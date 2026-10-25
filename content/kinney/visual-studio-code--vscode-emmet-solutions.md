@@ -1,47 +1,47 @@
 ---
-title: "Emmet in Visual Studio Code: Solutions"
-lang: en
+title: "Emmet في Visual Studio Code: الحلول"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-emmet-solutions"
 ---
 
-Here are some possible solutions to [these exercises](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises).
+إليك بعض الحلول الممكنة [لهذه التمارين](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises).
 
-## Basic Paragraph
+## فقرة أساسية
 
 ```css
 p{Hello, world!}
 ```
 
-A classic statement—you can swap the text for anything that tickles your fancy.
+عبارة كلاسيكية — يمكنك استبدال النص بأي شيء يروق لك.
 
-## Simple Unordered List
+## قائمة غير مرتّبة بسيطة
 
 ```css
 ul>li{Item}*3
 ```
 
-This one gives you three list items shouting “Item”—perfect for when you need some simple repetition.
+يمنحك هذا ثلاثة عناصر قائمة تهتف «Item» — مثالي عندما تحتاج إلى تكرار بسيط.
 
-## Image Element with Attributes
+## عنصر صورة مع خصائص
 
 ```css
 img[src='image.jpg'][alt='Placeholder Image']
 ```
 
-No frills here: an image tag with source and alt text. It’s like the basic outfit of HTML images.
+لا زخرفة هنا: وسم صورة مع المصدر والنص البديل. إنه مثل الزيّ الأساسي لصور HTML.
 
-## Nested Div Structure
+## بنية div متداخلة
 
 ```css
 div>div
 ```
 
-A parent div holding a child div. It’s as simple as nesting your hopes in a dream.
+div أب يحوي div ابنًا. الأمر بسيط كتداخل آمالك في حلم.
 
-## Header with Navigation
+## ترويسة مع تنقّل
 
 ```css
 header>nav>ul>li*2
 ```
 
-A header with a nav that wraps a list of two items. It’s a mini layout that’s as straightforward as it gets.
+ترويسة مع nav يلتفّ حول قائمة من عنصرين. إنه تخطيط مصغّر بأبسط ما يكون.

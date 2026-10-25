@@ -1,14 +1,14 @@
 ---
-title: "DELETE Requests and State Cleanup"
-lang: en
+title: "طلبات DELETE وتنظيف الحالة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/deleting-todos-state-cleanup"
 ---
 
-Deleting data seems simple—remove it from the array and call it done. But production applications need confirmation dialogs, undo functionality, soft deletes, and proper cleanup of related data. TypeScript helps us implement these patterns safely, ensuring we handle all the edge cases that come with destructive operations.
+يبدو حذف البيانات بسيطًا — أزله من المصفوفة واعتبر الأمر منتهيًا. لكن تطبيقات الإنتاج تحتاج إلى نوافذ تأكيد، وإمكانية التراجع (undo)، والحذف الناعم (soft delete)، وتنظيف سليم للبيانات المرتبطة. يساعدنا TypeScript على تنفيذ هذه الأنماط بأمان، ويضمن تعاملنا مع جميع الحالات الحدّية التي تصاحب العمليات المدمّرة.
 
-## Basic Delete Pattern
+## النمط الأساسي للحذف
 
-Let’s start with a simple delete implementation:
+لنبدأ بتنفيذ حذف بسيط:
 
 ```typescript
 interface Todo {
@@ -64,9 +64,9 @@ function BasicTodoDeleter() {
 }
 ```
 
-## Optimistic Delete with Undo
+## الحذف المتفائل مع التراجع
 
-Implement instant deletion with undo capability:
+نفّذ حذفًا فوريًا مع إمكانية التراجع:
 
 ```typescript
 interface DeletedTodo extends Todo {
@@ -202,9 +202,9 @@ function UndoableTodoList() {
 }
 ```
 
-## Confirmation Dialog Pattern
+## نمط نافذة التأكيد
 
-Add confirmation before destructive actions:
+أضف خطوة تأكيد قبل الإجراءات المدمّرة:
 
 ```typescript
 interface ConfirmDialogProps {
@@ -310,9 +310,9 @@ function TodosWithConfirmDelete() {
 }
 ```
 
-## Soft Delete Pattern
+## نمط الحذف الناعم
 
-Implement soft delete where items are marked as deleted but not removed:
+نفّذ حذفًا ناعمًا تُوسم فيه العناصر كمحذوفة دون إزالتها:
 
 ```typescript
 interface SoftDeletableTodo extends Todo {
@@ -469,9 +469,9 @@ function SoftDeleteTodos() {
 }
 ```
 
-## Batch Delete Operations
+## عمليات الحذف بالدفعات
 
-Delete multiple items efficiently:
+احذف عناصر متعدّدة بكفاءة:
 
 ```typescript
 function BatchDeleteTodos() {
@@ -601,9 +601,9 @@ function BatchDeleteTodos() {
 }
 ```
 
-## Cascading Deletes
+## عمليات الحذف المتتالية
 
-Handle deletion of related data:
+تعامل مع حذف البيانات المرتبطة:
 
 ```typescript
 interface TodoWithSubtasks extends Todo {
@@ -731,9 +731,9 @@ function CascadingDeleteTodos() {
 }
 ```
 
-## Custom Hook for Delete Operations
+## خُطّاف مخصّص لعمليات الحذف
 
-Encapsulate delete logic in a reusable hook:
+اجمع منطق الحذف داخل خُطّاف قابل لإعادة الاستخدام:
 
 ```typescript
 interface UseDeleteOptions {
@@ -827,24 +827,24 @@ function useDelete<T extends { id: number }>(
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Always confirm destructive actions** - Use dialogs or undo functionality
-2. **Implement soft delete when possible** - Keep data recoverable
-3. **Handle cascading deletes carefully** - Clean up related data
-4. **Provide feedback during deletion** - Show progress for bulk operations
-5. **Test edge cases** - Network failures, concurrent deletes, etc.
+1. **أكّد دائمًا الإجراءات المدمّرة** — استخدم نوافذ التأكيد أو إمكانية التراجع
+2. **نفّذ الحذف الناعم متى أمكن** — أبقِ البيانات قابلة للاسترجاع
+3. **تعامل مع عمليات الحذف المتتالية بعناية** — نظّف البيانات المرتبطة
+4. **قدّم تغذية راجعة أثناء الحذف** — اعرض التقدّم للعمليات الجماعية
+5. **اختبر الحالات الحدّية** — أعطال الشبكة، والحذف المتزامن، وما شابه
 
-## Summary
+## الخلاصة
 
-Proper delete operations require:
+تتطلّب عمليات الحذف السليمة ما يلي:
 
-- Confirmation before destructive actions
-- Undo functionality for better UX
-- Soft delete patterns for data recovery
-- Batch operations for efficiency
-- Proper state cleanup and error handling
+- تأكيد قبل الإجراءات المدمّرة
+- إمكانية تراجع لتجربة استخدام أفضل
+- أنماط حذف ناعم لاسترجاع البيانات
+- عمليات بالدفعات لزيادة الكفاءة
+- تنظيف سليم للحالة ومعالجة الأخطاء
 
-## What’s Next?
+## ما التالي؟
 
-Now let’s bring everything together in a complete CRUD todo application.
+لنجمع كل ذلك معًا الآن في تطبيق مهام متكامل يعمل بعمليات CRUD.

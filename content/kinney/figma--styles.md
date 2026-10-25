@@ -1,48 +1,48 @@
 ---
-title: "Styles"
-lang: en
+title: "الأنماط"
+lang: ar
 source: "https://stevekinney.com/courses/figma/styles"
 ---
 
-> **Styles and Variables**
+> **الأنماط والمتغيّرات**
 >
-> Figma introduced a new feature—that is currently in beta—called [variables](https://stevekinney.com/courses/figma/variables). There is a certain amount of overlap between the two features. That said, **variables** don’t—and can’t—replace styles just yet. You can read some more about the differences in [Styles vs. Variables](https://stevekinney.com/courses/figma/styles-vs-variables).
+> أدخل Figma ميزة جديدة — لا تزال في المرحلة التجريبية (beta) — تُسمّى [المتغيّرات](https://stevekinney.com/courses/figma/variables). وهناك قدر من التداخل بين الميزتين. ومع ذلك، لا تُغني **المتغيّرات** عن الأنماط — ولا يمكنها ذلك — في الوقت الحالي. ويمكنك قراءة المزيد عن الفروق في [الأنماط مقابل المتغيّرات](https://stevekinney.com/courses/figma/styles-vs-variables).
 
-Shared styles allow you to store information about the color, text properties, shadows, or layouts into reusable styles. This is cool because if you update that style, then anything that points to that style will also update accordingly.
+تتيح لك الأنماط المشتركة تخزين معلومات عن اللون وخصائص النص والظلال أو التخطيطات في أنماط قابلة لإعادة الاستخدام. وهذا رائع لأنك إن حدّثت ذلك النمط، فسيُحدَّث تلقائيًا كل شيء يشير إليه.
 
-You can create shared styles for any of the following:
+يمكنك إنشاء أنماط مشتركة لأي ممّا يلي:
 
-- Colors
-- Text
-- Effects (e.g. shadows and blurs)
-- [Layout Grids](https://stevekinney.com/courses/figma/layout-grids)
+- الألوان
+- النص
+- التأثيرات (مثل الظلال والتمويهات)
+- [شبكات التخطيط](https://stevekinney.com/courses/figma/layout-grids)
 
-## Text Styles and Color Styles
+## أنماط النص وأنماط الألوان
 
-One of the things to notice here is that text styles and color styles are separate. This is intended to make your life easier.
+من الأمور التي ينبغي ملاحظتها هنا أن أنماط النص وأنماط الألوان منفصلة. والقصد من ذلك أن يُسهّل حياتك.
 
-You don’t need to make three styles for red text: one right-aligned, one center-aligned, and one-left aligned. You can make your color style and your alignment style and them apply them both separately to the layer in question.
+لا تحتاج إلى إنشاء ثلاثة أنماط لنص أحمر: واحد بمحاذاة لليمين وواحد بمحاذاة الوسط وواحد بمحاذاة اليسار. يمكنك إنشاء نمط اللون ونمط المحاذاة ثم تطبيقهما معًا بشكل منفصل على الطبقة المعنية.
 
-## Naming Conventions
+## اصطلاحات التسمية
 
-The way you name your styles will help you as your design does it inevitable march into complexity. You can use a slash in the name of your file to create an ad hoc folder-like structure to your components.
+ستساعدك طريقة تسمية أنماطك مع تقدّم تصميمك حتمًا نحو التعقيد. ويمكنك استخدام الشرطة المائلة في اسم ملفك لإنشاء بنية شبيهة بالمجلدات لمكوّناتك بعفوية.
 
-By using a forward slash in your style names, you can group your colors by theme or hue or type styles by size or use case. You might group your grid styles by the viewport of whatever device they’re intended for.
+وباستخدام الشرطة المائلة في أسماء أنماطك، يمكنك تجميع ألوانك حسب السمة أو الدرجة اللونية، أو تجميع أنماط النص حسب الحجم أو حالة الاستخدام. وقد تجمّع أنماط شبكاتك حسب منفذ العرض (viewport) للجهاز الذي وُجدت من أجله.
 
-## Creating Styles at Scale
+## إنشاء الأنماط على نطاق واسع
 
-- Let’s create a style based off of one of the colors.
-- This is tedious, let’s actually create them in bulk by renaming these little color swatches to whatever we want the styles to be called.
-- We’ll a plugin called [Styler](https://www.figma.com/community/plugin/820660579767995949/Styler) to create the styles.
+- لننشئ نمطًا بناءً على أحد الألوان.
+- هذا أمر ممل، فلننشئها فعليًا بالجملة بإعادة تسمية عيّنات الألوان الصغيرة هذه إلى ما نريد أن تُسمّى به الأنماط.
+- سنستخدم إضافة (plugin) تُسمّى [Styler](https://www.figma.com/community/plugin/820660579767995949/Styler) لإنشاء الأنماط.
 
-## Generating CSS from Styles
+## توليد CSS من الأنماط
 
-If you’re going to go through all of the work to create styles in Figma, it would be nice if you could export some of the basic ideas of those styles into CSS or SCSS variables to use in your code. It turns out that you can with a plugin called [CSSGen](https://www.figma.com/community/plugin/742750636238601912/CSSGen).
+إن كنت ستبذل كل هذا الجهد لإنشاء أنماط في Figma، فمن الجيد أن تستطيع تصدير بعض الأفكار الأساسية لتلك الأنماط في صورة متغيّرات CSS أو SCSS لاستخدامها في شيفرتك. وتبيّن أنك تستطيع ذلك بإضافة تُسمّى [CSSGen](https://www.figma.com/community/plugin/742750636238601912/CSSGen).
 
-## Batch Renaming
+## إعادة التسمية بالجملة
 
-Larry Wall, the creator of the Perl programming language, famously said that the three great virtues of a programmer were laziness, impatience, and hubris. In his honor, let’s talk about way for renaming layers in bulk. This will aid us when we start creating styles based on layers.
+قال Larry Wall، مبتكر لغة البرمجة Perl، قولته الشهيرة إن الفضائل العظيمة الثلاث للمبرمج هي الكسل وعدم الصبر والغطرسة. وتكريمًا له، لنتحدث عن طريقة لإعادة تسمية الطبقات بالجملة. وسيساعدنا هذا عندما نبدأ في إنشاء أنماط بناءً على الطبقات.
 
-- Select a row of color layers.
-- Use the Quick Action panel and search for Rename or hit `Command/Control-R`.
-- Rename them all using the Gray / n is a variable for a number that will increment).
+- حدّد صفًا من طبقات الألوان.
+- استخدم لوحة Quick Action وابحث عن Rename أو اضغط `Command/Control-R`.
+- أعد تسميتها جميعًا باستخدام Gray / n حيث n متغيّر يمثّل رقمًا يتزايد).

@@ -62,7 +62,7 @@ ws.onmessage = function(msg) {
 > User agents can use this as a hint for how to handle incoming binary data: if the attribute is set to "blob", it is safe to spool it to disk, and if it is set to "arraybuffer", it is likely more efficient to keep the data in memory. Naturally, user agents are encouraged to use more subtle heuristics to decide whether to keep incoming data in memory or not…
 > > The WebSocket API, W3C Candidate Recommendation
 
-A Blob object represents a file-like object of immutable, raw data. If you do not need to modify the data and do not need to slice it into smaller chunks, then it is the optimal format—e.g., you can pass the entire Blob object to an image tag (see the example in [Downloading Data with XHR](/xmlhttprequest/#downloading-data-with-xhr)). On the other hand, if you need to perform additional processing on the binary data, then ArrayBuffer is likely the better fit.
+A Blob object represents a file-like object of immutable, raw data. If you do not need to modify the data and do not need to slice it into smaller chunks, then it is the optimal format—e.g., you can pass the entire Blob object to an image tag (see the example in [Downloading Data with XHR](/book/hpbn/xmlhttprequest/#downloading-data-with-xhr)). On the other hand, if you need to perform additional processing on the binary data, then ArrayBuffer is likely the better fit.
 
 #### Decoding Binary Data with JavaScript
 

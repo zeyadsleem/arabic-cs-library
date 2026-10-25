@@ -1,28 +1,28 @@
 ---
-title: "Install all dependencies"
-lang: en
+title: "المستودعات الموحّدة وأنواع واجهة المستخدم المشتركة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/monorepos-and-shared-ui-types"
 ---
 
-Building applications in isolation is fine until you need to share components, utilities, or types across multiple projects. That’s when you realize you’ve been copy-pasting the same button component and duplicating TypeScript interfaces like it’s 2015 (we’ve all been there). Enter monorepos—a single repository containing multiple packages that can import from each other while maintaining proper type safety and development workflows.
+لا بأس في بناء التطبيقات بمعزل عن بعضها حتى تحتاج إلى مشاركة المكوّنات والمساعدات أو الأنواع بين مشروعاتٍ عدّة. حينها تنتبه أنك كنت تنسخ عنصر الزرّ نفسه وتكرّر واجهات TypeScript وكأنك في عام 2015 (كلنا مررنا بشأنه). وهنا تأتي المستودعات الموحّدة (monorepos) — مستودع واحد يحتوي حزمًا عدّة يستطيع بعضها الاستيراد من بعض مع الإبقاء على أمان الأنواع وسير عمل تطويرٍ سليمين.
 
-Monorepos solve the “shared component library” problem elegantly. Instead of publishing internal packages to npm or wrestling with Git submodules, you keep everything in one place with proper tooling to build, test, and deploy individual packages independently. Today, we’ll build a TypeScript monorepo with a shared UI library that provides both React components and type definitions to consuming applications.
+يحل المستودع الموحّد مشكلة «مكتبة المكوّنات المشتركة» حلًّا أنيقًا. فبدلًا من نشر حزمة داخلية إلى npm أو مصارعة وحدات Git الفرعية (Git submodules)، تُبقي كل شيء في موضع واحد مع أدوات مناسبة تُعين في بناء كل حزمة على حدة واختبارها ونشرها استقلالًا. سنبني اليوم مستودعًا موحّدًا بـ TypeScript فيه مكتبة واجهة مستخدم مشتركة تقدّم للتطبيقات المستهلكة مكوّنات React وتعريفات أنواع معًا.
 
-## Why Monorepos for Shared Libraries?
+## لماذا المستودعات الموحّدة للمكتبات المشتركة؟
 
-Before diving in, let’s quickly cover why monorepos make sense for shared UI libraries:
+قبل أن نتعمّق، لنغطِّ بسرعة السبب الذي يجعل المستودعات الموحّدة مناسبة لمكتبات واجهة المستخدم المشتركة:
 
-- **Single source of truth**: All your components and types live in one place
-- **Atomic changes**: Update both library and consumer in the same commit
-- **Simplified dependency management**: No more “which version of our button component are we using?”
-- **Better developer experience**: Jump to definitions works across packages
-- **Consistent tooling**: Share ESLint configs, build scripts, and testing setup
+- **مصدر واحد للحق:** جميع مكوّناتك وأنواعها في موضع واحد
+- **تغييرات ذرّية:** حدّث المكتبة والمستهلك في الإيداع نفسه
+- **إدارة اعتمادات ميسَّرة:** لا سؤال بعدُ «أيّ إصدار من مكوّن الزرّ نستخدم؟»
+- **تجربة مطوّر أفضل:** فالانتقال إلى التعريفات يعمل عبر الحزم
+- **أدوات متّسقة:** شارك تهيئات ESLint وسكربتات البناء وإعداد الاختبار
 
-The tradeoffs? Larger repository size and slightly more complex build orchestration—but modern tools make these concerns largely theoretical for most teams.
+والمفاضلة؟ حجم مستودع أكبر، وتنسيق بناء أكثر تعقيدًا بقليل — لكن الأدوات الحديثة تجعل هذه الهموم نظرية في الغالب لمعظم الفرق.
 
-## Setting Up the Monorepo Structure
+## تهيئة بنية المستودع الموحّد
 
-We’ll use [pnpm workspaces](https://pnpm.io/workspaces) because it handles package linking elegantly and has excellent TypeScript support. Our structure will look like this:
+سنستخدم [pnpm workspaces](https://pnpm.io/workspaces) لأنها تتعامل مع ربط الحزم بأناقة ولها دعم ممتاز لـ TypeScript. ستبدو بنيتنا كما يأتي:
 
 ```
 my-monorepo/
@@ -35,7 +35,7 @@ my-monorepo/
 └── tsconfig.json     # Root TypeScript config
 ```
 
-Start by creating the root `package.json`:
+ابدأ بإنشاء الملف `package.json` الجذري:
 
 ```json
 {
@@ -54,23 +54,23 @@ Start by creating the root `package.json`:
 }
 ```
 
-Create the workspace configuration in `pnpm-workspace.yaml`:
+أنشئ تهيئة مساحات العمل في `pnpm-workspace.yaml`:
 
 ```yaml
 packages:
   - 'packages/*'
 ```
 
-## Creating the Shared Types Package
+## إنشاء حزمة الأنواع المشتركة
 
-Let’s start with the types package since our UI components will depend on it. This keeps our type definitions as a single source of truth.
+لنبدأ بحزمة الأنواع لأن مكوّنات واجهة المستخدم ستعتمد عليها. هكذا تبقى تعريفات الأنواع لدينا مصدرًا واحدًا موثوقًا للحق.
 
 ```bash
 mkdir -p packages/types/src
 cd packages/types
 ```
 
-Create `packages/types/package.json`:
+أنشئ `packages/types/package.json`:
 
 ```json
 {
@@ -95,11 +95,11 @@ Create `packages/types/package.json`:
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> The `workspace:*` syntax tells pnpm to use the TypeScript version from the root workspace, ensuring consistency.
+> تُخبر صيغة `workspace:*` أداة pnpm أن تستخدم إصدار TypeScript من مساحة العمل الجذرية فتضمن الاتساق.
 
-Create `packages/types/tsconfig.json`:
+أنشئ `packages/types/tsconfig.json`:
 
 ```json
 {
@@ -116,9 +116,9 @@ Create `packages/types/tsconfig.json`:
 }
 ```
 
-The `composite: true` flag is crucial—it enables TypeScript project references, allowing other packages to build incrementally and get proper IDE support.
+عَلَم `composite: true` جوهري — فهو يفعّل مراجع المشاريع (project references) في TypeScript، بحيث تتمكن الحزم الأخرى من بناء تدريجي ودعم سليم من بيئة التطوير التكاملية.
 
-Now, create some shared types in `packages/types/src/index.ts`:
+الآن أنشئ بعض الأنواع المشتركة في `packages/types/src/index.ts`:
 
 ```typescript
 // Common UI prop types
@@ -174,18 +174,18 @@ export type FormState<T extends Record<string, unknown>> = {
 };
 ```
 
-These types cover common UI patterns you’ll want to share: component props, theme systems, data models, and form utilities.
+تغطي هذه الأنواع أنماط واجهة المستخدم الشائعة التي ستريد مشاركتها: خصائص المكوّنات، وأنظمة السمات (themes)، ونماذج البيانات، وأدوات النماذج (forms).
 
-## Building the Shared UI Package
+## بناء حزمة واجهة المستخدم المشتركة
 
-Now for the fun part—building reusable React components. Create the UI package structure:
+الآن الجزء الممتع: بناء مكوّنات React قابلة لإعادة الاستخدام. أنشئ بنية حزمة واجهة المستخدم:
 
 ```bash
 mkdir -p packages/ui/src/components
 cd packages/ui
 ```
 
-Create `packages/ui/package.json`:
+أنشئ `packages/ui/package.json`:
 
 ```json
 {
@@ -223,7 +223,7 @@ Create `packages/ui/package.json`:
 }
 ```
 
-Create `packages/ui/tsconfig.json`:
+أنشئ `packages/ui/tsconfig.json`:
 
 ```json
 {
@@ -241,9 +241,9 @@ Create `packages/ui/tsconfig.json`:
 }
 ```
 
-The `references` array tells TypeScript that this package depends on the types package, enabling incremental builds and proper cross-package type checking.
+تخبر مصفوفة `references` TypeScript بأن هذه الحزمة تعتمد على حزمة الأنواع، فتُفعّل البناء التدريجي والتحقق النوعي السليم عبر الحزم.
 
-Create a Button component in `packages/ui/src/components/Button.tsx`:
+أنشئ مكوّن Button في `packages/ui/src/components/Button.tsx`:
 
 ```typescript
 import React from 'react';
@@ -347,7 +347,7 @@ const Button: React.FC<ButtonProps> = ({
 export default Button;
 ```
 
-Create a Modal component in `packages/ui/src/components/Modal.tsx`:
+أنشئ مكوّن Modal في `packages/ui/src/components/Modal.tsx`:
 
 ```typescript
 import React, { useEffect } from 'react';
@@ -416,7 +416,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, classNa
 export default Modal;
 ```
 
-Create the main export file `packages/ui/src/index.ts`:
+أنشئ ملف التصدير الرئيسي `packages/ui/src/index.ts`:
 
 ```typescript
 // Export all components
@@ -427,9 +427,9 @@ export { default as Modal } from './components/Modal';
 export type { ButtonProps, ModalProps, ThemeVariant, Size, BaseProps } from '@my-org/types';
 ```
 
-## Setting Up TypeScript Project References
+## تهيئة مراجع مشاريع TypeScript
 
-The magic happens in the root `tsconfig.json`. This file coordinates building across all packages:
+يجري السحر في ملف `tsconfig.json` الجذري. هذا الملف ينسّق البناء عبر كل الحزم:
 
 ```json
 {
@@ -464,18 +464,18 @@ The magic happens in the root `tsconfig.json`. This file coordinates building ac
 }
 ```
 
-The `paths` mapping allows TypeScript to resolve package imports during development, while `references` enables incremental compilation across packages.
+يتيح إسناد `paths` لـ TypeScript أن يحل الاستيرادات من الحزم أثناء التطوير، فيما تُفعّل `references` التصريف التدريجي عبر الحزم.
 
-## Creating a Consumer Application
+## إنشاء تطبيق مستهلك
 
-Now let’s create an app that uses our shared UI library. Create `packages/web-app`:
+لننشئ الآن تطبيقًا يستخدم مكتبة واجهة المستخدم المشتركة عندنا. أنشئ `packages/web-app`:
 
 ```bash
 mkdir -p packages/web-app/src
 cd packages/web-app
 ```
 
-Create `packages/web-app/package.json`:
+أنشئ `packages/web-app/package.json`:
 
 ```json
 {
@@ -503,7 +503,7 @@ Create `packages/web-app/package.json`:
 }
 ```
 
-Create `packages/web-app/tsconfig.json`:
+أنشئ `packages/web-app/tsconfig.json`:
 
 ```json
 {
@@ -517,7 +517,7 @@ Create `packages/web-app/tsconfig.json`:
 }
 ```
 
-Create a simple app in `packages/web-app/src/App.tsx`:
+أنشئ تطبيقًا بسيطًا في `packages/web-app/src/App.tsx`:
 
 ```typescript
 import React, { useState } from 'react';
@@ -582,9 +582,9 @@ const App: React.FC = () => {
 export default App;
 ```
 
-## Build Configuration and Workflows
+## تهيئة البناء وسير العمل
 
-Create a build script for the UI package using Rollup. Add `packages/ui/rollup.config.js`:
+أنشئ سكربت بناء لحزمة واجهة المستخدم بواسطة Rollup. أضف `packages/ui/rollup.config.js`:
 
 ```javascript
 import typescript from '@rollup/plugin-typescript';
@@ -608,7 +608,7 @@ export default {
 };
 ```
 
-Now you can build everything from the root:
+الآن نستطيع بناء كل شيء من الجذر:
 
 ```bash
 # Install all dependencies
@@ -624,11 +624,11 @@ pnpm type-check
 pnpm dev
 ```
 
-## Advanced Patterns and Best Practices
+## أنماط متقدمة وأفضل الممارسات
 
-### Barrel Exports for Clean Imports
+### التصديرات البرميلية (barrel exports) لاستيراد نظيف
 
-Instead of importing from deep paths, create barrel exports in your UI package:
+بدلًا من الاستيراد من مسارات معمّقة، أنشئ تصديرات برميلية في حزمة واجهة المستخدم عندك:
 
 ```typescript
 // packages/ui/src/components/index.ts
@@ -644,9 +644,9 @@ export * from './hooks';
 export * from '@my-org/types';
 ```
 
-### Shared Build Configuration
+### تهيئة بناء مشتركة
 
-Create a shared TypeScript config for common settings:
+أنشئ تهيئة TypeScript مشتركة للإعدادات العامة:
 
 ```json
 // tsconfig.base.json
@@ -667,7 +667,7 @@ Create a shared TypeScript config for common settings:
 }
 ```
 
-Then extend it in each package:
+ثم قم بتوسيعه في كل حزمة:
 
 ```json
 {
@@ -678,9 +678,9 @@ Then extend it in each package:
 }
 ```
 
-### Runtime Type Validation
+### التحقق النوعي عند وقت التشغيل
 
-For shared types that cross API boundaries, add Zod schemas alongside your TypeScript types:
+أما الأنواع المشتركة التي تعبر حدود API فأضف إلى جانب أنواع TypeScript عندك مخططات Zod:
 
 ```typescript
 // packages/types/src/user.ts
@@ -702,13 +702,13 @@ export const parseUser = (data: unknown): User => {
 };
 ```
 
-This gives you both compile-time types and runtime validation using the same definition.
+بهذا تربح أنواعًا عند وقت التصريف وتحقّقًا عند وقت التشغيل من التعريف نفسه.
 
-## Common Pitfalls and Solutions
+## الأخطاء الشائعة وحلولها
 
-### Circular Dependencies
+### الاعتمادات الدائرية
 
-Watch out for circular imports between packages. If your types package needs UI-specific types, create a separate `ui-types` package or move shared types to a more general location.
+انتبه للاستيرادات الدائرية بين الحزم. إن احتاجت حزمة أنواعك أنواعًا خاصة بواجهة المستخدم، فأنشئ حزمة `ui-types` منفصلة أو انقل الأنواع المشتركة إلى موضع أعم.
 
 ```typescript
 // ❌ Avoid this pattern
@@ -721,9 +721,9 @@ Watch out for circular imports between packages. If your types package needs UI-
 // packages/ui depends on ui-types and api-types
 ```
 
-### Build Order Issues
+### مشكلات ترتيب البناء
 
-Use TypeScript project references properly to ensure packages build in the correct order:
+استخدم مراجع مشاريع TypeScript على الصحيح حتى تُبنى الحزم بترتيب صحيح:
 
 ```bash
 # Build everything with proper dependencies
@@ -733,20 +733,20 @@ npx tsc --build
 pnpm --recursive run build
 ```
 
-### Development vs Production Imports
+### استيراد التطوير مقابل الإنتاج
 
-During development, you want TypeScript to resolve to source files. In production, you want it to resolve to built `.d.ts` files. The `paths` configuration in your root `tsconfig.json` handles development, while the `types` field in `package.json` handles production builds.
+أثناء التطوير تريد أن تُفسَّر الاستيرادات إلى ملفات المصدر. وفي الإنتاج تريد أن تُفسَّر إلى ملفات `.d.ts` المُبنَأة. فتهيئة `paths` في ملف `tsconfig.json` الجذري تعتني بالتطوير، بينما يعتني حقل `types` في `package.json` بأعمال البناء الإنتاجية.
 
-## Next Steps
+## الخطوات التالية
 
-You now have a fully functional monorepo with shared UI components and types. Here are some enhancements to consider:
+أنت الآن تملك مستودعًا موحّدًا عاملًا بالكامل فيه مكوّنات وأنواع واجهة المستخدم المشتركة. هذه بعض التحسينات الجديرة بالنظر:
 
-- **Storybook**: Add component documentation and testing
-- **Testing**: Set up Jest with proper module resolution for cross-package testing
-- **Linting**: Share ESLint configurations across packages
-- **Publishing**: Use Changesets for versioning and publishing individual packages
-- **CI/CD**: Set up build caching to only rebuild changed packages
+- **Storybook:** أضف توثيقًا واختبارًا للمكوّنات
+- **الاختبار:** هيّئ Jest بحل وحدات سليم للاختبارات عبر الحزم
+- **الفحص:** شارك تهيئات ESLint عبر الحزم
+- **النشر:** استخدم Changesets لإدارة الإصدارات ونشر الحزم كلًّا على حدة
+- **التكامل والنشر المستمر (CI/CD):** هيّئ ذاكرة تخزينٍ مؤقتة للبناء لا تعيد بناء إلا الحزم المتغيرة
 
-The patterns shown here scale well—whether you’re building a design system for a single organization or managing dozens of interconnected packages. The key is maintaining clear boundaries between packages while leveraging TypeScript’s project references to keep everything type-safe and buildable.
+تندرج هذه الأنماط جيدًا سواء بُني نظام تصاميم لمؤسسة واحدة أم تُدار عشرات الحزم المرتبطة بعضها بعضًا. والمفتاح هو المحافظة على حدود واضحة بين الحزم مع الاستفادة من مراجع مشاريع TypeScript في إبقاء كل شيء آمن الأنواع وقابلًا للبناء.
 
-Remember: monorepos are about organization and workflow, not architecture. Keep your components focused, your types specific, and your build processes predictable. The tooling will handle the rest.
+تذكر: المستودعات الموحّدة تخص التنظيم وسير العمل لا المعمارية. أبقِ مكوّناتك مركّزة، وأنواعك محددة، وعملية بنائك متوقعة. وستتكفل الأدوات بالبقية.

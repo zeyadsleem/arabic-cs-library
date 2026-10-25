@@ -1,75 +1,75 @@
 ---
-title: "Flaky-Test Triage: When Retries Are Lying to You"
-lang: en
+title: "فرز الاختبارات المتذبذبة: حين تخدعك إعادة المحاولات"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage"
 ---
 
-Shelf’s search test passes nine times out of ten on my laptop and one time out of ten in CI. The honest thing is to admit I don’t know why. The dishonest thing is to bump `retries` from 2 to 3 and call it Tuesday.
+اختبار البحث في Shelf ينجح تسع مرات من عشر على حاسوبي المحمول، ومرة واحدة من عشر في CI. الفعل الصادق أن أعترف بأنني لا أعرف السبب. والفعل غير الصادق أن أرفع `retries` من 2 إلى 3 وأعتبر الأمر منتهيًا.
 
-This lesson is about that second move — the one every agent I’ve worked with reaches for when a test flakes. Retries are a painkiller. They mask the symptom, let the underlying bug grow, and eventually the tumor is big enough to take down the whole suite. Everything here is a substitute for that reflex.
+هذا الدرس عن الحركة الثانية تلك — التي يمدّ إليها كل وكيل عملت معه يده حين يتذبذب اختبار. إعادة المحاولات مسكّن للألم. تُخفي العَرَض، وتترك العلّة الكامنة تنمو، وفي النهاية يصبح الورم كبيرًا بما يكفي لإسقاط مجموعة الاختبارات بأكملها. كل ما في هذا الدرس بديل عن ذلك الانعكاس.
 
-## Four causes of flake, not one
+## أربعة أسباب للتذبذب، لا سبب واحد
 
-Flaky tests have personality. Once you’ve seen a few, you learn to recognize which family a given flake belongs to before you even open the trace. There are four families, and each one has a different fix. If you can classify the flake, you already know what to do.
+للاختبارات المتذبذبة شخصية. وحين ترى بعضها، تتعلّم أن تميّز إلى أي عائلة ينتمي تذبذب بعينه قبل أن تفتح التتبّع أصلًا. هناك أربع عائلات، ولكل واحدة إصلاح مختلف. فإن استطعت تصنيف التذبذب، فقد عرفت ما تفعل.
 
-### 1. Timing race
+### 1. سباق التوقيت
 
-**Symptom**: the test asserts something *before* the network request that would have made the assertion pass. Sometimes the request is fast and the assertion coincidentally wins. Sometimes the request is slow and the assertion fails.
+**العَرَض**: يتحقّق الاختبار من شيء *قبل* طلب الشبكة الذي كان سيجعل التحقّق ينجح. أحيانًا يكون الطلب سريعًا فيفوز التحقّق بالمصادفة. وأحيانًا يكون الطلب بطيئًا فيفشل التحقّق.
 
-**Example**: the rate-book test clicks “Save rating” and immediately asserts the rating text is visible, without waiting for the `PATCH /api/shelf/:id` response. On a fast machine the PATCH resolves before the assertion runs. On a slow machine, no.
+**مثال**: اختبار كتاب التقييم ينقر «Rate this book» ثم يتحقّق فورًا من ظهور نص التقييم، دون انتظار استجابة `PATCH /api/shelf/:id`. على جهاز سريع تُحلّ استجابة PATCH قبل أن يُنفَّذ التحقّق. وعلى جهاز بطيء، لا.
 
-**Fix**: use `page.waitForResponse` on the specific request, or let Playwright’s auto-retrying assertions do the waiting for you. Never bump the assertion’s timeout as a first response — that just makes the race less visible, not less real.
+**الإصلاح**: استخدم `page.waitForResponse` على الطلب المحدّد، أو دع التحقّقات ذاتية إعادة المحاولة في Playwright تقوم بالانتظار نيابةً عنك. لا ترفع مهلة التحقّق أبدًا كأول استجابة — فذلك يجعل السباق أقلّ وضوحًا فحسب، لا أقلّ واقعية.
 
-Link back: this is the exact failure mode [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) warned you about. Read that lesson if you want the full treatment.
+رجوع إلى الدرس: هذا هو نمط الفشل نفسه الذي حذّرك منه [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story). اقرأ ذلك الدرس إن أردت المعالجة الكاملة.
 
-### 2. Shared state leak
+### 2. تسريب الحالة المشتركة
 
-**Symptom**: test N passes in isolation and fails when test N−1 runs first. The failure is about some book, some user, or some setting that test N−1 left behind. Run the full suite and it’s flaky. Run the single test and it’s fine.
+**العَرَض**: ينجح الاختبار رقم N في العزلة، ويفشل حين يُشغَّل الاختبار رقم N−1 قبله. والفشل يتعلّق بكتاب أو مستخدم أو إعداد تركه الاختبار رقم N−1 خلفه. شغّل مجموعة الاختبارات كاملة فتجد تذبذبًا. وشغّل الاختبار واحدًا فينجح.
 
-**Example**: test N−1 adds Annihilation to the shelf and doesn’t clean up. Test N counts shelf entries and expects two, because two is what `resetShelfContent()` shelves. It finds three. Fail.
+**مثال**: الاختبار رقم N−1 يضيف Annihilation إلى الرفّ ولا ينظّف بعده. والاختبار رقم N يعدّ مدخلات الرفّ ويتوقّع اثنين، لأن الاثنين هما ما يضعه `resetShelfContent()` على الرفّ. فيجد ثلاثة. فشل.
 
-**Fix**: put state management in a *fixture with teardown*, not in `beforeEach` discipline. The [Fixtures lesson](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) is the prerequisite here. The rule is that mutating fixtures have a teardown half that’s awaited, and the teardown is what keeps the leak from reaching the next test.
+**الإصلاح**: ضع إدارة الحالة في *تجهيزة مع تفكيك*، لا في انضباط `beforeEach`. و[درس التجهيزات](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) هو المتطلب السابق هنا. والقاعدة أن للتجهيزات المُعدِّلة نصفًا للتفكيك يُنتظر إتمامه، والتفكيك هو ما يمنع التسريب من الوصول إلى الاختبار التالي.
 
-### 3. Order-dependent rendering or locator ambiguity
+### 3. تصيير معتمد على الترتيب أو غموض في المحدِّد
 
-**Symptom**: a locator resolves to the wrong element, either because a modal or toast is transiently stacked over the page, or because the same role-plus-name combination exists on multiple elements at once. Playwright throws a strict-mode violation or silently clicks the wrong thing.
+**العَرَض**: يُحلّ محدِّد الموقع إلى العنصر الخطأ، إما لأن نافذة منبثقة أو إشعارًا عابرًا متراكم فوق الصفحة، وإما لأن تركيب الدور والاسم نفسه موجود على أكثر من عنصر في وقت واحد. فترمي Playwright مخالفة الوضع الصارم أو تنقر العنصر الخطأ بصمت.
 
-**Example**: the shelf renders one “Rate this book” button per shelved book. `page.getByRole('button', { name: 'Rate this book' })` matches both of them. Strict-mode violation.
+**مثال**: يعرض الرفّ زرًّا واحدًا «Rate this book» لكل كتاب موضوع عليه. و`page.getByRole('button', { name: 'Rate this book' })` يطابق الاثنين معًا. مخالفة الوضع الصارم.
 
-**Fix**: scope the locator to a region. `page.getByRole('article', { name: /Station Eleven/ }).getByRole('button', { name: 'Rate this book' })` resolves to exactly one button. The [Locators lesson](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) calls this “region-scoped locators” and it’s the single most reliable fix for this class of flake.
+**الإصلاح**: احصر المحدِّد في منطقة. فـ`page.getByRole('article', { name: /Station Eleven/ }).getByRole('button', { name: 'Rate this book' })` يُحلّ إلى زر واحد بالضبط. و[درس المحدِّدات](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) يسمّي هذا «محدِّدات محصورة في منطقة»، وهو الإصلاح الوحيد الأكثر موثوقية لهذه الفئة من التذبذب.
 
-### 4. Config / auth mismatch
+### 4. عدم تطابق التهيئة أو المصادقة
 
-**Symptom**: the test runs under the wrong Playwright project, misses its storage state, hits a server that wasn’t seeded, or depends on `setup` without declaring it. The failure looks like “element missing” or “redirected to /login.” The test body is fine — the wiring is broken.
+**العَرَض**: يجري الاختبار تحت مشروع Playwright الخطأ، أو يفتقد حالة التخزين الخاصة به، أو يصطدم بخادم لم تُغذَّ فيه البيانات، أو يعتمد على `setup` دون أن يعلن ذلك. ويبدو الفشل كأنه «العنصر مفقود» أو «أُعيد التوجيه إلى /login». جسم الاختبار سليم — والتوصيلات هي المعطوبة.
 
-**Example**: a test sitting in `tests/rate-book.spec.ts` but accidentally run under the `public` project instead of `authenticated`. It has no storage state. It navigates to `/shelf` and the server redirects it to `/login` before a single assertion runs.
+**مثال**: اختبار يقيم في `tests/rate-book.spec.ts` لكنه يُشغَّل بالخطأ تحت مشروع `public` بدلًا من `authenticated`. فليس لديه حالة تخزين. ينتقل إلى `/shelf` فيعيده الخادم إلى `/login` قبل أن يُنفَّذ تحقّق واحد.
 
-**Fix**: check the project, check the `dependencies: ['setup']` line, check the `storageState` in the project config. The fix is the *wiring*, not the test body. Link back: [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) and [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication).
+**الإصلاح**: افحص المشروع، وافحص سطر `dependencies: ['setup']`، وافحص `storageState` في تهيئة المشروع. فالإصلاح في *التوصيلات*، لا في جسم الاختبار. رجوع إلى الدرس: [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) و[مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication).
 
-## Triage workflow
+## سير عمل الفرز
 
-When a test flakes, run it. Run it ten times.
+حين يتذبذب اختبار، شغّله. شغّله عشر مرات.
 
 ```bash
 for i in {1..10}; do npm run test -- --grep "your test name" || true; done
 ```
 
-Count the failures.
+عُدّ حالات الفشل.
 
-- **0 out of 10**: not flaky on your machine. Probably CI-only. Suspect timing (bucket 1) or worker isolation (bucket 2). Run the same test on CI a few times and see if it fails there.
-- **1 to 3 out of 10**: real flake. Open the trace from a failing run and classify into one of the four buckets. Apply the corresponding fix.
-- **4 or more out of 10**: not flaky — broken. Stop calling it flaky. It’s a test that fails half the time because something is actually wrong with the test or with the code it’s testing. Treat it like a bug report, not a flake.
-- **10 out of 10**: something is wrong with your setup. You’re probably not even running the test you think you’re running.
+- **0 من 10**: ليس متذبذبًا على جهازك. الأرجح أنه في CI وحده. فاشتبه في التوقيت (الدلو 1) أو في عزلة العامل (الدلو 2). شغّل الاختبار نفسه على CI بضع مرات وانظر هل يفشل هناك.
+- **1 إلى 3 من 10**: تذبذب حقيقي. افتح التتبّع من تشغيل فاشل وصنّفه في أحد الدلاء الأربعة. ثم طبّق الإصلاح المقابل.
+- **4 أو أكثر من 10**: ليس متذبذبًا — بل معطوب. توقّف عن تسميته متذبذبًا. إنه اختبار يفشل نصف الوقت لأن شيئًا خطأ فعلًا في الاختبار أو في الشيفرة التي يختبرها. تعامل معه كتقرير خلل، لا كتذبذب.
+- **10 من 10**: شيء خطأ في تهيئتك. والأرجح أنك لا تشغّل الاختبار الذي تظنّ أنك تشغّله.
 
-The threshold between “real flake” and “broken” is the part that matters. Agents default to calling everything “flaky” because “flaky” lets them bump `retries` and move on. A 40% failure rate is not a flake. It’s a test that needs to be fixed or deleted.
+الحدّ الفاصل بين «التذبذب الحقيقي» و«المعطوب» هو الجزء المهم. فالوكلاء يميلون تلقائيًا إلى تسمية كل شيء «متذبذبًا»، لأن كلمة «متذبذب» تتيح لهم رفع `retries` والمضي. ومعدّل فشل 40% ليس تذبذبًا. إنه اختبار يحتاج إلى إصلاح أو حذف.
 
-> **The agent rule**
+> **قاعدة الوكيل**
 >
-> Before touching flaky-test code, an agent must (a) read a trace from a failing run, (b) classify the failure into one of the four buckets above, and (c) propose a *locator / fixture / wait / project-config* fix, not a retry bump. The next lesson, [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace), is how step (a) works in practice.
+> قبل أن يمسّ الوكيل شيفرة الاختبار المتذبذب، عليه أن (أ) يقرأ تتبّعًا من تشغيل فاشل، و(ب) يصنّف الفشل في أحد الدلاء الأربعة أعلاه، و(ج) يقترح إصلاحًا في *المحدِّد أو التجهيزة أو الانتظار أو تهيئة المشروع*، لا رفعًا لإعادة المحاولات. والدرس التالي، [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace)، يبيّن كيف تعمل الخطوة (أ) في الممارسة.
 
-## Quarantine without hiding
+## الحجر الصحي دون إخفاء
 
-Sometimes you can’t fix the flake today. The feature is shipping, the test is slowing the team down, and you need it out of the way. The move is not to delete the test. The move is not to bump the timeout. The move is:
+أحيانًا لا تستطيع إصلاح التذبذب اليوم. فالميزة تُشحن، والاختبار يبطّئ الفريق، وتحتاج إلى إبعاده عن الطريق. والحركة ليست حذف الاختبار. والحركة ليست رفع المهلة. الحركة هي:
 
 ```typescript
 test.fixme('adding a search result through the UI lands it on the shelf', async ({ page }) => {
@@ -82,21 +82,21 @@ test.fixme('adding a search result through the UI lands it on the shelf', async 
 });
 ```
 
-`test.fixme` marks the test as “expected to fail.” Playwright still runs it, still captures the trace, and *fails the run if the test starts passing*. That last part is the critical feature: the moment the flaky test is accidentally fixed (by you or by someone else touching related code), `test.fixme` tells you so you can delete the quarantine marker. Nothing hides.
+`test.fixme` يعلّم الاختبار بأنه «متوقّع أن يفشل». فـPlaywright ما زال يشغّله، وما زال يلتقط التتبّع، و*يفشل التشغيل إن بدأ الاختبار ينجح*. هذا الجزء الأخير هو الميزة الحاسمة: ففي اللحظة التي يُصلَح فيها الاختبار المتذبذب بالمصادفة (بواسطتك أو بواسطة من يمسّ شيفرة متصلة)، يخبرك `test.fixme` بذلك كي تحذف علامة الحجر الصحي. لا شيء يختفي.
 
-Compare with `test.skip`, which just doesn’t run the test. Skip hides. `fixme` announces.
+قارن ذلك بـ`test.skip`، الذي لا يشغّل الاختبار فحسب. فـskip يخفي. وfixme يُعلن.
 
-The annotation is not optional — it’s how future you remembers why this test is in quarantine. “TBD” in the URL is fine for a first pass, as long as you circle back and file the real issue before the end of the day.
+والتعليق التوضيحي ليس اختياريًا — فهو كيف يتذكّر «أنت المستقبلي» سبب وجود هذا الاختبار في الحجر الصحي. و«TBD» في الرابط لا بأس به في الجولة الأولى، ما دام أنك تعود وتفتح المشكلة الحقيقية قبل نهاية اليوم.
 
-## What retries are actually for
+## ما هي إعادة المحاولات في الحقيقة
 
-Retries exist for one reason: protecting `main` from *environmental* flakes. DNS, cold starts, browser install races, web-server startup jitter. The kind of thing where the failure is in the infrastructure around the test, not in the test itself.
+إعادة المحاولات وُجدت لسبب واحد: حماية `main` من التذبذبات *البيئية*. مثل DNS، والبدايات الباردة، وسباقات تثبيت المتصفّح، واهتزاز بدء خادم الويب. ذلك النوع الذي يكون فيه الفشل في البنية المحيطة بالاختبار، لا في الاختبار نفسه.
 
-The standard CI pattern is `retries: process.env.CI ? 2 : 0`. Treat 2 as a ceiling. Don’t raise it. Zero in local runs is not negotiable: a test that fails once locally is information, and you want to see that information, not hide it under a second attempt.
+نمط CI القياسي هو `retries: process.env.CI ? 2 : 0`. عامل الرقم 2 كسقف. لا ترفعه. والصفر في التشغيلات المحلية غير قابل للتفاوض: فالاختبار الذي يفشل مرة محليًا معلومة، وأنت تريد أن ترى تلك المعلومة، لا أن تخفيها تحت محاولة ثانية.
 
-The specific agent failure mode I want to head off: “this test flaked, let me set `retries: 5`.” No. If 2 retries isn’t enough, you are not dealing with an environmental flake. You are dealing with one of the four buckets above, and the fix lives there.
+نمط فشل الوكيل المحدَّد الذي أريد أن أمنعه مسبقًا: «هذا الاختبار تذبذب، دعني أضبط `retries: 5`». لا. فإن لم تكفِ محاولتان، فأنت لا تتعامل مع تذبذب بيئي. أنت تتعامل مع أحد الدلاء الأربعة أعلاه، والإصلاح يقيم هناك.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Flaky-test triage
@@ -108,13 +108,13 @@ The specific agent failure mode I want to head off: “this test flaked, let me 
 - Quarantine with `test.fixme` plus an issue annotation, never with `test.skip` and never with a retry bump. `fixme` stays loud; skip hides.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-“Flaky” is not a diagnosis. It’s the word you use *before* you’ve figured out which of the four buckets the failure belongs to. The whole point of this lesson is that every flake has a cause, each cause has a fix, and bumping `retries` isn’t one of them. When you catch yourself reaching for the retry dial, stop — open the trace instead. The next lesson is how to read it.
+«متذبذب» ليس تشخيصًا. إنها الكلمة التي تستخدمها *قبل* أن تعرف إلى أي دلو من الدلاء الأربعة ينتمي الفشل. ومقصود هذا الدرس كله أن لكل تذبذب سببًا، ولكل سبب إصلاحًا، وأن رفع `retries` ليس واحدًا منها. وحين تلمس نفسك تمتدّ يدك إلى مقبض إعادة المحاولات، توقّف — وافتح التتبّع بدلًا من ذلك. والدرس التالي عن كيفية قراءته.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — the next lesson, which is how step 3 of the triage workflow actually works.
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — the timing-race bucket’s home lesson.
-- [Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — the shared-state-leak bucket’s home lesson.
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) — the locator-ambiguity bucket’s home lesson.
+- [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — الدرس التالي، وفيه كيف تعمل الخطوة الثالثة من سير عمل الفرز فعليًا.
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — درس البيت لدلو سباق التوقيت.
+- [التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — درس البيت لدلو تسريب الحالة المشتركة.
+- [المحدِّدات وهرمية إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) — درس البيت لدلو غموض المحدِّد.

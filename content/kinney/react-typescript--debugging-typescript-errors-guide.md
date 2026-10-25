@@ -1,18 +1,18 @@
 ---
-title: "Debugging TypeScript Errors Guide"
-lang: en
+title: "دليل تصحيح أخطاء TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/debugging-typescript-errors-guide"
 ---
 
-TypeScript errors can feel like reading ancient hieroglyphics. You know something’s wrong, but the error message is a wall of type definitions that seems designed to confuse rather than help. But here’s the secret: once you learn to decode TypeScript’s error language, those cryptic messages become your best debugging tool. Let’s transform you from someone who fears TypeScript errors to someone who reads them like a pro.
+قد تبدو أخطاء TypeScript وكأنّك تقرأ الهيروغليفية القديمة. تعلم أنّ شيئًا ما خاطئ، لكنّ رسالة الخطأ جدارٌ من تعريفات الأنواع يبدو أنه صُمّم ليُربك لا ليُعين. لكن إليك السر: حين تتعلم فك شفرة لغة أخطاء TypeScript، تتحوّل تلك الرسائل المبهمة إلى أفضل أداة تصحيح (debugging) لديك. لنحوّلك من شخصٍ يخشى أخطاء TypeScript إلى شخصٍ يقرأها كالمحترفين.
 
-Think of TypeScript errors as a very pedantic friend who’s actually trying to help. They might be verbose and sometimes annoying, but they’re usually pointing you to exactly what’s wrong—you just need to know how to listen.
+فكّر في أخطاء TypeScript على أنها صديقٌ مُفرط في المضاهرة إنما يحاول مساعدتك فعلًا. قد يكون كثير الكلام ومُزعجًا أحيانًا، لكنه يشير غالبًا بضبطٍ إلى ما الخطأ—كل ما تحتاجه أن تعرف كيف تُصغي.
 
-## Understanding TypeScript’s Error Language
+## فهم لغة أخطاء TypeScript
 
-Before we dive into specific errors, let’s understand how TypeScript communicates problems.
+قبل الخوض في أخطاء بعينها، لنفهم كيف يوصل TypeScript المشكلات إليك.
 
-### Anatomy of a TypeScript Error
+### تشريح خطأ TypeScript
 
 ```typescript
 // Let's trigger a complex error
@@ -46,14 +46,14 @@ processUser(user);
 //       Type '"user"' is not assignable to type '"admin"'.
 ```
 
-Let’s break this down:
+لنفكّك الرسالة:
 
-1. **What went wrong**: “Argument of type ‘User’ is not assignable”
-2. **Where it went wrong**: “to parameter of type ‘AdminUser’”
-3. **Why it went wrong**: “Types of property ‘role’ are incompatible”
-4. **The specific issue**: Type ‘“user”’ is not assignable to type ‘“admin”’
+1. **ما الذي وقع**: «Argument of type 'User' is not assignable»
+2. **أين وقع**: «to parameter of type 'AdminUser'»
+3. **لماذا وقع**: «Types of property 'role' are incompatible»
+4. **المشكلة بعينها**: النوع '«user»' غير قابل للإسناد إلى النوع '«admin»'
 
-### Reading Complex Type Errors
+### قراءة أخطاء الأنواع المعقّدة
 
 ```typescript
 // A more complex example
@@ -89,13 +89,13 @@ updateConfig({} as Config, {
 // Error: Type 'number' is not assignable to type 'DeepPartial<string>' | undefined
 ```
 
-**Pro tip**: Start from the innermost error and work your way out. Here, `123` is a number, but `username` expects a string.
+**نصيحة محترفين**: ابدأ من أعمق خطأ وتقدّم نحو الخارج. هنا، `123` رقم، بينما `username` يتوقّع نصًّا (string).
 
-## Common React + TypeScript Errors
+## الأخطاء الشائعة في React مع TypeScript
 
-Let’s tackle the errors you’ll see most often in React development.
+لنتعامل مع الأخطاء التي ستواجهها أكثر من غيرها في تطوير React.
 
-### Error: “JSX element type ’…’ does not have any construct or call signatures”
+### الخطأ: «نوع عنصر JSX '…' لا يحتوي على أي توقيعات بناء أو استدعاء»
 
 ```typescript
 // ❌ This causes the error
@@ -142,7 +142,7 @@ function SafeRender({ componentKey }: { componentKey: string }) {
 }
 ```
 
-### Error: “Property ‘children’ does not exist on type”
+### الخطأ: «الخاصية 'children' غير موجودة في النوع»
 
 ```typescript
 // ❌ This causes the error
@@ -178,7 +178,7 @@ interface ButtonProps {
 }
 ```
 
-### Error: “Type ’…’ is not assignable to type ‘IntrinsicAttributes & …‘”
+### الخطأ: «النوع '…' غير قابل للإسناد إلى نوع 'IntrinsicAttributes & …'»
 
 ```typescript
 // ❌ This causes the error
@@ -211,11 +211,11 @@ type CardProps = {
 } & React.ComponentPropsWithoutRef<'div'>;
 ```
 
-## Event Handler Errors
+## أخطاء معالجات الأحداث
 
-Event handlers are a common source of TypeScript confusion.
+معالجات الأحداث مصدرٌ شائع لاستفزاز TypeScript.
 
-### Error: “Type ’…’ is not assignable to type ‘MouseEventHandler’”
+### الخطأ: «النوع '…' غير قابل للإسناد إلى نوع 'MouseEventHandler'»
 
 ```typescript
 // ❌ This causes the error
@@ -255,7 +255,7 @@ function Button() {
 }
 ```
 
-### Form Event Type Errors
+### أخطاء أنواع أحداث النماذج
 
 ```typescript
 // ❌ Common form errors
@@ -289,11 +289,11 @@ function Form() {
 }
 ```
 
-## Generic Component Errors
+## أخطاء المكوّنات العامة
 
-Generics can produce some of the most confusing errors.
+قد تُنتج الأنواع العامة (generics) من أويلر الأخطاء أكثر إرباكًا.
 
-### Error: “Type ‘T’ does not satisfy the constraint”
+### الخطأ: «النوع 'T' لا يحقّق القيد»
 
 ```typescript
 // ❌ This causes the error
@@ -360,11 +360,11 @@ function List({ items }: { items: ListItem[] }) {
 }
 ```
 
-## Hook-Related Errors
+## أخطاء الخُطّافات
 
-Custom hooks can produce unique TypeScript errors.
+قد تُنتج الخُطّافات (hooks) المخصّصة أخطاء TypeScript فريدة من نوعها.
 
-### Error: “React Hook ’…’ is called conditionally”
+### الخطأ: «الخُطّاف '…' في React يُستدعى بشكل شرطي»
 
 ```typescript
 // ❌ This causes the error (TypeScript AND React error)
@@ -406,7 +406,7 @@ function useMaybeFetch<T>(url: string | null): T | null {
 }
 ```
 
-### Error: “Type ‘undefined’ cannot be used as an index type”
+### الخطأ: «النوع 'undefined' لا يصلح نوعًا للفهرس»
 
 ```typescript
 // ❌ This causes the error
@@ -446,11 +446,11 @@ function useFormField(name?: string) {
 }
 ```
 
-## Async/Promise Errors
+## أخطاء `async` و `Promise`
 
-Async operations in React components need special handling.
+تحتاج العمليات غير المتزامنة (async) في مكوّنات React إلى معالجة خاصة.
 
-### Error: “Type ‘Promise<…>’ is not assignable to type ‘ReactElement’”
+### الخطأ: «النوع 'Promise<…>' غير قابل للإسناد إلى نوع 'ReactElement'»
 
 ```typescript
 // ❌ This causes the error
@@ -483,11 +483,11 @@ const UserProfile = lazy(async () => {
 });
 ```
 
-## Advanced Debugging Techniques
+## تقنيات التصحيح المتقدّمة
 
-When simple solutions don’t work, use these advanced techniques.
+حين لا تفشل الحلول البسيطة بل لا تكفي، استخدم هذه القنوات المتقدّمة.
 
-### Type Assertion Debugging
+### التشخيص عبر التأكيدات النوعية
 
 ```typescript
 // Temporary type assertions for debugging
@@ -514,7 +514,7 @@ function ComplexComponent({ data }: { data: unknown }) {
 }
 ```
 
-### Using Type Predicates for Debugging
+### استخدام مُحدِّدات الأنواع للتشخيص
 
 ```typescript
 // Create detailed type guards
@@ -556,7 +556,7 @@ function UserCard({ data }: { data: unknown }) {
 }
 ```
 
-### Extracting Complex Types
+### استخراج الأنواع المعقّدة
 
 ```typescript
 // When types get too complex, extract and simplify
@@ -573,11 +573,11 @@ const debugProps: ButtonProps = {
 };
 ```
 
-## Error Message Decoder
+## فكّ تشفير رسائل الأخطاء
 
-Here’s a decoder for common TypeScript error patterns:
+إليك مُفكِّكًا للأنماط الشائعة من أخطاء TypeScript:
 
-### “Type ’…’ is not assignable to type ‘never’”
+### «النوع '…' غير قابل للإسناد إلى نوع 'never'»
 
 ```typescript
 // This usually means impossible state
@@ -599,7 +599,7 @@ function handleStatus(status: Status) {
 }
 ```
 
-### “Object is possibly ‘null’ or ‘undefined’”
+### «الكائن قد يكون 'null' أو 'undefined'»
 
 ```typescript
 // ❌ Causes error
@@ -625,7 +625,7 @@ function DisplayUser({ user }: { user: User | null }) {
 }
 ```
 
-### “Expected X arguments, but got Y”
+### «كان يُتوقّع X من المعاملات، لكن وصل Y»
 
 ```typescript
 // ❌ Common with array methods
@@ -642,9 +642,9 @@ const doubled = numbers.map(n => parseInt(n.toString()));
 <button onClick={() => doSomething('arg')} />
 ```
 
-## Tools for Better Error Messages
+## أدوات لرسائل أخطاء أفضل
 
-### TypeScript Error Translator
+### مترجم أخطاء TypeScript
 
 ```typescript
 // Use the @typescript/error-translator
@@ -653,7 +653,7 @@ const doubled = numbers.map(n => parseInt(n.toString()));
 // Or use online: https://ts-error-translator.vercel.app/
 ```
 
-### Custom Error Reporter
+### مُبلِّغ أخطاء مخصّص
 
 ```typescript
 // Create your own error formatter
@@ -674,7 +674,7 @@ class TypeScriptErrorFormatter {
 }
 ```
 
-### IDE Configuration for Better Errors
+### إعداد IDE من أجل رسائل أخطاء أفضل
 
 ```json
 // .vscode/settings.json
@@ -688,9 +688,9 @@ class TypeScriptErrorFormatter {
 }
 ```
 
-## Common Gotchas and Solutions
+## مزالق شائعة وحلولها
 
-### React.FC vs Function Declaration
+### React.FC مقابل تعريف الدالة
 
 ```typescript
 // ❌ React.FC can cause issues
@@ -704,7 +704,7 @@ function Component({ children }: PropsWithChildren<Props>) {
 }
 ```
 
-### Const Assertions
+### تأكيدات `const`
 
 ```typescript
 // ❌ Type is string[]
@@ -717,7 +717,7 @@ const colors = ['red', 'green', 'blue'] as const;
 type Color = (typeof colors)[number]; // 'red' | 'green' | 'blue'
 ```
 
-### Index Signatures
+### توقيعات الفهارس
 
 ```typescript
 // ❌ Too permissive
@@ -737,16 +737,16 @@ type Data = Record<string, unknown>;
 type StrictData = Map<string, string>;
 ```
 
-## Debugging Workflow
+## سير عمل التصحيح
 
-Here’s a systematic approach to debugging TypeScript errors:
+إليك نهجًا منهجيًا لتصحيح أخطاء TypeScript:
 
-1. **Read the actual error message** (not just the red squiggly)
-2. **Identify the types involved** (hover over variables)
-3. **Trace the type flow** (where does the type come from?)
-4. **Simplify the problem** (extract to smaller example)
-5. **Use type assertions temporarily** (to understand the issue)
-6. **Fix properly** (remove assertions, add proper types)
+1. **اقرأ رسالة الخطأ الفعليّة** (لا الخط الأحمر المتعرّج وحده)
+2. **حدّد الأنواع المعنيّة** (أشر بفأرتك فوق المتغيّرات)
+3. **تقفّي تدفّق النوع** (من أين جاء النوع؟)
+4. **بسّط المشكلة** (استخرجها في مثال أصغر)
+5. **استخدم التأكيدات النوعية مؤقتًا** (لتفهم المشكلة)
+6. **أصلِح على الوجه الصحيح** (أرجِع التأكيدات، وأضف الأنواع السليمة)
 
 ```typescript
 // Example debugging workflow
@@ -771,8 +771,8 @@ function debuggingWorkflow() {
 }
 ```
 
-## Wrapping Up
+## الخلاصة
 
-TypeScript errors might seem daunting at first, but they’re actually your best friend in catching bugs before they reach production. The key is learning to read them systematically, understanding the common patterns, and knowing the right fixes. With the techniques in this guide, you’ll go from dreading TypeScript errors to appreciating the safety net they provide.
+قد تبدو أخطاء TypeScript مرهبةً في البداية، لكنها في الحقيقة أعزّ أصدقائك في التقاط الأعطال قبل بلوغها الإنتاج. والمفتاح هو تعلّم قراءتها منهجيًا، وفهم الأنماط الشائعة، ومعرفة الإصلاحات الصحيحة. وبالتقنيات في هذا الدليل، ستنتقل من اشمئزازك نحو أخطاء TypeScript إلى تقديرك للشبكة الأمنية التي توفّرها.
 
-Remember: Every TypeScript error is preventing a potential runtime crash. Embrace them, learn from them, and let them guide you to writing better, safer React applications.
+تذكّر: كل خطأ في TypeScript يمنع انهيارًا محتملًا وقت التشغيل. احتضنها، وتعلّم منها، ودعها ترشدك إلى كتابة تطبيقات React أفضل وأكثر أمانًا.

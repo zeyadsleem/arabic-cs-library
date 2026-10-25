@@ -1,18 +1,18 @@
 ---
-title: "Using Storybook with MDX"
-lang: en
+title: "استخدام Storybook مع MDX"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/mdx"
 ---
 
-Storybook allows you to document components using [MDX](https://mdxjs.com/), which is basically just Markdown + JSX.
+تتيح لك Storybook توثيق المكوّنات باستخدام [MDX](https://mdxjs.com/)، وهو أساسًا Markdown + JSX فقط.
 
-This allows *a lot* more flexibility when it comes to how you display your components, stories, controls, and—of course—documentation.
+وهذا يتيح *قدرًا كبيرًا* من المرونة في كيفية عرضك للمكوّنات والقصص وأدوات التحكم—والتوثيق بالطبع.
 
-> **Storybook and MDX only supports React.**
+> **Storybook وMDX يدعم React فقط.**
 >
-> Your components and stories can be in any framework that Storybook supports, but your MDX files will use React.
+> يمكن أن تكون مكوّناتك وقصصك بأي إطار عمل تدعمه Storybook، لكن ملفات MDX لديك ستستخدم React.
 
-By default, MDX will pick up any `.mdx` files in your project. But, you *can* configure it, if you want.
+افتراضيًا، سيلتقط MDX أي ملفات `.mdx` في مشروعك. لكن *يمكنك* تهيئته إن أردت.
 
 ```typescript
 import type { StorybookConfig } from '@storybook/react-vite';
@@ -28,7 +28,7 @@ const config: StorybookConfig = {
 export default config;
 ```
 
-Let’s start with something simple just to demonstrate how MDX works and then we’ll get into some of the more specific Storybook-related tricks. Let’s create `src/components/button/button.mdx`.
+لنبدأ بشيء بسيط فقط لنوضّح كيف يعمل MDX، ثم ندخل في بعض الحيل الأكثر تحديدًا المتعلقة بـ Storybook. لننشئ `src/components/button/button.mdx`.
 
 ```mdx
 import { Button } from './button';
@@ -40,11 +40,11 @@ Welcome to our dope component library. This is a collection of components that w
 <Button>Wow, a button!</Button>
 ```
 
-A basic MDX documentation page in Storybook
+صفحة توثيق MDX أساسية في Storybook
 
-## Doc Blocks
+## كتل التوثيق
 
-The *real* power—or, at least the Storybook-related power—comes mixing in `@storybook/blocks` into your documentation. Doc blocks allow you to take pieces of the stories that we’ve been working with so far and integrating them into your prose.
+القوة *الحقيقية*—أو القوة المتعلقة بـ Storybook على الأقل—تأتي من خلط `@storybook/blocks` في توثيقك. وتتيح لك كتل التوثيق أخذ أجزاء من القصص التي نعمل عليها حتى الآن ودمجها في نثرك.
 
 ```mdx
 import { Meta, Title, Primary, Controls, Story } from '@storybook/blocks';
@@ -65,11 +65,11 @@ Buttons have lots of little things that you can tweak about them.
 <Controls />
 ```
 
-Let’s talk about what’s going on here:
+لنتحدث عمّا يجري هنا:
 
-- We’re importing all of the exports from our button stories.
-- We’re importing the `Meta` block from `@storybook/blocks` in order to attach our documentation to our component.
-- The `Primary` block renders the first-defined story in our `button.stories.tsx` file. It’s purely coincidental that it happens that my first export is *also* named **Primary**.
-- There is some more prose and then re render the `Controls`, which is analogous to what we’ve seen so far.
+- نستورد كل الصادرات من قصص زرنا.
+- نستورد كتلة `Meta` من `@storybook/blocks` لربط توثيقنا بمكوّننا.
+- كتلة `Primary` تصيّر أول قصة معرَّفة في ملف `button.stories.tsx` لدينا. ومن قبيل المصادفة البحتة أن أول تصدير لدي *أيضًا* اسمه **Primary**.
+- هناك بعض النثر الإضافي ثم نعيد تصيير `Controls`، وهو مماثل لما رأيناه حتى الآن.
 
-Button component documentation rendered in MDX
+توثيق مكوّن الزر مصيَّر في MDX

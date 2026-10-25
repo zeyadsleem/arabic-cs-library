@@ -1,16 +1,16 @@
 ---
-title: "flushSync and Imperative DOM with Types"
-lang: en
+title: "`flushSync` والـ DOM الأمْرِيّ مع الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/flushsync-and-imperative-dom"
 ---
 
-React’s declarative model is brilliant—until you need to coordinate with the DOM itself. Sometimes you need to measure elements, focus inputs, or time animations precisely. Enter `flushSync` and React’s imperative DOM helpers, which let you step outside React’s async world when the situation calls for it (and TypeScript helps ensure you do it safely).
+نموذج React الإعلاني (declarative) رائع—إلى أن تحتاج التناغم مع الـ DOM نفسه. فأحيانًا تحتاج إلى قياس العناصر، أو التركيز على حقول الإدخال، أو ضبط توقيت الحركات بدقّة. وها أنتَ مع `flushSync` ومساعدات React للـ DOM الأمْرِيّ (imperative DOM) التي تتيح لك الخروج من عالم React غير المتزامن متى دَعَت الحاجة (ويساعدك TypeScript على فعله بأمان).
 
-`flushSync` forces React to flush updates synchronously instead of batching them, while imperative DOM patterns use refs to directly manipulate DOM elements. Both are escape hatches from React’s declarative model—powerful tools that should be used sparingly and with good reason.
+يُجبِر `flushSync` React على تفريغ التحديثات تزامنيًّا بدلًا من تجميعها معًا، بينما تستخدم أنماط الـ DOM الأمْرِيّة مراجع (refs) لمعالجة عناصر DOM مباشرةً. وكلاهما مخارج هروب من النموذج الإعلاني لـ React—أدوات قوية ينبغي استخدامها باقتصاد ودواعٍ وجيهة.
 
-## Understanding React’s Asynchronous Updates
+## فهم التحديثات غير المتزامنة في React
 
-Before we dive into `flushSync`, let’s understand why React batches updates in the first place. React groups multiple state updates together to avoid unnecessary re-renders, which improves performance but can create timing challenges:
+قبل الغوص في `flushSync`، لنفهم أولًا لماذا تُجمّع React التحديثات أصلًا. تجمع React تحديثات حالة متعددة معًا لتفادي إعادة التصيير (re-render) غير اللازمة، وهو ما يُحسّن الأداء لكنه قد يخلق تحديات توقيت:
 
 ```typescript
 function AsyncExample() {
@@ -33,24 +33,24 @@ function AsyncExample() {
 }
 ```
 
-This batching is usually what you want, but sometimes you need updates to happen immediately—that’s where `flushSync` comes in.
+التجميع هو عادةً ما تريد، لكن أحيانًا تحتاج أن تجري التحديثات فورًا—وهنا يقطع `flushSync` عزمًا.
 
-## When to Use `flushSync`
+## متى تستخدم `flushSync`
 
-`flushSync` forces React to synchronously flush updates to the DOM. Use it sparingly for these specific scenarios:
+يُجبِر `flushSync` React على تفريغ التحديثات إلى الـ DOM تزامنيًّا. فاستعمله باقتصاد في هذه الحالات بعينها:
 
-- **Focus management**: Ensuring an element is rendered before focusing it
-- **DOM measurements**: Getting accurate dimensions after state changes
-- **Animation timing**: Coordinating with animation libraries
-- **Scroll position**: Updating scroll position after content changes
+- **إدارة التركيز**: ضمان أن يكون العنصر قد انتُج بالتصيير قبل التركيز عليه
+- **قياسات DOM**: الحصول على أبعاد دقيقة بعد تغيّرات الحالة
+- **توقيت الحركات**: التنسيق مع مكتبات الحركات (animation)
+- **موضع التمرير**: تحديث موضع التمرير بعد تغيّر المحتوى
 
-> **Warning**
+> **تحذير**
 >
-> `flushSync` can hurt performance by preventing React’s optimizations. Only use it when you have a specific timing requirement.
+> قد يُضرّ `flushSync` بالأداء بمنع تحسينات React. لا تستخدمه إلا إذا كان عندك شرط توقيت بعينه.
 
-## Basic `flushSync` Usage with Types
+## استخدام `flushSync` الأساسي مع الأنواع
 
-Here’s how to use `flushSync` with proper TypeScript types:
+هكذا تستخدم `flushSync` مع أنواع TypeScript سليمة:
 
 ```typescript
 import { flushSync } from 'react-dom';
@@ -111,9 +111,9 @@ function TodoList() {
 }
 ```
 
-## Real-World Example: Modal Focus Management
+## مثال واقعي: إدارة التركيز في النافذة المنبثقة
 
-Here’s a practical example where `flushSync` ensures proper focus management in a modal:
+هذا مثال تطبيقي يضمن فيه `flushSync` إدارة التركيز في نافذة منبثقة (modal):
 
 ```typescript
 import { flushSync } from 'react-dom';
@@ -181,11 +181,11 @@ function App() {
 }
 ```
 
-## Imperative DOM Patterns with Types
+## أنماط الـ DOM الأمْرِيّة مع الأنواع
 
-Sometimes you need to directly manipulate DOM elements. Here are common patterns with proper TypeScript types:
+أحيانًا تحتاج معالجة عناصر DOM مباشرةً. وهذه أنماط شائعة بأنواع TypeScript سليمة:
 
-### Custom Input Focus Hook
+### خُطّاف مخصّص للتركيز على المدخلات
 
 ```typescript
 import { useRef, useCallback, type RefObject } from 'react';
@@ -244,7 +244,7 @@ function SearchForm() {
 }
 ```
 
-### DOM Measurement with Types
+### قياس DOM بالأنواع
 
 ```typescript
 import { useState, useRef, useCallback, type RefObject } from 'react';
@@ -320,9 +320,9 @@ function ResizableBox() {
 }
 ```
 
-## Animation Coordination Example
+## مثال عن التنسيق مع الحركات
 
-Here’s how to coordinate React state changes with animation libraries:
+هكذا تنسّق بين تغيّرات حالة React ومكتبات الحركات (animation):
 
 ```typescript
 import { useState, useRef, useCallback, type RefObject } from 'react';
@@ -423,9 +423,9 @@ function TodoApp() {
 }
 ```
 
-## Common Pitfalls and Best Practices
+## مزالق شائعة وأفضل الممارسات
 
-### ❌ Bad: Overusing `flushSync`
+### ❌ سيّئ: الإفراط في استخدام `flushSync`
 
 ```typescript
 // Don't do this - unnecessary flushSync usage
@@ -443,7 +443,7 @@ function BadCounter() {
 }
 ```
 
-### ✅ Good: Strategic `flushSync` usage
+### ✅ جيّد: استخدام `flushSync` استراتيجيًّا
 
 ```typescript
 // Do this - flushSync only when you need DOM coordination
@@ -483,21 +483,21 @@ function GoodInfiniteScroll() {
 }
 ```
 
-### Type Safety Tips
+### نصائح سلامة الأنواع
 
-1. **Use specific element types**: `RefObject<HTMLInputElement>` instead of `RefObject<HTMLElement>`
-2. **Check for null**: Always check `ref.current` before using it
-3. **Type animation callbacks**: Use proper event types for animation events
-4. **Generic constraints**: Use constraints like `T extends HTMLElement` for reusable hooks
+1. **استخدم أنواع عناصر محدّدة**: `RefObject<HTMLInputElement>` بدلًا من `RefObject<HTMLElement>`
+2. **افحص null**: افحص `ref.current` دومًا قبل استخدامها
+3. **حدّد نوع استدعاءات الحركات** (callbacks): استخدم أنواع أحداث مناسبة لأحداث الحركة
+4. **قيود الأنواع العامة**: استخدم قيودًا مثل `T extends HTMLElement` للخُطّافات (hooks) القابلة لإعادة الاستخدام
 
-## Performance Considerations
+## اعتبارات الأداء
 
-`flushSync` bypasses React’s performance optimizations, so use it judiciously:
+يتجاوز `flushSync` تحسينات React للأداء، فاستخدمه بحكمة:
 
-- **Profile first**: Measure if you actually have a timing problem
-- **Batch operations**: Group multiple state updates inside one `flushSync` call
-- **Avoid in loops**: Don’t call `flushSync` repeatedly in tight loops
-- **Consider alternatives**: Sometimes `useLayoutEffect` is a better choice
+- **قِس أولًا**: اكتشف إن كان لديك مشكل توقيت فعلًا
+- **جمّع العمليات**: أدرج تحديثات الحالة المتعددة في استدعاء واحد لـ `flushSync`
+- **تجنّب استعماله في الحلقات**: لا تستدعِ `flushSync` مرارًا في حلقات مغلقة (tight loops)
+- **فكّر في البدائل**: أحيانًا يكون `useLayoutEffect` خيارًا أفضل
 
 ```typescript
 // ✅ Good: Batch multiple updates
@@ -513,9 +513,9 @@ flushSync(() => setLoading(false));
 flushSync(() => setError(null));
 ```
 
-## When to Use `useLayoutEffect` Instead
+## متى تستخدم `useLayoutEffect` بدلًا منه
 
-Sometimes `useLayoutEffect` is a better choice than `flushSync`:
+أحيانًا يكون `useLayoutEffect` خيارًا أفضل من `flushSync`:
 
 ```typescript
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
@@ -545,11 +545,11 @@ function AutoResizeTextarea() {
 }
 ```
 
-## Real World Use Cases™
+## حالات استخدام في الواقع™
 
-Here are some practical scenarios where these patterns shine:
+هذه بعض السيناريوهات المطبِّقة التي تلمع فيها هذه الأنماط:
 
-### Form Validation with Focus
+### التحقّق من النموذج مع التركيز
 
 ```typescript
 interface FormError {
@@ -606,7 +606,7 @@ function ValidatedForm() {
 }
 ```
 
-### Dynamic Content with Scroll Preservation
+### محتوى ديناميكي مع الحفاظ على موضع التمرير
 
 ```typescript
 function ChatMessages() {
@@ -659,10 +659,10 @@ function ChatMessages() {
 }
 ```
 
-## Wrapping Up
+## الخلاصة
 
-`flushSync` and imperative DOM patterns are powerful escape hatches from React’s declarative model. Use them when you need precise timing for focus management, DOM measurements, or animation coordination—but always measure the performance impact and consider whether declarative alternatives might work just as well.
+أنماط `flushSync` والـ DOM الأمْرِيّة مخارج هروب قويّة من النموذج الإعلاني في React. استخدمها حين تحتاج دقّة في التوقيت لإدارة التركيز، أو قياسات الـ DOM، أو تنسيق الحركات—لكن قِس أثر الأداء دومًا، وفكّر هل تعمل البدائل الإعلانية على غرارها.
 
-Remember: React’s async nature is usually a feature, not a bug. When you do need to step outside that model, TypeScript’s type system helps ensure you’re doing it safely by catching null reference errors and providing proper element types for your DOM manipulations.
+تذكّر: طبيعة React غير المتزامنة ميزة في الغالب لا خللًا. وعندما تحتاج فعلًا إلى الخروج من ذلك النموذج، يساعدك نظام أنواع TypeScript على ضمان أن تفعل بأمان، عبر التقاط أخطاء المراجع الفارغة (null reference) وتوفير أنواع عناصر مناسبة لمعالجاتك في الـ DOM.
 
-The key is knowing when these tools are genuinely necessary versus when you’re fighting against React’s natural patterns. When in doubt, start with the declarative approach and reach for `flushSync` only when you have a specific timing requirement that can’t be solved otherwise.
+المفتاح أن تعرف متى تكون هذه الأدوات ضرورية فعلًا ومتى تكون في محاربة الأنماط الطبيعية لـ React. عند الشكّ، ابدأ بالنهج الإعلاني، ولا تقبض على `flushSync` إلا إذا كان عندك شرط توقيت بعينه لا يحلّه غيره.

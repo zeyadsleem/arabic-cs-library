@@ -1,32 +1,32 @@
 ---
-title: "Line Spacing and Letter Spacing"
-lang: en
+title: "تباعد الأسطر وتباعد الأحرف"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/line-spacing-and-letter-spacing"
 ---
 
-Tailwind manages line spacing (leading) and letter spacing (tracking) with utility classes in your HTML.
+يتولّى Tailwind إدارة تباعد الأسطر (leading) وتباعد الأحرف (tracking) عبر أصناف مساعِدة داخل HTML لديك.
 
-Line spacing (`line-height` in CSS) is the vertical space between text lines, managed by `leading-*` utilities. Letter spacing (`letter-spacing` in CSS) is the horizontal space between characters, managed by `tracking-*` utilities.
+وتباعد الأسطر (`line-height` في CSS) هو المسافة الرأسية بين سطور النص، ويديره الأصناف `leading-*`. أمّا تباعد الأحرف (`letter-spacing` في CSS) فهو المسافة الأفقية بين المحارف، ويديره الأصناف `tracking-*`.
 
-## Line Spacing (Leading)
+## تباعد الأسطر (Leading)
 
-Line spacing affects readability. Tailwind utilities set `line-height` with predefined theme values.
+يؤثّر تباعد الأسطر في سهولة القراءة. وتضبط أصناف Tailwind `line-height` بقيم سمة مُعرَّفة مسبقًا.
 
-### Setting Line Height with Font Size
+### ضبط ارتفاع السطر مع حجم الخط
 
-Tailwind combines `font-size` and `line-height` for consistency using `text-<size>/<number>` (e.g., `text-sm/6`). `<size>` is a predefined font size (sm, base, lg), and `<number>` is a `line-height` from the spacing scale. `text-<size>` alone applies a default `line-height`.
+يجمع Tailwind بين `font-size` و`line-height` للاتّساق باستخدام `text-<size>/<number>` (مثل `text-sm/6`). و`<size>` هو حجم خط مُعرَّف مسبقًا (sm، base، lg)، و`<number>` هو `line-height` من مقياس المسافات. أمّا `text-<size>` وحدها فتطبّق `line-height` افتراضيًا.
 
-### Setting Line Height Independently
+### ضبط ارتفاع السطر بشكل مستقل
 
-Control `line-height` with `leading-*` utilities (e.g., `leading-6`, `leading-7`). `leading-none` sets `line-height` to `1`.
+تحكّم في `line-height` عبر الأصناف `leading-*` (مثل `leading-6`، `leading-7`). ويضبط `leading-none` قيمة `line-height` على `1`.
 
-### Responsive Line Height
+### ارتفاع سطر استجابة
 
-Apply line height utilities conditionally with responsive variants (e.g., `md:leading-relaxed`) or container query variants (e.g., `@md:leading-relaxed`).
+طَبِّق أصناف ارتفاع السطر بشكل شرطي مع مُبدّلات الاستجابة (مثل `md:leading-relaxed`) أو مُبدّلات استعلامات الحاوية (مثل `@md:leading-relaxed`).
 
-### Customizing the Line Height Scale
+### تخصيص مقياس ارتفاع السطر
 
-Extend or override the default line height scale in your main CSS file using the `@theme` directive with `--leading-*` variables.
+وسّع مقياس ارتفاع السطر الافتراضي أو تجاوزه في ملف CSS الرئيسي باستخدام التوجيه `@theme` مع متغيّرات `--leading-*`.
 
 ```css
 @import 'tailwindcss';
@@ -37,27 +37,27 @@ Extend or override the default line height scale in your main CSS file using the
 }
 ```
 
-This creates `leading-extra-tight` and `leading-loose` utilities. Clear defaults with `--leading-*: initial;` before defining custom values.
+ينشئ هذا أصناف `leading-extra-tight` و`leading-loose`. وامسح القيم الافتراضية بـ`--leading-*: initial;` قبل تعريف قيم مخصّصة.
 
-## Letter Spacing (Tracking)
+## تباعد الأحرف (Tracking)
 
-Letter spacing (`letter-spacing`) is controlled by `tracking-*` utilities.
+يُتحكَّم في تباعد الأحرف (`letter-spacing`) عبر الأصناف `tracking-*`.
 
-### Setting Letter Spacing with Utilities
+### ضبط تباعد الأحرف بالأصناف المساعِدة
 
-Predefined `tracking-*` utilities include `tracking-tighter`, `tracking-tight`, `tracking-normal`, `tracking-wide`, `tracking-wider`, and `tracking-widest`. `tracking-tight` reduces space; `tracking-wide` increases it. `tracking-normal` resets to browser default.
+تشمل أصناف `tracking-*` المُعرَّفة مسبقًا `tracking-tighter` و`tracking-tight` و`tracking-normal` و`tracking-wide` و`tracking-wider` و`tracking-widest`. ويقلّل `tracking-tight` المسافة؛ ويزيد `tracking-wide` منها. أمّا `tracking-normal` فيعيد الضبط إلى القيمة الافتراضية للمتصفح.
 
-### Using Negative Letter Spacing
+### استخدام تباعد أحرف سالب
 
-Achieve negative letter spacing with custom values in the theme. If a custom scale includes negative values, prefix the utility with a dash (e.g., `-tracking-tightest`) for numerically-based custom scales.
+حقق تباعد أحرف سالب عبر قيم مخصّصة في السمة. فإن تضمّن مقياسك المخصّص قيمًا سالبة، فبادِئ الصنف بشرطة (مثل `-tracking-tightest`) للمقاييس المخصّصة القائمة على الأرقام.
 
-### Responsive Letter Spacing
+### تباعد أحرف استجابة
 
-Make letter spacing responsive with breakpoint or container query variants (e.g., `tracking-tight md:tracking-normal`).
+اجعل تباعد الأحرف متجاوبًا عبر مُبدّلات نقطة التوقّف أو استعلامات الحاوية (مثل `tracking-tight md:tracking-normal`).
 
-### Customizing the Letter Spacing Scale
+### تخصيص مقياس تباعد الأحرف
 
-Customize the `tracking-*` scale using the `@theme` directive with `--tracking-*` variables.
+خصّص مقياس `tracking-*` باستخدام التوجيه `@theme` مع متغيّرات `--tracking-*`.
 
 ```css
 @import 'tailwindcss';
@@ -68,24 +68,24 @@ Customize the `tracking-*` scale using the `@theme` directive with `--tracking-*
 }
 ```
 
-This creates `tracking-tightest` and `tracking-extra-wide` utilities. Clear defaults with `--tracking-*: initial;`.
+ينشئ هذا أصناف `tracking-tightest` و`tracking-extra-wide`. وامسح القيم الافتراضية بـ`--tracking-*: initial;`.
 
-## Using Custom Values
+## استخدام القيم المخصّصة
 
-Use arbitrary values for line height and letter spacing with square bracket notation.
+استخدم القيم التعسّفية لارتفاع السطر وتباعد الأحرف مع صيغة الأقواس المربّعة.
 
-For line height: `leading-[<value>]` (e.g., `leading-[1.7]`) or `text-<size>/[<value>]`.
+لارتفاع السطر: `leading-[<value>]` (مثل `leading-[1.7]`) أو `text-<size>/[<value>]`.
 
-For letter spacing: `tracking-[<value>]` (e.g., `tracking-[0.1em]`).
+لتباعد الأحرف: `tracking-[<value>]` (مثل `tracking-[0.1em]`).
 
-CSS variables can be used: `leading-[var(--custom-line-height)]`.
+ويمكن استخدام متغيّرات CSS: `leading-[var(--custom-line-height)]`.
 
-## Applying Responsive Design
+## تطبيق التصميم المتجاوب
 
-All utilities, including line spacing and letter spacing, can be applied conditionally at breakpoints (e.g., `sm:`, `md:`) or based on container queries (e.g., `@sm:`, `@md:`).
+يمكن تطبيق جميع الأصناف، بما فيها تباعد الأسطر وتباعد الأحرف، بشكل شرطي عند نقاط التوقّف (مثل `sm:`، `md:`) أو بحسب استعلامات الحاوية (مثل `@sm:`، `@md:`).
 
-## Customizing Theme Variables
+## تخصيص متغيّرات السمة
 
-Tailwind 4 uses CSS-first configuration with the `@theme` directive. Define custom scales in your main CSS file.
+يستخدم Tailwind 4 إعدادًا يبدأ من CSS مع التوجيه `@theme`. عرّف المقاييس المخصّصة في ملف CSS الرئيسي.
 
-Theme variables (e.g., `--leading-loose`, `--tracking-tightest`) become standard CSS variables, usable in custom CSS or inline styles. This simplifies integration with other tools.
+وتصبح متغيّرات السمة (مثل `--leading-loose`، `--tracking-tightest`) متغيّرات CSS عادية، قابلة للاستخدام في CSS المخصّص أو الأنماط المضمَّنة. وهذا يبسّط التكامل مع الأدوات الأخرى.

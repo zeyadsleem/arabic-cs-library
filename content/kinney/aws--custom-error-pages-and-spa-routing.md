@@ -1,16 +1,16 @@
 ---
-title: "Custom Error Pages and SPA Routing"
-lang: en
+title: "صفحات الأخطاء المخصّصة وتوجيه SPA"
+lang: ar
 source: "https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing"
 ---
 
-If you’ve deployed a single-page application to Vercel or Netlify, you know the drill: you add a `rewrites` rule or a `_redirects` file so that every path serves `index.html`, and your client-side router (React Router, Vue Router, whatever) handles the URL. Without that rule, refreshing the page on `/dashboard/settings` returns a 404 because no file exists at that path—the server doesn’t know that your JavaScript handles routing.
+إذا سبق أن نشرت تطبيقًا أحادي الصفحة إلى Vercel أو Netlify، فأنت تعرف الروتين: تضيف قاعدة `rewrites` أو ملف `_redirects` بحيث يقدّم كل مسار الملف `index.html`، ويتولى موجّهك على جانب العميل (React Router أو Vue Router أو أيًّا كان) معالجة عنوان URL. ومن دون تلك القاعدة، يُرجع تحديث الصفحة على `/dashboard/settings` خطأ 404 لأنه لا يوجد ملف في ذلك المسار — فالخادم لا يعرف أن JavaScript لديك يتولى التوجيه.
 
-If you want AWS’s version of the underlying feature while you read, the [CloudFront custom error pages guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/creating-custom-error-pages.html) is the official reference.
+إذا أردت نسخة AWS من الميزة الأساسية أثناء القراءة، فإن [دليل صفحات الأخطاء المخصّصة في CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/creating-custom-error-pages.html) هو المرجع الرسمي.
 
-On AWS, the same problem exists, and the fix is CloudFront’s **custom error responses**.
+على AWS، توجد المشكلة نفسها، والإصلاح هو **استجابات الأخطاء المخصّصة** في CloudFront.
 
-## The Problem
+## المشكلة
 
 ```
 flowchart LR
@@ -21,37 +21,37 @@ flowchart LR
     Rewrite --> Router["SPA router renders /dashboard/settings"]
 ```
 
-Here’s what happens when a user navigates to `/dashboard/settings` on your CloudFront distribution:
+إليك ما يحدث عندما ينتقل مستخدم إلى `/dashboard/settings` على توزيع CloudFront لديك:
 
-1. CloudFront receives the request for `/dashboard/settings`.
-2. CloudFront checks its edge cache—no cached object for that path.
-3. CloudFront forwards the request to S3.
-4. S3 looks for an object with the key `dashboard/settings`. No such object exists.
-5. S3 returns a **403 Forbidden** error (because with Origin Access Control, S3 returns 403 instead of 404 for missing objects—helpful, right?).
-6. CloudFront passes the 403 back to the browser.
-7. The user sees an XML error page instead of your app.
+1. يتلقى CloudFront طلب `/dashboard/settings`.
+2. يفحص CloudFront ذاكرة الحافة المؤقتة — لا كائن مخزّن مؤقتًا لذلك المسار.
+3. يمرّر CloudFront الطلب إلى S3.
+4. تبحث S3 عن كائن بمفتاح `dashboard/settings`. ولا يوجد كائن كهذا.
+5. تُرجع S3 خطأ **403 Forbidden** (لأنه مع التحكم في الوصول إلى الأصل، تُرجع S3 403 بدلًا من 404 للكائنات المفقودة — مساعد، أليس كذلك؟).
+6. يمرّر CloudFront الخطأ 403 عائدًا إلى المتصفح.
+7. يرى المستخدم صفحة خطأ XML بدلًا من تطبيقك.
 
-This works fine for the initial page load at `/` (because `index.html` exists), and it works fine for hashed assets like `/assets/main.a1b2c3.js` (because those files exist in S3). But any route that only exists in your client-side router—`/dashboard`, `/settings`, `/users/123`—breaks on a direct visit or a page refresh.
+هذا يعمل جيدًا للتحميل الأولي للصفحة على `/` (لأن `index.html` موجود)، ويعمل جيدًا للأصول ذات البصمة مثل `/assets/main.a1b2c3.js` (لأن تلك الملفات موجودة في S3). لكن أي مسار موجود فقط في موجّهك على جانب العميل — `/dashboard` و`/settings` و`/users/123` — ينكسر عند الزيارة المباشرة أو تحديث الصفحة.
 
-> **Tip**
+> **نصيحة**
 >
-> Why 403 and not 404? When you use Origin Access Control (configured in [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3)), S3 returns 403 Forbidden for missing objects instead of 404 Not Found. This is a security measure—S3 doesn’t want to reveal whether an object exists or not to unauthorized callers. CloudFront is authorized to read from the bucket, but the object genuinely doesn’t exist, so S3 returns 403. You need to handle both 403 and 404 to cover all cases.
+> لماذا 403 لا 404؟ عندما تستخدم التحكم في الوصول إلى الأصل (المضبوط في [التحكم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3))، تُرجع S3 خطأ 403 Forbidden للكائنات المفقودة بدلًا من 404 Not Found. وهذا إجراء أمني — فـ S3 لا تريد كشف ما إذا كان الكائن موجودًا أم لا للمستدعين غير المصرّح لهم. وCloudFront مصرّح له بالقراءة من الحاوية، لكن الكائن غير موجود فعلًا، لذا تُرجع S3 403. وتحتاج إلى معالجة كل من 403 و404 لتغطية كل الحالات.
 
-## The Fix: Custom Error Responses
+## الإصلاح: استجابات الأخطاء المخصّصة
 
-CloudFront lets you intercept specific HTTP error codes and return a different response. For SPA routing, you tell CloudFront: “When you get a 403 or 404 from the origin, return `/index.html` with a 200 status code instead.”
+يتيح لك CloudFront اعتراض رموز أخطاء HTTP محدّدة وإرجاع استجابة مختلفة. ولتوجيه SPA، تخبر CloudFront: «عندما تحصل على 403 أو 404 من الأصل، فأرجع `/index.html` برمز حالة 200 بدلًا من ذلك.»
 
-This is the AWS equivalent of:
+وهذا مكافئ AWS لما يلي:
 
-- **Netlify**: `/* /index.html 200` in `_redirects`
-- **Vercel**: `{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }` in `vercel.json`
+- **Netlify**: `/* /index.html 200` في `_redirects`
+- **Vercel**: `{ "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }` في `vercel.json`
 - **nginx**: `try_files $uri /index.html;`
 
-## Configuring Custom Error Responses
+## إعداد استجابات الأخطاء المخصّصة
 
-You add custom error responses by updating your distribution config. Fetch the current config, add the `CustomErrorResponses` block, and submit the update.
+تضيف استجابات الأخطاء المخصّصة بتحديث إعدادات توزيعك. اجلب الإعدادات الحالية، وأضف كتلة `CustomErrorResponses`، ثم أرسل التحديث.
 
-Fetch the config:
+اجلب الإعدادات:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -60,7 +60,7 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config-current.json
 ```
 
-Add this `CustomErrorResponses` block to the `DistributionConfig`:
+أضف كتلة `CustomErrorResponses` هذه إلى `DistributionConfig`:
 
 ```json
 {
@@ -84,7 +84,7 @@ Add this `CustomErrorResponses` block to the `DistributionConfig`:
 }
 ```
 
-Submit the update:
+أرسل التحديث:
 
 ```bash
 aws cloudfront update-distribution \
@@ -95,55 +95,55 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-Replace `E2QWRUHEXAMPLE` with the `ETag` from the `get-distribution-config` response.
+استبدل `E2QWRUHEXAMPLE` بقيمة `ETag` من استجابة `get-distribution-config`.
 
-In the console, the **Error pages** tab on your distribution shows each custom error response. The form for a single rule maps an HTTP error code to a custom response page and status code.
+في لوحة التحكم، يعرض تبويب **Error pages** على توزيعك كل استجابة خطأ مخصّصة. ويطابق نموذج القاعدة الواحدة رمز خطأ HTTP بصفحة استجابة مخصّصة ورمز حالة.
 
-The CloudFront Create Custom Error Response form showing HTTP error code 403, response page path /index.html, and HTTP response code 200.
+نموذج CloudFront Create Custom Error Response وهو يعرض رمز خطأ HTTP 403، ومسار صفحة الاستجابة /index.html، ورمز استجابة HTTP 200.
 
-Once both rules are configured, the **Error pages** tab shows the complete mapping.
+بمجرد إعداد القاعدتين، يعرض تبويب **Error pages** التعيين الكامل.
 
-The CloudFront Error pages tab showing two custom error responses: 403 and 404 both mapped to /index.html with HTTP response code 200.
+تبويب CloudFront Error pages وهو يعرض استجابتَي خطأ مخصّصتين: 403 و404 كلتاهما معيّنتان إلى /index.html برمز استجابة HTTP 200.
 
-## Breaking Down the Config
+## تفكيك الإعدادات
 
 ### ErrorCode
 
-The HTTP status code from the origin that triggers this custom response. You need entries for both `403` and `404`:
+رمز حالة HTTP من الأصل الذي يطلق هذه الاستجابة المخصّصة. وتحتاج إلى إدخالين لكل من `403` و`404`:
 
-- **403**: S3 returns this for missing objects when using OAC. It also returns 403 if the bucket policy doesn’t allow the request.
-- **404**: S3 can return this in some configurations (particularly when S3 website hosting is enabled on the bucket). Including it ensures coverage regardless of your S3 setup.
+- **403**: تُرجع S3 هذا للكائنات المفقودة عند استخدام OAC. وتُرجع 403 أيضًا إن كانت سياسة الحاوية لا تسمح بالطلب.
+- **404**: يمكن أن تُرجع S3 هذا في بعض الإعدادات (خاصةً عند تمكين استضافة موقع S3 على الحاوية). وتضمينه يضمن التغطية بغض النظر عن إعداد S3 لديك.
 
 ### ResponsePagePath
 
-The path to the file CloudFront should serve instead of the error. This must start with `/` and reference a file that exists in your S3 bucket. For a SPA, that’s `/index.html`.
+مسار الملف الذي ينبغي أن يقدّمه CloudFront بدلًا من الخطأ. ويجب أن يبدأ بـ `/` وأن يشير إلى ملف موجود في حاوية S3 لديك. ولتطبيق SPA، هذا هو `/index.html`.
 
 ### ResponseCode
 
-The HTTP status code CloudFront returns to the browser along with the custom response page. This is the critical field. You’ve got two choices:
+رمز حالة HTTP الذي يُرجعه CloudFront إلى المتصفح مع صفحة الاستجابة المخصّصة. وهذا هو الحقل الحاسم. ولديك خياران:
 
-- **`"200"`**: The browser receives `index.html` with a 200 OK status. Your client-side router processes the URL and renders the appropriate page. Search engines see a valid page.
-- **`"404"`**: The browser receives `index.html` with a 404 status. Your client-side router still works for the user, but search engines interpret the page as “not found” and may de-index it.
+- **`"200"`**: يتلقى المتصفح `index.html` بحالة 200 OK. ويعالج موجّهك على جانب العميل عنوان URL ويعرض الصفحة المناسبة. وترى محركات البحث صفحة صالحة.
+- **`"404"`**: يتلقى المتصفح `index.html` بحالة 404. ولا يزال موجّهك على جانب العميل يعمل للمستخدم، لكن محركات البحث تفسّر الصفحة على أنها «غير موجودة» وقد تُزيلها من الفهرس.
 
-For a SPA, use `"200"`. Every route is a valid page—the routing just happens in JavaScript rather than on the server.
+لتطبيق SPA، استخدم `"200"`. فكل مسار صفحة صالحة — والتوجيه يحدث فقط في JavaScript بدلًا من الخادم.
 
 ### ErrorCachingMinTTL
 
-How long (in seconds) CloudFront caches the error response at edge locations. The default is 300 seconds (5 minutes) if you omit this field. Setting it to `10` means CloudFront will re-check the origin after 10 seconds.
+المدة (بالثواني) التي يخزّن فيها CloudFront استجابة الخطأ مؤقتًا في مواقع الحافة. والافتراضي 300 ثانية (5 دقائق) إذا أغفلت هذا الحقل. وضبطه على `10` يعني أن CloudFront سيعيد فحص الأصل بعد 10 ثوانٍ.
 
-Why does this matter? Suppose you deploy new content and a path that previously returned a 403 now maps to a real file. With the default 5-minute TTL, users would still see the custom error response (served as `index.html`) for up to 5 minutes instead of the actual file. A lower value means faster recovery.
+لماذا يهم هذا؟ لنفترض أنك نشرت محتوى جديدًا، وأن مسارًا كان يُرجع 403 سابقًا أصبح الآن يعيّن إلى ملف حقيقي. مع مدة الصلاحية الافتراضية البالغة 5 دقائق، سيرى المستخدمون استجابة الخطأ المخصّصة (المقدّمة كـ `index.html`) حتى 5 دقائق بدلًا من الملف الفعلي. والقيمة الأقل تعني استعادة أسرع.
 
-Setting `ErrorCachingMinTTL` to `0` is allowed—CloudFront just won’t cache the error response, so every miss triggers an origin request. Fine for a low-traffic SPA, expensive at scale. A value of `10` is a reasonable balance for most projects: short enough that errors don’t persist long, but long enough that CloudFront isn’t hammering your origin on every cache miss.
+ضبط `ErrorCachingMinTTL` على `0` مسموح — لكن CloudFront لن يخزّن استجابة الخطأ مؤقتًا، فكل إخفاق يطلق طلبًا إلى الأصل. وهذا مقبول لتطبيق SPA منخفض الحركة، ومكلف على نطاق واسع. والقيمة `10` توازن معقول لمعظم المشاريع: قصيرة بما يكفي كي لا تستمر الأخطاء طويلًا، وطويلة بما يكفي كي لا يرهق CloudFront أصلك عند كل إخفاق في الذاكرة المؤقتة.
 
-## Testing SPA Routing
+## اختبار توجيه SPA
 
-After the distribution finishes deploying (check with `aws cloudfront wait distribution-deployed --id E1A2B3C4D5E6F7`), test a SPA route:
+بعد أن يكمل التوزيع النشر (تحقّق باستخدام `aws cloudfront wait distribution-deployed --id E1A2B3C4D5E6F7`)، اختبر مسار SPA:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/dashboard/settings
 ```
 
-You should see:
+ينبغي أن ترى:
 
 ```
 HTTP/2 200
@@ -151,21 +151,21 @@ content-type: text/html
 x-cache: Miss from cloudfront
 ```
 
-The `200` status confirms the custom error response is working. The `x-cache: Miss from cloudfront` header tells you this wasn’t cached yet. A subsequent request to the same path will show `Hit from cloudfront`.
+تؤكد حالة `200` أن استجابة الخطأ المخصّصة تعمل. وتخبرك ترويسة `x-cache: Miss from cloudfront` أن هذا لم يكن مخزّنًا مؤقتًا بعد. والطلب التالي إلى المسار نفسه سيعرض `Hit from cloudfront`.
 
-Try it in a browser: navigate to `https://d1234abcdef.cloudfront.net/dashboard/settings` directly. If your SPA router is set up correctly, you should see the app render the dashboard settings page.
+جرّبه في متصفح: انتقل إلى `https://d1234abcdef.cloudfront.net/dashboard/settings` مباشرة. فإن كان موجّه SPA لديك مهيّأ بشكل صحيح، فينبغي أن ترى التطبيق يعرض صفحة إعدادات لوحة المعلومات.
 
-## The 200 vs. 404 Debate
+## جدل 200 مقابل 404
 
-Using `"ResponseCode": "200"` for all client-side routes means CloudFront returns 200 OK for genuinely missing pages too. If someone navigates to `/asdfghjkl`, they get `index.html` with a 200 status code. Your client-side router should render a “not found” page for unknown routes, but the HTTP status code is still 200.
+استخدام `"ResponseCode": "200"` لكل مسارات جانب العميل يعني أن CloudFront يُرجع 200 OK حتى للصفحات المفقودة فعلًا. فإذا انتقل أحدهم إلى `/asdfghjkl`، فسيحصل على `index.html` برمز حالة 200. وينبغي أن يعرض موجّهك على جانب العميل صفحة «غير موجودة» للمسارات المجهولة، لكن رمز حالة HTTP يبقى 200.
 
-This is the same behavior as Vercel’s rewrite rules and Netlify’s `_redirects`. It’s a trade-off: you lose HTTP-level 404 semantics in exchange for working client-side routing. For most single-page applications, this is the correct trade-off. Your frontend router knows which routes are valid and which aren’t—the CDN doesn’t.
+وهذا هو السلوك نفسه في قواعد إعادة الكتابة في Vercel و`_redirects` في Netlify. وهو مقايضة: تفقد دلالات 404 على مستوى HTTP مقابل توجيه عامل على جانب العميل. ولمعظم التطبيقات أحادية الصفحة، هذه هي المقايضة الصحيحة. فموجّه واجهتك الأمامية يعرف أي المسارات صالحة وأيها ليست — أما CDN فلا يعرف.
 
-If you need proper 404 status codes for SEO purposes (e.g., a marketing site with some SPA sections), you’d handle this with a CloudFront Function or Lambda@Edge that inspects the URL and returns 404 for genuinely invalid paths. That’s covered in the edge-compute section.
+إذا كنت تحتاج إلى رموز حالة 404 صحيحة لأغراض تحسين محركات البحث (مثل موقع تسويقي فيه أقسام SPA)، فستعالج ذلك باستخدام CloudFront Function أو Lambda@Edge يفحص عنوان URL ويُرجع 404 للمسارات غير الصالحة فعلًا. وهذا مشمول في قسم الحوسبة على الحافة.
 
-## Multi-Page Sites vs. SPAs
+## المواقع متعددة الصفحات مقابل تطبيقات SPA
 
-If you’re deploying a traditional multi-page static site (not a SPA), you probably don’t want this configuration. A 404 for a missing page should be an actual 404, not a redirect to `index.html`. In that case, you would configure a custom error response that returns a dedicated error page:
+إذا كنت تنشر موقعًا ثابتًا تقليديًا متعدد الصفحات (لا SPA)، فالأرجح أنك لا تريد هذا الإعداد. فينبغي أن يكون 404 للصفحة المفقودة 404 فعليًا، لا إعادة توجيه إلى `index.html`. وفي تلك الحالة، ستضبط استجابة خطأ مخصّصة تُرجع صفحة خطأ مخصّصة:
 
 ```json
 {
@@ -176,6 +176,6 @@ If you’re deploying a traditional multi-page static site (not a SPA), you prob
 }
 ```
 
-This returns your custom error page with a 404 status code—the standard behavior for a static website.
+يُرجع هذا صفحة الخطأ المخصّصة لديك برمز حالة 404 — وهو السلوك القياسي لموقع ثابت.
 
-Your SPA routes work. But your site is still served on a `*.cloudfront.net` domain, and there’s no custom SSL certificate. In the next lesson, you’ll attach the ACM certificate you already requested to your CloudFront distribution, enabling HTTPS on your custom domain.
+مسارات SPA لديك تعمل. لكن موقعك لا يزال يُقدَّم على نطاق `*.cloudfront.net`، ولا توجد شهادة SSL مخصّصة. في الدرس التالي، ستربط شهادة ACM التي طلبتها بالفعل بتوزيع CloudFront، لتمكين HTTPS على نطاقك المخصّص.

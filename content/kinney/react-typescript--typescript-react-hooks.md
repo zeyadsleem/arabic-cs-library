@@ -1,16 +1,16 @@
 ---
-title: "TypeScript React Hooks"
-lang: en
+title: "خُطّافات React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-react-hooks"
 ---
 
-React Hooks and TypeScript together enable incredibly powerful patterns, but they also come with unique typing challenges. This guide covers everything from basic hook typing to advanced custom hook patterns that you’ll use in production applications.
+تمكّن خُطّافات React مع TypeScript معًا من أنماط قويّة للغاية، لكنّها تأتي أيضًا مع تحدّيات فريدة في تحديد الأنواع. يغطّي هذا الدليل كل شيء من تحديد أنواع الخُطّافات الأساسيّة إلى أنماط الخُطّافات المخصّصة المتقدّمة التي ستستخدمها في تطبيقات الإنتاج.
 
-## useState: Getting the Types Right
+## useState: ضبط الأنواع على نحو صحيح
 
-The most common hook needs careful typing for complex state.
+أكثر الخُطّافات شيوعًا يحتاج إلى تحديد دقيق للأنواع من أجل الحالات المعقّدة.
 
-### Basic useState Patterns
+### الأنماط الأساسية لـ useState
 
 ```typescript
 import { useState } from 'react';
@@ -41,7 +41,7 @@ function Component() {
 }
 ```
 
-### Complex State Patterns
+### أنماط الحالة المعقّدة
 
 ```typescript
 // Union types for state
@@ -88,7 +88,7 @@ function Counter() {
 }
 ```
 
-### State Initialization Patterns
+### أنماط تهيئة الحالة
 
 ```typescript
 // Lazy initial state for expensive computations
@@ -126,11 +126,11 @@ function useStateWithStorage<T>(
 }
 ```
 
-## useReducer: Type-Safe State Management
+## useReducer: إدارة حالة آمنة الأنواع
 
-For complex state logic, useReducer with TypeScript provides excellent type safety.
+لمعالجة منطق الحالة المعقّد، يوفّر useReducer مع TypeScript أمانًا ممتازًا في الأنواع.
 
-### Basic useReducer Pattern
+### النمط الأساسي لـ useReducer
 
 ```typescript
 import { useReducer } from 'react';
@@ -185,7 +185,7 @@ function Counter() {
 }
 ```
 
-### Advanced useReducer Patterns
+### أنماط useReducer المتقدّمة
 
 ```typescript
 // Generic reducer for CRUD operations
@@ -253,11 +253,11 @@ function UserManager() {
 }
 ```
 
-## useRef: Beyond DOM References
+## useRef: أبعد من مراجع DOM
 
-useRef has multiple uses, each with different typing requirements.
+ولـ useRef استخدامات متعدّدة، لكلٍّ منها متطلّبات خاصّة في تحديد الأنواع.
 
-### DOM Element References
+### مراجع عناصر DOM
 
 ```typescript
 import { useRef, useEffect } from 'react';
@@ -296,7 +296,7 @@ function MediaPlayer() {
 }
 ```
 
-### Mutable Values with useRef
+### القيم القابلة للتغيير مع useRef
 
 ```typescript
 // Storing mutable values that don't trigger re-renders
@@ -346,11 +346,11 @@ function Timer() {
 }
 ```
 
-## useCallback and useMemo: Optimized Typing
+## useCallback و useMemo: تحديد أنواع محسَّن
 
-These hooks require careful typing for their dependencies and return values.
+تحتاج هذه الخُطّافات إلى تحديد دقيق لأنواع اعتمادياتها وقيمها المعادة.
 
-### useCallback Patterns
+### أنماط useCallback
 
 ```typescript
 import { useCallback, useState } from 'react';
@@ -416,7 +416,7 @@ function SearchBar() {
 }
 ```
 
-### useMemo Patterns
+### أنماط useMemo
 
 ```typescript
 import { useMemo } from 'react';
@@ -462,11 +462,11 @@ function DataProcessor({ items }: { items: DataItem[] }) {
 }
 ```
 
-## Custom Hook Patterns
+## أنماط الخُطّافات المخصّصة
 
-Creating reusable, type-safe custom hooks.
+إنشاء خُطّافات مخصّصة قابلة لإعادة الاستخدام وآمنة الأنواع.
 
-### Basic Custom Hook
+### خُطّاف مخصّص أساسي
 
 ```typescript
 // Simple custom hook with proper return type
@@ -496,7 +496,7 @@ function useToggle(initialValue = false): [boolean, () => void, (value: boolean)
 }
 ```
 
-### Generic Custom Hooks
+### خُطّافات مخصّصة عامة
 
 ```typescript
 // Generic fetch hook
@@ -552,7 +552,7 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Advanced Custom Hook Patterns
+### أنماط الخُطّافات المخصّصة المتقدّمة
 
 ```typescript
 // Hook with configuration options
@@ -602,9 +602,9 @@ function useAsync<T>(asyncFunction: () => Promise<T>, options: UseAsyncOptions<T
 }
 ```
 
-## useImperativeHandle: Exposing Component APIs
+## useImperativeHandle: كشف واجهات المكوّنات
 
-Creating component APIs with proper typing.
+إنشاء واجهات للمكوّنات بأنواع دقيقة.
 
 ```typescript
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
@@ -710,9 +710,9 @@ function App() {
 }
 ```
 
-## useContext with TypeScript
+## useContext مع TypeScript
 
-Type-safe context patterns for global state.
+أنماط سياق آمنة الأنواع للحالة العامة.
 
 ```typescript
 import { createContext, useContext, useState, ReactNode } from 'react';
@@ -789,9 +789,9 @@ const [ThemeProvider, useTheme] = createContextWithHook<{
 }>('Theme');
 ```
 
-## Hook Composition Patterns
+## أنماط تركيب الخُطّافات
 
-Combining hooks for complex functionality.
+تركيب الخُطّافات للحصول على وظائف معقّدة.
 
 ```typescript
 // Composing multiple hooks
@@ -840,9 +840,9 @@ function useConditionalFeature(enabled: boolean) {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Do’s ✅
+### ما ينبغي فعله ✅
 
 ```typescript
 // ✅ Type state explicitly when needed
@@ -863,7 +863,7 @@ function useAsync<T>(asyncFn: () => Promise<T>) {}
 function useApi(): { data: Data | null; loading: boolean } {}
 ```
 
-### Don’ts ❌
+### ما ينبغي تجنّبه ❌
 
 ```typescript
 // ❌ Don't use any for hook state
@@ -887,6 +887,6 @@ useEffect(() => {
 }, []);
 ```
 
-## Summary
+## الخلاصة
 
-React Hooks with TypeScript provide a powerful foundation for building type-safe, reusable logic. The key is understanding when to be explicit with types and when to let TypeScript’s inference do the work. Focus on creating hooks that are both type-safe and ergonomic to use, and remember that good typing helps prevent bugs before they happen.
+تقدّم خُطّافات React مع TypeScript أساسًا قويًا لبناء منطق آمن الأنواع وقابل لإعادة الاستخدام. والمفتاح هو فهم متى تكون صريحًا في الأنواع ومتى تترك الاستدلال في TypeScript يقوم بالعمل. ركّز على إنشاء خُطّافات آمنة الأنواع ومريحة في الاستخدام معًا، وتذكّر أنّ تحديد الأنواع الجيّد يساعد في منع الأخطاء قبل وقوعها.

@@ -1,24 +1,24 @@
 ---
-title: "Log Groups, Log Streams, and Structured Logging"
-lang: en
+title: "مجموعات السجلات وتدفقاتها والتسجيل المهيكل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structured-logging"
 ---
 
-Every `console.log` you’ve written in your Lambda functions has been landing in CloudWatch Logs since [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function). The logs are there—but if you’ve ever tried to find a specific error in an unstructured wall of text, you know that having logs and being able to use them are two different things.
+كل `console.log` كتبته في دوال Lambda لديك كان يصل إلى CloudWatch Logs منذ [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function). السجلات موجودة — لكن إن سبق أن حاولت العثور على خطأ محدّد في جدار نصي غير مهيكل، فأنت تعلم أن امتلاك السجلات والقدرة على استخدامها أمران مختلفان.
 
-If you want AWS’s version of the logging service surface while you read, the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) is the official reference to keep nearby.
+إذا أردت أن تطّلع على نسخة AWS من واجهة خدمة التسجيل أثناء القراءة، فإن [نظرة CloudWatch العامة](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) هي المرجع الرسمي الذي يُستحسن إبقاؤه قريبًا.
 
-In this lesson, you’ll learn how CloudWatch organizes logs, how to switch from `console.log('something happened')` to structured JSON logging, and how to query your logs with CloudWatch Logs Insights—a SQL-like query language that makes your logs actually searchable.
+في هذا الدرس، ستتعلم كيف تنظّم CloudWatch السجلات، وكيف تنتقل من `console.log('something happened')` إلى تسجيل JSON مهيكل، وكيف تستعلم عن سجلاتك باستخدام CloudWatch Logs Insights — لغة استعلام شبيهة بـ SQL تجعل سجلاتك قابلة للبحث فعلًا.
 
-## Log Groups and Log Streams
+## مجموعات السجلات وتدفقاتها
 
-CloudWatch organizes logs into two levels: **log groups** and **log streams**.
+تنظّم CloudWatch السجلات في مستويين: **مجموعات السجلات** (log groups) و**تدفقات السجلات** (log streams).
 
-A **log group** is a container for logs from a single source. Lambda creates one automatically for each function, following the naming convention `/aws/lambda/<function-name>`. Your function gets `/aws/lambda/my-frontend-app-api`. API Gateway can also write to log groups if you enable access logging (covered in [API Gateway Stages and Custom Domains](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains)).
+**مجموعة السجلات** حاوية لسجلات مصدر واحد. تُنشئ Lambda مجموعة تلقائيًا لكل دالة، وفق اصطلاح التسمية `/aws/lambda/<function-name>`. وتحصل دالتك على `/aws/lambda/my-frontend-app-api`. ويمكن لـ API Gateway أيضًا أن يكتب إلى مجموعات السجلات إذا مكّنت تسجيل الوصول (وهو مشمول في [مراحل API Gateway والنطاقات المخصّصة](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains)).
 
-A **log stream** is a sequence of log events within a log group. Lambda creates a new log stream for each execution environment. If your function scales to three concurrent environments, you’ll see three log streams. Each stream’s name includes the date and a unique identifier—something like `2026/03/18/[$LATEST]a1b2c3d4e5f6`.
+**تدفق السجلات** سلسلة من أحداث السجل داخل مجموعة سجلات. وتنشئ Lambda تدفق سجلات جديدًا لكل بيئة تنفيذ. فإذا توسّعت دالتك إلى ثلاث بيئات متزامنة، فسترى ثلاثة تدفقات سجلات. ويتضمن اسم كل تدفق التاريخ ومعرّفًا فريدًا — شيء مثل `2026/03/18/[$LATEST]a1b2c3d4e5f6`.
 
-To see your log groups from the CLI:
+لرؤية مجموعات سجلاتك من CLI:
 
 ```bash
 aws logs describe-log-groups \
@@ -27,7 +27,7 @@ aws logs describe-log-groups \
   --output json
 ```
 
-To list the log streams inside a group:
+لسرد تدفقات السجلات داخل مجموعة:
 
 ```bash
 aws logs describe-log-streams \
@@ -39,11 +39,11 @@ aws logs describe-log-streams \
   --output json
 ```
 
-## Retention Settings
+## إعدادات الاحتفاظ
 
-By default, CloudWatch Logs keeps your logs **forever**. That’s almost never what you want. Logs accumulate, storage costs grow, and nobody is reading six-month-old debug output.
+افتراضيًا، تحتفظ CloudWatch Logs بسجلاتك **إلى الأبد**. وهذا ليس ما تريده غالبًا. تتراكم السجلات، وتنمو تكاليف التخزين، ولا أحد يقرأ مخرجات تصحيح عمرها ستة أشهر.
 
-Set a retention policy on your log group:
+اضبط سياسة احتفاظ على مجموعة سجلاتك:
 
 ```bash
 aws logs put-retention-policy \
@@ -53,15 +53,15 @@ aws logs put-retention-policy \
   --output json
 ```
 
-Valid retention values include 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1096, 1827, 2192, 2557, 2922, 3288, and 3653 days. For development, 30 days is reasonable. For production, 90 days gives you enough history to investigate incidents without paying for years of storage.
+تشمل قيم الاحتفاظ الصالحة 1 و3 و5 و7 و14 و30 و60 و90 و120 و150 و180 و365 و400 و545 و731 و1096 و1827 و2192 و2557 و2922 و3288 و3653 يومًا. وللتطوير، 30 يومًا معقولة. وللإنتاج، تمنحك 90 يومًا تاريخًا كافيًا للتحقيق في الحوادث دون دفع تكلفة تخزين سنوات.
 
-> **Warning**
+> **تحذير**
 >
-> If you don’t set a retention policy, your log storage costs will grow indefinitely. This is one of those AWS defaults that silently costs you money over time.
+> إذا لم تضبط سياسة احتفاظ، فستنمو تكاليف تخزين سجلاتك بلا حد. وهذا أحد افتراضات AWS التي تكلّفك المال بصمت مع مرور الوقت.
 
-Retention lives on the log group, not on the function. If you delete the function and redeploy it, Lambda creates a fresh log group with infinite retention—your retention setting is gone. Codify retention in your IaC (CDK’s `Function` construct exposes `logRetention`), or pre-create the log group with retention set before deploying the function.
+يعيش الاحتفاظ على مجموعة السجلات، لا على الدالة. فإذا حذفت الدالة وأعدت نشرها، تنشئ Lambda مجموعة سجلات جديدة باحتفاظ لا نهائي — ويضيع إعداد الاحتفاظ لديك. لذلك كوّد الاحتفاظ في البنية التحتية كشيفرة (IaC) لديك (فبنية `Function` في CDK تكشف `logRetention`)، أو أنشئ مجموعة السجلات مسبقًا مع ضبط الاحتفاظ قبل نشر الدالة.
 
-### With the SDK
+### باستخدام SDK
 
 ```typescript
 import {
@@ -101,9 +101,9 @@ do {
 console.log(result.results);
 ```
 
-## The Problem with `console.log`
+## مشكلة `console.log`
 
-Here’s how most developers log in Lambda functions:
+هكذا يسجّل معظم المطورين في دوال Lambda:
 
 ```typescript
 console.log('Processing request for user:', userId);
@@ -111,15 +111,15 @@ console.log('Database query took', duration, 'ms');
 console.log('Error:', error.message);
 ```
 
-This works. You can read it in CloudWatch. But when you have thousands of log entries from hundreds of invocations, searching for “all errors for user abc-123” means scrolling through unstructured text and hoping your eyes catch it.
+هذا يعمل. يمكنك قراءته في CloudWatch. لكن حين تكون لديك آلاف إدخالات السجل من مئات الاستدعاءات، فإن البحث عن «كل أخطاء المستخدم abc-123» يعني التمرير عبر نص غير مهيكل والأمل في أن تلتقطه عيناك.
 
-The fundamental issue: `console.log` produces strings. Strings are hard to filter, aggregate, and query programmatically.
+المشكلة الجوهرية: يُنتج `console.log` سلاسل نصية. والسلاسل النصية يصعب تصفيتها وتجميعها والاستعلام عنها برمجيًا.
 
-## Structured JSON Logging
+## تسجيل JSON المهيكل
 
-**Structured logging** means writing log entries as JSON objects instead of plain strings. CloudWatch Logs Insights can parse JSON automatically, which means every field in your JSON becomes a searchable, filterable column.
+**التسجيل المهيكل** (structured logging) يعني كتابة إدخالات السجل كائنات JSON بدلًا من سلاسل نصية عادية. ويمكن لـ CloudWatch Logs Insights تحليل JSON تلقائيًا، ما يعني أن كل حقل في JSON يصبح عمودًا قابلًا للبحث والتصفية.
 
-Here’s what structured logging looks like in practice:
+هكذا يبدو التسجيل المهيكل عمليًا:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -193,21 +193,21 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* CloudWatch Logs Insights auto-parses JSON, making each field queryable.
+*ملاحظة:* يحلّل CloudWatch Logs Insights JSON تلقائيًا، ما يجعل كل حقل قابلًا للاستعلام.
 
-The key difference: instead of `console.log('Error:', error.message)`, you write `console.log(JSON.stringify({ level: 'ERROR', message: 'Request failed', error: error.message }))`. Each log entry is a single-line JSON object that CloudWatch can parse and index.
+الفرق الجوهري: بدلًا من `console.log('Error:', error.message)`، تكتب `console.log(JSON.stringify({ level: 'ERROR', message: 'Request failed', error: error.message }))`. كل إدخال سجل كائن JSON من سطر واحد يمكن لـ CloudWatch تحليله وفهرسته.
 
-> **Tip**
+> **نصيحة**
 >
-> You don’t need a logging library. A simple `log` helper function that calls `console.log(JSON.stringify(entry))` is all you need for Lambda. Libraries like `pino` or `winston` add features you generally don’t need in a serverless context—structured JSON output is the goal, and `JSON.stringify` gets you there.
+> لست بحاجة إلى مكتبة تسجيل. فدالة مساعدة بسيطة باسم `log` تستدعي `console.log(JSON.stringify(entry))` هي كل ما تحتاجه في Lambda. ومكتبات مثل `pino` أو `winston` تضيف ميزات لا تحتاجها عمومًا في سياق بلا خوادم — فالمبتغى هو مخرجات JSON مهيكلة، و`JSON.stringify` توصلك إلى ذلك.
 
-## Querying with CloudWatch Logs Insights
+## الاستعلام باستخدام CloudWatch Logs Insights
 
-**CloudWatch Logs Insights** is a query language for searching and analyzing log data. If you’ve used SQL, the syntax will feel familiar. If you’ve used browser DevTools to filter console output, this is the industrial-strength version.
+**CloudWatch Logs Insights** لغة استعلام للبحث في بيانات السجلات وتحليلها. فإن كنت قد استخدمت SQL، فستبدو الصياغة مألوفة. وإن كنت قد استخدمت أدوات مطوّري المتصفح لتصفية مخرجات وحدة التحكم، فهذه هي النسخة الصناعية القوية.
 
-### Basic Queries
+### الاستعلامات الأساسية
 
-Find the 25 most recent log entries:
+اعثر على أحدث 25 إدخال سجل:
 
 ```
 fields @timestamp, @message
@@ -215,7 +215,7 @@ fields @timestamp, @message
 | limit 25
 ```
 
-Filter for errors only (assuming structured JSON logging):
+صفِّ الأخطاء فقط (بافتراض تسجيل JSON المهيكل):
 
 ```
 fields @timestamp, level, message, error, requestId
@@ -224,7 +224,7 @@ fields @timestamp, level, message, error, requestId
 | limit 50
 ```
 
-Find all requests for a specific user:
+اعثر على كل طلبات مستخدم محدّد:
 
 ```
 fields @timestamp, level, message, userId, duration
@@ -232,9 +232,9 @@ fields @timestamp, level, message, userId, duration
 | sort @timestamp desc
 ```
 
-### Aggregation Queries
+### استعلامات التجميع
 
-Count errors per hour:
+احسب الأخطاء لكل ساعة:
 
 ```
 filter level = "ERROR"
@@ -242,7 +242,7 @@ filter level = "ERROR"
 | sort errorCount desc
 ```
 
-Get average and p95 request duration:
+احصل على متوسط مدة الطلب والمئين 95:
 
 ```
 filter level = "INFO" and message = "Request completed"
@@ -251,7 +251,7 @@ filter level = "INFO" and message = "Request completed"
   by bin(5m)
 ```
 
-Find the slowest requests:
+اعثر على أبطأ الطلبات:
 
 ```
 filter level = "INFO" and message = "Request completed"
@@ -259,9 +259,9 @@ filter level = "INFO" and message = "Request completed"
 | limit 10
 ```
 
-### Running Insights Queries from the CLI
+### تشغيل استعلامات Insights من CLI
 
-You can run Insights queries from the command line using `aws logs start-query` and `aws logs get-query-results`. The query runs asynchronously—you start it, get a query ID, and then poll for results.
+يمكنك تشغيل استعلامات Insights من سطر الأوامر باستخدام `aws logs start-query` و`aws logs get-query-results`. يعمل الاستعلام بشكل غير متزامن — فتبدأه، وتحصل على معرّف استعلام، ثم تستعلم عن النتائج.
 
 ```bash
 # macOS
@@ -283,7 +283,7 @@ aws logs start-query \
   --output json
 ```
 
-This returns a query ID:
+يُرجع هذا معرّف استعلام:
 
 ```json
 {
@@ -291,7 +291,7 @@ This returns a query ID:
 }
 ```
 
-Fetch the results:
+اجلب النتائج:
 
 ```bash
 aws logs get-query-results \
@@ -300,30 +300,30 @@ aws logs get-query-results \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> The `--start-time` and `--end-time` parameters expect epoch timestamps (seconds since January 1, 1970). On macOS, `date -v-1H +%s` gives you “one hour ago” as an epoch timestamp. On Linux, use `date -d '1 hour ago' +%s`.
+> يتوقع المعاملان `--start-time` و`--end-time` طوابع زمنية بنظام epoch (الثواني منذ 1 يناير 1970). على macOS، يعطيك `date -v-1H +%s` «قبل ساعة» كطابع زمني بنظام epoch. وعلى Linux، استخدم `date -d '1 hour ago' +%s`.
 
-### Insights Query Syntax Reference
+### مرجع صياغة استعلامات Insights
 
-| Command | Purpose | Example |
+| الأمر | الغرض | مثال |
 | --- | --- | --- |
-| `fields` | Select which fields to display | `fields @timestamp, level, message` |
-| `filter` | Keep only matching records | `filter level = "ERROR"` |
-| `stats` | Aggregate data | `stats count(*) by level` |
-| `sort` | Order results | `sort @timestamp desc` |
-| `limit` | Cap the number of results | `limit 25` |
-| `parse` | Extract fields from unstructured text | `parse @message "User * performed *" as user, action` |
+| `fields` | اختيار الحقول التي تُعرض | `fields @timestamp, level, message` |
+| `filter` | الإبقاء على السجلات المطابقة فقط | `filter level = "ERROR"` |
+| `stats` | تجميع البيانات | `stats count(*) by level` |
+| `sort` | ترتيب النتائج | `sort @timestamp desc` |
+| `limit` | تحديد الحد الأقصى لعدد النتائج | `limit 25` |
+| `parse` | استخراج حقول من نص غير مهيكل | `parse @message "User * performed *" as user, action` |
 
-The `@` prefix denotes system fields that CloudWatch adds automatically: `@timestamp`, `@message`, `@logStream`, `@log`. Your structured JSON fields (like `level`, `requestId`, `duration`) are referenced without the `@` prefix.
+تشير البادئة `@` إلى حقول نظام تضيفها CloudWatch تلقائيًا: `@timestamp` و`@message` و`@logStream` و`@log`. أما حقول JSON المهيكلة لديك (مثل `level` و`requestId` و`duration`) فتُشار إليها دون البادئة `@`.
 
-## Structured Logging vs. Plain Text: The Payoff
+## التسجيل المهيكل مقابل النص العادي: العائد
 
-Here’s the same debugging scenario with both approaches.
+إليك سيناريو التصحيح نفسه بالطريقتين.
 
-**Plain text logs**: “Find all failed requests for user abc-123 in the last hour.” You open the log group, scroll through dozens of streams, `Ctrl+F` for “abc-123”, and hope the error message is near the user ID in the log output.
+**سجلات نصية عادية**: «اعثر على كل الطلبات الفاشلة للمستخدم abc-123 في الساعة الأخيرة». تفتح مجموعة السجلات، وتتمرّر عبر عشرات التدفقات، وتضغط `Ctrl+F` بحثًا عن «abc-123»، وتأمل أن تكون رسالة الخطأ قريبة من معرّف المستخدم في مخرجات السجل.
 
-**Structured JSON logs**: You run an Insights query:
+**سجلات JSON مهيكلة**: تشغّل استعلام Insights:
 
 ```
 fields @timestamp, message, error, duration
@@ -331,12 +331,12 @@ fields @timestamp, message, error, duration
 | sort @timestamp desc
 ```
 
-Results appear in seconds, with every field neatly extracted. You see the error message, the request duration, and the timestamp for each failure. No scrolling, no guessing.
+تظهر النتائج في ثوانٍ، مع استخراج كل حقل بعناية. وترى رسالة الخطأ، ومدة الطلب، والطابع الزمني لكل فشل. لا تمرير، ولا تخمين.
 
-The five minutes you spend switching to structured logging pays for itself the first time you debug a production issue at 11 PM. I learned this the hard way—nothing quite like scrolling through unstructured text at midnight wishing you’d spent those five minutes earlier.
+الدقائق الخمس التي تقضيها في الانتقال إلى التسجيل المهيكل تسدّد تكلفتها أول مرة تصحّح فيها مشكلة في الإنتاج عند الساعة 11 مساءً. لقد تعلمت هذا بالطريقة الصعبة — لا شيء يضاهي التمرير عبر نص غير مهيكل في منتصف الليل وأنت تتمنى لو أنفقت تلك الدقائق الخمس مبكرًا.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want the structured-logging wrappers without writing them yourself, **AWS Lambda Powertools for TypeScript** (`@aws-lambda-powertools/logger`, `metrics`, `tracer`) handles correlation IDs, JSON log formatting, and custom metrics emission with a few lines of setup. It’s AWS-maintained and the de facto standard in production TypeScript Lambdas.
+> إذا أردت أغلفة التسجيل المهيكل دون كتابتها بنفسك، فإن **AWS Lambda Powertools for TypeScript** (`@aws-lambda-powertools/logger` و`metrics` و`tracer`) تتعامل مع معرّفات الارتباط وتنسيق سجلات JSON وإصدار المقاييس المخصّصة ببضعة أسطر من الإعداد. وهي مُدارة من AWS والمعيار الفعلي في دوال Lambda المكتوبة بـ TypeScript في الإنتاج.
 
-Now that your logs are structured and queryable, it’s time to look at the other side of CloudWatch: the metrics that Lambda, API Gateway, and DynamoDB publish automatically. In the next lesson, you’ll build a dashboard that gives you a single view of your application’s health.
+الآن وقد أصبحت سجلاتك مهيكلة وقابلة للاستعلام، حان وقت النظر إلى الجانب الآخر من CloudWatch: المقاييس التي تنشرها Lambda وAPI Gateway وDynamoDB تلقائيًا. في الدرس التالي، ستبني لوحة معلومات تمنحك رؤية واحدة لصحة تطبيقك.

@@ -1,24 +1,24 @@
 ---
-title: "Subgrids"
-lang: en
+title: "الشبكات الفرعية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-subgrids"
 ---
 
-Tailwind CSS uses utility classes to build complex, responsive UIs in HTML. Version 4.0 improves performance and embraces modern CSS.
+يستخدم Tailwind CSS أصناف الأدوات لبناء واجهات مستخدم معقّدة ومتجاوبة داخل HTML. والإصدار 4.0 يحسّن الأداء ويتبنّى CSS الحديث.
 
-## Working with Grid Layouts
+## العمل مع تخطيطات Grid
 
-Tailwind CSS provides utilities for CSS Grid to create complex layouts. Define grid columns and rows, control auto-placement, and position grid items.
+يوفّر Tailwind CSS أدوات لـ CSS Grid لإنشاء تخطيطات معقّدة. عرّف أعمدة grid وصفوفه، وتحكّم في الوضع التلقائي، وضع عناصر grid.
 
-### Grid Columns
+### أعمدة Grid
 
-Define grid column numbers with utilities like `grid-cols-<number>` (e.g., `grid-cols-2`, `grid-cols-4`) for equally sized columns. Use `grid-cols-none` for no grid columns.
+حدّد عدد أعمدة grid عبر أدوات مثل `grid-cols-<number>` (مثل `grid-cols-2` و`grid-cols-4`) لأعمدة متساوية الحجم. واستخدم `grid-cols-none` لعدم وجود أعمدة grid.
 
-#### Implementing a Subgrid for Columns
+#### تطبيق شبكة فرعية للأعمدة
 
-Tailwind CSS supports subgrids for columns. Use `grid-cols-subgrid` to adopt column tracks from the parent item. This aligns nested grid items with their parent grid container.
+يدعم Tailwind CSS الشبكات الفرعية للأعمدة. استخدم `grid-cols-subgrid` لتبنّي مسارات الأعمدة من العنصر الأب. وهذا يحاذي عناصر grid المتداخلة مع حاوية grid الأم.
 
-*Implementing a Subgrid for Columns — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/13a3be93dac65bec93914d21286727e06612778555ec19aa0011d423102ba9cb.html)*
+*تطبيق شبكة فرعية للأعمدة — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/13a3be93dac65bec93914d21286727e06612778555ec19aa0011d423102ba9cb.html)*
 
 ```html
 <div class="grid grid-cols-12 gap-4 rounded-lg bg-gray-100 p-4">
@@ -38,17 +38,17 @@ Tailwind CSS supports subgrids for columns. Use `grid-cols-subgrid` to adopt col
 </div>
 ```
 
-A child element with `grid-cols-subgrid` inherits its parent’s column structure.
+العنصر الابن الحامل لـ `grid-cols-subgrid` يرث بنية أعمدة أبيه.
 
-### Grid Rows
+### صفوف Grid
 
-Specify grid rows with utilities like `grid-rows-<number>` (e.g., `grid-rows-2`, `grid-rows-4`) for equally sized rows. Use `grid-rows-none` to remove grid rows.
+حدّد صفوف grid عبر أدوات مثل `grid-rows-<number>` (مثل `grid-rows-2` و`grid-rows-4`) لصفوف متساوية الحجم. واستخدم `grid-rows-none` لإزالة صفوف grid.
 
-#### Implementing a Subgrid for Rows
+#### تطبيق شبكة فرعية للصفوف
 
-Use `grid-rows-subgrid` for a grid item to adopt row tracks from its parent. This maintains vertical alignment in nested grid structures.
+استخدم `grid-rows-subgrid` لعنصر grid ليبتني مسارات الصفوف من أبيه. وهذا يحافظ على المحاذاة الرأسية في بنى grid المتداخلة.
 
-*Implementing a Subgrid for Rows — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/469f9b742a367d36e3f54610ce0518cf19a96a22ec266decc5b481869df69c82.html)*
+*تطبيق شبكة فرعية للصفوف — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/469f9b742a367d36e3f54610ce0518cf19a96a22ec266decc5b481869df69c82.html)*
 
 ```html
 <div class="grid h-64 grid-rows-6 gap-4 rounded-lg bg-gray-100 p-4">
@@ -66,6 +66,6 @@ Use `grid-rows-subgrid` for a grid item to adopt row tracks from its parent. Thi
 </div>
 ```
 
-The child element with `grid-rows-subgrid` aligns its rows with the parent grid’s row tracks.
+العنصر الابن الحامل لـ `grid-rows-subgrid` يحاذي صفوفه مع مسارات صفوف شبكة grid الأم.
 
-Subgrid utilities mirror native CSS Grid capabilities, offering a utility-based approach for this layout feature in Tailwind.
+تعكس أدوات الشبكة الفرعية قدرات CSS Grid الأصلية، وتقدّم منهجًا قائمًا على الأدوات لميزة التخطيط هذه في Tailwind.

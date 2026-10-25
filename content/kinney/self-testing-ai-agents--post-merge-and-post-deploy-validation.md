@@ -1,22 +1,22 @@
 ---
-title: "Post-Merge and Post-Deploy Validation"
-lang: en
+title: "التحقّق بعد الدمج وبعد النشر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation"
 ---
 
-CI going green is a great feeling. It is also not the same thing as “the deployment is healthy.”
+أن يخضرّ CI شعور رائع. وهو أيضًا ليس الشيء نفسه الذي «النشر سليم».
 
-I’ve shipped enough “perfectly green” pull requests that still broke on the real environment to stop pretending otherwise. Wrong environment variables. Wrong redirect URL. Wrong cookie domain. Background job didn’t boot. CDN served the old asset manifest. Database migration passed and the route still exploded on first real traffic. You only need a few of these before “CI passed” stops sounding like a victory speech.
+لقد أطلقت ما يكفي من طلبات السحب «الخضراء تمامًا» التي انكسرت مع ذلك في البيئة الحقيقية حتى أتوقّف عن التظاهر بغير ذلك. متغيّرات بيئة خاطئة. عنوان إعادة توجيه خاطئ. نطاق ملف تعريف ارتباط خاطئ. مهمة خلفية لم تُقلع. شبكة CDN قدّمت بيان الأصول القديم. ترحيل قاعدة البيانات نجح ومع ذلك انفجر المسار عند أول حركة مرور حقيقية. لا تحتاج إلا إلى بضعة أمثلة من هذه قبل أن يتوقّف «نجح CI» عن أن يبدو خطاب نصر.
 
-So, this lesson is about the loop *after* the merge gate.
+إذن، هذا الدرس عن الحلقة *بعد* بوابة الدمج.
 
-> **Prerequisite**
+> **متطلّب سابق**
 >
-> This lesson assumes you’ve already wired [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). CI is the last pre-merge gate. Post-deploy validation is the first post-merge one.
+> يفترض هذا الدرس أنك وصلت بالفعل [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). فـ CI هو آخر بوابة قبل الدمج، والتحقّق بعد النشر هو أول بوابة بعد الدمج.
 
-## The shape of the loop
+## شكل الحلقة
 
-If you’re using [GitHub Actions environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments) or an equivalent deployment system, the loop follows this shape:
+إن كنت تستخدم [بيئات GitHub Actions](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments) أو نظام نشر مكافئًا، فتتبع الحلقة هذا الشكل:
 
 ```
 graph LR
@@ -28,36 +28,36 @@ graph LR
   Monitor -->|Errors spike| Rollback
 ```
 
-That’s the whole lesson in a diagram.
+هذا هو الدرس كله في رسم بياني.
 
-The key idea: **deployment is not the end of automation. Deployment is the beginning of the next loop.**
+والفكرة الأساسية: **النشر ليس نهاية الأتمتة. النشر بداية الحلقة التالية.**
 
-## What post-deploy validation is actually proving
+## ما يثبته التحقّق بعد النشر فعلًا
 
-This layer is not rerunning your whole test suite for the drama of it. It is proving a smaller, sharper thing:
+هذه الطبقة لا تعيد تشغيل مجموعة اختباراتك بأكملها من باب التشويق. إنها تثبت شيئًا أصغر وأحدّ:
 
-- the deployed URL is reachable
-- the core route renders
-- authentication still works if the route depends on it
-- the primary read path and one primary write path still function
-- the environment-specific wiring is correct
+- أن عنوان URL المنشور قابل للوصول
+- أن المسار الجوهري يُصيَّر
+- أن المصادقة ما تزال تعمل إن كان المسار يعتمد عليها
+- أن مسار القراءة الأساسي ومسار كتابة أساسي واحد ما يزالان يعملان
+- أن الوصلات الخاصة بالبيئة صحيحة
 
-That is a smoke check, not a second CI pipeline.
+هذا تدقيق سريع، لا خط أنابيب CI ثانٍ.
 
-For Shelf, the post-deploy smoke check can stay tiny:
+وبالنسبة لـ Shelf، يمكن أن يبقى تدقيق ما بعد النشر ضئيلًا:
 
-- load the home page or shelf page
-- confirm the critical heading renders
-- confirm the seeded data or a known empty state shows up
-- if auth is required, prove the storage state or login bootstrap still works against the deployed URL
+- حمّل الصفحة الرئيسية أو صفحة الرف
+- تأكّد من تصيير العنوان الحرج
+- تأكّد من ظهور البيانات المبذورة أو حالة فارغة معروفة
+- إن كانت المصادقة مطلوبة، فأثبت أن حالة التخزين أو تهيئة تسجيل الدخول ما تزال تعمل مقابل عنوان URL المنشور
 
-Small is a feature here. If the post-deploy check takes ten minutes, nobody trusts it as a stop-ship signal.
+والصِغر ميزة هنا. فإن استغرق التحقّق بعد النشر عشر دقائق، فلن يثق به أحد كإشارة لإيقاف الإطلاق.
 
-### What the smoke spec actually looks like
+### كيف تبدو مواصفة التدقيق فعلًا
 
-A post-deploy smoke test is a regular Playwright spec in a dedicated directory so it does not run as part of the normal end-to-end suite. The only thing that makes it “post-deploy” is that it reads its target URL from an environment variable the deployment workflow injects, so the same file can run against a preview, a staging environment, or production without any code changes.
+اختبار التدقيق بعد النشر هو مواصفة Playwright عادية في مجلد مخصّص كي لا يعمل كجزء من مجموعة الاختبارات الشاملة العادية. والشيء الوحيد الذي يجعله «بعد النشر» هو أنه يقرأ عنوان URL الهدف من متغيّر بيئة يحقنه سير عمل النشر، بحيث يمكن للملف نفسه أن يعمل مقابل معاينة أو بيئة اختبار تمهيدي أو الإنتاج دون أي تغييرات في الشيفرة.
 
-In the post-deploy lab, the named command that runs this route lives in `package.json` as `npm run test:smoke`, the spec lives at `tests/smoke/post-deploy.spec.ts`, and you can add a dedicated `playwright.smoke.config.ts` if you want the smoke run isolated from the main config. Those files are the concrete surface area of the loop.
+وفي تمرين ما بعد النشر، يعيش الأمر المسمّى الذي يشغّل هذا المسار في `package.json` باسم `npm run test:smoke`، وتعيش المواصفة في `tests/smoke/post-deploy.spec.ts`، ويمكنك إضافة `playwright.smoke.config.ts` مخصّص إن أردت عزل تشغيل التدقيق عن الإعداد الرئيسي. وتلك الملفات هي السطح الملموس للحلقة.
 
 ```typescript
 // tests/smoke/post-deploy.spec.ts
@@ -75,11 +75,11 @@ test('home page renders and exposes sign in', async ({ page }) => {
 });
 ```
 
-Two assertions. That’s it. The completed Shelf version lives at `tests/smoke/post-deploy.spec.ts` and is often invoked through a dedicated `playwright.smoke.config.ts` so the default Playwright loop does not accidentally pick it up.
+تحقّقان. هذا كل شيء. والنسخة المكتملة في Shelf تعيش في `tests/smoke/post-deploy.spec.ts` وتُستدعى غالبًا عبر `playwright.smoke.config.ts` مخصّص كي لا تلتقطها حلقة Playwright الافتراضية بالخطأ.
 
-### The deployment workflow that runs the smoke check
+### سير عمل النشر الذي يشغّل تدقيق ما بعد النشر
 
-The deployment workflow is where the smoke check gets its teeth. A minimal GitHub Actions shape:
+سير عمل النشر هو حيث يستمدّ التدقيق أسنانه. وهذا شكل أدنى لـ GitHub Actions:
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -131,67 +131,67 @@ jobs:
           retention-days: 7
 ```
 
-Two jobs. The first job does whatever your host needs to deploy and writes the deployed URL into `$GITHUB_OUTPUT` so the next job can read it. The second job installs Playwright, runs `npm run test:smoke` with `SMOKE_BASE_URL` pointing at that URL, and uploads the Playwright report if the check fails. If the smoke job goes red, the deploy either gets rolled back automatically or the workflow posts a stop-ship signal.
+مهمتان. المهمة الأولى تفعل ما يحتاجه مضيفك للنشر وتكتب عنوان URL المنشور في `$GITHUB_OUTPUT` كي تقرأه المهمة التالية. والمهمة الثانية تثبّت Playwright، وتشغّل `npm run test:smoke` مع `SMOKE_BASE_URL` مشيرًا إلى ذلك العنوان، وترفع تقرير Playwright إن فشل التحقّق. وإن احمرّت مهمة التدقيق، فإما أن يُلغى النشر تلقائيًا وإما أن ينشر سير العمل إشارة إيقاف الإطلاق.
 
-> **No deploy target yet?**
+> **لا يوجد هدف نشر بعد؟**
 >
-> If your Shelf clone doesn’t have a hosted deploy target, you can still practice the same loop locally: run `npm run build && npm run preview -- --host 127.0.0.1 --port 4173` in one terminal and `SMOKE_BASE_URL=http://127.0.0.1:4173 npm run test:smoke` in another. Record the gap in your runbook and wire up the real deploy workflow when you have a target.
+> إن لم يكن في نسختك من Shelf هدف نشر مستضاف، فيمكنك مع ذلك التدرّب على الحلقة نفسها محليًا: شغّل `npm run build && npm run preview -- --host 127.0.0.1 --port 4173` في طرفية، و`SMOKE_BASE_URL=http://127.0.0.1:4173 npm run test:smoke` في طرفية أخرى. وسجّل هذه الفجوة في دليل التشغيل (runbook) لديك، ووصّل سير عمل النشر الحقيقي عندما يصبح لديك هدف.
 
-## Preview targets count
+## أهداف المعاينة تُحتسب
 
-You do not need a full production rollout to teach this loop well.
+لا تحتاج إلى إطلاق إنتاجي كامل لتعليم هذه الحلقة جيدًا.
 
-A deployment preview, a staging target, or even a build-and-preview job that exposes a stable URL is enough to practice the shape:
+فمعاينة نشر، أو هدف اختبار تمهيدي، أو حتى مهمة بناء ومعاينة تُتيح عنوان URL مستقرًا — كل ذلك يكفي للتدرّب على الشكل:
 
-- deploy candidate artifact
-- run smoke check against the deployed URL
-- upload artifacts on failure
-- decide whether to proceed
+- انشر المخرج المرشّح
+- شغّل تدقيقًا مقابل عنوان URL المنشور
+- ارفع المخرجات عند الفشل
+- قرّر ما إذا كنت تمضي قدمًا
 
-That is why I prefer teaching this on a preview target first. The loop is the point. The host is an implementation detail.
+ولهذا أفضّل تعليم هذا على هدف معاينة أولًا. فالحلقة هي المقصد، والمضيف تفصيل تنفيذي.
 
-## The health window after the smoke test
+## نافذة السلامة بعد اختبار التدقيق
 
-Passing the smoke test is necessary. It is still not the whole story.
+النجاح في اختبار التدقيق ضروري. وهو ما يزال ليس القصة كاملة.
 
-There is usually a short window after deploy where you want at least one more signal:
+فعادةً ما تكون هناك نافذة قصيرة بعد النشر تريد فيها إشارة أخرى على الأقل:
 
-- error rate stayed flat
-- request latency did not jump
-- logs are not filling with obvious exceptions
-- jobs and background workers are still healthy
+- بقي معدّل الأخطاء ثابتًا
+- لم تقفز زمن استجابة الطلبات
+- السجلات لا تمتلئ باستثناءات واضحة
+- المهام والعمال الخلفيون ما يزالون سليمين
 
-I am not asking you to build a full observability stack in this course. I *am* asking you to define what would trigger a rollback. If you do not define that rule ahead of time, every bad deploy becomes an argument instead of a decision.
+أنا لا أطلب منك بناء منظومة مراقبة كاملة في هذه الدورة. لكنني *أطلب* منك تعريف ما الذي سيؤدي إلى التراجع. فإن لم تعرّف تلك القاعدة مسبقًا، صار كل نشر سيئ جدلًا بدلًا من قرار.
 
-## Rollback rules should be written before you need them
+## قواعد التراجع ينبغي أن تُكتب قبل أن تحتاجها
 
-This is one of those delightfully unglamorous engineering habits that saves an unreasonable amount of stress.
+هذه واحدة من تلك العادات الهندسية غير البرّاقة على نحو مُبهج التي توفّر قدرًا غير معقول من التوتّر.
 
-Write the rollback trigger down:
+اكتب محفّز التراجع:
 
-- smoke check fails: rollback
-- critical route 500s: rollback
-- authentication broken: rollback
-- error spike above agreed threshold in first N minutes: rollback or pause
+- فشل تدقيق ما بعد النشر: تراجع
+- مسار حرج يعيد 500: تراجع
+- المصادقة معطّلة: تراجع
+- قفزة أخطاء فوق الحدّ المتفق عليه في أول N دقيقة: تراجع أو إيقاف مؤقت
 
-Make the rule specific enough that an agent or a human can follow it without theater.
+واجعل القاعدة محدّدة بما يكفي ليتبعها وكيل أو إنسان دون مسرحيات.
 
-> **Ambiguous rollback rules**
+> **قواعد تراجع غامضة**
 >
-> “If it looks bad, we should probably revert” is not a rollback policy. That is a future argument in a pull request thread while users are already feeling the problem.
+> «إن بدا سيئًا، فربما ينبغي أن نتراجع» ليست سياسة تراجع. تلك مجادلة مستقبلية في سلسلة تعليقات على طلب سحب بينما المستخدمون يشعرون بالمشكلة بالفعل.
 
-## What the agent needs here
+## ما يحتاجه الوكيل هنا
 
-The agent needs the exact same thing it has needed all day:
+يحتاج الوكيل الشيء نفسه بالضبط الذي احتاجه طوال اليوم:
 
-- a named command to run
-- a target URL
-- artifacts when the check fails
-- a documented stop condition
+- أمر مسمّى لتشغيله
+- عنوان URL هدف
+- مخرجات عند فشل التحقّق
+- شرط إيقاف موثّق
 
-If the deployment workflow says “run `npm run test:smoke` against `SMOKE_BASE_URL` and upload the Playwright report on failure,” the agent can work with that. If the workflow says “manually look at the deploy and decide if vibes are good,” congratulations, you have rebuilt yourself as the relay.
+فإن قال سير عمل النشر «شغّل `npm run test:smoke` مقابل `SMOKE_BASE_URL` وارفع تقرير Playwright عند الفشل»، فيمكن للوكيل العمل بذلك. وإن قال سير عمل النشر «انظر إلى النشر يدويًا وقرّر إن كانت الأجواء طيبة»، فمبروك، لقد أعدت بناء نفسك كحلقة وصل.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Post-merge and post-deploy
@@ -207,19 +207,19 @@ If the deployment workflow says “run `npm run test:smoke` against `SMOKE_BASE_
   of describing the failure passively.
 ```
 
-## How You Know the Loop Is Real
+## كيف تعرف أن الحلقة حقيقية
 
-You have this loop when:
+تكون لديك هذه الحلقة عندما:
 
-- a deployment or preview target exposes a stable URL
-- a named smoke test runs against that URL automatically
-- rollback triggers are written down before the deploy fails
+- هدف نشر أو معاينة يُتيح عنوان URL مستقرًا
+- اختبار تدقيق مسمّى يعمل على ذلك العنوان تلقائيًا
+- محفّزات التراجع مكتوبة قبل أن يفشل النشر
 
-## The one thing to remember
+## الشيء الواحد الذي يجب تذكّره
 
-CI proves the change was mergeable. Post-deploy validation proves the deployment itself is healthy. Those are different claims, and if you only automate the first one, the second one is still your problem.
+يثبت CI أن التغيير كان قابلًا للدمج. ويثبت التحقّق بعد النشر أن النشر نفسه سليم. وهذان ادّعاءان مختلفان، وإن أتمتت الأول فقط، فالثاني ما يزال مشكلتك.
 
-## Additional Reading
+## قراءات إضافية
 
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Lab: Add Post-Deploy Smoke Checks to Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [تمرين: إضافة تدقيقات ما بعد النشر إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)

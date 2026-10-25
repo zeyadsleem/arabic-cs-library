@@ -1,10 +1,10 @@
 ---
-title: "Generating Zod Schemas from OpenAPI"
-lang: en
+title: "توليد مخططات Zod من OpenAPI"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/generating-zod-openapi"
 ---
 
-We can use a tool called [`orval`](https://npm.im/orval) to generate Zod schemas from an OpenAPI specification. We can configure Orval like so:
+يمكننا استخدام أداة تسمى [`orval`](https://npm.im/orval) لتوليد مخططات Zod من مواصفة OpenAPI. ويمكننا تهيئة Orval هكذا:
 
 ```typescript
 /* eslint-disable no-undef */
@@ -22,7 +22,7 @@ module.exports = {
 };
 ```
 
-And then when we run `npx orval --config orval.config.cjs`, we’ll get the following output.
+ثم عندما نشغّل `npx orval --config orval.config.cjs`، سنحصل على المخرجات التالية.
 
 ```typescript
 /**
@@ -103,4 +103,4 @@ export const deleteTasksIdParams = zod.object({
 });
 ```
 
-Not *exactly* the same as what we wrote by hand, but very, very close.
+ليست *بالضبط* كما كتبناه بأيدينا، لكنها قريبة جدًا جدًا.

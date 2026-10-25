@@ -1,114 +1,114 @@
 ---
-title: "Reading a Trace"
-lang: en
+title: "قراءة تتبّع"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace"
 ---
 
-The Playwright trace viewer is the single best piece of software in the Playwright ecosystem, and the agents I work with use it like a folder full of screenshots. They open it, scroll, find a red box, close it, and go guess at a fix. That’s not reading a trace. That’s looking at one.
+عارض تتبّع Playwright هو أفضل قطعة برمجيات واحدة في منظومة Playwright، والوكلاء الذين أعمل معهم يستخدمونه كأنه مجلد مليء بلقطات شاشة. يفتحونه، ويتمرّرون، ويجدون مربّعًا أحمر، ويغلقونه، ثم يذهبون ليخمّنوا إصلاحًا. ذلك ليس قراءة تتبّع. ذلك مجرد النظر إلى واحد.
 
-A trace isn’t a recording. It’s a time-indexed database of DOM snapshots, network activity, console messages, and action metadata — and every single thing your test did is in there, in order, with before-and-after state. Learning to read one is the single highest-leverage debugging skill in this entire course, because it’s the difference between “the agent patches the test until it passes” and “the agent proposes the right fix the first time.”
+التتبّع ليس تسجيلًا. إنه قاعدة بيانات مفهرسة زمنيًا للقطات DOM ونشاط الشبكة ورسائل الطرفية وبيانات وصفية للأفعال — وكل شيء فعله اختبارك موجود هناك، بالترتيب، مع الحالة قبل وبعد. وتعلّم قراءته هو مهارة التنقيح الأعلى مردودًا في هذا المقرر كله، لأنه الفرق بين «الوكيل يرقّع الاختبار حتى ينجح» و«الوكيل يقترح الإصلاح الصحيح من المرة الأولى».
 
-## What’s inside a .zip trace
+## ما بداخل تتبّع بصيغة .zip
 
-`trace.zip` is a real zip file with real files inside. If you’ve ever unzipped one, you’ve seen a `trace.trace` file, a `resources/` folder full of network snapshots and DOM captures, and a `network.network` file with request/response metadata. The `show-trace` command renders all of that into the viewer, but the underlying data is *structured*, not a video. You can parse it with a script. You can diff two traces. You can write a custom reporter that pulls specific fields out of one.
+`trace.zip` ملف zip حقيقي بداخله ملفات حقيقية. فإن فككت ضغطه يومًا، فقد رأيت ملف `trace.trace`، ومجلد `resources/` مليئًا بلقطات الشبكة والتقاطات DOM، وملف `network.network` فيه بيانات وصفية للطلبات والاستجابات. أمر `show-trace` يرسم كل ذلك في العارض، لكن البيانات الأساسية *منظّمة*، لا فيديو. يمكنك تحليلها بسكربت. ويمكنك عمل فرق بين تتبّعين. ويمكنك كتابة مُبلِّغ مخصّص يستخرج حقولًا معيّنة من أحدهما.
 
-The important reframe: a trace is *data*. It happens to have a great viewer. That’s why reading it well matters — the viewer is presenting structured evidence, and your job is to find the specific piece of evidence that explains the failure.
+إعادة التأطير المهمة: التتبّع *بيانات*. وقد صادف أن له عارضًا رائعًا. ولهذا تهمّ قراءته جيدًا — فالعارض يعرض أدلّة منظّمة، ومهمتك أن تجد القطعة المحدّدة من الأدلّة التي تفسّر الفشل.
 
-## Opening one
+## فتح التتبّع
 
-Given a trace zip on disk:
+بمعطى ملف تتبّع zip على القرص:
 
 ```bash
 npx playwright show-trace path/to/trace.zip
 ```
 
-That opens the viewer in a browser tab. You can also open traces from the HTML report — every failing test links to its trace, and clicking the link opens the viewer inline. After you add the helper in the companion lab, you’ll have a command like this to generate three real traces for practice:
+يفتح ذلك العارض في تبويب متصفّح. ويمكنك أيضًا فتح التتبّعات من تقرير HTML — فكل اختبار فاشل يرتبط بتتبّعه، والنقر على الرابط يفتح العارض داخل الصفحة. وبعد أن تضيف المساعد في المختبر المرافق، سيكون لديك أمر مثل هذا لتوليد ثلاثة تتبّعات حقيقية للتمرين:
 
 ```bash
 npm run traces:generate
 ```
 
-That command is just the entry point. The Shelf starter does **not** ship it. In the current course flow, you add the generator helper yourself as `scripts/generate-lab-traces.mjs` (or equivalent) in the trace-triage lab, and you can add a `traces:clean` command when you want to wipe the generated artifacts and rerun the lab from a clean slate. The generate step runs the three deliberately-broken specs in `tests/labs/broken-traces/` and copies the resulting trace files to `playwright-report/lab-traces/`. Each of those broken specs currently starts with `test.skip()` as a safety gate — your generator helper has to remove or wrap that call before Playwright will run them and produce trace output. The future `labs-broken-traces` project the specs reference isn’t shipped in the starter’s `playwright.config.ts` yet; you wire it up during the lab. Open them one at a time. We’ll work through what to look for next.
+ذلك الأمر مجرد نقطة الدخول. فنسخة Shelf الأولية **لا** تشحنه. وفي مسار المقرر الحالي، تضيف مساعد التوليد بنفسك كـ`scripts/generate-lab-traces.mjs` (أو ما يعادله) في مختبر فرز التتبّعات، ويمكنك إضافة أمر `traces:clean` حين تريد محو النواتج المولّدة وإعادة تشغيل المختبر من صفحة بيضاء. وخطوة التوليد تشغّل المواصفات الثلاثة المعطوبة عمدًا في `tests/labs/broken-traces/` وتنسخ ملفات التتبّع الناتجة إلى `playwright-report/lab-traces/`. وكل واحدة من تلك المواصفات المعطوبة تبدأ حاليًا بـ`test.skip()` كبوابة أمان — فعلى مساعد التوليد أن يحذف ذلك النداء أو يلفّه قبل أن يشغّلها Playwright وينتج ناتج تتبّع. ومشروع `labs-broken-traces` المستقبلي الذي تشير إليه المواصفات غير مشحون بعد في `playwright.config.ts` الخاص بالنسخة الأولية؛ فأنت تربطه أثناء المختبر. افتحها واحدة تلو الأخرى. وسنمضي فيما يجب البحث عنه بعد ذلك.
 
-## The four panes and what each one tells you
+## الألواح الأربعة وما يخبرك به كل منها
 
-Every trace has four panes in the viewer, and each one answers a different question.
+لكل تتبّع أربعة ألواح في العارض، وكل منها يجيب عن سؤال مختلف.
 
-### Timeline / Actions
+### الخط الزمني / الأفعال
 
-**The question it answers**: *when* did each locator resolve, how long did it take, and which one stalled?
+**السؤال الذي يجيب عنه**: *متى* حُلّ كل محدّد موقع، وكم استغرق، وأيّها تعطّل؟
 
-The Timeline is the top-of-screen strip showing every action your test performed, in order, sized proportionally to how long it took. When you click an action, every other pane updates to show the state at that moment.
+الخط الزمني هو الشريط الأعلى في الشاشة الذي يعرض كل فعل نفّذه اختبارك، بالترتيب، وبحجم يتناسب مع المدة التي استغرقها. وعندما تنقر فعلًا، تتحدّث كل الألواح الأخرى لتعرض الحالة في تلك اللحظة.
 
-The signal you’re looking for: a single action that’s disproportionately wide. An action that takes 4.8 seconds on a test that usually takes 1.2 total is the smoking gun. That action was *waiting* for something. Find out what.
+الإشارة التي تبحث عنها: فعل واحد عريض بشكل غير متناسب. فعل يستغرق 4.8 ثوانٍ في اختبار يستغرق عادةً 1.2 في مجموعه هو الدليل الدامغ. ذلك الفعل كان *ينتظر* شيئًا. اكتشف ما هو.
 
-### DOM snapshots (before, action, after)
+### لقطات DOM (قبل، الفعل، بعد)
 
-**The question it answers**: *what* did the page look like when the locator ran?
+**السؤال الذي يجيب عنه**: *كيف* كانت الصفحة تبدو حين عمل محدّد الموقع؟
 
-This is where “element not found” becomes “element was hidden behind a modal that I forgot about.” For every action, Playwright captures a snapshot of the DOM from three moments: before the action fired, at the moment it fired, and immediately after. You can toggle between them with the snapshot selector at the top of the viewer.
+هنا يتحوّل «العنصر غير موجود» إلى «العنصر كان مخفيًا خلف نافذة منبثقة نسيتها». فلكل فعل، يلتقط Playwright لقطة من DOM في ثلاث لحظات: قبل انطلاق الفعل، وفي لحظة انطلاقه، وبعدها فورًا. ويمكنك التبديل بينها بمحدّد اللقطات في أعلى العارض.
 
-The signal you’re looking for: the element you *expected* the locator to match is missing, or it’s present but obscured, or it’s present multiple times. Agents stop looking at this pane too soon. Look at it longer. The answer is almost always in here.
+الإشارة التي تبحث عنها: العنصر الذي *توقّعت* أن يطابقه محدّد الموقع مفقود، أو موجود لكنه محجوب، أو موجود أكثر من مرة. الوكلاء يتوقفون عن النظر إلى هذا اللوح مبكرًا جدًا. انظر إليه أطول. فالجواب موجود هنا تقريبًا دائمًا.
 
-### Network
+### الشبكة
 
-**The question it answers**: *which* requests fired, in what order, with what status codes and timing?
+**السؤال الذي يجيب عنه**: *أي* الطلبات انطلقت، وبأي ترتيب، وبأي رموز حالة وتوقيت؟
 
-Every HTTP request the page made during the trace is listed, with timing, status, and payload. You can click any request to see the headers and body.
+كل طلب HTTP أطلقته الصفحة أثناء التتبّع مدرج، مع التوقيت والحالة والحمولة. ويمكنك النقر على أي طلب لترى الترويسات والجسم.
 
-The signal you’re looking for: a request that was still pending when the assertion ran (this is the timing-race bucket from the [flaky-test-triage lesson](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage)). Or a request that 401’d and triggered a redirect (this is the config/auth-mismatch bucket). Or a request that never fired at all (which means the click didn’t dispatch the handler, which usually means the locator resolved to the wrong element).
+الإشارة التي تبحث عنها: طلب كان ما يزال معلّقًا حين عمل التأكيد (وهذا هو دلو سباق التوقيت من [درس فرز الاختبارات المتقلّبة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage)). أو طلب أعاد 401 وأطلق تحويلًا (وهذا دلو تعارض التهيئة/المصادقة). أو طلب لم ينطلق قط (وهذا يعني أن النقرة لم تُطلق المعالج، وهو ما يعني عادةً أن محدّد الموقع حُلّ إلى العنصر الخطأ).
 
-### Console and source
+### الطرفية والمصدر
 
-**The question it answers**: *what* did the browser say, and *where* in the test source did the failure land?
+**السؤال الذي يجيب عنه**: *ماذا* قال المتصفّح، و*أين* في مصدر الاختبار وقع الفشل؟
 
-The Console pane shows every `console.log`, `console.error`, and `console.warn` the page emitted during the test. The Source pane shows your test code with the failing line highlighted. Between them, you get both the browser’s voice and your own.
+لوح الطرفية يعرض كل `console.log` و`console.error` و`console.warn` أصدرته الصفحة أثناء الاختبار. ولوح المصدر يعرض شيفرة اختبارك مع إبراز السطر الفاشل. وبينهما تحصل على صوت المتصفّح وصوتك معًا.
 
-The signal you’re looking for: a `console.error` that explains the failure directly. If the page emitted an error and you didn’t catch it, you’re missing a whole layer of diagnostic information. After the fixtures lab, Shelf’s shared `fixtures.ts` forwards these to stderr; the [fixtures lesson](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) shows why.
+الإشارة التي تبحث عنها: `console.error` يفسّر الفشل مباشرة. فإن أصدرت الصفحة خطأ ولم تلتقطه، فأنت تفوّت طبقة كاملة من المعلومات التشخيصية. وبعد المختبر الخاص بـfixtures، يمرّر `fixtures.ts` المشترك في Shelf هذه الرسائل إلى stderr؛ و[درس الـfixtures](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) يبيّن السبب.
 
-## Reading a trace for a real failure
+## قراءة تتبّع لفشل حقيقي
 
-Let’s walk through the Trace A failure from the lab. The spec in `tests/labs/broken-traces/trace-a-config.spec.ts` opts out of the default storage state, navigates to `/shelf`, and asserts the “Your books” heading is visible. It fails. (In the current starter, that spec begins with `test.skip()` as a safety gate — the lab’s generator helper removes it before running the spec.)
+لنمشِ في فشل التتبّع A من المختبر. فالمواصفة في `tests/labs/broken-traces/trace-a-config.spec.ts` تتخلى عن حالة التخزين الافتراضية، وتنتقل إلى `/shelf`، وتؤكّد أن عنوان «Your books» ظاهر. وهي تفشل. (وفي النسخة الأولية الحالية، تبدأ تلك المواصفة بـ`test.skip()` كبوابة أمان — ومساعد التوليد في المختبر يحذفه قبل تشغيل المواصفة.)
 
-Generate it if you’ve already added the helper in the lab:
+ولّده إن كنت قد أضفت المساعد في المختبر بالفعل:
 
 ```bash
 npm run traces:generate
 ```
 
-Then open it:
+ثم افتحه:
 
 ```bash
 npx playwright show-trace playwright-report/lab-traces/trace-a-config.zip
 ```
 
-Now read the four panes, in order.
+الآن اقرأ الألواح الأربعة، بالترتيب.
 
-**Timeline**: you see two actions — `goto('/shelf')` and `expect(heading).toBeVisible()`. The `goto` is short. The `expect` stalls for five seconds and fails. That’s the action that burned the time. Click it.
+**الخط الزمني**: ترى فعلين—`goto('/shelf')` و`expect(heading).toBeVisible()`. فالـ`goto` قصير. والـ`expect` يتعطّل خمس ثوانٍ ويفشل. وذلك هو الفعل الذي أحرق الوقت. انقر عليه.
 
-**DOM snapshot at the failure**: the pane shows a login form, not the shelf. The `<h1>` reads “Sign in to Shelf.” The heading “Your books” is nowhere in the DOM. The locator was looking for something that doesn’t exist on this page.
+**لقطة DOM عند الفشل**: يعرض اللوح نموذج تسجيل دخول، لا الرفّ. والـ`<h1>` يقول «Sign in to Shelf». وعنوان «Your books» غير موجود في أي مكان في DOM. كان محدّد الموقع يبحث عن شيء غير موجود في هذه الصفحة.
 
-**Network**: this is the smoking gun. You see a `GET /shelf` that responded with a `302 Found` and a `Location` header pointing to `/login`, followed by a `GET /login` that responded with a `200 OK`. The test asked for `/shelf` and the server redirected it to `/login` before the page ever rendered.
+**الشبكة**: هنا الدليل الدامغ. ترى `GET /shelf` استجاب بـ`302 Found` وترويسة `Location` تشير إلى `/login`، ثم `GET /login` استجاب بـ`200 OK`. فطلب الاختبار `/shelf` فحوّله الخادم إلى `/login` قبل أن تُرسَم الصفحة أصلًا.
 
-**Console**: empty. No JavaScript error. This is important — the failure is server-side, not client-side. The redirect happened before any of your app’s code ran in the browser.
+**الطرفية**: فارغة. لا خطأ JavaScript. وهذا مهم — فالفشل من جهة الخادم، لا من جهة العميل. فالتحويل حدث قبل أن يعمل أي من شيفرة تطبيقك في المتصفّح.
 
-**Diagnosis**: the test is unauthenticated, and `/shelf` is gated server-side on `locals.user`. Classify it as a config / auth mismatch from the [flaky-test-triage](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) taxonomy. The fix is the project wiring, not the test body — whichever lab-only config or setup you use to generate these traces should mount storage state by default, and this one spec opts out via `test.use({ storageState: { cookies: [], origins: [] } })`. The *lesson* is the failure. The *trace* is how you get from the failure to “oh, it’s the auth.”
+**التشخيص**: الاختبار غير مصادَق، و`/shelf` محميّ من جهة الخادم عبر `locals.user`. صنّفه كتعارض تهيئة / مصادقة من تصنيف [فرز الاختبارات المتقلّبة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage). والإصلاح هو توصيل المشروع، لا جسم الاختبار — فأي تهيئة أو إعداد خاص بالمختبر تستخدمه لتوليد هذه التتبّعات ينبغي أن يركّب حالة التخزين افتراضيًا، وهذه المواصفة الواحدة تتخلى عنها عبر `test.use({ storageState: { cookies: [], origins: [] } })`. و*الدرس* هو الفشل. و*التتبّع* هو كيف تنتقل من الفشل إلى «آه، إنها المصادقة».
 
-The whole walkthrough took maybe thirty seconds once you know what to look for. That’s the skill.
+استغرق المشوار كله نحو ثلاثين ثانية متى عرفت ما تبحث عنه. تلك هي المهارة.
 
-## The five fields an agent needs
+## الحقول الخمسة التي يحتاجها الوكيل
 
-When an agent reads a trace to decide what to fix, there are five fields it should extract — and they map cleanly onto the four panes plus the test file.
+حين يقرأ الوكيل تتبّعًا ليقرّر ما يصلحه، ثمة خمسة حقول ينبغي أن يستخرجها — وهي تنطبق بانطباع على الألواح الأربعة زائد ملف الاختبار.
 
-1. **Failing step name**. If the test uses `test.step`, the failure report already says which step blew up. If not, you’re stuck with a line number. The [test.step lesson](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) is what makes this field useful.
-2. **DOM snapshot at failure**. Paste the relevant part of the rendered HTML into the dossier — the login form, the stacked modal, the article with the wrong rating, whatever the smoking gun is.
-3. **Relevant network requests**. Status, URL, method, and timing for any request that’s either (a) pending at the moment of failure or (b) clearly the cause of the failure (a 302, a 401, a 500).
-4. **Console errors**. Anything the page emitted via `console.error` or `pageerror`. If it’s empty, say so explicitly — an empty console is also diagnostic information.
-5. **Timestamp delta between action and assertion**. “Click fired at 1.2s, assertion ran at 1.21s, PATCH response returned at 1.85s” is a complete story in one line. That delta is how you diagnose a timing race without even opening the timeline pane.
+1. **اسم الخطوة الفاشلة**. إن كان الاختبار يستخدم `test.step`، فتقرير الفشل يقول أصلًا أي خطوة انفجرت. وإن لم يكن، فأنت عالق مع رقم سطر. و[درس test.step](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) هو ما يجعل هذا الحقل مفيدًا.
+2. **لقطة DOM عند الفشل**. الصق الجزء ذا الصلة من HTML المرسوم في الملف — نموذج تسجيل الدخول، أو النافذة المتراكمة، أو المقال بالتقييم الخطأ، أيًّا كان الدليل الدامغ.
+3. **طلبات الشبكة ذات الصلة**. الحالة والعنوان والطريقة والتوقيت لأي طلب كان إما (أ) معلّقًا في لحظة الفشل أو (ب) سبب الفشل بوضوح (302، أو 401، أو 500).
+4. **أخطاء الطرفية**. أي شيء أصدرته الصفحة عبر `console.error` أو `pageerror`. وإن كانت فارغة، فقل ذلك صراحةً — فالطرفية الفارغة أيضًا معلومة تشخيصية.
+5. **فرق الطابع الزمني بين الفعل والتأكيد**. «النقرة انطلقت عند 1.2ث، والتأكيد عمل عند 1.21ث، واستجابة PATCH عادت عند 1.85ث» حكاية كاملة في سطر واحد. وذلك الفرق هو كيف تشخّص سباق توقيت دون أن تفتح لوح الخط الزمني أصلًا.
 
-These five fields are the handoff to the [Failure Dossiers](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) lesson. The dossier summarizer already extracts most of them from the Playwright JSON reporter output; the discipline here is making sure *you* know what to look for when the automated extraction misses something.
+هذه الحقول الخمسة هي التسليم إلى درس [ملفات الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build). فملخّص الملف يستخرج معظمها أصلًا من ناتج مُبلِّغ Playwright بصيغة JSON؛ والانضباط هنا هو أن تتأكد أن *أنت* تعرف ما تبحث عنه حين يفوّت الاستخراج الآلي شيئًا.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Reading a trace
@@ -120,12 +120,12 @@ These five fields are the handoff to the [Failure Dossiers](https://stevekinney.
 - If the network pane shows a pending request at the moment of failure, suspect a timing race (bucket 1). Use `waitForResponse`, not a bumped assertion timeout.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-The trace viewer is not a video player. It’s a structured-data browser dressed up as a debugging UI. When you treat it like a video player, you scroll, find a red box, and guess. When you treat it like a structured-data browser, you know which pane answers which question, you work through them in order, and you produce a diagnosis in thirty seconds. The trace was telling you the whole time. You just had to learn how to listen.
+عارض التتبّع ليس مشغّل فيديو. إنه متصفّح بيانات منظّمة مُتنكّر في هيئة واجهة تنقيح. وحين تعامله كمشغّل فيديو، تتمرّر وتجد مربّعًا أحمر وتخمّن. وحين تعامله كمتصفّح بيانات منظّمة، تعرف أي لوح يجيب عن أي سؤال، وتمشي فيها بالترتيب، وتنتج تشخيصًا في ثلاثين ثانية. كان التتبّع يخبرك طوال الوقت. كل ما عليك فعله أن تتعلم كيف تصغي.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Flaky-Test Triage: When Retries Are Lying to You](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — the framework that turns a trace finding into a classified flake and a specific fix.
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — where the five fields above turn into the structured artifact the agent reads.
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — the lesson that warned you about the exact race-condition failure mode the Network pane surfaces.
+- [فرز الاختبارات المتقلّبة: حين تكذب عليك إعادات المحاولة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — الإطار الذي يحوّل نتيجة تتبّع إلى تقلّب مصنّف وإصلاح محدّد.
+- [ملفات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — حيث تتحوّل الحقول الخمسة أعلاه إلى الأثر المنظّم الذي يقرأه الوكيل.
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — الدرس الذي حذّرك من نمط فشل سباق التوقيت بالضبط الذي يكشفه لوح الشبكة.

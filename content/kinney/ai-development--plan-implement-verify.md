@@ -1,19 +1,18 @@
 ---
-title: "Plan → Implement → Verify Prompt Pattern"
-lang: en
+title: "نمط الطلب: خطّط → نفّذ → تحقّق"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/plan-implement-verify"
 ---
 
-The simplest reliable agent workflow is still:
+لا يزال أبسط سير عمل موثوق للوكيل هو:
 
-1. Plan.
-2. Implement.
-3. Verify.
+1. خطّط.
+2. نفّذ.
+3. تحقّق.
 
-The point is not ceremony. The point is making the agent show its understanding
-before it changes files and making success mechanically checkable afterward.
+والمقصود ليس الشكليات، بل جعل الوكيل يُظهر فهمه قبل أن يغيّر الملفات، وجعل النجاح قابلًا للفحص آليًا بعد ذلك.
 
-## The Pattern
+## النمط
 
 ```
 Goal:
@@ -35,28 +34,22 @@ If a command fails for an unrelated reason, stop and report the command, output,
 and likely cause instead of changing unrelated files.
 ```
 
-This works in [Cursor](https://cursor.com/) Agent mode, Cursor Cloud Agents, [Claude Code](https://code.claude.com/docs/en/overview), and most command line
-agent workflows.
+وهذا يعمل في وضع الوكيل في [Cursor](https://cursor.com/) ووكلاء Cursor السحابيين و[Claude Code](https://code.claude.com/docs/en/overview) ومعظم سير عمل وكلاء سطر الأوامر.
 
-## Why It Works
+## لماذا ينجح
 
-Planning catches misunderstandings while the cost is still low. Implementation
-keeps the agent inside the task. Verification turns “looks good” into a binary
-check.
+يَكتشف التخطيط سوء الفهم بينما تكون الكلفة منخفضة. ويُبقي التنفيذ الوكيل داخل المهمة. ويحوّل التحقق عبارة «يبدو جيدًا» إلى فحص ثنائي.
 
-The stop condition matters as much as the success condition. Without it, agents
-will often route around failures by editing adjacent code, weakening tests, or
-claiming partial success.
+وشرط التوقف لا يقل أهمية عن شرط النجاح. فبدونه، كثيرًا ما يلتفّ الوكلاء حول الإخفاقات بتعديل شيفرة مجاورة، أو إضعاف الاختبارات، أو ادّعاء نجاح جزئي.
 
-## When to Skip the Full Pattern
+## متى تتجاوز النمط الكامل
 
-For a tiny inline edit, a full plan is overkill. Use the pattern when the task:
+في التعديل المضمّن الصغير جدًا، تكون الخطة الكاملة مبالغة. استخدم النمط عندما تكون المهمة:
 
-- Touches more than one file.
-- Has security, data, or user-facing risk.
-- Requires tests or generated artifacts.
-- Could be solved in more than one reasonable way.
-- Will run in a cloud, command line, or automated context.
+- تمسّ أكثر من ملف واحد.
+- تحمل خطرًا أمنيًا أو متعلّقًا بالبيانات أو مواجهًا للمستخدم.
+- تتطلّب اختبارات أو مخرجات مولَّدة.
+- يمكن حلّها بأكثر من طريقة معقولة.
+- ستُشغَّل في سياق سحابي أو في سطر الأوامر أو سياق مؤتمت.
 
-If you cannot name the verification command, you probably do not have a complete
-task yet.
+وإذا لم تستطع تسمية أمر التحقق، فالأرجح أنك لا تملك مهمة مكتملة بعد.

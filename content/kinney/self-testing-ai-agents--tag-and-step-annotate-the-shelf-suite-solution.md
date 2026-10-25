@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/tag-and-step-annotate-the-shelf-suite-solution"
 ---
 
-One reasonable walk from the starting state of `rate-book.spec.ts` and `smoke.spec.ts` to a better-instrumented version. As with the other solutions in this course, yours may make different calls — different step labels, different tag choices, different places to drop an annotation. The principles you’re grading against are in the lesson; this is the narrative.
+هذا مسار معقول واحد من الحالة الابتدائية للملفّين `rate-book.spec.ts` و`smoke.spec.ts` إلى نسخة أفضل تجهيزًا بالأدوات. وكما هو الحال مع بقية الحلول في هذه الدورة، قد تتخذ نسختك قرارات مختلفة — تسميات خطوات مختلفة، واختيارات وسوم مختلفة، ومواضع مختلفة لإسقاط تعليق توضيحي. أما المبادئ التي تُقيَّم على أساسها فهي في الدرس؛ وهذا سردها.
 
-> **Prerequisite labs**
+> **متطلبات المختبرات المسبقة**
 >
-> This solution edits `tests/rate-book.spec.ts`, which is the file produced by the [harden-the-flaky-rate-book-test lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test). It also calls `resetShelfContent` from `tests/helpers/seed.ts`, which is wired up by the [fixtures refactor lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures); the starter ships a stub that throws. If you haven’t landed those labs yet, treat the code below as an aspirational target rather than something to paste directly over the current starter.
+> يحرّر هذا الحل الملف `tests/rate-book.spec.ts`، وهو الملف الذي ينتجه [مختبر تقوية اختبار تقييم الكتاب المتذبذب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test). ويستدعي أيضًا `resetShelfContent` من `tests/helpers/seed.ts`، وهو موصول عبر [مختبر إعادة هيكلة التجهيزات](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures)؛ ويشحن البادئ بديلًا يرمي استثناءً. فإن لم تكن قد أنجزت هذين المختبرين بعد، فتعامل مع الشيفرة أدناه كهدف طموح لا كشيء تلصقه مباشرةً فوق البادئ الحالي.
 
-## Commit 1: Steps in the rate-book test
+## الإيداع 1: خطوات في اختبار تقييم الكتاب
 
-Four natural phases in the flow: land on the shelf, open the dialog, submit the rating, verify persistence. Each becomes a `test.step`.
+أربع مراحل طبيعية في التدفق: الوصول إلى الرف، وفتح النافذة الحوارية، وإرسال التقييم، والتحقق من بقاء التقييم. كل واحدة منها تصبح `test.step`.
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -69,11 +69,11 @@ test.describe('rate a book on your shelf', () => {
 });
 ```
 
-Notice what I didn’t change: every assertion still checks the same thing in the same order. The only thing the steps add is a label around the groups. Run `npm run test`, confirm green, commit.
+لاحظ ما لم أغيّره: كل تحقّق ما زال يفحص الشيء نفسه بالترتيب نفسه. والشيء الوحيد الذي تضيفه الخطوات هو تسمية تحيط بالمجموعات. شغّل `npm run test`، وأكّد الخضرة، وأودِع.
 
-## Commit 2: Tag and step the smoke tests
+## الإيداع 2: وسّم اختبارات الدخان ووثّق خطواتها
 
-The starter’s two smoke tests are both `@critical`. One is the public face of the starter; the other proves protected routes still redirect correctly when the reader is anonymous. Both deserve to stay in the fast gate.
+اختبارا الدخان في البادئ كلاهما `@critical`. أحدهما الوجه العام للبادئ؛ والآخر يُثبت أن المسارات المحمية ما زالت تعيد التوجيه على نحو صحيح حين يكون القارئ مجهولًا. وكلاهما يستحق البقاء في البوابة السريعة.
 
 ```typescript
 test(
@@ -108,13 +108,13 @@ test(
 );
 ```
 
-Three things happened here:
+حدثت ثلاثة أشياء هنا:
 
-1. The smoke test is now `@critical` — one line on the signature.
-2. The homepage test has explicit step labels around the user-visible phases.
-3. The navigation-link checks are now `expect.soft`, so one broken link does not hide the rest of the state of the header.
+1. صار اختبار الدخان الآن `@critical` — سطر واحد على التوقيع.
+2. صار لاختبار الصفحة الرئيسية تسميات خطوات صريحة تحيط بالمراحل المرئية للمستخدم.
+3. صارت فحوص روابط التنقل الآن `expect.soft`، فلا يخفي رابط مكسور واحد بقية حالة الترويسة.
 
-The redirect smoke follows the same pattern:
+ويتبع اختبار الدخان الخاص بإعادة التوجيه النمط نفسه:
 
 ```typescript
 test(
@@ -134,7 +134,7 @@ test(
 );
 ```
 
-The rate-book test keeps the issue annotation:
+ويحتفظ اختبار تقييم الكتاب بتعليق المسألة التوضيحي:
 
 ```typescript
 test('user can rate Station Eleven', { tag: ['@critical'] }, async ({ page, request }) => {
@@ -147,19 +147,19 @@ test('user can rate Station Eleven', { tag: ['@critical'] }, async ({ page, requ
 });
 ```
 
-Run the full suite. Green. Commit.
+شغّل المجموعة كاملة. خضراء. أودِع.
 
-## Commit 3: Verify the tag filter works
+## الإيداع 3: تحقّق من عمل مرشّح الوسوم
 
 ```bash
 npx playwright test --grep @critical
 ```
 
-Should show three tests (the rate-book one, plus both smoke tests). If anything you didn’t tag shows up, you have a regex leak. If something you *did* tag doesn’t show up, the tag array is wrong.
+ينبغي أن يعرض ثلاثة اختبارات (اختبار تقييم الكتاب، مع اختباري الدخان). فإن ظهر شيء لم توسمه، فعندك تسريب في التعبير النمطي. وإن لم يظهر شيء *وسمته*، فمصفوفة الوسوم خطأ.
 
-## What a failure now looks like
+## كيف يبدو الفشل الآن
 
-Break the rate-book test deliberately — change `4` to `5` in the assertion — and run it. The failure report now reads:
+اكسر اختبار تقييم الكتاب عمدًا — غيّر `4` إلى `5` في التحقّق — وشغّله. يقرأ تقرير الفشل الآن:
 
 ```
 1) [authenticated] › rate-book.spec.ts:10 › user can rate Station Eleven
@@ -167,27 +167,27 @@ Break the rate-book test deliberately — change `4` to `5` in the assertion —
    expected 5 but received 4
 ```
 
-(The `[authenticated]` project prefix appears once the storage-state lab has added the `authenticated` project to `playwright.config.ts`. If you’re running this before that lab lands, your project prefix will look different.)
+(تظهر بادئة المشروع `[authenticated]` بمجرد أن يضيف مختبر حالة التخزين مشروع `authenticated` إلى `playwright.config.ts`. وإن كنت تشغّل هذا قبل أن يُنجَز ذلك المختبر، فستبدو بادئة مشروعك مختلفة.)
 
-Compare that to the before, which said:
+قارن ذلك بما كان قبل، حين كان يقول:
 
 ```
 1) [authenticated] › rate-book.spec.ts:42
    expected 5 but received 4
 ```
 
-Same mismatch, dramatically different story. The agent reading the dossier knows the failure is in the “verify the rating persists” phase, which means the PATCH went through (otherwise an earlier step would have blown up), which means the issue is either in the response parsing or in whatever the server returned. That’s three possible causes out of an initial space of “any of the twelve things this test does.”
+التباين نفسه، لكن الحكاية مختلفة جذريًا. فالوكيل الذي يقرأ ملف الأدلة يعرف أن الفشل في مرحلة «التحقق من بقاء التقييم»، ما يعني أن طلب PATCH قد مرّ (وإلا لانفجرت خطوة أبكر)، ما يعني أن المشكلة إما في تحليل الاستجابة أو في أي شيء أعاده الخادم. فتلك ثلاثة أسباب محتملة من فضاء ابتدائي هو «أي واحد من الأشياء الاثني عشر التي يفعلها هذا الاختبار».
 
-Un-break the test. Run the full suite. Commit the diff.
+أزل الكسر عن الاختبار. شغّل المجموعة كاملة. أودِع الفرق.
 
-## Stretch: the step-only reporter
+## إضافي: المُبلِّغ الخاص بالخطوات فقط
 
-The custom reporter in the lab is ~30 lines. Drop it in `tests/reporters/step-reporter.ts`, add it to a temporary lab-only Playwright config or your main config while you experiment, and the next failing lab run prints exactly the step names and durations for the failing tests — nothing else. That output is the cleanest possible input for the [failure dossier summarizer](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build), which currently has to parse the full JSON reporter output to extract the same information.
+المُبلِّغ المخصّص في المختبر نحو 30 سطرًا. ألقِه في `tests/reporters/step-reporter.ts`، وأضفه إلى إعداد Playwright مؤقت خاص بالمختبر أو إلى إعدادك الرئيسي أثناء تجريبك، وسيطبع تشغيل المختبر الفاشل التالي أسماء الخطوات ومددها للاختبارات الفاشلة بالضبط — لا شيء غير ذلك. وتلك المخرجات هي أنظف مدخل ممكن لـ[ملخِّص ملف أدلة الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)، الذي عليه الآن أن يحلّل مخرجات مُبلِّغ JSON كاملة ليستخرج المعلومة نفسها.
 
-You probably won’t ship the step-only reporter to production. You’ll use it locally when you’re debugging a long chain.
+والأرجح أنك لن تشحن المُبلِّغ الخاص بالخطوات فقط إلى الإنتاج. ستستخدمه محليًا حين تنقّح سلسلة طويلة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [test.step, Tags, and Annotations](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) — the lesson this solution walks through.
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — the dossier that now reads better because every step has a label.
-- [Lab: Refactor Shelf’s Fixtures](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures) — a different kind of refactor, same spirit.
+- [test.step والوسوم والتعليقات التوضيحية](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) — الدرس الذي يمشي عليه هذا الحل.
+- [ملفات أدلة الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — ملف الأدلة الذي صار يُقرأ أفضل الآن لأن لكل خطوة تسمية.
+- [مختبر: إعادة هيكلة تجهيزات Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures) — نوع مختلف من إعادة الهيكلة، والروح نفسها.

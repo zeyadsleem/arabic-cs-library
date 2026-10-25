@@ -1,14 +1,14 @@
 ---
-title: "Type Narrowing and Control Flow"
-lang: en
+title: "تضييق الأنواع وتحليل تدفّق التحكم"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow"
 ---
 
-TypeScript has this incredible ability to understand your code’s logic and narrow types based on the checks you perform. It’s like having a really smart assistant that follows along as you write conditions and helps ensure type safety. Let’s dive into how TypeScript’s control flow analysis makes your React code safer and more predictable.
+يمتلك TypeScript قدرة مذهلة على فهم منطق شيفرتك وتضييق الأنواع بناءً على الفحوص التي تجريها. فهو كمساعد ذكي جدًا يتابعك أثناء كتابة الشروط ويساعدك على ضمان سلامة الأنواع. ولنتعمّق في كيفية جعل تحليل تدفّق التحكم في TypeScript لشيفرة React أكثر أمانًا وقابلية للتنبؤ.
 
-## What is Type Narrowing?
+## ما هو تضييق الأنواع؟
 
-Type narrowing is when TypeScript refines a type to be more specific based on the code’s control flow. Think of it as TypeScript following your logic:
+تضييق الأنواع هو أن يصقل TypeScript نوعًا ليصبح أكثر تحديدًا بناءً على تدفّق التحكم في الشيفرة. فكّر فيه كأن TypeScript يتتبّع منطقك:
 
 ```typescript
 function processValue(value: string | number) {
@@ -24,11 +24,11 @@ function processValue(value: string | number) {
 }
 ```
 
-## Type Guards: Your Narrowing Tools
+## حرّاس الأنواع: أدواتك للتضييق
 
-### typeof Type Guards
+### حرّاس الأنواع عبر typeof
 
-The `typeof` operator is your first line of defense for primitive types:
+معامل `typeof` هو خط دفاعك الأول أمام الأنواع الأولية:
 
 ```typescript
 function formatValue(value: string | number | boolean) {
@@ -60,9 +60,9 @@ const DisplayValue = ({ value }: { value: string | number | null }) => {
 };
 ```
 
-### instanceof Type Guards
+### حرّاس الأنواع عبر instanceof
 
-For class instances and built-in objects:
+للنسخ الخارجة من الأصناف وللكائنات المدمجة:
 
 ```typescript
 class ValidationError extends Error {
@@ -96,9 +96,9 @@ function processDate(value: Date | string) {
 }
 ```
 
-### in Operator Type Guards
+### حرّاس الأنواع عبر المعامل in
 
-Check for property existence to narrow object types:
+تحقّق من وجود الخاصية لتضييق أنواع الكائنات:
 
 ```typescript
 interface Car {
@@ -149,9 +149,9 @@ const DynamicRender = (props: TextProps | ComponentProps) => {
 };
 ```
 
-## Truthiness Narrowing
+## التضييق بالصحّة (truthiness)
 
-TypeScript understands JavaScript’s truthiness:
+يفهم TypeScript صحّة القيم في JavaScript:
 
 ```typescript
 function processUser(user: User | null | undefined) {
@@ -187,9 +187,9 @@ function processItems<T>(items: T[] | null | undefined) {
 }
 ```
 
-## Equality Narrowing
+## التضييق بالمساواة
 
-TypeScript narrows based on equality checks:
+يضيّق TypeScript الأنواع بناءً على فحوص المساواة:
 
 ```typescript
 function handleStatus(status: 'loading' | 'success' | 'error' | null) {
@@ -240,9 +240,9 @@ function reducer(state: number, action: Action): number {
 }
 ```
 
-## Custom Type Guards
+## حرّاس أنواع مخصّصة
 
-Create your own type guard functions:
+أنشئ دوال حرّاس أنواع خاصة بك:
 
 ```typescript
 // Simple type guard
@@ -284,9 +284,9 @@ function processData(data: unknown) {
 }
 ```
 
-## Array Type Guards
+## حرّاس الأنواع للمصفوفات
 
-Working with arrays requires special attention:
+يتطلب التعامل مع المصفوفات عناية خاصة:
 
 ```typescript
 // Filter with type guards
@@ -313,9 +313,9 @@ const strings = mixedArray.filter(isString);
 // strings is string[]
 ```
 
-## Control Flow Analysis
+## تحليل تدفّق التحكم
 
-TypeScript follows your code’s logic:
+يتبع TypeScript منطق شيفرتك:
 
 ```typescript
 function processValue(value: string | number | null) {
@@ -352,9 +352,9 @@ if (Math.random() > 0.5) {
 }
 ```
 
-## Never and Exhaustiveness
+## never والشمول (exhaustiveness)
 
-Use `never` to ensure you handle all cases:
+استخدم `never` لتتأكّد من أنك تعالج كل الحالات:
 
 ```typescript
 type Shape =
@@ -414,9 +414,9 @@ function reducer(state: State, action: Action): State {
 }
 ```
 
-## Assertion Functions
+## دوال التأكيد (assertion functions)
 
-Create functions that assert conditions:
+أنشئ دوال تؤكّد شروطًا:
 
 ```typescript
 function assertIsDefined<T>(value: T | null | undefined): asserts value is T {
@@ -451,9 +451,9 @@ const UserProfile = ({ userId }: { userId: string | null }) => {
 };
 ```
 
-## Optional Chaining and Narrowing
+## السلسلة الاختيارية والتضييق
 
-TypeScript understands optional chaining:
+يفهم TypeScript السلسلة الاختيارية:
 
 ```typescript
 interface User {
@@ -485,9 +485,9 @@ function getDisplayName(user: User | null) {
 }
 ```
 
-## Type Narrowing in React
+## تضييق الأنواع في React
 
-### Component Props
+### خصائص المكوّنات
 
 ```typescript
 type ButtonProps =
@@ -528,7 +528,7 @@ const Button = (props: ButtonProps) => {
 };
 ```
 
-### Conditional Rendering
+### التصيير الشرطي
 
 ```typescript
 interface DataState<T> {
@@ -556,7 +556,7 @@ function DataDisplay<T>({ state }: { state: DataState<T> }) {
 }
 ```
 
-### Form Validation
+### التحقّق من النماذج
 
 ```typescript
 type ValidationResult =
@@ -596,9 +596,9 @@ const EmailInput = () => {
 };
 ```
 
-## Advanced Patterns
+## أنماط متقدّمة
 
-### Discriminated Unions with Multiple Fields
+### الاتحادات المميّزة (discriminated unions) ذات الحقول المتعدّدة
 
 ```typescript
 type Response<T> =
@@ -623,7 +623,7 @@ function handleResponse<T>(response: Response<T>) {
 }
 ```
 
-### Combining Type Guards
+### دمج حرّاس الأنواع
 
 ```typescript
 interface Admin {
@@ -657,7 +657,7 @@ function hasPermission(person: Person, permission: string): boolean {
 }
 ```
 
-### Narrowing with Generics
+### التضييق مع الأنواع العامة
 
 ```typescript
 function processValue<T>(value: T | null, processor: (value: T) => void): void {
@@ -677,7 +677,7 @@ function filterDefined<T>(items: (T | undefined)[]): T[] {
 }
 ```
 
-## Real-World Example: Form Handler
+## مثال من العالم الحقيقي: معالج نموذج
 
 ```typescript
 type FieldValue = string | number | boolean | Date | null;
@@ -770,9 +770,9 @@ const FormComponent = ({ form }: { form: Form }) => {
 };
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Use Discriminated Unions
+### استخدم الاتحادات المميّزة
 
 ```typescript
 // ✅ Good - Easy to narrow
@@ -786,7 +786,7 @@ interface Result<T> {
 }
 ```
 
-### Make Invalid States Unrepresentable
+### اجعل الحالات غير الصالحة غير قابلة للتمثيل
 
 ```typescript
 // ✅ Good - Can't have both data and error
@@ -804,7 +804,7 @@ interface State<T> {
 }
 ```
 
-### Use Exhaustive Checks
+### استخدم الفحوص الشاملة
 
 ```typescript
 // ✅ Always include exhaustive checks
@@ -823,7 +823,7 @@ function handle(value: 'a' | 'b' | 'c') {
 }
 ```
 
-### Prefer Type Guards Over Type Assertions
+### فضّل حرّاس الأنواع على تأكيدات الأنواع
 
 ```typescript
 // ✅ Good - Safe type narrowing
@@ -839,14 +839,14 @@ if (isString(value)) {
 console.log((value as string).toUpperCase());
 ```
 
-## Summary
+## الخلاصة
 
-Type narrowing and control flow analysis are fundamental to writing safe TypeScript code. They let you:
+تضييق الأنواع وتحليل تدفّق التحكم أساسيان في كتابة شيفرة TypeScript آمنة. وهما يتيحان لك:
 
-1. **Write safer code** - TypeScript ensures you handle all cases
-2. **Avoid runtime errors** - Catch type issues at compile time
-3. **Express intent clearly** - Your type checks document your logic
-4. **Reduce defensive coding** - TypeScript knows when checks are unnecessary
-5. **Enable better refactoring** - Changes to types are caught immediately
+1. **اكتب شيفرة أكثر أمانًا** — يضمن TypeScript أنك تعالج كل الحالات
+2. **تجنّب أخطاء وقت التشغيل** — التقط مشكلات الأنواع وقت التصريف
+3. **عبّر عن النية بوضوح** — فحوص أنواعك توثّق منطقك
+4. **قلّل الشيفرة الدفاعية** — يعرف TypeScript متى تكون الفحوص غير ضرورية
+5. **فعّل إعادة هيكلة أفضل** — تُلتقط التغييرات في الأنواع فورًا
 
-Master these concepts, and you’ll write React components that are not just type-safe, but also more maintainable and easier to reason about.
+أتقن هذه المفاهيم، وستكتب مكوّنات React لا آمنةً من حيث الأنواع فحسب، بل أسهل في الصيانة وأوضح في التفكير فيها.

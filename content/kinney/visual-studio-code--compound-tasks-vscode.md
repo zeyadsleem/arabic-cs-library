@@ -1,10 +1,10 @@
 ---
-title: "Compound Tasks"
-lang: en
+title: "المهام المركّبة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/compound-tasks-vscode"
 ---
 
-Compound tasks allow you to run multiple tasks in sequence. This is useful for orchestrating complex workflows.
+تتيح لك المهام المركّبة تشغيل مهام متعددة بالتتابع. ويفيد ذلك في تنسيق مسارات عمل معقّدة.
 
 ```json
 {
@@ -30,16 +30,16 @@ Compound tasks allow you to run multiple tasks in sequence. This is useful for o
 }
 ```
 
-- `"dependsOn": ["Task A", "Task B"]` : The `Run A and B` task will execute tasks with labels `Task A` and `Task B`.
-- `"dependsOrder": "sequence"`: The tasks will be run in the order defined in the `dependsOn` array.
+- `"dependsOn": ["Task A", "Task B"]` : ستشغّل مهمة `Run A and B` المهام ذات الوسمين `Task A` و `Task B`.
+- `"dependsOrder": "sequence"`: ستُشغَّل المهام بالترتيب المعرّف في مصفوفة `dependsOn`.
 
-## Understanding Task Dependencies: `dependsOn` and `dependsOrder`
+## فهم اعتماديات المهام: `dependsOn` و `dependsOrder`
 
-When orchestrating multiple tasks, you need to control both which tasks run (`dependsOn`) and how they run in relation to each other (`dependsOrder`). The `dependsOrder` property accepts three values, each with distinct behavior:
+عند تنسيق مهام متعددة، تحتاج إلى التحكّم في المهام التي تُشغَّل (`dependsOn`) وفي طريقة تشغيلها بالنسبة إلى بعضها (`dependsOrder`). وتقبل خاصية `dependsOrder` ثلاث قيم، لكل منها سلوك مختلف:
 
-### `sequence` (Default)
+### `sequence` (الافتراضي)
 
-Tasks run serially in the exact order listed in the `dependsOn` array. Each task must complete before the next one starts.
+تعمل المهام تسلسليًا بالترتيب المذكور تمامًا في مصفوفة `dependsOn`. ويجب أن تكتمل كل مهمة قبل أن تبدأ التالية.
 
 ```json
 {
@@ -49,11 +49,11 @@ Tasks run serially in the exact order listed in the `dependsOn` array. Each task
 }
 ```
 
-This ensures that “Clean” finishes before “Build” starts, and “Build” finishes before “Test” starts. If any task fails, subsequent tasks won’t run.
+وهذا يضمن انتهاء “Clean” قبل بدء “Build”، وانتهاء “Build” قبل بدء “Test”. وإذا فشلت أي مهمة، فلا تعمل المهام اللاحقة.
 
 ### `parallel`
 
-All dependent tasks start simultaneously and run concurrently.
+تبدأ كل المهام التابعة في الوقت نفسه وتعمل بالتوازي.
 
 ```json
 {
@@ -63,11 +63,11 @@ All dependent tasks start simultaneously and run concurrently.
 }
 ```
 
-This launches all three asset compilation tasks at once, which can significantly speed up build times for independent operations.
+وهذا يطلق مهام ترجمة الأصول الثلاث كلها دفعة واحدة، ما يمكن أن يسرّع أوقات البناء بدرجة كبيرة للعمليات المستقلة.
 
 ### `any`
 
-Visual Studio Code starts tasks in parallel, but the main task completes as soon as any dependent task finishes. This is useful for “race condition” scenarios.
+يبدأ Visual Studio Code المهام بالتوازي، لكن المهمة الرئيسية تكتمل بمجرد انتهاء أي مهمة تابعة. ويفيد ذلك في سيناريوهات «حالة التسابق».
 
 ```json
 {
@@ -77,11 +77,11 @@ Visual Studio Code starts tasks in parallel, but the main task completes as soon
 }
 ```
 
-In this example, the “Development Server” task is considered complete when either the API server or the frontend server starts successfully.
+وفي هذا المثال، تُعدّ مهمة “Development Server” مكتملة عندما يبدأ خادم الـ API أو خادم الواجهة الأمامية بنجاح.
 
-### Combining Dependencies
+### دمج الاعتماديات
 
-You can create complex task trees by combining dependencies. For example:
+يمكنك إنشاء أشجار مهام معقّدة بدمج الاعتماديات. مثلًا:
 
 ```json
 {
@@ -120,13 +120,13 @@ You can create complex task trees by combining dependencies. For example:
 }
 ```
 
-In this example:
+في هذا المثال:
 
-1. The “Clean” task runs first
-2. Then “Build Frontend” and “Build Backend” run (both depend on “Clean”)
-3. After both builds complete, “Run Tests” executes (depends on both builds)
-4. Finally, “Full Pipeline” completes after “Run Tests” finishes
+1. تعمل مهمة “Clean” أولًا
+2. ثم تعمل “Build Frontend” و “Build Backend” (وكلتاهما تعتمد على “Clean”)
+3. وبعد اكتمال البناءين، تُنفَّذ “Run Tests” (وهي تعتمد على البناءين)
+4. وأخيرًا تكتمل “Full Pipeline” بعد انتهاء “Run Tests”
 
-> **Tip**
+> **نصيحة**
 >
-> Be aware of potential race conditions when using `parallel` with tasks that might conflict (e.g., tasks that write to the same files). In such cases, `sequence` is safer.
+> انتبه إلى حالات التسابق المحتملة عند استخدام `parallel` مع مهام قد تتعارض (مثل مهام تكتب في الملفات نفسها). وفي هذه الحالات، يكون `sequence` أكثر أمانًا.

@@ -1,28 +1,28 @@
 ---
-title: "Module Federation"
-lang: en
+title: "اتحاد الوحدات (Module Federation)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/module-federation"
 ---
 
-Module Federation is a runtime code-sharing model for JavaScript applications. The original [webpack concept](https://webpack.js.org/concepts/module-federation/) is straightforward but powerful: multiple separate builds should form a single application, where each build can act as a container, expose modules, and consume modules from other containers at runtime. The high-level `ModuleFederationPlugin` is the ergonomic wrapper over webpack’s lower-level `ContainerPlugin` and `ContainerReferencePlugin`.
+اتحاد الوحدات (Module Federation) نموذج لمشاركة الشيفرة وقت التشغيل في تطبيقات JavaScript. و[مفهوم webpack](https://webpack.js.org/concepts/module-federation/) الأصلي بسيط لكنه قوي: ينبغي أن تُشكّل عمليات بناء منفصلة عدة تطبيقًا واحدًا، حيث يستطيع كل بناء أن يعمل كحاوية، ويكشف وحدات، ويستهلك وحدات من حاويات أخرى وقت التشغيل. أما `ModuleFederationPlugin` العالي المستوى فهو الغلاف المُيسِّر فوق `ContainerPlugin` و`ContainerReferencePlugin` الأدنى مستوى في webpack.
 
-The important word is “runtime.” A remote module is not part of the current build. It’s loaded asynchronously from another container, then evaluated synchronously once its factory is available. That means Module Federation isn’t just a packaging trick—it’s a runtime composition system that happens to be driven by bundlers. webpack’s concept goals also make clear that it’s intended to be environment-independent and usable in web and Node.js, not only in browser microfrontends.
+والكلمة المهمة هنا هي «وقت التشغيل». فالوحدة البعيدة ليست جزءًا من البناء الحالي، بل تُحمَّل لا تزامنيًا من حاوية أخرى، ثم تُقيَّم تزامنيًا متى صار مصنعها متاحًا. وهذا يعني أن اتحاد الوحدات ليس مجرد حيلة تغليف، بل نظام تركيب وقت تشغيل يصادف أن المُجمِّعات تقوده. كما توضح أهداف مفهوم webpack أنه مقصود ليكون مستقلًا عن البيئة وقابلًا للاستخدام في الويب وNode.js، لا في الواجهات المصغّرة داخل المتصفح فقط.
 
-## When It’s the Right Tool
+## متى يكون الأداة المناسبة
 
-Module Federation is a good fit when you want independently deployed slices to behave like one app. webpack’s official use cases include separate builds per page in an SPA, a shared components library exposed as a container, and dynamic A/B tests that can provide a different version of a shared module at runtime. The docs also stress that this is often called microfrontends, but is not limited to microfrontends.
+يكون اتحاد الوحدات خيارًا مناسبًا عندما تريد أن تتصرّف شرائح تُنشر باستقلال كتطبيق واحد. ومن حالات الاستخدام الرسمية في webpack: عمليات بناء منفصلة لكل صفحة في تطبيق أحادي الصفحة (SPA)، ومكتبة مكوّنات مشتركة تُكشف كحاوية، واختبارات A/B ديناميكية تستطيع تقديم نسخة مختلفة من وحدة مشتركة وقت التشغيل. وتشدّد الوثائق أيضًا على أن هذا يُسمّى غالبًا الواجهات المصغّرة، لكنه ليس مقصورًا عليها.
 
-It’s also the right tool when you need decentralization without giving up composition. If a team owns a route, a domain feature, or a component library and wants to ship it independently, Federation can make that possible. If you just want reusable code with identical release cadence and no runtime indirection, a normal package is usually simpler. Humans do love adding a distributed system because a monorepo felt too peaceful.
+وهو الأداة الصحيحة أيضًا عندما تحتاج إلى لامركزية دون التخلي عن التركيب. فإن كان فريق يملك مسارًا أو ميزة نطاق أو مكتبة مكوّنات ويريد نشرها باستقلال، فبوسع الاتحاد أن يجعل ذلك ممكنًا. أما إن كنت تريد فقط شيفرة قابلة لإعادة الاستخدام بوتيرة إصدار متطابقة وبلا تحويل غير مباشر وقت التشغيل، فالحزمة العادية أبسط عادةً. فالبشر يعشقون إضافة نظام موزّع لأن المستودع الأحادي بدا سلميًا أكثر من اللازم.
 
-## The Core Mental Model
+## النموذج الذهني الجوهري
 
-Five concepts matter more than the rest.
+خمسة مفاهيم تهمّ أكثر من غيرها.
 
-A **producer** (often called a remote) exposes modules. A **consumer** (often called a host) loads those exposed modules. A **container** is the runtime façade around a build. **Shared dependencies** live in **share scopes**, which are named pools used for reuse and override rules. The container interface itself is tiny—`init` for wiring share scopes, and `get` for retrieving an exposed module factory.
+**المُنتِج (producer)** (ويُسمّى غالبًا الوحدة البعيدة) يكشف الوحدات. و**المستهلك (consumer)** (ويُسمّى غالبًا المضيف) يحمّل تلك الوحدات المكشوفة. و**الحاوي (container)** واجهة وقت التشغيل التي تلفّ عملية بناء. أما **الاعتمادات المشتركة** فتعيش في **نطاقات المشاركة (share scopes)**، وهي مجموعات مُسمّاة تُستخدم لقواعد إعادة الاستخدام والتجاوز. وواجهة الحاوي نفسها ضئيلة: `init` لربط نطاقات المشاركة، و`get` لاسترجاع مصنع وحدة مكشوفة.
 
-**Local module** versus **remote module** is the boundary to keep in your head. Local modules are compiled into the current build. Remote modules are discovered and loaded later. Loading is asynchronous, usually behind `import()`-style chunk boundaries, which is why Federation feels natural with lazy loading and route splitting. webpack also explicitly notes that containers can be nested, and even circular dependencies between containers are possible. Just because you *can* do that doesn’t mean your future self will send you flowers.
+و**الوحدة المحلية** مقابل **الوحدة البعيدة** هو الحدّ الذي ينبغي أن تُبقيه في ذهنك. فالوحدات المحلية تُصرَّف ضمن البناء الحالي. أما الوحدات البعيدة فتُكتشَف وتُحمَّل لاحقًا. والتحميل لا تزامني، ويقع عادةً خلف حدود حزم على نمط `import()`، ولهذا يبدو الاتحاد طبيعيًا مع التحميل المتأخر وتقسيم المسارات. ويلاحظ webpack صراحةً أيضًا أن الحاويات قابلة للتداخل، بل إن الاعتمادات الدائرية بين الحاويات ممكنة. وكونك *تستطيع* فعل ذلك لا يعني أن نفسك المستقبلية سترسل إليك الزهور.
 
-A good shorthand:
+وإليك اختصارًا مفيدًا:
 
 ```
 host app
@@ -33,27 +33,27 @@ host app
        └─ exposed module B
 ```
 
-That mental model is enough to reason about most real systems: who owns the remote, what gets exposed, what is shared, what must be singleton, and when loading happens.
+وهذا النموذج الذهني يكفي للاستدلال على معظم الأنظمة الحقيقية: من يملك الوحدة البعيدة، وما يُكشف، وما يُشارَك، وما يجب أن يكون أحادي النسخة، ومتى يحدث التحميل.
 
-## The Ecosystem and Version Story
+## المنظومة وقصة الإصدارات
 
-There are really three layers to keep straight. First, webpack 5 has the original native `webpack.container.ModuleFederationPlugin`. Second, [Rspack](https://rspack.dev/guide/features/module-federation) ships built-in support for Module Federation v1.5, including runtime plugins. Third, Module Federation 2.0 adds features like dynamic TypeScript type hints, Chrome DevTools integration, runtime plugins, preloading, shared tree shaking, and more—typically through the `@module-federation/enhanced` plugins. Rspack’s own docs recommend v1.5 or v2.0 and say v1.0 compatibility mode is no longer being iterated on.
+هناك ثلاث طبقات فعلًا ينبغي التمييز بينها. أولًا، يملك webpack 5 الإضافة الأصلية المدمجة `webpack.container.ModuleFederationPlugin`. وثانيًا، يوفّر [Rspack](https://rspack.dev/guide/features/module-federation) دعمًا مدمجًا لاتحاد الوحدات الإصدار 1.5، بما في ذلك إضافات وقت التشغيل. وثالثًا، يضيف اتحاد الوحدات 2.0 ميزات مثل تلميحات أنواع TypeScript الديناميكية، وتكامل Chrome DevTools، وإضافات وقت التشغيل، والتحميل المسبق، وتقليم الشيفرة غير المستخدمة للاعتمادات المشتركة، والمزيد—عادةً عبر إضافات `@module-federation/enhanced`. وتوصي وثائق Rspack نفسها بالإصدار 1.5 أو 2.0، وتقول إن وضع التوافق مع الإصدار 1.0 لم يعد يُعمل عليه.
 
-As of the current official docs, [MF 2.0’s ecosystem](https://module-federation.io/blog/v2-stable-version) spans major bundlers and tools, including webpack, Rspack, Rollup, Rolldown, Rsbuild, Vite, Metro, Modern.js, Next.js, Rspress, Rslib, Storybook, React, Vue, and React Native. In practice, support quality is not identical everywhere, so read the plugin docs for your exact stack instead of assuming every badge means “same maturity.”
+وبحسب الوثائق الرسمية الحالية، تمتد [منظومة الإصدار 2.0](https://module-federation.io/blog/v2-stable-version) عبر كبرى أدوات التجميع والبيئات، ومنها webpack وRspack وRollup وRolldown وRsbuild وVite وMetro وModern.js وNext.js وRspress وRslib وStorybook وReact وVue وReact Native. وعمليًا، ليست جودة الدعم متطابقة في كل مكان، فاقرأ وثائق الإضافة الخاصة بمكدّسك التقني بالضبط بدل أن تفترض أن كل شارة تعني «النضج ذاته».
 
-For webpack and Rspack, the official MF 2.0 path is the [enhanced plugin](https://module-federation.io/guide/build-plugins/plugins-webpack). The webpack plugin docs describe hot reloading for consumed remotes, remote type download, and standard shared/remotes/exposes support. Rspack’s docs show the same general model, and Rspack’s built-in federation layer remains a first-class option if you don’t need MF 2.0 extras.
+أما في webpack وRspack، فالمسار الرسمي لاتحاد الوحدات 2.0 هو [الإضافة المحسّنة](https://module-federation.io/guide/build-plugins/plugins-webpack). وتصف وثائق إضافة webpack إعادة التحميل الساخن للوحدات البعيدة المستهلكة، وتنزيل نوع الوحدة البعيدة، والدعم القياسي للمشاركة والوحدات البعيدة والكشف. وتعرض وثائق Rspack النموذج العام نفسه، وتبقى طبقة الاتحاد المدمجة في Rspack خيارًا من الدرجة الأولى إن لم تكن بحاجة إلى إضافات الإصدار 2.0.
 
-[Vite support](https://module-federation.io/guide/build-plugins/plugins-vite) exists, but the official plugin docs still say the `dev` option is unsupported, with remote hot updates and Nuxt SSR listed on the roadmap. Next.js support is [explicitly marked as deprecating](https://module-federation.io/guide/framework/nextjs), supports only the Pages Router, and the docs flag “App Router Not Supported.” [Modern.js](https://module-federation.io/guide/framework/modernjs) is the strongest official framework-integrated path at the moment and includes SSR support.
+ويوجد [دعم لـVite](https://module-federation.io/guide/build-plugins/plugins-vite)، لكن وثائق الإضافة الرسمية لا تزال تقول إن الخيار `dev` غير مدعوم، مع إدراج التحديثات الساخنة للوحدات البعيدة وتصيير Nuxt من الخادم على خريطة الطريق. أما دعم Next.js فهو [مُعلَّم صراحةً بأنه في طريق الإهمال](https://module-federation.io/guide/framework/nextjs)، ولا يدعم سوى موجّه الصفحات (Pages Router)، وتنبّه الوثائق إلى أن «موجّه التطبيق (App Router) غير مدعوم». ويُعدّ [Modern.js](https://module-federation.io/guide/framework/modernjs) أقوى مسار رسمي مدمج مع إطار عمل في الوقت الحالي، وهو يتضمن دعم التصيير من الخادم.
 
-## The Essential Configuration Surface
+## سطح التهيئة الضروري
 
-At minimum, you configure `name`, `remotes`, `exposes`, and `shared`. In the MF 2.0 [config docs](https://module-federation.io/configure/name), `name` is required and must be unique because it’s used for runtime data retrieval and global chunk storage references. `filename` controls the generated remote entry name and defaults to `remoteEntry.js`.
+على الأقل، تهيّئ `name` و`remotes` و`exposes` و`shared`. وفي [وثائق التهيئة](https://module-federation.io/configure/name) الخاصة بالإصدار 2.0، يُعدّ `name` مطلوبًا ويجب أن يكون فريدًا لأنه يُستخدم لاسترجاع بيانات وقت التشغيل ومراجع تخزين الحزم العامة. ويتحكم `filename` في اسم مدخل الوحدة البعيدة المُولَّد، وقيمته الافتراضية `remoteEntry.js`.
 
-[`exposes`](https://module-federation.io/configure/exposes) is producer-side. Setting it means “this build publishes modules.” The docs say exposed modules are split into their own chunk, and async chunks are extracted according to chunk-splitting rules. Expose keys follow package-entry-point style semantics, and the docs are explicit that `.` means the default export while `"./"` by itself is not supported.
+ويخصّ [`exposes`](https://module-federation.io/configure/exposes) جهة المُنتِج. فضبطه يعني «هذا البناء ينشر وحدات». وتقول الوثائق إن الوحدات المكشوفة تُقسَّم إلى حزمة خاصة بها، وإن الحزم غير المتزامنة تُستخرج وفق قواعد تقسيم الحزم. وتتبع مفاتيح الكشف دلالات على نمط نقطة دخول الحزمة، والوثائق صريحة في أن `.` تعني التصدير الافتراضي، أما `"./"` وحده فغير مدعوم.
 
-[`remotes`](https://module-federation.io/configure/remotes) is consumer-side. The alias you configure is the name your app imports from, and it doesn’t have to equal the producer’s `name`. The remote string is `producerName@entryUrl`, where the entry can be either `remoteEntry.js` or `mf-manifest.json`. If you use `mf-manifest.json`, the docs say you gain dynamic module type hints, resource preloading, and Chrome DevTool support.
+ويخصّ [`remotes`](https://module-federation.io/configure/remotes) جهة المستهلك. فالاسم المستعار الذي تهيّئه هو الاسم الذي يستورد منه تطبيقك، وليس بالضرورة أن يساوي `name` لدى المُنتِج. وصيغة سلسلة الوحدة البعيدة هي `producerName@entryUrl`، حيث يمكن أن يكون المدخل إما `remoteEntry.js` أو `mf-manifest.json`. وإن استخدمت `mf-manifest.json`، تقول الوثائق إنك تكسب تلميحات أنواع الوحدات الديناميكية، والتحميل المسبق للموارد، ودعم Chrome DevTool.
 
-A stripped-down remote and host configuration:
+وإليك تهيئة مختصرة لوحدة بعيدة ومضيف:
 
 ```javascript
 // remote: module-federation.config.js
@@ -83,15 +83,15 @@ module.exports = {
 };
 ```
 
-That follows the official producer/consumer split—remote exposes modules, host references the remote through an alias, and shared dependencies are declared in both places. The import path on the host side would be something like `store/ProductCard`, because the alias is what the consumer uses.
+وهذا يتبع الفصل الرسمي بين المُنتِج والمستهلك: فالوحدة البعيدة تكشف وحدات، والمضيف يشير إلى الوحدة البعيدة عبر اسم مستعار، والاعتمادات المشتركة تُعلَن في الموضعين. ويكون مسار الاستيراد على جهة المضيف شيئًا مثل `store/ProductCard`، لأن الاسم المستعار هو ما يستخدمه المستهلك.
 
-## How Loading Actually Works
+## كيف يعمل التحميل فعليًا
 
-At the raw webpack level, the remote-loading protocol is straightforward. First the host initializes the shared scope with `__webpack_init_sharing__("default")`. Then it gets the container and calls `container.init(__webpack_share_scopes__.default)`. Finally, it calls `container.get("./module")` and executes the returned factory. That’s the real runtime handshake hiding underneath the nicer plugin syntax.
+على مستوى webpack الخام، بروتوكول تحميل الوحدة البعيدة مباشر. فيُهيّئ المضيف أولًا نطاق المشاركة عبر `__webpack_init_sharing__("default")`. ثم يحصل على الحاوي وينادي `container.init(__webpack_share_scopes__.default)`. وأخيرًا ينادي `container.get("./module")` وينفّذ المصنع المُعاد. تلك هي المصافحة الحقيقية وقت التشغيل المتخفية تحت صيغة الإضافة الأنيقة.
 
-In practice, the build plugin hides almost all of that. But the low-level model matters because it explains several edge cases: why loading is async, why shared resolution happens before the module factory is used, why remotes can be connected dynamically, and why promise-based remotes only need to resolve an object that implements the same `get`/`init` interface.
+عمليًا، تخفي إضافة البناء معظم ذلك. لكن النموذج المنخفض المستوى يهم لأنه يفسّر عدة حالات حدّية: لماذا التحميل غير متزامن، ولماذا يحدث حلّ الاعتمادات المشتركة قبل استخدام مصنع الوحدة، ولماذا يمكن ربط الوحدات البعيدة ديناميكيًا، ولماذا لا تحتاج الوحدات البعيدة المعتمدة على الوعود إلا إلى حلّ كائن يطبّق الواجهة نفسها `get`/`init`.
 
-The low-level flow:
+والتدفق منخفض المستوى:
 
 ```javascript
 await __webpack_init_sharing__('default');
@@ -101,24 +101,24 @@ const factory = await container.get('./ProductCard');
 const ProductCardModule = factory();
 ```
 
-That’s why Module Federation feels magical until you remember it’s “just” a runtime registry plus a share-scope negotiation step. A very elaborate registry, naturally, because simple things would upset the ecosystem.
+ولهذا يبدو اتحاد الوحدات سحريًا حتى تتذكر أنه «مجرد» سجلّ وقت تشغيل مضافًا إليه خطوة تفاوض على نطاق المشاركة. سجلّ بالغ الإسهاب، بطبيعة الحال، لأن الأشياء البسيطة ستُغضب المنظومة.
 
-## Build Plugin Mode Versus Pure Runtime Mode
+## وضع إضافة البناء مقابل وضع وقت التشغيل المحض
 
-| Aspect | Build plugin mode | Pure runtime mode |
+| الجانب | وضع إضافة البناء | وضع وقت التشغيل المحض |
 | --- | --- | --- |
-| Registration | Declared in bundler config | `createInstance()` + `registerRemotes()` |
-| Import syntax | Normal `import()` / `React.lazy` | `loadRemote()` from runtime API |
-| Type hints | Yes (via `dts`) | Manual (`consumeTypes.remoteTypeUrls`) |
-| Shared dependency handling | Automatic bidirectional | Manual via `registerShared()` |
-| Dynamic remote addition | Limited | Full (`registerRemotes`) |
-| Best for | Standard setups with known remotes | Dynamic registration, multi-instance, Node.js |
+| التسجيل | مُعلَن في تهيئة المُجمِّع | `createInstance()` + `registerRemotes()` |
+| صيغة الاستيراد | `import()` / `React.lazy` العادية | `loadRemote()` من واجهة وقت التشغيل |
+| تلميحات الأنواع | نعم (عبر `dts`) | يدوي (`consumeTypes.remoteTypeUrls`) |
+| التعامل مع الاعتمادات المشتركة | تلقائي ثنائي الاتجاه | يدوي عبر `registerShared()` |
+| الإضافة الديناميكية للوحدات البعيدة | محدودة | كاملة (`registerRemotes`) |
+| الأنسب لـ | الإعدادات القياسية بوحدات بعيدة معروفة | التسجيل الديناميكي، وتعدد النسخ، وNode.js |
 
-The [official runtime docs](https://module-federation.io/guide/runtime/) say there are two ways to register and load modules: declare them in the build plugin, or register and load them directly through the runtime API. The two modes can be mixed. The big difference is that build-plugin mode supports direct `import`-style loading and remote type hints, while pure runtime mode supports dynamic registration and works without the build plugin—but you load with `loadRemote()` rather than normal import syntax.
+تقول [وثائق وقت التشغيل الرسمية](https://module-federation.io/guide/runtime/) إن هناك طريقتين لتسجيل الوحدات وتحميلها: إعلانها في إضافة البناء، أو تسجيلها وتحميلها مباشرةً عبر واجهة وقت التشغيل. ويمكن مزج الوضعين. والفرق الكبير أن وضع إضافة البناء يدعم التحميل المباشر على نمط `import` وتلميحات أنواع الوحدات البعيدة، بينما يدعم وضع وقت التشغيل المحض التسجيل الديناميكي ويعمل بلا إضافة بناء—لكنك تحمّل عبر `loadRemote()` بدل صيغة الاستيراد العادية.
 
-If you use the build plugin, an MF instance is created automatically and stored in memory. That’s why `loadRemote()` can be imported directly from `@module-federation/enhanced/runtime` and still know which application instance it belongs to. If you don’t use the build plugin, you must call `createInstance()` yourself. The [docs specifically call out](https://module-federation.io/guide/runtime/runtime-api) pure-runtime use, multiple separate MF instances, and custom partitioning as reasons to create your own instance.
+وإن استخدمت إضافة البناء، تُنشأ نسخة اتحاد وحدات تلقائيًا وتُخزَّن في الذاكرة. ولهذا يمكن استيراد `loadRemote()` مباشرةً من `@module-federation/enhanced/runtime` وهو يعرف مع ذلك نسخة التطبيق التي ينتمي إليها. أما إن لم تستخدم إضافة البناء، فعليك أن تنادي `createInstance()` بنفسك. وتُبرز [الوثائق تحديدًا](https://module-federation.io/guide/runtime/runtime-api) استخدام وقت التشغيل المحض، ونسخ اتحاد الوحدات المنفصلة المتعددة، والتقسيم المخصص كأسباب لإنشاء نسختك الخاصة.
 
-A typical runtime-only setup:
+وهذا إعداد نموذجي لوقت التشغيل المحض:
 
 ```typescript
 import { createInstance } from '@module-federation/enhanced/runtime';
@@ -136,19 +136,19 @@ const mf = createInstance({
 const mod = await mf.loadRemote('catalog/ProductCard');
 ```
 
-That pattern is official, not some community hack. The [Node.js guide](https://module-federation.io/blog/node) says runtime-only federation works in Node as well, including HTTP-based remotes, which is why Federation is now viable in SSR, BFF, and service-layer scenarios rather than only in browsers.
+وهذا النمط رسمي، وليس حيلة من المجتمع. فـ[دليل Node.js](https://module-federation.io/blog/node) يقول إن الاتحاد بوقت التشغيل المحض يعمل في Node أيضًا، بما في ذلك الوحدات البعيدة القائمة على HTTP، ولهذا صار الاتحاد قابلًا للتطبيق في سيناريوهات التصيير من الخادم وواجهات الواجهة الخلفية وطبقة الخدمات، لا في المتصفحات فقط.
 
-The runtime API also exposes `registerRemotes`, `registerShared`, `registerPlugins`, `getInstance`, `loadShare`, and `preloadRemote`. `registerRemotes(..., { force: true })` is explicitly documented as risky because it overwrites registered and loaded modules and deletes their cache if already loaded. That’s useful for canary or environment switching, but it’s the kind of power tool that removes fingers if you get casual.
+وتكشف واجهة وقت التشغيل أيضًا `registerRemotes`، و`registerShared`، و`registerPlugins`، و`getInstance`، و`loadShare`، و`preloadRemote`. والوثائق تصف `registerRemotes(..., { force: true })` صراحةً بأنها محفوفة بالمخاطر لأنها تستبدل الوحدات المسجَّلة والمحمَّلة وتحذف ذاكرتها المؤقتة إن كانت محمَّلة بالفعل. وهذا مفيد للنسخ التجريبية أو تبديل البيئات، لكنه من نوع الأدوات الجبارة التي تقطع الأصابع إن تعاملت معها بتراخٍ.
 
-## Shared Dependencies, Properly Understood
+## الاعتمادات المشتركة كما ينبغي فهمها {#shared-dependencies-properly-understood}
 
-Shared modules are the part people fear for good reason. webpack defines them as modules that are both overridable and provided as overrides to nested containers. In the default model, module requests in `shared` are only provided when used, will match equal requests in your build, and can even provide and consume multiple versions when nested `node_modules` exist. That last bit matters—sharing is not automatically singleton unless you make it so.
+الوحدات المشتركة هي الجزء الذي يخشاه الناس لسبب وجيه. يعرّفها webpack بأنها وحدات قابلة للتجاوز في الوقت نفسه الذي تُقدَّم فيه كتجاوزات لحاويات متداخلة. وفي النموذج الافتراضي، لا تُقدَّم طلبات الوحدات في `shared` إلا عند استخدامها، وستطابق الطلبات المكافئة في بنائك، بل يمكنها تقديم واستهلاك نسخ متعددة عند وجود `node_modules` متداخلة. وهذه النقطة الأخيرة مهمة: فالمشاركة ليست أحادية النسخة تلقائيًا إلا إن جعلتها كذلك.
 
-In the [MF 2.0 config docs](https://module-federation.io/configure/shared), the common shared options are `singleton`, `requiredVersion`, `eager`, `shareScope`, `import`, `allowNodeModulesSuffixMatch`, and tree-shaking settings. The default share scope is `"default"`. `requiredVersion` defaults to the current application’s dependency version. `import: false` means the shared dependency won’t be packaged into that build at all, so the consuming environment must provide it.
+وفي [وثائق تهيئة الإصدار 2.0](https://module-federation.io/configure/shared)، تشمل الخيارات المشتركة الشائعة `singleton` و`requiredVersion` و`eager` و`shareScope` و`import` و`allowNodeModulesSuffixMatch` وإعدادات تقليم الشيفرة غير المستخدمة. ونطاق المشاركة الافتراضي هو `"default"`. وتُؤخذ `requiredVersion` افتراضيًا من إصدار الاعتماد لدى التطبيق الحالي. أما `import: false` فتعني أن الاعتماد المشترك لن يُحزَّم في ذلك البناء إطلاقًا، فعلى بيئة الاستهلاك أن توفّره.
 
-For React and React DOM, `singleton: true` is the standard move. webpack’s [plugin docs](https://webpack.js.org/plugins/module-federation-plugin/) are explicit about why—libraries with global internal state, such as React and React DOM, should only have one instance active at a time. The same docs also say that if multiple versions exist in the shared scope, the highest semantic version is used.
+وفي حالة React وReact DOM، تُعدّ `singleton: true` الخطوة القياسية. وتوضح [وثائق الإضافة](https://webpack.js.org/plugins/module-federation-plugin/) في webpack السبب صراحةً: فالمكتبات ذات الحالة الداخلية العامة، مثل React وReact DOM، ينبغي ألا يكون لها سوى نسخة واحدة نشطة في الوقت نفسه. وتقول الوثائق نفسها أيضًا إنه إن وُجدت إصدارات متعددة في نطاق المشاركة، فسيُستخدم أعلى إصدار دلالي.
 
-A sane React shared block:
+وإليك كتلة مشاركة معقولة لـReact:
 
 ```javascript
 shared: {
@@ -163,79 +163,79 @@ shared: {
 }
 ```
 
-That pattern is documented directly in webpack’s plugin examples and is still the default mental model for React-based federation.
+وهذا النمط موثّق مباشرةً في أمثلة إضافة webpack، وما زال النموذج الذهني الافتراضي للاتحاد القائم على React.
 
-`eager` is the other big lever. In both webpack and MF 2.0 docs, the warning is the same—eager sharing pulls the shared dependency into the entry or initial chunk instead of loading it asynchronously, which can inflate your entry size and force those modules to download up front. Use it only when you deliberately want synchronous availability, usually at one shell entry point, not because the error message annoyed you.
+و`eager` هي الرافعة الكبيرة الأخرى. والتحذير واحد في وثائق webpack والإصدار 2.0 على السواء: فالمشاركة المتلهّفة (eager) تسحب الاعتماد المشترك إلى المدخل أو الحزمة الأولية بدل تحميله لا تزامنيًا، ما قد يضخّم حجم مدخلك ويُجبر على تنزيل تلك الوحدات مقدمًا. فلا تستخدمها إلا عندما تريد الإتاحة التزامنية عن قصد، وعادةً عند نقطة دخول قشرة واحدة، لا لأن رسالة الخطأ أزعجتك.
 
-If you’re in a pnpm, symlinked, or custom-loader world, `allowNodeModulesSuffixMatch` matters. The official docs say it matches shared modules by the resolved path segment after `node_modules/`, which helps when host and remote resolve the same package through different absolute paths but you still want them treated as the same shared module. One of those tiny options that saves an absurd amount of time.
+وإن كنت في عالم pnpm أو الروابط الرمزية أو المحمّلات المخصصة، فإن `allowNodeModulesSuffixMatch` تهم. تقول الوثائق الرسمية إنها تطابق الوحدات المشتركة عبر مقطع المسار المحلول بعد `node_modules/`، وهو ما يساعد عندما يحلّ المضيف والوحدة البعيدة الحزمة نفسها عبر مسارات مطلقة مختلفة لكنك ما زلت تريد معاملتها كالوحدة المشتركة نفسها. من تلك الخيارات الصغيرة التي توفّر وقتًا سخيفًا.
 
-webpack’s native plugin also documents advanced hints that aren’t always front-and-center in the enhanced config pages: `packageName`, `shareKey`, `strictVersion`, and explicit `version`. `strictVersion: true` means invalid shared versions throw for singletons or modules without a fallback; otherwise a fallback can be used. `shareKey` lets you publish under one request key and import under another. `packageName` helps when the required version can’t be inferred automatically from the request.
+وتوثّق إضافة webpack الأصلية أيضًا تلميحات متقدمة لا تكون دائمًا بارزة في صفحات تهيئة الإضافة المحسّنة: `packageName` و`shareKey` و`strictVersion` و`version` الصريحة. وتعني `strictVersion: true` أن إصدارات المشاركة غير الصالحة ترمي خطأً للأحادية النسخة أو للوحدات بلا بديل احتياطي؛ وإلا فيمكن استخدام بديل احتياطي. وتتيح لك `shareKey` النشر تحت مفتاح طلب واحد والاستيراد تحت آخر. وتفيد `packageName` عندما يتعذّر استنتاج الإصدار المطلوب تلقائيًا من الطلب.
 
-One subtle rule from webpack’s concepts page is worth remembering: shared requests with a trailing slash, such as `"react/"`, match all module requests with that prefix. That’s how you deliberately share subpath imports rather than just the package root.
+وثمة قاعدة دقيقة من صفحة مفاهيم webpack تستحق التذكر: طلبات المشاركة المنتهية بشرطة مائلة، مثل `"react/"`، تطابق كل طلبات الوحدات بذلك البادئة. وهكذا تشارك عن قصد الاستيرادات الفرعية بدل جذر الحزمة فحسب.
 
-### Who Decides the Blessed Version
+### من يقرّر الإصدار المعتمد
 
-The mechanics above explain *how* version selection works, but the more interesting question is *who decides*. In practice, the host shell’s `package.json` is usually the source of truth. The host initializes the share scope first, and the host’s version of React is the one that populates the `"default"` share scope before any remote gets a say. Remotes that declare `singleton: true` and a compatible `requiredVersion` will reuse whatever the host provided. That’s not a formal contract—it’s just the consequence of initialization order.
+تشرح الآلية السابقة *كيف* يعمل اختيار الإصدار، لكن السؤال الأكثر تشويقًا هو *من يقرّر*. عمليًا، تكون `package.json` في قشرة المضيف هي مصدر الحقيقة عادةً. فالمضيف يهيّئ نطاق المشاركة أولًا، وإصدار React لدى المضيف هو الذي يملأ نطاق المشاركة `"default"` قبل أن يكون لأي وحدة بعيدة رأي. والوحدات البعيدة التي تعلن `singleton: true` و`requiredVersion` متوافقة ستعيد استخدام ما وفّره المضيف أيًا كان. وهذا ليس عقدًا رسميًا، بل مجرد نتيجة لترتيب التهيئة.
 
-What happens when a remote pins a different major version is where things get uncomfortable. If the host provides React 18 and a remote expects React 17, the runtime has to make a call. Without `strictVersion`, it uses the highest semver match—which means the remote gets React 18 whether it wanted it or not. If React 18’s API surface changed in ways the remote relies on, the remote breaks silently at runtime. With `strictVersion: true`, the mismatch throws an error, which is at least honest about the problem even if it doesn’t fix it.
+وأما ما يحدث عندما تثبّت وحدة بعيدة إصدارًا رئيسيًا مختلفًا، فهناك تصير الأمور غير مريحة. فإن وفّر المضيف React 18 وتوقّعت وحدة بعيدة React 17، فعلى وقت التشغيل أن يقرّر. وبلا `strictVersion`، يستخدم أعلى تطابق دلالي، ما يعني أن الوحدة البعيدة ستحصل على React 18 شاءت أم أبت. وإن كانت واجهة React 18 قد تغيّرت بطرق تعتمد عليها الوحدة البعيدة، فستنكسر الأخيرة بصمت وقت التشغيل. أما مع `strictVersion: true`، فالعدم التوافق يرمي خطأً، وهو على الأقل صادق بشأن المشكلة حتى إن لم يصلحها.
 
-The practical pattern most teams converge on is this: pin shared dependencies to the same major range across all remotes, use `requiredVersion` to express that range, and let `singleton: true` handle the dedup. Treat a shared dependency major bump as a coordinated change across the whole federated system, not something one team does on a Thursday afternoon. Some teams enforce this with CI checks that compare each remote’s declared `requiredVersion` against the host’s installed version. Others just have a Slack channel where someone says “we’re bumping React next sprint” and everyone nods. The CI check is better, but both happen.
+النمط العملي الذي تلتقي عليه معظم الفرق هو هذا: ثبّت الاعتمادات المشتركة على النطاق الرئيسي نفسه في كل الوحدات البعيدة، واستخدم `requiredVersion` للتعبير عن ذلك النطاق، واترك `singleton: true` تتولى إزالة التكرار. وتعامل مع رفع الإصدار الرئيسي لاعتماد مشترك كتغيير منسّق في النظام الاتحادي كله، لا كشيء تفعله فرقة واحدة في ظهيرة خميس. وتفرض بعض الفرق ذلك عبر فحوص CI تقارن `requiredVersion` المعلنة في كل وحدة بعيدة بالإصدار المثبَّت لدى المضيف. أما غيرها فلديه قناة Slack يقول فيها أحدهم «سنرفع React في السبرنت القادم» فيومئ الجميع. فحص CI أفضل، لكن الأمرين يحدثان.
 
-## Share Scopes and Multiple Pools
+## نطاقات المشاركة والمجموعات المتعددة
 
-A **share scope** is just a named pool of shared dependencies. The default is `"default"`, but the [MF 2.0 docs](https://module-federation.io/configure/sharescope) support multiple share scopes so you can isolate reuse domains. The producer declares which scopes it initializes through `shareScope`, each shared dependency picks a scope through `shared[*].shareScope`, and the consumer can align specific remotes to one or more scopes with `remotes[remote].shareScope`.
+**نطاق المشاركة (share scope)** ليس إلا مجموعة مُسمّاة من الاعتمادات المشتركة. والافتراضي هو `"default"`، لكن [وثائق الإصدار 2.0](https://module-federation.io/configure/sharescope) تدعم نطاقات مشاركة متعددة كي تعزل مجالات إعادة الاستخدام. ويعلن المُنتِج النطاقات التي يهيّئها عبر `shareScope`، ويختار كل اعتماد مشترك نطاقًا عبر `shared[*].shareScope`، ويستطيع المستهلك مواءمة وحدات بعيدة محددة مع نطاق أو أكثر عبر `remotes[remote].shareScope`.
 
-That means you can keep React in the default pool while isolating something like an internal design system or special runtime into a separate scope. This is useful when two apps should reuse some things globally but shouldn’t accidentally unify everything. It’s not magic isolation—it’s just explicit dependency pooling, which is honestly a healthier idea than most frontend architecture slogans.
+هذا يعني أنك تستطيع إبقاء React في المجموعة الافتراضية مع عزل شيء مثل نظام تصميم داخلي أو وقت تشغيل خاص في نطاق منفصل. وهذا مفيد عندما ينبغي لتطبيقين أن يعيدا استخدام بعض الأشياء على المستوى العام دون أن يوحّدا كل شيء عن غير قصد. وليس هذا عزلًا سحريًا، بل تجميع صريح للاعتمادات، وهو فكرة أصح بصراحة من معظم شعارات معمارية الواجهات الأمامية.
 
-## Share Strategy and Startup Behavior
+## استراتيجية المشاركة وسلوك الإقلاع
 
-| Strategy | When remotes load | Version selection | Offline remote behavior | Best for |
+| الاستراتيجية | متى تُحمَّل الوحدات البعيدة | اختيار الإصدار | سلوك الوحدة البعيدة غير المتصلة | الأنسب لـ |
 | --- | --- | --- | --- | --- |
-| `version-first` | All loaded during startup | Highest compatible semver selected | Startup can hang or fail | Strict version coordination |
-| `loaded-first` | Loaded on first module request | Reuses already-loaded dependencies | Only fails if you request the dead remote | Resilience and graceful degradation |
+| `version-first` | تُحمَّل كلها أثناء الإقلاع | يُختار أعلى إصدار دلالي متوافق | قد يتعلّق الإقلاع أو يفشل | تنسيق صارم للإصدارات |
+| `loaded-first` | تُحمَّل عند أول طلب وحدة | تعيد استخدام الاعتمادات المحمَّلة سابقًا | لا يفشل إلا إن طلبت الوحدة البعيدة الميتة | المرونة والتدرّج اللطيف في التدهور |
 
-MF 2.0 introduces [`shareStrategy`](https://module-federation.io/configure/sharestrategy), with two official modes: `'version-first'` and `'loaded-first'`. The default is `'version-first'`, which loads all remotes during initialization so shared dependencies can register and the highest compatible versions can be selected. `'loaded-first'` delays remote loading until a module is actually requested and prioritizes reuse of already loaded shared dependencies.
+ويقدّم الإصدار 2.0 [`shareStrategy`](https://module-federation.io/configure/sharestrategy) بوضعين رسميين: `'version-first'` و`'loaded-first'`. والافتراضي هو `'version-first'`، الذي يحمّل كل الوحدات البعيدة أثناء التهيئة كي تُسجَّل الاعتمادات المشتركة وتُختار أعلى الإصدارات المتوافقة. أما `'loaded-first'` فيؤجّل تحميل الوحدات البعيدة حتى تُطلب وحدة فعلًا، ويعطي الأولوية لإعادة استخدام الاعتمادات المشتركة المحمَّلة سابقًا.
 
-The tradeoff is operational, not theoretical. The docs are clear that with `'version-first'`, if a remote is offline during startup, `errorLoadRemote` is triggered with `lifecycle: 'beforeLoadShare'`, and if you don’t provide a fallback the app can hang or fail during initialization. With `'loaded-first'`, offline remotes don’t break startup unless you actually request them. So, if your remote network isn’t perfectly reliable, `'loaded-first'` is usually the more resilient default.
+والمقايضة تشغيلية لا نظرية. فالوثائق واضحة في أن `'version-first'`، إن كانت وحدة بعيدة غير متصلة أثناء الإقلاع، تُشغّل `errorLoadRemote` مع `lifecycle: 'beforeLoadShare'`، وإن لم توفّر بديلًا احتياطيًا فقد يتعلّق التطبيق أو يفشل أثناء التهيئة. أما مع `'loaded-first'`، فلا تكسر الوحدات البعيدة غير المتصلة الإقلاع إلا إن طلبتها فعلًا. لذا، إن لم تكن شبكة وحداتك البعيدة موثوقة تمامًا، فـ`'loaded-first'` هي الافتراضي الأكثر صمودًا عادةً.
 
-If you do need version-first semantics, pair them with real fallback logic through runtime plugins. The runtime hook docs explicitly support `errorLoadRemote` returning custom fallback behavior, and the share-strategy docs specifically call out retry mechanisms, fallbacks, and error boundaries as production measures.
+وإن احتجت فعلًا دلالات الأولوية للإصدار، فاقرنها بمنطق بديل احتياطي حقيقي عبر إضافات وقت التشغيل. فوثائق خطافات وقت التشغيل تدعم صراحةً أن يعيد `errorLoadRemote` سلوكًا بديلًا مخصصًا، وتُبرز وثائق استراتيجية المشاركة تحديدًا آليات إعادة المحاولة والبدائل الاحتياطية وحدود الأخطاء كتدابير للإنتاج.
 
-## Promise-Based Remotes and Dynamic Registration
+## الوحدات البعيدة المعتمدة على الوعود والتسجيل الديناميكي
 
-webpack’s official docs support **promise-based dynamic remotes**. Instead of a fixed URL string in `remotes`, you can provide a promise that resolves at runtime to an object implementing `get` and `init`. The docs show using a query parameter to pick a versioned `remoteEntry.js`, inject the script, and then resolve a proxy around `window.app1`.
+تدعم وثائق webpack الرسمية **الوحدات البعيدة الديناميكية المعتمدة على الوعود**. فبدل سلسلة URL ثابتة في `remotes`، تستطيع تقديم وعد يُحلّ وقت التشغيل إلى كائن يطبّق `get` و`init`. وتعرض الوثائق استخدام معامل استعلام لاختيار `remoteEntry.js` مُصدَّر بإصدار، وحقن السكربت، ثم حلّ وكيل حول `window.app1`.
 
-That’s the canonical solution for tenant routing, feature flags, environment switching, or version pinning at runtime. It’s also the conceptual bridge to MF 2.0’s runtime registration APIs like `registerRemotes`, which let you add or override remotes after startup. The docs even use remote override as an example and warn that `force: true` should be used carefully because it replaces loaded modules and clears caches.
+وهذا هو الحل المتعارف عليه لتوجيه المستأجرين، وأعلام الميزات، وتبديل البيئات، أو تثبيت الإصدارات وقت التشغيل. وهو أيضًا الجسر المفاهيمي إلى واجهات التسجيل وقت التشغيل في الإصدار 2.0 مثل `registerRemotes`، التي تتيح لك إضافة الوحدات البعيدة أو تجاوزها بعد الإقلاع. بل تستخدم الوثائق تجاوز الوحدة البعيدة كمثال، وتحذّر من أن `force: true` ينبغي استخدامها بحذر لأنها تستبدل الوحدات المحمَّلة وتمسح الذاكرات المؤقتة.
 
-## Manifests Versus `remoteEntry.js`
+## البيانات مقابل `remoteEntry.js`
 
-| Aspect | `remoteEntry.js` | `mf-manifest.json` |
+| الجانب | `remoteEntry.js` | `mf-manifest.json` |
 | --- | --- | --- |
-| Format | Executable JavaScript | Declarative JSON |
-| Dynamic type hints | No | Yes |
-| Resource preloading | No | Yes |
-| Chrome DevTools support | No | Yes |
-| Ecosystem maturity | Classic (webpack 5 era) | MF 2.0+ |
-| Use when | Simple setups, no extras needed | You want types, preloading, and devtools |
+| الصيغة | JavaScript قابل للتنفيذ | JSON تصريحي |
+| تلميحات الأنواع الديناميكية | لا | نعم |
+| التحميل المسبق للموارد | لا | نعم |
+| دعم Chrome DevTools | لا | نعم |
+| نضج المنظومة | كلاسيكي (عصر webpack 5) | الإصدار 2.0 وما بعده |
+| استخدمه عندما | إعدادات بسيطة لا تحتاج إضافات | تريد الأنواع والتحميل المسبق وأدوات التطوير |
 
-Classic webpack federation revolves around `remoteEntry.js`. MF 2.0 adds [`mf-manifest.json`](https://module-federation.io/configure/manifest), which the docs describe as a runtime-oriented manifest consumers can use, and the [remotes docs](https://module-federation.io/configure/remotes) say manifest-based remotes unlock dynamic type hints, resource preloading, and Chrome DevTools features. If you want the modern toolchain around federation, manifest-based remotes are the more capable choice.
+يدور اتحاد webpack الكلاسيكي حول `remoteEntry.js`. ويضيف الإصدار 2.0 [`mf-manifest.json`](https://module-federation.io/configure/manifest)، الذي تصفه الوثائق بأنه بيان موجّه لوقت التشغيل يمكن للمستهلكين استخدامه، وتقول [وثائق الوحدات البعيدة](https://module-federation.io/configure/remotes) إن الوحدات البعيدة القائمة على البيان تفتح تلميحات الأنواع الديناميكية، والتحميل المسبق للموارد، وميزات Chrome DevTools. وإن كنت تريد سلسلة الأدوات الحديثة حول الاتحاد، فالوحدات البعيدة القائمة على البيان هي الخيار الأقدر.
 
-The manifest config supports `fileName`, `filePath`, and `disableAssetsAnalyze`. The default filename is `mf-manifest.json`, and if you customize it, the companion stats file gets a `-stats` suffix automatically. That matters when you’re standardizing deployment artifacts or building tooling around the manifest.
+وتدعم تهيئة البيان `fileName` و`filePath` و`disableAssetsAnalyze`. واسم الملف الافتراضي هو `mf-manifest.json`، وإن خصّصته، يحصل ملف الإحصاءات المرافق على اللاحقة `-stats` تلقائيًا. وهذا يهم عندما توحّد مخرجات النشر أو تبني أدوات حول البيان.
 
-## Type Hints and TypeScript Support
+## تلميحات الأنواع ودعم TypeScript
 
-MF 2.0’s type story is one of the biggest quality-of-life upgrades. The [`dts` option](https://module-federation.io/configure/dts) defaults to `true`. The official docs say the producer will generate a compressed `@mf-types.zip` file during build, and the consumer will automatically download and extract remote types into `@mf-types`. That’s a far nicer experience than hand-written ambient declarations and prayer.
+قصة الأنواع في الإصدار 2.0 من أكبر تحسينات جودة الحياة. فخيار [`dts`](https://module-federation.io/configure/dts) قيمته الافتراضية `true`. وتقول الوثائق الرسمية إن المُنتِج سيولّد ملفًا مضغوطًا `@mf-types.zip` أثناء البناء، وسينزّل المستهلك أنواع الوحدة البعيدة ويستخرجها تلقائيًا إلى `@mf-types`. وهذه تجربة أجمل بكثير من التعريفات المحيطة المكتوبة يدويًا والدعاء.
 
-If you’re using runtime-only loading or hosting types at nonstandard URLs, [`consumeTypes.remoteTypeUrls`](https://module-federation.io/configure/dts) lets you provide those addresses explicitly. The docs call out runtime-only scenarios as a specific use case for this.
+وإن كنت تستخدم التحميل بوقت التشغيل المحض أو تستضيف الأنواع على عناوين غير قياسية، تتيح لك [`consumeTypes.remoteTypeUrls`](https://module-federation.io/configure/dts) تقديم تلك العناوين صراحةً. وتُبرز الوثائق سيناريوهات وقت التشغيل المحض كحالة استخدام محددة لهذا.
 
-If type generation fails, the official [troubleshooting advice](https://module-federation.io/guide/basic/type-prompt) is to start with `FEDERATION_DEBUG=true` and enable `dts.displayErrorInTerminal`, then inspect the console and the `.mf/typesGenerate.log` file. One of those small doc nuggets you only appreciate after spending an hour pretending TypeScript is the mysterious one.
+وإن فشل توليد الأنواع، فالنصيحة [الرسمية لاستكشاف الأخطاء وإصلاحها](https://module-federation.io/guide/basic/type-prompt) هي البدء بـ`FEDERATION_DEBUG=true` وتمكين `dts.displayErrorInTerminal`، ثم فحص الطرفية وملف `.mf/typesGenerate.log`. من تلك الشذرات الصغيرة في الوثائق التي لا تقدّرها إلا بعد أن تقضي ساعة تتظاهر بأن TypeScript هو الغامض.
 
-## Runtime Plugins and Hooks
+## إضافات وقت التشغيل وخطافاتها
 
-One of MF 2.0’s defining features is the runtime plugin system. The [`runtimePlugins` config](https://module-federation.io/configure/runtimeplugins) accepts paths or `[path, options]` tuples, and the docs say those plugins are automatically injected and used during the build process. This is the official extension point for changing how remotes are resolved, fetched, loaded, and how shares are selected.
+من السمات المميزة للإصدار 2.0 نظام إضافات وقت التشغيل. وتقبل [تهيئة `runtimePlugins`](https://module-federation.io/configure/runtimeplugins) مسارات أو أزواجًا `[path, options]`، وتقول الوثائق إن تلك الإضافات تُحقن تلقائيًا وتُستخدم أثناء عملية البناء. وهذه هي نقطة التوسيع الرسمية لتغيير كيفية حلّ الوحدات البعيدة وجلبها وتحميلها وكيفية اختيار المشاركات.
 
-The most useful [hooks](https://module-federation.io/guide/runtime/runtime-hooks.html) are `beforeRequest` and `afterResolve` for modifying remote resolution, `errorLoadRemote` for fallbacks, `resolveShare` for manually selecting a shared implementation, `createScript` for customizing how remote scripts are inserted, `fetch` for controlling manifest requests, and `loadEntry` for fully custom remote types or delegation models. The docs include examples for credentials on manifest fetches, custom script attributes like `crossorigin="anonymous"`, JSON remotes, and delegate modules.
+أكثر [الخطافات](https://module-federation.io/guide/runtime/runtime-hooks.html) فائدة هي `beforeRequest` و`afterResolve` لتعديل حلّ الوحدة البعيدة، و`errorLoadRemote` للبدائل الاحتياطية، و`resolveShare` لاختيار تطبيق مشترك يدويًا، و`createScript` لتخصيص طريقة إدراج سكربتات الوحدة البعيدة، و`fetch` للتحكم في طلبات البيان، و`loadEntry` لأنواع الوحدات البعيدة المخصصة كليًا أو نماذج التفويض. وتضم الوثائق أمثلة على بيانات الاعتماد في جلب البيانات، وخصائص السكربت المخصصة مثل `crossorigin="anonymous"`، ووحدات JSON البعيدة، ووحدات التفويض.
 
-A representative runtime plugin:
+وإليك إضافة وقت تشغيل تمثيلية:
 
 ```typescript
 import type { FederationRuntimePlugin } from '@module-federation/enhanced/runtime';
@@ -259,37 +259,37 @@ export default function (): FederationRuntimePlugin {
 }
 ```
 
-That’s the right place for cross-cutting policy—auth, retries, tenant resolution, observability, offline fallbacks, and CDN quirks—instead of smearing that logic across every consumer.
+وهذا هو الموضع الصحيح للسياسات الشاملة: المصادقة، وإعادة المحاولات، وحلّ المستأجرين، والرصد، والبدائل الاحتياطية عند انقطاع الاتصال، وغرائب CDN—بدل تلطيخ ذلك المنطق على كل مستهلك.
 
-## Public Path and Asset URL Resolution
+## حلّ المسار العام وعناوين الموارد
 
-Asset URLs are one of the classic Federation pain points, especially behind reverse proxies or subpaths. webpack’s official docs describe two runtime solutions. One is to expose a method from the remote so the host can set `__webpack_public_path__` before bootstrapping the rest of the remote. The other is to infer the public path from `document.currentScript.src`.
+عناوين الموارد من نقاط ألم الاتحاد الكلاسيكية، خصوصًا خلف الوكلاء العكسيين أو المسارات الفرعية. وتصف وثائق webpack الرسمية حلّين وقت التشغيل. أحدهما كشف تابع من الوحدة البعيدة كي يضبط المضيف `__webpack_public_path__` قبل إقلاع بقية الوحدة البعيدة. والآخر استنتاج المسار العام من `document.currentScript.src`.
 
-MF 2.0 also adds [`getPublicPath`](https://module-federation.io/configure/getpublicpath). The config docs say it must be a function provided as a string, and it’s executed with `new Function` to obtain the public path prefix. If you use the webpack plugin and want dynamic public path behavior there, the docs explicitly say to set `__webpack_public_path__ = window.cdn_prefix` inside that function body. Because this is literally executed code, treat it as trusted configuration only, not as a place for user-controlled nonsense.
+ويضيف الإصدار 2.0 أيضًا [`getPublicPath`](https://module-federation.io/configure/getpublicpath). وتقول وثائق التهيئة إنه يجب أن يكون دالة تُقدَّم كسلسلة، وتُنفَّذ بـ`new Function` للحصول على بادئة المسار العام. وإن استخدمت إضافة webpack وأردت سلوك مسار عام ديناميكي هناك، تقول الوثائق صراحةً إن تضبط `__webpack_public_path__ = window.cdn_prefix` داخل جسم تلك الدالة. ولأن هذه شيفرة تُنفَّذ حرفيًا، فتعامل معها كتهيئة موثوقة فقط، لا كمكان تضع فيه عبثًا يتحكم به المستخدم.
 
-## SSR, Node, and Framework Reality
+## الواقع مع التصيير من الخادم وNode وأطر العمل
 
-At the concept level, webpack’s federation docs say the model is environment-independent and usable in web and Node.js. In practice, SSR support depends on your tooling layer. The official [Node.js guide](https://module-federation.io/blog/node) says Module Federation works in Node out of the box and can load local CommonJS builds or HTTP remotes through the runtime API.
+على مستوى المفهوم، تقول وثائق الاتحاد في webpack إن النموذج مستقل عن البيئة وقابل للاستخدام في الويب وNode.js. وعمليًا، يعتمد دعم التصيير من الخادم على طبقة أدواتك. ويقول [دليل Node.js](https://module-federation.io/blog/node) الرسمي إن اتحاد الوحدات يعمل في Node مباشرةً، ويستطيع تحميل عمليات بناء CommonJS محلية أو وحدات بعيدة عبر HTTP من خلال واجهة وقت التشغيل.
 
-[Modern.js](https://module-federation.io/guide/framework/modernjs) is currently the most complete official SSR path. Its docs say the plugin supports SSR, and specifically note that for performance reasons the Modern.js SSR integration only supports stream SSR. The MF 2.0 stable release post also calls out SSR as a major capability area.
+و[Modern.js](https://module-federation.io/guide/framework/modernjs) هو حاليًا أكمل مسار رسمي للتصيير من الخادم. وتقول وثائقه إن الإضافة تدعم التصيير من الخادم، وتلاحظ تحديدًا أنه لأسباب أداء لا يدعم تكامل Modern.js مع التصيير من الخادم سوى التصيير المتدفّق من الخادم. كما يُبرز منشور الإصدار المستقر 2.0 التصيير من الخادم كمجال قدرات رئيسي.
 
-[Next.js](https://module-federation.io/guide/framework/nextjs) is the cautionary tale. The official docs say support for the Next.js plugin is ending, that it supports Next 12 through 15, SSR, and the Pages Router, and separately flag that App Router is not supported. The usage notes also say you need local webpack via `NEXT_PRIVATE_LOCAL_WEBPACK=true`, and recommend `React.lazy` instead of `next/dynamic` for federated components to avoid hydration errors.
+أما [Next.js](https://module-federation.io/guide/framework/nextjs) فهو القصة المُحذِّرة. فتقول الوثائق الرسمية إن دعم إضافة Next.js آيل إلى الانتهاء، وإنها تدعم Next 12 إلى 15، والتصيير من الخادم، وموجّه الصفحات، وتُنبّه بشكل منفصل إلى أن موجّه التطبيق غير مدعوم. وتقول ملاحظات الاستخدام أيضًا إنك بحاجة إلى webpack محلي عبر `NEXT_PRIVATE_LOCAL_WEBPACK=true`، وتوصي بـ`React.lazy` بدل `next/dynamic` للمكوّنات الاتحادية لتجنّب أخطاء الترطيب (hydration).
 
-[Vite](https://module-federation.io/guide/build-plugins/plugins-vite) is usable, but read the fine print. The official Vite plugin docs say all options are supported except `dev`, and list remote hot updates and Nuxt SSR on the roadmap. Not a dealbreaker—it just means you shouldn’t assume webpack/Rspack parity everywhere.
+و[Vite](https://module-federation.io/guide/build-plugins/plugins-vite) قابل للاستخدام، لكن اقرأ الشروط الدقيقة. فوثائق إضافة Vite الرسمية تقول إن كل الخيارات مدعومة إلا `dev`، وتُدرج التحديثات الساخنة للوحدات البعيدة وتصيير Nuxt من الخادم على خريطة الطريق. وهذا ليس مانعًا قاطعًا، بل يعني فقط ألا تفترض التعادل مع webpack وRspack في كل مكان.
 
-## Style Isolation and CSS
+## عزل الأنماط وCSS
 
-The official [style-isolation docs](https://module-federation.io/guide/basic/css-isolate) are blunt: Module Federation does not directly handle CSS isolation, and they explain why. Shared dependencies can escape sandboxes, isolation can become dependent on load order, and runtime handling of CSS isolation has many edge cases. The docs call out Shadow DOM compatibility issues, hard-to-debug CSS collection/clearing problems, and uncontrollable impact when sandboxes change in the consumer.
+وثائق [عزل الأنماط](https://module-federation.io/guide/basic/css-isolate) الرسمية صريحة: لا يتولى اتحاد الوحدات عزل CSS مباشرةً، وهي تشرح السبب. فالاعتمادات المشتركة قد تفلت من الصناديق الرملية، وقد يصير العزل معتمدًا على ترتيب التحميل، ولمعالجة CSS للعزل وقت التشغيل حالات حدّية كثيرة. وتُبرز الوثائق مشكلات توافق Shadow DOM، ومشكلات جمع CSS ومسحه العسيرة التشخيص، والتأثير غير القابل للتحكم عندما تتغير الصناديق الرملية لدى المستهلك.
 
-The [recommended approaches](https://module-federation.io/guide/basic/css-isolate) are to solve CSS in the producer, not in Federation itself—use CSS Modules, prefixes or BEM, CSS-in-JS, unified component-library versions, or directly export Shadow DOM components when that tradeoff is acceptable.
+وتتمثل [المقاربات الموصى بها](https://module-federation.io/guide/basic/css-isolate) في حلّ CSS لدى المُنتِج، لا في الاتحاد نفسه: استخدم CSS Modules، أو البادئات أو BEM، أو CSS-in-JS، أو إصدارات موحّدة لمكتبة المكوّنات، أو صدّر مكوّنات Shadow DOM مباشرةً عندما تكون تلك المقايضة مقبولة.
 
-The practical takeaway is simple: don’t expect Federation to save you from global CSS. Keep styling boundaries inside the remote, or you’ll end up debugging load order at 2 a.m. like the world’s saddest stage magician.
+والخلاصة العملية بسيطة: لا تتوقع أن ينقذك الاتحاد من CSS العام. أبقِ حدود الأنماط داخل الوحدة البعيدة، وإلا انتهيت إلى تشخيص ترتيب التحميل في الثانية صباحًا كأحزن ساحر مسرح في العالم.
 
-## Routing and URL Ownership
+## التوجيه وملكية العنوان
 
-Module Federation doesn’t have an opinion about routing, which means you need to have one. The default answer—and usually the right one—is that the host shell owns the router and the URL bar. The host defines the top-level routes, and each route mounts the appropriate remote as a component. The remote renders inside the host’s layout, not in its own browser tab.
+لا رأي لاتحاد الوحدات في التوجيه، ما يعني أن عليك أن يكون لك رأي. والجواب الافتراضي—وهو الصحيح عادةً—أن قشرة المضيف تملك الموجّه وشريط العنوان. فالمضيف يعرّف المسارات العليا، وكل مسار يثبّت الوحدة البعيدة المناسبة كمكوّن. وتُصيَّر الوحدة البعيدة داخل تخطيط المضيف، لا في تبويب متصفح خاص بها.
 
-A typical pattern looks like this: the host has routes for `/`, `/analytics`, `/catalog`, and `/settings`. The `/analytics` route lazy-loads the analytics remote, the `/catalog` route lazy-loads the catalog remote, and so on. Each remote is wrapped in `React.lazy` and `<Suspense>`, so the host router controls when the remote mounts and what the user sees while it loads.
+وإليك نمطًا نموذجيًا: فلدى المضيف مسارات لـ`/` و`/analytics` و`/catalog` و`/settings`. ومسار `/analytics` يحمّل وحدة التحليلات البعيدة تحميلًا متأخرًا، ومسار `/catalog` يحمّل وحدة الكتالوج البعيدة تحميلًا متأخرًا، وهكذا. وكل وحدة بعيدة تُلفّ بـ`React.lazy` و`<Suspense>`، فيتحكم موجّه المضيف في متى تُثبَّت الوحدة البعيدة وما يراه المستخدم أثناء تحميلها.
 
 ```jsx
 const Analytics = React.lazy(() => import('analytics/Dashboard'));
@@ -320,86 +320,86 @@ function App() {
 }
 ```
 
-The `/*` wildcard on those routes is important. It tells the host router to match any subpath under `/analytics/` and pass it through. That gives the remote room for internal sub-views—`/analytics/metrics`, `/analytics/funnels`, whatever—without the host needing to know about them. The remote can use its own nested `<Routes>` for those sub-views, but it doesn’t own its own `<BrowserRouter>`. It reads the URL and renders accordingly, but the host’s router is the one managing the history stack.
+وحرف البدل `/*` في تلك المسارات مهم. فهو يخبر موجّه المضيف أن يطابق أي مسار فرعي تحت `/analytics/` ويمرّره. وهذا يمنح الوحدة البعيدة مجالًا لشاشات فرعية داخلية—`/analytics/metrics`، و`/analytics/funnels`، أيًا كان—دون أن يحتاج المضيف إلى معرفتها. وتستطيع الوحدة البعيدة استخدام `<Routes>` المتداخلة الخاصة بها لتلك الشاشات الفرعية، لكنها لا تملك `<BrowserRouter>` الخاصة بها. فهي تقرأ العنوان وتصيّر وفقًا له، لكن موجّه المضيف هو من يدير مكدّس السجل.
 
-Cross-remote navigation just uses the host’s router. When the analytics remote wants to link to a catalog page, it uses `<Link to="/catalog/123">` or `navigate("/catalog/123")`—the same way any component inside the host would navigate. The host router handles the transition, unmounts the analytics remote, and mounts the catalog remote. No full page reload, because the host shell never unmounts.
+والتنقل بين الوحدات البعيدة يستخدم موجّه المضيف فحسب. فعندما تريد وحدة التحليلات البعيدة أن تربط إلى صفحة كتالوج، تستخدم `<Link to="/catalog/123">` أو `navigate("/catalog/123")`—بالطريقة نفسها التي يتنقل بها أي مكوّن داخل المضيف. فيتولى موجّه المضيف الانتقال، ويفكّ تثبيت وحدة التحليلات البعيدة، ويثبّت وحدة الكتالوج البعيدة. بلا إعادة تحميل كاملة للصفحة، لأن قشرة المضيف لا تُفكّ أبدًا.
 
-Browser back and forward work naturally for the same reason. The host router manages `window.history`, and the remotes are just components that mount and unmount as the URL changes. Deep linking also works as long as the host router knows which route prefixes map to which remotes—if a user bookmarks `/analytics/funnels` and comes back later, the host router matches `/analytics/*`, loads the analytics remote, and the remote’s internal routing renders the funnels view.
+ويعمل زرا الرجوع والتقدم في المتصفح طبيعيًا للسبب نفسه. فموجّه المضيف يدير `window.history`، والوحدات البعيدة مجرد مكوّنات تُثبَّت وتُفكّ مع تغيّر العنوان. ويعمل الربط العميق أيضًا ما دام موجّه المضيف يعرف أي بادئات مسارات تقابل أي وحدات بعيدة: فإن حفظ المستخدم `/analytics/funnels` في المفضلة وعاد لاحقًا، يطابق موجّه المضيف `/analytics/*`، ويحمّل وحدة التحليلات البعيدة، ويصيّر التوجيه الداخلي في الوحدة البعيدة شاشة المسارات التحويلية (funnels).
 
-The one way to break all of this is for a remote to create its own `<BrowserRouter>`. Two routers fighting over `window.history` produces exactly the kind of state corruption that makes people regret architectural decisions. If a remote needs sub-routing, use `<Routes>` or `useRoutes` without wrapping them in a separate `<BrowserRouter>`. The remote should read the URL, not own it.
+والطريقة الوحيدة لكسر كل هذا أن تنشئ وحدة بعيدة `<BrowserRouter>` الخاصة بها. فموجّهان يتصارعان على `window.history` ينتجان بالضبط نوع فساد الحالة الذي يجعل الناس يندمون على قراراتهم المعمارية. وإن احتاجت وحدة بعيدة توجيهًا فرعيًا، فاستخدم `<Routes>` أو `useRoutes` من دون لفهما في `<BrowserRouter>` منفصل. ينبغي للوحدة البعيدة أن تقرأ العنوان، لا أن تملكه.
 
-## Version Skew and Deployment Timing
+## انحراف الإصدارات وتوقيت النشر
 
-Shared dependency negotiation has runtime machinery—semver matching, singleton resolution, `strictVersion`. Exposed module interfaces have *nothing*. An exposed module is just a JavaScript export. There’s no runtime contract check, no version negotiation, no compatibility handshake. Whatever the remote deployed most recently is what the host gets when it calls `container.get("./ProductCard")`.
+لتفاوض الاعتمادات المشتركة آلية وقت تشغيل: مطابقة الإصدارات الدلالية، وحلّ الأحادية النسخة، و`strictVersion`. أما واجهات الوحدات المكشوفة فليس لها *شيء* من ذلك. فالوحدة المكشوفة مجرد تصدير JavaScript. لا فحص عقد وقت تشغيل، ولا تفاوض إصدارات، ولا مصافحة توافق. ومهما نشرته الوحدة البعيدة أحدثًا هو ما يحصل عليه المضيف عندما ينادي `container.get("./ProductCard")`.
 
-That makes version skew between independently deployed remotes a quiet, operational problem rather than a loud runtime error. Here’s the scenario that actually happens: on Tuesday, the catalog team deploys a remote that exposes `<ProductCard>` expecting `{ title, price }` as props. On Thursday, the team agrees to add a required `currency` prop. On Friday, the host deploys with `<ProductCard title="Widget" price={9.99} currency="USD" />`. But the catalog remote hasn’t redeployed yet. The version running in production still expects `{ title, price }` and ignores `currency` entirely—or worse, the new remote deploys first and the *host* isn’t passing `currency` yet, so the component renders with `undefined` where a currency symbol should be.
+وهذا يجعل انحراف الإصدارات بين وحدات بعيدة تُنشر باستقلال مشكلة تشغيلية هادئة بدل خطأ وقت تشغيل صاخب. وإليك السيناريو الذي يحدث فعلًا: يوم الثلاثاء، تنشر فرقة الكتالوج وحدة بعيدة تكشف `<ProductCard>` وتتوقع `{ title, price }` كخصائص. ويوم الخميس، تتفق الفرقة على إضافة خاصية `currency` مطلوبة. ويوم الجمعة، ينشر المضيف مع `<ProductCard title="Widget" price={9.99} currency="USD" />`. لكن وحدة الكتالوج البعيدة لم تُعَد نشرها بعد. فالنسخة العاملة في الإنتاج ما زالت تتوقع `{ title, price }` وتتجاهل `currency` كليًا—أو الأسوأ، تُنشر الوحدة البعيدة الجديدة أولًا و*المضيف* لا يمرّر `currency` بعد، فيُصيَّر المكوّن بـ`undefined` حيث ينبغي أن يكون رمز العملة.
 
-The runtime won’t tell you this happened. The module loads successfully. The component renders. The missing or extra prop is silently `undefined`. There’s no `strictVersion` equivalent for exposed module APIs. If you’re lucky, it looks wrong. If you’re unlucky, it looks *almost* right.
+ولن يخبرك وقت التشغيل أن هذا حدث. فالوحدة تُحمَّل بنجاح. والمكوّن يُصيَّر. والخاصية الناقصة أو الزائدة `undefined` بصمت. ولا نظير لـ`strictVersion` في واجهات الوحدات المكشوفة. وإن كنت محظوظًا، فسيبدو الشكل خطأً. وإن كنت سيئ الحظ، فسيبدو *شبه* صحيح.
 
-The practical answer is to treat exposed modules like public APIs. Keep changes backwards-compatible: add optional props with defaults rather than adding required ones, don’t rename or remove props that consumers rely on. MF 2.0’s `dts` feature helps here—if the host downloads the remote’s TypeScript types during build, the host gets a build-time error when the contract changes. That’s the closest thing to a compile-time compatibility check across federation boundaries.
+والجواب العملي أن تتعامل مع الوحدات المكشوفة كواجهات برمجية عامة. أبقِ التغييرات متوافقة مع الوراء: أضف خصائص اختيارية بقيم افتراضية بدل إضافة خصائص مطلوبة، ولا تُعِد تسمية خصائص يعتمد عليها المستهلكون ولا تحذفها. وتفيد ميزة `dts` في الإصدار 2.0 هنا: فإن نزّل المضيف أنواع TypeScript للوحدة البعيدة أثناء البناء، حصل المضيف على خطأ وقت البناء عندما يتغير العقد. وهذا أقرب شيء إلى فحص توافق وقت التصريف عبر حدود الاتحاد.
 
-When a breaking change is unavoidable, coordinate the deploy order. Update the producer first with a backwards-compatible version that supports both the old and new interface. Deploy consumers. Then deploy the producer again to remove the backwards-compatible shim. That’s the same “expand, migrate, contract” pattern you’d use for any API migration, just applied to component props instead of HTTP endpoints.
+وعندما يكون تغيير كاسر لا مفر منه، نسّق ترتيب النشر. حدّث المُنتِج أولًا بنسخة متوافقة مع الوراء تدعم الواجهة القديمة والجديدة معًا. ثم انشر المستهلكين. ثم انشر المُنتِج مرة أخرى لإزالة طبقة التوافق مع الوراء. وهو نمط «التوسيع، ثم الترحيل، ثم التقليص» نفسه الذي تستخدمه في أي ترحيل واجهة برمجية، مطبَّقًا هنا على خصائص المكوّنات بدل نقاط النهاية عبر HTTP.
 
-The organizational backstop is contract tests—automated tests that verify the host can render the remote’s exposed modules with the props it actually passes. These run in CI against the remote’s published types or a locally built version, and they fail before deploy if the contract broke. Teams that skip this step find out about version skew from users, which is the most expensive test environment available.
+والشبكة التنظيمية الواقية هي اختبارات العقود: اختبارات آلية تتحقق من قدرة المضيف على تصيير الوحدات المكشوفة في الوحدة البعيدة بالخصائص التي يمرّرها فعلًا. وهذه تعمل في CI مقابل الأنواع المنشورة للوحدة البعيدة أو نسخة مبنية محليًا، وتفشل قبل النشر إن انكسر العقد. والفرق التي تتخطى هذه الخطوة تعرف بأمر انحراف الإصدارات من المستخدمين، وهو أغلى بيئة اختبار متاحة.
 
-## Failure Isolation
+## عزل الأعطال
 
-If a remote is listed in the static `remotes` configuration and that remote is unreachable, the default behavior is catastrophic: the federation runtime’s manifest fetch fails during the share-scope negotiation phase, the error propagates up through the async `import("./bootstrap")`, and the entire host application fails to mount. The user sees a blank white page. Not a fallback component, not an error message—nothing.
+إن كانت وحدة بعيدة مُدرجة في تهيئة `remotes` الساكنة وكانت تلك الوحدة غير قابلة للوصول، فالسلوك الافتراضي كارثي: يفشل جلب البيان في وقت تشغيل الاتحاد أثناء مرحلة تفاوض نطاق المشاركة، وينتشر الخطأ صعودًا عبر `import("./bootstrap")` غير المتزامن، ويفشل تطبيق المضيف كله في التثبيت. فيرى المستخدم صفحة بيضاء فارغة. لا مكوّن احتياطي، ولا رسالة خطأ—لا شيء.
 
-The reason this is worse than you’d expect is that the failure happens *before React mounts*. React error boundaries catch errors during rendering, but federation’s negotiation phase runs before `createRoot` is ever called. The error boundary exists in your source code, but it was never instantiated in the DOM. You can’t catch errors in a component tree that doesn’t exist yet.
+والسبب في أن هذا أسوأ مما تتوقع أن العطل يحدث *قبل تثبيت React*. فحدود أخطاء React تلتقط الأخطاء أثناء التصيير، أما مرحلة التفاوض في الاتحاد فتعمل قبل أن يُنادى `createRoot` أصلًا. فحدّ الأخطاء موجود في شيفرتك المصدرية، لكنه لم يُنشأ قط في DOM. ولا تستطيع التقاط أخطاء في شجرة مكوّنات غير موجودة بعد.
 
-There are three patterns that actually work. First, catch the bootstrap failure itself—wrap `import("./bootstrap")` in a `.catch()` in `index.tsx` and render a plain DOM fallback. That’s ugly (raw DOM manipulation in a React app), but it’s the only thing that can run at that point in the lifecycle. Second, make remotes optional at the import level—wrap `React.lazy` imports with `.catch()` so a dead remote returns a fallback component instead of crashing. Third, and cleanest, use dynamic remote registration via the runtime API so the remote is never in the static config and its failure can’t crash the negotiation phase.
+وهناك ثلاثة أنماط تنجح فعلًا. أولًا، التقط فشل الإقلاع نفسه: لفّ `import("./bootstrap")` في `.catch()` داخل `index.tsx` وصيّر بديلًا احتياطيًا بـDOM خام. هذا قبيح (تلاعب خام بـDOM في تطبيق React)، لكنه الشيء الوحيد القادر على العمل في تلك النقطة من دورة الحياة. وثانيًا، اجعل الوحدات البعيدة اختيارية على مستوى الاستيراد: لفّ استيرادات `React.lazy` بـ`.catch()` كي تعيد وحدة بعيدة ميتة مكوّنًا احتياطيًا بدل الانهيار. وثالثًا، وهو الأنظف، استخدم التسجيل الديناميكي للوحدات البعيدة عبر واجهة وقت التشغيل كي لا تكون الوحدة البعيدة في التهيئة الساكنة أبدًا ولا يستطيع عطلها إسقاط مرحلة التفاوض.
 
-The [error boundaries lecture](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) walks through each of these patterns in detail, including the exact failure timeline from script load to blank page and working code for each recovery strategy.
+وتستعرض [محاضرة حدود الأخطاء](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) كل نمط من هذه بتفصيل، بما في ذلك الخط الزمني الدقيق للعطل من تحميل السكربت إلى الصفحة البيضاء، وشيفرة عاملة لكل استراتيجية استعادة.
 
-The architectural takeaway is simple: assume remotes *will* fail. Design the host shell so that a dead remote costs one empty panel, not a dead application. The difference between a good federated architecture and a bad one is usually not in how it works when everything is up—it’s in what happens when one piece goes down and the rest of the system has to decide whether to care.
+والخلاصة المعمارية بسيطة: افترض أن الوحدات البعيدة *ستفشل*. صمّم قشرة المضيف بحيث تكلّف وحدة بعيدة ميتة لوحة فارغة واحدة، لا تطبيقًا ميتًا. والفرق بين معمارية اتحادية جيدة وأخرى سيئة ليس عادةً في كيف تعمل حين يكون كل شيء قائمًا، بل في ما يحدث عندما يسقط جزء واحد ويجب على بقية النظام أن يقرّر هل يهمّه الأمر.
 
-## Debugging and Observability
+## التنقيح والرصد
 
-MF 2.0 ships a surprisingly decent debugging story. The [Chrome DevTools extension](https://module-federation.io/guide/debug/chrome-devtool) can proxy online remotes to local ones, inspect module info, visualize dependency graphs, and analyze shared dependency reuse, including singleton and strict-version behavior. The docs state that the visualization and proxy capabilities require `mf-manifest.json`.
+يأتي الإصدار 2.0 بقصة تنقيح جيدة على نحو مفاجئ. فـ[إضافة Chrome DevTools](https://module-federation.io/guide/debug/chrome-devtool) تستطيع تمرير الوحدات البعيدة المتصلة إلى نظيراتها المحلية، وفحص معلومات الوحدات، وعرض مخططات الاعتمادات، وتحليل إعادة استخدام الاعتمادات المشتركة، بما في ذلك سلوك الأحادية النسخة والإصدار الصارم. وتذكر الوثائق أن قدرات العرض والتمرير تتطلب `mf-manifest.json`.
 
-There’s also a [global `__FEDERATION__` object](https://module-federation.io/guide/debug/variables) injected after initialization. The docs say it contains all module federation information for the current application, including processed `moduleInfo`, and recommend using the Chrome DevTools panel to inspect it. `__FEDERATION__.__INSTANCES__` lets you inspect created runtime instances.
+وثمة أيضًا [كائن `__FEDERATION__` العام](https://module-federation.io/guide/debug/variables) يُحقَن بعد التهيئة. وتقول الوثائق إنه يحتوي كل معلومات اتحاد الوحدات للتطبيق الحالي، بما في ذلك `moduleInfo` المعالَج، وتوصي باستخدام لوحة Chrome DevTools لفحصه. ويتيح لك `__FEDERATION__.__INSTANCES__` فحص نسخ وقت التشغيل المُنشأة.
 
-If you’re debugging type issues, start with `FEDERATION_DEBUG=true`. If you’re debugging runtime resolution or share behavior, use the DevTools panel and the global variables before you start rewriting config from memory. Memory is not a source of truth—it’s where broken assumptions go to ferment.
+وإن كنت تنقّح مشكلات الأنواع، فابدأ بـ`FEDERATION_DEBUG=true`. وإن كنت تنقّح الحلّ وقت التشغيل أو سلوك المشاركة، فاستخدم لوحة DevTools والمتغيرات العامة قبل أن تبدأ بإعادة كتابة التهيئة من الذاكرة. فالذاكرة ليست مصدر حقيقة، بل المكان الذي تختمر فيه الافتراضات الخاطئة.
 
-## Performance Tuning
+## ضبط الأداء
 
-The first lever isn’t exotic—avoid sharing or federating everything. Shared dependencies exist to reduce duplicate downloads and enable reuse, but the docs for both webpack and [MF 2.0](https://module-federation.io/configure/shared) warn that eager sharing increases initial bundle size and forces download of provided and fallback modules up front. Keep remotes and shared boundaries meaningful rather than atomized.
+الرافعة الأولى ليست غريبة: تجنّب مشاركة أو اتحاد كل شيء. فالاعتمادات المشتركة وُجدت لتقليل التنزيلات المكررة وتمكين إعادة الاستخدام، لكن وثائق webpack و[الإصدار 2.0](https://module-federation.io/configure/shared) على السواء تحذّر من أن المشاركة المتلهّفة تزيد حجم الحزمة الأولية وتفرض تنزيل الوحدات الموفَّرة والاحتياطية مقدمًا. فأبقِ الوحدات البعيدة وحدود المشاركة ذات معنى بدل تفتيتها.
 
-The second lever is preloading. The [runtime API](https://module-federation.io/guide/runtime/runtime-api) includes `preloadRemote`, which the docs say can start loading remote resources earlier to avoid waterfall requests. Manifest-based remotes also enable preloading features, and MF 2.0 adds `prefetch` and `cache` APIs for isomorphic data prefetching and caching. The prefetch docs also warn that prefetching can produce stale data if users mutate server state after a prefetch result has been cached.
+والرافعة الثانية هي التحميل المسبق. وتضم [واجهة وقت التشغيل](https://module-federation.io/guide/runtime/runtime-api) `preloadRemote`، التي تقول الوثائق إنها تستطيع بدء تحميل موارد الوحدة البعيدة أبكر لتجنّب طلبات الشلال. كما تتيح الوحدات البعيدة القائمة على البيان ميزات التحميل المسبق، ويضيف الإصدار 2.0 واجهتي `prefetch` و`cache` للجلب المسبق المتماثل للبيانات والتخزين المؤقت. وتحذّر وثائق الجلب المسبق أيضًا من أن الجلب المسبق قد ينتج بيانات قديمة إن عدّل المستخدمون حالة الخادم بعد تخزين نتيجة الجلب المسبق.
 
-The third lever is shared-dependency tree shaking in MF 2.0. The [official stable-release post](https://module-federation.io/blog/v2-stable-version.html) says shared dependencies now support tree shaking, with `runtime-infer` and `server-calc` modes. `runtime-infer` works out of the box and can fall back to the full dependency if the tree-shaken variant is insufficient. `server-calc` is aimed at larger systems where a server or CI can compute a globally optimal pruning result.
+والرافعة الثالثة هي تقليم الاعتمادات المشتركة غير المستخدمة في الإصدار 2.0. ويقول [منشور الإصدار المستقر الرسمي](https://module-federation.io/blog/v2-stable-version.html) إن الاعتمادات المشتركة تدعم الآن تقليم الشيفرة غير المستخدمة، بوضعي `runtime-infer` و`server-calc`. ويعمل `runtime-infer` مباشرةً، ويستطيع العودة إلى الاعتماد الكامل إن كانت النسخة المقلَّمة غير كافية. أما `server-calc` فموجّه إلى الأنظمة الأكبر حيث يستطيع خادم أو CI حساب نتيجة تقليم مثلى على المستوى العام.
 
-If you use `server-calc`, the deployment service rebuilds shared dependencies in a second pass, and your original project build config isn’t loaded for that pass. That’s why [`treeShakingSharedPlugins`](https://module-federation.io/configure/treeshakingsharedplugins) exists—to let you bring required build plugins, such as custom `externals`, into the shared tree-shaking rebuild. The related `injectTreeShakingUsedExports` option controls whether actual used exports are injected into the bundler runtime, and the docs recommend setting it to `false` with `server-calc`.
+وإن استخدمت `server-calc`، تعيد خدمة النشر بناء الاعتمادات المشتركة في مرور ثانٍ، ولا تُحمَّل تهيئة بناء مشروعك الأصلية في ذلك المرور. ولهذا توجد [`treeShakingSharedPlugins`](https://module-federation.io/configure/treeshakingsharedplugins)—لتمكينك من جلب إضافات البناء المطلوبة، مثل `externals` المخصصة، إلى إعادة بناء التقليم المشتركة. ويتحكم الخيار المرتبط `injectTreeShakingUsedExports` في ما إذا كانت الصادرات المستخدمة فعلًا تُحقَن في وقت تشغيل المُجمِّع، وتوصي الوثائق بضبطه على `false` مع `server-calc`.
 
-The fourth lever is the [`experiments` block](https://module-federation.io/configure/experiments). `asyncStartup` removes the need for the classic `import('./bootstrap')` trick and automatically makes entrypoints async, which also helps avoid eager-consumption errors. `externalRuntime` and `provideExternalRuntime` can dramatically reduce remote entry size by having the topmost consumer provide the runtime. `disableSnapshot` reduces runtime size further, but the docs warn that it disables the mf-manifest protocol, TypeScript syncing, and HMR for federated modules.
+والرافعة الرابعة هي [كتلة `experiments`](https://module-federation.io/configure/experiments). فـ`asyncStartup` تُغني عن حيلة `import('./bootstrap')` الكلاسيكية وتجعل نقاط الدخول غير متزامنة تلقائيًا، وهو ما يساعد أيضًا في تجنّب أخطاء الاستهلاك المتلهّف. وتستطيع `externalRuntime` و`provideExternalRuntime` تقليص حجم مدخل الوحدة البعيدة تقليصًا هائلًا بجعل أعلى مستهلك يوفّر وقت التشغيل. وتقلّص `disableSnapshot` حجم وقت التشغيل أكثر، لكن الوثائق تحذّر من أنها تعطّل بروتوكول mf-manifest، ومزامنة TypeScript، وإعادة التحميل الساخن (HMR) للوحدات الاتحادية.
 
-## The Most Common Edge Cases
+## أكثر الحالات الحدّية شيوعًا
 
-The classic webpack error is `Uncaught Error: Shared module is not available for eager consumption`. The official fix is either to make the dependency eager—carefully, usually only in the shell—or, better, introduce an async boundary so initialization happens asynchronously. MF 2.0’s `asyncStartup` experiment formalizes that second path.
+الخطأ الكلاسيكي في webpack هو `Uncaught Error: Shared module is not available for eager consumption`. والإصلاح الرسمي إما جعل الاعتماد متلهّفًا—بحذر، وفي القشرة فقط عادةً—أو الأفضل، إدخال حدّ غير متزامن كي تحدث التهيئة لا تزامنيًا. وتُقعّد تجربة `asyncStartup` في الإصدار 2.0 ذلك المسار الثاني.
 
-If you see `Module "./Button" does not exist in container`, the webpack docs point to expose-key format. The exposed key needs the `./` prefix, so `Button` is wrong and `./Button` is right.
+وإن رأيت `Module "./Button" does not exist in container`، فوثائق webpack تشير إلى صيغة مفتاح الكشف. فمفتاح الكشف يحتاج البادئة `./`، لذا `Button` خطأ و`./Button` صحيح.
 
-If you see `fn is not a function`, webpack’s troubleshooting page says you’re likely missing the remote container. If the target remote is loaded and the error remains, the docs say to ensure the host container’s remote container file is present as well.
+وإن رأيت `fn is not a function`، تقول صفحة استكشاف الأخطاء في webpack إنك على الأرجح تفتقد حاوي الوحدة البعيدة. وإن كانت الوحدة البعيدة الهدف محمَّلة وبقي الخطأ، تقول الوثائق إن عليك التأكد من وجود ملف حاوي الوحدة البعيدة لدى حاوي المضيف أيضًا.
 
-If multiple remotes collide, webpack recommends setting `output.uniqueName` on remote builds. Rspack’s federation guide also explicitly tells you to set `uniqueName` so HMR works. One of those tiny config details that stops bizarre runtime collisions before they happen.
+وإن تصادمت وحدات بعيدة متعددة، يوصي webpack بضبط `output.uniqueName` في عمليات بناء الوحدات البعيدة. كما يخبرك دليل الاتحاد في Rspack صراحةً بضبط `uniqueName` كي تعمل إعادة التحميل الساخن. من تلك التفاصيل الصغيرة في التهيئة التي تمنع تصادمات وقت التشغيل الغريبة قبل حدوثها.
 
-If you use `'version-first'` and a remote goes offline, the startup failure will usually show up through `errorLoadRemote` with `lifecycle: 'beforeLoadShare'`. The docs specifically recommend either switching to `'loaded-first'` for resilience or implementing explicit fallback and retry behavior.
+وإن استخدمت `'version-first'` وخرجت وحدة بعيدة عن الاتصال، فسيظهر فشل الإقلاع عادةً عبر `errorLoadRemote` مع `lifecycle: 'beforeLoadShare'`. وتوصي الوثائق تحديدًا إما بالتحول إلى `'loaded-first'` للصمود، أو بتطبيق سلوك صريح للبديل الاحتياطي وإعادة المحاولة.
 
-## Best Practices That Actually Hold Up
+## أفضل الممارسات التي تصمد فعلًا
 
-Federate coarse-grained vertical slices first—routes, domain features, or stable component surfaces. webpack’s own use cases emphasize separate builds per page and whole component libraries as containers, not every last atom. If you federate tiny leaf widgets without a real ownership boundary, you mostly buy extra network and coordination cost.
+اتحد شرائح رأسية خشنة الحبيبات أولًا: المسارات، أو ميزات النطاق، أو أسطح المكوّنات المستقرة. فحالات الاستخدام في webpack نفسها تشدّد على عمليات بناء منفصلة لكل صفحة ومكتبات مكوّنات كاملة كحاويات، لا كل ذرّة صغيرة. وإن اتحدت ويدجات ورقية صغيرة بلا حدّ ملكية حقيقي، فلن تكسب غالبًا سوى كلفة إضافية في الشبكة والتنسيق.
 
-Share React and React DOM as singletons unless you have a very unusual reason not to. Use custom share scopes only when you truly need isolated pools, such as keeping a design system separate from the default React pool. Keep `eager` rare, keep `import: false` deliberate, and turn on `allowNodeModulesSuffixMatch` early in pnpm or symlink-heavy environments.
+شارك React وReact DOM كأحاديين النسخة إلا إن كان لديك سبب غير معتاد جدًا لعدم ذلك. ولا تستخدم نطاقات مشاركة مخصصة إلا عندما تحتاج فعلًا مجموعات معزولة، مثل إبقاء نظام تصميم منفصلًا عن مجموعة React الافتراضية. فأبقِ `eager` نادرة، وأبقِ `import: false` مقصودة، وفعّل `allowNodeModulesSuffixMatch` مبكرًا في بيئات pnpm أو كثيفة الروابط الرمزية.
 
-Prefer manifest-based remotes if you want the better developer experience—types, preloading, devtools, and proxying all ride on `mf-manifest.json`. Use `remoteEntry.js` when you need the classic entry and don’t care about those extras. That’s not ideology—it’s just what the official feature split currently is.
+فضّل الوحدات البعيدة القائمة على البيان إن أردت تجربة المطوّر الأفضل: فالأنواع والتحميل المسبق وأدوات التطوير والتمرير كلها تعتمد على `mf-manifest.json`. واستخدم `remoteEntry.js` عندما تحتاج المدخل الكلاسيكي ولا تهمّك تلك الإضافات. وهذا ليس أيديولوجيا، بل هو فقط ما عليه تقسيم الميزات الرسمي حاليًا.
 
-Choose `loaded-first` unless strict version coordination is more important than startup resilience. Put remote auth, credentials, CDN quirks, and offline fallback behavior into runtime plugins instead of ad hoc app code. Use the runtime API when you need dynamic registration or runtime-only composition. Use the build plugin when you want import syntax, bidirectional shared behavior, and type hints.
+اختر `loaded-first` إلا إن كان تنسيق الإصدارات الصارم أهم من صمود الإقلاع. وضع مصادقة الوحدات البعيدة، وبيانات الاعتماد، وغرائب CDN، وسلوك البدائل الاحتياطية عند انقطاع الاتصال في إضافات وقت التشغيل بدل شيفرة تطبيق مرتجلة. واستخدم واجهة وقت التشغيل عندما تحتاج التسجيل الديناميكي أو التركيب بوقت التشغيل المحض. واستخدم إضافة البناء عندما تريد صيغة الاستيراد، والسلوك المشترك ثنائي الاتجاه، وتلميحات الأنواع.
 
-Be brutally honest about framework support. Modern.js is the strongest official SSR path. Next.js Pages Router works for now, but the official plugin is deprecating and App Router is not supported. Vite works, but the docs still list gaps. Rspack and webpack remain the most complete home territory for the model.
+كن صريحًا بلا مجاملة بشأن دعم أطر العمل. فـModern.js هو أقوى مسار رسمي للتصيير من الخادم. وموجّه الصفحات في Next.js يعمل الآن، لكن الإضافة الرسمية في طريق الإهمال، وموجّه التطبيق غير مدعوم. وVite يعمل، لكن الوثائق ما زالت تُدرج فجوات. ويبقى Rspack وwebpack الموطن الأكمل للنموذج.
 
-## The Shortest Honest Summary
+## أقصر ملخص صادق
 
-Module Federation is a runtime container protocol plus shared-dependency negotiation. At the webpack level, it’s `get`/`init` and share scopes. At the architecture level, it’s a way to let independently built and deployed applications behave like one system. The hard parts aren’t “how do I expose a component.” The hard parts are version policy, startup resilience, CSS boundaries, public path resolution, and deciding what truly deserves to be federated in the first place.
+اتحاد الوحدات بروتوكول حاويات وقت تشغيل مضافًا إليه تفاوض على الاعتمادات المشتركة. وعلى مستوى webpack، هو `get`/`init` ونطاقات المشاركة. وعلى مستوى المعمار، هو طريقة لتمكين تطبيقات مبنية ومنشورة باستقلال من التصرف كنظام واحد. والأجزاء الصعبة ليست «كيف أكشف مكوّنًا». الأجزاء الصعبة هي سياسة الإصدارات، وصمود الإقلاع، وحدود CSS، وحلّ المسار العام، وتقرير ما يستحق فعلًا أن يكون اتحاديًا من الأساس.
 
-The tooling is much better now than it was a few years ago, which is fortunate, because people remain committed to building distributed frontends whether physics approves or not.
+والأدوات الآن أفضل بكثير مما كانت قبل بضع سنوات، وهذا حسن الحظ، لأن الناس ما زالوا مصممين على بناء واجهات أمامية موزّعة سواء وافقت الفيزياء أم لم توافق.

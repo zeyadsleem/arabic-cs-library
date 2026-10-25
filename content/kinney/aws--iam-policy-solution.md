@@ -1,28 +1,28 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/iam-policy-solution"
 ---
 
-Here’s the complete policy, the CLI commands to wire it up, and an explanation of every decision. I’ll walk through each statement so you can see the reasoning, not just the end result.
+إليك السياسة الكاملة، وأوامر CLI لتوصيلها، وشرحًا لكل قرار. سأستعرض كل بيان حتى ترى المنطق، لا النتيجة النهائية فقط.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- The policy separates bucket-level and object-level permissions, which is the core IAM trick that makes S3 access control feel less arbitrary.
-- The CloudFront permission is scoped to one distribution, so the deploy bot can refresh only the cache it actually owns.
-- The final `get-caller-identity` check proves you did not just create policy JSON. You created a principal that can authenticate with the boundaries you intended.
+- تفصل السياسة بين أذونات مستوى الحاوية وأذونات مستوى الكائن، وهي حيلة IAM الأساسية التي تجعل التحكّم في وصول S3 يبدو أقل اعتباطية.
+- إذن CloudFront محدّد النطاق بتوزيع واحد، لذا يستطيع روبوت النشر تحديث الذاكرة المؤقتة التي يملكها فعلًا فقط.
+- فحص `get-caller-identity` الأخير يثبت أنك لم تُنشئ JSON لسياسة فحسب، بل أنشأت أصلًا يمكنه المصادقة ضمن الحدود التي أردتها.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want the AWS version of the policy mechanics while you work, keep the [IAM JSON policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) and the [`aws iam create-policy` command reference](https://docs.aws.amazon.com/cli/latest/reference/iam/create-policy.html) open.
+> إن أردت نسخة AWS من آليات السياسات أثناء عملك، فأبقِ [مرجع سياسات IAM بصيغة JSON](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) و[مرجع الأمر `aws iam create-policy`](https://docs.aws.amazon.com/cli/latest/reference/iam/create-policy.html) مفتوحين.
 
-## The Policy
+## السياسة
 
-> **Tip**
+> **نصيحة**
 >
-> This policy is available as [`deploy-bot-policy.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/deploy-bot-policy.json) in the Scratch Lab repository.
+> هذه السياسة متاحة باسم [`deploy-bot-policy.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/deploy-bot-policy.json) في مستودع Scratch Lab.
 
-Create a file called `deploy-bot-policy.json`:
+أنشئ ملفًا باسم `deploy-bot-policy.json`:
 
 ```json
 {
@@ -50,9 +50,9 @@ Create a file called `deploy-bot-policy.json`:
 }
 ```
 
-### Why Three Statements Instead of One?
+### لماذا ثلاثة بيانات بدلًا من بيان واحد؟
 
-You could combine the S3 actions into a single statement with both resource ARNs, like this:
+يمكنك دمج إجراءات S3 في بيان واحد مع كلا ARN للمورد، هكذا:
 
 ```json
 {
@@ -74,13 +74,13 @@ You could combine the S3 actions into a single statement with both resource ARNs
 }
 ```
 
-Both versions work identically. AWS evaluates each action against each resource in the arrays—`s3:ListBucket` matches the bucket ARN, and `s3:PutObject`/`s3:DeleteObject` match the objects ARN. The combined version is more compact. The split version makes it explicit which actions go with which resources. Either approach is fine; pick whichever your team finds more readable.
+تعمل النسختان بشكل متطابق. تقيّم AWS كل إجراء مقابل كل مورد في المصفوفات—فـ`s3:ListBucket` يطابق ARN الحاوية، و`s3:PutObject`/`s3:DeleteObject` يطابقان ARN الكائنات. والنسخة المدمجة أكثر إيجازًا. أما النسخة المفصولة فتجعل من الواضح أي إجراءات تخص أي موارد. وكلا النهجين مقبول؛ اختر ما يراه فريقك أكثر قابلية للقراءة.
 
-The three-statement version is a bit more self-documenting: each Sid tells you exactly what that block is for. When a policy grows to ten or fifteen statements, the extra clarity pays for itself.
+نسخة البيانات الثلاث أكثر توثيقًا لذاتها قليلًا: كل Sid يخبرك بالضبط بما يخصّه ذلك القسم. وعندما تنمو السياسة إلى عشرة أو خمسة عشر بيانًا، فإن الوضوح الإضافي يغطّي كلفته.
 
-## Statement-by-Statement Breakdown
+## شرح البيان تلو البيان
 
-### Statement 1: AllowS3ObjectSync
+### البيان 1: AllowS3ObjectSync
 
 ```json
 {
@@ -91,13 +91,13 @@ The three-statement version is a bit more self-documenting: each Sid tells you e
 }
 ```
 
-- **`s3:PutObject`**—required by `aws s3 sync` to upload new or changed files.
-- **`s3:DeleteObject`**—required by `aws s3 sync --delete` to remove files from S3 that no longer exist in the local build directory. Without this, old files accumulate in your bucket.
-- **Resource ends with `/*`**—these actions operate on individual objects within the bucket, not the bucket itself. The `/*` wildcard matches every object key in the bucket.
+- **`s3:PutObject`**—يطلبه `aws s3 sync` لتحميل الملفات الجديدة أو المتغيّرة.
+- **`s3:DeleteObject`**—يطلبه `aws s3 sync --delete` لإزالة الملفات من S3 التي لم تعد موجودة في دليل البناء المحلي. وبدونه، تتراكم الملفات القديمة في حاويتك.
+- **المورد ينتهي بـ`/*`**—تعمل هذه الإجراءات على كائنات فردية داخل الحاوية، لا على الحاوية نفسها. ونمط البدل `/*` يطابق كل مفتاح كائن في الحاوية.
 
-What this doesn’t allow: `s3:GetObject` (reading files back), `s3:DeleteBucket` (deleting the bucket itself), or any other S3 action. The deploy bot can push files in and remove stale ones. That’s it.
+ما لا تسمح به: `s3:GetObject` (قراءة الملفات مرة أخرى)، أو `s3:DeleteBucket` (حذف الحاوية نفسها)، أو أي إجراء S3 آخر. يستطيع روبوت النشر دفع الملفات وإزالة القديم منها. هذا كل شيء.
 
-### Statement 2: AllowS3ListBucket
+### البيان 2: AllowS3ListBucket
 
 ```json
 {
@@ -108,12 +108,12 @@ What this doesn’t allow: `s3:GetObject` (reading files back), `s3:DeleteBucket
 }
 ```
 
-- **`s3:ListBucket`**—required by `aws s3 sync` to compare the local directory against what’s already in the bucket. Without list permission, sync can’t determine which files need to be uploaded or deleted.
-- **Resource has no `/*`**—`ListBucket` is a bucket-level operation, not an object-level operation. The ARN points to the bucket itself.
+- **`s3:ListBucket`**—يطلبه `aws s3 sync` لمقارنة الدليل المحلي بما هو موجود بالفعل في الحاوية. وبدون إذن السرد، لا يستطيع sync تحديد الملفات التي يجب تحميلها أو حذفها.
+- **المورد بلا `/*`**—`ListBucket` عملية على مستوى الحاوية، لا على مستوى الكائن. ويشير ARN إلى الحاوية نفسها.
 
-This is the distinction that trips people up most often. As covered in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy), mixing up the bucket ARN and the object ARN is the most common cause of “my policy doesn’t work” debugging sessions.
+هذا هو الفرق الذي يوقع الناس في الخطأ أكثر من غيره. وكما ورد في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)، فإن الخلط بين ARN الحاوية وARN الكائن هو السبب الأكثر شيوعًا لجلسات تصحيح «سياستي لا تعمل».
 
-### Statement 3: AllowCloudFrontInvalidation
+### البيان 3: AllowCloudFrontInvalidation
 
 ```json
 {
@@ -124,17 +124,17 @@ This is the distinction that trips people up most often. As covered in [Writing 
 }
 ```
 
-- **`cloudfront:CreateInvalidation`**—tells CloudFront to purge cached versions of your files at edge locations worldwide so users see the latest deployment.
-- **Resource targets one specific distribution**—the deploy bot can only invalidate this distribution’s cache, not any other distribution in the account.
-- **No region in the ARN**—CloudFront is a global service, so the region segment in the ARN is empty (the `::` between `cloudfront` and the account ID).
+- **`cloudfront:CreateInvalidation`**—يخبر CloudFront بإبطال النسخ المخزّنة مؤقتًا من ملفاتك في مواقع الحافة حول العالم حتى يرى المستخدمون أحدث نشر.
+- **المورد يستهدف توزيعًا واحدًا محدّدًا**—لا يستطيع روبوت النشر إبطال ذاكرة إلا هذا التوزيع، ولا أي توزيع آخر في الحساب.
+- **لا منطقة في ARN**—CloudFront خدمة عالمية، لذا فمقطع المنطقة في ARN فارغ (`::` بين `cloudfront` ومعرّف الحساب).
 
-What this doesn’t allow: `cloudfront:UpdateDistribution` (changing the distribution’s settings), `cloudfront:DeleteDistribution` (removing the distribution), or invalidation on other distributions. The deploy bot can clear the cache. Period.
+ما لا تسمح به: `cloudfront:UpdateDistribution` (تغيير إعدادات التوزيع)، أو `cloudfront:DeleteDistribution` (إزالة التوزيع)، أو الإبطال على توزيعات أخرى. يستطيع روبوت النشر مسح الذاكرة المؤقتة. وانتهى الأمر.
 
-## Full CLI Walkthrough
+## جولة كاملة في CLI
 
-Here are all the commands in sequence:
+إليك كل الأوامر بالتسلسل:
 
-### Create the user
+### إنشاء المستخدم
 
 ```bash
 aws iam create-user \
@@ -143,7 +143,7 @@ aws iam create-user \
   --output json
 ```
 
-### Create access keys
+### إنشاء مفاتيح الوصول
 
 ```bash
 aws iam create-access-key \
@@ -152,9 +152,9 @@ aws iam create-access-key \
   --output json
 ```
 
-Save the `AccessKeyId` and `SecretAccessKey` from the response.
+احفظ `AccessKeyId` و`SecretAccessKey` من الاستجابة.
 
-### Create the policy
+### إنشاء السياسة
 
 ```bash
 aws iam create-policy \
@@ -164,7 +164,7 @@ aws iam create-policy \
   --output json
 ```
 
-The response includes the policy’s ARN:
+تتضمّن الاستجابة ARN الخاص بالسياسة:
 
 ```json
 {
@@ -181,7 +181,7 @@ The response includes the policy’s ARN:
 }
 ```
 
-### Attach the policy to the user
+### إرفاق السياسة بالمستخدم
 
 ```bash
 aws iam attach-user-policy \
@@ -191,15 +191,15 @@ aws iam attach-user-policy \
   --output json
 ```
 
-### Configure a CLI profile for the deploy bot
+### تهيئة ملف تعريف CLI لروبوت النشر
 
 ```bash
 aws configure --profile deploy-bot
 ```
 
-Enter the access key ID, secret access key, `us-east-1`, and `json`.
+أدخل معرّف مفتاح الوصول، ومفتاح الوصول السرّي، و`us-east-1`، و`json`.
 
-### Verify the identity
+### التحقّق من الهوية
 
 ```bash
 aws sts get-caller-identity \
@@ -208,7 +208,7 @@ aws sts get-caller-identity \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقّعة:
 
 ```json
 {
@@ -218,7 +218,7 @@ Expected output:
 }
 ```
 
-### Test that unauthorized actions are denied
+### اختبار رفض الإجراءات غير المصرّح بها
 
 ```bash
 aws iam list-users \
@@ -227,11 +227,11 @@ aws iam list-users \
   --output json
 ```
 
-Expected: an `AccessDenied` error. This is correct behavior—the deploy bot has no IAM permissions. The policy is doing exactly what it should.
+المتوقّع: خطأ `AccessDenied`. وهذا سلوك صحيح—فروبوت النشر لا يملك أذونات IAM. والسياسة تفعل بالضبط ما ينبغي.
 
-## Stretch Goal: Explicit Deny on DeleteBucket
+## هدف إضافي: منع صريح على DeleteBucket
 
-If you attempted the stretch goal of adding an explicit Deny for `s3:DeleteBucket`, here’s what that looks like:
+إن كنت قد حاولت الهدف الإضافي بإضافة منع صريح لـ`s3:DeleteBucket`، فهذا ما يبدو عليه:
 
 ```json
 {
@@ -265,4 +265,4 @@ If you attempted the stretch goal of adding an explicit Deny for `s3:DeleteBucke
 }
 ```
 
-The `DenyBucketDeletion` statement is technically redundant here—the deploy bot has no Allow for `s3:DeleteBucket`, so it’s already implicitly denied. But as discussed in [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege), explicit Deny statements act as **guardrails**. If someone later modifies this policy and accidentally adds `s3:*` to an Allow statement, the explicit Deny still prevents bucket deletion. Defense in depth.
+بيان `DenyBucketDeletion` زائد تقنيًا هنا—فرُوبوت النشر لا يملك أي Allow لـ`s3:DeleteBucket`، فهو ممنوع ضمنًا بالفعل. لكن كما نوقش في [مبدأ أقل امتياز](https://stevekinney.com/courses/aws/principle-of-least-privilege)، تعمل بيانات المنع الصريح كـ**حواجز أمان**. فإن عدّل أحدهم هذه السياسة لاحقًا وأضاف `s3:*` إلى بيان Allow بالخطأ، فسيظل المنع الصريح يمنع حذف الحاوية. دفاع في العمق.

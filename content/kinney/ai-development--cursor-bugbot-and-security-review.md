@@ -1,20 +1,16 @@
 ---
-title: "Bugbot and Security Review"
-lang: en
+title: "Bugbot والمراجعة الأمنية"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-bugbot-and-security-review"
 ---
 
-[Cursor Bugbot](https://cursor.com/docs/bugbot) and [Cursor Security Agents](https://cursor.com/docs/security-agent) add automated
-review surfaces around code changes. They are useful because they look at the
-diff with a different set of eyes. They are not a replacement for ownership.
+يضيف [Cursor Bugbot](https://cursor.com/docs/bugbot) و[وكلاء الأمان في Cursor](https://cursor.com/docs/security-agent) أسطح مراجعة آلية حول تغييرات الشيفرة. وهي مفيدة لأنها تنظر إلى الفرق بعينين مختلفتين. لكنها ليست بديلًا عن الملكية.
 
 ## Bugbot
 
-Bugbot reviews changes and flags likely defects. Use it as a second reviewer for
-pull requests, especially when a change touches edge cases, error handling, or
-cross-file behavior.
+يراجع Bugbot التغييرات ويشير إلى العيوب المحتملة. استخدمه كمراجع ثانٍ لطلبات السحب، خصوصًا عندما يمسّ تغيير حالات حافة أو معالجة أخطاء أو سلوكًا بين الملفات.
 
-Good Bugbot follow-up asks for evidence:
+المتابعة الجيدة مع Bugbot تطلب دليلًا:
 
 ```
 For each Bugbot finding, verify whether the issue is real by reading the changed
@@ -22,13 +18,11 @@ code and the closest tests. Fix only confirmed issues. If a finding is invalid,
 explain why with file references.
 ```
 
-Do not accept a bot finding blindly. Do not dismiss it blindly either.
+لا تقبل نتيجة روبوت بشكل أعمى. ولا تتجاهلها بشكل أعمى أيضًا.
 
-## Security Review
+## المراجعة الأمنية
 
-Security Agents focus on risk: secrets, authorization, injection, dependency
-surface, dangerous commands, and similar concerns. They are most valuable when
-the prompt names the threat model:
+يركّز وكلاء الأمان على المخاطر: الأسرار، والتفويض، والحقن، وسطح الاعتماديات، والأوامر الخطيرة، وما شابه. وهم أكثر قيمة عندما يسمّي الطلب نموذج التهديد:
 
 ```
 Review this pull request for authorization bypasses and secret exposure.
@@ -36,15 +30,10 @@ Ignore style issues. Cite exact files and propose the smallest fix for confirmed
 security issues.
 ```
 
-## Security and MCP
+## الأمان و MCP
 
-MCP servers can expose powerful tools and data. A review agent should treat MCP
-configuration as part of the application surface, not editor decoration. Look for
-untrusted servers, broad permissions, environment variable leaks, and tools that
-can write to external systems.
+يمكن أن تكشف خوادم MCP أدوات وبيانات قوية. وينبغي أن يعامل وكيل المراجعة تهيئة MCP كجزء من سطح التطبيق، لا كزينة للمحرّر. ابحث عن خوادم غير موثوقة، وصلاحيات واسعة، وتسرّبات متغيّرات البيئة، وأدوات تستطيع الكتابة إلى أنظمة خارجية.
 
-## Merge Discipline
+## انضباط الدمج
 
-Automated review output is input. The merge decision still belongs to a human.
-Before merging, make sure findings are resolved, tests are green, and the final
-diff is understandable without the bot conversation.
+مخرَج المراجعة الآلية مُدخَل. ويبقى قرار الدمج لإنسان. وقبل الدمج، تأكد من حلّ الملاحظات، ونجاح الاختبارات، وأن الفرق النهائي مفهوم دون محادثة الروبوت.

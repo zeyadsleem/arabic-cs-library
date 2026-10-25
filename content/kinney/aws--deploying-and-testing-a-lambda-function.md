@@ -1,23 +1,23 @@
 ---
-title: "Deploying and Testing a Lambda Function"
-lang: en
+title: "نشر دالة Lambda واختبارها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function"
 ---
 
-You have a compiled TypeScript handler and an execution role with logging permissions. Now you need to get the code into Lambda and verify it works. The workflow is: compile TypeScript, zip the output, create the function (or update it), invoke it, and read the results. All of this happens through the CLI.
+لديك معالج TypeScript مُجمّع ودور تنفيذ بأذونات تسجيل. الآن تحتاج إلى نقل الشيفرة إلى Lambda والتحقق من أنها تعمل. وسير العمل هو: جمّع TypeScript، وغلّف المخرجات في zip، وأنشئ الدالة (أو حدّثها)، واستدعها، واقرأ النتائج. وكل هذا يحدث عبر CLI.
 
-If you want AWS’s exact command surface while you work, keep the [`aws lambda create-function` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html), the [`aws lambda update-function-code` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html), and the [`aws lambda invoke` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/invoke.html) open.
+إذا أردت سطح الأوامر الدقيق في AWS أثناء عملك، فأبقِ [مرجع أمر `aws lambda create-function`](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html)، و[مرجع أمر `aws lambda update-function-code`](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html)، و[مرجع أمر `aws lambda invoke`](https://docs.aws.amazon.com/cli/latest/reference/lambda/invoke.html) مفتوحة.
 
-## Building the Deployment Package
+## بناء حزمة النشر
 
-Lambda expects a zip file containing your compiled JavaScript and any dependencies. Start by compiling your TypeScript and creating the zip:
+تتوقع Lambda ملف zip يحتوي JavaScript المُجمّع وأي اعتمادات. ابدأ بجمع TypeScript وإنشاء ملف zip:
 
 ```bash
 cd lambda
 npm run build
 ```
 
-This produces `dist/handler.js` (and associated source maps). Now zip the contents of the `dist/` directory:
+ينتج هذا الملف `dist/handler.js` (وخرائط المصدر المرتبطة به). الآن غلّف محتويات دليل `dist/`:
 
 ```bash
 cd dist
@@ -25,17 +25,17 @@ zip -r ../function.zip .
 cd ..
 ```
 
-The zip file must contain your handler file at the root level—not nested inside a `dist/` folder. That’s why you `cd` into `dist/` before zipping: Lambda looks for the handler at the path you specify (e.g., `handler.handler`), and if your file is at `dist/handler.js` inside the zip, Lambda won’t find it.
+يجب أن يحتوي ملف zip على ملف معالجك في المستوى الجذري — لا متداخلًا داخل مجلد `dist/`. ولهذا تنتقل بـ `cd` إلى `dist/` قبل التغليف: تبحث Lambda عن المعالج في المسار الذي تحدّده (مثل `handler.handler`)، وإذا كان ملفك في `dist/handler.js` داخل zip، فلن تجده Lambda.
 
-> **Warning**
+> **تحذير**
 >
-> If your function uses `node_modules` dependencies (beyond what the Lambda runtime provides), you need to include them in the zip. Copy `node_modules` into the `dist/` directory before zipping. For this lesson, the handler has no runtime dependencies—`@types/aws-lambda` is a dev dependency that’s only used during compilation.
+> إذا كانت دالتك تستخدم اعتمادات `node_modules` (خارج ما يوفّره وقت تشغيل Lambda)، فتحتاج إلى تضمينها في zip. انسخ `node_modules` إلى دليل `dist/` قبل التغليف. وفي هذا الدرس، لا يملك المعالج أي اعتمادات وقت تشغيل — فـ `@types/aws-lambda` اعتماد تطوير يُستخدم فقط أثناء التجميع.
 
-### The Bundle Size Problem
+### مشكلة حجم الحزمة
 
-The `tsc` + zip approach works for simple handlers with no runtime dependencies. But the moment you import the AWS SDK—`@aws-sdk/client-dynamodb`, `@aws-sdk/lib-dynamodb`, `@aws-sdk/client-ssm`—your zip balloons to **37 MB** because `tsc` copies every file and can’t tree-shake unused code.
+يعمل نهج `tsc` + zip مع المعالجات البسيطة التي بلا اعتمادات وقت تشغيل. لكن بمجرد أن تستورد AWS SDK — `@aws-sdk/client-dynamodb` أو `@aws-sdk/lib-dynamodb` أو `@aws-sdk/client-ssm` — ينتفخ ملف zip إلى **37 MB** لأن `tsc` ينسخ كل ملف ولا يمكنه إزالة الشيفرة غير المستخدمة (tree-shaking).
 
-The fix is **esbuild**. It bundles your handler into a single file, tree-shakes dead code, and—critically—lets you mark the AWS SDK as *external* so it’s not included in the bundle at all. The `nodejs22.x` Lambda runtime already includes the AWS SDK v3, so your handler can `require('@aws-sdk/client-dynamodb')` at runtime without shipping it.
+الإصلاح هو **esbuild**. فهو يغلّف معالجك في ملف واحد، ويزيل الشيفرة الميتة، والأهم أنه يتيح لك وسم AWS SDK على أنه *خارجي* (external) كي لا يُضمّن في الحزمة إطلاقًا. فوقت تشغيل Lambda `nodejs22.x` يتضمن AWS SDK v3 بالفعل، لذا يمكن لمعالجك أن يستدعي `require('@aws-sdk/client-dynamodb')` في وقت التشغيل دون شحنه.
 
 ```bash
 npx esbuild src/handler.ts \
@@ -46,17 +46,17 @@ npx esbuild src/handler.ts \
   --external:@aws-sdk/*
 ```
 
-The result: **37 MB → under 6 KB**. One file, no `node_modules`, and the zip is small enough that you’ll never think about Lambda’s 50 MB upload limit.
+النتيجة: **37 MB ← أقل من 6 KB**. ملف واحد، بلا `node_modules`، وzip صغير بما يكفي كي لا تفكر أبدًا في حد الرفع البالغ 50 MB في Lambda.
 
-If you’ve used Vite, esbuild is already running under the hood—Vite uses it for dev transforms. The difference here is that you’re running it directly, with one flag (`--external`) that tells it to skip the AWS SDK because Lambda provides it.
+إذا سبق أن استخدمت Vite، فـ esbuild يعمل بالفعل في الخلفية — فـ Vite يستخدمه لتحويلات التطوير. والفرق هنا أنك تشغّله مباشرة، بعلم واحد (`--external`) يخبره بتخطّي AWS SDK لأن Lambda توفّره.
 
-> **Tip**
+> **نصيحة**
 >
-> Use `tsc --noEmit` for type-checking and esbuild for the actual build. They complement each other: TypeScript catches type errors, esbuild produces the deployment artifact. The [Scratch Lab repository](https://github.com/stevekinney/scratch-lab) has this set up as `npm run build:check` (tsc) and `npm run build` (esbuild) in the `lambda/` directory.
+> استخدم `tsc --noEmit` للتحقق من الأنواع وesbuild للبناء الفعلي. فهما يتكاملان: يلتقط TypeScript أخطاء الأنواع، وينتج esbuild أثر النشر. ويحتوي [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab) على هذا معدًّا كـ `npm run build:check` (tsc) و`npm run build` (esbuild) في دليل `lambda/`.
 
-## Creating the Function
+## إنشاء الدالة
 
-Use `aws lambda create-function` to deploy your function for the first time:
+استخدم `aws lambda create-function` لنشر دالتك لأول مرة:
 
 ```bash
 aws lambda create-function \
@@ -69,15 +69,15 @@ aws lambda create-function \
   --output json
 ```
 
-Let’s unpack these flags:
+لنفكّك هذه الأعلام:
 
-- **`--function-name`**: The name of your function. This is how you reference it everywhere in AWS.
-- **`--runtime`**: The language runtime. `nodejs22.x` runs Node.js 22. The AWS SDK v3 is bundled in this runtime, but AWS pins a specific minor version—not the latest release—and it can vary by region. In production, bundle the SDK in your deployment package so you control the version explicitly.
-- **`--role`**: The ARN of the execution role you created in [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions).
-- **`--handler`**: The path to your handler function in the format `<filename>.<export>`. Since your compiled file is `handler.js` and the exported function is `handler`, this is `handler.handler`. (Yes, `handler.handler` looks redundant. You get used to it.)
-- **`--zip-file`**: The deployment package. The `fileb://` prefix tells the CLI to read the file as binary data.
+- **`--function-name`**: اسم دالتك. وهكذا تشير إليها في كل مكان في AWS.
+- **`--runtime`**: وقت تشغيل اللغة. يشغّل `nodejs22.x` الإصدار 22 من Node.js. وAWS SDK v3 مضمّن في وقت التشغيل هذا، لكن AWS تثبّت إصدارًا فرعيًا محدّدًا — لا أحدث إصدار — وقد يختلف حسب المنطقة. وفي الإنتاج، غلّف SDK في حزمة نشرك لتتحكم في الإصدار صراحةً.
+- **`--role`**: ARN دور التنفيذ الذي أنشأته في [أدوار تنفيذ Lambda وأذوناتها](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions).
+- **`--handler`**: مسار دالة المعالج لديك بصيغة `<filename>.<export>`. وبما أن ملفك المُجمّع هو `handler.js` والدالة المصدّرة هي `handler`، فهذا `handler.handler`. (نعم، `handler.handler` يبدو مكرّرًا. لكنك تعتاد عليه.)
+- **`--zip-file`**: حزمة النشر. وتخبر البادئة `fileb://` CLI بقراءة الملف كبيانات ثنائية.
 
-The response confirms that the function was created:
+تؤكد الاستجابة أن الدالة أُنشئت:
 
 ```json
 {
@@ -93,23 +93,23 @@ The response confirms that the function was created:
 }
 ```
 
-Notice the defaults: 3-second timeout and 128 MB of memory. These are fine for a simple API handler. You can change them later with `aws lambda update-function-configuration`.
+لاحظ الافتراضيات: مهلة 3 ثوانٍ وذاكرة 128 MB. وهذه مناسبة لمعالج API بسيط. ويمكنك تغييرها لاحقًا باستخدام `aws lambda update-function-configuration`.
 
-In the console, the **Create function** page lets you select the runtime and configure basic settings before deploying.
+في لوحة التحكم، تتيح لك صفحة **Create function** اختيار وقت التشغيل وضبط الإعدادات الأساسية قبل النشر.
 
-The Lambda Create Function page showing Author from scratch selected, a function name entered, and Node.js runtime selected.
+صفحة Lambda Create Function وهي تعرض اختيار Author from scratch وإدخال اسم دالة واختيار وقت تشغيل Node.js.
 
-After creation, the **Code** tab shows the deployed handler code in the inline editor.
+بعد الإنشاء، يعرض تبويب **Code** شيفرة المعالج المنشورة في المحرّر المضمّن.
 
-The Lambda function detail page showing the Code tab with the inline code editor displaying the handler function.
+صفحة تفاصيل دالة Lambda وهي تعرض تبويب Code مع المحرّر المضمّن يعرض دالة المعالج.
 
-The **Configuration** tab shows the function’s runtime settings—memory, timeout, ephemeral storage, and SnapStart. You’ll come back here when you need to adjust these or add environment variables.
+ويعرض تبويب **Configuration** إعدادات وقت التشغيل للدالة — الذاكرة والمهلة والتخزين المؤقت وSnapStart. وستعود هنا عندما تحتاج إلى تعديلها أو إضافة متغيّرات بيئة.
 
-The Lambda Configuration tab showing General configuration with 128 MB memory, 10-second timeout, and 512 MB ephemeral storage.
+تبويب Lambda Configuration وهو يعرض General configuration بذاكرة 128 MB ومهلة 10 ثوانٍ وتخزين مؤقت 512 MB.
 
-## Invoking the Function
+## استدعاء الدالة
 
-Now test it. The `aws lambda invoke` command calls your function directly, without going through API Gateway:
+الآن اختبرها. أمر `aws lambda invoke` يستدعي دالتك مباشرة، دون المرور بـ API Gateway:
 
 ```bash
 aws lambda invoke \
@@ -121,7 +121,7 @@ aws lambda invoke \
   response.json
 ```
 
-This command does two things: it invokes the function and writes the function’s return value to `response.json`. The terminal output shows metadata about the invocation:
+يفعل هذا الأمر شيئين: يستدعي الدالة ويكتب قيمة إرجاع الدالة إلى `response.json`. وتعرض مخرجات الطرفية بيانات وصفية عن الاستدعاء:
 
 ```json
 {
@@ -130,7 +130,7 @@ This command does two things: it invokes the function and writes the function’
 }
 ```
 
-The actual response from your handler is in `response.json`:
+الاستجابة الفعلية من معالجك موجودة في `response.json`:
 
 ```bash
 cat response.json
@@ -144,27 +144,27 @@ cat response.json
 }
 ```
 
-Your function received the event, read the `name` query parameter, and returned a greeting. It works.
+تلقّت دالتك الحدث، وقرأت معامل الاستعلام `name`، وأرجعت تحية. إنها تعمل.
 
-In the console, the **Test** tab lets you configure a test event and run the function directly. Select **Create new event**, give it a name, and paste your JSON payload into the editor.
+في لوحة التحكم، يتيح لك تبويب **Test** ضبط حدث اختبار وتشغيل الدالة مباشرة. اختر **Create new event**، وأعطه اسمًا، والصق حمولة JSON في المحرّر.
 
-The Lambda Test tab showing the Create new event option selected with the Event JSON editor ready for input.
+تبويب Lambda Test وهو يعرض خيار Create new event مختارًا مع محرّر Event JSON جاهزًا للإدخال.
 
-After entering your test payload, click **Test**. The **Event JSON** editor accepts any JSON payload, and the execution result shows the response and logs inline.
+بعد إدخال حمولة الاختبار، انقر **Test**. ويقبل محرّر **Event JSON** أي حمولة JSON، وتعرض نتيجة التنفيذ الاستجابة والسجلات مضمّنة.
 
-The Lambda Test tab showing the Event JSON editor configured with a sample payload, ready to invoke the function.
+تبويب Lambda Test وهو يعرض محرّر Event JSON مهيّأً بحمولة نموذجية، جاهزًا لاستدعاء الدالة.
 
-After clicking **Test**, the result expands above the event editor showing the status, response body, and log output.
+بعد النقر على **Test**، تتوسّع النتيجة فوق محرّر الحدث لتعرض الحالة ونص الاستجابة ومخرجات السجل.
 
-The Lambda Test tab showing the execution result as Succeeded with the response JSON expanded showing statusCode 200 and the Hello from Lambda body.
+تبويب Lambda Test وهو يعرض نتيجة التنفيذ كـ Succeeded مع توسّع استجابة JSON التي تعرض statusCode 200 ونص Hello from Lambda.
 
-> **Tip**
+> **نصيحة**
 >
-> The `--cli-binary-format raw-in-base64-out` flag is required when passing `--payload` with AWS CLI v2. Without it, the CLI tries to base64-encode your payload, which isn’t what you want for JSON test events.
+> العلم `--cli-binary-format raw-in-base64-out` مطلوب عند تمرير `--payload` مع AWS CLI v2. فمن دونه، تحاول CLI ترميز حمولتك بـ base64، وهو ما لا تريده لأحداث اختبار JSON.
 
-## Using Test Event Files
+## استخدام ملفات أحداث الاختبار
 
-Typing JSON payloads on the command line gets unwieldy fast. Save your test event to a file instead:
+تكتب حمولات JSON على سطر الأوامر تصبح مرهقة سريعًا. احفظ حدث اختبارك في ملف بدلًا من ذلك:
 
 ```json
 {
@@ -183,7 +183,7 @@ Typing JSON payloads on the command line gets unwieldy fast. Save your test even
 }
 ```
 
-Save this as `test-event.json` and invoke with:
+احفظ هذا باسم `test-event.json` واستدعِ باستخدام:
 
 ```bash
 aws lambda invoke \
@@ -195,11 +195,11 @@ aws lambda invoke \
   response.json
 ```
 
-Using `file://` (not `fileb://`—payloads are text, not binary) loads the event from a file. Keep a collection of test events in your project for different scenarios: missing parameters, POST requests, malformed JSON bodies.
+استخدام `file://` (لا `fileb://` — فالحمولات نصية لا ثنائية) يحمّل الحدث من ملف. واحتفظ بمجموعة أحداث اختبار في مشروعك لسيناريوهات مختلفة: معاملات ناقصة، وطلبات POST، وأجسام JSON مشوّهة.
 
-## Updating the Function Code
+## تحديث شيفرة الدالة
 
-You won’t create a new function every time you change your code. After the initial `create-function`, use `update-function-code` to deploy changes:
+لن تنشئ دالة جديدة كلما غيّرت شيفرتك. بعد `create-function` الأولي، استخدم `update-function-code` لنشر التغييرات:
 
 ```bash
 cd lambda
@@ -213,15 +213,15 @@ aws lambda update-function-code \
   --output json
 ```
 
-This replaces the function’s code while preserving all configuration (runtime, memory, timeout, environment variables, execution role). The update is atomic—Lambda serves the old code until the new code is ready, then switches over.
+يستبدل هذا شيفرة الدالة مع الحفاظ على كل الإعدادات (وقت التشغيل والذاكرة والمهلة ومتغيّرات البيئة ودور التنفيذ). والتحديث ذرّي — تقدّم Lambda الشيفرة القديمة حتى تجهز الجديدة، ثم تنتقل إليها.
 
-## Reading the Logs
+## قراءة السجلات
 
-In the console, the **Monitor** tab shows invocation metrics, duration, and error rates at a glance. It also links directly to the CloudWatch log group for your function.
+في لوحة التحكم، يعرض تبويب **Monitor** مقاييس الاستدعاء والمدة ومعدّلات الأخطاء بنظرة واحدة. ويربط أيضًا مباشرة بمجموعة سجلات CloudWatch لدالتك.
 
-The Lambda Monitor tab showing invocation count, duration, and error metrics with a link to CloudWatch Logs.
+تبويب Lambda Monitor وهو يعرض عدد الاستدعاءات والمدة ومقاييس الأخطاء مع رابط إلى CloudWatch Logs.
 
-Your function’s `console.log` output goes to CloudWatch Logs. The simplest way to watch logs in real time is `aws logs tail`:
+تذهب مخرجات `console.log` من دالتك إلى CloudWatch Logs. وأبسط طريقة لمراقبة السجلات في الوقت الفعلي هي `aws logs tail`:
 
 ```bash
 aws logs tail /aws/lambda/my-frontend-app-api \
@@ -229,9 +229,9 @@ aws logs tail /aws/lambda/my-frontend-app-api \
   --region us-east-1
 ```
 
-`--follow` streams new events as they arrive—useful when you’re invoking the function in another terminal and want to see output immediately.
+يبثّ `--follow` الأحداث الجديدة عند وصولها — وهو مفيد عندما تستدعي الدالة في طرفية أخرى وتريد رؤية المخرجات فورًا.
 
-For scripted post-processing—archiving logs, searching for errors in CI—the `describe-log-streams` and `get-log-events` pair gives you more control:
+وللمعالجة اللاحقة البرمجية — أرشفة السجلات أو البحث عن أخطاء في CI — يمنحك الزوج `describe-log-streams` و`get-log-events` تحكمًا أكبر:
 
 ```bash
 aws logs get-log-events \
@@ -248,17 +248,17 @@ aws logs get-log-events \
   --output json
 ```
 
-That nested command finds the most recent log stream and then fetches its events. The output includes your `console.log` messages, the start and end of each invocation, and the billed duration.
+يجد ذلك الأمر المتداخل أحدث تدفق سجلات ثم يجلب أحداثه. وتتضمن المخرجات رسائل `console.log` لديك، وبداية كل استدعاء ونهايته، والمدة المفوترة.
 
-We’ll cover CloudWatch in depth in the CloudWatch section. For now, `aws logs tail` is your primary debugging tool.
+سنغطّي CloudWatch بعمق في قسم CloudWatch. أما الآن، فـ `aws logs tail` هو أداة التصحيح الأساسية لديك.
 
-> **Tip**
+> **نصيحة**
 >
-> You can also include `--log-type Tail` on your `aws lambda invoke` command. This returns the last 4 KB of log output as a base64-encoded string in the response, which you can decode with `base64 --decode`. It’s quicker than querying CloudWatch for simple debugging.
+> يمكنك أيضًا تضمين `--log-type Tail` في أمر `aws lambda invoke`. ويُرجع هذا آخر 4 KB من مخرجات السجل كسلسلة مرمّزة بـ base64 في الاستجابة، ويمكنك فكّ ترميزها باستخدام `base64 --decode`. وهو أسرع من الاستعلام عن CloudWatch في التصحيح البسيط.
 
-## The Full Deployment Script
+## سكربت النشر الكامل
 
-Here’s the complete build-and-deploy workflow as a single script. You’ll run some version of this every time you update your function:
+إليك سير عمل البناء والنشر الكامل في سكربت واحد. وستشغّل نسخة منه كلما حدّثت دالتك:
 
 ```bash
 # Build
@@ -289,11 +289,11 @@ aws lambda invoke \
 cat response.json
 ```
 
-This is the manual version. Later in the course, you’ll automate this in a GitHub Actions workflow, just like you automated static frontend deployments in the deployment section.
+هذه هي النسخة اليدوية. لاحقًا في الدورة، ستؤتمت هذا في سير عمل GitHub Actions، كما أتمتت نشر الواجهات الأمامية الثابتة في قسم النشر.
 
-## With the SDK
+## باستخدام SDK
 
-Deploy scripts often want to stay in JavaScript rather than shell out to `aws lambda`. Here’s the SDK equivalent:
+غالبًا ما تريد سكربتات النشر البقاء في JavaScript بدلًا من استدعاء `aws lambda` عبر الصدفة. وهذا مكافئ SDK:
 
 ```typescript
 import { readFile } from 'node:fs/promises';
@@ -334,23 +334,23 @@ const body = new TextDecoder().decode(result.Payload);
 console.log(JSON.parse(body));
 ```
 
-Two v3-specific gotchas: the request `Payload` must be a `Uint8Array` (not a string), and the response `Payload` is also a `Uint8Array`—`TextDecoder` is how you read it back. The v2 SDK buffered this for you.
+ثمة مزلقان خاصان بالإصدار v3: يجب أن تكون `Payload` في الطلب `Uint8Array` (لا سلسلة نصية)، و`Payload` في الاستجابة أيضًا `Uint8Array` — و`TextDecoder` هي طريقة قراءتها. أما SDK v2 فكان يخزّنها مؤقتًا نيابة عنك.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Wrong handler path.** If you get “Runtime.HandlerNotFound” when invoking, your `--handler` value doesn’t match the file and export name inside the zip. Double-check that `handler.js` is at the root of the zip (not in a subdirectory) and that the exported function is named `handler`.
+**مسار معالج خاطئ.** إذا حصلت على «Runtime.HandlerNotFound» عند الاستدعاء، فقيمة `--handler` لديك لا تطابق اسم الملف والتصدير داخل zip. تحقّق مرتين من أن `handler.js` في جذر zip (لا في دليل فرعي) وأن الدالة المصدّرة اسمها `handler`.
 
-**Zip contains the directory instead of the contents.** If you run `zip -r function.zip dist/`, the zip contains a `dist/` folder, and Lambda looks for `dist/handler.handler` instead of `handler.handler`. Always `cd` into the directory and zip the contents.
+**zip يحتوي الدليل بدلًا من المحتويات.** إذا شغّلت `zip -r function.zip dist/`، فسيحتوي zip على مجلد `dist/`، وستبحث Lambda عن `dist/handler.handler` بدلًا من `handler.handler`. انتقل دائمًا بـ `cd` إلى الدليل وغلّف المحتويات.
 
-**Role not propagated.** If `create-function` fails with “The role defined for the function cannot be assumed by Lambda,” wait 10-15 seconds and try again. IAM role propagation is eventually consistent.
+**الدور لم ينتشر.** إذا فشل `create-function` برسالة «The role defined for the function cannot be assumed by Lambda»، فانتظر 10–15 ثانية وحاول مرة أخرى. فانتشار دور IAM متسق في النهاية.
 
-Your function is deployed and you can invoke it directly. But direct invocation isn’t how a frontend calls an API. You need an HTTP endpoint. Before you get to the API Gateway section, there are two more Lambda topics to cover: environment variables, for configuration that shouldn’t be hardcoded, and cold starts, the performance characteristic that matters most for API latency.
+دالتك منشورة ويمكنك استدعاؤها مباشرة. لكن الاستدعاء المباشر ليس طريقة استدعاء واجهة أمامية لواجهة API. فأنت تحتاج إلى نقطة نهاية HTTP. وقبل أن تصل إلى قسم API Gateway، ثمة موضوعان آخران عن Lambda يجب تغطيتهما: متغيّرات البيئة، للإعدادات التي لا ينبغي تضمينها مباشرة، والبدايات الباردة، وهي خاصية الأداء الأهم لزمن استجابة API.
 
-## Cleanup
+## التنظيف
 
-> **Note**
+> **ملاحظة**
 >
-> This function is reused in the API Gateway, DynamoDB, Secrets Manager, and CloudWatch sections. Only delete it if you’re done with the course entirely.
+> تُعاد هذه الدالة استخدامها في أقسام API Gateway وDynamoDB وSecrets Manager وCloudWatch. فلا تحذفها إلا إذا انتهيت من الدورة بالكامل.
 
 ```bash
 aws lambda delete-function \

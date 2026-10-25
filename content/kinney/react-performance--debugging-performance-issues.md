@@ -1,16 +1,16 @@
 ---
-title: "Debugging React Performance Issues"
-lang: en
+title: "تصحيح مشكلات أداء React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/debugging-performance-issues"
 ---
 
-Performance issues in React apps are like medical mysteries—the symptoms are obvious (janky scrolling, sluggish interactions, frozen UI), but the root cause could be anywhere. A slow component might be the victim of a parent’s excessive re-renders, a memory leak three components away, or an innocent-looking useEffect that triggers a cascade of state updates. Without a systematic debugging approach, you’re just guessing.
+مشكلات الأداء في تطبيقات React أشبه بألغاز طبية — الأعراض واضحة (تمرير متقطّع، تفاعلات بطيئة، واجهة متجمّدة)، لكن السبب الجذري قد يكون في أي مكان. قد يكون المكوّن البطيء ضحية إفراط مكوّن أب في إعادة التصيير، أو تسرّب ذاكرة على بُعد ثلاثة مكوّنات، أو useEffect بريء المظهر يُشعل سلسلة تحديثات حالة. ومن دون منهج منظّم لتصحيح المشكلات، لن تفعل شيئًا سوى التخمين.
 
-The key to effective performance debugging isn’t just knowing the tools—it’s having a repeatable process that narrows down the problem space methodically. You need to distinguish between actual performance issues and perceived slowness, identify the specific bottleneck, and verify that your fix actually improves things. This guide gives you that systematic approach, walking through real debugging sessions that show exactly how to hunt down and eliminate performance problems.
+مفتاح تصحيح مشكلات الأداء بفعالية ليس مجرّد معرفة الأدوات، بل امتلاك عملية قابلة للتكرار تضيّق مساحة المشكلة بمنهجية. عليك أن تفرّق بين مشكلات الأداء الفعلية والبطء المُتوهَّم، وأن تحدّد عنق الزجاجة المحدّد، وأن تتحقّق من أن إصلاحك يحسّن الأمور فعلًا. يقدّم لك هذا الدليل ذلك المنهج المنظّم، متتبّعًا جلسات تصحيح حقيقية تُظهر بالضبط كيف تتعقّب مشكلات الأداء وتقضي عليها.
 
-## The Performance Debugging Workflow
+## سير عمل تصحيح الأداء
 
-Before diving into tools, establish a systematic workflow:
+قبل الغوص في الأدوات، أرسِ سير عمل منهجيًا:
 
 ```typescript
 // Performance Debugging Checklist
@@ -45,11 +45,11 @@ interface DebugWorkflow {
 }
 ```
 
-## React DevTools Profiler Deep Dive
+## غوص عميق في أداة Profiler في React DevTools
 
-The React DevTools Profiler is your first line of defense for component-level performance issues:
+أداة Profiler في React DevTools هي خطّ دفاعك الأول عن مشكلات الأداء على مستوى المكوّنات:
 
-### Setting Up Effective Profiling
+### إعداد تنميط فعّال
 
 ```typescript
 // Enable profiling in development
@@ -91,9 +91,9 @@ function SuspectComponent() {
 }
 ```
 
-### Reading the Flame Graph
+### قراءة مخطط اللهب
 
-The flame graph shows you exactly where time is being spent:
+يُظهر لك مخطط اللهب بالضبط أين يُستهلَك الوقت:
 
 ```typescript
 // Common patterns in flame graphs and what they mean
@@ -153,9 +153,9 @@ function DeeplyNested() {
 }
 ```
 
-### Identifying Unnecessary Re-renders
+### تحديد عمليات إعادة التصيير غير الضرورية
 
-Use the Profiler’s “Highlight updates” feature to spot excessive re-rendering:
+استخدم ميزة «Highlight updates» في أداة Profiler لرصد إعادة التصيير المفرطة:
 
 ```typescript
 // Custom hook to track why a component re-rendered
@@ -196,11 +196,11 @@ function PotentiallyExpensiveComponent(props: Props) {
 }
 ```
 
-## Chrome Performance Tab Analysis
+## تحليل تبويب Performance في Chrome
 
-When React DevTools isn’t enough, the Chrome Performance tab provides deeper runtime analysis:
+حين لا تكفي React DevTools، يقدّم تبويب Performance في Chrome تحليلًا أعمق لوقت التشغيل:
 
-### Recording Performance Profiles
+### تسجيل ملفّات الأداء
 
 ```typescript
 // Programmatically trigger performance recording
@@ -232,9 +232,9 @@ function PerformanceRecorder() {
 }
 ```
 
-### Understanding the Performance Timeline
+### فهم الخط الزمني للأداء
 
-Key areas to focus on in the Performance tab:
+المجالات الرئيسية التي ينبغي التركيز عليها في تبويب Performance:
 
 ```typescript
 // What to look for in Chrome Performance profiles
@@ -299,11 +299,11 @@ function LayoutThrashingExample() {
 }
 ```
 
-## Memory Profiling and Leak Detection
+## تنميط الذاكرة وكشف التسريبات
 
-Memory issues often masquerade as performance problems:
+كثيرًا ما تتخفّى مشكلات الذاكرة في صورة مشكلات أداء:
 
-### Taking Heap Snapshots
+### أخذ لقطات الكومة
 
 ```typescript
 // Memory leak detection utility
@@ -371,11 +371,11 @@ function MemoryMonitor() {
 }
 ```
 
-## Real-World Debugging Session
+## جلسة تصحيح من الواقع
 
-Let’s walk through debugging a real performance issue:
+لنمضِ معًا في تصحيح مشكلة أداء حقيقية:
 
-### Scenario: Slow Search Component
+### السيناريو: مكوّن بحث بطيء
 
 ```typescript
 // Initial problematic implementation
@@ -413,7 +413,7 @@ function SlowSearchComponent() {
 }
 ```
 
-### Step 1: Profile and Identify Issues
+### الخطوة 1: تنميط الأداء وتحديد المشكلات
 
 ```typescript
 // Add profiling to identify bottlenecks
@@ -431,7 +431,7 @@ function ProfiledSearch() {
 // - Main thread blocked during filtering
 ```
 
-### Step 2: Apply Targeted Fixes
+### الخطوة 2: تطبيق إصلاحات موجّهة
 
 ```typescript
 // Optimized implementation
@@ -508,9 +508,9 @@ function OptimizedSearchComponent() {
 // - No main thread blocking
 ```
 
-## Performance Debugging Toolkit
+## صندوق أدوات تصحيح الأداء
 
-Build your own debugging utilities:
+ابنِ أدوات التصحيح الخاصة بك:
 
 ```typescript
 // performance-debug.ts
@@ -577,9 +577,9 @@ function DebuggedComponent() {
 }
 ```
 
-## Common Performance Patterns to Watch For
+## أنماط أداء شائعة يجب الانتباه لها
 
-### The N+1 Rendering Problem
+### مشكلة التصيير N+1
 
 ```typescript
 // ❌ Bad: Each state update triggers cascade of renders
@@ -609,7 +609,7 @@ function N1Solution() {
 }
 ```
 
-### The Hidden Re-render Cascade
+### سلسلة إعادة التصيير الخفيّة
 
 ```typescript
 // Use this hook to trace re-render cascades
@@ -634,9 +634,9 @@ function useRenderTrace(componentName: string) {
 }
 ```
 
-## Performance Debugging Checklist
+## قائمة تحقّق لتصحيح الأداء
 
-Before declaring a performance issue “fixed,” verify:
+قبل إعلان مشكلة الأداء «مُصلَحة»، تحقّق من:
 
 ```typescript
 // Performance validation checklist
@@ -667,9 +667,9 @@ interface ValidationChecklist {
 }
 ```
 
-## Quick Debugging Commands
+## أوامر سريعة للتصحيح
 
-Keep these snippets handy for quick debugging:
+احتفظ بهذه المقتطفات في متناول يدك لتصحيح سريع:
 
 ```javascript
 // Copy-paste these into Chrome DevTools Console

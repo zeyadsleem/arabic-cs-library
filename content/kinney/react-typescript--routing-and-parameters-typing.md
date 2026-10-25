@@ -1,16 +1,16 @@
 ---
-title: "Routing and Typed URL Parameters"
-lang: en
+title: "التوجيه والمعاملات المُنوَّعة النوع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/routing-and-parameters-typing"
 ---
 
-URLs are the API of the web—they carry data, state, and intent. But by default, they’re just strings, which means your `userId` parameter could be `"definitely-not-a-number"` and TypeScript would happily let you pass it to a function expecting a number. Enter typed routing: a way to make your URLs as type-safe as the rest of your React application, catching mismatched parameters at compile time instead of letting users stumble into broken pages.
+عناوين URL هي واجهة برمجة الويب (API) للويب — تحمل البيانات والحالة والنوايا. لكنها افتراضيًا مجرد سلاسل نصية، ما يعني أن معامل `userId` عندك قد يكون `"definitely-not-a-number"` بينما يسمح لك TypeScript مرتاحًا أن تمرّره إلى دالة تتوقع عددًا. وهنا يأتي التوجيه المُنوَّع النوع (typed routing): طريقة تجعل عناوين URL آمنة الأنواع مثل بقية تطبيق React عندك، فيلتقط المعاملات غير المتطابقة عند وقت التصريف بدلًا من أن يتعثّر المستخدمون في صفحات مكسورة.
 
-Modern React routing libraries like [React Router v6.4+](https://reactrouter.com/), [TanStack Router](https://tanstack.com/router), and [Next.js 13+ App Router](https://nextjs.org/docs/app) all support some form of type-safe routing. We’ll explore how to constrain path parameters, validate search parameters, and ensure your data loaders never receive unexpected types—because nobody wants to debug why `parseInt("banana")` returns `NaN` at 2 AM.
+تدعم مكتبات التوجيه الحديثة في React كلٌّ من [React Router v6.4+](https://reactrouter.com/) و[TanStack Router](https://tanstack.com/router) و[Next.js 13+ App Router](https://nextjs.org/docs/app) شكلًا ما من التوجيه الآمن الأنواع. سنتكشف كيف تقيّد معاملات المسار، وتتحقق من معاملات البحث (search parameters)، وتضمن ألا تتلقى محمّلات بياناتك (data loaders) أنواعًا غير متوقعة أبدًا — لأن أحدًا لا يريد في الثانية فجرًا تصحيح سبب إرجاع `parseInt("banana")` قيمة `NaN`.
 
-## The Problem with String-Based Routing
+## مشكلة التوجيه القائم على السلاسل النصية
 
-Traditional routing treats everything as strings. Consider this typical React Router setup:
+يتعامل التوجيه التقليدي مع كل شيء بوصفه سلاسل نصية. تأمّل هذه التهيئة النمطية من React Router:
 
 ```typescript
 // ❌ No type safety here
@@ -26,23 +26,23 @@ function UserProfile() {
 }
 ```
 
-The issues are obvious:
+المشاكل واضحة:
 
-- `userId` could be `undefined` or a malformed string
-- Type assertions (`!`) hide potential runtime errors
-- No compile-time guarantee that the route parameter exists
-- Search parameters are even more Wild West™
+- قد يكون `userId` قيمة `undefined` أو سلسلة نصية مشوّهة
+- تُخفي التأكيدات النوعية (`!`) أخطاء وقت التشغيل المحتملة
+- لا ضمانًا عند وقت التصريف بوجود معامل المسار
+- ومعاملات البحث فهي «غرب بريّ»™ بمعنى الحرف
 
-## Setting Up Typed Routes with React Router
+## تهيئة مسارات مُنوَّعة الأنواع بواسطة React Router
 
-Let’s start with React Router since it’s the most widely used. We’ll use [Zod](https://zod.dev/) for runtime validation and type inference—the perfect marriage of compile-time and runtime safety.
+لنبدأ بـ React Router لأنه الأوسع استخدامًا. سنستخدم [Zod](https://zod.dev/) للتحقّق وقت التشغيل والاستنتاج النوعي (type inference) — اتحاد مثالي بين أمان التصريف وأمان التشغيل.
 
 ```bash
 npm install react-router-dom zod
 npm install -D @types/react-router-dom
 ```
 
-First, let’s create a schema for our route parameters:
+لننشئ أولًا مخططًا لمعاملات مساراتنا:
 
 ```typescript
 import { z } from 'zod';
@@ -68,7 +68,7 @@ export type UserParams = z.infer<typeof userParamsSchema>;
 export type PostParams = z.infer<typeof postParamsSchema>;
 ```
 
-Now we can create a typed hook that validates parameters:
+يمكننا الآن إنشاء خُطّاف مُنوَّع يتحقق من المعاملات:
 
 ```typescript
 import { useParams } from 'react-router-dom';
@@ -106,9 +106,9 @@ function PostDetail() {
 }
 ```
 
-## Handling Search Parameters
+## التعامل مع معاملات البحث
 
-Search parameters (query strings) are trickier because they’re optional and can have multiple values. Let’s create a typed solution:
+معاملات البحث (سلاسل الاستعلام) أصعب تصرّفًا لأنها اختيارية وقد تحمل قيمًا عدّة. لنبنِ حلًّا مُنوَّع النوع:
 
 ```typescript
 import { useSearchParams } from 'react-router-dom';
@@ -191,9 +191,9 @@ function PostsList() {
 }
 ```
 
-## Typed Route Definitions
+## تعريفات مسارات مُنوَّعة الأنواع
 
-For even better type safety, let’s create a system where route definitions include their parameter schemas:
+لمزيد من أمان الأنواع، لنبنِ نظامًا تضم فيه تعريفاتُ المسارات مخططات معاملاتها:
 
 ```typescript
 import { z } from 'zod';
@@ -264,9 +264,9 @@ function SomeComponent() {
 }
 ```
 
-## Typed Data Loaders
+## محمّلات بيانات مُنوَّعة النوع
 
-If you’re using React Router’s data loading features, you can type your loaders too:
+إن كنت تستخدم ميزات تحميل البيانات في React Router، فيمكنك أن تُنوّع محمّلاتك أيضًا:
 
 ```typescript
 import { LoaderFunctionArgs } from 'react-router-dom';
@@ -293,13 +293,13 @@ function UserProfile() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> For even better type inference with loaders, consider using libraries like [Remix](https://remix.run/) or [TanStack Router](https://tanstack.com/router), which provide first-class TypeScript support for data loading.
+> لمزيد من الاستنتاج النوعي مع المحمّلات، خُذ في الحسبان مكتبات مثل [Remix](https://remix.run/) أو [TanStack Router](https://tanstack.com/router)، فهي تقدّم دعمًا من الطبقة الأولى لـ TypeScript في تحميل البيانات.
 
-## Going Full Type-Safe with TanStack Router
+## الأمان النوعي الكامل بواسطة TanStack Router
 
-If you want the ultimate in type-safe routing, TanStack Router provides end-to-end type safety out of the box:
+إن أردت ذروة أمان الأنواع في التوجيه، فإن TanStack Router يقدّم أمانًا نوعيًا من الطرف إلى الطرف (end-to-end) جاهزًا مباشرة:
 
 ```typescript
 import { createRoute, createRouter } from '@tanstack/react-router';
@@ -327,13 +327,13 @@ function UserProfile() {
 }
 ```
 
-TanStack Router generates types automatically and catches routing errors at compile time. It’s particularly powerful for complex applications where type safety is critical.
+يولّد TanStack Router الأنواع تلقائيًا ويلتقط أخطاء التوجيه عند وقت التصريف. وهو أقوى ما يكون في التطبيقات المركّبة التي يكون أمان الأنواع فيها جوهريًا.
 
-## Real-World Considerations
+## اعتبارات من الواقع العملي
 
-### Performance Implications
+### أثر الأداء
 
-Parameter validation happens on every route change, so keep schemas lightweight:
+يطرأ التحقق من المعاملات عند كل تغييرٍ للمسار، فأبقِ المخططات خفيفة الوزن:
 
 ```typescript
 // ✅ Good: Simple transformations
@@ -347,9 +347,9 @@ const heavySchema = z.object({
 });
 ```
 
-### Error Boundaries
+### حدود الأخطاء (Error Boundaries)
 
-Wrap your routing components in error boundaries to handle validation failures gracefully:
+غلّف مكوّنات توجيهك بحدود أخطاء لتتعامل مع إخفاقات التحقق برفق:
 
 ```typescript
 function RouteErrorBoundary({ children }: { children: React.ReactNode }) {
@@ -367,9 +367,9 @@ function RouteErrorBoundary({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Backward Compatibility
+### التوافق مع الإصدارات السابقة
 
-If you’re adding type safety to an existing app, use progressive enhancement:
+إن كنت تضيف أمان الأنواع إلى تطبيق قائم، فاستخدم التحسين التدريجي (progressive enhancement):
 
 ```typescript
 function useTypedParamsWithFallback<T>(schema: z.ZodSchema<T>) {
@@ -387,9 +387,9 @@ function useTypedParamsWithFallback<T>(schema: z.ZodSchema<T>) {
 }
 ```
 
-## Testing Typed Routes
+## اختبار المسارات المُنوَّعة
 
-Type-safe routes are easier to test since you know exactly what data shape to expect:
+المسارات الآمنة الأنواع أسهل اختبارًا لأنك تعرف تمامًا شكل البيانات الذي تتوقعه:
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -433,15 +433,15 @@ test('handles invalid user ID', () => {
 });
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Typed routing transforms URLs from error-prone strings into reliable, validated data contracts. Start small—add parameter validation to your most critical routes first, then expand the system as you see the benefits.
+يحوّل التوجيه المُنوَّع عناوين URL من سلاسل نصية كثير الغلط إلى عقود بيانات موثوقة مُتحقَّقة. ابدأ بالصغير — أضف التحقق من المعاملات أولًا إلى مساراتك الأكثر جوهرية، ثم وسّع النظام كلما رأيت المنافع.
 
-Consider these enhancements as your routing grows:
+فكّر في هذه التحسينات كلما نما توجيهك:
 
-- **Route-based code splitting** with typed lazy loading
-- **SEO-friendly URLs** with slug validation and transformation
-- **Internationalized routing** with locale-aware parameter schemas
-- **Analytics integration** that tracks typed route transitions
+- **تقسيم الشيفرة حسب المسار** مع تحميل خامل (lazy loading) مُنوَّع
+- **عناوين URL صديقة لمحركات البحث** مع التحقق من الـ slug وتحويله
+- **توجيه متعدّد اللغات** مع مخططات معاملات واعية ببيئة اللغة (locale)
+- **اندماج في التحليلات (analytics)** يتتبّع انتقالات المسارات المُنوَّعة
 
-The goal isn’t perfection from day one—it’s building a system that catches more errors at compile time and makes your routing logic more predictable. Your future self (and your users) will thank you when they never see another “Cannot read property of undefined” error from malformed URL parameters.
+الغاية ليست الكمال في اليوم الأول، بل بناء نظام يلتقط المزيد من الأخطاء عند وقت التصريف ويجعل منطق توجيهك أكثر قابلية للتنبّؤ. وستشكرك نفسُك المستقبليّة (ومستخدموك معها) حين لا يروا بعد اليوم خطأً آخر من جنس «Cannot read property of undefined» نتيجة معاملاتٍ مُشوَّهة لعنوان URL.

@@ -1,19 +1,19 @@
 ---
-title: "Deploying Web Applications on AWS"
-lang: en
+title: "نشر تطبيقات الويب على AWS"
+lang: ar
 source: "https://stevekinney.com/courses/aws"
 ---
 
-This course walks you through the AWS services that matter most to frontend engineers—the ones you’ll actually use to ship, scale, and secure your applications. No hand-waving, no “just click here” tutorials that fall apart when the console changes. You’ll understand what each service does, why it exists, and how it connects to the problems you’ve already been solving on the frontend.
+تأخذك هذه الدورة في جولة عبر خدمات AWS التي تهمّ مهندسي الواجهة الأمامية أكثر من غيرها — تلك التي ستستخدمها فعليًا لشحن تطبيقاتك وتوسيعها وتأمينها. بلا كلام مبهم، وبلا دروس من نوع «اضغط هنا فقط» التي تنهار بمجرد أن تتغيّر وحدة التحكم. ستفهم ما تفعله كل خدمة، ولماذا وُجدت، وكيف تتصل بالمشكلات التي كنت تحلّها بالفعل في الواجهة الأمامية.
 
-> **Note**
+> **ملاحظة**
 >
-> Keep the [AWS documentation home](https://docs.aws.amazon.com/) and the [AWS CLI configuration guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) nearby while you work through the course. I’ll usually teach the why first, and the AWS docs are the source of truth when the console or CLI wording drifts.
+> أبقِ [الصفحة الرئيسية لتوثيق AWS](https://docs.aws.amazon.com/) و[دليل تهيئة AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) في متناول يدك أثناء عملك في الدورة. سأشرح «السبب» أولًا عادةً، ووثائق AWS هي المرجع الموثوق عندما تختلف صياغة وحدة التحكم أو واجهة سطر الأوامر.
 
-We start with the basics—getting an AWS account set up without shooting yourself in the foot—then build the static-hosting pipeline in the order that actually makes sense when you’re doing this from scratch. You learn S3 first so the storage model clicks. Then you step into domains and DNS so you actually control the name you want to use. From there, ACM certificate validation stops feeling mystical, CloudFront has something real to terminate TLS for, and Route 53 becomes the final routing layer instead of a vague side quest at the end.
+نبدأ بالأساسيات — إعداد حساب AWS دون أن تُصيب نفسك في مقتل — ثم نبني خط أنابيب الاستضافة الثابتة بالترتيب الذي يكون منطقيًا فعلًا عندما تبدأ من الصفر. تتعلّم S3 أولًا حتى يستقرّ نموذج التخزين في ذهنك. ثم تنتقل إلى النطاقات وDNS حتى تتحكّم فعلًا بالاسم الذي تريد استخدامه. من هناك، يتوقّف التحقّق من شهادة ACM عن الظهور كأمر غامض، ويصبح لدى CloudFront ما ينهي عليه TLS فعلًا، ويتحوّل Route 53 إلى طبقة التوجيه الأخيرة بدلًا من مهمة جانبية مبهمة في النهاية.
 
-Along the way, you’ll still do the public S3 website version because it’s the cleanest way to see the moving parts in isolation. But the course treats that as a learning checkpoint, not the production answer. The production answer is the stack you actually want: private S3 bucket, CloudFront in front, ACM for HTTPS, and Route 53 alias records pointing your domain at the distribution.
+على طول الطريق، ستنجز أيضًا نسخة موقع S3 العام لأنها أنظف طريقة لرؤية الأجزاء المتحركة بمعزل عن بعضها. لكن الدورة تعامل ذلك كنقطة تعلّم عابرة، لا كإجابة الإنتاج. إجابة الإنتاج هي المكدّس الذي تريده فعلًا: حاوية S3 خاصة، وCloudFront في المقدمة، وACM من أجل HTTPS، وسجلات Alias في Route 53 توجّه نطاقك إلى التوزيع.
 
-Throughout the second half of the course, you’ll keep returning to the same capstone app: **[Scratch Lab](https://github.com/stevekinney/scratch-lab)**, a notepad application built with React and Vite that starts as a static frontend and gradually picks up real backend behavior. The static frontend lives on S3 and CloudFront. The notes API runs on Lambda behind API Gateway. DynamoDB stores user notes. Secrets Manager and Parameter Store hold credentials and configuration. CloudWatch shows you what breaks when real users start clicking around. Same app, more layers, higher stakes.
+طوال النصف الثاني من الدورة، ستظلّ عائدًا إلى التطبيق الختامي نفسه: **[Scratch Lab](https://github.com/stevekinney/scratch-lab)**، تطبيق مفكّرة مبنيّ بـ React وVite يبدأ كواجهة أمامية ثابتة ثم يكتسب تدريجيًا سلوكًا حقيقيًا في الخلفية. تعيش الواجهة الأمامية الثابتة على S3 وCloudFront. تعمل واجهة الملاحظات البرمجية على Lambda خلف API Gateway. يخزّن DynamoDB ملاحظات المستخدمين. يحتفظ Secrets Manager وParameter Store ببيانات الاعتماد والإعدادات. يُظهر لك CloudWatch ما الذي ينكسر عندما يبدأ المستخدمون الحقيقيون بالنقر هنا وهناك. التطبيق نفسه، طبقات أكثر، ورِهان أعلى.
 
-By the end, you’ll have deployed a real application to AWS and understood every layer of the stack you built.
+بحلول النهاية، ستكون قد نشرت تطبيقًا حقيقيًا على AWS وفهمت كل طبقة من المكدّس الذي بنيته.

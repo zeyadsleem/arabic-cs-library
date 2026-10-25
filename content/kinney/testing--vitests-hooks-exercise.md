@@ -1,12 +1,12 @@
 ---
-title: "Exercise"
-lang: en
+title: "تمرين"
+lang: ar
 source: "https://stevekinney.com/courses/testing/vitests-hooks-exercise"
 ---
 
-Can you take the `Character` tests from the [previous solution](https://stevekinney.com/courses/testing/asymmetric-matchers-solution) and use a `beforeEach` hook to create a new character each time?
+هل يمكنك أخذ اختبارات `Character` من [الحل السابق](https://stevekinney.com/courses/testing/asymmetric-matchers-solution) واستخدام خطّاف `beforeEach` لإنشاء شخصية جديدة في كل مرة؟
 
-If we were to do something similar to `Person`, it might look like this.
+لو أردنا فعل شيء مماثل مع `Person`، فقد يبدو هكذا.
 
 ```javascript
 import { describe, it, expect, beforeEach } from 'vitest';

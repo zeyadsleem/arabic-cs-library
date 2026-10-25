@@ -1,123 +1,123 @@
 ---
-title: "Verification and Evidence"
-lang: en
+title: "التحقّق والأدلة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/verification-and-evidence"
 ---
 
-An agent tells you the feature works. The tests pass. There’s even a screenshot. Then you open the app, and the button does nothing.
+يخبرك وكيل أن الميزة تعمل. وتنجح الاختبارات. بل ثمة لقطة شاشة. ثم تفتح التطبيق، فلا يفعل الزر شيئًا.
 
-Nobody lied, exactly. The agent reported evidence that couldn’t have failed. The trick is telling the difference between a check that measures something and a check that merely agrees with the agent.
+لم يكذب أحد، بالضبط. فقد أبلغ الوكيل عن دليل ما كان له أن يفشل. والحيلة هي التمييز بين فحص يقيس شيئًا وفحص يوافق الوكيل فحسب.
 
-## The ideal
+## المثالي
 
-Start with the **oracle**: whatever decides that the work is done. It might be a test suite, a linter, a script, or a person. What matters is that the answer comes from somewhere other than the agent’s opinion of its own work.
+ابدأ بـ**المُحكِّم (oracle)**: أي شيء يقرّر أن العمل انتهى. وقد يكون مجموعة اختبارات، أو مدقّقًا، أو سكربتًا، أو شخصًا. والمهم أن تأتي الإجابة من مكان غير رأي الوكيل في عمله هو.
 
-Ideally, the agent being judged can’t reach the oracle. That can be as simple as:
+ومن المثالي أن لا يستطيع الوكيل المُحاكَم الوصول إلى المُحكِّم. وقد يكون ذلك ببساطة:
 
-- Tests, linters, or static analysis (tools that inspect code without running it), as long as the agent can’t edit them. [Protecting the oracle](#protecting-the-oracle) covers how.
-- Continuous integration (CI), a service that runs your checks on every push, running on a system the agent can’t touch.
+- الاختبارات، أو المدقّقات، أو التحليل الساكن (أدوات تفحص الشيفرة دون تشغيلها)، ما دام الوكيل لا يستطيع تعديلها. ويتناول [حماية المُحكِّم](#protecting-the-oracle) الكيفية.
+- التكامل المستمر (CI)، وهو خدمة تشغّل فحوصاتك عند كل رفع، وتعمل على نظام لا يستطيع الوكيل لمسه.
 
-It’s not lost on me that this isn’t always possible. When it isn’t, the oracle is *you*. Your review is incredibly valuable, but only *sometimes*. It’s worth a lot less when all it produces is “nope, that button still isn’t aligned correctly,” pasted back one round at a time. That’s the [meat proxy](https://stevekinney.com/courses/ai-development-setup/why-systems) problem again. [Reviewing agent work](#reviewing-agent-work), below, covers how to make your review count.
+ولا يغيب عني أن هذا ليس ممكنًا دائمًا. وحين لا يكون، فالمُحكِّم هو *أنت*. ومراجعتك قيّمة للغاية، لكن *أحيانًا* فقط. وهي تساوي أقل بكثير حين لا تنتج سوى «لا، ذلك الزر ما زال غير محاذى بشكل صحيح»، ملصقةً مرة دورًا بعد دور. وهذه مشكلة [الوسيط البشري (meat proxy)](https://stevekinney.com/courses/ai-development-setup/why-systems) مرة أخرى. ويتناول [مراجعة عمل الوكيل](#reviewing-agent-work)، أدناه، كيف تجعل لمراجعتك وزنًا.
 
-## The definition of done
+## تعريف الانتهاء
 
-A **definition of done** is the evidence half of a [task contract](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts): what “done” means, written in the task prompt, the spec, or the ticket before the agent starts. Each *acceptance criterion* in it names:
+**تعريف الانتهاء** هو نصف الأدلة في [عقد المهمة](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts): ما معنى «منتهٍ»، مكتوبًا في موجّه المهمة أو المواصفة أو التذكرة قبل أن يبدأ الوكيل. ويسمّي كل *معيار قبول* فيه:
 
-- A behavior claim.
-- A command, inspection, or observation that could disprove it.
-- What a failure looks like.
-- What evidence to keep.
-- Who owns changing the check.
+- ادعاء سلوك.
+- أمرًا أو فحصًا أو ملاحظة يمكن أن تدحضه.
+- كيف يبدو الفشل.
+- أي دليل يُحفظ.
+- من يملك تغيير الفحص.
 
-That last item matters more than it looks. Whoever can change the check can make it pass.
+والبند الأخير أهم مما يبدو. فمن يستطيع تغيير الفحص يستطيع جعله ينجح.
 
-## Three ways evidence lies
+## ثلاث طرق تكذب بها الأدلة {#three-ways-evidence-lies}
 
-- **The false green**: `./check.sh 2>&1 | head` exits `0` even when `check.sh` exits `7`, because a pipeline reports the exit status of its last command, and that’s `head`. In bash, `echo ${PIPESTATUS[@]}` prints `7 0`: the truth and the lie, side by side. No model required.
-- **The test that tests nothing**: Give an agent a buggy `slugify` function and three visible tests, and a special-cased solution (one that hard-codes the answers to exactly those three inputs) scores 3/3. Run the held-out suite, a different set of tests you wrote *before* the agent started and never showed it, and the same solution scores 0/3. If the agent can reach the stop condition, it’s a target, not a measurement.
-- **The plausible screenshot**: A grey, clickable button photographs beautifully. And Playwright’s `toHaveScreenshot` assertion goes green on its second run with no product change at all, because the first run wrote the baseline. A check that writes its own expected value can’t fail.
+- **النجاح الكاذب**: يخرج `./check.sh 2>&1 | head` بـ `0` حتى حين يخرج `check.sh` بـ `7`، لأن خطّ الأنابيب يبلّغ عن رمز خروج أمره الأخير، وهو `head`. وفي bash، يطبع `echo ${PIPESTATUS[@]}` القيمة `7 0`: الحقيقة والكذبة، جنبًا إلى جنب. دون حاجة إلى نموذج.
+- **الاختبار الذي لا يختبر شيئًا**: أعطِ وكيلًا دالة `slugify` معطوبة وثلاثة اختبارات ظاهرة، وحلًّا بحالات خاصة (يحفظ إجابات تلك المدخلات الثلاثة تحديدًا) يسجّل 3/3. ثم شغّل المجموعة المحفوظة، وهي اختبارات مختلفة كتبتها *قبل* أن يبدأ الوكيل ولم تُرِه إياها قط، فيسجّل الحل نفسه 0/3. وإن كان الوكيل يستطيع الوصول إلى شرط التوقف، فهو هدف، لا قياس.
+- **لقطة الشاشة المعقولة**: زر رمادي قابل للنقر يبدو في الصورة رائعًا. ويصير تحقّق `toHaveScreenshot` في Playwright ناجحًا في تشغيله الثاني دون أي تغيير في المنتج أصلًا، لأن التشغيل الأول كتب خطّ الأساس. والفحص الذي يكتب قيمته المتوقّعة بنفسه لا يمكن أن يفشل.
 
-The common thread: distrust any evidence whose author and judge are the same process. In the second and third examples that’s literal: the agent writes what’s being checked, and the check writes its own expected value. In the first, the pipeline’s status stands in for the checker’s.
+الخيط الجامع: لا تثق بأي دليل يكون كاتبه وحَكَمه العملية نفسها. وفي المثالين الثاني والثالث ذلك حرفي: الوكيل يكتب ما يُفحص، والفحص يكتب قيمته المتوقّعة بنفسه. وفي الأول، تحلّ حالة خطّ الأنابيب محلّ حالة الفاحص.
 
-## Protecting the oracle
+## حماية المُحكِّم {#protecting-the-oracle}
 
-An agent has two routes to a green suite. It can fix the code, or it can change the test. The second one has a sneaky cousin: change the *configuration*. That might be a `jest.config` exclusion that skips a failing file, a lowered coverage floor, or an `eslint-disable` comment that silences a rule.
+للوكيل طريقان إلى مجموعة ناجحة. فيمكنه إصلاح الشيفرة، أو تغيير الاختبار. وللثاني قريب مخاتل: تغيير *الإعداد*. وقد يكون استبعادًا في `jest.config` يتخطّى ملفًا فاشلًا، أو حدًّا أدنى مخفَّضًا للتغطية، أو تعليق `eslint-disable` يُسكت قاعدة.
 
-Here’s how to close those routes:
+وإليك كيف تُغلق تلك الطرق:
 
-- **Freeze the tests**: Deny edits to test files and snapshot baselines with permission rules (settings that allow or deny specific tool calls), not just an instruction. An instruction is a request. The harness enforces a permission rule whatever the model decides. It still isn’t airtight: a deny on `Edit` alone doesn’t stop a script or shell command from writing the same file. For anything that must hold, add a [hook](https://stevekinney.com/courses/ai-development-setup/hooks) or the sandbox.
-- **Watch the protected paths**: In CI, flag any pull request that changes tests, baselines, or test configuration alongside the implementation.
-- **Ratchet the suppressions**: Count `eslint-disable`, `@ts-expect-error`, skipped tests, and assertions. The number of escape hatches shouldn’t go up. The number of assertions shouldn’t go down.
-- **Gate on diff-scoped coverage**: Coverage normally measures how much of the whole codebase your tests execute. *Diff-scoped* coverage asks whether any test ran the lines this change touched. [Across 4,882 agent-authored pull requests](https://arxiv.org/abs/2607.18057), 64.8% of the Python ones had no changed line executed by *any* existing test. In the Java pull requests that didn’t improve test coverage, agents deleted tests 2.6× as often as they added them. A green suite that never runs the changed lines is no evidence at all.
-- **Test the judge**: Feed your oracle deliberately broken code. Any broken variant (a *mutant*) that still passes is a blind spot. Do the same for a model-based grader: give it one wrong answer, and one right answer phrased three different ways.
+- **جمّد الاختبارات**: امنع التعديلات على ملفات الاختبار وخطوط أساس اللقطات بقواعد إذن (إعدادات تسمح بنداءات أدوات محدّدة أو تمنعها)، لا بتعليمة فقط. فالتعليمة طلب. أما قاعدة الإذن فتنفّذها الأداة مهما قرّر النموذج. وهي ليست محكمة تمامًا: فالمنع على `Edit` وحده لا يمنع سكربتًا أو أمرًا صدفيًا من كتابة الملف نفسه. ولكل ما يجب أن يصمد، أضف [خُطّافًا](https://stevekinney.com/courses/ai-development-setup/hooks) أو صندوق الرمل.
+- **راقب المسارات المحمية**: في CI، أشر إلى أي طلب سحب يغيّر الاختبارات أو خطوط الأساس أو إعداد الاختبار إلى جانب التنفيذ.
+- **اقفل مخارج التجاوز**: عُدّ `eslint-disable` و`@ts-expect-error` والاختبارات المتخطّاة والتحقّقات. فلا ينبغي أن يزيد عدد مخارج النجاة. ولا ينبغي أن ينقص عدد التحقّقات.
+- **بوّب على التغطية المحدودة بالفرق**: تقيس التغطية عادةً مقدار ما تنفّذه اختباراتك من قاعدة الشيفرة كاملة. أما التغطية *المحدودة بالفرق* فتسأل هل شغّل أي اختبار الأسطر التي مسّها هذا التغيير. و[عبر 4,882 طلب سحب من تأليف وكلاء](https://arxiv.org/abs/2607.18057)، لم يكن في 64.8% من طلبات Python سطر متغيّر نفّذه *أي* اختبار موجود. وفي طلبات Java التي لم تحسّن تغطية الاختبارات، حذف الوكلاء اختبارات 2.6 ضعف ما أضافوه. فمجموعة ناجحة لا تشغّل الأسطر المتغيّرة ليست دليلًا على الإطلاق.
+- **اختبر الحَكَم**: غذِّ مُحكِّمك بشيفرة معطوبة عن قصد. فأي نسخة معطوبة (*متحوّلة*) تنجح رغم ذلك نقطة عمياء. وافعل الشيء نفسه مع مُقيِّم قائم على نموذج: أعطه إجابة خاطئة واحدة، وإجابة صحيحة واحدة مصاغة بثلاث طرق مختلفة.
 
-Freezing is a [permissions](https://code.claude.com/docs/en/permissions) job, and some of the watching is a hook job. We’ll sort out which rule needs which tool in [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder).
+التجميد مهمة [أذونات](https://code.claude.com/docs/en/permissions)، وبعض المراقبة مهمة خُطّاف. وسنوضّح أي قاعدة تحتاج أي أداة في [سلّم الإنفاذ](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder).
 
-## Match the evidence to the claim
+## طابِق الدليل مع الادعاء {#match-the-evidence-to-the-claim}
 
-Different claims need different proof:
+الادعاءات المختلفة تحتاج أدلة مختلفة:
 
-| Claim | Weak evidence | Better evidence |
+| الادعاء | دليل ضعيف | دليل أفضل |
 | --- | --- | --- |
-| It renders | The agent says so | A screenshot that a person or tool inspects |
-| It looks right | A screenshot | A diff against a baseline written by a *different* run |
-| It works | A screenshot | Role, name, and state assertions (the Save button exists and is disabled) |
-| Tests pass | A run from ten minutes ago | Test output with zero failures from after the final edit |
-| It’s done | Tests pass | Each acceptance criterion mapped to evidence, re-run after the final edit, and the final diff inspected |
-| Agent completed | The subagent’s own report | A diff, or a [referee](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee)’s verdict |
-| It’s delivered | It merged | Merged, CI green on `main` after the merge, review threads resolved |
+| يُصيَّر | يقول الوكيل ذلك | لقطة شاشة يفحصها شخص أو أداة |
+| يبدو صحيحًا | لقطة شاشة | فرق مقابل خطّ أساس كتبه تشغيل *مختلف* |
+| يعمل | لقطة شاشة | تحقّقات الدور والاسم والحالة (زر Save موجود ومعطَّل) |
+| تنجح الاختبارات | تشغيل من عشر دقائق مضت | مخرَج اختبار بلا إخفاقات من بعد التعديل الأخير |
+| انتهى | تنجح الاختبارات | كل معيار قبول مربوط بدليل، وأُعيد تشغيله بعد التعديل الأخير، وفُحص الفرق النهائي |
+| اكتمل الوكيل | تقرير الوكيل الفرعي نفسه | فرق، أو حكم [حَكَم (referee)](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee) |
+| سُلِّم | اندمج | اندمج، وCI أخضر على `main` بعد الدمج، وخيوط المراجعة محلولة |
 
-I didn’t invent this table. Superpowers’ [verification-before-completion](https://github.com/obra/superpowers/tree/main/skills/verification-before-completion) skill includes one, and it makes the agent identify the command that would prove the claim, run it *in full*, and confirm the output says what the agent is about to claim. The [verification gate skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#verification-gate) covers it.
+لم أختلق هذا الجدول. فمهارة [التحقّق قبل الإتمام](https://github.com/obra/superpowers/tree/main/skills/verification-before-completion) من Superpowers تضم واحدًا، وهي تجعل الوكيل يحدّد الأمر الذي سيثبت الادعاء، ويشغّله *كاملًا*، ويؤكّد أن المخرَج يقول ما سيصرّح به الوكيل. وتتناوله [مهارة بوابة التحقّق](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#verification-gate).
 
-A screenshot proves that a render happened, not that the change is correct, accessible, or responsive. Put role-and-state assertions (checks on what the page exposes, like a button’s accessible name) in the agent’s inner loop, the edit-run-check cycle it repeats while it works. Save the pixel diffs for the merge boundary, where a change is about to land on `main`, and leave comparing two images to a pixel-diff tool or a person, not the model.
+لقطة الشاشة تثبت أن تصييرًا حدث، لا أن التغيير صحيح أو متاح أو متجاوب. فضع تحقّقات الدور والحالة (فحوصات على ما تعرضه الصفحة، مثل الاسم المتاح لزر) في الحلقة الداخلية للوكيل، أي دورة التعديل-التشغيل-الفحص التي يكرّرها أثناء عمله. واحفظ فروق البكسل لحدّ الدمج، حيث يستقرّ التغيير على `main`، واترك مقارنة صورتين لأداة فرق البكسل أو لشخص، لا للنموذج.
 
-## Reviewing agent work
+## مراجعة عمل الوكيل {#reviewing-agent-work}
 
-When the oracle is you, the job gets harder. I keep saying your job is *taste* and *judgment*. Most of the time, that cashes out as reading a diff an agent wrote and deciding whether it should exist.
+حين يكون المُحكِّم هو أنت، يصير العمل أصعب. وأظلّ أقول إن مهمتك هي *الذوق* و*الحكم*. ومعظم الوقت، يتبلور ذلك في قراءة فرق كتبه وكيل وتقرير ما إذا كان ينبغي أن يوجد.
 
-That’s a different skill from reviewing a colleague’s pull request. Agent diffs tend to look *more* finished than they are: clean formatting, fluent comments, green tests. None of that tells you whether the change is right.
+وهذه مهارة مختلفة عن مراجعة طلب سحب لزميل. ففروق الوكلاء تميل إلى أن تبدو *أكثر* إنهاءً مما هي: تنسيق نظيف، وتعليقات فصيحة، واختبارات ناجحة. ولا شيء من ذلك يخبرك هل التغيير صحيح.
 
-### Six tells in an agent’s diff
+### ست علامات في فرق الوكيل
 
-- **The duplicated helper**: It wrote a new function that already exists three directories over. Grep before you approve.
-- **The test that asserts the implementation**: It checks what the code does, not what the requirement demands. Ask for a test that fails on the pre-change behavior. ([The test that tests nothing](#three-ways-evidence-lies) is the longer version of this problem.)
-- **The swallowed error**: A `try`/`catch` that turns a failure into a quiet `null`. Read the contract, not just the happy path.
-- **The confident comment**: A beautifully written comment describing behavior the code doesn’t have. Read the code as if the comment didn’t exist.
-- **The plausible call to something that doesn’t exist**: A method, flag, or package that *sounds* right.
-- **Scope creep**: A bunch of files the task never mentioned, or a pull request whose purpose you can’t state in one sentence.
+- **الدالة المساعدة المكرّرة**: كتب دالة جديدة موجودة بالفعل على بعد ثلاثة مجلدات. فابحث بـ grep قبل أن توافق.
+- **الاختبار الذي يؤكّد التنفيذ**: يفحص ما تفعله الشيفرة، لا ما يطلبه المتطلَّب. فاطلب اختبارًا يفشل على السلوك قبل التغيير. ([الاختبار الذي لا يختبر شيئًا](#three-ways-evidence-lies) هو النسخة الأطول من هذه المشكلة.)
+- **الخطأ المبتلع**: `try`/`catch` يحوّل فشلًا إلى `null` صامت. فاقرأ العقد، لا المسار السعيد وحده.
+- **التعليق الواثق**: تعليق مكتوب ببراعة يصف سلوكًا لا تملكه الشيفرة. فاقرأ الشيفرة كأن التعليق غير موجود.
+- **النداء المعقول لشيء غير موجود**: تابع، أو عَلَم، أو حزمة *تبدو* صحيحة.
+- **زحف النطاق**: مجموعة ملفات لم تذكرها المهمة قط، أو طلب سحب لا تستطيع ذكر غرضه في جملة واحدة.
 
-### You are a load-sensitive component
+### أنت مكوّن حسّاس للحمل {#you-are-a-load-sensitive-component}
 
-Over the last year and a half, I’ve noticed something incredibly important: I review more carefully in the morning than at the end of a long day. Back when I wrote all of the code, this worked out conveniently. I’d run out of good judgment at around the same time I ran out of the ability to write any code at all.
+على مدى العام ونصف الماضيين، لاحظت شيئًا بالغ الأهمية: أراجع بعناية أكبر في الصباح من آخر يوم طويل. وفي الأيام التي كنت أكتب فيها الشيفرة كلها، كان ذلك يتوافق بيسر. فقد ينفد حكمي الجيد في الوقت نفسه الذي تنفد فيه قدرتي على كتابة أي شيفرة إطلاقًا.
 
-Now, I can make poor choices while an agent is more than happy to go off and implement them on my behalf.
+أما الآن، فأستطيع اتخاذ خيارات سيئة بينما يذهب وكيل، وهو في غاية السرور، لينفّذها نيابةً عني.
 
-There’s no technical advice here, just something for *you* to be aware of. And it’s not *just* you and me. The human gate, meaning you reading and approving, degrades in well-documented, predictable ways:
+لا نصيحة تقنية هنا، بل شيء يجب أن تكون *أنت* على وعي به. وهو لا يخصّ *فقط* إياي وإياك. فالبوابة البشرية، أي قراءتك وموافقتك، تتدهور بطرق موثّقة جيدًا ويمكن التنبؤ بها:
 
-- **Approval fatigue**: [Claude Code’s own documentation](https://code.claude.com/docs/en/best-practices) puts it bluntly: “After the tenth approval you’re clicking through rather than reviewing.”
-- **Review fatigue**: A [large case study at Cisco](https://static1.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf) found defect detection peaks around 200–400 lines of code reviewed per sitting and falls off after 60–90 minutes of continuous review. Generating 300 lines costs an agent nothing extra.
-- **Reading atrophy**: Delegation removes the practice that kept the reading skill sharp in the first place.
+- **إجهاد الموافقة**: تقول [وثائق Claude Code نفسها](https://code.claude.com/docs/en/best-practices) بصراحة: «بعد الموافقة العاشرة تصير تنقر للنقر بدل أن تراجع».
+- **إجهاد المراجعة**: وجدت [دراسة حالة كبيرة في Cisco](https://static1.smartbear.co/support/media/resources/cc/book/code-review-cisco-case-study.pdf) أن كشف العيوب يبلغ ذروته عند نحو 200–400 سطر من الشيفرة المراجَعة في الجلسة الواحدة ويهبط بعد 60–90 دقيقة من المراجعة المتواصلة. وتوليد 300 سطر لا يكلّف الوكيل شيئًا إضافيًا.
+- **ضمور القراءة**: يزيل التفويض الممارسة التي أبقَت مهارة القراءة حادّة أصلًا.
 
-If you notice you’re approving without reading, stop. Come back in the morning, or hand the first pass to a reviewer that doesn’t get tired.
+إن لاحظت أنك توافق دون قراءة، فتوقّف. وعُد في الصباح، أو سلّم الجولة الأولى إلى مراجع لا يتعب.
 
-### Make the history reviewable
+### اجعل التاريخ قابلًا للمراجعة {#make-the-history-reviewable}
 
-One long session needs to become a history that reviewers, `git revert` (which undoes a commit), and `git bisect` (which hunts for the commit that introduced a bug) can actually use. The unit of history should match the unit of change.
+تحتاج الجلسة الطويلة الواحدة إلى أن تصير تاريخًا يستطيع المراجعون و`git revert` (الذي يتراجع عن إيداع) و`git bisect` (الذي يبحث عن الإيداع الذي أدخل عيبًا) أن يستخدموه فعلًا. وينبغي أن تطابق وحدة التاريخ وحدة التغيير.
 
-`git add -p`, which stages changes piece by piece, is interactive, so the agent can’t use it. But you can split a commit after the fact yourself, with `git reset` and then `git add -p`. And agent-written commit messages tend to get the *what* right while inventing a plausible *why*. Make sure the why is yours.
+`git add -p`، الذي يجهّز التغييرات قطعة قطعة، تفاعلي، فلا يستطيع الوكيل استخدامه. لكن يمكنك تقسيم إيداع بعد وقوعه بنفسك، بـ `git reset` ثم `git add -p`. ورسائل الإيداع التي يكتبها الوكيل تميل إلى إصابة *ماذا* بينما تختلق *لماذا* معقولًا. فتأكّد أن «لماذا» من عندك.
 
-### Agent reviewers
+### مراجعون من الوكلاء {#agent-reviewers}
 
-Agents make great reviewers, if you set them up to disagree with the author instead of agreeing with it.
+الوكلاء مراجعون رائعون، إن أعددتهم ليعارضوا المؤلف بدلًا من موافقته.
 
-- **Use a fresh context**: A reviewer that shares the implementer’s conversation inherits its blind spots. (Context is everything the model can see when it decides its next step.) A new agent *name* isn’t a clean context. The author knows what it meant and reads that into what it wrote. A reviewer with only the requirements and the diff has to check what’s actually there.
-- **Give it the requirements, the diff, and the test results, not the transcript**: Otherwise, it rubber-stamps the implementer’s reasoning. My own advisor setup (a stronger reviewer model I consult mid-task) forwards the entire transcript by design. That’s me ignoring my own advice, so don’t copy it for reviews.
-- **A second model buys you uncorrelated errors**: My [committee-review skill](https://stevekinney.com/courses/ai-development-setup/committee-review) (which has a second model, often Codex, review Claude’s diff) ran in 465 sessions. Calling `codex exec` from another agent has a few traps, like waiting on stdin and exiting `0` without reviewing anything; [Calling Codex from Claude Code](https://stevekinney.com/courses/ai-development-setup/claude-code-and-codex-together#calling-codex-from-claude-code) has the safe version.
-- **Ask for findings with evidence**: The location, the input that triggers the problem, and the expected and actual results. “This might have edge cases” isn’t a finding.
-- **Zero findings is a valid result**: A reviewer told to find problems will find problems. Give it permission to say there aren’t any.
-- **Cap the rounds and make nits non-blocking**: Otherwise, you end up with my favorite self-inflicted anti-pattern: a reviewing agent rejecting a pull request for the fourteenth time because it doesn’t like the prose in a JSDoc comment.
-- **An agent’s approval is not a human’s**: My `address-pr` skill (which works through unresolved pull request review comments) was resolving merge conflicts and merging on an agent’s approval, posted through my own GitHub account and indistinguishable from mine. Don’t let an agent’s approval count as yours, and don’t let agent actions post under your own account.
+- **استخدم سياقًا جديدًا**: المراجع الذي يتشارك محادثة المنفّذ يرث نقاطه العمياء. (والسياق كل ما يستطيع النموذج رؤيته حين يقرّر خطوته التالية.) و*اسم* وكيل جديد ليس سياقًا نظيفًا. فالمؤلف يعرف ما قصد ويقرأ ذلك في ما كتب. أما المراجع الذي يملك المتطلّبات والفرق فقط فعليه أن يفحص ما هو موجود فعلًا.
+- **أعطه المتطلّبات والفرق ونتائج الاختبار، لا النص الكامل**: وإلا فقد صادق على تعليل المنفّذ دون فحص. وإعداد المستشار لديّ (نموذج مراجع أقوى أستشيره في منتصف المهمة) يمرّر النص كله عن قصد. وذلك مني تجاهل لنصيحتي، فلا تنسخه للمراجعات.
+- **نموذج ثانٍ يشتري لك أخطاءً غير مترابطة**: [مهارة المراجعة اللجنية](https://stevekinney.com/courses/ai-development-setup/committee-review) لديّ (وفيها نموذج ثانٍ، غالبًا Codex، يراجع فرق Claude) عملت في 465 جلسة. ونداء `codex exec` من وكيل آخر فيه بعض المزالق، مثل الانتظار على stdin والخروج بـ `0` دون مراجعة أي شيء؛ ولدى [نداء Codex من Claude Code](https://stevekinney.com/courses/ai-development-setup/claude-code-and-codex-together#calling-codex-from-claude-code) النسخة الآمنة.
+- **اطلب نتائج مصحوبة بدليل**: الموقع، والمدخل الذي يثير المشكلة، والنتيجة المتوقّعة والفعلية. فـ«قد تكون لهذه حالات حدّية» ليست نتيجة.
+- **صفر نتائج نتيجة صحيحة**: المراجع المأمور بإيجاد مشكلات سيجد مشكلات. فامنحه إذنًا بأن يقول إنه لا توجد أي منها.
+- **حدّد عدد الجولات واجعل الملاحظات التافهة غير حاجبة**: وإلا انتهيت إلى النمط المضاد المفضّل لديّ من صنع نفسي: وكيل مراجع يرفض طلب سحب للمرة الرابعة عشرة لأنه لا يحب النثر في تعليق JSDoc.
+- **موافقة الوكيل ليست موافقة إنسان**: كانت مهارة `address-pr` لديّ (التي تعمل على تعليقات مراجعة طلبات السحب غير المحلولة) تحلّ تعارضات الدمج وتدمج بناءً على موافقة وكيل، منشورة عبر حساب GitHub الخاص بي ولا تُميَّز عن حسابي. فلا تدع موافقة وكيل تُحتسب كموافقتك، ولا تدع أفعال وكيل تُنشر تحت حسابك.
 
-The review subagents in [Exemplar Subagents](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) are a good starting set, and [Getting reports you can trust](https://stevekinney.com/courses/ai-development-setup/subagents#getting-reports-you-can-trust) covers why a worker’s report is a claim you still have to check.
+الوكلاء الفرعيون للمراجعة في [وكلاء فرعيون نموذجيون](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) مجموعة بداية جيدة، ويتناول [الحصول على تقارير تثق بها](https://stevekinney.com/courses/ai-development-setup/subagents#getting-reports-you-can-trust) لماذا يظلّ تقرير العامل ادعاءً عليك فحصه.
 
-A claim without a check that could have failed isn’t a claim yet. It’s a hope. Review in the morning, with a fresh reviewer, and keep the final yes for yourself.
+الادعاء بلا فحص كان يمكن أن يفشل ليس ادعاءً بعد. بل أمل. فراجع في الصباح، بمراجع جديد، واحفظ «نعم» النهائية لنفسك.

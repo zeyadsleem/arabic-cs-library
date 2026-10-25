@@ -1,29 +1,29 @@
 ---
-title: "Selective Hydration in Modern React Apps"
-lang: en
+title: "الترطيب الانتقائي في تطبيقات React الحديثة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/selective-hydration-react-19"
 ---
 
-Your users don’t care about the footer interactive when they’re trying to click “Add to Cart.” Selective hydration in React 18+ lets you prioritize what gets hydrated first, making your server-rendered apps feel snappy where it matters most—even while the rest of your page is still waking up in the background.
+لا يهم مستخدميك أن يكون التذييل تفاعليًا وهم يحاولون النقر على «أضف إلى السلة». يتيح لك الترطيب الانتقائي (selective hydration) في React 18 والإصدارات الأحدث إعطاء الأولوية لما يُرطَّب أولًا، فتغدو تطبيقاتك المصيّرة على الخادم سريعة الاستجابة حيث يهمّ ذلك أكثر — حتى بينما لا تزال بقية صفحتك تستيقظ في الخلفية.
 
-Think of hydration like filling a swimming pool: instead of waiting for the entire pool to fill before anyone can swim, selective hydration lets people jump into the shallow end while the deep end is still filling up. Your critical components become interactive immediately while less important ones hydrate at their own pace.
+تخيّل الترطيب كملء حوض سباحة: فبدلًا من انتظار امتلاء الحوض بأكمله قبل أن يسبح أحد، يتيح لك الترطيب الانتقائي أن يقفز الناس إلى الطرف الضحل بينما لا يزال الطرف العميق يمتلئ. تصبح مكوّناتك الحرجة تفاعلية فورًا، بينما تُرطَّب المكوّنات الأقل أهمية على وتيرتها.
 
-## What is Selective Hydration?
+## ما الترطيب الانتقائي؟
 
-Traditional hydration is all-or-nothing. Your entire React app needs to hydrate before any part becomes interactive—even if users are only interested in clicking one button above the fold. This creates frustrating experiences where users click things that look interactive but don’t respond because JavaScript hasn’t finished loading and executing.
+الترطيب التقليدي كل شيء أو لا شيء. يجب أن يُرطَّب تطبيق React بأكمله قبل أن يصبح أي جزء منه تفاعليًا — حتى لو كان المستخدمون مهتمين بنقر زر واحد فقط في أعلى الشاشة. يخلق هذا تجارب محبطة ينقر فيها المستخدمون أشياء تبدو تفاعلية لكنها لا تستجيب لأن JavaScript لم ينتهِ من التحميل والتنفيذ.
 
-Selective hydration changes this. It allows React to:
+يغيّر الترطيب الانتقائي هذا. فهو يتيح لـ React أن:
 
-1. **Start hydrating high-priority components immediately**
-2. **Delay hydration of lower-priority sections**
-3. **Respond to user interactions by prioritizing those components**
-4. **Stream in components as they become ready**
+1. **يبدأ ترطيب المكوّنات ذات الأولوية العالية فورًا**
+2. **يؤجّل ترطيب الأقسام الأقل أولوية**
+3. **يستجيب لتفاعلات المستخدم بإعطاء الأولوية لتلك المكوّنات**
+4. **يدفّق المكوّنات وهي تصبح جاهزة**
 
-The key insight? Not all parts of your UI are equally important when the page first loads.
+والفكرة الجوهرية؟ ليست كل أجزاء واجهتك متساوية الأهمية عند التحميل الأول للصفحة.
 
-## How Selective Hydration Works Under the Hood
+## كيف يعمل الترطيب الانتقائي من الداخل
 
-React 18 introduced concurrent features that enable selective hydration through `Suspense` boundaries. Here’s the magic:
+قدّم React 18 قدرات تزامنية تتيح الترطيب الانتقائي عبر حدود `Suspense`. وإليك السحر:
 
 ```typescript
 // ✅ Components wrap in Suspense can hydrate independently
@@ -45,13 +45,13 @@ function App() {
 }
 ```
 
-When a user tries to interact with a component that hasn’t hydrated yet, React automatically prioritizes hydrating that component first. It’s like having a smart waiter who brings your appetizer before your tablemate’s dessert, even if the dessert was ordered first.
+حين يحاول المستخدم التفاعل مع مكوّن لم يُرطَّب بعد، يعطي React الأولوية تلقائيًا لترطيب ذلك المكوّن أولًا. الأمر كأن لديك نادلًا ذكيًا يجلب المقبّلات لك قبل حلوى رفيقك على الطاولة، حتى لو كانت الحلوى قد طُلبت أولًا.
 
-## Setting Up Selective Hydration
+## إعداد الترطيب الانتقائي
 
-Let’s build a realistic example. Imagine an e-commerce product page with several distinct sections that have different priorities.
+لنبنِ مثالًا واقعيًا. تخيّل صفحة منتج في متجر إلكتروني بأقسام متعددة متمايزة لها أولويات مختلفة.
 
-### Basic Setup with `Suspense` Boundaries
+### الإعداد الأساسي باستخدام حدود `Suspense`
 
 ```typescript
 import { Suspense, lazy } from 'react';
@@ -97,9 +97,9 @@ function ProductPage({ productId }: { productId: string }) {
 }
 ```
 
-### Smart Priority with User Interactions
+### الأولوية الذكية مع تفاعلات المستخدم
 
-Here’s where selective hydration really shines. When users interact with components, React automatically bumps their hydration priority:
+هنا يتألق الترطيب الانتقائي حقًا. حين يتفاعل المستخدمون مع المكوّنات، يرفع React أولوية ترطيبها تلقائيًا:
 
 ```typescript
 function ProductPage({ productId }: { productId: string }) {
@@ -133,11 +133,11 @@ function ProductPage({ productId }: { productId: string }) {
 }
 ```
 
-## Advanced Patterns and Real-World Usage
+## أنماط متقدمة واستخدامات واقعية
 
-### Progressive Enhancement with Feature Detection
+### التحسين التدريجي مع اكتشاف الميزات
 
-Not all features need to be interactive immediately. You can progressively enhance your UI:
+لا تحتاج كل الميزات إلى أن تكون تفاعلية فورًا. يمكنك تحسين واجهتك تدريجيًا:
 
 ```typescript
 function SearchBar() {
@@ -172,9 +172,9 @@ function SearchBar() {
 }
 ```
 
-### Data-Dependent Selective Hydration
+### الترطيب الانتقائي المعتمد على البيانات
 
-Sometimes hydration priority depends on the data itself:
+أحيانًا تعتمد أولوية الترطيب على البيانات نفسها:
 
 ```typescript
 function DashboardWidget({
@@ -218,11 +218,11 @@ function Dashboard({ widgets }: { widgets: Widget[] }) {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## المزالق الشائعة وكيفية تجنّبها
 
-### Over-Suspensing Your Components
+### الإفراط في تغليف المكوّنات بـ Suspense
 
-Don’t wrap every single component in Suspense. This creates unnecessary overhead:
+لا تغلّف كل مكوّن على حدة بـ Suspense. فهذا يخلق عبئًا إضافيًا غير ضروري:
 
 ```typescript
 // ❌ Bad: Too granular
@@ -252,9 +252,9 @@ function ProductCard({ product }) {
 }
 ```
 
-### Forgetting About Error Boundaries
+### نسيان حدود الأخطاء
 
-Always pair Suspense with proper error handling:
+اقرن Suspense دائمًا بمعالجة أخطاء مناسبة:
 
 ```typescript
 function SafeSelectiveComponent({ data }: { data: unknown }) {
@@ -274,9 +274,9 @@ function SafeSelectiveComponent({ data }: { data: unknown }) {
 }
 ```
 
-### Inconsistent Fallback States
+### حالات التحميل البديلة غير المتسقة
 
-Make sure your skeleton states match your actual content dimensions:
+تأكّد من أن حالات الهياكل العظمية لديك تطابق أبعاد المحتوى الفعلي:
 
 ```typescript
 // ✅ Good: Skeleton matches actual content layout
@@ -295,45 +295,45 @@ function ProductListSkeleton() {
 }
 ```
 
-## Performance Benefits and Trade-offs
+## مزايا الأداء والمقايضات
 
-### The Good News
+### الأخبار السارة
 
-Selective hydration can dramatically improve perceived performance:
+يمكن أن يحسّن الترطيب الانتقائي الأداء المدرَك تحسينًا جذريًا:
 
-- **Faster time to interactive** for critical components
-- **Better user experience** during hydration
-- **Reduced main thread blocking** during initial load
-- **Automatic priority management** based on user interactions
+- **زمن وصول إلى التفاعل أسرع** للمكوّنات الحرجة
+- **تجربة مستخدم أفضل** أثناء الترطيب
+- **تعطيل أقل للخيط الرئيسي** أثناء التحميل الأولي
+- **إدارة أولويات تلقائية** بناءً على تفاعلات المستخدم
 
-### The Considerations
+### الاعتبارات
 
-Like any optimization, selective hydration has trade-offs:
+مثل أي تحسين، للترطيب الانتقائي مقايضات:
 
-- **Increased complexity** in component architecture
-- **More bundle splitting** can increase overall bundle size
-- **Error boundaries become critical** for good UX
-- **Testing becomes more complex** with async loading
+- **تعقيد متزايد** في معمارية المكوّنات
+- **تقسيم حزم أكثر** قد يزيد حجم الحزمة الإجمالي
+- **حدود الأخطاء تصبح حرجة** لتجربة مستخدم جيدة
+- **الاختبار يصبح أكثر تعقيدًا** مع التحميل غير المتزامن
 
-## When to Use Selective Hydration
+## متى تستخدم الترطيب الانتقائي
 
-Selective hydration works best when you have:
+يعمل الترطيب الانتقائي أفضل ما يعمل عندما يكون لديك:
 
-1. **Clear content hierarchy** (above/below fold, primary/secondary features)
-2. **Heavy components** that are expensive to hydrate
-3. **User-driven interactions** where you can predict priority
-4. **Server-side rendering** already in place
+1. **تسلسل هرمي واضح للمحتوى** (أعلى/أسفل الشاشة، ميزات أساسية/ثانوية)
+2. **مكوّنات ثقيلة** مكلفة الترطيب
+3. **تفاعلات يقودها المستخدم** يمكنك التنبؤ بأولويتها
+4. **تصيير من جانب الخادم** قائم أصلًا
 
-Consider it essential for:
+اعتبره ضروريًا في:
 
-- **E-commerce sites** (product pages, shopping carts)
-- **Dashboards** (widget-based layouts)
-- **Content sites** (articles with comments, related content)
-- **Social platforms** (feeds with infinite scroll)
+- **مواقع التجارة الإلكترونية** (صفحات المنتجات، سلال التسوق)
+- **لوحات المعلومات** (تخطيطات قائمة على الودجات)
+- **مواقع المحتوى** (مقالات مع تعليقات ومحتوى ذي صلة)
+- **منصات التواصل** (خلاصات مع تمرير لا نهائي)
 
-## Measuring Success
+## قياس النجاح
 
-Track these metrics to validate your selective hydration implementation:
+تتبّع هذه المقاييس للتحقق من صحة تنفيذك للترطيب الانتقائي:
 
 ```typescript
 // Simple performance tracking
@@ -362,13 +362,13 @@ function CriticalComponent() {
 }
 ```
 
-Focus on:
+ركّز على:
 
-- **Time to Interactive (TTI)** for critical components
-- **First Input Delay (FID)** improvements
-- **User interaction success rates** during hydration
-- **Cumulative Layout Shift (CLS)** from skeleton transitions
+- **زمن الوصول إلى التفاعل (TTI)** للمكوّنات الحرجة
+- **تحسينات تأخير الإدخال الأول (FID)**
+- **معدلات نجاح تفاعلات المستخدم** أثناء الترطيب
+- **الإزاحة التراكمية للتخطيط (CLS)** الناتجة عن انتقالات الهياكل العظمية
 
-## The Bottom Line
+## الخلاصة
 
-Selective hydration transforms server-rendered apps from “all or nothing” to “progressive by default.” By wrapping less critical components in Suspense boundaries and leveraging React’s automatic prioritization, you can create apps that feel responsive from the moment they load—even while parts are still hydrating in the background.
+يحوّل الترطيب الانتقائي التطبيقات المصيّرة على الخادم من «كل شيء أو لا شيء» إلى «تدريجي افتراضيًا». فبتغليف المكوّنات الأقل حرجًا في حدود Suspense والاستفادة من تحديد الأولويات التلقائي في React، يمكنك بناء تطبيقات تبدو سريعة الاستجابة من لحظة تحميلها — حتى بينما لا تزال أجزاء منها تُرطَّب في الخلفية.

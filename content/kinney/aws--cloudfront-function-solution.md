@@ -1,24 +1,24 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudfront-function-solution"
 ---
 
-Here’s the complete solution for every step, including the function code, all CLI commands, and the expected output at each stage.
+هذا هو الحل الكامل لكل خطوة، بما في ذلك شيفرة الدالة، وكل أوامر CLI، والمخرجات المتوقعة في كل مرحلة.
 
-If you want AWS’s version of the runtime behavior while you read, the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) is the official reference.
+إذا أردت أن تطّلع على نسخة AWS من سلوك وقت التشغيل أثناء القراءة، فإن [دليل CloudFront Functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) هو المرجع الرسمي.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- Viewer-request functions can change routing before CloudFront decides what to fetch, which is why redirects belong there.
-- Viewer-response functions can mutate headers on the way out, which makes them the right place for security headers.
-- Publishing to `LIVE` and associating the function with the distribution is the operational step that turns working code into real edge behavior.
+- دوال طلب المشاهد (viewer-request) يمكنها تغيير التوجيه قبل أن تقرّر CloudFront ما تجلبه، ولهذا تنتمي عمليات إعادة التوجيه إلى هناك.
+- دوال استجابة المشاهد (viewer-response) يمكنها تعديل الترويسات أثناء الخروج، ما يجعلها المكان المناسب لترويسات الأمان.
+- النشر إلى `LIVE` وربط الدالة بالتوزيع هو الخطوة التشغيلية التي تحوّل شيفرة عاملة إلى سلوك حقيقي على الحافة.
 
-> **Tip**
+> **نصيحة**
 >
-> All CloudFront Functions from this exercise are available as standalone files in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/cloudfront/functions).
+> كل دوال CloudFront Functions من هذا التمرين متاحة كملفات مستقلة في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/cloudfront/functions).
 
-## The Security Headers Function
+## دالة ترويسات الأمان
 
 ```javascript
 function handler(event) {
@@ -36,9 +36,9 @@ function handler(event) {
 }
 ```
 
-*Note:* Setting properties on the existing `headers` object preserves any headers already present.
+*ملاحظة:* إن ضبط الخصائص على كائن `headers` الموجود يحافظ على أي ترويسات موجودة أصلًا.
 
-### Create the function
+### إنشاء الدالة
 
 ```bash
 aws cloudfront create-function \
@@ -49,7 +49,7 @@ aws cloudfront create-function \
   --output json
 ```
 
-Expected output (abbreviated):
+المخرجات المتوقعة (مختصرة):
 
 ```json
 {
@@ -70,9 +70,9 @@ Expected output (abbreviated):
 }
 ```
 
-Save the `ETag` value—you need it for testing and publishing.
+احفظ قيمة `ETag` — ستحتاجها للاختبار والنشر.
 
-### Test the function
+### اختبار الدالة
 
 ```bash
 aws cloudfront test-function \
@@ -84,7 +84,7 @@ aws cloudfront test-function \
   --output json
 ```
 
-Expected: The function result includes all four security headers **and** the original `content-type` header:
+المتوقع: تتضمن نتيجة الدالة ترويسات الأمان الأربعة **و** ترويسة `content-type` الأصلية:
 
 ```json
 {
@@ -99,9 +99,9 @@ Expected: The function result includes all four security headers **and** the ori
 }
 ```
 
-The `ComputeUtilization` value should be low (well under 100). If it approaches 100, the function is too slow.
+ينبغي أن تكون قيمة `ComputeUtilization` منخفضة (أقل بكثير من 100). إذا اقتربت من 100، فالدالة بطيئة جدًا.
 
-## The Legacy Redirect Function
+## دالة إعادة التوجيه القديمة
 
 ```javascript
 function handler(event) {
@@ -121,7 +121,7 @@ function handler(event) {
 }
 ```
 
-### Create the function
+### إنشاء الدالة
 
 ```bash
 aws cloudfront create-function \
@@ -132,9 +132,9 @@ aws cloudfront create-function \
   --output json
 ```
 
-Save the `ETag`.
+احفظ `ETag`.
 
-### Test: request to /old-path
+### الاختبار: طلب إلى /old-path
 
 ```bash
 aws cloudfront test-function \
@@ -146,7 +146,7 @@ aws cloudfront test-function \
   --output json
 ```
 
-Expected: A 301 response with `location: /new-path`:
+المتوقع: استجابة 301 مع `location: /new-path`:
 
 ```json
 {
@@ -161,7 +161,7 @@ Expected: A 301 response with `location: /new-path`:
 }
 ```
 
-### Test: request to /about (pass-through)
+### الاختبار: طلب إلى /about (تمرير)
 
 ```bash
 aws cloudfront test-function \
@@ -173,9 +173,9 @@ aws cloudfront test-function \
   --output json
 ```
 
-Expected: The request passes through unchanged—`FunctionOutput` contains the original request object with `uri: "/about"`.
+المتوقع: يمرّ الطلب دون تغيير — يحتوي `FunctionOutput` على كائن الطلب الأصلي مع `uri: "/about"`.
 
-## Publish Both Functions
+## نشر الدالتين
 
 ```bash
 aws cloudfront publish-function \
@@ -193,9 +193,9 @@ aws cloudfront publish-function \
   --output json
 ```
 
-Replace the `ETag` values with the ones you received from the create step (or the most recent operation on each function). Each publish returns a new `ETag`.
+استبدل قيم `ETag` بالقيم التي تلقّيتها من خطوة الإنشاء (أو من أحدث عملية على كل دالة). كل عملية نشر تُرجع `ETag` جديدًا.
 
-### Verify both are LIVE
+### التحقق من أن كلتيهما LIVE
 
 ```bash
 aws cloudfront describe-function \
@@ -213,11 +213,11 @@ aws cloudfront describe-function \
   --output json
 ```
 
-Both should show `"Stage": "LIVE"` in the response.
+ينبغي أن تُظهر كلتاهما `"Stage": "LIVE"` في الاستجابة.
 
-## Associate with the Distribution
+## الربط بالتوزيع
 
-### Get the current distribution config
+### الحصول على إعدادات التوزيع الحالية
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -226,9 +226,9 @@ aws cloudfront get-distribution-config \
   --output json > dist-config.json
 ```
 
-### Edit the distribution config
+### تحرير إعدادات التوزيع
 
-Open `dist-config.json`. Find the `DefaultCacheBehavior` section and add the `FunctionAssociations` block:
+افتح `dist-config.json`. ابحث عن قسم `DefaultCacheBehavior` وأضف كتلة `FunctionAssociations`:
 
 ```json
 {
@@ -250,11 +250,11 @@ Open `dist-config.json`. Find the `DefaultCacheBehavior` section and add the `Fu
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> The `get-distribution-config` response wraps the config in a `DistributionConfig` key and includes an `ETag` header. When you pass the config to `update-distribution`, you need the inner `DistributionConfig` object (not the outer wrapper) and the `ETag` as the `--if-match` value.
+> تُغلّف استجابة `get-distribution-config` الإعدادات في مفتاح `DistributionConfig` وتتضمن ترويسة `ETag`. حين تمرّر الإعدادات إلى `update-distribution`، فأنت تحتاج كائن `DistributionConfig` الداخلي (لا الغلاف الخارجي) وقيمة `ETag` كقيمة `--if-match`.
 
-### Update the distribution
+### تحديث التوزيع
 
 ```bash
 aws cloudfront update-distribution \
@@ -265,7 +265,7 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-### Wait for deployment
+### انتظار اكتمال النشر
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -273,17 +273,17 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-This command blocks until the distribution status changes from `InProgress` to `Deployed`. It can take a few minutes.
+يحجب هذا الأمر التنفيذ حتى تتغيّر حالة التوزيع من `InProgress` إلى `Deployed`. قد يستغرق بضع دقائق.
 
-## Verify in Production
+## التحقق في بيئة الإنتاج
 
-### Check security headers
+### التحقق من ترويسات الأمان
 
 ```bash
 curl -I https://d111111abcdef8.cloudfront.net/
 ```
 
-Expected headers in the response:
+الترويسات المتوقعة في الاستجابة:
 
 ```
 HTTP/2 200
@@ -294,30 +294,30 @@ x-frame-options: DENY
 referrer-policy: strict-origin-when-cross-origin
 ```
 
-### Check the redirect
+### التحقق من إعادة التوجيه
 
 ```bash
 curl -I https://d111111abcdef8.cloudfront.net/old-path
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 301
 location: /new-path
 ```
 
-### Check that other paths pass through
+### التحقق من تمرير المسارات الأخرى
 
 ```bash
 curl -I https://d111111abcdef8.cloudfront.net/about
 ```
 
-Expected: A normal 200 response (or 404 if the page doesn’t exist) with the security headers present and no redirect.
+المتوقع: استجابة 200 عادية (أو 404 إن لم تكن الصفحة موجودة) مع وجود ترويسات الأمان ودون إعادة توجيه.
 
-## Stretch Goal: Content Security Policy
+## هدف إضافي: سياسة أمان المحتوى
 
-Extend the security headers function to include a CSP header:
+وسّع دالة ترويسات الأمان لتضمّن ترويسة CSP:
 
 ```javascript
 function handler(event) {
@@ -339,11 +339,11 @@ function handler(event) {
 }
 ```
 
-After updating the function code with `aws cloudfront update-function`, remember to publish it again—the update only changes the DEVELOPMENT stage.
+بعد تحديث شيفرة الدالة باستخدام `aws cloudfront update-function`، تذكّر أن تنشرها مرة أخرى — فالتحديث لا يغيّر إلا مرحلة `DEVELOPMENT`.
 
-## Stretch Goal: Multiple Redirects
+## هدف إضافي: عمليات إعادة توجيه متعددة
 
-Replace the single path check with a redirect map:
+استبدل فحص المسار الواحد بخريطة إعادة توجيه:
 
 ```javascript
 var redirects = {
@@ -371,11 +371,11 @@ function handler(event) {
 }
 ```
 
-This scales to as many redirects as you can fit in 10 KB.
+يتوسّع هذا ليشمل أكبر عدد ممكن من عمليات إعادة التوجيه ضمن 10 كيلوبايت.
 
-## Cleanup
+## التنظيف
 
-A CloudFront Function cannot be deleted while it’s associated with any distribution. Disassociate first, wait for the distribution to reach `Deployed` status, then delete.
+لا يمكن حذف دالة CloudFront Function ما دامت مرتبطة بأي توزيع. افصل الارتباط أولًا، وانتظر حتى يصل التوزيع إلى حالة `Deployed`، ثم احذف.
 
 ```bash
 # After removing FunctionAssociations from the distribution config
@@ -391,4 +391,4 @@ aws cloudfront delete-function \
   --region us-east-1
 ```
 
-Repeat for the `security-headers` function if you also created that one.
+كرّر الأمر مع دالة `security-headers` إن كنت قد أنشأتها أيضًا.

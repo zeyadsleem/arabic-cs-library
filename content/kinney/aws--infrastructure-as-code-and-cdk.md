@@ -1,30 +1,30 @@
 ---
-title: "Infrastructure as Code: When to Reach for CDK"
-lang: en
+title: "البنية التحتية كشيفرة: متى تلجأ إلى CDK"
+lang: ar
 source: "https://stevekinney.com/courses/aws/infrastructure-as-code-and-cdk"
 ---
 
-You’ve spent this entire course clicking through the AWS console and running CLI commands. You created an S3 bucket, configured a CloudFront distribution, set up an API Gateway, attached IAM roles, provisioned a DynamoDB table, and wired it all together. It works. But there’s a problem: if you had to do it all again—on a new account, for a new Scratch Lab environment, for a teammate—you’d need to repeat every step from memory, in the right order, without mistakes.
+أمضيت هذه الدورة كلها تتنقّل في وحدات تحكم AWS وتشغّل أوامر سطر الأوامر. أنشأت حاوية S3، وهيأت توزيع CloudFront، وأعددت API Gateway، وأرفقت أدوار IAM، وأنشأت جدول DynamoDB، وربطت كل ذلك معًا. إنه يعمل. لكن ثمة مشكلة: لو اضطررت إلى فعل كل ذلك من جديد — على حساب جديد، أو لبيئة Scratch Lab جديدة، أو لزميل — لاحتجت إلى تكرار كل خطوة من ذاكرتك، بالترتيب الصحيح، ومن دون أخطاء.
 
-If you want AWS’s official framing for the first-party IaC tool in this lesson, the [AWS CDK Developer Guide](https://docs.aws.amazon.com/cdk/v2/guide/home.html) is the canonical reference.
+إن أردت الصياغة الرسمية من AWS لأداة IaC الخاصة بها في هذا الدرس، فإن [دليل مطوّري AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html) هو المرجع المعتمد.
 
-> **CDK v2 Only**
+> **CDK v2 فقط**
 >
-> Everything in this lesson uses **CDK v2** (`aws-cdk-lib`). CDK v1 reached end-of-support in mid-2023. If you come across tutorials importing from `@aws-cdk/aws-s3` or `@aws-cdk/aws-lambda` (one package per service), that’s v1—don’t copy it. v2 consolidates everything into `aws-cdk-lib` plus `constructs`. Verify by checking your `package.json`: `"aws-cdk-lib": "^2.x"` is v2.
+> كل ما في هذا الدرس يستخدم **CDK v2** (`aws-cdk-lib`). فقد وصل CDK v1 إلى نهاية الدعم في منتصف 2023. وإن صادفت دروسًا تستورد من `@aws-cdk/aws-s3` أو `@aws-cdk/aws-lambda` (حزمة واحدة لكل خدمة)، فذلك v1 — لا تنسخه. أما v2 فيجمع كل شيء في `aws-cdk-lib` مع `constructs`. تحقّق من ذلك بالنظر إلى `package.json`: `"aws-cdk-lib": "^2.x"` يعني v2.
 
-That’s the problem **Infrastructure as Code** solves. Instead of manually configuring services through a web console, you write code that describes your infrastructure. You check that code into version control. You deploy it with a single command. And when you need to tear it down, update it, or replicate it, the code is the source of truth—not a series of console clicks you half-remember.
+**البنية التحتية كشيفرة** هي ما يحلّ تلك المشكلة. فبدلًا من تهيئة الخدمات يدويًا عبر لوحة تحكم ويب، تكتب شيفرة تصف بنيتك التحتية. وتُدخل تلك الشيفرة في نظام التحكّم في الإصدارات. وتنشرها بأمر واحد. وحين تحتاج إلى هدمها أو تحديثها أو تكرارها، تكون الشيفرة هي مصدر الحقيقة — لا سلسلة نقرات في لوحة التحكم تذكر نصفها.
 
-If you’ve ever used a `package.json` to describe your project’s dependencies, you already understand the concept. IaC is `package.json` for your AWS infrastructure.
+إن كنت قد استخدمت `package.json` يومًا لوصف اعتماديات مشروعك، فقد فهمت الفكرة بالفعل. فـ IaC هو `package.json` لبنيتك التحتية على AWS.
 
-## Why This Matters
+## لماذا يهمّ هذا
 
-This is the lesson where the course finally turns back on itself. Up to this point, manual setup was the right move because you needed to see every service in the open. But once you understand the pieces, repeating the console dance is not educational anymore. It’s just drift waiting to happen.
+هذا هو الدرس الذي تنعطف فيه الدورة أخيرًا على نفسها. فحتى هذه اللحظة، كانت التهيئة اليدوية هي الخطوة الصحيحة لأنك كنت تحتاج إلى رؤية كل خدمة مكشوفة. لكن بمجرد أن تفهم القطع، لم يعد تكرار رقصة لوحة التحكم تعليميًا. إنه مجرد انحراف في التهيئة ينتظر أن يحدث.
 
-## Builds On
+## يُبنى على
 
-- [The Full Static Site Pipeline](https://stevekinney.com/courses/aws/full-static-pipeline)
-- [What Lambda Is and Why Frontend Engineers Care](https://stevekinney.com/courses/aws/what-is-lambda)
-- [What DynamoDB Is and When to Use It](https://stevekinney.com/courses/aws/what-is-dynamodb)
+- [خط أنابيب الموقع الثابت الكامل](https://stevekinney.com/courses/aws/full-static-pipeline)
+- [ما هي Lambda ولماذا يهتم مهندسو الواجهة الأمامية](https://stevekinney.com/courses/aws/what-is-lambda)
+- [ما هو DynamoDB ومتى تستخدمه](https://stevekinney.com/courses/aws/what-is-dynamodb)
 
 ```
 flowchart LR
@@ -34,23 +34,23 @@ flowchart LR
     Infra --> Drift["Reproducible changes<br/>instead of console drift"]
 ```
 
-## The Pain of Manual Configuration
+## عناء التهيئة اليدوية
 
-You might not feel the pain yet. You have one project, one account, and you just set everything up. But consider what happens as you grow:
+قد لا تشعر بالوجع بعد. فلديك مشروع واحد، وحساب واحد، وقد أعددت كل شيء للتو. لكن فكّر فيما يحدث مع نموّك:
 
-**Reproducibility.** A new developer joins your team and needs their own staging environment. You hand them a 47-step rundown document. They miss step 23. The environment is broken in a way that takes two hours to debug because the error message from CloudFront is “Access Denied” and the actual problem is a missing bucket policy.
+**قابلية التكرار.** ينضم مطوّر جديد إلى فريقك ويحتاج بيئة اختبار خاصة به. فتعطيه مستندًا من 47 خطوة. فيفوته الخطوة 23. وتنكسر البيئة بشكل يتطلّب ساعتين لتصحيحه، لأن رسالة الخطأ من CloudFront هي «Access Denied» والمشكلة الفعلية سياسة حاوية مفقودة.
 
-**Drift.** Someone makes a quick fix in the console—tweaks a Lambda timeout, adds a CORS header, changes a DynamoDB capacity setting. That change exists only in AWS, not in any documentation or code. Three months later, you deploy a “fresh” environment from your rundown document and it behaves differently from production. You spend a day figuring out why.
+**الانحراف.** يُجري أحدهم إصلاحًا سريعًا في لوحة التحكم — يعدّل مهلة Lambda، أو يضيف ترويسة CORS، أو يغيّر إعداد سعة DynamoDB. وهذا التغيير موجود في AWS فقط، لا في أي توثيق أو شيفرة. وبعد ثلاثة أشهر، تنشر بيئة «جديدة» من مستندك فيتصرّف بشكل مختلف عن الإنتاج. وتقضي يومًا في اكتشاف السبب.
 
-**Auditing.** Your security team asks “what changed in the last month?” With console changes, the answer is: go read CloudTrail logs and try to reconstruct what happened. With IaC, the answer is: look at the Git history.
+**التدقيق.** يسأل فريق الأمان لديك: «ما الذي تغيّر في الشهر الماضي؟» مع تغييرات لوحة التحكم، الجواب: اذهب واقرأ سجلات CloudTrail وحاول إعادة بناء ما حدث. أما مع IaC، فالجواب: انظر إلى تاريخ Git.
 
-**Disaster recovery.** Something catastrophic happens—an accidental deletion, a region outage, a compromised account. How fast can you rebuild? With manual configuration: hours to days. With IaC: minutes.
+**التعافي من الكوارث.** يحدث شيء كارثي — حذف عارض، أو انقطاع منطقة، أو اختراق حساب. فما مدى سرعة إعادة البناء؟ مع التهيئة اليدوية: ساعات إلى أيام. ومع IaC: دقائق.
 
-## CloudFormation: The Foundation
+## CloudFormation: الأساس
 
-**CloudFormation** is AWS’s native IaC service. You write a template—a JSON or YAML file—that describes every resource you want. CloudFormation reads the template, creates the resources, and tracks their state. When you update the template, CloudFormation figures out what changed and applies only the differences.
+**CloudFormation** هي خدمة IaC الأصلية في AWS. تكتب قالبًا — ملف JSON أو YAML — يصف كل مورد تريده. فتقرأ CloudFormation القالب، وتنشئ الموارد، وتتتبّع حالتها. وحين تحدّث القالب، تستنتج CloudFormation ما تغيّر وتطبّق الفروق فقط.
 
-Here is a tiny CloudFormation template that creates an S3 bucket:
+إليك قالب CloudFormation صغيرًا ينشئ حاوية S3:
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -68,7 +68,7 @@ Resources:
         RestrictPublicBuckets: true
 ```
 
-You deploy this with:
+تنشره بـ:
 
 ```bash
 aws cloudformation deploy \
@@ -78,17 +78,17 @@ aws cloudformation deploy \
   --output json
 ```
 
-CloudFormation creates a **stack**—a collection of resources that are managed as a unit. Delete the stack, and all the resources go away. Update the template, redeploy, and CloudFormation handles the changes.
+تنشئ CloudFormation **مكدّسًا** — مجموعة موارد تُدار كوحدة واحدة. احذف المكدّس، فتُحذف الموارد كلها. وحدّث القالب، وأعد النشر، فتتولّى CloudFormation التغييرات.
 
-The value is clear: this YAML file is your infrastructure. Check it into Git, review it in pull requests, and anyone can deploy the same environment by running one command.
+والقيمة واضحة: ملف YAML هذا هو بنيتك التحتية. أدخله في Git، وراجعه في طلبات السحب، فيستطيع أي أحد نشر البيئة نفسها بأمر واحد.
 
-The downside is also clear: CloudFormation templates get verbose fast. A complete static frontend deployment—S3 bucket, bucket policy, CloudFront distribution, OAC, ACM certificate, Route 53 records—can easily be 200-300 lines of YAML. And YAML isn’t exactly pleasant to write at scale. (Honestly, I’m not sure YAML is pleasant to write at *any* scale.)
+والجانب السلبي واضح أيضًا: قوالب CloudFormation تصير مطوّلة بسرعة. فنشر واجهة أمامية ثابتة كامل — حاوية S3، وسياسة حاوية، وتوزيع CloudFront، وOAC، وشهادة ACM، وسجلات Route 53 — قد يبلغ بسهولة 200-300 سطر من YAML. وYAML ليس ممتعًا تمامًا في الكتابة على نطاق واسع. (بصراحة، لست متأكدًا أن YAML ممتع في الكتابة على *أي* نطاق.)
 
-## CDK: Infrastructure in TypeScript
+## CDK: البنية التحتية بـ TypeScript
 
-The **AWS Cloud Development Kit (CDK)** solves the verbosity problem. Instead of writing YAML, you write real code—TypeScript, Python, Java, Go—that generates CloudFormation templates under the hood. CDK gives you the full power of a programming language: variables, loops, conditionals, abstractions, type checking.
+**AWS Cloud Development Kit (CDK)** يحلّ مشكلة الإطالة. فبدلًا من كتابة YAML، تكتب شيفرة حقيقية — TypeScript أو Python أو Java أو Go — تولّد قوالب CloudFormation في الخلف. ويمنحك CDK كامل قوة لغة برمجة: متغيّرات، وحلقات، وشرطيات، وتجريدات، وفحص أنواع.
 
-Here is what your manually-built static site infrastructure looks like in CDK, using TypeScript:
+إليك شكل بنيتك التحتية للموقع الثابت التي بنيتها يدويًا في CDK، باستخدام TypeScript:
 
 ```typescript
 import * as cdk from 'aws-cdk-lib';
@@ -144,31 +144,31 @@ export class FrontendStack extends cdk.Stack {
 }
 ```
 
-That’s around 45 lines of TypeScript. It creates an S3 bucket with public access blocked, a CloudFront distribution with OAC, HTTPS redirection, SPA error handling, and a Route 53 alias record, basically the entire static-hosting arc in a single file. And because it’s TypeScript, you get autocomplete, type errors, and compile-time validation.
+هذا نحو 45 سطرًا من TypeScript. ينشئ حاوية S3 محجوب وصولها العام، وتوزيع CloudFront مع OAC، وإعادة توجيه HTTPS، ومعالجة أخطاء SPA، وسجل Alias في Route 53 — أي قوس الاستضافة الثابتة كله تقريبًا في ملف واحد. ولأنها TypeScript، تحصل على الإكمال التلقائي وأخطاء الأنواع والتحقّق وقت الترجمة.
 
-You deploy it with:
+تنشره بـ:
 
 ```bash
 npx cdk deploy --region us-east-1
 ```
 
-CDK synthesizes the TypeScript into a CloudFormation template (often hundreds of lines of YAML) and deploys it. You never have to read or write that YAML.
+يُصنّع CDK شيفرة TypeScript إلى قالب CloudFormation (غالبًا مئات الأسطر من YAML) وينشره. ولن تحتاج أبدًا إلى قراءة ذلك الـ YAML أو كتابته.
 
-> **Tip**
+> **نصيحة**
 >
-> CDK uses constructs—reusable building blocks—at different levels of abstraction. The `Distribution` class above is a “L2 construct” that sets sensible defaults and hides low-level CloudFormation details. If you need full control, you can drop down to L1 constructs that map 1:1 to CloudFormation resources.
+> يستخدم CDK تجريدات — لبنات بناء قابلة لإعادة الاستخدام — على مستويات مختلفة من التجريد. فالصنف `Distribution` أعلاه «تجريد من المستوى الثاني (L2)» يضبط إعدادات افتراضية معقولة ويخفي تفاصيل CloudFormation المنخفضة المستوى. وإن احتجت إلى تحكّم كامل، يمكنك النزول إلى تجريدات المستوى الأول (L1) التي تُقابل موارد CloudFormation واحدًا لواحد.
 
-## SST: CDK for Serverless
+## SST: CDK من أجل Serverless
 
-**SST** (originally “Serverless Stack”) is a framework built on top of CDK that’s specifically designed for full-stack serverless applications. If CDK is “Infrastructure as Code in TypeScript,” SST is “Infrastructure as Code in TypeScript, but opinionated about the patterns you’ll actually use.”
+**SST** (اسمها الأصلي «Serverless Stack») هو إطار عمل مبني فوق CDK ومصمّم خصيصًا لتطبيقات Serverless كاملة الحزمة. فإن كان CDK هو «البنية التحتية كشيفرة بـ TypeScript»، فـ SST هو «البنية التحتية كشيفرة بـ TypeScript، لكن برأي واضح في الأنماط التي ستستخدمها فعلًا».
 
-SST adds several things that CDK doesn’t provide out of the box:
+يضيف SST عدة أشياء لا يوفّرها CDK جاهزة:
 
-- **Live Lambda development.** Your Lambda function code runs locally and connects to real AWS resources, so you get instant feedback without deploying on every change. If you’ve used `next dev` or `vite dev`, this is the equivalent for serverless backends.
-- **Higher-level constructs.** SST provides components like `StaticSite`, `Api`, and `Table` that bundle together multiple AWS resources into a single, sensible default. Creating a full-stack app takes a few lines instead of a few pages.
-- **Frontend framework integration.** SST knows about Next.js, Astro, SvelteKit, and other frameworks. It can deploy your frontend and backend together, handling the build pipeline automatically.
+- **تطوير Lambda الحي.** تعمل شيفرة دالة Lambda لديك محليًا وتتصل بموارد AWS حقيقية، فتحصل على تغذية راجعة فورية دون نشر عند كل تغيير. وإن كنت قد استخدمت `next dev` أو `vite dev`، فهذا مكافئه لواجهات الخلفية في Serverless.
+- **تجريدات أعلى مستوى.** يوفّر SST مكوّنات مثل `StaticSite` و`Api` و`Table` تجمع موارد AWS متعددة في إعداد افتراضي واحد معقول. فيستغرق إنشاء تطبيق كامل الحزمة بضعة أسطر بدلًا من بضع صفحات.
+- **تكامل مع أطر الواجهة الأمامية.** يعرف SST عن Next.js وAstro وSvelteKit وأطر أخرى. ويمكنه نشر واجهتك الأمامية وخلفيتك معًا، مع إدارة خط أنابيب البناء تلقائيًا.
 
-Here is the same static site in SST:
+إليك الموقع الثابت نفسه في SST:
 
 ```typescript
 new sst.aws.StaticSite('Frontend', {
@@ -177,43 +177,43 @@ new sst.aws.StaticSite('Frontend', {
 });
 ```
 
-Two lines. SST creates the S3 bucket, CloudFront distribution, OAC, ACM certificate, and Route 53 records automatically. It applies the same best practices you configured manually throughout the static-hosting arc.
+سطران. ينشئ SST حاوية S3 وتوزيع CloudFront وOAC وشهادة ACM وسجلات Route 53 تلقائيًا. ويطبّق أفضل الممارسات نفسها التي هيّأتها يدويًا طوال قوس الاستضافة الثابتة.
 
-> **Warning**
+> **تحذير**
 >
-> SST is a third-party open-source project, not an AWS product. It has a strong community and active development, but it’s a dependency you take on. If SST’s opinions about project structure and deployment patterns don’t match yours, CDK gives you the same power with more flexibility.
+> SST مشروع مفتوح المصدر من طرف ثالث، وليس منتجًا من AWS. وله مجتمع قوي وتطوير نشط، لكنه اعتمادية تتحمّلها. فإن كانت آراء SST في بنية المشروع وأنماط النشر لا تناسبك، فإن CDK يمنحك القوة نفسها بمرونة أكبر.
 
-## Which One Should You Use?
+## أيها تستخدم؟
 
-This isn’t a deep dive into any of these tools. You’re not going to learn CDK or SST in this lesson. But here’s the honest decision matrix:
+هذا ليس تعمّقًا في أي من هذه الأدوات. فلن تتعلم CDK أو SST في هذا الدرس. لكن إليك مصفوفة القرار الصادقة:
 
-**CloudFormation** is the right choice if you want maximum control, no third-party dependencies, and are willing to write verbose YAML/JSON. Most large organizations use CloudFormation (or tools that generate it) because it’s the native AWS primitive.
+**CloudFormation** هو الخيار الصحيح إن أردت أقصى تحكّم، وبلا اعتماديات خارجية، وكنت مستعدًا لكتابة YAML/JSON مطوّل. ومعظم المؤسسات الكبيرة تستخدم CloudFormation (أو أدوات تولّده) لأنه اللبنة الأصلية في AWS.
 
-**CDK** is the right choice if you want type safety, reusable abstractions, and are comfortable writing TypeScript (which, as a frontend engineer, you are). CDK is an AWS product with strong support and a large ecosystem.
+**CDK** هو الخيار الصحيح إن أردت أمان الأنواع وتجريدات قابلة لإعادة الاستخدام، وكنت مرتاحًا في كتابة TypeScript (وأنت كذلك كمهندس واجهة أمامية). وCDK منتج من AWS بدعم قوي ونظام بيئي كبير.
 
-**SST** is the right choice if you’re building exactly the kind of application this course teaches—a frontend with a serverless backend—and you want the fastest path from code to deployed infrastructure. SST’s opinions save time when they match your use case.
+**SST** هو الخيار الصحيح إن كنت تبني بالضبط نوع التطبيق الذي تعلّمه هذه الدورة — واجهة أمامية بواجهة خلفية Serverless — وتريد أسرع طريق من الشيفرة إلى بنية تحتية منشورة. فآراء SST توفّر الوقت عندما تطابق حالة استخدامك.
 
-All three tools produce CloudFormation templates at the end. The differences are in how you write and maintain the code that generates those templates.
+كل الأدوات الثلاث تنتج قوالب CloudFormation في النهاية. أما الاختلافات فتكمن في كيفية كتابتك وصيانتك للشيفرة التي تولّد تلك القوالب.
 
-## The Real Value
+## القيمة الحقيقية
 
-Here’s the thing that matters: right now, you understand how every service works because you configured them by hand. That understanding is permanent and transferable. It doesn’t matter whether you use CDK, SST, Terraform, Pulumi, or raw CloudFormation—you know what a bucket policy does, why OAC exists, how execution roles work, and what CORS headers mean. You did the hard part.
+إليك ما يهمّ فعلًا: الآن، تفهم كيف تعمل كل خدمة لأنك هيّأتها بيدك. وهذا الفهم دائم وقابل للنقل. لا يهمّ إن استخدمت CDK أو SST أو Terraform أو Pulumi أو CloudFormation الخام — فأنت تعرف ما تفعله سياسة الحاوية، ولماذا يوجد OAC، وكيف تعمل أدوار التنفيذ، وماذا تعني ترويسات CORS. لقد أنجزت الجزء الصعب.
 
-IaC isn’t a replacement for that understanding. It’s a way to encode it. The code you write in CDK is only as good as your knowledge of the underlying services. And because you built everything manually first, you’ll actually know what the IaC is doing when something goes wrong—which it will, because infrastructure is infrastructure regardless of whether you wrote it in YAML or TypeScript.
+IaC ليس بديلًا عن ذلك الفهم. إنه طريقة لتشفيره. فالشيفرة التي تكتبها في CDK لا تجود إلا بقدر جودة معرفتك بالخدمات الأساسية. ولأنك بنيت كل شيء يدويًا أولًا، ستعرف فعلًا ما تفعله IaC حين يحدث خطأ — وسيحدث، لأن البنية التحتية بنية تحتية سواء كتبتها بـ YAML أو TypeScript.
 
-## Verification
+## التحقّق
 
-You do not need to deploy CDK in this lesson, but you should be able to verify the mental model:
+لا تحتاج إلى نشر CDK في هذا الدرس، لكن ينبغي أن تكون قادرًا على التحقّق من النموذج الذهني:
 
-- Can you point at one manual change in the course and say what it would become in code?
-- Can you explain which CloudFormation resource is hiding under the friendly CDK construct?
-- Can you explain what would happen if a teammate recreated Scratch Lab in another account from the same IaC definition?
+- هل يمكنك الإشارة إلى تغيير يدوي واحد في الدورة وقول ما سيصير إليه في الشيفرة؟
+- هل يمكنك شرح مورد CloudFormation المختبئ تحت تجريد CDK الودود؟
+- هل يمكنك شرح ما سيحدث لو أعاد زميل إنشاء Scratch Lab في حساب آخر من تعريف IaC نفسه؟
 
-If those answers are clear, the lesson did its job.
+إن كانت هذه الأجوبة واضحة، فقد أدى الدرس مهمّته.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Jumping to abstractions before understanding the services:** that gives you fast scaffolding and terrible debugging instincts.
-- **Treating CDK as magic instead of CloudFormation generation:** when deployment errors happen, you still need the underlying AWS model.
-- **Encoding bad infrastructure faster:** IaC faithfully preserves good decisions *and* bad ones.
-- **Letting the framework pick everything silently:** sensible defaults are great until they stop matching your actual system.
+- **القفز إلى التجريدات قبل فهم الخدمات:** يمنحك هذا سقالات سريعة وحدسًا بائسًا في التصحيح.
+- **التعامل مع CDK كسحر لا كتوليد لـ CloudFormation:** حين تحدث أخطاء النشر، فأنت ما زلت تحتاج إلى نموذج AWS الأساسي.
+- **تشفير بنية تحتية سيئة بشكل أسرع:** IaC يحفظ القرارات الجيدة *والسيئة* بأمانة.
+- **ترك الإطار يختار كل شيء بصمت:** الإعدادات الافتراضية المعقولة رائعة إلى أن تكفّ عن مطابقة نظامك الفعلي.

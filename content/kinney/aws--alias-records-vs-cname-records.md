@@ -1,42 +1,42 @@
 ---
-title: "Alias Records vs. CNAME Records"
-lang: en
+title: "سجلات Alias مقابل سجلات CNAME"
+lang: ar
 source: "https://stevekinney.com/courses/aws/alias-records-vs-cname-records"
 ---
 
-If you’ve managed DNS before, you’ve probably created CNAME records. They’re the standard way to make one domain name point to another. But the moment you try to point the bare domain at CloudFront, CNAME starts falling apart. This is where Route 53’s alias records come in. They solve a specific problem that standard DNS does not solve cleanly, and understanding that difference will save you from one of the most common custom-domain mistakes.
+إن كنت قد أدرت DNS من قبل، فالأرجح أنك أنشأت سجلات CNAME. فهي الطريقة القياسية لجعل اسم نطاق يشير إلى اسم نطاق آخر. لكن بمجرد أن تحاول توجيه النطاق المجرّد إلى CloudFront، يبدأ CNAME في التفكك. هنا تأتي سجلات alias في Route 53. فهي تحل مشكلة محددة لا يحلها DNS القياسي بشكل نظيف، وفهم هذا الفرق سينقذك من أحد أكثر أخطاء النطاقات المخصصة شيوعًا.
 
-If you want AWS’s side-by-side version of this decision, the [Route 53 guide to alias versus non-alias records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) is the official reference.
+إن أردت نسخة AWS التي تقارن الخيارين جنبًا إلى جنب، فـ[دليل Route 53 لسجلات alias مقابل السجلات غير alias](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) هو المرجع الرسمي.
 
-## The Zone Apex Problem
+## مشكلة قمة النطاق
 
-Here’s the core issue: **CNAME records can’t be used at the zone apex**.
+المشكلة الجوهرية هي هذه: **لا يمكن استخدام سجلات CNAME عند قمة النطاق (zone apex)**.
 
-The zone apex is your bare domain—`example.com` without any prefix. Every DNS zone requires NS and SOA records at the apex (you saw these created automatically in [Hosted Zones and Record Types](https://stevekinney.com/courses/aws/hosted-zones-and-record-types)). The DNS specification (RFC 1034) says that if a CNAME record exists for a name, no other record types can exist for that same name. Since NS and SOA records must exist at the apex, a CNAME record there would violate the spec.
+قمة النطاق هي نطاقك المجرّد—`example.com` بلا أي بادئة. كل نطاق DNS يتطلب سجلي NS وSOA عند القمة (وقد رأيت هذين يُنشآن تلقائيًا في [النطاقات المستضافة وأنواع السجلات](https://stevekinney.com/courses/aws/hosted-zones-and-record-types)). تقول مواصفة DNS (RFC 1034) إنه إذا وُجد سجل CNAME لاسم ما، فلا يمكن أن توجد أنواع سجلات أخرى للاسم نفسه. وبما أن سجلي NS وSOA يجب أن يوجدا عند القمة، فإن سجل CNAME هناك سيخالف المواصفة.
 
-This means you can’t do this:
+هذا يعني أنك لا تستطيع فعل هذا:
 
 ```
 example.com.    300    IN    CNAME    d111111abcdef8.cloudfront.net.
 ```
 
-Some DNS providers let you enter it anyway and handle the conflict behind the scenes (Cloudflare calls this “CNAME flattening”), but it’s technically non-compliant. Other providers reject it outright.
+بعض مزوّدي DNS يسمحون لك بإدخاله رغم ذلك ويتعاملون مع التعارض خلف الكواليس (تسمّي Cloudflare هذا «تسطيح CNAME»)، لكنه غير مطابق للمواصفة من الناحية التقنية. أما مزوّدون آخرون فيرفضونه رفضًا قاطعًا.
 
-For subdomains, CNAME records are fine:
+أما في النطاقات الفرعية، فسجلات CNAME مناسبة تمامًا:
 
 ```
 www.example.com.    300    IN    CNAME    d111111abcdef8.cloudfront.net.
 ```
 
-This works because `www.example.com` isn’t the zone apex—there are no NS or SOA records there to conflict with.
+هذا يعمل لأن `www.example.com` ليس قمة النطاق—فلا توجد هناك سجلات NS أو SOA تتعارض معه.
 
-But most frontend deployments need to work at the bare domain. Users type `example.com`, not `www.example.com`. You need a way to point `example.com` at your CloudFront distribution without using a CNAME. That’s what alias records are for.
+لكن معظم عمليات نشر الواجهات الأمامية تحتاج إلى العمل على النطاق المجرّد. يكتب المستخدمون `example.com`، لا `www.example.com`. تحتاج إلى طريقة لتوجيه `example.com` إلى توزيع CloudFront دون استخدام CNAME. وهذا بالضبط ما تُوجد سجلات alias من أجله.
 
-## What an Alias Record Is
+## ما هو سجل Alias
 
-An **alias record** is a Route 53-specific extension to DNS. From the outside—from the perspective of a DNS resolver querying your domain—an alias record looks exactly like a standard A or AAAA record. The resolver asks for the A record of `example.com` and gets back an IP address. It has no idea that behind the scenes, Route 53 looked up the current IP addresses of your CloudFront distribution and returned those. (This is one of those things that I think is genuinely clever about Route 53’s design.)
+**سجل alias** امتداد خاص بـ Route 53 على DNS. من الخارج—من منظور مُحلِّل DNS يستعلم عن نطاقك—يبدو سجل alias تمامًا كسجل A أو AAAA قياسي. يسأل المُحلِّل عن سجل A الخاص بـ`example.com` فيحصل على عنوان IP. وليس لديه أي فكرة أن Route 53، خلف الكواليس، بحث عن عناوين IP الحالية لتوزيع CloudFront الخاص بك وأعادها. (هذا من الأمور التي أراها بارعة حقًا في تصميم Route 53.)
 
-The key difference is in how you configure it. Instead of specifying an IP address, you specify an AWS resource:
+الفرق الجوهري في كيفية إعداده. فبدلًا من تحديد عنوان IP، تحدد مورد AWS:
 
 ```json
 {
@@ -50,7 +50,7 @@ The key difference is in how you configure it. Instead of specifying an IP addre
 }
 ```
 
-Compare this to a standard A record, where you specify the IP directly:
+قارن هذا بسجل A قياسي، حيث تحدد عنوان IP مباشرة:
 
 ```json
 {
@@ -65,72 +65,72 @@ Compare this to a standard A record, where you specify the IP directly:
 }
 ```
 
-The alias record has no `TTL` field and no `ResourceRecords`. Instead, it has an `AliasTarget` that tells Route 53: “Resolve this by looking up the target resource and returning its current addresses.”
+لا يحتوي سجل alias على حقل `TTL` ولا على `ResourceRecords`. بل يحتوي على `AliasTarget` يقول لـ Route 53: «حلّ هذا بالبحث عن المورد الهدف وإعادة عناوينه الحالية.»
 
-## Why Alias Records Are Better for AWS Resources
+## لماذا سجلات Alias أفضل لموارد AWS
 
-Alias records have three concrete advantages over CNAME records when pointing to AWS services:
+لسجلات alias ثلاث ميزات ملموسة تتفوق بها على سجلات CNAME عند التوجيه إلى خدمات AWS:
 
-### They Work at the Zone Apex
+### تعمل عند قمة النطاق
 
-This is the main reason alias records exist. You can create an alias A record for `example.com` pointing to your CloudFront distribution. You can’t do this with a CNAME.
+هذا هو السبب الرئيسي لوجود سجلات alias. يمكنك إنشاء سجل alias من النوع A لـ`example.com` يشير إلى توزيع CloudFront الخاص بك. ولا يمكنك فعل ذلك بسجل CNAME.
 
-### They’re Free
+### مجانية
 
-Route 53 doesn’t charge for DNS queries that resolve to alias records pointing to AWS resources. Standard DNS queries cost $0.40 per million, but alias queries to CloudFront, S3, Elastic Load Balancing, and other supported AWS services are free. For a high-traffic site, this adds up.
+لا تتقاضى Route 53 مقابل استعلامات DNS التي تُحلّ إلى سجلات alias تشير إلى موارد AWS. تكلف استعلامات DNS القياسية 0.40 دولار لكل مليون استعلام، لكن استعلامات alias إلى CloudFront وS3 وElastic Load Balancing وغيرها من خدمات AWS المدعومة مجانية. وبالنسبة لموقع عالي الزيارات، فإن هذا يتراكم.
 
-With a CNAME, every query is billed. With an alias record, it’s zero.
+مع CNAME، تُحتسب عليك كل استعلام. أما مع سجل alias، فالتكلفة صفر.
 
-### They Resolve in One Step
+### تُحلّ في خطوة واحدة
 
-A CNAME adds an extra DNS lookup. When a resolver encounters a CNAME, it has to make a second query to resolve the target domain name. An alias record resolves directly to IP addresses—Route 53 handles the lookup internally and returns the answer in a single response. One fewer round trip means marginally faster DNS resolution.
+يضيف CNAME عملية بحث DNS إضافية. حين يصادف المُحلِّل سجل CNAME، عليه أن ينفّذ استعلامًا ثانيًا لحل اسم النطاق الهدف. أما سجل alias فيُحلّ مباشرة إلى عناوين IP—إذ تتعامل Route 53 مع البحث داخليًا وتعيد الجواب في استجابة واحدة. رحلة ذهاب وعودة أقل تعني حل DNS أسرع بشكل طفيف.
 
-## When to Use Each
+## متى تستخدم كل نوع
 
-| Scenario | Use |
+| السيناريو | ما تستخدمه |
 | --- | --- |
-| Point `example.com` (zone apex) to CloudFront | Alias A + AAAA |
-| Point `www.example.com` to CloudFront | Alias A + AAAA (preferred) or CNAME |
-| Point `api.example.com` to API Gateway | Alias A + AAAA |
-| Point `staging.example.com` to a non-AWS service (e.g., Heroku, Render) | CNAME |
-| ACM DNS validation record | CNAME (ACM gives you the value) |
-| Google Workspace email verification | TXT or CNAME (Google tells you which) |
+| توجيه `example.com` (قمة النطاق) إلى CloudFront | Alias A + AAAA |
+| توجيه `www.example.com` إلى CloudFront | Alias A + AAAA (المفضّل) أو CNAME |
+| توجيه `api.example.com` إلى API Gateway | Alias A + AAAA |
+| توجيه `staging.example.com` إلى خدمة خارج AWS (مثل Heroku أو Render) | CNAME |
+| سجل التحقق في ACM | CNAME (توفّر لك ACM القيمة) |
+| التحقق من بريد Google Workspace | TXT أو CNAME (تخبرك Google بأيّهما) |
 
-The rule is straightforward: if the target is an AWS resource that supports alias records, use an alias record. If the target is outside AWS, use a CNAME (for subdomains) or set up a redirect (for the apex).
+القاعدة مباشرة: إن كان الهدف مورد AWS يدعم سجلات alias، فاستخدم سجل alias. وإن كان الهدف خارج AWS، فاستخدم CNAME (للنطاقات الفرعية) أو أعدّ إعادة توجيه (للقمة).
 
-## Supported Alias Targets
+## أهداف Alias المدعومة
 
-Not every AWS service can be an alias target. Here are the ones you’ll encounter in this course:
+ليست كل خدمة AWS صالحة كهدف alias. إليك تلك التي ستصادفها في هذه الدورة:
 
-- **CloudFront distributions**: Use hosted zone ID `Z2FDTNDATAQYW2` for all distributions.
-- **S3 website endpoints**: Use the S3 website endpoint’s regional hosted zone ID (varies by region). This is the endpoint from [Static Website Hosting on S3](https://stevekinney.com/courses/aws/static-website-hosting-on-s3).
-- **API Gateway custom domain names**: Alias targets are available when you configure a custom domain in API Gateway.
-- **Another Route 53 record in the same hosted zone**: You can alias one record to another within the same zone.
+- **توزيعات CloudFront**: استخدم معرّف النطاق المستضاف `Z2FDTNDATAQYW2` لكل التوزيعات.
+- **نقاط نهاية موقع S3**: استخدم معرّف النطاق المستضاف الإقليمي لنقطة نهاية موقع S3 (وهو يتغيّر بحسب المنطقة). هذه هي نقطة النهاية من [استضافة موقع ثابت على S3](https://stevekinney.com/courses/aws/static-website-hosting-on-s3).
+- **أسماء النطاقات المخصصة في API Gateway**: تتوفر أهداف alias عند إعداد نطاق مخصص في API Gateway.
+- **سجل Route 53 آخر في النطاق المستضاف نفسه**: يمكنك ربط سجل بسجل آخر داخل النطاق نفسه عبر alias.
 
-Each target has its own hosted zone ID. CloudFront always uses `Z2FDTNDATAQYW2`. S3 varies by region. You don’t need to memorize these—the AWS documentation lists them, and the Route 53 console auto-fills the value when you select a target.
+لكل هدف معرّف النطاق المستضاف الخاص به. تستخدم CloudFront دائمًا `Z2FDTNDATAQYW2`. أما S3 فيتغيّر بحسب المنطقة. لست بحاجة إلى حفظ هذه القيم—فوثائق AWS تسردها، ووحدة تحكم Route 53 تملأ القيمة تلقائيًا عند اختيار هدف.
 
-## Health Checking Differences
+## فروق فحص السلامة
 
-Alias records support Route 53 health checks differently than standard records. For standard records, you can attach a health check directly. For alias records, the `EvaluateTargetHealth` flag determines whether Route 53 considers the target healthy before returning the record.
+تدعم سجلات alias فحوصات سلامة Route 53 بشكل مختلف عن السجلات القياسية. فبالنسبة للسجلات القياسية، يمكنك إرفاق فحص سلامة مباشرة. أما بالنسبة لسجلات alias، فيحدد علم `EvaluateTargetHealth` ما إذا كانت Route 53 تعتبر الهدف سليمًا قبل إعادة السجل.
 
-For CloudFront, `EvaluateTargetHealth` must be `false`. CloudFront is a globally distributed service with its own health management—Route 53 health checks don’t apply to it in a meaningful way. For Elastic Load Balancers and other regional resources, you might set this to `true` to enable failover routing.
+بالنسبة لـ CloudFront، يجب أن يكون `EvaluateTargetHealth` مساويًا لـ`false`. فـ CloudFront خدمة موزّعة عالميًا لديها إدارة سلامة خاصة بها—وفحوصات سلامة Route 53 لا تنطبق عليه بشكل ذي معنى. أما بالنسبة لموازنات التحميل Elastic Load Balancer والموارد الإقليمية الأخرى، فقد تضبط هذه القيمة على `true` لتفعيل التوجيه عند الفشل (failover).
 
-For frontend deployments behind CloudFront, you’ll always set `EvaluateTargetHealth` to `false` and let CloudFront handle availability at the edge.
+أما عمليات نشر الواجهات الأمامية خلف CloudFront، فستضبط فيها دائمًا `EvaluateTargetHealth` على `false` وتترك CloudFront يتولى التوافر عند الحافة.
 
-## A Common Mistake
+## خطأ شائع
 
-A mistake that trips people up: creating a CNAME record for the apex domain and wondering why it doesn’t work. If you try to create a CNAME for `example.com` in Route 53, the console will let you attempt it, but the DNS behavior will be unpredictable. Some resolvers will return errors, and others will ignore the record entirely.
+من الأخطاء التي تُربك الناس: إنشاء سجل CNAME للنطاق عند القمة ثم التساؤل عن سبب عدم عمله. إن حاولت إنشاء CNAME لـ`example.com` في Route 53، فستسمح لك وحدة التحكم بالمحاولة، لكن سلوك DNS سيكون غير متوقع. بعض المُحلِّلات ستعيد أخطاء، وأخرى ستتجاهل السجل كليًا.
 
-If you inherited a DNS configuration from a previous provider and see a CNAME at the apex, replace it with an alias A record (and an alias AAAA record for IPv6). This is the correct configuration for any AWS resource.
+إن ورثت إعداد DNS من مزوّد سابق ورأيت CNAME عند القمة، فاستبدله بسجل alias من النوع A (وسجل alias من النوع AAAA لدعم IPv6). هذا هو الإعداد الصحيح لأي مورد AWS.
 
-> **Warning**
+> **تحذير**
 >
-> If you’re migrating from Cloudflare, you may have been using their “CNAME flattening” feature at the apex domain. This is Cloudflare’s proprietary workaround for the zone apex problem. Route 53 doesn’t support CNAME flattening—you must use alias records instead. The end result is the same (the apex resolves to an IP address), but the configuration looks different.
+> إن كنت تنتقل من Cloudflare، فقد كنت تستخدم ميزة «تسطيح CNAME» لديهم عند نطاق القمة. هذا حل بديل خاص بـ Cloudflare لمشكلة قمة النطاق. ولا تدعم Route 53 تسطيح CNAME—بل عليك استخدام سجلات alias بدلًا منه. النتيجة النهائية نفسها (تُحلّ القمة إلى عنوان IP)، لكن الإعداد يبدو مختلفًا.
 
-## The Mental Model
+## النموذج الذهني
 
-Think of it this way: a CNAME record says “go ask someone else.” An alias record says “I already asked for you—here’s the answer.” The resolver never sees the indirection. From the outside, `example.com` looks like it has a plain A record with real IP addresses. The fact that those IP addresses came from a CloudFront distribution lookup is entirely Route 53’s business.
+فكّر في الأمر هكذا: سجل CNAME يقول «اذهب واسأل شخصًا آخر». أما سجل alias فيقول «لقد سألت بالفعل نيابةً عنك—إليك الجواب». لا يرى المُحلِّل هذا التحويل الوسيط أبدًا. من الخارج، يبدو `example.com` كأن لديه سجل A عاديًا بعناوين IP حقيقية. أما كون تلك العناوين جاءت من بحث في توزيع CloudFront، فذلك شأن Route 53 وحده.
 
-For everything in this course—CloudFront distributions, S3 endpoints, API Gateway custom domains—alias records are the right choice. Use CNAME only when the target is outside AWS or when a service specifically requires it (like ACM validation records).
+لكل شيء في هذه الدورة—توزيعات CloudFront ونقاط نهاية S3 والنطاقات المخصصة في API Gateway—سجلات alias هي الخيار الصحيح. استخدم CNAME فقط عندما يكون الهدف خارج AWS أو عندما تتطلب خدمة معينة ذلك صراحةً (كسجلات التحقق في ACM).
 
-Next, you’ll use that rule for the real thing: creating the alias records that point your domain at CloudFront.
+لاحقًا، ستطبّق هذه القاعدة على الأمر الحقيقي: إنشاء سجلات alias التي توجّه نطاقك إلى CloudFront.

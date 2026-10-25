@@ -1,16 +1,16 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/harden-the-flaky-rate-book-test-solution"
 ---
 
-The starting test had eight problems and zero good habits. The finished version has zero problems and—if you squint—reads like a spec. Here’s how we get from one to the other, one pattern at a time.
+كان في اختبار البداية ثماني مشكلات وصفر من العادات الجيدة. أما النسخة النهائية ففيها صفر مشكلات—وإن أمعنت النظر—تُقرأ كأنها مواصفة. وإليك كيف ننتقل من الأولى إلى الثانية، نمطًا واحدًا في كل مرة.
 
-If you want to skip the walkthrough and just see the final file, jump to [the final code](#the-final-file). But the interesting part isn’t the destination—it’s the sequence of commits that got us there, because each one isolates exactly one category of fix.
+إن أردت تجاوز الشرح التفصيلي والاكتفاء برؤية الملف النهائي، فاقفز إلى [الشيفرة النهائية](#the-final-file). لكن الجزء المثير ليس الوجهة—بل تسلسل الإيداعات الذي أوصلنا إليها، لأن كل إيداع يعزل فئة واحدة بالضبط من الإصلاحات.
 
-## Fix 1: Storage state authentication
+## الإصلاح 1: المصادقة بحالة التخزين
 
-The original test starts with a full UI login:
+يبدأ الاختبار الأصلي بتسجيل دخول كامل عبر الواجهة:
 
 ```typescript
 await page.goto('/login');
@@ -20,21 +20,21 @@ await page.click('button[type=submit]');
 await page.waitForTimeout(1000);
 ```
 
-Five lines, one `waitForTimeout`, and every test in the suite pays the cost of filling a form and waiting for a redirect. Worse: if the login page changes its markup, every test file that logs in this way breaks.
+خمسة أسطر، و`waitForTimeout` واحد، وكل اختبار في المجموعة يدفع ثمن ملء نموذج والانتظار من أجل إعادة توجيه. والأسوأ: إن غيّرت صفحة تسجيل الدخول ترميزها، انكسر كل ملف اختبار يسجّل الدخول بهذه الطريقة.
 
-Storage state fixes all of this. The login happens once in `tests/authentication.setup.ts`, the resulting cookies are saved to disk, and every subsequent test reuses them. The test file doesn’t mention `/login` at all.
+حالة التخزين تصلح كل هذا. يحدث تسجيل الدخول مرة واحدة في `tests/authentication.setup.ts`، وتُحفظ ملفات تعريف الارتباط الناتجة على القرص، ثم يعيد كل اختبار لاحق استخدامها. ولا يذكر ملف الاختبار `/login` إطلاقًا.
 
-After this commit, the test starts at `page.goto('/shelf')`. The five login lines are gone. The first `waitForTimeout` is gone with them.
+بعد هذا الإيداع، يبدأ الاختبار عند `page.goto('/shelf')`. وقد اختفت أسطر تسجيل الدخول الخمسة. واختفى معها أول `waitForTimeout`.
 
-> **Note**
+> **ملاحظة**
 >
-> Shelf’s auth stack enforces CSRF-style semantics, so the setup file drives the real login form through a browser rather than POSTing directly to the sign-in endpoint. That’s intentional—it also doubles as an implicit smoke test on the login page.
+> تفرض كومة المصادقة في Shelf دلالات على طريقة CSRF، لذا يقود ملف الإعداد نموذج تسجيل الدخول الحقيقي عبر متصفح بدلًا من إرسال POST مباشرة إلى نقطة نهاية تسجيل الدخول. وهذا مقصود—فهو يخدم أيضًا كاختبار دخان ضمني على صفحة تسجيل الدخول.
 
-## Fix 2: Deterministic seeding
+## الإصلاح 2: الزرع الحتمي
 
-The original test has no seeding. It assumes “whatever is on the shelf” includes a book with a `.rate` button. On a fresh database, it might. After another test deletes a book, it might not. That’s the definition of flaky.
+الاختبار الأصلي بلا زرع. إنه يفترض أن «كل ما على الرف» يتضمن كتابًا فيه زر `.rate`. على قاعدة بيانات جديدة، قد يكون كذلك. وبعد أن يحذف اختبار آخر كتابًا، قد لا يكون. وهذا هو تعريف التذبذب.
 
-The fix is `resetShelfContent` in a `beforeEach`. This calls the seed helper you build in `tests/helpers/seed.ts`, which resets the shelf to a known state: a specific set of books, no ratings, every time.
+الإصلاح هو `resetShelfContent` داخل `beforeEach`. وهذه تنادي دالة الزرع المساعدة التي تبنيها في `tests/helpers/seed.ts`، والتي تعيد الرف إلى حالة معلومة: مجموعة كتب محددة، بلا تقييمات، في كل مرة.
 
 ```typescript
 test.beforeEach(async () => {
@@ -42,13 +42,13 @@ test.beforeEach(async () => {
 });
 ```
 
-One line. Now the test knows exactly what’s in the database before it starts. The second and third `waitForTimeout` calls were partially compensating for stale or missing data—once the seed is deterministic, half the timing issues disappear on their own.
+سطر واحد. الآن يعرف الاختبار بالضبط ما في قاعدة البيانات قبل أن يبدأ. وكان نداءا `waitForTimeout` الثاني والثالث يعوّضان جزئيًا عن بيانات قديمة أو ناقصة—وحين يصير الزرع حتميًا، يختفي نصف مشكلات التوقيت من تلقاء نفسه.
 
-Notice we use `resetShelfContent`, not `seedFreshDatabase`. The difference matters: `resetShelfContent` resets books and ratings without touching users. If we blew away users, we’d invalidate the storage state we just set up in Fix 1. That’s the kind of interaction that burns an hour if you don’t know to look for it.
+لاحظ أننا نستخدم `resetShelfContent` لا `seedFreshDatabase`. والفرق مهم: `resetShelfContent` تعيد ضبط الكتب والتقييمات دون المساس بالمستخدمين. ولو محونا المستخدمين، لأبطلنا حالة التخزين التي أعددناها للتو في الإصلاح 1. وهذا نوع التفاعل الذي يحرق ساعة من وقتك إن لم تعرف أن تبحث عنه.
 
-## Fix 3: Semantic locators
+## الإصلاح 3: المحددات الدلالية
 
-The original test uses raw CSS selectors everywhere:
+يستخدم الاختبار الأصلي محددات CSS خامًا في كل مكان:
 
 ```typescript
 await page.locator('.book-card button.rate').first().click();
@@ -57,18 +57,18 @@ await page.locator('.rating-modal button.submit').click();
 const toast = await page.locator('.toast').textContent();
 ```
 
-Every one of these breaks when class names change. The `.first()` call is particularly bad—it grabs whichever book happens to be first in the DOM, which means the test doesn’t actually verify a specific book.
+كل واحد من هذه ينكسر حين تتغير أسماء الفئات. ونداء `.first()` سيئ على وجه الخصوص—فهو يلتقط أي كتاب تصادف أنه الأول في DOM، ما يعني أن الاختبار لا يتحقق فعلًا من كتاب بعينه.
 
-The fix uses `getByRole` with scoped chaining:
+يستخدم الإصلاح `getByRole` مع تسلسل محدّد النطاق:
 
 ```typescript
 const stationEleven = page.getByRole('article', { name: /Station Eleven/ });
 await stationEleven.getByRole('button', { name: 'Rate this book' }).click();
 ```
 
-Now we’re targeting a specific book by its accessible name, then scoping inside that article to find the rate button. If someone reorders the shelf, the test still finds Station Eleven. If someone renames the CSS class from `.rate` to `.rating-trigger`, the test doesn’t care.
+الآن نستهدف كتابًا بعينه باسمه المتاح للوصول، ثم نحدد النطاق داخل ذلك المقال للعثور على زر التقييم. إن أعاد أحد ترتيب الرف، فسيظل الاختبار يجد Station Eleven. وإن أعاد أحد تسمية فئة CSS من `.rate` إلى `.rating-trigger`، فلن يهتم الاختبار.
 
-Inside the dialog, same pattern:
+داخل النافذة، النمط نفسه:
 
 ```typescript
 const dialog = page.getByRole('dialog', { name: /Rate Station Eleven/ });
@@ -76,23 +76,23 @@ await dialog.getByRole('radio', { name: '4 stars' }).check();
 await dialog.getByRole('button', { name: 'Save rating' }).click();
 ```
 
-The dialog is scoped by role and name. The radio button is found by its label. The submit button is found by its visible text. No CSS. No `data-value` attributes. No compound selectors.
+النافذة محددة النطاق بالدور والاسم. وزر الاختيار يُعثر عليه بتسميته. وزر الإرسال يُعثر عليه بنصه الظاهر. لا CSS. ولا خصائص `data-value`. ولا محددات مركّبة.
 
-The toast assertion also changes. The original read `textContent()` into a variable and asserted with `.toContain`—which bypasses Playwright’s auto-retry entirely. If the toast takes 200ms to appear, the test fails. The fix:
+يتغير تأكيد الإشعار أيضًا. كان الأصل يقرأ `textContent()` في متغيّر ويؤكد بـ`.toContain`—وهذا يتجاوز إعادة المحاولة التلقائية في Playwright بالكامل. فإن استغرق ظهور الإشعار 200ms، يفشل الاختبار. أما الإصلاح:
 
 ```typescript
 await expect(page.getByRole('status')).toHaveText(/Thanks/);
 ```
 
-`toHaveText` auto-retries until the element’s text matches or the timeout expires. The `role="status"` locator is more stable than `.toast`, and it’s also an accessibility check—if someone removes the ARIA role from the toast, this test fails *and* the toast is broken for screen reader users.
+يعيد `toHaveText` المحاولة تلقائيًا حتى يطابق نص العنصر أو تنتهي المهلة. ومحدد `role="status"` أكثر استقرارًا من `.toast`، وهو أيضًا فحص وصول—فإن أزال أحد دور ARIA من الإشعار، يفشل هذا الاختبار *و*يكون الإشعار معطلًا لمستخدمي قارئات الشاشة.
 
-## Fix 4: Replace waits with real signals
+## الإصلاح 4: استبدال الانتظارات بإشارات حقيقية
 
-The original has three `waitForTimeout` calls: 1000ms after login, 2000ms after navigating to the shelf, and 1500ms after submitting the rating. Together that’s 4.5 seconds of dead time—on a good day.
+في الأصل ثلاثة نداءات `waitForTimeout`: 1000ms بعد تسجيل الدخول، و2000ms بعد الانتقال إلى الرف، و1500ms بعد إرسال التقييم. مجموع ذلك 4.5 ثوانٍ من الزمن الميت—في يوم جيد.
 
-Fix 1 already eliminated the first one. The second was compensating for the shelf page loading—but we don’t need a timeout for that. The `await expect(stationEleven).toBeVisible()` assertion auto-retries until the book card appears. That’s the wait. No magic number needed.
+الإصلاح 1 أزال الأول بالفعل. وكان الثاني يعوّض عن تحميل صفحة الرف—لكننا لا نحتاج مهلة لذلك. فتأكيد `await expect(stationEleven).toBeVisible()` يعيد المحاولة تلقائيًا حتى تظهر بطاقة الكتاب. هذا هو الانتظار. بلا رقم سحري.
 
-The third is the most interesting. The original waits 1500ms after clicking “submit” and hopes the rating has been saved. The fix uses `waitForResponse`:
+والثالث هو الأكثر إثارة. ينتظر الأصل 1500ms بعد النقر على «submit» ويأمل أن التقييم قد حُفظ. أما الإصلاح فيستخدم `waitForResponse`:
 
 ```typescript
 const ratingResponse = page.waitForResponse(
@@ -103,13 +103,13 @@ const savedResponse = await ratingResponse;
 expect(savedResponse.ok()).toBe(true);
 ```
 
-Note the order: you set up the response listener *before* the click, then await it *after*. If you do it the other way around, you have a race condition—the response might arrive before you start listening. This is the pattern. Memorize it.
+لاحظ الترتيب: تُعدّ مستمع الاستجابة *قبل* النقر، ثم تنتظره *بعده*. وإن فعلت العكس، فلديك حالة تسابق—قد تصل الاستجابة قبل أن تبدأ الاستماع. هذا هو النمط. احفظه.
 
-Now the test waits for exactly the right signal: the PATCH request to the shelf API returned a 200. Not “1500ms have passed and I hope things worked out.” The actual network response.
+الآن ينتظر الاختبار الإشارة الصحيحة بالضبط: طلب PATCH إلى API الرف عاد بـ200. لا «مرّت 1500ms وأرجو أن الأمور سارت على ما يرام». بل استجابة الشبكة الفعلية.
 
-## The final file
+## الملف النهائي {#the-final-file}
 
-Here’s the final test after all four fixes. The inline comments are teaching annotations layered on top of the final shape in `tests/rate-book.spec.ts`.
+هذا هو الاختبار النهائي بعد الإصلاحات الأربعة كلها. والتعليقات المضمّنة هي شروح تعليمية موضوعة فوق الشكل النهائي في `tests/rate-book.spec.ts`.
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -171,50 +171,50 @@ test.describe('rate a book on your shelf', () => {
 });
 ```
 
-At this point in the course, the test still imports from `@playwright/test`. Later, in the failure-dossier lab, you add `tests/fixtures.ts` to wrap `page` with console and network forwarding. Once that file exists, swapping the import to `./fixtures` is a good follow-up. It is **not** a prerequisite for this lab.
+في هذه المرحلة من الدورة، ما زال الاختبار يستورد من `@playwright/test`. لاحقًا، في مختبر ملفات تعريف الأعطال، تضيف `tests/fixtures.ts` لتغليف `page` بتمرير وحدة التحكم والشبكة. وحين يوجد ذلك الملف، يصبح تبديل الاستيراد إلى `./fixtures` متابعة جيدة. وهو **ليس** شرطًا مسبقًا لهذا المختبر.
 
-Zero `waitForTimeout`. Zero `page.locator()`. Zero `page.goto('/login')`. Zero `page.fill('[name=')`. Every locator is semantic. Every wait is a real signal.
+صفر `waitForTimeout`. صفر `page.locator()`. صفر `page.goto('/login')`. صفر `page.fill('[name=')`. كل محدد دلالي. وكل انتظار إشارة حقيقية.
 
-## What you still need to run
+## ما ما زلت بحاجة إلى تشغيله
 
-The acceptance criteria require 10 consecutive passes. Here’s the loop:
+تشترط معايير القبول عشر نجاحات متتالية. وهذه هي الحلقة:
 
 ```bash
 for i in {1..10}; do npx playwright test --project=authenticated tests/rate-book.spec.ts || break; done
 ```
 
-If any iteration exits non-zero, the test is still flaky. The most common culprit at this point is a seeding issue—`resetShelfContent` didn’t fully reset, or the book title doesn’t match the regex. Check the seed helper first.
+إن خرج أي تكرار بقيمة غير صفرية، فالاختبار ما زال متذبذبًا. والسبب الأكثر شيوعًا في هذه المرحلة مشكلة زرع—إما أن `resetShelfContent` لم تعِد الضبط كاملًا، أو أن عنوان الكتاب لا يطابق التعبير النمطي. افحص دالة الزرع المساعدة أولًا.
 
-For the wall-time check:
+ولفحص الزمن الجداري:
 
 ```bash
 time npx playwright test --project=authenticated tests/rate-book.spec.ts
 ```
 
-The original test with its 4.5 seconds of `waitForTimeout` calls usually clocks in around 8-10 seconds. The hardened version typically finishes under 5 seconds, sometimes under 3. The exact numbers depend on your machine, but the delta should be obvious.
+الاختبار الأصلي، بما فيه من 4.5 ثوانٍ من نداءات `waitForTimeout`، يسجّل عادة نحو 8-10 ثوانٍ. أما النسخة المحصّنة فتنتهي عادة في أقل من 5 ثوانٍ، وأحيانًا في أقل من 3. وتعتمد الأرقام الدقيقة على آلتك، لكن الفرق ينبغي أن يكون واضحًا.
 
-## The commit sequence
+## تسلسل الإيداعات
 
-Your git history should show at least four commits, each one addressing a single pattern:
+ينبغي أن يُظهر سجل git لديك أربعة إيداعات على الأقل، يعالج كل واحد منها نمطًا واحدًا:
 
-1. **Storage state auth** — delete the login block, wire up `tests/authentication.setup.ts`, verify the test still reaches `/shelf`.
-2. **Deterministic seeding** — add `resetShelfContent` in `beforeEach`, verify the book exists before interacting with it.
-3. **Semantic locators** — replace every CSS selector with `getByRole`/`getByLabel`/`getByText`, scope by book title.
-4. **Real waits** — replace every `waitForTimeout` with `toBeVisible()` or `waitForResponse`, swap `textContent` + `toContain` for auto-retrying assertions.
+1. **مصادقة حالة التخزين** — احذف كتلة تسجيل الدخول، واربط `tests/authentication.setup.ts`، وتحقّق من أن الاختبار ما زال يصل إلى `/shelf`.
+2. **الزرع الحتمي** — أضف `resetShelfContent` في `beforeEach`، وتحقّق من وجود الكتاب قبل التفاعل معه.
+3. **المحددات الدلالية** — استبدل كل محدد CSS بـ`getByRole`/`getByLabel`/`getByText`، وحدد النطاق بعنوان الكتاب.
+4. **انتظارات حقيقية** — استبدل كل `waitForTimeout` بـ`toBeVisible()` أو `waitForResponse`، وبدّل `textContent` + `toContain` بتأكيدات تعيد المحاولة تلقائيًا.
 
-Each commit should leave the test passing. If a commit breaks the test, you’ve got the order wrong—probably tried to remove a `waitForTimeout` before the locator it was compensating for was fixed. Work top-down.
+ينبغي أن يترك كل إيداع الاختبار ناجحًا. وإن كسر إيداعٌ الاختبار، فقد أخطأت الترتيب—حاولت على الأرجح إزالة `waitForTimeout` قبل إصلاح المحدد الذي كان يعوّض عنه. اعمل من الأعلى إلى الأسفل.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **Authentication is infrastructure, not test code.** Storage state runs once, the whole suite benefits.
-- **Seeding is the contract between your test and your database.** If you don’t seed, you’re testing “whatever happened to be there,” which is another way of saying “nothing in particular.”
-- **Semantic locators are more stable than CSS selectors *and* they’re accessibility assertions for free.** If `getByRole('button', { name: 'Rate this book' })` stops working, either the button lost its accessible name or the accessible name changed. Both of those are bugs worth catching.
-- **The assertion is the wait.** `toBeVisible()`, `toHaveText()`, and `waitForResponse` all have built-in retry logic. Adding a `waitForTimeout` on top of them is paying for the same thing twice—except the timeout version is slower *and* less reliable.
+- **المصادقة بنية تحتية، لا شيفرة اختبار.** حالة التخزين تعمل مرة واحدة، وتستفيد منها المجموعة كلها.
+- **الزرع هو العقد بين اختبارك وقاعدة بياناتك.** إن لم تزرع، فأنت تختبر «أي شيء تصادف وجوده»، وهذا تعبير آخر عن «لا شيء بعينه».
+- **المحددات الدلالية أكثر استقرارًا من محددات CSS *وهي* تأكيدات وصول مجانًا.** فإن توقف `getByRole('button', { name: 'Rate this book' })` عن العمل، فإما أن الزر فقد اسمه المتاح للوصول أو أن الاسم المتاح تغيّر. وكلاهما عيب يستحق الالتقاط.
+- **التأكيد هو الانتظار.** لـ`toBeVisible()` و`toHaveText()` و`waitForResponse` منطق إعادة محاولة مدمج. وإضافة `waitForTimeout` فوقها دفع مرتين مقابل الشيء نفسه—إلا أن نسخة المهلة أبطأ *وأقل* موثوقية.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Harden the Flaky Rate-Book Test](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)
+- [مختبر: تحصين اختبار تقييم الكتاب المتذبذب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [اختبارات API وUI الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)

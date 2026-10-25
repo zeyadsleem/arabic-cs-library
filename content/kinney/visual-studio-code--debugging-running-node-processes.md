@@ -1,10 +1,10 @@
 ---
-title: "Debugging Running Node Processes"
-lang: en
+title: "تنقيح عمليات Node قيد التشغيل"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/debugging-running-node-processes"
 ---
 
-Alternatively, you can attach the debugger to an already running Node process. To do this, start your Node program with the inspector enabled (e.g. `node --inspect-brk app.js` to break on the first line, or `node --inspect app.js` to just listen). Then use a configuration with `"request": "attach"`, specifying the `"port"` (default 9229 for Node inspector) and `"address"` (e.g. `"localhost"` if running locally). For example:
+بديلًا عن ذلك، يمكنك إرفاق المُنقّح بعملية Node قيد التشغيل بالفعل. ولتفعل ذلك، شغّل برنامج Node مع تمكين المفتّش (مثل `node --inspect-brk app.js` للتوقّف عند السطر الأول، أو `node --inspect app.js` للاستماع فقط). ثم استخدم إعدادًا يحمل `"request": "attach"`، مع تحديد `"port"` (والافتراضي 9229 لمفتّش Node) و`"address"` (مثل `"localhost"` إذا كان التشغيل محليًا). فمثلًا:
 
 ```json
 {
@@ -16,4 +16,4 @@ Alternatively, you can attach the debugger to an already running Node process. T
 }
 ```
 
-When you start this attach config (F5), Visual Studio Code will try to attach to Node on that host/port. This is useful for debugging scenarios where the Node process is launched outside Visual Studio Code (for instance, via a terminal or a nodemon process). Visual Studio Code can also **auto-attach** to Node processes run in the integrated terminal if you enable it (more on this in *Lesser-Known Features*).
+عند بدء إعداد الإرفاق هذا (F5)، سيحاول Visual Studio Code الإرفاق بـ Node على ذلك المضيف والمنفذ. وهذا مفيد في سيناريوهات التنقيح التي تُطلَق فيها عملية Node خارج Visual Studio Code (مثل الإطلاق عبر طرفية أو عملية nodemon). ويستطيع Visual Studio Code أيضًا **الإرفاق التلقائي** بعمليات Node التي تعمل في الطرفية المدمجة إن مكّنت ذلك (وسنتناول هذا بمزيد من التفصيل في *الميزات الأقل شهرة*).

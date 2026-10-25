@@ -1,29 +1,26 @@
 ---
-title: "Cursor Command Line Interface"
-lang: en
+title: "واجهة سطر أوامر Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-cli"
 ---
 
-[Cursor’s command line interface](https://cursor.com/docs/cli/overview) uses the `agent` command. It is useful when the task belongs in the terminal or when you
-want a scriptable agent surface.
+تستخدم [واجهة سطر أوامر Cursor](https://cursor.com/docs/cli/overview) الأمر `agent`. وهي مفيدة عندما تنتمي المهمة إلى الطرفية أو عندما تريد سطح وكيل قابلًا للبرمجة النصية.
 
-## Interactive Sessions
+## الجلسات التفاعلية
 
-Run `agent` inside a repository:
+شغّل `agent` داخل مستودع:
 
 ```bash
 agent
 ```
 
-The terminal interface supports Agent, Plan, and Ask modes. It can resume
-sessions, continue the latest session, and hand work to the cloud when you
-prepend `&` to an agent request:
+تدعم واجهة الطرفية أوضاع Agent و Plan و Ask. وتستطيع استئناف الجلسات، ومتابعة أحدث جلسة، وتسليم العمل إلى السحابة عندما تسبق طلب الوكيل بـ `&`:
 
 ```bash
 & refactor the auth module
 ```
 
-Useful session commands include:
+من أوامر الجلسة المفيدة:
 
 ```bash
 agent ls
@@ -31,32 +28,26 @@ agent resume
 agent --continue
 ```
 
-## Print Mode
+## وضع الطباعة
 
-[Print mode](https://cursor.com/docs/cli/headless) runs a prompt and exits:
+يشغّل [وضع الطباعة](https://cursor.com/docs/cli/headless) طلبًا ثم يخرج:
 
 ```bash
 agent -p "Summarize the staged diff and list test gaps."
 ```
 
-By default, print mode is safest for read-only work. If you allow file
-modification, do it explicitly with the documented flags and only inside a clean
-working tree.
+بشكل افتراضي، وضع الطباعة هو الأكثر أمانًا للعمل للقراءة فقط. وإذا سمحت بتعديل الملفات، فافعل ذلك صراحةً بالأعلام الموثّقة وداخل شجرة عمل نظيفة فقط.
 
-## Automation Pattern
+## نمط الأتمتة
 
-Use print mode for narrow checks:
+استخدم وضع الطباعة لفحوص ضيقة:
 
 ```bash
 agent -p "Review this diff for missing tests. Output only findings with file paths."
 ```
 
-Do not build hidden release systems out of agent prompts. If a step must always
-run, put it in a script or continuous integration. Use the agent to reason about
-the result.
+لا تبنِ أنظمة إصدار خفية من طلبات الوكيل. وإذا وجب أن تعمل خطوة دائمًا، فضعها في سكربت أو تكامل مستمر. واستخدم الوكيل للاستدلال على النتيجة.
 
-## Local Permissions Still Matter
+## الصلاحيات المحلية تبقى مهمة
 
-The command line interface can run shell commands and edit files. The same
-approval rules apply as in the editor: know what the agent is allowed to do,
-review the diff, and run the verification command yourself before shipping.
+تستطيع واجهة سطر الأوامر تشغيل أوامر الصدفة وتعديل الملفات. وتنطبق قواعد الموافقة نفسها كما في المحرّر: اعرف ما يُسمح للوكيل بفعله، وراجع الفرق، وشغّل أمر التحقق بنفسك قبل الشحن.

@@ -1,20 +1,20 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/secrets-in-lambda-solution"
 ---
 
-This is the complete solution for the [Exercise: Store and Retrieve a Secret in Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-exercise). If you got stuck, don’t worry—there are a few gotchas in here that trip everyone up the first time.
+هذا هو الحل الكامل لـ[تمرين: تخزين سرّ واسترجاعه في Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-exercise). إذا وقعت في مشكلة، فلا تقلق — ثمة بعض المزالق هنا يتعثّر فيها الجميع في المرة الأولى.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- Parameter Store becomes the source of truth for the secret, which removes the value from source control and from Lambda configuration.
-- The function loads the secret at initialization time, so you pay the lookup cost once per warm environment instead of on every invocation.
-- The final configuration check matters because a secret is not truly moved until it disappears from environment variables and deployment settings.
+- يصبح Parameter Store مصدر الحقيقة للسرّ، ما يُخرج القيمة من نظام التحكّم بالمصادر ومن إعدادات Lambda.
+- تُحمّل الدالة السرّ في وقت التهيئة، فتدفع كلفة البحث مرة واحدة لكل بيئة دافئة بدلًا من كل استدعاء.
+- فحص الإعداد النهائي مهم لأن السرّ لا يكون قد انتقل فعلًا حتى يختفي من متغيّرات البيئة وإعدادات النشر.
 
-If you want AWS’s version of the secret-storage workflow open while you work, keep the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) and the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) nearby.
+إذا أردت نسخة AWS من سير عمل تخزين الأسرار مفتوحة أثناء عملك، فأبقِ [نظرة عامة على AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) و[توثيق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) قريبًا منك.
 
-## Store the Secret
+## تخزين السرّ
 
 ```bash
 aws ssm put-parameter \
@@ -25,7 +25,7 @@ aws ssm put-parameter \
   --output json
 ```
 
-Verify it:
+تحقّق منه:
 
 ```bash
 aws ssm get-parameter \
@@ -35,7 +35,7 @@ aws ssm get-parameter \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقّعة:
 
 ```json
 {
@@ -50,13 +50,13 @@ Expected output:
 }
 ```
 
-You can also verify the parameter in the AWS Console under **Systems Manager → Parameter Store**:
+يمكنك أيضًا التحقّق من المعامل في وحدة تحكّم AWS تحت **Systems Manager → Parameter Store**:
 
-The Parameter Store detail view showing the SecureString parameter with its ARN, type, tier, and masked value.
+عرض تفاصيل Parameter Store وهو يُظهر معامل SecureString مع ARN الخاص به ونوعه وطبقته وقيمته المقنّعة.
 
-## Write the Handler
+## كتابة المعالج
 
-Project setup:
+إعداد المشروع:
 
 ```bash
 mkdir -p lambda/src
@@ -66,7 +66,7 @@ npm install @aws-sdk/client-ssm
 npm install -D typescript @types/aws-lambda @types/node
 ```
 
-Create `tsconfig.json`:
+أنشئ `tsconfig.json`:
 
 ```json
 {
@@ -89,7 +89,7 @@ Create `tsconfig.json`:
 }
 ```
 
-Add the build script to `package.json`:
+أضف سكربت البناء إلى `package.json`:
 
 ```json
 {
@@ -99,7 +99,7 @@ Add the build script to `package.json`:
 }
 ```
 
-Create `src/handler.ts`:
+أنشئ `src/handler.ts`:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -144,19 +144,19 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Create the client at module level so it is reused across invocations.
+*ملاحظة:* أنشئ العميل على مستوى الوحدة النمطية كي يُعاد استخدامه بين الاستدعاءات.
 
-*Note:* Skip the API call if the value is already cached from a previous invocation.
+*ملاحظة:* تخطَّ استدعاء API إذا كانت القيمة مخزّنة مؤقتًا من استدعاء سابق.
 
-Build:
+ابنِ:
 
 ```bash
 npm run build
 ```
 
-## Update the Execution Role
+## تحديث دور التنفيذ
 
-Create `parameter-store-policy.json` (also available as [`parameter-store.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/parameter-store.json) in the Scratch Lab repository):
+أنشئ `parameter-store-policy.json` (وهو متاح أيضًا باسم [`parameter-store.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/parameter-store.json) في مستودع Scratch Lab):
 
 ```json
 {
@@ -176,7 +176,7 @@ Create `parameter-store-policy.json` (also available as [`parameter-store.json`]
 }
 ```
 
-Attach it to the execution role:
+أرفقه بدور التنفيذ:
 
 ```bash
 aws iam put-role-policy \
@@ -186,7 +186,7 @@ aws iam put-role-policy \
   --output json
 ```
 
-Verify the policy is attached:
+تحقّق من أن السياسة مرفقة:
 
 ```bash
 aws iam list-role-policies \
@@ -194,7 +194,7 @@ aws iam list-role-policies \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقّعة:
 
 ```json
 {
@@ -202,7 +202,7 @@ Expected output:
 }
 ```
 
-You can also verify the policy contents:
+يمكنك أيضًا التحقّق من محتوى السياسة:
 
 ```bash
 aws iam get-role-policy \
@@ -211,9 +211,9 @@ aws iam get-role-policy \
   --output json
 ```
 
-## Deploy and Invoke
+## النشر والاستدعاء
 
-Package the function. The `nodejs22.x` runtime bundles the AWS SDK v3, but bundle `node_modules` anyway—AWS pins a specific minor version in the runtime, not the latest, and it varies by region. Bundling your own copy means you control the version and aren’t surprised by a runtime update:
+حزّم الدالة. تُضمّن بيئة التشغيل `nodejs22.x` حزمة AWS SDK v3، لكن احزم `node_modules` على أي حال — إذ تثبّت AWS إصدارًا فرعيًا محدّدًا في بيئة التشغيل، لا الأحدث، وهو يتفاوت حسب المنطقة. وحزم نسختك الخاصة يعني أنك تتحكّم في الإصدار ولا تفاجئك تحديثات بيئة التشغيل:
 
 ```bash
 cd lambda
@@ -224,7 +224,7 @@ zip -r ../function.zip .
 cd ..
 ```
 
-Deploy—if updating an existing function:
+انشر — إن كنت تحدّث دالة موجودة:
 
 ```bash
 aws lambda update-function-code \
@@ -234,7 +234,7 @@ aws lambda update-function-code \
   --output json
 ```
 
-Or create a new function:
+أو أنشئ دالة جديدة:
 
 ```bash
 aws lambda create-function \
@@ -248,11 +248,11 @@ aws lambda create-function \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> The default timeout is 3 seconds. The first invocation (cold start) includes the SDK call to Parameter Store, which can take a second or two. Setting the timeout to 10 seconds gives plenty of headroom.
+> المهلة الافتراضية 3 ثوانٍ. ويتضمّن أول استدعاء (بدء بارد) استدعاء SDK إلى Parameter Store، وقد يستغرق ثانية أو ثانيتين. وضبط المهلة على 10 ثوانٍ يمنحك هامشًا واسعًا.
 
-Invoke the function:
+استدعِ الدالة:
 
 ```bash
 aws lambda invoke \
@@ -264,13 +264,13 @@ aws lambda invoke \
   response.json
 ```
 
-Read the response:
+اقرأ الاستجابة:
 
 ```bash
 cat response.json
 ```
 
-Expected output:
+المخرجات المتوقّعة:
 
 ```json
 {
@@ -280,9 +280,9 @@ Expected output:
 }
 ```
 
-The `keyPrefix` value is `sk_test`—the first 7 characters of `sk_test_exercise_abc123`.
+قيمة `keyPrefix` هي `sk_test` — أول 7 أحرف من `sk_test_exercise_abc123`.
 
-## Verify the Secret Isn’t in Environment Variables
+## التحقّق من أن السرّ ليس في متغيّرات البيئة
 
 ```bash
 aws lambda get-function-configuration \
@@ -292,15 +292,15 @@ aws lambda get-function-configuration \
   --output json
 ```
 
-If you have environment variables from a previous exercise (like `TABLE_NAME`), they appear here. The API key doesn’t. It exists only in Parameter Store.
+إذا كانت لديك متغيّرات بيئة من تمرين سابق (مثل `TABLE_NAME`)، فستظهر هنا. أما مفتاح API فلا يظهر. فهو موجود في Parameter Store فقط.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-**“AccessDeniedException” when invoking the function.** The execution role is missing `ssm:GetParameter` or `kms:Decrypt` permissions. Double-check the policy document and verify it’s attached to the correct role. Also verify the parameter ARN in the policy matches the parameter name exactly—remember that the ARN path doesn’t double the leading slash.
+**«AccessDeniedException» عند استدعاء الدالة.** دور التنفيذ تفتقده أذونات `ssm:GetParameter` أو `kms:Decrypt`. راجع مستند السياسة وتحقّق من إرفاقه بالدور الصحيح. وتحقّق أيضًا من أن ARN المعامل في السياسة يطابق اسم المعامل تمامًا — وتذكّر أن مسار ARN لا يضاعف الشرطة المائلة البادئة.
 
-**“ParameterNotFound” error.** The parameter name in your code doesn’t match the name you used in `put-parameter`. Parameter names are case-sensitive and must include the full path with leading slash.
+**خطأ «ParameterNotFound».** اسم المعامل في شفرتك لا يطابق الاسم الذي استخدمته في `put-parameter`. أسماء المعاملات حسّاسة لحالة الأحرف ويجب أن تتضمّن المسار الكامل مع الشرطة المائلة البادئة.
 
-**Function times out.** The default timeout is 3 seconds, which may not be enough for a cold start that includes an SDK call. Bump the timeout to 10 seconds with:
+**انتهاء مهلة الدالة.** المهلة الافتراضية 3 ثوانٍ، وقد لا تكفي لبدء بارد يتضمّن استدعاء SDK. ارفع المهلة إلى 10 ثوانٍ بـ:
 
 ```bash
 aws lambda update-function-configuration \
@@ -310,11 +310,11 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-**“Cannot find module ‘@aws-sdk/client-ssm’”** The `node_modules` directory wasn’t included in the deployment zip. The `nodejs22.x` runtime does bundle the AWS SDK v3, but this exercise bundles its own copy for version control. Make sure you copy `node_modules` into the `dist/` directory before zipping.
+**«Cannot find module '@aws-sdk/client-ssm'»** لم يُضمَّن دليل `node_modules` في ملف zip الخاص بالنشر. تتضمّن بيئة التشغيل `nodejs22.x` حزمة AWS SDK v3، لكن هذا التمرين يحزم نسخته الخاصة للتحكّم في الإصدار. تأكّد من نسخ `node_modules` إلى دليل `dist/` قبل الضغط.
 
-## Stretch Goal Solution: GetParametersByPath
+## حل الهدف الإضافي: GetParametersByPath
 
-Store a second parameter:
+خزّن معاملًا ثانيًا:
 
 ```bash
 aws ssm put-parameter \
@@ -325,7 +325,7 @@ aws ssm put-parameter \
   --output json
 ```
 
-Update the IAM policy to allow `ssm:GetParametersByPath` and broaden the resource to the path prefix:
+حدّث سياسة IAM للسماح بـ`ssm:GetParametersByPath` وتوسيع المورد إلى بادئة المسار:
 
 ```json
 {
@@ -345,7 +345,7 @@ Update the IAM policy to allow `ssm:GetParametersByPath` and broaden the resourc
 }
 ```
 
-Updated handler using `GetParametersByPathCommand`:
+معالج محدّث باستخدام `GetParametersByPathCommand`:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -399,11 +399,11 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-The response now includes both parameters, loaded in a single API call.
+تتضمّن الاستجابة الآن المعاملين، محمّلين في استدعاء API واحد.
 
-## Cleanup
+## التنظيف
 
-Delete the Parameter Store parameters when you’re done:
+احذف معاملات Parameter Store عندما تنتهي:
 
 ```bash
 aws ssm delete-parameters \
@@ -414,4 +414,4 @@ aws ssm delete-parameters \
   --output json
 ```
 
-Standard-tier parameters are free, so this is housekeeping rather than a cost concern—but it keeps your parameter namespace clean.
+معاملات الطبقة القياسية مجانية، لذا فالأمر تنظيمٌ لا شأن له بالتكلفة — لكنه يُبقي فضاء أسماء المعاملات نظيفًا.

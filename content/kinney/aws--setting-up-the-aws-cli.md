@@ -1,29 +1,29 @@
 ---
-title: "Setting Up the AWS CLI"
-lang: en
+title: "إعداد AWS CLI"
+lang: ar
 source: "https://stevekinney.com/courses/aws/setting-up-the-aws-cli"
 ---
 
-The AWS Management Console is fine for clicking around and exploring, but you’re not going to deploy a frontend by clicking buttons. The **AWS CLI (Command Line Interface)** is how you’ll interact with AWS from your terminal—syncing files to S3, creating CloudFront invalidations, invoking Lambda functions, and everything else you’ll do in this course. It’s also what your CI/CD pipeline will use under the hood.
+وحدة تحكم إدارة AWS مناسبة للنقر والاستكشاف، لكنك لن تنشر واجهة أمامية بالنقر على الأزرار. إن **AWS CLI (واجهة سطر الأوامر)** هي طريقتك للتفاعل مع AWS من الطرفية—مزامنة الملفات إلى S3، وإنشاء عمليات إبطال في CloudFront، واستدعاء دوال Lambda، وكل شيء آخر ستفعله في هذه الدورة. وهي أيضًا ما سيستخدمه خط أنابيب CI/CD لديك في الخلفية.
 
-If you want AWS’s canonical version of the profile and credential file setup, the [AWS CLI configuration file guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) is the official reference.
+إذا أردت النسخة المعتمدة من AWS لإعداد ملف التعريف وملف بيانات الاعتماد، فإن [دليل ملفات تهيئة AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) هو المرجع الرسمي.
 
-If you’ve used tools like `vercel` or `netlify` CLI, the AWS CLI serves a similar purpose. The difference is that it covers every AWS service, so the surface area is much larger. You won’t need to memorize it all—just the commands for the services you’re using.
+إذا استخدمت أدوات مثل `vercel` أو `netlify` CLI، فإن AWS CLI تؤدي غرضًا مشابهًا. الفرق أنها تغطي كل خدمة في AWS، لذا فإن مساحة السطح أكبر بكثير. لن تحتاج إلى حفظها كلها—فقط أوامر الخدمات التي تستخدمها.
 
-## Installing AWS CLI v2
+## تثبيت AWS CLI v2
 
-AWS CLI v2 is the current version. Don’t install v1—it’s effectively deprecated and missing features you’ll want.
+AWS CLI v2 هي النسخة الحالية. لا تثبّت v1—فهي مهجورة فعليًا وتفتقد ميزات ستحتاجها.
 
 ### macOS
 
-The simplest path is the official `.pkg` installer:
+أبسط طريق هو مثبّت `.pkg` الرسمي:
 
 ```bash
 curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
 sudo installer -pkg AWSCLIV2.pkg -target /
 ```
 
-If you prefer Homebrew:
+إذا كنت تفضّل Homebrew:
 
 ```bash
 brew install awscli
@@ -31,7 +31,7 @@ brew install awscli
 
 ### Linux
 
-Download, unzip, and run the installer:
+نزّل الملف، وفكّ ضغطه، وشغّل المثبّت:
 
 ```bash
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -39,7 +39,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-For ARM-based Linux (like Graviton instances):
+لنُظم Linux المبنية على ARM (مثل نسخ Graviton):
 
 ```bash
 curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
@@ -47,47 +47,47 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-### Verify the Installation
+### التحقق من التثبيت
 
 ```bash
 aws --version
 ```
 
-You should see something like `aws-cli/2.x.x Python/3.x.x` followed by your platform info. If you get “command not found,” the install didn’t add `aws` to your PATH—check that `/usr/local/bin` is in your `$PATH`.
+ينبغي أن ترى شيئًا مثل `aws-cli/2.x.x Python/3.x.x` يتبعه معلومات منصّتك. إذا ظهرت لك رسالة «لم يتم العثور على الأمر»، فالتثبيت لم يضف `aws` إلى PATH لديك—تحقّق من أن `/usr/local/bin` موجود في `$PATH`.
 
-## Creating Access Keys
+## إنشاء مفاتيح الوصول
 
-> **2026 Recommendation**
+> **توصية 2026**
 >
-> The course uses IAM user access keys because they’re the shortest path to a working CLI. In a real production setup, the 2026 recommendation is to run `aws configure sso` and log in through **IAM Identity Center**, which hands the CLI short-lived credentials scoped to an SSO session. No long-lived secret access key ever touches your disk. Every `aws` command in this course works identically against either credential source—the difference is only in how the CLI gets its token. Treat the access-key approach below as a course simplification and plan to migrate once you’re comfortable.
+> تستخدم الدورة مفاتيح وصول لمستخدم IAM لأنها أقصر طريق للحصول على CLI عاملة. في إعداد إنتاجي حقيقي، توصية 2026 هي تشغيل `aws configure sso` وتسجيل الدخول عبر **IAM Identity Center**، الذي يمنح CLI بيانات اعتماد قصيرة الأجل محدّدة النطاق بجلسة SSO. لا يلمس أي مفتاح وصول سري طويل الأجل قرصك أبدًا. كل أمر `aws` في هذه الدورة يعمل بالطريقة نفسها مع أي من مصدرَي بيانات الاعتماد—الفرق فقط في كيفية حصول CLI على رمزها. تعامل مع نهج مفتاح الوصول أدناه كتبسيط للدورة، وخطط للانتقال إلى SSO عندما تصبح مرتاحًا.
 
-Before you can configure the CLI, you need **access keys** for your IAM user. Access keys are a pair of credentials—an **Access Key ID** and a **Secret Access Key**—that let the CLI authenticate as your IAM user.
+قبل أن تتمكّن من تهيئة CLI، تحتاج إلى **مفاتيح وصول** لمستخدم IAM الخاص بك. مفاتيح الوصول زوج من بيانات الاعتماد—**معرّف مفتاح الوصول (Access Key ID)** و**مفتاح الوصول السري (Secret Access Key)**—يتيحان لـ CLI المصادقة بصفتك مستخدم IAM.
 
-1. Sign into the AWS Console as your `admin` user (not root—remember, root stays locked away).
-2. Navigate to **IAM** > **Users** > **admin**.
-3. Click the **Security credentials** tab.
-4. Scroll to **Access keys** and click **Create access key**.
-5. Select **Command Line Interface (CLI)** as the use case.
-6. Acknowledge the recommendation about alternatives (AWS wants you to know that short-lived credentials via IAM Identity Center are more secure—true, but access keys are simpler for learning).
-7. Click **Create access key**.
+1. سجّل الدخول إلى وحدة تحكم AWS بمستخدم `admin` الخاص بك (لا بحساب الجذر—تذكّر أن الجذر يبقى مقفلًا بعيدًا).
+2. انتقل إلى **IAM** > **Users** > **admin**.
+3. انقر على علامة التبويب **Security credentials**.
+4. مرّر إلى **Access keys** وانقر على **Create access key**.
+5. اختر **Command Line Interface (CLI)** كحالة الاستخدام.
+6. أقرّ بالتوصية بشأن البدائل (تريد AWS أن تعرف أن بيانات الاعتماد قصيرة الأجل عبر IAM Identity Center أكثر أمانًا—صحيح، لكن مفاتيح الوصول أبسط للتعلّم).
+7. انقر على **Create access key**.
 
-Security credentials tab for an IAM user showing the Access keys section and the Create access key button.
+علامة التبويب الخاصة ببيانات الاعتماد الأمنية لمستخدم IAM، مع إظهار قسم Access keys وزر Create access key.
 
-You’ll see your **Access Key ID** and **Secret Access Key**. This is the only time the secret key is shown. Copy both values and store them in your password manager.
+سترى **Access Key ID** و**Secret Access Key** الخاصين بك. هذه هي المرة الوحيدة التي يُعرض فيها المفتاح السري. انسخ القيمتين واحفظهما في مدير كلمات المرور لديك.
 
-> **Warning**
+> **تحذير**
 >
-> If you lose the secret access key, you can’t retrieve it. You’ll have to delete the key pair and create a new one. Treat these credentials like passwords—they grant the same level of access as logging into the console as that user.
+> إذا فقدت مفتاح الوصول السري، فلن تستطيع استعادته. سيكون عليك حذف زوج المفاتيح وإنشاء زوج جديد. تعامل مع بيانات الاعتماد هذه مثل كلمات المرور—فهي تمنح مستوى الوصول نفسه الذي يمنحه تسجيل الدخول إلى وحدة التحكم بذلك المستخدم.
 
-## Configuring the CLI
+## تهيئة CLI
 
-Run `aws configure` to set up your default profile:
+شغّل `aws configure` لإعداد ملف التعريف الافتراضي:
 
 ```bash
 aws configure
 ```
 
-It prompts for four values:
+يطلب أربع قيم:
 
 ```
 AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
@@ -96,28 +96,28 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
-Enter your access key ID, secret access key, `us-east-1` as the region, and `json` as the output format. These values get written to two files in your home directory:
+أدخل معرّف مفتاح الوصول، ومفتاح الوصول السري، و`us-east-1` كمنطقة، و`json` كصيغة إخراج. تُكتب هذه القيم في ملفين داخل دليلك الرئيسي:
 
-- `~/.aws/credentials`—stores your access keys
-- `~/.aws/config`—stores region and output preferences
+- `~/.aws/credentials`—يخزّن مفاتيح الوصول لديك
+- `~/.aws/config`—يخزّن تفضيلات المنطقة وصيغة الإخراج
 
-> **Tip**
+> **نصيحة**
 >
-> We use `us-east-1` throughout this course because it’s the region where CloudFront certificates and Lambda@Edge functions must be created. Using a single region for everything keeps things simple while you’re learning.
+> نستخدم `us-east-1` في كل هذه الدورة لأنها المنطقة التي يجب إنشاء شهادات CloudFront ودوال Lambda@Edge فيها. استخدام منطقة واحدة لكل شيء يُبقي الأمور بسيطة أثناء التعلّم.
 
-Once you’ve set a default region with `aws configure`, the `--region` flag becomes optional: if you leave it off, the CLI uses whatever you configured. For the rest of the course, I’ll still pass `--region us-east-1` explicitly on every command. It’s redundant when your default is already `us-east-1`, but it makes the examples reproducible if you ever change your default and copy a command into a different shell. If you want to drop the flag once you’re comfortable, that’s fine—just remember which region your default points at.
+بعد أن تضبط منطقة افتراضية باستخدام `aws configure`، تصبح خانة `--region` اختيارية: إذا تركتها، تستخدم CLI ما قمت بتهيئته. في بقية الدورة، سأظل أمرّر `--region us-east-1` صراحةً في كل أمر. إنها زائدة عن الحاجة عندما تكون منطقتك الافتراضية هي `us-east-1` بالفعل، لكنها تجعل الأمثلة قابلة للتكرار إذا غيّرت منطقتك الافتراضية يومًا ونسخت أمرًا إلى صدفة أخرى. إذا أردت إسقاط الخانة بعد أن تصبح مرتاحًا، فلا بأس—تذكّر فقط إلى أي منطقة يشير الافتراضي لديك.
 
-## Named Profiles
+## ملفات التعريف المسماة
 
-The default profile works fine when you have one AWS account. But if you ever have a personal account and a work account—or a staging environment and a production environment—you’ll want **named profiles**.
+يعمل ملف التعريف الافتراضي جيدًا عندما يكون لديك حساب AWS واحد. لكن إذا كان لديك يومًا حساب شخصي وحساب عمل—أو بيئة تمهيدية وبيئة إنتاج—فستريد **ملفات تعريف مسماة**.
 
-Create a named profile by adding `--profile` to the configure command:
+أنشئ ملف تعريف مسمّى بإضافة `--profile` إلى أمر التهيئة:
 
 ```bash
 aws configure --profile personal
 ```
 
-This creates a separate set of credentials stored under the `personal` profile name. To use it, add `--profile personal` to any CLI command:
+هذا ينشئ مجموعة منفصلة من بيانات الاعتماد مخزّنة تحت اسم ملف التعريف `personal`. لاستخدامه، أضف `--profile personal` إلى أي أمر CLI:
 
 ```bash
 aws s3 ls \
@@ -125,7 +125,7 @@ aws s3 ls \
   --region us-east-1
 ```
 
-The underlying file structure looks like this:
+يبدو هيكل الملفات الكامن هكذا:
 
 **`~/.aws/credentials`**
 
@@ -151,17 +151,17 @@ region = us-east-1
 output = json
 ```
 
-Notice the asymmetry: in the credentials file, the section header is just `[personal]`. In the config file, it’s `[profile personal]`. This inconsistency is annoying, but it’s how AWS designed it. (Honestly, I don’t know why. It trips everyone up at least once.) The `[default]` profile doesn’t use the `profile` prefix in either file.
+لاحظ عدم التماثل: في ملف بيانات الاعتماد، رأس القسم هو `[personal]` فقط. في ملف الإعداد، هو `[profile personal]`. هذا التضارب مزعج، لكنه الطريقة التي صمّمتها AWS. (بصراحة، لا أعرف السبب. هذا يُربك الجميع مرة واحدة على الأقل.) ملف التعريف `[default]` لا يستخدم بادئة `profile` في أي من الملفين.
 
-You can also set the `AWS_PROFILE` environment variable to avoid typing `--profile` on every command:
+يمكنك أيضًا ضبط متغيّر البيئة `AWS_PROFILE` لتجنّب كتابة `--profile` في كل أمر:
 
 ```bash
 export AWS_PROFILE=personal
 ```
 
-## Verifying Your Credentials
+## التحقق من بيانات الاعتماد
 
-The best way to confirm your CLI is properly configured is the `get-caller-identity` command:
+أفضل طريقة للتأكد من أن CLI مهيّأة بشكل صحيح هي أمر `get-caller-identity`:
 
 ```bash
 aws sts get-caller-identity \
@@ -169,7 +169,7 @@ aws sts get-caller-identity \
   --output json
 ```
 
-This returns the identity associated with your credentials:
+هذا يعيد الهوية المرتبطة ببيانات اعتمادك:
 
 ```json
 {
@@ -179,40 +179,40 @@ This returns the identity associated with your credentials:
 }
 ```
 
-If you see your account ID and the ARN of your `admin` user, everything is working. This command requires no special permissions—it works even if the user has no policies attached. It’s the AWS equivalent of `whoami`.
+إذا رأيت معرّف حسابك وARN الخاص بمستخدم `admin` لديك، فكل شيء يعمل. لا يتطلب هذا الأمر أي أذونات خاصة—فهو يعمل حتى لو لم يكن للمستخدم أي سياسات مرفقة. إنه مكافئ `whoami` في عالم AWS.
 
-If you get an error like `The security token included in the request is invalid`, your access keys are wrong. Double-check what you entered, or delete the key pair in the console and create a new one.
+إذا ظهرت لك رسالة خطأ مثل `The security token included in the request is invalid`، فمفاتيح الوصول لديك خاطئة. تحقّق مرة أخرى مما أدخلته، أو احذف زوج المفاتيح في وحدة التحكم وأنشئ زوجًا جديدًا.
 
-> **Tip**
+> **نصيحة**
 >
-> Run `aws sts get-caller-identity` any time you’re unsure which credentials the CLI is using. It’s especially useful when you have multiple profiles and want to confirm you’re not accidentally running commands against your production account.
+> شغّل `aws sts get-caller-identity` في أي وقت تكون فيه غير متأكد من بيانات الاعتماد التي تستخدمها CLI. إنه مفيد بشكل خاص عندما يكون لديك عدة ملفات تعريف وتريد التأكد من أنك لا تشغّل الأوامر عن غير قصد ضد حساب الإنتاج لديك.
 
-## A Quick Test: List S3 Buckets
+## اختبار سريع: سرد حاويات S3
 
-Let’s make sure the CLI can actually talk to a service. Run:
+لنتأكد من أن CLI تستطيع فعلًا التحدث إلى خدمة. شغّل:
 
 ```bash
 aws s3 ls \
   --region us-east-1
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> The high-level `aws s3` commands (`ls`, `sync`, `cp`, `rm`) are convenience wrappers that don’t produce JSON output — `--output json` is silently ignored on these commands. Use `--output json` with `aws s3api` commands instead, which map directly to the S3 API and respect the output format flag.
+> أوامر `aws s3` عالية المستوى (`ls`، `sync`، `cp`، `rm`) هي أغلفة مريحة لا تنتج إخراج JSON — يتم تجاهل `--output json` بصمت مع هذه الأوامر. استخدم `--output json` مع أوامر `aws s3api` بدلًا من ذلك، فهي تُطابق S3 API مباشرة وتحترم علامة صيغة الإخراج.
 
-If you haven’t created any buckets yet, you’ll get an empty response. That’s fine—it means the CLI authenticated successfully and S3 responded. If you get an access denied error, your `admin` user’s permissions might not be set up correctly—revisit the user setup in [Creating and Securing an AWS Account](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account).
+إذا لم تكن قد أنشأت أي حاويات بعد، فستحصل على استجابة فارغة. لا بأس—هذا يعني أن CLI صادقت بنجاح وأن S3 استجاب. أما إذا حصلت على خطأ في رفض الوصول، فقد تكون أذونات مستخدم `admin` لديك غير مضبوطة بشكل صحيح—راجع إعداد المستخدم في [إنشاء حساب AWS وتأمينه](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account).
 
-## Security Hygiene for Access Keys
+## نظافة الأمان لمفاتيح الوصول
 
-A few rules to keep your credentials safe:
+بضعة قواعد للحفاظ على أمان بيانات اعتمادك:
 
-- **Never commit access keys to version control.** Add `~/.aws/` to your global `.gitignore`. If a key ends up in a public GitHub repo, bots will find it within minutes and start spinning up resources.
-- **Don’t put access keys in environment variables in CI/CD unless you’re using secrets management.** GitHub Actions has encrypted secrets. Use them.
-- **Rotate keys periodically.** You can have two active access keys per IAM user, which means you can create a new key, update your configuration, verify it works, and then deactivate the old key without downtime.
-- **Delete keys you’re not using.** If you created a key for testing and no longer need it, delete it. An unused key is an attack surface with no benefit.
+- **لا ترفع مفاتيح الوصول إلى نظام التحكم في الإصدارات أبدًا.** أضف `~/.aws/` إلى ملف `.gitignore` العام لديك. إذا انتهى مفتاح في مستودع GitHub عام، فستجده الروبوتات في غضون دقائق وتبدأ في إنشاء الموارد.
+- **لا تضع مفاتيح الوصول في متغيّرات بيئة داخل CI/CD إلا إذا كنت تستخدم إدارة الأسرار.** لدى GitHub Actions أسرار مشفّرة. استخدمها.
+- **دوّر المفاتيح دوريًا.** يمكن أن يكون لديك مفتاحا وصول نشطان لكل مستخدم IAM، ما يعني أنك تستطيع إنشاء مفتاح جديد، وتحديث إعدادك، والتحقق من أنه يعمل، ثم تعطيل المفتاح القديم دون أي توقف.
+- **احذف المفاتيح التي لا تستخدمها.** إذا أنشأت مفتاحًا للاختبار ولم تعد تحتاجه، فاحذفه. المفتاح غير المستخدم مساحة هجوم بلا فائدة.
 
-> **Warning**
+> **تحذير**
 >
-> If you ever suspect a key has been compromised—you accidentally logged it, it appeared in a build output, anything—deactivate it immediately in the IAM console. Don’t wait to create a replacement first. Deactivate, then create a new one. Minutes matter.
+> إذا شككت يومًا في أن مفتاحًا قد اختُرِق—سجّلته عن طريق الخطأ، أو ظهر في مخرجات بناء، أو أي شيء آخر—فعطّله فورًا في وحدة تحكم IAM. لا تنتظر لإنشاء بديل أولًا. عطّل، ثم أنشئ مفتاحًا جديدًا. الدقائق مهمة.
 
-You now have a working AWS CLI installation connected to your IAM user. Every CLI command in the rest of this course assumes this setup. When we create S3 buckets, configure CloudFront, or deploy Lambda functions, we’ll be using these same credentials from the same terminal.
+أصبح لديك الآن تثبيت AWS CLI عامل ومتصل بمستخدم IAM الخاص بك. كل أمر CLI في بقية هذه الدورة يفترض هذا الإعداد. عندما ننشئ حاويات S3، أو نهيّئ CloudFront، أو ننشر دوال Lambda، سنستخدم بيانات الاعتماد نفسها من الطرفية نفسها.

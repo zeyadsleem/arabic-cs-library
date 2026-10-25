@@ -1,157 +1,157 @@
 ---
-title: "What's Next: Services You'll Eventually Need"
-lang: en
+title: "ما التالي: خدمات ستحتاجها في النهاية"
+lang: ar
 source: "https://stevekinney.com/courses/aws/whats-next-services-youll-eventually-need"
 ---
 
-You now know how to deploy a static frontend with S3 and CloudFront, run serverless functions with Lambda, expose APIs through API Gateway, store data in DynamoDB, manage secrets with Secrets Manager and Parameter Store, and monitor all of it with CloudWatch. That’s a real stack. You can build and ship production applications with exactly what you’ve learned.
+أنت تعرف الآن كيف تنشر واجهة أمامية ثابتة باستخدام S3 وCloudFront، وتشغّل دوالًا بلا خادم باستخدام Lambda، وتعرض واجهات برمجية عبر API Gateway، وتخزّن البيانات في DynamoDB، وتدير الأسرار باستخدام Secrets Manager وParameter Store، وتراقب كل ذلك بـ CloudWatch. هذه مكدّس حقيقي، ويمكنك بناء تطبيقات إنتاجية وشحنها بما تعلّمته بالضبط.
 
-If you want AWS’s official version of the services in this tour, start with the [Amazon ECS Developer Guide](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html) and the [AWS WAF Developer Guide](https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html).
+إذا أردت النسخة الرسمية من AWS لخدمات هذه الجولة، فابدأ بـ[دليل مطوّر Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html) و[دليل مطوّر AWS WAF](https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html).
 
-But AWS has over 200 services, and at some point your application will need something that isn’t in your current toolkit. This lesson is a map of the services you’re most likely to reach for next—not a tutorial, just enough context to know what each one does and when it becomes relevant.
+لكن AWS لديها أكثر من 200 خدمة، وسيحتاج تطبيقك في مرحلة ما إلى شيء ليس في عدّتك الحالية. هذا الدرس خريطة للخدمات التي يُرجَّح أن تلجأ إليها بعد ذلك — ليس درسًا تعليميًا، بل سياق كافٍ لتعرف ما تفعله كل خدمة ومتى تصبح ذات صلة.
 
 ## Amplify
 
-**AWS Amplify** is a managed platform for full-stack web and mobile applications. Think of it as AWS’s answer to Vercel or Netlify—it handles hosting, CI/CD, and backend provisioning through a single interface.
+**AWS Amplify** منصة مُدارة لتطبيقات الويب والجوال كاملة المكدّس. فكّر فيها كردّ AWS على Vercel أو Netlify — فهي تتولى الاستضافة والتكامل المستمر والنشر الآلي وتهيئة الخلفية عبر واجهة واحدة.
 
-**When you’d reach for it:** You want the developer experience of Vercel (Git-push deploys, preview environments, managed hosting) but on AWS infrastructure. Amplify supports Next.js, Nuxt, Astro, and other frameworks with server-side rendering, and it provisions backend resources (auth, APIs, storage) through a CLI workflow.
+**متى تلجأ إليها:** عندما تريد تجربة المطوّر التي تمنحها Vercel (نشر بدفع Git، وبيئات معاينة، واستضافة مُدارة) لكن على بنية AWS التحتية. تدعم Amplify أُطر Next.js وNuxt وAstro وغيرها مع التصيير من جهة الخادم، وتهيّئ موارد الخلفية (المصادقة وواجهات API والتخزين) عبر سير عمل CLI.
 
-**Why you didn’t use it in this course:** Amplify abstracts away the services you spent 12 modules learning. That abstraction is valuable when you want speed, but this course was about understanding what’s underneath. Now that you know what Amplify does behind the scenes—S3, CloudFront, Lambda, API Gateway, DynamoDB—you can use it with informed confidence instead of blind trust.
+**لماذا لم تستخدمها في هذه الدورة:** تُجرّد Amplify الخدمات التي أمضيت 12 وحدة في تعلّمها. وهذا التجريد قيّم عندما تريد السرعة، لكن هذه الدورة كانت عن فهم ما يحدث تحت السطح. والآن بعد أن تعرف ما تفعله Amplify خلف الكواليس — S3 وCloudFront وLambda وAPI Gateway وDynamoDB — يمكنك استخدامها بثقة مستنيرة بدلًا من ثقة عمياء.
 
 ## Cognito
 
-**Amazon Cognito** provides user authentication and authorization. It handles sign-up, sign-in, password resets, multi-factor authentication, and social login (Google, Apple, Facebook) without you building any of that infrastructure yourself.
+تقدّم **Amazon Cognito** مصادقة المستخدمين وتفويضهم. فهي تتولى التسجيل وتسجيل الدخول وإعادة تعيين كلمات المرور والمصادقة متعددة العوامل وتسجيل الدخول الاجتماعي (Google وApple وFacebook) دون أن تبني أيًا من تلك البنية التحتية بنفسك.
 
-**When you’d reach for it:** Your application needs user accounts. You set up JWT authorizers or Lambda authorizers in [API Gateway Authentication](https://stevekinney.com/courses/aws/api-gateway-authentication)—Cognito is what generates those JWTs. It gives you a hosted login UI, user pools for managing identities, and direct integration with API Gateway and Lambda.
+**متى تلجأ إليها:** عندما يحتاج تطبيقك إلى حسابات مستخدمين. لقد أعددت مُفاوِضات JWT أو مُفاوِضات Lambda في [مصادقة API Gateway](https://stevekinney.com/courses/aws/api-gateway-authentication) — وCognito هي ما يولّد تلك الرموز JWT. وهي تمنحك واجهة تسجيل دخول مُستضافة، ومجموعات مستخدمين لإدارة الهويات، وتكاملًا مباشرًا مع API Gateway وLambda.
 
-**The frontend angle:** Cognito provides a JavaScript SDK (`amazon-cognito-identity-js` and the newer Amplify Auth library) that handles the entire authentication flow from your React application. You call a function, the user sees a login form, and you get back tokens that your API Gateway authorizer validates. No auth server to build or maintain.
+**من زاوية الواجهة الأمامية:** توفّر Cognito حزمة SDK لـ JavaScript (`amazon-cognito-identity-js` ومكتبة Amplify Auth الأحدث) تتولى تدفق المصادقة كله من تطبيق React لديك. فتستدعي دالة، ويرى المستخدم نموذج تسجيل دخول، وتحصل بالمقابل على رموز يتحقق منها مُفاوِض API Gateway لديك. بلا خادم مصادقة تبنيه أو تصونه.
 
 ## Step Functions
 
-**AWS Step Functions** is a serverless orchestration service. It lets you chain multiple Lambda functions (and other AWS services) into workflows with branching, retries, error handling, and parallel execution.
+**AWS Step Functions** خدمة تنسيق بلا خادم. فهي تتيح لك ربط عدة دوال Lambda (وخدمات AWS أخرى) في تدفقات عمل فيها تفرّع وإعادة محاولة ومعالجة أخطاء وتنفيذ متوازٍ.
 
-**When you’d reach for it:** Your backend logic outgrows a single Lambda function. Instead of one function that processes a form submission, sends an email, updates a database, and generates a PDF, you break the work into steps—each step is a Lambda function, and Step Functions manages the flow between them. If step three fails, Step Functions retries it without re-running steps one and two.
+**متى تلجأ إليها:** عندما يتجاوز منطق خلفيتك دالة Lambda واحدة. فبدلًا من دالة واحدة تعالج إرسال نموذج وترسل بريدًا إلكترونيًا وتحدّث قاعدة بيانات وتولّد ملف PDF، تقسّم العمل إلى خطوات — كل خطوة دالة Lambda، وStep Functions تدير التدفق بينها. وإن فشلت الخطوة الثالثة، تعيد Step Functions محاولتها دون إعادة تشغيل الخطوتين الأولى والثانية.
 
-**The mental model:** If Lambda is a single function call, Step Functions is `async/await` with `try/catch` for a series of function calls—except the orchestration runs on AWS infrastructure, not in your code.
+**النموذج الذهني:** إذا كانت Lambda استدعاء دالة واحدًا، فـ Step Functions هي `async/await` مع `try/catch` لسلسلة من استدعاءات الدوال — إلا أن التنسيق يعمل على بنية AWS التحتية لا في كودك.
 
 ## EventBridge
 
-**Amazon EventBridge** is a serverless event bus. It routes events between AWS services, third-party SaaS applications, and your own custom code based on rules you define.
+**Amazon EventBridge** ناقل أحداث بلا خادم. فهو يوجّه الأحداث بين خدمات AWS وتطبيقات SaaS الخارجية وكودك المخصّص بناءً على قواعد تحدّدها.
 
-**When you’d reach for it:** Your application needs to react to things happening in your AWS account without tight coupling. A user uploads a file to S3, and you want to resize it with Lambda. A DynamoDB item changes, and you want to send a notification. An external service (Stripe, Shopify, Auth0) fires a webhook, and you want to process it. EventBridge decouples the “something happened” from the “do something about it.”
+**متى تلجأ إليه:** عندما يحتاج تطبيقك إلى التفاعل مع أشياء تحدث في حساب AWS لديك دون اقتران محكم. يرفع مستخدم ملفًا إلى S3، وتريد تغيير حجمه بـ Lambda. يتغيّر عنصر في DynamoDB، وتريد إرسال إشعار. تُطلق خدمة خارجية (Stripe أو Shopify أو Auth0) خطاف ويب، وتريد معالجته. يفصل EventBridge بين «حدث شيء ما» و«افعل شيئًا بشأنه».
 
-**Why it matters:** Without EventBridge, you end up with Lambda functions that call other Lambda functions, creating a tangle of direct invocations that’s hard to debug and harder to change. EventBridge gives you a central routing layer where you can add, remove, or modify event handlers without touching the producers.
+**لماذا يهمّ ذلك:** بدون EventBridge، تنتهي إلى دوال Lambda تستدعي دوال Lambda أخرى، فتصنع تشابكًا من الاستدعاءات المباشرة يصعب تصحيحه ويصعب تغييره أكثر. أما EventBridge فيمنحك طبقة توجيه مركزية يمكنك فيها إضافة معالجات الأحداث أو إزالتها أو تعديلها دون لمس المنتجين.
 
 ## SQS
 
-**Amazon Simple Queue Service (SQS)** is a managed message queue. You put messages in, consumers pull them out, and SQS guarantees that every message gets processed at least once.
+**Amazon Simple Queue Service (SQS)** طابور رسائل مُدار. تضع الرسائل فيه، ويسحبها المستهلكون، وتضمن SQS أن كل رسالة تُعالَج مرة واحدة على الأقل.
 
-**When you’d reach for it:** Your Lambda function receives a burst of requests and you need to process them reliably without losing any. Instead of your API handler doing heavy work synchronously (making the user wait), it drops a message on an SQS queue and returns immediately. A separate Lambda function polls the queue and processes messages at its own pace. If the processor crashes, the message goes back on the queue and gets retried.
+**متى تلجأ إليها:** عندما تتلقى دالة Lambda دفعة من الطلبات وتحتاج إلى معالجتها بموثوقية دون فقدان أي منها. فبدلًا من أن يؤدي معالج API عملًا شاقًا بشكل متزامن (فيجعل المستخدم ينتظر)، يضع رسالة في طابور SQS ويعود فورًا. وتستقصي دالة Lambda منفصلة الطابور وتعالج الرسائل بوتيرتها. وإن انهار المعالج، تعود الرسالة إلى الطابور وتُعاد محاولتها.
 
-**The frontend angle:** SQS is what makes “we received your request and will process it shortly” responses possible. Any time your API needs to do more work than it can finish within a reasonable response time, a queue is the answer.
+**من زاوية الواجهة الأمامية:** SQS هي ما يجعل استجابات «تلقّينا طلبك وسنعالجه قريبًا» ممكنة. فكلما احتاجت واجهتك البرمجية إلى عمل أكثر مما تستطيع إنجازه في زمن استجابة معقول، كان الطابور هو الجواب.
 
-## ECS and Fargate
+## ECS وFargate
 
-**Amazon Elastic Container Service (ECS)** runs Docker containers. **Fargate** is the serverless launch type for ECS—you define your container and Fargate handles the servers, scaling, and scheduling.
+**Amazon Elastic Container Service (ECS)** تشغّل حاويات Docker. و**Fargate** نوع الإطلاق بلا خادم في ECS — فأنت تعرّف حاويتك، وFargate تتولى الخوادم والتوسّع والجدولة.
 
-**When you’d reach for it:** Lambda doesn’t fit. Maybe your workload runs longer than 15 minutes (Lambda’s maximum). Maybe you need a persistent WebSocket connection. Maybe you’re running a service that wasn’t designed for the request-response model—a background worker, a long-running process, a service that needs to maintain state in memory. Fargate lets you run a container without managing EC2 instances.
+**متى تلجأ إليها:** عندما لا تناسبك Lambda. ربما يعمل عبء عملك أطول من 15 دقيقة (وهو الحد الأقصى في Lambda). وربما تحتاج إلى اتصال WebSocket دائم. وربما تشغّل خدمة لم تُصمَّم لنموذج الطلب والاستجابة — عامل خلفية، أو عملية طويلة الأمد، أو خدمة تحتاج إلى حفظ الحالة في الذاكرة. وتتيح لك Fargate تشغيل حاوية دون إدارة مثيلات EC2.
 
-**How it relates to what you know:** Think of Fargate as “Lambda for containers.” You still don’t manage servers. You still pay for what you use (roughly). But instead of writing a handler function, you package your application as a Docker image and let ECS run it.
+**كيف ترتبط بما تعرفه:** فكّر في Fargate كـ«Lambda للحاويات». فأنت لا تدير الخوادم، وتدفع مقابل ما تستخدمه (تقريبًا). لكن بدلًا من كتابة دالة معالج، تحزم تطبيقك كصورة Docker وتترك ECS تشغّله.
 
 ## WAF
 
-**AWS Web Application Firewall (WAF)** filters malicious web traffic before it reaches your application. It protects against common attacks like SQL injection, cross-site scripting (XSS), and DDoS attempts.
+**AWS Web Application Firewall (WAF)** ترشّح حركة الويب الخبيثة قبل أن تصل إلى تطبيقك. فهي تحمي من الهجمات الشائعة مثل حقن SQL والبرمجة النصية عبر المواقع (XSS) ومحاولات حجب الخدمة الموزعة.
 
-**When you’d reach for it:** Your application is public-facing and you want protection beyond what CloudFront provides by default. WAF integrates directly with CloudFront and API Gateway, letting you define rules that block suspicious requests based on IP addresses, request patterns, geographic location, or rate limiting.
+**متى تلجأ إليها:** عندما يكون تطبيقك متاحًا للعموم وتريد حماية تتجاوز ما توفّره CloudFront افتراضيًا. تتكامل WAF مباشرة مع CloudFront وAPI Gateway، فتتيح لك تعريف قواعد تحجب الطلبات المشبوهة بناءً على عناوين IP أو أنماط الطلبات أو الموقع الجغرافي أو تحديد المعدّل.
 
-**The practical version:** WAF is the service that lets you say “block any IP that makes more than 1,000 requests per minute” or “block requests that contain SQL injection patterns in the query string.” You can use AWS-managed rule groups (pre-built rule sets maintained by AWS) for common protections without writing custom rules.
+**النسخة العملية:** WAF هي الخدمة التي تتيح لك أن تقول «احجب أي عنوان IP يرسل أكثر من 1000 طلب في الدقيقة» أو «احجب الطلبات التي تحتوي أنماط حقن SQL في سلسلة الاستعلام». ويمكنك استخدام مجموعات القواعد المُدارة من AWS (مجموعات قواعد جاهزة تصونها AWS) للحمايات الشائعة دون كتابة قواعد مخصّصة.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re using the CloudFront free tier flat-rate plan, basic WAF protection is included at no additional cost. For custom rules beyond the managed set, WAF charges per rule and per million requests evaluated.
+> إن كنت تستخدم خطة السعر الثابت من الطبقة المجانية لـ CloudFront، فإن حماية WAF الأساسية مشمولة بلا تكلفة إضافية. أما القواعد المخصّصة التي تتجاوز المجموعة المُدارة، فتحاسب عليها WAF لكل قاعدة ولكل مليون طلب يُقيَّم.
 
-## When to Go Back to Vercel or Amplify
+## متى تعود إلى Vercel أو Amplify
 
-This course is about understanding what’s underneath, not a verdict that raw AWS is always the right choice. Now that you’ve built the thing, here’s when reaching back for the abstraction is genuinely better:
+هذه الدورة عن فهم ما يحدث تحت السطح، لا حكم بأن AWS الخام هي الخيار الصحيح دائمًا. والآن بعد أن بنيت الشيء، إليك الحالات التي يكون فيها العودة إلى التجريد أفضل حقًا:
 
-- **Preview deployments per PR matter more than fine-grained control.** Vercel’s per-branch preview URLs, with the full SSR stack automatically wired up, are a productivity multiplier that’s genuinely hard to replicate on raw AWS without writing a lot of CI glue.
-- **You’re doing SSR-heavy Next.js.** Next.js on Vercel is the reference implementation. On raw AWS you’re stitching it together with Lambda@Edge or Fargate and will spend non-trivial time on the seams. Amplify’s Hosting product closes part of that gap.
-- **You need zero infra headcount.** Vercel pricing is higher at scale, but if the alternative is hiring someone to operate CloudFront + S3 + Lambda + monitoring, Vercel is cheaper.
-- **Edge-heavy personalization is core to the product.** Vercel’s edge runtime and Edge Middleware are a cleaner developer experience than Lambda@Edge + CloudFront Functions, which is the rough equivalent on raw AWS.
+- **عمليات نشر المعاينة لكل طلب سحب تهمّ أكثر من التحكم الدقيق.** فعناوين URL للمعاينة لكل فرع في Vercel، مع مكدّس التصيير من جهة الخادم كاملًا وموصولًا تلقائيًا، مضاعِف إنتاجية يصعب حقًا تكراره على AWS الخام دون كتابة الكثير من الغراء في التكامل المستمر.
+- **أنت تبني Next.js بكثافة على التصيير من جهة الخادم.** فـ Next.js على Vercel هو التطبيق المرجعي. أما على AWS الخام فأنت تجمّعه بـ Lambda@Edge أو Fargate وستصرف وقتًا غير هين على الوصلات. ومنتج Hosting في Amplify يسدّ جزءًا من هذه الفجوة.
+- **تحتاج إلى صفر موظفين للبنية التحتية.** تسعير Vercel أعلى عند التوسّع، لكن إن كان البديل هو توظيف شخص لتشغيل CloudFront وS3 وLambda والمراقبة، فـ Vercel أرخص.
+- **التخصيص المعتمد على الحافة جوهري في المنتج.** فوقت تشغيل الحافة وEdge Middleware في Vercel تجربة مطوّر أنظف من Lambda@Edge مع دوال CloudFront، وهما المكافئ التقريبي على AWS الخام.
 
-Go direct to AWS when:
+اتجه مباشرة إلى AWS عندما:
 
-- **You’re already on AWS for other reasons.** A data platform on RDS or a business backend on ECS makes “just use AWS for the frontend too” the simpler answer.
-- **Compliance, data residency, or cost optimization at scale drives the decision.** At $100k+/month, the raw-AWS cost advantage compounds.
-- **You want explicit control over the caching and routing model.** Vercel’s abstractions are opinionated; AWS is a set of primitives.
+- **تكون على AWS أصلًا لأسباب أخرى.** فمنصة بيانات على RDS أو خلفية أعمال على ECS تجعل «استخدم AWS للواجهة الأمامية أيضًا» الجواب الأبسط.
+- **تحكم الامتثال أو إقامة البيانات أو تحسين التكلفة عند التوسّع القرار.** فعند 100 ألف دولار شهريًا أو أكثر، تتراكم ميزة التكلفة في AWS الخام.
+- **تريد تحكمًا صريحًا في نموذج التخزين المؤقت والتوجيه.** فتجريدات Vercel ذات موقف، أما AWS فمجموعة أوليات.
 
-Both paths are legitimate. The skills from this course are what let you make the choice on evidence rather than vibes.
+المسارَان مشروعان. والمهارات من هذه الدورة هي ما يتيح لك اتخاذ القرار بناءً على الأدلة لا على الانطباعات.
 
-## A Word on the Services You Don’t Need Yet
+## كلمة عن الخدمات التي لا تحتاجها بعد
 
-AWS has services for machine learning, satellite ground stations, quantum computing, and IoT device management. You don’t need any of them for a frontend application. The list above covers the services that a frontend engineer building web applications will encounter first after the foundation this course provides.
+لدى AWS خدمات للتعلّم الآلي، ومحطات استقبال الأقمار الصناعية، والحوسبة الكمومية، وإدارة أجهزة إنترنت الأشياء. ولا تحتاج أيًا منها لتطبيق واجهة أمامية. والقائمة أعلاه تغطي الخدمات التي سيصادفها أولًا مهندس واجهة أمامية يبني تطبيقات ويب بعد الأساس الذي توفّره هذه الدورة.
 
-The pattern for learning new AWS services is the same pattern you followed here: understand the problem the service solves, build something small with it, wire it into your existing stack, and then read the documentation with enough context to know what matters and what you can skip. That last part is key—I find AWS documentation is *dramatically* easier to read once you have a mental model for how the pieces connect.
+ونمط تعلّم خدمات AWS الجديدة هو النمط نفسه الذي اتبعته هنا: افهم المشكلة التي تحلّها الخدمة، وابنِ شيئًا صغيرًا بها، ووصّلها بمكدّسك الحالي، ثم اقرأ الوثائق وعندك سياق كافٍ لتعرف ما يهمّ وما يمكنك تجاوزه. وهذا الجزء الأخير هو المفتاح — أجد وثائق AWS *أسهل بكثير* في القراءة بعد أن يصبح لديك نموذج ذهني لكيفية ترابط القطع.
 
-You now have that context. You understand IAM policies well enough to grant a new service the permissions it needs. You understand CloudWatch well enough to debug it when it breaks. You understand API Gateway well enough to put it in front of whatever backend you build. These fundamentals transfer to every new service you adopt.
+لديك الآن ذلك السياق. فأنت تفهم سياسات IAM جيدًا بما يكفي لمنح خدمة جديدة الأذونات التي تحتاجها، وتفهم CloudWatch جيدًا بما يكفي لتصحيح أعطالها، وتفهم API Gateway جيدًا بما يكفي لوضعها أمام أي خلفية تبنيها. وهذه الأساسيات تنتقل إلى كل خدمة جديدة تتبنّاها.
 
-The hardest part of AWS was getting started—understanding the account model, decoding IAM, navigating the console, and building that first deployment pipeline. You’ve done all of that. Everything from here is incremental: one new service at a time, wired into an architecture you already understand. You know how the pieces fit together. The rest is just adding more pieces.
+كان أصعب جزء في AWS هو البداية — فهم نموذج الحساب، وفكّ رموز IAM، والتنقل في لوحة التحكم، وبناء خط أنابيب النشر الأول. لقد أنجزت كل ذلك. وكل ما يأتي من هنا تراكمي: خدمة جديدة واحدة في كل مرة، موصولة ببنية تفهمها بالفعل. أنت تعرف كيف تترابط القطع، والباقي مجرد إضافة قطع أكثر.
 
-## Final Teardown Checklist
+## قائمة التحقق النهائية للتفكيك
 
-If you built along with the course and want to tear down everything you created, work through this list. Each section below links to the lesson that has the full teardown commands—this is a checklist, not a second copy of the same commands.
+إن كنت قد بنيت مع الدورة وتريد تفكيك كل ما أنشأته، فاعمل عبر هذه القائمة. وكل قسم أدناه يربط بالدرس الذي فيه أوامر التفكيك الكاملة — فهذه قائمة تحقق، لا نسخة ثانية من الأوامر نفسها.
 
-Resources are listed in reverse dependency order (tear down what depends on other things first):
+الموارد مرتّبة بترتيب الاعتماد العكسي (فكّك ما يعتمد على غيره أولًا):
 
-**CloudFront and DNS**
+**CloudFront وDNS**
 
-- Delete the CloudFront distribution (disable it first, then delete after 10–15 minutes). See [CloudFront Distribution Exercise](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise).
-- Remove Route 53 alias record pointing at CloudFront. See [Route 53 DNS Exercise](https://stevekinney.com/courses/aws/route-53-dns-exercise).
-- Delete the hosted zone. See [Hosted Zones and Record Types](https://stevekinney.com/courses/aws/hosted-zones-and-record-types).
-- Delete the ACM certificate (only after the distribution is deleted—CloudFront won’t release the cert while it’s in use). See [ACM Certificate Exercise](https://stevekinney.com/courses/aws/acm-certificate-exercise).
+- احذف توزيع CloudFront (عطّله أولًا، ثم احذفه بعد 10–15 دقيقة). راجع [تمرين توزيع CloudFront](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise).
+- أزل سجل Alias في Route 53 الذي يشير إلى CloudFront. راجع [تمرين DNS في Route 53](https://stevekinney.com/courses/aws/route-53-dns-exercise).
+- احذف المنطقة المُستضافة. راجع [المناطق المُستضافة وأنواع السجلات](https://stevekinney.com/courses/aws/hosted-zones-and-record-types).
+- احذف شهادة ACM (فقط بعد حذف التوزيع — فلن تُحرّر CloudFront الشهادة وهي قيد الاستخدام). راجع [تمرين شهادة ACM](https://stevekinney.com/courses/aws/acm-certificate-exercise).
 
 **API Gateway**
 
-- Delete the HTTP API. `aws apigatewayv2 delete-api --api-id your-api-id --region us-east-1`
+- احذف HTTP API. `aws apigatewayv2 delete-api --api-id your-api-id --region us-east-1`
 
 **Lambda**
 
-- Delete the Lambda function. `aws lambda delete-function --function-name my-frontend-app-api --region us-east-1`
-- Delete the CloudWatch log group (Lambda recreates this on deploy). `aws logs delete-log-group --log-group-name /aws/lambda/my-frontend-app-api --region us-east-1`
+- احذف دالة Lambda. `aws lambda delete-function --function-name my-frontend-app-api --region us-east-1`
+- احذف مجموعة سجلات CloudWatch (تعيد Lambda إنشاءها عند النشر). `aws logs delete-log-group --log-group-name /aws/lambda/my-frontend-app-api --region us-east-1`
 
 **DynamoDB**
 
-- Delete the table. See [Solution: Build a Lambda-Backed Data API with DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-solution) — there’s a Cleanup section at the bottom.
+- احذف الجدول. راجع [الحل: بناء واجهة API للبيانات مدعومة بـ Lambda مع DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-solution) — ففيه قسم للتنظيف في الأسفل.
 
-**Secrets and Configuration**
+**الأسرار والإعدادات**
 
-- Delete Parameter Store parameters. See [Parameter Store: Hierarchical Configuration](https://stevekinney.com/courses/aws/parameter-store-hierarchical-configuration) and [Solution: Store and Retrieve a Secret in Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-solution). The course’s secrets exercise uses Parameter Store only—if you followed along with [Parameter Store vs. Secrets Manager](https://stevekinney.com/courses/aws/parameter-store-vs-secrets-manager) and spun up a real Secrets Manager secret to compare, delete it with `aws secretsmanager delete-secret --secret-id <name> --force-delete-without-recovery` (test secrets only).
+- احذف معاملات Parameter Store. راجع [Parameter Store: إعدادات هرمية](https://stevekinney.com/courses/aws/parameter-store-hierarchical-configuration) و[الحل: تخزين سرّ واسترداده في Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-solution). فتمرين الأسرار في الدورة يستخدم Parameter Store فقط — وإن كنت قد تابعت [Parameter Store مقابل Secrets Manager](https://stevekinney.com/courses/aws/parameter-store-vs-secrets-manager) وأنشأت سرًّا حقيقيًا في Secrets Manager للمقارنة، فاحذفه بـ `aws secretsmanager delete-secret --secret-id <name> --force-delete-without-recovery` (للأسرار التجريبية فقط).
 
-**CloudWatch Monitoring**
+**مراقبة CloudWatch**
 
-- Delete CloudWatch alarms. See [Solution: Set Up Alarms for Your Lambda Functions](https://stevekinney.com/courses/aws/cloudwatch-alarms-solution).
-- Unsubscribe from and delete the SNS topic. See the same solution file.
-- Delete the CloudWatch dashboard. See [CloudWatch Metrics and Dashboards](https://stevekinney.com/courses/aws/cloudwatch-metrics-and-dashboards).
+- احذف إنذارات CloudWatch. راجع [الحل: إعداد إنذارات لدوال Lambda](https://stevekinney.com/courses/aws/cloudwatch-alarms-solution).
+- ألغِ الاشتراك في موضوع SNS واحذفه. راجع ملف الحل نفسه.
+- احذف لوحة معلومات CloudWatch. راجع [مقاييس CloudWatch ولوحات المعلومات](https://stevekinney.com/courses/aws/cloudwatch-metrics-and-dashboards).
 
 **S3**
 
-- Empty the S3 bucket, then delete it. `aws s3 rm s3://your-bucket-name --recursive && aws s3api delete-bucket --bucket your-bucket-name --region us-east-1`
+- أفرغ حاوية S3 ثم احذفها. `aws s3 rm s3://your-bucket-name --recursive && aws s3api delete-bucket --bucket your-bucket-name --region us-east-1`
 
 **IAM**
 
-IAM won’t let you delete a role until every attached managed policy is detached *and* every inline policy is removed. The Lambda execution role accumulates several of these over the course—work through them in order before the final `delete-role`:
+لا تسمح لك IAM بحذف دور إلى أن تفصل كل سياسة مُدارة مُرفقة *و*تزيل كل سياسة مضمنة. ودور تنفيذ Lambda يراكم عدة سياسات من هذه على مدى الدورة — تناولها بالترتيب قبل أمر `delete-role` النهائي:
 
-- Detach and delete the DynamoDB managed policy. `aws iam detach-role-policy --role-name my-frontend-app-lambda-role --policy-arn arn:aws:iam::123456789012:policy/MyFrontendAppLambdaDynamoDB && aws iam delete-policy --policy-arn arn:aws:iam::123456789012:policy/MyFrontendAppLambdaDynamoDB`
-- Detach the AWS-managed basic execution role. `aws iam detach-role-policy --role-name my-frontend-app-lambda-role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole` (Don’t try to `delete-policy` on this one—it’s owned by AWS.)
-- Delete the `parameter-store-access` inline policy added in the secrets exercise. `aws iam delete-role-policy --role-name my-frontend-app-lambda-role --policy-name parameter-store-access`
-- List what’s left to confirm the role is bare before deletion. `aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role` and `aws iam list-role-policies --role-name my-frontend-app-lambda-role`—both should return empty arrays.
-- Delete the Lambda execution role. `aws iam delete-role --role-name my-frontend-app-lambda-role`
-- Tear down the `deploy-bot` IAM user: deactivate the access key, detach `DeployBotPolicy`, delete the key, then delete the user. See [Exercise: IAM Policy for a Deploy Bot](https://stevekinney.com/courses/aws/iam-policy-exercise) for the full command sequence—IAM ordering rules matter here.
+- افصل سياسة DynamoDB المُدارة واحذفها. `aws iam detach-role-policy --role-name my-frontend-app-lambda-role --policy-arn arn:aws:iam::123456789012:policy/MyFrontendAppLambdaDynamoDB && aws iam delete-policy --policy-arn arn:aws:iam::123456789012:policy/MyFrontendAppLambdaDynamoDB`
+- افصل دور التنفيذ الأساسي المُدار من AWS. `aws iam detach-role-policy --role-name my-frontend-app-lambda-role --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole` (لا تحاول تنفيذ `delete-policy` على هذه — فهي مملوكة لـ AWS.)
+- احذف السياسة المضمنة `parameter-store-access` التي أضيفت في تمرين الأسرار. `aws iam delete-role-policy --role-name my-frontend-app-lambda-role --policy-name parameter-store-access`
+- اعرض ما تبقّى للتأكد من أن الدور خالٍ قبل الحذف. `aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role` و`aws iam list-role-policies --role-name my-frontend-app-lambda-role` — ويجب أن تُرجعا كلتاهما مصفوفتين فارغتين.
+- احذف دور تنفيذ Lambda. `aws iam delete-role --role-name my-frontend-app-lambda-role`
+- فكّك مستخدم IAM `deploy-bot`: عطّل مفتاح الوصول، وافصل `DeployBotPolicy`، واحذف المفتاح، ثم احذف المستخدم. راجع [تمرين: سياسة IAM لبوت نشر](https://stevekinney.com/courses/aws/iam-policy-exercise) لتسلسل الأوامر الكامل — فقواعد الترتيب في IAM تهمّ هنا.
 
-**Billing**
+**الفوترة**
 
-- Delete the AWS Budget. See [Cost Monitoring and Budget Alarms](https://stevekinney.com/courses/aws/cost-monitoring-and-budget-alarms).
+- احذف ميزانية AWS. راجع [مراقبة التكلفة وإنذارات الميزانية](https://stevekinney.com/courses/aws/cost-monitoring-and-budget-alarms).
 
-> **Tip**
+> **نصيحة**
 >
-> After teardown, run `aws s3 ls`, `aws dynamodb list-tables --region us-east-1`, and `aws lambda list-functions --region us-east-1` to confirm nothing was left behind. Forgotten resources are the most common source of surprise charges.
+> بعد التفكيك، شغّل `aws s3 ls` و`aws dynamodb list-tables --region us-east-1` و`aws lambda list-functions --region us-east-1` لتتأكد أن شيئًا لم يبقَ خلفك. فالموارد المنسية هي أكثر مصادر الفواتير المفاجئة شيوعًا.

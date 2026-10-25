@@ -1,36 +1,36 @@
 ---
-title: "Testing Third-Party Authentication"
-lang: en
+title: "اختبار المصادقة عبر طرف ثالث"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/testing-third-party-authentication"
 ---
 
-The hardest authentication bug to explain to a team is this one: *“No, we are not going to make every pull request wait on Google’s login screen.”* If your app signs in through Google OAuth, Okta, Auth0, Microsoft, or some enterprise SAML flow you barely understand, it is tempting to treat the provider’s UI as part of your regression suite.
+أصعب خلل مصادقة يمكن أن تشرحه لفريق هو هذا: *«لا، لن نجعل كل طلب سحب ينتظر شاشة تسجيل الدخول في Google.»* فإن كان تطبيقك يسجّل الدخول عبر Google OAuth أو Okta أو Auth0 أو Microsoft أو أحد تدفّقات SAML المؤسسية التي بالكاد تفهمها، فمن المُغري أن تعامل واجهة المزوّد بوصفها جزءًا من مجموعة اختبارات الانحدار لديك.
 
-That is the wrong boundary.
+وهذا هو الحدّ الخاطئ.
 
-You do not own Google’s DOM. You do not control its rate limits, its bot detection, its occasional extra challenge screen, or the person in IT who rotated the test account’s recovery phone number. If you make that UI part of every end-to-end run, you are renting your test suite from somebody else’s incident calendar.
+أنت لا تملك DOM الخاص بـGoogle. ولا تتحكّم بحدود معدّل طلباته، ولا بكشفه للبوتات، ولا بشاشة تحدٍّ إضافية تظهر عنده أحيانًا، ولا بالشخص في قسم تقنية المعلومات الذي بدّل رقم هاتف استرداد حساب الاختبار. فإن جعلت تلك الواجهة جزءًا من كل تشغيل شامل، فأنت تستأجر مجموعة اختباراتك من تقويم حوادث شخص آخر.
 
-## The boundary you actually own
+## الحدّ الذي تملكه فعلًا
 
-For third-party authentication, there are really three separate questions:
+في المصادقة عبر طرف ثالث، ثمّة ثلاثة أسئلة منفصلة حقًّا:
 
-- Can the user *start* the sign-in flow from your app?
-- Can your app create the right session after a successful callback?
-- Does your app behave correctly once the user is signed in?
+- هل يستطيع المستخدم *أن يبدأ* تدفّق تسجيل الدخول من تطبيقك؟
+- هل يستطيع تطبيقك إنشاء الجلسة الصحيحة بعد استدعاء عودة (callback) ناجح؟
+- هل يتصرّف تطبيقك بشكل صحيح بعد أن يسجّل المستخدم الدخول؟
 
-Those questions do not all deserve the same kind of test.
+هذه الأسئلة لا تستحق جميعها النوع نفسه من الاختبار.
 
-The first one is a narrow integration check. The second one is an application-authentication concern. The third one is what most of your end-to-end suite is actually about. If you collapse them into one giant “log into Google for real” test, you pay the highest possible cost for the least useful signal.
+الأول فحص تكامل ضيّق. والثاني شأن من شؤون مصادقة التطبيق. والثالث هو ما تدور حوله معظم مجموعة اختباراتك الشاملة في الحقيقة. فإن جمعتها كلها في اختبار واحد عملاق من نوع «سجّل الدخول إلى Google فعليًا»، دفعت أعلى كلفة ممكنة مقابل أقلّ إشارة نافعة.
 
-## The normal pattern: bootstrap your app’s session
+## النمط المعتاد: هيّئ جلسة تطبيقك
 
-If OAuth eventually produces a normal session cookie in *your* app, the cleanest pattern is:
+إذا كان OAuth يُنتج في النهاية كوكي جلسة عادية في تطبيق*ك*، فأنظف نمط هو:
 
-1. Add a test-only helper or endpoint in the application that creates that same session for a known test user in test or staging.
-2. Call that helper from the Playwright setup project.
-3. Save the resulting storage state and let the rest of the suite reuse it.
+1. أضف مساعدًا أو نقطة نهاية خاصّة بالاختبار في التطبيق تُنشئ تلك الجلسة نفسها لمستخدم اختبار معروف في بيئة الاختبار أو بيئة التهيئة.
+2. استدعِ ذلك المساعد من مشروع الإعداد في Playwright.
+3. احفظ حالة التخزين الناتجة ودع بقية المجموعة تعيد استخدامها.
 
-The snippet below is illustrative. Shelf does not use third-party auth, so `/test-authentication/session` is a stand-in for whatever app-owned bootstrap route your codebase exposes.
+المقتطف أدناه توضيحي. فـShelf لا يستخدم مصادقة عبر طرف ثالث، لذا فـ`/test-authentication/session` بديل عن أي مسار تهيئة تملكه شيفرتك وتكشفه.
 
 ```typescript
 import { test as setup, expect } from '@playwright/test';
@@ -52,22 +52,22 @@ setup('authenticate test user for OAuth-backed app', async ({ request }) => {
 });
 ```
 
-This is not cheating. It is choosing the correct seam.
+هذا ليس غشًّا. إنه اختيار الفاصل الصحيح.
 
-Your real OAuth callback receives identity from Google and turns it into an application session. The helper should do that same *app-owned* part directly. What you are bypassing is the provider’s UI, not your own authorization model.
+فحركة عودة OAuth الحقيقية لديك تستقبل الهوية من Google وتحوّلها إلى جلسة تطبيق. والمساعد ينبغي أن يفعل ذلك الجزء *الذي تملكه* أنت مباشرةً. وما تتخطّاه هو واجهة المزوّد، لا نموذج التخويل الخاص بك.
 
-The official docs use `playwright/.auth/` as the conventional storage-state folder. Shelf uses `playwright/.authentication/` in the workshop material. Either works. Pick one, keep it out of git, and do not let both conventions drift into the same repository.
+تستخدم الوثائق الرسمية `playwright/.auth/` مجلدًا تقليديًا لحالة التخزين. أما Shelf فيستخدم `playwright/.authentication/` في مواد الورشة. وكلاهما يعمل. اختر واحدًا، وأبعده عن git، ولا تدع الاصطلاحين ينزلقان إلى المستودع نفسه.
 
-Two rules matter here:
+وثمّة قاعدتان تهمّان هنا:
 
-- The helper must exist only in test or staging environments, never production.
-- The helper must mint the same kind of session the real callback mints. Do not create a fake `"loggedIn": true` toggle that skips roles, claims, or permission checks.
+- يجب ألّا يوجد المساعد إلا في بيئتي الاختبار أو التهيئة، وألّا يوجد في الإنتاج أبدًا.
+- يجب أن يُصدر المساعد النوع نفسه من الجلسات الذي تُصدره حركة العودة الحقيقية. لا تُنشئ مفتاحًا مزيفًا من نوع `"loggedIn": true` يتخطّى الأدوار أو المطالبات (claims) أو فحوص الأذونات.
 
-If that second rule sounds picky, good. A fake auth shortcut that bypasses your real session shape is how you get a green test suite that does not resemble production.
+وإن بدت القاعدة الثانية متشدّدة، فهذا حسن. فالطريق المختصر المزيف في المصادقة الذي يتخطّى شكل الجلسة الحقيقي هو كيف تحصل على مجموعة اختبارات خضراء لا تشبه الإنتاج.
 
-## When the final state lives in browser storage
+## عندما تعيش الحالة النهائية في تخزين المتصفح
 
-Some stacks do not finish with a plain server cookie. They land the final tokens in `localStorage` or `IndexedDB` through a browser-side SDK. In that case, you still use the same overall idea, but the bootstrap must finish inside a browser context so Playwright can capture the real browser state.
+بعض المكدّسات لا تنتهي بكوكي خادم عادي. بل تُنزل الرموز (tokens) النهائية في `localStorage` أو `IndexedDB` عبر SDK يعمل في المتصفح. وفي هذه الحالة تظلّ تستخدم الفكرة العامة نفسها، لكن التهيئة يجب أن تنتهي داخل سياق متصفح حتى يستطيع Playwright التقاط حالة المتصفح الحقيقية.
 
 ```typescript
 import { test as setup, expect } from '@playwright/test';
@@ -86,13 +86,13 @@ setup('authenticate browser-backed OAuth session', async ({ page }) => {
 });
 ```
 
-That `indexedDB: true` is the part people miss. If the provider SDK stores tokens there, a cookies-only snapshot is incomplete and your tests will “mysteriously” redirect back to login.
+و`indexedDB: true` هو الجزء الذي يفوته الناس. فإن كان SDK المزوّد يخزّن الرموز هناك، فلقطة الكوكيز وحدها ناقصة، وستُعيد اختباراتك التوجيه إلى تسجيل الدخول «بشكل غامض».
 
-This is still the same storage-state pattern from the earlier lesson. The difference is only that your setup route is building browser-backed auth state instead of a plain server session.
+هذا لا يزال نمط حالة التخزين نفسه من الدرس السابق. والفرق الوحيد أن مسار الإعداد لديك يبني حالة مصادقة مدعومة بالمتصفح بدلًا من جلسة خادم عادية.
 
-## Keep one tiny real-flow smoke test
+## أبقِ اختبار دخان حقيقيًا صغيرًا واحدًا
 
-You still want one test that proves the integration starts correctly. Clicking `Continue with Google` should redirect to your OAuth start route or to the provider domain. That is a valid thing to test.
+ما زلت تريد اختبارًا واحدًا يُثبت أن التكامل يبدأ على نحو صحيح. فالنقر على `Continue with Google` ينبغي أن يوجّه إلى مسار بدء OAuth لديك أو إلى نطاق المزوّد. وهذا شيء صحيح أن تختبره.
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -109,45 +109,45 @@ test('google sign-in starts the OAuth redirect', async ({ page }) => {
 });
 ```
 
-That is enough to prove that your sign-in button, route, and redirect wiring are alive. It is not enough to prove every edge case of Google’s login flow, and it does not need to. This is a smoke test, not a full outsourced regression suite.
+هذا يكفي لإثبات أن زر تسجيل الدخول لديك ومساره وتوصيلات التوجيه فيه حيّة. ولا يكفي لإثبات كل حالة حدّية في تدفّق تسجيل الدخول في Google، ولا حاجة به إلى ذلك. فهذا اختبار دخان، لا مجموعة اختبارات انحدار كاملة مُستعارة من الخارج.
 
-If your app opens a popup instead of redirecting the current page, the same rule applies: assert that the popup or navigation *starts*. Do not turn the provider’s full UI into the thing every developer waits on.
+وإن كان تطبيقك يفتح نافذة منبثقة بدلًا من توجيه الصفحة الحالية، فالقاعدة نفسها تنطبق: تحقّق من أن النافذة المنبثقة أو التنقّل *يبدأ*. ولا تحوّل واجهة المزوّد الكاملة إلى الشيء الذي ينتظره كل مطوّر.
 
-## Put the real provider flow in its own lane
+## ضع تدفّق المزوّد الحقيقي في مسار خاص به
 
-Sometimes you really do need one full end-to-end provider test. Maybe your compliance team requires it. Maybe a customer-specific SAML configuration breaks often enough that you want one real monitor.
+أحيانًا تحتاج فعلًا إلى اختبار شامل واحد كامل لتدفّق المزوّد. ربما يطلبه فريق الامتثال لديك. وربما تنكسر تهيئة SAML الخاصّة بعميل ما في كثير من الأحيان بما يكفي لتريد مراقبًا حقيقيًا واحدًا.
 
-Fine. Just isolate it.
+لا بأس. اعزله فقط.
 
-- Run it against dedicated test accounts with the smallest permissions possible.
-- Keep it out of the main pull-request gate if the provider can rate-limit, challenge, or randomly slow down.
-- Run it on a schedule or as a manually-invoked environment check, not as the thing that decides whether every unrelated feature branch can merge.
-- If the provider offers a sandbox or test tenant, use it.
+- شغّله على حسابات اختبار مخصّصة بأصغر أذونات ممكنة.
+- أبعده عن بوابة طلبات السحب الرئيسية إن كان المزوّد قد يحدّد معدّل الطلبات أو يطرح تحديًا أو يتباطأ عشوائيًا.
+- شغّله وفق جدول زمني أو كفحص بيئة يُستدعى يدويًا، لا كالشيء الذي يقرّر ما إذا كان كل فرع ميزة غير ذي صلة يستطيع الدمج.
+- إن كان المزوّد يوفّر بيئة اختبار معزولة أو مستأجر اختبار، فاستخدمه.
 
-The key distinction is this: a real-provider flow can be a useful smoke test, but it is a terrible default for the everyday developer loop.
+والتمييز الأساسي هو هذا: تدفّق المزوّد الحقيقي قد يكون اختبار دخان نافعًا، لكنه خيار افتراضي بائس لحلقة عمل المطوّر اليومية.
 
-## The failure mode to avoid
+## نمط الفشل الذي يجب تجنّبه
 
-When a team first hits Google OAuth in Playwright, the usual instinct is one of these:
+حين يصطدم فريق بـGoogle OAuth في Playwright لأول مرة، تكون الغريزة المعتادة واحدة من هذه:
 
-- Automate the whole provider UI in every test.
-- Add `page.waitForTimeout(5000)` until the redirect eventually settles.
-- Save one long-lived authenticated profile and hope it never expires.
+- أتمتة واجهة المزوّد كاملة في كل اختبار.
+- إضافة `page.waitForTimeout(5000)` حتى يستقرّ التوجيه في النهاية.
+- حفظ ملف تعريف مُوثّق واحد طويل العمر والأمل ألّا تنتهي صلاحيته أبدًا.
 
-All three are unstable.
+والثلاثة كلها غير مستقرة.
 
-The stable version is boring:
+أما النسخة المستقرة فمملّة:
 
-- one small redirect smoke test
-- one app-owned bootstrap path for normal authenticated tests
-- one storage-state file per role
-- one isolated real-provider smoke lane, only if you truly need it
+- اختبار دخان صغير واحد للتوجيه
+- مسار تهيئة واحد تملكه أنت لاختبارات المصادقة العادية
+- ملف حالة تخزين واحد لكل دور
+- مسار دخان معزول واحد للمزوّد الحقيقي، إن كنت تحتاجه فعلًا
 
-If you ever do need to swap a single browser context from one auth state to another inside a narrow smoke flow, newer Playwright versions add `browserContext.setStorageState()`. That is an advanced edge, not the default path. The default is still “fresh context, known state, no heroics.”
+وإن احتجت يومًا إلى تبديل سياق متصفح واحد من حالة مصادقة إلى أخرى داخل تدفّق دخان ضيّق، فإن إصدارات Playwright الأحدث تضيف `browserContext.setStorageState()`. وهذه حالة حدّية متقدّمة، لا المسار الافتراضي. فالافتراضي لا يزال «سياق جديد، وحالة معروفة، وبلا بطولات».
 
-That structure is what keeps “auth is external” from turning into “the whole suite is external.”
+هذا البنيان هو ما يمنع «المصادقة خارجية» من أن تنقلب إلى «المجموعة كلها خارجية».
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Third-party authentication
@@ -167,12 +167,12 @@ That structure is what keeps “auth is external” from turning into “the who
   normal pull-request gate.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Do not regression-test Google’s login page. Regression-test *your app’s relationship to authentication*. Start the redirect once, prove you can create the right session, save it to storage state, and spend the rest of your test budget on behavior you actually own.
+لا تُجرِ اختبار انحدار على صفحة تسجيل الدخول في Google. أجرِ اختبار انحدار على *علاقة تطبيقك بالمصادقة*. ابدأ التوجيه مرة واحدة، وأثبت أنك تستطيع إنشاء الجلسة الصحيحة، واحفظها في حالة التخزين، وأنفق بقية ميزانية اختبارك على السلوك الذي تملكه فعلًا.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
-- [APIRequestContext: Beyond Storage State](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
+- [APIRequestContext: ما هو أبعد من حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state)

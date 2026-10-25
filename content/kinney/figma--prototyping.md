@@ -1,53 +1,53 @@
 ---
-title: "Prototyping"
-lang: en
+title: "النمذجة الأولية (Prototyping)"
+lang: ar
 source: "https://stevekinney.com/courses/figma/prototyping"
 ---
 
-Prototyping in Figma transforms static designs into interactive simulations, allowing designers to explore, test, and validate user experiences before any development begins. This allows our designer friends to put together a full flow of the experience and test it with customers before we spend countless hours building something that everyone hates.
+تحوّل النمذجة الأولية في Figma التصميمات الساكنة إلى محاكاات تفاعلية، ما يتيح للمصمّمين استكشاف تجارب المستخدم واختبارها والتحقق منها قبل أن يبدأ أي تطوير. وهذا يتيح لأصدقائنا المصمّمين تجميع مسار كامل للتجربة واختباره مع العملاء قبل أن نصرف ساعات لا تُحصى في بناء شيء يكرهه الجميع.
 
-## Setting Up Your First Prototype
+## إعداد نموذجك الأولي الأول
 
-### Creating Frames and Connections
+### إنشاء الإطارات والوصلات
 
-1. **Start with Frames**: In Figma, your design screens are contained within Frames. Begin by organizing your design into separate frames for each screen of your prototype.
-2. **Linking Frames**: Use the Prototype tab in the right sidebar to create connections between frames. Select an object or a frame, then drag the connector (a small circle) to another frame to create an interaction.
+1. **ابدأ بالإطارات (Frames)**: في Figma، تُحتوى شاشات تصميمك داخل إطارات. ابدأ بتنظيم تصميمك في إطارات منفصلة لكل شاشة من شاشات نموذجك الأولي.
+2. **ربط الإطارات**: استخدم تبويب Prototype في الشريط الجانبي الأيمن لإنشاء وصلات بين الإطارات. حدّد كائنًا أو إطارًا، ثم اسحب الوصلة (دائرة صغيرة) إلى إطار آخر لإنشاء تفاعل.
 
-### Interactions and Transitions
+### التفاعلات والانتقالات
 
-1. **Adding Interactions**: With frames linked, specify the type of interaction (e.g., click, hover) that triggers the transition.
-2. **Choosing Transitions**: Figma offers various transition effects like dissolve, slide, and push. Experiment with these to find the best fit for your prototype’s flow.
+1. **إضافة التفاعلات**: بعد ربط الإطارات، حدّد نوع التفاعل (مثل click أو hover) الذي يُشغّل الانتقال.
+2. **اختيار الانتقالات**: يقدّم Figma تأثيرات انتقال متنوعة مثل dissolve وslide وpush. جرّبها لتجد الأنسب لمسار نموذجك الأولي.
 
-## Advanced Prototyping Features
+## ميزات النمذجة الأولية المتقدّمة
 
-### Utilizing Overlays
+### استخدام التراكبات (Overlays)
 
-Overlays allow you to overlay a frame over another without navigating away. Perfect for modals, dropdowns, or any element that appears above the current content.
+تتيح لك التراكبات تركيب إطار فوق آخر دون الانتقال بعيدًا. وهي مثالية للنوافذ المنبثقة (modals) والقوائم المنسدلة (dropdowns) أو أي عنصر يظهر فوق المحتوى الحالي.
 
-### Scrolling and Fixed Elements
+### التمرير والعناصر الثابتة
 
-1. **Enable Scrolling**: To simulate scrolling, wrap your content in a frame and adjust its height to the viewport size. Then, set the content to scroll vertically or horizontally.
-2. **Fixing Elements**: Fix elements (e.g., headers) by selecting the layer and using the “Fix position when scrolling” option in the Prototype tab.
+1. **تفعيل التمرير**: لمحاكاة التمرير، غلّف محتواك في إطار واضبط ارتفاعه على حجم نافذة العرض. ثم اضبط المحتوى ليتمرّر عموديًا أو أفقيًا.
+2. **تثبيت العناصر**: ثبّت العناصر (مثل الترويسات) بتحديد الطبقة واستخدام خيار «Fix position when scrolling» في تبويب Prototype.
 
 ### Smart Animate
 
-Smart Animate magically animates transitions between frames that have common elements. Simply name the elements consistently across frames and choose “Smart Animate” as the animation type.
+يحرّك Smart Animate الانتقالات بين الإطارات التي تشترك في عناصر مشتركة بطريقة سحرية. ما عليك سوى تسمية العناصر تسمية متسقة عبر الإطارات واختيار «Smart Animate» كنوع الحركة.
 
-### Interactive Components
+### المكوّنات التفاعلية
 
-Interactive components are reusable elements with predefined states (like buttons with normal, hover, and pressed states). Use variants to create these interactive elements for more dynamic prototypes.
+المكوّنات التفاعلية عناصر قابلة لإعادة الاستخدام بحالات محدّدة مسبقًا (مثل الأزرار بحالات normal وhover وpressed). استخدم الأنماط البديلة لإنشاء هذه العناصر التفاعلية لنماذج أولية أكثر ديناميكية.
 
-## Best Practices for Prototyping
+## أفضل الممارسات في النمذجة الأولية
 
-- **Keep Prototypes Organized**: Label your frames and interactions clearly and utilize Figma’s layers panel to manage the complexity.
-- **Embrace Iterative Design**: Use feedback from user testing to refine your prototype iteratively. Prototyping is a cyclical process, and improvements are always around the corner.
+- **حافظ على تنظيم النماذج الأولية**: سمِّ إطاراتك وتفاعلاتك تسمية واضحة واستخدم لوحة الطبقات في Figma لإدارة التعقيد.
+- **تبنَّ التصميم التكراري**: استخدم التغذية الراجعة من اختبار المستخدمين لتحسين نموذجك الأولي تكرارًا. فالنمذجة الأولية عملية دورية، والتحسينات على مقربة دائمًا.
 
-## Building a Complete Prototype
+## بناء نموذج أولي كامل
 
-Let’s apply what we’ve learned by creating a prototype for a simple mobile app:
+لنطبّق ما تعلّمناه بإنشاء نموذج أولي لتطبيق جوال بسيط:
 
-1. **Design Your Frames**: Start by designing the key screens of your app. Include a home screen, a search results page, and a details screen.
-2. **Link Your Frames**: Use the Prototype tab to drag connectors from buttons or interactive elements on one frame to the corresponding screen.
-3. **Add Interactions**: Define the interactions for each linked element. For example, set a tap interaction on a search button to navigate to the search results page.
-4. **Implement Overlays and Scrolling**: If your app has a modal or a dropdown menu, create an overlay. Also, enable vertical scrolling for your search results page.
-5. **Test and Share**: Preview your prototype using Figma’s presentation view, and share it with users or stakeholders for feedback.
+1. **صمّم إطاراتك**: ابدأ بتصميم الشاشات الأساسية لتطبيقك. تضمّن شاشة رئيسية وصفحة نتائج بحث وشاشة تفاصيل.
+2. **اربط إطاراتك**: استخدم تبويب Prototype لسحب الوصلات من الأزرار أو العناصر التفاعلية في إطار إلى الشاشة المقابلة.
+3. **أضف التفاعلات**: عرّف التفاعلات لكل عنصر مرتبط. فمثلًا، اضبط تفاعل نقر (tap) على زر بحث للانتقال إلى صفحة نتائج البحث.
+4. **نفّذ التراكبات والتمرير**: إذا كان تطبيقك يحتوي نافذة منبثقة أو قائمة منسدلة، فأنشئ تراكبًا. وفعّل أيضًا التمرير العمودي لصفحة نتائج البحث.
+5. **اختبر وشارك**: عاين نموذجك الأولي باستخدام عرض التقديم (presentation view) في Figma، وشاركه مع المستخدمين أو أصحاب المصلحة للحصول على التغذية الراجعة.

@@ -1,18 +1,18 @@
 ---
-title: "Solution: Refactor Shelf's Fixtures"
-lang: en
+title: "الحل: إعادة هيكلة تجهيزات Shelf"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/refactor-shelf-fixtures-solution"
 ---
 
-The course solution below is one reasonable endpoint. Yours may look different — the lab grades on the quality of your decisions, not a byte-for-byte match. What follows is the narrative for how I’d walk from `fixtures.ts` to a cleaner final shape, one commit at a time.
+الحل التالي من الدورة نقطة وصول معقولة واحدة. وقد تبدو نسختك مختلفة — فالمختبر يُقيّم جودة قراراتك، لا تطابقًا حرفيًا بايتًا ببايت. وما يلي سرد لكيفية انتقالي من `fixtures.ts` إلى شكل نهائي أنظف، إيداعًا تلو الآخر.
 
-This lab now sits after the deterministic seeding lesson on purpose. The refactor only becomes real once `tests/helpers/seed.ts` exists and `resetShelfContent()` actually works.
+هذا المختبر يقع الآن بعد درس الزرع الحتمي عن قصد. فلا تصبح إعادة الهيكلة حقيقية إلا حين يوجد `tests/helpers/seed.ts` وتعمل `resetShelfContent()` فعلًا.
 
-If you already finished the lab and want to compare, scroll to the [final file](#the-final-file) at the bottom.
+إن كنت قد أنهيت المختبر بالفعل وتريد المقارنة، فمرّر إلى [الملف النهائي](#the-final-file) في الأسفل.
 
-## Commit 1: Rename everything
+## الإيداع 1: أعد تسمية كل شيء
 
-First, names. `setupUser` describes what the fixture *does* (it sets up a user); `seededReader` describes what the fixture *provides* (the reader who got seeded). `setupEmptyShelf` and `setupShelfWithBooks` were lying to the reader — both of them call `resetShelfContent`, and the seed helper you built earlier *always* shelves Station Eleven and Piranesi. Neither one provides an empty shelf. Collapse them into a single `seededShelf`.
+أولًا، الأسماء. `setupUser` تصف ما *تفعله* التجهيزة (تعدّ مستخدمًا)؛ و`seededReader` تصف ما *توفّره* التجهيزة (القارئ الذي جرى زرعه). وكانت `setupEmptyShelf` و`setupShelfWithBooks` تكذبان على القارئ — فكلتاهما تستدعي `resetShelfContent`، والأداة المساعدة للزرع التي بنيتها سابقًا تضع Station Eleven وPiranesi على الرف *دائمًا*. ولا واحدة منهما توفّر رفًا فارغًا. فادمجهما في `seededShelf` واحدة.
 
 ```typescript
 // Before:
@@ -44,23 +44,23 @@ seededShelf: async ({ request }, use) => {
 },
 ```
 
-Update the spec’s parameter destructures to match: `setupUser` becomes `seededReader`, both `setupEmptyShelf` and `setupShelfWithBooks` become `seededShelf`. Merge the two tests that used different names for the same fixture into one test, or keep them split — your call. I kept them split because the assertions they check are different.
+حدّث تفكيكات معاملات المواصفة لتطابق ذلك: تصبح `setupUser` هي `seededReader`، وتصبح كل من `setupEmptyShelf` و`setupShelfWithBooks` هي `seededShelf`. وادمج الاختبارين اللذين استخدما اسمين مختلفين للتجهيزة نفسها في اختبار واحد، أو أبقِهما منفصلين — القرار لك. أنا أبقيتهما منفصلين لأن التحققات التي يفحصانها مختلفة.
 
-Run the spec. It still passes. Commit.
+شغّل المواصفة. ما زالت تنجح. أودِع.
 
-## Commit 2: Teardown the mutating fixtures
+## الإيداع 2: أضف التفكيك للتجهيزات المغيّرة للحالة
 
-Notice the new `await resetShelfContent()` *after* `await use(request)` in `seededShelf`. That’s the teardown half. The starting state didn’t have one. The test passed without it, because the next test in the starting file also called `resetShelfContent`, and the seed utility is idempotent. But the moment you add a new test that *doesn’t* call it, the leak becomes visible.
+لاحظ `await resetShelfContent()` الجديد *بعد* `await use(request)` في `seededShelf`. هذا هو نصف التفكيك. لم تكن الحالة الابتدائية تحتوي عليه. وكان الاختبار ينجح بدونه، لأن الاختبار التالي في الملف الابتدائي كان يستدعي `resetShelfContent` أيضًا، وأداة الزرع عديمة الأثر عند التكرار. لكن لحظة أن تضيف اختبارًا جديدًا *لا* يستدعيها، يصبح التسريب مرئيًا.
 
-The rule from the lesson: every mutating fixture has a teardown half, and it’s always awaited. Zero exceptions. If the teardown is there but unawaited, Playwright thinks the fixture is done and races the next test’s setup.
+القاعدة من الدرس: كل تجهيزة تغيّر الحالة لها نصف تفكيك، وهو دائمًا مسبوق بـ`await`. صفر استثناءات. وإن وُجد التفكيك لكن بلا `await`، فـ Playwright يظن أن التجهيزة انتهت فيتسابق مع إعداد الاختبار التالي.
 
-Commit the teardown.
+أودِع التفكيك.
 
-## Commit 3: Demote the helpers
+## الإيداع 3: أنزل رتبة الأدوات المساعدة
 
-`authedPage` was a lie. It said “here’s an authenticated page” but by the time you reach this lab you should already have some authenticated default Playwright setup for protected Shelf pages — usually storage state from the earlier auth lessons. The fixture was navigating to `/shelf` and asserting the URL, which is not a fixture — it’s two lines of code. Delete it, and inline the navigation in the spec.
+كانت `authedPage` كذبة. كانت تقول «ها هي صفحة موثَّقة»، لكن بحلول وصولك إلى هذا المختبر يفترض أن تكون لديك بالفعل تهيئة Playwright موثَّقة افتراضية لصفحات Shelf المحمية — عادةً حالة تخزين من دروس المصادقة السابقة. وكانت التجهيزة تنتقل إلى `/shelf` وتتحقق من المسار، وهذا ليس تجهيزة — بل سطرا شيفرة. احذفها، وضع الانتقال مباشرةً في المواصفة.
 
-`loggedOutPage` was a different problem. It was a real fixture (it built a fresh browser context), but it was only used in one test, and it was awkward to compose because it fought whatever authenticated default browser state you had already set up for the lab run. The solution file moves it out as a plain helper function and lets the caller own teardown:
+وكانت `loggedOutPage` مشكلة مختلفة. كانت تجهيزة حقيقية (تبني سياق متصفح جديدًا)، لكنها استُخدمت في اختبار واحد فقط، وكان تركيبها عسيرًا لأنها تصارع أي حالة متصفح موثَّقة افتراضية أعددتها بالفعل لتشغيل المختبر. فملف الحل ينقلها خارجًا كدالة مساعدة عادية ويترك التفكيك للمستدعي:
 
 ```typescript
 // In fixtures.ts after the refactor:
@@ -81,13 +81,13 @@ test('logged-out page is redirected to login when it asks for /shelf', async ({ 
 });
 ```
 
-Note the tradeoff: the helper hands teardown responsibility back to the caller, because only fixtures can *own* teardown inside Playwright’s lifecycle. If you forget `await context.close()`, Playwright will warn you at the end of the run. That warning is the safety net — it’s not as tight as a fixture’s teardown, but it’s visible.
+لاحظ المقايضة: الأداة المساعدة تعيد مسؤولية التفكيك إلى المستدعي، لأن التجهيزات وحدها تستطيع أن *تملك* التفكيك داخل دورة حياة Playwright. وإن نسيت `await context.close()`، فسينبّهك Playwright في نهاية التشغيل. ذلك التنبيه هو شبكة الأمان — ليست محكمة كتفكيك تجهيزة، لكنها مرئية.
 
-Run the spec. Still green. Commit.
+شغّل المواصفة. ما زالت خضراء. أودِع.
 
-## Commit 4: Add the scope justification comments
+## الإيداع 4: أضف تعليقات تبرير النطاق
 
-The lesson’s rule: every fixture has a one-line comment naming the scope choice and why. Here’s what the solution file says:
+قاعدة الدرس: كل تجهيزة لها تعليق من سطر واحد يسمّي اختيار النطاق وسببه. وهذا ما يقوله ملف الحل:
 
 ```typescript
 // Test-scoped: the reader identity is a small, read-only value used
@@ -102,13 +102,13 @@ seededReader: async ({}, use) => { ... },
 seededShelf: async ({ request }, use) => { ... },
 ```
 
-Neither fixture is worker-scoped. That’s the honest answer. Neither one has read-only data that’s expensive enough to earn shared scope. The *temptation* to worker-scope `seededShelf` is real — it would be faster — but then every test in the worker would inherit whatever state the previous test left behind, which is exactly the bug the lesson wants you to prevent.
+لا واحدة من التجهيزتين على مستوى العامل. وهذا هو الجواب الصادق. ولا واحدة منهما تحمل بيانات للقراءة فقط مكلفة بما يكفي لتستحق نطاقًا مشتركًا. والإغراء بجعل `seededShelf` على نطاق العامل حقيقي — سيكون أسرع — لكن كل اختبار في العامل سيرث عندئذٍ أي حالة خلّفها الاختبار السابق، وهذا بالضبط الخطأ الذي يريد الدرس منعك منه.
 
-Writing the justification in a comment is how you make the decision visible to the next person. (Future you, in six months.)
+كتابة التبرير في تعليق هي طريقة جعل القرار مرئيًا للشخص التالي. (أي أنت المستقبلي، بعد ستة أشهر.)
 
-## The final file
+## الملف النهائي {#the-final-file}
 
-The refactored `fixtures.ts` is roughly this:
+ملف `fixtures.ts` بعد إعادة الهيكلة هو تقريبًا هذا:
 
 ```typescript
 import { test as base } from '@playwright/test';
@@ -148,15 +148,15 @@ export const openLoggedOutPage = async (browser: Browser) => {
 export { expect } from '@playwright/test';
 ```
 
-Five fixtures became two fixtures plus one helper. The file is shorter. The intent is clearer. The teardowns are awaited. The scope choices are documented.
+خمس تجهيزات صارت تجهيزتين وأداة مساعدة واحدة. والملف أقصر. والقصد أوضح. والتفكيكات مسبوقة بـ`await`. واختيارات النطاق موثَّقة.
 
-## What you should feel
+## ما ينبغي أن تشعر به
 
-If your version looks similar in *shape* but different in *details* — different fixture names, different decisions about which helper gets demoted — that’s exactly right. There is no single correct refactor. There is a set of principles, and either your file honors them or it doesn’t.
+إن كانت نسختك مشابهة في *الشكل* ومختلفة في *التفاصيل* — أسماء تجهيزات مختلفة، وقرارات مختلفة حول أي أداة مساعدة تُنزَل رتبتها — فذلك صحيح تمامًا. لا توجد إعادة هيكلة صحيحة واحدة. توجد مجموعة مبادئ، وإما أن يحترمها ملفك أو لا يحترمها.
 
-What you should *not* feel is the urge to add more fixtures. The lesson and the lab are both about removing fixture complexity, not adding it. If your refactor made the file longer, you went the wrong direction.
+وما *لا* ينبغي أن تشعر به هو الرغبة في إضافة تجهيزات أكثر. فالدرس والمختبر كلاهما عن إزالة تعقيد التجهيزات، لا عن إضافته. فإن جعلت إعادة هيكلتك الملف أطول، فأنت تمضي في الاتجاه الخطأ.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped)
-- [APIRequestContext Beyond Storage State](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state) — the next lesson, which picks up where the `authenticatedRequest` composition example left off and turns it into a real pattern for mid-test user switching.
+- [التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped)
+- [APIRequestContext فيما يتجاوز حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state) — الدرس التالي، الذي يبدأ من حيث انتهى مثال تركيب `authenticatedRequest` ويحوّله إلى نمط حقيقي لتبديل المستخدم في منتصف الاختبار.

@@ -1,60 +1,60 @@
 ---
-title: "Performance at Scale"
-lang: en
+title: "الأداء على نطاق واسع"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/performance-at-scale"
 ---
 
-Any client-side framework looks reasonable when the session lasts three minutes. A user lands on a marketing page, scrolls, maybe clicks a CTA, and leaves. The performance conversation for that kind of surface is mostly about first impressions—how fast did the hero image paint, how quickly did the page become interactive, did anything shift while the user was trying to click.
+يبدو أي إطار عمل من جهة العميل معقولًا حين تستمر الجلسة ثلاث دقائق. يهبط مستخدم على صفحة تسويقية، ويمرّر، وربما ينقر زر دعوة إلى إجراء، ثم يمضي. والحديث عن الأداء في سطح كهذا يدور في معظمه حول الانطباعات الأولى—كم كان رسم الصورة الرئيسية سريعًا، وكم سرعان ما صارت الصفحة تفاعلية، وهل تحرّك شيء بينما كان المستخدم يحاول النقر.
 
-Enterprise applications are a different animal. Your users keep the tab open for *hours*. They interact with data grids containing thousands of rows. They trigger complex state transitions across deeply nested component trees. They open dashboards in the morning and don’t close them until they leave for the day. The things that matter for a landing page still matter here—but they’re joined by a whole category of concerns that consumer-facing optimization guides barely mention: memory hygiene, garbage collection pressure, rendering cost at density, and the slow accumulation of cruft that turns a snappy application into something that needs a page refresh by 2 p.m.
+أما تطبيقات المؤسسات فكائن آخر. يُبقي مستخدموك علامة التبويب مفتوحة *ساعات*. ويتفاعلون مع شبكات بيانات تحتوي آلاف الصفوف. ويطلقون انتقالات حالة معقّدة عبر أشجار مكوّنات متداخلة بعمق. ويفتحون لوحات معلومات في الصباح ولا يغلقونها حتى يرحلوا في نهاية اليوم. وما يهمّ في صفحة هبوط يظل مهمًا هنا—لكنه ينضم إليه صنف كامل من الهموم لا تكاد أدلة تحسين واجهات المستهلكين تذكره: نظافة الذاكرة، وضغط جمع المهملات، وكلفة التصيير عند الكثافة العالية، والتراكم البطيء للشوائب الذي يحوّل تطبيقًا خاطفًا إلى شيء يحتاج تحديث الصفحة بحلول الثانية بعد الظهر.
 
-This lecture covers the strategies that keep enterprise frontends fast over the long haul. For the deep dive on setting and enforcing specific metric thresholds, see the [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets). For production telemetry and alerting, see the [observability lecture](https://stevekinney.com/courses/enterprise-ui/observability).
+تغطي هذه المحاضرة الاستراتيجيات التي تُبقي واجهات المؤسسات سريعة على المدى الطويل. وللتعمّق في وضع عتبات مقاييس محددة وفرضها، راجع [محاضرة موازنات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets). وللقياس عن بعد والتنبيه في الإنتاج، راجع [محاضرة الرصد](https://stevekinney.com/courses/enterprise-ui/observability).
 
-## Why Enterprise Performance Is Different
+## لماذا يختلف أداء المؤسسات
 
-The performance profile of an internal tool, a trading platform, or a management dashboard differs from a consumer landing page in ways that aren’t just quantitative.
+يختلف ملف الأداء لأداة داخلية أو منصّة تداول أو لوحة معلومات إدارية عن صفحة هبوط موجّهة للمستهلك بطرق ليست كمية فحسب.
 
-**Session duration** is the big one. A consumer session might last two or three minutes. An enterprise session can run eight hours or longer. Gmail’s engineering team [documented this directly](https://web.dev/articles/effectivemanagement)—they found that even modest memory growth, invisible in a short session, compounded into real pain when users kept tabs open all day. Minor leaks that a consumer site never notices become browser crashes in an enterprise context.
+**مدة الجلسة** هي الأهم. قد تستمر جلسة مستهلك دقيقتين أو ثلاثًا. أما جلسة مؤسسية فقد تمتد ثماني ساعات أو أكثر. وقد [وثّق فريق هندسة Gmail هذا مباشرةً](https://web.dev/articles/effectivemanagement)—فقد وجدوا أن نمو الذاكرة حتى لو كان متواضعًا، وغير مرئي في جلسة قصيرة، يتراكم إلى ألم حقيقي حين يُبقي المستخدمون علامات التبويب مفتوحة طوال اليوم. والتسريبات الصغيرة التي لا يلاحظها موقع موجّه للمستهلكين أبدًا تتحوّل في سياق مؤسسي إلى انهيارات متصفح.
 
-**Data density** is the second. Enterprise UIs regularly display grids with hundreds of columns and tens of thousands of rows. The performance bottleneck isn’t network bandwidth—it’s the number of DOM nodes the browser has to lay out and paint, and the cost of recalculating styles when something changes in a sea of cells.
+**كثافة البيانات** هي الثاني. تعرض واجهات المؤسسات بانتظام شبكات بمئات الأعمدة وعشرات آلاف الصفوف. وعنق زجاجة الأداء ليس عرض النطاق الشبكي—بل عدد عقد DOM التي يجب على المتصفح تخطيطها ورسمها، وكلفة إعادة حساب الأنماط حين يتغيّر شيء في بحر من الخلايا.
 
-**Interaction frequency** is the third. A user on a content site might click three times. An enterprise user might perform hundreds of clicks, keypresses, and filter operations in a single session. That distinction is exactly why Google replaced First Input Delay with [Interaction to Next Paint](https://web.dev/articles/vitals) as a Core Web Vital—FID only measured the *first* interaction, while INP tracks the latency of *all* interactions throughout the session. For enterprise apps, that shift was overdue.
+**تكرار التفاعل** هو الثالث. قد ينقر مستخدم موقع محتوى ثلاث نقرات. أما مستخدم مؤسسي فقد ينفّذ مئات النقرات وضغطات المفاتيح وعمليات التصفية في جلسة واحدة. وهذا الفرق بالتحديد هو سبب استبدال Google مؤشر First Input Delay بـ[Interaction to Next Paint](https://web.dev/articles/vitals) ضمن Core Web Vitals—فقد كان FID يقيس *أول* تفاعل فقط، بينما يتتبّع INP زمن استجابة *كل* التفاعلات طوال الجلسة. وكان هذا التحوّل متأخرًا بالنسبة لتطبيقات المؤسسات.
 
-## Core Web Vitals in an Enterprise Context
+## Core Web Vitals في سياق مؤسسي
 
-The Core Web Vitals give you a triangulated view of loading, responsiveness, and visual stability. The current thresholds, measured at the [75th percentile](https://web.dev/articles/vitals) of page visits:
+تمنحك Core Web Vitals رؤية مثلّثة للتحميل والاستجابة والاستقرار البصري. وهذه هي العتبات الحالية، مقيسة عند [المئين 75](https://web.dev/articles/vitals) من زيارات الصفحة:
 
-| Metric | Good | Needs improvement | Poor |
+| المقياس | جيد | يحتاج تحسينًا | سيّئ |
 | --- | --- | --- | --- |
 | Largest Contentful Paint (LCP) | < 2.5s | 2.5s–4.0s | > 4.0s |
 | Interaction to Next Paint (INP) | < 200ms | 200ms–500ms | > 500ms |
 | Cumulative Layout Shift (CLS) | < 0.1 | 0.1–0.25 | > 0.25 |
 
-**LCP** measures when the largest visible element finishes rendering. In an enterprise dashboard, that’s usually the primary data grid or chart. If the main content area takes three seconds to paint, the user is staring at a skeleton screen wondering why they didn’t go into farming.
+**LCP** يقيس متى ينتهي تصيير أكبر عنصر مرئي. وفي لوحة معلومات مؤسسية، يكون ذلك عادةً شبكة البيانات الرئيسية أو المخطط الرئيسي. وإذا استغرقت منطقة المحتوى الرئيسية ثلاث ثوانٍ لترسم، فالمستخدم يحدّق في شاشة هيكلية يتساءل لماذا لم يمتهن الزراعة.
 
-**INP** replaced FID in 2024 and measures responsiveness across the entire session—not just the first click. For enterprise apps with complex filtering, sorting, and navigation, INP is the metric that tells you whether the app *stays* responsive, not just whether it *starts* responsive.
+**INP** حلّ محل FID في 2024 ويقيس الاستجابة عبر الجلسة كلها—لا أول نقرة فقط. ولتطبيقات المؤسسات ذات التصفية والترتيب والتنقّل المعقّدة، INP هو المقياس الذي يخبرك هل *يبقى* التطبيق متجاوبًا، لا هل *يبدأ* متجاوبًا فقط.
 
-**CLS** quantifies visual instability. In applications that load multiple asynchronous data streams simultaneously—a dashboard with six independently-fetching widgets, say—layout shift is a constant threat. Every widget that pushes content around as it resolves contributes to the score.
+**CLS** يقيس عدم الاستقرار البصري كميًا. وفي التطبيقات التي تحمّل عدة تدفقات بيانات غير متزامنة في وقت واحد—لوحة معلومات بست ودجات تجلب بياناتها كلٌّ على حدة، مثلًا—يكون انحراف التخطيط تهديدًا دائمًا. وكل ودجة تدفع المحتوى هنا وهناك عند اكتمالها تساهم في الدرجة.
 
-These metrics are a starting point. For enterprise-specific measurement strategies and how to wire them into CI, the [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets) covers field budgets, lab budgets, and asset budgets in detail. For production telemetry pipelines, see the [observability lecture](https://stevekinney.com/courses/enterprise-ui/observability).
+هذه المقاييس نقطة بداية. وللاستراتيجيات القياس الخاصة بالمؤسسات وكيفية ربطها بـCI، تغطي [محاضرة موازنات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) موازنات الميدان والمختبر والأصول بالتفصيل. ولخطوط القياس عن بعد في الإنتاج، راجع [محاضرة الرصد](https://stevekinney.com/courses/enterprise-ui/observability).
 
-### Real User Monitoring Versus Synthetic Testing
+### المراقبة عبر المستخدمين الحقيقيين مقابل الاختبار الاصطناعي
 
-You need both. Real User Monitoring (RUM) captures how the application behaves on the actual hardware your users have—which in many enterprises means lower-powered corporate laptops, not the M4 MacBook Pro you’re developing on. Synthetic monitoring provides a controlled, repeatable baseline for catching regressions in CI.
+تحتاج كليهما. فالمراقبة عبر المستخدمين الحقيقيين (RUM) تلتقط كيف يسلك التطبيق على العتاد الفعلي لدى مستخدميك—وهو في مؤسسات كثيرة حواسيب محمولة مؤسسية أضعف قدرة، لا جهاز M4 MacBook Pro الذي تطوّر عليه. أما المراقبة الاصطناعية فتوفّر أساسًا مضبوطًا قابلًا للتكرار لالتقاط التراجعات في CI.
 
-The key nuance is that they diverge for real reasons. Lab tests can’t measure INP because there’s no real user interacting. CLS in the lab looks artificially low because lab runs typically don’t scroll or interact. LCP can differ because of caching, redirects, and personalization that only exist in production. [web.dev’s guidance](https://web.dev/articles/vitals-measurement-getting-started) is explicit: use synthetic tests for CI gates and developer workflows, use RUM for understanding what users actually experience. The [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets) walks through the tooling for both.
+والفارق الدقيق أن الاثنين يتباعدان لأسباب حقيقية. فلا تستطيع اختبارات المختبر قياس INP لعدم وجود مستخدم حقيقي يتفاعل. ويبدو CLS في المختبر منخفضًا اصطناعيًا لأن تشغيلات المختبر لا تمرّر ولا تتفاعل عادةً. وقد يختلف LCP بسبب التخزين المؤقت وإعادة التوجيه والتخصيص التي لا توجد إلا في الإنتاج. و[إرشاد web.dev](https://web.dev/articles/vitals-measurement-getting-started) صريح: استخدم الاختبارات الاصطناعية لبوابات CI وسير عمل المطوّرين، واستخدم RUM لفهم ما يخوضه المستخدمون فعلًا. وتستعرض [محاضرة موازنات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) أدوات الاثنين.
 
-## Bundle Optimization
+## تحسين الحزمة
 
-Large-scale applications accumulate JavaScript the way old houses accumulate paint layers. Each feature, each library, each “just one more script” adds to the total payload that the browser must download, parse, and execute before the application becomes interactive.
+تتراكم JavaScript في التطبيقات واسعة النطاق كما تتراكم طبقات الدهان في البيوت القديمة. فكل ميزة، وكل مكتبة، وكل «سكربت واحد إضافي فقط» يضيف إلى الحمولة الكلية التي يجب على المتصفح تنزيلها وتحليلها وتنفيذها قبل أن يصبح التطبيق تفاعليًا.
 
-### Code Splitting Strategies
+### استراتيجيات تقسيم الشيفرة
 
-**Code splitting** divides a JavaScript bundle into smaller chunks loaded only when needed. In enterprise environments, this typically operates at three granularities.
+**تقسيم الشيفرة** (code splitting) يقسّم حزمة JavaScript إلى قطع أصغر لا تُحمَّل إلا عند الحاجة. وفي بيئات المؤسسات، يعمل هذا عادةً على ثلاث درجات من الدقة.
 
-**Route-based splitting** is the foundation. The JavaScript for `/settings` doesn’t load when the user is on `/dashboard`. Every modern bundler supports this through dynamic `import()` at the router level, and it’s the single highest-leverage optimization most apps can make.
+**التقسيم القائم على المسار** هو الأساس. فلا تُحمَّل JavaScript الخاصة بـ`/settings` حين يكون المستخدم في `/dashboard`. وكل مُجمِّع حديث يدعم هذا عبر `import()` الديناميكي على مستوى الموجّه، وهو أعلى تحسين مردودًا يمكن لمعظم التطبيقات تنفيذه.
 
-**Component-based splitting** goes further. A heavy charting library, a complex modal, or an entire below-the-fold section can be lazily loaded using [`React.lazy`](https://react.dev/reference/react/lazy) and [`Suspense`](https://react.dev/reference/react/Suspense). The code doesn’t arrive until the component actually mounts.
+**التقسيم القائم على المكوّن** يذهب أبعد. فمكتبة رسم مخططات ثقيلة، أو نافذة منبثقة معقّدة، أو قسم كامل أسفل الطية يمكن تحميله بكسل باستخدام [`React.lazy`](https://react.dev/reference/react/lazy) و[`Suspense`](https://react.dev/reference/react/Suspense). فلا تصل الشيفرة إلا حين يُركَّب المكوّن فعلًا.
 
 ```typescript
 const AnalyticsChart = React.lazy(() => import('./AnalyticsChart'));
@@ -68,65 +68,64 @@ function Dashboard() {
 }
 ```
 
-**Interaction-based splitting** is the most aggressive form. Code loads only after a specific user action—clicking an “Export to CSV” button, opening an advanced settings panel, hovering over a tooltip that needs a rich rendering library. The [Import on Interaction](https://www.patterns.dev/vanilla/import-on-interaction/) pattern from Patterns.dev is the canonical reference here.
+**التقسيم القائم على التفاعل** هو الشكل الأكثر جرأة. فلا تُحمَّل الشيفرة إلا بعد إجراء مستخدم محدد—النقر على زر «Export to CSV»، أو فتح لوحة إعدادات متقدمة، أو المرور فوق تلميح يحتاج مكتبة تصيير غنية. ونمط [Import on Interaction](https://www.patterns.dev/vanilla/import-on-interaction/) من Patterns.dev هو المرجع المعتمد هنا.
 
-| Strategy | When code loads | Good for |
+| الاستراتيجية | متى تُحمَّل الشيفرة | جيدة لـ |
 | --- | --- | --- |
-| Route-based | On navigation | Separate views, admin sections |
-| Component-based | On mount | Heavy tabs, modals, charts |
-| Interaction-based | On user action | Export utilities, advanced dialogs |
+| قائمة على المسار | عند التنقّل | العروض المنفصلة، وأقسام الإدارة |
+| قائمة على المكوّن | عند التركيب | التبويبات الثقيلة، والنوافذ المنبثقة، والمخططات |
+| قائمة على التفاعل | عند إجراء المستخدم | أدوات التصدير، والحوارات المتقدمة |
 
-### Tree Shaking Pitfalls
+### مزالق اهتزاز الشجرة
 
-**Tree shaking** removes unreachable code by analyzing the static structure of ES module imports. Bundlers like [webpack](https://webpack.js.org/guides/tree-shaking/) and Vite are efficient at this, but enterprise projects frequently disable the optimization without realizing it.
+**اهتزاز الشجرة** (tree shaking) يزيل الشيفرة غير القابلة للوصول بتحليل البنية الساكنة لاستيرادات وحدات ES. والمُجمِّعات مثل [webpack](https://webpack.js.org/guides/tree-shaking/) وVite فعّالة في هذا، لكن مشاريع المؤسسات كثيرًا ما تعطّل هذا التحسين دون أن تدري.
 
-The primary culprit is **side effects**—code that does something when imported, like modifying the global `window` object or injecting styles. If a module isn’t pure, the bundler can’t safely remove it even when none of its exports are used. webpack’s [tree-shaking guide](https://webpack.js.org/guides/tree-shaking/) is explicit: mark internal packages with `"sideEffects": false` in `package.json` so the bundler knows it’s safe to eliminate unused exports.
+والمتهم الأول هو **الآثار الجانبية**—شيفرة تفعل شيئًا عند استيرادها، مثل تعديل كائن `window` العام أو حقن أنماط. فإن لم تكن الوحدة نقية، فلن يستطيع المُجمِّع إزالتها بأمان حتى إن لم يُستخدم أي من صادراتها. و[دليل اهتزاز الشجرة](https://webpack.js.org/guides/tree-shaking/) في webpack صريح: وسّم الحزم الداخلية بـ`"sideEffects": false` في `package.json` كي يعلم المُجمِّع أن إزالة الصادرات غير المستخدمة آمنة.
 
-The second culprit is **barrel files**—those `index.ts` files that re-export everything from a package. When you write `import { Button } from '@acme/ui'` and that barrel re-exports 200 components, the bundler may not be able to prune the other 199 without explicit side-effect declarations. In large monorepos, barrel files are one of the most common reasons tree shaking quietly stops working.
+والمتهم الثاني هو **الملفات البرميلية**—تلك الملفات `index.ts` التي تعيد تصدير كل شيء من حزمة. فحين تكتب `import { Button } from '@acme/ui'` ويعيد ذلك البرميل تصدير 200 مكوّن، فقد لا يستطيع المُجمِّع تقليم الـ199 الأخرى دون إعلانات صريحة للآثار الجانبية. وفي المستودعات الأحادية الكبيرة، الملفات البرميلية من أكثر أسباب توقّف اهتزاز الشجرة بهدوء.
 
-### Bundle Analysis and Shared Chunks
+### تحليل الحزمة والقطع المشتركة
 
-You can’t optimize what you can’t see. Tools like `webpack-bundle-analyzer` and `source-map-explorer` give you a visual map of what’s actually in the bundle. In my experience, the first time a team runs one of these tools on a mature enterprise application, someone gasps. The discovery is always the same: a library nobody remembers adding, a duplicate copy of something that should be shared, or a dev dependency that accidentally leaked into production.
+لا يمكنك تحسين ما لا تراه. أدوات مثل `webpack-bundle-analyzer` و`source-map-explorer` تمنحك خريطة بصرية لما في الحزمة فعلًا. وفي تجربتي، في أول مرة تشغّل فيها فرق أحد هذه الأدوات على تطبيق مؤسسي ناضج، يشهق أحدهم. والاكتشاف واحد دائمًا: مكتبة لا يتذكّر أحد إضافتها، أو نسخة مكرّرة من شيء كان ينبغي أن يكون مشتركًا، أو اعتماد تطوير تسرّب إلى الإنتاج عن غير قصد.
 
-In multi-application or [microfrontend](https://stevekinney.com/courses/enterprise-ui/module-federation) architectures, shared chunk optimization becomes critical. A common “vendor” chunk can hold libraries like React, your design system, or shared utilities. The browser downloads it once, caches it, and reuses it across applications. The [Module Federation lecture](https://stevekinney.com/courses/enterprise-ui/module-federation) covers shared dependency negotiation in depth—the `singleton`, `requiredVersion`, and share-scope machinery that prevents five copies of React from loading simultaneously.
+وفي معماريات التطبيقات المتعددة أو [الواجهات الدقيقة](https://stevekinney.com/courses/enterprise-ui/module-federation)، يصبح تحسين القطع المشتركة حاسمًا. فقسم «vendor» مشترك يمكن أن يحمل مكتبات مثل React، أو نظام التصميم لديك، أو أدوات مساعدة مشتركة. فينزّله المتصفح مرة واحدة، ويخزّنه مؤقتًا، ويعيد استخدامه عبر التطبيقات. وتغطي [محاضرة Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) التفاوض على الاعتمادات المشتركة بعمق—آلية `singleton` و`requiredVersion` ونطاق المشاركة التي تمنع تحميل خمس نسخ من React في الوقت نفسه.
+## أداء التصيير
 
-## Rendering Performance
+حين تعرض واجهتك آلاف نقاط البيانات وتتعامل مع مئات التفاعلات في الجلسة، لم يعد أداء التصيير متعلقًا بـ«أول رسم سريع» بل أصبح متعلقًا باستجابة مستدامة تحت الحمل.
 
-When your UI displays thousands of data points and handles hundreds of interactions per session, rendering performance stops being about “fast first paint” and becomes about sustained responsiveness under load.
+### المحاكاة الافتراضية
 
-### Virtualization
+المقاربة الساذجة لتصيير شبكة بيانات من 50,000 صف هي إنشاء 50,000 عقدة DOM. فيقضي المتصفح وقته في تخطيط عناصر ورسمها وإعادة تدفّقها لا يستطيع المستخدم رؤيتها أصلًا. و**المحاكاة الافتراضية** (virtualization)—وتُسمى أيضًا التمرير النوافذي (windowing)—تصلح هذا بتصيير الصفوف المرئية حاليًا في إطار العرض فقط، مع ذاكرة مؤقتة صغيرة أعلى وأسفل للتمرير السلس.
 
-The naïve approach to rendering a 50,000-row data grid is to create 50,000 DOM nodes. The browser then spends its time laying out, painting, and reflowing elements the user can’t even see. **Virtualization** (also called windowing) fixes this by rendering only the rows currently visible in the viewport, plus a small buffer above and below for smooth scrolling.
+مكتبات مثل `react-window` وTanStack Virtual توفّر البنية التحتية. وللشبكات المؤسسية المعقّدة ذات الأعمدة المثبّتة وارتفاعات الصفوف الديناميكية والتمرير الأفقي عبر مئات الأعمدة، كثيرًا ما ينتهي الفرق إلى تطبيقات مخصصة مضبوطة على شكل بياناتهم تحديدًا. وقد [وثّق فريق هندسة Shopify هذه المقاربة](https://shopify.engineering/improving-shopify-app-s-performance)—فقد أعادوا كتابة شاشات رئيسية باستخدام عروض تمرير كسولة ورأوا انخفاضات في زمن التحميل تصل إلى 50% في صفحات الإدارة كثيفة البيانات.
 
-Libraries like `react-window` and TanStack Virtual provide the infrastructure. For complex enterprise grids with frozen columns, dynamic row heights, and horizontal scrolling across hundreds of columns, teams often end up with custom implementations tuned to their specific data shape. Shopify’s engineering team [documented this approach](https://shopify.engineering/improving-shopify-app-s-performance)—they rewrote major screens using lazy scroll views and saw load time reductions up to 50% on data-heavy admin pages.
+القاعدة المعمارية بسيطة: إن كنت تصيّر قائمة بأكثر من بضع مئات من العناصر، فينبغي أن تحاكيها افتراضيًا. فلم يُصمَّم DOM للتعامل بكفاءة مع عشرات آلاف العقد، ولن تُصلح أي كمية من الحفظ الذاكري محرّك تخطيط يعيد حساب الهندسة لصفوف لن يمرّر المستخدم إليها أبدًا.
 
-The architectural rule is simple: if you’re rendering a list of more than a few hundred items, you should be virtualizing it. The DOM was not designed to handle tens of thousands of nodes efficiently, and no amount of memoization will fix a layout engine that’s recalculating geometry for rows the user will never scroll to.
+### منع إعادة التصيير والجدولة
 
-### Re-render Prevention and Scheduling
+في شجرة مكوّنات معقّدة، قد يطلق تغيير حالة واحد في الجذر سلسلة متتالية من إعادات التصيير حتى الأسفل. وأدوات المنع القياسية—`React.memo` و`useMemo` و`useCallback`—موجودة لقطع العمل غير الضروري بإبقاء تساوي المراجع في الخصائص. لكنها ليست مجانية. فالمقارنة نفسها لها كلفة، ولفّ كل مكوّن بـ`React.memo` دون قياس أداء أولًا هو تحسين سابق لأوانه يرتدي معطفًا.
 
-In a complex component tree, a single state change at the root can trigger a cascade of re-renders all the way down. The standard prevention tools—`React.memo`, `useMemo`, `useCallback`—exist to short-circuit unnecessary work by maintaining referential equality of props. But, they’re not free. The comparison itself has a cost, and wrapping every component in `React.memo` without profiling first is premature optimization wearing a trench coat.
+والرافعة الأكثر إثارة هي **الجدولة**. فليس كل عمل يجب أن يحدث فورًا. و`requestIdleCallback` يتيح للمتصفح تنفيذ مهام خلفية—تسجيل القياس عن بعد، والجلب المسبق للبيانات، والتحديثات غير الحرجة للحالة—حين لا يكون مشغولًا بمعالجة إدخال المستخدم أو الرسوم المتحركة. وللحسابات الثقيلة مثل تحليل البيانات أو التصفية المعقّدة، فإن نقلها إلى [Web Workers](https://stevekinney.com/courses/enterprise-ui/comlink) هو الخطوة الصحيحة. وتغطي [محاضرة Comlink](https://stevekinney.com/courses/enterprise-ui/comlink) كيفية جعل ذلك الحدّ مريحًا.
 
-The more interesting lever is **scheduling**. Not all work needs to happen immediately. `requestIdleCallback` lets the browser perform background tasks—telemetry logging, data prefetching, non-critical state updates—when it isn’t busy handling user input or animations. For heavy computation like data parsing or complex filtering, offloading to [Web Workers](https://stevekinney.com/courses/enterprise-ui/comlink) is the right move. The [Comlink lecture](https://stevekinney.com/courses/enterprise-ui/comlink) covers how to make that boundary ergonomic.
+والعتبة العملية 50 مللي ثانية. فأي حساب متزامن يستغرق أكثر من ذلك هو **مهمة طويلة** تُضعف INP. وإن كنت تحلّل ملف CSV، أو تشغّل فهرس بحث، أو تقيّم صيغ جداول بيانات، أو تولّد PDF في جهة العميل، فذلك العمل مكانه خارج الخيط الرئيسي.
 
-The practical threshold is 50 milliseconds. Any synchronous computation that takes longer than that is a **long task** that degrades INP. If you’re parsing a CSV, running a search index, evaluating spreadsheet formulas, or generating a PDF on the client, that work belongs off the main thread.
+### معمارية CSS والكلفة وقت التشغيل
 
-### CSS Architecture and Runtime Cost
+لاستراتيجية التنسيق لديك آثار وقت تشغيل تقلّل معظم الفرق من تقديرها. فمكتبات CSS-in-JS وقت التشغيل مثل styled-components وEmotion تنفّذ JavaScript لتوليد الأنماط وحقنها في DOM في كل تصيير. وهذا مقبول في معدّلات التفاعل المعتدلة، لكن في تطبيقات المؤسسات ذات إعادات التصيير العالية التكرار—شبكة بيانات حيّة، أو واجهة تداول، أو أي شيء يتحدّث عشرات المرات في الثانية—تصبح الكلفة التراكمية مرئية.
 
-Your styling strategy has runtime implications that most teams underestimate. Runtime CSS-in-JS libraries like styled-components and Emotion execute JavaScript to generate and inject styles into the DOM on every render. That’s fine for moderate interaction frequencies, but in enterprise apps with high-frequency re-renders—a live data grid, a trading interface, anything that updates dozens of times per second—the cumulative cost becomes visible.
+أما استخلاص CSS الساكن وحلول CSS-in-JS وقت الترجمة مثل Vanilla Extract وLinaria فتولّد ملفات CSS قياسية وقت البناء. ومحرّك تحليل CSS في المتصفح محسّن بكثافة ومسرّع عتاديًا بطرق لا تتوفر في حقن الأنماط المدفوع بـJavaScript. ولتطبيقات المؤسسات التي تهمّ فيها إنتاجية التصيير، تميل حلول وقت الترجمة إلى أن تكون الافتراضي الأفضل.
 
-Static CSS extraction and compile-time CSS-in-JS solutions like Vanilla Extract and Linaria generate standard CSS files at build time. The browser’s CSS parsing engine is heavily optimized and hardware-accelerated in ways that JavaScript-driven style injection is not. For enterprise applications where rendering throughput matters, compile-time solutions tend to be the better default.
+ليست هذه قاعدة شاملة. فإن لم يكن تطبيقك ذا تصيير عالي التكرار، فالفارق ضئيل. لكن إن كنت تنقّب عن التقطيع (jank) في عرض بيانات كثيف وتشغّل مكتبة CSS-in-JS وقت تشغيل، فقياس كلفة حقن الأنماط جدير بالتنفيذ قبل أن تبدأ إلقاء اللوم على React.
 
-This isn’t a universal rule. If your app doesn’t have high-frequency rendering, the difference is negligible. But, if you’re debugging jank in a dense data display and you’re running a runtime CSS-in-JS library, profiling the style injection cost is worth doing before you start blaming React.
+## تحسين الشبكة
 
-## Network Optimization
+في مؤسسة موزّعة عالميًا، ليس كل مستخدميك على ألياف بسرعة جيجابت بجوار مركز البيانات. وتحسين الشبكة يدور حول تقليل كلفة الطلبات التي يجب أن تحدث وإلغاء الطلبات التي لا يجب أن تحدث.
 
-In a globally distributed enterprise, your users are not all on gigabit fiber sitting next to the data center. Network optimization is about reducing the cost of the requests that have to happen and eliminating the ones that don’t.
+### تلميحات الموارد
 
-### Resource Hints
+**تلميحات الموارد** تُخبر المتصفح مسبقًا بما سيحتاجه. فيُنشئ `preconnect` و`dns-prefetch` اتصالات مبكّرة بنطاقات حرجة—بوابة واجهة برمجة التطبيقات لديك، أو مزوّد الخطوط، أو شبكة توصيل المحتوى—فتكون عملية بحث DNS ومصافحة TLS قد تمّت بالفعل عند إطلاق أول طلب حقيقي. ويجلب `preload` الموارد ذات الأولوية العالية للصفحة الحالية. ويجلب `prefetch` الموارد المتوقّعة *للتنقّل التالي*.
 
-**Resource hints** give the browser advance notice about what it’s going to need. `preconnect` and `dns-prefetch` establish early connections to critical domains—your API gateway, your font provider, your CDN—so the DNS lookup and TLS handshake are already done when the first real request fires. `preload` fetches high-priority resources for the current page. `prefetch` fetches resources expected for the *next* navigation.
-
-For module-heavy applications, `modulepreload` is worth knowing about. It tells the browser to fetch *and parse* ES modules in parallel, avoiding the serial dependency chain that happens when the browser discovers each `import` only after evaluating the previous module.
+وفي التطبيقات المثقلة بالوحدات، يستحق `modulepreload` أن تعرفه. فهو يطلب من المتصفح جلب وحدات ES *وتحليلها* على التوازي، متجنّبًا سلسلة الاعتماد التسلسلية التي تحدث حين يكتشف المتصفح كل `import` فقط بعد تقييم الوحدة السابقة.
 
 ```html
 <link rel="preconnect" href="https://api.example.com" />
@@ -134,69 +133,69 @@ For module-heavy applications, `modulepreload` is worth knowing about. It tells 
 <link rel="prefetch" href="/chunks/settings.js" />
 ```
 
-The ordering matters. Preconnect the domains you’ll definitely hit. Preload what the current page needs. Prefetch what the next page probably needs. Get the priority wrong and you’ll burn bandwidth on speculative fetches while the critical resources wait in line.
+والترتيب مهم. اربط مبكرًا النطاقات التي ستصل إليها بالتأكيد. واحمّل مسبقًا ما تحتاجه الصفحة الحالية. واجلب مسبقًا ما تحتاجه الصفحة التالية على الأرجح. وإن أخطأت في الأولوية، فستحرق عرض النطاق على عمليات جلب تخمينية بينما تنتظر الموارد الحرجة في الطابور.
 
-### Caching Strategies
+### استراتيجيات التخزين المؤقت
 
-[Service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) give you a programmable network proxy between the application and the server. The three caching strategies that matter most for enterprise apps:
+تمنحك [عوامل الخدمة](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) وسيطًا شبكيًا قابلًا للبرمجة بين التطبيق والخادم. وهذه أهم ثلاث استراتيجيات تخزين مؤقت لتطبيقات المؤسسات:
 
-- **Stale-while-revalidate** for application shells and static assets. The user gets an instant cache hit while the service worker fetches a fresh copy in the background. The next visit gets the updated version. This is the sweet spot for most UI assets.
-- **Cache-first** for immutable, versioned assets. If the filename contains a content hash, the file never changes. Serve it from cache forever.
-- **Network-first** for critical business data. Accuracy matters more than speed. Fall back to cached data only when the network is genuinely unavailable.
+- **stale-while-revalidate** لقشور التطبيقات والأصول الساكنة. فيحصل المستخدم على إصابة فورية في الذاكرة المؤقتة بينما يجلب عامل الخدمة نسخة جديدة في الخلفية. وتحصل الزيارة التالية على النسخة المحدّثة. وهذا هو الوضع الأمثل لمعظم أصول واجهة المستخدم.
+- **cache-first** للأصول غير القابلة للتغيير والمصحوبة بإصدار. فإذا احتوى اسم الملف على بصمة محتوى، فلن يتغيّر الملف أبدًا. قدّمه من الذاكرة المؤقتة إلى الأبد.
+- **network-first** لبيانات الأعمال الحرجة. فالدقة أهم من السرعة. ولا ترجع إلى البيانات المخزّنة مؤقتًا إلا حين تكون الشبكة غير متاحة فعلًا.
 
-### HTTP/2, HTTP/3, and CDN
+### HTTP/2 وHTTP/3 وشبكة توصيل المحتوى
 
-HTTP/2’s multiplexing lets the browser send multiple requests over a single connection, which means the old practice of domain-sharding assets across CDN subdomains is no longer necessary and actually counterproductive—each extra domain adds a DNS lookup and TLS handshake. HTTP/3 improves on this further with QUIC’s zero-round-trip connection resumption.
+تتيح تعدّد الإرسال (multiplexing) في HTTP/2 للمتصفح إرسال طلبات متعددة عبر اتصال واحد، ما يعني أن ممارسة توزيع الأصول على نطاقات فرعية متعددة لشبكة توصيل المحتوى لم تعد ضرورية بل صارت مضادة للإنتاج—فكل نطاق إضافي يضيف بحث DNS ومصافحة TLS. ويحسّن HTTP/3 على هذا أكثر باستئناف الاتصال بلا جولات في QUIC.
 
-Shopify found that consolidating static content under a single domain—instead of using a separate `cdn.shopify.com` subdomain—improved TTFB by [35% globally](https://www.shopify.com/enterprise/blog/site-performance-page-speed-ecommerce) because it eliminated the extra DNS and TLS overhead and let HTTP/3 prioritization do its job.
+وجدت Shopify أن توحيد المحتوى الساكن تحت نطاق واحد—بدلًا من استخدام نطاق فرعي منفصل `cdn.shopify.com`—حسّن TTFB بنسبة [35% عالميًا](https://www.shopify.com/enterprise/blog/site-performance-page-speed-ecommerce) لأنه أزال كلفة DNS وTLS الإضافية وترك ترتيب الأولويات في HTTP/3 يقوم بعمله.
 
-For image-heavy dashboards and admin screens, automatic format negotiation (serving AVIF or WebP based on browser support) reduces the visual payload without requiring per-image decisions from developers.
+وللوحات معلومات وشاشات الإدارة الغنية بالصور، يقلّل التفاوض التلقائي على الصيغة (تقديم AVIF أو WebP بحسب دعم المتصفح) الحمولة البصرية دون أن يتطلب قرارات من المطوّرين لكل صورة.
 
-## Long-Session Memory Hygiene
+## نظافة الذاكرة في الجلسات الطويلة
 
-This is where enterprise performance diverges most sharply from consumer optimization. A minor memory leak that’s invisible in a three-minute session becomes a browser crash after eight hours. Gmail’s engineering team [reported](https://web.dev/articles/effectivemanagement) that fixing unbounded caches, orphaned callbacks, and leaked event listeners reduced memory usage at the 99th percentile by 80%.
+هنا يتباعد أداء المؤسسات بأشد ما يكون عن تحسين واجهات المستهلكين. فتسريب ذاكرة طفيف لا يُرى في جلسة من ثلاث دقائق يصبح انهيار متصفح بعد ثماني ساعات. وقد [أفاد فريق هندسة Gmail](https://web.dev/articles/effectivemanagement) أن إصلاح الذاكرات المؤقتة غير المحدودة، والاستدعاءات الراجعة المعلّقة، ومستمعي الأحداث المتسرّبين قلّل استخدام الذاكرة عند المئين 99 بنسبة 80%.
 
-### Common Leak Patterns
+### أنماط التسريب الشائعة
 
-**Detached DOM nodes** are elements removed from the visible page but still referenced in a JavaScript variable, array, or map. The garbage collector can’t reclaim them because the code still holds a reference, even though nothing renders them.
+**عقد DOM المنفصلة** هي عناصر أُزيلت من الصفحة المرئية لكن ما زالت مذكورة في متغيّر JavaScript أو مصفوفة أو خريطة. ولا يستطيع جامع المهملات استعادتها لأن الشيفرة ما زالت تحتفظ بمرجع إليها، رغم أن لا شيء يصيّرها.
 
-**Closure-based leaks** happen when an inner function captures a large variable from its outer scope. If that closure outlives the component that created it—attached to a global event handler, stored in a module-level cache, referenced by a timer that was never cleared—the entire captured scope stays alive in memory.
+**التسريبات القائمة على الإغلاقات** (closures) تحدث حين تلتقط دالة داخلية متغيّرًا كبيرًا من نطاقها الخارجي. فإن عاش ذلك الإغلاق أطول من المكوّن الذي أنشأه—بأن يُربط بمعالج حدث عام، أو يُخزَّن في ذاكرة مؤقتة على مستوى الوحدة، أو يُشار إليه بمؤقّت لم يُلغَ قط—بقي النطاق الملتقط كله حيًّا في الذاكرة.
 
-**Event listener accumulation** is the most insidious pattern. Listeners attached to `window` or `document` that are never removed effectively keep the entire component scope alive for the lifetime of the page. In a single-page application where components mount and unmount as the user navigates, forgetting to clean up a `window.addEventListener('resize', ...)` in an effect cleanup function means every visit to that route adds another listener that never goes away.
+**تراكم مستمعي الأحداث** هو أخبث الأنماط. فالمستمعون المربوطون بـ`window` أو `document` ولا يُزالون قط يُبقون نطاق المكوّن كله حيًّا طوال عمر الصفحة. وفي تطبيق صفحة واحدة تُركَّب فيه المكوّنات وتُفكّ مع تنقّل المستخدم، فإن نسيان تنظيف `window.addEventListener('resize', ...)` في دالة تنظيف تأثير يعني أن كل زيارة لذلك المسار تضيف مستمعًا آخر لا يذهب أبدًا.
 
-The diagnostic tool is Chrome DevTools’ Memory tab. Take heap snapshots before and after a suspected leak, compare them, and look for objects whose **retained size**—the memory that would be freed if the object were collected—keeps growing. If you navigate to a route, navigate away, force a garbage collection, and the heap doesn’t return to baseline, something is holding on to references it shouldn’t be.
+والأداة التشخيصية هي تبويب Memory في Chrome DevTools. التقط لقطات كومة قبل تسريب مشتبه به وبعده، وقارن بينها، وابحث عن الكائنات التي يستمر **حجمها المحتفَظ به**—أي الذاكرة التي ستتحرّر لو جُمع الكائن—في النمو. فإن تنقّلت إلى مسار، ثم ابتعدت عنه، وأجبرت جمع المهملات، ولم تعد الكومة إلى خط الأساس، فثمة شيء يحتفظ بمراجع لا ينبغي أن يحتفظ بها.
 
-### Garbage Collection Pressure
+### ضغط جمع المهملات
 
-Even without leaks, you can degrade performance by allocating and discarding objects too rapidly. V8’s garbage collector uses a generational strategy—young-generation collections are fast but frequent, old-generation collections are thorough but pause the main thread. Every allocation moves you closer to a GC pause. If your application creates and discards thousands of short-lived objects per second—common with high-frequency state updates, immutable data patterns, or aggressive memoization—the GC runs more often and the pauses become noticeable as jank.
+حتى بدون تسريبات، يمكنك إضعاف الأداء بتخصيص الكائنات والتخلّص منها بسرعة مفرطة. فجامع المهملات في V8 يستخدم استراتيجية أجيال—فعمليات جمع الجيل الفتيّ سريعة لكن متكرّرة، وعمليات جمع الجيل القديم شاملة لكنها تُجمّد الخيط الرئيسي. وكل تخصيص يقرّبك من توقّف GC. وإن أنشأ تطبيقك آلاف الكائنات قصيرة العمر وتخلّص منها كل ثانية—وهو شائع مع تحديثات الحالة عالية التكرار، أو أنماط البيانات غير القابلة للتغيير، أو الحفظ الذاكري المكثّف—فإن GC يعمل أكثر وتصبح التوقّفات ملحوظة بوصفها تقطيعًا.
 
-The practical mitigation is to keep large, non-reactive datasets out of the reactive state tree. Historical logs, complex configuration objects, reference data that doesn’t change—these can live in [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) instead of a JavaScript state store. The reactive system only needs to hold what the UI actually renders. Everything else is overhead that makes the garbage collector work harder than it should.
+والتخفيف العملي هو إبقاء مجموعات البيانات الكبيرة وغير التفاعلية خارج شجرة الحالة التفاعلية. فالسجلات التاريخية، وكائنات التهيئة المعقّدة، وبيانات المرجع التي لا تتغيّر—يمكن أن تسكن في [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) بدل مخزن حالة JavaScript. ولا يحتاج النظام التفاعلي إلى حمل إلا ما تصيّره واجهة المستخدم فعلًا. وكل ما عدا ذلك كلفة إضافية تجعل جامع المهملات يعمل بجهد أكبر مما ينبغي.
 
-## Microfrontend-Specific Performance
+## الأداء الخاص بالواجهات الدقيقة
 
-Microfrontends introduce performance challenges that don’t exist in a monolithic architecture. The [Module Federation lecture](https://stevekinney.com/courses/enterprise-ui/module-federation) covers the composition model; this section covers the performance implications.
+تضيف الواجهات الدقيقة تحديات أداء لا وجود لها في معمارية أحادية. وتغطي [محاضرة Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) نموذج التركيب؛ أما هذا القسم فيغطي آثار الأداء.
 
-### Bundle Duplication
+### ازدواج الحزم
 
-Without coordination, each microfrontend independently bundles common dependencies. If three remotes each ship their own copy of React, the user downloads React three times. Module Federation’s `shared` configuration with `singleton: true` is the standard mitigation—only the first remote to load provides the library, and the rest reuse it. The [shared dependencies section](https://stevekinney.com/courses/enterprise-ui/module-federation#shared-dependencies-properly-understood) of the Module Federation lecture covers the mechanics.
+بدون تنسيق، تحزم كل واجهة دقيقة الاعتمادات المشتركة بشكل مستقل. فإن شحن ثلاثة تطبيقات بعيدة نسخة React خاصة بكل منها، نزّل المستخدم React ثلاث مرات. وتهيئة `shared` في Module Federation مع `singleton: true` هي التخفيف القياسي—فأول تطبيق بعيد يُحمَّل هو الذي يوفّر المكتبة، ويعيد الباقون استخدامها. ويغطي [قسم الاعتمادات المشتركة](https://stevekinney.com/courses/enterprise-ui/module-federation#shared-dependencies-properly-understood) في محاضرة Module Federation الآلية.
 
-The organizational discipline matters as much as the configuration. Group platform dependency upgrades so shared runtime libraries move atomically across remotes. Use CI checks (tools like `syncpack` or centralized version presets) to catch version drift before it ships. Publish dependency-alignment dashboards so teams can see which remotes are lagging behind and prioritize accordingly. Performance regressions in federated architectures are frequently dependency-governance failures, not rendering algorithm failures.
+والانضباط التنظيمي مهم بقدر أهمية التهيئة. فجمّع ترقيات اعتمادات المنصّة كي تنتقل مكتبات وقت التشغيل المشتركة انتقالًا ذرّيًا عبر التطبيقات البعيدة. واستخدم فحوص CI (أدوات مثل `syncpack` أو إعدادات إصدار مركزية) لالتقاط تباعد الإصدارات قبل نشره. وانشر لوحات معلومات لمواءمة الاعتمادات لترى الفرق أي التطبيقات البعيدة متأخّرة فترتّب الأولويات وفقًا لذلك. فتراجعات الأداء في المعماريات الموحّدة كثيرًا ما تكون إخفاقات في حوكمة الاعتمادات، لا إخفاقات في خوارزميات التصيير.
 
-### Network Waterfalls
+### الشلالات الشبكية
 
-If the shell loads, discovers it needs Remote A, loads that, which then discovers it needs an async chunk, loads *that*—you’ve built a serial waterfall where each request has to complete before the next one starts. Mitigations include preloading frequently-needed remote scripts with `<link rel="preload">` in the shell, using Module Federation 2.0’s manifest for coordinated preloading, and ensuring HTTP/2 multiplexing is active so at least the parallel requests share a connection.
+إن حُمّل القشر، ثم اكتشف أنه يحتاج التطبيق البعيد A، فحمّله، فاكتشف هذا بدوره أنه يحتاج قطعة غير متزامنة، فحمّلها *هي*—فقد بنيت شلالًا تسلسليًا يجب أن يكتمل فيه كل طلب قبل أن يبدأ التالي. ومن التخفيفات تحميل سكربتات التطبيقات البعيدة كثيرة الطلب مسبقًا بـ`<link rel="preload">` في القشر، واستخدام بيان Module Federation 2.0 للتحميل المسبق المنسّق، وضمان أن تعدّد الإرسال في HTTP/2 نشط حتى تتشارك الطلبات المتوازية اتصالًا واحدًا على الأقل.
 
-American Express reportedly imposed a strict budget of roughly 250 KB per microfrontend, enforced through externals and dynamic imports. Setting per-remote performance budgets is one of the more effective guardrails against any single team’s remote becoming a payload liability for the whole platform.
+يُقال إن American Express فرضت موازنة صارمة قوامها نحو 250 كيلوبايت لكل واجهة دقيقة، مفروضة عبر externals والاستيرادات الديناميكية. ووضع موازنات أداء لكل تطبيق بعيد من أكثر الحواجز فعّالية ضد أن يصبح تطبيق فريق بعينه عبئًا على حمولة المنصّة كلها.
 
-### Streaming SSR and Partial Hydration
+### التصيير من الخادم بالتدفق والترطيب الجزئي
 
-Advanced microfrontend architectures can stream HTML as fragments render—similar to Zalando’s Tailor approach—so users see content incrementally rather than waiting for every remote to finish. Partial hydration ensures only the truly interactive parts of a microfrontend run JavaScript on the client, reducing the initial execution cost. The [server components and streaming lecture](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) covers the React-specific streaming model, and the [islands architecture lecture](https://stevekinney.com/courses/enterprise-ui/island-architecture) covers the broader pattern of selective hydration.
+تستطيع معماريات الواجهات الدقيقة المتقدّمة بثّ HTML مع تصيير القطع تدريجيًا—على غرار مقاربة Tailor من Zalando—فيرى المستخدمون المحتوى على مراحل بدل انتظار اكتمال كل تطبيق بعيد. ويضمن الترطيب الجزئي أن الأجزاء التفاعلية فعلًا من الواجهة الدقيقة هي وحدها التي تشغّل JavaScript في جهة العميل، ما يقلّل كلفة التنفيذ الأولية. وتغطي [محاضرة مكوّنات الخادم والبثّ](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) نموذج البثّ الخاص بـReact، وتغطي [محاضرة معمارية الجزر](https://stevekinney.com/courses/enterprise-ui/island-architecture) النمط الأوسع للترطيب الانتقائي.
 
-## Off-Main-Thread Architecture
+## معمارية خارج الخيط الرئيسي
 
-Any synchronous computation that takes more than 50 milliseconds should be a candidate for a Web Worker. Enterprise applications are full of candidates: CSV parsing, client-side search indexing, data transformation pipelines, spreadsheet formula evaluation, PDF generation.
+أي حساب متزامن يستغرق أكثر من 50 مللي ثانية ينبغي أن يكون مرشّحًا لعامل ويب (Web Worker). وتطبيقات المؤسسات مليئة بالمرشّحين: تحليل CSV، وفهرسة البحث في جهة العميل، وخطوط تحويل البيانات، وتقييم صيغ جداول البيانات، وتوليد PDF.
 
-A Worker runs in a separate thread with its own event loop. The main thread stays responsive because the heavy work never touches it.
+يعمل العامل في خيط منفصل بحلقة أحداث خاصة به. ويبقى الخيط الرئيسي متجاوبًا لأن العمل الثقيل لا يمسّه أبدًا.
 
 ```typescript
 // workers/csv-parser.worker.ts
@@ -214,70 +213,70 @@ worker.onmessage = (event) => {
 };
 ```
 
-`SharedWorker` extends this for scenarios where multiple tabs or microfrontends need the same background process—a WebSocket connection manager, a shared search index, a cross-tab state synchronization layer. In federated architectures, a `SharedWorker` can maintain a single WebSocket connection to the backend instead of each remote opening its own.
+ويمدّ `SharedWorker` هذا إلى الحالات التي تحتاج فيها علامات تبويب متعددة أو واجهات دقيقة متعددة العملية الخلفية نفسها—مدير اتصال WebSocket، أو فهرس بحث مشترك، أو طبقة مزامنة حالة بين علامات التبويب. وفي المعماريات الموحّدة، يستطيع `SharedWorker` إبقاء اتصال WebSocket واحد بالخادم الخلفي بدل أن يفتح كل تطبيق بعيد اتصاله الخاص.
 
-The [Comlink lecture](https://stevekinney.com/courses/enterprise-ui/comlink) covers how to turn the raw `postMessage` ceremony into an ergonomic RPC-style API, including `transfer()` for zero-copy handoff of large buffers and `proxy()` for passing callbacks across the boundary.
+وتغطي [محاضرة Comlink](https://stevekinney.com/courses/enterprise-ui/comlink) كيفية تحويل طقوس `postMessage` الخام إلى واجهة برمجة مريحة على غرار RPC، بما في ذلك `transfer()` لتسليم الوسائط الكبيرة دون نسخ، و`proxy()` لتمرير الاستدعاءات الراجعة عبر الحدّ.
 
-## Case Studies
+## دراسات حالة
 
 ### Netflix
 
-Netflix optimized their logged-out landing page by removing client-side React entirely and transitioning to vanilla JavaScript. React still ran on the server for developer experience and SSR, but stripping the client-side framework cut the bundle by 200 KB and [improved time-to-interactive by 50%](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9). For subsequent steps in the sign-up flow, they used XHR prefetching to download the React application in the background while the user was still reading the landing page. The lesson isn’t “don’t use React.” It’s that the landing page and the application are different performance contexts, and treating them identically is a missed opportunity.
+حسّنت Netflix صفحة الهبوط الخاصة بغير المسجّلين بإزالة React من جهة العميل كليًا والانتقال إلى JavaScript العادي. وظلّ React يعمل على الخادم لتجربة المطوّرين وللتصيير من الخادم، لكن إزالة إطار العمل من جهة العميل قلّصت الحزمة بمقدار 200 كيلوبايت و[حسّنت زمن الوصول إلى التفاعل بنسبة 50%](https://medium.com/dev-channel/a-netflix-web-performance-case-study-c0bcde26a9d9). وللخطوات اللاحقة في مسار التسجيل، استخدموا الجلب المسبق بـXHR لتنزيل تطبيق React في الخلفية بينما كان المستخدم ما زال يقرأ صفحة الهبوط. والدرس ليس «لا تستخدم React». بل إن صفحة الهبوط والتطبيق سياقا أداء مختلفان، ومعاملتهما بالطريقة نفسها فرصة مهدرة.
 
 ### Walmart
 
-Walmart Global Tech treats performance as a north-star metric and [focuses on the 75th percentile](https://medium.com/walmartglobaltech/walmart-journey-to-optimize-web-performance-and-drive-business-growth-c3bec8d7780b) rather than medians or averages, because averages hide pain. Their governance model includes pull-request-level performance checks in CI, canary monitoring for INP in production (since INP requires real user interactions and can’t be measured synthetically), and real-time alerting. Thousands of developers contribute to the platform, and the performance governance is what keeps the aggregate from drifting.
+تتعامل Walmart Global Tech مع الأداء كمقياس نجمي شمالي و[تركّز على المئين 75](https://medium.com/walmartglobaltech/walmart-journey-to-optimize-web-performance-and-drive-business-growth-c3bec8d7780b) بدل الوسيط أو المتوسط، لأن المتوسطات تخفي الألم. ويتضمن نموذج حوكمتهم فحوص أداء على مستوى طلب السحب في CI، ومراقبة كناري لـINP في الإنتاج (لأن INP يتطلب تفاعلات مستخدم حقيقية ولا يمكن قياسه اصطناعيًا)، وتنبيهًا في الزمن الحقيقي. ويساهم آلاف المطوّرين في المنصّة، وحوكمة الأداء هي ما يمنع الإجمالي من التباعد.
 
 ### Shopify
 
-Shopify’s engineering team rewrote major admin screens around lazy scroll views and intelligent layout, [achieving dramatically faster initial renders](https://shopify.engineering/improving-shopify-app-s-performance) for data-heavy pages. They also consolidated static assets under a single domain instead of a separate CDN subdomain, leveraging HTTP/3 prioritization and eliminating the latency of extra DNS lookups and TLS handshakes. The result was a [35% improvement in TTFB globally](https://www.shopify.com/enterprise/blog/site-performance-page-speed-ecommerce). Perceived performance—how fast the app *feels*—was their explicit optimization target, not just how fast synthetic benchmarks said it was.
+أعاد فريق هندسة Shopify كتابة شاشات إدارية رئيسية حول عروض تمرير كسولة وتخطيط ذكي، [محققًا تصييرات أولية أسرع بفارق كبير](https://shopify.engineering/improving-shopify-app-s-performance) للصفحات كثيفة البيانات. كما وحّدوا الأصول الساكنة تحت نطاق واحد بدل نطاق فرعي منفصل لشبكة توصيل المحتوى، مستفيدين من أولويات HTTP/3 ومزيلين زمن استجابة عمليات DNS الإضافية ومصافحات TLS. وكانت النتيجة [تحسّنًا بنسبة 35% في TTFB عالميًا](https://www.shopify.com/enterprise/blog/site-performance-page-speed-ecommerce). وكان الأداء المُدرك—أي مدى سرعة *إحساس* التطبيق—هدفهم الصريح للتحسين، لا مجرد السرعة التي تقول المقاييس الاصطناعية إنه عليها.
 
-## The Organizational Part
+## الجانب التنظيمي
 
-Technical optimizations erode without organizational support. Performance budgets belong in CI. Memory regression tests belong in the release process. Performance data belongs on business dashboards, not just engineering dashboards.
+تتآكل التحسينات التقنية بلا دعم تنظيمي. فموازنات الأداء مكانها CI. واختبارات تراجع الذاكرة مكانها عملية الإصدار. وبيانات الأداء مكانها لوحات المعلومات التجارية، لا لوحات الهندسة وحدها.
 
-Farfetch built a “Site Speed Business Case Calculator” that lets product managers estimate the revenue impact of performance changes—turning speed from a technical concern into a business priority. Walmart runs weekly operational-excellence reviews where performance is visible to leadership. The pattern is the same everywhere it works: performance has to be somebody’s job, and the metrics have to be legible to people who don’t read flame charts.
+بنَت Farfetch «حاسبة الحالة التجارية لسرعة الموقع» التي تتيح لمديري المنتجات تقدير أثر تغييرات الأداء على الإيرادات—محوّلةً السرعة من شأن تقني إلى أولوية تجارية. وتُجري Walmart مراجعات أسبوعية للتميّز التشغيلي يكون فيها الأداء مرئيًا للقيادة. والنمط واحد في كل مكان ينجح فيه: يجب أن يكون الأداء وظيفة أحدهم، ويجب أن تكون المقاييس مفهومة لمن لا يقرؤون مخططات اللهب.
 
-The [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets) covers the mechanics—field budgets, lab budgets, asset budgets, CI enforcement with Lighthouse CI, and how to structure thresholds that are strict enough to prevent drift without being so brittle that teams start reaching for `--no-verify`.
+وتغطي [محاضرة موازنات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) الآلية—موازنات الميدان، وموازنات المختبر، وموازنات الأصول، والفرض في CI بـLighthouse CI، وكيفية بناء عتبات صارمة بما يكفي لمنع التباعد دون أن تكون هشّة إلى حدّ يجعل الفرق تمدّ يدها إلى `--no-verify`.
 
-## The Short Version
+## النسخة المختصرة
 
-Enterprise frontend performance is a long game. The first paint matters, but so does the 10,000th interaction. Memory management matters as much as bundle size. Organizational governance matters as much as technical optimization.
+أداء واجهات المؤسسات لعبة طويلة. فالرسم الأول مهم، لكن التفاعل رقم 10,000 مهم أيضًا. وإدارة الذاكرة تهمّ بقدر ما يهمّ حجم الحزمة. والحوكمة التنظيمية تهمّ بقدر ما يهمّ التحسين التقني.
 
-Measure in the field *and* the lab. Split bundles at route, component, and interaction boundaries. Virtualize large datasets. Move heavy computation off the main thread. Keep non-reactive data out of the reactive state tree. Coordinate shared dependencies across federated remotes. Set budgets, enforce them in CI, and make the numbers visible to people who can prioritize the work.
+قِس في الميدان *و*المختبر. وقسّم الحزم عند حدود المسار والمكوّن والتفاعل. وحاكِ مجموعات البيانات الكبيرة افتراضيًا. وانقل الحسابات الثقيلة خارج الخيط الرئيسي. وأبقِ البيانات غير التفاعلية خارج شجرة الحالة التفاعلية. ونسّق الاعتمادات المشتركة عبر التطبيقات البعيدة الموحّدة. وضع موازنات، وافرضها في CI، واجعل الأرقام مرئية لمن يستطيع ترتيب أولويات العمل.
 
-The applications that stay fast are the ones where performance is treated as an ongoing constraint—built into the architecture, enforced in the pipeline, and visible in the culture—rather than a quarterly initiative that produces a slide deck and then quietly evaporates.
-
----
-
-## TL;DR
-
-### Performance in Enterprise Context
-
-> Enterprise performance ≠ consumer performance.
-
-- Consumer apps optimize for first visit (LCP, FCP).
-- Enterprise apps optimize for *long sessions* — users stay for hours.
-
-**Enterprise-specific concerns:**
-
-- **Memory leaks** — detached DOM nodes, closure-based leaks, event listener accumulation.
-- **Re-render storms** — dense data grids updating every few seconds.
-- **Bundle duplication** — multiple remotes shipping the same library.
-- **Network waterfalls** — remote A loads → discovers it needs remote B → loads remote B.
+التطبيقات التي تبقى سريعة هي التي يُعامَل فيها الأداء كقيد مستمر—مدمج في المعمارية، ومفروض في خط الأنابيب، ومرئي في الثقافة—لا كمبادرة ربع سنوية تُنتج عرضًا تقديميًا ثم تتبخّر بهدوء.
 
 ---
 
-### Code Splitting Strategies
+## الخلاصة السريعة (TL;DR)
 
-> Three levels of splitting for microfrontends.
+### الأداء في سياق المؤسسات
 
-| Level | How | When to load |
+> أداء المؤسسات ≠ أداء المستهلكين.
+
+- تطبيقات المستهلكين تحسّن للزيارة الأولى (LCP، FCP).
+- تطبيقات المؤسسات تحسّن *للجلسات الطويلة* — فالمستخدمون يبقون ساعات.
+
+**هموم خاصة بالمؤسسات:**
+
+- **تسريبات الذاكرة** — عقد DOM منفصلة، وتسريبات قائمة على الإغلاقات، وتراكم مستمعي الأحداث.
+- **عواصف إعادة التصيير** — شبكات بيانات كثيفة تتحدّث كل بضع ثوانٍ.
+- **ازدواج الحزم** — تطبيقات بعيدة متعددة تشحن المكتبة نفسها.
+- **الشلالات الشبكية** — يُحمَّل التطبيق البعيد A → يكتشف أنه يحتاج التطبيق البعيد B → يحمّل التطبيق البعيد B.
+
+---
+
+### استراتيجيات تقسيم الشيفرة
+
+> ثلاثة مستويات من التقسيم للواجهات الدقيقة.
+
+| المستوى | الكيفية | متى تُحمَّل |
 | --- | --- | --- |
-| **Route-based** | Each route is a lazy-loaded chunk | On navigation |
-| **Component-based** | Heavy components split out | On visibility / interaction |
-| **Interaction-based** | Load code on user action | On click, hover, scroll |
+| **قائمة على المسار** | كل مسار قطعة تُحمَّل بكسل | عند التنقّل |
+| **قائمة على المكوّن** | المكوّنات الثقيلة تُفصل خارجًا | عند الظهور / التفاعل |
+| **قائمة على التفاعل** | تُحمَّل الشيفرة عند إجراء المستخدم | عند النقر أو المرور أو التمرير |
 
-- **Barrel file trap:** `index.ts` that re-exports everything defeats tree-shaking. Import directly from the module.
-- **Shared chunks:** Configure bundler to extract common dependencies into shared chunks across remotes.
-- Use `modulepreload` for critical federated remotes the user will likely need.
+- **فخ الملف البرميلي:** ملف `index.ts` يعيد تصدير كل شيء يُبطل اهتزاز الشجرة. استورد مباشرةً من الوحدة.
+- **القطع المشتركة:** هيئ المُجمِّع لاستخلاص الاعتمادات المشتركة في قطع مشتركة عبر التطبيقات البعيدة.
+- استخدم `modulepreload` للتطبيقات البعيدة الموحّدة الحرجة التي سيحتاجها المستخدم على الأرجح.

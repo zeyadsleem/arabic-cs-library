@@ -1,101 +1,101 @@
 ---
-title: "Auto Layout"
-lang: en
+title: "التخطيط التلقائي (Auto Layout)"
+lang: ar
 source: "https://stevekinney.com/courses/figma/auto-layout"
 ---
 
-Manually adjusting everything is hard and we certainly don’t arrange our UIs by pixel in the browser. Imagine if everything you already know and love about [flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) was available to you? Well, it is. It just goes by the name auto layout.
+ضبط كل شيء يدويًا أمر صعب، ونحن بالتأكيد لا نرتّب واجهاتنا بالبكسل في المتصفّح. تخيّل لو كان كل ما تعرفه وتحبّه في [flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout/Basic_concepts_of_flexbox) متاحًا لك. حسنًا، إنه متاح. لكنه يُعرف باسم التخطيط التلقائي (auto layout).
 
-> **Frames only**
+> **الإطارات فقط**
 >
-> Auto layout is only available in [Frames](https://stevekinney.com/courses/figma/layers#frames).
+> لا يتوفّر التخطيط التلقائي إلا في [الإطارات](https://stevekinney.com/courses/figma/layers#frames).
 
-## Shortcuts
+## الاختصارات
 
-- **`Shift-A`** will turn any frame into an Auto Layout frame.
-- **`Option/Alt-Shift-A`** will remove Auto Layout from a frame.
-- **`Shift` and drag a handle**: Drag padding/spacing with big nudge steps
-- **`Option` and drag a handle**: Drag padding from both sides
-- **`Shift+Option` and drag a handle**: Drag padding from all sides
-- **`Option` and click on the padding area**: Edit both padding sides
-- **`Shift+Option` and click on the padding area**: Edit all padding sides
-- **`Command/Control` and click on the padding input field**: Edit all padding in design panel
-- **Double click on the edge**: Set hug contents
-- **`Option` and double click on the edge**: Set fill container
-- **`Option` and select Fixed Size for text**: Set text resizing to text truncation
-- **Click on the alignment widget + `Up`, `Down`, `Left`, or `Right`**: Set alignment stepwise
-- **Click on the alignment widget and press `W`, `A`, `S`, or `D`**: Set alignment to edge
-- **Click on the alignment widget and press `V` or `H`**: Set alignment to center vertically or horizontally
-- **Click on the alignment widget and press `B`**: Toggle baseline alignment
-- **Click on the alignment widget and press `X`**: Toggle space between
+- **`Shift-A`** يحوّل أي إطار إلى إطار Auto Layout.
+- **`Option/Alt-Shift-A`** يزيل Auto Layout من الإطار.
+- **`Shift` واسحب مقبضًا**: اسحب الحشو/المسافة بخطوات تعديل كبيرة.
+- **`Option` واسحب مقبضًا**: اسحب الحشو من الجانبين.
+- **`Shift+Option` واسحب مقبضًا**: اسحب الحشو من كل الجوانب.
+- **`Option` وانقر على منطقة الحشو**: حرّر جانبي الحشو.
+- **`Shift+Option` وانقر على منطقة الحشو**: حرّر كل جوانب الحشو.
+- **`Command/Control` وانقر على حقل إدخال الحشو**: حرّر كل الحشو في لوحة التصميم.
+- **انقر نقرًا مزدوجًا على الحافة**: اضبط الاحتواء على المحتوى (hug contents).
+- **`Option` وانقر نقرًا مزدوجًا على الحافة**: اضبط ملء الحاوية (fill container).
+- **`Option` واختر Fixed Size للنص**: اضبط تغيير حجم النص على اقتطاع النص (text truncation).
+- **انقر على أداة المحاذاة + `Up` أو `Down` أو `Left` أو `Right`**: اضبط المحاذاة خطوة بخطوة.
+- **انقر على أداة المحاذاة واضغط `W` أو `A` أو `S` أو `D`**: اضبط المحاذاة على الحافة.
+- **انقر على أداة المحاذاة واضغط `V` أو `H`**: اضبط المحاذاة على الوسط رأسيًا أو أفقيًا.
+- **انقر على أداة المحاذاة واضغط `B`**: بدّل محاذاة خط الأساس (baseline alignment).
+- **انقر على أداة المحاذاة واضغط `X`**: بدّل المسافة الفاصلة (space between).
 
-## Understanding Auto Layout
+## فهم Auto Layout
 
-Auto layout adds a structure to your frames and components, allowing them to resize content automatically based on the properties you define. It’s particularly useful for designing interfaces that need to be responsive or adapt to content variations, such as text changes, navigation bars, or dynamic lists. As I mentioned above, if you think you might use flexbox in your implementation, then you’ll probably choose to use auto layout in Figma.
+يضيف التخطيط التلقائي بنية إلى إطاراتك ومكوّناتك، ما يتيح لها تغيير حجم المحتوى تلقائيًا بناءً على الخصائص التي تحدّدها. وهو مفيد بوجه خاص لتصميم الواجهات التي تحتاج إلى أن تكون متجاوبة أو أن تتكيّف مع تغيّرات المحتوى، مثل تغيّر النصوص أو أشرطة التنقّل أو القوائم الديناميكية. وكما ذكرت أعلاه، إن كنت ترجّح أنك قد تستخدم flexbox في تنفيذك، فمن المحتمل أن تختار استخدام التخطيط التلقائي في Figma.
 
-Looking at the screenshot above, you can see the following controls:
+بالنظر إلى لقطة الشاشة أعلاه، يمكنك رؤية عناصر التحكّم التالية:
 
-- The ability to set the direction of the elements in the auto-layout. You can think of this as similar to `flex-direction` in CSS.
-- The gap between the times. This is similar to the `gap` property in CSS.
-- The horizontal and vertical padding of each item. To no one’s surprise, this is similar to `padding` in CSS, but applied to each of the items from one place. You can also set the individual padding by using the little square icon located at the bottom-right of the control pane.
-- In the grid that it’s the center, you can set the alignment and justification. This is similar to `justify-items` and `align-items` in CSS.
+- القدرة على ضبط اتجاه العناصر في التخطيط التلقائي. يمكنك التفكير في هذا كشيء مشابه لـ`flex-direction` في CSS.
+- الفراغ بين العناصر. وهذا مشابه لخاصية `gap` في CSS.
+- الحشو الأفقي والرأسي لكل عنصر. وبدون مفاجأة لأحد، هذا مشابه لـ`padding` في CSS، لكنه يُطبّق على كل العناصر من مكان واحد. ويمكنك أيضًا ضبط الحشو الفردي باستخدام أيقونة المربّع الصغير الموجودة في أسفل يمين لوحة التحكّم.
+- في الشبكة الموجودة في المركز، يمكنك ضبط المحاذاة والتوزيع. وهذا مشابه لـ`justify-items` و`align-items` في CSS.
 
-There are also some advanced settings hiding out in the little menu along the right-side of the control panel.
+وهناك أيضًا بعض الإعدادات المتقدّمة المخبّأة في القائمة الصغيرة على يمين لوحة التحكّم.
 
-Advanced options for Figma's auto layout
+خيارات متقدّمة للتخطيط التلقائي في Figma
 
-## Setting Up Auto Layout
+## إعداد Auto Layout
 
-To apply auto layout, select a frame or group of objects and click the “Auto Layout” button in the right-side panel. From here, you can define properties such as spacing, alignment, and direction (horizontal or vertical), which determine how the elements within the frame will behave.
+لتطبيق التخطيط التلقائي، حدّد إطارًا أو مجموعة كائنات وانقر زر “Auto Layout” في اللوحة اليمنى. ومن هنا يمكنك تعريف خصائص مثل المسافات والمحاذاة والاتجاه (أفقي أو رأسي)، التي تحدّد كيفية تصرّف العناصر داخل الإطار.
 
-The really cool thing about using auto layout is that you no longer need to resize your frames in order to accommodate new items.
+والأمر الرائع حقًا في استخدام التخطيط التلقائي هو أنك لم تعد بحاجة إلى تغيير حجم إطاراتك لاستيعاب عناصر جديدة.
 
-This works because in this case, sizing is controlled by the `Hug` value in the frame size. This instructs the frame to adapt to the size of its children.
+وهذا يعمل لأن التحجيم في هذه الحالة يتحكّم فيه قيمة `Hug` في حجم الإطار. وهي توجّه الإطار ليتكيّف مع حجم العناصر التابعة له.
 
-You can control this by using the caret next to the value.
+ويمكنك التحكّم في ذلك باستخدام السهم الصغير بجوار القيمة.
 
-## Minding the Gap
+## مراعاة الفاصل (Minding the Gap)
 
-When you’re basing the size of the frame based on it’s children, then you can provide a value that represents how many pixels you want in between each child. Alternatively, if you want to use a fixed size, then you can set the `gap` to auto. This will spread the children out evenly across the entire height or width of the parent frame. You can think of this like using `justify-content: space-between` in flexbox when using CSS.
+عندما تبني حجم الإطار على أساس العناصر التابعة له، يمكنك تقديم قيمة تمثّل عدد البكسلات التي تريدها بين كل عنصر وآخر. وبالطريقة البديلة، إن أردت استخدام حجم ثابت، فيمكنك ضبط `gap` على auto. وسيوزّع هذا العناصر بالتساوي على كامل ارتفاع الإطار الأب أو عرضه. ويمكنك التفكير في هذا كاستخدام `justify-content: space-between` في flexbox عند استخدام CSS.
 
-> **Keyboard shortcut**
+> **اختصار لوحة المفاتيح**
 >
-> You can quickly switch between fixed and automatic spacing using **Command+X**.
+> يمكنك التبديل بسرعة بين المسافة الثابتة والتلقائية باستخدام **Command+X**.
 
-Fixed height and automatic gap sizing with auto layout
+ارتفاع ثابت ومسافة تلقائية مع Auto Layout
 
-Now, the you can resize the frame and the elements will distribute themselves evenly. The ability for frames to adapt to the size of their children and be able to maintain consistent spaces are basically two of the most common use cases for using auto layout.
+الآن يمكنك تغيير حجم الإطار وستوزّع العناصر نفسها بالتساوي. والقدرة على تكيّف الإطارات مع حجم العناصر التابعة لها مع الحفاظ على مسافات متّسقة هما في الأساس من أكثر حالتي الاستخدام شيوعًا للتخطيط التلقائي.
 
-## Adjusting the Padding
+## ضبط الحشو
 
-Trying to grab the corners of the frame to resize it will switch the horizontal and/or vertical resizing from **Hug** to **Fixed**. However, if you want to click to change the padding, you can do that as well, you just need to be a *little bit* more precise as to where you click to drag.
+محاولة الإمساك بزوايا الإطار لتغيير حجمه ستُبدّل تغيير الحجم الأفقي و/أو الرأسي من **Hug** إلى **Fixed**. لكن إن أردت النقر لتغيير الحشو، فيمكنك فعل ذلك أيضًا، لكن يجب أن تكون *أكثر دقة قليلًا* في المكان الذي تنقر فيه لتسحب.
 
-## Accounting for Strokes
+## مراعاة الحدود (Strokes)
 
-When determining the size of objects for auto layout, strokes are not considered, so they do not impact the parent frame or other nearby elements.
+عند تحديد حجم الكائنات لأجل التخطيط التلقائي، لا تُؤخذ الحدود في الحسبان، فلا تؤثّر في الإطار الأب أو في العناصر المجاورة الأخرى.
 
-This might not be the best approach for developer handoff since it doesn’t show how CSS displays borders accurately.
+وقد لا يكون هذا أفضل أسلوب لتسليم التصاميم للمطوّرين لأنه لا يُظهر كيف تعرض CSS الحدود بدقة.
 
-To address this, you can decide if strokes should occupy space within an auto layout frame. Simply access the advanced layout settings and use the dropdown menu next to **stroke** to choose between **included in layout** or **excluded from layout**.
+ولمعالجة ذلك، يمكنك أن تقرّر ما إذا كان ينبغي للحدود أن تشغل مساحة داخل إطار التخطيط التلقائي. ما عليك إلا أن تفتح إعدادات التخطيط المتقدّمة وتستخدم القائمة المنسدلة بجوار **stroke** لتختار بين **included in layout** أو **excluded from layout**.
 
-## Nesting Auto Layouts
+## تداخل تخطيطات Auto Layout
 
-Nested Auto Layouts in Figma help designers create layouts that adjust smoothly to different content and device sizes. By nesting Auto Layout frames within each other, designers can blend the benefits of Auto Layout with complex designs, making layouts that adapt easily to changing content.
+تساعد تخطيطات Auto Layout المتداخلة في Figma المصمّمين على إنشاء تخطيطات تتكيّف بسلاسة مع أحجام المحتوى والأجهزة المختلفة. وبتداخل إطارات Auto Layout داخل بعضها، يستطيع المصمّمون الدمج بين مزايا Auto Layout وتصاميم معقّدة، فيصنعون تخطيطات تتكيّف بسهولة مع المحتوى المتغيّر.
 
-### Selling Points of Nested Auto Layouts
+### مزايا تخطيطات Auto Layout المتداخلة
 
-1. **Responsive Design:** Nested Auto Layouts automatically adjust design elements to fit various screen sizes, crucial for responsive designs.
-2. **Content Flexibility:** Perfect for designs with changing content needs, like dynamic lists or user-generated content, without requiring manual adjustments.
-3. **Organized Design:** Nested Auto Layouts keep your Figma layers tidy and structured, simplifying the management of intricate designs.
+1. **التصميم المتجاوب:** تُعدّل تخطيطات Auto Layout المتداخلة عناصر التصميم تلقائيًا لتلائم أحجام الشاشات المختلفة، وهذا أمر بالغ الأهمية للتصاميم المتجاوبة.
+2. **مرونة المحتوى:** مثالية للتصاميم ذات احتياجات المحتوى المتغيّرة، مثل القوائم الديناميكية أو المحتوى الذي ينشئه المستخدم، دون حاجة إلى ضبط يدوي.
+3. **تصميم منظّم:** تُبقي تخطيطات Auto Layout المتداخلة طبقات Figma مرتّبة ومنظّمة، ما يُبسّط إدارة التصاميم المعقّدة.
 
-### Some Pro-Tips for Working with Nested Auto Layouts
+### بعض النصائح الاحترافية للعمل مع تخطيطات Auto Layout المتداخلة
 
-- **Learn Auto Layout Features:** Understand how properties like spacing and padding impact layout design, especially when nesting layouts.
-- **Plan Your Design:** Map out your component structure before nesting layouts to ensure elements relate properly and adjust as needed.
-- **Utilize Variants:** Pairing variants with nested Auto Layouts boosts component flexibility and reusability, expanding design possibilities.
+- **تعلّم ميزات Auto Layout:** افهم كيف تؤثّر خصائص مثل المسافات والحشو في تصميم التخطيط، خصوصًا عند تداخل التخطيطات.
+- **خطّط لتصميمك:** ارسم بنية مكوّناتك قبل تداخل التخطيطات لتضمن ارتباط العناصر بشكل صحيح وتكيّفها حسب الحاجة.
+- **استفد من Variants:** اقتران Variants بتخطيطات Auto Layout المتداخلة يعزّز مرونة المكوّنات وقابلية إعادة استخدامها، ويوسّع إمكانات التصميم.
 
-### Practical Applications
+### تطبيقات عملية
 
-- **Forms and Lists:** Ideal for creating forms and lists that adapt to varying content lengths or additions.
-- **Responsive Navigation Menus:** Craft navigation menus that adjust to different screen sizes, showing more items on larger screens and simplifying on smaller devices.
-- **Cards and Tiles:** Design card components or tiles that resize based on content, maintaining consistent spacing and padding.
+- **النماذج والقوائم:** مثالية لإنشاء نماذج وقوائم تتكيّف مع أطوال المحتوى المتفاوتة أو الإضافات.
+- **قوائم تنقّل متجاوبة:** اصنع قوائم تنقّل تتكيّف مع أحجام الشاشات المختلفة، فتُظهر عناصر أكثر على الشاشات الأكبر وتبسّط على الأجهزة الأصغر.
+- **البطاقات والبلاطات:** صمّم مكوّنات بطاقات أو بلاطات يتغيّر حجمها حسب المحتوى، مع الحفاظ على مسافات وحشو متّسقين.

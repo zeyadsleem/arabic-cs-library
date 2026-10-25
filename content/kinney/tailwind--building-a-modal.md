@@ -1,10 +1,10 @@
 ---
-title: "Modal"
-lang: en
+title: "بناء نافذة منبثقة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-modal"
 ---
 
-Let’s start with our basic HTML structure for a modal dialog component.
+لنبدأ ببنية HTML الأساسية لدينا لمكوّن نافذة منبثقة (modal dialog).
 
 ```html
 <div>
@@ -30,11 +30,11 @@ Let’s start with our basic HTML structure for a modal dialog component.
 </div>
 ```
 
-It’s a semantic `<dialog>` element with proper content structure, but it’s completely unstyled and the native dialog appearance varies significantly across browsers. Let’s transform this into a polished modal that feels modern and professional.
+إنه عنصر `<dialog>` دلالي ببنية محتوى سليمة، لكنه بلا أي تنسيق على الإطلاق، ويختلف مظهر الحوار الأصلي اختلافًا كبيرًا بين المتصفحات. لنحوّله إلى نافذة منبثقة مصقولة تشبه الحديثة والاحترافية.
 
-## Styling the Trigger Button
+## تنسيق زر التشغيل
 
-First, let’s style our trigger button using the patterns we learned in our [button tutorial](https://stevekinney.com/courses/tailwind/building-a-button).
+أولًا، لننسّق زر التشغيل لدينا مستخدمين الأنماط التي تعلّمناها في [درس الزر](https://stevekinney.com/courses/tailwind/building-a-button).
 
 ```html
 <div>
@@ -64,19 +64,19 @@ First, let’s style our trigger button using the patterns we learned in our [bu
 </div>
 ```
 
-Button styling:
+تنسيق الزر:
 
-- `bg-blue-600 hover:bg-blue-500`: Blue primary color with lighter hover state
-- `px-4 py-2`: 16px horizontal and 8px vertical padding for comfortable touch targets
-- `text-sm font-semibold`: 14px semibold text for clarity
-- `shadow-sm`: Subtle depth that makes the button feel clickable
-- `focus-visible:outline-*`: Accessible focus ring for keyboard navigation
+- `bg-blue-600 hover:bg-blue-500`: لون أساسي أزرق مع حالة تمرير أفتح
+- `px-4 py-2`: حشوة أفقية 16px ورأسية 8px توفّر أهداف لمس مريحة
+- `text-sm font-semibold`: نص بوزن نصف عريض بحجم 14px من أجل الوضوح
+- `shadow-sm`: عمق خفيف يجعل الزر يبدو قابلًا للنقر
+- `focus-visible:outline-*`: حلقة تركيز متاحة للتنقل بلوحة المفاتيح
 
-This gives us a professional trigger button that clearly indicates it will open something important.
+هذا يمنحنا زر تشغيل احترافيًا يوضّح بجلاء أنه سيفتح شيئًا مهمًا.
 
-## Creating the Modal Backdrop
+## إنشاء خلفية النافذة المنبثقة
 
-Now let’s style the dialog element itself. The `<dialog>` element provides the semantic foundation, but we need to override its default styling for a modern appearance.
+الآن لننسّق عنصر الحوار نفسه. يوفّر عنصر `<dialog>` الأساس الدلالي، لكننا بحاجة إلى تجاوز تنسيقه الافتراضي للحصول على مظهر حديث.
 
 ```html
 <div>
@@ -106,16 +106,16 @@ Now let’s style the dialog element itself. The `<dialog>` element provides the
 </div>
 ```
 
-Backdrop styling:
+تنسيق الخلفية:
 
-- `backdrop:bg-black/50`: Semi-transparent black backdrop (50% opacity) that darkens the background content
-- `backdrop:backdrop-blur-sm`: Subtle blur effect that creates depth and focus on the modal content
+- `backdrop:bg-black/50`: خلفية سوداء شبه شفافة (شفافية 50%) تعتّم المحتوى الموجود خلفها
+- `backdrop:backdrop-blur-sm`: تأثير تمويه خفيف يخلق عمقًا ويبرز محتوى النافذة المنبثقة
 
-The `backdrop:` pseudo-element utilities style the browser’s native dialog backdrop, creating a professional overlay effect without needing additional HTML elements.
+تنسّق أدوات العنصر الزائف `backdrop:` خلفية الحوار الأصلية في المتصفح، فتُنشئ تأثير تراكب احترافيًا دون الحاجة إلى عناصر HTML إضافية.
 
-## Positioning and Sizing the Modal
+## تموضع النافذة المنبثقة وتحجيمها
 
-Let’s position the modal properly and create the main container structure using techniques from our [card tutorial](https://stevekinney.com/courses/tailwind/building-a-card).
+لنتموضع النافذة المنبثقة بشكل صحيح ونُنشئ بنية الحاوية الرئيسية باستخدام التقنيات التي تعلّمناها في [درس البطاقة](https://stevekinney.com/courses/tailwind/building-a-card).
 
 ```html
 <div>
@@ -147,20 +147,20 @@ Let’s position the modal properly and create the main container structure usin
 </div>
 ```
 
-Modal container styling:
+تنسيق حاوية النافذة المنبثقة:
 
-- `m-auto`: Centers the modal both horizontally and vertically using automatic margins
-- `w-full max-w-md`: Full width up to 448px maximum for optimal readability
-- `h-fit`: Height adjusts to content rather than filling the viewport
-- `rounded-lg bg-white`: 8px border radius and white background for modern card appearance
-- `shadow-lg`: Substantial shadow that creates clear separation from the backdrop
-- `p-0`: Removes default dialog padding so we can control spacing internally
+- `m-auto`: يوسّط النافذة المنبثقة أفقيًا ورأسيًا باستخدام الهوامش التلقائية
+- `w-full max-w-md`: عرض كامل حتى حد أقصى قدره 448px من أجل قابلية قراءة مثلى
+- `h-fit`: يتكيّف الارتفاع مع المحتوى بدلًا من ملء إطار العرض
+- `rounded-lg bg-white`: نصف قطر حد 8px وخلفية بيضاء لمظهر بطاقة حديث
+- `shadow-lg`: ظل واضح يخلق فصلًا محسوسًا عن الخلفية
+- `p-0`: إزالة حشوة الحوار الافتراضية حتى نتحكّم في التباعد من الداخل
 
-The `m-auto` utility ensures consistent centering across all browsers by setting `margin: auto` on all sides, overriding any browser-specific dialog positioning quirks.
+تضمن أداة `m-auto` توسيطًا متسقًا عبر جميع المتصفحات عبر ضبط `margin: auto` على جميع الجهات، متجاوزة أي خصوصيات خاصة بموضع الحوار في المتصفح.
 
-## Structuring the Modal Content
+## هيكلة محتوى النافذة المنبثقة
 
-Now let’s properly structure the header, main content, and footer areas with appropriate spacing and visual hierarchy.
+الآن لنُهيكل منطقة الترويسة والمحتوى الرئيسي والتذييل بشكل صحيح مع تباعد وتسلسل بصري ملائمين.
 
 ```html
 <div>
@@ -198,21 +198,21 @@ Now let’s properly structure the header, main content, and footer areas with a
 </div>
 ```
 
-Content structure improvements:
+تحسينات بنية المحتوى:
 
-- `flex flex-col`: Vertical flexbox layout for header, main, footer sections
-- `border-b border-slate-200`: Subtle separator below header for visual organization
-- `px-6 py-4`: Consistent 24px horizontal and 16px vertical padding across sections
-- `flex items-center justify-between`: Spreads title and close button across header width
-- `text-lg font-semibold`: Prominent heading that establishes content hierarchy
-- `text-slate-700`: Slightly muted body text color for comfortable reading
-- Close button with hover states for clear interactive feedback
+- `flex flex-col`: تخطيط flexbox عمودي لأقسام الترويسة والمحتوى الرئيسي والتذييل
+- `border-b border-slate-200`: فاصل خافت أسفل الترويسة لتنظيم بصري
+- `px-6 py-4`: حشوة أفقية 24px ورأسية 16px متسقة عبر الأقسام
+- `flex items-center justify-between`: يوزّع العنوان وزر الإغلاق على عرض الترويسة
+- `text-lg font-semibold`: عنوان بارز يؤسّس تسلسل المحتوى
+- `text-slate-700`: لون نص المتن خافت قليلًا من أجل قراءة مريحة
+- زر إغلاق مع حالات تمرير لتغذية راجعة تفاعلية واضحة
 
-The consistent padding and borders create clear content zones while maintaining visual cohesion.
+تخلق الحشوة والحدود المتسقة مناطق محتوى واضحة مع الحفاظ على التماسك البصري.
 
-## Enhancing the Close Button
+## تحسين زر الإغلاق
 
-Let’s improve the close button in the header to make it more accessible and visually appealing, building on our understanding of focus states.
+لنحسّن زر الإغلاق في الترويسة لنجعله أكثر إتاحة وملاذًا بصريًا، انطلاقًا من فهمنا لحالات التركيز.
 
 ```html
 <div>
@@ -252,19 +252,19 @@ Let’s improve the close button in the header to make it more accessible and vi
 </div>
 ```
 
-Close button enhancements:
+تحسينات زر الإغلاق:
 
-- `flex h-8 w-8 items-center justify-center`: 32px square button with centered content
-- `text-xl leading-none`: Larger × symbol with tight line height for better visual balance
-- `transition-colors`: Smooth color changes on hover and focus
-- `focus-visible:outline-slate-500`: Accessible focus ring that matches the button’s muted aesthetic
-- Consistent hover and focus patterns with the footer close button
+- `flex h-8 w-8 items-center justify-center`: زر مربع بمقاس 32px ومحتوى موسَّط
+- `text-xl leading-none`: رمز × أكبر مع ارتفاع سطر ضيق لتوازن بصري أفضل
+- `transition-colors`: تغيّرات لونية سلسة عند التمرير والتركيز
+- `focus-visible:outline-slate-500`: حلقة تركيز متاحة تتوافق مع الطابع الخافت للزر
+- أنماط تمرير وتركيز متسقة مع زر الإغلاق في التذييل
 
-The square format with generous padding creates a comfortable touch target while the muted colors keep it unobtrusive.
+الصيغة المربعة مع الحشوة السخية تخلق هدف لمس مريحًا، بينما تحافظ الألوان الخافتة على حضوره دون لفت الانتباه.
 
-## Adding Button Variations and Layout
+## إضافة تنويعات الأزرار والتخطيط
 
-Let’s enhance the footer with multiple button options and proper spacing.
+لنُعزِّز التذييل بعدة خيارات للأزرار وتباعد صحيح.
 
 ```html
 <div>
@@ -309,80 +309,19 @@ Let’s enhance the footer with multiple button options and proper spacing.
 </div>
 ```
 
-Footer enhancements:
+تحسينات التذييل:
 
-- `flex justify-end gap-3`: Right-aligned buttons with 12px spacing between them
-- Secondary cancel button with `border border-slate-300 bg-white`: Subtle border and white background for lower visual weight
-- Primary delete button with `bg-red-600`: Red color indicates destructive action
-- Consistent `transition-colors` and focus states across all interactive elements
-- More realistic content that demonstrates a confirmation dialog use case
+- `flex justify-end gap-3`: أزرار محاذاة إلى اليمين مع تباعد 12px بينها
+- زر إلغاء ثانوي بـ `border border-slate-300 bg-white`: حد خافت وخلفية بيضاء لوزن بصري أقل
+- زر حذف أساسي بـ `bg-red-600`: اللون الأحمر يشير إلى إجراء مدمّر
+- حالات تركيز و`transition-colors` متسقة عبر جميع العناصر التفاعلية
+- محتوى أكثر واقعية يوضّح حالة استخدام نافذة التأكيد
 
-The button hierarchy clearly communicates the primary and secondary actions while maintaining the established visual patterns.
+توضّح تسلسل الأزرار بجلاء الإجراء الأساسي والثانوي مع الحفاظ على الأنماط البصرية المستقرة.
 
-## Adding Smooth Entrance Animations
+## إضافة حركات دخول سلسة
 
-Now let’s add sophisticated animations using Tailwind’s `starting:` variant to define initial animation states and create smooth entrance effects.
-
-```html
-<div>
-  <button
-    class="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-  >
-    Open Modal
-  </button>
-
-  <dialog
-    class="animate-in fade-in zoom-in backdrop:animate-in backdrop:fade-in m-auto h-fit w-full max-w-md rounded-lg bg-white p-0 shadow-xl duration-200 backdrop:bg-black/50 backdrop:backdrop-blur-sm backdrop:duration-300 starting:scale-95 starting:opacity-0 backdrop:starting:opacity-0"
-  >
-    <div class="flex flex-col overflow-hidden">
-      <header class="flex items-center justify-between border-b border-slate-200 px-4 py-4 sm:px-6">
-        <h2 class="text-lg font-semibold text-slate-900">Confirm Action</h2>
-        <button
-          class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
-        >
-          <span class="text-xl leading-none" aria-hidden="true">×</span>
-          <span class="sr-only">Close modal</span>
-        </button>
-      </header>
-      <main class="px-4 py-4 sm:px-6">
-        <p class="leading-relaxed text-slate-700">
-          Are you sure you want to delete this item? This action cannot be undone and will
-          permanently remove the data from our servers.
-        </p>
-      </main>
-      <footer
-        class="flex flex-col-reverse gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:justify-end sm:px-6"
-      >
-        <button
-          class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
-        >
-          Cancel
-        </button>
-        <button
-          class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-        >
-          Delete
-        </button>
-      </footer>
-    </div>
-  </dialog>
-</div>
-```
-
-Animation enhancements:
-
-- `starting:opacity-0 starting:scale-95`: Defines the initial state—invisible and slightly smaller (95% scale)
-- `animate-in fade-in zoom-in duration-200`: Animates to full opacity and scale over 200ms
-- `backdrop:starting:opacity-0`: Sets the backdrop’s initial state to transparent
-- `backdrop:animate-in backdrop:fade-in backdrop:duration-300`: Backdrop fades in over 300ms for a layered animation effect
-- `shadow-xl`: Enhanced shadow for more dramatic depth
-- `overflow-hidden`: Ensures content respects the modal’s rounded corners
-
-The `starting:` variant is crucial here—it sets the initial state before the animation begins, creating smooth entrance effects. The modal starts invisible and slightly scaled down, then animates to its final state when opened.
-
-## Adding Responsive Behavior and Final Polish
-
-Finally, let’s add responsive behavior and additional polish to make the modal feel professional across all devices.
+الآن لنضف حركات متقنة باستخدام متغيّر Tailwind `starting:` لتحديد حالات البداية الأولية للرسوم المتحركة وخلق تأثيرات دخول سلسة.
 
 ```html
 <div>
@@ -430,36 +369,97 @@ Finally, let’s add responsive behavior and additional polish to make the modal
 </div>
 ```
 
-Responsive and accessibility features:
+تحسينات الحركة:
 
-- `px-4 sm:px-6`: Responsive padding that’s tighter on mobile (16px) and more generous on larger screens (24px)
-- `flex-col-reverse sm:flex-row sm:justify-end`: Stacked buttons on mobile with primary action on top, horizontal layout on larger screens
-- `sr-only`: Screen reader text for the close button icon
-- `aria-hidden="true"`: Hides the × symbol from screen readers since we provide descriptive text
-- `leading-relaxed`: More comfortable line height for the longer descriptive text
+- `starting:opacity-0 starting:scale-95`: يحدد الحالة الأولية — غير مرئي وأصغر قليلًا (قياس 95%)
+- `animate-in fade-in zoom-in duration-200`: يحرّك نحو الشفافية الكاملة والقياس الكامل خلال 200ms
+- `backdrop:starting:opacity-0`: يضبط الحالة الأولية للخلفية على الشفافية
+- `backdrop:animate-in backdrop:fade-in backdrop:duration-300`: تلاشي الخلفية خلال 300ms لتأثير حركة متدرّج الطبقات
+- `shadow-xl`: ظل محسّن لعمق أكثر دراماتيكية
+- `overflow-hidden`: يضمن احترام المحتوى لزوايا النافذة المنبثقة المستديرة
 
-The responsive footer layout ensures the primary action (Delete) is always easily accessible—on top for thumb-friendly mobile interaction, on the right for desktop mouse patterns.
+متغيّر `starting:` جوهري هنا — فهو يضبط الحالة الأولية قبل أن تبدأ الحركة، فتُنشأ تأثيرات دخول سلسة. تبدأ النافذة المنبثقة غير مرئية ومصغّرة قليلًا، ثم تتحرك نحو حالتها النهائية عند الفتح.
 
-## Why This Approach Works
+## إضافة السلوك المتجاوب والتلميع النهائي
 
-This modal implementation combines modern CSS features with semantic HTML for optimal user experience:
+أخيرًا، لنضف السلوك المتجاوب لمزيد من التلميع حتى تبدو النافذة المنبثقة احترافية على جميع الأجهزة.
 
-**Perfect Centering**: The `m-auto` utility ensures consistent centering across all browsers, overriding any browser-specific quirks with the `<dialog>` element’s default positioning.
+```html
+<div>
+  <button
+    class="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+  >
+    Open Modal
+  </button>
 
-**Smooth Animations**: The `starting:` variant defines initial animation states clearly, creating professional entrance effects that feel polished and intentional.
+  <dialog
+    class="animate-in fade-in zoom-in backdrop:animate-in backdrop:fade-in m-auto h-fit w-full max-w-md rounded-lg bg-white p-0 shadow-xl duration-200 backdrop:bg-black/50 backdrop:backdrop-blur-sm backdrop:duration-300 starting:scale-95 starting:opacity-0 backdrop:starting:opacity-0"
+  >
+    <div class="flex flex-col overflow-hidden">
+      <header class="flex items-center justify-between border-b border-slate-200 px-4 py-4 sm:px-6">
+        <h2 class="text-lg font-semibold text-slate-900">Confirm Action</h2>
+        <button
+          class="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+        >
+          <span class="text-xl leading-none" aria-hidden="true">×</span>
+          <span class="sr-only">Close modal</span>
+        </button>
+      </header>
+      <main class="px-4 py-4 sm:px-6">
+        <p class="leading-relaxed text-slate-700">
+          Are you sure you want to delete this item? This action cannot be undone and will
+          permanently remove the data from our servers.
+        </p>
+      </main>
+      <footer
+        class="flex flex-col-reverse gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:justify-end sm:px-6"
+      >
+        <button
+          class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+        >
+          Cancel
+        </button>
+        <button
+          class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+        >
+          Delete
+        </button>
+      </footer>
+    </div>
+  </dialog>
+</div>
+```
 
-**Semantic Foundation**: The `<dialog>` element provides built-in keyboard handling (Escape to close), focus management, and screen reader support without additional JavaScript.
+ميزات الاستجابة وإمكانية الوصول:
 
-**Layered Animation Timing**: The modal content animates faster (200ms) than the backdrop (300ms), creating a sophisticated layered effect where the background dims first, then the content appears.
+- `px-4 sm:px-6`: حشوة متجاوبة أكثر إحكامًا على الجوال (16px) وأوسع على الشاشات الأكبر (24px)
+- `flex-col-reverse sm:flex-row sm:justify-end`: أزرار مكدّسة على الجوال مع الإجراء الأساسي في الأعلى، وتخطيط أفقي على الشاشات الأكبر
+- `sr-only`: نص لقارئات الشاشة لأيقونة زر الإغلاق
+- `aria-hidden="true"`: يخفي رمز × عن قارئات الشاشة لأننا نقدّم نصًا وصفيًا
+- `leading-relaxed`: ارتفاع سطر أكثر راحة للنص الوصفي الأطول
 
-**Responsive Design**: The modal adapts from mobile-first stacked buttons to desktop-optimized horizontal layouts without losing usability.
+يضمن تخطيط التذييل المتجاوب أن الإجراء الأساسي (حذف) يبقى متاحًا بسهولة دائمًا — في الأعلى للتفاعل المريح بالإبهام على الجوال، وعلى اليمين لأنماط الفأرة على سطح المكتب.
 
-## Common Use Cases
+## لماذا ينجح هذا الأسلوب
 
-This modal pattern works excellently for:
+يجمع تنفيذ النافذة المنبثقة هذا بين ميزات CSS الحديثة وHTML الدلالي للحصول على أفضل تجربة للمستخدم:
 
-- Confirmation dialogs for destructive actions
-- Forms that need focused attention (login, contact forms)
-- Image or content previews
-- Settings panels that need isolation from main content
-- Alert messages requiring user acknowledgment
+**توسيط مثالي**: تضمن أداة `m-auto` توسيطًا متسقًا عبر جميع المتصفحات، متجاوزة أي خصوصيات خاصة بالمتصفح في الموضع الافتراضي لعنصر `<dialog>`.
+
+**حركات سلسة**: يحدد متغيّر `starting:` حالات البداية الأولية للحركة بوضوح، فتُنشأ تأثيرات دخول احترافية تبدو مصقولة ومقصودة.
+
+**أساس دلالي**: يوفّر عنصر `<dialog>` معالجة لوحة مفاتيح مدمجة (Escape للإغلاق)، وإدارة للتركيز، ودعمًا لقارئات الشاشة دون أي JavaScript إضافي.
+
+**توقيت حركة متدرّج الطبقات**: تتحرك محتويات النافذة المنبثقة أسرع (200ms) من الخلفية (300ms)، فيُخلق تأثير متدرّج الطبقات يبدأ بفتّح الخلفية ثم ظهور المحتوى.
+
+**تصميم متجاوب**: تتكيّف النافذة المنبثقة من أزرار مكدّسة تبدأ من الجوال إلى تخطيطات أفقية محسّنة لسطح المكتب من دون أن تفقد سهولة الاستخدام.
+
+## حالات الاستخدام الشائعة
+
+يعمل نمط النافذة المنبثقة هذا بشكل ممتاز مع:
+
+- نوافذ التأكيد للإجراءات المدمّرة
+- النماذج التي تحتاج إلى تركيز الانتباه (تسجيل الدخول، نماذج الاتصال)
+- معاينات الصور أو المحتوى
+- لوحات الإعدادات التي تحتاج إلى عزل عن المحتوى الرئيسي
+- رسائل التنبيه التي تتطلب تأكيد المستخدم

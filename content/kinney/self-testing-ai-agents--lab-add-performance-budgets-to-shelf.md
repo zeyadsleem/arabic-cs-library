@@ -1,48 +1,48 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر: إضافة ميزانيات الأداء إلى Shelf"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf"
 ---
 
-You’re going to add two checks to Shelf:
+ستضيف إلى Shelf فحصين:
 
-- one that says “the shipped client bundle did not get quietly heavier”
-- one that says “this important route or interaction did not get quietly slower”
+- فحصًا يقول «حزمة العميل المشحونة لم تصبح أثقل بهدوء»
+- وفحصًا يقول «هذا المسار أو هذا التفاعل المهم لم يصبح أبطأ بهدوء»
 
-That is enough to turn performance from a vague aspiration into a real feedback loop.
+هذا يكفي لتحويل الأداء من طموح غامض إلى حلقة تغذية راجعة حقيقية.
 
-> **Prerequisite**
+> **المتطلب السابق**
 >
-> Complete [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) first. This lab assumes you are intentionally building the small two-budget version, not a whole performance platform.
+> أكمل [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) أولًا. يفترض هذا المختبر أنك تبني عمدًا النسخة الصغيرة ذات الميزانيتين، لا منصة أداء كاملة.
 
-> **In the current starter**
+> **في البادئ الحالي**
 >
-> The Shelf starter doesn’t include the performance budget loop. This lab is where you add the stats build, the budget file, the check script, the runtime spec, and the `npm run performance:*` commands.
+> بادئ Shelf لا يتضمّن حلقة ميزانيات الأداء. هذا المختبر هو حيث تضيف بناء الإحصاءات، وملف الميزانيات، وسكربت الفحص، ومواصفة وقت التشغيل، وأوامر `npm run performance:*`.
 
-Install the stats-build dependency first:
+ثبّت اعتماد بناء الإحصاءات أولًا:
 
 ```bash
 npm install -D rollup-plugin-visualizer
 ```
 
-## The task
+## المهمة
 
-Create the five pieces of Shelf’s performance budget loop in order. For each one, answer the question in its section before moving on. When you’re done, falsify one threshold and watch the gate break.
+أنشئ القطع الخمس لحلقة ميزانيات الأداء في Shelf بالترتيب. وأجب عن السؤال في قسم كل قطعة قبل أن تنتقل. وحين تنتهي، كذّب عتبة واحدة وشاهد البوابة تنكسر.
 
-## 1. The stats build — `vite.config.ts`
+## 1. بناء الإحصاءات — `vite.config.ts`
 
-Open `vite.config.ts` and add the `rollup-plugin-visualizer` import. Wire it behind a `BUNDLE_STATS=1` environment flag so the normal build stays fast and the stats build is opt-in.
+افتح `vite.config.ts` وأضف استيراد `rollup-plugin-visualizer`. وصله خلف علم بيئة `BUNDLE_STATS=1` ليبقى البناء العادي سريعًا وليكون بناء الإحصاءات اختياريًا.
 
-When the flag is set, Vite emits two files:
+وحين يُضبط العلم، يُخرج Vite ملفين:
 
-- `build/stats.html` — a treemap report for humans
-- `build/stats.json` — the `raw-data` template, keyed for automation
+- `build/stats.html` — تقرير خريطة شجرية للبشر
+- `build/stats.json` — قالب `raw-data`، مُهيَّأ للأتمتة
 
-**Question:** why behind an env flag instead of always-on? (Answer: the stats generation adds meaningful time to the build, and you only need it when you’re about to run the budget check.)
+**سؤال:** لماذا خلف علم بيئة بدلًا من أن يكون دائم التشغيل؟ (الجواب: توليد الإحصاءات يضيف وقتًا معتبرًا إلى البناء، وأنت تحتاجها فقط حين تكون على وشك تشغيل فحص الميزانيات.)
 
-## 2. The thresholds — `performance-budgets.json`
+## 2. العتبات — `performance-budgets.json`
 
-Create `performance-budgets.json`. It’s eight lines:
+أنشئ `performance-budgets.json`. إنه ثمانية أسطر:
 
 ```json
 {
@@ -56,37 +56,37 @@ Create `performance-budgets.json`. It’s eight lines:
 }
 ```
 
-That’s it. Two build numbers, one runtime number, no schema, no tooling. The numbers are baseline-plus-buffer — the current build is ~105 kB total, and 110 gives enough headroom for small feature work without letting a 20% regression slip through.
+هذا كل شيء. رقمان للبناء، ورقم واحد لوقت التشغيل، بلا مخطط، وبلا أدوات. والأرقام هي خط الأساس زائد هامش — فالبناء الحالي نحو 105 kB في المجموع، و110 يمنح هامشًا كافيًا لعمل ميزات صغير دون أن يسمح بانزلاق تراجع بنسبة 20%.
 
-**Question:** why are the thresholds in a JSON file instead of hardcoded in the check script? (Answer: the file is the contract. Bumping a threshold is a visible commit, which means bumping a threshold is a conversation.)
+**سؤال:** لماذا تكون العتبات في ملف JSON بدلًا من أن تُثبَّت في سكربت الفحص؟ (الجواب: الملف هو العقد. ورفع عتبة إيداع مرئي، ومعنى ذلك أن رفع عتبة محادثة.)
 
-## 3. The check script — `scripts/check-performance-budgets.mjs`
+## 3. سكربت الفحص — `scripts/check-performance-budgets.mjs`
 
-Create `scripts/check-performance-budgets.mjs`. It’s about 88 lines. Walk the four sections:
+أنشئ `scripts/check-performance-budgets.mjs`. إنه نحو 88 سطرًا. تنقّل في الأقسام الأربعة:
 
-- **Lines 12–16: constants.** The `CLIENT_BUNDLE_PREFIX = '_app/immutable'` is the SvelteKit-specific filter — it’s what makes the budget “client bundle only” rather than “everything Vite emits.”
-- **Lines 18–43: `computeClientBundleSizes`.** This is the whole lesson. Walk `nodeMetas → moduleParts → nodeParts` to sum gzip bytes per output file, filter to client chunks, return `totalClientGzipBytes`, `largestClientChunkBytes`, and `clientEntries`.
-- **Lines 45–83: `main`.** Read both files, compute sizes, compare to budgets, push a human-readable string into `failures` for each exceeded threshold. On failure: print to stderr and exit 1. On success: print the current numbers with their budgets and exit 0.
-- **Lines 85–88: top-level error handler.** Exits 2 on any thrown error so the agent can distinguish “budget exceeded” from “script broke.”
+- **الأسطر 12–16: الثوابت.** الثابت `CLIENT_BUNDLE_PREFIX = '_app/immutable'` هو المرشح الخاص بـSvelteKit — وهو ما يجعل الميزانية «حزمة العميل فقط» لا «كل ما يُخرجه Vite».
+- **الأسطر 18–43: `computeClientBundleSizes`.** هذا هو الدرس كله. تنقّل في `nodeMetas → moduleParts → nodeParts` لتجمع بايتات gzip لكل ملف ناتج، ثم رشّح إلى قطع العميل، ثم أرجع `totalClientGzipBytes` و`largestClientChunkBytes` و`clientEntries`.
+- **الأسطر 45–83: `main`.** اقرأ الملفين، واحسب الأحجام، وقارنها بالميزانيات، وادفع نصًا مقروءًا للبشر إلى `failures` عند كل عتبة متجاوَزة. عند الفشل: اطبع إلى stderr واخرج بالرمز 1. وعند النجاح: اطبع الأرقام الحالية مع ميزانياتها واخرج بالرمز 0.
+- **الأسطر 85–88: معالج الأخطاء في المستوى الأعلى.** يخرج بالرمز 2 عند أي خطأ مُلقى ليستطيع الوكيل التمييز بين «تجاوز الميزانية» و«انكسر السكربت».
 
-The lesson walks the `nodeMetas` structure in the **The checker script** section of [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) if you want the data-shape explanation before you open the script.
+ويتنقّل الدرس في بنية `nodeMetas` في قسم **سكربت الفحص** من [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) إن أردت شرح شكل البيانات قبل أن تفتح السكربت.
 
-**Question:** why does the script return `clientEntries` from `computeClientBundleSizes` even though `main` doesn’t use it? (Answer: future rules like “which chunk grew the most week-over-week” can read it without re-walking the report. The function is written for the next feature, not just this one.)
+**سؤال:** لماذا يعيد السكربت `clientEntries` من `computeClientBundleSizes` رغم أن `main` لا يستخدمها؟ (الجواب: قواعد مستقبلية مثل «أي قطعة كبرت أكثر خلال الأسبوع» تستطيع قراءتها دون إعادة التنقل في التقرير. فالدالة مكتوبة للميزة التالية، لا لهذه وحدها.)
 
-## 4. The runtime spec — `tests/performance.spec.ts`
+## 4. مواصفة وقت التشغيل — `tests/performance.spec.ts`
 
-Create `tests/performance.spec.ts`. It goes to `/shelf`, reads `performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd` inside the browser context, loads the threshold from `performance-budgets.json`, and asserts the measured value is under it.
+أنشئ `tests/performance.spec.ts`. تنتقل إلى `/shelf`، وتقرأ `performance.getEntriesByType('navigation')[0].domContentLoadedEventEnd` داخل سياق المتصفح، وتحمّل العتبة من `performance-budgets.json`، وتتحقق من أن القيمة المقيسة أقل منها.
 
-Two things to notice:
+وهناك أمران يستحقان الملاحظة:
 
-- The threshold is read from disk, not hardcoded. Same contract as the build budget — bumping it is a visible commit.
-- If you already completed the storage-state lab, run the spec inside that authenticated Playwright project so it measures the real build-and-preview flow. If your current Shelf copy still has only the minimal public starter, either add the authenticated project first or point the runtime check at a public route until the auth loop exists.
+- العتبة تُقرأ من القرص، لا تُثبَّت في الشيفرة. وهو العقد نفسه الخاص بميزانية البناء — فرفعها إيداع مرئي.
+- إن كنت قد أكملت مختبر حالة التخزين بالفعل، فشغّل المواصفة داخل مشروع Playwright الموثَّق ذاك حتى تقيس تدفّق البناء والمعاينة الحقيقي. وإن كانت نسخة Shelf الحالية لديك لا تزال تحمل البادئ العام الأدنى فقط، فأضف المشروع الموثَّق أولًا أو وجّه فحص وقت التشغيل إلى مسار عام إلى أن توجد حلقة المصادقة.
 
-**Question:** why measure `domContentLoadedEventEnd` instead of something like `largestContentfulPaint`? (Answer: `domContentLoaded` is cheaper to stabilize because it doesn’t depend on image decode or font load. For a budget you want a number that moves only when *your* code changes, not when an asset pipeline hiccups.)
+**سؤال:** لماذا نقيس `domContentLoadedEventEnd` بدلًا من شيء مثل `largestContentfulPaint`؟ (الجواب: `domContentLoaded` أرخص في التثبيت لأنه لا يعتمد على فك ترميز الصور ولا على تحميل الخطوط. فالميزانية تريد رقمًا لا يتحرّك إلا حين تتغيّر *شيفرتك* أنت، لا حين يتعثّر خط أنابيب الأصول.)
 
-## 5. The named commands — `package.json`
+## 5. الأوامر المسمّاة — `package.json`
 
-Open `package.json` and add the four performance scripts:
+افتح `package.json` وأضف سكربتات الأداء الأربعة:
 
 ```json
 {
@@ -99,51 +99,51 @@ Open `package.json` and add the four performance scripts:
 }
 ```
 
-The shapes matter: `performance:check` is the one command an agent calls to get the full answer. Everything below it is a piece the agent can rerun in isolation when one of the two halves is the one that broke.
+الأشكال تهمّ: `performance:check` هو الأمر الوحيد الذي يستدعيه الوكيل للحصول على الجواب الكامل. وكل ما دونه قطعة يستطيع الوكيل إعادة تشغيلها بمعزل حين يكون أحد النصفين هو ما انكسر.
 
-**Question:** why *doesn’t* `performance:runtime` shell out to `drizzle-kit push --force` first? (Answer: by this point the authenticated project and seed helpers should already own the app setup. The performance command should measure the app, not hide infrastructure bootstrapping inside a side-effect-heavy script preamble.)
+**سؤال:** لماذا *لا* يستدعي `performance:runtime` الأمر `drizzle-kit push --force` أولًا؟ (الجواب: في هذه المرحلة يفترض أن يكون المشروع الموثَّق وأدوات الزرع المساعدة مالكةً لإعداد التطبيق بالفعل. فأمر الأداء يجب أن يقيس التطبيق، لا أن يخفي تهيئة البنية التحتية داخل مقدمة سكربت مثقلة بالآثار الجانبية.)
 
-## Break it
+## اكسره
 
-Now that you’ve read all five pieces, prove you understand how they interact.
+الآن وقد قرأت القطع الخمس، أثبت أنك تفهم كيف تتفاعل.
 
-1. Open `performance-budgets.json`. Lower `maxTotalGzipKilobytes` from `110` to `50`.
-2. Run `npm run performance:build`.
-3. Read the failure output. It should name the failing budget and the actual measured size.
-4. Restore the threshold. Rerun. Watch it go green.
+1. افتح `performance-budgets.json`. اخفض `maxTotalGzipKilobytes` من `110` إلى `50`.
+2. شغّل `npm run performance:build`.
+3. اقرأ مخرجات الفشل. يجب أن تسمّي الميزانية الفاشلة والحجم المقيس فعلًا.
+4. أعد العتبة. أعد التشغيل. شاهده يعود أخضر.
 
-If the failure didn’t look the way you expected, go back to `scripts/check-performance-budgets.mjs` section 3 and re-read `main` — the `failures.push(...)` string is the thing you just saw, word for word.
+إن لم يبدُ الفشل كما توقّعت، فعُد إلى القسم 3 من `scripts/check-performance-budgets.mjs` وأعد قراءة `main` — فسلسلة `failures.push(...)` هي ما رأيته للتو، كلمة بكلمة.
 
-## Acceptance criteria
+## معايير القبول
 
-You’re done when you can answer each of these without looking:
+تنتهي حين تستطيع الإجابة عن كل سؤال من هذه دون أن تنظر:
 
-- Why is the stats build gated behind `BUNDLE_STATS=1`?
-- Why do the thresholds live in a JSON file instead of the script?
-- What does `CLIENT_BUNDLE_PREFIX` filter out, and why?
-- What’s the difference between exit 1 and exit 2 in `check-performance-budgets.mjs`?
-- Why does the runtime spec run under the `authenticated` project specifically?
-- Why does `performance:runtime` stay focused on the test run instead of sneaking setup commands into the script?
-- You lowered `maxTotalGzipKilobytes` to `50`, ran `npm run performance:build`, saw it fail, and restored the threshold. (Mechanical check of the read.)
+- لماذا بناء الإحصاءات محكوم بعلم `BUNDLE_STATS=1`؟
+- لماذا تعيش العتبات في ملف JSON بدلًا من السكربت؟
+- ما الذي يرشّحه `CLIENT_BUNDLE_PREFIX`، ولماذا؟
+- ما الفرق بين الخروج بالرمز 1 والخروج بالرمز 2 في `check-performance-budgets.mjs`؟
+- لماذا تعمل مواصفة وقت التشغيل تحت مشروع `authenticated` تحديدًا؟
+- لماذا يبقى `performance:runtime` مركّزًا على تشغيل الاختبار بدلًا من تهريب أوامر إعداد إلى السكربت؟
+- خفضت `maxTotalGzipKilobytes` إلى `50`، وشغّلت `npm run performance:build`، ورأيته يفشل، ثم أعدت العتبة. (فحص ميكانيكي للقراءة.)
 
-## Troubleshooting
+## استكشاف الأخطاء
 
-- If the runtime number jumps around wildly, stop measuring against the dev server and switch to build plus preview.
-- If the build stats are hard to parse, simplify the report shape before you add more budgets.
-- If the budget fails after a legitimate feature addition, inspect the stats first. Sometimes the fix is obvious. Sometimes the correct answer is a deliberate budget update with an explanation.
+- إن كان رقم وقت التشغيل يقفز هنا وهناك بعشوائية، فتوقّف عن القياس على خادم التطوير وانتقل إلى البناء مع المعاينة.
+- إن كانت إحصاءات البناء عسيرة التحليل، فبسّط شكل التقرير قبل أن تضيف ميزانيات أكثر.
+- إن فشلت الميزانية بعد إضافة ميزة مشروعة، فافحص الإحصاءات أولًا. أحيانًا يكون الإصلاح واضحًا. وأحيانًا يكون الجواب الصحيح تحديثَ ميزانية متعمَّدًا مع شرح.
 
-## Stretch goals
+## أهداف إضافية
 
-- Track a second runtime flow, but only after the first one is stable.
-- Upload the build stats report and runtime trace as CI artifacts when the check fails.
-- Add a workflow summary that prints the before-and-after numbers for faster review.
+- تتبّع تدفّقًا ثانيًا في وقت التشغيل، لكن فقط بعد أن يستقر الأول.
+- ارفع تقرير إحصاءات البناء وأثر وقت التشغيل كآثار CI حين يفشل الفحص.
+- أضف ملخّصًا لسير العمل يطبع الأرقام قبل وبعد لمراجعة أسرع.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Performance only becomes part of the loop when there is a number the agent can break. Pick the number, store it in the repository, and make the command cheap enough that the agent will actually run it.
+لا يصبح الأداء جزءًا من الحلقة إلا حين يوجد رقم يستطيع الوكيل كسره. اختر الرقم، وخزّنه في المستودع، واجعل الأمر رخيصًا بما يكفي ليشغّله الوكيل فعلًا.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/add-performance-budgets-to-shelf-solution)
-- [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)
-- [Runtime Tools Compared](https://stevekinney.com/courses/self-testing-ai-agents/runtime-tools-compared)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/add-performance-budgets-to-shelf-solution)
+- [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)
+- [أدوات وقت التشغيل مقارنةً](https://stevekinney.com/courses/self-testing-ai-agents/runtime-tools-compared)

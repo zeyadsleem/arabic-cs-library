@@ -1,14 +1,14 @@
 ---
-title: "Render Props and HOC Alternatives"
-lang: en
+title: "خصائص التصيير وبدائل المكوّنات ذات الرتبة العليا"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/render-props-and-hoc-alternatives"
 ---
 
-Higher-Order Components (HOCs) used to be React’s go-to pattern for sharing logic between components. But with TypeScript, HOCs can become typing nightmares, especially when you need to thread props through multiple layers. Enter render props—a pattern that gives you the same power with far better type safety and IntelliSense support. We’ll explore why render props often win in the modern React + TypeScript world and show you practical alternatives that keep your code both flexible and type-safe.
+كان يومًا ما المكوّنات ذات الرتبة العليا (Higher-Order Components) هي النمط المفضّل في React لمشاركة المنطق بين المكوّنات. لكن مع TypeScript قد تتحوّل إلى كابوس في التعامل مع الأنواع، وخصوصًا حين تحتاج إلى تمرير الخصائص عبر عدّة طبقات. هنا يأتي دور خصائص التصيير (render props) — وهو نمط يمنحك القدرة نفسها مع أمانٍ أفضل في الأنواع ودعمٍ أفضل بكثير لـ IntelliSense. سنستكشف لماذا تتفوّق خصائص التصيير غالبًا في عالم React + TypeScript الحديث، ونعرض لك بدائل عملية تُبقي شيفرتك مرنة وآمنة الأنواع في الوقت نفسه.
 
-## The HOC Problem
+## مشكلة المكوّنات ذات الرتبة العليا
 
-Before we dive into solutions, let’s understand what we’re solving. HOCs wrap your components to inject props or behavior, but they come with some TypeScript pain points:
+قبل أن نغوص في الحلول، لنفهم ما الذي نحاول حله. تغلّف المكوّنات ذات الرتبة العليا مكوّناتك لحقن الخصائص أو السلوك فيها، لكنها تأتي مع بعض نقاط الألم في TypeScript:
 
 ```typescript
 // ❌ Classic HOC - typing gets messy fast
@@ -31,11 +31,11 @@ const ProfilePage = withAuth<{ title: string }>(({ user, title }) => {
 });
 ```
 
-The issues become more apparent when you start composing HOCs or when TypeScript can’t properly infer the injected props. Your editor’s autocomplete gets confused, error messages become cryptic, and refactoring becomes risky business.
+تصبح المشكلات أكثر وضوحًا حين تبدأ في تركيب المكوّنات ذات الرتبة العليا معًا، أو حين لا يستطيع TypeScript استنتاج الخصائص المحقونة استنتاجًا صحيحًا. يختلط الإكمال التلقائي في محرّرك، وتصبح رسائل الأخطاء ملتبسة، ويصبح إعادةُ الهيكلة عمليةً محفوفة بالمخاطر.
 
-## Render Props: The TypeScript-Friendly Alternative
+## خصائص التصيير: البديل الصديق لـ TypeScript
 
-Render props flip the script. Instead of wrapping your component, you pass a function that receives the data and returns JSX. TypeScript loves this pattern because the data flow is explicit and type inference works beautifully.
+تنقلب خصائص التصيير المعادلة رأسًا على عقب. فبدلًا من تغليف مكوّنك، تمرّر دالةً تستقبل البيانات وتعيد JSX. يحبّ TypeScript هذا النمط لأن تدفّق البيانات فيه صريح، ولأن استنتاج الأنواع يعمل فيه بإتقان.
 
 ```typescript
 // ✅ Render prop component with excellent TypeScript support
@@ -75,11 +75,11 @@ function ProfilePage() {
 }
 ```
 
-The magic happens in that `children` prop type: `(props: AuthRenderProps) => React.ReactNode`. TypeScript knows exactly what data is available inside the render function, giving you perfect autocomplete and error checking.
+ويحدث السحر في نوع خاصية `children`: `(props: AuthRenderProps) => React.ReactNode`. يعرف TypeScript تمامًا ما البيانات المتاحة داخل دالة التصيير، فيمنحك إكمالًا تلقائيًا مثاليًا وفحصًا دقيقًا للأخطاء.
 
-## Generic Render Props for Maximum Flexibility
+## خصائص تصيير عامة لأقصى حدّ من المرونة
 
-When you need to handle different data types, generics make render props even more powerful:
+عندما تحتاج إلى التعامل مع أنواع بيانات مختلفة، تجعل الأنواع العامة (generics) خصائص التصيير أقوى بكثير:
 
 ```typescript
 interface DataFetcher<T> {
@@ -149,11 +149,11 @@ function UserProfile({ userId }: { userId: number }) {
 }
 ```
 
-Notice how TypeScript automatically infers that `user` is of type `User` inside the render function. No manual type assertions needed.
+لاحظ كيف يستنتج TypeScript تلقائيًا أن `user` من نوع `User` داخل دالة التصيير. لا حاجة إلى تأكيدات أنواع يدوية.
 
-## Custom Hooks: The Modern Alternative
+## الخُطّافات المخصّصة: البديل الحديث
 
-Sometimes you don’t need the component wrapper at all. Custom hooks can provide the same logic sharing with even cleaner syntax:
+أحيانًا لا تحتاج إلى غلاف المكوّن أصلًا. تستطيع الخُطّافات المخصّصة أن توفّر مشاركة المنطق نفسها بصياغة أنظف بكثير:
 
 ```typescript
 function useAuth() {
@@ -204,11 +204,11 @@ function ProfilePage() {
 }
 ```
 
-Custom hooks give you the best of both worlds: shared logic without component wrapping, and TypeScript support that’s as good as it gets.
+تمنحك الخُطّافات المخصّصة أفضل ما في العالمين: منطقًا مشتركًا دون غلاف مكوّن، ودعمًا من TypeScript لا يُقدَّم له مثيل.
 
-## Compound Components with Render Props
+## المكوّنات المركّبة مع خصائص التصيير
 
-For more complex UI patterns, you can combine render props with compound components to create flexible, reusable interfaces:
+لأنماط واجهة المستخدم الأكثر تعقيدًا، يمكنك الجمع بين خصائص التصيير والمكوّنات المركّبة لإنشاء واجهات مرنة وقابلة لإعادة الاستخدام:
 
 ```typescript
 interface DropdownContextValue {
@@ -311,11 +311,11 @@ function UserSelector() {
 }
 ```
 
-This pattern gives you maximum flexibility while maintaining excellent type safety. The render prop receives the full context with proper typing, and you can compose different data sources easily.
+يمنحك هذا النمط أقصى قدر من المرونة مع الحفاظ على أمانٍ ممتاز في الأنواع. وتتلقّى خاصية التصيير السياق كاملًا بأنواعه الصحيحة، فتتمكّن من تركيب مصادر بيانات مختلفة بسهولة.
 
-## Performance Considerations
+## اعتبارات الأداء
 
-One common concern with render props is performance. Since you’re creating a new function on each render, React might unnecessarily re-render child components. Here are some strategies to optimize:
+من المخاوف الشائعة مع خصائص التصيير الأداء. ولأنّك تنشئ دالةً جديدة في كل تصيير، قد يعيد React تصيير المكوّنات الفرعية دون داعٍ. وهذه بعض الاستراتيجيات لتحسين ذلك:
 
 ```typescript
 // ✅ Memoize expensive render functions
@@ -339,46 +339,46 @@ function ExpensiveComponent() {
 const MemoizedFetchData = React.memo(FetchData) as typeof FetchData;
 ```
 
-> **Tip**
+> **تلميح**
 >
-> In most cases, the performance impact is negligible. Profile before optimizing, and remember that the type safety and developer experience benefits often outweigh minor performance costs.
+> في معظم الحالات، يكون الأثر على الأداء ضئيلًا. قِس الأداء قبل أن تحسّنه، وتذكّر أن فوائد أمان الأنواع وتجربة المطوّر غالبًا ما تفوق تكاليف الأداء البسيطة.
 
-## When to Use Each Pattern
+## متى تستخدم كل نمط
 
-Here’s a practical guide for choosing the right pattern:
+إليك دليلًا عمليًا لاختيار النمط المناسب:
 
-**Use Custom Hooks when:**
+**استخدم الخُطّافات المخصّصة عندما:**
 
-- You’re sharing stateful logic between components
-- The logic doesn’t need to control rendering
-- You want the cleanest possible syntax
-- The shared data is relatively simple
+- تشارك منطقًا ذا حالة بين المكوّنات
+- لا يحتاج المنطق إلى التحكّم في التصيير
+- تريد أنظف صياغة ممكنة
+- تكون البيانات المشتركة بسيطة نسبيًا
 
-**Use Render Props when:**
+**استخدم خصائص التصيير عندما:**
 
-- You need to control when/how child components render
-- You’re building reusable UI components
-- The component needs to handle loading states, errors, etc.
-- You want to compose multiple data sources
+- تحتاج إلى التحكّم في متى وكيف تُصيَّر المكوّنات الفرعية
+- تبني مكوّنات واجهة قابلة لإعادة الاستخدام
+- يحتاج المكوّن إلى معالجة حالات التحميل والأخطاء وما شابه
+- تريد تركيب عدة مصادر بيانات
 
-**Use Compound Components when:**
+**استخدم المكوّنات المركّبة عندما:**
 
-- You’re building complex, multi-part UI components
-- You need to share state between distant child components
-- You want API flexibility (users can arrange parts differently)
-- The component has multiple distinct pieces that work together
+- تبني مكوّنات واجهة معقّدة ومتعدّدة الأجزاء
+- تحتاج إلى مشاركة الحالة بين مكوّنات فرعية متباعدة
+- تريد مرونة في الواجهة البرمجية (فيستطيع المستخدمون ترتيب الأجزاء بطرق مختلفة)
+- يتكوّن المكوّن من أجزاء متميّزة تعمل معًا
 
-**Avoid HOCs when:**
+**تجنّب المكوّنات ذات الرتبة العليا عندما:**
 
-- You’re using TypeScript (unless you really know what you’re doing)
-- You need to compose multiple behaviors
-- The wrapped component’s props need to be transparent to consumers
+- تستخدم TypeScript (إلّا إن كنت تعرف حقًّا ما تفعل)
+- تحتاج إلى تركيب عدّة سلوكيات
+- يجب أن تكون خصائص المكوّن الملفوف شفافة للمستهلكين
 
-## Real World Use Cases™
+## حالات استخدام من العالم الحقيقي™
 
-Here are some practical scenarios where these patterns shine:
+إليك بعض السيناريوهات العملية التي تتألّق فيها هذه الأنماط:
 
-### Form Field Management
+### إدارة حقول النماذج
 
 ```typescript
 interface FieldState<T> {
@@ -465,7 +465,7 @@ function SignupForm() {
 }
 ```
 
-### API State Management
+### إدارة حالة واجهة البرمجة (API)
 
 ```typescript
 interface ApiState<T, E = unknown> {
@@ -519,9 +519,9 @@ function UserDashboard({ userId }: { userId: number }) {
 }
 ```
 
-## Migrating from HOCs
+## الانتقال من المكوّنات ذات الرتبة العليا
 
-If you’re stuck with existing HOCs, here’s a gradual migration strategy:
+إذا كنت مضطرًا للاحتفاظ بمكوّنات رتبة عليا قائمة، فإليك استراتيجية انتقال تدريجي:
 
 ```typescript
 // Step 1: Create a render prop version alongside your HOC
@@ -545,15 +545,15 @@ function withAuthRenderProp<T extends object>(Component: React.ComponentType<T &
 // Step 3: Eventually remove the HOC wrapper entirely
 ```
 
-The transition can be gradual, allowing you to improve type safety incrementally without breaking existing code.
+يمكن أن يكون الانتقال تدريجيًا، فيتيح لك تحسين أمان الأنواع خطوةً بخطوة دون كسر الشيفرة القائمة.
 
-## Next Steps
+## الخطوات التالية
 
-Render props and custom hooks represent the modern way to share logic in React applications with TypeScript. They provide better type safety, clearer data flow, and superior developer experience compared to HOCs. Start by identifying shared logic in your codebase that could benefit from these patterns:
+تمثّل خصائص التصيير والخُطّافات المخصّصة الطريقة الحديثة لمشاركة المنطق في تطبيقات React مع TypeScript. فهي توفّر أمانًا أفضل في الأنواع وتدفّق بيانات أوضح وتجربة مطوّر أفضل بكثير مقارنةً بالمكوّنات ذات الرتبة العليا. ابدأ بتحديد المنطق المشترك في قاعدة شيفرتك الذي يمكن أن يستفيد من هذه الأنماط:
 
-1. **Audit your HOCs**: Look for components that are hard to type or compose
-2. **Extract custom hooks**: Convert simple stateful logic to hooks first
-3. **Build render prop components**: For more complex UI logic that needs to control rendering
-4. **Combine patterns**: Use compound components + render props for maximum flexibility
+1. **راجع مكوّنات الرتبة العليا**: ابحث عن المكوّنات الصعبة في الأنواع أو التركيب
+2. **استخرج خُطّافات مخصّصة**: حوّل المنطق البسيط ذا الحالة إلى خُطّافات أولًا
+3. **ابنِ مكوّنات بخصائص التصيير**: لمنطق واجهة أكثر تعقيدًا يحتاج إلى التحكّم في التصيير
+4. **امزج الأنماط**: استخدم المكوّنات المركّبة مع خصائص التصيير لأقصى مرونة
 
-The goal isn’t to eliminate every HOC overnight, but to reach for these patterns when building new features. Your future self (and your teammates) will thank you for the improved type safety and cleaner code.
+الهدف ليس إلغاء كل مكوّن ذي رتبة عليا بين ليلة وضحاها، بل أن تلجأ إلى هذه الأنماط عند بناء ميزات جديدة. وسيشكرك نفسك في المستقبل (وزملاؤك) على أمان الأنواع المحسّن والشيفرة الأنظف.

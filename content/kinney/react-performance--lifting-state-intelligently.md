@@ -1,16 +1,16 @@
 ---
-title: "Lifting State Intelligently"
-lang: en
+title: "رفع الحالة بذكاء (Lifting State Intelligently)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/lifting-state-intelligently"
 ---
 
-“Lift state up” is one of React’s most repeated mantras—and for good reason. When multiple components need the same piece of data, moving it to their closest common ancestor makes perfect sense. But like most architectural advice, it’s easy to take this too far and accidentally create performance bottlenecks that ripple through your entire component tree.
+«ارفع الحالة إلى أعلى» من أكثر الشعارات تكرارًا في React — ولسبب وجيه. فعندما تحتاج عدة مكوّنات إلى القطعة نفسها من البيانات، يصبح نقلها إلى أقرب سلف مشترك لها منطقيًا تمامًا. لكن كمعظم النصائح المعمارية، يسهل المبالغة في ذلك وإنشاء اختناقات أداء بالخطأ تنتشر في شجرة مكوّناتك بأكملها.
 
-The key insight? **Lift state only when components genuinely need to share it**. Everything else can (and should) stay local. When you do lift state, be intentional about where it lands and how changes propagate. A little upfront thinking can save you from debugging sluggish UIs later.
+والرؤية الجوهرية؟ **لا ترفع الحالة إلا عندما تحتاج المكوّنات فعلًا إلى مشاركتها**. وكل ما عدا ذلك يمكنه (بل ينبغي له) أن يبقى محليًا. وعندما ترفع الحالة فعلًا، فكن متعمّدًا في اختيار موضع استقرارها وكيفية انتشار التغييرات. فقليل من التفكير المسبق ينجيك من تصحيح واجهات بطيئة لاحقًا.
 
-## The Problem with Overzealous State Lifting
+## مشكلة المبالغة في رفع الحالة
 
-Let’s say you’re building a dashboard with multiple widgets. Each widget has its own loading state, data, and user interactions. The naive approach might be to lift all state to the top level—after all, centralized state feels organized, right?
+لنفترض أنك تبني لوحة تحكّم فيها عدة أدوات مصغّرة. لكل أداة حالة التحميل الخاصة بها وبياناتها وتفاعلات مستخدميها. وقد يكون النهج الساذج هو رفع كل الحالة إلى المستوى الأعلى — فالحالة المركزية تبدو منظّمة، أليس كذلك؟
 
 ```typescript
 // ❌ Over-lifting state creates unnecessary re-renders
@@ -47,11 +47,11 @@ function Dashboard() {
 }
 ```
 
-Here’s the problem: every time any widget loads data, the entire `Dashboard` component re-renders—along with every other widget—even though they have nothing to do with each other. You’ve created a performance chokepoint where isolated changes trigger unnecessary work across your entire tree.
+وهنا المشكلة: كلما حمّلت أي أداة بياناتها، يُعاد تصيير مكوّن `Dashboard` بأكمله — مع كل أداة أخرى — مع أنه لا علاقة بينها. لقد أنشأت نقطة اختناق في الأداء تُطلق فيها تغييرات معزولة عملًا غير ضروري في شجرتك بأكملها.
 
-## Keep State Local by Default
+## أبقِ الحالة محلية افتراضيًا
 
-The better approach? **Start local, lift only when necessary**. Each widget should manage its own state until you have a compelling reason to share it.
+والنهج الأفضل؟ **ابدأ محليًا، ولا ترفع إلا عند الضرورة**. ينبغي لكل أداة أن تدير حالتها بنفسها حتى يوجد سبب قوي لمشاركتها.
 
 ```typescript
 // ✅ Keep independent state local
@@ -88,21 +88,21 @@ function Widget1() {
 }
 ```
 
-Now when `Widget1` loads data, only `Widget1` re-renders. The other widgets remain blissfully unaware, and your dashboard stays snappy.
+الآن عندما تحمّل `Widget1` بياناتها، لا يُعاد تصيير إلا `Widget1`. وتبقى الأدوات الأخرى في غفلة سعيدة، وتبقى لوحة التحكّم لديك سريعة الاستجابة.
 
-> **Note**
+> **ملاحظة**
 >
-> This is React’s default behavior working in your favor. Components only re-render when their own state changes or their parent passes different props.
+> هذا هو السلوك الافتراضي في React وهو في صالحك. فلا يُعاد تصيير المكوّنات إلا عندما تتغيّر حالتها هي أو يمرّر لها الأب خصائص مختلفة.
 
-## When to Actually Lift State
+## متى ترفع الحالة فعلًا
 
-You should lift state when components need to:
+ينبغي أن ترفع الحالة عندما تحتاج المكوّنات إلى:
 
-1. **Share the same data** and display it consistently
-2. **Coordinate behavior** (like master-detail views)
-3. **Synchronize changes** across multiple locations
+1. **مشاركة البيانات نفسها** وعرضها باتساق
+2. **تنسيق السلوك** (مثل واجهات الرئيس/التفصيل)
+3. **مزامنة التغييرات** عبر مواضع متعددة
 
-Let’s look at a realistic example where lifting state makes sense:
+لننظر إلى مثال واقعي يكون فيه رفع الحالة منطقيًا:
 
 ```typescript
 // ✅ Lift state when components need to share data
@@ -130,13 +130,13 @@ function OrderManagement() {
 }
 ```
 
-Here, `OrderList` and `OrderDetails` genuinely need to coordinate—selecting an order in the list should show its details, and updating an order should refresh the list. The shared state is justified.
+هنا يحتاج `OrderList` و`OrderDetails` فعلًا إلى التنسيق — فاختيار طلب من القائمة ينبغي أن يعرض تفاصيله، وتحديث طلب ينبغي أن يحدّث القائمة. والحالة المشتركة مبرَّرة.
 
-## Smart State Placement Strategies
+## استراتيجيات ذكية لموضع الحالة
 
-### Co-locate with the Components That Need It
+### أبقِ الحالة قريبة من المكوّنات التي تحتاجها
 
-Place state as close as possible to the components that use it. If only two sibling components need to share data, lift it to their immediate parent—not three levels up to some distant ancestor.
+ضع الحالة قريبة قدر الإمكان من المكوّنات التي تستخدمها. فإن كان مكوّنان شقيقان فقط يحتاجان إلى مشاركة البيانات، فارفعها إلى أبيهما المباشر — لا إلى سلف بعيد على بُعد ثلاثة مستويات.
 
 ```typescript
 // ✅ Lift to the closest common parent
@@ -163,9 +163,9 @@ function RelatedProductsSection() {
 }
 ```
 
-### Use Multiple State Containers
+### استخدم حاويات حالة متعددة
 
-Don’t feel compelled to cram everything into a single state object. Multiple focused pieces of state are often better than one monolithic object.
+لا تشعر بأنك مضطر إلى حشر كل شيء في كائن حالة واحد. فغالبًا ما تكون قطع الحالة المتعددة المركّزة أفضل من كائن واحد متضخّم.
 
 ```typescript
 // ❌ Monolithic state object
@@ -201,9 +201,9 @@ function App() {
 }
 ```
 
-### Contain State Changes with `React.memo`
+### احصر تغييرات الحالة باستخدام `React.memo`
 
-When you do need to lift state but want to minimize re-render impact, use `React.memo` to create render boundaries:
+عندما تحتاج فعلًا إلى رفع الحالة لكنك تريد تقليل أثر إعادة التصيير إلى أدنى حد، استخدم `React.memo` لإنشاء حدود للتصيير:
 
 ```typescript
 // ✅ Memo prevents unnecessary re-renders of expensive components
@@ -236,9 +236,9 @@ function Dashboard() {
 }
 ```
 
-## Real-World State Architecture
+## معمارية حالة من الواقع
 
-Here’s how you might structure state in a realistic application:
+إليك كيف يمكنك هيكلة الحالة في تطبيق واقعي:
 
 ```typescript
 // ✅ Thoughtful state architecture
@@ -296,11 +296,11 @@ const MetricsGrid = memo(function MetricsGrid({ dateRange }: { dateRange: string
 });
 ```
 
-## Common Anti-Patterns to Avoid
+## أنماط مضادة شائعة ينبغي تجنّبها
 
-### The “Props Drilling Prevention” Trap
+### فخّ «منع تمرير الخصائص المتشعّب»
 
-Just because you want to avoid props drilling doesn’t mean you should lift state to the top level. Consider Context or a state management library instead:
+مجرّد رغبتك في تجنّب تمرير الخصائص المتشعّب لا يعني أنه ينبغي لك رفع الحالة إلى المستوى الأعلى. فكّر بدلًا من ذلك في Context أو مكتبة إدارة حالة:
 
 ```typescript
 // ❌ Lifting state too high to avoid props drilling
@@ -342,9 +342,9 @@ function App() {
 }
 ```
 
-### The “Future-Proofing” Fallacy
+### مغالطة «التحوّط للمستقبل»
 
-Don’t lift state “just in case” you might need it later. YAGNI (You Aren’t Gonna Need It) applies to state architecture too:
+لا ترفع الحالة «تحسّبًا» لأنك قد تحتاجها لاحقًا. ينطبق مبدأ YAGNI (لن تحتاج إليه) على معمارية الحالة أيضًا:
 
 ```typescript
 // ❌ Premature state lifting
@@ -376,15 +376,15 @@ function UserProfile() {
 }
 ```
 
-## Measuring the Impact
+## قياس الأثر
 
-When you’re unsure whether to lift state, profile your app’s performance. React DevTools Profiler can show you which components are re-rendering and why:
+عندما تتردّد في رفع الحالة، قِس أداء تطبيقك. فبإمكان أداة Profiler في React DevTools أن تُظهر لك أيّ المكوّنات يُعاد تصييرها ولماذا:
 
-1. **Before lifting**: Profile your current implementation
-2. **After lifting**: Profile again and compare
-3. **Look for**: Unnecessary re-renders in unrelated components
-4. **Optimize**: Add `memo` boundaries or reconsider state placement
+1. **قبل الرفع**: افحص أداء تطبيقك الحالي
+2. **بعد الرفع**: افحص الأداء مجددًا وقارن
+3. **ابحث عن**: عمليات إعادة تصيير غير ضرورية في مكوّنات لا علاقة لها بالأمر
+4. **حسّن**: أضف حدود `memo` أو أعد النظر في موضع الحالة
 
-> **Tip**
+> **نصيحة**
 >
-> A few unnecessary re-renders aren’t always a problem—React is quite fast. Focus on the ones that cause noticeable lag or expensive computations.
+> ليست عمليات إعادة التصيير غير الضرورية القليلة مشكلة دائمًا — فـ React سريعة جدًا. ركّز على التي تسبّب تأخّرًا ملحوظًا أو حسابات مكلفة.

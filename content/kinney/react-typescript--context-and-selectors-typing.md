@@ -1,16 +1,16 @@
 ---
-title: "Context and Selectors Typing"
-lang: en
+title: "أنواع Context والمحدِّدات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/context-and-selectors-typing"
 ---
 
-Context in React is like that friend who knows everyone at the party—incredibly useful for sharing data across your component tree, but without proper typing, it can become a source of runtime surprises and debugging headaches. Let’s explore how to build fully typed contexts with TypeScript that not only prevent bugs but also provide excellent developer ergonomics through state/action patterns and performance-optimized selectors.
+السياق (context) في React يشبه ذلك الصديق الذي يعرف كل الحاضرين في الحفلة — مفيدٌ جدًا لمشاركة البيانات عبر شجرة مكوّناتك، لكن من دون أنواع دقيقة قد يتحوّل إلى مصدر مفاجآت وقت التشغيل وآلام التنقيح. لنتعرّف كيف نبني سياقات (contexts) مكتوبة الأنواع بالكامل باستخدام TypeScript، لا تكتفي بمنع الأخطاء بل تقدّم أيضًا تجربة تطوير ممتازة عبر أنماط الحالة والإجراءات ومحدِّدات (selectors) محسّنة للأداء.
 
-We’ll cover everything from basic typed contexts to advanced patterns like selector-based contexts that minimize unnecessary re-renders, plus some Real World Use Cases™ where these patterns shine.
+سنغطّي كل شيء من السياقات المكتوبة الأنواع الأساسية إلى الأنماط المتقدّمة مثل السياقات المعتمدة على المحدِّدات التي تقلّل إعادة التصيير غير الضرورية، إضافة إلى بعض «حالات الاستخدام الواقعية™» التي تبرز فيها هذه الأنماط.
 
-## The Basic Typed Context Pattern
+## النمط الأساسي للسياق المكتوب الأنواع
 
-Let’s start with the foundation—a properly typed context that catches errors at compile time rather than runtime. Here’s what most folks reach for first:
+لنبدأ بالأساس — سياق مكتوب الأنواع بشكل صحيح يلتقط الأخطاء وقت التجميع بدلًا من وقت التشغيل. إليك ما يلجأ إليه أغلب المطوّرين أولًا:
 
 ```typescript
 import { createContext, useContext, ReactNode } from 'react';
@@ -52,15 +52,15 @@ export function useUser(): UserContextType {
 }
 ```
 
-This pattern gives us type safety and runtime checks, but there’s room for improvement. The main issue? Every component that uses `useUser()` will re-render whenever *any* part of the context value changes, even if they only care about `currentUser.name`.
+يمنحنا هذا النمط أمان الأنواع وفحوصًا وقت التشغيل، لكن ما زال ثمة مجال للتحسين. المشكلة الرئيسة؟ كل مكوّن يستخدم `useUser()` سيُعاد تصييره كلما تغيّر *أيّ* جزء من قيمة السياق، حتى إن كان يهمّه `currentUser.name` وحدها.
 
-> **Tip**
+> **نصيحة**
 >
-> Always create a custom hook for your context rather than exposing `useContext` directly. This lets you add runtime checks and encapsulate the context usage pattern.
+> أنشئ دائمًا خُطّافًا مخصّصًا للسياق بدلًا من تعريض `useContext` مباشرة. يتيح لك ذلك إضافة فحوص وقت التشغيل وتغليف نمط استخدام السياق.
 
-## State and Actions Split Pattern
+## نمط فصل الحالة والإجراءات
 
-For more complex state, splitting your context into separate state and actions can improve both performance and maintainability. This pattern borrows ideas from Redux but keeps things simpler:
+للحالة الأكثر تعقيدًا، يمكن فصل السياق إلى حالة وإجراءات منفصلتين لتحسين الأداء وقابلية الصيانة معًا. يستعير هذا النمط أفكارًا من Redux لكنه يبقي الأمور أبسط:
 
 ```typescript
 import { createContext, useContext, useReducer, ReactNode } from 'react';
@@ -181,15 +181,15 @@ export function useTodoActions(): TodoActions {
 }
 ```
 
-This approach has several advantages:
+لهذا النهج عدّة مزايا:
 
-- **Performance**: Components that only trigger actions don’t re-render when state changes
-- **Clarity**: The separation makes it obvious what’s state vs. what’s behavior
-- **Testing**: You can test actions independently from the components that use them
+- **الأداء**: المكوّنات التي تُطلق الإجراءات فقط لا تُعاد تصييرها عند تغيّر الحالة
+- **الوضوح**: الفصل يجعل من الواضح ما هي الحالة وما هو السلوك
+- **الاختبار**: يمكنك اختبار الإجراءات بمعزل عن المكوّنات التي تستخدمها
 
-## The Selector Pattern: Performance That Actually Matters
+## نمط المحدِّد: أداء يهمّ فعلًا
 
-Here’s where things get interesting. The selector pattern lets components subscribe only to the specific slices of state they care about, dramatically reducing unnecessary re-renders:
+هنا تصبح الأمور مثيرة. يتيح لك نمط المحدِّد أن تشترك المكوّنات في الشرائح المحدّدة من الحالة التي تعنيها فقط، ما يقلّل بشكل كبير إعادة التصيير غير الضرورية:
 
 ```typescript
 import { createContext, useContext, useCallback, useSyncExternalStore } from 'react';
@@ -271,7 +271,7 @@ export function useAppActions() {
 }
 ```
 
-Now components can subscribe to exactly what they need:
+الآن تستطيع المكوّنات أن تشترك في ما تحتاجه بالضبط:
 
 ```typescript
 // ✅ This component only re-renders when the user changes
@@ -316,13 +316,13 @@ function ThemeToggle() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> The `useSyncExternalStore` hook is React 18’s recommended way to subscribe to external stores. It handles the tricky bits of ensuring your selectors work correctly with React’s concurrent features.
+> خُطّاف `useSyncExternalStore` هو الطريقة التي توصي بها React 18 للاشتراك في المخازن الخارجية. فهو يتولّى التفاصيل المعقّدة لضمان عمل محدِّداتك بشكل صحيح مع ميزات React المتزامنة.
 
-## Advanced Typing with Discriminated Unions
+## أنواع متقدّمة عبر الاتحادات المُميَّزة
 
-For even more type safety, you can use discriminated unions to ensure your context state is always in a valid configuration:
+لمنح أمان أنواع أكبر، يمكنك استخدام الاتحادات المُميَّزة (discriminated unions) لضمان أن تكون حالة سياقك دائمًا في إعداد صالح:
 
 ```typescript
 // ✅ Use discriminated unions for complex state
@@ -380,11 +380,11 @@ function AuthenticatedApp() {
 }
 ```
 
-## Real World Use Cases™
+## حالات الاستخدام الواقعية™
 
-Here are some scenarios where these patterns really shine:
+إليك بعض السيناريوهات التي تبرز فيها هذه الأنماط فعلًا:
 
-### Shopping Cart with Performance Optimization
+### سلة التسوّق مع تحسين الأداء
 
 ```typescript
 // Separate contexts for cart data and UI state
@@ -406,7 +406,7 @@ function CartDrawer() {
 }
 ```
 
-### Multi-Step Form with Validation State
+### نموذج متعدّد الخطوات مع حالة التحقّق
 
 ```typescript
 type FormState = {
@@ -425,7 +425,7 @@ function PersonalInfoStep() {
 }
 ```
 
-### Real-Time Dashboard
+### لوحة تحكم لحظية
 
 ```typescript
 // Dashboard components can subscribe to specific metrics
@@ -438,11 +438,11 @@ function MetricCard({ metric }: { metric: keyof DashboardMetrics }) {
 }
 ```
 
-## Performance Gotchas and How to Avoid Them
+## مَطبّات الأداء وكيفية تجنّبها
 
-When implementing these patterns, watch out for these common pitfalls:
+عند تنفيذ هذه الأنماط، انتبه لهذه الأخطاء الشائعة:
 
-### Selector Reference Equality
+### تساوي المراجع في المحدِّدات
 
 ```typescript
 // ❌ This creates a new array on every selector call
@@ -463,7 +463,7 @@ function useActiveTodos() {
 }
 ```
 
-### Context Provider Re-creation
+### إعادة إنشاء مزوّد السياق
 
 ```typescript
 // ❌ This creates a new context value object on every render
@@ -483,9 +483,9 @@ function AppProvider({ children }) {
 }
 ```
 
-## Testing Your Typed Contexts
+## اختبار سياقاتك المكتوبة الأنواع
 
-Testing contexts becomes much easier with proper TypeScript patterns:
+يصبح اختبار السياقات أسهل بكثير مع أنماط TypeScript الصحيحة:
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -535,16 +535,16 @@ test('useTodoActions provides expected methods', () => {
 });
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Typed contexts with selector patterns give you the best of both worlds: the simplicity of React Context with the performance characteristics of more sophisticated state management solutions. The key insights:
+تمنحك السياقات المكتوبة الأنواع مع أنماط المحدِّدات أفضل ما في العالمين: بساطة React Context مع سمات الأداء لحلول إدارة الحالة الأكثر تقدّمًا. وهذه هي الرؤى الأساسية:
 
-- **Split state and actions** for better performance and maintainability
-- **Use selectors** to minimize re-renders and subscribe only to needed data
-- **Leverage discriminated unions** for type-safe state transitions
-- **Create custom hooks** that encapsulate context usage and provide runtime safety
-- **Test contexts thoroughly** to ensure your type contracts hold at runtime
+- **افصل الحالة عن الإجراءات** لتحسين الأداء وقابلية الصيانة
+- **استخدم المحدِّدات** لتقليل إعادة التصيير والاشتراك في البيانات المطلوبة فقط
+- **استثمر الاتحادات المُميَّزة** لضمان انتقالات الحالة الآمنة من حيث الأنواع
+- **أنشئ خُطّافات مخصّصة** تغلف استخدام السياق وتوفّر أمانًا وقت التشغيل
+- **اختبر السياقات بانتظام** لضمان ثبات عقود الأنواع لديك وقت التشغيل
 
-These patterns might feel like overkill for simple cases (and they probably are—use `useState` for local component state!), but when you’re managing complex application state that needs to be shared across many components, they’ll save you from both performance headaches and late-night debugging sessions.
+قد تبدو هذه الأنماط مبالغة في الحالات البسيطة (ومن المرجّح أنها كذلك — استخدم `useState` لحالة المكوّن المحلية!)، لكن حين تدير حالة تطبيق معقّدة تحتاج إلى المشاركة بين مكوّنات كثيرة، ستوفّر عليك آلام الأداء وجلسات التنقيح المتأخرة في الليل.
 
-The patterns we’ve covered here scale well from medium-sized applications to large enterprise codebases, and they play nicely with other tools in the React ecosystem. Your future self (and your teammates) will thank you for the compile-time safety and runtime performance these approaches provide.
+الأنماط التي غطّيناها هنا تتوسّع جيدًا من التطبيقات متوسطة الحجم إلى المستودعات المؤسسية الكبيرة، وهي تعمل بسلاسة مع بقية أدوات منظومة React. وسيشكرك نسختك المستقبلية من نفسك (وزملاؤك) على أمان التجميع وأداء وقت التشغيل الذي توفّره هذه المقاربات.

@@ -1,154 +1,154 @@
 ---
-title: "npm vs pnpm vs Bun: Workspace Package Managers"
-lang: en
+title: "npm مقابل pnpm مقابل Bun: مديرو حزم مساحات العمل"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/workspace-package-managers"
 ---
 
-All three tools solve the same problem: one repository, many packages, one dependency graph. The difference isn’t *whether* they can do workspaces. The difference is what they optimize for when the repository gets large, when teams get bigger, and when CI cost starts to matter.
+تحلّ الأدوات الثلاث المشكلة نفسها: مستودع واحد، وحزم كثيرة، ورسم اعتمادات واحد. والفرق ليس *في قدرتها* على إدارة مساحات العمل، بل في ما تُحسّنه عندما يكبر المستودع، وتكبر الفرق، ويبدأ ثمن CI يهمّ.
 
-If you want the shortest possible summary:
+وإن أردت أقصر ملخّص ممكن:
 
-- **npm workspaces** optimizes for compatibility and low process change.
-- **pnpm workspaces** optimizes for correctness, efficiency, and monorepo operations at scale.
-- **Bun workspaces** optimizes for speed and a unified runtime-plus-package-manager experience.
+- **مساحات عمل npm** تُحسّن التوافق وقلة تغيير العمليات.
+- **مساحات عمل pnpm** تُحسّن الصحة والكفاءة وعمليات المستودعات الأحادية على نطاق واسع.
+- **مساحات عمل Bun** تُحسّن السرعة وتجربة موحّدة تجمع وقت التشغيل ومدير الحزم.
 
-But, workspace tooling isn’t just about installation. It’s also about dependency boundaries, script orchestration, lockfile behavior, and how much accidental coupling your architecture tolerates.
+لكن أدوات مساحات العمل ليست في التثبيت فحسب، بل أيضًا في حدود الاعتماد، وتنسيق السكربتات، وسلوك ملف القفل، ومقدار الاقتران العارض الذي تتحمله معماريتك.
 
-## The Shared Mental Model
+## النموذج الذهني المشترك
 
-A workspace setup has four core jobs:
+لإعداد مساحة العمل أربع مهام جوهرية:
 
-1. Define which folders are packages.
-2. Install and link dependencies across those packages.
-3. Execute scripts across selected packages.
-4. Produce deterministic dependency state through a lockfile.
+1. تحديد المجلدات التي تُعدّ حزمًا.
+2. تثبيت الاعتمادات عبر تلك الحزم وربطها.
+3. تنفيذ السكربتات عبر الحزم المختارة.
+4. إنتاج حالة اعتمادات حتمية عبر ملف قفل.
 
-All three tools do these jobs. Teams get into trouble when they assume these jobs are *implemented* the same way.
+والأدوات الثلاث تؤدي هذه المهام. لكن الفرق تقع في مشكلات عندما تفترض أن هذه المهام *منفَّذة* بالطريقة نفسها.
 
-## What They Have in Common
+## ما تشترك فيه
 
-- A single repository containing multiple packages.
-- Local package references (`workspace:` style linking).
-- Root-level script execution targeting one workspace or many.
-- A root lockfile for deterministic resolution.
+- مستودع واحد يضم حزمًا متعددة.
+- مراجع الحزم المحلية (ربط بنمط `workspace:`).
+- تنفيذ سكربتات من الجذر يستهدف مساحة عمل واحدة أو عدة مساحات.
+- ملف قفل في الجذر لحلّ حتمي.
 
-These similarities are enough for small repositories. As the repository grows, the differences in install topology, filtering model, and strictness become much more important than the basic capability checklist.
+وهذه التشابهات تكفي المستودعات الصغيرة. لكن مع نمو المستودع، تصبح الفروق في بنية التثبيت، ونموذج الترشيح، والصرامة أهم بكثير من قائمة القدرات الأساسية.
 
-## Where They Diverge
+## أين تتباعد
 
-| Dimension | npm | pnpm | Bun |
+| البُعد | npm | pnpm | Bun |
 | --- | --- | --- | --- |
-| Workspace definition | `"workspaces"` in root `package.json` | `pnpm-workspace.yaml` (root package always included) | `"workspaces"` in root `package.json` (npm-compatible) |
-| Install model | Traditional `node_modules`, hoisted by default | Symlinked `node_modules` backed by a content-addressable store | Fast installer with npm-compatible layout; supports isolated installs |
-| Lockfile | `package-lock.json` | `pnpm-lock.yaml` | `bun.lock` |
-| Default strictness | Most permissive | Strictest | Configurable—isolated or hoisted |
-| Targeting subsets | `--workspace` and `--workspaces` flags | Powerful `--filter` selectors (graph-aware and git-aware) | `--filter` supports names, paths, globs, and exclusions |
-| Script orchestration | Runs in workspace order from root manifest | Recursive `-r` commands are topologically sorted by default | Dependency-aware ordering with parallel/sequential modes |
+| تعريف مساحة العمل | `"workspaces"` في `package.json` الجذر | `pnpm-workspace.yaml` (وحزمة الجذر مشمولة دائمًا) | `"workspaces"` في `package.json` الجذر (متوافق مع npm) |
+| نموذج التثبيت | `node_modules` التقليدي، مرفوع افتراضيًا | `node_modules` بروابط رمزية مدعوم بمخزن عنواني المحتوى | مثبّت سريع بتخطيط متوافق مع npm؛ ويدعم التثبيتات المعزولة |
+| ملف القفل | `package-lock.json` | `pnpm-lock.yaml` | `bun.lock` |
+| الصرامة الافتراضية | الأكثر تسامحًا | الأكثر صرامة | قابلة للتهيئة—معزولة أو مرفوعة |
+| استهداف المجموعات الفرعية | علمَا `--workspace` و`--workspaces` | محدّدات `--filter` قوية (واعية بالرسم البياني وبـgit) | يدعم `--filter` الأسماء والمسارات والأنماط العامة والاستثناءات |
+| تنسيق السكربتات | يعمل بترتيب مساحات العمل من بيان الجذر | أوامر `-r` التكرارية مفروزة طوبولوجيًا افتراضيًا | ترتيب واعٍ بالاعتمادات مع أنماط متوازية ومتسلسلة |
 
-## How the Differences Show Up
+## كيف تظهر الفروق
 
-The easiest way to compare these tools is to follow the lifecycle of a typical change: a developer installs dependencies, runs tasks in affected packages, CI rebuilds and tests a subset of the repo, and eventually the team upgrades dependencies without breaking unrelated packages. Different workspace managers put friction at different stages of that lifecycle.
+أسهل طريقة لمقارنة هذه الأدوات هي تتبّع دورة حياة تغيير نموذجي: يثبّت مطوّر الاعتمادات، ويشغّل المهام في الحزم المتأثرة، ويعيد CI بناء مجموعة فرعية من المستودع ويختبرها، ثم يرقّي الفريق الاعتمادات دون كسر حزم غير ذات صلة. ومديرو مساحات العمل المختلفون يضعون الاحتكاك في مراحل مختلفة من تلك الدورة.
 
-### Install and linking
+### التثبيت والربط
 
-npm follows the most familiar `node_modules` model. For many teams, that familiarity is an advantage—old scripts, existing CI images, and third-party tooling usually assume npm-like layouts. The downside is that permissive hoisting can hide undeclared dependencies. Things work locally until a layout change reveals a missing dependency declaration that nobody noticed because hoisting papered over it.
+يتبع npm نموذج `node_modules` الأكثر ألفة. ولمعظم الفرق تمثّل تلك الألفة ميزة—فالسكربتات القديمة، وصور CI الموجودة، وأدوات الطرف الثالث تفترض عادةً تخطيطات شبيهة بـnpm. والعيب أن الرفع المتسامح قد يخفي اعتمادات غير معلنة. فتسير الأمور محليًا حتى يكشف تغيير في التخطيط إعلان اعتماد ناقصًا لم يلاحظه أحد لأن الرفع غطّى عليه.
 
-pnpm treats installation more like dependency virtualization backed by a content-addressable store. Packages are linked efficiently and package boundaries are stricter by default. Teams discover dependency declaration mistakes earlier, which can feel painful at first but tends to reduce long-term monorepo fragility.
+أما pnpm فيعامل التثبيت أقرب إلى إظهار افتراضي للاعتمادات مدعوم بمخزن عنواني المحتوى. وتُربط الحزم بكفاءة، وتكون حدود الحزم أكثر صرامة افتراضيًا. وتكتشف الفرق أخطاء إعلان الاعتمادات أبكر، وقد يبدو ذلك مؤلمًا في البداية لكنه يميل إلى تقليل هشاشة المستودع الأحادي على المدى الطويل.
 
-Bun emphasizes install performance and tighter integration with the rest of the Bun toolchain. It supports npm-compatible workspace definitions while also offering stricter isolated installs. In practice, Bun’s value is strongest when your runtime and scripts are also Bun-native, not only your package installs.
+ويشدّد Bun على أداء التثبيت والاندماج الأوثق مع بقية سلسلة أدوات Bun. فهو يدعم تعريفات مساحات عمل متوافقة مع npm مع تقديم تثبيتات معزولة أكثر صرامة أيضًا. وعمليًا، تكون قيمة Bun في أقوى حالاتها عندما يكون وقت تشغيلك وسكربتاتك أصليَّين في Bun أيضًا، لا تثبيت الحزم وحده.
 
-### Phantom dependencies
+### الاعتمادات الشبحية
 
-The most expensive monorepo bugs are often not logic bugs. They’re *boundary* bugs: package A compiles only because package B happened to hoist a dependency into a reachable location.
+أغلى أخطاء المستودعات الأحادية ليست غالبًا أخطاء منطق، بل أخطاء *حدود*: فحزمة A تُصرَّف فقط لأن الحزمة B صادف أنها رفعت اعتمادًا إلى موضع يمكن الوصول إليه.
 
-npm’s defaults are the most permissive. That makes onboarding easy, but it can permit accidental transitive access if teams aren’t disciplined about their `package.json` declarations.
+وإعدادات npm الافتراضية هي الأكثر تسامحًا. وهذا يسهّل البدء، لكنه قد يسمح بوصول عابر عارض إن لم تكن الفرق منضبطة في إعلانات `package.json` لديها.
 
-pnpm is often chosen precisely because it reduces this class of issue. Its structure makes dependency edges harder to fake accidentally, so declaration errors surface during local development rather than three weeks later in production.
+وكثيرًا ما يُختار pnpm تحديدًا لأنه يقلّل هذه الفئة من المشكلات. فبنيته تجعل حواف الاعتماد أصعب في التزييف العارض، فتظهر أخطاء الإعلان أثناء التطوير المحلي لا بعد ثلاثة أسابيع في الإنتاج.
 
-Bun can sit between these worlds depending on configuration. Teams can start with compatibility-oriented linking when migrating quickly, then move toward stricter isolation once they want stronger guarantees.
+وقد يقف Bun بين هذين العالمين حسب التهيئة. فتستطيع الفرق البدء بربط موجّه نحو التوافق عند الترحيل السريع، ثم الانتقال إلى عزل أكثر صرامة عندما تريد ضمانات أقوى.
 
-The tradeoff is straightforward: permissive systems reduce short-term friction, strict systems reduce long-term architectural entropy.
+والمقايضة واضحة: الأنظمة المتسامحة تقلّل الاحتكاك قصير الأجل، والأنظمة الصارمة تقلّل الفوضى المعمارية طويلة الأجل.
 
-### Lockfiles and determinism
+### ملفات القفل والحتمية
 
-All three tools provide lockfiles, but lockfile value is only realized when your team treats lockfiles as release-critical artifacts rather than incidental files that get auto-committed without review.
+توفّر الأدوات الثلاث ملفات قفل، لكن قيمة ملف القفل لا تتحقق إلا عندما يعامله فريقك كأثر حرج للإصدار لا كملف عابر يُودَع تلقائيًا بلا مراجعة.
 
-npm lockfiles fit cleanly into standard Node pipelines and are widely understood by surrounding tooling. pnpm lockfiles pair naturally with its store model and generally work well in CI once you cache the right layers. Bun lockfiles are fast in Bun-centric pipelines, but teams running mixed Node/Bun environments should validate reproducibility across local machines and CI agents before standardizing.
+فملفات قفل npm تندرج بنظافة في خطوط أنابيب Node القياسية، وتفهمها الأدوات المحيطة على نطاق واسع. وتتناغم ملفات قفل pnpm طبيعيًا مع نموذج مخزنها، وتعمل جيدًا عمومًا في CI بمجرد تخزين الطبقات الصحيحة مؤقتًا. أما ملفات قفل Bun فسريعة في الخطوط التي تتمحور حول Bun، لكن الفرق التي تشغّل بيئات مختلطة بين Node وBun ينبغي أن تتحقق من قابلية الإعادة عبر الأجهزة المحلية وعوامل CI قبل التوحيد.
 
-Regardless of manager, reproducibility depends on process:
+وأيًا كان المدير، تعتمد قابلية الإعادة على العملية:
 
-- Pin toolchain versions.
-- Treat lockfile changes as reviewable diffs.
-- Enforce frozen install behavior in CI (`npm ci`, `pnpm install --frozen-lockfile`, `bun install --frozen-lockfile`).
+- ثبّت إصدارات سلسلة الأدوات.
+- عامل تغييرات ملف القفل كفروق قابلة للمراجعة.
+- افرض سلوك التثبيت المجمّد في CI (`npm ci`، و`pnpm install --frozen-lockfile`، و`bun install --frozen-lockfile`).
 
-### Task targeting
+### استهداف المهام
 
-Workspace managers become operational tools when repositories exceed a handful of packages. Running everything on every change is too slow and too expensive.
+يتحول مديرو مساحات العمل إلى أدوات تشغيلية عندما يتجاوز المستودع حفنة من الحزم. فإن تشغيل كل شيء عند كل تغيير بطيء ومكلف أكثر من اللازم.
 
-npm supports workspace targeting, but its model is comparatively simple. This is often good enough for moderate repos where affected-only workflows are handled by an external orchestrator like Turborepo or Nx rather than by npm itself.
+يدعم npm استهداف مساحات العمل، لكن نموذجه بسيط نسبيًا. وهذا يكفي غالبًا للمستودعات المتوسطة حيث يتولّى منسّق خارجي مثل Turborepo أو Nx سير عمل المتأثر فقط بدل npm نفسه.
 
-pnpm has stronger built-in filtering semantics and is often preferred by teams that want native, graph-aware command targeting for selective CI pipelines.
+ولدى pnpm دلالات ترشيح مدمجة أقوى، وكثيرًا ما تفضّله الفرق التي تريد استهدافًا أصليًا واعيًا بالرسم البياني للأوامر في خطوط CI الانتقائية.
 
-Bun provides filtering and fast task execution, which can feel excellent for local loops. The question isn’t speed in isolation—it’s whether your full CI/CD and surrounding ecosystem behave predictably with your chosen Bun workflow.
+ويوفّر Bun الترشيح وتنفيذًا سريعًا للمهام، وقد يبدو ذلك ممتازًا للحلقات المحلية. لكن السؤال ليس السرعة بمعزل عن غيرها—بل هل تتصرف سلسلة CI/CD كاملة والنظام البيئي المحيط بشكل متوقّع مع سير عمل Bun الذي اخترته.
 
-## Ecosystem Compatibility
+## التوافق مع النظام البيئي
 
-Compatibility is a strategic dimension, not a stylistic preference.
+التوافق بُعد استراتيجي، لا تفضيل أسلوبي.
 
-npm wins by default in compatibility-sensitive environments. If your organization depends on older scripts, diverse CI images, and third-party tools with implicit assumptions about `node_modules` layout, npm minimizes migration risk.
+ويفوز npm افتراضيًا في البيئات الحساسة للتوافق. فإن كانت مؤسستك تعتمد على سكربتات أقدم، وصور CI متنوعة، وأدوات طرف ثالث تفترض ضمنًا تخطيطًا معينًا لـ`node_modules`، فإن npm يقلّل مخاطر الترحيل.
 
-pnpm is mature and widely adopted in modern monorepos, but it asks teams to be explicit about dependency discipline. This is usually positive pressure, though it may require migration work in older codebases that historically relied on hoisting accidents.
+وpnpm ناضج ومعتمد على نطاق واسع في المستودعات الأحادية الحديثة، لكنه يطلب من الفرق الإفصاح في انضباط الاعتمادات. وهذا ضغط إيجابي عادةً، وإن كان قد يتطلب عمل ترحيل في قواعد شيفرة أقدم اعتمدت تاريخيًا على حوادث الرفع.
 
-Bun adoption should be evaluated as a *platform* decision, not only a package-manager decision. If only installs use Bun but test, build, and runtime remain Node-first, validate the integration seams carefully before moving core repos.
+وينبغي تقييم تبنّي Bun كقرار *منصة*، لا كقرار مدير حزم فحسب. فإن كانت عمليات التثبيت وحدها تستخدم Bun بينما يبقى الاختبار والبناء ووقت التشغيل Node أولًا، فتحقق من مفاصل التكامل بعناية قبل نقل المستودعات الأساسية.
 
-## CI and Cost
+## CI والكلفة
 
-In practice, these tools affect CI in three ways:
+عمليًا، تؤثر هذه الأدوات في CI بثلاث طرق:
 
-1. **Install time and network/disk pressure.** pnpm’s store model and Bun’s raw speed both help here, though the magnitude depends on your dependency tree and caching setup.
-2. **Cache effectiveness.** Stable, predictable cache keys matter more than which tool fills the cache. Pin your versions.
-3. **Error detection timing.** Strict tools surface dependency mistakes in CI before they reach production. Permissive tools let those mistakes through, and you find them later when the cost is higher.
+1. **زمن التثبيت وضغط الشبكة والقرص.** يساعد نموذج مخزن pnpm وسرعة Bun الخام هنا، وإن كان المقدار يعتمد على شجرة اعتماداتك وإعداد التخزين المؤقت.
+2. **فعالية الذاكرة المؤقتة.** مفاتيح ذاكرة مؤقتة مستقرة ومتوقّعة تهمّ أكثر من الأداة التي تملأ الذاكرة. ثبّت إصداراتك.
+3. **توقيت كشف الأخطاء.** الأدوات الصارمة تُظهر أخطاء الاعتمادات في CI قبل وصولها إلى الإنتاج. أما المتسامحة فتتركها تمر، فتجدها لاحقًا عندما تكون الكلفة أعلى.
 
-Raw speed numbers matter less than stable, predictable pipeline behavior under continuous change.
+أرقام السرعة الخام تهمّ أقل من سلوك خط أنابيب مستقر ومتوقّع في ظل تغيير مستمر.
 
-## What Workspaces Don’t Solve
+## ما لا تحلّه مساحات العمل
 
-Workspaces define package relationships and installation behavior. They don’t replace release governance.
+تحدّد مساحات العمل علاقات الحزم وسلوك التثبيت، لكنها لا تحلّ محلّ حوكمة الإصدار.
 
-If your repo publishes multiple packages, you still need decisions about fixed versus independent versioning, changelog policy, breaking-change windows, and adoption tracking across consumers. This is why many teams pair any workspace manager with release tooling like **Changesets** and dependency automation like **Renovate** or **Dependabot**.
+فإن كان مستودعك ينشر حزمًا متعددة، فما زلت تحتاج قرارات حول الإصدار الثابت مقابل المستقل، وسياسة سجل التغييرات، ونوافذ التغييرات الكاسرة، وتتبّع التبنّي عبر المستهلكين. ولهذا تقرن فرق كثيرة أي مدير مساحات عمل بأدوات إصدار مثل **Changesets** وأتمتة اعتمادات مثل **Renovate** أو **Dependabot**.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-| Symptom | What’s usually going on | Mitigation |
+| العَرَض | ما يجري عادةً | التخفيف |
 | --- | --- | --- |
-| Works locally, fails in CI with a missing module | Undeclared dependency hidden by hoisting | Enforce explicit manifests; use frozen lockfile installs in CI |
-| Dependency upgrades cause broad breakage | Weak version policy across packages | Define allowed version windows; run automated drift checks |
-| CI is fast sometimes, slow other times | Unstable cache keys or inconsistent toolchain versions | Pin tool versions; normalize cache strategy |
-| Scripts run too many packages | Weak targeting strategy | Adopt graph-aware filtering and affected-only execution |
-| Migration stalls midway | Changing install model and release process simultaneously | Stage it: install model first, release workflow second |
+| يعمل محليًا ويفشل في CI بوحدة ناقصة | اعتماد غير معلن يخفيه الرفع | افرض بيانات صريحة؛ واستخدم تثبيتات ملف قفل مجمّد في CI |
+| ترقيات الاعتمادات تسبب أعطالًا واسعة | سياسة إصدارات ضعيفة عبر الحزم | حدّد نوافذ إصدارات مسموحة؛ وشغّل فحوص انحراف مؤتمتة |
+| CI سريع أحيانًا وبطيء أحيانًا | مفاتيح ذاكرة مؤقتة غير مستقرة أو إصدارات أدوات غير متسقة | ثبّت إصدارات الأدوات؛ ووحّد استراتيجية التخزين المؤقت |
+| السكربتات تشغّل حزمًا أكثر من اللازم | استراتيجية استهداف ضعيفة | اعتمد ترشيحًا واعيًا بالرسم البياني وتنفيذًا للمتأثر فقط |
+| الترحيل يتوقف في منتصفه | تغيير نموذج التثبيت وعملية الإصدار في آن واحد | مرّحله: نموذج التثبيت أولًا، وسير عمل الإصدار ثانيًا |
 
-## Migration Paths
+## مسارات الترحيل
 
-**npm to pnpm** is the common path for teams that outgrow permissive dependency behavior or need better monorepo ergonomics. The migration cost is usually in cleaning up undeclared dependencies and normalizing scripts, not in conceptual retraining.
+**من npm إلى pnpm** هو المسار الشائع للفرق التي تنمو خارج السلوك المتسامح للاعتمادات أو تحتاج إلى بيئة عمل أفضل للمستودع الأحادي. وكلفة الترحيل تكون عادةً في تنظيف الاعتمادات غير المعلنة وتوحيد السكربتات، لا في إعادة تدريب مفاهيمية.
 
-**npm to Bun** can provide immediate install and runtime speed improvements when teams are ready to validate Bun compatibility end-to-end. It’s most successful when treated as a platform migration with staged rollout and explicit rollback criteria.
+و**من npm إلى Bun** قد يوفّر تحسّنًا فوريًا في سرعة التثبيت ووقت التشغيل عندما تكون الفرق جاهزة للتحقق من توافق Bun من الطرف إلى الطرف. وينجح أكثر ما ينجح عندما يُعامل كترحيل منصة بطرح مرحلي ومعايير تراجع صريحة.
 
-**pnpm to Bun** is generally driven by wanting a unified Bun-native toolchain. If you’re making this move, preserve the strictness and dependency governance habits you built with pnpm—otherwise you’re reintroducing the hidden coupling you spent months cleaning up.
+و**من pnpm إلى Bun** يدفعه عمومًا الرغبة في سلسلة أدوات موحّدة أصلية في Bun. وإن كنت تُجري هذه الخطوة، فحافظ على الصرامة وعادات حوكمة الاعتمادات التي بنيتها مع pnpm—وإلا فأنت تعيد إدخال الاقتران الخفي الذي أمضيت شهورًا في تنظيفه.
 
-## Picking One
+## الاختيار بينها
 
-If your primary constraint is **compatibility and minimal migration risk**, choose npm.
+إن كان قيدك الأساسي **التوافق وأقل مخاطر ترحيل**، فاختر npm.
 
-If your primary constraint is **long-term monorepo correctness and operational efficiency**, choose pnpm.
+وإن كان قيدك الأساسي **صحة المستودع الأحادي على المدى الطويل والكفاءة التشغيلية**، فاختر pnpm.
 
-If your primary constraint is **end-to-end toolchain speed** and you’re ready for Bun-centric platform decisions, choose Bun.
+وإن كان قيدك الأساسي **سرعة سلسلة الأدوات من الطرف إلى الطرف** وكنت جاهزًا لقرارات منصة تتمحور حول Bun، فاختر Bun.
 
-A practical sequencing model that many teams follow:
+وهذا نموذج تتابعي عملي تتبعه فرق كثيرة:
 
-1. Start with npm when the repo is small and process simplicity matters most.
-2. Move to pnpm when dependency discipline and CI scale become central pain points.
-3. Evaluate Bun when performance and unified runtime/tooling become strategic priorities.
+1. ابدأ بـnpm عندما يكون المستودع صغيرًا وبساطة العملية هي الأهم.
+2. انتقل إلى pnpm عندما يصبح انضباط الاعتمادات وتوسّع CI من نقاط الألم المركزية.
+3. قيّم Bun عندما تصبح الأداء ووحدة وقت التشغيل والأدوات أولويات استراتيجية.
 
-There’s no universally best workspace manager. There’s only the one that best fits your current organizational constraints. Teams usually regret choosing a tool for benchmark speed alone. They rarely regret choosing a tool that matches their governance maturity, CI model, and compatibility envelope.
+لا يوجد مدير مساحات عمل أفضل عالميًا، بل فقط الأنسب لقيودك التنظيمية الحالية. وتندم الفرق عادةً على اختيار أداة لسرعة القياس وحدها، ونادرًا ما تندم على اختيار أداة توافق نضج حوكمتها، ونموذج CI لديها، ونطاق توافقها.
 
-For most large monorepos, the durable differentiator isn’t raw install speed. It’s how well the workspace system helps you keep boundaries explicit as code and teams grow.
+وفي معظم المستودعات الأحادية الكبيرة، ليس المُميّز المعمَّر هو سرعة التثبيت الخام، بل مقدار مساعدة نظام مساحات العمل لك في إبقاء الحدود صريحة مع نموّ الشيفرة والفرق.

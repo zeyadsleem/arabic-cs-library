@@ -1,22 +1,22 @@
 ---
-title: "Clearing, Restoring, and Resetting Mocks"
-lang: en
+title: "مسح البدائل المُحاكاة واستعادتها وإعادة ضبطها"
+lang: ar
 source: "https://stevekinney.com/courses/testing/clearing-restoring-and-resetting-mocks"
 ---
 
-Mocking is all well and good when it’s intended, but it’s going to haunt you if old mocks linger on well past their welcome. Once you’ve mocked something, you want to make sure that those mocks don’t stick around like a bad code smell. That’s why **clearing**, **restoring**, and **resetting** mocks are vital parts of your testing toolkit. So, let’s break it down like refactoring a confusing callback hell into promise chains.
+المضاهاة أمر جيد تمامًا عندما تكون مقصودة، لكنها ستطاردك إن بقيت البدائل المُحاكاة القديمة فترة أطول من اللازم. فبعد أن تُحاكي شيئًا، تريد أن تتأكّد من أن تلك البدائل المُحاكاة لا تبقى كرائحة شيفرة كريهة. ولهذا فإن **مسح** البدائل المُحاكاة و**استعادتها** و**إعادة ضبطها** أجزاء جوهرية في صندوق أدوات الاختبار لديك. فلنفكّك الأمر كما نفكّك جحيم ردود النداء المربك إلى سلاسل وعود.
 
-## When To Use Each
+## متى تستخدم كلًا منها
 
-We’ll get into the specifics of each in a moment, but let’s just compare them at a high level before we dive in.
+سنخوض في تفاصيل كل واحدة بعد قليل، لكن لنقارن بينها على مستوى عالٍ قبل أن نغوص.
 
-- **Clear**: You’ve created some complex mock logic, and now you’re retracing steps, clearing call history to test cleanly.
-- **Reset**: You made a mess with return values or `.mockImplementation`—and now you just want to start over without rebuilding the mock.
-- **Restore**: You’re done mocking, you want to reinstate the original functionality, and walk away like nothing ever happened.
+- **المسح**: أنشأت بعض منطق المضاهاة المعقّد، وأنت الآن تعيد تتبّع الخطوات وتمسح سجل الاستدعاءات لتختبر بشكل نظيف.
+- **إعادة الضبط**: أحدثت فوضى في القيم المُعادة أو `.mockImplementation`—والآن تريد ببساطة أن تبدأ من جديد دون إعادة بناء البديل المُحاكى.
+- **الاستعادة**: انتهيت من المضاهاة، وتريد إعادة الوظيفة الأصلية، والانصراف وكأن شيئًا لم يكن.
 
-## Clearing Mocks
+## مسح البدائل المُحاكاة
 
-Clearing a mock removes all *invocation history*. Let’s say you’ve got a mock that’s been called a few times, and you want to reset the call count back to zero. That’s *clearing* in action.
+مسح بديل مُحاكى يُزيل كل *سجل الاستدعاءات*. لنفترض أن لديك بديلًا مُحاكى استُدعي بضع مرات، وتريد إعادة ضبط عدد الاستدعاءات إلى الصفر. هذا هو *المسح* في العمل.
 
 ```javascript
 const myFunc = vi.fn();
@@ -31,15 +31,15 @@ myFunc.mockClear();
 console.log(myFunc.mock.calls.length); // Ah, nice! Back to 0.
 ```
 
-Use `mockClear()` when you want to ensure that your tests are checking fresh invocation data. This way, you’re not being haunted by any ghost calls from previous tests. Common use case? When you’re running the same mock across multiple assertions but want a clean slate for each.
+استخدم `mockClear()` عندما تريد ضمان أن اختباراتك تفحص بيانات استدعاء جديدة. بهذه الطريقة، لن تطاردك أي استدعاءات شبحية من اختبارات سابقة. حالة الاستخدام الشائعة؟ عندما تشغّل البديل المُحاكى نفسه عبر تحقّقات متعددة لكنك تريد صفحة بيضاء لكل منها.
 
-> **Pro Tip**
+> **نصيحة احترافية**
 >
-> If your tests rely on the **number of times** a function is called, reset that call count before each test—so you’re always getting fresh numbers.
+> إذا كانت اختباراتك تعتمد على **عدد مرات** استدعاء دالة، فأعد ضبط عدد الاستدعاءات ذلك قبل كل اختبار—حتى تحصل دائمًا على أرقام جديدة.
 
-## Resetting Mocks
+## إعادة ضبط البدائل المُحاكاة
 
-While **clearing** wipes out call history, **resetting** is like hitting the factory reset button on your microwave—it clears not only the previous calls but also any custom mock implementations.
+بينما **المسح** يمحو سجل الاستدعاءات، فإن **إعادة الضبط** أشبه بالضغط على زر إعادة ضبط المصنع في ميكروويفك—فهي لا تمسح الاستدعاءات السابقة فحسب، بل تمسح أيضًا أي تنفيذات بديلة مُحاكاة مخصّصة.
 
 ```javascript
 const myFunc = vi.fn(() => 'I got mocked');
@@ -54,15 +54,15 @@ myFunc.mockReset();
 console.log(myFunc()); // undefined
 ```
 
-When should you reset? Think of it as hitting *undo*. If you’ve changed what the mock returns, and you’re like, “Nope, never should’ve done that,” then this is your ticket to sanity.
+متى ينبغي أن تعيد الضبط؟ فكّر في الأمر كضغط على *تراجع*. إذا غيّرت ما يُعيده البديل المُحاكى، وقلت لنفسك: «لا، لم يكن ينبغي أن أفعل ذلك أبدًا»، فهذه بطاقتك إلى السلامة العقلية.
 
-> **A Word on Resetting**
+> **كلمة عن إعادة الضبط**
 >
-> With reset, you’ll still *have* the mock object, but it behaves like it did out of the box—call count set to `0`, and no return values or side effects.
+> مع إعادة الضبط، سيظل لديك كائن البديل المُحاكى، لكنه يتصرّف كما كان عند إنشائه—عدد الاستدعاءات مضبوط على `0`، ولا توجد قيم مُعادة أو آثار جانبية.
 
-## Restoring Mocks
+## استعادة البدائل المُحاكاة
 
-Now, here’s the nuclear option: **restoring** mocks. This completely removes the mock’s implementation and puts things back the way they were before you even touched it. If you’re mocking a native function or something from a shared library, this is how you avoid accidentally breaking things later.
+الآن، إليك الخيار النووي: **استعادة** البدائل المُحاكاة. هذا يزيل تنفيذ البديل المُحاكى تمامًا ويعيد الأمور إلى ما كانت عليه قبل أن تلمسه أصلًا. وإذا كنت تُحاكي دالة أصلية أو شيئًا من مكتبة مشتركة، فهذه طريقتك لتجنّب إفساد الأمور لاحقًا عن غير قصد.
 
 ```javascript
 // Let's mock Math.random
@@ -76,24 +76,24 @@ Math.random.mockRestore();
 console.log(Math.random()); // Now we're back to good ol' randomness
 ```
 
-When you restore a mock, it brings the original, un-mocked function back. This is super useful, especially when you’re messing with native APIs—because, trust me, leaving `Math.random()` mocked throughout your app is guaranteed to produce test nightmares later.
+عندما تستعيد بديلًا مُحاكى، فإنه يُعيد الدالة الأصلية غير المحاكاة. هذا مفيد جدًا، خصوصًا عندما تعبث بواجهات أصلية—لأنه، ثق بي، إبقاء `Math.random()` محاكاةً في كل تطبيقك سيُنتج كوابيس اختبار لاحقًا بكل تأكيد.
 
-## Object Methods
+## توابع الكائن
 
-For a moment, let’s assume `const fn = vi.fn()`.
+لنفترض للحظة أن `const fn = vi.fn()`.
 
-- `fn.mockClear()`: Clears out all of the information about how it was called and what it returned. This is effectively the same as setting `fn.mock.calls` and `fn.mock.results` back to empty arrays.
-- `fn.mockReset()`: In addition to doing what `fn.mockClear()`, this method replaces the inner implementation with an empty function.
-- `fn.mockRestore()`: In addition to doing what `fn.mockReset()` does, it replaces the implementation with the original functions.
+- `fn.mockClear()`: يمسح كل المعلومات عن كيفية استدعائه وما أعاده. هذا يعادل فعليًا إعادة ضبط `fn.mock.calls` و`fn.mock.results` إلى مصفوفتين فارغتين.
+- `fn.mockReset()`: إضافةً إلى فعل ما يفعله `fn.mockClear()`، يستبدل هذا التابع التنفيذ الداخلي بدالة فارغة.
+- `fn.mockRestore()`: إضافةً إلى فعل ما يفعله `fn.mockReset()`، يستبدل التنفيذ بالدوال الأصلية.
 
-## Mock Lifecycle Methods
+## توابع دورة حياة البدائل المُحاكاة
 
-You’d typically put these in an `afterEach` block within your test suite.
+عادةً ما تضع هذه في كتلة `afterEach` داخل مجموعة اختباراتك.
 
-- `vi.clearAllMocks`: Clears out the history of calls and return values on the spies, but does *not* reset them to their default implementation. This is effectively the same as calling `.mockClear()` on each and every spy.
-- `vi.resetAllMocks`: Calls `.mockReset()` on all the spies. It will replace any mock implementations with an empty function.
-- `vi.restoreAllMocks`: Calls `.mockRestore()` on each and every mock. This one returns the world to it’s original state.
+- `vi.clearAllMocks`: يمسح سجل الاستدعاءات والقيم المُعادة في الجواسيس، لكنه *لا* يعيد ضبطها إلى تنفيذها الافتراضي. هذا يعادل فعليًا استدعاء `.mockClear()` على كل جاسوس.
+- `vi.resetAllMocks`: يستدعي `.mockReset()` على كل الجواسيس. وسيستبدل أي تنفيذات بديلة مُحاكاة بدالة فارغة.
+- `vi.restoreAllMocks`: يستدعي `.mockRestore()` على كل بديل مُحاكى. وهذا يُعيد العالم إلى حالته الأصلية.
 
-### Conclusion
+### الخاتمة {#conclusion}
 
-Vitest gives you the tools you need to keep your tests clean, your mocks simple, and your frustrations (mostly) in check. The key is knowing when to clean up after yourself. Mocks can be powerful, but if you don’t clear, reset, or restore them properly, you’ll end up wondering why things are on fire and you’re dealing with mocking baggage from previous tests.
+يمنحك Vitest الأدوات التي تحتاجها لإبقاء اختباراتك نظيفة، وبدائلك المُحاكاة بسيطة، وإحباطاتك تحت السيطرة (في الأغلب). مفتاح الأمر هو معرفة متى تنظّف بعد نفسك. قد تكون البدائل المُحاكاة قوية، لكن إن لم تمسحها أو تعِد ضبطها أو تستعدها بشكل سليم، فستجد نفسك تتساءل عن سبب اندلاع النيران وأنت تتعامل مع أمتعة المضاهاة من اختبارات سابقة.

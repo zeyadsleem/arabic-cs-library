@@ -1,68 +1,68 @@
 ---
-title: "Playwright Test Agents"
-lang: en
+title: "وكلاء الاختبار في Playwright"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents"
 ---
 
-So, [Playwright](https://playwright.dev/) 1.56 shipped something genuinely new: three built-in agents—**planner**, **generator**, and **healer**—that can write and maintain your test suite from inside your coding agent’s loop. Not “AI-assisted autocomplete for test code.” Actual agents with tools, instructions, and the ability to drive a browser, inspect the result, and iterate.
+أطلقت [Playwright](https://playwright.dev/) الإصدار 1.56 بشيء جديد حقًا: ثلاثة وكلاء مدمجين—**المخطِّط** و**المولِّد** و**المعالِج**—يمكنهم كتابة حزمة اختباراتك وصيانتها من داخل حلقة وكيل البرمجة الخاص بك. ليس «إكمالًا تلقائيًا بمساعدة الذكاء الاصطناعي لكود الاختبار». بل وكلاء فعليون يملكون أدوات وتعليمات وقدرة على تشغيل متصفح، وفحص النتيجة، والتكرار.
 
-This matters for us because it changes the shape of the feedback loop. Until now, the agent wrote code, ran the tests, read the output, and tried again. With Playwright’s test agents, the agent can also *write the tests themselves*—and when those tests break, heal them without you pasting the stack trace back in. The verification layer becomes something the agent can build *and* maintain, not just consume.
+هذا يهمنا لأنه يغيّر شكل حلقة التغذية الراجعة. حتى الآن، كان الوكيل يكتب الكود، ويشغّل الاختبارات، ويقرأ المخرجات، ويحاول مرة أخرى. مع وكلاء الاختبار في Playwright، يمكن للوكيل أيضًا *كتابة الاختبارات نفسها*—وعندما تتعطل تلك الاختبارات، يعالجها دون أن تلصق أثر المكدس مرة أخرى. تصبح طبقة التحقق شيئًا يمكن للوكيل بناؤه *وصيانته*، لا مجرد استهلاكه.
 
-## The three agents
+## الوكلاء الثلاثة
 
-Each agent handles one phase of the test lifecycle. You can use them independently, chain them together, or let them run as a loop.
+يتولى كل وكيل مرحلة واحدة من دورة حياة الاختبار. يمكنك استخدامها بشكل مستقل، أو ربطها ببعضها، أو تركها تعمل كحلقة.
 
-- **Planner:** Explores your app in a real browser and produces a structured Markdown test plan.
-- **Generator:** Takes that Markdown plan and turns it into executable Playwright test files, verifying selectors and assertions live as it goes.
-- **Healer:** Runs a failing test, inspects the current UI, patches the test, and re-runs until it passes—or marks it with `test.fixme()` if the functionality itself appears broken.
+- **المخطِّط:** يستكشف تطبيقك في متصفح حقيقي وينتج خطة اختبار Markdown منظمة.
+- **المولِّد:** يأخذ خطة Markdown تلك ويحوّلها إلى ملفات اختبار Playwright قابلة للتنفيذ، ويتحقق من المحددات والتأكيدات مباشرة أثناء ذلك.
+- **المعالِج:** يشغّل اختبارًا فاشلًا، ويفحص الواجهة الحالية، ويصلح الاختبار، ويعيد التشغيل حتى ينجح—أو يعلّمه بـ `test.fixme()` إذا بدت الوظيفة نفسها معطلة.
 
-The key insight is that they’re composable. Planner doesn’t need generator, and healer doesn’t need either of the other two. But when you chain all three, you get a pipeline that goes from “here’s my app” to “here’s a passing test suite” to “the tests still pass after a refactor” without you writing a single locator.
+الفكرة الأساسية هي أنها قابلة للتركيب. لا يحتاج المخطِّط إلى المولِّد، ولا يحتاج المعالِج إلى أي من الاثنين الآخرين. لكن عندما تربط الثلاثة، تحصل على خط أنابيب يمتد من «هذا تطبيقي» إلى «هذه حزمة اختبارات ناجحة» إلى «الاختبارات ما زالت تنجح بعد إعادة الهيكلة» دون أن تكتب محددًا واحدًا.
 
-> **These agents are tools, not magic**
+> **هؤلاء الوكلاء أدوات، لا سحر**
 >
-> They produce real Playwright test files—the same `test()` blocks, `expect()` assertions, and `getByRole()` locators you’d write by hand. You can (and should) read, edit, and commit the output. They’re accelerators for the loop, not a replacement for understanding what the tests do. If an agent stalls or errors out, re-run it—but review the diff first, since a partial run may have already edited files.
+> إنهم ينتجون ملفات اختبار Playwright حقيقية—نفس كتل `test()` وتأكيدات `expect()` ومحددات `getByRole()` التي كنت ستكتبها يدويًا. يمكنك (بل وينبغي لك) قراءة المخرجات وتحريرها وإيداعها. إنهم مسرّعات للحلقة، وليسوا بديلًا عن فهم ما تفعله الاختبارات. إذا تعطّل وكيل أو أخطأ، فأعد تشغيله—لكن راجع الفروق أولًا، لأن تشغيلًا جزئيًا ربما عدّل ملفات بالفعل.
 
-## Getting started
+## البدء
 
-Add the agent definitions to your project with the `init-agents` command. These definitions are collections of [MCP](https://modelcontextprotocol.io/) tools and instructions that Playwright provides, and they should be regenerated whenever you update Playwright to pick up new capabilities.
+أضف تعريفات الوكلاء إلى مشروعك بالأمر `init-agents`. هذه التعريفات عبارة عن مجموعات من أدوات [MCP](https://modelcontextprotocol.io/) وتعليمات يوفرها Playwright، وينبغي إعادة توليدها كلما حدّثت Playwright لالتقاط القدرات الجديدة.
 
-For [Claude Code](https://docs.claude.com/en/docs/claude-code/overview):
+لـ [Claude Code](https://docs.claude.com/en/docs/claude-code/overview):
 
 ```bash
 npx playwright init-agents --loop=claude
 ```
 
-For [VS Code](https://code.visualstudio.com/):
+لـ [VS Code](https://code.visualstudio.com/):
 
 ```bash
 npx playwright init-agents --loop=vscode
 ```
 
-For [GitHub Copilot](https://github.com/features/copilot):
+لـ [GitHub Copilot](https://github.com/features/copilot):
 
 ```bash
 npx playwright init-agents --loop=copilot
 ```
 
-For [OpenCode](https://opencode.ai/):
+لـ [OpenCode](https://opencode.ai/):
 
 ```bash
 npx playwright init-agents --loop=opencode
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> VS Code v1.105 or later is needed for the agentic experience to work properly.
+> تحتاج إلى VS Code الإصدار 1.105 أو أحدث لكي تعمل التجربة الوكيلة بشكل صحيح.
 
-For Claude Code, this creates three agent definitions in `.claude/agents/` (planner, generator, healer) and an MCP server config in `.mcp.json`. It may also scaffold a `specs/README.md` and a default seed test if none exists. Other tools put the definitions elsewhere—VS Code and Copilot use `.github/agents/` and additionally write `.github/workflows/copilot-setup-steps.yml` plus an appended `.vscode/mcp.json`, while OpenCode writes agent prompts under `.opencode/prompts/` plus an `opencode.json` at the repo root. Expect files outside the top-level agent folder on those loops and review the full diff after running `init-agents`.
+بالنسبة إلى Claude Code، ينشئ هذا ثلاثة تعريفات وكلاء في `.claude/agents/` (المخطِّط والمولِّد والمعالِج) وإعداد خادم MCP في `.mcp.json`. وقد ينشئ أيضًا ملف `specs/README.md` واختبار بذرة افتراضيًا إذا لم يكن أي منهما موجودًا. أما الأدوات الأخرى فتضع التعريفات في أماكن أخرى—يستخدم VS Code وCopilot المسار `.github/agents/` ويكتبان إضافةً إلى ذلك `.github/workflows/copilot-setup-steps.yml` وملف `.vscode/mcp.json` مُلحَقًا، بينما يكتب OpenCode مطالبات الوكلاء تحت `.opencode/prompts/` مع ملف `opencode.json` في جذر المستودع. توقّع ملفات خارج مجلد الوكلاء الأعلى في تلك الحلقات، وراجع الفروق كاملة بعد تشغيل `init-agents`.
 
-One thing to know: `init-agents` replaces the repo’s `.mcp.json`. Shelf doesn’t ship one, so this is harmless inside the workshop. If you’re running it against your own repo that already registers MCP servers, back the file up first and merge `playwright-test` in after.
+ثمة أمر يجب معرفته: `init-agents` يستبدل ملف `.mcp.json` الخاص بالمستودع. لا يشحن Shelf هذا الملف، لذا الأمر غير ضار داخل الورشة. أما إذا كنت تشغّله على مستودعك الخاص الذي يسجّل خوادم MCP بالفعل، فخذ نسخة احتياطية من الملف أولًا ثم ادمج `playwright-test` بعده.
 
-Once the agents are generated, you command them through your AI tool of choice. The generated artifacts follow a clean structure we’ll look at in a moment.
+بمجرد توليد الوكلاء، توجّههم عبر أداة الذكاء الاصطناعي التي تختارها. تتبع المخرجات المولّدة بنية نظيفة سنلقي نظرة عليها بعد قليل.
 
-## The CLI options that actually matter
+## خيارات سطر الأوامر التي تهم فعلًا
 
-The help output for `init-agents` is short:
+مخرجات المساعدة لـ `init-agents` قصيرة:
 
 ```
 --loop <loop>
@@ -72,83 +72,83 @@ The help output for `init-agents` is short:
 -h, --help
 ```
 
-Short help is nice. It is also not enough explanation on its own.
+المساعدة القصيرة لطيفة. لكنها أيضًا ليست شرحًا كافيًا بحد ذاتها.
 
 ### `--loop <loop>`
 
-This is the only required decision. It tells Playwright which agent host it should initialize for:
+هذا هو القرار الوحيد المطلوب. يخبر Playwright بمضيف الوكيل الذي ينبغي تهيئته:
 
-- `claude`: writes Claude Code agent definitions under `.claude/agents/` and an MCP config in `.mcp.json`
-- `copilot`: writes GitHub Copilot-style agent definitions under `.github/agents/`
-- `opencode`: writes OpenCode config plus agent prompts under `.opencode/`
-- `vscode`: uses the current VS Code / GitHub agent layout under `.github/agents/`
-- `vscode-legacy`: uses the older VS Code chatmode layout under `.github/chatmodes/` and `.vscode/mcp.json`
+- `claude`: يكتب تعريفات وكلاء Claude Code تحت `.claude/agents/` وإعداد MCP في `.mcp.json`
+- `copilot`: يكتب تعريفات وكلاء بنمط GitHub Copilot تحت `.github/agents/`
+- `opencode`: يكتب إعداد OpenCode مع مطالبات الوكلاء تحت `.opencode/`
+- `vscode`: يستخدم تخطيط وكيل VS Code / GitHub الحالي تحت `.github/agents/`
+- `vscode-legacy`: يستخدم تخطيط أوضاع الدردشة (chatmodes) الأقدم في VS Code تحت `.github/chatmodes/` و`.vscode/mcp.json`
 
-As of Playwright 1.59, `--loop=vscode` and `--loop=copilot` dispatch to the same generator and produce identical output. The two flags are synonyms today; pick whichever name reads more clearly for your workflow.
+اعتبارًا من Playwright 1.59، يوجّه `--loop=vscode` و`--loop=copilot` إلى المولِّد نفسه، وينتج عنهما مخرجات متطابقة. العلمان مترادفان اليوم؛ اختر الاسم الأوضح في سير عملك.
 
-The important distinction is that `vscode` is the current path. `vscode-legacy` exists for older VS Code setups that still expect chatmodes instead of the newer agent definition format.
+التمييز المهم هو أن `vscode` هو المسار الحالي. أما `vscode-legacy` فيوجد لإعدادات VS Code الأقدم التي ما زالت تتوقع أوضاع الدردشة بدلًا من صيغة تعريف الوكيل الأحدث.
 
 ### `-c, --config <file>`
 
-This points `init-agents` at the Playwright config file it should load before it tries to find a seed project.
+يوجّه هذا `init-agents` إلى ملف إعداد Playwright الذي ينبغي تحميله قبل محاولة العثور على مشروع بذرة.
 
-Use it when:
+استخدمه عندما:
 
-- your config is not the default `playwright.config.ts` in the current directory
-- you have multiple Playwright configs in the repo
-- you are running `init-agents` from a subdirectory and do not want Playwright guessing
+- لا يكون إعدادك هو `playwright.config.ts` الافتراضي في المجلد الحالي
+- يكون لديك عدة إعدادات Playwright في المستودع
+- تشغّل `init-agents` من مجلد فرعي ولا تريد أن يخمّن Playwright
 
-This flag matters because the generator uses the loaded config to find the project’s `testDir`, then searches that project for a file whose name includes `seed`. If it does not find one, it creates a default `seed.spec.ts` in that project’s `testDir`.
+هذا العلم مهم لأن المولِّد يستخدم الإعداد المحمّل للعثور على `testDir` الخاص بالمشروع، ثم يبحث في ذلك المشروع عن ملف يتضمن اسمه `seed`. وإذا لم يجد واحدًا، ينشئ `seed.spec.ts` افتراضيًا في `testDir` لذلك المشروع.
 
 ### `--project <project>`
 
-This chooses which Playwright project to treat as the **primary seed project**.
+هذا يختار مشروع Playwright الذي سيُعامَل بوصفه **مشروع البذرة الأساسي**.
 
-If you omit it, Playwright uses the first top-level project in the loaded config. That is fine when your config has one obvious main project. It is not fine when your config has multiple roles or environments and the first project happens to be something weird like `setup`, `firefox`, or `mobile`.
+إذا حذفته، يستخدم Playwright أول مشروع من المستوى الأعلى في الإعداد المحمّل. هذا مقبول عندما يحتوي إعدادك على مشروع رئيسي واحد واضح. لكنه غير مقبول عندما يحتوي إعدادك على أدوار أو بيئات متعددة، ويصادف أن أول مشروع شيء غريب مثل `setup` أو `firefox` أو `mobile`.
 
-Use `--project` when the seed should clearly come from one specific project:
+استخدم `--project` عندما ينبغي أن تأتي البذرة بوضوح من مشروع محدد واحد:
 
 ```bash
 npx playwright init-agents --loop=claude --project=authenticated
 ```
 
-That tells Playwright where to look for an existing seed file and where to create the default one if no seed exists yet.
+هذا يخبر Playwright بمكان البحث عن ملف بذرة موجود، وبمكان إنشاء الملف الافتراضي إذا لم تكن هناك بذرة بعد.
 
 ### `--prompts`
 
-This tells Playwright to write prompt templates alongside the agent initialization instead of only writing the agent definitions.
+هذا يخبر Playwright بكتابة قوالب المطالبات إلى جانب تهيئة الوكيل بدلًا من كتابة تعريفات الوكلاء فقط.
 
-In practice, that means provider-specific prompt folders such as:
+عمليًا، يعني ذلك مجلدات مطالبات خاصة بكل مزوّد مثل:
 
 - `.claude/prompts/`
 - `.opencode/prompts/`
 - `.github/prompts/`
 
-This is useful when you want the prompt text version-controlled as an editable artifact instead of living only inside the generated agent files.
+هذا مفيد عندما تريد نص المطالبة تحت تحكم الإصدارات كقطعة أثرية قابلة للتحرير بدلًا من أن يعيش فقط داخل ملفات الوكلاء المولّدة.
 
-One nuance: `--prompts` is meaningful for the current Claude, Copilot, OpenCode, and modern VS Code layouts. It is not the interesting flag in `vscode-legacy` mode, because that older path is built around chatmodes instead of the newer prompt-template layout.
+ثمة فارق دقيق: `--prompts` ذو معنى لتخطيطات Claude وCopilot وOpenCode وVS Code الحديثة الحالية. وهو ليس العلم المثير في وضع `vscode-legacy`، لأن ذلك المسار الأقدم مبني حول chatmodes بدلًا من تخطيط قوالب المطالبات الأحدث.
 
 ### `-h, --help`
 
-This just prints the command help and exits:
+هذا يطبع مساعدة الأمر ويخرج فحسب:
 
 ```bash
 npx playwright init-agents --help
 ```
 
-That sounds trivial, but it is the fastest way to confirm which loop providers your installed Playwright version actually supports before you start cargo-culting examples from a blog post written against a different release.
+يبدو ذلك تافهًا، لكنه أسرع طريقة للتأكد من مزوّدي الحلقات الذين يدعمهم إصدار Playwright المثبّت لديك فعلًا، قبل أن تبدأ في تقليد الأمثلة من مقالة مدونة كُتبت لإصدار مختلف.
 
-## Planner
+## المخطِّط
 
-The planner agent explores your running app in a real browser and produces a Markdown test plan. It’s doing what a QA engineer does on their first pass through an unfamiliar app: clicking around, noting what the app does, and writing down what should be tested.
+يستكشف وكيل المخطِّط تطبيقك العامل في متصفح حقيقي وينتج خطة اختبار Markdown. إنه يفعل ما يفعله مهندس ضمان الجودة في أول جولة له في تطبيق غير مألوف: ينقر هنا وهناك، ويلاحظ ما يفعله التطبيق، ويكتب ما ينبغي اختباره.
 
-**What it needs from you:**
+**ما يحتاجه منك:**
 
-- A clear request—“Generate a plan for the guest checkout flow” or “Plan tests for the shelf rating workflow.”
-- A **seed test** that bootstraps the environment your app needs. The planner runs the seed test to bootstrap the environment—global setup, project dependencies, fixtures, hooks—and then explores from there. It also reads the seed’s structure as a style reference for the generated plan.
-- Optionally, a PRD or requirements document for additional context.
+- طلب واضح—«أنشئ خطة لمسار الدفع كزائر» أو «خطّط لاختبارات سير عمل تقييم الكتب على الرف».
+- **اختبار بذرة** يهيئ البيئة التي يحتاجها تطبيقك. يشغّل المخطِّط اختبار البذرة لتهيئة البيئة—الإعداد العام، وتبعيات المشروع، والتجهيزات، والخطافات—ثم يستكشف من هناك. ويقرأ أيضًا بنية البذرة كمرجع أسلوبي للخطة المولّدة.
+- اختياريًا، وثيقة PRD أو وثيقة متطلبات لسياق إضافي.
 
-The seed test is just a regular Playwright test that gets the app into a usable state:
+اختبار البذرة هو مجرد اختبار Playwright عادي يضع التطبيق في حالة قابلة للاستخدام:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -161,15 +161,15 @@ test('seed', async ({ page }) => {
 });
 ```
 
-If you’ve already reached the failure-dossier lab and added `tests/fixtures.ts`, importing from `./fixtures` is also fine. The important part here is the seeded, authenticated starting position — not the wrapper file.
+إذا كنت قد وصلت بالفعل إلى مختبر ملف أدلة الفشل وأضفت `tests/fixtures.ts`، فالاستيراد من `./fixtures` مقبول أيضًا. الجزء المهم هنا هو نقطة البداية المهيأة والمصادَقة—لا ملف الغلاف.
 
-In Shelf, that seed will be `tests/seed.spec.ts` — a file you’ll create in the accompanying lab, not one that ships with the starter. Once generation has happened and a test is red, the healer is usually pointed at one concrete file under `tests/<failing-spec>.spec.ts`. Those two paths are the handoff points for the whole loop.
+في Shelf، ستكون تلك البذرة `tests/seed.spec.ts`—ملف ستنشئه في المختبر المرافق، لا ملفًا يأتي مع المشروع الأولي. وبعد أن يحدث التوليد ويصبح اختبار ما أحمر، يُوجّه المعالِج عادة إلى ملف ملموس واحد تحت `tests/<failing-spec>.spec.ts`. هذان المساران هما نقطتا التسليم للحلقة بأكملها.
 
-**What it produces:**
+**ما ينتجه:**
 
-A Markdown file in `specs/`—something like `specs/basic-operations.md`. The plan is human-readable but precise enough that the generator can act on it mechanically. Each scenario includes numbered steps, expected results, and enough context that you could hand it to a human tester and they’d know what to do.
+ملف Markdown في `specs/`—شيء مثل `specs/basic-operations.md`. الخطة مقروءة بشريًا لكنها دقيقة بما يكفي لكي يعمل المولِّد عليها آليًا. يتضمن كل سيناريو خطوات مرقّمة ونتائج متوقعة وسياقًا كافيًا بحيث لو سلّمتها لمختبِر بشري لعرف ما يجب فعله.
 
-Here’s a trimmed example of the kind of output you should get:
+وهذا مثال مبتور من نوع المخرجات التي ينبغي أن تحصل عليها:
 
 ```markdown
 # TodoMVC Application - Basic Operations Test Plan
@@ -201,23 +201,23 @@ counter, edit-in-place, and state persistence during navigation.
 - Input field is cleared and ready for next entry
 ```
 
-Notice the structure: each scenario names its seed, lists concrete steps, and specifies observable expected results. This isn’t a vague requirements document—it’s a test plan an agent (or a person) can execute step by step.
+لاحظ البنية: كل سيناريو يسمّي بذرته، ويسرد خطوات ملموسة، ويحدد نتائج متوقعة قابلة للملاحظة. هذه ليست وثيقة متطلبات غامضة—إنها خطة اختبار يمكن لوكيل (أو إنسان) تنفيذها خطوة بخطوة.
 
-## Generator
+## المولِّد
 
-The generator takes a Markdown plan from `specs/` and produces executable Playwright test files. The important thing: it doesn’t just translate text into code. It verifies selectors and assertions *live* as it performs each scenario, so the generated tests reflect what the app actually does, not what the plan guessed.
+يأخذ المولِّد خطة Markdown من `specs/` وينتج ملفات اختبار Playwright قابلة للتنفيذ. الأمر المهم: إنه لا يترجم النص إلى كود فحسب. بل يتحقق من المحددات والتأكيدات *مباشرة* أثناء تنفيذه كل سيناريو، لذا تعكس الاختبارات المولّدة ما يفعله التطبيق فعلًا، لا ما خمّنته الخطة.
 
-Playwright provides the generator with generation hints and a catalog of assertions, so the output tends to land on `getByRole` locators and auto-retrying assertions—exactly the patterns we’ve been building toward in this course.
+يزوّد Playwright المولِّد بتلميحات توليد وكتالوج من التأكيدات، لذا تميل المخرجات إلى الاستقرار على محددات `getByRole` وتأكيدات تعيد المحاولة تلقائيًا—وهي بالضبط الأنماط التي كنا نبني نحوها في هذه الدورة.
 
-**What it needs from you:**
+**ما يحتاجه منك:**
 
-- A Markdown plan from `specs/`. Include the file in your prompt context so the generator knows where to find it.
+- خطة Markdown من `specs/`. أدرج الملف في سياق مطالبتك كي يعرف المولِّد أين يجده.
 
-**What it produces:**
+**ما ينتجه:**
 
-Test files under `tests/`, aligned one-to-one with the spec scenarios. The generated tests may have initial issues—selectors that don’t quite match, assertions that need tightening—and that’s where the healer comes in.
+ملفات اختبار تحت `tests/`، بمقابلة واحد لواحد مع سيناريوهات المواصفة. قد تكون للاختبارات المولّدة مشكلات أولية—محددات لا تتطابق تمامًا، وتأكيدات تحتاج إلى إحكام—وهنا يأتي دور المعالِج.
 
-A generated test might look something like this:
+قد يبدو اختبار مولّد هكذا:
 
 ```typescript
 // spec: specs/basic-operations.md
@@ -244,29 +244,29 @@ test.describe('Adding New Todos', () => {
 });
 ```
 
-Two things to notice. First, the comments at the top trace the test back to its spec and seed—so you can always find the plan that generated a given test. Second, it’s using `getByRole` and auto-retrying assertions, not CSS selectors and `waitForTimeout`. The generator has internalized the locator hierarchy we covered earlier in this course.
+ثمة أمران يستحقان الملاحظة. أولًا، التعليقات في الأعلى تتعقب الاختبار عائدًا إلى مواصفته وبذرته—حتى تتمكن دائمًا من العثور على الخطة التي ولّدت اختبارًا معينًا. ثانيًا، إنه يستخدم `getByRole` وتأكيدات تعيد المحاولة تلقائيًا، لا محددات CSS و`waitForTimeout`. لقد استوعب المولِّد هرمية المحددات التي غطيناها سابقًا في هذه الدورة.
 
-## Healer
+## المعالِج
 
-This is the agent that closes the loop. When a test fails—because the UI changed, a locator drifted, or the generated code wasn’t quite right—the healer replays the failing steps, inspects the current state of the UI, and patches the test.
+هذا هو الوكيل الذي يغلق الحلقة. عندما يفشل اختبار—لأن الواجهة تغيرت، أو انزلق محدد، أو لم يكن الكود المولّد صحيحًا تمامًا—يعيد المعالِج تشغيل الخطوات الفاشلة، ويفحص الحالة الحالية للواجهة، ويصلح الاختبار.
 
-**What it does:**
+**ما يفعله:**
 
-- Replays the failing test steps in a real browser.
-- Inspects the current DOM to find equivalent elements or flows.
-- Suggests a patch: a locator update, a wait adjustment, a data fix.
-- Re-runs the test to verify the patch works.
-- Repeats until the test passes, or until guardrails stop the loop. If the error persists and the healer is confident the test is correct, it marks the test with `test.fixme()` and adds a comment before the failing step explaining what’s happening instead of the expected behavior.
+- يعيد تشغيل خطوات الاختبار الفاشلة في متصفح حقيقي.
+- يفحص DOM الحالي للعثور على عناصر أو تدفقات مكافئة.
+- يقترح تصحيحًا: تحديث محدد، أو تعديل انتظار، أو إصلاح بيانات.
+- يعيد تشغيل الاختبار للتحقق من نجاح التصحيح.
+- يكرر حتى ينجح الاختبار، أو حتى توقفه الحواجز. إذا استمر الخطأ وكان المعالِج واثقًا من صحة الاختبار، فإنه يعلّم الاختبار بـ `test.fixme()` ويضيف تعليقًا قبل الخطوة الفاشلة يشرح ما يحدث بدلًا من السلوك المتوقع.
 
-That last point is subtle and important. A good healer doesn’t just force tests to pass. It distinguishes between “the test is stale” and “the feature is broken.” When the healer skips a test, it’s telling you something worth investigating.
+تلك النقطة الأخيرة دقيقة ومهمة. المعالِج الجيد لا يُجبر الاختبارات على النجاح فحسب. بل يميّز بين «الاختبار قديم» و«الميزة معطلة». عندما يتخطى المعالِج اختبارًا، فهو يخبرك بشيء يستحق التحقيق.
 
-**What it needs from you:**
+**ما يحتاجه منك:**
 
-- The name of the failing test.
+- اسم الاختبار الفاشل.
 
-**What it produces:**
+**ما ينتجه:**
 
-- A passing test, or a `test.fixme()` annotation with a comment explaining why the healer believes the functionality itself is broken. A healer-skipped test looks something like this:
+- اختبار ناجح، أو تعليق `test.fixme()` مع تعليق يشرح سبب اعتقاد المعالِج أن الوظيفة نفسها معطلة. ويبدو الاختبار الذي تخطاه المعالِج هكذا:
 
 ```typescript
 test('Rate a book from the shelf', async ({ page }) => {
@@ -279,9 +279,9 @@ test('Rate a book from the shelf', async ({ page }) => {
 });
 ```
 
-## The artifact structure
+## بنية المخرجات
 
-The agents produce files in a predictable layout:
+ينتج الوكلاء ملفات في تخطيط متوقع:
 
 ```
 repo/
@@ -296,37 +296,37 @@ repo/
   playwright.config.ts
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> VS Code and Copilot put agent definitions under `.github/agents/` instead. OpenCode uses `.opencode/prompts/`. The layout above reflects the Claude Code default.
+> يضع VS Code وCopilot تعريفات الوكلاء تحت `.github/agents/` بدلًا من ذلك. ويستخدم OpenCode المسار `.opencode/prompts/`. التخطيط أعلاه يعكس الافتراضي في Claude Code.
 
-**Agent definitions** are provided by Playwright and should be regenerated when you update Playwright versions. They contain the MCP tool definitions and instructions that power each agent.
+**تعريفات الوكلاء** توفرها Playwright وينبغي إعادة توليدها عند تحديث إصدارات Playwright. إنها تحتوي على تعريفات أدوات MCP والتعليمات التي تشغّل كل وكيل.
 
-**Specs** in `specs/` are the structured plans. They’re version-controlled, reviewable, and editable. If the planner’s plan isn’t quite right, you can edit the Markdown before handing it to the generator.
+**المواصفات** في `specs/` هي الخطط المنظمة. إنها تحت تحكم الإصدارات، وقابلة للمراجعة، وقابلة للتحرير. إذا لم تكن خطة المخطِّط صحيحة تمامًا، يمكنك تحرير Markdown قبل تسليمها إلى المولِّد.
 
-**Tests** in `tests/` are the generated Playwright tests. They’re regular `.spec.ts` files—nothing special about them. You commit them, review them in pull requests, and run them in CI like any other test.
+**الاختبارات** في `tests/` هي اختبارات Playwright المولّدة. إنها ملفات `.spec.ts` عادية—لا شيء مميز فيها. تُودعها، وتراجعها في طلبات السحب، وتشغّلها في CI مثل أي اختبار آخر.
 
-**Seed tests** like `seed.spec.ts` provide the starting context. They handle authentication, fixture setup, and anything else the planner needs to explore from a known state.
+**اختبارات البذرة** مثل `seed.spec.ts` توفر السياق الابتدائي. إنها تتولى المصادقة، وإعداد التجهيزات، وأي شيء آخر يحتاجه المخطِّط للاستكشاف من حالة معروفة.
 
-Commit the agent definitions to version control. They’re small Markdown files, and keeping them in the repo means every developer on the team gets the same agent behavior.
+أودع تعريفات الوكلاء في تحكم الإصدارات. إنها ملفات Markdown صغيرة، وإبقاؤها في المستودع يعني أن كل مطور في الفريق يحصل على سلوك الوكيل نفسه.
 
-## Where test agents fit in the loop
+## أين تقع وكلاء الاختبار في الحلقة
 
-The test agents slot into the feedback loop at a specific point: they’re the layer between “the agent wrote some code” and “the agent knows whether the code works.” Here’s how that looks in practice.
+تندرج وكلاء الاختبار في حلقة التغذية الراجعة عند نقطة محددة: إنها الطبقة بين «كتب الوكيل بعض الكود» و«يعرف الوكيل ما إذا كان الكود يعمل». وهكذا يبدو ذلك عمليًا.
 
-Without test agents, the loop is: write code → run existing tests → read failures → fix → repeat. The tests are static—someone (you) wrote them, and the agent just runs them.
+بدون وكلاء الاختبار، تكون الحلقة: اكتب الكود ← شغّل الاختبارات الموجودة ← اقرأ الإخفاقات ← أصلح ← كرر. الاختبارات ثابتة—شخص ما (أنت) كتبها، والوكيل يجريها فقط.
 
-With test agents, the loop expands: write code → plan tests for the new behavior → generate tests → run them → heal any that fail → report. The agent can now *extend* the test suite as part of its workflow, not just consume what’s already there.
+مع وكلاء الاختبار، تتوسع الحلقة: اكتب الكود ← خطّط لاختبارات السلوك الجديد ← ولّد الاختبارات ← شغّلها ← عالج ما يفشل منها ← أبلغ. يمكن للوكيل الآن *توسيع* حزمة الاختبارات كجزء من سير عمله، لا مجرد استهلاك ما هو موجود بالفعل.
 
-This is a meaningful shift. It means an agent working on a new feature can also produce the verification for that feature, in the same conversation. The planner explores what the feature actually does (not what the prompt said it should do), the generator writes tests that match the real UI, and the healer keeps those tests alive as the code evolves.
+هذا تحول ذو معنى. فهو يعني أن وكيلًا يعمل على ميزة جديدة يمكنه أيضًا إنتاج التحقق لتلك الميزة، في المحادثة نفسها. يستكشف المخطِّط ما تفعله الميزة فعلًا (لا ما قالته المطالبة إنه ينبغي أن تفعله)، ويكتب المولِّد اختبارات تطابق الواجهة الحقيقية، ويُبقي المعالِج تلك الاختبارات حية مع تطور الكود.
 
-The lab walks through this pipeline once, end to end. In practice, you loop back to the planner whenever requirements change or the app gains new workflows.
+يستعرض المختبر هذا الخط مرة واحدة، من البداية إلى النهاية. عمليًا، تعود إلى المخطِّط كلما تغيرت المتطلبات أو اكتسب التطبيق تدفقات جديدة.
 
-The catch—and I want to be honest about this—is that agent-generated tests are only as good as the plan. If the planner misunderstands the feature, the generator will faithfully produce tests for the wrong thing, and the healer will faithfully keep those wrong tests passing. You still need to review the specs in `specs/` with the same care you’d review any test. The agents accelerate the mechanical work. The judgment about *what to test* is still yours.
+التحذير—وأريد أن أكون صريحًا بشأنه—هو أن جودة الاختبارات المولّدة من الوكيل لا تتجاوز جودة الخطة. إذا أساء المخطِّط فهم الميزة، فسينتج المولِّد بأمانة اختبارات للشيء الخطأ، وسيحافظ المعالِج بأمانة على نجاح تلك الاختبارات الخاطئة. ما زلت بحاجة إلى مراجعة المواصفات في `specs/` بالعناية نفسها التي تراجع بها أي اختبار. الوكلاء يسرّعون العمل الميكانيكي. أما الحكم على *ما يجب اختباره* فما زال لك.
 
-## The agent rules
+## قواعد الوكيل
 
-If you’re using test agents in your project, add something like this to the instructions file:
+إذا كنت تستخدم وكلاء الاختبار في مشروعك، فأضف شيئًا مثل هذا إلى ملف التعليمات:
 
 ```markdown
 ## Playwright Test Agents
@@ -345,13 +345,13 @@ If you’re using test agents in your project, add something like this to the in
   bypass fixtures or global setup in seed tests.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكره
 
-Playwright’s test agents turn the verification layer from something you build *for* the agent into something the agent can build *with* you. Planner explores, generator writes, healer maintains. The mechanical work of keeping a test suite current gets cheaper. The judgment about what matters—what to plan, what to review, when to override the healer—stays with you.
+تحوّل وكلاء الاختبار في Playwright طبقة التحقق من شيء تبنيه *من أجل* الوكيل إلى شيء يمكن للوكيل بناؤه *معك*. المخطِّط يستكشف، والمولِّد يكتب، والمعالِج يصون. يصبح العمل الميكانيكي لإبقاء حزمة الاختبارات محدثة أرخص. أما الحكم على ما يهم—ما يجب تخطيطه، وما يجب مراجعته، ومتى تتجاوز المعالِج—فيبقى معك.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [Lab: Generate and Heal a Test Suite with Playwright Agents](https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents)
+- [المحددات وهرمية إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [قصة الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [مختبر: توليد حزمة اختبارات ومعالجتها بوكلاء Playwright](https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents)

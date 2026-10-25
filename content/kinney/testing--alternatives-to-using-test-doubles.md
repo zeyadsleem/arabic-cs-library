@@ -1,18 +1,18 @@
 ---
-title: "Alternatives to Using Test Doubles"
-lang: en
+title: "بدائل استخدام بدائل الاختبار (test doubles)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/alternatives-to-using-test-doubles"
 ---
 
-Put on your imagination cap for a second: You’re writing a test, and you *could* mock something out, but it just feels… wrong.
+ضع قبعة الخيال لثانية: أنت تكتب اختبارًا، و*يمكنك* محاكاة شيء ما، لكنه يبدو… خطأ.
 
-[Test Doubles](https://stevekinney.com/courses/testing/test-doubles)—those helpful [stubs](https://stevekinney.com/courses/testing/stubs), [mocks](https://stevekinney.com/courses/testing/mocks), and [spies](https://stevekinney.com/courses/testing/spies)—can be super useful, but they’re not always the best option. In fact, overusing them can lead to fragile tests. Let’s take a look at some solid alternatives to using test doubles and learn when we might not need the shiny bells and whistles of a mock library.
+[بدائل الاختبار (Test Doubles)](https://stevekinney.com/courses/testing/test-doubles) — تلك [البدائل (stubs)](https://stevekinney.com/courses/testing/stubs) و[البدائل المحاكاة (mocks)](https://stevekinney.com/courses/testing/mocks) و[الجواسيس (spies)](https://stevekinney.com/courses/testing/spies) المفيدة — قد تكون مفيدة جدًا، لكنها ليست الخيار الأفضل دائمًا. في الواقع، الإفراط في استخدامها قد يؤدي إلى اختبارات هشة. لنلقِ نظرة على بعض البدائل المتينة لاستخدام بدائل الاختبار، ولنتعلم متى قد لا نحتاج إلى أجراس صندوق محاكاة لامعة.
 
-## Test the Real Thing
+## اختبر الشيء الحقيقي
 
-When possible, writing tests using the actual implementation is often the way to go. This approach keeps your tests grounded in reality and less subject to breaking because some mock behaved in a way you didn’t expect. Instead of trying to pretend what the function would return, let it return what it actually should.
+حين يكون ممكنًا، غالبًا ما تكون كتابة الاختبارات باستخدام التنفيذ الفعلي هي الطريق الصحيح. تُبقي هذه المقاربة اختباراتك راسخة في الواقع وأقل عرضة للكسر لأن بعض البدائل المحاكاة تصرفت على نحو لم تتوقعه. فبدلًا من محاولة تظاهر ما سترجعه الدالة، دعها ترجع ما ينبغي أن ترجعه فعلًا.
 
-Let’s look at an example.
+لننظر إلى مثال.
 
 ```javascript
 function calculateTotal(cartItems) {
@@ -29,13 +29,13 @@ test('calculates correct total from cart items', () => {
 });
 ```
 
-Here, there’s no need to stub out anything, no mock need apply, just test the real deal. The function’s behavior is deterministic and plain. Boom. Done. Shipped.
+هنا، لا حاجة لبديل عن أي شيء، ولا حاجة لأي محاكاة، اختبر الأمر الحقيقي فقط. سلوك الدالة حتمي وبسيط. بوم. انتهى. شُحن.
 
-## Inject Your Dependencies
+## حقن اعتمادياتك
 
-Let’s say your function calls out to *another* part of your code. The temptation here is to mock that other function and avoid external side effects—but sometimes, letting those dependencies do their thing can give you a better test outcome.
+لنفترض أن دالتك تستدعي *جزءًا آخر* من شيفرتك. الإغراء هنا هو محاكاة تلك الدالة الأخرى وتجنب الآثار الجانبية الخارجية — لكن أحيانًا، ترك تلك الاعتماديات تفعل فعلها قد يمنحك نتيجة اختبار أفضل.
 
-For example, suppose you’ve got a `getUserCart` function that hits some local data store and calls `calculateTotal` under the hood. Instead of mocking `calculateTotal`, make use of it! It’s your code after all, and if your functions work well together, you’ve learned a lot more about your system than with partial mocks.
+مثلًا، لنفترض أن لديك دالة `getUserCart` تصل إلى مخزن بيانات محلي وتستدعي `calculateTotal` داخليًا. بدلًا من محاكاة `calculateTotal`، استفد منها! فهي شيفرتك في النهاية، وإن كانت دوالك تعمل معًا بشكل جيد، فقد تعلمت عن نظامك أكثر بكثير مما لو استخدمت محاكاة جزئية.
 
 ```javascript
 function getUserCart(userId, cartService) {
@@ -56,13 +56,13 @@ test('returns correct total from cart service', () => {
 });
 ```
 
-Here, I’m not mocking out `calculateTotal`—I want to see if it works as part of `getUserCart`. Even though I control `cartService` in the test, I let the rest of the code use its implementation. In many situations, letting the real dependencies run wild gives you far more confidence than relying on mocks for everything.
+هنا، لا أحاكي `calculateTotal` — أريد أن أرى إن كانت تعمل كجزء من `getUserCart`. حتى مع تحكمي في `cartService` داخل الاختبار، أترك بقية الشيفرة تستخدم تنفيذها. في كثير من الحالات، ترك الاعتماديات الحقيقية تعمل بحرية يمنحك ثقة أكبر بكثير من الاعتماد على البدائل المحاكاة في كل شيء.
 
-## Use Real Objects, Not Mocked Interfaces
+## استخدم كائنات حقيقية، لا واجهات محاكاة
 
-When testing functions that return complex objects, it can be tempting to swap in mocks for the dependencies we call. But wait! You might be better served using real objects or factories to create these complex things, especially if they’re fairly lightweight.
+عند اختبار دوال ترجع كائنات معقدة، قد يكون مغريًا استبدال الاعتماديات التي نستدعيها ببدائل محاكاة. لكن انتظر! قد يكون الأفضل لك استخدام كائنات حقيقية أو مصانع لإنشاء هذه الأشياء المعقدة، خاصةً إن كانت خفيفة نسبيًا.
 
-Let’s say you have some `CartItem` object that carries both data and a relevant method.
+لنفترض أن لديك كائن `CartItem` يحمل بيانات وطريقة مرتبطة به.
 
 ```javascript
 class CartItem {
@@ -77,7 +77,7 @@ class CartItem {
 }
 ```
 
-If you’re testing how `getPrice` behaves, you probably don’t need to mock it—just use the real thing!
+إن كنت تختبر سلوك `getPrice`، فمن المحتمل ألا تحتاج إلى محاكاته — استخدم الشيء الحقيقي فقط!
 
 ```javascript
 test('calculates price of cart item correctly', () => {
@@ -86,11 +86,11 @@ test('calculates price of cart item correctly', () => {
 });
 ```
 
-No need to mock that `CartItem`; it’s simple enough and faster to just use it directly.
+لا حاجة لمحاكاة ذلك `CartItem`؛ فهو بسيط بما يكفي وأسرع في الاستخدام المباشر.
 
-## Self-Contained Tests
+## اختبارات مكتفية ذاتيًا
 
-Sometimes, mocks exist to patch a leaky test… but let’s be real—maybe the test isn’t as contained as it *should* be. If your tests are self-reliant and focused, you don’t need all the mock scaffolding to hold them together. Before reaching for a mock, ask yourself: *Should this test need to know about every other part of the system?* Often the answer is no, and a smaller test means no mocking is needed.
+أحيانًا توجد البدائل المحاكاة لترقيع اختبار مسرّب… لكن لنكن واقعيين — ربما الاختبار ليس محصورًا كما *ينبغي* أن يكون. إن كانت اختباراتك معتمدة على نفسها ومركزة، فلن تحتاج كل سقالات المحاكاة لإمساكها. قبل الوصول إلى محاكاة، اسأل نفسك: *هل ينبغي أن يعرف هذا الاختبار كل جزء آخر من النظام؟* غالبًا الجواب لا، والاختبار الأصغر يعني عدم الحاجة إلى محاكاة.
 
 ```javascript
 test('correctly sums prices in cart', () => {
@@ -101,11 +101,11 @@ test('correctly sums prices in cart', () => {
 });
 ```
 
-Here, I don’t need to mock anything—just set up my data, perform my action, and check the result. (Test Nirvana achieved!)
+هنا، لا أحتاج إلى محاكاة أي شيء — فقط أُعدّ بياناتي، وأنفّذ إجرائي، وأتحقق من النتيجة. (لقد تحققت نيرفانا الاختبار!)
 
-## Let Dumb Functions Do Their Thing
+## دع الدوال البسيطة تفعل فعلها
 
-By “dumb” functions, I’m talking about pure functions or functions with no side effects. These are your friends during testing. You give them some inputs, they do their thing, and they spit out the right result—no need to mock their behavior.
+بـ «الدوال البسيطة» أعني الدوال النقية أو الدوال بلا آثار جانبية. هذه أصدقاؤك أثناء الاختبار. تعطيها مدخلات، فتفعل فعلها، وتبصق النتيجة الصحيحة — دون حاجة لمحاكاة سلوكها.
 
 ```javascript
 function add(a, b) {
@@ -117,8 +117,8 @@ test('adds numbers correctly', () => {
 });
 ```
 
-I mean, this is so basic it *hurts*—but sometimes, we complicate things unnecessarily by mocking functions that truly don’t need it. If nothing else, remember: simplicity is king in tests.
+أعني، هذا أساسي لدرجة *مؤلمة* — لكننا أحيانًا نعقّد الأمور دون داعٍ بمحاكاة دوال لا تحتاج ذلك فعلًا. إن لم يكن هناك شيء آخر، فتذكر: البساطة مَلِك في الاختبارات.
 
-## Final Thoughts
+## أفكار ختامية
 
-Don’t get me wrong: mocking *has* its place (and Vitest does make it super easy to mock things with `vi.fn()`), but it’s a scalpel, not a sledgehammer. Always ask yourself if you can test the real implementation first. *Real code means real results.* If you go this route, your tests will be more reliable, you’ll spend less time worrying about mocking intricacies, and you can laser-focus on breaking your code in ways only *real* users would. Objectives aligned, mind at ease, testing purified.
+لا تفهمني خطأ: للمحاكاة *مكانها* (وVitest يجعل محاكاة الأشياء بـ `vi.fn()` سهلة جدًا)، لكنها مشرط لا مطرقة ثقيلة. اسأل نفسك دائمًا إن كان يمكنك اختبار التنفيذ الحقيقي أولًا. *الشيفرة الحقيقية تعني نتائج حقيقية.* إن اخترت هذا الطريق، فستكون اختباراتك أكثر موثوقية، وستقضي وقتًا أقل في القلق على تعقيدات المحاكاة، ويمكنك التركيز بالليزر على كسر شيفرتك بطرق لا يفعلها إلا المستخدمون *الحقيقيون*. أهداف متوائمة، وذهن مرتاح، واختبار نقي.

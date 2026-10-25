@@ -1,12 +1,12 @@
 ---
-title: "Using Testing Library"
-lang: en
+title: "استخدام Testing Library"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-library"
 ---
 
-[Testing Library](https://testing-library.com/) is designed to help you out with writing tests that focus on user behavior rather than implementation details. It provides utilities to query and interact with the DOM in a way that’s similar to how users would.
+[Testing Library](https://testing-library.com/) مصمّمة لمساعدتك في كتابة اختبارات تركّز على سلوك المستخدم بدلًا من تفاصيل التنفيذ. وهي توفّر أدوات للاستعلام عن DOM والتفاعل معه بطريقة تشبه ما يفعله المستخدمون.
 
-Let’s review the example from the [previous section](https://stevekinney.com/courses/testing/testing-local-storage).
+لنراجع المثال من [القسم السابق](https://stevekinney.com/courses/testing/testing-local-storage).
 
 ```javascript
 it('should store the value in localStorage', () => {
@@ -21,34 +21,34 @@ it('should store the value in localStorage', () => {
 });
 ```
 
-This test passes. So, technically it works. But, there are some caveats that make it not super great for testing real world behavior:
+هذا الاختبار ينجح. لذا فهو يعمل من الناحية التقنية. لكن هناك بعض التحفّظات التي تجعله غير رائع جدًا لاختبار سلوك العالم الحقيقي:
 
-1. We’re setting the `input` element’s value manually rather than simulating a user typing into it.
-2. We’re calling a method on the button instead of actually clicking on it.
+1. نضبط قيمة عنصر `input` يدويًا بدلًا من محاكاة كتابة المستخدم فيه.
+2. نستدعي تابعًا على الزر بدلًا من النقر عليه فعليًا.
 
-One of the goals of Testing Library is to help us simulate actual user interactions.
+أحد أهداف Testing Library هو مساعدتنا في محاكاة تفاعلات المستخدم الفعلية.
 
-## Why Use Testing Library?
+## لماذا تستخدم Testing Library؟
 
-- **User-Centric Testing**: Focuses on testing components from the user’s perspective.
-- **Avoids Implementation Details**: Reduces coupling between tests and component internals.
-- **Improved Test Reliability**: Leads to tests that are more robust and less prone to breakage due to refactoring.
-- **Accessible Queries**: Encourages testing with queries that reflect accessibility best practices.
+- **اختبار محوره المستخدم**: تركّز على اختبار المكوّنات من منظور المستخدم.
+- **تجنّب تفاصيل التنفيذ**: تقلّل الاقتران بين الاختبارات ودواخل المكوّنات.
+- **تحسين موثوقية الاختبارات**: تؤدي إلى اختبارات أكثر متانة وأقل عرضة للانكسار بسبب إعادة الهيكلة.
+- **استعلامات سهلة الوصول**: تشجّع على الاختبار باستعلامات تعكس أفضل ممارسات إمكانية الوصول.
 
-## Components of Testing Library
+## مكوّنات Testing Library
 
-Generally speaking you can think of Testing Library has two parts:
+بوجه عام، يمكنك أن تنظر إلى Testing Library على أنها جزآن:
 
-1. **A framework-specific flavor of helper methods**: For example, there is the core [`@testing-library/dom`](https://npm.im/@testing-library/dom). But there is also: [`@testing-library/react`](https://npm.im/@testing-library/react), [`@testing-library/vue`](https://npm.im/@testing-library/vue), [`@testing-library/svelte`](https://npm.im/@testing-library/svelte), etc.
-2. **User Event** (`@testing-library/user-event`): A framework agnostic helper library for simulating user events.
+1. **نسخة خاصة بإطار معيّن من التوابع المساعدة**: على سبيل المثال، هناك الحزمة الأساسية [`@testing-library/dom`](https://npm.im/@testing-library/dom). لكن هناك أيضًا: [`@testing-library/react`](https://npm.im/@testing-library/react)، و[`@testing-library/vue`](https://npm.im/@testing-library/vue)، و[`@testing-library/svelte`](https://npm.im/@testing-library/svelte)، وغيرها.
+2. **User Event** (`@testing-library/user-event`): مكتبة مساعدة مستقلة عن الإطار لمحاكاة أحداث المستخدم.
 
-## Refactoring the Secret Input
+## إعادة هيكلة حقل الإدخال السرّي
 
-> **User Event is Asynchronous**
+> **User Event غير متزامن**
 >
-> The methods provided by `userEvent` are asynchronous, which means your tests will need to use `async`/`await`.
+> التوابع التي يوفّرها `userEvent` غير متزامنة، وهذا يعني أن اختباراتك ستحتاج إلى استخدام `async`/`await`.
 
-Let’s look at this test re-imagined using Testing Library. We’ll look at the whole thing and then we’ll break it down piece by piece.
+لننظر إلى هذا الاختبار وقد أُعيد تصوّره باستخدام Testing Library. سننظر إلى الأمر كله ثم نفكّكه قطعة قطعة.
 
 ```javascript
 describe('createSecretInput', async () => {
@@ -70,18 +70,18 @@ describe('createSecretInput', async () => {
 });
 ```
 
-### Pulling in Our Dependencies
+### جلب اعتمادياتنا
 
-So, first I need to pull in that helper library—the one that I said was “framework-flavored” earlier. In this case, we’re just using vanilla JavaScript. So, we’re going with `@testing-library/dom`. We’ll also pull in `@testing-library/user-event` for interacting with the DOM as a user might.
+إذن، أولًا أحتاج إلى جلب تلك المكتبة المساعدة—تلك التي قلت سابقًا إن لها «نكهة إطار». في هذه الحالة، نستخدم JavaScript العادية فحسب. لذا نختار `@testing-library/dom`. وسنجلب أيضًا `@testing-library/user-event` للتفاعل مع DOM كما قد يفعل المستخدم.
 
 ```javascript
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 ```
 
-### Setting Up the DOM
+### تهيئة DOM
 
-In the previous iteration, I was just playing around with the elements in memory. They were never rendered to the page. This time around, let’s render them into the document. I’m also going to make sure I clear out the `document` before each test.
+في التكرار السابق، كنت أعبث بالعناصر في الذاكرة فحسب. لم تُصيَّر قط إلى الصفحة. هذه المرة، لنُصيّرها في المستند. وسأحرص أيضًا على تفريغ `document` قبل كل اختبار.
 
 ```javascript
 beforeEach(() => {
@@ -96,9 +96,9 @@ beforeEach(() => {
 });
 ```
 
-### Interact with the DOM
+### التفاعل مع DOM
 
-Now, we’re going to use some accessibility selectors. `screen` is basically the browser window. This means that your `id` could change or be randomly generated or whatever. We’re using the same functionality that a screen reader might use in order to find the elements.
+الآن، سنستخدم بعض محدّدات إمكانية الوصول. `screen` هي في الأساس نافذة المتصفح. وهذا يعني أن `id` الخاص بك قد يتغيّر أو يُولَّد عشوائيًا أو أيًا كان. نحن نستخدم الوظيفة نفسها التي قد يستخدمها قارئ الشاشة للعثور على العناصر.
 
 ```javascript
 it('should store the value in localStorage', async () => {
@@ -112,27 +112,27 @@ it('should store the value in localStorage', async () => {
 });
 ```
 
-> **Make Sure You’re Awaiting Your User Events**
+> **تأكّد من أنك تنتظر أحداث المستخدم**
 >
-> As an experiment—go ahead and remove those `await` keywords and see what happens. **Spoiler**: It’s not good.
+> على سبيل التجربة—امضِ قدمًا واحذف كلمات `await` تلك وانظر ما يحدث. **حرق المفاجأة**: إنه ليس جيدًا.
 
-## When to Use Testing Library
+## متى تستخدم Testing Library
 
-- **Component Interaction Testing**: When you need to test how components respond to user actions.
-- **Accessibility Compliance**: Ensuring components are accessible and interact as expected.
-- **Behavior Verification**: Validating that components render and update correctly based on props and state.
+- **اختبار تفاعل المكوّنات**: عندما تحتاج إلى اختبار كيف تستجيب المكوّنات لأفعال المستخدم.
+- **الالتزام بإمكانية الوصول**: ضمان أن المكوّنات سهلة الوصول وتتفاعل كما هو متوقّع.
+- **التحقّق من السلوك**: التأكّد من أن المكوّنات تُصيَّر وتتحدّث بشكل صحيح بناءً على الخصائص والحالة.
 
-> **Exercise**
+> **تمرين**
 >
-> Can you refactor our button from [this section](https://stevekinney.com/courses/testing/testing-the-dom-example) (found in `examples/element-factory/src/button.js`) to use Testing Library and User Event? You can see a potential solution [here](https://stevekinney.com/courses/testing/testing-library-solution).
+> هل يمكنك إعادة هيكلة زرّنا من [هذا القسم](https://stevekinney.com/courses/testing/testing-the-dom-example) (الموجود في `examples/element-factory/src/button.js`) لاستخدام Testing Library وUser Event؟ يمكنك رؤية حل محتمل [هنا](https://stevekinney.com/courses/testing/testing-library-solution).
 
-## Additional Reading
+## قراءات إضافية
 
-`@testing-library/dom` has a function called `fireEvent` that will fire raw events at DOM nodes. This is useful when you need it, but—generally-speaking—you should aim to use `user-event` instead since it will better simulate a user interaction. For example, a simple user event might consist of multiple DOM events.
+لدى `@testing-library/dom` دالة تُسمّى `fireEvent` تُطلق أحداثًا خامًا على عُقد DOM. هذا مفيد عند الحاجة إليه، لكن—بوجه عام—ينبغي أن تهدف إلى استخدام `user-event` بدلًا منه لأنه يحاكي تفاعل المستخدم بشكل أفضل. على سبيل المثال، قد يتكوّن حدث مستخدم بسيط من أحداث DOM متعددة.
 
-- The user might click to focus on the field (`click`, `focus`).
-- They might press a key (`keydown`, `keypress`).
-- They’ll probably release that key (`keyup`).
-- That’ll trigger a `change` event on the input field.
+- قد ينقر المستخدم ليركّز على الحقل (`click`، `focus`).
+- وقد يضغط مفتاحًا (`keydown`، `keypress`).
+- وعلى الأرجح سيُفلت ذلك المفتاح (`keyup`).
+- وسيؤدي ذلك إلى إطلاق حدث `change` على حقل الإدخال.
 
-I wrote a bit more on [`user-event` here](https://stevekinney.com/courses/testing/user-event).
+كتبت المزيد عن [`user-event` هنا](https://stevekinney.com/courses/testing/user-event).

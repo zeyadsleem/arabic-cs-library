@@ -1,18 +1,18 @@
 ---
-title: "Advanced Error Handling Patterns"
-lang: en
+title: "أنماط متقدّمة للتعامل مع الأخطاء"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/advanced-error-handling-patterns"
 ---
 
-Error handling is where many React applications fall apart. Users see generic “Something went wrong” messages, developers lose critical debugging information, and recovery becomes impossible. But with TypeScript and proper patterns, we can build resilient applications that gracefully handle errors, provide meaningful feedback, and recover automatically when possible.
+التعامل مع الأخطاء هو المجال الذي تنهار فيه تطبيقات كثيرة بُنيت بـ React. يرى المستخدمون رسائل عامّة من نوع «حدث خطأ ما»، ويضيع المطوّرون معلومات أساسية عن التشخيص، ويصبح التعافي من الخطأ مستحيلًا. لكن مع TypeScript والأنماط السليمة، يمكننا بناء تطبيقات مرنة تتعامل مع الأخطاء بلياقة، وتقدّم تغذية راجعة ذات معنًى، وتتعافى تلقائيًا كلما أمكن ذلك.
 
-## The Error Handling Philosophy
+## فلسفة التعامل مع الأخطاء
 
-Good error handling is about three things:
+التعامل الجيّد مع الأخطاء يقوم على ثلاثة أمور:
 
-1. **Prevention** - Catch errors before they happen
-2. **Recovery** - Handle errors gracefully when they do occur
-3. **Reporting** - Provide actionable information to users and developers
+1. **الوقاية** - التقاط الأخطاء قبل أن تقع
+2. **التعافي** - التعامل مع الأخطاء بلياقة عندما تقع
+3. **الإبلاغ** - تزويد المستخدمين والمطوّرين بمعلومات قابلة للتنفيذ
 
 ```typescript
 // ❌ Poor error handling
@@ -40,9 +40,9 @@ try {
 }
 ```
 
-## Typed Error System
+## نظام أخطاء مُحكَم الأنواع
 
-Start with a comprehensive error type system:
+ابدأ بنظام أنواع أخطاء شامل:
 
 ```typescript
 // types/errors.ts
@@ -133,9 +133,9 @@ export class ErrorFactory {
 }
 ```
 
-## Result Pattern for Error Handling
+## نمط Result في التعامل مع الأخطاء
 
-Implement the Result pattern for explicit error handling:
+نفّذ نمط `Result` من أجل تعامل صريح مع الأخطاء:
 
 ```typescript
 // utils/result.ts
@@ -189,9 +189,9 @@ export const Result = {
 };
 ```
 
-## Error-Aware API Client
+## عميل API واعي بالأخطاء
 
-Build an API client that handles errors systematically:
+ابنِ عميل API يتعامل مع الأخطاء بمنهجية:
 
 ```typescript
 // api/client.ts
@@ -341,9 +341,9 @@ class ApiClient {
 export const api = new ApiClient('/api');
 ```
 
-## React Hook for Error Handling
+## خُطّاف React للتعامل مع الأخطاء
 
-Create a comprehensive error handling hook:
+أنشئ خُطّافًا شاملًا للتعامل مع الأخطاء:
 
 ```typescript
 // hooks/useErrorHandler.ts
@@ -481,9 +481,9 @@ function reportError(error: AppError): void {
 }
 ```
 
-## Advanced Error Boundary
+## حدّ أخطاء متقدّم
 
-Create a sophisticated error boundary with recovery:
+أنشئ حدّ أخطاء متطوّرًا مع إمكانية التعافي:
 
 ```typescript
 // components/ErrorBoundary.tsx
@@ -697,9 +697,9 @@ function DefaultErrorFallback({
 };
 ```
 
-## Async Operation Hook with Error Handling
+## خُطّاف للعمليات غير المتزامنة مع التعامل مع الأخطاء
 
-Create a hook for handling async operations with comprehensive error handling:
+أنشئ خُطّافًا للتعامل مع العمليات غير المتزامنة مع تغطية شاملة للأخطاء:
 
 ```typescript
 // hooks/useAsyncOperation.ts
@@ -828,9 +828,9 @@ export function useAsyncOperation<T, Args extends any[] = []>(
 }
 ```
 
-## Component-Level Error Handling
+## التعامل مع الأخطاء على مستوى المكوّن
 
-Integrate error handling into components:
+ادمج التعامل مع الأخطاء داخل المكوّنات:
 
 ```typescript
 // components/UserProfile.tsx
@@ -1021,9 +1021,9 @@ function ErrorCard({
 };
 ```
 
-## Global Error Handling
+## التعامل مع الأخطاء على مستوى التطبيق
 
-Set up application-wide error handling:
+اضبط معالجة أخطاء على نطاق التطبيق كلّه:
 
 ```typescript
 // contexts/ErrorContext.tsx
@@ -1143,9 +1143,9 @@ function ErrorToast({ error, onDismiss }: {
 };
 ```
 
-## Testing Error Handling
+## اختبار التعامل مع الأخطاء
 
-Write comprehensive tests for error scenarios:
+اكتب اختبارات شاملة لحالات الأخطاء:
 
 ```typescript
 // __tests__/errorHandling.test.tsx
@@ -1284,9 +1284,9 @@ describe('Error Boundary', () => {
 });
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Monitor error rates and performance:
+راقب معدّلات الأخطاء والأداء:
 
 ```typescript
 // utils/monitoring.ts
@@ -1394,15 +1394,15 @@ export const monitoredApi = {
 };
 ```
 
-## Best Practices Summary
+## خلاصة أفضل الممارسات
 
-1. **Use Typed Errors** - Create comprehensive error types instead of generic Error objects
-2. **Implement Result Pattern** - Make error handling explicit and type-safe
-3. **Add Retry Logic** - Automatically retry retryable errors with exponential backoff
-4. **Provide User Feedback** - Show meaningful error messages and recovery options
-5. **Log and Monitor** - Track error rates and patterns for debugging
-6. **Test Error Paths** - Write tests for error scenarios, not just happy paths
-7. **Use Error Boundaries** - Catch and handle React component errors gracefully
-8. **Fail Fast** - Validate inputs early and provide immediate feedback
+1. **استخدم أخطاء مُحكَمة الأنواع** - أنشئ أنواع أخطاء شاملة بدلًا من كائنات `Error` عامّة
+2. **نفّذ نمط `Result`** - اجعل التعامل مع الأخطاء صريحًا وآمنًا من ناحية الأنواع
+3. **أضف منطق إعادة المحاولة** - أعد المحاولة تلقائيًا للأخطاء القابلة لإعادة المحاولة مع تراجع أُسّي (exponential backoff)
+4. **قدّم تغذية راجعة للمستخدم** - اعرض رسائل خطأ ذات معنًى وخيارات للتعافي
+5. **سجّل وراقب** - تتبّع معدّلات الأخطاء وأنماطها لأغراض التشخيص
+6. **اختبر مسارات الخطأ** - اكتب اختبارات لحالات الأخطاء لا لمسارات النجاح وحدها
+7. **استخدم حدود الأخطاء** - التقط أخطاء مكوّنات React وتعامل معها بلياقة
+8. **أخفق مبكّرًا (Fail Fast)** - تحقّق من المدخلات مبكّرًا وقدّم تغذية راجعة فورية
 
-With these patterns, you’ll build React applications that handle errors gracefully, provide excellent user experience, and give you the debugging information you need when things go wrong.
+مع هذه الأنماط، ستبني تطبيقات React تتعامل مع الأخطاء بلياقة، وتقدّم تجربة مستخدم ممتازة، وتمنحك معلومات التشخيص التي تحتاجها حين تسوء الأمور.

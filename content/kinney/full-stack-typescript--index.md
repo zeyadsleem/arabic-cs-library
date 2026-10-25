@@ -1,19 +1,19 @@
 ---
-title: "Full Stack TypeScript"
-lang: en
+title: "TypeScript للويب الكامل"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript"
 ---
 
-> **The Repository for the Workshop**
+> **مستودع الورشة**
 >
-> You can find all of the code that we’ll be playing with today in [this repository](https://github.com/stevekinney/full-stack-typescript).
+> تجد كل الشيفرة التي سنلعب بها اليوم في [هذا المستودع](https://github.com/stevekinney/full-stack-typescript).
 
-When building modern TypeScript applications, you’ll quickly discover just how important it is to validate data effectively and maintain type safety from front to back. That’s where libraries like Zod, React Hook Form, and tRPC come to the rescue. You’ll learn how Zod transforms from a mere validation tool into a full-blown runtime guardian, sparing your code from sloppy user input. By pairing Zod with React Hook Form, you’ll see how typed schemas can both validate form data on the client and transfer seamlessly to the server for final checks.
+عند بناء تطبيقات TypeScript حديثة، ستكتشف سريعًا كم يهمّ التحقّق من البيانات بفعالية والحفاظ على أمان الأنواع من الواجهة إلى الخلفية. هنا تأتي مكتبات مثل Zod وReact Hook Form وtRPC للإنقاذ. ستتعلّم كيف يتحوّل Zod من مجرد أداة تحقّق إلى حارس كامل لوقت التشغيل، فيُعفي شيفرتك من مدخلات المستخدم المهملة. وبإقران Zod مع React Hook Form، سترى كيف تستطيع المخططات المُنمّطة أن تتحقّق من بيانات النماذج على العميل وتنتقل بسلاسة إلى الخادم للفحوص النهائية.
 
-On the server side, you’ll explore how Express can be carefully massaged into a type-safe environment using generic signatures like `Request<Params, ResBody, ReqBody, ReqQuery>` and by hooking up Zod (or alternative libraries) for runtime validation. You’ll also discover how to enforce consistent API responses, work with typed request headers, harness error-handling middleware, and keep your cookie usage under control. This ensures every route truly operates with the data shape you’ve promised—no more “surprise, that field is actually undefined.”
+على جانب الخادم، ستستكشف كيف يمكن عجن Express بعناية ليصير بيئة آمنة الأنواع باستخدام تواقيع عامة (generic signatures) مثل `Request<Params, ResBody, ReqBody, ReqQuery>` وعبر ربط Zod (أو مكتبات بديلة) للتحقّق في وقت التشغيل. وستكتشف أيضًا كيف تفرض استجابات API متسقة، وتتعامل مع ترويسات الطلبات المُنمّطة، وتُسخّر وسيط معالجة الأخطاء، وتُبقي استخدامك لملفات تعريف الارتباط تحت السيطرة. وهذا يضمن أن كل مسار يعمل فعلًا بالشكل البياني للبيانات الذي وعدت به — لا مزيد من «مفاجأة، هذا الحقل في الواقع غير معرّف».
 
-You’ll then see how to generate the holy grail of API docs—OpenAPI/Swagger specs—directly from your TypeScript code. Tools like `zod-to-openapi` help keep your documentation in perfect sync with your actual validation rules, turning the dreaded chore of “update the docs” into a speedy, automated step. If you want to dive even deeper into typed endpoints, you’ll learn that tRPC can eliminate the need for separate REST or GraphQL definitions, enabling type-checked procedure calls right in your frontend.
+ثم سترى كيف تولّد الكأس المقدّسة لتوثيق API — مواصفات OpenAPI/Swagger — مباشرةً من شيفرة TypeScript لديك. تساعد أدوات مثل `zod-to-openapi` في إبقاء توثيقك متزامنًا تمامًا مع قواعد التحقّق الفعلية، فتحوّل المهمة المكروهة «حدّث التوثيق» إلى خطوة سريعة آلية. وإذا أردت التعمّق أكثر في نقاط النهاية المُنمّطة، فستتعلّم أن tRPC يستطيع إلغاء الحاجة إلى تعريفات REST أو GraphQL منفصلة، بما يتيح استدعاءات إجراءات مفحوصة الأنواع مباشرةً في واجهتك الأمامية.
 
-Throughout this journey, a big focus is placed on best practices: how to write advanced Zod schemas (unions, intersections, branded types, transforms) without losing your sanity, how to avoid repeated validations or enormous boilerplates, and how to keep performance from tanking. You’ll also uncover the secrets of testing: hooking up your Zod schemas to test frameworks, verifying your Express routes via supertest, and unit-testing your tRPC calls with zero fuss.
+وطوال هذه الرحلة، يُولى تركيز كبير لأفضل الممارسات: كيف تكتب مخططات Zod متقدمة (اتحادات، تقاطعات، أنواع موسومة، تحويلات) دون أن تفقد صوابك، وكيف تتجنّب التحقّقات المتكرّرة أو القوالب الضخمة، وكيف تمنع الأداء من التدهور. وستكشف أيضًا أسرار الاختبار: ربط مخططات Zod بأطر الاختبار، والتحقّق من مسارات Express عبر supertest، واختبار استدعاءات tRPC وحديًا بلا أي عناء.
 
-Finally, for those craving a full-stack approach, you’ll see how to tie these concepts into a database layer—be it Prisma or another TypeScript-friendly ORM. By unifying your type definitions from the database to the front end, you drastically reduce “API mismatch” headaches and keep development nimble. Overall, expect to walk away knowing how to craft robust apps that glean the best from TypeScript’s compile-time checks, while also guaranteeing real-world inputs won’t break your system at runtime.
+وأخيرًا، لمن يتوق إلى مقاربة ويب كامل، سترى كيف تربط هذه المفاهيم بطبقة قاعدة بيانات — سواء أكانت Prisma أو أي ORM آخر صديق لـ TypeScript. وبتوحيد تعريفات أنواعك من قاعدة البيانات إلى الواجهة الأمامية، تقلّل كثيرًا من صداع «عدم تطابق API» وتحافظ على رشاقة التطوير. عمومًا، توقّع أن تخرج من هنا وأنت تعرف كيف تصنع تطبيقات متينة تنهل أفضل ما في فحوص TypeScript وقت الترجمة، مع ضمان أن المدخلات الواقعية لن تكسر نظامك في وقت التشغيل.

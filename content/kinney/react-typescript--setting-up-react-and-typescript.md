@@ -1,22 +1,22 @@
 ---
-title: "Setting Up React and TypeScript"
-lang: en
+title: "تهيئة React و TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/setting-up-react-and-typescript"
 ---
 
-Building modern React applications with TypeScript isn’t just about adding some type annotations and hoping for the best. It’s about setting up a foundation that helps you catch bugs before they reach production, provides excellent developer experience, and scales gracefully as your team and codebase grow. React 19 brings some exciting improvements to how we write components, and when paired with TypeScript’s latest features, you get a development experience that’s both powerful and pleasant.
+بناء تطبيقات React الحديثة مع TypeScript لا يقتصر على إضافة بعض تعليقات الأنواع والأمل أن ينجح الأمر. إنه عن تهيئة أساس يساعدك على التقاط الأخطاء قبل أن تصل إلى الإنتاج، ويوفّر تجربة تطوير ممتازة، ويتوسّع بسلاسة مع نمو فريقك ومستودعك الشيفري. يجلب React 19 بعض التحسينات المثيرة في طريقة كتابة المكوّنات، وعند اقترانه بآخر ميزات TypeScript تحصل على تجربة تطوير قوية وممتعة في آن واحد.
 
-In this guide, we’ll build a React 19 + TypeScript project from the ground up, covering everything from `tsconfig.json` configuration to component patterns that’ll make your future self thank you.
+في هذا الدليل، سنبني مشروع React 19 + TypeScript من الصفر، مغطّين كل شيء من ضبط `tsconfig.json` إلى أنماط المكوّنات التي ستجعلك تشكر نفسك لاحقًا.
 
-## Setting Up Your Development Environment
+## تهيئة بيئة التطوير
 
-Before we dive into the fun stuff, let’s make sure we have the right tools installed. You’ll want Node.js 18 or higher—React 19 requires it—and your favorite package manager. I’ll use `npm` in the examples, but feel free to swap in `yarn` or `pnpm` or `bun`.
+قبل أن نغوص في الأمور الممتعة، لنتأكّد من أن الأدوات الصحيحة مثبّتة. ستحتاج إلى Node.js 18 أو أحدث — هذا ما يتطلبه React 19 — وإلى مدير الحزم المفضّل لديك. سأستخدم `npm` في الأمثلة، لكنك حرّ أن تستبدل به `yarn` أو `pnpm` أو `bun`.
 
-> **You can use a Vite template to make this easy on yourself.**
+> **يمكنك استخدام قالب Vite لتُسهّل الأمر على نفسك.**
 >
-> Try `npm create vite@latest` and follow the prompts if you want to make this easy on yourself.
+> جرّب `npm create vite@latest` واتّبع التعليمات إن أردت أن تُسهّل الأمر على نفسك.
 
-But, let’s say that we wanted to do this by hand.
+لكن لنفترض أننا أردنا أن نفعل ذلك يدويًا.
 
 ```bash
 # Create a new project directory
@@ -27,7 +27,7 @@ cd your-project-here
 npm init -y
 ```
 
-Now let’s install React 19 and TypeScript. Note that React 19 is currently in beta, so we’ll need to install the beta versions:
+الآن لنثبّت React 19 و TypeScript. لاحظ أن React 19 لا يزال في نسخة تجريبية (beta)، لذا سنحتاج إلى تثبيت النسخ التجريبية:
 
 ```bash
 # Install React
@@ -40,9 +40,9 @@ npm install -D typescript @types/react @types/react-dom @types/node
 npm install -D vite @vitejs/plugin-react
 ```
 
-## Configuring TypeScript for React
+## ضبط TypeScript لـ React
 
-The `tsconfig.json` is where the magic happens. React 19 introduces some changes that affect how we configure TypeScript, particularly around the new JSX runtime and improved type checking.
+ملف `tsconfig.json` هو موضع السحر. يُدخل React 19 بعض التغييرات التي تؤثر في كيفية ضبط TypeScript، ولا سيما حول بيئة تشغيل JSX الجديدة وفحص الأنواع المحسّن.
 
 ```json
 {
@@ -75,25 +75,25 @@ The `tsconfig.json` is where the magic happens. React 19 introduces some changes
 }
 ```
 
-Allow me to break down the React 19-specific bits:
+اسمح لي أن أُفصّل الأجزاء الخاصة بـ React 19:
 
-- **`jsx: "react-jsx"`**: Uses the new JSX transform—no more `import React from 'react'` in every file!
-- **`exactOptionalPropertyTypes: true`**: Prevents accidentally passing `undefined` to optional props.
-- **`noUncheckedIndexedAccess: true`**: Forces you to handle potential `undefined` values when accessing arrays or objects with dynamic keys.
+- **`jsx: "react-jsx"`**: يستخدم تحويل JSX الجديد — لا حاجة إلى `import React from 'react'` في كل ملف!
+- **`exactOptionalPropertyTypes: true`**: يمنع تمرير `undefined` عن طريق الخطأ إلى الخصائص الاختيارية.
+- **`noUncheckedIndexedAccess: true`**: يفرض عليك التعامل مع قيم `undefined` المحتملة عند الوصول إلى المصفوفات أو الكائنات بمفاتيح ديناميكية.
 
-> **Tip**
+> **نصيحة**
 >
-> The `exactOptionalPropertyTypes` setting is particularly helpful with React props. It ensures that if a prop is optional, you can’t accidentally pass `undefined` to it—you have to either pass a real value or omit it entirely.
+> إعداد `exactOptionalPropertyTypes` مفيد خصوصًا مع خصائص React. فهو يضمن أن إن كانت الخاصية اختيارية، لا يمكنك تمرير `undefined` إليها عن طريق الخطأ — عليك إمّا تمرير قيمة حقيقية أو حذفها تمامًا.
 
-## ESLint: An Extra Layer of Protection
+## ESLint: طبقة إضافية من الحماية
 
-We can also set up [ESLint](https://eslint.org/) add additional checks on our code. Using ESLint with TypeScript requires a little extra tweaking that is probably worth talking about. But, first—let’s install some dependencies.
+ يمكننا أيضًا ضبط [ESLint](https://eslint.org/) ليضيف فحوصًا إضافية على شيفرتنا. استخدام ESLint مع TypeScript يتطلب بعض التعديلات الإضافية التي يُحتمل أن تستحق الحديث عنها. لكن أولًا — لنثبّت بعض الاعتماديات.
 
 ```bash
 npm install -D eslint @eslint/js @types/eslint__js typescript-eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-react-refresh
 ```
 
-Okay, here is a reasonable template that you can copy and paste.
+حسنًا، إليك قالبًا معقولًا يمكنك نسخه ولصقه.
 
 ```javascript
 import js from '@eslint/js'; // ESLint's core recommended JavaScript rules
@@ -169,20 +169,20 @@ export default [
 ];
 ```
 
-Let’s explain each of these.
+لنشرح كلًا من هذه.
 
 ### `eslint-plugin-react`
 
-**Purpose:** Core React linting rules for JSX and React-specific patterns.
+**الغرض:** قواعد React الأساسية للفحص الخاص بـ JSX والأنماط الخاصة بـ React.
 
-**What it catches:**
+**ما الذي يلتقطه:**
 
-- Missing `key` props in lists
-- Invalid prop types
-- Unused state and props
-- Direct state mutations
-- Accessibility issues in JSX
-- React best practices violations
+- خصائص `key` المفقودة في القوائم
+- أنواع خصائص غير صحيحة
+- حالة وخصائص غير مستخدمة
+- تعديلات مباشرة على الحالة
+- مشكلات إمكانية الوصول في JSX
+- مخالفات لأفضل ممارسات React
 
 ```javascript
 // Basic setup
@@ -220,16 +220,16 @@ rules: {
 
 ### `eslint-plugin-react-hooks`
 
-**Purpose:** Enforces the Rules of Hooks - React’s critical rules for using hooks correctly.
+**الغرض:** يفرض قواعد الخُطّافات (Rules of Hooks) — قواعد React الحرجة لاستخدام الخُطّافات بشكل صحيح.
 
-**What it catches:**
+**ما الذي يلتقطه:**
 
-- Hooks called conditionally (violates rules of hooks)
-- Missing dependencies in `useEffect`, `useMemo`, `useCallback`
-- Hooks called outside of components or custom hooks
-- Custom hooks not starting with “use”
+- خُطّافات تُستدعى بشكل شرطي (يخالف قواعد الخُطّافات)
+- اعتماديات مفقودة في `useEffect` و`useMemo` و`useCallback`
+- خُطّافات تُستدعى خارج المكوّنات أو الخُطّافات المخصّصة
+- خُطّافات مخصّصة لا تبدأ بـ «use»
 
-**Common configurations:**
+**الإعدادات الشائعة:**
 
 ```javascript
 // Standard (recommended for most projects)
@@ -256,7 +256,7 @@ rules: {
 }
 ```
 
-**Common patterns people use:**
+**أنماط شائعة يستخدمها الناس:**
 
 ```javascript
 // Some teams disable exhaustive-deps for specific cases
@@ -270,15 +270,15 @@ rules: {
 
 ### `eslint-plugin-react-refresh`
 
-**Purpose:** Ensures components are compatible with React Fast Refresh (Vite’s hot reload).
+**الغرض:** يضمن توافق المكوّنات مع React Fast Refresh (إعادة التحميل الساخن في Vite).
 
-**What it catches:**
+**ما الذي يلتقطه:**
 
-- Components exported alongside non-component exports
-- Anonymous default exports that break Fast Refresh
-- Class components (which don’t work well with Fast Refresh)
+- مكوّنات مصدَّرة إلى جانب تصديرات ليست مكوّنات
+- تصديرات افتراضية مجهولة الاسم تكسر Fast Refresh
+- مكوّنات صنفية (لا تعمل جيدًا مع Fast Refresh)
 
-**Common configurations:**
+**الإعدادات الشائعة:**
 
 ```javascript
 // Basic setup (most common)
@@ -304,19 +304,19 @@ rules: {
 }
 ```
 
-## Prettier: Consistent Code Formatting
+## Prettier: تنسيق الشيفرة المتسق
 
-While ESLint handles code quality, Prettier handles formatting. They work great together when configured properly.
+بينما يتولّى ESLint جودة الشيفرة، يتولّى Prettier التنسيق. يعملان معًا بشكل ممتاز عند ضبطهما بشكل صحيح.
 
-### Installation
+### التثبيت
 
 ```bash
 npm install -D prettier eslint-config-prettier
 ```
 
-### Prettier Configuration
+### ضبط Prettier
 
-Create `.prettierrc.json`:
+أنشئ ملف `.prettierrc.json`:
 
 ```json
 {
@@ -332,7 +332,7 @@ Create `.prettierrc.json`:
 }
 ```
 
-And `.prettierignore`:
+وملف `.prettierignore`:
 
 ```
 node_modules
@@ -342,13 +342,13 @@ coverage
 *.min.js
 ```
 
-### Integrating with ESLint
+### التكامل مع ESLint
 
-To avoid conflicts between ESLint and Prettier, add `eslint-config-prettier` to your ESLint config. This disables ESLint rules that would conflict with Prettier’s formatting.
+لتجنّب التعارضات بين ESLint و Prettier، أضف `eslint-config-prettier` إلى ضبط ESLint الخاص بك. هذا يعطّل قواعد ESLint التي تتعارض مع تنسيق Prettier.
 
-## Package Scripts
+## سكربتات الحزمة
 
-Add these scripts to your `package.json` for a smooth development workflow:
+أضف هذه السكربتات إلى ملف `package.json` الخاص بك لتحصل على سير عمل تطوير سلس:
 
 ```json
 {
@@ -375,9 +375,9 @@ Add these scripts to your `package.json` for a smooth development workflow:
 }
 ```
 
-### Development Workflow
+### سير عمل التطوير
 
-During development, run these in separate terminals for the best experience:
+أثناء التطوير، شغّل هذه في طرفيات منفصلة للحصول على أفضل تجربة:
 
 ```bash
 # Terminal 1: Dev server with hot reload
@@ -387,7 +387,7 @@ npm run dev
 npm run type-check:watch
 ```
 
-Before committing:
+قبل الإيداع:
 
 ```bash
 # Check everything
@@ -397,9 +397,9 @@ npm run check-all
 npm run fix-all
 ```
 
-## Real-World Configuration Examples
+## أمثلة إعدادات من العالم الحقيقي
 
-### Strict Configuration (Enterprise/Large Teams)
+### الإعداد الصارم (المؤسسات والفرق الكبيرة)
 
 ```javascript
 rules: {
@@ -422,7 +422,7 @@ rules: {
 }
 ```
 
-### Balanced Configuration (Most Projects)
+### الإعداد المتوازن (أغلب المشاريع)
 
 ```javascript
 rules: {
@@ -437,7 +437,7 @@ rules: {
 }
 ```
 
-### Minimal Configuration (Prototypes/Small Projects)
+### الإعداد الأدنى (النماذج الأولية والمشاريع الصغيرة)
 
 ```javascript
 rules: {
@@ -448,21 +448,21 @@ rules: {
 }
 ```
 
-## Common Pitfalls
+## الأخطاء الشائعة
 
-1. **Don’t disable `rules-of-hooks`**: This can cause React to behave unpredictably.
-2. **Be careful with `exhaustive-deps`**: It’s annoying but *usually* right.
-3. **`react-refresh` is Vite-specific**: You don’t need it for Create React App or Next.js
-4. **TypeScript makes many React rules redundant**: You can disable `prop-types` related rules
-5. **Some rules conflict with Prettier** - Disable formatting rules if using Prettier.
+1. **لا تعطّل `rules-of-hooks`**: قد يسبّب هذا سلوكًا غير متوقّع لـ React.
+2. **كن حذرًا مع `exhaustive-deps`**: إنه مزعج لكنه *عادةً* صحيح.
+3. **`react-refresh` خاص بـ Vite**: لست بحاجة إليه مع Create React App أو Next.js
+4. **يجعل TypeScript كثيرًا من قواعد React زائدة عن الحاجة**: يمكنك تعطيل القواعد المرتبطة بـ `prop-types`
+5. **بعض القواعد تتعارض مع Prettier** - عطّل قواعد التنسيق إن كنت تستخدم Prettier.
 
-> **I made a list of all of the “recommended” rules and what they do.**
+> **أعددت قائمة بكل القواعد «الموصى بها» وما الذي تفعله.**
 >
-> You can check that list out [here](https://stevekinney.com/courses/react-typescript/typescript-react-eslint-rules).
+> يمكنك الاطّلاع على تلك القائمة [هنا](https://stevekinney.com/courses/react-typescript/typescript-react-eslint-rules).
 
-## `package,json` Scripts
+## سكربتات `package,json`
 
-Add these scripts to your `package.json`:
+أضف هذه السكربتات إلى ملف `package.json` الخاص بك:
 
 ```json
 {
@@ -473,11 +473,11 @@ Add these scripts to your `package.json`:
 }
 ```
 
-## Some Other Best Practices
+## بعض أفضل الممارسات الأخرى
 
-For stricter type checking, enable type-aware rules by adding project configuration:
+لفحص أنواع أكثر صرامة، فعّل القواعد المدركة للأنواع بإضافة ضبط المشروع:
 
-If you’re using Bun or Deno, you can use `import.meta.env`. But, if you’re using Node, you’ll need to create your own polyfill.
+إن كنت تستخدم Bun أو Deno، يمكنك استخدام `import.meta.env`. لكن إن كنت تستخدم Node، فستحتاج إلى إنشاء بديلك (polyfill) الخاص.
 
 ```javascript
 const __filename = fileURLToPath(import.meta.url);
@@ -491,7 +491,7 @@ parserOptions: {
 }
 ```
 
-Again, in Deno or Bun, you can do this instead:
+ومرة أخرى، في Deno أو Bun يمكنك فعل ما يلي بدلًا من ذلك:
 
 ```javascript
 parserOptions: {
@@ -500,9 +500,9 @@ parserOptions: {
 }
 ```
 
-Then use `typescript.configs.recommendedTypeChecked` instead of just `recommended`.
+ثم استخدم `typescript.configs.recommendedTypeChecked` بدلًا من `recommended` فقط.
 
-**2. Custom Rules for Your Team** Add project-specific rules based on your team’s conventions:
+**2. قواعد مخصّصة لفريقك** أضف قواعد خاصة بالمشروع بناءً على أعراف فريقك:
 
 ```javascript
 rules: {
@@ -513,9 +513,9 @@ rules: {
 }
 ```
 
-## Optional: Setting Up Visual Studio Code and/or Cursor
+## اختياري: تهيئة Visual Studio Code و/أو Cursor
 
-If you’re using Visual Studio Code or Cursor, you might want to install the [ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+إن كنت تستخدم Visual Studio Code أو Cursor، فقد ترغب في تثبيت [امتداد ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
 ```json
 {
@@ -526,16 +526,16 @@ If you’re using Visual Studio Code or Cursor, you might want to install the [E
 }
 ```
 
-## Optional: Setting Up Pre-Commit Hooks
+## اختياري: تهيئة خطّافات ما قبل الإيداع
 
-Use Husky and lint-staged to enforce linting before commits:
+استخدم Husky و lint-staged لفرض الفحص قبل الإيداعات:
 
 ```bash
 npm install -D husky lint-staged
 npx husky init
 ```
 
-Add to `package.json`:
+أضف إلى `package.json`:
 
 ```json
 {

@@ -1,87 +1,87 @@
 ---
-title: "Cold Starts and Performance"
-lang: en
+title: "البدء البارد والأداء"
+lang: ar
 source: "https://stevekinney.com/courses/aws/lambda-cold-starts-and-performance"
 ---
 
-You’ve deployed a Lambda function, invoked it, and it works. But if you invoke it after a period of inactivity, the first response is noticeably slower than the ones that follow. That first slow response is a **cold start**, and it’s the performance characteristic of Lambda that matters most to frontend engineers building API backends.
+لقد نشرت دالة Lambda واستدعيتها، وهي تعمل. لكن إذا استدعيتها بعد فترة من عدم النشاط، فإن الاستجابة الأولى أبطأ بشكل ملحوظ من التي تليها. تلك الاستجابة الأولى البطيئة هي **البدء البارد**، وهي خاصية الأداء في Lambda التي تهمّ مهندسي الواجهة الأمامية الذين يبنون واجهات API خلفية أكثر من أي شيء آخر.
 
-If you want AWS’s version of the lifecycle details behind cold starts, the [Lambda runtime environment guide](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) and the [Lambda best practices guide](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html) are the official references.
+إذا أردت نسخة AWS من تفاصيل دورة الحياة الكامنة وراء البدء البارد، فإن [دليل بيئة تشغيل Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html) و[دليل أفضل ممارسات Lambda](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html) هما المرجعان الرسميان.
 
-A cold start adds latency to the first request after an idle period. For an API endpoint that your frontend calls on page load, that latency is the difference between a snappy experience and a visible loading spinner. You can’t eliminate cold starts entirely, but you can make them fast enough that users don’t notice.
+يضيف البدء البارد زمن استجابة إلى أول طلب بعد فترة خمول. وبالنسبة إلى نقطة نهاية API تستدعيها واجهتك الأمامية عند تحميل الصفحة، يمثّل ذلك الزمن الفرق بين تجربة سريعة الاستجابة ومؤشّر تحميل مرئي. لا يمكنك إزالة البدء البارد كليًا، لكن يمكنك جعله سريعًا بما يكفي كي لا يلاحظه المستخدمون.
 
-## What Happens During a Cold Start
+## ما الذي يحدث أثناء البدء البارد
 
-Recall the runtime lifecycle from [What is Lambda?](https://stevekinney.com/courses/aws/what-is-lambda): every execution environment goes through init, invoke, and (eventually) shutdown. A cold start is what happens when Lambda has no warm execution environment available for your function.
+تذكّر دورة حياة وقت التشغيل من [ما هو Lambda؟](https://stevekinney.com/courses/aws/what-is-lambda): تمرّ كل بيئة تنفيذ بمرحلة التهيئة، ثم الاستدعاء، ثم (في النهاية) الإيقاف. والبدء البارد هو ما يحدث عندما لا تملك Lambda بيئة تنفيذ دافئة متاحة لدالتك.
 
-During the **init phase**, Lambda does the following:
+أثناء **مرحلة التهيئة**، تفعل Lambda ما يلي:
 
-1. **Downloads your deployment package** from internal storage to the execution environment.
-2. **Starts the runtime**—in your case, Node.js 22.
-3. **Runs your top-level module code**—every `import` statement, every module-level variable initialization, every database client constructor.
+1. **تنزيل حزمة النشر الخاصة بك** من التخزين الداخلي إلى بيئة التنفيذ.
+2. **تشغيل وقت التشغيل**—في حالتك، Node.js 22.
+3. **تشغيل شيفرة الوحدة النمطية من المستوى الأعلى**—كل عبارة `import`، وكل تهيئة لمتغيّر على مستوى الوحدة، وكل مُنشئ عميل قاعدة بيانات.
 
-Only after all of that completes does your handler function execute. Steps 1 and 2 are controlled by Lambda. Step 3 is controlled by you.
+ولا تُنفّذ دالة المعالج الخاصة بك إلا بعد اكتمال كل ذلك. الخطوتان 1 و2 تتحكم فيهما Lambda. أما الخطوة 3 فتتحكم فيها أنت.
 
-A **warm start** skips all three steps. The execution environment is already running, the runtime is already initialized, your top-level code has already executed. Lambda goes straight to calling your handler function. This is why the second request is faster: it reuses the existing environment.
+يتخطى **البدء الدافئ** الخطوات الثلاث كلها. فبيئة التنفيذ تعمل بالفعل، ووقت التشغيل مهيّأ بالفعل، وشيفرتك العليا نُفّذت بالفعل. وتنتقل Lambda مباشرةً إلى استدعاء دالة المعالج. ولهذا يكون الطلب الثاني أسرع: فهو يعيد استخدام البيئة الموجودة.
 
-## How Long Do Cold Starts Take?
+## كم يستغرق البدء البارد؟
 
-For a Node.js function with a small deployment package and no heavy dependencies, cold start latency is typically in the range of **100-400 milliseconds**. For a function with a large `node_modules` directory, several AWS SDK clients, and complex initialization logic, cold starts can reach **1-3 seconds**.
+بالنسبة إلى دالة Node.js بحزمة نشر صغيرة وبلا اعتماديات ثقيلة، يقع زمن البدء البارد عادةً في نطاق **100-400 مللي ثانية**. أما الدالة التي تحتوي على دليل `node_modules` كبير وعدة عملاء AWS SDK ومنطق تهيئة معقّد، فقد يصل زمن البدء البارد فيها إلى **1-3 ثوانٍ**.
 
-Here’s what affects cold start duration, roughly in order of impact:
+إليك ما يؤثر في مدة البدء البارد، تقريبًا بترتيب الأثر:
 
-### Deployment Package Size
+### حجم حزمة النشر
 
-The biggest factor. Lambda downloads your zip file from internal storage before it can start the runtime. A 1 MB zip downloads faster than a 50 MB zip. This is why tree-shaking, removing unused dependencies, and being selective about what goes into `node_modules` matters for Lambda in a way it doesn’t for a Vercel deployment (where the CDN layer hides the startup cost).
+العامل الأكبر. فـ Lambda تنزّل ملف zip الخاص بك من التخزين الداخلي قبل أن تستطيع تشغيل وقت التشغيل. وملف zip بحجم 1 MB يُنزّل أسرع من ملف بحجم 50 MB. ولهذا يهمّ تقليم الشيفرة (tree-shaking) وإزالة الاعتماديات غير المستخدمة والانتقائية فيما يدخل إلى `node_modules` في Lambda بطريقة لا تهمّ في نشر Vercel (حيث تخفي طبقة CDN كلفة بدء التشغيل).
 
-### Number and Size of Dependencies
+### عدد الاعتماديات وحجمها
 
-Every `import` or `require` statement in your top-level code executes during init. If your handler imports the entire AWS SDK v3 (`@aws-sdk/client-s3`, `@aws-sdk/client-dynamodb`, `@aws-sdk/client-ses`) but only uses DynamoDB, those unused imports still run during initialization. Import only what you use.
+كل عبارة `import` أو `require` في شيفرتك العليا تُنفّذ أثناء التهيئة. فإذا كانت دالتك تستورد AWS SDK v3 كاملًا (`@aws-sdk/client-s3` و`@aws-sdk/client-dynamodb` و`@aws-sdk/client-ses`) لكنها لا تستخدم إلا DynamoDB، فإن تلك الاستيرادات غير المستخدمة تُنفّذ مع ذلك أثناء التهيئة. استورد فقط ما تستخدمه.
 
-### Runtime Choice
+### اختيار وقت التشغيل
 
-Node.js and Python have the fastest cold starts among Lambda’s managed runtimes. Java and .NET have significantly slower cold starts because their runtimes take longer to initialize. This is one reason Node.js is a natural choice for frontend API backends: you already know the language, and the cold start performance is among the best available.
+Node.js وPython لديهما أسرع بدء بارد بين أوقات التشغيل المُدارة في Lambda. أما Java و.NET فبدءهما البارد أبطأ بكثير لأن أوقات تشغيلهما تستغرق وقتًا أطول للتهيئة. وهذا أحد أسباب كون Node.js خيارًا طبيعيًا لواجهات API الخلفية للواجهة الأمامية: فأنت تعرف اللغة أصلًا، وأداء البدء البارد من بين الأفضل المتاح.
 
 > **SnapStart**
 >
-> If you ever end up on a JVM Lambda, **SnapStart** snapshots the initialized runtime after first load and restores from the snapshot on cold start, collapsing JVM cold starts from seconds to ~200 ms. It’s available for Java, .NET, and Python runtimes today. Node.js isn’t in that list—it’s already fast enough that SnapStart isn’t applied—but you’ll see it mentioned in AWS docs and job listings, so it’s worth knowing the name.
+> إذا انتهى بك الأمر يومًا على Lambda بـ JVM، فإن **SnapStart** تأخذ لقطة من وقت التشغيل المهيّأ بعد التحميل الأول وتستعيدها عند البدء البارد، فتقلّص أوقات البدء البارد لـ JVM من ثوانٍ إلى نحو 200 مللي ثانية. وهي متاحة اليوم لأوقات تشغيل Java و.NET وPython. وNode.js ليست في تلك القائمة—فهي سريعة بما يكفي بالفعل بحيث لا تُطبّق عليها SnapStart—لكنك ستراها مذكورة في وثائق AWS وإعلانات الوظائف، لذا يستحقّ الاسم أن تعرفه.
 
-### Memory Configuration
+### إعداد الذاكرة
 
-Lambda allocates CPU proportionally to memory. A 128 MB function gets a fraction of a vCPU; a 1,024 MB function gets substantially more. More CPU means faster initialization—your `import` statements execute faster, your SDK clients initialize faster. For cold-start-sensitive functions, increasing memory from 128 MB to 512 MB or 1,024 MB often reduces cold start latency by 40-60%, and the cost increase is negligible because the function initializes faster (you pay per millisecond).
+تخصّص Lambda وحدة المعالجة المركزية بشكل متناسب مع الذاكرة. فدالة بـ 128 MB تحصل على جزء صغير من vCPU؛ ودالة بـ 1,024 MB تحصل على قدر أكبر بكثير. وزيادة CPU تعني تهيئة أسرع—فتُنفّذ عبارات `import` أسرع، ويهيّأ عملاء SDK أسرع. وبالنسبة إلى الدوال الحساسة للبدء البارد، فإن رفع الذاكرة من 128 MB إلى 512 MB أو 1,024 MB يقلّل زمن البدء البارد غالبًا بنسبة 40-60%، وزيادة الكلفة ضئيلة لأن الدالة تهيّأ أسرع (فأنت تدفع لكل مللي ثانية).
 
-### Architecture Choice
+### اختيار المعمارية
 
-Lambda supports `x86_64` (default) and `arm64` (AWS Graviton2). ARM64 costs 20% less per GB-second of compute—and the [Lambda pricing page](https://aws.amazon.com/lambda/pricing/) cites *up to 34% better price performance* overall, which folds in arm64 often running faster and billing fewer milliseconds. Pass `--architectures arm64` on new functions. The only reason to stay on `x86_64` is if you’re bundling native modules built for it.
+تدعم Lambda المعماريتين `x86_64` (الافتراضية) و`arm64` (AWS Graviton2). وARM64 أقل كلفة بنسبة 20% لكل GB-ثانية من الحوسبة—و[صفحة أسعار Lambda](https://aws.amazon.com/lambda/pricing/) تذكر *أداء سعر أفضل بنسبة تصل إلى 34%* إجمالًا، وهو رقم يشمل كون arm64 يعمل غالبًا أسرع ويُفوتر مللي ثانيات أقل. مرّر `--architectures arm64` على الدوال الجديدة. والسبب الوحيد للبقاء على `x86_64` هو أنك تحزم وحدات أصلية مبنية لها.
 
-### VPC Configuration
+### إعداد VPC
 
-If your Lambda function is configured to run inside a VPC (Virtual Private Cloud), cold starts include creating and attaching a network interface. This used to add 5-10 seconds of cold start latency, but AWS improved VPC networking significantly—the penalty is now roughly 1-2 seconds. Still, avoid putting functions in a VPC unless they need to access VPC-only resources like an RDS database. For this course, your functions don’t need VPC access.
+إذا كانت دالة Lambda لديك مضبوطة لتعمل داخل VPC (سحابة خاصة افتراضية)، فإن البدء البارد يتضمن إنشاء واجهة شبكة وربطها. كان هذا يضيف سابقًا 5-10 ثوانٍ إلى زمن البدء البارد، لكن AWS حسّنت شبكات VPC تحسينًا كبيرًا—فالعقوبة الآن نحو 1-2 ثانية. ومع ذلك، تجنّب وضع الدوال في VPC إلا إذا كانت تحتاج إلى الوصول إلى موارد موجودة داخل VPC فقط مثل قاعدة بيانات RDS. وفي هذه الدورة، لا تحتاج دوالك إلى وصول VPC.
 
-## When Cold Starts Happen
+## متى يحدث البدء البارد
 
-Cold starts don’t happen on every request. They happen when:
+لا يحدث البدء البارد مع كل طلب. بل يحدث عندما:
 
-- **Your function hasn’t been invoked recently.** Lambda keeps execution environments warm for roughly 5-15 minutes of inactivity (the exact duration isn’t guaranteed and varies).
-- **Traffic spikes.** If your function is handling 10 concurrent requests and an 11th arrives, Lambda creates a new execution environment for that 11th request. The 11th user experiences a cold start even though the function has been running continuously.
-- **You deploy new code.** After `update-function-code`, existing warm environments use the old code. New environments with the new code experience cold starts.
+- **لم تُستدعَ دالتك مؤخرًا.** فـ Lambda تبقي بيئات التنفيذ دافئة لنحو 5-15 دقيقة من عدم النشاط (المدة الدقيقة غير مضمونة وتتفاوت).
+- **تحدث قفزات في حركة المرور.** إذا كانت دالتك تتعامل مع 10 طلبات متزامنة ووصل طلب حادٍ عشر، فإن Lambda تنشئ بيئة تنفيذ جديدة لذلك الطلب الحادي عشر. ويختبر المستخدم الحادي عشر بدءًا باردًا رغم أن الدالة كانت تعمل باستمرار.
+- **تنشر شيفرة جديدة.** بعد `update-function-code`، تستخدم البيئات الدافئة الموجودة الشيفرة القديمة. أما البيئات الجديدة بالشيفرة الجديدة فتمرّ ببدء بارد.
 
-For a frontend API that receives consistent traffic, cold starts are rare after the initial invocation. For an API that gets sporadic traffic—a few requests per hour from an internal tool—cold starts are the norm.
+بالنسبة إلى واجهة API أمامية تتلقى حركة مرور منتظمة، يصبح البدء البارد نادرًا بعد الاستدعاء الأول. أما واجهة API تتلقى حركة متقطّعة—بضعة طلبات في الساعة من أداة داخلية—فإن البدء البارد فيها هو القاعدة.
 
-## Practical Mitigation Strategies
+## استراتيجيات التخفيف العملية
 
-### Keep Your Bundle Small
+### أبقِ حزمتك صغيرة
 
-This is the highest-impact change you can make. Remove unused dependencies, use tree-shaking, and audit your `package.json` regularly. I can’t stress this one enough.
+هذا أعلى تغيير أثرًا يمكنك إجراؤه. أزل الاعتماديات غير المستخدمة، واستخدم تقليم الشيفرة، ودقّق `package.json` بانتظام. لا أستطيع التشديد على هذه النقطة بما يكفي.
 
 ```bash
 # Check the size of your deployment package
 ls -lh function.zip
 ```
 
-A good target for a typical API handler is under 5 MB zipped. If your zip is over 10 MB, you probably have dependencies you don’t need.
+الهدف الجيد لمعالج API نموذجي هو أقل من 5 MB مضغوطًا. وإذا تجاوز ملف zip لديك 10 MB، فمن المحتمل أن لديك اعتماديات لا تحتاجها.
 
-**Use esbuild to bundle and tree-shake.** `tsc` emits one `.js` per `.ts` and doesn’t drop unused imports—so your zip ends up shipping every file under `node_modules`. esbuild bundles everything the handler actually touches into one file and drops the rest:
+**استخدم esbuild للحزم وتقليم الشيفرة.** فـ `tsc` يُخرج ملف `.js` واحدًا لكل `.ts` ولا يحذف الاستيرادات غير المستخدمة—لذا ينتهي ملف zip لديك بشحن كل ملف تحت `node_modules`. أما esbuild فيحزم كل ما يلمسه المعالج فعليًا في ملف واحد ويحذف الباقي:
 
 ```bash
 npx esbuild src/handler.ts \
@@ -94,11 +94,11 @@ npx esbuild src/handler.ts \
   --outfile=dist/handler.js
 ```
 
-Mark `@aws-sdk/*` as external—the AWS SDK is preinstalled in the Lambda Node.js 22 runtime, so bundling it adds megabytes to your zip for no benefit. For every other dependency, let esbuild tree-shake it. A handler that was 28 MB with raw `tsc` + `npm install` routinely drops below 500 KB after this.
+علّم `@aws-sdk/*` كخارجي—فـ AWS SDK مثبّت مسبقًا في وقت تشغيل Lambda Node.js 22، لذا فإن حزمه يضيف ميغابايتات إلى ملف zip لديك بلا فائدة. ولكل اعتمادية أخرى، دع esbuild يقلّمها. فالمعالج الذي كان 28 MB مع `tsc` الخام و`npm install` ينزل عادةً إلى أقل من 500 KB بعد ذلك.
 
-### Use Lazy Imports for Rarely-Used Dependencies
+### استخدم الاستيرادات الكسولة للاعتماديات النادرة الاستخدام
 
-If your handler conditionally uses a large dependency (like an image processing library for one specific route), import it inside the handler instead of at the top level:
+إذا كان معالجك يستخدم اعتمادية كبيرة بشكل شرطي (مثل مكتبة معالجة صور لمسار واحد محدّد)، فاستوردها داخل المعالج بدلًا من المستوى الأعلى:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -120,13 +120,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Dynamic `import()` calls run only when the code path executes, not during init.
+*ملاحظة:* استدعاءات `import()` الديناميكية تُنفّذ فقط عند تنفيذ مسار الشيفرة، لا أثناء التهيئة.
 
-This keeps the init phase fast for the common case. The uncommon path pays the import cost only when it’s actually used.
+هذا يبقي مرحلة التهيئة سريعة للحالة الشائعة. أما المسار غير الشائع فيدفع كلفة الاستيراد فقط عندما يُستخدم فعليًا.
 
-### Increase Memory
+### زد الذاكرة
 
-If your cold starts are in the 500+ millisecond range, try doubling the memory:
+إذا كانت أوقات البدء البارد لديك في نطاق 500 مللي ثانية وأكثر، فجرّب مضاعفة الذاكرة:
 
 ```bash
 aws lambda update-function-configuration \
@@ -136,11 +136,11 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-The increase in per-millisecond cost is usually offset by the decrease in duration. Test both configurations and compare total cost, not just per-millisecond pricing.
+الزيادة في الكلفة لكل مللي ثانية يقابلها عادةً انخفاض في المدة. اختبر الإعدادين وقارن الكلفة الإجمالية، لا سعر المللي ثانية فقط.
 
-### Initialize Clients Outside the Handler
+### تهيئة العملاء خارج المعالج
 
-If your function uses the AWS SDK (for DynamoDB, S3, etc.), create the client at the top level so it initializes once during init and is reused across warm invocations:
+إذا كانت دالتك تستخدم AWS SDK (لـ DynamoDB أو S3 أو غيرها)، فأنشئ العميل على المستوى الأعلى بحيث يُهيّأ مرة واحدة أثناء التهيئة ويُعاد استخدامه عبر الاستدعاءات الدافئة:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -165,13 +165,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Top-level initialization runs once during init and persists across warm invocations.
+*ملاحظة:* تهيئة المستوى الأعلى تُنفّذ مرة واحدة أثناء التهيئة وتبقى عبر الاستدعاءات الدافئة.
 
-This is a general best practice, not just a cold start optimization. A warm function reuses the existing client (and its TCP connections) instead of creating a new one on every request.
+هذه ممارسة عامة أفضل، لا مجرّد تحسين للبدء البارد. فالدالة الدافئة تعيد استخدام العميل الموجود (واتصالات TCP الخاصة به) بدلًا من إنشاء عميل جديد مع كل طلب.
 
-## Provisioned Concurrency
+## التزامن المخصّص
 
-Lambda offers a feature called **provisioned concurrency** that pre-creates a specified number of warm execution environments for your function. These environments are always ready, eliminating cold starts entirely—at a cost.
+تقدّم Lambda ميزة تُسمى **التزامن المخصّص** تُنشئ مسبقًا عددًا محدّدًا من بيئات التنفيذ الدافئة لدالتك. وهذه البيئات جاهزة دائمًا، ما يزيل البدء البارد كليًا—ولكن بكلفة.
 
 ```bash
 # Publish a version first
@@ -189,20 +189,20 @@ aws lambda put-provisioned-concurrency-config \
   --output json
 ```
 
-Provisioned concurrency requires a published, numbered version (or an alias pointing at one)—[`$LATEST` is explicitly unsupported](https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html) and the API will reject it. In production, the typical pattern is to attach provisioned concurrency to an alias (`prod`, `staging`, etc.) that points at a specific published version: the alias absorbs the routing logic, and the provisioned concurrency sticks to whatever version the alias resolves to.
+يتطلب التزامن المخصّص إصدارًا منشورًا ومرقّمًا (أو اسمًا مستعارًا يشير إلى واحد)—و[`$LATEST` غير مدعوم صراحةً](https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html) وسترفضه واجهة API. وفي الإنتاج، النمط المعتاد هو ربط التزامن المخصّص باسم مستعار (`prod` أو `staging` أو ما شابه) يشير إلى إصدار منشور محدّد: فالاسم المستعار يستوعب منطق التوجيه، ويلتصق التزامن المخصّص بالإصدار الذي يحلّ إليه الاسم المستعار.
 
-This keeps 5 execution environments warm at all times. You pay for them whether they handle requests or not—it’s essentially the cost of running a small server continuously.
+هذا يبقي 5 بيئات تنفيذ دافئة في كل الأوقات. وتدفع مقابلها سواء تعاملت مع الطلبات أم لا—فهي في جوهرها كلفة تشغيل خادم صغير باستمرار.
 
-For most frontend API backends, provisioned concurrency is overkill. It makes sense for latency-critical production workloads where even occasional cold starts are unacceptable (payment processing, real-time gaming). For a typical frontend API, the strategies above—small bundles, increased memory, top-level initialization—are sufficient and far cheaper.
+بالنسبة إلى معظم واجهات API الخلفية للواجهة الأمامية، التزامن المخصّص مبالغة. وهو منطقي لأحمال العمل الإنتاجية الحرجة من حيث زمن الاستجابة حيث لا يكون البدء البارد العرضي مقبولًا (معالجة المدفوعات، الألعاب في الوقت الفعلي). أما لواجهة API أمامية نموذجية، فالاستراتيجيات أعلاه—حزم صغيرة، وذاكرة أعلى، وتهيئة على المستوى الأعلى—كافية وأرخص بكثير.
 
-## Concurrency Limits and 429 Throttling
+## حدود التزامن والتقييد 429
 
-Lambda doesn’t create infinitely many execution environments. Your account has a **concurrent executions** quota (starts at 1,000 per region, raisable on request). Every in-flight invocation counts as one. If traffic spikes past the quota, new invocations fail immediately with `429 TooManyRequestsException` and the error code `Rate exceeded`. API Gateway surfaces this to the browser as a `500` or `502` depending on integration mode—you don’t get a nice 503.
+لا تنشئ Lambda عددًا لا نهائيًا من بيئات التنفيذ. فحسابك لديه حصة **تنفيذ متزامن** (تبدأ بـ 1,000 لكل منطقة، وقابلة للرفع عند الطلب). وكل استدعاء قيد التنفيذ يُحتسب واحدًا. وإذا تجاوزت حركة المرور الحصة، تفشل الاستدعاءات الجديدة فورًا بـ `429 TooManyRequestsException` ورمز الخطأ `Rate exceeded`. ويعرض API Gateway ذلك للمتصفح كـ `500` أو `502` حسب نمط التكامل—فلن تحصل على 503 لطيف.
 
-Two knobs worth knowing:
+مِقبضان يستحقّان المعرفة:
 
-- **Reserved concurrency** caps a single function at N concurrent executions, *guaranteeing* it at least N out of the account quota while also preventing it from consuming more. Useful when one noisy function (video transcoding) shouldn’t be able to starve a latency-critical one (`api.example.com`).
-- **Unreserved concurrency** is the rest of the quota, shared across every function that hasn’t set a reservation.
+- **التزامن المحجوز** يحدّ دالة واحدة عند N من التنفيذات المتزامنة، *ويضمن* لها N على الأقل من حصة الحساب مع منعها من استهلاك أكثر من ذلك. وهذا مفيد عندما لا ينبغي لدالة مزعجة واحدة (تحويل فيديو) أن تجوّع دالة حرجة من حيث زمن الاستجابة (`api.example.com`).
+- **التزامن غير المحجوز** هو بقية الحصة، ويُتشارك بين كل دالة لم تضبط حجزًا.
 
 ```bash
 # Cap a function at 50 concurrent executions
@@ -212,21 +212,21 @@ aws lambda put-function-concurrency \
   --region us-east-1
 ```
 
-For a typical frontend backend the default quota is plenty. It becomes a real concern when you have a mix of spiky-batch and steady-API workloads in the same account.
+بالنسبة إلى واجهة خلفية أمامية نموذجية، الحصة الافتراضية وفيرة. لكنها تصبح مصدر قلق حقيقي عندما يكون لديك مزيج من أحمال عمل دفعية متقلّبة وواجهات API مستقرة في الحساب نفسه.
 
-> **Tip**
+> **نصيحة**
 >
-> Before reaching for provisioned concurrency, measure your actual cold start latency. If your function initializes in 200 milliseconds and your API’s p95 latency requirement is under 500 milliseconds, you’re already fine. Optimize based on measurement, not anxiety.
+> قبل اللجوء إلى التزامن المخصّص، قِس زمن البدء البارد الفعلي لديك. فإذا كانت دالتك تهيّأ في 200 مللي ثانية وكان متطلب زمن الاستجابة p95 لواجهتك أقل من 500 مللي ثانية، فأنت بخير بالفعل. حسّن بناءً على القياس، لا على القلق.
 
-## Measuring Cold Starts
+## قياس البدء البارد
 
-You can see cold start duration in your function’s CloudWatch Logs. Lambda logs an `Init Duration` field on cold start invocations:
+يمكنك رؤية مدة البدء البارد في سجلات CloudWatch لدالتك. فـ Lambda تسجّل حقل `Init Duration` في الاستدعاءات التي تمرّ ببدء بارد:
 
 ```
 REPORT RequestId: abc-123 Duration: 15.23 ms Billed Duration: 16 ms
 Memory Size: 128 MB Max Memory Used: 67 MB Init Duration: 245.67 ms
 ```
 
-The `Init Duration` field only appears on cold start invocations. If you don’t see it, the invocation was a warm start. Compare the `Duration` (your handler execution time) to the `Init Duration` (the cold start overhead) to understand where your latency comes from.
+يظهر حقل `Init Duration` فقط في استدعاءات البدء البارد. وإذا لم تره، فالاستدعاء كان بدءًا دافئًا. قارن `Duration` (زمن تنفيذ معالجك) بـ `Init Duration` (كلفة البدء البارد) لتفهم من أين يأتي زمن الاستجابة لديك.
 
-You now understand all the core Lambda concepts: writing handlers, configuring execution roles, deploying and testing, setting environment variables, and managing cold start performance. In the next module, you’ll put an HTTP layer in front of your function with API Gateway, so your frontend can call it with a `fetch` request.
+أنت الآن تفهم كل مفاهيم Lambda الأساسية: كتابة المعالجات، وتهيئة أدوار التنفيذ، والنشر والاختبار، وضبط متغيّرات البيئة، وإدارة أداء البدء البارد. في الوحدة التالية، ستضع طبقة HTTP أمام دالتك باستخدام API Gateway، كي تستطيع واجهتك الأمامية استدعاءها بطلب `fetch`.

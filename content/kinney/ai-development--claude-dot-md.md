@@ -1,20 +1,16 @@
 ---
-title: "CLAUDE.md"
-lang: en
+title: "ملف CLAUDE.md"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-dot-md"
 ---
 
-[Claude Code](https://code.claude.com/docs/en/memory) has two broad memory
-systems: human-written memory and Claude-written auto memory. Both are context,
-not enforcement. If something must be enforced, encode it in tests, lint,
-permissions, hooks, or continuous integration.
+لدى [Claude Code](https://code.claude.com/docs/en/memory) نظاما ذاكرة واسعان: ذاكرة يكتبها الإنسان، وذاكرة تلقائية يكتبها Claude. وكلتاهما سياق لا فرض. وإذا وجب فرض شيء، فشفّره في الاختبارات أو الفحص أو الصلاحيات أو الخطّافات أو التكامل المستمر.
 
 ## CLAUDE.md
 
-`CLAUDE.md` is the main human-written project instruction file. It can live at
-the repository root or under `.claude/`. User-level instructions can live at `~/.claude/CLAUDE.md`.
+`CLAUDE.md` هو ملف تعليمات المشروع الرئيسي الذي يكتبه الإنسان. ويمكن أن يسكن في جذر المستودع أو تحت `.claude/`. ويمكن أن تسكن التعليمات على مستوى المستخدم في `~/.claude/CLAUDE.md`.
 
-Use `CLAUDE.md` for durable project guidance:
+استخدم `CLAUDE.md` للإرشاد الدائم بالمشروع:
 
 ```markdown
 # Project Instructions
@@ -24,30 +20,25 @@ Use `CLAUDE.md` for durable project guidance:
 - Do not edit generated files directly.
 ```
 
-Keep it short. Link to deeper documentation instead of turning the file into a
-manual.
+أبقِه قصيرًا. واربط بتوثيق أعمق بدلًا من تحويل الملف إلى دليل.
 
-Do not rely on local-only memory for shared project policy. If the next person
-needs the instruction, put it in a versioned file.
+لا تعتمد على ذاكرة محلية فقط لسياسة مشروع مشتركة. وإذا احتاج الشخص التالي إلى التعليمة، فضعها في ملف مُصدَّر بإصدارات.
 
-## Imports and AGENTS.md
+## الاستيراد و AGENTS.md
 
-Claude Code supports imports with `@path` references. As of the current
-documentation, Claude Code does not read [`AGENTS.md`](https://agents.md/) directly. If a repository uses `AGENTS.md`, create a `CLAUDE.md` that imports it:
+يدعم Claude Code الاستيراد بمراجع `@path`. واعتبارًا من التوثيق الحالي، لا يقرأ Claude Code ملف [`AGENTS.md`](https://agents.md/) مباشرةً. وإذا استخدم مستودع `AGENTS.md`، فأنشئ `CLAUDE.md` يستورده:
 
 ```markdown
 @AGENTS.md
 ```
 
-That keeps one shared instruction source without pretending every agent discovers
-files the same way.
+يحافظ ذلك على مصدر تعليمات مشترك واحد دون التظاهر بأن كل وكيل يكتشف الملفات بالطريقة نفسها.
 
 ## .claude/rules
 
-Rules in `.claude/rules/*.md` are useful for scoped context. They can include
-frontmatter such as `paths` so the rule attaches to relevant files.
+القواعد في `.claude/rules/*.md` مفيدة للسياق المُنطَّق. ويمكن أن تتضمن ترويسة مثل `paths` كي ترتبط القاعدة بالملفات ذات الصلة.
 
-Use rules for constraints:
+استخدم القواعد للقيود:
 
 ```markdown
 ---
@@ -59,15 +50,12 @@ API routes must validate input at the boundary and return the shared error
 shape.
 ```
 
-## Skills Versus Rules
+## المهارات مقابل القواعد
 
-Use skills for task-specific workflows. If the instruction has phases, scripts,
-references, or assets, it probably belongs in `.claude/skills/<name>/SKILL.md` instead of a rule.
+استخدم المهارات لسير العمل الخاص بمهمة. وإذا كانت التعليمة لها مراحل وسكربتات ومراجع وموجودات، فالأرجح أن موضعها `.claude/skills/<name>/SKILL.md` لا قاعدة.
 
-Rules shape the session. Skills run a workflow.
+القواعد تُشكّل الجلسة. والمهارات تشغّل سير عمل.
 
-## Auto Memory
+## الذاكرة التلقائية
 
-Auto memory is Claude-written and can help carry preferences forward, but it
-should not become the only place important project behavior lives. If an auto
-memory captures a real team decision, move that decision into a versioned file.
+الذاكرة التلقائية يكتبها Claude وقد تساعد في نقل التفضيلات إلى الأمام، لكن ينبغي ألا تصير المكان الوحيد الذي يسكن فيه سلوك مشروع مهم. وإذا التقطت ذاكرة تلقائية قرارًا حقيقيًا للفريق، فانقل ذلك القرار إلى ملف مُصدَّر بإصدارات.

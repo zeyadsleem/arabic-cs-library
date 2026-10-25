@@ -1,16 +1,16 @@
 ---
-title: "Referential Equality"
-lang: en
+title: "مساواة المراجع"
+lang: ar
 source: "https://stevekinney.com/courses/testing/beyond-strict-equality"
 ---
 
-Most of us have been living in the “everything should be immutable” world long enough to know that there is a difference between comparing objects by reference and comparing it with object that *looks* the same in terms of its value, but has a difference reference in memory.
+عاش معظمنا في عالم «يجب أن يكون كل شيء غير قابل للتغيير» بما يكفي لنعرف أن هناك فرقًا بين مقارنة الكائنات بالمرجع ومقارنتها بكائن *يبدو* مماثلًا من حيث قيمته، لكن له مرجع مختلف في الذاكرة.
 
-## toBe
+## toBe {#tobe}
 
-So far, we’re only used `.toBe`, which checks for strict equality (e.g. `===` or `Object.is`).
+حتى الآن، استخدمنا فقط `.toBe`، الذي يتحقّق من المساواة الصارمة (أي `===` أو `Object.is`).
 
-This works like we expect for simple types:
+هذا يعمل كما نتوقّع للأنواع البسيطة:
 
 ```typescript
 test('strings should be strictly equal', () => {
@@ -40,7 +40,7 @@ test('BigInts should be strickly equal', () => {
 });
 ```
 
-But, things get a little trickier when comparing objects (arrays *and* functions are objects in JavaScript).
+لكن الأمور تصير أكثر تعقيدًا قليلًا عند مقارنة الكائنات (المصفوفات *والدوال* كائنات في JavaScript).
 
 ```typescript
 describe('toBe', () => {
@@ -58,9 +58,9 @@ describe('toBe', () => {
 });
 ```
 
-## toEqual
+## toEqual {#toequal}
 
-Consider this function:
+انظر إلى هذه الدالة:
 
 ```javascript
 export const generateFibonacci = (n) => {
@@ -74,7 +74,7 @@ export const generateFibonacci = (n) => {
 };
 ```
 
-This seems like something I’d like to test, right? Here is the issue, this otherwise wonderful test will blow up in my face.
+يبدو هذا شيئًا أود اختباره، أليس كذلك؟ المشكلة هنا أن هذا الاختبار الرائع في ما عدا ذلك سينفجر في وجهي.
 
 ```javascript
 it('should generate fibonacci sequence', () => {
@@ -83,13 +83,13 @@ it('should generate fibonacci sequence', () => {
 });
 ```
 
-And like, Vitest knows that they serialize to the same thing. But it’s forcing us to be more specific. Instead, when we’re comparing two objects that are not referentially equal, we can use `toEqual`. I’m just going to [quote the documentation](https://vitest.dev/api/expect.html#toequal) for a hot minute:
+وVitest يعرف أنهما يُسلسَلان إلى الشيء نفسه. لكنه يجبرنا على أن نكون أكثر تحديدًا. بدلًا من ذلك، حين نقارن كائنين غير متساويين بالمرجع، يمكننا استخدام `toEqual`. سأقتبس [من التوثيق](https://vitest.dev/api/expect.html#toequal) لدقيقة سريعة:
 
-> **Naming Things is Hard**
+> **تسمية الأشياء صعبة**
 >
-> `toEqual` asserts if actual value is equal to received one or has the same structure, if it is an object (compares them recursively).
+> يؤكّد `toEqual` ما إذا كانت القيمة الفعلية مساوية للقيمة المستلمة أو لها البنية نفسها، إن كانت كائنًا (يقارنهما تكراريًا).
 
-Let’s look at another example:
+لننظر إلى مثال آخر:
 
 ```typescript
 describe('toEqual', () => {
@@ -116,14 +116,14 @@ describe('toEqual', () => {
 });
 ```
 
-## toEqual vs. toStrictEqual
+## toEqual مقابل toStrictEqual
 
-`toStrictEqual` is a little bit more… strict.
+`toStrictEqual` أكثر… صرامة بقليل.
 
-- `{ a: 1, b: undefined }` and `{ a: 1 }` are equal but not *strictly* equal.
-- A object literal and a class instance with the exact same properties are also not strictly equal.
+- `{ a: 1, b: undefined }` و`{ a: 1 }` متساويان لكنهما غير متساويين *تمامًا*.
+- كائن حرفي (object literal) ونسخة صنف (class instance) لهما الخصائص نفسها تمامًا غير متساويين صرامةً أيضًا.
 
-Here are some tests that you can review that might help clarify the difference. You can also play around with these tests in `examples/strictly-speaking/strictly-speaking.test.js`.
+إليك بعض الاختبارات التي يمكنك مراجعتها وقد تساعد في توضيح الفرق. يمكنك أيضًا أن تجرّب هذه الاختبارات في `examples/strictly-speaking/strictly-speaking.test.js`.
 
 ```javascript
 class Person {
@@ -157,9 +157,9 @@ test('instances are not strictly equal to object literals with the same properti
 });
 ```
 
-## Further Reading
+## قراءات إضافية
 
-Here are some assertions that you *may* want to consider:
+إليك بعض التحقّقات التي *قد* ترغب في أخذها بعين الاعتبار:
 
 - [`toBe`](https://vitest.dev/api/expect.html#tobe)
 - [`toBeCloseTo`](https://vitest.dev/api/expect.html#tobecloseto)
@@ -169,7 +169,7 @@ Here are some assertions that you *may* want to consider:
 - [`toThrow`](https://vitest.dev/api/expect.html#tothrow)
 - [`toThrowError`](https://vitest.dev/api/expect.html#tothrowerror)
 
-You can see the full API for `expect` here:
+يمكنك رؤية واجهة `expect` الكاملة هنا:
 
-- [Vitest’s Expect API](https://vitest.dev/api/expect.html).
-- [Jest’s Expect API](https://jestjs.io/docs/expect)
+- [واجهة Expect في Vitest](https://vitest.dev/api/expect.html).
+- [واجهة Expect في Jest](https://jestjs.io/docs/expect)

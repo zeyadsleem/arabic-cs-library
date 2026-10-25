@@ -1,16 +1,16 @@
 ---
-title: "Advanced Debugging Techniques"
-lang: en
+title: "تقنيات تنقيح متقدّمة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/advanced-debugging-techniques"
 ---
 
-## Conditional Breakpoints
+## نقاط التوقّف الشرطية
 
-Conditional breakpoints allow you to pause execution only when a specific condition is met. This is incredibly useful when you need to investigate a bug that only occurs under certain circumstances, saving you from stepping through irrelevant code.
+تتيح لك نقاط التوقّف الشرطية إيقاف التنفيذ فقط عند تحقّق شرط محدّد. وهذا مفيد للغاية حين تحتاج إلى التحقيق في خطأ لا يظهر إلا في ظروف معيّنة، فيغني عن التقدّم سطرًا بسطر عبر شيفرة لا علاقة لها بالمشكلة.
 
-To set a conditional breakpoint, right-click on an existing breakpoint (or in the left gutter where breakpoints are placed) and choose “Edit Breakpoint…“. Then, select “Expression” from the dropdown. Enter a JavaScript expression that evaluates to `true` or `false`. The breakpoint will only trigger if the expression is `true`.
+لضبط نقطة توقّف شرطية، انقر بزر الفأرة الأيمن على نقطة توقّف قائمة (أو في الهامش الأيسر حيث توضع نقاط التوقّف) واختر “Edit Breakpoint…“. ثم اختر “Expression” من القائمة المنسدلة. وأدخل تعبير JavaScript يُقيَّم إلى `true` أو `false`. ولن تُفعَّل نقطة التوقّف إلا إذا كان التعبير `true`.
 
-For example, imagine you’re debugging a loop and only want to pause when a variable `i` is greater than 100 and a variable `data[i].status` is equal to “error”:
+فمثلًا، تخيّل أنك تنقّح حلقة ولا تريد التوقّف إلا عندما يكون المتغيّر `i` أكبر من 100 والمتغيّر `data[i].status` مساويًا لـ “error”:
 
 ```typescript
 // Your code
@@ -22,13 +22,13 @@ for (let i = 0; i < data.length; i++) {
 i > 100 && data[i].status === 'error';
 ```
 
-The debugger will now only pause *inside* the loop when *both* of those conditions are true. This is significantly more efficient than manually stepping through the loop hundreds of times.
+لن يتوقّف المُنقّح الآن إلا *داخل* الحلقة عندما يكون *كلا* الشرطين صحيحًا. وهذا أكفأ بكثير من التقدّم يدويًا عبر الحلقة مئات المرّات.
 
-## Logpoints vs. console.log: A Direct Comparison
+## Logpoints مقابل console.log: مقارنة مباشرة
 
-Logpoints and `console.log` statements both help you trace program execution and inspect values, but they differ significantly in how they work and when to use them.
+يساعدك كلٌّ من Logpoints وعبارات `console.log` على تتبّع تنفيذ البرنامج وفحص القيم، لكنهما يختلفان اختلافًا كبيرًا في طريقة عملهما ووقت استخدام كلٍّ منهما.
 
-### Traditional console.log Approach
+### المقاربة التقليدية بـ console.log
 
 ```javascript
 function processData(item) {
@@ -41,7 +41,7 @@ function processData(item) {
 }
 ```
 
-### Logpoint Approach
+### مقاربة Logpoint
 
 ```javascript
 function processData(item) {
@@ -56,35 +56,35 @@ function processData(item) {
 }
 ```
 
-### Key Differences
+### الفروق الجوهرية
 
-| Feature | console.log | Logpoints |
+| الميزة | console.log | Logpoints |
 | --- | --- | --- |
-| **Code Modification** | Requires changing source code | No source code changes needed |
-| **Version Control** | Changes show up in commits | Invisible to version control |
-| **Deployment** | Must be removed or commented out before production | Automatically removed when debugging ends |
-| **Conditional Logging** | Requires explicit if statements | Built-in condition expression support |
-| **Performance Impact** | Always executes, even in production | Only active during debugging |
-| **Persistence** | Remains in code until manually removed | Persists between debugging sessions but doesn’t affect production |
-| **Collaboration** | Teammates see your debug logs | Doesn’t affect teammates’ experience |
+| **تعديل الشيفرة** | يتطلّب تغيير الشيفرة المصدرية | لا حاجة إلى أي تغيير في الشيفرة المصدرية |
+| **التحكّم في الإصدارات** | تظهر التغييرات في الإيداعات | غير مرئية لنظام التحكّم في الإصدارات |
+| **النشر** | يجب حذفها أو تحويلها إلى تعليقات قبل الإنتاج | تُزال تلقائيًا عند انتهاء التنقيح |
+| **التسجيل الشرطي** | يتطلّب عبارات if صريحة | دعم مدمج لتعبيرات الشروط |
+| **أثر الأداء** | تُنفَّذ دائمًا، حتى في الإنتاج | نشطة أثناء التنقيح فقط |
+| **الاستمرارية** | تبقى في الشيفرة حتى تُحذف يدويًا | تستمر بين جلسات التنقيح لكنها لا تؤثّر في الإنتاج |
+| **التعاون** | يرى زملاؤك سجلات التنقيح الخاصة بك | لا تؤثّر في تجربة زملائك |
 
-### When to Use Each Approach
+### متى تستخدم كل مقاربة
 
-**Use console.log when:**
+**استخدم console.log عندما:**
 
-- You need logs in production for monitoring/auditing
-- You want team members to see the same logs
-- You’re using it as part of your permanent logging strategy
+- تحتاج إلى سجلات في الإنتاج لأغراض المراقبة أو التدقيق
+- تريد أن يرى أعضاء الفريق السجلات نفسها
+- تستخدمه كجزء من استراتيجيتك الدائمة للتسجيل
 
-**Use Logpoints when:**
+**استخدم Logpoints عندما:**
 
-- You need temporary debugging output
-- You’re exploring unfamiliar code
-- You’re debugging third-party libraries
-- You want to avoid cluttering commits with debugging code
-- You need conditional debugging output without modifying code
+- تحتاج إلى مخرَج تنقيح مؤقّت
+- تستكشف شيفرة غير مألوفة
+- تنقّح مكتبات طرف ثالث
+- تريد تجنّب إثقال الإيداعات بشيفرة تنقيح
+- تحتاج إلى مخرَج تنقيح شرطي من دون تعديل الشيفرة
 
-To add a logpoint, right-click in the breakpoint gutter and choose “Add Logpoint…“. Enter a message to log. You can use curly braces `{}` to embed expressions within the log message, similar to template literals.
+لإضافة logpoint، انقر بزر الفأرة الأيمن في هامش نقاط التوقّف واختر “Add Logpoint…“. وأدخل رسالة تُسجَّل. ويمكنك استخدام الأقواس المعقوفة `{}` لتضمين تعبيرات داخل رسالة السجل، على غرار القوالب النصية (template literals).
 
 ```typescript
 // Your code
@@ -96,17 +96,17 @@ function processData(item: any) {
 ('Processing item: {item.id}, name: {item.name}');
 ```
 
-When the logpoint is hit, the message will be printed to the Debug Console, including the evaluated values of `item.id` and `item.name`.
+عند بلوغ نقطة الـ logpoint، تُطبع الرسالة في Debug Console، مع القيم المُقيَّمة لـ `item.id` و`item.name`.
 
-> **Tip**
+> **نصيحة**
 >
-> Logpoints are incredibly helpful for debugging code that you don’t own or can’t modify directly. They are also excellent for diagnosing issues in production environments where you can’t easily restart the application with modified code.
+> تُعدّ Logpoints مفيدة للغاية لتنقيح شيفرة لا تملكها أو لا تستطيع تعديلها مباشرة. وهي أيضًا ممتازة لتشخيص المشكلات في بيئات الإنتاج حيث لا يمكنك بسهولة إعادة تشغيل التطبيق بشيفرة معدّلة.
 
-## Hit Count Breakpoints
+## نقاط توقّف العدّ التراكمي
 
-Hit count breakpoints allow you to pause execution only after the breakpoint has been hit a specific number of times. This is useful for scenarios where a bug occurs only after a certain number of iterations in a loop or after a function has been called repeatedly.
+تتيح لك نقاط توقّف العدّ التراكمي (hit count breakpoints) إيقاف التنفيذ فقط بعد أن تُصاب نقطة التوقّف عددًا محدّدًا من المرّات. وهذا مفيد في الحالات التي لا يظهر فيها خطأ إلا بعد عدد معيّن من الدورات في حلقة، أو بعد استدعاء دالة مرارًا.
 
-To set a hit count breakpoint, right-click on a breakpoint and choose “Edit Breakpoint…“. Select “Hit Count” from the dropdown. Enter a number. The breakpoint will only trigger after it has been hit that many times.
+لضبط نقطة توقّف عدّ تراكمي، انقر بزر الفأرة الأيمن على نقطة توقّف واختر “Edit Breakpoint…“. واختر “Hit Count” من القائمة المنسدلة. وأدخل رقمًا. ولن تُفعَّل نقطة التوقّف إلا بعد أن تُصاب ذلك العدد من المرّات.
 
 ```typescript
 // Your code
@@ -116,33 +116,33 @@ for (let i = 0; i < 1000; i++) {
 }
 ```
 
-The debugger will pause inside the loop only on the 500th iteration.
+سيتوقّف المُنقّح داخل الحلقة عند الدورة الـ500 فقط.
 
-You can also use comparison operators: `>` (greater than), `>=` (greater or equal), `<` (less than), `<=` (less than or equal), or `=` (equal). For example, `>10` will trigger the breakpoint after 10 hits.
+ويمكنك أيضًا استخدام عوامل المقارنة: `>` (أكبر من)، و`>=` (أكبر أو يساوي)، و`<` (أصغر من)، و`<=` (أصغر أو يساوي)، أو `=` (يساوي). فمثلًا، `>10` سيُفعّل نقطة التوقّف بعد 10 إصابات.
 
-## Data Breakpoints: Practical Approaches
+## نقاط توقّف البيانات: مقاربات عملية
 
-Data breakpoints (also known as “watchpoints”) are designed to pause execution when the value of a specific variable *changes*. This is exceptionally powerful for tracking down unexpected modifications to your data.
+صُمّمت نقاط توقّف البيانات (المعروفة أيضًا بـ“watchpoints”) لإيقاف التنفيذ عندما *تتغيّر* قيمة متغيّر محدّد. وهي قوية استثنائيًا لتتبّع التعديلات غير المتوقّعة على بياناتك.
 
-### Language Support for Data Breakpoints
+### دعم اللغات لنقاط توقّف البيانات
 
-The level of data breakpoint support in Visual Studio Code varies by language:
+يتفاوت مستوى دعم نقاط توقّف البيانات في Visual Studio Code حسب اللغة:
 
-| Language | Support Level | Notes |
+| اللغة | مستوى الدعم | ملاحظات |
 | --- | --- | --- |
-| **JavaScript/TypeScript** | Limited | Basic support for property changes on global objects |
-| **C/C++** | Full | Comprehensive support for memory addresses |
-| **C#/.NET** | Full | Robust property change detection |
-| **Java** | Moderate | Support depends on Java extension version |
-| **Python** | Limited | Basic support in some debugger extensions |
+| **JavaScript/TypeScript** | محدود | دعم أساسي لتغيّرات الخصائص على الكائنات العامة |
+| **C/C++** | كامل | دعم شامل لعناوين الذاكرة |
+| **C#/.NET** | كامل | كشف قوي لتغيّرات الخصائص |
+| **Java** | متوسّط | يعتمد الدعم على إصدار إضافة Java |
+| **Python** | محدود | دعم أساسي في بعض إضافات التنقيح |
 
-### C# Example: Robust Data Breakpoints
+### مثال C#: نقاط توقّف بيانات قوية
 
-In C#, data breakpoints are well-supported. When debugging a C# application:
+في C#، تُدعَم نقاط توقّف البيانات جيدًا. فعند تنقيح تطبيق C#:
 
-1. Run the application in debug mode
-2. When paused, find a variable in the Variables panel
-3. Right-click and select “Break When Value Changes”
+1. شغّل التطبيق في وضع التنقيح
+2. عند التوقّف، اعثر على متغيّر في لوحة Variables
+3. انقر بزر الفأرة الأيمن واختر “Break When Value Changes”
 
 ```csharp
 // C# Example
@@ -156,11 +156,11 @@ var user = new User { Name = "John", Age = 30 };
 UpdateUserData(user);  // Set a data breakpoint on user.Age
 ```
 
-The debugger will automatically pause when the `Age` property changes, showing you exactly where the modification occurs.
+سيتوقّف المُنقّح تلقائيًا عند تغيّر خاصية `Age`، ويُظهر لك بالضبط موضع التعديل.
 
-### C++ Example: Memory-Level Monitoring
+### مثال C++: مراقبة على مستوى الذاكرة
 
-C++ provides low-level support through memory watchpoints:
+يوفّر C++ دعمًا منخفض المستوى عبر نقاط مراقبة الذاكرة:
 
 ```cpp
 // C++ Example
@@ -175,11 +175,11 @@ Product product{1, 9.99};
 UpdateInventory(&product);
 ```
 
-The C++ debugger can monitor the memory address of `product.price` and break precisely when that memory location changes.
+يستطيع مُنقّح C++ مراقبة عنوان الذاكرة الخاص بـ `product.price` والتوقّف بدقّة عند تغيّر موضع الذاكرة ذلك.
 
-### JavaScript Workarounds: Proxy Objects
+### حلول بديلة في JavaScript: كائنات Proxy
 
-While native data breakpoints have limited support in JavaScript, you can use JavaScript’s `Proxy` object to achieve similar functionality:
+مع أن دعم نقاط توقّف البيانات الأصلية محدود في JavaScript، يمكنك استخدام كائن `Proxy` في JavaScript لتحقيق وظائف مشابهة:
 
 ```javascript
 // Create a monitored version of your object
@@ -204,11 +204,11 @@ const monitoredUser = createMonitored(user, (obj, prop, value) => {
 monitoredUser.score = 150; // Will trigger the debugger
 ```
 
-This approach lets you create a “debug version” of an object that will automatically pause execution when any property changes.
+تتيح لك هذه المقاربة إنشاء “نسخة تنقيح” من كائن يُوقف التنفيذ تلقائيًا عند تغيّر أي خاصية.
 
-### Alternative: Change Tracking with Snapshots
+### بديل آخر: تتبّع التغييرات عبر اللقطات
 
-For complex objects where the proxy approach isn’t practical, you can implement manual change tracking:
+بالنسبة إلى الكائنات المعقّدة التي لا تناسبها مقاربة الـ proxy، يمكنك تنفيذ تتبّع يدوي للتغييرات:
 
 ```javascript
 function trackChanges(obj, label = 'Object') {
@@ -228,43 +228,43 @@ function processData(data) {
 }
 ```
 
-### When to Use Data Breakpoints
+### متى تستخدم نقاط توقّف البيانات
 
-Data breakpoints are particularly useful for debugging:
+نقاط توقّف البيانات مفيدة بوجه خاص في تنقيح:
 
-1. **Unexpected state changes**: When a value is modified but you don’t know where
-2. **Race conditions**: When multiple parts of code might be changing the same data
-3. **Third-party library interactions**: When external code modifies your objects
-4. **Complex object mutations**: When tracking changes deep in object hierarchies
+1. **تغيّرات الحالة غير المتوقّعة**: عندما تُعدَّل قيمة لكنك لا تعرف أين
+2. **حالات التسابق (race conditions)**: عندما قد تكون أجزاء متعدّدة من الشيفرة تغيّر البيانات نفسها
+3. **التفاعلات مع مكتبات الطرف الثالث**: عندما تعدّل شيفرة خارجية كائناتك
+4. **تحوّلات الكائنات المعقّدة**: عند تتبّع التغييرات في أعماق تسلسلات الكائنات
 
-> **Tip**
+> **نصيحة**
 >
-> Even in languages with limited data breakpoint support, the combination of conditional breakpoints, logpoints, and custom proxy objects can provide similar functionality with a bit more setup.
+> حتى في اللغات ذات الدعم المحدود لنقاط توقّف البيانات، يمكن أن يوفّر الجمع بين نقاط التوقّف الشرطية والـ logpoints وكائنات proxy المخصّصة وظائف مشابهة مع قليل من الإعداد الإضافي.
 
-## Function Breakpoints
+## نقاط توقّف الدوال
 
-Function breakpoints allow you to pause execution whenever a specific function is *called*, regardless of where the call originates. This is extremely useful when you want to understand how a particular function is being used throughout your application, especially in large codebases or when dealing with callbacks or event handlers.
+تتيح لك نقاط توقّف الدوال إيقاف التنفيذ كلما *استُدعيت* دالة محدّدة، بصرف النظر عن موضع الاستدعاء. وهذا مفيد للغاية حين تريد فهم كيف تُستخدم دالة معيّنة في أنحاء تطبيقك، وخصوصًا في قواعد الشيفرة الكبيرة أو عند التعامل مع دوال الاستدعاء أو معالجات الأحداث.
 
-To create a function breakpoint, go to the “Breakpoints” section in the Debug view. Click the ”+” button and choose “Function Breakpoint”. Enter the name of the function. You can also specify a condition or hit count for function breakpoints.
+لإنشاء نقطة توقّف دالة، انتقل إلى قسم “Breakpoints” في عرض Debug. وانقر على زر ”+” واختر “Function Breakpoint”. ثم أدخل اسم الدالة. ويمكنك أيضًا تحديد شرط أو عدّ تراكمي لنقاط توقّف الدوال.
 
 ```typescript
 // Function Breakpoint:
 myFunction;
 ```
 
-The debugger will now pause at the beginning of `myFunction` every time it’s called.
+سيتوقّف المُنقّح الآن عند بداية `myFunction` في كل مرة تُستدعى فيها.
 
-## Remote Debugging
+## التنقيح عن بُعد
 
-Remote debugging allows you to debug an application running on a different machine, in a virtual machine, or inside a Docker container. This is essential for debugging server-side applications, cloud deployments, or situations where the execution environment differs from your development machine.
+يتيح لك التنقيح عن بُعد تنقيح تطبيق يعمل على جهاز مختلف، أو داخل جهاز افتراضي، أو داخل حاوية Docker. وهذا ضروري لتنقيح تطبيقات جهة الخادم، أو عمليات النشر السحابية، أو الحالات التي تختلف فيها بيئة التنفيذ عن جهاز التطوير لديك.
 
-Visual Studio Code supports remote debugging through various debugger extensions and configurations. The general approach involves:
+يدعم Visual Studio Code التنقيح عن بُعد عبر إضافات وإعدادات تنقيح متنوّعة. وتتضمّن المقاربة العامة ما يلي:
 
-1. **Setting up the remote environment:** Ensure the remote environment has the necessary debugging tools installed (e.g., the Node.js debugger, Python debugger, etc.).
-2. **Configuring the debugger:** Create a `launch.json` configuration with the `request` type set to `"attach"`. You’ll need to specify the host, port, and other connection details for the remote debugger.
-3. **Connecting to the remote process:** Start the application in debug mode on the remote machine, and then use Visual Studio Code’s Debug view to connect to it.
+1. **تهيئة البيئة البعيدة:** تأكّد من تثبيت أدوات التنقيح اللازمة في البيئة البعيدة (مثل مُنقّح Node.js، ومُنقّح Python، وغيرها).
+2. **ضبط المُنقّح:** أنشئ إعدادًا في `launch.json` يكون فيه نوع `request` مضبوطًا على `"attach"`. وستحتاج إلى تحديد المضيف والمنفذ وتفاصيل الاتصال الأخرى الخاصة بالمُنقّح البعيد.
+3. **الاتصال بالعملية البعيدة:** شغّل التطبيق في وضع التنقيح على الجهاز البعيد، ثم استخدم عرض Debug في Visual Studio Code للاتصال به.
 
-For example, to debug a Node.js application running remotely:
+فمثلًا، لتنقيح تطبيق Node.js يعمل عن بُعد:
 
 JSON
 
@@ -287,7 +287,7 @@ JSON
 }
 ```
 
-On the remote machine, you would start your Node.js application with the `--inspect` flag:
+على الجهاز البعيد، ستشغّل تطبيق Node.js الخاص بك مع العَلَم `--inspect`:
 
 Bash
 
@@ -295,26 +295,26 @@ Bash
 node --inspect=0.0.0.0:9229 index.js  # Allow connections from any IP
 ```
 
-Dev Containers (covered in your previous sections) provide a streamlined way to handle remote debugging within Docker containers, automating much of this setup process.
+توفّر حاويات التطوير Dev Containers (التي تناولناها في أقسامك السابقة) طريقة انسيابية للتعامل مع التنقيح عن بُعد داخل حاويات Docker، إذ تؤتمت كثيرًا من خطوات هذا الإعداد.
 
-## Debugging Tests: Framework-Specific Approaches
+## تنقيح الاختبارات: مقاربات خاصة بكل إطار
 
-Debugging tests is crucial for understanding why they fail and fixing your code or tests accordingly. Visual Studio Code provides comprehensive support for debugging various testing frameworks, allowing you to step through test execution and inspect variables just like any other code.
+تنقيح الاختبارات ضروري لفهم سبب فشلها ولإصلاح شيفرتك أو اختباراتك وفقًا لذلك. ويوفّر Visual Studio Code دعمًا شاملًا لتنقيح مختلف أطر الاختبار، مما يتيح لك التقدّم في تنفيذ الاختبارات سطرًا بسطر وفحص المتغيّرات كما تفعل مع أي شيفرة أخرى.
 
-### Using the Test Explorer UI
+### استخدام واجهة Test Explorer
 
-Visual Studio Code’s Test Explorer provides a unified interface for discovering, viewing, and running tests across different frameworks:
+يوفّر Test Explorer في Visual Studio Code واجهة موحّدة لاكتشاف الاختبارات وعرضها وتشغيلها عبر أطر مختلفة:
 
-1. Install the appropriate test extension for your framework
-2. Open the Testing panel in the sidebar (flask icon)
-3. Tests are automatically discovered and displayed in a tree view
-4. Right-click a test and select “Debug Test” to run it in debug mode
+1. ثبّت إضافة الاختبار المناسبة لإطارك
+2. افتح لوحة Testing في الشريط الجانبي (أيقونة القارورة)
+3. تُكتشف الاختبارات تلقائيًا وتُعرض في عرض شجري
+4. انقر بزر الفأرة الأيمن على اختبار واختر “Debug Test” لتشغيله في وضع التنقيح
 
-![Test Explorer showing a tree of tests with debug options]
+![Test Explorer يعرض شجرة اختبارات مع خيارات التنقيح]
 
-### Jest Tests (JavaScript/TypeScript)
+### اختبارات Jest (JavaScript/TypeScript)
 
-For Jest, the most popular JavaScript testing framework:
+بالنسبة إلى Jest، وهو أشهر إطار اختبار في JavaScript:
 
 ```json
 // launch.json
@@ -335,13 +335,13 @@ For Jest, the most popular JavaScript testing framework:
 }
 ```
 
-With this configuration:
+مع هذا الإعداد:
 
-- `--runInBand` ensures tests run sequentially, which is better for debugging
-- `${fileBasename}` runs tests in the current file
-- You can set breakpoints directly in your test or in the code being tested
+- يضمن `--runInBand` تشغيل الاختبارات بالتتابع، وهو أفضل للتنقيح
+- يشغّل `${fileBasename}` الاختبارات في الملف الحالي
+- يمكنك ضبط نقاط التوقّف مباشرة في اختبارك أو في الشيفرة التي تُختبر
 
-For a more interactive approach, install the “Jest Runner” extension, which adds inline “Debug” buttons above each test:
+ولمقاربة أكثر تفاعلًا، ثبّت إضافة “Jest Runner” التي تضيف أزرار “Debug” مضمّنة فوق كل اختبار:
 
 ```javascript
 // Example Jest test with breakpoint
@@ -357,9 +357,9 @@ test('calculates total correctly', () => {
 });
 ```
 
-### Mocha Tests (JavaScript/TypeScript)
+### اختبارات Mocha (JavaScript/TypeScript)
 
-For Mocha, another popular JavaScript testing framework:
+بالنسبة إلى Mocha، وهو إطار اختبار آخر شائع في JavaScript:
 
 ```json
 // launch.json
@@ -378,9 +378,9 @@ For Mocha, another popular JavaScript testing framework:
 }
 ```
 
-### Python Tests (pytest)
+### اختبارات Python (pytest)
 
-For Python using pytest:
+بالنسبة إلى Python باستخدام pytest:
 
 ```json
 // launch.json
@@ -399,7 +399,7 @@ For Python using pytest:
 }
 ```
 
-The “Python” extension for Visual Studio Code adds code lenses above test functions with “Run Test” and “Debug Test” buttons:
+تضيف إضافة “Python” في Visual Studio Code عدسات شيفرة فوق دوال الاختبار تحمل زرّي “Run Test” و“Debug Test”:
 
 ```python
 # Example pytest test
@@ -412,9 +412,9 @@ def test_calculate_area():
     assert area == 50
 ```
 
-### .NET Tests (xUnit, NUnit, MSTest)
+### اختبارات .NET (xUnit وNUnit وMSTest)
 
-The C# extension provides excellent built-in support for .NET test frameworks:
+توفّر إضافة C# دعمًا مدمجًا ممتازًا لأطر اختبار .NET:
 
 ```json
 // launch.json
@@ -436,55 +436,55 @@ The C# extension provides excellent built-in support for .NET test frameworks:
 }
 ```
 
-### Debugging UI Component Tests
+### تنقيح اختبارات مكوّنات الواجهة
 
-For component tests in frameworks like React, Vue, or Angular:
+بالنسبة إلى اختبارات المكوّنات في أطر مثل React أو Vue أو Angular:
 
-1. **React Testing Library / Enzyme**: Use Jest configuration but add the `--env=jsdom` argument
-  - Use Jest configuration but add the `--env=jsdom` argument
-2. **Cypress Component Tests**: Use the Cypress extension to open Cypress in debug mode Set breakpoints in your component code
-  - Use the Cypress extension to open Cypress in debug mode
-  - Set breakpoints in your component code
-3. **Storybook Tests**: Debug the Storybook development server using the Chrome debugger
-  - Debug the Storybook development server using the Chrome debugger
+1. **React Testing Library / Enzyme**: استخدم إعداد Jest لكن أضف الوسيطة `--env=jsdom`
+   - استخدم إعداد Jest لكن أضف الوسيطة `--env=jsdom`
+2. **اختبارات مكوّنات Cypress**: استخدم إضافة Cypress لفتح Cypress في وضع التنقيح، واضبط نقاط التوقّف في شيفرة مكوّنك
+   - استخدم إضافة Cypress لفتح Cypress في وضع التنقيح
+   - اضبط نقاط التوقّف في شيفرة مكوّنك
+3. **اختبارات Storybook**: انقّح خادم تطوير Storybook باستخدام مُنقّح Chrome
+   - انقّح خادم تطوير Storybook باستخدام مُنقّح Chrome
 
-### Tips for Debugging Tests
+### نصائح لتنقيح الاختبارات
 
-1. **Debug only failing tests**: Most test frameworks allow you to run only tests that match a pattern <code><span class="line"><span style="color:#637777;font-style:italic"># Jest example</span></span>
+1. **اقتصر على الاختبارات الفاشلة في التنقيح**: تتيح لك معظم أطر الاختبار تشغيل الاختبارات المطابقة لنمط فقط <code><span class="line"><span style="color:#637777;font-style:italic"># Jest example</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">jest</span><span style="color:#82AAFF"> -t</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">calculates total</span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --runInBand</span></span></code>
-2. **Use watch mode with breakpoints**: Start test runner in watch mode and set breakpoints to automatically debug on changes
-3. **Debug both test and implementation**: Set breakpoints in both test files and the code under test to understand the full flow
-4. **Use the Visual Studio Code Debug Console**: Evaluate expressions and modify values during test execution
-5. **Mock dependencies**: Isolate your tests by setting up mocks in the Debug Console during a paused execution
+2. **استخدم وضع المراقبة مع نقاط التوقّف**: شغّل مُشغّل الاختبارات في وضع المراقبة واضبط نقاط التوقّف للتنقيح تلقائيًا عند التغييرات
+3. **انقّح الاختبار والتنفيذ معًا**: اضبط نقاط التوقّف في ملفات الاختبار وفي الشيفرة قيد الاختبار لفهم المسار كاملًا
+4. **استخدم Debug Console في Visual Studio Code**: قيّم التعبيرات وعدّل القيم أثناء تنفيذ الاختبار
+5. **حاكِ الاعتمادات**: اعزل اختباراتك بتهيئة بدائل محاكاة في Debug Console أثناء تنفيذ متوقّف
 
-## Inspecting Variables
+## فحص المتغيّرات
 
-The “Variables” pane in the Debug view is your primary tool for inspecting the state of your application during debugging. It shows:
+لوحة “Variables” في عرض Debug هي أداتك الأساسية لفحص حالة تطبيقك أثناء التنقيح. وهي تعرض:
 
-- **Local Variables:** Variables within the current scope (function or block).
-- **Global Variables:** Variables accessible from anywhere in your code.
-- **Closures:** Variables from outer scopes that are accessible within the current function (relevant for JavaScript and other languages with closures).
-- **Call Stack:** The sequence of function calls that led to the current point of execution. You can click on different frames in the call stack to inspect the variables in those scopes.
+- **المتغيّرات المحلية:** المتغيّرات داخل النطاق الحالي (دالة أو كتلة).
+- **المتغيّرات العامة:** المتغيّرات المتاحة من أي موضع في شيفرتك.
+- **الإغلاقات (Closures):** متغيّرات من نطاقات خارجية يمكن الوصول إليها داخل الدالة الحالية (وهذا مهم في JavaScript واللغات الأخرى التي تملك إغلاقات).
+- **مكدّس الاستدعاءات (Call Stack):** تسلسل استدعاءات الدوال الذي أدّى إلى نقطة التنفيذ الحالية. ويمكنك النقر على إطارات مختلفة في مكدّس الاستدعاءات لفحص المتغيّرات في تلك النطاقات.
 
-You can expand objects and arrays to see their properties and elements. You can also modify the values of variables directly in the Variables pane (in most cases) to test different scenarios.
+ويمكنك توسيع الكائنات والمصفوفات لرؤية خصائصها وعناصرها. كما يمكنك تعديل قيم المتغيّرات مباشرة في لوحة Variables (في معظم الحالات) لاختبار سيناريوهات مختلفة.
 
-## Watch Expressions
+## تعبيرات المراقبة
 
-Watch expressions allow you to continuously monitor the values of specific expressions or variables during debugging. These expressions are re-evaluated every time the debugger pauses, providing a dynamic view of your data.
+تتيح لك تعبيرات المراقبة مراقبة قيم تعبيرات أو متغيّرات محدّدة باستمرار أثناء التنقيح. وتُعاد تقييم هذه التعبيرات في كل مرة يتوقّف فيها المُنقّح، مما يوفّر عرضًا ديناميكيًا لبياناتك.
 
-To add a watch expression, go to the “Watch” section in the Debug view and click the ”+” button. Enter a JavaScript expression. The expression will be evaluated and its value displayed.
+لإضافة تعبير مراقبة، انتقل إلى قسم “Watch” في عرض Debug وانقر على زر ”+”. وأدخل تعبير JavaScript. وسيُقيَّم التعبير وتُعرض قيمته.
 
-For example, you might watch:
+فمثلًا، قد تراقب:
 
-- `myVariable`: To see the current value of a variable.
-- `myArray.length`: To track the size of an array.
-- `myObject.property1 + myObject.property2`: To see the result of a calculation.
-- `typeof myVariable`: To track the data type.
+- `myVariable`: لرؤية القيمة الحالية لمتغيّر.
+- `myArray.length`: لتتبّع حجم مصفوفة.
+- `myObject.property1 + myObject.property2`: لرؤية نتيجة حساب.
+- `typeof myVariable`: لتتبّع نوع البيانات.
 
-Watch expressions are incredibly valuable for tracking down complex state changes and understanding how your data evolves during execution.
+تعبيرات المراقبة ذات قيمة كبيرة لتتبّع تغيّرات الحالة المعقّدة وفهم كيف تتطوّر بياناتك أثناء التنفيذ.
 
-> **Tip**
+> **نصيحة**
 >
-> Combine watch expressions with conditional breakpoints for even more targeted debugging. For example, you could set a conditional breakpoint that only triggers when a watched expression meets a certain condition.
+> اجمع تعبيرات المراقبة مع نقاط التوقّف الشرطية لتنقيح أكثر استهدافًا. فمثلًا، يمكنك ضبط نقطة توقّف شرطية لا تُفعَّل إلا عندما يستوفي تعبير مراقَب شرطًا معيّنًا.
 
-By mastering these advanced debugging techniques, you’ll be well-equipped to tackle even the most challenging debugging situations in Visual Studio Code. Remember to experiment with these features and find the workflow that best suits your needs. Happy debugging!
+بإتقانك هذه التقنيات المتقدّمة في التنقيح، ستكون مجهّزًا جيدًا للتعامل حتى مع أصعب حالات التنقيح في Visual Studio Code. وتذكّر أن تجرّب هذه الميزات وأن تجد سير العمل الأنسب لاحتياجاتك. تنقيحًا ممتعًا!

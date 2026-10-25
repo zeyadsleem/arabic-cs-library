@@ -1,16 +1,16 @@
 ---
-title: "Enterprise UI"
-lang: en
+title: "واجهات المؤسسات (Enterprise UI)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui"
 ---
 
-This course teaches senior frontend engineers how to scale applications beyond a single-team SPA—covering composition patterns (microfrontends, monorepos, server components), operational infrastructure (TypeScript scaling, architectural linting, CI/CD, testing), and migration strategies (strangler fig, codemods). Students build and evolve a real codebase across nine hands-on exercises, experiencing the trade-offs firsthand so they can make informed architectural decisions for their own organizations.
+تُعلِّم هذه الدورة مهندسي الواجهة الأمامية من ذوي الخبرة كيفية توسيع نطاق التطبيقات إلى ما يتجاوز تطبيق صفحة واحدة (SPA) يُطوّره فريق واحد — بما يشمل أنماط التركيب (الواجهات المصغّرة microfrontends، والمستودعات الأحادية monorepos، ومكوّنات الخادم server components)، والبنية التحتية التشغيلية (توسيع TypeScript، والفحص المعماري architectural linting، وCI/CD، والاختبارات)، واستراتيجيات الترحيل (strangler fig، وcodemods). ويبني الطلاب قاعدة شيفرة حقيقية ويطوّرونها خلال تسع تمارين تطبيقية، فيخوضون المقايضات بأنفسهم، ليتمكنوا من اتخاذ قرارات معمارية مدروسة لمنظماتهم.
 
-## Things to Install
+## ما يلزم تثبيته
 
-Other than the project repositories below, the *only* thing you need to install is [pnpm](https://pnpm.io/)
+باستثناء مستودعات المشروع الواردة أدناه، فإن الشيء *الوحيد* الذي تحتاج إلى تثبيته هو [pnpm](https://pnpm.io/)
 
-## Project Repositories
+## مستودعات المشروع
 
-- [Federation Repository](https://github.com/stevekinney/enterprise-ui-federation)
-- [Workshop Repository](https://github.com/stevekinney/enterprise-ui-workshop)
+- [مستودع Federation](https://github.com/stevekinney/enterprise-ui-federation)
+- [مستودع الورشة](https://github.com/stevekinney/enterprise-ui-workshop)

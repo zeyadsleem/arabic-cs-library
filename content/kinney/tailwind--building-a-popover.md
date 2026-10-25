@@ -1,10 +1,10 @@
 ---
-title: "Popover"
-lang: en
+title: "بناء نافذة منبثقة (Popover)"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-popover"
 ---
 
-Let’s start with our basic HTML structure using the native Popover API.
+لنبدأ ببنية HTML الأساسية باستخدام Popover API الأصلية.
 
 ```html
 <div>
@@ -17,11 +17,11 @@ Let’s start with our basic HTML structure using the native Popover API.
 </div>
 ```
 
-This uses the native HTML Popover API where `popovertarget` connects the trigger button to the popover element by ID. The browser handles all the show/hide logic automatically—we just need to style it beautifully with Tailwind.
+يستخدم هذا Popover API الأصلية في HTML حيث يربط `popovertarget` زر التشغيل بعنصر النافذة المنبثقة عبر المعرّف (ID). ويتولّى المتصفّح منطق الإظهار والإخفاء تلقائيًا—نحن نحتاج فقط إلى تنسيقه بجمال مع Tailwind.
 
-## Styling the Trigger Button
+## تنسيق زر التشغيل
 
-First, let’s apply professional button styling to make our trigger look clickable and polished.
+أولًا، لنطبّق تنسيق أزرار احترافيًا ليجعل زر التشغيل يبدو قابلًا للنقر ومُصقولًا.
 
 ```html
 <div>
@@ -39,23 +39,23 @@ First, let’s apply professional button styling to make our trigger look clicka
 </div>
 ```
 
-Trigger button styling:
+تنسيق زر التشغيل:
 
-- `rounded-md`: 6px border radius for modern appearance
-- `bg-slate-600`: Professional gray background color
-- `px-3 py-2`: 12px horizontal and 8px vertical padding for comfortable touch targets
-- `text-sm font-semibold`: 14px semibold text for clear readability
-- `shadow-xs`: Subtle 1px shadow adds depth
-- `hover:bg-slate-500`: Lighter shade on hover for interactive feedback
-- `focus-visible:outline-*`: Proper keyboard navigation styling
+- `rounded-md`: استدارة حدّ قدرها 6px لمظهر حديث
+- `bg-slate-600`: لون خلفية رمادي احترافي
+- `px-3 py-2`: حشوة أفقية 12px ورأسيًا 8px لاستهدافات لمس مريحة
+- `text-sm font-semibold`: نص بوزن شبه عريض بحجم 14px لوضوح القراءة
+- `shadow-xs`: ظلّ خفيف بسمك 1px يضيف عمقًا
+- `hover:bg-slate-500`: درجة أفتح عند التحويم لتغذية راجعة تفاعلية
+- `focus-visible:outline-*`: تنسيق ملائم للتنقّل بلوحة المفاتيح
 
-This creates a professional trigger button that clearly indicates it’s interactive.
+وهذا ينشئ زر تشغيل احترافيًا يوضّح بجلاء أنّه تفاعلي.
 
-## Positioning Popovers with CSS Anchor Positioning
+## وضع النوافذ المنبثقة عبر CSS Anchor Positioning
 
-**The Problem**: The HTML `popover` attribute moves elements to the top layer, breaking normal CSS positioning (like `absolute top-full left-0`). The popover appears wherever the browser decides to place it, not necessarily near your button.
+**المشكلة**: تنقل سمة `popover` في HTML العناصر إلى الطبقة العلوية (top layer)، فتكسر تموضع CSS المعتاد (مثل `absolute top-full left-0`). وتظهر النافذة المنبثقة حيث يقرّر المتصفّح وضعها، لا بالضرورة بالقرب من زرّك.
 
-**The Solution**: Use CSS Anchor Positioning to explicitly anchor the popover to the button. First, let’s set up Tailwind 4 custom utilities in your CSS:
+**الحل**: استخدم CSS Anchor Positioning لربط النافذة المنبثقة صراحةً بالزر. أولًا، لنجهّز أصناف Tailwind 4 المخصّصة في CSS:
 
 ```css
 @utility anchor-* {
@@ -82,7 +82,7 @@ This creates a professional trigger button that clearly indicates it’s interac
 }
 ```
 
-Now let’s apply anchor positioning to our popover:
+والآن لنطبّق التموضع بالمرساة (anchor positioning) على نافذتنا المنبثقة:
 
 ```html
 <div>
@@ -104,16 +104,16 @@ Now let’s apply anchor positioning to our popover:
 </div>
 ```
 
-Anchor positioning setup:
+إعداد التموضع بالمرساة:
 
-- `anchor-menu-button` on trigger: Creates an anchor named `--menu-button`
-- `anchor-below-menu-button` on popover: Positions the popover below and aligned to the left edge of the anchor
+- `anchor-menu-button` على زر التشغيل: ينشئ مرساة باسم `--menu-button`
+- `anchor-below-menu-button` على النافذة المنبثقة: يضع النافذة المنبثقة أسفل المرساة ومحاذاةً لحافّتها اليسرى
 
-This ensures the popover appears exactly where you want it—directly below the trigger button—regardless of the browser’s default positioning logic.
+وهذا يضمن ظهور النافذة المنبثقة في المكان الذي تريده بالضبط—مباشرةً أسفل زر التشغيل—بغضّ النظر عن منطق التموضع الافتراضي في المتصفّح.
 
-## Creating the Popover Container
+## إنشاء حاوية النافذة المنبثقة
 
-Now let’s style the popover itself to look like a modern dropdown menu with proper visual hierarchy.
+والآن لننسّق النافذة المنبثقة نفسها لتبدو كقائمة منسدلة حديثة بتسلسل بصري صحيح.
 
 ```html
 <div>
@@ -135,20 +135,20 @@ Now let’s style the popover itself to look like a modern dropdown menu with pr
 </div>
 ```
 
-Popover container styling:
+تنسيق حاوية النافذة المنبثقة:
 
-- `m-0`: Removes default browser margins that popovers often have
-- `rounded-lg`: 8px border radius, slightly more pronounced than the trigger button
-- `border border-slate-200`: Subtle light gray border for definition
-- `bg-white`: Clean white background
-- `p-1`: 4px padding creates a border around menu items
-- `shadow-lg`: More prominent shadow than the button, creating a floating effect
+- `m-0`: يزيل الهوامش الافتراضية في المتصفّح التي تميل النوافذ المنبثقة إليها
+- `rounded-lg`: استدارة حدّ قدرها 8px، أكثر وضوحًا بقليل من زر التشغيل
+- `border border-slate-200`: حدّ رمادي فاتح خفيف يحدّد الحواف
+- `bg-white`: خلفية بيضاء نظيفة
+- `p-1`: حشوة قدرها 4px تنشئ حدًّا حول عناصر القائمة
+- `shadow-lg`: ظلّ أكثر بروزًا من ظلّ الزر، فينشئ تأثير لوحة معلّقة
 
-The larger border radius and shadow help establish that this is a floating panel, distinct from the trigger button.
+وتساعد استدارة الحدّ الأكبر والظلّ على ترسيخ كون هذه لوحة معلّقة، مميّزةً عن زر التشغيل.
 
-## Styling the Menu Items
+## تنسيق عناصر القائمة
 
-Let’s transform the menu buttons into proper menu items with consistent spacing and hover states.
+لنحوّل أزرار القائمة إلى عناصر قائمة حقيقية بمسافات متّسقة وحالات تحويم.
 
 ```html
 <div>
@@ -176,20 +176,20 @@ Let’s transform the menu buttons into proper menu items with consistent spacin
 </div>
 ```
 
-Menu item styling:
+تنسيق عنصر القائمة:
 
-- `block w-full`: Makes each button take the full width and stack vertically
-- `rounded-md`: 6px border radius matches the trigger button
-- `px-3 py-2`: Same padding as the trigger for visual consistency
-- `text-left`: Left-aligns text, which is standard for menu items
-- `text-sm`: 14px font size for comfortable reading
-- `text-slate-700`: Dark gray text for good contrast against white background
+- `block w-full`: يجعل كل زر يأخذ العرض كاملًا ويرتب رأسيًا
+- `rounded-md`: استدارة حدّ قدرها 6px تطابق زر التشغيل
+- `px-3 py-2`: الحشوة نفسها التي في زر التشغيل لاتّساق بصري
+- `text-left`: يحاذي النص إلى اليسار، وهو المعتاد في عناصر القوائم
+- `text-sm`: حجم خط 14px لقراءة مريحة
+- `text-slate-700`: نص رمادي داكن لتباين جيد مع الخلفية البيضاء
 
-Now our menu items look cohesive and properly sized, but they need interactive feedback.
+والآن تبدو عناصر قائمتنا متّسقة ومضبوطة الحجم، لكنها تحتاج إلى تغذية راجعة تفاعلية.
 
-## Adding Interactive States
+## إضافة الحالات التفاعلية
 
-Let’s add hover and focus states to make the menu items feel responsive and accessible.
+لنضف حالتي التحويم والتركيز لتبدو عناصر القائمة استجابةً ومتاحة.
 
 ```html
 <div>
@@ -223,17 +223,17 @@ Let’s add hover and focus states to make the menu items feel responsive and ac
 </div>
 ```
 
-Interactive state improvements:
+تحسينات الحالات التفاعلية:
 
-- `hover:bg-slate-50`: Light gray background on hover provides clear feedback
-- `focus-visible:bg-slate-50`: Same background for keyboard focus, ensuring accessibility
-- `focus-visible:outline-none`: Removes the default browser outline since we’re using background color for focus indication
+- `hover:bg-slate-50`: خلفية رمادية فاتحة عند التحويم توفّر تغذية راجعة واضحة
+- `focus-visible:bg-slate-50`: الخلفية نفسها عند التركيز بلوحة المفاتيح، ما يضمن إمكانية الوصول
+- `focus-visible:outline-none`: يزيل الحدّ الافتراضي في المتصفّح لأننا نستخدم لون الخلفية لإشارة التركيز
 
-The subtle hover states make it clear which item will be activated without being distracting.
+وتجعل حالات التحويم الخفيفة واضحًا أي عنصر سيُفعَّل من دون إزعاج.
 
-## Adding Smooth Transitions
+## إضافة انتقالات سلسة
 
-Let’s add transitions to make the state changes feel polished and professional.
+لنضف الانتقالات لتبدو تغيّرات الحالة مصقولة واحترافية.
 
 ```html
 <div>
@@ -267,16 +267,16 @@ Let’s add transitions to make the state changes feel polished and professional
 </div>
 ```
 
-Animation improvements:
+تحسينات الحركة:
 
-- `transition-colors` on trigger button: Smoothly animates the background color change on hover
-- `transition-colors` on menu items: Creates smooth hover and focus transitions
+- `transition-colors` على زر التشغيل: يُحرّك تغيّر لون الخلفية بسلاسة عند التحويم
+- `transition-colors` على عناصر القائمة: ينشئ انتقالات سلسة عند التحويم والتركيز
 
-The 200ms default transition duration feels responsive without being sluggish, creating a more polished interaction experience.
+ومدة الانتقال الافتراضية البالغة 200ms تبدو استجابةً من دون بطء، فتُنشئ تجربة تفاعل أكثر صقلًا.
 
-## Improving Width and Typography
+## تحسين العرض والتنضيب
 
-Let’s refine the typography and ensure the popover has a proper minimum width for better readability.
+لنُحسّن التنضيب (typography) ونحرص على أن تمتلك النافذة المنبثقة عرضًا أدنى ملائمًا لتحسين القراءة.
 
 ```html
 <div>
@@ -310,16 +310,16 @@ Let’s refine the typography and ensure the popover has a proper minimum width 
 </div>
 ```
 
-Typography and sizing improvements:
+تحسينات التنضيب والأبعاد:
 
-- `min-w-48`: Sets minimum width of 192px so the popover doesn’t look cramped
-- `font-medium`: Medium font weight (500) for menu items provides better hierarchy than regular weight
+- `min-w-48`: يضبط عرضًا أدنى قدره 192px حتى لا تبدو النافذة المنبثقة ضيّقة
+- `font-medium`: وزن خط متوسط (500) لعناصر القائمة يوفّر تسلسلًا بصريًا أفضل من الوزن العادي
 
-The minimum width ensures the popover feels substantial and gives text room to breathe, while the font weight makes the menu items easier to scan.
+ويضمن العرض الأدنى أن تبدو النافذة المنبثقة ذات حضور واضح ويمنح النص مساحة للتنفّس، بينما يجعل وزن الخط من السهل تصفّح عناصر القائمة.
 
-## Adding Visual Grouping with Separators
+## إضافة التجميع البصري بالفواصل
 
-Finally, let’s add a separator before the logout button to group related actions and use color to indicate destructive actions.
+وأخيرًا، لنضف فاصلًا قبل زر تسجيل الخروج لتجميع الإجراءات المترابطة، ونستخدم اللون للإشارة إلى الإجراءات المدمِّرة.
 
 ```html
 <div>
@@ -354,19 +354,19 @@ Finally, let’s add a separator before the logout button to group related actio
 </div>
 ```
 
-Final enhancements:
+التحسينات الأخيرة:
 
-- `<div class="my-1 border-t border-slate-200"></div>`: Creates a separator line with 4px vertical margin
-- `text-red-600` on logout button: Red text indicates a destructive action
-- `hover:bg-red-50 focus-visible:bg-red-50`: Light red background on hover/focus instead of gray
+- `<div class="my-1 border-t border-slate-200"></div>`: ينشئ خط فاصل بهامش رأسي قدره 4px
+- `text-red-600` على زر تسجيل الخروج: النص الأحمر يشير إلى إجراء مدمِّر
+- `hover:bg-red-50 focus-visible:bg-red-50`: خلفية حمراء فاتحة عند التحويم/التركيز بدلًا من الرمادية
 
-The separator creates clear grouping between user actions (Settings, Profile) and the logout action, while the red color coding follows common UI patterns for destructive actions.
+وينشئ الفاصل تجميعًا واضحًا بين إجراءات المستخدم (Settings، Profile) وإجراء تسجيل الخروج، بينما يتبع الترميز اللوني الأحمر أنماط واجهات المستخدم الشائعة في الإجراءات المدمِّرة.
 
-## Alternative Positioning Options
+## خيارات تموضع بديلة
 
-You can customize popover positioning by using different anchor utilities. Here are some common patterns:
+يمكنك تخصيص تموضع النافذة المنبثقة باستخدام أصناف مراسي مختلفة. وإليك بعض الأنماط الشائعة:
 
-**Right-aligned popover:**
+**نافذة منبثقة محاذاة لليمين:**
 
 ```html
 <button class="anchor-dropdown">Menu</button>
@@ -375,7 +375,7 @@ You can customize popover positioning by using different anchor utilities. Here 
 </div>
 ```
 
-**Centered popover:**
+**نافذة منبثقة في الوسط:**
 
 ```html
 <button class="anchor-profile">Profile</button>
@@ -384,7 +384,7 @@ You can customize popover positioning by using different anchor utilities. Here 
 </div>
 ```
 
-**Above the button:**
+**فوق الزر:**
 
 ```html
 <button class="anchor-tooltip">Help</button>
@@ -393,23 +393,23 @@ You can customize popover positioning by using different anchor utilities. Here 
 </div>
 ```
 
-The anchor positioning system is completely flexible—you can create any spatial relationship between trigger and popover.
+ونظام التموضع بالمراسي مرن تمامًا—يمكنك إنشاء أي علاقة مكانية بين زر التشغيل والنافذة المنبثقة.
 
-## Why This Approach is Cool
+## لماذا هذا الأسلوب رائع
 
-**Semantic Class Names**: Classes like `anchor-menu-button` and `anchor-below-menu-button` are self-documenting and reusable.
+**أسماء أصناف دلالية**: أصناف مثل `anchor-menu-button` و`anchor-below-menu-button` تشرح نفسها وقابلة لإعادة الاستخدام.
 
-**Dynamic Utilities**: The Tailwind 4 utilities work with any anchor name—`anchor-dropdown`, `anchor-profile`, `anchor-tooltip`—making them infinitely flexible.
+**أصناف ديناميكية**: تعمل أصناف Tailwind 4 مع أي اسم مرساة—`anchor-dropdown`، `anchor-profile`، `anchor-tooltip`—فتصبح مرنة إلى ما لا نهاية.
 
-**Native Browser Benefits**: Works with the native popover API while maintaining all accessibility features and browser optimizations.
+**مزايا المتصفّح الأصلية**: يعمل مع Popover API الأصلية مع الحفاظ على كل ميزات إمكانية الوصول وتحسينات المتصفّح.
 
-**Precise Control**: Unlike JavaScript positioning libraries, CSS Anchor Positioning is handled by the browser’s layout engine, making it more performant and reliable.
+**تحكّم دقيق**: بخلاف مكتبات التموضع المكتوبة بـJavaScript، يتولّى محرّك التخطيط في المتصفّح معالجة CSS Anchor Positioning، ما يجعله أكثر أداءً وموثوقية.
 
-**Future-Proof**: As CSS Anchor Positioning gains broader support, this approach will become the standard way to position floating elements.
+**جاهز للمستقبل**: كلما اتّسع دعم CSS Anchor Positioning، سيصبح هذا الأسلوب هو الطريقة القياسية لوضع العناصر المعلّقة.
 
-## Challenges
+## التحديات
 
-Try building these variations:
+جرّب بناء هذه الصيغ:
 
-1. **User Profile Popover**: Create a popover with user avatar, name, email, and action buttons using a more complex layout with proper spacing and typography hierarchy
-2. **Multi-Section Menu**: Extend the menu to include multiple grouped sections with separators, organizing related actions together using the separator pattern we learned
+1. **نافذة منبثقة لملف المستخدم**: أنشئ نافذة منبثقة فيها صورة رمزية للمستخدم واسمه وبريده الإلكتروني وأزرار إجراءات، بتخطيط أكثر تعقيدًا مع مسافات وتسلسل تنضيب صحيح
+2. **قائمة متعدّدة الأقسام**: وسّع القائمة لتشمل أقسامًا متعدّدة مجمّعة مع فواصل، بتنظيم الإجراءات المترابطة معًا باستخدام نمط الفاصل الذي تعلّمناه

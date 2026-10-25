@@ -1,14 +1,14 @@
 ---
-title: "has-*"
-lang: en
+title: "أدوات has-*"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/has-utility"
 ---
 
-The `has-*` utilities in Tailwind CSS are based on the CSS `:has()` pseudo-class, allowing parent elements to style themselves based on their children’s state. Think of it as “if this container has a child that matches `$condition` condition, then style the container like this.”
+تستند أدوات `has-*` في Tailwind CSS إلى الفئة الزائفة `:has()` في CSS، وتتيح للعناصر الأب أن تنسّق نفسها بناءً على حالة أبنائها. فكّر فيها كأنها تقول: «إن كانت هذه الحاوية تحتوي على عنصر تابع يطابق الشرط `$condition`، فنسّق الحاوية هكذا.»
 
-Let’s start with our basic HTML structure to explore these powerful utilities.
+لنبدأ ببنية HTML الأساسية لدينا لاستكشاف هذه الأدوات القوية.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/b8e495266f6b29bafcc52e060b2d8d73f87ae96050d1a714b52d46fac5bff74f.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b8e495266f6b29bafcc52e060b2d8d73f87ae96050d1a714b52d46fac5bff74f.html)*
 
 ```html
 <div>
@@ -17,13 +17,13 @@ Let’s start with our basic HTML structure to explore these powerful utilities.
 </div>
 ```
 
-It’s a basic checkbox and label, but with `has-*` utilities, we can make the entire container respond intelligently to the checkbox state.
+إنه مربع اختيار وتسمية أساسيان، لكن بأدوات `has-*` يمكننا جعل الحاوية كلها تستجيب بذكاء لحالة مربع الاختيار.
 
-## Basic Container Response
+## استجابة الحاوية الأساسية
 
-First, let’s make the container respond to its checkbox child’s state.
+أولًا، لنجعل الحاوية تستجيب لحالة مربع الاختيار التابع لها.
 
-*Basic Container Response — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/995ebf5dc4a52ae6f81834d001afc8a9b88488313c587d7e275830eec5af1d90.html)*
+*استجابة الحاوية الأساسية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/995ebf5dc4a52ae6f81834d001afc8a9b88488313c587d7e275830eec5af1d90.html)*
 
 ```html
 <div
@@ -34,17 +34,17 @@ First, let’s make the container respond to its checkbox child’s state.
 </div>
 ```
 
-Basic `has-*` implementation:
+تنفيذ `has-*` الأساسي:
 
-- `has-[input:checked]:border-green-500`: When container has a checked input, border turns green
-- `has-[input:checked]:bg-green-50`: When container has a checked input, background turns light green
-- The entire container responds automatically to the checkbox state.
+- `has-[input:checked]:border-green-500`: عندما تحتوي الحاوية على حقل إدخال محدَّد، يصبح الحد أخضر
+- `has-[input:checked]:bg-green-50`: عندما تحتوي الحاوية على حقل إدخال محدَّد، تصبح الخلفية خضراء فاتحة
+- تستجيب الحاوية كلها تلقائيًا لحالة مربع الاختيار.
 
-This is fundamentally different from `peer-*` utilities—instead of siblings affecting each other, parents respond to children.
+هذا مختلف جوهريًا عن أدوات `peer-*` — فبدلًا من أن يؤثر الأشقاء في بعضهم، يستجيب الآباء للأبناء.
 
-## Form Validation Containers
+## حاويات التحقق من النماذج
 
-*Form Validation Containers — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/139e27eb57f558a2d13c894608b86ad5234450e8a11535ebb280bf6456fdec87.html)*
+*حاويات التحقق من النماذج — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/139e27eb57f558a2d13c894608b86ad5234450e8a11535ebb280bf6456fdec87.html)*
 
 ```html
 <div class="space-y-4">
@@ -69,20 +69,20 @@ This is fundamentally different from `peer-*` utilities—instead of siblings af
 </div>
 ```
 
-Form validation features:
+ميزات التحقق من النماذج:
 
-- `has-[input:valid]:border-green-500`: Container turns green when input is valid
-- `has-[input:invalid]:border-red-500`: Container turns red when input is invalid
-- `has-[input:focus]:border-blue-500`: Container highlights when input is focused
-- `transition-colors`: Smooth state transitions.
+- `has-[input:valid]:border-green-500`: تتحول الحاوية إلى الأخضر عندما يكون الإدخال صحيحًا
+- `has-[input:invalid]:border-red-500`: تتحول الحاوية إلى الأحمر عندما يكون الإدخال غير صحيح
+- `has-[input:focus]:border-blue-500`: تبرز الحاوية عندما يكون الإدخال في حالة تركيز
+- `transition-colors`: انتقالات حالة سلسة.
 
-The entire form field container provides visual feedback, not just the input itself.
+توفّر حاوية حقل النموذج كلها تغذية بصرية، لا حقل الإدخال وحده.
 
-## Card Selection Patterns
+## أنماط اختيار البطاقات
 
-Let’s build interactive cards that respond to nested form controls, perfect for pricing tables or option selection.
+لنبنِ بطاقات تفاعلية تستجيب لعناصر تحكم النماذج المتداخلة، وهي مثالية لجداول الأسعار أو اختيار الخيارات.
 
-*Card Selection Patterns — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/f6243b761e14d1371f444e0e3eecbaae9ed7536f24416e59ebcb760d74fd7331.html)*
+*أنماط اختيار البطاقات — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f6243b761e14d1371f444e0e3eecbaae9ed7536f24416e59ebcb760d74fd7331.html)*
 
 ```html
 <div class="grid gap-4 md:grid-cols-3">
@@ -121,19 +121,19 @@ Let’s build interactive cards that respond to nested form controls, perfect fo
 </div>
 ```
 
-Card selection styling:
+تنسيق اختيار البطاقات:
 
-- `has-[input:checked]:border-blue-500`: Selected card gets blue border
-- `has-[input:checked]:bg-blue-50`: Selected card gets light background
-- `has-[input:checked]:shadow-md`: Selected card gets elevated shadow
+- `has-[input:checked]:border-blue-500`: البطاقة المختارة تحصل على حد أزرق
+- `has-[input:checked]:bg-blue-50`: البطاقة المختارة تحصل على خلفية فاتحة
+- `has-[input:checked]:shadow-md`: البطاقة المختارة تحصل على ظل مرتفع
 
-Perfect for pricing tables, feature comparisons, or any multi-option selection interface.
+مثالية لجداول الأسعار أو مقارنات الميزات أو أي واجهة اختيار متعددة الخيارات.
 
-## Complex Selectors and Targeting
+## المحدّدات المركّبة والاستهداف
 
-The `has-*` utilities support complex CSS selectors for sophisticated parent-child relationships.
+تدعم أدوات `has-*` محدّدات CSS المركّبة لعلاقات أب-ابن متطورة.
 
-*Complex Selectors and Targeting — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/9b0ab93f1909621abbdb15aa02dbe68e7b2f40eb66f6f69bf257b244f6fcd23f.html)*
+*المحدّدات المركّبة والاستهداف — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9b0ab93f1909621abbdb15aa02dbe68e7b2f40eb66f6f69bf257b244f6fcd23f.html)*
 
 ```html
 <div class="space-y-4">
@@ -179,19 +179,19 @@ The `has-*` utilities support complex CSS selectors for sophisticated parent-chi
 </div>
 ```
 
-Complex selector examples:
+أمثلة على المحدّدات المركّبة:
 
-- `has-[input:checked]:bg-slate-50`: Responds to any checked input descendant
-- `has-[select:focus]:border-blue-500`: Different colors for different element types
-- `has-[input[type='file']]:border-dashed`: Targets specific input types using attributes
+- `has-[input:checked]:bg-slate-50`: يستجيب لأي حقل إدخال محدَّد من العناصر التابعة
+- `has-[select:focus]:border-blue-500`: ألوان مختلفة لأنواع عناصر مختلفة
+- `has-[input[type='file']]:border-dashed`: يستهدف أنواع إدخال محددة باستخدام الخصائص
 
-This shows how you can create contextually aware containers that respond to different child elements differently.
+يوضّح هذا كيف يمكنك إنشاء حاويات واعية بالسياق تستجيب لعناصر تابعة مختلفة بشكل مختلف.
 
-## Navigation State Detection
+## كشف حالة التنقل
 
-`has-*` utilities excel at creating intelligent navigation systems that respond to user interaction.
+تتفوّق أدوات `has-*` في إنشاء أنظمة تنقل ذكية تستجيب لتفاعل المستخدم.
 
-*Navigation State Detection — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/2712304a0554562bcf7ade2b5ad0f4456cf655cd750c67d9ae5ab30320c84cfd.html)*
+*كشف حالة التنقل — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2712304a0554562bcf7ade2b5ad0f4456cf655cd750c67d9ae5ab30320c84cfd.html)*
 
 ```html
 <nav class="rounded-lg bg-white shadow-sm">
@@ -217,19 +217,19 @@ This shows how you can create contextually aware containers that respond to diff
 </nav>
 ```
 
-Navigation enhancements:
+تحسينات التنقل:
 
-- `has-[a.active]:bg-blue-50`: Navigation highlights when it contains an active link
-- `has-[details[open]]:bg-slate-50`: Dropdown container changes when opened
-- `has-[input:focus]:bg-blue-50`: Search area highlights when input is focused
+- `has-[a.active]:bg-blue-50`: يبرز التنقل عندما يحتوي على رابط نشط
+- `has-[details[open]]:bg-slate-50`: تتغير حاوية القائمة المنسدلة عند فتحها
+- `has-[input:focus]:bg-blue-50`: تبرز منطقة البحث عندما يكون الإدخال في حالة تركيز
 
-Creates navigation where entire sections respond to user interaction states.
+ينشئ هذا تنقلًا تستجيب فيه الأقسام كلها لحالات تفاعل المستخدم.
 
-## Data Table Row Selection
+## اختيار صفوف جدول البيانات
 
-Perfect for admin interfaces where entire rows need to respond to selection states.
+مثالي لواجهات الإدارة حيث تحتاج الصفوف كلها إلى الاستجابة لحالات الاختيار.
 
-*Data Table Row Selection — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/642c0a548e887c72f42e2dbe0a36ea24cf05abba02bd0cd241580ca38ee3273c.html)*
+*اختيار صفوف جدول البيانات — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/642c0a548e887c72f42e2dbe0a36ea24cf05abba02bd0cd241580ca38ee3273c.html)*
 
 ```html
 <div class="overflow-hidden rounded-lg border bg-white">
@@ -263,19 +263,19 @@ Perfect for admin interfaces where entire rows need to respond to selection stat
 </div>
 ```
 
-Table row features:
+ميزات صفوف الجدول:
 
-- `has-[input:checked]:bg-blue-50`: Selected rows get highlighted.
-- `has-[input:checked]:border-l-4`: Selected rows get prominent left border.
-- `transition-colors`: Smooth state transitions.
+- `has-[input:checked]:bg-blue-50`: الصفوف المختارة تحصل على إبراز.
+- `has-[input:checked]:border-l-4`: الصفوف المختارة تحصل على حد أيسر بارز.
+- `transition-colors`: انتقالات حالة سلسة.
 
-Creates intuitive selection interfaces where entire rows provide visual feedback.
+ينشئ هذا واجهات اختيار بديهية توفّر فيها الصفوف كلها تغذية بصرية.
 
-## Bulk Actions Panel
+## لوحة الإجراءات المجمّعة
 
-Create action panels that appear when items are selected.
+أنشئ لوحات إجراءات تظهر عند اختيار العناصر.
 
-*Bulk Actions Panel — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/03f8af7e410729b4227d90f7ebc906eb8709a3f5001288c2f4d7249158c77651.html)*
+*لوحة الإجراءات المجمّعة — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/03f8af7e410729b4227d90f7ebc906eb8709a3f5001288c2f4d7249158c77651.html)*
 
 ```html
 <div class="space-y-4">
@@ -319,42 +319,42 @@ Create action panels that appear when items are selected.
 </div>
 ```
 
-Bulk actions features:
+ميزات الإجراءات المجمّعة:
 
-- `has-[input:checked]:block hidden`: Panel appears when any checkbox is selected
-- Works across multiple child elements automatically
-- Perfect for e-commerce and admin interfaces
+- `has-[input:checked]:block hidden`: تظهر اللوحة عندما يُحدَّد أي مربع اختيار
+- تعمل عبر عدة عناصر تابعة تلقائيًا
+- مثالية لواجهات التجارة الإلكترونية والإدارة
 
-## Why This is Kind of a Big Deal™
+## لماذا هذا أمر مهم حقًا™
 
-The `has-*` utilities represent a fundamental shift in CSS capabilities:
+تمثّل أدوات `has-*` تحولًا جوهريًا في قدرات CSS:
 
-- **Before `:has()`**: Parent-child state relationships required JavaScript event handling and manual class management.
-- **With `has-*`**: Sophisticated interactive patterns work with pure CSS.
+- **قبل `:has()`**: كانت علاقات الحالة بين الأب والابن تتطلب معالجة أحداث JavaScript وإدارة الأصناف يدويًا.
+- **مع `has-*`**: تعمل الأنماط التفاعلية المتطورة بـ CSS خالص.
 
-### Key Advantages
+### المزايا الرئيسية
 
-- **Performance**: No JavaScript overhead required
-- **Accessibility**: Works seamlessly with native form controls
-- **Maintainability**: State relationships expressed directly in markup
-- **Progressive enhancement**: Works even if CSS fails to load
+- **الأداء**: لا حاجة إلى عبء JavaScript
+- **إمكانية الوصول**: تعمل بسلاسة مع عناصر تحكم النماذج الأصلية
+- **قابلية الصيانة**: علاقات الحالة معبَّر عنها مباشرة في الترميز
+- **التحسين التدريجي**: تعمل حتى إن فشل تحميل CSS
 
-**Browser support**: Supported in all modern browsers (Chrome 105+, Firefox 121+, Safari 15.4+).
+**دعم المتصفحات**: مدعومة في جميع المتصفحات الحديثة (Chrome 105+، Firefox 121+، Safari 15.4+).
 
-### Challenges
+### تحديات
 
-Try building these variations:
+جرّب بناء هذه الاختلافات:
 
-1. **Multi-step Form**: Create a 3-step form where each step’s container responds to input completion using `has-[input:valid]` conditions
-2. **Dashboard Metrics**: Build metric cards that can be selected for comparison, with a comparison panel that appears when multiple cards are selected
+1. **نموذج متعدد الخطوات**: أنشئ نموذجًا من 3 خطوات تستجيب فيه حاوية كل خط لاكتمال الإدخال باستخدام شروط `has-[input:valid]`
+2. **مقاييس لوحة المعلومات**: ابنِ بطاقات مقاييس يمكن اختيارها للمقارنة، مع لوحة مقارنة تظهر عند اختيار عدة بطاقات
 
-The `has-*` utilities unlock powerful new possibilities for creating intelligent, responsive interfaces while maintaining semantic HTML and excellent performance.
+تفتح أدوات `has-*` إمكانات جديدة قوية لإنشاء واجهات ذكية متجاوبة مع الحفاظ على HTML الدلالي والأداء الممتاز.
 
-## Examples
+## أمثلة
 
-### Based on Content
+### حسب المحتوى
 
-*Based on Content — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/3d14dd57bce115859ae084370b72d5e03cec944faef1150447525523c3eb1643.html)*
+*حسب المحتوى — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3d14dd57bce115859ae084370b72d5e03cec944faef1150447525523c3eb1643.html)*
 
 ```html
 <article class="gap-4 rounded-lg border bg-white p-4 has-[img]:flex">
@@ -367,11 +367,11 @@ The `has-*` utilities unlock powerful new possibilities for creating intelligent
 </article>
 ```
 
-## Common Patterns
+## أنماط شائعة
 
-**Form validation indicators:**
+**مؤشرات التحقق من النماذج:**
 
-*Common Patterns — Example 10 — [Open example](https://stevekinney.com/generated/playgrounds/23398c4aa0bd9b44a67022836d335f61d7c011a9a94a8a729608aa219b3767e4.html)*
+*أنماط شائعة — المثال 10 — [افتح المثال](https://stevekinney.com/generated/playgrounds/23398c4aa0bd9b44a67022836d335f61d7c011a9a94a8a729608aa219b3767e4.html)*
 
 ```html
 <label class="mb-2 block text-sm font-medium has-[:invalid]:text-red-500">
@@ -385,8 +385,8 @@ The `has-*` utilities unlock powerful new possibilities for creating intelligent
 </label>
 ```
 
-## Key Differences
+## فروق أساسية
 
-- **`has-*`** - Styles the element containing the target
-- **`group-has-*`** - Styles descendant when ancestor contains target
-- **`peer-has-*`** - Styles sibling when previous sibling contains target
+- **`has-*`** - ينسّق العنصر الذي يحتوي على الهدف
+- **`group-has-*`** - ينسّق العنصر التابع عندما يحتوي السلف على الهدف
+- **`peer-has-*`** - ينسّق الشقيق عندما يحتوي الشقيق السابق على الهدف

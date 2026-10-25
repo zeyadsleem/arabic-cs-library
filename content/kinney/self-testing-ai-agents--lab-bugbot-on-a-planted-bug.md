@@ -1,22 +1,22 @@
 ---
-title: "Lab"
-lang: en
+title: "مخبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug"
 ---
 
-This lab is mostly hosted process, not code authoring. The Shelf starter doesn’t ship the tuned reviewer config or the planted branch, so this lab is where you add or recreate those pieces and then run the review loop honestly.
+هذا المخبر عملية مستضافة في معظمه، لا تأليف شيفرة. المشروع الأولي Shelf لا يشحن إعداد المراجع المضبوط ولا الفرع المزروع، لذا هذا المخبر هو حيث تضيف تلك القطع أو تعيد إنشاءها ثم تشغّل حلقة المراجعة بأمانة.
 
-> **Prerequisite**
+> **المتطلبات المسبقة**
 >
-> Complete [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase) first. This lab assumes you already have a tuned reviewer configuration and are now pressure-testing it on a known bug.
+> أكمل [ضبط Bugbot لقاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase) أولًا. يفترض هذا المخبر أن لديك إعداد مراجع مضبوطًا بالفعل، وأنك الآن تختبره ضغطًا على علّة معروفة.
 
-> **In the current starter**
+> **في المشروع الأولي الحالي**
 >
-> Shelf still has the baseline admin endpoint, but you now create or restore `.cursor/BUGBOT.md` yourself and create the `planted-bug/admin-feature` branch as part of the lab. This is still mostly a hosted-process exercise, not a long code-authoring one.
+> ما زال Shelf يضم نقطة النهاية الإدارية الأساسية، لكنك الآن تُنشئ `.cursor/BUGBOT.md` أو تستعيده بنفسك، وتُنشئ فرع `planted-bug/admin-feature` كجزء من المخبر. هذا ما زال في معظمه تمرينًا على عملية مستضافة، لا تمرينًا طويلًا على تأليف الشيفرة.
 
-## What you can verify locally
+## ما يمكنك التحقق منه محليًا
 
-You can inspect the planted branch, confirm the diff is only the missing admin guard, verify `.cursor/BUGBOT.md` is present, and run `npm run typecheck`, `npm run lint`, and `npm run test` to prove the local safety rails stay green even with the bug present. That local mismatch is the whole point of the lab.
+يمكنك فحص الفرع المزروع، والتأكد من أن الفرق ليس إلا الحارس الإداري الناقص، والتحقق من وجود `.cursor/BUGBOT.md`، وتشغيل `npm run typecheck` و`npm run lint` و`npm run test` لإثبات أن قضبان الأمان المحلية تبقى خضراء حتى مع وجود العلّة. ذلك التعارض المحلي هو مقصد المخبر كله.
 
 ```bash
 npm run typecheck
@@ -24,92 +24,92 @@ npm run lint
 npm run test
 ```
 
-## What remains manual or external
+## ما يبقى يدويًا أو خارجيًا
 
-Everything interesting after that depends on GitHub plus a live Bugbot installation: opening the pull request, waiting for the hosted reviewer to comment, handing the comment to an agent, and confirming the next push clears the thread. If you do not have a fork and a connected Bugbot install yet, stop after the local verification and record the hosted gap explicitly.
+كل ما هو مثير للاهتمام بعد ذلك يعتمد على GitHub مع تركيب Bugbot حيّ: فتح طلب السحب، وانتظار تعليق المراجع المستضاف، وتسليم التعليق إلى وكيل، والتأكد من أن الدفعة التالية تُغلق النقاش. إن لم يكن لديك بعد نسخة متشعّبة وتركيب Bugbot موصول، فتوقّف بعد التحقق المحلي وسجّل الفجوة المستضافة صراحةً.
 
-The Shelf starter still has the baseline admin endpoint. Your job in this lab is to add the Bugbot config, create the planted-bug branch, fork or push the repo, open a PR from `planted-bug/admin-feature`, wait for Bugbot to comment, hand the comment to Claude Code, and watch the fix land without you explaining the bug.
+ما زال المشروع الأولي Shelf يضم نقطة النهاية الإدارية الأساسية. مهمتك في هذا المخبر أن تضيف إعداد Bugbot، وتُنشئ فرع العلّة المزروعة، وتتفرّع من المستودع أو تدفعه، وتفتح طلب سحب من `planted-bug/admin-feature`، وتنتظر Bugbot حتى يعلّق، وتسلّم التعليق إلى Claude Code، وتراقب الإصلاح يهبط دون أن تشرح العلّة بنفسك.
 
-## Setup
+## التهيئة
 
-You’ll need:
+ستحتاج إلى:
 
-- A fork of the Shelf repo on your own GitHub.
-- A Cursor account with Bugbot enabled. Bugbot is a paid add-on on top of Cursor Pro/Teams as of the workshop date, though a free tier with limited PR reviews exists—check the Cursor dashboard.
-- Admin access to install Bugbot on your fork.
+- نسخة متشعّبة من مستودع Shelf في حساب GitHub الخاص بك.
+- حساب Cursor مع Bugbot مُفعّلًا. Bugbot إضافة مدفوعة فوق Cursor Pro/Teams في تاريخ الورشة، وإن كانت هناك طبقة مجانية بمراجعات طلبات سحب محدودة — تحقّق من لوحة تحكم Cursor.
+- وصول إداري لتركيب Bugbot على نسختك المتشعّبة.
 
-Install Bugbot on your Shelf fork from the Cursor dashboard and grant it access. Confirm it’s active by opening an existing PR—Bugbot should leave a comment within a minute or two.
+ركّب Bugbot على نسختك المتشعّبة من Shelf من لوحة تحكم Cursor وامنحه الوصول. تأكّد من أنه نشط بفتح طلب سحب قائم — ينبغي أن يترك Bugbot تعليقًا خلال دقيقة أو دقيقتين.
 
-Create `.cursor/BUGBOT.md` in the repo root from the previous lesson’s guidance. In the fully hosted version of the lab, commit it directly to `main`. In the local workshop repo, commit it on your current working branch now and merge it into `main` later when the fork exists.
+أنشئ `.cursor/BUGBOT.md` في جذر المستودع بحسب إرشادات الدرس السابق. في النسخة المستضافة بالكامل من المخبر، أودعه مباشرة في `main`. وفي مستودع الورشة المحلي، أودعه الآن في فرع عملك الحالي ثم ادمجه في `main` لاحقًا حين توجد النسخة المتشعّبة.
 
-## The planted bug
+## العلّة المزروعة
 
-Check out the `planted-bug/admin-feature` branch:
+انتقل إلى فرع `planted-bug/admin-feature`:
 
 ```bash
 git checkout planted-bug/admin-feature
 ```
 
-The clean baseline’s `/api/admin/featured-books/+server.ts` starts with `requireAdministrator(locals.user)` from `$lib/server/authorization`. The planted branch deletes that line and replaces it with a plain `if (!locals.user)` authentication check. Every signed-in reader can now feature or unfeature any book—but the happy-path tests all still pass because there is no test covering the case of a non-admin reader hitting the endpoint.
+ملف `/api/admin/featured-books/+server.ts` في الأساس النظيف يبدأ بـ `requireAdministrator(locals.user)` من `$lib/server/authorization`. والفرع المزروع يحذف ذلك السطر ويستبدله بفحص مصادقة مجرّد `if (!locals.user)`. صار كل قارئ مسجّل الدخول قادرًا على تمييز أي كتاب أو إلغاء تمييزه — لكن اختبارات المسار السعيد كلها ما زالت تنجح لأن لا اختبار يغطي حالة قارئ غير مشرف يصل إلى نقطة النهاية.
 
-Open a PR from `planted-bug/admin-feature` into the main starter branch.
+افتح طلب سحب من `planted-bug/admin-feature` إلى فرع المشروع الأولي الرئيسي.
 
-## What should happen
+## ما الذي ينبغي أن يحدث
 
-Within a minute or two of opening the PR, Bugbot should post at least one inline comment on the diff. With the tuned config file in place, the comment should:
+خلال دقيقة أو دقيقتين من فتح طلب السحب، ينبغي أن ينشر Bugbot تعليقًا مضمّنًا واحدًا على الأقل على الفرق. مع وجود ملف الإعداد المضبوط، ينبغي للتعليق أن:
 
-- Identify the specific line where the permission check is wrong.
-- Explain why it’s wrong (e.g., “this only checks that `locals.user` exists, not `locals.user.isAdmin`; any logged-in user can call this endpoint”).
-- Suggest a fix.
+- يحدّد السطر المحدد الذي فحص الصلاحية فيه خاطئ.
+- يوضح لماذا هو خاطئ (مثلًا: «هذا يتحقق فقط من وجود `locals.user`، لا من `locals.user.isAdmin`؛ أي مستخدم مسجّل الدخول يستطيع استدعاء نقطة النهاية هذه»).
+- يقترح إصلاحًا.
 
-If Bugbot doesn’t flag the bug on the first pass, that’s useful information—you’ve found a gap in the config. Update `.cursor/BUGBOT.md` to include a rule about admin-only endpoints and push again. Iterate until the bot catches it. This is the tuning loop.
+إن لم يشر Bugbot إلى العلّة من المحاولة الأولى، فذلك معلومة مفيدة — لقد وجدت فجوة في الإعداد. حدّث `.cursor/BUGBOT.md` لتضمين قاعدة عن نقاط النهاية المخصّصة للمشرفين ثم ادفع مرة أخرى. كرّر حتى يلتقطها الروبوت. هذه هي حلقة الضبط.
 
-## Wiring the fix back through the agent
+## توصيل الإصلاح عائدًا عبر الوكيل
 
-Once Bugbot flags the bug, don’t fix it yourself. Hand the comment to Claude Code:
+حين يشير Bugbot إلى العلّة، لا تصلحها بنفسك. سلّم التعليق إلى Claude Code:
 
-> Read the Bugbot comments on PR #1. Fix each finding. Push a new commit.
+> اقرأ تعليقات Bugbot على طلب السحب رقم 1. أصلح كل ما وجدته. ادفع إيداعًا جديدًا.
 
-The agent should:
+ينبغي أن يقوم الوكيل بـ:
 
-1. Read the comment text (via `gh pr view --comments` or similar).
-2. Identify the affected line from the comment’s file reference.
-3. Apply a fix.
-4. Push a new commit to the branch.
+1. قراءة نص التعليق (عبر `gh pr view --comments` أو ما يشبهها).
+2. تحديد السطر المتأثر من إشارة التعليق إلى الملف.
+3. تطبيق إصلاح.
+4. دفع إيداع جديد إلى الفرع.
 
-Bugbot re-reviews on the new push. Either the comment is resolved or a refined follow-up appears on the same line.
+ويعيد Bugbot المراجعة على الدفعة الجديدة. فإما يُحلّ التعليق أو يظهر متابعة مصقولة على السطر نفسه.
 
-## Acceptance criteria
+## معايير القبول
 
-- `.cursor/BUGBOT.md` exists at the repo root and contains “what to flag” and “what to leave alone” sections.
-- The `planted-bug/admin-feature` branch exists and introduces only the planted permission bug on top of the clean working branch.
-- The planted branch still passes the local quality gates (`npm run typecheck`, `npm run lint`, `npm run test`).
-- If the repository is still local-only, the hosted gap is documented somewhere durable (for example a repo note under `docs/` or an issue) instead of being hand-waved.
-- Bugbot is installed on your Shelf fork and active on PRs.
-- The `planted-bug/admin-feature` branch exists and has not been modified by hand after the planted-bug commit.
-- A PR from `planted-bug/admin-feature` to `main` is open.
-- Bugbot posted at least one comment on the PR. (If it didn’t, update the config and re-push until it does.)
-- At least one comment identifies the permission check bug on the intended line. (File and line info in the comment should match the planted location.)
-- You handed the comment to Claude Code without any additional explanation of the bug.
-- Claude Code applied a fix and pushed a new commit.
-- Bugbot either resolved the thread on the new push or left a refined follow-up. No “the bug is still there” comments remain.
-- You committed `.cursor/BUGBOT.md` to `main` so future PRs inherit the config.
-- The conversation log between you, Bugbot, and Claude Code contains zero messages where you had to explain the bug to anyone.
+- `.cursor/BUGBOT.md` موجود في جذر المستودع ويضم قسمي «ما الذي يُبلَّغ عنه» و«ما الذي تتركه».
+- فرع `planted-bug/admin-feature` موجود ولا يُدخل إلا علّة الصلاحية المزروعة فوق فرع العمل النظيف.
+- الفرع المزروع ما زال يمرّ في بوابات الجودة المحلية (`npm run typecheck` و`npm run lint` و`npm run test`).
+- إن كان المستودع ما زال محليًا فقط، فالفجوة المستضافة موثّقة في موضع دائم (مثلًا ملاحظة في المستودع تحت `docs/` أو مسألة) بدلًا من التلويح بها.
+- Bugbot مركّب على نسختك المتشعّبة من Shelf ونشط على طلبات السحب.
+- فرع `planted-bug/admin-feature` موجود ولم يُعدَّل يدويًا بعد إيداع العلّة المزروعة.
+- طلب سحب من `planted-bug/admin-feature` إلى `main` مفتوح.
+- نشر Bugbot تعليقًا واحدًا على الأقل على طلب السحب. (إن لم يفعل، فحدّث الإعداد وأعد الدفع حتى يفعل.)
+- تعليق واحد على الأقل يحدّد علّة فحص الصلاحية على السطر المقصود. (ينبغي أن تطابق معلومات الملف والسطر في التعليق الموضع المزروع.)
+- سلّمت التعليق إلى Claude Code دون أي شرح إضافي للعلّة.
+- طبّق Claude Code إصلاحًا ودفع إيداعًا جديدًا.
+- إما أن Bugbot حلّ النقاش على الدفعة الجديدة أو ترك متابعة مصقولة. لم تبقَ تعليقات من نوع «العلّة ما زالت هناك».
+- أودعت `.cursor/BUGBOT.md` في `main` حتى ترث طلبات السحب المستقبلية الإعداد.
+- سجل المحادثة بينك وبين Bugbot وClaude Code خالٍ من أي رسالة اضطررت فيها إلى شرح العلّة لأي طرف.
 
-## Stretch goals
+## أهداف موسّعة
 
-- Plant your own bug in a new branch and see if Bugbot finds it with the current config. If it doesn’t, refine the config.
-- Add a rule to `.cursor/BUGBOT.md` about a pattern specific to your real day-job codebase (not Shelf). See how the framing changes when the context is familiar instead of synthetic.
-- Try the same lab with a different review bot—CodeRabbit, Copilot review, or Codex review—and compare the output on the same planted bug. Note which one was easier to tune, which found the bug first, and which produced actionable comments.
-- Write a `CLAUDE.md` addition that automates the “read Bugbot comments, fix them, push” loop into a single command the agent can run.
+- ازرع علّة من عندك في فرع جديد وانظر هل يجدها Bugbot بالإعداد الحالي. إن لم يجدها، فصفِّ الإعداد.
+- أضف قاعدة إلى `.cursor/BUGBOT.md` عن نمط خاص بقاعدة شيفرة عملك الحقيقي (لا Shelf). لاحظ كيف تتغيّر الصياغة حين يكون السياق مألوفًا بدلًا من مصطنعًا.
+- جرّب المخبر نفسه مع روبوت مراجعة آخر — CodeRabbit أو مراجعة Copilot أو مراجعة Codex — وقارن المخرجات على العلّة المزروعة نفسها. لاحظ أيّها كان أسهل في الضبط، وأيّها وجد العلّة أولًا، وأيّها أنتج تعليقات قابلة للتنفيذ.
+- اكتب إضافة إلى `CLAUDE.md` تُؤتمت حلقة «اقرأ تعليقات Bugbot، أصلحها، ادفع» في أمر واحد يستطيع الوكيل تشغيله.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The goal isn’t for Bugbot to find every bug. The goal is for Bugbot to find the bugs your tests didn’t think to check, without noise, and for the original agent to be able to act on the findings without you playing secretary between them. When that loop works—bot flags, agent fixes, bot verifies—you’ve added a review pass to every PR for the cost of one config file.
+الهدف ليس أن يجد Bugbot كل علّة. الهدف أن يجد Bugbot العلّات التي لم تفكّر اختباراتك في فحصها، بلا ضجيج، وأن يستطيع الوكيل الأصلي التصرف بناءً على ما وجده دون أن تلعب أنت دور السكرتير بينهما. حين تعمل تلك الحلقة — الروبوت يشير، والوكيل يصلح، والروبوت يتحقق — تكون قد أضفت مرور مراجعة إلى كل طلب سحب بتكلفة ملف إعداد واحد.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/bugbot-on-a-planted-bug-solution)
-- [The Second Opinion](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
-- [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)
-- [The Static Layer as Underlayment](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/bugbot-on-a-planted-bug-solution)
+- [الرأي الثاني](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
+- [ضبط Bugbot لقاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)
+- [الطبقة الساكنة كطبقة أساس](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)

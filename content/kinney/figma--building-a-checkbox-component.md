@@ -1,46 +1,46 @@
 ---
-title: "Building a Checkbox Component"
-lang: en
+title: "بناء مكوّن مربّع اختيار"
+lang: ar
 source: "https://stevekinney.com/courses/figma/building-a-checkbox-component"
 ---
 
-> **Solution**
+> **الحل**
 >
-> This is the solution for the exercise in the section on [interactive components](https://stevekinney.com/courses/figma/interactive-components).
+> هذا هو حلّ التمرين في قسم [المكوّنات التفاعلية](https://stevekinney.com/courses/figma/interactive-components).
 
-Let’s start by setting up some color variables. I have long given up have the smallest possible set of variables for colors humanly possible. I now aim for the smallest set *practically possible*. So, I’ll probably make two variables for the background colors of the checkbox.
+لنبدأ بإعداد بعض متغيّرات الألوان. لقد تخلّيت منذ زمن طويل عن محاولة الحصول على أصغر مجموعة متغيّرات ألوان ممكنة بشريًا. وأنا الآن أستهدف أصغر مجموعة *ممكنة عمليًا*. لذا، سأصنع على الأرجح متغيّرين لألوان خلفية مربّع الاختيار.
 
-New variables for the checkbox background
+متغيّرات جديدة لخلفية مربّع الاختيار
 
-I going to make a few variations:
+سأصنع بضعة تنويعات:
 
-- **Checked** can either be true or false.
-- **Focused** can either be true or false.
+- **Checked** إما true أو false.
+- **Focused** إما true أو false.
 
-I’ll end up with something like this.
+سينتهي بي الأمر إلى شيء كهذا.
 
-Checkbox states
+حالات مربّع الاختيار
 
-And now, we want to create a component set. Since I did a good job with my naming, we should get a fair amount for free here.
+والآن، نريد إنشاء مجموعة مكوّنات. ولأنني أحسنت التسمية، ينبغي أن نحصل على قدر جيد من ذلك مجانًا هنا.
 
-Checkbox component variants in Figma
+الأنماط البديلة لمكوّن مربّع الاختيار في Figma
 
-Next, we want to add an interaction to the component.
+بعد ذلك، نريد إضافة تفاعل إلى المكوّن.
 
-If you wanted to, you could try to simulate the focused state with a hover transition, but that feels a little forced, so I’m not going to.
+لو أردت، يمكنك محاولة محاكاة حالة التركيز بانتقال عند المرور بالمؤشّر، لكن ذلك يبدو متكلَّفًا قليلًا، لذا لن أفعل.
 
-You can see in action [here](https://www.figma.com/proto/k2WU0bJ53LG4Kl6hoBCITR/Curricula-Components?page-id=0%3A1&type=design&node-id=22-1009&viewport=-5532%2C-4146%2C5.6&t=AyXsLsPZMzFZrDNN-1&scaling=min-zoom&mode=design).
+يمكنك رؤيته أثناء العمل [هنا](https://www.figma.com/proto/k2WU0bJ53LG4Kl6hoBCITR/Curricula-Components?page-id=0%3A1&type=design&node-id=22-1009&viewport=-5532%2C-4146%2C5.6&t=AyXsLsPZMzFZrDNN-1&scaling=min-zoom&mode=design).
 
-## Expanding the Component
+## توسيع المكوّن
 
-Next, we’re going to expand our checkbox to be a checklist item. This isn’t anything we haven’t seen before. We just need to create a component that also has some text and [auto-layout](https://stevekinney.com/courses/figma/auto-layout).
+بعد ذلك، سنوسّع مربّع الاختيار لدينا ليصبح عنصر قائمة مهام. هذا ليس شيئًا لم نره من قبل. نحتاج فقط إلى إنشاء مكوّن يحوي أيضًا بعض النص و[التخطيط التلقائي](https://stevekinney.com/courses/figma/auto-layout).
 
-The checklist item component
+مكوّن عنصر قائمة المهام
 
-**The problem** with this component is that only the checkbox is interactive. We want to make clicking the element itself interactive.
+**المشكلة** في هذا المكوّن أن مربّع الاختيار وحده هو التفاعلي. نريد أن نجعل النقر على العنصر نفسه تفاعليًا.
 
-Instead, we need to do something similar to the checkbox component and create two variants and connect their interactions. The **good news** is that we *still* inherit from the **Checkbox** component in terms of style. But, I haven’t found a good way to pass component properties through.
+بدلًا من ذلك، نحتاج إلى فعل شيء مشابه لمكوّن مربّع الاختيار وإنشاء نمطين بديلين وربط تفاعلاتهما. و**الخبر السار** أننا *ما زلنا* نرث من مكوّن **Checkbox** من حيث النمط. لكنني لم أجد طريقة جيدة لتمرير خصائص المكوّن.
 
-Variants of the checklist item component
+الأنماط البديلة لمكوّن عنصر قائمة المهام
 
-Now, the next logical thing to do is to make a checklist component with multiple checklist items. But, for that, we’ll need to leverage a technique called [cropped grid components](https://stevekinney.com/courses/figma/cropped-grid-components).
+الآن، الأمر المنطقي التالي هو إنشاء مكوّن قائمة مهام يحوي عدة عناصر قائمة مهام. لكن لذلك، سنحتاج إلى الاستفادة من تقنية تُسمّى [مكوّنات الشبكة المقصوصة](https://stevekinney.com/courses/figma/cropped-grid-components).

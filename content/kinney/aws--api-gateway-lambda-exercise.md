@@ -1,53 +1,53 @@
 ---
-title: "Exercise: Build an API with API Gateway and Lambda"
-lang: en
+title: "تمرين: بناء API باستخدام API Gateway وLambda"
+lang: ar
 source: "https://stevekinney.com/courses/aws/api-gateway-lambda-exercise"
 ---
 
-You’re going to build a complete API from scratch—an HTTP API in API Gateway with two routes, each wired to a Lambda function, with CORS configured so a React app can call it. By the end of this exercise, you’ll have a working API that accepts GET and POST requests and returns JSON responses to your frontend.
+ستبني API كاملة من الصفر — HTTP API في API Gateway بمسارين، كل منهما موصول بدالة Lambda، مع إعداد CORS كي يستطيع تطبيق React استدعاءها. وبحلول نهاية هذا التمرين، سيكون لديك API عاملة تقبل طلبات GET وPOST وتُرجع استجابات JSON إلى واجهتك الأمامية.
 
-This exercise ties together everything from the Lambda and API Gateway sections. You’ll write the handler, deploy the function, create the API, wire the integration, and call it from the browser.
+يربط هذا التمرين كل شيء من قسمَي Lambda وAPI Gateway. ستكتب المعالج، وتنشر الدالة، وتنشئ API، وتوصل التكامل، وتستدعيها من المتصفّح.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the route, integration, and CORS workflow open while you work, keep the [HTTP APIs documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html), the [Lambda integration guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html), and the [HTTP API CORS guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) nearby.
+> إذا أردت نسخة AWS من سير عمل المسارات والتكاملات وCORS مفتوحة أثناء عملك، فأبقِ [توثيق HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html)، و[دليل تكامل Lambda](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html)، و[دليل CORS في HTTP API](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) قريبًا منك.
 
-## Why It Matters
+## لماذا يهمّ
 
-On Vercel, creating an API endpoint means dropping a file in the `api/` directory. On AWS, you build each layer yourself: the compute (Lambda), the HTTP layer (API Gateway), the routing, the permissions, and the CORS configuration. That sounds like more work—and it is—but when something breaks at 2am, you know exactly where to look because you built every piece. That’s the trade-off.
+على Vercel، إنشاء نقطة نهاية API يعني إسقاط ملف في دليل `api/`. وعلى AWS، تبني كل طبقة بنفسك: الحوسبة (Lambda)، وطبقة HTTP (API Gateway)، والتوجيه، والأذونات، وإعداد CORS. يبدو ذلك عملًا أكثر — وهو كذلك — لكن حين ينكسر شيء في الثانية صباحًا، تعرف تمامًا أين تنظر لأنك بنيت كل قطعة. هذا هو المقايضة.
 
-## Your Task
+## مهمّتك
 
-Build and deploy an API with two endpoints:
+ابنِ وانشر API بنقطتَي نهاية:
 
-- **`GET /items`**—returns a JSON array of items
-- **`POST /items`**—accepts a JSON body with `name` and `price`, returns the created item with a generated `id`
+- **`GET /items`** — تُرجع مصفوفة JSON من العناصر
+- **`POST /items`** — تقبل جسمًا بصيغة JSON فيه `name` و`price`، وتُرجع العنصر المنشأ مع `id` مولّد
 
-Then call both endpoints from a React app running on `localhost:3000` (or `localhost:5173` if using Vite).
+ثم استدعِ نقطتَي النهاية من تطبيق React يعمل على `localhost:3000` (أو `localhost:5173` إن كنت تستخدم Vite).
 
-Use the account ID `123456789012`, region `us-east-1`, function name `my-frontend-app-api`, and `--output json` for all commands.
+استخدم معرّف الحساب `123456789012`، والمنطقة `us-east-1`، واسم الدالة `my-frontend-app-api`، و`--output json` في كل الأوامر.
 
-## Write the Lambda Handler
+## كتابة معالج Lambda
 
-Create (or update) `lambda/src/handler.ts` with a handler that:
+أنشئ (أو حدّث) `lambda/src/handler.ts` بمعالج:
 
-1. Uses the `APIGatewayProxyHandlerV2` type
-2. Reads `event.requestContext.http.method` to distinguish between GET and POST
-3. For GET requests: returns a 200 response with a JSON body containing an `items` array (hardcode 2-3 items, each with `id`, `name`, and `price` fields)
-4. For POST requests: parses `event.body` as JSON, validates that `name` and `price` are present, generates an `id` using `crypto.randomUUID()`, and returns a 201 response with the created item
-5. Returns a 405 response for any other HTTP method
+1. يستخدم النوع `APIGatewayProxyHandlerV2`
+2. يقرأ `event.requestContext.http.method` للتمييز بين GET وPOST
+3. لطلبات GET: يُرجع استجابة 200 بجسم JSON يحتوي مصفوفة `items` (اكتب 2-3 عناصر ثابتة، لكل منها حقول `id` و`name` و`price`)
+4. لطلبات POST: يُحلّل `event.body` كـJSON، ويتحقّق من وجود `name` و`price`، ويولّد `id` باستخدام `crypto.randomUUID()`، ويُرجع استجابة 201 بالعنصر المنشأ
+5. يُرجع استجابة 405 لأي طريقة HTTP أخرى
 
-Build the project and create the deployment zip.
+ابنِ المشروع وأنشئ ملف zip الخاص بالنشر.
 
-### Checkpoint
+### نقطة تحقّق
 
-`npm run build` succeeds with no TypeScript errors. `lambda/function.zip` contains the compiled handler.
+ينجح `npm run build` دون أخطاء TypeScript. ويحتوي `lambda/function.zip` على المعالج المترجم.
 
-## Deploy the Lambda Function
+## نشر دالة Lambda
 
-If you already have the `my-frontend-app-api` function from the Lambda exercise, update its code. If not, create a new function with the execution role from [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions).
+إذا كانت لديك بالفعل دالة `my-frontend-app-api` من تمرين Lambda، فحدّث شفرتها. وإن لم تكن، فأنشئ دالة جديدة بدور التنفيذ من [أدوار وأذونات تنفيذ Lambda](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions).
 
-For updating an existing function:
+لتحديث دالة موجودة:
 
 ```bash
 aws lambda update-function-code \
@@ -57,71 +57,71 @@ aws lambda update-function-code \
   --output json
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Invoke the function directly with a GET test event and a POST test event. The GET event returns a 200 with items. The POST event returns a 201 with the created item.
+استدعِ الدالة مباشرةً بحدث اختبار GET وحدث اختبار POST. فحدث GET يُرجع 200 مع العناصر. وحدث POST يُرجع 201 مع العنصر المنشأ.
 
-## Create the HTTP API
+## إنشاء HTTP API
 
-Create an HTTP API named `my-frontend-app-api` with protocol type `HTTP`.
+أنشئ HTTP API باسم `my-frontend-app-api` ونوع بروتوكول `HTTP`.
 
-Save the `ApiId` from the response—you’ll need it for every subsequent command.
+احفظ `ApiId` من الاستجابة — ستحتاجه في كل أمر لاحق.
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws apigatewayv2 get-api --api-id YOUR_API_ID --region us-east-1 --output json` returns the API with the correct name and protocol type.
+يُرجع `aws apigatewayv2 get-api --api-id YOUR_API_ID --region us-east-1 --output json` واجهة API بالاسم ونوع البروتوكول الصحيحين.
 
-## Create the Integration
+## إنشاء التكامل
 
-Create a Lambda proxy integration pointing to your function:
+أنشئ تكامل وكيل Lambda يشير إلى دالتك:
 
-- Integration type: `AWS_PROXY`
-- Integration URI: the ARN of your Lambda function
-- Payload format version: `2.0`
+- نوع التكامل: `AWS_PROXY`
+- عنوان URI للتكامل: ARN دالة Lambda
+- إصدار صيغة الحمولة: `2.0`
 
-Save the `IntegrationId` from the response.
+احفظ `IntegrationId` من الاستجابة.
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws apigatewayv2 get-integrations --api-id YOUR_API_ID --region us-east-1 --output json` shows one integration with type `AWS_PROXY` and the correct function ARN.
+يُظهر `aws apigatewayv2 get-integrations --api-id YOUR_API_ID --region us-east-1 --output json` تكاملًا واحدًا بنوع `AWS_PROXY` وARN الدالة الصحيح.
 
-## Create the Routes
+## إنشاء المسارات
 
-Create two routes:
+أنشئ مسارين:
 
-1. `GET /items` targeting your integration
-2. `POST /items` targeting the same integration
+1. `GET /items` مستهدفًا تكاملك
+2. `POST /items` مستهدفًا التكامل نفسه
 
-Remember: the `--target` value is `integrations/{IntegrationId}`, with the `integrations/` prefix.
+تذكّر: قيمة `--target` هي `integrations/{IntegrationId}`، مع بادئة `integrations/`.
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws apigatewayv2 get-routes --api-id YOUR_API_ID --region us-east-1 --output json` shows both routes with the correct route keys and targets.
+يُظهر `aws apigatewayv2 get-routes --api-id YOUR_API_ID --region us-east-1 --output json` المسارين بمفاتيح المسارات والأهداف الصحيحة.
 
-## Grant Permission
+## منح الإذن
 
-Add a resource-based policy to your Lambda function that allows API Gateway to invoke it. Use `apigateway.amazonaws.com` as the principal, and set the source ARN to `arn:aws:execute-api:us-east-1:123456789012:YOUR_API_ID/*`.
+أضف سياسة قائمة على الموارد إلى دالة Lambda تسمح لـ API Gateway باستدعائها. استخدم `apigateway.amazonaws.com` كأصل، واضبط ARN المصدر على `arn:aws:execute-api:us-east-1:123456789012:YOUR_API_ID/*`.
 
-### Checkpoint
+### نقطة تحقّق
 
 ```bash
 curl https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/items
 ```
 
-Returns a 200 response with your items array. If you get a 500 error, the Lambda permission is missing.
+تُرجع استجابة 200 بمصفوفة العناصر. وإن حصلت على خطأ 500، فإذن Lambda مفقود.
 
-## Configure CORS
+## تهيئة CORS
 
-Update the API with a CORS configuration that allows:
+حدّث API بإعداد CORS يسمح بـ:
 
-- Origins: `http://localhost:3000` and `http://localhost:5173`
-- Methods: `GET`, `POST`
-- Headers: `Content-Type`
-- Max age: `86400`
+- الأصول: `http://localhost:3000` و`http://localhost:5173`
+- الطرق: `GET` و`POST`
+- الترويسات: `Content-Type`
+- أقصى عمر: `86400`
 
-### Checkpoint
+### نقطة تحقّق
 
-Test the preflight response:
+اختبر استجابة preflight:
 
 ```bash
 curl -i -X OPTIONS \
@@ -131,11 +131,11 @@ curl -i -X OPTIONS \
   -H "Access-Control-Request-Headers: Content-Type"
 ```
 
-The response includes `access-control-allow-origin: http://localhost:3000` and `access-control-allow-methods` containing `GET` and `POST`.
+تتضمّن الاستجابة `access-control-allow-origin: http://localhost:3000` و`access-control-allow-methods` يحتوي `GET` و`POST`.
 
-## Call the API from React
+## استدعاء API من React
 
-Create a minimal React component (or use an existing React project) that calls both endpoints:
+أنشئ مكوّن React أدنى (أو استخدم مشروع React موجودًا) يستدعي نقطتَي النهاية:
 
 ```typescript
 const API_URL = 'https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com';
@@ -157,38 +157,38 @@ async function createItem(name: string, price: number) {
 }
 ```
 
-Open the browser’s DevTools Network tab and verify:
+افتح تبويب Network في أدوات مطوّري المتصفّح وتحقّق:
 
-1. The GET request returns your items array
-2. The POST request returns the created item with a generated `id`
-3. No CORS errors appear in the console
+1. طلب GET يُرجع مصفوفة العناصر
+2. طلب POST يُرجع العنصر المنشأ مع `id` مولّد
+3. لا أخطاء CORS تظهر في وحدة التحكّم
 
-### Checkpoint
+### نقطة تحقّق
 
-Both `fetch` calls succeed from the browser. The Network tab shows 200/201 responses with the correct JSON bodies. No CORS errors in the console.
+ينجح استدعاءا `fetch` من المتصفّح. ويُظهر تبويب Network استجابات 200/201 بأجسام JSON الصحيحة. ولا أخطاء CORS في وحدة التحكّم.
 
-## Checkpoints Summary
+## ملخّص نقاط التحقّق
 
-- Lambda handler builds and handles both GET and POST
-- Lambda function is deployed and invocable from the CLI
-- HTTP API exists with the correct protocol type
-- Integration connects to the Lambda function with payload format 2.0
-- Routes exist for `GET /items` and `POST /items`
-- Lambda permission allows API Gateway to invoke the function
-- `curl` to the API endpoint returns the expected JSON
-- CORS is configured and preflight requests succeed
-- React app can call both endpoints without CORS errors
+- معالج Lambda يُبنى ويتعامل مع GET وPOST
+- دالة Lambda منشورة وقابلة للاستدعاء من CLI
+- HTTP API موجودة بنوع البروتوكول الصحيح
+- التكامل يتصل بدالة Lambda بصيغة حمولة 2.0
+- المسارات موجودة لـ`GET /items` و`POST /items`
+- إذن Lambda يسمح لـ API Gateway باستدعاء الدالة
+- `curl` إلى نقطة نهاية API يُرجع JSON المتوقّع
+- CORS مُعدّ وطلبات preflight تنجح
+- تطبيق React يستطيع استدعاء نقطتَي النهاية دون أخطاء CORS
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **`curl` returns `{"message":"Internal Server Error"}`:** API Gateway can reach the route, but Lambda permission is missing or your handler threw an exception. Check `aws lambda add-permission` and the CloudWatch logs.
-- **`curl` returns `{"message":"Not Found"}`:** The route does not exist, points at the wrong integration, or you created it under a different method/path combination.
-- **The browser still shows CORS errors even though the CLI works:** Your API Gateway CORS settings do not include the exact frontend origin, methods, or headers the browser is asking for.
+- **`curl` يُرجع `{"message":"Internal Server Error"}`:** تستطيع API Gateway الوصول إلى المسار، لكن إذن Lambda مفقود أو معالجك رمى استثناءً. افحص `aws lambda add-permission` وسجلات CloudWatch.
+- **`curl` يُرجع `{"message":"Not Found"}`:** المسار غير موجود، أو يشير إلى التكامل الخاطئ، أو أنشأته تحت تركيبة طريقة/مسار مختلفة.
+- **ما زال المتصفّح يُظهر أخطاء CORS رغم أن CLI يعمل:** إعدادات CORS في API Gateway لا تتضمّن أصل الواجهة الأمامية أو الطرق أو الترويسات الدقيقة التي يطلبها المتصفّح.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add a `GET /items/{id}` route.** Create a third route with a path parameter. Update your handler to read `event.pathParameters?.id` and return a single item. Test it with `curl` and from your React app.
-- **Add error handling for invalid POST bodies.** Send a POST request with an empty body, a non-JSON body, and a JSON body missing required fields. Verify your handler returns appropriate 400 responses in each case.
-- **Add a custom domain.** If you have a domain managed in Route 53 and an ACM certificate, create a custom domain name for your API and test that it works.
+- **أضف مسار `GET /items/{id}`.** أنشئ مسارًا ثالثًا بمعامل مسار. حدّث معالجك ليقرأ `event.pathParameters?.id` ويُرجع عنصرًا واحدًا. اختبره بـ`curl` ومن تطبيق React.
+- **أضف معالجة أخطاء لأجسام POST غير الصالحة.** أرسل طلب POST بجسم فارغ، وجسم غير JSON، وجسم JSON يفتقد حقولًا مطلوبة. تحقّق من أن معالجك يُرجع استجابات 400 مناسبة في كل حالة.
+- **أضف نطاقًا مخصّصًا.** إذا كان لديك نطاق مُدار في Route 53 وشهادة ACM، فأنشئ اسم نطاق مخصّصًا لواجهتك واختبر أنه يعمل.
 
-When you’re ready, check your work against the [Solution: Build an API with API Gateway and Lambda](https://stevekinney.com/courses/aws/api-gateway-lambda-solution).
+عندما تكون جاهزًا، قارن عملك بـ[الحل: بناء API باستخدام API Gateway وLambda](https://stevekinney.com/courses/aws/api-gateway-lambda-solution).

@@ -1,46 +1,46 @@
 ---
-title: "Generating a Color Palette"
-lang: en
+title: "توليد لوحة ألوان"
+lang: ar
 source: "https://stevekinney.com/courses/figma/generating-a-color-palette"
 ---
 
-> **Coming up with a color palette**
+> **ابتكار لوحة ألوان**
 >
-> Color theory is a bit outside of the topics we’re going to cover today, but I did want to point you towards a few tools that I use when I am trying to come up with a color palette. **Disclaimer**: I am an engineering and *not* a designer.
+> نظرية الألوان خارج قليلًا عن الموضوعات التي سنغطّيها اليوم، لكنني أردت أن أرشدك إلى بعض الأدوات التي أستخدمها عندما أحاول ابتكار لوحة ألوان. **إخلاء مسؤولية**: أنا مهندس و*لست* مصمّمًا.
 >
 > - [UIColors.app](http://uicolors.app/)
 > - [Coolors](https://coolors.co/)
 > - [Paletton](https://paletton.com/)
 
-There are two—well, really just one and a half—primary techniques for creating a color palette:
+هناك تقنيتان أساسيتان — بل واحدة ونصف في الحقيقة — لإنشاء لوحة ألوان:
 
-- Take some non-semantic tokens and just derive your semantic colors from there.
-- Skip that step and just go with some semantic colors.
+- خُذ بعض الرموز غير الدلالية (non-semantic tokens) ثم اشتقّ ألوانك الدلالية منها.
+- تجاوز تلك الخطوة واذهب مباشرة إلى بعض الألوان الدلالية.
 
-On a long enough timeline, you’ll probably end up using a lot off different colors throughout your application, so it makes sense to go with the first approach, but you always want to end up with something closer to the second.
+وعلى مدى زمني طويل بما يكفي، سينتهي بك الأمر على الأرجح إلى استخدام الكثير من الألوان المختلفة في تطبيقك، لذا من المنطقي أن تتبع المقاربة الأولى، لكنك تريد دائمًا أن تنتهي إلى شيء أقرب إلى الثانية.
 
-> **The case for semantic colors**
+> **الحجّة لصالح الألوان الدلالية**
 >
-> Here is a **thought exercise**: Let’s assume your company’s brand is some kind of red color. So, you use `red` throughout your code and designs. And then, the corporate powers that be decided to do a rebrand or there is some kind of merger or acquisition. You’re going to be a lot happier as a person/team if you used `brand` or `primary` instead of `red` everywhere. The same goes for things like success, error, information, and danger states.
+> إليك **تمرين ذهني**: لنفترض أن علامة شركتك التجارية لون أحمر من نوع ما. لذا تستخدم `red` في كل أنحاء شيفرتك وتصميماتك. ثم تقرّر السلطات المؤسسية إعادة بناء العلامة أو يحدث نوع من الاندماج أو الاستحواذ. ستكون أكثر سعادة كشخص أو كفريق إذا استخدمت `brand` أو `primary` بدلًا من `red` في كل مكان. وينطبق الأمر نفسه على حالات مثل النجاح والخطأ والمعلومات والخطر.
 
-I usually start with the following semantic colors:
+أبدأ عادةً بالألوان الدلالية التالية:
 
-- **Information**: Often represented by a blue color, signaling clarity and calm.
-- **Success**: Green is commonly used, suggesting safety and “go-ahead”.
-- **Warning**: Orange or yellow, indicating caution but not immediate danger.
-- **Dangerous Information/Actions**: Red, as it universally signals stop or error.
+- **المعلومات (Information)**: يُعبَّر عنها غالبًا بلون أزرق يدل على الوضوح والهدوء.
+- **النجاح (Success)**: يُستخدم الأخضر عادةً، وهو يوحي بالأمان و«المضيّ قدمًا».
+- **التحذير (Warning)**: البرتقالي أو الأصفر، للدلالة على الحذر دون خطر وشيك.
+- **المعلومات/الإجراءات الخطرة (Dangerous Information/Actions)**: الأحمر، لأنه يشير عالميًا إلى التوقّف أو الخطأ.
 
-## Generating Color Variables
+## توليد متغيّرات الألوان
 
-There are *a lot* of tools out there for generating a color palette. I really like [uicolors.app](https://uicolors.app/). They have a [really cool plugin for Figma](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that allows you to generate a color palette that aligns with [Tailwind](https://tailwindcss.com/)’s semantics. You don’t have to use Tailwind to use it either. It’s definitely a nice jumping off point to begin with.
+هناك *الكثير* من الأدوات لتوليد لوحة ألوان. ويعجبني حقًا [uicolors.app](https://uicolors.app/). فلديهم [إضافة رائعة حقًا لـ Figma](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) تتيح لك توليد لوحة ألوان تتوافق مع دلالات [Tailwind](https://tailwindcss.com/). ولست مضطرًا لاستخدام Tailwind كي تستعملها. إنها بالتأكيد نقطة انطلاق جيدة للبدء.
 
-Tailwind CSS Color Generator
+مولّد ألوان Tailwind CSS
 
-As you can see, instantly create [styles](https://stevekinney.com/courses/figma/styles) and [variables](https://stevekinney.com/courses/figma/variables) along the way. You can also check **Generate a color guide** to create a component that allows you to easily see your color palette.
+وكما ترى، تُنشئ فورًا [الأنماط](https://stevekinney.com/courses/figma/styles) و[المتغيّرات](https://stevekinney.com/courses/figma/variables) في أثناء ذلك. ويمكنك أيضًا تحديد **Generate a color guide** لإنشاء مكوّن يتيح لك رؤية لوحة ألوانك بسهولة.
 
-## Exercise
+## تمرين
 
-Let’s generate a color palette with the following semantic colors:
+لنولّد لوحة ألوان بالألوان الدلالية التالية:
 
 - **Primary**
 - **Success**
@@ -48,21 +48,21 @@ Let’s generate a color palette with the following semantic colors:
 - **Warning**
 - **Danger**
 
-Optionally, you can create a set **Neutral** and **Secondary** colors. Use a frame and [auto layout](https://stevekinney.com/courses/figma/auto-layout) to create a style guide for your tokens. It should look something like this.
+واختياريًا، يمكنك إنشاء مجموعة ألوان **Neutral** و**Secondary**. استخدم إطارًا (frame) و[التخطيط التلقائي (auto layout)](https://stevekinney.com/courses/figma/auto-layout) لإنشاء دليل أنماط لرموزك. وينبغي أن يبدو على نحو ما يلي.
 
-A color palette generated using the Tailwind CSS Color Generator Function
+لوحة ألوان مولَّدة باستخدام وظيفة Tailwind CSS Color Generator
 
-## Using Colors in Code
+## استخدام الألوان في الشيفرة
 
-You can hook these colors up to [dev-mode](https://stevekinney.com/courses/figma/dev-mode) or export the variables, but you can also use [**UI Colors**](https://uicolors.app/) to create either a Tailwind theme or CSS variables that you can use in your actual code.
+يمكنك ربط هذه الألوان بـ [dev-mode](https://stevekinney.com/courses/figma/dev-mode) أو تصدير المتغيّرات، لكن يمكنك أيضًا استخدام [**UI Colors**](https://uicolors.app/) لإنشاء سمة Tailwind أو متغيّرات CSS تستخدمها في شيفرتك الفعلية.
 
-The UIColors.app website
+موقع UIColors.app
 
-Clicking **Export** makes it easy to grab your styles as code in the format you need it.
+النقر على **Export** يسهّل الحصول على أنماطك كشيفرة بالصيغة التي تحتاجها.
 
-Exporting colors from UIColors.app
+تصدير الألوان من UIColors.app
 
-There are also a number of other tools that you can use to get your variables out of Figma.
+وهناك أيضًا عدد من الأدوات الأخرى التي يمكنك استخدامها لإخراج متغيّراتك من Figma.
 
 - [Token Variable Export](https://www.figma.com/community/plugin/1264267851877180830)
 - [Advanced Variable Export](https://www.figma.com/community/plugin/1260472771849439434)

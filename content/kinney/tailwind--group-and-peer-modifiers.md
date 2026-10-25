@@ -1,18 +1,18 @@
 ---
-title: "Group and Peer Modifiers"
-lang: en
+title: "معدِّلات group وpeer"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/group-and-peer-modifiers"
 ---
 
-`group` and `peer` modifiers are two of Tailwind’s most powerful features for creating interactive components without writing custom CSS. They allow you to style elements based on the state of their parent (`group`) or sibling (`peer`) elements.
+معدِّلا `group` و`peer` من أقوى ميزات Tailwind لإنشاء مكوّنات تفاعلية دون كتابة CSS مخصص. يتيحان لك تنسيق العناصر بناءً على حالة العناصر الأب (`group`) أو الأشقاء (`peer`).
 
-## Parent State Styling
+## تنسيق حالة العنصر الأب
 
-`group` modifiers let you style child elements when a parent element changes state. You add group to a parent element, then use `group-hover:`, `group-focus:`, etc. on child elements.
+تتيح لك معدِّلات `group` تنسيق العناصر الابنة عندما تتغيّر حالة عنصر أب. تضيف group إلى عنصر أب، ثم تستخدم `group-hover:` و`group-focus:` وما شابه على العناصر الابنة.
 
-Apply `group` class to a parent, then use `group-*` variants on descendants:
+طبّق صنف `group` على عنصر أب، ثم استخدم صيغ `group-*` على العناصر السليلة:
 
-*Parent State Styling — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/6450343962365f6e955f5c00829c0dcee3453c21ffbb0c9445e0086776013ab1.html)*
+*تنسيق حالة العنصر الأب — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6450343962365f6e955f5c00829c0dcee3453c21ffbb0c9445e0086776013ab1.html)*
 
 ```html
 <div class="group">
@@ -21,20 +21,20 @@ Apply `group` class to a parent, then use `group-*` variants on descendants:
 </div>
 ```
 
-Some ideal use cases include:
+من حالات الاستخدام المثالية:
 
-- Multi-element hover effects on cards
-- Navigation items with icons and text
-- Complex button interactions
-- Interactive list items
+- تأثيرات تمرير متعددة العناصر على البطاقات
+- عناصر تنقل بأيقونات ونص
+- تفاعلات أزرار معقدة
+- عناصر قائمة تفاعلية
 
-> **You can combine modifiers with variants.**
+> **يمكنك دمج المعدِّلات مع الصيغ.**
 >
-> It works with all pseudo-classes: `group-focus`, `group-active`, `group-odd`.
+> يعمل مع كل الأصناف الزائفة: `group-focus` و`group-active` و`group-odd`.
 
-### Practical Example: Interactive Card
+### مثال عملي: بطاقة تفاعلية
 
-*Practical Example: Interactive Card — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/dde935d0de16b37d211cae08b41c00bffd2429f5b3fdcb873dda32feac9569d7.html)*
+*مثال عملي: بطاقة تفاعلية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/dde935d0de16b37d211cae08b41c00bffd2429f5b3fdcb873dda32feac9569d7.html)*
 
 ```html
 <div class="group rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-xl">
@@ -52,11 +52,11 @@ Some ideal use cases include:
 </div>
 ```
 
-### Advanced Group Features
+### ميزات group المتقدمة
 
-**`group-has-*`** - Style based on descendant state:
+**`group-has-*`** - التنسيق بناءً على حالة العنصر السليل:
 
-*Advanced Group Features — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/06fc0188b59c862a098239912ec3b7be19a14eeb779e161a02a5d19e3d716c92.html)*
+*ميزات group المتقدمة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/06fc0188b59c862a098239912ec3b7be19a14eeb779e161a02a5d19e3d716c92.html)*
 
 ```html
 <div class="group">
@@ -67,9 +67,9 @@ Some ideal use cases include:
 </div>
 ```
 
-**Named groups** for nesting:
+**مجموعات مسمّاة** للتعشيش:
 
-*Advanced Group Features — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/5ac273ced0b6215f6b854d039f26d17fbda8d7acbfa39a1ea0e854e881ef2c06.html)*
+*ميزات group المتقدمة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5ac273ced0b6215f6b854d039f26d17fbda8d7acbfa39a1ea0e854e881ef2c06.html)*
 
 ```html
 <div class="group/outer">
@@ -81,15 +81,15 @@ Some ideal use cases include:
 </div>
 ```
 
-**Arbitrary selectors**: `group-[.is-active]:bg-gray-100`
+**محدِّدات عشوائية**: `group-[.is-active]:bg-gray-100`
 
-**v4 composability**: Combine with other variants like `group-has-focus:not-disabled:opacity-100`
+**قابلية التركيب في v4**: ادمجها مع صيغ أخرى مثل `group-has-focus:not-disabled:opacity-100`
 
-### Smart Container Pattern
+### نمط الحاوية الذكية
 
-Use `group-has` to create contextually aware components:
+استخدم `group-has` لإنشاء مكوّنات واعية بالسياق:
 
-*Smart Container Pattern — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/f5a3db92f332d333376710a0aae3573f73992e3ee7a1de3e569b00d7ddd85566.html)*
+*نمط الحاوية الذكية — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f5a3db92f332d333376710a0aae3573f73992e3ee7a1de3e569b00d7ddd85566.html)*
 
 ```html
 <!-- Navigation that changes theme when it contains an active link -->
@@ -107,13 +107,13 @@ Use `group-has` to create contextually aware components:
 </form>
 ```
 
-## Sibling State Styling
+## تنسيق حالة العنصر الشقيق
 
-Peer modifiers let you style elements based on the state of sibling elements. You add peer to one element, then use `peer-hover:`, `peer-checked:`, `peer-focus:`, etc. on siblings that come after it in the DOM.
+تتيح لك معدِّلات peer تنسيق العناصر بناءً على حالة العناصر الأشقاء. تضيف peer إلى عنصر واحد، ثم تستخدم `peer-hover:` و`peer-checked:` و`peer-focus:` وما شابه على الأشقاء الذين يأتون بعده في DOM.
 
-Apply `peer` class to an element, then use `peer-*` variants on subsequent siblings:
+طبّق صنف `peer` على عنصر، ثم استخدم صيغ `peer-*` على الأشقاء اللاحقين:
 
-*Sibling State Styling — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/94a9cd1f1d5660fef0307331f911e0b90f826b16380a8475aa554f0ddc6a9176.html)*
+*تنسيق حالة العنصر الشقيق — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/94a9cd1f1d5660fef0307331f911e0b90f826b16380a8475aa554f0ddc6a9176.html)*
 
 ```html
 <div class="space-y-1">
@@ -123,15 +123,15 @@ Apply `peer` class to an element, then use `peer-*` variants on subsequent sibli
 </div>
 ```
 
-**Important:** `peer` *only* works on siblings that come AFTER the peer element. This is a CSS limitation.
+**مهم:** يعمل `peer` *فقط* على الأشقاء الذين يأتون بعد عنصر peer. هذا قيد في CSS.
 
-`peer` works with all pseudo-classes: `peer-focus`, `peer-required`, `peer-disabled`.
+يعمل `peer` مع كل الأصناف الزائفة: `peer-focus` و`peer-required` و`peer-disabled`.
 
-### Floating Label Pattern
+### نمط التسمية العائمة
 
-Perfect for modern form inputs:
+مثالي لحقول النماذج الحديثة:
 
-*Floating Label Pattern — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/25b9542e648e53eb60bbcc7e2d4784b5733815f80324963f8d247f7800908524.html)*
+*نمط التسمية العائمة — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/25b9542e648e53eb60bbcc7e2d4784b5733815f80324963f8d247f7800908524.html)*
 
 ```html
 <div class="relative">
@@ -148,11 +148,11 @@ Perfect for modern form inputs:
 </div>
 ```
 
-### Advanced Peer Features
+### ميزات peer المتقدمة
 
-**Named peers** for multiple siblings:
+**أقران مسمّون** لعدة أشقاء:
 
-*Advanced Peer Features — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/aad1e123cea86b854aa061c5308b581976b40e89fc1ac964ef188f43a3eb76a9.html)*
+*ميزات peer المتقدمة — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/aad1e123cea86b854aa061c5308b581976b40e89fc1ac964ef188f43a3eb76a9.html)*
 
 ```html
 <input type="email" class="peer/email" />
@@ -161,15 +161,15 @@ Perfect for modern form inputs:
 <p class="hidden peer-invalid/password:block">Invalid password</p>
 ```
 
-> **Arbitrary Selectors**
+> **محدِّدات عشوائية**
 >
-> You can use `peer` with **arbitrary selectors**: `peer-[&:nth-child(3)]:mt-4`.
+> يمكنك استخدام `peer` مع **محدِّدات عشوائية**: `peer-[&:nth-child(3)]:mt-4`.
 
-## Common Pitfalls & Solutions
+## المزالق الشائعة وحلولها
 
-### Multiple Peer Problem
+### مشكلة تعدد الأقران
 
-*Multiple Peer Problem — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/39373328fd2446947047a974f56f375ecf2da2c2d9912c1878db9b74a36084e4.html)*
+*مشكلة تعدد الأقران — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/39373328fd2446947047a974f56f375ecf2da2c2d9912c1878db9b74a36084e4.html)*
 
 ```html
 <!-- ❌ Ambiguous - which peer responds? -->
@@ -183,9 +183,9 @@ Perfect for modern form inputs:
 <label class="peer-focus/email:text-blue-600">Clear!</label>
 ```
 
-### Nested Group Conflicts
+### تعارضات المجموعات المتعشّشة
 
-*Nested Group Conflicts — Example 10 — [Open example](https://stevekinney.com/generated/playgrounds/ad78c8bf6477c09f41b4861932ef9f45ae64da5fdc8cd2112d2605c5997003f3.html)*
+*تعارضات المجموعات المتعشّشة — المثال 10 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ad78c8bf6477c09f41b4861932ef9f45ae64da5fdc8cd2112d2605c5997003f3.html)*
 
 ```html
 <!-- ❌ Inner button responds to both groups -->
@@ -203,11 +203,11 @@ Perfect for modern form inputs:
 </div>
 ```
 
-## Conditional Content Revelation
+## إظهار المحتوى المشروط
 
-Show/hide content based on form selections without JavaScript by combinig `group` with `has-*:` to become `group-has-*:`
+أظهر المحتوى أو أخفه بناءً على اختيارات النموذج دون JavaScript بدمج `group` مع `has-*:` ليصبح `group-has-*:`
 
-*Conditional Content Revelation — Example 11 — [Open example](https://stevekinney.com/generated/playgrounds/f945388370dbbf24224fde777e44364f69eb14d612648cb692ff07de77d06b92.html)*
+*إظهار المحتوى المشروط — المثال 11 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f945388370dbbf24224fde777e44364f69eb14d612648cb692ff07de77d06b92.html)*
 
 ```html
 <div class="group rounded-lg border p-4">
@@ -238,17 +238,17 @@ Show/hide content based on form selections without JavaScript by combinig `group
 </div>
 ```
 
-Conditional content:
+المحتوى المشروط:
 
-- `hidden`: Content hidden by default
-- `has-[input[value='poor']:checked]:block`: Shows when specific radio button is selected
-- Targets specific values using attribute selectors
+- `hidden`: المحتوى مخفي افتراضيًا
+- `has-[input[value='poor']:checked]:block`: يظهر عندما يُحدَّد زر اختيار معيّن
+- يستهدف قيمًا محددة باستخدام محدِّدات الخصائص
 
-Perfect for branching forms and progressive disclosure patterns.
+مثالي للنماذج المتفرعة وأنماط الكشف التدريجي.
 
-## Key Differences
+## الفروق الأساسية
 
-- **`group`**: Parent → descendants (any depth)
-- **`peer`**: Sibling → subsequent siblings only
-- **`group-has`**: Parent responds to descendant states
-- **Named variants**: Prevent conflicts in complex layouts
+- **`group`**: من الأب → إلى السلائل (بأي عمق)
+- **`peer`**: من الشقيق → إلى الأشقاء اللاحقين فقط
+- **`group-has`**: يستجيب الأب لحالات السلائل
+- **الصيغ المسمّاة**: تمنع التعارضات في التخطيطات المعقدة

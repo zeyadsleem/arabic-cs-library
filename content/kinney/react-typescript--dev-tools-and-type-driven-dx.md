@@ -1,18 +1,18 @@
 ---
-title: "Developer Tools and Type-Driven DX"
-lang: en
+title: "أدوات المطوّر والتجربة المدفوعة بالأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/dev-tools-and-type-driven-dx"
 ---
 
-Building React apps is fun. Debugging them? Not so much. But what if your TypeScript types could make your Developer Tools experience actually delightful? We’re going to explore how to leverage TypeScript to create a development experience where your types don’t just catch errors—they actively help you debug, understand component relationships, and make sense of complex state changes in real time.
+بناء تطبيقات React ممتع. أما تصحيحها (debugging)؟ ليس كثيرًا. لكن ماذا لو استطاعت أنواع TypeScript لديك أن تجعل تجربة أدوات المطوّر (Developer Tools) ممتعة فعلًا؟ سنتكشف كيف نستثمر TypeScript لنصنع تجربة تطوير لا تُخطئ فيها الأنواع الأخطاء فحسب—بل تساعدك نشطًا على التصحيح، وفهم علاقات المكوّنات (components)، وتفسير تحوّلات الحالة المعقّدة في الوقت الحقيقي.
 
-By the end of this, you’ll know how to use TypeScript to make your Developer Tools tell a story about your application state, create meaningful component names that survive minification, and build debugging tools that understand your domain models as well as you do.
+عند نهاية هذه الصفحة، ستعرف كيف تستخدم TypeScript لترسم أدوات المطوّر قصةً عن حالة تطبيقك، وأنشئ أسماء مكوّنات ذات معنى تصمد أمام التصغير (minification)، وتبني أدوات تصحيح تفهم نماذج النطاق (domain models) كما تفهمها أنت.
 
-## The Problem with Generic Developer Tools
+## مشكلة أدوات المطوّر العامة
 
-React Developer Tools are great, but they’re also generic. They show you component trees, props, and state—but they don’t understand your business logic. When you’re debugging a complex e-commerce checkout flow, seeing `Component` with props `{data: {...}, onClick: f}` doesn’t tell you much about whether you’re looking at a product card, a payment form, or a shipping selector.
+أدوات المطوّر في React عظيمة، لكنها أيضًا عامة. فهي تريك أشجار المكوّنات، والخصائص (props)، والحالة—لكنها لا تفهم منطق عملك. وحين تصحّح مسار الدفع في متجر إلكتروني معقّد، فإن رؤية `Component` بخصائص `{data: {...}, onClick: f}` لا تخبرك كثيرًا عمّا إذا كان ما تنظر إلى بطاقة منتج، أم نموذج دفع، أم مُنتقي شحن.
 
-Here’s what we typically see in Developer Tools:
+هذا ما نراه عادةً في أدوات المطوّر:
 
 ```typescript
 // ❌ What Developer Tools shows us
@@ -24,7 +24,7 @@ Here’s what we typically see in Developer Tools:
 </Component>
 ```
 
-And here’s what we wish we could see:
+وهذا ما نتمنّى أن نراه:
 
 ```typescript
 // ✅ What we want to see
@@ -36,11 +36,11 @@ And here’s what we wish we could see:
 </ProductListing>
 ```
 
-The good news? TypeScript gives us the tools to bridge this gap.
+والخبر السارّ؟ يمنحنا TypeScript الأدوات لسدّ هذه الفجوة.
 
-## Component Display Names That Actually Help
+## أسماء عرض للمكوّنات تعين حقًا
 
-First things first: let’s make our components identifiable in Developer Tools. The `displayName` property is your friend, but we can make it even better with TypeScript.
+أولًا: لنجعل مكوّناتنا قابلةً للتعريف في أدوات المطوّر. فخاصية `displayName` صديقتك، ويمكن أن نزدها فائدةً بواسطة TypeScript.
 
 ```typescript
 interface ProductCardProps {
@@ -61,7 +61,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
 ProductCard.displayName = 'ProductCard';
 ```
 
-But manually setting `displayName` on every component gets tedious. Let’s create a helper that uses TypeScript to make this automatic:
+لكنّ ضبط `displayName` يدويًا على كل مكوّن يغدو مستهلكًا. لننشئ عونًا (helper) يستخدم TypeScript ليُتمّ الأمر آليًا:
 
 ```typescript
 function createNamedComponent<T>(name: string, component: React.FC<T>): React.FC<T> {
@@ -76,15 +76,15 @@ export const ProductCard = createNamedComponent('ProductCard', ({ product, onAdd
 });
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> This pattern is especially useful when you’re creating components dynamically or using higher-order components that might obscure the original component name.
+> هذا النمط ذو فائدة خاصة حين تصنع مكوّنات ديناميكيًا أو تستخدم المكوّنات عالية الرتبة (higher-order components) التي قد تحجب اسم المكوّن الأصلي.
 
-## Making Props Readable in Developer Tools
+## جعل الخصائص مقروءة في أدوات المطوّر
 
-Developer Tools can show you prop values, but they’re often cryptic objects with meaningless property names. We can use TypeScript to create props that are self-documenting.
+تستطيع أدوات المطوّر إظهار قيم الخصائص، لكنها غالبًا كائنات مبهمة بأسماء خصائص لا معنى لها. ويمكننا أن نستخدم TypeScript لصنع خصائص تُوثِّق نفسها.
 
-Instead of this:
+بدلًا من هذا:
 
 ```typescript
 // ❌ Unclear props in Developer Tools
@@ -95,7 +95,7 @@ interface ButtonProps {
 }
 ```
 
-Do this:
+افعل هذا:
 
 ```typescript
 // ✅ Self-documenting props
@@ -121,7 +121,7 @@ const Button: React.FC<ButtonProps> = ({ variant, size, children, ...props }) =>
 // Instead of: type="primary" size={16}
 ```
 
-For complex data structures, consider creating debug-friendly representations:
+وبالبنى البياناتية (data structures) المعقّدة، فكّر في تشكيل تمثيلات صديقة للتصحيح:
 
 ```typescript
 interface UserProfileProps {
@@ -150,9 +150,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 };
 ```
 
-## Type-Safe State Logging
+## تسجيل الحالة بأمان الأنواع
 
-When debugging state changes, console logs often look like cryptic object dumps. Let’s create type-safe loggers that understand our domain models:
+حين تصحّح التغيّرات في الحالة، تبدو سجلات وحدة التحكم (console) غالبًا أكوامًا من كائناتٍ غامضة. لننشئ مُسجِّلات (loggers) آمنة الأنواع تفهم نماذج نطاقنا:
 
 ```typescript
 import { z } from 'zod';
@@ -239,9 +239,9 @@ const CartProvider: React.FC = ({ children }) => {
 };
 ```
 
-## Custom Developer Tools Panels
+## لوحات مخصّصة لأدوات المطوّر
 
-For complex applications, the built-in React Developer Tools might not be enough. You can create custom Developer Tools panels that understand your specific domain:
+في التطبيقات المعقّدة، قد لا تكفي أدوات المطوّر المدمجة في React. ويمكنك إنشاء لوحات مخصّصة لأدوات المطوّر تفهم نطاقك بعينه:
 
 ```typescript
 interface DebugPanelProps {
@@ -292,9 +292,9 @@ const ComplexComponent: React.FC = () => {
 };
 ```
 
-## Error Boundaries with Type Information
+## حدود الأخطاء مع معلومات الأنواع
 
-When errors occur, having context about the types involved can be invaluable. Let’s create an error boundary that captures type information:
+عند وقوع الأخطاء، قد يكون امتلاك سيّاقٍ عن الأنواع المعنيّة عديم الثمن. لننشئ حدّاً أخطاء (error boundary) يلتقاط معلومات النوع:
 
 ```typescript
 interface ErrorInfo {
@@ -391,9 +391,9 @@ const App: React.FC = () => {
 };
 ```
 
-## Performance Profiling with Types
+## توصيف الأداء بالأنواع
 
-React’s Profiler API is powerful, but we can make it even more useful by adding type information:
+واجهة Profiler في React قوية، ويمكن أن نزدها فائدة بإضافة معلومات النوع:
 
 ```typescript
 interface ProfilerData {
@@ -478,9 +478,9 @@ const ProductList: React.FC<{ products: Product[]; filters: FilterState }> = ({
 };
 ```
 
-## Debugging Context with Types
+## تصحيح السياق (Context) بالأنواع
 
-React Context can be difficult to debug because values are often passed down through multiple layers. Let’s create a context debugging system that maintains type safety:
+السياق (Context) في React قد يصعب تصحيحه لأنّ القيم تُمرَّر عبر طبقاتٍ متعددة غالبًا. لننشئ نظامًا لتصحيح السياق يُبقي على أمان الأنواع:
 
 ```typescript
 import { createContext, useContext, useDebugValue } from 'react';
@@ -550,9 +550,9 @@ const UserProfile: React.FC = () => {
 };
 ```
 
-## Real-World Example: E-commerce Debug System
+## مثال من الواقع: نظام تصحيحٍ لمتجر إلكتروني
 
-Let’s put it all together in a realistic example. Here’s how you might create a comprehensive debugging system for an e-commerce application:
+لنجمعها كلها في مثال واقعي. هكذا قد تنشئ نظامًا شاملًا للتصحيح في تطبيق تجارة إلكترونية:
 
 ```typescript
 import { z } from 'zod';
@@ -659,22 +659,22 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
 ProductCard.displayName = 'ProductCard';
 ```
 
-## Wrapping Up
+## الخلاصة
 
-TypeScript and React Developer Tools don’t have to be separate worlds. By using types to enhance your debugging experience, you create a development environment where:
+لا يلزم أن يكوّن TypeScript وأدوات المطوّر في React عالَمَين منفصلَين. وباستخدامك الأنواع لتحسين تجربة التصحيح، تصنع بيئة تطوير فيها:
 
-- Components have meaningful names that survive minification
-- Props and state are self-documenting
-- Error messages include relevant type information
-- Performance bottlenecks are automatically flagged with context
-- State changes are validated and logged with clear diffs
+- تحمل المكوّنات أسماء ذات معنى تصمد أمام التصغير (minification)
+- الخصائص والحالة تُوثِّق نفسها
+- رسائل الخطأ تتضمّن معلومات النوع ذات الصلة
+- تُرصد اختناقات الأداء وتُميَّز بالسياق تلقائيًا
+- تُتحقَّق التغيّرات في الحالة وتُسجَّل في فروق واضحة
 
-The key is thinking of your types not just as compile-time helpers, but as runtime debugging partners. When you’re deep in a debugging session at 2 AM (we’ve all been there), having Developer Tools that understand your domain models as well as you do can be the difference between finding the bug quickly and spending hours scratching your head.
+المفتاح أن تفكّر في أنواعك ليس كمُعِينات وقت التصريف فقط، بل كشركاء تصحيح وقت التشغيل. وحين تغوص في جلسة تصحيح في الثانية فجرًا (كلّنا مرّا بذلك)، فإن امتلاك أدوات مطوّر تفهم نماذج نطاقك كما تفهمها أنت قد يكون الفرق بين إيجاد العيب سريعًا وقضاء ساعات في حكّ رأسك.
 
-> **Warning**
+> **تحذير**
 >
-> Remember to wrap debug code in `process.env.NODE_ENV === 'development'` checks to avoid shipping debug overhead to production.
+> تذكّر أن تُغلّف شيفرة التصحيح بفحص `process.env.NODE_ENV === 'development'` لتجنّب شحن عبء التصحيح إلى الإنتاج.
 
-Start small—add display names to a few components, create a simple state logger, or build a custom error boundary. You’ll be surprised how much these small improvements compound into a dramatically better debugging experience.
+ابدأ صغيرًا—أضف أسماء عرض إلى قليلٍ من المكوّنات، أنشئ مُسجِّل حالة بسيطًا، أو ابنِ حدود أخطاء مخصّصة. وسيُدهشك مقدار ما تتراكم به هذه التحسينات الصغيرة لتجربة تصحيح أفضل كثيرًا.
 
-Your future self (and your teammates) will thank you when those cryptic production bugs become much easier to track down.
+وسيشكرك أنت في المستقبل (وإلى أعضاء فريقك) حين تُصبح تلك الأخطاء الغامضة في الإنتاج أسهل كثيرًا في التتبّع.

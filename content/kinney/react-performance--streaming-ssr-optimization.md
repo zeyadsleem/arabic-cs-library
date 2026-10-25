@@ -1,16 +1,16 @@
 ---
-title: "Streaming SSR Optimization"
-lang: en
+title: "تحسين التدفق في التصيير على الخادم (SSR)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/streaming-ssr-optimization"
 ---
 
-Traditional Server-Side Rendering forces users to wait for the entire page to be generated before receiving any HTML. With 10,000 products to render, users stare at a blank screen while your server crunches through data. Streaming SSR changes this: it sends HTML as soon as it’s ready, piece by piece, creating the perception of instant loading even when the full page takes time to generate.
+يجبر التصيير التقليدي على جانب الخادم المستخدمين على انتظار توليد الصفحة كاملة قبل تلقّي أي HTML. فمع 10,000 منتج للتصيير، يحدّق المستخدمون في شاشة فارغة بينما يطحن خادمك البيانات. يغيّر التدفق في التصيير على الخادم (Streaming SSR) هذا: فهو يرسل HTML فور جهوزه، قطعةً قطعة، فيخلق إحساسًا بالتحميل الفوري حتى عندما يستغرق توليد الصفحة كاملة وقتًا.
 
-React 18’s streaming capabilities transform slow SSR from a liability into a competitive advantage. Users see above-the-fold content immediately while below-the-fold sections stream in progressively. The result? Dramatically improved Time to First Byte (TTFB), better Core Web Vitals scores, and users who stay engaged instead of bouncing to faster competitors.
+تحوّل قدرات التدفق في React 18 التصيير البطيء على الخادم من عبء إلى ميزة تنافسية. يرى المستخدمون محتوى أعلى الشاشة فورًا بينما تتدفق الأقسام الأسفل تدريجيًا. والنتيجة؟ تحسّن جذري في زمن الوصول إلى البايت الأول (TTFB)، ونتائج أفضل لمؤشرات الويب الأساسية، ومستخدمون يبقون متفاعلين بدلًا من الهروب إلى منافسين أسرع.
 
-## Understanding Streaming SSR
+## فهم التدفق في التصيير على الخادم
 
-Traditional SSR is synchronous—the server must complete the entire page before sending any HTML:
+التصيير التقليدي على الخادم متزامن — يجب على الخادم إكمال الصفحة كاملة قبل إرسال أي HTML:
 
 ```typescript
 // Traditional SSR - All or nothing approach
@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
 // Result: 3+ second wait for TTFB, blank screen for users
 ```
 
-Streaming SSR breaks this bottleneck by sending HTML incrementally:
+يكسر التدفق في التصيير على الخادم هذا الاختناق بإرسال HTML على نحو تدريجي:
 
 ```typescript
 // Streaming SSR - Progressive HTML delivery
@@ -67,9 +67,9 @@ app.get('/', (req, res) => {
 // Result: Sub-100ms TTFB, immediate visual feedback
 ```
 
-## Implementing Streaming SSR
+## تنفيذ التدفق في التصيير على الخادم
 
-### Basic Streaming Setup
+### إعداد التدفق الأساسي
 
 ```typescript
 // server/streaming-ssr.ts
@@ -183,7 +183,7 @@ app.get('*', (req, res) => {
 });
 ```
 
-### `Suspense` Boundaries for Streaming
+### حدود `Suspense` من أجل التدفق
 
 ```typescript
 // components/StreamingApp.tsx
@@ -270,7 +270,7 @@ export function StreamingApp() {
 }
 ```
 
-### Data Fetching for Streaming
+### جلب البيانات من أجل التدفق
 
 ```typescript
 // utils/streaming-data.ts
@@ -382,9 +382,9 @@ function StreamingErrorBoundary({
 }
 ```
 
-## Advanced Streaming Patterns
+## أنماط تدفق متقدمة
 
-### Priority-Based Streaming
+### التدفق القائم على الأولوية
 
 ```typescript
 // Priority-based streaming for optimal user experience
@@ -449,7 +449,7 @@ function StreamingBoundary({
 }
 ```
 
-### Streaming with Real-Time Updates
+### التدفق مع تحديثات الزمن الحقيقي
 
 ```typescript
 // Combine streaming SSR with real-time updates
@@ -502,7 +502,7 @@ function LiveDataStream() {
 }
 ```
 
-## Progressive Hydration
+## الترطيب التدريجي
 
 ```typescript
 // Progressive hydration for streaming SSR
@@ -656,9 +656,9 @@ hydrator.hydrateOnVisible('recommendations', Recommendations, recommendationsPro
 hydrator.hydrateOnVisible('footer', Footer, footerProps);
 ```
 
-## Performance Optimization
+## تحسين الأداء
 
-### Streaming Performance Monitoring
+### مراقبة أداء التدفق
 
 ```typescript
 // Monitor streaming SSR performance
@@ -772,7 +772,7 @@ class ServerStreamingMonitor {
 }
 ```
 
-### Cache-Friendly Streaming
+### تدفق صديق لذاكرة التخزين المؤقت
 
 ```typescript
 // Implement caching for streaming components
@@ -888,9 +888,9 @@ setInterval(() => {
 }, 60000); // Every minute
 ```
 
-## Edge Cases and Error Handling
+## الحالات الطرفية ومعالجة الأخطاء
 
-### Streaming Error Recovery
+### استرداد أخطاء التدفق
 
 ```typescript
 // Robust error handling for streaming SSR
@@ -980,7 +980,7 @@ class StreamingErrorHandler {
 }
 ```
 
-## Testing Streaming SSR
+## اختبار التدفق في التصيير على الخادم
 
 ```typescript
 // Testing utilities for streaming SSR

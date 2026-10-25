@@ -1,16 +1,16 @@
 ---
-title: "Route-Based Network Interception"
-lang: en
+title: "اعتراض الشبكة القائم على المسارات"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception"
 ---
 
-The [HAR lessons](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) covered the “record everything, replay forever” approach to network isolation. That’s the right tool when you’re mocking a large API surface—dozens of endpoints, nested responses, pagination tokens. But sometimes you don’t need a full recording. You need to mock *one* endpoint, or block images, or simulate a 500 from the server, or strip a header before it reaches your app. That’s where [`page.route`](https://playwright.dev/docs/mock) earns its keep.
+غطّت [دروس HAR](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) نهج «سجّل كل شيء، وأعِد تشغيله إلى الأبد» في عزل الشبكة. هذه هي الأداة الصحيحة عندما تحاكي سطح API واسعًا—عشرات من نقاط النهاية، واستجابات متداخلة، ورموز ترقيم صفحات. لكنك لا تحتاج دائمًا إلى تسجيل كامل. تحتاج إلى محاكاة نقطة نهاية *واحدة*، أو حجب الصور، أو محاكاة استجابة 500 من الخادم، أو إزالة ترويسة قبل أن تصل إلى تطبيقك. هنا يأتي دور [`page.route`](https://playwright.dev/docs/mock) ويستحق مكانه.
 
-Route-based interception is Playwright’s API for intercepting individual network requests and deciding what to do with them: serve a fake response, modify the real one, or kill the request entirely. It’s more explicit than HAR replay, more flexible, and—for small mocks—much less ceremony.
+الاعتراض القائم على المسارات هو واجهة Playwright البرمجية لاعتراض طلبات الشبكة الفردية وتقرير ما يجب فعله بها: تقديم استجابة مزيفة، أو تعديل الاستجابة الحقيقية، أو إلغاء الطلب بالكامل. إنه أكثر صراحة من إعادة تشغيل HAR، وأكثر مرونة، وللمحاكاة الصغيرة أقل تكلفة بكثير.
 
-## The basics: intercepting a request
+## الأساسيات: اعتراض طلب
 
-[`page.route`](https://playwright.dev/docs/api/class-page#page-route) takes a URL pattern and a handler function. Every request matching the pattern goes through your handler instead of the real network:
+يأخذ [`page.route`](https://playwright.dev/docs/api/class-page#page-route) نمط URL ودالة معالج. كل طلب يطابق النمط يمر عبر معالجك بدلًا من الشبكة الحقيقية:
 
 ```typescript
 await page.route('**/api/shelf', async (route) => {
@@ -22,9 +22,9 @@ await page.route('**/api/shelf', async (route) => {
 });
 ```
 
-That’s it. Any request to a URL ending in `/api/shelf` gets your canned response instead of hitting the server. The test is deterministic, it’s fast, and you can read the mock right there in the test file.
+هذا كل شيء. أي طلب إلى URL ينتهي بـ `/api/shelf` يحصل على استجابتك الجاهزة بدلًا من الوصول إلى الخادم. الاختبار حتمي وسريع، ويمكنك قراءة المحاكاة مباشرة في ملف الاختبار.
 
-You can also scope the interception to an entire browser context with [`context.route`](https://playwright.dev/docs/api/class-browsercontext#browser-context-route), which applies to every page in the context—including popups and opened links:
+يمكنك أيضًا حصر الاعتراض في سياق متصفح كامل باستخدام [`context.route`](https://playwright.dev/docs/api/class-browsercontext#browser-context-route)، وهو ينطبق على كل صفحة في السياق—بما في ذلك النوافذ المنبثقة والروابط المفتوحة:
 
 ```typescript
 test.beforeEach(async ({ context }) => {
@@ -32,35 +32,35 @@ test.beforeEach(async ({ context }) => {
 });
 ```
 
-The difference matters. `page.route` only intercepts requests from that specific page. `context.route` intercepts requests from every page the context opens. For most test scenarios, `page.route` is what you want. Reach for `context.route` when you need to block something globally—analytics, tracking pixels, third-party scripts—across all pages in the test.
+الفرق مهم. `page.route` يعترض فقط الطلبات الصادرة من تلك الصفحة تحديدًا. أما `context.route` فيعترض الطلبات من كل صفحة يفتحها السياق. في معظم سيناريوهات الاختبار، `page.route` هو ما تريده. والجأ إلى `context.route` عندما تحتاج إلى حجب شيء على المستوى العام—التحليلات، ووحدات تتبع البكسل، ونصوص الأطراف الثالثة—عبر كل الصفحات في الاختبار.
 
-The fast rule is:
+القاعدة السريعة هي:
 
-- use `page.route()` when the mock belongs to one page and one scenario
-- use `browserContext.route()` when the mock is part of the environment for the whole test
+- استخدم `page.route()` عندما تنتمي المحاكاة إلى صفحة واحدة وسيناريو واحد
+- استخدم `browserContext.route()` عندما تكون المحاكاة جزءًا من بيئة الاختبار بأكمله
 
-Concrete examples:
+أمثلة ملموسة:
 
-- **Use `page.route()`** for “this shelf page should see a 500 from `/api/shelf`” or “this one checkout flow should get a fake tax response.” The route is local to the page under test, and when the page goes away, the mock’s useful life is over too.
-- **Use `browserContext.route()`** for blocking analytics on every page, intercepting popup traffic from the first request, or setting one fake backend response that both the main page and a popup will hit during the same test.
-- **Use `browserContext.route()`** whenever you do not have the target page object yet. The first request of a popup is the classic case. By the time you get a `Page` handle for the popup, that request already happened.
-- **Prefer `page.route()`** when the broader scope would make the mock too invisible. A context-wide route is effectively ambient test infrastructure; that is good when it truly is infrastructure and bad when it quietly changes unrelated pages.
+- **استخدم `page.route()`** في حالات مثل «يجب أن ترى صفحة الرف هذه استجابة 500 من `/api/shelf`» أو «يجب أن يحصل مسار الدفع هذا على استجابة ضريبية مزيفة». المسار محلي بالنسبة للصفحة قيد الاختبار، وعندما تختفي الصفحة ينتهي العمر المفيد للمحاكاة أيضًا.
+- **استخدم `browserContext.route()`** لحجب التحليلات في كل صفحة، أو لاعتراض حركة النوافذ المنبثقة من أول طلب، أو لضبط استجابة خلفية مزيفة واحدة تصطدم بها كل من الصفحة الرئيسية والنافذة المنبثقة أثناء الاختبار نفسه.
+- **استخدم `browserContext.route()`** كلما لم تكن تملك كائن الصفحة الهدف بعد. أول طلب من نافذة منبثقة هو الحالة الكلاسيكية. بحلول الوقت الذي تحصل فيه على مقبض `Page` للنافذة المنبثقة، يكون ذلك الطلب قد حدث بالفعل.
+- **فضّل `page.route()`** عندما يجعل النطاق الأوسع المحاكاة خفية جدًا. المسار على مستوى السياق هو في الواقع بنية اختبار محيطة؛ وهذا جيد عندما يكون بنية حقيقية وسيئًا عندما يغيّر صفحات غير ذات صلة بهدوء.
 
-The precedence rule from the docs is also worth remembering: if both match, `page.route()` wins over `browserContext.route()` for requests coming from that page. That lets you keep a broad context-level default and override one endpoint surgically on the page that needs a different behavior.
+من القواعد الجديرة بالتذكر أيضًا قاعدة الأسبقية الواردة في التوثيق: إذا تطابق الاثنان، يفوز `page.route()` على `browserContext.route()` بالنسبة للطلبات القادمة من تلك الصفحة. يتيح لك ذلك الاحتفاظ بافتراضي واسع على مستوى السياق وتجاوز نقطة نهاية واحدة بدقة على الصفحة التي تحتاج إلى سلوك مختلف.
 
-One more detail from the [Page API](https://playwright.dev/docs/api/class-page) docs that is easy to miss: enabling routing disables the browser HTTP cache for that page or context. That is usually what you want in tests. It also means “my app got slower after I added routes” is not your imagination.
+وثمة تفصيل آخر من توثيق [واجهة Page](https://playwright.dev/docs/api/class-page) يسهل تفويته: تفعيل التوجيه يعطّل ذاكرة التخزين المؤقت لـ HTTP في المتصفح لتلك الصفحة أو السياق. هذا غالبًا ما تريده في الاختبارات. ويعني أيضًا أن «تطبيقي أصبح أبطأ بعد إضافة المسارات» ليس من نسج خيالك.
 
-## Restoring routes
+## استعادة المسارات
 
-Adding the route is only half the job. If you install a route in the middle of a long test, or inside a reusable helper that runs more than once, you also need to know how to get rid of it.
+إضافة المسار نصف العمل فقط. إذا ثبّتت مسارًا في منتصف اختبار طويل، أو داخل دالة مساعدة قابلة لإعادة الاستخدام تُنفّذ أكثر من مرة، فأنت تحتاج أيضًا إلى معرفة كيفية التخلص منه.
 
-In plain Playwright Test, the cheapest cleanup is often the test boundary itself: each test gets a fresh browser context, so routes you add in one test do not leak into the next one. But inside a single test or helper, route cleanup is your responsibility.
+في Playwright Test العادي، غالبًا ما يكون أرخص تنظيف هو حد الاختبار نفسه: كل اختبار يحصل على سياق متصفح جديد، لذا لا تتسرب المسارات التي تضيفها في اختبار إلى الاختبار التالي. لكن داخل اختبار واحد أو دالة مساعدة واحدة، تنظيف المسارات مسؤوليتك.
 
-There are three patterns worth knowing.
+هناك ثلاثة أنماط جديرة بالمعرفة.
 
-### 1. Make the route self-expire
+### 1. اجعل المسار ينتهي تلقائيًا
 
-If the mock should only apply once, use the route `times` option and let Playwright remove it after that many matches:
+إذا كان ينبغي تطبيق المحاكاة مرة واحدة فقط، فاستخدم خيار `times` في المسار ودع Playwright يزيله بعد هذا العدد من المطابقات:
 
 ```typescript
 await page.route(
@@ -76,11 +76,11 @@ await page.route(
 );
 ```
 
-This is the cleanest option when you are intercepting one bootstrap request and then want the page to go back to the real network.
+هذا هو الخيار الأنظف عندما تعترض طلب تهيئة واحدًا ثم تريد أن تعود الصفحة إلى الشبكة الحقيقية.
 
-### 2. Remove one specific route
+### 2. إزالة مسار محدد واحد
 
-Use [`page.unroute()`](https://playwright.dev/docs/api/class-page#page-unroute) or [`browserContext.unroute()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute) when you want to remove a specific handler:
+استخدم [`page.unroute()`](https://playwright.dev/docs/api/class-page#page-unroute) أو [`browserContext.unroute()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute) عندما تريد إزالة معالج محدد:
 
 ```typescript
 const mockShelf = async (route) => {
@@ -101,13 +101,13 @@ try {
 }
 ```
 
-Passing the handler matters when you have more than one route on the same URL pattern. If you omit it, Playwright removes **all** routes for that URL on that page or context.
+تمرير المعالج مهم عندما يكون لديك أكثر من مسار واحد على نمط URL نفسه. إذا حذفته، يزيل Playwright **كل** المسارات لذلك الـ URL على تلك الصفحة أو السياق.
 
-`try` / `finally` is the right shape in helpers. Tests fail. Cleanup still has to happen.
+`try` / `finally` هو الشكل الصحيح في الدوال المساعدة. الاختبارات تفشل. والتنظيف يجب أن يحدث رغم ذلك.
 
-### 3. Wipe everything
+### 3. مسح كل شيء
 
-If a helper installs several routes, or mixes manual routes with HAR replay, use [`page.unrouteAll()`](https://playwright.dev/docs/api/class-page#page-unroute-all) or [`browserContext.unrouteAll()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute-all). These remove both the routes you registered with `route()` and the HAR handlers you registered with `routeFromHAR()`:
+إذا كانت دالة مساعدة تثبّت عدة مسارات، أو تخلط المسارات اليدوية مع إعادة تشغيل HAR، فاستخدم [`page.unrouteAll()`](https://playwright.dev/docs/api/class-page#page-unroute-all) أو [`browserContext.unrouteAll()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-unroute-all). هذه تزيل المسارات التي سجلتها بواسطة `route()` ومعالجات HAR التي سجلتها بواسطة `routeFromHAR()` معًا:
 
 ```typescript
 await page.route('**/api/shelf', async (route) => {
@@ -123,24 +123,24 @@ await page.routeFromHAR('tests/fixtures/open-library.har', {
 await page.unrouteAll({ behavior: 'wait' });
 ```
 
-The `behavior` option is not decoration.
+خيار `behavior` ليس زينة.
 
-- `'wait'` waits for currently running handlers to finish before removing them.
-- `'ignoreErrors'` removes immediately and swallows later handler errors.
-- `'default'` removes immediately and can still surface unhandled errors from a handler that was already running.
+- `'wait'` ينتظر انتهاء المعالجات الجارية حاليًا قبل إزالتها.
+- `'ignoreErrors'` يزيل فورًا ويبتلع أخطاء المعالجات اللاحقة.
+- `'default'` يزيل فورًا ويمكنه مع ذلك إظهار أخطاء غير معالجة من معالج كان يعمل بالفعل.
 
-Use `'wait'` unless you have a specific reason not to. It is the teardown version that behaves like an adult.
+استخدم `'wait'` ما لم يكن لديك سبب محدد لخلاف ذلك. إنها نسخة التفكيك التي تتصرّف بنضج.
 
-## Routing is middleware, not magic
+## التوجيه برمجية وسيطة، وليس سحرًا
 
-Playwright’s routing chain has real middleware semantics.
+سلسلة التوجيه في Playwright لها دلالات برمجية وسيطة حقيقية.
 
-- Routes run in **reverse registration order**. The most recently registered matching route gets the first shot.
-- A `page.route(...)` handler beats a matching `browserContext.route(...)` handler for requests from that page.
-- [`route.fallback()`](https://playwright.dev/docs/api/class-route#route-fallback) passes the request along to the next matching handler, optionally with request overrides.
-- [`route.continue()`](https://playwright.dev/docs/api/class-route#route-continue) sends the request straight to the network and stops the chain.
+- تُنفّذ المسارات بترتيب **عكسي لترتيب التسجيل**. أحدث مسار مطابق مسجّل هو الذي يحصل على الفرصة الأولى.
+- معالج `page.route(...)` يتغلب على معالج `browserContext.route(...)` المطابق بالنسبة للطلبات القادمة من تلك الصفحة.
+- [`route.fallback()`](https://playwright.dev/docs/api/class-route#route-fallback) يمرر الطلب إلى المعالج المطابق التالي، مع إمكانية تجاوزات على الطلب.
+- [`route.continue()`](https://playwright.dev/docs/api/class-route#route-continue) يرسل الطلب مباشرة إلى الشبكة ويوقف السلسلة.
 
-That distinction matters a lot once you have more than one handler:
+هذا التمييز مهم جدًا عندما يكون لديك أكثر من معالج واحد:
 
 ```typescript
 await page.route('**/*', async (route, request) => {
@@ -162,15 +162,15 @@ await page.route('**/api/**', async (route) => {
 });
 ```
 
-Registered in that order, the `**/api/**` handler runs first, and the broad `**/*` handler runs later only if the first one falls back. If you use `continue()` in the broad handler, the narrower one never gets a turn.
+بالتسجيل بهذا الترتيب، يعمل معالج `**/api/**` أولًا، ويعمل المعالج الواسع `**/*` لاحقًا فقط إذا تراجع الأول. إذا استخدمت `continue()` في المعالج الواسع، فلن يحصل المعالج الأضيق على دوره أبدًا.
 
-## Three things you can do with a route
+## ثلاثة أشياء يمكنك فعلها بمسار
 
-Every route handler ends by calling one of three methods on the `route` object. Each one answers a different question.
+كل معالج مسار ينتهي باستدعاء واحدة من ثلاث طرق على كائن `route`. كل واحدة منها تجيب على سؤال مختلف.
 
-### Fulfill: serve a fake response
+### fulfill: تقديم استجابة مزيفة
 
-[`route.fulfill`](https://playwright.dev/docs/api/class-route#route-fulfill) replaces the real response entirely. The request never leaves the browser:
+[`route.fulfill`](https://playwright.dev/docs/api/class-route#route-fulfill) يستبدل الاستجابة الحقيقية بالكامل. الطلب لا يغادر المتصفح أبدًا:
 
 ```typescript
 await page.route('**/api/shelf', async (route) => {
@@ -182,9 +182,9 @@ await page.route('**/api/shelf', async (route) => {
 });
 ```
 
-This is the one you’ll reach for most often in tests. Mock the endpoint, control the response, assert on the UI that renders it. No network, no flakiness, no dependency on somebody else’s server.
+هذا هو الخيار الذي ستلجأ إليه أكثر من غيره في الاختبارات. حاكِ نقطة النهاية، وتحكم في الاستجابة، وتحقق من الواجهة التي تعرضها. لا شبكة، ولا تقلّب، ولا اعتماد على خادم شخص آخر.
 
-You can fulfill with more than just a body. The full set of options includes `status`, `headers`, `contentType`, `body`, and `path` (serve a file from disk). For example, serving a static JSON fixture:
+يمكنك التقديم بأكثر من مجرد جسم. المجموعة الكاملة من الخيارات تشمل `status` و`headers` و`contentType` و`body` و`path` (تقديم ملف من القرص). على سبيل المثال، تقديم ملف JSON ثابت:
 
 ```typescript
 await route.fulfill({
@@ -193,16 +193,16 @@ await route.fulfill({
 });
 ```
 
-### Abort: kill the request
+### abort: إلغاء الطلب
 
-[`route.abort`](https://playwright.dev/docs/api/class-route#route-abort) stops the request cold. The browser gets a network error, as if the server was unreachable:
+[`route.abort`](https://playwright.dev/docs/api/class-route#route-abort) يوقف الطلب تمامًا. يحصل المتصفح على خطأ شبكة، كما لو كان الخادم غير قابل للوصول:
 
 ```typescript
 // Block all image requests.
 await page.route('**/*.{png,jpg,jpeg,webp}', (route) => route.abort());
 ```
 
-This is useful for two things. First, speeding up tests that don’t care about images, fonts, or third-party scripts—blocking them shaves time off every page load. Second, testing how your app handles network failures. If you want to verify that the shelf page shows an error state when the API is down, abort the API route and assert on the error UI:
+هذا مفيد لشيئين. أولًا، تسريع الاختبارات التي لا تهتم بالصور أو الخطوط أو نصوص الأطراف الثالثة—فحجبها يقتطع وقتًا من كل تحميل صفحة. ثانيًا، اختبار كيفية تعامل تطبيقك مع أعطال الشبكة. إذا أردت التحقق من أن صفحة الرف تعرض حالة خطأ عندما يكون الـ API معطلًا، فألغِ مسار الـ API وتحقق من واجهة الخطأ:
 
 ```typescript
 await page.route('**/api/shelf', (route) => route.abort());
@@ -210,7 +210,7 @@ await page.goto('/shelf');
 await expect(page.getByText('Unable to load your shelf')).toBeVisible();
 ```
 
-You can also abort selectively by resource type instead of URL:
+يمكنك أيضًا الإلغاء بشكل انتقائي حسب نوع المورد بدلًا من الـ URL:
 
 ```typescript
 await page.route('**/*', (route) => {
@@ -218,9 +218,9 @@ await page.route('**/*', (route) => {
 });
 ```
 
-### Continue: let it through, maybe modified
+### continue: دعه يمر، ربما معدلًا
 
-[`route.continue`](https://playwright.dev/docs/api/class-route#route-continue) sends the request to the real server, but lets you modify it on the way out. You can change the method, the URL, the headers, or the post data:
+[`route.continue`](https://playwright.dev/docs/api/class-route#route-continue) يرسل الطلب إلى الخادم الحقيقي، لكنه يتيح لك تعديله في طريقه. يمكنك تغيير الطريقة أو الـ URL أو الترويسات أو بيانات ما بعد الإرسال:
 
 ```typescript
 // Strip a custom header before the request reaches the server.
@@ -231,13 +231,13 @@ await page.route('**/*', async (route) => {
 });
 ```
 
-This is the least common of the three in test code, but it shows up when you need to simulate a specific client environment (changing the `User-Agent`, for example) or when you need to strip headers that your test infrastructure adds but that the server doesn’t expect.
+هذا هو الأقل شيوعًا من الثلاثة في كود الاختبار، لكنه يظهر عندما تحتاج إلى محاكاة بيئة عميل محددة (تغيير `User-Agent` على سبيل المثال) أو عندما تحتاج إلى إزالة ترويسات تضيفها بنية اختبارك لكن الخادم لا يتوقعها.
 
-There is one nasty caveat from the [Route API](https://playwright.dev/docs/api/class-route): you cannot override the `Cookie` header this way. The browser fills cookies from its cookie jar, not from your handcrafted header override. If cookie state matters, use `browserContext.addCookies()` or `storageState` instead of trying to smuggle it through `continue()`.
+هناك تحذير مزعج واحد من [واجهة Route](https://playwright.dev/docs/api/class-route): لا يمكنك تجاوز ترويسة `Cookie` بهذه الطريقة. يملأ المتصفح ملف تعريف الارتباط من جرار الكوكيز الخاص به، لا من تجاوزك المصنوع يدويًا. إذا كانت حالة الكوكيز مهمة، فاستخدم `browserContext.addCookies()` أو `storageState` بدلًا من محاولة تهريبها عبر `continue()`.
 
-## Modifying responses
+## تعديل الاستجابات
 
-Sometimes you want the *real* response from the server, but with one thing changed—a field added, a field removed, a status code swapped. The pattern is: fetch the original response through the route, modify it, then fulfill with the modified version.
+أحيانًا تريد الاستجابة *الحقيقية* من الخادم، لكن مع تغيير شيء واحد—حقل مضاف، أو حقل محذوف، أو رمز حالة مبدل. النمط هو: اجلب الاستجابة الأصلية عبر المسار، وعدّلها، ثم قدّم النسخة المعدلة.
 
 ```typescript
 await page.route('**/api/shelf', async (route) => {
@@ -261,27 +261,27 @@ await page.route('**/api/shelf', async (route) => {
 });
 ```
 
-[`route.fetch`](https://playwright.dev/docs/api/class-route#route-fetch) sends the request to the real server and gives you the response object. You modify whatever you need, then call `route.fulfill` with the modified version. The browser sees the modified response as if it came from the server directly.
+[`route.fetch`](https://playwright.dev/docs/api/class-route#route-fetch) يرسل الطلب إلى الخادم الحقيقي ويعطيك كائن الاستجابة. تعدّل ما تحتاجه، ثم تستدعي `route.fulfill` بالنسخة المعدلة. يرى المتصفح الاستجابة المعدلة كما لو جاءت من الخادم مباشرة.
 
-`route.fetch()` also takes a few useful knobs of its own. The two that matter most in test code are `maxRedirects` and `maxRetries`. Redirect-heavy auth flows or the occasional transient reset on a backend call are much easier to model there than in handwritten retry wrappers around your route handler.
+يأخذ `route.fetch()` أيضًا بعض خيارات الضبط المفيدة الخاصة به. وأهم اثنين في كود الاختبار هما `maxRedirects` و`maxRetries`. تدفقات المصادقة المليئة بإعادة التوجيه، أو إعادة الضبط العابرة أحيانًا في استدعاء خلفي، أسهل بكثير في النمذجة هناك من أغلفة إعادة المحاولة المكتوبة يدويًا حول معالج المسار.
 
-This is powerful for testing edge cases without building a separate test server. Want to test what happens when the API returns 500? Fetch the real response, ignore it, and fulfill with a 500. Want to test what happens when one field is missing? Fetch the real response, delete the field, fulfill. The real server provides the baseline; you provide the variation.
+هذا قوي لاختبار الحالات الحدية دون بناء خادم اختبار منفصل. أتريد اختبار ما يحدث عندما يعيد الـ API استجابة 500؟ اجلب الاستجابة الحقيقية، وتجاهلها، وقدّم استجابة 500. أتريد اختبار ما يحدث عند غياب حقل واحد؟ اجلب الاستجابة الحقيقية، واحذف الحقل، وقدّمها. الخادم الحقيقي يوفر خط الأساس؛ وأنت توفر التباين.
 
-> **Tip**
+> **نصيحة**
 >
-> If you find yourself modifying responses for more than two or three routes in the same test, you’ve probably outgrown route-based interception. Switch to HAR replay with a pre-edited HAR file, or build a proper fixture system. Route handlers are great for surgical mocks; they get unwieldy when you’re mocking an entire API surface.
+> إذا وجدت نفسك تعدّل الاستجابات لأكثر من مسارين أو ثلاثة في الاختبار نفسه، فمن المحتمل أنك تجاوزت حدود الاعتراض القائم على المسارات. انتقل إلى إعادة تشغيل HAR بملف HAR محرّر مسبقًا، أو ابنِ نظام تجهيزات مناسبًا. معالجات المسارات رائعة للمحاكاة الجراحية؛ لكنها تصبح ثقيلة عندما تحاكي سطح API بأكمله.
 
-## Glob URL patterns
+## أنماط URL العامة (Glob) {#glob-url-patterns}
 
-Playwright uses its own simplified glob syntax for URL matching in `page.route`, `page.waitForResponse`, and everywhere else that accepts a URL pattern. A few rules worth internalizing:
+يستخدم Playwright صيغة glob المبسطة الخاصة به لمطابقة الـ URL في `page.route` و`page.waitForResponse` وفي كل مكان آخر يقبل نمط URL. وفيما يلي بعض القواعد الجديرة بالاستيعاب:
 
-- A single `*` matches any characters *except* `/`. So `https://example.com/*.js` matches `https://example.com/app.js` but not `https://example.com/scripts/app.js`.
-- A double `**` matches any characters *including* `/`. So `**/*.js` matches both of those.
-- `?` matches a literal question mark, not “any single character.” This is different from shell globs. If you want to match any character, use `*`.
-- Curly braces `{}` match a comma-separated list of alternatives: `**/*.{png,jpg,jpeg}` matches all three image types.
-- The glob must match the *entire* URL, not just a substring. `*.js` won’t match anything because URLs start with `https://`.
+- `*` المفردة تطابق أي أحرف *عدا* `/`. لذا `https://example.com/*.js` يطابق `https://example.com/app.js` لكنه لا يطابق `https://example.com/scripts/app.js`.
+- `**` المزدوجة تطابق أي أحرف *بما في ذلك* `/`. لذا `**/*.js` يطابق كليهما.
+- `?` يطابق علامة استفهام حرفية، وليس «أي حرف واحد». هذا يختلف عن أنماط shell العامة. إذا أردت مطابقة أي حرف، فاستخدم `*`.
+- الأقواس المعقوفة `{}` تطابق قائمة بدائل مفصولة بفواصل: `**/*.{png,jpg,jpeg}` يطابق أنواع الصور الثلاثة.
+- يجب أن يطابق النمط الـ URL *بالكامل*، لا مجرد سلسلة فرعية. `*.js` لن يطابق شيئًا لأن عناوين URL تبدأ بـ `https://`.
 
-When globs aren’t expressive enough, pass a regular expression instead:
+عندما لا تكون أنماط glob معبّرة بما يكفي، مرّر تعبيرًا نمطيًا بدلًا منها:
 
 ```typescript
 await page.route(/openlibrary\.org\/search\.json/, async (route) => {
@@ -289,26 +289,26 @@ await page.route(/openlibrary\.org\/search\.json/, async (route) => {
 });
 ```
 
-Regex patterns match against the full URL string, so you don’t need to match the protocol and domain if you don’t care about them—a partial match is fine.
+تطابق أنماط regex سلسلة الـ URL الكاملة، لذا لا تحتاج إلى مطابقة البروتوكول والنطاق إن لم تكن تهتم بهما—المطابقة الجزئية كافية.
 
-## Monitoring network events
+## مراقبة أحداث الشبكة
 
-Sometimes you don’t want to intercept requests—you want to observe them. Playwright exposes `request` and `response` events on both the page and the context:
+أحيانًا لا تريد اعتراض الطلبات—بل تريد مراقبتها. يعرّض Playwright حدثي `request` و`response` على كل من الصفحة والسياق:
 
 ```typescript
 page.on('request', (request) => console.log('>>', request.method(), request.url()));
 page.on('response', (response) => console.log('<<', response.status(), response.url()));
 ```
 
-These fire for *every* request, including ones you’ve routed. They’re useful for debugging—if a route isn’t matching, the `request` event shows you exactly what URL the browser is requesting so you can fix your glob.
+يُشغَّل هذان الحدثان مع *كل* طلب، بما في ذلك الطلبات التي وجّهتها. إنهما مفيدان لتصحيح الأخطاء—إذا لم يكن هناك مسار مطابق، فإن حدث `request` يريك بالضبط أي URL يطلبه المتصفح كي تصحح نمط glob الخاص بك.
 
-In test code, you’ll rarely need raw event listeners. `page.waitForResponse` (covered in [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)) is the right tool for “wait until this request finishes, then assert.” Event listeners are for when you need to collect *all* traffic for a test report or a failure dossier.
+في كود الاختبار، نادرًا ما تحتاج إلى مستمعي أحداث خام. `page.waitForResponse` (المغطى في [قصة الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)) هو الأداة الصحيحة لـ «انتظر حتى ينتهي هذا الطلب، ثم تحقق». مستمعو الأحداث مفيدون عندما تحتاج إلى جمع *كل* حركة الشبكة لتقرير اختبار أو ملف أدلة فشل.
 
-## The service worker gotcha
+## مأزق الـ service worker
 
-If your app registers a [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), that worker sits between the browser and the network—and it intercepts requests *before* Playwright’s route handlers see them. This means your `page.route` calls might not fire at all, because the service worker is serving cached responses instead of letting the requests through to the network layer.
+إذا سجّل تطبيقك [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)، فإن هذا العامل يجلس بين المتصفح والشبكة—ويعترض الطلبات *قبل* أن تراها معالجات المسارات في Playwright. هذا يعني أن استدعاءات `page.route` الخاصة بك قد لا تُنفّذ أبدًا، لأن الـ service worker يقدم استجابات مخزنة مؤقتًا بدلًا من تمرير الطلبات إلى طبقة الشبكة.
 
-The fix is straightforward:
+الإصلاح واضح ومباشر:
 
 ```typescript
 const context = await browser.newContext({
@@ -316,7 +316,7 @@ const context = await browser.newContext({
 });
 ```
 
-Or in `playwright.config.ts`:
+أو في `playwright.config.ts`:
 
 ```typescript
 export default defineConfig({
@@ -326,32 +326,32 @@ export default defineConfig({
 });
 ```
 
-This disables service workers entirely for the test context. Your routes work as expected, and you don’t lose anything—service worker caching is a production concern, not a test concern.
+هذا يعطّل عمال الخدمة بالكامل لسياق الاختبار. تعمل مساراتك كما هو متوقع، ولا تخسر شيئًا—فالتخزين المؤقت لعامل الخدمة مسألة إنتاج، لا مسألة اختبار.
 
-> **Warning**
+> **تحذير**
 >
-> If you’re using [Mock Service Worker (MSW)](https://mswjs.io/) for API mocking in your app, it registers its own service worker. That worker will intercept requests before Playwright’s route handlers, making your routes invisible. If you want Playwright-level route interception, either disable MSW in the test environment or use Playwright’s built-in routing instead of MSW.
+> إذا كنت تستخدم [Mock Service Worker (MSW)](https://mswjs.io/) لمحاكاة الـ API في تطبيقك، فهو يسجّل عامل خدمة خاصًا به. سيعترض هذا العامل الطلبات قبل معالجات مسارات Playwright، مما يجعل مساراتك غير مرئية. إذا أردت اعتراض المسارات على مستوى Playwright، فإما أن تعطّل MSW في بيئة الاختبار أو تستخدم التوجيه المدمج في Playwright بدلًا من MSW.
 
-## Popups and WebSockets have their own edge cases
+## للنوافذ المنبثقة وWebSockets حالات حدية خاصة
 
-Two route gotchas are worth writing down because they look like “Playwright is broken” right up until you know the rule.
+هناك مأزقان في المسارات يستحقان التدوين لأنهما يبدوان كأن «Playwright معطوب» حتى تعرف القاعدة.
 
-First: `page.route()` does **not** catch the first request of a popup page. That request happens before you have a handle on the popup page object. If you need to intercept popup traffic from the start, register the handler on the browser context with `browserContext.route()`.
+أولًا: `page.route()` **لا** يلتقط أول طلب لصفحة منبثقة. يحدث ذلك الطلب قبل أن يكون لديك مقبض على كائن الصفحة المنبثقة. إذا كنت تحتاج إلى اعتراض حركة النوافذ المنبثقة من البداية، فسجّل المعالج على سياق المتصفح باستخدام `browserContext.route()`.
 
-Second: socket-heavy apps now have [`browserContext.routeWebSocket()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-route-web-socket) when you need to observe or modify WebSocket traffic. The timing rule is strict: only sockets created **after** routing is registered get intercepted. Set it up before the page creates the connection or do not bother pretending the route will see it.
+ثانيًا: التطبيقات المثقلة بمقابس الاتصال لديها الآن [`browserContext.routeWebSocket()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-route-web-socket) عندما تحتاج إلى مراقبة حركة WebSocket أو تعديلها. قاعدة التوقيت صارمة: فقط المقابس المنشأة **بعد** تسجيل التوجيه يتم اعتراضها. أعدّ التوجيه قبل أن تنشئ الصفحة الاتصال، أو لا تتظاهر بأن المسار سيراها.
 
-## When to use routes vs. HARs
+## متى تستخدم المسارات مقابل HAR
 
-The decision is usually obvious once you state the question clearly:
+القرار عادة واضح بمجرد أن تصوغ السؤال بوضوح:
 
-- **One or two endpoints with known responses:** Use `page.route` with `route.fulfill`. The mock lives in the test, it’s readable, it’s explicit.
-- **Simulating errors or edge cases:** Use `page.route` with `route.abort` or a custom `route.fulfill` with a non-200 status. HARs record *successful* sessions—they’re not built for error simulation.
-- **A large API surface with many endpoints:** Use HAR replay. Recording ten endpoints is easier than writing ten route handlers.
-- **Response modification:** Use `route.fetch` + `route.fulfill` when you want the real response with one thing changed. Use a modified HAR when you need that across many tests.
+- **نقطة نهاية أو نقطتان باستجابات معروفة:** استخدم `page.route` مع `route.fulfill`. المحاكاة تعيش في الاختبار، وهي مقروءة وصريحة.
+- **محاكاة الأخطاء أو الحالات الحدية:** استخدم `page.route` مع `route.abort` أو `route.fulfill` مخصص برمز حالة غير 200. تُسجّل ملفات HAR الجلسات *الناجحة*—وهي ليست مصممة لمحاكاة الأخطاء.
+- **سطح API واسع بنقاط نهاية كثيرة:** استخدم إعادة تشغيل HAR. تسجيل عشر نقاط نهاية أسهل من كتابة عشرة معالجات مسارات.
+- **تعديل الاستجابة:** استخدم `route.fetch` + `route.fulfill` عندما تريد الاستجابة الحقيقية مع تغيير شيء واحد. واستخدم HAR معدلًا عندما تحتاج إلى ذلك عبر اختبارات كثيرة.
 
-Both tools coexist. You can replay a HAR for most endpoints and add a `page.route` on top for the one endpoint you need to simulate failing. The route handler takes priority over the HAR replay for matching requests.
+الأداتان تتعايشان. يمكنك إعادة تشغيل HAR لمعظم نقاط النهاية وإضافة `page.route` فوقها لنقطة النهاية الوحيدة التي تحتاج إلى محاكاة فشلها. معالج المسار له الأولوية على إعادة تشغيل HAR بالنسبة للطلبات المطابقة.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Route-based network mocking
@@ -376,13 +376,13 @@ Both tools coexist. You can replay a HAR for most endpoints and add a `page.rout
   `unroute()`, or `unrouteAll({ behavior: 'wait' })` before returning.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكره
 
-`page.route` is the surgical tool. HAR replay is the sledgehammer. Use `route.fulfill` when you know exactly what response you want, `route.abort` when you want to simulate failure, and `route.continue` when you want the real response with a tweak. When the mocks get big enough that route handlers are cluttering the test file, switch to HAR.
+`page.route` هو الأداة الجراحية. وإعادة تشغيل HAR هي المطرقة الثقيلة. استخدم `route.fulfill` عندما تعرف بالضبط الاستجابة التي تريدها، و`route.abort` عندما تريد محاكاة الفشل، و`route.continue` عندما تريد الاستجابة الحقيقية مع تعديل طفيف. وعندما تصبح المحاكاة كبيرة لدرجة أن معالجات المسارات تزدحم بها ملف الاختبار، فانتقل إلى HAR.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
-- [Approaches to HAR Recording](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [تسجيل HAR لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
+- [مقاربات في تسجيل HAR](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording)
+- [قصة الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)

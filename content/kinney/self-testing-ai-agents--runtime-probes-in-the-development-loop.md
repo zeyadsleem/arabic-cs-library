@@ -1,35 +1,35 @@
 ---
-title: "Runtime Probes in the Development Loop"
-lang: en
+title: "مسابر وقت التشغيل داخل حلقة التطوير"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop"
 ---
 
-You installed Playwright MCP. Great. Now what?
+ثبّتت Playwright MCP. عظيم. وما الآن؟
 
-> **Note**
+> **ملاحظة**
 >
-> As of April 9, 2026, Playwright MCP defaults to a persistent browser profile. For reproducible probes against Shelf, prefer an isolated profile or an explicit storage state so every probe starts from known browser and authentication state.
+> اعتبارًا من 9 أبريل 2026، صار Playwright MCP يستخدم افتراضيًا ملف تعريف متصفح دائمًا. وللحصول على مسابر قابلة لإعادة الإنتاج على Shelf، يُفضَّل استخدام ملف تعريف معزول أو حالة تخزين صريحة، حتى يبدأ كل مسبار من حالة متصفح ومصادقة معروفة.
 
-This lesson is about what to actually *do* with a runtime tool once the agent has one. The short version is that you want the agent probing the UI between edits, on its own initiative, the way a careful developer would.
+يدور هذا الدرس حول ما تفعله فعلًا بأداة وقت تشغيل بعد أن تصبح بيد الوكيل. والخلاصة القصيرة أنك تريد للوكيل أن يستكشف الواجهة بين التعديلات، بمبادرة منه، كما يفعل مطوّر دقيق.
 
-## What a probe is, and why it’s different from a test
+## ما المسبار، ولماذا يختلف عن الاختبار
 
-A test is a scripted, repeatable thing you commit. A probe is a one-off interactive check the agent runs in the middle of doing something else. Probes don’t get committed. They don’t have assertions in the “fail the build” sense. They produce observations the agent uses to decide what to do next.
+الاختبار شيء مُبرمَج قابل للتكرار تُودِعه في المستودع. أما المسبار ففحص تفاعلي لمرة واحدة يشغّله الوكيل في منتصف انشغاله بشيء آخر. والمسابر لا تُودَع. وليست فيها تحقّقات بمعنى «أفشِل البناء». إنها تُنتج ملاحظات يستخدمها الوكيل ليقرّر ما يفعل تاليًا.
 
-Concretely: the agent has just edited `src/routes/shelf/+page.svelte` to add a “Sort by rating” dropdown. Before declaring the task done, it runs a probe: “Open the dev server at localhost:5173/shelf, confirm the dropdown is visible, click it, confirm it has the expected options, select ‘rating’, confirm the list re-sorts.” That’s not a test. That’s the agent rubber-ducking itself by actually running the code it wrote.
+وبشكل ملموس: يكون الوكيل قد عدّل للتوّ `src/routes/shelf/+page.svelte` ليضيف قائمة منسدلة «رتّب حسب التقييم». وقبل أن يعلن انتهاء المهمة، يشغّل مسبارًا: «افتح خادم التطوير على localhost:5173/shelf، وتأكّد أن القائمة المنسدلة ظاهرة، وانقر عليها، وتأكّد أن خياراتها هي المتوقّعة، واختر «التقييم»، وتأكّد أن القائمة أُعيد ترتيبها.» هذا ليس اختبارًا. هذا الوكيل يشرح لنفسه وهو يشغّل الشيفرة التي كتبها فعلًا.
 
-Without a runtime tool, the agent has two bad options: run the committed Playwright suite (slow, wrong-grained, might not cover the new thing) or skip the check and hope. With a runtime tool, it has a third option: poke at the feature directly.
+بلا أداة وقت تشغيل، أمام الوكيل خياران سيئان: أن يشغّل مجموعة اختبارات Playwright المُودَعة (بطيئة، وبمستوى تفصيل خاطئ، وربما لا تغطّي الشيء الجديد)، أو أن يتخطّى الفحص ويأمل. وبأداة وقت تشغيل يصبح لديه خيار ثالث: أن ينقر الميزة مباشرةً.
 
-## The probe pattern
+## نمط المسبار
 
-I teach the pattern as a four-step loop the agent should follow after any UI change:
+أُدرّس النمط في صورة حلقة من أربع خطوات ينبغي للوكيل اتّباعها بعد أي تغيير في الواجهة:
 
-1. **Navigate** to the page affected by the change.
-2. **Observe** the relevant region—read the accessibility tree, take a screenshot, log the DOM for the specific component.
-3. **Interact** with the change—click the new button, fill in the new form field, trigger the new animation.
-4. **Re-observe**—did the interaction produce the expected result? What does the console say? What does the network tab say?
+1. **انتقل** إلى الصفحة المتأثّرة بالتغيير.
+2. **لاحِظ** المنطقة ذات الصلة — اقرأ شجرة إمكانية الوصول، وخُذ لقطة شاشة، وسجّل DOM للمكوّن المحدّد.
+3. **تفاعَل** مع التغيير — انقر الزر الجديد، واملأ حقل النموذج الجديد، وأشعِل الحركة الجديدة.
+4. **أعِد الملاحظة** — هل أنتج التفاعل النتيجة المتوقّعة؟ وماذا تقول وحدة التحكّم؟ وماذا تقول لوحة الشبكة؟
 
-Step 4 is the one agents skip if you don’t explicitly tell them not to. The click succeeds, no error is thrown, and the agent thinks the feature works. The actual question is *what happened next*, and the only way to know is to look.
+الخطوة الرابعة هي التي يتخطّاها الوكلاء إن لم تأمرهم صراحةً بألّا يفعلوا. فالنقر ينجح، ولا يُطرَح خطأ، فيظنّ الوكيل أن الميزة تعمل. والسؤال الحقيقي هو *ما الذي حدث بعد ذلك*، والسبيل الوحيد لمعرفته هو النظر.
 
 ```
 graph LR
@@ -47,7 +47,7 @@ graph LR
   style F fill:#e8f5e9
 ```
 
-You can encode this directly in the instructions file:
+يمكنك ترميز ذلك مباشرةً في ملف التعليمات:
 
 ```markdown
 ## Runtime probing after UI changes
@@ -65,13 +65,13 @@ If any step produces an error or unexpected result, fix it before
 reporting the task as complete. Attach the screenshot to your summary.
 ```
 
-The last sentence is the important one. “Attach the screenshot to your summary” means the agent has to actually look at the thing it changed. That’s different from running a test.
+الجملة الأخيرة هي المهمة. «أرفق لقطة الشاشة بملخّصك» تعني أن على الوكيل أن ينظر فعليًا إلى الشيء الذي عدّله. وهذا يختلف عن تشغيل اختبار.
 
-## Accessibility tree as the probe’s primary observation
+## شجرة إمكانية الوصول بوصفها الملاحظة الأساسية للمسبار
 
-When an agent uses [Playwright MCP](https://playwright.dev/) to probe, the single most useful thing it can ask for is the page’s structured accessibility snapshot of the region it changed. Not a screenshot—that’s the second-most useful thing. The accessibility snapshot is a text representation of what’s on the page structured by role, and it’s the form the agent can reason about most effectively.
+حين يستخدم الوكيل [Playwright MCP](https://playwright.dev/) للاستكشاف، فإن أنفع شيء واحد يمكنه طلبه هو اللقطة المُهيكلة لإمكانية الوصول للمنطقة التي عدّلها. لا لقطة الشاشة — فتلك ثاني أنفع شيء. فلقطة إمكانية الوصول تمثيل نصّي لما في الصفحة، مُهيكلًا بحسب الدور، وهي الصورة التي يستطيع الوكيل الاستدلال عليها بأعلى كفاءة.
 
-A good probe from the agent looks like:
+مسبار جيّد من الوكيل يبدو هكذا:
 
 ```
 > Open http://localhost:5173/shelf and give me an accessibility snapshot of the main region.
@@ -89,41 +89,41 @@ main:
       button: "Rate this book"
 ```
 
-The agent can read this and confirm “yes, the ‘Rating’ option is in the combobox and nothing else moved.” That’s a much stronger observation than “I took a screenshot and it looks fine.”
+يستطيع الوكيل قراءة ذلك والتأكّد من أن «نعم، خيار «التقييم» موجود في القائمة المنسدلة، ولم يتحرّك شيء آخر». وهذه ملاحظة أقوى بكثير من «أخذت لقطة شاشة وتبدو جيّدة».
 
-If the accessibility snapshot doesn’t show the new element the agent expected, that’s itself a bug—it means the agent wrote a button with no accessible name, or a dropdown with no role, or something similar. Catching that at probe time is exactly the kind of early-warning loop we want.
+وإذا لم تُظهر لقطة إمكانية الوصول العنصر الجديد الذي توقّعه الوكيل، فذلك في ذاته خلل — إذ يعني أن الوكيل كتب زرًّا بلا اسم مُتاح لإمكانية الوصول، أو قائمة منسدلة بلا دور، أو شيئًا من هذا القبيل. والتقاط ذلك في وقت المسبار هو بالضبط نوع حلقة الإنذار المبكّر التي نريدها.
 
-## Running the dev server and keeping it alive
+## تشغيل خادم التطوير وإبقاؤه حيًّا
 
-Runtime probes require a running dev server. This sounds obvious but it’s the part that’s most likely to get the agent stuck.
+تتطلّب مسابر وقت التشغيل خادم تطوير يعمل. يبدو هذا بديهيًا، لكنه الجزء الأرجح أن يُعلِق الوكيل.
 
-A few patterns that work:
+وفيما يلي أنماط قليلة تعمل:
 
-**Let the agent manage the dev server itself.** The agent runs the development server in a background shell, waits for the local URL banner, and then probes. When it’s done, it kills the server. This works but it’s fiddly—managing background processes is not the agent’s strong suit.
+**أن يدير الوكيل خادم التطوير بنفسه.** يشغّل الوكيل خادم التطوير في صدفة خلفية، وينتظر لافتة عنوان URL المحلي، ثم يستكشف. وحين ينتهي، يُنهي الخادم. هذا يعمل لكنه شاقّ — فإدارة العمليات الخلفية ليست من مواطن قوة الوكيل.
 
-**Run the dev server out-of-band and tell the agent about it.** You keep the development server running in a terminal you own. The agent’s instructions file says “the dev server is always running at localhost:5173; do not start or stop it.” The agent just probes. This is my default for workshop use—simpler, fewer moving parts, easier to reason about.
+**أن تشغّل خادم التطوير خارج الحلقة وتُخبر الوكيل به.** تُبقي خادم التطوير يعمل في طرفية تملكها أنت. ويقول ملف تعليمات الوكيل: «خادم التطوير يعمل دائمًا على localhost:5173؛ لا تبدأه ولا توقفه.» فيكتفي الوكيل بالاستكشاف. هذا هو خياري الافتراضي في الورشة — أبسط، وأجزاء متحرّكة أقل، وأسهل في الاستدلال.
 
-**Spin up a test-dedicated dev server.** Your CI or your Playwright config starts a dev server on an unusual port (e.g., 4173) just for probing. The agent uses that port. Your normal dev server on 5173 is untouched by the agent. This is nice for isolation but adds config complexity.
+**أن تُشغّل خادم تطوير مخصّصًا للاختبار.** يبدأ CI أو تهيئة Playwright لديك خادم تطوير على منفذ غير معتاد (مثل 4173) للاستكشاف فقط. ويستخدم الوكيل ذلك المنفذ. فيبقى خادم التطوير العادي لديك على 5173 بمنأى عن الوكيل. هذا جيّد للعزل لكنه يضيف تعقيدًا في التهيئة.
 
-Pick one, put the URL and the rules in your agent instructions, and move on. I’d spend more time on this if it were interesting. It’s not.
+اختر واحدًا، وضع عنوان URL والقواعد في تعليمات وكيلك، وامضِ. كنت سأُنفق وقتًا أطول على هذا لو كان مثيرًا للاهتمام. وهو ليس كذلك.
 
-## When a probe finds something
+## عندما يجد المسبار شيئًا
 
-Here’s the part I like. When a probe finds a real bug—the button doesn’t work, the console has a warning, the network tab shows a 500—the agent has everything it needs to fix the bug without asking you. It has the exact URL, the exact interaction, the exact error. It can go back to the code, make an edit, and re-run the probe. The loop is complete.
+وهذا هو الجزء الذي يعجبني. عندما يجد مسبار خللًا حقيقيًا — الزر لا يعمل، أو في وحدة التحكّم تحذير، أو لوحة الشبكة تُظهر 500 — يكون لدى الوكيل كل ما يحتاجه لإصلاح الخلل دون سؤالك. لديه عنوان URL الدقيق، والتفاعل الدقيق، والخطأ الدقيق. يستطيع العودة إلى الشيفرة، وإجراء تعديل، وإعادة تشغيل المسبار. والحلقة مكتملة.
 
-This is the loop working as intended. The agent caught its own mistake, diagnosed it, fixed it, and verified the fix—all before your next message. The only thing left for you to do is review the commit, and the commit is clean because the agent iterated on its own.
+هذه هي الحلقة تعمل كما هو مقصود. أمسك الوكيل خطأه بنفسه، وشخّصه، وأصلحه، وتحقّق من الإصلاح — كل ذلك قبل رسالتك التالية. والشيء الوحيد المتبقّي لك هو مراجعة الإيداع، والإيداع نظيف لأن الوكيل كرّر على نفسه.
 
-When I see this work, it feels like magic. It isn’t. It’s just that the feedback loop finally exists.
+حين أرى هذا يعمل، يبدو كالسحر. وهو ليس سحرًا. كل ما في الأمر أن حلقة التغذية الراجعة صارت موجودة أخيرًا.
 
-## The failure mode I want you to watch for
+## نمط الفشل الذي أريدك أن تراقبه
 
-Probes can become busy work. The agent probes *every* change, including changes that have nothing to do with the UI, and you end up watching the agent take screenshots of unrelated pages for five minutes. This is wasteful.
+يمكن للمسابر أن تصير عملًا بلا طائل. يستكشف الوكيل *كل* تغيير، بما فيه تغييرات لا علاقة لها بالواجهة، فتنتهي وأنت تشاهد الوكيل يأخذ لقطات شاشة لصفحات غير ذات صلة خمس دقائق. وهذا إهدار.
 
-The instructions file rule I quoted earlier has a scope guard built in: “After any change to a file under `src/routes/` or `src/lib/components/`.” Anything outside those paths doesn’t trigger a probe. You can widen or narrow the scope based on what you find the agent doing. The goal is that probes fire exactly when they’re useful, not every time something changes.
+قاعدة ملف التعليمات التي اقتبستها آنفًا فيها حارس نطاق مبنيّ في داخلها: «بعد أي تغيير في ملف تحت `src/routes/` أو `src/lib/components/`.» وأي شيء خارج هذين المسارين لا يُطلق مسبارًا. ويمكنك توسيع النطاق أو تضييقه بحسب ما تراه يفعل الوكيل. والهدف أن تُطلَق المسابر في الوقت النافع بالضبط، لا كلما تغيّر شيء.
 
-## The agent rules
+## قواعد الوكيل
 
-In addition to the probe rule above, I put this in the file:
+إضافةً إلى قاعدة المسبار أعلاه، أضع هذا في الملف:
 
 ```markdown
 ## Runtime probing rules
@@ -139,11 +139,11 @@ In addition to the probe rule above, I put this in the file:
   task as complete.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Probes are the agent’s way of checking its own work at runtime without paying the cost of the full test suite. They’re cheap, they’re fast, and they catch the class of mistake tests don’t think to cover. Teach the agent to run them, and most of the “hey, did you actually try it?” questions you currently ask go away.
+المسابر طريقة الوكيل لفحص عمله في وقت التشغيل دون دفع كلفة مجموعة الاختبارات الكاملة. فهي رخيصة وسريعة، وتلتقط صنف الأخطاء الذي لا تفكّر الاختبارات في تغطيته. علّم الوكيل تشغيلها، وستزول معظم أسئلة «هل جرّبته فعلًا؟» التي تسألها الآن.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Runtime Tools Compared](https://stevekinney.com/courses/self-testing-ai-agents/runtime-tools-compared)
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [مقارنة أدوات وقت التشغيل](https://stevekinney.com/courses/self-testing-ai-agents/runtime-tools-compared)
+- [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)

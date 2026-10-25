@@ -1,12 +1,12 @@
 ---
-title: "Creating an Invoice Table"
-lang: en
+title: "إنشاء جدول فاتورة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-an-invoice-table"
 ---
 
-Let’s start with our basic HTML structure for an invoice table with line items.
+لنبدأ ببنية HTML الأساسية وجدول فاتورة يحتوي على بنود.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/e9be7cf8e8dce3a743460da828e1b665955d2ace4db2bcb480f9ce569aae3d3a.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e9be7cf8e8dce3a743460da828e1b665955d2ace4db2bcb480f9ce569aae3d3a.html)*
 
 ```html
 <div>
@@ -37,13 +37,13 @@ Let’s start with our basic HTML structure for an invoice table with line items
 </div>
 ```
 
-It’s a basic invoice table structure, but the columns don’t align and there’s no visual hierarchy. Let’s transform this into a professional invoice table where the header and rows share perfectly aligned column tracks, and the entire component adapts intelligently to its container size.
+هذه بنية جدول فاتورة أساسية، لكن الأعمدة غير محاذاة ولا توجد تسلسل بصري واضح. لنحوّلها إلى جدول فاتورة احترافي تتشارك فيه الترويسة والصفوف مسارات أعمدة محاذاة تمامًا، ويتكيّف فيه المكوّن بالكامل بذكاء مع حجم حاويته.
 
-## Setting Up Container Query Context
+## تهيئة سياق استعلامات الحاوية
 
-First, let’s establish our container as a query context and create the CSS Grid foundation, building on what we learned in our [statistics card tutorial](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
+أولًا، لنؤسّس حاويتنا كسياق استعلامات، وننشئ أساس CSS Grid، انطلاقًا مما تعلّمناه في [دليل بطاقة الإحصاءات](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
 
-*Setting Up Container Query Context — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/5248709ba7e0b4fe92778f03caf0d3415bdb4006b651c6d185061316759b42c9.html)*
+*تهيئة سياق استعلامات الحاوية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5248709ba7e0b4fe92778f03caf0d3415bdb4006b651c6d185061316759b42c9.html)*
 
 ```html
 <div class="@container">
@@ -76,20 +76,20 @@ First, let’s establish our container as a query context and create the CSS Gri
 </div>
 ```
 
-Foundation setup:
+التهيئة الأساسية:
 
-- `@container`: Establishes this element as a container query context—child elements can respond to this container’s size
-- `grid grid-cols-[1fr_auto_auto_auto]`: Creates a 4-column grid where the description column takes available space and the other columns size to their content
-- `gap-x-4`: Adds 16px horizontal spacing between columns for readability
-- `contents`: Makes the row divs “transparent” to the grid, so their children become direct grid items
+- `@container`: تجعل هذا العنصر سياقًا لاستعلامات الحاوية — فيستطيع عناصره الاستجابة لحجم هذه الحاوية
+- `grid grid-cols-[1fr_auto_auto_auto]`: تنشئ شبكة من أربعة أعمدة، يأخذ فيها عمود الوصف المساحة المتاحة بينما يتكيّف بقية الأعمدة مع محتواها
+- `gap-x-4`: تضيف مسافة أفقية قدرها 16px بين الأعمدة لتسهيل القراءة
+- `contents`: تجعل div الصفوف «شفافة» أمام الشبكة، فيصبح أبناؤها عناصر grid مباشرة
 
-The `contents` utility is key here—it removes the wrapper divs from the visual layout while keeping them in the HTML for semantic structure.
+أداة `contents` هي المفتاح هنا — فهي تزيل عناصر الغلاف من التخطيط المرئي مع إبقائها في HTML لأجل البنية الدلالية.
 
-## Introducing CSS Subgrid
+## تقديم CSS Subgrid
 
-Now comes the magic—let’s use CSS Subgrid to ensure perfect alignment between header and data rows while adding proper visual hierarchy.
+الآن يأتي السحر — لنستخدم CSS Subgrid لضمان محاذاة مثالية بين الترويسة وصفوف البيانات، مع إضافة تسلسل بصري صحيح.
 
-*Introducing CSS Subgrid — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/c603cc2af10f38cce7b9d6939e3af83c209b76ada0d7e6a7ea6961ee3037a2c9.html)*
+*تقديم CSS Subgrid — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c603cc2af10f38cce7b9d6939e3af83c209b76ada0d7e6a7ea6961ee3037a2c9.html)*
 
 ```html
 <div class="@container">
@@ -122,21 +122,21 @@ Now comes the magic—let’s use CSS Subgrid to ensure perfect alignment betwee
 </div>
 ```
 
-Subgrid implementation:
+تطبيق Subgrid:
 
-- `col-span-4`: Each row spans all 4 columns of the parent grid
-- `grid grid-cols-subgrid`: Creates a subgrid that inherits the exact column tracks from the parent—this ensures perfect alignment
-- Header styling with `font-semibold` and bottom border separation
-- `text-right` on amount columns for proper financial formatting
-- `py-3`: 12px vertical padding creates comfortable row height
+- `col-span-4`: يمتدّ كل صف عبر الأعمدة الأربعة لشبكة الأم
+- `grid grid-cols-subgrid`: تنشئ شبكة فرعية ترث مسارات الأعمدة نفسها تمامًا من الأم — وهذا يضمن المحاذاة المثالية
+- تنسيق الترويسة بـ `font-semibold` مع حدّ سفلي يفصلها
+- `text-right` على أعمدة المبالغ من أجل تنسيق مالي صحيح
+- `py-3`: حشو رأسي قدره 12px ينتج ارتفاع صف مريح
 
-CSS Subgrid ensures that no matter how the content changes, the columns will always align perfectly between header and rows.
+يضمن CSS Subgrid أن الأعمدة ستظل محاذاة تمامًا بين الترويسة والصفوف مهما تغيّر المحتوى.
 
-## Adding Container-Responsive Typography
+## إضافة طباعة متجاوبة مع الحاوية
 
-Let’s make the table adapt its typography and spacing based on the container size, creating a more refined experience in larger spaces.
+لنجعل الجدول يتكيّف طباعته ومسافاته بحسب حجم الحاوية، لنحصل على تجربة أكثر أناقة في المساحات الأكبر.
 
-*Adding Container-Responsive Typography — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/e125090066f0790be3839a0c3961952236fed784d40df0aab0b93c722f5866d5.html)*
+*إضافة طباعة متجاوبة مع الحاوية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e125090066f0790be3839a0c3961952236fed784d40df0aab0b93c722f5866d5.html)*
 
 ```html
 <div class="@container">
@@ -169,20 +169,20 @@ Let’s make the table adapt its typography and spacing based on the container s
 </div>
 ```
 
-Container-responsive refinements:
+تحسينات متجاوبة مع الحاوية:
 
-- `@lg:gap-x-6`: Increases column gaps to 24px when container is large (512px+)
-- `@lg:text-base` on headers: Larger 16px font size for headers in spacious layouts
-- `@lg:text-lg` on data: Larger 18px font for better readability in wide containers
-- `@lg:py-4`: More generous 16px vertical padding when space allows
+- `@lg:gap-x-6`: تزيد فجوات الأعمدة إلى 24px عندما تكون الحاوية كبيرة (512px فأكثر)
+- `@lg:text-base` على الترويسات: حجم خط أكبر قدره 16px للترويسات في التخطيطات الواسعة
+- `@lg:text-lg` على البيانات: خط أكبر قدره 18px لقراءة أفضل في الحاويات العريضة
+- `@lg:py-4`: حشو رأسي أوسع قدره 16px عندما تسمح المساحة بذلك
 
-The table automatically becomes more spacious and readable when placed in larger containers, while staying compact in constrained spaces.
+يصبح الجدول تلقائيًا أكثر راحة وأسهل قراءة عند وضعه في حاويات أكبر، مع بقائه مضغوطًا في المساحات المحدودة.
 
-## Adding Alternating Row Backgrounds
+## إضافة خلفيات متناوبة للصفوف
 
-Let’s add professional alternating row backgrounds using the `even:` selector for better scannability across wide tables.
+لنضف خلفيات متناوبة واحترافية للصفوف باستخدام المُحدِّد `even:` لتحسين قابلية المسح عبر الجداول العريضة.
 
-*Adding Alternating Row Backgrounds — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/9a4eb42a65e64e763a062c77fcc96354a687fd2e18173b4dde3b37609868e6e0.html)*
+*إضافة خلفيات متناوبة للصفوف — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9a4eb42a65e64e763a062c77fcc96354a687fd2e18173b4dde3b37609868e6e0.html)*
 
 ```html
 <div class="@container">
@@ -215,17 +215,17 @@ Let’s add professional alternating row backgrounds using the `even:` selector 
 </div>
 ```
 
-Row styling enhancement:
+تحسين تنسيق الصفوف:
 
-- `even:bg-slate-50`: Adds a subtle gray background to every even-numbered row (2nd, 4th, etc.)
+- `even:bg-slate-50`: تضيف خلفية رمادية خفيفة لكل صف برقم زوجي (الثاني والرابع وما إلى ذلك)
 
-This creates the classic “zebra stripe” pattern that helps users track across wide tables. The alternating backgrounds work automatically regardless of how many rows you add or remove.
+ينشئ هذا النمط الكلاسيكي المعروف بـ«الشرائط المتناوبة» الذي يساعد المستخدمين على تتبّع الصفوف في الجداول العريضة. وتعمل الخلفيات المتناوبة تلقائيًا مهما أضفت أو حذفت صفوفًا.
 
-## Adding Polish and Totals Section
+## إضافة اللمسات الأخيرة وقسم الإجماليات
 
-Finally, let’s add a totals section and professional polish to complete our invoice table.
+أخيرًا، لنضف قسم الإجماليات ولمسات احترافية لإكمال جدول الفاتورة.
 
-*Adding Polish and Totals Section — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/35aada05bb7ff32d3137768b9c278960e85678be3e937ea56ae9ec3a9ff9dcce.html)*
+*إضافة اللمسات الأخيرة وقسم الإجماليات — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/35aada05bb7ff32d3137768b9c278960e85678be3e937ea56ae9ec3a9ff9dcce.html)*
 
 ```html
 <div class="@container">
@@ -266,42 +266,42 @@ Finally, let’s add a totals section and professional polish to complete our in
 </div>
 ```
 
-Final polish additions:
+الإضافات النهائية:
 
-- `rounded-lg border border-slate-200 bg-white`: Wraps the entire table in a professional card container
-- `p-4 @lg:p-6`: Container padding that grows with available space
-- Totals row with `border-t border-slate-200`: Clear separation from line items
-- `text-lg font-bold @lg:text-xl`: Prominent total that scales with container size
-- Empty cells in totals row maintain perfect column alignment through subgrid
+- `rounded-lg border border-slate-200 bg-white`: تلتفّ الجدول كاملًا داخل حاوية بطاقة احترافية
+- `p-4 @lg:p-6`: حشو الحاوية ينمو مع المساحة المتاحة
+- صف الإجماليات بـ `border-t border-slate-200`: فصل واضح عن بنود الفاتورة
+- `text-lg font-bold @lg:text-xl`: إجمالي بارز يتكيّف مع حجم الحاوية
+- الخلايا الفارغة في صف الإجماليات تحافظ على محاذاة الأعمدة المثالية عبر subgrid
 
-## Why This Approach is Revolutionary
+## لماذا هذا النهج ثوري
 
-This invoice table demonstrates the pinnacle of modern CSS layout techniques working in harmony:
+يُظهر جدول الفاتورة هذا ذروة تقنيات تخطيط CSS الحديثة وهي تعمل بانسجام:
 
-**CSS Subgrid Magic**: The header and every row share exactly the same column tracks. If you change the content in any cell, all other rows automatically adjust to maintain perfect alignment. No manual column width calculations needed.
+**سحر CSS Subgrid**: تتشارك الترويسة وكل صف مسارات الأعمدة نفسها تمامًا. فإذا غيّرت محتوى أي خلية، تتكيّف بقية الصفوف تلقائيًا للحفاظ على محاذاة مثالية. ولا حاجة إلى أي حسابات يدوية لعرض الأعمدة.
 
-**Container Query Intelligence**: The table adapts to its container, not the viewport. Whether it’s in a narrow sidebar, main content area, or full-width dashboard, it always looks proportional and readable.
+**ذكاء استعلامات الحاوية**: يتكيّف الجدول مع حاويته لا مع نافذة العرض. فسواء كان في شريط جانبي ضيّق أو في منطقة المحتوى الرئيسية أو في لوحة تحكم بعرض كامل، سيبدو متناسبًا ومقروءًا دائمًا.
 
-**Semantic Foundation**: Despite the sophisticated layout, the HTML remains clean and accessible. Screen readers understand the table structure perfectly.
+**أساس دلالي**: على الرغم من تعقيد التخطيط، يبقى HTML نظيفًا ومتاحًا. فقارئات الشاشة تفهم بنية الجدول تمامًا.
 
-**Maintenance Benefits**: Adding new rows or columns requires no layout recalculation—the subgrid automatically maintains alignment and the container queries handle responsive behavior.
+**فوائد الصيانة**: إضافة صفوف أو أعمدة جديدة لا تتطلّب أي إعادة حساب للتخطيط — فالشبكة الفرعية تحافظ على المحاذاة تلقائيًا، واستعلامات الحاوية تتولّى السلوك المتجاوب.
 
-**Performance**: This is all CSS-driven with zero JavaScript, making it lightweight and fast while providing sophisticated adaptive behavior.
+**الأداء**: كل ذلك مدفوع بـ CSS بلا أي JavaScript، فيكون خفيفًا وسريعًا مع سلوك متكيّف متقدّم.
 
-## Real-World Applications
+## التطبيقات في العالم الحقيقي
 
-This pattern solves common problems in:
+يحلّ هذا النمط مشكلات شائعة في:
 
-- **Financial applications**: Invoice tables, expense reports, pricing tables
-- **Data dashboards**: Analytics tables that need to fit various widget sizes
-- **Admin interfaces**: User tables, product catalogs, order management
-- **Content management**: Post listings, media libraries, any tabular data
+- **التطبيقات المالية**: جداول الفواتير وتقارير المصروفات وجداول التسعير
+- **لوحات بيانات التحليلات**: جداول تحليلية تحتاج إلى ملاءمة مقاسات الأدوات المختلفة
+- **واجهات الإدارة**: جداول المستخدمين وكتالوجات المنتجات وإدارة الطلبات
+- **إدارة المحتوى**: قوائم المنشورات ومكتبات الوسائط وأي بيانات جدولية
 
-The combination of subgrid and container queries creates truly modular components that work anywhere in your application without modification.
+ينشئ الجمع بين الشبكة الفرعية واستعلامات الحاوية مكوّنات نمطية حقيقية تعمل في أي مكان من تطبيقك دون تعديل.
 
-## Challenges
+## التحدّيات
 
-Try building these variations:
+جرّب بناء هذه الأنماط:
 
-1. **Expandable Invoice Items**: Add detailed line item descriptions that appear/disappear using the techniques from our [details disclosure tutorial](https://stevekinney.com/courses/tailwind/building-details-disclosure), while maintaining subgrid alignment
-2. **Multi-Section Table**: Create sections for “Design Services” and “Development Services” with subheadings that span all columns, demonstrating how subgrid handles complex table structures
+1. **بنود فاتورة قابلة للتوسيع**: أضف أوصافًا تفصيلية لبنود الفاتورة تظهر وتختفي باستخدام التقنيات من [دليل تفاصيل القوائم القابلة للطي](https://stevekinney.com/courses/tailwind/building-details-disclosure)، مع الحفاظ على محاذاة الشبكة الفرعية
+2. **جدول متعدد الأقسام**: أنشئ أقسامًا لـ«خدمات التصميم» و«خدمات التطوير» بعناوين فرعية تمتدّ عبر كل الأعمدة، لتُظهر كيف تتعامل الشبكة الفرعية مع بنى الجداول المعقّدة

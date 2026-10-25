@@ -1,16 +1,16 @@
 ---
-title: "not-*"
-lang: en
+title: "المتغيّر not-*"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/not-utility"
 ---
 
-> **This is new in Tailwind 4!**
+> **هذا جديد في Tailwind 4!**
 
-The `not-*` variant applies styles when a condition is NOT true, simplifying conditional styling and reducing the need for default styles that get overridden.
+يطبّق المتغيّر `not-*` الأنماط عندما يكون شرط ما غير صحيح، ما يبسّط التنسيق الشرطي ويقلّل الحاجة إلى أنماط افتراضية تُستبدل لاحقًا.
 
-## Basic Usage
+## الاستخدام الأساسي {#basic-usage}
 
-*Basic Usage — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/a4f606cc7618aed49848e37bc5930d37614e3ec68bd5d29d029ed68ba520c9df.html)*
+*الاستخدام الأساسي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a4f606cc7618aed49848e37bc5930d37614e3ec68bd5d29d029ed68ba520c9df.html)*
 
 ```html
 <!-- Subtle opacity when not hovered, full opacity on hover -->
@@ -27,11 +27,11 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 />
 ```
 
-## Common Patterns
+## أنماط شائعة
 
-### Interactive Button States
+### حالات الأزرار التفاعلية
 
-*Interactive Button States — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/139231ac89b4095bb75b4b0cd00108c58fa4bc81cf7c3c255e981f1cf1729763.html)*
+*حالات الأزرار التفاعلية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/139231ac89b4095bb75b4b0cd00108c58fa4bc81cf7c3c255e981f1cf1729763.html)*
 
 ```html
 <!-- Button that's interactive when enabled, muted when disabled -->
@@ -43,9 +43,9 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </button>
 ```
 
-### Responsive Visibility
+### الظهور المتجاوب
 
-*Responsive Visibility — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/bf72a456193f1f7bc9e00fb4fb08ae53fac3d34eaaa7658a14e2935a37bf776f.html)*
+*الظهور المتجاوب — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/bf72a456193f1f7bc9e00fb4fb08ae53fac3d34eaaa7658a14e2935a37bf776f.html)*
 
 ```html
 <!-- Hide on mobile when not expanded, always show on desktop -->
@@ -57,11 +57,11 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </nav>
 ```
 
-## Advanced Compositions
+## تركيبات متقدمة
 
-### Group Interactions
+### تفاعلات المجموعة
 
-*Group Interactions — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/27fb4f2440da13c82b24955e95c2d13656505f847cd534b710349090398235d9.html)*
+*تفاعلات المجموعة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/27fb4f2440da13c82b24955e95c2d13656505f847cd534b710349090398235d9.html)*
 
 ```html
 <!-- Card that dims its content when parent is not hovered -->
@@ -77,9 +77,9 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </div>
 ```
 
-### Peer-Based Styling
+### التنسيق عبر العنصر الشقيق
 
-*Peer-Based Styling — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/2d0c49b6ad1b94194244efca9f0e3dafa55494674655e7daf7546747579b6968.html)*
+*التنسيق عبر العنصر الشقيق — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2d0c49b6ad1b94194244efca9f0e3dafa55494674655e7daf7546747579b6968.html)*
 
 ```html
 <!-- Toggle switch with dependent text styling -->
@@ -97,9 +97,9 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </div>
 ```
 
-### Complex State Management
+### إدارة حالة مركّبة
 
-*Complex State Management — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/307cb8811b2c124520a4ec9acaadb49e39e543fc2c0c4fcd02163dd9ae1331d9.html)*
+*إدارة حالة مركّبة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/307cb8811b2c124520a4ec9acaadb49e39e543fc2c0c4fcd02163dd9ae1331d9.html)*
 
 ```html
 <!-- Input with dynamic validation feedback -->
@@ -118,11 +118,11 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </div>
 ```
 
-## Practical Examples
+## أمثلة عملية
 
-### Form Field Validation
+### التحقق من حقل النموذج
 
-*Form Field Validation — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/c471aae4d87486f04334de2dab3246dbef33b6f3b5f0131ca4aaf3fa095fba0b.html)*
+*التحقق من حقل النموذج — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c471aae4d87486f04334de2dab3246dbef33b6f3b5f0131ca4aaf3fa095fba0b.html)*
 
 ```html
 <!-- Email field with real-time validation -->
@@ -144,9 +144,9 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </div>
 ```
 
-### Dynamic List Styling
+### تنسيق قائمة ديناميكي
 
-*Dynamic List Styling — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/e9a7e4ad3277f9c7fc85eb45adb619de20bd649c87d2a9b68bae5e42b7b61ff6.html)*
+*تنسيق قائمة ديناميكي — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e9a7e4ad3277f9c7fc85eb45adb619de20bd649c87d2a9b68bae5e42b7b61ff6.html)*
 
 ```html
 <!-- List with smart borders and hover effects -->
@@ -163,9 +163,9 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </ul>
 ```
 
-### Feature Detection Fallbacks
+### بدائل احتياطية لكشف الميزات
 
-*Feature Detection Fallbacks — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/53db83af196cc0b72a214e95c7ecb1f153adde4ee10174ed394e83519966d917.html)*
+*بدائل احتياطية لكشف الميزات — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/53db83af196cc0b72a214e95c7ecb1f153adde4ee10174ed394e83519966d917.html)*
 
 ```html
 <!-- Grid layout with flexbox fallback -->
@@ -185,10 +185,10 @@ The `not-*` variant applies styles when a condition is NOT true, simplifying con
 </div>
 ```
 
-## Benefits
+## الفوائد
 
-- **Cleaner Logic**: Express negative conditions directly instead of overriding defaults
-- **Better Performance**: Avoid unnecessary style recalculations from overrides
-- **Improved Readability**: Makes conditional styling intent immediately clear
-- **Universal Compatibility**: Works with all Tailwind variants (hover, focus, group, peer, etc.)
-- **Reduced Specificity Issues**: Less reliance on cascade order for conditional styles
+- **منطق أنظف**: عبّر عن الشروط السلبية مباشرة بدلًا من استبدال الأنماط الافتراضية
+- **أداء أفضل**: تجنّب إعادة حسابات الأنماط غير الضرورية الناتجة عن الاستبدال
+- **قراءة محسّنة**: يجعل نية التنسيق الشرطي واضحة فورًا
+- **توافق شامل**: يعمل مع جميع متغيّرات Tailwind (hover، focus، group، peer، إلخ)
+- **مشكلات تخصيص أقل**: اعتماد أقل على ترتيب التسلسل في الأنماط الشرطية

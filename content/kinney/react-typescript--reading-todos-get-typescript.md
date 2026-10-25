@@ -1,16 +1,16 @@
 ---
-title: "Reading Todos - GET Requests and Type Safety"
-lang: en
+title: "قراءة المهام (todos) بواسطة TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/reading-todos-get-typescript"
 ---
 
-Reading and displaying data is the foundation of any application. While fetching todos might seem simple—just a GET request, right?—production apps need pagination, filtering, searching, sorting, and caching. TypeScript helps us build these features with confidence, ensuring type safety from API parameters to rendered components.
+قراءة البيانات وعرضها أساسُ أي تطبيق. وجلب المهام قد يبدو بسيطًا — طلب GET فحص، أليس كذلك؟ — لكن التطبيقات الإنتاجية تحتاج ترقيم صفحات وتصفية وبحثًا وترتيبًا وذاكرة تخزين مؤقتة. يساعدنا TypeScript في بناء هذه الميزات بثقة، فيضمن أمان الأنواع من معاملات API إلى المكوّنات المُصرَّعة.
 
-In this tutorial, we’ll build a comprehensive todo reading system with all the features users expect in a modern application.
+في هذا الدرس سنبني نظامًا جامعًا لقراءة المهام بكل الميزات التي يتوقعها المستخدمون في تطبيق حديث.
 
-## Basic GET Request with Types
+## طلب GET أساسي مع الأنواع
 
-Let’s start with the fundamentals:
+لنبدأ بالأساسيات:
 
 ```typescript
 interface Todo {
@@ -72,9 +72,9 @@ function BasicTodoList() {
 }
 ```
 
-## Pagination with Type-Safe Parameters
+## الترقيم بمعاملات آمنة الأنواع
 
-Real applications need pagination for performance:
+التطبيقات الواقعية تحتاج ترقيمًا للصفحات حفاظًا على الأداء:
 
 ```typescript
 interface PaginationParams {
@@ -225,9 +225,9 @@ function PaginatedTodoList() {
 }
 ```
 
-## Filtering with Type-Safe Query Parameters
+## التصفية بمعاملات استعلام آمنة الأنواع
 
-Add filtering capabilities with proper TypeScript types:
+أضف قدرات التصفية بأنواع TypeScript سليمة:
 
 ```typescript
 type FilterStatus = 'all' | 'completed' | 'active';
@@ -370,9 +370,9 @@ function FilteredTodoList() {
 }
 ```
 
-## Infinite Scroll Pattern
+## نمط التمرير اللانهائي
 
-For modern UX, implement infinite scrolling:
+من أجل تجربة مستخدم حديثة، طبّق التمرير اللانهائي:
 
 ```typescript
 function useInfiniteScroll<T>(fetchMore: () => Promise<void>, hasMore: boolean) {
@@ -453,9 +453,9 @@ function InfiniteScrollTodos() {
 }
 ```
 
-## Caching Strategy
+## استراتيجية التخزين المؤقت
 
-Implement caching to reduce API calls:
+طبّق التخزين المؤقت للتقليل من نداءات API:
 
 ```typescript
 interface CacheEntry<T> {
@@ -584,9 +584,9 @@ function CachedTodoList() {
 }
 ```
 
-## Search with Debouncing
+## البحث مع تأجيل النداءات (debouncing)
 
-Implement efficient search with debouncing:
+طبّق بحثًا كفؤًا مع تأجيل النداءات:
 
 ```typescript
 function useDebounce<T>(value: T, delay: number): T {
@@ -666,9 +666,9 @@ function SearchableTodos() {
 }
 ```
 
-## Complete Example: Advanced Todo Reader
+## مثال كامل: قارئ مهام متقدم
 
-Here’s everything combined into a production-ready component:
+فيما يلي كل شيء مجتمعاً في مكوّن جاهز للإنتاج:
 
 ```typescript
 interface TodoQueryOptions {
@@ -875,26 +875,26 @@ function AdvancedTodoReader() {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Use proper loading states** - Always show feedback during fetching
-2. **Handle errors gracefully** - Provide retry options and helpful messages
-3. **Implement caching** - Reduce unnecessary API calls
-4. **Debounce search inputs** - Prevent excessive API requests
-5. **Type your API responses** - Don’t trust external data without validation
-6. **Consider pagination early** - Don’t load thousands of items at once
+1. **استخدم حالات تحميل سليمة** — أظهر التغذية الراجعة دائمًا أثناء الجلب
+2. **عالج الأخطاء برفق** — وفّر خيارات إعادة محاولة ورسائل نافعة
+3. **طبّق التخزين المؤقت** — قلّل نداءات API غير الضرورية
+4. **مهّد إدخالات البحث** — يمنع طلبات API المكثفة
+5. **نوّع استجابات API لديك** — لا تثق بالبيانات الخارجية دون تحقق
+6. **فكّر في الترقيم مبكرًا** — لا تحمّل آلاف العناصر دفعة واحدة
 
-## Summary
+## الخلاصة
 
-Reading todos efficiently requires:
+قراءة المهام بكفاءة تتطلب:
 
-- Type-safe query parameters
-- Proper pagination implementation
-- Filtering and sorting capabilities
-- Search with debouncing
-- Caching strategies
-- Error handling and retry logic
+- معاملات استعلام آمنة الأنواع
+- تنفيذًا سليمًا للترقيم
+- قدرات التصفية والترتيب
+- بحثًا مع تأجيل النداءات
+- استراتيجيات التخزين المؤقت
+- معالجة الأخطاء ومنطق إعادة المحاولة
 
-## What’s Next?
+## ما التالي؟
 
-Now that we can create and read todos, let’s implement updating with optimistic updates and proper rollback strategies.
+بعد أن نستطيع إنشاء المهام وقراءتها، لنطبّق التحديث بتغييراتٍ متفائلة (optimistic updates) واستراتيجيات تراجع سليمة.

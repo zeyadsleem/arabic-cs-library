@@ -1,10 +1,10 @@
 ---
-title: "Validating Schema with Middleware"
-lang: en
+title: "التحقق من المخطط باستخدام وسيط"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-schema-with-middleware"
 ---
 
-We could create a middleware that allows us to validate the body of a request with a Zod schema.
+يمكننا إنشاء وسيط يتيح لنا التحقق من جسم الطلب باستخدام مخطط Zod.
 
 ```typescript
 const validateBody =
@@ -18,7 +18,7 @@ const validateBody =
   };
 ```
 
-Even better, we could try to hold on to the type.
+والأفضل من ذلك، يمكننا أن نحاول الاحتفاظ بالنوع.
 
 ```typescript
 const validateBody =
@@ -35,9 +35,9 @@ const validateBody =
 
 > **Zod v4**
 >
-> In Zod v4, `ZodSchema` still works as a type alias. The underlying `ZodType` generic changed from `ZodType<Output, Def, Input>` to `ZodType<Output, Input>`, but this middleware pattern works identically in both versions.
+> في Zod v4، لا يزال `ZodSchema` يعمل كمرادف للنوع. تغيّر النوع العام الأساسي `ZodType` من `ZodType<Output, Def, Input>` إلى `ZodType<Output, Input>`، لكن نمط الوسيط هذا يعمل بالطريقة نفسها في كلا الإصدارين.
 
-## Validating `POST`
+## التحقق من `POST`
 
 ```typescript
 app.post('/tasks', validateBody(NewTaskSchema), async (req, res) => {
@@ -51,7 +51,7 @@ app.post('/tasks', validateBody(NewTaskSchema), async (req, res) => {
 });
 ```
 
-## Validating `PUT`
+## التحقق من `PUT`
 
 ```typescript
 app.put('/tasks/:id', validateBody(UpdateTaskSchema), async (req, res) => {
@@ -70,4 +70,4 @@ app.put('/tasks/:id', validateBody(UpdateTaskSchema), async (req, res) => {
 });
 ```
 
-**Next**: [Validating Query and Path Parameters with Middleware](https://stevekinney.com/courses/full-stack-typescript/validating-query-and-path-parameters)
+**التالي**: [التحقق من معاملات الاستعلام والمسار باستخدام وسيط](https://stevekinney.com/courses/full-stack-typescript/validating-query-and-path-parameters)

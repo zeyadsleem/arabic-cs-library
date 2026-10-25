@@ -1,16 +1,16 @@
 ---
-title: "Framework Migration Patterns"
-lang: en
+title: "أنماط ترحيل أطر العمل"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/framework-migration-patterns"
 ---
 
-So, your application is built on a framework that’s either deprecated, unsupported, or two major versions behind the current release. You’d love to be on the modern version—or a different framework entirely—but the application has hundreds of routes, dozens of contributors, and actual users who expect it to keep working while you figure this out.
+إذن، تطبيقك مبني على إطار عمل إما مهمَل أو غير مدعوم أو متأخر بإصدارين رئيسيين عن الإصدار الحالي. وستحب أن تكون على النسخة الحديثة — أو على إطار مختلف تمامًا — لكن التطبيق فيه مئات المسارات، وعشرات المساهمين، ومستخدمون حقيقيون يتوقعون أن يظل يعمل بينما تحلّ هذه المشكلة.
 
-This is the framework migration problem, and it’s where the [strangler fig concept](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction) meets the messy reality of rendering cycles, shared state, and authentication tokens. The strangler fig gives you the routing strategy: put a façade in front, route incrementally, delete the old path when the new one proves itself. This section covers what happens *inside* that façade—the bridge engineering that lets two frameworks coexist in the same application without regressing.
+هذه هي مشكلة ترحيل أطر العمل، وهنا يلتقي [مفهوم شجرة الخنّاق التينيّ](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction) بالواقع الفوضوي لدورات التصيير والحالة المشتركة ورموز المصادقة. تمنحك شجرة الخنّاق التينيّ استراتيجية التوجيه: ضع واجهة أمامية أمام النظام، ووجّه تدريجيًا، واحذف المسار القديم عندما يثبت المسار الجديد نفسه. ويغطي هذا القسم ما يحدث *داخل* تلك الواجهة — هندسة الجسر التي تتيح لاثنين من الأطر التعايش في التطبيق نفسه دون تراجع.
 
-## The bridge layer
+## طبقة الجسر
 
-When you run two frameworks side by side—say, an AngularJS monolith and a modern React application—they don’t naturally know about each other. They have different rendering cycles, different dependency injection systems, different expectations about who owns the DOM. The **bridge layer** is the infrastructure you build to make these two runtimes coexist without collision.
+عندما تشغّل إطارين جنبًا إلى جنب — مثلًا تطبيق شامل بـAngularJS وتطبيق React حديث — فإنهما لا يعرف أحدهما الآخر بطبيعته. فلديهما دورتا تصيير مختلفتان، ونظاما حقن تبعيات مختلفان، وتوقعان مختلفان حول من يملك DOM. و**طبقة الجسر** هي البنية التحتية التي تبنيها ليتعايش وقتا التشغيل هذان دون تصادم.
 
 ```
 flowchart TD
@@ -24,21 +24,21 @@ flowchart TD
     Bridge --> StateAdapter["State Adapter\n(event bus / shared store)"]
 ```
 
-The bridge has three jobs:
+وللجسر ثلاث مهام:
 
-- **State synchronization**: if a user updates data in a legacy component, the modern component sees the change, and vice versa.
-- **Authentication sharing**: both frameworks read from the same auth token so navigation between them doesn’t trigger a re-login.
-- **Lifecycle coordination**: the legacy digest cycle and the modern reactive cycle don’t collide or trigger infinite update loops.
+- **مزامنة الحالة**: إذا حدّث المستخدم بيانات في مكوّن قديم، رأى المكوّن الحديث التغيير، والعكس.
+- **مشاركة المصادقة**: يقرأ الإطاران من رمز المصادقة نفسه فلا يؤدي التنقل بينهما إلى تسجيل دخول جديد.
+- **تنسيق دورة الحياة**: لا تتصادم دورة الهضم (digest) القديمة مع الدورة التفاعلية الحديثة ولا تُطلقا حلقات تحديث لا نهائية.
 
-The first two are solvable with well-known patterns. The third one is where the subtle bugs live.
+الأوليان قابلتان للحل بأنماط معروفة. أما الثالثة فهناك تعيش الأخطاء الخفية.
 
-## Dual bootstrapping
+## الإقلاع المزدوج
 
-The most common bridge pattern is **dual bootstrapping**: both frameworks initialize and mount in the same page, each owning a region of the DOM. A thin shell—often framework-agnostic HTML—provides the chrome (navigation, header, footer) and mounts the active framework’s root into a container `div`.
+أكثر أنماط الجسر شيوعًا هو **الإقلاع المزدوج**: يهيّئ الإطاران ويُركّبان في الصفحة نفسها، وكل منهما يملك منطقة من DOM. ويوفّر هيكل رقيق — غالبًا HTML مستقل عن الأطر — الواجهة الخارجية (التنقل، والترويسة، والتذييل) ويركّب جذر الإطار النشط في `div` حاوية.
 
-For AngularJS-to-Angular migrations specifically, the [ngUpgrade](https://angular.dev/guide/upgrade) library creates a hybrid mode where Angular components can be “downgraded” to work inside AngularJS templates, and AngularJS services can be “upgraded” for injection into Angular components. This is a first-party escape hatch designed for exactly this kind of gradual transition.
+وفي ترحيلات AngularJS إلى Angular تحديدًا، تُنشئ مكتبة [ngUpgrade](https://angular.dev/guide/upgrade) وضعًا هجينًا يمكن فيه «تخفيض» مكوّنات Angular لتعمل داخل قوالب AngularJS، و«ترقية» خدمات AngularJS لحقنها في مكوّنات Angular. وهذا مخرج طارئ من الجهة الأولى مصمّم لهذا النوع من الانتقال التدريجي بالضبط.
 
-For migrations to React or Vue from AngularJS, the pattern usually involves wrapping the new framework’s components as [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) (Web Components) and rendering them inside AngularJS directives. Libraries like `react2angular` and `ngVue` automate the wrapper boilerplate. The general shape looks like this:
+وفي الترحيلات إلى React أو Vue من AngularJS، يتضمن النمط عادةً لفّ مكوّنات الإطار الجديد كـ[عناصر مخصّصة](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) (مكوّنات الويب) وتصييرها داخل توجيهات AngularJS. وتُؤتمت مكتبات مثل `react2angular` و`ngVue` الشكل المتكرر للمغلّف. ويبدو الشكل العام هكذا:
 
 *bridge/react-wrapper.directive.ts*
 
@@ -57,15 +57,15 @@ angular.module('legacyApp').directive('modernDashboard', () => ({
 }));
 ```
 
-*Note:* Mounts a React component tree inside an AngularJS directive.
+*ملاحظة:* يركّب شجرة مكوّنات React داخل توجيه AngularJS.
 
-*Note:* Cleans up the React root when AngularJS destroys the directive's scope.
+*ملاحظة:* ينظّف جذر React عندما يهدم AngularJS نطاق التوجيه.
 
-The key discipline here is lifecycle cleanup. If the AngularJS scope is destroyed (the user navigates away), the React root must be unmounted. If the React component subscribes to a shared store, the subscription must be cleaned up on unmount. Leaking subscriptions or orphaned DOM nodes is the most common bug in dual-bootstrap systems, and it manifests as gradually increasing memory usage that only shows up under sustained use.
+الانتظام الجوهري هنا هو تنظيف دورة الحياة. فإذا هُدم نطاق AngularJS (غادر المستخدم الصفحة)، يجب إلغاء تركيب جذر React. وإذا اشترك مكوّن React في مخزن مشترك، يجب تنظيف الاشتراك عند إلغاء التركيب. وتسريب الاشتراكات أو عُقد DOM المهجورة أكثر الأخطاء شيوعًا في أنظمة الإقلاع المزدوج، ويظهر كتزايد تدريجي في استهلاك الذاكرة لا يبدو إلا في الاستخدام المستمر.
 
-## Shared state across frameworks
+## الحالة المشتركة بين الأطر
 
-When both frameworks render components that depend on the same data, you need a single source of truth that both runtimes can read from and write to. The typical approach is to externalize shared state into something framework-agnostic—a plain event bus, a shared observable, or a small store library like [nanostores](https://stevekinney.com/courses/enterprise-ui/nanostores) that has bindings for both frameworks.
+عندما يصيّر الإطاران مكوّنات تعتمد على البيانات نفسها، فأنت تحتاج إلى مصدر حقيقة واحد يستطيع وقتا التشغيل القراءة منه والكتابة فيه. والنهج المعتاد هو إخراج الحالة المشتركة إلى شيء مستقل عن الأطر — ناقل أحداث عادي، أو observable مشترك، أو مكتبة مخزن صغيرة مثل [nanostores](https://stevekinney.com/courses/enterprise-ui/nanostores) لها ارتباطات مع كلا الإطارين.
 
 *bridge/shared-state.ts*
 
@@ -76,21 +76,21 @@ export const currentUser = atom<User | null>(null);
 export const notifications = atom<Notification[]>([]);
 ```
 
-*Note:* Framework-agnostic atoms that both React and AngularJS can subscribe to.
+*ملاحظة:* ذرّات مستقلة عن الأطر يستطيع React وAngularJS الاشتراك فيها معًا.
 
-The React side uses `useStore(currentUser)`. The AngularJS side uses a service that subscribes to the atom and triggers `$scope.$apply()` when the value changes. Both frameworks see the same value, and writes from either side propagate immediately.
+يستخدم جانب React الدالة `useStore(currentUser)`. ويستخدم جانب AngularJS خدمة تشترك في الذرّة وتُطلق `$scope.$apply()` عند تغيّر القيمة. ويرى الإطاران القيمة نفسها، وتنتشر الكتابات من أي جانب فورًا.
 
-> **Watch the digest cycle**
+> **احترس من دورة الهضم**
 >
-> AngularJS’s change detection runs on digest cycles, not on reactive subscriptions. When an external store updates, AngularJS won’t notice unless you explicitly trigger a digest. Wrapping the subscription callback in `$scope.$apply()` handles this, but calling `$apply` during an already-running digest throws an error. Use `$scope.$applyAsync()` or check `$$phase` if you hit this—it’s exactly the kind of subtle interop bug that dual bootstrapping introduces.
+> يعمل كشف التغييرات في AngularJS على دورات الهضم، لا على اشتراكات تفاعلية. فعندما يُحدَّث مخزن خارجي، لن يلاحظ AngularJS ذلك إلا إذا أطلقت دورة هضم صراحةً. ولفّ نداء الاشتراك في `$scope.$apply()` يعالج ذلك، لكن نداء `$apply` أثناء دورة هضم تعمل بالفعل يُطلق خطأً. استخدم `$scope.$applyAsync()` أو افحص `$$phase` إن واجهت هذا — فهو بالضبط نوع أخطاء التوافق الخفية التي يقدمها الإقلاع المزدوج.
 
-Authentication is a specific case of shared state with higher stakes. The standard approach is to store the auth token (usually a JWT) in an `HttpOnly` cookie or a shared `sessionStorage` key, then have both frameworks check that central store. Neither framework “owns” authentication—it’s a concern of the shell or the bridge layer. This prevents the situation where navigating from a React route to a legacy route requires the user to log in again.
+المصادقة حالة خاصة من الحالة المشتركة بمخاطر أعلى. والنهج المعياري هو تخزين رمز المصادقة (عادةً JWT) في ملف تعريف `HttpOnly` أو مفتاح `sessionStorage` مشترك، ثم يفحص الإطاران ذلك المخزن المركزي. ولا «يملك» أي من الإطارين المصادقة — فهي شأن يخصّ الهيكل أو طبقة الجسر. وهذا يمنع الحالة التي يتطلب فيها التنقل من مسار React إلى مسار قديم أن يسجّل المستخدم الدخول مرة أخرى.
 
-## The “two systems tax”
+## «ضريبة النظامين»
 
-During any framework migration, your team is maintaining two rendering runtimes, two sets of tooling conventions, and two mental models for how data flows through the application. This overhead—the time spent bridging, synchronizing, debugging interop issues, and context-switching between paradigms—is the **two systems tax**.
+أثناء أي ترحيل إطار عمل، يصون فريقك وقتيْ تشغيل للتصيير، ومجموعتين من اصطلاحات الأدوات، ونموذجين ذهنيين لتدفق البيانات في التطبيق. وهذا العبء — الوقت المصروف على الجسر والمزامنة وتنقيح مشكلات التوافق والتنقل بين النماذج الذهنية — هو **ضريبة النظامين**.
 
-It’s a real cost, and it’s the reason many migrations stall. The tax is highest at the beginning, when the bridge infrastructure is still being built and developers are learning to work across both systems. It decreases as more of the application moves to the target framework and the legacy surface area shrinks.
+إنها كلفة حقيقية، وهي سبب تعطّل كثير من الترحيلات. والضريبة في أعلى مستوياتها في البداية، حين تكون بنية الجسر قيد البناء والمطوّرون يتعلمون العمل عبر النظامين. وتنخفض مع انتقال مزيد من التطبيق إلى الإطار المستهدف وتقلّص مساحة السطح القديمة.
 
 ```
 flowchart LR
@@ -103,64 +103,64 @@ flowchart LR
     High --> Mid --> Low
 ```
 
-Teams manage the tax in a few ways:
+وتدير الفرق هذه الضريبة بعدة طرق:
 
-- **Rotation model**: a portion of each sprint is dedicated to migration work, so feature velocity continues while the legacy footprint shrinks.
-- **Platform team**: a dedicated group owns the bridge infrastructure and tooling, while feature teams continue shipping against whichever framework their routes use.
-- **Migration-first rule**: new features go into the modern framework, and legacy code only receives bug fixes. This prevents the legacy side from growing while you’re trying to shrink it.
+- **نموذج التناوب**: يُخصَّص جزء من كل دورة تطوير (sprint) لعمل الترحيل، فتواصل الميزات وتيرتها بينما تتقلّص البصمة القديمة.
+- **فريق منصة**: تتولى مجموعة مخصصة بنية الجسر وأدواته، بينما تواصل فرق الميزات التسليم على أي إطار تستخدمه مساراتها.
+- **قاعدة الترحيل أولًا**: الميزات الجديدة تذهب إلى الإطار الحديث، ولا تتلقى الشفرة القديمة إلا إصلاحات الأخطاء. وهذا يمنع الجانب القديم من النمو بينما تحاول تقليصه.
 
-The third rule is the most important and the most frequently violated. Every new feature that lands in the legacy codebase extends the migration timeline and increases the bridge surface area. If the migration is going to succeed, new work *must* go into the new system. As we covered in the [strangler fig introduction](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction): if new work keeps flowing into the legacy code, you’re not strangling it. You’re feeding it vitamins.
+القاعدة الثالثة هي الأهم والأكثر انتهاكًا. فكل ميزة جديدة تحلّ في قاعدة الشفرة القديمة تمدّد الجدول الزمني للترحيل وتزيد مساحة سطح الجسر. وإذا كان للترحيل أن ينجح، *يجب* أن يذهب العمل الجديد إلى النظام الجديد. وكما غطينا في [مدخل شجرة الخنّاق التينيّ](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction): إذا استمر العمل الجديد في التدفق إلى الشفرة القديمة، فأنت لا تخنقها. بل تُغذّيها بالفيتامينات.
 
-## The 70% stall
+## توقف 70%
 
-There’s a common failure mode where the most visible, high-traffic features are migrated early—the homepage, the main dashboard, the checkout flow—but the complex, low-traffic legacy core lingers. Nobody wants to touch the admin panel built in 2017. The reporting module has undocumented business logic that nobody fully understands. The settings page has a form with forty fields and custom validation that predates the current team.
+هناك نمط فشل شائع: تُهاجر الميزات الأكثر وضوحًا والأعلى حركة مبكرًا — الصفحة الرئيسية، ولوحة التحكم الأساسية، وتدفق إتمام الشراء — لكن الجوهر القديم المعقّد ومنخفض الحركة يبقى. فلا أحد يريد لمس لوحة الإدارة المبنية في 2017. ووحدة التقارير فيها منطق عمل غير موثّق لا يفهمه أحد تمامًا. وصفحة الإعدادات فيها نموذج بأربعين حقلًا وتحقق مخصّص أقدم من الفريق الحالي.
 
-This is the **70% stall**: the migration reaches a point where the remaining 30% is disproportionately harder than everything that came before, and organizational energy shifts to new features instead of finishing the job. The result is a permanent hybrid architecture—not as a deliberate choice, but as an accidental one.
+هذا هو **توقف 70%**: يصل الترحيل إلى نقطة تكون فيها الـ30% المتبقية أصعب بشكل غير متناسب من كل ما سبق، فتنتقل طاقة المؤسسة إلى الميزات الجديدة بدل إتمام العمل. والنتيجة معمارية هجينة دائمة — لا كخيار متعمد بل كخيار عارض.
 
-Preventing the stall requires a rigorous definition of “done.” The migration is not complete when the high-traffic routes work in the new framework. It’s complete when the legacy application has zero routes, its dev server is shut down, its directory is deleted, and its build dependencies are removed from the project. If the definition of done doesn’t include deletion, the deletion won’t happen.
+يتطلب منع التوقف تعريفًا صارمًا لـ«الانتهاء». فالترحيل لا يكتمل عندما تعمل المسارات عالية الحركة في الإطار الجديد. بل يكتمل عندما لا يبقى للتطبيق القديم أي مسار، ويُوقف خادم تطويره، ويُحذف مجلده، وتُزال تبعيات بنائه من المشروع. وإذا لم يتضمن تعريف الانتهاء الحذف، فلن يحدث الحذف.
 
-Teams that successfully avoid the stall tend to use **ratcheting**—build-time or lint-time rules that prevent new code from being written in the legacy style. An ESLint rule that flags imports from the legacy directory. A CI check that fails if the number of legacy files increases. A dashboard that tracks migration progress and makes the remaining work visible. These are the same architectural enforcement patterns from [Writing Our Own ESLint Rules](https://stevekinney.com/courses/enterprise-ui/writing-eslint-rules), applied to migration tracking instead of package boundaries.
+تميل الفرق التي تتفادى التوقف بنجاح إلى استخدام **السقّاطة (ratcheting)** — قواعد وقت البناء أو وقت الفحص تمنع كتابة شفرة جديدة على الطراز القديم. قاعدة ESLint تُعلّم الاستيرادات من المجلد القديم. وفحص CI يفشل إذا زاد عدد الملفات القديمة. ولوحة تحكم تتبّع تقدم الترحيل وتُظهر العمل المتبقي. وهذه هي أنماط الفرض المعماري نفسها من [كتابة قواعد ESLint الخاصة بنا](https://stevekinney.com/courses/enterprise-ui/writing-eslint-rules)، مطبّقة على تتبّع الترحيل بدل حدود الحزم.
 
-## What Etsy got right
+## ما أصاب فيه Etsy
 
-Etsy’s multi-year migration of seventeen thousand JavaScript files to TypeScript is one of the better-documented success stories. Their [engineering blog](https://www.etsy.com/codeascraft/etsys-journey-to-typescript) describes a gradual adoption strategy driven by a few key decisions:
+يُعد ترحيل Etsy الممتد سنوات لسبعة عشر ألف ملف JavaScript إلى TypeScript من أفضل قصص النجاح توثيقًا. ويصف [مدوّنتهم الهندسية](https://www.etsy.com/codeascraft/etsys-journey-to-typescript) استراتيجية تبنٍّ تدريجي مدفوعة بقرارات رئيسية قليلة:
 
-- They typed core utilities and shared libraries first—the **infrastructure-first** approach. Feature developers had high-quality types available from day one of their own conversions.
-- They distinguished between “trusted” `.ts` files (which had accurate type signatures) and legacy `.js` files (which might have `any` everywhere). This gave developers confidence that typed code was *genuinely* typed, not just renamed.
-- They focused on actively developed areas rather than trying to convert dormant code. Files that hadn’t been touched in a year could wait.
-- They enabled strict TypeScript flags incrementally, ratcheting up strictness on a per-directory basis rather than flipping `strict: true` globally and drowning in errors.
+- كتبوا أنواع الأدوات الأساسية والمكتبات المشتركة أولًا — نهج **البنية التحتية أولًا**. فكان لدى مطوّري الميزات أنواع عالية الجودة من اليوم الأول لتحويلاتهم.
+- ميّزوا بين ملفات `.ts` «موثوقة» (لها توقيعات أنواع دقيقة) وملفات `.js` القديمة (التي قد يكون فيها `any` في كل مكان). وهذا منح المطوّرين ثقة بأن الشفرة المكتوبة بالأنواع *مكتوبة بالأنواع فعلًا*، لا مجرد أعيدت تسميتها.
+- ركّزوا على المناطق النشطة التطوير بدل محاولة تحويل الشفرة الخاملة. فالملفات التي لم تُلمس خلال سنة كان يمكنها الانتظار.
+- فعّلوا أعلام TypeScript الصارمة تدريجيًا، مُصعِّدين الصرامة مجلدًا بمجلد بدل تبديل `strict: true` على المستوى العام والغرق في الأخطاء.
 
-The migration succeeded because it was designed to deliver value incrementally. Each converted file made the surrounding code easier to work with. Developers weren’t converting files as a chore—they were improving their own working environment.
+نجح الترحيل لأنه صُمّم لتحقيق قيمة تدريجيًا. فكل ملف محوّل جعل الشفرة المحيطة أسهل في التعامل. ولم يكن المطوّرون يحوّلون الملفات كعبء — بل كانوا يحسّنون بيئة عملهم.
 
-This is the same principle we discussed in [Scaling TypeScript](https://stevekinney.com/courses/enterprise-ui/scaling-typescript): the type system is most useful when it’s trustworthy, and trustworthiness comes from being strict in the places that matter rather than being permissive everywhere.
+وهذا هو المبدأ نفسه الذي ناقشناه في [توسيع نطاق TypeScript](https://stevekinney.com/courses/enterprise-ui/scaling-typescript): نظام الأنواع أنفع ما يكون عندما يكون موثوقًا، والموثوقية تأتي من الصرامة في المواضع المهمة لا من التسامح في كل مكان.
 
-## What Lyft got wrong
+## ما أخطأت فيه Lyft
 
-A [cautionary tale](https://www.datafold.com/data-migration-guide/what-data-practitioners-wish-they-knew) from Lyft illustrates the opposite trajectory. What started as a platform migration spiraled as the team tried to simultaneously redesign the data model, optimize performance, and restructure the entire application. The migration took so long that the *target* platform became legacy before the migration finished.
+و[قصة تحذيرية](https://www.datafold.com/data-migration-guide/what-data-practitioners-wish-they-knew) من Lyft تُظهر المسار المعاكس. فما بدأ كترحيل منصة تضخّم حين حاول الفريق في الوقت نفسه إعادة تصميم نموذج البيانات وتحسين الأداء وإعادة هيكلة التطبيق كله. واستغرق الترحيل وقتًا طويلًا حتى أصبحت المنصة *المستهدفة* قديمة قبل أن ينتهي الترحيل.
 
-This is the “double disaster” of delayed migrations: you lose velocity during the transition *and* the destination moves out from under you. The original migration was supposed to take a few quarters. It took years. By the end, the team was stuck on an outdated system after investing enormous effort to get there.
+هذه هي «الكارثة المزدوجة» للترحيلات المتأخرة: تفقد وتيرتك أثناء الانتقال *و*تتحرك الوجهة من تحت قدميك. كان يُفترض أن يستغرق الترحيل الأصلي بضعة أرباع سنة. واستغرق سنوات. وفي النهاية بقي الفريق عالقًا على نظام قديم بعد بذل جهد هائل للوصول إليه.
 
-The lesson is scope discipline. A migration should change the framework—not the data model, not the feature set, not the deployment topology, not the state management approach. If you want to change all of those things, do them sequentially. Trying to modernize everything simultaneously is how you end up building a system that’s legacy before it launches.
+والدرس هو انضباط النطاق. ينبغي أن يغيّر الترحيل إطار العمل — لا نموذج البيانات، ولا مجموعة الميزات، ولا طوبولوجيا النشر، ولا نهج إدارة الحالة. وإذا أردت تغيير كل ذلك، فافعله بالتتابع. ومحاولة تحديث كل شيء في الوقت نفسه هي كيف ينتهي بك الأمر ببناء نظام يصبح قديمًا قبل إطلاقه.
 
-> **Migration versus modernization**
+> **الترحيل في مقابل التحديث**
 >
-> “Migrate the framework” and “modernize the architecture” are different projects that happen to overlap in time. Conflating them is the single most common cause of migration failure. Move the code first. *Then* refactor the architecture in the new framework, where you have modern tooling and a clean foundation to work with.
+> «رحّل إطار العمل» و«حدّث المعمارية» مشروعان مختلفان يتصادف أنهما يتقاطعان زمنيًا. والخلط بينهما هو السبب الأكثر شيوعًا لفشل الترحيل. انقل الشفرة أولًا. *ثم* أعد هيكلة المعمارية في الإطار الجديد، حيث لديك أدوات حديثة وأساس نظيف للعمل عليه.
 
-## Routing mechanisms for the bridge
+## آليات التوجيه للجسر
 
-The [strangler fig introduction](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction) covers the general routing concept. In framework migrations specifically, there are three common implementations:
+يغطي [مدخل شجرة الخنّاق التينيّ](https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction) مفهوم التوجيه العام. وفي ترحيلات الأطر تحديدًا، هناك ثلاثة تنفيذات شائعة:
 
-| Mechanism | Where it runs | How it works |
+| الآلية | أين تعمل | كيف تعمل |
 | --- | --- | --- |
-| **Reverse proxy** | Infrastructure (NGINX, CDN edge) | Routes are split by URI path at the network level. The most decoupled option, but sharing session state across origins requires extra work. |
-| **Client-side router bridge** | Application (SPA router) | A unified router loads different framework bundles based on the URL. Preserves the single-page feel but requires careful management of global CSS and window-level state. |
-| **Shared shell** | Application (Module Federation) | A thin, framework-agnostic shell orchestrates micro-apps. The most sophisticated option—handles hybrid pages where legacy and modern components coexist in the same view. |
+| **الوكيل العكسي** | البنية التحتية (NGINX، طرف شبكة توصيل المحتوى) | تُقسَّم المسارات بحسب مسار URI على مستوى الشبكة. وهو الخيار الأكثر فصلًا، لكن مشاركة حالة الجلسة عبر أصول مختلفة تتطلب عملًا إضافيًا. |
+| **جسر التوجيه في المتصفح** | التطبيق (موجّه SPA) | يحمّل موجّه موحّد حزم أطر مختلفة بحسب عنوان URL. ويحافظ على إحساس الصفحة الواحدة لكنه يتطلب إدارة حذرة لـCSS العام والحالة على مستوى النافذة. |
+| **الهيكل المشترك** | التطبيق (اتحاد الوحدات) | هيكل رقيق مستقل عن الأطر ينسّق التطبيقات الدقيقة. وهو الخيار الأكثر تطورًا — يتولى الصفحات الهجينة التي تتعايش فيها المكوّنات القديمة والحديثة في العرض نفسه. |
 
-The reverse proxy approach is the simplest to implement and the safest to operate. It’s also the easiest to roll back: if a migrated route has problems, you change the proxy config and traffic goes back to the legacy app. The downside is that navigation between legacy and modern routes triggers full page loads, which breaks the single-page illusion.
+نهج الوكيل العكسي أبسطها تنفيذًا وأكثرها أمانًا تشغيليًا. وهو أيضًا الأسهل في الرجوع: إذا واجه مسار مهاجَر مشكلات، تغيّر إعداد الوكيل فتعود الحركة إلى التطبيق القديم. والجانب السلبي أن التنقل بين المسارات القديمة والحديثة يُطلق تحميلات كاملة للصفحة، ما يكسر وهم الصفحة الواحدة.
 
-Client-side routing preserves seamless navigation but introduces framework collision risks—CSS leaking across boundaries, global variables conflicting, event handlers interfering. If you go this route, CSS isolation through Shadow DOM, CSS Modules, or strict naming conventions is non-negotiable.
+يحافظ التوجيه في المتصفح على تنقل سلس لكنه يُدخل مخاطر تصادم الأطر — تسرّب CSS عبر الحدود، وتعارض المتغيرات العامة، وتداخل معالجات الأحداث. وإذا سلكت هذا الطريق، فعزل CSS عبر Shadow DOM أو وحدات CSS أو اصطلاحات تسمية صارمة غير قابل للتفاوض.
 
-The shared shell approach, typically implemented with [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation), is the most flexible but also the most complex. It’s the right choice when you need hybrid pages—where a legacy sidebar coexists with a modern content area during the transition—but the operational overhead is significant. Don’t reach for it unless you actually need that level of granularity.
+نهج الهيكل المشترك، المنفّذ عادةً بـ[اتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/module-federation)، هو الأكثر مرونة لكنه الأكثر تعقيدًا أيضًا. وهو الخيار الصحيح عندما تحتاج إلى صفحات هجينة — حيث يتعايش شريط جانبي قديم مع منطقة محتوى حديثة أثناء الانتقال — لكن العبء التشغيلي كبير. لا تلجأ إليه إلا إذا احتجت فعلًا إلى هذا المستوى من التفصيل.
 
 ```
 flowchart TD
@@ -184,26 +184,26 @@ flowchart TD
     end
 ```
 
-## Piloting the migration
+## تجربة الترحيل الأولية
 
-Luca Mezzalira’s advice for microfrontend transitions applies equally well to framework migrations: pilot an end-to-end flow with a single migrated route before committing to the full migration. Pick something relatively self-contained and low-risk—a settings page, a help section, an internal dashboard—and migrate it completely. Test the entire flow from development through deployment and monitoring.
+نصيحة Luca Mezzalira لانتقالات الواجهات الدقيقة تسري بالقدر نفسه على ترحيلات الأطر: جرّب تدفقًا من الطرف إلى الطرف بمسار مهاجَر واحد قبل الالتزام بالترحيل كاملًا. اختر شيئًا مكتفيًا بذاته نسبيًا ومنخفض المخاطر — صفحة إعدادات، أو قسم مساعدة، أو لوحة تحكم داخلية — وهاجره بالكامل. واختبر التدفق كله من التطوير حتى النشر والمراقبة.
 
-The pilot validates the bridge infrastructure, surfaces infrastructure gaps (like missing shared auth), and gives the team experience with the dual-bootstrap workflow before the stakes are high. If the pilot takes two weeks, you have a realistic basis for estimating the rest. If the pilot takes two months, you’ve learned something important before betting the roadmap on it.
+تتحقق التجربة الأولية من بنية الجسر، وتكشف ثغرات البنية التحتية (مثل غياب المصادقة المشتركة)، وتمنح الفريق خبرة بسير عمل الإقلاع المزدوج قبل أن ترتفع المخاطر. فإذا استغرقت التجربة أسبوعين، صار لديك أساس واقعي لتقدير الباقي. وإذا استغرقت شهرين، فقد تعلمت شيئًا مهمًا قبل أن تراهن على خارطة الطريق.
 
-## Data architecture migration
+## ترحيل معمارية البيانات
 
-Framework migration gets all the attention, but data architecture migration—how your application fetches, caches, and manages server state—is often the quieter, higher-leverage change. A codebase that swaps React for Vue but keeps the same verbose, boilerplate-heavy data layer hasn’t modernized much. It’s moved the furniture without fixing the plumbing.
+يحظى ترحيل إطار العمل بكل الاهتمام، لكن ترحيل معمارية البيانات — كيف يجلب تطبيقك حالة الخادم ويخزّنها مؤقتًا ويديرها — غالبًا ما يكون التغيير الأهدأ والأعلى أثرًا. فقاعدة شفرة تستبدل React بـVue لكنها تبقي طبقة البيانات المطوّلة المثقلة بالنماذج المتكررة لم تتحدّث كثيرًا. إنها نقلت الأثاث دون إصلاح السباكة.
 
-### Redux to React Query
+### من Redux إلى React Query
 
-Large-scale Redux implementations tend to accumulate a specific kind of bloat: action types, action creators, thunks, reducers, selectors, and middleware—all to manage what is fundamentally *server cache*. The data isn’t application state in the meaningful sense. It’s a local copy of something that lives on a server, with its own staleness, invalidation, and refetching concerns.
+تميل تطبيقات Redux واسعة النطاق إلى تجميع نوع محدد من التضخّم: أنواع الإجراءات، ومنشئات الإجراءات، وthunks، والمخفّضات (reducers)، والمحدِّدات (selectors)، والوسيط — كل ذلك لإدارة ما هو في جوهره *ذاكرة مؤقتة للخادم*. فالبيانات ليست حالة تطبيق بالمعنى الجوهري. بل نسخة محلية من شيء يعيش على خادم، وله شؤونه الخاصة من التقادم والإبطال وإعادة الجلب.
 
-[React Query](https://tanstack.com/query/latest) (now TanStack Query) treats server data as exactly that—a specialized cache with built-in mechanisms for invalidation, background refetching, and optimistic updates. The migration from Redux to React Query is typically conducted incrementally, one feature at a time:
+ويتعامل [React Query](https://tanstack.com/query/latest) (الآن TanStack Query) مع بيانات الخادم على أنها ذلك بالضبط — ذاكرة مؤقتة متخصصة بآليات مدمجة للإبطال وإعادة الجلب في الخلفية والتحديثات المتفائلة. ويُجرى الترحيل من Redux إلى React Query عادةً تدريجيًا، بميزة واحدة في كل مرة:
 
-- Identify a Redux “duck” (feature module) that primarily manages server data—a list of users, a set of orders, a dashboard feed.
-- Rewrite the data fetching as a `useQuery` hook. The hook handles loading states, error states, caching, and refetching automatically.
-- Remove the corresponding Redux actions, reducers, and selectors.
-- Repeat for the next feature.
+- حدّد وحدة ميزة في Redux (duck) تدير أساسًا بيانات الخادم — قائمة مستخدمين، أو مجموعة طلبات، أو تدفق تغذية لوحة تحكم.
+- أعد كتابة جلب البيانات كخُطّاف `useQuery`. فيتولى الخُطّاف حالات التحميل والخطأ والتخزين المؤقت وإعادة الجلب تلقائيًا.
+- أزل إجراءات Redux ومخفّضاته ومحدِّداته المقابلة.
+- وكرّر مع الميزة التالية.
 
 ```typescript
 // Before: Redux thunk + reducer + selector for fetching orders
@@ -218,15 +218,15 @@ const { data: orders, isLoading } = useQuery({
 });
 ```
 
-During the transition, both systems coexist. Legacy features continue to use Redux while new features use React Query. As more features migrate, the Redux store shrinks until it either disappears entirely or is reduced to a small store for genuinely global UI state—things like sidebar open/closed, active theme, or modal visibility—that aren’t server data at all.
+أثناء الانتقال يتعايش النظامان. فتظل الميزات القديمة تستخدم Redux بينما تستخدم الميزات الجديدة React Query. وكلما هاجرت ميزات أكثر تقلّص مخزن Redux حتى يختفي كليًا أو يُختصر إلى مخزن صغير لحالة واجهة عامة فعلًا — أشياء مثل فتح/إغلاق الشريط الجانبي، أو السمة النشطة، أو ظهور النوافذ الحوارية — وهي ليست بيانات خادم على الإطلاق.
 
-The scope discipline from the framework migration section applies here too. Migrate the data layer *separately* from the framework. If you’re simultaneously swapping React for something else, moving from Redux to React Query, and restructuring your API layer, you’ve built the Lyft failure into your project plan.
+وانضباط النطاق من قسم ترحيل الأطر يسري هنا أيضًا. رحّل طبقة البيانات *منفصلةً* عن إطار العمل. وإذا كنت تستبدل React بشيء آخر، وتنتقل من Redux إلى React Query، وتعيد هيكلة طبقة API في الوقت نفسه، فأنت قد بنيت فشل Lyft داخل خطة مشروعك.
 
-### REST to GraphQL
+### من REST إلى GraphQL
 
-For applications consuming dozens of REST endpoints, the move to [GraphQL](https://graphql.org/) provides a single aggregation layer that eliminates over-fetching (getting more fields than you need) and under-fetching (making N+1 requests to assemble one view).
+بالنسبة إلى التطبيقات التي تستهلك عشرات نقاط نهاية REST، يوفّر الانتقال إلى [GraphQL](https://graphql.org/) طبقة تجميع واحدة تُلغي الجلب الزائد (الحصول على حقول أكثر مما تحتاج) والجلب الناقص (إجراء N+1 طلبًا لتجميع عرض واحد).
 
-The migration almost never involves rewriting the backend. Instead, a GraphQL server sits between the frontend and the existing REST APIs. The GraphQL resolvers call the REST endpoints as a data source, and the frontend gets the benefit of declarative, single-round-trip queries without anyone touching the existing services.
+لا يتضمن الترحيل تقريبًا أبدًا إعادة كتابة الواجهة الخلفية. بل يجلس خادم GraphQL بين الواجهة الأمامية وواجهات REST القائمة. فتنادي محلّلات GraphQL نقاط نهاية REST كمصدر بيانات، وتحصل الواجهة الأمامية على ميزة استعلامات تصريحية برحلة واحدة دون أن يلمس أحد الخدمات القائمة.
 
 ```
 Frontend  →  GraphQL Gateway  →  REST API A
@@ -234,70 +234,70 @@ Frontend  →  GraphQL Gateway  →  REST API A
                                →  REST API C
 ```
 
-The frontend migrates endpoint by endpoint. New views use GraphQL queries. Existing views continue hitting REST directly until someone rewrites them. The GraphQL gateway grows as more resolvers are added, and the REST-direct paths shrink. It’s a strangler fig for your API layer.
+تهاجر الواجهة الأمامية نقطة نهاية تلو الأخرى. فالعروض الجديدة تستخدم استعلامات GraphQL. والعروض القائمة تستمر في مناداة REST مباشرةً حتى يعيد أحدهم كتابتها. وتنمو بوابة GraphQL كلما أُضيفت محلّلات أكثر، وتتقلّص المسارات المباشرة إلى REST. إنها شجرة خنّاق تينيّ لطبقة API لديك.
 
-The trap is migrating to GraphQL for “web-scale” cachet without a clear technical driver. If your REST APIs are well-designed and your frontend doesn’t have over-fetching or N+1 problems, GraphQL adds complexity without solving a problem. Migrate because the data-fetching patterns genuinely hurt, not because the architecture deck looks cooler with a box labeled “GraphQL” in the middle.
+والفخ هو الترحيل إلى GraphQL طلبًا لوجاهة «النطاق الويبّي» دون دافع تقني واضح. فإذا كانت واجهات REST لديك مصمّمة جيدًا وواجهتك الأمامية لا تعاني من الجلب الزائد أو مشكلات N+1، فـGraphQL يضيف تعقيدًا دون حل مشكلة. رحّل لأن أنماط جلب البيانات تؤلم فعلًا، لا لأن عرض المعمارية يبدو أروع بمربع مكتوب عليه «GraphQL» في المنتصف.
 
-### The SSR and Server Components frontier
+### حدود التصيير على الخادم ومكوّنات الخادم
 
-The current edge of frontend modernization is the shift from client-side rendering to server-side rendering and [React Server Components](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming). The business driver is real: heavy client-side JavaScript bundles degrade Core Web Vitals on mobile devices, and the performance cost of hydrating a large SPA on every page load is increasingly hard to justify for content-heavy pages.
+الحد الحالي لتحديث الواجهة الأمامية هو الانتقال من التصيير في المتصفح إلى التصيير على الخادم و[مكوّنات الخادم في React](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming). والدافع التجاري حقيقي: فحزم JavaScript الثقيلة في المتصفح تُضعف مؤشرات Core Web Vitals على الأجهزة المحمولة، وكلفة أداء ترطيب تطبيق SPA كبير عند كل تحميل صفحة يصعب تبريرها بشكل متزايد في الصفحات الغنية بالمحتوى.
 
-Migrating to SSR or RSC is a different kind of transition than the framework swaps we’ve discussed. It changes *where* code runs, not just *which* code runs. Data fetching moves to the server. Components are classified as server or client. The mental model shifts from “one big client app” to “server-rendered by default, client-interactive where needed.”
+الترحيل إلى التصيير على الخادم أو RSC انتقال من نوع مختلف عن تبديلات الأطر التي ناقشناها. فهو يغيّر *مكان* تشغيل الشفرة، لا *أي* شفرة تعمل فقط. فينتقل جلب البيانات إلى الخادم. وتُصنَّف المكوّنات كخادم أو عميل. ويتحول النموذج الذهني من «تطبيق عميل واحد كبير» إلى «مُصيَّر على الخادم افتراضيًا، وتفاعلي في المتصفح حيث يلزم».
 
-Most organizations start this transition with the pages where the performance benefit is highest—high-traffic marketing pages, product pages, or homepages—and work inward toward the more interactive, stateful sections. The [server components and streaming lecture](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) covers the technical model. The migration pattern is the same one we’ve been discussing: incremental, behind a routing layer, with both old and new implementations running simultaneously until the old path can be retired.
+تبدأ معظم المؤسسات هذا الانتقال بالصفحات التي تكون فيها فائدة الأداء أعلى — صفحات التسويق عالية الحركة، أو صفحات المنتجات، أو الصفحات الرئيسية — وتعمل إلى الداخل نحو الأقسام الأكثر تفاعلية وذات الحالة. وتغطي [محاضرة مكوّنات الخادم والتدفق](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) النموذج التقني. ونمط الترحيل هو نفسه الذي نناقشه: تدريجي، خلف طبقة توجيه، مع تشغيل التنفيذين القديم والجديد معًا حتى يمكن إحالة المسار القديم إلى التقاعد.
 
-## Validating at scale
+## التحقق على نطاق واسع
 
-When the application serves millions of users, you can’t afford to discover migration bugs in production. The same incremental philosophy that governs the migration itself should govern the validation.
+عندما يخدم التطبيق ملايين المستخدمين، لا يمكنك تحمّل اكتشاف أخطاء الترحيل في الإنتاج. والفلسفة التدريجية نفسها التي تحكم الترحيل ينبغي أن تحكم التحقق.
 
-**Shadow logic** is the safest validation technique for high-stakes migrations. Run both the legacy and modern implementations in parallel, compare their outputs, and log discrepancies—without exposing the modern path to users. The modern implementation is exercised under real production conditions, but the legacy system remains the source of truth until the shadow results prove the new path is correct.
+**المنطق الظلّي (shadow logic)** أأمن تقنية تحقق للترحيلات عالية المخاطر. شغّل التنفيذين القديم والحديث بالتوازي، وقارن مخرجاتهما، وسجّل الفروق — دون كشف المسار الحديث للمستخدمين. فيُختبر التنفيذ الحديث في ظروف إنتاج حقيقية، لكن يبقى النظام القديم مصدر الحقيقة حتى تُثبت نتائج الظل صحة المسار الجديد.
 
-**Staged rollouts** complement shadow logic with real user exposure. Route 1% of users to the modern implementation, monitor error rates and performance metrics, and expand incrementally. Combined with feature flags from the [deployment and release patterns lecture](https://stevekinney.com/courses/enterprise-ui/deployment-and-release-patterns), this gives you a continuous feedback loop between migration progress and production health.
+**الإطلاقات المرحلية** تكمّل المنطق الظلّي بتعريض مستخدمين حقيقيين. وجّه 1% من المستخدمين إلى التنفيذ الحديث، وراقب معدلات الأخطاء ومقاييس الأداء، وتوسّع تدريجيًا. ومع أعلام الميزات من [محاضرة أنماط النشر والإصدار](https://stevekinney.com/courses/enterprise-ui/deployment-and-release-patterns)، يمنحك ذلك حلقة تغذية راجعة مستمرة بين تقدم الترحيل وصحة الإنتاج.
 
-**Regression pipelines** catch visual and functional regressions before they reach production. Automated screenshot comparison, accessibility audits, and end-to-end tests should run against every migrated route in CI. The cost of these checks is trivial compared to the cost of a regression that reaches a million users.
+**خطوط أنابيب الانحدار** تلتقط الانحدارات البصرية والوظيفية قبل وصولها إلى الإنتاج. ومقارنة اللقطات الآلية ومراجعات إمكانية الوصول واختبارات من الطرف إلى الطرف ينبغي أن تعمل على كل مسار مهاجَر في CI. وكلفة هذه الفحوصات هامشية مقابل كلفة انحدار يصل إلى مليون مستخدم.
 
-## The shortest useful summary
+## أقصر ملخص مفيد
 
-Framework migration is a strangler fig with extra steps. The routing strategy is the same: put a façade in front, move one route at a time, delete the old path when the new one works. The bridge layer is the part that makes it *possible*—shared state, shared auth, lifecycle coordination. The organizational discipline is the part that makes it *finish*—new work goes into the new system, migration progress is tracked and enforced, and “done” means deletion, not dormancy.
+ترحيل إطار العمل شجرة خنّاق تينيّ بخطوات إضافية. فاستراتيجية التوجيه هي نفسها: ضع واجهة أمامية، وانقل مسارًا واحدًا في كل مرة، واحذف المسار القديم عندما يعمل الجديد. وطبقة الجسر هي الجزء الذي يجعل ذلك *ممكنًا* — حالة مشتركة، ومصادقة مشتركة، وتنسيق دورة الحياة. والانتظام التنظيمي هو الجزء الذي يجعله *ينتهي* — العمل الجديد يذهب إلى النظام الجديد، ويُتبَّع تقدم الترحيل ويُفرض، و«الانتهاء» يعني الحذف لا الخمود.
 
-Data architecture migration follows the same pattern—incremental, parallel, with both systems coexisting until the old path is retired. TypeScript adoption follows it too, starting with infrastructure and moving outward. The principle is always the same: controlled coexistence, gradual cutover, and deletion of the old path when the new one proves itself.
+ويتبع ترحيل معمارية البيانات النمط نفسه — تدريجي، ومتوازٍ، مع تعايش النظامين حتى إحالة المسار القديم إلى التقاعد. وتبنّي TypeScript يتبعه أيضًا، بدءًا من البنية التحتية والتحرك إلى الخارج. والمبدأ واحد دائمًا: تعايش مضبوط، وتحوّل تدريجي، وحذف المسار القديم عندما يثبت الجديد نفسه.
 
-If the migration starts feeling like it has no end in sight, check for scope creep. If the easy routes are done but the hard routes keep getting deferred, check for the 70% stall. If new features keep landing in the legacy code, check for the migration-first rule. These are all management failures dressed up as technical complexity.
+إذا بدأ الترحيل يبدو بلا نهاية في الأفق، فابحث عن تمدد النطاق. وإذا انتهت المسارات السهلة وظلّت المسارات الصعبة تُؤجَّل، فابحث عن توقف 70%. وإذا ظلت الميزات الجديدة تحلّ في الشفرة القديمة، فافحص قاعدة الترحيل أولًا. وكل هذه إخفاقات إدارية متخفية في زي تعقيد تقني.
 
-We’ll apply these patterns hands-on in [Exercise 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise), where you’ll set up a routing-level strangler fig and use [codemods](https://stevekinney.com/courses/enterprise-ui/codemods-at-scale) to automate the mechanical parts of the migration.
-
----
-
-## TL;DR
-
-### The Bridge Layer
-
-> Two frameworks coexist — a bridge makes them talk.
-
-- **React ↔ Angular:** `react2angular` / `angular2react` adapter directives.
-- **React ↔ jQuery:** Mount React components into jQuery-managed DOM regions.
-- **Any ↔ Any:** Web Components as the universal bridge — wrap framework components in custom elements.
-
-**Shared state across frameworks:**
-
-- Framework-agnostic stores (nanostores, vanilla JS event emitters).
-- *Not* Redux, Vuex, or any framework-specific store — those can’t cross the bridge.
+وسنطبّق هذه الأنماط عمليًا في [التمرين 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise)، حيث ستهيّئ شجرة خنّاق تينيّ على مستوى التوجيه وتستخدم [أدوات التحويل البرمجي](https://stevekinney.com/courses/enterprise-ui/codemods-at-scale) لأتمتة الأجزاء الميكانيكية من الترحيل.
 
 ---
 
-### The Two Systems Tax
+## الخلاصة السريعة (TL;DR)
 
-> Running two frameworks simultaneously has a cost.
+### طبقة الجسر
 
-- Double the bundle size until migration completes.
-- Two mental models for developers.
-- Two sets of tooling, testing, and debugging workflows.
-- Two upgrade paths to maintain.
+> إطاران يتعايشان — والجسر يجعلهما يتحدثان.
 
-**Managing the tax:**
+- **React ↔ Angular:** توجيهات محوّل `react2angular` / `angular2react`.
+- **React ↔ jQuery:** ركّب مكوّنات React في مناطق DOM التي تديرها jQuery.
+- **أي إطار ↔ أي إطار:** مكوّنات الويب كجسر عالمي — لفّ مكوّنات الأطر في عناصر مخصّصة.
 
-- **Rotation model** — every team spends N% of sprints on migration.
-- **Platform team** — dedicated team owns the bridge and migration tooling.
-- **Migration-first rule** — new features are built in the new framework only.
+**الحالة المشتركة بين الأطر:**
 
-**The 70% stall:** Most migrations stall at ~70% because the remaining 30% is the hardest code. Use a ratcheting approach — once a module is migrated, it can never go back.
+- مخازن مستقلة عن الأطر (nanostores، وبواعث أحداث JavaScript العادية).
+- *ليست* Redux أو Vuex أو أي مخزن خاص بإطار — فهذه لا تعبر الجسر.
+
+---
+
+### ضريبة النظامين
+
+> تشغيل إطارين في الوقت نفسه له كلفة.
+
+- ضعف حجم الحزمة حتى يكتمل الترحيل.
+- نموذجان ذهنيان للمطوّرين.
+- مجموعتان من الأدوات وسير عمل الاختبار والتنقيح.
+- مسارا ترقية يجب صيانتهما.
+
+**إدارة الضريبة:**
+
+- **نموذج التناوب** — كل فريق يصرف نسبة من دوراته على الترحيل.
+- **فريق منصة** — فريق مخصص يتولى الجسر وأدوات الترحيل.
+- **قاعدة الترحيل أولًا** — الميزات الجديدة تُبنى في الإطار الجديد فقط.
+
+**توقف 70%:** معظم الترحيلات تتوقف عند نحو 70% لأن الـ30% المتبقية هي أصعب شفرة. استخدم نهج السقّاطة (ratcheting) — فبمجرد هجرة وحدة، لا يمكنها الرجوع أبدًا.

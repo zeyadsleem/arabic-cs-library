@@ -1,47 +1,40 @@
 ---
-title: "Subagent Anti-Patterns"
-lang: en
+title: "أنماط مضادّة للوكلاء الفرعيين"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/subagent-anti-patterns"
 ---
 
-Subagents are useful when they reduce context pressure. They are harmful when
-they create an illusion of rigor without a clear owner.
+يكون الوكلاء الفرعيون مفيدين عندما يقلّلون ضغط السياق، وضارّين عندما يخلقون وهم الصرامة دون مالك واضح.
 
-## Anti-Pattern: Splitting Tiny Work
+## نمط مضاد: تقسيم العمل الصغير جدًا
 
-Do not create a subagent to rename a function, update one test, or read one file.
-The overhead is larger than the task.
+لا تنشئ وكيلًا فرعيًا لإعادة تسمية دالة، أو تحديث اختبار واحد، أو قراءة ملف واحد؛ فالكلفة الإضافية أكبر من المهمة.
 
-Use a subagent when the work has a natural boundary: security review, test audit,
-repository orientation, browser reproduction, or release checklist.
+استخدم وكيلًا فرعيًا عندما يكون للعمل حدّ طبيعي: مراجعة أمنية، أو تدقيق اختبارات، أو جولة تعريفية على المستودع، أو إعادة إنتاج في المتصفح، أو قائمة تحقق للإصدار.
 
-## Anti-Pattern: No Return Contract
+## نمط مضاد: غياب عقد الإرجاع
 
-Bad:
+سيّئ:
 
 ```
 Have a subagent look into this.
 ```
 
-Better:
+أفضل:
 
 ```
 Ask a read-only subagent to inspect authentication tests. Return confirmed gaps
 only, with file references and the exact regression each test should cover.
 ```
 
-Subagent output should be easy to accept, reject, or turn into a task.
+ينبغي أن يكون مخرج الوكيل الفرعي سهل القبول أو الرفض أو التحويل إلى مهمة.
 
-## Anti-Pattern: Parallelizing Shared State
+## نمط مضاد: تشغيل الحالة المشتركة على التوازي
 
-Two agents editing the same files at once will often fight. Parallelize research,
-not overlapping writes. If multiple agents need to edit, give each one exclusive
-files or sequence the work.
+كثيرًا ما يتصادم وكيلان يعدّلان الملفات نفسها في الوقت نفسه. فشغّل البحث على التوازي، لا الكتابات المتداخلة. وإذا احتاج عدة وكلاء إلى التعديل، فامنح كل واحد ملفات حصرية أو رتّب العمل تسلسليًا.
 
-## Anti-Pattern: Treating Subagents as Review
+## نمط مضاد: معاملة الوكلاء الفرعيين كمراجعة
 
-A subagent can help review, but the main agent or human still owns the decision.
-Run the tests, inspect the diff, and resolve conflicts in one place.
+يستطيع الوكيل الفرعي المساعدة في المراجعة، لكن الوكيل الرئيسي أو الإنسان يبقى مالك القرار. شغّل الاختبارات، وافحص الفرق، وحلّ التعارضات في مكان واحد.
 
-The best subagent output is narrow enough that it improves the main workflow
-instead of becoming a second workflow.
+أفضل مخرج لوكيل فرعي هو مخرج ضيّق بما يكفي ليحسّن سير العمل الرئيسي بدلًا من أن يصبح سير عمل ثانيًا.

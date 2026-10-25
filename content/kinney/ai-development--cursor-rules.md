@@ -1,44 +1,36 @@
 ---
-title: "Cursor Rules"
-lang: en
+title: "قواعد Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-rules"
 ---
 
-[Cursor Rules](https://cursor.com/docs/rules) are system-level instructions for
-Cursor’s agent. They are the right place for behavior that should apply before a
-specific prompt exists.
+[Cursor Rules](https://cursor.com/docs/rules) تعليمات على مستوى النظام لوكيل Cursor. وهي المكان الصحيح للسلوك الذي ينبغي أن ينطبق قبل وجود طلب محدّد.
 
-I add rules when Cursor makes the same mistake twice. The first time is a prompt
-problem. The second time is a repository problem.
+أضيف القواعد عندما يكرّر Cursor الخطأ نفسه مرتين. فالمرة الأولى مشكلة طلب. والمرة الثانية مشكلة مستودع.
 
-## Rule Types
+## أنواع القواعد
 
-Cursor supports four practical instruction sources:
+يدعم Cursor أربعة مصادر تعليمات عملية:
 
-- **Project Rules** live in `.cursor/rules/*.mdc` and belong in the repository.
-- **User Rules** live in Cursor settings and follow one developer across
-projects.
-- **Team Rules** are centrally managed for teams.
-- **[AGENTS.md](https://agents.md/)** files can also provide repository
-instructions.
+- **قواعد المشروع** تسكن في `.cursor/rules/*.mdc` وتنتمي إلى المستودع.
+- **قواعد المستخدم** تسكن في إعدادات Cursor وتتبع مطوّرًا واحدًا عبر المشاريع.
+- **قواعد الفريق** تُدار مركزيًا للفرق.
+- ملفات **[AGENTS.md](https://agents.md/)** يمكن أن تقدّم أيضًا تعليمات المستودع.
 
-Project Rules use Markdown with frontmatter. The file extension matters: `.mdc` is the Cursor rule format. Plain `.md` files in `.cursor/rules` are not
-treated as project rules.
+تستخدم قواعد المشروع Markdown مع ترويسة. وامتداد الملف مهم: `.mdc` هو صيغة قاعدة Cursor. أما ملفات `.md` العادية في `.cursor/rules` فلا تُعامل كقواعد مشروع.
 
-## Application Modes
+## أوضاع التطبيق
 
-A project rule can apply in different ways:
+يمكن أن تنطبق قاعدة المشروع بطرق مختلفة:
 
-- Always apply.
-- Apply intelligently when its description matches the task.
-- Apply to specific file globs.
-- Apply only when manually referenced.
+- تنطبق دائمًا.
+- تنطبق بذكاء عندما يطابق وصفها المهمة.
+- تنطبق على أنماط ملفات محددة.
+- تنطبق فقط عند الإشارة إليها يدويًا.
 
-Use the weakest mode that is still reliable. Always-on rules are expensive and
-can create conflicting instructions when they try to describe every possible
-task.
+استخدم أضعف وضع يبقى موثوقًا. فالقواعد الدائمة مكلفة وقد تنشئ تعليمات متعارضة عندما تحاول وصف كل مهمة ممكنة.
 
-## A Small Useful Rule
+## قاعدة صغيرة مفيدة
 
 ```markdown
 ---
@@ -53,21 +45,16 @@ implementation. Run the targeted test command and the repository lint command
 before reporting completion.
 ```
 
-This is specific enough to act on and small enough to audit.
+هذه محدّدة بما يكفي للعمل بها وصغيرة بما يكفي لتدقيقها.
 
-## Rules Versus Skills
+## القواعد مقابل المهارات
 
-Use a rule for a constraint. Use a skill for a workflow.
+استخدم قاعدة لِقيد. واستخدم مهارة لسير عمل.
 
-For example, “prefer typed errors in server code” is a rule. “Run the release
-checklist, update the changelog, build packages, and verify generated exports” is
-a skill because it needs steps, references, and probably scripts.
+على سبيل المثال، «فضّل الأخطاء المُنمَّطة في شيفرة الخادم» قاعدة. أما «شغّل قائمة تحقق الإصدار، وحدّث سجل التغييرات، وابنِ الحزم، وتحقق من الصادرات المولَّدة» فمهارة لأنها تحتاج خطوات ومراجع وأرجح سكربتات.
 
-Cursor can read skills from `.cursor/skills`, `.agents/skills`, `.claude/skills`,
-and `.codex/skills`, so a well-written skill can serve more than one agent.
+يستطيع Cursor قراءة المهارات من `.cursor/skills` و`.agents/skills` و`.claude/skills` و`.codex/skills`، لذا يمكن لمهارة مكتوبة جيدًا أن تخدم أكثر من وكيل.
 
-## Maintenance
+## الصيانة
 
-Keep rules under roughly a few hundred lines and split by concern. Remove
-obsolete rules in the same pull request that makes them obsolete. A stale rule is
-not harmless documentation; it is active instruction.
+أبقِ القواعد تحت نحو بضع مئات من الأسطر وقسّمها حسب الشاغل. واحذف القواعد المهجورة في طلب السحب نفسه الذي يجعلها مهجورة. فالقاعدة البائدة ليست توثيقًا غير ضار؛ إنها تعليمة نشطة.

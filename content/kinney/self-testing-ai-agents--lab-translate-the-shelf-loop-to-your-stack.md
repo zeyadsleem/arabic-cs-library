@@ -1,109 +1,109 @@
 ---
-title: "Lab"
-lang: en
+title: "تمرين تطبيقي"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack"
 ---
 
-This appendix lab is the bridge back to real life.
+هذا التمرين الملحق هو الجسر العائد إلى الحياة الواقعية.
 
-You’re going to take the loops from Shelf and map them onto the stack you actually use, or onto a reference stack like Next.js or Rails if you want a dry run first.
+ستأخذ الحلقات من Shelf وتربطها بالتقنية التي تستخدمها فعلًا، أو بتقنية مرجعية مثل Next.js أو Rails إن أردت تجربة جافة أولًا.
 
-> **Prerequisite**
+> **متطلب سابق**
 >
-> Complete [Porting the Shelf Loop to Another Stack](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack) first. This lab assumes you are translating responsibilities, not blindly copying file names.
+> أكمل [نقل حلقة Shelf إلى تقنية أخرى](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack) أولًا. يفترض هذا التمرين أنك تنقل مسؤوليات، لا أنك تنسخ أسماء ملفات على العمياء.
 
-## The task
+## المهمة
 
-Create a concrete translation map from the Shelf workshop loop to another stack you care about.
+أنشئ خريطة ترجمة ملموسة من حلقة ورشة Shelf إلى تقنية أخرى تهمك.
 
-## Step 1: create the translation document
+## الخطوة 1: أنشئ وثيقة الترجمة
 
-Create `LOOP_TRANSLATION.md` in the root of the target repository, or in a scratch directory if you are doing this as a planning exercise.
+أنشئ `LOOP_TRANSLATION.md` في جذر المستودع الهدف، أو في مجلد مؤقت إن كنت تفعل هذا كتمرين تخطيط.
 
-The file should have one row each for:
+ينبغي أن يحتوي الملف على صف واحد لكل من:
 
-- agent instructions
-- unit and integration tests
-- browser-level verification
-- auth bootstrap
-- deterministic data reset
-- runtime probes
-- failure dossier artifacts
-- static layer
-- CI workflow
-- post-deploy smoke checks
-- review loop
+- تعليمات الوكيل
+- اختبارات الوحدات والتكامل
+- التحقق عند مستوى المتصفح
+- تهيئة المصادقة
+- إعادة ضبط البيانات حتميًا
+- فحوص وقت التشغيل
+- وثائق ملف الإخفاق
+- الطبقة الساكنة
+- سير عمل التكامل المستمر
+- فحوص الفحص السريع بعد النشر
+- حلقة المراجعة
 
-## Step 2: fill in exact paths and commands
+## الخطوة 2: املأ المسارات والأوامر الدقيقة
 
-Do not stop at conceptual labels. Write the actual file paths and commands.
+لا تتوقف عند التسميات المفاهيمية. اكتب مسارات الملفات والأوامر الفعلية.
 
-Bad:
+سيئ:
 
-- “we would have some tests here”
+- «سيكون لدينا بعض الاختبارات هنا»
 
-Good:
+جيد:
 
-- ”`apps/web/playwright.config.ts`”
-- ”`bin/rails test:system`”
-- ”`pnpm lint && pnpm typecheck`”
-- ”`test/fixtures/users.yml`”
+- «`apps/web/playwright.config.ts`»
+- «`bin/rails test:system`»
+- «`pnpm lint && pnpm typecheck`»
+- «`test/fixtures/users.yml`»
 
-If the target repository does not have that piece yet, write the missing file or command explicitly as the proposed addition.
+إن لم يكن في المستودع الهدف ذلك الجزء بعد، فاكتب الملف أو الأمر الناقص صراحةً كإضافة مقترحة.
 
-## Step 3: identify the weakest loop
+## الخطوة 3: حدّد أضعف حلقة
 
-Pick the one gap most likely to force a human back into the relay role.
+اختر الفجوة التي يُرجَّح أكثر من غيرها أن تعيد الإنسان إلى دور المرحّل.
 
-Examples:
+أمثلة:
 
-- no deterministic auth bootstrap
-- no browser-level smoke test
-- failure output too thin to be agent-fixable
-- no review instructions for a second opinion
+- لا تهيئة مصادقة حتمية
+- لا اختبار فحص سريع عند مستوى المتصفح
+- مخرجات الإخفاق أرقّ من أن يصلحها الوكيل
+- لا تعليمات مراجعة للحصول على رأي ثانٍ
 
-Write down the first concrete change that would tighten that gap.
+اكتب أول تغيير ملموس من شأنه أن يضيّق تلك الفجوة.
 
-## Step 4: add one proof-of-life command
+## الخطوة 4: أضف أمرًا واحدًا لإثبات الحياة
 
-Pick one loop from the map and actually prove it can run.
+اختر حلقة واحدة من الخريطة وأثبت فعليًا أنها تستطيع العمل.
 
-Examples:
+أمثلة:
 
-- run the unit suite
-- run the browser smoke test
-- run the static checks
-- generate the failure artifact from a deliberate failure
+- شغّل مجموعة اختبارات الوحدات
+- شغّل اختبار الفحص السريع في المتصفح
+- شغّل الفحوص الساكنة
+- أنشئ وثيقة الإخفاق من إخفاق متعمّد
 
-This keeps the exercise from turning into architecture fiction.
+هذا يمنع التمرين من أن يتحول إلى خيال معماري.
 
-## Acceptance criteria
+## معايير القبول
 
-- `LOOP_TRANSLATION.md` exists
-- Every core Shelf loop has a mapped responsibility in the target stack
-- The document includes exact paths and commands, not only concepts
-- The weakest current loop is identified explicitly
-- The document names one concrete first improvement for that weak loop
-- At least one mapped verification command has been run or dry-run verified
+- وجود `LOOP_TRANSLATION.md`
+- لكل حلقة أساسية في Shelf مسؤولية مربوطة في التقنية الهدف
+- تتضمن الوثيقة مسارات وأوامر دقيقة، لا مفاهيم فقط
+- تحديد أضعف حلقة حالية صراحةً
+- تسمية الوثيقة تحسين أول ملموس واحد لتلك الحلقة الضعيفة
+- تشغيل أمر تحقق واحد مربوط على الأقل أو التحقق منه بتجربة جافة
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-- If you find yourself copying file names mechanically, go back and translate the responsibility instead.
-- If the target stack has two plausible places for one loop, pick one and justify it. Ambiguity is the enemy here.
-- If the repository is missing half the loops, that is fine. The point is to make the missing pieces explicit and ordered.
+- إن وجدت نفسك تنسخ أسماء الملفات آليًا، فارجع وترجم المسؤولية بدلًا من ذلك.
+- إن كان للتقنية الهدف موضعان محتملان لحلقة واحدة، فاختر واحدًا وبرّر اختياره. الغموض هو العدو هنا.
+- إن كان المستودع يفتقد نصف الحلقات، فلا بأس. المقصود هو جعل الأجزاء الناقصة صريحة ومرتبة.
 
-## Stretch goals
+## أهداف إضافية
 
-- Translate the loop twice: once for a JavaScript stack and once for a Rails-style stack.
-- Add a second column to `LOOP_TRANSLATION.md` marking which loops are already automated versus still manual.
-- Turn the translation file into the backlog for the next quarter’s verification work.
+- ترجم الحلقة مرتين: مرة لتقنية JavaScript ومرة لتقنية بنمط Rails.
+- أضف عمودًا ثانيًا إلى `LOOP_TRANSLATION.md` يبيّن أي الحلقات مؤتمتة بالفعل وأيها لا يزال يدويًا.
+- حوّل ملف الترجمة إلى قائمة أعمال للربع القادم من عمل التحقق.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-A translation map is valuable when it tells the next engineer exactly where each loop lives and what command proves it. Anything fuzzier than that is still just vibes.
+خريطة الترجمة قيّمة عندما تخبر المهندس التالي بالضبط أين تعيش كل حلقة وأي أمر يثبتها. وأي شيء أكثر ضبابية من ذلك يبقى مجرد إحساس.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/translate-the-shelf-loop-to-your-stack-solution)
-- [Porting the Shelf Loop to Another Stack](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack)
-- [The Hypothesis](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/translate-the-shelf-loop-to-your-stack-solution)
+- [نقل حلقة Shelf إلى تقنية أخرى](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack)
+- [الفرضية](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)

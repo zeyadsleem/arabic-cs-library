@@ -1,14 +1,14 @@
 ---
-title: "Cache Behaviors and Invalidations"
-lang: en
+title: "سلوكات التخزين المؤقت وعمليات الإبطال"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations"
 ---
 
-CloudFront’s entire value proposition is caching: serve content from edge locations close to users instead of making round trips to your origin. But caching creates a problem you’ve probably already dealt with—stale content. You deploy a fix, but users still see the old version because the CDN hasn’t picked up the change yet.
+القيمة الكاملة التي يقدّمها CloudFront هي التخزين المؤقت: تقديم المحتوى من مواقع حافة قريبة من المستخدمين بدلًا من القيام برحلات ذهاب وعودة إلى أصلك. لكن التخزين المؤقت يخلق مشكلة سبق أن تعاملت معها على الأرجح — المحتوى القديم. فأنت تنشر إصلاحًا، لكن المستخدمين ما زالوا يرون النسخة القديمة لأن الشبكة لم تلتقط التغيير بعد.
 
-If you want AWS’s exact version of the knobs you’re turning here, keep the [cache behavior settings reference](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistValuesCacheBehavior.html), the [CloudFront invalidation guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html), and the [`aws cloudfront create-invalidation` command reference](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) open.
+إذا أردت النسخة الدقيقة من AWS للمقابض التي تديرها هنا، فأبقِ [مرجع إعدادات سلوك التخزين المؤقت](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistValuesCacheBehavior.html) و[دليل الإبطال في CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html) و[مرجع أمر `aws cloudfront create-invalidation`](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) مفتوحة.
 
-On Vercel, the platform handles cache busting for you. On AWS, you manage it. That means understanding cache behaviors, TTLs, and invalidation strategies.
+على Vercel، تتولى المنصة كسر التخزين المؤقت عنك. أما على AWS فأنت تديره. وهذا يعني فهم سلوكات التخزين المؤقت ومدد TTL واستراتيجيات الإبطال.
 
 ```
 flowchart LR
@@ -26,45 +26,45 @@ flowchart LR
     Purge --> Hit
 ```
 
-## How CloudFront Decides What to Cache
+## كيف تقرّر CloudFront ما تخزّنه مؤقتًا
 
-Every request to your CloudFront distribution is evaluated against a set of rules called **cache behaviors**. Each behavior defines:
+يُقيَّم كل طلب إلى توزيع CloudFront لديك وفق مجموعة قواعد تُسمّى **سلوكات التخزين المؤقت**. ويحدّد كل سلوك:
 
-- **Path pattern**: Which URLs this behavior applies to (e.g., `*.html`, `/api/*`, or `*` for everything).
-- **Cache policy**: How long content is cached and what factors make a cached response unique.
-- **Origin**: Which origin to fetch content from on a cache miss.
-- **Viewer protocol policy**: Whether to allow HTTP, HTTPS, or redirect HTTP to HTTPS.
+- **نمط المسار**: عناوين URL التي ينطبق عليها هذا السلوك (مثل `*.html` أو `/api/*` أو `*` لكل شيء).
+- **سياسة التخزين المؤقت**: مدة تخزين المحتوى مؤقتًا والعوامل التي تجعل الاستجابة المخزّنة فريدة.
+- **الأصل**: الأصل الذي تُجلب منه المحتوى عند عدم وجوده في ذاكرة التخزين المؤقت.
+- **سياسة بروتوكول المشاهد**: هل يُسمح بـ HTTP أو HTTPS أو إعادة توجيه HTTP إلى HTTPS.
 
-Every distribution has a **default cache behavior** (`*`) that applies to all requests not matched by a more specific behavior. For a static site, the default behavior is often all you need.
+ولكل توزيع **سلوك تخزين مؤقت افتراضي** (`*`) ينطبق على كل الطلبات التي لا يطابقها سلوك أكثر تحديدًا. ولموقع ثابت، غالبًا يكون السلوك الافتراضي كل ما تحتاجه.
 
-In the console, the **Behaviors** tab lists all cache behaviors for your distribution with their path patterns, origins, and attached policies.
+وفي لوحة التحكم، يسرد تبويب **Behaviors** كل سلوكات التخزين المؤقت لتوزيعك مع أنماط مساراتها وأصولها والسياسات المرفقة بها.
 
-The CloudFront distribution Behaviors tab showing the default cache behavior with path pattern Default, origin, and Managed-CachingOptimized policy.
+تبويب Behaviors في توزيع CloudFront وهو يعرض سلوك التخزين المؤقت الافتراضي بنمط المسار Default والأصل وسياسة Managed-CachingOptimized.
 
-## Cache Policies and TTLs
+## سياسات التخزين المؤقت ومدد TTL
 
-A **cache policy** controls three TTL values that determine how long CloudFront caches an object:
+تتحكم **سياسة التخزين المؤقت** في ثلاث قيم TTL تحدّد مدة تخزين CloudFront لكائن ما:
 
-| Setting | CachingOptimized Default | What It Does |
+| الإعداد | الافتراضي في CachingOptimized | ما يفعله |
 | --- | --- | --- |
-| **Minimum TTL** | 1 second | The floor. CloudFront caches content for at least this long, even if the origin sends `Cache-Control: no-cache`. |
-| **Default TTL** | 86,400 seconds (24 hours) | Used when the origin doesn’t send `Cache-Control` or `Expires` headers. |
-| **Maximum TTL** | 31,536,000 seconds (365 days) | The ceiling. Even if the origin sends `Cache-Control: max-age=999999999`, CloudFront caps caching at this value. |
+| **الحد الأدنى لـ TTL** | ثانية واحدة | الأرضية. تخزّن CloudFront المحتوى مؤقتًا لهذه المدة على الأقل، حتى لو أرسل الأصل `Cache-Control: no-cache`. |
+| **TTL الافتراضي** | 86,400 ثانية (24 ساعة) | يُستخدم عندما لا يرسل الأصل ترويسات `Cache-Control` أو `Expires`. |
+| **الحد الأقصى لـ TTL** | 31,536,000 ثانية (365 يومًا) | السقف. حتى لو أرسل الأصل `Cache-Control: max-age=999999999`، يحدّ CloudFront التخزين المؤقت عند هذه القيمة. |
 
-The managed **CachingOptimized** policy (ID: `658327ea-f89d-4fab-a63d-7e88639e58f6`) that you attached in [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) uses these defaults. For most static sites, these values are sensible—your content is cached for 24 hours unless your origin specifies otherwise.
+والسياسة المُدارة **CachingOptimized** (المعرّف: `658327ea-f89d-4fab-a63d-7e88639e58f6`) التي أرفقتها في [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) تستخدم هذه الافتراضيات. ولمعظم المواقع الثابتة، هذه القيم معقولة — فيُخزَّن محتواك مؤقتًا لمدة 24 ساعة إلا إذا حدّد أصلك غير ذلك.
 
-### How TTLs Interact with Origin Headers
+### كيف تتفاعل مدد TTL مع ترويسات الأصل
 
-CloudFront doesn’t blindly cache everything for the default TTL. It respects `Cache-Control` headers from your origin (S3), within the bounds of the min and max TTLs:
+لا تخزّن CloudFront كل شيء مؤقتًا بشكل أعمى لمدة TTL الافتراضية، بل تحترم ترويسات `Cache-Control` من أصلك (S3) ضمن حدود الحدّين الأدنى والأقصى لـ TTL:
 
-- Origin sends `Cache-Control: max-age=3600` (1 hour): CloudFront caches for 1 hour (between min and max, so it’s honored).
-- Origin sends `Cache-Control: max-age=0`: CloudFront caches for 1 second (the minimum TTL overrides).
-- Origin sends no `Cache-Control` header: CloudFront caches for 24 hours (the default TTL).
-- Origin sends `Cache-Control: max-age=63072000` (2 years): CloudFront caches for 365 days (the maximum TTL caps it).
+- يرسل الأصل `Cache-Control: max-age=3600` (ساعة واحدة): تخزّن CloudFront مؤقتًا لمدة ساعة (بين الحد الأدنى والأقصى، فتُحترم القيمة).
+- يرسل الأصل `Cache-Control: max-age=0`: تخزّن CloudFront مؤقتًا لثانية واحدة (فيتغلّب الحد الأدنى لـ TTL على قيمة الأصل).
+- لا يرسل الأصل ترويسة `Cache-Control`: تخزّن CloudFront مؤقتًا لمدة 24 ساعة (وهو TTL الافتراضي).
+- يرسل الأصل `Cache-Control: max-age=63072000` (سنتان): تخزّن CloudFront مؤقتًا لمدة 365 يومًا (فيحدّها الحد الأقصى لـ TTL).
 
-> **Tip**
+> **نصيحة**
 >
-> You can set `Cache-Control` headers on your S3 objects when uploading them. This gives you per-file control over caching: cache `index.html` for 60 seconds (so users get updates quickly), but cache hashed assets like `main.a1b2c3.js` for a year (they’re immutable—the filename changes when the content changes).
+> يمكنك ضبط ترويسات `Cache-Control` على كائنات S3 عند رفعها. وهذا يمنحك تحكمًا لكل ملف على حدة في التخزين المؤقت: خزّن `index.html` مؤقتًا لمدة 60 ثانية (ليحصل المستخدمون على التحديثات سريعًا)، لكن خزّن الأصول المُجزَّأة مثل `main.a1b2c3.js` مؤقتًا لمدة سنة (فهي غير قابلة للتغيير — يتغيّر اسم الملف عندما يتغيّر المحتوى).
 
 ```bash
 # Short cache for HTML files
@@ -79,27 +79,27 @@ aws s3 sync ./build/assets s3://my-frontend-app-assets/assets \
   --region us-east-1
 ```
 
-## Cache Keys
+## مفاتيح التخزين المؤقت
 
-CloudFront uses a **cache key** to determine whether a cached response can serve a given request. By default, the cache key consists of the URL path and the `Host` header. Two requests to the same path produce the same cache key and get the same cached response.
+تستخدم CloudFront **مفتاح تخزين مؤقت** لتحديد ما إذا كانت استجابة مخزّنة تستطيع خدمة طلب معين. وافتراضيًا يتكون مفتاح التخزين المؤقت من مسار URL وترويسة `Host`. فالطلبان إلى المسار نفسه ينتجان مفتاح التخزين المؤقت نفسه ويحصلان على الاستجابة المخزّنة نفسها.
 
-You can expand the cache key to include:
+ويمكنك توسيع مفتاح التخزين المؤقت ليشمل:
 
-- **Query strings**: `?v=2` and `?v=3` would be cached separately.
-- **Request headers**: Different responses for `Accept-Encoding: gzip` vs. `Accept-Encoding: br`.
-- **Cookies**: Different responses for authenticated vs. anonymous users.
+- **سلاسل الاستعلام**: `?v=2` و`?v=3` تُخزَّنان مؤقتًا بشكل منفصل.
+- **ترويسات الطلب**: استجابات مختلفة لـ `Accept-Encoding: gzip` مقابل `Accept-Encoding: br`.
+- **ملفات تعريف الارتباط**: استجابات مختلفة للمستخدمين المُصادَق عليهم مقابل المجهولين.
 
-For a static site, the default cache key (URL path only) is exactly right. You don’t want query strings, headers, or cookies fragmenting your cache. Every request for `/index.html` should get the same cached response regardless of query parameters or cookies.
+ولموقع ثابت، مفتاح التخزين المؤقت الافتراضي (مسار URL فقط) هو الصحيح تمامًا. فأنت لا تريد أن تفتّت سلاسل الاستعلام أو الترويسات أو ملفات تعريف الارتباط ذاكرتك المؤقتة. وكل طلب لـ `/index.html` يجب أن يحصل على الاستجابة المخزّنة نفسها بصرف النظر عن معاملات الاستعلام أو ملفات تعريف الارتباط.
 
-## Custom Cache Behaviors
+## سلوكات تخزين مؤقت مخصّصة
 
-Sometimes you need different caching rules for different paths. Common examples:
+تحتاج أحيانًا إلى قواعد تخزين مؤقت مختلفة لمسارات مختلفة. وأمثلة شائعة:
 
-- **HTML files**: Cache briefly (60 seconds) so users get updates quickly.
-- **Hashed JS/CSS files**: Cache aggressively (1 year) because the filename changes when the content changes.
-- **API proxy**: Don’t cache at all (if you’re routing API requests through CloudFront).
+- **ملفات HTML**: خزّنها مؤقتًا لفترة قصيرة (60 ثانية) ليحصل المستخدمون على التحديثات سريعًا.
+- **ملفات JS وCSS المُجزَّأة**: خزّنها مؤقتًا بقوة (سنة واحدة) لأن اسم الملف يتغيّر عندما يتغيّر المحتوى.
+- **وكيل API**: لا تخزّن مؤقتًا على الإطلاق (إن كنت توجّه طلبات API عبر CloudFront).
 
-You add custom behaviors by updating the distribution config. Each behavior has a path pattern and its own cache policy:
+تضيف السلوكات المخصّصة بتحديث إعدادات التوزيع. فلكل سلوك نمط مسار وسياسة تخزين مؤقت خاصة به:
 
 ```json
 {
@@ -126,17 +126,17 @@ You add custom behaviors by updating the distribution config. Each behavior has 
 }
 ```
 
-CloudFront evaluates behaviors in order, from most specific to least specific. The first behavior whose path pattern matches the request wins. The default behavior (`*`) is always evaluated last.
+تقيّم CloudFront السلوكات بالترتيب، من الأكثر تحديدًا إلى الأقل. فأول سلوك يطابق نمط مساره الطلب هو الفائز، ويُقيَّم السلوك الافتراضي (`*`) دائمًا أخيرًا.
 
-For most frontend deployments, you don’t need custom cache behaviors. The combination of the CachingOptimized cache policy and per-file `Cache-Control` headers on your S3 objects gives you enough control. Custom behaviors become useful when you start routing different paths to different origins (e.g., `/api/*` goes to API Gateway while `/*` goes to S3).
+ولمعظم عمليات نشر الواجهة الأمامية، لا تحتاج إلى سلوكات تخزين مؤقت مخصّصة. فمزيج سياسة التخزين المؤقت CachingOptimized مع ترويسات `Cache-Control` لكل ملف على كائنات S3 يمنحك تحكمًا كافيًا. وتصبح السلوكات المخصّصة مفيدة عندما تبدأ في توجيه مسارات مختلفة إلى أصول مختلفة (مثلًا يذهب `/api/*` إلى API Gateway بينما يذهب `/*` إلى S3).
 
-## Cache Invalidations
+## عمليات إبطال ذاكرة التخزين المؤقت
 
-When you deploy new content to S3, the old versions might still be cached at CloudFront edge locations. You have two options for getting the new content to users: **cache invalidation** and **cache busting**.
+عندما تنشر محتوى جديدًا إلى S3، قد تظل النسخ القديمة مخزّنة مؤقتًا في مواقع حافة CloudFront. ولديك خياران لإيصال المحتوى الجديد إلى المستخدمين: **إبطال ذاكرة التخزين المؤقت** و**كسر التخزين المؤقت**.
 
-### Invalidation: Tell CloudFront to Drop Cached Copies
+### الإبطال: اطلب من CloudFront إسقاط النسخ المخزّنة
 
-An invalidation marks cached objects as stale. On the next request for that object at each edge location (after the location receives the invalidation), CloudFront fetches the latest version from the origin. The existing cached copies aren’t physically removed—they’re just flagged as no-longer-valid.
+يعلّم الإبطال الكائنات المخزّنة مؤقتًا بأنها قديمة. وعند الطلب التالي لذلك الكائن في كل موقع حافة (بعد أن يستقبل الموقع الإبطال)، تجلب CloudFront أحدث نسخة من الأصل. ولا تُزال النسخ المخزّنة القائمة فعليًا — بل تُوسم فقط بأنها لم تعد صالحة.
 
 ```bash
 aws cloudfront create-invalidation \
@@ -146,7 +146,7 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-You can also invalidate everything:
+ويمكنك أيضًا إبطال كل شيء:
 
 ```bash
 aws cloudfront create-invalidation \
@@ -156,7 +156,7 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-The response includes an invalidation ID you can use to check status:
+وتتضمن الاستجابة معرّف إبطال يمكنك استخدامه لفحص الحالة:
 
 ```json
 {
@@ -175,17 +175,17 @@ The response includes an invalidation ID you can use to check status:
 }
 ```
 
-Invalidations typically take 5–15 minutes to propagate fully across all edge locations, so don’t be surprised if an immediate post-invalidation request still returns stale content. During that window, *different users are served different versions of your site*—the user in Sydney might get the new bundle while the user in Frankfurt still gets the old one. For hashed assets this is fine (both filenames coexist). For `index.html` it means someone’s browser can load the new HTML that references old `main.abc.js` that’s already been `--delete`d from S3. The short-TTL + hash-the-assets pattern below makes this gap invisible. Skipping it makes the gap loudly visible.
+تستغرق عمليات الإبطال عادةً من 5 إلى 15 دقيقة لتنتشر بالكامل في كل مواقع الحافة، فلا تتفاجأ إن أعاد طلب فوري بعد الإبطال محتوى قديمًا. وفي تلك النافذة *يحصل مستخدمون مختلفون على نسخ مختلفة من موقعك* — فقد يحصل المستخدم في سيدني على الحزمة الجديدة بينما لا يزال المستخدم في فرانكفورت يحصل على القديمة. وبالنسبة للأصول المُجزَّأة هذا مقبول (فالاسمان يتعايشان). أما بالنسبة لـ `index.html`، فهذا يعني أن متصفح أحدهم قد يحمّل HTML الجديد الذي يشير إلى `main.abc.js` قديم سبق حذفه بـ `--delete` من S3. ونمط TTL القصير مع تجزئة الأصول أدناه يجعل هذه الفجوة غير مرئية، وتجاهله يجعلها مرئية بوضوح.
 
-In the console, the **Invalidations** tab lets you create invalidations by entering object paths. The `/*` wildcard invalidates everything in one operation.
+وفي لوحة التحكم، يتيح لك تبويب **Invalidations** إنشاء عمليات إبطال بإدخال مسارات الكائنات. وتُبطل العلامة `/*` كل شيء في عملية واحدة.
 
-The CloudFront Create Invalidation form with /* entered in the object paths field.
+نموذج Create Invalidation في CloudFront مع إدخال /* في حقل مسارات الكائنات.
 
-Once CloudFront finishes propagating the invalidation to all edge locations, the status changes to **Completed**.
+وبمجرد أن تنتهي CloudFront من نشر الإبطال إلى كل مواقع الحافة، تتغيّر الحالة إلى **Completed**.
 
-The CloudFront Invalidations tab showing the invalidation with Completed status.
+تبويب Invalidations في CloudFront وهو يعرض الإبطال بحالة Completed.
 
-### With the SDK
+### باستخدام SDK
 
 ```typescript
 import {
@@ -214,35 +214,35 @@ const status = await cloudfront.send(
 console.log(status.Invalidation?.Status); // 'InProgress' → 'Completed'
 ```
 
-`CallerReference` acts as an idempotency key—submit the same value twice and CloudFront returns the existing invalidation instead of creating a duplicate. Useful if your deploy script retries.
+يعمل `CallerReference` كمفتاح إلغاء تكرار — فإن أرسلت القيمة نفسها مرتين، أعادت CloudFront الإبطال القائم بدلًا من إنشاء نسخة مكررة. وهذا مفيد إن كان سكربت النشر لديك يعيد المحاولة.
 
-### Invalidation Costs
+### تكاليف الإبطال
 
-The first 1,000 invalidation paths per month are free. After that, each path costs $0.005. A `/*` wildcard counts as one path. Individual file paths count as one path each.
+أول 1000 مسار إبطال شهريًا مجانًا. وبعد ذلك يكلّف كل مسار 0.005 دولار. وتُحتسب العلامة `/*` كمسار واحد، كما يُحتسب كل مسار ملف على حدة كمسار واحد.
 
-> **Warning**
+> **تحذير**
 >
-> Invalidating `/*` after every deployment is a common pattern, but it’s a blunt instrument. It clears everything from the cache—including files that didn’t change. If you have a high-traffic site, a full invalidation causes a burst of cache misses across all edge locations. For most frontend projects, this is fine. For sites handling millions of requests per minute, consider targeted invalidations.
+> إبطال `/*` بعد كل عملية نشر نمط شائع، لكنه أداة فظّة. فهو يمسح كل شيء من ذاكرة التخزين المؤقت — بما في ذلك الملفات التي لم تتغيّر. وإن كان لديك موقع عالي الحركة، فإن إبطالًا كاملًا يسبب دفعة من حالات فقدان ذاكرة التخزين المؤقت في كل مواقع الحافة. ولمعظم مشاريع الواجهة الأمامية هذا مقبول، أما المواقع التي تتعامل مع ملايين الطلبات في الدقيقة فينبغي أن تفكّر في إبطالات موجّهة.
 
-### Cache Busting: Change the URL
+### كسر التخزين المؤقت: غيّر عنوان URL
 
-The alternative to invalidation is **cache busting**—changing the filename so CloudFront treats it as a new object. If your build tool generates hashed filenames (e.g., `main.a1b2c3.js` becomes `main.d4e5f6.js` after a change), the new file has a different cache key. CloudFront fetches it fresh from S3, and the old version naturally expires from cache at the end of its TTL.
+البديل عن الإبطال هو **كسر التخزين المؤقت** — أي تغيير اسم الملف حتى تعامله CloudFront ككائن جديد. فإذا كانت أداة البناء لديك تولّد أسماء ملفات مُجزَّأة (مثلًا يصبح `main.a1b2c3.js` هو `main.d4e5f6.js` بعد تغيير)، فإن للملف الجديد مفتاح تخزين مؤقت مختلف. فتجليه CloudFront من S3 طازجًا، وتنتهي صلاحية النسخة القديمة طبيعيًا من ذاكرة التخزين المؤقت بانتهاء مدة TTL.
 
-Modern frontend build tools (Vite, webpack, Next.js) generate hashed filenames by default for JavaScript and CSS bundles. This is why those files can be cached for a year—the hash changes when the content changes. The only file that doesn’t get a hash is `index.html`, because its URL needs to stay stable.
+تولّد أدوات بناء الواجهة الأمامية الحديثة (Vite وwebpack وNext.js) أسماء ملفات مُجزَّأة افتراضيًا لحزم JavaScript وCSS. ولهذا يمكن تخزين تلك الملفات مؤقتًا لمدة سنة — فالتجزئة تتغيّر عندما يتغيّر المحتوى. والملف الوحيد الذي لا يحصل على تجزئة هو `index.html`، لأن عنوان URL الخاص به يجب أن يبقى ثابتًا.
 
-### The Recommended Strategy
+### الاستراتيجية الموصى بها
 
-For most frontend deployments, the best approach is:
+لمعظم عمليات نشر الواجهة الأمامية، أفضل نهج هو:
 
-1. **Hashed filenames** for JS, CSS, and image assets. Cache these aggressively with `Cache-Control: max-age=31536000, immutable`.
-2. **Short TTL or no-cache** for `index.html`. Either set `Cache-Control: max-age=60` on the S3 object, or rely on invalidations.
-3. **Invalidate `/*`** after every deployment. This ensures `index.html` is refreshed immediately, and the hashed assets are fetched fresh if needed (though they would be new URLs anyway).
+1. **أسماء ملفات مُجزَّأة** لملفات JS وCSS وأصول الصور. خزّنها مؤقتًا بقوة باستخدام `Cache-Control: max-age=31536000, immutable`.
+2. **TTL قصير أو بلا تخزين مؤقت** لـ `index.html`. فإما أن تضبط `Cache-Control: max-age=60` على كائن S3، وإما أن تعتمد على الإبطالات.
+3. **أبطل `/*`** بعد كل عملية نشر. وهذا يضمن تحديث `index.html` فورًا، وجلب الأصول المُجزَّأة طازجة عند الحاجة (وإن كانت ستكون عناوين URL جديدة على أي حال).
 
-This is the same strategy Vercel and Netlify use behind the scenes. I’ve used this pattern on every production deployment I’ve ever set up on AWS, and it just works. Immutable assets get long-lived cache entries. The HTML entry point gets refreshed on every deploy.
+هذه هي الاستراتيجية نفسها التي تستخدمها Vercel وNetlify خلف الكواليس. وقد استخدمت هذا النمط في كل عملية نشر إنتاجية أعددتها على AWS، وهو يعمل ببساطة. فالأصول غير القابلة للتغيير تحصل على مدخلات تخزين مؤقت طويلة الأمد، ونقطة دخول HTML تُحدَّث في كل عملية نشر.
 
-## A Deploy Script
+## سكربت للنشر
 
-Here’s a simple deployment script that ties everything together:
+إليك سكربت نشر بسيطًا يربط كل شيء معًا:
 
 ```bash
 set -euo pipefail
@@ -277,8 +277,8 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> The `--delete` flag is load-bearing and dangerous in equal measure. It removes files from S3 that no longer exist in your local build directory—good, because that cleans up stale hashed assets. But if `./build/assets` doesn’t exist (failed build), or is empty (bad build output), `s3 sync --delete` treats every existing asset in the bucket as “no longer local” and deletes it. That’s why the script aborts before the sync if the local directory is missing or empty. Don’t remove the guard.
+> راية `--delete` ضرورية وخطيرة بالقدر نفسه. فهي تزيل من S3 الملفات التي لم تعد موجودة في مجلد البناء المحلي — وهذا جيد، لأنه ينظّف الأصول المُجزَّأة القديمة. لكن إن لم يكن `./build/assets` موجودًا (بناء فاشل)، أو كان فارغًا (ناتج بناء سيّئ)، عامل `s3 sync --delete` كل أصل قائم في الحاوية على أنه «لم يعد محليًا» وحذفه. ولهذا يتوقّف السكربت قبل المزامنة إن كان المجلد المحلي مفقودًا أو فارغًا. لا تُزل هذا الحارس.
 
-Caching is sorted. But there’s another problem: if a user navigates to `/dashboard/settings` in your single-page application, CloudFront asks S3 for a file at that path. S3 doesn’t have a file called `/dashboard/settings`, so it returns a 403 or 404 error. In the next lesson, you’ll configure custom error responses to handle SPA routing—telling CloudFront to serve `index.html` whenever it encounters one of these errors.
+التخزين المؤقت أصبح مضبوطًا. لكن ثمة مشكلة أخرى: إن انتقل مستخدم إلى `/dashboard/settings` في تطبيق صفحتك الواحدة، طلبت CloudFront من S3 ملفًا في ذلك المسار. ولا يوجد في S3 ملف اسمه `/dashboard/settings`، فتُرجع خطأ 403 أو 404. وفي الدرس التالي، ستُعدّ استجابات أخطاء مخصّصة للتعامل مع توجيه SPA — إذ تخبر CloudFront أن يقدّم `index.html` كلما صادف أحد هذه الأخطاء.

@@ -1,16 +1,16 @@
 ---
-title: "Code-Splitting and Lazy Types"
-lang: en
+title: "تقسيم الشيفرة والأنواع الكسولة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/code-splitting-lazy-types"
 ---
 
-Code-splitting is one of those performance optimizations that sounds scary but is surprisingly straightforward once you understand the mechanics. You’re basically telling your bundler (probably Webpack or Vite) to create separate JavaScript chunks that load on-demand rather than cramming everything into one massive bundle. With React’s `lazy` function and TypeScript’s type system, you can split your components while keeping your type safety intact—no compromises required.
+تقسيم الشيفرة (code-splitting) هو واحد من تلك تحسينات الأداء التي تبدو مخيفة، لكنها تكتشف أنّها أبسط مما تظنّ بمجرد أن تفهم آليّتها. فأنت في الأساس تخبر حُزّام ملفاتك (على الأغلب Webpack أو Vite) أن ينشئ مقاطع JavaScript منفصلة تُحمَّل عند الحاجة، بدلًا من حشر كل شيء في حزمة واحدة ضخمة. ومع دالة `lazy` في React ونظام الأنواع في TypeScript، يمكنك تقسيم مكوّناتك مع الحفاظ على سلامة أنواعك—بلا أي مساومة.
 
-The real magic happens when you combine `React.lazy()` with TypeScript’s type inference. Your lazily-loaded components get the same type checking as regular components, prop validation works as expected, and your IDE still gives you autocomplete. It’s like having your cake and eating it too, except the cake loads faster and your users don’t have to wait for chunks they might never need.
+وتبدأ السحر الحقيقي حين تدمج `React.lazy()` مع استنتاج الأنواع في TypeScript. فالمكوّنات المحمّلة كسولًا تحصل على الفحص نفسه الذي تحصل عليه المكوّنات العادية، ويتحقّق التحقّق من الخصائص (props) كما هو متوقّع، ويظلّ محرّكك البرمجي يقدّم لك الإكمال التلقائي. وكأنّك تأكل الكعكة وتحتفظ بها معًا، مع الفارق أنّ الكعكة تُحمَّل أسرع ولا يضطرّ المستخدمون إلى انتظار مقاطع قد لا يحتاجونها أبدًا.
 
-## The Basic Setup
+## الإعداد الأساسي
 
-Let’s start with the fundamentals. `React.lazy()` expects a function that returns a promise resolving to a module with a default export. Here’s the simplest possible example:
+لنبدأ بالأساسيات. تتوقّع `React.lazy()` دالة تُعيد وعدًا (promise) يُحلّ إلى وحدة فيها تصدير افتراضي (default export). إليك أبسط مثال ممكن:
 
 ```typescript
 import React, { Suspense, lazy } from 'react';
@@ -30,7 +30,7 @@ function App() {
 }
 ```
 
-The key requirement here is that `ExpensiveChart` must be a **default export**. This trips up a lot of developers who prefer named exports, but React’s lazy loading mechanism specifically looks for the default export from the imported module.
+المطلب الأساسي هنا هو أن يكون `ExpensiveChart` **تصديرًا افتراضيًا (default export)**. وهذا ما يُوقع كثيرًا من المطوّرين في حيرة، إذ يفضّلون التصدير المسمّى (named export)، لكن آلية التحميل الكسول في React تبحث تحديدًا عن التصدير الافتراضي من الوحدة المستوردة.
 
 ```typescript
 // ✅ Good - default export
@@ -44,9 +44,9 @@ export function ExpensiveChart() {
 }
 ```
 
-## Handling Props with Type Safety
+## التعامل مع الخصائص مع السلامة النمطية
 
-The real question is: how do you pass props to lazy components while maintaining type safety? The good news is that TypeScript’s inference handles this beautifully once you get the export structure right.
+السؤال الحقيقي هو: كيف تمرّر الخصائص إلى المكوّنات الكسولة مع الحفاظ على السلامة النمطية؟ والخبر الجيّد هو أنّ استنتاج TypeScript يتعامل مع هذا على نحو رائع بمجرد أن تضبط بنية التصدير بشكل صحيح.
 
 ```typescript
 // components/UserProfile.tsx
@@ -88,11 +88,11 @@ function App() {
 }
 ```
 
-TypeScript automatically infers the prop types from the component’s default export. You get full IntelliSense, prop validation, and compile-time type checking—exactly what you’d expect from a regular component.
+يستنتج TypeScript تلقائيًا أنواع الخصائص من التصدير الافتراضي للمكوّن. فتحصل على IntelliSense كامل، وعلى التحقّق من الخصائص، وعلى فحص الأنواع وقت التصريف—بالضبط ما تتوقّعه من مكوّن عادي.
 
-## Working with Named Exports
+## العمل مع التصديرات المسمّاة
 
-Sometimes you have a component that’s not the default export, or you need to lazy-load a specific named export. You can handle this by creating a small wrapper module or using dynamic imports creatively:
+أحيانًا يكون لديك مكوّن ليس التصدير الافتراضي، أو إذا احتجت إلى تحميل تصدير مسمّى محدّد كسولًا. يمكنك معالجة ذلك بإنشاء وحدة غلاف صغيرة أو باستخدام الاستيراد الديناميكي بذكاء:
 
 ```typescript
 // Method 1: Re-export as default
@@ -111,11 +111,11 @@ const LazySettings = lazy(async () => {
 });
 ```
 
-Each approach has its merits. Method 1 is clean for simple re-exports, Method 2 gives you a place to add wrapper logic if needed, and Method 3 keeps everything inline (though it’s a bit more verbose).
+لكل نهج مزاياه. النهج الأول نظيف في إعادة التصدير البسيط، والنهج الثاني يوفّر لك موضعًا لإضافة منطق الغلاف عند الحاجة، والنهج الثالث يُبقي كل شيء في مكانه (مع أنه أطول قليلًا).
 
-## Advanced Patterns with Error Boundaries
+## أنماط متقدّمة مع حدود الأخطاء
 
-When components fail to load—network issues, missing chunks, or server problems—you want graceful degradation. Error boundaries combined with `Suspense` give you complete control over the loading experience:
+حين تفشل المكوّنات في التحميل—بسبب مشكلات في الشبكة أو مقاطع مفقودة أو أعطال في الخادم—فأنت تريد تدهورًا رشيقًا (graceful degradation). وجمع حدود الأخطاء مع `Suspense` يمنحك تحكّمًا كاملًا في تجربة التحميل:
 
 ```typescript
 import React, { ErrorBoundary } from 'react-error-boundary';
@@ -149,13 +149,13 @@ function App() {
 }
 ```
 
-> **Tip**
+> **تلميح**
 >
-> Always wrap lazy components in both `Suspense` (for loading states) and `ErrorBoundary` (for failure states). Your users will thank you when their flaky mobile connection acts up.
+> لُفّ المكوّنات الكسولة دائمًا داخل `Suspense` (لحالات التحميل) و`ErrorBoundary` (لحالات الفشل) معًا. وسيشكرلك المستخدمون حين تتعثّر شبكة اتصالاتهم المتنقّلة الهشّة.
 
-## Preloading Strategies
+## استراتيجيات التحميل المسبق
 
-Sometimes you want to load components before they’re actually needed. Maybe you know a user will likely navigate to a certain section, or you want to preload during idle time. React doesn’t provide this out of the box, but you can build it yourself:
+أحيانًا تريد تحميل المكوّنات قبل أن تكون ضرورية فعلًا. ربما تعرف أن مستخدمًا ما سينتقل إلى قسم معيّن على الأرجح، أو تريد التحميل المسبق في وقت الخمول (idle time). لا يوفّر React ذلك جاهزًا، لكن يمكنك بناءه بنفسك:
 
 ```typescript
 // Create a preloadable lazy component
@@ -190,11 +190,11 @@ function App() {
 }
 ```
 
-This pattern gives you fine-grained control over when chunks load, which can significantly improve perceived performance.
+هذا النمط يمنحك تحكّمًا دقيقًا في توقيت تحميل المقاطع، ويمكنه أن يُحسّن الأداء المُدرَك بشكل ملحوظ.
 
-## Route-Based Code Splitting
+## التقسيم على مستوى المسارات
 
-The most common place to implement code splitting is at the route level. Each page becomes its own chunk, loaded only when users navigate there:
+أكثر مكان شائع لتطبيق تقسيم الشيفرة هو مستوى المسارات (routes). فكل صفحة تصبح مقطعها الخاص، يُحمَّل فقط عندما ينتقل المستخدم إليها:
 
 ```typescript
 import React, { Suspense, lazy } from 'react';
@@ -226,11 +226,11 @@ function App() {
 }
 ```
 
-This approach can dramatically reduce your initial bundle size. Users downloading your app only get the code for the home page initially, then additional chunks load as they navigate.
+يمكن لهذا النهج أن يُقلّل حجم حزمتك الأوّلي بشكل لافت. فالمستخدمون الذين ينزّلون تطبيقك لا يحصلون في البداية إلّا على شيفرة الصفحة الرئيسية، ثم تُحمَّل مقاطع إضافية مع تنقّلهم.
 
-## Type Safety with Complex Components
+## السلامة النمطية مع المكوّنات المعقّدة
 
-When you’re working with more complex component hierarchies, TypeScript’s type inference continues to work seamlessly. Generic components, higher-order components, and forwarded refs all play nicely with lazy loading:
+حين تعمل مع تسلسلات هرمية من المكوّنات أكثر تعقيدًا، يواصل استنتاج الأنواع في TypeScript عمله بسلاسة. فالمكوّنات العامة (generics) والمكوّنات الأعلى ترتيبًا (higher-order components) والمراجع المُمرَّرة (forwarded refs) تنسجم جميعها مع التحميل الكسول:
 
 ```typescript
 // Generic lazy component
@@ -281,13 +281,13 @@ function UserList({ users }: { users: User[] }) {
 }
 ```
 
-TypeScript correctly infers that `user` in the `renderItem` callback is of type `User`, giving you full type safety even with lazy-loaded generic components.
+يستنتج TypeScript على نحو صحيح أنّ `user` في دالة `renderItem` من النوع `User`، فتأمن لك سلامة نمطية كاملة حتى مع المكوّنات العامة المحمّلة كسولًا.
 
-## Common Pitfalls and Solutions
+## الأخطاء الشائعة والحلول
 
-### The Missing Default Export Trap
+### فخّ غياب التصدير الافتراضي
 
-This is probably the most common mistake developers make when implementing code splitting:
+هذه على الأرجح الخطأ الأكثر شيوعًا الذي يقع فيه المطوّرون عند تطبيق تقسيم الشيفرة:
 
 ```typescript
 // ❌ This will cause runtime errors
@@ -299,7 +299,7 @@ const LazyComponent = lazy(() => import('./MyComponent'));
 // Error: Element type is invalid - expected string or class/function
 ```
 
-The error message isn’t particularly helpful, but the fix is simple—ensure your component has a default export:
+رسالة الخطأ ليست مفيدة بشكل خاص، لكن الحل بسيط—تأكّد من أنّ مكوّنك لديه تصدير افتراضي:
 
 ```typescript
 // ✅ Fixed version
@@ -310,9 +310,9 @@ function MyComponent() {
 export default MyComponent;
 ```
 
-### `Suspense` Boundary Placement
+### موضع حدود `Suspense`
 
-Another common issue is placing `Suspense` boundaries too high or too low in your component tree:
+مشكلة شائعة أخرى هي وضع حدود `Suspense` في موضع مرتفع جدًّا أو منخفض جدًّا في شجرة المكوّنات لديك:
 
 ```typescript
 // ❌ Too high - entire app shows loading state
@@ -342,11 +342,11 @@ function App() {
 }
 ```
 
-Place `Suspense` boundaries close to where the lazy components are actually used, so other parts of your UI remain interactive during loading.
+ضع حدود `Suspense` قريبة من الموضعين اللذين تُستخدم فيهما المكوّنات الكسولة فعلًا، حتى تبقى بقية أجزاء واجهتك تفاعلية أثناء التحميل.
 
-### Dynamic Import Expressions
+### تعبيرات الاستيراد الديناميكي
 
-Be careful with dynamic import expressions—they need to be static enough for bundlers to understand:
+كن حذرًا مع تعبيرات الاستيراد الديناميكي—فهي تحتاج إلى أن تكون ثابتة بما يكفي ليتمكّن حُزّام الملفات من فهمها:
 
 ```typescript
 // ❌ Too dynamic - bundler can't analyze
@@ -359,31 +359,31 @@ const LazyComponent = lazy(() => import(`./components/${componentName}`));
 const LazyComponent = lazy(() => import('./components/MyComponent'));
 ```
 
-Most bundlers need to be able to statically analyze your import statements to create the appropriate chunks.
+تحتاج معظم حُزّام الملفات إلى القدرة على تحليل عبارات الاستيراد لديك تحليلًا ساكنًا كي تنشئ المقاطع المناسبة.
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Code splitting isn’t always a net positive—there are tradeoffs to consider:
+تقسيم الشيفرة ليس دائمًا مكسبًا صافيًا—هناك مقايضات يجب أخذها في الحسبان:
 
-**Benefits:**
+**الفوائد:**
 
-- Reduced initial bundle size
-- Faster initial page load
-- Only load code users actually need
-- Better caching (unchanged chunks stay cached)
+- تقليل حجم الحزمة الأوّلية
+- تحميل أسرع للصفحة الأولى
+- تحميل الشيفرة التي يحتاجها المستخدمون فعلًا فقط
+- تخزين مؤقت أفضل (تبقى المقاطع غير المتغيّرة مخزّنة)
 
-**Costs:**
+**التكاليف:**
 
-- Additional network requests for chunks
-- Potential loading states and visual jank
-- Complexity in handling loading/error states
-- Bundle splitting overhead
+- طلبات شبكة إضافية للمقاطع
+- حالات تحميل محتملة وتقطّعات بصرية
+- تعقيد في التعامل مع حالات التحميل والأخطاء
+- عبء تقسيم الحزم
 
-The sweet spot is typically at the route level or for genuinely heavy components (large charting libraries, rich text editors, admin panels that most users won’t see). Don’t split every component—focus on the ones that will meaningfully reduce your initial bundle size.
+تكون النقطة المثلى عادةً عند مستوى المسارات أو مع المكوّنات الثقيلة حقًّا (مكتبات الرسوم البيانية الكبيرة، ومحرّرات النصوص الغنية، ولوحات الإدارة التي لن يراها معظم المستخدمين). لا تقسّم كل مكوّن—ركّز على تلك التي ستُقلّل حجم حزمتك الأوّلي بصورة ذات معنى.
 
-## Bundle Analysis and Optimization
+## تحليل الحزم وتحسينها
 
-To make informed decisions about code splitting, you need visibility into your bundle composition. Most bundlers provide analysis tools:
+لاتخاذ قرارات مبنية على المعرفة بشأن تقسيم الشيفرة، تحتاج إلى رؤية واضحة لتكوين حزمتك. وتوفّر معظم حُزّام الملفات أدوات تحليل:
 
 ```bash
 # Webpack Bundle Analyzer
@@ -398,17 +398,17 @@ npm run build
 npm run analyze
 ```
 
-Look for:
+ابحث عن:
 
-- Large dependencies that could be split
-- Duplicate code across chunks
-- Chunks that are too small (splitting overhead > benefit)
-- Critical path components that should load immediately
+- اعتماديات كبيرة يمكن تقسيمها
+- شيفرة مكرّرة عبر المقاطع
+- مقاطع صغيرة جدًّا (عبء التقسيم أكبر من المنفعة)
+- مكوّنات المسار الحرج التي ينبغي أن تُحمَّل فورًا
 
-## Wrapping Up
+## الخلاصة
 
-Code splitting with React.lazy and TypeScript gives you powerful tools for optimizing your application’s loading performance without sacrificing type safety. The key is being strategic about where you split—focus on routes and genuinely heavy components rather than splitting everything.
+تقسيم الشيفرة باستخدام React.lazy وTypeScript يمنحك أدوات قويّة لتحسين أداء التحميل في تطبيقك دون التضحية بالسلامة النمطية. والمفتاح هو أن تكون استراتيجيًّا في تحديد مواضع التقسيم—ركّز على المسارات وعلى المكوّنات الثقيلة حقًّا بدلًا من تقسيم كل شيء.
 
-Start with route-based splitting for immediate wins, then identify heavy components that not all users need. Combine lazy loading with proper error boundaries and loading states for a smooth user experience. And remember: always measure the impact of your optimizations—sometimes the simplest solution is the best one.
+ابدأ بالتقسيم على مستوى المسارات لتحصل على مكاسب فورية، ثم حدّد المكوّنات الثقيلة التي لا يحتاجها كل المستخدمين. واجمع التحميل الكسول مع حدود أخطاء وحالات تحميل سليمة لتحصل على تجربة مستخدم سلسة. وتذكّر: قِس دائمًا أثر تحسيناتك—فأحيانًا يكون أبسط حلّ هو أفضل حلّ.
 
-The combination of `React.lazy()`, `Suspense`, and TypeScript’s type inference creates a powerful foundation for building fast, type-safe applications that scale with your users’ needs. Your initial bundle stays lean, your types stay intact, and your users get a better experience. What’s not to love?
+وتُشكّل مجموعة `React.lazy()` و`Suspense` واستنتاج الأنواع في TypeScript أساسًا قويًّا لبناء تطبيقات سريعة وآمنة نمطيًا تتوسّع مع احتياجات مستخدميك. فتبقى حزمتك الأوّلية نحيلة، وتبقى أنواعك سليمة، ويحصل مستخدموك على تجربة أفضل. فما الذي لا يُعجبك في ذلك؟

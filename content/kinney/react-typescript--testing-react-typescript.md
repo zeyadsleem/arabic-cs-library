@@ -1,38 +1,38 @@
 ---
-title: "Testing React TypeScript"
-lang: en
+title: "اختبار React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/testing-react-typescript"
 ---
 
-Testing React components can feel like a chore when you’re deep in the flow of building features. But when you’re working with TypeScript, testing becomes your safety net—not just for catching bugs, but for ensuring your component APIs work as expected and your types actually match reality. We’ll explore how to set up a robust testing environment with Jest or Vitest, leverage React Testing Library’s type-safe queries, and write tests that catch the kinds of issues TypeScript alone can’t prevent.
+قد يبدو اختبار مكوّنات React عبئًا ثقيلًا حين تكون غارقًا في تدفّق بناء المزايا. لكنّك حين تعمل مع TypeScript، يصبح الاختبار شبكة أمان لك — لا لالتقاط الأخطاء فحسب، بل لضمان أنّ واجهات مكوّناتك تعمل كما هو متوقّع وأنّ أنواعك تطابق الواقع فعلًا. وسنستكشف كيف تهيّئ بيئة اختبار متينة مع Jest أو Vitest، وكيف تستفيد من استعلامات React Testing Library الآمنة من حيث الأنواع، وكيف تكتب اختبارات تلتقط أنواع المشكلات التي لا يستطيع TypeScript وحده منعها.
 
-By the end of this, you’ll have a testing setup that feels natural with TypeScript—complete with proper mocking, user event simulation, and techniques for testing async behavior without losing type safety.
+وفي نهاية هذا الدليل ستملك إعداد اختبار يبدو طبيعيًا مع TypeScript — مع محاكاة سليمة، ومحاكاة أحداث المستخدم، وتقنيات لاختبار السلوك اللاتزامني من دون أن تفقد أمان الأنواع.
 
-## Why Testing Matters More with TypeScript
+## لماذا يهمّ الاختبار أكثر مع TypeScript
 
-TypeScript gives you compile-time guarantees, but there’s a gap between “this compiles” and “this actually works.” Your component might accept the right props, but does it render correctly? Does it handle user interactions properly? Does it behave the same way at runtime as your types suggest?
+يمنحك TypeScript ضمانات وقت التجميع، لكنّ هناك فجوة بين «هذا يُصرَّف» و«هذا يعمل فعلًا». ربّما يقبل مكوّنك الخصائص الصحيحة، لكنّ هل يصيّرها على نحو صحيح؟ وهل يتعامل مع تفاعلات المستخدم معالجةً سليمة؟ وهل يتصرّف وقت التشغيل بالطريقة التي توحي بها أنواعك؟
 
-Here’s what TypeScript can’t catch:
+إليك ما لا يستطيع TypeScript التقاطه:
 
-- **Runtime behavior**: Your component compiles but crashes when a user clicks a button
-- **Integration issues**: Props are typed correctly but the component doesn’t respond to changes
-- **Async timing**: Your useEffect dependencies are typed but create infinite loops
-- **User experience**: The component works but is completely unusable
+- **السلوك وقت التشغيل**: يُصرَّف مكوّنك لكنّه ينهار عندما ينقر المستخدم على زرّ
+- **مشاكل التكامل**: الخصائص مُنمَّطة على نحو صحيح لكنّ المكوّن لا يستجيب للتغيّرات
+- **التوقيت اللاتزامني**: اعتماديات `useEffect` مُنمَّطة لكنّها تسبّب حلقات لا نهائية
+- **تجربة المستخدم**: المكوّن يعمل لكنّه غير قابل للاستخدام البتّة
 
-Testing fills these gaps while working *with* your TypeScript setup, not against it.
+يملأ الاختبار هذه الثغرات وهو يعمل *مع* إعدادك في TypeScript، لا ضدّه.
 
-## Setting Up Your Testing Environment
+## تهيئة بيئة الاختبار
 
-### Option 1: Vitest (Recommended for New Projects)
+### الخيار 1: Vitest (مُستحسن للمشاريع الجديدة)
 
-If you’re starting fresh or can migrate easily, [Vitest](https://vitest.dev/) provides excellent TypeScript support out of the box and plays nicely with Vite-based React setups.
+إذا كنت تبدأ من الصفر أو يمكنك الانتقال بسهولة، فإنّ [Vitest](https://vitest.dev/) يوفّر دعمًا ممتازًا لـ TypeScript من دون أيّ إعداد إضافي، ويتوافق بسلاسة مع إعدادات React المبنية على Vite.
 
 ```bash
 npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event
 npm install -D @vitejs/plugin-react jsdom
 ```
 
-Create a `vitest.config.ts`:
+أنشئ ملف `vitest.config.ts`:
 
 ```typescript
 import { defineConfig } from 'vitest/config';
@@ -48,16 +48,16 @@ export default defineConfig({
 });
 ```
 
-### Option 2: Jest (For Existing Projects)
+### الخيار 2: Jest (للمشاريع القائمة)
 
-For projects already using Jest, you’ll need a bit more configuration to get TypeScript working smoothly.
+بالنسبة إلى المشاريع التي تستخدم Jest أصلًا، ستحتاج إلى القليل من الإعداد الإضافي حتى يعمل TypeScript بسلاسة.
 
 ```bash
 npm install -D jest @types/jest ts-jest @testing-library/react @testing-library/jest-dom @testing-library/user-event
 npm install -D jest-environment-jsdom
 ```
 
-Create a `jest.config.js`:
+أنشئ ملف `jest.config.js`:
 
 ```javascript
 module.exports = {
@@ -74,19 +74,19 @@ module.exports = {
 };
 ```
 
-### Test Setup File
+### ملف تهيئة الاختبار
 
-Both approaches need a setup file (`src/test-setup.ts`) to configure React Testing Library:
+يحتاج كلا النهجين ملف تهيئة (`src/test-setup.ts`) لضبط React Testing Library:
 
 ```typescript
 import '@testing-library/jest-dom';
 ```
 
-This gives you typed matchers like `toBeInTheDocument()` and `toHaveTextContent()`.
+وهذا يوفّر لك مُطابقات مُنمَّطة مثل `toBeInTheDocument()` و`toHaveTextContent()`.
 
-## Writing Your First Type-Safe Test
+## كتابة أول اختبار آمن من حيث الأنواع
 
-Let’s start with a simple component and build up complexity:
+لنبدأ بمكوّن بسيط ونبني التعقيد تدريجيًا:
 
 ```typescript
 // Button.tsx
@@ -116,7 +116,7 @@ export const Button: React.FC<ButtonProps> = ({
 };
 ```
 
-Now let’s test it with full type safety:
+الآن لنختبره بأمان كامل من حيث الأنواع:
 
 ```typescript
 // Button.test.tsx
@@ -158,7 +158,7 @@ describe('Button', () => {
 });
 ```
 
-Notice how TypeScript catches issues at compile time:
+لاحظ كيف يلتقط TypeScript المشكلات وقت التجميع:
 
 ```typescript
 // ❌ TypeScript error: Type 'string' is not assignable to type '() => void'
@@ -172,9 +172,9 @@ render(
 );
 ```
 
-## Type-Safe Queries and Matchers
+## الاستعلامات والمُطابقات الآمنة من حيث الأنواع
 
-React Testing Library provides several query methods, each with different TypeScript implications:
+توفّر React Testing Library عدّة طرق للاستعلام، ولكلٍّ منها انعكاسات مختلفة على TypeScript:
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -198,9 +198,9 @@ const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
 expect(emailInput.type).toBe('email');
 ```
 
-## Testing Props and Component APIs
+## اختبار الخصائص وواجهات مكوّنات البرمجة
 
-TypeScript really shines when testing component contracts:
+يبرز TypeScript حقًّا عند اختبار عقود المكوّنات:
 
 ```typescript
 // UserCard.tsx
@@ -229,7 +229,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onEdit, showEmail = fa
 };
 ```
 
-Testing this component with proper TypeScript safety:
+اختبار هذا المكوّن بأمان TypeScript سليم:
 
 ```typescript
 // UserCard.test.tsx
@@ -274,9 +274,9 @@ describe('UserCard', () => {
 });
 ```
 
-## Testing Hooks with TypeScript
+## اختبار الخُطّافات مع TypeScript
 
-Custom hooks need testing too, and TypeScript helps ensure you’re testing the right contract:
+الخُطّافات المخصّصة تحتاج إلى الاختبار أيضًا، ويساعدك TypeScript على التأكّد من أنّك تختبر العقد الصحيح:
 
 ```typescript
 // useCounter.ts
@@ -300,7 +300,7 @@ export const useCounter = (initialValue = 0): UseCounterReturn => {
 };
 ```
 
-Testing hooks with React Testing Library’s `renderHook`:
+اختبار الخُطّافات باستخدام `renderHook` من React Testing Library:
 
 ```typescript
 // useCounter.test.ts
@@ -350,11 +350,11 @@ describe('useCounter', () => {
 });
 ```
 
-## Type-Safe Mocking
+## المحاكاة الآمنة من حيث الأنواع
 
-Mocking in TypeScript requires extra care to maintain type safety. Here are patterns that work well:
+تتطلّب المحاكاة في TypeScript عنايةً إضافية للحفاظ على أمان الأنواع. وإليك أنماطًا تنجح جيّدًا:
 
-### Mocking External Dependencies
+### محاكاة الاعتماديات الخارجية
 
 ```typescript
 // api.ts
@@ -417,9 +417,9 @@ describe('UserProfile', () => {
 });
 ```
 
-### Creating Mock Factories
+### إنشاء مصانع للبدائل المُحاكاة
 
-For complex objects, create type-safe factories:
+للأ objects المعقّدة، أنشئ مصانع آمنة من حيث الأنواع:
 
 ```typescript
 // test-utils.ts
@@ -443,9 +443,9 @@ const mockUser = createMockUser({ name: 'Alice' });
 const mockResponse = createMockApiResponse(mockUser);
 ```
 
-## Testing Async Components
+## اختبار المكوّنات اللاتزامنية
 
-TypeScript helps catch timing issues and async behavior problems:
+يساعدك TypeScript على التقاط مشكلات التوقيت ومشاكل السلوك اللاتزامني:
 
 ```typescript
 // AsyncUserList.tsx
@@ -534,9 +534,9 @@ describe('AsyncUserList', () => {
 });
 ```
 
-## Common Testing Patterns and Gotchas
+## أنماط الاختبار الشائعة والمزالق
 
-### Avoiding `any` in Tests
+### تجنّب `any` في الاختبارات
 
 ```typescript
 // ❌ Loses type safety
@@ -552,7 +552,7 @@ const mockProps: UserCardProps = {
 const mockProps: Partial<UserCardProps> = { user: mockUser };
 ```
 
-### Testing Error Boundaries
+### اختبار حدود الأخطاء
 
 ```typescript
 // ErrorBoundary test
@@ -576,7 +576,7 @@ it('catches and displays errors', () => {
 });
 ```
 
-### Testing Context Providers
+### اختبار مزوّدي السياق
 
 ```typescript
 // Custom render with context
@@ -595,9 +595,9 @@ it('displays user name from context', () => {
 });
 ```
 
-## Performance Testing Considerations
+## اعتبارات اختبار الأداء
 
-While not strictly about TypeScript, testing performance-sensitive components requires type-aware approaches:
+ولأنّ الأمر ليس متعلّقًا بـ TypeScript تحديدًا، فإنّ اختبار المكوّنات الحسّاسة للأداء يتطلّب مقاربات واعية بالأنواع:
 
 ```typescript
 // MemoizedExpensiveComponent.test.tsx
@@ -623,32 +623,32 @@ describe('MemoizedExpensiveComponent', () => {
 });
 ```
 
-## Next Steps and Best Practices
+## الخطوات التالية وأفضل الممارسات
 
-Here are the key takeaways for maintaining type safety in your React tests:
+إليك أبرز الخلاصات للحفاظ على أمان الأنواع في اختبارات React لديك:
 
-### Do
+### افعل
 
-- Use `vi.mocked()` or `jest.mocked()` for type-safe mocks
-- Create mock factories with `Partial<T>` for flexible test data
-- Test the TypeScript contract, not just the implementation
-- Use specific queries (`getByRole`, `getByLabelText`) over generic ones
-- Test async behavior with `waitFor` and proper error boundaries
+- استعمل `vi.mocked()` أو `jest.mocked()` للبدائل المُحاكاة الآمنة من حيث الأنواع
+- أنشئ مصانع بدائل مُحاكاة بـ `Partial<T>` لبيانات اختبار مرنة
+- اختبر عقد TypeScript، لا التنفيذ فحسب
+- استعمل استعلامات محدّدة (`getByRole` و`getByLabelText`) بدل الاستعلامات العامة
+- اختبر السلوك اللاتزامني مع `waitFor` وحدود أخطاء سليمة
 
-### Don’t
+### لا تفعل
 
-- Resort to `any` types in tests—it defeats the purpose
-- Mock everything—test integration where it makes sense
-- Ignore TypeScript errors in test files
-- Test implementation details that TypeScript already guarantees
+- تلجأ إلى أنواع `any` في الاختبارات — فهي تُفرغ الغرض من العمل
+- تحاكي كل شيء — بل اختبر التكامل حيث يكون ذلك منطقيًا
+- تتجاهل أخطاء TypeScript في ملفات الاختبار
+- تختبر تفاصيل التنفيذ التي يضمنها TypeScript أصلًا
 
-### Advanced Topics to Explore:
+### مواضيع متقدّمة تستحقّ الاستكشاف
 
-- **Visual regression testing**: Tools like Chromatic work great with TypeScript components
-- **E2E testing**: Playwright and Cypress both have excellent TypeScript support
-- **Property-based testing**: Libraries like `fast-check` can generate typed test data
-- **Component testing**: Testing components in isolation with tools like Storybook
+- **الاختبار البصري الارتدادي (visual regression testing)**: أدوات مثل Chromatic تعمل بشكل ممتاز مع مكوّنات TypeScript
+- **اختبار E2E**: كلٌّ من Playwright وCypress يوفّران دعمًا ممتازًا لـ TypeScript
+- **الاختبار القائم على الخصائص (property-based testing)**: مكتبات مثل `fast-check` تستطيع توليد بيانات اختبار مُنمَّطة
+- **اختبار المكوّنات**: اختبار المكوّنات بمعزل عن غيرها بأدوات مثل Storybook
 
-The goal isn’t to test *everything* TypeScript guarantees—it’s to test the gaps where types meet runtime behavior. When you nail this balance, your tests become a powerful complement to TypeScript’s compile-time safety, catching the issues that matter while staying maintainable and fast.
+الهدف ليس اختبار *كلّ* ما يضمنه TypeScript — بل اختبار الفجوات التي تلتقي فيها الأنواع بالسلوك وقت التشغيل. وعندما تُتقن هذا التوازن، تصير اختباراتك مكمّلًا قويًا لأمان TypeScript وقت التجميع، تلتقط المشكلات المهمة وتبقى قابلة للصيانة وسريعة.
 
-Your components work at compile-time AND runtime. Your users will thank you for it.
+مكوّناتك تعمل وقت التجميع ووقت التشغيل. وسيشكرك مستخدموك على ذلك.

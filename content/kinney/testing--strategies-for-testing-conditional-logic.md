@@ -1,16 +1,16 @@
 ---
-title: "Strategies For Testing Conditional Logic"
-lang: en
+title: "استراتيجيات اختبار المنطق الشرطي"
+lang: ar
 source: "https://stevekinney.com/courses/testing/strategies-for-testing-conditional-logic"
 ---
 
-Conditional logic is one of those things that can sneak up on you. You start with something simple: “Just handle this one edge case.” The next thing you know, you’ve got more `if` statements than you do lines of actual code. And when things go wrong—and they *will*—it’s usually because some branch of your conditional logic went rogue.
+المنطق الشرطي من الأمور التي تتسلل إليك دون أن تشعر. تبدأ بشيء بسيط: «تعامل مع هذه الحالة الحدّية الواحدة فقط». وقبل أن تدرك، صار لديك من عبارات `if` أكثر مما لديك من أسطر شيفرة فعلية. وحين تسوء الأمور — وهي *ستسوء* — يكون السبب عادةً أن أحد فروع منطقك الشرطي خرج عن السيطرة.
 
-Testing these conditions can feel like untangling a ball of yarn, but don’t worry. Let’s walk through this step by step and break it down.
+قد يبدو اختبار هذه الشروط كفكّ كرة من الصوف المتشابك، لكن لا تقلق. لنمضِ في هذا خطوة بخطوة ونفكّكه.
 
-## First, Know What You’re Testing
+## أولًا، اعرف ما تختبره
 
-Before we write a single test, we need to know what conditions we’re dealing with. Let’s picture a simple function that calculates a discount based on the number of items a user buys. Something like this:
+قبل أن نكتب اختبارًا واحدًا، علينا أن نعرف ما الشروط التي نتعامل معها. لنتخيّل دالة بسيطة تحسب خصمًا بناءً على عدد العناصر التي يشتريها المستخدم. شيء كهذا:
 
 ```javascript
 const calculateDiscount = (items) => {
@@ -24,29 +24,29 @@ const calculateDiscount = (items) => {
 };
 ```
 
-Seems straightforward, right? Three different conditions, and we need to make sure all of them are covered.
+يبدو مباشرًا، أليس كذلك؟ ثلاثة شروط مختلفة، وعلينا التأكد من تغطيتها جميعًا.
 
-## Step 1: Identify Test Cases
+## الخطوة 1: حدّد حالات الاختبار
 
-This might feel too obvious, but it’s *so* crucial. You gotta test **every branch**. Every condition in your `if` or `switch` (if you’re feeling fancy) needs a test case.
+قد يبدو هذا بديهيًا أكثر من اللازم، لكنه *بالغ* الأهمية. عليك اختبار **كل فرع**. كل شرط في `if` أو `switch` لديك (إن كنت من محبي الفخامة) يحتاج إلى حالة اختبار.
 
-Let’s break this down:
+لنفكّك هذا:
 
-1. **Test items greater than 10**: Make sure we get that sweet, sweet 20% discount when items exceed 10.
-2. **Test items greater than 5 but less than or equal to 10**: Here, we expect that more modest 10% discount.
-3. **Test items 5 or less**: Sorry, pal, no discount for you.
+1. **اختبر العناصر الأكبر من 10**: تأكد من أننا نحصل على خصم 20% الرائع ذاك عندما يتجاوز عدد العناصر 10.
+2. **اختبر العناصر الأكبر من 5 والأصغر من أو تساوي 10**: هنا نتوقع خصم 10% الأكثر تواضعًا.
+3. **اختبر العناصر 5 أو أقل**: عذرًا يا صديقي، لا خصم لك.
 
-## Step 2: Write Tests for Each Condition
+## الخطوة 2: اكتب اختبارات لكل شرط
 
-Let’s write some tests with Vitest to see this magic happen. No need for mocks or stubs this time—just pure conditional logic.
+لنكتب بعض الاختبارات باستخدام Vitest لنرى هذا السحر يحدث. لا حاجة إلى بدائل مُحاكاة أو بدائل هذه المرة — فقط منطق شرطي خالص.
 
-First things first, let’s get Vitest rolling. If you haven’t already, sprinkle a bit of this command into your project:
+أولًا وقبل كل شيء، لنشغّل Vitest. إن لم تكن قد فعلت ذلك بعد، رشّ قليلًا من هذا الأمر في مشروعك:
 
 ```bash
 npm install vitest --save-dev
 ```
 
-We’re good to go. Now let’s make sure we’re covering every branch of our function.
+نحن جاهزون. الآن لنتأكد من أننا نغطي كل فرع من دالتنا.
 
 ```javascript
 import { describe, it, expect } from 'vitest';
@@ -70,17 +70,17 @@ describe('calculateDiscount - conditional logic tests', () => {
 });
 ```
 
-Boom. **Three tests.** All paths covered. Not only is our logic thoroughly tested, but now we have pigeonholed ourselves into knowing when something goes wrong.
+بوم. **ثلاثة اختبارات.** كل المسارات مغطاة. لم يُختبر منطقنا اختبارًا شاملًا فحسب، بل صرنا الآن نعرف تحديدًا أين ننظر عندما يسوء شيء.
 
-## Step 3: Think About Edge Cases
+## الخطوة 3: فكّر في الحالات الحدّية
 
-We *all* know nothing breaks production like an edge case. So, let’s think about situations that aren’t as straightforward—like those pesky boundaries.
+كلنا *جميعًا* نعلم أنه لا شيء يخرّب بيئة الإنتاج مثل حالة حدّية. لذا لنفكّر في مواقف ليست بهذه المباشرة — مثل تلك الحدود المزعجة.
 
-1. What happens on the *exact* boundary (i.e., 5, 10)?
-2. What happens if `items` is `0`?
-3. What about negative numbers? Should that even be possible?
+1. ماذا يحدث عند الحد *بالضبط* (أي 5 و10)؟
+2. ماذا يحدث إذا كانت `items` تساوي `0`؟
+3. وماذا عن الأعداد السالبة؟ هل ينبغي أن يكون ذلك ممكنًا أصلًا؟
 
-If you really want to sleep at night, let’s cover those too:
+إن كنت تريد أن تنام مرتاحًا حقًا، فلنغطِّ تلك أيضًا:
 
 ```javascript
 it('should return 0 discount for exactly 5 items', () => {
@@ -104,13 +104,13 @@ it('should return 0 discount for negative number of items', () => {
 });
 ```
 
-If there’s one thing we’ve learned in this industry, it’s that users will find creative ways to break everything **literally every time**, so we might as well prepare for it.
+إن كان هناك درس واحد تعلمناه في هذه الصناعة، فهو أن المستخدمين سيجدون طرقًا مبتكرة لكسر كل شيء **حرفيًا في كل مرة**، فلنستعد لذلك بينما نحن فيه.
 
-## Step 4: Refactor with Confidence
+## الخطوة 4: أعد الهيكلة بثقة
 
-Here’s the best part—you can now mess with your logic confidently. Want to tweak the discount thresholds later on? Go ahead! Your tests have got your back. They provide that magical safety net that ensures you’re not unknowingly changing behavior left and right.
+وهنا الجزء الأفضل — يمكنك الآن العبث بمنطقك بثقة. تريد تعديل حدود الخصم لاحقًا؟ تفضّل! اختباراتك تسند ظهرك. إنها توفر تلك الشبكة الأمان السحرية التي تضمن أنك لا تغيّر السلوك يمينًا ويسارًا دون أن تدري.
 
-Maybe later you decide, “Hey, let’s give a 15% discount for exactly 10 items.” You can change:
+ربما تقرر لاحقًا: «لنمنح خصم 15% عند 10 عناصر بالضبط». يمكنك تغيير:
 
 ```javascript
 if (items > 10) {
@@ -121,16 +121,16 @@ if (items > 10) {
 }
 ```
 
-Then, re-run your tests:
+ثم أعد تشغيل اختباراتك:
 
 ```bash
 npx vitest run
 ```
 
-If anything was broken in your refactor—guess what? The tests will scream at you. And you’ll know *exactly* where to look.
+إن انكسر شيء في إعادة الهيكلة — احزر ماذا؟ ستصرخ في وجهك الاختبارات. وستعرف *بالضبط* أين تنظر.
 
-## Conclusion: Embrace Branch Testing
+## الخلاصة: احتضن اختبار الفروع
 
-Testing conditional logic is less about making sure things pass and more about making sure you’re covering all the angles. Every condition, every branch, every edge case—it’s all in play. Getting to 100% coverage isn’t just a vanity metric here; it’s a necessity. Without it, you’re walking a tightrope without a net.
+اختبار المنطق الشرطي أقل اهتمامًا بالتأكد من أن الأمور تنجح، وأكثر اهتمامًا بالتأكد من أنك تغطي كل الزوايا. كل شرط، وكل فرع، وكل حالة حدّية — كلها في اللعبة. الوصول إلى تغطية 100% ليس مجرد مقياس مظهري هنا؛ بل ضرورة. بدونه، أنت تمشي على حبل مشدود بلا شبكة.
 
-So, next time you’re sprinkling in conditionals like a chef seasoning a dish, make sure you’re seasoning your tests accordingly. Because nothing ruins a refactor faster than a missed `else` clause.
+لذا في المرة القادمة التي ترشّ فيها الشروط كما يرشّ الطاهي البهارات في طبق، تأكد من أنك تتبّل اختباراتك بالقدر المناسب. لأن لا شيء يخرّب إعادة الهيكلة أسرع من جملة `else` منسيّة.

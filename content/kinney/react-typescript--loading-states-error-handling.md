@@ -1,16 +1,16 @@
 ---
-title: "Loading States and Error Handling"
-lang: en
+title: "حالات التحميل ومعالجة الأخطاء"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/loading-states-error-handling"
 ---
 
-Half of building a great user experience is handling the unhappy paths gracefully. When you’re fetching todos from an API, users need to know when things are loading, when they succeed, and most importantly, when they fail and what they can do about it. TypeScript’s discriminated unions let us model these states in a way that makes bugs literally impossible to write.
+نصف العمل في بناء تجربة مستخدم رائعة هو التعامل مع المسارات غير الموفّقة برشاقة. حين تجلب المهام (todos) من واجهة برمجية (API)، يحتاج المستخدمون إلى معرفة وقت تحميل البيانات، ووقت نجاحها، والأهم من ذلك: وقت فشلها وما الذي يمكنهم فعله حيال ذلك. تتيح لنا الاتحادات المُميَّزة (discriminated unions) في TypeScript نمذجة هذه الحالات بطريقة تجعل كتابة الأخطاء مستحيلةً حرفيًا.
 
-In this tutorial, we’ll explore patterns for representing async states that eliminate entire categories of bugs, provide better user experiences, and make your code more maintainable.
+في هذا الدليل سنستكشف أنماطًا لتمثيل الحالات غير المتزامنة تُزيل فئات كاملة من الأخطاء، وتوفّر تجربة مستخدم أفضل، وتجعل شيفرتك أكثر قابلية للصيانة.
 
-## The Problem with Boolean Flags
+## المشكلة مع الأعلام المنطقية
 
-Let’s start with what NOT to do. This is how many developers first approach async state:
+لنبدأ بما لا ينبغي فعله. هذه هي الطريقة التي يقترب بها كثير من المطوّرين من الحالة غير المتزامنة في البداية:
 
 ```typescript
 // ❌ The problematic boolean approach
@@ -39,11 +39,11 @@ function BadTodoList() {
 }
 ```
 
-The problem? You can represent impossible states, and eventually, you will.
+المشكلة؟ إنك تستطيع تمثيل حالات مستحيلة، وفي النهاية ستقوم بذلك.
 
-## Discriminated Unions: Making Impossible States Impossible
+## الاتحادات المُميَّزة: جعل الحالات المستحيلة مستحيلة
 
-Here’s a better way using TypeScript’s discriminated unions:
+إليك طريقة أفضل باستخدام الاتحادات المُميَّزة في TypeScript:
 
 ```typescript
 interface Todo {
@@ -119,11 +119,11 @@ function GoodTodoList() {
 }
 ```
 
-Now it’s impossible to be loading AND have an error. TypeScript won’t let you access `data` unless the status is ‘success’. Beautiful!
+الآن أصبح من المستحيل أن تكون الحالة في تحميل وفي الوقت نفسه هناك خطأ. لن يسمح لك TypeScript بالوصول إلى `data` ما لم تكن الحالة `success`. رائع!
 
-## Generic Async State Type
+## نوع عام للحالة غير المتزامنة
 
-Let’s make this pattern reusable:
+لنجعل هذا النمط قابلًا لإعادة الاستخدام:
 
 ```typescript
 // Generic type for any async operation
@@ -207,9 +207,9 @@ function TodoListWithHook() {
 }
 ```
 
-## Enhanced Error Handling with Error Types
+## معالجة الأخطاء المحسّنة بأنواع الأخطاء
 
-Different errors need different handling:
+الأخطاء المختلفة تحتاج معالجة مختلفة:
 
 ```typescript
 // Classify different error types
@@ -367,9 +367,9 @@ function TodoListWithEnhancedErrors() {
 }
 ```
 
-## Optimistic Updates with Rollback
+## التحديثات المتفائلة مع التراجع
 
-Handle optimistic updates that might fail:
+تعامل مع التحديثات المتفائلة التي قد تفشل:
 
 ```typescript
 type OptimisticState<T> =
@@ -479,9 +479,9 @@ function TodoListWithOptimisticUpdates() {
 }
 ```
 
-## Skeleton Loading States
+## حالات التحميل الهيكلية
 
-Provide better perceived performance with skeleton screens:
+وفّر أداءً إدراكيًا أفضل باستخدام شاشات الهيكل (skeleton):
 
 ```typescript
 function TodoSkeleton() {
@@ -582,9 +582,9 @@ function TodoListWithSkeleton() {
 }
 ```
 
-## Error Boundaries for Unexpected Errors
+## حدود الأخطاء للأخطاء غير المتوقعة
 
-Catch errors that occur during rendering:
+التقط الأخطاء التي تحدث أثناء التصيير (render):
 
 ```typescript
 import { Component, ErrorInfo, ReactNode } from 'react';
@@ -658,9 +658,9 @@ function App() {
 }
 ```
 
-## Combining Multiple Async States
+## دمج عدة حالات غير متزامنة
 
-When you have multiple async operations:
+حين تكون لديك عدة عمليات غير متزامنة:
 
 ```typescript
 type MultiAsyncState<T, U> = {
@@ -758,9 +758,9 @@ function DashboardWithMultipleStates() {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### 1. Always Use Discriminated Unions for Async State
+### 1. استخدم دائمًا الاتحادات المُميَّزة للحالة غير المتزامنة
 
 ```typescript
 // ✅ Good: Impossible states are impossible
@@ -775,7 +775,7 @@ interface State {
 }
 ```
 
-### 2. Provide User-Friendly Error Messages
+### 2. قدّم رسائل أخطاء مفهومة للمستخدم
 
 ```typescript
 // ✅ Good: Helpful error message with action
@@ -789,7 +789,7 @@ interface State {
 <div>Error: NetworkError: Failed to fetch</div>
 ```
 
-### 3. Handle All State Transitions
+### 3. تعامل مع جميع انتقالات الحالة
 
 ```typescript
 // ✅ Good: Clear state flow
@@ -802,7 +802,7 @@ loading -> loading (what happened?)
 success -> error (without loading?)
 ```
 
-### 4. Consider Stale Data
+### 4. خذ بعين الاعتبار البيانات القديمة (stale data)
 
 ```typescript
 type DataState<T> =
@@ -811,17 +811,17 @@ type DataState<T> =
   | { status: 'error'; error: Error; lastValidData?: T };
 ```
 
-## Summary
+## الخلاصة
 
-Proper loading states and error handling are crucial for production React applications. Key takeaways:
+حالات التحميل ومعالجة الأخطاء السليمة أمران حاسمان لتطبيقات React الإنتاجية. أهم ما تأخذه معك:
 
-1. **Use discriminated unions** - Make impossible states unrepresentable
-2. **Classify errors** - Different errors need different handling
-3. **Provide feedback** - Users should always know what’s happening
-4. **Enable recovery** - Always provide a way to retry or recover
-5. **Consider optimistic updates** - But always handle rollback
-6. **Use error boundaries** - Catch unexpected rendering errors
+1. **استخدم الاتحادات المُميَّزة** — اجعل الحالات المستحيلة غير قابلة للتمثيل
+2. **صنّف الأخطاء** — الأخطاء المختلفة تحتاج معالجة مختلفة
+3. **قدّم تغذية راجعة** — يجب أن يعرف المستخدمون دائمًا ما يحدث
+4. **وفّر وسيلة للتعافي** — اعرض دائمًا طريقة لإعادة المحاولة أو للتعافي
+5. **فكّر في التحديثات المتفائلة** — لكن عالج التراجع دائمًا
+6. **استخدم حدود الأخطاء** — التقط أخطاء التصيير غير المتوقعة
 
-## What’s Next?
+## ما التالي؟
 
-Now that we can handle loading and errors properly, let’s start implementing CRUD operations. The next tutorial covers creating todos with POST requests.
+الآن وقد استطعنا التعامل مع التحميل والأخطاء على النحو الصحيح، لنبدأ بتنفيذ عمليات CRUD. يغطي الدليل التالي إنشاء المهام عبر طلبات POST.

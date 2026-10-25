@@ -1,10 +1,10 @@
 ---
-title: "Adding Button Sizes"
-lang: en
+title: "إضافة أحجام الأزرار"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/adding-button-sizes-exercise"
 ---
 
-Buttons can come in all shapes and sizes, the buttons in our design system come in four sizes—`extra-small`, `small`, `medium`, and `large` —with `medium` being the default size. Here is some CSS to get us started. This is included in `button.module.css`.
+يمكن أن تأتي الأزرار بكل الأشكال والأحجام؛ والأزرار في نظام التصميم لدينا تأتي بأربعة أحجام—`extra-small`، و`small`، و`medium`، و`large` —حيث `medium` هو الحجم الافتراضي. وإليك بعض CSS لنبدأ به. وهو مُضمَّن في `button.module.css`.
 
 ```css
 .small {
@@ -23,4 +23,4 @@ Buttons can come in all shapes and sizes, the buttons in our design system come 
 }
 ```
 
-When you’re ready, we can walk through [a solution](https://stevekinney.com/courses/storybook/adding-button-sizes-solution).
+عندما تكون مستعدًا، يمكننا أن نمضي معًا في [حل](https://stevekinney.com/courses/storybook/adding-button-sizes-solution).

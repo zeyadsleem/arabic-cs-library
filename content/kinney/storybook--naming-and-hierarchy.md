@@ -1,14 +1,14 @@
 ---
-title: "Organizing Stories and Documentation"
-lang: en
+title: "تنظيم القصص والتوثيق"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/naming-and-hierarchy"
 ---
 
-If you look at our sidebar, it’s *already* getting a little unorganized. Luckily, it’s pretty easy to bring some level of organization to our components. Storybook uses the way that our components are named to form some story of hierarchy.
+إن نظرت إلى شريطنا الجانبي، فهو *بالفعل* صار غير منظّم قليلًا. ولحسن الحظ، من السهل جدًا إدخال قدر من التنظيم على مكوّناتنا. وتستخدم Storybook طريقة تسمية مكوّناتنا لتكوين نوع من التسلسل الهرمي.
 
-For example, if you name a component `Components/Button`, it will place our `Button` story under the `Components` section. Let’s go ahead and try the following.
+فمثلًا، إن سمّيت مكوّنًا `Components/Button`، فسيضع قصة `Button` لديك تحت قسم `Components`. هيا نجرّب ما يلي.
 
-In `src/colors.mdx`:
+في `src/colors.mdx`:
 
 ```diff
 @@ -2,7 +2,7 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
@@ -21,7 +21,7 @@ In `src/colors.mdx`:
  ## Brand Colors
 ```
 
-In `src/components/button/button.stories.tsx`:
+في `src/components/button/button.stories.tsx`:
 
 ```diff
 @@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
@@ -35,7 +35,7 @@ In `src/components/button/button.stories.tsx`:
      children: 'Button',
 ```
 
-In `src/icons.mdx`:
+في `src/icons.mdx`:
 
 ```diff
 @@ -1,7 +1,7 @@
@@ -48,8 +48,8 @@ In `src/icons.mdx`:
  <Title>Icons</Title>
 ```
 
-## The Result
+## النتيجة
 
-We should now live in a much more orderly world.
+ينبغي أن نعيش الآن في عالم أكثر نظامًا بكثير.
 
-Storybook components ordered nicely
+مكوّنات Storybook مرتّبة بشكل جميل

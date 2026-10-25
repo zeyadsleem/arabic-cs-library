@@ -1,10 +1,10 @@
 ---
-title: "Forcing Dark Mode"
-lang: en
+title: "فرض الوضع الداكن"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/forcing-dark-mode"
 ---
 
-Just like I don’t want to set arguments by default, sometimes, I want to force a story into dark mode. That’s easily done with a Storybook feature called **parameters**.
+مثلما لا أريد تعيين الوسائط افتراضيًا، أريد أحيانًا فرض قصة في الوضع الداكن. ويُفعل ذلك بسهولة بميزة في Storybook تُسمّى **المعاملات (parameters)**.
 
 ```typescript
 export const Dark: Story = {
@@ -16,7 +16,7 @@ export const Dark: Story = {
 };
 ```
 
-As long as we’re on the topic, you can also force a viewport:
+وطالما نحن في الموضوع، يمكنك أيضًا فرض إطار عرض (viewport):
 
 ```typescript
 export const Mobile: Story = {

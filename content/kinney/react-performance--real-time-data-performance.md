@@ -1,16 +1,16 @@
 ---
-title: "Real-Time Data Performance in React"
-lang: en
+title: "أداء البيانات الزمنية الحقيقية في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/real-time-data-performance"
 ---
 
-Real-time data is React’s kryptonite. Stock prices updating 100 times per second, chat messages flooding in, live collaboration with dozens of users—each update triggers a re-render, and suddenly your smooth React app becomes a stuttering mess. The challenge isn’t the network; modern WebSockets can handle thousands of messages per second. The challenge is React’s reconciliation process choking on the frequency of updates.
+البيانات الزمنية الحقيقية هي نقطة ضعف React القاتلة. أسعار أسهم تتحدّث 100 مرة في الثانية، ورسائل دردشة تتدفّق، وتعاون حيّ مع عشرات المستخدمين — كل تحديث يُطلق إعادة تصيير، وفجأة يتحوّل تطبيق React السلس لديك إلى فوضى متقطّعة. والتحدي ليس في الشبكة؛ فـ WebSockets الحديثة قادرة على التعامل مع آلاف الرسائل في الثانية. التحدي في عملية المطابقة (reconciliation) في React التي تختنق بوتيرة التحديثات.
 
-But real-time doesn’t have to mean real-slow. With the right patterns—throttling, batching, virtualization, and selective updates—you can handle massive data streams while maintaining 60fps. The key is understanding where the bottlenecks are (hint: it’s not always where you think) and implementing the right optimizations at each layer of your stack. This guide shows you how to build React applications that handle real-time data like a pro.
+لكن الزمن الحقيقي لا يعني البطء الحقيقي بالضرورة. فبالأنماط الصحيحة — تقييد المعدّل (throttling)، والتجميع (batching)، والمحاكاة الافتراضية (virtualization)، والتحديثات الانتقائية — تستطيع التعامل مع تدفقات بيانات هائلة مع الحفاظ على 60 إطارًا في الثانية. والمفتاح هو فهم مواضع الاختناقات (تلميح: ليست دائمًا حيث تظن) وتنفيذ التحسينات الصحيحة في كل طبقة من طبقات منظومتك. يعرض عليك هذا الدليل كيف تبني تطبيقات React تتعامل مع البيانات الزمنية الحقيقية باحتراف.
 
-## Understanding Real-Time Performance Challenges
+## فهم تحديات الأداء في الزمن الحقيقي
 
-Real-time data creates unique performance problems:
+تخلق البيانات الزمنية الحقيقية مشكلات أداء فريدة من نوعها:
 
 ```typescript
 // Real-time data performance characteristics
@@ -53,9 +53,9 @@ const updateFrequencyImpact = {
 };
 ```
 
-## WebSocket Connection Management
+## إدارة اتصالات WebSocket
 
-Efficient WebSocket setup with reconnection and backpressure:
+إعداد فعّال لـ WebSocket مع إعادة الاتصال والضغط العكسي (backpressure):
 
 ```typescript
 // Advanced WebSocket manager
@@ -270,9 +270,9 @@ export function useWebSocket(url: string) {
 }
 ```
 
-## Throttling and Batching Updates
+## تقييد التحديثات وتجميعها
 
-Control update frequency to maintain performance:
+تحكّم في وتيرة التحديثات للحفاظ على الأداء:
 
 ```typescript
 // Advanced throttling and batching
@@ -423,9 +423,9 @@ export function useThrottledState<T>(
 }
 ```
 
-## Virtualization for Large Data Sets
+## المحاكاة الافتراضية لمجموعات البيانات الكبيرة
 
-Handle large real-time lists efficiently:
+تعامل مع القوائم الزمنية الحقيقية الكبيرة بكفاءة:
 
 ```typescript
 // Virtual list for real-time data
@@ -511,9 +511,9 @@ function RealTimeVirtualList<T>({
 }
 ```
 
-## Selective Component Updates
+## تحديثات المكوّنات الانتقائية
 
-Update only what’s changed:
+حدّث ما تغيّر فقط:
 
 ```typescript
 // Selective update system
@@ -603,9 +603,9 @@ function RealTimeCell({ path }: { path: string }) {
 }
 ```
 
-## Server-Sent Events (SSE)
+## أحداث الخادم المرسلة (SSE)
 
-Alternative to WebSockets for one-way streaming:
+بديل عن WebSockets للبثّ أحادي الاتجاه:
 
 ```typescript
 // SSE manager for real-time updates
@@ -745,9 +745,9 @@ export function useSSE(url: string) {
 }
 ```
 
-## Web Worker Processing
+## المعالجة بواسطة Web Worker
 
-Process real-time data off the main thread:
+عالج البيانات الزمنية الحقيقية خارج الخيط الرئيسي:
 
 ```typescript
 // worker/realtime-processor.ts
@@ -857,9 +857,9 @@ export function useRealTimeWorker() {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track real-time performance metrics:
+تتبّع مقاييس الأداء في الزمن الحقيقي:
 
 ```typescript
 // Real-time performance monitor
@@ -967,7 +967,7 @@ function RealTimeMonitor() {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface RealTimeBestPractices {

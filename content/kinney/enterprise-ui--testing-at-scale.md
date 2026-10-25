@@ -1,40 +1,40 @@
 ---
-title: "Testing Strategy for Large Applications"
-lang: en
+title: "استراتيجية الاختبار للتطبيقات الكبيرة"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/testing-at-scale"
 ---
 
-When you have one application and one team, your testing strategy is whatever the team agrees on during a standup. Unit tests for business logic. A few integration tests for the happy path. Maybe some Playwright runs before a release if someone remembers. It works.
+عندما يكون لديك تطبيق واحد وفريق واحد، فإن استراتيجية الاختبار هي ما يتفق عليه الفريق في اجتماعه اليومي. اختبارات وحدة لمنطق العمل. وبضعة اختبارات تكامل للمسار السعيد. وربما بعض تشغيلات Playwright قبل الإصدار إن تذكّر أحد. هذا ينجح.
 
-But, the moment you have a monorepo with 50 packages, three teams shipping independently, and a user journey that touches five separately-owned modules—testing stops being a localized task and becomes an architectural concern. The question isn’t “should we write tests?” The question is *what kind* of tests, *where* in the pipeline, and *who owns* the suite when it starts failing at 2 AM on a Tuesday.
+لكن بمجرد أن يصبح لديك مستودع أحادي فيه 50 حزمة، وثلاثة فرق تُصدر منتجاتها باستقلال، ورحلة مستخدم تلامس وحدات بعيدة يملكها ثلاثة فرق — يتوقف الاختبار عن كونه مهمة موضعية ويصبح شأنًا معماريًا. والسؤال ليس «هل نكتب اختبارات؟» بل ما *نوع* الاختبارات، و*أين* في خط الأنابيب، و*من يملك* مجموعة الاختبارات عندما تبدأ بالفشل في الثانية صباحًا من يوم ثلاثاء.
 
-This piece covers the strategic layer. We already have deep coverage of [Mock Service Worker](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) for network mocking and [API Contract Testing](https://stevekinney.com/courses/enterprise-ui/api-contract-testing) for interface stability. Here, we’re talking about how those tools fit into a broader testing architecture—and the enterprise-specific patterns that don’t show up in tutorials built around todo apps.
+تتناول هذه المقالة الطبقة الاستراتيجية. لدينا بالفعل تغطية معمّقة لـ[Mock Service Worker](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) لمحاكاة الشبكة و[اختبار عقود الواجهات البرمجية (API Contract Testing)](https://stevekinney.com/courses/enterprise-ui/api-contract-testing) لاستقرار الواجهات. وهنا نتحدث عن كيف تندرج هذه الأدوات في معمارية اختبار أوسع — وعن الأنماط الخاصة بالمؤسسات التي لا تظهر في الدروس المبنية حول تطبيقات قوائم المهام.
 
-## Choosing a Test Shape
+## اختيار شكل الاختبار
 
-The first strategic decision is *where to allocate effort*. Three models dominate the conversation, and they disagree on the answer.
+القرار الاستراتيجي الأول هو *أين توزّع الجهد*. ثلاثة نماذج تهيمن على النقاش، وهي تختلف على الجواب.
 
-### The test pyramid
+### هرم الاختبارات
 
-Mike Cohn’s [test pyramid](https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid) is the oldest and most widely taught model. A broad base of unit tests. A narrower middle of integration tests. A thin peak of end-to-end tests. The philosophy is that low-level tests are fast, cheap, and precise—so you should have a lot of them. High-level tests are slow, expensive, and brittle—so you should have few.
+[هرم الاختبارات](https://www.mountaingoatsoftware.com/blog/the-forgotten-layer-of-the-test-automation-pyramid) لمايك كوهن هو أقدم النماذج وأكثرها تدريسًا. قاعدة عريضة من اختبارات الوحدة. ووسط أضيق من اختبارات التكامل. وقمة رفيعة من اختبارات الطرف إلى الطرف. والفلسفة أن الاختبارات منخفضة المستوى سريعة ورخيصة ودقيقة — فينبغي أن يكون لديك منها الكثير. أما الاختبارات عالية المستوى فبطيئة ومكلفة وهشّة — فينبغي أن يكون لديك منها القليل.
 
-In a logic-heavy backend or a monolith with complex business rules, the pyramid is still a reasonable default. Unit tests on pure functions and state transitions give you fast feedback with minimal infrastructure.
+في خلفية غنية بالمنطق، أو في تطبيق أحادي بقواعد عمل معقّدة، يظل الهرم خيارًا افتراضيًا معقولًا. فاختبارات الوحدة على الدوال النقية وانتقالات الحالة تمنحك تغذية راجعة سريعة بأقل بنية تحتية.
 
-### The testing trophy
+### كأس الاختبارات
 
-Guillermo Rauch captured the counterargument in one sentence: “Write tests. Not too many. Mostly integration.” Kent C. Dodds formalized this as the [testing trophy](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications), which adds a static analysis layer at the bottom and shifts the center of gravity from unit tests to integration tests.
+لخّص Guillermo Rauch الحجة المضادة في جملة واحدة: «اكتب اختبارات. ليس الكثير منها. ومعظمها تكامل.» وصاغ Kent C. Dodds ذلك في [كأس الاختبارات](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications)، الذي يضيف طبقة تحليل ساكن في القاعدة وينقل مركز الثقل من اختبارات الوحدة إلى اختبارات التكامل.
 
-The core insight is that in modern component-based frontends, the interesting bugs aren’t in isolated functions—they’re in *how things compose*. A `useAuth` hook might work perfectly in isolation and fail completely when wrapped in a router context and a theme provider. Integration tests that exercise components as a user would experience them catch those composition bugs. Testing Library’s guiding principle—“the more your tests resemble the way your software is used, the more confidence they can give you”—is the operational expression of this philosophy.
+والرؤية الجوهرية أن الأخطاء المثيرة في الواجهات الحديثة القائمة على المكوّنات لا تقع في دوال معزولة — بل في *كيفية تركيب الأشياء*. فقد يعمل خُطّاف `useAuth` بشكل مثالي بمعزل عن غيره، ثم يفشل تمامًا عند تغليفه بسياق موجّه ومزوّد سمات. واختبارات التكامل التي تمرّن المكوّنات كما يخوضها المستخدم هي التي تلتقط أخطاء التركيب هذه. والمبدأ الموجِّه لمكتبة Testing Library — «بقدر ما تشبه اختباراتك طريقة استخدام برنامجك، بقدر ما تمنحك من ثقة» — هو التعبير العملي عن هذه الفلسفة.
 
-For most single-page applications with component-driven architectures, the trophy is the better default. It trades some unit test speed for meaningfully higher confidence at the integration layer.
+ولمعظم تطبيقات الصفحة الواحدة ذات المعماريات المدفوعة بالمكوّنات، يكون الكأس هو الافتراضي الأفضل. فهو يقايض شيئًا من سرعة اختبارات الوحدة بثقة أعلى بدرجة معتبرة في طبقة التكامل.
 
-### The testing honeycomb
+### قرص عسل الاختبارات
 
-[Spotify’s testing honeycomb](https://engineering.atspotify.com/2018/01/testing-of-microservices/) (sometimes called the testing diamond) takes a different angle entirely. In a microservice or microfrontend architecture, the individual service *is* the unit. The interesting complexity isn’t inside any one service—it’s at the boundaries where services communicate. The honeycomb minimizes effort on internal implementation details and maximizes effort on integration points and contract verification.
+يتخذ [قرص عسل الاختبارات عند Spotify](https://engineering.atspotify.com/2018/01/testing-of-microservices/) (ويُسمى أحيانًا ماسة الاختبارات) زاوية مختلفة تمامًا. ففي معمارية الخدمات المصغّرة أو الواجهات المصغّرة، تكون الخدمة الفردية *هي* الوحدة. والتعقيد المثير ليس داخل أي خدمة واحدة — بل عند الحدود التي تتواصل عبرها الخدمات. ويقلّل قرص العسل الجهد المبذول على تفاصيل التنفيذ الداخلية ويزيده إلى أقصى حد على نقاط التكامل والتحقق من العقود.
 
-If you’re running a [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) setup with independently deployed remotes, the honeycomb’s emphasis on boundary testing aligns well with reality. You don’t need 300 unit tests proving that a remote’s internal state machine works. You need contract tests proving that the remote still honors the shell’s expectations.
+وإن كنت تدير إعدادًا من [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) بوحدات بعيدة تُنشر بشكل مستقل، فإن تشديد قرص العسل على اختبار الحدود يتوافق جيدًا مع الواقع. فأنت لا تحتاج إلى 300 اختبار وحدة تثبت أن آلة الحالة الداخلية لوحدة بعيدة تعمل. بل تحتاج إلى اختبارات عقود تثبت أن الوحدة البعيدة ما زالت تحترم توقعات القشرة.
 
-### Which shape fits?
+### أي شكل يناسب حالتك؟
 
 ```
 flowchart TB
@@ -72,27 +72,27 @@ flowchart TB
   style h3 fill:#f87171,color:#000
 ```
 
-The ✦ marks each model’s center of gravity—the layer where it concentrates the most testing effort.
+تُعلّم علامة ✦ مركز ثقل كل نموذج — الطبقة التي يركّز فيها أكبر جهد اختباري.
 
-| Model | Center of gravity | Best fit |
+| النموذج | مركز الثقل | الأنسب لـ |
 | --- | --- | --- |
-| Pyramid | Unit tests | Logic-heavy backends, pure-function-heavy codebases |
-| Trophy | Integration tests | Component-based SPAs, modern frontend applications |
-| Honeycomb | Service integration | Microfrontends, microservices, distributed systems |
+| الهرم | اختبارات الوحدة | الخلفيات الغنية بالمنطق، وقواعد الشيفرة المثقلة بالدوال النقية |
+| الكأس | اختبارات التكامل | تطبيقات الصفحة الواحدة القائمة على المكوّنات، والواجهات الحديثة |
+| قرص العسل | تكامل الخدمات | الواجهات المصغّرة، والخدمات المصغّرة، والأنظمة الموزّعة |
 
-The honest answer is that most large applications need *elements of all three*. Pure business logic still deserves unit tests. Component composition deserves integration tests. Cross-service boundaries deserve contract tests. The shape tells you where to put the *most* effort, not the *only* effort.
+والجواب الصادق أن معظم التطبيقات الكبيرة تحتاج *عناصر من الثلاثة جميعًا*. فمنطق العمل النقي ما زال يستحق اختبارات وحدة. وتركيب المكوّنات يستحق اختبارات تكامل. وحدود الخدمات المتبادلة تستحق اختبارات عقود. والشكل يخبرك أين تضع *أكبر* جهد، لا الجهد *الوحيد*.
 
-> **The inverted pyramid anti-pattern**
+> **النمط المضاد للهرم المقلوب**
 >
-> One shape to actively avoid: the **inverted pyramid** (sometimes called the “ice cream cone”). This is what you get when the majority of testing effort goes into manual testing and slow E2E suites, with minimal unit or integration coverage underneath. It’s expensive, slow, and the first thing to collapse under pressure. If your team’s test suite takes 45 minutes and most of it is Selenium, you’re living in the inverted pyramid whether you intended to or not.
+> هناك شكل واحد يجب تجنّبه بنشاط: **الهرم المقلوب** (ويُسمى أحيانًا «مخروط الآيس كريم»). وهو ما تحصل عليه عندما يذهب معظم جهد الاختبار إلى الاختبار اليدوي ومجموعات E2E البطيئة، مع تغطية ضئيلة من اختبارات الوحدة أو التكامل في القاعدة. إنه مكلف وبطيء، وأول ما ينهار تحت الضغط. وإن كانت مجموعة اختبارات فريقك تستغرق 45 دقيقة ومعظمها Selenium، فأنت تعيش في الهرم المقلوب شئت أم أبيت.
 
-## Unit Tests in Enterprise Frontends
+## اختبارات الوحدة في واجهات المؤسسات
 
-Unit tests in a large frontend aren’t about testing `add(2, 3)`. They’re about verifying the business logic that lives in hooks, reducers, state machines, and utility functions.
+اختبارات الوحدة في واجهة كبيرة لا تتعلق باختبار `add(2, 3)`. بل بالتحقق من منطق العمل الذي يعيش في الخُطّافات والمخفّضات (reducers) وآلات الحالة ودوال الأدوات المساعدة.
 
-### State management as the high-value target
+### إدارة الحالة بوصفها الهدف عالي القيمة
 
-Reducers, store actions, and state machine transitions are the highest-confidence targets for unit tests because they’re pure functions. Given state A and event B, the result is always state C. No DOM, no rendering, no async—just data transformations.
+المخفّضات وإجراءات المخزن وانتقالات آلات الحالة هي أعلى الأهداف ثقةً لاختبارات الوحدة لأنها دوال نقية. فبالنظر إلى الحالة A والحدث B، تكون النتيجة دائمًا الحالة C. لا DOM، ولا تصيير، ولا عمل غير متزامن — مجرد تحويلات على البيانات.
 
 ```typescript
 import { describe, it, expect } from 'vitest';
@@ -126,19 +126,19 @@ describe('cartReducer', () => {
 });
 ```
 
-This is the kind of logic that deserves exhaustive unit testing. State transitions in a checkout flow, permission calculations in an RBAC system, price computations in a billing module—these are deterministic, critical, and cheap to test. Teams that achieve high coverage on state transitions tend to ship fewer “the total was wrong” incidents.
+هذا هو نوع المنطق الذي يستحق اختبار وحدة مستقصيًا. فانتقالات الحالة في تدفّق الدفع، وحسابات الأذونات في نظام التحكم بالوصول المبني على الأدوار، وحسابات الأسعار في وحدة الفوترة — كلها حتمية وحرجة ورخيصة الاختبار. والفرق التي تحقق تغطية عالية لانتقالات الحالة تميل إلى إنتاج حوادث أقل من نوع «المجموع كان خاطئًا».
 
-### The mocking question
+### مسألة المحاكاة
 
-The mocking strategy you choose has a direct effect on how long your test suite stays useful. There’s a spectrum, and each position on it trades something.
+استراتيجية المحاكاة التي تختارها تؤثر تأثيرًا مباشرًا في المدة التي تظل فيها مجموعة اختباراتك مفيدة. فهناك طيف، وكل موضع عليه يقايض شيئًا.
 
-**Module-level mocking** (`jest.mock`, `vi.mock`) replaces an entire module with a fake. It’s fast and easy and also the most likely to produce stale mocks—tests that pass because the mock no longer matches reality, not because the code works. If you mock a module and then the module’s API changes, nothing breaks in the test. That’s the failure mode.
+**المحاكاة على مستوى الوحدة** (`jest.mock`، `vi.mock`) تستبدل وحدة كاملة ببديل مزيف. وهي سريعة وسهلة، وهي أيضًا الأكثر عرضة لإنتاج بدائل مُحاكاة قديمة — اختبارات تنجح لأن البديل لم يعد يطابق الواقع، لا لأن الشيفرة تعمل. فإن حاكيت وحدة ثم تغيّرت واجهتها البرمجية، لم ينكسر شيء في الاختبار. وذلك هو نمط الفشل.
 
-**Dependency injection** passes dependencies as arguments, making swaps explicit and type-safe. The tradeoff is architectural overhead—your code needs to accept its dependencies rather than importing them directly. For services and utilities, this is often the right call. For React components, it can feel like over-engineering.
+**حقن الاعتماد** يمرّر الاعتمادات كوسائط، فيجعل التبديل صريحًا وآمن من حيث الأنواع. والمقايضة هي عبء معماري — إذ تحتاج شيفرتك إلى قبول اعتماداتها بدل استيرادها مباشرة. وهو في الخدمات والأدوات غالبًا القرار الصحيح، أما في مكوّنات React فقد يبدو مبالغة في الهندسة.
 
-**Network-level interception** via [Mock Service Worker](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) sits between your application and the network. The application code runs exactly as it does in production. MSW intercepts at the Service Worker layer in the browser and at the `http` module level in Node.js. This is the right default for anything that makes API calls, because the mock is realistic, the application code is untouched, and the same handler set works across unit tests, integration tests, Storybook, and local development.
+**الاعتراض على مستوى الشبكة** عبر [Mock Service Worker](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) يقف بين تطبيقك والشبكة. فشيفرة التطبيق تعمل تمامًا كما تعمل في الإنتاج. ويعترض MSW على مستوى عامل الخدمة في المتصفح وعلى مستوى وحدة `http` في Node.js. وهذا هو الافتراضي الصحيح لأي شيء يجري نداءات إلى الواجهات البرمجية، لأن البديل المُحاكى واقعي، وشيفرة التطبيق لم تُمسّ، والمجموعة نفسها من المعالجات تعمل في اختبارات الوحدة، واختبارات التكامل، وStorybook، والتطوير المحلي.
 
-The difference is where the interception happens:
+والفرق هو أين يحدث الاعتراض:
 
 ```
 flowchart LR
@@ -156,17 +156,17 @@ flowchart LR
   style MSW fill:#4ade80,color:#000
 ```
 
-The further right you intercept, the more production-like the test—but the more infrastructure you need. MSW sits at the network boundary, which means the application’s entire code path runs exactly as it does in production.
+وكلما اتجهت في الاعتراض إلى اليمين، صار الاختبار أشبه بالإنتاج — لكنك تحتاج إلى بنية تحتية أكثر. ويقف MSW عند حدود الشبكة، ما يعني أن مسار الشيفرة كاملًا في التطبيق يعمل تمامًا كما يعمل في الإنتاج.
 
-The pattern I’ve seen work best in large codebases: use MSW for all API mocking, use dependency injection for complex service-level logic, and reach for `vi.mock` only for true leaf-node dependencies like date libraries or random number generators where the alternative is worse.
+والنمط الذي رأيته ينجح أفضل ما يكون في قواعد الشيفرة الكبيرة: استخدم MSW لكل محاكاة الواجهات البرمجية، واستخدم حقن الاعتماد لمنطق الخدمات المعقّد، ولا تلجأ إلى `vi.mock` إلا لاعتمادات الأوراق الطرفية الحقيقية مثل مكتبات التواريخ أو مولّدات الأرقام العشوائية حيث يكون البديل أسوأ.
 
-## Integration Tests as the Confidence Layer
+## اختبارات التكامل كطبقة الثقة
 
-Integration tests verify that components, hooks, and state modules compose correctly. In a large application, this is where most of the high-value bugs hide—not in individual units, but in the seams between them.
+تتحقق اختبارات التكامل من أن المكوّنات والخُطّافات ووحدات الحالة تتركّب بشكل صحيح. وفي تطبيق كبير، هنا تختبئ معظم الأخطاء عالية القيمة — لا في الوحدات الفردية، بل في المفاصل بينها.
 
-[Testing Library](https://testing-library.com/docs/guiding-principles) codifies the right philosophy: interact with the DOM the way a user would. Query by role, label, and text—not by CSS class or test ID. Fire real events. Assert on visible outcomes. If you’re reaching into component internals to check state values, you’re testing the implementation, not the behavior. That distinction is the difference between tests that survive refactoring and tests that break every time someone renames a variable.
+و[مكتبة Testing Library](https://testing-library.com/docs/guiding-principles) تُقنّن الفلسفة الصحيحة: تفاعل مع DOM كما يتفاعل المستخدم. استعلم بالدور والتسمية والنص — لا بصنف CSS أو بمعرّف اختبار. وأطلق أحداثًا حقيقية. وتحقّق من النواتج المرئية. وإن كنت تمدّ يدك إلى داخل المكوّن لتفحص قيم الحالة، فأنت تختبر التنفيذ لا السلوك. وهذا الفرق هو الفرق بين اختبارات تنجو من إعادة الهيكلة واختبارات تنكسر كلما أعاد أحد تسمية متغيّر.
 
-The practical rule for enterprise integration tests: test *features*, not *components*. A “search and filter” integration test exercises the input field, the debounce hook, the API call (intercepted by MSW), the state update, and the results rendering—all in one flow. That’s the composition you actually need to verify.
+والقاعدة العملية لاختبارات التكامل في المؤسسات: اختبر *الميزات* لا *المكوّنات*. فاختبار تكامل لـ«البحث والتصفية» يمرّن حقل الإدخال، وخُطّاف تأخير الإدخال، ونداء الواجهة البرمجية (الذي يعترضه MSW)، وتحديث الحالة، وتصيير النتائج — كل ذلك في تدفّق واحد. وذلك هو التركيب الذي تحتاج فعلًا إلى التحقق منه.
 
 ```typescript
 import { render, screen, waitFor } from '@testing-library/react';
@@ -186,21 +186,21 @@ it('filters users by search term', async () => {
 });
 ```
 
-No mocking of component internals. No inspection of hook state. Just “type a name, see the right results.” That test will survive a refactor from Redux to Zustand, a migration from Axios to `fetch`, and a complete rewrite of the debounce logic—because it tests the contract, not the machinery.
+بلا محاكاة لدواخل المكوّن. وبلا فحص لحالة الخُطّاف. فقط «اكتب اسمًا، وسترى النتائج الصحيحة». هذا الاختبار سينجو من إعادة هيكلة من Redux إلى Zustand، ومن ترحيل من Axios إلى `fetch`، ومن إعادة كتابة كاملة لمنطق تأخير الإدخال — لأنه يختبر العقد لا الآلة.
 
-## End-to-End Testing at Scale
+## اختبار الطرف إلى الطرف على نطاق واسع
 
-E2E tests run the full application in a real browser. They’re the most expensive tests you can write—slowest to run, most infrastructure to maintain, most prone to flakiness—and also the only tests that verify the entire stack assembled. The goal isn’t to cover everything. It’s to cover the **critical user journeys** that, if broken, would cause real business damage.
+تُشغّل اختبارات E2E التطبيق كاملًا في متصفح حقيقي. وهي أكثر الاختبارات كلفةً مما يمكنك كتابته — أبطؤها تشغيلًا، وأكثرها بنية تحتية للصيانة، وأشدّها عرضة للتذبذب — وهي أيضًا الاختبارات الوحيدة التي تتحقق من المنظومة كاملة مُركَّبة. والهدف ليس تغطية كل شيء، بل تغطية **رحلات المستخدم الحرجة** التي لو تعطّلت لأحدثت ضررًا تجاريًا حقيقيًا.
 
-### Playwright versus Cypress
+### Playwright مقابل Cypress
 
-The two dominant E2E frameworks represent fundamentally different architectural decisions.
+يمثّل إطارا E2E المهيمنان قرارين معماريين مختلفين جذريًا.
 
-**Cypress** runs inside the browser’s execution loop. Tests and the application share the same JavaScript runtime. This produces excellent debugging ergonomics—you can observe application state directly, and Cypress’s automatic waiting is intuitive. The limitation is the browser’s security sandbox. Multi-tab testing, cross-origin navigation, and anything that requires controlling browser behavior from *outside* the tab are architecturally constrained.
+**Cypress** يعمل داخل حلقة تنفيذ المتصفح. فالاختبارات والتطبيق يتشاركان بيئة تشغيل JavaScript نفسها. وهذا ينتج تجربة تصحيح أخطاء ممتازة — إذ يمكنك ملاحظة حالة التطبيق مباشرة، والانتظار التلقائي في Cypress بديهي. أما القيد فهو الصندوق الأمني للمتصفح. فاختبار تبويبات متعددة، والتنقل عبر أصول مختلفة، وأي شيء يتطلب التحكم بسلوك المتصفح من *خارج* التبويب — كلها مقيّدة معماريًا.
 
-**Playwright** communicates with browsers via the [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) over WebSocket. It runs out-of-process, which means it can manage multiple browser contexts, tabs, and domains natively. It supports Chromium, Firefox, and WebKit (Safari) from a single API. It has first-class parallel execution with worker-based sharding. And it doesn’t require a paid cloud service for CI parallelism.
+أما **Playwright** فيتواصل مع المتصفحات عبر [بروتوكول Chrome DevTools](https://chromedevtools.github.io/devtools-protocol/) فوق WebSocket. وهو يعمل خارج العملية، ما يعني أنه يستطيع إدارة سياقات تبويبات ونطاقات متعددة أصلًا بشكل أصلي. ويدعم Chromium وFirefox وWebKit (Safari) من واجهة واحدة. وله تنفيذ متوازٍ من الدرجة الأولى مع تقسيم قائم على العمال. ولا يتطلب خدمة سحابية مدفوعة للتوازي في CI.
 
-The architectural difference looks like this:
+والفرق المعماري يبدو هكذا:
 
 ```
 flowchart TB
@@ -223,13 +223,13 @@ flowchart TB
   style playwright fill:#1e293b,color:#f1f5f9
 ```
 
-Cypress shares a runtime with the application—great for observability, limiting for multi-context scenarios. Playwright controls browsers from outside, which means it can manage multiple contexts, tabs, and even different browser engines simultaneously.
+يتشارك Cypress بيئة التشغيل مع التطبيق — وهذا رائع للملاحظة، ومحدود في السيناريوهات متعددة السياقات. أما Playwright فيتحكم بالمتصفحات من الخارج، ما يعني أنه يستطيع إدارة سياقات وتبويبات متعددة، وحتى محرّكات متصفح مختلفة، في الوقت نفسه.
 
-For enterprise-scale testing—where you need cross-browser coverage, parallel execution across dozens of CI nodes, and multi-domain user journeys—Playwright’s architecture scales better. Cypress’s in-browser model is great for developer experience on smaller suites, but you’ll outgrow it once your E2E suite exceeds a few dozen tests and needs to run in under ten minutes.
+ولاختبار على نطاق المؤسسات — حيث تحتاج إلى تغطية عبر متصفحات متعددة، وتنفيذ متوازٍ على عشرات عُقد CI، ورحلات مستخدم عبر نطاقات متعددة — تتوسّع معمارية Playwright على نحو أفضل. فنموذج Cypress داخل المتصفح رائع لتجربة المطوّر في المجموعات الأصغر، لكنك ستتجاوزه بمجرد أن تتخطى مجموعة E2E بضعة عشرات من الاختبارات وتحتاج إلى التشغيل في أقل من عشر دقائق.
 
-### Structuring E2E for maintainability
+### هيكلة اختبارات E2E لقابلية الصيانة
 
-A large E2E suite rots fast without structural patterns. The **Page Object Model** abstracts page-level interactions into classes, so test logic is separated from DOM selectors. But in component-based architectures, the **Component Object Model** is often a better fit—it treats reusable UI fragments (navigation bars, data tables, modals) as composable objects that can be used across multiple page-level tests.
+تتحلّل مجموعة E2E الكبيرة سريعًا بلا أنماط هيكلية. فـ**نموذج كائن الصفحة** (Page Object Model) يجرد تفاعلات مستوى الصفحة في أصناف، فينفصل منطق الاختبار عن محدِّدات DOM. لكن في المعماريات القائمة على المكوّنات يكون **نموذج كائن المكوّن** (Component Object Model) غالبًا أنسب — فهو يعامل شذرات واجهة المستخدم القابلة لإعادة الاستخدام (أشرطة التنقل، وجداول البيانات، والنوافذ المنبثقة) كائنات قابلة للتركيب يمكن استخدامها في عدة اختبارات على مستوى الصفحة.
 
 ```typescript
 // Component object for a shared data table
@@ -264,28 +264,28 @@ test('users table sorts by name', async ({ page }) => {
 });
 ```
 
-When the data table’s HTML structure changes, you update one class. Every test that uses it keeps working. That’s the difference between a maintainable E2E suite and a pile of duplicated selectors that someone abandons after the third refactor.
+عندما يتغير بنية HTML لجدول البيانات، تحدّث صنفًا واحدًا. وكل اختبار يستخدمه يظل يعمل. وهذا هو الفرق بين مجموعة E2E قابلة للصيانة وكومة من المحدِّدات المكررة يهجرها صاحبها بعد إعادة الهيكلة الثالثة.
 
-### Flakiness is a strategic problem
+### التذبذب مشكلة استراتيجية
 
-A test with 99% reliability sounds fine. A suite of 200 tests at 99% reliability each will produce at least one false failure in 87% of runs. At enterprise scale, flakiness isn’t an annoyance—it’s the thing that makes teams stop trusting the test suite and start merging without green CI.
+اختبار بموثوقية 99% يبدو جيدًا. لكن مجموعة من 200 اختبار بموثوقية 99% لكل منها ستنتج فشلًا زائفًا واحدًا على الأقل في 87% من التشغيلات. وعلى نطاق المؤسسات، ليس التذبذب مجرد إزعاج — بل هو ما يجعل الفرق تكفّ عن الثقة بمجموعة الاختبارات وتبدأ بالدمج دون CI أخضر.
 
-The defenses:
+والدفاعات:
 
-- **Deterministic selectors.** Use `getByRole`, `getByLabel`, or `data-testid` attributes. Never rely on CSS classes, tag indices, or XPath expressions that break when someone reorders a `div`.
-- **Test isolation.** Each test gets a fresh browser context, fresh session state, and unique test data. No shared database state between tests. No “test B depends on what test A created.”
-- **Retry budgets.** Allow retries for transient infrastructure failures (network timeouts, browser startup race conditions), but *log every retry*. If a test needs retries to pass reliably, it has a bug—the retry is a bandage, not a fix. Track retry rates and investigate tests that retry frequently.
-- **Parallel sharding.** Split the suite across multiple CI workers to keep total execution time under ten minutes. Playwright’s `--shard` flag handles this natively.
+- **محدِّدات حتمية.** استخدم `getByRole` أو `getByLabel` أو خصائص `data-testid`. لا تعتمد أبدًا على أصناف CSS أو فهارس الوسوم أو تعبيرات XPath التي تنكسر عندما يعيد أحد ترتيب `div`.
+- **عزل الاختبارات.** يحصل كل اختبار على سياق متصفح جديد، وحالة جلسة جديدة، وبيانات اختبار فريدة. لا حالة قاعدة بيانات مشتركة بين الاختبارات. ولا «الاختبار B يعتمد على ما أنشأه الاختبار A».
+- **ميزانيات إعادة المحاولة.** اسمح بإعادة المحاولات لأعطال البنية التحتية العابرة (مهل الشبكة، وحالات التسابق في تشغيل المتصفح)، لكن *سجّل كل إعادة محاولة*. فإن احتاج اختبار إلى إعادة المحاولات ليعمل بموثوقية، ففيه خطأ — وإعادة المحاولة ضمادة لا علاج. تتبّع معدلات إعادة المحاولة وحقّق في الاختبارات التي تعيد المحاولة كثيرًا.
+- **التقسيم المتوازي.** وزّع المجموعة على عدة عمال CI لتبقى مدة التنفيذ الكلية تحت عشر دقائق. وتتولى راية `--shard` في Playwright ذلك بشكل أصلي.
 
-## Visual Regression Testing
+## اختبار الانحدار البصري
 
-Functional tests tell you the button works. Visual regression tests tell you the button doesn’t look like it survived a CSS earthquake.
+تخبرك الاختبارات الوظيفية أن الزر يعمل. وتخبرك اختبارات الانحدار البصري أن الزر لا يبدو وكأنه نجا من زلزال CSS.
 
-Visual regression testing captures screenshots of UI states and compares them pixel-by-pixel against approved baselines. It catches layout shifts, broken alignment, color regressions, and z-index problems that functional tests completely miss—because functional tests don’t look at the screen.
+يلتقط اختبار الانحدار البصري لقطات لحالات واجهة المستخدم ويقارنها بكسلًا بكسل مقابل خطوط أساس معتمدة. وهو يلتقط انزياحات التخطيط، والاصطفاف المكسور، وانحدارات الألوان، ومشكلات ترتيب الطبقات التي تفوّتها الاختبارات الوظيفية تمامًا — لأن الاختبارات الوظيفية لا تنظر إلى الشاشة.
 
-**Chromatic** is the standard tool for Storybook-driven workflows. It captures every story as a visual snapshot and diffs against the previous baseline. When a visual change is detected, it surfaces in the pull request for review. Intentional changes get approved. Unintentional changes block merge. The key advantage over raw screenshot diffing is that Chromatic’s algorithms handle anti-aliasing differences and subpixel rendering noise, so you don’t drown in false positives.
+و**Chromatic** هو الأداة المعيارية لتدفّقات العمل المدفوعة بـStorybook. فهو يلتقط كل قصة كلقطة بصرية ويقارنها بالخط الأساس السابق. وعند اكتشاف تغيّر بصري، يظهر في طلب السحب للمراجعة. فتُعتمد التغيرات المقصودة، وتحجب التغيرات غير المقصودة الدمج. والميزة الأساسية على مقارنة اللقطات الخام أن خوارزميات Chromatic تتعامل مع فروق التنعيم الضدّي وضجيج التصيير التحت-بكسلي، فلا تغرق في الإيجابيات الزائفة.
 
-For page-level visual testing in E2E flows, Playwright has built-in [screenshot comparison](https://playwright.dev/docs/test-snapshots):
+ولاختبار بصري على مستوى الصفحة في تدفّقات E2E، يضم Playwright [مقارنة اللقطات](https://playwright.dev/docs/test-snapshots) مدمجة:
 
 ```typescript
 test('dashboard renders correctly', async ({ page }) => {
@@ -298,31 +298,31 @@ test('dashboard renders correctly', async ({ page }) => {
 });
 ```
 
-The workflow integration matters as much as the tool. Visual diffs should appear in pull requests, not in a separate tool that nobody checks. Designers and engineers should both be able to review and approve changes. And the baseline update process should be explicit—accidentally updating baselines when they shouldn’t be updated is how visual regressions get permanently baked into the codebase.
+والاندماج في سير العمل مهم بقدر أهمية الأداة نفسها. فينبغي أن تظهر الفروق البصرية في طلبات السحب، لا في أداة منفصلة لا يفتحها أحد. وينبغي أن يستطيع المصمّمون والمهندسون معًا مراجعة التغيرات واعتمادها. وينبغي أن تكون عملية تحديث الخط الأساس صريحة — فتحديث خطوط الأساس بالخطأ في غير موضعها هو الطريقة التي تُخبز بها الانحدارات البصرية في قاعدة الشيفرة خبزًا دائمًا.
 
-## Enterprise-Specific Testing Patterns
+## أنماط اختبار خاصة بالمؤسسات
 
-Large applications have testing requirements that most tutorials don’t cover, because most tutorials aren’t built for software that handles real money, real compliance, or real access control.
+للتطبيقات الكبيرة متطلبات اختبار لا تغطيها معظم الدروس، لأن معظم الدروس ليست مبنية لبرمجيات تتعامل مع أموال حقيقية، أو التزامات تنظيمية حقيقية، أو تحكم حقيقي بالوصول.
 
-### RBAC and permission testing
+### التحكم بالوصول المبني على الأدوار واختبار الأذونات
 
-If your application has role-based access control, you need to test the permission boundaries—not just the happy path. A **permission matrix** maps roles to allowed actions:
+إن كان تطبيقك يتضمن تحكمًا بالوصول مبنيًا على الأدوار، فأنت تحتاج إلى اختبار حدود الأذونات — لا المسار السعيد فقط. و**مصفوفة الأذونات** تربط الأدوار بالإجراءات المسموح بها:
 
-| Role | Create | Read | Update | Delete |
+| الدور | الإنشاء | القراءة | التحديث | الحذف |
 | --- | --- | --- | --- | --- |
-| Admin | Yes | Yes | Yes | Yes |
-| Editor | Yes | Yes | Yes | No |
-| Viewer | No | Yes | No | No |
+| مدير | نعم | نعم | نعم | نعم |
+| محرّر | نعم | نعم | نعم | لا |
+| مشاهد | لا | نعم | لا | لا |
 
-The important tests aren’t the “admin can do everything” tests. Those are easy and rarely fail. The important tests are the **negative scenarios**: does the Viewer role *actually* see a disabled delete button? Does the API call return a 403, not a 500? If a Viewer somehow navigates to `/admin/users/delete/42`, does the route guard redirect them, or does it render a broken page?
+والاختبارات المهمة ليست اختبارات «المدير يستطيع فعل كل شيء». فتلك سهلة ونادرًا ما تفشل. الاختبارات المهمة هي **السيناريوهات السلبية**: هل يرى دور المشاهد *فعلًا* زر حذف معطّلًا؟ وهل يعيد نداء الواجهة البرمجية رمز 403 لا 500؟ وإن وصل مشاهد بطريقة ما إلى `/admin/users/delete/42`، فهل يعيده حارس المسار، أم يصيّر صفحة مكسورة؟
 
-Automate RBAC tests across all primary roles for critical features. Run them on every release. The bugs that slip through permission boundaries tend to be the ones that end up in security incident reports.
+أتمِت اختبارات التحكم بالوصول عبر كل الأدوار الأساسية للميزات الحرجة. وشغّلها في كل إصدار. فالأخطاء التي تتسلل عبر حدود الأذونات هي غالبًا التي تنتهي في تقارير الحوادث الأمنية.
 
-### Multi-tenant isolation
+### عزل المستأجرين المتعددين
 
-For SaaS platforms, multi-tenancy testing verifies that Tenant A cannot access Tenant B’s data. This sounds obvious, and it is, until someone writes a query that forgets to include the `tenant_id` filter.
+بالنسبة لمنصات SaaS، يتحقق اختبار تعدد المستأجرين من أن المستأجر A لا يستطيع الوصول إلى بيانات المستأجر B. وهذا يبدو بديهيًا، وهو كذلك، حتى يكتب أحدهم استعلامًا ينسى تضمين مرشّح `tenant_id`.
 
-The testing pattern is to create test scenarios with two tenants and verify strict data isolation:
+والنمط الاختباري هو إنشاء سيناريوهات اختبار بمستأجرين اثنين والتحقق من العزل الصارم للبيانات:
 
 ```typescript
 test('tenant A cannot access tenant B resources', async ({ request }) => {
@@ -335,19 +335,19 @@ test('tenant A cannot access tenant B resources', async ({ request }) => {
 });
 ```
 
-These tests belong in your integration suite, not just in E2E. By the time a tenant isolation failure reaches E2E, the damage is architectural.
+وتنتمي هذه الاختبارات إلى مجموعة التكامل، لا إلى E2E فقط. فبحلول الوقت الذي يصل فيه عطل عزل المستأجرين إلى E2E، يكون الضرر معماريًا.
 
-### Internationalization
+### التدويل
 
-i18n testing goes beyond “did the translation string load.” Enterprise i18n has three failure modes that functional tests won’t catch:
+يتجاوز اختبار التدويل سؤال «هل حُمّلت نص الترجمة». فللتدويل في المؤسسات ثلاثة أنماط فشل لا تلتقطها الاختبارات الوظيفية:
 
-- **Expansion testing**: German and Finnish strings can be 30–40% longer than English. A button that says “Submit” in English says “Einreichen” in German, and if the container has a fixed width, the text overflows or wraps in ugly ways. Visual regression tests with locale-switched snapshots catch this.
-- **Right-to-left mirroring**: Arabic and Hebrew trigger RTL layout. Navigation flips. Icons mirror. Text alignment reverses. A component that looks perfect in English can be completely broken in Arabic if the CSS doesn’t handle `direction: rtl` correctly.
-- **Locale-specific formatting**: Dates, currencies, and numbers render differently. `$1,234.56` in the US is `1.234,56 €` in Germany. If your formatting logic uses hardcoded separators instead of `Intl.NumberFormat`, it’s wrong in half the world.
+- **اختبار التمدد**: قد يكون النص الألماني والفنلندي أطول بنسبة 30–40% من الإنجليزي. فالزر الذي يقول «Submit» بالإنجليزية يقول «Einreichen» بالألمانية، وإن كان الحاوي بعرض ثابت فسيطفح النص أو يلتفّ بقبح. وتلتقط اختبارات الانحدار البصري بلقطات مبدَّلة اللغة هذا العيب.
+- **الانعكاس من اليمين إلى اليسار**: تُفعّل العربية والعبرية تخطيط RTL. فينقلب التنقل، وتنعكس الأيقونات، وينعكس اصطفاف النص. وقد يكون مكوّن يبدو مثاليًا بالإنجليزية مكسورًا تمامًا بالعربية إن لم تتعامل CSS مع `direction: rtl` بشكل صحيح.
+- **التنسيق الخاص بكل لغة**: تُصيَّر التواريخ والعملات والأرقام بشكل مختلف. فـ`$1,234.56` في الولايات المتحدة هي `1.234,56 €` في ألمانيا. وإن كان منطق التنسيق لديك يستخدم فواصل مكتوبة يدويًا بدل `Intl.NumberFormat`، فهو خاطئ في نصف العالم.
 
-### Accessibility as a testing layer
+### إمكانية الوصول كطبقة اختبار
 
-Accessibility testing is not optional in enterprise software—it’s often legally required. Automated tools like [axe-core](https://www.deque.com/axe/) catch roughly 30–50% of WCAG violations: missing ARIA labels, insufficient color contrast, invalid roles. Integrate axe into both component stories and E2E tests:
+اختبار إمكانية الوصول ليس اختياريًا في برمجيات المؤسسات — بل غالبًا مطلوب قانونيًا. والأدوات الآلية مثل [axe-core](https://www.deque.com/axe/) تلتقط نحو 30–50% من مخالفات WCAG: تسميات ARIA المفقودة، وتباين الألوان غير الكافي، والأدوار غير الصحيحة. ادمج axe في قصص المكوّنات وفي اختبارات E2E معًا:
 
 ```typescript
 import AxeBuilder from '@axe-core/playwright';
@@ -360,21 +360,21 @@ test('dashboard has no critical a11y violations', async ({ page }) => {
 });
 ```
 
-But automated checks only catch the mechanical violations. Keyboard navigation, focus management, and screen reader behavior require explicit interaction tests. Can you tab through the entire form? Does focus return to the trigger when a modal closes? Does the screen reader announce status changes? These need to be written as tests, not hoped for as outcomes.
+لكن الفحوص الآلية لا تلتقط إلا المخالفات الميكانيكية. أما التنقل بلوحة المفاتيح، وإدارة التركيز، وسلوك قارئ الشاشة فتحتاج إلى اختبارات تفاعل صريحة. هل تستطيع التنقل بمفتاح الجدولة عبر النموذج كاملًا؟ وهل يعود التركيز إلى زر الإطلاق عند إغلاق نافذة منبثقة؟ وهل يعلن قارئ الشاشة تغيّرات الحالة؟ هذه أمور تحتاج أن تُكتب اختبارات، لا أن تُرجى نتائج.
 
-## Monorepo Testing Strategies
+## استراتيجيات الاختبار في المستودع الأحادي
 
-### Affected detection
+### كشف المتأثر
 
-A monorepo with 50+ packages might have thousands of tests. Running all of them on every pull request is wasteful and slow. The solution is **affected detection**—analyzing the dependency graph to determine which packages changed and running only their tests plus the tests of packages that depend on them.
+قد يحتوي مستودع أحادي فيه أكثر من 50 حزمة على آلاف الاختبارات. وتشغيلها كلها في كل طلب سحب مضيعة وتباطؤ. والحل هو **كشف المتأثر** — تحليل رسم الاعتمادات لتحديد الحزم التي تغيّرت وتشغيل اختباراتها فقط، مع اختبارات الحزم التي تعتمد عليها.
 
-[Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo) handles this through its task graph and caching. If a package’s inputs haven’t changed since the last successful test run, the cached result is reused. In practice, this reduces a 20-minute full test suite to 2–3 minutes for most pull requests.
+ويتولى [Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo) ذلك عبر رسم مهامه والتخزين المؤقت. فإن لم تتغير مدخلات حزمة منذ آخر تشغيل اختبارات ناجح، تُعاد النتيجة المخزّنة مؤقتًا. وعمليًا، يقلّص هذا مجموعة اختبارات كاملة تستغرق 20 دقيقة إلى 2–3 دقائق لمعظم طلبات السحب.
 
-Nx takes a more explicit approach with `nx affected:test`, which uses its project graph to identify impacted packages. Both tools achieve the same goal: fast CI feedback without sacrificing coverage for changed code.
+ويتخذ Nx مقاربة أكثر صراحة عبر `nx affected:test`، الذي يستخدم رسم مشروعه لتحديد الحزم المتأثرة. وكلا الأداتين تحقق الهدف نفسه: تغذية راجعة سريعة في CI دون التضحية بتغطية الشيفرة المتغيرة.
 
-### Shared test infrastructure
+### بنية الاختبار المشتركة
 
-Centralizing test utilities prevents every team from reinventing mock data and render helpers:
+تمركز أدوات الاختبار يمنع كل فريق من إعادة اختراع بيانات البدائل ومُساعِدات التصيير:
 
 ```
 packages/
@@ -388,19 +388,19 @@ packages/
       render-with-providers.tsx
 ```
 
-Factory functions generate fresh, valid test data for each test. Shared MSW handlers provide consistent API behavior across all test suites. A `renderWithProviders` helper wraps components in the theme, auth, router, and query client providers they need—so individual tests don’t each build their own slightly-different provider stack.
+دوال المصنع تولّد بيانات اختبار جديدة صالحة لكل اختبار. ومعالجات MSW المشتركة توفّر سلوكًا متسقًا للواجهة البرمجية في كل مجموعات الاختبار. ويساعد `renderWithProviders` على تغليف المكوّنات بمزوّدات السمة والمصادقة والموجّه وعميل الاستعلامات التي تحتاجها — فلا تبني الاختبارات الفردية كل واحدة منها كومتها الخاصة من المزوّدات المختلفة اختلافًا طفيفًا.
 
-The rule: mock *external* APIs with MSW. Test *internal* package interactions authentically. If `@acme/ui` depends on `@acme/tokens`, don’t mock the tokens package—import it and test the real integration. Mocking your own internal packages defeats the purpose of having a monorepo.
+والقاعدة: حاكِ الواجهات البرمجية *الخارجية* بـMSW. واختبر تفاعلات الحزم *الداخلية* اختبارًا أصيلًا. فإن كانت `@acme/ui` تعتمد على `@acme/tokens`، فلا تحاكِ حزمة الرموز — استوردها واختبر التكامل الحقيقي. فمحاكاة حزمك الداخلية تناقض الغرض من وجود مستودع أحادي.
 
-### Test organization
+### تنظيم الاختبارات
 
-Where tests live affects how they run:
+مكان الاختبارات يؤثر في طريقة تشغيلها:
 
-- **Unit tests**: colocated with source (`Button.test.tsx` next to `Button.tsx`). Discovered automatically by Vitest or Jest.
-- **Integration tests**: in a `__tests__/` directory at the package root, emphasizing cross-module flows within that package.
-- **E2E tests**: in a dedicated `e2e/` package or `apps/app-name-e2e/` directory. Centralized because they exercise the composed application, not individual packages.
+- **اختبارات الوحدة**: بجوار الشيفرة المصدرية (`Button.test.tsx` قرب `Button.tsx`). ويكتشفها Vitest أو Jest تلقائيًا.
+- **اختبارات التكامل**: في دليل `__tests__/` عند جذر الحزمة، مع التركيز على التدفقات العابرة للوحدات داخل تلك الحزمة.
+- **اختبارات E2E**: في حزمة مخصّصة `e2e/` أو دليل `apps/app-name-e2e/`. ومركزية لأنها تمرّن التطبيق المُركَّب، لا الحزم الفردية.
 
-This separation matters for CI performance:
+وهذا الفصل مهم لأداء CI:
 
 ```
 flowchart LR
@@ -417,11 +417,11 @@ flowchart LR
   style E2E fill:#fbbf24,color:#000
 ```
 
-Unit and integration tests run per-package with affected detection—only changed packages and their dependents get tested. E2E tests run against the composed application in a separate CI stage with browser installation and a running dev server.
+تعمل اختبارات الوحدة والتكامل لكل حزمة مع كشف المتأثر — فلا تُختبر إلا الحزم المتغيرة وتوابعها. أما اختبارات E2E فتعمل على التطبيق المُركَّب في مرحلة CI منفصلة مع تثبيت المتصفحات وخادم تطوير يعمل.
 
-## The Microfrontend Testing Gap
+## فجوة اختبار الواجهات المصغّرة
 
-Microfrontends create a specific testing problem that neither unit tests nor traditional E2E tests address cleanly. Each remote can be tested in isolation—its components render, its state manages correctly, its API calls return the right data. But the *composed* application introduces integration seams that don’t exist in any single remote’s test suite.
+تخلق الواجهات المصغّرة مشكلة اختبار خاصة لا تعالجها اختبارات الوحدة ولا اختبارات E2E التقليدية معالجة نظيفة. فكل وحدة بعيدة يمكن اختبارها بمعزل — مكوّناتها تُصيّر، وحالتها تُدار بشكل صحيح، ونداءاتها البرمجية تعيد البيانات الصحيحة. لكن التطبيق *المُركَّب* يُدخل مفاصل تكامل لا وجود لها في مجموعة اختبارات أي وحدة بعيدة منفردة.
 
 ```
 flowchart TB
@@ -449,94 +449,94 @@ flowchart TB
   style shell_test fill:#1e293b,color:#f1f5f9
 ```
 
-The gap shows up in three places:
+تظهر الفجوة في ثلاثة مواضع:
 
-- **Shell-to-remote contracts.** Does the shell still provide the props, context, and theme tokens the remote expects? Version drift between shell and remote is the most common source of production failures in Module Federation setups.
-- **Cross-remote communication.** If two remotes share state through [Nanostores](https://stevekinney.com/courses/enterprise-ui/nanostores), [BroadcastChannel](https://stevekinney.com/courses/enterprise-ui/broadcast-channel), or custom events, who tests that the messages are compatible?
-- **Composed layout and styling.** A remote that looks correct in standalone mode can break when rendered inside the shell’s layout—z-index collisions, CSS variable overrides, and conflicting global styles are invisible until the remotes are composed.
+- **عقود القشرة مع الوحدات البعيدة.** هل ما زالت القشرة توفّر الخصائص والسياق ورموز السمات التي تتوقعها الوحدة البعيدة؟ وانزياح الإصدارات بين القشرة والوحدة البعيدة هو أكثر مصادر أعطال الإنتاج شيوعًا في إعدادات Module Federation.
+- **التواصل بين الوحدات البعيدة.** إن تشاركت وحدتان بعيدتان الحالة عبر [Nanostores](https://stevekinney.com/courses/enterprise-ui/nanostores) أو [BroadcastChannel](https://stevekinney.com/courses/enterprise-ui/broadcast-channel) أو أحداث مخصّصة، فمن يختبر أن الرسائل متوافقة؟
+- **التخطيط والأنماط المركّبة.** قد تنكسر وحدة بعيدة تبدو صحيحة في وضعها المستقل عند تصييرها داخل تخطيط القشرة — فتصادمات ترتيب الطبقات، وتجاوزات متغيّرات CSS، والأنماط العامة المتعارضة تظل غير مرئية حتى تُركَّب الوحدات البعيدة.
 
-[Contract testing](https://stevekinney.com/courses/enterprise-ui/api-contract-testing) handles the first gap. The shell declares what it expects from each remote, and each remote verifies it can satisfy those expectations. For the second and third gaps, you need composed integration tests—a small number of Playwright tests that load the shell with its remotes and verify the critical integration seams. These are *not* full E2E journey tests. They’re boundary tests: does the remote mount? Does it receive the theme? Does cross-remote navigation work? Does shared state propagate?
+و[اختبار العقود](https://stevekinney.com/courses/enterprise-ui/api-contract-testing) يتولى الفجوة الأولى. فالقشرة تُعلن ما تتوقعه من كل وحدة بعيدة، وكل وحدة بعيدة تتحقق من أنها تستطيع تلبية تلك التوقعات. أما الفجوتان الثانية والثالثة فتحتاجان إلى اختبارات تكامل مركّبة — عدد صغير من اختبارات Playwright تحمّل القشرة مع وحداتها البعيدة وتتحقق من مفاصل التكامل الحرجة. وهذه *ليست* اختبارات رحلة E2E كاملة. بل اختبارات حدود: هل تُركَّب الوحدة البعيدة؟ وهل تستقبل السمة؟ وهل يعمل التنقل بين الوحدات البعيدة؟ وهل تنتشر الحالة المشتركة؟
 
-Keep this composed suite small. Its purpose is to catch integration failures, not to retest every feature that the per-remote suites already cover.
+أبقِ هذه المجموعة المركّبة صغيرة. فغرضها التقاط أعطال التكامل، لا إعادة اختبار كل ميزة تغطيها مجموعات الوحدات البعيدة أصلًا.
 
-## Vitest versus Jest
+## Vitest مقابل Jest
 
-If you’re starting a new project or migrating a monorepo’s test infrastructure, the test runner choice matters for developer experience and CI cost.
+إن كنت تبدأ مشروعًا جديدًا أو تُرحّل بنية الاختبار في مستودع أحادي، فاختيار مشغّل الاختبارات مهم لتجربة المطوّر وكلفة CI.
 
-**Jest** has been the default for years. It has comprehensive features, a huge ecosystem of matchers and plugins, and near-universal familiarity. It also runs CommonJS by default, uses its own module transform pipeline, and can be slow in large monorepos because it doesn’t share configuration with your build tooling.
+كان **Jest** هو الافتراضي لسنوات. وله ميزات شاملة، ونظام بيئي ضخم من المطابِقات والإضافات، وألفة شبه عالمية. لكنه أيضًا يعمل بـCommonJS افتراضيًا، ويستخدم خط تحويل وحدات خاصًا به، وقد يكون بطيئًا في المستودعات الأحادية الكبيرة لأنه لا يشارك الإعداد مع أدوات البناء لديك.
 
-**Vitest** is built on Vite, which means it uses the same bundler and module resolution as your development and production builds. No behavioral discrepancies between “how the test runner resolves imports” and “how the app actually resolves imports.” It supports native ESM, runs 5–10x faster than Jest in most benchmarks, uses less memory (which matters when you’re running thousands of tests in parallel on CI), and offers a near-identical API so migration is mostly mechanical.
+أما **Vitest** فمبني على Vite، ما يعني أنه يستخدم الحازمة (bundler) نفسها ودقة الوحدات نفسها التي تستخدمها عمليات بناء تطويرك وإنتاجك. فلا تناقضات سلوكية بين «كيف يحل مشغّل الاختبارات الاستيرادات» و«كيف يحل التطبيق الاستيرادات فعلًا». ويدعم ESM الأصلي، ويعمل أسرع من Jest بمقدار 5–10 أضعاف في معظم المقارنات، ويستهلك ذاكرة أقل (وهذا مهم عندما تشغّل آلاف الاختبارات على التوازي في CI)، ويعرض واجهة شبه مطابقة فتكون الهجرة ميكانيكية في معظمها.
 
-For monorepos, Vitest’s speed advantage compounds. A test suite that takes 8 minutes with Jest might take 2 minutes with Vitest—and when that suite runs on every push across dozens of packages, the CI cost savings add up.
+وفي المستودعات الأحادية تتراكم ميزة سرعة Vitest. فمجموعة اختبارات تستغرق 8 دقائق مع Jest قد تستغرق دقيقتين مع Vitest — وعندما تعمل تلك المجموعة في كل دفعة عبر عشرات الحزم، تتراكم وفورات كلفة CI.
 
-The migration path is straightforward: replace `jest` with `vitest` in your test files, swap `jest.fn()` for `vi.fn()`, update the config file, and run the suite. Most tests work without changes because the assertion and mocking APIs are intentionally compatible.
+ومسار الهجرة واضح: استبدل `jest` بـ`vitest` في ملفات اختبارك، وبدّل `jest.fn()` بـ`vi.fn()`، وحدّث ملف الإعداد، وشغّل المجموعة. ومعظم الاختبارات تعمل بلا تغييرات لأن واجهات التحقّق والمحاكاة متوافقة عن قصد.
 
-## Test Data and Environments
+## بيانات الاختبار والبيئات
 
-### Test data management
+### إدارة بيانات الاختبار
 
-Enterprise tests often need complex, multi-stage state that’s tedious to set up and dangerous to share between tests.
+غالبًا ما تحتاج اختبارات المؤسسات إلى حالة معقّدة متعددة المراحل، مملّة الإعداد وخطيرة المشاركة بين الاختبارات.
 
-**Factory functions** generate fresh, valid data objects for each test. No shared fixtures. No “test user 42” that seven different test files all depend on in slightly different states. Each test creates what it needs and tears it down when it’s done.
+**دوال المصنع** تولّد كائنات بيانات جديدة صالحة لكل اختبار. بلا بيانات ثابتة مشتركة. وبلا «مستخدم اختبار 42» الذي تعتمد عليه سبعة ملفات اختبار مختلفة في حالات متباينة قليلًا. كل اختبار يُنشئ ما يحتاجه ويمحوه عند انتهائه.
 
-**API seeding** creates backend state through the application’s own API rather than direct database manipulation. This is slower but more realistic—if the API validates data on the way in, your test data passes the same validation. Direct database inserts skip validation, which means your test data might be subtly invalid in ways that produce different behavior than production.
+**تغذية الواجهات البرمجية بالبيانات** تُنشئ الحالة الخلفية عبر واجهة التطبيق البرمجية نفسها بدل التلاعب المباشر بقاعدة البيانات. وهذا أبطأ لكنه أكثر واقعية — فإن كانت الواجهة البرمجية تتحقق من البيانات عند الدخول، فبيانات اختبارك تجتاز التحقق نفسه. أما الإدراج المباشر في قاعدة البيانات فتخطّى التحقق، ما يعني أن بيانات اختبارك قد تكون غير صحيحة بطرق خفية تُنتج سلوكًا مختلفًا عن الإنتاج.
 
-**Data masking** is a compliance requirement when using production data snapshots in staging or testing environments. If your test fixtures contain real customer names, email addresses, or financial data, that’s a data privacy violation waiting to happen. Anonymize before the data leaves production.
+**إخفاء البيانات** متطلب امتثالي عند استخدام لقطات من بيانات الإنتاج في بيئات التجهيز أو الاختبار. فإن كانت بيانات اختبارك الثابتة تحتوي أسماء عملاء حقيقية أو عناوين بريد إلكتروني أو بيانات مالية، فهذا انتهاك لخصوصية البيانات ينتظر أن يقع. أخفِ هوية البيانات قبل أن تغادر الإنتاج.
 
-### Ephemeral environments
+### البيئات العابرة
 
-Shared staging environments are the single biggest bottleneck in enterprise testing pipelines. Two teams deploying to the same staging environment at the same time contaminate each other’s tests. A broken deploy blocks everyone until someone fixes it or rolls back. The queue of “waiting for staging” is where velocity goes to die.
+بيئات التجهيز المشتركة هي أكبر عنق زجاجة في خطوط أنابيب اختبار المؤسسات. ففريقان ينشران إلى بيئة التجهيز نفسها في الوقت نفسه يلوّثان اختبارات بعضهما. ونشر مكسور يوقف الجميع حتى يُصلحه أحد أو يتراجع عنه. وطابور «الانتظار لبيئة التجهيز» هو المكان الذي تموت فيه السرعة.
 
-**Ephemeral environments**—short-lived, isolated copies of the full stack provisioned for each pull request—eliminate the bottleneck. Each PR gets its own frontend, backend, and database. Tests run in isolation. No queueing. No contamination. When the PR merges or closes, the environment is torn down.
+أما **البيئات العابرة** — نسخ قصيرة العمر ومعزولة من المنظومة كاملة تُوفَّر لكل طلب سحب — فتُلغي عنق الزجاجة. فيحصل كل طلب سحب على واجهته وخلفيته وقاعدة بياناته. وتعمل الاختبارات بمعزل. بلا طوابير. وبلا تلوّث. وعند دمج طلب السحب أو إغلاقه، تُفكَّك البيئة.
 
-The infrastructure cost is real, but the engineering velocity gain usually justifies it. Teams with ephemeral environments consistently ship faster because they’re never blocked waiting for a shared resource.
+وكلفة البنية التحتية حقيقية، لكن مكسب سرعة الهندسة يبرّرها عادةً. فالفرق التي تستخدم بيئات عابرة تُصدر أسرع باطراد لأنها لا تتوقف أبدًا في انتظار مورد مشترك.
 
-## Test Governance
+## حوكمة الاختبار
 
-At scale, *who owns what* matters as much as *what you test*. Without clear ownership, test failures become nobody’s problem, flaky tests accumulate, and the suite gradually becomes a thing that everyone ignores.
+على النطاق الواسع، *من يملك ماذا* مهم بقدر أهمية *ما تختبره*. فبلا ملكية واضحة، تصبح أعطال الاختبارات مشكلة لا تخص أحدًا، وتتراكم الاختبارات المتذبذبة، وتتحول المجموعة تدريجيًا إلى شيء يتجاهله الجميع.
 
-A workable governance model:
+ونموذج حوكمة عملي:
 
-- **Package teams own their unit and integration tests.** If a test in `@acme/checkout` fails, the checkout team investigates. Not the platform team. Not the QA team. The team that owns the code owns the tests.
-- **A platform team owns the testing infrastructure.** Shared utilities, CI configuration, browser installation, test runner upgrades, and the affected detection pipeline. They make it easy for teams to write good tests. They don’t write the tests for them.
-- **E2E tests for critical journeys have explicit owners.** The “checkout completes successfully” E2E test isn’t owned by “everyone.” It’s owned by the checkout team, who are responsible for keeping it green and updating it when the journey changes.
-- **Quarantine, don’t delete, flaky tests.** Tag tests with `@quarantine` and exclude them from blocking merges. Track them in a dashboard. Investigate and fix them on a cadence. A quarantined test is a known problem. A deleted test is a lost investment.
+- **فرق الحزم تملك اختبارات وحدتها وتكاملها.** فإن فشل اختبار في `@acme/checkout`، حقّق فريق الدفع. لا فريق المنصة. ولا فريق ضمان الجودة. الفريق الذي يملك الشيفرة يملك الاختبارات.
+- **فريق منصة يملك البنية التحتية للاختبار.** الأدوات المشتركة، وإعداد CI، وتثبيت المتصفحات، وترقيات مشغّل الاختبارات، وخط أنابيب كشف المتأثر. هم يسهّلون على الفرق كتابة اختبارات جيدة، ولا يكتبون الاختبارات نيابة عنها.
+- **اختبارات E2E للرحلات الحرجة لها ملاك صريحون.** فاختبار E2E الخاص بـ«إتمام الدفع بنجاح» لا يملكه «الجميع»، بل يملكه فريق الدفع، وهو المسؤول عن إبقائه أخضر وتحديثه عند تغيّر الرحلة.
+- **اعزل الاختبارات المتذبذبة، لا تحذفها.** ضع عليها الوسم `@quarantine` واستبعدها من حجب الدمج. وتتبّعها في لوحة معلومات. وحقّق فيها وأصلحها بوتيرة منتظمة. فالاختبار المعزول مشكلة معروفة، أما الاختبار المحذوف فاستثمار ضائع.
 
-The overarching principle: testing at scale is an organizational problem, not just a technical one. The tools are the easy part. The hard part is making sure that when a test fails, someone cares enough to fix it—and has the context to do so quickly.
+والمبدأ الجامع: الاختبار على نطاق واسع مشكلة تنظيمية، لا تقنية فقط. فالأدوات هي الجزء السهل. والجزء الصعب هو ضمان أن أحدهم يهتم بما يكفي لإصلاح اختبار فاشل — وأن لديه السياق لفعل ذلك بسرعة.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة
 
-### Test Shapes
+### أشكال الاختبارات
 
-> Three models for how much of each test type to write.
+> ثلاثة نماذج لمقدار ما تكتبه من كل نوع من الاختبارات.
 
-| Model | Shape | Emphasis |
+| النموذج | الشكل | التشديد |
 | --- | --- | --- |
-| **Test Pyramid** | △ | Lots of unit, fewer integration, minimal E2E |
-| **Testing Trophy** | 🏆 | Heavy integration, moderate unit and E2E |
-| **Testing Honeycomb** | ⬡ | Integration-first for microservices |
+| **هرم الاختبارات** | △ | كثير من الوحدة، وأقل من التكامل، وأدنى حد من E2E |
+| **كأس الاختبارات** | 🏆 | تكامل كثيف، ووحدة وE2E بدرجة معتدلة |
+| **قرص عسل الاختبارات** | ⬡ | التكامل أولًا للخدمات المصغّرة |
 
-**For microfrontends:** The trophy model tends to work best.
+**بالنسبة للواجهات المصغّرة:** يميل نموذج الكأس إلى كونه الأنسب.
 
-- Unit test business logic and state management.
-- Integration test composed UI with MSW-mocked APIs.
-- E2E test critical cross-remote user flows only (they’re slow and flaky).
-- Contract test API boundaries between remotes and BFF.
+- اختبر منطق العمل وإدارة الحالة باختبارات وحدة.
+- اختبر الواجهة المركّبة باختبارات تكامل مع واجهات برمجية مُحاكاة بـMSW.
+- اختبر تدفقات المستخدم الحرجة بين الوحدات البعيدة باختبارات E2E فقط (فهي بطيئة ومتذبذبة).
+- اختبر عقود حدود الواجهة البرمجية بين الوحدات البعيدة وBFF.
 
 ---
 
-### Visual Regression Testing
+### اختبار الانحدار البصري
 
-> Catch unintended visual changes automatically.
+> التقط التغيرات البصرية غير المقصودة تلقائيًا.
 
-- **Chromatic** — Storybook-based, captures every story as a baseline.
-- **Playwright screenshots** — capture pages at key states, diff against baselines.
-- **Percy** — cross-browser visual snapshots in CI.
+- **Chromatic** — قائم على Storybook، يلتقط كل قصة كخط أساس.
+- **لقطات Playwright** — تلتقط الصفحات في حالات مفصلية وتقارنها بخطوط الأساس.
+- **Percy** — لقطات بصرية عبر متصفحات متعددة في CI.
 
-**In a design system context:**
+**في سياق نظام التصميم:**
 
-- Every component variant gets a visual baseline.
-- PRs that change component styles show visual diffs in the review.
-- Prevents “I changed a token and accidentally broke 47 components.”
+- كل تنويعة مكوّن تحصل على خط أساس بصري.
+- طلبات السحب التي تغيّر أنماط المكوّنات تُظهر فروقًا بصرية في المراجعة.
+- يمنع ذلك «غيّرت رمزًا فكسرت 47 مكوّنًا بالخطأ».

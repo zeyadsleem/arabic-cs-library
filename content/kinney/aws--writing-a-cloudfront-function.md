@@ -1,38 +1,38 @@
 ---
-title: "Writing a CloudFront Function"
-lang: en
+title: "كتابة دالة CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/writing-a-cloudfront-function"
 ---
 
-CloudFront Functions give you a way to run lightweight JavaScript at CloudFront’s edge locations—all 200+ of them—on every single request. If you’ve ever written a `_redirects` file on Netlify or a `next.config.js` with redirects and rewrites, you already understand the use case. The difference is that you’re writing actual code instead of configuration, which means you can handle dynamic logic that static config files can’t.
+تمنحك دوال CloudFront طريقة لتشغيل JavaScript خفيفة على مواقع الحافة في CloudFront — جميعها، أكثر من 200 موقع — عند كل طلب على حدة. وإن سبق أن كتبت ملف `_redirects` على Netlify أو ملف `next.config.js` فيه عمليات إعادة توجيه وإعادة كتابة، فأنت تفهم حالة الاستخدام بالفعل. الفرق أنك تكتب كودًا حقيقيًا بدلًا من إعدادات، ما يعني أنك تستطيع معالجة منطق ديناميكي لا تستطيعه ملفات الإعدادات الثابتة.
 
-If you want AWS’s version of the runtime behavior while you read, the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) is the official reference.
+إذا أردت نسخة AWS من سلوك وقت التشغيل أثناء قراءتك، فإن [دليل دوال CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) هو المرجع الرسمي.
 
-You already hit a version of this problem earlier. When you set up [Origin Access Control](https://stevekinney.com/courses/aws/origin-access-control-for-s3), your S3 bucket stopped being a website endpoint and became a private object store. S3 no longer resolves `/about/` to `/about/index.html`—it just looks for an object with the key `about/` and returns a 403 when it doesn’t find one. The [custom error responses](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing) you configured handle the SPA case (every missing path serves `index.html`), but they’re a blunt instrument. A CloudFront Function gives you precise control: rewrite the URL before the cache check, so CloudFront requests the right object from S3 in the first place.
+لقد واجهت نسخة من هذه المشكلة سابقًا. فعندما أعددت [التحكم في الوصول إلى الأصل](https://stevekinney.com/courses/aws/origin-access-control-for-s3)، كفّت حاويتك على S3 عن كونها نقطة نهاية موقع وأصبحت مخزن كائنات خاصًا. ولم تعد S3 تحوّل `/about/` إلى `/about/index.html` — بل تبحث فقط عن كائن مفتاحه `about/` وتُرجع خطأ 403 عندما لا تجده. أما [استجابات الأخطاء المخصّصة](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing) التي أعددتها فتعالج حالة تطبيق الصفحة الواحدة (كل مسار مفقود يقدّم `index.html`)، لكنها أداة فظّة. ودالة CloudFront تمنحك تحكمًا دقيقًا: أعد كتابة المسار قبل فحص ذاكرة التخزين المؤقت، حتى تطلب CloudFront الكائن الصحيح من S3 من الأساس.
 
-In this lesson, you’ll write a CloudFront Function that does exactly that, test it, publish it, and associate it with your distribution.
+في هذا الدرس ستكتب دالة CloudFront تفعل ذلك بالضبط، ثم تختبرها وتنشرها وتربطها بتوزيعك.
 
-## The Runtime Is Not Node.js
+## وقت التشغيل ليس Node.js
 
-This is the single most important thing to internalize. The CloudFront Functions runtime is a purpose-built JavaScript engine. It’s **not** Node.js. There’s no `require()`, no `import`, no `Buffer`, no `process.env`, no `setTimeout`, no `fetch`. You get ECMAScript 5.1 with selected features from ES6 through ES12—things like `let`, `const`, arrow functions, template literals, destructuring, `String.prototype.includes()`, and `Array.prototype.find()`.
+هذا أهم شيء يجب استيعابه. فوقت تشغيل دوال CloudFront محرك JavaScript مبنيّ لغرض محدد، وهو **ليس** Node.js. لا وجود لـ `require()` ولا لـ `import` ولا لـ `Buffer` ولا لـ `process.env` ولا لـ `setTimeout` ولا لـ `fetch`. ما تحصل عليه هو ECMAScript 5.1 مع ميزات مختارة من ES6 حتى ES12 — أشياء مثل `let` و`const` والدوال السهمية وقوالب النصوص والتفكيك و`String.prototype.includes()` و`Array.prototype.find()`.
 
-What you do **not** get:
+ما **لا** تحصل عليه:
 
-- **No network access.** You can’t make HTTP requests. Period.
-- **No file system access.** There’s no `fs` module.
-- **No dynamic code evaluation.** No `eval()`, no `new Function()`.
-- **No environment variables.** You can’t read `process.env`.
-- **No modules.** Everything must be in a single file, under 10 KB.
+- **لا وصول إلى الشبكة.** لا يمكنك إجراء طلبات HTTP. انتهى الأمر.
+- **لا وصول إلى نظام الملفات.** لا وجود لوحدة `fs`.
+- **لا تقييم ديناميكي للكود.** لا `eval()` ولا `new Function()`.
+- **لا متغيرات بيئة.** لا يمكنك قراءة `process.env`.
+- **لا وحدات.** يجب أن يكون كل شيء في ملف واحد أصغر من 10 كيلوبايت.
 
-This feels restrictive, but the tradeoff is speed. CloudFront Functions execute in sub-millisecond time and can handle tens of millions of requests per second. The constraints are what make that possible.
+يبدو هذا مقيّدًا، لكن المقابل هو السرعة. فدوال CloudFront تُنفَّذ في أقل من ميلي ثانية وتستطيع التعامل مع عشرات الملايين من الطلبات في الثانية، والقيود هي ما يجعل ذلك ممكنًا.
 
-> **Tip**
+> **نصيحة**
 >
-> If you need any of the features listed above—network calls, npm packages, environment variables—you need Lambda@Edge instead. See [Lambda@Edge vs CloudFront Functions](https://stevekinney.com/courses/aws/edge-compute-comparison) for the full comparison.
+> إن كنت تحتاج أيًا من الميزات المذكورة أعلاه — طلبات الشبكة، أو حزم npm، أو متغيرات البيئة — فأنت بحاجة إلى Lambda@Edge بدلًا منها. راجع [Lambda@Edge مقابل دوال CloudFront](https://stevekinney.com/courses/aws/edge-compute-comparison) للمقارنة الكاملة.
 
-## The Function Signature
+## توقيع الدالة
 
-Every CloudFront Function has the same structure:
+لكل دالة CloudFront البنية نفسها:
 
 ```javascript
 function handler(event) {
@@ -42,11 +42,11 @@ function handler(event) {
 }
 ```
 
-That’s it. One function named `handler`, one `event` argument, and you return either the modified request (to let CloudFront continue processing) or a response object (to short-circuit and respond immediately).
+هذا كل شيء. دالة واحدة اسمها `handler`، ووسيط واحد اسمه `event`، وتُرجع إما الطلب المُعدَّل (لتترك CloudFront يواصل المعالجة) أو كائن استجابة (لتقطع المسار وتستجيب فورًا).
 
-### The Event Object
+### كائن الحدث
 
-The `event` object has this shape for a **viewer request** trigger:
+يكون لكائن `event` هذا الشكل عند مشغّل **طلب المشاهد**:
 
 ```javascript
 {
@@ -73,18 +73,18 @@ The `event` object has this shape for a **viewer request** trigger:
 }
 ```
 
-A few things to notice:
+ثمة أمور قليلة تستحق الانتباه:
 
-- **`request.uri`** is the path, not the full URL. It starts with `/`.
-- **Headers** are objects with a `value` property, not plain strings. To read the `Host` header, you access `event.request.headers.host.value`.
-- **Query strings** are objects too. A request to `/search?q=hello` gives you `{ q: { value: 'hello' } }`.
-- **Cookies** follow the same pattern: `{ session: { value: 'abc123' } }`.
+- **`request.uri`** هو المسار لا عنوان URL الكامل، ويبدأ بـ `/`.
+- **الترويسات** كائنات لها خاصية `value`، وليست نصوصًا عادية. فلقراءة ترويسة `Host` تصل إلى `event.request.headers.host.value`.
+- **سلاسل الاستعلام** كائنات أيضًا. فالطلب إلى `/search?q=hello` يعطيك `{ q: { value: 'hello' } }`.
+- **ملفات تعريف الارتباط** تتبع النمط نفسه: `{ session: { value: 'abc123' } }`.
 
-### Returning a Request vs. a Response
+### إرجاع طلب مقابل استجابة
 
-If you return the `request` object (potentially modified), CloudFront continues processing the request—checking the cache, forwarding to the origin if needed, and so on.
+إن أرجعت كائن `request` (معدّلًا ربما)، واصلت CloudFront معالجة الطلب — بفحص ذاكرة التخزين المؤقت والتمرير إلى الأصل عند الحاجة، وهكذا.
 
-If you return a **response** object, CloudFront sends that response directly to the viewer without ever touching the cache or origin:
+وإن أرجعت كائن **استجابة**، أرسلت CloudFront تلك الاستجابة مباشرة إلى المشاهد دون أن تلمس ذاكرة التخزين المؤقت أو الأصل أبدًا:
 
 ```javascript
 function handler(event) {
@@ -98,13 +98,13 @@ function handler(event) {
 }
 ```
 
-## Writing a URL Rewrite Function
+## كتابة دالة لإعادة كتابة المسار
 
-> **Tip**
+> **نصيحة**
 >
-> All CloudFront Functions from this lesson are available as standalone files in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/cloudfront/functions).
+> كل دوال CloudFront في هذا الدرس متاحة كملفات مستقلة في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/cloudfront/functions).
 
-Here’s the most common CloudFront Function you’ll deploy: a URL rewrite that appends `index.html` to directory-style URLs. Your S3 bucket is behind OAC now—it’s a private object store, not a website. When someone requests `/about/`, S3 looks for an object with the literal key `about/`, fails, and returns a 403. This function rewrites the URL before CloudFront even checks its cache, so S3 gets a request for `about/index.html` instead.
+إليك أكثر دوال CloudFront شيوعًا فيما ستنشره: إعادة كتابة مسار تُلحق `index.html` بمسارات نمط المجلدات. فحاويتك S3 خلف OAC الآن — أي مخزن كائنات خاص لا موقع. وعندما يطلب أحد `/about/`، تبحث S3 عن كائن مفتاحه الحرفي `about/` فلا تجده وتُرجع 403. هذه الدالة تعيد كتابة المسار قبل أن تفحص CloudFront ذاكرتها المؤقتة أصلًا، فتتلقى S3 طلبًا لـ `about/index.html` بدلًا من ذلك.
 
 ```javascript
 function handler(event) {
@@ -121,15 +121,15 @@ function handler(event) {
 }
 ```
 
-*Note:* Requests like `/about` become `/about/index.html`. Requests for `/style.css` pass through unchanged.
+*ملاحظة:* الطلبات مثل `/about` تصبح `/about/index.html`. أما الطلبات إلى `/style.css` فتمرّ كما هي دون تغيير.
 
-Without this function, navigating directly to `/about` on your distribution returns a 403—there’s no S3 object with the key `about`. Your custom error responses would catch the 403 and serve `index.html`, which works for SPAs but breaks multi-page static sites. The rewrite function solves it at the right layer: before the request ever reaches S3.
+بدون هذه الدالة، فإن الانتقال مباشرة إلى `/about` على توزيعك يُرجع 403 — فلا وجود لكائن S3 مفتاحه `about`. وكانت استجابات الأخطاء المخصّصة لديك ستلتقط 403 وتقدّم `index.html`، وهذا ينفع لتطبيقات الصفحة الواحدة لكنه يكسر المواقع الثابتة متعددة الصفحات. أما دالة إعادة الكتابة فتحلّ المشكلة في الطبقة الصحيحة: قبل أن يصل الطلب إلى S3 أصلًا.
 
-### SPA Variant: Rewriting to the Root
+### نسخة SPA: إعادة الكتابة إلى الجذر
 
-The function above works for multi-page static sites where every directory has its own `index.html`. But Scratch Lab—the app you [just deployed](https://stevekinney.com/courses/aws/deploying-scratch-lab)—is a single-page application. There’s only one `index.html` at the root. Routes like `/notes/abc123` don’t correspond to directories in S3 at all—the JavaScript router reads `window.location.pathname` and decides what to render.
+الدالة أعلاه تناسب المواقع الثابتة متعددة الصفحات حيث لكل مجلد ملف `index.html` خاص به. لكن Scratch Lab — التطبيق الذي [نشرته للتو](https://stevekinney.com/courses/aws/deploying-scratch-lab) — تطبيق صفحة واحدة، فلا يوجد إلا `index.html` واحد في الجذر. والمسارات مثل `/notes/abc123` لا تقابل مجلدات في S3 على الإطلاق — فموجّه JavaScript يقرأ `window.location.pathname` ويقرّر ما يعرضه.
 
-For an SPA, the rewrite is different: anything that isn’t a static file gets rewritten to the root `index.html`:
+أما لتطبيق SPA فإعادة الكتابة مختلفة: كل ما ليس ملفًا ثابتًا يُعاد كتابته إلى `index.html` في الجذر:
 
 ```javascript
 function handler(event) {
@@ -147,41 +147,41 @@ function handler(event) {
 }
 ```
 
-This is a fundamentally different operation from the multi-page rewrite. The multi-page version turns `/about` into `/about/index.html`—it assumes a directory structure with an HTML file at each path. The SPA version turns `/notes/abc123` into `/index.html`—it assumes a single entry point that handles all routing in JavaScript.
+هذه عملية مختلفة جذريًا عن إعادة كتابة الصفحات المتعددة. فنسخة الصفحات المتعددة تحوّل `/about` إلى `/about/index.html` — أي تفترض بنية مجلدات فيها ملف HTML عند كل مسار. أما نسخة SPA فتحوّل `/notes/abc123` إلى `/index.html` — أي تفترض نقطة دخول واحدة تتولى كل التوجيه في JavaScript.
 
-Your distribution already has custom error responses doing the same job: S3 returns a 403 for the missing path, CloudFront intercepts it, and serves `/index.html`. The CloudFront Function is cleaner because it rewrites the URL *before* S3 ever sees it—no wasted round trip, no relying on error interception for normal routing. And as you’ll see in [SPA Status Codes with Lambda@Edge](https://stevekinney.com/courses/aws/spa-status-codes-with-lambda-edge), it also opens the door to returning correct status codes for unknown paths.
+توزيعك لديه بالفعل استجابات أخطاء مخصّصة تؤدي المهمة نفسها: تُرجع S3 خطأ 403 للمسار المفقود، فتعترضه CloudFront وتقدّم `/index.html`. ودالة CloudFront أنظف لأنها تعيد كتابة المسار *قبل* أن تراه S3 أصلًا — بلا رحلة ذهاب وعودة مهدرة، وبلا اعتماد على اعتراض الأخطاء من أجل التوجيه العادي. وكما سترى في [رموز حالة SPA مع Lambda@Edge](https://stevekinney.com/courses/aws/spa-status-codes-with-lambda-edge)، فإنها تفتح الباب أيضًا لإرجاع رموز حالة صحيحة للمسارات المجهولة.
 
-> **Tip**
+> **نصيحة**
 >
-> Which variant should you use? If your build output has HTML files in subdirectories (`about/index.html`, `blog/post/index.html`), use the multi-page rewrite. If your build output is a single `index.html` with a JavaScript router, use the SPA variant. Most React, Vue, and Svelte apps use the SPA pattern. Static site generators like Astro and Hugo use the multi-page pattern.
+> أي نسخة تستخدم؟ إن كان ناتج بناءك يحتوي ملفات HTML في مجلدات فرعية (`about/index.html` و`blog/post/index.html`)، فاستخدم إعادة كتابة الصفحات المتعددة. وإن كان ناتج بناءك ملف `index.html` واحدًا مع موجّه JavaScript، فاستخدم نسخة SPA. ومعظم تطبيقات React وVue وSvelte تتبع نمط SPA، بينما تتبع مولّدات المواقع الثابتة مثل Astro وHugo نمط الصفحات المتعددة.
 
-## Creating and Testing the Function
+## إنشاء الدالة واختبارها
 
-The steps below walk through the create → test → publish → associate workflow using the multi-page rewrite as the example. If you’re deploying Scratch Lab (or any SPA), swap the function code for the SPA variant above—the workflow is identical.
+تمشي الخطوات أدناه عبر سير العمل إنشاء ← اختبار ← نشر ← ربط، باستخدام إعادة كتابة الصفحات المتعددة كمثال. وإن كنت تنشر Scratch Lab (أو أي تطبيق SPA)، فاستبدل كود الدالة بنسخة SPA أعلاه — فسير العمل نفسه.
 
-### Creating a Function in the Console
+### إنشاء دالة في لوحة التحكم
 
-Navigate to **CloudFront → Functions** in the left sidebar. You’ll see the Functions list page.
+انتقل إلى **CloudFront → Functions** في الشريط الجانبي الأيسر. وسترى صفحة قائمة Functions.
 
-The CloudFront Functions list page showing no functions with a Create function button.
+صفحة قائمة دوال CloudFront وهي لا تعرض أي دوال، مع زر Create function.
 
-Click **Create function**. The create form asks for three things: a **Name**, an optional **Description**, and the **Runtime** version. Use `cloudfront-js-2.0` (the default)—it supports modern JavaScript features including `async`/`await` and WebCrypto APIs.
+انقر **Create function**. يسألك نموذج الإنشاء عن ثلاثة أشياء: **الاسم**، و**الوصف** الاختياري، وإصدار **وقت التشغيل**. استخدم `cloudfront-js-2.0` (الافتراضي) — فهو يدعم ميزات JavaScript الحديثة بما في ذلك `async`/`await` وواجهات WebCrypto.
 
-The CloudFront Create function form with fields for Name, Description, and Runtime selection between cloudfront-js-1.0 and cloudfront-js-2.0.
+نموذج إنشاء دالة CloudFront مع حقول الاسم والوصف واختيار وقت التشغيل بين cloudfront-js-1.0 وcloudfront-js-2.0.
 
-After clicking **Create function**, you land on the function detail page. This page has three tabs: **Build**, **Test**, and **Publish**. The Build tab shows the code editor where you write or paste your function code.
+بعد النقر على **Create function** تصل إلى صفحة تفاصيل الدالة. وهذه الصفحة فيها ثلاثة تبويبات: **Build** و**Test** و**Publish**. ويعرض تبويب Build محرّر الكود حيث تكتب كود دالتك أو تلصقه.
 
-The CloudFront function detail page showing the url-rewrite function with Build, Test, and Publish tabs and the function code editor below.
+صفحة تفاصيل دالة CloudFront وهي تعرض دالة url-rewrite مع تبويبات Build وTest وPublish ومحرّر كود الدالة أسفله.
 
-Paste your function code into the editor and click **Save changes**. The editor starts with a skeleton handler—replace it entirely with your rewrite function.
+ألصق كود دالتك في المحرّر وانقر **Save changes**. يبدأ المحرّر بهيكل دالة أولي — استبدله كليًا بدالة إعادة الكتابة.
 
-The **Test** tab lets you build a test event and run it against the `DEVELOPMENT` stage of your function. Build a viewer request event with `uri` set to `/about`, then click **Test function**. You should see the output with `request.uri` changed to `/about/index.html`.
+يتيح لك تبويب **Test** بناء حدث اختبار وتشغيله على مرحلة `DEVELOPMENT` من دالتك. ابنِ حدث طلب مشاهد تكون فيه `uri` مساوية `/about`، ثم انقر **Test function**. ويجب أن ترى الناتج وقد تغيّرت فيه `request.uri` إلى `/about/index.html`.
 
-The **Publish** tab pushes your function from the `DEVELOPMENT` stage to `LIVE`. Until you publish, the function only runs in test mode. Click **Publish function** to make it available for association with a distribution.
+أما تبويب **Publish** فيدفع دالتك من مرحلة `DEVELOPMENT` إلى `LIVE`. وإلى أن تنشر، لا تعمل الدالة إلا في وضع الاختبار. انقر **Publish function** لتجعلها متاحة للربط بتوزيع.
 
-### Creating a Function with the CLI
+### إنشاء دالة باستخدام CLI
 
-You can also create the function entirely from the command line. Save the function code to `url-rewrite.js`:
+يمكنك أيضًا إنشاء الدالة كليًا من سطر الأوامر. احفظ كود الدالة في `url-rewrite.js`:
 
 ```javascript
 function handler(event) {
@@ -196,7 +196,7 @@ function handler(event) {
 }
 ```
 
-Then create the function using `fileb://` to pass the file contents:
+ثم أنشئ الدالة باستخدام `fileb://` لتمرير محتويات الملف:
 
 ```bash
 aws cloudfront create-function \
@@ -207,17 +207,17 @@ aws cloudfront create-function \
   --output json
 ```
 
-The `cloudfront-js-2.0` runtime is the recommended choice for new functions. It supports a broader subset of modern JavaScript than `1.0`—including `async`/`await` syntax and a small set of Promise-based [WebCrypto APIs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/functions-javascript-runtime-20.html) you can legitimately `await`. In practice, nearly every CloudFront Function use case is synchronous: URL rewrites, header manipulation, A/B routing. Write synchronous functions unless you specifically need WebCrypto for something like signed-cookie verification. The AWS docs describe the runtime as ECMAScript 5.1 with selected ES6–ES12 features, so check the [runtime features page](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/functions-javascript-runtime-20.html) before relying on any specific ES2020+ syntax.
+وقت التشغيل `cloudfront-js-2.0` هو الخيار الموصى به للدوال الجديدة، فهو يدعم مجموعة أوسع من JavaScript الحديثة مقارنةً بـ `1.0` — بما في ذلك صياغة `async`/`await` ومجموعة صغيرة من [واجهات WebCrypto](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/functions-javascript-runtime-20.html) القائمة على Promise والتي يمكنك فعلًا أن تنتظرها بـ `await`. وعمليًا، تكاد كل حالات استخدام دوال CloudFront تكون متزامنة: إعادة كتابة المسارات، والتلاعب بالترويسات، والتوجيه A/B. فاكتب دوالًا متزامنة إلا إذا كنت تحتاج تحديدًا إلى WebCrypto لشيء مثل التحقق من ملفات تعريف ارتباط موقّعة. تصف وثائق AWS وقت التشغيل بأنه ECMAScript 5.1 مع ميزات مختارة من ES6 حتى ES12، فتحقق من [صفحة ميزات وقت التشغيل](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/functions-javascript-runtime-20.html) قبل الاعتماد على أي صياغة محددة من ES2020 وما بعده.
 
-The response includes an `ETag` value—save it. You need it for every subsequent operation on this function.
+تتضمن الاستجابة قيمة `ETag` — احفظها، فأنت تحتاجها في كل عملية لاحقة على هذه الدالة.
 
-> **Warning**
+> **تحذير**
 >
-> The `--region` flag doesn’t control where the function runs. CloudFront Functions are global. The region flag tells the CLI which API endpoint to use, and CloudFront’s API lives in `us-east-1`.
+> لا تتحكم راية `--region` في مكان تشغيل الدالة، فدوال CloudFront عالمية. وراية المنطقة تخبر CLI بنقطة نهاية API التي يجب استخدامها، وAPI الخاصة بـ CloudFront تقع في `us-east-1`.
 
-### Test the function
+### اختبار الدالة
 
-Before publishing, test the function against a sample event:
+قبل النشر، اختبر الدالة على حدث تجريبي:
 
 ```bash
 aws cloudfront test-function \
@@ -229,13 +229,13 @@ aws cloudfront test-function \
   --output json
 ```
 
-Replace `ETVPDKIKX0DER` with the `ETag` from the create step. The `--event-object` is a JSON representation of a viewer request event.
+استبدل `ETVPDKIKX0DER` بقيمة `ETag` من خطوة الإنشاء. و`--event-object` تمثيل JSON لحدث طلب مشاهد.
 
-The response tells you whether the function succeeded and shows the output. You should see `request.uri` changed to `/about/index.html`.
+تخبرك الاستجابة هل نجحت الدالة، وتعرض الناتج. ويجب أن ترى `request.uri` وقد تغيّرت إلى `/about/index.html`.
 
-### Publish the function
+### نشر الدالة
 
-Testing happens on the `DEVELOPMENT` stage. To make the function available for association with a distribution, publish it to `LIVE`:
+يجري الاختبار على مرحلة `DEVELOPMENT`. ولجعل الدالة متاحة للربط بتوزيع، انشرها إلى `LIVE`:
 
 ```bash
 aws cloudfront publish-function \
@@ -245,13 +245,13 @@ aws cloudfront publish-function \
   --output json
 ```
 
-This returns a new `ETag`—the live version’s ETag. Save this one too.
+تُرجع هذه العملية `ETag` جديدًا — هو ETag النسخة الحيّة. احفظ هذا أيضًا.
 
-## Associating with a CloudFront Behavior
+## الربط بسلوك CloudFront
 
-A function that isn’t associated with a **behavior** doesn’t do anything. You need to update your CloudFront distribution to attach this function to a cache behavior—typically the default behavior (`*`).
+الدالة غير المرتبطة بـ**سلوك** لا تفعل شيئًا. فأنت تحتاج إلى تحديث توزيع CloudFront لتربط هذه الدالة بسلوك تخزين مؤقت — عادةً السلوك الافتراضي (`*`).
 
-You configured behaviors in [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations). Now you’re adding a function association to one of those behaviors.
+لقد أعددت السلوكات في [سلوكات التخزين المؤقت وعمليات الإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations). والآن أنت تضيف ربط دالة إلى أحد تلك السلوكات.
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -260,7 +260,7 @@ aws cloudfront get-distribution-config \
   --output json > dist-config.json
 ```
 
-Edit `dist-config.json` and add a `FunctionAssociations` block inside the `DefaultCacheBehavior`:
+عدّل `dist-config.json` وأضف كتلة `FunctionAssociations` داخل `DefaultCacheBehavior`:
 
 ```json
 {
@@ -276,7 +276,7 @@ Edit `dist-config.json` and add a `FunctionAssociations` block inside the `Defau
 }
 ```
 
-Then update the distribution:
+ثم حدّث التوزيع:
 
 ```bash
 aws cloudfront update-distribution \
@@ -287,13 +287,13 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> To find the function ARN, run `aws cloudfront list-functions --region us-east-1 --output json`. Each function in the response includes its `FunctionARN`.
+> لمعرفة ARN الخاص بالدالة، شغّل `aws cloudfront list-functions --region us-east-1 --output json`. وكل دالة في الاستجابة تتضمن `FunctionARN` الخاص بها.
 
-## Updating an Existing Function
+## تحديث دالة موجودة
 
-To change the function code, use `update-function`:
+لتغيير كود الدالة، استخدم `update-function`:
 
 ```bash
 aws cloudfront update-function \
@@ -305,13 +305,13 @@ aws cloudfront update-function \
   --output json
 ```
 
-After updating, you must **publish** again to push the changes to `LIVE`. The update only changes the `DEVELOPMENT` stage. This two-stage model lets you test changes before they affect production traffic.
+بعد التحديث، يجب أن **تنشر** مرة أخرى لدفع التغييرات إلى `LIVE`. فالتحديث لا يغيّر إلا مرحلة `DEVELOPMENT`. ويتيح لك هذا النموذج ذو المرحلتين اختبار التغييرات قبل أن تؤثر في حركة الإنتاج.
 
-## Common Patterns
+## أنماط شائعة
 
-### Redirecting www to the apex domain
+### إعادة توجيه www إلى النطاق الجذري
 
-If you set up a custom domain in the [DNS and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section, you might have both `www.example.com` and `example.com` pointing at your distribution. This function canonicalizes traffic to the apex domain:
+إن أعددت نطاقًا مخصّصًا في قسم [DNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers)، فقد يكون لديك `www.example.com` و`example.com` كلاهما يشير إلى توزيعك. وهذه الدالة توحّد الحركة على النطاق الجذري:
 
 ```javascript
 function handler(event) {
@@ -332,11 +332,11 @@ function handler(event) {
 }
 ```
 
-Without this, search engines treat `www.example.com/about` and `example.com/about` as two different pages. A 301 at the edge fixes that before anyone—crawler or human—sees the duplicate.
+بدون ذلك، تعامل محركات البحث `www.example.com/about` و`example.com/about` كصفحتين مختلفتين. ويصلح رمز 301 على الحافة ذلك قبل أن يرى أي أحد — زاحفًا كان أو إنسانًا — النسخة المكررة.
 
-### Adding a trailing slash
+### إضافة شرطة مائلة في النهاية
 
-If your static site generator creates directories like `about/index.html`, you want `/about` to redirect to `/about/` so relative asset paths resolve correctly:
+إن كان مولّد موقعك الثابت ينشئ مجلدات مثل `about/index.html`، فأنت تريد أن يعيد `/about` التوجيه إلى `/about/` كي تُحلّ مسارات الأصول النسبية بشكل صحيح:
 
 ```javascript
 function handler(event) {
@@ -357,13 +357,13 @@ function handler(event) {
 }
 ```
 
-You could combine this with the `index.html` rewrite from earlier—redirect `/about` to `/about/`, then rewrite `/about/` to `/about/index.html`—but putting both in one function is simpler and avoids the extra round trip.
+يمكنك دمج هذا مع إعادة كتابة `index.html` من قبل — إعادة توجيه `/about` إلى `/about/` ثم إعادة كتابة `/about/` إلى `/about/index.html` — لكن وضع الاثنين في دالة واحدة أبسط ويتجنّب الرحلة الإضافية ذهابًا وعودة.
 
-These patterns are building blocks. In [Edge Function Use Cases](https://stevekinney.com/courses/aws/edge-function-use-cases), you’ll see more examples including security headers, geolocation routing, and language detection.
+هذه الأنماط قطع بناء. وفي [حالات استخدام دوال الحافة](https://stevekinney.com/courses/aws/edge-function-use-cases) سترى أمثلة أكثر تشمل ترويسات الأمان والتوجيه الجغرافي والكشف عن اللغة.
 
-## Gotchas
+## مزالق
 
-- **10 KB code size limit.** Your entire function, including comments, must fit in 10 KB. Minify aggressively if you’re approaching the limit. If the pressure comes from embedded lookup data (redirect maps, feature flag tables, etc.), move that data to **CloudFront KeyValueStore** (KVS)—the function reads it at runtime via `cf.kvs()`, keeping the code small while the data scales independently.
-- **No async APIs.** The `cloudfront-js-2.0` runtime parses `async`/`await` syntax without error, but there are no async APIs to call. Everything executes synchronously. Don’t reach for `async` expecting it to do useful work.
-- **Header names must be lowercase.** When you set or read headers, use lowercase names: `content-type`, not `Content-Type`.
-- **The `ETag` dance.** Every create, update, and publish operation returns a new ETag, and the next operation requires the current ETag. I’ve lost track of these more times than I’d like to admit—if you do too, re-fetch with `describe-function`.
+- **حدّ حجم الكود 10 كيلوبايت.** يجب أن تتّسع دالتك كاملة، بما فيها التعليقات، في 10 كيلوبايت. فقلّل الحجم بقوة إن كنت تقترب من الحد. وإن كان الضغط ناتجًا عن بيانات بحث مضمنة (خرائط إعادة توجيه، وجداول أعلام ميزات، وما شابه)، فانقل تلك البيانات إلى **CloudFront KeyValueStore** (KVS) — إذ تقرأها الدالة في وقت التشغيل عبر `cf.kvs()`، فيبقى الكود صغيرًا وتتوسّع البيانات باستقلال.
+- **لا واجهات برمجية غير متزامنة.** يحلّل وقت التشغيل `cloudfront-js-2.0` صياغة `async`/`await` دون خطأ، لكن لا توجد واجهات برمجية غير متزامنة لاستدعائها. فكل شيء يُنفَّذ بشكل متزامن. لا تلجأ إلى `async` متوقعًا أن تؤدي عملًا مفيدًا.
+- **أسماء الترويسات يجب أن تكون بأحرف صغيرة.** عند ضبط الترويسات أو قراءتها، استخدم أسماء بأحرف صغيرة: `content-type` لا `Content-Type`.
+- **رقصة `ETag`.** كل عملية إنشاء أو تحديث أو نشر تُرجع ETag جديدًا، والعملية التالية تتطلب ETag الحالي. لقد فقدت أثر هذه القيم أكثر مرات مما أحبّ الاعتراف به — فإن حدث ذلك معك، فأعد جلبها باستخدام `describe-function`.

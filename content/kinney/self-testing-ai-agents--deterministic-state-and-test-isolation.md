@@ -1,14 +1,14 @@
 ---
-title: "Deterministic State and Test Isolation"
-lang: en
+title: "الحالة الحتمية وعزل الاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation"
 ---
 
-We’ve handled the stuff outside your app—the Open Library API—by recording a HAR and replaying it. Now we need to handle the stuff *inside* your app: the database, the session, anything stateful that a test writes to and another test might read from.
+تعاملنا مع الأشياء خارج تطبيقك — واجهة Open Library API — بتسجيل HAR وإعادة تشغيله. الآن نحتاج إلى التعامل مع الأشياء *داخل* تطبيقك: قاعدة البيانات، والجلسة، وأي شيء ذي حالة يكتب فيه اختبار وقد يقرأ منه اختبار آخر.
 
-This is the lesson where Playwright tests become predictable. It’s also the lesson most projects skip—and it’s why most Playwright suites are a wall of `.only` and `.skip` annotations with a single person on the team who knows how to unblock the suite.
+هذا هو الدرس الذي تصبح فيه اختبارات Playwright قابلة للتنبؤ. وهو أيضًا الدرس الذي تتخطاه معظم المشاريع — وهو سبب كون معظم حزم Playwright جدارًا من تعليقات `.only` و`.skip` مع شخص واحد في الفريق يعرف كيف يفتح الحزمة من جديد.
 
-## The failure mode
+## نمط الفشل
 
 ```
 ✓ test 1: add book passes
@@ -16,30 +16,30 @@ This is the lesson where Playwright tests become predictable. It’s also the le
 ✗ test 3: view shelf fails—expected 3 books, got 7
 ```
 
-Test 3 fails because tests 1 and 2 left data behind. Or because test 2 from *last* night’s CI run left data behind. Or because the developer ran the test locally yesterday and never cleaned up. Or because tests are running in parallel and two of them are writing to the same user’s shelf simultaneously, racing each other to a nondeterministic result.
+يفشل الاختبار 3 لأن الاختبارين 1 و2 تركا بيانات خلفهما. أو لأن الاختبار 2 من تشغيل CI *الليلة الماضية* ترك بيانات خلفه. أو لأن المطوّر شغّل الاختبار محليًا أمس ولم ينظّف. أو لأن الاختبارات تعمل بالتوازي واثنان منها يكتبان في رفّ المستخدم نفسه في الوقت نفسه، متسابقين إلى نتيجة غير حتمية.
 
-Every one of those is “the test suite isn’t isolated.” That’s the disease. Everything we’re about to do is the treatment.
+كل واحد من هذه هو «الحزمة غير معزولة». ذلك هو الداء. وكل ما سنفعله الآن هو العلاج.
 
-## The two rules
+## القاعدتان
 
-Rule one: **every test starts in a known state.** Not an unknown state, not “whatever was there last time,” not “the state the previous test happened to leave behind.” A specific, named starting point. The agent should be able to read the test and know exactly what data exists when the test begins.
+القاعدة الأولى: **كل اختبار يبدأ في حالة معروفة.** لا حالة مجهولة، ولا «أيًا كان ما كان هناك في المرة الماضية»، ولا «الحالة التي صادف أن تركها الاختبار السابق». نقطة بداية محدّدة ومسمّاة. ينبغي أن يستطيع الوكيل قراءة الاختبار ومعرفة البيانات الموجودة بالضبط عند بدايته.
 
-Rule two: **every test cleans up after itself, or runs in a bubble that gets torn down.** I slightly prefer the bubble approach because “cleans up after itself” is easy to forget and hard to verify.
+القاعدة الثانية: **كل اختبار ينظّف بعد نفسه، أو يعمل في فقاعة تُهدَم.** أميل قليلًا إلى نهج الفقاعة لأن «ينظّف بعد نفسه» سهل النسيان وصعب التحقق.
 
-Let’s look at both.
+لننظر إلى الاثنتين.
 
-## Rule one: seeding
+## القاعدة الأولى: زرع البيانات
 
-Shelf uses SQLite via [Drizzle](https://orm.drizzle.team/). For end-to-end tests, we want a way to reset the database to a known state before each test (or each test file). The naive version is “scatter `db.delete(...)` calls through the test files.” That works for an afternoon and turns into a maintenance mess immediately.
+يستخدم Shelf قاعدة SQLite عبر [Drizzle](https://orm.drizzle.team/). لاختبارات الطرف إلى الطرف، نريد طريقة لإعادة ضبط قاعدة البيانات إلى حالة معروفة قبل كل اختبار (أو كل ملف اختبار). النسخة الساذجة هي «نثر استدعاءات `db.delete(...)` في ملفات الاختبار». هذا ينجح لنهار واحد ويتحول إلى فوضى صيانة فورًا.
 
-The current starter intentionally stops one layer short of shipping the actual seed helper. Instead it gives you two building blocks:
+المشروع الأولي الحالي يتوقف عمدًا قبل طبقة واحدة من شحن مساعد الزرع الفعلي. بدلًا من ذلك يمنحك لبنين:
 
-- small server-side utilities like `createUser`, `createBook`, and `createShelfEntry` in `src/lib/server/`
-- JSON fixtures in `tests/data/*.json`
+- أدوات مساعدة صغيرة على الخادم مثل `createUser` و`createBook` و`createShelfEntry` في `src/lib/server/`
+- fixtures بصيغة JSON في `tests/data/*.json`
 
-Then the deterministic seeding lab has you write `tests/helpers/seed.ts` on top of those pieces. The point is pedagogical: students should focus on Playwright and deterministic state, not spend the whole lesson reverse-engineering raw Drizzle insert calls.
+ثم يطلب منك مختبر الزرع الحتمي كتابة `tests/helpers/seed.ts` فوق تلك القطع. الفائدة تربوية: ينبغي أن يركّز الطلاب على Playwright والحالة الحتمية، لا أن يمضوا الدرس كله في هندسة عكسية لاستدعاءات إدراج Drizzle الخام.
 
-The starter utilities have simplified signatures that look roughly like this (the real exports are arrow functions and take a few more fields, like `isAdmin` on users and `featuredPosition` on books):
+لأدوات المشروع الأولي توقيعات مبسّطة تبدو تقريبًا هكذا (الصادرات الحقيقية دوال سهمية وتأخذ حقولًا أكثر، مثل `isAdmin` للمستخدمين و`featuredPosition` للكتب):
 
 ```typescript
 // src/lib/server/users.ts
@@ -58,7 +58,7 @@ export async function createShelfEntry({ userId, bookId, status, rating }: Creat
 }
 ```
 
-And the seed data lives in plain JSON:
+وبيانات الزرع تعيش في JSON صريح:
 
 ```json
 // tests/data/users.json
@@ -72,7 +72,7 @@ And the seed data lives in plain JSON:
 ]
 ```
 
-The helper students build in the lab reads those JSON files, calls the server utilities, and exports the two functions the rest of the suite relies on:
+المساعد الذي يبنيه الطلاب في المختبر يقرأ ملفات JSON تلك، ويستدعي أدوات الخادم، ويصدّر الدالتين التي تعتمد عليهما بقية الحزمة:
 
 ```typescript
 // tests/helpers/seed.ts
@@ -85,7 +85,7 @@ export async function resetShelfContent() {
 }
 ```
 
-Then in a test:
+ثم في اختبار:
 
 ```typescript
 import { resetShelfContent } from './helpers/seed';
@@ -101,19 +101,19 @@ test('alice can add Piranesi to her shelf', async ({ page }) => {
 });
 ```
 
-Every test starts with alice, three books, and two shelf entries (Station Eleven and Piranesi). That’s the contract. If a test needs different data, it seeds different data *explicitly*, not by hoping some earlier test left it around.
+كل اختبار يبدأ بـ alice، وثلاثة كتب، ومدخلَي رفّ (Station Eleven وPiranesi). هذا هو العقد. وإذا احتاج اختبار بيانات مختلفة، فهو يزرع بيانات مختلفة *صراحةً*، لا بأمل أن بعض الاختبارات السابقة تركتها هناك.
 
-The important thing here is that seeding is *fast* against SQLite. You can afford to reseed before every test. If you’re on Postgres and reseeding takes two seconds, you might reseed per file instead of per test, or use transactions (more on that in a moment).
+المهم هنا أن الزرع *سريع* على SQLite. يمكنك تحمّل إعادة الزرع قبل كل اختبار. أما إذا كنت على Postgres واستغرق إعادة الزرع ثانيتين، فقد تعيد الزرع لكل ملف بدلًا من كل اختبار، أو تستخدم المعاملات (المزيد عن ذلك بعد قليل).
 
-## Rule two: isolation bubbles
+## القاعدة الثانية: فقاعات العزل
 
-Seeding gets you to a known *starting* state. Isolation gets you to a known *process*—two tests that run in parallel never see each other’s writes, full stop.
+الزرع ينقلك إلى حالة *بداية* معروفة. والعزل ينقلك إلى *عملية* معروفة — اختباران يعملان بالتوازي لا يرى أحدهما كتابات الآخر، نقطة.
 
-There are three common strategies. Pick one based on your database.
+هناك ثلاث استراتيجيات شائعة. اختر واحدة بناءً على قاعدة بياناتك.
 
-**Per-test transactions.** Wrap every test in a transaction, roll back at the end. This is the fastest option and it requires zero cleanup code, because nothing was ever committed. The catch: it only works if your application code reuses the same database connection the test opens. Node-level connection pooling usually breaks this, and you have to be careful with framework-level request handlers. [Drizzle](https://orm.drizzle.team/) supports this via `database.transaction`, but wiring it into SvelteKit’s request handlers takes more than a lesson’s worth of plumbing. Worth knowing about; not my default recommendation.
+**معاملات لكل اختبار.** لفّ كل اختبار في معاملة، وارجع عنها في النهاية. هذا أسرع خيار ولا يحتاج أي كود تنظيف، لأن شيئًا لم يُثبَّت قط. المأخذ: لا ينجح إلا إذا أعاد كود تطبيقك استخدام اتصال قاعدة البيانات نفسه الذي يفتحه الاختبار. غالبًا ما يكسر تجميع الاتصالات على مستوى Node هذا، وعليك الحذر مع معالجات الطلبات على مستوى الإطار. يدعم [Drizzle](https://orm.drizzle.team/) هذا عبر `database.transaction`، لكن وصله بمعالجات طلبات SvelteKit يتطلب سباكة أكثر من درس كامل. يستحق المعرفة؛ لكنه ليس توصيتي الافتراضية.
 
-**Per-worker databases.** [Playwright spins up multiple workers when it runs in parallel.](https://playwright.dev/docs/test-parallel) Each worker gets its own SQLite file, its own schema, its own seed. Tests within a worker share the database but always run serially, so they can’t race each other. This is where I want SQLite projects to end up eventually. A future Shelf could roughly look like this:
+**قواعد بيانات لكل عامل.** [يشغّل Playwright عدة عمال عندما يعمل بالتوازي.](https://playwright.dev/docs/test-parallel) يحصل كل عامل على ملف SQLite خاص به، ومخطّط خاص به، وزرع خاص به. تتشارك الاختبارات داخل العامل قاعدة البيانات نفسها لكنها تعمل دائمًا تسلسليًا، فلا يمكنها التسابق. هذا هو المكان الذي أريد أن تنتهي إليه مشاريع SQLite في نهاية المطاف. نسخة Shelf مستقبلية قد تبدو تقريبًا هكذا:
 
 ```typescript
 // playwright.config.ts
@@ -130,23 +130,23 @@ export default defineConfig({
 const workerDatabasePath = `./test-database-${process.env.TEST_WORKER_INDEX ?? 0}.sqlite`;
 ```
 
-Each worker points the app at a different SQLite file. When Playwright launches the dev server (or you launch it yourself with the right env var), it reads the worker index and uses the matching database.
+كل عامل يوجّه التطبيق إلى ملف SQLite مختلف. وعندما يشغّل Playwright خادم التطوير (أو تشغّله أنت بنفسك بمتغيّر البيئة الصحيح)، يقرأ فهرس العامل ويستخدم قاعدة البيانات المطابقة.
 
-**Per-test namespaces.** If the data has a natural scoping (a user, an organization, a tenant), make every test create its own. Alice-1 for test 1, Alice-2 for test 2. Tests then read and write under their own namespace and never collide. This is the heaviest ceremony of the three but it’s also the most bulletproof, and it ports to any database including production-like Postgres.
+**نطاقات لكل اختبار.** إذا كانت البيانات ذات نطاق طبيعي (مستخدم، أو مؤسسة، أو مستأجر)، فاجعل كل اختبار ينشئ نطاقه الخاص. Alice-1 للاختبار 1، وAlice-2 للاختبار 2. ثم تقرأ الاختبارات وتكتب داخل نطاقها ولا تتصادم أبدًا. هذا أثقل تكليف من الثلاثة لكنه أيضًا الأكثر مناعة، وينتقل إلى أي قاعدة بيانات بما فيها Postgres الشبيهة بالإنتاج.
 
-## What Shelf does today, and why
+## ما يفعله Shelf اليوم، ولماذا
 
-Shelf’s `playwright.config.ts` does not pin `workers: 1`, and that is the right starting shape. The shipped suite is intentionally tiny: one public smoke spec, lab subtrees ignored by default, and no authenticated matrix yet. In that world, the cleanest config is the honest config.
+لا يثبّت `playwright.config.ts` في Shelf قيمة `workers: 1`، وهذا هو الشكل الابتدائي الصحيح. الحزمة المشحونة صغيرة عمدًا: مواصفة دخان عامة واحدة، وأشجار مختبرات متجاهلة افتراضيًا، ولا مصفوفة مصادقة بعد. في ذلك العالم، أنظف تهيئة هي التهيئة الصادقة.
 
-What changes once you build the later labs is the amount of shared mutable state. The moment you add authenticated specs that all talk to the same SQLite file, worker count stops being theoretical. If turning workers up exposes failures, that is not Playwright being mean. It is the suite finally telling you the database isolation story is incomplete.
+ما يتغيّر بمجرد أن تبني المختبرات اللاحقة هو مقدار الحالة المشتركة القابلة للتغيير. في اللحظة التي تضيف فيها مواصفات مصادقة تتحدث كلها إلى ملف SQLite نفسه، يتوقف عدد العمال عن كونه نظريًا. وإذا كشف رفع عدد العمال عن أعطال، فليس Playwright هو الوقح. إنها الحزمة تقول لك أخيرًا إن قصة عزل قاعدة البيانات ناقصة.
 
-The tempting fix is `workers: 1`. Sometimes you use it temporarily while you are unblocking a refactor. Fine. What you must not do is mistake that temporary brace for the finished design. A single worker hides leaks; it does not remove them.
+الإصلاح المغري هو `workers: 1`. تستخدمه أحيانًا مؤقتًا أثناء فتح طريق إعادة هيكلة. لا بأس. لكن ما يجب ألا تفعله هو أن تظن أن هذه الجبيرة المؤقتة هي التصميم النهائي. العامل الواحد يخفي التسريبات؛ ولا يزيلها.
 
-The durable next move for a SQLite project like Shelf is the per-worker-database pattern above. Each worker gets its own file, the server reads `TEST_WORKER_INDEX`, and the seed helper points at the same file the app is using. Then you can turn the worker count back up without treating parallelism as a bug.
+الخطوة الدائمة التالية لمشروع SQLite مثل Shelf هي نمط قاعدة البيانات لكل عامل أعلاه. يحصل كل عامل على ملفه الخاص، ويقرأ الخادم `TEST_WORKER_INDEX`، ويوجّه مساعد الزرع إلى الملف نفسه الذي يستخدمه التطبيق. حينها يمكنك رفع عدد العمال مجددًا دون معاملة التوازي كخطأ.
 
-## Test fixtures for shared setup
+## Fixtures الاختبار للإعداد المشترك
 
-[Playwright’s `test.extend`](https://playwright.dev/docs/test-fixtures) is the clean way to attach seed data to tests when you find yourself repeating a `beforeEach` block:
+[‏`test.extend` في Playwright](https://playwright.dev/docs/test-fixtures) هو الطريقة النظيفة لربط بيانات الزرع بالاختبارات عندما تجد نفسك تكرّر كتلة `beforeEach`:
 
 ```typescript
 import { test as base, expect } from '@playwright/test';
@@ -167,7 +167,7 @@ export const test = base.extend<Fixtures>({
 export { expect };
 ```
 
-And in a test:
+وفي اختبار:
 
 ```typescript
 import { test, expect } from './fixtures';
@@ -179,9 +179,9 @@ test('reader can rate Station Eleven', async ({ page, seeded }) => {
 });
 ```
 
-The fixture runs automatically when any test imports this `test`. No more `beforeEach` boilerplate scattered across files. And because the seeding logic is centralized, updating the baseline data is a single-file change.
+يعمل الـ fixture تلقائيًا عندما يستورد أي اختبار هذا `test`. لا مزيد من قوالب `beforeEach` المتناثرة في الملفات. ولأن منطق الزرع مركزي، فتحيث بيانات الأساس تغيير في ملف واحد.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Database state in end-to-end tests
@@ -200,13 +200,13 @@ The fixture runs automatically when any test imports this `test`. No more `befor
   reason to hard-code `workers: 1` forever.
 ```
 
-That last rule matters. Agents will happily disable parallelism to make a failing test pass. It works, it’s green, and it’s also a silent regression in suite speed and isolation guarantees. Don’t let them.
+القاعدة الأخيرة مهمة. سيعطّل الوكلاء التوازي بسرور لجعل اختبار فاشل ينجح. ينجح الأمر، ويصبح أخضر، وهو أيضًا انحدار صامت في سرعة الحزمة وضمانات العزل. لا تدعهم يفعلون ذلك.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Two invariants make a Playwright suite trustworthy: every test starts in a known state, and no two tests can see each other’s state. You get the first from a seed helper every spec can call directly. You get the second by choosing a strategy your database can support—per-worker files, transactions, or namespacing—and by treating flaky parallelism as a leak to fix, not a knob to turn down.
+ثابتان يجعلان حزمة Playwright جديرة بالثقة: كل اختبار يبدأ في حالة معروفة، ولا يمكن لاختبارين أن يرى أحدهما حالة الآخر. تحصل على الأول من مساعد زرع تستطيع كل مواصفة استدعاؤه مباشرة. وتحصل على الثاني باختيار استراتيجية تدعمها قاعدة بياناتك — ملفات لكل عامل، أو معاملات، أو نطاقات — وبمعاملة التوازي المتقلّب كتسريب يجب إصلاحه، لا كمقبض يُخفَّض.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
-- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)
+- [تسجيل HARs لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
+- [اختبارات هجينة بين API والواجهة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)

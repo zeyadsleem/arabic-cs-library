@@ -1,28 +1,28 @@
 ---
-title: "Maintaining a Design System at Scale"
-lang: en
+title: "صيانة نظام التصميم على نطاق واسع"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/maintaining-a-design-system"
 ---
 
-Setting up a design system is the easy part. You pick a token format, scaffold some components, wire up a Storybook, and ship a v1 to the registry. Everyone’s excited. Adoption ticks up. The Slack channel is quiet in that good way.
+إعداد نظام التصميم هو الجزء السهل. تختار صيغة رموز، وتبني هيكلًا لبعض المكوّنات، وتربط Storybook، وتنشر إصدارًا أول إلى السجل. الجميع متحمّس. يرتفع معدّل التبنّي. وتسكت قناة Slack سكوتها الجيد ذاك.
 
-Then six months pass.
+ثم تمرّ ستة أشهر.
 
-Somebody wraps your `Button` in a `ProjectButton` because they needed one extra prop. Another team copies `Modal` into their repo because the design system version didn’t support a feature they needed *last sprint*. A third team is still on v1 while everyone else moved to v3, and nobody knows why. The token file has 400 entries and at least 30 of them do the same thing. The Figma library and the code haven’t matched since someone renamed a color during a rebrand.
+فيلفّ أحدهم مكوّن `Button` الخاص بك داخل `ProjectButton` لأنه احتاج خاصية إضافية واحدة. وينسخ فريق آخر `Modal` إلى مستودعه لأن إصدار نظام التصميم لم يدعم ميزة احتاجها *في الدورة السابقة*. ويبقى فريق ثالث على v1 بينما انتقل الجميع إلى v3، ولا أحد يعرف السبب. ويحتوي ملف الرموز على 400 مدخل، و30 منها على الأقل تفعل الشيء نفسه. ولم تعد مكتبة Figma والشيفرة متطابقتين منذ أن أعاد أحدهم تسمية لون أثناء إعادة الهوية.
 
-These aren’t exotic failure modes. They’re the default outcome when a design system doesn’t have a maintenance strategy. The architecture we covered in [Design System Governance](https://stevekinney.com/courses/enterprise-ui/design-system-governance) and [Versioning and Release Management](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management) gives you the foundation. This is about what breaks *after* the foundation is laid, and the patterns that keep it from rotting.
+ليست هذه أنماط فشل غريبة. إنها النتيجة الافتراضية حين لا يكون لنظام التصميم استراتيجية صيانة. والمعمارية التي تناولناها في [حوكمة نظام التصميم](https://stevekinney.com/courses/enterprise-ui/design-system-governance) و[إدارة الإصدارات والنشر](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management) تمنحك الأساس. أما هنا فالحديث عن ما يتعطّل *بعد* وضع الأساس، وعن الأنماط التي تمنعه من التلف.
 
-## Component Proliferation
+## تضخّم المكوّنات
 
-The most common way a design system decays is through accumulation, not neglect. Every component starts with a clear purpose. Then someone adds a variant. Then a size option. Then a `renderCustomHeader` prop. Then an `isLegacy` flag that conditionally renders a completely different component under the same name.
+أكثر الطرق شيوعًا لتحلّل نظام التصميم هي التراكم لا الإهمال. يبدأ كل مكوّن بغرض واضح. ثم يضيف أحدهم متغيّرًا. ثم خيار حجم. ثم خاصية `renderCustomHeader`. ثم علامة `isLegacy` تُصيّر مكوّنًا مختلفًا تمامًا تحت الاسم نفسه تصييرًا شرطيًا.
 
-A `Button` with four variants and three sizes is 12 combinations. Add an icon position (left, right, none), a loading state, and a disabled state and you’re at 144 permutations—most of which nobody has tested together. This is **variant explosion**, and it’s the main reason design system bundle sizes grow faster than feature count.
+مكوّن `Button` بأربعة متغيّرات وثلاثة أحجام يعني 12 توليفة. أضف موضع أيقونة (يسار، يمين، بلا)، وحالة تحميل، وحالة تعطيل فتصل إلى 144 تبديلة—لم يختبر أحد معظمها معًا. هذا هو **انفجار المتغيّرات**، وهو السبب الرئيسي في أن أحجام حزم نظام التصميم تنمو أسرع من عدد الميزات.
 
-The fix isn’t to freeze the component API. It’s to make the cost of a new variant visible.
+والحل ليس تجميد واجهة برمجة المكوّن. بل جعل كلفة المتغيّر الجديد مرئية.
 
-**Audit before adding.** Before any new variant ships, require a brief accounting: which products need it, what existing variant it’s closest to, and whether it can be achieved through composition instead. This isn’t bureaucracy—it’s the same “do we need this?” conversation you’d have before adding a new database table.
+**دقّق قبل الإضافة.** قبل نشر أي متغيّر جديد، اطلب حصرًا موجزًا: أي المنتجات تحتاجه، وأي متغيّر قائم هو أقرب إليه، وهل يمكن تحقيقه بالتركيب بدلًا من ذلك. هذه ليست بيروقراطية—إنها الحوار نفسه «هل نحتاج هذا؟» الذي تجريه قبل إضافة جدول قاعدة بيانات جديد.
 
-**Composition over configuration.** A `Card` component with twelve props for header, footer, media, actions, badges, and overflow menus is a page layout pretending to be a component.
+**التركيب قبل التهيئة.** مكوّن `Card` باثنتي عشرة خاصية للترويسة والتذييل والوسائط والإجراءات والشارات وقوائم الفائض هو تخطيط صفحة متنكّر في هيئة مكوّن.
 
 ```
 flowchart LR
@@ -44,15 +44,15 @@ flowchart LR
   style composition fill:#4ade80,color:#000
 ```
 
-Break it into composable pieces—`Card`, `CardHeader`, `CardMedia`, `CardActions`—and let consumers assemble what they need. The API surface stays small. The flexibility goes up. And you don’t end up with a `Card` that accepts a `renderCustomEverything` function.
+فكّكه إلى قطع قابلة للتركيب—`Card` و`CardHeader` و`CardMedia` و`CardActions`—ودع المستهلكين يجمّعون ما يحتاجونه. تبقى مساحة واجهة البرمجة صغيرة. وترتفع المرونة. ولا ينتهي بك الأمر بمكوّن `Card` يقبل دالة `renderCustomEverything`.
 
-**Sunset aggressively.** If a variant has zero usage across all consuming applications, remove it. If two variants are functionally identical except for a padding value, merge them. Track usage metrics (more on that below) and make removal a regular part of the release cycle, not something that waits for a “cleanup sprint” that never arrives.
+**أوقف الاستخدام بجرأة.** إذا لم يُستخدم متغيّر في أي تطبيق مستهلك على الإطلاق، فأزله. وإذا كان متغيّران متطابقين وظيفيًا إلا في قيمة حشو، فادمجهما. تتبّع مقاييس الاستخدام (مزيد عن ذلك أدناه) واجعل الإزالة جزءًا منتظمًا من دورة الإصدار، لا شيئًا ينتظر «دورة تنظيف» لا تأتي أبدًا.
 
-## Fork Culture
+## ثقافة التفرّع
 
-Forking is the immune response of a team that can’t get what it needs from the system fast enough. A team needs a feature. The design system backlog is full. So they copy the component, modify it locally, and move on. Perfectly rational. Completely corrosive.
+التفرّع هو الاستجابة المناعية لفريق لا يستطيع الحصول على ما يحتاجه من النظام بالسرعة الكافية. يحتاج الفريق ميزة. وقائمة أعمال نظام التصميم ممتلئة. فينسخ المكوّن، ويعدّله محليًا، ويمضي. قرار عقلاني تمامًا. ومدمّر تمامًا.
 
-The problem with forks isn’t the initial copy. It’s what happens after.
+المشكلة في التفرّعات ليست النسخة الأولى. بل ما يحدث بعدها.
 
 ```
 flowchart TB
@@ -79,39 +79,39 @@ flowchart TB
   style DS4 fill:#4ade80,color:#000
 ```
 
-Forks don’t get accessibility updates. They don’t get token migrations. They don’t get bug fixes. They drift from the system and from each other, and six months later you have three `DatePicker` implementations with three different keyboard interaction patterns and nobody remembers which one is canonical.
+لا تتلقى التفرّعات تحديثات إمكانية الوصول. ولا ترحيل الرموز. ولا إصلاحات العلل. إنها تتباعد عن النظام وعن بعضها بعضًا، وبعد ستة أشهر يصبح لديك ثلاثة تطبيقات لـ`DatePicker` بثلاثة أنماط مختلفة للتفاعل بلوحة المفاتيح، ولا يتذكّر أحد أيّها المرجع.
 
-You can’t eliminate forking through policy alone. You have to reduce the pressure that causes it.
+لا يمكنك إلغاء التفرّع بالسياسات وحدها. عليك تقليل الضغط الذي يسبّبه.
 
-**Contribution pathways.** Make it possible for product teams to contribute back to the system without going through a six-week review cycle. A clear contribution guide with templates, automated checks, and a responsive review process turns forks into pull requests. The [GitHub Primer](https://primer.style/guides/contribute) team is a good reference here—they invest heavily in contribution documentation and review standards, which keeps the system growing without the core team becoming a bottleneck.
+**مسارات المساهمة.** اجعل من الممكن لفرق المنتجات أن تساهم في النظام دون المرور بدورة مراجعة تستغرق ستة أسابيع. دليل مساهمة واضح بقوالب وفحوص آلية وعملية مراجعة سريعة الاستجابة يحوّل التفرّعات إلى طلبات سحب. وفريق [GitHub Primer](https://primer.style/guides/contribute) مرجع جيد هنا—فهو يستثمر بكثافة في توثيق المساهمة ومعايير المراجعة، ما يُبقي النظام ينمو دون أن يصبح الفريق الأساسي عنق زجاجة.
 
-**Extension points.** Design components with sanctioned customization surfaces. CSS custom properties for theming. Slots or render props for content injection. `::part()` selectors for Web Components. If teams can customize *within* the system, they’re less likely to escape *around* it.
+**نقاط التوسعة.** صمّم المكوّنات بأسطح تخصيص مصرّح بها. خصائص CSS المخصصة للتنسيق. أو الفتحات (slots) أو خصائص التصيير لحقن المحتوى. محددات `::part()` لمكوّنات الويب. إذا استطاعت الفرق التخصيص *داخل* النظام، قلّ احتمال فرارها *حوله*.
 
-**Fork registry.** When forks do happen (and they will), track them. A simple table—component name, forking team, reason, date, planned migration—makes forks visible instead of invisible. Invisible forks compound. Visible forks get addressed.
+**سجل التفرّعات.** حين تحدث التفرّعات فعلًا (وستحدث)، تتبّعها. جدول بسيط—اسم المكوّن، والفريق المتفرّع، والسبب، والتاريخ، والترحيل المخطّط—يجعل التفرّعات مرئية بدل أن تكون خفية. التفرّعات الخفية تتراكم. والمرئية تُعالج.
 
-## Version Fragmentation
+## تشظّي الإصدارات
 
-In a polyrepo world, design system versions fragment by default. Each team upgrades on its own schedule, and “on its own schedule” usually means “never, unless something breaks.” You end up with a long tail of versions in production, which makes every design system change a question of “but which version are they on?”
+في عالم تعدد المستودعات، تتشظّى إصدارات نظام التصميم افتراضيًا. كل فريق يرقّي وفق جدوله الخاص، و«جدوله الخاص» تعني عادةً «أبدًا، إلا إذا تعطّل شيء». فتنتهي بذيل طويل من الإصدارات في الإنتاج، ما يجعل كل تغيير في نظام التصميم سؤالًا: «لكن أي إصدار يستخدمون؟»
 
-The governance piece covers [versioning contracts](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management), but the maintenance problem is different from the versioning problem. Versioning is about *what* the numbers mean. Maintenance is about *getting people to move*.
+يغطي جزء الحوكمة [عقود الإصدارات](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management)، لكن مشكلة الصيانة تختلف عن مشكلة الإصدارات. فالإصدارات تتعلق بمعنى *الأرقام*. أما الصيانة فتتعلق *بجعل الناس يتحرّكون*.
 
-**Track version distribution.** You can’t fix fragmentation you can’t see. Build a dashboard (or even a spreadsheet—start ugly) that shows which version of each design system package each application is running. Update it from CI or from registry metadata. When you can see that 40% of your applications are three majors behind, the conversation shifts from “we should probably upgrade” to “we have a measurable platform debt problem.”
+**تتبّع توزيع الإصدارات.** لا يمكنك إصلاح تشظٍّ لا تراه. ابنِ لوحة معلومات (أو حتى جدول بيانات—ابدأ بشكل قبيح) تُظهر أي إصدار من كل حزمة من حزم نظام التصميم يشغّله كل تطبيق. حدّثها من CI أو من بيانات السجل الوصفية. وحين ترى أن 40% من تطبيقاتك متأخرة بثلاثة إصدارات رئيسية، يتحوّل الحوار من «يُفترض أن نرقّي» إلى «لدينا مشكلة دين منصّي قابلة للقياس».
 
-**Upgrade budgets.** Allocate explicit time for design system upgrades, the same way you’d allocate time for security patches. If upgrades are always “we’ll get to it after the feature work,” they don’t happen. Some teams set a policy: you must be within one major version of current, and you have 90 days after a major release to adopt. That’s not a suggestion—it’s a release policy with teeth.
+**موازنات الترقية.** خصّص وقتًا صريحًا لترقيات نظام التصميم، تمامًا كما تخصّص وقتًا لرقعات الأمان. وإذا كانت الترقيات دائمًا «سنصل إليها بعد عمل الميزات»، فهي لا تحدث. وتضع بعض الفرق سياسة: يجب أن تكون في نطاق إصدار رئيسي واحد من الحالي، ولديك 90 يومًا بعد إصدار رئيسي لتتبنّاه. هذا ليس اقتراحًا—إنه سياسة إصدار لها أنياب.
 
-**Codemods for mechanical changes.** Every breaking change in a major release should ship with a codemod that handles the mechanical migration—renamed props, moved imports, deprecated tokens. [jscodeshift](https://github.com/facebook/jscodeshift) for JavaScript and TypeScript, [PostCSS](https://postcss.org/) plugins for CSS. The goal is to make the upgrade effort proportional to the *interesting* changes, not the tedious ones. If 80% of an upgrade is find-and-replace, automate the find-and-replace.
+**أدوات تعديل الشيفرة (codemods) للتغييرات الميكانيكية.** ينبغي أن يُنشر مع كل تغيير كاسر في إصدار رئيسي codemod يتولى الترحيل الميكانيكي—إعادة تسمية الخصائص، ونقل الاستيرادات، والرموز المُهمَلة. [jscodeshift](https://github.com/facebook/jscodeshift) لـJavaScript وTypeScript، وإضافات [PostCSS](https://postcss.org/) لـCSS. والهدف جعل جهد الترقية متناسبًا مع التغييرات *المثيرة*، لا المملة. فإذا كان 80% من الترقية بحثًا واستبدالًا، فأتمت البحث والاستبدال.
 
-**Canary releases.** Before a major version goes stable, publish a canary channel and ask two or three consuming teams to try it. This catches integration issues before they hit everyone. It also gives those teams a head start on the migration, which means they’re advocates instead of skeptics when the stable release lands.
+**إصدارات الكناري.** قبل أن يستقر إصدار رئيسي، انشر قناة كناري واطلب من فريقين أو ثلاثة من الفرق المستهلكة تجربتها. هذا يلتقط مشكلات التكامل قبل أن تصيب الجميع. ويمنح تلك الفرق سبقًا في الترحيل، فيصبحون مؤيدين لا متشكّكين عند صدور الإصدار المستقر.
 
-## Token Sprawl
+## تناثر الرموز
 
-Tokens multiply. It starts innocently—you add `color-primary-light` alongside `color-primary` because the design called for it. Then `color-primary-lighter`. Then `color-primary-subtle`. Then `color-primary-muted`. Then someone asks what the difference between “subtle” and “muted” is, and the answer is “one of them was added in Q2 and the other in Q4 by a different designer.”
+الرموز تتكاثر. تبدأ البراءة—تضيف `color-primary-light` إلى جانب `color-primary` لأن التصميم طلب ذلك. ثم `color-primary-lighter`. ثم `color-primary-subtle`. ثم `color-primary-muted`. ثم يسأل أحدهم عن الفرق بين «subtle» و«muted»، فتكون الإجابة: «أحدهما أُضيف في الربع الثاني والآخر في الربع الرابع على يد مصمّم مختلف».
 
-Token sprawl is the design system equivalent of CSS specificity wars. Each individual token seems reasonable. In aggregate, they create a system that nobody can navigate without a glossary, and the glossary is always out of date.
+تناثر الرموز هو مقابل حروب التخصيص (specificity) في CSS داخل نظام التصميم. كل رمز على حدة يبدو معقولًا. لكنها مجتمعةً تُنشئ نظامًا لا يستطيع أحد التنقّل فيه دون معجم، والمعجم دائمًا قديم.
 
-**Semantic over literal.** Name tokens by *role*, not by *value*. `color-text-secondary` tells you when to use it. `color-gray-400` tells you what it looks like. When a rebrand changes your gray palette, every literal reference needs manual review. Every semantic reference just works—you update the value behind `color-text-secondary` and every usage follows.
+**الدلالي قبل الحرفي.** سمِّ الرموز بحسب *الدور*، لا بحسب *القيمة*. `color-text-secondary` يخبرك متى تستخدمه. أما `color-gray-400` فيخبرك كيف يبدو. وحين تغيّر إعادة الهوية لوحة الرمادي لديك، يحتاج كل مرجع حرفي إلى مراجعة يدوية. أما كل مرجع دلالي فيعمل ببساطة—تحدّث القيمة خلف `color-text-secondary` فتتبعه كل مواضع الاستخدام.
 
-**Token tiers.** Structure tokens in layers. **Global tokens** define the raw palette (`blue-500`, `gray-200`). **Semantic tokens** map roles to globals (`color-action-primary` → `blue-500`). **Component tokens** map component-specific decisions to semantic tokens (`button-background` → `color-action-primary`). Consumers use semantic and component tokens. Global tokens are internal implementation details—not part of the public API.
+**طبقات الرموز.** رتّب الرموز في طبقات. **الرموز العامة** تعرّف اللوحة الخام (`blue-500`، `gray-200`). و**الرموز الدلالية** تربط الأدوار بالرموز العامة (`color-action-primary` → `blue-500`). و**رموز المكوّنات** تربط القرارات الخاصة بالمكوّن بالرموز الدلالية (`button-background` → `color-action-primary`). ويستخدم المستهلكون الرموز الدلالية ورموز المكوّنات. أما الرموز العامة فهي تفاصيل تنفيذ داخلية—ليست جزءًا من واجهة البرمجة العامة.
 
 ```
 flowchart LR
@@ -140,48 +140,48 @@ flowchart LR
   style component fill:#4ade80,color:#000
 ```
 
-Consumers use semantic and component tokens. Global tokens are internal implementation details—the raw palette that nobody should reference directly. This tiered model is exactly what the [DTCG format](https://www.designtokens.org/TR/2025.10/format/) supports through aliases. A semantic token references a global token by path, and Style Dictionary resolves the chain at build time.
+يستخدم المستهلكون الرموز الدلالية ورموز المكوّنات. أما الرموز العامة فهي تفاصيل تنفيذ داخلية—اللوحة الخام التي لا ينبغي لأحد الرجوع إليها مباشرة. وهذا النموذج الطبقي هو بالضبط ما تدعمه [صيغة DTCG](https://www.designtokens.org/TR/2025.10/format/) عبر الأسماء المستعارة. فالرمز الدلالي يشير إلى رمز عام بالمسار، ويحلّ Style Dictionary السلسلة وقت البناء.
 
-**Regular audits.** Schedule a quarterly token review. Pull usage data from your codebase (grep is fine—this doesn’t need a platform). Identify tokens with zero usage, tokens with near-identical values, and tokens that violate your naming convention. Remove the dead ones. Merge the duplicates. Fix the names. If you don’t do this regularly, the token file becomes a geological record of every design decision anyone ever made, including the bad ones.
+**تدقيقات منتظمة.** اجدول مراجعة ربع سنوية للرموز. واستخرج بيانات الاستخدام من قاعدة شيفرتك (grep يكفي—هذا لا يحتاج منصّة). حدّد الرموز غير المستخدمة على الإطلاق، والرموز ذات القيم المتطابقة تقريبًا، والرموز التي تخالف اصطلاح التسمية لديك. أزل الميتة. وادمج المكرّرة. وأصلح الأسماء. وإن لم تفعل هذا بانتظام، يصبح ملف الرموز سجلًا جيولوجيًا لكل قرار تصميمي اتخذه أي أحد يومًا، بما فيها القرارات السيئة.
 
-## API Inconsistency
+## تضارب واجهة البرمجة
 
-When a design system grows beyond a handful of components, API inconsistency creeps in. One component uses `variant` for visual style, another uses `appearance`. One uses `onPress`, another uses `onClick`. One accepts children as a render prop, another as a slot, another as a named prop. Each component was designed by whoever built it, and they each made locally reasonable choices that collectively produce an unpredictable API surface.
+حين ينمو نظام التصميم إلى ما هو أكثر من حفنة مكوّنات، يتسلّل تضارب واجهة البرمجة. فمكوّن يستخدم `variant` للنمط البصري، وآخر يستخدم `appearance`. وواحد يستخدم `onPress`، وآخر يستخدم `onClick`. وواحد يقبل الأبناء كخاصية تصيير، وآخر كفتحة، وثالث كخاصية مُسمّاة. صُمّم كل مكوّن على يد من بناه، واتخذ كل منهم خيارات معقولة محليًا تُنتج مجتمعةً سطح واجهة برمجة غير متوقّع.
 
-This matters because inconsistency is a tax on every consumer. If I know how `Button` works, I should be able to guess how `IconButton` works. If I can’t, I have to look it up every time—which means the design system is slower to use than building the component from scratch.
+وهذا مهم لأن التضارب ضريبة على كل مستهلك. إن كنت أعرف كيف يعمل `Button`، فينبغي أن أستطيع تخمين كيف يعمل `IconButton`. وإن لم أستطع، فعليّ البحث عنه في كل مرة—ما يعني أن نظام التصميم أبطأ في الاستخدام من بناء المكوّن من الصفر.
 
-**Naming conventions.** Establish conventions early and enforce them. Pick one word for visual style (`variant`, not sometimes `variant` and sometimes `appearance`). Pick one pattern for event handlers (`onAction`, not a mix of `onPress` and `onClick` and `onActivate`). Pick one approach to sizes (`size="small"`, not sometimes `size="sm"` and sometimes `compact={true}`). Document these conventions in a contributor guide and lint for them in CI.
+**اصطلاحات التسمية.** أثبت الاصطلاحات مبكرًا وافرضها. اختر كلمة واحدة للنمط البصري (`variant`، لا مرة `variant` ومرة `appearance`). واختر نمطًا واحدًا لمعالجات الأحداث (`onAction`، لا خليطًا من `onPress` و`onClick` و`onActivate`). واختر مقاربة واحدة للأحجام (`size="small"`، لا مرة `size="sm"` ومرة `compact={true}`). ووثّق هذه الاصطلاحات في دليل المساهمين وافحصها آليًا في CI.
 
-**API review checklist.** Before a new component ships, check it against the existing API patterns:
+**قائمة مراجعة واجهة البرمجة.** قبل نشر مكوّن جديد، افحصه مقابل أنماط واجهة البرمجة القائمة:
 
-- Does it use the same prop names as similar components?
-- Does it follow the same composition pattern (children, slots, render props)?
-- Are the defaults consistent with the rest of the system?
-- Does it handle the standard states (disabled, loading, error) the same way?
+- هل يستخدم أسماء الخصائص نفسها التي تستخدمها المكوّنات المشابهة؟
+- هل يتبع نمط التركيب نفسه (الأبناء، الفتحات، خصائص التصيير)؟
+- هل تتوافق القيم الافتراضية مع بقية النظام؟
+- هل يتعامل مع الحالات القياسية (معطَّل، تحميل، خطأ) بالطريقة نفسها؟
 
-This isn’t a formal review board. It’s a checklist in a pull request template. Five minutes of checking prevents months of inconsistency.
+هذه ليست هيئة مراجعة رسمية. إنها قائمة تحقّق في قالب طلب السحب. خمس دقائق من الفحص تمنع شهورًا من التضارب.
 
-**Refactor in batches.** If you’ve already accumulated inconsistencies, don’t fix them one at a time across separate major releases. Consumers can tolerate one migration. They can’t tolerate a new migration every quarter because you’re fixing API inconsistencies incrementally. Group the API normalization into one coordinated release with codemods.
+**أعد الهيكلة على دفعات.** إن كنت قد راكمت تضاربات بالفعل، فلا تصلحها واحدة تلو الأخرى عبر إصدارات رئيسية منفصلة. يستطيع المستهلكون تحمّل ترحيل واحد. ولا يستطيعون تحمّل ترحيل جديد كل ربع سنة لأنك تصلح تضاربات واجهة البرمجة تدريجيًا. اجمع توحيد واجهة البرمجة في إصدار واحد منسّق مع codemods.
 
-## Documentation Rot
+## تعفّن التوثيق
 
-Documentation that doesn’t match the code is worse than no documentation, because it’s *confidently* wrong. Consumers trust it, build against it, and then file bugs when reality doesn’t match what the docs said.
+التوثيق الذي لا يطابق الشيفرة أسوأ من غياب التوثيق، لأنه مخطئ *بثقة*. يثق به المستهلكون، ويبنون عليه، ثم يبلّغون عن علل حين لا يطابق الواقع ما قاله التوثيق.
 
-The usual cause is that documentation lives in a separate system from the code. The component gets updated in a pull request. The docs stay in Notion, or Confluence, or a Storybook MDX file that nobody remembered to touch.
+والسبب المعتاد أن التوثيق يسكن نظامًا منفصلًا عن الشيفرة. فيُحدَّث المكوّن في طلب سحب. ويبقى التوثيق في Notion، أو Confluence، أو ملف MDX في Storybook لم يتذكّر أحد لمسه.
 
-**Colocate docs with code.** Keep component documentation in the same package as the component—MDX files next to the source, or inline in Storybook stories. When a pull request changes the component, the diff should show the doc change too. If it doesn’t, the reviewer asks why.
+**ضع التوثيق بجوار الشيفرة.** أبقِ توثيق المكوّن في الحزمة نفسها التي فيها المكوّن—ملفات MDX بجانب المصدر، أو مضمّنة في قصص Storybook. وحين يغيّر طلب سحب المكوّن، ينبغي أن يُظهر فرق الشيفرة تغيير التوثيق أيضًا. فإن لم يفعل، سأل المراجع عن السبب.
 
-**Autodocs as baseline.** [Storybook Autodocs](https://storybook.js.org/docs/writing-docs/autodocs) generates documentation from your stories and TypeScript types. It’s not a substitute for written guidance—it won’t tell you *when* to use a component or *why* one variant exists—but it guarantees that the prop table and live examples always match the code. Use Autodocs as the floor and add human-written guidance on top.
+**التوثيق الآلي كحدّ أدنى.** يولّد [Storybook Autodocs](https://storybook.js.org/docs/writing-docs/autodocs) التوثيق من قصصك وأنواع TypeScript. وهو ليس بديلًا عن الإرشاد المكتوب—فلن يخبرك *متى* تستخدم مكوّنًا ولا *لماذا* وُجد متغيّر معيّن—لكنه يضمن أن جدول الخصائص والأمثلة الحيّة تطابق الشيفرة دائمًا. اجعل Autodocs الأرضية وأضف فوقها إرشادًا مكتوبًا بشريًا.
 
-**Deprecation docs are docs.** When you deprecate a component or token, the deprecation notice *is* documentation. It should say what to use instead, link to a migration guide, and ideally include a code example showing the before and after. A deprecation warning that says “this is deprecated” without saying what to do next is a TODO comment wearing a trench coat.
+**توثيق الإهمال توثيق.** حين تُهمل مكوّنًا أو رمزًا، فإن إشعار الإهمال *هو* توثيق. ينبغي أن يقول ما يُستخدم بدلًا منه، ويربط بدليل ترحيل، ويضمّن مثاليًا مثال شيفرة يوضّح ما قبل وما بعد. وتحذير إهمال يقول «هذا مُهمَل» دون أن يقول ما الخطوة التالية هو تعليق TODO يرتدي معطفًا.
 
-## Performance Creep
+## زحف الأداء
 
-A design system’s bundle footprint tends to grow monotonically. Components get added. Dependencies accumulate. Nobody removes anything because removal is scary and addition is fun.
+يميل أثر نظام التصميم في الحزمة إلى النمو المطّرد. تُضاف مكوّنات. وتتراكم الاعتمادات. ولا يزيل أحد شيئًا لأن الإزالة مخيفة والإضافة ممتعة.
 
-Then one day somebody profiles a page and discovers that the design system is 40% of the JavaScript bundle, and half of that is components the page doesn’t use.
+ثم يفحص أحدهم أداء صفحة يومًا ما فيكتشف أن نظام التصميم يشكّل 40% من حزمة JavaScript، وأن نصف ذلك مكوّنات لا تستخدمها الصفحة.
 
-**Tree-shaking by default.** Publish ESM with proper `sideEffects` annotations in `package.json`. This lets bundlers eliminate unused components at build time. If your components have side effects (global style injection, custom element registration), mark them explicitly so the bundler doesn’t tree-shake them away—but be honest about what actually has side effects. Over-declaring side effects defeats the purpose.
+**اهتزاز الشجرة افتراضيًا.** انشر ESM مع إعلانات `sideEffects` صحيحة في `package.json`. هذا يتيح للمُجمِّعات إزالة المكوّنات غير المستخدمة وقت البناء. وإن كانت مكوّناتك ذات آثار جانبية (حقن أنماط عامة، أو تسجيل عناصر مخصصة)، فوسّمها صراحةً كي لا يزيلها المُجمِّع مع الأشجار—لكن كن صادقًا بشأن ما له آثار جانبية فعلًا. فالإفراط في إعلان الآثار الجانبية ينقض الغرض.
 
 ```json
 {
@@ -200,17 +200,17 @@ Then one day somebody profiles a page and discovers that the design system is 40
 }
 ```
 
-**Granular entry points.** Offer per-component entry points (`@acme/ui/Button`) alongside the barrel export (`@acme/ui`). Some bundlers handle barrel exports well. Others don’t. Per-component imports remove the ambiguity.
+**نقاط دخول دقيقة.** وفّر نقاط دخول لكل مكوّن (`@acme/ui/Button`) إلى جانب التصدير البرميلي (`@acme/ui`). بعض المُجمِّعات تتعامل جيدًا مع التصديرات البرميلية. وبعضها لا. والاستيراد لكل مكوّن يزيل الالتباس.
 
-**Size budgets in CI.** Set a size budget for the design system packages and enforce it in CI. If a pull request pushes the bundle past the threshold, the build fails. This makes size regressions as visible as test failures—which means they get fixed instead of noticed three months later during a performance review.
+**موازنات الحجم في CI.** ضع موازنة حجم لحزم نظام التصميم وافرضها في CI. فإن دفع طلب سحب الحزمة إلى ما يتجاوز العتبة، فشل البناء. وهذا يجعل تراجعات الحجم مرئية كفشل الاختبارات—أي أنها تُصلح بدل أن تُلاحَظ بعد ثلاثة أشهر أثناء مراجعة أداء.
 
-## Responsive Components with Container Queries
+## مكوّنات متجاوبة باستعلامات الحاوية
 
-CSS container queries change the maintenance equation for responsive components. Media queries respond to the *viewport*. Container queries respond to the *parent element’s size*. For a design system consumed across different contexts—a card in a full-width dashboard versus the same card in a narrow sidebar—container queries let the component adapt without the consumer passing size props or wrapper classes.
+تغيّر استعلامات حاوية CSS معادلة الصيانة للمكوّنات المتجاوبة. فاستعلامات الوسائط تستجيب *لإطار العرض*. أما استعلامات الحاوية فتستجيب *لحجم العنصر الأب*. ولنظام تصميم يُستهلك في سياقات مختلفة—بطاقة في لوحة معلومات بعرض كامل مقابل البطاقة نفسها في شريط جانبي ضيّق—تتيح استعلامات الحاوية للمكوّن أن يتكيّف دون أن يمرّر المستهلك خصائص حجم أو أصناف تغليف.
 
-This matters for maintenance because size variants are one of the fastest-growing surfaces in a design system. A `Card` with viewport-based responsive behavior works fine until someone drops it in a 300px sidebar and discovers the “desktop” layout is still rendering at full width. The usual fix is a `compact` prop, or a `size` prop, or a wrapping `<CardContainer width="narrow">`. Each one is another variant to test, document, and maintain.
+وهذا مهم للصيانة لأن متغيّرات الحجم من أسرع الأسطح نموًا في نظام التصميم. فمكوّن `Card` بسلوك تجاوب قائم على إطار العرض يعمل جيدًا حتى يضعه أحدهم في شريط جانبي بعرض 300 بكسل فيكتشف أن تخطيط «سطح المكتب» ما زال يُصيّر بالعرض الكامل. والحل المعتاد خاصية `compact`، أو خاصية `size`، أو تغليفه بـ`<CardContainer width="narrow">`. وكل واحد منها متغيّر آخر يحتاج اختبارًا وتوثيقًا وصيانة.
 
-Container queries eliminate that entire category of variant:
+وتُزيل استعلامات الحاوية تلك الفئة كاملة من المتغيّرات:
 
 ```css
 /* design-system/components/card.css */
@@ -238,19 +238,19 @@ Container queries eliminate that entire category of variant:
 }
 ```
 
-The component queries its own container and adjusts layout accordingly. No size prop. No media query that assumes viewport width equals available width. The component is genuinely context-agnostic—it works in a 1200px main content area and a 300px sidebar without the consumer doing anything.
+يستعلم المكوّن عن حاويته الخاصة ويعدّل التخطيط وفقًا لذلك. لا خاصية حجم. ولا استعلام وسائط يفترض أن عرض إطار العرض يساوي العرض المتاح. المكوّن محايد للسياق بحق—يعمل في منطقة محتوى رئيسية بعرض 1200 بكسل وفي شريط جانبي بعرض 300 بكسل دون أن يفعل المستهلك شيئًا.
 
-For design system teams, the practical shift is: adopt container queries as the default responsive mechanism for *components*, and reserve media queries for *page-level* layout concerns. This aligns with composition-over-configuration. A component that adapts to its container is one fewer prop, one fewer variant, one fewer thing to document and test.
+وبالنسبة لفرق نظام التصميم، التحوّل العملي هو: تبنَّ استعلامات الحاوية كآلية التجاوب الافتراضية *للمكوّنات*، واحفظ استعلامات الوسائط لهموم تخطيط *مستوى الصفحة*. وهذا يتوافق مع التركيب قبل التهيئة. فالمكوّن الذي يتكيّف مع حاويته هو خاصية أقل، ومتغيّر أقل، وشيء أقل للتوثيق والاختبار.
 
-## Accessibility Regression
+## تراجع إمكانية الوصول
 
-Accessibility is easy to get right on the first pass and easy to break on every subsequent one. A component ships with correct ARIA attributes, keyboard navigation, and focus management. Then someone adds a variant that skips the `aria-label`. Then a refactor breaks the tab order. Then a new feature adds a click handler to a `div` instead of a `button`.
+إمكانية الوصول سهلة الإتقان في المرة الأولى وسهلة الكسر في كل مرة تالية. يُنشر مكوّن بخصائص ARIA صحيحة، وتنقّل بلوحة المفاتيح، وإدارة تركيز. ثم يضيف أحدهم متغيّرًا يتجاهل `aria-label`. ثم تكسر إعادة هيكلة ترتيب التنقّل بمفتاح Tab. ثم تضيف ميزة جديدة معالج نقر إلى `div` بدل `button`.
 
-The problem is that accessibility regressions are invisible in visual testing. The component looks fine. It just doesn’t work for anyone using a keyboard or screen reader.
+والمشكلة أن تراجعات إمكانية الوصول غير مرئية في الاختبار البصري. يبدو المكوّن سليمًا. لكنه ببساطة لا يعمل مع أي شخص يستخدم لوحة المفاتيح أو قارئ شاشة.
 
-**Automated checks in stories.** [Storybook’s accessibility addon](https://storybook.js.org/docs/8/writing-tests/accessibility-testing) runs axe-core checks against every story. Wire it into CI so violations fail the build. This catches the low-hanging fruit: missing labels, insufficient contrast, invalid ARIA attributes.
+**فحوص آلية في القصص.** تشغّل [إضافة إمكانية الوصول في Storybook](https://storybook.js.org/docs/8/writing-tests/accessibility-testing) فحوص axe-core على كل قصة. اربطها بـCI كي تُفشل المخالفات البناء. وهذا يلتقط السهل: التسميات المفقودة، والتباين غير الكافي، وخصائص ARIA غير الصحيحة.
 
-**Keyboard interaction tests.** Automated checks can’t validate interaction patterns. Write explicit tests for keyboard behavior—Tab order, Enter/Space activation, Escape to dismiss, arrow key navigation within composite widgets. These are the interaction patterns defined in the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/), and they should be tested as rigorously as visual output.
+**اختبارات التفاعل بلوحة المفاتيح.** لا تستطيع الفحوص الآلية التحقق من أنماط التفاعل. اكتب اختبارات صريحة لسلوك لوحة المفاتيح—ترتيب Tab، والتنشيط بمفتاح Enter أو المسافة، والإغلاق بمفتاح Escape، والتنقّل بمفاتيح الأسهم داخل الودجات المركّبة. هذه أنماط التفاعل المعرّفة في [دليل ممارسات تأليف ARIA](https://www.w3.org/WAI/ARIA/apg/)، وينبغي اختبارها بالصرامة نفسها التي تُختبر بها المخرجات البصرية.
 
 ```typescript
 test('dropdown closes on Escape', async ({ page }) => {
@@ -264,15 +264,15 @@ test('dropdown closes on Escape', async ({ page }) => {
 });
 ```
 
-**Review new variants for a11y.** Every new variant, every new composition pattern, every new interactive state needs an accessibility review. Not a full audit—a focused check: does this variant inherit the base component’s ARIA behavior? Does this new state communicate its status to assistive technology? Does this composition pattern preserve the focus order? Add it to the pull request checklist and make it someone’s explicit responsibility.
+**راجع المتغيّرات الجديدة من ناحية إمكانية الوصول.** كل متغيّر جديد، وكل نمط تركيب جديد، وكل حالة تفاعل جديدة تحتاج مراجعة لإمكانية الوصول. لا تدقيقًا كاملًا—بل فحصًا مركّزًا: هل يرث هذا المتغيّر سلوك ARIA من المكوّن الأساس؟ وهل تُبلّغ هذه الحالة الجديدة عن وضعها للتقنيات المساعِدة؟ وهل يحافظ نمط التركيب هذا على ترتيب التركيز؟ أضفه إلى قائمة تحقّق طلب السحب واجعله مسؤولية صريحة لأحدهم.
 
-## Design-Engineering Drift
+## التباعد بين التصميم والهندسة
 
-Figma says the border radius is 8px. The code says `--acme-radius-md` which resolves to 6px. Both are “right” within their respective systems. Neither matches the other. This is **design-engineering drift**, and it’s the single most common source of “the design system doesn’t match the designs” complaints.
+تقول Figma إن نصف قطر الحواف 8 بكسل. وتقول الشيفرة `--acme-radius-md` التي تُحلّ إلى 6 بكسل. كلاهما «صحيح» داخل نظامه. ولا يطابق أحدهما الآخر. هذا هو **التباعد بين التصميم والهندسة**، وهو أكثر مصادر شكاوى «نظام التصميم لا يطابق التصاميم» شيوعًا.
 
-Drift happens because design tools and code are separate artifacts maintained by separate people on separate schedules. A designer updates a component in Figma. The change doesn’t propagate to code automatically. Eventually someone notices, files a ticket, and the ticket sits in the backlog until it matters enough to fix—by which point the Figma has changed again.
+ويحدث التباعد لأن أدوات التصميم والشيفرة أثران منفصلان يصونهما أشخاص مختلفون وفق جداول مختلفة. يحدّث مصمّم مكوّنًا في Figma. ولا ينتقل التغيير إلى الشيفرة تلقائيًا. ثم يلاحظ أحدهم الأمر أخيرًا، ويفتح تذكرة، وتبقى التذكرة في قائمة الأعمال حتى تصبح مهمة بما يكفي لإصلاحها—وعندها يكون Figma قد تغيّر مرة أخرى.
 
-**Single source of truth for tokens.** Pick one. Either tokens are authored in Figma and exported to code, or they’re authored in code and imported into Figma. Not both.
+**مصدر حقيقة واحد للرموز.** اختر واحدًا. إما أن تُؤلَّف الرموز في Figma وتُصدَّر إلى الشيفرة، وإما أن تُؤلَّف في الشيفرة وتُستورد إلى Figma. لا الاثنان.
 
 ```
 flowchart LR
@@ -292,19 +292,19 @@ flowchart LR
   style right fill:#4ade80,color:#000
 ```
 
-The [Tokens Studio](https://tokens.studio/) plugin syncs design tokens between Figma and code repositories, using the DTCG format as the interchange layer. The direction of flow matters less than the fact that there’s *one* direction.
+تزامن إضافة [Tokens Studio](https://tokens.studio/) رموز التصميم بين Figma ومستودعات الشيفرة، مستخدمةً صيغة DTCG كطبقة تبادل. واتجاه التدفّق أقل أهمية من كون الاتجاه *واحدًا*.
 
-**Figma-to-code diffing.** Build a check (automated or manual, on a cadence) that compares Figma component specs against code output. At a minimum, check token values, spacing, and typography. You don’t need pixel-perfect matching—you need to catch the drifts before they compound.
+**مقارنة Figma بالشيفرة.** ابنِ فحصًا (آليًا أو يدويًا، وفق وتيرة منتظمة) يقارن مواصفات مكوّنات Figma بمخرجات الشيفرة. وبالحد الأدنى، افحص قيم الرموز والتباعد والطباعة. لا تحتاج تطابقًا مثاليًا على مستوى البكسل—تحتاج التقاط التباعدات قبل أن تتراكم.
 
-**Shared language.** When the component in Figma is called “Card / Elevated / Large” and the code component is `<Card variant="raised" size="lg">`, every conversation between design and engineering starts with a translation exercise. Use the same names. If the Figma variant is “elevated,” the code prop value should be `"elevated"`, not `"raised"`. This sounds trivial. It prevents an extraordinary amount of confusion.
+**لغة مشتركة.** حين يُسمّى المكوّن في Figma «Card / Elevated / Large» ويكون مكوّن الشيفرة `<Card variant="raised" size="lg">`، تبدأ كل محادثة بين التصميم والهندسة بتمرين ترجمة. استخدم الأسماء نفسها. فإن كان المتغيّر في Figma اسمه «elevated»، فينبغي أن تكون قيمة الخاصية في الشيفرة `"elevated"` لا `"raised"`. يبدو هذا تافهًا. لكنه يمنع قدرًا هائلًا من الالتباس.
 
-## The Central Team Bottleneck
+## عنق زجاجة الفريق المركزي
 
-A design system team that owns everything becomes a team that blocks everything. Every new component, every bug fix, every variant request flows through the same three people. The backlog grows. Response times increase. Product teams start forking (see above) because waiting isn’t an option when you have a deadline.
+فريق نظام تصميم يملك كل شيء يصبح فريقًا يعطّل كل شيء. فكل مكوّن جديد، وكل إصلاح علّة، وكل طلب متغيّر يمرّ عبر الأشخاص الثلاثة أنفسهم. تنمو قائمة الأعمال. وترتفع أزمنة الاستجابة. وتبدأ فرق المنتجات بالتفرّع (انظر أعلاه) لأن الانتظار ليس خيارًا حين يكون لديك موعد نهائي.
 
-This is the most insidious maintenance problem because the central team is doing everything *right*—they’re reviewing carefully, maintaining quality, ensuring consistency—and the system is still failing because it can’t keep up with demand.
+وهذه أخبث مشكلة صيانة لأن الفريق المركزي يفعل كل شيء *بشكل صحيح*—فهو يراجع بعناية، ويحافظ على الجودة، ويضمن الاتساق—ومع ذلك يفشل النظام لأنه لا يستطيع مواكبة الطلب.
 
-**Tiered ownership.** Not every component needs the same level of central control. Define tiers:
+**ملكية طبقية.** ليست كل مكوّنات تحتاج المستوى نفسه من التحكّم المركزي. عرّف طبقات:
 
 ```
 flowchart TB
@@ -330,31 +330,31 @@ flowchart TB
   style community fill:#fbbf24,color:#000
 ```
 
-- **Core**: tokens, themes, primitives (Button, Input, Typography). Owned and maintained by the design system team. Changes require full review.
-- **Composed**: higher-level patterns built from core components (DataTable, FormField, Wizard). Owned by product teams, built using core primitives. Design system team reviews for API consistency and accessibility, but product teams drive the roadmap.
-- **Community**: experimental or domain-specific components. Contributed by anyone. Minimal review. Not guaranteed to be stable or maintained. Clearly labeled as such.
+- **النواة**: الرموز، والسمات، والعناصر الأولية (Button وInput وTypography). يملكها ويصونها فريق نظام التصميم. وتتطلب تغييراتها مراجعة كاملة.
+- **المركّبة**: أنماط أعلى مستوى مبنية من مكوّنات النواة (DataTable وFormField وWizard). تملكها فرق المنتجات، وتُبنى باستخدام العناصر الأولية في النواة. ويراجع فريق نظام التصميم اتساق واجهة البرمجة وإمكانية الوصول، لكن فرق المنتجات هي التي تقود خارطة الطريق.
+- **المجتمع**: مكوّنات تجريبية أو خاصة بمجال. يساهم بها أي أحد. مراجعة دنيا. وليس مضمونًا أن تكون مستقرة أو مصانة. وتُوسم بوضوح على هذا الأساس.
 
-This distributes the maintenance burden without abandoning quality where it matters most.
+وهذا يوزّع عبء الصيانة دون التخلّي عن الجودة حيث تهمّ أكثر ما يهم.
 
-**Office hours over tickets.** A Jira ticket for “can you add an icon position prop to Button” is slow, async, and loses context. A weekly office hour where product engineers bring their design system questions, requests, and frustrations is faster and builds relationships. Most requests turn out to be “I didn’t know the system could already do this” or “here’s a two-line change you can make yourself with guidance.”
+**ساعات مكتبية بدل التذاكر.** تذكرة Jira تقول «هل يمكنكم إضافة خاصية موضع أيقونة إلى Button» بطيئة وغير متزامنة وتفقد السياق. أما ساعة مكتبية أسبوعية يجلب فيها مهندسو المنتجات أسئلتهم وطلباتهم وإحباطاتهم بشأن نظام التصميم فهي أسرع وتبني العلاقات. ويتضح أن معظم الطلبات إما «لم أكن أعلم أن النظام يستطيع فعل هذا أصلًا» وإما «إليك تغييرًا من سطرين يمكنك تنفيذه بنفسك مع بعض الإرشاد».
 
-**Inner-source model.** Treat the design system as an inner-source project. Anyone can contribute. The core team reviews and merges. Clear contributing guidelines, good `CONTRIBUTING.md`, automated checks that catch style and quality issues before review. The goal is to make contributing *easier* than forking.
+**نموذج المصدر الداخلي.** عامل نظام التصميم كمشروع مصدر داخلي. يستطيع أي أحد المساهمة. ويراجع الفريق الأساسي ويدمج. إرشادات مساهمة واضحة، و`CONTRIBUTING.md` جيد، وفحوص آلية تلتقط مشكلات الأسلوب والجودة قبل المراجعة. والهدف جعل المساهمة *أسهل* من التفرّع.
 
-## The Contribution Pipeline
+## خط أنابيب المساهمة
 
-Tiered ownership and office hours reduce the bottleneck, but they don’t address the most common complaint product teams have about design systems: “I submitted a request three months ago and nobody responded.”
+تقلّل الملكية الطبقية والساعات المكتبية من عنق الزجاجة، لكنها لا تعالج أكثر الشكاوى شيوعًا لدى فرق المنتجات بشأن أنظمة التصميم: «قدّمت طلبًا قبل ثلاثة أشهر ولم يردّ أحد».
 
-The fix is a visible, time-bounded contribution pipeline with service levels.
+والحل خط أنابيب مساهمة مرئي ومحدّد زمنيًا بمستويات خدمة.
 
-**The flow looks like this.** Someone files an intake with the problem they’re trying to solve and evidence that it’s not already addressed by the system. Triage sorts it into one of four buckets: `reject` (doesn’t belong in the system), `compose` (can be built from existing primitives), `RFC` (needs design and review), or `expedite` (urgent fix to existing behavior). An RFC goes through design, engineering, and accessibility review. Implementation happens behind quality gates. The release ships with migration guidance. After release, monitor adoption and run a retrospective.
+**يبدو التدفّق هكذا.** يقدّم أحدهم طلبًا استقبالًا يتضمن المشكلة التي يحاول حلّها ودليلًا على أن النظام لا يعالجها بالفعل. ويفرزه الفرز إلى أحد أربعة صناديق: `reject` (لا ينتمي إلى النظام)، أو `compose` (يمكن بناؤه من العناصر الأولية القائمة)، أو `RFC` (يحتاج تصميمًا ومراجعة)، أو `expedite` (إصلاح عاجل لسلوك قائم). ويمرّ RFC بمراجعة التصميم والهندسة وإمكانية الوصول. ويجري التنفيذ خلف بوابات جودة. ويُنشر الإصدار مع إرشاد ترحيل. وبعد النشر، راقب التبنّي ونفّذ مراجعة استخلاصية.
 
-That’s not particularly exotic. The part that makes it *work* is the service levels.
+هذا ليس غريبًا بشكل خاص. والجزء الذي يجعله *يعمل* هو مستويات الخدمة.
 
-**Set response targets and publish them.** Intake response within two business days. RFC first review within five business days. Non-breaking decision within ten. Breaking-change decision within fifteen, with a rollout plan. These aren’t aspirational targets on an internal wiki—they’re commitments. If you miss them consistently, product teams learn that the system is slow and start routing around it.
+**ضع أهداف استجابة وانشرها.** استجابة للطلب المستقر خلال يومَي عمل. ومراجعة أولى لـRFC خلال خمسة أيام عمل. وقرار غير كاسر خلال عشرة. وقرار تغيير كاسر خلال خمسة عشر، مع خطة طرح. هذه ليست أهدافًا أمنيات على ويكي داخلية—إنها التزامات. وإن أخفقت فيها بانتظام، تتعلّم فرق المنتجات أن النظام بطيء وتبدأ بالالتفاف حوله.
 
-**Acceptance criteria before inclusion.** Not every request should become a component. Before something enters the system, validate reuse potential across multiple teams, test and document accessibility behavior, complete the token mapping for default and themed contexts, review the API for invalid state combinations, and write docs that include examples, anti-patterns, and migration notes.
+**معايير القبول قبل الإدراج.** ليست كل طلب يجب أن يصبح مكوّنًا. قبل أن يدخل شيء إلى النظام، تحقّق من إمكان إعادة استخدامه عبر فرق متعددة، واختبر سلوك إمكانية الوصول ووثّقه، وأكمل ربط الرموز للسياقات الافتراضية والموسومة بسمات، وراجع واجهة البرمجة من حيث توليفات الحالات غير الصحيحة، واكتب توثيقًا يتضمن أمثلة وأنماطًا مضادة وملاحظات ترحيل.
 
-An RFC template keeps proposals focused:
+ويُبقي قالب RFC المقترحات مركّزة:
 
 ```markdown
 # RFC: <proposal-title>
@@ -378,91 +378,91 @@ An RFC template keeps proposals focused:
 ## Rollout and rollback plan
 ```
 
-If this feels heavyweight, calibrate the process to the size of the change. A new color token doesn’t need an RFC. A new composite component with five interactive states does. The point is to make the contribution *path* visible, not to make every contribution *slow*.
+إن بدا هذا ثقيلًا، فاضبط العملية على حجم التغيير. فرموز لون جديد لا يحتاج RFC. أما مكوّن مركّب جديد بخمس حالات تفاعلية فيحتاج. والفكرة إظهار *مسار* المساهمة، لا جعل كل مساهمة *بطيئة*.
 
-## Measuring System Health
+## قياس صحة النظام
 
-You can’t maintain what you can’t measure. The governance piece covers [what to measure](https://stevekinney.com/courses/enterprise-ui/design-system-governance) at the organizational level. For ongoing maintenance, focus on these operational signals:
+لا يمكنك صيانة ما لا تقيسه. ويغطي جزء الحوكمة [ما ينبغي قياسه](https://stevekinney.com/courses/enterprise-ui/design-system-governance) على المستوى التنظيمي. وللصيانة المستمرة، ركّز على هذه الإشارات التشغيلية:
 
-- **Component adoption rate**: what percentage of UI in each application uses design system components versus custom implementations? Falling adoption means the system isn’t keeping up with needs.
-- **Version currency**: median age of the design system version across consuming applications. Rising age means upgrades are too painful.
-- **Contribution rate**: how many external contributions (from product teams) land per quarter? Low contribution rate means the system is too hard to contribute to or the core team is a bottleneck.
-- **Fork count**: how many known forks exist? Rising forks are the canary in the coal mine.
-- **Time to integrate**: how long from “I need a new component” to “it’s available in the system”? If this is measured in months, product teams will route around the system.
-- **Bundle size trend**: is the system getting heavier? Track package sizes over time and correlate with component count.
+- **معدّل تبنّي المكوّنات**: ما النسبة المئوية من واجهة المستخدم في كل تطبيق التي تستخدم مكوّنات نظام التصميم مقابل تطبيقات مخصّصة؟ وتراجع التبنّي يعني أن النظام لا يواكب الاحتياجات.
+- **حداثة الإصدار**: العمر الوسيط لإصدار نظام التصميم عبر التطبيقات المستهلكة. وارتفاع العمر يعني أن الترقيات مؤلمة جدًا.
+- **معدّل المساهمة**: كم مساهمة خارجية (من فرق المنتجات) تُدمج كل ربع سنة؟ ومعدّل المساهمة المنخفض يعني أن المساهمة في النظام صعبة جدًا أو أن الفريق الأساسي عنق زجاجة.
+- **عدد التفرّعات**: كم تفرّعًا معروفًا موجود؟ وتزايد التفرّعات هو كناري منجم الفحم.
+- **زمن الإدماج**: كم يمضي من «أحتاج مكوّنًا جديدًا» إلى «هو متاح في النظام»؟ إن كان هذا يُقاس بالأشهر، فستلتفّ فرق المنتجات حول النظام.
+- **اتجاه حجم الحزمة**: هل يصبح النظام أثقل؟ تتبّع أحجام الحزم عبر الزمن واربطها بعدد المكوّنات.
 
-None of these need a fancy dashboard on day one. A spreadsheet updated monthly is fine. The point is to *have* the data so decisions are informed by evidence instead of vibes.
+لا يحتاج أي منها لوحة معلومات فاخرة من اليوم الأول. جدول بيانات يُحدَّث شهريًا يكفي. والفكرة *امتلاك* البيانات لتستند القرارات إلى الدليل لا إلى الإحساس.
 
-## The Enforcement Ladder
+## سلّم الفرض
 
-Lint rules and CI gates are the enforcement mechanism—but enforcement that arrives before the system has coverage will frustrate teams. If 30% of your UI surfaces don’t have a design system equivalent, blocking raw `<button>` elements in CI means teams can’t ship until you catch up. That’s a recipe for `eslint-disable` everywhere, which is worse than no rule at all.
+قواعد فحص الشيفرة وبوابات CI هي آلية الفرض—لكن الفرض الذي يأتي قبل أن يحقّق النظام تغطية كافية سيُحبِط الفرق. فإن لم يكن لـ30% من أسطح واجهة المستخدم لديك مقابل في نظام التصميم، فحجب عناصر `<button>` الخام في CI يعني أن الفرق لن تستطيع النشر حتى تلحق. وهذه وصفة لـ`eslint-disable` في كل مكان، وهي أسوأ من عدم وجود قاعدة أصلًا.
 
-Enforcement should escalate in stages:
+وينبغي أن يتدرّج الفرض على مراحل:
 
-- **Guidance only:** docs, design reviews, and recommendations. No automation. This is where you start while the system is still filling gaps.
-- **Lint warnings:** teams see the guidance in their editors and CI logs, but nothing blocks. This is education.
-- **Pull request annotations:** warnings surface in code review with links to the relevant design system component or token. Reviewers notice. Authors fix.
-- **Required checks:** raw hex colors fail CI. Native `<button>` elements fail CI. This only works when the system provides a real alternative for every blocked pattern.
-- **Controlled exceptions with expiration dates:** when a team genuinely needs to deviate—a one-off landing page, a third-party integration with its own styles—grant a time-bounded exception with an owner, a reason, and a date by which the deviation must be resolved.
+- **إرشاد فقط:** توثيق ومراجعات تصميم وتوصيات. بلا أتمتة. وهنا تبدأ بينما لا يزال النظام يسدّ الفجوات.
+- **تحذيرات الفحص:** ترى الفرق الإرشاد في محرراتها وسجلات CI، لكن لا شيء يحجب. هذا تعليم.
+- **تعليقات طلبات السحب:** تظهر التحذيرات في مراجعة الشيفرة مع روابط إلى مكوّن نظام التصميم أو رمزه ذي الصلة. فيلاحظ المراجعون. ويصلح المؤلفون.
+- **فحوص إلزامية:** تُفشل ألوان hex الخام بناء CI. وتُفشله عناصر `<button>` الأصلية. وهذا لا ينجح إلا حين يوفّر النظام بديلًا حقيقيًا لكل نمط محجوب.
+- **استثناءات مضبوطة بتواريخ انتهاء:** حين يحتاج فريق فعلًا إلى الخروج عن القاعدة—صفحة هبوط لمرة واحدة، أو تكامل طرف ثالث بأنماطه الخاصة—فامنحه استثناءً محدّد المدة بمالك وسبب وتاريخ يجب أن يُحلّ الخروج قبله.
 
-The ladder only moves one direction: up. But it moves *slowly*, and only after the system has earned the right to be strict. Enforce strictly after coverage is high enough that teams aren’t blocked by missing capabilities. Before that, you’re just making enemies.
+يتحرّك السلّم في اتجاه واحد فقط: إلى الأعلى. لكنه يتحرّك *ببطء*، وفقط بعد أن يستحق النظام حقّ الصرامة. افرض بصرامة بعد أن تصبح التغطية عالية بما يكفي بحيث لا تُحجب الفرق بقدرات ناقصة. وقبل ذلك، لن تجني إلا الأعداء.
 
-## Assessing Your Maturity
+## تقييم نضجك
 
-Not every organization needs the same maintenance investment. A useful diagnostic is to ask where you sit on the maturity spectrum:
+لا تحتاج كل مؤسسة الاستثمار نفسه في الصيانة. ومن التشخيصات المفيدة أن تسأل أين تقع على طيف النضج:
 
-| Level | Characteristics | Main Risk | What to Work On Next |
+| المستوى | الخصائص | الخطر الرئيسي | ما العمل عليه تاليًا |
 | --- | --- | --- | --- |
-| L0: Ad Hoc | Repeated one-off UI decisions, no shared artifacts | Inconsistent UX and compounding rework | Establish a token baseline and publish it |
-| L1: Shared Library | Reusable components exist, minimal governance | Drift and fragile APIs | Add a contribution model and API review |
-| L2: Governed Platform | RFCs, release notes, quality gates | Central team bottleneck | Federate contributions with tiered ownership |
-| L3: Scaled Platform | Multi-brand support, migration tooling, metrics | Operational complexity | Tighten observability and automate upgrades |
-| L4: Product Infrastructure | DS runs like an internal product with SLAs | Complacency and slower innovation | Continuous capability reviews and deprecation |
+| L0: ارتجالي | قرارات واجهة مستخدم متكررة لمرة واحدة، وبلا أثر مشترك | تجربة مستخدم غير متسقة وأعمال إعادة متضاعفة | أنشئ أساسًا للرموز وانشره |
+| L1: مكتبة مشتركة | مكوّنات قابلة لإعادة الاستخدام موجودة، بحوكمة دنيا | التباعد وواجهات برمجة هشّة | أضف نموذج مساهمة ومراجعة واجهة برمجة |
+| L2: منصّة محوكمة | طلبات تغيير (RFCs)، وملاحظات إصدار، وبوابات جودة | عنق زجاجة الفريق المركزي | وزّع المساهمات بملكية طبقية |
+| L3: منصّة موسّعة | دعم علامات متعددة، وأدوات ترحيل، ومقاييس | تعقيد تشغيلي | شدّد الرصد وأتمت الترقيات |
+| L4: بنية تحتية للمنتج | يعمل نظام التصميم كمنتج داخلي باتفاقيات مستوى خدمة | الرضا والركون إلى المنجز، وابتكار أبطأ | مراجعات قدرات مستمرة وإهمال منظّم |
 
-Most organizations overestimate their level. If your components exist but nobody reviews API consistency, you’re at L1 regardless of how polished the Storybook looks. If you have an RFC process but no service levels and a three-month backlog, you’re still at L2 with L3 aspirations.
+تُبالغ معظم المؤسسات في تقدير مستواها. فإن كانت مكوّناتك موجودة لكن لا يراجع أحد اتساق واجهة البرمجة، فأنت في L1 مهما بدا Storybook مصقولًا. وإن كان لديك عملية RFC لكن بلا مستويات خدمة وبقائمة أعمال تراكمت ثلاثة أشهر، فأنت ما زلت في L2 بطموحات L3.
 
-The maturity model isn’t a ladder you climb once. Systems can regress. A reorg that disbands the design system team drops you from L3 to L1 overnight. A quarter of aggressive product work without maintenance time creates token sprawl that erodes L2 governance. Maintenance is the force that prevents regression.
+نموذج النضج ليس سلّمًا تصعدته مرة واحدة. فالأنظمة قد تتراجع. وإعادة تنظيم تحلّ فريق نظام التصميم تُسقطك من L3 إلى L1 بين ليلة وضحاها. وربع سنة من العمل المنتجي المكثّف بلا وقت للصيانة يخلق تناثرًا في الرموز يقوّض حوكمة L2. والصيانة هي القوة التي تمنع التراجع.
 
-## The Symptom-to-Action Map
+## خريطة العَرَض إلى الإجراء
 
-When you know something’s wrong but aren’t sure where to start, match the symptom to its likely root cause:
+حين تعلم أن هناك خطبًا لكنك لا تعرف من أين تبدأ، طابق العَرَض مع سببه الجذري المرجّح:
 
-| Symptom | Likely Root Cause | Next Action |
+| العَرَض | السبب الجذري المرجّح | الإجراء التالي |
 | --- | --- | --- |
-| Teams keep bypassing the DS | Missing capabilities or slow intake | Improve intake SLA and add extension points |
-| Upgrades are repeatedly delayed | Migration friction too high | Invest in codemods and release support |
-| Visual inconsistency across brands | Weak semantic token contract | Rework theming around semantic tokens |
-| Governance queue is overloaded | Centralized decision bottleneck | Delegate scoped approvals and improve triage |
-| Accessibility regressions recur | A11y not built into definition of done | Add mandatory a11y gates and manual review |
-| New components feel unpredictable | No API consistency conventions | Establish naming conventions and API checklist |
+| الفرق تواصل الالتفاف حول نظام التصميم | قدرات ناقصة أو استقبال بطيء | حسّن اتفاقية مستوى خدمة الاستقبال وأضف نقاط توسعة |
+| تتراجع الترقيات مرارًا | احتكاك الترحيل مرتفع جدًا | استثمر في codemods ودعم الإصدار |
+| عدم اتساق بصري بين العلامات | عقد رموز دلالية ضعيف | أعد بناء التنسيق حول الرموز الدلالية |
+| قائمة الحوكمة مثقلة | عنق زجاجة قرار مركزي | فوّض الموافقات المحدودة النطاق وحسّن الفرز |
+| تتكرّر تراجعات إمكانية الوصول | إمكانية الوصول ليست مدمجة في تعريف الإنجاز | أضف بوابات إلزامية لإمكانية الوصول ومراجعة يدوية |
+| تبدو المكوّنات الجديدة غير متوقّعة | لا اصطلاحات لاتساق واجهة البرمجة | أثبت اصطلاحات التسمية وقائمة تحقّق لواجهة البرمجة |
 
-This isn’t a flowchart. Multiple symptoms can be active at once, and the root causes overlap. But if you can identify even one symptom and address its root cause, the downstream effects tend to improve the others.
+هذه ليست مخططًا انسيابيًا. فقد تكون أعراض متعددة نشطة في الوقت نفسه، وتتقاطع الأسباب الجذرية. لكن إن استطعت تحديد عَرَض واحد فقط ومعالجة سببه الجذري، فتميل آثاره اللاحقة إلى تحسين الأخرى.
 
-## The Maintenance Mindset
+## عقلية الصيانة
 
-The hardest part of design system maintenance isn’t any single problem. It’s the shift from “building the system” to “tending the system.” Building feels productive. Tending feels like janitorial work. But a design system that gets built and then left alone will drift, bloat, and eventually get replaced by another system that gets built and then left alone.
+أصعب ما في صيانة نظام التصميم ليس مشكلة بعينها. بل التحوّل من «بناء النظام» إلى «رعاية النظام». فالبناء يبدو منتجًا. والرعاية تبدو عملًا من أعمال الحراسة. لكن نظام تصميم يُبنى ثم يُترك وحده سيتباعد ويتضخّم، وينتهي به الأمر إلى أن يستبدله نظام آخر يُبنى ثم يُترك وحده.
 
-The teams that maintain design systems well treat it like infrastructure: boring, essential, and worth investing in continuously. They allocate time for deprecation and removal, not just addition. They track health metrics. They make upgrading easier than forking. They review components for API consistency the same way they review code for correctness.
+الفرق التي تصون أنظمة التصميم جيدًا تعاملها كبنية تحتية: مملة، وأساسية، وتستحق استثمارًا مستمرًا. تخصّص وقتًا للإهمال والإزالة، لا للإضافة وحدها. وتتبّع مقاييس الصحة. وتجعل الترقية أسهل من التفرّع. وتراجع المكوّنات من حيث اتساق واجهة البرمجة كما تراجع الشيفرة من حيث الصحّة.
 
-A design system is a product. Products that ship once and never iterate die. The same rule applies here—it just takes longer to notice.
+نظام التصميم منتج. والمنتجات التي تُنشر مرة ولا تتطوّر تموت. والقاعدة نفسها تنطبق هنا—لكن ملاحظة ذلك تستغرق وقتًا أطول.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Maintaining a Design System
+### صيانة نظام التصميم
 
-> The post-launch challenges.
+> تحديات ما بعد الإطلاق.
 
-- **Component proliferation** — too many variants. Audit ruthlessly, deprecate aggressively.
-- **Fork culture** — teams copy-paste instead of contributing. Fix the contribution path.
-- **Version fragmentation** — 5 apps on 5 different versions. Track adoption, set deprecation timelines.
-- **Documentation rot** — docs drift from implementation. Colocate docs with code. Automate.
+- **تضخّم المكوّنات** — متغيّرات أكثر من اللازم. دقّق بلا رحمة، وأهمل بحزم.
+- **ثقافة التفرّع** — الفرق تنسخ وتلصق بدل المساهمة. أصلح مسار المساهمة.
+- **تشظّي الإصدارات** — 5 تطبيقات على 5 إصدارات مختلفة. تتبّع التبنّي، واضبط جداول زمنية للإهمال.
+- **تعفّن التوثيق** — التوثيق يتباعد عن التنفيذ. ضع التوثيق بجوار الشيفرة. وأتمِت.
 
-**Contribution pipeline:**
+**خط أنابيب المساهمة:**
 
-1. Proposal (issue/RFC) → 2. Design review → 3. Implementation → 4. Visual regression test → 5. Release
+1. مقترح (issue/RFC) → 2. مراجعة تصميم → 3. تنفيذ → 4. اختبار التراجع البصري → 5. إصدار
 
-- Central team reviews for consistency and accessibility.
-- Product teams contribute components they need.
-- Service level: respond to proposals within N days.
+- يراجع الفريق المركزي الاتساق وإمكانية الوصول.
+- تساهم فرق المنتجات بالمكوّنات التي تحتاجها.
+- مستوى الخدمة: الردّ على المقترحات خلال N يوم.

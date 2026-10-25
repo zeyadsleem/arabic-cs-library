@@ -1,18 +1,18 @@
 ---
-title: "S3 SDK Examples"
-lang: en
+title: "أمثلة على SDK الخاص بـ S3"
+lang: ar
 source: "https://stevekinney.com/courses/aws/s3-sdk-examples"
 ---
 
-Common patterns for working with Amazon S3 using the AWS SDK for JavaScript v3 (`@aws-sdk/client-s3`).
+أنماط شائعة للعمل مع Amazon S3 باستخدام AWS SDK لـ JavaScript الإصدار v3 (`@aws-sdk/client-s3`).
 
-## Installation
+## التثبيت
 
 ```bash
 npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
 ```
 
-## Client Setup
+## تهيئة العميل
 
 ```typescript
 import { S3Client } from '@aws-sdk/client-s3';
@@ -24,7 +24,7 @@ const s3 = new S3Client({
 });
 ```
 
-## Upload an Object (`PutObject`)
+## رفع كائن (`PutObject`)
 
 ```typescript
 import { PutObjectCommand } from '@aws-sdk/client-s3';
@@ -42,7 +42,7 @@ await s3.send(
 );
 ```
 
-## Download an Object (`GetObject`)
+## تنزيل كائن (`GetObject`)
 
 ```typescript
 import { GetObjectCommand } from '@aws-sdk/client-s3';
@@ -58,7 +58,7 @@ const text = await Body!.transformToString();
 console.log(text);
 ```
 
-## List Objects (`ListObjectsV2`)
+## سرد الكائنات (`ListObjectsV2`)
 
 ```typescript
 import { ListObjectsV2Command } from '@aws-sdk/client-s3';
@@ -81,7 +81,7 @@ do {
 } while (ContinuationToken);
 ```
 
-## Delete an Object
+## حذف كائن
 
 ```typescript
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -94,7 +94,7 @@ await s3.send(
 );
 ```
 
-## Copy an Object
+## نسخ كائن
 
 ```typescript
 import { CopyObjectCommand } from '@aws-sdk/client-s3';
@@ -108,7 +108,7 @@ await s3.send(
 );
 ```
 
-## Check Existence (`HeadObject`)
+## التحقّق من الوجود (`HeadObject`)
 
 ```typescript
 import { HeadObjectCommand, NotFound } from '@aws-sdk/client-s3';
@@ -124,11 +124,11 @@ async function exists(Bucket: string, Key: string) {
 }
 ```
 
-## Pre-Signed URLs
+## عناوين URL الموقّعة مسبقًا
 
-Pre-signed URLs let a client upload or download an object directly from S3 without your backend proxying the bytes. The URL carries a short-lived, scoped signature — the client doesn’t need AWS credentials.
+تتيح عناوين URL الموقّعة مسبقًا للعميل رفع كائن أو تنزيله مباشرة من S3 دون أن يمرّر خادمك الخلفي البايتات. ويحمل عنوان URL توقيعًا محدود النطاق وقصير الأجل — فلا يحتاج العميل إلى بيانات اعتماد AWS.
 
-### Pre-Signed URL for Download (`GetObject`)
+### عنوان URL موقّع مسبقًا للتنزيل (`GetObject`)
 
 ```typescript
 import { GetObjectCommand } from '@aws-sdk/client-s3';
@@ -146,7 +146,7 @@ const url = await getSignedUrl(
 // Hand `url` to the browser — plain GET, no auth headers.
 ```
 
-### Pre-Signed URL for Upload (`PutObject`)
+### عنوان URL موقّع مسبقًا للرفع (`PutObject`)
 
 ```typescript
 import { PutObjectCommand } from '@aws-sdk/client-s3';
@@ -163,7 +163,7 @@ const url = await getSignedUrl(
 );
 ```
 
-On the client:
+على جانب العميل:
 
 ```typescript
 await fetch(url, {
@@ -173,9 +173,9 @@ await fetch(url, {
 });
 ```
 
-The `Content-Type` header on the `PUT` must match what was signed, or S3 rejects the request with `SignatureDoesNotMatch`.
+يجب أن تطابق ترويسة `Content-Type` في طلب `PUT` ما وُقّع، وإلا رفض S3 الطلب بـ `SignatureDoesNotMatch`.
 
-## Multipart Upload (for Large Files)
+## الرفع متعدّد الأجزاء (للملفات الكبيرة)
 
 ```typescript
 import { Upload } from '@aws-sdk/lib-storage';
@@ -200,9 +200,9 @@ upload.on('httpUploadProgress', (p) => {
 await upload.done();
 ```
 
-## Express Example: Upload via Pre-Signed URL
+## مثال Express: الرفع عبر عنوان URL موقّع مسبقًا
 
-A minimal Express app that hands the client a pre-signed upload URL and later reads the object back.
+تطبيق Express بسيط يمنح العميل عنوان URL موقّعًا مسبقًا للرفع، ثم يقرأ الكائن مرة أخرى لاحقًا.
 
 ```typescript
 import express from 'express';
@@ -257,11 +257,11 @@ app.get('/uploads/:key', async (req, res) => {
 app.listen(3000);
 ```
 
-The client hits `POST /uploads` to get a signed URL, uploads the file directly to S3 with a `PUT`, and can later fetch it back through `GET /uploads/:key`. Your server never touches the upload bytes — S3 handles the heavy lifting.
+يضرب العميل `POST /uploads` للحصول على عنوان URL موقّع، ويرفع الملف مباشرة إلى S3 بـ `PUT`، ويمكنه لاحقًا جلبه عبر `GET /uploads/:key`. ولا يلمس خادمك بايتات الرفع إطلاقًا — فـ S3 تتولّى العمل الشاق.
 
-## Common Gotchas
+## المزالق الشائعة
 
-- **CORS**: Browser uploads via pre-signed URL need the bucket’s CORS config to allow `PUT` from your origin.
-- **Clock skew**: Pre-signed URLs are time-bound. A client with a badly drifted clock can get `RequestTimeTooSkewed`.
-- **Signed headers must match**: Any header included when signing (e.g., `ContentType`, `ACL`, `x-amz-meta-*`) must be sent verbatim by the client.
-- **Region**: The client region must match the bucket’s region, or you’ll get `PermanentRedirect` / 301s.
+- **CORS**: عمليات الرفع من المتصفح عبر عنوان URL موقّع مسبقًا تحتاج إلى تهيئة CORS في الحاوية للسماح بـ `PUT` من أصلك.
+- **انحراف الساعة**: عناوين URL الموقّعة مسبقًا مرتبطة بالوقت. والعميل الذي انحرفت ساعته بشدة قد يحصل على `RequestTimeTooSkewed`.
+- **يجب أن تطابق الترويسات الموقّعة**: أي ترويسة أُدرجت عند التوقيع (مثل `ContentType` و`ACL` و`x-amz-meta-*`) يجب أن يرسلها العميل حرفيًا.
+- **المنطقة**: يجب أن تطابق منطقة العميل منطقة الحاوية، وإلا حصلت على `PermanentRedirect` / 301.

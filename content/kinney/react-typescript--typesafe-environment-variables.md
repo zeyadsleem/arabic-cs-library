@@ -1,12 +1,12 @@
 ---
-title: "Type-Safe Environment Variables"
-lang: en
+title: "متغيّرات بيئة آمنة الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typesafe-environment-variables"
 ---
 
-## Type-Safe Environment Variables
+## متغيّرات بيئة آمنة الأنواع (Type-Safe Environment Variables)
 
-Here’s a pattern for handling environment variables that’ll save you from runtime surprises:
+إليك نمطًا للتعامل مع متغيّرات البيئة (environment variables) يجنّبك المفاجآت عند وقت التشغيل:
 
 ```typescript
 // src/lib/env.ts

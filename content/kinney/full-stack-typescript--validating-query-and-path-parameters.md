@@ -1,10 +1,10 @@
 ---
-title: "Validating Query and Path Parameters"
-lang: en
+title: "التحقق من معاملات الاستعلام والمسار"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-query-and-path-parameters"
 ---
 
-We can create similar middleware for validating queries and paths.
+يمكننا إنشاء وسيط مشابه للتحقق من الاستعلامات والمسارات.
 
 ```typescript
 const validateParams =
@@ -32,9 +32,9 @@ const validateQuery =
   };
 ```
 
-## Putting It All Together
+## جمع كل شيء معًا
 
-Now, we can make one middleware that validates all of the different options.
+الآن يمكننا إنشاء وسيط واحد يتحقق من كل الخيارات المختلفة.
 
 ```typescript
 import { type NextFunction, type Request, type Response } from 'express';
@@ -74,4 +74,4 @@ export const validate = (schemas: ValidationOptions) => {
 };
 ```
 
-**Next**: [Adding Client-Side Validations](https://stevekinney.com/courses/full-stack-typescript/adding-client-side-validation)
+**التالي**: [إضافة تحققات من جهة العميل](https://stevekinney.com/courses/full-stack-typescript/adding-client-side-validation)

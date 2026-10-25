@@ -1,34 +1,34 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/s3-static-site-solution"
 ---
 
-This is the complete solution for the S3 static site deployment exercise. Every command is shown with its expected output so you can verify each step.
+هذا هو الحل الكامل لتمرين نشر موقع ثابت على S3. وكل أمر معروض مع ناتجه المتوقع لتتمكن من التحقق من كل خطوة.
 
-> **Tip**
+> **نصيحة**
 >
-> If the console labels move while you’re doing this exercise, keep the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) and the [`aws s3 sync` command reference](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) open. AWS changes the UI more often than the core concepts.
+> إن تحرّكت تسميات لوحة التحكم أثناء أدائك هذا التمرين، فأبقِ [درس موقع S3 الثابت](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) و[مرجع أمر `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) مفتوحين. فـ AWS تغيّر واجهة المستخدم أكثر مما تغيّر المفاهيم الأساسية.
 
-## Why This Works
+## لماذا يعمل هذا
 
-- S3 website hosting turns a bucket full of objects into an HTTP origin with index and error document behavior.
-- The public-read bucket policy is what makes the website endpoint usable from a browser; the upload alone is not enough.
-- Versioning gives you a recovery path the moment you overwrite `index.html`, which is why it belongs in the same exercise as the first deploy.
+- تحوّل استضافة المواقع في S3 حاوية مليئة بالكائنات إلى أصل HTTP له سلوك مستند الفهرسة ومستند الخطأ.
+- سياسة الحاوية العامة للقراءة هي ما يجعل نقطة نهاية الموقع قابلة للاستخدام من متصفح؛ فالرفع وحده لا يكفي.
+- تمنحك الإصدارات مسار استرداد في اللحظة التي تكتب فوق `index.html`، ولهذا تنتمي إلى التمرين نفسه الذي فيه أول عملية نشر.
 
-## Create the Static Site Files
+## إنشاء ملفات الموقع الثابت
 
-> **Tip**
+> **نصيحة**
 >
-> These files are also available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/playground/build) if you’d prefer to clone them instead of creating them by hand.
+> هذه الملفات متاحة أيضًا في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/playground/build) إن كنت تفضّل استنساخها بدلًا من إنشائها يدويًا.
 
-Create a `build/` directory with four files:
+أنشئ مجلد `build/` فيه أربعة ملفات:
 
 ```bash
 mkdir -p build
 ```
 
-Create `build/index.html`:
+أنشئ `build/index.html`:
 
 ```html
 <!doctype html>
@@ -50,7 +50,7 @@ Create `build/index.html`:
 </html>
 ```
 
-Create `build/styles.css`:
+أنشئ `build/styles.css`:
 
 ```css
 * {
@@ -87,14 +87,14 @@ p {
 }
 ```
 
-Create `build/app.js`:
+أنشئ `build/app.js`:
 
 ```javascript
 document.getElementById('timestamp').textContent =
   'Page loaded at: ' + new Date().toLocaleTimeString();
 ```
 
-Create `build/error.html`:
+أنشئ `build/error.html`:
 
 ```html
 <!doctype html>
@@ -135,32 +135,32 @@ Create `build/error.html`:
 </html>
 ```
 
-## Create the Bucket
+## إنشاء الحاوية
 
 ```bash
 aws s3 mb s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```
 make_bucket: my-frontend-app-assets
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3 ls --region us-east-1
 ```
 
-Expected output (your date will differ):
+الناتج المتوقع (سيختلف التاريخ لديك):
 
 ```
 2026-03-18 12:00:00 my-frontend-app-assets
 ```
 
-## Disable Block Public Access
+## تعطيل حجب الوصول العام
 
 ```bash
 aws s3api put-public-access-block \
@@ -170,9 +170,9 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-This command produces no output on success.
+لا ينتج هذا الأمر أي مخرجات عند النجاح.
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-public-access-block \
@@ -181,7 +181,7 @@ aws s3api get-public-access-block \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```json
 {
@@ -194,7 +194,7 @@ Expected output:
 }
 ```
 
-## Apply the Bucket Policy
+## تطبيق سياسة الحاوية
 
 ```bash
 aws s3api put-bucket-policy \
@@ -214,9 +214,9 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-This command produces no output on success.
+لا ينتج هذا الأمر أي مخرجات عند النجاح.
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-policy \
@@ -225,7 +225,7 @@ aws s3api get-bucket-policy \
   --output json
 ```
 
-Expected output (the policy is returned as a JSON string inside the `Policy` field):
+الناتج المتوقع (تُعاد السياسة كنص JSON داخل حقل `Policy`):
 
 ```json
 {
@@ -233,14 +233,14 @@ Expected output (the policy is returned as a JSON string inside the `Policy` fie
 }
 ```
 
-## Upload Files
+## رفع الملفات
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```
 upload: build/app.js to s3://my-frontend-app-assets/app.js
@@ -249,14 +249,14 @@ upload: build/index.html to s3://my-frontend-app-assets/index.html
 upload: build/styles.css to s3://my-frontend-app-assets/styles.css
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3 ls s3://my-frontend-app-assets/ \
   --region us-east-1
 ```
 
-Expected output (sizes and dates will differ):
+الناتج المتوقع (ستختلف الأحجام والتواريخ):
 
 ```
 2026-03-18 12:00:00         98 app.js
@@ -265,7 +265,7 @@ Expected output (sizes and dates will differ):
 2026-03-18 12:00:00        374 styles.css
 ```
 
-## Enable Static Website Hosting
+## تمكين استضافة الموقع الثابت
 
 ```bash
 aws s3 website s3://my-frontend-app-assets/ \
@@ -273,9 +273,9 @@ aws s3 website s3://my-frontend-app-assets/ \
   --error-document error.html
 ```
 
-This command produces no output on success.
+لا ينتج هذا الأمر أي مخرجات عند النجاح.
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-website \
@@ -284,7 +284,7 @@ aws s3api get-bucket-website \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```json
 {
@@ -297,37 +297,37 @@ Expected output:
 }
 ```
 
-## View Your Site
+## اعرض موقعك
 
-Open this URL in your browser:
+افتح عنوان URL هذا في متصفحك:
 
 ```
 http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com
 ```
 
-You should see:
+ويجب أن ترى:
 
-- The heading “Hello from S3” centered on a dark background
-- The text “This site is hosted entirely on Amazon S3.”
-- A timestamp showing when the page loaded
+- العنوان «Hello from S3» في وسط خلفية داكنة
+- النص «This site is hosted entirely on Amazon S3.»
+- طابعًا زمنيًا يبيّن وقت تحميل الصفحة
 
-Browser showing the deployed S3 static site with the Hello from S3 heading on a dark background and a page-load timestamp.
+متصفح يعرض موقع S3 الثابت المنشور، وفيه عنوان Hello from S3 على خلفية داكنة وطابع زمني لتحميل الصفحة.
 
-Test the error page by navigating to a nonexistent path:
+اختبر صفحة الخطأ بالانتقال إلى مسار غير موجود:
 
 ```
 http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com/nonexistent
 ```
 
-You should see the custom 404 page with “This page does not exist.”
+ويجب أن ترى صفحة 404 المخصّصة وفيها «This page does not exist.»
 
-You can also verify with `curl`:
+ويمكنك التحقق أيضًا باستخدام `curl`:
 
 ```bash
 curl -s http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com | head -5
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```html
 <!doctype html>
@@ -339,7 +339,7 @@ Expected output:
 </html>
 ```
 
-## Enable Versioning
+## تمكين الإصدارات
 
 ```bash
 aws s3api put-bucket-versioning \
@@ -348,9 +348,9 @@ aws s3api put-bucket-versioning \
   --region us-east-1
 ```
 
-This command produces no output on success.
+لا ينتج هذا الأمر أي مخرجات عند النجاح.
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-versioning \
@@ -359,7 +359,7 @@ aws s3api get-bucket-versioning \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```json
 {
@@ -367,28 +367,28 @@ Expected output:
 }
 ```
 
-## Deploy an Update and Verify Versioning
+## نشر تحديث والتحقق من الإصدارات
 
-Edit `build/index.html` and change the `<h1>` tag:
+عدّل `build/index.html` وغيّر وسم `<h1>`:
 
 ```html
 <h1>Hello from S3 (v2)</h1>
 ```
 
-Redeploy:
+أعد النشر:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Expected output (only the changed file uploads):
+الناتج المتوقع (يُرفع الملف المتغيّر فقط):
 
 ```
 upload: build/index.html to s3://my-frontend-app-assets/index.html
 ```
 
-Verify that versioning captured both versions:
+تحقّق من أن الإصدارات حفظت النسختين:
 
 ```bash
 aws s3api list-object-versions \
@@ -398,7 +398,7 @@ aws s3api list-object-versions \
   --output json
 ```
 
-Expected output (version IDs will differ):
+الناتج المتوقع (ستختلف معرّفات الإصدارات):
 
 ```json
 {
@@ -423,11 +423,11 @@ Expected output (version IDs will differ):
 }
 ```
 
-The first entry (`IsLatest: true`) is the updated version with “Hello from S3 (v2)“. The second entry is the original version.
+المدخل الأول (`IsLatest: true`) هو النسخة المحدّثة التي تحمل «Hello from S3 (v2)». أما المدخل الثاني فهو النسخة الأصلية.
 
-## Stretch Goal: Add a Lifecycle Rule
+## هدف إضافي: إضافة قاعدة دورة حياة
 
-Create a file called `lifecycle.json`:
+أنشئ ملفًا اسمه `lifecycle.json`:
 
 ```json
 {
@@ -446,7 +446,7 @@ Create a file called `lifecycle.json`:
 }
 ```
 
-Apply it:
+طبّقه:
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration \
@@ -455,7 +455,7 @@ aws s3api put-bucket-lifecycle-configuration \
   --region us-east-1
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-lifecycle-configuration \
@@ -464,7 +464,7 @@ aws s3api get-bucket-lifecycle-configuration \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```json
 {
@@ -483,9 +483,9 @@ Expected output:
 }
 ```
 
-## Stretch Goal: Test a Rollback
+## هدف إضافي: اختبار التراجع
 
-Download the previous version using its version ID (use the actual version ID from your `list-object-versions` output):
+نزّل النسخة السابقة باستخدام معرّف إصدارها (استخدم معرّف الإصدار الفعلي من ناتج `list-object-versions`):
 
 ```bash
 aws s3api get-object \
@@ -496,18 +496,18 @@ aws s3api get-object \
   index-old.html
 ```
 
-Re-upload it as the current version:
+أعد رفعها كنسخة حالية:
 
 ```bash
 aws s3 cp index-old.html s3://my-frontend-app-assets/index.html \
   --region us-east-1
 ```
 
-Refresh the browser—you should see the original “Hello from S3” heading (without “(v2)”).
+حدّث المتصفح — ويجب أن ترى العنوان الأصلي «Hello from S3» (بلا «(v2)»).
 
-## Stretch Goal: Verify Content Types
+## هدف إضافي: التحقق من أنواع المحتوى
 
-Check the content type of your CSS file:
+افحص نوع محتوى ملف CSS لديك:
 
 ```bash
 aws s3api head-object \
@@ -517,7 +517,7 @@ aws s3api head-object \
   --output json
 ```
 
-Expected output (partial):
+الناتج المتوقع (جزئيًا):
 
 ```json
 {
@@ -527,15 +527,15 @@ Expected output (partial):
 }
 ```
 
-The `ContentType` should be `text/css`. Check your JavaScript file the same way—it should be `text/javascript`.
+يجب أن تكون قيمة `ContentType` هي `text/css`. وافحص ملف JavaScript بالطريقة نفسها — ويجب أن تكون `text/javascript`.
 
-## Summary
+## الخلاصة
 
-You have deployed a static site to S3 with:
+لقد نشرت موقعًا ثابتًا على S3 مع:
 
-- A publicly accessible bucket with a bucket policy
-- Static website hosting with index and error documents
-- Versioning enabled for rollback protection
-- A lifecycle rule to clean up old versions
+- حاوية متاحة للعموم بسياسة حاوية
+- استضافة موقع ثابت بمستندي الفهرسة والخطأ
+- إصدارات مُمكّنة للحماية بالتراجع
+- قاعدة دورة حياة لتنظيف الإصدارات القديمة
 
-This is the foundation that the rest of the hosting arc builds on top of. Next, you’ll move into domain control and DNS authority so you can validate an ACM certificate cleanly. After that, you’ll put CloudFront in front of this bucket to add HTTPS, global edge caching, and a proper deployment workflow.
+هذا هو الأساس الذي يبني عليه بقية مسار الاستضافة. وبعد ذلك، ستنتقل إلى التحكم في النطاق وسلطة DNS لتتمكن من التحقق من شهادة ACM بنظافة، ثم تضع CloudFront أمام هذه الحاوية لإضافة HTTPS والتخزين المؤقت العالمي على الحافة وسير عمل نشر سليم.

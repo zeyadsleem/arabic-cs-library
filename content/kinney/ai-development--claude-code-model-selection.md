@@ -1,15 +1,14 @@
 ---
-title: "Model Selection"
-lang: en
+title: "اختيار النموذج"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-model-selection"
 ---
 
-[Claude Code model configuration](https://code.claude.com/docs/en/model-config) changes quickly. As of June 23, 2026, the important durable idea is to use
-aliases and task shape rather than hardcoding exact model identifiers everywhere.
+تتغيّر [تهيئة نموذج Claude Code](https://code.claude.com/docs/en/model-config) بسرعة. واعتبارًا من 23 يونيو 2026، الفكرة الدائمة المهمة هي استخدام الأسماء المستعارة وشكل المهمة بدلًا من ترميز معرّفات النماذج الدقيقة في كل مكان.
 
-## Useful Aliases
+## أسماء مستعارة مفيدة
 
-Claude Code supports aliases such as:
+يدعم Claude Code أسماء مستعارة مثل:
 
 - `default`
 - `best`
@@ -21,45 +20,31 @@ Claude Code supports aliases such as:
 - `opus[1m]`
 - `opusplan`
 
-As of the current documentation, `opus` maps to [Opus 4.8](https://code.claude.com/docs/en/model-config) on the Anthropic API,
-while Claude Platform on AWS, [Amazon Bedrock](https://aws.amazon.com/bedrock/), [Google Vertex AI](https://cloud.google.com/vertex-ai), and [Microsoft Foundry](https://azure.microsoft.com/products/ai-foundry/) can resolve
-the same alias differently. `sonnet` maps to [Sonnet 4.6](https://code.claude.com/docs/en/model-config) on the Anthropic API
-and Claude Platform on AWS, and [Fable 5](https://code.claude.com/docs/en/model-config) is available for explicit
-use when the account and retention policy allow it. Check provider-specific
-model routing before making a team-wide rule.
+وكما في التوثيق الحالي، يُقابل `opus` النموذج [Opus 4.8](https://code.claude.com/docs/en/model-config) على واجهة Anthropic API، بينما قد يحلّ Claude Platform on AWS و[Amazon Bedrock](https://aws.amazon.com/bedrock/) و[Google Vertex AI](https://cloud.google.com/vertex-ai) و[Microsoft Foundry](https://azure.microsoft.com/products/ai-foundry/) الاسم المستعار نفسه بطريقة مختلفة. ويُقابل `sonnet` النموذج [Sonnet 4.6](https://code.claude.com/docs/en/model-config) على واجهة Anthropic API و Claude Platform on AWS، ويتاح [Fable 5](https://code.claude.com/docs/en/model-config) للاستخدام الصريح عندما يسمح الحساب وسياسة الاحتفاظ بذلك. تحقّق من توجيه النماذج الخاص بكل مزوّد قبل وضع قاعدة على مستوى الفريق.
 
-## Defaults
+## الإعدادات الافتراضية
 
-Claude Code defaults vary by account type and provider. That means “use the
-default model” is a reasonable personal workflow but a weak reproducibility
-claim. For team processes, specify the alias and date the guidance.
+تختلف إعدادات Claude Code الافتراضية حسب نوع الحساب والمزوّد. وهذا يعني أن «استخدم النموذج الافتراضي» سير عمل شخصي معقول لكنه ادّعاء ضعيف بقابلية إعادة الإنتاج. ولسير عمل الفريق، حدّد الاسم المستعار وأرّخ الإرشاد.
 
 ```
 As of 2026-06-23, use `sonnet` for routine implementation and `opusplan` for
 planning complex changes before execution.
 ```
 
-## Opus Plan
+## خطة Opus
 
-`opusplan` uses Opus for planning and Sonnet for implementation. It is a good fit
-when the hard part is design, not typing code. Ask for the plan first and review
-it before allowing broad edits.
+يستخدم `opusplan` نموذج Opus للتخطيط و Sonnet للتنفيذ. وهو مناسب عندما يكون الجزء الصعب هو التصميم لا كتابة الشيفرة. اطلب الخطة أولًا وراجعها قبل السماح بتعديلات واسعة.
 
-## Effort and Context
+## الجهد والسياق
 
-Claude Code also supports effort controls such as `/effort` and large-context
-aliases such as `sonnet[1m]` and `opus[1m]`. Larger context is not automatically
-better. It is useful when the task depends on many files, long logs, or generated
-artifacts. It is wasteful when a targeted test and two source files define the
-answer.
+يدعم Claude Code أيضًا ضوابط الجهد مثل `/effort` والأسماء المستعارة ذات السياق الكبير مثل `sonnet[1m]` و`opus[1m]`. والسياق الأكبر ليس أفضل تلقائيًا. فهو مفيد عندما تعتمد المهمة على ملفات كثيرة أو سجلات طويلة أو مخرجات مولَّدة. وهو إسراف عندما يحدّد اختبار مركّز وملفَّا مصدر الإجابة.
 
-## Fallback Chains
+## سلاسل الاحتياط
 
-Use fallback models for reliability:
+استخدم نماذج احتياطية من أجل الموثوقية:
 
 ```bash
 claude --model opus --fallback-model sonnet
 ```
 
-Fallbacks are operational policy. They should preserve the intent of the task,
-not silently downgrade a security review into a cheap rewrite.
+الاحتياطات سياسة تشغيلية. وينبغي أن تحافظ على نية المهمة، لا أن تخفّض مراجعة أمنية بصمت إلى إعادة كتابة رخيصة.

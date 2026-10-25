@@ -1,14 +1,14 @@
 ---
-title: "Alarms and Notifications with SNS"
-lang: en
+title: "الإنذارات والإشعارات باستخدام SNS"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudwatch-alarms-and-sns"
 ---
 
-Dashboards are great for when you’re actively looking. Alarms are for when you’re not. A **CloudWatch alarm** watches a metric and triggers an action when that metric crosses a threshold you define. The most common action: sending you an email through **SNS** (Simple Notification Service). You wake up to an email that says “your Lambda error rate spiked at 3 AM” instead of a user complaint at 9 AM.
+لوحات المعلومات رائعة حين تنظر إليها بنشاط. أما الإنذارات فهي للحين الذي لا تنظر فيه. **إنذار CloudWatch** يراقب مقياسًا ويطلق إجراءً عندما يتجاوز ذلك المقياس حدًّا تحدّده أنت. والإجراء الأكثر شيوعًا: إرسال بريد إلكتروني إليك عبر **SNS** (خدمة الإشعارات البسيطة). تستيقظ على بريد يقول «ارتفع معدّل أخطاء Lambda عند الساعة 3 صباحًا» بدلًا من شكوى مستخدم عند الساعة 9 صباحًا.
 
-If you want AWS’s version of the monitoring primitives while you read, the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) is the official reference.
+إذا أردت أن تطّلع على نسخة AWS من أوليات المراقبة أثناء القراءة، فإن [نظرة CloudWatch العامة](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) هي المرجع الرسمي.
 
-If you’ve used Vercel’s deployment notifications or GitHub Actions failure alerts, this is the same concept—except you define exactly what “failure” means and how you get notified.
+إذا كنت قد استخدمت إشعارات النشر في Vercel أو تنبيهات فشل GitHub Actions، فهذا هو المفهوم نفسه — إلا أنك تحدّد بالضبط ما يعنيه «الفشل» وكيف تُبلَّغ به.
 
 ```
 flowchart LR
@@ -20,37 +20,37 @@ flowchart LR
     State -- "INSUFFICIENT_DATA" --> Wait["Wait for more data"]
 ```
 
-## How Alarms Work
+## كيف تعمل الإنذارات
 
-An alarm has three components:
+يتكوّن الإنذار من ثلاثة عناصر:
 
-1. **A metric to watch**—for example, Lambda `Errors` for `my-frontend-app-api`
-2. **A condition**—for example, “Sum of Errors is greater than 5”
-3. **An action**—for example, “send a notification to this SNS topic”
+1. **مقياس تراقبه** — مثل `Errors` في Lambda من أجل `my-frontend-app-api`
+2. **شرط** — مثل «مجموع الأخطاء أكبر من 5»
+3. **إجراء** — مثل «أرسل إشعارًا إلى موضوع SNS هذا»
 
-Alarms evaluate the condition over a configurable time window. You specify a **period** (how long each evaluation window is) and **evaluation periods** (how many consecutive windows must breach the threshold before the alarm fires). This prevents one-off spikes from waking you up at night.
+تقيّم الإنذارات الشرط على نافذة زمنية قابلة للضبط. وتحدّد **فترة** (مدة كل نافذة تقييم) و**فترات تقييم** (عدد النوافذ المتتالية التي يجب أن تتجاوز الحد قبل أن ينطلق الإنذار). وهذا يمنع الارتفاعات العابرة من إيقاظك ليلًا.
 
-### Alarm States
+### حالات الإنذار
 
-Every alarm is in one of three states at any given time:
+يكون كل إنذار في واحدة من ثلاث حالات في أي لحظة:
 
-- **OK**: The metric is within the threshold. Everything is fine.
-- **ALARM**: The metric has breached the threshold for the required number of evaluation periods. Something needs attention.
-- **INSUFFICIENT_DATA**: CloudWatch doesn’t have enough data to evaluate the condition. This is the initial state of every new alarm. It’s also the state your alarm enters when your function hasn’t been invoked recently—no invocations means no data points.
+- **OK**: المقياس ضمن الحد. كل شيء على ما يرام.
+- **ALARM**: تجاوز المقياس الحد لعدد فترات التقييم المطلوب. وهناك ما يستدعي الانتباه.
+- **INSUFFICIENT_DATA**: لا تملك CloudWatch بيانات كافية لتقييم الشرط. وهذه هي الحالة الابتدائية لكل إنذار جديد. وهي أيضًا الحالة التي يدخلها إنذارك عندما لا تكون دالتك قد استُدعيت مؤخرًا — فلا استدعاءات تعني لا نقاط بيانات.
 
-> **Tip**
+> **نصيحة**
 >
-> A new alarm starts in `INSUFFICIENT_DATA`, not `OK`. This is normal. Once your function receives traffic and CloudWatch has enough data points to evaluate the condition, the alarm will transition to `OK` (or `ALARM`, if you’re having a bad day).
+> يبدأ الإنذار الجديد في `INSUFFICIENT_DATA`، لا في `OK`. وهذا طبيعي. وبمجرد أن تتلقى دالتك حركة مرور وتملك CloudWatch نقاط بيانات كافية لتقييم الشرط، سينتقل الإنذار إلى `OK` (أو إلى `ALARM`، إن كان يومك سيئًا).
 
-In the console, the **Alarms** page shows your alarm with its current state, action configuration, and last state update time.
+في لوحة التحكم، تعرض صفحة **Alarms** إنذارك مع حالته الحالية وإعداد الإجراء ووقت آخر تحديث للحالة.
 
-The CloudWatch Alarms page showing one alarm named my-frontend-app-api-errors in Insufficient data state with Actions enabled.
+صفحة CloudWatch Alarms وهي تعرض إنذارًا واحدًا باسم my-frontend-app-api-errors في حالة Insufficient data مع تمكين الإجراءات.
 
-## Setting Up SNS
+## إعداد SNS
 
-Before you create an alarm, you need somewhere to send notifications. **SNS** (Simple Notification Service) is AWS’s pub/sub messaging service. You create a **topic** (a notification channel), subscribe your email to it, and then point your alarms at that topic.
+قبل إنشاء إنذار، تحتاج إلى مكان لإرسال الإشعارات إليه. **SNS** (خدمة الإشعارات البسيطة) هي خدمة المراسلة نشر/اشتراك في AWS. تُنشئ **موضوعًا** (قناة إشعارات)، وتشترك ببريدك الإلكتروني فيه، ثم توجّه إنذاراتك إلى ذلك الموضوع.
 
-### Create an SNS Topic
+### إنشاء موضوع SNS
 
 ```bash
 aws sns create-topic \
@@ -59,7 +59,7 @@ aws sns create-topic \
   --output json
 ```
 
-This returns the topic ARN:
+يُرجع هذا ARN الموضوع:
 
 ```json
 {
@@ -67,9 +67,9 @@ This returns the topic ARN:
 }
 ```
 
-Save that ARN—you’ll use it when creating alarms.
+احفظ ذلك ARN — ستستخدمه عند إنشاء الإنذارات.
 
-### Subscribe Your Email
+### الاشتراك ببريدك الإلكتروني
 
 ```bash
 aws sns subscribe \
@@ -86,13 +86,13 @@ aws sns subscribe \
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> You **must** confirm the subscription. AWS sends a confirmation email to the address you specified. Click the link in that email. Until you confirm, SNS won’t deliver notifications—your alarms will fire, but you’ll never see the emails.
+> **يجب** أن تؤكّد الاشتراك. ترسل AWS رسالة تأكيد إلى العنوان الذي حدّدته. انقر الرابط في تلك الرسالة. وإلى أن تؤكّد، لن تسلّم SNS الإشعارات — فستنطلق إنذاراتك، لكنك لن ترى الرسائل أبدًا.
 
-### Verify the Subscription
+### التحقق من الاشتراك
 
-After confirming, check the subscription status:
+بعد التأكيد، افحص حالة الاشتراك:
 
 ```bash
 aws sns list-subscriptions-by-topic \
@@ -101,11 +101,11 @@ aws sns list-subscriptions-by-topic \
   --output json
 ```
 
-The `SubscriptionArn` should now be a real ARN instead of `pending confirmation`.
+ينبغي أن يكون `SubscriptionArn` الآن ARN حقيقيًا بدلًا من `pending confirmation`.
 
-## Creating an Alarm for Lambda Errors
+## إنشاء إنذار لأخطاء Lambda
 
-This alarm fires when your Lambda function produces more than 5 errors in a 5-minute period, for two consecutive periods.
+ينطلق هذا الإنذار عندما تنتج دالة Lambda أكثر من 5 أخطاء في فترة مدتها 5 دقائق، لفترتين متتاليتين.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -125,18 +125,18 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-Let’s break down what each parameter does:
+لنفكّك ما يفعله كل معامل:
 
-- **`--period 300`**: Each evaluation window is 5 minutes (300 seconds).
-- **`--evaluation-periods 2`**: The threshold must be breached for 2 consecutive periods (10 minutes total) before the alarm fires.
-- **`--threshold 5`**: More than 5 errors in a single period triggers a breach.
-- **`--comparison-operator GreaterThanThreshold`**: The alarm fires when the value is **greater than** 5, not equal to 5.
-- **`--alarm-actions`**: The SNS topic to notify when the alarm transitions to `ALARM`.
-- **`--ok-actions`**: The SNS topic to notify when the alarm transitions back to `OK`. This is optional but useful—you want to know when the problem is resolved, not just when it starts.
+- **`--period 300`**: كل نافذة تقييم مدتها 5 دقائق (300 ثانية).
+- **`--evaluation-periods 2`**: يجب تجاوز الحد لفترتين متتاليتين (10 دقائق إجمالًا) قبل أن ينطلق الإنذار.
+- **`--threshold 5`**: أكثر من 5 أخطاء في فترة واحدة يطلق تجاوزًا.
+- **`--comparison-operator GreaterThanThreshold`**: ينطلق الإنذار عندما تكون القيمة **أكبر من** 5، لا مساوية لـ 5.
+- **`--alarm-actions`**: موضوع SNS الذي يُبلَّغ عند انتقال الإنذار إلى `ALARM`.
+- **`--ok-actions`**: موضوع SNS الذي يُبلَّغ عند عودة الإنذار إلى `OK`. وهذا اختياري لكنه مفيد — فأنت تريد معرفة متى تُحلّ المشكلة، لا متى تبدأ فقط.
 
-## Creating an Alarm for Lambda Duration
+## إنشاء إنذار لمدة تنفيذ Lambda
 
-This alarm fires when your function’s average duration exceeds 3 seconds—a sign that something is running slowly, possibly due to cold starts or a downstream service taking too long.
+ينطلق هذا الإنذار عندما يتجاوز متوسط مدة تنفيذ دالتك 3 ثوانٍ — وهي علامة على أن شيئًا يعمل ببطء، ربما بسبب البدء البارد (cold starts) أو خدمة لاحقة تستغرق وقتًا طويلًا.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -155,11 +155,11 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-Note that `Duration` is measured in milliseconds, so a 3-second threshold is `3000`.
+لاحظ أن `Duration` يُقاس بالمللي ثانية، لذا فإن حدّ 3 ثوانٍ هو `3000`.
 
-## Creating an Alarm for API Gateway 5XX Errors
+## إنشاء إنذار لأخطاء 5XX في API Gateway
 
-This alarm fires when your API returns server errors—meaning your Lambda function is crashing or timing out.
+ينطلق هذا الإنذار عندما تُرجع واجهة API أخطاء خادم — أي أن دالة Lambda تتعطّل أو تنتهي مهلتها.
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -178,13 +178,13 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-This alarm uses a single evaluation period and a threshold of zero—any 5XX error in any 5-minute window triggers it immediately. 5XX errors are serious enough that you want to know right away. (Trust me on this one.)
+يستخدم هذا الإنذار فترة تقييم واحدة وحدًّا صفريًا — أي خطأ 5XX في أي نافذة مدتها 5 دقائق يطلقه فورًا. وأخطاء 5XX خطيرة بما يكفي لأن تريد معرفتها على الفور. (ثق بي في هذه.)
 
-> **Tip**
+> **نصيحة**
 >
-> If your API receives infrequent traffic, alarms will frequently sit in `INSUFFICIENT_DATA` instead of `OK`. Add `--treat-missing-data notBreaching` to any `put-metric-alarm` command to treat periods with no data as non-breaching—this avoids noisy state transitions in low-traffic environments and during development.
+> إذا كانت واجهة API تتلقى حركة مرور غير متكررة، فستبقى الإنذارات غالبًا في `INSUFFICIENT_DATA` بدلًا من `OK`. أضف `--treat-missing-data notBreaching` إلى أي أمر `put-metric-alarm` لمعاملة الفترات الخالية من البيانات على أنها غير متجاوزة — وهذا يتجنّب انتقالات الحالة المزعجة في البيئات منخفضة الحركة وأثناء التطوير.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import { SNSClient, CreateTopicCommand, SubscribeCommand } from '@aws-sdk/client-sns';
@@ -220,9 +220,9 @@ await cloudwatch.send(
 );
 ```
 
-## Verifying Your Alarms
+## التحقق من إنذاراتك
 
-List all your alarms:
+اسرد كل إنذاراتك:
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -231,11 +231,11 @@ aws cloudwatch describe-alarms \
   --output json
 ```
 
-This shows the current state of each alarm, its configuration, and when it last changed state.
+يعرض هذا الحالة الحالية لكل إنذار وإعداده ووقت آخر تغيّر لحالته.
 
-## Testing an Alarm
+## اختبار إنذار
 
-You can manually set an alarm state to verify that your SNS subscription works:
+يمكنك ضبط حالة إنذار يدويًا للتحقق من أن اشتراك SNS يعمل:
 
 ```bash
 aws cloudwatch set-alarm-state \
@@ -246,23 +246,23 @@ aws cloudwatch set-alarm-state \
   --output json
 ```
 
-Check your email. You should receive a notification from SNS. After verifying, the alarm will return to its actual state on the next evaluation period.
+افحص بريدك الإلكتروني. ينبغي أن تتلقى إشعارًا من SNS. وبعد التحقق، سيعود الإنذار إلى حالته الفعلية في فترة التقييم التالية.
 
-> **Tip**
+> **نصيحة**
 >
-> Use `set-alarm-state` to test your notification pipeline before a real incident. Discovering that your email subscription isn’t confirmed during an actual outage is a bad experience.
+> استخدم `set-alarm-state` لاختبار مسار الإشعارات قبل أي حادث حقيقي. فاكتشاف أن اشتراك بريدك غير مؤكّد أثناء انقطاع فعلي تجربة سيئة.
 
-## Choosing Thresholds
+## اختيار الحدود
 
-Threshold values depend on your application. Here are starting points for a typical frontend API backend:
+تعتمد قيم الحد على تطبيقك. وهذه نقاط بداية لواجهة خلفية نموذجية لواجهة أمامية:
 
-| Alarm | Metric | Statistic | Threshold | Period | Evaluation Periods |
+| الإنذار | المقياس | الإحصاءة | الحد | الفترة | فترات التقييم |
 | --- | --- | --- | --- | --- | --- |
-| Error rate | `Errors` | `Sum` | 5 | 300s | 2 |
-| Duration | `Duration` | `Average` | 3000 ms | 300s | 2 |
-| 5XX errors | `5XXError` | `Sum` | 0 | 300s | 1 |
-| Throttles | `Throttles` | `Sum` | 0 | 300s | 1 |
+| معدّل الأخطاء | `Errors` | `Sum` | 5 | 300s | 2 |
+| المدة | `Duration` | `Average` | 3000 ms | 300s | 2 |
+| أخطاء 5XX | `5XXError` | `Sum` | 0 | 300s | 1 |
+| عمليات التقييد | `Throttles` | `Sum` | 0 | 300s | 1 |
 
-Start with these, observe how they behave with real traffic, and adjust. If your error alarm fires ten times a day, either your threshold is too low or you have a real problem to fix.
+ابدأ بهذه، وراقب كيف تتصرف مع حركة مرور حقيقية، ثم عدّل. فإن كان إنذار الأخطاء ينطلق عشر مرات يوميًا، فإما أن حدّك منخفض جدًا أو لديك مشكلة حقيقية تحتاج إلى إصلاح.
 
-You now have alarms that tell you when something goes wrong. But when an alarm fires, you need to figure out *what* went wrong. In the next lesson, you’ll learn to trace a single request across API Gateway, Lambda, and DynamoDB using correlation IDs and CloudWatch Logs Insights—turning “something broke” into “this specific request failed at this specific step.”
+أصبح لديك الآن إنذارات تخبرك عندما يسوء شيء ما. لكن عندما ينطلق إنذار، تحتاج إلى معرفة *ما* الذي ساء. في الدرس التالي، ستتعلم تتبّع طلب واحد عبر API Gateway وLambda وDynamoDB باستخدام معرّفات الارتباط (correlation IDs) وCloudWatch Logs Insights — لتحوّل «شيء ما تعطّل» إلى «هذا الطلب المحدّد فشل في هذه الخطوة المحدّدة».

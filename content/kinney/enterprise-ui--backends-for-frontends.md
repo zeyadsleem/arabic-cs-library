@@ -1,18 +1,18 @@
 ---
-title: "Backends for Frontends"
-lang: en
+title: "خوادم الواجهات (Backends for Frontends)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/backends-for-frontends"
 ---
 
-A **backend for frontend**, or BFF, is a client-specific backend layer: one backend per user experience, instead of one shared “general-purpose” backend trying to please web, mobile, desktop, and every external consumer at once. [Sam Newman](https://samnewman.io/patterns/architectural/bff/) describes it as a single-purpose edge service for a UI or external party, and [Azure’s architecture guidance](https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends) uses the same core idea: decouple frontend implementations from shared backend services so each interface gets something tailored to its needs. In the healthiest version, the BFF is owned by the same team as the frontend, so the API and the UI can evolve together instead of negotiating through a central platform queue.
+**الخادم المخصّص للواجهة (backend for frontend)**، أو BFF، طبقة خادم خاصّة بعميل بعينه: خادم واحد لكل تجربة مستخدم، بدلًا من خادم عام مشترك واحد يحاول إرضاء الويب والجوال وسطح المكتب وكل مستهلك خارجي في الوقت نفسه. يصفه [Sam Newman](https://samnewman.io/patterns/architectural/bff/) بأنه خدمة طرفية أحادية الغرض لواجهة مستخدم أو لطرف خارجي، وتستخدم [إرشادات Azure المعمارية](https://learn.microsoft.com/en-us/azure/architecture/patterns/backends-for-frontends) الفكرة الجوهرية نفسها: افصل تنفيذات الواجهة الأمامية عن خدمات الخادم المشتركة حتى تحصل كل واجهة على شيء مُفصَّل بحسب احتياجاتها. وفي أكثر الصور صحة، يملك الفريق نفسه الواجهة الأمامية والـ BFF معًا، فيتطوّر الـ API والواجهة معًا بدل التفاوض عبر صفّ منصة مركزي.
 
-The reason this pattern exists is painfully ordinary. A shared API backend often starts out fine when every client needs roughly the same data. Then mobile arrives, or a partner integration, or a high-latency SPA, and now one backend has to serve very different payload shapes, interaction patterns, performance constraints, and release cadences. Newman calls out the way a general-purpose API backend becomes a bottleneck, while [Microsoft’s microservices guidance](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern) points out the concrete symptoms of direct client-to-service communication: too many endpoints in the client, too many round trips, tighter coupling to internal service boundaries, and a larger public attack surface.
+سبب وجود هذا النمط عادي إلى حدّ مؤلم. غالبًا ما يبدأ خادم API مشترك بداية جيدة حين تحتاج كل العملاء البيانات نفسها تقريبًا. ثم يظهر الجوال، أو تكامل مع شريك، أو تطبيق صفحة واحدة عالي الكمون، وصار على خادم واحد أن يخدم أشكال حِزم وتيّارات تفاعل وقيود أداء وإيقاعات إصدار شديدة الاختلاف. يشير Newman إلى الطريقة التي يصبح بها خادم API العام عنق زجاجة، بينما تبيّن [إرشادات Microsoft للخدمات المصغّرة](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern) الأعراض الملموسة للتواصل المباشر بين العميل والخدمة: نقاط نهاية أكثر من اللازم في العميل، ورحلات ذهاب وإياب أكثر من اللازم، وارتباط أشدّ بحدود الخدمات الداخلية، وسطح هجوم عام أوسع.
 
-## What Problem a BFF Is Actually Solving
+## ما المشكلة التي يحلّها BFF فعلًا
 
-A BFF exists to translate backend capabilities into a client-shaped interface. That usually means some mix of orchestration, aggregation, pagination defaults, payload trimming, response reshaping, and hiding backend topology from the client. Microsoft’s guidance explicitly calls out request aggregation and reduced chattiness as key benefits, especially for remote clients like mobile apps and SPAs. Newman makes the same point from the UI side: one call into the BFF often fans out to several downstream services, then comes back as a single view model the client can render.
+يوجد BFF ليترجم قدرات الخادم إلى واجهة على شكل العميل. يعني ذلك عادةً مزيجًا من التنسيق والتجميع وقيم الترقيم الافتراضية وتقليم الحِزم وإعادة تشكيل الاستجابات وإخفاء طوبولوجيا الخادم عن العميل. وتُبرز إرشادات Microsoft تجميع الطلبات وتقليل كثرة المحادثات كمزايا رئيسية، خصوصًا للعملاء البعيدين مثل تطبيقات الجوال وتطبيقات الصفحة الواحدة. ويقدّم Newman النقطة نفسها من جهة الواجهة: نداء واحد إلى BFF كثيرًا ما يتفرّع إلى عدة خدمات لاحقة، ثم يعود كنموذج عرض واحد يستطيع العميل تصييره.
 
-The simplest mental model is this: the client should ask for what *that client* needs, not for the raw internal structure of your service estate. That sounds obvious, which is why teams reliably ignore it until the mobile app is making six calls to paint one screen and everyone pretends this is “just how distributed systems work.” A BFF gives you one place to compose those calls for that experience without making every client learn your backend decomposition.
+أبسط نموذج ذهني هو هذا: ينبغي أن يطلب العميل ما يحتاجه *ذلك العميل*، لا البنية الداخلية الخام لمجموعة خدماتك. يبدو ذلك بديهيًا، ولهذا تتجاهله الفرق بانتظام حتى يبدأ تطبيق الجوال في إجراء ستة نداءات لرسم شاشة واحدة، وحتى يتظاهر الجميع بأن هذه «مجرد طريقة عمل الأنظمة الموزّعة». يمنحك BFF مكانًا واحدًا لتأليف تلك النداءات لهذه التجربة دون إجبار كل عميل على تعلّم تفكيك خادمك.
 
 ```
 sequenceDiagram
@@ -34,7 +34,7 @@ sequenceDiagram
     Note over BFF,Price: Three parallel calls inside the datacenter
 ```
 
-A typical shape:
+شكل نمطي:
 
 ```
 graph LR
@@ -59,64 +59,64 @@ graph LR
     MobileBFF --> Orders
 ```
 
-In that layout, the gateway layer handles generic ingress concerns, while each BFF handles client-specific composition and adaptation. Azure’s example is exactly this shape: API Management handles authorization, monitoring, caching, routing, and aggregation into client-specific BFF services, with one BFF optimized for mobile and another for desktop.
+في ذلك التخطيط، تتولّى طبقة البوابة هموم الدخول العامة، بينما يتولّى كل BFF التأليف والتكييف الخاصين بالعميل. ومثال Azure بهذا الشكل بالضبط: يدير API Management التخويل والمراقبة والتخزين المؤقت والتوجيه والتجميع في خدمات BFF خاصة بالعميل، مع BFF مُحسَّن للجوال وآخر لسطح المكتب.
 
-## What a BFF Is Not
+## ما ليس BFF
 
-A BFF is not supposed to become your new shared enterprise API. [Microsoft’s API gateway guidance](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern) is blunt here: a single custom gateway aggregating all microservices tends to become a monolithic orchestrator, coupling everything together and violating service autonomy. Azure’s BFF guidance says the BFF should only handle client-specific logic, while generic cross-cutting features like gatekeeping, routing, and rate limiting should be abstracted separately. If your “BFF” starts serving every frontend and every partner, congratulations—you rebuilt the thing this pattern was trying to escape.
+ليس الغرض من BFF أن يصبح واجهة API المؤسسية المشتركة الجديدة لديك. [إرشادات Microsoft لبوابة API](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/direct-client-to-microservice-communication-versus-the-api-gateway-pattern) صريحة هنا: البوابة المخصّصة الواحدة التي تجمّع كل الخدمات المصغّرة تنزع إلى أن تصبح مُنسّقًا وحدويًا، يربط كل شيء ببعضه وينتهك استقلالية الخدمات. وتقول إرشادات Azure الخاصة بـ BFF إن على BFF أن يتعامل فقط مع المنطق الخاص بالعميل، بينما المزايا العامة العابرة للجوانب مثل البوابة والتوجيه وتحديد المعدّل ينبغي تجريدها على حدة. وإن بدأ «BFF» لديك يخدم كل واجهة وكل شريك، فمبارك لك — لقد أعدت بناء الشيء الذي كان هذا النمط يحاول الهروب منه.
 
-That doesn’t mean every concern must live outside the BFF. Newman explicitly notes that some teams keep authentication, authorization, or request logging inside the BFF because adding more upstream layers also adds latency and operational complexity. The real rule isn’t “never put cross-cutting concerns in a BFF.” The real rule is “don’t let client-specific code and generic perimeter policy collapse into one giant, multi-tenant blob.”
+لا يعني ذلك أن كل همّ يجب أن يعيش خارج BFF. يلاحظ Newman صراحةً أن بعض الفرق تُبقي المصادقة أو التخويل أو تسجيل الطلبات داخل BFF لأن إضافة طبقات أعلى إضافية تضيف أيضًا كمونًا وتعقيدًا تشغيليًا. القاعدة الحقيقية ليست «لا تضع أبدًا همومًا عابرة للجوانب في BFF». القاعدة الحقيقية هي «لا تدع الشيفرة الخاصة بالعميل والسياسة المحيطية العامة تنهاران في كتلة واحدة عملاقة متعددة المستأجرين».
 
-## BFF Versus API Gateway
+## BFF مقابل بوابة API
 
-| Dimension | API gateway | BFF | GraphQL |
+| البُعد | بوابة API | BFF | GraphQL |
 | --- | --- | --- | --- |
-| Scope | General-purpose ingress | Client-specific façade | Schema-driven query layer |
-| Ownership | Platform / infra team | Frontend team (ideally) | Varies (platform or federated) |
-| Data shaping | Minimal (routing + passthrough) | Aggregation, trimming, reshaping | Client-driven field selection |
-| Client coupling | Low (serves all clients equally) | High (one per experience) | Medium (schema shared, queries differ) |
-| Typical use alongside | BFFs or direct services | Thin gateway in front | May replace BFF or live inside one |
-| Best for | Auth, rate limiting, SSL, routing | Client-specific orchestration | Flexible data fetching, multi-client schemas |
+| النطاق | دخول عام الغرض | واجهة أمامية خاصة بالعميل | طبقة استعلام تقودها المخططات |
+| الملكية | فريق المنصة / البنية التحتية | فريق الواجهة الأمامية (من حيث المثالية) | تتفاوت (المنصة أو اتحادية) |
+| تشكيل البيانات | أدنى حد (توجيه + تمرير) | تجميع، تقليم، إعادة تشكيل | اختيار الحقول بقيادة العميل |
+| ارتباط العميل | منخفض (يخدم كل العملاء بالتساوي) | مرتفع (واحد لكل تجربة) | متوسط (المخطط مشترك والاستعلامات مختلفة) |
+| الاستخدام النموذجي إلى جانبه | خوادم BFF أو خدمات مباشرة | بوابة رفيعة في المقدمة | قد يحل محل BFF أو يعيش داخل واحد |
+| الأفضل لـ | المصادقة، تحديد المعدّل، SSL، التوجيه | تنسيق خاص بالعميل | جلب بيانات مرن، مخططات متعددة العملاء |
 
-The cleanest distinction: an API gateway is usually a general-purpose ingress layer, while a BFF is a client-specific façade. Microsoft’s docs describe the gateway as the single entry point for a group of services, responsible for routing and potentially for auth, SSL termination, caching, rate limiting, logging, and other cross-cutting concerns. The BFF pattern appears when you split that gateway layer into multiple smaller façades based on client type or business boundary so each client gets an interface tailored to its needs.
+أوضح تمييز: بوابة API عادةً طبقة دخول عامة الغرض، بينما BFF واجهة أمامية خاصة بالعميل. تصف وثائق Microsoft البوابة بأنها نقطة الدخول الوحيدة لمجموعة من الخدمات، وهي مسؤولة عن التوجيه وربما عن المصادقة وإنهاء SSL والتخزين المؤقت وتحديد المعدّل والتسجيل وهموم أخرى عابرة للجوانب. ويظهر نمط BFF حين تقسّم طبقة البوابة تلك إلى عدة واجهات أمامية أصغر بحسب نوع العميل أو الحدّ التجاري، فيحصل كل عميل على واجهة مُفصَّلة بحسب احتياجاته.
 
-That’s why many real systems use both. A thin gateway or API-management layer sits at the edge for shared concerns, and behind it sit several BFFs, one per experience or client class. Azure’s reference architecture does exactly that with API Management in front of separate BFF services. This is usually the sane default because it keeps generic ingress policy in one place without forcing every client-specific adaptation into the same deployable unit.
+ولهذا تستخدم أنظمة حقيقية كثيرة كليهما. تجلس بوابة رفيعة أو طبقة إدارة API عند الطرف للمسائل المشتركة، وخلفها تجلس عدة خوادم BFF، واحد لكل تجربة أو فئة عملاء. وهذه بالضبط ما تفعله البنية المرجعية لـ Azure، حيث تأتي API Management أمام خدمات BFF منفصلة. وهذا عادةً الافتراضي السليم لأنه يُبقي سياسة الدخول العامة في مكان واحد دون إجبار كل تكييف خاص بعميل على أن يدخل وحدة النشر نفسها.
 
-## BFF Versus GraphQL
+## BFF مقابل GraphQL
 
-GraphQL can overlap with some of the reasons people introduce a BFF. Azure’s architecture guidance explicitly notes that GraphQL can reduce or eliminate the need for a separate BFF layer because clients can request exactly the data they need instead of relying on predefined endpoints, and it goes further by saying that GraphQL with frontend-specific resolvers may make BFF services unnecessary in some organizations.
+قد يتداخل GraphQL مع بعض الأسباب التي تدفع الناس لإدخال BFF. تلاحظ إرشادات Azure المعمارية صراحةً أن GraphQL قد يقلّل الحاجة إلى طبقة BFF منفصلة أو يلغيها لأن العملاء يستطيعون طلب البيانات التي يحتاجونها بالضبط بدل الاعتماد على نقاط نهاية محدّدة مسبقًا، وتمضي أبعد من ذلك فتقول إن GraphQL مع مُحلّلات خاصة بالواجهة الأمامية قد يجعل خدمات BFF غير ضرورية في بعض المؤسسات.
 
-But that’s not the same as saying “GraphQL replaces BFFs.” That only follows if your problem is mostly data shaping. If your real problem is team autonomy, browser-session security, OAuth token mediation, client-owned release cadence, client-specific rate limits, or experience-specific backend workflows, GraphQL alone doesn’t settle those questions. In practice, GraphQL can be the interface a BFF exposes, or the composition layer the BFF uses, but it’s not automatically a substitute for the architectural boundary.
+لكن ذلك لا يكافئ القول «GraphQL يستبدل خوادم BFF». لا يصح ذلك إلا إذا كانت مشكلتك في معظمها تشكيل البيانات. أما إذا كانت مشكلتك الحقيقية استقلالية الفريق، أو أمن جلسة المتصفح، أو وساطة رموز OAuth، أو إيقاع إصدار يملكه العميل، أو حدود معدّل خاصة بالعميل، أو تدفقات خادم خاصة بالتجربة، فإن GraphQL وحده لا يحسم تلك الأسئلة. عمليًا، قد يكون GraphQL الواجهة التي يعرضها BFF، أو طبقة التأليف التي يستخدمها BFF، لكنه ليس بديلًا تلقائيًا عن الحدّ المعماري.
 
-## How Many BFFs You Should Have
+## كم عدد خوادم BFF التي ينبغي أن تملكها
 
-The most useful rule of thumb is Newman’s: one experience, one BFF. He also notes that some organizations share a BFF across iOS and Android when the experience is genuinely the same and the same team owns both, but warns that as more client types accumulate behind one BFF, the temptation to bloat it grows fast. Azure makes the same trade-off explicit: if different interfaces make the same or very similar requests, a separate BFF may not be worth it; if they diverge, separating them buys clarity and performance.
+القاعدة العملية الأكثر نفعًا هي قاعدة Newman: تجربة واحدة، خادم BFF واحد. ويلاحظ أيضًا أن بعض المؤسسات تشترك في BFF واحد بين iOS وAndroid حين تكون التجربة واحدة فعلًا ويملك الفريق نفسه كليهما، لكنه يحذّر من أن إغراء تضخيمه ينمو بسرعة كلما تراكمت أنواع عملاء أكثر خلف BFF واحد. ويجعل Azure المقايضة نفسها صريحة: إذا كانت الواجهات المختلفة تُجري الطلبات نفسها أو طلبات شديدة التشابه، فقد لا يستحق BFF منفصل عناءه؛ وإذا تباعدت، فإن فصلها يشتري وضوحًا وأداءً.
 
-Team boundaries matter almost as much as UI boundaries. Newman argues that BFFs work best when aligned around team ownership, because the UI team can evolve the BFF and the interface together without waiting on a shared backend team. Azure says much the same thing in more corporate language: frontend teams can independently manage their own BFFs, choosing language, release cadence, and priorities. That autonomy is one of the strongest reasons to adopt the pattern in the first place.
+حدود الفريق تهمّ بقدر ما تهمّ حدود الواجهة تقريبًا. يرى Newman أن خوادم BFF تعمل بأفضل حال حين تُبنى حول ملكية الفريق، لأن فريق الواجهة يستطيع أن يطوّر BFF والواجهة معًا دون انتظار فريق خادم مشترك. يقول Azure الشيء نفسه تقريبًا بلغة أكثر مؤسسية: تستطيع فرق الواجهة الأمامية أن تدير خوادم BFF الخاصة بها باستقلالية، فتختار اللغة وإيقاع الإصدار والأولويات. وهذه الاستقلالية من أقوى أسباب تبنّي النمط من الأصل.
 
-## Where BFFs Shine
+## أين تتألق خوادم BFF
 
-BFFs are especially strong when you have multiple clients with materially different needs. Mobile is the classic example because bandwidth, latency, battery, and smaller screens often demand fewer calls and smaller payloads than desktop web. Microsoft’s guidance also highlights remote SPAs and mobile apps as the scenarios where aggregation and response shaping help the most. Sam Newman goes even further and says he’d strongly consider BFFs from the outset when a system needs client-specific functionality for mobile or third parties.
+تكون خوادم BFF قوية بشكل خاص حين تملك عدة عملاء باحتياجات مختلفة اختلافًا جوهريًا. الجوال هو المثال الكلاسيكي لأن عرض النطاق والكمون والبطارية والشاشات الأصغر كثيرًا ما تفرض نداءات أقل وحِزمًا أصغر من ويب سطح المكتب. وتُبرز إرشادات Microsoft أيضًا تطبيقات الصفحة الواحدة البعيدة وتطبيقات الجوال كالسيناريوهات التي يفيد فيها التجميع وتشكيل الاستجابات أكثر ما يفيد. ويذهب Sam Newman أبعد فيقول إنه سينظر بجدية في خوادم BFF من البداية حين يحتاج نظام ما إلى وظائف خاصة بالعميل للجوال أو لأطراف ثالثة.
 
-They also make sense for web experiences when there’s significant server-side aggregation or server-side rendering work to do. Newman notes that for desktop web, a BFF becomes useful when a larger portion of the UI is generated on the server, and that it can simplify caching because a reverse proxy can sit in front of the BFF and cache aggregated results. Azure’s example similarly shows a desktop client BFF shaping pagination and other client-specific behavior independently of the mobile one.
+وتكون منطقية أيضًا لتجارب الويب حين يوجد قدر كبير من التجميع أو التصيير على الخادم. يلاحظ Newman أن BFF يصبح نافعًا على ويب سطح المكتب حين يُولَّد جزء أكبر من الواجهة على الخادم، وأنه قد يبسّط التخزين المؤقت لأن وسيطًا عكسيًا يمكن أن يجلس أمام BFF ويخزّن النتائج المجمّعة. ويُظهر مثال Azure بالمثل BFF لعميل سطح المكتب يشكّل الترقيم وسلوكًا آخر خاصًا بالعميل باستقلال عن نظيره في الجوال.
 
-A less discussed but valid case is external consumers. Newman explicitly mentions using BFFs for third parties and device-specific integrations when those consumers have limited ability or desire to adapt to backend changes. That makes a BFF useful as a compatibility façade for a particular partner or channel, rather than forcing the shared backend to keep old behaviors alive for everyone forever.
+وثمة حالة أقل نقاشًا لكنها صحيحة، وهي المستهلكون الخارجيون. يذكر Newman صراحةً استخدام خوادم BFF لأطراف ثالثة ولتكاملات خاصة بالأجهزة حين تكون لدى هؤلاء المستهلكين قدرة محدودة على التكيّف مع تغيّرات الخادم أو رغبة محدودة فيها. وهذا يجعل BFF نافعًا كواجهة توافق لشريك أو قناة معيّنة، بدل إجبار الخادم المشترك على إبقاء سلوكيات قديمة حيّة للجميع إلى الأبد.
 
-## Where BFFs Don’t Help Much
+## أين لا تفيد خوادم BFF كثيرًا
 
-If there’s only one interface, or if multiple interfaces are making almost the same requests, the extra service may not be worth it. Azure lists those as the clearest cases where the pattern may not be suitable. Newman makes a similar point for pure web applications: if there’s not much server-side aggregation to do, other UI composition techniques can work just as well without adding another backend component.
+إذا كانت هناك واجهة واحدة فقط، أو كانت واجهات متعددة تُجري الطلبات نفسها تقريبًا، فقد لا تستحق الخدمة الإضافية عناءها. يذكر Azure هذه كأوضح الحالات التي قد لا يناسبها النمط. ويقدّم Newman نقطة مشابهة لتطبيقات الويب الصافية: إن لم يكن هناك تجميع كبير على الخادم، فقد تعمل تقنيات تأليف واجهة أخرى بالقدر نفسه من الجودة دون إضافة مكوّن خادم آخر.
 
-They also lose their shine when an existing GraphQL layer with frontend-specific resolvers already solves the data-shaping problem, or when a thin API gateway plus straightforward service calls is enough. Azure says both of those scenarios can make a separate BFF unnecessary. Adding a BFF in that situation isn’t architectural maturity. It’s just another service to page someone about at 3 a.m.
+وتفقد خوادم BFF بريقها أيضًا حين تحلّ طبقة GraphQL قائمة بمُحلّلات خاصة بالواجهة الأمامية مشكلة تشكيل البيانات بالفعل، أو حين تكفي بوابة API رفيعة مع نداءات خدمات مباشرة. يقول Azure إن كلا السيناريوهين قد يجعل BFF منفصلًا غير ضروري. وإضافة BFF في تلك الحالة ليست نضجًا معماريًا. إنها مجرد خدمة أخرى ليبقى شخص مستيقظًا بسببها في الثالثة صباحًا.
 
-## What Should Live Inside a BFF
+## ما ينبغي أن يعيش داخل BFF
 
-The safest definition is “client-specific server logic.” That includes payload shaping, request aggregation, server-managed pagination defaults, view-model composition, minor workflow orchestration for one experience, and protocol adaptation between the client and downstream services. Azure’s pattern guidance says the BFF should focus on logic related to a specific user experience, while Microsoft’s API gateway guidance calls out request aggregation as a foundational behavior for this layer.
+التعريف الأكثر أمانًا هو «منطق خادم خاص بالعميل». ويشمل ذلك تشكيل الحِزم وتجميع الطلبات وقيم الترقيم الافتراضية التي يديرها الخادم وتأليف نماذج العرض وتنسيق تدفق بسيط لتجربة واحدة وتكييف البروتوكول بين العميل والخدمات اللاحقة. تقول إرشادات النمط من Azure إن على BFF أن يركّز على المنطق المرتبط بتجربة مستخدم معيّنة، بينما تُبرز إرشادات Microsoft لبوابة API تجميع الطلبات كسلوك أساسي لهذه الطبقة.
 
-What should *not* live there is broad domain logic that really belongs in shared services, or generic enterprise perimeter features that are better handled once upstream. Newman warns against using the BFF as the place where all generic concerns accumulate, and Azure says gatekeeping, rate limiting, and routing often belong in adjacent patterns rather than in the BFF itself. If every change to pricing, inventory, promotions, auth, monitoring, and partner policy lands in the BFF, then the BFF is no longer a façade. It’s your application wearing a fake moustache.
+وما *لا* ينبغي أن يعيش هناك هو منطق النطاق الواسع الذي ينتمي فعلًا إلى الخدمات المشتركة، أو مزايا المحيط المؤسسي العامة التي يُعالَجها مرة واحدة في الأعلى بشكل أفضل. يحذّر Newman من استخدام BFF كمكان تتراكم فيه كل الهموم العامة، ويقول Azure إن البوابة وتحديد المعدّل والتوجيه غالبًا ما تنتمي إلى أنماط مجاورة لا إلى BFF نفسه. وإذا كانت كل تغييرات التسعير والمخزون والعروض والمصادقة والمراقبة وسياسة الشركاء تنتهي في BFF، فلم يعد BFF واجهة أمامية. صار تطبيقك يرتدي شاربًا مزيفًا.
 
-## The Browser-App Version of the Pattern
+## نسخة تطبيق المتصفح من النمط
 
-For browser-based applications, BFF has a very specific modern meaning in OAuth and OIDC architecture. The current [IETF browser-based apps draft](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps) describes BFF as one of the main architectural patterns for browser apps and gives it three core responsibilities: the BFF acts as a confidential OAuth client, manages access and refresh tokens in a cookie-based session so tokens aren’t directly exposed to the browser, and forwards API requests to resource servers with the correct access token attached. The same document explicitly says the BFF *becomes* the OAuth client for the frontend application.
+لتطبيقات المتصفح، لـ BFF معنى حديث محدد جدًا في معمارية OAuth وOIDC. تصف [مسودة IETF لتطبيقات المتصفح](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps) الحالية BFF بأنه أحد الأنماط المعمارية الرئيسية لتطبيقات المتصفح، وتُسند إليه ثلاث مسؤوليات جوهرية: يعمل BFF كعميل OAuth سريّ، ويدير رموز الوصول والتحديث في جلسة قائمة على الكوكيز كي لا تتعرض الرموز للمتصفح مباشرة، ويمرّر طلبات API إلى خوادم الموارد مع إرفاق رمز الوصول الصحيح. ويقول المستند نفسه صراحةً إن BFF *يصبح* عميل OAuth لتطبيق الواجهة الأمامية.
 
 ```
 sequenceDiagram
@@ -141,25 +141,25 @@ sequenceDiagram
     Note over Browser: No tokens in JavaScript
 ```
 
-That security property is the big reason BFF has become popular again. If tokens never reach browser JavaScript, you eliminate a whole class of token-exfiltration problems. The IETF draft says the architecture mitigates token theft scenarios precisely because there are no tokens for malicious code to steal from the browser, and because the BFF, as a confidential client, is the party that exchanges codes for tokens. [Auth0’s overview](https://auth0.com/blog/the-backend-for-frontend-pattern-bff/) describes the same flow in practical terms: login goes through the backend, the backend stores tokens and issues a session cookie, and the SPA calls the backend with the cookie instead of calling the resource server directly with tokens.
+خاصية الأمان تلك هي السبب الكبير في عودة شعبية BFF. إذا لم تصل الرموز أبدًا إلى جافاسكربت المتصفح، فأنت تُزيل فئة كاملة من مشكلات تسريب الرموز. تقول مسودة IETF إن المعمارية تخفّف سيناريوهات سرقة الرموز تحديدًا لأنه لا توجد رموز ليسرقها كود خبيث من المتصفح، ولأن BFF، كعميل سريّ، هو الطرف الذي يبادل الرموز بأكواد التفويض. ويصف [عرض Auth0](https://auth0.com/blog/the-backend-for-frontend-pattern-bff/) التدفق نفسه بعبارات عملية: يمرّ تسجيل الدخول عبر الخادم، ويخزّن الخادم الرموز ويُصدر كوكي جلسة، ويستدعي تطبيق الصفحة الواحدة الخادم بالكوكي بدل استدعاء خادم الموارد مباشرة بالرموز.
 
-That doesn’t mean the browser suddenly becomes a sacred temple of safety. The same IETF guidance says malicious JavaScript running in the browser can still send requests to the BFF through the user’s browser, so BFF is not a magic shield against XSS-like abuse of the user’s current session. It mainly removes direct token exposure and moves OAuth duties into a more controlled server-side environment. That’s a major improvement, not an absolution certificate.
+لا يعني ذلك أن المتصفح يصبح فجأة معبدًا مقدّسًا للأمان. تقول إرشادات IETF نفسها إن جافاسكربت الخبيث العامل في المتصفح قد يظل يرسل طلبات إلى BFF عبر متصفح المستخدم، فليس BFF درعًا سحريًا ضد إساءة استخدام الجلسة الحالية على غرار XSS. إنه يزيل بالدرجة الأولى تعرّض الرموز المباشر وينقل مهام OAuth إلى بيئة خادم أكثر تحكّمًا. وهذا تحسين كبير، وليس شهادة غفران.
 
-## Cookie, Session, and CSRF Details That Matter
+## تفاصيل الكوكيز والجلسات وCSRF المهمة
 
-If you use the browser-app BFF model, cookie handling becomes security-critical. Auth0’s BFF guidance says the session cookie should be marked `Secure` and `HttpOnly`, should be tied to the token set, and requires CSRF protection. The IETF draft is stricter and says the BFF must implement proper CSRF defenses, with `SameSite=Strict` helping in some deployments but not solving everything if sibling subdomains are considered same-site. It also explains that if you rely on CORS as part of your CSRF defense, you should require a custom request header so the browser must preflight cross-origin requests.
+إذا استخدمت نموذج BFF لتطبيق المتصفح، يصبح التعامل مع الكوكيز مسألة أمنية حرجة. تقول إرشادات Auth0 الخاصة بـ BFF إن كوكي الجلسة ينبغي أن يكون موسومًا بـ `Secure` و`HttpOnly`، وأن يرتبط بمجموعة الرموز، وأن يتطلب حماية من CSRF. ومسودة IETF أكثر صرامة فتقول إن على BFF أن ينفّذ دفاعات CSRF سليمة، مع `SameSite=Strict` الذي يساعد في بعض عمليات النشر لكنه لا يحل كل شيء إذا كانت النطاقات الفرعية الشقيقة تُعدّ من الموقع نفسه. وتوضح أيضًا أنه إذا اعتمدت على CORS كجزء من دفاعك ضد CSRF، فعليك أن تشترط ترويسة طلب مخصّصة حتى يُلزم المتصفح نفسه بطلب تمهيدي للطلبات عبر الأصل.
 
-There’s also a subtle operational trap here. The IETF draft points out that the BFF is effectively a proxy, so attackers may try to manipulate it into forwarding requests to unintended hosts. Its recommendation is to use strict outbound request controls: explicit allowlists of resource servers and tight method validation per endpoint. If you skip that and your BFF can proxy arbitrary destinations, you’ve built an SSRF gadget and called it architecture.
+وثمة فخّ تشغيلي خفي هنا أيضًا. تشير مسودة IETF إلى أن BFF هو فعليًا وسيط، فقد يحاول المهاجمون التلاعب به لتمرير الطلبات إلى مضيفين غير مقصودين. وتوصيتها استخدام ضوابط صارمة للطلبات الصادرة: قوائم سماح صريحة بخوادم الموارد وتحقّق ضيق من التابع لكل نقطة نهاية. وإن تخطّيت ذلك وكان BFF لديك قادرًا على الوساطة إلى وجهات عشوائية، فأنت قد بنيت أداة SSRF وأسميتها معمارية.
 
-Session storage has trade-offs too. The current draft says server-side sessions give you strong control and easy revocation, but can hurt scalability because they often need sticky sessions or session replication, so they’re only recommended for smaller-scale scenarios. Client-side signed or encrypted cookies remove server session storage but shift the control model toward token lifetime and token revocation. The right choice depends on scale, revocation needs, and the platform you’re deploying on, not on whichever blog post was most aggressively confident.
+تخزين الجلسة له مقايضات أيضًا. تقول المسودة الحالية إن الجلسات على الخادم تمنحك تحكّمًا قويًا وإلغاءً سهلًا، لكنها قد تضرّ بالتوسّع لأنها كثيرًا ما تحتاج جلسات ملتصقة أو تكرارًا للجلسات، لذا تُوصى فقط بالسيناريوهات الأصغر حجمًا. أما الكوكيز الموقّعة أو المشفّرة من جهة العميل فتُزيل تخزين الجلسة على الخادم لكنها تنقل نموذج التحكّم نحو عمر الرمز وإلغاء الرمز. والاختيار الصحيح يعتمد على الحجم واحتياجات الإلغاء والمنصة التي تنشر عليها، لا على أي منشور مدوّنة كان الأكثر ثقة مفرطة.
 
-## Performance, Aggregation, and Partial Failure
+## الأداء والتجميع والفشل الجزئي
 
-A BFF adds an extra network hop, so it’s not free. Azure says to review service-level objectives carefully because latency can increase when clients no longer contact services directly, and Microsoft’s API gateway guidance notes the same cost alongside the risk that a gateway can become a bottleneck or single point of failure if it’s not scaled properly.
+يضيف BFF قفزة شبكة إضافية، فهو ليس مجانيًا. تقول Azure إن عليك مراجعة أهداف مستوى الخدمة بعناية لأن الكمون قد يزداد حين لا تعود العملاء تتصل بالخدمات مباشرة، وتذكر إرشادات Microsoft لبوابة API التكلفة نفسها إلى جانب خطر أن تصبح البوابة عنق زجاجة أو نقطة فشل واحدة إن لم تُوسَّع بشكل صحيح.
 
-The reason BFFs still improve user experience so often is that they can remove more latency than they add. Instead of asking a mobile client or SPA to make many remote calls, a BFF can aggregate those calls inside the datacenter and return one client-shaped response. Microsoft explicitly calls out this reduction in chattiness as especially important for remote apps, and Newman recommends running downstream calls in parallel where possible to keep total call time down.
+سبب استمرار خوادم BFF في تحسين تجربة المستخدم بهذا التكرار هو أنها تستطيع إزالة كمون أكثر مما تضيف. فبدل مطالبة عميل جوال أو تطبيق صفحة واحدة بإجراء نداءات بعيدة كثيرة، يستطيع BFF تجميع تلك النداءات داخل مركز البيانات وإرجاع استجابة واحدة على شكل العميل. ويُبرز Microsoft صراحةً هذا التقليل من كثرة المحادثات كأمر مهم بشكل خاص للتطبيقات البعيدة، ويوصي Newman بتشغيل النداءات اللاحقة على التوازي حيث أمكن لإبقاء زمن النداء الإجمالي منخفضًا.
 
-The tricky part is failure behavior. Newman’s example is a good one: if a wishlist page depends on wishlist, catalog, and inventory services, do you really want the whole screen to fail when only inventory is down? His answer is basically “probably not.” A BFF should often degrade gracefully, returning a partial response the client knows how to render instead of treating every downstream failure as total failure. This is one of the reasons BFFs are valuable: they let you encode experience-specific resilience policy close to the experience.
+الجزء الصعب هو سلوك الفشل. مثال Newman مثال جيد: إذا كانت صفحة قائمة رغبات تعتمد على خدمات قائمة الرغبات والكتالوج والمخزون، فهل تريد فعلًا أن تفشل الشاشة كلها حين يكون المخزون وحده معطّلًا؟ جوابه هو عمليًا «الأرجح لا». على BFF غالبًا أن يتدهور بلطف، فيعيد استجابة جزئية يعرف العميل كيف يصيّرها بدل معاملة كل فشل لاحق كفشل كلي. وهذا أحد أسباب قيمة خوادم BFF: فهي تتيح لك ترميز سياسة مرونة خاصة بالتجربة قريبًا من التجربة.
 
 ```
 sequenceDiagram
@@ -180,28 +180,28 @@ sequenceDiagram
     BFF-->>Client: Items + details (stock: unknown)
 ```
 
-Caching belongs in this same discussion. Newman notes that a reverse proxy in front of a BFF can cache the results of aggregated calls, but the expiry of the aggregate has to respect the shortest-lived or most freshness-sensitive component in the response. Azure’s example also uses API Management request caching in front of client-specific BFFs. So, yes, caching aggregated responses is useful, but it has to be done with actual cache semantics, not with the traditional method of “we’ll just cache it for a bit and hope the business doesn’t notice.”
+التخزين المؤقت ينتمي إلى هذه المناقشة نفسها. يلاحظ Newman أن وسيطًا عكسيًا أمام BFF يمكنه تخزين نتائج النداءات المجمّعة، لكن انتهاء صلاحية المُجمَّع يجب أن يحترم أقصر المكوّنات عمرًا أو أكثرها حساسية للطزاجة في الاستجابة. ويستخدم مثال Azure أيضًا تخزين طلبات API Management أمام خوادم BFF الخاصة بالعملاء. إذن نعم، تخزين الاستجابات المجمّعة نافع، لكن يجب أن يُنفَّذ بدلالات تخزين مؤقت حقيقية، لا بالطريقة التقليدية «سنخزّنه قليلًا ونأمل ألا يلاحظ العمل ذلك».
 
-## Operational and Organizational Trade-Offs
+## المقايضات التشغيلية والتنظيمية
 
-Every BFF is another service. Azure’s guidance says that plainly: more services mean more operational overhead, more deployments, more maintenance, and more security work. It also warns that code duplication is a probable outcome and that learning and implementing the pattern can add technical debt if the team isn’t disciplined.
+كل BFF خدمة أخرى. تقول إرشادات Azure ذلك بصراحة: خدمات أكثر تعني عبئًا تشغيليًا أكبر، وعمليات نشر أكثر، وصيانة أكثر، وعملًا أمنيًا أكثر. وتحذّر أيضًا من أن تكرار الشيفرة نتيجة محتملة، وأن تعلّم النمط وتنفيذه قد يضيف دَينًا تقنيًا إن لم يكن الفريق منضبطًا.
 
-The reason that cost is often worth paying is autonomy. Azure says frontend teams can independently manage their BFFs and choose their own language, release cadence, and priorities. Newman argues that this is especially valuable when the UI team and downstream service teams are different groups, because the UI team can evolve its BFF and frontend together without waiting for a central API team to rebalance everyone’s demands. That’s usually the hidden economics of the pattern: you pay some ops cost to buy delivery speed and local decision-making.
+سبب استحقاق تلك التكلفة غالبًا هو الاستقلالية. تقول Azure إن فرق الواجهة الأمامية تستطيع إدارة خوادم BFF الخاصة بها باستقلالية واختيار لغتها وإيقاع إصدارها وأولوياتها. ويرى Newman أن هذا ذو قيمة خاصة حين يكون فريق الواجهة وفرق الخدمات اللاحقة مجموعات مختلفة، لأن فريق الواجهة يستطيع تطوير BFF والواجهة الأمامية معًا دون انتظار فريق API مركزي لإعادة موازنة مطالب الجميع. وهذه عادةً الاقتصاديات الخفية للنمط: تدفع بعض التكلفة التشغيلية لتشتري سرعة التسليم واتخاذ القرار محليًا.
 
-Duplication is the price everyone notices first. Newman’s advice is good and refreshingly unromantic: some duplication between BFFs is fine, and merging BFFs back into a general-purpose edge service just to avoid duplication usually recreates the original problem. If repetition becomes meaningful, then either extract a shared library or push aggregation further downstream into a domain service, but only when the abstraction is real. The usual “abstract on the third repetition” rule still applies, even when the abstraction is a service boundary instead of a helper function.
+التكرار هو الثمن الذي يلاحظه الجميع أولًا. نصيحة Newman جيدة وغير رومانسية بشكل منعش: بعض التكرار بين خوادم BFF مقبول، ودمج خوادم BFF من جديد في خدمة طرفية عامة الغرض لمجرد تجنّب التكرار عادةً يُعيد إنتاج المشكلة الأصلية. وإذا صار التكرار ذا معنى، فاستخرج مكتبة مشتركة أو ادفع التجميع أبعد في النهاية إلى خدمة نطاق، لكن فقط حين يكون التجريد حقيقيًا. وتبقى قاعدة «جرّد عند المرة الثالثة» سارية، حتى حين يكون التجريد حدّ خدمة لا دالة مساعدة.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-**The giant shared BFF.** This is the most common one because it starts from a reasonable instinct—reuse—and ends as a centralized bottleneck that every client team depends on. Both Sam Newman and Microsoft warn about this exact drift.
+**الـ BFF المشترك العملاق.** هذا أكثرها شيوعًا لأنه يبدأ من غريزة معقولة — إعادة الاستخدام — وينتهي كعنق زجاجة مركزي تعتمد عليه كل فرق العملاء. ويحذّر Sam Newman وMicrosoft معًا من هذا الانحراف بالذات.
 
-**The pass-through BFF that adds almost no value.** If it merely forwards requests without shaping, composing, securing, or insulating anything, then it’s just another hop. Azure’s guidance to keep BFF logic client-specific cuts both ways: it should contain client-specific value, not random boilerplate, but it should also not exist if there’s no such value to provide.
+**الـ BFF المارّ الذي لا يضيف قيمة تُذكر.** إذا كان يمرّر الطلبات فقط دون تشكيل أو تأليف أو تأمين أو عزل أي شيء، فهو مجرد قفزة أخرى. وإرشاد Azure بإبقاء منطق BFF خاصًا بالعميل يقطع من الاتجاهين: ينبغي أن يحتوي قيمة خاصة بالعميل، لا نصًّا نمطيًا عشوائيًا، وينبغي أيضًا ألا يوجد إن لم تكن هناك قيمة كهذه يقدّمها.
 
-**Treating the BFF as a safe place to dump all business logic.** That moves domain complexity to the edge, couples the experience layer to backend internals, and makes reuse harder. The BFF should be a façade with experience-specific logic, not the new home of your order system, pricing engine, or entitlement model.
+**معاملة BFF كمكان آمن لإلقاء كل منطق العمل.** ذلك ينقل تعقيد النطاق إلى الطرف، ويربط طبقة التجربة بالبنيات الداخلية للخادم، ويجعل إعادة الاستخدام أصعب. ينبغي أن يكون BFF واجهة أمامية بمنطق خاص بالتجربة، لا الموطن الجديد لنظام طلباتك أو محرّك التسعير أو نموذج الاستحقاقات لديك.
 
-**Getting the security story half right.** Moving tokens out of the browser is good; forgetting CSRF, cookie hardening, outbound allowlists, privacy implications, or rate-limit behavior is not. The IETF browser-app draft is especially useful here because it documents these operational edge cases instead of hand-waving them away.
+**إصابة قصة الأمان في نصفها.** نقل الرموز خارج المتصفح أمر جيد؛ أما نسيان CSRF وتقوية الكوكيز وقوائم السماح الصادرة والآثار الخصوصية أو سلوك تحديد المعدّل فليس كذلك. ومسودة IETF لتطبيقات المتصفح مفيدة بشكل خاص هنا لأنها توثّق هذه الحالات التشغيلية الحدّية بدل التلويح بها جانبًا.
 
-## A Sensible Default
+## افتراضي معقول
 
-For most teams, the best default is a thin ingress or API-management layer for generic perimeter concerns, then one BFF per meaningfully different user experience, owned by the same team as that experience. Let the gateway handle things like routing, coarse auth, rate limiting, and observability. Let the BFF handle client-specific composition, shaping, and experience-specific resilience rules. Keep domain logic in downstream services. Use duplication sparingly and refactor only when shared behavior is genuinely stable.
+لمعظم الفرق، أفضل افتراضي هو طبقة دخول رفيعة أو طبقة إدارة API للمسائل المحيطية العامة، ثم BFF واحد لكل تجربة مستخدم مختلفة اختلافًا ذا معنى، يملكها الفريق نفسه الذي يملك تلك التجربة. دع البوابة تتولّى أشياء مثل التوجيه والمصادقة الخشنة وتحديد المعدّل والرصد. ودع BFF يتولّى التأليف والتشكيل الخاصين بالعميل وقواعد المرونة الخاصة بالتجربة. وأبقِ منطق النطاق في الخدمات اللاحقة. واستخدم التكرار باعتدال وأعد الهيكلة فقط حين يكون السلوك المشترك مستقرًا فعلًا.
 
-If the frontend is a browser app using OAuth or OIDC, the modern secure default is the browser-app BFF model: the BFF acts as the confidential client, tokens stay server-side, the browser gets a hardened session cookie, and API calls go through the BFF. If your clients are basically identical, or GraphQL with frontend-specific resolvers already solves the shaping problem, skip the extra service. The whole point of BFF is to introduce a boundary that earns its keep, not to accumulate architecture points like a loyalty program for distributed systems.
+إذا كانت الواجهة الأمامية تطبيق متصفح يستخدم OAuth أو OIDC، فالافتراضي الآمن الحديث هو نموذج BFF لتطبيق المتصفح: يعمل BFF كعميل سريّ، وتبقى الرموز على الخادم، ويحصل المتصفح على كوكي جلسة مقوّى، وتمرّ نداءات API عبر BFF. وإذا كانت عملاؤك متطابقة تقريبًا، أو كان GraphQL بمُحلّلات خاصة بالواجهة الأمامية يحلّ مشكلة التشكيل بالفعل، فتخطَّ الخدمة الإضافية. فالمقصد كله من BFF هو إدخال حدّ يستحق تكلفته، لا تجميع نقاط معمارية كأنها برنامج ولاء للأنظمة الموزّعة.

@@ -1,16 +1,16 @@
 ---
-title: "Performance Testing Strategy"
-lang: en
+title: "استراتيجية اختبار الأداء"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/performance-testing-strategy"
 ---
 
-Performance without tests is just wishful thinking. You might optimize a component today, but without automated testing, tomorrow’s feature addition could undo all your work. Performance testing isn’t just about catching regressions—it’s about establishing performance as a first-class concern in your development process, ensuring that every code change is evaluated not just for correctness, but for its impact on user experience.
+الأداء بلا اختبارات مجرّد أمنيات. فقد تحسّن مكوّنًا اليوم، لكن من دون اختبار آلي قد تُلغي إضافة ميزة غدًا كل عملك. ولا يقتصر اختبار الأداء على التقاط الانحدارات فحسب — بل يتعلّق بترسيخ الأداء كهمّ من الدرجة الأولى في عملية تطويرك، بما يضمن تقييم كل تغيير في الشيفرة لا من حيث الصحة فقط، بل من حيث أثره في تجربة المستخدم أيضًا.
 
-The challenge with performance testing in React is that performance varies dramatically based on data size, device capabilities, and network conditions. A component that renders 10 items smoothly might grind to a halt with 1,000 items. A bundle that loads instantly on a MacBook Pro might timeout on a 3G connection. Effective performance testing creates realistic scenarios that catch these issues before users do.
+يكمن التحدّي في اختبار الأداء في React في أن الأداء يتفاوت تفاوتًا هائلًا حسب حجم البيانات وقدرات الجهاز وظروف الشبكة. فمكوّن يصيّر 10 عناصر بسلاسة قد يتوقّف تمامًا مع 1,000 عنصر. وحزمة تُحمَّل فورًا على MacBook Pro قد تنتهي مهلتها على اتصال 3G. واختبار الأداء الفعّال يخلق سيناريوهات واقعية تلتقط هذه المشكلات قبل أن يكتشفها المستخدمون.
 
-## Performance Testing Pyramid
+## هرم اختبار الأداء
 
-Just like the testing pyramid for functional tests, performance testing has layers:
+مثل هرم الاختبارات الوظيفية تمامًا، لاختبار الأداء طبقات:
 
 ```typescript
 // Performance Testing Pyramid (bottom to top)
@@ -54,9 +54,9 @@ interface PerformanceTestStrategy {
 }
 ```
 
-## Unit Performance Testing
+## اختبار الأداء على مستوى الوحدة
 
-### Component Render Performance
+### أداء تصيير المكوّن
 
 ```typescript
 // utils/performance-test-helpers.ts
@@ -132,7 +132,7 @@ expect.extend({
 });
 ```
 
-### Component Performance Test Examples
+### أمثلة على اختبارات أداء المكوّنات
 
 ```typescript
 // components/__tests__/UserList.performance.test.tsx
@@ -200,7 +200,7 @@ describe('UserList Performance', () => {
 });
 ```
 
-### Hook Performance Testing
+### اختبار أداء الخُطّافات
 
 ```typescript
 // hooks/__tests__/useExpensiveCalculation.performance.test.ts
@@ -257,7 +257,7 @@ describe('useExpensiveCalculation Performance', () => {
 });
 ```
 
-### Memory Usage Testing
+### اختبار استخدام الذاكرة
 
 ```typescript
 // utils/memory-test-helpers.ts
@@ -328,9 +328,9 @@ export class MemoryLeakDetector {
 }
 ```
 
-## Integration Performance Testing
+## اختبار الأداء التكاملي
 
-### Page Load Performance Tests
+### اختبارات أداء تحميل الصفحة
 
 ```typescript
 // tests/integration/page-performance.test.ts
@@ -435,7 +435,7 @@ describe('Page Performance Integration', () => {
 });
 ```
 
-### Bundle Size Performance Tests
+### اختبارات أداء حجم الحزمة
 
 ```typescript
 // tests/integration/bundle-performance.test.ts
@@ -512,11 +512,11 @@ describe('Bundle Performance', () => {
 });
 ```
 
-## End-to-End Performance Testing
+## اختبار الأداء من طرف إلى طرف
 
-### Lighthouse CI Integration
+### تكامل Lighthouse CI
 
-For comprehensive CI/CD pipeline configuration including performance budgets, see [performance-budgets-and-automation.md](https://stevekinney.com/courses/react-performance/performance-budgets-and-automation).
+للاطلاع على إعداد شامل لخط أنابيب CI/CD بما في ذلك ميزانيات الأداء، راجع [performance-budgets-and-automation.md](https://stevekinney.com/courses/react-performance/performance-budgets-and-automation).
 
 ```yaml
 # .github/workflows/performance.yml
@@ -616,7 +616,7 @@ module.exports = {
 };
 ```
 
-### Custom Performance Test Suite
+### مجموعة اختبارات أداء مخصّصة
 
 ```typescript
 // tests/e2e/performance-suite.ts
@@ -839,9 +839,9 @@ describe('E2E Performance', () => {
 });
 ```
 
-## Continuous Performance Monitoring
+## المراقبة المستمرة للأداء
 
-### Performance Regression Detection
+### كشف انحدارات الأداء
 
 ```typescript
 // scripts/performance-regression-check.ts
@@ -928,9 +928,9 @@ class PerformanceRegressionDetector {
 }
 ```
 
-## Performance Testing Best Practices
+## أفضل ممارسات اختبار الأداء
 
-### Test Data Management
+### إدارة بيانات الاختبار
 
 ```typescript
 // utils/performance-test-data.ts
@@ -978,7 +978,7 @@ export class PerformanceTestDataGenerator {
 }
 ```
 
-### Performance Test Utilities
+### أدوات مساعدة لاختبار الأداء
 
 ```typescript
 // utils/performance-assertions.ts

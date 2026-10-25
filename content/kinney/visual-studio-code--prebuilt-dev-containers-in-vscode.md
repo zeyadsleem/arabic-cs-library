@@ -1,312 +1,312 @@
 ---
-title: "Prebuilt Dev Containers in Visual Studio Code"
-lang: en
+title: "حاويات التطوير الجاهزة في Visual Studio Code"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/prebuilt-dev-containers-in-vscode"
 ---
 
-Visual Studio Code and the community provide a rich collection of pre-built Dev Container definitions. These are incredibly useful for quickly setting up common development environments without writing `devcontainer.json` from scratch.
+يوفّر Visual Studio Code والمجتمع مجموعة غنية من تعريفات حاويات التطوير الجاهزة. وهي مفيدة للغاية للإعداد السريع لبيئات تطوير شائعة دون كتابة `devcontainer.json` من الصفر.
 
-## Accessing Pre-built Definitions
+## الوصول إلى التعريفات الجاهزة
 
-When you use the “Dev Containers: Add Dev Container Configuration Files…” command, Visual Studio Code will offer a list of predefined definitions. These are fetched from the [vscode-dev-containers repository on GitHub](https://github.com/devcontainers/templates).
+عندما تستخدم الأمر “Dev Containers: Add Dev Container Configuration Files…“، سيعرض عليك Visual Studio Code قائمة من التعريفات المعرّفة مسبقًا. ويُجلب ذلك من [مستودع vscode-dev-containers على GitHub](https://github.com/devcontainers/templates).
 
-**Example: Using a Pre-built Python Definition:**
+**مثال: استخدام تعريف Python جاهز:**
 
-1. Open your project folder in Visual Studio Code.
-2. Open the Command Palette and select “Dev Containers: Add Dev Container Configuration Files…“.
-3. Choose “Python 3”.
-4. Visual Studio Code generates a `.devcontainer` folder with a pre-configured `devcontainer.json` for Python development.
-5. Open the folder in a Dev Container (as explained in the next section).
+1. افتح مجلد مشروعك في Visual Studio Code.
+2. افتح لوحة الأوامر واختر “Dev Containers: Add Dev Container Configuration Files…“.
+3. اختر “Python 3”.
+4. يُنشئ Visual Studio Code مجلد `.devcontainer` يضمّ ملف `devcontainer.json` مهيّأً مسبقًا لتطوير Python.
+5. افتح المجلد في حاوية تطوير (كما هو موضّح في القسم التالي).
 
-**Customizing Pre-built Definitions:**
+**تخصيص التعريفات الجاهزة:**
 
-Pre-built definitions are excellent starting points. You can customize them further by modifying the generated `devcontainer.json` file—adding more extensions, customizing settings, forwarding ports, adding a `postCreateCommand`, and more to tailor the environment to your project needs.
+التعريفات الجاهزة نقاط انطلاق ممتازة. ويمكنك تخصيصها أكثر بتعديل ملف `devcontainer.json` المُولَّد — بإضافة مزيد من الإضافات، وتخصيص الإعدادات، وتحويل المنافذ، وإضافة `postCreateCommand`، وغير ذلك، لتفصيل البيئة على مقاس احتياجات مشروعك.
 
-## Working with Dev Containers: Your Daily Development Workflow
+## العمل مع حاويات التطوير: سير عمل تطويرك اليومي
 
-Now that you’ve set up a Dev Container, let’s explore how to work with it effectively.
+ما إن تُعدّ حاوية تطوير، لنستكشف كيف تعمل معها بفاعلية.
 
-### Opening a Folder in a Container: Connecting to Your Environment
+### فتح مجلد في حاوية: الاتصال ببيئتك
 
-Once you have a `.devcontainer` folder in your project, Visual Studio Code will recognize it and offer options to work within the Dev Container.
+ما إن يصبح لديك مجلد `.devcontainer` في مشروعك، حتى يتعرّف عليه Visual Studio Code ويعرض عليك خيارات للعمل داخل حاوية التطوير.
 
-**Opening a Folder in a Dev Container:**
+**فتح مجلد في حاوية تطوير:**
 
-- **Option 1 (Recommended): Reopen in Container** Open your project folder in Visual Studio Code (the folder contains the `.devcontainer` folder). Visual Studio Code detects the Dev Container configuration and displays a notification: “Dev Container: Folder contains a Dev Container configuration file.” Click “Reopen in Container.” Visual Studio Code builds (if necessary) and starts the Dev Container. Once ready, it reloads and shows “(Dev Container)” in the bottom-left corner.
-  1. Open your project folder in Visual Studio Code (the folder contains the `.devcontainer` folder).
-  2. Visual Studio Code detects the Dev Container configuration and displays a notification: “Dev Container: Folder contains a Dev Container configuration file.”
-  3. Click “Reopen in Container.”
-  4. Visual Studio Code builds (if necessary) and starts the Dev Container. Once ready, it reloads and shows “(Dev Container)” in the bottom-left corner.
-- **Option 2: Command Palette – “Dev Containers: Reopen in Container”** Open your project folder. Open the Command Palette and select “Dev Containers: Reopen in Container.” Follow the same process as Option 1.
-  1. Open your project folder.
-  2. Open the Command Palette and select “Dev Containers: Reopen in Container.”
-  3. Follow the same process as Option 1.
-- **Option 3: Remote Explorer (Optional)** The Remote Explorer view (accessible via the Remote icon in the Activity Bar) also lists available Dev Containers. However, “Reopen in Container” is generally more direct.
+- **الخيار 1 (مُوصى به): Reopen in Container** افتح مجلد مشروعك في Visual Studio Code (والملف يشمل مجلد `.devcontainer`). ويكتشف Visual Studio Code إعداد حاوية التطوير ويعرض إشعارًا: “Dev Container: Folder contains a Dev Container configuration file.” فانقر “Reopen in Container.” وسيبني Visual Studio Code حاوية التطوير (عند الحاجة) ويشغّلها. وما إن تصبح جاهزة، يعيد التحميل ويعرض “(Dev Container)” في أسفل اليسار.
+  1. افتح مجلد مشروعك في Visual Studio Code (والمجلد يضمّ مجلد `.devcontainer`).
+  2. يكتشف Visual Studio Code إعداد حاوية التطوير ويعرض إشعارًا: “Dev Container: Folder contains a Dev Container configuration file.”
+  3. انقر “Reopen in Container.”
+  4. سيبني Visual Studio Code حاوية التطوير (عند الحاجة) ويشغّلها. وما إن تصبح جاهزة، يعيد التحميل ويعرض “(Dev Container)” في أسفل اليسار.
+- **الخيار 2: لوحة الأوامر — “Dev Containers: Reopen in Container”** افتح مجلد مشروعك. وافتح لوحة الأوامر واختر “Dev Containers: Reopen in Container.” ثم اتبع العملية نفسها كما في الخيار 1.
+  1. افتح مجلد مشروعك.
+  2. افتح لوحة الأوامر واختر “Dev Containers: Reopen in Container.”
+  3. اتبع العملية نفسها كما في الخيار 1.
+- **الخيار 3: Remote Explorer (اختياري)** يعرض أيضًا عرض Remote Explorer (المتاح عبر أيقونة Remote في شريط النشاط) حاويات التطوير المتاحة. لكن “Reopen in Container” أكثر مباشرة عمومًا.
 
-**What Happens When You “Reopen in Container”?**
+**ماذا يحدث عندما تختار “Reopen in Container”؟**
 
-- **Container Build (If Necessary):**
-Visual Studio Code triggers a Docker build if the specified image (or Dockerfile) needs to be built. Build logs appear in the Output panel, and subsequent reopens are faster due to Docker caching.
-- **Container Start:**
-Docker starts the container as configured.
-- **Visual Studio Code Connection:**
-Visual Studio Code connects to the running container.
-- **Workspace Mount:**
-Your project folder is **bind-mounted** into the container at the `workspaceFolder` (default `/workspace`), ensuring changes sync between host and container.
-- **Extension Installation (Inside Container):**
-Extensions listed in `devcontainer.json` are automatically installed inside the container.
-- **Settings Application (Inside Container):**
-Settings defined in `devcontainer.json` are applied within the container environment.
+- **بناء الحاوية (عند الحاجة):**
+يُطلق Visual Studio Code عملية بناء Docker إذا كانت الصورة المحدّدة (أو Dockerfile) بحاجة إلى بناء. وتظهر سجلات البناء في لوحة Output، وتكون عمليات إعادة الفتح اللاحقة أسرع بفضل التخزين المؤقت في Docker.
+- **بدء الحاوية:**
+يبدأ Docker تشغيل الحاوية وفقًا للإعدادات.
+- **اتصال Visual Studio Code:**
+يتّصل Visual Studio Code بالحاوية قيد التشغيل.
+- **تثبيت مساحة العمل:**
+يُثبَّت مجلد مشروعك بـ**ربط مباشر** (bind mount) في الحاوية عند `workspaceFolder` (والافتراضي `/workspace`)، بما يضمن تزامن التغييرات بين المضيف والحاوية.
+- **تثبيت الإضافات (داخل الحاوية):**
+تُثبَّت الإضافات المدرَجة في `devcontainer.json` تلقائيًا داخل الحاوية.
+- **تطبيق الإعدادات (داخل الحاوية):**
+تُطبَّق الإعدادات المعرّفة في `devcontainer.json` داخل بيئة الحاوية.
 
-### Building and Rebuilding Containers: Updating Your Environment
+### بناء الحاويات وإعادة بنائها: تحديث بيئتك
 
-Sometimes you need to modify your Dev Container configuration. In such cases, rebuild the container.
+تحتاج أحيانًا إلى تعديل إعدادات حاوية التطوير. وفي هذه الحالات، أعد بناء الحاوية.
 
-**Building or Rebuilding a Dev Container:**
+**بناء حاوية تطوير أو إعادة بنائها:**
 
-- **Option 1: Command Palette – “Dev Containers: Rebuild Container”** Ensure you are connected to your Dev Container. Open the Command Palette and select “Dev Containers: Rebuild Container.” Visual Studio Code rebuilds the container image based on your updated Dockerfile or image specification, then restarts the container.
-  1. Ensure you are connected to your Dev Container.
-  2. Open the Command Palette and select “Dev Containers: Rebuild Container.”
-  3. Visual Studio Code rebuilds the container image based on your updated Dockerfile or image specification, then restarts the container.
-- **Option 2: Command Palette – “Dev Containers: Rebuild and Reopen in Container”** Similar to the previous option but automatically reopens your project in the newly rebuilt container.
-  1. Similar to the previous option but automatically reopens your project in the newly rebuilt container.
-- **When to Rebuild:** Changes to the `Dockerfile` (adding software, updating dependencies, or changing the base image). Changes to `devcontainer.json` (switching to a different base image or Dockerfile). Manual software updates inside the container (though it’s better to define these in the Dockerfile).
-  - Changes to the `Dockerfile` (adding software, updating dependencies, or changing the base image).
-  - Changes to `devcontainer.json` (switching to a different base image or Dockerfile).
-  - Manual software updates inside the container (though it’s better to define these in the Dockerfile).
+- **الخيار 1: لوحة الأوامر — “Dev Containers: Rebuild Container”** تأكّد من أنك متّصل بحاوية التطوير. وافتح لوحة الأوامر واختر “Dev Containers: Rebuild Container.” فيعيد Visual Studio Code بناء صورة الحاوية استنادًا إلى Dockerfile المحدَّث أو مواصفة الصورة، ثم يعيد تشغيل الحاوية.
+  1. تأكّد من أنك متّصل بحاوية التطوير.
+  2. افتح لوحة الأوامر واختر “Dev Containers: Rebuild Container.”
+  3. يعيد Visual Studio Code بناء صورة الحاوية استنادًا إلى Dockerfile المحدَّث أو مواصفة الصورة، ثم يعيد تشغيل الحاوية.
+- **الخيار 2: لوحة الأوامر — “Dev Containers: Rebuild and Reopen in Container”** يشبه الخيار السابق، لكنه يعيد فتح مشروعك تلقائيًا في الحاوية المُعاد بناؤها حديثًا.
+  1. يشبه الخيار السابق، لكنه يعيد فتح مشروعك تلقائيًا في الحاوية المُعاد بناؤها حديثًا.
+- **متى تعيد البناء:** تغييرات في `Dockerfile` (إضافة برمجيات، أو تحديث اعتمادات، أو تغيير الصورة الأساسية). وتغييرات في `devcontainer.json` (الانتقال إلى صورة أساسية مختلفة أو Dockerfile مختلف). وتحديثات البرمجيات يدويًا داخل الحاوية (مع أن الأفضل تعريفها في Dockerfile).
+  - تغييرات في `Dockerfile` (إضافة برمجيات، أو تحديث اعتمادات، أو تغيير الصورة الأساسية).
+  - تغييرات في `devcontainer.json` (الانتقال إلى صورة أساسية مختلفة أو Dockerfile مختلف).
+  - تحديثات البرمجيات يدويًا داخل الحاوية (مع أن الأفضل تعريفها في Dockerfile).
 
-### Accessing the Terminal: Your Gateway to the Container
+### الوصول إلى الطرفية: بوابتك إلى الحاوية
 
-The integrated terminal in Visual Studio Code runs *inside* the Dev Container.
+تعمل الطرفية المدمجة في Visual Studio Code *داخل* حاوية التطوير.
 
-**Accessing the Dev Container Terminal:**
+**الوصول إلى طرفية حاوية التطوير:**
 
-- **Option 1: Visual Studio Code Integrated Terminal** Ensure you are connected to your Dev Container. Open the integrated terminal (Ctrl+`or Cmd+`). The terminal prompt shows you are inside the container (using the shell configured in your container image or `devcontainer.json`).
-  1. Ensure you are connected to your Dev Container.
-  2. Open the integrated terminal (Ctrl+`or Cmd+`).
-  3. The terminal prompt shows you are inside the container (using the shell configured in your container image or `devcontainer.json`).
+- **الخيار 1: الطرفية المدمجة في Visual Studio Code** تأكّد من أنك متّصل بحاوية التطوير. وافتح الطرفية المدمجة (Ctrl+` أو Cmd+`). ويُظهر لك موجّه الطرفية أنك داخل الحاوية (باستخدام الأوامر المهيّأة في صورة حاويتك أو في `devcontainer.json`).
+  1. تأكّد من أنك متّصل بحاوية التطوير.
+  2. افتح الطرفية المدمجة (Ctrl+` أو Cmd+`).
+  3. يوضّح لك موجّه الطرفية أنك داخل الحاوية (باستخدام الطرفية المهيّأة في صورة حاويتك أو في `devcontainer.json`).
 
-**Usage:**
+**الاستخدام:**
 
-- **Execute Commands:** Run commands such as build scripts, tests, or dependency management directly within the container.
-- **Temporary Software Installation:** Install packages (via apt, npm, pip, etc.) as needed, though changes won’t persist across restarts unless added to the Dockerfile.
-- **Debug and Troubleshoot:** Use the terminal to inspect logs and troubleshoot container issues.
+- **تنفيذ الأوامر:** شغّل أوامر مثل سكربتات البناء، أو الاختبارات، أو إدارة الاعتمادات مباشرة داخل الحاوية.
+- **تثبيت برمجيات مؤقّت:** ثبّت حزمًا (عبر apt أو npm أو pip أو غيرها) عند الحاجة، لكن التغييرات لن تستمر بعد إعادة التشغيل ما لم تُضَف إلى Dockerfile.
+- **التنقيح وحلّ المشكلات:** استخدم الطرفية لفحص السجلات وتشخيص مشكلات الحاوية.
 
-### Installing Extensions: Enhancing Your Containerized IDE
+### تثبيت الإضافات: تعزيز بيئة تطويرك المحوَسة
 
-Dev Containers allow you to install Visual Studio Code extensions directly within the container.
+تتيح لك حاويات التطوير تثبيت إضافات Visual Studio Code مباشرة داخل الحاوية.
 
-**Installing Extensions Inside the Dev Container:**
+**تثبيت الإضافات داخل حاوية التطوير:**
 
-- **Automatic Installation:**
-List essential extensions in the `extensions` property of `devcontainer.json` to have them automatically installed when the container starts.
-- **Manual Installation:** Ensure you are connected to the Dev Container. Open the Extensions view (Ctrl+Shift+X or Cmd+Shift+X). Locate the section “Dev Container: [Container Name] - Installed” and install extensions there.
-  1. Ensure you are connected to the Dev Container.
-  2. Open the Extensions view (Ctrl+Shift+X or Cmd+Shift+X).
-  3. Locate the section “Dev Container: [Container Name] - Installed” and install extensions there.
+- **التثبيت التلقائي:**
+أدرج الإضافات الأساسية في خاصية `extensions` في `devcontainer.json` لتُثبَّت تلقائيًا عند بدء الحاوية.
+- **التثبيت اليدوي:** تأكّد من أنك متّصل بحاوية التطوير. وافتح عرض Extensions (`Ctrl+Shift+X` أو `Cmd+Shift+X`). وابحث عن قسم “Dev Container: [Container Name] - Installed” وثبّت الإضافات هناك.
+  1. تأكّد من أنك متّصل بحاوية التطوير.
+  2. افتح عرض Extensions (`Ctrl+Shift+X` أو `Cmd+Shift+X`).
+  3. ابحث عن قسم “Dev Container: [Container Name] - Installed” وثبّت الإضافات هناك.
 
-**Benefits:**
+**الفوائد:**
 
-- Ensures consistency across the team.
-- Reduces clutter on your host machine.
-- Allows project-specific configuration.
+- تضمن الاتساق بين أعضاء الفريق.
+- تقلّل الفوضى على جهازك المضيف.
+- تتيح إعدادات خاصة بكل مشروع.
 
-### Sharing Workspaces: Collaborative Containerized Development
+### مشاركة مساحات العمل: تطوير محوَس تعاوني
 
-Sharing your Dev Container configuration via version control ensures every team member uses the same environment.
+تضمن مشاركة إعداد حاوية التطوير عبر التحكّم في الإصدارات أن يستخدم كل عضو في الفريق البيئة نفسها.
 
-**How to Share:**
+**كيف تشارك:**
 
-- **Version Control:**
-Commit the `.devcontainer` folder (including `devcontainer.json` and optionally a `Dockerfile` or `docker-compose.yml`) to Git.
-- **Team Cloning:**
-When team members clone the repository and open it in Visual Studio Code with the Remote - Containers extension, they will be prompted to “Reopen in Container” and receive the same environment.
+- **التحكّم في الإصدارات:**
+أودِع مجلد `.devcontainer` (بما يشمل `devcontainer.json` واختياريًا `Dockerfile` أو `docker-compose.yml`) في Git.
+- **استنساخ الفريق:**
+عندما يستنسخ أعضاء الفريق المستودع ويفتحونه في Visual Studio Code مع إضافة Remote - Containers، سيُطلب منهم “Reopen in Container” وسيحصلون على البيئة نفسها.
 
-**Benefits:**
+**الفوائد:**
 
-- Consistency across the team.
-- Version history for configuration changes.
-- Simplified onboarding for new team members.
+- الاتساق بين أعضاء الفريق.
+- سجل إصدارات لتغييرات الإعدادات.
+- تهيئة مبسّطة لأعضاء الفريق الجدد.
 
-## Customizing Dev Containers: Tailoring Your Environment
+## تخصيص حاويات التطوير: تفصيل بيئتك على مقاسك
 
-Dev Containers offer extensive customization options.
+توفّر حاويات التطوير خيارات تخصيص واسعة.
 
-### Dockerfiles: Fine-Grained Control
+### ملفات Dockerfile: تحكّم دقيق
 
-For advanced customization, use a Dockerfile.
+للتخصيص المتقدّم، استخدم Dockerfile.
 
-**Using Dockerfiles:**
+**استخدام ملفات Dockerfile:**
 
-1. Create a `Dockerfile` within the `.devcontainer` folder.
-2. In `devcontainer.json`, replace the `image` property with `dockerFile` and specify the Dockerfile path: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
-<span class="line"><span style="color:#7FDBCA"> "dockerFile"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">Dockerfile</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> Use a relative path if the Dockerfile isn’t in the same folder.
+1. أنشئ `Dockerfile` داخل مجلد `.devcontainer`.
+2. في `devcontainer.json`، استبدل خاصية `image` بـ`dockerFile` وحدّد مسار Dockerfile: <code><span class="line"><span>{</span></span>
+<span class="line"><span> "dockerFile"</span><span>: </span><span>"</span><span>Dockerfile</span><span>"</span></span>
+<span class="line"><span>}</span></span></code> استخدم مسارًا نسبيًا إذا لم يكن Dockerfile في المجلد نفسه.
 
-**Examples:**
+**أمثلة:**
 
-- **Installing Software:** <code><span class="line"><span style="color:#7FDBCA">FROM</span><span style="color:#D6DEEB"> mcr.microsoft.com/devcontainers/javascript-node:18</span></span>
-<span class="line"><span style="color:#7FDBCA">RUN</span><span style="color:#D6DEEB"> apt-get update && apt-get install -y --no-install-recommends \</span></span>
-<span class="line"><span style="color:#D6DEEB"> graphicsmagick</span></span></code>
-- **Configuring Settings:** <code><span class="line"><span style="color:#7FDBCA">FROM</span><span style="color:#D6DEEB"> mcr.microsoft.com/devcontainers/python:3.10</span></span>
-<span class="line"><span style="color:#7FDBCA">RUN</span><span style="color:#D6DEEB"> echo </span><span style="color:#ECC48D">"en_US.UTF-8 UTF-8"</span><span style="color:#D6DEEB"> >> /etc/locale.gen && locale-gen</span></span>
-<span class="line"><span style="color:#7FDBCA">ENV</span><span style="color:#D6DEEB"> LANG en_US.UTF-8</span></span>
-<span class="line"><span style="color:#7FDBCA">ENV</span><span style="color:#D6DEEB"> LANGUAGE en_US:en</span></span>
-<span class="line"><span style="color:#7FDBCA">ENV</span><span style="color:#D6DEEB"> LC_ALL en_US.UTF-8</span></span></code>
-- **Setting Up Services:** <code><span class="line"><span style="color:#7FDBCA">FROM</span><span style="color:#D6DEEB"> mcr.microsoft.com/devcontainers/go:1.20</span></span>
-<span class="line"><span style="color:#7FDBCA">RUN</span><span style="color:#D6DEEB"> apt-get update && apt-get install -y --no-install-recommends \</span></span>
-<span class="line"><span style="color:#D6DEEB"> postgresql-client</span></span></code>
+- **تثبيت برمجيات:** <code><span class="line"><span>FROM</span><span> mcr.microsoft.com/devcontainers/javascript-node:18</span></span>
+<span class="line"><span>RUN</span><span> apt-get update && apt-get install -y --no-install-recommends \</span></span>
+<span class="line"><span> graphicsmagick</span></span></code>
+- **ضبط الإعدادات:** <code><span class="line"><span>FROM</span><span> mcr.microsoft.com/devcontainers/python:3.10</span></span>
+<span class="line"><span>RUN</span><span> echo </span><span>"en_US.UTF-8 UTF-8"</span><span> >> /etc/locale.gen && locale-gen</span></span>
+<span class="line"><span>ENV</span><span> LANG en_US.UTF-8</span></span>
+<span class="line"><span>ENV</span><span> LANGUAGE en_US:en</span></span>
+<span class="line"><span>ENV</span><span> LC_ALL en_US.UTF-8</span></span></code>
+- **إعداد الخدمات:** <code><span class="line"><span>FROM</span><span> mcr.microsoft.com/devcontainers/go:1.20</span></span>
+<span class="line"><span>RUN</span><span> apt-get update && apt-get install -y --no-install-recommends \</span></span>
+<span class="line"><span> postgresql-client</span></span></code>
 
-**Best Practices:**
+**أفضل الممارسات:**
 
-- Use a reputable base image.
-- Optimize layering for caching.
-- Keep the Dockerfile minimal.
-- Pin dependency versions for reproducibility.
+- استخدم صورة أساسية موثوقة.
+- حسّن الطبقات من أجل التخزين المؤقت.
+- أبقِ Dockerfile بسيطًا.
+- ثبّت إصدارات الاعتمادات لضمان قابلية إعادة الإنتاج.
 
-### dotfiles: Personalizing Your Environment
+### ملفات dotfiles: تخصيص بيئتك
 
-Mount your host’s dotfiles to personalize your container.
+ثبّت ملفات dotfiles من مضيفك لتخصيص حاويتك.
 
-**Using dotfiles:**
+**استخدام ملفات dotfiles:**
 
-1. Add a `dotfiles` property in `devcontainer.json`: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
-<span class="line"><span style="color:#7FDBCA"> "dotfiles"</span><span style="color:#D6DEEB">: {</span></span>
-<span class="line"><span style="color:#7FDBCA"> "repository"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">https://github.com/your-username/dotfiles</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
-<span class="line"><span style="color:#7FDBCA"> "targetPath"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">~</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
-<span class="line"><span style="color:#7FDBCA"> "installCommand"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">install.sh</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#D6DEEB"> }</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> **repository:** URL to your dotfiles repo. **targetPath:** Path inside the container (default `~`). **installCommand:** Script executed post-cloning.
-  - **repository:** URL to your dotfiles repo.
-  - **targetPath:** Path inside the container (default `~`).
-  - **installCommand:** Script executed post-cloning.
-2. Structure your dotfiles repository with files like `.bashrc`, `.gitconfig`, and an `install.sh` script: <code>dotfiles-repository/
+1. أضف خاصية `dotfiles` في `devcontainer.json`: <code><span class="line"><span>{</span></span>
+<span class="line"><span> "dotfiles"</span><span>: {</span></span>
+<span class="line"><span> "repository"</span><span>: </span><span>"</span><span>https://github.com/your-username/dotfiles</span><span>"</span><span>,</span></span>
+<span class="line"><span> "targetPath"</span><span>: </span><span>"</span><span>~</span><span>"</span><span>,</span></span>
+<span class="line"><span> "installCommand"</span><span>: </span><span>"</span><span>install.sh</span><span>"</span></span>
+<span class="line"><span> }</span></span>
+<span class="line"><span>}</span></span></code> **repository:** عنوان URL لمستودع dotfiles لديك. و**targetPath:** المسار داخل الحاوية (والافتراضي `~`). و**installCommand:** سكربت يُنفَّذ بعد الاستنساخ.
+  - **repository:** عنوان URL لمستودع dotfiles لديك.
+  - **targetPath:** المسار داخل الحاوية (والافتراضي `~`).
+  - **installCommand:** سكربت يُنفَّذ بعد الاستنساخ.
+2. نظّم مستودع dotfiles لديك بملفات مثل `.bashrc` و`.gitconfig` وسكربت `install.sh`: <code>dotfiles-repository/
 ├── .bashrc
 ├── .gitconfig
 ├── .vimrc
 └── install.sh</code>
-3. **Example `install.sh`:** <code><span class="line"><span style="color:#637777;font-style:italic">#!/bin/bash</span></span>
-<span class="line"><span style="color:#82AAFF;font-style:italic">ln</span><span style="color:#82AAFF"> -sf</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$DOTFILES_REPOSITORY</span><span style="color:#ECC48D">/.bashrc</span><span style="color:#D9F5DD">"</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$HOME</span><span style="color:#ECC48D">/.bashrc</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#82AAFF;font-style:italic">ln</span><span style="color:#82AAFF"> -sf</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$DOTFILES_REPOSITORY</span><span style="color:#ECC48D">/.gitconfig</span><span style="color:#D9F5DD">"</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$HOME</span><span style="color:#ECC48D">/.gitconfig</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#82AAFF;font-style:italic">ln</span><span style="color:#82AAFF"> -sf</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$DOTFILES_REPOSITORY</span><span style="color:#ECC48D">/.vimrc</span><span style="color:#D9F5DD">"</span><span style="color:#D9F5DD"> "</span><span style="color:#C5E478">$HOME</span><span style="color:#ECC48D">/.vimrc</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#C5E478;font-style:italic">echo</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">Dotfiles installation complete!</span><span style="color:#D9F5DD">"</span></span></code>
+3. **مثال على `install.sh`:** <code><span class="line"><span>#!/bin/bash</span></span>
+<span class="line"><span>ln</span><span> -sf</span><span> "</span><span>$DOTFILES_REPOSITORY</span><span>/.bashrc</span><span>"</span><span> "</span><span>$HOME</span><span>/.bashrc</span><span>"</span></span>
+<span class="line"><span>ln</span><span> -sf</span><span> "</span><span>$DOTFILES_REPOSITORY</span><span>/.gitconfig</span><span>"</span><span> "</span><span>$HOME</span><span>/.gitconfig</span><span>"</span></span>
+<span class="line"><span>ln</span><span> -sf</span><span> "</span><span>$DOTFILES_REPOSITORY</span><span>/.vimrc</span><span>"</span><span> "</span><span>$HOME</span><span>/.vimrc</span><span>"</span></span>
+<span class="line"><span>echo</span><span> "</span><span>Dotfiles installation complete!</span><span>"</span></span></code>
 
-**Benefits:**
+**الفوائد:**
 
-- Personalizes the container environment.
-- Ensures consistency across systems.
-- Version-controls your configurations.
-- Enables portability.
+- تخصّص بيئة الحاوية.
+- تضمن الاتساق بين الأنظمة.
+- تُخضع إعداداتك للتحكّم في الإصدارات.
+- تمكّن قابلية النقل.
 
-### Advanced Capabilities
+### قدرات متقدّمة
 
-**Bind Mounts:**
+**عمليات التثبيت المباشر (Bind Mounts):**
 
-- Mount host directories into the container.
-- Define in `devcontainer.json` using the `mounts` property: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
-<span class="line"><span style="color:#7FDBCA"> "mounts"</span><span style="color:#D6DEEB">: [</span></span>
-<span class="line"><span style="color:#D9F5DD"> "</span><span style="color:#C789D6">source=${localWorkspaceFolder}/data,target=/container/data,type=bind,consistency=cached</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#D6DEEB"> ]</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> **source:** Host path. **target:** Container path. **type:** Set as `bind`. **consistency:** Optional (e.g., `cached`).
-  - **source:** Host path.
-  - **target:** Container path.
-  - **type:** Set as `bind`.
-  - **consistency:** Optional (e.g., `cached`).
+- ثبّت أدلة المضيف داخل الحاوية.
+- عرّفها في `devcontainer.json` باستخدام خاصية `mounts`: <code><span class="line"><span>{</span></span>
+<span class="line"><span> "mounts"</span><span>: [</span></span>
+<span class="line"><span> "</span><span>source=${localWorkspaceFolder}/data,target=/container/data,type=bind,consistency=cached</span><span>"</span></span>
+<span class="line"><span> ]</span></span>
+<span class="line"><span>}</span></span></code> **source:** مسار المضيف. و**target:** مسار الحاوية. و**type:** يُضبط على `bind`. و**consistency:** اختياري (مثل `cached`).
+  - **source:** مسار المضيف.
+  - **target:** مسار الحاوية.
+  - **type:** يُضبط على `bind`.
+  - **consistency:** اختياري (مثل `cached`).
 
-**Port Forwarding:**
+**تحويل المنافذ:**
 
-- Use the `forwardPorts` property to forward container ports to the host.
-- Visual Studio Code can auto-detect and prompt for forwarded ports.
+- استخدم خاصية `forwardPorts` لتحويل منافذ الحاوية إلى المضيف.
+- يمكن لـ Visual Studio Code أن يكتشف المنافذ المحوَّلة تلقائيًا ويعرض تحويلها.
 
 **Docker Compose:**
 
-- Define multi-container environments with a `docker-compose.yml` file.
-- Modify `devcontainer.json` to use `dockerComposeFile`, and specify `service` and `workspaceFolder`: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
-<span class="line"><span style="color:#7FDBCA"> "dockerComposeFile"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">docker-compose.yml</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
-<span class="line"><span style="color:#7FDBCA"> "service"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">app</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
-<span class="line"><span style="color:#7FDBCA"> "workspaceFolder"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">/app</span><span style="color:#D9F5DD">"</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code>
-- **Example `docker-compose.yml`:** <code><span class="line"><span style="color:#7FDBCA">version</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">3.8</span><span style="color:#D9F5DD">'</span></span>
-<span class="line"><span style="color:#7FDBCA">services</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> app</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> build</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> context</span><span style="color:#D6DEEB">: </span><span style="color:#ECC48D">./app</span></span>
-<span class="line"><span style="color:#7FDBCA"> dockerfile</span><span style="color:#D6DEEB">: </span><span style="color:#ECC48D">Dockerfile</span></span>
-<span class="line"><span style="color:#7FDBCA"> ports</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#D6DEEB"> - </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">3000:3000</span><span style="color:#D9F5DD">'</span></span>
-<span class="line"><span style="color:#7FDBCA"> volumes</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#D6DEEB"> - </span><span style="color:#ECC48D">./app:/app</span></span>
-<span class="line"><span style="color:#7FDBCA"> db</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> image</span><span style="color:#D6DEEB">: </span><span style="color:#ECC48D">postgres:14</span></span>
-<span class="line"><span style="color:#7FDBCA"> environment</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> POSTGRES_USER</span><span style="color:#D6DEEB">: </span><span style="color:#ECC48D">devuser</span></span>
-<span class="line"><span style="color:#7FDBCA"> POSTGRES_PASSWORD</span><span style="color:#D6DEEB">: </span><span style="color:#ECC48D">devpassword</span></span>
-<span class="line"><span style="color:#7FDBCA"> ports</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#D6DEEB"> - </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">5432:5432</span><span style="color:#D9F5DD">'</span></span>
-<span class="line"><span style="color:#7FDBCA"> volumes</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#D6DEEB"> - </span><span style="color:#ECC48D">db_data:/var/lib/postgresql/data</span></span>
-<span class="line"><span style="color:#7FDBCA">volumes</span><span style="color:#D6DEEB">:</span></span>
-<span class="line"><span style="color:#7FDBCA"> db_data</span><span style="color:#D6DEEB">:</span></span></code>
+- عرّف بيئات متعدّدة الحاويات بملف `docker-compose.yml`.
+- عدّل `devcontainer.json` لاستخدام `dockerComposeFile`، وحدّد `service` و`workspaceFolder`: <code><span class="line"><span>{</span></span>
+<span class="line"><span> "dockerComposeFile"</span><span>: </span><span>"</span><span>docker-compose.yml</span><span>"</span><span>,</span></span>
+<span class="line"><span> "service"</span><span>: </span><span>"</span><span>app</span><span>"</span><span>,</span></span>
+<span class="line"><span> "workspaceFolder"</span><span>: </span><span>"</span><span>/app</span><span>"</span></span>
+<span class="line"><span>}</span></span></code>
+- **مثال على `docker-compose.yml`:** <code><span class="line"><span>version</span><span>: </span><span>'</span><span>3.8</span><span>'</span></span>
+<span class="line"><span>services</span><span>:</span></span>
+<span class="line"><span> app</span><span>:</span></span>
+<span class="line"><span> build</span><span>:</span></span>
+<span class="line"><span> context</span><span>: </span><span>./app</span></span>
+<span class="line"><span> dockerfile</span><span>: </span><span>Dockerfile</span></span>
+<span class="line"><span> ports</span><span>:</span></span>
+<span class="line"><span> - </span><span>'</span><span>3000:3000</span><span>'</span></span>
+<span class="line"><span> volumes</span><span>:</span></span>
+<span class="line"><span> - </span><span>./app:/app</span></span>
+<span class="line"><span> db</span><span>:</span></span>
+<span class="line"><span> image</span><span>: </span><span>postgres:14</span></span>
+<span class="line"><span> environment</span><span>:</span></span>
+<span class="line"><span> POSTGRES_USER</span><span>: </span><span>devuser</span></span>
+<span class="line"><span> POSTGRES_PASSWORD</span><span>: </span><span>devpassword</span></span>
+<span class="line"><span> ports</span><span>:</span></span>
+<span class="line"><span> - </span><span>'</span><span>5432:5432</span><span>'</span></span>
+<span class="line"><span> volumes</span><span>:</span></span>
+<span class="line"><span> - </span><span>db_data:/var/lib/postgresql/data</span></span>
+<span class="line"><span>volumes</span><span>:</span></span>
+<span class="line"><span> db_data</span><span>:</span></span></code>
 
-**GitHub Codespaces Integration:**
+**التكامل مع GitHub Codespaces:**
 
-- If a project contains a `.devcontainer` folder, Codespaces uses it to create a cloud-based environment.
-- **Benefits:** Cloud-based access, pre-configured environments, and seamless local-to-cloud transitions.
+- إذا كان المشروع يضمّ مجلد `.devcontainer`، فيستخدمه Codespaces لإنشاء بيئة سحابية.
+- **الفوائد:** وصول سحابي، وبيئات مهيّأة مسبقًا، وانتقالات سلسة من المحلي إلى السحابة.
 
-## Troubleshooting and Best Practices
+## حلّ المشكلات وأفضل الممارسات
 
-### Common Issues
+### مشكلات شائعة
 
-- **Container Build Errors:** Review build logs. Check Dockerfile syntax, network, resource limits, and rate limits. Rebuild with a clean cache if needed.
-  - Review build logs.
-  - Check Dockerfile syntax, network, resource limits, and rate limits.
-  - Rebuild with a clean cache if needed.
-- **Container Startup Failures:** Examine container logs. Verify resource allocation and port conflicts. Check Dockerfile/image issues.
-  - Examine container logs.
-  - Verify resource allocation and port conflicts.
-  - Check Dockerfile/image issues.
-- **Extension Installation Issues:** Ensure container internet connectivity. Verify extension compatibility. Restart Visual Studio Code or reload the container.
-  - Ensure container internet connectivity.
-  - Verify extension compatibility.
-  - Restart Visual Studio Code or reload the container.
-- **Performance Issues:** Increase Docker Desktop resources. Optimize Dockerfile layering and base image size. Consider using Docker volumes over bind mounts. Limit installed extensions.
-  - Increase Docker Desktop resources.
-  - Optimize Dockerfile layering and base image size.
-  - Consider using Docker volumes over bind mounts.
-  - Limit installed extensions.
+- **أخطاء بناء الحاوية:** راجع سجلات البناء. وافحص صيغة Dockerfile، والشبكة، وحدود الموارد، وحدود المعدّل (rate limits). وأعد البناء بذاكرة مؤقتة نظيفة عند الحاجة.
+  - راجع سجلات البناء.
+  - افحص صيغة Dockerfile، والشبكة، وحدود الموارد، وحدود المعدّل.
+  - أعد البناء بذاكرة مؤقتة نظيفة عند الحاجة.
+- **فشل بدء الحاوية:** افحص سجلات الحاوية. وتحقّق من تخصيص الموارد وتعارضات المنافذ. وافحص مشكلات Dockerfile أو الصورة.
+  - افحص سجلات الحاوية.
+  - تحقّق من تخصيص الموارد وتعارضات المنافذ.
+  - افحص مشكلات Dockerfile أو الصورة.
+- **مشكلات تثبيت الإضافات:** تأكّد من اتصال الحاوية بالإنترنت. وتحقّق من توافق الإضافات. وأعد تشغيل Visual Studio Code أو أعد تحميل الحاوية.
+  - تأكّد من اتصال الحاوية بالإنترنت.
+  - تحقّق من توافق الإضافات.
+  - أعد تشغيل Visual Studio Code أو أعد تحميل الحاوية.
+- **مشكلات الأداء:** زد موارد Docker Desktop. وحسّن طبقات Dockerfile وحجم الصورة الأساسية. وفكّر في استخدام وحدات تخزين Docker بدلًا من عمليات التثبيت المباشر. وقلّل الإضافات المثبّتة.
+  - زد موارد Docker Desktop.
+  - حسّن طبقات Dockerfile وحجم الصورة الأساسية.
+  - فكّر في استخدام وحدات تخزين Docker بدلًا من عمليات التثبيت المباشر.
+  - قلّل الإضافات المثبّتة.
 
-### Performance Optimization
+### تحسين الأداء
 
-- Allocate sufficient CPU/memory in Docker Desktop.
-- Optimize Dockerfiles for caching and minimal image size.
-- Use Docker volumes where beneficial.
-- Install only essential extensions.
-- Minimize background processes.
-- Choose efficient base images.
-- Configure Visual Studio Code caching optimally.
+- خصّص موارد CPU وذاكرة كافية في Docker Desktop.
+- حسّن ملفات Dockerfile من أجل التخزين المؤقت وتقليل حجم الصورة.
+- استخدم وحدات تخزين Docker حيث يكون ذلك مفيدًا.
+- ثبّت الإضافات الأساسية فقط.
+- قلّل العمليات الخلفية.
+- اختر صورًا أساسية فعّالة.
+- اضبط التخزين المؤقت في Visual Studio Code على النحو الأمثل.
 
-### Security Considerations
+### اعتبارات أمنية {#security-considerations}
 
-- **Container Image Security:** Use trusted base images and scan for vulnerabilities. Minimize image size. Regularly update images and dependencies.
-  - Use trusted base images and scan for vulnerabilities.
-  - Minimize image size.
-  - Regularly update images and dependencies.
-- **Network Security:** Forward only necessary ports. Understand container networking. Manage secrets securely (use environment variables).
-  - Forward only necessary ports.
-  - Understand container networking.
-  - Manage secrets securely (use environment variables).
-- **Host Access:** Follow least privilege principles for bind mounts. Use read-only mounts when possible.
-  - Follow least privilege principles for bind mounts.
-  - Use read-only mounts when possible.
-- **User Permissions:** Run containers as non-root. Consider Docker user namespaces for extra isolation.
-  - Run containers as non-root.
-  - Consider Docker user namespaces for extra isolation.
+- **أمن صورة الحاوية:** استخدم صورًا أساسية موثوقة وافحصها بحثًا عن الثغرات. وقلّل حجم الصورة. وحدّث الصور والاعتمادات بانتظام.
+  - استخدم صورًا أساسية موثوقة وافحصها بحثًا عن الثغرات.
+  - قلّل حجم الصورة.
+  - حدّث الصور والاعتمادات بانتظام.
+- **أمن الشبكة:** حوّل المنافذ الضرورية فقط. وافهم شبكات الحاويات. وأدر الأسرار بأمان (باستخدام متغيّرات البيئة).
+  - حوّل المنافذ الضرورية فقط.
+  - افهم شبكات الحاويات.
+  - أدر الأسرار بأمان (باستخدام متغيّرات البيئة).
+- **الوصول إلى المضيف:** اتبع مبادئ الامتياز الأقل لعمليات التثبيت المباشر. واستخدم عمليات تثبيت للقراءة فقط عند الإمكان.
+  - اتبع مبادئ الامتياز الأقل لعمليات التثبيت المباشر.
+  - استخدم عمليات تثبيت للقراءة فقط عند الإمكان.
+- **أذونات المستخدم:** شغّل الحاويات بوصفك مستخدمًا غير جذر. وفكّر في استخدام نطاقات مستخدمي Docker لعزل إضافي.
+  - شغّل الحاويات بوصفك مستخدمًا غير جذر.
+  - فكّر في استخدام نطاقات مستخدمي Docker لعزل إضافي.
 
-## Real-World Examples: Dev Containers in Action
+## أمثلة واقعية: حاويات التطوير في العمل
 
-### Node.js Development Environment
+### بيئة تطوير Node.js
 
-Setting up a Node.js environment with specific npm packages and configurations for a web application.
+إعداد بيئة Node.js بحزم npm وإعدادات محدّدة لتطبيق ويب.
 
 `devcontainer.json`:
 
@@ -324,8 +324,8 @@ Setting up a Node.js environment with specific npm packages and configurations f
 }
 ```
 
-- Uses the Node.js 18 image.
-- Installs ESLint, Prettier, and a debugger.
-- Sets the terminal to bash with format-on-save enabled.
-- Forwards port 3000.
-- Runs `npm install` after container creation.
+- يستخدم صورة Node.js 18.
+- يثبّت ESLint وPrettier ومُنقّحًا.
+- يضبط الطرفية على bash مع تمكين التنسيق عند الحفظ.
+- يحوّل المنفذ 3000.
+- يشغّل `npm install` بعد إنشاء الحاوية.

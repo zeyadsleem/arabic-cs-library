@@ -1,21 +1,21 @@
 ---
-title: "Advanced Snippet Techniques"
-lang: en
+title: "تقنيات متقدّمة في المقتطفات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/advanced-snippet-techniques-vscode"
 ---
 
-Alright, we’re not done just yet. Let’s take a quick moment and look at two advanced strategies before we move on.
+حسنًا، لم ننتهِ بعد. فلنأخذ لحظة سريعة لننظر في استراتيجيتين متقدّمتين قبل أن نمضي.
 
-- Using Nested Snippets
-- Using Regular Expressions in Snippets
+- استخدام المقتطفات المتداخلة
+- استخدام التعبيرات النمطية في المقتطفات
 
-## Nested Snippets
+## المقتطفات المتداخلة
 
-Nested snippets allow you to create complex code generation workflows by inserting snippets within other snippets. This is achieved by using placeholders as snippet triggers.
+تتيح لك المقتطفات المتداخلة إنشاء مسارات عمل معقّدة لتوليد الشيفرة بإدراج مقتطفات داخل مقتطفات أخرى. ويتحقّق ذلك باستخدام عناصر نائبة كمُشغّلات للمقتطفات.
 
-### Example: Nested React Component Snippet
+### مثال: مقتطف مكوّن React متداخل
 
-Let’s say you have a basic React component snippet and a separate snippet for PropTypes. You can nest the PropTypes snippet within the component snippet.
+افترض أن لديك مقتطفًا أساسيًا لمكوّن React ومقتطفًا منفصلًا لـ PropTypes. ويمكنك تداخل مقتطف PropTypes داخل مقتطف المكوّن.
 
 ```json
 "React Functional Component": {
@@ -37,7 +37,7 @@ Let’s say you have a basic React component snippet and a separate snippet for 
 }
 ```
 
-### PropTypes Snippet
+### مقتطف PropTypes
 
 ```json
 "React PropTypes": {
@@ -53,13 +53,13 @@ Let’s say you have a basic React component snippet and a separate snippet for 
 }
 ```
 
-**Nesting them:** To nest, modify the React Component snippet (`react-component.json`) to include a placeholder that triggers the PropTypes snippet. Replace the `export default ${1};` line with:
+**تداخلهما:** للتداخل، عدّل مقتطف مكوّن React (`react-component.json`) ليتضمّن عنصرًا نائبًا يشغّل مقتطف PropTypes. واستبدل السطر `export default ${1};` بما يلي:
 
 ```json
 'export default ${1};', '${2:proptypes}'; // Placeholder that triggers "proptypes" snippet
 ```
 
-Now, the modified `snippet` becomes:
+الآن يصبح المقتطف المعدّل:
 
 ```json
 "React Functional Component with PropTypes": { // Renamed snippet
@@ -82,13 +82,13 @@ Now, the modified `snippet` becomes:
 }
 ```
 
-### How This Works
+### كيف يعمل هذا
 
-1. Insert the “React Functional Component with PropTypes” snippet using the `rfcp` prefix.
-2. Fill in the component name at placeholder `$1`.
-3. Press `Tab` to move to placeholder `$2`.
-4. Now, within the `$2` placeholder, type the prefix of the “React PropTypes” snippet, which is `proptypes`.
-5. Visual Studio Code will suggest the “React PropTypes” snippet. Select it.
-6. The “React PropTypes” snippet will be inserted *within* the `$2` placeholder of the “React Functional Component” snippet, effectively nesting them.
+1. أدرج مقتطف “React Functional Component with PropTypes” باستخدام البادئة `rfcp`.
+2. املأ اسم المكوّن في العنصر النائب `$1`.
+3. اضغط `Tab` للانتقال إلى العنصر النائب `$2`.
+4. الآن، داخل العنصر النائب `$2`، اكتب بادئة مقتطف “React PropTypes”، وهي `proptypes`.
+5. سيقترح Visual Studio Code مقتطف “React PropTypes”. فاختره.
+6. سيُدرج مقتطف “React PropTypes” *داخل* العنصر النائب `$2` من مقتطف “React Functional Component”، فيتداخل المقتطفان فعليًا.
 
-Nested snippets allow you to create modular and reusable code templates, building complex structures from smaller, manageable snippets.
+تتيح لك المقتطفات المتداخلة إنشاء قوالب شيفرة معيارية قابلة لإعادة الاستخدام، وبناء بنى معقّدة من مقتطفات أصغر يمكن إدارتها.

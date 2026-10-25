@@ -1,42 +1,35 @@
 ---
-title: "Notepads Migration"
-lang: en
+title: "ترحيل الدفتر (Notepads)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-notepads"
 ---
 
-[Cursor Notepads](https://forum.cursor.com/t/deprecating-notepads-in-cursor/138305) were deprecated by Cursor in 2025. Do not introduce Notepads into a current
-workflow. If you find one in an older course, team process, or personal setup,
-migrate the content into a durable source that matches how the information is
-used.
+أُهملت [دفاتر Cursor](https://forum.cursor.com/t/deprecating-notepads-in-cursor/138305) من Cursor في 2025. لا تُدخل الدفاتر في سير عمل حالي. وإذا وجدت واحدًا في دورة أقدم أو عملية فريق أو إعداد شخصي، فرحّل المحتوى إلى مصدر دائم يطابق طريقة استخدام المعلومة.
 
-This page keeps the old route alive because external links may still point here.
-The current lesson is migration, not usage.
+تُبقي هذه الصفحة المسار القديم حيًّا لأن الروابط الخارجية قد لا تزال تشير هنا. والدرس الحالي هو الترحيل، لا الاستخدام.
 
-## Where Notepad Content Should Go Now
+## أين ينبغي أن يذهب محتوى الدفتر الآن
 
-Use this mapping:
+استخدم هذا التعيين:
 
-- Repeated behavioral guidance becomes a Project Rule in `.cursor/rules/*.mdc`.
-- Multi-step workflows become a Skill in `.cursor/skills/<name>/SKILL.md`.
-- Personal preferences that should not live in the repository become Cursor
-Memories or User Rules.
-- Long explanations, architecture notes, and onboarding material become ordinary
-Markdown files in the repository.
-- Team-wide policy belongs in Team Rules or repository-owned documentation.
+- الإرشاد السلوكي المتكرر يصير قاعدة مشروع في `.cursor/rules/*.mdc`.
+- سير العمل متعدد الخطوات يصير مهارة في `.cursor/skills/<name>/SKILL.md`.
+- التفضيلات الشخصية التي لا ينبغي أن تسكن في المستودع تصير ذكريات Cursor أو قواعد مستخدم.
+- الشروح الطويلة وملاحظات المعمارية ومواد الإعداد تصير ملفات Markdown عادية في المستودع.
+- سياسة الفريق بأكملها تنتمي إلى قواعد الفريق أو توثيق مملوك للمستودع.
 
-The old habit was “bundle whatever I need later.” The current habit should be
-“put the information where ownership and review are obvious.”
+العادة القديمة كانت «احزم كل ما أحتاجه لاحقًا». والعادة الحالية ينبغي أن تكون «ضع المعلومة حيث تكون الملكية والمراجعة واضحتين».
 
-## Migration Example
+## مثال ترحيل
 
-An old Notepad might contain this:
+قد يحتوي دفتر قديم على هذا:
 
 ```
 When editing API routes, use zod validation, return typed errors, update tests,
 and run bun test:unit.
 ```
 
-That should become a scoped project rule:
+ينبغي أن يصير قاعدة مشروع مُنطَّقة:
 
 ```markdown
 ---
@@ -51,12 +44,8 @@ typed error shape, update the closest regression test, and run the targeted unit
 test command before reporting completion.
 ```
 
-If the Notepad also included a release checklist, move that checklist into a
-skill instead of making the rule longer.
+وإذا تضمّن الدفتر أيضًا قائمة تحقق للإصدار، فانقل تلك القائمة إلى مهارة بدلًا من إطالة القاعدة.
 
-## What Not to Migrate
+## ما لا يجب ترحيله
 
-Do not preserve stale Notepad content just because it used to exist. Delete
-temporary prompts, old model recommendations, copied documentation, and notes
-that no longer match the repository. Migrating bad context just gives it a new
-folder.
+لا تحافظ على محتوى دفتر بائد لمجرد أنه كان موجودًا. احذف الطلبات المؤقتة، وتوصيات النماذج القديمة، والتوثيق المنسوخ، والملاحظات التي لم تعد تطابق المستودع. فترحيل السياق السيّئ يمنحه مجلدًا جديدًا فقط.

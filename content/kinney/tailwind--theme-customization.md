@@ -1,16 +1,16 @@
 ---
-title: "Theme Customization"
-lang: en
+title: "تخصيص السمة (Theme)"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/theme-customization"
 ---
 
-Unlike previous versions that relied on JavaScript configuration files, Tailwind 4 uses CSS-native theme variables that provide better performance, easier sharing between projects, and more intuitive workflows.
+بخلاف الإصدارات السابقة التي كانت تعتمد على ملفات إعداد JavaScript، يستخدم Tailwind 4 متغيّرات سمة أصلية في CSS تقدّم أداءً أفضل، ومشاركة أسهل بين المشاريع، وسير عمل أكثر حدسية.
 
-## Understanding Theme Variables
+## فهم متغيّرات السمة
 
-Theme variables in Tailwind 4 are special CSS variables defined using the `@theme` directive. These aren’t just regular CSS variables—they instruct Tailwind to generate corresponding utility classes, making them the foundation of your design system.
+متغيّرات السمة في Tailwind 4 هي متغيّرات CSS خاصّة تُعرَّف باستخدام التوجيه `@theme`. وهي ليست متغيّرات CSS عادية فحسب—بل تطلب من Tailwind توليد أصناف مساعِدة مقابلة، فتُصبح أساس نظام التصميم لديك.
 
-### The @theme Directive
+### التوجيه `@theme`
 
 ```css
 @import 'tailwindcss';
@@ -22,32 +22,32 @@ Theme variables in Tailwind 4 are special CSS variables defined using the `@them
 }
 ```
 
-When you define these variables, Tailwind automatically:
+وحين تُعرّف هذه المتغيّرات، يقوم Tailwind تلقائيًا بـ:
 
-- Creates utility classes like `bg-brand-500`, `text-brand-500`, `font-heading`, etc.
-- Generates regular CSS variables you can use in custom CSS
-- Maintains proper specificity and inheritance
+- إنشاء أصناف مساعِدة مثل `bg-brand-500` و`text-brand-500` و`font-heading` إلخ.
+- توليد متغيّرات CSS عادية يمكنك استخدامها في CSS المخصّص
+- الحفاظ على أولوية التحديد (specificity) والوراثة على نحو صحيح
 
-### Why @theme Instead of :root?
+### لماذا `@theme` بدلًا من `:root`؟
 
-You might wonder why Tailwind uses a special `@theme` directive instead of regular CSS variables. The key differences are:
+قد تتساءل لماذا يستخدم Tailwind توجيهًا خاصًّا هو `@theme` بدلًا من متغيّرات CSS العادية. والفروق الجوهرية هي:
 
-- **Utility generation**: Theme variables automatically create utility classes
-- **Build-time processing**: Tailwind can optimize and validate theme variables during compilation
-- **Explicit intent**: Using `@theme` makes it clear which variables are part of your design system
-- **Validation**: Tailwind can enforce that theme variables are defined at the top level
+- **توليد الأصناف المساعِدة**: متغيّرات السمة تُنشئ أصنافًا مساعِدة تلقائيًا
+- **المعالجة وقت البناء**: يمكن لـTailwind أن يحسّن متغيّرات السمة ويتحقّق منها أثناء التصريف
+- **القصد الصريح**: يوضّح استخدام `@theme` أي المتغيّرات جزء من نظام التصميم لديك
+- **التحقّق**: يمكن لـTailwind أن يفرض ألّا تُعرَّف متغيّرات السمة إلّا في المستوى الأعلى
 
-## Theme Variable Namespaces
+## فضاءات أسماء متغيّرات السمة
 
-Tailwind organizes theme variables into namespaces, where each namespace controls different aspects of your design system. Understanding these namespaces is crucial for building a cohesive design system.
+ينظّم Tailwind متغيّرات السمة في فضاءات أسماء، يتحكّم كل فضاء منها في جانب مختلف من جوانب نظام التصميم لديك. وفهم هذه الفضاءات هو أمر بالغ الأهمية لبناء نظام تصميم متّسق.
 
-### Core Namespaces
+### الفضاءات الأساسية
 
-Let’s explore the main namespaces and build a custom design system step by step:
+لنتصفّح الفضاءات الرئيسية ونبنِ نظام تصميم مخصّصًا خطوة بخطوة:
 
-#### Colors (`--color-*`)
+#### الألوان (`--color-*`)
 
-Colors are the foundation of most design systems. Here’s how to build a comprehensive color palette:
+الألوان هي أساس معظم أنظمة التصميم. وإليك كيفية بناء لوحة ألوان شاملة:
 
 ```css
 @import 'tailwindcss';
@@ -71,15 +71,15 @@ Colors are the foundation of most design systems. Here’s how to build a compre
 }
 ```
 
-This creates utilities like:
+ينشئ هذا أصنافًا مثل:
 
-- `bg-primary-500`, `text-primary-500`, `border-primary-500`
-- `bg-success`, `text-success`, `border-success`
-- `bg-surface`, `text-surface`, `border-surface`
+- `bg-primary-500`، `text-primary-500`، `border-primary-500`
+- `bg-success`، `text-success`، `border-success`
+- `bg-surface`، `text-surface`، `border-surface`
 
-#### Typography (`--font-*`, `--text-*`, `--font-weight-*`)
+#### التنضيب (Typography) (`--font-*`، `--text-*`، `--font-weight-*`)
 
-Typography systems require coordination between font families, sizes, and weights:
+تتطلّب أنظمة التنضيب تنسيقًا بين عائلات الخطوط وأحجامها وأوزانها:
 
 ```css
 @theme {
@@ -109,9 +109,9 @@ Typography systems require coordination between font families, sizes, and weight
 }
 ```
 
-#### Spacing (`--spacing-*`)
+#### المسافات (Spacing) (`--spacing-*`)
 
-Consistent spacing is crucial for visual hierarchy:
+المسافات المتّسقة أمر بالغ الأهمية للتسلسل البصري:
 
 ```css
 @theme {
@@ -125,13 +125,13 @@ Consistent spacing is crucial for visual hierarchy:
 }
 ```
 
-The `--spacing` variable is special—it’s used as the base unit for the default spacing scale (1 = 4px, 2 = 8px, etc.).
+متغيّر `--spacing` خاص—فهو يُستخدم كوحدة أساسية لمقياس المسافات الافتراضي (1 = 4px، 2 = 8px، إلخ).
 
-## Building a Complete Design System
+## بناء نظام تصميم كامل
 
-Let’s build a comprehensive design system for a SaaS application, step by step:
+لنبنِ نظام تصميم شاملًا لتطبيق SaaS، خطوة بخطوة:
 
-### Step 1: Define the Foundation
+### الخطوة 1: عرّف الأساس
 
 ```css
 @import 'tailwindcss';
@@ -231,11 +231,11 @@ Let’s build a comprehensive design system for a SaaS application, step by step
 }
 ```
 
-### Step 2: Build Core Components
+### الخطوة 2: ابنِ المكوّنات الأساسية
 
-Now let’s build components using our design system:
+الآن لنبنِ المكوّنات باستخدام نظام التصميم لدينا:
 
-*Step 2: Build Core Components — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ea200cc4e9c144557021d94f7c5599ff9f6739791e28bb28c7a3669f41e61d22.html)[CSS](#playground-css-brand)*
+*الخطوة 2: ابنِ المكوّنات الأساسية — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ea200cc4e9c144557021d94f7c5599ff9f6739791e28bb28c7a3669f41e61d22.html)[CSS](#playground-css-brand)*
 
 ```html
 <!-- Button Component -->
@@ -257,9 +257,9 @@ Now let’s build components using our design system:
 </div>
 ```
 
-### Step 3: Handle Dark Mode
+### الخطوة 3: تعامل مع الوضع الداكن
 
-Extend your theme to support dark mode elegantly:
+وسّع سمتك لدعم الوضع الداكن بأناقة:
 
 ```css
 @theme {
@@ -286,9 +286,9 @@ Extend your theme to support dark mode elegantly:
 }
 ```
 
-Now you can use these semantic colors that automatically adapt:
+والآن يمكنك استخدام هذه الألوان الدلالية التي تتكيّف تلقائيًا:
 
-*Step 3: Handle Dark Mode — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/35e6351f181e719231025f2f391524479931706c74f6c7d895ecb280d0fe4fe5.html)[CSS](#playground-css-brand)*
+*الخطوة 3: تعامل مع الوضع الداكن — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/35e6351f181e719231025f2f391524479931706c74f6c7d895ecb280d0fe4fe5.html)[CSS](#playground-css-brand)*
 
 ```html
 <div class="bg-surface border-border text-text border">
@@ -297,11 +297,11 @@ Now you can use these semantic colors that automatically adapt:
 </div>
 ```
 
-## Advanced Theme Techniques
+## تقنيات السمة المتقدّمة
 
-### Referencing Other Variables
+### الإشارة إلى متغيّرات أخرى
 
-When creating derived values, use `@theme inline` to reference other theme variables:
+عند إنشاء قيم مشتقّة، استخدم `@theme inline` للإشارة إلى متغيّرات السمة الأخرى:
 
 ```css
 :root {
@@ -316,11 +316,11 @@ When creating derived values, use `@theme inline` to reference other theme varia
 }
 ```
 
-This approach allows you to create dynamic color systems that can be adjusted with just a few base variables.
+يتيح لك هذا الأسلوب إنشاء أنظمة ألوان ديناميكية يمكن ضبطها بمتغيّرات أساسية قليلة فحسب.
 
-### Component-Specific Themes
+### سمات خاصّة بالمكوّنات
 
-Create specialized themes for specific components:
+أنشئ سمات متخصّصة لمكوّنات بعينها:
 
 ```css
 @theme {
@@ -342,11 +342,11 @@ Create specialized themes for specific components:
 }
 ```
 
-### Building Complex Components
+### بناء مكوّنات معقّدة
 
-Let’s build a comprehensive dashboard card using our design system:
+لنبنِ بطاقة لوحة تحكّم شاملة باستخدام نظام التصميم لدينا:
 
-*Building Complex Components — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/dffbec5e8d57d180e01784ceedde6ea387ad5137c6efd493b938c497bdeabeb8.html)[CSS](#playground-css-brand)*
+*بناء مكوّنات معقّدة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/dffbec5e8d57d180e01784ceedde6ea387ad5137c6efd493b938c497bdeabeb8.html)[CSS](#playground-css-brand)*
 
 ```html
 <article class="bg-surface border-border shadow-card overflow-hidden rounded-lg border">
@@ -404,9 +404,9 @@ Let’s build a comprehensive dashboard card using our design system:
 </article>
 ```
 
-## Using Theme Variables in Custom CSS
+## استخدام متغيّرات السمة في CSS المخصّص
 
-Your theme variables are available as regular CSS variables, making it easy to create custom styles that stay consistent with your design system:
+متغيّرات سمتك متاحة كمتغيّرات CSS عادية، فيصبح إنشاء أنماط مخصّصة متّسقة مع نظام التصميم سهلًا:
 
 ```css
 @import 'tailwindcss';
@@ -439,11 +439,11 @@ Your theme variables are available as regular CSS variables, making it easy to c
 }
 ```
 
-## Sharing Themes Across Projects
+## مشاركة السمات بين المشاريع
 
-One of the biggest advantages of CSS-based themes is how easy it is to share them across projects:
+من أكبر مزايا السمات المعتمدة على CSS هو سهولة مشاركتها بين المشاريع:
 
-### Creating a Shared Theme Package
+### إنشاء حزمة سمة مشتركة
 
 ```css
 /* themes/brand.css */
@@ -467,7 +467,7 @@ One of the biggest advantages of CSS-based themes is how easy it is to share the
 }
 ```
 
-### Using Shared Themes
+### استخدام السمات المشتركة
 
 ```css
 /* In any project */
@@ -481,15 +481,15 @@ One of the biggest advantages of CSS-based themes is how easy it is to share the
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### Optimizing Theme Variables
+### تحسين متغيّرات السمة
 
-Tailwind 4’s theme system is designed for performance, but there are best practices to follow:
+صُمّم نظام السمات في Tailwind 4 من أجل الأداء، لكنّ هناك أفضل الممارسات الواجب اتباعها:
 
-1. **Use semantic naming**: Instead of `--color-blue-500`, use `--color-primary-500` to make refactoring easier
-2. **Minimize arbitrary values**: Rely on your theme variables rather than arbitrary values in HTML
-3. **Use the `static` option sparingly**: Only generate all CSS variables when necessary
+1. **استخدم التسمية الدلالية**: بدلًا من `--color-blue-500`، استخدم `--color-primary-500` لتسهيل إعادة الهيكلة
+2. **قلّل القيم التعسّفية**: اعتمد على متغيّرات سمتك بدلًا من القيم التعسّفية داخل HTML
+3. **استخدم خيار `static` بحذر**: لا تولّد كل متغيّرات CSS إلا عند الضرورة
 
 ```css
 /* Generate all variables (use sparingly) */
@@ -503,16 +503,16 @@ Tailwind 4’s theme system is designed for performance, but there are best prac
 }
 ```
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Tailwind CSS 4’s theme system represents a fundamental shift towards CSS-native design systems. By mastering theme variables, you can create more maintainable, performant, and shareable design systems.
+يمثّل نظام السمات في Tailwind CSS 4 تحوّلًا جوهريًا نحو أنظمة تصميم أصلية في CSS. وبإتقانك متغيّرات السمة، يمكنك إنشاء أنظمة تصميم أكثر قابلية للصيانة والأداء والمشاركة.
 
-The key principles to remember:
+وهذه المبادئ المفتاحية التي ينبغي تذكّرها:
 
-1. **Start with foundations**: Define your colors, typography, and spacing first
-2. **Use semantic naming**: Create meaningful variable names that reflect purpose, not appearance
-3. **Build systematically**: Layer your design tokens from basic to component-specific
-4. **Leverage CSS variables**: Take advantage of the generated CSS variables for custom styles
-5. **Think in systems**: Design your theme to scale across multiple projects and team members
+1. **ابدأ بالأساسيات**: عرّف ألوانك وتنضيبك ومسافاتك أولًا
+2. **استخدم التسمية الدلالية**: أنشئ أسماء متغيّرات ذات معنى تعكس الغرض لا المظهر
+3. **ابنِ بمنهجية**: رتّب رموز التصميم (design tokens) من الأساسي إلى الخاصّ بالمكوّنات
+4. **استثمر متغيّرات CSS**: استفد من متغيّرات CSS المولَّدة في الأنماط المخصّصة
+5. **فكّر كأنظمة**: صمّم سمتك لتتوسّع عبر مشاريع متعدّدة وأعضاء فريق
 
-With these techniques, you’ll be able to build sophisticated, maintainable design systems that grow with your projects and provide a solid foundation for your entire user interface.
+وبهذه التقنيات، ستكون قادرًا على بناء أنظمة تصميم متطوّرة قابلة للصيانة، تنمو مع مشاريعك، وتوفّر أساسًا متينًا لواجهة المستخدم كلّها.

@@ -1,9 +1,9 @@
 ---
-title: "Add Timestamp"
-lang: en
+title: "إضافة طابع زمني (Add Timestamp)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/exercise-add-timestamp"
 ---
 
-**Your mission**: We want a function that takes an object and adds a `timestamp` field to it with the current date.
+**مهمتك**: نريد دالة تأخذ كائنًا وتضيف إليه حقل `timestamp` بالتاريخ الحالي.
 
-The problem, of course, is that the current date is always going to be different, because—as they say—time keeps on tickin’, tickin’, tickin’ into the future. So, we don’t care about the exact value. We just want to make sure that a `timestamp` field was added and that the value of that field is some kind of `Date` object.
+المشكلة، بالطبع، أن التاريخ الحالي سيكون دائمًا مختلفًا، لأنه — كما يقولون — الوقت يستمر في الدق، الدق، الدق نحو المستقبل. لذا لا يهمنا القيمة الدقيقة. نريد فقط التأكد من إضافة حقل `timestamp` وأن قيمة ذلك الحقل من نوع كائن `Date` ما.

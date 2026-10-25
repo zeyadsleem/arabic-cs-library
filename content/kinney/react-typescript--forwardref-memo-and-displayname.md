@@ -1,16 +1,16 @@
 ---
-title: "forwardRef, memo, and displayName"
-lang: en
+title: "`forwardRef` و`memo` و`displayName`"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/forwardref-memo-and-displayname"
 ---
 
-React’s `forwardRef`, `memo`, and `displayName` are fantastic tools for building performant, reusable components. But when you mix them with TypeScript—especially when you start combining them—things can get tricky fast. Type inference breaks, generics get confused, and your beautiful component APIs start looking like alphabet soup. Let’s fix that.
+`forwardRef` و`memo` و`displayName` في React هي أدوات رائعة لبناء مكوّنات سريعة الأداء وقابلة لإعادة الاستخدام. لكن حين تخلطها مع TypeScript — ولا سيما حين تبدأ في تركيبها معًا — تصبح الأمور معقّدة بسرعة. ينكسر استنتاج الأنواع، وتتلخّبط المعاملات العامة (generics)، وتبدأ واجهات مكوّناتك الجميلة في إبهار شكل حروف الأبجدية. لنُصلح ذلك.
 
-By the end of this tutorial, you’ll know how to compose these APIs without losing type safety, keep your DevTools readable, and avoid the common pitfalls that make other developers question your life choices.
+بنهاية هذا الدليل، ستعرف كيف تركّب هذه الـ APIs دون أن تفقد أمان الأنواع، وكيف تُبقي أدوات التطوير (DevTools) مقروءة، وكيف تتجنّب المزالق الشائعة التي تجعل المطورين الآخرين يتساءلون عن قراراتك في الحياة.
 
-## The Problem with Higher-Order Components and TypeScript
+## مشكلة المكوّنات من الرتبة العليا (Higher-Order Components) مع TypeScript
 
-Here’s what usually happens when you try to combine these APIs:
+إليك ما يحدث عادةً عندما تحاول تركيب هذه الـ APIs:
 
 ```typescript
 // ❌ This looks reasonable but has problems
@@ -21,18 +21,18 @@ const MyComponent = memo(
 );
 ```
 
-What’s wrong here? Well, several things:
+ما الخطأ هنا؟ حسنًا، أشياء كثيرة:
 
-1. **Lost display name**: Your DevTools will show `Anonymous` or `ForwardRef(memo(...))`
-2. **Generic inference**: If your component uses generics, TypeScript gets confused about the order
-3. **Type complexity**: The resulting type is a mess of wrapped function signatures
-4. **Poor IntelliSense**: Auto-completion suffers when types are overly complex
+1. **اسم العرض مفقود**: ستعرض أدوات التطوير (DevTools) `Anonymous` أو `ForwardRef(memo(...))`
+2. **استنتاج المعاملات العامة (generics)**: إذا كان مكوّنك يستخدم معاملات عامة، سيتلخبط TypeScript بشأن الترتيب
+3. **تعقيد الأنواع**: ينتج النوع النهائي فوضى من تواقيع الدوال الملفوفة
+4. **ضعف IntelliSense**: يتضرّر الإكمال التلقائي عندما تكون الأنواع معقّدة أكثر من اللازم
 
-Let’s tackle these issues one by one.
+لنعالج هذه المشكلات واحدة تلو الأخرى.
 
-## Understanding forwardRef with TypeScript
+## فهم `forwardRef` مع TypeScript
 
-`forwardRef` lets you pass refs through your component to DOM elements or child components. With TypeScript, you need to be explicit about what kind of ref you’re forwarding.
+يتيح لك `forwardRef` تمرير المراجع عبر مكوّنك إلى عناصر DOM أو إلى المكوّنات الأبناء. ومع TypeScript، عليك أن تكون صريحًا بشأن نوع المرجع الذي تمرّره.
 
 ```typescript
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
@@ -50,15 +50,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({ label, ...props }, ref
 ));
 ```
 
-The first generic parameter (`HTMLInputElement`) tells TypeScript what type of element the ref points to. The second parameter (`InputProps`) defines your component’s props.
+المعامل العام الأول (`HTMLInputElement`) يخبر TypeScript بنوع العنصر الذي يشير إليه المرجع. أما المعامل الثاني (`InputProps`) فيعرّف خصائص مكوّنك.
 
-> **Tip**
+> **نصيحة**
 >
-> Use `ComponentPropsWithoutRef<'input'>` instead of `HTMLProps<HTMLInputElement>` to get proper prop types while excluding the `ref` prop (since forwardRef handles that).
+> استخدم `ComponentPropsWithoutRef<'input'>` بدلًا من `HTMLProps<HTMLInputElement>` للحصول على أنواع الخصائص الصحيحة مع استبعاد خاصية `ref` (لأن `forwardRef` يتولّى ذلك).
 
-### Generic Components with forwardRef
+### المكوّنات العامة مع `forwardRef`
 
-Things get spicier when you want generic components:
+تصبح الأمور أكثر تعقيدًا حين تريد مكوّنات عامة (generic components):
 
 ```typescript
 // ✅ Generic forwardRef component
@@ -79,11 +79,11 @@ const List = forwardRef(
 ) as <T>(props: ListProps<T> & { ref?: React.Ref<HTMLUListElement> }) => React.ReactElement;
 ```
 
-That type assertion at the end is necessary because `forwardRef` doesn’t play nicely with generic functions. It’s verbose, but it preserves your generic API.
+هذا التأكيد على النوع (type assertion) في النهاية ضروري لأن `forwardRef` لا يتعامل بلطف مع الدوال العامة. إنه مطوّل، لكنه يحفظ واجهتك العامة.
 
-## `memo`: When and How to Use It
+## `memo`: متى تستخدمه وكيف
 
-`React.memo` prevents unnecessary re-renders by memoizing your component. It’s React’s equivalent of `PureComponent` for function components.
+يمنع `React.memo` التصييرات غير الضرورية عبر تذكير مكوّنك (memoizing). وهو مكافئ React لـ `PureComponent` في حالة مكوّنات الدوال.
 
 ```typescript
 import { memo } from 'react';
@@ -106,11 +106,11 @@ const UserCard = memo<UserCardProps>(({ name, email, avatar }) => (
 ));
 ```
 
-TypeScript can usually infer the props type from your component, but being explicit helps with complex prop types.
+غالبًا يستطيع TypeScript استنتاج نوع الخصائص من مكوّنك، لكن التوضيح الصريح يساعد مع أنواع الخصائص المعقّدة.
 
-### Custom Comparison Functions
+### دوال المقارنة المخصّصة
 
-Sometimes you need custom logic to determine if props have changed:
+أحيانًا تحتاج إلى منطق مخصّص لتحديد ما إذا كانت الخصائص قد تغيّرت:
 
 ```typescript
 interface ExpensiveComponentProps {
@@ -142,13 +142,13 @@ const ExpensiveComponent = memo<ExpensiveComponentProps>(
 );
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with custom comparison functions. They run on every render and can become performance bottlenecks if they’re too complex. Also, ignoring function props (like `onUpdate` above) can lead to stale closures.
+> كن حذرًا مع دوال المقارنة المخصّصة. فهي تعمل عند كل تصيير، ويمكن أن تتحوّل إلى اختناقات أداء إذا كانت معقّدة أكثر من اللازم. كما أن تجاهل خصائص الدوال (مثل `onUpdate` أعلاه) قد يؤدي إلى إغلاقات قديمة (stale closures).
 
-## `displayName`: Making DevTools Readable
+## `displayName`: جعل أدوات التطوير مقروءة
 
-`displayName` is crucial for debugging. Without it, your DevTools show generic names that make debugging a nightmare.
+`displayName` أمر حاسم لأغراض التنقيح. من دونه، تعرض أدوات التطوير أسماء عامة تجعل التنقيح كابوسًا.
 
 ```typescript
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, ...props }, ref) => (
@@ -165,7 +165,7 @@ const MemoizedButton = memo(Button);
 MemoizedButton.displayName = 'memo(Button)';
 ```
 
-For complex compositions, be descriptive:
+وللتكوينات المعقّدة، كن وصفيًا:
 
 ```typescript
 const ComplexButton = memo(
@@ -180,9 +180,9 @@ const ComplexButton = memo(
 ComplexButton.displayName = 'memo(forwardRef(Button))';
 ```
 
-## Composing `forwardRef` and `memo` Correctly
+## التركيب الصحيح لـ `forwardRef` و`memo`
 
-Now let’s put it all together. Here’s the pattern that works reliably:
+الآن لنجمع كل ذلك معًا. إليك النمط الذي يعمل بثبات:
 
 ```typescript
 import { forwardRef, memo, type ComponentPropsWithoutRef } from 'react';
@@ -216,16 +216,16 @@ Button.displayName = 'memo(Button)';
 export { Button };
 ```
 
-This approach gives you:
+يقدّم لك هذا النهج:
 
-- ✅ Proper TypeScript inference
-- ✅ Readable DevTools names
-- ✅ Performance optimization
-- ✅ Clean, maintainable code
+- ✅ استنتاجًا صحيحًا من TypeScript
+- ✅ أسماء مقروءة في أدوات التطوير
+- ✅ تحسينًا للأداء
+- ✅ شيفرة نظيفة وقابلة للصيانة
 
-### Generic Components with Both APIs
+### المكوّنات العامة مع كلتا الـ APIين
 
-For generic components, the pattern is similar but requires that type assertion dance:
+بالنسبة إلى المكوّنات العامة، النمط مشابه لكنه يتطلّب تلك «رقصة» التأكيد على النوع:
 
 ```typescript
 interface SelectProps<T> extends ComponentPropsWithoutRef<'select'> {
@@ -270,11 +270,11 @@ Select.displayName = 'memo(Select)';
 export { Select };
 ```
 
-The double type assertion (`memo(SelectBase) as typeof SelectBase`) preserves the generic signature through the memo wrapper.
+التأكيد المزدوج على النوع (`memo(SelectBase) as typeof SelectBase`) يحفظ التوقيع العام عبر غلاف `memo`.
 
-## Common Pitfalls and Solutions
+## المزالق الشائعة والحلول
 
-### Pitfall 1: Wrong Order of Composition
+### المزالق 1: ترتيب خاطئ في التركيب
 
 ```typescript
 // ❌ Wrong: memo wrapping forwardRef loses ref forwarding
@@ -286,7 +286,7 @@ const GoodComponent = memo(
 );
 ```
 
-### Pitfall 2: Missing Display Names
+### المزالق 2: أسماء العرض المفقودة
 
 ```typescript
 // ❌ DevTools will show "ForwardRef" or "Anonymous"
@@ -297,7 +297,7 @@ const MyComponent = memo(forwardRef((props, ref) => <div />));
 MyComponent.displayName = 'MyComponent';
 ```
 
-### Pitfall 3: Over-memoizing
+### المزالق 3: الإفراط في استخدام `memo`
 
 ```typescript
 // ❌ Don't memo components that always receive new props
@@ -314,7 +314,7 @@ const JustAButton = ({ onClick }: { onClick: () => void }) => (
 );
 ```
 
-### Pitfall 4: Forgetting `useCallback` with `memo`
+### المزالق 4: نسيان `useCallback` مع `memo`
 
 ```typescript
 // ❌ memo is useless because handleClick changes every render
@@ -336,9 +336,9 @@ const Parent = () => {
 };
 ```
 
-## Real-World Example: A Reusable Input Component
+## مثال من العالم الحقيقي: مكوّن إدخال قابل لإعادة الاستخدام
 
-Let’s build a comprehensive input component that demonstrates all these concepts:
+لنبنِ مكوّن إدخال شاملًا يوضّح كل هذه المفاهيم:
 
 ```typescript
 import { forwardRef, memo, useId, type ComponentPropsWithoutRef } from 'react';
@@ -388,43 +388,43 @@ Input.displayName = 'memo(Input)';
 export { Input };
 ```
 
-This component is:
+هذا المكوّن:
 
-- **Accessible**: Proper labeling and ARIA attributes
-- **Performant**: Memoized to prevent unnecessary re-renders
-- **Ref-enabled**: Can focus the input imperatively
-- **Type-safe**: Full TypeScript support with proper prop types
-- **Debuggable**: Clear display names in DevTools
+- **يمكن الوصول إليه**: تسمية صحيحة وخصائص ARIA
+- **سريع الأداء**: مُذكَّر (memoized) لمنع التصييرات غير الضرورية
+- **يدعم المراجع**: يمكن تركيز حقل الإدخال بشكل إجرائي
+- **آمن الأنواع**: دعم كامل من TypeScript بأنواع خصائص صحيحة
+- **قابل للتنقيح**: أسماء عرض واضحة في أدوات التطوير
 
-## Usage Patterns and Best Practices
+## أنماط الاستخدام وأفضل الممارسات
 
-### When to Use Each API
+### متى تستخدم كل API
 
 **`forwardRef`**:
 
-- ✅ Building reusable UI components (inputs, buttons)
-- ✅ Creating component libraries
-- ✅ When parent components need imperative access to DOM elements
-- ❌ Every component (only use when refs are actually needed)
+- ✅ بناء مكوّنات واجهة قابلة لإعادة الاستخدام (حقول إدخال، أزرار)
+- ✅ إنشاء مكتبات مكوّنات
+- ✅ حين تحتاج المكوّنات الأب إلى وصول إجرائي إلى عناصر DOM
+- ❌ كل مكوّن (استخدمه فقط حين تكون المراجع مطلوبة فعلًا)
 
 **`memo`**:
 
-- ✅ Components that receive stable props most of the time
-- ✅ Expensive components that render frequently
-- ✅ Components in large lists (with stable keys)
-- ❌ Components that always receive new props
-- ❌ Very cheap components (the memo check might cost more than re-rendering)
+- ✅ المكوّنات التي تتلقّى خصائص مستقرة معظم الوقت
+- ✅ المكوّنات المكلفة التي تُصيَّر كثيرًا
+- ✅ المكوّنات داخل القوائم الكبيرة (بمفاتيح مستقرة)
+- ❌ المكوّنات التي تتلقّى خصائص جديدة في كل مرة
+- ❌ المكوّنات الرخيصة جدًا (فحص `memo` قد يكلّف أكثر من إعادة التصيير)
 
 **`displayName`**:
 
-- ✅ Always use with HOCs (memo, forwardRef, etc.)
-- ✅ Complex component compositions
-- ✅ Component libraries (for better DX)
-- ❌ Simple components without HOCs (React infers the name from the function)
+- ✅ استخدمه دائمًا مع المكوّنات من الرتبة العليا (HOCs) مثل `memo` و`forwardRef`
+- ✅ تركيبات المكوّنات المعقّدة
+- ✅ مكتبات المكوّنات (لتحسين تجربة المطوّر)
+- ❌ المكوّنات البسيطة بلا HOCs (يستنتج React الاسم من الدالة)
 
-### Performance Considerations
+### اعتبارات الأداء
 
-Remember that both `memo` and `forwardRef` add slight overhead:
+تذكّر أن `memo` و`forwardRef` كلاهما يضيف الحمل الضئيل:
 
 ```typescript
 // ✅ Good use case: Expensive component with stable props
@@ -443,9 +443,9 @@ const SimpleDiv = memo(
 );
 ```
 
-## Debugging and DevTools
+## التنقيح وأدوات التطوير
 
-With proper `displayName` usage, your component tree looks like this:
+مع الاستخدام الصحيح لـ `displayName`، تبدو شجرة مكوّناتك هكذا:
 
 ```
 App
@@ -456,7 +456,7 @@ App
 └── memo(forwardRef(SearchInput))
 ```
 
-Without it, you get:
+ومن دونه، تحصل على:
 
 ```
 App
@@ -467,16 +467,16 @@ App
 └── ForwardRef
 ```
 
-Guess which one is easier to debug at 2 AM?
+خمّن أيّهما أسهل في التنقيح عند الساعة الثانية فجرًا؟
 
-## Final Thoughts
+## خاتمة
 
-`forwardRef`, `memo`, and `displayName` are powerful tools, but they’re also easy to misuse. The key is understanding when each provides value:
+`forwardRef` و`memo` و`displayName` أدوات قويّة، لكنها سهلة إساءة الاستخدام أيضًا. والمفتاح هو فهم متى تقدّم كل منها قيمة:
 
-- **`forwardRef`**: Use when refs need to pass through your component
-- **`memo`**: Use for expensive components with stable props
-- **`displayName`**: Always use with HOCs for better debugging
+- **`forwardRef`**: استخدمه حين تحتاج المراجع إلى المرور عبر مكوّنك
+- **`memo`**: استخدمه للمكوّنات المكلفة ذات الخصائص المستقرة
+- **`displayName`**: استخدمه دائمًا مع المكوّنات من الرتبة العليا لتحسين التنقيح
 
-When you combine them thoughtfully with TypeScript, you get components that are performant, type-safe, and maintainable. Your future self (and your teammates) will thank you for the extra effort.
+حين تدمجها بعناية مع TypeScript، تحصل على مكوّنات سريعة الأداء وآمنة الأنواع وقابلة للصيانة. وستشكرك نسختك المستقبلية (وزملاؤك) على الجهد الإضافي.
 
-Remember: premature optimization is the root of all evil, but when you do need these tools, use them correctly. The patterns in this guide will serve you well as you build robust React applications with TypeScript.
+وتذكّر: التحسين المبكّر هو مصدر كل الشرور، لكن حين تحتاج فعلًا إلى هذه الأدوات فاستخدمها بشكل صحيح. ستفيدك الأنماط في هذا الدليل كثيرًا وأنت تبني تطبيقات React متينة باستخدام TypeScript.

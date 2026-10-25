@@ -1,18 +1,18 @@
 ---
-title: "Vite + React TypeScript Optimization"
-lang: en
+title: "تحسين Vite مع React وTypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/vite-react-typescript-optimization"
 ---
 
-Vite has revolutionized React development with its lightning-fast HMR and optimized builds. But when you combine Vite with TypeScript and React, there’s a whole world of optimization opportunities that can make your development experience even better and your production bundles even smaller. From parallel type checking to optimal code splitting strategies, let’s explore how to squeeze every ounce of performance out of your Vite + React + TypeScript setup.
+أحدثت Vite ثورة في تطوير React بفضل الاستبدال الساخن السريع كالبرق والبناءات المحسّنة. لكنك حين تجمع Vite مع TypeScript وReact، تنفتح أمامك دنيا كاملة من فرص التحسين التي تجعل تجربة تطويرك أفضل وأحزم إنتاجك أصغر. من فحص الأنواع على التوازي إلى استراتيجيات تقسيم الشيفرة المثلى، دعنا نستكشف كيف تعصر كل ذرة أداء من إعداد Vite وReact وTypeScript لديك.
 
-Think of Vite as a Formula 1 pit crew for your React app. It’s already fast, but with the right tuning and TypeScript configurations, you can make it absolutely fly.
+فكّر في Vite كفريق صيانة في سباقات الفورمولا 1 لتطبيق React الخاص بك. إنه سريع بالفعل، لكن مع الضبط الصحيح وإعدادات TypeScript المناسبة، يمكنك جعله يطير حقًا.
 
-## Understanding Vite’s Architecture
+## فهم بنية Vite
 
-Before we optimize, let’s understand how Vite handles TypeScript and React differently from traditional bundlers.
+قبل أن نحسّن، دعنا نفهم كيف تتعامل Vite مع TypeScript وReact بشكل مختلف عن أدوات التجميع التقليدية.
 
-### Vite’s Two-Phase Approach
+### مقاربة Vite ذات المرحلتين
 
 ```typescript
 // vite.config.ts - Understanding the architecture
@@ -35,13 +35,13 @@ export default defineConfig({
 });
 ```
 
-The key insight: Vite doesn’t type-check during development by default. It transpiles TypeScript by removing types, which is why it’s so fast.
+الرؤية الجوهرية: لا تفحص Vite الأنواع أثناء التطوير افتراضيًا. إنها تحوّل TypeScript بإزالة الأنواع، ولهذا هي بهذه السرعة.
 
-## Optimizing Development Experience
+## تحسين تجربة التطوير
 
-Let’s start with making development blazing fast while maintaining type safety.
+لنبدأ بجعل التطوير فائق السرعة مع الحفاظ على سلامة الأنواع.
 
-### Parallel Type Checking
+### فحص الأنواع على التوازي
 
 ```typescript
 // vite.config.ts
@@ -82,7 +82,7 @@ export default defineConfig({
 });
 ```
 
-### Optimized TSConfig for Vite
+### ملف TSConfig محسّن لـ Vite
 
 ```json
 // tsconfig.json
@@ -131,7 +131,7 @@ export default defineConfig({
 }
 ```
 
-### Fast Refresh Configuration
+### إعداد Fast Refresh
 
 ```typescript
 // vite.config.ts - Optimized Fast Refresh
@@ -163,11 +163,11 @@ export default defineConfig({
 });
 ```
 
-## Advanced TypeScript Integration
+## تكامل متقدم مع TypeScript
 
-Let’s leverage TypeScript for better Vite optimizations.
+لنستفد من TypeScript لتحسينات أفضل في Vite.
 
-### Type-Safe Environment Variables
+### متغيرات بيئة آمنة من حيث الأنواع
 
 ```typescript
 // src/vite-env.d.ts
@@ -206,7 +206,7 @@ export function validateEnv(): void {
 }
 ```
 
-### Dynamic Import Types
+### أنواع الاستيراد الديناميكي
 
 ```typescript
 // src/utils/dynamic-imports.ts
@@ -261,11 +261,11 @@ export function lazyWithErrorBoundary<T extends React.ComponentType<any>>(
 }
 ```
 
-## Production Build Optimization
+## تحسين بناء الإنتاج
 
-Optimize your production builds for maximum performance.
+حسّن بناءات الإنتاج لديك لأقصى أداء.
 
-### Advanced Build Configuration
+### إعداد بناء متقدم
 
 ```typescript
 // vite.config.ts - Production optimizations
@@ -371,7 +371,7 @@ export default defineConfig(({ mode }) => ({
 }));
 ```
 
-### Smart Code Splitting
+### تقسيم ذكي للشيفرة
 
 ```typescript
 // src/utils/code-splitting.ts
@@ -431,11 +431,11 @@ export const routes: RouteConfig[] = [
 ];
 ```
 
-## CSS and Asset Optimization
+## تحسين CSS والأصول
 
-Optimize CSS and assets with TypeScript support.
+حسّن CSS والأصول بدعم من TypeScript.
 
-### CSS Modules with TypeScript
+### وحدات CSS مع TypeScript
 
 ```typescript
 // vite.config.ts - CSS Modules configuration
@@ -495,7 +495,7 @@ export default styles;
 }
 ```
 
-### Image Optimization
+### تحسين الصور
 
 ```typescript
 // vite.config.ts - Image optimization
@@ -578,11 +578,11 @@ export function ResponsiveImage({
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track and optimize your Vite app’s performance.
+تتبّع أداء تطبيق Vite الخاص بك وحسّنه.
 
-### Build Time Analysis
+### تحليل زمن البناء
 
 ```typescript
 // vite-plugin-build-time.ts
@@ -647,7 +647,7 @@ export function buildTimeAnalysis(): Plugin {
 }
 ```
 
-### Runtime Performance Monitoring
+### مراقبة أداء وقت التشغيل
 
 ```typescript
 // src/utils/performance-monitor.ts
@@ -750,11 +750,11 @@ export function usePerformanceMonitor() {
 }
 ```
 
-## Advanced Vite Plugins
+## إضافات Vite المتقدمة
 
-Create custom Vite plugins with TypeScript for specific optimizations.
+أنشئ إضافات Vite خاصة بك بـ TypeScript من أجل تحسينات محددة.
 
-### Auto Import Plugin
+### إضافة الاستيراد التلقائي
 
 ```typescript
 // vite-plugin-auto-import.ts
@@ -844,7 +844,7 @@ export default defineConfig({
 });
 ```
 
-### Component Library Optimization
+### تحسين مكتبة المكوّنات
 
 ```typescript
 // vite-plugin-component-lib.ts
@@ -883,11 +883,11 @@ export function componentLibrary(config: ComponentLibConfig): Plugin {
 }
 ```
 
-## Development Workflow Optimization
+## تحسين سير عمل التطوير
 
-Optimize your development workflow with Vite and TypeScript.
+حسّن سير عمل تطويرك مع Vite وTypeScript.
 
-### Multi-Page Application Setup
+### إعداد تطبيق متعدد الصفحات
 
 ```typescript
 // vite.config.ts - Multi-page app
@@ -929,7 +929,7 @@ const pages: Record<string, PageConfig> = {
 };
 ```
 
-### Hot Module Replacement Types
+### أنواع الاستبدال الساخن للوحدات
 
 ```typescript
 // src/types/hmr.d.ts
@@ -965,11 +965,11 @@ export function HMRComponent() {
 }
 ```
 
-## Production Deployment
+## النشر إلى الإنتاج
 
-Deploy your optimized Vite app with confidence.
+انشر تطبيق Vite المحسّن لديك بثقة.
 
-### Docker Configuration
+### إعداد Docker
 
 ```dockerfile
 # Dockerfile - Multi-stage build for Vite app
@@ -1007,7 +1007,7 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-### CI/CD Optimization
+### تحسين التكامل والنشر المستمر
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -1049,9 +1049,9 @@ jobs:
           path: dist/
 ```
 
-## Monitoring and Analytics
+## المراقبة والتحليلات
 
-Track your Vite app’s performance in production.
+تتبّع أداء تطبيق Vite الخاص بك في الإنتاج.
 
 ```typescript
 // src/utils/analytics.ts
@@ -1103,8 +1103,8 @@ if (import.meta.env.PROD) {
 }
 ```
 
-## Wrapping Up
+## خلاصة
 
-Optimizing Vite with React and TypeScript isn’t just about making builds faster—it’s about creating a development experience that’s so smooth you forget you’re even using a build tool. From parallel type checking to smart code splitting, every optimization compounds to create an incredibly fast development and production experience.
+تحسين Vite مع React وTypeScript ليس مجرد جعل البناءات أسرع — إنه خلق تجربة تطوير سلسة إلى حد تنسى فيه أنك تستخدم أداة بناء أصلًا. من فحص الأنواع على التوازي إلى تقسيم الشيفرة الذكي، كل تحسين يتراكم مع غيره ليصنع تجربة تطوير وإنتاج فائقة السرعة.
 
-Remember: Start with the basics (proper tsconfig, good chunking strategy), then layer on advanced optimizations as needed. Vite is already fast out of the box, but with these TypeScript-powered optimizations, you can make it absolutely fly. Your development speed will thank you, and your users will love the lightning-fast load times.
+تذكّر: ابدأ بالأساسيات (ملف tsconfig سليم، واستراتيجية تقسيم جيدة للحزم)، ثم أضف التحسينات المتقدمة حسب الحاجة. Vite سريعة أصلًا وجاهزة للعمل، لكن مع هذه التحسينات المدعومة بـ TypeScript يمكنك جعلها تطير حقًا. ستشكرك سرعة تطويرك، وسيحب مستخدموك أزمنة التحميل السريعة كالبرق.

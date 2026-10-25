@@ -1,42 +1,42 @@
 ---
-title: "Search and Replace"
-lang: en
+title: "البحث والاستبدال"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/search-and-replace-vscode"
 ---
 
-Visual Studio Code’s search and replace features are like an all-seeing crystal ball for your codebase—pinpointing the lines you need to tweak, then changing them at scale with minimal hassle.
+ميزات البحث والاستبدال في Visual Studio Code أشبه بكرية بلورية ترى كل شيء في قاعدة شيفرتك — فهي تحدّد الأسطر التي تحتاج إلى تعديل، ثم تغيّرها على نطاق واسع بأقل عناء.
 
-## Searching Across Files
+## البحث في الملفات
 
-Press `Ctrl+Shift+F` (or `Cmd+Shift+F` on macOS) to open the Search view, which scans your entire workspace by default. Type in your query or pattern, and watch as Visual Studio Code combs through all files, presenting matches in a collapsible tree of results.
+اضغط `Ctrl+Shift+F` (أو `Cmd+Shift+F` على macOS) لفتح عرض البحث، الذي يفحص مساحة عملك كلها افتراضيًا. اكتب استعلامك أو نمطك، وشاهد Visual Studio Code يمشّط كل الملفات ويعرض المطابقات في شجرة نتائج قابلة للطي.
 
-You can refine this search by specifying `Files to include` or `Files to exclude`. For instance, if you only want to search TypeScript files, type `**/*.ts` in the inclusion field. If you’d like to skip certain folders (like `node_modules`), exclude them explicitly with a pattern such as `**/node_modules`.
+ويمكنك تنقيح هذا البحث بتحديد `Files to include` أو `Files to exclude`. فمثلًا، إن أردت البحث في ملفات TypeScript فقط، فاكتب `**/*.ts` في حقل التضمين. وإن أردت تجاوز مجلدات معيّنة (مثل `node_modules`)، فاستبعدها صراحةً بنمط مثل `**/node_modules`.
 
-## Search and Replace Across Files
+## البحث والاستبدال في الملفات
 
-When you need to correct or update code across your entire project, the Replace panel is your friend. Once you enter text in the `Replace` field, you can preview the proposed changes before finalizing. Visual Studio Code groups each change by file, and you can accept or reject them individually or all at once.
+عندما تحتاج إلى تصحيح الشيفرة أو تحديثها في مشروعك كله، فلوحة الاستبدال صديقتك. وبمجرد إدخالك نصًا في حقل `Replace`، يمكنك معاينة التغييرات المقترحة قبل إنهائها. ويجمع Visual Studio Code كل تغيير حسب الملف، ويمكنك قبول التغييرات أو رفضها فرديًا أو كلها دفعة واحدة.
 
-This careful approach ensures you don’t blindly clobber lines you never intended to touch. It’s like having a code-proofreading assistant who waits for your final say before making sweeping edits.
+وتضمن هذه المقاربة الحذرة ألّا تسحق بشكل أعمى أسطرًا لم تقصد لمسها قط. إنها مثل وجود مساعد تصحيح شيفرة ينتظر كلمتك الأخيرة قبل إجراء تعديلات واسعة.
 
-> **Danger Zone™**
+> **منطقة الخطر**
 >
-> Double-check each replacement when dealing with sensitive code—particularly if your regex is broad. “Oops, I accidentally replaced my database URL everywhere” is not a fun Slack announcement.
+> تحقق من كل استبدال مرتين عند التعامل مع شيفرة حساسة — خصوصًا إن كان تعبيرك النمطي واسعًا. فـ«عذرًا، استبدلت عنوان URL لقاعدة بياناتي في كل مكان بالخطأ» ليس إعلانًا ممتعًا في Slack.
 
-## Include/Exclude Files and Folders
+## تضمين الملفات والمجلدات واستبعادها
 
-The `Files to include` and `Files to exclude` fields in the Search view work with glob patterns to zero in on, or ignore, specific directories and file types. Here are a few scenarios to consider:
+يعمل حقلَا `Files to include` و`Files to exclude` في عرض البحث بأنماط glob للتركيز على مجلدات وأنواع ملفات محدّدة أو تجاهلها. وإليك بعض السيناريوهات التي تستحق النظر:
 
-- Searching only in your `src` folder: `src/**/*.ts`
-- Excluding test files: `!**/*.test.ts`
-- Ignoring multiple folders: `**/*` in Include, `**/node_modules, **/dist` in Exclude
+- البحث في مجلد `src` وحده: `src/**/*.ts`
+- استبعاد ملفات الاختبار: `!**/*.test.ts`
+- تجاهل مجلدات متعددة: `**/*` في Include، و`**/node_modules, **/dist` في Exclude
 
-These patterns make it effortless to keep your search results relevant, saving you from rummaging through auto-generated code or external libraries.
+وتجعل هذه الأنماط إبقاء نتائج بحثك ذات صلة أمرًا سهلًا، وتنجيك من التنقيب في الشيفرة المولّدة تلقائيًا أو المكتبات الخارجية.
 
-## Regular Expressions: The Advanced Power Tool
+## التعبيرات النمطية: أداة القوة المتقدّمة
 
-When simple text searches won’t cut it, regular expressions come to the rescue. Toggle the `.*` button in the Search view to enable regex mode. This allows you to create flexible patterns for everything from variable renaming to code cleanup.
+عندما لا تكفي عمليات البحث النصي البسيطة، تأتي التعبيرات النمطية للإنقاذ. بدّل زر `.*` في عرض البحث لتفعيل وضع التعبيرات النمطية. وهذا يتيح لك إنشاء أنماط مرنة لكل شيء بدءًا من إعادة تسمية المتغيّرات إلى تنظيف الشيفرة.
 
-Imagine you have a React codebase where you want to replace all `myVariable` declarations with `myVar`, but only when it’s a let declaration:
+تخيّل أن لديك قاعدة شيفرة React تريد فيها استبدال كل تعريفات `myVariable` بـ `myVar`، لكن في تعريفات let فقط:
 
 ```typescript
 let myVariable = "Hello";
@@ -45,60 +45,60 @@ let myVariableAgain = 42;
 const myVariable = 9000; // should remain untouched
 ```
 
-You can craft a regex like:
+ويمكنك صياغة تعبير نمطي مثل:
 
 ```typescript
 Find:    (let\s+)myVariable\b
 Replace: $1myVar
 ```
 
-Here, `(let\s+)` captures the literal `let` plus the following space, so the replacement references it as `$1`, preserving the original context. Using `\b` (word boundary) ensures you don’t match partial words like `myVariableAgain`.
+هنا تلتقط `(let\s+)` الكلمة الحرفية `let` مع المسافة التالية لها، فيشير الاستبدال إليها بـ `$1`، حافظًا السياق الأصلي. ويضمن استخدام `\b` (حد الكلمة) ألّا تطابق كلمات جزئية مثل `myVariableAgain`.
 
-> **Test First**
+> **اختبر أولًا**
 >
-> Test your regex patterns on a few lines before replacing across your entire codebase. Accidental mass replacements can lead to comedic or catastrophic results (depending on your perspective).
+> اختبر أنماطك النمطية على أسطر قليلة قبل الاستبدال في قاعدة شيفرتك كلها. فقد تؤدي الاستبدالات الجماعية غير المقصودة إلى نتائج مضحكة أو كارثية (حسب منظورك).
 
-## Preserve Case
+## الحفاظ على حالة الأحرف
 
-Visual Studio Code has a nifty “Preserve Case” feature, especially handy if you’re refactoring variable names with different capitalizations. Suppose you search for `name` and replace it with `thing`. If you turn on Preserve Case, `Name` becomes `Thing`, and `NAME` becomes `THING`, matching the original capitalization pattern.
+يمتلك Visual Studio Code ميزة لطيفة هي «Preserve Case»، وهي مفيدة خصوصًا عند إعادة هيكلة أسماء متغيّرات بأحرف كبيرة مختلفة. افترض أنك تبحث عن `name` وتستبدلها بـ `thing`. فإن فعّلت Preserve Case، يصبح `Name` هو `Thing`، ويصبح `NAME` هو `THING`، بما يطابق نمط الأحرف الكبيرة الأصلي.
 
-You can toggle this option by clicking the `AB` icon in the Search view. It’s an easy way to avoid case-related mishaps while still automating the majority of your refactor.
+ويمكنك تبديل هذا الخيار بالنقر على أيقونة `AB` في عرض البحث. إنها طريقة سهلة لتجنّب الأخطاء المتعلقة بحالة الأحرف مع الاستمرار في أتمتة معظم إعادة الهيكلة.
 
-## Search Editor: A Dedicated View for Search Results
+## محرّر البحث: عرض مخصّص لنتائج البحث
 
-Visual Studio Code offers a dedicated Search Editor that provides a more powerful way to work with search results. Press `Ctrl+Shift+J` (or `Cmd+Shift+J` on macOS) to open the Search Editor, which presents your search results in a full-fledged editor view.
+يقدّم Visual Studio Code محرّر بحث مخصّصًا يوفّر طريقة أقوى للتعامل مع نتائج البحث. اضغط `Ctrl+Shift+J` (أو `Cmd+Shift+J` على macOS) لفتح محرّر البحث، الذي يعرض نتائج بحثك في عرض محرّر كامل.
 
-### Benefits of the Search Editor:
+### فوائد محرّر البحث:
 
-1. **Persistent Results**: The Search Editor saves your search results as a document, allowing you to reference them later without re-running the search.
-2. **Full Editor Capabilities**: Use all standard editor features like multiple cursors, selection, and keyboard navigation on your search results.
-3. **Contextual View**: Each match is shown with several lines of context, making it easier to understand the surrounding code.
-4. **Advanced Filtering**: Apply additional filtering to your search results without starting over.
-5. **Searchable Results**: You can perform a search within your search results—essentially creating a nested search.
+1. **نتائج دائمة**: يحفظ محرّر البحث نتائج بحثك كمستند، ما يتيح لك الرجوع إليها لاحقًا دون إعادة تشغيل البحث.
+2. **قدرات محرّر كاملة**: استخدم كل ميزات المحرّر القياسية مثل المؤشرات المتعددة والتحديد والتنقل بلوحة المفاتيح على نتائج بحثك.
+3. **عرض سياقي**: تُعرض كل مطابقة مع عدة أسطر من السياق، ما يسهّل فهم الشيفرة المحيطة.
+4. **تصفية متقدّمة**: طبّق تصفية إضافية على نتائج بحثك دون البدء من جديد.
+5. **نتائج قابلة للبحث**: يمكنك إجراء بحث داخل نتائج بحثك — أي إنشاء بحث متداخل.
 
-### Example Workflow
+### سير عمل مثال
 
-1. Press `Ctrl+Shift+J` to open Search Editor
-2. Enter your search term or regex pattern
-3. Configure include/exclude patterns
-4. Press Enter to run the search
-5. Use standard editor keyboard shortcuts to navigate results
-6. Apply additional filters via the search bar at the top
-7. Double-click any result to jump to that location in the source file
+1. اضغط `Ctrl+Shift+J` لفتح محرّر البحث
+2. أدخل مصطلح البحث أو النمط النمطي
+3. اضبط أنماط التضمين والاستبعاد
+4. اضغط Enter لتشغيل البحث
+5. استخدم اختصارات لوحة مفاتيح المحرّر القياسية للتنقل في النتائج
+6. طبّق تصفية إضافية عبر شريط البحث في الأعلى
+7. انقر نقرًا مزدوجًا على أي نتيجة للانتقال إلى ذلك الموضع في ملف المصدر
 
-When working with large codebases or complex searches, the Search Editor becomes invaluable for organizing and navigating through numerous results. You can even have multiple Search Editors open simultaneously for different queries.
+عند العمل مع قواعد شيفرة كبيرة أو عمليات بحث معقّدة، يصبح محرّر البحث لا يُقدّر بثمن لتنظيم النتائج الكثيرة والتنقل فيها. ويمكنك حتى فتح عدة محرّرات بحث في الوقت نفسه لاستعلامات مختلفة.
 
-> **Tip**
+> **نصيحة**
 >
-> You can save a Search Editor to revisit the same search later. Use `File > Save As…` or the keyboard shortcut `Ctrl+S` (`Cmd+S` on macOS).
+> يمكنك حفظ محرّر بحث للرجوع إلى البحث نفسه لاحقًا. استخدم `File > Save As…` أو الاختصار `Ctrl+S` (`Cmd+S` على macOS).
 
-## Advanced Capture Groups in Replacements
+## مجموعات الالتقاط المتقدّمة في الاستبدالات
 
-Capture groups in regular expressions aren’t just for preserving parts of the match—they can be rearranged, duplicated, and transformed to create powerful text manipulations.
+مجموعات الالتقاط في التعبيرات النمطية ليست للحفاظ على أجزاء من المطابقة فحسب — بل يمكن إعادة ترتيبها وتكرارها وتحويلها لإجراء معالجات نصية قوية.
 
-### Reordering Text with Capture Groups
+### إعادة ترتيب النص بمجموعات الالتقاط
 
-Imagine you have a list of names in “LastName, FirstName” format that you need to reverse:
+تخيّل أن لديك قائمة أسماء بصيغة «LastName, FirstName» تحتاج إلى عكسها:
 
 ```typescript
 (Smith, John);
@@ -106,12 +106,12 @@ Imagine you have a list of names in “LastName, FirstName” format that you ne
 (Williams, Michael);
 ```
 
-You can use capture groups to swap the order:
+يمكنك استخدام مجموعات الالتقاط لتبديل الترتيب:
 
-- Find: `([^,]+),\s*(.+)`
-- Replace: `$2 $1`
+- بحث: `([^,]+),\s*(.+)`
+- استبدال: `$2 $1`
 
-This transforms the text to:
+فيحوّل هذا النص إلى:
 
 ```typescript
 John Smith
@@ -119,74 +119,74 @@ Sarah Johnson
 Michael Williams
 ```
 
-The pattern captures everything before the comma as `$1` and everything after (excluding the space) as `$2`, then swaps them in the replacement.
+يلتقط النمط كل ما قبل الفاصلة كـ `$1` وكل ما بعدها (باستثناء المسافة) كـ `$2`، ثم يبدّلهما في الاستبدال.
 
-### Converting Date Formats
+### تحويل صيغ التواريخ
 
-Need to convert dates from `MM/DD/YYYY` to `YYYY-MM-DD` format?
+هل تحتاج إلى تحويل التواريخ من صيغة `MM/DD/YYYY` إلى صيغة `YYYY-MM-DD`؟
 
-- Find: `(\d{1,2})\/(\d{1,2})\/(\d{4})`
-- Replace: `$3-$1-$2`
+- بحث: `(\d{1,2})\/(\d{1,2})\/(\d{4})`
+- استبدال: `$3-$1-$2`
 
-This changes:
+فيغيّر هذا:
 
 ```typescript
 12 / 25 / 2023;
 1 / 15 / 2024;
 ```
 
-To:
+إلى:
 
 ```typescript
 2023 - 12 - 25;
 2024 - 1 - 15;
 ```
 
-For a more robust version that ensures two-digit months and days:
+ولنسخة أكثر متانة تضمن شهرًا ويومًا من رقمين:
 
-- Find: `(\d{1,2})\/(\d{1,2})\/(\d{4})`
-- Replace: `$3-${1.padStart(2, '0')}-${2.padStart(2, '0')}`
+- بحث: `(\d{1,2})\/(\d{1,2})\/(\d{4})`
+- استبدال: `$3-${1.padStart(2, '0')}-${2.padStart(2, '0')}`
 
-### Transforming HTML to JSX
+### تحويل HTML إلى JSX
 
-When converting HTML to JSX, you often need to change attribute names:
+عند تحويل HTML إلى JSX، غالبًا ما تحتاج إلى تغيير أسماء الخصائص:
 
-- Find: `<([a-z]+)([^>]*)\sclass="([^"]*)"([^>]*)>`
-- Replace: `<$1$2 className="$3"$4>`
+- بحث: `<([a-z]+)([^>]*)\sclass="([^"]*)"([^>]*)>`
+- استبدال: `<$1$2 className="$3"$4>`
 
-This changes `<div class="container">` to `<div className="container">`.
+فيغيّر هذا `<div class="container">` إلى `<div className="container">`.
 
-### Creating URL Slugs from Titles
+### إنشاء معرّفات URL من العناوين
 
-Transform article titles into URL-friendly slugs:
+حوّل عناوين المقالات إلى معرّفات صديقة لعنوان URL:
 
-- Find: `([A-Z])([A-Za-z\s]+)`
-- Replace: `${1.toLowerCase()}${2.toLowerCase().replace(/\s+/g, '-')}`
+- بحث: `([A-Z])([A-Za-z\s]+)`
+- استبدال: `${1.toLowerCase()}${2.toLowerCase().replace(/\s+/g, '-')}`
 
-This converts “My Article Title” to “my-article-title”.
+فيحوّل هذا «My Article Title» إلى «my-article-title».
 
-### Converting Between Programming Styles
+### التحويل بين أساليب البرمجة
 
-Transform snake_case to camelCase:
+حوّل snake_case إلى camelCase:
 
-- Find: `([a-z])_([a-z])`
-- Replace: `$1${2.toUpperCase()}`
+- بحث: `([a-z])_([a-z])`
+- استبدال: `$1${2.toUpperCase()}`
 
-This changes “user_profile_id” to “userProfileId”.
+فيغيّر هذا «user_profile_id» إلى «userProfileId».
 
-Or convert camelCase to kebab-case:
+أو حوّل camelCase إلى kebab-case:
 
-- Find: `([a-z])([A-Z])`
-- Replace: `$1-${2.toLowerCase()}`
+- بحث: `([a-z])([A-Z])`
+- استبدال: `$1-${2.toLowerCase()}`
 
-This changes “userProfileId” to “user-profile-id”.
+فيغيّر هذا «userProfileId» إلى «user-profile-id».
 
-> **Tip**
+> **نصيحة**
 >
-> Remember that regex replacement operations in Visual Studio Code occur from left to right, so complex transformations might require multiple passes with different patterns.
+> تذكّر أن عمليات الاستبدال بالتعبيرات النمطية في Visual Studio Code تحدث من اليسار إلى اليمين، لذا قد تتطلّب التحويلات المعقّدة عدة مرات بأنماط مختلفة.
 
-## Saving Search Queries
+## حفظ استعلامات البحث
 
-Yes, you can save search queries by using the Search Editor. Once you open the Search Editor (press `Ctrl+Shift+J` on Windows/Linux or `Cmd+Shift+J` on macOS) and run your search, you can save the results—including the query itself—as a file. Simply use **File → Save As…** (or the corresponding shortcut) to store your search document. This file not only preserves the output but also the search parameters, so you can re-run or modify the query later with ease. It’s especially useful for recurring searches in large codebases or when you want to share a complex search query with your team.
+نعم، يمكنك حفظ استعلامات البحث باستخدام محرّر البحث. وبمجرد أن تفتح محرّر البحث (اضغط `Ctrl+Shift+J` على Windows/Linux أو `Cmd+Shift+J` على macOS) وتشغّل بحثك، يمكنك حفظ النتائج — بما فيها الاستعلام نفسه — في ملف. ما عليك سوى استخدام **File → Save As…** (أو الاختصار المقابل) لتخزين مستند بحثك. ولا يحفظ هذا الملف المخرجات فحسب، بل معاملات البحث أيضًا، فيمكنك إعادة تشغيل الاستعلام أو تعديله لاحقًا بسهولة. وهو مفيد خصوصًا للبحوث المتكرّرة في قواعد شيفرة كبيرة أو عندما تريد مشاركة استعلام بحث معقّد مع فريقك.
 
-> **Leverage the Search Editor to keep a library of your most-used queries. This ensures that you don’t have to reconstruct intricate regex patterns or inclusion/exclusion filters from scratch every time you need them.**
+> **استفد من محرّر البحث للحفاظ على مكتبة من استعلاماتك الأكثر استخدامًا. وهذا يضمن ألّا تضطر إلى إعادة بناء أنماط نمطية معقّدة أو مرشّحات تضمين واستبعاد من الصفر كلما احتجت إليها.**

@@ -1,12 +1,12 @@
 ---
-title: "Server Components and Streaming SSR"
-lang: en
+title: "مكوّنات الخادم والتصيير المتدفّق من الخادم"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming"
 ---
 
-The cleanest way to understand this stack is to separate execution from delivery. Server Components decide what code runs ahead of time on the server. `'use client'` marks which modules belong in the browser. SSR decides whether React turns the result into HTML on the server. Streaming SSR decides whether that HTML is sent all at once or progressively, usually around Suspense boundaries. React can combine all of these, but they solve different problems.
+أنظف طريقة لفهم هذه المنظومة هي الفصل بين التنفيذ والتسليم. فمكوّنات الخادم (Server Components) تقرّر أي شيفرة تعمل مسبقًا على الخادم. و`'use client'` تحدّد أي الوحدات تنتمي إلى المتصفح. والتصيير من الخادم (SSR) يقرّر هل يحوّل React النتيجة إلى HTML على الخادم. والتصيير المتدفّق من الخادم يقرّر هل يُرسل ذلك HTML دفعة واحدة أم تدريجيًا، عادةً حول حدود Suspense. ويستطيع React الجمع بين كل هذه، لكنها تحلّ مشكلات مختلفة.
 
-A useful mental model for a single request:
+وهذا نموذج ذهني مفيد لطلب واحد:
 
 ```
 request
@@ -17,26 +17,26 @@ request
   → hydrate interactive client islands in the browser
 ```
 
-## Server Components Are About Where Code Runs
+## مكوّنات الخادم تتعلق بأين تعمل الشيفرة
 
-Server Components render in a separate environment from the client app—and React is [explicit](https://react.dev/reference/rsc/server-components) that this environment is separate even from the SSR server. They can run once at build time on CI or per request on a web server. That makes them a good home for route composition, server-side data access, filesystem reads, and expensive libraries you don’t want in the browser bundle. They also support `async` components, so you can `await` during render instead of bouncing through client-side effects and extra API hops.
+تُصيّر مكوّنات الخادم في بيئة منفصلة عن تطبيق العميل—وReact [صريح](https://react.dev/reference/rsc/server-components) في أن هذه البيئة منفصلة حتى عن خادم SSR. ويمكنها العمل مرة واحدة وقت البناء في CI أو مع كل طلب على خادم ويب. وهذا يجعلها موطنًا مناسبًا لتكوين المسارات، والوصول إلى البيانات من جهة الخادم، وقراءات نظام الملفات، والمكتبات المكلفة التي لا تريدها في حزمة المتصفح. وهي تدعم أيضًا المكوّنات `async`، فيمكنك استخدام `await` أثناء التصيير بدل التنقل عبر تأثيرات العميل وطلبات واجهة برمجية إضافية.
 
-The payoff is smaller client bundles and simpler data loading. The trade is equally clear: Server Components aren’t sent to the browser, so they can’t use interactive browser APIs like `useState`, event handlers, or most hooks. When you need interactivity, you compose a Server Component *with* a Client Component instead of trying to make the server piece do browser work it was never meant to do.
+والعائد حزم عميل أصغر وتحميل بيانات أبسط. والمقايضة واضحة بالقدر نفسه: مكوّنات الخادم لا تُرسل إلى المتصفح، فلا تستطيع استخدام واجهات المتصفح التفاعلية مثل `useState` أو معالجات الأحداث أو معظم الخُطّافات. وعندما تحتاج التفاعل، تركّب مكوّن خادم *مع* مكوّن عميل بدل محاولة جعل جزء الخادم يؤدي عمل المتصفح الذي لم يُقصد له قط.
 
-One subtle but important detail: there’s no directive that marks a file as a Server Component. React’s [docs explicitly say](https://react.dev/reference/rsc/server-components) that `'use server'` is *not* for Server Components—it’s for Server Functions. Different job, same ecosystem. React 19 stabilizes Server Components themselves, but the bundler and framework APIs used to implement RSC don’t follow semver across React 19.x minors yet. In practice, that means most teams should use RSC through a framework instead of hand-rolling the integration.
+وتفصيل دقيق لكن مهم: لا توجد توجيهية تعلّم ملفًا كمكوّن خادم. فـ[وثائق React تقول صراحةً](https://react.dev/reference/rsc/server-components) إن `'use server'` *ليست* لمكوّنات الخادم—بل لدوال الخادم. مهمة مختلفة، ونظام بيئي واحد. وقد ثبّت React 19 مكوّنات الخادم نفسها، لكن واجهات المُجمِّع والإطار المستخدمة لتنفيذ RSC لا تتبع semver عبر الإصدارات الفرعية لـReact 19.x بعد. وعمليًا، هذا يعني أن معظم الفرق ينبغي أن تستخدم RSC عبر إطار بدل تنفيذ التكامل يدويًا.
 
-## The Server/Client Boundary Is a Module Boundary
+## الحدّ بين الخادم والعميل حدّ وحدات
 
-`'use client'` creates a boundary in the **module dependency tree**, not in the render tree. Once a module is marked `'use client'`, that module and its entire transitive dependency subtree become client-evaluated code. React is [direct about this](https://react.dev/reference/rsc/use-client): code in the client module subtree is sent to and run by the client. That’s why putting `'use client'` high in the tree is expensive—it widens the amount of code that ships to the browser.
+تنشئ `'use client'` حدًا في **شجرة اعتماد الوحدات**، لا في شجرة التصيير. فبمجرد أن تُعلَّم وحدة بـ`'use client'`، تصير تلك الوحدة وشجرة اعتمادها العابرة بكاملها شيفرة تُقيَّم في العميل. وReact [صريح في هذا](https://react.dev/reference/rsc/use-client): الشيفرة في شجرة وحدات العميل تُرسل إلى العميل ويعمل بها. ولهذا فإن وضع `'use client'` في أعلى الشجرة مكلف—فهو يوسّع مقدار الشيفرة التي تُشحن إلى المتصفح.
 
-The boundary also doesn’t follow parent-child nesting. A Client Component can still render a Server Component by receiving already-created JSX as props or `children`. React’s own example makes the rule blunt: parent-child render relationships don’t guarantee the same render environment, because the boundary lives on the import graph, not the component tree.
+والحدّ أيضًا لا يتبع التداخل بين الآباء والأبناء. فمكوّن عميل ما زال يستطيع تصيير مكوّن خادم باستقبال JSX مُنشأ سابقًا كخواص أو `children`. ومثال React نفسه يجعل القاعدة صريحة: علاقات التصيير بين الآباء والأبناء لا تضمن بيئة تصيير واحدة، لأن الحدّ يعيش في رسم الاستيراد، لا في شجرة المكوّنات.
 
-Two practical consequences:
+والنتيجتان العمليتان:
 
-1. **Keep `'use client'` as low as possible**—ideally on the smallest interactive leaf, not on the page, layout, or route module.
-2. **Keep cross-boundary data serializable.** React requires props flowing from Server Components to Client Components to be serializable. Shared helper modules can be evaluated on either side depending on who imports them, so they need to stay environment-agnostic unless you split them deliberately.
+1. **أبقِ `'use client'` في أدنى موضع ممكن**—ويُفضّل على أصغر ورقة تفاعلية، لا على الصفحة أو التخطيط أو وحدة المسار.
+2. **أبقِ البيانات العابرة للحدود قابلة للتسلسل.** فوReact يشترط أن تكون الخصائص المنتقلة من مكوّنات الخادم إلى مكوّنات العميل قابلة للتسلسل. والوحدات المساعدة المشتركة يمكن أن تُقيَّم على أي من الجانبين حسب من يستوردها، لذا يلزم أن تبقى محايدة تجاه البيئة ما لم تقسمها عن قصد.
 
-Here’s what that looks like in practice:
+وهذا شكل ذلك عمليًا:
 
 ```typescript
 // Expandable.tsx
@@ -78,17 +78,17 @@ async function ArticleBody({ article }: { article: Article }) {
 }
 ```
 
-`Expandable` is client code because its module is marked `'use client'`. `ArticleBody` is still a Server Component because the server created that JSX before handing it to the client wrapper. Same UI tree, different execution environments. The rule is consistent once you think in modules instead of nesting.
+فـ`Expandable` شيفرة عميل لأن وحدتها معلَّمة بـ`'use client'`. أما `ArticleBody` فما زال مكوّن خادم لأن الخادم أنشأ ذلك JSX قبل تسليمه إلى غلاف العميل. الشجرة نفسها، وبيئات تنفيذ مختلفة. والقاعدة متسقة بمجرد أن تفكّر بالوحدات لا بالتداخل.
 
-## `renderToPipeableStream` Is the Node Streaming SSR API
+## `renderToPipeableStream` هي واجهة البث في SSR لبيئة Node
 
-If you’re doing low-level SSR in Node, [`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream) is the core server entry point. It renders a React tree to a Node.js stream and returns `pipe` and `abort`.
+إن كنت تُجري SSR منخفض المستوى في Node، فـ[`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream) هي نقطة الدخول الأساسية للخادم. فهي تصيّر شجرة React إلى دفق Node.js وتعيد `pipe` و`abort`.
 
-> **Note**
+> **ملاحظة**
 >
-> This API is Node-specific. React 19.2 added `renderToReadableStream` support in Node, but the React team still recommends the Node Streams APIs in Node because they’re faster there and Web Streams don’t support compression by default.
+> هذه الواجهة خاصة بـNode. أضاف React 19.2 دعم `renderToReadableStream` في Node، لكن فريق React ما زال يوصي بواجهات Node Streams في Node لأنها أسرع هناك، ولأن Web Streams لا تدعم الضغط افتراضيًا.
 
-At this level, React expects the rendered tree to represent the whole document, so your top-level app usually renders `<html>`, not just a content fragment. `bootstrapScripts` points the browser at the client bundle, and the client uses `hydrateRoot` to attach interactivity to the server-generated HTML.
+وعلى هذا المستوى، يتوقع React أن تمثّل الشجرة المُصيَّرة المستند كاملًا، لذا يصيّر تطبيقك العلوي عادةً `<html>`، لا مقطع محتوى فقط. و`bootstrapScripts` يوجّه المتصفح إلى حزمة العميل، ويستخدم العميل `hydrateRoot` لوصل التفاعل بـHTML المولَّد من الخادم.
 
 ```typescript
 import express from 'express';
@@ -126,23 +126,23 @@ app.get('*', (req, res) => {
 });
 ```
 
-The callbacks map to specific stages of the render:
+وتقابل النداءات الراجعة مراحل محدّدة من التصيير:
 
-- **`onShellReady`** fires when the shell has rendered—the normal point to set headers and start streaming.
-- **`onAllReady`** waits until the *full* render is complete. Use this when you want final HTML instead of progressive chunks (crawlers, static generation).
-- **`onShellError`** fires for failures before any bytes are emitted—you can still send a fallback document and a 500.
-- **`onError`** sees both recoverable and non-recoverable server errors.
-- **`abort()`** stops waiting, flushes loading fallbacks, and lets the client finish the rest.
+- **`onShellReady`** يعمل عندما يكون الهيكل قد صُيّر—النقطة الطبيعية لضبط الترويسات وبدء البث.
+- **`onAllReady`** ينتظر حتى يكتمل التصيير *كاملًا*. استخدمه عندما تريد HTML نهائيًا بدل مقاطع تدريجية (الزواحف، والتوليد الساكن).
+- **`onShellError`** يعمل عند الأعطال قبل إصدار أي بايت—وما زال بوسعك إرسال مستند احتياطي ورمز 500.
+- **`onError`** يرى أخطاء الخادم القابلة للاسترداد وغير القابلة له معًا.
+- **`abort()`** يوقف الانتظار، ويفرّغ الواجهات الاحتياطية أثناء التحميل، ويترك العميل يكمل الباقي.
 
-The biggest operational catch is status codes. Once you start streaming, you can’t change the response status. React’s guidance: think in terms of the shell versus everything inside Suspense boundaries. If the shell fails, `onShellError` can still send a 500. If something *inside* a Suspense boundary fails, React can often recover on the client, and you may still choose to stream the shell and return 200.
+وأكبر مأخذ تشغيلي هو رموز الحالة. فبمجرد أن تبدأ البث، لا تستطيع تغيير حالة الاستجابة. وتوجيه React: فكّر من حيث الهيكل مقابل كل ما داخل حدود Suspense. فإن فشل الهيكل، فما زال `onShellError` قادرًا على إرسال 500. وإن فشل شيء *داخل* حدّ Suspense، فغالبًا يستطيع React التعافي في العميل، ويمكنك مع ذلك أن تختار بث الهيكل وإرجاع 200.
 
-## Streaming SSR Is Suspense-Aware HTML Delivery
+## التصيير المتدفّق من الخادم تسليم HTML واعٍ بـSuspense
 
-Streaming SSR isn’t just “send bytes sooner.” In React, it’s coordinated by Suspense. The **shell** is the part of the page outside any Suspense boundary. When a slower region sits inside `<Suspense>`, React streams the shell first, emits the fallback for that region, and later streams the finished HTML along with an inline script that replaces the fallback with the real content. Nested Suspense boundaries let you reveal the page in stages instead of waiting for the slowest part.
+ليس التصيير المتدفّق من الخادم مجرد «إرسال البايتات أبكر»، بل ينسّقه Suspense في React. و**الهيكل** هو جزء الصفحة الواقع خارج أي حدّ Suspense. وعندما تقع منطقة أبطأ داخل `<Suspense>`، يبثّ React الهيكل أولًا، ويصدر الواجهة الاحتياطية لتلك المنطقة، ثم يبثّ لاحقًا HTML المكتمل مع سكربت مضمّن يستبدل الواجهة الاحتياطية بالمحتوى الحقيقي. وتتيح لك حدود Suspense المتداخلة كشف الصفحة على مراحل بدل انتظار أبطأ جزء.
 
-React [warns against](https://react.dev/reference/react-dom/server/renderToPipeableStream) the lazy version of this pattern where you wrap the whole app in one root Suspense boundary. If you do that, your shell is just a spinner. The better target is a shell that feels minimal but complete—real layout, page chrome, enough context that the user can orient immediately while slower regions fill in.
+و[يحذّر React](https://react.dev/reference/react-dom/server/renderToPipeableStream) من النسخة الكسولة من هذا النمط حيث تلفّ التطبيق كامل في حدّ Suspense جذري واحد. فإن فعلت ذلك، فليس هيكلك إلا مؤشر تحميل. والهدف الأفضل هيكل يبدو أدنى ما يمكن لكنه مكتمل—تخطيط حقيقي، وإطار الصفحة، وسياق يكفي ليتوجّه المستخدم فورًا بينما تمتلئ المناطق الأبطأ.
 
-Streaming also doesn’t need to wait for React itself to load in the browser before the initial HTML becomes visible. But only Suspense-enabled data sources participate. React currently calls out framework-managed Suspense data fetching, `lazy`, and `use` on a Promise. It [explicitly says](https://react.dev/reference/react-dom/server/renderToPipeableStream) Suspense does *not* detect data fetched inside an Effect or event handler. So, if your data model is still “render, then `useEffect`, then fetch,” you’re not really taking advantage of streaming SSR at all.
+كما أن البث لا يحتاج إلى انتظار تحميل React نفسه في المتصفح قبل ظهور HTML الأولي. لكن مصادر البيانات الممكَّنة بـSuspense وحدها تشارك. ويشير React حاليًا إلى جلب البيانات عبر Suspense الذي يديره الإطار، وإلى `lazy`، وإلى `use` على وعد. وهو [يقول صراحةً](https://react.dev/reference/react-dom/server/renderToPipeableStream) إن Suspense *لا* يكتشف البيانات المجلوبة داخل Effect أو معالج حدث. فإن كان نموذج بياناتك ما زال «صيّر، ثم `useEffect`، ثم اجلب»، فأنت لا تستفيد من التصيير المتدفّق من الخادم فعليًا.
 
 ```typescript
 import { Suspense } from 'react';
@@ -168,13 +168,13 @@ async function Recommendations() {
 }
 ```
 
-The hero and layout are part of the shell. `SearchBox` hydrates on the client because it’s a Client Component. `Recommendations` streams later behind a fallback. That’s the basic composition React keeps steering people toward: Server Components for data-rich composition, Client Components for interaction, Suspense for progressive reveal.
+فالبانر الرئيسي والتخطيط جزء من الهيكل. و`SearchBox` يُثبَّت في العميل لأنه مكوّن عميل. أما `Recommendations` فيُبثّ لاحقًا خلف واجهة احتياطية. هذا هو التركيب الأساسي الذي يواصل React توجيه الناس إليه: مكوّنات الخادم للتركيب الغني بالبيانات، ومكوّنات العميل للتفاعل، وSuspense للكشف التدريجي.
 
-## Where Server Functions Fit
+## أين تقع دوال الخادم
 
-Server Functions are the mutation half of this model. A function marked with [`'use server'`](https://react.dev/reference/rsc/use-server) is callable from client code—React serializes the arguments, sends a network request to the server, runs the function there, and serializes the result back. React is very explicit that these functions must be async, and that you should treat their arguments as untrusted input and authorize any mutations.
+دوال الخادم (Server Functions) هي نصف التغيير في هذا النموذج. فالدالة المعلَّمة بـ[`'use server'`](https://react.dev/reference/rsc/use-server) قابلة للنداء من شيفرة العميل—يسلسل React الوسائط، ويرسل طلب شبكة إلى الخادم، ويشغّل الدالة هناك، ويسلسل النتيجة عائدةً. وReact صريح جدًا في أن هذه الدوال يجب أن تكون غير متزامنة، وأن تعامل وسائطها كمدخلات غير موثوقة وتصرّح بأي تغييرات.
 
-When a Server Function is passed to [`<form action>`](https://react.dev/reference/react-dom/components/form) from a Server Component, the form is progressively enhanced. The form can submit even without JavaScript or before the client code has loaded—a much nicer baseline than the usual “click button, nothing happens until the bundle finishes downloading” experience.
+وعندما تُمرَّر دالة خادم إلى [`<form action>`](https://react.dev/reference/react-dom/components/form) من مكوّن خادم، يُحسَّن النموذج تدريجيًا. فيمكن للنموذج أن يُرسل حتى بلا JavaScript أو قبل تحميل شيفرة العميل—وهي قاعدة أفضل بكثير من التجربة المعتادة: «انقر الزر، ولا شيء يحدث حتى تكتمل حزمة التنزيل».
 
 ```typescript
 // actions.ts
@@ -202,23 +202,23 @@ export function SearchForm() {
 }
 ```
 
-## A Practical Architecture
+## معمارية عملية
 
-A sane default: keep pages, layouts, route composition, and server-side data reads in Server Components. Put widgets that need state, effects, browser APIs, or event handlers in Client Components. Put mutations in Server Functions. Place Suspense boundaries around slower or lower-priority regions so the shell can stream as early as possible.
+وهذا إعداد افتراضي معقول: أبقِ الصفحات والتخطيطات وتكوين المسارات وقراءات البيانات من جهة الخادم في مكوّنات الخادم. وضع الأدوات التي تحتاج حالة أو تأثيرات أو واجهات متصفح أو معالجات أحداث في مكوّنات العميل. وضع التغييرات في دوال الخادم. وضع حدود Suspense حول المناطق الأبطأ أو الأدنى أولوية كي يستطيع الهيكل البث بأسرع ما يمكن.
 
-That split lines up with React’s documented advantages and limits for Server Components and with how `renderToPipeableStream` defines the shell. Unless you’re building framework tooling, let a framework own the RSC transport and bundler integration—React still describes those low-level APIs as unstable across 19.x minors.
+وذلك التقسيم يتوافق مع مزايا مكوّنات الخادم وحدودها كما توثقها React، ومع كيف يعرّف `renderToPipeableStream` الهيكل. وما لم تكن تبني أدوات إطار، دع إطارًا ما يملك نقل RSC وتكامل المُجمِّع—فما زال React يصف تلك الواجهات منخفضة المستوى بأنها غير مستقرة عبر الإصدارات الفرعية 19.x.
 
-## Common Mistakes
+## أخطاء شائعة
 
-The fastest way to get lost here is to learn the names and miss the boundaries.
+أسرع طريقة لتضيع هنا هي أن تتعلّم الأسماء وتفوّت الحدود.
 
-- **Thinking `'use server'` marks a Server Component.** It doesn’t. There’s no directive for Server Components. `'use server'` marks Server Functions.
-- **Thinking the boundary follows component nesting.** It doesn’t. The boundary is in the module dependency tree, not the render tree.
-- **Marking a page or layout `'use client'`.** The client subtree includes transitive dependencies, so bundle size can expand far beyond what you intended.
-- **Expecting Suspense to work with `useEffect` data fetching.** Suspense doesn’t detect data fetched in effects or event handlers. Only Suspense-enabled data sources (framework data fetching, `lazy`, `use` on a Promise) participate.
-- **Forgetting that the status code is fixed once streaming starts.** Streaming gives earlier paint, but it changes your error-handling model.
-- **Hand-rolling RSC infrastructure.** The framework and bundler integration APIs don’t follow semver across React 19.x minors. Let a framework handle it.
+- **الظن أن `'use server'` تعلّم مكوّن خادم.** ليست كذلك. فلا توجد توجيهية لمكوّنات الخادم. و`'use server'` تعلّم دوال الخادم.
+- **الظن أن الحدّ يتبع تداخل المكوّنات.** لا يتبعه. فالحدّ في شجرة اعتماد الوحدات، لا في شجرة التصيير.
+- **تعليم صفحة أو تخطيط بـ`'use client'`.** فشجرة العميل تضم الاعتمادات العابرة، لذا يمكن أن يتضخم حجم الحزمة أبعد بكثير مما قصدت.
+- **توقع أن يعمل Suspense مع جلب البيانات في `useEffect`.** لا يكتشف Suspense البيانات المجلوبة في التأثيرات أو معالجات الأحداث. فمصادر البيانات الممكَّنة بـSuspense وحدها (جلب بيانات الإطار، و`lazy`، و`use` على وعد) تشارك.
+- **نسيان أن رمز الحالة يُثبَّت بمجرد بدء البث.** فالبث يمنح رسمًا أبكر، لكنه يغيّر نموذج معالجة الأخطاء لديك.
+- **تنفيذ بنية RSC يدويًا.** فواجهات تكامل الإطار والمُجمِّع لا تتبع semver عبر الإصدارات الفرعية 19.x من React. دع إطارًا ما يتولّى ذلك.
 
-## The Short Version
+## النسخة المختصرة
 
-Server Components for server-only reads and route composition. Client Components for interaction. Server Functions for mutations. Suspense to decide what belongs in the shell and what can reveal later. `renderToPipeableStream` at the Node entry point when you want streaming SSR. Once those responsibilities are separated, the model stops feeling mystical and starts feeling like a pretty sensible pipeline—which is irritating, because it means React was right this time.
+مكوّنات الخادم للقراءات الخادمية فقط وتكوين المسارات. ومكوّنات العميل للتفاعل. ودوال الخادم للتغييرات. وSuspense لتقرير ما ينتمي إلى الهيكل وما يمكن كشفه لاحقًا. و`renderToPipeableStream` عند نقطة دخول Node عندما تريد التصيير المتدفّق من الخادم. وبمجرد فصل هذه المسؤوليات، يتوقف النموذج عن الإحساس بأنه غامض ويبدأ في الإحساس بأنه خط أنابيب معقول جدًا—وهذا مذعج، لأنه يعني أن React كانت محقة هذه المرة.

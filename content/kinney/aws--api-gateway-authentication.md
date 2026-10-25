@@ -1,18 +1,18 @@
 ---
-title: "Authentication with API Gateway"
-lang: en
+title: "المصادقة باستخدام API Gateway"
+lang: ar
 source: "https://stevekinney.com/courses/aws/api-gateway-authentication"
 ---
 
-Your API is deployed, CORS is configured, and your frontend can call it. But right now, anyone with the URL can call any endpoint. There’s nothing stopping a random script from hammering `POST /items` with garbage data. You need authentication—a way to verify that the person making the request is who they claim to be and that they’re allowed to do what they’re asking.
+واجهتك البرمجية منشورة، وCORS مُهيّأ، وواجهتك الأمامية تستطيع استدعاءها. لكن في هذه اللحظة، أي شخص يملك الرابط يستطيع استدعاء أي نقطة نهاية. لا شيء يمنع سكربتًا عشوائيًا من قصف `POST /items` ببيانات لا معنى لها. أنت بحاجة إلى المصادقة—وهي طريقة للتحقق من أن الشخص الذي يرسل الطلب هو بالفعل من يدّعي أنه هو، ومن أنه مسموح له بفعل ما يطلبه.
 
-If you want AWS’s exact version of the auth model while you read, the [JWT authorizer guide for HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html) is the official reference.
+إن أردت الاطلاع على نسخة AWS الدقيقة من نموذج المصادقة أثناء قراءتك، فإن [دليل مُفوِّض JWT لواجهات HTTP البرمجية](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html) هو المرجع الرسمي.
 
-API Gateway supports two types of authorizers for HTTP APIs: **JWT authorizers** and **Lambda authorizers**. JWT authorizers handle the common case—validating tokens from Cognito, Auth0, or any OIDC provider. Lambda authorizers handle everything else.
+يدعم API Gateway نوعين من المُفوِّضات لواجهات HTTP البرمجية: **مُفوِّضات JWT** و**مُفوِّضات Lambda**. تتولى مُفوِّضات JWT الحالة الشائعة—التحقق من الرموز الصادرة من Cognito أو Auth0 أو أي مزوّد OIDC. وتتولى مُفوِّضات Lambda كل ما عدا ذلك.
 
-> **This Lesson Assumes a Token Source**
+> **يفترض هذا الدرس وجود مصدر للرمز**
 >
-> This course doesn’t cover setting up the identity provider itself—Cognito lives in [What’s Next](https://stevekinney.com/courses/aws/whats-next-services-youll-eventually-need), Auth0 and Clerk are outside the AWS scope. Everything below assumes you already have a JWT coming from *somewhere*: a pre-issued test token, a Cognito User Pool, or an Auth0 tenant. If you want a quick path to a real token for this lesson, create a free Auth0 tenant and use their “Machine-to-Machine” app to mint tokens—that gives you something concrete to point the authorizer at. For production, you’ll most likely end up with Cognito or a third-party provider. The *authorizer configuration* below is identical regardless of which provider issues the token.
+> لا تتناول هذه الدورة إعداد مزوّد الهوية نفسه—فـCognito موجود في [ما التالي](https://stevekinney.com/courses/aws/whats-next-services-youll-eventually-need)، أما Auth0 وClerk فهما خارج نطاق AWS. كل ما يلي يفترض أن لديك بالفعل JWT قادمًا من *مكان ما*: رمز اختبار صادر مسبقًا، أو Cognito User Pool، أو مستأجر Auth0. إن أردت مسارًا سريعًا للحصول على رمز حقيقي لهذا الدرس، فأنشئ مستأجر Auth0 مجانيًا واستخدم تطبيق «Machine-to-Machine» لديهم لإصدار الرموز—فهذا يمنحك شيئًا ملموسًا توجّه إليه المُفوِّض. وفي الإنتاج، على الأرجح ستنتهي إلى Cognito أو مزوّد خارجي. أما *تهيئة المُفوِّض* أدناه فهي متطابقة بغض النظر عن الجهة التي تصدر الرمز.
 
 ```
 flowchart LR
@@ -26,15 +26,15 @@ flowchart LR
     Route --> Handler["Backend Lambda handler"]
 ```
 
-## JWT Authorizers: The Fast Path
+## مُفوِّضات JWT: المسار السريع
 
-A **JWT authorizer** validates JSON Web Tokens on incoming requests. You tell API Gateway where to find the token (usually the `Authorization` header), who issued it (the OIDC provider’s URL), and which audience to accept. API Gateway validates the token’s signature, expiration, issuer, and audience before your Lambda function runs. If the token is invalid, the request gets a 401—your handler code never executes.
+**مُفوِّض JWT** يتحقق من رموز JSON Web Tokens في الطلبات الواردة. أنت تخبر API Gateway بمكان العثور على الرمز (عادةً ترويسة `Authorization`)، ومن أصدره (رابط مزوّد OIDC)، وأي جمهور يقبل. يتحقق API Gateway من توقيع الرمز وانتهاء صلاحيته ومُصدره وجمهوره قبل أن تعمل دالة Lambda الخاصة بك. وإذا كان الرمز غير صالح، فإن الطلب يحصل على 401—ولا تُنفَّذ شيفرة المعالج لديك إطلاقًا.
 
-This is the same thing that happens when you use middleware like `next-auth` or a Vercel edge function to validate tokens, except API Gateway does it at the infrastructure layer.
+هذا هو الشيء نفسه الذي يحدث عندما تستخدم وسيطًا مثل `next-auth` أو دالة حافة على Vercel للتحقق من الرموز، إلا أن API Gateway يفعل ذلك على مستوى البنية التحتية.
 
-### Creating a JWT Authorizer
+### إنشاء مُفوِّض JWT
 
-Here’s how to create a JWT authorizer that validates tokens from an Amazon Cognito user pool:
+إليك كيفية إنشاء مُفوِّض JWT يتحقق من الرموز الصادرة من مجمّع مستخدمي Amazon Cognito:
 
 ```bash
 aws apigatewayv2 create-authorizer \
@@ -61,26 +61,26 @@ aws apigatewayv2 create-authorizer \
 }
 ```
 
-The key parameters:
+المعاملات الأساسية:
 
-- **`--authorizer-type JWT`**—tells API Gateway to validate the token as a JWT.
-- **`--identity-source '$request.header.Authorization'`**—where to find the token. API Gateway’s HTTP API JWT authorizer accepts an `Authorization` header containing either a bare token or a `Bearer`-prefixed token—you do not need to strip the prefix yourself. The authorizer extracts the token from the identity source and validates the JWT directly; your backend receives the decoded claims, not the raw header string.
-- **`--jwt-configuration Issuer`**—the issuer URL. For Cognito, this is `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`. For Auth0, it’s `https://{your-domain}.auth0.com/`. The issuer must match the `iss` claim in the JWT.
-- **`--jwt-configuration Audience`**—the expected audience. For Cognito, this is the app client ID. For Auth0, this is the API identifier. The audience must match the `aud` claim in the JWT.
+- **`--authorizer-type JWT`**—يخبر API Gateway أن يتحقق من الرمز بوصفه JWT.
+- **`--identity-source '$request.header.Authorization'`**—مكان العثور على الرمز. يقبل مُفوِّض JWT الخاص بواجهات HTTP البرمجية في API Gateway ترويسة `Authorization` تحتوي إما على رمز مجرّد أو على رمز مسبوق بـ `Bearer`—ولست بحاجة إلى إزالة البادئة بنفسك. يستخرج المُفوِّض الرمز من مصدر الهوية ويتحقق من JWT مباشرة؛ ويستقبل خادمك الخلفي المطالبات المفكوكة، لا سلسلة الترويسة الخام.
+- **`--jwt-configuration Issuer`**—رابط المُصدر. بالنسبة إلى Cognito فهو `https://cognito-idp.{region}.amazonaws.com/{userPoolId}`. وبالنسبة إلى Auth0 فهو `https://{your-domain}.auth0.com/`. ويجب أن يطابق المُصدر مطالبة `iss` في JWT.
+- **`--jwt-configuration Audience`**—الجمهور المتوقع. بالنسبة إلى Cognito فهو معرّف عميل التطبيق. وبالنسبة إلى Auth0 فهو معرّف الواجهة البرمجية. ويجب أن يطابق الجمهور مطالبة `aud` في JWT.
 
-### Using Any OIDC Provider
+### استخدام أي مزوّد OIDC
 
-JWT authorizers work with any provider that issues JWTs and exposes a JSON Web Key Set (JWKS) endpoint. This includes:
+تعمل مُفوِّضات JWT مع أي مزوّد يصدر رموز JWT ويكشف نقطة نهاية JSON Web Key Set (JWKS). ويشمل ذلك:
 
-- **Amazon Cognito**—AWS’s built-in identity service
-- **Auth0**—popular third-party auth provider
-- **Okta**—enterprise identity provider
-- **Firebase Auth**—Google’s authentication service
-- **Any OIDC-compliant provider**—anything that publishes a `.well-known/openid-configuration` endpoint
+- **Amazon Cognito**—خدمة الهوية المدمجة في AWS
+- **Auth0**—مزوّد مصادقة خارجي شائع
+- **Okta**—مزوّد هوية للمؤسسات
+- **Firebase Auth**—خدمة المصادقة من Google
+- **أي مزوّد متوافق مع OIDC**—أي شيء ينشر نقطة نهاية `.well-known/openid-configuration`
 
-API Gateway fetches the provider’s JWKS (the public keys used to sign tokens) from the issuer’s `/.well-known/openid-configuration` endpoint and uses them to verify token signatures. You don’t need to manage keys yourself.
+يجلب API Gateway مجموعة JWKS الخاصة بالمزوّد (المفاتيح العامة المستخدمة لتوقيع الرموز) من نقطة نهاية `/.well-known/openid-configuration` الخاصة بالمُصدر، ويستخدمها للتحقق من توقيعات الرموز. لا تحتاج إلى إدارة المفاتيح بنفسك.
 
-Here’s the same command for an Auth0-issued token:
+إليك الأمر نفسه لرمز صادر من Auth0:
 
 ```bash
 aws apigatewayv2 create-authorizer \
@@ -94,13 +94,13 @@ aws apigatewayv2 create-authorizer \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> The issuer URL for Auth0 must include the trailing slash. Cognito issuer URLs don’t include a trailing slash. This is a common source of 401 errors—the issuer in the token must exactly match the issuer you configure on the authorizer.
+> يجب أن يتضمن رابط المُصدر الخاص بـ Auth0 الشرطة المائلة في آخره. أما روابط مُصدر Cognito فلا تتضمن شرطة مائلة في آخرها. وهذا مصدر شائع لأخطاء 401—إذ يجب أن يطابق المُصدر الموجود في الرمز المُصدر الذي تهيّئه على المُفوِّض تمامًا.
 
-### Attaching the Authorizer to a Route
+### إرفاق المُفوِّض بمسار
 
-Creating an authorizer doesn’t protect any routes by itself. You need to attach it to specific routes using `update-route`:
+إنشاء مُفوِّض لا يحمي أي مسار بحد ذاته. تحتاج إلى إرفاقه بمسارات محددة باستخدام `update-route`:
 
 ```bash
 aws apigatewayv2 update-route \
@@ -113,9 +113,9 @@ aws apigatewayv2 update-route \
   --output json
 ```
 
-The `--authorization-scopes` parameter is optional. If specified, API Gateway checks that the token’s `scope` claim contains at least one of the listed scopes. This lets you create fine-grained permissions: a `GET /items` route might require `items:read`, while `POST /items` requires `items:write`. I find this is one of those features you don’t need until you *really* need it.
+المعامل `--authorization-scopes` اختياري. وإذا حُدِّد، يتحقق API Gateway من أن مطالبة `scope` في الرمز تحتوي على واحد على الأقل من النطاقات المدرجة. وهذا يتيح لك إنشاء أذونات دقيقة: فقد يتطلب مسار `GET /items` النطاق `items:read`، بينما يتطلب `POST /items` النطاق `items:write`. وأجد أن هذه إحدى تلك الميزات التي لا تحتاجها حتى تحتاجها *حقًا*.
 
-You can find the route ID by listing routes:
+يمكنك العثور على معرّف المسار بسرد المسارات:
 
 ```bash
 aws apigatewayv2 get-routes \
@@ -124,9 +124,9 @@ aws apigatewayv2 get-routes \
   --output json
 ```
 
-### What Your Handler Receives
+### ما يستقبله المعالج لديك
 
-When a JWT authorizer approves a request, the decoded token claims are available in your handler at `event.requestContext.authorizer.jwt.claims`:
+عندما يوافق مُفوِّض JWT على طلب، تصبح مطالبات الرمز المفكوكة متاحة في المعالج لديك عند `event.requestContext.authorizer.jwt.claims`:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -151,17 +151,17 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* The `sub` claim is the user's unique identifier in most OIDC providers.
+*ملاحظة:* مطالبة `sub` هي المعرّف الفريد للمستخدم في معظم مزوّدي OIDC.
 
-The claims object includes everything in the JWT payload: `sub` (subject/user ID), `email`, `iss` (issuer), `exp` (expiration), custom claims, and anything else the identity provider includes.
+يتضمن كائن المطالبات كل شيء في حِمل JWT: `sub` (الموضوع/معرّف المستخدم)، و`email`، و`iss` (المُصدر)، و`exp` (الانتهاء)، والمطالبات المخصّصة، وأي شيء آخر يضمّنه مزوّد الهوية.
 
-## Lambda Authorizers: Custom Logic
+## مُفوِّضات Lambda: منطق مخصّص
 
-**Lambda authorizers** run a Lambda function to decide whether a request is allowed. They’re more flexible than JWT authorizers—you can validate tokens from non-standard providers, check custom headers, look up API keys in a database, or implement any authentication logic you need.
+**مُفوِّضات Lambda** تشغّل دالة Lambda لتقرير ما إذا كان الطلب مسموحًا به. وهي أكثر مرونة من مُفوِّضات JWT—يمكنك التحقق من رموز صادرة من مزوّدين غير قياسيين، أو فحص ترويسات مخصّصة، أو البحث عن مفاتيح API في قاعدة بيانات، أو تنفيذ أي منطق مصادقة تحتاجه.
 
-### Creating a Lambda Authorizer
+### إنشاء مُفوِّض Lambda
 
-First, write the authorizer function. This is a separate Lambda function from your API handler:
+أولًا، اكتب دالة المُفوِّض. هذه دالة Lambda منفصلة عن معالج واجهتك البرمجية:
 
 ```typescript
 import type { APIGatewayRequestSimpleAuthorizerHandlerV2 } from 'aws-lambda';
@@ -189,9 +189,9 @@ export const handler: APIGatewayRequestSimpleAuthorizerHandlerV2 = async (event)
 };
 ```
 
-The authorizer returns `isAuthorized: true` or `isAuthorized: false`. The optional `context` object passes data to your API handler—the values appear in `event.requestContext.authorizer.lambda`.
+يعيد المُفوِّض `isAuthorized: true` أو `isAuthorized: false`. وكائن `context` الاختياري يمرّر بيانات إلى معالج واجهتك البرمجية—إذ تظهر القيم في `event.requestContext.authorizer.lambda`.
 
-Deploy this function separately (using the same process from [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function)), then create the authorizer:
+انشر هذه الدالة بشكل منفصل (باستخدام العملية نفسها من [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function))، ثم أنشئ المُفوِّض:
 
 ```bash
 aws apigatewayv2 create-authorizer \
@@ -206,7 +206,7 @@ aws apigatewayv2 create-authorizer \
   --output json
 ```
 
-And grant API Gateway permission to invoke the authorizer function:
+وامنح API Gateway إذنًا باستدعاء دالة المُفوِّض:
 
 ```bash
 aws lambda add-permission \
@@ -219,11 +219,11 @@ aws lambda add-permission \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Lambda authorizer invocations count as additional Lambda invocations and incur their own costs. The `--authorizer-result-ttl-in-seconds` parameter caches the authorization result so the authorizer isn’t called on every request. Set this to a reasonable value (300 seconds is five minutes) to reduce both latency and cost.
+> تُحتسب استدعاءات مُفوِّض Lambda كاستدعاءات Lambda إضافية وتترتب عليها تكاليفها الخاصة. ويخزّن المعامل `--authorizer-result-ttl-in-seconds` نتيجة التفويض مؤقتًا حتى لا يُستدعى المُفوِّض في كل طلب. اضبطه على قيمة معقولة (300 ثانية أي خمس دقائق) لتقليل زمن الاستجابة والتكلفة معًا.
 
-### Attaching to a Route
+### الإرفاق بمسار
 
 ```bash
 aws apigatewayv2 update-route \
@@ -235,27 +235,27 @@ aws apigatewayv2 update-route \
   --output json
 ```
 
-## JWT vs. Lambda Authorizers
+## مُفوِّضات JWT مقابل مُفوِّضات Lambda
 
-| Feature | JWT Authorizer | Lambda Authorizer |
+| الميزة | مُفوِّض JWT | مُفوِّض Lambda |
 | --- | --- | --- |
-| Token validation | Built-in (signature, expiry, claims) | Your code |
-| Supported providers | Any OIDC/JWT issuer | Anything |
-| Custom validation logic | No | Yes |
-| Additional Lambda cost | No | Yes (extra invocation) |
-| Latency | Lower (no Lambda cold start) | Higher (Lambda invocation) |
-| Caching | Built-in | Configurable TTL |
-| Use case | Standard OAuth/OIDC flows | API keys, custom tokens, database lookups |
+| التحقق من الرمز | مدمج (التوقيع، الانتهاء، المطالبات) | شيفرتك |
+| المزوّدون المدعومون | أي مُصدر OIDC/JWT | أي شيء |
+| منطق تحقق مخصّص | لا | نعم |
+| تكلفة Lambda إضافية | لا | نعم (استدعاء إضافي) |
+| زمن الاستجابة | أقل (بلا بدء بارد لـ Lambda) | أعلى (استدعاء Lambda) |
+| التخزين المؤقت | مدمج | مدة TTL قابلة للتهيئة |
+| حالة الاستخدام | تدفقات OAuth/OIDC القياسية | مفاتيح API، رموز مخصّصة، استعلامات قواعد البيانات |
 
-Start with JWT authorizers. Move to Lambda authorizers when you need logic that JWT validation can’t express—checking a database, validating a custom token format, or implementing multi-tenant authorization.
+ابدأ بمُفوِّضات JWT. وانتقل إلى مُفوِّضات Lambda عندما تحتاج إلى منطق لا يستطيع التحقق بواسطة JWT التعبير عنه—مثل فحص قاعدة بيانات، أو التحقق من صيغة رمز مخصّصة، أو تنفيذ تفويض متعدد المستأجرين.
 
-## Leaving Routes Unprotected
+## ترك المسارات بلا حماية
 
-Not every route needs authentication. Public endpoints—health checks, public data feeds, landing page content—should remain accessible without a token. Only attach authorizers to routes that require authentication. Routes without an authorizer are open by default.
+ليس كل مسار بحاجة إلى مصادقة. فالنقاط النهائية العامة—فحوصات السلامة، وتدفقات البيانات العامة، ومحتوى صفحة الهبوط—ينبغي أن تبقى متاحة دون رمز. أرفق المُفوِّضات بالمسارات التي تتطلب المصادقة فقط. والمسارات التي لا مُفوِّض لها مفتوحة افتراضيًا.
 
-## Calling an Authenticated API from Your Frontend
+## استدعاء واجهة برمجية محمية من واجهتك الأمامية
 
-From your React app, include the JWT in the `Authorization` header:
+من تطبيق React لديك، أدرج JWT في ترويسة `Authorization`:
 
 ```typescript
 const token = await getAccessToken(); // From your auth library
@@ -268,14 +268,14 @@ const response = await fetch('https://api.example.com/items', {
 });
 ```
 
-If the token is expired or invalid, the response is a 401. Your frontend should handle this by refreshing the token or redirecting to the login flow.
+إذا كان الرمز منتهي الصلاحية أو غير صالح، فإن الاستجابة تكون 401. وينبغي أن تتعامل واجهتك الأمامية مع ذلك بتحديث الرمز أو بإعادة التوجيه إلى تدفق تسجيل الدخول.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Using the wrong audience.** The `aud` claim in the JWT must match the audience configured on the authorizer. For Cognito, the audience is the app client ID—not the user pool ID. This is the most common cause of 401 errors with a valid-looking token.
+**استخدام جمهور خاطئ.** يجب أن تطابق مطالبة `aud` في JWT الجمهور المهيّأ على المُفوِّض. وبالنسبة إلى Cognito، الجمهور هو معرّف عميل التطبيق—لا معرّف مجمّع المستخدمين. وهذا هو السبب الأكثر شيوعًا لأخطاء 401 مع رمز يبدو صالحًا.
 
-**Forgetting to grant invoke permission on the Lambda authorizer function.** Just like your API handler, the authorizer function needs a resource-based policy allowing `apigateway.amazonaws.com` to invoke it. Without it, every request returns 500.
+**نسيان منح إذن الاستدعاء لدالة مُفوِّض Lambda.** تمامًا مثل معالج واجهتك البرمجية، تحتاج دالة المُفوِّض إلى سياسة قائمة على الموارد تسمح لـ `apigateway.amazonaws.com` باستدعائها. وبدون ذلك، يعيد كل طلب رمز 500.
 
-**Not handling 401 responses in the frontend.** When an authorizer rejects a request, the response is a bare `{"message":"Unauthorized"}`. Your frontend code should check for 401 status and trigger a token refresh or login redirect, not display a generic error.
+**عدم التعامل مع استجابات 401 في الواجهة الأمامية.** عندما يرفض المُفوِّض طلبًا، تكون الاستجابة `{"message":"Unauthorized"}` المجرّدة. وينبغي أن تتحقق شيفرة واجهتك الأمامية من حالة 401 وتطلق تحديث الرمز أو إعادة التوجيه إلى تسجيل الدخول، لا أن تعرض خطأً عامًا.
 
-You now have the complete API Gateway picture: HTTP APIs, routes, integrations, CORS, stages, custom domains, and authentication. In the exercise that follows, you’ll put all of these pieces together and build a working API that your frontend can call.
+باتت لديك الآن صورة API Gateway كاملة: واجهات HTTP البرمجية، والمسارات، والتكاملات، وCORS، والمراحل، والنطاقات المخصّصة، والمصادقة. وفي التمرين التالي، ستجمع كل هذه القطع معًا وتبني واجهة برمجية عاملة تستطيع واجهتك الأمامية استدعاءها.

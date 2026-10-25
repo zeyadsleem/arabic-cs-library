@@ -1,27 +1,27 @@
 ---
-title: "Codemods at Scale"
-lang: en
+title: "Codemods على نطاق واسع"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/codemods-at-scale"
 ---
 
-If you’ve ever needed to rename an import across two thousand files, your first instinct was probably find-and-replace. And for a simple rename—`oldThing` to `newThing`—that works. But the moment you need something slightly more structural—changing a named import to a default import, rewriting a function call to use a different argument order, replacing a deprecated API with one that takes different options—find-and-replace starts producing false positives, missing edge cases, and occasionally destroying template literals.
+إن احتجت يومًا إلى إعادة تسمية استيراد عبر ألفَي ملف، فحدسك الأول كان على الأرجح البحث والاستبدال. وبالنسبة إلى إعادة تسمية بسيطة—`oldThing` إلى `newThing`—فهذا ينجح. لكن بمجرد أن تحتاج شيئًا أكثر بنيوية بقليل—تحويل استيراد مُسمّى إلى استيراد افتراضي، أو إعادة كتابة نداء دالة ليستخدم ترتيب وسائط مختلفًا، أو استبدال واجهة برمجية مهجورة بأخرى تأخذ خيارات مختلفة—يبدأ البحث والاستبدال في إنتاج نتائج إيجابية خاطئة، وإغفال حالات حدّية، وإتلاف القوالب النصية (template literals) أحيانًا.
 
-A **codemod** is an automated code transformation that operates on the *structure* of the code rather than its text. Instead of matching strings, a codemod parses source code into an Abstract Syntax Tree, searches for nodes that match a pattern, replaces those nodes with new ones, and prints the modified tree back to source. The result is a transformation that understands the difference between `React.createClass` in an import statement and `React.createClass` in a comment.
+**codemod** هو تحويل آلي للشيفرة يعمل على *بنية* الشيفرة لا على نصها. فبدلًا من مطابقة السلاسل النصية، يحلّل codemod الشيفرة المصدرية إلى شجرة صياغة مجرّدة (Abstract Syntax Tree)، ويبحث عن العُقد المطابقة لنمط ما، ويستبدل تلك العُقد بأخرى جديدة، ويطبع الشجرة المعدَّلة عائدةً إلى المصدر. والنتيجة تحويل يفهم الفرق بين `React.createClass` في عبارة استيراد و`React.createClass` في تعليق.
 
-## Why text-based transforms break
+## لماذا تنكسر التحويلات القائمة على النص
 
-Consider a migration where you need to change every call to `analytics.track(eventName)` into `analytics.send({ event: eventName })`. A regex can handle the simple case, but real codebases have:
+تأمّل ترحيلًا تحتاج فيه إلى تغيير كل نداء إلى `analytics.track(eventName)` ليصبح `analytics.send({ event: eventName })`. يستطيع التعبير النمطي (regex) معالجة الحالة البسيطة، لكن قواعد الشيفرة الحقيقية فيها:
 
-- Different import aliases (`import { track as logEvent }`)
-- Calls that span multiple lines
-- The same string `analytics.track` inside a JSX attribute, a template literal, and a comment
-- Dynamic property access (`analytics[method]()`)
+- أسماء استيراد مستعارة مختلفة (`import { track as logEvent }`)
+- نداءات تمتد على عدة أسطر
+- السلسلة `analytics.track` نفسها داخل خاصية JSX وقالب نصي وتعليق
+- وصول ديناميكي إلى الخصائص (`analytics[method]()`)
 
-A regex either misses these or mangles them. An AST-based transform handles the first three naturally because it operates on the parsed structure, not the raw text. The fourth case—dynamic access—it correctly skips because the node type doesn’t match. You want a tool that’s precise about what it changes and honest about what it can’t.
+فإما أن يفوت التعبير النمطي هذه الحالات أو يشوّهها. أما التحويل القائم على AST فيتعامل مع الثلاث الأولى طبيعيًا لأنه يعمل على البنية المحلَّلة لا على النص الخام. والحالة الرابعة—الوصول الديناميكي—يتخطّاها بشكل صحيح لأن نوع العقدة لا يطابق. أنت تريد أداة دقيقة في ما تغيّره وصادقة في ما لا تستطيع تغييره.
 
-## The AST pipeline
+## خط أنابيب AST
 
-Every codemod follows the same four-stage pipeline:
+يتبع كل codemod خط الأنابيب نفسه ذا المراحل الأربع:
 
 ```
 flowchart LR
@@ -32,11 +32,11 @@ flowchart LR
     Print --> Output["Modified Source"]
 ```
 
-The parser reads source code and produces a tree. Each node in the tree represents a language construct—an `ImportDeclaration`, a `CallExpression`, a `JSXElement`, a `VariableDeclarator`. The transform step walks the tree, finds nodes matching a pattern, and replaces them with new nodes. The printer serializes the modified tree back to source code, preserving formatting and comments that weren’t part of the transformation.
+يقرأ المحلّل (parser) الشيفرة المصدرية وينتج شجرة. وتمثّل كل عقدة في الشجرة تركيبًا لغويًا—`ImportDeclaration` أو `CallExpression` أو `JSXElement` أو `VariableDeclarator`. وتمشي خطوة التحويل في الشجرة، فتجد العُقد المطابقة لنمط وتستبدلها بعُقد جديدة. ويُسلسل الطابع (printer) الشجرة المعدَّلة عائدةً إلى الشيفرة المصدرية، محافظًا على التنسيق والتعليقات التي لم تكن جزءًا من التحويل.
 
-The “abstract” in **Abstract Syntax Tree** means the tree omits syntactic noise—parentheses used only for grouping, semicolons, whitespace. What remains is the logical structure of the program. That’s why two files with different formatting but identical logic produce the same AST, and why a codemod can find a pattern without worrying about how many spaces someone used for indentation.
+كلمة «مجرّدة» في **شجرة الصياغة المجرّدة** تعني أن الشجرة تُسقط الضجيج الصياغي—الأقواس المستخدمة للتجميع فقط، والفواصل المنقوطة، والمسافات. وما يبقى هو البنية المنطقية للبرنامج. ولهذا يُنتج ملفان بتنسيق مختلف لكن بمنطق متطابق الشجرة نفسها، ولهذا يستطيع codemod إيجاد نمط دون القلق من عدد المسافات التي استخدمها أحدهم للإزاحة.
 
-Here’s what a simple import statement looks like as a tree:
+إليك شكل عبارة استيراد بسيطة كشجرة:
 
 ```
 graph TD
@@ -48,13 +48,13 @@ graph TD
     IS --> Local["local: 'Chart'"]
 ```
 
-When a codemod “finds all imports from `./legacy-chart`,” it’s searching for `ImportDeclaration` nodes whose `source.value` matches that string. When it replaces the source with `@pulse/analytics`, it’s swapping one AST node for another. The printer handles converting the modified tree back to valid source code.
+عندما «يجد codemod كل الاستيرادات من `./legacy-chart`»، فهو يبحث عن عُقد `ImportDeclaration` التي تطابق `source.value` فيها تلك السلسلة. وعندما يستبدل المصدر بـ `@pulse/analytics`، فهو يبادل عقدة AST بأخرى. ويتولّى الطابع تحويل الشجرة المعدَّلة عائدةً إلى شيفرة مصدرية صالحة.
 
 ## jscodeshift
 
-[jscodeshift](https://github.com/facebook/jscodeshift) is Meta’s toolkit for writing and running codemods. It wraps [recast](https://github.com/benjamn/recast) (which handles parsing and printing with format preservation) and provides a jQuery-like API for searching and transforming the AST.
+[jscodeshift](https://github.com/facebook/jscodeshift) هو صندوق أدوات Meta لكتابة codemods وتشغيلها. وهو يلفّ [recast](https://github.com/benjamn/recast) (الذي يتولّى التحليل والطبع مع الحفاظ على التنسيق) ويوفّر واجهة برمجية شبيهة بـ jQuery للبحث في AST وتحويله.
 
-A minimal codemod looks like this:
+يبدو codemod بسيط هكذا:
 
 *rename-import.ts*
 
@@ -77,23 +77,23 @@ export default function transform(file: FileInfo, api: API) {
 }
 ```
 
-*Note:* `j(file.source)` parses the file and returns a traversable collection.
+*ملاحظة:* `j(file.source)` يحلّل الملف ويعيد مجموعة قابلة للاجتياز.
 
-*Note:* Finds every import from `@old/package` and rewrites the source string.
+*ملاحظة:* يجد كل استيراد من `@old/package` ويعيد كتابة سلسلة المصدر.
 
-You run it against a directory of files:
+تشغّله على دليل من الملفات:
 
 ```bash
 npx jscodeshift --parser tsx --transform rename-import.ts src/
 ```
 
-jscodeshift processes files in parallel by default, so it scales to large codebases without custom batching. The `--parser tsx` flag tells recast to use a TypeScript-aware parser, which handles both `.ts` and `.tsx` files.
+يعالج jscodeshift الملفات على التوازي افتراضيًا، فيتوسّع ليشمل قواعد شيفرة كبيرة دون دفعات مخصّصة. ويخبر علم `--parser tsx` أداة recast باستخدام محلّل مدرك لـ TypeScript، يتعامل مع ملفات `.ts` و`.tsx` معًا.
 
-The API follows a pattern: `find` to locate nodes, `filter` to narrow the results, `forEach` or `replaceWith` to make changes. If you’ve used jQuery or D3 selections, the chaining style will feel familiar.
+تتبع الواجهة البرمجية نمطًا: `find` لتحديد موقع العُقد، و`filter` لتضييق النتائج، و`forEach` أو `replaceWith` لإجراء التغييرات. وإن كنت قد استخدمت jQuery أو تحديدات D3، فسيبدو أسلوب التسلسل مألوفًا.
 
-## A more realistic transform
+## تحويل أكثر واقعية
 
-Renaming a package source is the easy case. Here’s something closer to real migration work—transforming a legacy API call pattern into a modern one:
+إعادة تسمية مصدر حزمة هي الحالة السهلة. وإليك شيئًا أقرب إلى عمل ترحيل حقيقي—تحويل نمط نداء واجهة برمجية قديمة إلى نمط حديث:
 
 *migrate-api-calls.ts*
 
@@ -135,19 +135,19 @@ export default function transform(file: FileInfo, api: API) {
 }
 ```
 
-*Note:* Matches the exact shape of `analytics.track(...)` calls in the AST.
+*ملاحظة:* يطابق الشكل الدقيق لنداءات `analytics.track(...)` في AST.
 
-*Note:* Restructures the arguments into a single options object.
+*ملاحظة:* يعيد هيكلة الوسائط في كائن خيارات واحد.
 
-This transform takes `analytics.track("page_view", { url: "/" })` and produces `analytics.send({ event: "page_view", properties: { url: "/" } })`. A regex can’t reliably distinguish this from a string that happens to contain `analytics.track` or a call with a different number of arguments. The AST transform handles both cases correctly because it’s operating on the code’s structure, not its text.
+يأخذ هذا التحويل `analytics.track("page_view", { url: "/" })` وينتج `analytics.send({ event: "page_view", properties: { url: "/" } })`. ولا يستطيع التعبير النمطي التمييز بشكل موثوق بين هذا وسلسلة تحتوي `analytics.track` صدفةً أو نداء بعدد وسائط مختلف. ويتعامل تحويل AST مع الحالتين بشكل صحيح لأنه يعمل على بنية الشيفرة لا على نصها.
 
-> **Start with the mechanical cases**
+> **ابدأ بالحالات الميكانيكية**
 >
-> A codemod doesn’t need to handle every edge case to be valuable. If it correctly transforms 80% of call sites and flags the remaining 20% for manual review, it’s already saved days of work. Write the transform for the common pattern, add a `console.warn` for the patterns you can’t handle automatically, and review the diff.
+> لا يحتاج codemod إلى معالجة كل حالة حدّية ليكون ذا قيمة. فإن كان يحوّل 80% من مواضع النداء بشكل صحيح ويؤشّر على الـ20% المتبقية للمراجعة اليدوية، فقد وفّر أيامًا من العمل بالفعل. اكتب التحويل للنمط الشائع، وأضف `console.warn` للأنماط التي لا تستطيع معالجتها تلقائيًا، وراجع الفرق (diff).
 
-## The testing loop
+## حلقة الاختبار
 
-Codemods are functions from strings to strings, which makes them straightforward to test. You write an input, run the transform, and assert on the output:
+codemods هي دوال من سلاسل نصية إلى سلاسل نصية، ما يجعل اختبارها مباشرًا. فتكتب مدخلًا، وتشغّل التحويل، وتتحقق من المخرَج:
 
 *rename-import.test.ts*
 
@@ -178,61 +178,61 @@ describe('rename-import', () => {
 });
 ```
 
-*Note:* String-in, string-out. No file system, no bundler, no framework.
+*ملاحظة:* سلسلة تدخل، وسلسلة تخرج. لا نظام ملفات، ولا مُجمِّع، ولا إطار.
 
-When a codemod produces incorrect output on a real file, copy the problematic snippet into a test case, fix the transform, and verify the test passes. Over time, your test suite accumulates a catalog of edge cases that prevents regressions as you extend the codemod.
+عندما ينتج codemod مخرَجًا غير صحيح على ملف حقيقي، انسخ المقتطف المشكِل إلى حالة اختبار، وأصلح التحويل، وتحقق من نجاح الاختبار. ومع الوقت، تجمع مجموعة اختباراتك فهرسًا من الحالات الحدّية يمنع التراجعات عند توسيعك نطاق codemod.
 
-## Institutional distribution
+## التوزيع المؤسسي
 
-At companies like Meta and Google, codemods aren’t a migration novelty—they’re part of the standard development workflow. When an internal library introduces a breaking API change, the team that owns the library ships a codemod alongside the new version. Martin Fowler’s [article on codemods](https://martinfowler.com/articles/codemods-api-refactoring.html) describes this as a cultural norm: the library author takes responsibility for migrating consumers, not the other way around.
+في شركات مثل Meta وGoogle، ليست codemods بدعة ترحيل—بل جزء من سير عمل التطوير القياسي. فعندما تُدخل مكتبة داخلية تغييرًا كاسرًا في واجهتها البرمجية، يشحن الفريق المالك للمكتبة codemod إلى جانب الإصدار الجديد. ويصف [مقال Martin Fowler عن codemods](https://martinfowler.com/articles/codemods-api-refactoring.html) هذا كعُرف ثقافي: فمؤلّف المكتبة يتحمّل مسؤولية ترحيل المستهلكين، لا العكس.
 
-This flips the usual upgrade dynamic. Instead of every consuming team independently figuring out how to adapt to a breaking change, the library team writes one transform that handles the migration across the entire monorepo. At Meta’s scale—thousands of engineers, millions of lines of code—the alternative (filing tickets and hoping each team migrates manually) simply doesn’t work.
+هذا يقلب ديناميكية الترقية المعتادة. فبدلًا من أن يكتشف كل فريق مستهلك باستقلالية كيف يتكيّف مع تغيير كاسر، يكتب فريق المكتبة تحويلًا واحدًا يتولّى الترحيل عبر المستودع الأحادي بأكمله. وعلى مقياس Meta—آلاف المهندسين، وملايين أسطر الشيفرة—فإن البديل (فتح تذاكر والأمل في أن يهاجر كل فريق يدويًا) لا ينجح ببساطة.
 
-The same pattern applies to design system migrations. When a component library renames a prop, changes a component’s API, or deprecates a pattern, a codemod can update every consumer automatically. [Hypermod](https://www.hypermod.io/blog/7-automating-design-system-evolution) builds on this idea, providing a platform specifically for distributing design system codemods that teams can run as part of their upgrade workflow.
+وينطبق النمط نفسه على ترحيلات نظام التصميم. فعندما تعيد مكتبة مكوّنات تسمية خاصية (prop)، أو تغيّر واجهة مكوّن البرمجية، أو تُهجر نمطًا، يستطيع codemod تحديث كل مستهلك تلقائيًا. ويبني [Hypermod](https://www.hypermod.io/blog/7-automating-design-system-evolution) على هذه الفكرة، موفّرًا منصة مخصّصة لتوزيع codemods نظام التصميم التي تستطيع الفرق تشغيلها كجزء من سير عمل ترقيتها.
 
-The organizational insight is worth underlining: codemods shift the cost of API evolution from consumers to producers. The team making the breaking change bears the cost of writing the migration script, which is fair—they’re the ones with the most context about what changed and why. This makes breaking changes *cheaper* for the organization as a whole, which means libraries can evolve faster without leaving consumers stranded on old versions.
+يستحق الاستنتاج التنظيمي التسطير: تنقل codemods كلفة تطوّر الواجهة البرمجية من المستهلكين إلى المنتِجين. فالفريق الذي يُجري التغيير الكاسر يتحمّل كلفة كتابة سكربت الترحيل، وهذا عادل—فهو الأكثر دراية بما تغيّر ولماذا. وهذا يجعل التغييرات الكاسرة *أرخص* على المؤسسة ككل، ما يعني أن المكتبات تستطيع التطور أسرع دون ترك المستهلكين عالقين على إصدارات قديمة.
 
-## When codemods earn their keep
+## متى تستحق codemods كلفتها
 
-Codemods make sense when you have a transformation that is:
+تصبح codemods منطقية عندما يكون لديك تحويل:
 
-- **Mechanical**: the old pattern maps to the new pattern without judgment calls.
-- **Repetitive**: the same change needs to happen across dozens or hundreds of files.
-- **Testable**: you can write input/output pairs that verify the transform.
+- **ميكانيكي**: يُقابل النمط القديم النمط الجديد دون أحكام شخصية.
+- **متكرّر**: يحتاج التغيير نفسه إلى الحدوث عبر عشرات أو مئات الملفات.
+- **قابل للاختبار**: تستطيع كتابة أزواج مدخل/مخرَج تتحقق من التحويل.
 
-They’re less useful when the transformation requires understanding business logic, when the code is so inconsistent that no single pattern covers most cases, or when the number of affected files is small enough that manual edits are faster than writing the transform.
+وهي أقل فائدة عندما يتطلّب التحويل فهم منطق العمل، أو عندما تكون الشيفرة غير متسقة إلى حد لا يغطّي فيه نمط واحد معظم الحالات، أو عندما يكون عدد الملفات المتأثرة صغيرًا بما يكفي لتكون التعديلات اليدوية أسرع من كتابة التحويل.
 
-A good litmus test: if you’d describe the change as “find every X and replace it with Y, where X and Y are structural code patterns,” that’s a codemod. If you’d describe it as “look at each usage and decide what to do based on context,” that’s a human with a checklist.
+اختبار عباد الشمس الجيد: إن كنت تصف التغيير بأنه «اعثر على كل X واستبدله بـ Y، حيث X وY نمطان بنيويان في الشيفرة»، فهذا codemod. وإن كنت تصفه بأنه «انظر إلى كل استخدام وقرّر ما تفعله بناءً على السياق»، فهذا إنسان مع قائمة تحقّق.
 
-## Beyond jscodeshift
+## ما هو أبعد من jscodeshift
 
-jscodeshift is the most widely used tool in the JavaScript ecosystem, but it’s not the only option. [ts-morph](https://ts-morph.com/) provides a TypeScript-native API that’s often more convenient for TypeScript-specific transforms because it understands types, not just syntax. For CSS transforms, [PostCSS](https://postcss.org/) provides an equivalent AST-based pipeline. For HTML templates, tools like [parse5](https://github.com/inikulin/parse5) offer DOM-level tree manipulation.
+jscodeshift هو الأداة الأوسع استخدامًا في منظومة JavaScript، لكنه ليس الخيار الوحيد. ويوفّر [ts-morph](https://ts-morph.com/) واجهة برمجية أصلية لـ TypeScript غالبًا أكثر ملاءمة للتحويلات الخاصة بـ TypeScript لأنه يفهم الأنواع لا الصياغة فقط. وبالنسبة إلى تحويلات CSS، يوفّر [PostCSS](https://postcss.org/) خط أنابيب مكافئًا قائمًا على AST. وبالنسبة إلى قوالب HTML، تقدّم أدوات مثل [parse5](https://github.com/inikulin/parse5) معالجة شجرية بمستوى DOM.
 
-The underlying idea is the same everywhere: parse structured content into a tree, manipulate the tree, print it back. Once you’ve written one AST transform, the pattern transfers to any language or format with a parser.
+الفكرة الكامنة هي نفسها في كل مكان: حلّل محتوى مُهيكلًا إلى شجرة، وعالج الشجرة، ثم اطبعها عائدةً. وبمجرد أن تكتب تحويل AST واحدًا، ينتقل النمط إلى أي لغة أو صيغة لها محلّل.
 
-We’ll put this into practice in [Exercise 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise), where you’ll write a jscodeshift codemod that transforms legacy component imports into modern package imports—the exact kind of mechanical, repetitive migration work that codemods handle well.
+سنضع هذا موضع التطبيق في [التمرين 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise)، حيث ستكتب codemod بـ jscodeshift يحوّل استيرادات المكوّنات القديمة إلى استيرادات حزم حديثة—وهو بالضبط نوع عمل الترحيل الميكانيكي المتكرّر الذي تتعامل معه codemods جيدًا.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### The AST Pipeline
+### خط أنابيب AST
 
-> Parse → find → transform → print. That’s the whole idea.
+> حلّل → اعثر → حوّل → اطبع. هذه هي الفكرة كلها.
 
 ```
 Source Code → Parse → Abstract Syntax Tree → Find & Transform → Print → Modified Source
 ```
 
-- Text-based transforms (regex, sed) break on multiline expressions, import aliases, and content inside comments or strings.
-- AST transforms understand program *structure*. They match nodes, not characters.
-- The printer preserves original formatting (whitespace, quotes, semicolons) for everything it didn’t touch.
+- تنكسر التحويلات القائمة على النص (regex، sed) عند التعبيرات متعددة الأسطر، وأسماء الاستيراد المستعارة، والمحتوى داخل التعليقات أو السلاسل النصية.
+- تفهم تحويلات AST *بنية* البرنامج. فهي تطابق عُقدًا لا أحرفًا.
+- يحافظ الطابع على التنسيق الأصلي (المسافات، والعلامات، والفواصل المنقوطة) لكل ما لم يمسّه.
 
 ---
 
 ### jscodeshift
 
-> Meta’s toolkit for writing and running AST-based code transforms at scale.
+> صندوق أدوات Meta لكتابة تحويلات الشيفرة القائمة على AST وتشغيلها على نطاق واسع.
 
 ```typescript
 export default function transform(file, api) {
@@ -247,17 +247,17 @@ export default function transform(file, api) {
 }
 ```
 
-- jQuery-like API: `find()`, `filter()`, `forEach()`, `replaceWith()`.
-- Runs transforms in parallel across large codebases.
-- Use AST Explorer to prototype transforms before committing to them.
+- واجهة برمجية شبيهة بـ jQuery: `find()`، `filter()`، `forEach()`، `replaceWith()`.
+- يشغّل التحويلات على التوازي عبر قواعد شيفرة كبيرة.
+- استخدم AST Explorer لنمذجة التحويلات قبل الالتزام بها.
 
 ---
 
-### When Codemods Earn Their Keep
+### متى تستحق codemods كلفتها
 
-> Codemods are worth it when the transformation is mechanical, repetitive, and testable.
+> تستحق codemods العناء عندما يكون التحويل ميكانيكيًا ومتكرّرًا وقابلًا للاختبار.
 
-- **Mechanical:** The old pattern maps directly to the new pattern. No business-logic judgment required.
-- **Repetitive:** Dozens to hundreds of call sites. If it’s three files, do it by hand.
-- **Testable:** String-in, string-out. Write input/output pairs, run the transform, compare.
-- Ship codemods *with* breaking changes. The library team that renames the API writes the codemod. Migration cost shifts from consumers to producers.
+- **ميكانيكي:** يُقابل النمط القديم النمط الجديد مباشرةً. ولا يلزم حكم على منطق العمل.
+- **متكرّر:** من عشرات إلى مئات مواضع النداء. وإن كانت ثلاثة ملفات، فأنجزها يدويًا.
+- **قابل للاختبار:** سلسلة تدخل وسلسلة تخرج. اكتب أزواج مدخل/مخرَج، وشغّل التحويل، وقارن.
+- اشحن codemods *مع* التغييرات الكاسرة. ففريق المكتبة الذي يعيد تسمية الواجهة البرمجية يكتب codemod. وتنتقل كلفة الترحيل من المستهلكين إلى المنتِجين.

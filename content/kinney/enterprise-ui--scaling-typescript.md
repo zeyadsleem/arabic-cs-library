@@ -1,61 +1,61 @@
 ---
-title: "Scaling TypeScript"
-lang: en
+title: "توسيع نطاق TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/scaling-typescript"
 ---
 
-TypeScript is great until it isn’t. At a few thousand lines of code, everything feels snappy—your editor highlights errors instantly, `tsc` finishes in seconds, and life is good. But, somewhere around the hundreds-of-thousands-of-lines mark, you start noticing that your IDE takes two minutes to show you a red squiggly, your CI pipeline burns through compute for tests that didn’t need to run, and `tsc` eats enough RAM to make your laptop fan audible from across the room.
+يكون TypeScript رائعًا حتى يتوقف عن ذلك. فعند بضع آلاف أسطر من الشيفرة، يبدو كل شيء سريع الاستجابة—يبرز محررك الأخطاء فورًا، وينتهي `tsc` في ثوانٍ، والحياة جميلة. لكن عند حدود مئات الآلاف من الأسطر، تبدأ في ملاحظة أن بيئة التطوير تستغرق دقيقتين لتعرض عليك خطًا متعرجًا أحمر، وأن خط CI يحرق طاقة حسابية في اختبارات لم تكن بحاجة إلى التشغيل، وأن `tsc` يستهلك من الذاكرة ما يجعل مروحة حاسوبك المحمول مسموعة من الجهة الأخرى للغرفة.
 
-The frustrating part is that it’s rarely *one* thing. TypeScript doesn’t “break” because you crossed some magical line-count threshold. It starts breaking when the compiler and language service are forced to understand too much at once, or when the type graph and module graph stop matching the real structure of the repository. The TypeScript docs and [performance guide](https://github.com/microsoft/Typescript/wiki/Performance) keep coming back to the same theme: for any non-trivial codebase, split it into smaller projects so the compiler loads fewer files, uses less memory, and does less work per edit and per build.
+الجزء المحبط أن السبب نادرًا ما يكون شيئًا *واحدًا*. فـTypeScript لا «ينكسر» لأنك تجاوزت عتبة سحرية لعدد الأسطر، بل يبدأ ينكسر عندما يُجبَر المصرّف وخدمة اللغة على فهم الكثير دفعة واحدة، أو عندما يتوقف مخطط الأنواع ومخطط الوحدات عن مطابقة البنية الحقيقية للمستودع. وتظل وثائق TypeScript و[دليل الأداء](https://github.com/microsoft/Typescript/wiki/Performance) يعودان إلى الثيمة نفسها: أي قاعدة شيفرة غير تافهة يجب تقسيمها إلى مشاريع أصغر بحيث يحمّل المصرّف ملفات أقل، ويستهلك ذاكرة أقل، وينجز عملًا أقل في كل تحرير وكل بناء.
 
-And here’s the thing that trips people up: build slowness and editor slowness are basically the same problem wearing different outfits. TypeScript’s editor service is tied to the same full-project checking behavior as `tsc`. The [docs explicitly note](https://github.com/microsoft/Typescript/wiki/Performance) that editor performance is related to the cost of checking the project, even if diagnostics for open files can appear faster than a full build.
+وهذه هي النقطة التي تربك الناس: بطء البناء وبطء المحرر مشكلة واحدة في جوهرها ترتدي زيّين مختلفين. فخدمة المحرر في TypeScript مرتبطة بسلوك الفحص الكامل للمشروع نفسه الذي يقدمه `tsc`. و[تلاحظ الوثائق صراحةً](https://github.com/microsoft/Typescript/wiki/Performance) أن أداء المحرر مرتبط بتكلفة فحص المشروع، حتى لو كانت تشخيصات الملفات المفتوحة قد تظهر أسرع من بناء كامل.
 
-## Where It Breaks
+## أين ينكسر
 
-| Failure mode | Symptom | Primary fix |
+| نمط الفشل | العَرَض | الإصلاح الأساسي |
 | --- | --- | --- |
-| Oversized program | Slow builds, high memory | Narrow `include`, set `"types": []` |
-| Barrel files | One import pulls hundreds of modules | Direct imports, remove re-export index files |
-| Complex types | Slow checking, quadratic unions | Prefer interfaces, name conditional types |
-| Anonymous exports | Huge `.d.ts` output | Add explicit return types to exports |
-| Ambient type pollution | Slow startup, duplicate globals | Set `"types": []`, list only what’s needed |
-| Typed linting | Slow ESLint, full project analysis | Narrow `tsconfig` for linting, disable type rules selectively |
-| Module-resolution drift | Works locally, breaks consumers | Use `nodenext`, avoid extensionless imports |
-| Circular dependencies | Deep instantiation errors, runtime `undefined` | Break cycles, restructure package graph |
+| برنامج متضخم | بناءات بطيئة وذاكرة مرتفعة | تضييق `include` وضبط `"types": []` |
+| ملفات البرميل (barrel files) | استيراد واحد يسحب مئات الوحدات | استيرادات مباشرة، وإزالة ملفات الفهرس المُصدِّرة من جديد |
+| أنواع معقدة | فحص بطيء واتحادات تربيعية | فضّل الواجهات، وسمِّ الأنواع الشرطية |
+| صادرات مجهولة | مخرجات `.d.ts` ضخمة | أضف أنواع إرجاع صريحة للصادرات |
+| تلوث الأنواع المحيطة | بدء بطيء وتكرار في المتغيرات العامة | اضبط `"types": []` واسرد ما تحتاج فقط |
+| الفحص الآلي المكتوب بالأنواع | ESLint بطيء وتحليل كامل للمشروع | ضيّق `tsconfig` لأجل الفحص، وعطّل قواعد الأنواع انتقائيًا |
+| انحراف حل الوحدات | يعمل محليًا وينكسر عند المستهلكين | استخدم `nodenext` وتجنب الاستيرادات بلا امتداد |
+| اعتمادات دائرية | أخطاء تنميط عميقة وقيم `undefined` وقت التشغيل | اكسر الحلقات وأعد هيكلة مخطط الحزم |
 
-**Program size** is the most straightforward failure mode. A single `tsconfig` that accidentally includes source, tests, generated files, extra `@types` packages, and parts of `node_modules` turns every edit into a much larger problem than it needs to be. TypeScript’s [performance guide](https://github.com/microsoft/Typescript/wiki/Performance) calls out oversized `include` globs, mixed project folders, tests living next to product code, and heavy directories under source roots as common causes of slow builds and high memory use.
+**حجم البرنامج** هو أبسط أنماط الفشل مباشرة. فملف `tsconfig` واحد يتضمن بالخطأ الشيفرة المصدرية والاختبارات والملفات المولّدة وحزم `@types` الإضافية وأجزاء من `node_modules` يحوّل كل تحرير إلى مشكلة أكبر بكثير مما ينبغي. ويشير [دليل الأداء](https://github.com/microsoft/Typescript/wiki/Performance) في TypeScript إلى أنماط `include` المتضخمة والمجلدات المختلطة في المشروع والاختبارات المجاورة لشيفرة المنتج والمجلدات الثقيلة تحت جذور المصدر بوصفها أسبابًا شائعة لبطء البناء وارتفاع استهلاك الذاكرة.
 
-**Barrel files** make program size worse by hiding it. You know the pattern—an `index.ts` that re-exports everything from a directory so consumers can write a clean one-line import. At small scale, it’s a nice convenience. At large scale, it’s a performance disaster. When you import a single component through a barrel file, TypeScript has to parse the *entire* module graph connected to that barrel—every re-exported file, and every downstream dependency of those files. One import becomes a cascading chain of hundreds of modules.
+**ملفات البرميل** تزيد حجم البرنامج سوءًا بإخفائه. وأنت تعرف النمط—ملف `index.ts` يعيد تصدير كل شيء من مجلد كي يكتب المستهلكون استيرادًا نظيفًا من سطر واحد. وعلى النطاق الصغير، هذا تيسير لطيف. وعلى النطاق الكبير، كارثة أداء. فعندما تستورد مكوّنًا واحدًا عبر ملف برميل، يتعين على TypeScript تحليل *كامل* مخطط الوحدات المتصل بذلك البرميل—كل ملف مُعاد تصديره، وكل اعتماد لاحق لتلك الملفات. فيصبح استيراد واحد سلسلة متتالية من مئات الوحدات.
 
-Atlassian removed their barrel files and saw a 75% reduction in average build times, a 30% improvement in IDE highlighting speed, and an 88% drop in the number of unit tests executed per pull request. That’s not a typo.
+أزالت Atlassian ملفات البرميل لديها فانخفض متوسط زمن البناء بنسبة 75%، وتحسنت سرعة الإبراز في بيئة التطوير بنسبة 30%، وتراجع عدد اختبارات الوحدة المنفذة في كل طلب سحب بنسبة 88%. وهذا ليس خطأ مطبعيًا.
 
-**Type complexity** is where otherwise sensible teams drift into type-level performance theater. Intersections are costlier than equivalent interface hierarchies because interfaces are flattened and their relationships can be cached. Large unions get expensive because members are compared repeatedly and can become quadratic to reduce. Deeply nested conditional and mapped types get re-evaluated over and over unless you give them stable names the compiler can cache. TypeScript’s [performance wiki](https://github.com/microsoft/Typescript/wiki/Performance) is unusually blunt here: prefer interfaces over intersections, prefer base types over giant unions, and name complex conditional types instead of inlining them everywhere.
+**تعقيد الأنواع** هو حيث تنزلق فرق عاقلة في غير ذلك إلى مسرح أداء على مستوى الأنواع. فأنواع التقاطع أكلف من تسلسلات الواجهات المكافئة لأن الواجهات تُسطَّح ويمكن تخزين علاقاتها مؤقتًا. والاتحادات الكبيرة تصبح مكلفة لأن أعضاءها يُقارَنون مرارًا وقد يصبح اختزالها بمثابة تعقيد تربيعي. والأنواع الشرطية والمعيّنة المتداخلة بعمق يُعاد تقييمها مرارًا وتكرارًا ما لم تمنحها أسماء مستقرة يستطيع المصرّف تخزينها مؤقتًا. و[ويكي الأداء](https://github.com/microsoft/Typescript/wiki/Performance) في TypeScript صريح على نحو غير معتاد هنا: فضّل الواجهات على التقاطعات، وفضّل الأنواع الأساسية على الاتحادات العملاقة، وسمِّ الأنواع الشرطية المعقدة بدلًا من تضمينها في كل مكان.
 
-**Declaration complexity** is sneakier. Anonymous inferred export types can look elegant in source and turn into hideous `.d.ts` output, which makes incremental builds and downstream checking slower. The TypeScript team [specifically recommends](https://github.com/microsoft/Typescript/wiki/Performance) adding explicit annotations—especially return types on exported functions—because named types are more compact and reduce the work needed to read and write declaration files.
+**تعقيد التعريفات** أكثر خفاءً. فالأنواع المجهولة المُستنتَجة للصادرات قد تبدو أنيقة في المصدر ثم تتحول إلى مخرجات `.d.ts` بشعة، ما يجعل البناءات التدريجية والفحص اللاحق أبطأ. ويوصي فريق TypeScript [تحديدًا](https://github.com/microsoft/Typescript/wiki/Performance) بإضافة تلميحات صريحة—خصوصًا أنواع الإرجاع في الدوال المُصدَّرة—لأن الأنواع المسماة أكثر إحكامًا وتقلل العمل اللازم لقراءة ملفات التعريف وكتابتها.
 
-**Ambient type pollution** is another quiet offender. By default, TypeScript automatically includes every `@types` package it finds in `node_modules`, even if you never import it. That slows down program construction and creates the usual circus of duplicate global identifiers when test frameworks, browser globals, and Node globals all pile in together.
+**تلوث الأنواع المحيطة** مجرم هادئ آخر. فافتراضيًا، يضم TypeScript تلقائيًا كل حزمة `@types` يجدها في `node_modules`، حتى لو لم تستوردها قط. وهذا يبطئ بناء البرنامج ويخلق السيرك المعتاد من معرّفات عامة مكررة عندما تتكدس أطر الاختبار ومتغيرات المتصفح العامة ومتغيرات Node العامة معًا.
 
-**Typed linting** adds yet another layer. Using `@typescript-eslint` with type-aware rules gives you incredible safety, but it requires TypeScript to analyze your whole project just to determine types for the linter. It’s a tax, and on a large codebase, it’s a steep one. Wide glob patterns in your `tsconfig.json` (like `**/*`) make it worse by accidentally pulling in build artifacts.
+**الفحص الآلي المكتوب بالأنواع** يضيف طبقة أخرى. فاستخدام `@typescript-eslint` مع قواعد واعية بالأنواع يمنحك أمانًا مذهلًا، لكنه يتطلب من TypeScript تحليل مشروعك بأكمله فقط ليعرف الأنواع لأجل المدقق. إنها ضريبة، وهي على قاعدة شيفرة كبيرة ضريبة باهظة. وأنماط glob الواسعة في `tsconfig.json` (مثل `**/*`) تزيدها سوءًا بجذب مخرجات البناء بالخطأ.
 
-**Module-resolution drift** tends to show up in monorepos as “it works in the editor, it works in the bundler, and then it explodes for consumers.” TypeScript supports `package.json` `exports` and `imports` in modern resolution modes, but `paths` only teaches the compiler how to resolve a name locally—it doesn’t rewrite emitted import specifiers. On top of that, the [TypeScript docs warn](https://www.typescriptlang.org/docs/handbook/compiler-options.html) that `"moduleResolution": "bundler"` can allow extensionless imports that are fine in bundlers and wrong in Node.js, and those bad specifiers can leak into declaration files if you publish libraries carelessly.
+**انحراف حل الوحدات** يظهر عادة في المستودعات الأحادية على هيئة «يعمل في المحرر، ويعمل في المُجمِّع، ثم ينفجر عند المستهلكين». يدعم TypeScript حقلي `exports` و`imports` في `package.json` في أنماط الحل الحديثة، لكن `paths` لا يعلّم المصرّف سوى كيفية حل اسم محليًا—فهو لا يعيد كتابة محددات الاستيراد المُصدَرة. وفوق ذلك، [تحذّر وثائق TypeScript](https://www.typescriptlang.org/docs/handbook/compiler-options.html) من أن `"moduleResolution": "bundler"` قد يسمح باستيرادات بلا امتداد تكون سليمة في المُجمِّعات وخاطئة في Node.js، ويمكن أن تتسرب هذه المحددات السيئة إلى ملفات التعريف إذا نشرت المكتبات بلا حذر.
 
-**Circular dependencies** are the classic runtime surprise. When module A imports module B, and module B imports module A, you get “excessively deep” type instantiation errors, slow compilation, and sometimes runtime `undefined` values that are deeply confusing to debug.
+**الاعتمادات الدائرية** هي مفاجأة وقت التشغيل الكلاسيكية. فعندما تستورد الوحدة A الوحدة B، وتستورد الوحدة B الوحدة A، تحصل على أخطاء تنميط «عميقة بإفراط»، وترجمة بطيئة، وأحيانًا قيم `undefined` وقت التشغيل تكون مربكة جدًا في التنقيح.
 
-And then there’s the **decomposition trade-off** itself. One giant project overloads the editor and checker. Too many tiny projects create overhead and repeated checking of shared dependency types. TypeScript’s [performance guide](https://github.com/microsoft/Typescript/wiki/Performance) gives an empirical rule of thumb for multi-project workspaces: somewhere around 5 to 20 projects is often a reasonable range, with evenly sized projects and boundaries that match how files are edited together. Humans, naturally, prefer either one giant ball of mud or eighty-seven micro-packages named after feelings.
+ثم هناك **مقايضة التفكيك** نفسها. فمشروع عملاق واحد يُثقل المحرر والمدقق، ومشاريع صغيرة أكثر من اللازم تخلق عبئًا إضافيًا وتكرارًا في فحص أنواع الاعتمادات المشتركة. ويقدم [دليل الأداء](https://github.com/microsoft/Typescript/wiki/Performance) في TypeScript قاعدة عملية تجريبية لمساحات العمل متعددة المشاريع: نطاق يتراوح حول 5 إلى 20 مشروعًا غالبًا نطاق معقول، بمشاريع متساوية الأحجام وحدود تطابق طريقة تحرير الملفات معًا. أما البشر، بطبيعة الحال، فيفضلون إما كرة طين عملاقة واحدة وإما سبعًا وثمانين حزمة دقيقة مُسمّاة على أسماء المشاعر.
 
-## Measure First
+## قِس أولًا
 
-Before you start flipping flags and restructuring your entire repository, figure out where the time is actually going. TypeScript gives you the tools to do this—most people just don’t know they exist.
+قبل أن تبدأ في تقليب الأعلام وإعادة هيكلة مستودعك بأكمله، اكتشف أين يذهب الوقت فعلًا. فـTypeScript يمنحك الأدوات لفعل ذلك—لكن معظم الناس لا يعرفون بوجودها.
 
-Start with `--extendedDiagnostics` to get a breakdown of where `tsc` spends its time:
+ابدأ بـ`--extendedDiagnostics` للحصول على تفصيل لما يصرفه `tsc` من وقت:
 
 ```bash
 tsc -p tsconfig.json --extendedDiagnostics
 ```
 
-A useful way to read the output: if `Files` and `I/O Read time` are high, the problem is usually your file set or module resolution. If `Check time` dominates, the problem is your types.
+طريقة مفيدة لقراءة المخرجات: إذا كانت قيمتا `Files` و`I/O Read time` مرتفعتين، فالمشكلة عادة في مجموعة ملفاتك أو في حل الوحدات. وإذا كانت `Check time` هي المهيمنة، فالمشكلة في أنواعك.
 
-When you need to go deeper:
+وعندما تحتاج إلى التعمق أكثر:
 
 ```bash
 tsc -p tsconfig.json --listFilesOnly
@@ -64,19 +64,19 @@ tsc -p tsconfig.json --traceResolution > resolution.txt
 tsc -p tsconfig.json --generateTrace .trace --incremental false
 ```
 
-`--listFilesOnly` shows you every file TypeScript decided to include—you’ll probably be surprised by a few of them. `--explainFiles` tells you *why* each file got pulled in. `--generateTrace` produces a Chrome-compatible trace where `checkSourceFile`, `checkExpression`, and `checkVariableDeclaration` are the events most worth staring at when you need to isolate a hotspot.
+يعرض `--listFilesOnly` كل ملف قرر TypeScript تضمينه—وستفاجأ على الأرجح ببعضها. ويخبرك `--explainFiles` بـ*سبب* سحب كل ملف. وينتج `--generateTrace` أثرًا متوافقًا مع Chrome تكون فيه `checkSourceFile` و`checkExpression` و`checkVariableDeclaration` الأحداث الأجدر بالتحديق فيها عندما تحتاج إلى عزل نقطة ساخنة.
 
-> **Tip**
+> **نصيحة**
 >
-> Tracing with plain `tsc` is usually easier than trying to diagnose the same issue through a bundler, and still tends to be representative.
+> غالبًا ما يكون التتبع بـ`tsc` وحده أسهل من محاولة تشخيص المشكلة نفسها عبر مُجمِّع، ويظل عادة ممثلًا للواقع.
 
-## Keeping TypeScript Fast
+## إبقاء TypeScript سريعًا
 
-The goal is to decorrelate the size of your codebase from the latency of your development tools. A repository with ten times the code shouldn’t have ten times the build time.
+الهدف هو فصل حجم قاعدة شيفرتك عن زمن استجابة أدوات التطوير لديك. فمستودع فيه عشرة أضعاف الشيفرة ينبغي ألّا يستغرق عشرة أضعاف زمن البناء.
 
-### Shrink the program
+### قلّص البرنامج
 
-The easiest win. Keep `include` narrow—usually just `src` or another true input directory. Add explicit excludes for `**/node_modules` and dot-folders. Don’t mix files from multiple projects in the same directory. If tests live beside product code, name or place them so they’re easy to exclude from the production project.
+أسهل مكسب. أبقِ `include` ضيقًا—عادة مجرد `src` أو مجلد إدخال حقيقي آخر. وأضف استثناءات صريحة لـ`**/node_modules` والمجلدات النقطية. ولا تخلط ملفات من مشاريع متعددة في المجلد نفسه. وإذا كانت الاختبارات تعيش بجوار شيفرة المنتج، فسمّها أو ضعها بحيث يسهل استثناؤها من مشروع الإنتاج.
 
 ```json
 {
@@ -88,49 +88,49 @@ The easiest win. Keep `include` narrow—usually just `src` or another true inpu
 }
 ```
 
-Setting `"types": []` is worth calling out. For application and library packages that don’t need ambient globals, this stops TypeScript from auto-including every `@types` package it finds. For test projects, list only the globals you actually need. This reduces startup work and avoids global declaration conflicts across packages.
+يستحق ضبط `"types": []` إشارة خاصة. فبالنسبة إلى حزم التطبيقات والمكتبات التي لا تحتاج إلى متغيرات عامة محيطة، يمنع هذا TypeScript من التضمين التلقائي لكل حزمة `@types` يجدها. أما مشاريع الاختبارات، فاسرد فيها المتغيرات العامة التي تحتاجها فعلًا فقط. وهذا يقلل عمل بدء التشغيل ويتجنب تعارضات التعريفات العامة عبر الحزم.
 
-### Ditch the barrel files
+### تخلّص من ملفات البرميل
 
-Replace barrel imports with direct imports. Instead of `import { Button } from './components'`, write `import { Button } from './components/Button/Button'`. It’s more verbose, sure. But, your tooling will thank you, and your coworkers will stop complaining about editor lag.
+استبدل استيرادات البرميل باستيرادات مباشرة. فبدلًا من `import { Button } from './components'`، اكتب `import { Button } from './components/Button/Button'`. إنها أكثر إسهابًا، بالتأكيد. لكن أدواتك ستشكرك، وسيكف زملاؤك عن الشكوى من تباطؤ المحرر.
 
-### Separate type checking from transpilation
+### افصل فحص الأنواع عن الترجمة
 
-Don’t use `tsc` to transpile your code during development. Use a type-stripping transpiler written in a compiled language—**esbuild**, **SWC**, or **Rspack**—which processes code almost instantly because it doesn’t care about your types. Then run type checking as a separate background process (`tsc --noEmit --watch`) or push full type checks to CI. You get fast feedback *and* type safety—just not from the same tool at the same time.
+لا تستخدم `tsc` لترجمة شيفرتك أثناء التطوير. استخدم مترجمًا يجرّد الأنواع مكتوبًا بلغة مُصرَّفة—**esbuild** أو **SWC** أو **Rspack**—يعالج الشيفرة على الفور تقريبًا لأنه لا يهتم بأنواعك. ثم شغّل فحص الأنواع كعملية خلفية منفصلة (`tsc --noEmit --watch`) أو ادفع الفحص الكامل للأنواع إلى CI. فتحصل على تغذية راجعة سريعة *و*أمان الأنواع—لا من الأداة نفسها في الوقت نفسه فحسب.
 
-TypeScript documents two complementary features that support this split. First, **`isolatedModules`** warns when you use constructs that can’t be safely transpiled file-by-file by tools like Babel or `transpileModule`. It doesn’t itself make emit faster—it just keeps you inside the subset that fast emitters can handle. Second, since TypeScript 5.6, **`--noCheck`** can skip full checking for faster emit workflows, and when paired with **`--isolatedDeclarations`**, declaration generation becomes mostly syntactic and therefore much faster. ([TypeScript 5.6 release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-6.html))
+توثّق TypeScript ميزتين متكاملتين تدعمان هذا الفصل. أولًا، **`isolatedModules`** يحذّر عندما تستخدم بنى لا يمكن ترجمتها بأمان ملفًا ملفًا بواسطة أدوات مثل Babel أو `transpileModule`. وهو نفسه لا يجعل الإصدار أسرع—بل يبقيك داخل المجموعة الفرعية التي تستطيع أدوات الإصدار السريعة التعامل معها. ثانيًا، منذ TypeScript 5.6، يستطيع **`--noCheck`** تخطي الفحص الكامل لسير عمل إصدار أسرع، وعندما يقترن بـ**`--isolatedDeclarations`** يصبح توليد التعريفات تركيبيًا في معظمه وبالتالي أسرع بكثير. ([ملاحظات إصدار TypeScript 5.6](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-6.html))
 
-In practice, that leads to two healthy patterns. For apps, let the bundler emit JavaScript and run TypeScript checking separately with `tsc --noEmit` or `tsc -b`. For libraries, keep `tsc` in charge of declarations, and if your codebase is disciplined enough for `isolatedDeclarations`, you can build a much faster declaration path with `--noCheck`. That’s a much saner use of engineering time than arguing about whether one more conditional type can prove the existence of free will.
+عمليًا، يقود ذلك إلى نمطين صحيين. بالنسبة إلى التطبيقات، دع المُجمِّع يُصدر JavaScript وشغّل فحص TypeScript منفصلًا عبر `tsc --noEmit` أو `tsc -b`. وبالنسبة إلى المكتبات، أبقِ `tsc` مسؤولًا عن التعريفات، وإن كانت قاعدة شيفرتك منضبطة بما يكفي لـ`isolatedDeclarations` فيمكنك بناء مسار تعريفات أسرع بكثير عبر `--noCheck`. وهذا استخدام أكثر عقلًا لوقت الهندسة من الجدال حول ما إذا كان نوع شرطي إضافي قادرًا على إثبات وجود الإرادة الحرة.
 
-### Optimize your types
+### حسّن أنواعك
 
-Optimize the public surface first. Add return types to exported functions. Pull repeated conditional or mapped types into named aliases. Prefer interface inheritance to large intersections. Prefer a shared base type over a giant union when you can model the domain that way. These changes matter because they improve caching and reduce repeated structural comparisons—especially across declaration emit and cross-package boundaries.
+حسّن السطح العام أولًا. أضف أنواع الإرجاع إلى الدوال المُصدَّرة. واسحب الأنواع الشرطية أو المعيّنة المتكررة إلى أسماء مستعارة مسماة. وفضّل وراثة الواجهات على التقاطعات الكبيرة. وفضّل نوعًا أساسيًا مشتركًا على اتحاد عملاق عندما تستطيع نمذجة المجال بهذه الطريقة. وهذه التغييرات تهم لأنها تحسّن التخزين المؤقت وتقلل المقارنات البنيوية المتكررة—خصوصًا عبر إصدار التعريفات وحدود الحزم.
 
-If a utility type requires a PhD to read, it probably needs to be broken up. At system boundaries (API responses, form inputs), prefer runtime schema validation with something like Zod rather than encoding every constraint in the type system.
+إذا كان نوع مساعد ما يتطلب شهادة دكتوراه لقراءته، فهو يحتاج على الأرجح إلى تفكيك. وعند حدود النظام (استجابات API، ومدخلات النماذج)، فضّل التحقق من المخطط وقت التشغيل بشيء مثل Zod بدلًا من ترميز كل قيد في نظام الأنواع.
 
-### Tune your `tsconfig`
+### اضبط `tsconfig` لديك
 
-**`incremental: true`** stores build state in a `.tsbuildinfo` file so subsequent builds only re-check what changed. In watch mode, `assumeChangesOnlyAffectDirectDependencies` can be a useful extra lever when most edits have local impact, because it tells TypeScript to assume a change only affects directly dependent files during incremental recompiles.
+**`incremental: true`** يخزّن حالة البناء في ملف `.tsbuildinfo` بحيث لا تعيد البناءات اللاحقة فحص إلا ما تغيّر. وفي وضع المراقبة، قد يكون `assumeChangesOnlyAffectDirectDependencies` رافعة إضافية مفيدة عندما يكون لأغلب التحريرات أثر محلي، لأنه يخبر TypeScript بافتراض أن التغيير لا يؤثر إلا في الملفات التابعة مباشرة أثناء إعادات الترجمة التدريجية.
 
-**`skipLibCheck: true`** tells TypeScript to stop type-checking every `.d.ts` file in `node_modules`. It’s a valid speed lever, but treat it like a speed lever, not a healing crystal. The [docs explicitly warn](https://github.com/microsoft/Typescript/wiki/Performance) that `skipLibCheck` can hide misconfiguration and conflicting declarations. It’s common in big application repos. It’s a poor substitute for fixing broken public types in a library repo.
+**`skipLibCheck: true`** يخبر TypeScript بالتوقف عن فحص الأنواع في كل ملف `.d.ts` داخل `node_modules`. إنها رافعة سرعة صالحة، لكن عاملها كرافعة سرعة لا كبلورة شفاء. فـ[الوثائق تحذّر صراحةً](https://github.com/microsoft/Typescript/wiki/Performance) من أن `skipLibCheck` قد يخفي سوء إعداد وتعريفات متعارضة. وهو شائع في مستودعات التطبيقات الكبيرة، لكنه بديل رديء عن إصلاح الأنواع العامة المعطوبة في مستودع مكتبات.
 
-### Keep an eye on the native compiler
+### راقب المصرّف الأصلي
 
-Microsoft is porting TypeScript to Go (Project Corsa, shipping as TypeScript 7.0). The native implementation eliminates JavaScript VM overhead and uses shared-memory parallelism, delivering 8–10x faster compile times and cutting memory usage roughly in half. It’s available now as a preview via `@typescript/native-preview`. When it stabilizes, it’s going to change the performance math for everyone.
+تنقل Microsoft TypeScript إلى Go (مشروع Corsa، الذي سيُطلق باسم TypeScript 7.0). فالتنفيذ الأصلي يلغي عبء آلة JavaScript الافتراضية ويستخدم توازي الذاكرة المشتركة، فيقدم أزمنة ترجمة أسرع بمقدار 8–10 أضعاف ويقلص استخدام الذاكرة إلى النصف تقريبًا. وهو متاح الآن كمعاينة عبر `@typescript/native-preview`. وعندما يستقر، سيغيّر حسابات الأداء للجميع.
 
-### Upgrade first, panic second
+### حدّث أولًا، وارتبك لاحقًا
 
-TypeScript’s own [performance guide](https://github.com/microsoft/Typescript/wiki/Performance) says newer TypeScript versions and newer `@types` packages can solve computationally expensive regressions. Recent releases shipped changes that directly help large repos: TypeScript 5.5 improved watch/editor reliability around deletes and symlinked directories in monorepo-like scenarios, and TypeScript 5.8 added program load and update optimizations to make large-project edits more responsive. When diagnosing a compiler performance issue, the TypeScript team even recommends trying `typescript@next` first to make sure you’re not chasing a bug that’s already been fixed.
+يقول [دليل الأداء](https://github.com/microsoft/Typescript/wiki/Performance) في TypeScript نفسه إن إصدارات TypeScript الأحدث وحزم `@types` الأحدث قد تحل تراجعات حسابية مكلفة. وقد جاءت إصدارات حديثة بتغييرات تساعد المستودعات الكبيرة مباشرة: فقد حسّن TypeScript 5.5 موثوقية وضع المراقبة والمحرر حول عمليات الحذف والمجلدات المرتبطة رمزيًا في السيناريوهات الشبيهة بالمستودعات الأحادية، وأضاف TypeScript 5.8 تحسينات لتحميل البرنامج وتحديثه تجعل تحرير المشاريع الكبيرة أكثر استجابة. وعند تشخيص مشكلة أداء في المصرّف، يوصي فريق TypeScript حتى بتجربة `typescript@next` أولًا لتتأكد من أنك لا تطارد خطأً أُصلح بالفعل.
 
-## TypeScript in Monorepos
+## TypeScript في المستودعات الأحادية
 
-Monorepos amplify every TypeScript scaling problem. One team’s barrel file habit becomes every team’s build slowdown. But, monorepos also give you the structure to solve these problems properly.
+تضخّم المستودعات الأحادية كل مشكلة من مشكلات توسيع نطاق TypeScript. فعادة ملفات البرميل عند فريق واحد تصبح بطء بناء عند كل الفرق. لكن المستودعات الأحادية تمنحك أيضًا البنية اللازمة لحل هذه المشاكل حلًا صحيحًا.
 
-### Project references
+### مراجع المشاريع
 
-Instead of one massive compilation context, split your repository into independently buildable units. Give each package its own `tsconfig.json` with **`composite: true`**, and link them using the `references` array. Build with `tsc --build` (or just `tsc -b`), which orchestrates builds in dependency order and only recompiles packages whose inputs actually changed. Imports from a referenced project resolve through its declaration output—which is exactly why references improve scaling: each project depends on a stable API surface instead of the full source of every downstream package.
+بدلًا من سياق ترجمة واحد ضخم، قسّم مستودعك إلى وحدات قابلة للبناء باستقلالية. وامنح كل حزمة ملف `tsconfig.json` خاصًا بها مع **`composite: true`**، واربطها باستخدام مصفوفة `references`. وابنِ بـ`tsc --build` (أو ببساطة `tsc -b`)، الذي ينسّق البناءات بترتيب الاعتمادات ولا يعيد ترجمة إلا الحزم التي تغيرت مدخلاتها فعلًا. وتُحل الاستيرادات من مشروع مرجعي عبر مخرجات تعريفاته—وهذا بالضبط سبب تحسين المراجع للتوسع: فكل مشروع يعتمد على سطح API مستقر بدلًا من الشيفرة الكاملة لكل حزمة لاحقة.
 
-A clean monorepo setup usually has three layers: a shared base config, a root “solution” config, and one `tsconfig.json` per package. The reason for the extra root solution file is annoyingly specific and very real: `extends` [does not inherit `references`](https://www.typescriptlang.org/tsconfig/extends.html), so the build graph must live in configs that declare it directly.
+يتألف إعداد المستودع الأحادي النظيف عادة من ثلاث طبقات: إعداد أساسي مشترك، وإعداد «حل» جذري، وملف `tsconfig.json` واحد لكل حزمة. وسبب ملف الحل الجذري الإضافي محدد بشكل مزعج وحقيقي جدًا: فـ`extends` [لا يورّث `references`](https://www.typescriptlang.org/tsconfig/extends.html)، لذا يجب أن يعيش مخطط البناء في إعدادات تعلنه مباشرة.
 
 ```json
 // tsconfig.base.json — shared strictness and syntax defaults
@@ -193,24 +193,24 @@ A clean monorepo setup usually has three layers: a shared base config, a root �
 }
 ```
 
-Then building is just:
+عندها يصبح البناء مجرد:
 
 ```bash
 tsc -b
 tsc -b --watch
 ```
 
-A few reference-specific details that matter in practice: referenced projects must enable `composite`, which also requires declaration emit. **`declarationMap`** is worth enabling because it gives you cross-project “Go to Definition” and rename support in editors. For very large composite workspaces, VS Code generates in-memory `.d.ts` redirects behind the scenes—if that becomes expensive, `disableSourceOfProjectReferenceRedirect` can reduce the cost.
+وثمة تفاصيل قليلة خاصة بالمراجع تهم عمليًا: يجب أن تمكّن المشاريع المرجعية `composite`، وهو ما يتطلب أيضًا إصدار التعريفات. ويستحق **`declarationMap`** التمكين لأنه يمنحك «الانتقال إلى التعريف» وإعادة التسمية عبر المشاريع في المحررات. وفي مساحات العمل التركيبية الكبيرة جدًا، يولّد VS Code إعادات توجيه `.d.ts` في الذاكرة من خلف الكواليس—وإذا أصبح ذلك مكلفًا، فقد يقلل `disableSourceOfProjectReferenceRedirect` التكلفة.
 
-If the editor still runs out of memory in a multi-project workspace, TypeScript’s [recommendation](https://github.com/microsoft/Typescript/wiki/Performance) is explicit: set `"disableReferencedProjectLoad": true` and `"disableSolutionSearching": true` so the language service stops eagerly loading everything. That reduces the amount of project context available immediately, but it’s often the difference between a usable editor and a molten one.
+وإذا نفدت ذاكرة المحرر رغم ذلك في مساحة عمل متعددة المشاريع، فـ[توصية](https://github.com/microsoft/Typescript/wiki/Performance) TypeScript صريحة: اضبط `"disableReferencedProjectLoad": true` و`"disableSolutionSearching": true` بحيث تتوقف خدمة اللغة عن تحميل كل شيء بلهفة. وهذا يقلل حجم سياق المشروع المتاح فورًا، لكنه غالبًا الفرق بين محرر قابل للاستخدام ومحرر منصهر.
 
-We’ll set up project references hands-on in the exercise.
+سنعدّ مراجع المشاريع عمليًا في التمرين.
 
-### Real packages, not folders with aspirations
+### حزم حقيقية، لا مجلدات ذات طموحات
 
-Treat workspace packages as real packages. npm workspaces automatically symlink local packages into `node_modules`, and pnpm’s **`workspace:*`** protocol exists specifically to remove ambiguity about whether a dependency should resolve to a local workspace package or to the registry. Your internal package dependency graph should be mirrored in project references. That gives you one runtime graph, one package graph, and one type graph instead of three slightly different lies.
+عامل حزم مساحة العمل كحزم حقيقية. فمساحات عمل npm تنشئ تلقائيًا روابط رمزية للحزم المحلية داخل `node_modules`، وبروتوكول **`workspace:*`** في pnpm موجود تحديدًا لإزالة الغموض حول ما إذا كان ينبغي لاعتماد ما أن يُحل إلى حزمة محلية في مساحة العمل أم إلى السجل. وينبغي أن يعكس مخطط اعتماد حزمك الداخلي في مراجع المشاريع. فتحصل على مخطط وقت تشغيل واحد ومخطط حزم واحد ومخطط أنواع واحد بدلًا من ثلاث أكاذيب مختلفة قليلًا.
 
-For internal and published packages, prefer real package imports plus `package.json` `exports` over TypeScript-only alias tricks. TypeScript [supports `exports` and `imports`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-7.html) in modern resolution modes. By contrast, `paths` is only a compiler hint—it doesn’t rewrite emitted imports—so it should be used only when your runtime or bundler already implements the same mapping.
+وبالنسبة إلى الحزم الداخلية والمنشورة، فضّل استيرادات الحزم الحقيقية مع `exports` في `package.json` على حيل الأسماء المستعارة الخاصة بـTypeScript وحده. فـTypeScript [يدعم `exports` و`imports`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-7.html) في أنماط الحل الحديثة. في المقابل، `paths` مجرد تلميح للمصرّف—فهو لا يعيد كتابة الاستيرادات المُصدَرة—لذا ينبغي ألّا يُستخدم إلا عندما يكون وقت التشغيل أو المُجمِّع لديك ينفذ التعيين نفسه بالفعل.
 
 ```json
 // packages/shared/package.json
@@ -226,94 +226,94 @@ For internal and published packages, prefer real package imports plus `package.j
 }
 ```
 
-### Align module settings with reality
+### وائم إعدادات الوحدات مع الواقع
 
-The current [TypeScript docs](https://www.typescriptlang.org/tsconfig/module) say modern Node.js packages will usually want `nodenext`, while bundled code will usually want `preserve` or `esnext`. Publishing code checked only under `"moduleResolution": "bundler"` is risky unless your declaration output is bundled appropriately—bundler resolution can accept extensionless relative imports that break in Node.js, and declaration files can preserve those unsafe specifiers.
+تقول [وثائق TypeScript](https://www.typescriptlang.org/tsconfig/module) الحالية إن حزم Node.js الحديثة سترغب عادة في `nodenext`، بينما سترغب الشيفرة المُحزَّمة عادة في `preserve` أو `esnext`. ونشر شيفرة فُحصت فقط تحت `"moduleResolution": "bundler"` مخاطرة، إلا إذا كانت مخرجات تعريفاتك محزَّمة على النحو المناسب—فحل المُجمِّع قد يقبل استيرادات نسبية بلا امتداد تنكسر في Node.js، ويمكن لملفات التعريف أن تحفظ تلك المحددات غير الآمنة.
 
-### Keep source and output separate
+### أبقِ المصدر والمخرجات منفصلين
 
-Give every package distinct `rootDir` and `outDir` values. TypeScript’s [library guidance](https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html) explicitly notes that for libraries which publish source, a separate output directory is necessary so consumers don’t accidentally load `.ts` files instead of `.d.ts` files through extension substitution. That’s both a correctness issue and a performance issue.
+امنح كل حزمة قيمتين متمايزتين لـ`rootDir` و`outDir`. و[إرشاد المكتبات](https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html) في TypeScript يلاحظ صراحةً أنه في المكتبات التي تنشر المصدر، يلزم مجلد مخرجات منفصل حتى لا يحمّل المستهلكون بالخطأ ملفات `.ts` بدلًا من ملفات `.d.ts` عبر استبدال الامتدادات. وهي مسألة صحة ومسألة أداء في آن واحد.
 
-### Separate concerns into separate projects
+### افصل الاهتمامات في مشاريع منفصلة
 
-Keep tests, generated code, and global declarations in their own projects when possible. This gives you smaller production graphs, narrower ambient contexts, and fewer accidental dependencies from product code into test code.
+أبقِ الاختبارات والشيفرة المولّدة والتعريفات العامة في مشاريعها الخاصة كلما أمكن. فذلك يمنحك مخططات إنتاج أصغر، وسياقات محيطة أضيق، واعتمادات عرضية أقل من شيفرة المنتج إلى شيفرة الاختبار.
 
-### Architectural boundaries
+### الحدود المعمارية
 
-In a monorepo, it’s *easy* to accidentally couple domains by reaching into a sibling package’s internals. Tools like **`eslint-plugin-boundaries`** or Nx’s `@nx/enforce-module-boundaries` let you tag projects (e.g., `type:ui`, `scope:admin`) and programmatically restrict which packages can import from which. We’ll dig into this in a later exercise.
+في المستودع الأحادي، من *السهل* أن تقترن المجالات عرضيًا بالوصول إلى الأجزاء الداخلية لحزمة شقيقة. وأدوات مثل **`eslint-plugin-boundaries`** أو `@nx/enforce-module-boundaries` في Nx تتيح لك وسم المشاريع (مثل `type:ui` و`scope:admin`) وتقييد أي الحزم يجوز لها الاستيراد من أي الحزم برمجيًا. وسنتعمق في هذا في تمرين لاحق.
 
-### Task orchestration
+### تنسيق المهام
 
-Tools like **Turborepo** and **Nx** analyze your dependency graph to run tasks in parallel, share build artifacts through remote caching, and support “affected” commands so CI only tests the packages altered by a given pull request. At scale, this is the difference between a 45-minute pipeline and a 5-minute one.
+أدوات مثل **Turborepo** و**Nx** تحلل مخطط اعتماداتك لتشغيل المهام على التوازي، ومشاركة مخرجات البناء عبر التخزين المؤقت البعيد، ودعم أوامر «المتأثر» بحيث لا يختبر CI إلا الحزم التي غيّرها طلب سحب معين. وعلى النطاق الكبير، هذا هو الفرق بين خط مدة تنفيذه 45 دقيقة وخط مدته 5 دقائق.
 
-### Single version policy
+### سياسة الإصدار الواحد
 
-Keep external dependency versions uniform across all packages. If one package uses React 18 and another uses React 19, you’re in for diamond dependency conflicts and mysterious runtime bugs. Tools like **Syncpack** can audit and auto-fix `package.json` files across the repo to enforce version alignment.
+أبقِ إصدارات الاعتمادات الخارجية موحدة عبر كل الحزم. فإذا استخدمت حزمة React 18 واستخدمت أخرى React 19، فأنت مقبل على تعارضات الاعتمادات الماسية وأخطاء وقت تشغيل غامضة. وأدوات مثل **Syncpack** يمكنها تدقيق ملفات `package.json` في المستودع وإصلاحها تلقائيًا لفرض توافق الإصدارات.
 
-## Quick reference
+## مرجع سريع
 
-### Compiler options
+### خيارات المصرّف
 
-| Option | What it does |
+| الخيار | ما يفعله |
 | --- | --- |
-| `composite` | Marks a project as a buildable unit for project references. Required for `tsc -b` to work. |
-| `declaration` | Emits `.d.ts` files so referenced projects resolve through declaration output instead of full source. |
-| `declarationMap` | Generates source maps for declarations, giving you cross-project “Go to Definition” and rename support in editors. |
-| `incremental` | Stores build state in a `.tsbuildinfo` file so subsequent builds only re-check what changed. |
-| `isolatedModules` | Warns about constructs that single-file transpilers like esbuild and SWC cannot safely handle. |
-| `isolatedDeclarations` | Makes declaration generation mostly syntactic. Paired with `noCheck`, enables much faster declaration emit. |
-| `noCheck` | Skips full type checking during emit. Useful when a fast transpiler handles JavaScript and `tsc` only emits `.d.ts` files. |
-| `noEmit` | Type-checks without producing output. The standard flag for “let the bundler emit, let TypeScript check.” |
-| `skipLibCheck` | Skips type-checking `.d.ts` files in `node_modules`. Speeds up builds but can hide misconfiguration. |
-| `types` | Controls which `@types` packages are auto-included. Setting `[]` stops ambient type pollution from slowing startup. |
-| `verbatimModuleSyntax` | Enforces explicit `import type` syntax so transpilers can safely drop type-only imports. |
-| `assumeChangesOnlyAffectDirectDependencies` | In watch mode, limits rechecking to direct dependents of the changed file. Useful when most edits have local impact. |
-| `disableReferencedProjectLoad` | Stops the language service from eagerly loading all referenced projects. Trades some cross-project awareness for lower memory. |
-| `disableSolutionSearching` | Stops the language service from walking the full solution graph. Another memory pressure valve for large workspaces. |
-| `disableSourceOfProjectReferenceRedirect` | Uses on-disk `.d.ts` files instead of generating in-memory declaration redirects. Reduces editor memory at the cost of needing a prior build. |
-| `module` / `moduleResolution` | Controls how imports are resolved. `nodenext` for Node packages, `preserve` or `esnext` for bundled code. `bundler` resolution can leak unsafe specifiers into declarations. |
-| `rootDir` / `outDir` | Separates source from output. Prevents consumers from accidentally loading `.ts` files instead of `.d.ts`. |
+| `composite` | يعلّم المشروع كوحدة قابلة للبناء لمراجع المشاريع. مطلوب ليعمل `tsc -b`. |
+| `declaration` | يُصدر ملفات `.d.ts` بحيث تُحل المشاريع المرجعية عبر مخرجات التعريفات لا الشيفرة الكاملة. |
+| `declarationMap` | يولّد خرائط مصدر للتعريفات، مما يمنحك «الانتقال إلى التعريف» وإعادة التسمية عبر المشاريع في المحررات. |
+| `incremental` | يخزّن حالة البناء في ملف `.tsbuildinfo` بحيث لا تعيد البناءات اللاحقة فحص إلا ما تغيّر. |
+| `isolatedModules` | يحذّر من بنى لا تستطيع المترجمات أحادية الملف مثل esbuild وSWC التعامل معها بأمان. |
+| `isolatedDeclarations` | يجعل توليد التعريفات تركيبيًا في معظمه. وعند اقترانه بـ`noCheck` يتيح إصدار تعريفات أسرع بكثير. |
+| `noCheck` | يتخطى فحص الأنواع الكامل أثناء الإصدار. مفيد عندما يتولى مترجم سريع إصدار JavaScript ويقتصر `tsc` على إصدار ملفات `.d.ts`. |
+| `noEmit` | يفحص الأنواع دون إنتاج مخرجات. العلم المعتاد لـ«دع المُجمِّع يُصدر، ودع TypeScript يفحص». |
+| `skipLibCheck` | يتخطى فحص الأنواع في ملفات `.d.ts` داخل `node_modules`. يسرّع البناء لكنه قد يخفي سوء الإعداد. |
+| `types` | يتحكم في حزم `@types` المضمّنة تلقائيًا. وضبط `[]` يمنع تلوث الأنواع المحيطة من إبطاء بدء التشغيل. |
+| `verbatimModuleSyntax` | يفرض صيغة `import type` الصريحة بحيث تستطيع المترجمات إسقاط الاستيرادات الخاصة بالأنواع فقط بأمان. |
+| `assumeChangesOnlyAffectDirectDependencies` | في وضع المراقبة، يحصر إعادة الفحص في التابعين المباشرين للملف المتغير. مفيد عندما يكون لأغلب التحريرات أثر محلي. |
+| `disableReferencedProjectLoad` | يمنع خدمة اللغة من تحميل كل المشاريع المرجعية بلهفة. يقايض بعض الوعي عبر المشاريع بذاكرة أقل. |
+| `disableSolutionSearching` | يمنع خدمة اللغة من السير في مخطط الحل الكامل. صمام آخر لتخفيف ضغط الذاكرة في مساحات العمل الكبيرة. |
+| `disableSourceOfProjectReferenceRedirect` | يستخدم ملفات `.d.ts` على القرص بدلًا من توليد إعادات توجيه التعريفات في الذاكرة. يقلل ذاكرة المحرر مقابل الحاجة إلى بناء سابق. |
+| `module` / `moduleResolution` | يتحكم في كيفية حل الاستيرادات. `nodenext` لحزم Node، و`preserve` أو `esnext` للشيفرة المُحزَّمة. وحل `bundler` قد يسرّب محددات غير آمنة إلى التعريفات. |
+| `rootDir` / `outDir` | يفصل المصدر عن المخرجات. يمنع المستهلكين من تحميل ملفات `.ts` بدلًا من `.d.ts` بالخطأ. |
 
-### Diagnostic flags
+### أعلام التشخيص
 
-| Flag | What it shows |
+| العلم | ما يعرضه |
 | --- | --- |
-| `--extendedDiagnostics` | Time breakdown across phases: I/O, parsing, binding, checking, emit. Start here. |
-| `--listFilesOnly` | Every file TypeScript decided to include. You will probably be surprised by a few of them. |
-| `--explainFiles` | Why each file was pulled in—which import or reference caused it. |
-| `--traceResolution` | Step-by-step module resolution decisions. Useful for debugging why a wrong `.d.ts` is being picked up. |
-| `--generateTrace` | Produces a Chrome DevTools–compatible trace. Look at `checkSourceFile` and `checkExpression` events. |
+| `--extendedDiagnostics` | تفصيل الوقت عبر المراحل: الإدخال/الإخراج، والتحليل، والربط، والفحص، والإصدار. ابدأ من هنا. |
+| `--listFilesOnly` | كل ملف قرر TypeScript تضمينه. ستفاجأ على الأرجح بالبعض منها. |
+| `--explainFiles` | سبب سحب كل ملف—أي استيراد أو مرجع تسبب في ذلك. |
+| `--traceResolution` | قرارات حل الوحدات خطوة بخطوة. مفيد في تنقيح سبب التقاط ملف `.d.ts` خاطئ. |
+| `--generateTrace` | ينتج أثرًا متوافقًا مع Chrome DevTools. انظر إلى حدثي `checkSourceFile` و`checkExpression`. |
 
-## A Default Setup That Ages Well
+## إعداد افتراضي يشيخ بكرامة
 
-The setup that tends to survive growth is boring in the best way. Put shared strictness and syntax defaults in a root base config. Put only `references` in a root solution config. Give each package its own `tsconfig` with `composite`, `declaration`, `incremental`, and clear `rootDir`/`outDir` boundaries. Scope `types` tightly. Use real package dependencies and real package exports. For app packages, let the bundler emit and let TypeScript check. For library packages, make declaration quality a first-class concern.
+الإعداد الذي ينجو من النمو ممل بأفضل معنى ممكن. ضع الصرامة المشتركة وإعدادات الصياغة الافتراضية في إعداد أساسي جذري. وضع `references` فقط في إعداد حل جذري. وامنح كل حزمة `tsconfig` خاصًا بها مع `composite` و`declaration` و`incremental` وحدود واضحة لـ`rootDir` و`outDir`. وحدّد نطاق `types` بإحكام. واستخدم اعتمادات حزم حقيقية وصادرات حزم حقيقية. وبالنسبة إلى حزم التطبيقات، دع المُجمِّع يُصدر ودع TypeScript يفحص. وبالنسبة إلى حزم المكتبات، اجعل جودة التعريفات شاغلًا من الدرجة الأولى.
 
-When TypeScript starts to feel slow, resist the urge to hunt for one magical flag. First check how many files got pulled in. Then check whether the pain is in program construction, module resolution, or type checking. Then fix the structure that caused it. That’s less glamorous than inventing a seventh layer of generic helper types, but reality has always been hostile to glamour.
+وعندما يبدأ TypeScript يبدو بطيئًا، قاوم الرغبة في البحث عن علم سحري واحد. تحقق أولًا من عدد الملفات التي جُذبت. ثم تحقق مما إذا كان الألم في بناء البرنامج أو في حل الوحدات أو في فحص الأنواع. ثم أصلح البنية التي سببت ذلك. هذا أقل بريقًا من اختراع طبقة سابعة من الأنواع العامة المساعدة، لكن الواقع كان دائمًا معاديًا للبريق.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Where TypeScript Breaks
+### أين ينكسر TypeScript
 
-> Build slowness and editor slowness are the same problem wearing different outfits.
+> بطء البناء وبطء المحرر مشكلة واحدة ترتدي زيّين مختلفين.
 
-| Failure mode | Symptom | Fix |
+| نمط الفشل | العَرَض | الإصلاح |
 | --- | --- | --- |
-| Oversized program | Slow builds, high memory | Narrow `include`, set `"types": []` |
-| Barrel files | One import pulls hundreds of modules | Direct imports, remove re-export index files |
-| Complex types | Slow checking, quadratic unions | Prefer interfaces, name conditional types |
-| Anonymous exports | Huge `.d.ts` output | Add explicit return types to exports |
-| Ambient type pollution | Slow startup, duplicate globals | Set `"types": []`, list only what’s needed |
-| Circular dependencies | Deep instantiation errors, `undefined` | Break cycles, restructure package graph |
+| برنامج متضخم | بناءات بطيئة وذاكرة مرتفعة | تضييق `include` وضبط `"types": []` |
+| ملفات البرميل | استيراد واحد يسحب مئات الوحدات | استيرادات مباشرة وإزالة ملفات الفهرس المُصدِّرة من جديد |
+| أنواع معقدة | فحص بطيء واتحادات تربيعية | فضّل الواجهات وسمِّ الأنواع الشرطية |
+| صادرات مجهولة | مخرجات `.d.ts` ضخمة | أضف أنواع إرجاع صريحة للصادرات |
+| تلوث الأنواع المحيطة | بدء بطيء وتكرار المتغيرات العامة | اضبط `"types": []` واسرد ما تحتاج فقط |
+| اعتمادات دائرية | أخطاء تنميط عميقة وقيم `undefined` | اكسر الحلقات وأعد هيكلة مخطط الحزم |
 
-- Atlassian removed barrel files: **75%** faster builds, **30%** faster IDE highlighting, **88%** fewer tests per PR.
+- أزالت Atlassian ملفات البرميل: بناءات أسرع بنسبة **75%**، وإبراز في بيئة التطوير أسرع بنسبة **30%**، واختبارات أقل بنسبة **88%** في كل طلب سحب.
 
 ---
 
-### Measure First
+### قِس أولًا
 
-> Before flipping flags, figure out where the time is actually going.
+> قبل تقليب الأعلام، اكتشف أين يذهب الوقت فعلًا.
 
 ```bash
 tsc -p tsconfig.json --extendedDiagnostics
@@ -322,15 +322,15 @@ tsc -p tsconfig.json --explainFiles > explain.txt
 tsc -p tsconfig.json --generateTrace .trace --incremental false
 ```
 
-- High `Files` + high `I/O Read time` → problem is your file set or module resolution.
-- High `Check time` → problem is your types.
-- `--generateTrace` produces a Chrome-compatible trace. Look at `checkSourceFile` and `checkExpression`.
+- ارتفاع `Files` مع ارتفاع `I/O Read time` → المشكلة في مجموعة ملفاتك أو في حل الوحدات.
+- ارتفاع `Check time` → المشكلة في أنواعك.
+- ينتج `--generateTrace` أثرًا متوافقًا مع Chrome. انظر إلى `checkSourceFile` و`checkExpression`.
 
 ---
 
-### Project References
+### مراجع المشاريع
 
-> Split the monorepo into independently buildable units.
+> قسّم المستودع الأحادي إلى وحدات قابلة للبناء باستقلالية.
 
 ```json
 // Root solution config — only references, no files
@@ -344,18 +344,18 @@ tsc -p tsconfig.json --generateTrace .trace --incremental false
 }
 ```
 
-- Each package: `composite: true`, `declaration: true`, `incremental: true`.
-- Imports resolve through declaration output, not full source.
-- `declarationMap` gives you cross-project “Go to Definition.”
-- 5–20 projects is the empirical sweet spot.
+- كل حزمة: `composite: true` و`declaration: true` و`incremental: true`.
+- تُحل الاستيرادات عبر مخرجات التعريفات لا الشيفرة الكاملة.
+- يمنحك `declarationMap` «الانتقال إلى التعريف» عبر المشاريع.
+- نطاق 5–20 مشروعًا هو النقطة المثلى التجريبية.
 
 ---
 
-### The Default Setup
+### الإعداد الافتراضي
 
-> The setup that survives growth is boring in the best way.
+> الإعداد الذي ينجو من النمو ممل بأفضل معنى ممكن.
 
-- **Apps:** Let the bundler emit JavaScript. Run `tsc --noEmit` separately.
-- **Libraries:** Keep `tsc` in charge of declarations. Make declaration quality a first-class concern.
-- **All packages:** Narrow `include`. Set `"types": []`. Separate `rootDir` and `outDir`. Use real `package.json` exports.
-- **When it feels slow:** Check file count first. Then check whether the pain is in program construction, resolution, or checking. Then fix the structure.
+- **التطبيقات:** دع المُجمِّع يُصدر JavaScript. وشغّل `tsc --noEmit` منفصلًا.
+- **المكتبات:** أبقِ `tsc` مسؤولًا عن التعريفات. واجعل جودة التعريفات شاغلًا من الدرجة الأولى.
+- **كل الحزم:** ضيّق `include`. واضبط `"types": []`. وافصل `rootDir` و`outDir`. واستخدم صادرات `package.json` حقيقية.
+- **عندما يبدو بطيئًا:** تحقق من عدد الملفات أولًا. ثم تحقق مما إذا كان الألم في بناء البرنامج أو في الحل أو في الفحص. ثم أصلح البنية.

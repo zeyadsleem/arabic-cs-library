@@ -1,10 +1,10 @@
 ---
-title: "How to Write a Story"
-lang: en
+title: "كيف تكتب قصة (Story)"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/writing-stories"
 ---
 
-Consider this super-naïve button component. Let’s say that this is in `src/components/button.tsx`.
+فكّر في هذا المكوّن البسيط جدًّا للزرّ. لنفترض أن هذا الملف موجود في `src/components/button.tsx`.
 
 ```typescript
 import { ComponentProps } from 'react';
@@ -16,21 +16,21 @@ export const Button = (props: ButtonProps) => {
 };
 ```
 
-Next, we’ll create our first story called—unsurprisingly—`button.stories.tsx`.
+ثم سننشئ أول قصة لنا تُسمّى — دون مفاجأة — `button.stories.tsx`.
 
-First, import the `Meta` and `StoryObj` types to get some sweet, sweet autocompletion in TypeScript stories as well as the very responsible type safety.
+أولًا، استورد النوعين `Meta` و`StoryObj` لتحصل على الإكمال التلقائي الرائع في قصص TypeScript وكذلك الأمان النوعي المسؤول.
 
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
 ```
 
-Next, let’s import a component. In this case, the `Button` component.
+ثم، لنستورد مكوّنًا. في هذه الحالة، مكوّن `Button`.
 
 ```typescript
 import { Button } from './button';
 ```
 
-The default export, `Meta`, contains metadata about this component’s stories. The title field controls where stories appear in the sidebar.
+يحتوي التصدير الافتراضي، `Meta`، على البيانات الوصفية الخاصة بقصص هذا المكوّن. ويتحكّم حقل العنوان في مكان ظهور القصص في الشريط الجانبي.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -41,7 +41,7 @@ const meta: Meta<typeof Button> = {
 export default meta;
 ```
 
-Each named export is a story. You’ll need at least one named export if you want to see anything.
+كل تصدير باسم هو قصة. وستحتاج إلى تصدير واحد على الأقل باسم إن أردت أن ترى أي شيء.
 
 ```typescript
 type Story = StoryObj<typeof Button>;
@@ -51,7 +51,7 @@ export const Primary: Story = {
 };
 ```
 
-All-in-all, your story should look something like this:
+في المجموع، ينبغي أن تبدو قصتك شيئًا كهذا:
 
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
@@ -72,13 +72,13 @@ export const Primary: Story = {
 };
 ```
 
-If you run Storybook using `npm run storybook`, you’ll see something like the following:
+إن شغّلت Storybook باستخدام `npm run storybook`، فسترى شيئًا مثل ما يلي:
 
-A basic button story in Storybook It’s not much to look at, but it’s our first story and I suppose that we had to start somewhere, right?
+قصة زرّ أساسية في Storybook. ليست شيئًا يُذكر للنظر إليه، لكنها أول قصة لنا، وأظن أننا كان علينا البدء من مكان ما، أليس كذلك؟
 
-## Using `args`
+## استخدام `args`
 
-Instead of rendering the component itself, you can choose to use to an `args` object that will be used for the `props` of the component being rendered in the story. This takes advantage of [Storybook’s Component Story Format](https://storybook.js.org/docs/api/csf).
+بدلًا من تصيير المكوّن نفسه، يمكنك أن تختار استخدام كائن `args` سيُستخدم كخصائص (`props`) للمكوّن المصيَّر في القصة. وهذا يستفيد من [صيغة قصة المكوّن في Storybook](https://storybook.js.org/docs/api/csf).
 
 ```typescript
 export const Primary: Story = {
@@ -88,13 +88,13 @@ export const Primary: Story = {
 };
 ```
 
-You’ll notice that you can adjust the `props` in the **Controls** tab.
+ستلاحظ أن بإمكانك ضبط الخصائص (`props`) في تبويب **التحكّم (Controls)**.
 
-A basic implementation of controls in Storybook
+تنفيذ أساسي للتحكّم في Storybook
 
-## Our Basic Button
+## زرّنا الأساسي
 
-Here is the end result of our button at this point:
+فيما يلي النتيجة النهائية لزرّنا في هذه المرحلة:
 
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
@@ -117,4 +117,4 @@ export const Primary: Story = {
 };
 ```
 
-Right now, our `Button` component doesn’t do much of anything and it’s *pretty ugly*. Let’s add some to the button. Let’s add some [variants](https://stevekinney.com/courses/storybook/adding-variants) to the story.
+في الوقت الحالي، لا يفعل مكوّن `Button` لدينا شيئًا يُذكر وشكله *قبيح حقًّا*. لنُضِف شيئًا إلى الزرّ. لنُضِف بعض [الأنماط (variants)](https://stevekinney.com/courses/storybook/adding-variants) إلى القصة.

@@ -1,16 +1,16 @@
 ---
-title: "OpenAPI/Swagger Contracts"
-lang: en
+title: "عقود OpenAPI/Swagger"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/open-api-swagger-express"
 ---
 
-OpenAPI (formerly Swagger) provides a powerful way to define and document your API contracts. Integrating it with TypeScript ensures type safety and consistency across your application. This guide walks you through defining your API using OpenAPI, generating TypeScript types, and using them within your Express application.
+يوفر OpenAPI (المعروف سابقًا بـ Swagger) طريقة قوية لتعريف عقود API وتوثيقها. ويضمن دمجه مع TypeScript سلامة الأنواع والاتساق في تطبيقك. ويرشدك هذا الدليل عبر تعريف API باستخدام OpenAPI، وتوليد أنواع TypeScript، واستخدامها داخل تطبيق Express لديك.
 
-## Defining Your API with OpenAPI
+## تعريف API باستخدام OpenAPI
 
-OpenAPI uses YAML or JSON to describe your API’s endpoints, request/response bodies, and other details.
+يستخدم OpenAPI صيغة YAML أو JSON لوصف نقاط نهاية API وأجسام الطلبات والاستجابات وتفاصيل أخرى.
 
-### Example OpenAPI Specification (openapi.yaml):
+### مثال على مواصفة OpenAPI (openapi.yaml):
 
 ```yaml
 openapi: 3.0.0
@@ -92,25 +92,25 @@ components:
           type: string
 ```
 
-This YAML file defines endpoints for retrieving and creating users, along with their request/response schemas.
+يعرّف ملف YAML هذا نقاط نهاية لاسترجاع المستخدمين وإنشائهم، مع مخططات طلباتها واستجاباتها.
 
-## Generating TypeScript Types
+## توليد أنواع TypeScript
 
-The [`openapi-typescript`](https://www.npmjs.com/package/openapi-typescript) tool generates TypeScript types from your OpenAPI specification.
+تولّد أداة [`openapi-typescript`](https://www.npmjs.com/package/openapi-typescript) أنواع TypeScript انطلاقًا من مواصفة OpenAPI لديك.
 
 ```bash
 npm install -D openapi-typescript
 ```
 
-### Generate Types
+### توليد الأنواع
 
 ```bash
 npx openapi-typescript openapi.yaml -o src/types/api.d.ts
 ```
 
-This command generates `src/types/api.d.ts`, containing TypeScript types corresponding to your OpenAPI schemas.
+يولّد هذا الأمر ملف `src/types/api.d.ts` الذي يحتوي أنواع TypeScript المقابلة لمخططات OpenAPI لديك.
 
-### Example Generated Types (`api.d.ts`)
+### مثال على الأنواع المولَّدة (`api.d.ts`)
 
 ```typescript
 export interface User {
@@ -189,9 +189,9 @@ export interface components {
 }
 ```
 
-## Using Generated Types in Express
+## استخدام الأنواع المولَّدة في Express
 
-Import the generated types into your Express route handlers:
+استورد الأنواع المولَّدة إلى معالجات مسارات Express لديك:
 
 ```typescript
 import express, { Request, Response } from 'express';
@@ -267,16 +267,16 @@ app.get(
 // ... other routes
 ```
 
-## Benefits
+## الفوائد
 
-- **Single Source of Truth:** Your OpenAPI specification serves as the central definition of your API.
-- **Type Safety:** Generated TypeScript types ensure consistency between your API and code.
-- **Improved Documentation:** OpenAPI provides interactive documentation for your API.
-- **Reduced Errors:** Type checking catches potential errors early in development.
+- **مصدر واحد للحقيقة:** تكون مواصفة OpenAPI لديك التعريف المركزي لـ API الخاص بك.
+- **سلامة الأنواع:** تضمن أنواع TypeScript المولَّدة الاتساق بين API لديك وشيفرتك.
+- **توثيق محسّن:** يوفر OpenAPI توثيقًا تفاعليًا لـ API الخاص بك.
+- **أخطاء أقل:** يلتقط فحص الأنواع الأخطاء المحتملة مبكرًا في أثناء التطوير.
 
-## Workflow Enhancements
+## تحسينات سير العمل
 
-- Integrate `openapi-typescript` into your build process to automatically generate types whenever your OpenAPI specification changes.
-- Use OpenAPI validation tools to ensure your specification is valid.
-- Consider using code generation tools to generate Express route handlers from your OpenAPI specification.
-- Use libraries like [`express-openapi-validator`](https://www.npmjs.com/package/express-openapi-validator) to validate requests against your openAPI spec at runtime.
+- ادمج `openapi-typescript` في عملية البناء لديك لتوليد الأنواع تلقائيًا كلما تغيّرت مواصفة OpenAPI لديك.
+- استخدم أدوات التحقق من OpenAPI للتأكد من أن مواصفتك صالحة.
+- فكّر في استخدام أدوات توليد الشيفرة لتوليد معالجات مسارات Express من مواصفة OpenAPI لديك.
+- استخدم مكتبات مثل [`express-openapi-validator`](https://www.npmjs.com/package/express-openapi-validator) للتحقق من الطلبات مقابل مواصفة OpenAPI لديك في وقت التشغيل.

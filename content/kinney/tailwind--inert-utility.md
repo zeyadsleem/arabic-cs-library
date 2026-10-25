@@ -1,24 +1,24 @@
 ---
-title: "inert"
-lang: en
+title: "أداة inert"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/inert-utility"
 ---
 
-Clear communication of element state and interactivity is vital for user experience, especially for keyboard and assistive technology users. Tailwind CSS helps by providing variants to style elements based on state, including `inert`.
+التواصل الواضح حول حالة العنصر وتفاعليته أمر حيوي لتجربة المستخدم، ولا سيما لمستخدمي لوحة المفاتيح والتقنيات المساعدة. يساعد Tailwind CSS في ذلك عبر توفير صيغ لتنسيق العناصر بحسب حالتها، ومنها `inert`.
 
-## Understanding the `inert` Variant
+## فهم صيغة `inert`
 
-Tailwind’s `inert` variant applies styles when an element has the HTML `inert` attribute. This attribute marks an element and its descendants as non-interactive, possibly because content is off-screen, disabled, or irrelevant.
+تطبّق صيغة `inert` في Tailwind الأنماط عندما يحمل العنصر خاصية HTML `inert`. وتضع هذه الخاصية العنصر وفروعه في حالة «غير تفاعلية»، ربما لأن المحتوى خارج الشاشة أو معطّل أو غير ذي صلة.
 
-The `inert` attribute makes parts of the DOM non-interactive and hidden from assistive technologies, improving accessibility by focusing users on relevant page parts. The `inert` variant in Tailwind visually represents this non-interactive state.
+تجعل خاصية `inert` أجزاءً من DOM غير تفاعلية ومخفية عن التقنيات المساعدة، ما يحسّن الوصولية بتركيز المستخدمين على أجزاء الصفحة ذات الصلة. أمّا صيغة `inert` في Tailwind فتمثّل هذه الحالة غير التفاعلية بصريًا.
 
-### How to Use the `inert` Variant
+### كيفية استخدام صيغة `inert`
 
-Prefix utility classes with `inert:` to conditionally apply styles when the element has the `inert` attribute.
+سبّق أصناف الأدوات المساعدة بصيغة `inert:` لتطبيق الأنماط بصورة شرطية عندما يحمل العنصر خاصية `inert`.
 
-For example, visually indicate a non-interactive section by reducing opacity or changing the cursor.
+على سبيل المثال، أشر بصريًا إلى قسم غير تفاعلي بتقليل الشفافية أو بتغيير شكل مؤشّر الماوس.
 
-*How to Use the inert Variant — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/0ed5c3fc7f68918c2dd7eecfca134d368a78fc2897ae31523515950d0840ea7e.html)*
+*كيفية استخدام صيغة inert — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0ed5c3fc7f68918c2dd7eecfca134d368a78fc2897ae31523515950d0840ea7e.html)*
 
 ```html
 <div inert class="opacity-100 inert:opacity-50">
@@ -28,10 +28,10 @@ For example, visually indicate a non-interactive section by reducing opacity or 
 <button inert class="cursor-pointer inert:cursor-not-allowed">This button might be inert</button>
 ```
 
-The `div` normally has full opacity (`opacity-100`). With the `inert` attribute, `inert:opacity-50` reduces opacity to 50%. The button normally has a pointer cursor; when `inert`, `inert:cursor-not-allowed` applies a “not-allowed” cursor.
+يملك العنصر `div` عادةً شفافية كاملة (`opacity-100`). ومع خاصية `inert` تقلّل `inert:opacity-50` الشفافية إلى 50%. أما الزر فيملك عادةً مؤشّر مؤشر؛ وعندما يكون `inert` تطبّق `inert:cursor-not-allowed` مؤشّر «غير مسموح».
 
-This provides visual cues for non-interactive content, crucial for accessibility, helping sighted users understand interactable page parts.
+يوفّر ذلك إشارات بصرية للمحتوى غير التفاعلي، وهي أمر حاسم لأغراض الوصولية، إذ يساعد المستخدمين ذوي البصر على فهم أجزاء الصفحة القابلة للتفاعل.
 
-The `inert` variant can combine with other variants, like responsive breakpoints (e.g., `md:inert:opacity-75` applies styles on medium screens and above when inert).
+يمكن لصيغة `inert` أن تُدمج مع صيغ أخرى، مثل نقاط التوقف المستجيب (responsive breakpoints)؛ فمثلًا `md:inert:opacity-75` يطبّق الأنماط على الشاشات المتوسطة وما فوقها عندما يكون العنصر `inert`.
 
-Leveraging the `inert` variant aligns visual presentation with the actual state of non-interactive content, enhancing UI clarity and accessibility.
+الاستفادة من صيغة `inert` توائم العرض البصري مع الحالة الفعلية للمحتوى غير التفاعلي، ما يزيد وضوح واجهة المستخدم وتحسّن الوصولية.

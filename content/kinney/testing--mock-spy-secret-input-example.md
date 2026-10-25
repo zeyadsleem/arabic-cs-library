@@ -1,12 +1,12 @@
 ---
-title: "Mocking and Spying on Built-in Methods"
-lang: en
+title: "محاكاة الطرق المدمجة والتجسس عليها (Mocking and Spying on Built-in Methods)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mock-spy-secret-input-example"
 ---
 
-Let’s take a look at `examples/element-factory/src/secret-input.test.js` again. We have some functionality where the input field can be pre-populated with whatever is currently in `localStorage`. Let’s say that we want to both stub the value of `localStorage` and also be able to introspect the parameters that `localStorage.getItem` was called with.
+لنلقِ نظرة على `examples/element-factory/src/secret-input.test.js` مرة أخرى. لدينا بعض الوظائف حيث يمكن تعبئة حقل الإدخال مسبقًا بأي شيء موجود حاليًا في `localStorage`. لنفترض أننا نريد في الوقت نفسه تثبيت قيمة `localStorage` وأن نكون قادرين على فحص المعاملات التي استُدعي بها `localStorage.getItem`.
 
-Let’s start by modifying our setup:
+لنبدأ بتعديل تهيئتنا:
 
 ```javascript
 beforeEach(() => {
@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 ```
 
-Now, let’s say that we want to take a look at whether or not the input has the correct value *and* if it was pulling that value from `localStorage`.
+الآن، لنفترض أننا نريد أن نلقي نظرة على ما إذا كان حقل الإدخال يحمل القيمة الصحيحة *و* ما إذا كان يجلب تلك القيمة من `localStorage`.
 
 ```javascript
 it('should have loaded the secret from localStorage', async () => {
@@ -27,15 +27,13 @@ it('should have loaded the secret from localStorage', async () => {
 });
 ```
 
-> **Could we just set and clear local storage using JSDOM or Happy DOM?**
+> **هل يمكننا ببساطة تعيين التخزين المحلي (local storage) ومسحه باستخدام JSDOM أو Happy DOM؟**
 >
-> Yea, probably. We could. And, maybe we should. The only added advantage here is
-> that we can look at the values that `localStorage.getItem` and `localStorage.setItem` were called with.
+> غالبًا، نعم. يمكننا ذلك. وربما ينبغي لنا. الميزة الوحيدة الإضافية هنا هي أننا نستطيع النظر في القيم التي استُدعي بها `localStorage.getItem` و`localStorage.setItem`.
 >
-> To be totally transparent, I am mostly doing this because I’m going to have you
-> take on more practical examples in a hot minute.
+> ولكي أكون صريحًا تمامًا، أفعل هذا غالبًا لأنني سأكلفك بأمثلة عملية أكثر بعد قليل.
 
-We can also do the same for setting the value. Bear in mind, since the secret is loaded from `localStorage`, you’ll need to clear out the input field before typing into it.
+يمكننا فعل الشيء نفسه لتعيين القيمة. تذكّر أنه بما أن السر يُحمَّل من `localStorage`، فستحتاج إلى مسح حقل الإدخال قبل الكتابة فيه.
 
 ```javascript
 it('should save the secret to localStorage', async () => {
@@ -50,19 +48,17 @@ it('should save the secret to localStorage', async () => {
 });
 ```
 
-## Your Turn
+## دورك الآن
 
-> **Can you mock out random numbers?**
+> **هل يمكنك محاكاة الأرقام العشوائية؟**
 >
-> Head over to `examples/guessing-game`. This game uses `Math.random` to come up with
-> a random number—which could make it hard to test. Can you use the strategies above
-> to keep `Math.random()` in a fixed place? **Hint**: `0.5` is a good choice.
+> انتقل إلى `examples/guessing-game`. تستخدم هذه اللعبة `Math.random` لتوليد رقم عشوائي — وهو ما قد يجعل اختبارها صعبًا. هل يمكنك استخدام الاستراتيجيات أعلاه لإبقاء `Math.random()` في مكان ثابت؟ **تلميح**: `0.5` خيار جيد.
 
-You can see an example solution [here](https://stevekinney.com/courses/testing/guessing-game-solution).
+يمكنك رؤية حل نموذجي [هنا](https://stevekinney.com/courses/testing/guessing-game-solution).
 
-## Further Reading
+## قراءات إضافية
 
-You can review some more examples [here](https://stevekinney.com/courses/testing/overriding-object-properties).
+يمكنك مراجعة المزيد من الأمثلة [هنا](https://stevekinney.com/courses/testing/overriding-object-properties).
 
-- [Overriding Object Properties](https://stevekinney.com/courses/testing/overriding-object-properties)
-- [Mocking DOM Methods](https://stevekinney.com/courses/testing/mocking-dom-methods)
+- [تجاوز خصائص الكائنات](https://stevekinney.com/courses/testing/overriding-object-properties)
+- [محاكاة طرق DOM](https://stevekinney.com/courses/testing/mocking-dom-methods)

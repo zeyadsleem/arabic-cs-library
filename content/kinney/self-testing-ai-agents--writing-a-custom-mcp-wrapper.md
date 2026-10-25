@@ -1,38 +1,38 @@
 ---
-title: "Writing a Custom MCP Wrapper"
-lang: en
+title: "كتابة غلاف MCP مخصّص"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper"
 ---
 
-Playwright MCP is generic by design. It exposes Playwright’s API as tools, and the agent has to figure out which combination of primitives to call to do what you want. Most of the time this is fine—the agent is pretty good at composing primitives.
+إن Playwright MCP عامّ بحكم التصميم. فهو يعرض واجهة Playwright البرمجية في صورة أدوات، ويتعيّن على الوكيل أن يستنتج أي توليفة من الأجزاء الأولية (primitives) يستدعيها لينجز ما تريد. هذا مقبول في معظم الأحيان — فالوكيل بارع في تركيب الأجزاء الأولية.
 
-Sometimes it isn’t fine. Sometimes you want the agent to have a single tool called “verify the shelf page renders correctly” that does six things under the hood and returns a structured result. You don’t want the agent to have to figure out how to compose those six things from first principles every time, because it will get it slightly wrong one time in five and you’ll be stuck debugging an MCP call.
+لكنه ليس مقبولًا دائمًا. أحيانًا تريد أن تكون لدى الوكيل أداة واحدة اسمها «تحقّق من أن صفحة الرفّ تُصيَّر بشكل صحيح» تفعل ستة أشياء في الخلف وتعيد نتيجة مُهيكلة. لا تريد أن يضطر الوكيل إلى استنتاج كيفية تركيب تلك الأشياء الستة من الصفر في كل مرة، لأنه سيخطئ خطأً طفيفًا مرة من كل خمس، وستبقى أنت عالقًا في تشخيص استدعاء MCP.
 
-The answer is to wrap your own MCP. It is not hard. It is honestly almost embarrassingly easy with the [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk), and the payoff—a custom verification tool shaped exactly for your codebase—is huge.
+الحل هو أن تغلّف MCP خاصًا بك. الأمر ليس صعبًا. بل هو في الحقيقة سهل إلى حدّ محرج مع [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)، والعائد — أداة تحقّق مخصّصة مفصّلة على مقاس قاعدة شيفرتك بالضبط — عائد ضخم.
 
-For a quick refresher on what the [Model Context Protocol](https://modelcontextprotocol.io/) is and how it works, see the spec. For this lesson, just know that an MCP server is a subprocess that exposes tools to the agent.
+وللمراجعة السريعة لما هو [بروتوكول سياق النموذج](https://modelcontextprotocol.io/) (Model Context Protocol) وكيف يعمل، راجع المواصفة. في هذا الدرس يكفي أن تعرف أن خادم MCP عملية فرعية (subprocess) تعرض أدوات للوكيل.
 
-## What we’re building
+## ما الذي نبنيه
 
-A small MCP server with a single tool called `verify_shelf_page`. When called, it:
+خادم MCP صغير بأداة واحدة اسمها `verify_shelf_page`. وعند استدعائها فإنه:
 
-1. Launches Playwright against `http://127.0.0.1:4173/shelf/<username>` by default. The `<username>` is the lower-cased portion of the reader’s email address before the `@`, so [alice@example.com](mailto:alice@example.com) becomes `alice`. `SHELF_BASE_URL` can override the host when needed.
-2. Waits for the page’s level-one shelf heading to be visible.
-3. Counts the books rendered as `<article>` elements.
-4. Captures any console errors emitted during page load.
-5. Returns a structured JSON blob: `{ ok: boolean, bookCount: number, consoleErrors: string[], url: string }`.
+1. يشغّل Playwright على `http://127.0.0.1:4173/shelf/<username>` افتراضيًا. و`<username>` هو الجزء المكتوب بحروف صغيرة من بريد القارئ قبل `@`، لذا يصبح [alice@example.com](mailto:alice@example.com) هو `alice`. ويمكن لـ `SHELF_BASE_URL` تجاوز المضيف عند الحاجة.
+2. ينتظر حتى يصبح عنوان الرفّ من المستوى الأول مرئيًا.
+3. يعدّ الكتب المُصيَّرة كعناصر `<article>`.
+4. يلتقط أي أخطاء في وحدة التحكّم تُصدَر أثناء تحميل الصفحة.
+5. يعيد كتلة JSON مُهيكلة: `{ ok: boolean, bookCount: number, consoleErrors: string[], url: string }`.
 
-The agent can now call `verify_shelf_page` and get a one-shot, structured answer to “is this page in good shape?” No composition, no guessing, no “did you remember to check the console?” It’s all in the tool.
+يستطيع الوكيل الآن استدعاء `verify_shelf_page` والحصول على جواب مُهيكل بضربة واحدة على سؤال «هل هذه الصفحة في حالة جيدة؟». لا تركيب، ولا تخمين، ولا «هل تذكّرت أن تفحص وحدة التحكّم؟». كل ذلك داخل الأداة.
 
-Shelf registers the server in a repository-local `.mcp.json` and resolves the target URL from `SHELF_BASE_URL`, defaulting to `http://127.0.0.1:4173`. The `/shelf/[username]` route is public, so the server does not strictly need authentication—but it reuses the existing `playwright/.authentication/user.json` storage state when present so the browser session stays consistent with the rest of the workshop tooling.
+يسجّل Shelf الخادم في ملف `.mcp.json` محلي داخل المستودع، ويستخرج عنوان URL الهدف من `SHELF_BASE_URL`، ويكون الافتراضي `http://127.0.0.1:4173`. والمسار `/shelf/[username]` عام، لذا لا يحتاج الخادم إلى مصادقة بالمعنى الدقيق — لكنه يعيد استخدام حالة التخزين الموجودة في `playwright/.authentication/user.json` عندما تكون موجودة، حتى تبقى جلسة المتصفح متسقة مع بقية أدوات الورشة.
 
-In the current starter, that target route is still the real `src/routes/shelf/[username]/+page.svelte`, but the custom verification server itself is something you add later in the course. That is the pattern to copy: real route, repo-local registration in `.mcp.json`, one sharply-shaped probe.
+في النسخة الابتدائية الحالية، لا يزال ذلك المسار الهدف هو الملف الحقيقي `src/routes/shelf/[username]/+page.svelte`، لكن خادم التحقّق المخصّص نفسه شيء تضيفه لاحقًا في الدورة. وهذا هو النمط الذي يجب نسخه: مسار حقيقي، وتسجيل محلي في المستودع داخل `.mcp.json`، ومِسبار واحد محدّد الحواف.
 
-## The skeleton
+## الهيكل العظمي
 
-Here’s the whole server, minus error handling for brevity. It’s around fifty lines.
+هذا هو الخادم كله، منزوعًا منه معالجة الأخطاء اختصارًا. إنه نحو خمسين سطرًا.
 
-It uses the [Playwright API](https://playwright.dev/docs/api/class-browsertype) to launch browsers and drive pages. Everything from `chromium.launch()` onward is standard Playwright.
+يستخدم [واجهة Playwright البرمجية](https://playwright.dev/docs/api/class-browsertype) لتشغيل المتصفحات وقيادة الصفحات. وكل ما يأتي من `chromium.launch()` فصاعدًا هو Playwright قياسي.
 
 ```typescript
 // tools/shelf-verification-server/server.ts
@@ -107,19 +107,19 @@ const transport = new StdioServerTransport();
 await server.connect(transport);
 ```
 
-That’s the whole server. The three pieces are:
+هذا هو الخادم كله. وأجزاؤه الثلاثة هي:
 
-- **The tool list.** Tell the agent what tools exist and what their inputs look like. This maps directly onto what the agent sees in its tool palette.
-- **The tool implementation.** When the agent calls the tool, you run whatever code you want, using whatever libraries you want, and return structured output.
-- **The transport.** Stdio transport means the server talks to the agent over standard input and output. The agent runs the server as a subprocess. It’s simpler than HTTP and it’s the right default for local tools.
+- **قائمة الأدوات.** أخبر الوكيل بالأدوات الموجودة وبشكل مدخلاتها. وهذا يناظر مباشرةً ما يراه الوكيل في لوحة أدواته.
+- **تنفيذ الأداة.** عندما يستدعي الوكيل الأداة، تشغّل أنت أي شيفرة تريدها، بأي مكتبات تريد، وتعيد مخرجات مُهيكلة.
+- **النقل.** نقل stdio يعني أن الخادم يتحدّث إلى الوكيل عبر المدخل والمخرج القياسيين. ويشغّل الوكيل الخادم كعملية فرعية. هذا أبسط من HTTP، وهو الافتراضي الصحيح للأدوات المحلية.
 
-> **Tip**
+> **نصيحة**
 >
-> Notice what’s missing from the example: `waitUntil: 'networkidle'`. The server waits on the shelf heading because that is the actual success signal for this probe. The same waiting rules from the Playwright lesson apply inside your custom MCPs.
+> لاحظ ما يغيب عن المثال: `waitUntil: 'networkidle'`. ينتظر الخادم عنوان الرفّ لأن ذلك هو إشارة النجاح الفعلية لهذا المسبار. وقواعد الانتظار نفسها من درس Playwright تنطبق داخل أدوات MCP المخصّصة التي تكتبها.
 
-## Wiring it up to your local MCP host
+## توصيله بمضيف MCP المحلي لديك
 
-In the local Shelf repository for this course, MCP config lives in `.mcp.json` at the repository root. Add an entry:
+في مستودع Shelf المحلي لهذه الدورة، تعيش تهيئة MCP في `.mcp.json` في جذر المستودع. أضف مُدخلًا:
 
 ```json
 {
@@ -136,49 +136,49 @@ In the local Shelf repository for this course, MCP config lives in `.mcp.json` a
 }
 ```
 
-Restart your MCP host. The new `verify_shelf_page` tool should appear in the tool list. Ask the agent to “verify the shelf page for alice” and it should pick the right tool automatically.
+أعد تشغيل مضيف MCP. ينبغي أن تظهر أداة `verify_shelf_page` الجديدة في قائمة الأدوات. اطلب من الوكيل أن «يتحقّق من صفحة الرفّ الخاصة بـ alice» فينبغي أن يختار الأداة الصحيحة تلقائيًا.
 
-If your editor or agent host uses a different config path, the concept is the same even if the file moves. The only thing that changes is where the subprocess registration lives.
+إذا كان محرّرك أو مضيف الوكيل يستخدم مسار تهيئة مختلفًا، فالمفهوم نفسه حتى لو انتقل الملف. والشيء الوحيد الذي يتغيّر هو موضع تسجيل العملية الفرعية.
 
-## Why this beats “compose it yourself”
+## لماذا يتفوّق هذا على «ركّبه بنفسك»
 
-Here’s the thing about having a custom verification tool. It’s not that the agent *couldn’t* open Playwright, navigate, count books, and read the console by composing primitive MCP tools. It could. The issue is that every time it does, it makes small decisions—which selector to use for the heading, whether to wait for the articles, how long to wait, whether to normalize the console text before comparing. Each of those decisions is a chance to get the answer subtly wrong.
+إليك جوهر الأمر في امتلاك أداة تحقّق مخصّصة. ليس أن الوكيل *لا يستطيع* فتح Playwright والتنقّل وعدّ الكتب وقراءة وحدة التحكّم بتركيب أدوات MCP أولية. بل يستطيع. المشكلة أن كل مرة يفعل فيها ذلك يتخذ قرارات صغيرة — أي محدّد (selector) يستخدم للعنوان، وهل ينتظر المقالات، وكم ينتظر، وهل يُطبّع نص وحدة التحكّم قبل المقارنة. وكل قرار من هذه قرار يُعرّض الجواب لأن يكون خاطئًا على نحو خفيّ.
 
-A custom tool encodes the *right* answer once, in code, where you can test it. The agent stops making those decisions and starts consuming a known-good result. And because the result is structured (`bookCount: number`), the agent can reason about it with the same reliability it has for any JSON it gets from an API. No hallucination about what “successfully verified” means—the tool returned `{ ok: true }` or it didn’t.
+الأداة المخصّصة تُرمّز الجواب *الصحيح* مرة واحدة، في الشيفرة، حيث تستطيع اختباره. فيتوقف الوكيل عن اتخاذ تلك القرارات ويبدأ في استهلاك نتيجة معروفة الجودة. ولأن النتيجة مُهيكلة (`bookCount: number`)، يستطيع الوكيل أن يستدلّ عليها بالموثوقية نفسها التي يتعامل بها مع أي JSON يصله من API. لا هلوسة حول معنى «تحقّق بنجاح» — فالأداة إمّا أعادت `{ ok: true }` أو لم تُعِد.
 
-I think of custom MCP tools as the opposite of prompting. Prompting says, “dear LLM, please do this thing correctly.” A custom tool says, “I already wrote this thing correctly. Here it is as a function.”
+أنا أنظر إلى أدوات MCP المخصّصة بوصفها نقيض التلقين (prompting). فالتلقين يقول: «عزيزي النموذج اللغوي، من فضلك افعل هذا الشيء بشكل صحيح». أما الأداة المخصّصة فتقول: «لقد كتبت هذا الشيء بشكل صحيح بالفعل. وها هو في صورة دالة».
 
-## What to wrap and what to leave alone
+## ما الذي تُغلّفه وما الذي تتركه
 
-Not everything needs a custom wrapper. Here’s my heuristic.
+ليست كل الأشياء تحتاج غلافًا مخصّصًا. وهذا هو دليلي الاستدلالي.
 
-**Wrap it if:** the check is specific to your codebase, it’s run more than a few times a day, and you’ve had the agent get it wrong at least once. These are the things where the agent’s marginal error rate times your annoyance rate is high enough that a custom tool pays back quickly.
+**غلّفه إذا:** كان الفحص خاصًا بقاعدة شيفرتك، ويُشغَّل أكثر من بضع مرات في اليوم، وقد أخطأ فيه الوكيل مرة على الأقل. هذه هي الأشياء التي يكون فيها معدّل خطأ الوكيل الحدّي مضروبًا في معدّل إزعاجه لك مرتفعًا بما يكفي ليعود الغلاف المخصّص بنفعه سريعًا.
 
-**Don’t wrap it if:** the off-the-shelf MCP tools do it well, the check is generic (“click a button, read the result”), and you’re only going to run it a few times. Wrapping takes an hour. A generic one-off task doesn’t earn that hour.
+**ولا تغلّفه إذا:** كانت أدوات MCP الجاهزة تؤدّيه جيدًا، وكان الفحص عامًّا («انقر زرًّا، واقرأ النتيجة»)، ولن تشغّله إلا بضع مرات. فالغلاف يستغرق ساعة. والمهمة العامة التي تُنفَّذ مرة واحدة لا تستحقّ تلك الساعة.
 
-Examples I’ve wrapped:
+أمثلة غلّفتها:
 
-- `verify_shelf_page` (this lesson)
-- `check_accessibility`—runs axe-core against a URL and returns violations as JSON, so the agent can act on them without parsing HTML reports
-- `database_snapshot`—dumps the current state of the test database as JSON, so the agent can reason about state between API calls
+- `verify_shelf_page` (هذا الدرس)
+- `check_accessibility` — يشغّل axe-core على عنوان URL ويعيد الانتهاكات بصيغة JSON، ليستطيع الوكيل التصرّف بناءً عليها دون تحليل تقارير HTML
+- `database_snapshot` — يُفرّغ الحالة الراهنة لقاعدة بيانات الاختبار بصيغة JSON، ليستطيع الوكيل الاستدلال على الحالة بين استدعاءات API
 
-Examples I haven’t wrapped:
+أمثلة لم أغلّفها:
 
-- “Click this button and read the response.” Playwright MCP handles this fine.
-- “Take a screenshot.” Already a primitive.
-- “Run the tests.” The shell tool is the right tool; there’s no wrapping to do.
+- «انقر هذا الزر واقرأ الاستجابة». يتعامل Playwright MCP مع هذا جيدًا.
+- «خُذ لقطة شاشة». هذه أولية بالفعل.
+- «شغّل الاختبارات». أداة الصدفة هي الأداة الصحيحة؛ ولا شيء هنا يستدعي التغليف.
 
-## Debugging custom MCPs
+## تشخيص أخطاء MCP المخصّصة
 
-Custom MCPs are subprocesses that talk over stdio. When they break, they break silently and the agent just says “tool call failed.” A few things to know:
+أدوات MCP المخصّصة عمليات فرعية تتحدّث عبر stdio. وعندما تتعطّل، تتعطّل بصمت ويقول الوكيل فقط «فشل استدعاء الأداة». وفيما يلي أمور قليلة يجدر معرفتها:
 
-- Log to stderr. Anything you write to stdout will be interpreted as an MCP message and will crash the protocol. Use `console.error(...)` for logging.
-- Write logs to a file. `fs.appendFileSync('./mcp-log.txt', ...)` is a useful debug crutch. Tail the file in another terminal while you develop.
-- Test the server standalone with the MCP inspector tool before wiring it into an agent. Takes thirty seconds, saves hours.
+- سجّل إلى stderr. فأي شيء تكتبه إلى stdout سيُفسَّر رسالة MCP وسيُسقِط البروتوكول. استخدم `console.error(...)` للتسجيل.
+- اكتب السجلات إلى ملف. و`fs.appendFileSync('./mcp-log.txt', ...)` عكّاز تصحيح مفيد. راقب نهاية الملف في طرفية أخرى أثناء تطويرك.
+- اختبر الخادم منفردًا بأداة MCP inspector قبل توصيله بوكيل. يستغرق ثلاثين ثانية ويوفّر ساعات.
 
-## The agent rules
+## قواعد الوكيل
 
-Add to the file:
+أضف إلى الملف:
 
 ```markdown
 ## Custom MCP tools
@@ -195,14 +195,14 @@ Specifically:
   new custom tool.
 ```
 
-The last rule is my favorite. It pushes the cost of wrapping back onto the agent’s working loop—if it notices the pattern, it can ask for a new tool, and you can write one during the next break.
+القاعدة الأخيرة هي المفضّلة عندي. فهي تدفع كلفة التغليف إلى حلقة عمل الوكيل — فإن لاحظ النمط، استطاع أن يطلب أداة جديدة، وتستطيع أنت كتابتها في الاستراحة التالية.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Off-the-shelf MCPs are generic. Custom MCPs encode your specific verification logic once, in code, and give the agent a reliable, structured answer. Every hour you spend writing one saves the agent an hour of composing primitives badly. Wrap the checks that matter most to you.
+أدوات MCP الجاهزة عامة. أما المخصّصة فتُرمّز منطق تحقّقك الخاص مرة واحدة، في الشيفرة، وتمنح الوكيل جوابًا موثوقًا مُهيكلًا. وكل ساعة تنفقها في كتابة واحدة منها توفّر على الوكيل ساعة من تركيب الأوليّات بشكل رديء. فغلّف الفحوص التي تهمّك أكثر من غيرها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Runtime Probes in the Development Loop](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
-- [Structured CLI Output as Pipeline Glue](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue)
-- [Lab: Wrap a Custom Verification MCP](https://stevekinney.com/courses/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp)
+- [مسابر وقت التشغيل داخل حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
+- [مخرجات سطر الأوامر المُهيكلة كغراء للخطوط الأنابيب](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue)
+- [مختبر: غلّف MCP تحقّق مخصّصًا](https://stevekinney.com/courses/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp)

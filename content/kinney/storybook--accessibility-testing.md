@@ -1,32 +1,32 @@
 ---
-title: "Accessibility Testing"
-lang: en
+title: "اختبار إمكانية الوصول (Accessibility Testing)"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/accessibility-testing"
 ---
 
-Storybook allows you to conduct accessibility audits on your stories using the [`@storybook/addon-a11y`](https://npm.im/@storybook/addon-a11y) addon. Let’s get it up and running.
+تتيح لك Storybook إجراء تدقيق لإمكانية الوصول على قصصك باستخدام الملحق [`@storybook/addon-a11y`](https://npm.im/@storybook/addon-a11y). هيا نشغّله.
 
 ```bash
 npx storybook@latest add @storybook/addon-a11y
 ```
 
-This will add a new tab to your addon pane that will show you any issues that your component might have. Under the hood, it’s using [`axe-core`](https://www.npmjs.com/package/axe-core) to run the audit.
+سيضيف هذا تبويبًا جديدًا إلى لوحة الملحقات لديك يعرض أي مشكلات قد تكون في مكوّنك. وهو يستخدم في الخفاء [`axe-core`](https://www.npmjs.com/package/axe-core) لتشغيل التدقيق.
 
-From the `axe-core` [`README.md`](https://github.com/dequelabs/axe-core/blob/develop/README.md):
+من ملف [`README.md`](https://github.com/dequelabs/axe-core/blob/develop/README.md) الخاص بـ `axe-core`:
 
-> With axe-core, you can find on average 57% of WCAG issues automatically. Additionally, axe-core will return elements as “incomplete” where axe-core could not be certain, and manual review is needed.
+> باستخدام axe-core، يمكنك اكتشاف 57% من مشكلات WCAG تلقائيًا في المتوسط. وإضافة إلى ذلك، يعيد axe-core العناصر بحالة «غير مكتمل» حيث لا يستطيع الجزم، فتحتاج إلى مراجعة يدوية.
 
-## Running Accessibility Audits as Part of Your Test Suite
+## تشغيل تدقيقات إمكانية الوصول ضمن مجموعة اختباراتك
 
-There is an integration between [Axe](https://www.deque.com/axe/) and [Playwright](https://playwright.dev/) called—unsurprisingly—[`axe-playwright`](https://npm.im/axe-playwright). What’s super cool is that Storybook can spin up Playwright and run these tests for you with it’s [test runner](https://stevekinney.com/courses/storybook/test-runner).
+توجد تكاملة بين [Axe](https://www.deque.com/axe/) و[Playwright](https://playwright.dev/) تُسمّى—بلا مفاجأة—[`axe-playwright`](https://npm.im/axe-playwright). والرائع جدًا أن Storybook يستطيع تشغيل Playwright وتنفيذ هذه الاختبارات لك عبر [مشغّل الاختبارات](https://stevekinney.com/courses/storybook/test-runner) الخاص به.
 
-> **Dependencies**
+> **الاعتمادات (Dependencies)**
 >
-> You’ll need to install `axe-playwright` if it’s not already installed. You can take care of that by running `npm install axe-playwright --save-dev`.
+> ستحتاج إلى تثبيت `axe-playwright` إن لم يكن مثبّتًا لديك بالفعل. يمكنك تدبّر ذلك بتشغيل `npm install axe-playwright --save-dev`.
 >
-> Also, if this is your first rodeo with Playwright in your project, you’ll need to install its browsers. You can take care of this by running `npx playwright install`.
+> كذلك، إن كانت هذه أول تجربة لك مع Playwright في مشروعك، فستحتاج إلى تثبيت متصفحاته. يمكنك تدبّر ذلك بتشغيل `npx playwright install`.
 
-In `.storybook/test-runner.ts`, you can set up the following configuration.
+في `.storybook/test-runner.ts`، يمكنك إعداد التهيئة التالية.
 
 ```typescript
 import type { TestRunnerConfig } from '@storybook/test-runner';
@@ -49,4 +49,4 @@ const config: TestRunnerConfig = {
 export default config;
 ```
 
-Now, when you run `npx test-storybook`, it will *also* check for accessibility violations as well.
+الآن، عند تشغيل `npx test-storybook`، سيتحقّق *أيضًا* من مخالفات إمكانية الوصول كذلك.

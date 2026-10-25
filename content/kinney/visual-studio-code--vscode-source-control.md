@@ -1,66 +1,66 @@
 ---
-title: "Source Control"
-lang: en
+title: "التحكم في المصدر"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-source-control"
 ---
 
-Git is baked right into Visual Studio Code, making version control feel like second nature. From staging and committing changes to handling merges and pushing to remote repositories, the built-in UI provides a smooth, visual workflow. Let’s explore how to leverage these features—plus a few extras like Git blame, GitHub integration, and interactive rebase—to keep your code pristine and your team happy.
+Git مدمج في Visual Studio Code مباشرةً، ما يجعل التحكم في الإصدارات يبدو طبيعة ثانية. ومن تجهيز التغييرات وإيداعها إلى التعامل مع عمليات الدمج والدفع إلى المستودعات البعيدة، توفّر الواجهة المدمجة سير عمل سلسًا ومرئيًا. ولنستكشف كيف تستفيد من هذه الميزات — مع بعض الإضافات مثل Git blame وتكامل GitHub وإعادة الأساس التفاعلية — لتبقي شيفرتك نقية وفريقك راضيًا.
 
-## Basic Git Operations
+## عمليات Git الأساسية
 
-At the heart of Visual Studio Code’s source control is the Source Control panel (the icon that looks like a branch fork on the Activity Bar). Once opened, you’ll see the changes in your working tree, including any staged and un-staged files. Here’s the lowdown on each operation:
+في قلب التحكم في المصدر في Visual Studio Code تقع لوحة التحكم في المصدر (الأيقونة التي تشبه تفرّع فرع في شريط النشاط). وبمجرد فتحها، سترى التغييرات في شجرة عملك، بما فيها أي ملفات مجهّزة وغير مجهّزة. وإليك تفصيل كل عملية:
 
-- **Staging:** Click the plus icon next to changed files, or use the `Stage Changes` button for everything at once.
-- **Committing:** Enter a commit message in the text box at the top of the Source Control panel, then hit the checkmark to commit.
-- **Pushing & Pulling:** Once you’ve committed, push your changes to the remote repository by clicking the triple-dot menu (`…`) and selecting `Push`, or use the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and type `Git: Push`. Pulling follows a similar workflow (`Git: Pull`).
-- **Branching:** Use the branch indicator in the bottom status bar. Clicking it displays your current branch and offers options like `Create Branch`, `Checkout Branch`, and `Delete Branch`.
-- **Merging:** Switch to the branch you want to merge into, then from the Source Control menu or Command Palette, select `Git: Merge Branch` to bring in changes from another branch.
+- **التجهيز:** انقر أيقونة الزائد بجوار الملفات المتغيّرة، أو استخدم زر `Stage Changes` لتجهيز كل شيء دفعة واحدة.
+- **الإيداع:** أدخل رسالة إيداع في مربع النص أعلى لوحة التحكم في المصدر، ثم اضغط علامة الصح للإيداع.
+- **الدفع والسحب:** بعد أن تُودع، ادفع تغييراتك إلى المستودع البعيد بالنقر على قائمة النقاط الثلاث (`…`) واختيار `Push`، أو استخدم لوحة الأوامر (`Ctrl+Shift+P` / `Cmd+Shift+P`) واكتب `Git: Push`. ويتبع السحب سير عمل مشابهًا (`Git: Pull`).
+- **الفروع:** استخدم مؤشر الفرع في شريط الحالة السفلي. والنقر عليه يعرض فرعك الحالي ويقدّم خيارات مثل `Create Branch` و`Checkout Branch` و`Delete Branch`.
+- **الدمج:** انتقل إلى الفرع الذي تريد الدمج فيه، ثم من قائمة التحكم في المصدر أو لوحة الأوامر اختر `Git: Merge Branch` لجلب التغييرات من فرع آخر.
 
-> **The Terminal is Always an Option**
+> **الطرفية خيار متاح دائمًا**
 >
-> If you prefer the terminal, everything is still at your fingertips (`git add`, `git commit`, etc.). Visual Studio Code’s integrated terminal can provide a nice blend of command-line control and visual feedback in the Source Control panel.
+> إن كنت تفضّل الطرفية، فكل شيء ما يزال في متناول يدك (`git add` و`git commit` وغيرها). ويمكن للطرفية المدمجة في Visual Studio Code أن توفّر مزيجًا جميلًا من تحكم سطر الأوامر وتغذية بصرية في لوحة التحكم في المصدر.
 
-## Diff View
+## عرض الفروقات
 
-Comparing code changes is a breeze with Visual Studio Code’s diff viewer. When you click on a modified file in the Source Control panel, you’ll see a split view showing the **old** content on one side and **new** changes on the other. Additions appear in green, deletions in red. This helps you quickly review edits before committing, ensuring you don’t accidentally introduce that half-finished debugging hack.
+مقارنة تغييرات الشيفرة سهلة بفضل عارض الفروقات في Visual Studio Code. فعند النقر على ملف معدّل في لوحة التحكم في المصدر، سترى عرضًا منقسمًا يُظهر المحتوى **القديم** على جانب والتغييرات **الجديدة** على الجانب الآخر. وتظهر الإضافات بالأخضر والحذوفات بالأحمر. وهذا يساعدك على مراجعة التعديلات سريعًا قبل الإيداع، فيضمن ألّا تُدخل بالخطأ تلك الحيلة التصحيحية نصف المكتملة.
 
-> **Diffing Made Easy™**
+> **مقارنة الفروقات بسهولة**
 >
-> You can diff any two files (even if they aren’t in the same repository) by right-clicking a file in the Explorer and choosing `Select for Compare`, then right-clicking another file and selecting `Compare with Selected`.
+> يمكنك مقارنة أي ملفين (حتى إن لم يكونا في المستودع نفسه) بالنقر بزر الفأرة الأيمن على ملف في المستكشف واختيار `Select for Compare`، ثم النقر بزر الفأرة الأيمن على ملف آخر واختيار `Compare with Selected`.
 
-## Merge Conflict Resolution
+## حل تعارضات الدمج
 
-Git merges can get hairy, but Visual Studio Code’s merge conflict resolution tool is there to save the day. Whenever a merge conflict arises, conflicting sections in files are highlighted in the editor with clear options:
+قد تصبح عمليات دمج Git شائكة، لكن أداة حل تعارضات الدمج في Visual Studio Code موجودة لتنقذ الموقف. فكلما نشأ تعارض دمج، تُبرَز الأقسام المتعارضة في الملفات في المحرّر مع خيارات واضحة:
 
-- **Accept Current Change** keeps your local modifications.
-- **Accept Incoming Change** takes changes from the branch you’re merging in.
-- **Accept Both Changes** merges them together. (Use with caution if they’re truly conflicting!)
-- **Compare Changes** opens a diff to help you decide what to keep.
+- **Accept Current Change** يبقي تعديلاتك المحلية.
+- **Accept Incoming Change** يأخذ التغييرات من الفرع الذي تدمج منه.
+- **Accept Both Changes** يدمجهما معًا. (استخدمه بحذر إن كانتا متعارضتين فعلًا!)
+- **Compare Changes** يفتح عرض فروقات ليساعدك على تقرير ما تُبقيه.
 
-Once you resolve each conflict, save the file, and stage the changes. Visual Studio Code will mark the conflict as resolved, letting you wrap up the merge gracefully.
+وبعد أن تحل كل تعارض، احفظ الملف وجهّز التغييرات. وسيعلّم Visual Studio Code التعارض كمحلول، ما يتيح لك إتمام الدمج بلطف.
 
-## Git History
+## سجل Git
 
-To browse commit history, use extensions like `Git History` or built-in commands. Even without an extension, you can right-click a file and select `Timeline` to see recent commits. Additionally, you can open the Command Palette and type `Git: View File History` (if you’ve installed an extension providing that feature). Each commit in the history shows details like commit message, author, and date, and you can drill down to view diffs for that commit.
+لتصفح سجل الإيداعات، استخدم إضافات مثل `Git History` أو الأوامر المدمجة. وحتى بلا إضافة، يمكنك النقر بزر الفأرة الأيمن على ملف واختيار `Timeline` لرؤية الإيداعات الأخيرة. وبالإضافة إلى ذلك، يمكنك فتح لوحة الأوامر وكتابة `Git: View File History` (إن كنت قد ثبّت إضافة توفّر هذه الميزة). ويعرض كل إيداع في السجل تفاصيل مثل رسالة الإيداع والمؤلف والتاريخ، ويمكنك التعمّق لعرض فروقات ذلك الإيداع.
 
-## Git Blame
+## الإسناد في Git
 
-Ever wonder who wrote that questionable piece of code? Git blame has you covered. In Visual Studio Code, you can hover your cursor over a line or install an extension like [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) to see inline blame annotations. It’ll tell you which commit last touched that line, who authored it, and when. It’s an efficient way to track accountability—just don’t use it for shaming your past self too hard.
+هل تساءلت يومًا من كتب ذلك الجزء المشكوك فيه من الشيفرة؟ إن الإسناد في Git (Git blame) يتولّى ذلك. وفي Visual Studio Code، يمكنك تمرير المؤشر فوق سطر أو تثبيت إضافة مثل [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) لرؤية تعليقات الإسناد التضمينية. وستخبرك أي إيداع لمس ذلك السطر آخر مرة، ومن كتبه، ومتى. إنها طريقة فعّالة لتتبّع المسؤولية — فقط لا تستخدمها لتوبيخ نفسك السابقة بقسوة زائدة.
 
-## GitHub Integration
+## تكامل GitHub
 
-Visual Studio Code provides native support for GitHub, GitLab, and Bitbucket workflows. For example, you can:
+يوفّر Visual Studio Code دعمًا أصليًا لسير عمل GitHub وGitLab وBitbucket. فمثلًا، يمكنك:
 
-- **Clone a repository** by clicking the Source Control icon, then the triple-dot menu (`…`), and selecting `Clone Repository`. Paste in the remote URL, pick a local folder, and you’re off.
-- **Create pull requests** using the GitHub Pull Requests extension (or a similar extension for GitLab or Bitbucket). This gives you a specialized view in Visual Studio Code to manage pull requests, add comments, and review code without leaving your editor.
-- **Push to private or public repos** by using the same `Push` or `Publish Branch` features in the Source Control menu.
+- **استنساخ مستودع** بالنقر على أيقونة التحكم في المصدر، ثم قائمة النقاط الثلاث (`…`)، واختيار `Clone Repository`. الصق عنوان URL البعيد، واختر مجلدًا محليًا، وانطلق.
+- **إنشاء طلبات سحب** باستخدام إضافة GitHub Pull Requests (أو إضافة مشابهة لـ GitLab أو Bitbucket). ويمنحك هذا عرضًا متخصّصًا في Visual Studio Code لإدارة طلبات السحب وإضافة التعليقات ومراجعة الشيفرة دون مغادرة محرّرك.
+- **الدفع إلى مستودعات خاصة أو عامة** باستخدام الميزتين نفسيهما `Push` أو `Publish Branch` في قائمة التحكم في المصدر.
 
-> **Even More GitHub Integration**
+> **تكامل أعمق مع GitHub**
 >
-> If you want to integrate more deeply, the official GitHub extension suite lets you sign in to GitHub and manage issues, pull requests, and more, all from within Visual Studio Code.
+> إن أردت تكاملًا أعمق، فمجموعة إضافات GitHub الرسمية تتيح لك تسجيل الدخول إلى GitHub وإدارة المشكلات وطلبات السحب وغيرها، كل ذلك من داخل Visual Studio Code.
 
-## Another Option
+## خيار آخر
 
-Alternatively, I also really like [GitHub Desktop](https://github.com/desktop).
+بدلًا من ذلك، تعجبني أيضًا [GitHub Desktop](https://github.com/desktop).
 
 GitHub Desktop

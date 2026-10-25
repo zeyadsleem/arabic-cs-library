@@ -1,12 +1,12 @@
 ---
-title: "Building an Interactive Checklist"
-lang: en
+title: "بناء قائمة تحقّق تفاعلية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-an-interactive-checklist"
 ---
 
-Let’s start with our basic HTML structure for a simple checklist item.
+لنبدأ ببنية HTML الأساسية لعنصر قائمة تحقّق بسيط.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/9629ba9390300e7ba99cc08ad4ed9efdc0aaeff3084c929575062c9d9e494078.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9629ba9390300e7ba99cc08ad4ed9efdc0aaeff3084c929575062c9d9e494078.html)*
 
 ```html
 <div>
@@ -15,13 +15,13 @@ Let’s start with our basic HTML structure for a simple checklist item.
 </div>
 ```
 
-It’s a basic checkbox and label, but there’s no visual feedback when the task is completed. Let’s transform it into a smart checklist item that automatically strikes through the text when the checkbox is checked.
+إنه مربع اختيار وتسمية أساسيان، لكن لا توجد تغذية بصرية عندما تكتمل المهمة. لنحوّله إلى عنصر قائمة تحقّق ذكي يشطب النص تلقائيًا عند تحديد مربع الاختيار.
 
-## Adding Structure and Layout
+## إضافة البنية والتخطيط
 
-First, let’s establish proper layout and spacing using flexbox to align our checkbox and text.
+أولًا، لنؤسس تخطيطًا وتباعدًا مناسبين باستخدام flexbox لمحاذاة مربع الاختيار والنص.
 
-*Adding Structure and Layout — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/202e6c85f38973e7566e0f47848e6ccd21d1d062e43d5ed6373fc747e4b7c3d1.html)*
+*إضافة البنية والتخطيط — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/202e6c85f38973e7566e0f47848e6ccd21d1d062e43d5ed6373fc747e4b7c3d1.html)*
 
 ```html
 <div class="flex items-center gap-3 p-3">
@@ -30,21 +30,21 @@ First, let’s establish proper layout and spacing using flexbox to align our ch
 </div>
 ```
 
-Layout improvements:
+تحسينات التخطيط:
 
-- `flex items-center gap-3`: Aligns checkbox and label horizontally with 12px spacing
-- `p-3`: Adds 12px padding around the entire item for comfortable touch targets
-- `h-4 w-4`: Sets checkbox to 16px square for proper proportions
-- `rounded border-slate-300`: Softens checkbox corners and adds subtle border
-- `text-slate-900`: High contrast text color for readability
+- `flex items-center gap-3`: يحاذي مربع الاختيار والتسمية أفقيًا بمسافة 12px
+- `p-3`: يضيف حشوًا بسماكة 12px حول العنصر كله لأهداف لمس مريحة
+- `h-4 w-4`: يضبط مربع الاختيار على مربع بحجم 16px لتناسب الأبعاد
+- `rounded border-slate-300`: يلطّف زوايا مربع الاختيار ويضيف حدًا خفيفًا
+- `text-slate-900`: لون نص عالي التباين للقراءة
 
-This creates a clean, accessible foundation with proper spacing and alignment.
+ينشئ هذا أساسًا نظيفًا وسهل الوصول مع تباعد ومحاذاة مناسبين.
 
-## Introducing the :has() Selector
+## تقديم محدّد :has()
 
-Now comes the magic—let’s use Tailwind’s `:has()` selector to automatically strike through the text when the checkbox is checked.
+الآن يأتي السحر — لنستخدم محدّد `:has()` في Tailwind لشطب النص تلقائيًا عند تحديد مربع الاختيار.
 
-*Introducing the :has() Selector — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/a7bb3247e0673b75fed4173cd4369530874674b9da0547cea0c4cee11081dac9.html)*
+*تقديم محدّد :has() — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a7bb3247e0673b75fed4173cd4369530874674b9da0547cea0c4cee11081dac9.html)*
 
 ```html
 <div
@@ -55,18 +55,18 @@ Now comes the magic—let’s use Tailwind’s `:has()` selector to automaticall
 </div>
 ```
 
-The `:has()` selector magic:
+سحر محدّد `:has()`:
 
-- `has-[input:checked]:text-slate-500`: Changes text color to muted gray when the container has a checked input child
-- `has-[input:checked]:line-through`: Adds strikethrough decoration when the container has a checked input child
+- `has-[input:checked]:text-slate-500`: يغيّر لون النص إلى رمادي باهت عندما تحتوي الحاوية على حقل إدخال محدَّد تابع
+- `has-[input:checked]:line-through`: يضيف زخرفة الشطب عندما تحتوي الحاوية على حقل إدخال محدَّد تابع
 
-The `has-[input:checked]:*` utilities are Tailwind’s way of using CSS’s `:has()` pseudo-class. This means “apply these styles to the container when it contains a checked input element.” No JavaScript needed!
+أدوات `has-[input:checked]:*` هي طريقة Tailwind لاستخدام الفئة الزائفة `:has()` في CSS. هذا يعني «طبّق هذه الأنماط على الحاوية عندما تحتوي على عنصر إدخال محدَّد». دون حاجة إلى JavaScript!
 
-## Adding Smooth Transitions
+## إضافة انتقالات سلسة
 
-Let’s add transitions to make the completion state feel polished and satisfying.
+لنضف انتقالات تجعل حالة الإكمال تبدو مصقولة ومُرضية.
 
-*Adding Smooth Transitions — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/1a7a65e2ba728d0dcc83ac659f4cf4ded69996f5731687b0b105d56c18cc56f6.html)*
+*إضافة انتقالات سلسة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1a7a65e2ba728d0dcc83ac659f4cf4ded69996f5731687b0b105d56c18cc56f6.html)*
 
 ```html
 <div
@@ -77,18 +77,18 @@ Let’s add transitions to make the completion state feel polished and satisfyin
 </div>
 ```
 
-Animation improvements:
+تحسينات الحركة:
 
-- `transition-all duration-300`: Smoothly animates both color and text-decoration changes over 300ms
-- The transition makes checking/unchecking feel more responsive and delightful
+- `transition-all duration-300`: يحرّك تغييرات اللون وزخرفة النص معًا بسلاسة خلال 300ms
+- يجعل الانتقال تحديد المهمة وإلغاء تحديدها أكثر استجابة ومتعة
 
-The 300ms duration provides a nice balance—fast enough to feel immediate but slow enough to see the visual change happen.
+مدة 300ms توفّر توازنًا جيدًا — سريعة بما يكفي لتبدو فورية، وبطيئة بما يكفي لرؤية التغيير البصري يحدث.
 
-## Enhanced Styling and Polish
+## تنسيق معزّز وصقل
 
-Finally, let’s add some refinements to make our checklist item feel more premium and interactive.
+أخيرًا، لنضف بعض التحسينات ليبدو عنصر قائمة التحقّق أكثر تميّزًا وتفاعلية.
 
-*Enhanced Styling and Polish — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/e4a2a2e0da4e73677765ca57d723f3d61366a1a721a5de38b5678656bcaa7e05.html)*
+*تنسيق معزّز وصقل — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e4a2a2e0da4e73677765ca57d723f3d61366a1a721a5de38b5678656bcaa7e05.html)*
 
 ```html
 <div
@@ -101,29 +101,29 @@ Finally, let’s add some refinements to make our checklist item feel more premi
 </div>
 ```
 
-Polish improvements:
+تحسينات الصقل:
 
-- `rounded-md`: Soft corners make the item feel more modern
-- `hover:bg-slate-50`: Subtle background change on hover provides interactive feedback
-- `text-blue-600` on checkbox: Brand color when checked (browser-dependent support)
-- `cursor-pointer` on label: Makes it clear the text is clickable
-- The `transition-all` now also animates the background color change
+- `rounded-md`: الزوايا الناعمة تجعل العنصر يبدو أكثر حداثة
+- `hover:bg-slate-50`: تغيير خفيف في الخلفية عند التحويم يوفّر تغذية تفاعلية
+- `text-blue-600` على مربع الاختيار: لون العلامة عند التحديد (الدعم يعتمد على المتصفح)
+- `cursor-pointer` على التسمية: يوضّح أن النص قابل للنقر
+- يحرّك `transition-all` الآن أيضًا تغيير لون الخلفية
 
-These small touches transform a basic form control into a polished interface element that feels cohesive and professional.
+تحوّل هذه اللمسات الصغيرة عنصر تحكم نموذج أساسي إلى عنصر واجهة مصقول يبدو متكاملًا واحترافيًا.
 
-## Why the :has() Selector is Powerful
+## لماذا محدّد :has() قوي
 
-The `:has()` selector represents a fundamental shift in CSS—it allows parent elements to style themselves based on their children’s state. This creates more intuitive component behavior where the entire checklist item responds to the checkbox state, not just the checkbox itself.
+يمثّل محدّد `:has()` تحولًا جوهريًا في CSS — فهو يسمح للعناصر الأب بتنسيق نفسها بناءً على حالة أبنائها. ينشئ هذا سلوكًا أكثر بداهة للمكوّنات، حيث يستجيب عنصر قائمة التحقّق كله لحالة مربع الاختيار، لا مربع الاختيار وحده.
 
-**Traditional approach**: You’d need JavaScript to add/remove classes when the checkbox changes.
+**النهج التقليدي**: كنت تحتاج إلى JavaScript لإضافة الأصناف وإزالتها عند تغيّر مربع الاختيار.
 
-**With :has()**: The styling happens automatically through pure CSS, making the component more performant and easier to maintain.
+**مع :has()**: يحدث التنسيق تلقائيًا عبر CSS خالص، ما يجعل المكوّن أكثر كفاءة وأسهل صيانة.
 
-**Accessibility**: Since we’re using a real checkbox and label, screen readers and keyboard navigation work perfectly—the visual enhancements don’t compromise the semantic foundation.
+**إمكانية الوصول**: بما أننا نستخدم مربع اختيار وتسمية حقيقيين، فإن قارئات الشاشة والتنقل بلوحة المفاتيح يعملان بشكل ممتاز — والتحسينات البصرية لا تمس الأساس الدلالي.
 
-## Challenges
+## تحديات
 
-Try building these variations:
+جرّب بناء هذه الاختلافات:
 
-1. **Multi-item Checklist**: Create a vertical list of 3-4 checklist items using the patterns above, with proper spacing between items
-2. **Priority Indicators**: Add colored dots or badges before the text that also fade out when the item is completed using `has-[input:checked]:opacity-30`
+1. **قائمة متعددة العناصر**: أنشئ قائمة رأسية من 3-4 عناصر قائمة تحقّق باستخدام الأنماط أعلاه، مع تباعد مناسب بين العناصر
+2. **مؤشرات الأولوية**: أضف نقاطًا ملوّنة أو شارات قبل النص تبهت أيضًا عند اكتمال العنصر باستخدام `has-[input:checked]:opacity-30`

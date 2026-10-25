@@ -1,12 +1,12 @@
 ---
-title: "Building a Details Disclosure Card"
-lang: en
+title: "بناء بطاقة كشف بالعنصر details"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-details-disclosure"
 ---
 
-Let’s start with our basic HTML structure for a simple disclosure component.
+لنبدأ ببنية HTML الأساسية لمكوّن كشف بسيط.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/f5bffbbd5dee55f42bccc5dbc1a596cbbbcc55b3909ec86cdf9f6efdfe330c6c.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f5bffbbd5dee55f42bccc5dbc1a596cbbbcc55b3909ec86cdf9f6efdfe330c6c.html)*
 
 ```html
 <details>
@@ -20,13 +20,13 @@ Let’s start with our basic HTML structure for a simple disclosure component.
 </details>
 ```
 
-It’s a semantic `<details>` element with a `<summary>` that users can click to reveal content. The browser provides basic functionality, but it looks quite plain. Let’s transform it into a polished disclosure component that provides clear visual feedback when expanded.
+إنه عنصر `<details>` دلالي مع `<summary>` يستطيع المستخدمون النقر عليه لكشف المحتوى. يوفّر المتصفح الوظيفة الأساسية، لكن المظهر بسيط جدًا. لنحوّله إلى مكوّن كشف مصقول يقدّم تغذية بصرية واضحة عند التوسّع.
 
-## Adding Structure and Layout
+## إضافة البنية والتخطيط
 
-First, let’s establish proper spacing and visual hierarchy for our disclosure component.
+أولًا، لنرسِ تباعدًا وتسلسلًا بصريًا سليمين لمكوّن الكشف.
 
-*Adding Structure and Layout — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/e1815a305b148f0daa13391ed9ba9930368cb250ee5337c8f0fd2af16712343c.html)*
+*إضافة البنية والتخطيط — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e1815a305b148f0daa13391ed9ba9930368cb250ee5337c8f0fd2af16712343c.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4">
@@ -42,22 +42,22 @@ First, let’s establish proper spacing and visual hierarchy for our disclosure 
 </details>
 ```
 
-Layout improvements:
+تحسينات التخطيط:
 
-- `rounded-lg border border-slate-200`: Creates a subtle container with soft corners and light border
-- `p-4`: Adds 16px padding around the entire component for comfortable spacing
-- `cursor-pointer`: Makes it clear the summary is clickable
-- `font-medium text-slate-900`: Medium weight and high contrast for the summary text
-- `mt-3`: Adds 12px spacing between summary and content when expanded
-- `text-slate-600`: Slightly muted color for the disclosure content
+- `rounded-lg border border-slate-200`: ينشئ حاوية خفيفة بزوايا ناعمة وحد فاتح
+- `p-4`: يضيف حشوة 16px حول المكوّن كله لتباعد مريح
+- `cursor-pointer`: يوضّح أن الملخّص قابل للنقر
+- `font-medium text-slate-900`: وزن متوسط وتباين عالٍ لنص الملخّص
+- `mt-3`: يضيف تباعد 12px بين الملخّص والمحتوى عند التوسّع
+- `text-slate-600`: لون هادئ قليلًا لمحتوى الكشف
 
-This creates a clean foundation with proper visual hierarchy between the summary and content.
+هذا ينشئ أساسًا نظيفًا بتسلسل بصري سليم بين الملخّص والمحتوى.
 
-## Introducing the in-open Pseudo-Class
+## تقديم الصنف الزائف in-open
 
-Now comes the key feature—let’s use Tailwind’s `in-open:*` utilities to change the summary color when the details element is open.
+الآن تأتي الميزة الأساسية — لنستخدم أدوات `in-open:*` في Tailwind لتغيير لون الملخّص عندما يكون عنصر details مفتوحًا.
 
-*Introducing the in-open Pseudo-Class — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/68b0394583d23e0344e7a2382f32aabab56d7859c18f29cbda5cdb8ee9443dd5.html)*
+*تقديم الصنف الزائف in-open — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/68b0394583d23e0344e7a2382f32aabab56d7859c18f29cbda5cdb8ee9443dd5.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4">
@@ -73,17 +73,17 @@ Now comes the key feature—let’s use Tailwind’s `in-open:*` utilities to ch
 </details>
 ```
 
-The `in-open:*` magic:
+سحر `in-open:*`:
 
-- `in-open:text-blue-600`: Changes the summary text to blue when the `<details>` element has the `open` attribute
+- `in-open:text-blue-600`: يغيّر نص الملخّص إلى الأزرق عندما يحمل عنصر `<details>` خاصية `open`
 
-The `in-open:*` utilities are Tailwind’s way of targeting the CSS `:open` pseudo-class, which automatically applies when a `<details>` element is expanded. This means “apply blue text color to this element when its containing details element is open.” No JavaScript needed!
+أدوات `in-open:*` هي طريقة Tailwind لاستهداف الصنف الزائف `:open` في CSS، الذي يُطبَّق تلقائيًا عند توسّع عنصر `<details>`. وهذا يعني «طبّق لون نص أزرق على هذا العنصر عندما يكون عنصر details الحاوي له مفتوحًا». دون حاجة إلى JavaScript!
 
-## Adding Visual State Indicators
+## إضافة مؤشرات حالة بصرية
 
-Let’s add a visual indicator that rotates when the disclosure is opened, making the state change even clearer.
+لنضف مؤشرًا بصريًا يدور عند فتح الكشف، ليجعل تغيّر الحالة أوضح.
 
-*Adding Visual State Indicators — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/496538f0b37335037fb7749c513c2a351612e230501cb2e890384cac1389ecaa.html)*
+*إضافة مؤشرات حالة بصرية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/496538f0b37335037fb7749c513c2a351612e230501cb2e890384cac1389ecaa.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4">
@@ -109,22 +109,22 @@ Let’s add a visual indicator that rotates when the disclosure is opened, makin
 </details>
 ```
 
-Visual indicator improvements:
+تحسينات المؤشر البصري:
 
-- `flex items-center justify-between`: Spreads the text and icon across the full width
-- `span` wrapper: Allows the text and icon to be positioned independently
-- Chevron down SVG icon with `h-5 w-5` (20px) sizing
-- `in-open:rotate-180`: Rotates the chevron 180 degrees when open, pointing up
-- `in-open:text-blue-600` on icon: Matches the summary text color when expanded
-- `text-slate-400`: Muted gray for the icon in closed state
+- `flex items-center justify-between`: يوزّع النص والأيقونة على العرض كله
+- غلاف `span`: يتيح وضع النص والأيقونة كلًا على حدة
+- أيقونة SVG سهم للأسفل بمقاس `h-5 w-5` (20px)
+- `in-open:rotate-180`: يدير السهم 180 درجة عند الفتح ليشير إلى الأعلى
+- `in-open:text-blue-600` على الأيقونة: يطابق لون نص الملخّص عند التوسّع
+- `text-slate-400`: رمادي هادئ للأيقونة في الحالة المغلقة
 
-Now both the text and icon change color together, and the icon rotates to indicate the expanded state.
+الآن يتغيّر لون النص والأيقونة معًا، وتدور الأيقونة للدلالة على الحالة الموسّعة.
 
-## Adding Smooth Transitions
+## إضافة انتقالات سلسة
 
-Let’s add transitions to make the state changes feel polished and professional.
+لنضف انتقالات لتجعل تغيّرات الحالة تبدو مصقولة واحترافية.
 
-*Adding Smooth Transitions — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/4a5b3664c91925bccb828923dc43106f902b1abc2dd6c8f12d00b7b3c6a5dc7e.html)*
+*إضافة انتقالات سلسة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4a5b3664c91925bccb828923dc43106f902b1abc2dd6c8f12d00b7b3c6a5dc7e.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4">
@@ -150,18 +150,18 @@ Let’s add transitions to make the state changes feel polished and professional
 </details>
 ```
 
-Animation improvements:
+تحسينات الحركة:
 
-- `transition-colors` on summary: Smoothly animates the text color change (200ms default)
-- `transition-all` on icon: Smoothly animates both the rotation and color change
+- `transition-colors` على الملخّص: يحرّك تغيّر لون النص بسلاسة (200ms افتراضيًا)
+- `transition-all` على الأيقونة: يحرّك الدوران وتغيّر اللون بسلاسة
 
-The transitions make expanding and collapsing feel responsive and delightful rather than jarring.
+تجعل الانتقالات التوسّع والانطواء يبدوان متجاوبين وممتعين بدلًا من أن يكونا مفاجئين.
 
-## Adding Hover States
+## إضافة حالات التمرير
 
-Let’s add subtle hover feedback to make the component feel more interactive even before clicking.
+لنضف تغذية تمرير خفيفة ليشعر المستخدم بأن المكوّن أكثر تفاعلًا حتى قبل النقر.
 
-*Adding Hover States — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/ecd0218739cc1340b0685247cf520c3437dbe3649c7decb0d75fbdbf9898524b.html)*
+*إضافة حالات التمرير — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ecd0218739cc1340b0685247cf520c3437dbe3649c7decb0d75fbdbf9898524b.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4">
@@ -187,20 +187,20 @@ Let’s add subtle hover feedback to make the component feel more interactive ev
 </details>
 ```
 
-Hover state improvements:
+تحسينات حالة التمرير:
 
-- `hover:text-slate-700`: Slightly darker text on hover when closed
-- `hover:text-slate-500`: Slightly darker icon on hover when closed
-- `in-open:hover:text-blue-700`: Darker blue when hovering over the open state
-- `in-open:hover:text-blue-700` on icon: Matches the text hover color
+- `hover:text-slate-700`: نص أغمق قليلًا عند التمرير وهو مغلق
+- `hover:text-slate-500`: أيقونة أغمق قليلًا عند التمرير وهو مغلق
+- `in-open:hover:text-blue-700`: أزرق أغمق عند التمرير في الحالة المفتوحة
+- `in-open:hover:text-blue-700` على الأيقونة: يطابق لون تمرير النص
 
-This creates sophisticated interaction feedback—the hover colors are contextual to whether the disclosure is open or closed.
+ينشئ هذا تغذية تفاعل متطورة — ألوان التمرير مرتبطة بسياق كون الكشف مفتوحًا أو مغلقًا.
 
-## Enhanced Border States
+## حالات حد معززة
 
-Finally, let’s add a subtle border accent that also responds to the open state for complete visual cohesion.
+أخيرًا، لنضف لمسة حد خفيفة تستجيب أيضًا للحالة المفتوحة لتماسك بصري كامل.
 
-*Enhanced Border States — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/c08a51ce86858f669507b494e9d3df8d977597f631efd96be10fb2f7181e91b5.html)*
+*حالات حد معززة — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c08a51ce86858f669507b494e9d3df8d977597f631efd96be10fb2f7181e91b5.html)*
 
 ```html
 <details class="rounded-lg border border-slate-200 p-4 transition-colors open:border-blue-200">
@@ -226,38 +226,38 @@ Finally, let’s add a subtle border accent that also responds to the open state
 </details>
 ```
 
-Border state enhancements:
+تحسينات حالة الحد:
 
-- `transition-colors` on details: Smoothly animates border color changes
-- `open:border-blue-200`: Light blue border when expanded, creating subtle visual connection with the blue text and icon
+- `transition-colors` على details: يحرّك تغيّرات لون الحد بسلاسة
+- `open:border-blue-200`: حد أزرق فاتح عند التوسّع، ينشئ ارتباطًا بصريًا خفيفًا مع النص والأيقونة الزرقاوين
 
-Now the entire component—text, icon, and border—all shift to the blue accent color family when opened, creating a cohesive and polished experience.
+الآن المكوّن كله — النص والأيقونة والحد — يتحوّل إلى عائلة اللون الأزرق المميز عند الفتح، ما ينشئ تجربة متماسكة ومصقولة.
 
-## Why the in-open Pseudo-Class is Powerful
+## لماذا الصنف الزائف in-open قوي
 
-The `in-open:*` utilities leverage the native `:open` pseudo-class that browsers automatically apply to expanded `<details>` elements. This creates sophisticated state-based styling without any JavaScript:
+تستفيد أدوات `in-open:*` من الصنف الزائف الأصلي `:open` الذي يطبّقه المتصفح تلقائيًا على عناصر `<details>` الموسّعة. وهذا ينشئ تنسيقًا متطورًا قائمًا على الحالة دون أي JavaScript:
 
-**Semantic Foundation**: The `<details>` and `<summary>` elements provide built-in accessibility features—screen readers announce them properly, and keyboard navigation works automatically.
+**أساس دلالي**: يوفّر عنصرا `<details>` و`<summary>` ميزات إمكانية وصول مدمجة — يعلنها قارئ الشاشة بشكل صحيح، ويعمل التنقل بلوحة المفاتيح تلقائيًا.
 
-**Zero JavaScript**: All the interactive behavior (expanding, collapsing, state management) is handled by the browser, making the component lightweight and reliable.
+**صفر JavaScript**: يتولّى المتصفح كل السلوك التفاعلي (التوسّع والانطواء وإدارة الحالة)، ما يجعل المكوّن خفيفًا وموثوقًا.
 
-**Progressive Enhancement**: The component works perfectly without CSS—users can still expand and collapse content even if styles fail to load.
+**تحسين تدريجي**: يعمل المكوّن تمامًا دون CSS — يمكن للمستخدمين توسيع المحتوى وطيّه حتى لو تعذّر تحميل الأنماط.
 
-**State Synchronization**: The visual styling automatically stays in sync with the actual element state since it’s driven by the browser’s native `:open` pseudo-class.
+**مزامنة الحالة**: يبقى التنسيق البصري متزامنًا تلقائيًا مع حالة العنصر الفعلية لأنه مدفوع بالصنف الزائف الأصلي `:open` في المتصفح.
 
-## Common Use Cases
+## حالات الاستخدام الشائعة
 
-This pattern works excellently for:
+يعمل هذا النمط بامتياز مع:
 
-- FAQ sections with multiple disclosure items
-- Settings panels with expandable option groups
-- Documentation with collapsible code examples
-- Product descriptions with detailed specifications
-- Navigation menus with expandable sub-sections
+- أقسام الأسئلة الشائعة بعدة عناصر كشف
+- لوحات إعدادات بمجموعات خيارات قابلة للتوسّع
+- توثيق بأمثلة شيفرة قابلة للطي
+- أوصاف منتجات بمواصفات مفصلة
+- قوائم تنقل بأقسام فرعية قابلة للتوسّع
 
-## Challenges
+## تحديات
 
-Try building these variations:
+جرّب بناء هذه التنويعات:
 
-1. **FAQ List**: Create 3-4 disclosure items in a vertical list, each with different questions and answers, using consistent spacing with `space-y-4`
-2. **Icon Variations**: Replace the chevron with a plus/minus icon that changes symbol (not just rotation) when opened using `in-open:hidden` and `in-open:block` utilities
+1. **قائمة أسئلة شائعة**: أنشئ 3-4 عناصر كشف في قائمة راسية، لكل منها سؤال وجواب مختلفان، بتباعد متسق باستخدام `space-y-4`
+2. **تنويعات الأيقونة**: استبدل السهم بأيقونة زائد/ناقص تغيّر رمزها (لا دورانها فقط) عند الفتح باستخدام أداتي `in-open:hidden` و`in-open:block`

@@ -1,20 +1,20 @@
 ---
-title: "Error Boundaries and Suspense Boundaries"
-lang: en
+title: "حدود الأخطاء وحدود Suspense"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/error-boundaries-and-suspense-boundaries"
 ---
 
-Error boundaries and Suspense boundaries are React’s tools for gracefully handling the unexpected—crashes and loading states, respectively. But here’s the thing: they’re class components and special APIs that don’t get the same TypeScript attention as your typical hooks and function components. Let’s fix that by learning how to properly type these boundaries so your fallbacks and error handling are as bulletproof as the rest of your application.
+حدود الأخطاء وحدود Suspense هما أدوات React للتعامل بلياقة مع ما لا يتوقّع — الانهيارات وحالات التحميل على التوالي. لكنّ هذا هو بيت القصيد: إنّهما مكوّنات صنفية وواجهات برمجية خاصّة لا تحظى بنفس اهتمام TypeScript الذي تحظى به خُطّافاتك ومكوّناتك الدالية المعتادة. لنُصلح ذلك بتعلّم كيفية تحديد أنواع هذه الحدود على نحو صحيح، حتى تصير بدائل العرض (fallbacks) ومعالجة الأخطاء لديك متينة كسائر تطبيقك.
 
-Both boundaries serve as safety nets in your component tree. Error boundaries catch JavaScript errors during rendering, in lifecycle methods, and in constructors, while Suspense boundaries handle async operations by catching thrown promises and displaying loading states. Getting the types right ensures your error information is properly structured and your fallback components receive exactly the props they expect.
+كلتا الحدّين تعملان كشبكات أمان في شجرة المكوّنات لديك. فحدود الأخطاء تلتقط أخطاء JavaScript أثناء التصيير وفي توابع دورة الحياة وفي البانِي، بينما تتعامل حدود Suspense مع العمليات غير المتزامنة عبر التقاط الوعود المرمية وعرض حالات التحميل. ويضمن ضبط الأنواع أن تكون معلومات الخطأ لديك منظّمة على نحو صحيح وأن يتلقّى مكوّنات البديل الخصائص التي تتوقّعها بالضبط.
 
-## Error Boundaries: Catching What Goes Wrong
+## حدود الأخطاء: التقاط ما يحدث خطأً
 
-Error boundaries are class components that implement either `componentDidCatch` or the static `getDerivedStateFromError` method. Since we’re working with TypeScript, we need to properly type both the component’s state and the error information we receive.
+حدود الأخطاء هي مكوّنات صنفية تُنفّذ إمّا `componentDidCatch` أو الأسلوب الساكن `getDerivedStateFromError`. وبما أنّنا نعمل مع TypeScript، فنحتاج إلى تحديد نوعَي حالة المكوّن ومعلومات الخطأ التي نتلقّاها على نحو صحيح.
 
-### Basic Error Boundary Implementation
+### التنفيذ الأساسي لحدّ الأخطاء
 
-Let’s start with a properly typed error boundary that captures both the error and additional error information:
+لنبدأ بحدّ أخطاء مُحكم الأنواع يلتقط الخطأ ومعلومات الخطأ الإضافية:
 
 ```typescript
 import { Component, ErrorInfo, ReactNode } from 'react';
@@ -68,11 +68,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 ```
 
-Notice how we’re properly typing the `ErrorInfo` object from React, which contains valuable debugging information like the component stack trace. The fallback prop is a function that receives both the error and error info, giving you full control over how to display error details.
+لاحظ كيف نُحدّد نوع كائن `ErrorInfo` القادم من React على نحو صحيح، وهو يحتوي على معلومات تنقيب قيّمة مثل أثر مكدّس المكوّنات. أمّا خاصية fallback فهي دالة تتلقّى الخطأ ومعلومات الخطأ معًا، فتمنحك تحكّمًا كاملًا في كيفية عرض تفاصيل الخطأ.
 
-### Typed Fallback Components
+### مكوّنات بديل مُنمَّطة
 
-Your fallback components should be properly typed to receive the error information they need:
+ينبغي أن تكون مكوّنات البديل لديك مُحكمة الأنواع لتتلقّى معلومات الخطأ التي تحتاج إليها:
 
 ```typescript
 interface ErrorFallbackProps {
@@ -100,9 +100,9 @@ function ErrorFallback({ error, errorInfo, resetErrorBoundary }: ErrorFallbackPr
 }
 ```
 
-### Enhanced Error Boundary with Reset Capability
+### حدّ أخطاء محسَّن مع إمكانية إعادة التعيين
 
-Real-world error boundaries often need the ability to reset their state. Here’s how to implement that with proper TypeScript support:
+غالبًا ما تحتاج حدود الأخطاء في العالم الحقيقي إلى القدرة على إعادة تعيين حالتها. وإليك كيفية تنفيذ ذلك بدعم TypeScript على نحو صحيح:
 
 ```typescript
 interface ErrorBoundaryState {
@@ -169,13 +169,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 }
 ```
 
-> **Tip**
+> **تلميح**
 >
-> Use generics when your error boundaries need to handle specific error types. For example, `ErrorBoundary<ApiError>` could provide typed access to API-specific error properties.
+> استخدم الأنواع العامة حين تحتاج حدود أخطائك إلى التعامل مع أنواع أخطاء محدّدة. فمثلًا `ErrorBoundary<ApiError>` يمكن أن يوفّر وصولًا مُنمَّطًا إلى خصائص الأخطاء الخاصة بواجهة البرمجة.
 
-## `Suspense` Boundaries: Handling Async Gracefully
+## حدود `Suspense`: التعامل بأناقة مع اللاتزامنية
 
-Suspense boundaries are much simpler to type since they’re built-in React components, but the fallback prop and error handling still need proper typing:
+حدود Suspense أسهل بكثير في تحديد الأنواع لأنّها مكوّنات مدمجة في React، لكنّ خاصية fallback ومعالجة الأخطاء ما زالت تحتاج إلى تحديد دقيق:
 
 ```typescript
 import { Suspense, ReactNode } from 'react';
@@ -214,9 +214,9 @@ function AsyncWrapper({ children, fallback, loadingMessage }: AsyncWrapperProps)
 }
 ```
 
-### Combining Error and `Suspense` Boundaries
+### الجمع بين حدود الخطأ وحدود `Suspense`
 
-In practice, you’ll often want both error and suspense handling. Here’s a typed wrapper that handles both concerns:
+في الممارسة العملية، ستحتاج غالبًا إلى التعامل مع الأخطاء والتعليق معًا. وإليك غلافًا مُنمَّطًا يتعامل مع القيدين:
 
 ```typescript
 interface BoundaryWrapperProps {
@@ -255,11 +255,11 @@ function BoundaryWrapper({
 </BoundaryWrapper>;
 ```
 
-## Real-World Patterns
+## أنماط من العالم الحقيقي
 
-### Route-Level Boundaries
+### حدود على مستوى المسارات
 
-When building applications with routing, you’ll want boundaries at the route level to prevent navigation errors from crashing the entire app:
+عند بناء تطبيقات تستخدم التوجيه (routing)، ستحتاج إلى حدود على مستوى المسار لمنع أخطاء التنقل من إسقاط التطبيق بأكمله:
 
 ```typescript
 interface RouteErrorBoundaryProps {
@@ -298,9 +298,9 @@ function RouteFallback({ error, routeName }: RouteFallbackProps) {
 }
 ```
 
-### Context-Aware Error Boundaries
+### حدود أخطاء واعية بالسياق
 
-Sometimes you need error boundaries that understand their context and can provide more specific error handling:
+أحيانًا تحتاج إلى حدود أخطاء تفهم سياقها وتستطيع تقديم معالجة أدقّ للأخطاء:
 
 ```typescript
 interface ContextualErrorBoundaryProps {
@@ -338,9 +338,9 @@ class ContextualErrorBoundary extends Component<ContextualErrorBoundaryProps, Er
 </ContextualErrorBoundary>;
 ```
 
-## Error Information Types
+## أنواع معلومات الخطأ
 
-TypeScript’s `ErrorInfo` interface provides structured information about where errors occurred. Here’s how to leverage it properly:
+توفّر واجهة `ErrorInfo` في TypeScript معلومات منظّمة عن مكان وقوع الأخطاء. وإليك كيفية الاستفادة منها على نحو صحيح:
 
 ```typescript
 import { ErrorInfo } from 'react';
@@ -365,16 +365,16 @@ const logDetailedError = (error: Error, errorInfo: ErrorInfo) => {
 };
 ```
 
-## Common Pitfalls and Solutions
+## المآخذ الشائعة والحلول
 
-### Don’t Catch Everything
+### لا تلتقط كل شيء
 
-Error boundaries only catch errors in the component tree below them. They don’t catch:
+حدود الأخطاء تلتقط فقط الأخطاء الموجودة في شجرة المكوّنات التي تقع تحتها. فهي لا تلتقط:
 
-- Errors in event handlers
-- Errors in async code
-- Errors during server-side rendering
-- Errors in the error boundary itself
+- الأخطاء في معالجات الأحداث
+- الأخطاء في الشيفرة غير المتزامنة
+- الأخطاء أثناء التصيير على الخادم
+- الأخطاء داخل حدّ الأخطاء نفسه
 
 ```typescript
 // ❌ This won't be caught by error boundaries
@@ -404,9 +404,9 @@ const GoodAsyncComponent = () => {
 };
 ```
 
-### Type-Safe Error Reporting
+### الإبلاغ عن الأخطاء بأمان الأنواع
 
-When integrating with error reporting services, ensure your error data is properly typed:
+عند التكامل مع خدمات الإبلاغ عن الأخطاء، تأكّد من تحديد أنواع بيانات الخطأ لديك على نحو صحيح:
 
 ```typescript
 interface ErrorReport {
@@ -449,13 +449,13 @@ const reportError = (
 };
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Error boundaries and Suspense boundaries are essential for building resilient React applications. With proper TypeScript integration, you can ensure that your error handling is as robust as your main application logic. The key is to:
+حدود الأخطاء وحدود Suspense ضرورية لبناء تطبيقات React مرنة. ومع التكامل السليم مع TypeScript، يمكنك ضمان أنّ معالجتك للأخطاء متينة بقدر منطق تطبيقك الرئيسي. والمفتاح هو:
 
-1. **Type your error information** comprehensively so debugging is straightforward
-2. **Create reusable boundary components** that can be composed throughout your app
-3. **Handle different error contexts** appropriately rather than using a one-size-fits-all approach
-4. **Integrate with monitoring services** to track errors in production
+1. **حدّد أنواع معلومات الخطأ** على نحو شامل ليسهل التنقيح
+2. **أنشئ مكوّنات حدود قابلة لإعادة الاستخدام** يمكن تركيبها في أنحاء تطبيقك
+3. **تعامل مع سياقات الخطأ المختلفة** على نحو ملائم بدلًا من الاعتماد على مقاسٍ واحد يناسب الجميع
+4. **تكامل مع خدمات المراقبة** لتتبّع الأخطاء في بيئة الإنتاج
 
-Your error boundaries become documentation for how your app handles failure, and proper typing makes that documentation executable and verifiable. That’s a pretty solid foundation for shipping reliable software.
+تصير حدود أخطائك توثيقًا لكيفية تعامل تطبيقك مع الإخفاق، ويجعل تحديد الأنواع على نحو صحيح هذا التوثيق قابلًا للتنفيذ والتحقّق. وهذه أساس متين جدًا لإطلاق برمجيات موثوقة.

@@ -1,18 +1,18 @@
 ---
-title: "Speculation Rules & bfcache Optimization"
-lang: en
+title: "قواعد التخمين وتحسين ذاكرة bfcache"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/speculation-rules-bfcache"
 ---
 
-You click a link. The page loads instantly. You hit the back button. The previous page appears immediately, exactly as you left it. No spinners, no re-rendering, no waiting. This isn’t magic—it’s what happens when you properly leverage the Speculation Rules API and the back/forward cache (bfcache).
+تنقر رابطًا. تُحمَّل الصفحة فورًا. تضغط زر الرجوع. تظهر الصفحة السابقة على الفور، تمامًا كما تركتها. لا مؤشرات تحميل، ولا إعادة تصيير، ولا انتظار. هذا ليس سحرًا — بل ما يحدث عندما تستفيد على نحو صحيح من واجهة قواعد التخمين (Speculation Rules API) ومن ذاكرة الرجوع/التقدم (bfcache).
 
-Most React apps break these powerful browser features without even knowing it. They prevent bfcache with careless event listeners. They ignore speculation rules that could prerender entire pages. They treat navigation like it’s 2010, making users wait for every single page transition.
+تكسر معظم تطبيقات React هذه الميزات القوية للمتصفح دون أن تدري. فهي تمنع bfcache بمستمعات أحداث غير مبالية. وتتجاهل قواعد تخمين كان يمكنها تصيير صفحات كاملة مسبقًا. وتتعامل مع التنقل كأننا في 2010، فتجعل المستخدمين ينتظرون كل انتقال بين الصفحات.
 
-Let’s fix that. Let’s build React apps that navigate so fast, users think they’re using a native app.
+لنصلح ذلك. لنبنِ تطبيقات React تتنقل بسرعة تجعل المستخدمين يظنون أنهم يستخدمون تطبيقًا أصليًا.
 
-## Understanding Speculation Rules API
+## فهم واجهة قواعد التخمين (Speculation Rules API)
 
-The Speculation Rules API lets you tell the browser which pages to prerender or prefetch:
+تتيح لك واجهة قواعد التخمين إخبار المتصفح بالصفحات التي يجب تصييرها مسبقًا أو جلبها مسبقًا:
 
 ```typescript
 interface SpeculationRules {
@@ -42,11 +42,11 @@ const addSpeculationRules = (rules: SpeculationRules) => {
 };
 ```
 
-## Implementing Smart Speculation
+## تنفيذ تخمين ذكي
 
-### Static Speculation Rules
+### قواعد التخمين الثابتة
 
-Define rules for common navigation patterns:
+عرّف قواعد لأنماط التنقل الشائعة:
 
 ```typescript
 const StaticSpeculation: React.FC = () => {
@@ -93,9 +93,9 @@ const StaticSpeculation: React.FC = () => {
 };
 ```
 
-### Dynamic Speculation Based on User Behavior
+### تخمين ديناميكي بناءً على سلوك المستخدم
 
-Predict and prerender based on user patterns:
+تنبّأ واصيّر مسبقًا بناءً على أنماط المستخدم:
 
 ```typescript
 class NavigationPredictor {
@@ -187,11 +187,11 @@ const usePredictiveSpeculation = () => {
 };
 ```
 
-## Back/Forward Cache (bfcache) Optimization
+## تحسين ذاكرة الرجوع/التقدم (bfcache)
 
-The bfcache stores complete page snapshots for instant back/forward navigation:
+تخزّن bfcache لقطات كاملة للصفحات لتنقّل فوري بالرجوع/التقدم:
 
-### Understanding bfcache Blockers
+### فهم العوامل المانعة لـ bfcache
 
 ```typescript
 // ❌ Common bfcache blockers
@@ -246,9 +246,9 @@ const BfcacheFriendly: React.FC = () => {
 };
 ```
 
-### Managing WebSocket Connections
+### إدارة اتصالات WebSocket
 
-Close connections properly for bfcache:
+أغلق الاتصالات على نحو صحيح من أجل bfcache:
 
 ```typescript
 const useBfcacheWebSocket = (url: string) => {
@@ -301,9 +301,9 @@ const useBfcacheWebSocket = (url: string) => {
 };
 ```
 
-### Handling Timers and Intervals
+### التعامل مع المؤقتات والفترات
 
-Pause and resume timers for bfcache:
+أوقف المؤقتات واستأنفها من أجل bfcache:
 
 ```typescript
 const useBfcacheTimer = (callback: () => void, delay: number) => {
@@ -361,9 +361,9 @@ const useBfcacheTimer = (callback: () => void, delay: number) => {
 };
 ```
 
-## Testing bfcache Eligibility
+## اختبار أهلية bfcache
 
-Build tools to test and monitor bfcache:
+ابنِ أدوات لاختبار bfcache ومراقبتها:
 
 ```typescript
 class BfcacheAnalyzer {
@@ -479,9 +479,9 @@ const BfcacheMonitor: React.FC = () => {
 };
 ```
 
-## Monitoring Speculation Success
+## مراقبة نجاح التخمين
 
-Track whether speculation is working:
+تتبّع ما إذا كان التخمين يعمل:
 
 ```typescript
 class SpeculationMonitor {
@@ -538,11 +538,11 @@ const useSpeculationMonitor = () => {
 };
 ```
 
-## Advanced Speculation Patterns
+## أنماط تخمين متقدمة
 
-### Viewport-Based Speculation
+### التخمين بناءً على إطار العرض
 
-Speculate on links visible in viewport:
+خمّن الروابط الظاهرة في إطار العرض:
 
 ```typescript
 const useViewportSpeculation = () => {
@@ -591,9 +591,9 @@ const useViewportSpeculation = () => {
 };
 ```
 
-### Time-Based Speculation
+### التخمين الزمني
 
-Increase speculation eagerness over time:
+زد حِدّة التخمين بمرور الوقت:
 
 ```typescript
 const useProgressiveSpeculation = () => {
@@ -641,9 +641,9 @@ const useProgressiveSpeculation = () => {
 };
 ```
 
-## Integration with React Router
+## التكامل مع React Router
 
-Integrate speculation with React Router:
+ادمج التخمين مع React Router:
 
 ```typescript
 const SpeculativeRouter: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -682,39 +682,39 @@ const SpeculativeRouter: React.FC<{ children: React.ReactNode }> = ({ children }
 };
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Enable bfcache:**
+✅ **فعّل bfcache:**
 
-- Use pagehide/pageshow instead of unload
-- Close connections before caching
-- Pause timers and intervals
-- Clear sensitive data
+- استخدم pagehide/pageshow بدلًا من unload
+- أغلق الاتصالات قبل التخزين المؤقت
+- أوقف المؤقتات والفترات
+- امسح البيانات الحساسة
 
-✅ **Implement smart speculation:**
+✅ **نفّذ تخمينًا ذكيًا:**
 
-- Start conservative, increase eagerness
-- Base on user behavior patterns
-- Respect device capabilities
-- Monitor hit rates
+- ابدأ محافظًا ثم زد الحِدّة
+- استند إلى أنماط سلوك المستخدم
+- راعِ قدرات الجهاز
+- راقب معدلات الإصابة
 
-✅ **Test thoroughly:**
+✅ **اختبر بدقّة:**
 
-- Check bfcache eligibility
-- Monitor speculation success
-- Test on real devices
-- Measure actual impact
+- تحقق من أهلية bfcache
+- راقب نجاح التخمين
+- اختبر على أجهزة حقيقية
+- قس الأثر الفعلي
 
-✅ **Handle edge cases:**
+✅ **تعامل مع الحالات الطرفية:**
 
-- Reconnect WebSockets on restore
-- Refresh stale data
-- Update timestamps
-- Clear outdated speculation
+- أعد الاتصال بـ WebSockets عند الاستعادة
+- حدّث البيانات القديمة
+- حدّث الطوابع الزمنية
+- نظّف التخمين القديم
 
-✅ **Respect resources:**
+✅ **احترم الموارد:**
 
-- Limit concurrent prerenders
-- Consider data saver mode
-- Adapt to network conditions
-- Clean up unused speculation
+- حدّد عدد التصييرات المسبقة المتزامنة
+- راعِ وضع موفّر البيانات
+- تكيّف مع ظروف الشبكة
+- نظّف التخمين غير المستخدم

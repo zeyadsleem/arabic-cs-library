@@ -1,20 +1,20 @@
 ---
-title: "Prop Identity Stability"
-lang: en
+title: "استقرار هوية الخصائص"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/identity-stability-props"
 ---
 
-React’s performance model is built on comparing values to decide when components need to re-render. When you pass objects, arrays, or functions as props, their **identity**—not just their contents—determines whether React considers them “the same.” Get this wrong, and you’ll trigger unnecessary re-renders that can cascade through your component tree. Get it right, and your app stays snappy even as it grows.
+يقوم نموذج أداء React على مقارنة القيم لتحديد متى تحتاج المكوّنات إلى إعادة التصيير. وعندما تمرّر كائنات أو مصفوفات أو دوال كخصائص، فإن **هويتها** — لا محتواها فقط — هي ما يحدّد ما إذا كان React يعتبرها «الشيء نفسه». فإن أخطأت في ذلك، أطلقت إعادات تصيير غير ضرورية قد تنتشر عبر شجرة مكوّناتك. وإن أحسنت، بقي تطبيقك سريع الاستجابة حتى مع نموّه.
 
-The tricky part isn’t understanding the concept (reference equality vs. deep equality), it’s knowing when it actually matters and how to fix it without over-engineering your codebase with `useMemo` and `useCallback` everywhere.
+والجزء الصعب ليس فهم المفهوم (تساوي المراجع مقابل التساوي العميق)، بل معرفة متى يهمّ فعلًا وكيف تصلحه دون إفراط في هندسة شيفرتك باستخدام `useMemo` و`useCallback` في كل مكان.
 
-## When Identity Actually Matters
+## متى تهمّ الهوية فعلًا
 
-Not every unstable reference causes performance problems. React is pretty fast at re-rendering components that haven’t actually changed. But identity stability becomes critical in a few specific scenarios:
+ليست كل مرجع غير مستقر يسبّب مشكلات أداء. فReact سريع جدًا في إعادة تصيير المكوّنات التي لم تتغيّر فعلًا. لكن استقرار الهوية يصبح حاسمًا في حالات محددة قليلة:
 
-### Memoized Components with Object Props
+### المكوّنات المحفوظة ذات الخصائص الكائنية
 
-When you’ve wrapped a component in `React.memo()`, it does a shallow comparison of props. If you pass a new object reference every render—even with identical contents—the memoization fails.
+عندما تلفّ مكوّنًا بـ `React.memo()`، فإنه يجري مقارنة سطحية للخصائص. وإذا مرّرت مرجع كائن جديدًا في كل تصيير — حتى بمحتوى مطابق — يفشل الحفظ.
 
 ```typescript
 // ❌ This will re-render every time, despite React.memo
@@ -45,9 +45,9 @@ function App() {
 }
 ```
 
-### `useEffect` Dependencies
+### اعتمادات `useEffect`
 
-Unstable references in dependency arrays cause effects to run on every render, even when the actual data hasn’t changed:
+المراجع غير المستقرة في مصفوفات الاعتمادات تجعل التأثيرات تعمل في كل تصيير، حتى عندما لا تتغيّر البيانات الفعلية:
 
 ```typescript
 // ❌ Effect runs on every render
@@ -66,9 +66,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Context Values
+### قيم السياق
 
-Perhaps the most insidious case—when context values change identity, every consumer re-renders:
+ولعلّها أخطر حالة — فعندما تتغيّر هوية قيم السياق (context)، يُعاد تصيير كل مستهلك:
 
 ```typescript
 // ❌ All consumers re-render when App re-renders
@@ -91,13 +91,13 @@ function App() {
 }
 ```
 
-## The Anatomy of Unstable References
+## تشريح المراجع غير المستقرة
 
-Let’s look at the most common ways developers accidentally create new references:
+لنستعرض أكثر الطرق شيوعًا التي ينشئ بها المطوّرون مراجع جديدة عن غير قصد:
 
-### Inline Object Literals
+### كائنات حرفية مضمّنة
 
-Every time you write `{}` in JSX, you’re creating a new object:
+في كل مرة تكتب `{}` في JSX، فأنت تنشئ كائنًا جديدًا:
 
 ```typescript
 // ❌ New object every render
@@ -117,9 +117,9 @@ const config = useMemo(
 );
 ```
 
-### Array Methods That Return New Arrays
+### توابع المصفوفات التي تعيد مصفوفات جديدة
 
-Operations like `.filter()`, `.map()`, and `.slice()` always return new arrays, even if the contents are identical:
+عمليات مثل `.filter()` و`.map()` و`.slice()` تعيد دائمًا مصفوفات جديدة، حتى لو كان المحتوى مطابقًا:
 
 ```typescript
 function TodoList({ todos }: { todos: Todo[] }) {
@@ -133,9 +133,9 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-### Function Definitions
+### تعريفات الدوال
 
-Functions defined inside components are recreated every render:
+الدوال المعرّفة داخل المكوّنات يُعاد إنشاؤها في كل تصيير:
 
 ```typescript
 // ❌ New function every render
@@ -157,13 +157,13 @@ function SearchResults({ query }: { query: string }) {
 }
 ```
 
-## Strategies for Stable Identity
+## استراتيجيات للحصول على هوية مستقرة
 
-The key is applying the right technique at the right time. Here’s your toolkit:
+المفتاح هو تطبيق التقنية المناسبة في الوقت المناسب. وهذه هي أدواتك:
 
-### Move Static Values Outside Components
+### انقل القيم الثابتة خارج المكوّنات
 
-If the value never changes, define it outside the component:
+إذا كانت القيمة لا تتغيّر أبدًا، فعرّفها خارج المكوّن:
 
 ```typescript
 // ✅ Defined once, never recreated
@@ -191,9 +191,9 @@ function Dashboard() {
 }
 ```
 
-### `useMemo` for Expensive Computations
+### `useMemo` للحسابات المكلفة
 
-Use `useMemo` when you’re doing work that you genuinely don’t want to repeat:
+استخدم `useMemo` عندما تقوم بعمل لا تريد تكراره فعلًا:
 
 ```typescript
 function ProductGrid({ products, filters, sortBy }: Props) {
@@ -214,9 +214,9 @@ function ProductGrid({ products, filters, sortBy }: Props) {
 }
 ```
 
-### `useCallback` for Function Stability
+### `useCallback` لاستقرار الدوال
 
-Use `useCallback` when the function identity affects child component rendering:
+استخدم `useCallback` عندما تؤثّر هوية الدالة في تصيير المكوّنات الأبناء:
 
 ```typescript
 function DataTable({ data }: { data: TableRow[] }) {
@@ -250,9 +250,9 @@ function DataTable({ data }: { data: TableRow[] }) {
 }
 ```
 
-### Extract Child Components
+### استخرج المكوّنات الأبناء
 
-Sometimes the cleanest solution is to pull complex JSX into separate components:
+أحيانًا يكون الحل الأنظف هو نقل JSX المعقّد إلى مكوّنات منفصلة:
 
 ```typescript
 // ❌ Recreates complex config object every render
@@ -287,13 +287,13 @@ function Dashboard({ user }: { user: User }) {
 }
 ```
 
-## Context Value Patterns
+## أنماط قيم السياق
 
-Context is where identity stability matters most, because unstable values cause every consumer to re-render. Here are patterns that work:
+السياق هو المجال الذي يهمّ فيه استقرار الهوية أكثر من أي مكان آخر، لأن القيم غير المستقرة تجعل كل مستهلك يعيد التصيير. وهذه أنماط فعّالة:
 
-### Split Context by Update Frequency
+### قسّم السياق حسب وتيرة التحديث
 
-Instead of one big context, split values that change at different rates:
+بدلًا من سياق واحد كبير، قسّم القيم التي تتغيّر بمعدّلات مختلفة:
 
 ```typescript
 // ✅ Theme rarely changes - separate context
@@ -340,9 +340,9 @@ function App() {
 }
 ```
 
-### Use Reducers for Complex State
+### استخدم المخفّضات للحالة المعقّدة
 
-When context manages complex state with multiple update patterns, reducers provide stable dispatch functions:
+عندما يدير السياق حالة معقّدة بأنماط تحديث متعددة، توفّر المخفّضات (reducers) دوال إرسال (dispatch) مستقرة:
 
 ```typescript
 type AppState = {
@@ -392,11 +392,11 @@ function AppProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-## Common Anti-Patterns to Avoid
+## أنماط مضادة شائعة يجب تجنّبها
 
-### Don’t Memoize Everything
+### لا تحفظ كل شيء
 
-The cure can be worse than the disease. Only memoize when there’s a real performance benefit:
+قد يكون العلاج أسوأ من الداء. لا تحفظ النتائج إلا عندما توجد فائدة أداء حقيقية:
 
 ```typescript
 // ❌ Unnecessary memoization for simple values
@@ -408,9 +408,9 @@ const userName = user?.name ?? 'Guest';
 const isLoggedIn = !!user;
 ```
 
-### Don’t Memoize Props You Pass Down Immediately
+### لا تحفظ خصائص تمرّرها فورًا إلى الأسفل
 
-If you’re just passing memoized values as props, you might not need the memoization:
+إذا كنت تمرّر قيمًا محفوظة كخصائص فقط، فقد لا تحتاج إلى الحفظ:
 
 ```typescript
 // ❌ Memoizing just to pass down immediately
@@ -432,9 +432,9 @@ const Child = React.memo(({ data }: { data: Item[] }) => {
 });
 ```
 
-### Don’t Over-Extract Dependencies
+### لا تفرط في استخراج الاعتمادات
 
-Including more dependencies than necessary defeats the purpose:
+إدراج اعتمادات أكثر من اللازم يُبطل الغرض:
 
 ```typescript
 // ❌ Too many dependencies
@@ -449,23 +449,23 @@ const expensiveValue = useMemo(() => {
 }, [data, selectedCategory]);
 ```
 
-## Debugging Identity Issues
+## تصحيح مشكلات الهوية
 
-When you suspect identity instability is causing performance problems, here’s how to track it down:
+عندما تشتبه في أن عدم استقرار الهوية يسبّب مشكلات أداء، إليك كيفية تتبّعه:
 
-### Use React DevTools Profiler
+### استخدم React DevTools Profiler
 
-The Profiler shows you which components are re-rendering and why:
+يُظهر لك Profiler أي المكوّنات يُعاد تصييرها ولماذا:
 
-1. Install React DevTools browser extension
-2. Open the Profiler tab
-3. Click “Start profiling”
-4. Interact with your app
-5. Look for components that render more than expected
+1. ثبّت إضافة React DevTools في المتصفح
+2. افتح تبويب Profiler
+3. انقر على «Start profiling»
+4. تفاعل مع تطبيقك
+5. ابحث عن المكوّنات التي تُصيَّر أكثر من المتوقع
 
-### Add Debug Logs
+### أضف سجلات تصحيح
 
-Temporarily log when expensive operations run:
+سجّل مؤقتًا وقت تشغيل العمليات المكلفة:
 
 ```typescript
 const expensiveComputation = useMemo(() => {
@@ -477,9 +477,9 @@ const expensiveComputation = useMemo(() => {
 }, [data]);
 ```
 
-### Use why-did-you-render
+### استخدم why-did-you-render
 
-The [`why-did-you-render`](https://github.com/welldone-software/why-did-you-render) library can automatically detect and log unnecessary re-renders:
+تستطيع مكتبة [`why-did-you-render`](https://github.com/welldone-software/why-did-you-render) كشف إعادات التصيير غير الضرورية وتسجيلها تلقائيًا:
 
 ```typescript
 // Install: npm install @welldone-software/why-did-you-render
@@ -497,9 +497,9 @@ const MyComponent = React.memo(() => <div>Hello</div>);
 MyComponent.whyDidYouRender = true;
 ```
 
-## Real-World Example: Shopping Cart
+## مثال واقعي: عربة التسوّق
 
-Let’s put it all together with a realistic shopping cart example that demonstrates both problems and solutions:
+لنجمع كل ذلك في مثال واقعي لعربة تسوّق يعرض المشكلات والحلول معًا:
 
 ```typescript
 // ❌ Problematic version with identity issues

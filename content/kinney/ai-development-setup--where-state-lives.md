@@ -1,45 +1,45 @@
 ---
-title: "Where State Lives"
-lang: en
+title: "أين تعيش الحالة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/where-state-lives"
 ---
 
-Once agents work across sessions, they need somewhere to put what they know. If you don’t choose that place on purpose, it chooses itself: a stray `NOTES.md` here, a half-finished checklist in a chat there. A week later nobody can say which one is true.
+حين يعمل الوكلاء عبر جلسات متعددة، يحتاجون إلى مكان يضعون فيه ما يعرفونه. وإن لم تختر ذلك المكان عن قصد، اختاره هو نفسه: ملف `NOTES.md` شارد هنا، وقائمة تحقّق نصف منتهية في محادثة هناك. وبعد أسبوع لا يستطيع أحد أن يقول أيّها الصحيح.
 
-[Sentinels](https://stevekinney.com/courses/ai-development-setup/sentinels) handle the narrow case of one process telling another a single fact. The wider question is where each *kind* of state belongs.
+[الشواهد (Sentinels)](https://stevekinney.com/courses/ai-development-setup/sentinels) تتناول الحالة الضيّقة حين تخبر عمليةٌ عمليةً أخرى بحقيقة واحدة. أما السؤال الأوسع فهو أين ينتمي كل *نوع* من الحالة.
 
-## One kind of state, one home
+## نوع واحد من الحالة، موطن واحد
 
-| State | Home |
+| الحالة | الموطن |
 | --- | --- |
-| Source and decisions | The repository |
-| Work status | An issue tracker, like [Linear](https://linear.app/) |
-| Research and concepts | A second brain, like [Obsidian](https://obsidian.md/) |
-| Ephemeral execution | The session, or the harness’s own task list for it |
-| Evidence | CI, logs, and reports |
-| Loop plans and scratch | Files in the working tree that you don’t commit, regenerated freely |
-| Sentinels and handoffs | Gates: a state directory the agent can’t write to. Handoffs: anywhere the agent writes. See [Sentinels](https://stevekinney.com/courses/ai-development-setup/sentinels) |
+| المصدر والقرارات | المستودع |
+| حالة العمل | متتبّع قضايا، مثل [Linear](https://linear.app/) |
+| البحث والمفاهيم | دماغ ثانٍ، مثل [Obsidian](https://obsidian.md/) |
+| التنفيذ العابر | الجلسة، أو قائمة مهام الأداة (harness) الخاصة بها |
+| الأدلة | CI والسجلات والتقارير |
+| خطط الحلقات والمسوّدات | ملفات في شجرة العمل لا تُودِعها، تُولَّد من جديد بحرية |
+| الشواهد والتسليمات | البوابات: مجلد حالة لا يستطيع الوكيل الكتابة فيه. أما التسليمات: فأي مكان يكتب فيه الوكيل. انظر [الشواهد](https://stevekinney.com/courses/ai-development-setup/sentinels) |
 
-A **second brain** is a personal knowledge base: a folder of linked notes you keep across projects. The tool matters less than the rule: each kind of state goes in the venue built for it, because each venue is bad at the others’ jobs. Work status in a notes folder drifts. Long research in an issue tracker becomes a wall of text nobody reads.
+**الدماغ الثاني** قاعدة معرفة شخصية: مجلد من الملاحظات المترابطة تحتفظ به عبر المشاريع. والأداة أقل أهمية من القاعدة: كل نوع من الحالة يذهب إلى المكان المبنيّ له، لأن كل مكان سيئ في وظائف الآخرين. فحالة العمل في مجلد ملاحظات تنحرف. والبحث الطويل في متتبّع قضايا يصير جدارًا من النص لا يقرأه أحد.
 
-The loop-plans row is throwaway. The `IMPLEMENTATION_PLAN.md` in [The Ralph Loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) gets regenerated whenever it goes stale, which is fine: it’s scratch for one run, not a record of what anyone believed. The sentinels row isn’t throwaway. A gate marker is evidence, so when a scheme fails you quarantine suspect markers instead of deleting them. [When a scheme has already failed](https://stevekinney.com/courses/ai-development-setup/sentinels#when-a-scheme-has-already-failed) explains.
+صف خطط الحلقات للرمي. فملف `IMPLEMENTATION_PLAN.md` في [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) يُولَّد من جديد كلما قدم، ولا بأس: فهو مسوّدة لتشغيل واحد، لا سجل لما اعتقده أحد. أما صف الشواهد فليس للرمي. فعلامة البوابة دليل، لذا حين يفشل نظام ما، تعزل العلامات المشتبه فيها بدلًا من حذفها. ويشرح [حين يفشل نظام بالفعل](https://stevekinney.com/courses/ai-development-setup/sentinels#when-a-scheme-has-already-failed) ذلك.
 
-## Stale information costs more than tokens
+## المعلومات القديمة تكلّف أكثر من الرموز
 
-Stale information is worse than spending the tokens, over and over, to work out the current answer. An agent that has to re-derive a fact is slow. An agent that trusts an out-of-date note is *confidently wrong*, and nothing in the transcript tells you why.
+المعلومات القديمة أسوأ من إنفاق الرموز (tokens)، مرة بعد مرة، للوصول إلى الإجابة الحالية. فالوكيل الذي عليه أن يستنبط حقيقة من جديد بطيء. أما الوكيل الذي يثق بملاحظة قديمة فهو *مخطئ بثقة*، ولا شيء في النص يشير إلى السبب.
 
-Treat old notes as leads, not facts.
+عامِل الملاحظات القديمة كخيوط، لا كحقائق.
 
-## Give every note a `verified_at`
+## امنح كل ملاحظة `verified_at`
 
-The fix is cheap. Give every durable note (a decision, a piece of research) a `verified_at` date separate from `updated`, which only records the last edit. Editing a note isn’t the same as verifying it. A matching hash, a fingerprint of the file’s contents, means the bytes haven’t changed, not that the claim is still true. When an agent reads a note with an old `verified_at`, it should re-check the claim before relying on it.
+الإصلاح زهيد. امنح كل ملاحظة دائمة (قرار، أو قطعة بحث) تاريخ `verified_at` منفصلًا عن `updated`، الذي يسجّل آخر تعديل فقط. فتعديل ملاحظة ليس مثل التحقق منها. وبصمة مطابقة، أي بصمة لمحتويات الملف، تعني أن البايتات لم تتغيّر، لا أن الادعاء لا يزال صحيحًا. وحين يقرأ وكيل ملاحظة بتاريخ `verified_at` قديم، ينبغي أن يعيد فحص الادعاء قبل الاعتماد عليه.
 
-And a missing date beats an invented one. If nobody knows when something was last checked, leave the field empty so the reader knows to check.
+وتاريخ ناقص خير من تاريخ مختلق. فإن لم يعرف أحد متى فُحص شيء آخر مرة، فاترك الحقل فارغًا ليعرف القارئ أن عليه الفحص.
 
-## Supersede, don’t rewrite
+## استبدل، ولا تعد الكتابة
 
-When a durable note changes, don’t overwrite the old one. Mark it `status: superseded` and link it to its replacement.
+حين تتغيّر ملاحظة دائمة، لا تكتب فوق القديمة. بل وسمها بـ `status: superseded` واربطها ببديلتها.
 
-“What’s true now?” and “What did we believe when we made that decision?” are different questions. Overwriting loses the second one. Decisions need that history most, because the reason you decided something is often the first thing you’ll want when it stops working.
+سؤال «ما الصحيح الآن؟» وسؤال «بمَ كنا نعتقد حين اتخذنا ذلك القرار؟» سؤالان مختلفان. والكتابة فوق القديم تُضيع الثاني. والقرارات أحوج ما يكون إلى ذلك التاريخ، لأن سبب قرارك شيء غالبًا ما ستحتاجه أولًا حين يتوقف عن العمل.
 
-Pick a home for every kind of state, date what you’ve verified, and never edit your way out of an old belief.
+اختر موطنًا لكل نوع من الحالة، وأرّخ ما تحقّقت منه، ولا تخرج أبدًا من اعتقاد قديم بالتحرير.

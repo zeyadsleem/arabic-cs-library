@@ -1,18 +1,18 @@
 ---
-title: "useDeferredValue Patterns"
-lang: en
+title: "أنماط useDeferredValue"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/usedeferredvalue-patterns"
 ---
 
-You’ve built a search component that filters a massive list of products. Your users start typing “iPhone” and immediately notice the input field feels sluggish—each keystroke seems to hang for a split second. The UI thread is getting hammered by expensive operations triggered on every character change, making your otherwise snappy interface feel clunky.
+بنيتَ مكوّن بحث يرشّح قائمة ضخمة من المنتجات. ويبدأ مستخدموك في كتابة «iPhone» فيلاحظون فورًا أن حقل الإدخال يبدو بطيئًا — فكل ضغطة مفتاح تكاد تتعلّق لجزء من الثانية. إذ تنهال على خيط واجهة المستخدم عمليات مكلفة تُطلق مع كل تغيير حرف، فتبدو واجهتك التي كانت سريعة خرقاء.
 
-Enter `useDeferredValue`—React’s elegant solution for keeping high-priority updates (like user input) responsive while allowing lower-priority updates (like expensive computations) to happen when the browser has spare cycles. Think of it as your UI’s way of saying “handle the urgent stuff first, deal with the heavy lifting when we have time.”
+وهنا يأتي `useDeferredValue` — حلّ React الأنيق لإبقاء التحديثات عالية الأولوية (مثل إدخال المستخدم) مستجيبة، مع السماح للتحديثات الأدنى أولوية (مثل الحسابات المكلفة) بالحدوث عندما يتوفّر للمتصفح دورات فائضة. اعتبره طريقة واجهتك في القول: «عالج الأمور العاجلة أولًا، وتولَّ العمل الثقيل حين يتوفّر الوقت».
 
-Unlike debouncing, which delays updates by a fixed amount of time, `useDeferredValue` is adaptive—it defers updates only when React is busy with more important work. When your app is idle, deferred values update immediately. When React is swamped, they gracefully step aside.
+وخلافًا للتخميد (debouncing) الذي يؤجّل التحديثات مدة زمنية ثابتة، فإن `useDeferredValue` متكيّف — لا يؤجّل التحديثات إلا عندما يكون React مشغولًا بعمل أهم. وحين يكون تطبيقك خاملًا، تتحدّث القيم المؤجَّلة فورًا. أما حين يكون React غارقًا في العمل، فإنها تتنحّى بأناقة.
 
-## The Basic Pattern
+## النمط الأساسي
 
-Let’s start with a simple example that demonstrates the core concept:
+لنبدأ بمثال بسيط يوضّح المفهوم الجوهري:
 
 ```typescript
 import { useDeferredValue, useState, useMemo } from 'react';
@@ -51,15 +51,15 @@ function App() {
 }
 ```
 
-Here’s what happens: When you type rapidly, `query` updates immediately (keeping the input responsive), but `deferredQuery` only updates when React determines it’s safe to do so without blocking more urgent updates. The expensive search computation gets the deferred value, so it doesn’t interfere with typing.
+وإليك ما يحدث: عندما تكتب بسرعة، يتحدّث `query` فورًا (فيبقى حقل الإدخال مستجيبًا)، أما `deferredQuery` فلا يتحدّث إلا حين يقرّر React أن ذلك آمن دون حجب تحديثات أكثر إلحاحًا. ويحصل حساب البحث المكلف على القيمة المؤجَّلة، فلا يتعارض مع الكتابة.
 
-> **Tip**
+> **نصيحة**
 >
-> Always pair `useDeferredValue` with `useMemo` or `useCallback`—otherwise, your components will still re-render on every change, defeating the purpose.
+> اقترن `useDeferredValue` دائمًا بـ `useMemo` أو `useCallback` — وإلا فستظل مكوّناتك تُعاد للتصيير مع كل تغيير، فتذهب الفائدة سدًى.
 
-## Real-World Search Interface
+## واجهة بحث واقعية
 
-Let’s build a more complete search interface that demonstrates several patterns working together:
+لنبنِ واجهة بحث أكمل تُظهر عدة أنماط تعمل معًا:
 
 ```typescript
 import { useDeferredValue, useState, useMemo, useTransition, Suspense } from 'react';
@@ -149,16 +149,16 @@ function ProductList({ products, isStale }: { products: Product[]; isStale: bool
 }
 ```
 
-This example combines several powerful patterns:
+يجمع هذا المثال عدة أنماط قوية:
 
-- **Deferred values** for both search query and category filter
-- **Transitions** for category changes (since they’re typically less urgent than typing)
-- **Visual feedback** when results are stale (notice the `isStale` prop)
-- **Memoized computation** to prevent unnecessary filtering
+- **قيم مؤجَّلة** لكل من عبارة البحث ومرشّح الفئة
+- **انتقالات** لتغييرات الفئة (لأنها عادةً أقل إلحاحًا من الكتابة)
+- **استجابة بصرية** عندما تصبح النتائج قديمة (لاحظ خاصية `isStale`)
+- **حساب محفوظ النتائج** لمنع الترشيح غير الضروري
 
-## Advanced Pattern: Cascading Deferrals
+## نمط متقدّم: التأجيلات المتتابعة
 
-Sometimes you have multiple levels of expensive computation. Here’s a pattern for handling cascading deferrals:
+أحيانًا تكون لديك مستويات متعددة من الحسابات المكلفة. إليك نمطًا للتعامل مع التأجيلات المتتابعة:
 
 ```typescript
 function DataDashboard() {
@@ -194,11 +194,11 @@ function DataDashboard() {
 }
 ```
 
-Each level of deferral protects the more urgent updates above it. Date range changes won’t block filter updates, and filter changes won’t block the chart rendering.
+يحمي كل مستوى من التأجيل التحديثات الأكثر إلحاحًا فوقه. فغييرات نطاق التاريخ لن تحجب تحديثات المرشّحات، وغييرات المرشّحات لن تحجب تصيير الرسم البياني.
 
-## Handling Loading States
+## التعامل مع حالات التحميل
 
-One challenge with `useDeferredValue` is managing loading states. Here’s a clean pattern for showing users when results are stale:
+من تحديات `useDeferredValue` إدارة حالات التحميل. وإليك نمطًا نظيفًا لتوضيح للمستخدمين متى تصبح النتائج قديمة:
 
 ```typescript
 function SearchWithLoadingState() {
@@ -231,11 +231,11 @@ function SearchWithLoadingState() {
 }
 ```
 
-The `isStale` check is your friend—it tells you when the UI is showing outdated results while new ones are being computed.
+فحص `isStale` صديقك — فهو يخبرك عندما تعرض واجهة المستخدم نتائج قديمة بينما تُحسب نتائج جديدة.
 
-## When NOT to Use `useDeferredValue`
+## متى لا تستخدم `useDeferredValue`
 
-Not every expensive operation benefits from `useDeferredValue`. Here are some cases where it’s not the right tool:
+ليست كل عملية مكلفة تستفيد من `useDeferredValue`. وإليك بعض الحالات التي لا تكون فيها الأداة المناسبة:
 
 ```typescript
 // ❌ Don't defer critical user feedback
@@ -284,9 +284,9 @@ function AnalyticsDashboard() {
 }
 ```
 
-## Combining with Concurrent Features
+## الدمج مع الميزات المتزامنة
 
-`useDeferredValue` works beautifully with React’s other concurrent features:
+يعمل `useDeferredValue` بانسجام مع بقية ميزات React المتزامنة:
 
 ```typescript
 function ModernSearchApp() {
@@ -324,11 +324,11 @@ function ModernSearchApp() {
 }
 ```
 
-## Performance Tips
+## نصائح للأداء
 
-Here are some practical tips for getting the most out of `useDeferredValue`:
+إليك بعض النصائح العملية للاستفادة القصوى من `useDeferredValue`:
 
-### Measure Before Optimizing
+### قِس قبل أن تُحسّن
 
 ```typescript
 // Use React DevTools Profiler to identify actual bottlenecks
@@ -346,9 +346,9 @@ function ExpensiveComponent({ data }: { data: string }) {
 }
 ```
 
-### Granular Deferrals
+### تأجيلات دقيقة
 
-Sometimes it’s better to defer specific parts rather than entire objects:
+أحيانًا يكون من الأفضل تأجيل أجزاء محددة بدلًا من كائنات كاملة:
 
 ```typescript
 // ❌ Defers the entire filter object
@@ -361,9 +361,9 @@ const deferredCategory = useDeferredValue(filters.category);
 const sortOrder = filters.sortOrder;
 ```
 
-### Custom Hooks for Common Patterns
+### خُطّافات مخصّصة للأنماط الشائعة
 
-Create reusable hooks for common deferral patterns:
+أنشئ خُطّافات قابلة لإعادة الاستخدام لأنماط التأجيل الشائعة:
 
 ```typescript
 function useDeferredSearch<T>(
@@ -398,9 +398,9 @@ function ProductSearch() {
 }
 ```
 
-## Common Gotchas
+## مزالق شائعة
 
-### Gotcha #1: Missing Memoization
+### المزلق 1: حفظ نتائج مفقود
 
 ```typescript
 // ❌ Still re-renders on every change
@@ -425,7 +425,7 @@ function GoodExample({ query }: { query: string }) {
 }
 ```
 
-### Gotcha #2: Deferring the Wrong Thing
+### المزلق 2: تأجيل الشيء الخطأ
 
 ```typescript
 // ❌ Deferring the final result instead of the input
@@ -448,6 +448,6 @@ function GoodExample({ items, query }: { items: Item[]; query: string }) {
 }
 ```
 
-## Wrapping Up
+## الخلاصة
 
-`useDeferredValue` is a powerful tool for building responsive UIs that handle expensive operations gracefully. The key principles to remember:
+‏`useDeferredValue` أداة قوية لبناء واجهات مستجيبة تتعامل مع العمليات المكلفة بسلاسة. وأهم المبادئ التي يجب تذكّرها:

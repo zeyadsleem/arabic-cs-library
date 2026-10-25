@@ -1,12 +1,12 @@
 ---
-title: "Using Zod with Express"
-lang: en
+title: "استخدام Zod مع Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/using-zod-with-express"
 ---
 
-Type definitions in TypeScript help you catch mistakes at compile time, but they can’t validate data when your code is actually running. That’s where a schema validation library like [zod](https://www.npmjs.com/package/zod) shines. It bridges the gap by enforcing runtime checks while preserving type safety.
+تساعدك تعريفات الأنواع في TypeScript على التقاط الأخطاء في وقت التصريف، لكنها لا تستطيع التحقق من البيانات عندما تكون شيفرتك قيد التشغيل فعلًا. وهنا تتألق مكتبة للتحقق من المخططات مثل [zod](https://www.npmjs.com/package/zod). فهي تردم الفجوة بفرض فحوص وقت التشغيل مع الحفاظ على سلامة الأنواع.
 
-Below is an example of using Zod in an [Express](https://expressjs.com/) application to ensure that incoming requests match the expected structure before the route handler processes them.
+وفيما يلي مثال على استخدام Zod في تطبيق [Express](https://expressjs.com/) للتأكد من أن الطلبات الواردة تطابق البنية المتوقعة قبل أن يعالجها معالج المسار.
 
 ```typescript
 import { z } from 'zod';
@@ -58,11 +58,11 @@ app.post(
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().email()` is preferably `z.email()`. The `ZodType` generic signature also changed from `ZodType<Output, Def, Input>` to `ZodType<Output, Input>` (the `Def` parameter was removed). The `z.ZodTypeAny` alias used here still works in v4.
+> في Zod v4، يُفضَّل استخدام `z.email()` بدلًا من `z.string().email()`. كما تغيّرت بصمة النوع العام `ZodType` من `ZodType<Output, Def, Input>` إلى `ZodType<Output, Input>` (إذ حُذفت المعلمة `Def`). ولا يزال المرادف `z.ZodTypeAny` المستخدم هنا يعمل في الإصدار v4.
 
-## Validating Query Parameters
+## التحقق من معاملات الاستعلام
 
-When working with GET endpoints that include query strings, you can define a schema for req.query. Since query parameters always arrive as strings, you might need z.string().transform(…) or z.coerce.number() to convert them.
+عند التعامل مع نقاط نهاية GET التي تتضمن سلاسل استعلام، يمكنك تعريف مخطط لـ req.query. ولأن معاملات الاستعلام تصل دائمًا كسلاسل، فقد تحتاج إلى z.string().transform(…) أو z.coerce.number() لتحويلها.
 
 ```typescript
 const searchQuerySchema = z.object({
@@ -95,9 +95,9 @@ app.get(
 );
 ```
 
-### Validating URL Parameters
+### التحقق من معاملات URL
 
-If your routes include path parameters (like /:userId), you can validate req.params using a similar approach.
+إذا كانت مساراتك تتضمن معاملات مسار (مثل /:userId)، فيمكنك التحقق من req.params بنهج مشابه.
 
 ```typescript
 const userParamsSchema = z.object({
@@ -128,11 +128,11 @@ app.get(
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().uuid()` is preferably `z.uuid()`. The v4 `z.uuid()` enforces stricter RFC 9562 validation; use `z.guid()` for v3-compatible behavior.
+> في Zod v4، يُفضَّل استخدام `z.uuid()` بدلًا من `z.string().uuid()`. ويفرض `z.uuid()` في الإصدار v4 تحققًا أشد صرامة وفق RFC 9562؛ فاستخدم `z.guid()` للحصول على السلوك المتوافق مع v3.
 
-## Validating Responses
+## التحقق من الاستجابات
 
-Zod can also validate your outbound data. This isn’t always necessary, but in higher-stakes environments (e.g., financial or medical data), it can be useful to ensure your code returns precisely the format you intend.
+يستطيع Zod أيضًا التحقق من بياناتك الصادرة. وهذا ليس ضروريًا دائمًا، لكن في البيئات العالية المخاطر (مثل البيانات المالية أو الطبية)، قد يكون مفيدًا للتأكد من أن شيفرتك تعيد بالضبط التنسيق الذي تقصده.
 
 ```typescript
 const userListResponseSchema = z.object({
@@ -147,9 +147,9 @@ function sendUserListResponse(res: Response, payload: unknown) {
 }
 ```
 
-### Safe Parsing vs. Throwing
+### التحليل الآمن مقابل الرمي
 
-If you prefer not to handle exceptions with `try`/`catch`, consider `schema.safeParse(data)` instead of `schema.parse(data)`. It returns `{ success: boolean; data?: T; error?: ZodError }`, letting you respond with a 400 status if success is false.
+إذا كنت تفضّل ألا تتعامل مع الاستثناءات بـ `try`/`catch`، ففكّر في `schema.safeParse(data)` بدلًا من `schema.parse(data)`. فهو يعيد `{ success: boolean; data?: T; error?: ZodError }`، ما يتيح لك الرد بحالة 400 إذا كانت success تساوي false.
 
 ```typescript
 const result = createUserSchema.safeParse(req.body);
@@ -159,9 +159,9 @@ if (!result.success) {
 // result.data is valid
 ```
 
-## Why Use Zod?
+## لماذا تستخدم Zod؟
 
-1. You get runtime validation *and* static typing from the same schema.
-2. You ensure only valid data hits your route handlers, preventing potential crashes or security holes.
-3. Zod integrates well with popular frameworks like [Express](https://www.npmjs.com/package/express), NestJS, or anything else in the Node.js ecosystem.
-4. You can extend this pattern to query parameters, URL parameters, and even response data to keep the entire data flow strongly typed and validated.
+1. تحصل على تحقق في وقت التشغيل *و* تنميط ساكن من المخطط نفسه.
+2. تضمن ألا تصل إلى معالجات مساراتك إلا بيانات صالحة، فتجنّب الأعطال المحتملة أو الثغرات الأمنية.
+3. يتكامل Zod جيدًا مع أطر شائعة مثل [Express](https://www.npmjs.com/package/express) وNestJS، أو أي شيء آخر في منظومة Node.js.
+4. يمكنك توسيع هذا النمط ليشمل معاملات الاستعلام ومعاملات URL وحتى بيانات الاستجابة، لتبقى سلسلة البيانات كلها قوية الأنواع ومتحقَّقًا منها.

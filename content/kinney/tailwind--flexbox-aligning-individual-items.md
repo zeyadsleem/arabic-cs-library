@@ -1,40 +1,40 @@
 ---
-title: "Aligning Individual Items"
-lang: en
+title: "محاذاة العناصر المفردة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-aligning-individual-items"
 ---
 
-While `align-items` controls the alignment of all direct children in a flex container, `align-self` allows fine-tuning the alignment of a single item. Tailwind provides `self-*` utilities for this.
+بينما تتحكّم `align-items` في محاذاة جميع العناصر الفرعية المباشرة في حاوية flex، تتيح `align-self` ضبطًا دقيقًا لمحاذاة عنصر مفرد. يوفّر Tailwind أدوات `self-*` لهذا الغرض.
 
-The `align-self` property overrides the container’s `align-items` value for a specific flex item. For instance, if a container uses `align-items: center`, `align-self: flex-start` on a child aligns it to the start of the cross axis, while other items remain centered.
+تتجاوز خاصية `align-self` قيمة `align-items` في الحاوية بالنسبة إلى عنصر flex محدّد. فمثلًا، إذا كانت الحاوية تستخدم `align-items: center`، فإن `align-self: flex-start` على عنصر فرعي يحاذيه إلى بداية المحور العرضي، بينما تبقى بقية العناصر موسّطة.
 
-Tailwind’s `self-*` utilities manage the `align-self` property.
+تدير أدوات `self-*` في Tailwind خاصية `align-self`.
 
-## Controlling Individual Alignment with `align-self`
+## التحكّم في محاذاة عنصر مفرد عبر `align-self`
 
-The `align-self` property sets a flex or grid item’s alignment within its flex line or grid area, overriding the container’s `align-items`.
+تضبط خاصية `align-self` محاذاة عنصر flex أو grid داخل سطر flex أو منطقة grid الخاصة به، متجاوزةً `align-items` في الحاوية.
 
-Tailwind offers these `align-self` utilities:
+يوفّر Tailwind أدوات `align-self` التالية:
 
-- `self-auto`: Resets to the container’s `align-items` value, or defaults to `stretch` if `align-items: normal`.
-- `self-start`: Aligns item to the start of the container’s cross axis.
-- `self-end`: Aligns item to the end of the container’s cross axis.
-- `self-center`: Aligns item along the center of the container’s cross axis.
-- `self-stretch`: Stretches item to fill the container’s cross axis, ignoring its dimensions unless constrained.
-- `self-baseline`: Aligns item’s baseline with other items in the same flex line or grid row.
-- `self-baseline-last`: Aligns item’s baseline with the last baseline in the container.
-- `self-end-safe`: Aligns item to the end, but to the start if overflow would occur.
-- `self-center-safe`: Aligns item to the center, but to the start if overflow would occur.
+- `self-auto`: تعيد الضبط إلى قيمة `align-items` في الحاوية، أو تعتمد `stretch` الافتراضية إذا كانت `align-items: normal`.
+- `self-start`: تحاذي العنصر إلى بداية المحور العرضي للحاوية.
+- `self-end`: تحاذي العنصر إلى نهاية المحور العرضي للحاوية.
+- `self-center`: تحاذي العنصر على طول مركز المحور العرضي للحاوية.
+- `self-stretch`: تمدّ العنصر ليملأ المحور العرضي للحاوية، متجاهلةً أبعاده ما لم تكن مقيّدة.
+- `self-baseline`: تحاذي خط أساس العنصر مع بقية العناصر في سطر flex أو صف grid نفسه.
+- `self-baseline-last`: تحاذي خط أساس العنصر مع خط الأساس الأخير في الحاوية.
+- `self-end-safe`: تحاذي العنصر إلى النهاية، وإلى البداية إذا جرى تجاوز الحد.
+- `self-center-safe`: تحاذي العنصر إلى الوسط، وإلى البداية إذا جرى تجاوز الحد.
 
-### Examples
+### أمثلة
 
-Assume the container has `display: flex` or `display: inline-flex`.
+افترض أن الحاوية تملك `display: flex` أو `display: inline-flex`.
 
-#### Resetting to Container’s Alignment
+#### إعادة الضبط إلى محاذاة الحاوية
 
-By default, `align-self` is `auto`, inheriting the container’s `align-items`. `self-auto` makes this explicit.
+افتراضيًا تكون `align-self` مساوية لـ `auto`، فتورث `align-items` من الحاوية. وتجعل `self-auto` هذا السلوك صريحًا.
 
-*Resetting to Container's Alignment — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/b45674f244ae48e63aeddbee44f073bb0895056b7f8a7f5688e5b1cd1dcaf998.html)*
+*إعادة الضبط إلى محاذاة الحاوية — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b45674f244ae48e63aeddbee44f073bb0895056b7f8a7f5688e5b1cd1dcaf998.html)*
 
 ```html
 <div class="flex min-h-[200px] items-center gap-4 rounded-lg bg-gray-100 p-6">
@@ -44,11 +44,11 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-#### Aligning to the Start
+#### المحاذاة إلى البداية
 
-`self-start` aligns an item to the beginning of the cross axis, regardless of `align-items`.
+محاذي `self-start` يحاذي العنصر إلى بداية المحور العرضي، بغضّ النظر عن `align-items`.
 
-*Aligning to the Start — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/abebf41349c9ecf0b326f4c81e1ca25832ef9f91a2ddd9f8d9f8bf006cce764b.html)*
+*المحاذاة إلى البداية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/abebf41349c9ecf0b326f4c81e1ca25832ef9f91a2ddd9f8d9f8bf006cce764b.html)*
 
 ```html
 <div class="flex min-h-[200px] items-center gap-4 rounded-lg bg-gray-100 p-6">
@@ -58,11 +58,11 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-#### Aligning to the End
+#### المحاذاة إلى النهاية
 
-`self-end` aligns an item to the end of the cross axis.
+محاذي `self-end` يحاذي العنصر إلى نهاية المحور العرضي.
 
-*Aligning to the End — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/ead473ac4ed2df6f12fbfb2cbd21e6bd0e30787de63a3ec9ea4587c41d432a57.html)*
+*المحاذاة إلى النهاية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ead473ac4ed2df6f12fbfb2cbd21e6bd0e30787de63a3ec9ea4587c41d432a57.html)*
 
 ```html
 <div class="flex min-h-[200px] items-center gap-4 rounded-lg bg-gray-100 p-6">
@@ -72,11 +72,11 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-#### Centering a Single Item
+#### توسيط عنصر واحد
 
-`self-center` centers a specific item when others have different alignments.
+يوسّط `self-center` عنصرًا محدّدًا عندما يكون لبقية العناصر محاذاة مختلفة.
 
-*Centering a Single Item — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/36a95356ba16d53a53ac4a59048da96707c3f44cd65bfc7c24f21854a917100e.html)*
+*توسيط عنصر واحد — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/36a95356ba16d53a53ac4a59048da96707c3f44cd65bfc7c24f21854a917100e.html)*
 
 ```html
 <div class="flex min-h-[200px] items-start gap-4 rounded-lg bg-gray-100 p-6">
@@ -86,13 +86,13 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-`self-center-safe` is a safer alternative, avoiding overflow.
+يُعدّ `self-center-safe` بديلًا أكثر أمانًا لأنه يتجنّب تجاوز الحد.
 
-#### Stretching a Single Item
+#### تمديد عنصر واحد
 
-`self-stretch` makes an item fill the cross axis, overriding its size or `align-items`.
+يملأ `self-stretch` العنصر المحور العرضي، متجاوزًا حجمه أو `align-items`.
 
-*Stretching a Single Item — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/134b447397330b136062c69df905f8f6947f9c2623b0adadd06eecc2b67a82b4.html)*
+*تمديد عنصر واحد — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/134b447397330b136062c69df905f8f6947f9c2623b0adadd06eecc2b67a82b4.html)*
 
 ```html
 <div class="flex min-h-[200px] items-start gap-4 rounded-lg bg-gray-100 p-6">
@@ -102,11 +102,11 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-#### Aligning Baselines
+#### محاذاة خطوط الأساس
 
-`self-baseline` aligns text baselines of items, even with different content heights. `self-baseline-last` aligns to the last baseline.
+يحاذي `self-baseline` خطوط أساس النصوص للعناصر، حتى مع اختلاف ارتفاعات المحتوى. ويحاذي `self-baseline-last` إلى خط الأساس الأخير.
 
-*Aligning Baselines — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/9a8090763c84578e8d8b4504623da354ebf199fa1383d2c13063275e81245769.html)*
+*محاذاة خطوط الأساس — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9a8090763c84578e8d8b4504623da354ebf199fa1383d2c13063275e81245769.html)*
 
 ```html
 <div class="flex min-h-[200px] items-stretch gap-4 rounded-lg bg-gray-100 p-6">
@@ -118,21 +118,21 @@ By default, `align-self` is `auto`, inheriting the container’s `align-items`. 
 </div>
 ```
 
-### Arbitrary Values and Custom Properties
+### القيم التعسّفية والخصائص المخصّصة
 
-For values not covered by predefined utilities or for using CSS variables, Tailwind supports `self-[]` (arbitrary values) and `self-()` (custom properties).
+للقيم التي لا تغطيها الأدوات المُعرَّفة مسبقًا، أو لاستخدام متغيّرات CSS، يدعم Tailwind صيغة `self-[]` (القيم التعسّفية) وصيغة `self-()` (الخصائص المخصّصة).
 
-For example, `self-[flex-start]` is like `self-start`. `self-(--my-custom-alignment)` sets `align-self` to the value of `--my-custom-alignment`.
+على سبيل المثال، `self-[flex-start]` مثل `self-start`. و`self-(--my-custom-alignment)` تضبط `align-self` على قيمة `--my-custom-alignment`.
 
-## Responsive Alignment
+## المحاذاة المتجاوبة
 
-Individual item alignment can change with viewport or container size. Tailwind’s `self-*` utilities support responsive design via prefixes.
+يمكن أن تتغيّر محاذاة العنصر المفرد بحسب حجم نافذة العرض أو الحاوية. تدعم أدوات `self-*` في Tailwind التصميم المتجاوب عبر البادئات.
 
-### Viewport Breakpoints
+### نقاط توقّف نافذة العرض
 
-Apply `self-*` utilities conditionally with breakpoint prefixes (e.g., `sm:`, `md:`, `lg:`).
+طبّق أدوات `self-*` بشكل مشروط مع بادئات نقاط التوقّف (مثل `sm:` و`md:` و`lg:`).
 
-*Viewport Breakpoints — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/fc9a009ddd6cd20459382d022dfd7f0fd0b4cd4c9f6584616926d51f21abddee.html)*
+*نقاط توقّف نافذة العرض — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/fc9a009ddd6cd20459382d022dfd7f0fd0b4cd4c9f6584616926d51f21abddee.html)*
 
 ```html
 <div class="flex min-h-[200px] items-start gap-4 rounded-lg bg-gray-100 p-6 md:items-center">
@@ -142,13 +142,13 @@ Apply `self-*` utilities conditionally with breakpoint prefixes (e.g., `sm:`, `m
 </div>
 ```
 
-Item 1 aligns to `end` by default. On medium screens (`md`) and up, the container centers items (`md:items-center`), and Item 1 inherits this (`md:self-auto`), also centering.
+يُحاذى العنصر 1 إلى `end` افتراضيًا. وفي الشاشات المتوسطة (`md`) فما فوق، توسّط الحاوية العناصر (`md:items-center`)، فيرث العنصر 1 ذلك (`md:self-auto`) ويُوسَّط أيضًا.
 
-### Container Queries
+### استعلامات الحاوية
 
-Adjust item alignment based on parent container size using `@container` and variants like `@sm:`, `@md:`.
+اضبط محاذاة العنصر بحسب حجم الحاوية الأب باستخدام `@container` ومتغيّرات مثل `@sm:` و`@md:`.
 
-*Container Queries — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/964f1f3cea954c43b6f3234f91c9ac9127f06b227283cef63a5cabb628b995ea.html)*
+*استعلامات الحاوية — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/964f1f3cea954c43b6f3234f91c9ac9127f06b227283cef63a5cabb628b995ea.html)*
 
 ```html
 <div class="@container flex min-h-[200px] items-center gap-4 rounded-lg bg-gray-100 p-6">
@@ -157,6 +157,6 @@ Adjust item alignment based on parent container size using `@container` and vari
 </div>
 ```
 
-Item 1 aligns `start` by default. When the parent `@container` reaches the `@md` breakpoint, Item 1 aligns `end` (`@md:self-end`).
+يُحاذى العنصر 1 إلى `start` افتراضيًا. وعندما تبلغ الحاوية الأم `@container` نقطة توقّف `@md`، يُحاذى العنصر 1 إلى `end` (`@md:self-end`).
 
-Combining `align-self` utilities with responsive features and arbitrary values enables nuanced, responsive layouts.
+يتيح دمج أدوات `align-self` مع المزايا المتجاوبة والقيم التعسّفية إنشاء تخطيطات متجاوبة دقيقة.

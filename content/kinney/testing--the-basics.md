@@ -1,14 +1,14 @@
 ---
-title: "Writing Your First Tests"
-lang: en
+title: "كتابة اختباراتك الأولى"
+lang: ar
 source: "https://stevekinney.com/courses/testing/the-basics"
 ---
 
-> **Sample Code Repository**
+> **مستودع الشيفرة النموذجية**
 >
-> If you haven’t already, now is a good time to clone [the repository with the sample code for this course](https://github.com/stevekinney/introduction-to-testing).
+> إن لم تكن قد فعلت ذلك بعد، فهذا وقت مناسب لاستنساخ [المستودع الذي يحتوي على الشيفرة النموذجية لهذه الدورة](https://github.com/stevekinney/introduction-to-testing).
 
-Let’s start with the world’s simplest test. I have an example of this code in `examples/scratchpad/index.test.js`, but you probably don’t need to worry about running it just yet.
+لنبدأ بأبسط اختبار في العالم. لديّ مثال على هذه الشيفرة في `examples/scratchpad/index.test.js`، لكنك على الأرجح لست بحاجة إلى القلق بشأن تشغيله الآن.
 
 ```javascript
 import { test, expect } from 'vitest';
@@ -18,21 +18,21 @@ it('is a super simple test', () => {
 });
 ```
 
-You *could* run this test by running `npm test` from the command line, but don’t expect any surprises.
+يمكنك *أن* تشغّل هذا الاختبار بتنفيذ `npm test` من سطر الأوامر، لكن لا تتوقّع أي مفاجآت.
 
-At the highest level, we can see the following:
+على أعلى مستوى، يمكننا ملاحظة ما يلي:
 
-- There is a function called `test` that takes two arguments: A string that represents the name of the test. A function that contains the body of the test.
-  - A string that represents the name of the test.
-  - A function that contains the body of the test.
-- Inside of that function, we use an assert library to make a statement about what we expect to be the way the world works. In this case, we’re expecting this two things to be equal and they are.
-  - In this case, we’re expecting this two things to be equal and they are.
+- توجد دالة تُسمّى `test` تأخذ وسيطين: نصًّا يمثّل اسم الاختبار. ودالة تحتوي على جسم الاختبار.
+  - نصًّا يمثّل اسم الاختبار.
+  - ودالة تحتوي على جسم الاختبار.
+- داخل تلك الدالة، نستخدم مكتبة تحقّق لنُصدر حكمًا على ما نتوقّع أن تكون عليه طريقة عمل العالم. في هذه الحالة، نتوقّع أن يكون هذان الشيئان متساويين، وهما كذلك.
+  - في هذه الحالة، نتوقّع أن يكون هذان الشيئان متساويين، وهما كذلك.
 
-> **Pro-Tip**
+> **نصيحة احترافية**
 >
-> You’ll see other tests where instead of `test`, we use `it`. There is literally no difference between these two functions. They are aliases of each other. You can use them interchangeably.
+> سترى اختبارات أخرى نستخدم فيها `it` بدلًا من `test`. لا يوجد حرفيًا أي فرق بين هاتين الدالتين. إنهما اسمان مستعاران لبعضهما. يمكنك استخدامهما بالتبادل.
 
-Okay, well this works—but, it’s a little ridiculous. Let’s actually test some expressions or maybe even a function.
+حسنًا، هذا يعمل—لكنه سخيف بعض الشيء. لنختبر فعليًا بعض التعابير، أو ربما دالة أيضًا.
 
 ```javascript
 test('another test, but with some logic', () => {
@@ -47,13 +47,13 @@ test('a test with a function', () => {
 });
 ```
 
-The selling point here is that when we write tests, we can make a bunch of statements about how we *expect* our code to work. Our test suite’s job is to save us the hassle of having to manually check on all of these things. Instead, the test runner will grab our code and make sure that everything still works the way that we expect as we go about our business adding features and refactoring code.
+نقطة الجذب هنا أننا حين نكتب الاختبارات، يمكننا إصدار مجموعة من الأحكام حول كيف *نتوقّع* أن تعمل شيفرتنا. ومهمة مجموعة اختباراتنا أن توفّر علينا عناء التحقّق يدويًا من كل هذه الأشياء. بدلًا من ذلك، سيأخذ مُشغّل الاختبارات شيفرتنا ويتأكّد من أن كل شيء لا يزال يعمل بالطريقة التي نتوقّعها أثناء مضيّنا في عملنا بإضافة الميزات وإعادة هيكلة الشيفرة.
 
-Generally speaking, it’s unlikely that our `add` function would live inside of a test. More likely, it’s a utility function of some kind that we’d use in our application.
+بوجه عام، من غير المرجّح أن تعيش دالتنا `add` داخل اختبار. والأرجح أنها دالة مساعدة من نوع ما نستخدمها في تطبيقنا.
 
-We’ll keep our scratchpad around in the repository for anytime we want to do some quick experiments, but let’s hop over to `examples/basic-math/src/arithmetic.js` instead.
+سنُبقي مساحة التجارب لدينا في المستودع لأي وقت نريد فيه إجراء بعض التجارب السريعة، لكن لننتقل بدلًا من ذلك إلى `examples/basic-math/src/arithmetic.js`.
 
-We can pull out our *very* exciting function into it’s own file like we might otherwise expect to see in our normal day-to-day.
+يمكننا استخراج دالتنا *الشيّقة جدًا* إلى ملف خاص بها كما قد نتوقّع أن نراه في يومنا العادي.
 
 ```javascript
 // arithmetic.js
@@ -62,7 +62,7 @@ export const add = (a, b) => {
 };
 ```
 
-We can add the test in `arithmetic.test.js`.
+يمكننا إضافة الاختبار في `arithmetic.test.js`.
 
 ```javascript
 // src/arithmetic.test.js
@@ -82,9 +82,9 @@ describe.todo('multiply', () => {});
 describe.todo('divide', () => {});
 ```
 
-## Adding Tests
+## إضافة الاختبارات
 
-Every test you write comes at some infinitesimally small cost, which I suppose can add up over time. The unhelpful rule for how many tests you should write is “as many as you need.” But, generally speaking—we want to at least cover some of the edge cases.
+كل اختبار تكتبه يأتي بتكلفة صغيرة للغاية، يمكن أن تتراكم بمرور الوقت على ما أظن. القاعدة غير المفيدة لعدد الاختبارات التي ينبغي أن تكتبها هي «بالقدر الذي تحتاجه». لكن بوجه عام—نريد على الأقل تغطية بعض الحالات الحدّية.
 
 ```javascript
 // src/arithmetic.test.js
@@ -106,13 +106,13 @@ describe('add', () => {
 });
 ```
 
-We’ll add a few more in a later section, but this is a pretty good start for now. Especially because we haven’t looked at [running your tests](https://stevekinney.com/courses/testing/running-tests) just yet.
+سنضيف المزيد في قسم لاحق، لكن هذه بداية جيدة جدًا الآن. خصوصًا لأننا لم ننظر بعد إلى [تشغيل اختباراتك](https://stevekinney.com/courses/testing/running-tests).
 
-But first, let’s take a hot minute to talk about [how tests work](https://stevekinney.com/courses/testing/how-tests-work).
+لكن أولًا، لنأخذ لحظة قصيرة للحديث عن [كيف تعمل الاختبارات](https://stevekinney.com/courses/testing/how-tests-work).
 
-## Related Reading
+## قراءات ذات صلة
 
-- [Running Tests](https://stevekinney.com/courses/testing/running-tests)
-- [How Tests Work](https://stevekinney.com/courses/testing/how-tests-work)
-- [Filtering Tests](https://stevekinney.com/courses/testing/filtering-tests)
-- [Organizing and Annotating Tests](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
+- [تشغيل الاختبارات](https://stevekinney.com/courses/testing/running-tests)
+- [كيف تعمل الاختبارات](https://stevekinney.com/courses/testing/how-tests-work)
+- [تصفية الاختبارات](https://stevekinney.com/courses/testing/filtering-tests)
+- [تنظيم الاختبارات والتعليق عليها](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)

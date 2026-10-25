@@ -1,30 +1,30 @@
 ---
-title: "Text-to-Image Generation (Stable Diffusion)"
-lang: en
+title: "توليد الصور من النص (Stable Diffusion)"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/image-generation"
 ---
 
-> **Key Takeaways**
+> **أهم الاستنتاجات**
 >
-> - Stable Diffusion denoises latents conditioned on text; VAE decodes to pixels
-> - Classifier-free guidance balances adherence to prompts vs realism (tune CFG)
-> - Schedulers trade speed/detail; step count interacts with scheduler choice
-> - Use valid latent resolutions (multiples), craft positive/negative prompts, and set seeds
-> - Optimize memory: efficient attention, slicing, channels-last, and mixed precision
+> - يزيل Stable Diffusion التشويش من الكوامن (latents) المشروطة بالنص؛ ويفكّ VAE ترميزها إلى بكسلات
+> - يوازن التوجيه بلا مصنّف (classifier-free) بين الالتزام بالأوامر والواقعية (اضبط CFG)
+> - تقايض المجدولات (schedulers) بين السرعة والتفاصيل؛ وعدد الخطوات يتفاعل مع اختيار المجدول
+> - استخدم دقّات كامنة صالحة (مضاعفات)، وصُغ أوامر إيجابية/سلبية، واضبط البذور (seeds)
+> - حسّن الذاكرة: انتباه فعّال، والتقطيع (slicing)، وصيغة channels-last، والدقة المختلطة
 
-## Overview
+## نظرة عامة
 
-Stable Diffusion generates images from text using a latent diffusion process guided by a text encoder and a denoising UNet. Unlike classification models that analyze existing images, diffusion models create new images from noise.
+يولّد Stable Diffusion الصور من النص باستخدام عملية انتشار كامنة (latent diffusion) يوجّهها مُرمِّز نصي وشبكة UNet لإزالة التشويش. وخلافًا لنماذج التصنيف التي تحلّل صورًا موجودة، تُنشئ نماذج الانتشار صورًا جديدة من الضوضاء.
 
-Think of Stable Diffusion as a super-smart magic coloring book: you whisper what picture you want—say, “a purple dinosaur eating ice cream on the moon”—and the coloring book starts with a page covered in silly scribbles (just random dots). Then, almost like an eraser and crayon working together, it keeps gently wiping away the messy dots and adding the right colors and shapes bit by bit, listening to your words the whole time, until the random mess turns into the exact picture you asked for.
+فكّر في Stable Diffusion ككتاب تلوين سحري فائق الذكاء: تهمس له بالصورة التي تريدها—قل مثلًا «ديناصور أرجواني يأكل مثلجات على سطح القمر»—فيبدأ كتاب التلوين بصفحة مغطاة بخربشات عبثية (مجرد نقاط عشوائية). ثم، وكأن ممحاة وقلم تلوين يعملان معًا، يظل يمسح النقاط الفوضوية بلطف ويضيف الألوان والأشكال الصحيحة شيئًا فشيئًا، وهو يصغي إلى كلماتك طوال الوقت، حتى تتحول الفوضى العشوائية إلى الصورة التي طلبتها بالضبط.
 
-## Notebook
+## دفتر الملاحظات
 
-View the companion notebook: [Image Generation](https://colab.research.google.com/drive/15s90EDiGZCFqhkc54bV6lAenLqmevTD3?usp=sharing)
+اطّلع على دفتر الملاحظات المرافق: [توليد الصور](https://colab.research.google.com/drive/15s90EDiGZCFqhkc54bV6lAenLqmevTD3?usp=sharing)
 
-## Setting Up Stable Diffusion
+## تهيئة Stable Diffusion
 
-First, install and import the necessary dependencies:
+أولًا، ثبّت الاعتمادات اللازمة واستوردها:
 
 ```python
 # Install dependencies
@@ -38,9 +38,9 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 generator = torch.Generator(device).manual_seed(1337)
 ```
 
-## Generating Your First Image
+## توليد صورتك الأولى
 
-Load a Stable Diffusion model and generate an image:
+حمّل نموذج Stable Diffusion وولّد صورة:
 
 ```python
 model_id = "stable-diffusion-v1-5/stable-diffusion-v1-5"
@@ -74,33 +74,33 @@ image = pipeline(
 image
 ```
 
-## Architecture Components
+## مكوّنات البنية
 
-Stable Diffusion consists of four key components working together:
+يتكوّن Stable Diffusion من أربعة مكوّنات رئيسية تعمل معًا:
 
-**Text Encoder** (CLIP) converts your prompt into embeddings that condition the denoiser. It understands the semantic meaning of your words.
+**المُرمِّز النصي** (Text Encoder) وهو CLIP، ويحوّل أمرك إلى تمثيلات متجهية (embeddings) تشترط عمل مزيل التشويش. وهو يفهم المعنى الدلالي لكلماتك.
 
-**UNet Denoiser** is the sculptor that repeatedly predicts and removes noise at each diffusion step. It’s a neural network trained to gradually transform random noise into meaningful images based on text guidance.
+**مزيل التشويش UNet** هو النحّات الذي يتوقّع الضوضاء ويزيلها مرارًا عند كل خطوة انتشار. وهو شبكة عصبية مُدرَّبة على تحويل الضوضاء العشوائية تدريجيًا إلى صور ذات معنى بناءً على التوجيه النصي.
 
-**VAE (Variational Autoencoder)** translates between pixel space and latent space. The encoder compresses images to smaller latent representations for efficient processing, while the decoder reconstructs full-resolution images from latents.
+**VAE (المُرمِّز التلقائي التغايري)** يترجم بين فضاء البكسل وفضاء الكوامن. يضغط المُرمِّز الصور إلى تمثيلات كامنة أصغر للمعالجة بكفاءة، بينما يعيد المفكّك بناء صور كاملة الدقة من الكوامن.
 
-**Scheduler** controls the noise schedule and update rule. Different schedulers (DDIM, Euler, DPM++) offer trade-offs between speed and quality.
+**المجدول** (Scheduler) يتحكّم في جدول الضوضاء وقاعدة التحديث. وتقدّم المجدولات المختلفة (DDIM، Euler، DPM++) مقايضات بين السرعة والجودة.
 
-## Understanding Diffusion Models
+## فهم نماذج الانتشار
 
-Diffusion models create images by gradually removing noise from random patterns:
+تُنشئ نماذج الانتشار الصور بإزالة الضوضاء تدريجيًا من أنماط عشوائية:
 
-**Forward Process**: Take a clear image and gradually add noise until it becomes pure random noise.
+**العملية الأمامية**: خذ صورة واضحة وأضف إليها الضوضاء تدريجيًا حتى تصبح ضوضاء عشوائية خالصة.
 
-**Reverse Process**: Train a model to reverse this—start with noise and gradually remove it to create an image.
+**العملية العكسية**: درّب نموذجًا على عكس ذلك—ابدأ بالضوضاء وأزلها تدريجيًا لإنشاء صورة.
 
-The U-Net is called that because of its U-shaped architecture: it has a downsampling path (analyzes the noisy image at multiple scales), a bottleneck (understands global context), and an upsampling path (rebuilds the image, refining it step by step).
+سُمّيت شبكة U-Net بهذا الاسم بسبب معماريتها على شكل حرف U: فلديها مسار لتقليل الدقة (يحلّل الصورة المشوّشة على مقاييس متعدّدة)، وعنق زجاجة (يفهم السياق الكلي)، ومسار لزيادة الدقة (يعيد بناء الصورة محسّنًا إياها خطوة بخطوة).
 
-## Key Parameters
+## المعاملات الرئيسية
 
-### Quality versus Speed
+### الجودة مقابل السرعة
 
-Control the trade-off between generation quality and speed:
+تحكّم في المقايضة بين جودة التوليد والسرعة:
 
 ```python
 # Fewer steps = faster, lower quality
@@ -114,11 +114,11 @@ creative_image = pipeline(prompt, guidance_scale=3.0)   # More creative
 strict_image = pipeline(prompt, guidance_scale=15.0)    # Stricter to prompt
 ```
 
-**`num_inference_steps`**: 10-50 steps, lower is faster. **`guidance_scale`**: 1-15, higher means more faithful to text but potentially stiffer. **`width/height`**: Stick to multiples of 64; larger sizes need more VRAM.
+**`num_inference_steps`**: من 10 إلى 50 خطوة، والأقل أسرع. **`guidance_scale`**: من 1 إلى 15، والأعلى يعني وفاءً أكبر للنص لكن قد يكون أكثر تصلّبًا. **`width/height`**: التزم بمضاعفات 64؛ فالأحجام الأكبر تحتاج VRAM أكثر.
 
-### Understanding the Generator
+### فهم المولّد
 
-The generator provides reproducible randomness:
+يوفّر المولّد عشوائية قابلة لإعادة الإنتاج:
 
 ```python
 # Creates a random number generator on your GPU/CPU
@@ -128,18 +128,18 @@ generator = torch.Generator(device).manual_seed(1337)
 # Different seed = different image
 ```
 
-Pass this generator to the pipeline for identical results across runs. Drop the seed or change it for variety.
+مرّر هذا المولّد إلى الأنبوب (pipeline) للحصول على نتائج متطابقة عبر التشغيلات. واحذف البذرة أو غيّرها للحصول على تنوّع.
 
-## Prompt Engineering
+## هندسة الأوامر
 
-The quality of generated images heavily depends on how you write prompts. A good prompt typically includes:
+تعتمد جودة الصور المولَّدة اعتمادًا كبيرًا على طريقة كتابتك للأوامر. ويتضمّن الأمر الجيد عادةً:
 
-1. **Subject**: What/who is in the image
-2. **Style**: Artistic style, medium, or technique
-3. **Quality modifiers**: Words that enhance quality
-4. **Lighting**: How the scene is lit
-5. **Composition**: Camera angle, framing
-6. **Details**: Specific attributes or characteristics
+1. **الموضوع**: ما أو مَن في الصورة
+2. **الأسلوب**: الطراز الفني أو الوسيط أو التقنية
+3. **محدّدات الجودة**: كلمات تعزّز الجودة
+4. **الإضاءة**: كيفية إضاءة المشهد
+5. **التكوين**: زاوية الكاميرا والتأطير
+6. **التفاصيل**: صفات أو خصائص محدّدة
 
 ```python
 # Basic prompt
@@ -157,9 +157,9 @@ basic_image = pipeline(basic_prompt).images[0]
 detailed_image = pipeline(detailed_prompt).images[0]
 ```
 
-## Negative Prompts
+## الأوامر السلبية
 
-Negative prompts tell the model what to avoid. In classifier-free guidance, the model denoises twice at every step—once with your positive prompt and once with an unconditional prompt. The negative prompt replaces that empty unconditional prompt, actively steering away from unwanted concepts:
+تخبر الأوامر السلبية النموذج بما يجب تجنّبه. ففي التوجيه بلا مصنّف، يزيل النموذج التشويش مرتين عند كل خطوة—مرة بأمرك الإيجابي ومرة بأمر غير مشروط. ويحلّ الأمر السلبي محلّ ذلك الأمر غير المشروط الفارغ، فيبعد النموذج بنشاط عن المفاهيم غير المرغوبة:
 
 ```python
 model_id = "stabilityai/stable-diffusion-xl-base-1.0"
@@ -200,11 +200,11 @@ image = pipeline(
 ).images[0]
 ```
 
-The mathematical effect is that the model actively moves away from concepts in the negative prompt, reducing artifacts and unwanted elements.
+الأثر الرياضي هو أن النموذج يبتعد بنشاط عن المفاهيم الواردة في الأمر السلبي، ما يقلّل التشوهات والعناصر غير المرغوبة.
 
-## Schedulers and Their Trade-offs
+## المجدولات ومقايضاتها
 
-Different schedulers offer different benefits:
+تقدّم المجدولات المختلفة مزايا مختلفة:
 
 ```python
 from diffusers import (
@@ -230,13 +230,13 @@ pipeline.scheduler = DDIMScheduler.from_config(
 )
 ```
 
-**DPMSolverMultistep** is like having a smart instruction booklet that finds shortcuts, making pictures appear faster without losing quality. **Euler/Euler A** often gives crisp details. **DDIM** can be faster with fewer steps. **DPM++ variants** provide good detail and stability.
+**DPMSolverMultistep** يشبه امتلاك كتيّب تعليمات ذكي يجد طرقًا مختصرة، فيُظهر الصور أسرع دون فقدان الجودة. **Euler/Euler A** غالبًا ما يمنح تفاصيل حادّة. **DDIM** يمكن أن يكون أسرع بخطوات أقل. **متغيّرات DPM++** تقدّم تفاصيل جيدة واستقرارًا.
 
-## Memory Optimizations
+## تحسينات الذاكرة
 
-### Attention Slicing
+### تقطيع الانتباه
 
-Attention slicing processes the image in smaller chunks instead of all at once:
+يعالج تقطيع الانتباه الصورة على شكل أجزاء أصغر بدلًا من معالجتها كلها دفعة واحدة:
 
 ```python
 # Instead of processing the whole image at once
@@ -246,9 +246,9 @@ pipeline.enable_attention_slicing()
 # Like coloring one square of a grid at a time
 ```
 
-This keeps your GPU from running out of memory while still creating the full picture.
+وهذا يمنع نفاد ذاكرة GPU لديك مع بناء الصورة الكاملة رغم ذلك.
 
-### Additional Optimizations
+### تحسينات إضافية
 
 ```python
 # VAE slicing - process VAE in chunks
@@ -265,16 +265,16 @@ with torch.autocast("cuda"):
     image = pipeline(prompt).images[0]
 ```
 
-## Model Variants
+## متغيّرات النموذج
 
-Different models offer different strengths:
+تقدّم النماذج المختلفة نقاط قوة مختلفة:
 
-- **`runwayml/stable-diffusion-v1-5`**: Classic SD 1.5—fast, versatile
-- **`stabilityai/stable-diffusion-2-1`**: SD 2.1—better faces, higher resolution
-- **`stabilityai/stable-diffusion-xl-base-1.0`**: SDXL—highest quality, slower
-- **`prompthero/openjourney`**: Midjourney style
-- **`hakurei/waifu-diffusion`**: Anime style
-- **`nitrosocke/Ghibli-Diffusion`**: Studio Ghibli style
+- **`runwayml/stable-diffusion-v1-5`**: الإصدار الكلاسيكي SD 1.5—سريع ومتعدّد الاستخدامات
+- **`stabilityai/stable-diffusion-2-1`**: الإصدار SD 2.1—وجوه أفضل ودقة أعلى
+- **`stabilityai/stable-diffusion-xl-base-1.0`**: الإصدار SDXL—أعلى جودة لكن أبطأ
+- **`prompthero/openjourney`**: بأسلوب Midjourney
+- **`hakurei/waifu-diffusion`**: بأسلوب الأنمي
+- **`nitrosocke/Ghibli-Diffusion`**: بأسلوب استوديو Ghibli
 
 ```python
 # Load a specialized model
@@ -289,17 +289,17 @@ anime_image = anime_pipeline(
 ).images[0]
 ```
 
-## Classifier-Free Guidance (CFG)
+## التوجيه بلا مصنّف (CFG)
 
-CFG amplifies the difference between conditional and unconditional predictions:
+يضخّم CFG الفرق بين التوقّعات المشروطة وغير المشروطة:
 
 `predicted_noise = uncond + s * (cond - uncond)`
 
-Where `s` is the guidance scale. Higher values make the model follow your prompt more strictly but can lead to oversaturation or artifacts. Moderate CFG (5-9 for SD 1.5, different ranges for SDXL) balances fidelity and naturalness.
+حيث `s` هو مقياس التوجيه. تجعل القيم الأعلى النموذج يتبع أمرك بصرامة أكبر لكنها قد تؤدي إلى إفراط في التشبّع أو تشوهات. ويوازن CFG المعتدل (من 5 إلى 9 للإصدار SD 1.5، ونطاقات مختلفة لـ SDXL) بين الوفاء والطبيعية.
 
-## Resolution and Aspect Ratios
+## الدقة ونسب الأبعاد
 
-Latents operate at lower resolution than pixels (64× downscale for SD 1.5). Valid dimensions must be multiples of the model’s downsampling factor:
+تعمل الكوامن بدقة أقل من البكسلات (تقليل بمقدار 64× في الإصدار SD 1.5). ويجب أن تكون الأبعاد الصالحة مضاعفات لعامل تقليل الدقة في النموذج:
 
 ```python
 # Valid resolutions for SD 1.5 (multiples of 64)
@@ -318,11 +318,11 @@ for width, height in resolutions:
     ).images[0]
 ```
 
-Start with moderate sizes (512×512), then upscale with dedicated upscalers if needed.
+ابدأ بأحجام معتدلة (512×512)، ثم زد الدقة بمكبّرات (upscalers) مخصّصة عند الحاجة.
 
-## Safety and Ethics
+## السلامة والأخلاقيات
 
-Use safety checkers and content filters responsibly:
+استخدم أدوات فحص السلامة ومرشّحات المحتوى بمسؤولية:
 
 ```python
 # Safety checker is included by default
@@ -337,13 +337,13 @@ def custom_safety_check(images, **kwargs):
 pipeline.safety_checker = custom_safety_check
 ```
 
-Respect licensing and usage policies. Avoid copying living artists’ named styles unless allowed; prefer generic descriptors. Be aware of potential biases in generated content.
+احترم التراخيص وسياسات الاستخدام. وتجنّب نسخ الأساليب المسمّاة لفنانين أحياء إلا إذا كان ذلك مسموحًا؛ وفضّل الأوصاف العامة. وكن على وعي بالتحيّزات المحتملة في المحتوى المولَّد.
 
-## Hardware Considerations
+## اعتبارات العتاد
 
-### CUDA Settings
+### إعدادات CUDA
 
-Enable optimizations for better performance:
+فعّل التحسينات للحصول على أداء أفضل:
 
 ```python
 import torch
@@ -351,9 +351,9 @@ torch.backends.cudnn.benchmark = True
 # Use autocast for fp16/bf16 when running custom inference loops
 ```
 
-### Batch Generation
+### التوليد بالدفعات
 
-Generate multiple images efficiently:
+ولّد صورًا متعدّدة بكفاءة:
 
 ```python
 # Generate batch of images
@@ -367,9 +367,9 @@ images = pipeline(
 ).images
 ```
 
-## Reproducibility and Seeds
+## قابلية إعادة الإنتاج والبذور
 
-Set seeds for reproducible results:
+اضبط البذور للحصول على نتائج قابلة لإعادة الإنتاج:
 
 ```python
 # Fixed seed for reproducibility
@@ -386,34 +386,34 @@ for seed in seeds:
     images.append(image)
 ```
 
-## Troubleshooting Common Issues
+## استكشاف المشكلات الشائعة وإصلاحها
 
-> **Over-saturation**
+> **الإفراط في التشبّع**
 >
-> If images look washed out or oversaturated, reduce guidance scale or try a different scheduler.
+> إذا بدت الصور باهتة أو مشبَعة بإفراط، فقلّل مقياس التوجيه أو جرّب مجدولًا مختلفًا.
 
-> **Prompt Ignored**
+> **تجاهل الأمر**
 >
-> If the model ignores parts of your prompt, try increasing guidance scale, rephrasing with clearer concepts, or using a different model checkpoint.
+> إذا تجاهل النموذج أجزاء من أمرك، فجرّب زيادة مقياس التوجيه، أو إعادة الصياغة بمفاهيم أوضح، أو استخدام نقطة تحقق (checkpoint) مختلفة للنموذج.
 
-> **Repeating Patterns**
+> **الأنماط المتكرّرة**
 >
-> For artifacts or repeating patterns, try different seeds, add negative prompts for common artifacts, or adjust the number of inference steps.
+> للتشوهات أو الأنماط المتكرّرة، جرّب بذورًا مختلفة، أو أضف أوامر سلبية للتشوهات الشائعة، أو عدّل عدد خطوات الاستدلال.
 
-## Advanced Techniques
+## تقنيات متقدّمة {#advanced-techniques}
 
-### Prompt Weighting
+### ترجيح الأوامر
 
-Some interfaces support prompt weighting, though base Diffusers doesn’t directly:
+تدعم بعض الواجهات ترجيح الأوامر، وإن كان Diffusers الأساسي لا يدعمه مباشرة:
 
 ```python
 # Conceptual - requires custom implementation
 weighted_prompt = "(beautiful:1.2) sunset over (calm:0.8) ocean"
 ```
 
-### Checkpoint Merging
+### دمج نقاط التحقق
 
-Combine strengths of different models:
+اجمع نقاط قوة نماذج مختلفة:
 
 ```python
 # Conceptual - requires model merging tools
@@ -424,14 +424,14 @@ merged_model = merge_models(
 )
 ```
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Stable Diffusion democratizes image generation, letting anyone create stunning visuals from text descriptions. Success depends on understanding the interplay between prompts, parameters, and model capabilities. Start with proven models and default settings, then experiment with prompts, schedulers, and parameters to find what works for your use case. Remember that generation is probabilistic—embrace the variability and use seeds when you need consistency.
+يُتيح Stable Diffusion توليد الصور للجميع، فيمكّن أي شخص من إنشاء مرئيات مذهلة من أوصاف نصية. ويعتمد النجاح على فهم التفاعل بين الأوامر والمعاملات وقدرات النموذج. ابدأ بنماذج مُجرَّبة وإعدادات افتراضية، ثم جرّب الأوامر والمجدولات والمعاملات لتجد ما يناسب حالة استخدامك. وتذكّر أن التوليد احتمالي—فاغتنم التغيّر واستخدم البذور عندما تحتاج إلى الاتساق.
 
-## Further Reading
+## قراءات إضافية
 
-- Latent Diffusion Models (Rombach et al., 2022): [https://arxiv.org/abs/2112.10752](https://arxiv.org/abs/2112.10752)
-- Classifier-Free Guidance (Ho and Salimans, 2021): [https://arxiv.org/abs/2207.12598](https://arxiv.org/abs/2207.12598)
+- نماذج الانتشار الكامن (Rombach وآخرون، 2022): [https://arxiv.org/abs/2112.10752](https://arxiv.org/abs/2112.10752)
+- التوجيه بلا مصنّف (Ho وSalimans، 2021): [https://arxiv.org/abs/2207.12598](https://arxiv.org/abs/2207.12598)
 - Stable Diffusion XL: [https://arxiv.org/abs/2307.01952](https://arxiv.org/abs/2307.01952)
-- Diffusers — Text-to-Image: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/conditional_image_generation](https://huggingface.co/docs/diffusers/main/en/using-diffusers/conditional_image_generation)
-- Diffusers — Schedulers: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/schedulers](https://huggingface.co/docs/diffusers/main/en/using-diffusers/schedulers)
+- Diffusers — توليد الصور من النص: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/conditional_image_generation](https://huggingface.co/docs/diffusers/main/en/using-diffusers/conditional_image_generation)
+- Diffusers — المجدولات: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/schedulers](https://huggingface.co/docs/diffusers/main/en/using-diffusers/schedulers)

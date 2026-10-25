@@ -1,27 +1,27 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/generate-and-heal-with-playwright-agents-solution"
 ---
 
-This lab doesn’t produce a single shipped file. It produces an *experience*—running three agents against a real app, reading their output, and deciding whether to trust it. The “solution” here isn’t code to copy. It’s a walkthrough of what you should have seen, what strong output contains, and where the agents need your judgment.
+هذا المختبر لا ينتج ملفًا واحدًا يُشحن. إنه ينتج *تجربة*—تشغيل ثلاثة وكلاء على تطبيق حقيقي، وقراءة مخرجاتهم، وتقرير ما إذا كانت تستحق الثقة. «الحل» هنا ليس شيفرة تنسخها. إنه سرد لما كان ينبغي أن تراه، وما تحتويه المخرجات القوية، وأين يحتاج الوكلاء إلى حكمك.
 
-Your results will differ from mine in the details. The agents explore the app live, and Shelf’s layout, copy, and component structure all influence what the planner observes and the generator writes. That’s fine. What matters is whether your output meets the quality bar described below—not whether it matches mine token for token.
+ستختلف نتائجك عن نتائجي في التفاصيل. فالوكلاء يستكشفون التطبيق حيًّا، وتخطيط Shelf ونصوصه وبنيته المكوّناتية كلها تؤثر في ما يلاحظه المخطِّط وما يكتبه المولِّد. وهذا لا بأس به. المهم هو ما إذا كانت مخرجاتك تلبي معيار الجودة الموصوف أدناه—لا ما إذا كانت تطابق مخرجاتي كلمة بكلمة.
 
-## What `init-agents` produces
+## ما ينتجه `init-agents`
 
-After running `npx playwright init-agents --loop=claude`, you should have:
+بعد تشغيل `npx playwright init-agents --loop=claude`، ينبغي أن يكون لديك:
 
-- `.claude/agents/` containing three files: one for the planner, one for the generator, one for the healer. Each is a Markdown file with agent instructions and tool definitions.
-- `.mcp.json` at the project root, pointing Claude Code at the Playwright MCP server so the agents can launch browsers, take screenshots, and interact with pages.
+- `.claude/agents/` يحتوي ثلاثة ملفات: واحد للمخطِّط، وواحد للمولِّد، وواحد للمعالِج. كل منها ملف Markdown فيه تعليمات الوكيل وتعريفات الأدوات.
+- `.mcp.json` في جذر المشروع، يشير إلى خادم Playwright MCP كي يستطيع الوكلاء تشغيل المتصفحات وأخذ لقطات الشاشة والتفاعل مع الصفحات.
 
-If you don’t see both of these, the command didn’t complete. Check that you’re on Playwright 1.56 or later (`npx playwright --version`) and that you ran the command from the project root.
+إن لم ترَ هذين الاثنين، فلم يكتمل الأمر. تحقّق من أنك على Playwright 1.56 أو أحدث (`npx playwright --version`) وأنك شغّلت الأمر من جذر المشروع.
 
-You don’t need to edit these files. They’re generated scaffolding. The interesting work starts when you use them.
+لا تحتاج إلى تحرير هذه الملفات. إنها سقالات مولّدة. والعمل المثير يبدأ حين تستخدمها.
 
-## The seed test
+## اختبار الزرع
 
-Your seed test should be minimal:
+ينبغي أن يكون اختبار الزرع لديك أدنى ما يمكن:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -34,106 +34,106 @@ test('seed', async ({ page }) => {
 });
 ```
 
-> **Prerequisite helpers**
+> **دوال مساعدة شرطية مسبقًا**
 >
-> `resetShelfContent` is the seed helper produced by the [fixtures refactor lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures); in the starter it’s a stub that throws. If you haven’t completed that lab yet, drop the `await resetShelfContent()` line and have the seed just navigate — you’ll wire the helper back in once the earlier lab lands.
+> `resetShelfContent` هي دالة الزرع المساعدة التي ينتجها [مختبر إعادة هيكلة تجهيزات Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures)؛ وهي في نسخة البداية بديل يرمي خطأً. إن لم تكن قد أكملت ذلك المختبر بعد، فاحذف سطر `await resetShelfContent()` ودع اختبار الزرع يكتفي بالتنقّل—وستعيد ربط الدالة المساعدة حين يكتمل المختبر السابق.
 
-Two things to note. First: at this point in the course it can import directly from `@playwright/test`. The authenticated project wiring is established in the earlier storage-state lab and lives in `playwright.config.ts`, not in a custom wrapper file. Later, once you’ve completed the failure-dossier lab, importing from `./fixtures` is a reasonable follow-up because that file wraps `page` with console and network forwarding (that lab is what writes the project-root `tests/fixtures.ts`).
+شيئان يجب ملاحظتهما. أولًا: في هذه المرحلة من الدورة يمكنه الاستيراد مباشرة من `@playwright/test`. فرَبْط مشروع المصادقة مُنشأ في مختبر حالة التخزين السابق ويعيش في `playwright.config.ts`، لا في ملف غلاف مخصص. لاحقًا، بعد إكمال مختبر ملفات تعريف الأعطال، يصبح الاستيراد من `./fixtures` متابعة معقولة لأن ذلك الملف يغلّف `page` بتمرير وحدة التحكم والشبكة (وذلك المختبر هو ما يكتب `tests/fixtures.ts` في جذر المشروع).
 
-Second: the seed test is deliberately boring. It resets shelf content, navigates to one page, and asserts a heading exists. Its job isn’t to test anything—it’s to bootstrap the app into a logged-in, seeded state so the planner has something to explore. Think of it as the planner’s starting position on the chessboard.
+ثانيًا: اختبار الزرع ممل عمدًا. إنه يعيد ضبط محتوى الرف، وينتقل إلى صفحة واحدة، ويؤكد وجود عنوان. ووظيفته ليست اختبار أي شيء—بل إقلاع التطبيق إلى حالة مسجّل فيها الدخول ومزروعة، كي يكون لدى المخطِّط ما يستكشفه. فكّر فيه كموقع البداية للمخطِّط على رقعة الشطرنج.
 
-## Expected planner output
+## المخرجات المتوقعة من المخطِّط
 
-When you point the planner at the shelf rating workflow, it launches a browser, navigates to `/shelf`, and starts exploring. What it produces is a Markdown file in `specs/` that reads like a test plan.
+حين توجّه المخطِّط إلى سير تقييم الكتب على الرف، فإنه يشغّل متصفحًا، وينتقل إلى `/shelf`، ويبدأ الاستكشاف. وما ينتجه هو ملف Markdown في `specs/` يُقرأ كخطة اختبار.
 
-A good planner output for the rating workflow should include:
+مخرجات جيدة من المخطِّط لسير التقييم ينبغي أن تتضمن:
 
-- **The starting state**: user is logged in, shelf has books (it gets this from the seed test).
-- **The interaction sequence**: find a book, click the rate button, select a star rating in the modal, submit.
-- **Expected results**: success toast appears, rating is visible on the card, modal closes.
-- **Edge cases it noticed**: what happens if you cancel the modal, what happens if you submit without selecting a rating.
+- **حالة البداية**: المستخدم مسجّل الدخول، والرف فيه كتب (ويحصل على هذا من اختبار الزرع).
+- **تسلسل التفاعل**: إيجاد كتاب، والنقر على زر التقييم، واختيار تقييم بالنجوم في النافذة، والإرسال.
+- **النتائج المتوقعة**: ظهور إشعار نجاح، وظهور التقييم على البطاقة، وإغلاق النافذة.
+- **الحالات الحدية التي لاحظها**: ماذا يحدث إن ألغيت النافذة، وماذا يحدث إن أرسلت دون اختيار تقييم.
 
-Things to watch for:
+أشياء يجب مراقبتها:
 
-- **Wrong routes.** The planner explores live, but it might describe `/books` when Shelf uses `/shelf`. Check the URLs in the plan against the actual app.
-- **Invented UI copy.** The planner reads the page, but it sometimes paraphrases. If it says “Rating saved successfully” but the app says “Thanks for rating!”, the generator will write an assertion that fails. Correct the copy in the plan before generating.
-- **Missing the modal interaction.** The rating flow involves a dialog with radio buttons. If the planner describes it as “click the 4th star” instead of “select the radio button labeled ‘4 stars’,” the generator will produce a fragile locator. Edit the plan to be specific about the interaction pattern.
+- **مسارات خاطئة.** المخطِّط يستكشف حيًّا، لكنه قد يصف `/books` بينما يستخدم Shelf المسار `/shelf`. تحقّق من عناوين URL في الخطة مقابل التطبيق الفعلي.
+- **نصوص واجهة مختلقة.** المخطِّط يقرأ الصفحة، لكنه يعيد الصياغة أحيانًا. فإن قال «Rating saved successfully» بينما يقول التطبيق «Thanks for rating!»، فسيكتب المولِّد تأكيدًا يفشل. صحّح النص في الخطة قبل التوليد.
+- **تفويت تفاعل النافذة.** سير التقييم يتضمن نافذة فيها أزرار اختيار. فإن وصفه المخطِّط بأنه «انقر النجمة الرابعة» بدلًا من «اختر زر الاختيار المسمّى ‘4 stars’»، فسينتج المولِّد محددًا هشًا. حرّر الخطة لتكون محددة بشأن نمط التفاعل.
 
-Edit the plan. It’s a Markdown file. You’re the reviewer, the planner is the author. Treat it exactly like a spec in a pull request.
+حرّر الخطة. إنها ملف Markdown. أنت المراجع، والمخطِّط هو المؤلف. عاملها تمامًا كمواصفة في طلب سحب.
 
-## Expected generator output
+## المخرجات المتوقعة من المولِّد
 
-The generator reads the plan and produces test files. For the rating workflow, you should get something like:
+يقرأ المولِّد الخطة وينتج ملفات اختبار. ولسير التقييم، ينبغي أن تحصل على شيء مثل:
 
-- A test that navigates to `/shelf`, finds a specific book, opens the rating modal, selects a star rating, submits, and asserts the success toast.
-- Comments in the test that reference the spec file (“From spec: rate-book-workflow.md, scenario 1”).
-- Locators that use `getByRole`, `getByLabel`, or `getByText`—not CSS selectors.
+- اختبار ينتقل إلى `/shelf`، ويجد كتابًا بعينه، ويفتح نافذة التقييم، ويختار تقييمًا بالنجوم، ويرسل، ويؤكد إشعار النجاح.
+- تعليقات في الاختبار تشير إلى ملف المواصفة («من المواصفة: rate-book-workflow.md، السيناريو 1»).
+- محددات تستخدم `getByRole` أو `getByLabel` أو `getByText`—لا محددات CSS.
 
-Here’s what to check in the generated tests:
+وإليك ما يجب فحصه في الاختبارات المولّدة:
 
-**Locator quality.** The generator should produce `getByRole` locators. If you see `page.locator('.book-card')` or `page.locator('#rating-modal')`, that’s a failure. The agent has access to the live DOM and should be resolving accessible names, not scraping class names.
+**جودة المحددات.** ينبغي أن ينتج المولِّد محددات `getByRole`. فإن رأيت `page.locator('.book-card')` أو `page.locator('#rating-modal')`، فهذا فشل. فالوكيل يملك وصولًا إلى DOM الحي وينبغي أن يستخرج الأسماء المتاحة للوصول، لا أن يكشط أسماء الفئات.
 
-**Wait strategy.** There should be zero `waitForTimeout` calls. The generator should use auto-retrying assertions (`toBeVisible`, `toHaveText`) for UI state and `waitForResponse` for network round-trips. If you see `await page.waitForTimeout(1000)` anywhere, flag it.
+**استراتيجية الانتظار.** ينبغي أن يكون عدد نداءات `waitForTimeout` صفرًا. فعلى المولِّد أن يستخدم تأكيدات تعيد المحاولة تلقائيًا (`toBeVisible`، `toHaveText`) لحالة الواجهة، و`waitForResponse` لرحلات الشبكة ذهابًا وإيابًا. فإن رأيت `await page.waitForTimeout(1000)` في أي مكان، فأشِر إليه.
 
-**Assertion strength.** Watch for assertions that are too weak. `toBeVisible()` on the toast is weaker than `toHaveText(/Thanks/)` on the toast. The first passes even if the toast says “Error: something went wrong.” The second catches that. Prefer specific assertions.
+**قوة التأكيد.** راقب التأكيدات الضعيفة جدًا. فـ`toBeVisible()` على الإشعار أضعف من `toHaveText(/Thanks/)` على الإشعار. الأول ينجح حتى لو قال الإشعار «Error: something went wrong.» والثاني يلتقط ذلك. فضّل التأكيدات المحددة.
 
-**Traceability.** Each test should have a comment or description that connects it back to the plan. This matters when a test fails six months from now and someone needs to understand *why* the test exists, not just *what* it checks.
+**قابلية التتبع.** ينبغي أن يكون لكل اختبار تعليق أو وصف يربطه بالخطة. وهذا مهم حين يفشل اختبار بعد ستة أشهر ويحتاج أحد إلى فهم *سبب* وجود الاختبار، لا *ما* يفحصه فقط.
 
-If the generated tests fail when you run them, that’s normal. The generator verifies locators live but doesn’t always get assertions right on the first pass. Don’t fix them by hand yet—that’s the healer’s job.
+إن فشلت الاختبارات المولّدة حين تشغّلها، فهذا طبيعي. فالمولِّد يتحقق من المحددات حيًّا لكنه لا يصيب التأكيدات دائمًا من المحاولة الأولى. لا تصلحها يدويًا بعد—فتلك وظيفة المعالِج.
 
-## Expected healer behavior
+## السلوك المتوقع من المعالِج
 
-The healer takes a failing test, replays it in a browser, inspects the DOM at the failure point, and patches the test. What it does falls into a few categories.
+يأخذ المعالِج اختبارًا فاشلًا، ويعيد تشغيله في متصفح، ويفحص DOM عند نقطة الفشل، ويرقع الاختبار. وما يفعله يقع في فئات قليلة.
 
-**Good fixes** (you should see these):
+**إصلاحات جيدة** (ينبغي أن تراها):
 
-- Updating a locator because the accessible name in the app doesn’t match what the generator wrote. Example: the generator wrote `getByRole('button', { name: 'Submit' })` but the button says “Save rating.”
-- Adding a `waitForResponse` where the test clicked a button and immediately asserted the result without waiting for the network round-trip.
-- Adjusting assertion text to match the actual UI copy. The plan said “Rating saved,” the app says “Thanks for rating!”, the healer updates the assertion.
+- تحديث محدد لأن الاسم المتاح للوصول في التطبيق لا يطابق ما كتبه المولِّد. مثال: كتب المولِّد `getByRole('button', { name: 'Submit' })` بينما يقول الزر «Save rating.»
+- إضافة `waitForResponse` حيث نقر الاختبار على زر وأكّد النتيجة فورًا دون انتظار رحلة الشبكة.
+- تعديل نص التأكيد ليطابق نص الواجهة الفعلي. قالت الخطة «Rating saved»، ويقول التطبيق «Thanks for rating!»، فيحدّث المعالِج التأكيد.
 
-**Suspicious fixes** (investigate if you see these):
+**إصلاحات مريبة** (تحقّق منها إن رأيتها):
 
-- Adding `waitForTimeout`. This should never happen with current Playwright agents. If it does, the healer is compensating for a timing issue it doesn’t understand. Fix it by hand with the right wait pattern.
-- Weakening an assertion. If the healer changes `toHaveText('Thanks for rating!')` to `toBeVisible()`, it’s hiding a problem. Either the toast copy changed (check the app) or the healer gave up on matching the text (fix it by hand).
-- Marking a test with `test.fixme()`. This means the healer couldn’t figure out the fix. Investigate. Is the feature broken? Is the locator fundamentally wrong? The healer is telling you it needs human judgment—provide it.
+- إضافة `waitForTimeout`. هذا لا ينبغي أن يحدث أبدًا مع وكلاء Playwright الحاليين. فإن حدث، فالمعالِج يعوّض عن مشكلة توقيت لا يفهمها. أصلحها يدويًا بنمط الانتظار الصحيح.
+- إضعاف تأكيد. إن غيّر المعالِج `toHaveText('Thanks for rating!')` إلى `toBeVisible()`، فهو يخفي مشكلة. فإما أن نص الإشعار تغيّر (افحص التطبيق) أو أن المعالِج استسلم لمطابقة النص (أصلحها يدويًا).
+- وسم اختبار بـ`test.fixme()`. هذا يعني أن المعالِج لم يستطع إيجاد الإصلاح. تحقّق. هل الميزة معطلة؟ هل المحدد خاطئ جذريًا؟ المعالِج يخبرك أنه يحتاج إلى حكم بشري—فامنحه إياه.
 
-## The break-and-heal cycle
+## حلقة الكسر والإصلاح
 
-When you make a deliberate UI change—renaming a button, changing toast copy, swapping a heading level—and run the tests, they should fail. The failures should be obvious: a locator can’t find an element because the name changed, or an assertion doesn’t match because the text changed.
+حين تجري تغييرًا متعمدًا في الواجهة—إعادة تسمية زر، أو تغيير نص إشعار، أو تبديل مستوى عنوان—وتشغّل الاختبارات، ينبغي أن تفشل. وينبغي أن تكون الإخفاقات واضحة: محدد لا يجد عنصرًا لأن الاسم تغيّر، أو تأكيد لا يطابق لأن النص تغيّر.
 
-The healer’s patch should be minimal. If you renamed “Add to shelf” to “Save to library,” the healer should change exactly one string in the locator. If you changed the heading from `h1` to `h2`, it should change the `level` option in `getByRole('heading', { level: 1 })` to `level: 2`.
+ينبغي أن تكون رقعة المعالِج أدنى ما يمكن. فإن أعدت تسمية «Add to shelf» إلى «Save to library»، فعلى المعالِج أن يغيّر سلسلة واحدة بالضبط في المحدد. وإن غيّرت العنوان من `h1` إلى `h2`، فعليه أن يغيّر خيار `level` في `getByRole('heading', { level: 1 })` إلى `level: 2`.
 
-If the healer rewrites the entire test, or adds workaround logic, or introduces new helper functions—that’s a signal the original test was over-coupled to implementation details. A well-written test is easy to heal because the changes are surgical. A poorly-written test is hard to heal because everything is tangled.
+إن أعاد المعالِج كتابة الاختبار كاملًا، أو أضاف منطق حلول ملتوية، أو أدخل دوال مساعدة جديدة—فتلك إشارة إلى أن الاختبار الأصلي كان مرتبطًا بإفراط بتفاصيل التنفيذ. فالاختبار المكتوب جيدًا يسهل علاجه لأن التغييرات جراحية. والاختبار المكتوب سيئًا يصعب علاجه لأن كل شيء متشابك.
 
-After healing, revert your UI change and run the tests again. They’ll fail again (they now match the *changed* UI). Heal again. You should end up back where you started. This round-trip is the proof that the healer is updating locators and assertions, not rewriting logic.
+بعد الإصلاح، أرجع تغيير الواجهة وشغّل الاختبارات مرة أخرى. ستفشل مجددًا (فهي تطابق الواجهة *المتغيرة* الآن). أصلح مرة أخرى. وينبغي أن تنتهي حيث بدأت. هذه الرحلة ذهابًا وإيابًا هي الدليل على أن المعالِج يحدّث المحددات والتأكيدات، لا يعيد كتابة المنطق.
 
-## Judgment criteria
+## معايير الحكم
 
-Here’s the rubric I use when evaluating agent-generated tests:
+هذا هو سلّم التقييم الذي أستخدمه عند تقييم اختبارات مولّدة بالوكيل:
 
-| Criterion | Pass | Fail |
+| المعيار | النجاح | الفشل |
 | --- | --- | --- |
-| Locators | All `getByRole`/`getByLabel`/`getByText`, `getByTestId` only for genuinely un-labelable elements | Any `page.locator()` with CSS or XPath |
-| Waits | Zero `waitForTimeout`, uses `toBeVisible`/`toHaveText`/`waitForResponse` | Any magic timeout |
-| Assertions | Specific (`toHaveText`, `toHaveAttribute`) over generic (`toBeVisible`) | Assertions weakened to pass |
-| Traceability | Comments reference the spec file and scenario | No connection to the plan |
-| Seeding | Uses `resetShelfContent` or equivalent | Depends on ambient database state |
-| Auth | Uses storage state via project config | Logs in inside the test |
+| المحددات | كلها `getByRole`/`getByLabel`/`getByText`، و`getByTestId` فقط للعناصر التي يتعذر تسميتها فعلًا | أي `page.locator()` بـCSS أو XPath |
+| الانتظارات | صفر `waitForTimeout`، ويستخدم `toBeVisible`/`toHaveText`/`waitForResponse` | أي مهلة سحرية |
+| التأكيدات | محددة (`toHaveText`، `toHaveAttribute`) أفضل من العامة (`toBeVisible`) | تأكيدات أُضعفت كي تنجح |
+| قابلية التتبع | تعليقات تشير إلى ملف المواصفة والسيناريو | لا صلة بالخطة |
+| الزرع | يستخدم `resetShelfContent` أو ما يعادلها | يعتمد على حالة قاعدة البيانات المحيطة |
+| المصادقة | يستخدم حالة التخزين عبر إعداد المشروع | يسجّل الدخول داخل الاختبار |
 
-If a generated test fails three or more of these, the plan needs editing, not the test. Go back to the spec, make it more specific about the interaction pattern and expected results, and regenerate.
+إن فشل اختبار مولّد في ثلاثة من هذه أو أكثر، فالخطة تحتاج إلى تحرير، لا الاختبار. عُد إلى المواصفة، واجعلها أكثر تحديدًا بشأن نمط التفاعل والنتائج المتوقعة، ثم أعد التوليد.
 
-## The meta-lesson
+## الدرس الأعلى
 
-The agents handle the mechanical work: exploring the app, generating locators, patching drifted selectors. They’re fast at the parts that are tedious for humans and reliable at the parts that are repetitive.
+يتولى الوكلاء العمل الميكانيكي: استكشاف التطبيق، وتوليد المحددات، وترقيع المحددات المنزاحة. إنهم سريعون في الأجزاء المملة للبشر، وموثوقون في الأجزاء المتكررة.
 
-But they don’t know *what* to test. They don’t know whether a weakened assertion is acceptable or dangerous. They don’t know whether `test.fixme()` means “the feature is broken” or “I gave up.” That judgment stays with you.
+لكنهم لا يعرفون *ماذا* يختبرون. لا يعرفون ما إذا كان تأكيد مُضعَّف مقبولًا أم خطيرًا. لا يعرفون ما إذا كانت `test.fixme()` تعني «الميزة معطلة» أو «لقد استسلمت». ذلك الحكم يبقى معك.
 
-Use the agents to go faster. Use your eyes to go correctly. The combination is better than either alone.
+استخدم الوكلاء لتسرع. واستخدم عينيك لتصيب. والجمع بينهما أفضل من أي منهما وحده.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Generate and Heal with Playwright Agents](https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents)
-- [Playwright Test Agents](https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents)
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [مختبر: التوليد والإصلاح مع وكلاء Playwright](https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents)
+- [وكلاء اختبار Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents)
+- [المحددات وتسلسل الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)

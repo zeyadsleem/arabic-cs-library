@@ -1,24 +1,24 @@
 ---
-title: "Writing a Lambda@Edge Function"
-lang: en
+title: "كتابة دالة Lambda@Edge"
+lang: ar
 source: "https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function"
 ---
 
-Lambda@Edge is a full Lambda function that runs at CloudFront’s regional edge caches instead of in a single region. If CloudFront Functions are like Vercel Edge Functions—tiny, fast, constrained—then Lambda@Edge is like a Vercel Serverless Function that AWS has moved closer to your users. You get the full Node.js runtime, npm packages, network access, and up to 30 seconds of execution time on origin events.
+تمثّل Lambda@Edge دالة Lambda كاملة تعمل في ذاكرات الحافة الإقليمية في CloudFront بدلًا من منطقة واحدة. فإن كانت CloudFront Functions أشبه بـ Vercel Edge Functions — صغيرة وسريعة ومقيّدة — فإن Lambda@Edge أشبه بـ Vercel Serverless Function نقلتها AWS أقرب إلى مستخدميك. فتحصل على وقت تشغيل Node.js كامل، وحزم npm، ووصول إلى الشبكة، وحتى 30 ثانية من وقت التنفيذ في أحداث الأصل.
 
-If you want AWS’s version of the runtime and replication model while you read, the [Lambda@Edge guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) is the official reference.
+وإن أردت نسخة AWS من نموذج وقت التشغيل والنسخ المتماثل أثناء القراءة، فإن [دليل Lambda@Edge](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) هو المرجع الرسمي.
 
-You already wrote and deployed a Lambda function in [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function). Lambda@Edge follows the same general pattern, but with a handful of additional constraints that trip people up. This lesson walks through all of them. Honestly, most of the gotchas aren’t hard once you know they exist—the problem is that first time when you don’t.
+لقد كتبت دالة Lambda ونشرتها بالفعل في [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function). ويتبع Lambda@Edge النمط العام نفسه، لكن مع حفنة من القيود الإضافية التي توقع الناس في الأخطاء. ويمرّ هذا الدرس عليها كلها. وبصراحة، معظم المزالق ليست صعبة بمجرد أن تعرف بوجودها — المشكلة هي المرة الأولى التي لا تعرف فيها.
 
-## The us-east-1 Requirement
+## شرط us-east-1
 
-Lambda@Edge functions **must** be created in `us-east-1`. This is the same requirement you encountered with ACM certificates in [Certificate Renewal and us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1)—CloudFront is a global service, and its control plane lives in `us-east-1`. When you associate a Lambda function with a CloudFront distribution, AWS replicates your function code to regional edge caches around the world. But the source of truth for that replication is always `us-east-1`.
+يجب إنشاء دوال Lambda@Edge في `us-east-1`. وهذا هو الشرط نفسه الذي صادفته مع شهادات ACM في [تجديد الشهادات وشرط us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1) — فـ CloudFront خدمة عالمية، ومستوى التحكّم فيها يعيش في `us-east-1`. وعندما تربط دالة Lambda بتوزيع CloudFront، تنسخ AWS كود دالتك إلى ذاكرات الحافة الإقليمية حول العالم. لكن مصدر الحقيقة لذلك النسخ هو `us-east-1` دائمًا.
 
-If you try to associate a Lambda function from any other region with a CloudFront behavior, the API will reject it.
+وإن حاولت ربط دالة Lambda من أي منطقة أخرى بسلوك CloudFront، فسترفضها الواجهة البرمجية.
 
-## The Handler Signature
+## توقيع المعالج
 
-Lambda@Edge handlers use the `CloudFrontRequestHandler` or `CloudFrontResponseHandler` types from `@types/aws-lambda`. The event structure is different from what you used with API Gateway.
+تستخدم معالجات Lambda@Edge النوعين `CloudFrontRequestHandler` أو `CloudFrontResponseHandler` من `@types/aws-lambda`. وبنية الحدث مختلفة عمّا استخدمته مع API Gateway.
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -33,13 +33,13 @@ export const handler: CloudFrontRequestHandler = async (event) => {
 };
 ```
 
-*Note:* The request lives at `event.Records[0].cf.request`—not `event.request` like in CloudFront Functions.
+*ملاحظة:* يعيش الطلب في `event.Records[0].cf.request` — لا في `event.request` كما في CloudFront Functions.
 
-The event object wraps the CloudFront data inside `event.Records[0].cf`. This structure exists because Lambda@Edge uses the same event delivery mechanism as other Lambda triggers—a `Records` array—even though there’s always exactly one record.
+يلفّ كائن الحدث بيانات CloudFront داخل `event.Records[0].cf`. ووجود هذه البنية سببه أن Lambda@Edge يستخدم آلية تسليم الأحداث نفسها التي تستخدمها محفّزات Lambda الأخرى — مصفوفة `Records` — رغم أنه يوجد دائمًا سجل واحد بالضبط.
 
-### Event Object Shape
+### شكل كائن الحدث
 
-For an **origin request** event, the event object looks like this:
+بالنسبة إلى حدث **طلب الأصل** (origin request)، يبدو كائن الحدث هكذا:
 
 ```typescript
 {
@@ -76,19 +76,19 @@ For an **origin request** event, the event object looks like this:
 }
 ```
 
-Notice the differences from CloudFront Functions:
+لاحظ الفروق عن CloudFront Functions:
 
-- **Headers** are arrays of objects with `key` and `value` properties, not single objects. This is because HTTP headers can have multiple values.
-- **Query string** is a plain string, not a parsed object.
-- **The `origin` property** is present on origin request events and tells you where CloudFront’s about to forward the request. You can modify this to change the origin dynamically.
+- **الترويسات** مصفوفات من كائنات لها خاصيتا `key` و`value`، لا كائنات مفردة. والسبب أن ترويسات HTTP يمكن أن تحمل قيمًا متعددة.
+- **سلسلة الاستعلام** سلسلة نصية عادية، لا كائنًا محلَّلًا.
+- **الخاصية `origin`** موجودة في أحداث طلب الأصل وتخبرك إلى أين ستوجّه CloudFront الطلب. ويمكنك تعديلها لتغيير الأصل ديناميكيًا.
 
-> **Why `authMethod: 'none'`**
+> **لماذا `authMethod: 'none'`**
 >
-> The `authMethod` field only tracks OAI (Origin Access Identity). [AWS documents this explicitly](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html): the field “does not support origin access control (OAC).” If your distribution uses OAC—the modern pattern this course teaches—OAC authentication happens at the distribution layer and is invisible to the Lambda@Edge event. Set `authMethod: 'none'`. If you’re on the legacy OAI pattern, use `'origin-access-identity'` instead.
+> الحقل `authMethod` يتتبّع OAI (هوية الوصول إلى الأصل) فقط. و[توثّق AWS ذلك صراحةً](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html): فالحقل «لا يدعم التحكم في الوصول إلى الأصل (OAC)». وإذا كان توزيعك يستخدم OAC — وهو النمط الحديث الذي تعلّمه هذه الدورة — فمصادقة OAC تحدث في طبقة التوزيع وتكون غير مرئية لحدث Lambda@Edge. اضبط `authMethod: 'none'`. وإن كنت على نمط OAI القديم، فاستخدم `'origin-access-identity'` بدلًا من ذلك.
 
-### Returning a Request vs. a Response
+### إرجاع طلب مقابل استجابة
 
-Just like CloudFront Functions, returning the `request` object tells CloudFront to continue processing. Returning a **response** object short-circuits the origin request and sends a response directly:
+تمامًا كما في CloudFront Functions، إرجاع كائن `request` يخبر CloudFront بمواصلة المعالجة. أما إرجاع كائن **استجابة** فيقصر مسار طلب الأصل ويرسل استجابة مباشرة:
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -111,15 +111,15 @@ export const handler: CloudFrontRequestHandler = async (event) => {
 };
 ```
 
-> **Warning**
+> **تحذير**
 >
-> In Lambda@Edge response objects, `status` is a **string**, not a number. Writing `status: 200` instead of `status: '200'` will cause a runtime error. This catches people coming from regular Lambda handlers where `statusCode` is a number.
+> في كائنات استجابة Lambda@Edge، يكون `status` **سلسلة نصية**، لا رقمًا. فكتابة `status: 200` بدلًا من `status: '200'` تسبّب خطأ وقت التشغيل. وهذا يوقع القادمين من معالجات Lambda العادية حيث يكون `statusCode` رقمًا.
 
-## Writing and Deploying the Function
+## كتابة الدالة ونشرها
 
-### Write the handler
+### كتابة المعالج
 
-Create a Lambda@Edge function that adds a custom header to origin requests. This is useful for passing information to your origin that the viewer didn’t send.
+أنشئ دالة Lambda@Edge تضيف ترويسة مخصّصة إلى طلبات الأصل. وهذا مفيد لتمرير معلومات إلى أصلك لم يرسلها المشاهد.
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -138,11 +138,11 @@ export const handler: CloudFrontRequestHandler = async (event) => {
 };
 ```
 
-Build and package this the same way you did in [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function): compile with TypeScript, zip the output.
+ابنِ هذه الحزمة وحزّمها بالطريقة نفسها التي فعلتها في [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function): ترجِم بـ TypeScript، ثم اضغط الناتج في ملف zip.
 
-### Create the execution role
+### إنشاء دور التنفيذ
 
-Lambda@Edge requires a trust policy that allows **both** `lambda.amazonaws.com` and `edgelambda.amazonaws.com` to assume the role. This is different from a standard Lambda function, which only needs `lambda.amazonaws.com`. It’s an easy thing to miss.
+يتطلّب Lambda@Edge سياسة ثقة تسمح **لكلٍّ من** `lambda.amazonaws.com` و`edgelambda.amazonaws.com` بتبنّي الدور. وهذا مختلف عن دالة Lambda العادية التي تحتاج `lambda.amazonaws.com` فقط. وهو أمر يسهل تفويته.
 
 ```json
 {
@@ -167,7 +167,7 @@ aws iam create-role \
   --output json
 ```
 
-Attach the basic execution role policy so the function can write logs:
+أرفق سياسة دور التنفيذ الأساسي حتى تتمكّن الدالة من كتابة السجلات:
 
 ```bash
 aws iam attach-role-policy \
@@ -177,7 +177,7 @@ aws iam attach-role-policy \
   --output json
 ```
 
-### Deploy to us-east-1
+### النشر إلى us-east-1
 
 ```bash
 aws lambda create-function \
@@ -190,9 +190,9 @@ aws lambda create-function \
   --output json
 ```
 
-### Publish a numbered version
+### نشر نسخة مرقّمة
 
-This is the critical step that differs from standard Lambda. Lambda@Edge **requires** a published, numbered version. You can’t use `$LATEST`.
+هذه هي الخطوة الحاسمة التي تختلف عن Lambda العادي. فـ Lambda@Edge **يتطلّب** نسخة منشورة ومرقّمة. ولا يمكنك استخدام `$LATEST`.
 
 ```bash
 aws lambda publish-version \
@@ -202,17 +202,17 @@ aws lambda publish-version \
   --output json
 ```
 
-The response includes a `Version` field (e.g., `"1"`) and a versioned ARN:
+تتضمّن الاستجابة حقل `Version` (مثل `"1"`) وARN مُرقَّمًا:
 
 ```
 arn:aws:lambda:us-east-1:123456789012:function:my-frontend-app-edge-rewrite:1
 ```
 
-That versioned ARN—with the `:1` at the end—is what you use when associating the function with CloudFront.
+ذلك الـ ARN المُرَقَّم — مع `:1` في نهايته — هو ما تستخدمه عند ربط الدالة بـ CloudFront.
 
-### Associate with a CloudFront behavior
+### الربط بسلوك CloudFront
 
-Retrieve your distribution config, add a `LambdaFunctionAssociations` block to the behavior, and update:
+استرجع إعدادات توزيعك، وأضف كتلة `LambdaFunctionAssociations` إلى السلوك، ثم حدّث:
 
 ```json
 {
@@ -238,34 +238,34 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-After the distribution finishes deploying (this takes a few minutes), your Lambda@Edge function will run on every origin request.
+بعد أن ينتهي نشر التوزيع (ويستغرق هذا بضع دقائق)، ستعمل دالة Lambda@Edge لديك في كل طلب أصل.
 
-## The Replication Model
+## نموذج النسخ المتماثل
 
-When you associate a Lambda@Edge function with a CloudFront distribution, AWS replicates your function to regional edge caches worldwide. This has three implications:
+عندما تربط دالة Lambda@Edge بتوزيع CloudFront، تنسخ AWS دالتك إلى ذاكرات الحافة الإقليمية في العالم. ولهذا ثلاثة آثار:
 
-1. **Deployment isn’t instant.** Unlike CloudFront Functions (which propagate in seconds), Lambda@Edge replicas take several minutes to deploy globally.
-2. **You can’t delete the function while replicas exist.** If you remove a Lambda@Edge association from your distribution, AWS doesn’t immediately delete the replicas. You may need to wait hours (sometimes up to a day) before you can delete the Lambda function itself. The API will return a `ReplicatedFunctionStillCreating` or `ResourceConflictException` error until replication cleanup is complete.
-3. **Each update requires a new version.** You can’t update a version in place. You publish a new version (`:2`, `:3`, etc.), update the CloudFront behavior to point to the new version ARN, and wait for replication.
+1. **النشر ليس فوريًا.** فبخلاف CloudFront Functions (التي تنتشر في ثوانٍ)، تستغرق نسخ Lambda@Edge عدة دقائق لتُنشر عالميًا.
+2. **لا يمكنك حذف الدالة ما دامت النسخ موجودة.** فإذا أزلت ربط Lambda@Edge من توزيعك، فلا تحذف AWS النسخ فورًا. وقد تحتاج إلى الانتظار ساعات (وأحيانًا حتى يوم) قبل أن تتمكّن من حذف دالة Lambda نفسها. وستُرجع الواجهة البرمجية خطأ `ReplicatedFunctionStillCreating` أو `ResourceConflictException` حتى يكتمل تنظيف النسخ.
+3. **كل تحديث يتطلّب نسخة جديدة.** فلا يمكنك تحديث نسخة في مكانها. بل تنشر نسخة جديدة (`:2`، `:3`، إلخ)، وتحدّث سلوك CloudFront ليشير إلى ARN النسخة الجديدة، وتنتظر النسخ المتماثل.
 
-> **Tip**
+> **نصيحة**
 >
-> Updating a Lambda@Edge function follows this cycle: update the function code, publish a new version, update the CloudFront behavior to reference the new version ARN, wait for distribution deployment. It’s more steps than CloudFront Functions, but you get the full Node.js runtime in exchange.
+> يتبع تحديث دالة Lambda@Edge هذه الدورة: حدّث كود الدالة، وانشر نسخة جديدة، وحدّث سلوك CloudFront ليشير إلى ARN النسخة الجديدة، وانتظر نشر التوزيع. إنها خطوات أكثر من CloudFront Functions، لكنك تحصل في المقابل على وقت تشغيل Node.js كامل.
 
-## Constraints to Remember
+## قيود يجب تذكّرها
 
-- **No user-defined environment variables.** Lambda@Edge doesn’t support user-defined environment variables at all, whether the function runs on viewer events or origin events.
-- **128 MB memory cap for viewer events.** If your viewer-triggered function needs more memory, you need to reconsider your approach—either move the logic to an origin trigger (up to 10,240 MB) or simplify it.
-- **5-second timeout for viewer events, 30 seconds for origin events.** A viewer request function that takes 5 seconds will make your site feel broken. Keep viewer-triggered functions fast—if it’s slow enough for the user to notice, it’s too slow.
-- **1 MB package size for viewer events.** This is the compressed zip size. If you bundle large libraries, you may exceed this. Use tree-shaking and keep dependencies minimal.
+- **لا متغيّرات بيئة يحدّدها المستخدم.** فـ Lambda@Edge لا يدعم متغيّرات البيئة التي يحدّدها المستخدم إطلاقًا، سواء عملت الدالة في أحداث المشاهد أو أحداث الأصل.
+- **حدّ الذاكرة 128 ميغابايت لأحداث المشاهد.** فإن كانت دالتك التي تُطلقها أحداث المشاهد تحتاج ذاكرة أكثر، فعليك إعادة النظر في نهجك — إمّا نقل المنطق إلى محفّز أصل (حتى 10,240 ميغابايت) أو تبسيطه.
+- **مهلة 5 ثوانٍ لأحداث المشاهد و30 ثانية لأحداث الأصل.** فدالة طلب مشاهد تستغرق 5 ثوانٍ ستجعل موقعك يبدو معطوبًا. أبقِ الدوال التي تُطلقها أحداث المشاهد سريعة — فإن كانت بطيئة بما يكفي ليلاحظها المستخدم، فهي بطيئة جدًا.
+- **حجم حزمة 1 ميغابايت لأحداث المشاهد.** وهذا هو حجم ملف zip المضغوط. فإن حزمت مكتبات كبيرة، فقد تتجاوز ذلك. استخدم tree-shaking وأبقِ الاعتماديات في حدها الأدنى.
 
-These constraints are covered in detail in [Edge Function Debugging and Limitations](https://stevekinney.com/courses/aws/edge-function-debugging-and-limitations). The important one to remember here is the least intuitive: Lambda@Edge doesn’t support user-defined environment variables at all, other than the reserved ones AWS injects automatically.
+تُغطّى هذه القيود بالتفصيل في [تصحيح دوال الحافة وقيودها](https://stevekinney.com/courses/aws/edge-function-debugging-and-limitations). وأهم ما يجب تذكّره هنا هو الأقل بداهةً: Lambda@Edge لا يدعم متغيّرات البيئة التي يحدّدها المستخدم إطلاقًا، عدا المتغيّرات المحجوزة التي تحقنها AWS تلقائيًا.
 
-## Cleanup
+## التنظيف
 
-Lambda@Edge replica cleanup takes hours after disassociation. Follow this sequence carefully.
+يستغرق تنظيف نسخ Lambda@Edge ساعات بعد فك الربط. فاتبع هذا التتابع بعناية.
 
-Remove the Lambda@Edge association from your distribution’s behavior configuration and wait for the distribution to reach `Deployed` status. Then attempt to delete the function:
+أزل ربط Lambda@Edge من إعدادات سلوك توزيعك وانتظر حتى يصل التوزيع إلى حالة `Deployed`. ثم حاول حذف الدالة:
 
 ```bash
 aws lambda delete-function \
@@ -273,7 +273,7 @@ aws lambda delete-function \
   --region us-east-1
 ```
 
-If this returns `ResourceConflictException`, the edge replicas haven’t finished cleaning up yet. Wait 30–60 minutes and try again. Once the function is deleted, also clean up the CloudWatch log groups in each region where the function executed—Lambda@Edge creates a log group per region, not just in `us-east-1`:
+إذا أرجع هذا `ResourceConflictException`، فنسخ الحافة لم تنتهِ من التنظيف بعد. انتظر من 30 إلى 60 دقيقة وحاول مجددًا. وبعد حذف الدالة، نظّف أيضًا مجموعات سجلات CloudWatch في كل منطقة نُفّذت فيها الدالة — فـ Lambda@Edge ينشئ مجموعة سجلات لكل منطقة، لا في `us-east-1` فقط:
 
 ```bash
 # List all Lambda@Edge log groups (they follow the pattern /aws/lambda/us-east-1.<function-name>)
@@ -284,4 +284,4 @@ aws logs describe-log-groups \
   --output text
 ```
 
-Delete each log group in every region where you found one.
+احذف كل مجموعة سجلات في كل منطقة وجدت فيها واحدة.

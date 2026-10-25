@@ -1,14 +1,14 @@
 ---
-title: "Demonstrating OpenClaw's Memory"
-lang: en
+title: "عرض توضيحي لذاكرة OpenClaw"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/demonstrating-openclaw-memory"
 ---
 
-Here’s a simple demonstration of OpenClaw’s persistent memory. The goal is to teach it something in one session, verify that it saved the information, and then test whether it remembers in a completely new session.
+إليك عرضًا توضيحيًا بسيطًا للذاكرة الدائمة في OpenClaw. والهدف هو تعليمه شيئًا في جلسة واحدة، والتحقّق من أنه حفظ المعلومة، ثم اختبار ما إذا كان يتذكّرها في جلسة جديدة تمامًا.
 
-## Step 1: Tell OpenClaw to remember something
+## الخطوة 1: اطلب من OpenClaw أن يتذكّر شيئًا
 
-Paste this into your OpenClaw chat:
+الصق هذا في دردشة OpenClaw:
 
 ```
 I want to test your long-term memory.
@@ -31,13 +31,13 @@ After saving it, tell me:
 3. How you verified that the information was written successfully.
 ```
 
-The fictional project gives us an easily recognizable test without mixing experimental information into your real preferences.
+يمنحنا المشروع الخيالي اختبارًا سهل التمييز دون خلط معلومات تجريبية في تفضيلاتك الحقيقية.
 
-## Step 2: Verify that the memory was written
+## الخطوة 2: تحقّق من كتابة الذاكرة
 
-Don’t accept “I’ll remember that” as proof. Language models are exceptionally good at confidently reporting that they’ve done things.
+لا تقبل «سأتذكّر ذلك» دليلًا. فالنماذج اللغوية بارعة بشكل استثنائي في الإبلاغ بثقة عن إنجازها أمورًا.
 
-Paste this next:
+الصق هذا بعد ذلك:
 
 ```
 Verify that you actually persisted the Project Magpie information.
@@ -49,25 +49,25 @@ Show me the exact Markdown content containing the Project Magpie information and
 Do not answer based solely on our conversation history. If you cannot access or verify the file, say so explicitly.
 ```
 
-The Control UI chat showing the agent reading MEMORY.md back from disk after the Project Magpie request
+دردشة Control UI تُظهر الوكيل وهو يقرأ MEMORY.md من القرص بعد طلب Project Magpie
 
-Depending on how your agent is configured, it might store the information in `MEMORY.md`, a dated Markdown file under `memory/`, or another configured memory backend.
+حسب تهيئة وكيلك، قد يخزّن المعلومة في `MEMORY.md`، أو في ملف Markdown بتاريخ ضمن `memory/`، أو في خلفية ذاكرة أخرى مُهيّأة.
 
-## Step 3: Start a completely new session
+## الخطوة 3: ابدأ جلسة جديدة تمامًا
 
-In OpenClaw, type:
+في OpenClaw، اكتب:
 
 ```
 /new
 ```
 
-In the Control UI, typing `/` opens a command menu, and `/new` is listed under Session as the command that starts a new session.
+في Control UI، يؤدي كتابة `/` إلى فتح قائمة أوامر، ويظهر `/new` تحت Session كأمر يبدأ جلسة جديدة.
 
-The slash command menu in the Control UI composer with the new command highlighted
+قائمة أوامر الشرطة المائلة في محرّر Control UI مع إبراز الأمر new
 
-This starts a fresh session without the previous conversation’s active context.
+يبدأ هذا جلسة جديدة دون السياق النشط للمحادثة السابقة.
 
-Now ask:
+الآن اسأل:
 
 ```
 I'm starting a new conversation and want to check your long-term memory.
@@ -83,13 +83,13 @@ Specifically:
 Use your persistent memory, not previous conversation history. Tell me which memory sources you used.
 ```
 
-A successful response should correctly identify all four details without needing the original conversation.
+ينبغي للاستجابة الناجحة أن تحدّد التفاصيل الأربعة كلها بشكل صحيح دون الحاجة إلى المحادثة الأصلية.
 
-A new session answering the Project Magpie questions and naming MEMORY.md and USER.md as its sources
+جلسة جديدة تجيب عن أسئلة Project Magpie وتسمّي MEMORY.md وUSER.md كمصدرين لها
 
-## Step 4: Test semantic memory retrieval
+## الخطوة 4: اختبر الاسترجاع الدلالي من الذاكرة
 
-This is the more interesting test because it checks whether OpenClaw can retrieve information when your question uses different wording.
+هذا هو الاختبار الأكثر إثارة للاهتمام لأنه يفحص ما إذا كان OpenClaw قادرًا على استرجاع المعلومة حين يستخدم سؤالك صياغة مختلفة.
 
 ```
 I'm considering restarting that fictional personal knowledge management application we discussed previously.
@@ -99,13 +99,13 @@ What technical choices and visual preferences had I settled on?
 Search your persistent memory for relevant information. Don't guess if you can't find it.
 ```
 
-Ideally, it should recover the project name, technical stack, and burnt-orange preference.
+من الناحية المثالية، ينبغي أن يستعيد اسم المشروع والحزمة التقنية وتفضيل اللون البرتقالي المحروق.
 
-OpenClaw’s `memory_search` can retrieve relevant memories semantically, while `memory_get` can read their original content.
+يمكن لـ `memory_search` في OpenClaw استرجاع الذكريات ذات الصلة دلاليًا، بينما يمكن لـ `memory_get` قراءة محتواها الأصلي.
 
-## Step 5: Inspect memory independently
+## الخطوة 5: افحص الذاكرة بشكل مستقل
 
-If you have terminal access to the machine hosting OpenClaw, inspect the underlying files:
+إذا كان لديك وصول طرفية إلى الجهاز الذي يستضيف OpenClaw، فافحص الملفات الأساسية:
 
 ```bash
 cat ~/.openclaw/workspace/MEMORY.md
@@ -113,20 +113,20 @@ cat ~/.openclaw/workspace/USER.md
 grep -Rni "Project Magpie" ~/.openclaw/workspace/memory/
 ```
 
-The paths assume the default agent workspace. If your agent uses a custom workspace, substitute that location.
+تفترض هذه المسارات مساحة العمل الافتراضية للوكيل. وإذا كان وكيلك يستخدم مساحة عمل مخصّصة، فاستبدل ذلك الموقع.
 
-## What counts as success?
+## ما الذي يُعدّ نجاحًا؟
 
-| Test | Expected result |
+| الاختبار | النتيجة المتوقعة |
 | --- | --- |
-| Initial memory request | Agent writes information to disk |
-| File verification | The information exists in a memory file |
-| New session recall | Agent correctly recalls the project |
-| Semantic retrieval | Agent recalls details without exact keywords |
-| Source verification | Agent identifies the memory file it used |
+| طلب الذاكرة الأولي | يكتب الوكيل المعلومة إلى القرص |
+| التحقّق من الملف | المعلومة موجودة في ملف ذاكرة |
+| التذكّر في جلسة جديدة | يستدعي الوكيل المشروع بشكل صحيح |
+| الاسترجاع الدلالي | يستدعي الوكيل التفاصيل دون كلمات مفتاحية مطابقة |
+| التحقّق من المصدر | يحدّد الوكيل ملف الذاكرة الذي استخدمه |
 
-One caveat: a new session can still load long-term memory automatically. That’s the intended behavior, not a failed test. The point is that the information comes from persistent storage rather than the previous conversation’s active context.
+وملاحظة واحدة: قد تُحمّل الجلسة الجديدة الذاكرة طويلة المدى تلقائيًا. وهذا هو السلوك المقصود، لا اختبار فاشل. والمقصود أن المعلومة تأتي من تخزين دائم لا من السياق النشط للمحادثة السابقة.
 
-The best proof is the combination of a verified disk write and successful recall after `/new`. Either one alone is weaker evidence.
+وأفضل دليل هو الجمع بين كتابة مُتحقَّق منها على القرص واستدعاء ناجح بعد `/new`. وأي منهما وحده دليل أضعف.
 
-OpenClaw’s current documentation describes this file-backed approach in its memory overview.
+تصف وثائق OpenClaw الحالية هذا النهج المدعوم بالملفات في نظرة عامة الذاكرة.

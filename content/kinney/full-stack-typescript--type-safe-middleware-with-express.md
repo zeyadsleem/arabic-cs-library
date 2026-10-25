@@ -1,12 +1,12 @@
 ---
-title: "Type Safe Middleware with Express"
-lang: en
+title: "وسيط آمن الأنواع مع Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-safe-middleware-with-express"
 ---
 
-### Type-Safe Middleware Chains
+### سلاسل وسيط آمنة الأنواع
 
-Express middleware can be challenging to type correctly, especially when middleware adds properties to the request:
+قد يكون تحديد أنواع وسيط Express تحديدًا صحيحًا أمرًا صعبًا، خصوصًا عندما يضيف الوسيط خصائص إلى الطلب:
 
 ```typescript
 // Define middleware that adds user to request
@@ -64,4 +64,4 @@ app.get(
 );
 ```
 
-This pattern guarantees that `req.user` exists and is properly typed in your route handler, with both compile-time and runtime checks.
+يضمن هذا النمط وجود `req.user` وتحديد نوعه تحديدًا سليمًا في معالج مسارك، بفحوصات وقت التصريف ووقت التشغيل معًا.

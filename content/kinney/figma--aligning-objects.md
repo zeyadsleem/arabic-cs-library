@@ -1,35 +1,35 @@
 ---
-title: "Aligning Objects"
-lang: en
+title: "محاذاة الكائنات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/aligning-objects"
 ---
 
-Figma offers various tools to help you align and distribute objects easily. When you select multiple objects, you’ll find a set of tools like the one shown below.
+يوفّر Figma أدوات متنوّعة تساعدك على محاذاة الكائنات وتوزيعها بسهولة. وعند تحديد عدة كائنات، ستجد مجموعة أدوات مثل المجموعة الظاهرة أدناه.
 
-## Aligning Objects
+## محاذاة الكائنات
 
-In Figma, you can align objects vertically or horizontally, choosing from start, middle, or end alignment options. Figma cleverly uses the boundaries of all selected objects to align them perfectly.
+في Figma، يمكنك محاذاة الكائنات رأسيًا أو أفقيًا باختيار خيارات المحاذاة عند البداية أو الوسط أو النهاية. ويستخدم Figma بذكاء حدود كل الكائنات المحدّدة لمحاذاتها محاذاة تامة.
 
-The following keyboard shortcuts facilitate these alignment actions:
+تسهّل اختصارات لوحة المفاتيح التالية إجراءات المحاذاة هذه:
 
-- **Align Left:** `Option/Alt + A`
-- **Align Center (Horizontal):** `Option/Alt + H`
-- **Align Right:** `Option/Alt + D`
-- **Align Top:** `Option/Alt + W`
-- **Align Middle (Vertical):** `Option/Alt + V`
-- **Align Bottom:** `Option/Alt + S`
+- **محاذاة إلى اليسار:** `Option/Alt + A`
+- **محاذاة إلى الوسط (أفقيًا):** `Option/Alt + H`
+- **محاذاة إلى اليمين:** `Option/Alt + D`
+- **محاذاة إلى الأعلى:** `Option/Alt + W`
+- **محاذاة إلى الوسط (رأسيًا):** `Option/Alt + V`
+- **محاذاة إلى الأسفل:** `Option/Alt + S`
 
-## Distributing Objects
+## توزيع الكائنات
 
-Figma also lets you evenly distribute objects. When distributing horizontally, it considers the leftmost and rightmost objects as boundaries; for vertical distribution, it uses the topmost and bottommost objects.
+يتيح لك Figma أيضًا توزيع الكائنات بالتساوي. وعند التوزيع أفقيًا، يعتبر الكائنين في أقصى اليسار وأقصى اليمين حدودًا؛ أما في التوزيع رأسيًا، فيستخدم الكائنين في أعلى الموضع وأدناه.
 
-The platform includes keyboard shortcuts for distribution tasks:
+تتضمّن المنصّة اختصارات لوحة مفاتيح لمهام التوزيع:
 
-- **Distribute Vertically:** `Ctrl + Alt/Option + V`
-- **Distribute Horizontally:** `Ctrl + Alt/Option + H`
+- **التوزيع رأسيًا:** `Ctrl + Alt/Option + V`
+- **التوزيع أفقيًا:** `Ctrl + Alt/Option + H`
 
-## Tidy Up
+## الترتيب (Tidy Up)
 
-The Tidy Up tool makes it super easy to tidy up messy selections without the need for precise adjustments. You can use the Tidy Up to neatly organize your chosen items.
+تجعل أداة Tidy Up ترتيب التحديدات الفوضوية أمرًا في غاية السهولة دون حاجة إلى ضبط دقيق. ويمكنك استخدام Tidy Up لتنظيم العناصر التي اخترتها بعناية.
 
-Tidy Up arranges selected items closely together with equal spacing. This feature isn’t just handy for Smart Selections; it works wonders with tables and toolbars too. Plus, unlike the usual distribute function, Tidy Up ensures consistent spacing every time.
+يرتّب Tidy Up العناصر المحدّدة قريبة من بعضها بمسافات متساوية. وهذه الميزة ليست مفيدة للتحديدات الذكية (Smart Selections) فحسب، بل تعمل ببراعة مع الجداول وأشرطة الأدوات أيضًا. وبخلاف دالة التوزيع المعتادة، يضمن Tidy Up مسافات ثابتة في كل مرة.

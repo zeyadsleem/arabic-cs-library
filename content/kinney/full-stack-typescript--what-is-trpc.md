@@ -1,20 +1,20 @@
 ---
-title: "What is tRPC?"
-lang: en
+title: "ما هو tRPC؟"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/what-is-trpc"
 ---
 
-tRPC (TypeScript Remote Procedure Call) gives you:
+يمنحك tRPC (استدعاء الإجراء عن بُعد في TypeScript، TypeScript Remote Procedure Call) ما يلي:
 
-- **Type inference across client and server.** You change a field name on the server, the client breaks at compile time. It’s a developer’s dream (or a lazy dev’s dream, depending on your vantage).
-- **No code generation.** You don’t have to write a separate REST or GraphQL schema, then generate client types. It’s all in code, courtesy of TypeScript and tRPC’s power.
-- **Less boilerplate** (compared to typical “API schema + server + client” combos).
+- **استنتاج الأنواع في العميل والخادم.** تُغيّر اسم حقل على الخادم، فيتعطّل العميل عند التصريف. إنه حلم أي مطوّر (أو حلم مطوّر كسول، حسب وجهة نظرك).
+- **بلا توليد شيفرة.** لا يلزمك كتابة مخطط REST أو GraphQL منفصل ثم توليد أنواع العميل. كل شيء في الشيفرة، بفضل TypeScript وقوة tRPC.
+- **شيفرة متكررة أقل** (مقارنةً بمزيج «مخطط API + خادم + عميل» المعتاد).
 
-Overall, tRPC transforms that painful “Oops, the server changed that field from `name` to `fullName` and we forgot to update the client” scenario into an immediate compile-time error. It’s like having a friendly, hyper-vigilant coworker who never sleeps.
+في المجمل، يحوّل tRPC مشهد «عذرًا، غيّر الخادم اسم الحقل من `name` إلى `fullName` ونسينا تحديث العميل» المؤلم إلى خطأ فوري عند التصريف. الأمر أشبه بزميل ودود شديد اليقظة لا ينام أبدًا.
 
-## Project Structure
+## بنية المشروع
 
-A typical approach is a “monorepo” style with:
+النهج المعتاد هو أسلوب «المستودع الأحادي» (monorepo) بالشكل:
 
 ```typescript
 root/
@@ -22,4 +22,4 @@ root/
  ┗ client/
 ```
 
-We’ll put our Express-based tRPC backend in `server/`, and any client code in `client/`. They’ll share types so we get that sweet end-to-end type safety.
+سنضع خادم tRPC القائم على Express في `server/`، وأي شيفرة عميل في `client/`. وسيتشاركان الأنواع فنحصل على سلامة الأنواع من الطرف إلى الطرف.

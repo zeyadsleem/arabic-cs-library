@@ -7,13 +7,13 @@
 ## 0. الحالة الحالية (آخر تحديث)
 
 حالة `content/library.json` بعد التحقق الفعلي من المستودع: **56 كتاباً** —
-**47 في حالة `translated`** و**9 في حالة `planned`**، ولا توجد حالة ثالثة.
+**49 في حالة `translated`** و**7 في حالة `planned`**، ولا توجد حالة ثالثة.
 
 | التصنيف | العدد | التفاصيل |
 | --- | --- | --- |
-| كتب بصفحات محلية داخل المكتبة | 41 | 1328 قسماً في `src/lib/generated/sections/` |
+| كتب بصفحات محلية داخل المكتبة | 43 | 2211 قسماً في `src/lib/generated/sections/` (منها 864 صفحة Kinney يبنيها `scripts/build-kinney.mjs`) |
 | كتب مستضافة خارجياً عبر `siteUrl` | 7 | `gobyexample-ar` · `learn-go-with-tests-ar` · `go101-ar` · `eloquent-javascript-ar` · `fullstack-open-ar` · `webdev-learn-ar` · `mooc` — ترجمتها كاملة لكنها تُقدَّم من مواقع خارجية، فلا صفحات محلية لها |
-| في طابور الترجمة | 9 | القسم 8 أدناه |
+| في طابور الترجمة | 7 | القسم 8 أدناه |
 
 `go-tour` ليست مستثنية: 103 صفحاتها العربية تُبنى من `src/lib/tour/translations/*.json`
 عبر `scripts/build-go-tour.mjs` ثم تُحقن في البيان عبر تخصيص في `build-content.mjs` —
@@ -23,12 +23,13 @@
 
 | البوابة | النتيجة |
 | --- | --- |
-| `pnpm audit:content` | 1328 قسماً في 41 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
-| `pnpm test:content` | 45/45 |
+| `pnpm audit:content` | 2211 قسماً في 43 كتاباً — 0 صورة ناقصة، 0 صيغة خاطئة، 0 نص معلّم |
+| `pnpm test:content` | يفشل في دورتي TanStack (32 تحقّقاً) — عمل سابق ناقص خارج نطاق Kinney؛ 77/109 تمر |
 | `pnpm test:import` | 9/9 |
-| `pnpm check:links` | 0 رابط غير محلَّل من 153,793 مرجعاً داخلياً على 1390 صفحة |
+| `pnpm check:links` | 0 رابط غير محلَّل من 936,298 مرجعاً داخلياً على 2273 صفحة |
 | `node scripts/build-content.mjs` | يخرج 0 فقط إذا كانت **كل** صفحة لكل كتاب مصنَّف `translated` بالفعل عربية |
-| `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 2 أدناه) |
+| `node scripts/check-mooc.mjs` | بوابة صفحة-صفحة لترجمة MOOC (القفل 1 أدناه) |
+| `node scripts/check-kinney.mjs` | 864 صفحة: 864 pass، 0 pending، 0 invalid (القفل 2 أدناه) |
 
 ملاحظتان حول النزاهة بعد هذه الجولة:
 
@@ -198,41 +199,21 @@
 كل وكلاء يعيد قراءة الملف من القرص ويُعيد التحقق بعد الكتابة، لأن كتابة بعضهم
 نُفِي دفعةً سابقة دون أن يشعر أحد.
 
-### القفل 2 — Kinney (868 صفحة · 8.5MB · 16 دورة)
+### القفل 2 — Kinney (864 صفحة · 16 دورة) — ✅ مكتمل
 
 | البند | القيمة |
 | --- | --- |
-| المصدر | `content-src/kinney/` — **جاهز بالكامل**، 864 ملفاً إنجليزياً |
-| خط الإنتاج | `scripts/import-kinney.mjs` + `scripts/build-kinney.mjs` موجودان |
-| نموذج التخزين | **على مستوى المقطع لا الصفحة**: `content-src/kinney-translations.json` يربط مفتاح مقطع ← النص العربي، والبناء يولّد `lang: ar` فقط عندما تكتمل مقاطع الصفحة |
+| المصدر | `content-src/kinney/` — 864 ملفاً إنجليزياً |
+| خط الإنتاج | `scripts/import-kinney.mjs` + `scripts/build-kinney.mjs` |
+| نموذج التخزين | **على مستوى الصفحة**: `content-src/kinney-translations/<key>.md` يقابل كل ملف مصدر بالاسم نفسه، والبناء يولّد `lang: ar` فقط عندما تكتمل ترجمة الصفحة |
+| العقدة | `docs/kinney-translation.md` |
+| الفاحص | `node scripts/check-kinney.mjs` (أو `pnpm check:kinney`) — الأسوار وهويتها، الروابط، نسبة العربية، وأي سطر إنجليزي باقٍ |
 | الإذن | إذن كتابي من ستيف كيني (CC BY-NC-SA 4.0) — غير رسمي وغير تجاري |
-| الحالة | `planned`، وصفر ترجمة (JSON المخزن كائن فارغ) |
+| الحالة | `translated` — 864 صفحة عربية، 0 معلّقة، 0 فاشلة |
 
-أول ثلاث خطوات قبل أي ترجمة:
-
-1. **عقدة ترجمة**: `docs/kinney-translation.md` على غرار عقدة MOOC — قواعد
-   الشيفرة والصور والمصطلحات وعناصر React المُصيَّرة.
-2. **فاحص**: نسخة Kinney من `check-mooc.mjs` تفحص المقاطع المفقودة ونسبة
-   العربية وأي سطر إنجليزي متبقٍّ.
-3. **تفكيك الدفعات**: حجم الملف الأكبر هو `enterprise-ui--observability`
-   (55KB) وتوزيع الدفعات يكون لكل دورة على حدة لتوحيد المصطلحات:
-
-   | الدورة | الصفحات | الدورة | الصفحات |
-   | --- | --- | --- | --- |
-   | `aws` | 100 | `self-testing-ai-agents` | 92 |
-   | `react-typescript` | 90 | `testing` | 81 |
-   | `tailwind` | 84 | `react-performance` | 67 |
-   | `full-stack-typescript` | 54 | `visual-studio-code` | 55 |
-   | `ai-development` | 44 | `enterprise-ui` | 51 |
-   | `storybook` | 40 | `ai-development-setup` | 38 |
-   | `figma` | 31 | `openclaw` | 23 |
-   | `python-ai` | 13 | `web-security` | 1 (صفحة تعريفية) |
-
-   الترتيب المقترح من الأصغر للأكبر لمراجعة العقدة مبكراً على دفعات قصيرة:
-   `web-security → python-ai → openclaw → figma → ai-development-setup →
-   storybook → enterprise-ui → visual-studio-code → full-stack-typescript →
-   react-performance → tailwind → testing → react-typescript →
-   self-testing-ai-agents → ai-development → aws`.
+النتيجة النهائية: `node scripts/build-kinney.mjs` يطبع
+`kinney: 864 pages (864 Arabic, 0 English)`، و`node scripts/check-kinney.mjs`
+يطبع `864 page(s): 864 pass, 0 pending, 0 invalid`.
 
 ### القفل 3 — MCS: الرياضيات لعلوم الحاسوب (22 صفحة)
 

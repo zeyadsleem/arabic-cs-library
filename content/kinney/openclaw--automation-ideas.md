@@ -1,63 +1,63 @@
 ---
-title: "Automation Ideas to Try"
-lang: en
+title: "أفكار أتمتة يمكنك تجربتها"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/automation-ideas"
 ---
 
-As soon as you can talk to your agent in Telegram, the fun part starts: getting it to do useful things while you’re not looking. This lesson is a menu. Read through it, pick one or two that match your life, and set them up in order of difficulty.
+بمجرد أن تستطيع التحدث إلى وكيلك في Telegram، يبدأ الجزء الممتع: أن تجعله يفعل أشياء مفيدة بينما لا تنظر. هذا الدرس قائمة أفكار. اقرأها، واختر فكرة أو فكرتين تناسبان حياتك، ثم أعدّهما بالترتيب من الأسهل إلى الأصعب.
 
-Every idea has the same shape:
+كل فكرة لها البنية نفسها:
 
-- **What you get** is the point of the thing.
-- **Built from** names the pieces it uses.
-- **Try it** is a starter command or prompt.
-- **Guardrails** is what keeps it from going wrong.
+- **ما تحصل عليه** هو جوهر الفكرة.
+- **مبنيّ من** يسمّي المكوّنات التي تستخدمها.
+- **جرّبها** أمر أو توجيه للبدء.
+- **حواجز الحماية** هي ما يمنعها من الانحراف.
 
-> **Some ideas need pieces from later lessons**
+> **بعض الأفكار تحتاج مكوّنات من دروس لاحقة**
 >
-> This lesson comes early so you can start scheduling right away, but many ideas use things later lessons set up: [Gmail and Calendar](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration), [the browser](https://stevekinney.com/courses/openclaw/browser-setup-and-use), [a paired Mac](https://stevekinney.com/courses/openclaw/connecting-a-remote-node), and [coding agents](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin). The **Needs** column in [Picking Your First Three](#picking-your-first-three) shows what each one requires. Start with the ones that only need a schedule and a chat, and come back for the rest as you go.
+> يأتي هذا الدرس مبكرًا كي تبدأ بالجدولة فورًا، لكن أفكارًا كثيرة تستخدم أشياء تُهيّئها دروس لاحقة: [Gmail وGoogle Calendar](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration)، و[المتصفح](https://stevekinney.com/courses/openclaw/browser-setup-and-use)، و[جهاز Mac مقترن](https://stevekinney.com/courses/openclaw/connecting-a-remote-node)، و[وكلاء البرمجة](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin). يُظهر عمود **Needs** في [اختيار أفكارك الثلاث الأولى](#picking-your-first-three) ما تتطلبه كل فكرة. ابدأ بالأفكار التي تحتاج فقط إلى جدول زمني ومحادثة، وعُد إلى البقية تدريجيًا.
 
-> **Treat the commands as sketches**
+> **تعامل مع الأوامر كمسوّدات**
 >
-> The scheduling flags here follow OpenClaw’s `2026.9.8` documentation, but I haven’t run every one against a live Gateway. If a flag doesn’t behave as shown, run the command with `--help`. Many ideas are also adapted from community write-ups, which are one person’s report of their own setup and not something the project has verified.
+> تستند خيارات الجدولة هنا إلى توثيق OpenClaw للإصدار `2026.9.8`، لكنني لم أُشغّل كل خيار منها على Gateway حيّ. وإذا لم يتصرف خيار كما هو موضّح، فشغّل الأمر مع `--help`. كثير من الأفكار أيضًا مقتبسة من كتابات المجتمع، وهي تقرير شخص واحد عن إعداده الخاص وليست شيئًا تحقّق منه المشروع.
 
-## The Building Blocks
+## المكوّنات الأساسية
 
-Almost every idea below is a combination of a few things OpenClaw already does:
+كل فكرة تقريبًا أدناه هي مزيج من أشياء قليلة يفعلها OpenClaw بالفعل:
 
-| Block | What it is | Best for |
+| المكوّن | ما هو | الأنسب لـ |
 | --- | --- | --- |
-| **Scheduled automation** | A stored job that runs on a clock (`--cron`, `--every`, or `--at`) | Briefs, digests, weekly reports |
-| **Heartbeat** | A recurring turn on an existing session that should usually answer “nothing changed” | Lightweight periodic checks |
-| **`/loop`** | A chat shortcut for a recurring job tied to the current conversation | Quick, temporary babysitting |
-| **Event triggers** | Jobs that fire when a command exits, a log line matches, or a script says so | “Tell me when something happens” |
-| **Webhooks** | An outside service POSTs to your Gateway | Push-style events (needs a reachable URL) |
-| **Capabilities** | Gmail and Calendar, the browser, memory, paired nodes, and ACP coding agents | What the job actually does |
+| **أتمتة مجدولة** | مهمة مخزّنة تعمل وفق ساعة (`--cron` أو `--every` أو `--at`) | الموجزات والملخصات والتقارير الأسبوعية |
+| **Heartbeat (النبضة الدورية)** | دورة متكررة على جلسة قائمة يُفترض أن تجيب عادةً بـ«لم يتغيّر شيء» | فحوص دورية خفيفة |
+| **`/loop`** | اختصار في المحادثة لمهمة متكررة مرتبطة بالمحادثة الحالية | مراقبة سريعة ومؤقتة |
+| **محفّزات الأحداث** | مهام تنطلق عندما ينتهي أمر، أو يطابق سطر في سجل، أو يطلب ذلك نص برمجي | «أخبرني عندما يحدث شيء ما» |
+| **Webhooks (خطافات الويب)** | خدمة خارجية ترسل طلب POST إلى Gateway الخاص بك | أحداث من نوع الدفع (تحتاج عنوان URL يمكن الوصول إليه) |
+| **القدرات** | Gmail وCalendar والمتصفح والذاكرة والعُقد المقترنة ووكلاء البرمجة عبر ACP | ما تفعله المهمة فعليًا |
 
-### Scheduling in Thirty Seconds
+### الجدولة في ثلاثين ثانية
 
-The command is `openclaw automations` (the older spelling `openclaw cron` works too). There are two ways to write the same thing. The first puts the schedule and the prompt up front:
+الأمر هو `openclaw automations` (والصيغة الأقدم `openclaw cron` تعمل أيضًا). وهناك طريقتان لكتابة الشيء نفسه. الأولى تضع الجدول والتوجيه في المقدمة:
 
 ```bash
 openclaw automations create "0 7 * * *" "Summarize overnight updates." \
   --name "Morning brief" --tz "America/Denver" --session isolated --announce
 ```
 
-The second spells everything out with flags:
+والثانية تفصّل كل شيء عبر الخيارات:
 
 ```bash
 openclaw automations add --name "Calendar check" --at "20m" \
   --session main --system-event "Next heartbeat: check calendar." --wake now
 ```
 
-A few flags do most of the work:
+وهناك خيارات قليلة تقوم بمعظم العمل:
 
-- **`--cron`, `--every`, and `--at`** pick the schedule. A schedule can be a cron expression, a duration like `20m`, an interval like `every 1h`, or a timestamp.
-- **`--tz`** sets the timezone. Always set it for anything tied to your day, or “7am” means 7am wherever the Gateway lives.
-- **`--session isolated`** gives the job its own fresh session, so it doesn’t pile up context in your main conversation.
-- **`--announce`** delivers the result. Use `openclaw automations show <job-id>` afterward to see exactly where it will go.
+- **`--cron` و`--every` و`--at`** تحدد الجدول. ويمكن أن يكون الجدول تعبير cron، أو مدة مثل `20m`، أو فاصلًا مثل `every 1h`، أو طابعًا زمنيًا.
+- **`--tz`** يضبط المنطقة الزمنية. اضبطه دائمًا لأي شيء مرتبط بيومك، وإلا صار «السابعة صباحًا» يعني السابعة صباحًا في المكان الذي يقيم فيه Gateway.
+- **`--session isolated`** يمنح المهمة جلسة جديدة خاصة بها، فلا يتراكم السياق في محادثتك الرئيسية.
+- **`--announce`** يوصّل النتيجة. استخدم `openclaw automations show <job-id>` بعد ذلك لترى بالضبط إلى أين ستذهب.
 
-And you manage jobs the same way for all of them:
+وتدير المهام بالطريقة نفسها لكلها:
 
 ```bash
 openclaw automations list --all          # every job, including disabled and system ones
@@ -66,35 +66,35 @@ openclaw automations runs <job-id>       # run history
 openclaw automations disable <job-id>    # stop it without deleting it
 ```
 
-You can also just ask your agent, in Telegram, to set one up. Jobs created that way are limited to the tools available in the conversation that created them, which is a nice built-in guardrail. Run `openclaw automations list` afterward to check what it actually made.
+ويمكنك أيضًا أن تطلب من وكيلك، في Telegram، إنشاء واحدة. والمهام التي تُنشأ بهذه الطريقة محصورة بالأدوات المتاحة في المحادثة التي أنشأتها، وهذا حاجز حماية مدمج لطيف. شغّل `openclaw automations list` بعد ذلك للتحقق مما أنشأه فعلًا.
 
-If you’d rather click than type, the Control UI has an Automations page with a New automation form. It asks for the same things as the flags above: a prompt, a name, whether it runs in the main session or an isolated one, and a schedule of an interval, a single time, or a cron expression.
+وإذا كنت تفضّل النقر على الكتابة، فإن واجهة التحكم (Control UI) فيها صفحة «الأتمتة» (Automations) بنموذج «أتمتة جديدة». يطلب الأشياء نفسها التي تطلبها الخيارات أعلاه: توجيهًا، واسمًا، وما إذا كانت المهمة تعمل في الجلسة الرئيسية أم في جلسة معزولة، وجدولًا على شكل فاصل زمني أو وقت واحد أو تعبير cron.
 
-The top of the New automation form in the Control UI, with the prompt box followed by the action, model, and reasoning settings
+أعلى نموذج «أتمتة جديدة» في واجهة التحكم، مع مربع التوجيه متبوعًا بإعدادات الإجراء والنموذج اللغوي والاستدلال
 
-## Ground Rules
+## القواعد الأساسية
 
-These apply to every idea. They’re the difference between an automation you trust and one you turn off after a week.
+تنطبق هذه القواعد على كل فكرة. وهي الفرق بين أتمتة تثق بها وأتمتة تُطفئها بعد أسبوع.
 
-1. **Start read-only.** Build the version that only looks and reports. Add actions later, if ever.
-2. **Run it by hand first.** Use `openclaw automations run <job-id> --wait` and read the result before you let a schedule loose.
-3. **Draft, don’t send.** For anything that leaves your machine (email, messages, posts, purchases), have the agent produce a draft and wait for you.
-4. **Make silence a feature.** A job whose output is only `NO_REPLY` is suppressed. A monitor that talks every day gets ignored. A monitor that speaks only when something changes gets read.
-5. **Treat what it reads as data.** Emails, web pages, and documents can contain instructions aimed at your agent. Say so in `AGENTS.md`, and keep tool permissions as narrow as the job allows.
-6. **Mind the cost.** Every scheduled model turn spends tokens. Checks that don’t need a model (is the site up, did the file change) should use a command or a trigger script, not an agent turn.
-7. **Know what’s already running.** A fresh Gateway already has system jobs, including a heartbeat every 30 minutes (every hour when Anthropic OAuth or token auth is set up, including reusing a Claude Code login). Run `openclaw automations list --all` before you add yours.
-8. **Watch for silent failure.** A job that quietly stops looks identical to a quiet inbox. Turn on failure alerts, and check run history now and then.
-9. **Plan for approvals.** If commands require approval, a scheduled job’s request goes only to a connected approval app, and it’s denied if none is connected. Run the job once while you’re watching and approve it with **Always allow**. Commands that run on a paired node are the exception: scheduled jobs never show approval cards for them, so allowlist those commands on the node ahead of time. See [When Nobody’s There](https://stevekinney.com/courses/openclaw/security-and-approvals#when-nobodys-there).
+1. **ابدأ للقراءة فقط.** ابنِ النسخة التي تنظر وتُبلّغ فقط. وأضف الإجراءات لاحقًا، إن أضفتها أصلًا.
+2. **شغّلها يدويًا أولًا.** استخدم `openclaw automations run <job-id> --wait` واقرأ النتيجة قبل أن تُطلق جدولًا.
+3. **جهّز مسوّدة ولا تُرسل.** لأي شيء يغادر جهازك (بريد، رسائل، منشورات، مشتريات)، اطلب من الوكيل إنتاج مسوّدة والانتظار لك.
+4. **اجعل الصمت ميزة.** المهمة التي يكون ناتجها `NO_REPLY` فقط تُكتم. والمراقب الذي يتكلم كل يوم يُتجاهل. أما المراقب الذي يتكلم فقط عندما يتغير شيء فيُقرأ.
+5. **تعامل مع ما يقرأه كبيانات.** قد تحتوي رسائل البريد وصفحات الويب والمستندات على تعليمات موجّهة إلى وكيلك. اذكر ذلك في `AGENTS.md`، وأبقِ أذونات الأدوات أضيق ما تسمح به المهمة.
+6. **انتبه للتكلفة.** كل دورة نموذج مجدولة تستهلك رموزًا (tokens). والفحوص التي لا تحتاج إلى نموذج (هل الموقع يعمل، هل تغيّر الملف) ينبغي أن تستخدم أمرًا أو نصًا محفّزًا، لا دورة وكيل.
+7. **اعرف ما يعمل بالفعل.** Gateway الجديد لديه بالفعل مهام نظام، منها heartbeat كل 30 دقيقة (وكل ساعة عند إعداد Anthropic OAuth أو مصادقة رمزية، بما في ذلك إعادة استخدام تسجيل دخول Claude Code). شغّل `openclaw automations list --all` قبل أن تضيف مهامك.
+8. **راقب الفشل الصامت.** المهمة التي تتوقف بهدوء تبدو تمامًا كصندوق بريد هادئ. فعّل تنبيهات الفشل، وتفقّد سجل التشغيل من حين لآخر.
+9. **خطّط للموافقات.** إذا كانت الأوامر تتطلب موافقة، فإن طلب المهمة المجدولة يذهب فقط إلى تطبيق موافقات متصل، ويُرفض إن لم يكن هناك أي تطبيق متصل. شغّل المهمة مرة وأنت تراقب ووافق عليها باستخدام **Always allow**. والأوامر التي تعمل على عقدة مقترنة هي الاستثناء: فالمهام المجدولة لا تُظهر بطاقات موافقة لها أبدًا، لذا أدرج تلك الأوامر في قائمة السماح على العقدة مسبقًا. انظر [عندما لا يكون أحد موجودًا](https://stevekinney.com/courses/openclaw/security-and-approvals#when-nobodys-there).
 
-## Daily Rhythms
+## الإيقاعات اليومية
 
-### 1. The Morning Brief
+### 1. الموجز الصباحي
 
-**What you get:** a short message at 7am with today’s schedule, any conflicts, and the few emails that probably need you.
+**ما تحصل عليه:** رسالة قصيرة في السابعة صباحًا تتضمن جدول اليوم، وأي تعارضات، ورسائل البريد القليلة التي تحتاج إلى اهتمامك على الأرجح.
 
-**Built from:** a scheduled automation, plus [Gmail and Calendar access](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration).
+**مبنيّ من:** أتمتة مجدولة، إضافة إلى [الوصول إلى Gmail وCalendar](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration).
 
-**Try it:**
+**جرّبه:**
 
 ```bash
 openclaw automations create "0 7 * * 1-5" \
@@ -102,17 +102,17 @@ openclaw automations create "0 7 * * 1-5" \
   --name "Morning brief" --tz "America/Denver" --session isolated --announce
 ```
 
-Then run it yourself with `run --wait` and read the output before you trust the schedule.
+ثم شغّله بنفسك باستخدام `run --wait` واقرأ الناتج قبل أن تثق بالجدول.
 
-**Guardrails:** keep the Google credentials read-only (`--readonly` in the Gmail lesson), and make sure `AGENTS.md` says email is untrusted data, not instructions. Start with delivery off or pointed at yourself until the output looks right.
+**حواجز الحماية:** أبقِ بيانات اعتماد Google للقراءة فقط (`--readonly` في درس Gmail)، وتأكد من أن `AGENTS.md` ينص على أن البريد بيانات غير موثوقة لا تعليمات. وابدأ بالتوصيل مُعطّلًا أو موجّهًا إلى نفسك حتى يبدو الناتج صحيحًا.
 
-### 2. The Evening Look-Ahead
+### 2. نظرة المساء إلى الغد
 
-**What you get:** at 6pm on weekdays, tomorrow’s calendar with conflicts and any gap longer than an hour, so you know what you’re walking into.
+**ما تحصل عليه:** في السادسة مساءً أيام العمل، تقويم الغد مع التعارضات وأي فراغ أطول من ساعة، كي تعرف ما أنت مقبل عليه.
 
-**Built from:** the same pieces as the morning brief, on a different clock.
+**مبنيّ من:** المكوّنات نفسها التي في الموجز الصباحي، على ساعة مختلفة.
 
-**Try it:**
+**جرّبه:**
 
 ```bash
 openclaw automations create "0 18 * * 1-5" \
@@ -120,36 +120,36 @@ openclaw automations create "0 18 * * 1-5" \
   --name "Evening look-ahead" --tz "America/Denver" --session isolated --announce
 ```
 
-**Guardrails:** none beyond the morning brief. This is the safest one on the list, which makes it a good first automation.
+**حواجز الحماية:** لا شيء يزيد على ما في الموجز الصباحي. فهذه هي الفكرة الأكثر أمانًا في القائمة، ما يجعلها أتمتة أولى جيدة.
 
-### 3. Numbered Email Triage With One-Word Approvals
+### 3. فرز البريد المرقّم بموافقات من كلمة واحدة
 
-**What you get:** an hourly digest where every email that needs attention gets a number, a two-sentence summary, and a proposed next step. You clear your inbox by replying “3 approve” or “5 move to personal review” from your phone.
+**ما تحصل عليه:** موجز كل ساعة يحصل فيه كل بريد يحتاج إلى اهتمام على رقم وملخص من جملتين وخطوة تالية مقترحة. وتُفرّغ صندوق بريدك بالرد «3 موافقة» أو «5 انقل إلى المراجعة الشخصية» من هاتفك.
 
-**Built from:** a dedicated agent with its own workspace, a rules file, an hourly schedule, and a chat channel. The idea comes from a community write-up, and its best trick is the response protocol: nothing happens until you reply with a number.
+**مبنيّ من:** وكيل مخصص بمساحة عمل خاصة به، وملف قواعد، وجدول كل ساعة، وقناة محادثة. وتأتي الفكرة من كتابة في المجتمع، وأفضل حيلة فيها هي بروتوكول الرد: لا شيء يحدث حتى ترد برقم.
 
-**Try it:** start with the digest only.
+**جرّبه:** ابدأ بالموجز فقط.
 
-1. Write down your triage rules in one file: what’s spam, what you must see yourself, what can wait. If you’ve ever onboarded an assistant, that document probably already exists.
-2. Create a separate agent for it, so company context doesn’t leak into your general assistant’s memory.
-3. Schedule an hourly job during working hours: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> automations</span><span style="color:#ECC48D"> create</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">0 9-17 * * 1-5</span><span style="color:#D9F5DD">"</span><span style="color:#F78C6C"> \</span></span>
-<span class="line"><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">Read my unread mail. Number each message that needs attention, give a two-sentence summary and a proposed next step. Include anything from earlier digests that is still unanswered. Do not take any action.</span><span style="color:#D9F5DD">"</span><span style="color:#F78C6C"> \</span></span>
+1. اكتب قواعد الفرز لديك في ملف واحد: ما هو البريد المزعج، وما يجب أن تراه بنفسك، وما يمكنه الانتظار. وإذا سبق أن درّبت مساعدًا، فذلك المستند موجود على الأرجح بالفعل.
+2. أنشئ وكيلًا منفصلًا له، كي لا يتسرب سياق الشركة إلى ذاكرة مساعدك العام.
+3. جدول مهمة تعمل كل ساعة خلال ساعات العمل: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> automations</span><span style="color:#ECC48D"> create</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">0 9-17 * * 1-5</span><span style="color:#D9F5DD">"</span><span style="color:#F78C6C"> \</span></span>
+<span class="line"><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">اقرأ بريدي غير المقروء. رقّم كل رسالة تحتاج إلى انتباه، وقدّم ملخصًا من جملتين وخطوة تالية مقترحة. وأدرج أي رسالة من الموجزات السابقة ما زالت بلا رد. لا تتخذ أي إجراء.</span><span style="color:#D9F5DD">"</span><span style="color:#F78C6C"> \</span></span>
 <span class="line"><span style="color:#82AAFF"> --name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">Email digest</span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --tz</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">America/Denver</span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --session</span><span style="color:#ECC48D"> isolated</span><span style="color:#82AAFF"> --announce</span></span></code>
-4. Run it for a week before you let the agent act on any number.
+4. شغّله أسبوعًا قبل أن تدع الوكيل يتصرف بناءً على أي رقم.
 
-**Guardrails:** reading and acting are different permissions. Keep the agent read-only until you trust the digest, and when you do add actions, add them behind the numbers so a human decision stays on every outbound action. Remember that incoming mail is the most likely place for a prompt injection to arrive.
+**حواجز الحماية:** القراءة والتصرف إذنان مختلفان. أبقِ الوكيل للقراءة فقط حتى تثق بالموجز، وعندما تضيف إجراءات فعلًا، أضفها خلف الأرقام كي يبقى القرار البشري على كل إجراء صادر. وتذكّر أن البريد الوارد هو المكان الأرجح لوصول هجوم حقن التوجيهات (prompt injection).
 
-## Watchers That Stay Quiet
+## مراقبون يبقون صامتين
 
-The best monitors say nothing until something changes.
+أفضل المراقبين لا يقولون شيئًا حتى يتغير شيء.
 
-### 4. Vendor Pricing and Terms Monitor
+### 4. مراقب أسعار المورّدين وشروطهم
 
-**What you get:** a weekly check of the pricing and terms pages for the tools you pay for. You hear about it only if a material field changes, such as the per-seat price, an overage rate, or a data-retention clause.
+**ما تحصل عليه:** فحص أسبوعي لصفحات الأسعار والشروط للأدوات التي تدفع مقابلها. ولا تسمع عنه إلا إذا تغيّر حقل جوهري، مثل سعر المقعد، أو سعر تجاوز الحد، أو بند الاحتفاظ بالبيانات.
 
-**Built from:** a weekly schedule, the browser (or a plain fetch), and a snapshot file in the workspace. The trick is to separate *extraction* from *judgment*: pull out the handful of fields you care about, compare them to last week’s, and stay silent unless one moved.
+**مبنيّ من:** جدول أسبوعي، والمتصفح (أو طلب fetch عادي)، وملف لقطة في مساحة العمل. والحيلة هي فصل *الاستخراج* عن *الحكم*: استخرج الحقول القليلة التي تهمك، وقارنها بلقطة الأسبوع الماضي، وابقَ صامتًا إلا إذا تحرّك أحدها.
 
-**Try it:**
+**جرّبه:**
 
 ```bash
 openclaw automations create "0 9 * * 1" \
@@ -157,25 +157,25 @@ openclaw automations create "0 9 * * 1" \
   --name "Vendor watch" --tz "America/Denver" --session isolated --announce
 ```
 
-**Guardrails:** web pages are untrusted input. A monitor that quietly breaks looks exactly like “nothing changed,” so also ask it to say “still watching” on the first Monday of each month, and turn on failure alerts.
+**حواجز الحماية:** صفحات الويب مدخلات غير موثوقة. والمراقب الذي يتعطل بهدوء يبدو تمامًا مثل «لم يتغير شيء»، لذا اطلب منه أيضًا أن يقول «ما زلت أراقب» في أول اثنين من كل شهر، وفعّل تنبيهات الفشل.
 
-### 5. A Watcher That Only Wakes the Model When It Matters
+### 5. مراقب لا يوقظ النموذج إلا عندما يهم الأمر
 
-**What you get:** a site check every five minutes that costs nothing on a good day and only involves the agent when something’s wrong.
+**ما تحصل عليه:** فحص للموقع كل خمس دقائق لا يكلّف شيئًا في يوم جيد، ولا يُشرك الوكيل إلا عندما يكون هناك خطأ.
 
-**Built from:** a *condition watcher*, which is a small script attached to a schedule with `--trigger-script`. The script runs on each tick, and the agent’s prompt only runs if the script returns `{ fire: true }`. A returned `message` is added to the prompt.
+**مبنيّ من:** *مراقب شرط*، وهو نص برمجي صغير يُربط بجدول باستخدام `--trigger-script`. يعمل النص في كل نبضة، ولا يعمل توجيه الوكيل إلا إذا أعاد النص `{ fire: true }`. وأي `message` مُعادة تُضاف إلى التوجيه.
 
-**Try it:** write a script that checks your site and returns `fire: true` with a message like “the site returned a 502” when it’s down. Then attach it to an `--every` schedule with `--trigger-script <file>` and a prompt along the lines of “Investigate and tell me what you find.”
+**جرّبه:** اكتب نصًا يفحص موقعك ويعيد `fire: true` مع رسالة مثل «أعاد الموقع رمز 502» عندما يكون معطّلًا. ثم اربطه بجدول `--every` باستخدام `--trigger-script <file>` وتوجيه من قبيل «حقّق وأخبرني بما تجد».
 
-**Guardrails:** trigger scripts run unattended with the agent’s full tool policy, so write them as read-only checks and keep any actions in the prompt, where your approval rules apply. Trigger schedules have a 30-second minimum interval, and each check has a 30-second budget.
+**حواجز الحماية:** تعمل النصوص المحفّزة دون إشراف وبسياسة الأدوات الكاملة للوكيل، لذا اكتبها كفحوص للقراءة فقط وأبقِ أي إجراءات في التوجيه، حيث تنطبق قواعد موافقتك. والجداول المحفّزة لها حد أدنى للفاصل قدره 30 ثانية، ولكل فحص ميزانية 30 ثانية.
 
-### 6. Tell Me When the Build Finishes
+### 6. أخبرني عندما ينتهي البناء
 
-**What you get:** a message when a slow build or test run ends, with a summary of whether it passed and what failed.
+**ما تحصل عليه:** رسالة عندما ينتهي بناء بطيء أو تشغيل اختبارات، مع ملخص عن نجاحه وما فشل.
 
-**Built from:** an `--on-exit` trigger, which fires once when a watched command exits.
+**مبنيّ من:** محفّز `--on-exit`، ينطلق مرة واحدة عندما ينتهي أمر مراقب.
 
-**Try it:**
+**جرّبه:**
 
 ```bash
 openclaw automations add --name "Build finished" \
@@ -184,35 +184,35 @@ openclaw automations add --name "Build finished" \
   --message "The build just finished. Tell me whether it succeeded and summarize any errors."
 ```
 
-**Guardrails:** the job disables itself after it fires, so re-enable it for the next run. Check `openclaw automations add --help` for exactly how the command is launched and watched on your version.
+**حواجز الحماية:** تُعطّل المهمة نفسها بعد انطلاقها، فأعد تمكينها للتشغيل التالي. وتحقّق من `openclaw automations add --help` لمعرفة كيف يُطلق الأمر ويُراقب بالضبط في إصدارك.
 
-### 7. The Quick Babysitter
+### 7. المراقب السريع
 
-**What you get:** a temporary “keep an eye on this” that lives in the current chat and goes away when you’re done.
+**ما تحصل عليه:** «راقب هذا» مؤقت يعيش في المحادثة الحالية ويزول عندما تفرغ منه.
 
-**Built from:** `/loop`, a chat shortcut for a recurring job. It’s owner-only.
+**مبنيّ من:** `/loop`، اختصار في المحادثة لمهمة متكررة. وهو مقصور على المالك.
 
-**Try it:** in your chat with the agent:
+**جرّبه:** في محادثتك مع الوكيل:
 
 ```
 /loop 5m Check whether the latest deploy is healthy and tell me once it's green.
 ```
 
-Leave off the interval and the loop paces itself between one minute and one hour, checking more often while things are changing and backing off when they’re quiet. See what’s running with `/loop status` and end it with `/loop stop`.
+اترك الفاصل فارغًا فيُوتّر الحلقة نفسه بين دقيقة وساعة، فيفحص أكثر عندما تتغير الأمور ويتراجع عندما تكون هادئة. واعرض ما يعمل باستخدام `/loop status` وأنهِه باستخدام `/loop stop`.
 
-**Guardrails:** a loop that keeps announcing nothing new has a scoping problem, not a timing problem. Narrow what counts as worth mentioning instead of making it run faster.
+**حواجز الحماية:** الحلقة التي تظل تعلن أنه لا جديد لديها مشكلة في تحديد النطاق، لا في التوقيت. ففضيّق ما يُعدّ جديرًا بالذكر بدلًا من جعلها تعمل أسرع.
 
-## Using the Browser
+## استخدام المتصفح
 
-Both of these build on the prompts from the [browser prompts lesson](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts).
+كلتا الفكرتين تبنيان على التوجيهات من [درس توجيهات المتصفح](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts).
 
-### 8. A Weekly Trending Digest
+### 8. موجز أسبوعي للرائج
 
-**What you get:** every Monday, a report on the most interesting GitHub Trending repositories for AI agents and developer tooling, with a comparison table and your top three picks, sent to Telegram.
+**ما تحصل عليه:** كل اثنين، تقرير عن أكثر مستودعات GitHub Trending إثارة للاهتمام في مجال وكلاء الذكاء الاصطناعي وأدوات المطورين، مع جدول مقارنة وأفضل ثلاثة اختيارات لديك، يُرسل إلى Telegram.
 
-**Built from:** a weekly schedule and the browser, with the GitHub Trending prompt as the body.
+**مبنيّ من:** جدول أسبوعي والمتصفح، مع توجيه GitHub Trending كنص أساسي.
 
-**Try it:** take the prompt from the browser lesson, and schedule it:
+**جرّبه:** خذ التوجيه من درس المتصفح، وجدوله:
 
 ```bash
 openclaw automations create "0 8 * * 1" \
@@ -220,27 +220,27 @@ openclaw automations create "0 8 * * 1" \
   --name "Weekly trending" --tz "America/Denver" --session isolated --announce
 ```
 
-**Guardrails:** don’t point it at a browser profile that’s signed in to your accounts. A signed-in browser can reach whatever that session can, which is broader than any single API token.
+**حواجز الحماية:** لا توجّهه إلى ملف تعريف متصفح مسجّل الدخول إلى حساباتك. فالمتصفح المسجّل الدخول يستطيع الوصول إلى كل ما تستطيعه تلك الجلسة، وهو أوسع من أي token واحد لأي API.
 
-### 9. A Nightly QA Pass on Your Own Site
+### 9. جولة ضمان جودة ليلية على موقعك
 
-**What you get:** an exploratory test of your staging site, with expected versus observed behavior, reproduction steps, and screenshots of anything odd.
+**ما تحصل عليه:** اختبار استكشافي لموقع الاختبار (staging) لديك، مع السلوك المتوقع مقابل الملاحظ، وخطوات إعادة الإنتاج، ولقطات شاشة لأي شيء غريب.
 
-**Built from:** the QA engineer prompt from the browser lesson, aimed at your own app and run on a schedule.
+**مبنيّ من:** توجيه مهندس ضمان الجودة من درس المتصفح، موجّهًا إلى تطبيقك أنت ويعمل وفق جدول.
 
-**Try it:** adapt the TodoMVC prompt to your staging URL, keep the line that says never to report a test as passing unless it was actually executed, and schedule it nightly or weekly.
+**جرّبه:** عدّل توجيه TodoMVC ليناسب عنوان URL الخاص بموقع الاختبار، وأبقِ السطر الذي يقول إنه لا يجوز الإبلاغ عن اختبار بأنه ناجح إلا إذا نُفّذ فعلًا، وجدوله ليليًا أو أسبوعيًا.
 
-**Guardrails:** staging only. Never aim it at production with real accounts, and never give it real credentials.
+**حواجز الحماية:** بيئة الاختبار فقط. لا توجّهه أبدًا إلى الإنتاج بحسابات حقيقية، ولا تعطه بيانات اعتماد حقيقية أبدًا.
 
-## Your Own Knowledge
+## معرفتك الخاصة
 
-### 10. A Monthly Memory Audit
+### 10. تدقيق شهري للذاكرة
 
-**What you get:** a report on the health of your agent’s memory: duplicate facts, stale decisions, contradictions, and anything that shouldn’t be there, like a stray secret.
+**ما تحصل عليه:** تقرير عن صحة ذاكرة وكيلك: حقائق مكررة، وقرارات قديمة، وتناقضات، وأي شيء لا ينبغي أن يكون هناك، مثل سر شارد.
 
-**Built from:** a monthly schedule, a stronger model, and the files from the [configuration lesson](https://stevekinney.com/courses/openclaw/configuring-your-openclaw). The point is to find problems, so the job writes a report and edits nothing.
+**مبنيّ من:** جدول شهري، ونموذج أقوى، والملفات من [درس الإعداد](https://stevekinney.com/courses/openclaw/configuring-your-openclaw). والغرض هو إيجاد المشكلات، لذا تكتب المهمة تقريرًا ولا تعدّل شيئًا.
 
-**Try it:**
+**جرّبه:**
 
 ```bash
 openclaw automations create "0 10 1 * *" \
@@ -248,15 +248,15 @@ openclaw automations create "0 10 1 * *" \
   --name "Memory audit" --tz "America/Denver" --session isolated --announce
 ```
 
-**Guardrails:** `MEMORY.md` is meant to stay small and curated, so a good audit should end with things to delete. Apply those changes yourself.
+**حواجز الحماية:** يُفترض أن يبقى `MEMORY.md` صغيرًا ومنقّحًا، لذا ينبغي أن ينتهي التدقيق الجيد بأشياء يجب حذفها. وطبّق تلك التغييرات بنفسك.
 
-### 11. A Weekly Status Draft
+### 11. مسوّدة حالة أسبوعية
 
-**What you get:** on Friday afternoon, a draft summary of the week with dated source links, waiting in a file for you to edit and send.
+**ما تحصل عليه:** عصر الجمعة، ملخص مسوّدة للأسبوع مع روابط مصادر مؤرخة، ينتظر في ملف لتعدّله وترسله.
 
-**Built from:** a *standing order*, which is durable instructions in `AGENTS.md` for what the agent owns, what it may do, and when it must stop, plus a Friday schedule. The schedule only wakes it up. The standing order says what it’s allowed to do.
+**مبنيّ من:** *أمر دائم*، وهو تعليمات راسخة في `AGENTS.md` تحدّد ما يملكه الوكيل، وما يجوز له فعله، ومتى يجب أن يتوقف، إضافة إلى جدول يوم الجمعة. فالجدول يوقظه فقط، والأمر الدائم يقول ما يُسمح له بفعله.
 
-**Try it:** add a short program to `AGENTS.md`:
+**جرّبه:** أضف برنامجًا قصيرًا إلى `AGENTS.md`:
 
 ```markdown
 ## Program: Weekly status draft
@@ -269,33 +269,33 @@ Escalation: Stop if a required source is missing or contradicts another.
 Completion: Verify the file exists and every material claim has a source.
 ```
 
-Then schedule a Friday job whose prompt points at the program instead of repeating it.
+ثم جدول مهمة يوم الجمعة يشير توجيهها إلى البرنامج بدلًا من تكراره.
 
-**Guardrails:** this idea separates producing a draft from publishing it. If you ever want it to send, write down the exact audience and conditions instead of telling it to “be proactive.”
+**حواجز الحماية:** تفصل هذه الفكرة بين إنتاج المسوّدة ونشرها. وإذا أردت يومًا أن ترسل، فاكتب الجمهور والشروط بدقة بدلًا من أن تقول له «كن مبادرًا».
 
-## With Your Mac
+## مع جهاز Mac
 
-### 12. An End-of-Day Dev Recap
+### 12. ملخص نهاية اليوم للمطوّر
 
-**What you get:** at 6pm, a summary of what you worked on across your repositories: commits, branches, and uncommitted changes.
+**ما تحصل عليه:** في السادسة مساءً، ملخص لما عملت عليه عبر مستودعاتك: الإيداعات والفروع والتغييرات غير المُودَعة.
 
-**Built from:** a [paired Mac node](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) and a scheduled job, with the commands routed to the node. Set `tools.exec.host` to `node` for the agent that runs the job (and `tools.exec.node` if you have more than one node), rather than relying on an `/exec` directive, which only applies in a chat.
+**مبنيّ من:** [عقدة Mac مقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) ومهمة مجدولة، مع توجيه الأوامر إلى العقدة. اضبط `tools.exec.host` على `node` للوكيل الذي يشغّل المهمة (و`tools.exec.node` إذا كان لديك أكثر من عقدة)، بدلًا من الاعتماد على توجيه `/exec` الذي لا ينطبق إلا في المحادثة.
 
-**Try it:** allowlist only the read-only git commands on the Mac, then schedule a job whose prompt asks for a recap of recent activity in your projects folder.
+**جرّبه:** أدرج في قائمة السماح أوامر git للقراءة فقط على جهاز Mac، ثم جدول مهمة يطلب توجيهها ملخصًا للنشاط الأخير في مجلد مشاريعك.
 
-**Guardrails:** command output returns to the Gateway and can enter the model’s context, so code leaves your Mac. Allow only what you need, like `git log` and `git status`. And plan for the Mac being asleep. An offline node is rejected, not redirected, so the job should report that it couldn’t run instead of falling back to another machine.
+**حواجز الحماية:** يعود ناتج الأوامر إلى Gateway ويمكن أن يدخل سياق النموذج، أي أن الشيفرة تغادر جهاز Mac. فاسمح فقط بما تحتاجه، مثل `git log` و`git status`. وخطّط لاحتمال نوم جهاز Mac؛ فالعقدة غير المتصلة تُرفض ولا يُعاد توجيهها، لذا ينبغي أن تُبلغ المهمة بأنها لم تستطع العمل بدلًا من التحول إلى جهاز آخر.
 
-## With Coding Agents
+## مع وكلاء البرمجة
 
-These use the [ACPX plugin](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) and are the most powerful and the riskiest on the list.
+تستخدم هذه الأفكار [إضافة ACPX](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) وهي الأقوى والأخطر في القائمة.
 
-### 13. Overnight Maintenance in a Scratch Checkout
+### 13. صيانة ليلية في نسخة عمل مؤقتة
 
-**What you get:** at 2am, a coding agent runs your tests, fixes trivial lint failures, and writes up what it found. In the morning you have a diff and a report to review.
+**ما تحصل عليه:** في الثانية صباحًا، يشغّل وكيل برمجة اختباراتك، ويصلح إخفاقات lint التافهة، ويكتب ما وجده. وفي الصباح يكون لديك diff وتقرير للمراجعة.
 
-**Built from:** a scheduled job whose prompt starts an ACP session with `sessions_spawn`, a throwaway checkout of your repository on the Gateway host, and the `approve-all` permission mode scoped to that checkout only.
+**مبنيّ من:** مهمة مجدولة يبدأ توجيهها جلسة ACP باستخدام `sessions_spawn`، ونسخة عمل مؤقتة من مستودعك على مضيف Gateway، ووضع الأذونات `approve-all` محصورًا في تلك النسخة فقط.
 
-**Try it:** clone a copy of a repository into a scratch directory on the Gateway host, then schedule a job like this:
+**جرّبه:** استنسخ نسخة من مستودع إلى مجلد مؤقت على مضيف Gateway، ثم جدول مهمة مثل هذه:
 
 ```bash
 openclaw automations create "0 2 * * 1-5" \
@@ -303,67 +303,67 @@ openclaw automations create "0 2 * * 1-5" \
   --name "Overnight maintenance" --tz "America/Denver" --session isolated --announce
 ```
 
-**Guardrails:**
+**حواجز الحماية:**
 
-- **No push credentials.** The scratch checkout shouldn’t be able to push anywhere. You review the diff, then apply what you want.
-- **ACP isn’t sandboxed.** The harness runs on the host, so keep `approve-all` off everywhere except this job’s directory, and turn it back to `approve-reads` when you’re not using it.
-- **Inspect before you retry.** If the session fails or times out, the harness may have already changed files. Check the session and the diff first.
-- **Not from a sandboxed session.** ACP spawns are blocked when the requesting session is sandboxed, so this job needs to run in an unsandboxed one.
+- **لا بيانات اعتماد للدفع (push).** لا ينبغي أن تستطيع نسخة العمل المؤقتة الدفع إلى أي مكان. فأنت تراجع diff ثم تطبّق ما تريد.
+- **ACP ليس معزولًا (sandboxed).** يعمل harness على المضيف، لذا أبقِ `approve-all` معطّلًا في كل مكان إلا مجلد هذه المهمة، وأعده إلى `approve-reads` عندما لا تستخدمه.
+- **افحص قبل أن تعيد المحاولة.** إذا فشلت الجلسة أو انتهت مهلتها، فقد يكون harness غيّر ملفات بالفعل. فتحقق من الجلسة وdiff أولًا.
+- **ليس من جلسة معزولة.** تُحجب عمليات spawn الخاصة بـACP عندما تكون الجلسة الطالبة معزولة، لذا يجب أن تعمل هذه المهمة في جلسة غير معزولة.
 
-### 14. A Second Opinion on Every Diff
+### 14. رأي ثانٍ على كل diff
 
-**What you get:** a code review from a different model than the one that wrote the code.
+**ما تحصل عليه:** مراجعة شيفرة من نموذج مختلف عن النموذج الذي كتب الشيفرة.
 
-**Built from:** two ACP sessions, one per harness, pointed at the same diff and asked the same question. This is exercise 2 from the ACPX lesson, put to work.
+**مبنيّ من:** جلستان من ACP، واحدة لكل harness، موجّهتان إلى diff نفسه ومطروح عليهما السؤال نفسه. وهذا هو التمرين الثاني من درس ACPX، مطبّقًا في العمل.
 
-**Try it:** ask your agent:
+**جرّبه:** اطلب من وكيلك:
 
-> Spawn two read-only ACP sessions, `codex` and `claude`, with `cwd` set to this repository. Ask each to review the staged changes for bugs and risky assumptions. Show me where they agree and where they disagree.
+> أطلق جلستَي ACP للقراءة فقط، `codex` و`claude`، مع ضبط `cwd` على هذا المستودع. واطلب من كل منهما مراجعة التغييرات المُجهّزة بحثًا عن الأخطاء والافتراضات المحفوفة بالمخاطر. وأرِني أين يتفقان وأين يختلفان.
 
-**Guardrails:** read-only mode is enough, so you don’t need `approve-all`. Disagreements are the interesting part. Look at those first.
+**حواجز الحماية:** وضع القراءة فقط كافٍ، لذا لا تحتاج إلى `approve-all`. والخلافات هي الجزء المثير. فانظر إليها أولًا.
 
-## Ideas to Be Careful With
+## أفكار ينبغي الحذر منها
 
-**Anything with real-world consequences.** Community showcases are full of agents that negotiate with car dealers, file insurance claims, check in for flights, place grocery orders, and send invoices. It’s impressive, but none of the published summaries mentions an approval step. If you want something like that, borrow the numbered-approval pattern from idea 3: the agent prepares the action, and nothing happens until you reply.
+**أي شيء له عواقب في العالم الحقيقي.** تعجّ عروض المجتمع بوكلاء يتفاوضون مع تجار سيارات، ويقدّمون مطالبات تأمين، ويسجّلون الوصول إلى الرحلات، ويطلبون مشتريات البقالة، ويرسلون الفواتير. وهذا مثير للإعجاب، لكن أيًا من الملخصات المنشورة لا يذكر خطوة موافقة. فإن أردت شيئًا كهذا، فاستعر نمط الموافقة المرقّمة من الفكرة 3: يجهّز الوكيل الإجراء، ولا شيء يحدث حتى ترد.
 
-**Push-style webhooks on a private Gateway.** A webhook needs the outside service to reach your Gateway, and a Gateway that’s reachable only over Tailscale, like the one the [Railway lesson](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale) deploys to [Railway](https://railway.com/?referralCode=kinney), can’t be reached by GitHub or Stripe. Public exposure is exactly what that setup avoids. When you can, prefer the pull-style version of an idea: a schedule that checks every few minutes instead of an event that arrives.
+**Webhooks من نوع الدفع على Gateway خاص.** يحتاج webhook إلى أن تصل الخدمة الخارجية إلى Gateway الخاص بك، وGateway لا يُصل إليه إلا عبر Tailscale، مثل ذلك الذي ينشره [درس Railway](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale) على [Railway](https://railway.com/?referralCode=kinney)، لا تستطيع GitHub أو Stripe الوصول إليه. والتعرّض العلني هو بالضبط ما يتجنبه ذلك الإعداد. وعندما تستطيع، فضّل النسخة من نوع السحب من الفكرة: جدول يفحص كل بضع دقائق بدلًا من حدث يصل.
 
-**Anything that browses while signed in.** It’s convenient and it’s a much bigger grant than it looks. If you do need it, [sync only the cookies for the sites a task needs](https://stevekinney.com/courses/openclaw/syncing-cookies-to-a-remote-gateway) into a named profile instead of attaching your whole browser.
+**أي شيء يتصفح أثناء تسجيل الدخول.** إنه مريح، لكنه منح أوسع بكثير مما يبدو. فإن احتجته فعلًا، ف[زامن فقط ملفات تعريف الارتباط للمواقع التي تحتاجها المهمة](https://stevekinney.com/courses/openclaw/syncing-cookies-to-a-remote-gateway) إلى ملف تعريف مسمّى بدلًا من إرفاق متصفحك كله.
 
-## Picking Your First Three
+## اختيار أفكارك الثلاث الأولى {#picking-your-first-three}
 
-| # | Idea | Effort | Risk | Needs |
+| # | الفكرة | الجهد | الخطر | المتطلبات |
 | --- | --- | --- | --- | --- |
-| 2 | Evening look-ahead | Low | Very low | Calendar access |
-| 1 | Morning brief | Low | Low | Gmail and Calendar |
-| 7 | Quick babysitter (`/loop`) | Low | Low | Command owner in chat |
-| 8 | Weekly trending digest | Low | Low | Browser |
-| 4 | Vendor pricing monitor | Medium | Low | Browser, a snapshot file |
-| 10 | Monthly memory audit | Low | Low | A stronger model |
-| 11 | Weekly status draft | Medium | Low | A standing order |
-| 6 | Build finished | Medium | Low | A command to watch |
-| 5 | Quiet watcher | Medium | Medium | A trigger script |
-| 9 | Nightly QA | Medium | Medium | Browser, a staging site |
-| 3 | Numbered email triage | High | Medium | A dedicated agent, rules, a channel |
-| 12 | Dev recap via your Mac | Medium | Medium | A paired node |
-| 14 | Second opinion on a diff | Medium | Medium | ACPX, two harnesses |
-| 13 | Overnight maintenance | High | High | ACPX, a scratch checkout |
+| 2 | نظرة المساء إلى الغد | منخفض | منخفض جدًا | الوصول إلى التقويم |
+| 1 | الموجز الصباحي | منخفض | منخفض | Gmail وCalendar |
+| 7 | المراقب السريع (`/loop`) | منخفض | منخفض | مالك الأمر في المحادثة |
+| 8 | موجز الرائج الأسبوعي | منخفض | منخفض | المتصفح |
+| 4 | مراقب أسعار المورّدين | متوسط | منخفض | المتصفح، وملف لقطة |
+| 10 | التدقيق الشهري للذاكرة | منخفض | منخفض | نموذج أقوى |
+| 11 | مسوّدة الحالة الأسبوعية | متوسط | منخفض | أمر دائم |
+| 6 | انتهاء البناء | متوسط | منخفض | أمر للمراقبة |
+| 5 | المراقب الصامت | متوسط | متوسط | نص محفّز |
+| 9 | ضمان الجودة الليلي | متوسط | متوسط | المتصفح، وموقع اختبار |
+| 3 | فرز البريد المرقّم | مرتفع | متوسط | وكيل مخصص، وقواعد، وقناة |
+| 12 | ملخص المطوّر عبر جهاز Mac | متوسط | متوسط | عقدة مقترنة |
+| 14 | رأي ثانٍ على diff | متوسط | متوسط | ACPX، واثنان من harness |
+| 13 | الصيانة الليلية | مرتفع | مرتفع | ACPX، ونسخة عمل مؤقتة |
 
-A good path:
+وهذا مسار جيد:
 
-1. **Right away:** the quick babysitter, which only needs a chat. It’s the fastest way to see scheduling and delivery work.
-2. **Once Gmail and Calendar are connected:** the evening look-ahead, then the morning brief. Get used to run history and delivery.
-3. **Next:** a quiet watcher, either the vendor monitor or the build-finished alert, so you learn what “silent unless it matters” feels like.
-4. **Then:** email triage in digest-only mode.
-5. **After that:** the coding-agent ideas, once you trust your permissions.
+1. **فورًا:** المراقب السريع، الذي يحتاج إلى محادثة فقط. فهو أسرع طريقة لرؤية الجدولة والتوصيل وهما يعملان.
+2. **بعد توصيل Gmail وCalendar:** نظرة المساء إلى الغد، ثم الموجز الصباحي. واعتد على سجل التشغيل والتوصيل.
+3. **بعد ذلك:** مراقب صامت، إما مراقب المورّدين أو تنبيه انتهاء البناء، كي تتعلم كيف يبدو «صامت إلا عندما يهم الأمر».
+4. **ثم:** فرز البريد في وضع الموجز فقط.
+5. **وبعد ذلك:** أفكار وكلاء البرمجة، عندما تثق بأذوناتك.
 
-## Living With Your Automations
+## التعايش مع أتمتاتك
 
-Once a few are running, give them a weekly check-up:
+بعد أن تعمل بضع أتمتات، امنحها فحصًا أسبوعيًا:
 
-- Run `openclaw automations list --all` and ask whether you’ve read the output of each one this month. If not, disable it.
-- Look at `openclaw automations runs <job-id>` for anything that keeps failing or quietly doing nothing.
-- Revisit anything that has standing permissions, and revoke what you no longer need.
-- Keep a short list of what’s running and why, so future you can tell the difference between a job you chose and a job you forgot.
+- شغّل `openclaw automations list --all` واسأل نفسك هل قرأت ناتج كل واحدة منها هذا الشهر. فإن لم تفعل، فعطّلها.
+- انظر في `openclaw automations runs <job-id>` بحثًا عن أي شيء يظل يفشل أو يفعل لا شيء بهدوء.
+- أعد النظر في أي شيء لديه أذونات دائمة، واسحب ما لم تعد تحتاجه.
+- احتفظ بقائمة قصيرة بما يعمل ولماذا، كي يستطيع «أنت» في المستقبل التمييز بين مهمة اخترتها ومهمة نسيتها.
 
-The goal isn’t the most automations. It’s a small set that you’d notice immediately if they stopped.
+الهدف ليس أكبر عدد من الأتمتات، بل مجموعة صغيرة ستلاحظ فورًا إذا توقفت.

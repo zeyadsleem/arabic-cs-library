@@ -1,16 +1,16 @@
 ---
-title: "Testing Library's Matchers"
-lang: en
+title: "مُطابِقات Testing Library"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-library-matchers"
 ---
 
-Testing Library also includes some useful matchers for making expectations on DOM elements. As a fun bonus, we’re going to use React as well—just to show you how little of a difference it makes when it comes to testing your UI in the DOM.
+تضمّن Testing Library أيضًا بعض المُطابِقات المفيدة لإصدار توقّعات على عناصر DOM. وكإضافة ممتعة، سنستخدم React أيضًا—فقط لنُظهر لك كم الفرق ضئيل عندما يتعلّق الأمر باختبار واجهتك في DOM.
 
-Let’s head on over to `examples/accident-counter`.
+لننتقل إلى `examples/accident-counter`.
 
-## Setting Up Testing Library’s Matchers
+## تهيئة مُطابِقات Testing Library
 
-In `examples/accident-counter/src/counter.test.jsx`, we can extend the methods provided by `expect` by pulling in `@testing-library/jest-dom/vitest`.
+في `examples/accident-counter/src/counter.test.jsx`، يمكننا توسيع التوابع التي يوفّرها `expect` بجلب `@testing-library/jest-dom/vitest`.
 
 ```jsx
 import { render, screen } from '@testing-library/react';
@@ -21,7 +21,7 @@ import { Counter } from './counter';
 import '@testing-library/jest-dom/vitest';
 ```
 
-This will call `expect.extend()`, which allows us to set up [customer matchers](https://stevekinney.com/courses/testing/custom-matchers). This will give us the following new methods on `expect`.
+سيستدعي هذا `expect.extend()`، مما يتيح لنا إعداد [مُطابِقات مخصّصة](https://stevekinney.com/courses/testing/custom-matchers). وسيمنحنا التوابع الجديدة التالية على `expect`.
 
 - `toBeDisabled`
 - `toBeEnabled`
@@ -49,11 +49,11 @@ This will call `expect.extend()`, which allows us to set up [customer matchers](
 - `toHaveRole`
 - `toHaveErrorMessage`
 
-You can read more about `@testing-library/jest-dom` [here](https://github.com/testing-library/jest-dom).
+يمكنك القراءة أكثر عن `@testing-library/jest-dom` [هنا](https://github.com/testing-library/jest-dom).
 
-## Rendering the Counter
+## تصيير العدّاد
 
-We want to render the `Counter` component before each test. This will put it back to it’s original state.
+نريد تصيير مكوّن `Counter` قبل كل اختبار. وهذا سيعيده إلى حالته الأصلية.
 
 ```javascript
 describe('Counter', () => {
@@ -63,9 +63,9 @@ describe('Counter', () => {
 });
 ```
 
-## Testing the Counter
+## اختبار العدّاد
 
-Now, let’s write a quick test to see if it’s rendering as expected.
+الآن، لنكتب اختبارًا سريعًا لنرى ما إذا كان يُصيَّر كما هو متوقّع.
 
 ```javascript
 it('renders with an initial count of 0', () => {
@@ -74,9 +74,9 @@ it('renders with an initial count of 0', () => {
 });
 ```
 
-Notice the new `toHaveTextContent` method.
+لاحظ التابع الجديد `toHaveTextContent`.
 
-We can also verify that the `decrement` and `reset` buttons are disabled when the counter is at zero.
+يمكننا أيضًا التحقّق من أن زرّي `decrement` و`reset` معطّلان عندما يكون العدّاد عند الصفر.
 
 ```javascript
 it('disables the "Decrement" and "Reset" buttons when the count is 0', () => {
@@ -88,19 +88,19 @@ it('disables the "Decrement" and "Reset" buttons when the count is 0', () => {
 });
 ```
 
-## Your Turn
+## دورك
 
-> **Exercise**
+> **تمرين**
 
-Implement as many of the following tests as you can:
+نفّذ أكبر عدد تستطيعه من الاختبارات التالية:
 
-- It displays “days” when the count is 0.
-- It increments the count when the “Increment” button is clicked.
-- It displays “day” when the count is 1.
-- It decrements the count when the “Decrement” button is clicked.
-- It does not allow decrementing below 0.
-- It resets the count when the “Reset” button is clicked.
-- It disables the “Decrement” and “Reset” buttons when the count is 0.
-- It updates the document title based on the count.
+- يعرض «days» عندما يكون العدّاد 0.
+- يزيد العدّاد عند النقر على زر «Increment».
+- يعرض «day» عندما يكون العدّاد 1.
+- ينقص العدّاد عند النقر على زر «Decrement».
+- لا يسمح بالإنقاص إلى ما دون 0.
+- يعيد ضبط العدّاد عند النقر على زر «Reset».
+- يعطّل زرّي «Decrement» و«Reset» عندما يكون العدّاد 0.
+- يحدّث عنوان المستند بناءً على العدّاد.
 
-You can see a potential solution [here](https://stevekinney.com/courses/testing/accident-counter-solution).
+يمكنك رؤية حل محتمل [هنا](https://stevekinney.com/courses/testing/accident-counter-solution).

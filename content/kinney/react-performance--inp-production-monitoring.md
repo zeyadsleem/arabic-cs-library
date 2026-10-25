@@ -1,18 +1,18 @@
 ---
-title: "INP Production Monitoring"
-lang: en
+title: "مراقبة INP في الإنتاج"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/inp-production-monitoring"
 ---
 
-You’ve optimized your React app locally. INP scores are perfect in your testing. You deploy to production, and suddenly users are experiencing 500ms interaction delays. What went wrong? Everything. Real users have real devices, real network conditions, and real usage patterns that your synthetic tests never captured.
+حسّنت تطبيق React لديك محليًا. ودرجات INP مثالية في اختباراتك. ثم تنشر إلى الإنتاج، فيبدأ المستخدمون فجأة يعانون تأخّرات تفاعل مقدارها 500 مللي ثانية. ما الذي حدث خطأً؟ كل شيء. فالمستخدمون الحقيقيون لديهم أجهزتهم الحقيقية وظروف شبكتهم الحقيقية وأنماط استخدامهم الحقيقية التي لم تلتقطها اختباراتك الاصطناعية قط.
 
-This is why production INP monitoring isn’t optional—it’s essential. You need to know how actual users experience your app, which interactions are slow, and most importantly, why they’re slow. Without this data, you’re optimizing blind.
+ولهذا فإن مراقبة INP في الإنتاج ليست اختيارية — بل ضرورية. تحتاج إلى معرفة كيف يختبر المستخدمون الفعليون تطبيقك، وأي التفاعلات بطيئة، والأهم من ذلك: لماذا هي بطيئة. وبدون هذه البيانات فأنت تحسّن على غير هدى.
 
-Let’s build a comprehensive INP monitoring system that captures every interaction, identifies patterns, and gives you the insights you need to fix performance issues before users complain.
+لنبنِ نظامًا شاملًا لمراقبة INP يلتقط كل تفاعل، ويحدّد الأنماط، ويمنحك الرؤى التي تحتاجها لإصلاح مشكلات الأداء قبل أن يشتكي المستخدمون.
 
-## Building an INP Monitoring System
+## بناء نظام مراقبة INP
 
-### Core INP Collection
+### جمع بيانات INP الأساسي
 
 ```typescript
 import { onINP, INPMetric, INPAttribution } from 'web-vitals';
@@ -164,9 +164,9 @@ interface PerformanceEventTiming extends PerformanceEntry {
 }
 ```
 
-## React-Specific INP Tracking
+## تتبّع INP الخاص بـ React
 
-### Component-Level Performance Tracking
+### تتبّع الأداء على مستوى المكوّن
 
 ```typescript
 // HOC for component interaction tracking
@@ -271,7 +271,7 @@ const useINPTracking = (componentName: string) => {
 };
 ```
 
-### Route-Based INP Analysis
+### تحليل INP حسب المسار
 
 ```typescript
 const useRouteINPTracking = () => {
@@ -364,9 +364,9 @@ interface InteractionMetric {
 }
 ```
 
-## Correlating INP with User Actions
+## ربط INP بإجراءات المستخدم
 
-### Action Attribution System
+### نظام إسناد الإجراءات
 
 ```typescript
 class ActionAttributionSystem {
@@ -498,9 +498,9 @@ const useActionTracking = () => {
 };
 ```
 
-## Real User Monitoring Dashboard
+## لوحة مراقبة المستخدمين الحقيقيين
 
-### INP Metrics Aggregation
+### تجميع مقاييس INP
 
 ```typescript
 class INPAggregator {
@@ -648,7 +648,7 @@ interface BucketStats {
 }
 ```
 
-## Alerting and Anomaly Detection
+## التنبيه وكشف الشذوذ
 
 ```typescript
 class INPAnomalyDetector {
@@ -772,34 +772,34 @@ interface AnomalyResult {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Collect comprehensive data:**
+✅ **اجمع بيانات شاملة:**
 
-- Track all interactions, not just samples
-- Include device and network context
-- Capture interaction attribution
+- تتبّع كل التفاعلات، لا العيّنات وحدها
+- ضمّن سياق الجهاز والشبكة
+- التقط إسناد التفاعل
 
-✅ **Monitor by segment:**
+✅ **راقب حسب الشرائح:**
 
-- Track INP by route/page
-- Segment by device type
-- Monitor by connection speed
+- تتبّع INP حسب المسار/الصفحة
+- قسّم حسب نوع الجهاز
+- راقب حسب سرعة الاتصال
 
-✅ **Set up alerting:**
+✅ **أعدّ التنبيهات:**
 
-- Define absolute thresholds
-- Detect anomalies from baseline
-- Alert on degradation trends
+- حدّد عتبات مطلقة
+- اكشف الشذوذ انطلاقًا من خط الأساس
+- نبّه عند اتجاهات التدهور
 
-✅ **Correlate with user actions:**
+✅ **اربطها بإجراءات المستخدم:**
 
-- Link INP to specific components
-- Track user flows
-- Identify problematic patterns
+- اربط INP بمكوّنات بعينها
+- تتبّع مسارات المستخدم
+- حدّد الأنماط المشكِلة
 
-✅ **Report actionable insights:**
+✅ **أبلغ برؤى قابلة للتنفيذ:**
 
-- Show worst performing interactions
-- Highlight regression risks
-- Provide fix recommendations
+- أظهر أسوأ التفاعلات أداءً
+- أبرز مخاطر التراجع
+- قدّم توصيات إصلاح

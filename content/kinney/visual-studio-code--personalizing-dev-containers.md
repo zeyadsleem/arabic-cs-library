@@ -1,18 +1,18 @@
 ---
-title: "Personalizing Your Container Environment"
-lang: en
+title: "تخصيص بيئة حاويتك"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/personalizing-dev-containers"
 ---
 
-`dotfiles` are configuration files (often starting with a dot, hence the name) that control the behavior of shell environments, editors, and other tools, typically found in your home directory (e.g., `.bashrc`, `.zshrc`, `.vimrc`, `.gitconfig`).
+ملفات `dotfiles` هي ملفات إعدادات (تبدأ غالبًا بنقطة، ومن هنا جاءت التسمية) تتحكّم في سلوك بيئات الأوامر والمحرّرات وأدوات أخرى، وتوجد عادةً في دليلك الرئيسي (مثل `.bashrc` و`.zshrc` و`.vimrc` و`.gitconfig`).
 
-Dev Containers allow you to easily **mount your host machine’s dotfiles into your container**, enabling you to personalize your container environment with your familiar shell aliases, editor configurations, Git settings, and more.
+تتيح لك حاويات التطوير **تثبيت ملفات dotfiles من جهازك المضيف داخل حاويتك** بسهولة، مما يمكّنك من تخصيص بيئة حاويتك بأسماء الأوامر المستعارة (aliases) المألوفة لديك، وإعدادات المحرّر، وإعدادات Git، وغيرها.
 
-## Using dotfiles with Dev Containers
+## استخدام ملفات dotfiles مع حاويات التطوير
 
-### Specify `dotfiles` in `devcontainer.json`
+### تحديد `dotfiles` في `devcontainer.json`
 
-Add a `dotfiles` property to your `devcontainer.json` configuration.
+أضف خاصية `dotfiles` إلى إعداد `devcontainer.json` لديك.
 
 ```json
 {
@@ -26,15 +26,15 @@ Add a `dotfiles` property to your `devcontainer.json` configuration.
 }
 ```
 
-- **`repository` (Required):** The URL of your dotfiles repository (typically on GitHub, GitLab, etc.). This should be a public or private Git repository containing your dotfiles.
-- **`targetPath` (Optional, Default: `~`):** The path inside the container where the dotfiles repository should be cloned. Defaults to the home directory (`~`).
-- **`installCommand` (Optional):** A script within your dotfiles repository that should be executed *after* cloning to install or configure the dotfiles in the container. This script (e.g., `install.sh`, `install.bash`) is often used to create symbolic links, set up shell configurations, etc.
+- **`repository` (مطلوب):** عنوان URL الخاص بمستودع dotfiles لديك (وعادةً على GitHub أو GitLab أو غيرهما). وينبغي أن يكون مستودع Git عامًا أو خاصًا يضمّ ملفات dotfiles الخاصة بك.
+- **`targetPath` (اختياري، الافتراضي: `~`):** المسار داخل الحاوية الذي ينبغي استنساخ مستودع dotfiles فيه. وقيمته الافتراضية الدليل الرئيسي (`~`).
+- **`installCommand` (اختياري):** سكربت داخل مستودع dotfiles لديك ينبغي تنفيذه *بعد* الاستنساخ لتثبيت ملفات dotfiles في الحاوية أو ضبطها. ويُستخدم هذا السكربت غالبًا (مثل `install.sh` و`install.bash`) لإنشاء روابط رمزية (symbolic links)، وإعداد تكوينات الأوامر، وغير ذلك.
 
-### Create a dotfiles Repository
+### أنشئ مستودعًا لملفات dotfiles
 
-If you don’t already have one, create a Git repository to store your dotfiles. Structure your dotfiles within the repository as needed. Include an `install.sh` (or similar) script if you need custom installation logic.
+إن لم يكن لديك واحد بالفعل، فأنشئ مستودع Git لتخزين ملفات dotfiles الخاصة بك. ونظّم ملفات dotfiles داخل المستودع حسب حاجتك. وضمّن سكربت `install.sh` (أو ما يشبهه) إذا احتجت إلى منطق تثبيت مخصّص.
 
-## Example dotfiles Repository Structure (Simplified)
+## مثال على بنية مستودع dotfiles (مبسّط)
 
 ```
 dotfiles-repository/
@@ -44,7 +44,7 @@ dotfiles-repository/
   └── install.sh
 ```
 
-## Example `install.sh` script
+## مثال على سكربت `install.sh`
 
 ```bash
 #!/bin/bash
@@ -61,21 +61,21 @@ ln -sf "$DOTFILES_REPOSITORY/.vimrc" "$HOME/.vimrc"
 echo "Dotfiles installation complete!"
 ```
 
-## Benefits of Using dotfiles
+## فوائد استخدام ملفات dotfiles
 
-- **Personalized Container Environment:** Bring your familiar shell environment, editor configurations, and tools into your Dev Containers.
-- **Consistency Across Environments:** Maintain a consistent development experience across different machines and Dev Containers.
-- **Version Control for Configurations:** Your dotfiles are version-controlled in your repository, making it easy to manage and update your personal settings.
-- **Portability:** Easily transfer your personalized development environment to new Dev Containers or even other systems.3
+- **بيئة حاوية مخصّصة:** اجلب بيئة الأوامر المألوفة لديك وإعدادات المحرّر والأدوات إلى حاويات تطويرك.
+- **الاتساق بين البيئات:** حافظ على تجربة تطوير متّسقة بين الأجهزة المختلفة وحاويات التطوير.
+- **تحكّم في الإصدارات للإعدادات:** تخضع ملفات dotfiles لديك للتحكّم في الإصدارات في مستودعك، مما يسهّل إدارة إعداداتك الشخصية وتحديثها.
+- **قابلية النقل:** انقل بيئة تطويرك المخصّصة بسهولة إلى حاويات تطوير جديدة أو حتى إلى أنظمة أخرى.3
 
-## Features: Advanced Dev Container Capabilities
+## الميزات: قدرات متقدّمة لحاويات التطوير
 
-Dev Containers offer a range of advanced features that further enhance flexibility and integration.
+توفّر حاويات التطوير مجموعة من الميزات المتقدّمة التي تعزّز المرونة والتكامل أكثر.
 
-### Bind Mounts
+### عمليات التثبيت المباشر (Bind Mounts)
 
-- **Concept:** Bind mounts allow you to mount a directory or file from your host machine directly into the container. This is how your project folder is mounted into the container by default, enabling seamless file editing.
-- **Custom Bind Mounts:** You can define additional bind mounts in `devcontainer.json` using the `mounts` property (or `dockerComposeFile` for Docker Compose, see later).
+- **المفهوم:** تتيح لك عمليات التثبيت المباشر تثبيت دليل أو ملف من جهازك المضيف داخل الحاوية مباشرة. وهكذا يُثبَّت مجلد مشروعك داخل الحاوية افتراضيًا، مما يتيح تحرير الملفات بسلاسة.
+- **عمليات تثبيت مباشر مخصّصة:** يمكنك تعريف عمليات تثبيت إضافية في `devcontainer.json` باستخدام خاصية `mounts` (أو `dockerComposeFile` عند استخدام Docker Compose، وسنراه لاحقًا).
 
 ```json
 {
@@ -85,16 +85,16 @@ Dev Containers offer a range of advanced features that further enhance flexibili
 }
 ```
 
-- **`source`:** Path on the host machine. `${localWorkspaceFolder}` is a variable representing your project folder.
-- **`target`:** Path inside the container where the host path should be mounted.
-- **`type`:** Set to `bind` for bind mounts.
-- **`consistency`:** Optional. `cached` can improve performance.
-- **Use Cases:**
-- **Mounting Data Directories:** Mount local data directories into the container for data processing or analysis.
-- **Sharing Configuration Files:** Mount configuration files from your host into the container.
-- **Accessing Host System Resources (Use with Caution):** Mount host directories like `/var/run/docker.sock` to allow containers to interact with the host Docker daemon (advanced, use carefully for security reasons).
+- **`source`:** المسار على الجهاز المضيف. و`${localWorkspaceFolder}` متغيّر يمثّل مجلد مشروعك.
+- **`target`:** المسار داخل الحاوية الذي ينبغي تثبيت مسار المضيف فيه.
+- **`type`:** يُضبط على `bind` لعمليات التثبيت المباشر.
+- **`consistency`:** اختياري. و`cached` يمكن أن يحسّن الأداء.
+- **حالات الاستخدام:**
+- **تثبيت أدلة البيانات:** ثبّت أدلة بيانات محلية داخل الحاوية لمعالجة البيانات أو تحليلها.
+- **مشاركة ملفات الإعدادات:** ثبّت ملفات إعدادات من مضيفك داخل الحاوية.
+- **الوصول إلى موارد نظام المضيف (استخدمه بحذر):** ثبّت أدلة المضيف مثل `/var/run/docker.sock` للسماح للحاويات بالتفاعل مع خفّي Docker على المضيف (متقدّم، فاستخدمه بحذر لأسباب أمنية).
 
-### Port Forwarding
+### تحويل المنافذ
 
-- **Covered earlier in `devcontainer.json`:** The `forwardPorts` property allows you to forward ports from the container to your host.
-- **Dynamic Port Forwarding:** Visual Studio Code’s Dev Containers extension automatically detects ports exposed by applications running in the container and offers to forward them. You’ll see a notification when an application running inside the container starts listening on a port.
+- **تناولناه سابقًا في `devcontainer.json`:** تتيح لك خاصية `forwardPorts` تحويل منافذ من الحاوية إلى مضيفك.
+- **تحويل المنافذ الديناميكي:** تكتشف إضافة Dev Containers في Visual Studio Code تلقائيًا المنافذ التي تكشفها التطبيقات العاملة في الحاوية وتعرض عليك تحويلها. وسترى إشعارًا عندما يبدأ تطبيق يعمل داخل الحاوية الاستماع على منفذ ما.

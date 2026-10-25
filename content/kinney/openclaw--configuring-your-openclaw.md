@@ -1,42 +1,42 @@
 ---
-title: "Configuring Your OpenClaw"
-lang: en
+title: "تهيئة OpenClaw لديك"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/configuring-your-openclaw"
 ---
 
-The OpenClaw Agents settings page showing identity, workspace, and model selection
+صفحة إعدادات وكلاء OpenClaw تعرض الهوية ومساحة العمل واختيار النموذج
 
-| File | Question it answers | Scope |
+| الملف | السؤال الذي يجيب عنه | النطاق |
 | --- | --- | --- |
-| `AGENTS.md` | How should I operate? | Rules, procedures, and decision-making |
-| `SOUL.md` | How should I behave? | Personality, tone, values, and boundaries |
-| `IDENTITY.md` | Who am I? | Name, role, avatar, and identity |
-| `USER.md` | Who am I helping? | Your preferences, background, and working style |
-| `TOOLS.md` | How does this environment work? | Legacy file, now consolidated into `AGENTS.md` |
-| `MEMORY.md` | What have I learned? | Persistent knowledge, decisions, and historical context |
+| `AGENTS.md` | كيف يجب أن أعمل؟ | القواعد والإجراءات واتخاذ القرارات |
+| `SOUL.md` | كيف يجب أن أتصرّف؟ | الشخصية والنبرة والقيم والحدود |
+| `IDENTITY.md` | من أنا؟ | الاسم والدور والصورة الرمزية والهوية |
+| `USER.md` | لمن أنا أساعد؟ | تفضيلاتك وخلفيتك وأسلوب عملك |
+| `TOOLS.md` | كيف تعمل هذه البيئة؟ | ملف قديم، دُمج الآن في `AGENTS.md` |
+| `MEMORY.md` | ماذا تعلّمت؟ | المعرفة الدائمة والقرارات والسياق التاريخي |
 
-You can read and edit the core files from the Control UI. Open Settings, choose Agents, and then pick the Files tab.
+يمكنك قراءة الملفات الأساسية وتحريرها من واجهة التحكم. افتح الإعدادات، واختر الوكلاء، ثم اختر تبويب الملفات.
 
-The Files tab in the OpenClaw agent settings, with tabs for AGENTS, SOUL, USER, and MEMORY and an editor showing AGENTS.md
+تبويب الملفات في إعدادات وكيل OpenClaw، حيث تبويبات AGENTS وSOUL وUSER وMEMORY ومحرّر يعرض AGENTS.md
 
-These files are not merely organizational conventions. Most are automatically included in the agent’s context, so every unnecessary paragraph has a cost in tokens, attention, and potentially conflicting instructions.
+هذه الملفات ليست مجرد اصطلاحات تنظيمية. أغلبها يُدرَج تلقائيًا في سياق الوكيل، لذلك لكل فقرة زائدة كلفة على مستوى الرموز (tokens) والانتباه، وربما على مستوى تعليمات متعارضة.
 
-## `AGENTS.md`: The operating manual
+## `AGENTS.md`: دليل التشغيل
 
-`AGENTS.md` defines how the agent approaches tasks, handles uncertainty, uses tools, asks permission, delegates work, and preserves information.
+يعرّف `AGENTS.md` كيف يتعامل الوكيل مع المهام، وكيف يتعامل مع عدم اليقين، وكيف يستخدم الأدوات، وكيف يطلب الإذن، وكيف يفوّض الأعمال، وكيف يحفظ المعلومات.
 
-Think of it as the agent’s standing orders.
+فكّر فيه بوصفه أوامر الوكيل الدائمة.
 
-### What belongs here
+### ما الذي يندرج هنا
 
-- Rules for planning and executing tasks.
-- When to ask permission versus act independently.
-- Guidelines for tool use and delegation.
-- How to manage sessions and update memory.
-- What constitutes successful completion.
-- Environment-specific tool conventions.
+- قواعد للتخطيط وتنفيذ المهام.
+- متى يطلب الإذن ومتى يتصرّف باستقلالية.
+- إرشادات لاستخدام الأدوات والتفويض.
+- كيفية إدارة الجلسات وتحديث الذاكرة.
+- ما الذي يُعدّ إتمامًا ناجحًا للمهمة.
+- اصطلاحات الأدوات الخاصة ببيئة التنفيذ.
 
-### Example
+### مثال
 
 ```markdown
 # Operating Instructions
@@ -98,31 +98,31 @@ Use read-only operations when investigating unfamiliar systems.
 Verify the outcome of any state-changing action.
 ```
 
-### What doesn’t belong here
+### ما الذي لا يندرج هنا
 
-Don’t put your biography, the agent’s personality, or detailed notes about past projects here.
+لا تضع هنا سيرتك الذاتية، ولا شخصية الوكيل، ولا ملاحظات تفصيلية عن المشاريع السابقة.
 
-Also avoid copying entire skill definitions into `AGENTS.md`. A rule such as “use the research skill for substantial research” belongs here. The actual research procedure belongs in [the skill](https://stevekinney.com/courses/openclaw/skills-and-clawhub).
+وكذلك تجنّب نسخ تعريفات المهارات كاملة إلى `AGENTS.md`. فقاعدة مثل «استخدم مهارة البحث عند إجراء أبحاث جوهرية» توضع هنا، أما إجراء البحث الفعلي فيعود إلى [المهارة](https://stevekinney.com/courses/openclaw/skills-and-clawhub).
 
-Useful distinction: `AGENTS.md` tells the agent when and how to approach a type of work. A skill provides the detailed procedure for a specific capability.
+تمييز مفيد: يُخبر `AGENTS.md` الوكيل متى وكيف يتعامل مع نوع من الأعمال، بينما توفر المهارة الإجراء التفصيلي لقدرة محددة.
 
-## `SOUL.md`: Personality and behavioral principles
+## `SOUL.md`: الشخصية والمبادئ السلوكية
 
-Where `AGENTS.md` explains what to do, `SOUL.md` explains what kind of assistant to be.
+إذا شرح `AGENTS.md` ما الذي يجب فعله، فإن `SOUL.md` يشرح أيّ نوع من المساعدين تريد أن تكون.
 
-This is about consistent behavior rather than operational mechanics.
+الموضوع هنا عن السلوك المتسق لا عن آليات التشغيل.
 
-OpenClaw explicitly treats it as the home for persona, tone, and boundaries.
+يعامل OpenClaw هذا الملف صراحةً بوصفه البيت للشخصية (persona) والنبرة والحدود.
 
-### What belongs here
+### ما الذي يندرج هنا
 
-- Communication style and personality.
-- Attitude toward uncertainty.
-- Intellectual principles.
-- How it should handle disagreements.
-- The kind of relationship it should have with you.
+- أسلوب التواصل والشخصية.
+- الموقف تجاه عدم اليقين.
+- المبادئ الفكرية.
+- كيف ينبغي أن يتعامل مع خلافات.
+- نوع العلاقة التي ينبغي أن تربطه بك.
 
-### Example
+### مثال
 
 ```markdown
 # Personality
@@ -159,34 +159,34 @@ Identify opportunities, risks, and useful connections but do not take consequent
 - Be transparent about important limitations.
 ```
 
-### What doesn’t belong here
+### ما الذي لا يندرج هنا
 
-Specific technical preferences, project history, automation schedules, or instructions for running tools.
+التفضيلات التقنية التفصيلية، أو تاريخ المشروع، أو جداول الأتمتة، أو تعليمات تشغيل الأدوات.
 
-A statement like “be intellectually curious” belongs in `SOUL.md`.
+عبارة مثل «كن فضوليًّا فكريًّا» تندرج في `SOUL.md`.
 
-A statement like “research new arXiv papers every Monday” belongs in a scheduled automation, not the agent’s personality.
+أما عبارة مثل «ابحث في أوراق arXiv الجديدة كل يوم اثنين» فتندرج في أتمتة مجدولة، لا في شخصية الوكيل.
 
-I would keep this file fairly short. Long personalities can become an expensive collection of adjectives that don’t meaningfully improve behavior.
+أنا أفضّل أن أُبقي هذا الملف قصيرًا إلى حد كبير. فالشخصيات الطويلة قد تصير مجموعة مكلفة من الصفات التي لا تُحسّن السلوك تحسّنًا ذا معنى.
 
-## `USER.md`: Your personal operating context
+## `USER.md`: سياق عملك الشخصي
 
-This file explains who you are, what you care about, and how the agent should adapt to you.
+يشرح هذا الملف من أنت، وما الذي يهمّك، وكيف ينبغي للوكيل أن يتكيف معك.
 
-It’s easy to confuse this with `MEMORY.md`, but the distinction is important.
+من السهل الخلط بينه وبين `MEMORY.md`، لكن التمييز بينهما مهم.
 
-`USER.md` should contain relatively stable information about you, expressed as guidance that affects the agent’s behavior.
+ينبغي أن يضمّ `USER.md` معلومات نسبيًا ثابتة عنك، مصاغة في صورة إرشادات تؤثر في سلوك الوكيل.
 
-### What belongs here
+### ما الذي يندرج هنا
 
-- Your technical preferences.
-- Professional background relevant to tasks.
-- Your preferred level of detail.
-- How you make decisions.
-- Your current areas of focus.
-- Stable personal preferences relevant to assistance.
+- تفضيلاتك التقنية.
+- خلفيتك المهنية ذات صلة بالمهام.
+- مستوى التفصيل الذي تفضّله.
+- كيف تتخذ القرارات.
+- مجالات تركيزك الحالية.
+- تفضيلات شخصية ثابتة مرتبطة بالمساعدة.
 
-### Example
+### مثال
 
 ```markdown
 # User Profile
@@ -232,35 +232,35 @@ Avoid introductory explanations of familiar software engineering concepts unless
 - Knowledge management and research.
 ```
 
-### What doesn’t belong here
+### ما الذي لا يندرج هنا
 
-A chronological history of everything you’ve discussed.
+سجلّ زمني لكل ما ناقشته.
 
-For example:
+على سبيل المثال:
 
-- “Prefers Bun over Node for new projects” belongs in `USER.md`.
-- “Decided to deploy Project X on Railway on October 7” belongs in `MEMORY.md`.
-- “Today we fixed a Railway configuration error” belongs in the daily memory file.
+- «يفضّل Bun على Node في المشاريع الجديدة» تندرج في `USER.md`.
+- «اتُّخذ قرار نشر المشروع X على Railway في 7 أكتوبر» تندرج في `MEMORY.md`.
+- «أصلحنا اليوم خطأ في إعدادات Railway» تندرج في ملف الذاكرة اليومي.
 
-Also, don’t store every possible personal detail simply because it’s available. A short and accurate user model is considerably more useful than a miniature autobiography.
+وأيضًا، لا تخزّن كل تفصيل شخصي ممكن لمجرد أنه متاح. فنموذج قصير ودقيق للمستخدم أنفع بكثير من سيرة ذاتية مصغّرة.
 
-Current OpenClaw also gives `USER.md` a separate 4,000-character injection limit, so keeping it focused is especially important.
+ويمنح OpenClaw حاليًا `USER.md` حدًّا منفصلًا للحقن قدره 4000 حرف، لذا إبقاؤه مركّزًا مهمّ جدًا.
 
-## `MEMORY.md`: Long-term knowledge
+## `MEMORY.md`: المعرفة طويلة المدى
 
-This is where the agent keeps information it has learned that should survive individual conversations.
+هنا يحتفظ الوكيل بالمعلومات التي تعلّمها والتي ينبغي أن تبقى بعد المحادثات الفردية.
 
-Unlike `USER.md`, which describes relatively stable attributes and preferences about you, `MEMORY.md` records durable facts, decisions, and context that accumulate through your work together.
+وعلى خلاف `USER.md` الذي يصف سمات وتفضيلات نسبيًا ثابتة عنك، يسجّل `MEMORY.md` حقائق وقرارات وسياقًا تراكمت جميعها عبر عملكم معًا.
 
-### What belongs here
+### ما الذي يندرج هنا
 
-- Architectural decisions and their rationale.
-- Ongoing project state.
-- Important discoveries.
-- Decisions that should not be repeatedly revisited.
-- References to more detailed information.
+- القرارات المعمارية وأسباب ومبرراتها.
+- حالة المشروع الجارية.
+- الاكتشافات المهمة.
+- القرارات التي لا ينبغي استعراضها مرارًا وتكرارًا.
+- مراجع إلى معلومات أكثر تفصيلًا.
 
-### Example
+### مثال
 
 ```markdown
 # Long-Term Memory
@@ -303,9 +303,9 @@ Status: Design and experimentation.
 Next consideration: Evaluate deterministic collection with agent-driven synthesis.
 ```
 
-### The distinction between `MEMORY.md` and daily memory
+### التمييز بين `MEMORY.md` والذاكرة اليومية
 
-OpenClaw also uses dated memory files:
+يستخدم OpenClaw أيضًا ملفات ذاكرة مؤرَّخة:
 
 ```
 memory/
@@ -314,22 +314,22 @@ memory/
 └── 2026-10-07.md
 ```
 
-Think of the two storage levels this way:
+فكّر في مستويَي التخزين هذين بالصورة التالية:
 
 | `MEMORY.md` | `memory/YYYY-MM-DD.md` |
 | --- | --- |
-| Curated knowledge | Chronological observations |
-| Durable decisions | Individual events |
-| High signal, low volume | Detailed historical context |
-| Revised when facts change | Appended as work happens |
-| Concise enough for recurring context | Retrieved when relevant |
+| معارف منقّحة | ملاحظات مرتبة زمنيًا |
+| قرارات دائمة | أحداث فردية |
+| إشارة عالية وحجم منخفض | سياق تاريخي مفصّل |
+| تُراجَع عند تغيّر الحقائق | تُضاف إليها أثناء العمل |
+| موجز يكفي للسياق المتكرّر | تُستدعى عند الحاجة |
 
-For example, today’s daily memory might record that you investigated three VPS providers, compared their operating costs, and selected one.
+على سبيل المثال، قد تدوّن ذاكرة اليوم أنك بحثت ثلاثة مزوّدي VPS، وقارنت تكاليف تشغيلهم، واخترت أحدهم.
 
-The long-term memory would preserve the final selection and the reasoning behind it.
+أما الذاكرة طويلة المدى فتحتفظ بالاختيار النهائي وبالمنطق الذي خلفه.
 
-Recent daily notes can be reintroduced when starting a new session, but the full daily archive is generally searched on demand. `MEMORY.md` is included in normal embedded-runtime context when applicable, with different handling in some harnesses.
+يمكن إعادة إدراج الملاحظات اليومية الحديثة عند بدء جلسة جديدة، لكن الأرشيف اليومي الكامل يُستعلم عنه عادةً عند الطلب. ويُدرَج `MEMORY.md` في سياق وقت التشغيل المضمَّن المعتاد حين ينطبق ذلك، مع معالجة مختلفة في بعض بيئات التنفيذ.
 
-This is why I’d keep `MEMORY.md` small and deliberately curated.
+لهذا أفضّل أن أُبقي `MEMORY.md` صغيرًا ومنقَّحًا بقصد.
 
-The rule I’d use: `AGENTS.md` governs actions, `SOUL.md` governs character, `IDENTITY.md` establishes identity, `USER.md` describes you, and `MEMORY.md` preserves what has been learned. Tool conventions belong inside `AGENTS.md`.
+القاعدة التي أعتمدها: `AGENTS.md` يحكم الأفعال، و`SOUL.md` يحكم الخُلق، و`IDENTITY.md` يقرّر الهوية، و`USER.md` يصفك، و`MEMORY.md` يحفظ ما تعلّمه. أما اصطلاحات الأدوات فتندرج داخل `AGENTS.md`.

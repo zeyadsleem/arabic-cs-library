@@ -1,22 +1,22 @@
 ---
-title: "What a CDN Does and Why You Need One"
-lang: en
+title: "ما تفعله شبكة توصيل المحتوى ولماذا تحتاج إليها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/what-is-a-cdn"
 ---
 
-When you deploy to Vercel, your site loads fast in New York and fast in Tokyo. When you deploy to a single S3 bucket in `us-east-1`, your site loads fast in Virginia and noticeably slower everywhere else. The difference is a **CDN**—a Content Delivery Network.
+عندما تنشر على Vercel، يُحمَّل موقعك بسرعة في نيويورك وبسرعة في طوكيو. وعندما تنشر إلى حاوية S3 واحدة في `us-east-1`، يُحمَّل موقعك بسرعة في فرجينيا وأبطأ بشكل ملحوظ في كل مكان آخر. والفرق هو **CDN** — شبكة توصيل المحتوى (Content Delivery Network).
 
-If you want AWS’s canonical version of the product surface while you read, the [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) is the official reference.
+وإن أردت نسخة AWS المعتمدة من سطح المنتج أثناء القراءة، فإن [دليل مطوّر CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) هو المرجع الرسمي.
 
-You’ve been using CDNs your entire career, even if you’ve never configured one. Every time you deployed to Vercel, Netlify, or Cloudflare Pages, those platforms put a CDN between your files and your users. **CloudFront** is AWS’s CDN, and it’s what turns your S3 bucket from “files in one region” into “a globally distributed frontend.”
+لقد كنت تستخدم شبكات CDN طوال مسيرتك المهنية، حتى لو لم تضبط واحدة قط. ففي كل مرة نشرت فيها على Vercel أو Netlify أو Cloudflare Pages، وضعت تلك المنصات شبكة CDN بين ملفاتك ومستخدميك. و**CloudFront** هو شبكة CDN الخاصة بـ AWS، وهو ما يحوّل حاوية S3 لديك من «ملفات في منطقة واحدة» إلى «واجهة أمامية موزّعة عالميًا».
 
-## Why This Matters
+## لماذا يهم هذا
 
-CDNs are where frontend performance stops being purely an application concern and becomes a geography concern. Once users are far from your origin, the network dominates. CloudFront is the service that makes your site feel local even when the bucket is not.
+شبكات CDN هي النقطة التي يتوقّف فيها أداء الواجهة الأمامية عن كونه شأنًا تطبيقيًا بحتًا ويصبح شأنًا جغرافيًا. فبمجرد أن يصبح المستخدمون بعيدين عن أصلك، تهيمن الشبكة. وCloudFront هو الخدمة التي تجعل موقعك يبدو محليًا حتى عندما لا تكون الحاوية كذلك.
 
-## Builds On
+## يبني على
 
-This lesson builds on the S3 foundation from the previous module. You already have the mental model of “static files in a bucket.” Now you’re adding the layer that caches those files at the edge, terminates HTTPS for users, and becomes the public face of the deployment.
+يبني هذا الدرس على أساس S3 من الوحدة السابقة. فلديك بالفعل النموذج الذهني «ملفات ثابتة في حاوية». والآن تضيف الطبقة التي تخزّن تلك الملفات مؤقتًا على الحافة، وتنهي HTTPS للمستخدمين، وتصبح الوجه العام للنشر.
 
 ```
 flowchart LR
@@ -28,102 +28,102 @@ flowchart LR
     Edge --> User
 ```
 
-## The Problem: Physics
+## المشكلة: الفيزياء
 
-S3 stores your files in a single AWS region. If your bucket is in `us-east-1` (Northern Virginia), a user in Sydney is roughly 15,000 kilometers away. Light travels through fiber at about two-thirds the speed of light in a vacuum, and every request has to make the round trip: browser to server and back. That’s physics, and you can’t negotiate with physics.
+يخزّن S3 ملفاتك في منطقة AWS واحدة. فإذا كانت حاويتك في `us-east-1` (شمال فرجينيا)، فمستخدم في سيدني يبعد نحو 15,000 كيلومتر. والضوء يسير في الألياف بسرعة تعادل نحو ثلثي سرعته في الفراغ، وكل طلب عليه أن يقطع الرحلة ذهابًا وعودة: من المتصفح إلى الخادم ثم يعود. هذه فيزياء، ولا يمكنك التفاوض مع الفيزياء.
 
-A static site might need 20–30 requests to fully load: HTML, CSS, JavaScript bundles, fonts, images. Each request pays the latency tax. A user in Virginia sees the page in 200 milliseconds. A user in Sydney waits 800 milliseconds or more. Users notice the difference, and so does Google’s Core Web Vitals score.
+قد يحتاج موقع ثابت إلى 20–30 طلبًا ليُحمَّل بالكامل: HTML وCSS وحزم JavaScript والخطوط والصور. وكل طلب يدفع ضريبة زمن الاستجابة. فمستخدم في فرجينيا يرى الصفحة في 200 ميلي ثانية. أما مستخدم في سيدني فينتظر 800 ميلي ثانية أو أكثر. والمستخدمون يلاحظون الفرق، وكذلك نتيجة Core Web Vitals من Google.
 
-## How a CDN Fixes This
+## كيف تحلّ CDN هذه المشكلة
 
-A CDN is a network of servers—called **edge locations**—distributed around the world. Instead of every request going back to your origin server (in this case, your S3 bucket), the CDN caches your content at edge locations close to your users.
+شبكة CDN هي شبكة من الخوادم — تُسمّى **مواقع الحافة** — موزّعة حول العالم. فبدلًا من عودة كل طلب إلى خادم أصلك (وهو هنا حاوية S3 لديك)، تخزّن CDN محتواك مؤقتًا في مواقع حافة قريبة من مستخدميك.
 
-Here’s what happens when a user in Tokyo requests your site through CloudFront:
+وهذا ما يحدث عندما يطلب مستخدم في طوكيو موقعك عبر CloudFront:
 
-1. The browser resolves your domain and connects to the nearest CloudFront edge location (probably in Tokyo).
-2. CloudFront checks its local cache for the requested file.
-3. **Cache hit**: the file is already cached at this edge location. CloudFront returns it immediately. The request never touches S3.
-4. **Cache miss**: the file isn’t cached yet. CloudFront fetches it from S3 (the **origin**), returns it to the user, and caches it at the Tokyo edge location for future requests.
+1. يحلّ المتصفح نطاقك ويتّصل بأقرب موقع حافة في CloudFront (الذي يكون في طوكيو على الأرجح).
+2. يفحص CloudFront ذاكرته المؤقتة المحلية بحثًا عن الملف المطلوب.
+3. **إصابة في الذاكرة المؤقتة**: الملف مخزّن مؤقتًا بالفعل في موقع الحافة هذا. فيرجعه CloudFront فورًا. ولا يمسّ الطلب S3 إطلاقًا.
+4. **غياب في الذاكرة المؤقتة**: الملف غير مخزّن مؤقتًا بعد. فيجلبه CloudFront من S3 (**الأصل**)، ويرجعه إلى المستخدم، ويخزّنه مؤقتًا في موقع حافة طوكيو للطلبات المستقبلية.
 
-After the first request, every subsequent user in the Tokyo region gets the file from the local edge location—a round trip of a few milliseconds instead of a few hundred.
+وبعد الطلب الأول، يحصل كل مستخدم لاحق في منطقة طوكيو على الملف من موقع الحافة المحلي — رحلة ذهاب وعودة تستغرق بضعة ميلي ثانية بدلًا من بضع مئات.
 
-> **Tip**
+> **نصيحة**
 >
-> This is the exact same model that Vercel and Netlify use. When Vercel serves your site globally, it’s using a CDN. CloudFront is that CDN—you’re just configuring it yourself instead of letting a platform abstract it away.
+> هذا هو النموذج نفسه بالضبط الذي تستخدمه Vercel وNetlify. فعندما تقدّم Vercel موقعك عالميًا، فهي تستخدم شبكة CDN. وCloudFront هو تلك الشبكة — أنت فقط تضبطه بنفسك بدلًا من أن تدع منصة تجرّده من تفاصيله.
 
-## CloudFront in AWS
+## CloudFront في AWS
 
-**CloudFront** is AWS’s CDN service. It has over 600 edge locations across 100+ cities in 50+ countries. When you create a CloudFront **distribution**, you’re telling AWS: “Here’s my content’s origin, here’s how I want it cached, and here’s the domain I want to serve it from.”
+**CloudFront** هو خدمة CDN الخاصة بـ AWS. وله أكثر من 600 موقع حافة في أكثر من 100 مدينة وفي أكثر من 50 بلدًا. وعندما تنشئ **توزيع** CloudFront، فأنت تخبر AWS: «هذا أصل محتواي، وهذه طريقة تخزينه مؤقتًا التي أريدها، وهذا النطاق الذي أريد تقديمه منه».
 
-A distribution ties together several concepts you’ve already seen (or will see soon):
+يجمع التوزيع عدة مفاهيم رأيتها بالفعل (أو ستراها قريبًا):
 
-- **Origin**: Where CloudFront fetches content from. For us, that’s an S3 bucket (configured in [Creating and Configuring a Bucket](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket)).
-- **Cache behaviors**: Rules that control how CloudFront caches content—TTLs, which headers to forward, which paths to cache differently.
-- **SSL certificate**: An ACM certificate that gives you HTTPS on your custom domain (covered in [Certificate Renewal and the us-east-1 Requirement](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1)).
-- **Custom domain**: A domain name pointing to the distribution, which you’ll wire up in the Route 53 custom-domain-routing section.
+- **الأصل**: من أين تجلب CloudFront المحتوى. وهو عندنا حاوية S3 (مضبوطة في [إنشاء حاوية S3 وإعدادها](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket)).
+- **سلوكات التخزين المؤقت**: قواعد تتحكّم في كيفية تخزين CloudFront للمحتوى مؤقتًا — مدد الصلاحية (TTL)، وأي الترويسات تُمرَّر، وأي المسارات تُخزَّن مؤقتًا بطريقة مختلفة.
+- **شهادة SSL**: شهادة ACM تمنحك HTTPS على نطاقك المخصّص (وهو ما يُغطّى في [تجديد الشهادات وشرط us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1)).
+- **نطاق مخصّص**: اسم نطاق يشير إلى التوزيع، وستربطه في قسم توجيه النطاقات المخصّصة في Route 53.
 
-Together, these produce a globally distributed, HTTPS-secured frontend served from edge locations—the same thing you get from Vercel with zero configuration, except now you control every knob.
+ومعًا، تُنتج هذه واجهة أمامية موزّعة عالميًا ومؤمّنة بـ HTTPS تُقدَّم من مواقع الحافة — وهو الشيء نفسه الذي تحصل عليه من Vercel بلا أي إعداد، إلا أنك الآن تتحكّم في كل مفتاح.
 
-## What CloudFront Gives You That S3 Doesn’t
+## ما يمنحك إياه CloudFront ولا يمنحك إياه S3
 
-S3 static website hosting (configured in [Static Website Hosting on S3](https://stevekinney.com/courses/aws/static-website-hosting-on-s3)) gets you a working website. CloudFront turns it into a production-grade deployment:
+استضافة المواقع الثابتة في S3 (المضبوطة في [استضافة موقع ثابت على S3](https://stevekinney.com/courses/aws/static-website-hosting-on-s3)) تمنحك موقعًا يعمل. أما CloudFront فيحوّله إلى نشر بمستوى الإنتاج:
 
-| Capability | S3 Website Hosting | S3 + CloudFront |
+| الإمكانية | استضافة مواقع S3 | S3 + CloudFront |
 | --- | --- | --- |
-| HTTPS | No (HTTP only) | Yes (with ACM certificate) |
-| Global latency | High (single region) | Low (edge locations worldwide) |
-| Custom domain | Limited (CNAME only, no HTTPS) | Full support (with Route 53 alias records) |
-| Cache control | Basic (`Cache-Control` headers only) | Fine-grained (behaviors, TTLs, invalidations) |
-| Security headers | None | Response headers policies (HSTS, CSP, etc.) |
-| Access restriction | Public bucket required | Bucket stays private via Origin Access Control |
-| DDoS protection | Basic | AWS Shield Standard (included free) |
+| HTTPS | لا (HTTP فقط) | نعم (بشهادة ACM) |
+| زمن الاستجابة عالميًا | مرتفع (منطقة واحدة) | منخفض (مواقع حافة حول العالم) |
+| نطاق مخصّص | محدود (CNAME فقط، بلا HTTPS) | دعم كامل (بسجلات Alias في Route 53) |
+| التحكم في التخزين المؤقت | أساسي (ترويسات `Cache-Control` فقط) | دقيق (سلوكات ومدد صلاحية وإبطالات) |
+| ترويسات الأمان | لا شيء | سياسات ترويسات الاستجابة (HSTS وCSP وإلخ) |
+| تقييد الوصول | حاوية عامة مطلوبة | تبقى الحاوية خاصة عبر التحكم في الوصول إلى الأصل |
+| الحماية من DDoS | أساسية | AWS Shield Standard (مشمولة مجانًا) |
 
-That last row matters more than you might think. I’ll be honest: I didn’t appreciate AWS Shield Standard until I saw a traffic spike hit an unprotected S3 endpoint. CloudFront comes with Shield Standard at no extra cost, which provides automatic protection against common DDoS attacks. S3 website endpoints are directly exposed.
+ذلك الصف الأخير أهم مما قد تظن. ولأكون صريحًا: لم أقدّر AWS Shield Standard حقّ قدره حتى رأيت ارتفاعًا مفاجئًا في الحركة يضرب نقطة نهاية S3 غير محمية. فـ CloudFront يأتي مع Shield Standard بلا تكلفة إضافية، وهو يوفّر حماية تلقائية من هجمات DDoS الشائعة. أما نقاط نهاية مواقع S3 فمكشوفة مباشرة.
 
-## The CloudFront Request Flow
+## تدفق الطلب في CloudFront
 
-Understanding the request flow helps you debug issues later. Here’s what happens for every request to your CloudFront distribution:
+فهم تدفق الطلب يساعدك على تصحيح المشكلات لاحقًا. وهذا ما يحدث في كل طلب إلى توزيع CloudFront لديك:
 
-1. **DNS resolution**: The user’s browser resolves your domain (e.g., `example.com`) to a CloudFront edge location IP address.
-2. **TLS handshake**: The browser establishes an HTTPS connection with the edge location using your ACM certificate.
-3. **Cache lookup**: CloudFront checks its cache for the requested path.
-4. **Cache hit**: Return the cached response. Done.
-5. **Cache miss**: Forward the request to the origin (your S3 bucket).
-6. **Origin response**: S3 returns the file. CloudFront caches it at the edge location according to the cache behavior’s TTL settings.
-7. **Response**: CloudFront returns the file to the browser.
+1. **تحليل DNS**: يحلّ متصفح المستخدم نطاقك (مثل `example.com`) إلى عنوان IP لموقع حافة CloudFront.
+2. **مصافحة TLS**: ينشئ المتصفح اتصال HTTPS مع موقع الحافة باستخدام شهادة ACM لديك.
+3. **البحث في الذاكرة المؤقتة**: يفحص CloudFront ذاكرته المؤقتة بحثًا عن المسار المطلوب.
+4. **إصابة في الذاكرة المؤقتة**: تُرجع الاستجابة المخزّنة مؤقتًا. انتهى.
+5. **غياب في الذاكرة المؤقتة**: يُمرَّر الطلب إلى الأصل (حاوية S3 لديك).
+6. **استجابة الأصل**: يُرجع S3 الملف. ويخزّنه CloudFront مؤقتًا في موقع الحافة وفق إعدادات مدة الصلاحية في سلوك التخزين المؤقت.
+7. **الاستجابة**: يُرجع CloudFront الملف إلى المتصفح.
 
-Steps 4–6 are invisible to the user. The browser only talks to the edge location. Whether the content comes from cache or from the origin, the user sees the same response—just with different latency.
+الخطوات 4–6 غير مرئية للمستخدم. فالمتصفح يتحدّث إلى موقع الحافة فقط. وسواء جاء المحتوى من الذاكرة المؤقتة أو من الأصل، يرى المستخدم الاستجابة نفسها — لكن بزمن استجابة مختلف.
 
-## Price Classes
+## فئات الأسعار
 
-CloudFront charges per request and per data transfer, with prices varying by edge location region. AWS groups edge locations into three **price classes**:
+تتقاضى CloudFront رسومًا لكل طلب ولكل نقل بيانات، وتتفاوت الأسعار حسب منطقة موقع الحافة. وتصنّف AWS مواقع الحافة في ثلاث **فئات أسعار**:
 
-- **`PriceClass_100`**: North America, Europe, and Israel. Cheapest option.
-- **`PriceClass_200`**: Everything in `PriceClass_100` plus Asia, Africa, and the Middle East.
-- **`PriceClass_All`**: All edge locations worldwide, including South America, Australia, and New Zealand.
+- **`PriceClass_100`**: أمريكا الشمالية وأوروبا وإسرائيل. الخيار الأرخص.
+- **`PriceClass_200`**: كل ما في `PriceClass_100` إضافة إلى آسيا وأفريقيا والشرق الأوسط.
+- **`PriceClass_All`**: كل مواقع الحافة حول العالم، بما فيها أمريكا الجنوبية وأستراليا ونيوزيلندا.
 
-If your users are primarily in North America and Europe, `PriceClass_100` saves money without meaningfully impacting performance for your audience. If you have a global user base, `PriceClass_All` is the right choice. For most frontend projects, `PriceClass_100` is a reasonable starting point—you can always change it later.
+إذا كان مستخدموك في أمريكا الشمالية وأوروبا أساسًا، فـ `PriceClass_100` يوفّر المال دون تأثير يُذكر في الأداء لدى جمهورك. وإن كانت قاعدتك العالمية من المستخدمين، فـ `PriceClass_All` هو الخيار الصحيح. ولمعظم مشاريع الواجهة الأمامية، `PriceClass_100` نقطة بداية معقولة — ويمكنك تغييرها لاحقًا دائمًا.
 
-> **Tip**
+> **نصيحة**
 >
-> Choosing a lower price class doesn’t make your site inaccessible from excluded regions. Users in those regions still reach your site—CloudFront just routes them to the nearest edge location in your price class, which might be farther away. They get slightly higher latency, not a broken site.
+> اختيار فئة أسعار أدنى لا يجعل موقعك غير متاح من المناطق المستبعدة. فالمستخدمون في تلك المناطق يصلون إلى موقعك رغم ذلك — لكن CloudFront يوجّههم إلى أقرب موقع حافة داخل فئة أسعارك، والذي قد يكون أبعد. فيحصلون على زمن استجابة أعلى قليلًا، لا على موقع معطوب.
 
-## When You Don’t Need CloudFront
+## متى لا تحتاج إلى CloudFront
 
-Not every project needs a CDN. If you’re building an internal tool used by a team of ten people in the same office, S3 static website hosting is fine. If your site has three visitors a day and they’re all you, skip CloudFront and save the complexity.
+ليست كل مشروع يحتاج إلى CDN. فإن كنت تبني أداة داخلية يستخدمها فريق من عشرة أشخاص في المكتب نفسه، فاستضافة المواقع الثابتة في S3 كافية. وإن كان موقعك يستقبل ثلاثة زوار يوميًا وهم كلهم أنت، فتخطَّ CloudFront ووفّر على نفسك التعقيد.
 
-But the moment your site is public-facing, needs HTTPS (it does), or has users outside your S3 bucket’s region, CloudFront isn’t optional—it’s the standard architecture. Every serious AWS deployment puts CloudFront in front of S3.
+لكن بمجرد أن يصبح موقعك مواجهًا للعامة، أو يحتاج إلى HTTPS (وهو يحتاج)، أو يكون له مستخدمون خارج منطقة حاوية S3 لديك، فـ CloudFront ليس اختياريًا — إنه المعمارية القياسية. فكل نشر جدي على AWS يضع CloudFront أمام S3.
 
-## Verification
+## التحقق
 
-- You can describe the difference between a cache hit and a cache miss in CloudFront’s request flow.
-- You can explain why a user in Sydney feels more latency from an S3 bucket in `us-east-1` even when your frontend code is identical.
-- You can choose an initial price class based on user geography instead of guessing.
+- تستطيع وصف الفرق بين إصابة الذاكرة المؤقتة وغيابها في تدفق الطلب في CloudFront.
+- تستطيع تفسير لماذا يشعر مستخدم في سيدني بزمن استجابة أكبر من حاوية S3 في `us-east-1` حتى عندما يكون كود واجهتك الأمامية مطابقًا.
+- تستطيع اختيار فئة أسعار أولية بناءً على جغرافية المستخدمين بدلًا من التخمين.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Thinking CloudFront is only about speed:** It also becomes your HTTPS endpoint, your caching layer, and your first security boundary in front of S3.
-- **Assuming the browser talks directly to S3 once CloudFront exists:** The browser talks to the edge location. CloudFront decides whether it needs the origin.
-- **Choosing a price class without thinking about audience:** That is a cost decision with latency consequences, not a random default.
+- **الاعتقاد بأن CloudFront يتعلّق بالسرعة فقط:** فهو يصبح أيضًا نقطة نهاية HTTPS لديك، وطبقة التخزين المؤقت لديك، وأول حدود أمان أمام S3.
+- **افتراض أن المتصفح يتحدّث مباشرة إلى S3 بمجرد وجود CloudFront:** فالمتصفح يتحدّث إلى موقع الحافة. وCloudFront يقرّر ما إذا كان يحتاج الأصل.
+- **اختيار فئة أسعار دون التفكير في الجمهور:** فذلك قرار تكلفة له تبعات في زمن الاستجابة، وليس افتراضيًا عشوائيًا.
 
-Now that you know what CloudFront does and why it matters, let’s actually create one. In the next lesson, you’ll create a CloudFront distribution with your S3 bucket as the origin, configure it via the CLI, and see your site served from edge locations worldwide.
+والآن بعد أن عرفت ما يفعله CloudFront ولماذا يهم، لننشئ واحدًا فعلًا. في الدرس التالي، ستنشئ توزيع CloudFront بحاوية S3 لديك أصلًا له، وتضبطه عبر CLI، وترى موقعك يُقدَّم من مواقع حافة حول العالم.

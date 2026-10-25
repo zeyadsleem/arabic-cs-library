@@ -1,18 +1,18 @@
 ---
-title: "API and UI Hybrid Tests"
-lang: en
+title: "اختبارات API والواجهة المدمجة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests"
 ---
 
-Here’s a pattern I didn’t know about for the first two years I used Playwright, and I’m still a little annoyed about it.
+هذا نمط لم أكن أعرفه في أول سنتين من استخدامي Playwright، وما زلت منزعجًا منه قليلًا.
 
-Playwright tests get a [`request` fixture](https://playwright.dev/docs/api-testing) alongside `page`. It’s a full HTTP client with the same base URL and authentication context as the browser, and you can use it to set up or assert on state that would otherwise require clicking through six pages of UI. The combination—set up via API, act and assert via UI—is what I call a hybrid test, and it is the right default for 80% of end-to-end tests once you’ve seen it.
+تحصل اختبارات Playwright على [`request` fixture](https://playwright.dev/docs/api-testing) إلى جانب `page`. وهو عميل HTTP كامل، له عنوان القاعدة وسياق المصادقة نفسيهما اللذين للمتصفح، ويمكنك استخدامه لتهيئة الحالة أو التأكيد عليها حين كان ذلك يتطلّب خلاف ذلك النقر عبر ست صفحات من الواجهة. والتوليفة — التهيئة عبر API، والفعل والتأكيد عبر الواجهة — هي ما أسمّيه اختبارًا مدمجًا، وهي الافتراضي الصحيح لـ80% من اختبارات الطرف إلى الطرف متى رأيتها.
 
-Let’s look at why.
+ولننظر في السبب.
 
-## The test that does too much
+## الاختبار الذي يفعل أكثر من اللازم
 
-A classic end-to-end test for “user can view their shelf stats” often starts this way:
+كثيرًا ما يبدأ اختبار طرف إلى طرف كلاسيكي لـ«يستطيع المستخدم رؤية إحصاءات رفّه» على هذا النحو:
 
 ```typescript
 test('shelf stats show total books read', async ({ page }) => {
@@ -29,11 +29,11 @@ test('shelf stats show total books read', async ({ page }) => {
 });
 ```
 
-This test is about the stats page, but most of the test is setting up books. Every iteration of the loop is a full browser round-trip. The test is slow, it’s covering behavior that’s already tested in *other* tests (adding books, marking as finished), and if any of that UI changes, this test breaks for reasons that have nothing to do with stats.
+هذا الاختبار عن صفحة الإحصاءات، لكن معظمه تهيئة للكتب. فكل تكرار في الحلقة رحلة ذهاب وعودة كاملة في المتصفح. والاختبار بطيء، وهو يغطّي سلوكًا مُختبَرًا بالفعل في اختبارات *أخرى* (إضافة الكتب، والوسم كمنتهٍ)، وإن تغيّر أي من تلك الواجهة انكسر هذا الاختبار لأسباب لا علاقة لها بالإحصاءات.
 
-This is a common anti-pattern: the end-to-end test that accidentally becomes an integration test for every feature it touches during setup.
+هذا نمط مضاد شائع: اختبار الطرف إلى الطرف الذي يصبح، على غير قصد، اختبار تكامل لكل ميزة يمسّها أثناء التهيئة.
 
-## The hybrid version
+## النسخة المدمجة
 
 ```typescript
 test('shelf stats show total books read', async ({ page, request }) => {
@@ -50,36 +50,36 @@ test('shelf stats show total books read', async ({ page, request }) => {
 });
 ```
 
-The setup is API calls. The assertion is still a real browser navigating a real page. The test is three times faster, half as long, and—critically—it *only* tests the stats page. If the “add book” UI breaks, this test still passes, because this test isn’t about adding books. The test for adding books is the one that breaks, as it should.
+التهيئة هنا استدعاءات API. أما التأكيد فما زال متصفحًا حقيقيًا يتنقّل في صفحة حقيقية. والاختبار الآن أسرع بثلاث مرات، وأنصف طولًا، و— وهذا الأهم — لا يختبر *إلا* صفحة الإحصاءات. فإن انكسرت واجهة «إضافة كتاب»، بقي هذا الاختبار ناجحًا، لأن هذا الاختبار ليس عن إضافة الكتب. والاختبار الخاص بإضافة الكتب هو الذي ينكسر، كما ينبغي.
 
-The `request` fixture authenticates automatically via whatever storage state the test project is using, so you don’t have to attach cookies or tokens. That’s the whole point of the fixture versus using raw `fetch`.
+يُصادِق `request` fixture تلقائيًا بحالة التخزين التي يستخدمها مشروع الاختبار، فلا تحتاج إلى إرفاق كوكيز أو رموز. وهذا هو مغزى الـ fixture كلّه مقابل استخدام `fetch` الخام.
 
-It also inherits the Playwright config you already wrote. The [API testing docs](https://playwright.dev/docs/api-testing) call out that the built-in `request` fixture respects things like `baseURL` and extra headers from config. So if your test project knows where the app lives and what auth state it should carry, the API client already knows too. Do not rebuild that configuration by hand unless you are intentionally creating a second actor.
+وهو يرث أيضًا تهيئة Playwright التي كتبتها بالفعل. وتشير [وثائق اختبار API](https://playwright.dev/docs/api-testing) إلى أن `request` fixture المدمج يحترم أشياء مثل `baseURL` والترويسات الإضافية من التهيئة. فإذا كان مشروع اختبارك يعرف أين يعيش التطبيق وأي حالة مصادقة يحملها، فعميل API يعرف ذلك أيضًا. ولا تُعِد بناء تلك التهيئة بيدك إلا إذا كنت تنشئ فاعلًا ثانيًا عن قصد.
 
-In Shelf, the concrete version of this pattern lands in the rate-book lab flow. You add `tests/authentication.setup.ts`, build the deterministic seed helper in `tests/helpers/seed.ts`, then create `tests/rate-book.spec.ts` under the authenticated project. The companion lab’s whole point is the same one this lesson is making: wait on the real network signal with `page.waitForResponse`, not on a timeout you hope is long enough.
+في Shelf، تصل النسخة الملموسة من هذا النمط في مسار مختبر تقييم الكتاب. فتضيف `tests/authentication.setup.ts`، وتبني دالة الزرع الحتمية في `tests/helpers/seed.ts`، ثم تنشئ `tests/rate-book.spec.ts` تحت المشروع الموثّق بالمصادقة. ومغزى المختبر المرافق هو نفسه الذي يقرّره هذا الدرس: انتظر إشارة الشبكة الحقيقية بـ `page.waitForResponse`، لا مهلة تأمل أن تكون طويلة بما يكفي.
 
-## When to use API, when to use UI
+## متى تستخدم API ومتى تستخدم الواجهة
 
-The heuristic I use:
+الدليل الاستدلالي الذي أستخدمه:
 
-- **Setup**: API. You’re building a scenario. The browser is overkill.
-- **The action under test**: UI. You are literally testing that the button works.
-- **Tear-down**: API or none (rely on seeding/isolation from the previous lesson).
-- **Side-effect verification**: either. If you need to know that the database actually recorded a write, an API GET is cheaper and more specific than navigating to a page and reading text. If you need to know a real user would see the change, UI.
+- **التهيئة**: API. فأنت تبني سيناريو، والمتصفح هنا مبالغة.
+- **الفعل موضوع الاختبار**: الواجهة. فأنت تختبر حرفيًا أن الزر يعمل.
+- **التفكيك**: API أو لا شيء (اعتمد على الزرع/العزل من الدرس السابق).
+- **التحقّق من الأثر الجانبي**: أيّهما. فإن احتجت أن تعرف أن قاعدة البيانات سجّلت كتابة فعلًا، فطلب GET عبر API أرخص وأدقّ من الانتقال إلى صفحة وقراءة نص. وإن احتجت أن تعرف أن مستخدمًا حقيقيًا سيرى التغيير، فالواجهة.
 
-The trap is reaching for UI when API would do. I’ve rarely seen the opposite mistake—agents reach for UI by default because that’s what Playwright tests “look like” in the examples. Your instructions file has to explicitly tell them there’s another option.
+الفخّ هو أن تمتدّ يدك إلى الواجهة حين تكفي API. ونادرًا ما رأيت الخطأ المعاكس — فالوكلاء يمتدّون إلى الواجهة افتراضيًا لأن هكذا «تبدو» اختبارات Playwright في الأمثلة. وملف تعليماتك عليه أن يخبرهم صراحةً أن هناك خيارًا آخر.
 
-Another good way to think about the split:
+وثمة طريقة جيدة أخرى للتفكير في الانقسام:
 
-- **API preconditions** create the world the test needs
-- **UI actions** exercise the behavior the user owns
-- **API postconditions** verify the side effect if that is cheaper or more precise than reading another page
+- **شروط API المسبقة** تخلق العالم الذي يحتاجه الاختبار
+- **أفعال الواجهة** تُمارس السلوك الذي يملكه المستخدم
+- **شروط API اللاحقة** تتحقّق من الأثر الجانبي إن كان ذلك أرخص أو أدقّ من قراءة صفحة أخرى
 
-That pattern gives you fast setup, real behavior, and a cheap double-check on persistence without turning every test into a browser pantomime.
+هذا النمط يمنحك تهيئة سريعة، وسلوكًا حقيقيًا، وفحصًا مزدوجًا رخيصًا للحفظ الدائم، دون أن تحوّل كل اختبار إلى تمثيل صامت في المتصفح.
 
-## A trickier example: setup the scenario, assert the consequence
+## مثال أعقد: هيّئ السيناريو، وأكّد النتيجة
 
-Shelf has a feature where finishing a book updates a “currently reading” counter on the shelf page. Let’s test that.
+في Shelf ميزة أن إنهاء كتاب يحدّث عدّاد «قيد القراءة حاليًا» في صفحة الرفّ. ولنختبر ذلك.
 
 ```typescript
 test('finishing a book updates the currently-reading counter', async ({ page, request }) => {
@@ -108,13 +108,13 @@ test('finishing a book updates the currently-reading counter', async ({ page, re
 });
 ```
 
-The shape is: API setup, UI action, UI assertion. The setup is cheap and deterministic. The action is what we actually care about. The assertion is what the user would see. Nothing is wasted.
+الشكل هو: تهيئة عبر API، وفعل عبر الواجهة، وتأكيد عبر الواجهة. التهيئة رخيصة وحتمية. والفعل هو ما يهمّنا فعلًا. والتأكيد هو ما سيراه المستخدم. ولا شيء يضيع هباءً.
 
-Compare this to the all-UI version, where adding two books via the search page, clicking “start reading” on each one, and navigating back to the home page would take another two seconds of wall time and a dozen extra lines of code. For a test that isn’t about searching or starting, none of that setup earns its keep.
+قارن هذا بالنسخة القائمة على الواجهة بالكامل، حيث إضافة كتابين عبر صفحة البحث، والنقر على «ابدأ القراءة» في كل منهما، والعودة إلى الصفحة الرئيسية، كانت ستستغرق ثانيتين إضافيتين من الزمن الحقيقي وعشرات الأسطر الإضافية من الشيفرة. وفي اختبار ليس عن البحث ولا عن بدء القراءة، لا شيء من تلك التهيئة يستحقّ كلفته.
 
-## Using `request` as a smoke test for the API itself
+## استخدام `request` كاختبار دخان لـ API نفسه
 
-One nice side effect: you can use the `request` fixture to write fast API-only tests for endpoints that don’t have a dedicated unit test. This isn’t strictly a hybrid pattern—it’s pure API—but it lives in the same file and uses the same authentication context:
+ثمة أثر جانبي لطيف: يمكنك استخدام `request` fixture لكتابة اختبارات API سريعة لنقاط النهاية التي ليس لها اختبار وحدة مخصّص. وهذا ليس نمطًا مدمجًا بالمعنى الدقيق — إنه API خالص — لكنه يعيش في الملف نفسه ويستخدم سياق المصادقة نفسه:
 
 ```typescript
 test('POST /api/shelf creates an entry', async ({ request }) => {
@@ -128,21 +128,21 @@ test('POST /api/shelf creates an entry', async ({ request }) => {
 });
 ```
 
-No browser, no UI, just an HTTP assertion. These run in the tens of milliseconds and they fill in the coverage gap between unit tests and full end-to-end tests. They also make excellent smoke tests at the top of a test file—if the API contract is broken, fail fast before the rest of the tests try to set up state through it.
+بلا متصفح، وبلا واجهة، مجرّد تأكيد HTTP. وهذه تعمل في حدود عشرات الميلي ثانية وتملأ فجوة التغطية بين اختبارات الوحدة واختبارات الطرف إلى الطرف الكاملة. وهي أيضًا اختبارات دخان ممتازة في أعلى ملف الاختبار — فإن كان عقد API مكسورًا، أفشِل سريعًا قبل أن تحاول بقية الاختبارات تهيئة الحالة عبره.
 
-## Browser cookies can flow through the API client too
+## كوكيز المتصفح يمكن أن تسري عبر عميل API أيضًا
 
-When you create contexts by hand, there is one more pattern worth knowing from the docs: [`browserContext.request`](https://playwright.dev/docs/api-testing) shares cookies with the browser context. Log in through the page, call the API through `browserContext.request`, and the session flows both ways.
+عندما تنشئ سياقات بيدك، ثمة نمط آخر يجدر معرفته من الوثائق: [`browserContext.request`](https://playwright.dev/docs/api-testing) يشارك الكوكيز مع سياق المتصفح. فسجّل الدخول عبر الصفحة، واستدعِ API عبر `browserContext.request`، فتسري الجلسة في الاتجاهين.
 
-That is cleaner than manually copying cookie headers and more honest than pretending the browser and API client are unrelated actors when they are really the same user.
+وهذا أنظف من نسخ ترويسات الكوكيز يدويًا، وأصدق من التظاهر بأن المتصفح وعميل API فاعلان غير مرتبطين وهما في الحقيقة المستخدم نفسه.
 
-## The pitfall: drifting schemas
+## المأزق: المخطّطات المنزاحة
 
-One risk of API setup is that the test bypasses whatever validation the UI does. If the real form has a “you can only add a book if you’re logged in and not over your 500-book limit” check, the API call might skip the 500-book check and put your test in an impossible state. Usually this is a feature—it lets you set up edge cases the UI couldn’t reach—but sometimes it hides a real bug.
+من مخاطر التهيئة عبر API أن الاختبار يتجاوز أي تحقّق تجريه الواجهة. فإن كان للنموذج الحقيقي فحص من نوع «لا يمكنك إضافة كتاب إلا إذا كنت مسجّل الدخول ولم تتجاوز حدّ 500 كتاب»، فقد يتجاوز استدعاء API فحص الـ500 كتاب ويضع اختبارك في حالة مستحيلة. وهذا عادةً ميزة — فهو يتيح لك تهيئة حالات حدّية لا تستطيع الواجهة الوصول إليها — لكنه يخفي أحيانًا خطأً حقيقيًا.
 
-The safeguard is that the API should have the same validation as the form. That’s good server design anyway. If your API lets the test do things the UI doesn’t, you’ve got a bigger problem than your test suite.
+والضمانة أن يكون في API التحقّق نفسه الذي في النموذج. وهذا تصميم خادم جيد على أي حال. فإن كان API يتيح للاختبار فعل أشياء لا تفعلها الواجهة، فلديك مشكلة أكبر من مجموعة اختباراتك.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Hybrid API+UI tests
@@ -165,11 +165,11 @@ The safeguard is that the API should have the same validation as the form. That�
   fixture and no `page`.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The fastest test is the one that skips the work it isn’t measuring. Use API for setup, UI for the thing you’re actually testing, and don’t mix those up. Most end-to-end tests in most codebases are slower and flakier than they need to be because the setup is pretending to be the subject.
+أسرع اختبار هو الذي يتخطّى العمل الذي لا يقيسه. استخدم API للتهيئة، والواجهة للشيء الذي تختبره فعلًا، ولا تخلط بينهما. فمعظم اختبارات الطرف إلى الطرف في معظم قواعد الشيفرة أبطأ وأكثر تذبذبًا مما ينبغي، لأن التهيئة تتنكّر في هيئة موضوع الاختبار.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [Lab: Harden the Flaky Rate-Book Test](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)
+- [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [مختبر: حصّن اختبار تقييم الكتاب المتذبذب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)

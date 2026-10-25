@@ -1,18 +1,18 @@
 ---
-title: "React-Specific TypeScript Patterns"
-lang: en
+title: "أنماط React الخاصة بـ TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-react-patterns"
 ---
 
-TypeScript and React were made for each other, but there are specific patterns and conventions that can make or break your development experience. This guide covers the essential React-specific TypeScript patterns that every React developer should master.
+TypeScript وReact خُلِقا لبعضهما، لكن هناك أنماطًا واصطلاحات محددة يمكن أن تصنع أو تكسر تجربة تطويرك. يغطّي هذا الدليل الأنماط الأساسية لـ TypeScript الخاصة بـ React التي يجب على كل مطوّر React إتقانها.
 
-## React 19 TypeScript Improvements
+## تحسينات TypeScript في React 19
 
-React 19 brings cleaner TypeScript patterns that reduce boilerplate and improve type inference. These improvements make React development more intuitive.
+يجلب React 19 أنماط TypeScript أنظف تقلّل من كمّ الشيفرة (boilerplate) وتُحسّن استنتاج الأنواع. تجعل هذه التحسينات تطوير React أكثر بديهية.
 
-### Simplified Component Typing
+### تبسيط تحديد أنواع المكوّنات
 
-React 19 embraces simpler component patterns, moving away from verbose type annotations:
+يتبنّى React 19 أنماط مكوّنات أبسط، مبتعدًا عن التعليقات التوضيحية (annotations) البارزة:
 
 ```typescript
 // ✅ React 19: Clean and simple
@@ -26,9 +26,9 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
 };
 ```
 
-### Improved Ref Type Inference
+### تحسين استنتاج نوع Ref
 
-React 19’s ref system works more naturally with TypeScript:
+يعمل نظام ref في React 19 بشكل أكثر طبيعية مع TypeScript:
 
 ```typescript
 // ✅ React 19: Refs just work
@@ -51,9 +51,9 @@ const FancyInput = forwardRef<HTMLInputElement, { placeholder: string }>(
 FancyInput.displayName = 'FancyInput'; // TypeScript helps remind you
 ```
 
-### Better Error Messages
+### رسائل خطأ أفضل
 
-React 19 with TypeScript 5+ provides more helpful error messages for common mistakes:
+يوفر React 19 مع TypeScript 5+ رسائل خطأ أكثر فائدة للأخطاء الشائعة:
 
 ```typescript
 // If you forget to pass required props:
@@ -68,11 +68,11 @@ function BadComponent(): number {
 }
 ```
 
-## Component Type Declarations: FC vs Function Declarations
+## إعلانات أنواع المكوّنات: FC مقابل إعلانات الدوال
 
-One of the first decisions you’ll face is how to type your React components. Let’s understand the trade-offs.
+أحد أول القرارات التي ستواجهك هو كيفية تحديد أنواع مكوّنات React. لنتعرّف على المفاضلات.
 
-### React.FC: The Traditional Approach
+### React.FC: المقاربة التقليدية
 
 ```typescript
 import { FC, ReactNode } from 'react';
@@ -97,7 +97,7 @@ const Button: FC<ButtonProps> = ({ variant = 'primary', onClick, children }) => 
 // ✅ displayName, defaultProps, propTypes are typed
 ```
 
-### Function Declarations: The Modern Approach
+### إعلانات الدوال: المقاربة الحديثة
 
 ```typescript
 interface ButtonProps {
@@ -125,7 +125,7 @@ const Button = ({ variant = 'primary', onClick, children }: ButtonProps) => {
 };
 ```
 
-### Which Should You Use?
+### أيهما يجب استخدامه؟
 
 ```typescript
 // ✅ Prefer function declarations or typed arrow functions
@@ -146,11 +146,11 @@ const Card: FC<CardProps> = ({ title, children }) => {
 };
 ```
 
-## The Children Prop: Getting It Right
+## خاصية children: إصابتها بالشكل الصحيح
 
-Understanding how to type children is crucial for component composition.
+فهم كيفية تحديد أنواع children أمر بالغ الأهمية لتكوين المكوّنات.
 
-### Different Children Types
+### أنواع children المختلفة
 
 ```typescript
 import { ReactNode, ReactElement, JSX } from 'react';
@@ -188,7 +188,7 @@ interface IconProps {
 }
 ```
 
-### Constraining Children
+### تقييد children
 
 ```typescript
 // Only allow specific components as children
@@ -222,11 +222,11 @@ function Tabs({ children }: TabsProps) {
 </Tabs>
 ```
 
-## Ref Forwarding with TypeScript
+## تمرير Ref مع TypeScript
 
-Refs are tricky in TypeScript. Here’s how to handle them properly.
+المرجعات (refs) معقدة في TypeScript. إليك كيفية التعامل معها بشكل صحيح.
 
-### Basic Ref Forwarding
+### تمرير Ref أساسي
 
 ```typescript
 import { forwardRef, InputHTMLAttributes } from 'react';
@@ -257,7 +257,7 @@ function Form() {
 }
 ```
 
-### Generic Ref Forwarding
+### تمرير Ref عام
 
 ```typescript
 // Generic component with ref forwarding
@@ -286,7 +286,7 @@ const List = typedForwardRef<HTMLUListElement, ListProps<any>>(
 );
 ```
 
-### Imperative Handle Pattern
+### نمط المقبض (Imperative Handle)
 
 ```typescript
 import { forwardRef, useImperativeHandle, useRef } from 'react';
@@ -338,11 +338,11 @@ function App() {
 }
 ```
 
-## React.memo with TypeScript
+## React.memo مع TypeScript
 
-Optimizing components with memo requires proper typing.
+تحسين المكوّنات باستخدام memo يتطلب تحديد أنواع صحيح.
 
-### Basic Memo Usage
+### استخدام Memo الأساسي
 
 ```typescript
 interface ExpensiveListProps {
@@ -379,7 +379,7 @@ const ExpensiveList = memo<ExpensiveListProps>(
 );
 ```
 
-### Memo with Generic Components
+### Memo مع المكوّنات العامة
 
 ```typescript
 // Generic memoized component
@@ -413,11 +413,11 @@ function ListComponent<T>({ items, renderItem, keyExtractor }: ListProps<T>) {
 const MemoizedList = typedMemo(ListComponent);
 ```
 
-## Higher-Order Component Patterns
+## أنماط مكوّنات الترتيب الأعلى (HOC)
 
-HOCs are complex to type but follow predictable patterns.
+مكوّنات HOC معقدة للتحديد لكنها تتبع أنماطًا قابلة للتنبؤ.
 
-### Basic HOC Pattern
+### نمط HOC أساسي
 
 ```typescript
 // HOC that adds loading state
@@ -453,7 +453,7 @@ const UserWithLoading = withLoading(User);
 <UserWithLoading name="Alice" age={30} loading={false} />
 ```
 
-### HOC with Injected Props
+### HOC مع خصائص محقونة
 
 ```typescript
 // HOC that injects props
@@ -482,11 +482,11 @@ const ProfileWithAuth = withAuth(Profile);
 <ProfileWithAuth /> // No user prop needed!
 ```
 
-## Event Handler Patterns
+## أنماط معالجات الأحداث
 
-React events need special attention in TypeScript.
+تتطلب أحداث React اهتمامًا خاصًا في TypeScript.
 
-### Typed Event Handlers
+### معالجات الأحداث المحددة الأنواع
 
 ```typescript
 import { MouseEvent, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
@@ -546,7 +546,7 @@ function SearchBar() {
 }
 ```
 
-### Generic Event Handlers
+### معالجات الأحداث العامة
 
 ```typescript
 // Generic click handler for any element
@@ -581,9 +581,9 @@ function Clickable<T = HTMLElement>({
 </Clickable>
 ```
 
-## Component Props Patterns
+## أنماط خصائص المكوّنات
 
-### Extending HTML Element Props
+### توسيع خصائص عناصر HTML
 
 ```typescript
 import { ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react';
@@ -624,7 +624,7 @@ function ButtonOrLink(props: ButtonOrLinkProps) {
 }
 ```
 
-### Discriminated Union Props
+### خصائص Union مميّزة
 
 ```typescript
 // Component with mutually exclusive props
@@ -659,7 +659,7 @@ function Alert(props: AlertProps) {
 }
 ```
 
-## Compound Component Patterns
+## أنماط المكوّنات المركّبة
 
 ```typescript
 // Compound components with TypeScript
@@ -743,7 +743,7 @@ Tabs.Panel = function TabPanel({ value, children }: TabPanelProps) {
 </Tabs>
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
 ### Do’s ✅
 
@@ -794,6 +794,6 @@ const element = document.getElementById('id') as HTMLInputElement; // Dangerous!
 // @ts-ignore // Never do this in components!
 ```
 
-## Summary
+## الخلاصة
 
-These React-specific TypeScript patterns form the foundation of type-safe React development. Master these patterns and you’ll write components that are not only type-safe but also more maintainable and easier to refactor. Remember: the goal isn’t to add types everywhere, but to add the right types in the right places to catch errors early and improve your development experience.
+تشكل أنماط TypeScript الخاصة بـ React هذه أساس تطوير React آمن الأنواع. أتقن هذه الأنماط وستكتب مكوّنات ليست آمنة الأنواع (type-safe) فحسب، بل أكثر قابلية للصيانة وأسهل في إعادة الهيكلة. تذكّر: الهدف ليس إضافة الأنواع إلى كل مكان، بل إضافة الأنواع الصحيحة في الأماكن الصحيحة لالتقاط الأخطاء مبكرًا وتحسين تجربة تطويرك.

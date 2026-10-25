@@ -1,97 +1,97 @@
 ---
-title: "Exercise: Build a Data API with DynamoDB"
-lang: en
+title: "تمرين: بناء واجهة API للبيانات باستخدام DynamoDB"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dynamodb-lambda-exercise"
 ---
 
-You’re going to build a complete data API backed by DynamoDB. By the end of this exercise, you’ll have a working endpoint that your frontend can call to create, list, and delete items, with data persisted in a DynamoDB table and served through the same Lambda and API Gateway infrastructure you set up earlier in the course.
+ستبني واجهة API بيانات كاملة مدعومة بـ DynamoDB. بحلول نهاية هذا التمرين، ستكون لديك نقطة نهاية عاملة يمكن لواجهتك الأمامية استدعاؤها لإنشاء العناصر وسردها وحذفها، مع تخزين البيانات في جدول DynamoDB وتقديمها عبر البنية نفسها من Lambda وAPI Gateway التي أعددتها سابقًا في الدورة.
 
-This is the exercise where “static site” becomes “full-stack application.” It’s my favorite milestone in this whole course.
+هذا هو التمرين الذي يتحول فيه «الموقع الثابت» إلى «تطبيق متكامل». وهو محطتي المفضلة في هذه الدورة كلها.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the table and query behavior open while you work, keep the [`aws dynamodb create-table` command reference](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/create-table.html), the [DynamoDB Query guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html), and the [DynamoDB Scan guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) nearby.
+> إذا أردت أن تُبقي نسخة AWS من سلوك الجدول والاستعلام مفتوحة أثناء عملك، فأبقِ [مرجع أمر `aws dynamodb create-table`](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/create-table.html)، و[دليل DynamoDB Query](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html)، و[دليل DynamoDB Scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) قريبة منك.
 
-## Why It Matters
+## لماذا يهم ذلك
 
-On Vercel or Netlify, you might use a hosted database like PlanetScale or Supabase and call it from a serverless function. On AWS, you’re building the equivalent—but you own every piece. The table, the function, the HTTP layer, the permissions. When something breaks, you know exactly where to look. When something costs money, you know exactly why.
+على Vercel أو Netlify، قد تستخدم قاعدة بيانات مستضافة مثل PlanetScale أو Supabase وتستدعيها من دالة بلا خادم. على AWS، تبني المكافئ — لكنك تملك كل قطعة. الجدول، والدالة، وطبقة HTTP، والأذونات. عندما يتعطل شيء، تعرف بالضبط أين تنظر. وعندما يكلفك شيء مالًا، تعرف بالضبط السبب.
 
-## Your Task
+## مهمتك
 
-Build a data API that:
+ابنِ واجهة API بيانات:
 
-- Stores items in a DynamoDB table named `my-frontend-app-data`
-- Supports GET (list items for a user), POST (create an item), and DELETE (remove an item)
-- Runs as a Lambda function with the correct DynamoDB permissions
-- Returns proper HTTP status codes and JSON responses
+- تخزّن العناصر في جدول DynamoDB باسم `my-frontend-app-data`
+- تدعم GET (سرد العناصر لمستخدم) وPOST (إنشاء عنصر) وDELETE (حذف عنصر)
+- تعمل كدالة Lambda بالأذونات الصحيحة لـ DynamoDB
+- تُرجع رموز حالة HTTP واستجابات JSON مناسبة
 
-Use account ID `123456789012`, region `us-east-1`, and the table/role names from the course conventions.
+استخدم معرّف الحساب `123456789012`، والمنطقة `us-east-1`، وأسماء الجدول والدور من أعراف الدورة.
 
-## Create the DynamoDB Table
+## إنشاء جدول DynamoDB
 
-Create the `my-frontend-app-data` table with:
+أنشئ جدول `my-frontend-app-data` بـ:
 
-- A **partition key** named `userId` (string)
-- A **sort key** named `itemId` (string)
-- **On-demand billing** (`PAY_PER_REQUEST`)
+- **مفتاح تقسيم** باسم `userId` (سلسلة نصية)
+- **مفتاح فرز** باسم `itemId` (سلسلة نصية)
+- **فوترة عند الطلب** (`PAY_PER_REQUEST`)
 
-Use the CLI to create the table and wait for it to become active.
+استخدم CLI لإنشاء الجدول وانتظر حتى يصبح نشطًا.
 
-In the console, the **Tables** list shows the table status as **Active** once provisioning completes.
+في وحدة التحكم، تعرض قائمة **Tables** حالة الجدول على أنها **Active** بمجرد اكتمال التهيئة.
 
-The DynamoDB tables list showing the frontend-items table with Active status.
+قائمة جداول DynamoDB تعرض جدول frontend-items بالحالة Active.
 
-### Checkpoint
+### نقطة تحقق
 
-Running `aws dynamodb describe-table --table-name my-frontend-app-data --region us-east-1 --output json --query "Table.TableStatus"` returns `"ACTIVE"`.
+تشغيل `aws dynamodb describe-table --table-name my-frontend-app-data --region us-east-1 --output json --query "Table.TableStatus"` يُرجع `"ACTIVE"`.
 
-## Add DynamoDB Permissions to the Lambda Role
+## إضافة أذونات DynamoDB إلى دور Lambda
 
-Your Lambda execution role (`my-frontend-app-lambda-role`) currently only has logging permissions. Create and attach a policy that grants:
+دور تنفيذ Lambda لديك (`my-frontend-app-lambda-role`) يملك حاليًا أذونات التسجيل فقط. أنشئ سياسة وأرفقها تمنح:
 
 - `dynamodb:GetItem`
 - `dynamodb:PutItem`
 - `dynamodb:DeleteItem`
 - `dynamodb:Query`
 
-Scope the policy to the specific table ARN: `arn:aws:dynamodb:us-east-1:123456789012:table/my-frontend-app-data`.
+قيّد السياسة على ARN الجدول المحدد: `arn:aws:dynamodb:us-east-1:123456789012:table/my-frontend-app-data`.
 
-Remember the principle of least privilege from [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege)—don’t grant `dynamodb:*` or use `*` as the resource.
+تذكّر مبدأ الامتياز الأدنى من [مبدأ الامتياز الأدنى](https://stevekinney.com/courses/aws/principle-of-least-privilege)—لا تمنح `dynamodb:*` ولا تستخدم `*` كمورد.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role --region us-east-1 --output json` shows both `AWSLambdaBasicExecutionRole` and your new DynamoDB policy.
+`aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role --region us-east-1 --output json` يعرض كلا من `AWSLambdaBasicExecutionRole` وسياستك الجديدة لـ DynamoDB.
 
-## Install the SDK and Update the Handler
+## تثبيت SDK وتحديث المعالج
 
-Add the DynamoDB SDK packages to your Lambda project:
+أضف حزم SDK الخاصة بـ DynamoDB إلى مشروع Lambda لديك:
 
 ```bash
 cd lambda
 npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 ```
 
-Update `src/handler.ts` to:
+حدّث `src/handler.ts` ليقوم بما يلي:
 
-1. Create a `DynamoDBDocumentClient` at the top level (outside the handler function)
-2. Read the table name from `process.env.TABLE_NAME`, falling back to `my-frontend-app-data`
-3. Handle three HTTP methods: **GET**: If `itemId` is provided, return that single item (404 if not found). If no `itemId`, query all items for the given `userId`. **POST**: Parse the request body for a `title`, generate an `itemId`, and write the item to DynamoDB. Return the created item with a 201 status. **DELETE**: Delete the item identified by `userId` and `itemId`. Return `{ "deleted": true }`.
-  - **GET**: If `itemId` is provided, return that single item (404 if not found). If no `itemId`, query all items for the given `userId`.
-  - **POST**: Parse the request body for a `title`, generate an `itemId`, and write the item to DynamoDB. Return the created item with a 201 status.
-  - **DELETE**: Delete the item identified by `userId` and `itemId`. Return `{ "deleted": true }`.
-4. Return 400 for missing required parameters
-5. Return 405 for unsupported HTTP methods
-6. Catch errors and return 500 with a generic error message
+1. إنشاء `DynamoDBDocumentClient` على المستوى الأعلى (خارج دالة المعالج)
+2. قراءة اسم الجدول من `process.env.TABLE_NAME`، مع الرجوع إلى `my-frontend-app-data`
+3. معالجة ثلاث طرق HTTP: **GET**: إذا تم توفير `itemId`، فأرجع ذلك العنصر الواحد (404 إذا لم يوجد). وإذا لم يوجد `itemId`، فاستعلم عن كل العناصر الخاصة بـ `userId` المعطى. **POST**: حلّل جسم الطلب بحثًا عن `title`، وأنشئ `itemId`، واكتب العنصر في DynamoDB. أرجع العنصر المنشأ بحالة 201. **DELETE**: احذف العنصر المحدد بـ `userId` و`itemId`. أرجع `{ "deleted": true }`.
+  - **GET**: إذا تم توفير `itemId`، فأرجع ذلك العنصر الواحد (404 إذا لم يوجد). وإذا لم يوجد `itemId`، فاستعلم عن كل العناصر الخاصة بـ `userId` المعطى.
+  - **POST**: حلّل جسم الطلب بحثًا عن `title`، وأنشئ `itemId`، واكتب العنصر في DynamoDB. أرجع العنصر المنشأ بحالة 201.
+  - **DELETE**: احذف العنصر المحدد بـ `userId` و`itemId`. أرجع `{ "deleted": true }`.
+4. إرجاع 400 للمعلمات المطلوبة المفقودة
+5. إرجاع 405 لطرق HTTP غير المدعومة
+6. التقاط الأخطاء وإرجاع 500 برسالة خطأ عامة
 
-Build the project and verify it compiles without errors.
+ابنِ المشروع وتحقق من أنه يُصرّف دون أخطاء.
 
-### Checkpoint
+### نقطة تحقق
 
-`npm run build` completes with no TypeScript errors. `dist/handler.js` exists.
+`npm run build` يكتمل دون أخطاء TypeScript. و`dist/handler.js` موجود.
 
-## Set the Environment Variable and Deploy
+## تعيين متغير البيئة والنشر
 
-Set the `TABLE_NAME` environment variable on your Lambda function:
+عيّن متغير البيئة `TABLE_NAME` على دالة Lambda لديك:
 
 ```bash
 aws lambda update-function-configuration \
@@ -101,15 +101,15 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-Package and deploy the updated handler code.
+حزّم وانشر شيفرة المعالج المحدثة.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws lambda get-function-configuration --function-name my-frontend-app-api --region us-east-1 --output json --query "Environment"` shows `TABLE_NAME` set to `my-frontend-app-data`.
+`aws lambda get-function-configuration --function-name my-frontend-app-api --region us-east-1 --output json --query "Environment"` يعرض `TABLE_NAME` مضبوطًا على `my-frontend-app-data`.
 
-## Test Creating an Item
+## اختبار إنشاء عنصر
 
-Invoke the function with a POST event:
+استدعِ الدالة بحدث POST:
 
 ```json
 {
@@ -126,15 +126,15 @@ Invoke the function with a POST event:
 }
 ```
 
-Save this as `test-create.json` and invoke the function. Check the response.
+احفظ هذا باسم `test-create.json` واستدعِ الدالة. تحقق من الاستجابة.
 
-### Checkpoint
+### نقطة تحقق
 
-The response has `statusCode: 201` and the body includes `userId`, `itemId`, `title`, `status`, and `createdAt`.
+تحتوي الاستجابة على `statusCode: 201` ويتضمن الجسم `userId` و`itemId` و`title` و`status` و`createdAt`.
 
-## Test Listing Items
+## اختبار سرد العناصر
 
-Create a second item with a different title (use the same `userId`), then invoke with a GET event that only includes `userId`—no `itemId`:
+أنشئ عنصرًا ثانيًا بعنوان مختلف (استخدم `userId` نفسه)، ثم استدعِ بحدث GET يتضمن `userId` فقط — دون `itemId`:
 
 ```json
 {
@@ -150,13 +150,13 @@ Create a second item with a different title (use the same `userId`), then invoke
 }
 ```
 
-### Checkpoint
+### نقطة تحقق
 
-The response has `statusCode: 200` and the body includes an `items` array with both items you created.
+تحتوي الاستجابة على `statusCode: 200` ويتضمن الجسم مصفوفة `items` بالعنصرين اللذين أنشأتهما.
 
-## Test Deleting an Item
+## اختبار حذف عنصر
 
-Use the `itemId` from one of the items you created. Invoke with a DELETE event:
+استخدم `itemId` من أحد العناصر التي أنشأتها. استدعِ بحدث DELETE:
 
 ```json
 {
@@ -173,42 +173,42 @@ Use the `itemId` from one of the items you created. Invoke with a DELETE event:
 }
 ```
 
-Replace `item-1234567890` with the actual `itemId` from one of your POST responses. Then list items again with a GET to confirm the item is gone.
+استبدل `item-1234567890` بـ `itemId` الفعلي من إحدى استجابات POST لديك. ثم اسرد العناصر مجددًا عبر GET للتأكد من زوال العنصر.
 
-### Checkpoint
+### نقطة تحقق
 
-The DELETE response has `statusCode: 200` and `{ "deleted": true }`. A subsequent GET for the same user shows only one item.
+استجابة DELETE تحتوي على `statusCode: 200` و`{ "deleted": true }`. واستجابة GET اللاحقة للمستخدم نفسه تعرض عنصرًا واحدًا فقط.
 
-## Test Error Cases
+## اختبار حالات الخطأ
 
-Invoke the function with a missing `userId` parameter and confirm you get a 400 response. Invoke with an unsupported method (like PUT) and confirm you get a 405.
+استدعِ الدالة مع فقدان المعامل `userId` وتأكد من حصولك على استجابة 400. واستدعِ بطريقة غير مدعومة (مثل PUT) وتأكد من حصولك على 405.
 
-### Checkpoint
+### نقطة تحقق
 
-Missing `userId` returns `statusCode: 400`. Unsupported method returns `statusCode: 405`.
+فقدان `userId` يُرجع `statusCode: 400`. والطريقة غير المدعومة تُرجع `statusCode: 405`.
 
-## Checkpoints Summary
+## ملخص نقاط التحقق
 
-- DynamoDB table `my-frontend-app-data` exists and is `ACTIVE`
-- Lambda role has both `AWSLambdaBasicExecutionRole` and a DynamoDB policy attached
-- Handler compiles without errors
-- `TABLE_NAME` environment variable is set on the Lambda function
-- POST creates an item and returns 201
-- GET lists all items for a user
-- DELETE removes an item
-- Missing parameters return 400
-- Unsupported methods return 405
+- جدول DynamoDB `my-frontend-app-data` موجود وحالته `ACTIVE`
+- دور Lambda لديه `AWSLambdaBasicExecutionRole` وسياسة DynamoDB مرفقتان
+- المعالج يُصرّف دون أخطاء
+- متغير البيئة `TABLE_NAME` مضبوط على دالة Lambda
+- POST ينشئ عنصرًا ويُرجع 201
+- GET يسرد كل العناصر لمستخدم
+- DELETE يحذف عنصرًا
+- المعلمات المفقودة تُرجع 400
+- الطرق غير المدعومة تُرجع 405
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **The Lambda invocation fails with `AccessDeniedException`:** The execution role is missing DynamoDB permissions, or the policy points at the wrong table ARN.
-- **You get validation errors or empty reads even after a successful write:** The `TABLE_NAME` environment variable or the partition/sort key names in your code do not match the actual table schema.
-- **DELETE succeeds but the item still appears on the next GET:** You reused the wrong `itemId`, or the delete request did not include the same `userId` partition key as the original item.
+- **يفشل استدعاء Lambda بـ `AccessDeniedException`:** دور التنفيذ تفتقد أذونات DynamoDB، أو تشير السياسة إلى ARN جدول خاطئ.
+- **تحصل على أخطاء تحقق أو قراءات فارغة حتى بعد كتابة ناجحة:** متغير البيئة `TABLE_NAME` أو أسماء مفاتيح التقسيم والفرز في شيفرتك لا تطابق مخطط الجدول الفعلي.
+- **DELETE ينجح لكن العنصر يظهر مجددًا في GET التالي:** أعدت استخدام `itemId` خاطئ، أو لم يتضمن طلب الحذف مفتاح التقسيم `userId` نفسه للعنصر الأصلي.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Wire it through API Gateway.** If you completed the API Gateway exercise, connect your function to an HTTP API route and call it from `curl` or the browser instead of using `aws lambda invoke`.
-- **Add an update endpoint.** Handle PATCH requests that update the `status` field of an existing item using `UpdateCommand` with an `UpdateExpression`. Return the updated item with `ReturnValues: 'ALL_NEW'`.
-- **Add pagination.** Modify the GET handler to accept a `limit` query parameter and return a `nextCursor` value. The client can pass the cursor back to get the next page of results.
+- **وصّلها عبر API Gateway.** إذا أكملت تمرين API Gateway، فاربط دالتك بمسار HTTP API واستدعها من `curl` أو المتصفح بدل استخدام `aws lambda invoke`.
+- **أضف نقطة نهاية تحديث.** تعامل مع طلبات PATCH التي تحدّث حقل `status` لعنصر موجود باستخدام `UpdateCommand` مع `UpdateExpression`. أرجع العنصر المحدّث بـ `ReturnValues: 'ALL_NEW'`.
+- **أضف ترقيم صفحات.** عدّل معالج GET لقبول معامل استعلام `limit` وإرجاع قيمة `nextCursor`. ويمكن للعميل تمرير المؤشر مرة أخرى للحصول على الصفحة التالية من النتائج.
 
-When you’re ready, check your work against the [Solution: Build a Lambda-Backed Data API with DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-solution).
+عندما تكون جاهزًا، تحقق من عملك مقابل [الحل: بناء واجهة API للبيانات مدعومة بـ Lambda باستخدام DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-solution).

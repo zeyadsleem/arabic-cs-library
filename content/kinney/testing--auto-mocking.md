@@ -1,12 +1,12 @@
 ---
-title: "Auto-Mocking in Vitest"
-lang: en
+title: "المحاكاة التلقائية في Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/auto-mocking"
 ---
 
-Vitest allows you to automatically [mock](https://stevekinney.com/courses/testing/mocks) entire modules or specific functions, making it easier to isolate and test code without manually creating mocks for every function. Auto-mocking is particularly useful when you are testing complex systems with many dependencies.
+يتيح لك Vitest أن تُحاكي تلقائيًا [وحدات](https://stevekinney.com/courses/testing/mocks) كاملة أو دوال بعينها، مما يسهّل عزل الشيفرة واختبارها دون إنشاء بديل مُحاكى يدويًا لكل دالة. تكون المحاكاة التلقائية مفيدة بشكل خاص عندما تختبر أنظمة معقّدة كثيرة الاعتمادات.
 
-You can automatically mock a module using `vi.mock()`:
+يمكنك محاكاة وحدة تلقائيًا باستخدام `vi.mock()`:
 
 ```javascript
 vi.mock('./api', () => ({
@@ -16,4 +16,4 @@ vi.mock('./api', () => ({
 }));
 ```
 
-This will mock the entire `api` module and replace `getConcertDetails` with a mock function that returns predefined data. Auto-mocking simplifies the process of managing mocks in large tests by allowing you to define mocks upfront.
+سيُحاكي هذا الوحدة `api` بأكملها ويستبدل `getConcertDetails` بدالة مُحاكاة تُعيد بيانات محددة مسبقًا. تُبسّط المحاكاة التلقائية عملية إدارة البدائل المُحاكاة في الاختبارات الكبيرة إذ تتيح لك تعريف تلك البدائل مسبقًا.

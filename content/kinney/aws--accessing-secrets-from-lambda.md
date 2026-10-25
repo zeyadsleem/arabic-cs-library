@@ -1,12 +1,12 @@
 ---
-title: "Accessing Secrets from Lambda"
-lang: en
+title: "الوصول إلى الأسرار من Lambda"
+lang: ar
 source: "https://stevekinney.com/courses/aws/accessing-secrets-from-lambda"
 ---
 
-You know how to store secrets in Parameter Store and Secrets Manager. Now you need to read them from a Lambda function. The pattern is straightforward: make an SDK call during initialization, cache the result in a module-level variable, and reuse it across invocations. This is the same init-time pattern you used for environment variables in [Lambda Environment Variables](https://stevekinney.com/courses/aws/lambda-environment-variables)—the difference is that the value comes from an API call instead of `process.env`.
+أنت تعرف كيف تخزّن الأسرار في Parameter Store وSecrets Manager. الآن تحتاج إلى قراءتها من دالة Lambda. النمط واضح: نفّذ استدعاءً عبر SDK أثناء التهيئة، وخزّن النتيجة في متغيّر على مستوى الوحدة، وأعد استخدامها عبر الاستدعاءات. هذا هو نمط التهيئة نفسه الذي استخدمته لمتغيّرات البيئة في [متغيّرات بيئة Lambda](https://stevekinney.com/courses/aws/lambda-environment-variables) — والفرق أن القيمة تأتي من استدعاء واجهة برمجية بدلًا من `process.env`.
 
-If you want AWS’s official version of the runtime side of this pattern, the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) and the [Lambda environment variables guide](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) are the references worth keeping open.
+إذا أردت نسخة AWS الرسمية من جانب وقت التشغيل في هذا النمط، فإن [نظرة Secrets Manager العامة](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) و[دليل متغيّرات بيئة Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) مرجعان يستحقّان أن يبقيا مفتوحين.
 
 ```
 flowchart LR
@@ -18,15 +18,15 @@ flowchart LR
     Warm -- "No" --> Fetch
 ```
 
-## Reading from Parameter Store
+## القراءة من Parameter Store
 
-Install the SSM client package in your Lambda project:
+ثبّت حزمة عميل SSM في مشروع Lambda لديك:
 
 ```bash
 npm install @aws-sdk/client-ssm
 ```
 
-Here’s a Lambda function that reads an API key from Parameter Store at init time:
+إليك دالة Lambda تقرأ مفتاح واجهة برمجية من Parameter Store في وقت التهيئة:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -68,13 +68,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* `WithDecryption: true` is required for `SecureString` parameters. Without it, you get encrypted ciphertext.
+*ملاحظة:* `WithDecryption: true` مطلوب لمعاملات `SecureString`. وبدونه تحصل على نص مشفّر.
 
-The `loadConfig` function runs on the first invocation. On subsequent warm invocations, `apiKey` is already set and the SDK call is skipped. This means you make one API call per cold start, not one per request.
+تعمل الدالة `loadConfig` في أول استدعاء. وفي الاستدعاءات الدافئة اللاحقة يكون `apiKey` مضبوطًا بالفعل ويُتخطّى استدعاء SDK. هذا يعني أنك تجري استدعاءً واحدًا لكل بدء بارد، لا استدعاءً لكل طلب.
 
-## Reading from Secrets Manager
+## القراءة من Secrets Manager
 
-Install the Secrets Manager client package:
+ثبّت حزمة عميل Secrets Manager:
 
 ```bash
 npm install @aws-sdk/client-secrets-manager
@@ -124,13 +124,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Secrets Manager returns the decrypted value automatically. No `WithDecryption` flag needed.
+*ملاحظة:* يعيد Secrets Manager القيمة بعد فكّ تشفيرها تلقائيًا. فلا حاجة إلى خيار `WithDecryption`.
 
-## IAM Permissions
+## أذونات IAM
 
-Your Lambda function’s execution role needs permission to read the specific parameters or secrets it uses. Recall from [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions) that the execution role controls what AWS services the function can access.
+يحتاج دور تنفيذ دالة Lambda إلى إذن لقراءة المعاملات أو الأسرار المحددة التي يستخدمها. تذكّر من [أدوار تنفيذ Lambda وأذوناتها](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions) أن دور التنفيذ يتحكم في خدمات AWS التي يمكن للدالة الوصول إليها.
 
-### For Parameter Store
+### من أجل Parameter Store
 
 ```json
 {
@@ -150,13 +150,13 @@ Your Lambda function’s execution role needs permission to read the specific pa
 }
 ```
 
-The first statement grants access to all parameters under the `/my-frontend-app/production/` path. The second statement grants permission to decrypt SecureString parameters using the AWS-managed KMS key. If you used a customer-managed KMS key, replace the resource ARN with your key’s ARN.
+العبارة الأولى تمنح الوصول إلى كل المعاملات تحت المسار `/my-frontend-app/production/`. والعبارة الثانية تمنح الإذن بفكّ تشفير معاملات SecureString باستخدام مفتاح KMS المُدار من AWS. أما إذا استخدمت مفتاح KMS مُدارًا من العميل، فاستبدل ARN المورد بـ ARN مفتاحك.
 
-> **Warning**
+> **تحذير**
 >
-> The parameter ARN in IAM policies does **not** include a leading slash before the parameter name. The parameter name `/my-frontend-app/production/api-key` has the ARN `arn:aws:ssm:us-east-1:123456789012:parameter/my-frontend-app/production/api-key`—note the single slash between `parameter` and `my-frontend-app`. This trips people up because the parameter name starts with `/` but the ARN path doesn’t double it.
+> ARN المعامل في سياسات IAM **لا** يتضمن شرطة مائلة بادئة قبل اسم المعامل. فالمعامل المسمّى `/my-frontend-app/production/api-key` له ARN بالشكل `arn:aws:ssm:us-east-1:123456789012:parameter/my-frontend-app/production/api-key` — لاحظ الشرطة المائلة الواحدة بين `parameter` و`my-frontend-app`. هذا ما يوقع الناس في الخطأ، لأن اسم المعامل يبدأ بـ `/` لكن مسار ARN لا يضاعفها.
 
-### For Secrets Manager
+### من أجل Secrets Manager
 
 ```json
 {
@@ -171,11 +171,11 @@ The first statement grants access to all parameters under the `/my-frontend-app/
 }
 ```
 
-Secrets Manager handles decryption internally when you call `GetSecretValue`, so you don’t need a separate `kms:Decrypt` permission—unless you used a customer-managed KMS key. In that case, add a `kms:Decrypt` statement for that key.
+يتولّى Secrets Manager فكّ التشفير داخليًا عندما تستدعي `GetSecretValue`، فلا تحتاج إلى إذن `kms:Decrypt` منفصل — إلا إذا استخدمت مفتاح KMS مُدارًا من العميل. في تلك الحالة، أضف عبارة `kms:Decrypt` لذلك المفتاح.
 
-### Attaching the Policy
+### إرفاق السياسة
 
-Attach these permissions to your Lambda execution role using an inline policy:
+أرفق هذه الأذونات بدور تنفيذ Lambda باستخدام سياسة مضمّنة:
 
 ```bash
 aws iam put-role-policy \
@@ -185,13 +185,13 @@ aws iam put-role-policy \
   --output json
 ```
 
-Or create a managed policy and attach it—the approach you learned in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy). Either way, the principle of least privilege applies: grant access to the specific parameters your function needs, not to all parameters in your account.
+أو أنشئ سياسة مُدارة وأرفقها — وهو النهج الذي تعلمته في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy). في الحالتين ينطبق مبدأ الامتياز الأدنى: امنح الوصول إلى المعاملات المحددة التي تحتاجها دالتك، لا إلى كل المعاملات في حسابك.
 
-## Caching Strategies
+## استراتيجيات التخزين المؤقت
 
-The init-time fetch pattern shown above works well for secrets that don’t change while the function is running. But if you use Secrets Manager’s automatic rotation, a secret could change while your Lambda execution environment is still warm. The cached value becomes stale.
+نمط الجلب في وقت التهيئة الموضّح أعلاه يعمل جيدًا للأسرار التي لا تتغير أثناء تشغيل الدالة. لكن إذا استخدمت التدوير التلقائي في Secrets Manager، فقد يتغيّر السر بينما بيئة تنفيذ Lambda لديك لا تزال دافئة. عندها تصبح القيمة المخزّنة مؤقتًا قديمة.
 
-Here’s a caching pattern with a time-to-live (TTL):
+إليك نمط تخزين مؤقت مع مدة صلاحية (TTL):
 
 ```typescript
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
@@ -227,15 +227,15 @@ const getParameter = async (name: string): Promise<string> => {
 };
 ```
 
-*Note:* After 5 minutes, the next invocation re-fetches the parameter. This keeps the cache fresh without calling the API on every request.
+*ملاحظة:* بعد 5 دقائق، يعيد الاستدعاء التالي جلب المعامل. هذا يُبقي الذاكرة المؤقتة حديثة دون استدعاء الواجهة البرمجية في كل طلب.
 
-A 5-minute TTL means your function re-fetches the secret at most once every 5 minutes per execution environment. For most applications, I’ve found this to be a good balance between freshness and API call cost.
+مدة صلاحية 5 دقائق تعني أن دالتك تعيد جلب السر مرة واحدة كل 5 دقائق لكل بيئة تنفيذ على الأكثر. وقد وجدت أن هذا توازن جيد لمعظم التطبيقات بين حداثة القيمة وتكلفة استدعاءات الواجهة البرمجية.
 
-## The AWS Parameters and Secrets Lambda Extension
+## إضافة Lambda لمعاملات وأسرار AWS
 
-AWS provides a Lambda extension that handles caching for you. Instead of making SDK calls from your code, you add a Lambda layer that runs a local HTTP cache. Your function retrieves parameters by calling `localhost:2773` instead of the SSM or Secrets Manager API.
+توفّر AWS إضافة Lambda تتولّى التخزين المؤقت نيابةً عنك. فبدلًا من إجراء استدعاءات SDK من كودك، تضيف طبقة Lambda تشغّل ذاكرة مؤقتة محلية عبر HTTP. وتستعيد دالتك المعاملات باستدعاء `localhost:2773` بدلًا من واجهة SSM أو Secrets Manager البرمجية.
 
-Add the extension layer to your function:
+أضف طبقة الإضافة إلى دالتك:
 
 ```bash
 EXTENSION_ARN=$(aws ssm get-parameter \
@@ -251,11 +251,11 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> The extension ARN is both **architecture-specific** and **region-specific**. The `x86/latest` path above resolves to a layer built for `x86_64` Lambdas; `arm64/latest` resolves to a different layer built for `arm64` (Graviton) Lambdas. Attaching the x86 layer to an arm64 function doesn’t fail at deploy time—the function comes up, but any call to `localhost:2773` fails at runtime because the extension binary can’t execute on that CPU. Worse, AWS’s public parameters are resolved in the region you call them from, so running the `aws ssm get-parameter` lookup in `us-east-1` gives you a `us-east-1` ARN that won’t work in a function deployed to `eu-west-1`. Match both the architecture flag (`x86` vs `arm64`) and the region (`--region`) to the function you’re attaching the layer to.
+> ARN الإضافة **خاص بالمعمارية** و**خاص بالمنطقة** في الوقت نفسه. فمسار `x86/latest` أعلاه يُحلّ إلى طبقة مبنية لدوال Lambda من نوع `x86_64`؛ أما `arm64/latest` فيُحلّ إلى طبقة مختلفة مبنية لدوال `arm64` (Graviton). وإرفاق طبقة x86 بدالة arm64 لا يفشل وقت النشر — بل تُقلع الدالة، لكن أي استدعاء إلى `localhost:2773` يفشل في وقت التشغيل لأن ملف الإضافة التنفيذي لا يمكن تشغيله على ذلك المعالج. والأسوأ من ذلك أن المعاملات العامة في AWS تُحلّ في المنطقة التي تستدعيها منها، فبحث `aws ssm get-parameter` في `us-east-1` يمنحك ARN من `us-east-1` لن يعمل في دالة منشورة في `eu-west-1`. طابق كلا الأمرين — خيار المعمارية (`x86` مقابل `arm64`) والمنطقة (`--region`) — مع الدالة التي تُرفق بها الطبقة.
 
-Then retrieve parameters via HTTP:
+ثم استرجع المعاملات عبر HTTP:
 
 ```typescript
 const getParameterFromExtension = async (name: string): Promise<string> => {
@@ -273,7 +273,7 @@ const getParameterFromExtension = async (name: string): Promise<string> => {
 };
 ```
 
-For Secrets Manager:
+ولأجل Secrets Manager:
 
 ```typescript
 const getSecretFromExtension = async (secretId: string): Promise<string> => {
@@ -291,15 +291,15 @@ const getSecretFromExtension = async (secretId: string): Promise<string> => {
 };
 ```
 
-The extension caches values with a configurable TTL (default 300 seconds). You control the TTL with the `SSM_PARAMETER_STORE_TTL` and `SECRETS_MANAGER_TTL` environment variables on the function.
+تخزّن الإضافة القيم مؤقتًا بمدة صلاحية قابلة للتهيئة (الافتراضي 300 ثانية). وتتحكم في المدة عبر متغيّري البيئة `SSM_PARAMETER_STORE_TTL` و`SECRETS_MANAGER_TTL` على الدالة.
 
-> **Tip**
+> **نصيحة**
 >
-> The extension approach trades SDK dependencies for HTTP calls. It’s useful when you want caching without writing cache logic, or when you want to keep your deployment package small by not bundling the SSM or Secrets Manager SDK packages. For simple use cases with a few secrets, the direct SDK approach is perfectly fine.
+> يقايض نهج الإضافة تبعيات SDK باستدعاءات HTTP. وهو مفيد عندما تريد تخزينًا مؤقتًا دون كتابة منطق التخزين المؤقت، أو عندما تريد إبقاء حزمة النشر صغيرة بعدم تضمين حزم SDK الخاصة بـ SSM أو Secrets Manager. أما حالات الاستخدام البسيطة التي فيها أسرار قليلة، فنهج SDK المباشر مناسب تمامًا.
 
-## Putting It All Together
+## جمع كل ذلك معًا
 
-Here’s a complete Lambda function that reads a DynamoDB table name from an environment variable (non-sensitive, doesn’t change), an API key from Parameter Store (sensitive, rarely changes), and uses both:
+إليك دالة Lambda كاملة تقرأ اسم جدول DynamoDB من متغيّر بيئة (غير حساس، ولا يتغيّر)، ومفتاح واجهة برمجية من Parameter Store (حساس، ونادرًا ما يتغيّر)، وتستخدم الاثنين:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -346,4 +346,4 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-This pattern—environment variables for non-sensitive config, Parameter Store or Secrets Manager for sensitive values, init-time caching for both—is the standard approach for Lambda functions in production. You now have two services that solve similar problems. The next lesson provides a direct comparison between Parameter Store and Secrets Manager to help you decide which one to reach for in different scenarios.
+هذا النمط — متغيّرات البيئة للتهيئة غير الحساسة، وParameter Store أو Secrets Manager للقيم الحساسة، والتخزين المؤقت في وقت التهيئة لكليهما — هو النهج القياسي لدوال Lambda في الإنتاج. أصبح لديك الآن خدمتان تحلّان مشكلات متشابهة. ويقدّم الدرس التالي مقارنة مباشرة بين Parameter Store وSecrets Manager لمساعدتك على تحديد أيهما تلجأ إليه في السيناريوهات المختلفة.

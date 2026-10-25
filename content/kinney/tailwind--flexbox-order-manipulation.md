@@ -1,21 +1,21 @@
 ---
-title: "Order Manipulation"
-lang: en
+title: "التلاعب بالترتيب"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-order-manipulation"
 ---
 
-Controlling the visual order of elements in Flexbox or Grid containers is common. CSS’s `order` property allows adjusting this without altering HTML structure. Tailwind CSS provides utilities to manipulate this property directly in your markup.
+التحكّم في الترتيب البصري للعناصر داخل حاويات Flexbox أو Grid أمر شائع. تتيح خاصية `order` في CSS تعديل ذلك دون تغيير بنية HTML. ويوفّر Tailwind CSS أدوات للتعامل مع هذه الخاصية مباشرةً في ترميزك (Markup).
 
-## Core Order Utilities
+## أدوات الترتيب الأساسية
 
-Tailwind offers utilities corresponding to the CSS `order` property, enabling you to define item stacking context in Flex or Grid containers. You can set an item’s order explicitly or use special values like `first`, `last`, or `none`.
+يوفّر Tailwind أدوات مقابلة لخاصية `order` في CSS، تتيح لك تعريف سياق تكديس العناصر في حاويات Flex أو Grid. يمكنك ضبط ترتيب عنصر صراحةً أو استخدام قيم خاصة مثل `first` أو `last` أو `none`.
 
-### Explicit Ordering
+### الترتيب الصريح
 
-Assign numerical order values with `order-<number>` (e.g., `order-1`, `order-3`). This sets the `order` CSS property to the specified number, rendering items in a sequence different from the HTML.
+خصّص قيم ترتيب عددية عبر `order-<number>` (مثل `order-1` و`order-3`). تضبط هذه خاصية `order` في CSS على الرقم المحدد، فتُعرض العناصر بتسلسل مختلف عن ترتيب HTML.
 CSS: `order: <number>;`
 
-*Explicit Ordering — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/925c6e235dd77ba6142aa20de5c36afb5b0a6db63144a5c2319b73ffac262289.html)*
+*الترتيب الصريح — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/925c6e235dd77ba6142aa20de5c36afb5b0a6db63144a5c2319b73ffac262289.html)*
 
 ```html
 <div class="flex gap-4 rounded-lg bg-gray-100 p-6">
@@ -25,12 +25,12 @@ CSS: `order: <number>;`
 </div>
 ```
 
-### Negative Ordering
+### الترتيب السالب
 
-Use negative order values by prefixing the class with a dash (e.g., `-order-<number>`).
+استخدم قيم ترتيب سالبة عبر بادئة الصنف بشرطة (مثل `-order-<number>`).
 CSS: `order: calc(<number> * -1);`
 
-*Negative Ordering — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/59d6c90c7c1edfe6298ca4d9bbc4d821310338722da175f3c3debe027172c6fa.html)*
+*الترتيب السالب — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/59d6c90c7c1edfe6298ca4d9bbc4d821310338722da175f3c3debe027172c6fa.html)*
 
 ```html
 <div class="flex gap-4 rounded-lg bg-gray-100 p-6">
@@ -40,16 +40,16 @@ CSS: `order: calc(<number> * -1);`
 </div>
 ```
 
-### Special Order Values
+### قيم ترتيب خاصة
 
-#### Rendering First or Last
+#### العرض في الأول أو الأخير
 
-- `order-first`: Renders items at the beginning.
+- `order-first`: تُعرض العناصر في البداية.
 CSS: `order: calc(-infinity);`
-- `order-last`: Renders items at the end.
+- `order-last`: تُعرض العناصر في النهاية.
 CSS: `order: calc(infinity);`
 
-*Rendering First or Last — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/5f2b6604122924159d4bd384f8ab40ee12852b5b761b87211c8a475f57bd18cc.html)*
+*العرض في الأول أو الأخير — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5f2b6604122924159d4bd384f8ab40ee12852b5b761b87211c8a475f57bd18cc.html)*
 
 ```html
 <div class="flex gap-4 rounded-lg bg-gray-100 p-6">
@@ -63,12 +63,12 @@ CSS: `order: calc(infinity);`
 </div>
 ```
 
-#### Resetting Order
+#### إعادة ضبط الترتيب
 
-- `order-none`: Resets `order` to its default (`0`). Items are ordered by source code position relative to others with `order: 0` or greater.
+- `order-none`: تعيد ضبط `order` إلى قيمتها الافتراضية (`0`). وتُرتَّب العناصر بحسب موضعها في الشيفرة المصدرية نسبةً إلى بقيّة العناصر ذات `order: 0` أو أكبر.
 CSS: `order: 0;`
 
-*Resetting Order — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/36901ffa1a9a974a8c9774b6c3a8344140a8048e342b3550523f99aebf138018.html)*
+*إعادة ضبط الترتيب — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/36901ffa1a9a974a8c9774b6c3a8344140a8048e342b3550523f99aebf138018.html)*
 
 ```html
 <div class="flex gap-4 rounded-lg bg-gray-100 p-6">
@@ -80,13 +80,13 @@ CSS: `order: 0;`
 </div>
 ```
 
-## Custom Order Values
+## قيم ترتيب مخصّصة
 
-If predefined utilities are insufficient, use arbitrary values with `order-[<value>]` to set `order` to any valid CSS value.
+إذا لم تكفِ الأدوات المُعرَّفة مسبقًا، استخدم القيم التعسّفية مع `order-[<value>]` لضبط `order` على أي قيمة CSS صالحة.
 
-Alternatively, reference a CSS variable with `order-(<custom-property>)` for dynamic or externally managed order values.
+وبدلًا من ذلك، أشِر إلى متغيّر CSS عبر `order-(<custom-property>)` لقيم ترتيب ديناميكية أو مُدارة خارجيًا.
 
-*Custom Order Values — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/d38bd6cc3c5d28aaeccf1fa822975270656645d0561b6466bfb28ec5ad7b8e77.html)*
+*قيم ترتيب مخصّصة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d38bd6cc3c5d28aaeccf1fa822975270656645d0561b6466bfb28ec5ad7b8e77.html)*
 
 ```html
 <div class="flex gap-4 rounded-lg bg-gray-100 p-6">
@@ -102,11 +102,11 @@ Alternatively, reference a CSS variable with `order-(<custom-property>)` for dyn
 </div>
 ```
 
-## Responsive Order Manipulation
+## التلاعب بالترتيب المتجاوب
 
-Like most Tailwind utilities, `order` utilities can be applied conditionally at breakpoints (e.g., `sm:order-1`, `md:order-last`). This changes element order responsively. Unprefixed utilities apply to all screen sizes; prefixed utilities apply at the specified breakpoint and larger.
+كما معظم أدوات Tailwind، يمكن تطبيق أدوات `order` بشكل مشروط عند نقاط التوقّف (مثل `sm:order-1` و`md:order-last`). ويغيّر هذا ترتيب العناصر بشكل متجاوب. وتُطبَّق الأدوات غير المسبوقة بالبادئة على جميع أحجام الشاشات، بينما تُطبَّق الأدوات المسبوقة بالبادئة عند نقطة التوقّف المحدَّدة وما فوقها.
 
-*Responsive Order Manipulation — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/bf69627e56b4b0839d31024be269c504e2ebf558a867fb66d8ffff7d75d34016.html)*
+*التلاعب بالترتيب المتجاوب — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/bf69627e56b4b0839d31024be269c504e2ebf558a867fb66d8ffff7d75d34016.html)*
 
 ```html
 <div class="flex flex-col gap-4 rounded-lg bg-gray-100 p-6 md:flex-row">

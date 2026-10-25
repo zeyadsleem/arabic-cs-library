@@ -1,22 +1,22 @@
 ---
-title: "Spying on Function Arguments"
-lang: en
+title: "التجسس على وسائط الدوال (Spying on Function Arguments)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-function-arguments"
 ---
 
-In unit testing, one of the key tasks is verifying that functions are called with the correct arguments. This ensures that your code is passing the right data through the system and interacting with dependencies in the expected way. Vitest provides some powerful utilities to check the arguments passed to a function, either by using spies or mocks.
+في اختبار الوحدات، من المهام الأساسية التحقق من أن الدوال تُستدعى بالوسائط الصحيحة. يضمن ذلك أن تمر شيفرتك البيانات الصحيحة عبر النظام وأن تتفاعل مع الاعتماديات بالطريقة المتوقعة. يوفر Vitest أدوات قوية للتحقق من الوسائط الممرَّرة إلى دالة، سواء باستخدام الجواسيس (spies) أو البدائل المُحاكاة (mocks).
 
-## Why Check Function Arguments?
+## لماذا نتحقق من وسائط الدوال؟
 
-- **Verification of Correct Data Flow**: Ensuring that your functions receive and pass the correct arguments at each stage.
-- **Testing Callbacks**: Verifying that callbacks are invoked with the right data, especially in asynchronous code.
-- **Ensuring Correct Usage of External Services**: When your code interacts with APIs, databases, or external services, checking the arguments ensures proper integration.
+- **التحقق من تدفق البيانات الصحيح**: ضمان أن دوالك تستقبل وتمرر الوسائط الصحيحة في كل مرحلة.
+- **اختبار الدوال المرجعة (callbacks)**: التحقق من أن الدوال المرجعة تُستدعى بالبيانات الصحيحة، خصوصًا في الشيفرة غير المتزامنة.
+- **ضمان الاستخدام الصحيح للخدمات الخارجية**: عندما تتفاعل شيفرتك مع واجهات برمجة التطبيقات (APIs) أو قواعد البيانات أو الخدمات الخارجية، فإن التحقق من الوسائط يضمن تكاملًا سليمًا.
 
-## Using Spies to Check Function Arguments
+## استخدام الجواسيس للتحقق من وسائط الدوال
 
-[Spies](https://stevekinney.com/courses/testing/spies) in Vitest can track how a function is called, including the arguments passed to it. The `vi.spyOn()` method allows you to monitor existing functions and check their arguments without modifying their behavior.
+[الجواسيس](https://stevekinney.com/courses/testing/spies) في Vitest يمكنها تتبع كيفية استدعاء دالة، بما في ذلك الوسائط الممرَّرة إليها. يتيح لك التابع `vi.spyOn()` مراقبة الدوال الموجودة والتحقق من وسائطها دون تعديل سلوكها.
 
-Here’s how you create a spy and check the arguments. Let’s take a look at `examples/logjam/src/log.test.js`.
+إليك كيف تُنشئ جاسوسًا وتتحقق من الوسائط. لنلقِ نظرة على `examples/logjam/src/log.test.js`.
 
 ```javascript
 describe('logger', () => {
@@ -32,11 +32,11 @@ describe('logger', () => {
 });
 ```
 
-In this example, `spy` tracks the calls to `console.log`. The `expect(spy).toHaveBeenCalledWith('Hello, world!')` assertion checks that the function was called with the correct argument.
+في هذا المثال، يتتبع `spy` الاستدعاءات إلى `console.log`. يتحقق التعبير `expect(spy).toHaveBeenCalledWith('Hello, world!')` من أن الدالة استُدعيت بالوسيط الصحيح.
 
-## Using Mocks to Check Function Arguments
+## استخدام البدائل المُحاكاة للتحقق من وسائط الدوال
 
-[Mocks](https://stevekinney.com/courses/testing/mocks) can also be used to check what arguments were passed to a function. When you create a mock with `vi.fn()`, Vitest automatically tracks the arguments passed to the mock, allowing you to assert on them later.
+[البدائل المُحاكاة](https://stevekinney.com/courses/testing/mocks) يمكن استخدامها أيضًا للتحقق من الوسائط التي مُرّرت إلى دالة. عندما تُنشئ بديلًا مُحاكى بـ `vi.fn()`، يتتبع Vitest تلقائيًا الوسائط الممرَّرة إلى البديل، ما يتيح لك التحقق منها لاحقًا.
 
 ```javascript
 // Create a mock function
@@ -53,11 +53,11 @@ describe('mock function argument checking', () => {
 });
 ```
 
-Here, `mockFn` is called with two arguments, and `expect(mockFn).toHaveBeenCalledWith('Green Day', 'American Idiot')` verifies that the mock was called with the correct data.
+هنا، يُستدعى `mockFn` بوسيطين، ويتحقق `expect(mockFn).toHaveBeenCalledWith('Green Day', 'American Idiot')` من أن البديل استُدعي بالبيانات الصحيحة.
 
-## Checking Multiple Calls and Arguments
+## التحقق من استدعاءات ووسائط متعددة
 
-Vitest allows you to check the arguments passed to a function over multiple calls. The `mock.calls` array stores the arguments passed to the mock in each call, making it easy to verify multiple interactions.
+يتيح لك Vitest التحقق من الوسائط الممرَّرة إلى دالة عبر استدعاءات متعددة. تخزّن مصفوفة `mock.calls` الوسائط الممرَّرة إلى البديل في كل استدعاء، ما يسهّل التحقق من تفاعلات متعددة.
 
 ```javascript
 const mockFn = vi.fn();
@@ -77,11 +77,11 @@ describe('checking multiple calls', () => {
 });
 ```
 
-The `toHaveBeenNthCalledWith()` method checks the arguments for the first call and the second call separately, ensuring that each call received the correct parameters.
+تتحقق الدالة `toHaveBeenNthCalledWith()` من وسائط الاستدعاء الأول والاستدعاء الثاني بشكل منفصل، بما يضمن أن كل استدعاء تلقى المعاملات الصحيحة.
 
-## Checking Arguments of Asynchronous Functions
+## التحقق من وسائط الدوال غير المتزامنة
 
-When working with asynchronous code, it’s important to ensure that the correct arguments are passed to functions when dealing with promises or callbacks. Vitest’s spies and mocks can handle asynchronous functions as well.
+عند التعامل مع شيفرة غير متزامنة، من المهم ضمان تمرير الوسائط الصحيحة إلى الدوال عند التعامل مع الوعود (promises) أو الدوال المرجعة. يمكن لجواسيس Vitest وبدائله المُحاكاة التعامل مع الدوال غير المتزامنة أيضًا.
 
 ```javascript
 async function fetchBandData(bandName, callback) {
@@ -104,11 +104,11 @@ describe('fetchBandData', () => {
 });
 ```
 
-In this example, the mock `callback` is passed to an asynchronous function. The test verifies that the callback was called with the correct argument after the async operation completed.
+في هذا المثال، يُمرَّر البديل المُحاكى `callback` إلى دالة غير متزامنة. يتحقق الاختبار من أن الدالة المرجعة استُدعيت بالوسيط الصحيح بعد اكتمال العملية غير المتزامنة.
 
-## Accessing Specific Arguments Using `mock.calls`
+## الوصول إلى وسائط محددة باستخدام `mock.calls`
 
-In some cases, you may need to manually access the arguments passed to a function in each call. Vitest stores the arguments of every call in the `mock.calls` array, allowing you to directly inspect or assert on them.
+في بعض الحالات، قد تحتاج إلى الوصول يدويًا إلى الوسائط الممرَّرة إلى دالة في كل استدعاء. يخزّن Vitest وسائط كل استدعاء في مصفوفة `mock.calls`، ما يتيح لك فحصها أو التحقق منها مباشرة.
 
 ```javascript
 const mockFn = vi.fn();
@@ -129,8 +129,8 @@ describe('accessing arguments manually', () => {
 });
 ```
 
-This example shows how you can manually inspect the `mock.calls` array to access the arguments passed to each call. Each entry in `mock.calls` corresponds to an array of arguments from one call to the function.
+يوضح هذا المثال كيف يمكنك فحص مصفوفة `mock.calls` يدويًا للوصول إلى الوسائط الممرَّرة إلى كل استدعاء. كل مدخل في `mock.calls` يقابل مصفوفة وسائط من استدعاء واحد للدالة.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Checking the arguments passed to a function is super important part of verifying that your code behaves correctly in unit tests. Whether you’re using spies to monitor real functions or mocks to simulate them, Vitest provides powerful tools like `toHaveBeenCalledWith()`, `toHaveBeenNthCalledWith()`, and `mock.calls` to assert on the arguments passed during execution. These capabilities allow you to confidently test that your code is passing the right data to the right places.
+التحقق من الوسائط الممرَّرة إلى دالة جزء بالغ الأهمية من التأكد من أن شيفرتك تتصرف بشكل صحيح في اختبارات الوحدات. سواء استخدمت الجواسيس لمراقبة دوال حقيقية أو البدائل المُحاكاة لمحاكاتها، يوفر Vitest أدوات قوية مثل `toHaveBeenCalledWith()` و`toHaveBeenNthCalledWith()` و`mock.calls` للتحقق من الوسائط الممرَّرة أثناء التنفيذ. تتيح لك هذه الإمكانات اختبار أن شيفرتك تمرر البيانات الصحيحة إلى الأماكن الصحيحة بثقة.

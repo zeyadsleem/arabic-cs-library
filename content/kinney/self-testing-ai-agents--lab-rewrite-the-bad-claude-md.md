@@ -1,52 +1,52 @@
 ---
-title: "Lab (Optional)"
-lang: en
+title: "مختبر (اختياري)"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md"
 ---
 
-Time to do the thing.
+حان وقت فعل الشيء.
 
-Open the Shelf starter repository. At the root, there’s a [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) file. In the local course baseline, it’s a decent draft — not terrible, but still too vague in places. Your job in this lab is to tighten it until every rule is something the agent can mechanically act on.
+افتح مستودع Shelf الانطلاقي. في الجذر يوجد ملف [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory). في نسخة الدورة المحلّية، هو مسوّدة مقبولة — ليست سيئة، لكنها ما زالت غامضة في مواضع. مهمتك في هذا المختبر أن تُحكمه حتى تصبح كل قاعدة شيئًا يستطيع الوكيل التصرّف فيه آليًا.
 
-## Setup
+## الإعداد
 
-Use an existing Shelf clone with dependencies already installed and the app available in your usual local workflow. Open [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) and `package.json` side by side in your editor. The Shelf starter ships with route, auth, and testing rules already—this lab is about making those rules *mechanically enforceable* and short enough that an agent will actually follow them without you repeating yourself. Keep the ones that earn their place and tighten the ones that are still too vague.
+استخدم نسخة Shelf موجودة مع الحزم مثبّتة والتطبيق متاحًا في سير عملك المحلّي المعتاد. افتح [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) و`package.json` جنبًا إلى جنب في محرّرك. تأتي بذرة Shelf بقواعد المسارات والمصادقة والاختبار جاهزة — هذا المختبر عن جعل تلك القواعد *قابلة للفرض آليًا* وقصيرة بما يكفي كي يتبّعها الوكيل فعلًا دون أن تكرّر نفسك. أبقِ ما يستحقّ مكانه وأحكِم ما ما زال غامضًا.
 
-## The task
+## المهمة
 
-Rewrite [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) so that every rule in it is something the agent can mechanically act on. You are allowed to delete *aggressively*. You are encouraged to delete more than you keep.
+أعد كتابة [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) بحيث تصبح كل قاعدة فيه شيئًا يستطيع الوكيل التصرّف فيه آليًا. يُسمح لك بالحذف *بجرأة*. ويُشجَّع لك أن تحذف أكثر مما تبقي.
 
-Specifically, the new file should include:
+تحديدًا، ينبغي أن يتضمّن الملف الجديد:
 
-- A “what green means” section that names the exact commands the agent should run before declaring a task done. Look in `package.json` for the actual script names. Don’t make commands up.
-- At least one rule about how tests get written (TDD ordering, file location, naming convention—your call).
-- At least one rule about how [Playwright](https://playwright.dev/) locators get chosen.
-- At least one rule about user-facing copy staying in the voice of the product. Course notes, test rationale, route names, and infrastructure details belong in docs or comments, not in the UI.
-- At least one rule about something the agent should *not* do in this codebase (a directory to leave alone, a pattern to avoid, a dependency not to add).
+- قسم «ما معنى النجاح» يسمّي الأوامر الدقيقة التي ينبغي أن يشغّلها الوكيل قبل إعلان انتهاء المهمة. ابحث في `package.json` عن أسماء السكربتات الفعلية. لا تختلق أوامر.
+- قاعدة واحدة على الأقل عن كيفية كتابة الاختبارات (ترتيب TDD، وموضع الملف، واصطلاح التسمية — القرار لك).
+- قاعدة واحدة على الأقل عن كيفية اختيار محدّدات [Playwright](https://playwright.dev/).
+- قاعدة واحدة على الأقل عن بقاء النصوص الموجّهة للمستخدم بصوت المنتج. فملاحظات الدورة، وتعليل الاختبارات، وأسماء المسارات، وتفاصيل البنية التحتية مكانها الوثائق أو التعليقات، لا الواجهة.
+- قاعدة واحدة على الأقل عن شيء يجب ألّا يفعله الوكيل في هذه الشيفرة (دليل يُترك وشأنه، أو نمط يُتجنّب، أو تبعية لا تُضاف).
 
-Keep the file under sixty lines. If it’s longer than that, you’re probably writing instructions to yourself instead of to the agent.
+أبقِ الملف تحت ستين سطرًا. فإن كان أطول، فأنت على الأرجح تكتب تعليمات لنفسك لا للوكيل.
 
-The starter already ships with real paths worth naming. Use that. A rule that says “reuse `src/lib/components`” or “put Playwright specs in `tests/`” is stronger than a vague rule about staying organized.
+تأتي البذرة بمسارات حقيقية تستحق التسمية. استخدم ذلك. فقاعدة تقول «أعد استخدام `src/lib/components`» أو «ضع مواصفات Playwright في `tests/`» أقوى من قاعدة غامضة عن البقاء منظّمًا.
 
-## Acceptance criteria
+## معايير القبول
 
-Each item is independently checkable. Don’t move on until all are ticked.
+كل بند قابل للفحص باستقلال. لا تنتقل حتى تُعلَّم كلها.
 
-- [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) exists at the repository root and is under sixty lines (`wc -l CLAUDE.md` reports a number ≤ 60).
-- The file contains a section that names at least three exact shell commands the agent should run before declaring a task done.
-- Every command named in that section actually exists in `package.json` (verify with `cat package.json | grep <command-name>` for each).
-- The file contains zero instances of the words “clean,” “best practices,” “good,” or “appropriate” (`grep -iE 'clean|best practices|good|appropriate' CLAUDE.md` returns no matches).
-- The file contains at least one rule that mentions a specific file path in the repo, and that path resolves (`ls <path>` exits zero for the path you named).
-- The file contains at least one rule about [Playwright](https://playwright.dev/) locator choice that names a specific [Playwright](https://playwright.dev/) API (e.g., `getByRole`, `getByLabel`, `data-testid`).
-- The file contains at least one rule that explicitly keeps user-facing copy about books and reading, and keeps course or testing notes out of the UI.
-- You ran `npm run lint`, `npm run typecheck`, and `npm run test` after editing and all three exit zero. (`CLAUDE.md` is markdown, so they should be unaffected, but the habit is the point.)
-- You committed the change with a message that starts with `lab(rewrite-the-bad-claude-md):` and the commit hash is on `HEAD`.
+- [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) موجود في جذر المستودع وتحت ستين سطرًا (`wc -l CLAUDE.md` يعطي رقمًا ≤ 60).
+- يحتوي الملف قسمًا يسمّي ثلاثة أوامر صدفية دقيقة على الأقل ينبغي أن يشغّلها الوكيل قبل إعلان انتهاء المهمة.
+- كل أمر مسمّى في ذلك القسم موجود فعلًا في `package.json` (تحقّق بـ `cat package.json | grep <command-name>` لكل أمر).
+- يحتوي الملف صفر حالات من الكلمات «clean» أو «best practices» أو «good» أو «appropriate» (`grep -iE 'clean|best practices|good|appropriate' CLAUDE.md` لا يعيد أي تطابق).
+- يحتوي الملف قاعدة واحدة على الأقل تذكر مسار ملف محدّدًا في المستودع، وذلك المسار يُحلّ (`ls <path>` يخرج بالرمز صفر للمسار الذي سمّيته).
+- يحتوي الملف قاعدة واحدة على الأقل عن اختيار محدّد [Playwright](https://playwright.dev/) تسمّي واجهة برمجية محدّدة في [Playwright](https://playwright.dev/) (مثل `getByRole` أو `getByLabel` أو `data-testid`).
+- يحتوي الملف قاعدة واحدة على الأقل تُبقي النصوص الموجّهة للمستخدم عن الكتب والقراءة، وتُخرج ملاحظات الدورة أو الاختبار من الواجهة.
+- شغّلت `npm run lint` و`npm run typecheck` و`npm run test` بعد التعديل وخرجت الثلاثة بالرمز صفر. (`CLAUDE.md` ملف markdown، لذا ينبغي ألّا تتأثّر، لكن العادة هي المقصد.)
+- التزمت التغيير برسالة تبدأ بـ `lab(rewrite-the-bad-claude-md):` والتجزئة موجودة على `HEAD`.
 
-If `npm run test` flakes here because the starter is still using interactive sign-in inside the browser tests, note it and keep going. The very next lab exists to harden that exact failure mode.
+إن تذبذب `npm run test` هنا لأن البذرة ما زالت تستخدم تسجيل الدخول التفاعلي داخل اختبارات المتصفح، فسجّل ذلك وامضِ. المختبر التالي مباشرةً موجود لتقوية نمط الفشل ذلك بعينه.
 
-### The one-shot probe
+### الفحص بضربة واحدة
 
-Copy and paste this block at the repository root to run every mechanical check above in one go. It exits zero when the file passes and prints the specific failing rule when it does not:
+انسخ هذا المقطع وألصقه في جذر المستودع لتشغيل كل فحص آلي أعلاه دفعة واحدة. يخرج بالرمز صفر حين ينجح الملف، ويطبع القاعدة الفاشلة تحديدًا حين لا ينجح:
 
 ```bash
 set -e
@@ -74,15 +74,15 @@ grep -qE 'getByRole|getByLabel|getByText|data-testid' CLAUDE.md \
 echo "ok: CLAUDE.md passes every mechanical check"
 ```
 
-Run that block inside the repo after each edit to CLAUDE.md. When it prints `ok`, the mechanical half of the lab is done and you can move on to the subjective half (“does the agent actually follow these rules when you give it a task”).
+شغّل ذلك المقطع داخل المستودع بعد كل تعديل على `CLAUDE.md`. وحين يطبع `ok`، يكون النصف الآلي من المختبر قد انتهى ويمكنك الانتقال إلى النصف الذاتي («هل يتبّع الوكيل هذه القواعد فعلًا حين تعطيه مهمة»).
 
-## What this looks like against a real agent
+## كيف يبدو هذا أمام وكيل حقيقي
 
-Once your file passes the mechanical checks, the real question is whether it actually changes agent behavior. Here’s what a run against Claude Code looks like with a tightened `CLAUDE.md` in place. The prompt:
+حين ينجح ملفك في الفحوص الآلية، يصبح السؤال الحقيقي: هل يغيّر سلوك الوكيل فعلًا؟ هذا ما تبدو عليه جولة أمام Claude Code مع `CLAUDE.md` محكَم في مكانه. الطلب:
 
-> Add a “finished this year” count to the stats page. Follow the rules in CLAUDE.md.
+> أضف عدّاد «أنجزت هذا العام» إلى صفحة الإحصاءات. واتّبع القواعد في CLAUDE.md.
 
-A tightened `CLAUDE.md` produces a session that looks roughly like this. This transcript assumes the static-layer lab has already added `npm run knip`; if you are doing this lab in isolation, ignore the knip step—the three gates in the starter `package.json` are `typecheck`, `lint`, and `test`.
+ملف `CLAUDE.md` محكَم ينتج جلسة تبدو تقريبًا هكذا. يفترض هذا النص أن مختبر الطبقة الثابتة أضاف `npm run knip`؛ وإن كنت تنفّذ هذا المختبر بمعزل، فتجاهل خطوة knip — فالبوابات الثلاث في `package.json` الانطلاقي هي `typecheck` و`lint` و`test`.
 
 ```
 Reading CLAUDE.md...
@@ -129,31 +129,31 @@ Running npm run test...
 All four gates green. Task complete.
 ```
 
-Two things to notice about this transcript:
+ثمّة أمران يجب ملاحظتهما في هذا النص:
 
-- The agent read `CLAUDE.md` first and extracted the “Done means green” rule before touching any code. It didn’t need to be reminded.
-- It checked the product-copy rule against its own output before moving on. The rule fired as a guardrail, not a post-hoc check.
+- قرأ الوكيل `CLAUDE.md` أولًا واستخرج قاعدة «الانتهاء يعني النجاح» قبل أن يلمس أي شيفرة. لم يحتج إلى تذكير.
+- فحص قاعدة نصوص المنتج على مخرجاته قبل أن يمضي. فالقاعدة اشتغلت كحاجز، لا كفحص لاحق.
 
-A *loose* `CLAUDE.md` — the one the starter ships — produces a very different session. The agent still writes the feature, but it either skips the gates entirely or runs them out of order, and “please run the gates” becomes something you have to say in the chat. The difference between the two versions is the difference between “instructions the agent consults” and “instructions the agent mechanically obeys.” The second one is the one you want.
+ملف `CLAUDE.md` *رخو* — ذاك الذي تشحنه البذرة — ينتج جلسة مختلفة جدًا. فما زال الوكيل يكتب الميزة، لكنه إمّا يتخطّى البوابات كليًا أو يشغّلها بترتيب خاطئ، ويصبح «من فضلك شغّل البوابات» شيئًا عليك قوله في المحادثة. والفرق بين النسختين هو الفرق بين «تعليمات يستشيرها الوكيل» و«تعليمات يطيعها الوكيل آليًا». والثانية هي التي تريدها.
 
-If you’re skeptical, try it yourself: revert `CLAUDE.md` to its starter state (or comment out the “Done means green” section), give Claude Code the same prompt, and compare the transcripts. The feature code will look similar; the process around it will not.
+إن كنت متشكّكًا، فجرّب بنفسك: أعد `CLAUDE.md` إلى حالته الانطلاقية (أو علّق قسم «الانتهاء يعني النجاح»)، وأعطِ Claude Code الطلب نفسه، وقارن النصوص. ستكون شيفرة الميزة متشابهة؛ أما العملية حولها فلن تكون.
 
-## Stretch goals
+## أهداف إضافية
 
-If you finish early:
+إن انتهيت مبكرًا:
 
-- Add a rule that references a file you haven’t created yet, then create it. (The HAR recording lessons later in the course will populate `tests/fixtures/` — a fixtures convention rule is a good fit to land early.)
-- Run the same task against a second agent (Cursor, Codex, Copilot) using the same instruction file translated to that agent’s filename. Note where the rules survive the port and where they don’t.
-- Take the worst rule you *kept* and try to make it more mechanically checkable. The goal is not perfection; the goal is to feel the difference between a rule the agent can act on and a rule it can’t.
+- أضف قاعدة تشير إلى ملف لم تنشئه بعد، ثم أنشئه. (دروس تسجيل HAR اللاحقة في الدورة ستعمر `tests/fixtures/` — وقاعدة اصطلاح للـ fixtures تناسب أن تُرسى مبكرًا.)
+- شغّل المهمة نفسها أمام وكيل ثانٍ (Cursor أو Codex أو Copilot) باستخدام ملف التعليمات نفسه مترجمًا إلى اسم ملف ذلك الوكيل. لاحظ أين تصمد القواعد في النقل وأين لا.
+- خذ أسوأ قاعدة *أبقيتها* وحاول جعلها أكثر قابلية للفحص آليًا. الهدف ليس الكمال؛ الهدف أن تشعر بالفرق بين قاعدة يستطيع الوكيل التصرّف فيها وأخرى لا يستطيع.
 
-## What you should be left with
+## ما ينبغي أن يتبقّى معك
 
-A `CLAUDE.md` you would actually want the agent to read. Shorter than the one you started with. More opinionated. Every line earns its place by being something the agent does, not something the agent *is*.
+ملف `CLAUDE.md` كنت تتمنّى فعلًا أن يقرأه الوكيل. أقصر من الذي بدأت به. أكثر حسمًا. كل سطر يستحقّ مكانه لأنه شيء يفعله الوكيل، لا شيء *يكون* عليه الوكيل.
 
-We’ll come back to this file in almost every lesson from here on. By the end of the day, it’s going to have rules from [Playwright](https://playwright.dev/) locators and waiting (see [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) and [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)), [lint and dead code detection](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails), and [the canonical CI command](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). The rewrite you do today is the spine that the rest of the day hangs on.
+سنعود إلى هذا الملف في كل درس تقريبًا من هنا. وبحلول نهاية اليوم، سيكون فيه قواعد من محدّدات [Playwright](https://playwright.dev/) والانتظار (راجع [تسلسل المحدّدات الهرمي](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) و[حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story))، و[التدقيق وكشف الشيفرة الميتة](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)، و[أمر التكامل المستمر المعتمد](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). وإعادة الكتابة التي تجريها اليوم هي العمود الذي يتعلّق به بقيّة اليوم.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/rewrite-the-bad-claude-md-solution)
-- [Instructions That Wire the Agent In](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)
-- [The Hypothesis](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/rewrite-the-bad-claude-md-solution)
+- [تعليمات تربط الوكيل بالحلقة](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)
+- [الفرضية](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)

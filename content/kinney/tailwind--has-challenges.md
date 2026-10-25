@@ -1,15 +1,15 @@
 ---
-title: "has-* Challenges"
-lang: en
+title: "تحديات has-*"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/has-challenges"
 ---
 
-Can you implement the following?
+هل يمكنك تنفيذ ما يلي؟
 
-1. **Checkbox Container**: Make a container change background color when its checkbox is checked. (Easy mode, you can find the answer somewhere in the last section.)
-2. **Form Validation Feedback**: Create a form field container that shows different colors for valid/invalid states
-3. **Conditional Content**: Build a survey question that reveals follow-up content based on radio button selection
-4. **Multi-Element Response**: Design a contact form container that responds differently to text inputs vs textareas
-5. **Complex Attribute Targeting**: Create a file upload zone that responds to both focus states and file type attributes
+1. **حاوية مربع اختيار**: اجعل حاوية تغيّر لون خلفيتها عند تحديد مربع الاختيار الخاص بها. (الوضع السهل: يمكنك أن تجد الإجابة في مكان ما في القسم الأخير.)
+2. **تغذية التحقق من النموذج**: أنشئ حاوية حقل نموذج تُظهر ألوانًا مختلفة للحالتين الصحيحة وغير الصحيحة
+3. **محتوى شرطي**: ابنِ سؤال استبيان يكشف محتوى متابعًا بناءً على اختيار زر الاختيار
+4. **استجابة متعددة العناصر**: صمّم حاوية نموذج اتصال تستجيب بشكل مختلف لحقول النص مقابل مناطق النص
+5. **استهداف خصائص مركّب**: أنشئ منطقة رفع ملفات تستجيب لحالات التركيز وخصائص نوع الملف معًا
 
-The [solutions can be found here](https://stevekinney.com/courses/tailwind/has-solutions).
+يمكن العثور على [الحلول هنا](https://stevekinney.com/courses/tailwind/has-solutions).

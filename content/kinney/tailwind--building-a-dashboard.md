@@ -1,12 +1,12 @@
 ---
-title: "Building a Dashboard"
-lang: en
+title: "بناء لوحة معلومات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-dashboard"
 ---
 
-Let’s start with our basic HTML structure for a simple analytics dashboard.
+لنبدأ ببنية HTML الأساسية الخاصة بلوحة تحليلات بسيطة.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/9e6301a79256ecbddf274bd3c977a5d19a40d794ac5b08b03158c14b1d42d965.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9e6301a79256ecbddf274bd3c977a5d19a40d794ac5b08b03158c14b1d42d965.html)*
 
 ```html
 <div class="space-y-4 rounded-lg bg-gray-100 p-4">
@@ -44,15 +44,15 @@ Let’s start with our basic HTML structure for a simple analytics dashboard.
 </div>
 ```
 
-We have a dashboard with header, sidebar navigation, main content, and a stats panel, but they’re all stacked vertically. Let’s transform this into a sophisticated layout using CSS Grid Template Areas—a more semantic approach than traditional grid column/row positioning.
+لدينا لوحة معلومات فيها ترويسة وتنقّل جانبي ومحتوى رئيسي ولوحة إحصاءات، لكنها جميعًا مكدّسة رأسيًا. لنحوّلها إلى تخطيط متطوّر باستخدام مناطق قوالب الشبكة (Grid Template Areas) في CSS — وهو نهج أكثر دلالية من التموضع التقليدي بأعمدة الشبكة وصفوفها.
 
-## Understanding Grid Template Areas
+## فهم مناطق قوالب الشبكة
 
-Unlike the numeric grid positioning we’ve used in previous tutorials like our [invoice table](https://stevekinney.com/courses/tailwind/building-an-invoice-table), Grid Template Areas let us define named regions in our layout. Think of it as drawing a visual map of your layout using meaningful names instead of numbers.
+بخلاف التموضع الرقمي للشبكة الذي استخدمناه في دروس سابقة مثل [جدول الفاتورة](https://stevekinney.com/courses/tailwind/building-an-invoice-table)، تتيح لنا مناطق قوالب الشبكة تعريف مناطق مسمّاة في تخطيطنا. فكّر في الأمر كأنك ترسم خريطة بصرية لتخطيطك بأسماء ذات معنى بدل الأرقام.
 
-Let’s set up our basic grid structure with named areas:
+لنضع الهيكل الأساسي لشبكتنا مع مناطق مسمّاة:
 
-*Understanding Grid Template Areas — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/a94b99dbc1b9c3c7b46a29daf2d1f46d17c02eeeeb8aa02f0e72f1de0829cd7c.html)*
+*فهم مناطق قوالب الشبكة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a94b99dbc1b9c3c7b46a29daf2d1f46d17c02eeeeb8aa02f0e72f1de0829cd7c.html)*
 
 ```html
 <div
@@ -129,20 +129,20 @@ Let’s set up our basic grid structure with named areas:
 </div>
 ```
 
-Grid Template Areas setup:
+إعداد مناطق قوالب الشبكة:
 
-- `grid-template-areas: 'header header header' 'sidebar main stats'`: Defines a visual map with header spanning the top row and three columns in the bottom row
-- `grid-area: header`: Places each component in its named area
-- `grid-cols-[250px_1fr_200px]`: Sets specific column sizes (fixed sidebar, flexible main, fixed stats)
-- `grid-rows-[auto_1fr]`: Header sizes to content, main row takes remaining space
+- `grid-template-areas: 'header header header' 'sidebar main stats'`: يعرّف خريطة بصرية تمتدّ فيها الترويسة عبر الصف العلوي، بثلاثة أعمدة في الصف السفلي
+- `grid-area: header`: يضع كل مكوّن في منطقته المسمّاة
+- `grid-cols-[250px_1fr_200px]`: يضبط أحجام أعمدة محدّدة (شريط جانبي ثابت، محتوى رئيسي مرن، إحصاءات ثابتة)
+- `grid-rows-[auto_1fr]`: يجعل حجم الترويسة محسوبًا من المحتوى، ويأخذ الصف الرئيسي المساحة المتبقّية
 
-The magic is in the `grid-template-areas` string—it’s literally a visual representation of your layout! Each word represents a named area, and identical words create spanning regions.
+السحر يكمن في سلسلة `grid-template-areas` — فهي تمثيل بصري حرفي لتخطيطك! فكل كلمة تمثّل منطقة مسمّاة، والكلمات المتطابقة تنشئ مناطق ممتدّة.
 
-## Converting to Tailwind Utilities
+## التحويل إلى أدوات Tailwind
 
-Now let’s replace the inline styles with Tailwind’s grid template utilities, building on the patterns from our [statistics card tutorial](https://stevekinney.com/courses/tailwind/building-a-statistics-card):
+الآن لنستبدل الأنماط المضمّنة بأدوات قوالب الشبكة في Tailwind، انطلاقًا من الأنماط التي تعلّمناها في [درس بطاقة الإحصاءات](https://stevekinney.com/courses/tailwind/building-a-statistics-card):
 
-*Converting to Tailwind Utilities — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/295f4acd04f31aae25bbb813ca78d37a500bce4fc6f83a2bfc72df4a74d39074.html)*
+*التحويل إلى أدوات Tailwind — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/295f4acd04f31aae25bbb813ca78d37a500bce4fc6f83a2bfc72df4a74d39074.html)*
 
 ```html
 <div
@@ -220,19 +220,19 @@ Now let’s replace the inline styles with Tailwind’s grid template utilities,
 </div>
 ```
 
-Tailwind arbitrary value syntax:
+صيغة القيم العشوائية في Tailwind:
 
-- `[grid-template-areas:'header_header_header''sidebar_main_stats']`: Uses bracket notation for custom CSS properties
-- `[grid-area:header]`: Assigns each element to its named grid area
-- Added `hover:bg-blue-500` and `transition-colors` for interactive feedback
+- `[grid-template-areas:'header_header_header''sidebar_main_stats']`: يستخدم ترميز الأقواس المربّعة لخصائص CSS المخصّصة
+- `[grid-area:header]`: يُسند كل عنصر إلى منطقته في الشبكة
+- أُضيف `hover:bg-blue-500` و`transition-colors` لتوفير تغذية راجعة تفاعلية
 
-The bracket syntax `[property:value]` lets us use any CSS property with Tailwind, perfect for newer features like grid template areas.
+صيغة الأقواس `[property:value]` تتيح لنا استخدام أي خاصية CSS مع Tailwind، وهي مثالية للميزات الأحدث مثل مناطق قوالب الشبكة.
 
-## Adding Container Query Responsiveness
+## إضافة الاستجابة عبر استعلامات الحاوية
 
-Now let’s make our dashboard truly responsive using container queries, building on techniques from our [statistics card tutorial](https://stevekinney.com/courses/tailwind/building-a-statistics-card):
+الآن لنجعل لوحتنا مستجيبة بحق باستخدام استعلامات الحاوية، انطلاقًا من التقنيات التي تعلّمناها في [درس بطاقة الإحصاءات](https://stevekinney.com/courses/tailwind/building-a-statistics-card):
 
-*Adding Container Query Responsiveness — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/d85de9e612583502b627aa9f9c92a6866d262dcaf7c5565008193aff775bc3c0.html)*
+*إضافة الاستجابة عبر استعلامات الحاوية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d85de9e612583502b627aa9f9c92a6866d262dcaf7c5565008193aff775bc3c0.html)*
 
 ```html
 <div class="@container">
@@ -312,21 +312,21 @@ Now let’s make our dashboard truly responsive using container queries, buildin
 </div>
 ```
 
-Responsive layout magic:
+سحر التخطيط المستجيب:
 
-- `@sm:` breakpoint: Stacks everything vertically with single-column grid and horizontal navigation
-- `@xl:` breakpoint: Returns to the three-column layout with sidebar navigation
-- Navigation adapts from horizontal flex on mobile to vertical block on desktop
-- Stats panel adapts from horizontal to vertical layout
-- Main content cards adapt from stacked to three-column grid
+- نقطة توقف `@sm:` تكدّس كل شيء رأسيًا مع شبكة من عمود واحد وتنقّل أفقي
+- نقطة توقف `@xl:` تعود إلى تخطيط الأعمدة الثلاثة مع التنقّل الجانبي
+- يتكيّف التنقّل من flex أفقي على الجوال إلى block رأسي على سطح المكتب
+- تتكيّف لوحة الإحصاءات من تخطيط أفقي إلى تخطيط رأسي
+- تتكيّف بطاقات المحتوى الرئيسي من مكدّسة إلى شبكة من ثلاثة أعمدة
 
-This demonstrates the real power of named grid areas—you can completely reshape your layout by just changing the `grid-template-areas` string and grid dimensions!
+يبيّن هذا القوة الحقيقية للمناطق المسمّاة في الشبكة — يمكنك إعادة تشكيل تخطيطك بالكامل بمجرد تغيير سلسلة `grid-template-areas` وأبعاد الشبكة!
 
-## Understanding the Semantic Advantage
+## فهم الميزة الدلالية
 
-Here’s why Grid Template Areas is superior to traditional numeric grid positioning:
+وهنا سببُ تقدّم مناطق قوالب الشبكة على التموضع الرقمي التقليدي للشبكة:
 
-**Traditional Approach:**
+**النهج التقليدي:**
 
 ```css
 .header {
@@ -347,7 +347,7 @@ Here’s why Grid Template Areas is superior to traditional numeric grid positio
 }
 ```
 
-**Template Areas Approach:**
+**نهج مناطق القوالب:**
 
 ```css
 .container {
@@ -360,18 +360,18 @@ Here’s why Grid Template Areas is superior to traditional numeric grid positio
 }
 ```
 
-The template areas approach is:
+نهج مناطق القوالب هو:
 
-- **Visual**: You can literally see your layout in the CSS
-- **Semantic**: Named areas are self-documenting
-- **Maintainable**: Changing layouts requires updating one string, not multiple numeric coordinates
-- **Responsive**: Different layouts at different breakpoints are crystal clear
+- **بصري**: يمكنك أن ترى تخطيطك حرفيًا في CSS
+- **دلالي**: المناطق المسمّاة توثّق نفسها بنفسها
+- **قابل للصيانة**: تغيير التخطيطات يتطلب تحديث سلسلة واحدة لا إحداثيات رقمية متعدّدة
+- **مستجيب**: التخطيطات المختلفة عند نقاط التوقف المختلفة واضحة تمامًا
 
-## Adding Dynamic Content Areas
+## إضافة مناطق المحتوى الديناميكي
 
-Let’s enhance our dashboard to handle dynamic content using the techniques we learned in our [card list tutorial](https://stevekinney.com/courses/tailwind/building-a-card-list):
+لنُحسّن لوحتنا لتتعامل مع المحتوى الديناميكي باستخدام التقنيات التي تعلّمناها في [درس قائمة البطاقات](https://stevekinney.com/courses/tailwind/building-a-card-list):
 
-*Adding Dynamic Content Areas — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/de3425cd512dca6a5ff9968edbc7e501d52cb7365577f521c7a300157f1bdf3a.html)*
+*إضافة مناطق المحتوى الديناميكي — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/de3425cd512dca6a5ff9968edbc7e501d52cb7365577f521c7a300157f1bdf3a.html)*
 
 ```html
 <div class="@container">
@@ -485,42 +485,42 @@ Let’s enhance our dashboard to handle dynamic content using the techniques we 
 </div>
 ```
 
-Enhanced features:
+الميزات المحسّنة:
 
-- **Dynamic Navigation**: Uses `not-first:` utilities with responsive border switching (top borders on desktop, left borders on mobile)
-- **Scrollable Content**: Added `overflow-hidden` and proper content areas that can handle dynamic data
-- **Transaction List**: Real-world content with hover states and proper typography hierarchy
-- **Responsive Stat Borders**: Conditional borders that adapt to horizontal/vertical layouts
+- **تنقّل ديناميكي**: يستخدم أدوات `not-first:` مع تبدّل حدود مستجيب (حدود علوية على سطح المكتب وحدود يسرى على الجوال)
+- **محتوى قابل للتمرير**: أُضيف `overflow-hidden` ومناطق محتوى مناسبة تتعامل مع البيانات الديناميكية
+- **قائمة معاملات**: محتوى من العالم الحقيقي مع حالات تحويم وتسلسل هرمي في الطباعة
+- **حدود إحصاءات مستجيبة**: حدود شرطية تتكيّف مع التخطيطات الأفقية والرأسية
 
-## Why This Approach is Revolutionary
+## لماذا هذا النهج ثوريّ
 
-CSS Grid Template Areas combined with container queries creates **truly semantic, adaptive layouts**:
+تنشئ مناطق قوالب الشبكة في CSS مع استعلامات الحاوية **تخطيطات دلالية ومتكيّفة حقًا**:
 
-**Layout as Code**: The `grid-template-areas` string is literally a visual representation of your layout. Other developers can instantly understand the structure.
+**التخطيط كشيفرة**: سلسلة `grid-template-areas` هي تمثيل بصري حرفي لتخطيطك. ويستطيع المطوّرون الآخرون فهم البنية فورًا.
 
-**Responsive Semantics**: Instead of changing numeric grid positions, you reshape the semantic layout itself. “Header spans full width” vs “Header is in columns 1-3, row 1.”
+**دلالات استجابة**: بدلًا من تغيير المواضع الرقمية للشبكة، أنت تُعيد تشكيل التخطيط الدلالي نفسه. «الترويسة تمتدّ بكامل العرض» مقابل «الترويسة في الأعمدة 1-3، الصف 1».
 
-**Maintainable Complexity**: Complex dashboards become manageable because each area has a meaningful name and clear boundaries.
+**تعقيد قابل للصيانة**: تصبح لوحات المعلومات المعقّدة قابلة للإدارة لأن كل منطقة لها اسم ذو معنى وحدود واضحة.
 
-**Component Modularity**: Each grid area can contain any component—the layout system doesn’t care about internal complexity.
+**تعدّدية المكوّنات**: يمكن لكل منطقة في الشبكة أن تضمّ أي مكوّن — فالنظام لا يهتم بالتعقيد الداخلي.
 
-**Container Adaptivity**: The dashboard works equally well in a full-screen app, embedded widget, or narrow sidebar because it responds to its container, not the viewport.
+**التكيّف مع الحاوية**: تعمل لوحة المعلومات بالدرجة نفسها في تطبيق بملء الشاشة أو أداة مضمّنة أو شريط جانبي ضيّق، لأنها تستجيب لحاويتها لا لإطار العرض.
 
-## Real-World Applications
+## التطبيقات في العالم الحقيقي
 
-This pattern solves layout challenges in:
+يحل هذا النمط تحدّيات التخطيط في:
 
-- **Admin Dashboards**: Analytics, user management, content management systems
-- **Documentation Sites**: Header, sidebar navigation, main content, table of contents
-- **E-commerce**: Product grids with filters, shopping cart, product details
-- **News Sites**: Article content with related articles, author info, advertisements
-- **SaaS Applications**: Tool panels, main workspace, property inspectors
+- **لوحات معلومات الإدارة**: التحليلات، إدارة المستخدمين، أنظمة إدارة المحتوى
+- **مواقع التوثيق**: ترويسة، تنقّل جانبي، محتوى رئيسي، جدول محتويات
+- **التجارة الإلكترونية**: شبكات المنتجات مع المرشّحات، وسلة التسوّق، وتفاصيل المنتج
+- **المواقع الإخبارية**: محتوى المقالات مع مقالات ذات صلة، ومعلومات المؤلف، والإعلانات
+- **تطبيقات SaaS**: لوحات الأدوات، مساحة العمل الرئيسية، فاحصو الخصائص
 
-The semantic nature makes these layouts self-documenting and easy for teams to maintain.
+الطبيعة الدلالية تجعل هذه التخطيطات توثّق نفسها وسهلة الصيانة على الفرق.
 
-## Challenges
+## التحديات
 
-Try building these variations:
+جرّب بناء هذه الصيغ:
 
-1. **Blog Post Layout**: Create a three-area layout with header, main article content, and sidebar for table of contents using template areas like `"header header" "article toc"`
-2. **Dynamic Dashboard**: Extend this dashboard to handle a “notifications” area that can be toggled on/off by changing the grid template areas between `"header header header"` and `"header header notifications"` states
+1. **تخطيط مقال مدوّنة**: أنشئ تخطيطًا من ثلاث مناطق مع ترويسة ومحتوى المقال الرئيسي وشريط جانبي لجدول المحتويات باستخدام مناطق قوالب مثل `"header header" "article toc"`
+2. **لوحة معلومات ديناميكية**: وسّع لوحة المعلومات هذه للتعامل مع منطقة «notifications» يمكن تشغيلها وإيقافها بتغيير مناطق قوالب الشبكة بين حالتي `"header header header"` و`"header header notifications"`

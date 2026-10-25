@@ -1,55 +1,55 @@
 ---
-title: "Editing Settings (Visually)"
-lang: en
+title: "تحرير الإعدادات (بصريًا)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/editing-settings-through-the-vs-code-ui"
 ---
 
-The Settings Editor is Visual Studio Code’s user-friendly interface for Browse and modifying settings. It provides a searchable list of all available settings, along with descriptions and their current values.
+محرّر الإعدادات هو واجهة Visual Studio Code سهلة الاستخدام لتصفّح الإعدادات وتعديلها. وهو يوفّر قائمة قابلة للبحث بكل الإعدادات المتاحة، مع أوصافها وقيمها الحالية.
 
-## Accessing the Settings Editor
+## الوصول إلى محرّر الإعدادات
 
-- **Menu:** Go to `File` (or `Code` on macOS) > `Preferences` > `Settings` (or `Code` > `Settings` > `Settings` on macOS).
-- **Keyboard Shortcut:** Press `Ctrl+,` (Windows, Linux) or `Cmd+,` (macOS).
-- **Command Palette:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and type “Settings” or “Preferences: Open Settings (UI)“.
+- **القائمة:** اذهب إلى `File` (أو `Code` على macOS) > `Preferences` > `Settings` (أو `Code` > `Settings` > `Settings` على macOS).
+- **اختصار لوحة المفاتيح:** اضغط `Ctrl+,` (على Windows و Linux) أو `Cmd+,` (على macOS).
+- **لوحة الأوامر:** افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) واكتب “Settings” أو “Preferences: Open Settings (UI)“.
 
-## Filtering and Comparing Settings
+## تصفية الإعدادات ومقارنتها
 
-In addition to the basic search bar, you can leverage search operators to refine your results. For example, typing `@modified` displays only the settings you’ve changed from their default values. Similarly, `@builtin` shows the original defaults provided by Visual Studio Code. These operators are especially useful for troubleshooting or auditing your customizations.
+إلى جانب شريط البحث الأساسي، يمكنك الاستفادة من معاملات البحث لتنقية نتائجك. فمثلًا، تُظهر كتابة `@modified` الإعدادات التي غيّرتها عن قيمها الافتراضية فقط. وبالمثل، يعرض `@builtin` القيم الافتراضية الأصلية التي يوفّرها Visual Studio Code. وهذه المعاملات مفيدة خصوصًا في تشخيص المشكلات أو تدقيق تخصيصاتك.
 
-## Viewing Default Settings
+## عرض الإعدادات الافتراضية
 
-Sometimes it’s helpful to compare your changes against the defaults. You can click on the link labeled “Open Default Settings (JSON)” within the Settings Editor. This read-only view shows all the built-in settings along with their default values and descriptions, allowing you to better understand what options are available.
+يفيدك أحيانًا مقارنة تغييراتك بالقيم الافتراضية. ويمكنك النقر على الرابط المسمّى “Open Default Settings (JSON)” داخل محرّر الإعدادات. ويعرض هذا العرض للقراءة فقط كل الإعدادات المدمجة مع قيمها الافتراضية وأوصافها، ما يساعدك على فهم الخيارات المتاحة فهمًا أفضل.
 
-## Syncing and Sharing Settings
+## مزامنة الإعدادات ومشاركتها
 
-Visual Studio Code offers a Settings Sync feature that automatically uploads your customizations to the cloud and synchronizes them across your devices. With Settings Sync enabled, any change you make in the Settings Editor is propagated to all your installations. This is particularly beneficial when setting up a new machine or working on multiple devices, ensuring a consistent environment everywhere.
+يوفّر Visual Studio Code ميزة مزامنة الإعدادات (Settings Sync) التي ترفع تخصيصاتك إلى السحابة تلقائيًا وتزامنها بين أجهزتك. وعند تمكين مزامنة الإعدادات، ينتقل أي تغيير تجريه في محرّر الإعدادات إلى جميع نسخك المثبّتة. وهذا مفيد خصوصًا عند إعداد جهاز جديد أو العمل على أجهزة متعددة، إذ يضمن بيئة متّسقة في كل مكان.
 
-## Directly Editing Settings Files
+## تحرير ملفات الإعدادات مباشرةً
 
-For those who prefer granular control, the “Edit in settings.json” link lets you open your configuration file directly. This file supports IntelliSense and schema validation, making it easier to enter valid values. User settings are stored in a centralized file, while workspace settings reside in the `.vscode` folder of your project. Familiarizing yourself with these files can be very helpful when you need to perform bulk changes or share configurations with your team.
+لمن يفضّلون التحكّم الدقيق، يتيح لك رابط “Edit in settings.json” فتح ملف تهيئتك مباشرةً. ويدعم هذا الملف IntelliSense والتحقّق من المخطّط، ما يسهّل إدخال قيم صحيحة. وتُخزّن إعدادات المستخدم في ملف مركزي، بينما تقيم إعدادات مساحة العمل في مجلد `.vscode` داخل مشروعك. والإلمام بهذه الملفات مفيد جدًا عندما تحتاج إلى تغييرات جماعية أو مشاركة التهيئات مع فريقك.
 
-## Resetting and Copying Settings
+## إعادة ضبط الإعدادات ونسخها
 
-When you need to revert a setting back to its default, simply click the reset icon (the gear) next to the setting. Additionally, hovering over any setting reveals options to copy its ID or export it as JSON. These features are useful for sharing configurations with coworkers or for scripting environment setups.
+عندما تحتاج إلى إرجاع إعداد إلى قيمته الافتراضية، انقر ببساطة أيقونة إعادة الضبط (الترس) بجوار الإعداد. وإضافةً إلى ذلك، يكشف مرور المؤشر على أي إعداد عن خيارات لنسخ معرّفه أو تصديره بصيغة JSON. وهذه الميزات مفيدة لمشاركة التهيئات مع زملاء العمل أو لكتابة سكربتات إعداد البيئات.
 
-Each of these enhancements to the Settings Editor not only improves your ability to customize Visual Studio Code but also streamlines the process of managing your development environment.
+وكل تحسين من هذه التحسينات في محرّر الإعدادات لا يحسّن قدرتك على تخصيص Visual Studio Code فحسب، بل يبسّط أيضًا عملية إدارة بيئة تطويرك.
 
-## Navigating the Settings Editor
+## التنقّل في محرّر الإعدادات
 
-- **Search Bar:** The search bar at the top is your primary tool for finding specific settings. Type keywords related to the setting you want to modify (e.g., “font”, “indentation”, “autosave”). Visual Studio Code will dynamically filter the settings list as you type.
-- **Settings List:** The main area of the Settings Editor displays the settings. Settings are grouped into categories (e.g., “Text Editor”, “Workbench”, “Extensions”). You can expand or collapse categories to browse related settings.
-- **Setting Types and Values:** Each setting is displayed with its current value and a brief description. The type of setting is indicated by the input control: **Boolean:** A checkbox for `true` or `false` values. **String:** A text input field for text values. **Number:** A number input field with increment/decrement controls. **Dropdown/Enum:** A dropdown list for selecting from predefined options. **Array:** An “Edit in settings.json”1 link that opens the `settings.json` file to modify the array. **Object:** An “Edit in settings.json” link that opens the `settings.json` file to modify the object.
-  - **Boolean:** A checkbox for `true` or `false` values.
-  - **String:** A text input field for text values.
-  - **Number:** A number input field with increment/decrement controls.
-  - **Dropdown/Enum:** A dropdown list for selecting from predefined options.
-  - **Array:** An “Edit in settings.json”1 link that opens the `settings.json` file to modify the array.
-  - **Object:** An “Edit in settings.json” link that opens the `settings.json` file to modify the object.
-- **Scope Toggle:** At the top of the Settings Editor, you’ll find toggles to switch between “User” and “Workspace” settings. Ensure you are in the correct scope (User or Workspace) before making changes. Folder settings are not directly editable through the UI and must be configured in `settings.json`.
-- **“Edit in settings.json” Link:** For some settings, especially complex ones like arrays or objects, you’ll see an “Edit in settings.json” link instead of a direct input control. Clicking this link will open the `settings.json` file, allowing you to edit the setting directly in JSON format.
-- **Gear Icon (Setting Actions):** Hovering over a setting reveals a gear icon. Clicking this icon provides options like: **Copy Setting ID:** Copies the unique identifier of the setting to the clipboard, useful for sharing settings or scripting. **Copy Setting as JSON:** Copies the setting in JSON format, including its current value and scope. **Reset Setting:** Resets the setting to its default value.
-  - **Copy Setting ID:** Copies the unique identifier of the setting to the clipboard, useful for sharing settings or scripting.
-  - **Copy Setting as JSON:** Copies the setting in JSON format, including its current value and scope.
-  - **Reset Setting:** Resets the setting to its default value.
+- **شريط البحث:** شريط البحث في الأعلى أداتك الأساسية للعثور على إعدادات محدّدة. اكتب كلمات مفتاحية متعلّقة بالإعداد الذي تريد تعديله (مثل “font” و “indentation” و “autosave”). وسيرشّح Visual Studio Code قائمة الإعدادات أثناء كتابتك.
+- **قائمة الإعدادات:** تعرض المساحة الرئيسية في محرّر الإعدادات الإعدادات. وهي مجمّعة في فئات (مثل “Text Editor” و “Workbench” و “Extensions”). ويمكنك توسيع الفئات أو طيّها لتصفّح الإعدادات المرتبطة بها.
+- **أنواع الإعدادات وقيمها:** يُعرض كل إعداد بقيمته الحالية ووصف موجز له. ويشير نوع الإعداد إلى عنصر الإدخال: **Boolean:** مربّع اختيار لقيم `true` أو `false`. **String:** حقل إدخال نصي للقيم النصية. **Number:** حقل إدخال رقمي بأدوات زيادة ونقصان. **Dropdown/Enum:** قائمة منسدلة للاختيار من خيارات محدّدة مسبقًا. **Array:** رابط “Edit in settings.json”1 يفتح ملف `settings.json` لتعديل المصفوفة. **Object:** رابط “Edit in settings.json” يفتح ملف `settings.json` لتعديل الكائن.
+  - **Boolean:** مربّع اختيار لقيم `true` أو `false`.
+  - **String:** حقل إدخال نصي للقيم النصية.
+  - **Number:** حقل إدخال رقمي بأدوات زيادة ونقصان.
+  - **Dropdown/Enum:** قائمة منسدلة للاختيار من خيارات محدّدة مسبقًا.
+  - **Array:** رابط “Edit in settings.json”1 يفتح ملف `settings.json` لتعديل المصفوفة.
+  - **Object:** رابط “Edit in settings.json” يفتح ملف `settings.json` لتعديل الكائن.
+- **مفتاح النطاق:** في أعلى محرّر الإعدادات، تجد مفاتيح للتبديل بين إعدادات “User” و “Workspace”. فتأكّد من أنك في النطاق الصحيح (User أو Workspace) قبل إجراء التغييرات. وإعدادات المجلدات غير قابلة للتحرير مباشرةً من الواجهة، ويجب ضبطها في `settings.json`.
+- **رابط “Edit in settings.json”:** في بعض الإعدادات، وخصوصًا المعقّدة منها مثل المصفوفات أو الكائنات، سترى رابط “Edit in settings.json” بدلًا من عنصر إدخال مباشر. وسيؤدي النقر على هذا الرابط إلى فتح ملف `settings.json`، ما يتيح لك تحرير الإعداد مباشرةً بتنسيق JSON.
+- **أيقونة الترس (إجراءات الإعداد):** يكشف مرور المؤشر على إعداد عن أيقونة ترس. ويوفّر النقر على هذه الأيقونة خيارات مثل: **Copy Setting ID:** ينسخ المعرّف الفريد للإعداد إلى الحافظة، وهو مفيد لمشاركة الإعدادات أو كتابة السكربتات. **Copy Setting as JSON:** ينسخ الإعداد بتنسيق JSON، بما في ذلك قيمته الحالية ونطاقه. **Reset Setting:** يعيد الإعداد إلى قيمته الافتراضية.
+  - **Copy Setting ID:** ينسخ المعرّف الفريد للإعداد إلى الحافظة، وهو مفيد لمشاركة الإعدادات أو كتابة السكربتات.
+  - **Copy Setting as JSON:** ينسخ الإعداد بتنسيق JSON، بما في ذلك قيمته الحالية ونطاقه.
+  - **Reset Setting:** يعيد الإعداد إلى قيمته الافتراضية.
 
-To change a setting’s value, simply interact with the input control in the Settings Editor. For boolean settings, toggle the checkbox. For string or number settings, type the desired value. For dropdown settings, select an option from the list. Visual Studio Code automatically saves changes as you make them.
+لتغيير قيمة إعداد، تفاعل ببساطة مع عنصر الإدخال في محرّر الإعدادات. ففي إعدادات Boolean، بدّل مربّع الاختيار. وفي إعدادات String أو Number، اكتب القيمة المطلوبة. وفي إعدادات القوائم المنسدلة، اختر خيارًا من القائمة. ويحفظ Visual Studio Code التغييرات تلقائيًا أثناء إجرائها.

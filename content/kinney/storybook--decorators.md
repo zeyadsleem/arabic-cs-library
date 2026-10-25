@@ -1,22 +1,22 @@
 ---
-title: "Using Decorators for Context"
-lang: en
+title: "استخدام المزيّنات (Decorators) للسياق"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/decorators"
 ---
 
-Decorators allow you to wrap the component in your story with another component. This is useful in a bunch of situations.
+تتيح لك المزيّنات (decorators) تغليف المكوّن في قصتك بمكوّن آخر. وهذا مفيد في جملة من الحالات.
 
-- You’re using React and your component expects to be wrapped in a [context provider](https://react.dev/learn/passing-data-deeply-with-context#step-3-provide-the-context).
-- You want to wrap a child component in a parent (e.g. you’re rendering a list item component, but you want to wrap each of them in the list component).
-- You want to add some extra markup around the component itself. The [official documentation using the example of adding some margin](https://storybook.js.org/docs/writing-stories/decorators#wrap-stories-with-extra-markup) around the component.
+- أنت تستخدم React ومكوّنك يتوقع أن يُغلَّف في [مزوّد سياق](https://react.dev/learn/passing-data-deeply-with-context#step-3-provide-the-context).
+- تريد تغليف مكوّن ابن داخل مكوّن أب (مثلًا: أنت تصيّر مكوّن عنصر قائمة، لكنك تريد تغليف كل منها في مكوّن القائمة).
+- تريد إضافة بعض العلامات الإضافية (markup) حول المكوّن نفسه. و[التوثيق الرسمي يستخدم مثال إضافة بعض الهامش](https://storybook.js.org/docs/writing-stories/decorators#wrap-stories-with-extra-markup) حول المكوّن.
 
-Additionally, [`@storybook/addons-themes`](https://storybook.js.org/addons/@storybook/addon-themes/) uses decorators to apply themes to your stories.
+وإضافة إلى ذلك، يستخدم [`@storybook/addons-themes`](https://storybook.js.org/addons/@storybook/addon-themes/) المزيّنات لتطبيق السمات على قصصك.
 
-## Refactoring Our Text Area
+## إعادة تهيئة منطقة النص لدينا
 
-Let’s imagine that we have a task list that relies on a Context API.
+لنتخيل أن لدينا قائمة مهام تعتمد على Context API.
 
-We can add the following to our story or to the meta:
+يمكننا إضافة ما يلي إلى قصتنا أو إلى الميتا (meta):
 
 ```typescript
 const meta = {

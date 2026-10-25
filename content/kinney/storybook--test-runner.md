@@ -1,33 +1,33 @@
 ---
-title: "Setting Up a Test Runner"
-lang: en
+title: "إعداد مشغّل اختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/test-runner"
 ---
 
-Storybook allows you to take your [Play functions](https://stevekinney.com/courses/storybook/play-functions) and run through them all and in order to make sure they all do what you expect them to do.
+يتيح لك Storybook أن تأخذ [دوال التشغيل (Play functions)](https://stevekinney.com/courses/storybook/play-functions) وتشغّلها كلها بالترتيب للتأكد من أنها تفعل ما تتوقّعه منها.
 
-You will need to install their test runner in order to get started with this:
+ستحتاج إلى تثبيت مشغّل الاختبارات الخاص بهم للبدء في ذلك:
 
 ```bash
 npm install -D @storybook/test-runner
 ```
 
-> **Storybook uses Playwright**
+> **يستخدم Storybook إطار Playwright**
 >
-> Make sure that you have your Playwright browsers installed by running `npx playwright install`.
+> تأكد من تثبيت متصفحات Playwright لديك بتشغيل `npx playwright install`.
 
-> **Storybook Must Be Running**
+> **يجب أن يكون Storybook قيد التشغيل**
 >
-> Storybook must be running in order to run your tests with `@storybook/test-runner`.
+> يجب أن يكون Storybook قيد التشغيل لتشغيل اختباراتك باستخدام `@storybook/test-runner`.
 
-Once your Storybook is up and running, you can run your tests.
+بمجرد أن يعمل Storybook لديك، يمكنك تشغيل اختباراتك.
 
 ```bash
 npx test-storybook
 ```
 
-Alternatively, you can—and should—add a script to your `package.json` to run the tests.
+بدلًا من ذلك، يمكنك — بل ينبغي لك — إضافة سكربت إلى `package.json` لتشغيل الاختبارات.
 
-## Running Your Tests in Github Actions
+## تشغيل اختباراتك في Github Actions
 
-We’re not going to cover this in our brief time together today, but [the official Storybook documentation](https://storybook.js.org/docs/writing-tests/test-runner#set-up-ci-to-run-tests) has some example [Github Actions](https://github.com/features/actions) for running your Storybook tests as part of your CI/CD process.
+لن نغطّي ذلك في وقتنا القصير معًا اليوم، لكن [توثيق Storybook الرسمي](https://storybook.js.org/docs/writing-tests/test-runner#set-up-ci-to-run-tests) يتضمّن بعض الأمثلة على [Github Actions](https://github.com/features/actions) لتشغيل اختبارات Storybook لديك كجزء من عملية CI/CD.

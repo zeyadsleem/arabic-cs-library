@@ -1,44 +1,44 @@
 ---
-title: "Settings Profiles"
-lang: en
+title: "ملفات تعريف الإعدادات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/settings-profiles-vscode"
 ---
 
-**Settings Profiles** allow you to create and manage distinct Visual Studio Code configurations for different projects, tasks, or programming languages. This is incredibly useful when you need to switch between drastically different development environments (e.g., web development vs. data science, personal projects vs. work projects).
+تتيح لك **ملفات تعريف الإعدادات (Settings Profiles)** إنشاء تهيئات مختلفة لـ Visual Studio Code وإدارتها لمشاريع أو مهام أو لغات برمجة مختلفة. وهذا مفيد للغاية عندما تحتاج إلى التبديل بين بيئات تطوير مختلفة اختلافًا جذريًا (مثل تطوير الويب مقابل علم البيانات، والمشاريع الشخصية مقابل مشاريع العمل).
 
-Creating a New Profile
+إنشاء ملف تعريف جديد
 
-## Creating Profiles
+## إنشاء ملفات التعريف
 
-1. **Command Palette:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run “Preferences: Create Settings Profile”.
-2. **Profile Type:** Choose a profile type: **Empty Profile:** Starts with default settings. **Based on Current Profile:** Copies settings from your current profile. **Based on Template Profile:** Starts with settings from a predefined template (e.g., “Web Development”, “Data Science”).
-  - **Empty Profile:** Starts with default settings.
-  - **Based on Current Profile:** Copies settings from your current profile.
-  - **Based on Template Profile:** Starts with settings from a predefined template (e.g., “Web Development”, “Data Science”).
-3. **Profile Name:** Enter a name for your new profile.
+1. **لوحة الأوامر:** افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) ونفّذ “Preferences: Create Settings Profile”.
+2. **نوع ملف التعريف:** اختر نوع ملف التعريف: **ملف تعريف فارغ:** يبدأ بالإعدادات الافتراضية. **بناءً على ملف التعريف الحالي:** ينسخ الإعدادات من ملف تعريفك الحالي. **بناءً على ملف تعريف قالب:** يبدأ بإعدادات من قالب محدّد مسبقًا (مثل “Web Development” و “Data Science”).
+  - **ملف تعريف فارغ:** يبدأ بالإعدادات الافتراضية.
+  - **بناءً على ملف التعريف الحالي:** ينسخ الإعدادات من ملف تعريفك الحالي.
+  - **بناءً على ملف تعريف قالب:** يبدأ بإعدادات من قالب محدّد مسبقًا (مثل “Web Development” و “Data Science”).
+3. **اسم ملف التعريف:** أدخل اسمًا لملف تعريفك الجديد.
 
-## Switching Profiles
+## تبديل ملفات التعريف
 
-1. **Command Palette:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run “Preferences: Switch Settings Profile”.
-2. **Select Profile:** Choose the profile you want to activate from the list.
+1. **لوحة الأوامر:** افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) ونفّذ “Preferences: Switch Settings Profile”.
+2. **اختيار ملف التعريف:** اختر ملف التعريف الذي تريد تنشيطه من القائمة.
 
-## Managing Profiles
+## إدارة ملفات التعريف
 
-1. **Command Palette:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run “Preferences: Manage Settings Profiles”.
-2. **Profile Actions:** In the Settings Profiles view, you can: **Edit:** Modify settings within a profile. **Rename:** Change the name of a profile. **Export:** Export a profile to a JSON file. **Import:** Import a profile from a JSON file. **Delete:** Delete a profile.
-  - **Edit:** Modify settings within a profile.
-  - **Rename:** Change the name of a profile.
-  - **Export:** Export a profile to a JSON file.
-  - **Import:** Import a profile from a JSON file.
-  - **Delete:** Delete a profile.
+1. **لوحة الأوامر:** افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) ونفّذ “Preferences: Manage Settings Profiles”.
+2. **إجراءات ملف التعريف:** في عرض Settings Profiles، يمكنك: **تحرير:** تعديل الإعدادات داخل ملف تعريف. **إعادة تسمية:** تغيير اسم ملف تعريف. **تصدير:** تصدير ملف تعريف إلى ملف JSON. **استيراد:** استيراد ملف تعريف من ملف JSON. **حذف:** حذف ملف تعريف.
+  - **تحرير:** تعديل الإعدادات داخل ملف تعريف.
+  - **إعادة تسمية:** تغيير اسم ملف تعريف.
+  - **تصدير:** تصدير ملف تعريف إلى ملف JSON.
+  - **استيراد:** استيراد ملف تعريف من ملف JSON.
+  - **حذف:** حذف ملف تعريف.
 
-> **Profile Scope**
+> **نطاق ملف التعريف**
 >
-> Settings profiles primarily manage User settings. Workspace and Folder settings remain workspace/folder-specific and are not directly managed by profiles. However, you can create profiles tailored for specific types of projects, and then apply those profiles when working on projects of that type.
+> تدير ملفات تعريف الإعدادات إعدادات User أساسًا. أما إعدادات Workspace و Folder فتبقى خاصة بمساحة العمل أو المجلد ولا تديرها ملفات التعريف مباشرةً. ومع ذلك، يمكنك إنشاء ملفات تعريف مصمّمة لأنواع محدّدة من المشاريع، ثم تطبيقها عند العمل على مشاريع من ذلك النوع.
 
-## Example Use Cases
+## حالات استخدام نموذجية
 
-- **Web Development Profile:** Enable web development-specific extensions, configure code formatters for HTML, CSS, and JavaScript, set up linters for web technologies, and customize themes for front-end work.
-- **Data Science Profile:** Install data science extensions (Python, Jupyter, R), configure Python environments, adjust editor settings for data analysis notebooks, and use a theme suitable for data visualization.
-- **Work vs. Personal Profile:** Separate work-related settings (company themes, code style guidelines, specific extensions) from personal project settings.
-- **Language-Specific Profiles:** Create profiles for different programming languages (e.g., Python profile, JavaScript profile) with language-specific settings and extensions.
+- **ملف تعريف لتطوير الويب:** فعّل الإضافات الخاصة بتطوير الويب، واضبط منسّقات الشيفرة لـ HTML و CSS و JavaScript، وأعدّ أدوات فحص الشيفرة لتقنيات الويب، وخصّص السمات للعمل على الواجهات الأمامية.
+- **ملف تعريف لعلم البيانات:** ثبّت إضافات علم البيانات (Python و Jupyter و R)، واضبط بيئات Python، وعدّل إعدادات المحرّر لدفاتر تحليل البيانات، واستخدم سمة مناسبة لتصوير البيانات.
+- **ملف تعريف للعمل مقابل الشخصي:** افصل الإعدادات المتعلقة بالعمل (سمات الشركة، وإرشادات نمط الشيفرة، والإضافات المحدّدة) عن إعدادات المشاريع الشخصية.
+- **ملفات تعريف خاصة بلغة:** أنشئ ملفات تعريف للغات برمجة مختلفة (مثل ملف تعريف Python وملف تعريف JavaScript) بإعدادات وإضافات خاصة بكل لغة.

@@ -1,21 +1,21 @@
 ---
-title: "Setting Up OpenClaw"
-lang: en
+title: "تهيئة OpenClaw"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/openclaw-setup"
 ---
 
-Once we’ve finished up with [installation](https://stevekinney.com/courses/openclaw/installation), we’re going to want to do a little of setup in order to get our OpenClaw instance rocking.
+وبعد أن ننهي [التثبيت](https://stevekinney.com/courses/openclaw/installation)، سنحتاج إلى بعض أعمال التهيئة كي تبدأ نسخة OpenClaw الخاصة بنا العمل.
 
-The first thing we’re going to want to do is set up which models we’re going to use. This, of course, is a personal decision—but, here are some sensible defaults.
+أول ما سنفعله هو تعيين النماذج التي سنستخدمها. وهذا قرار شخصي بطبيعة الحال، لكن إليك بعض الافتراضيات المعقولة.
 
-The model settings showing a primary model, a utility model, a decision model, a fallback model, thinking, and fast mode
+إعدادات النماذج تعرض النموذج الأساسي، والنموذج المساعد، ونموذج القرار، ونموذج الاحتياط، والتفكير، والوضع السريع
 
-## Tweaking Your Security Settings
+## ضبط إعدادات الأمان
 
-**Optional**: Out of the box, OpenClaw has full access to run commands. One thing you *might* want to consider doing is to have it ask you for permission before running anything that isn’t on an allowlist.
+**اختياري:** يملك OpenClaw افتراضيًا صلاحية كاملة لتنفيذ الأوامر. ومن أمر قد ترغب في التفكير فيه أن يطلب منك الإذن قبل تشغيل أي أمر غير موجود في قائمة السماح (allowlist).
 
 ```bash
 openclaw exec-policy preset cautious
 ```
 
-Run this on the machine where the Gateway runs. [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals) explains what it changes, how approval requests reach you, and the rest of OpenClaw’s safety controls.
+شغّل هذا على الجهاز الذي تعمل عليه البوابة. ويشرح [الأمن والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals) ما الذي يغيّره، وكيف تصلك طلبات الموافقة، وبقية ضوابط الأمان في OpenClaw.

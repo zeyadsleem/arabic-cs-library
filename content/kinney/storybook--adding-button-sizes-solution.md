@@ -1,10 +1,10 @@
 ---
-title: "Solution: Adding Button Size Variants and Controls"
-lang: en
+title: "الحل: إضافة متغيّرات أحجام الأزرار وأدوات التحكم"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/adding-button-sizes-solution"
 ---
 
-We should also probably update the component as well, right?
+يجدر بنا على الأرجح أن نحدّث المكوّن أيضًا، أليس كذلك؟
 
 ```typescript
 import { ComponentProps } from 'react';
@@ -22,7 +22,7 @@ export const Button = ({ variant = 'primary', size = 'medium', ...props }: Butto
 };
 ```
 
-Lastly, we need to add additional stories for our button sizes.
+وأخيرًا، نحتاج إلى إضافة قصص إضافية لأحجام أزرارنا.
 
 ```typescript
 export const Small: Story = {
@@ -47,4 +47,4 @@ export const Large: Story = {
 };
 ```
 
-As promised, it’s time to talk about [default arguments](https://stevekinney.com/courses/storybook/default-args).
+كما وعدنا، حان وقت الحديث عن [الوسائط الافتراضية](https://stevekinney.com/courses/storybook/default-args).

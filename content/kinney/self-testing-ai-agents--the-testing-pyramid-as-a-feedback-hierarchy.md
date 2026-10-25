@@ -1,34 +1,34 @@
 ---
-title: "The Testing Pyramid"
-lang: en
+title: "هرم الاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy"
 ---
 
-I’m going to move fast through this one. If you want the full treatment of the testing pyramid from first principles, I have two courses for that—[Testing JavaScript Applications](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney) and [Enterprise UI Development](https://frontendmasters.com/courses/enterprise-ui-dev-v2/?utm_source=kinney&utm_medium=social&code=kinney)—and you don’t need to rewatch them to follow along here.
+سأمرّ على هذا الدرس بسرعة. إذا أردت المعالجة الكاملة لهرم الاختبارات من المبادئ الأولى، فلديّ دورتان لذلك — [Testing JavaScript Applications](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney) و[Enterprise UI Development](https://frontendmasters.com/courses/enterprise-ui-dev-v2/?utm_source=kinney&utm_medium=social&code=kinney) — ولست بحاجة إلى إعادة مشاهدتهما لتتابع ما هنا.
 
-What I do want is for all of us to have the same mental model of the pyramid before we start the [Playwright](https://playwright.dev/)-heavy morning. Because when an agent is the one driving the tests, the pyramid stops being an abstract shape about “ratios of tests” and starts being a *feedback hierarchy*. Each layer is a different loop with different cost and different scope, and the agent needs to know which one to hit when.
+ما أريده هو أن يكون لدينا جميعًا النموذج الذهني نفسه للهرم قبل أن نبدأ صباح [Playwright](https://playwright.dev/) المكثّف. لأن الهرم، عندما يكون الوكيل هو من يقود الاختبارات، يتوقف عن كونه شكلًا مجرّدًا عن «نسب الاختبارات» ويصبح *هرمية تغذية راجعة*. كل طبقة حلقة مختلفة بتكلفة مختلفة ونطاق مختلف، ويحتاج الوكيل إلى معرفة أي حلقة يطرق ومتى.
 
-## The classic picture, in one paragraph
+## الصورة الكلاسيكية، في فقرة واحدة
 
-Unit tests at the bottom—fast, many, narrow. Integration tests in the middle—slower, fewer, wider. End-to-end tests at the top—slowest, fewest, widest. The pyramid shape is prescriptive: you want more fast tests than slow tests because fast tests dominate your feedback loop. If your pyramid is upside down, every change waits on the end-to-end suite and nobody ever runs it locally, which means nobody ever knows if it works, which means it breaks, which means people start ignoring red runs, which means the gate stops being a gate.
+اختبارات الوحدة في الأسفل — سريعة، كثيرة، ضيقة. اختبارات التكامل في الوسط — أبطأ، أقل، أوسع. اختبارات الطرف إلى الطرف في الأعلى — الأبطأ، الأقل، الأوسع. شكل الهرم وصف إلزامي: تريد اختبارات سريعة أكثر من الاختبارات البطيئة لأن الاختبارات السريعة تهيمن على حلقة التغذية الراجعة لديك. وإذا كان هرمك مقلوبًا، فكل تغيير ينتظر حزمة الطرف إلى الطرف ولا يشغّلها أحد محليًا أبدًا، ما يعني أن لا أحد يعرف أبدًا إن كانت تعمل، ما يعني أنها تنكسر، ما يعني أن الناس يبدأون بتجاهل التشغيلات الحمراء، ما يعني أن البوابة تتوقف عن كونها بوابة.
 
-The Testing Pyramid
+هرم الاختبارات
 
-That’s the summary. None of that changes when the agent shows up. What *does* change is who’s reading the signal.
+هذا هو الملخّص. لا شيء من ذلك يتغيّر عندما يظهر الوكيل. الذي *يتغيّر* هو من يقرأ الإشارة.
 
-## Reframed: what each layer tells the agent
+## إعادة الصياغة: ما تخبر به كل طبقة الوكيل
 
-Here’s the version that matters for today.
+هذه هي النسخة التي تهمّ اليوم.
 
-**Unit tests** answer “did this function do what I said?” They run in milliseconds. The agent can run the entire unit suite dozens of times in a single task without paying a meaningful cost. These are the loop the agent lives inside when it’s writing a pure function, a store, a reducer, a utility module. If a unit test takes more than a second or two to run, it’s lying about being a unit test.
+**اختبارات الوحدة** تجيب عن «هل فعلت هذه الدالة ما قلته؟». تعمل في نطاق المللي ثانية. يستطيع الوكيل تشغيل حزمة الوحدات كاملة عشرات المرات في مهمة واحدة دون دفع تكلفة ذات معنى. هذه هي الحلقة التي يعيش داخلها الوكيل عندما يكتب دالة نقية، أو مخزنًا، أو مخفّضًا (reducer)، أو وحدة أدوات. وإذا استغرق اختبار وحدة أكثر من ثانية أو ثانيتين، فهو يكذب بشأن كونه اختبار وحدة.
 
-**Integration tests** answer “do these pieces agree with each other?” A component rendered with its actual store. A route handler with its actual database (a real one, against a test schema). A form with its actual validation schema. The agent reaches for these when it touches a seam—when the edit it just made crosses two files that have a contract between them. They’re slower than unit tests but still cheap enough to run on every save.
+**اختبارات التكامل** تجيب عن «هل تتفق هذه القطع بعضها مع بعض؟». مكوّن مرسوم مع مخزنه الحقيقي. معالج مسار مع قاعدة بياناته الحقيقية (حقيقية، على مخطّط اختبار). نموذج مع مخطّط تحققه الحقيقي. يلجأ الوكيل إلى هذه عندما يلمس خطًّا فاصلًا — عندما يعبر التعديل الذي أجراه للتو ملفين بينهما عقد. إنها أبطأ من اختبارات الوحدة لكنها ما زالت رخيصة بما يكفي للتشغيل عند كل حفظ.
 
-**End-to-end tests** answer “would a user be able to do the thing?” They spin up the whole stack. They click real buttons in a real browser against real (or deterministic) data. They’re the only layer that can tell you the navigation works, the form submits, the page renders, the auth loads, the loading state actually resolves. They are *expensive*—a Playwright suite that’s fast for today’s standards is still measured in seconds per test, and a real suite is measured in minutes. The agent should not run the whole end-to-end suite on every save. But it absolutely should run the one or two end-to-end tests that cover the feature it’s currently working on, every time it changes UI.
+**اختبارات الطرف إلى الطرف** تجيب عن «هل سيستطيع مستخدم فعل الشيء؟». تُشغّل المكدّس كله. تنقر أزرارًا حقيقية في متصفح حقيقي على بيانات حقيقية (أو حتمية). وهي الطبقة الوحيدة التي تستطيع إخبارك أن التنقل يعمل، وأن النموذج يُرسِل، وأن الصفحة تُرسم، وأن المصادقة تُحمَّل، وأن حالة التحميل تُحلّ فعلًا. إنها *مكلفة* — حزمة Playwright سريعة بمقاييس اليوم تُقاس بالثواني لكل اختبار، والحزمة الحقيقية تُقاس بالدقائق. لا ينبغي للوكيل أن يشغّل حزمة الطرف إلى الطرف كاملة عند كل حفظ. لكنه ينبغي أن يشغّل بالتأكيد الاختبار أو الاختبارين من الطرف إلى الطرف الذين يغطيان الميزة التي يعمل عليها حاليًا، في كل مرة يغيّر فيها الواجهة.
 
-## The shape the agent cares about
+## الشكل الذي يهمّ الوكيل
 
-The classic pyramid is drawn as a cost/volume tradeoff: cheap tests are numerous, expensive tests are scarce. For the agent, the more useful framing is *loop speed*.
+يُرسم الهرم الكلاسيكي كمقايضة بين التكلفة والحجم: الاختبارات الرخيصة كثيرة، والمكلفة نادرة. أما عند الوكيل، فالإطار الأكثر فائدة هو *سرعة الحلقة*.
 
 ```
 flowchart TD
@@ -41,32 +41,32 @@ flowchart TD
     style D fill:#f3e5f5
 ```
 
-- Sub-second loop: lint, types, unit tests. The agent runs these continuously.
-- Few-second loop: integration tests, a single targeted end-to-end test. The agent runs these on every meaningful edit.
-- Minute-ish loop: the full end-to-end suite, visual regression, full type check on a cold cache. The agent runs these at the end of a task, before declaring done.
-- CI-only loop: cross-browser end-to-end, full visual regression against the baseline, flaky-retries, bundle analysis. The agent does not run these locally—CI does.
+- حلقة أقل من ثانية: lint والأنواع واختبارات الوحدة. يشغّلها الوكيل باستمرار.
+- حلقة بضع ثوانٍ: اختبارات التكامل، واختبار طرف إلى طرف واحد موجّه. يشغّلها الوكيل عند كل تعديل ذي معنى.
+- حلقة بدقيقة تقريبًا: حزمة الطرف إلى الطرف كاملة، والانحدار البصري، وفحص الأنواع الكامل على ذاكرة مؤقتة باردة. يشغّلها الوكيل في نهاية المهمة، قبل إعلان الإنجاز.
+- حلقة CI فقط: الطرف إلى الطرف عبر المتصفحات، والانحدار البصري الكامل مقابل الأساس، وإعادة المحاولات المتقلّبة، وتحليل الحزمة. لا يشغّلها الوكيل محليًا — بل CI.
 
-If you buy the loop-speed framing, the pyramid almost inverts: you want the *shortest* loops to be the *densest* in feedback, because those are the ones that run on every edit. That’s not a contradiction with the classic pyramid—it’s the same shape, labelled with time instead of volume.
+إذا اقتنعت بإطار سرعة الحلقة، فالهرم يكاد ينقلب: تريد أن تكون *أقصر* الحلقات هي *أكثفها* تغذية راجعة، لأنها التي تعمل عند كل تعديل. هذا ليس تناقضًا مع الهرم الكلاسيكي — إنه الشكل نفسه، موسومًا بالزمن بدلًا من الحجم.
 
-## Where agents misuse the pyramid
+## حيث يسيء الوكلاء استخدام الهرم
 
-A few failure modes I see a lot, and that we’re going to actively counter in the lessons after this one.
+أنماط فشل قليلة أراها كثيرًا، وسنواجهها فعليًا في الدروس التالية لهذا الدرس.
 
-**The agent writes end-to-end tests when unit tests would do.** Classic overreach. The agent changes a utility function, writes a [Playwright](https://playwright.dev/) test that clicks three pages to verify the utility function, and calls it done. The utility function needed a three-line [Vitest](https://vitest.dev/) case. The [Playwright](https://playwright.dev/) test is ten times slower, flakier, and tests the wrong thing. The fix: the instructions file explicitly says *what a unit test looks like in this repo, with an example path*, so the agent has a template to copy.
+**يكتب الوكيل اختبارات طرف إلى طرف حين تكفي اختبارات الوحدة.** تجاوز كلاسيكي. يغيّر الوكيل دالة أدوات، ويكتب اختبار [Playwright](https://playwright.dev/) ينقر ثلاث صفحات للتحقق من دالة الأدوات، ويعلن الانتهاء. كانت دالة الأدوات تحتاج حالة [Vitest](https://vitest.dev/) من ثلاثة أسطر. اختبار [Playwright](https://playwright.dev/) أبطأ عشر مرات، وأكثر تقلّبًا، ويختبر الشيء الخاطئ. الإصلاح: يقول ملف التعليمات صراحةً *كيف يبدو اختبار وحدة في هذا المستودع، مع مسار مثال*، فيكون لدى الوكيل قالب ينسخه.
 
-**The agent writes unit tests when end-to-end tests are what mattered.** The inverse. The agent adds a form, writes unit tests that mock the form’s state and pretend the mock is a test, and never actually renders the form in a browser. The whole loading state is broken and nobody notices because no test ever saw a browser. The fix: the instructions file says *“UI features must ship with a [Playwright](https://playwright.dev/) test that opens the page and asserts on visible content.”* A lint rule or pre-commit hook can even enforce it—if `src/routes/foo/+page.svelte` changed, `tests/foo.spec.ts` must exist.
+**يكتب الوكيل اختبارات وحدة حين كانت اختبارات الطرف إلى الطرف هي المهمة.** العكس. يضيف الوكيل نموذجًا، ويكتب اختبارات وحدة تزيّف حالة النموذج وتتعامل مع التزييف كأنه اختبار، ولا يرسم النموذج في متصفح أبدًا. حالة التحميل كلها مكسورة ولا يلاحظ أحد لأن أي اختبار لم يرَ متصفحًا قط. الإصلاح: يقول ملف التعليمات *«يجب أن تُشحن ميزات الواجهة مع اختبار [Playwright](https://playwright.dev/) يفتح الصفحة ويؤكد على محتوى مرئي.»* ويمكن لقاعدة lint أو خطّاف ما قبل الالتزام أن يفرض ذلك — إذا تغيّر `src/routes/foo/+page.svelte`، فيجب أن يوجد `tests/foo.spec.ts`.
 
-**The agent doesn’t know the difference.** This is the most common failure mode. The agent writes “a test” without any awareness of which layer it’s targeting, which means the test ends up halfway between two layers and exercises neither well. The fix is again the instructions file, and again with examples: “Here’s what a unit test in this repo looks like. Here’s what an integration test looks like. Here’s what an end-to-end test looks like.” Concrete file paths, not abstract descriptions.
+**لا يعرف الوكيل الفرق.** هذا نمط الفشل الأكثر شيوعًا. يكتب الوكيل «اختبارًا» بلا أي إدراك للطبقة التي يستهدفها، ما يعني أن الاختبار ينتهي في منتصف المسافة بين طبقتين ولا يختبر أيًّا منهما جيدًا. الإصلاح مجددًا هو ملف التعليمات، ومجددًا بأمثلة: «هكذا يبدو اختبار وحدة في هذا المستودع. هكذا يبدو اختبار تكامل. هكذا يبدو اختبار طرف إلى طرف.» مسارات ملفات ملموسة، لا أوصافًا مجرّدة.
 
-Notice the pattern—every fix routes back through the [instructions file](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in). The pyramid only works as a hierarchy if the agent knows which layer to reach for, and it only knows that because you told it.
+لاحظ النمط — كل إصلاح يعود عبر [ملف التعليمات](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in). لا يعمل الهرم كهرمية إلا إذا عرف الوكيل أي طبقة يطرق، وهو لا يعرف ذلك إلا لأنك أخبرته.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The pyramid, for our purposes, is a hierarchy of loops. Fast loops run continuously, slow loops run at checkpoints, slowest loops run in CI. The agent needs to know which loop a given change triggers, and that knowledge lives in the instructions file as concrete examples and concrete rules, not as “follow the testing pyramid.”
+الهرم، لأغراضنا، هرماية حلقات. الحلقات السريعة تعمل باستمرار، والبطيئة تعمل عند نقاط تحقق، والأبطأ تعمل في CI. يحتاج الوكيل إلى معرفة أي حلقة يطلقها تغيير معيّن، وتلك المعرفة تعيش في ملف التعليمات كأمثلة ملموسة وقواعد ملموسة، لا كعبارة «اتبع هرم الاختبارات».
 
-The next set of lessons picks up here and spends the whole morning on the slowest, most expensive, most pain-prone layer: Playwright. That’s where the agent needs the most help, so that’s where we spend the most time.
+تلتقط الدروس التالية الخيط من هنا وتمضي الصباح كله على الطبقة الأبطأ والأغلى والأكثر إيلامًا: Playwright. هناك يحتاج الوكيل إلى أكبر قدر من المساعدة، وهناك نمضي أكبر قدر من الوقت.
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Hypothesis](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [الفرضية](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
+- [المحدّدات وهرمية الإتاحة](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)

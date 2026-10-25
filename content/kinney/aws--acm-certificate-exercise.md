@@ -1,30 +1,30 @@
 ---
-title: "Exercise: Request and Validate a Certificate"
-lang: en
+title: "تمرين: طلب شهادة والتحقّق منها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/acm-certificate-exercise"
 ---
 
-You’ve read about ACM, certificates, and DNS validation. Now you’re going to do it for real: request a certificate, add the validation records, and verify that ACM issues the certificate. By the end of this exercise, you’ll have a valid SSL/TLS certificate in `us-east-1` ready to attach to a CloudFront distribution.
+لقد قرأت عن ACM والشهادات والتحقّق عبر DNS. والآن ستفعل ذلك فعلًا: اطلب شهادة، وأضف سجلات التحقّق، وتحقّق من أن ACM تُصدر الشهادة. وبحلول نهاية هذا التمرين، سيكون لديك شهادة SSL/TLS صالحة في `us-east-1` جاهزة للإرفاق بتوزيع CloudFront.
 
-## Why It Matters
+## لماذا يهمّ
 
-Every production frontend on AWS needs a certificate. The certificate request-and-validate flow is something you’ll do once per domain (or once per wildcard scope), and if you do it correctly, ACM handles renewal for the rest of the certificate’s life. Getting this right on the first pass means one less thing to debug when you wire up CloudFront.
+كل واجهة أمامية إنتاجية على AWS تحتاج إلى شهادة. وسير عمل طلب الشهادة والتحقّق منها شيء تفعله مرة لكل نطاق (أو مرة لكل نطاق wildcard)، وإذا فعلته بشكل صحيح، فتتولّى ACM التجديد لبقية عمر الشهادة. وإتقان هذا من المحاولة الأولى يعني شيئًا أقل لتنقّحه عند ربط CloudFront.
 
-## Prerequisites
+## المتطلّبات المسبقة {#prerequisites}
 
-- An AWS account with CLI access configured (see [Setting Up the AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli))
-- A domain name you control.
-- DNS authority for that domain: **Recommended path:** Route 53 hosts the domain’s DNS, either because you registered the domain there or because you already pointed the registrar at a Route 53 hosted zone. **Alternate path:** Your DNS is hosted elsewhere and you can add CNAME records manually.
-  - **Recommended path:** Route 53 hosts the domain’s DNS, either because you registered the domain there or because you already pointed the registrar at a Route 53 hosted zone.
-  - **Alternate path:** Your DNS is hosted elsewhere and you can add CNAME records manually.
+- حساب AWS مع إعداد وصول CLI (انظر [إعداد AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli))
+- اسم نطاق تتحكّم به.
+- صلاحية DNS لذلك النطاق: **المسار الموصى به:** يستضيف Route 53 نظام DNS للنطاق، إما لأنك سجّلت النطاق هناك أو لأنك وجّهت المسجّل بالفعل إلى منطقة استضافة في Route 53. **المسار البديل:** DNS مستضاف في مكان آخر ويمكنك إضافة سجلات CNAME يدويًا.
+  - **المسار الموصى به:** يستضيف Route 53 نظام DNS للنطاق، إما لأنك سجّلت النطاق هناك أو لأنك وجّهت المسجّل بالفعل إلى منطقة استضافة في Route 53.
+  - **المسار البديل:** DNS مستضاف في مكان آخر ويمكنك إضافة سجلات CNAME يدويًا.
 
-> **Tip**
+> **نصيحة**
 >
-> The smoothest version of this exercise is a domain with DNS already hosted in Route 53. If you followed the domain and DNS lessons with a cheap Route 53-registered domain, ACM validation is basically a copy-paste problem instead of a scavenger hunt through another provider’s dashboard.
+> النسخة الأسهل من هذا التمرين نطاق يكون DNS فيه مستضافًا بالفعل في Route 53. فإن اتبعت دروس النطاقات وDNS بنطاق رخيص مسجّل في Route 53، فالتحقّق في ACM أشبه بمسألة نسخ ولصق بدلًا من رحلة بحث في لوحة مزوّد آخر.
 
-## Request the Certificate
+## طلب الشهادة
 
-Request a certificate that covers both the apex domain and all subdomains. Replace `example.com` with your actual domain:
+اطلب شهادة تغطّي النطاق الجذري وكل النطاقات الفرعية. استبدل `example.com` بنطاقك الفعلي:
 
 ```bash
 aws acm request-certificate \
@@ -35,7 +35,7 @@ aws acm request-certificate \
   --output json
 ```
 
-You should see a response containing a `CertificateArn`. Save this value—you’ll need it for the remaining steps.
+يجب أن ترى استجابة تتضمّن `CertificateArn`. احفظ هذه القيمة — ستحتاجها في الخطوات المتبقية.
 
 ```json
 {
@@ -43,15 +43,15 @@ You should see a response containing a `CertificateArn`. Save this value—you�
 }
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- You received a `CertificateArn` in the response.
-- The command completed without errors.
-- You specified `--region us-east-1`.
+- تلقّيت `CertificateArn` في الاستجابة.
+- اكتمل الأمر دون أخطاء.
+- حدّدت `--region us-east-1`.
 
-## Retrieve the Validation Records
+## استرجاع سجلات التحقّق
 
-Get the CNAME records that ACM needs you to add to your DNS:
+احصل على سجلات CNAME التي تحتاج ACM إلى إضافتها إلى DNS:
 
 ```bash
 aws acm describe-certificate \
@@ -61,7 +61,7 @@ aws acm describe-certificate \
   --query "Certificate.DomainValidationOptions[*].{Domain:DomainName,Name:ResourceRecord.Name,Value:ResourceRecord.Value,Status:ValidationStatus}"
 ```
 
-The output shows one or more CNAME records, along with their validation status:
+تُظهر المخرجات سجل CNAME واحدًا أو أكثر، مع حالة التحقّق الخاصة به:
 
 ```json
 [
@@ -74,42 +74,42 @@ The output shows one or more CNAME records, along with their validation status:
 ]
 ```
 
-Write down the `Name` and `Value` for each record. You need to add these to your DNS.
+دوّن `Name` و`Value` لكل سجل. فأنت تحتاج إلى إضافتها إلى DNS.
 
-### Checkpoint
+### نقطة تحقّق
 
-- You can see one or more CNAME records with `PENDING_VALIDATION` status.
-- You have noted the `Name` and `Value` for each record.
+- ترى سجل CNAME واحدًا أو أكثر بحالة `PENDING_VALIDATION`.
+- دوّنت `Name` و`Value` لكل سجل.
 
-## Add the Validation Records to DNS
+## إضافة سجلات التحقّق إلى DNS
 
-**If your domain’s DNS is in Route 53:** The simplest approach is the ACM console. Open the [ACM console](https://console.aws.amazon.com/acm/home?region=us-east-1), find your certificate, expand it, and click **Create records in Route 53**. ACM creates the CNAME records in your hosted zone automatically.
+**إذا كان DNS نطاقك في Route 53:** أبسط نهج هو وحدة تحكّم ACM. افتح [وحدة تحكّم ACM](https://console.aws.amazon.com/acm/home?region=us-east-1)، واعثر على شهادتك، ووسّعها، وانقر **Create records in Route 53**. فتنشئ ACM سجلات CNAME في منطقة استضافتك تلقائيًا.
 
-**If your domain is hosted elsewhere:** Log into your DNS provider’s management console and create a CNAME record with:
+**إذا كان نطاقك مستضافًا في مكان آخر:** سجّل الدخول إلى وحدة تحكّم مزوّد DNS لديك وأنشئ سجل CNAME بالخصائص التالية:
 
-- **Name/Host**: The value from the `Name` field (e.g., `_abc123.example.com`). Some providers want just `_abc123` without the domain suffix—check your provider’s documentation.
+- **Name/Host**: القيمة من حقل `Name` (مثل `_abc123.example.com`). بعض المزوّدين يريدون `_abc123` فقط دون لاحقة النطاق — راجع توثيق مزوّدك.
 - **Type**: CNAME
-- **Value/Points to**: The value from the `Value` field (e.g., `_def456.acm-validations.aws`). Some providers want this without the trailing dot.
-- **TTL**: 300 (5 minutes) is fine.
+- **Value/Points to**: القيمة من حقل `Value` (مثل `_def456.acm-validations.aws`). بعض المزوّدين يريدونها دون النقطة الأخيرة.
+- **TTL**: 300 (5 دقائق) مناسب.
 
-Repeat for each domain in your certificate if there are multiple validation records.
+كرّر ذلك لكل نطاق في شهادتك إن كانت سجلات التحقّق متعددة.
 
-### Checkpoint
+### نقطة تحقّق
 
-- You have added all CNAME validation records to your DNS.
-- You can verify the records exist using `dig` or `nslookup`:
+- أضفت كل سجلات تحقّق CNAME إلى DNS.
+- يمكنك التحقّق من وجود السجلات بـ`dig` أو `nslookup`:
 
 ```bash
 dig CNAME _abc123.example.com
 ```
 
-You should see the `_def456.acm-validations.aws.` value in the answer section.
+يجب أن ترى القيمة `_def456.acm-validations.aws.` في قسم الإجابة.
 
-## Wait for Validation
+## انتظار التحقّق
 
-ACM checks for the DNS records periodically. Validation usually completes within a few minutes but can take up to 30 minutes.
+تفحص ACM سجلات DNS دوريًا. ويكتمل التحقّق عادةً في غضون دقائق لكن قد يستغرق حتى 30 دقيقة.
 
-You can poll the status:
+يمكنك استقصاء الحالة دوريًا:
 
 ```bash
 aws acm describe-certificate \
@@ -119,7 +119,7 @@ aws acm describe-certificate \
   --query "Certificate.Status"
 ```
 
-Or use the built-in waiter to block until validation completes:
+أو استخدم أداة الانتظار المدمجة للانتظار حتى يكتمل التحقّق:
 
 ```bash
 aws acm wait certificate-validated \
@@ -127,16 +127,16 @@ aws acm wait certificate-validated \
   --region us-east-1
 ```
 
-This command exits silently when the certificate reaches `ISSUED` status, or times out after approximately 40 minutes.
+يخرج هذا الأمر صامتًا عندما تبلغ الشهادة حالة `ISSUED`، أو تنتهي مهلته بعد نحو 40 دقيقة.
 
-### Checkpoint
+### نقطة تحقّق
 
-- The certificate status is `ISSUED`.
-- The `wait` command exited without error.
+- حالة الشهادة `ISSUED`.
+- خرج أمر `wait` دون خطأ.
 
-## Verify the Certificate
+## التحقّق من الشهادة
 
-Confirm the certificate is issued and covers the correct domains:
+أكّد أن الشهادة صادرة وتغطّي النطاقات الصحيحة:
 
 ```bash
 aws acm describe-certificate \
@@ -146,7 +146,7 @@ aws acm describe-certificate \
   --query "Certificate.{Status:Status,Domains:SubjectAlternativeNames,Renewal:RenewalEligibility}"
 ```
 
-Expected output:
+المخرجات المتوقّعة:
 
 ```json
 {
@@ -156,36 +156,36 @@ Expected output:
 }
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- Status is `ISSUED`.
-- The certificate covers both `example.com` and `*.example.com` (or whatever domains you requested).
-- Renewal eligibility is `ELIGIBLE`.
+- الحالة `ISSUED`.
+- الشهادة تغطّي `example.com` و`*.example.com` (أو أي نطاقات طلبتها).
+- أهلية التجديد `ELIGIBLE`.
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **The certificate stays in `PENDING_VALIDATION`:** The DNS validation CNAME is missing, the name or value was copied incorrectly, or your DNS provider flattened or proxied the record instead of publishing it exactly as ACM requested.
-- **You only validated one name and expected both:** Re-run `describe-certificate` and check the `DomainValidationOptions`. ACM sometimes reuses one validation record for apex and wildcard names, but you still need to confirm what your certificate request actually expects.
-- **The certificate looks fine but CloudFront cannot use it later:** The certificate was requested outside `us-east-1`. CloudFront only accepts ACM certificates from that region.
+- **تبقى الشهادة في `PENDING_VALIDATION`:** سجل CNAME للتحقّق عبر DNS مفقود، أو نُسخ الاسم أو القيمة بشكل خاطئ، أو قام مزوّد DNS لديك بتسوية السجل أو توكيله بدلًا من نشره تمامًا كما طلبت ACM.
+- **تحقّقت من اسم واحد فقط وتوقّعت الاثنين:** أعد تشغيل `describe-certificate` وافحص `DomainValidationOptions`. فأحيانًا تعيد ACM استخدام سجل تحقّق واحد للنطاق الجذري وأسماء wildcard، لكنك ما زلت بحاجة إلى تأكيد ما يتوقّعه طلب شهادتك فعلًا.
+- **تبدو الشهادة سليمة لكن CloudFront لا يستطيع استخدامها لاحقًا:** طُلبت الشهادة خارج `us-east-1`. ولا تقبل CloudFront شهادات ACM إلا من تلك المنطقة.
 
-## What You Built
+## ما بنيته
 
-You now have a valid SSL/TLS certificate in `us-east-1` that covers your domain and all subdomains. This certificate will auto-renew as long as the CNAME validation record stays in your DNS and the certificate is associated with an AWS service. The next job is attaching it to CloudFront so the distribution can answer for your real domain over HTTPS.
+لديك الآن شهادة SSL/TLS صالحة في `us-east-1` تغطّي نطاقك وكل النطاقات الفرعية. وستتجدّد هذه الشهادة تلقائيًا ما دام سجل تحقّق CNAME باقيًا في DNS والشهادة مرتبطة بخدمة AWS. والمهمة التالية إرفاقها بـ CloudFront كي يستطيع التوزيع الإجابة عن نطاقك الحقيقي عبر HTTPS.
 
-> **Warning**
+> **تحذير**
 >
-> Do not delete the CNAME validation records from your DNS. They are required for auto-renewal. Treat them as permanent.
+> لا تحذف سجلات تحقّق CNAME من DNS. فهي مطلوبة للتجديد التلقائي. عاملها كسجلات دائمة.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **List all certificates**: Run `aws acm list-certificates --region us-east-1 --output json` to see every certificate in your account. Notice how each one shows its domain and status.
-- **Request a second certificate**: Try requesting a certificate for a different subdomain (e.g., `staging.example.com`) without a wildcard. Compare the validation process—is it any different?
-- **Explore the full output**: Run `aws acm describe-certificate` without the `--query` flag to see the complete certificate metadata: key algorithm, issuer, creation date, and the full `DomainValidationOptions` structure.
-- **Automate it**: Write a short shell script that requests a certificate, extracts the CNAME records, and prints the records you need to add to DNS. Bonus: if your domain is in Route 53, have the script create the records automatically.
+- **سرد كل الشهادات**: شغّل `aws acm list-certificates --region us-east-1 --output json` لترى كل شهادة في حسابك. لاحظ كيف تُظهر كل واحدة نطاقها وحالتها.
+- **طلب شهادة ثانية**: جرّب طلب شهادة لنطاق فرعي مختلف (مثل `staging.example.com`) دون wildcard. قارن عملية التحقّق — هل هي مختلفة؟
+- **استكشاف المخرجات الكاملة**: شغّل `aws acm describe-certificate` دون علم `--query` لترى بيانات الشهادة الوصفية الكاملة: خوارزمية المفتاح، والجهة المُصدرة، وتاريخ الإنشاء، وبنية `DomainValidationOptions` الكاملة.
+- **أتمتتها**: اكتب سكربت صدفة قصيرًا يطلب شهادة، ويستخرج سجلات CNAME، ويطبع السجلات التي تحتاج إلى إضافتها إلى DNS. إضافة: إن كان نطاقك في Route 53، فاجعل السكربت ينشئ السجلات تلقائيًا.
 
-## Cleanup
+## التنظيف
 
-ACM certificates are free while unused, but the validation CNAME record persists in Route 53 and can cause confusion if you forget it’s there. When you’re done with a certificate:
+شهادات ACM مجانية ما دامت غير مستخدمة، لكن سجل CNAME للتحقّق يبقى في Route 53 وقد يسبّب ارتباكًا إن نسيت وجوده. وعندما تنتهي من شهادة:
 
 ```bash
 aws acm delete-certificate \
@@ -193,8 +193,8 @@ aws acm delete-certificate \
   --region us-east-1
 ```
 
-Then delete the validation CNAME record from Route 53 using `change-resource-record-sets` with `Action: DELETE`. The record name and value are the same ones you used to validate — find them with `aws acm describe-certificate` if you don’t have them handy.
+ثم احذف سجل CNAME للتحقّق من Route 53 باستخدام `change-resource-record-sets` مع `Action: DELETE`. اسم السجل وقيمته هما نفس ما استخدمته للتحقّق — اعثر عليهما بـ`aws acm describe-certificate` إن لم تكن بحوزتك.
 
-> **Warning**
+> **تحذير**
 >
-> If this certificate is still attached to a CloudFront distribution, ACM will refuse to delete it. Detach it from the distribution first.
+> إذا كانت هذه الشهادة ما زالت مرفقة بتوزيع CloudFront، فسترفض ACM حذفها. افصلها عن التوزيع أولًا.

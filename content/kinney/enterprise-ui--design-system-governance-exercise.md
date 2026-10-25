@@ -1,36 +1,36 @@
 ---
-title: "Exercise 7: Design System Governance"
-lang: en
+title: "التمرين السابع: حوكمة نظام التصميم"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/design-system-governance-exercise"
 ---
 
-## What You’re Doing
+## ما الذي ستفعله
 
-The `@pulse/ui` package has a `tokens.ts` file that exports color, spacing, and radius constants — but no component actually uses them. The `Button` component hardcodes Tailwind classes like `bg-gray-900`. The `StatCard` component hardcodes its own border and text colors. The token file exists, but it is decoration. You are going to connect the token system to the components through CSS custom properties, then add visual regression tests that catch unintended changes when tokens are modified.
+تحتوي حزمة `@pulse/ui` على ملف `tokens.ts` يصدّر ثوابت الألوان والتباعد وأنصاف الأقطار — لكن لا يستخدمها أي مكوّن فعليًا. فمكوّن `Button` يثبّت أصناف Tailwind مباشرةً مثل `bg-gray-900`. ومكوّن `StatCard` يثبّت ألوان حدوده ونصه بنفسه. ملف الـ tokens موجود، لكنه زينة لا أكثر. ستربط نظام الـ tokens بالمكوّنات عبر خصائص CSS المخصّصة، ثم تضيف اختبارات انحدار بصري تلتقط التغييرات غير المقصودة عند تعديل الـ tokens.
 
-## Why It Matters
+## لماذا يهم هذا
 
-A design system without enforcement is a style guide PDF that nobody reads. Tokens that exist in a file but are not referenced by components create false confidence — the team believes they have a single source of truth, but every component is actually making its own color decisions. CSS custom properties solve this by creating a runtime connection between token definitions and component rendering. When you change `--color-primary`, every component that references it updates automatically. Visual regression tests close the loop: they encode what the UI *should* look like, so a token change that unexpectedly affects layout or color shows up as a screenshot diff before it reaches production.
+نظام التصميم الذي لا تُفرَض قواعده ليس سوى ملف PDF لدليل أنماط لا يقرأه أحد. إن الـ tokens الموجودة في ملف دون أن تشير إليها المكوّنات تزرع ثقة زائفة: يعتقد الفريق أن لديه مصدرًا واحدًا للحقيقة، بينما يتخذ كل مكوّن في الواقع قراراته اللونية الخاصة. وتحل خصائص CSS المخصّصة هذه المشكلة بإنشاء صلة وقت التشغيل بين تعريفات الـ tokens وعرض المكوّنات. فعندما تغيّر `--color-primary`، يتحدّث تلقائيًا كل مكوّن يشير إليه. وتُغلق اختبارات الانحدار البصري الحلقة: فهي تُثبّت كيف *ينبغي* أن تبدو الواجهة، بحيث يظهر أي تغيير في الـ tokens يؤثر على التخطيط أو اللون بشكل غير متوقع كفروق في لقطة شاشة قبل أن يصل إلى الإنتاج.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-- Node.js 20+
-- pnpm 9+
+- Node.js 20 أو أحدث
+- pnpm 9 أو أحدث
 
-## Setup
+## الإعداد
 
-You should be continuing from where Exercise 6 left off. If you need to catch up:
+يفترض أنك تتابع من حيث توقّف التمرين السادس. وإذا احتجت إلى اللحاق بالركب:
 
 ```bash
 git checkout 06-design-system-start
 pnpm install
 ```
 
-## Examine the Disconnected Token System
+## افحص نظام الـ tokens المنفصل
 
-Before changing anything, understand the gap between the token definitions and the components that should use them.
+قبل أن تغيّر أي شيء، افهم الفجوة بين تعريفات الـ tokens والمكوّنات التي ينبغي أن تستخدمها.
 
-Open `packages/ui/src/tokens.ts`:
+افتح `packages/ui/src/tokens.ts`:
 
 *packages/ui/src/tokens.ts*
 
@@ -65,31 +65,31 @@ export const radii = {
 } as const;
 ```
 
-Now open `packages/ui/src/button.tsx`. The variant styles use hardcoded values — `bg-gray-900`, `text-white`, and similar Tailwind utility classes — instead of referencing anything from `tokens.ts`.
+الآن افتح `packages/ui/src/button.tsx`. تستخدم أنماط المتغيّرات قيمًا مثبّتة — مثل `bg-gray-900` و`text-white` وما شابهها من أصناف Tailwind المساعدة — بدلًا من الإشارة إلى أي شيء من `tokens.ts`.
 
-Open `packages/ui/src/stat-card.tsx`. Same pattern: hardcoded border colors and text colors with no connection to the token file.
+افتح `packages/ui/src/stat-card.tsx`. النمط نفسه: ألوان حدود وألوان نص مثبّتة دون أي صلة بملف الـ tokens.
 
-Search the codebase for imports of `tokens.ts`:
+ابحث في قاعدة الشيفرة عن أي استيراد لـ `tokens.ts`:
 
 ```bash
 grep -r "from.*tokens" packages/ui/src/
 ```
 
-No component imports the token file. The tokens are orphaned.
+لا يستورد أي مكوّن ملف الـ tokens. فالـ tokens يتيمة.
 
-> **The disconnected tokens anti-pattern**
+> **النمط المضاد: tokens منفصلة**
 >
-> This is worse than having no tokens at all. With no token file, the team knows there is no single source of truth and makes decisions accordingly. With a token file that nothing references, the team *believes* there is a single source of truth. Someone changes `colors.primary` in `tokens.ts`, assumes the UI updated, and ships. Nothing changed. The token file creates false confidence.
+> هذا أسوأ من ألّا تكون لديك tokens على الإطلاق. فحين لا يوجد ملف tokens، يعرف الفريق أنه لا يوجد مصدر واحد للحقيقة ويتخذ قراراته على هذا الأساس. أما حين يوجد ملف tokens لا يشير إليه شيء، فإن الفريق *يعتقد* أن لديه مصدرًا واحدًا للحقيقة. فيغيّر أحدهم `colors.primary` في `tokens.ts`، ويفترض أن الواجهة تحدّثت، ثم يُطلق الإصدار. لكن شيئًا لم يتغيّر. فملف الـ tokens يصنع ثقة زائفة.
 
-### Checkpoint
+### نقطة تحقق
 
-You have confirmed the gap: `tokens.ts` defines the design language, but `button.tsx` and `stat-card.tsx` ignore it entirely. Changing a value in `tokens.ts` would have zero effect on the rendered UI.
+لقد تأكدت من الفجوة: يعرّف `tokens.ts` لغة التصميم، لكن `button.tsx` و`stat-card.tsx` يتجاهلانه تمامًا. وتغيير قيمة في `tokens.ts` لن يكون له أي أثر على الواجهة المعروضة.
 
-## Create CSS Custom Properties
+## أنشئ خصائص CSS مخصّصة
 
-JavaScript constants cannot cascade through the DOM, cannot be overridden per-component, and cannot be swapped at runtime for theming. CSS custom properties can. Create a CSS file that bridges the token values into the browser’s rendering engine.
+لا تستطيع ثوابت JavaScript أن تتوارث عبر DOM، ولا أن تُتجاوَز لكل مكوّن على حدة، ولا أن تُستبدل وقت التشغيل لأجل السمات. أما خصائص CSS المخصّصة فتستطيع ذلك. أنشئ ملف CSS يربط قيم الـ tokens بمحرّك العرض في المتصفح.
 
-Create `packages/ui/src/tokens.css`:
+أنشئ `packages/ui/src/tokens.css`:
 
 *packages/ui/src/tokens.css*
 
@@ -123,7 +123,7 @@ Create `packages/ui/src/tokens.css`:
 }
 ```
 
-Import the token CSS in the application’s global stylesheet. Open `apps/dashboard/src/global.css` and add the import:
+استورد ملف CSS الخاص بالـ tokens في ورقة الأنماط العامة للتطبيق. افتح `apps/dashboard/src/global.css` وأضف الاستيراد:
 
 *apps/dashboard/src/global.css*
 
@@ -133,19 +133,19 @@ Import the token CSS in the application’s global stylesheet. Open `apps/dashbo
 @source '../../../packages';
 ```
 
-> **Why CSS custom properties instead of JavaScript constants**
+> **لماذا خصائص CSS المخصّصة بدلًا من ثوابت JavaScript**
 >
-> Three reasons. First, CSS custom properties cascade through the DOM — a parent element can override `--color-primary` and every child component that references it picks up the new value without any prop drilling or context providers. Second, they enable theming via `data-theme` attributes: you can define `[data-theme="dark"] { --color-background: #0f172a; }` and toggle themes by changing a single attribute on the root element. Third, they work with any styling approach — Tailwind utility classes, inline styles, CSS modules, or plain CSS — because they live in the browser’s style engine, not in JavaScript.
+> ثلاثة أسباب. أولًا، تتوارث خصائص CSS المخصّصة عبر DOM: يمكن للعنصر الأب أن يتجاوز `--color-primary`، فيلتقط كل مكوّن فرعي يشير إليه القيمة الجديدة دون أي تمرير props أو مزوّدات سياق. ثانيًا، تتيح السمات عبر خصائص `data-theme`: يمكنك تعريف `[data-theme="dark"] { --color-background: #0f172a; }` وتبديل السمات بتغيير خاصية واحدة على العنصر الجذري. ثالثًا، تعمل مع أي أسلوب تنسيق — أصناف Tailwind المساعدة، أو الأنماط المضمّنة، أو وحدات CSS، أو CSS العادي — لأنها تعيش في محرّك أنماط المتصفح لا في JavaScript.
 
-### Checkpoint
+### نقطة تحقق
 
-Open the browser devtools on the running app (`pnpm dev` from the workspace root) and inspect the `:root` element. You should see all the `--color-*`, `--space-*`, and `--radius-*` custom properties listed under the element’s computed styles.
+افتح أدوات المطوّر في المتصفح على التطبيق العامل (`pnpm dev` من جذر مساحة العمل) وافحص العنصر `:root`. ينبغي أن ترى كل الخصائص المخصّصة `--color-*` و`--space-*` و`--radius-*` مدرجة ضمن الأنماط المحسوبة للعنصر.
 
-## Connect Components to Tokens
+## اربط المكوّنات بالـ tokens
 
-Now update the components to reference the CSS custom properties instead of hardcoded values.
+حدّث الآن المكوّنات لتشير إلى خصائص CSS المخصّصة بدلًا من القيم المثبّتة.
 
-Open `packages/ui/src/button.tsx` and replace it with:
+افتح `packages/ui/src/button.tsx` واستبدله بما يلي:
 
 *packages/ui/src/button.tsx*
 
@@ -194,9 +194,9 @@ export function Button({
 }
 ```
 
-The variant styles now reference CSS custom properties through `var()`. The `primary` variant uses `--color-primary` for its background and `--color-background` for its text color. The `secondary` variant uses `--color-border` for its border. No hardcoded hex values remain in the variant definitions.
+تشير أنماط المتغيّرات الآن إلى خصائص CSS المخصّصة عبر `var()`. يستخدم المتغيّر `primary` الخاصية `--color-primary` لخلفيته والخاصية `--color-background` للون نصه. ويستخدم المتغيّر `secondary` الخاصية `--color-border` لحدوده. ولم تبقَ أي قيم سداسية عشرية مثبّتة في تعريفات المتغيّرات.
 
-Open `packages/ui/src/stat-card.tsx` and replace it with:
+افتح `packages/ui/src/stat-card.tsx` واستبدله بما يلي:
 
 *packages/ui/src/stat-card.tsx*
 
@@ -231,27 +231,27 @@ export function StatCard({ label, value }: StatCardProps): React.ReactElement {
 }
 ```
 
-Verify the connection works. Open `packages/ui/src/tokens.css` and temporarily change `--color-primary` to something obvious:
+تحقّق من أن الصلة تعمل. افتح `packages/ui/src/tokens.css` وغيّر `--color-primary` مؤقتًا إلى قيمة واضحة:
 
 ```css
 --color-primary: #ff0000;
 ```
 
-Reload the dashboard. Every primary button should now be red. Change it back to `#2563eb`.
+أعد تحميل لوحة المعلومات. ينبغي أن يصبح كل زر رئيسي أحمر الآن. ثم أعد القيمة إلى `#2563eb`.
 
-> **This is the governance mechanism**
+> **هذه هي آلية الحوكمة**
 >
-> Before this step, changing the primary color required finding every component that hardcoded it and updating each one individually. Now, changing `--color-primary` in one file cascades through every component that references it. The token file is no longer decorative — it is the single source of truth for color values, enforced by the browser’s CSS engine.
+> قبل هذه الخطوة، كان تغيير اللون الرئيسي يتطلّب العثور على كل مكوّن يثبّته وتحديث كل واحد منها على حدة. أما الآن، فتغيير `--color-primary` في ملف واحد يتوارث عبر كل مكوّن يشير إليه. ولم يعد ملف الـ tokens زينة — بل صار المصدر الوحيد للحقيقة في قيم الألوان، تفرضه آلية CSS في المتصفح.
 
-### Checkpoint
+### نقطة تحقق
 
-The dashboard renders identically to before — same colors, same layout. The difference is structural: colors now flow from `tokens.css` through CSS custom properties into component styles. Changing one token value in `tokens.css` visibly affects every component that uses it.
+تُعرض لوحة المعلومات كما كانت تمامًا — الألوان نفسها والتخطيط نفسه. الفرق بنيوي: فالألوان تتدفّق الآن من `tokens.css` عبر خصائص CSS المخصّصة إلى أنماط المكوّنات. وتغيير قيمة token واحدة في `tokens.css` يؤثر تأثيرًا مرئيًا في كل مكوّن يستخدمها.
 
-## Add Visual Regression Tests
+## أضف اختبارات الانحدار البصري
 
-Connecting tokens to components solves the consistency problem, but it introduces a new risk: changing a single token now affects the entire UI. You need a way to verify that token changes produce the *intended* visual result and nothing else. Playwright’s screenshot comparison does this automatically.
+يحل ربط الـ tokens بالمكوّنات مشكلة الاتساق، لكنه يُدخل خطرًا جديدًا: تغيير token واحدة صار يؤثر في الواجهة كلها. تحتاج إلى وسيلة تتحقّق من أن تغييرات الـ tokens تُنتج النتيجة البصرية *المقصودة* ولا شيء غيرها. وتفعل مقارنة لقطات الشاشة في Playwright ذلك تلقائيًا.
 
-Create `tests/e2e/visual.spec.ts`:
+أنشئ `tests/e2e/visual.spec.ts`:
 
 *tests/e2e/visual.spec.ts*
 
@@ -285,69 +285,69 @@ test.describe('Visual regression', () => {
 });
 ```
 
-> **How `toHaveScreenshot()` works**
+> **كيف تعمل `toHaveScreenshot()`**
 >
-> The first time you run this test, Playwright captures a reference screenshot and saves it to a `visual.spec.ts-snapshots` directory. On subsequent runs, it captures a new screenshot and compares it pixel-by-pixel against the reference. If the images differ beyond a configurable threshold, the test fails and produces a diff image highlighting exactly which pixels changed. This is deterministic because MSW provides fixed API data — the same fetch calls return the same numbers every time.
+> في أول مرة تشغّل فيها هذا الاختبار، يلتقط Playwright لقطة شاشة مرجعية ويحفظها في دليل `visual.spec.ts-snapshots`. وفي التشغيلات اللاحقة، يلتقط لقطة جديدة ويقارنها بالمرجع بكسلًا بكسلًا. وإذا اختلفت الصور بما يتجاوز حدًا قابلًا للضبط، يفشل الاختبار ويُنتج صورة فروق تُبرز بالضبط البكسلات التي تغيّرت. وهذا حتمي لأن MSW يوفّر بيانات API ثابتة — فالطلبات نفسها تعيد الأرقام نفسها في كل مرة.
 
-Run the tests to generate baseline screenshots:
+شغّل الاختبارات لتوليد لقطات الشاشة الأساسية:
 
 ```bash
 pnpm exec playwright test tests/e2e/visual.spec.ts --update-snapshots
 ```
 
-This creates reference screenshots in the snapshots directory. These are the “expected” images that future test runs will compare against.
+يُنشئ هذا لقطات شاشة مرجعية في دليل اللقطات. وهذه هي الصور «المتوقّعة» التي ستقارن بها تشغيلات الاختبار المستقبلية.
 
-Run the tests again without `--update-snapshots`:
+شغّل الاختبارات مرة أخرى دون `--update-snapshots`:
 
 ```bash
 pnpm exec playwright test tests/e2e/visual.spec.ts
 ```
 
-The tests should pass because the current rendering matches the baselines you just captured.
+ينبغي أن تنجح الاختبارات لأن العرض الحالي يطابق اللقطات الأساسية التي التقطتها للتوّ.
 
-Now test the safety net. Open `packages/ui/src/tokens.css` and change the border color:
+اختبر الآن شبكة الأمان. افتح `packages/ui/src/tokens.css` وغيّر لون الحدود:
 
 ```css
 --color-border: #ff0000;
 ```
 
-Run the visual tests again:
+شغّل الاختبارات البصرية مرة أخرى:
 
 ```bash
 pnpm exec playwright test tests/e2e/visual.spec.ts
 ```
 
-The tests should fail with a screenshot diff showing red borders where gray ones were expected. This is the governance layer — the visual tests encode what the UI should look like, and any token change that deviates from the baseline produces a visible, reviewable diff.
+ينبغي أن تفشل الاختبارات بفروق في لقطة الشاشة تُظهر حدودًا حمراء حيث كانت تُتوقّع حدود رمادية. هذه هي طبقة الحوكمة: فالاختبارات البصرية تُثبّت كيف ينبغي أن تبدو الواجهة، وأي تغيير في الـ tokens يخرج عن الأساس يُنتج فروقًا مرئية قابلة للمراجعة.
 
-Revert the border color change back to `#e2e8f0`.
+أعِد لون الحدود إلى `#e2e8f0`.
 
-> **Visual regression as governance**
+> **الانحدار البصري كحوكمة**
 >
-> Architectural linting (Exercise 6) enforces package-level boundaries — who can import what. Design tokens enforce visual consistency — what colors and spacing are allowed. Visual regression tests close the feedback loop by encoding the *rendered result* of those decisions. A developer who changes `--color-border` sees exactly which pages are affected in the screenshot diff. A reviewer on the pull request can approve or reject the visual change explicitly, rather than discovering it in production.
+> يفرض التدقيق المعماري (التمرين السادس) حدود الحزم — من يحق له استيراد ماذا. وتفرض design tokens الاتساق البصري — أي الألوان والتباعد مسموح. وتُغلق اختبارات الانحدار البصري حلقة التغذية الراجعة بتثبيت *النتيجة المعروضة* لتلك القرارات. فالمطوّر الذي يغيّر `--color-border` يرى بالضبط أي الصفحات تأثّرت في فروق لقطة الشاشة. ويستطيع المراجع على طلب السحب أن يوافق على التغيير البصري أو يرفضه صراحةً، بدلًا من اكتشافه في الإنتاج.
 
-> **The `--update-snapshots` flag is intentionally manual**
+> **علم `--update-snapshots` يدوي عن قصد**
 >
-> Updating baselines requires a deliberate decision: “yes, this is what the UI should look like now.” This prevents accidental baseline drift. In CI, the tests run *without* `--update-snapshots`, so any visual change fails the build until someone explicitly updates the baselines and commits the new reference screenshots.
+> يتطلّب تحديث اللقطات الأساسية قرارًا متعمّدًا: «نعم، هكذا ينبغي أن تبدو الواجهة الآن». وهذا يمنع الانحراف العرَضي للأساس. وفي CI، تُشغَّل الاختبارات *دون* `--update-snapshots`، لذا يفشل البناء عند أي تغيير بصري حتى يحدّث أحدهم الأساس صراحةً ويُودع لقطات الشاشة المرجعية الجديدة.
 
-### Checkpoint
+### نقطة تحقق
 
-Visual regression tests are in place. Changing a token value in `tokens.css` causes a test failure with a screenshot diff. Updating the baselines requires an explicit `--update-snapshots` flag. The design system is now governed at three levels: tokens define the values, components reference them, and screenshot tests verify the rendered output.
+اختبارات الانحدار البصري أصبحت جاهزة. تغيير قيمة token في `tokens.css` يُسبّب فشل اختبار مع فروق لقطة شاشة. وتحديث اللقطات الأساسية يتطلّب علم `--update-snapshots` صريحًا. ونظام التصميم الآن محوكَم على ثلاثة مستويات: الـ tokens تعرّف القيم، والمكوّنات تشير إليها، واختبارات لقطات الشاشة تتحقّق من الناتج المعروض.
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `07-cicd-start` branch:
+إذا احتجت إلى اللحاق بالركب، فالحالة المكتملة لهذا التمرين متاحة على الفرع `07-cicd-start`:
 
 ```bash
 git checkout 07-cicd-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Dark theme via `data-theme`:** Add a `[data-theme="dark"]` block to `tokens.css` that overrides the color variables with dark values. Add a theme toggle button to the dashboard that sets `document.documentElement.dataset.theme = "dark"`. No component changes are needed — the CSS custom properties cascade automatically.
-- **Token linting with stylelint:** Write a stylelint rule (or use `stylelint-declaration-strict-value`) to flag hardcoded hex colors in component files. If a component uses `#2563eb` directly instead of `var(--color-primary)`, the linter should warn. This prevents regression to hardcoded values after migration.
-- **Token documentation:** Generate a visual token reference page that renders every color, spacing, and radius value from `tokens.css` in a grid. This gives designers and developers a shared reference that stays in sync with the code.
+- **سمة داكنة عبر `data-theme`:** أضف كتلة `[data-theme="dark"]` إلى `tokens.css` تتجاوز متغيّرات الألوان بقيم داكنة. وأضف زر تبديل للسمة في لوحة المعلومات يضبط `document.documentElement.dataset.theme = "dark"`. ولا حاجة إلى أي تغييرات في المكوّنات — فخصائص CSS المخصّصة تتوارث تلقائيًا.
+- **تدقيق الـ tokens باستخدام stylelint:** اكتب قاعدة stylelint (أو استخدم `stylelint-declaration-strict-value`) للإبلاغ عن الألوان السداسية العشرية المثبّتة في ملفات المكوّنات. فإذا استخدم مكوّن ما `#2563eb` مباشرةً بدلًا من `var(--color-primary)`، ينبغي أن ينبّه المدقّق. وهذا يمنع العودة إلى القيم المثبّتة بعد الترحيل.
+- **توثيق الـ tokens:** ولّد صفحة مرجعية بصرية للـ tokens تعرض كل قيمة لون وتباعد ونصف قطر من `tokens.css` في شبكة. وهذا يمنح المصمّمين والمطوّرين مرجعًا مشتركًا يبقى متزامنًا مع الشيفرة.
 
-## What’s Next
+## ما التالي
 
-You have a connected design system with visual regression tests catching unintended changes. But none of this runs automatically on pull requests. In the next exercise, you’ll build a GitHub Actions CI pipeline that uses Turborepo for caching and runs typecheck, lint, test, and build on every push — turning these local checks into an automated quality gate.
+أصبح لديك نظام تصميم مترابط مع اختبارات انحدار بصري تلتقط التغييرات غير المقصودة. لكن لا شيء من هذا يعمل تلقائيًا على طلبات السحب. في التمرين التالي، ستبني خط CI على GitHub Actions يستخدم Turborepo للتخزين المؤقت ويشغّل فحص الأنواع والتدقيق والاختبار والبناء عند كل دفعة — محوّلًا هذه الفحوص المحلية إلى بوابة جودة آلية.

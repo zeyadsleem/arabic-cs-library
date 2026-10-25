@@ -1,24 +1,24 @@
 ---
-title: "Reporters in Vitest"
-lang: en
+title: "المُبلِّغون في Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/vitest-reporters"
 ---
 
-Reporters are what you see in your terminal when you run your tests. It turns out that there are some options here. I’ve almost always used the built-in, default reporter. But, maybe you want something different. Or maybe, you *need* a different format for some other kind of tooling to ingest or something.
+المُبلِّغون (reporters) هم ما تراه في طرفيتك عند تشغيل اختباراتك. اتضح أن هناك بعض الخيارات هنا. لطالما استخدمت المُبلِّغ المدمج الافتراضي تقريبًا دائمًا. لكن ربما تريد شيئًا مختلفًا. أو ربما *تحتاج* إلى صيغة مختلفة لبعض الأدوات الأخرى لتستوعبها أو ما شابه.
 
-### Default Reporter
+### المُبلِّغ الافتراضي
 
-By default, Vitest goes with a pretty simple format in your terminal. It’s essentially the *classic newsroom feel*: you get a list of all test suites, along with which tests passed or failed.
+افتراضيًا، يعتمد Vitest صيغة بسيطة جدًا في طرفيتك. إنها أساسًا *إحساس غرفة الأخبار الكلاسيكي*: تحصل على قائمة بكل مجموعات الاختبارات، مع ما نجح منها وما فشل.
 
-Let’s simplify this with a quick setup and run:
+لنبسّط هذا بتهيئة وتشغيل سريعين:
 
-#### Install Vitest (if You Haven’t already)
+#### ثبّت Vitest (إن لم تكن قد فعلت)
 
 ```bash
 npm install vitest --save-dev
 ```
 
-#### Create a Simple Test File (`example.test.js`)
+#### أنشئ ملف اختبار بسيطًا (`example.test.js`)
 
 ```javascript
 import { expect, test } from 'vitest';
@@ -32,13 +32,13 @@ test('this one will fail', () => {
 });
 ```
 
-#### Run Your Tests
+#### شغّل اختباراتك
 
 ```bash
 npx vitest
 ```
 
-Here’s the output from your terminal:
+إليك المخرجات من طرفيتك:
 
 ```typescript
  PASS  example.test.js > math works
@@ -53,47 +53,47 @@ Here’s the output from your terminal:
 Test Files  1 failed | 1 passed
 ```
 
-Simple and to the point, right? But sometimes we want **more** or **less**.
+بسيط وفي صلب الموضوع، أليس كذلك؟ لكن أحيانًا نريد **أكثر** أو **أقل**.
 
-### Built-in Reporters
+### المُبلِّغون المدمجون
 
-Vitest comes with a bunch of built-in reporters like your standard “news anchors,” each with a different style of reporting the testing situation. Here are some of the most commonly used ones:
+يأتي Vitest مع مجموعة من المُبلِّغين المدمجين مثل «مذيعي الأخبار» المعتادين، ولكل منهم أسلوب مختلف في الإبلاغ عن حالة الاختبار. إليك بعض أكثرها استخدامًا:
 
-#### Dot Reporter
+#### مُبلِّغ النقاط
 
-The **dot** reporter is for people who think the terminal’s main job is to stay as quiet and non-verbose as possible. It gives you a dot for every test, and a failure means the dot will turn red. Think of it like the minimalist approach to testing:
+مُبلِّغ **dot** لمن يرون أن وظيفة الطرفية الأساسية هي أن تبقى هادئة وغير مطوّلة قدر الإمكان. يعطيك نقطة لكل اختبار، والفشل يعني أن النقطة تتحول إلى الحمراء. فكّر فيه كالمقاربة الأقلية في الاختبار:
 
 ```bash
 npx vitest --reporter dot
 ```
 
-And here’s what it’ll output:
+وإليك ما سيخرجه:
 
 ```typescript
   ..F
 ```
 
-Translation: Two tests passed (.), and one failed (F). Short, sweet, and ready for your brain to decode it.
+الترجمة: نجح اختباران (.) وفشل واحد (F). قصير ولطيف وجاهز ليفكّ شيفرته دماغك.
 
-#### Verbose Reporter
+#### المُبلِّغ المطوّل
 
-Maybe you’re more of a *give-me-everything* kinda person. If you want your test output to feel like a full log of basically every tiny thing going on, the **verbose** reporter is your jam.
+ربما أنت من نوع *أعطني كل شيء*. إن أردت أن تشعر مخرجات اختبارك كسجل كامل لكل صغيرة وجليلة تحدث، فمُبلِّغ **verbose** هو خيارك.
 
 ```bash
 npx vitest --reporter verbose
 ```
 
-With this, you’ll get a blow-by-blow account including the test suites, individual tests, and detailed results. Verbose is like the sports commentator that describes the entire game in full detail.
+بهذا ستحصل على سرد تفصيلي خطوة بخطوة يشمل مجموعات الاختبارات والاختبارات الفردية والنتائج المفصّلة. المُبلِّغ المطوّل كالمعلّق الرياضي الذي يصف المباراة كلها بتفصيل كامل.
 
-#### JSON Reporter
+#### مُبلِّغ JSON
 
-Sometimes, we’re not even interested in human-readable formats. Who needs it, right? Maybe you’re plotting to feed your test results into some external dashboard or CI/CD pipeline as part of an automated process. The **json** reporter will output your test results in a JSON object:
+أحيانًا لا نهتم حتى بالصيغ المقروءة للبشر. من يحتاجها، أليس كذلك؟ ربما تخطّط لتغذية نتائج اختبارك في لوحة معلومات خارجية أو خط أنابيب CI/CD كجزء من عملية آلية. سيخرج مُبلِّغ **json** نتائج اختبارك في كائن JSON:
 
 ```bash
 npx vitest --reporter json
 ```
 
-Here’s a simplified version of the output:
+إليك نسخة مبسّطة من المخرجات:
 
 ```json
 {
@@ -112,15 +112,15 @@ Here’s a simplified version of the output:
 }
 ```
 
-#### Tap Reporter
+#### مُبلِّغ Tap
 
-For old-school engineers or teams using certain CI systems, the **tap** format (Test Anything Protocol) is a time-tested tool you’ll recognize. This spits out the results in a format which is designed for other systems to process:
+للمهندسين القدامى أو الفرق التي تستخدم أنظمة CI معيّنة، صيغة **tap** (بروتوكول Test Anything Protocol) أداة مجرَّبة عبر الزمن ستعرفها. إنها تُخرج النتائج بصيغة مصمّمة لتعالجها أنظمة أخرى:
 
 ```bash
 npx vitest --reporter tap
 ```
 
-You’ll get output like this:
+ستحصل على مخرجات كهذه:
 
 ```typescript
 TAP version 13
@@ -129,45 +129,45 @@ ok 1 math works
 not ok 2 this one will fail
 ```
 
-Yep, it’s that minimal and direct. It’s all about the machines, man.
+نعم، بهذه البساطة والمباشرة. الأمر كله للآلات يا صاحبي.
 
-### Combining Reporters
+### دمج المُبلِّغين
 
-What if you want the best of both worlds? Say you want the **dot** reporter for your command-line scanning, and the **json** reporter to send results to CI?
+ماذا لو أردت أفضل ما في العالمين؟ لنفترض أنك تريد مُبلِّغ **dot** لمسح سطر الأوامر، ومُبلِّغ **json** لإرسال النتائج إلى CI؟
 
-Good news, you can totally combine them together, like ketchup and mustard. Just pass them both:
+خبر سار: يمكنك دمجهما معًا تمامًا، كالكاتشب والخردل. مرّر كليهما فقط:
 
 ```bash
 npx vitest --reporter dot --reporter json
 ```
 
-Boom. Now you’ve got dots in your terminal and JSON data flying wherever you want it!
+بوم. الآن لديك نقاط في طرفيتك وبيانات JSON تطير حيثما تريدها!
 
-## Custom Reporters
+## المُبلِّغون المخصصون
 
-You’ve got your tests running with Vitest, and everything looks shiny… except maybe the default output doesn’t scratch that developer itch, right? Maybe you’ve got a VIP watching over your CI pipeline who’s like, “It’s fine, but I wish it looked *cooler*.”
+اختباراتك تعمل الآن مع Vitest، وكل شيء يبدو لامعًا… إلا أن المخرجات الافتراضية ربما لا تحكّ حكة المطوّر تلك، أليس كذلك؟ ربما لديك شخص مهم يراقب خط أنابيب CI لديك ويقول: «لا بأس، لكني أتمنى لو بدا *أجمل*».
 
-Or maybe you’re staring at your terminal and thinking, “Could this have more info—*or*, could it bless me with *less* info?” Time to roll up your sleeves and whip up a **custom reporter**.
+أو ربما تحدّق في طرفيتك وتفكّر: «هل يمكن أن تحمل معلومات أكثر — *أو* أن تكرمني بمعلومات *أقل*؟» حان وقت رفع الأكمام وإعداد **مُبلِّغ مخصص**.
 
-Vitest lets you create custom reporters to control what gets spit out in your command line. Let’s walk through crafting a custom reporter that’ll make your tests feel more at home, whether that’s jazzed up or minimalistic.
+يتيح لك Vitest إنشاء مُبلِّغين مخصصين للتحكم في ما يُخرجه سطر أوامرك. لنمضِ في صناعة مُبلِّغ مخصص يجعل اختباراتك تشعر بأنها في موطنها، سواء كان ذلك مبهرجًا أو أقليًا.
 
-## Why Custom Reporters Matter
+## لماذا تهم المُبلِّغون المخصصون
 
-Imagine this: you’ve got a CI pipeline breaking *occasionally* (ugh), and you need to get to the root cause ASAP. The default reporter’s output is okay, but what if you could give it just a *bit* more context? Custom reporters allow you to surface specific information that’s helpful in your scenario—whether that’s cleaner logs, specific metrics, or a creative touch that livens up your test reports.
+تخيّل هذا: خط أنابيب CI لديك ينكسر *أحيانًا* (أوف)، وتحتاج إلى الوصول إلى السبب الجذري في أسرع وقت. مخرجات المُبلِّغ الافتراضي مقبولة، لكن ماذا لو أمكنك منحها *قليلًا* من السياق الإضافي؟ تتيح لك المُبلِّغون المخصصون إبراز معلومات محددة مفيدة في حالتك — سواء كان ذلك سجلات أنظف أو مقاييس محددة أو لمسة إبداعية تنعش تقارير اختبارك.
 
-Some other hypothetical use cases:
+بعض حالات الاستخدام الافتراضية الأخرى:
 
-- Making CEOs and managers feel *something* when they see test results.
-- Addressing special requirements for audit or compliance reasons.
-- Controlling the noise level—sometimes you just want the deets, not the fanfare.
+- جعل الرؤساء والمديرين يشعرون *بشيء* عندما يرون نتائج الاختبار.
+- تلبية متطلبات خاصة لأسباب تدقيق أو امتثال.
+- التحكم في مستوى الضجيج — أحيانًا تريد التفاصيل فقط، لا الاستعراض.
 
-## Setting Up a Custom Reporter
+## إعداد مُبلِّغ مخصص
 
-Great, the “why” is clear. Now let’s get our hands dirty and write one.
+عظيم، «لماذا» واضحة الآن. لنبدأ العمل ونكتب واحدًا.
 
-Vitest gives you a hook into the test runner through a **Reporter API**. The basic structure involves creating a class with methods that correspond to certain test events—like when a test starts, finishes, or (heaven help us) fails.
+يمنحك Vitest خُطّافًا إلى مشغّل الاختبارات عبر **Reporter API**. تتضمن البنية الأساسية إنشاء صنف بتابع أو توابع تقابل أحداث اختبار معيّنة — مثل بدء اختبار أو انتهائه أو (أعاننا الله) فشله.
 
-Let’s craft a simple custom reporter that says, “Hello, testing world,” whenever a test starts.
+لنصنع مُبلِّغًا مخصصًا بسيطًا يقول «مرحبًا يا عالم الاختبار» كلما بدأ اختبار.
 
 ```javascript
 // hello-world-reporter.js
@@ -187,11 +187,11 @@ export class HelloWorldReporter {
 }
 ```
 
-## Hooking It Into Vitest
+## توصيله بـ Vitest
 
-Okay, we’ve got the *HelloWorldReporter* locked and loaded. Now we just need to tell Vitest to use it.
+حسنًا، صار *HelloWorldReporter* جاهزًا للاستخدام. الآن نحتاج فقط إلى إخبار Vitest باستخدامه.
 
-Here’s how you connect it in your `vitest.config.js` file.
+إليك كيفية توصيله في ملف `vitest.config.js`.
 
 ```javascript
 import { defineConfig } from 'vitest/config';
@@ -204,11 +204,11 @@ export default defineConfig({
 });
 ```
 
-In this case, `reporters` expects an array. You could add multiple reporters to combine custom ones with Vitest’s built-ins (like `['default', new HelloWorldReporter()]`). It’s basically like building a superhero team of test output handlers.
+في هذه الحالة، تتوقع `reporters` مصفوفة. يمكنك إضافة عدة مُبلِّغين لدمج المخصصين مع المدمجين في Vitest (مثل `['default', new HelloWorldReporter()]`). الأمر أشبه ببناء فريق أبطال خارقين لمعالجة مخرجات الاختبار.
 
-## Running Your Tests with the Custom Reporter
+## تشغيل اختباراتك مع المُبلِّغ المخصص
 
-Boom! That’s it. Now, when you run `vitest`, you’ll start seeing your custom messages come through.
+بوم! هذا كل شيء. الآن، عند تشغيل `vitest`، ستبدأ برؤية رسائلك المخصصة تظهر.
 
 ```bash
 $ vitest
@@ -217,21 +217,21 @@ $ vitest
  🎉 Hooray! Test passed: Sample Test
 ```
 
-If a test fails? Expect some fireworks:
+إن فشل اختبار؟ توقّع بعض الألعاب النارية:
 
 ```bash
  💥 Oh no! Test failed: Crazy Edge Case
 ```
 
-## Where to Take This Next
+## إلى أين تأخذ هذا بعد ذلك
 
-Custom reporters vary *wildly* depending on what you’re trying to achieve. Maybe you want to generate a file with summary stats, spit out a more compact report for quicker reads, or build a visual dashboard from the results.
+تتنوّع المُبلِّغون المخصصون *تنوّعًا هائلًا* حسب ما تحاول تحقيقه. ربما تريد توليد ملف بإحصاءات ملخّصة، أو إخراج تقرير أكثر إحكامًا لقراءة أسرع، أو بناء لوحة معلومات بصرية من النتائج.
 
-You can go as simple or complex as you need. Heck, you could even pipe your results into a `Slack` webhook or have them broadcast in Morse code over the office speakers (not that I’d recommend it, but *hey*, it’s your world).
+يمكنك المضي ببساطة أو تعقيد ما تحتاج. بل يمكنك حتى تمرير نتائجك إلى webhook في `Slack` أو بثّها بشيفرة مورس عبر مكبّرات صوت المكتب (لا أنصح بذلك، لكن *يا*، إنه عالمك).
 
-Key things you can hook into:
+أهم الأشياء التي يمكنك الارتباط بها:
 
-- `onTestStart(test)` – The moment a test begins
-- `onTestPass(test)` – When a test sails through
-- `onTestFail(test)` – Your test hits the *failure iceberg*
-- `onRunComplete(testResults)` – Everything’s done and dusted
+- `onTestStart(test)` – لحظة بدء الاختبار
+- `onTestPass(test)` – عندما يمرّ اختبار بسلام
+- `onTestFail(test)` – عندما يرتطم اختبارك بـ*جبل الفشل الجليدي*
+- `onRunComplete(testResults)` – عندما ينتهي كل شيء ويُطوى

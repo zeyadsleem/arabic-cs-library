@@ -1,10 +1,10 @@
 ---
-title: "Type Branding with Zod"
-lang: en
+title: "وسم الأنواع مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-branding-with-zod"
 ---
 
-You can “brand” your types so that TypeScript sees them as unique, even if they’re plain strings or numbers at runtime.
+يمكنك «وسم» أنواعك بحيث يراها TypeScript فريدة، حتى لو كانت في وقت التشغيل مجرّد نصوص أو أعداد عادية.
 
 ```typescript
 import { z } from 'zod';
@@ -30,6 +30,6 @@ sendEmail('unbranded string');
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().email()` is preferably written as `z.email()`. The `.brand()` method also accepts an optional second argument (`"in"`, `"out"`, or `"inout"`) to control where the brand appears in the inferred type.
+> في Zod v4، يُفضَّل كتابة `z.string().email()` بالصيغة `z.email()`. كما تقبل طريقة `.brand()` وسيطًا ثانيًا اختياريًا (`"in"` أو `"out"` أو `"inout"`) للتحكّم في موضع الوسم في النوع المستنتَج.
 
-Branding is purely a TypeScript compile-time trick, but it helps you avoid passing, for example, a plain string where an `EmailAddress` is required. You can brand objects, too.
+الوسم مجرّد حيلة في TypeScript وقت الترجمة، لكنه يساعدك على تجنّب تمرير نص عادي — مثلًا — حيث يُطلب `EmailAddress`. ويمكنك وسم الكائنات أيضًا.

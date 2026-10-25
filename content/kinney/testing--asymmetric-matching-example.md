@@ -1,12 +1,12 @@
 ---
-title: "Handling Large Data Structures In Testing"
-lang: en
+title: "التعامل مع بنى بيانات كبيرة في الاختبار"
+lang: ar
 source: "https://stevekinney.com/courses/testing/asymmetric-matching-example"
 ---
 
-The little examples that we have are easy to grok, but they don’t always properly demonstrate what you might see in the wild. (This is mostly because it can take days or weeks to fully grok a large code base, so I’m choosing to simplify things a bit.)
+الأمثلة الصغيرة التي لدينا سهلة الفهم، لكنها لا تعرض دائمًا ما قد تراه في الواقع على نحو سليم. (هذا في الغالب لأن استيعاب قاعدة شيفرة كبيرة بالكامل قد يستغرق أيامًا أو أسابيع، لذا أختار تبسيط الأمور قليلًا.)
 
-I’m not going to bore you with the details of the application that I work on, but we have these things called **Workflows**, which have an **Event History**, that is made up from **Events**. I grabbed one of those raw events. For your viewing pleasure, here it is:
+لن أُشغلك بتفاصيل التطبيق الذي أعمل عليه، لكن لدينا أشياء تسمى **سير العمل (Workflows)**، ولها **سجل أحداث (Event History)** يتكوّن من **أحداث (Events)**. أخذت أحد تلك الأحداث الخام. من أجل متعة مشاهدتك، ها هو:
 
 ```json
 {
@@ -258,6 +258,6 @@ I’m not going to bore you with the details of the application that I work on, 
 }
 ```
 
-Honestly, I don’t expect you to grok it. I just want you to recognize that it’s big. In our application, we take that raw data and we massage it into a slightly more managable data structure, but it’s still pretty gnarly.
+بصراحة، لا أتوقع منك استيعابه. أريد فقط أن تدرك أنه كبير. في تطبيقنا، نأخذ تلك البيانات الخام ونعيد تشكيلها إلى بنية بيانات أكثر قابلية للإدارة قليلًا، لكنها لا تزال معقدة.
 
-[Asymmetric Matchers](https://stevekinney.com/courses/testing/asymmetric-matchers) allow me to make some lightweight assumptions that will keep my tests honed in on exactly what they should be testing. If another part of the data structure is changes, it doesn’t really matter to me.
+[المطابقات غير المتماثلة](https://stevekinney.com/courses/testing/asymmetric-matchers) تتيح لي وضع بعض الافتراضات الخفيفة التي تُبقي اختباراتي مركّزة على ما ينبغي أن تختبره بالضبط. وإن تغيّر جزء آخر من بنية البيانات، فلا يهمني كثيرًا.

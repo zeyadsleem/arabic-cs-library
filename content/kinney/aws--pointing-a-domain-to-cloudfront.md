@@ -1,26 +1,26 @@
 ---
-title: "Pointing a Domain to CloudFront"
-lang: en
+title: "توجيه نطاق إلى CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/pointing-a-domain-to-cloudfront"
 ---
 
-Your CloudFront distribution is live, but right now you access it at something like `d111111abcdef8.cloudfront.net`. That’s not what you ship to production. You want users to visit `example.com` and have it serve your frontend through CloudFront—with your ACM certificate, your cache behaviors, your origin access control. This is where Route 53 ties the infrastructure together: you create DNS records that point your domain at the distribution, and the CloudFront URL disappears behind your brand.
+توزيع CloudFront الخاص بك أصبح يعمل، لكنك تصل إليه الآن عبر شيء مثل `d111111abcdef8.cloudfront.net`. هذا ليس ما تنشره في الإنتاج. تريد أن يزور المستخدمون `example.com` ويُخدَم لهم واجهتك الأمامية عبر CloudFront—بشهادة ACM الخاصة بك، وسلوكيات ذاكرة التخزين المؤقت، وتحكّم وصول الأصل. هنا تربط Route 53 البنية التحتية ببعضها: تنشئ سجلات DNS تشير بنطاقك إلى التوزيع، فيختفي رابط CloudFront خلف علامتك التجارية.
 
-If you want AWS’s version of the routing mechanics while you work, keep the [Route 53 DNS configuration guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) and the [`aws route53 change-resource-record-sets` command reference](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) open.
+إذا أردت نسخة AWS من آليات التوجيه أثناء عملك، فأبقِ [دليل تهيئة DNS في Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) و[مرجع أمر `aws route53 change-resource-record-sets`](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) مفتوحين.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-Before you create DNS records, you need three things in place:
+قبل أن تنشئ سجلات DNS، تحتاج إلى ثلاثة أشياء جاهزة:
 
-1. **A CloudFront distribution** with your domain listed as an **alternate domain name (CNAME)**. You configured the distribution in [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) and added the aliases in [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate). If your distribution doesn’t list `example.com` (and optionally `www.example.com`) as an alternate domain name, Route 53 will refuse to create an alias record pointing to it.
-2. **An ACM certificate** covering your domain, attached to the distribution. You requested it in [Requesting a Certificate in ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm), validated it in [DNS Validation vs. Email Validation](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation), and attached it in [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate). The certificate must be in `us-east-1`.
-3. **A Route 53 hosted zone** for your domain, with nameservers configured at your registrar. You set that up in the domain and DNS foundation lessons.
+1. **توزيع CloudFront** مُدرج فيه نطاقك كـ**اسم نطاق بديل (CNAME)**. هيّأت التوزيع في [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) وأضفت الأسماء المستعارة في [إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate). إذا لم يُدرج توزيعك `example.com` (واختياريًا `www.example.com`) كاسم نطاق بديل، فسترفض Route 53 إنشاء سجل alias يشير إليه.
+2. **شهادة ACM** تغطي نطاقك، ومرفقة بالتوزيع. طلبتها في [طلب شهادة في ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm)، وتحقّقت منها في [التحقق عبر DNS مقابل التحقق عبر البريد الإلكتروني](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation)، وأرفقتها في [إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate). يجب أن تكون الشهادة في `us-east-1`.
+3. **منطقة مستضافة في Route 53** لنطاقك، مع خوادم أسماء مهيّأة عند مسجّل النطاق لديك. أعددت ذلك في دروس أساس النطاقات وDNS.
 
-## Creating an A Alias Record for the Apex Domain
+## إنشاء سجل A Alias للنطاق الجذري
 
-The most common setup is pointing the bare domain (`example.com`) to your CloudFront distribution. Since `example.com` is the **zone apex**, you can’t use a CNAME record here (we cover why in [Alias Records vs. CNAME Records](https://stevekinney.com/courses/aws/alias-records-vs-cname-records)). Instead, you use a Route 53 **alias record**.
+الإعداد الأكثر شيوعًا هو توجيه النطاق المجرّد (`example.com`) إلى توزيع CloudFront. ولأن `example.com` هو **جذر المنطقة**، لا يمكنك استخدام سجل CNAME هنا (نغطي السبب في [سجلات Alias مقابل سجلات CNAME](https://stevekinney.com/courses/aws/alias-records-vs-cname-records)). بدلًا من ذلك، تستخدم **سجل alias** في Route 53.
 
-First, get your hosted zone ID:
+أولًا، احصل على معرّف منطقتك المستضافة:
 
 ```bash
 aws route53 list-hosted-zones \
@@ -32,7 +32,7 @@ aws route53 list-hosted-zones \
 ["/hostedzone/Z1234567890ABC"]
 ```
 
-Now create the alias A record. CloudFront distributions always use `Z2FDTNDATAQYW2` as the hosted zone ID for alias targets—this is a fixed value for all CloudFront distributions globally:
+الآن أنشئ سجل A من نوع alias. تستخدم توزيعات CloudFront دائمًا `Z2FDTNDATAQYW2` كمعرّف المنطقة المستضافة لأهداف alias—وهي قيمة ثابتة لكل توزيعات CloudFront عالميًا:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -56,14 +56,14 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-A few things to note in that command:
+ثمة أمور قليلة جديرة بالملاحظة في ذلك الأمر:
 
-- **`HostedZoneId`** is `Z2FDTNDATAQYW2`. This isn’t your hosted zone ID—it’s the fixed identifier that Route 53 uses for all CloudFront distributions. Every alias record pointing to CloudFront uses this same value.
-- **`DNSName`** is the domain name of your CloudFront distribution (the `d111111abcdef8.cloudfront.net` value).
-- **`EvaluateTargetHealth`** is `false`. CloudFront doesn’t support Route 53 health checks, so this must always be `false` for CloudFront alias targets.
-- There is no `TTL` field. Alias records inherit the TTL from the target resource—Route 53 handles this automatically.
+- **`HostedZoneId`** هو `Z2FDTNDATAQYW2`. هذا ليس معرّف منطقتك المستضافة—بل هو المعرّف الثابت الذي تستخدمه Route 53 لكل توزيعات CloudFront. كل سجل alias يشير إلى CloudFront يستخدم القيمة نفسها.
+- **`DNSName`** هو اسم نطاق توزيع CloudFront الخاص بك (قيمة `d111111abcdef8.cloudfront.net`).
+- **`EvaluateTargetHealth`** هو `false`. لا تدعم CloudFront فحوص صحة Route 53، لذا يجب أن تكون هذه القيمة `false` دائمًا لأهداف alias الخاصة بـ CloudFront.
+- لا يوجد حقل `TTL`. ترث سجلات alias قيمة TTL من المورد الهدف—وتتولى Route 53 ذلك تلقائيًا.
 
-The response confirms the change:
+تؤكد الاستجابة التغيير:
 
 ```json
 {
@@ -75,11 +75,11 @@ The response confirms the change:
 }
 ```
 
-`PENDING` means Route 53 is propagating the change. This typically completes in under 60 seconds.
+تعني `PENDING` أن Route 53 ينشر التغيير. يكتمل هذا عادةً في أقل من 60 ثانية.
 
-## Adding an AAAA Alias Record for IPv6
+## إضافة سجل AAAA Alias لدعم IPv6
 
-CloudFront supports IPv6 by default. To ensure your domain resolves correctly for clients on IPv6 networks, create a second alias record with type `AAAA`:
+تدعم CloudFront بروتوكول IPv6 افتراضيًا. لضمان تحليل نطاقك بشكل صحيح للعملاء على شبكات IPv6، أنشئ سجل alias ثانيًا من النوع `AAAA`:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -103,19 +103,19 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-The command is identical to the A record, except `"Type"` is `"AAAA"`. Route 53 resolves the alias to the appropriate IPv6 addresses for your CloudFront distribution. (I know it feels redundant, but IPv6 support is one of those things you’ll be glad you set up from the start.)
+الأمر مطابق لسجل A، إلا أن `"Type"` هو `"AAAA"`. يحلّل Route 53 الـ alias إلى عناوين IPv6 المناسبة لتوزيع CloudFront الخاص بك. (أعلم أنه يبدو زائدًا عن الحاجة، لكن دعم IPv6 من الأشياء التي ستكون سعيدًا لأنك أعددتها من البداية.)
 
-> **Tip**
+> **نصيحة**
 >
-> You can combine both records into a single `change-resource-record-sets` call by including both changes in the `Changes` array. This is cleaner for scripts and ensures both records are created atomically.
+> يمكنك دمج السجلين في استدعاء واحد لـ `change-resource-record-sets` بتضمين التغييرين في مصفوفة `Changes`. هذا أنظف للنصوص البرمجية ويضمن إنشاء السجلين بشكل ذرّي.
 
-## Handling the www Subdomain
+## التعامل مع النطاق الفرعي www
 
-Most sites serve traffic on both `example.com` and `www.example.com`. You have two options:
+تعرض معظم المواقع حركة المرور على `example.com` و`www.example.com` معًا. لديك خياران:
 
-### Option A: Alias Records for Both
+### الخيار أ: سجلات Alias لكليهما
 
-Create the same A and AAAA alias records for `www.example.com`, pointing to the same CloudFront distribution. This means both the apex and `www` resolve directly to CloudFront:
+أنشئ سجلات alias نفسها من النوعين A وAAAA لـ `www.example.com`، تشير إلى توزيع CloudFront نفسه. هذا يعني أن الجذر و`www` يحلّان مباشرة إلى CloudFront:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -151,11 +151,11 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-Make sure `www.example.com` is listed as an alternate domain name on your CloudFront distribution, and that your ACM certificate covers it (a wildcard certificate for `*.example.com` handles this automatically).
+تأكد من أن `www.example.com` مُدرج كاسم نطاق بديل في توزيع CloudFront الخاص بك، وأن شهادة ACM تغطيه (شهادة wildcard مثل `*.example.com` تتولى ذلك تلقائيًا).
 
-### Option B: CNAME from www to Apex
+### الخيار ب: CNAME من www إلى الجذر
 
-Create a CNAME record that maps `www.example.com` to `example.com`. Since `www` isn’t the zone apex, CNAME is valid here:
+أنشئ سجل CNAME يربط `www.example.com` بـ `example.com`. ولأن `www` ليس جذر المنطقة، فسجل CNAME صالح هنا:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -180,9 +180,9 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-Option A is preferable because alias records are free (no query charges) and resolve in one step. Option B adds an extra DNS lookup and incurs standard query charges.
+الخيار أ أفضل لأن سجلات alias مجانية (بلا رسوم استعلامات) وتُحلّ في خطوة واحدة. أما الخيار ب فيضيف بحث DNS إضافيًا ويتحمّل رسوم الاستعلامات المعتادة.
 
-## With the SDK
+## مع SDK
 
 ```typescript
 import {
@@ -227,48 +227,48 @@ await r53.send(
 );
 ```
 
-The SDK lets you batch several record changes into one call without the JSON-file choreography the CLI needs. `UPSERT` is idempotent: it creates the record if it’s missing and replaces it if it exists.
+يتيح لك SDK تجميع عدة تغييرات سجلات في استدعاء واحد دون رقصة ملف JSON التي تحتاجها CLI. إن `UPSERT` عملية متساوية الأثر (idempotent): تنشئ السجل إن كان مفقودًا وتستبدله إن كان موجودًا.
 
-## Verifying DNS Resolution
+## التحقق من تحليل DNS
 
-After creating your records, verify that DNS is resolving correctly.
+بعد إنشاء سجلاتك، تحقّق من أن DNS يُحلّ بشكل صحيح.
 
-Check the A record:
+افحص سجل A:
 
 ```bash
 dig example.com A +short
 ```
 
-You should see one or more IP addresses—these are CloudFront edge server IPs. They’ll vary by region and over time; that’s expected.
+ينبغي أن ترى عنوان IP واحدًا أو أكثر—وهي عناوين IP لخوادم حافة CloudFront. ستختلف حسب المنطقة وبمرور الوقت؛ وهذا متوقع.
 
-Check the AAAA record:
+افحص سجل AAAA:
 
 ```bash
 dig example.com AAAA +short
 ```
 
-You should see one or more IPv6 addresses.
+ينبغي أن ترى عنوان IPv6 واحدًا أو أكثر.
 
-To bypass caches and query Route 53 directly, use one of the nameservers from your hosted zone:
+لتجاوز ذاكرات التخزين المؤقت والاستعلام من Route 53 مباشرةً، استخدم أحد خوادم الأسماء من منطقتك المستضافة:
 
 ```bash
 dig example.com A @ns-1234.awsdns-56.org +short
 ```
 
-If this returns the correct IPs but `dig example.com A +short` doesn’t, the records are correct at the source and you’re waiting for caches to expire.
+إذا أعاد هذا عناوين IP الصحيحة لكن `dig example.com A +short` لم يفعل، فالسجلات صحيحة عند المصدر وأنت تنتظر انتهاء صلاحية ذاكرات التخزين المؤقت.
 
-You can also verify in a browser. Navigate to `https://example.com`. If your ACM certificate is attached to the distribution and the alternate domain name is configured, you should see your site served over HTTPS with a valid certificate. Check the browser’s address bar for the lock icon.
+يمكنك أيضًا التحقق في المتصفح. انتقل إلى `https://example.com`. إذا كانت شهادة ACM مرفقة بالتوزيع واسم النطاق البديل مهيأ، فينبغي أن ترى موقعك يُخدَم عبر HTTPS بشهادة صالحة. افحص شريط عنوان المتصفح بحثًا عن أيقونة القفل.
 
-> **Warning**
+> **تحذير**
 >
-> If you see a CloudFront error like “Bad Request” or “The request could not be satisfied,” the most likely cause is that your domain isn’t listed as an alternate domain name on the CloudFront distribution. CloudFront rejects requests for hostnames it doesn’t recognize. Double-check the distribution settings in the console or run `aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --output json --query "DistributionConfig.Aliases"`.
+> إذا رأيت خطأ CloudFront مثل «Bad Request» أو «The request could not be satisfied»، فالسبب الأرجح أن نطاقك غير مُدرج كاسم نطاق بديل في توزيع CloudFront. ترفض CloudFront الطلبات لأسماء المضيف التي لا تعرفها. تحقّق مرة أخرى من إعدادات التوزيع في وحدة التحكم أو شغّل `aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --output json --query "DistributionConfig.Aliases"`.
 
-## Propagation Time
+## زمن الانتشار
 
-DNS changes in Route 53 take effect within 60 seconds on Route 53’s own nameservers. But that doesn’t mean every user on the internet sees the change immediately. Recursive resolvers around the world may have cached the old answer, and they’ll continue serving it until the TTL expires.
+تسري تغييرات DNS في Route 53 خلال 60 ثانية على خوادم أسماء Route 53 نفسها. لكن هذا لا يعني أن كل مستخدم على الإنترنت يرى التغيير فورًا. ربما خزّنت المحلّلات العودية حول العالم الإجابة القديمة مؤقتًا، وستستمر في تقديمها حتى تنتهي صلاحية TTL.
 
-If you set a TTL of 300 seconds (5 minutes) on the previous record, the worst case is that some users see the old record for up to 5 minutes after the change. For new records that didn’t previously exist, there’s no old cache to expire—the record is visible as soon as Route 53 propagates it.
+إذا ضبطت TTL بقيمة 300 ثانية (5 دقائق) على السجل السابق، فأسوأ حالة هي أن يرى بعض المستخدمين السجل القديم لمدة تصل إلى 5 دقائق بعد التغيير. أما السجلات الجديدة التي لم تكن موجودة سابقًا، فلا ذاكرة قديمة تنتهي صلاحيتها—يصبح السجل مرئيًا بمجرد أن ينشره Route 53.
 
-## What You Built
+## ما الذي بنيته
 
-You created A and AAAA alias records that point your domain to your CloudFront distribution. Your site is now accessible at `example.com` over HTTPS, served through CloudFront’s global edge network, with content pulled from your S3 bucket. This is the stack: S3 stores the files, CloudFront distributes them, ACM secures them, and Route 53 makes them reachable at your domain.
+أنشأت سجلات alias من النوعين A وAAAA توجّه نطاقك إلى توزيع CloudFront الخاص بك. أصبح موقعك الآن متاحًا على `example.com` عبر HTTPS، يُخدَم من خلال شبكة الحافة العالمية لـ CloudFront، مع سحب المحتوى من حاوية S3 الخاصة بك. هذه هي الحزمة: S3 يخزّن الملفات، وCloudFront يوزّعها، وACM يؤمّنها، وRoute 53 يجعلها قابلة للوصول على نطاقك.

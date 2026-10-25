@@ -1,16 +1,16 @@
 ---
-title: "Data Fetching and Runtime Validation"
-lang: en
+title: "جلب البيانات والتحقّق وقت التشغيل"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation"
 ---
 
-When you’re fetching data in React, TypeScript gives you excellent compile-time safety—but it can’t magically guarantee that the API you’re calling returns what you expect. That’s where runtime validation comes in, bridging the gap between TypeScript’s static analysis and the wild, unpredictable world of external data sources. React 19’s improved async patterns make this even more critical (and thankfully, more elegant) to get right.
+حين تجلب البيانات في React، يمنحك TypeScript أمانًا ممتازًا وقت التجميع — لكنّه لا يستطيع أن يضمن بشكل سحري أنّ الواجهة البرمجية التي تستدعيها تُعيد ما تتوقّعه. وهنا يأتي دور التحقّق وقت التشغيل، الذي يسدّ الفجوة بين التحليل الساكن في TypeScript وعالم البيانات الخارجية الفوضوي غير المتوقّع. وتجعل أنماط اللاتزامنية المحسّنة في React 19 هذا الأمر أكثر أهمية (لحسن الحظ، وبأناقة أكبر) في ضبطه.
 
-Here’s the fundamental challenge: your TypeScript types are just compiler hints that disappear at runtime, but your APIs can return anything—malformed data, missing fields, or completely unexpected structures. One typo in a backend migration, and suddenly your `user.firstName` is `undefined`, breaking your entire component tree in ways TypeScript never warned you about.
+وهنا التحدّي الجوهري: أنواع TypeScript ليست سوى تلميحات للمُصرِّف تختفي وقت التشغيل، لكنّ واجهاتك البرمجية قد تُعيد أي شيء — بيانات مشوّهة أو حقول ناقصة أو بنى لا تتوقّعها البتّة. وحرفٌ واحد خطأ في ترحيلٍ في الخادم، وفجأة يصبح `user.firstName` بقيمة `undefined`، فينهار شجرة مكوّناتك بالكامل بطرق لم ينبّهك إليها TypeScript يومًا.
 
-## The Problem with Naive Type Assertions
+## المشكلة مع تأكيدات النوع الساذجة
 
-Let’s start with what not to do. You’ve probably seen (or written) code like this:
+لنبدأ بما ينبغي ألّا تفعله. ربّما رأيت (أو كتبت) شيفرة كهذه:
 
 ```typescript
 // ❌ Bad: Just assuming the API returns what you expect
@@ -28,17 +28,17 @@ async function fetchUser(id: string): Promise<User> {
 }
 ```
 
-This approach is brittle because you’re making an unsafe type assertion (`as User`) without actually validating that the data matches your expectations. When the backend inevitably changes or returns an error response, your component will explode in unpredictable ways.
+هذا النهج هشّ لأنّك تُجري تأكيد نوع غير آمن (`as User`) من دون أن تتحقّق فعليًا من مطابقة البيانات لتوقّعاتك. وحين يتغيّر الخادم لا محالة أو يُعيد استجابة خطأ، سينفجر مكوّنك بطرق غير متوقّعة.
 
-## Enter Runtime Validation with Zod
+## الدخول إلى التحقّق وقت التشغيل مع Zod
 
-[Zod](https://zod.dev/) is the gold standard for TypeScript-first schema validation. It lets you define schemas that both validate at runtime *and* infer TypeScript types—giving you a single source of truth for your data shapes.
+[Zod](https://zod.dev/) هو المعيار الذهبي للتحقّق من المخطّطات (schemas) في عالم TypeScript. فهو يتيح لك تعريف مخطّطات تتحقّق من البيانات وقت التشغيل *و* تستنتج أنواع TypeScript في آنٍ واحد — مصدرًا واحدًا للحقيقة بشأن أشكال بياناتك.
 
 ```bash
 npm install zod
 ```
 
-Here’s how to rewrite our user fetching with proper validation:
+وهكذا نعيد كتابة جلب المستخدم لدينا مع تحقّق سليم:
 
 ```typescript
 import { z } from 'zod';
@@ -68,11 +68,11 @@ async function fetchUser(id: string): Promise<User> {
 }
 ```
 
-Now you get both compile-time type safety and runtime validation. If the API returns malformed data, Zod will throw a descriptive error rather than letting invalid data silently corrupt your component state.
+هكذا تحصل الآن على أمان الأنواع وقت التجميع والتحقّق وقت التشغيل معًا. فإن أعادت الواجهة البرمجية بيانات مشوّهة، فإنّ Zod سيرمي خطأً وصفيًا بدلًا من أن يسمح للبيانات غير الصالحة بأن تُفسد حالة مكوّنك بصمت.
 
-## Handling Validation Gracefully
+## التعامل مع التحقّق بأناقة
 
-Sometimes you want to handle validation failures more gracefully than throwing exceptions. Zod’s `safeParse` method returns a result object instead:
+أحيانًا تريد التعامل مع فشل التحقّق بأسلوب أنيق أكثر من رمي الاستثناءات. في هذه الحالة تُعيد طريقة `safeParse` في Zod كائن نتيجة بدلًا من ذلك:
 
 ```typescript
 async function fetchUserSafely(id: string): Promise<User | null> {
@@ -100,11 +100,11 @@ async function fetchUserSafely(id: string): Promise<User | null> {
 }
 ```
 
-This approach lets you handle network failures, HTTP errors, and validation failures with different strategies—maybe you retry on network errors but log and return null on validation failures.
+يتيح لك هذا النهج التعامل مع أعطال الشبكة وأخطاء HTTP وفشل التحقّق باستراتيجيات مختلفة — ربّما تُعيد المحاولة عند أخطاء الشبكة لكنّك تسجّل وتُعيد null عند فشل التحقّق.
 
-## React 19 and the `use` Hook
+## React 19 والخُطّاف `use`
 
-React 19 introduces the experimental `use` hook, which can consume promises directly. This pairs beautifully with validated data fetching:
+يقدّم React 19 الخُطّاف التجريبي `use` الذي يستطيع استهلاك الوعود مباشرةً. وهذا يتوافق بسلاسة مع جلب البيانات المُتحقَّق منه:
 
 ```typescript
 import { use, Suspense } from 'react';
@@ -137,15 +137,15 @@ function App() {
 }
 ```
 
-Since our `fetchUser` function already includes validation, any malformed data will cause the promise to reject, triggering React’s error boundary handling rather than rendering broken UI.
+وبما أنّ دالة `fetchUser` لدينا تتضمّن التحقّق بالفعل، فإنّ أي بيانات مشوّهة ستُجعل الوعد يُرفض، فتُطلق معالجة حدّ الأخطاء في React بدلًا من تصيير واجهة مكسورة.
 
-> **Tip**
+> **تلميح**
 >
-> The `use` hook is still experimental as of React 19. For production code, stick with traditional async patterns or libraries like React Query until it stabilizes.
+> لا يزال الخُطّاف `use` تجريبيًا حتى الآن في React 19. وفي شيفرة الإنتاج، التزم بأنماط اللاتزامنية التقليدية أو بمكتبات مثل React Query حتى يستقرّ.
 
-## Building a Robust Data Fetching Hook
+## بناء خُطّاف متين لجلب البيانات
 
-Let’s combine everything into a reusable pattern that handles loading states, errors, and validation:
+لنجمع كل ذلك معًا في نمط قابل لإعادة الاستخدام يتعامل مع حالات التحميل والأخطاء والتحقّق:
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -215,7 +215,7 @@ function useValidatedFetch<T>(url: string, schema: z.ZodSchema<T>, dependencies:
 }
 ```
 
-Now you can use this hook anywhere you need validated data fetching:
+والآن يمكنك استخدام هذا الخُطّاف في أي موضع تحتاج فيه إلى جلب بيانات مُتحقَّق منها:
 
 ```typescript
 function UserProfile({ userId }: { userId: string }) {
@@ -242,9 +242,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Handling Complex Data Shapes
+## التعامل مع أشكال البيانات المعقّدة
 
-Real-world APIs often return nested objects, arrays, and optional fields. Zod excels at handling these complex scenarios:
+غالبًا ما تُعيد الواجهات البرمجية في العالم الحقيقي كائنات متداخلة ومصفوفات وحقولًا اختيارية. وZod متميّز في التعامل مع هذه السيناريوهات المعقّدة:
 
 ```typescript
 const AddressSchema = z.object({
@@ -269,18 +269,18 @@ const DetailedUserSchema = z.object({
 type DetailedUser = z.infer<typeof DetailedUserSchema>;
 ```
 
-This schema handles:
+وهذا المخطّط يتعامل مع:
 
-- Nested objects (`address`)
-- Optional fields (`.optional()`)
-- Arrays with defaults (`.default([])`)
-- Flexible key-value objects (`z.record()`)
-- Data transformations (`.transform()`)
-- Custom validation with regex patterns
+- الكائنات المتداخلة (`address`)
+- الحقول الاختيارية (`.optional()`)
+- المصفوفات مع قيم افتراضية (`.default([])`)
+- كائنات المفاتيح والقيم المرنة (`z.record()`)
+- تحويلات البيانات (`.transform()`)
+- التحقّق المخصّص عبر أنماط التعبيرات النمطية (regex)
 
-## Error Boundaries for Validation Failures
+## حدود الأخطاء لفشل التحقّق
 
-Since validation failures can happen at any time during data fetching, you should wrap your data-fetching components in error boundaries:
+وبما أنّ فشل التحقّق يمكن أن يحدث في أي لحظة أثناء جلب البيانات، ينبغي أن تغلّف مكوّنات جلب البيانات لديك بحدود أخطاء:
 
 ```typescript
 import { Component, ReactNode } from 'react';
@@ -330,7 +330,7 @@ class DataValidationBoundary extends Component<Props, State> {
 }
 ```
 
-Wrap your data-driven components:
+غلّف مكوّناتك المعتمدة على البيانات:
 
 ```typescript
 function App() {
@@ -342,13 +342,13 @@ function App() {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Runtime validation does add some overhead, but it’s usually negligible compared to network requests. However, there are a few optimization strategies:
+التحقّق وقت التشغيل يضيف بعض الحمل الزائد، لكنّه عادةً لا يُذكر مقارنةً بطلبات الشبكة. ومع ذلك، هناك بضع استراتيجيات تحسين:
 
-### Validate Once, Trust Later
+### تحقّق مرّة واحدة ثم ثق
 
-If you’re passing validated data through multiple components, you don’t need to re-validate it:
+إذا كنت تمرّر بيانات مُتحقَّق منها عبر عدّة مكوّنات، فلا حاجة لك إلى إعادة التحقّق منها:
 
 ```typescript
 // ✅ Good: Validate at the boundary, pass typed data down
@@ -379,9 +379,9 @@ function UserHeader({ user }: { user: User }) {
 }
 ```
 
-### Schema Caching
+### التخزين المؤقت للمخطّطات
 
-For frequently used schemas, consider caching the compiled validation functions:
+للمخطّطات المستخدَمة كثيرًا، من المفيد التفكير في تخزين دوالّ التحقّق المُصرَّفة مؤقتًا:
 
 ```typescript
 const schemaCache = new Map();
@@ -394,4 +394,4 @@ function getCachedSchema<T>(key: string, schema: z.ZodSchema<T>) {
 }
 ```
 
-### Partial Validation
+### التحقّق الجزئي

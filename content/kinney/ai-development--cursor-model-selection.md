@@ -1,55 +1,44 @@
 ---
-title: "Model Selection Strategy"
-lang: en
+title: "استراتيجية اختيار النموذج"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-model-selection"
 ---
 
-[Cursor](https://cursor.com/) changes its model menu frequently. As of June 23,
-2026, the official model documentation lists current families from [Anthropic](https://www.anthropic.com/), [OpenAI](https://openai.com/), and [Google](https://deepmind.google/). Treat exact model availability, pricing, and
-provider routing as volatile.
+تغيّر [Cursor](https://cursor.com/) قائمة نماذجه بتكرار. واعتبارًا من 23 يونيو 2026، يسرد توثيق النماذج الرسمي عائلات حالية من [Anthropic](https://www.anthropic.com/) و[OpenAI](https://openai.com/) و[Google](https://deepmind.google/). عامل توفّر النماذج الدقيق والتسعير وتوجيه المزوّد كأمور متقلّبة.
 
-The durable skill is choosing the right class of model for the work.
+والمهارة الدائمة هي اختيار فئة النموذج الصحيحة للعمل.
 
-## Start with Auto
+## ابدأ بوضع Auto
 
-Cursor’s Auto mode routes work across models based on capability, cost, and
-reliability. Use it for ordinary implementation, refactoring, and bug fixing
-until you have evidence that a specific model is better for the current task.
+يوجّه وضع Auto في Cursor العمل عبر النماذج بناءً على القدرة والكلفة والموثوقية. استخدمه للتنفيذ العادي وإعادة الهيكلة وإصلاح الأخطاء حتى تتوفر لديك أدلة على أن نموذجًا معيّنًا أفضل للمهمة الحالية.
 
-Auto is also a good default for teaching because it keeps the lesson focused on
-the workflow instead of model trivia.
+و Auto أيضًا إعداد افتراضي جيد للتعليم لأنه يبقي الدرس مركّزًا على سير العمل لا على تفاصيل النماذج.
 
-## Escalate for Hard Reasoning
+## صعّد للاستدلال الصعب
 
-Choose a stronger explicit model when the task has one of these traits:
+اختر نموذجًا صريحًا أقوى عندما تكون للمهمة إحدى هذه السمات:
 
-- Ambiguous architecture decisions.
-- Large cross-file refactors.
-- Security-sensitive code.
-- Complex migrations with many edge cases.
-- Reviews where false confidence is expensive.
+- قرارات معمارية غامضة.
+- عمليات إعادة هيكلة كبيرة بين الملفات.
+- شيفرة حساسة أمنيًا.
+- ترحيلات معقّدة بحالات حافة كثيرة.
+- مراجعات تكون فيها الثقة الكاذبة مكلفة.
 
-Ask for a plan first, then decide whether the plan justifies the slower or more
-expensive model.
+اطلب خطة أولًا، ثم قرّر هل تبرّر الخطة النموذج الأبطأ أو الأكثر كلفة.
 
-## Use Max Mode Deliberately
+## استخدم Max Mode عن قصد
 
-Max Mode gives Cursor access to the model’s larger context window and premium
-reasoning path. It is useful when the task genuinely depends on a broad slice of
-the repository. It is wasteful when the task needs three files and a test.
+يمنح Max Mode Cursor وصولًا إلى نافذة السياق الأكبر للنموذج ومسار الاستدلال المتميّز. وهو مفيد عندما تعتمد المهمة فعلًا على شريحة واسعة من المستودع. وهو إسراف عندما تحتاج المهمة ثلاثة ملفات واختبارًا.
 
-Cloud Agents always run with Max Mode enabled, so write cloud prompts with the
-same discipline you would use for an expensive local session: exact scope,
-acceptance criteria, and verification commands.
+يعمل وكلاء السحابة دائمًا مع تفعيل Max Mode، لذا اكتب طلبات السحابة بالانضباط نفسه الذي تستخدمه لجلسة محلية مكلفة: نطاق دقيق، ومعايير قبول، وأوامر تحقق.
 
-## Keep Model Claims Dated
+## أبقِ ادّعاءات النماذج مؤرَّخة
 
-If you write a rule, tutorial, or team process that names a model, date the
-claim:
+إذا كتبت قاعدة أو درسًا أو عملية فريق تسمّي نموذجًا، فأرّخ الادّعاء:
 
 ```
 As of 2026-06-23, use Cursor Auto for default implementation work and escalate to
 the strongest available reasoning model for architecture reviews.
 ```
 
-That phrasing survives menu changes. “Always use Model X” usually does not.
+تصمد هذه الصيغة أمام تغيّرات القائمة. أما «استخدم النموذج X دائمًا» فلا تصمد عادةً.

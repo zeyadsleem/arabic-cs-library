@@ -1,23 +1,23 @@
 ---
-title: "Introduction to Zod"
-lang: en
+title: "مقدّمة إلى Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/introduction-to-zod"
 ---
 
-TypeScript gives you compile‐time type safety, but when your data comes from the wild (APIs, user inputs, env variables), there’s no guarantee it will behave. Enter **[Zod](https://www.npmjs.com/package/zod)**—a TypeScript‐first, zero-dependency runtime validation library that makes sure your data is as type-safe as your code (and saves you from unexpected runtime nightmares).
+يمنحك TypeScript أمان أنواع في وقت الترجمة، لكن عندما تأتي بياناتك من العالم الخارجي (واجهات API، مدخلات المستخدم، متغيّرات البيئة)، فلا ضمان أن تتصرّف كما ينبغي. هنا يدخل **[Zod](https://www.npmjs.com/package/zod)** — مكتبة تحقّق في وقت التشغيل بلا اعتمادات، مبنية على TypeScript أولًا، وتضمن أن بياناتك آمنة الأنواع مثل شيفرتك (وتنجّيك من كوابيس وقت التشغيل غير المتوقعة).
 
-[Zod](https://www.npmjs.com/package/zod) is a TypeScript-first schema declaration and validation library. Unlike using pure TypeScript interfaces (which disappear at runtime), Zod schemas can:
+[Zod](https://www.npmjs.com/package/zod) مكتبة لإعلان المخططات والتحقّق منها مبنية على TypeScript أولًا. وعلى خلاف استخدام واجهات TypeScript الصرفية (التي تختفي في وقت التشغيل)، تستطيع مخططات Zod أن:
 
-- Validate user input at runtime (on the backend or even on the frontend).
-- Provide you with **Zod-inferred** types so you don’t have to define data shapes twice.
-- **Single source of truth:** One schema that validates data and infers TypeScript types.
-- **Better error messages:** Clear, structured error feedback for both developers and users.
-- **Modular, composable design:** Build and reuse schemas for all your data needs.
-- **Advanced features:** Transformations, custom refinements, asynchronous validations—the works.
+- تتحقّق من مدخلات المستخدم في وقت التشغيل (على الخادم أو حتى على العميل).
+- تزوّدك بأنواع **مستنتَجة من Zod** فلا تحتاج إلى تعريف أشكال البيانات مرتين.
+- **مصدر حقيقة واحد:** مخطط واحد يتحقّق من البيانات ويستنتج أنواع TypeScript.
+- **رسائل أخطاء أفضل:** تغذية راجعة واضحة ومنظّمة عن الأخطاء للمطوّرين والمستخدمين معًا.
+- **تصميم معياري قابل للتركيب:** ابنِ المخططات وأعد استخدامها لكل احتياجات بياناتك.
+- **ميزات متقدمة:** تحويلات، وتحسينات مخصّصة، وتحقّقات غير متزامنة — وكل ما يلزم.
 
-## Installing Zod
+## تثبيت Zod
 
-Like most libraries, you can install Zod using your favorite package manager.
+مثل معظم المكتبات، يمكنك تثبيت Zod باستخدام مدير الحزم المفضل لديك.
 
 ```bash
 # Using npm:
@@ -30,11 +30,11 @@ yarn add zod
 pnpm add zod
 ```
 
-## Basic Usage
+## الاستخدام الأساسي {#basic-usage}
 
-## Validating Primitives
+## التحقّق من الأوليّات
 
-At it’s simplest level, we can use Zod to verify that something is a given type:
+في أبسط مستوياته، يمكننا استخدام Zod للتحقّق من أن شيئًا ما من نوع معيّن:
 
 ```typescript
 import { z } from 'zod';
@@ -44,7 +44,7 @@ const stringSchema = z.string();
 stringSchema.parse('hello');
 ```
 
-As you might expect, the same applies to numbers.
+وكما قد تتوقع، ينطبق الأمر نفسه على الأعداد.
 
 ```typescript
 const numberSchema = z.number();
@@ -53,7 +53,7 @@ numberSchema.parse(42); // Valid
 // numberSchema.parse("42"); // Throws ZodError: Expected number, received string
 ```
 
-You can even validate things like `BitInt`s and `Date` objects.
+يمكنك حتى التحقّق من أشياء مثل `BitInt` وكائنات `Date`.
 
 ```typescript
 const bigintSchema = z.bigint();
@@ -63,11 +63,11 @@ bigintSchema.parse(123n);
 dateSchema.parse(new Date());
 ```
 
-### Parsing Objects
+### تحليل الكائنات
 
-Obviously, the above examples are overly-simple. Where Zod comes in handy is when we want to see if an objects matches a given schema.
+من الواضح أن الأمثلة أعلاه بسيطة أكثر من اللازم. يتجلّى نفع Zod عندما نريد أن نرى هل يطابق كائنٌ مخططًا معيّنًا.
 
-We can start by defining schemas—which you can think of like you would a `type` or `interface` in TypeScript.
+يمكننا البدء بتعريف المخططات — ويمكنك التفكير فيها كما تفكّر في `type` أو `interface` في TypeScript.
 
 ```typescript
 import { z } from 'zod';
@@ -82,7 +82,7 @@ export const UserSchema = z.object({
 export type UserType = z.infer<typeof UserSchema>;
 ```
 
-We can also add some additional validation (e.g. making sure something is an email or has a particular length), which we couldn’t otherwise do in TypeScript.
+يمكننا أيضًا إضافة بعض التحقّق الإضافي (مثل التأكّد من أن شيئًا ما بريد إلكتروني أو له طول معيّن)، وهو ما لم نكن نستطيع فعله في TypeScript بغير ذلك.
 
 ```typescript
 import { z } from 'zod';
@@ -99,9 +99,9 @@ export type UserType = z.infer<typeof UserSchema>;
 
 > **Zod v4**
 >
-> In Zod v4, string format validators like `.email()` have top-level equivalents: `z.email()`, `z.uuid()`, `z.url()`, etc. The chained form (`z.string().email()`) still works. Additionally, the `{ message: "..." }` option in validators is deprecated in favor of `{ error: "..." }`.
+> في Zod v4، لمحقّقات صيغ النصوص مثل `.email()` مكافئات على المستوى الأعلى: `z.email()` و`z.uuid()` و`z.url()` وغيرها. وما زالت الصيغة المتسلسلة (`z.string().email()`) تعمل. كما أن خيار `{ message: "..." }` في المحقّقات مهجور لصالح `{ error: "..." }`.
 
-Once you have a schema, you can use Zod to validate objects to make sure that they match that schema.
+بمجرد أن يكون لديك مخطط، يمكنك استخدام Zod للتحقّق من الكائنات وضمان مطابقتها لذلك المخطط.
 
 ```typescript
 // Using parse() – throws on failure
@@ -130,13 +130,13 @@ if (!result.success) {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Use `safeParse()` to avoid `try`/`catch` clutter while still handling errors gracefully.
+> استخدم `safeParse()` لتجنّب فوضى `try`/`catch` مع معالجة الأخطاء بأناقة في الوقت نفسه.
 
-## Generating Types from Schema
+## توليد الأنواع من المخطط
 
-The magic of Zod is that your schema is your single source of truth. You don’t write duplicate types!
+سحر Zod هو أن مخططك هو مصدر حقيقتك الوحيد. فلن تكتب أنواعًا مكرّرة!
 
 ```typescript
 import { z } from 'zod';
@@ -155,8 +155,8 @@ type Product = z.infer<typeof ProductSchema>;
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().uuid()` can be written as `z.uuid()`. Note that `z.uuid()` in v4 enforces stricter RFC 9562 validation. Use `z.guid()` if you need the more permissive v3 behavior.
+> في Zod v4، يمكن كتابة `z.string().uuid()` بالصيغة `z.uuid()`. ولاحظ أن `z.uuid()` في v4 يفرض تحقّقًا أكثر صرامة وفق RFC 9562. واستخدم `z.guid()` إن احتجت سلوك v3 الأكثر تسامحًا.
 
-Your validated data automatically gets the correct TypeScript type—no more mismatched types between your runtime checks and compile-time expectations.
+تحصل بياناتك المتحقَّق منها تلقائيًا على نوع TypeScript الصحيح — لا مزيد من الأنواع غير المتطابقة بين فحوص وقت التشغيل وتوقعات وقت الترجمة.
 
-**Next**: [Advanced Types with Zod](https://stevekinney.com/courses/full-stack-typescript/advanced-types-with-zod)
+**التالي**: [أنواع متقدمة مع Zod](https://stevekinney.com/courses/full-stack-typescript/advanced-types-with-zod)

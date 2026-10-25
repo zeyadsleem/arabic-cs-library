@@ -1,23 +1,23 @@
 ---
-title: "Alignment"
-lang: en
+title: "المحاذاة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-alignment"
 ---
 
-Flexbox provides powerful alignment options along both the main and cross axes.
+يوفّر Flexbox خيارات محاذاة قوية على المحورين الرئيسي والمتقاطع.
 
-## Main Axis Alignment
+## محاذاة المحور الرئيسي
 
-Control distribution along the main axis with `justify-*` utilities:
+تحكّم في التوزيع على المحور الرئيسي بأدوات `justify-*`:
 
-- `justify-start` - Pack items at start (default)
-- `justify-end` - Pack items at end
-- `justify-center` - Center items
-- `justify-between` - Equal space between items
-- `justify-around` - Equal space around items
-- `justify-evenly` - Equal space between items and edges
+- `justify-start` - تحزيم العناصر في البداية (افتراضي)
+- `justify-end` - تحزيم العناصر في النهاية
+- `justify-center` - توسيط العناصر
+- `justify-between` - مسافة متساوية بين العناصر
+- `justify-around` - مسافة متساوية حول العناصر
+- `justify-evenly` - مسافة متساوية بين العناصر والحواف
 
-*Main Axis Alignment — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/f36a0f6b28818f4f69ffb94f6e5680d462948522bc7d02437e15617b740371a3.html)*
+*محاذاة المحور الرئيسي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f36a0f6b28818f4f69ffb94f6e5680d462948522bc7d02437e15617b740371a3.html)*
 
 ```html
 <!-- Center navigation items -->
@@ -35,17 +35,17 @@ Control distribution along the main axis with `justify-*` utilities:
 </div>
 ```
 
-## Cross Axis Alignment
+## محاذاة المحور المتقاطع
 
-Align items perpendicular to the main axis:
+حاذِ العناصر عموديًا على المحور الرئيسي:
 
-- `items-start` - Align to start of cross axis
-- `items-end` - Align to end of cross axis
-- `items-center` - Center on cross axis
-- `items-baseline` - Align text baselines
-- `items-stretch` - Stretch to fill (default)
+- `items-start` - محاذاة إلى بداية المحور المتقاطع
+- `items-end` - محاذاة إلى نهاية المحور المتقاطع
+- `items-center` - توسيط على المحور المتقاطع
+- `items-baseline` - محاذاة خطوط أساس النص
+- `items-stretch` - تمدّد للملء (افتراضي)
 
-*Cross Axis Alignment — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/2c5a1069aa947db4bd498c6fd6297cc03ff59bf8997b13edbd48a0f610aa0014.html)*
+*محاذاة المحور المتقاطع — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2c5a1069aa947db4bd498c6fd6297cc03ff59bf8997b13edbd48a0f610aa0014.html)*
 
 ```html
 <!-- Vertically center items -->
@@ -55,17 +55,17 @@ Align items perpendicular to the main axis:
 </div>
 ```
 
-## Individual Alignment
+## المحاذاة الفردية
 
-Override container alignment for specific items:
+تجاوز محاذاة الحاوية لعناصر محددة:
 
-- `self-auto` - Use container’s alignment
-- `self-start` - Align item to start
-- `self-end` - Align item to end
-- `self-center` - Center item
-- `self-stretch` - Stretch item
+- `self-auto` - استخدام محاذاة الحاوية
+- `self-start` - محاذاة العنصر إلى البداية
+- `self-end` - محاذاة العنصر إلى النهاية
+- `self-center` - توسيط العنصر
+- `self-stretch` - تمديد العنصر
 
-*Individual Alignment — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/1fd4665b46d42e404e5e48bd7f1566bedfdc62b055472d26f21e6f126ca68542.html)*
+*المحاذاة الفردية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1fd4665b46d42e404e5e48bd7f1566bedfdc62b055472d26f21e6f126ca68542.html)*
 
 ```html
 <div class="flex h-32 items-start gap-4 rounded-lg bg-gray-100 p-4">
@@ -75,18 +75,18 @@ Override container alignment for specific items:
 </div>
 ```
 
-## Multi-line Alignment
+## محاذاة متعددة الأسطر
 
-For wrapped flex items, align entire lines:
+لعناصر flex الملتفة، حاذِ الأسطر كاملة:
 
-- `content-start` - Pack lines at start
-- `content-end` - Pack lines at end
-- `content-center` - Center lines
-- `content-between` - Space between lines
-- `content-around` - Space around lines
-- `content-evenly` - Even spacing
+- `content-start` - حزم الأسطر في البداية
+- `content-end` - حزم الأسطر في النهاية
+- `content-center` - توسيط الأسطر
+- `content-between` - مسافة بين الأسطر
+- `content-around` - مسافة حول الأسطر
+- `content-evenly` - تباعد متساوٍ
 
-*Multi-line Alignment — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/134b2ae712f7c4bd0790cb7dbc3d51e3b4a45dd404f5b6829227f04c057e87e2.html)*
+*محاذاة متعددة الأسطر — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/134b2ae712f7c4bd0790cb7dbc3d51e3b4a45dd404f5b6829227f04c057e87e2.html)*
 
 ```html
 <div class="flex h-64 flex-wrap content-center gap-4 rounded-lg bg-gray-100 p-4">

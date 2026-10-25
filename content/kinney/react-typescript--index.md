@@ -1,56 +1,56 @@
 ---
-title: "React with TypeScript"
-lang: en
+title: "React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript"
 ---
 
-These are the notes for my [React && TypeScript workshop](https://frontendmasters.com/workshops/react-typescript-v3/?utm_source=kinney&utm_medium=social&code=kinney) for [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
+هذه هي ملاحظات ورشة [React && TypeScript](https://frontendmasters.com/workshops/react-typescript-v3/?utm_source=kinney&utm_medium=social&code=kinney) التي أقدّمها لـ [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
 
-> **Course Repository**
+> **مستودع الدورة**
 >
-> We’ll me working through the content in [this repository](https://github.com/stevekinney/react-typescript-labs).
+> سنعمل على المحتوى في [هذا المستودع](https://github.com/stevekinney/react-typescript-labs).
 >
-> Also, at some points, we may pop into the [TypeScript Playground](https://www.typescriptlang.org/play).
+> كذلك، في بعض المواضع، قد نقفز إلى [ساحة TypeScript التجريبية](https://www.typescriptlang.org/play).
 
-## Key Benefits
+## الفوائد الأساسية
 
-By the end of this course, you’ll be able to:
+بنهاية هذه الدورة، ستكون قادرًا على:
 
-- Build React applications with confidence using TypeScript’s type system
-- Catch runtime errors at compile time with proper typing strategies
-- Create reusable, well-typed component libraries
-- Work effectively with React 19’s latest features and TypeScript
-- Set up development environments optimized for React TypeScript development
-- Write maintainable code that scales with your team and application size
+- بناء تطبيقات React بثقة باستخدام نظام أنواع TypeScript
+- التقاط أخطاء وقت التشغيل وقت التجميع عبر استراتيجيات كتابة الأنواع الصحيحة
+- إنشاء مكتبات مكوّنات قابلة لإعادة الاستخدام ومكتوبة بأنواع صحيحة
+- العمل بفعالية مع أحدث ميزات React 19 ومع TypeScript
+- تهيئة بيئات تطوير مُحسّنة لتطوير React مع TypeScript
+- كتابة شيفرة قابلة للصيانة تتوسّع مع فريقك وحجم تطبيقك
 
-## Appendix
+## ملحق
 
-- [Type System Fundamentals](https://stevekinney.com/courses/react-typescript/typescript-type-system-fundamentals)
-- [Type-Level Programming](https://stevekinney.com/courses/react-typescript/typescript-type-level-programming)
-- [Performance in Large Codebases](https://stevekinney.com/courses/react-typescript/typescript-performance-large-codebases)
-- [Modules and Declarations](https://stevekinney.com/courses/react-typescript/typescript-modules-declarations)
-- [Build Pipeline: TSC, SWC](https://stevekinney.com/courses/react-typescript/build-pipeline-tsc-swc)
-- [Module Federation with TypeScript](https://stevekinney.com/courses/react-typescript/module-federation-typescript)
-- [Tailwind + CVA: Typed Variants and Slots](https://stevekinney.com/courses/react-typescript/tailwind-cva-typed-variants)
-- [Real-time Typing: WebSockets and SSE](https://stevekinney.com/courses/react-typescript/realtime-typing-websockets-and-sse)
-- [Result/Either Patterns for React](https://stevekinney.com/courses/react-typescript/result-types-and-error-handling)
-- [Type-Safe Environment Variables](https://stevekinney.com/courses/react-typescript/typesafe-environment-variables)
-- [Publishing Types for Component Libraries](https://stevekinney.com/courses/react-typescript/publishing-types-for-component-libraries)
-- [Monorepos and Shared UI Types](https://stevekinney.com/courses/react-typescript/monorepos-and-shared-ui-types)
-- [Advanced Error Handling Patterns](https://stevekinney.com/courses/react-typescript/advanced-error-handling-patterns)
-- [Code Splitting Lazy Types](https://stevekinney.com/courses/react-typescript/code-splitting-lazy-types)
-- [Resource Preloading APIs Types](https://stevekinney.com/courses/react-typescript/resource-preloading-apis-types)
-- [Streaming SSR with TypeScript](https://stevekinney.com/courses/react-typescript/streaming-ssr-typescript)
-- [Vite React TypeScript Optimization](https://stevekinney.com/courses/react-typescript/vite-react-typescript-optimization)
-- [DevTools and Type-Driven DX](https://stevekinney.com/courses/react-typescript/dev-tools-and-type-driven-dx)
-- [Debugging TypeScript Errors Guide](https://stevekinney.com/courses/react-typescript/debugging-typescript-errors-guide)
-- [Routing and Params Typing](https://stevekinney.com/courses/react-typescript/routing-and-parameters-typing)
-- [Styling: CSSType and CSS Modules](https://stevekinney.com/courses/react-typescript/styling-csstype-and-css-modules)
-- [TypeScript Without Trying](https://stevekinney.com/courses/react-typescript/typescript-without-trying)
-- [Mental Models for React and TypeScript](https://stevekinney.com/courses/react-typescript/react-typescript-mental-models)
+- [أساسيات نظام الأنواع](https://stevekinney.com/courses/react-typescript/typescript-type-system-fundamentals)
+- [البرمجة على مستوى الأنواع](https://stevekinney.com/courses/react-typescript/typescript-type-level-programming)
+- [الأداء في المستودعات الكبيرة](https://stevekinney.com/courses/react-typescript/typescript-performance-large-codebases)
+- [الوحدات والإعلانات](https://stevekinney.com/courses/react-typescript/typescript-modules-declarations)
+- [خط البناء: TSC، SWC](https://stevekinney.com/courses/react-typescript/build-pipeline-tsc-swc)
+- [Module Federation مع TypeScript](https://stevekinney.com/courses/react-typescript/module-federation-typescript)
+- [Tailwind + CVA: تنويعات وفتحة (slots) بأنواع](https://stevekinney.com/courses/react-typescript/tailwind-cva-typed-variants)
+- [الكتابة الآنية: WebSockets و SSE](https://stevekinney.com/courses/react-typescript/realtime-typing-websockets-and-sse)
+- [أنماط Result/Either لـ React](https://stevekinney.com/courses/react-typescript/result-types-and-error-handling)
+- [متغيّرات بيئة آمنة النوع](https://stevekinney.com/courses/react-typescript/typesafe-environment-variables)
+- [نشر الأنواع لمكتبات المكوّنات](https://stevekinney.com/courses/react-typescript/publishing-types-for-component-libraries)
+- [المستودعات الأحادية (Monorepos) وأنواع واجهة المستخدم المشتركة](https://stevekinney.com/courses/react-typescript/monorepos-and-shared-ui-types)
+- [أنماط متقدّمة للتعامل مع الأخطاء](https://stevekinney.com/courses/react-typescript/advanced-error-handling-patterns)
+- [تقسيم الشيفرة وأنواع كسولة](https://stevekinney.com/courses/react-typescript/code-splitting-lazy-types)
+- [أنواع واجهات برمجية لتحميل الموارد مسبقًا](https://stevekinney.com/courses/react-typescript/resource-preloading-apis-types)
+- [تصيير الخادم المتدفّق (Streaming SSR) مع TypeScript](https://stevekinney.com/courses/react-typescript/streaming-ssr-typescript)
+- [تحسين Vite مع React و TypeScript](https://stevekinney.com/courses/react-typescript/vite-react-typescript-optimization)
+- [أدوات التطوير وتجربة التطوير القائمة على الأنواع](https://stevekinney.com/courses/react-typescript/dev-tools-and-type-driven-dx)
+- [دليل تصحيح أخطاء TypeScript](https://stevekinney.com/courses/react-typescript/debugging-typescript-errors-guide)
+- [التوجيه وكتابة أنواع المعاملات](https://stevekinney.com/courses/react-typescript/routing-and-parameters-typing)
+- [التنسيق: CSSType ووحدات CSS](https://stevekinney.com/courses/react-typescript/styling-csstype-and-css-modules)
+- [TypeScript من دون محاولة](https://stevekinney.com/courses/react-typescript/typescript-without-trying)
+- [النماذج الذهنية لـ React و TypeScript](https://stevekinney.com/courses/react-typescript/react-typescript-mental-models)
 
-### Migration Guides
+### أدلة الترحيل
 
-- [Migrating JavaScript to TypeScript](https://stevekinney.com/courses/react-typescript/migrating-javascript-to-typescript)
-- [Migrating from PropTypes](https://stevekinney.com/courses/react-typescript/migrating-from-proptypes)
-- [State Libraries and Context Interoperability](https://stevekinney.com/courses/react-typescript/state-libraries-and-context-interoperability)
+- [ترحيل JavaScript إلى TypeScript](https://stevekinney.com/courses/react-typescript/migrating-javascript-to-typescript)
+- [الترحيل من PropTypes](https://stevekinney.com/courses/react-typescript/migrating-from-proptypes)
+- [مكتبات الحالة والتشغيل البيني مع Context](https://stevekinney.com/courses/react-typescript/state-libraries-and-context-interoperability)

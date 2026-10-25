@@ -1,12 +1,12 @@
 ---
-title: "Tailwind Cva Typed Variants"
-lang: en
+title: "متغيّرات Tailwind المكتوبة (Typed) باستخدام CVA"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/tailwind-cva-typed-variants"
 ---
 
-Pair Tailwind with `class-variance-authority` (CVA) to create discoverable, type-safe variant APIs—no more stringly-typed class soups.
+اقترن Tailwind بـ `class-variance-authority` (CVA) لإنشاء واجهات متغيّرات (variants) قابلة للاكتشاف وآمنة الأنواع — لا مزيد من «حساء» الأصناف stringly-typed.
 
-## Core Pattern
+## النمط الأساسي
 
 ```typescript
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -32,9 +32,9 @@ export function Button({
 }
 ```
 
-## Slots and Polymorphism
+## Slots والتعدّد (Polymorphism)
 
-Use CVA per slot and a polymorphic `as` prop with constrained generics to keep refs and props typed.
+استخدم CVA لكل slot وprop `as` متعدّد الأشكال (polymorphic) مع generics مقيدة للحفاظ على refs والخصائص مكتوبة.
 
 ```typescript
 import { forwardRef, ElementType, ComponentPropsWithRef } from 'react';
@@ -61,9 +61,9 @@ const Card = forwardRef(
 );
 ```
 
-## Compound Variants and Strictness
+## المتغيّرات المركّبة (Compound Variants) والصرامة
 
-Define mutually exclusive or combined states with compile‑time safety.
+عرّف حالات متبادلة الاستبعاد أو مجمّعة مع أمان at compile-time.
 
 ```typescript
 const badge = cva('inline-flex items-center rounded px-2 py-0.5 text-xs', {
@@ -76,9 +76,9 @@ const badge = cva('inline-flex items-center rounded px-2 py-0.5 text-xs', {
 });
 ```
 
-## Slot Classes Pattern
+## نمط Slots للأصناف
 
-Use a record of CVAs for multi‑part components (e.g., `input`, `label`, `helper`).
+استخدم record من CVAs لمكوّنات متعدّدة الأجزاء (مثل `input`، `label`، `helper`).
 
 ```typescript
 const inputSlots = {

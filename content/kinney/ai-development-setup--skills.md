@@ -1,40 +1,40 @@
 ---
-title: "Skills"
-lang: en
+title: "المهارات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/skills"
 ---
 
-You’ve told the agent the same thing four times this week. How to run the migration. How to investigate a failed contract test. Which of the three release scripts is the real one. Each time, you retype it, and each time, it’s slightly different.
+أخبرت الوكيل بالشيء نفسه أربع مرات هذا الأسبوع. كيف يشغّل الترحيل. كيف يحقّق في اختبار عقد فاشل. أيّ من سكربتات الإصدار الثلاثة هو الحقيقي. وفي كل مرة تعيد كتابته، وفي كل مرة يكون مختلفًا قليلًا.
 
-You could put it all in `CLAUDE.md`. But then every session (one conversation with the agent) pays for it, whether or not the task has anything to do with migrations. A **skill** is the other answer.
+ويمكنك وضع ذلك كله في `CLAUDE.md`. لكن حينئذ تدفع كل جلسة (محادثة واحدة مع الوكيل) ثمنه، سواء كان للمهمة علاقة بالترحيلات أم لا. و**المهارة** هي الجواب الآخر.
 
-## What a skill is
+## ما هي المهارة
 
-A skill is reusable knowledge about how to perform a recurring task. It should activate narrowly.
+المهارة معرفة قابلة لإعادة الاستخدام حول كيفية أداء مهمة متكررة. وينبغي أن تُفعَّل بضيق.
 
-A skill lives in a folder. At the very least, that folder needs a `SKILL.md` file, which describes when to use the skill and how to do the work. Put the folder in `.claude/skills/` for a project, in `~/.claude/skills/` for yourself, or ship it in a plugin (a bundle of skills, hooks, and other pieces you install together). You invoke a skill by typing `/skill-name`, or the agent loads it on its own when the task matches the description. (Skills follow an [open standard](https://agentskills.io/), and Claude Code’s [skills documentation](https://code.claude.com/docs/en/skills) covers its own extensions.)
+تعيش المهارة في مجلد. وفي أدنى حد، يحتاج ذلك المجلد إلى ملف `SKILL.md`، يصف متى تُستخدم المهارة وكيف يُؤدّى العمل. ضع المجلد في `.claude/skills/` لمشروع، أو في `~/.claude/skills/` لنفسك، أو اشحنه في إضافة (حزمة من المهارات والخُطّافات وأجزاء أخرى تركّبها معًا). وتستدعي المهارة بكتابة `/skill-name`، أو يحمّلها الوكيل بنفسه حين تطابق المهمة الوصف. (تتبع المهارات [معيارًا مفتوحًا](https://agentskills.io/)، و[توثيق المهارات](https://code.claude.com/docs/en/skills) في Claude Code يغطّي امتداداته الخاصة.)
 
-It’s not totally wrong to think of a skill as a *saved prompt*, with two differences. The agent can decide on its own to load a skill into its context, which is usually what you want. And a skill can hold supporting detail that loads only when it’s needed.
+وليس خطأً تامًا أن تتصوّر المهارة كـ*طلب محفوظ*، مع فرقين. فبإمكان الوكيل أن يقرّر بنفسه تحميل مهارة إلى سياقه، وهذا عادةً ما تريده. ويمكن للمهارة أن تحمل تفاصيل مساندة لا تُحمَّل إلا عند الحاجة.
 
-That saves you from shoving *everything* into your instruction file: `CLAUDE.md` for Claude Code, `AGENTS.md` in Codex. The harness (the program wrapped around the model) loads those according to directory scope, with descendant Claude Code instructions discovered on demand. Write your descriptions well, and a skill lazy-loads instructions only when they’re needed.
+وهذا يخلّصك من حشر *كل شيء* في ملف تعليماتك: `CLAUDE.md` في Claude Code، و`AGENTS.md` في Codex. وتحمّلها البيئة (البرنامج الملتفّ حول النموذج) وفق نطاق الدليل، مع اكتشاف تعليمات Claude Code الفرعية عند الطلب. واكتب أوصافك جيدًا، فتُحمّل المهارة تعليماتها بتأخير (lazy-load) فقط عند الحاجة إليها.
 
-## What a skill isn’t
+## ما ليست المهارة
 
-A skill is *not* a capability grant. It doesn’t add any new tools to the harness. It can explain how to use a tool, and that tool could be a command-line program that happens to be on your machine. A skill’s `allowed-tools` field can pre-approve tools you already have, so you aren’t prompted ([Configuring Skills](https://stevekinney.com/courses/ai-development-setup/skill-configuration) covers it), but that never overrides a deny rule.
+المهارة *ليست* منحًا لقدرة. فهي لا تضيف أي أدوات جديدة إلى البيئة. ويمكنها شرح كيفية استخدام أداة، وقد تكون تلك الأداة برنامج سطر أوامر مصادف وجوده على جهازك. ويمكن لحقل `allowed-tools` في المهارة أن يوافق مسبقًا على أدوات تملكها بالفعل، فلا تُطالَب بها ([تهيئة المهارات](https://stevekinney.com/courses/ai-development-setup/skill-configuration) يغطّي ذلك)، لكن ذلك لا يتجاوز قاعدة رفض أبدًا.
 
-A skill can *say* a release requires passing tests. Your release infrastructure should *enforce* it. We’ll look at that gap between asking and enforcing in [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder).
+ويمكن للمهارة أن *تقول* إن الإصدار يتطلّب اختبارات ناجحة. وينبغي لبنية الإصدار لديك أن *تفرض* ذلك. وسننظر في تلك الفجوة بين الطلب والفرض في [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder).
 
-## Anatomy of a skill
+## تشريح المهارة
 
-A skill has up to five parts:
+للمهارة ما يصل إلى خمسة أجزاء:
 
-- **Name and description**: The discovery surface. This is what the agent sees when it’s deciding whether the skill applies.
-- **Main body**: The procedure the agent follows after the skill activates.
-- **Reference files**: Extra detail that’s read only when needed.
-- **Scripts**: Code the agent runs for deterministic work, so it doesn’t have to improvise.
-- **Assets**: Templates the result is built from.
+- **الاسم والوصف**: سطح الاكتشاف. وهذا ما يراه الوكيل حين يقرّر هل تنطبق المهارة.
+- **المتن الرئيسي**: الإجراء الذي يتبعه الوكيل بعد تفعيل المهارة.
+- **ملفات المراجع**: تفاصيل إضافية لا تُقرأ إلا عند الحاجة.
+- **السكربتات**: شيفرة يشغّلها الوكيل للعمل الحتمي، فلا يضطر إلى الارتجال.
+- **الأصول**: قوالب يُبنى منها الناتج.
 
-Here’s what that looks like for a database migration skill:
+وهكذا يبدو ذلك لمهارة ترحيل قاعدة بيانات:
 
 ```
 database-migration/
@@ -48,90 +48,90 @@ database-migration/
     └── report-template.md
 ```
 
-The agent reads `SKILL.md` first. It only opens `postgres.md` if the migration is for Postgres. That’s the whole trick.
+يقرأ الوكيل `SKILL.md` أولًا. ولا يفتح `postgres.md` إلا إذا كان الترحيل لـ Postgres. وهذه هي الحيلة كلها.
 
-## What makes a good skill
+## ما الذي يجعل المهارة جيدة {#what-makes-a-good-skill}
 
-Here’s what separates a good skill from a saved prompt. Most of it lives in the body. The trigger goes in the description, local evidence in reference files, and mechanical helpers in scripts. A deliverable template, if you need one, goes in assets.
+وهذا ما يفصل المهارة الجيدة عن الطلب المحفوظ. فمعظمه يعيش في المتن. ويذهب المُشغِّل في الوصف، والدليل المحلي في ملفات المراجع، والمساعدات الميكانيكية في السكربتات. وقالب التسليم، إن احتجت واحدًا، يذهب في الأصول.
 
-- **Trigger**: The task it applies to, plus the near-misses where it should *not* activate.
-- **Procedure**: Decisions and ordered steps, *not* just a list of virtues.
-- **Local evidence**: Relevant examples, conventions, schemas, or documented constraints.
-- **Mechanical helpers**: Existing commands or small scripts for repetitive, checkable work.
-- **Deliverable**: A patch, reproduction, compatibility matrix, test report, or other inspectable result.
-- **Boundaries**: What it must *not* modify, what needs approval, and when it should stop.
-- **Inputs**: What the skill expects to be handed before it starts.
-- **Proof**: How success gets demonstrated, not just announced.
-- **Retry safety**: Which steps are safe to run again if something falls over halfway through.
+- **المُشغِّل**: المهمة التي تنطبق عليها، مع الحالات القريبة التي ينبغي ألا *تُفعَّل* فيها.
+- **الإجراء**: قرارات وخطوات مرتّبة، لا مجرد قائمة فضائل.
+- **الدليل المحلي**: أمثلة أو أعراف أو مخطّطات أو قيود موثّقة ذات صلة.
+- **المساعدات الميكانيكية**: أوامر موجودة أو سكربتات صغيرة للعمل المتكرّر القابل للفحص.
+- **التسليم**: رقعة (patch)، أو إعادة إنتاج، أو مصفوفة توافق، أو تقرير اختبار، أو نتيجة أخرى قابلة للفحص.
+- **الحدود**: ما يجب ألا *تعدّله*، وما يحتاج موافقة، ومتى ينبغي أن تتوقف.
+- **المدخلات**: ما تتوقّع المهارة تسليمه لها قبل أن تبدأ.
+- **الإثبات**: كيف يُبرهَن على النجاح، لا يُعلَن فقط.
+- **أمان إعادة المحاولة**: أي الخطوات آمن إعادة تشغيلها إن سقط شيء في المنتصف.
 
-### Does this line change a decision?
+### هل يغيّر هذا السطر قرارًا؟
 
-Ask that of every line in the body.
+اسأل ذلك عن كل سطر في المتن.
 
-“Handle errors properly” doesn’t. The model isn’t going to read that and think, “Oh, *properly*. Got it.”
+«تعامل مع الأخطاء على نحو سليم» لا يفعل. فلن يقرأ النموذج ذلك ويفكّر: «آه، *على نحو سليم*. فهمت.»
 
-Match how much you prescribe to how fragile the task is:
+وازِن مقدار ما تفرضه مع مدى هشاشة المهمة:
 
-- **An investigation**: Specify the evidence you want back.
-- **Generated output**: Hand it a schema.
-- **A destructive change**: Give it the exact command. This is *not* the place for creative interpretation.
+- **تحقيق**: حدّد الدليل الذي تريده في المقابل.
+- **مخرَج مُولَّد**: سلّمه مخطّطًا.
+- **تغيير مُدمِّر**: أعطِه الأمر الدقيق. فهذا *ليس* موضعًا للتفسير الإبداعي.
 
-## What a skill costs
+## ماذا تكلّف المهارة
 
-Skills load in stages, and every stage has a price tag. (Costs here are measured in *tokens*, the chunks of text a model reads and writes. [Prompt Caching and Cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) explains why they matter.)
+تُحمَّل المهارات على مراحل، ولكل مرحلة ثمن. (والكلف هنا تُقاس بـ*الرموز* (tokens)، وهي قطع النص التي يقرؤها النموذج ويكتبها. و[التخزين المؤقت للطلبات والكلفة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) يشرح لماذا تهمّ.)
 
-- **Name and description**: Every model-invocable skill sits in the discovery listing whether or not it ever gets used. That’s roughly 100 tokens for a typical short description, closer to 250 at the 1,024-character limit. Thirty typical skills is about 3,000 tokens before you’ve typed a word. In Claude Code, manual-only skills with `disable-model-invocation: true` stay out of the listing, so they cost nothing until invoked. The [invocation table](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill) distinguishes these cases; use `/context` to measure the actual listing after its budget is applied.
-- **Body**: An inline skill’s body loads into the caller when invoked and stays there across later turns, subject to compaction. With `context: fork`, the body becomes a separate worker’s task instead, and the caller gets the worker’s summarized result, not a session-long copy. [Running skills in a subagent](https://code.claude.com/docs/en/skills#run-skills-in-a-subagent) explains the distinction.
-- **Reference files**: Free until something actually reads them.
-- **Scripts**: You pay for their output, not their source.
+- **الاسم والوصف**: كل مهارة قابلة للاستدعاء بالنموذج تجلس في قائمة الاكتشاف سواء استُخدمت أم لم تُستخدم قط. وهذا نحو 100 رمز لوصف قصير نمطي، ويقترب من 250 عند حدّ 1,024 حرفًا. وثلاثون مهارة نمطية نحو 3,000 رمز قبل أن تكتب كلمة. وفي Claude Code، تبقى المهارات اليدوية فقط ذات `disable-model-invocation: true` خارج القائمة، فلا تكلّف شيئًا حتى تُستدعى. و[جدول الاستدعاء](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill) يميّز هذه الحالات؛ استخدم `/context` لقياس القائمة الفعلية بعد تطبيق ميزانيتها.
+- **المتن**: يُحمَّل متن المهارة المضمّنة في المُستدعي عند الاستدعاء ويبقى هناك عبر الأدوار اللاحقة، رهنًا بالضغط (compaction). ومع `context: fork`، يصبح المتن مهمة عامل منفصل بدلًا من ذلك، ويحصل المُستدعي على نتيجة العامل الملخّصة، لا على نسخة تدوم طول الجلسة. و[تشغيل المهارات في وكيل فرعي](https://code.claude.com/docs/en/skills#run-skills-in-a-subagent) يشرح الفرق.
+- **ملفات المراجع**: مجانية حتى يقرأها شيء فعلًا.
+- **السكربتات**: تدفع ثمن مخرجاتها، لا مصدرها.
 
-Keep `SKILL.md` under 500 lines. If it’s pushing past that, some of it probably wants to be a reference file.
+أبقِ `SKILL.md` تحت 500 سطر. وإن كان يتجاوز ذلك، فبعضه على الأرجح يريد أن يكون ملف مرجع.
 
-## Skills versus instructions
+## المهارات مقابل التعليمات
 
-The line between a skill and an instruction in `CLAUDE.md` is pretty clean:
+الخط بين المهارة وتعليمة في `CLAUDE.md` واضح جدًا:
 
-- **Instruction**: “All changes to billing must run the contract tests.”
-- **Skill**: “How to investigate a failed billing contract test.”
+- **تعليمة**: «كل تغييرات الفوترة يجب أن تشغّل اختبارات العقد».
+- **مهارة**: «كيف تحقّق في اختبار عقد فوترة فاشل».
 
-An instruction is a rule that’s true all the time. A skill is a procedure for when something specific happens. See [User and Project Instructions](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) for the first kind.
+التعليمة قاعدة صحيحة طوال الوقت. والمهارة إجراء لما يحدث شيء محدد. راجع [تعليمات المستخدم والمشروع](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) للنوع الأول.
 
-## Skills versus tools
+## المهارات مقابل الأدوات {#skills-versus-tools}
 
-You want the agent to check a package registry before upgrading a dependency. Do you write a skill? Install an MCP server (a program that adds tools to the harness over the [Model Context Protocol](https://modelcontextprotocol.io/))? Write a script? The question sounds like it has one right answer. It’s really two questions mixed together: *can* the agent do the thing, and does it know how to do it well?
+تريد أن يفحص الوكيل سجل حزم قبل ترقية اعتماد. فهل تكتب مهارة؟ أم تركّب خادم MCP (برنامج يضيف أدوات إلى البيئة عبر [بروتوكول سياق النموذج](https://modelcontextprotocol.io/))؟ أم تكتب سكربتًا؟ يبدو السؤال وكأن له جوابًا صحيحًا واحدًا. وهو في الحقيقة سؤالان مختلطان معًا: هل *يستطيع* الوكيل فعل الشيء، وهل يعرف كيف يفعله جيدًا؟
 
-Your harness comes with built-in **tools**: the actions the agent can take, like `WebFetch`, `WebSearch`, `Read`, `Write`, and `Bash`.
+وتأتي بيئتك بـ**أدوات** مدمجة: الإجراءات التي يستطيع الوكيل اتخاذها، مثل `WebFetch` و`WebSearch` و`Read` و`Write` و`Bash`.
 
-You can’t *really* add tools to the harness. That’s only half-true, so bear with me. You can install a command-line program for the agent to call through `Bash`, or you can install an MCP server.
+لا تستطيع *حقًا* إضافة أدوات إلى البيئة. وهذا نصف صحيح فقط، فاحتملني. يمكنك تركيب برنامج سطر أوامر ليستدعيه الوكيل عبر `Bash`، أو تركيب خادم MCP.
 
-Honestly, this is mostly pedantic. A skill can include a script that `Bash` calls. So when this course says “tool,” it means any action the agent can take: the built-ins, a command-line program run through `Bash`, or a tool an MCP server provides.
+وبصراحة، هذا في معظمه تدقيق لفظي. فالمهارة يمكن أن تتضمّن سكربتًا يستدعيه `Bash`. فحين تقول هذه الدورة «أداة»، فهي تعني أي إجراء يستطيع الوكيل اتخاذه: المدمجة، أو برنامج سطر أوامر يُشغَّل عبر `Bash`، أو أداة يوفّرها خادم MCP.
 
-For our purposes, the distinction looks a little something like this:
+ولأغراضنا، يبدو الفرق شيئًا كهذا:
 
-- **Tool**: Query package registry data.
-- **Skill**: Interpret version changes, reproduce them, and report compatibility risk.
+- **أداة**: الاستعلام عن بيانات سجل الحزم.
+- **مهارة**: تفسير تغييرات الإصدارات، وإعادة إنتاجها، والإبلاغ عن مخاطر التوافق.
 
-A tool is something the harness *can do*. A skill is instructions about *how* to do that given thing well. A tool without a skill gives the agent a capability and no judgment. A skill without a tool is advice the agent has no way to act on.
+الأداة شيء تستطيع البيئة *فعله*. والمهارة تعليمات حول *كيفية* فعل ذلك الشيء المعطى جيدًا. والأداة بلا مهارة تمنح الوكيل قدرة بلا حكم. والمهارة بلا أداة نصيحة لا سبيل للوكيل إلى التصرّف بناءً عليها.
 
-## Anatomy of a tool call
+## تشريح استدعاء الأداة
 
-What happens when an agent “uses a tool” explains a bunch of behavior that otherwise seems arbitrary. There are four steps:
+ما يحدث حين «يستخدم وكيل أداة» يفسّر جملة سلوك كان سيبدو اعتباطيًا لولا ذلك. وهناك أربع خطوات:
 
-1. **Definition**: Every tool has a name, a description, and a JSON schema for its input (a machine-readable description of the arguments it accepts). These live up front with the system prompt (the harness’s built-in instructions to the model), so every tool, built-in or added, costs tokens on every request, whether or not it ever gets called. MCP tools are the exception by default, as you’ll see below.
-2. **Call**: The model doesn’t run anything. It emits a structured request: this tool, with these arguments.
-3. **Execution**: The harness checks permissions and runs any [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) (scripts it runs automatically at set points), then runs the tool.
-4. **Result**: The output is appended to the conversation as a tool result, and the model reads it when it decides its next step.
+1. **التعريف**: لكل أداة اسم ووصف ومخطّط JSON لمدخلها (وصف مقروء للآلة للوسائط التي تقبلها). وهذه تعيش في المقدمة مع طلب النظام (تعليمات البيئة المدمجة للنموذج)، فتكلّف كل أداة، مدمجة كانت أو مضافة، رموزًا في كل طلب، سواء استُدعيت أم لم تُستدعَ قط. وأدوات MCP استثناء افتراضيًا، كما سترى أدناه.
+2. **الاستدعاء**: النموذج لا يشغّل شيئًا. بل يصدر طلبًا مهيكلًا: هذه الأداة، بهذه الوسائط.
+3. **التنفيذ**: تفحص البيئة الأذونات وتشغّل أي [خُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) (سكربتات تشغّلها تلقائيًا عند نقاط محددة)، ثم تشغّل الأداة.
+4. **النتيجة**: يُلحَق المخرَج بالمحادثة كنتيجة أداة، ويقرؤه النموذج حين يقرّر خطوته التالية.
 
-A few implications fall out of that:
+وتتفرّع عن ذلك بضع نتائج:
 
-- **The description *is* the interface**: The model decides whether and how to call a tool based entirely on its name, description, and schema. A vague description means a tool that gets misused or never gets used. (Sound familiar? Same goes for a skill’s description.)
-- **Tool definitions sit in the cached prefix**: The provider caches the start of the conversation, and tool definitions are part of it. Adding or removing tools mid-session can invalidate your [prompt cache](https://stevekinney.com/courses/ai-development-setup/caching-and-cost). That’s why Claude Code defers MCP tool definitions behind tool search by default, loading each one on demand, which keeps their cost off every request.
-- **The result is just more text in the context**: It costs tokens, it can get truncated, and it can contain instructions the model might follow. Content that arrives through a tool result is untrusted input. We’ll look at what that means in [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius).
+- **الوصف *هو* الواجهة**: يقرّر النموذج هل يستدعي أداة وكيف، بناءً كليًا على اسمها ووصفها ومخطّطها. والوصف الغامض يعني أداة يُساء استخدامها أو لا تُستخدم أبدًا. (يبدو مألوفًا؟ الأمر نفسه ينطبق على وصف المهارة.)
+- **تعريفات الأدوات تجلس في البادئة المخزّنة مؤقتًا**: يخزّن المزوّد بداية المحادثة مؤقتًا، وتعريفات الأدوات جزء منها. وإضافة الأدوات أو إزالتها في منتصف الجلسة يمكن أن يُبطل [ذاكرتك المؤقتة للطلبات](https://stevekinney.com/courses/ai-development-setup/caching-and-cost). ولهذا يؤخّر Claude Code تعريفات أدوات MCP خلف بحث الأدوات افتراضيًا، فيحمّل كل واحدة عند الطلب، مما يُبقي كلفتها خارج كل طلب.
+- **النتيجة مجرد نص إضافي في السياق**: تكلّف رموزًا، ويمكن أن تُقتطع، ويمكن أن تحتوي تعليمات قد يتبعها النموذج. والمحتوى الذي يصل عبر نتيجة أداة مدخل غير موثوق. وسننظر في معنى ذلك في [نطاق التأثير](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius).
 
-Install the tool for the capability. Write the skill for the judgment.
+ركّب الأداة من أجل القدرة. واكتب المهارة من أجل الحكم.
 
-## Where to go next
+## إلى أين تذهب بعد ذلك
 
-The settings that control how a skill activates are in [Configuring Skills](https://stevekinney.com/courses/ai-development-setup/skill-configuration). If you’re wondering whether a recurring job should be a skill or a helper agent, [Skill or subagent?](https://stevekinney.com/courses/ai-development-setup/subagents#skill-or-subagent) draws that line. And before you write one from scratch, [Exemplar Skills](https://stevekinney.com/courses/ai-development-setup/exemplar-skills) is worth ten minutes.
+الإعدادات التي تتحكّم في كيفية تفعيل المهارة في [تهيئة المهارات](https://stevekinney.com/courses/ai-development-setup/skill-configuration). وإن كنت تتساءل هل ينبغي أن تكون مهمة متكررة مهارة أم وكيلًا مساعدًا، فـ[مهارة أم وكيل فرعي؟](https://stevekinney.com/courses/ai-development-setup/subagents#skill-or-subagent) يرسم ذلك الخط. وقبل أن تكتب واحدة من الصفر، يستحق [المهارات النموذجية](https://stevekinney.com/courses/ai-development-setup/exemplar-skills) عشر دقائق.
 
-If you can’t say what the agent keeps getting wrong, don’t write the skill yet.
+إن لم تستطع أن تقول ما الذي يخطئ فيه الوكيل مرارًا، فلا تكتب المهارة بعد.

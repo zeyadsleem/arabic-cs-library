@@ -1,98 +1,99 @@
 ---
-title: "Configuring Subagents"
-lang: en
+title: "تهيئة الوكلاء الفرعيين"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/subagent-configuration"
 ---
 
-A subagent definition looks like a few lines of YAML. Most of the ways it goes wrong are silent: a misspelled field is ignored, a “read-only” agent can write files, a permission setting gets overridden by the parent. None of those produce an error.
+تعريف الوكيل الفرعي يبدو كبضعة أسطر من YAML. ومعظم طرق إخفاقه صامتة: حقل مكتوب خطأً يُتجاهل، ووكيل «للقراءة فقط» يستطيع كتابة ملفات، وإعداد إذن يتجاوزه الأصل. ولا شيء من ذلك يُنتج خطأً.
 
-This is the reference for the definition file. If you haven’t yet, [Subagents](https://stevekinney.com/courses/ai-development-setup/subagents) explains what one is for.
+هذا مرجع ملف التعريف. وإن لم تكن قد فعلت بعد، فيشرح [الوكلاء الفرعيون](https://stevekinney.com/courses/ai-development-setup/subagents) ما الغرض منه.
 
-## Where definitions live
+## أين تعيش التعريفات
 
-A definition is a Markdown file with YAML frontmatter (a block of key-value settings between two `---` lines) followed by the agent’s instructions. It can live in:
+التعريف ملف Markdown بترويسة YAML (كتلة من إعدادات مفتاح-قيمة بين سطري `---`) يتبعها تعليمات الوكيل. ويمكن أن يعيش في:
 
-- `.claude/agents/` for the project.
-- `~/.claude/agents/` for you, across projects.
-- The session-level `--agents` command-line option, which takes JSON.
-- A plugin, which is a bundle of skills, hooks, and agents you install together.
+- `.claude/agents/` للمشروع.
+- `~/.claude/agents/` لك، عبر المشاريع.
+- الخيار `--agents` على مستوى الجلسة في سطر الأوامر، ويأخذ JSON.
+- إضافة (plugin)، وهي حزمة من المهارات والخطافات والوكلاء تثبّتها معًا.
 
-Only `name` and `description` are required. The [subagent documentation](https://code.claude.com/docs/en/sub-agents) is the authority for the rest.
+لا يُشترط إلا `name` و`description`. و[وثائق الوكيل الفرعي](https://code.claude.com/docs/en/sub-agents) هي المرجع لبقيتها.
 
-## Fields
+## الحقول
 
-- `name`: Must be unique. It can’t contain `:` or start with `-`. Project and user agent files must declare it; without it, Claude Code treats the file as adjacent documentation and skips registration. Only plugin agents fall back to the filename.
-- `description`: Tells Claude when to delegate to this agent. Automatic delegation depends on it, so treat it as a routing rule.
-- `tools`: An allowlist, as a comma-separated string or a YAML list. Listing `Agent` (the tool that starts subagents) lets the agent delegate. `Agent(researcher, analyst)` limits it to those agents, but only when the agent runs the whole session with `--agent`. In an ordinary subagent definition, the parenthesized list is ignored.
-- `disallowedTools`: Removes tools from the inherited set. A name pattern like `mcp__*` (every tool an MCP server supplies) works. A pattern with a specifier, like `Bash(git push *)`, removes the *whole* tool, not just that command. For command-level blocks, use a deny rule in your settings instead.
-- `permissionMode`: How much the agent may do without asking. `default` asks before edits and commands. `acceptEdits` auto-approves file edits. `plan` is read-only planning. `auto` lets a classifier (a background model check) approve actions it judges safe. `bypassPermissions` skips prompts entirely. `dontAsk` auto-denies any call that would otherwise prompt. Unset, the agent uses the session’s mode. Heads up: if the parent is in `auto`, `acceptEdits`, or `bypassPermissions`, the subagent runs in that mode and ignores its own setting, so a `plan` reviewer isn’t read-only under `auto`. See the [permissions documentation](https://code.claude.com/docs/en/permissions) for what each mode does.
-- `model`: `sonnet`, `opus`, `haiku`, `fable`, a full model ID, or `inherit` to use the parent’s.
-- `effort`: How hard the model thinks: `low`, `medium`, `high`, `xhigh`, or `max`.
-- `maxTurns`: Stops the agent after N agentic turns (one model request plus the tool calls it makes). Output that hits the cap is marked partial.
-- `background`: `true` forces the agent to run in the background. Without it, Claude decides. With fork mode on (the interactive default), subagents normally run in the background. With fork mode off, including headless (`claude -p`) and SDK defaults, Claude usually backgrounds them but picks foreground when it needs the result before continuing. Set it when a worker must stay in the background; see the [scheduling rules](https://code.claude.com/docs/en/sub-agents#run-subagents-in-foreground-or-background).
-- `isolation`: `worktree` runs the agent in its own git worktree (an extra checkout of the same repository, in its own directory). By default it branches from your default branch, not your current `HEAD`. To branch from your current commit, set `worktree.baseRef` to `"head"` in your Claude Code settings, or name the exact commit in the assignment and have the worker check it out first. ([Things that will bite you](https://stevekinney.com/courses/ai-development-setup/worktrees#things-that-will-bite-you) covers this trap.)
-- `initialPrompt`: Auto-submits the first message when the agent runs as the main session with `--agent`.
-- `skills`: [Skills](https://stevekinney.com/courses/ai-development-setup/skills) to preload at startup. It doesn’t restrict which others the agent can reach.
-- `mcpServers`: MCP server names or inline definitions scoped to this agent. (An MCP server is a program that adds tools to the harness over the [Model Context Protocol](https://modelcontextprotocol.io/).)
-- `hooks`: Lifecycle [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) scoped to this agent.
-- `memory`: Gives the agent a persistent memory directory. Set it to `user`, `project`, or `local`: `user` stores it under `~/.claude/agent-memory/<agent-name>/`. `project` stores it under `.claude/agent-memory/<agent-name>/`, which can be committed to the repository. `local` stores it under `.claude/agent-memory-local/<agent-name>/`, which stays out of version control.
-  - `user` stores it under `~/.claude/agent-memory/<agent-name>/`.
-  - `project` stores it under `.claude/agent-memory/<agent-name>/`, which can be committed to the repository.
-  - `local` stores it under `.claude/agent-memory-local/<agent-name>/`, which stays out of version control.
-- `omitClaudeMd`: On v2.1.271+, skips user, project, and local `CLAUDE.md` instructions for a spawned subagent. Managed policy still loads for ordinary definitions; managed definitions can omit it too. It’s ignored when the definition runs as the main session through `--agent` or the `agent` setting, and it isn’t a policy-free context switch; see the [frontmatter reference](https://code.claude.com/docs/en/sub-agents#frontmatter-reference).
-- `color`: Terminal display color, such as `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, or `cyan`.
-- `experimental.cacheTtl`: `5m` or `1h`, the lifetime of this one agent’s [prompt cache](https://stevekinney.com/courses/ai-development-setup/caching-and-cost). The `subagentPromptCacheTtl` setting does the same job session-wide for everything outside your main conversation, and per Claude Code’s [prompt caching documentation](https://code.claude.com/docs/en/prompt-caching), it wins when both are set.
+- `name`: يجب أن يكون فريدًا. ولا يمكن أن يحتوي `:` أو يبدأ بـ `-`. ويجب أن تعلنه ملفات وكلاء المشروع والمستخدم؛ وبدونه يعامل Claude Code الملف كوثائق مجاورة ويتخطّى التسجيل. ولا تعود إلا وكلاء الإضافات إلى اسم الملف.
+- `description`: يخبر Claude متى يفوّض إلى هذا الوكيل. ويعتمد التفويض التلقائي عليه، فعامِله كقاعدة توجيه.
+- `tools`: قائمة سماح، كسلسلة مفصولة بفواصل أو قائمة YAML. وإدراج `Agent` (الأداة التي تبدأ الوكلاء الفرعيين) يتيح للوكيل التفويض. و`Agent(researcher, analyst)` يحصره في هؤلاء الوكلاء، لكن فقط حين يشغّل الوكيل الجلسة كاملة بـ `--agent`. وفي تعريف وكيل فرعي عادي، تُتجاهل القائمة بين القوسين.
+- `disallowedTools`: يزيل أدوات من المجموعة الموروثة. ويعمل نمط اسم مثل `mcp__*` (كل أداة يوفّرها خادم MCP). والنمط ذو محدِّد، مثل `Bash(git push *)`، يزيل الأداة *كلها*، لا ذلك الأمر وحده. ولمنع على مستوى الأوامر، استخدم قاعدة رفض في إعداداتك بدلًا من ذلك.
+- `permissionMode`: مقدار ما يستطيع الوكيل فعله دون سؤال. فـ `default` يسأل قبل التعديلات والأوامر. و`acceptEdits` يوافق تلقائيًا على تعديلات الملفات. و`plan` تخطيط للقراءة فقط. و`auto` يتيح لمصنّف (فحص نموذج في الخلفية) الموافقة على الإجراءات التي يحكم بأنها آمنة. و`bypassPermissions` يتخطّى المطالبات كليًا. و`dontAsk` يرفض تلقائيًا أي نداء كان سيطالب بغيره. وإذا لم يُضبط، استخدم الوكيل وضع الجلسة. وتنبيه: إن كان الأصل في `auto` أو `acceptEdits` أو `bypassPermissions`، فيعمل الوكيل الفرعي في ذلك الوضع ويتجاهل إعداده الخاص، فلا يكون مراجع `plan` للقراءة فقط تحت `auto`. انظر [وثائق الأذونات](https://code.claude.com/docs/en/permissions) لمعرفة ما يفعله كل وضع.
+- `model`: `sonnet` أو `opus` أو `haiku` أو `fable`، أو معرّف نموذج كامل، أو `inherit` لاستخدام نموذج الأصل.
+- `effort`: مقدار ما يفكّر فيه النموذج: `low` أو `medium` أو `high` أو `xhigh` أو `max`.
+- `maxTurns`: يوقف الوكيل بعد N من الأدوار الوكيلية (طلب نموذج واحد إضافة إلى نداءات الأدوات التي يجريها). ويُوسم المخرَج الذي يبلغ الحدّ بأنه جزئي.
+- `background`: `true` يفرض على الوكيل العمل في الخلفية. وبدونه يقرّر Claude. وبوضع التفرّع (fork) مفعّلًا (وهو الافتراضي التفاعلي)، يعمل الوكلاء الفرعيون عادةً في الخلفية. وبوضع التفرّع معطّلًا، بما فيه بلا واجهة (`claude -p`) وافتراضيات SDK، يضعهم Claude في الخلفية عادةً لكنه يختار المقدّمة حين يحتاج النتيجة قبل المتابعة. فاضبطه حين يجب أن يبقى عامل في الخلفية؛ انظر [قواعد الجدولة](https://code.claude.com/docs/en/sub-agents#run-subagents-in-foreground-or-background).
+- `isolation`: `worktree` يشغّل الوكيل في شجرة عمل git خاصة به (نسخة إضافية من المستودع نفسه، في مجلدها الخاص). وهي تتفرّع افتراضيًا من فرعك الافتراضي، لا من `HEAD` الحالي. وللتفرّع من إيداعك الحالي، اضبط `worktree.baseRef` على `"head"` في إعدادات Claude Code، أو سمِّ الإيداع الدقيق في المهمة واجعل العامل يُخرجه أولًا. ([أمور ستؤذيك](https://stevekinney.com/courses/ai-development-setup/worktrees#things-that-will-bite-you) يتناول هذا المأزق.)
+- `initialPrompt`: يرسل الرسالة الأولى تلقائيًا حين يعمل الوكيل كجلسة رئيسية بـ `--agent`.
+- `skills`: [المهارات](https://stevekinney.com/courses/ai-development-setup/skills) التي تُحمَّل مسبقًا عند البدء. وهو لا يقيّد أي مهارات أخرى يستطيع الوكيل الوصول إليها.
+- `mcpServers`: أسماء خوادم MCP أو تعريفات مضمّنة محصورة في هذا الوكيل. (وخادم MCP برنامج يضيف أدوات إلى الأداة عبر [بروتوكول سياق النموذج](https://modelcontextprotocol.io/).)
+- `hooks`: [خُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) دورة الحياة المحصورة في هذا الوكيل.
+- `memory`: يمنح الوكيل مجلد ذاكرة دائمًا. اضبطه على `user` أو `project` أو `local`:
 
-## Gotchas
+  - `user` يخزّنه تحت `~/.claude/agent-memory/<agent-name>/`.
+  - `project` يخزّنه تحت `.claude/agent-memory/<agent-name>/`، ويمكن إيداعه في المستودع.
+  - `local` يخزّنه تحت `.claude/agent-memory-local/<agent-name>/`، ويبقى خارج التحكّم بالإصدارات.
+- `omitClaudeMd`: في v2.1.271 وما بعده، يتخطّى تعليمات `CLAUDE.md` للمستخدم والمشروع والمحلية لوكيل فرعي مولَّد. وتظلّ السياسة المُدارة تُحمَّل للتعريفات العادية؛ ويمكن للتعريفات المُدارة أن تتخطّاها أيضًا. وهو متجاهَل حين يعمل التعريف كجلسة رئيسية عبر `--agent` أو إعداد `agent`، وهو ليس تبديل سياق بلا سياسة؛ انظر [مرجع الترويسة](https://code.claude.com/docs/en/sub-agents#frontmatter-reference).
+- `color`: لون العرض في الطرفية، مثل `red` أو `blue` أو `green` أو `yellow` أو `purple` أو `orange` أو `pink` أو `cyan`.
+- `experimental.cacheTtl`: `5m` أو `1h`، وهو عمر [ذاكرة الموجّهات المؤقتة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) لهذا الوكيل وحده. ويؤدي إعداد `subagentPromptCacheTtl` الوظيفة نفسها على مستوى الجلسة لكل ما خارج محادثتك الرئيسية، ووفقًا لـ[وثائق تخزين الموجّهات مؤقتًا](https://code.claude.com/docs/en/prompt-caching) في Claude Code، فهو يفوز حين يُضبط الاثنان.
 
-- **Omitting `tools` inherits everything**: The subagent gets whatever the parent has. To make a leaf worker that can’t delegate any further, list `tools` explicitly and leave `Agent` out.
-- **Bash is the soft spot**: A shell can write files, so a “read-only” agent with `Bash` isn’t. Back it with a settings deny rule, a `PreToolUse` hook (a script that runs before a tool call), or the sandbox (operating-system-level isolation that limits what files and network the agent’s shell commands can reach, no matter what the model decides).
-- **Model selection takes the first match**: The model passed when spawning, then the definition’s `model`, then the `CLAUDE_CODE_SUBAGENT_MODEL` environment variable, then the parent’s model. Forks (subagents that start with a copy of your conversation) always run on the parent’s model. `/tasks` shows which model each subagent actually ran on.
-- **Unknown fields fail silently**: Write `max_turns` instead of `maxTurns`, and it’s ignored without so much as a warning.
-- **Plugin agents drop fields**: `hooks`, `mcpServers`, `permissionMode`, and `initialPrompt` all get dropped from agents that ship in a plugin.
-- **Background by default**: With fork mode on (the interactive default), subagents run in the background, and some tools are unavailable there. Where fork mode is off, foreground execution is available; `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1` forces it. In an interactive session, a subagent’s permission request shows up in the main session, labeled with the subagent, and the worker waits for your answer. An unattended run may have nobody to answer, so define how it reports a blocked action instead of granting broader access to dodge the prompt.
-- **Limits**: 20 subagents running at once and three layers of nesting by default (a subagent starting subagents, which start more). Four children per agent across three layers is 4 + 16 + 64 = 84 workers. (Please don’t.)
+## مزالق
 
-## Which model a subagent runs on
+- **حذف `tools` يورّث كل شيء**: يحصل الوكيل الفرعي على كل ما لدى الأصل. ولصنع عامل ورقة لا يستطيع التفويض أكثر، اسرد `tools` صراحةً واترك `Agent` خارجها.
+- **Bash هي النقطة الضعيفة**: الصدفة تستطيع كتابة ملفات، فوكيل «للقراءة فقط» مع `Bash` ليس كذلك. فادعمه بقاعدة رفض في الإعدادات، أو خُطّاف `PreToolUse` (سكربت يعمل قبل نداء أداة)، أو صندوق الرمل (عزل على مستوى نظام التشغيل يحدّ من الملفات والشبكة التي تستطيع أوامر الوكيل الصدفية الوصول إليها، مهما قرّر النموذج).
+- **اختيار النموذج يأخذ أول تطابق**: النموذج الممرَّر عند التوليد، ثم `model` في التعريف، ثم متغيّر البيئة `CLAUDE_CODE_SUBAGENT_MODEL`، ثم نموذج الأصل. والتفرّعات (وكلاء فرعيون يبدأون بنسخة من محادثتك) تعمل دائمًا على نموذج الأصل. ويعرض `/tasks` النموذج الذي عمل عليه كل وكيل فرعي فعلًا.
+- **الحقول المجهولة تفشل في صمت**: اكتب `max_turns` بدل `maxTurns`، فيُتجاهل دون حتى تحذير.
+- **وكلاء الإضافات تُسقِط حقولًا**: تُسقَط `hooks` و`mcpServers` و`permissionMode` و`initialPrompt` كلها من الوكلاء الذين تأتي داخل إضافة.
+- **الخلفية افتراضيًا**: بوضع التفرّع مفعّلًا (وهو الافتراضي التفاعلي)، يعمل الوكلاء الفرعيون في الخلفية، وبعض الأدوات غير متاحة هناك. وحيث يكون وضع التفرّع معطّلًا، فالتنفيذ في المقدّمة متاح؛ ويفرضه `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`. وفي جلسة تفاعلية، يظهر طلب إذن الوكيل الفرعي في الجلسة الرئيسية، موسومًا بالوكيل الفرعي، وينتظر العامل إجابتك. وقد لا يكون ثمة من يجيب في تشغيل بلا إشراف، فحدّد كيف يبلّغ عن إجراء محجوب بدل منح وصول أوسع للتهرّب من المطالبة.
+- **الحدود**: 20 وكيلًا فرعيًا يعمل في وقت واحد وثلاث طبقات من التضمين افتراضيًا (وكيل فرعي يبدأ وكلاء فرعيين، يبدؤون المزيد). وأربعة أبناء لكل وكيل عبر ثلاث طبقات هي 4 + 16 + 64 = 84 عاملًا. (أرجوك لا.)
 
-The `model:` line in a definition doesn’t guarantee that model. From Claude Code 2.1.251 on, for a custom agent, the first source that’s set wins: the model passed at spawn time, the definition’s `model:` (`inherit` means the main model), the `CLAUDE_CODE_SUBAGENT_MODEL` environment variable (`inherit` is the same as unset), and then the main conversation’s model.
+## أي نموذج يعمل عليه الوكيل الفرعي
 
-Before 2.1.251, the environment variable sat at the top and overrode everything. Same files, opposite answer, and no warning either way:
+سطر `model:` في تعريف لا يضمن ذلك النموذج. ومن Claude Code 2.1.251 فصاعدًا، ولوكيل مخصّص، يفوز أول مصدر مضبوط: النموذج الممرَّر عند التوليد، ثم `model:` في التعريف (`inherit` تعني النموذج الرئيسي)، ثم متغيّر البيئة `CLAUDE_CODE_SUBAGENT_MODEL` (`inherit` مثل عدم الضبط)، ثم نموذج المحادثة الرئيسية.
 
-| `CLAUDE_CODE_SUBAGENT_MODEL=haiku`, plus… | Before 2.1.251 | 2.1.251 and later |
+وقبل 2.1.251، كان متغيّر البيئة في القمة ويتجاوز كل شيء. الملفات نفسها، والإجابة معاكسة، ولا تحذير في أي من الحالتين:
+
+| `CLAUDE_CODE_SUBAGENT_MODEL=haiku`، مع… | قبل 2.1.251 | 2.1.251 وما بعده |
 | --- | --- | --- |
-| A definition with `model: opus` | Haiku | Opus |
-| A model passed at spawn time | Haiku | The spawn-time model |
-| Nothing else | Haiku | Haiku |
-| The variable unset, nothing else | The main model | The main model |
+| تعريف فيه `model: opus` | Haiku | Opus |
+| نموذج ممرَّر عند التوليد | Haiku | النموذج الممرَّر عند التوليد |
+| لا شيء آخر | Haiku | Haiku |
+| المتغيّر غير مضبوط، ولا شيء آخر | النموذج الرئيسي | النموذج الرئيسي |
 
-To get the old behavior back, 2.1.257 added `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`. It applies the variable’s model, or the main model if the variable isn’t set, to every subagent and ignores definitions and spawn-time models. Forks and skills running with `model: inherit` are exempt. On 2.1.251 through 2.1.256 the flag doesn’t exist, so it silently does nothing.
+ولاستعادة السلوك القديم، أضاف 2.1.257 المفتاح `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`. وهو يطبّق نموذج المتغيّر، أو النموذج الرئيسي إن لم يُضبط المتغيّر، على كل وكيل فرعي ويتجاهل التعريفات والنماذج الممرَّرة عند التوليد. ويُستثنى التفرّعات والمهارات التي تعمل بـ `model: inherit`. وفي 2.1.251 حتى 2.1.256 لا يوجد العَلَم، فلا يفعل شيئًا في صمت.
 
-The built-in agents follow their own rules. Explore inherits the main model, capped at Opus on a subscription, a Console account, or an LLM gateway (before 2.1.198 it always ran on Haiku). Plan runs on the main model. The environment variable alone doesn’t move either one; with `FORCE` on, it does. A project or user agent with the same name as a built-in replaces it and follows the custom-agent order above.
+الوكلاء المدمجون يتبعون قواعدهم الخاصة. فيرث Explore النموذج الرئيسي، بحدّ أقصى Opus على اشتراك، أو حساب Console، أو بوابة LLM (وقبل 2.1.198 كان يعمل دائمًا على Haiku). ويعمل Plan على النموذج الرئيسي. ومتغيّر البيئة وحده لا يحرّك أيًّا منهما؛ ومع `FORCE` مفعّلًا، يحرّكهما. ووكيل مشروع أو مستخدم باسم مطابق لمدمج يستبدله ويتبع ترتيب الوكيل المخصّص أعلاه.
 
-Don’t trust the order; check it. From 2.1.243, `/tasks` shows the model each subagent actually ran on. Last verified: 2026-10-04 against Claude Code 2.1.289.
+لا تثق بالترتيب؛ بل تحقّق منه. ومن 2.1.243، يعرض `/tasks` النموذج الذي عمل عليه كل وكيل فرعي فعلًا. آخر تحقّق: 2026-10-04 مقابل Claude Code 2.1.289.
 
-## Choosing a model per stage
+## اختيار نموذج لكل مرحلة
 
-Pick the model by what a mistake at that stage costs:
+اختر النموذج بحسب كلفة الخطأ في تلك المرحلة:
 
-| Stage | Examples | Cost of a mistake | Claude Code `model` | Codex-side equivalent |
+| المرحلة | أمثلة | كلفة الخطأ | `model` في Claude Code | المكافئ في Codex |
 | --- | --- | --- | --- | --- |
-| Mechanical | Listing files, extracting fields, grepping a known pattern | Low: checkable by hand in seconds | `haiku` | Luna |
-| Discovery | “Find bugs in this module” | High and invisible: a miss never reaches verification | `sonnet` | Sol |
-| Judging | Refuting a finding, scoring competing approaches | High: nothing checks the checker | `opus` | Sol |
-| Synthesis | Merging findings, writing the final report | Highest: it’s the version someone acts on | `opus` | Sol |
+| ميكانيكية | سرد الملفات، واستخلاص الحقول، والبحث عن نمط معروف بـ grep | منخفضة: يمكن فحصها يدويًا في ثوانٍ | `haiku` | Luna |
+| استكشاف | «ابحث عن العيوب في هذه الوحدة» | عالية وغير مرئية: الإخفاق لا يصل إلى التحقّق أبدًا | `sonnet` | Sol |
+| حكم | دحض نتيجة، وتقييم مقاربات متنافسة | عالية: لا شيء يفحص الفاحص | `opus` | Sol |
+| تركيب | دمج النتائج، وكتابة التقرير النهائي | الأعلى: فهي النسخة التي يتصرّف أحدهم بناءً عليها | `opus` | Sol |
 
-For narrow but careful work, raise the `effort` field before moving to a bigger model. Compare cost per accepted result, not per run. [Prompt Caching and Cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) has the prices behind these names.
+وللعمل الضيّق لكن الحذر، ارفع حقل `effort` قبل الانتقال إلى نموذج أكبر. وقارن الكلفة لكل نتيجة مقبولة، لا لكل تشغيل. ولدى [تخزين الموجّهات مؤقتًا والتكلفة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) الأسعار الكامنة وراء هذه الأسماء.
 
-## Claude Code versus Codex
+## Claude Code مقابل Codex
 
-The biggest difference is who decides to delegate.
+أكبر فرق هو من يقرّر التفويض.
 
-Claude Code delegates on its own judgment: it reads each agent’s `description` to route work, and you can force a choice with an @-mention or `--agent`. You tune the model’s judgment.
+يفوّض Claude Code بحكمه الخاص: فيقرأ `description` لكل وكيل لتوجيه العمل، ويمكنك فرض اختيار بـ @-mention أو `--agent`. وأنت تضبط حكم النموذج.
 
-[Codex](https://developers.openai.com/codex/subagents) delegates when you ask directly or when applicable `AGENTS.md` or skill instructions request it. You can name the agents in the prompt, but check those standing instructions too: they can trigger parallel work without a new request each turn. Codex runs the agents and gathers their results, and every worker adds token usage and concurrency.
+ويفوّض [Codex](https://developers.openai.com/codex/subagents) حين تطلب مباشرة أو حين تطلبه تعليمات `AGENTS.md` أو مهارة منطبقة. ويمكنك تسمية الوكلاء في الموجّه، لكن تفقّد تلك التعليمات القائمة أيضًا: فقد تُطلق عملًا متوازيًا دون طلب جديد في كل دور. ويشغّل Codex الوكلاء ويجمع نتائجهم، وكل عامل يضيف استخدام رموز (tokens) وتزامنًا.
 
-[Delegating well](https://stevekinney.com/courses/ai-development-setup/subagents#delegating-well) covers how to write the assignment these definitions get handed.
+ويتناول [التفويض الجيد](https://stevekinney.com/courses/ai-development-setup/subagents#delegating-well) كيف تكتب المهمة التي تُسلَّم إليها هذه التعريفات.
 
-Set `tools`, set `model`, and check `/tasks`. Don’t trust the defaults.
+اضبط `tools`، واضبط `model`، وتفقّد `/tasks`. ولا تثق بالافتراضيات.

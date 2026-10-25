@@ -1,61 +1,61 @@
 ---
-title: "Agent Teams"
-lang: en
+title: "فرق الوكلاء (Agent Teams)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/agent-teams"
 ---
 
-By default, a subagent talks only to the main agent that started it. Sometimes that’s exactly the limit you hit: two workers are chasing competing theories of the same bug, and the useful move would be for one to tell the other, “that can’t be it, here’s why.”
+بشكل افتراضي، لا يتحدّث الوكيل الفرعي إلا إلى الوكيل الرئيسي الذي بدأه. وأحيانًا يكون هذا بالضبط الحدّ الذي تصطدم به: عاملان يطاردان نظريتين متعارضتين عن العلّة نفسها، والحركة المفيدة ستكون أن يقول أحدهما للآخر: «هذا لا يمكن أن يكون هو السبب، وإليك لماذا».
 
-That’s what [agent teams](https://code.claude.com/docs/en/agent-teams) are for. They’re also expensive, which is the catch.
+ولهذا وُجدت [فرق الوكلاء](https://code.claude.com/docs/en/agent-teams). وهي مكلفة أيضًا، وهذه هي المشكلة.
 
-## What a team is
+## ما هو الفريق
 
-Agent teams are [subagents](https://stevekinney.com/courses/ai-development-setup/subagents) (helper agents that each start with their own fresh context) that can talk to *each other*.
+فرق الوكلاء هي [وكلاء فرعيون](https://stevekinney.com/courses/ai-development-setup/subagents) (وكلاء مساعدون يبدأ كل منهم بسياقه الجديد الخاص) يمكنهم التحدّث إلى *بعضهم بعضًا*.
 
-An ordinary subagent returns its final report to the main agent that started it. While it runs, it can exchange messages with that main agent through `SendMessage`, and the main agent can resume it later the same way. By default, that’s its only conversation. (A worker explicitly given `SendMessage`, in a workflow for example, can message other agents too.)
+يعيد الوكيل الفرعي العادي تقريره النهائي إلى الوكيل الرئيسي الذي بدأه. وأثناء عمله، يمكنه تبادل الرسائل مع ذلك الوكيل الرئيسي عبر `SendMessage`، ويستطيع الوكيل الرئيسي استئنافه لاحقًا بالطريقة ذاتها. وهذا افتراضيًا محادثته الوحيدة. (والعامل الذي مُنح صراحةً `SendMessage`، في سير عمل مثلًا، يمكنه مراسلة وكلاء آخرين أيضًا.)
 
-A team makes peer messaging the default. Instead of a lead (the main agent that created the team) dispatching workers and waiting for reports, teammates share a task list, claim work from it, and message each other directly.
+والفريق يجعل المراسلة النظيرة (peer messaging) هي الافتراضي. فبدلًا من أن يوزّع القائد (الوكيل الرئيسي الذي أنشأ الفريق) المهام على العاملين وينتظر التقارير، يتشارك الزملاء قائمة مهام، ويطالبون بأعمال منها، ويراسلون بعضهم بعضًا مباشرة.
 
-*TL;DR*: teams are worth their cost only when workers need to change each other’s minds mid-task. If the lead only needs final answers, subagents give you the same parallelism for about half the tokens. They can also run in worktree isolation (each worker in its own checkout of the repository), but only when you set `isolation: worktree` in the definition or invocation. Otherwise they share the main session’s working directory. See the [subagent configuration reference](https://code.claude.com/docs/en/sub-agents#write-subagent-files).
+*باختصار*: لا تستحق الفرق تكلفتها إلا حين يحتاج العاملون إلى تغيير رأي بعضهم بعضًا في منتصف المهمة. أما إن كان القائد يحتاج إلى إجابات نهائية فقط، فإن الوكلاء الفرعيين يمنحونك التزامن نفسه بنحو نصف الرموز. ويمكنهم أيضًا العمل في عزل worktree (كل عامل في نسخته الخاصة من المستودع)، ولكن فقط عندما تضبط `isolation: worktree` في التعريف أو الاستدعاء. وإلا فإنهم يتشاركون دليل العمل الخاص بالجلسة الرئيسية. انظر [مرجع تهيئة الوكلاء الفرعيين](https://code.claude.com/docs/en/sub-agents#write-subagent-files).
 
-## Turning a team on
+## تفعيل فريق
 
-Teams are experimental and off by default. Set the `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable in your shell or a settings file. Then ask the lead (the session you’re talking to) for a team in plain language: “Spawn three teammates to review PR #142: one security, one performance, one test coverage.” Each teammate starts like a fresh session: it loads your `CLAUDE.md`, MCP servers, skills, and the spawn prompt, but not the lead’s conversation.
+الفرق تجريبية ومعطّلة افتراضيًا. اضبط متغيّر البيئة `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` في صدفة الطرفية أو ملف إعدادات. ثم اطلب من القائد (الجلسة التي تتحدث إليها) فريقًا بلغة عادية: «ابدأ ثلاثة زملاء لمراجعة PR #142: واحد للأمن، وواحد للأداء، وواحد لتغطية الاختبارات.» يبدأ كل زميل كجلسة جديدة: يحمّل `CLAUDE.md` وخوادم MCP والمهارات وطلب البدء، لكن لا يحمّل محادثة القائد.
 
-One catch: since Claude Code v2.1.233, task-tracking tools are disabled by default on Opus 4.8+, Sonnet 5+, Fable 5+, and Mythos 5+. Set `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` to restore them, as the [release notes](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21233) specify, and check that the shared task tools are available before relying on them.
+وثمّة مشكلة: منذ Claude Code v2.1.233، أصبحت أدوات تتبّع المهام معطّلة افتراضيًا على Opus 4.8+ و Sonnet 5+ و Fable 5+ و Mythos 5+. اضبط `CLAUDE_CODE_ENABLE_TODO_TOOLS=1` لاستعادتها، كما تحدّد [ملاحظات الإصدار](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md#21233)، وتحقق من توفّر أدوات المهام المشتركة قبل الاعتماد عليها.
 
-## What they cost
+## كم تكلّف
 
-- A three-teammate team runs about 3–4× the tokens of one sequential session.
-- Teammates in plan mode (the read-only `plan` permission mode, where an agent proposes a plan before changing anything) run about 7×.
-- Teams buy you latency, not savings. [One field report](https://magarcia.io/using-claude-code-agent-teams-for-incident-investigation/) on one incident triage: about 10 minutes instead of 30–45 working solo, at roughly $8–10 instead of $2–3 in token spend.
+- فريق من ثلاثة زملاء يستهلك نحو 3–4 أضعاف رموز جلسة تسلسلية واحدة.
+- الزملاء في وضع الخطة (وضع الإذن `plan` للقراءة فقط، حيث يقترح الوكيل خطة قبل تغيير أي شيء) يستهلكون نحو 7 أضعاف.
+- تشتري الفرق لك زمن الاستجابة، لا التوفير. [تقرير ميداني](https://magarcia.io/using-claude-code-agent-teams-for-incident-investigation/) عن فرز حادثة واحدة: نحو 10 دقائق بدلًا من 30–45 منفردًا، بكلفة رموز نحو 8–10 دولارات بدلًا من 2–3.
 
-Sometimes that’s a great trade. Just make it on purpose.
+أحيانًا تكون هذه مقايضة رائعة. لكن اجعلها عن قصد.
 
-## Good fits
+## الحالات المناسبة
 
-- **Competing hypotheses**: Each teammate tries to *disprove* the others’ theories, not just defend its own.
-- **Cross-layer features**: Frontend, backend, and tests working in parallel, after you’ve frozen the contract between them.
-- **Multi-lens review**: Security, performance, and test coverage looking at the same change and arguing about severity.
+- **الفرضيات المتعارضة**: يحاول كل زميل *دحض* نظريات الآخرين، لا مجرد الدفاع عن نظريته.
+- **الميزات عبر الطبقات**: الواجهة الأمامية والخلفية والاختبارات تعمل بالتوازي، بعد أن تجمّد العقد بينها.
+- **المراجعة متعددة الزوايا**: الأمن والأداء وتغطية الاختبارات تنظر إلى التغيير نفسه وتتجادل في الخطورة.
 
-## Things that will bite you
+## أمور ستُزعجك {#things-that-will-bite-you}
 
-- **The setting changes your subagents, too**: In interactive sessions with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` on, a *named* Agent call becomes a teammate unless it’s a fork or passes `isolation` on the call itself, as the [team launch reference](https://code.claude.com/docs/en/agent-teams#how-claude-starts-agent-teams) explains. Headless and SDK named agents stay ordinary subagents. A converted teammate runs in the main working directory and ignores the definition’s `isolation: worktree`, preloaded `skills`, and `permissionMode`, so frontmatter isolation alone won’t save you. My own settings had this on globally, which may well explain a chunk of my worktree friction. Keep it off in your user settings and turn it on per repository. ([Configuring Subagents](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) explains the fields.)
-- **Runaway spawns**: [In one reported case](https://github.com/anthropics/claude-code/issues/76970), a teammate with no `tools` or `model` restriction inherited the ability to spawn more agents on Opus, recursed, and burned about 77% of a five-hour usage limit in under an hour. The nesting limit for ordinary subagents didn’t stop it. Give every role an explicit `tools` list and `model`, state the roster size, and require workers to return to the coordinator rather than delegate further. Codex needs the same roster and concurrency policy: its V2 runtime supports nested agents, and the older `agents.max_depth` setting is [ignored by V2](https://github.com/openai/codex/blob/main/codex-rs/config/src/config_toml.rs). Verify the active runtime’s limits instead of assuming a depth-one boundary.
-- **The lead does the work itself**: Instead of waiting for teammates, the lead starts implementing. Tell it to wait.
-- **Idle looks dead**: The lead decides a quiet teammate has died and spawns a duplicate.
-- **Plan approval is automatic**: A teammate in plan mode stays read-only until it submits a plan, which the lead then approves without reading. If you want a real review, build it in with a hook. It’s the same fatigue from [You are a load-sensitive component](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#you-are-a-load-sensitive-component).
+- **الإعداد يغيّر وكلاءك الفرعيين أيضًا**: في الجلسات التفاعلية مع تفعيل `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`، يتحوّل نداء Agent *المسمّى* إلى زميل ما لم يكن تفريعًا أو يمرّر `isolation` في النداء نفسه، كما يشرح [مرجع إطلاق الفرق](https://code.claude.com/docs/en/agent-teams#how-claude-starts-agent-teams). أما الوكلاء المسمّون في الوضع بلا واجهة وفي SDK فيبقون وكلاء فرعيين عاديين. والزميل المحوّل يعمل في دليل العمل الرئيسي ويتجاهل `isolation: worktree` و `skills` المحمّلة مسبقًا و `permissionMode` في التعريف، فلا ينقذك العزل في المقدّمة وحده. كانت إعداداتي أنا تفعّله عالميًا، وهذا قد يفسّر كثيرًا من احتكاكي مع worktree. أبقِه معطّلًا في إعدادات المستخدم لديك وفعّله لكل مستودع. ([تهيئة الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) يشرح الحقول.)
+- **عمليات بدء جامحة**: [في حالة موثّقة](https://github.com/anthropics/claude-code/issues/76970)، ورث زميل بلا قيد `tools` أو `model` القدرة على بدء مزيد من الوكلاء على Opus، فتكرّر، وأحرق نحو 77% من حدّ استخدام خمس ساعات في أقل من ساعة. ولم يوقفه حدّ التعشيش الخاص بالوكلاء الفرعيين العاديين. امنح كل دور قائمة `tools` و `model` صريحة، وحدّد حجم القائمة، واطلب من العاملين العودة إلى المنسّق بدلًا من التفويض أكثر. ويحتاج Codex إلى سياسة القائمة والتزامن ذاتها: فبيئة تشغيله V2 تدعم الوكلاء المتعشّشين، وإعداد `agents.max_depth` الأقدم [يتجاهله V2](https://github.com/openai/codex/blob/main/codex-rs/config/src/config_toml.rs). تحقّق من حدود بيئة التشغيل الفعّالة بدلًا من افتراض حدّ عمق واحد.
+- **القائد ينفّذ العمل بنفسه**: بدلًا من انتظار الزملاء، يبدأ القائد بالتنفيذ. اطلب منه أن ينتظر.
+- **الهدوء يبدو موتًا**: يقرّر القائد أن زميلًا ساكنًا قد مات فيبدأ نسخة مكرّرة.
+- **الموافقة على الخطة آلية**: يبقى الزميل في وضع الخطة للقراءة فقط حتى يقدّم خطة، فيوافق عليها القائد دون قراءتها. وإن أردت مراجعة حقيقية، فابنِها بخُطّاف. إنه الإجهاد نفسه من [أنت مكوّن حسّاس للحمل](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#you-are-a-load-sensitive-component).
 
-## The real quality gate
+## بوابة الجودة الحقيقية
 
-Team-specific [hooks](https://stevekinney.com/courses/ai-development-setup/hooks), scripts the harness runs automatically at set points, are where you get control back. Three fire at team events:
+[خُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) الفرق خاصة، وهي سكربتات يشغّلها الإطار آليًا عند نقاط محدّدة، وهناك تستعيد السيطرة. ثلاثة منها تُطلَق عند أحداث الفريق:
 
-- `TaskCreated`: Fires when a task is added to the shared list.
-- `TaskCompleted`: Fires when a teammate marks a task done. Exiting with code `2` (the hook’s block signal) refuses the “done” until your tests actually pass.
-- `TeammateIdle`: Fires when a teammate goes quiet. Exiting `2` sends the hook’s stderr to the teammate as feedback, and the teammate keeps working instead of going idle. Keep a retry count so the hook gives up after a few tries instead of looping forever.
+- `TaskCreated`: يُطلَق عند إضافة مهمة إلى القائمة المشتركة.
+- `TaskCompleted`: يُطلَق عندما يعلّم زميل مهمة كمكتملة. والخروج بالرمز `2` (إشارة المنع الخاصة بالخُطّاف) يرفض «الإنجاز» حتى تنجح اختباراتك فعلًا.
+- `TeammateIdle`: يُطلَق عندما يصمت زميل. والخروج بالرمز `2` يرسل stderr الخاص بالخُطّاف إلى الزميل كتغذية راجعة، فيواصل الزميل العمل بدلًا من أن يصمت. أبقِ عدّاد إعادة محاولات حتى يستسلم الخُطّاف بعد بضع محاولات بدلًا من التكرار إلى الأبد.
 
-> **Codex doesn’t have a teams feature**
+> **ليست لدى Codex ميزة فرق**
 >
-> You can build one out of task files, `mkdir`-based lock claims (creating a directory is an atomic way to claim a task), and a `codex exec` worker per worktree. (`codex exec` is Codex’s headless mode: it runs one non-interactive session and exits.) But at that point, you’re writing a [Ralph loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) (a fresh agent per task, restarted in a loop) with extra steps.
+> يمكنك بناء واحدة من ملفات المهام، ومطالبات الأقفال القائمة على `mkdir` (إنشاء دليل طريقة ذرّية للمطالبة بمهمة)، وعامل `codex exec` لكل worktree. (`codex exec` هو الوضع بلا واجهة في Codex: يشغّل جلسة واحدة غير تفاعلية ثم يخرج.) لكنك عندئذٍ تكتب [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) (وكيل جديد لكل مهمة، يُعاد تشغيله في حلقة) بخطوات إضافية.
 
-Reach for a team when the workers need to argue. Otherwise, use subagents and save the tokens.
+مدّ يدك إلى فريق حين يحتاج العاملون إلى الجدال. وإلا فاستخدم الوكلاء الفرعيين ووفّر الرموز.

@@ -1,30 +1,30 @@
 ---
-title: "Image-to-Image Transformations"
-lang: en
+title: "التحويلات من صورة إلى صورة (Image-to-Image)"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/image-to-image"
 ---
 
-> **Key Takeaways**
+> **أهم الاستنتاجات**
 >
-> - Image-to-image starts with partially noised source images, not pure noise
-> - The strength parameter controls transformation degree (0 = original, 1 = new)
-> - Preserve composition with lower strength; change style with higher values
-> - Match latent resolution; prep images for better results
-> - Works for style transfer, editing, variations, and upscaling tasks
+> - يبدأ التوليد من صورة إلى صورة من صور مصدر مشوّشة جزئيًا، لا من ضوضاء خالصة
+> - يتحكّم معامل القوة (strength) في درجة التحوّل: صفر يعني الأصلية وواحد تعني الجديدة
+> - حافظ على التكوين بقوة أقل، وغيّر الأسلوب بقيم أعلى
+> - طابِق دقة التمثيل الكامن (latent)، وجهّز الصور مسبقًا لنتائج أفضل
+> - يصلح لنقل الأسلوب، والتحرير، وإنشاء التنويعات، ومهام التكبير
 
-## Overview
+## نظرة عامة
 
-Image-to-image generation transforms existing images using text prompts, preserving aspects of the original while introducing new elements. Unlike text-to-image which starts from random noise, image-to-image begins with your source image, giving you creative control over how much to preserve versus transform.
+يحوّل التوليد من صورة إلى صورة الصور الموجودة باستخدام أوامر نصية، مع الحفاظ على جوانب من الأصلية أثناء إدخال عناصر جديدة. وخلافًا للتوليد من نص إلى صورة الذي يبدأ من ضوضاء عشوائية، يبدأ هذا النوع من صورتك المصدر، فيمنحك سيطرة إبداعيًا على مقدار ما تحفظه مقابل مقدار ما تحوّله.
 
-Think of it like renovating a house instead of building from scratch. You keep the foundation and structure (the composition) but can change the style, colors, and details. The strength parameter is like choosing between a light refresh (new paint) or a complete remodel (new everything).
+فكّر فيه كإعادة ترميم منزل بدل بنائه من الصفر. أنت تحفظ الأساس والبنية (أي التكوين)، لكن يمكنك تغيير الأسلوب والألوان والتفاصيل. ومعامل القوة (strength) يشبه الاختيار بين تجديد خفيف (طلاء جديد) أو تجديد شامل (كل شيء جديد).
 
-## Notebook
+## دفتر الملاحظات
 
-View the companion notebook: [Image to Image Transformations](https://colab.research.google.com/drive/1iI-RKtZOkL4DbaJKCIHIqkati3D1Yv_7?usp=sharing)
+اطّلع على دفتر الملاحظات المرافق: [تحويلات من صورة إلى صورة](https://colab.research.google.com/drive/1iI-RKtZOkL4DbaJKCIHIqkati3D1Yv_7?usp=sharing)
 
-## Setting Up the Pipeline
+## تهيئة خط المعالجة
 
-Install dependencies and load the image-to-image pipeline:
+ثبّت الاعتمادات وحمّل خط المعالجة (pipeline) المخصّص للصور من صورة إلى صورة:
 
 ```python
 !pip install -q diffusers transformers accelerate
@@ -49,9 +49,9 @@ init_image = Image.open(BytesIO(response.content)).convert("RGB")
 init_image = init_image.resize((512, 512))
 ```
 
-## The Strength Parameter
+## معامل القوة
 
-The strength parameter determines how much of your original image to preserve versus how much freedom the model has to change it. Strength maps to how far along the diffusion trajectory the process starts—high strength injects more noise (more change), low strength preserves structure (less change).
+يحدّد معامل القوة مقدار ما تحفظه من صورتك الأصلية مقابل مقدار الحرية التي يملكها النموذج لتغييرها. ويُقابل المعامل موقع انطلاق العملية على مسار الانتشار: القوة العالية تُحقن ضوضاء أكثر (تغيّر أكبر)، والقوة المنخفضة تحافظ على البنية (تغيّر أقل).
 
 ```python
 prompt = "A oil painting of a landscape in impressionist style"
@@ -81,18 +81,18 @@ heavy_edit = pipeline(
 ).images[0]
 ```
 
-**Strength = 0.0**: Returns original unchanged. **Strength = 0.3**: Light edits, colors and textures change. **Strength = 0.5**: Balanced stylistic changes. **Strength = 0.8**: Heavy transformation, may alter composition. **Strength = 1.0**: Nearly equivalent to text-to-image.
+**قوة = 0.0**: تُعيد الصورة الأصلية دون أي تغيير. **قوة = 0.3**: تحريرات خفيفة تتغيّر معها الألوان والقوامات. **قوة = 0.5**: تغيّرات أسلوبية متوازنة. **قوة = 0.8**: تحوّل قوي قد يمسّ التكوين. **قوة = 1.0**: يعادل تقريبًا التوليد من نص إلى صورة.
 
-## How It Works
+## كيف يعمل
 
-The process differs from text-to-image in a crucial way:
+تختلف العملية عن التوليد من نص إلى صورة في جانب حاسم:
 
-1. **Encode**: Your image is encoded into latent space using the VAE encoder
-2. **Add Noise**: Noise is added based on the strength parameter
-3. **Denoise**: The U-Net removes noise while being guided by your text prompt
-4. **Decode**: The VAE decoder converts the result back to an image
+1. **الترميز**: تُرمَّز صورتك إلى الفضاء الكامن بمساعدة مُرمِّز VAE
+2. **إضافة الضوضاء**: تُضاف ضوضاء بناءً على معامل القوة
+3. **إزالة التشويش**: تزيل شبكة U-Net الضوضاء تحت توجيه أمرك النصي
+4. **فك الترميز**: يحوّل مفكّك VAE النتيجة عائدًا إلى صورة
 
-With strength=0.5, the model only runs the last 50% of denoising steps. Your image starts partially along the denoising trajectory, not from pure noise:
+عند قوة تساوي 0.5، يُشغّل النموذج آخر 50% فقط من خطوات إزالة التشويش. وتبدأ صورتك في منتصف مسار إزالة التشويش، لا من ضوضاء خالصة:
 
 ```python
 # Understanding the math
@@ -102,11 +102,11 @@ start_step = int(total_steps * (1 - strength))  # Start at step 25
 # Model runs steps 25-50, preserving early structure
 ```
 
-## Practical Applications
+## تطبيقات عملية
 
-### Style Transfer
+### نقل الأسلوب
 
-Transform photos into different artistic styles while preserving composition:
+حوّل الصور الفوتوغرافية إلى أساليب فنية مختلفة مع الحفاظ على التكوين:
 
 ```python
 # Load a photo
@@ -130,9 +130,9 @@ for style_prompt in styles:
     styled_images.append(result)
 ```
 
-### Object Modification
+### تعديل العناصر
 
-Change specific elements while keeping the rest intact:
+غيّر عناصر محدّدة مع إبقاء بقية العناصر سليمة:
 
 ```python
 # Original: photo of a red car
@@ -147,9 +147,9 @@ modified = pipeline(
 ).images[0]
 ```
 
-### Creating Variations
+### إنشاء التنويعات
 
-Generate multiple versions of the same concept:
+ولّد نسخًا متعددة من المفهوم نفسه:
 
 ```python
 prompt = "professional product photography of a watch"
@@ -166,9 +166,9 @@ for i in range(4):
     variations.append(variant)
 ```
 
-## Composition Preservation
+## الحفاظ على التكوين
 
-Prompts that mention objects and their relations help maintain layout. For strict structure preservation, combine with control methods when available:
+تساعد الأوامر التي تذكر العناصر والعلاقات بينها في الحفاظ على التخطيط. أما للحفاظ الصارم على البنية فادمجها مع أساليب التحكّم متى كانت متاحة:
 
 ```python
 # Include spatial information in prompt
@@ -186,9 +186,9 @@ result = pipeline(
 ).images[0]
 ```
 
-## Progressive Refinement
+## التنقيح التدريجي
 
-Apply multiple passes with decreasing strength for controlled editing:
+طبّق ممرات متعددة بقوة متناقصة للحصول على تحرير منضبط:
 
 ```python
 def progressive_edit(image, prompt, strengths=[0.6, 0.4, 0.2]):
@@ -211,9 +211,9 @@ final = progressive_edit(
 )
 ```
 
-## Masked Editing (Inpainting)
+## التحرير بالقناع (Inpainting)
 
-For precise local edits, use inpainting pipelines:
+لأجل التعديلات المحلية الدقيقة، استخدم خطوط معالجة التحرير بالقناع:
 
 ```python
 from diffusers import AutoPipelineForInpainting
@@ -235,9 +235,9 @@ result = inpaint_pipe(
 ).images[0]
 ```
 
-## Resolution Matching
+## مطابقة الدقة
 
-Always match the model’s native resolution for best results:
+طابِق دائمًا دقة النموذج الأصلية للحصول على أفضل النتائج:
 
 ```python
 def prepare_image(image, target_size=512):
@@ -265,9 +265,9 @@ def prepare_image(image, target_size=512):
     return resized
 ```
 
-## Strength vs Steps Visualization
+## تصوّير القوة مقابل عدد الخطوات
 
-Understanding how strength affects the denoising process:
+افهم كيف يؤثّر معامل القوة على عملية إزالة التشويش:
 
 ```python
 import matplotlib.pyplot as plt
@@ -298,11 +298,11 @@ ax.set_xlim(0, total_steps)
 plt.show()
 ```
 
-Lower strength means fewer denoising steps, preserving more of the original. Higher strength means more denoising steps, allowing greater transformation.
+قوة أقل تعني خطوات إزالة تشويش أقل، فتُحفظ نسبة أكبر من الأصلية. وقوة أعلى تعني خطوات أكثر، فيُسمح بتحوّل أكبر.
 
-## Upscaling with Image-to-Image
+## التكبير باستخدام الصور من صورة إلى صورة
 
-Use image-to-image for intelligent upscaling:
+استخدم التوليد من صورة إلى صورة لتكبير ذكي:
 
 ```python
 from diffusers import StableDiffusionUpscalePipeline
@@ -320,23 +320,23 @@ upscaled = upscale_pipe(
 ).images[0]
 ```
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-> **Loss of Detail**
+> **فقدان التفاصيل**
 >
-> If losing too much detail, reduce strength or increase guidance scale. Consider using img2img-specific models.
+> إن كنت تفقد تفاصيل كثيرة، فقلّل القوة أو زد مقياس التوجيه (guidance scale). وفكّر في استخدام نماذج مخصّصة لـ img2img.
 
-> **Color Shifts**
+> **انزياح الألوان**
 >
-> To maintain original colors, include color descriptions in your prompt or use lower strength values (0.2-0.4).
+> للحفاظ على الألوان الأصلية، أدرج وصف الألوان في أمرك أو استخدم قيم قوة أقل (0.2-0.4).
 
-> **Resolution Artifacts**
+> **شوائب الدقة**
 >
-> Always resize images to model’s native resolution (512×512 for SD 1.5, 768×768 or 1024×1024 for SDXL).
+> قلّم حجم الصور دائمًا إلى الدقة الأصلية للنموذج (512×512 لـ SD 1.5، و768×768 أو 1024×1024 لـ SDXL).
 
-## Color and Style Consistency
+## اتساق الألوان والأسلوب
 
-To keep color palettes, use lower strength and fewer steps, or apply color transfer post-process. To change only style, keep semantic content in the prompt and emphasize stylistic descriptors:
+للحفاظ على لوحات الألوان، استخدم قوة أقل وخطوات أقل، أو طبّق نقل الألوان بعد المعالجة. أما لتغيير الأسلوب وحده فاحتفظ بالمحتوى الدلالي في الأمر وابرز الأوصاف الأسلوبية:
 
 ```python
 # Preserve colors while changing style
@@ -353,9 +353,9 @@ result = pipeline(
 ).images[0]
 ```
 
-## Multi-pass Workflows
+## سير عمل متعدد الممرات
 
-Iterate with small strength adjustments for complex transformations:
+كرّر التنفيذ بتعديلات صغيرة في القوة لتحقيق تحوّلات مركّبة:
 
 ```python
 # Stage 1: Style transfer
@@ -380,14 +380,14 @@ final = pipeline(
 ).images[0]
 ```
 
-Save seeds for each pass to re-run successful chains deterministically.
+احفظ البذور (seeds) لكل ممر لتتمكن من إعادة تشغيل السلاسل الناجحة بطريقة حتمية.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Image-to-image generation offers precise control over AI image transformation. The strength parameter balances preservation versus transformation—start with 0.3-0.5 for most tasks. Lower values preserve structure while higher values allow creative freedom. Combine with progressive refinement, inpainting, and proper resolution handling for professional results. Remember that this technique excels at style transfer, concept variation, and iterative refinement tasks.
+يمنح توليد الصور من صورة إلى صورة تحكّمًا دقيقًا في تحوّل الصور بواسطة الذكاء الاصطناعي. ويزن معامل القوة بين الحفاظ والتحوّل—ابدأ بقيمة بين 0.3 و0.5 في معظم المهام. فالقيم الأدنى تحافظ على البنية بينما تتيح القيم الأعلى حرية إبداعية. وادمج ذلك مع التنقيح التدريجي، والتحرير بالقناع، ومعالجة الدقة الصحيحة للحصول على نتائج احترافية. وتذكّر أن هذه التقنية تتفوق في نقل الأسلوب، وتنويع المفاهيم، والمهام التنقيحية التكرارية.
 
-## Further Reading
+## قراءات إضافية
 
-- Diffusers — Image-to-Image: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/img2img](https://huggingface.co/docs/diffusers/main/en/using-diffusers/img2img)
-- Diffusers — Inpainting: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/inpaint](https://huggingface.co/docs/diffusers/main/en/using-diffusers/inpaint)
-- ControlNet (Zhang and Agrawala): [https://arxiv.org/abs/2302.05543](https://arxiv.org/abs/2302.05543)
+- Diffusers — التحوّل من صورة إلى صورة: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/img2img](https://huggingface.co/docs/diffusers/main/en/using-diffusers/img2img)
+- Diffusers — التحرير بالقناع: [https://huggingface.co/docs/diffusers/main/en/using-diffusers/inpaint](https://huggingface.co/docs/diffusers/main/en/using-diffusers/inpaint)
+- شبكة التحكّم ControlNet (Zhang وAgrawala): [https://arxiv.org/abs/2302.05543](https://arxiv.org/abs/2302.05543)

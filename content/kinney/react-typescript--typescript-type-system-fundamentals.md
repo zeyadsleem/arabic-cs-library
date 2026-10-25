@@ -1,71 +1,71 @@
 ---
-title: "TypeScript Type System Fundamentals"
-lang: en
+title: "أساسيات نظام أنواع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-type-system-fundamentals"
 ---
 
-Before you can master React with TypeScript, you need to understand how TypeScript thinks about types. It’s not like Java or C# where types are about classes and inheritance. TypeScript uses structural typing—if it walks like a duck and quacks like a duck, TypeScript says it’s a duck. This fundamental difference changes everything about how you write and think about types.
+قبل أن تتقن React مع TypeScript، تحتاج إلى فهم كيف يفكّر TypeScript في الأنواع. ليس كـ Java أو C# حيث الأنواع تدور حول الأصناف والوراثة. يستخدم TypeScript التصنيف البنيوي (structural typing) — إن مشى كبطّة وصوّت كبطّة، يقول TypeScript إنها بطّة. هذا الاختلاف الأساسي يغيّر كل شيء في كيفية كتابة الأنواع والتفكير فيها.
 
-Let’s build a rock-solid foundation in TypeScript’s type system. Once you understand these core concepts, every React pattern will make more sense, every error message will be clearer, and you’ll write types that actually help rather than hinder.
+لنبنِ أساسًا متينًا في نظام أنواع TypeScript. متى فهمت هذه المفاهيم الأساسية، كل نمط في React سيصبح أكثر وضوحًا، وكل رسالة خطأ ستكون أوضح، وستكتب أنواعًا تساعد فعلًا بدل أن تعيق.
 
-## Structural Typing: The Foundation
+## التصنيف البنيوي: الأساس
 
-TypeScript doesn’t care about names or declarations—it cares about shape. This is the most important concept to internalize. Unlike nominally-typed languages like Java or C#, TypeScript uses structural typing where type compatibility is determined by the structure of the types, not their names.
+TypeScript لا يهتم بالأسماء أو التصريحات — يهتم بالشكل. هذا أهم مفهوم يجب استيعابه. على عكس اللغات مُسمّاة التصنيف مثل Java أو C#، يستخدم TypeScript التصنيف البنيوي حيث يُحدَّد توافق الأنواع ببنية الأنواع، لا بأسمائها.
 
-**See: [Structural Typing in TypeScript](https://stevekinney.com/courses/react-typescript/typescript-structural-typing)** for comprehensive coverage including:
+**انظر: [التصنيف البنيوي في TypeScript](https://stevekinney.com/courses/react-typescript/typescript-structural-typing)** لتغطية شاملة تتضمن:
 
-- Duck typing patterns
-- Excess property checking
-- React props and component composition
-- Class compatibility rules
-- Real-world patterns and best practices
+- أنماط التصنيف البنيوي (duck typing)
+- فحص الخصائص الزائدة (excess property checking)
+- خصائص React (props) وتراكيب المكوّنات (component composition)
+- قواعد توافق الأصناف (class compatibility rules)
+- أنماط واقعية وأفضل الممارسات
 
-## Type Inference: Let TypeScript Do the Work
+## استنتاج الأنواع: دع TypeScript يعمل
 
-TypeScript is incredibly good at figuring out types. Understanding when to let inference work and when to be explicit is key to writing clean, maintainable code with less boilerplate.
+TypeScript ممتاز في معرفة الأنواع. فهم متى تترك الاستنتاج يعمل ومتى تكون صريحًا هو مفتاح كتابة شيفرة نظيفة وقابلة للصيانة مع كمية أقل من الكود المعياري (boilerplate).
 
-**See: [Type Inference Mastery](https://stevekinney.com/courses/react-typescript/typescript-type-inference-mastery)** for comprehensive coverage including:
+**انظر: [إتقان استنتاج الأنواع](https://stevekinney.com/courses/react-typescript/typescript-type-inference-mastery)** لتغطية شاملة تتضمن:
 
-- When to rely on inference vs being explicit
-- Contextual typing patterns
-- Const assertions and literal types
-- React-specific inference patterns
-- Performance considerations
+- متى الاعتماد على الاستنتاج مقابل الصراحة
+- أنماط التصنيف السياقي (contextual typing)
+- تأكيدات const (const assertions) والأنواع الحرفيّة (literal types)
+- أنماط الاستنتاج الخاصة بـ React
+- اعتبارات الأداء
 
-## Type Narrowing: Progressive Type Refinement
+## تضييق الأنواع: تحسين تدريجي للنوع
 
-TypeScript understands control flow and narrows types based on your code’s logic. This enables you to write safer code with precise type checking.
+TypeScript يفهم تدفق التحكم ويضيّق الأنواع بناءً على منطق شيفرتك. هذا يمكّنك من كتابة شيفرة أكثر أمانًا مع فحص أنواع دقيق.
 
-**See: [Type Narrowing and Control Flow](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** for comprehensive coverage including:
+**انظر: [تضييق الأنواع وتدفق التحكم](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** لتغطية شاملة تتضمن:
 
-- Type guards (typeof, instanceof, in operator)
-- Custom type guards and assertion functions
-- Control flow analysis
-- Discriminated unions and exhaustiveness checking
-- React-specific narrowing patterns
+- حرّاس الأنواع (type guards): `typeof` و`instanceof` وعامل `in`
+- حرّاس الأنواع المخصّصة ودوال التأكيد (assertion functions)
+- تحليل تدفق التحكم (control flow analysis)
+- الاتحادات المميّزة (discriminated unions) وفحص الاستنفاد (exhaustiveness checking)
+- أنماط التضييق الخاصة بـ React
 
-## Type Safety with `unknown` and `any`
+## أمان الأنواع مع `unknown` و`any`
 
-Understanding the difference between `unknown` and `any` is crucial for type safety. While `any` disables type checking, `unknown` requires you to validate types before use.
+فهم الفرق بين `unknown` و`any` أساسي لسلامة الأنواع. بينما `any` يعطّل فحص الأنواع، `unknown` يتطلب منك التحقّق من الأنواع قبل الاستخدام.
 
-**See: [`unknown` vs `any`](https://stevekinney.com/courses/react-typescript/typescript-unknown-vs-any)** for comprehensive coverage including:
+**انظر: [`unknown` مقابل `any`](https://stevekinney.com/courses/react-typescript/typescript-unknown-vs-any)** لتغطية شاملة تتضمن:
 
-- Why `any` is dangerous and how it spreads
-- Safe handling of dynamic types with `unknown`
-- The `never` type for exhaustiveness checking
-- Migration strategies from `any` to `unknown`
-- Real-world patterns for type-safe API handling
+- لماذا `any` خطر وكيف ينتشر
+- معالجة الأنواع الديناميكية بأمان مع `unknown`
+- نوع `never` لفحص الاستنفاد
+- استراتيجيات الترحيل من `any` إلى `unknown`
+- أنماط واقعية لمعالجة API بأمان الأنواع
 
-## Type Aliases vs Interfaces
+## الأسماء المستعارة للأنواع مقابل الواجهات
 
-When to use `type` vs `interface` is a common question in TypeScript. While both can describe object shapes, they each have unique capabilities.
+متى تستخدم `type` مقابل `interface` سؤال شائع في TypeScript. بينما كلاهما يمكن أن يصف شكلاً لكائن، لكل منهما قدرات فريدة.
 
-**Key Differences:**
+**الاختلافات الرئيسية:**
 
-- **Interfaces** are best for object shapes, support declaration merging, and work well with classes
-- **Type aliases** can represent any type (unions, tuples, primitives), support intersection types, and work with mapped/conditional types
+- **الواجهات (Interfaces)** الأفضل لأشكال الكائنات، تدعم دمج التصريحات (declaration merging)، وتعمل جيدًا مع الأصناف
+- **الأسماء المستعارة للأنواع (Type aliases)** يمكن أن تمثّل أي نوع (اتحادات، tuples، أنواع بدائية)، تدعم أنواع التقاطع (intersection types)، وتعمل مع الأنواع المُخطّطة/الشرطية (mapped/conditional types)
 
-**Quick Guidelines:**
+**إرشادات سريعة:**
 
 ```typescript
 // Use interface for object shapes
@@ -80,55 +80,55 @@ type Handler = (event: Event) => void;
 type Nullable<T> = T | null;
 ```
 
-For more patterns with type aliases and interfaces, see:
+لمزيد من الأنماط مع الأسماء المستعارة للأنواع والواجهات، انظر:
 
-- **[Unions, Intersections, and Guards](https://stevekinney.com/courses/react-typescript/typescript-unions-intersections-guards)** for union and intersection patterns
-- **[Utility Types](https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete)** for advanced type transformations
+- **[الاتحادات والتقاطعات والحرّاس](https://stevekinney.com/courses/react-typescript/typescript-unions-intersections-guards)** لأنماط الاتحاد والتقاطع
+- **[أنواع الأدوات (Utility Types)](https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete)** لتحويلات الأنواع المتقدمة
 
-## Literal Types and Template Literals
+## الأنواع الحرفيّة والقوالب الحرفيّة
 
-TypeScript’s literal types allow you to specify exact values as types, enabling precise type checking and powerful string manipulation patterns.
+الأنواع الحرفيّة في TypeScript تسمح لك بتحديد قيم exact كأنواع، مما يمكّن فحص أنواع دقيق وأنماط manipulation للسلاسل الفعّالة.
 
-**See: [Template Literal Types](https://stevekinney.com/courses/react-typescript/typescript-template-literal-types)** for comprehensive coverage including:
+**انظر: [أنواع القوالب الحرفيّة (Template Literal Types)](https://stevekinney.com/courses/react-typescript/typescript-template-literal-types)** لتغطية شاملة تتضمن:
 
-- String, numeric, and boolean literal types
-- Template literal type patterns
-- String manipulation utilities
-- Dynamic property names and event handlers
-- Real-world React patterns
+- أنواع حرفيّة للسلاسل والأرقام والقيم المنطقية
+- أنماط أنواع القوالب الحرفيّة
+- أدوات manipulation للسلاسل
+- أسماء خصائص ديناميكية ومعالجات الأحداث
+- أنماط React واقعية
 
-## Type Assertions and Casting
+## تأكيدات الأنواع والتحويل (Casting)
 
-Sometimes you know more than TypeScript about a value’s type. Type assertions let you override TypeScript’s inferred type, but use them carefully—they bypass type safety.
+أحيانًا تعرف أكثر من TypeScript عن نوع قيمة. تأكيدات الأنواع تسمح لك بتجاوز النوع المُستنتَج من TypeScript، لكن استخدمها بحذر — فهي تتجاوز سلامة الأنواع.
 
-**Common Patterns:**
+**أنماط شائعة:**
 
-- `as` syntax for type assertions (preferred in JSX)
-- Non-null assertion operator (`!`) when you’re certain a value exists
-- `as const` for literal type inference
-- Assertion functions for runtime type validation
+- صياغة `as` لتأكيدات الأنواع (مُفضّلة في JSX)
+- عامل التأكيد غير null (`!`) عندما تكون متأكدًا من وجود قيمة
+- `as const` لاستنتاج الأنواع الحرفيّة
+- دوال التأكيد (assertion functions) للتحقّق من الأنواع في وقت التشغيل
 
-**See: [Type Narrowing and Control Flow](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** for safer alternatives using:
+**انظر: [تضييق الأنواع وتدفق التحكم](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** لبدائل أأمن باستخدام:
 
-- Type guards instead of assertions
-- Assertion functions with runtime checks
-- Control flow analysis for automatic narrowing
+- حرّاس الأنواع بدل التأكيدات
+- دوال التأكيد مع فحوصات وقت التشغيل
+- تحليل تدفق التحكم للتضييق التلقائي
 
-## Function Types and Overloads
+## أنواع الدوال والتحميل (Overloads)
 
-Functions in TypeScript support powerful typing patterns including overloads, optional parameters, and callable interfaces.
+الدوال في TypeScript تدعم أنماط typing قوية تتضمن التحميل (overloads)، المعاملات الاختيارية، والواجهات القابلة للاستدعاء.
 
-**Key Concepts:**
+**المفاهيم الرئيسية:**
 
-- Function type expressions for defining function signatures
-- Function overloads for multiple call signatures
-- Optional and rest parameters
-- Functions with properties
+- تعبيرات نوع الدالة لتحديد تواقيع الدوال
+- تحميل الدوال لتوقيعات استدعاء متعددة
+- معاملات اختيارية وrest
+- دوال مع خصائص
 
-**Related Topics:**
+**مواضيع ذات صلة:**
 
-- **[Generics Deep Dive](https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive)** for generic function patterns
-- **[Type Narrowing](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** for type guard functions
+- **[العموميات (Generics) بعمق](https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive)** لأنماط دوال العموميات
+- **[تضييق الأنواع](https://stevekinney.com/courses/react-typescript/typescript-type-narrowing-control-flow)** لدوال حرّاس الأنواع
 
 ```typescript
 // Quick example: Function overloads
@@ -139,33 +139,33 @@ function parse(value: string | number): object | string {
 }
 ```
 
-## Generic Functions and Type Parameters
+## الدوال العامة (Generic Functions) ومعاملات الأنواع
 
-Generics enable writing reusable, type-safe functions that work with any type while maintaining type relationships.
+العموميات (generics) تمكّن من كتابة دوال قابلة لإعادة الاستخدام وأمن الأنواع تعمل مع أي نوع مع الحفاظ على علاقات الأنواع.
 
-**See: [TypeScript Generics Deep Dive](https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive)** for comprehensive coverage including:
+**انظر: [العموميات في TypeScript بعمق](https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive)** لتغطية شاملة تتضمن:
 
-- Generic functions, interfaces, and classes
-- Type constraints and conditional types
-- React component generics
-- Advanced patterns with multiple type parameters
-- Real-world applications and best practices
+- دوال وواجهات وأصناف عمومية
+- قيود الأنواع والأنواع الشرطية
+- عموميات مكوّنات React
+- أنماط متقدمة مع معاملات أنواع متعددة
+- تطبيقات واقعية وأفضل الممارسات
 
-## Index Signatures and Dynamic Types
+## توقيعات الفهرس (Index Signatures) والأنواع الديناميكية
 
-TypeScript provides several ways to work with objects that have dynamic property names.
+TypeScript يوفّر عدة طرق للعمل مع كائنات لها أسماء خصائص ديناميكية.
 
-**Key Patterns:**
+**الأنماط الرئيسية:**
 
-- Index signatures for dynamic property access
-- Record types for mapping keys to values
-- Template literal patterns for property names
+- توقيعات الفهرس للوصول الديناميكي للخصائص
+- أنواع Record لربط المفاتيح بالقيم
+- أنماط القوالب الحرفيّة لأسماء الخصائص
 
-**See Advanced Coverage:**
+**انظر التغطية المتقدمة:**
 
-- **[Conditional and Mapped Types](https://stevekinney.com/courses/react-typescript/typescript-conditional-mapped-types)** for mapped type transformations
-- **[Template Literal Types](https://stevekinney.com/courses/react-typescript/typescript-template-literal-types)** for template literal patterns
-- **[Utility Types](https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete)** for Record, Partial, and other utilities
+- **[الأنواع الشرطية والمُخطّطة (Conditional and Mapped Types)](https://stevekinney.com/courses/react-typescript/typescript-conditional-mapped-types)** لتحويلات الأنواع المُخطّطة
+- **[أنواع القوالب الحرفيّة](https://stevekinney.com/courses/react-typescript/typescript-template-literal-types)** لأنماط القوالب الحرفيّة
+- **[أنواع الأدوات (Utility Types)](https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete)** لـ Record وPartial وأدوات أخرى
 
 ```typescript
 // Quick example: Record type
@@ -180,21 +180,21 @@ const messages: StatusMessages = {
 };
 ```
 
-## Module Systems and Type Declarations
+## أنظمة الوحدات (Module Systems) وتصريحات الأنواع
 
-Understanding TypeScript’s module system is crucial for organizing code and working with external libraries.
+فهم نظام وحدات TypeScript أساسي لتنظيم الشيفرة والعمل مع المكتبات الخارجية.
 
-**See: [Modules and Declarations](https://stevekinney.com/courses/react-typescript/typescript-modules-declarations)** for comprehensive coverage including:
+**انظر: [الوحدات والتصريحات](https://stevekinney.com/courses/react-typescript/typescript-modules-declarations)** لتغطية شاملة تتضمن:
 
-- ES modules and CommonJS interop
-- Type-only imports and exports
-- Declaration files for JavaScript libraries
-- Module augmentation patterns
-- Namespace and global type declarations
+- وحدات ES وتوافق CommonJS
+- استيرادات وتصديرات type-only
+- ملفات التصريحات (declaration files) لمكتبات JavaScript
+- أنماط augmentation للوحدات
+- تصريحات أنواع namespace والعالمية (global)
 
-## Best Practices and Mental Models
+## أفضل الممارسات والنمذجة الذهنية
 
-### Start Specific, Widen as Needed
+### ابدأ محددًا، ووسّع عند الحاجة
 
 ```typescript
 // ❌ Too wide initially
@@ -213,7 +213,7 @@ function processEntity<T extends { id: string }>(entity: T) {
 }
 ```
 
-### Use Union Types for States
+### استخدم أنواع Union للحالات
 
 ```typescript
 // ❌ Multiple booleans
@@ -231,7 +231,7 @@ type GoodState =
   | { status: 'success'; data: Data };
 ```
 
-### Prefer Type Inference
+### فضّل استنتاج الأنواع
 
 ```typescript
 // ❌ Unnecessary annotations
@@ -245,7 +245,7 @@ const age = 30;
 const user = { name, age };
 ```
 
-### Make Invalid States Unrepresentable
+### اجعل الحالات غير الصالحة غير قابلة للتمثيل
 
 ```typescript
 // ❌ Invalid states possible
@@ -263,8 +263,8 @@ type GoodForm =
   | { status: 'error'; error: string };
 ```
 
-## Wrapping Up
+## خاتمة
 
-These fundamentals form the bedrock of TypeScript understanding. Structural typing teaches you to think in shapes, not names. Type inference shows you when to write types and when to let TypeScript work. Type narrowing reveals how TypeScript understands your code’s flow. And the distinction between `unknown` and `any` keeps your code safe.
+هذه الأسس تشكّل bedrock فهم TypeScript. التصنيف البنيوي (structural typing) يعلّمك التفكير بالأشكال، لا الأسماء. استنتاج الأنواع يوضح متى تكتب الأنواع ومتى تترك TypeScript يعمل. تضييق الأنواع يكشف كيف يفهم TypeScript تدفق شيفرتك. والفرق بين `unknown` و`any` يبقي شيفرتك آمنة.
 
-Master these concepts, and React TypeScript patterns will feel natural. You’ll write types that help rather than hinder, catch bugs at compile time, and build applications with confidence. The type system isn’t a burden—it’s your most powerful tool for writing robust, maintainable code.
+أتقن هذه المفاهيم، وأنماط React مع TypeScript ستبدو طبيعية. ستكتب أنواعًا تساعد بدل أن تعيق، وتلتقط الأخطاء في وقت الترجمة (compile time)، وتبني تطبيقات بثقة. نظام الأنواع ليس عبئًا — إنه أقوى أداة لديك لكتابة شيفرة قوية وقابلة للصيانة.

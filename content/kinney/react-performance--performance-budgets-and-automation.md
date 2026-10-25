@@ -1,16 +1,16 @@
 ---
-title: "Performance Budgets and Automation"
-lang: en
+title: "ميزانيات الأداء والأتمتة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/performance-budgets-and-automation"
 ---
 
-Performance optimization without budgets is like dieting without a scale—you might feel like you’re making progress, but you have no idea if you’re actually succeeding. Performance budgets turn vague goals like “make it faster” into concrete, measurable targets like “keep the bundle under 200KB” and “ensure LCP stays below 2.5 seconds.” But budgets alone aren’t enough—you need automation to enforce them, catching performance regressions before they hit production.
+تحسين الأداء بلا ميزانيات أشبه بحمية غذائية بلا ميزان — قد تشعر بأنك تحرز تقدمًا، لكنك لا تعرف على وجه اليقين إن كنت تنجح فعلًا. تحوّل ميزانيات الأداء أهدافًا غامضة مثل «اجعله أسرع» إلى أهداف ملموسة قابلة للقياس مثل «أبقِ الحزمة تحت 200KB» و«تأكّد من بقاء LCP دون 2.5 ثانية». لكن الميزانيات وحدها لا تكفي — فأنت تحتاج إلى أتمتة تفرضها، فتلقط انحدارات الأداء قبل وصولها إلى الإنتاج.
 
-This guide shows you how to establish realistic performance budgets for your React applications, implement automated testing that enforces these budgets in your CI/CD pipeline, and create a culture where performance is a feature, not an afterthought. You’ll learn to catch that 50KB library addition in PR review, prevent that O(n²) algorithm from reaching main, and sleep soundly knowing your app won’t suddenly become sluggish.
+يوضّح لك هذا الدليل كيف تضع ميزانيات أداء واقعية لتطبيقات React، وكيف تنفّذ اختبارات آلية تفرض هذه الميزانيات في خط CI/CD لديك، وكيف تنشئ ثقافة يكون فيها الأداء ميزة، لا فكرة متأخّرة. وستتعلّم كيف تلتقط إضافة مكتبة بحجم 50KB في مراجعة طلب السحب، وكيف تمنع خوارزمية بترتيب O(n²) من الوصول إلى الفرع main، وكيف تنام مطمئنًا لأن تطبيقك لن يصير بطيئًا فجأة.
 
-## Understanding Performance Budgets
+## فهم ميزانيات الأداء
 
-Performance budgets are constraints you set on various metrics that affect user experience:
+ميزانيات الأداء قيود تفرضها على مقاييس متنوّعة تؤثّر في تجربة المستخدم:
 
 ```typescript
 // Types of performance budgets
@@ -51,9 +51,9 @@ interface PerformanceBudgets {
 }
 ```
 
-## Setting Realistic Budgets
+## وضع ميزانيات واقعية
 
-### Baseline Measurement
+### قياس خط الأساس
 
 ```typescript
 // utils/performanceBaseline.ts
@@ -199,9 +199,9 @@ async function generateBaseline() {
 }
 ```
 
-## Webpack Bundle Analysis and Budgets
+## تحليل الحزم والميزانيات في Webpack
 
-### Webpack Configuration
+### تهيئة Webpack
 
 ```javascript
 // webpack.config.js
@@ -251,7 +251,7 @@ module.exports = {
 };
 ```
 
-### Custom Budget Plugin
+### إضافة مخصّصة لفرض الميزانيات
 
 ```javascript
 // webpack/bundleBudgetPlugin.js
@@ -365,9 +365,9 @@ class BundleBudgetPlugin {
 module.exports = { BundleBudgetPlugin };
 ```
 
-## CI/CD Integration
+## التكامل مع CI/CD
 
-### GitHub Actions Workflow
+### سير عمل GitHub Actions
 
 ```yaml
 # .github/workflows/performance.yml
@@ -447,7 +447,7 @@ jobs:
             });
 ```
 
-### Lighthouse CI Configuration
+### تهيئة Lighthouse CI
 
 ```javascript
 // lighthouserc.js
@@ -485,9 +485,9 @@ module.exports = {
 };
 ```
 
-## Runtime Performance Monitoring
+## مراقبة الأداء أثناء التشغيل
 
-Runtime performance monitoring integrates with CI automation to enforce budgets during development. For detailed production monitoring implementation, see [production-performance-monitoring.md](https://stevekinney.com/courses/react-performance/production-performance-monitoring).
+تندمج مراقبة الأداء أثناء التشغيل مع أتمتة CI لفرض الميزانيات أثناء التطوير. ولتفاصيل تنفيذ مراقبة الإنتاج، راجع [production-performance-monitoring.md](https://stevekinney.com/courses/react-performance/production-performance-monitoring).
 
 ```typescript
 // Basic budget violation detection for development
@@ -511,11 +511,11 @@ export function setupBudgetWatcher(budgets: RuntimeBudgets) {
 }
 ```
 
-## Automated Performance Testing
+## اختبار الأداء الآلي
 
-Performance testing should be integrated into your budget enforcement pipeline. For comprehensive testing strategies and patterns, see [performance-testing-strategy.md](https://stevekinney.com/courses/react-performance/performance-testing-strategy).
+ينبغي دمج اختبارات الأداء في خط فرض الميزانيات لديك. ولاستراتيجيات الاختبار وأنماطه الشاملة، راجع [performance-testing-strategy.md](https://stevekinney.com/courses/react-performance/performance-testing-strategy).
 
-### Jest Performance Tests
+### اختبارات الأداء باستخدام Jest
 
 ```typescript
 // __tests__/performance.test.ts
@@ -599,7 +599,7 @@ export async function measureRender(component: ReactElement) {
 }
 ```
 
-### Playwright E2E Performance Tests
+### اختبارات الأداء من طرف إلى طرف باستخدام Playwright
 
 ```typescript
 // e2e/performance.spec.ts
@@ -689,9 +689,9 @@ test.describe('Performance E2E Tests', () => {
 });
 ```
 
-## Bundle Size Tracking
+## تتبّع حجم الحزمة
 
-### Size Limit Configuration
+### تهيئة حدّ الحجم
 
 ```json
 // .size-limit.json
@@ -720,7 +720,7 @@ test.describe('Performance E2E Tests', () => {
 ]
 ```
 
-### NPM Scripts
+### سكربتات NPM
 
 ```json
 // package.json
@@ -749,6 +749,6 @@ test.describe('Performance E2E Tests', () => {
 }
 ```
 
-## Performance Dashboard Integration
+## دمج لوحة معلومات الأداء
 
-Performance dashboards and alerting systems should be integrated with your automation pipeline to provide visibility into budget compliance over time. For comprehensive dashboard implementation and production alerting, see [production-performance-monitoring.md](https://stevekinney.com/courses/react-performance/production-performance-monitoring).
+ينبغي دمج لوحات معلومات الأداء وأنظمة التنبيه مع خط الأتمتة لديك لتوفير رؤية واضحة لمدى الالتزام بالميزانيات عبر الزمن. ولتنفيذ لوحة معلومات شاملة وتنبيهات في الإنتاج، راجع [production-performance-monitoring.md](https://stevekinney.com/courses/react-performance/production-performance-monitoring).

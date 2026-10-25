@@ -1,37 +1,37 @@
 ---
-title: "Best Practices with Zod"
-lang: en
+title: "أفضل الممارسات مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/zod-best-practices"
 ---
 
-Runtime validation does introduce overhead – after all, it’s extra code executing – but Zod is designed to be fairly efficient and small. Still, in performance-sensitive scenarios or large data throughput, you should be mindful of how and when you validate.
+يُدخِل التحقق في وقت التشغيل حملًا إضافيًا، فهو شيفرة إضافية تُنفَّذ في النهاية. لكن Zod مصمَّم ليكون فعّالًا وصغيرًا إلى حد كبير. ومع ذلك، في السيناريوهات الحساسة للأداء أو مع معدلات بيانات كبيرة، ينبغي أن تكون منتبهًا لكيفية التحقق ووقته.
 
-## Validate only when Necessary
+## تحقق فقط عند الحاجة
 
-Avoid redundant validations. If you’ve validated data once and you trust it hasn’t changed, there’s no need to validate it again. For example, if you parse incoming JSON with Zod at your API boundary, you can consider that data trusted within your system afterward (especially because Zod will have also given it a precise type). Don’t re-parse the same object multiple times in different layers.
+تجنّب التحققات المتكررة بلا داعٍ. فإذا كنت قد تحققت من البيانات مرة واحدة ووثقت بأنها لم تتغيّر، فلا حاجة للتحقق منها مرة أخرى. فمثلًا، إذا حلّلت JSON الوارد بـ Zod عند حدود API، فيمكنك اعتبار تلك البيانات موثوقة داخل نظامك بعد ذلك (خاصةً لأن Zod سيكون قد أعطاها نوعًا دقيقًا أيضًا). لا تُعِد تحليل الكائن نفسه مرات عدة في طبقات مختلفة.
 
-## Do Schema Parsing outside Hot Loops
+## أجرِ تحليل المخطط خارج الحلقات الساخنة
 
-If you have to validate a large number of items, try not to do it inside a tight loop unnecessarily. If possible, vectorize the operation (e.g. validate an array schema of items in one go, rather than item by item in a loop). Zod can validate an entire array of objects with one schema (and it will return an error detailing which index failed).
+إذا كان عليك التحقق من عدد كبير من العناصر، فحاول ألا تفعل ذلك داخل حلقة ضيقة بلا داعٍ. وإن أمكن، نفّذ العملية على المصفوفة كاملة (مثل التحقق من مخطط مصفوفة عناصر في مرة واحدة، بدلًا من عنصرًا عنصرًا داخل حلقة). ويستطيع Zod التحقق من مصفوفة كائنات كاملة بمخطط واحد (وسيعيد خطأً يوضح أي فهرس فشل).
 
-## Reuse Schemas
+## أعد استخدام المخططات
 
-Defining a schema (like calling `z.object({…})`) is not hugely expensive, but there’s no need to recreate the same schema every time you use it. Define your schemas once (say at module initialization) and reuse them for each validation. This is both for code clarity and a tiny performance win (avoid re-instantiating validators).
+تعريف مخطط (مثل نداء `z.object({…})`) ليس مكلفًا كثيرًا، لكن لا حاجة لإعادة إنشاء المخطط نفسه في كل مرة تستخدمه. عرّف مخططاتك مرة واحدة (ليكن عند تهيئة الوحدة) وأعد استخدامها في كل عملية تحقق. وهذا يعود إلى وضوح الشيفرة وإلى مكسب أداء صغير (تجنّب إعادة إنشاء المُحقِّقات).
 
-## Leverage .parse Vs .safeParse Appropriately
+## الاستفادة من .parse مقابل .safeParse كما يقتضي الحال
 
-In some performance critical code, using `parse` in a try/catch might actually be slower than `safeParse` because throwing exceptions is expensive. If you expect failures to be common or you’re doing a lot of validations, using `safeParse` (which returns a result object) can be more efficient than try/catch on exceptions.
+في بعض الشيفرة الحساسة للأداء، قد يكون استخدام `parse` داخل try/catch أبطأ فعليًا من `safeParse`، لأن رمي الاستثناءات مكلف. وإذا كنت تتوقع أن تكون حالات الفشل شائعة أو كنت تجري تحققات كثيرة، فقد يكون استخدام `safeParse` (الذي يعيد كائن نتيجة) أكفأ من try/catch على الاستثناءات.
 
-## Partial Validations
+## التحققات الجزئية
 
-If you only need to validate part of a large object, consider structuring your schemas so you can validate just that part. For instance, if you have already validated an outer object but later want to validate a nested piece differently, you could call a schema for that nested piece instead of re-validating the whole thing.
+إذا كنت تحتاج فقط إلى التحقق من جزء من كائن كبير، ففكّر في تنظيم مخططاتك بحيث تتحقق من ذلك الجزء وحده. فمثلًا، إذا كنت قد تحققت بالفعل من كائن خارجي ثم أردت لاحقًا التحقق من قطعة متداخلة بطريقة مختلفة، فيمكنك نداء مخطط لتلك القطعة المتداخلة بدلًا من إعادة التحقق من الكل.
 
-Zod’s default behavior for object schemas is to **strip unknown properties**. This means it will iterate over extra keys and remove them. If performance is critical and you don’t mind unknown properties, you could use `.passthrough()` to avoid the cost of stripping (which in practice is minor, but it is an extra step).
+السلوك الافتراضي لمخططات الكائنات في Zod هو **إزالة الخصائص غير المعروفة**. وهذا يعني أنه سيمر على المفاتيح الإضافية ويزيلها. وإذا كان الأداء حرجًا ولم تكن تمانع الخصائص غير المعروفة، فيمكنك استخدام `.passthrough()` لتجنّب كلفة الإزالة (وهي في الممارسة ضئيلة، لكنها خطوة إضافية).
 
-Conversely, `.strict()` will throw on unknown keys, which adds a check for each key. These costs are usually negligible unless your objects have huge numbers of keys or you’re validating thousands of objects per second. In most applications, the clarity and safety of validation far outweigh the micro-performance concerns.
+وبالمقابل، يرمي `.strict()` عند وجود مفاتيح غير معروفة، ما يضيف فحصًا لكل مفتاح. وهذه الكلف عادةً مهملة ما لم تكن كائناتك تحمل أعدادًا هائلة من المفاتيح أو كنت تحقق من آلاف الكائنات في الثانية. وفي معظم التطبيقات، يفوق وضوح التحقق وأمانه بكثير مخاوف الأداء الدقيقة.
 
-Finally, remember that premature optimization is dangerous. Profile if you suspect validation is a bottleneck. Zod is pretty fast for typical use (and much faster than say JSON schema validation in many cases). If you do hit performance issues (for example, validating a massive deeply nested structure), you can sometimes split the work or adjust your approach (maybe validate streaming chunks, etc.). But for the majority, using Zod out-of-the-box shouldn’t pose problems, and the bottleneck is more likely to be I/O or database, not the validation step.
+وأخيرًا، تذكّر أن التحسين المبكر خطر. وقِس الأداء إذا شككت في أن التحقق عنق زجاجة. فـ Zod سريع جدًا في الاستخدام النموذجي (وأسرع كثيرًا من التحقق بمخطط JSON في حالات كثيرة). وإذا واجهت فعلًا مشكلات في الأداء (مثل التحقق من بنية ضخمة عميقة التداخل)، فيمكنك أحيانًا تقسيم العمل أو تعديل نهجك (ربما التحقق من قطع متدفقة، إلخ). لكن في الغالبية، لا ينبغي أن يشكّل استخدام Zod جاهزًا مشكلات، والأرجح أن يكون عنق الزجاجة الإدخال/الإخراج أو قاعدة البيانات، لا خطوة التحقق.
 
-## A Free Debugging Trick
+## حيلة تنقيح مجانية
 
-One nice thing about Zod is that because schemas are code, you can use the same debugging techniques as normal code. Step through in a debugger if needed, or add temporary `.refine(x => { console.log(x); return true; })` to see intermediate values if debugging transform pipelines.
+من الأمور اللطيفة في Zod أنه، لأن المخططات شيفرة، يمكنك استخدام تقنيات التنقيح نفسها التي تستخدمها مع الشيفرة العادية. فتنقّل خطوة بخطوة في المنقّح إن لزم، أو أضف `.refine(x => { console.log(x); return true; })` مؤقتًا لرؤية القيم الوسيطة عند تنقيح خطوط التحويل.

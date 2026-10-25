@@ -1,12 +1,12 @@
 ---
-title: "Querying and Scanning"
-lang: en
+title: "الاستعلام والمسح الضوئي في DynamoDB"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dynamodb-querying-and-scanning"
 ---
 
-GetItem retrieves a single item by its exact primary key. But frontend applications rarely need just one item at a time—you need a list. “Show me all the items for this user.” “Show me this user’s items created after a certain date.” DynamoDB gives you two tools for retrieving multiple items: **Query** and **Scan**. They sound similar, but they’re fundamentally different in how they work, what they cost, and when you should use each one.
+يجلب GetItem عنصرًا واحدًا بمفتاحه الأساسي الدقيق. لكن تطبيقات الواجهة الأمامية نادرًا ما تحتاج عنصرًا واحدًا في المرة—تحتاج إلى قائمة. «أرني كل عناصر هذا المستخدم». «أرني عناصر هذا المستخدم المنشأة بعد تاريخ معيّن». يمنحك DynamoDB أداتين لاسترجاع عناصر متعددة: **Query** و**Scan**. يبدوان متشابهين، لكنهما مختلفان جوهريًا في طريقة عملهما، وتكلفتهما، ومتى ينبغي استخدام كل منهما.
 
-If you want AWS’s exact wording on the trade-off you’re making here, keep the [DynamoDB Query guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html) and the [DynamoDB Scan guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) open.
+إن أردت صياغة AWS الدقيقة للمقايضة التي تجريها هنا، فأبقِ [دليل Query في DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html) و[دليل Scan في DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) مفتوحين.
 
 ```
 flowchart LR
@@ -17,11 +17,11 @@ flowchart LR
     Filter --> Cost["Higher latency and read cost"]
 ```
 
-## Query: The Right Way to Read Multiple Items
+## Query: الطريقة الصحيحة لقراءة عناصر متعددة
 
-**Query** retrieves items from a single partition. You specify the partition key (required) and optionally filter by the sort key. DynamoDB finds the partition, reads the items within it, and returns them—already sorted by the sort key.
+يسترجع **Query** العناصر من قسم واحد. تحدد مفتاح القسم (وهو إلزامي) وتُصفّي اختياريًا بمفتاح الفرز. يعثر DynamoDB على القسم، ويقرأ العناصر داخله، ويعيدها—مرتبة مسبقًا حسب مفتاح الفرز.
 
-This is efficient because DynamoDB knows exactly where to look. It doesn’t scan the entire table. It goes directly to the partition you specified and reads only the items that match your key condition.
+هذا فعّال لأن DynamoDB يعرف بالضبط أين ينظر. لا يمسح الجدول بأكمله. يذهب مباشرة إلى القسم الذي حددته ويقرأ فقط العناصر المطابقة لشرط مفتاحك.
 
 ```typescript
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -45,13 +45,13 @@ async function getItemsForUser(userId: string) {
 }
 ```
 
-*Note:* `Items` is an array of plain JavaScript objects, thanks to the document client.
+*ملاحظة:* `Items` مصفوفة من كائنات JavaScript العادية، بفضل عميل المستندات.
 
-The **`KeyConditionExpression`** is the critical parameter. It specifies which partition key value to query, and optionally constrains the sort key. The expression uses the same placeholder syntax you saw with UpdateCommand—values prefixed with `:` are defined in `ExpressionAttributeValues`.
+إن **`KeyConditionExpression`** هو المعامل الحاسم. يحدد قيمة مفتاح القسم التي تريد الاستعلام عنها، ويقيّد مفتاح الفرز اختياريًا. يستخدم التعبير بنية العناصر النائبة نفسها التي رأيتها مع UpdateCommand—القيم المسبوقة بـ `:` تُعرّف في `ExpressionAttributeValues`.
 
-### Sort Key Conditions
+### شروط مفتاح الفرز
 
-The sort key supports several comparison operators in the key condition expression:
+يدعم مفتاح الفرز عدة معاملات مقارنة في تعبير شرط المفتاح:
 
 ```typescript
 // Items where itemId begins with a prefix
@@ -67,20 +67,20 @@ const result = await client.send(
 );
 ```
 
-Available sort key operators:
+معاملات مفتاح الفرز المتاحة:
 
-| Operator | Example | Use case |
+| المعامل | مثال | حالة الاستخدام |
 | --- | --- | --- |
-| `=` | `itemId = :id` | Exact match |
-| `<`, `<=`, `>`, `>=` | `createdAt > :date` | Range queries on timestamps |
-| `BETWEEN` | `itemId BETWEEN :start AND :end` | Range with upper and lower bounds |
-| `begins_with` | `begins_with(itemId, :prefix)` | Prefix matching |
+| `=` | `itemId = :id` | تطابق تام |
+| `<`، `<=`، `>`، `>=` | `createdAt > :date` | استعلامات نطاقية على الطوابع الزمنية |
+| `BETWEEN` | `itemId BETWEEN :start AND :end` | نطاق بحدّين أدنى وأعلى |
+| `begins_with` | `begins_with(itemId, :prefix)` | مطابقة البادئة |
 
-These operators only work on the sort key in a `KeyConditionExpression`. The partition key must always use `=`.
+تعمل هذه المعاملات على مفتاح الفرز فقط داخل `KeyConditionExpression`. أما مفتاح القسم فيجب أن يستخدم `=` دائمًا.
 
-### Filtering Results
+### تصفية النتائج
 
-Sometimes you need to filter by attributes that aren’t part of the key. For this, you add a **`FilterExpression`**:
+أحيانًا تحتاج إلى التصفية بسمات ليست جزءًا من المفتاح. لهذا تضيف **`FilterExpression`**:
 
 ```typescript
 async function getPendingItems(userId: string) {
@@ -103,13 +103,13 @@ async function getPendingItems(userId: string) {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> A `FilterExpression` doesn’t reduce the amount of data DynamoDB reads—it only reduces what comes back in the response. DynamoDB reads all items matching the `KeyConditionExpression`, then applies the filter to the results. You still pay for the reads. If a partition has 1,000 items and the filter matches 10, you’re charged for reading all 1,000. Filters are useful for reducing network transfer, but they’re not a substitute for good key design.
+> لا تقلّل `FilterExpression` كمية البيانات التي يقرأها DynamoDB—إنها تقلّل فقط ما يعود في الاستجابة. يقرأ DynamoDB كل العناصر المطابقة لـ `KeyConditionExpression`، ثم يطبّق المرشح على النتائج. ما زلت تدفع ثمن القراءات. إذا كان في القسم 1,000 عنصر وطابق المرشح 10 عناصر، فأنت تُحاسَب على قراءة الألف كلها. المرشحات مفيدة لتقليل نقل الشبكة، لكنها ليست بديلًا عن تصميم مفاتيح جيد.
 
-### Sorting and Limiting
+### الترتيب والتحديد
 
-Items within a partition are automatically sorted by the sort key. You can reverse the order and limit the number of items returned:
+تُرتَّب العناصر داخل القسم تلقائيًا حسب مفتاح الفرز. يمكنك عكس الترتيب وتحديد عدد العناصر المعادة:
 
 ```typescript
 async function getRecentItems(userId: string, limit: number) {
@@ -129,12 +129,12 @@ async function getRecentItems(userId: string, limit: number) {
 }
 ```
 
-- **`ScanIndexForward: false`** reverses the sort order (descending by sort key). The default is `true` (ascending).
-- **`Limit`** caps the number of items returned. Combined with reverse sort order, this gives you “the N most recent items”—a pattern frontend applications use constantly.
+- **`ScanIndexForward: false`** يعكس ترتيب الفرز (تنازليًا حسب مفتاح الفرز). القيمة الافتراضية هي `true` (تصاعديًا).
+- **`Limit`** يحدّ عدد العناصر المعادة. ومع عكس ترتيب الفرز، يمنحك هذا «أحدث N عنصرًا»—وهو نمط تستخدمه تطبيقات الواجهة الأمامية باستمرار.
 
-## Scan: Reading the Entire Table
+## Scan: قراءة الجدول بأكمله
 
-**Scan** reads every item in the table, one page at a time. Unlike Query, which targets a specific partition, Scan examines every single item and optionally applies a filter to the results.
+يقرأ **Scan** كل عنصر في الجدول، صفحة واحدة في المرة. وخلافًا لـ Query الذي يستهدف قسمًا معينًا، يفحص Scan كل عنصر على حدة ويطبّق مرشحًا على النتائج اختياريًا.
 
 ```typescript
 import { ScanCommand } from '@aws-sdk/lib-dynamodb';
@@ -150,32 +150,32 @@ async function getAllItems() {
 }
 ```
 
-This works, and for a table with 50 items during development, it’s fine. But Scan has a cost that grows linearly with table size:
+هذا يعمل، ولجدول فيه 50 عنصرًا أثناء التطوير، لا بأس به. لكن Scan له تكلفة تنمو خطيًا مع حجم الجدول:
 
-- A table with 100 items: Scan reads 100 items. Fast, cheap.
-- A table with 100,000 items: Scan reads 100,000 items. Slow, expensive.
-- A table with 10 million items: Scan reads 10 million items. Very slow, very expensive.
+- جدول فيه 100 عنصر: يقرأ Scan 100 عنصر. سريع ورخيص.
+- جدول فيه 100,000 عنصر: يقرأ Scan 100,000 عنصر. بطيء ومكلف.
+- جدول فيه 10 ملايين عنصر: يقرأ Scan 10 ملايين عنصر. بطيء جدًا ومكلف جدًا.
 
-Query performance depends on the partition size. Scan performance depends on the table size. As your table grows, Query stays fast and Scan gets slower.
+يعتمد أداء Query على حجم القسم. ويعتمد أداء Scan على حجم الجدول. مع نمو جدولك، يبقى Query سريعًا ويصبح Scan أبطأ.
 
-> **Tip**
+> **نصيحة**
 >
-> A useful rule of thumb: if you find yourself reaching for Scan, ask whether a different key design would let you use Query instead. Most of the time, the answer is yes. Scan is a code smell in DynamoDB—it usually means your key design doesn’t match your access patterns.
+> قاعدة عملية مفيدة: إذا وجدت نفسك تمتدّ يدك إلى Scan، فاسأل هل سيتيح لك تصميم مفاتيح مختلف استخدام Query بدلًا منه. في معظم الحالات، الجواب هو نعم. Scan رائحة كود في DynamoDB—فهو يعني عادةً أن تصميم مفاتيحك لا يطابق أنماط وصولك.
 
-### When Scan Is Acceptable
+### متى يكون Scan مقبولًا
 
-Scan isn’t always wrong. Reasonable use cases include:
+Scan ليس خاطئًا دائمًا. تشمل حالات الاستخدام المعقولة:
 
-- **Admin tools** that need to export or audit the entire table
-- **Small tables** (under a few thousand items) where the cost is negligible
-- **One-time data migrations** where you need to touch every item
-- **Development and debugging**—scanning a table with 20 test items is fine
+- **أدوات الإدارة** التي تحتاج إلى تصدير الجدول بأكمله أو تدقيقه
+- **الجداول الصغيرة** (أقل من بضعة آلاف من العناصر) حيث تكون التكلفة ضئيلة
+- **ترحيل البيانات لمرة واحدة** حيث تحتاج إلى لمس كل عنصر
+- **التطوير وتصحيح الأخطاء**—مسح جدول فيه 20 عنصرًا تجريبيًا أمر لا بأس به
 
-For a frontend API endpoint that runs on every request, Scan is almost never the right choice.
+بالنسبة لنقطة نهاية API في الواجهة الأمامية تعمل في كل طلب، يكاد Scan لا يكون الخيار الصحيح أبدًا.
 
-## Pagination with `LastEvaluatedKey`
+## الترقيم باستخدام `LastEvaluatedKey`
 
-Both Query and Scan return at most 1 MB of data per request. If there are more items to read, the response includes a `LastEvaluatedKey`—a bookmark that tells DynamoDB where to continue on the next request.
+يعيد كل من Query وScan 1 MB من البيانات كحد أقصى في كل طلب. إذا كانت هناك عناصر أخرى للقراءة، تتضمن الاستجابة `LastEvaluatedKey`—علامة مرجعية تخبر DynamoDB من أين يكمل في الطلب التالي.
 
 ```typescript
 async function getAllItemsForUser(userId: string) {
@@ -202,13 +202,13 @@ async function getAllItemsForUser(userId: string) {
 }
 ```
 
-The pattern:
+النمط:
 
-1. Make the initial request without `ExclusiveStartKey`
-2. If the response includes `LastEvaluatedKey`, make another request with that value as `ExclusiveStartKey`
-3. Repeat until `LastEvaluatedKey` is undefined
+1. أرسل الطلب الأول دون `ExclusiveStartKey`
+2. إذا تضمنت الاستجابة `LastEvaluatedKey`، فأرسل طلبًا آخر بتلك القيمة كـ `ExclusiveStartKey`
+3. كرّر حتى تصبح `LastEvaluatedKey` غير معرّفة
 
-For frontend APIs, you usually don’t want to paginate through everything—you want to return a page of results to the client and let them request the next page. You can pass `LastEvaluatedKey` back to the frontend (base64-encoded) as a pagination cursor:
+بالنسبة لواجهات API الأمامية، لا تريد عادةً ترقيم كل شيء—تريد إعادة صفحة من النتائج إلى العميل وتركه يطلب الصفحة التالية. يمكنك تمرير `LastEvaluatedKey` مرة أخرى إلى الواجهة الأمامية (بترميز base64) كمؤشر ترقيم:
 
 ```typescript
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
@@ -238,18 +238,18 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> This cursor-based pagination pattern is common in APIs backed by DynamoDB. The client receives a `nextCursor` with each response. To get the next page, the client includes `?cursor=...` in the request. When `nextCursor` is `null`, there are no more pages.
+> نمط الترقيم القائم على المؤشر شائع في واجهات API المدعومة بـ DynamoDB. يتلقى العميل `nextCursor` مع كل استجابة. وللحصول على الصفحة التالية، يدرج العميل `?cursor=...` في الطلب. عندما تكون `nextCursor` مساوية لـ `null`، لم تبقَ صفحات أخرى.
 
-## Query vs Scan: The Summary
+## Query مقابل Scan: الملخّص
 
 |  | Query | Scan |
 | --- | --- | --- |
-| Reads | One partition | Entire table |
-| Required parameters | Partition key | None |
-| Performance | Consistent, fast | Degrades with table size |
-| Cost | Proportional to items matched | Proportional to table size |
-| Use for | Application endpoints | Admin tools, migrations |
+| يقرأ | قسمًا واحدًا | الجدول بأكمله |
+| المعاملات المطلوبة | مفتاح القسم | لا شيء |
+| الأداء | ثابت وسريع | يتدهور مع حجم الجدول |
+| التكلفة | تتناسب مع العناصر المطابقة | تتناسب مع حجم الجدول |
+| يُستخدم لـ | نقاط نهاية التطبيق | أدوات الإدارة والترحيل |
 
-Design your table keys around Query. Use Scan only when you genuinely need to read everything. I’ve found that if I’m tempted to reach for Scan in production code, it almost always means I need to rethink my key design.
+صمّم مفاتيح جدولك حول Query. واستخدم Scan فقط عندما تحتاج حقًا إلى قراءة كل شيء. وجدت أنني إذا أُغريت باللجوء إلى Scan في كود الإنتاج، فهذا يعني دائمًا تقريبًا أنني بحاجة إلى إعادة التفكير في تصميم مفاتيحي.

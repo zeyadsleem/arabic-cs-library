@@ -1,49 +1,49 @@
 ---
-title: "Creating and Configuring a Bucket"
-lang: en
+title: "إنشاء حاوية S3 وإعدادها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket"
 ---
 
-You know what S3 is and how buckets and objects work. Now it’s time to create one. By the end of this lesson, you’ll have an S3 bucket configured and ready to hold your static site files. We’ll use the AWS CLI because that’s how you’ll automate this later—clicking through the console is fine for exploration, but it doesn’t scale.
+تعرف ما هو S3 وكيف تعمل الحاويات والكائنات. الآن حان وقت إنشاء واحدة. وبنهاية هذا الدرس، سيكون لديك حاوية S3 مهيّأة وجاهزة لاستيعاب ملفات موقعك الثابت. وسنستخدم AWS CLI لأنها الطريقة التي ستؤتمت بها هذا لاحقًا — فالنقر في لوحة التحكم مناسب للاستكشاف، لكنه لا يتوسّع.
 
-If you want AWS’s version of the bucket rules next to this lesson, keep the [Amazon S3 User Guide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) and the [bucket naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) handy.
+إذا أردت نسخة AWS من قواعد الحاويات إلى جانب هذا الدرس، فأبقِ [دليل مستخدم Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) و[قواعد تسمية الحاويات](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html) في متناول يدك.
 
-## Creating a Bucket with the CLI
+## إنشاء حاوية باستخدام CLI
 
-The simplest way to create a bucket is the `aws s3 mb` command (mb stands for “make bucket”):
+أبسط طريقة لإنشاء حاوية هي أمر `aws s3 mb` (وmb اختصار «make bucket»):
 
 ```bash
 aws s3 mb s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-You should see output like:
+ينبغي أن ترى مخرجات مثل:
 
 ```
 make_bucket: my-frontend-app-assets
 ```
 
-That’s it. You have a bucket. In the console, a green success banner confirms the bucket was created and takes you directly to the bucket’s detail page.
+هذا كل شيء. لديك حاوية. وفي لوحة التحكم، يؤكد شريط نجاح أخضر إنشاء الحاوية وينقلك مباشرة إلى صفحة تفاصيلها.
 
-The S3 bucket detail page showing a green Successfully created bucket banner at the top with the bucket name and region displayed.
+صفحة تفاصيل حاوية S3 وهي تعرض شريط نجاح أخضر بعنوان Successfully created bucket في الأعلى مع اسم الحاوية والمنطقة.
 
-But the defaults AWS applied to it matter a lot, and understanding them will save you from a class of debugging problems that plague every newcomer to S3.
+لكن الافتراضيات التي طبّقتها AWS عليها تهم كثيرًا، وفهمها سينقذك من فئة من مشكلات التصحيح تؤرق كل قادم جديد إلى S3.
 
-> **Tip**
+> **نصيحة**
 >
-> If you get a `BucketAlreadyExists` error, someone else in the world already owns that bucket name. Remember: bucket names are globally unique across all AWS accounts. Try adding a unique suffix like your name or a random string: `my-frontend-app-assets-jsmith-2026`.
+> إذا حصلت على خطأ `BucketAlreadyExists`، فشخص آخر في العالم يملك اسم الحاوية ذلك بالفعل. تذكّر: أسماء الحاويات فريدة عالميًا عبر كل حسابات AWS. جرّب إضافة لاحقة فريدة مثل اسمك أو سلسلة عشوائية: `my-frontend-app-assets-jsmith-2026`.
 
-If you prefer to create the bucket through the AWS console, the Create Bucket form asks for the same two things: a name and a region.
+إذا كنت تفضّل إنشاء الحاوية عبر لوحة تحكم AWS، فإن نموذج Create Bucket يسأل عن الأمرين نفسهما: اسم ومنطقة.
 
-The S3 Create Bucket form showing the bucket name field filled with my-frontend-app-assets and the AWS Region set to US East (N. Virginia) us-east-1.
+نموذج S3 Create Bucket وهو يعرض حقل اسم الحاوية مملوءًا بـ my-frontend-app-assets والمنطقة مضبوطة على US East (N. Virginia) us-east-1.
 
-## Choosing a Region
+## اختيار منطقة
 
-We’re using `us-east-1` throughout this course, and there’s a practical reason for that. When you eventually attach an ACM certificate to a CloudFront distribution, the certificate must be provisioned in `us-east-1`. Several other AWS services also require `us-east-1` for specific features. Keeping your S3 bucket in the same region simplifies everything and avoids cross-region transfer costs.
+نستخدم `us-east-1` في هذه الدورة، وثمة سبب عملي لذلك. فعندما تربط شهادة ACM بتوزيع CloudFront في النهاية، يجب توفير الشهادة في `us-east-1`. وتتطلب عدة خدمات AWS أخرى `us-east-1` لميزات محدّدة. وإبقاء حاوية S3 في المنطقة نفسها يبسّط كل شيء ويتجنّب تكاليف النقل بين المناطق.
 
-That said, S3 buckets can exist in any AWS region. If your users are primarily in Europe, you might choose `eu-west-1`. If they’re in Asia, `ap-northeast-1`. For a production application, your bucket region should be close to your users—or, more accurately, close to your CloudFront origin, since CloudFront will be the thing actually serving your files.
+ومع ذلك، يمكن أن توجد حاويات S3 في أي منطقة AWS. فإذا كان مستخدموك في أوروبا أساسًا، فقد تختار `eu-west-1`. وإن كانوا في آسيا، فـ `ap-northeast-1`. ولتطبيق إنتاجي، ينبغي أن تكون منطقة حاويتك قريبة من مستخدميك — أو، بدقة أكبر، قريبة من أصل CloudFront، لأن CloudFront سيكون ما يقدّم ملفاتك فعلًا.
 
-You can verify your bucket’s region after creation:
+يمكنك التحقق من منطقة حاويتك بعد الإنشاء:
 
 ```bash
 aws s3api get-bucket-location \
@@ -58,26 +58,26 @@ aws s3api get-bucket-location \
 }
 ```
 
-A `null` location constraint means `us-east-1`—it’s a historical quirk. Every other region returns its name as a string.
+قيد الموقع `null` يعني `us-east-1` — وهي شذوذ تاريخي. وكل منطقة أخرى تُرجع اسمها كسلسلة نصية.
 
-## Understanding Block Public Access
+## فهم حجب الوصول العام
 
-Every S3 bucket created since April 2023 has **Block Public Access** enabled by default. This is four separate settings, and all four are turned on:
+كل حاوية S3 أُنشئت منذ أبريل 2023 لديها **Block Public Access** ممكّنًا افتراضيًا. وهذه أربعة إعدادات منفصلة، وجميعها مفعّلة:
 
-1. **BlockPublicAcls**—blocks new public ACLs from being applied
-2. **IgnorePublicAcls**—ignores any existing public ACLs
-3. **BlockPublicPolicy**—blocks new public bucket policies
-4. **RestrictPublicBuckets**—restricts access for any bucket with a public policy
+1. **BlockPublicAcls** — يحجب تطبيق قوائم ACL العامة الجديدة
+2. **IgnorePublicAcls** — يتجاهل أي قوائم ACL عامة موجودة
+3. **BlockPublicPolicy** — يحجب سياسات الحاوية العامة الجديدة
+4. **RestrictPublicBuckets** — يقيّد الوصول لأي حاوية ذات سياسة عامة
 
-This is AWS saying: “We assume you don’t want this bucket to be public unless you explicitly tell us otherwise.” For most S3 use cases, this is exactly right. For hosting a static website, you have two paths:
+هذا يعني أن AWS تقول: «نفترض أنك لا تريد هذه الحاوية عامة إلا إذا أخبرتنا بخلاف ذلك صراحةً.» ولمعظم حالات استخدام S3، هذا صحيح تمامًا. وللاستضافة موقع ثابت، لديك مساران:
 
-**Path 1: CloudFront with Origin Access Control (recommended).** You keep Block Public Access enabled and let CloudFront access the bucket through a special mechanism called Origin Access Control. The bucket stays private, and CloudFront is the only thing that can read from it. This is the production path you’ll build once the CloudFront section starts.
+**المسار 1: CloudFront مع التحكم في الوصول إلى الأصل (موصى به).** تُبقي Block Public Access ممكّنًا وتدع CloudFront يصل إلى الحاوية عبر آلية خاصة تسمى التحكم في الوصول إلى الأصل. وتبقى الحاوية خاصة، ويكون CloudFront الشيء الوحيد القادر على القراءة منها. وهذا مسار الإنتاج الذي ستبنيه بمجرد أن يبدأ قسم CloudFront.
 
-**Path 2: Direct S3 website hosting.** You disable some Block Public Access settings and attach a bucket policy that allows public reads. This is simpler to set up and is what we’ll do in this module so you can see the moving parts clearly. The tradeoff is that anyone with the S3 URL can access your files directly.
+**المسار 2: استضافة موقع S3 مباشرة.** تعطّل بعض إعدادات Block Public Access وترفق سياسة حاوية تسمح بالقراءات العامة. وهذا أبسط في الإعداد وهو ما سنفعله في هذه الوحدة لترى الأجزاء المتحركة بوضوح. والمقابل أن أي شخص يملك عنوان URL لـ S3 يمكنه الوصول إلى ملفاتك مباشرة.
 
-For this module, we’re going with Path 2 because it teaches the mechanics cleanly. Treat it like a lab version of the deployment, not the finish line. You’ll lock the bucket down properly once you move into CloudFront and Origin Access Control.
+في هذه الوحدة، سنختار المسار 2 لأنه يعلّم الآليات بوضوح. تعامل معه كنسخة مختبرية من النشر، لا كخط النهاية. وستقيّد الحاوية بشكل صحيح بمجرد انتقالك إلى CloudFront والتحكم في الوصول إلى الأصل.
 
-To check the current Block Public Access settings:
+لفحص إعدادات Block Public Access الحالية:
 
 ```bash
 aws s3api get-public-access-block \
@@ -97,23 +97,23 @@ aws s3api get-public-access-block \
 }
 ```
 
-In the console, the bucket’s **Permissions** tab shows these same four settings under **Block Public Access (bucket settings)**—all enabled by default.
+في لوحة التحكم، يعرض تبويب **Permissions** في الحاوية هذه الإعدادات الأربعة نفسها ضمن **Block Public Access (bucket settings)** — وكلها ممكّنة افتراضيًا.
 
-S3 bucket Permissions tab showing Block Public Access settings with all four options enabled, labeled On in the console.
+تبويب S3 bucket Permissions وهو يعرض إعدادات Block Public Access مع تمكين الخيارات الأربعة كلها، وموسومة On في لوحة التحكم.
 
-When you’re ready to make the bucket publicly accessible for static website hosting, you’ll need to disable these settings. We’ll do that in [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access), once you understand what a bucket policy actually is.
+حين تكون مستعدًا لجعل الحاوية متاحة للعامة لاستضافة موقع ثابت، ستحتاج إلى تعطيل هذه الإعدادات. وسنفعل ذلك في [سياسات الحاويات والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access)، بعد أن تفهم ما هي سياسة الحاوية فعلًا.
 
-> **Warning**
+> **تحذير**
 >
-> Don’t disable Block Public Access until you understand exactly what you’re exposing. A misconfigured public bucket is one of the most common AWS security incidents. Every few months, a company makes the news because they accidentally exposed an S3 bucket full of customer data. For a static site with HTML, CSS, and JavaScript, public access is fine. For anything containing user data, API keys, or internal documents, it’s not.
+> لا تعطّل Block Public Access حتى تفهم بالضبط ما تعرّضه. فالحاوية العامة المهيّأة بشكل خاطئ من أكثر حوادث الأمان شيوعًا في AWS. وكل بضعة أشهر، تتصدّر شركة الأخبار لأنها عرضت عن غير قصد حاوية S3 مليئة ببيانات العملاء. ولموقع ثابت فيه HTML وCSS وJavaScript، الوصول العام مقبول. أما لأي شيء يحتوي على بيانات مستخدمين أو مفاتيح API أو مستندات داخلية، فليس مقبولًا.
 
-## Default Encryption
+## التشفير الافتراضي
 
-Since January 2023, all new S3 buckets have **server-side encryption** enabled by default using Amazon S3 managed keys (SSE-S3). This means every object you upload is automatically encrypted at rest. You don’t need to configure anything—it just works.
+منذ يناير 2023، جميع حاويات S3 الجديدة لديها **تشفير من جانب الخادم** ممكّن افتراضيًا باستخدام مفاتيح مُدارة من Amazon S3 (SSE-S3). وهذا يعني أن كل كائن ترفعه يُشفّر تلقائيًا أثناء السكون. ولست بحاجة إلى ضبط أي شيء — إنه يعمل فقط.
 
-For a static website, this is mostly academic. Your HTML and JavaScript files are public anyway, so encrypting them at rest doesn’t add meaningful security. But it’s good to know the default exists, because when you start storing private data (like user uploads or application state), encryption at rest is a compliance requirement that S3 handles for you automatically.
+ولموقع ثابت، هذا نظري في الغالب. فملفات HTML وJavaScript لديك عامة على أي حال، لذا لا يضيف تشفيرها أثناء السكون أمانًا ذا معنى. لكن من الجيد معرفة أن الافتراضي موجود، لأنه عندما تبدأ بتخزين بيانات خاصة (مثل رفعات المستخدمين أو حالة التطبيق)، يصبح التشفير أثناء السكون متطلبًا امتثاليًا تتولاه S3 نيابة عنك تلقائيًا.
 
-You can verify the encryption configuration:
+يمكنك التحقق من إعداد التشفير:
 
 ```bash
 aws s3api get-bucket-encryption \
@@ -137,15 +137,15 @@ aws s3api get-bucket-encryption \
 }
 ```
 
-## ACLs Are Disabled by Default
+## قوائم ACL معطّلة افتراضيًا
 
-Historically, S3 used **Access Control Lists (ACLs)** to manage permissions on buckets and objects. ACLs are a legacy mechanism, and AWS now recommends using bucket policies instead. Since April 2023, all new buckets have ACLs disabled by default—the bucket is set to “BucketOwnerEnforced,” which means the bucket owner owns all objects and ACLs have no effect.
+استخدم S3 تاريخيًا **قوائم التحكم في الوصول (ACLs)** لإدارة الأذونات على الحاويات والكائنات. وقوائم ACL آلية قديمة، وتوصي AWS الآن باستخدام سياسات الحاويات بدلًا منها. ومنذ أبريل 2023، جميع الحاويات الجديدة لديها قوائم ACL معطّلة افتراضيًا — فالحاوية مضبوطة على «BucketOwnerEnforced»، ما يعني أن مالك الحاوية يملك كل الكائنات، ولا تأثير لقوائم ACL.
 
-This is the right default. You shouldn’t need to touch ACLs for anything in this course. If you see old tutorials or Stack Overflow answers telling you to set an ACL like `--acl public-read`, ignore them. Honestly, the amount of outdated S3 advice floating around out there is *remarkable*. Use bucket policies instead—they’re more flexible and easier to audit.
+وهذا هو الافتراضي الصحيح. ولا ينبغي أن تحتاج إلى لمس قوائم ACL لأي شيء في هذه الدورة. فإن رأيت دروسًا قديمة أو إجابات Stack Overflow تخبرك بضبط ACL مثل `--acl public-read`، فتجاهلها. وبصراحة، كمية النصائح القديمة عن S3 المنتشرة هناك *جديرة بالملاحظة*. استخدم سياسات الحاويات بدلًا منها — فهي أكثر مرونة وأسهل في التدقيق.
 
-## Creating a Bucket with the Low-Level API
+## إنشاء حاوية باستخدام API منخفض المستوى
 
-The `aws s3 mb` command is the quick way. For more control, use `aws s3api create-bucket`:
+أمر `aws s3 mb` هو الطريق السريع. ولمزيد من التحكم، استخدم `aws s3api create-bucket`:
 
 ```bash
 aws s3api create-bucket \
@@ -160,7 +160,7 @@ aws s3api create-bucket \
 }
 ```
 
-For regions other than `us-east-1`, you need to include a `--create-bucket-configuration`:
+ولمناطق غير `us-east-1`، تحتاج إلى تضمين `--create-bucket-configuration`:
 
 ```bash
 aws s3api create-bucket \
@@ -170,15 +170,15 @@ aws s3api create-bucket \
   --output json
 ```
 
-This is another historical quirk—`us-east-1` is the original S3 region and doesn’t require the location constraint. Every other region does.
+وهذا شذوذ تاريخي آخر — فـ `us-east-1` هي منطقة S3 الأصلية ولا تتطلب قيد الموقع. وكل منطقة أخرى تتطلبه.
 
-> **Tip**
+> **نصيحة**
 >
-> If you created the bucket with `aws s3 mb` already, you don’t need to create it again with `s3api`. Both commands create the same bucket—`s3 mb` is just a higher-level wrapper around `s3api create-bucket`.
+> إذا أنشأت الحاوية بالفعل باستخدام `aws s3 mb`، فلست بحاجة إلى إنشائها مرة أخرى باستخدام `s3api`. فالأمران ينشئان الحاوية نفسها — و`s3 mb` مجرّد غلاف أعلى مستوى حول `s3api create-bucket`.
 
-## The Same Operation with the AWS SDK for JavaScript v3
+## العملية نفسها باستخدام AWS SDK for JavaScript v3
 
-Every CLI command in this course maps to an SDK call. Frontend engineers read CLI as “infrastructure work” and SDK as “application work”—they’re the same operations, different transports. Here’s the SDK v3 equivalent of everything above:
+كل أمر CLI في هذه الدورة يقابل استدعاء SDK. يقرأ مهندسو الواجهات الأمامية CLI على أنه «عمل بنية تحتية» وSDK على أنه «عمل تطبيق» — لكنها العمليات نفسها بوسائل نقل مختلفة. وهذا مكافئ SDK v3 لكل ما سبق:
 
 ```typescript
 import {
@@ -225,11 +225,11 @@ await s3.send(
 await s3.send(new HeadBucketCommand({ Bucket: 'my-frontend-app-assets' }));
 ```
 
-The CLI and SDK hit the same API endpoints. If you can write one, you can write the other—the shapes match.
+تصل CLI وSDK إلى نقاط نهاية API نفسها. فإن استطعت كتابة أحدهما، استطعت كتابة الآخر — فالأشكال متطابقة.
 
-## Verifying Your Bucket
+## التحقق من حاويتك
 
-Let’s confirm everything looks right. List your buckets:
+لنتأكد من أن كل شيء يبدو صحيحًا. اسرد حاوياتك:
 
 ```bash
 aws s3api list-buckets \
@@ -237,7 +237,7 @@ aws s3api list-buckets \
   --output json
 ```
 
-You should see your bucket in the list with a creation date. You can also inspect the bucket specifically:
+ينبغي أن ترى حاويتك في القائمة مع تاريخ إنشاء. ويمكنك أيضًا فحص الحاوية تحديدًا:
 
 ```bash
 aws s3api head-bucket \
@@ -246,18 +246,18 @@ aws s3api head-bucket \
   --output json
 ```
 
-If the command returns without error, the bucket exists and you have access to it. A 404 means the bucket doesn’t exist; a 403 means it exists but you don’t have permission (which can happen if someone else owns a bucket with that name, as covered in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)).
+إذا عاد الأمر دون خطأ، فالحاوية موجودة ولديك وصول إليها. و404 تعني أن الحاوية غير موجودة؛ و403 تعني أنها موجودة لكنك لا تملك الإذن (وهو ما قد يحدث إن كان شخص آخر يملك حاوية بهذا الاسم، كما هو مشمول في [كتابة أول سياسة IAM لديك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)).
 
-The S3 Buckets list showing the newly created my-frontend-app-assets bucket with its creation date and region.
+قائمة S3 Buckets وهي تعرض حاوية my-frontend-app-assets المنشأة حديثًا مع تاريخ إنشائها ومنطقتها.
 
-## What You Have So Far
+## ما لديك حتى الآن
 
-You now have an S3 bucket with:
+لديك الآن حاوية S3 بـ:
 
-- A globally unique name
-- Server-side encryption enabled (default)
-- Block Public Access enabled (default—we’ll modify this later)
-- ACLs disabled (default—we won’t change this)
-- A home in `us-east-1`
+- اسم فريد عالميًا
+- تشفير من جانب الخادم ممكّن (افتراضي)
+- Block Public Access ممكّن (افتراضي — سنعدّله لاحقًا)
+- قوائم ACL معطّلة (افتراضي — لن نغيّر هذا)
+- موطن في `us-east-1`
 
-Next up, you’ll upload files to this bucket and learn how `aws s3 cp` and `aws s3 sync` work—including the gotchas around content types that trip up every frontend engineer the first time.
+التالي، سترفع ملفات إلى هذه الحاوية وتتعلم كيف يعمل `aws s3 cp` و`aws s3 sync` — بما في ذلك المزالق المتعلقة بأنواع المحتوى التي توقع كل مهندس واجهات أمامية في المرة الأولى.

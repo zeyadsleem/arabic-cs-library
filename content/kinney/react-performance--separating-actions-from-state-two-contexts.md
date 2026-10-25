@@ -1,16 +1,16 @@
 ---
-title: "Separating Actions from State: Two Contexts"
-lang: en
+title: "فصل الإجراءات عن الحالة: سياقان"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/separating-actions-from-state-two-contexts"
 ---
 
-React Context is powerful for sharing state across components, but it comes with a performance trap that catches most of us at some point: every time the context value changes, every consumer re-renders. This becomes particularly painful when you’re passing both state and the functions to update that state through the same context—because creating those updater functions inline means the context value changes on every render, even when the actual state hasn’t.
+سياق React (Context) أداة قوية لمشاركة الحالة بين المكوّنات، لكنه يحمل معه فخًّا في الأداء يقع فيه معظمنا في مرحلة ما: كلما تغيّرت قيمة السياق، أُعيد تصيير كل مستهلك له. ويصبح هذا مؤلمًا بشكل خاص عندما تمرّر الحالة ودوال تحديثها معًا عبر السياق نفسه — لأن إنشاء دوال التحديث تلك داخل المكوّن مباشرةً يعني أن قيمة السياق تتغيّر مع كل تصيير، حتى إذا لم تتغيّر الحالة الفعلية.
 
-The solution? Split your contexts. Put your state in one context and your actions in another. This way, components that only need to read state won’t re-render when action functions are recreated, and components that only need to dispatch actions won’t re-render when state changes. Let’s explore how to implement this pattern effectively.
+والحل؟ افصل سياقاتك. ضع حالتك في سياق والإجراءات في سياق آخر. بهذه الطريقة، لن يُعاد تصيير المكوّنات التي تحتاج إلى قراءة الحالة فقط عند إعادة إنشاء دوال الإجراءات، ولن يُعاد تصيير المكوّنات التي تحتاج إلى إرسال الإجراءات فقط عندما تتغيّر الحالة. لنستكشف كيف ننفّذ هذا النمط بفعالية.
 
-## The Problem with Single Context
+## مشكلة السياق الواحد
 
-Here’s what most of us do first—and why it hurts performance:
+إليك ما يفعله معظمنا أولًا — ولماذا يضرّ ذلك بالأداء:
 
 ```typescript
 // ❌ The performance trap
@@ -46,11 +46,11 @@ function TodoProvider({ children }: { children: React.ReactNode }) {
 }
 ```
 
-Every time `TodoProvider` renders—which happens whenever `todos` changes—new function references are created for `addTodo`, `toggleTodo`, and `deleteTodo`. Since the entire `value` object is also recreated, every component consuming this context will re-render, even if they only care about reading the current todos and don’t need the action functions.
+في كل مرة يُصيّر `TodoProvider` — ويحدث ذلك كلما تغيّرت `todos` — تُنشأ مراجع دوال جديدة لـ `addTodo` و`toggleTodo` و`deleteTodo`. ولأن كائن `value` بأكمله يُعاد إنشاؤه أيضًا، سيُعاد تصيير كل مكوّن يستهلك هذا السياق، حتى إن كان يهتم فقط بقراءة المهام الحالية ولا يحتاج إلى دوال الإجراءات.
 
-## The Two-Context Solution
+## حل السياقين
 
-Let’s split this into separate contexts for state and actions:
+لنقسّم هذا إلى سياقين منفصلين: واحد للحالة وآخر للإجراءات:
 
 ```typescript
 // ✅ Split contexts for better performance
@@ -99,11 +99,11 @@ function TodoProvider({ children }: { children: React.ReactNode }) {
 }
 ```
 
-Now when the todos array changes, only components subscribed to `TodoStateContext` will re-render. Components that only need to dispatch actions stay untouched.
+الآن عندما تتغيّر مصفوفة todos، لن يُعاد تصيير إلا المكوّنات المشتركة في `TodoStateContext`. أما المكوّنات التي تحتاج إلى إرسال الإجراءات فقط فتبقى دون مساس.
 
-## Custom Hooks for Clean API
+## خُطّافات مخصّصة لواجهة نظيفة
 
-Wrap the context consumption in custom hooks to provide a cleaner API and better error handling:
+غلّف استهلاك السياق في خُطّافات مخصّصة لتوفير واجهة برمجية أنظف ومعالجة أخطاء أفضل:
 
 ```typescript
 function useTodos() {
@@ -131,9 +131,9 @@ function useTodosWithActions() {
 }
 ```
 
-## Using the Split Contexts
+## استخدام السياقين المفصولين
 
-Now your components can be more selective about what they subscribe to:
+الآن يمكن لمكوّناتك أن تكون أكثر انتقائية فيما تشترك فيه:
 
 ```typescript
 // ✅ Only re-renders when todos array changes
@@ -184,11 +184,11 @@ function AddTodoForm() {
 }
 ```
 
-Notice how `TodoItem` and `AddTodoForm` never re-render when the todos array changes—they only care about the actions. Meanwhile, `TodoList` re-renders when todos change but isn’t affected by action function recreation.
+لاحظ كيف لا يُعاد تصيير `TodoItem` و`AddTodoForm` أبدًا عندما تتغيّر مصفوفة المهام — فهما يهتمّان بالإجراءات فقط. في المقابل، يُعاد تصيير `TodoList` عندما تتغيّر المهام لكنه لا يتأثّر بإعادة إنشاء دوال الإجراءات.
 
-## Advanced Pattern: `useReducer` Alternative
+## نمط متقدّم: بديل `useReducer`
 
-For more complex state management, you can combine this pattern with `useReducer` for even more predictable updates:
+لإدارة حالة أكثر تعقيدًا، يمكنك دمج هذا النمط مع `useReducer` للحصول على تحديثات أكثر قابلية للتوقّع:
 
 ```typescript
 type TodoAction =
@@ -242,11 +242,11 @@ function TodoProvider({ children }: { children: React.ReactNode }) {
 }
 ```
 
-With `useReducer`, the `dispatch` function reference is always stable, so your memoized actions object never needs to change—making this approach even more performance-friendly.
+مع `useReducer`، يبقى مرجع دالة `dispatch` مستقرًّا دائمًا، لذا لا يحتاج كائن الإجراءات المحفوظ إلى التغيّر أبدًا — ما يجعل هذا النهج أصدق مع الأداء.
 
-## Real-World Example: User Authentication
+## مثال واقعي: مصادقة المستخدم
 
-Here’s how this pattern looks with a more complex, realistic example:
+إليك كيف يبدو هذا النمط في مثال أكثر تعقيدًا وواقعية:
 
 ```typescript
 interface User {
@@ -351,7 +351,7 @@ function useAuthActions() {
 }
 ```
 
-Now components can be surgical about what they subscribe to:
+الآن يمكن للمكوّنات أن تكون جراحية في تحديد ما تشترك فيه:
 
 ```typescript
 // ✅ Only re-renders when auth state changes
@@ -400,9 +400,9 @@ function LoginForm() {
 }
 ```
 
-## Testing Benefits
+## فوائد الاختبار
 
-One underappreciated benefit of this pattern is how much easier it makes testing. You can test your state logic and action logic independently:
+من الفوائد التي لا تُقدَّر حقّ قدرها في هذا النمط أنه يسهّل الاختبار كثيرًا. يمكنك اختبار منطق الحالة ومنطق الإجراءات كلًّا على حدة:
 
 ```typescript
 // Test state transformations in isolation
@@ -464,32 +464,32 @@ test('TodoList renders todos', () => {
 });
 ```
 
-## When to Use This Pattern
+## متى تستخدم هذا النمط
 
-This two-context pattern shines when:
+يتألّق نمط السياقين هذا عندما:
 
-- **You have many consumers**: Multiple components need either state or actions (but not necessarily both)
-- **Frequent state updates**: Your state changes often and you want to minimize re-renders
-- **Complex action logic**: Your actions involve async operations or complex state transformations
-- **Performance is critical**: You’re optimizing for minimal re-renders in a large component tree
+- **لديك مستهلكون كثر**: تحتاج مكوّنات متعددة إلى الحالة أو الإجراءات (وليس بالضرورة إلى كليهما)
+- **تحديثات حالة متكررة**: تتغيّر حالتك كثيرًا وتريد تقليل عمليات إعادة التصيير إلى أدنى حد
+- **منطق إجراءات معقّد**: تتضمّن إجراءاتك عمليات غير متزامنة أو تحويلات حالة معقّدة
+- **الأداء حرج**: تُحسّن من أجل أقل عدد ممكن من عمليات إعادة التصيير في شجرة مكوّنات كبيرة
 
-It might be overkill for:
+وقد يكون مبالغة في الحالات التالية:
 
-- **Simple, infrequent state**: A toggle that changes once in a while doesn’t need this complexity
-- **Small component trees**: If you only have a few components, the performance benefit isn’t worth the extra code
-- **State and actions are always used together**: If every component needs both reading and writing capabilities
+- **حالة بسيطة ونادرة التغيّر**: مفتاح تبديل يتغيّر بين حين وآخر لا يحتاج إلى هذا التعقيد
+- **أشجار مكوّنات صغيرة**: إذا كانت لديك مكوّنات قليلة فقط، فلا تستحق فائدة الأداء الشيفرة الإضافية
+- **الحالة والإجراءات تُستخدمان معًا دائمًا**: إذا كان كل مكوّن يحتاج إلى قدرتي القراءة والكتابة معًا
 
-## Tradeoffs to Consider
+## مقايضات يجب مراعاتها
 
-**Pros:**
+**المزايا:**
 
-- Surgical re-renders: Components only update when their specific dependencies change
-- Stable action references: Action functions don’t cause unnecessary re-renders
-- Better testability: State logic and actions can be tested independently
-- Clear separation of concerns: Read and write paths are explicitly separate
+- عمليات إعادة تصيير جراحية: لا تتحدّث المكوّنات إلا عندما تتغيّر اعتماداتها المحدّدة
+- مراجع إجراءات مستقرة: لا تسبّب دوال الإجراءات عمليات إعادة تصيير غير ضرورية
+- قابلية اختبار أفضل: يمكن اختبار منطق الحالة والإجراءات كلًّا على حدة
+- فصل واضح للمسؤوليات: مسارا القراءة والكتابة منفصلان صراحةً
 
-**Cons:**
+**العيوب:**
 
-- More boilerplate: You need separate contexts, providers, and hooks
-- Slightly more complex mental model: Developers need to understand the split
-- Potential over-engineering: Can be overkill for simple state scenarios
+- شيفرة نموذجية أكثر: تحتاج إلى سياقات ومزوّدات وخُطّافات منفصلة
+- نموذج ذهني أعقد قليلًا: يحتاج المطوّرون إلى فهم هذا الفصل
+- احتمال مبالغة في الهندسة: قد يكون مبالغة في سيناريوهات الحالة البسيطة

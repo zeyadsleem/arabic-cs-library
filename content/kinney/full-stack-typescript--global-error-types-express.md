@@ -1,10 +1,10 @@
 ---
-title: "Global Error Types with Express"
-lang: en
+title: "أنواع الأخطاء العامة مع Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/global-error-types-express"
 ---
 
-For a consistent approach across your application, define error types in a central location:
+لمقاربة متسقة في أنحاء تطبيقك، عرّف أنواع الأخطاء في موضع مركزي:
 
 ```typescript
 // errors.ts
@@ -56,7 +56,7 @@ export class ValidationError extends AppError {
 // Additional error classes…
 ```
 
-Then use these types across your application:
+ثم استخدم هذه الأنواع في أنحاء تطبيقك:
 
 ```typescript
 import { NotFoundError, ValidationError, ErrorResponse } from './errors';

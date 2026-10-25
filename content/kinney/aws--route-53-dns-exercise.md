@@ -1,32 +1,32 @@
 ---
-title: "Exercise: Configure DNS for Your Site"
-lang: en
+title: "تمرين: تهيئة DNS لموقعك"
+lang: ar
 source: "https://stevekinney.com/courses/aws/route-53-dns-exercise"
 ---
 
-You have a CloudFront distribution serving your frontend and an ACM certificate attached to it. The distribution works at its `d111111abcdef8.cloudfront.net` URL, but nobody ships a CloudFront domain to production. In this exercise, you’ll wire up your own domain so users visit `example.com` and get your site served through CloudFront.
+لديك توزيع CloudFront يقدّم واجهتك الأمامية وشهادة ACM مرفقة به. ويعمل التوزيع على عنوان URL الخاص به `d111111abcdef8.cloudfront.net`، لكن لا أحد يطلق نطاق CloudFront إلى الإنتاج. في هذا التمرين، ستوصل نطاقك الخاص بحيث يزور المستخدمون `example.com` فيحصلون على موقعك المقدَّم عبر CloudFront.
 
-> **Tip**
+> **نصيحة**
 >
-> If the Route 53 console looks a little different when you do this, keep the [Route 53 DNS configuration guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) and the [`aws route53 change-resource-record-sets` command reference](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) open.
+> إذا بدت وحدة تحكّم Route 53 مختلفة قليلًا عند تنفيذك هذا، فأبقِ [دليل تهيئة DNS في Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) و[مرجع الأمر `aws route53 change-resource-record-sets`](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) مفتوحين.
 
-## Why It Matters
+## لماذا يهمّ
 
-DNS is the final piece of the static hosting stack. Without it, your deployment is functional but unreachable at a real domain. Once you complete this exercise, you’ll have a full end-to-end deployment: S3 stores the files, CloudFront distributes them, ACM secures the connection, and Route 53 makes the whole thing reachable at your domain name. This is the same stack that production frontend applications run on.
+DNS هو القطعة الأخيرة في مكدّس الاستضافة الثابتة. فبدونه، يكون نشرك عاملًا لكنه غير قابل للوصول على نطاق حقيقي. وبمجرد إكمال هذا التمرين، سيكون لديك نشر كامل من الطرف إلى الطرف: يخزّن S3 الملفات، وتوزّعها CloudFront، ويؤمّن ACM الاتصال، ويجعل Route 53 كل شيء قابلًا للوصول على اسم نطاقك. وهذا هو المكدّس نفسه الذي تعمل عليه تطبيقات الواجهة الأمامية الإنتاجية.
 
-## Prerequisites
+## المتطلّبات المسبقة {#prerequisites}
 
-- An AWS account with CLI access configured (see [Setting Up the AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli))
-- A CloudFront distribution with your domain listed as an alternate domain name and an ACM certificate attached (see [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) and [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate))
-- A domain name you control, with DNS already hosted in Route 53 or delegated to a Route 53 hosted zone.
+- حساب AWS مع إعداد وصول CLI (انظر [إعداد AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli))
+- توزيع CloudFront مُدرج فيه نطاقك كاسم نطاق بديل وشهادة ACM مرفقة به (انظر [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) و[إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate))
+- اسم نطاق تتحكّم به، ويكون DNS مستضافًا بالفعل في Route 53 أو مفوَّضًا إلى منطقة استضافة في Route 53.
 
-> **Tip**
+> **نصيحة**
 >
-> In the new course flow, you should already have the hosted zone by the time you reach this exercise. If you registered the domain through Route 53, AWS probably created it automatically. If the domain lives elsewhere, you should already have pointed the registrar at the Route 53 nameservers during the DNS foundation lessons.
+> في مسار الدورة الجديد، يفترض أن تكون لديك منطقة الاستضافة بالفعل بحلول وصولك إلى هذا التمرين. فإن سجّلت النطاق عبر Route 53، فالأرجح أن AWS أنشأتها تلقائيًا. وإن كان النطاق في مكان آخر، فالأرجح أنك وجّهت المسجّل إلى خوادم أسماء Route 53 خلال دروس أساسيات DNS.
 
-## Confirm Your Hosted Zone
+## تأكيد منطقة الاستضافة
 
-Before you add alias records, make sure you’re working in the right hosted zone. Replace `example.com` with your actual domain:
+قبل أن تضيف سجلات alias، تأكّد من أنك تعمل في منطقة الاستضافة الصحيحة. استبدل `example.com` بنطاقك الفعلي:
 
 ```bash
 aws route53 list-hosted-zones-by-name \
@@ -34,27 +34,27 @@ aws route53 list-hosted-zones-by-name \
   --output json
 ```
 
-From the response, note two things:
+من الاستجابة، لاحظ أمرين:
 
-1. The **hosted zone ID** (e.g., `/hostedzone/Z1234567890ABC`). You will use the ID portion (`Z1234567890ABC`) in subsequent commands.
-2. The **domain name** on the zone matches the domain you’re about to route.
+1. **معرّف منطقة الاستضافة** (مثل `/hostedzone/Z1234567890ABC`). ستستخدم جزء المعرّف (`Z1234567890ABC`) في الأوامر اللاحقة.
+2. **اسم النطاق** في المنطقة يطابق النطاق الذي أنت على وشك توجيهه.
 
-If you do **not** have a hosted zone yet, stop here and create one using [Hosted Zones and Record Types](https://stevekinney.com/courses/aws/hosted-zones-and-record-types), then make sure your registrar points to the Route 53 nameservers before continuing.
+إذا **لم** تكن لديك منطقة استضافة بعد، فتوقّف هنا وأنشئ واحدة باستخدام [مناطق الاستضافة وأنواع السجلات](https://stevekinney.com/courses/aws/hosted-zones-and-record-types)، ثم تأكّد من أن مسجّلك يشير إلى خوادم أسماء Route 53 قبل المتابعة.
 
-### Checkpoint
+### نقطة تحقّق
 
-- The hosted zone exists in Route 53.
-- You have the hosted zone ID saved.
-- If your domain is registered externally, its nameservers already point at Route 53.
+- منطقة الاستضافة موجودة في Route 53.
+- لديك معرّف منطقة الاستضافة محفوظًا.
+- إذا كان نطاقك مسجّلًا خارجيًا، فخوادم أسمائه تشير بالفعل إلى Route 53.
 
-## Create an A Alias Record for the Apex Domain
+## إنشاء سجل Alias من النوع A للنطاق الجذري
 
-Create an alias A record that points your bare domain (`example.com`) to your CloudFront distribution. You’ll need:
+أنشئ سجل A من نوع alias يوجّه نطاقك المجرّد (`example.com`) إلى توزيع CloudFront. ستحتاج إلى:
 
-- Your hosted zone ID from the previous step
-- Your CloudFront distribution’s domain name (e.g., `d111111abcdef8.cloudfront.net`)
+- معرّف منطقة الاستضافة من الخطوة السابقة
+- اسم نطاق توزيع CloudFront (مثل `d111111abcdef8.cloudfront.net`)
 
-The CloudFront hosted zone ID for alias targets is always `Z2FDTNDATAQYW2`.
+معرّف منطقة الاستضافة في CloudFront لأهداف alias هو دائمًا `Z2FDTNDATAQYW2`.
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -78,14 +78,14 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- The command returned a `ChangeInfo` object with `"Status": "PENDING"`.
-- No errors about the alias target. If you see an error, verify that your CloudFront distribution lists `example.com` as an alternate domain name.
+- أعاد الأمر كائن `ChangeInfo` مع `"Status": "PENDING"`.
+- لا أخطاء بشأن هدف alias. وإن رأيت خطأً، فتحقّق من أن توزيع CloudFront يُدرج `example.com` كاسم نطاق بديل.
 
-## Create an AAAA Alias Record for IPv6
+## إنشاء سجل Alias من النوع AAAA لـ IPv6
 
-Create a matching AAAA record so your domain resolves over IPv6:
+أنشئ سجل AAAA مطابقًا كي يُحلّ نطاقك عبر IPv6:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -109,58 +109,58 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- The command succeeded with `"Status": "PENDING"`.
-- You now have both an A and an AAAA alias record for `example.com`.
+- نجح الأمر مع `"Status": "PENDING"`.
+- لديك الآن سجلّا alias من النوعين A وAAAA لـ`example.com`.
 
-## Create Records for www (Optional but Recommended)
+## إنشاء سجلات لـ www (اختياري لكن موصى به)
 
-If you want `www.example.com` to work as well, create alias records for it. Make sure `www.example.com` is listed as an alternate domain name on your CloudFront distribution (or that your ACM certificate covers `*.example.com`).
+إذا أردت أن يعمل `www.example.com` أيضًا، فأنشئ سجلات alias له. تأكّد من إدراج `www.example.com` كاسم نطاق بديل في توزيع CloudFront (أو أن شهادة ACM تغطّي `*.example.com`).
 
-Create both A and AAAA alias records for `www.example.com` pointing to the same CloudFront distribution.
+أنشئ سجلي alias من النوعين A وAAAA لـ`www.example.com` يشيران إلى توزيع CloudFront نفسه.
 
-### Checkpoint
+### نقطة تحقّق
 
-- If you created www records, you now have four alias records total: A and AAAA for both `example.com` and `www.example.com`.
+- إذا أنشأت سجلات www، فلديك الآن أربعة سجلات alias إجمالًا: A وAAAA لكل من `example.com` و`www.example.com`.
 
-## Verify DNS Resolution
+## التحقّق من تحليل DNS
 
-Wait about 60 seconds for Route 53 to propagate the changes, then verify:
+انتظر نحو 60 ثانية كي تنشر Route 53 التغييرات، ثم تحقّق:
 
-Check the A record:
+افحص سجل A:
 
 ```bash
 dig example.com A +short
 ```
 
-You should see one or more IP addresses (these are CloudFront edge server IPs).
+يجب أن ترى عنوان IP واحدًا أو أكثر (وهي عناوين IP لخوادم حافة CloudFront).
 
-Check the AAAA record:
+افحص سجل AAAA:
 
 ```bash
 dig example.com AAAA +short
 ```
 
-You should see one or more IPv6 addresses.
+يجب أن ترى عنوان IPv6 واحدًا أو أكثر.
 
-If the records aren’t resolving yet, query a Route 53 nameserver directly to confirm the records are correct at the source:
+إذا لم تكن السجلات تُحلّ بعد، فاستعلم من خادم أسماء Route 53 مباشرةً لتأكيد صحة السجلات في المصدر:
 
 ```bash
 dig example.com A @ns-1234.awsdns-56.org +short
 ```
 
-Replace the nameserver with one of the four from your hosted zone.
+استبدل خادم الأسماء بأحد الخوادم الأربعة من منطقة استضافتك.
 
-### Checkpoint
+### نقطة تحقّق
 
-- `dig example.com A +short` returns IP addresses.
-- `dig example.com AAAA +short` returns IPv6 addresses.
-- Opening `https://example.com` in a browser shows your frontend with a valid SSL certificate.
+- يُرجع `dig example.com A +short` عناوين IP.
+- يُرجع `dig example.com AAAA +short` عناوين IPv6.
+- فتح `https://example.com` في متصفّح يُظهر واجهتك الأمامية بشهادة SSL صالحة.
 
-## List All Records in Your Hosted Zone
+## سرد كل السجلات في منطقة استضافتك
 
-Verify the complete state of your hosted zone:
+تحقّق من الحالة الكاملة لمنطقة استضافتك:
 
 ```bash
 aws route53 list-resource-record-sets \
@@ -168,30 +168,30 @@ aws route53 list-resource-record-sets \
   --output json
 ```
 
-You should see your NS and SOA records (auto-created), plus the A and AAAA alias records you just created. If you completed the ACM exercise, you may also see the CNAME validation record.
+يجب أن ترى سجلات NS وSOA (منشأة تلقائيًا)، إضافة إلى سجلي alias من النوعين A وAAAA اللذين أنشأتهما للتوّ. وإذا أكملت تمرين ACM، فقد ترى أيضًا سجل تحقّق CNAME.
 
-### Checkpoint
+### نقطة تحقّق
 
-- The output includes NS, SOA, A, and AAAA records for your domain.
-- The A and AAAA records show `AliasTarget` with your CloudFront distribution’s domain name.
+- تتضمّن المخرجات سجلات NS وSOA وA وAAAA لنطاقك.
+- تُظهر سجلات A وAAAA هدف `AliasTarget` باسم نطاق توزيع CloudFront.
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **The alias records look right in Route 53 but the domain does not resolve publicly:** Your registrar is still pointing at old nameservers. Compare the registrar settings with the four Route 53 NS records from your hosted zone.
-- **The CloudFront domain works but `https://example.com` does not:** The apex A and AAAA alias records are missing, or they point at the wrong distribution or hosted zone ID.
-- **`example.com` works but `www.example.com` fails:** You created only the apex records. Add matching `www` alias records if you want both hostnames to resolve.
+- **تبدو سجلات alias صحيحة في Route 53 لكن النطاق لا يُحلّ علنًا:** ما زال مسجّلك يشير إلى خوادم أسماء قديمة. قارن إعدادات المسجّل بسجلات NS الأربعة في منطقة استضافتك.
+- **يعمل نطاق CloudFront لكن `https://example.com` لا يعمل:** سجلا alias من النوعين A وAAAA للنطاق الجذري مفقودان، أو يشيران إلى التوزيع الخاطئ أو معرّف منطقة الاستضافة الخاطئ.
+- **يعمل `example.com` لكن `www.example.com` يفشل:** أنشأت سجلات النطاق الجذري فقط. أضف سجلات alias مطابقة لـ`www` إن أردت أن يُحلّ كلا الاسمين.
 
-## What You Built
+## ما بنيته
 
-You now have a complete DNS configuration: a hosted zone in Route 53 with alias records pointing your domain to your CloudFront distribution. Your frontend is accessible at `https://example.com` with a valid SSL certificate, global CDN distribution, and DNS resolution handled by Route 53.
+لديك الآن تهيئة DNS كاملة: منطقة استضافة في Route 53 مع سجلات alias توجّه نطاقك إلى توزيع CloudFront. وواجهتك الأمامية متاحة على `https://example.com` بشهادة SSL صالحة، وتوزيع CDN عالمي، وتحليل DNS يتولّاه Route 53.
 
-This completes the foundation stack: S3 (storage) + CloudFront (CDN) + ACM (certificates) + Route 53 (DNS). I still get a little thrill seeing a real domain resolve to infrastructure I set up myself—it’s one of those moments where everything clicks.
+بهذا يكتمل مكدّس الأساس: S3 (تخزين) + CloudFront (CDN) + ACM (شهادات) + Route 53 (DNS). ما زلت أشعر بشيء من الإثارة حين أرى نطاقًا حقيقيًا يُحلّ إلى بنية تحتية أعددتها بنفسي — إنها إحدى تلك اللحظات التي يتّضح فيها كل شيء.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Test with `nslookup`**: Run `nslookup example.com` and compare the output to `dig`. Notice how `nslookup` shows which nameserver answered the query.
-- **Check TTL behavior**: Run `dig example.com A` (without `+short`) and look at the TTL value in the answer section. Run it again 30 seconds later and notice the TTL has decreased. This is the cache counting down.
-- **Query from different resolvers**: Compare results from different public DNS resolvers to see if they all return the same answer: <code><span class="line"><span style="color:#82AAFF;font-style:italic">dig</span><span style="color:#ECC48D"> example.com</span><span style="color:#ECC48D"> A</span><span style="color:#ECC48D"> @1.1.1.1</span><span style="color:#ECC48D"> +short</span></span>
+- **الاختبار بـ`nslookup`**: شغّل `nslookup example.com` وقارن المخرجات بـ`dig`. لاحظ كيف يُظهر `nslookup` أي خادم أسماء أجاب عن الاستعلام.
+- **فحص سلوك TTL**: شغّل `dig example.com A` (بلا `+short`) وانظر إلى قيمة TTL في قسم الإجابة. شغّله مرة أخرى بعد 30 ثانية ولاحظ أن TTL انخفض. هذا هو العدّ التنازلي للذاكرة المؤقتة.
+- **الاستعلام من مُحلِّلات مختلفة**: قارن النتائج من مُحلِّلات DNS عامة مختلفة لترى ما إذا كانت كلها تُرجع الإجابة نفسها: <code><span class="line"><span style="color:#82AAFF;font-style:italic">dig</span><span style="color:#ECC48D"> example.com</span><span style="color:#ECC48D"> A</span><span style="color:#ECC48D"> @1.1.1.1</span><span style="color:#ECC48D"> +short</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">dig</span><span style="color:#ECC48D"> example.com</span><span style="color:#ECC48D"> A</span><span style="color:#ECC48D"> @8.8.8.8</span><span style="color:#ECC48D"> +short</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">dig</span><span style="color:#ECC48D"> example.com</span><span style="color:#ECC48D"> A</span><span style="color:#ECC48D"> @9.9.9.9</span><span style="color:#ECC48D"> +short</span></span></code>
-- **Redirect www to apex**: If you didn’t create www records, set up a simple S3 redirect bucket that sends `www.example.com` to `example.com`. This ensures users who type `www` still reach your site.
+- **إعادة توجيه www إلى النطاق الجذري**: إذا لم تنشئ سجلات www، فأعدّ حاوية S3 بسيطة لإعادة التوجيه ترسل `www.example.com` إلى `example.com`. هذا يضمن أن المستخدمين الذين يكتبون `www` يصلون إلى موقعك.

@@ -1,18 +1,18 @@
 ---
-title: "Frontend Security and Supply Chain Safety"
-lang: en
+title: "أمن الواجهة الأمامية وسلامة سلسلة التوريد"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/frontend-security"
 ---
 
-Frontend security used to be a short conversation. Escape your outputs, set some headers, do not put secrets in the bundle. That was about it. The frontend was a thin rendering layer, and the real security work happened on the server.
+كان أمن الواجهة الأمامية محادثة قصيرة في ما مضى. هرّب مخرجاتك، واضبط بعض الترويسات، ولا تضع الأسرار في الحزمة. هذا كان كل شيء تقريبًا. كانت الواجهة الأمامية طبقة تصيير رفيعة، والعمل الأمني الحقيقي يجري على الخادم.
 
-That is not where we are anymore. Modern enterprise frontends are thick clients. They contain business logic, authentication state, user data, and a dependency tree with a thousand transitive packages—each one a potential entry point for an attacker. The application loads scripts from multiple origins, communicates with backend services across trust boundaries, and runs third-party code with the same privileges as your own. The security posture of this system is not a checklist of headers. It is an architectural discipline.
+لكن هذا ليس موضعنا اليوم. فواجهات المؤسسات الحديثة عملاء متخمون. تحتوي منطق العمل، وحالة المصادقة، وبيانات المستخدم، وشجرة اعتمادات فيها ألف حزمة عابرة — كل واحدة منها مدخل محتمل للمهاجم. ويحمّل التطبيق سكربتات من أصول متعددة، ويتواصل مع خدمات خلفية عبر حدود ثقة، ويشغّل شيفرة طرف ثالث بالامتيازات نفسها التي تحظى بها شيفرتك. والوضع الأمني لهذا النظام ليس قائمة تحقق من الترويسات، بل انضباط معماري.
 
-## The Browser’s Trust Model
+## نموذج الثقة في المتصفح
 
-The browser’s foundational security mechanism is the **Same-Origin Policy** (SOP): code from one origin (scheme + host + port) cannot read data from another origin. `https://app.example.com` and `https://api.example.com` are different origins. `http://` and `https://` on the same host are different origins. `localhost:3000` and `localhost:3001` are different origins. The [SOP](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) is the reason a random webpage cannot read your email.
+الآلية الأمنية الأساسية في المتصفح هي **سياسة الأصل نفسه** (Same-Origin Policy، SOP): فالشيفرة من أصل واحد (المخطط + المضيف + المنفذ) لا تستطيع قراءة بيانات من أصل آخر. و`https://app.example.com` و`https://api.example.com` أصلان مختلفان. و`http://` و`https://` على المضيف نفسه أصلان مختلفان. و`localhost:3000` و`localhost:3001` أصلان مختلفان. و[سياسة الأصل نفسه (SOP)](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) هي السبب في أن صفحة ويب عشوائية لا تستطيع قراءة بريدك الإلكتروني.
 
-Enterprise applications routinely pierce this boundary. CORS headers allow cross-origin API calls. `postMessage` enables cross-origin iframe communication. Third-party `<script>` tags run with full access to the host page’s DOM. Every one of these is an intentional weakening of the isolation model, and every one of them is a place where security assumptions can break.
+واختراق تطبيقات المؤسسات لهذا الحد أمر روتيني. فترويسات CORS تسمح بنداءات الواجهة البرمجية عبر الأصول. و`postMessage` يتيح تواصلًا عبر الأصول بين الإطارات. ووسوم `<script>` لطرف ثالث تعمل بوصول كامل إلى DOM الصفحة المضيفة. وكل واحد من هذه ثقب مقصود في نموذج العزل، وكل واحد منها موضع يمكن أن تنكسر فيه الافتراضات الأمنية.
 
 ```
 graph TD
@@ -37,25 +37,25 @@ graph TD
     App -->|"sandboxable"| Frames
 ```
 
-The uncomfortable truth about third-party scripts is worth stating plainly: a `<script src="https://analytics.example.com/tag.js">` tag gives that script identical privileges to your own code. It can read the DOM, access `localStorage`, register event listeners on input fields, and make network requests to any origin. If the analytics provider gets compromised—or if a tag manager lets marketing inject arbitrary JavaScript—the attacker has the same access as your most senior engineer.
+والحقيقة المقلقة عن سكربتات الطرف الثالث تستحق أن تُقال صراحة: فوسم `<script src="https://analytics.example.com/tag.js">` يمنح ذلك السكربت امتيازات مطابقة لامتيازات شيفرتك. يستطيع قراءة DOM، والوصول إلى `localStorage`، وتسجيل مستمعات أحداث على حقول الإدخال، وإجراء طلبات شبكة إلى أي أصل. وإن اختُرقت جهة التحليلات — أو سمح مدير وسوم لقسم التسويق بحقن JavaScript اعتباطي — فسيحصل المهاجم على الوصول نفسه الذي يحظى به أقدم مهندسيك.
 
-| Trust boundary | Mechanism | What breaks when it is breached |
+| حد الثقة | الآلية | ما ينكسر عند اختراقه |
 | --- | --- | --- |
-| **Same-origin** | SOP, cookie scoping | Full DOM access, credential theft |
-| **Cross-origin API** | CORS headers | Data exfiltration, CSRF |
-| **Third-party scripts** | `<script>` tags, tag managers | Keylogging, session hijacking, skimming |
-| **iframe embeds** | `sandbox` attribute, CSP | Clickjacking, phishing |
-| **Service Workers** | Origin-scoped, intercepts all fetches | Client-side man-in-the-middle |
+| **الأصل نفسه** | سياسة الأصل نفسه، ونطاق الكوكيز | وصول كامل إلى DOM، وسرقة بيانات الاعتماد |
+| **الواجهة البرمجية عبر الأصول** | ترويسات CORS | تسريب البيانات، وتزوير الطلبات عبر المواقع |
+| **سكربتات الطرف الثالث** | وسوم `<script>`، ومديرو الوسوم | تسجيل ضغطات المفاتيح، واختطاف الجلسات، وسرقة البيانات |
+| **الإطارات المضمّنة** | خاصية `sandbox`، وسياسة أمان المحتوى | اختطاف النقرات، والتصيّد |
+| **عمال الخدمة** | مقيّدون بالأصل، ويعترضون كل الجلبات | رجل في المنتصف من جهة العميل |
 
-## Content Security Policy
+## سياسة أمان المحتوى
 
-Content Security Policy (CSP) is the single most impactful security mechanism available to frontend developers. A well-configured CSP dramatically reduces the impact of XSS by telling the browser which resources it is allowed to load and execute. If an attacker injects a `<script>` tag that is not permitted by the policy, the browser blocks it.
+سياسة أمان المحتوى (CSP) هي الآلية الأمنية الأكثر أثرًا المتاحة لمطوّري الواجهة الأمامية. فسياسة مُعدّة جيدًا تقلّل أثر XSS تقليلًا هائلًا بإخبار المتصفح بالموارد المسموح له بتحميلها وتنفيذها. وإن حقن مهاجم وسم `<script>` لا تسمح به السياسة، حجبه المتصفح.
 
-And yet, CSP remains one of the most poorly implemented security features in enterprise applications. The usual failure mode is deploying a policy so permissive that it provides no meaningful protection, or skipping it entirely because “it was breaking things in staging.”
+ومع ذلك تظل CSP من أكثر الميزات الأمنية سوءًا في التنفيذ داخل تطبيقات المؤسسات. ونمط الفشل المعتاد هو نشر سياسة متسامحة إلى حد لا توفّر حماية ذات معنى، أو تخطيها كليًا بحجة «أنها كانت تكسر الأشياء في بيئة التجهيز».
 
-### How CSP directives work
+### كيف تعمل توجيهات CSP
 
-A CSP is a set of directives, each controlling a different resource type. The policy is delivered via an HTTP response header:
+سياسة أمان المحتوى مجموعة من التوجيهات، يضبط كل منها نوعًا مختلفًا من الموارد. وتُسلَّم السياسة عبر ترويسة استجابة HTTP:
 
 ```
 Content-Security-Policy:
@@ -70,13 +70,13 @@ Content-Security-Policy:
   form-action 'self';
 ```
 
-`default-src` is the fallback for any directive not explicitly listed. `script-src` controls JavaScript sources. `connect-src` controls `fetch`, `XMLHttpRequest`, and WebSocket destinations. The browser enforces each directive independently—if a resource does not match the directive’s allowlist, it is blocked and a violation is reported.
+توجيه `default-src` هو البديل الاحتياطي لأي توجيه غير مذكور صراحة. ويتحكم `script-src` بمصادر JavaScript. ويتحكم `connect-src` بوجهات `fetch` و`XMLHttpRequest` وWebSocket. وينفّذ المتصفح كل توجيه باستقلال — فإن لم يطابق مورد قائمة السماح في التوجيه، حُجب المورد وأُبلغ عن مخالفة.
 
-### Nonce-based CSP
+### سياسة أمان المحتوى القائمة على الـnonce
 
-The modern approach to CSP uses **nonces** rather than domain allowlists. [Google’s strict CSP guidance](https://web.dev/articles/strict-csp) recommends this strategy because domain-based allowlists are surprisingly easy to bypass (any script on a trusted CDN becomes an attack vector), while nonces tie script execution to a specific page load.
+تستخدم المقاربة الحديثة لـCSP **الـnonces** بدل قوائم سماح النطاقات. وتوصي [إرشادات Google لسياسة CSP الصارمة](https://web.dev/articles/strict-csp) بهذه الاستراتيجية لأن قوائم سماح النطاقات سهلة التجاوز على نحو مفاجئ (فأي سكربت على شبكة توصيل محتوى موثوقة يصبح ناقل هجوم)، في حين تربط الـnonces تنفيذ السكربت بتحميل صفحة بعينه.
 
-The flow:
+والتدفّق:
 
 ```
 sequenceDiagram
@@ -93,41 +93,41 @@ sequenceDiagram
     Browser->>Browser: No nonce → BLOCKED
 ```
 
-Every legitimate inline script includes the server-generated nonce. Any injected script without the matching nonce is blocked. The nonce changes on every response, so an attacker who discovers one nonce cannot reuse it.
+كل سكربت مضمّن مشروع يتضمن الـnonce الذي يولّده الخادم. وأي سكربت محقون بلا الـnonce المطابق يُحجب. ويتغيّر الـnonce في كل استجابة، فلا يستطيع مهاجم يكتشف nonce واحد أن يعيد استخدامه.
 
-The **`strict-dynamic`** keyword extends this: if a trusted script (one with a valid nonce) dynamically creates additional scripts, those are also trusted. [Google’s CSP documentation](https://web.dev/articles/strict-csp) describes `strict-dynamic` as the mechanism that makes nonce-based CSP practical for applications that load code dynamically—including Module Federation remotes.
+وتمدد كلمة **`strict-dynamic`** هذا السلوك: فإن أنشأ سكربت موثوق (له nonce صالح) سكربتات إضافية ديناميكيًا، كانت تلك السكربتات موثوقة أيضًا. وتصف [توثيق Google لـCSP](https://web.dev/articles/strict-csp) الـ`strict-dynamic` بأنه الآلية التي تجعل سياسة أمان المحتوى القائمة على الـnonce عملية للتطبيقات التي تحمّل الشيفرة ديناميكيًا — بما فيها الوحدات البعيدة في Module Federation.
 
-> **CSP and Server Components**
+> **سياسة أمان المحتوى ومكوّنات الخادم**
 >
-> Nonce-based CSP works naturally with server-rendered frameworks (Next.js, Remix, SvelteKit) because the server generates the nonce during rendering and injects it into both the header and the script tags. For purely client-rendered SPAs, the nonce must be generated by the BFF or reverse proxy.
+> تعمل سياسة أمان المحتوى القائمة على الـnonce بشكل طبيعي مع الأطر المصيّرة على الخادم (Next.js وRemix وSvelteKit) لأن الخادم يولّد الـnonce أثناء التصيير ويحقنه في الترويسة وفي وسوم السكربت معًا. أما تطبيقات الصفحة الواحدة المصيّرة كليًا على العميل فيجب أن يولّد الـnonce فيها الـBFF أو الوسيط العكسي.
 
-### CSP in microfrontend architectures
+### سياسة أمان المحتوى في معماريات الواجهات المصغّرة
 
-CSP becomes more complex when multiple teams deploy independently. The shell application’s CSP must be permissive enough to allow all remotes, which risks weakening the policy.
+تصبح سياسة أمان المحتوى أكثر تعقيدًا عندما تنشر فرق متعددة باستقلال. فسياسة القشرة التطبيقية يجب أن تكون متسامحة بما يكفي لتسمح بكل الوحدات البعيدة، ما يخاطر بإضعاف السياسة.
 
-The `strict-dynamic` nonce approach helps here. If the shell loads a Module Federation remote with a valid nonce, that remote’s dynamically created scripts are automatically trusted. This avoids maintaining an ever-growing allowlist of remote origins in the CSP.
+وتساعد مقاربة الـnonce مع `strict-dynamic` هنا. فإذا حمّلت القشرة وحدة بعيدة من Module Federation بـnonce صالح، صارت السكربتات التي تنشئها تلك الوحدة ديناميكيًا موثوقة تلقائيًا. وهذا يجنّبك صيانة قائمة سماح متضخمة باستمرار لأصول الوحدات البعيدة في سياسة أمان المحتوى.
 
-For iframe-based microfrontends, each iframe can have its own CSP—the strongest isolation model. The tradeoff is the communication overhead that comes with iframe boundaries.
+وفي الواجهات المصغّرة القائمة على الإطارات، يمكن أن يكون لكل إطار سياسته الخاصة — وهو أقوى نموذج عزل. والمقايضة هي العبء التنظيمي للتواصل الذي يرافق حدود الإطارات.
 
-### Deploying CSP progressively
+### نشر سياسة أمان المحتوى تدريجيًا
 
-Do not deploy a strict CSP to production on a Friday afternoon and hope for the best. The deployment should follow a progression:
+لا تنشر سياسة CSP صارمة في الإنتاج عصر يوم جمعة وتأمل أن يكون كل شيء على ما يُراد. ينبغي أن يتبع النشر تدرجًا:
 
-- **Report-only mode first**. The `Content-Security-Policy-Report-Only` header collects violations without blocking anything. Deploy this, let it run for a week or two, and analyze what breaks.
-- **Analyze violations**. Use the [Reporting API](https://developer.mozilla.org/en-US/docs/Web/API/Reporting_API) or services like report-uri.com to aggregate violations. Most violations are legitimate things you forgot to allow—not attacks.
-- **Tighten iteratively**. Move from permissive to strict as you resolve each violation category. Remove `unsafe-inline` from `script-src` first (replace with nonces), then tighten `connect-src`, `img-src`, and others.
-- **Enforce**. Switch from `Report-Only` to enforcing once the violation rate is manageable.
-- **Monitor continuously**. CSP violations should feed into your [observability pipeline](https://stevekinney.com/courses/enterprise-ui/observability) as a security signal. A spike in violations after a deploy likely means a regression.
+- **وضع الإبلاغ فقط أولًا**. تجمع ترويسة `Content-Security-Policy-Report-Only` المخالفات دون حجب أي شيء. انشرها، ودعها تعمل أسبوعًا أو أسبوعين، وحلّل ما ينكسر.
+- **حلّل المخالفات**. استخدم [واجهة الإبلاغ (Reporting API)](https://developer.mozilla.org/en-US/docs/Web/API/Reporting_API) أو خدمات مثل report-uri.com لتجميع المخالفات. ومعظم المخالفات أشياء مشروعة نسيت السماح بها — لا هجمات.
+- **شدّد تدريجيًا**. انتقل من التسامح إلى الصرامة وأنت تحل كل فئة مخالفات. أزل `unsafe-inline` من `script-src` أولًا (واستبدلها بالـnonces)، ثم شدّد `connect-src` و`img-src` وغيرهما.
+- **فرض السياسة**. انتقل من `Report-Only` إلى الإنفاذ متى صار معدّل المخالفات قابلًا للإدارة.
+- **راقب باستمرار**. ينبغي أن تتغذى مخالفات سياسة أمان المحتوى في [خط أنابيب الملاحظة](https://stevekinney.com/courses/enterprise-ui/observability) لديك كإشارة أمنية. فقفزة في المخالفات بعد نشر تعني على الأرجح انحدارًا.
 
-## XSS Prevention Beyond Escaping
+## الوقاية من XSS بما يتجاوز التهريب
 
-Output escaping is the foundation of XSS prevention, and modern frameworks do it by default. React auto-escapes JSX values. Vue auto-escapes template interpolation. Svelte auto-escapes expression bindings. Angular sanitizes DOM assignments. The pattern across frameworks is consistent: safe by default, with explicitly named escape hatches (`dangerouslySetInnerHTML`, `v-html`, `{@html}`, `bypassSecurityTrustHtml`) that can be detected by static analysis and flagged in code review.
+تهريب المخرجات هو أساس الوقاية من XSS، والأطر الحديثة تفعله افتراضيًا. فـReact يهرّب قيم JSX تلقائيًا. وVue يهرّب إقحام القوالب تلقائيًا. وSvelte يهرّب ارتباطات التعبيرات تلقائيًا. وAngular يعقّم إسنادات DOM. والنمط متسق عبر الأطر: الأمان افتراضيًا، مع مخارج هروب مسماة صراحة (`dangerouslySetInnerHTML`، `v-html`، `{@html}`، `bypassSecurityTrustHtml`) يمكن للتحليل الساكن اكتشافها وللمراجعة البرمجية الإشارة إليها.
 
-But, escaping is one layer. Enterprise applications need defense in depth.
+لكن التهريب طبقة واحدة. وتحتاج تطبيقات المؤسسات إلى دفاع في العمق.
 
-### Trusted Types
+### الأنواع الموثوقة (Trusted Types)
 
-**Trusted Types** is a browser API that provides programmatic enforcement against DOM XSS. When enabled via CSP (`require-trusted-types-for 'script'`), the browser rejects string assignments to dangerous DOM sinks—`innerHTML`, `eval`, `document.write`, `script.src`, event handler attributes—unless the value is wrapped in a Trusted Type object.
+**الأنواع الموثوقة** واجهة برمجية في المتصفح توفّر إنفاذًا برمجيًا ضد XSS في DOM. وعند تفعيلها عبر سياسة أمان المحتوى (`require-trusted-types-for 'script'`)، يرفض المتصفح إسنادات النصوص إلى مصارف DOM الخطرة — `innerHTML` و`eval` و`document.write` و`script.src` وخصائص معالجات الأحداث — ما لم تُغلَّف القيمة في كائن من الأنواع الموثوقة.
 
 ```typescript
 // Define a policy that sanitizes HTML input
@@ -144,36 +144,36 @@ const sanitizePolicy = trustedTypes.createPolicy('sanitize', {
 element.innerHTML = sanitizePolicy.createHTML(userContent);
 ```
 
-*Note:* The policy is a centralized, auditable enforcement point. One place to get sanitization right.
+*ملاحظة:* السياسة نقطة إنفاذ مركزية قابلة للتدقيق. مكان واحد لإتقان التعقيم.
 
-[Trusted Types](https://w3c.github.io/trusted-types/dist/spec/) are particularly valuable in enterprise applications where multiple teams contribute code and “do not use `innerHTML`” is difficult to enforce through code review alone. The policy becomes an enforcement point that works at runtime, not just at review time.
+وتكون [الأنواع الموثوقة](https://w3c.github.io/trusted-types/dist/spec/) ذات قيمة خاصة في تطبيقات المؤسسات، حيث تسهم فرق متعددة بالشيفرة ويصعب إنفاذ «لا تستخدم `innerHTML`» عبر المراجعة البرمجية وحدها. فتصبح السياسة نقطة إنفاذ تعمل في وقت التشغيل، لا في وقت المراجعة فقط.
 
-### Lesser-known XSS vectors
+### نواقل XSS الأقل شهرة
 
-Two vectors deserve attention in enterprise contexts:
+يستحق ناقلان الانتباه في سياقات المؤسسات:
 
-- **DOM clobbering**: HTML elements with `id` or `name` attributes can shadow global JavaScript variables and DOM API methods. An attacker who controls an element’s `id` can override properties the application reads through the DOM. Avoid reading globals like `document.getElementById('config')` when the content might be user-controlled.
-- **Mutation XSS (mXSS)**: Exploits differences between how HTML sanitizers parse content and how the browser’s parser actually renders it. Input that looks clean after sanitization is mutated by the browser’s parsing algorithm into executable script. [DOMPurify](https://github.com/cure53/DOMPurify) is the most robust defense because it sanitizes in the same parser context as the browser.
+- **سحق DOM (DOM clobbering)**: يمكن لعناصر HTML بخصائص `id` أو `name` أن تحجب متغيّرات JavaScript العامة وتوابع واجهة DOM البرمجية. ومهاجم يتحكم بخصائص `id` لعنصر ما يستطيع تجاوز خصائص يقرأها التطبيق عبر DOM. تجنّب قراءة المتغيّرات العامة مثل `document.getElementById('config')` عندما يكون المحتوى قابلًا لتحكم المستخدم.
+- **XSS التحوّل (mXSS)**: يستغل فروقًا بين كيفية تحليل مُعقّمات HTML للمحتوى وكيفية تصيير محلّل المتصفح له فعلًا. فالمدخل الذي يبدو نظيفًا بعد التعقيم يُحوّله خوارزم تحليل المتصفح إلى سكربت قابل للتنفيذ. و[DOMPurify](https://github.com/cure53/DOMPurify) هو أقوى دفاع لأن تعقيمه يجري في سياق المحلل نفسه الذي يستخدمه المتصفح.
 
-## Dependency Supply Chain Security
+## أمن سلسلة توريد الاعتمادات
 
-A typical enterprise frontend application has over a thousand transitive dependencies. Each one is a potential entry point. The security of your application is bounded by the least trustworthy package in your dependency tree.
+تطبيق واجهة أمامية نمطي في المؤسسات له أكثر من ألف اعتماد عابر. وكل واحد منها مدخل محتمل. وأمن تطبيقك محدود بأقل حزمة جديرة بالثقة في شجرة اعتماداتك.
 
-### The attack taxonomy
+### تصنيف الهجمات
 
-Supply chain attacks on the npm ecosystem have moved from theoretical to routine:
+انتقلت هجمات سلسلة التوريد على نظام npm البيئي من الإطار النظري إلى الروتين:
 
-| Attack vector | How it works | Notable example |
+| ناقل الهجوم | كيف يعمل | مثال بارز |
 | --- | --- | --- |
-| **Typosquatting** | Malicious package with a name similar to a popular one | `crossenv` vs `cross-env` (2017) |
-| **Dependency confusion** | Public package shadows an intended private package in resolution | Alex Birsan’s 2021 research (Apple, Microsoft) |
-| **Maintainer compromise** | Attacker gains access to a legitimate maintainer’s npm account | `event-stream` (2018), `ua-parser-js` (2021) |
-| **Malicious update** | Previously legitimate package pushes a compromised version | `colors` and `faker` (2022) |
-| **Build script exploitation** | Malicious code in `postinstall` scripts runs during `npm install` | Various cryptocurrency miners |
+| **انتحال الأسماء (Typosquatting)** | حزمة خبيثة باسم شبيه باسم حزمة شهيرة | `crossenv` مقابل `cross-env` (2017) |
+| **الخلط بين الاعتمادات (Dependency confusion)** | حزمة عامة تحجب حزمة خاصة مقصودة عند الدقة | بحث Alex Birsan عام 2021 (Apple وMicrosoft) |
+| **اختراق مشرف** | يحصل المهاجم على حساب مشرف شرعي على npm | `event-stream` (2018)، و`ua-parser-js` (2021) |
+| **تحديث خبيث** | حزمة كانت شرعية تنشر إصدارًا مخترقًا | `colors` و`faker` (2022) |
+| **استغلال سكربت البناء** | شيفرة خبيثة في سكربتات `postinstall` تعمل أثناء `npm install` | مختلف معدّنات العملات الرقمية |
 
-### Lockfile discipline
+### انضباط ملف القفل
 
-The lockfile (`package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`) is the single most important supply chain security artifact in your project. It pins exact versions and records integrity hashes (SHA-512) for every dependency.
+ملف القفل (`package-lock.json`، `pnpm-lock.yaml`، `yarn.lock`) هو أهم أثر أمني واحد لسلسلة التوريد في مشروعك. فهو يثبّت الإصدارات الدقيقة ويسجل بصمات السلامة (SHA-512) لكل اعتماد.
 
 ```yaml
 # In CI: frozen lockfile installs are non-negotiable
@@ -183,13 +183,13 @@ install:
   yarn: yarn install --immutable
 ```
 
-*Note:* npm ci refuses to modify the lockfile. If it doesn't match package.json, the build fails.
+*ملاحظة:* يرفض `npm ci` تعديل ملف القفل. فإن لم يطابق `package.json`، فشل البناء.
 
-Every pull request that modifies the lockfile should trigger a review. Not a rubber stamp—an actual review. Tools like `lockfile-lint` can enforce policies (all packages from the official registry, no HTTP URLs, no git dependencies without integrity hashes).
+وكل طلب سحب يعدّل ملف القفل ينبغي أن يُفعّل مراجعة. لا ختمًا مطاطيًا — بل مراجعة حقيقية. وتستطيع أدوات مثل `lockfile-lint` إنفاذ سياسات (كل الحزم من السجل الرسمي، وبلا عناوين HTTP، وبلا اعتمادات git بلا بصمات سلامة).
 
-### Automated auditing in CI
+### التدقيق الآلي في CI
 
-Dependency auditing should be a blocking gate in your [CI/CD pipeline](https://stevekinney.com/courses/enterprise-ui/github-actions), not a dashboard someone checks monthly:
+ينبغي أن يكون تدقيق الاعتمادات بوابة حاجبة في [خط أنابيب CI/CD](https://stevekinney.com/courses/enterprise-ui/github-actions) لديك، لا لوحة معلومات يفتحها أحدهم شهريًا:
 
 ```yaml
 # Multi-layered dependency security gate
@@ -211,22 +211,22 @@ security-audit:
     - run: npx @cyclonedx/cyclonedx-npm --output sbom.json
 ```
 
-*Note:* SBOM generation is increasingly required by government contracts and enterprise procurement.
+*ملاحظة:* يزداد الطلب على توليد قائمة مكوّنات البرمجيات (SBOM) في العقود الحكومية ومشتريات المؤسسات.
 
-The key distinction between layers: `npm audit` and Snyk check for *known* CVEs—vulnerabilities that have been reported and catalogued. Behavioral analysis tools like Socket.dev analyze what packages actually *do*: filesystem access, network calls, environment variable reads, obfuscated code, install scripts. A package can have zero known CVEs and still be malicious. Both layers are necessary.
+والفرق الجوهري بين الطبقات: يبحث `npm audit` وSnyk عن ثغرات *معروفة* (CVEs) — أي ثغرات أُبلغ عنها وفُهرست. أما أدوات التحليل السلوكي مثل Socket.dev فتحلّل ما تفعله الحزم فعلًا: الوصول إلى نظام الملفات، ونداءات الشبكة، وقراءة متغيّرات البيئة، والشيفرة المبهمة، وسكربتات التثبيت. فقد تكون حزمة بلا أي ثغرة معروفة وتبقى خبيثة. والطبقتان ضروريتان معًا.
 
-### Dependency hygiene
+### نظافة الاعتمادات
 
-The tension between security (updating quickly to patch vulnerabilities) and stability (not breaking production with untested updates) requires a deliberate strategy:
+يتطلب التوتر بين الأمن (التحديث السريع لترقيع الثغرات) والاستقرار (عدم كسر الإنتاج بتحديثات غير مختبَرة) استراتيجية متعمّدة:
 
-- **Automated update PRs**: Renovate or Dependabot creates PRs for dependency updates. Group related updates (all `@testing-library/*` packages in one PR) to reduce review burden.
-- **Update cadence**: Security patches merged immediately. Minor and major updates batched weekly, gated behind the full test suite.
-- **Dependency minimization**: Regularly evaluate whether each dependency is still needed. `depcheck` identifies unused packages. Fewer dependencies mean a smaller attack surface and a smaller auditing problem.
-- **SBOM generation**: A Software Bill of Materials (CycloneDX or SPDX format) provides a machine-readable inventory of every dependency. This is not optional for organizations selling to government or enterprise procurement.
+- **طلبات سحب آلية للتحديثات**: ينشئ Renovate أو Dependabot طلبات سحب لتحديثات الاعتمادات. وجمّع التحديثات المترابطة (كل حزم `@testing-library/*` في طلب واحد) لتقليل عبء المراجعة.
+- **وتيرة التحديث**: تُدمج الترقيعات الأمنية فورًا. أما التحديثات الثانوية والرئيسية فتُجمّع أسبوعيًا، مرهونة بالمجموعة الكاملة من الاختبارات.
+- **تقليل الاعتمادات**: قيّم بانتظام هل ما زال كل اعتماد لازمًا. ويكشف `depcheck` الحزم غير المستخدمة. وقلة الاعتمادات تعني سطح هجوم أصغر ومشكلة تدقيق أصغر.
+- **توليد قائمة مكوّنات البرمجيات**: توفر قائمة مكوّنات البرمجيات (بصيغة CycloneDX أو SPDX) جردًا مقروءًا آليًا لكل اعتماد. وهذا ليس اختياريًا للمؤسسات التي تبيع للحكومات أو للمشتريات المؤسسية.
 
-## Subresource Integrity
+## سلامة الموارد الفرعية
 
-When loading scripts or stylesheets from CDNs or third-party origins, **Subresource Integrity** (SRI) ensures the browser only executes resources whose content matches an expected cryptographic hash.
+عند تحميل سكربتات أو أوراق أنماط من شبكات توصيل محتوى أو أصول طرف ثالث، تضمن **سلامة الموارد الفرعية** (SRI) ألا ينفّذ المتصفح إلا الموارد التي تطابق بَصمة تشفيرية متوقعة.
 
 ```html
 <script
@@ -236,96 +236,96 @@ When loading scripts or stylesheets from CDNs or third-party origins, **Subresou
 ></script>
 ```
 
-The browser fetches the script, computes its hash, and compares it to the `integrity` attribute. If they do not match—because the CDN was compromised, or a man-in-the-middle modified the response—the browser refuses to execute the script. [MDN’s SRI documentation](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) describes the supported algorithms (`sha256`, `sha384`, `sha512`) and the verification process.
+يجلب المتصفح السكربت، ويحسب بصمته، ويقارنها بخاصية `integrity`. فإن لم تتطابقا — لأن شبكة التوصيل اختُرقت، أو لأن رجلًا في المنتصف عدّل الاستجابة — يرفض المتصفح تنفيذ السكربت. و[توثيق MDN لسلامة الموارد الفرعية](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity) يصف الخوارزميات المدعومة (`sha256`، `sha384`، `sha512`) وعملية التحقق.
 
-### SRI and dynamic architectures
+### سلامة الموارد الفرعية والمعماريات الديناميكية
 
-SRI presents challenges in Module Federation and code-split architectures where bundle contents change with every deployment:
+تطرح سلامة الموارد الفرعية تحديات في Module Federation والمعماريات المقسمة إلى حزم، حيث يتغير محتوى الحزمة مع كل عملية نشر:
 
-- **Module Federation remotes**: Remote container scripts change on each deploy, so a static SRI hash in the host’s HTML becomes stale immediately. The practical pattern is a manifest file that maps remote entry URLs to their current hashes, updated as part of the remote’s deployment pipeline. The host fetches the manifest and verifies integrity before loading the remote.
-- **Dynamic `import()`**: Code-split chunks loaded via dynamic imports do not natively support SRI attributes. Build tools can generate import maps with integrity metadata, though browser support for import-map integrity is still evolving.
-- **Service worker verification**: A service worker can intercept fetch requests for JavaScript chunks, verify their integrity against a signed manifest, and reject any that do not match—providing SRI-like protection for dynamic imports.
+- **الوحدات البعيدة في Module Federation**: تتغير سكربتات حاويات الوحدات البعيدة في كل نشر، فتصبح بصمة SRI الساكنة في HTML المضيف قديمة فورًا. والنمط العملي هو ملف بيان يربط عناوين دخول الوحدات البعيدة ببصماتها الحالية، ويُحدَّث في إطار خط أنابيب نشر الوحدة البعيدة. فيجلب المضيف البيان ويتحقق من السلامة قبل تحميل الوحدة البعيدة.
+- **الاستيراد الديناميكي `import()`**: لا تدعم الشُّذر المقسمة المحمّلة عبر الاستيرادات الديناميكية خصائص SRI أصليًا. وتستطيع أدوات البناء توليد خرائط استيراد (import maps) ببيانات سلامة وصفية، وإن كان دعم المتصفحات لسلامة خرائط الاستيراد ما زال في تطوّر.
+- **التحقق عبر عامل الخدمة**: يستطيع عامل الخدمة اعتراض طلبات الجلب لشُذر JavaScript، والتحقق من سلامتها مقابل بيان موقّع، ورفض كل ما لا يطابق — ما يوفّر حماية شبيهة بـSRI للاستيرادات الديناميكية.
 
-## Third-Party Script Sandboxing
+## عزل سكربتات الطرف الثالث في صناديق رملية
 
-Enterprise applications routinely load analytics, tag managers, A/B testing tools, customer support widgets, and advertising scripts. Each of these runs with full access to the page unless you take steps to isolate them.
+تحمّل تطبيقات المؤسسات بشكل روتيني أدوات التحليلات، ومديري الوسوم، وأدوات اختبار A/B، وويدجت دعم العملاء، وسكربتات الإعلانات. وكل واحد منها يعمل بوصول كامل إلى الصفحة ما لم تتخذ خطوات لعزله.
 
-### Sandboxing strategies
+### استراتيجيات العزل
 
-**iframe sandboxing** loads third-party scripts in a sandboxed iframe with restricted permissions:
+**العزل بالإطار** يحمّل سكربتات الطرف الثالث في إطار مقيّد الصلاحيات:
 
 ```html
 <iframe src="https://analytics.example.com/widget" sandbox="allow-scripts" loading="lazy"></iframe>
 ```
 
-The `sandbox` attribute strips all permissions by default. Only explicitly allowed capabilities (`allow-scripts`, `allow-same-origin`, `allow-forms`) are granted. Communication with the host page happens through `postMessage`.
+تجريد خاصية `sandbox` كل الصلاحيات افتراضيًا. ولا تُمنح إلا القدرات المسموح بها صراحة (`allow-scripts`، `allow-same-origin`، `allow-forms`). ويجري التواصل مع الصفحة المضيفة عبر `postMessage`.
 
-**Web Worker isolation** runs third-party code in a Worker thread where it has no DOM access. Libraries like [Partytown](https://partytown.builder.io/) take this approach, proxying DOM operations from the worker:
+**العزل في عامل ويب** يشغّل شيفرة الطرف الثالث في خيط عامل لا وصول له إلى DOM. ومكتبات مثل [Partytown](https://partytown.builder.io/) تتبع هذه المقاربة، فتوكل عمليات DOM من العامل:
 
 ```html
 <!-- Partytown moves third-party scripts off the main thread -->
 <script type="text/partytown" src="https://analytics.example.com/tag.js"></script>
 ```
 
-This improves main-thread performance (a concern covered in [Performance Budgets](https://stevekinney.com/courses/enterprise-ui/performance-budgets)) while also providing a security boundary—the script cannot directly access the DOM, form inputs, or user data.
+وهذا يحسّن أداء الخيط الرئيسي (وهو شاغل تتناوله [ميزانيات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets)) مع توفير حدّ أمني أيضًا — فالسكربت لا يستطيع الوصول مباشرة إلى DOM أو حقول النموذج أو بيانات المستخدم.
 
-**CSP restriction** limits what third-party scripts can do even if they run in the main thread. A tight `connect-src` prevents a compromised analytics script from exfiltrating data to unexpected endpoints. A restricted `script-src` prevents it from loading additional scripts.
+**تقييد سياسة أمان المحتوى** يحدّ مما تستطيع سكربتات الطرف الثالث فعله حتى لو عملت في الخيط الرئيسي. فسياسة `connect-src` ضيقة تمنع سكربت تحليلات مخترقًا من تسريب البيانات إلى نقاط نهاية غير متوقعة. وسياسة `script-src` مقيّدة تمنعه من تحميل سكربتات إضافية.
 
-### Tag manager governance
+### حوكمة مدير الوسوم
 
-Google Tag Manager and similar tag management systems are often the weakest link in enterprise frontend security because they let marketing teams inject arbitrary JavaScript without engineering review. The script that tracks button clicks today could be swapped for a keylogger tomorrow if the GTM account is compromised—or if someone adds a tag without understanding what it does.
+غالبًا ما يكون Google Tag Manager وأنظمة إدارة الوسوم المشابهة أضعف حلقة في أمن واجهات المؤسسات، لأنها تتيح لفرق التسويق حقن JavaScript اعتباطي دون مراجعة هندسية. فالسكربت الذي يتتبّع نقرات الأزرار اليوم قد يُستبدل غدًا بمسجّل ضغطات مفاتيح إن اختُرق حساب GTM — أو إن أضاف أحدهم وسمًا دون فهم ما يفعله.
 
-Governance patterns:
+وأنماط الحوكمة:
 
-- **CSP restrictions on GTM containers**: Limit what scripts GTM can load via CSP. This requires coordination with marketing teams.
-- **Approval workflows**: Implement approval gates in the tag management platform before tags reach production.
-- **Change monitoring**: Alert when tags are added or modified. Tag managers should feed into the same change management process as code deployments.
-- **Server-side tagging**: Move tag execution from the browser to a server-side container. Google Tag Manager supports a server-side tagging mode that eliminates the client-side attack surface entirely. The tags never run in the user’s browser.
+- **قيود سياسة أمان المحتوى على حاويات GTM**: حدّد ما تستطيع GTM تحميله من سكربتات عبر CSP. وهذا يتطلب تنسيقًا مع فرق التسويق.
+- **مسارات الموافقة**: نفّذ بوابات موافقة في منصة إدارة الوسوم قبل وصول الوسوم إلى الإنتاج.
+- **مراقبة التغييرات**: نبّه عند إضافة الوسوم أو تعديلها. وينبغي أن تتغذى مديريات الوسوم في عملية إدارة التغيير نفسها التي تتبعها عمليات نشر الشيفرة.
+- **الوسم من جهة الخادم**: انقل تنفيذ الوسوم من المتصفح إلى حاوية من جهة الخادم. ويدعم Google Tag Manager وضع وسم من جهة الخادم يُلغي سطح الهجوم من جهة العميل كليًا. فلا تعمل الوسوم في متصفح المستخدم أبدًا.
 
-## Security Headers
+## ترويسات الأمان
 
-Beyond CSP, several HTTP response headers form a defense layer that is cheap to implement and expensive to omit:
+فيما يتجاوز سياسة أمان المحتوى، تُشكّل عدة ترويسات استجابة HTTP طبقة دفاع رخيصة التنفيذ ومكلفة الإغفال:
 
-| Header | Purpose | Recommended value |
+| الترويسة | الغرض | القيمة الموصى بها |
 | --- | --- | --- |
-| `Strict-Transport-Security` | Force HTTPS | `max-age=63072000; includeSubDomains; preload` |
-| `X-Content-Type-Options` | Prevent MIME sniffing | `nosniff` |
-| `X-Frame-Options` | Prevent clickjacking (legacy) | `DENY` or `SAMEORIGIN` |
-| `Referrer-Policy` | Control referrer leakage | `strict-origin-when-cross-origin` |
-| `Permissions-Policy` | Restrict browser APIs | `camera=(), microphone=(), geolocation=()` |
-| `Cross-Origin-Opener-Policy` | Process isolation | `same-origin` |
-| `Cross-Origin-Embedder-Policy` | Require CORP for subresources | `require-corp` |
-| `Cross-Origin-Resource-Policy` | Restrict who loads your assets | `same-origin` |
+| `Strict-Transport-Security` | فرض HTTPS | `max-age=63072000; includeSubDomains; preload` |
+| `X-Content-Type-Options` | منع استنشاق نوع MIME | `nosniff` |
+| `X-Frame-Options` | منع اختطاف النقرات (قديم) | `DENY` أو `SAMEORIGIN` |
+| `Referrer-Policy` | التحكم في تسريب المُحيل | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | تقييد واجهات المتصفح البرمجية | `camera=(), microphone=(), geolocation=()` |
+| `Cross-Origin-Opener-Policy` | عزل العمليات | `same-origin` |
+| `Cross-Origin-Embedder-Policy` | اشتراط CORP للموارد الفرعية | `require-corp` |
+| `Cross-Origin-Resource-Policy` | تقييد من يحمّل أصولك | `same-origin` |
 
-`Strict-Transport-Security` tells the browser to always use HTTPS for this domain, even if the user types `http://`. `X-Content-Type-Options: nosniff` prevents the browser from guessing the MIME type of a response, which stops it from executing a JSON response as JavaScript. `Permissions-Policy` restricts access to browser APIs your application does not use—camera, microphone, geolocation—so a compromised script cannot silently enable them.
+تخبر `Strict-Transport-Security` المتصفح بأن يستخدم HTTPS دائمًا لهذا النطاق، حتى لو كتب المستخدم `http://`. و`X-Content-Type-Options: nosniff` يمنع المتصفح من تخمين نوع MIME للاستجابة، فيوقفه عن تنفيذ استجابة JSON كأنها JavaScript. وتقيّد `Permissions-Policy` الوصول إلى واجهات المتصفح البرمجية التي لا يستخدمها تطبيقك — الكاميرا والميكروفون وتحديد الموقع — فلا يستطيع سكربت مخترق تفعيلها بصمت.
 
-### Cross-Origin Isolation
+### العزل عبر الأصول
 
-**Cross-Origin Opener Policy** (COOP) and **Cross-Origin Embedder Policy** (COEP) together enable cross-origin isolation. This places the document in its own browsing context group, which prevents Spectre-class side-channel attacks and enables `SharedArrayBuffer` and high-resolution timers.
+تُمكّن **سياسة فتح الأصول المتقاطعة** (COOP) و**سياسة تضمين الأصول المتقاطعة** (COEP) معًا العزل عبر الأصول. وهذا يضع المستند في مجموعة سياق تصفح خاصة به، فيمنع هجمات القنوات الجانبية من فئة Spectre، ويتيح `SharedArrayBuffer` والمؤقتات عالية الدقة.
 
 ```
 Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Embedder-Policy: require-corp
 ```
 
-Cross-origin isolation is increasingly relevant for enterprise applications that use Web Workers with `SharedArrayBuffer` for performance-sensitive computations. The tradeoff is that `require-corp` means every cross-origin resource your page loads must explicitly opt in with a `Cross-Origin-Resource-Policy` header, which can be painful to roll out when you depend on third-party CDNs that have not added the header yet.
+ويزداد ارتباط العزل عبر الأصول بتطبيقات المؤسسات التي تستخدم عمال ويب مع `SharedArrayBuffer` لحسابات حساسة للأداء. والمقايضة أن `require-corp` تعني أن كل مورد عبر الأصول تحمّله صفحتك يجب أن يوافق صراحة عبر ترويسة `Cross-Origin-Resource-Policy`، وقد يكون ذلك مؤلمًا في التطبيق عندما تعتمد على شبكات توصيل محتوى لطرف ثالث لم تضف الترويسة بعد.
 
-## Client-Side Data Protection
+## حماية البيانات من جهة العميل
 
-### What should not be in the bundle
+### ما ينبغي ألا يكون في الحزمة
 
-The client-side bundle is public. Anyone with browser DevTools can read it. Minification and obfuscation are speed bumps, not barriers. This means certain things should never be there:
+حزمة جهة العميل علنية. فكل من لديه أدوات مطوّري المتصفح يستطيع قراءتها. والتصغير والتعتيم مصدّات سرعة، لا حواجز. وهذا يعني أن أشياء معينة ينبغي ألا تكون فيها أبدًا:
 
-- **API secrets**: If a Google Maps API key is in the bundle, it can be extracted and abused. Use server-proxied requests or restrict keys by referrer and IP.
-- **Feature flag configurations**: The full set of feature flags reveals unreleased features, internal experiments, and business strategy. Evaluate flags server-side or through a proxy.
-- **Complete GraphQL schemas**: An introspection-enabled GraphQL endpoint exposes the entire data model, including fields the current user should not know about. Disable introspection in production.
-- **Source maps**: Covered in the [observability section](https://stevekinney.com/courses/enterprise-ui/observability)—never serve them to unauthenticated users.
+- **أسرار الواجهات البرمجية**: إن كان مفتاح Google Maps API في الحزمة، فيمكن استخراجه وإساءة استخدامه. استخدم طلبات بوساطة الخادم، أو قيّد المفاتيح بالمُحيل وعنوان IP.
+- **إعدادات رايات الميزات**: تكشف المجموعة الكاملة لرايات الميزات ميزات لم تُصدر بعد، وتجارب داخلية، واستراتيجية تجارية. قيّم الرايات من جهة الخادم أو عبر وسيط.
+- **مخططات GraphQL الكاملة**: تكشف نقطة نهاية GraphQL المفعّل فيها الاستبطان نموذج البيانات كاملًا، بما فيه حقول لا ينبغي للمستخدم الحالي معرفتها. عطّل الاستبطان في الإنتاج.
+- **خرائط الشيفرة المصدرية**: تُعالَج في [قسم الملاحظة](https://stevekinney.com/courses/enterprise-ui/observability) — لا تقدّمها أبدًا لمستخدمين غير موثَّقين.
 
-The correct mental model is straightforward: treat the client as untrusted. Validate everything server-side. Never put sensitive logic in the frontend. Authorization checks must be enforced by the backend, regardless of what the frontend displays. Code obfuscation provides delay, not security.
+والنموذج الذهني الصحيح واضح: عامل العميل كغير موثوق. تحقق من كل شيء من جهة الخادم. ولا تضع منطقًا حساسًا في الواجهة الأمامية أبدًا. ويجب أن يُنفّذ الخادم الخلفي فحوص التخويل، مهما عرضت الواجهة الأمامية. وتعتيم الشيفرة يوفّر تأخيرًا، لا أمانًا.
 
-## Pipeline Security
+## أمن خط الأنابيب
 
-Frontend security extends beyond the running application into the [CI/CD pipeline](https://stevekinney.com/courses/enterprise-ui/github-actions). A compromised build pipeline can inject malicious code into every artifact it produces, which makes it a higher-leverage target than any individual vulnerability.
+يمتد أمن الواجهة الأمامية إلى ما بعد التطبيق العامل إلى [خط أنابيب CI/CD](https://stevekinney.com/courses/enterprise-ui/github-actions). فخط أنابيب بناء مخترق يستطيع حقن شيفرة خبيثة في كل مخرج ينتجه، ما يجعله هدفًا أعلى مردودًا من أي ثغرة فردية.
 
 ```
 graph LR
@@ -337,22 +337,22 @@ graph LR
     end
 ```
 
-The key practices:
+والممارسات الجوهرية:
 
-- **Frozen lockfile installs** in CI. `npm ci`, not `npm install`. The lockfile is the contract; CI enforces it.
-- **Ephemeral build environments**. Run builds in isolated containers that are destroyed after each build. Never reuse build environments across projects.
-- **Secret management**. Environment variables containing API keys or signing credentials come from a secrets manager (Vault, AWS Secrets Manager), not from the repository. Secrets in `.env` files committed to git are not a configuration strategy; they are a future incident.
-- **Build output verification**. Generate a signed manifest of all output files with their hashes. Verify this manifest during deployment.
-- **Immutable deployments**. Use content-hashed filenames so every deployment is a new set of files. Old versions remain available for rollback without cache invalidation gymnastics.
-- **Post-deployment scanning**. Run automated security scans (OWASP ZAP, Nuclei) against the deployed application as a post-deploy check.
+- **تثبيت بملف قفل مجمّد** في CI. استخدم `npm ci` لا `npm install`. فملف القفل هو العقد، وCI ينفّذه.
+- **بيئات بناء عابرة**. شغّل عمليات البناء في حاويات معزولة تُدمَّر بعد كل بناء. ولا تعد استخدام بيئات البناء عبر المشاريع.
+- **إدارة الأسرار**. متغيّرات البيئة التي تحتوي مفاتيح الواجهات البرمجية أو بيانات اعتماد التوقيع تأتي من مدير أسرار (Vault، أو AWS Secrets Manager)، لا من المستودع. والأسرار في ملفات `.env` المُودَعة في git ليست استراتيجية إعداد؛ بل حادثة مستقبلية.
+- **التحقق من مخرجات البناء**. ولّد بيانًا موقّعًا لكل ملفات المخرجات ببصماتها. وتحقق من هذا البيان أثناء النشر.
+- **عمليات نشر غير قابلة للتغيير**. استخدم أسماء ملفات مُبصَّمة بالمحتوى ليكون كل نشر مجموعة ملفات جديدة. وتبقى الإصدارات القديمة متاحة للتراجع دون بهلوانيات إبطال الذاكرة المؤقتة.
+- **الفحص بعد النشر**. شغّل فحوصًا أمنية آلية (OWASP ZAP وNuclei) على التطبيق المنشور كفحص بعد النشر.
 
-## Security at Organizational Scale
+## الأمن على نطاق تنظيمي
 
-In a large organization with dozens of frontend teams, security cannot be enforced by a single team reviewing every pull request. It has to be embedded in the architecture, the tooling, and the defaults.
+في مؤسسة كبيرة فيها عشرات فرق الواجهة الأمامية، لا يمكن إنفاذ الأمن بواسطة فريق واحد يراجع كل طلب سحب. بل يجب تضمينه في المعمارية والأدوات والافتراضات.
 
-### The security pyramid
+### هرم الأمن
 
-The layers, from most automated to most human:
+الطبقات، من الأكثر آلية إلى الأكثر بشرية:
 
 ```
 graph TD
@@ -374,56 +374,56 @@ graph TD
     style E fill:#95d5b2,color:#000
 ```
 
-The bottom of the pyramid handles the most volume. Framework defaults that prevent XSS protect every line of code automatically. Linting rules that flag `dangerouslySetInnerHTML`, `eval`, and `document.write` catch mistakes at the editor level. Automated scanning in CI blocks compromised dependencies before they reach production. The human layers—security champions on each team and periodic penetration testing—handle the nuanced judgment calls that automation cannot.
+تتعامل قاعدة الهرم مع أكبر حجم. فالافتراضات في الأطر التي تمنع XSS تحمي كل سطر شيفرة تلقائيًا. وقواعد الفحص التي تلتقط `dangerouslySetInnerHTML` و`eval` و`document.write` تمسك الأخطاء على مستوى المحرّر. والفحص الآلي في CI يحجب الاعتمادات المخترقة قبل أن تصل إلى الإنتاج. أما الطبقات البشرية — أبطال الأمن في كل فريق، واختبار الاختراق الدوري — فتتعامل مع الأحكام الدقيقة التي لا تستطيع الأتمتة بلوغها.
 
-### The design system as a security lever
+### نظام التصميم كرافعة أمنية
 
-The [design system](https://stevekinney.com/courses/enterprise-ui/design-system-governance) is a powerful but underused security tool because it controls the components every team reaches for:
+[نظام التصميم](https://stevekinney.com/courses/enterprise-ui/design-system-governance) أداة أمنية قوية لكنها قليلة الاستخدام، لأنه يتحكم بالمكوّنات التي تمتد إليها يد كل فريق:
 
-- **Input components**: Build XSS-safe input handling into the design system’s form components. If the `<TextInput>` component auto-sanitizes, teams do not need to remember to do it.
-- **Link components**: The design system’s `<Link>` component can reject `javascript:` URLs and validate `href` values.
-- **Rich text editors**: If the design system provides a rich text editor, it should use DOMPurify by default with no option to disable sanitization.
+- **مكوّنات الإدخال**: ابنِ معالجة إدخال آمنة من XSS في مكوّنات النماذج في نظام التصميم. فإن عقّم مكوّن `<TextInput>` المدخلات تلقائيًا، لم يعد على الفرق أن تتذكر فعل ذلك.
+- **مكوّنات الروابط**: يستطيع مكوّن `<Link>` في نظام التصميم رفض عناوين `javascript:` والتحقق من قيم `href`.
+- **محرّرات النصوص المنسّقة**: إن وفّر نظام التصميم محرّر نصوص منسّقة، فينبغي أن يستخدم DOMPurify افتراضيًا بلا خيار لتعطيل التعقيم.
 
-When the safe path is also the easy path, teams follow it without thinking. That is the goal.
+وعندما يكون المسار الآمن هو المسار السهل نفسه، يتبعه الفرق دون تفكير. وهذا هو الهدف.
 
-## Compliance and Audit Readiness
+## الامتثال والجاهزية للتدقيق
 
-Enterprise applications are subject to compliance frameworks—SOC 2, PCI DSS, HIPAA, GDPR, ISO 27001—that increasingly scrutinize frontend security practices. The frontend’s contribution to audit evidence is more concrete than most teams realize:
+تخضع تطبيقات المؤسسات لأطر امتثال — SOC 2 وPCI DSS وHIPAA وGDPR وISO 27001 — تفحص ممارسات أمن الواجهة الأمامية بشكل متزايد. وإسهام الواجهة الأمامية في أدلة التدقيق أكثر واقعية مما تدركه معظم الفرق:
 
-| Framework | Frontend-relevant requirements |
+| الإطار | المتطلبات ذات الصلة بالواجهة الأمامية |
 | --- | --- |
-| **SOC 2** | Access controls, encryption in transit, logging, change management |
-| **PCI DSS** | Input validation, XSS prevention, SRI, secure token handling |
-| **HIPAA** | PHI never stored client-side, encryption in transit, audit logging |
-| **GDPR** | Cookie consent, data minimization in analytics, right to erasure in storage |
-| **ISO 27001** | Asset inventory (SBOM), vulnerability management, incident response |
+| **SOC 2** | ضوابط الوصول، والتشفير أثناء النقل، والتسجيل، وإدارة التغيير |
+| **PCI DSS** | التحقق من المدخلات، والوقاية من XSS، وسلامة الموارد الفرعية، ومعالجة الرموز بشكل آمن |
+| **HIPAA** | عدم تخزين معلومات الصحة المحمية من جهة العميل أبدًا، والتشفير أثناء النقل، وتسجيل التدقيق |
+| **GDPR** | موافقة الكوكيز، وتقليل البيانات في التحليلات، والحق في المحو من التخزين |
+| **ISO 27001** | جرد الأصول (SBOM)، وإدارة الثغرات، والاستجابة للحوادث |
 
-The practices described in this section—SBOM generation, CSP violation reporting, security header configuration, dependency audit logs, feature flag audit trails—are not just good engineering. They are audit evidence. Generating them automatically in CI means they are always current, which turns a compliance burden into a CI artifact.
-
----
-
-## TL;DR
-
-### The Browser’s Trust Model
-
-> Your code runs in an environment you don’t control.
-
-- The browser executes *anything* in a `<script>` tag — yours, an attacker’s, an ad network’s.
-- Microfrontends make this worse: multiple teams ship code to the same origin.
-- Module Federation loads remote JavaScript at runtime — a new attack surface.
-
-**Key threats for enterprise frontends:**
-
-- Cross-Site Scripting (XSS) via dynamic content injection
-- Supply chain attacks through compromised dependencies
-- Data exfiltration from shared browser context
-- Script injection via federated remotes
+والممارسات الموصوفة في هذا القسم — توليد SBOM، والإبلاغ عن مخالفات سياسة أمان المحتوى، وتهيئة ترويسات الأمان، وسجلات تدقيق الاعتمادات، ومسارات تدقيق رايات الميزات — ليست هندسة جيدة فقط، بل أدلة تدقيق. وتوليدها آليًا في CI يعني أنها محدَّثة دائمًا، فيتحول عبء الامتثال إلى مخرج من مخرجات CI.
 
 ---
 
-### Content Security Policy
+## الخلاصة السريعة
 
-> CSP tells the browser which scripts are allowed to execute.
+### نموذج الثقة في المتصفح
+
+> تعمل شيفرتك في بيئة لا تتحكم بها.
+
+- ينفّذ المتصفح *أي شيء* في وسم `<script>` — شيفرتك، أو شيفرة مهاجم، أو شبكة إعلانات.
+- والواجهات المصغّرة تزيد الأمر سوءًا: فرق متعددة تنشر شيفرة إلى الأصل نفسه.
+- ويحمّل Module Federation شيفرة JavaScript بعيدة في وقت التشغيل — سطح هجوم جديد.
+
+**التهديدات الأساسية لواجهات المؤسسات:**
+
+- البرمجة عبر المواقع (XSS) عبر حقن المحتوى الديناميكي
+- هجمات سلسلة التوريد عبر اعتمادات مخترقة
+- تسريب البيانات من سياق متصفح مشترك
+- حقن السكربتات عبر الوحدات البعيدة الموحّدة
+
+---
+
+### سياسة أمان المحتوى
+
+> تخبر CSP المتصفح بالسكربتات المسموح لها بالتنفيذ.
 
 ```http
 Content-Security-Policy:
@@ -433,24 +433,24 @@ Content-Security-Policy:
   connect-src 'self' https://api.example.com;
 ```
 
-- `'self'` — only scripts from your origin.
-- `nonce-abc123` — only inline scripts with this nonce (generated per-request).
-- **Module Federation challenge:** Remote entry scripts come from other origins. Add each remote’s origin to `script-src`. Or use a shared CDN origin for all remotes.
-  - Add each remote’s origin to `script-src`.
-  - Or use a shared CDN origin for all remotes.
+- `'self'` — السكربتات من أصلك فقط.
+- `nonce-abc123` — السكربتات المضمّنة التي تحمل هذا الـnonce فقط (يُولَّد لكل طلب).
+- **تحدي Module Federation:** سكربتات دخول الوحدات البعيدة تأتي من أصول أخرى. أضف أصل كل وحدة بعيدة إلى `script-src`. أو استخدم أصل شبكة توصيل محتوى مشتركًا لكل الوحدات البعيدة.
+  - أضف أصل كل وحدة بعيدة إلى `script-src`.
+  - أو استخدم أصل شبكة توصيل محتوى مشتركًا لكل الوحدات البعيدة.
 
 ---
 
-### Supply Chain Security
+### أمن سلسلة التوريد
 
-> You ship your dependencies’ bugs too.
+> أنت تنشر أخطاء اعتماداتك أيضًا.
 
-| Attack vector | Defense |
+| ناقل الهجوم | الدفاع |
 | --- | --- |
-| Compromised npm package | Lock files, audit in CI (`npm audit`), Snyk/Socket |
-| Typosquatting | Scoped packages (`@yourorg/`), registry allowlists |
-| Malicious postinstall scripts | `ignore-scripts` in `.npmrc`, review exceptions |
-| CDN compromise | **Subresource Integrity (SRI)** hashes |
+| حزمة npm مخترقة | ملفات القفل، والتدقيق في CI (`npm audit`)، وSnyk/Socket |
+| انتحال الأسماء | الحزم ذات النطاق (`@yourorg/`)، وقوائم السماح في السجل |
+| سكربتات postinstall خبيثة | `ignore-scripts` في `.npmrc`، ومراجعة الاستثناءات |
+| اختراق شبكة توصيل المحتوى | بَصمات **سلامة الموارد الفرعية (SRI)** |
 
 ```html
 <script
@@ -460,22 +460,22 @@ Content-Security-Policy:
 ></script>
 ```
 
-- SRI: if the file changes, the browser refuses to execute it.
-- Generate hashes at build time, verify at runtime.
+- سلامة الموارد الفرعية: إن تغيّر الملف، يرفض المتصفح تنفيذه.
+- ولّد البَصمات في وقت البناء، وتحقّق منها في وقت التشغيل.
 
 ---
 
-### Sandboxing Third-Party Code
+### عزل شيفرة الطرف الثالث
 
-> Isolation strategies when you can’t fully trust the code.
+> استراتيجيات العزل عندما لا تستطيع الثقة الكاملة بالشيفرة.
 
-- **`<iframe sandbox>`** — strongest isolation, highest friction. Good for true third-party widgets.
-- **Shadow DOM** — style isolation, not security isolation. A common misconception.
-- **Web Workers** — runs code off the main thread, limited DOM access. Good for computation.
-- **CSP per-remote** — different policies for different origins. Granular but complex.
+- **`<iframe sandbox>`** — أقوى عزل، وأعلى احتكاك. جيد لويدجت الطرف الثالث الحقيقية.
+- **Shadow DOM** — عزل للأنماط، لا عزل أمني. وهذا فهم خاطئ شائع.
+- **عمال ويب** — تشغّل الشيفرة خارج الخيط الرئيسي بوصول محدود إلى DOM. جيدة للحسابات.
+- **سياسة CSP لكل وحدة بعيدة** — سياسات مختلفة لأصول مختلفة. دقيقة لكن معقّدة.
 
-**The principle:** Assume any remote *could* be compromised. Limit what it can access.
+**والمبدأ:** افترض أن أي وحدة بعيدة *قد* تكون مخترقة. وحدّ مما تستطيع الوصول إليه.
 
-- Don’t put auth tokens in `localStorage` where any script on the origin can read them.
-- Use `httpOnly` cookies — JavaScript can’t access them at all.
-- BFF pattern keeps tokens server-side.
+- لا تضع رموز المصادقة في `localStorage` حيث يستطيع أي سكربت على الأصل قراءتها.
+- استخدم كوكيز `httpOnly` — فلا يستطيع JavaScript الوصول إليها إطلاقًا.
+- نمط BFF يُبقي الرموز من جهة الخادم.

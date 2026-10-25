@@ -1,39 +1,39 @@
 ---
-title: "Code Coverage"
-lang: en
+title: "تغطية الشيفرة (Code Coverage)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/code-coverage"
 ---
 
-Code coverage is useful for identifying how much your code is (or *isn’t*) covered by tests. This can be useful for identifying blind spots and potential edge cases that are not covered by your test suite.
+تغطية الشيفرة مفيدة لتحديد مقدار ما تغطيه اختباراتك من شيفرتك (أو *لا* تغطيه). قد يكون ذلك مفيدًا لتحديد النقاط العمياء والحالات الطرفية المحتملة غير المغطاة بمجموعة اختباراتك.
 
-**A word of caution**: [Aiming for 100% coverage](https://stevekinney.com/courses/testing/you-dont-need-perfect-code-coverage)—or, worse *mandating* it—isn’t the best use of your time and attention:
+**كلمة تحذير**: [السعي إلى تغطية 100%](https://stevekinney.com/courses/testing/you-dont-need-perfect-code-coverage) — أو الأسوأ *فرضها* — ليس أفضل استخدام لوقتك وانتباهك:
 
-1. Consider the 80/20 principle, that last little bit of coverage is usually a lot more work than the majority of it. And frankly, you can hit the point of diminishing returns pretty quickly. Maybe you’re better off with an integration test?
-2. Speaking of integration tests: It’s rare that any code coverage tool takes a holistic few of your application and its code. Usually, it’s able to tell you about the coverage that one kind of test—typically your unit tests—provide. This means, that your code *could* very well be covered by some other kind of test—or even your type system.
+1. فكّر في مبدأ 80/20، فذلك الجزء الأخير الصغير من التغطية عادةً عمل أكثر بكثير من معظمها. وبصراحة، يمكنك الوصول إلى نقطة العوائد المتناقصة بسرعة. ربما تكون أفضل حالًا باختبار تكامل؟
+2. وبالحديث عن اختبارات التكامل: من النادر أن تأخذ أي أداة تغطية شيفرة نظرة شاملة إلى تطبيقك وشيفرته. عادةً، تستطيع إخبارك بالتغطية التي يوفرها نوع واحد من الاختبارات — عادةً اختبارات وحداتك. وهذا يعني أن شيفرتك *قد* تكون مغطاة جيدًا بنوع آخر من الاختبارات — أو حتى بنظام أنواعك.
 
-I hesitate to mandating a given number. If you do, keep it low. Sure, I’d say like less that 60% means you should probably pay some attention to your tests. Alternatively, you could choose to just monitor that a given change doesn’t drastically reduce the amount of code coverage.
+أتردد في فرض رقم محدد. إن فعلت، فأبقِه منخفضًا. بالتأكيد، سأقول إن أقل من 60% يعني أنه يحسن بك أن تولي بعض الانتباه لاختباراتك. بدلًا من ذلك، يمكنك اختيار مراقبة أن تغييرًا معينًا لا يقلل بشكل جذري من مقدار تغطية الشيفرة.
 
-For me, the biggest advantage is to help as I’m working on a new function or feature. Code coverage allows me to see where I still need to add some tests and allows me get a high-level few as I’m working on something new.
+بالنسبة لي، أكبر ميزة هي المساعدة أثناء عملي على دالة أو ميزة جديدة. تتيح لي تغطية الشيفرة رؤية أين ما زلت بحاجة إلى إضافة اختبارات، وتمنحني نظرة عالية المستوى أثناء عملي على شيء جديد.
 
-## What is Code Coverage?
+## ما هي تغطية الشيفرة؟
 
-Code coverage quantifies the amount of code executed during automated tests. It provides insights into:
+تحدد تغطية الشيفرة كميًا مقدار الشيفرة المنفذة أثناء الاختبارات المؤتمتة. توفر رؤى حول:
 
-- **Statements Coverage**: Percentage of executed statements.
-- **Branches Coverage**: Percentage of executed control flow branches (e.g., `if`/`else` blocks).
-- **Functions Coverage**: Percentage of executed functions or methods.
-- **Lines Coverage**: Percentage of executed lines in the source code.
+- **تغطية العبارات**: نسبة العبارات المنفذة.
+- **تغطية الفروع**: نسبة فروع تدفق التحكم المنفذة (مثل كتل `if`/`else`).
+- **تغطية الدوال**: نسبة الدوال أو التوابع المنفذة.
+- **تغطية الأسطر**: نسبة الأسطر المنفذة في الشيفرة المصدرية.
 
-## Why Use Code Coverage?
+## لماذا تستخدم تغطية الشيفرة؟
 
-- **Identify Untested Code**: Highlights areas of the codebase not covered by tests.
-- **Improve Test Quality**: Encourages writing comprehensive tests.
-- **Maintain Code Health**: Helps prevent regressions by ensuring critical code paths are tested.
-- **Metric for Progress**: Serves as a measurable indicator of testing efforts.
+- **تحديد الشيفرة غير المختبَرة**: يبرز مناطق قاعدة الشيفرة غير المغطاة بالاختبارات.
+- **تحسين جودة الاختبار**: يشجع على كتابة اختبارات شاملة.
+- **الحفاظ على صحة الشيفرة**: يساعد في منع الانحدارات بضمان اختبار مسارات الشيفرة الحرجة.
+- **مقياس للتقدم**: يعمل كمؤشر قابل للقياس على جهود الاختبار.
 
-## Installing a Code Coverage Tool
+## تثبيت أداة تغطية الشيفرة
 
-If you *don’t* have a coverage reporter installed, Vitest will prompt you to install the dependency.
+إذا *لم* يكن لديك مُبلّغ تغطية مثبّت، فسيطلب منك Vitest تثبيت الاعتمادية.
 
 ```
 > vitest exercise.test.ts --coverage
@@ -43,26 +43,26 @@ If you *don’t* have a coverage reporter installed, Vitest will prompt you to i
 ✔ Do you want to install @vitest/coverage-c8? … yes
 ```
 
-## Running the Code Coverage Tool
+## تشغيل أداة تغطية الشيفرة
 
-You can do this via:
+يمكنك فعل ذلك عبر:
 
 ```typescript
 npm test -- --coverage
 npx vitest --coverage
 ```
 
-You’ll likely get a new `./coverage` directory. Go take a look. You can spin up a quick web server using:
+من المحتمل أن تحصل على دليل `./coverage` جديد. اذهب وألقِ نظرة. يمكنك إطلاق خادم ويب سريع باستخدام:
 
 ```typescript
 vite preview  --outDir coverage
 ```
 
-This will allow you see where you code is *not* being tested. (Source: [The documenation for c8](https://github.com/bcoe/c8#ignoring-uncovered-lines-functions-and-blocks).)
+سيتيح لك ذلك رؤية أين *لا* تُختبَر شيفرتك. (المصدر: [توثيق c8](https://github.com/bcoe/c8#ignoring-uncovered-lines-functions-and-blocks).)
 
-## Ignoring Lines
+## تجاهل الأسطر
 
-You can ignore lines from your coverage report:
+يمكنك استبعاد أسطر من تقرير تغطيتك:
 
 ```typescript
 const something = 'lol';
@@ -81,9 +81,9 @@ function dontMindMe() {
 /* c8 ignore stop */
 ```
 
-## Configuring Your Coverage Report
+## تهيئة تقرير تغطيتك
 
-You can add a `coverage` key to the `test` configuration in your `vitest.config.ts`:
+يمكنك إضافة مفتاح `coverage` إلى تهيئة `test` في `vitest.config.ts`:
 
 ```typescript
 import path from 'node:path';
@@ -124,25 +124,25 @@ export default defineConfig({
 });
 ```
 
-You can see all of the options [here](https://github.com/bcoe/c8#cli-options--configuration).
+يمكنك رؤية كل الخيارات [هنا](https://github.com/bcoe/c8#cli-options--configuration).
 
-The cool one here is the ability to set thresholds at which your build will fail if you dip below a certain amount.
+الشيء الرائع هنا هو القدرة على تعيين حدود يفشل عندها بناؤك إذا نزلت تحت مقدار معين.
 
 ```json
 { "statements": 54.92, "thresholdAutoUpdate": true }
 ```
 
-These options will stop you from dropping at the very least and if you go up, it sets that as the new baseline.
+ستمنعك هذه الخيارات من الانخفاض على الأقل، وإذا ارتفعت، فستعين ذلك كخط الأساس الجديد.
 
-### Interpreting Coverage Reports
+### تفسير تقارير التغطية
 
-Vitest generates coverage reports in the specified formats. Commonly used reporters include:
+يولّد Vitest تقارير تغطية بالتنسيقات المحددة. تشمل المبلّغات الشائعة الاستخدام:
 
-- **Text**: Outputs coverage summary to the console.
-- **HTML**: Generates an interactive HTML report.
-- **LCOV**: Produces an `lcov.info` file, useful for integrating with coverage services.
+- **نص**: يخرج ملخص التغطية إلى الطرفية.
+- **HTML**: يولّد تقرير HTML تفاعليًا.
+- **LCOV**: ينتج ملف `lcov.info`، وهو مفيد للتكامل مع خدمات التغطية.
 
-#### Console Output Example
+#### مثال مخرجات الطرفية
 
 ```bash
 ---------------|---------|----------|---------|---------|-------------------
@@ -156,42 +156,42 @@ All files      |    85.7 |    66.66 |      80 |    85.7 |
 ---------------|---------|----------|---------|---------|-------------------
 ```
 
-**Explanation:**
+**الشرح:**
 
-- **% Stmts**: Percentage of statements executed.
-- **% Branch**: Percentage of branches executed.
-- **% Funcs**: Percentage of functions executed.
-- **% Lines**: Percentage of lines executed.
-- **Uncovered Line #s**: Lines that were not executed during tests.
+- **% Stmts**: نسبة العبارات المنفذة.
+- **% Branch**: نسبة الفروع المنفذة.
+- **% Funcs**: نسبة الدوال المنفذة.
+- **% Lines**: نسبة الأسطر المنفذة.
+- **Uncovered Line #s**: الأسطر التي لم تُنفَّذ أثناء الاختبارات.
 
-##### HTML Report
+##### تقرير HTML
 
-The HTML report is generated in the `coverage` directory by default. Open `coverage/index.html` in your browser to view it.
+يُولَّد تقرير HTML في دليل `coverage` افتراضيًا. افتح `coverage/index.html` في متصفحك لعرضه.
 
-**Features:**
+**الميزات:**
 
-- **Interactive Navigation**: Browse coverage details for each file.
-- **Highlighted Code**: See which lines are covered (green) and which are not (red).
-- **Detailed Metrics**: Provides line-by-line coverage information.
+- **تنقل تفاعلي**: تصفح تفاصيل التغطية لكل ملف.
+- **شيفرة مظللة**: انظر أي الأسطر مغطاة (أخضر) وأيها غير مغطاة (أحمر).
+- **مقاييس مفصلة**: يوفر معلومات تغطية سطرًا بسطر.
 
-#### Best Practices for Code Coverage
+#### أفضل الممارسات لتغطية الشيفرة
 
-##### Aim for Meaningful Coverage, Not Just High Percentages
+##### استهدف تغطية ذات معنى، لا مجرد نسب عالية
 
-- **Quality Over Quantity**: High coverage does not guarantee good tests. Focus on writing meaningful tests that cover critical code paths.
-- **Avoid Coverage for Its Own Sake**: Don’t write superficial tests just to increase coverage numbers.
+- **الجودة قبل الكمية**: التغطية العالية لا تضمن اختبارات جيدة. ركّز على كتابة اختبارات ذات معنى تغطي مسارات الشيفرة الحرجة.
+- **تجنب التغطية لأجل التغطية**: لا تكتب اختبارات سطحية فقط لزيادة أرقام التغطية.
 
-##### Identify and Prioritize Critical Code
+##### حدد الشيفرة الحرجة ورتّب أولوياتها
 
-- **Core Functionality**: Ensure that essential functions and business logic are thoroughly tested.
-- **Edge Cases**: Write tests for boundary conditions and error handling paths.
+- **الوظائف الأساسية**: تأكد من اختبار الدوال الأساسية ومنطق العمل اختبارًا شاملًا.
+- **الحالات الطرفية**: اكتب اختبارات لشروط الحدود ومسارات معالجة الأخطاء.
 
-##### Exclude Generated or External Code
+##### استبعد الشيفرة المولّدة أو الخارجية
 
-- **Configuration Files**: Exclude files like configuration or setup files that don’t need testing.
-- **Third-Party Libraries**: Exclude `node_modules` or other external code from coverage.
+- **ملفات التهيئة**: استبعد ملفات مثل ملفات التهيئة أو الإعداد التي لا تحتاج إلى اختبار.
+- **مكتبات خارجية**: استبعد `node_modules` أو أي شيفرة خارجية أخرى من التغطية.
 
-**Example: Exclude in Configuration**
+**مثال: الاستبعاد في التهيئة**
 
 ```javascript
 // vitest.config.js
@@ -204,17 +204,17 @@ export default defineConfig({
 });
 ```
 
-#### Regularly Review Coverage Reports
+#### راجع تقارير التغطية بانتظام
 
-- **Identify Gaps**: Use reports to find untested code areas.
-- **Refactor Tests**: Improve existing tests to cover missing branches or statements.
+- **حدد الفجوات**: استخدم التقارير للعثور على مناطق الشيفرة غير المختبَرة.
+- **أعد هيكلة الاختبارات**: حسّن الاختبارات الحالية لتغطية الفروع أو العبارات المفقودة.
 
-#### Integrate Coverage into Continuous Integration (CI)
+#### ادمج التغطية في التكامل المستمر (CI)
 
-- **Automate Coverage Reporting**: Run coverage analysis as part of your CI pipeline.
-- **Set Coverage Thresholds**: Fail the build if coverage drops below a certain percentage.
+- **أتمتة تقارير التغطية**: شغّل تحليل التغطية كجزء من خط أنابيب CI لديك.
+- **عيّن حدود التغطية**: أفشل البناء إذا انخفضت التغطية تحت نسبة معينة.
 
-**Example: Setting Coverage Thresholds**
+**مثال: تعيين حدود التغطية**
 
 ```javascript
 // vitest.config.js
@@ -230,60 +230,60 @@ export default defineConfig({
 });
 ```
 
-#### Use Coverage Badges in Documentation
+#### استخدم شارات التغطية في التوثيق
 
-- **Visibility**: Display coverage status in your project’s README file.
-- **Motivation**: Encourages contributors to maintain or improve coverage.
+- **الظهور**: اعرض حالة التغطية في ملف README لمشروعك.
+- **التحفيز**: يشجع المساهمين على الحفاظ على التغطية أو تحسينها.
 
-### Common Pitfalls and How to Avoid Them
+### مزالق شائعة وكيفية تجنبها
 
-#### Misinterpreting Coverage Metrics
+#### إساءة تفسير مقاييس التغطية
 
-**Issue**: Assuming that 100% coverage means no bugs.
+**المشكلة**: افتراض أن تغطية 100% تعني عدم وجود أخطاء.
 
-**Solution**:
+**الحل**:
 
-- Understand that coverage metrics indicate which code is executed, not whether the code behaves correctly.
-- Focus on writing meaningful tests that assert correct behavior.
+- افهم أن مقاييس التغطية تشير إلى الشيفرة المنفذة، لا إلى ما إذا كانت الشيفرة تتصرف بشكل صحيح.
+- ركّز على كتابة اختبارات ذات معنى تتحقق من السلوك الصحيح.
 
-#### Overlooking Uncovered Branches
+#### إغفال الفروع غير المغطاة
 
-**Issue**: Missing coverage for conditional branches.
+**المشكلة**: غياب التغطية للفروع الشرطية.
 
-**Solution**:
+**الحل**:
 
-- Examine branch coverage to identify untested `if`/`else` conditions.
-- Write tests that cover different logical paths.
+- افحص تغطية الفروع لتحديد شروط `if`/`else` غير المختبَرة.
+- اكتب اختبارات تغطي مسارات منطقية مختلفة.
 
-#### Ignoring Integration and End-to-End Tests
+#### تجاهل اختبارات التكامل ومن طرف إلى طرف
 
-**Issue**: Relying solely on unit tests for coverage.
+**المشكلة**: الاعتماد على اختبارات الوحدات وحدها للتغطية.
 
-**Solution**:
+**الحل**:
 
-- Incorporate integration and end-to-end tests to cover interactions between components.
-- Use tools like **Playwright** for end-to-end testing.
+- ضمّن اختبارات التكامل ومن طرف إلى طرف لتغطية التفاعلات بين المكوّنات.
+- استخدم أدوات مثل **Playwright** لاختبار من طرف إلى طرف.
 
-#### Including Unnecessary Files
+#### تضمين ملفات غير ضرورية
 
-**Issue**: Coverage reports include files that should be excluded, skewing metrics.
+**المشكلة**: تتضمن تقارير التغطية ملفات ينبغي استبعادها، ما يشوّه المقاييس.
 
-**Solution**:
+**الحل**:
 
-- Use `include` and `exclude` patterns in your configuration to focus on relevant files.
+- استخدم أنماط `include` و`exclude` في تهيئتك للتركيز على الملفات ذات الصلة.
 
-#### Not Cleaning Up Before Coverage Runs
+#### عدم التنظيف قبل تشغيلات التغطية
 
-**Issue**: Old coverage data persists, causing inaccurate reports.
+**المشكلة**: تبقى بيانات تغطية قديمة، ما يسبب تقارير غير دقيقة.
 
-**Solution**:
+**الحل**:
 
-- Ensure that the coverage directory is cleaned before generating new reports.
-- Use scripts to automate cleanup.
+- تأكد من تنظيف دليل التغطية قبل توليد تقارير جديدة.
+- استخدم سكربتات لأتمتة التنظيف.
 
-### Examples in Practice
+### أمثلة عملية
 
-Let’s look at our early example:
+لننظر إلى مثالنا المبكر:
 
 ```javascript
 // src/math.js
@@ -310,16 +310,16 @@ test('subtracts numbers correctly', () => {
 });
 ```
 
-You can run the tests with the coverage flag.
+يمكنك تشغيل الاختبارات مع علم التغطية.
 
 ```bash
 npx vitest --coverage
 ```
 
-- Both `add` and `subtract` functions are covered.
-- Coverage should be 100% for statements, branches, functions, and lines.
+- الدالتان `add` و`subtract` مغطاتان معًا.
+- ينبغي أن تكون التغطية 100% للعبارات والفروع والدوال والأسطر.
 
-#### Identifying Uncovered Code
+#### تحديد الشيفرة غير المغطاة
 
 ```javascript
 // src/utils/helper.js
@@ -341,10 +341,10 @@ test('greets a named person', () => {
 });
 ```
 
-- The case where `name` is not provided is not tested.
-- Coverage report will show incomplete branch coverage.
+- الحالة التي لا يُمرَّر فيها `name` غير مختبَرة.
+- سيعرض تقرير التغطية تغطية فروع غير كاملة.
 
-Go ahead and add a test for the missing branch.
+واصل وأضف اختبارًا للفرع المفقود.
 
 ```javascript
 test('greets a stranger when no name is provided', () => {
@@ -352,9 +352,9 @@ test('greets a stranger when no name is provided', () => {
 });
 ```
 
-### Integrating Coverage with Continuous Integration
+### دمج التغطية مع التكامل المستمر
 
-We’ll talk more about [continuous integration](https://stevekinney.com/courses/testing/continuous-integration). But, I’ll leave this example of how to run your code coverage report in Github Actions here for reference.
+سنتحدث أكثر عن [التكامل المستمر](https://stevekinney.com/courses/testing/continuous-integration). لكنني سأترك هذا المثال عن كيفية تشغيل تقرير تغطية شيفرتك في GitHub Actions هنا للرجوع إليه.
 
 ```yaml
 # .github/workflows/ci.yml
@@ -383,22 +383,22 @@ jobs:
           path: coverage
 ```
 
-- The workflow runs tests with coverage on each push or pull request.
-- Coverage reports are uploaded as artifacts for review.
+- يشغّل سير العمل الاختبارات مع التغطية عند كل دفع أو طلب سحب.
+- تُرفع تقارير التغطية كعناصر أثرية للمراجعة.
 
-### Conclusion
+### الخلاصة {#conclusion}
 
-Code Coverage tools are super useful to help you see where you might be missing test coverage, but you shouldn’t chase 100% code coverage for the sake of it. It’s important to be reasonable in terms of what’s Good Enough™.
+أدوات تغطية الشيفرة مفيدة جدًا لمساعدتك على رؤية أين قد تنقصك تغطية الاختبارات، لكن لا ينبغي أن تطارد تغطية 100% لأجل التغطية نفسها. من المهم أن تكون معقولًا بشأن ما هو «جيد بما يكفي».
 
-- **Enable Coverage**: Use `--coverage` flag or configure in `vitest.config.js`.
-- **Interpret Reports**: Understand statements, branches, functions, and lines coverage.
-- **Aim for Meaningful Coverage**: Focus on writing effective tests rather than achieving arbitrary coverage percentages.
-- **Use Coverage Tools**: Leverage coverage reports to identify gaps and improve tests.
-- **Integrate with CI**: Automate coverage analysis in your continuous integration pipeline.
-- **Exclude Irrelevant Files**: Configure inclusion and exclusion patterns to focus on relevant code.
+- **فعّل التغطية**: استخدم علم `--coverage` أو هيّئها في `vitest.config.js`.
+- **فسّر التقارير**: افهم تغطية العبارات والفروع والدوال والأسطر.
+- **استهدف تغطية ذات معنى**: ركّز على كتابة اختبارات فعالة بدلًا من تحقيق نسب تغطية اعتباطية.
+- **استخدم أدوات التغطية**: استفد من تقارير التغطية لتحديد الفجوات وتحسين الاختبارات.
+- **ادمج مع CI**: أتمت تحليل التغطية في خط أنابيب التكامل المستمر لديك.
+- **استبعد الملفات غير ذات الصلة**: هيّئ أنماط التضمين والاستبعاد للتركيز على الشيفرة ذات الصلة.
 
-### Additional Resources
+### موارد إضافية
 
-- **Vitest Documentation**: [Vitest Coverage Guide](https://vitest.dev/guide/coverage.html)
-- **C8 Coverage Tool**: [c8 on npm](https://www.npmjs.com/package/c8)
-- **Understanding Code Coverage Metrics**: [Istanbul.js Documentation](https://istanbul.js.org/docs/advanced/coverage-object/)
+- **توثيق Vitest**: [دليل التغطية في Vitest](https://vitest.dev/guide/coverage.html)
+- **أداة التغطية C8**: [c8 على npm](https://www.npmjs.com/package/c8)
+- **فهم مقاييس تغطية الشيفرة**: [توثيق Istanbul.js](https://istanbul.js.org/docs/advanced/coverage-object/)

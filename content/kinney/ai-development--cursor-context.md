@@ -1,32 +1,29 @@
 ---
-title: "Context is King"
-lang: en
+title: "السياق هو الملك"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-context"
 ---
 
-[Cursor](https://cursor.com/) is only as useful as the context you give it. More
-context is not automatically better. The goal is **relevant context**: the files,
-constraints, examples, and tools that change the answer.
+[Cursor](https://cursor.com/) لا يكون مفيدًا إلا بقدر السياق الذي تعطيه له. والسياق الأكثر ليس أفضل تلقائيًا. فالهدف هو **السياق ذو الصلة**: الملفات والقيود والأمثلة والأدوات التي تغيّر الإجابة.
 
-## Context Sources
+## مصادر السياق
 
-Cursor can draw from several places:
+يستطيع Cursor أن يستمدّ من أماكن عدة:
 
-- Open files, selected code, and recently edited files.
-- Mentioned files, folders, symbols, images, and documentation.
-- Semantic repository search.
-- Project Rules, User Rules, Team Rules, and [`AGENTS.md`](https://agents.md/).
-- Skills in `.cursor/skills`, `.agents/skills`, `.claude/skills`, or `.codex/skills`.
-- Memories that capture reusable preferences.
-- MCP servers that expose external data and tools.
-- Web search and fetched pages when allowed.
+- الملفات المفتوحة، والشيفرة المحدّدة، والملفات المُعدَّلة حديثًا.
+- الملفات والمجلدات والرموز والصور والتوثيق المذكورة.
+- البحث الدلالي في المستودع.
+- قواعد المشروع، وقواعد المستخدم، وقواعد الفريق، وملف [`AGENTS.md`](https://agents.md/).
+- المهارات في `.cursor/skills` أو `.agents/skills` أو `.claude/skills` أو `.codex/skills`.
+- الذكريات التي تلتقط تفضيلات قابلة لإعادة الاستخدام.
+- خوادم MCP التي تكشف بيانات وأدوات خارجية.
+- البحث في الويب والصفحات المجلوبة عند السماح.
 
-The agent will often find the obvious files itself. You should still name the
-files that define correctness.
+غالبًا ما يجد الوكيل الملفات الواضحة بنفسه. ومع ذلك ينبغي أن تسمّي أنت الملفات التي تحدّد الصحة.
 
-## Tell Cursor What Matters
+## أخبر Cursor بما يهمّ
 
-Use a short context contract at the top of bigger prompts:
+استخدم عقد سياق قصيرًا في أعلى الطلبات الأكبر:
 
 ```
 Relevant context:
@@ -38,31 +35,21 @@ Goal:
 Reject expired invite tokens with the same error shape used by revoked tokens.
 ```
 
-This does two things. It saves search time, and it tells the model what evidence
-you expect it to respect.
+يفعل ذلك شيئين. فهو يوفّر وقت البحث، ويخبر النموذج بالأدلة التي تتوقع أن يحترمها.
 
-## Rules, Skills, and Markdown References
+## القواعد والمهارات ومراجع Markdown
 
-Use the smallest durable container that fits the job:
+استخدم أصغر حاوية دائمة تناسب المهمة:
 
-- Use **Rules** for behavior that should apply automatically.
-- Use **Skills** for reusable workflows with instructions, scripts, references,
-or assets.
-- Use ordinary Markdown files for longer explanations that a human should review
-and version.
-- Use Memories for preferences that are useful across sessions but do not belong
-in source control.
+- استخدم **القواعد** للسلوك الذي ينبغي أن ينطبق تلقائيًا.
+- استخدم **المهارات** لسير العمل القابل لإعادة الاستخدام بتعليمات وسكربتات ومراجع وموجودات.
+- استخدم ملفات Markdown العادية للشروح الأطول التي ينبغي أن يراجعها إنسان ويصدّرها بإصدارات.
+- استخدم الذكريات للتفضيلات المفيدة عبر الجلسات لكنها لا تنتمي إلى التحكم بالمصدر.
 
-Do not hide architectural truth in chat history. If a future contributor needs
-it, put it in the repository.
+لا تُخفِ الحقيقة المعمارية في سجل المحادثة. وإذا احتاجها مساهم مستقبلي، فضعها في المستودع.
 
-## Avoid Context Rot
+## تجنّب تعفّن السياق
 
-Stale context is worse than missing context because it sounds authoritative. When
-Cursor makes the same mistake twice, fix the durable instruction source instead
-of writing a longer prompt. When a rule or skill no longer matches the codebase,
-delete or update it in the same change that updates the code.
+السياق القديم أسوأ من السياق المفقود لأنه يبدو موثوقًا. وعندما يكرّر Cursor الخطأ نفسه مرتين، فأصلح مصدر التعليمات الدائم بدلًا من كتابة طلب أطول. وعندما تتوقف قاعدة أو مهارة عن مطابقة الشيفرة، فاحذفها أو حدّثها في التغيير نفسه الذي يحدّث الشيفرة.
 
-For code review prompts, ask Cursor to cite the files it inspected. If the answer
-does not mention the file that defines the behavior, the context set is not good
-enough yet.
+وفي طلبات مراجعة الشيفرة، اطلب من Cursor أن يستشهد بالملفات التي فحصها. وإذا لم تذكر الإجابة الملف الذي يحدّد السلوك، فمجموعة السياق ليست جيدة بما يكفي بعد.

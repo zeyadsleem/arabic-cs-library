@@ -274,8 +274,6 @@ const areEqual = (prev: Props, next: Props): boolean => {
 
 قد تكون فحوصات التساوي العميق أبطأ من إعادة التصيير نفسها. فكن انتقائيًا في ما تقارنه بدلًا من ذلك.
 
-Hmm, wait — I need to fix that. Let me write: "فكن انتقائيًا في ما تقارنه بدلًا من ذلك."
-
 ### نسيان مراجع الدوال
 
 ```typescript

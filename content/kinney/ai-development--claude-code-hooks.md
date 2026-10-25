@@ -1,52 +1,43 @@
 ---
-title: "Claude Code's Hooks"
-lang: en
+title: "خطّافات Claude Code"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-hooks"
 ---
 
-I reach for [Claude Code hooks](https://code.claude.com/docs/en/hooks) when I’ve
-told an agent the same safety rule twice and I want the repository to enforce it
-the third time. Hooks let you run command, HTTP, LLM prompt, or agent hooks
-around the session lifecycle. They are powerful because they can influence tool
-use and decisions. That also makes them risky.
+ألجأ إلى [خطّافات Claude Code](https://code.claude.com/docs/en/hooks) عندما أكون قد أخبرت وكيلًا بقاعدة أمان واحدة مرتين وأريد أن يفرضها المستودع في المرة الثالثة. تتيح لك الخطّافات تشغيل خطّافات أوامر أو HTTP أو طلبات LLM أو خطّافات وكلاء حول دورة حياة الجلسة. وهي قوية لأنها تستطيع التأثير في استخدام الأدوات والقرارات. وهذا أيضًا ما يجعلها محفوفة بالمخاطر.
 
-## Common Events
+## الأحداث الشائعة
 
-Claude Code exposes many hook events, including:
+يكشف Claude Code أحداث خطّافات كثيرة، منها:
 
-- Session start and end.
-- User prompt submission and expansion.
-- Pre-tool and post-tool use.
-- Permission requests and denials.
-- Tool failure.
-- Subagent start and stop.
-- Task creation and completion.
-- Pre-compact and post-compact.
-- File changes.
-- Working directory changes.
-- Configuration changes.
+- بداية الجلسة ونهايتها.
+- إرسال طلب المستخدم وتوسيعه.
+- الاستخدام قبل الأداة وبعدها.
+- طلبات الصلاحيات ورفضها.
+- فشل الأداة.
+- بدء الوكيل الفرعي وتوقفه.
+- إنشاء المهمة وإتمامها.
+- ما قبل الضغط وما بعده.
+- تغييرات الملفات.
+- تغييرات دليل العمل.
+- تغييرات التهيئة.
 
-Use the narrowest event that fits. A broad hook that fires on every tool call
-should be very small and very fast.
+استخدم أضيق حدث يناسب الحاجة. فالخطّاف الواسع الذي يُطلق عند كل نداء أداة ينبغي أن يكون صغيرًا جدًا وسريعًا جدًا.
 
-## Hook Locations
+## مواضع الخطّافات
 
-Hooks can come from user, project, local, managed, plugin, skill, and agent
-configuration. That means a hook might be inherited from a place other than the
-repository you are currently reading.
+يمكن أن تأتي الخطّافات من تهيئة المستخدم والمشروع والمحلي والمُدار والإضافة والمهارة والوكيل. وهذا يعني أن خطّافًا قد يكون موروثًا من مكان غير المستودع الذي تقرأه الآن.
 
-When diagnosing surprising behavior, inspect the hook sources before blaming the
-model.
+وعند تشخيص سلوك مفاجئ، افحص مصادر الخطّافات قبل أن تلوم النموذج.
 
-## Good Hook Uses
+## استخدامات الخطّافات الجيدة
 
-Good hooks are deterministic:
+الخطّافات الجيدة حتمية:
 
-- Block edits to generated files.
-- Add a required instruction when a file pattern is touched.
-- Log tool use for local audit.
-- Deny shell commands that target production.
-- Run a fast formatter check after a specific tool action.
+- احجب التعديلات على الملفات المولَّدة.
+- أضف تعليمة مطلوبة عند لمس نمط ملف.
+- سجّل استخدام الأدوات للتدقيق المحلي.
+- ارفض أوامر الصدفة التي تستهدف الإنتاج.
+- شغّل فحص تنسيق سريعًا بعد إجراء أداة محدد.
 
-Bad hooks try to run the whole development process invisibly. Put real quality
-gates in scripts and continuous integration.
+أما الخطّافات السيئة فتحاول تشغيل عملية التطوير كلها بشكل غير مرئي. فضع بوابات الجودة الحقيقية في السكربتات والتكامل المستمر.

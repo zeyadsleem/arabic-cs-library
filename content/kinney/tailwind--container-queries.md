@@ -1,21 +1,21 @@
 ---
-title: "Container Queries"
-lang: en
+title: "استعلامات الحاويات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/container-queries"
 ---
 
-Container queries let you style elements based on their parent’s size, not the viewport. Perfect for reusable components.
+تتيح لك استعلامات الحاويات تنسيق العناصر بحسب حجم العنصر الأم لا بحسب إطار العرض. وهي مثالية للمكوّنات القابلة لإعادة الاستخدام.
 
-## Container Vs Viewport Queries
+## استعلامات الحاوية مقابل استعلامات إطار العرض
 
-| Type | Based On | Use Case |
+| النوع | معيار القياس | حالة الاستخدام |
 | --- | --- | --- |
-| Viewport (`md:`) | Browser window | Page layouts |
-| Container (`@md:`) | Parent element | Components |
+| إطار العرض (`md:`) | نافذة المتصفح | تخطيطات الصفحات |
+| الحاوية (`@md:`) | العنصر الأم | المكوّنات |
 
-## Basic Usage
+## الاستخدام الأساسي {#basic-usage}
 
-Mark parent as container, style children based on its size:
+ضع علامة على العنصر الأم كحاوية، ونسّق أبناءه بحسب حجمها:
 
 ```html
 <div class="@container">
@@ -25,19 +25,19 @@ Mark parent as container, style children based on its size:
 </div>
 ```
 
-## Container Breakpoints
+## نقاط توقف الحاويات
 
-Default sizes match viewport breakpoints:
+الأحجام الافتراضية تطابق نقاط توقف إطار العرض:
 
-- `@sm`: 640px container
-- `@md`: 768px container
-- `@lg`: 1024px container
-- `@xl`: 1280px container
-- `@2xl`: 1536px container
+- `@sm`: حاوية بعرض 640px
+- `@md`: حاوية بعرض 768px
+- `@lg`: حاوية بعرض 1024px
+- `@xl`: حاوية بعرض 1280px
+- `@2xl`: حاوية بعرض 1536px
 
-## Common Patterns
+## أنماط شائعة
 
-### Card Component
+### مكوّن البطاقة
 
 ```html
 <div class="@container">
@@ -50,7 +50,7 @@ Default sizes match viewport breakpoints:
 </div>
 ```
 
-### Sidebar Layout
+### تخطيط الشريط الجانبي
 
 ```html
 <aside class="@container">
@@ -60,9 +60,9 @@ Default sizes match viewport breakpoints:
 </aside>
 ```
 
-## Named Containers
+## الحاويات المسمّاة
 
-Target specific containers in nested layouts:
+استهدف حاويات محدّدة في التخطيطات المتداخلة:
 
 ```html
 <!-- Main content area -->
@@ -81,9 +81,9 @@ Target specific containers in nested layouts:
 </main>
 ```
 
-## Container Query Ranges
+## نطاقات استعلامات الحاوية
 
-### Maximum Width
+### الحد الأقصى للعرض
 
 ```html
 <div class="@container">
@@ -91,7 +91,7 @@ Target specific containers in nested layouts:
 </div>
 ```
 
-### Specific Ranges
+### نطاقات محدّدة
 
 ```html
 <div class="@container">
@@ -99,7 +99,7 @@ Target specific containers in nested layouts:
 </div>
 ```
 
-## Arbitrary Container Sizes
+## أحجام حاويات عشوائية
 
 ```html
 <div class="@container">
@@ -111,9 +111,9 @@ Target specific containers in nested layouts:
 </div>
 ```
 
-## Container Types
+## أنواع الحاويات
 
-Control which dimension to query:
+تحكّم في البُعد الذي يُستعلم عنه:
 
 ```html
 <!-- Default: inline-size (width) -->
@@ -123,9 +123,9 @@ Control which dimension to query:
 <div class="@container/size">...</div>
 ```
 
-## Container Units
+## وحدات الحاوية
 
-Size elements relative to container:
+اضبط أحجام العناصر نسبةً إلى الحاوية:
 
 ```html
 <div class="@container">
@@ -137,16 +137,16 @@ Size elements relative to container:
 </div>
 ```
 
-Units available:
+الوحدات المتاحة:
 
-- `cqw` - 1% of container width
-- `cqh` - 1% of container height
-- `cqi` - 1% of container inline size
-- `cqb` - 1% of container block size
-- `cqmin` - 1% of container minimum dimension
-- `cqmax` - 1% of container maximum dimension
+- `cqw` — 1% من عرض الحاوية
+- `cqh` — 1% من ارتفاع الحاوية
+- `cqi` — 1% من حجم الحاوية الأفقي
+- `cqb` — 1% من حجم الحاوية العمودي
+- `cqmin` — 1% من أصغر بُعد في الحاوية
+- `cqmax` — 1% من أكبر بُعد في الحاوية
 
-## Customizing Container Sizes
+## تخصيص أحجام الحاويات
 
 ```css
 @import 'tailwindcss';
@@ -161,9 +161,9 @@ Units available:
 }
 ```
 
-## Real-World Example
+## مثال من العالم الحقيقي
 
-Product card that works everywhere:
+بطاقة منتج تعمل في كل مكان:
 
 ```html
 <div class="@container">
@@ -185,10 +185,10 @@ Product card that works everywhere:
 </div>
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Use for components** - Not page layouts
-2. **Name nested containers** - Avoid confusion
-3. **Test at various sizes** - Components appear in many contexts
-4. **Consider performance** - Each container adds overhead
-5. **Fallback for old browsers** - Container queries need modern browsers
+1. **استخدمها للمكوّنات** — لا لتخطيطات الصفحات
+2. **سمِّ الحاويات المتداخلة** — تجنّب الالتباس
+3. **اختبر عند مقاسات مختلفة** — تظهر المكوّنات في سياقات كثيرة
+4. **فكّر في الأداء** — كل حاوية تضيف عبئًا
+5. **ضع بديلًا للمتصفحات القديمة** — استعلامات الحاويات تحتاج متصفحات حديثة

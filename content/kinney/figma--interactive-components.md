@@ -1,23 +1,23 @@
 ---
-title: "Interactive Components"
-lang: en
+title: "المكوّنات التفاعلية"
+lang: ar
 source: "https://stevekinney.com/courses/figma/interactive-components"
 ---
 
-It turns out that users like to interact with these web pages that we build. Sometimes, they go as far as to expect that they’ll behave like “Applications,” I’ve been told. Interactive Components give us and our designer friends the ability to create components that are—umm—interactive.
+اتضح أن المستخدمين يحبون التفاعل مع صفحات الويب التي نبنيها. وأحيانًا يذهبون إلى حد توقّع أن تتصرّف مثل «التطبيقات»، كما قيل لي. وتمنحنا المكوّنات التفاعلية (Interactive Components) نحن وأصدقاءنا المصمّمين القدرة على إنشاء مكوّنات — أمم — تفاعلية.
 
-Not only can we have lots and lots of different types of buttons, those buttons can be in different states based on user interaction. Consider this simple button for a moment.
+لا يمكننا فحسب أن نحصل على أنواع كثيرة جدًا ومختلفة من الأزرار، بل يمكن أن تكون تلك الأزرار في حالات مختلفة بناءً على تفاعل المستخدم. تأمّل هذا الزر البسيط لحظة.
 
-Button states
+حالات الزر
 
-We want our buttons to behave in our prototypes as they would in the browser. This is where that Prototype mode in the right sidebar comes into play.
+نريد أن تتصرّف أزرارنا في نماذجنا الأولية كما تتصرّف في المتصفح. وهنا يأتي دور وضع Prototype في الشريط الجانبي الأيمن.
 
-## Setting Up Interactions with Variants
+## إعداد التفاعلات بالأنماط البديلة
 
-One option at our disposal is to swap between variables based on the user interaction.
+أحد الخيارات المتاحة لنا هو التبديل بين المتغيّرات بناءً على تفاعل المستخدم.
 
-And with that you should be able to see your button in action and interact with it.
+وبذلك ينبغي أن تكون قادرًا على رؤية زرّك أثناء العمل والتفاعل معه.
 
-> **Exercise**
+> **تمرين**
 >
-> Can you build a checkbox component that can be clicked to check the checkbox? You can find [the solution here](https://stevekinney.com/courses/figma/building-a-checkbox-component).
+> هل يمكنك بناء مكوّن مربّع اختيار (checkbox) يمكن النقر عليه لتأشير المربّع؟ يمكنك أن تجد [الحل هنا](https://stevekinney.com/courses/figma/building-a-checkbox-component).

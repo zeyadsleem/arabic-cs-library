@@ -1,21 +1,18 @@
 ---
-title: "AI Development Setup"
-lang: en
+title: "تهيئة بيئة التطوير بالذكاء الاصطناعي"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup"
 ---
 
-You might not be writing as much of the code anymore—or *any* of it. But, you’re still in charge of the system that produces it. That system is the thing worth designing, and it’s what this course is about.
+ربما لم تعد تكتب القدر نفسه من الشيفرة — أو لا تكتب *أيًا* منها. لكنك ما زلت المسؤول عن النظام الذي ينتجها. ذلك النظام هو الشيء الجدير بالتصميم، وهو موضوع هذه الدورة.
 
-- If you want working examples to borrow from, I keep my own collection of skills,
-agents, and other reusable pieces in [Repertoire](https://github.com/stevekinney/repertoire).
-- If you’d like a safe place to try things out, fork or clone [front-desk](https://github.com/stevekinney/front-desk). It’s a little
-playground repository for the examples in this course, so you can let an agent
-loose without worrying about your real code.
+- إن أردت أمثلة عاملة تستعير منها، فأنا أحتفظ بمجموعتي الخاصة من المهارات والوكلاء وغيرها من القطع القابلة لإعادة الاستخدام في [Repertoire](https://github.com/stevekinney/repertoire).
+- وإن أردت مكانًا آمنًا لتجربة الأشياء، فاعمل fork أو clone لـ [front-desk](https://github.com/stevekinney/front-desk). إنه مستودع صغير للتجارب يخص أمثلة هذه الدورة، حتى تطلق وكيلًا بحرية دون القلق على شيفرتك الحقيقية.
 
-The model is the part everyone argues about. I care a lot more about everything around it: the tools the agent can use, the information it starts with, what survives from one conversation to the next, and—most of all—the checks that decide whether it actually did the thing. Get those right and you can swap models without much drama. Get them wrong and no model will save you.
+النموذج هو الجزء الذي يتجادل عليه الجميع. أنا أهتم أكثر بكثير بكل ما يحيط به: الأدوات التي يستطيع الوكيل استخدامها، والمعلومات التي يبدأ بها، وما يبقى من محادثة إلى التي تليها، والأهم من ذلك كله: الفحوص التي تحدد ما إذا كان قد أنجز العمل فعلًا. إن أحسنت هذه الأمور استطعت تبديل النماذج بلا ضجيج يُذكر. وإن أسأتها فلن ينقذك أي نموذج.
 
-We’ll use [Claude Code](https://code.claude.com/docs/en/overview) as the default **harness**—the program wrapped around the model that gives it tools, permissions, and **context** (everything the model can see when it decides its next step: your messages, its instructions, and every file or command output so far). I’ll call out where OpenAI’s [Codex](https://developers.openai.com/codex), another harness, does things differently. The tools are converging fast, so most of what you learn here carries over to whatever you use.
+سنستخدم [Claude Code](https://code.claude.com/docs/en/overview) بوصفه **المنصة (harness)** الافتراضية — البرنامج الذي يلتف حول النموذج فيمنحه الأدوات والصلاحيات و**السياق (context)** (كل ما يستطيع النموذج رؤيته حين يقرر خطوته التالية: رسائلك، وتعليماته، وكل ملف أو مخرَج أمر حتى الآن). وسأشير إلى المواضع التي يفعل فيها [Codex](https://developers.openai.com/codex) من OpenAI، وهو منصة أخرى، الأمور بطريقة مختلفة. الأدوات تتقارب بسرعة، لذا ينتقل معظم ما تتعلمه هنا إلى أي أداة تستخدمها.
 
-> **Prices, model names, and version numbers move quickly**
+> **الأسعار وأسماء النماذج وأرقام الإصدارات تتغيّر بسرعة**
 >
-> Everything here reflects the tools as of October 2026. The principles have held steady for a while now. The specific numbers won’t.
+> كل ما هنا يعكس الأدوات كما كانت في أكتوبر 2026. أما المبادئ فقد ثبتت منذ مدة. وأما الأرقام المحددة فلن تثبت.

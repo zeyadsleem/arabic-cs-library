@@ -1,16 +1,16 @@
 ---
-title: "useState with TypeScript: The Basics"
-lang: en
+title: "useState مع TypeScript: الأساسيات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/usestate-typescript-basics"
 ---
 
-When you combine React’s `useState` hook with TypeScript, you get a powerful duo that catches bugs before they happen. But there’s more to it than just slapping types on your state variables. Understanding how TypeScript infers types, when to be explicit, and how to handle complex state shapes will transform your React development experience from “hoping it works” to “knowing it works.”
+حين تجمع خُطّاف `useState` في React مع TypeScript، تحصل على ثنائيٍّ قويّ يلتقط الأخطاء قبل وقوعها. لكنّ الأمر يتجاوز مجرّد وضع الأنواع على متغيّرات حالتك. إن فهمتَ كيف يستنتج TypeScript الأنواع، ومتى ينبغي أن تكون صريحًا، وكيف تتعامل مع أشكال الحالة المعقّدة، فإنّ تجربة تطويرك في React ستتحوّل من «آمل أن يعمل» إلى «متيقّن من أنّه يعمل».
 
-In this tutorial, we’ll build up from the simplest useState patterns to handling complex state shapes, using the JSONPlaceholder todos API as our real-world example throughout.
+في هذا الدليل، سنبني تدريجيًا من أبسط أنماط useState إلى التعامل مع أشكال الحالة المعقّدة، مستخدمين واجهة JSONPlaceholder لقوائم المهام مثالًا واقعيًا في كلّ مراحل الشرح.
 
-## Type Inference: When TypeScript Just Knows
+## استنتاج الأنواع: حين يعرف TypeScript وحده
 
-TypeScript is smart about inferring types from initial values. For simple primitives, you often don’t need explicit types:
+TypeScript ذكيّ في استنتاج الأنواع من القيم الابتدائية. وللأنواع الأولية البسيطة، لن تحتاج غالبًا إلى أنواع صريحة:
 
 ```typescript
 import { useState } from 'react';
@@ -37,13 +37,13 @@ function TodoCounter() {
 }
 ```
 
-The beauty here? TypeScript automatically types `setCount` to only accept numbers or a function that returns a number. You get compile-time safety without writing a single type annotation.
+أين الجمال هنا؟ يقيّد TypeScript تلقائيًا نوع `setCount` ليقبل الأعداد فقط أو دالةً تُعيد عددًا. فتحصل على أمانٍ وقت التصريف دون كتابة أي تعليق نوع واحد.
 
-## When Inference Isn’t Enough: Being Explicit
+## حين لا يكفي الاستنتاج: كن صريحًا
 
-While inference is great for primitives, you’ll need to be explicit in several common scenarios:
+رغم أنّ الاستنتاج ممتاز مع الأنواع الأولية، ستحتاج إلى أن تكون صريحًا في عدّة سيناريوهات شائعة:
 
-### Empty Arrays: The Classic Trap
+### المصفوفات الفارغة: الفخّ الكلاسيكي
 
 ```typescript
 function TodoList() {
@@ -55,7 +55,7 @@ function TodoList() {
 }
 ```
 
-The fix? Be explicit about what the array will contain:
+الحلّ؟ كن صريحًا بشأن ما ستحتوي عليه المصفوفة:
 
 ```typescript
 function TodoList() {
@@ -70,9 +70,9 @@ function TodoList() {
 }
 ```
 
-### Union Types for Constrained Values
+### أنواع اتحادية للقيم المقيَّدة
 
-When your state should only be certain specific values, guide TypeScript with union types:
+حين لا ينبغي أن تتجاوز حالتك قيمًا معيّنة، وجّه TypeScript باستخدام الأنواع الاتحادية:
 
 ```typescript
 type FilterStatus = 'all' | 'active' | 'completed';
@@ -95,9 +95,9 @@ function TodoFilter() {
 }
 ```
 
-## Working with Objects: The Todo Type
+## العمل مع الكائنات: نوع Todo
 
-Let’s define our Todo type based on the JSONPlaceholder API structure:
+لنعرّف نوع Todo استنادًا إلى بنية واجهة JSONPlaceholder:
 
 ```typescript
 interface Todo {
@@ -146,9 +146,9 @@ function TodoItem() {
 }
 ```
 
-## The Null/Undefined Pattern for Async Data
+## نمط null/undefined للبيانات غير المتزامنة
 
-When data hasn’t loaded yet, using `null` or `undefined` as initial state is a common pattern:
+حين لا تكون البيانات قد حُمِّلت بعد، فإن استخدام `null` أو `undefined` كقيمة ابتدائية للحالة نمطٌ شائع:
 
 ```typescript
 function TodoDetail({ todoId }: { todoId: number }) {
@@ -178,9 +178,9 @@ function TodoDetail({ todoId }: { todoId: number }) {
 }
 ```
 
-## Functional Updates: The Safe Way
+## التحديثات الوظيفية: الطريقة الآمنة
 
-When your next state depends on the previous state, use the functional update pattern. TypeScript automatically infers the parameter type:
+حين تعتمد حالتك التالية على حالتك السابقة، استخدم نمط التحديث الوظيفي. ويستنتج TypeScript تلقائيًا نوع المُعامل:
 
 ```typescript
 function TodoStats() {
@@ -217,9 +217,9 @@ function TodoStats() {
 }
 ```
 
-## Complex State: When to Split vs. Combine
+## الحالة المعقّدة: متى تُقسِّم ومتى تُدمج
 
-Deciding whether to use multiple `useState` calls or combine state into an object depends on how the values relate:
+إن كان قرارك بين استخدام عدّة استدعاءات لـ `useState` أو دمج الحالة في كائن واحد يعتمد على العلاقة بين القيم:
 
 ```typescript
 // ✅ Good: Related values that change together
@@ -263,9 +263,9 @@ function TodoApp() {
 }
 ```
 
-## Generic Custom Hooks with useState
+## خُطّافات مخصّصة عامة مع useState
 
-Create reusable stateful logic with generic custom hooks:
+أنشئ منطقًا ذا حالة قابلًا لإعادة الاستخدام عبر خُطّافات مخصّصة عامة:
 
 ```typescript
 // Generic hook for any toggleable value
@@ -295,9 +295,9 @@ function TodoControls() {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## الأخطاء الشائعة وكيف تتجنّبها
 
-### Pitfall 1: Mutating State Directly
+### الخطأ 1: تعديل الحالة مباشرة
 
 ```typescript
 function TodoMutationBug() {
@@ -321,7 +321,7 @@ function TodoMutationBug() {
 }
 ```
 
-### Pitfall 2: Stale Closures in Event Handlers
+### الخطأ 2: الإغلاقات القديمة (stale closures) في معالجات الأحداث
 
 ```typescript
 function StaleClosureExample() {
@@ -347,7 +347,7 @@ function StaleClosureExample() {
 }
 ```
 
-### Pitfall 3: Over-specifying Types
+### الخطأ 3: تحديد الأنواع أكثر من اللازم
 
 ```typescript
 // ❌ Unnecessary: TypeScript can infer this
@@ -361,11 +361,11 @@ const [user, setUser] = useState<User | null>(null);
 const [items, setItems] = useState<string[]>([]);
 ```
 
-## Performance Tips
+## نصائح الأداء
 
-### Tip 1: Lazy Initial State
+### نصيحة 1: حالة ابتدائية كسولة
 
-When initial state requires expensive computation, use a function:
+حين تتطلّب الحالة الابتدائية حسابًا مكلفًا، استخدم دالةً:
 
 ```typescript
 function ExpensiveComponent() {
@@ -383,9 +383,9 @@ function ExpensiveComponent() {
 }
 ```
 
-### Tip 2: Batching State Updates
+### نصيحة 2: تجميع تحديثات الحالة
 
-React automatically batches updates in event handlers:
+يجمع React تحديثات الحالة تلقائيًا في معالجات الأحداث:
 
 ```typescript
 function TodoBatching() {
@@ -413,9 +413,9 @@ function TodoBatching() {
 }
 ```
 
-## Putting It Together: A Complete Example
+## تجميع كل ما سبق: مثال كامل
 
-Here’s everything we’ve learned in a practical todo list component:
+إليك كل ما تعلّمناه في مكوّن عملي لقائمة المهام:
 
 ```typescript
 interface Todo {
@@ -522,15 +522,15 @@ function TodoManager() {
 }
 ```
 
-## Key Takeaways
+## الخلاصات الأساسية
 
-1. **Let TypeScript infer when possible** - For simple primitives, TypeScript’s inference is usually sufficient
-2. **Be explicit with complex types** - Arrays, objects, and unions need explicit typing
-3. **Use union types with null** - The `Type | null` pattern is perfect for async data
-4. **Prefer functional updates** - They prevent stale closure bugs and are more predictable
-5. **Split state by concern** - Keep unrelated state separate for cleaner code
-6. **Initialize expensive state lazily** - Use functions for expensive initial computations
+1. **دع TypeScript يستنتج متى أمكن** - بالنسبة للأنواع الأولية البسيطة، يكون استنتاج TypeScript كافيًا عادةً
+2. **كن صريحًا مع الأنواع المعقّدة** - تحتاج المصفوفات والكائنات والأنواع الاتحادية إلى تحديدٍ صريح
+3. **استخدم الأنواع الاتحادية مع null** - نمط `Type | null` مثالي للبيانات غير المتزامنة
+4. **فضّل التحديثات الوظيفية** - فهي تمنع أخطاء الإغلاقات القديمة وأكثر قابلية للتنبّؤ
+5. **قسّم الحالة بحسب المسؤوليات** - أبقِ الحالة غير المرتبطة منفصلة للحصول على شيفرة أنظف
+6. **هيّئ الحالة المكلفة كسولًا** - استخدم الدوال للحسابات الابتدائية المكلفة
 
-## What’s Next?
+## ما التالي؟
 
-Now that you understand the fundamentals of useState with TypeScript, you’re ready to tackle async data fetching. In the next tutorial, we’ll combine useState with useEffect to fetch real todos from the JSONPlaceholder API, handle loading states, and manage errors—all with complete type safety.
+الآن بعد أن فهمتَ أساسيات useState مع TypeScript، أصبحتَ مستعدًا لخوض غمار جلب البيانات غير المتزامنة. في الدليل التالي، سنجمع useState مع useEffect لجلب مهام حقيقية من واجهة JSONPlaceholder، ومعالجة حالات التحميل، وإدارة الأخطاء — كل ذلك بأمانٍ كامل في الأنواع.

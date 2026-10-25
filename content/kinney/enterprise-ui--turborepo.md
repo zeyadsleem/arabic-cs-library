@@ -1,24 +1,24 @@
 ---
-title: "Turborepo"
-lang: en
+title: "Turborepo: مشغّل المهام المدرك للمخططات والتخزين المؤقت"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/turborepo"
 ---
 
-Turborepo is Vercel’s build system for JavaScript and TypeScript codebases. It’s designed for monorepos, but the [official docs](https://turborepo.dev/docs/getting-started/add-to-existing-repository) are very clear that it also works for single-package workspaces. One current-version detail is worth getting out of the way immediately: modern Turborepo configuration uses `tasks` in `turbo.json`. If you run into older articles using `pipeline`, you’re reading old material, and the official codemods literally include a `rename-pipeline` migration for 2.x. The internet, naturally, remains full of archaeological debris.
+Turborepo هو نظام البناء من Vercel لقواعد شيفرة JavaScript وTypeScript. صُمم للمستودعات الأحادية، لكن [الوثائق الرسمية](https://turborepo.dev/docs/getting-started/add-to-existing-repository) واضحة جدًا في أنه يعمل أيضًا مع مساحات العمل أحادية الحزمة. وثمة تفصيلة تخص الإصدار الحالي يجدر إزاحتها عن الطريق فورًا: إعداد Turborepo الحديث يستخدم `tasks` في `turbo.json`. وإن صادفت مقالات أقدم تستخدم `pipeline` فأنت تقرأ مواد قديمة، بل إن أدوات الترميز الرسمية تتضمن ترحيلًا باسم `rename-pipeline` للإصدار 2.x. أما الإنترنت، بطبيعة الحال، فيظل مليئًا بالحطام الأثري.
 
-Turborepo is also not a package manager, not a replacement for workspaces, and not the thing that resolves dependencies. The official docs say it’s built on top of package-manager workspaces, and they say outright that dependency installation, linking, and module resolution are still the package manager’s job. Turborepo sits above that layer and optimizes task execution, task ordering, and caching.
+كما أن Turborepo ليس مدير حزم، ولا بديلًا عن مساحات العمل، ولا الجهة التي تحل الاعتمادات. تقول الوثائق الرسمية إنه مبني فوق مساحات عمل مدير الحزم، وتقول صراحةً إن تثبيت الاعتمادات وربطها وحل الوحدات تبقى مهمة مدير الحزم. فـTurborepo يجلس فوق تلك الطبقة ويحسّن تنفيذ المهام وترتيبها والتخزين المؤقت.
 
-## What Turborepo Is Actually For
+## ما الغرض الحقيقي من Turborepo
 
-The shortest accurate definition: Turborepo takes the package graph your workspace already has, lets you define a task graph on top of it, and then runs those tasks as fast as possible through parallelization, dependency-aware ordering, and caching. The [docs describe](https://turborepo.dev/repo/docs/core-concepts/package-and-task-graph) the package graph as coming from your package manager’s internal dependency relationships, and the task graph as the DAG you define in `turbo.json` with `dependsOn`.
+أقصر تعريف دقيق: يأخذ Turborepo مخطط الحزم الموجود لديك في مساحة العمل، ويتيح لك تعريف مخطط مهام فوقه، ثم يشغّل تلك المهام بأسرع ما يمكن عبر التوازي والترتيب المدرك للاعتمادات والتخزين المؤقت. و[تصف الوثائق](https://turborepo.dev/repo/docs/core-concepts/package-and-task-graph) مخطط الحزم بأنه نابع من علاقات الاعتماد الداخلية في مدير الحزم، ومخطط المهام بأنه الرسم البياني الموجّه غير الحلقي (DAG) الذي تعرّفه في `turbo.json` عبر `dependsOn`.
 
-That package-graph-first model matters because Turborepo is fundamentally workspace-aware. If `apps/web` depends on `@repo/ui`, and both have a `build` task, then `"dependsOn": ["^build"]` means the UI package’s build must complete before the app’s build starts. The docs also call out a subtle case called a **transit node**: if an intermediate package doesn’t have its own task, Turborepo can still traverse through it to reach dependencies that do. That’s why it feels smarter than “run all scripts in all folders” tools.
+ويهم هذا النموذج الذي يضع مخطط الحزم أولًا لأن Turborepo مدرك لمساحة العمل جوهريًا. فإذا كان `apps/web` يعتمد على `@repo/ui`، وكان لكل منهما مهمة `build`، فإن `"dependsOn": ["^build"]` تعني أن بناء حزمة الواجهة يجب أن يكتمل قبل أن يبدأ بناء التطبيق. وتشير الوثائق أيضًا إلى حالة دقيقة تسمى **عقدة العبور (transit node)**: إذا لم تكن لحزمة وسيطة مهمتها الخاصة، فلا يزال بإمكان Turborepo المرور عبرها للوصول إلى الاعتمادات التي تملك مهامًا. ولهذا يبدو أذكى من الأدوات التي «تشغّل كل النصوص في كل المجلدات».
 
-## The Core Mental Model
+## النموذج الذهني الأساسي
 
-A healthy Turborepo starts with an ordinary workspace layout. The [official guidance](https://turborepo.dev/docs/guides/workspaces) uses the usual `apps/*` and `packages/*` structure, plus a root `package.json`, a lockfile, and a root `turbo.json`. Turborepo can be added incrementally to an existing repo, and for multi-package workspaces it relies on the workspace definitions your package manager already understands.
+يبدأ أي Turborepo سليم بتخطيط مساحة عمل عادي. ويعتمد [الإرشاد الرسمي](https://turborepo.dev/docs/guides/workspaces) البنية المعتادة `apps/*` و`packages/*`، مع `package.json` جذري وملف قفل و`turbo.json` جذري. ويمكن إضافة Turborepo تدريجيًا إلى مستودع قائم، وهو يعتمد في مساحات العمل متعددة الحزم على تعريفات مساحة العمل التي يفهمها مدير الحزم لديك مسبقًا.
 
-A good baseline:
+خط أساس جيد:
 
 ```
 repo/
@@ -35,11 +35,11 @@ repo/
   turbo.json
 ```
 
-That shape isn’t mandatory, but it matches the official examples and plays nicely with the way Turborepo thinks about application packages and library packages. The docs also recommend that application packages be the “end” of the package graph, with library or internal packages supporting them rather than the other way around.
+هذا الشكل ليس إلزاميًا، لكنه يطابق الأمثلة الرسمية وينسجم مع الطريقة التي يفكر بها Turborepo في حزم التطبيقات وحزم المكتبات. وتوصي الوثائق أيضًا بأن تكون حزم التطبيقات هي «نهاية» مخطط الحزم، مع حزم المكتبات أو الحزم الداخلية التي تسندها لا العكس.
 
-## A Good Default Setup
+## إعداد افتراضي جيد
 
-If you want one starting point that will survive contact with reality:
+إذا أردت نقطة انطلاق واحدة تصمد أمام الاحتكاك مع الواقع:
 
 ```json
 {
@@ -68,19 +68,19 @@ If you want one starting point that will survive contact with reality:
 }
 ```
 
-This works because it models the three things Turborepo cares most about: dependency order, cacheable outputs, and which tasks are intentionally non-cacheable long-running processes. The [docs recommend](https://turborepo.dev/repo/docs/crafting-your-repository/configuring-tasks) `dependsOn` for ordering, `outputs` for restoring files on cache hits, and `cache: false` plus `persistent: true` for development servers and other never-ending tasks.
+هذا يعمل لأنه يُنمذج الأمور الثلاثة التي يهمها Turborepo أكثر من غيرها: ترتيب الاعتمادات، والمخرجات القابلة للتخزين المؤقت، وأي المهام عمليات طويلة الأمد غير قابلة للتخزين المؤقت عن قصد. و[توصي الوثائق](https://turborepo.dev/repo/docs/crafting-your-repository/configuring-tasks) باستخدام `dependsOn` للترتيب، و`outputs` لاستعادة الملفات عند إصابات الذاكرة المؤقتة، و`cache: false` مع `persistent: true` لخوادم التطوير وغيرها من المهام التي لا تنتهي.
 
-## How Task Orchestration Actually Works
+## كيف يعمل تنسيق المهام فعليًا
 
-Every key in the root `tasks` object is a task Turborepo can run, and Turborepo looks for scripts with matching names in package `package.json` files. So `turbo run build` means “find every package with a `build` script, then run them according to the task graph.” The docs also note that `turbo run` is aliased to `turbo`, though they [recommend](https://turborepo.dev/repo/docs/reference/configuration) using the explicit `turbo run` form in CI to avoid future subcommand naming collisions.
+كل مفتاح في كائن `tasks` الجذري هو مهمة يستطيع Turborepo تشغيلها، ويبحث Turborepo عن نصوص برمجية بأسماء مطابقة في ملفات `package.json` الخاصة بالحزم. لذا فإن `turbo run build` تعني «اعثر على كل حزمة فيها نص `build`، ثم شغّلها وفق مخطط المهام». وتلاحظ الوثائق أيضًا أن `turbo run` لها اسم مستعار هو `turbo`، لكنها [توصي](https://turborepo.dev/repo/docs/reference/configuration) باستخدام الصيغة الصريحة `turbo run` في CI لتفادي تضارب أسماء الأوامر الفرعية مستقبلًا.
 
-The most important `dependsOn` patterns are simple. `"^build"` means “run this task in dependency packages first.” `"build"` means “run another task in the same package first.” `"utils#build"` means “run this exact package task first,” and you can also target a task itself in the root config like `"web#lint"`. The docs give all three patterns because they are the real vocabulary of the task graph.
+أهم أنماط `dependsOn` بسيطة. فـ`"^build"` تعني «شغّل هذه المهمة في حزم الاعتماد أولًا»، و`"build"` تعني «شغّل مهمة أخرى في الحزمة نفسها أولًا»، و`"utils#build"` تعني «شغّل مهمة هذه الحزمة تحديدًا أولًا»، ويمكنك أيضًا استهداف مهمة بعينها في الإعداد الجذري مثل `"web#lint"`. وتقدم الوثائق الأنماط الثلاثة لأنها المفردات الحقيقية لمخطط المهام.
 
-Turborepo also parallelizes aggressively. The docs explicitly position this as a key reason it’s fast: rather than forcing a repository through one giant serial sequence like “lint everything, then build everything, then test everything,” it runs whatever can safely run in parallel and only respects the edges in the task graph where order actually matters.
+ويوازي Turborepo بين المهام بقوة أيضًا. وتقدم الوثائق ذلك صراحةً كسبب رئيسي لسرعته: فبدلًا من إجبار المستودع على تسلسل واحد عملاق مثل «افحص كل شيء، ثم ابنِ كل شيء، ثم اختبر كل شيء»، يشغّل كل ما يمكن تشغيله بأمان على التوازي ولا يحترم إلا الحواف في مخطط المهام حيث يهم الترتيب فعلًا.
 
-There are also some advanced task controls that matter a lot in real repos. `persistent: true` marks a task as long-running, which means other tasks can’t depend on it because it never exits. `interactive: true` lets it accept terminal input. `interruptible: true` allows a persistent task to be restarted by `turbo watch`. And `with` lets you say “whenever I run this task, also run these other tasks alongside it,” which is particularly useful for development servers that should start together.
+وثمة أيضًا بعض أدوات التحكم المتقدمة في المهام التي تهم كثيرًا في المستودعات الحقيقية. فـ`persistent: true` يعلّم المهمة بأنها طويلة الأمد، ما يعني أن المهام الأخرى لا تستطيع الاعتماد عليها لأنها لا تنتهي أبدًا. و`interactive: true` يتيح لها قبول المدخلات من الطرفية. و`interruptible: true` يسمح لـ`turbo watch` بإعادة تشغيل مهمة دائمة. و`with` يتيح لك القول «كلما شغّلت هذه المهمة، شغّل هذه المهام الأخرى إلى جانبها»، وهو مفيد بشكل خاص لخوادم التطوير التي ينبغي أن تبدأ معًا.
 
-A common dev configuration:
+إعداد تطوير شائع:
 
 ```json
 {
@@ -100,17 +100,17 @@ A common dev configuration:
 }
 ```
 
-That setup follows the [official guidance](https://turborepo.dev/docs/reference/configuration) for long-running tasks much better than trying to force `dev` to act like a normal cacheable build step. Turborepo is fast, but it still understands that a server process that never exits is not a normal dependency. Shocking restraint from software, for once.
+يتبع هذا الإعداد [الإرشاد الرسمي](https://turborepo.dev/docs/reference/configuration) للمهام طويلة الأمد أفضل بكثير من محاولة إجبار `dev` على التصرف كخطوة بناء عادية قابلة للتخزين المؤقت. فـTurborepo سريع، لكنه يظل يفهم أن عملية خادم لا تنتهي ليست اعتمادًا عاديًا. ضبط مفاجئ من البرمجيات، للمرة الأولى.
 
-## Caching Is the Real Feature
+## التخزين المؤقت هو الميزة الحقيقية
 
-The headline feature isn’t “monorepo support.” It’s caching. Turborepo’s [caching docs](https://turborepo.dev/repo/docs/crafting-your-repository/caching) describe caching as restoring task results from a fingerprint of the inputs instead of repeating work, and they’re explicit that tasks are assumed to be deterministic. If a task can produce different outputs from inputs Turborepo is unaware of, cache correctness can break. That’s the entire game: fast when deterministic, nonsense when sloppy.
+الميزة البارزة ليست «دعم المستودعات الأحادية»، بل التخزين المؤقت. فـ[وثائق التخزين المؤقت](https://turborepo.dev/repo/docs/crafting-your-repository/caching) عند Turborepo تصف التخزين المؤقت بأنه استعادة نتائج المهام من بصمة للمدخلات بدلًا من تكرار العمل، وهي صريحة في أن المهام يُفترض أن تكون حتمية. وإذا كانت مهمة ما قادرة على إنتاج مخرجات مختلفة انطلاقًا من مدخلات لا يعلمها Turborepo، فقد يختل صواب التخزين المؤقت. وهذه هي اللعبة كلها: سرعة عندما يكون كل شيء حتميًا، وهراء عندما يكون العمل رخوًا.
 
-Turborepo caches two things: file outputs and logs. File outputs only come back if you tell Turborepo what they are with the `outputs` key. If you omit `outputs` or leave it empty, Turborepo caches no file outputs, only logs. That’s one of the most common causes of “cache hits but my build artifacts are missing” confusion. The docs say this very plainly, because apparently many people need to learn it the hard way.
+يخزّن Turborepo شيئين مؤقتًا: مخرجات الملفات والسجلات. ولا تعود مخرجات الملفات إلا إذا أخبرت Turborepo ما هي عبر مفتاح `outputs`. وإن حذفت `outputs` أو تركته فارغًا، لا يخزّن Turborepo أي مخرجات ملفات، بل السجلات فقط. وهذا أحد أكثر أسباب الارتباك شيوعًا: «إصابات ذاكرة مؤقتة لكن مخرجات البناء مفقودة». وتقول الوثائق هذا بوضوح شديد، لأنه يبدو أن كثيرين بحاجة إلى تعلمه بالطريقة الصعبة.
 
-The `inputs` key controls which files contribute to a task’s hash. By default, Turborepo uses all files in the package that are checked into source control, and certain files like `package.json`, `turbo.json`, and the lockfile are always considered inputs. If you define `inputs`, you opt out of the default behavior, including `.gitignore` handling, unless you reintroduce it with `$TURBO_DEFAULT$`. That’s powerful, but it’s also how teams accidentally overfit cache behavior and then spend a week wondering why changes don’t invalidate anything.
+يتحكم مفتاح `inputs` في أي الملفات تسهم في تجزئة المهمة. افتراضيًا، يستخدم Turborepo كل الملفات في الحزمة المُودَعة في نظام إدارة المصادر، وتُعد ملفات معينة مثل `package.json` و`turbo.json` وملف القفل مدخلات دائمًا. وإذا عرّفت `inputs`، فإنك تخرج من السلوك الافتراضي، بما في ذلك معالجة `.gitignore`، إلا إذا أعدتها عبر `$TURBO_DEFAULT$`. وهذا قوي، لكنه أيضًا الطريق الذي تُفرط فيه الفرق في تكييف سلوك التخزين المؤقت عن غير قصد ثم تمضي أسبوعًا تتساءل لماذا لا يُبطل أي تغيير شيئًا.
 
-A careful `inputs` rule often looks like this:
+وغالبًا ما تبدو قاعدة `inputs` الحذرة هكذا:
 
 ```json
 {
@@ -125,11 +125,11 @@ A careful `inputs` rule often looks like this:
 }
 ```
 
-That follows the official pattern of starting from the default hash behavior and trimming only what you know shouldn’t affect the output. The docs explicitly recommend `$TURBO_DEFAULT$` for that reason.
+هذا يتبع النمط الرسمي: البدء من سلوك التجزئة الافتراضي وقصّ ما تعرف فقط أنه لا ينبغي أن يؤثر في المخرجات. وتوصي الوثائق صراحةً بـ`$TURBO_DEFAULT$` لهذا السبب.
 
-The local filesystem cache lives in `.turbo/cache` by default. [Remote Caching](https://turborepo.dev/docs/crafting-your-repository/caching) extends the same idea to other machines and CI so the same task doesn’t need to be re-executed separately by every developer, CI job, and deployment machine. The official docs say Vercel Remote Cache works with zero configuration as the default provider, but Turborepo also supports any provider implementing its Remote Cache API and even self-hosted caches.
+تعيش ذاكرة التخزين المؤقت المحلية على نظام الملفات في `.turbo/cache` افتراضيًا. ويوسّع [التخزين المؤقت البعيد](https://turborepo.dev/docs/crafting-your-repository/caching) الفكرة نفسها إلى أجهزة أخرى وCI بحيث لا تحتاج المهمة نفسها إلى إعادة تنفيذ منفصلة لدى كل مطوّر وكل مهمة CI وكل آلة نشر. وتقول الوثائق الرسمية إن Vercel Remote Cache يعمل دون أي إعداد كمزود افتراضي، لكن Turborepo يدعم أيضًا أي مزود ينفذ واجهة Remote Cache API الخاصة به، بل وحتى ذاكرات تخزين مؤقت مستضافة ذاتيًا.
 
-If you care about artifact integrity, Turborepo also supports [signing remote-cache artifacts](https://turborepo.dev/repo/docs/core-concepts/remote-caching) with HMAC-SHA256. You enable this with `remoteCache.signature: true` and provide `TURBO_REMOTE_CACHE_SIGNATURE_KEY`; failed verification is treated as a cache miss. One of those features people ignore until the day they suddenly care very much about authenticity.
+وإذا كانت سلامة المخرجات تهمك، يدعم Turborepo أيضًا [توقيع مخرجات الذاكرة المؤقتة البعيدة](https://turborepo.dev/repo/docs/core-concepts/remote-caching) بـHMAC-SHA256. وتمكّن ذلك عبر `remoteCache.signature: true` وتوفر `TURBO_REMOTE_CACHE_SIGNATURE_KEY`؛ وتُعامل نتيجة فشل التحقق كإخفاق في الذاكرة المؤقتة. وهو من تلك الميزات التي يتجاهلها الناس حتى اليوم الذي يصبح فيه التحقق من الأصالة مهمًا جدًا لهم فجأة.
 
 ```json
 {
@@ -139,25 +139,25 @@ If you care about artifact integrity, Turborepo also supports [signing remote-ca
 }
 ```
 
-One newer wrinkle is Git worktree cache sharing, currently documented as pre-release. When no explicit `cacheDir` is set, Turborepo can share local cache between the main worktree and linked worktrees, which improves reuse across branches on the same machine. Set `cacheDir` explicitly and that behavior is disabled.
+وثمة تفصيلة أحدث هي مشاركة ذاكرة التخزين المؤقت بين أشجار عمل Git، وهي موثّقة حاليًا كإصدار أولي (pre-release). فعندما لا يُضبط `cacheDir` صراحةً، يستطيع Turborepo مشاركة الذاكرة المؤقتة المحلية بين شجرة العمل الرئيسية وأشجار العمل المرتبطة، ما يحسّن إعادة الاستخدام عبر الفروع على الجهاز نفسه. وإذا ضبطت `cacheDir` صراحةً، تعطَّل هذا السلوك.
 
-## Environment Variables Are Where Cache Correctness Lives or Dies
+## متغيّرات البيئة هي حيث يحيا صواب التخزين المؤقت أو يموت
 
-Turborepo’s [environment docs](https://turborepo.dev/docs/crafting-your-repository/using-environment-variables) are unusually blunt about environment variables because this is where people most reliably poison their caches. The core split is `env` and `globalEnv` for variables that should affect hashing, and `passThroughEnv` and `globalPassThroughEnv` for variables that should be available at runtime but shouldn’t change the cache key. `globalEnv` affects all task hashes, while `env` is task-specific.
+تأتي [وثائق متغيّرات البيئة](https://turborepo.dev/docs/crafting-your-repository/using-environment-variables) عند Turborepo صريحة على نحو غير معتاد لأن هذا هو الموضع الذي يسمّم فيه الناس ذاكراتهم المؤقتة بأكثر الطرق موثوقية. والتقسيم الجوهري هو `env` و`globalEnv` للمتغيّرات التي ينبغي أن تؤثر في التجزئة، و`passThroughEnv` و`globalPassThroughEnv` للمتغيّرات التي ينبغي أن تكون متاحة وقت التشغيل لكن دون أن تغيّر مفتاح الذاكرة المؤقتة. ويؤثر `globalEnv` في تجزئات كل المهام، بينما `env` خاص بالمهمة.
 
-`envMode` defaults to `"strict"`, which means only explicitly allowed variables are available to task runtime. `"loose"` makes everything available, which is easier during migration but much more dangerous because it makes it easier to restore cached artifacts produced under the wrong environment. The docs explicitly say Loose Mode raises the chance of wrong-environment cache hits, which is a refreshingly direct way of saying “don’t be lazy unless you mean it.”
+قيمة `envMode` الافتراضية هي `"strict"`، ومعناها أن المتغيّرات المسموح بها صراحةً وحدها متاحة لوقت تنفيذ المهام. أما `"loose"` فتجعل كل شيء متاحًا، وهو أسهل أثناء الترحيل لكنه أخطر بكثير لأنه يسهّل استعادة مخرجات مخزنة أُنتجت في البيئة الخاطئة. وتقول الوثائق صراحةً إن الوضع المرن يرفع احتمال إصابات الذاكرة المؤقتة من بيئة خاطئة، وهي طريقة مباشرة منعشة لقول «لا تكن متساهلًا ما لم تقصد ذلك».
 
-**Framework Inference** softens the pain a bit. Turborepo automatically accounts for common framework-prefixed environment variables, so a Next.js package doesn’t need you to manually list `NEXT_PUBLIC_*` variables. You can disable framework inference if needed, but the default is on.
+**استنتاج الإطار (Framework Inference)** يخفف الألم قليلًا. فيحسب Turborepo تلقائيًا متغيّرات البيئة المسبوقة بأسماء الأطر الشائعة، فلا تحتاج حزمة Next.js إلى أن تدرج `NEXT_PUBLIC_*` يدويًا. ويمكنك تعطيل استنتاج الإطار عند الحاجة، لكنه مفعّل افتراضيًا.
 
-For `.env` handling, the docs recommend keeping `.env` files inside the packages that use them rather than at the repository root. That better matches runtime reality and reduces environment leakage across apps. The docs also warn against creating or mutating environment variables during task execution, because Turborepo hashes env state at task start and can’t account for mutations that happen afterward.
+أما معالجة `.env`، فتوصي الوثائق بإبقاء ملفات `.env` داخل الحزم التي تستخدمها لا في جذر المستودع. وهذا يطابق واقع وقت التشغيل أكثر ويقلل تسرب البيئة بين التطبيقات. وتحذّر الوثائق أيضًا من إنشاء متغيّرات البيئة أو تغييرها أثناء تنفيذ المهام، لأن Turborepo يجزّئ حالة البيئة عند بدء المهمة ولا يستطيع احتساب التغييرات التي تحدث بعد ذلك.
 
-If you want guardrails, the official [`eslint-plugin-turbo`](https://turborepo.dev/docs/reference/eslint-plugin-turbo) package flags environment variables used in source code that aren’t accounted for in `turbo.json`. Worth using in serious repos because undeclared env vars are one of the most boring ways to make a fast system subtly wrong.
+وإذا أردت حواجز حماية، فحزمة [`eslint-plugin-turbo`](https://turborepo.dev/docs/reference/eslint-plugin-turbo) الرسمية تشير إلى متغيّرات البيئة المستخدمة في الشيفرة المصدرية وغير المحتسبة في `turbo.json`. ويستحق استخدامه في المستودعات الجدّية لأن متغيّرات البيئة غير المعلنة من أكثر الطرق المملة لجعل نظام سريع خاطئًا بشكل خفي.
 
-## Packages, Dependencies, and Repository Structure
+## الحزم والاعتمادات وبنية المستودع
 
-Turborepo’s [official guidance on dependency management](https://turborepo.dev/docs/crafting-your-repository/managing-dependencies) is simple and good: install dependencies where they’re used, keep very few dependencies in the repository root, and let the package manager do package-manager things. The docs specifically say this improves clarity, allows different packages to evolve dependency versions independently if needed, and avoids unnecessary cache misses from constantly touching the workspace root.
+[الإرشاد الرسمي لإدارة الاعتمادات](https://turborepo.dev/docs/crafting-your-repository/managing-dependencies) عند Turborepo بسيط وجيد: ثبّت الاعتمادات حيث تُستخدم، وأبقِ اعتمادات قليلة جدًا في جذر المستودع، ودع مدير الحزم يفعل ما يفعله مدير الحزم. وتقول الوثائق تحديدًا إن هذا يحسّن الوضوح، ويتيح لحزم مختلفة تطوير إصدارات اعتمادها باستقلالية عند الحاجة، ويتجنب إخفاقات الذاكرة المؤقتة غير الضرورية الناتجة عن لمس جذر مساحة العمل باستمرار.
 
-**Internal dependencies** are just workspace packages installed through your package manager’s workspace syntax, such as `workspace:*`. Turborepo automatically builds the package graph from these relationships, which is why good `package.json` dependency declarations matter so much. If you lie in `package.json`, the graph lies back.
+**الاعتمادات الداخلية** ليست سوى حزم مساحة عمل مثبّتة عبر صيغة مساحة العمل في مدير الحزم، مثل `workspace:*`. ويبني Turborepo مخطط الحزم تلقائيًا من هذه العلاقات، ولهذا تهم إعلانات الاعتماد الجيدة في `package.json` إلى هذا الحد. وإذا كذبت في `package.json`، كذب عليك المخطط بالمقابل.
 
 ```json
 {
@@ -169,21 +169,21 @@ Turborepo’s [official guidance on dependency management](https://turborepo.dev
 }
 ```
 
-The docs also distinguish [application packages from library packages](https://turborepo.dev/docs/core-concepts/package-types). Application packages are typically your deployable endpoints, often living under `apps/`, and are best treated as the end of the package graph. Library packages are the shared internal packages that support them. That distinction helps keep the graph directional instead of turning your repo into a social network of mutual dependency.
+وتميّز الوثائق أيضًا بين [حزم التطبيقات وحزم المكتبات](https://turborepo.dev/docs/core-concepts/package-types). حزم التطبيقات هي عادة نقاط النشر النهائية لديك، وغالبًا ما تعيش تحت `apps/`، والأفضل معاملتها كنهاية مخطط الحزم. أما حزم المكتبات فهي حزم داخلية مشتركة تسندها. ويساعد هذا التمييز في إبقاء المخطط اتجاهيًا بدلًا من تحويل مستودعك إلى شبكة اجتماعية من الاعتماد المتبادل.
 
-| Strategy | Exports | Build step | Turborepo caching | TypeScript `paths` | Best for |
+| الاستراتيجية | الصادرات | خطوة البناء | التخزين المؤقت في Turborepo | `paths` في TypeScript | الأنسب لـ |
 | --- | --- | --- | --- | --- | --- |
-| Just-in-Time (JIT) | Raw source | None (consumer’s bundler) | No build to cache | Not supported | Simple internal packages, fast iteration |
-| Compiled | Built output | `tsc` or similar | Yes | Supported | Shared libraries with stable APIs |
-| Publishable | npm-ready dist | Full build + pack | Yes | Supported | Packages published to a registry |
+| في الوقت المناسب (JIT) | الشيفرة المصدرية الخام | لا شيء (المُجمِّع المستهلك) | لا بناء ليُخزَّن | غير مدعوم | حزم داخلية بسيطة وتكرار سريع |
+| مُجمَّعة | المخرجات المبنية | `tsc` أو ما يماثله | نعم | مدعوم | مكتبات مشتركة بواجهات API مستقرة |
+| قابلة للنشر | مخرجات dist جاهزة لـnpm | بناء كامل + تحزيم | نعم | مدعوم | حزم تُنشر إلى سجل |
 
-For internal packages, the docs describe three strategies: **Just-in-Time packages**, **Compiled packages**, and **Publishable packages**. [JIT packages](https://turborepo.dev/repo/docs/core-concepts/internal-packages) export source directly and rely on consuming bundlers to compile them. Compiled packages build themselves with tools like `tsc`. Publishable packages prepare for npm publication. The docs note that JIT packages are low-config but can’t have their own Turborepo-cached build step, because there’s no build step to cache. They also warn that JIT packages can’t use TypeScript `paths` the way people often hope.
+أما الحزم الداخلية، فتصف الوثائق ثلاث استراتيجيات: **حزم في الوقت المناسب**، و**حزم مُجمَّعة**، و**حزم قابلة للنشر**. و[حزم JIT](https://turborepo.dev/repo/docs/core-concepts/internal-packages) تصدّر الشيفرة المصدرية مباشرة وتعتمد على المُجمِّعات المستهلكة في ترجمتها. والحزم المُجمَّعة تبني نفسها بأدوات مثل `tsc`. والحزم القابلة للنشر تُعدّ للنشر على npm. وتلاحظ الوثائق أن حزم JIT قليلة الإعداد لكن لا يمكن أن تملك خطوة بناء مخزنة في Turborepo، لأنه لا توجد خطوة بناء تُخزَّن. وتحذّر أيضًا من أن حزم JIT لا تستطيع استخدام `paths` في TypeScript بالطريقة التي يأملها الناس غالبًا.
 
-For TypeScript internal libraries, the [official docs recommend](https://turborepo.dev/docs/guides/tools/typescript) using `tsc` to compile packages whenever possible instead of bundling, because bundling adds extra complexity and can make downstream debugging harder. They also recommend `declaration` and `declarationMap` for compiled packages so editor go-to-definition works across package boundaries.
+وبالنسبة إلى المكتبات الداخلية بلغة TypeScript، [توصي الوثائق الرسمية](https://turborepo.dev/docs/guides/tools/typescript) باستخدام `tsc` لترجمة الحزم كلما أمكن بدلًا من التجميع في حزمة واحدة، لأن ذلك يضيف تعقيدًا إضافيًا وقد يصعّب التنقيح في المراحل اللاحقة. وتوصي أيضًا بـ`declaration` و`declarationMap` للحزم المُجمَّعة كي يعمل الانتقال إلى التعريف في المحرر عبر حدود الحزم.
 
-## Package Configurations
+## إعدادات الحزم
 
-One root `turbo.json` works for many repos, but not all. Turborepo supports [package-level `turbo.json` files](https://turborepo.dev/repo/docs/reference/package-configurations) that extend the root configuration with `extends: ["//"]`, and package configs can also extend other packages to share task setup. This is especially useful in mixed-framework repos where one global `outputs` setting would otherwise become a landfill of `.next/**`, `.svelte-kit/**`, and every other framework’s leftovers.
+ملف `turbo.json` جذري واحد يكفي لكثير من المستودعات، لكن ليس كلها. ويدعم Turborepo [ملفات `turbo.json` على مستوى الحزمة](https://turborepo.dev/repo/docs/reference/package-configurations) التي توسّع الإعداد الجذري عبر `extends: ["//"]`، كما يمكن لإعدادات الحزم أن توسّع حزمًا أخرى لمشاركة إعداد المهام. وهذا مفيد بشكل خاص في المستودعات متعددة الأطر حيث يصبح إعداد `outputs` عالمي واحد لولا ذلك مكب نفايات من `.next/**` و`.svelte-kit/**` وبقايا كل إطار آخر.
 
 ```json
 // apps/web/turbo.json
@@ -213,15 +213,15 @@ One root `turbo.json` works for many repos, but not all. Turborepo supports [pac
 }
 ```
 
-The important nuance is that package-specific `package#task` entries in the root config fully overwrite task configuration, whereas Package Configurations inherit scalar fields and override only what they specify. The official docs increasingly position Package Configurations as the cleaner default for most package-specific behavior.
+الفارق الدقيق المهم هو أن مدخلات `package#task` الخاصة بحزمة في الإعداد الجذري تستبدل إعداد المهمة استبدالًا كاملًا، بينما ترث إعدادات الحزم الحقول القياسية ولا تتجاوز إلا ما تحدده. وتميل الوثائق الرسمية بشكل متزايد إلى تقديم إعدادات الحزم كخيار افتراضي أنظف لمعظم السلوك الخاص بحزمة بعينها.
 
-## Running Less Work
+## تشغيل عمل أقل
 
-Turborepo’s [`run` command](https://turborepo.dev/repo/docs/reference/run) is where the practical ergonomics live. `--filter` supports package names, directories, and Git commit ranges, with a small microsyntax language for dependencies, dependents, negation, and commit ranges. `...web` selects dependents, `web...` selects dependencies, `!` removes targets, and commit-based filters use `[]`. It’s a little weird at first, then annoyingly useful forever.
+أمر [`run`](https://turborepo.dev/repo/docs/reference/run) عند Turborepo هو حيث تسكن سهولة الاستخدام العملية. فـ`--filter` يدعم أسماء الحزم والمجلدات ونطاقات إيداعات Git، بلغة صغيرة فائقة الصياغة للاعتمادات والتابعين والنفي ونطاقات الإيداعات. و`...web` تختار التابعين، و`web...` تختار الاعتمادات، و`!` تزيل الأهداف، وتستخدم المرشحات المبنية على الإيداعات `[]`. الأمر غريب بعض الشيء في البداية، ثم يصبح مفيدًا بشكل مزعج إلى الأبد.
 
-`--affected` is the friendlier entry point for change-based execution. The docs say it’s equivalent by default to `--filter=...[main...HEAD]`, and they warn that it requires sufficient Git history in the checkout. In shallow CI clones, everything may look changed unless you fetch enough history or adjust `TURBO_SCM_BASE` and `TURBO_SCM_HEAD`.
+و`--affected` هو نقطة الدخول الأكثر ودًّا للتنفيذ المبني على التغييرات. وتقول الوثائق إنه يكافئ افتراضيًا `--filter=...[main...HEAD]`، وتحذّر من أنه يتطلب تاريخ Git كافيًا في النسخة المسحوبة. وفي الاستنساخات السطحية في CI، قد يبدو كل شيء متغيرًا ما لم تجلب تاريخًا كافيًا أو تضبط `TURBO_SCM_BASE` و`TURBO_SCM_HEAD`.
 
-Some useful examples:
+بعض الأمثلة المفيدة:
 
 ```bash
 turbo run build --filter=web
@@ -230,68 +230,68 @@ turbo run lint --affected
 turbo run web#lint --only
 ```
 
-All of those patterns are direct extensions of the official filter model, and they’re where Turborepo starts paying for itself in larger repositories. It’s much nicer to say “run the right work” than to pretend every CI job needs to lovingly recheck the entire universe.
+كل هذه الأنماط امتدادات مباشرة لنموذج المرشحات الرسمي، وهي حيث يبدأ Turborepo في تغطية تكلفته في المستودعات الكبيرة. فمن الأجمل بكثير أن تقول «شغّل العمل الصحيح» من أن تتظاهر بأن كل مهمة CI تحتاج إلى إعادة فحص الكون بأكمله بحب وعناية.
 
-If you want to skip even more work, [`turbo-ignore`](https://turborepo.dev/repo/docs/crafting-your-repository/constructing-ci) exists for the pre-install phase of CI. The docs describe it as a way to determine whether a package or its dependencies have changed, so you can skip expensive setup like container preparation or dependency installation when a later Turborepo run would only hit cache anyway. It’s a more advanced optimization, but it becomes very attractive once CI bills start getting theatrical.
+وإذا أردت تخطي عمل أكثر، فهناك [`turbo-ignore`](https://turborepo.dev/repo/docs/crafting-your-repository/constructing-ci) لمرحلة ما قبل التثبيت في CI. وتصفه الوثائق بأنه طريقة لتحديد ما إذا تغيّرت حزمة أو تغيّرت اعتماداتها، بحيث يمكنك تخطي إعداد مكلف مثل تجهيز الحاوية أو تثبيت الاعتمادات عندما لا تكون نتيجة تشغيل Turborepo اللاحق سوى إصابة في الذاكرة المؤقتة على أي حال. وهو تحسين أكثر تقدمًا، لكنه يصبح جاذبًا جدًا بمجرد أن تبدأ فواتير CI في التصاعد المسرحي.
 
-## Local Development and Watch Mode
+## التطوير المحلي ووضع المراقبة
 
-[`turbo watch`](https://turborepo.dev/repo/docs/reference/watch) is dependency-aware and reruns tasks based on code changes, following the ordering in your task graph. That makes it useful for tasks that need graph-aware restarts rather than just file-local watching. But the docs also say that if your tool already understands dependency changes on its own—like a framework dev server that watches internal packages correctly—you should just use that tool’s native watcher and mark the task as `persistent`.
+[`turbo watch`](https://turborepo.dev/repo/docs/reference/watch) مدرك للاعتمادات ويعيد تشغيل المهام بناءً على تغييرات الشيفرة، متبعًا الترتيب في مخطط مهامك. وهذا يجعله مفيدًا للمهام التي تحتاج إلى إعادات تشغيل مدركة للمخطط لا مجرد مراقبة محلية للملفات. لكن الوثائق تقول أيضًا إن كانت أداتك تفهم تغييرات الاعتمادات بنفسها—مثل خادم تطوير إطار يراقب الحزم الداخلية بشكل صحيح—فما عليك سوى استخدام المراقب الأصلي لتلك الأداة وتعليم المهمة بأنها `persistent`.
 
-Persistent tasks behave specially in watch mode. Because they don’t exit, they can’t participate as normal dependency edges. By default they’re ignored for restart purposes, and if you want `turbo watch` to restart them, you need `interruptible: true`. The docs also warn that cache writes in watch mode are still experimental behind `--experimental-write-cache`.
+تتصرف المهام الدائمة تصرفًا خاصًا في وضع المراقبة. ولأنها لا تنتهي، لا يمكنها المشاركة كحواف اعتماد عادية. وافتراضيًا تُتجاهل لأغراض إعادة التشغيل، وإن أردت لـ`turbo watch` إعادة تشغيلها فأنت تحتاج إلى `interruptible: true`. وتحذّر الوثائق أيضًا من أن كتابات الذاكرة المؤقتة في وضع المراقبة لا تزال تجريبية خلف العلم `--experimental-write-cache`.
 
-There’s a nasty edge case here: if a watched task writes files that are checked into source control, watch mode can loop because it sees its own outputs as changes. The docs say Turborepo has some hash-based protections, but they’re not foolproof, and the recommended fix is not to keep those task outputs in Git. Sensible advice, which of course many repos will ignore until the fans start spinning.
+وثمة حالة حدّية خبيثة هنا: إذا كتبت مهمة مراقَبة ملفات مُودَعة في نظام إدارة المصادر، فقد يدخل وضع المراقبة في حلقة لأنه يرى مخرجاته هو نفسه كتغييرات. وتقول الوثائق إن لدى Turborepo بعض الحمايات المبنية على التجزئة، لكنها ليست مضمونة، والإصلاح الموصى به هو عدم إبقاء مخرجات تلك المهام في Git. نصيحة سليمة، سيتجاهلها كثير من المستودعات بطبيعة الحال حتى تبدأ المراوح في الدوران.
 
-## CI, Remote Caching, and Docker
+## التكامل المستمر والتخزين المؤقت البعيد وDocker
 
-The [CI story](https://turborepo.dev/repo/docs/crafting-your-repository/constructing-ci) is straightforward. Remote Caching in CI is enabled by setting `TURBO_TOKEN` and `TURBO_TEAM`, after which your CI machines can read and write the shared cache. The docs recommend leaning on caching first, then layering in filtering and more targeted optimizations later. They also explicitly recommend using `turbo run` in CI and pinning any global `turbo` install to the same major version declared in your repository, especially in cases like `turbo prune` where you may be running before dependencies are installed.
+[قصة CI](https://turborepo.dev/repo/docs/crafting-your-repository/constructing-ci) مباشرة. فيُفعَّل التخزين المؤقت البعيد في CI بضبط `TURBO_TOKEN` و`TURBO_TEAM`، وبعد ذلك تستطيع آلات CI لديك قراءة الذاكرة المؤقتة المشتركة والكتابة فيها. وتوصي الوثائق بالاعتماد على التخزين المؤقت أولًا، ثم إضافة المرشحات وتحسينات أكثر استهدافًا لاحقًا. وتوصي صراحةً أيضًا باستخدام `turbo run` في CI وبتثبيت أي تثبيت عالمي لـ`turbo` على الإصدار الرئيسي نفسه المعلن في مستودعك، خصوصًا في حالات مثل `turbo prune` حيث قد تعمل قبل تثبيت الاعتمادات.
 
-Turborepo’s daemon is a local performance optimization and is disabled in CI regardless of config. Useful to know because people love hunting phantom CI differences that are actually just “the daemon isn’t there.”
+خدمة Turborepo الخلفية (daemon) تحسين أداء محلي، وهي معطلة في CI بغض النظر عن الإعداد. ومن المفيد معرفة ذلك لأن الناس يحبون مطاردة فروق CI وهمية ليست في الحقيقة إلا «الخدمة الخلفية غير موجودة».
 
-For Docker, [`turbo prune`](https://turborepo.dev/docs/reference/prune) is one of the most valuable commands in the tool. The docs say it generates a partial monorepo for a target package, including the full source of required internal packages, a pruned lockfile, and a copy of the root `package.json`. With `--docker`, it splits the output into `json/` for package manifests and `full/` for full source, which aligns with Docker layer caching so dependency installation and source copying can be separated.
+أما Docker، فأمر [`turbo prune`](https://turborepo.dev/docs/reference/prune) من أثمن أوامر الأداة. وتقول الوثائق إنه يولّد مستودعًا أحاديًا جزئيًا لحزمة مستهدفة، يشمل الشيفرة الكاملة للحزم الداخلية المطلوبة، وملف قفل مقصوصًا، ونسخة من `package.json` الجذري. ومع `--docker` يقسّم المخرجات إلى `json/` لبيانات الحزم و`full/` للشيفرة الكاملة، بما يتوافق مع التخزين المؤقت لطبقات Docker بحيث يمكن فصل تثبيت الاعتمادات عن نسخ الشيفرة.
 
 ```bash
 turbo prune web --docker
 ```
 
-That split is exactly what you want in container builds. Copy `out/json` and install first, then copy `out/full` and build. The [official Docker guide](https://turborepo.dev/repo/docs/handbook/deploying-with-docker) uses this to avoid invalidating dependency layers for unrelated monorepo changes, which is one of those savings that becomes enormous once you stop pretending every service deserves a fresh lockfile-driven reinstall on every build.
+هذا التقسيم هو بالضبط ما تريده في بناءات الحاويات: انسخ `out/json` وثبّت أولًا، ثم انسخ `out/full` وابنِ. ويستخدم [دليل Docker الرسمي](https://turborepo.dev/repo/docs/handbook/deploying-with-docker) هذا لتجنب إبطال طبقات الاعتماد بسبب تغييرات غير ذات صلة في المستودع الأحادي، وهو من الوفورات التي تصبح هائلة بمجرد أن تتوقف عن التظاهر بأن كل خدمة تستحق إعادة تثبيت طازجة مدفوعة بملف القفل في كل بناء.
 
-One useful nuance from the docs: `turbo prune` and `pnpm deploy` are not the same thing. `turbo prune` produces a partial monorepo, preserving repo structure for the target package and its internal dependencies. `pnpm deploy` produces a self-contained deployable package with its own `node_modules`. Use the one that matches the thing you’re actually trying to ship.
+وثمة فارق دقيق مفيد من الوثائق: `turbo prune` و`pnpm deploy` ليسا الشيء نفسه. فـ`turbo prune` ينتج مستودعًا أحاديًا جزئيًا يحافظ على بنية المستودع للحزمة المستهدفة واعتماداتها الداخلية. أما `pnpm deploy` فينتج حزمة قابلة للنشر قائمة بذاتها لها `node_modules` الخاصة بها. استخدم الأمر الذي يطابق الشيء الذي تحاول إصداره فعليًا.
 
-## Debugging and Understanding the Repo
+## التنقيح وفهم المستودع
 
-Turborepo has grown a decent introspection toolbox. `--graph` visualizes the task graph for a run. `turbo ls` lists packages and can be filtered just like `run`. `turbo devtools` provides a browser-based package graph visualization. And since 2.2.0, [`turbo query`](https://turborepo.dev/repo/docs/core-concepts/package-and-task-graph) exposes a GraphQL interface over repository metadata so you can ask questions like which packages are affected, which have a given task, or which packages have too many dependents. That’s much better than the old debugging strategy of “stare at the repo and hope revelation occurs.”
+نمت لدى Turborepo صندوق أدوات محترم لفحص البنية الداخلية. فـ`--graph` يرسم مخطط المهام لتشغيل ما. و`turbo ls` يسرد الحزم ويمكن ترشيحه تمامًا كما تفعل مع `run`. و`turbo devtools` يوفر تصورًا لمخطط الحزم في المتصفح. ومنذ الإصدار 2.2.0، يعرض [`turbo query`](https://turborepo.dev/repo/docs/core-concepts/package-and-task-graph) واجهة GraphQL فوق بيانات المستودع الوصفية بحيث يمكنك طرح أسئلة مثل: ما الحزم المتأثرة؟ وما الحزم التي لديها مهمة معينة؟ وما الحزم التي لها تابعون أكثر من اللازم؟ وهذا أفضل بكثير من استراتيجية التنقيح القديمة: «حدّق في المستودع وانتظر حدوث الوحي».
 
-There’s also [`turbo scan`](https://turborepo.dev/repo/docs/reference/scan), which is basically an interactive performance checklist. The docs say it can help enable Git FS Monitor, the Turborepo daemon, Remote Caching, version checks, and [editor integration](https://turborepo.dev/docs/getting-started/editor-integration). It’s not magic, but it’s a good sanity pass for a repo that feels slower than it should.
+وهناك أيضًا [`turbo scan`](https://turborepo.dev/repo/docs/reference/scan)، وهو في جوهره قائمة تحقق تفاعلية للأداء. وتقول الوثائق إنه يمكن أن يساعد في تفعيل Git FS Monitor وخدمة Turborepo الخلفية والتخزين المؤقت البعيد وفحوص الإصدارات و[تكامل المحرر](https://turborepo.dev/docs/getting-started/editor-integration). إنه ليس سحرًا، لكنه تمرين فحص جيد لمستودع يبدو أبطأ مما ينبغي.
 
-If you care about editor ergonomics, the docs recommend adding the `$schema` key to `turbo.json` so editors can validate and autocomplete configuration. A tiny improvement with a surprisingly good payoff, because hand-writing invalid build-system config is one of humanity’s least productive hobbies.
+وإذا كانت سهولة استخدام المحرر تهمك، فتوصي الوثائق بإضافة مفتاح `$schema` إلى `turbo.json` كي يتمكن المحرر من التحقق من الإعداد وإكماله تلقائيًا. تحسين صغير بعائد جيد بشكل مفاجئ، لأن كتابة إعداد نظام بناء غير صالح يدويًا من أقل هوايات البشرية إنتاجية.
 
-## Boundaries and Governance
+## الحدود والحكامة
 
-Turborepo also has an experimental [`boundaries` command](https://turborepo.dev/docs/reference/boundaries). The docs say it checks two kinds of violations out of the box: importing files outside a package’s directory and importing a package that isn’t declared in `package.json`. On top of that, you can add package tags and define rules about what tagged packages may depend on or be depended on by.
+ولـTurborepo أيضًا [أمر `boundaries`](https://turborepo.dev/docs/reference/boundaries) تجريبي. وتقول الوثائق إنه يفحص نوعين من الانتهاكات جاهزين: استيراد ملفات من خارج مجلد الحزمة، واستيراد حزمة غير معلنة في `package.json`. وفوق ذلك، يمكنك إضافة وسوم للحزم وتحديد قواعد لما يجوز للحزم الموسومة أن تعتمد عليه أو أن يعتمد عليها.
 
-That’s especially relevant in monorepos because repo-local imports make it very easy to cheat. A fast monorepo is nice. A fast monorepo where every package secretly reaches into every other package’s private files is just a quicker route to structural decay. Boundaries are experimental, but the problem they address is absolutely real.
+وهذا وثيق الصلة في المستودعات الأحادية لأن الاستيرادات المحلية داخل المستودع تجعل الغش سهلًا جدًا. فالمستودع الأحادي السريع جميل، لكن مستودعًا أحاديًا سريعًا تمد فيه كل حزمة يدها سرًا إلى الملفات الخاصة بكل حزمة أخرى ليس سوى طريق أسرع إلى التآكل البنيوي. الحدود تجريبية، لكن المشكلة التي تعالجها حقيقية تمامًا.
 
-## Single-Package Workspaces Are Still Valid
+## مساحات العمل أحادية الحزمة لا تزال صالحة
 
-Turborepo is not monorepo-only. The [official single-package guide](https://turborepo.dev/docs/guides/single-package-workspaces) says the important features still work in single-package repos, including task parallelization and local or remote caching. The features that don’t work are mostly the ones that are meaningless without multiple packages, such as package-scoped task identifiers.
+Turborepo ليس حكرًا على المستودعات الأحادية. ويقول [الدليل الرسمي لمساحات العمل أحادية الحزمة](https://turborepo.dev/docs/guides/single-package-workspaces) إن الميزات المهمة لا تزال تعمل في المستودعات أحادية الحزمة، بما فيها توازي المهام والتخزين المؤقت المحلي أو البعيد. أما الميزات التي لا تعمل فهي غالبًا تلك التي لا معنى لها دون حزم متعددة، مثل معرّفات المهام المحددة النطاق بحزمة.
 
-This makes Turborepo a reasonable incremental adoption path. The docs say you can add it to an existing single-package or multi-package repo, and in a single-package app it can still orchestrate complex local workflows, parallelize independent checks, and cache expensive tasks. Useful when a repo hasn’t become a monorepo yet, but its scripts already resemble a small festival of avoidable repetition.
+وهذا يجعل Turborepo مسار تبني تدريجي معقول. وتقول الوثائق إنك تستطيع إضافته إلى مستودع قائم أحادي الحزمة أو متعدد الحزم، وهو في تطبيق أحادي الحزمة لا يزال قادرًا على تنسيق سير عمل محلي معقد، وتوازي الفحوص المستقلة، وتخزين المهام المكلفة مؤقتًا. وهذا مفيد عندما لا يكون المستودع قد أصبح مستودعًا أحاديًا بعد، لكن نصوصه البرمجية باتت تشبه مهرجانًا صغيرًا من التكرار الذي يمكن تجنبه.
 
-## The Common Ways Teams Blunt Turborepo
+## كيف تُضعف الفرق Turborepo عادةً
 
-**Treating it like a package manager.** It isn’t. The package manager owns dependency installation and resolution; Turborepo builds on top of that. When teams blame Turborepo for workspace-resolution weirdness, they’re often aiming at the wrong layer.
+**معاملته كمدير حزم.** لكنه ليس كذلك. فمدير الحزم يملك تثبيت الاعتمادات وحلّها، وTurborepo يُبنى فوق ذلك. وعندما تلوم الفرق Turborepo على غرابة في حل مساحة العمل، فإنها غالبًا تصوّب سهامها إلى الطبقة الخطأ.
 
-**Bad `outputs`.** If cache hits don’t restore the files your build needs, the usual cause is that `outputs` is incomplete or missing. The docs call this out repeatedly because it’s the most common “cache is broken” report that is actually “config is incomplete.”
+**`outputs` سيئ.** إذا لم تستعد إصابات الذاكرة المؤقتة الملفات التي يحتاجها بناؤك، فالسبب المعتاد أن `outputs` ناقص أو مفقود. وتشير الوثائق إلى ذلك مرارًا لأنه أكثر تقرير شيوعًا عن «التخزين المؤقت معطوب» يكون في الحقيقة «الإعداد ناقص».
 
-**Bad environment-variable hygiene.** Strict Mode is the default for a reason. If you use Loose Mode casually, or forget to account for build-affecting env vars in `env` or `globalEnv`, wrong-environment cache hits become much easier. The docs are especially blunt about this in the environment guide.
+**نظافة سيئة لمتغيّرات البيئة.** الوضع الصارم هو الافتراضي لسبب وجيه. وإذا استخدمت الوضع المرن بلا مبالاة، أو نسيت احتساب متغيّرات البيئة المؤثرة في البناء في `env` أو `globalEnv`، أصبحت إصابات الذاكرة المؤقتة من البيئة الخاطئة أسهل بكثير. والوثائق صريحة على نحو خاص في هذا الشأن في دليل البيئة.
 
-**Installing too much at the root.** The docs say root-level dependency churn causes unnecessary cache misses and obscures ownership. Keep root dependencies for repo-management tooling, and install app or library dependencies where they’re used.
+**تثبيت الكثير في الجذر.** تقول الوثائق إن كثرة تغييرات الاعتمادات في الجذر تسبب إخفاقات غير ضرورية في الذاكرة المؤقتة وتطمس الملكية. فأبقِ اعتمادات الجذر لأدوات إدارة المستودع، وثبّت اعتمادات التطبيقات أو المكتبات حيث تُستخدم.
 
-**Confusing JIT packages with free lunch.** JIT internal packages are nice when modern bundlers can consume them, but the docs are clear that they don’t have their own Turborepo-cached build step and come with limitations like no TypeScript `paths` in the package itself. They’re a trade, not a cheat code.
+**الخلط بين حزم JIT والغداء المجاني.** حزم JIT الداخلية جميلة عندما تستطيع المُجمِّعات الحديثة استهلاكها، لكن الوثائق واضحة في أنها لا تملك خطوة بناء مخزنة في Turborepo، وتأتي بقيود مثل عدم وجود `paths` في TypeScript داخل الحزمة نفسها. إنها مقايضة، لا شيفرة غش.
 
-## When Turborepo Is the Right Answer
+## متى يكون Turborepo هو الجواب الصحيح
 
-Turborepo is a very good fit when you already have a JS or TS workspace and your pain is task orchestration, CI cost, repeated work, or repository-wide developer ergonomics. It’s especially good when you want incremental adoption, because the official docs support adding it to existing single-package or multi-package repos instead of forcing a giant migration ritual.
+يكون Turborepo مناسبًا جدًا عندما تكون لديك بالفعل مساحة عمل بلغة JS أو TS وتكون مشكلتك هي تنسيق المهام أو تكلفة CI أو العمل المكرر أو سهولة الاستخدام للمطورين على مستوى المستودع. وهو جيد بشكل خاص عندما تريد تبنيًا تدريجيًا، لأن الوثائق الرسمية تدعم إضافته إلى مستودعات قائمة أحادية أو متعددة الحزم بدلًا من فرض طقس ترحيل عملاق.
 
-The best way to think about it isn’t “a monorepo framework.” It’s “a cache- and graph-aware task runner for JS/TS workspaces.” Once you keep that model straight, the rest becomes much easier: let the package manager manage packages, let Turborepo manage work, and be ruthlessly explicit about outputs, inputs, and environment variables. That’s where the speed comes from, and also where teams most reliably sabotage themselves.
+أفضل طريقة للتفكير فيه ليست أنه «إطار للمستودعات الأحادية»، بل «مشغّل مهام مدرك للذاكرة المؤقتة والمخططات لمساحات عمل JS/TS». وما إن تلتزم بهذا النموذج حتى يصبح الباقي أسهل بكثير: دع مدير الحزم يدير الحزم، ودع Turborepo يدير العمل، وكن صريحًا بلا رحمة بشأن المخرجات والمدخلات ومتغيّرات البيئة. من هنا تأتي السرعة، ومن هنا أيضًا تفشّل الفرق في إيذاء نفسها بأكثر الطرق موثوقية.

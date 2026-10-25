@@ -1,16 +1,16 @@
 ---
-title: "Further Form Improvements"
-lang: en
+title: "مزيد من تحسينات النماذج"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/form-improvements"
 ---
 
-Now that we’ve built a solid foundation for our form inputs, let’s explore some advanced styling techniques that can elevate the user experience even further. We’ll build on the input component we created, adding polish and interactivity while maintaining accessibility.
+بعد أن بنينا أساسًا متينًا لحقول النماذج لدينا، لنستكشف بعض تقنيات التنسيق المتقدمة التي يمكن أن ترفع تجربة المستخدم أكثر. سنبني على مكوّن الإدخال الذي أنشأناه، مضيفين الصقل والتفاعلية مع الحفاظ على إمكانية الوصول.
 
-## Enhancing Focus States with Rings
+## تحسين حالات التركيز بالحلقات
 
-In our previous tutorial, we used outlines for focus states. Let’s enhance this approach by combining outlines with ring utilities for even more prominent focus indicators.
+في درسنا السابق، استخدمنا المحيطات لحالات التركيز. لنعزّز هذا النهج بدمج المحيطات مع أدوات الحلقة لمؤشرات تركيز أكثر بروزًا.
 
-*Enhancing Focus States with Rings — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/5bf1034e8ec3eb4d333f55b68a6d44ffb7bdcd5a54bf7305a1f2a8d579a65075.html)*
+*تحسين حالات التركيز بالحلقات — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5bf1034e8ec3eb4d333f55b68a6d44ffb7bdcd5a54bf7305a1f2a8d579a65075.html)*
 
 ```html
 <div>
@@ -27,18 +27,18 @@ In our previous tutorial, we used outlines for focus states. Let’s enhance thi
 </div>
 ```
 
-The key addition here is `focus:ring-4 focus:ring-indigo-600/40`:
+الإضافة الأساسية هنا هي `focus:ring-4 focus:ring-indigo-600/40`:
 
-- `focus:ring-4`: Creates a 4px ring around the input when focused
-- `focus:ring-indigo-600/40`: Uses the same indigo color as our outline, but with 10% opacity
+- `focus:ring-4`: ينشئ حلقة بسماكة 4px حول الحقل عند التركيز
+- `focus:ring-indigo-600/40`: يستخدم لون النيلي نفسه للمحيط، لكن بعتامة 10%
 
-This creates a subtle glow effect that extends beyond the outline, making the focus state even more prominent while maintaining visual cohesion.
+ينشئ هذا تأثير توهج خفيف يمتد خارج المحيط، ما يجعل حالة التركيز أكثر بروزًا مع الحفاظ على التماسك البصري.
 
-## Styling Placeholder Text
+## تنسيق النص النائب
 
-Default placeholder text can feel disconnected from your design system. Let’s make it more intentional:
+قد يبدو النص النائب الافتراضي منفصلًا عن نظام تصميمك. لنجعله أكثر قصدًا:
 
-*Styling Placeholder Text — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/a82b3fd067cffe9865c993d5e34fec0a5d4e01278b9da518e666d9d256e5e325.html)*
+*تنسيق النص النائب — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a82b3fd067cffe9865c993d5e34fec0a5d4e01278b9da518e666d9d256e5e325.html)*
 
 ```html
 <input
@@ -50,18 +50,18 @@ Default placeholder text can feel disconnected from your design system. Let’s 
 />
 ```
 
-We’ve enhanced the placeholder with:
+عزّزنا النص النائب بما يلي:
 
-- `placeholder:text-slate-400`: Light gray color that doesn’t compete with actual input text
-- `placeholder:italic`: Subtle italic styling to differentiate placeholder from real content
+- `placeholder:text-slate-400`: لون رمادي فاتح لا ينافس نص الإدخال الفعلي
+- `placeholder:italic`: نمط مائل خفيف لتمييز النص النائب عن المحتوى الحقيقي
 
-The italic styling helps users distinguish between placeholder text and actual input values, which is particularly helpful for users with cognitive disabilities.
+يساعد النمط المائل المستخدمين على التمييز بين النص النائب وقيم الإدخال الفعلية، وهو مفيد بشكل خاص للمستخدمين ذوي الإعاقات الإدراكية.
 
-## Customizing the Text Cursor
+## تخصيص مؤشر النص
 
-The default text cursor (caret) can be styled to match your brand colors:
+يمكن تنسيق مؤشر النص الافتراضي (caret) ليطابق ألوان علامتك:
 
-*Customizing the Text Cursor — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/e941da8109b50109e129b7b30858c77195fde16fa767378f6fe959a3e4cb559e.html)*
+*تخصيص مؤشر النص — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e941da8109b50109e129b7b30858c77195fde16fa767378f6fe959a3e4cb559e.html)*
 
 ```html
 <input
@@ -73,13 +73,13 @@ The default text cursor (caret) can be styled to match your brand colors:
 />
 ```
 
-The `caret-indigo-600` class changes the blinking text cursor to match our focus color, creating a cohesive experience when users are actively typing.
+يغيّر الصنف `caret-indigo-600` مؤشر النص الوامض ليطابق لون التركيز، ما ينشئ تجربة متكاملة عندما يكتب المستخدمون فعليًا.
 
-## Validation States
+## حالات التحقق
 
-Real-world forms need to communicate validation status clearly. Let’s add support for valid and invalid states:
+تحتاج النماذج الواقعية إلى إبلاغ حالة التحقق بوضوح. لنضف دعمًا للحالات الصحيحة وغير الصحيحة:
 
-*Validation States — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/38843150110dfa40affe0c18de8bf53b9c99b6381b49f582d868e419dd43e640.html)*
+*حالات التحقق — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/38843150110dfa40affe0c18de8bf53b9c99b6381b49f582d868e419dd43e640.html)*
 
 ```html
 <!-- Invalid state -->
@@ -98,19 +98,19 @@ Real-world forms need to communicate validation status clearly. Let’s add supp
 </div>
 ```
 
-Invalid state styling:
+تنسيق الحالة غير الصحيحة:
 
-- `invalid:outline-red-500`: Red outline when HTML5 validation fails
-- `invalid:text-red-900`: Dark red text for error state
-- `invalid:placeholder:text-red-300`: Lighter red for placeholder in error state
+- `invalid:outline-red-500`: محيط أحمر عندما يفشل تحقق HTML5
+- `invalid:text-red-900`: نص أحمر غامق لحالة الخطأ
+- `invalid:placeholder:text-red-300`: أحمر أفتح للنص النائب في حالة الخطأ
 
-This leverages HTML5’s built-in validation, automatically applying error styles when the input doesn’t match the expected pattern.
+يستفيد هذا من التحقق المدمج في HTML5، فيطبّق أنماط الخطأ تلقائيًا عندما لا يطابق الإدخال النمط المتوقع.
 
-## Valid State Feedback
+## تغذية الحالة الصحيحة
 
-For positive reinforcement, we can also style valid inputs:
+للتعزيز الإيجابي، يمكننا أيضًا تنسيق الحقول الصحيحة:
 
-*Valid State Feedback — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/647d10bfe02bf273c97a0dda9c853c61afe6cc0577fdcfb3da3be91b4f5f01e8.html)*
+*تغذية الحالة الصحيحة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/647d10bfe02bf273c97a0dda9c853c61afe6cc0577fdcfb3da3be91b4f5f01e8.html)*
 
 ```html
 <input
@@ -124,13 +124,13 @@ For positive reinforcement, we can also style valid inputs:
 />
 ```
 
-The `valid:outline-green-500` provides immediate positive feedback when users enter valid data, encouraging continued engagement.
+يوفّر `valid:outline-green-500` تغذية إيجابية فورية عندما يدخل المستخدمون بيانات صحيحة، ما يشجّع على استمرار التفاعل.
 
-## Disabled States and Cursor Feedback
+## الحالات المعطّلة وتغذية المؤشر
 
-Disabled inputs need clear visual indicators and appropriate cursor behavior:
+تحتاج الحقول المعطّلة إلى مؤشرات بصرية واضحة وسلوك مؤشر مناسب:
 
-*Disabled States and Cursor Feedback — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/e79d351ff3207ba47b66e5e798da6cc6c70e29386c8072f1770dc2ffd8691240.html)*
+*الحالات المعطّلة وتغذية المؤشر — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e79d351ff3207ba47b66e5e798da6cc6c70e29386c8072f1770dc2ffd8691240.html)*
 
 ```html
 <input
@@ -143,18 +143,18 @@ Disabled inputs need clear visual indicators and appropriate cursor behavior:
 />
 ```
 
-Disabled state styling:
+تنسيق الحالة المعطّلة:
 
-- `disabled:bg-slate-50`: Light gray background indicates unavailability
-- `disabled:text-slate-500`: Muted text color
-- `disabled:outline-slate-200`: Very light outline for minimal visual weight
-- `disabled:cursor-not-allowed`: Shows the “not allowed” cursor on hover
+- `disabled:bg-slate-50`: خلفية رمادية فاتحة تدل على عدم التوفّر
+- `disabled:text-slate-500`: لون نص باهت
+- `disabled:outline-slate-200`: محيط فاتح جدًا لوزن بصري أدنى
+- `disabled:cursor-not-allowed`: يُظهر مؤشر «غير مسموح» عند التحويم
 
-## Checkbox and Radio Button Accents
+## ألوان تمييز مربعات الاختيار وأزرار الاختيار
 
-Form controls like checkboxes and radio buttons can also match your design system:
+يمكن أيضًا أن تطابق عناصر تحكم النماذج مثل مربعات الاختيار وأزرار الاختيار نظام تصميمك:
 
-*Checkbox and Radio Button Accents — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/9316af6aa1504f35a2e2f5b8ea850b994591b751d181913ca7f53cf02d113897.html)*
+*ألوان تمييز مربعات الاختيار وأزرار الاختيار — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9316af6aa1504f35a2e2f5b8ea850b994591b751d181913ca7f53cf02d113897.html)*
 
 ```html
 <div class="flex items-center gap-2">
@@ -168,13 +168,13 @@ Form controls like checkboxes and radio buttons can also match your design syste
 </div>
 ```
 
-The `accent-indigo-600` class styles the active/checked state of form controls to match your brand colors. The `h-4 w-4` classes ensure consistent sizing across different browsers.
+ينسّق الصنف `accent-indigo-600` حالة التفعيل/التحديد لعناصر تحكم النماذج لتطابق ألوان علامتك. وتضمن الأصناف `h-4 w-4` حجمًا متسقًا عبر المتصفحات المختلفة.
 
-## Complete Enhanced Input Example
+## مثال الإدخال المعزّز الكامل
 
-Here’s our fully enhanced input with all improvements:
+إليك حقل الإدخال المعزّز بالكامل مع جميع التحسينات:
 
-*Complete Enhanced Input Example — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/c7eef6528c0111d7594a9f81f1f55133f4e0b731e0dee089fa9ead84fb5782a0.html)*
+*مثال الإدخال المعزّز الكامل — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c7eef6528c0111d7594a9f81f1f55133f4e0b731e0dee089fa9ead84fb5782a0.html)*
 
 ```html
 <div>
@@ -194,6 +194,6 @@ Here’s our fully enhanced input with all improvements:
 </div>
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-These styling enhancements add minimal overhead since they leverage CSS pseudo-classes and don’t require JavaScript. The `:invalid` and `:valid` pseudo-classes provide functionality that would otherwise require custom validation scripts.
+تضيف تحسينات التنسيق هذه عبئًا ضئيلًا لأنها تستفيد من الفئات الزائفة في CSS ولا تتطلب JavaScript. توفّر الفئات الزائفة `:invalid` و`:valid` وظائف كانت ستتطلب بخلاف ذلك نصوص تحقق مخصصة.

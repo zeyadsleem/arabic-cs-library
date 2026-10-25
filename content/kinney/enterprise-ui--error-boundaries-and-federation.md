@@ -1,49 +1,49 @@
 ---
-title: "Error Boundaries and Module Federation"
-lang: en
+title: "حدود الأخطاء واتحاد الوحدات"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation"
 ---
 
-If you stop the remote dev server in the [runtime composition exercise](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise) and reload the host, you’ll see a blank white page. Not the `<Suspense>` fallback. Not the error boundary’s fallback UI. Just nothing. The console tells you what happened: `ERR_CONNECTION_REFUSED` on `mf-manifest.json`, followed by a `Federation Runtime` error. The error boundary never had a chance.
+إن أوقفت خادم تطوير الوحدة البعيدة في [تمرين التركيب وقت التشغيل](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise) وأعدت تحميل المضيف، فسترى صفحة بيضاء فارغة. لا واجهة `<Suspense>` الاحتياطية، ولا واجهة حدّ الأخطاء الاحتياطية. لا شيء فحسب. وتخبرك الطرفية بما حدث: `ERR_CONNECTION_REFUSED` على `mf-manifest.json`، يتبعها خطأ `Federation Runtime`. فحدّ الأخطاء لم تسنح له أي فرصة.
 
-This isn’t a bug in your error boundary setup. It’s a fundamental timing problem with how Module Federation and React interact.
+وهذا ليس عيبًا في إعداد حدّ الأخطاء لديك، بل مشكلة توقيت جوهرية في كيفية تفاعل اتحاد الوحدات مع React.
 
-## Why the Error Boundary Doesn’t Fire
+## لماذا لا يعمل حدّ الأخطاء
 
-React error boundaries catch errors that happen *during rendering*. They wrap a component tree and intercept exceptions thrown by `render()`, lifecycle methods, or constructors of descendant components. That’s the contract—error boundaries catch render-time errors from components below them in the tree.
+تلتقط حدود أخطاء React الأخطاء التي تحدث *أثناء التصيير*. فهي تلفّ شجرة مكوّنات وتعترض الاستثناءات التي ترميها `render()`، أو توابع دورة الحياة، أو بواني المكوّنات التابعة. هذا هو العقد—فحدود الأخطاء تلتقط أخطاء وقت التصيير من المكوّنات الواقعة تحتها في الشجرة.
 
-Module Federation’s manifest fetch doesn’t happen during rendering. It happens *before* rendering. When the host application starts, the federation runtime fetches `mf-manifest.json` from every configured remote as part of shared module negotiation. This negotiation is what the async boundary in `index.tsx` exists to support—the `import("./bootstrap")` pattern defers application code until the federation runtime has contacted all remotes and resolved shared dependencies.
+أما جلب بيان اتحاد الوحدات فلا يحدث أثناء التصيير، بل *قبل* التصيير. فعندما يبدأ تطبيق المضيف، يجلب وقت تشغيل الاتحاد `mf-manifest.json` من كل وحدة بعيدة مُهيّأة ضمن تفاوض الوحدات المشتركة. وهذا التفاوض هو ما يوجد الحدّ غير المتزامن في `index.tsx` لدعمه—فنمط `import("./bootstrap")` يؤجّل شيفرة التطبيق حتى يتصل وقت تشغيل الاتحاد بكل الوحدات البعيدة ويحلّ الاعتمادات المشتركة.
 
-When a remote is completely unreachable, the manifest fetch fails. The federation runtime throws before `createRoot` is ever called. React hasn’t mounted yet. The error boundary component exists in your source code, but it’s never been instantiated in the DOM. You can’t catch errors in a component tree that doesn’t exist yet.
+وعندما تكون وحدة بعيدة غير قابلة للوصول تمامًا، يفشل جلب البيان. فيرمي وقت تشغيل الاتحاد خطأً قبل أن يُنادى `createRoot` أصلًا. ولم يُثبَّت React بعد. فمكوّن حدّ الأخطاء موجود في شيفرتك المصدرية، لكنه لم يُنشأ قط في DOM. ولا تستطيع التقاط أخطاء في شجرة مكوّنات غير موجودة بعد.
 
-## The Timeline
+## الخط الزمني
 
-Here’s what happens when the remote is down:
+وهذا ما يحدث عندما تكون الوحدة البعيدة متوقفة:
 
-1. Browser loads the host’s HTML and JavaScript
-2. `index.tsx` runs `import("./bootstrap")`
-3. The federation runtime intercepts this and starts shared module negotiation
-4. Federation runtime fetches `mf-manifest.json` from `localhost:3001`
-5. The fetch fails with `ERR_CONNECTION_REFUSED`
-6. Federation runtime throws an error
-7. The dynamic `import("./bootstrap")` rejects
-8. Nothing else happens—`bootstrap.tsx` never runs, `createRoot` never executes, React never mounts
+1. يحمّل المتصفح HTML المضيف وJavaScript.
+2. يشغّل `index.tsx` الأمر `import("./bootstrap")`.
+3. يعترض وقت تشغيل الاتحاد ذلك ويبدأ تفاوض الوحدات المشتركة.
+4. يجلب وقت تشغيل الاتحاد `mf-manifest.json` من `localhost:3001`.
+5. يفشل الجلب بالخطأ `ERR_CONNECTION_REFUSED`.
+6. يرمي وقت تشغيل الاتحاد خطأً.
+7. يُرفض `import("./bootstrap")` الديناميكي.
+8. لا شيء آخر يحدث—فـ`bootstrap.tsx` لا يعمل قط، و`createRoot` لا يُنفَّذ قط، وReact لا يُثبَّت قط.
 
-Your `<ErrorBoundary>` lives inside `<App>`, which lives inside `bootstrap.tsx`. Step 8 never happens, so the error boundary never exists.
+فـ`<ErrorBoundary>` لديك يعيش داخل `<App>`، الذي يعيش داخل `bootstrap.tsx`. والخطوة 8 لا تحدث قط، فلا يوجد حدّ الأخطاء قط.
 
-## What Actually Works
+## ما ينجح فعلًا
 
-| Strategy | Where it runs | Catches bootstrap crash | Catches render errors | Complexity |
+| الاستراتيجية | أين تعمل | تلتقط انهيار الإقلاع | تلتقط أخطاء التصيير | التعقيد |
 | --- | --- | --- | --- | --- |
-| Catch bootstrap failure | `index.tsx` (plain JS) | Yes | No | Low |
-| Make remote optional | `React.lazy` `.catch()` | Only if not in static `remotes` | Yes | Medium |
-| Dynamic remote registration | Runtime API (`registerRemotes`) | Yes | Yes | Higher |
+| التقاط فشل الإقلاع | `index.tsx` (JS عادي) | نعم | لا | منخفضة |
+| جعل الوحدة البعيدة اختيارية | `React.lazy` `.catch()` | فقط إن لم تكن في `remotes` الثابتة | نعم | متوسطة |
+| التسجيل الديناميكي للوحدات البعيدة | واجهة وقت التشغيل (`registerRemotes`) | نعم | نعم | أعلى |
 
-There are a few strategies for handling this, and they operate at different levels.
+وهناك عدة استراتيجيات للتعامل مع هذا، وهي تعمل على مستويات مختلفة.
 
-### Catch the bootstrap failure
+### التقاط فشل الإقلاع
 
-The most direct fix is wrapping the dynamic import in `index.tsx` itself with a `try/catch` or `.catch()` handler. This is plain JavaScript error handling, not React—it happens before React exists.
+أكثر إصلاح مباشر هو لفّ الاستيراد الديناميكي في `index.tsx` نفسه بمعالج `try/catch` أو `.catch()`. وهذا معالجة أخطاء JavaScript عادية، لا React—فهي تحدث قبل وجود React.
 
 ```typescript
 // index.tsx
@@ -62,13 +62,13 @@ import('./bootstrap').catch((error) => {
 });
 ```
 
-This is ugly—you’re writing raw DOM manipulation in a React app. But it’s also the only thing that can run at this point in the lifecycle, because React doesn’t exist yet.
+هذا قبيح—فأنت تكتب تلاعبًا خامًا بـDOM داخل تطبيق React. لكنه أيضًا الشيء الوحيد القادر على العمل في هذه النقطة من دورة الحياة، لأن React غير موجود بعد.
 
-### Make the remote optional
+### اجعل الوحدة البعيدة اختيارية
 
-A more architectural approach is to make the federation runtime treat the remote as optional rather than required. Module Federation supports this through error handling in the `remotes` configuration or by wrapping the lazy import with proper error recovery.
+والنهج الأكثر معمارية هو جعل وقت تشغيل الاتحاد يعامل الوحدة البعيدة كاختيارية لا مطلوبة. ويدعم اتحاد الوحدات ذلك عبر معالجة الأخطاء في إعداد `remotes` أو بلفّ الاستيراد الكسول باسترداد أخطاء سليم.
 
-Instead of letting the manifest failure crash the entire application, you can catch the failure at the `React.lazy` boundary:
+وبدل ترك فشل البيان يُسقط التطبيق كامل، تستطيع التقاط الفشل عند حدّ `React.lazy`:
 
 ```typescript
 const AnalyticsDashboard = React.lazy(() =>
@@ -78,13 +78,13 @@ const AnalyticsDashboard = React.lazy(() =>
 );
 ```
 
-This works because `React.lazy` expects a promise that resolves to a module with a `default` export. If the remote import fails, you return a fallback component instead of letting the error propagate. The `<Suspense>` boundary still handles the loading state, and the fallback component renders if the remote is down.
+وهذا ينجح لأن `React.lazy` يتوقع وعدًا يُحلّ إلى وحدة ذات تصدير `default`. فإن فشل استيراد الوحدة البعيدة، تعيد مكوّنًا احتياطيًا بدل ترك الخطأ ينتشر. وما زال حدّ `<Suspense>` يتولّى حالة التحميل، ويُصيَّر المكوّن الاحتياطي إن كانت الوحدة البعيدة متوقفة.
 
-But, this only works if the federation runtime doesn’t throw *during negotiation* before the lazy import even runs. If the remote is listed in `remotes` and the manifest fetch fails during the eager negotiation phase, you’re back to the blank page. The fix for that is either removing the remote from `remotes` entirely (making it truly dynamic) or configuring the federation runtime’s error handling.
+لكن هذا لا ينجح إلا إن لم يرمِ وقت تشغيل الاتحاد خطأً *أثناء التفاوض* قبل أن يعمل الاستيراد الكسول أصلًا. فإن كانت الوحدة البعيدة مدرجة في `remotes` وفشل جلب البيان في مرحلة التفاوض المُبكِّرة، عدت إلى الصفحة البيضاء. والإصلاح في هذه الحالة إما إزالة الوحدة من `remotes` تمامًا (بجعلها ديناميكية فعلًا) وإما تهيئة معالجة الأخطاء في وقت تشغيل الاتحاد.
 
-### Dynamic remote registration
+### التسجيل الديناميكي للوحدات البعيدة
 
-The cleanest solution for truly optional remotes is to skip the static `remotes` configuration and register remotes dynamically at runtime. Module Federation supports this through its runtime API—you can register a remote only when you’re ready to load it, and handle the failure gracefully.
+أنظف حل للوحدات البعيدة الاختيارية فعلًا هو تجاوز إعداد `remotes` الثابت وتسجيل الوحدات البعيدة ديناميكيًا وقت التشغيل. ويدعم اتحاد الوحدات ذلك عبر واجهته البرمجية لوقت التشغيل—فتستطيع تسجيل وحدة بعيدة فقط عندما تكون جاهزًا لتحميلها، والتعامل مع الفشل بلطف.
 
 ```typescript
 import { registerRemotes } from '@module-federation/runtime';
@@ -106,25 +106,25 @@ async function loadAnalytics() {
 }
 ```
 
-Now the manifest fetch happens inside a `try/catch` that you control, not during the global negotiation phase. If the remote is down, the app still boots, React still mounts, and the error boundary can handle whatever else goes wrong.
+الآن يحدث جلب البيان داخل `try/catch` تتحكم به أنت، لا في مرحلة التفاوض العامة. وإن كانت الوحدة البعيدة متوقفة، فالتطبيق يُقلع، ويُثبَّت React، ويستطيع حدّ الأخطاء التعامل مع أي خطأ آخر.
 
-## The Lesson
+## الدرس
 
-The broader lesson isn’t just about Module Federation. It’s about the gap between “error handling in React” and “error handling in the application bootstrap.” React error boundaries are excellent at catching render-time failures. They’re useless for anything that happens before React exists—failed network requests during module negotiation, broken script tags, CDN outages, or any initialization error that prevents the component tree from mounting in the first place.
+الدرس الأوسع لا يتعلق باتحاد الوحدات وحده، بل بالفجوة بين «معالجة الأخطاء في React» و«معالجة الأخطاء في إقلاع التطبيق». فحدود أخطاء React ممتازة في التقاط أعطال وقت التصيير، لكنها عديمة الجدوى مع أي شيء يحدث قبل وجود React—طلبات شبكة فاشلة أثناء تفاوض الوحدات، أو وسوم سكربت معطوبة، أو انقطاع CDN، أو أي خطأ تهيئة يمنع شجرة المكوّنات من التثبّت أصلًا.
 
-In a traditional single-build application, this gap barely matters because there’s very little that can go wrong between “JavaScript loads” and “React mounts.” Module Federation makes that gap much wider by inserting a whole negotiation phase—manifest fetches, shared dependency resolution, remote module loading—into the space between script execution and application rendering.
+وفي تطبيق تقليدي ببناء واحد، تكاد هذه الفجوة لا تهم لأن ما يمكن أن يعطب بين «تحميل JavaScript» و«تثبيت React» قليل جدًا. أما اتحاد الوحدات فيوسّع تلك الفجوة كثيرًا بإدخال مرحلة تفاوض كاملة—جلب بيانات، وحلّ اعتمادات مشتركة، وتحميل وحدات بعيدة—في المسافة بين تنفيذ السكربت وتصيير التطبيق.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### The Bootstrap Problem
+### مشكلة الإقلاع
 
-> Error boundaries don’t catch the failure you actually have.
+> حدود الأخطاء لا تلتقط الفشل الذي لديك فعلًا.
 
-- React error boundaries catch render-time errors inside the tree.
-- A federated remote fails *before* it renders — during script fetch or container initialization.
-- The error boundary never fires because the component never mounts.
+- تلتقط حدود أخطاء React أخطاء وقت التصيير داخل الشجرة.
+- الوحدة البعيدة الاتحادية تفشل *قبل* أن تُصيّر — أثناء جلب السكربت أو تهيئة الحاوية.
+- لا يعمل حدّ الأخطاء قط لأن المكوّن لا يُثبَّت قط.
 
 ```
 Timeline:
@@ -137,9 +137,9 @@ Timeline:
 
 ---
 
-### Catching Bootstrap Failures
+### التقاط أعطال الإقلاع
 
-> Wrap the import, not just the component.
+> الفّ الاستيراد، لا المكوّن فقط.
 
 ```typescript
 const SafeRemote = lazy(() =>
@@ -149,20 +149,20 @@ const SafeRemote = lazy(() =>
 );
 ```
 
-- The `.catch()` returns a valid module with a fallback component.
-- React never knows the remote failed — it gets a component either way.
-- Combine with `<Suspense>` for the loading state.
+- يعيد `.catch()` وحدة صالحة بمكوّن احتياطي.
+- لا يعلم React قط أن الوحدة فشلت — فهو يحصل على مكوّن في الحالتين.
+- ادمجه مع `<Suspense>` لحالة التحميل.
 
 ---
 
-### The RemoteBoundary Pattern
+### نمط RemoteBoundary
 
-> A reusable wrapper for every federated remote.
+> غلاف قابل لإعادة الاستخدام لكل وحدة بعيدة اتحادية.
 
-- Catches bootstrap failures (network, JS errors)
-- Catches render-time errors (standard error boundary)
-- Reports *which* remote failed, not just *that* something failed
-- Renders a fallback UI scoped to the remote’s region
+- يلتقط أعطال الإقلاع (أخطاء الشبكة وJS)
+- يلتقط أخطاء وقت التصيير (حدّ أخطاء قياسي)
+- يبلّغ عن *أي* وحدة بعيدة فشلت، لا *أن* شيئًا ما فشل فقط
+- يصيّر واجهة احتياطية محصورة في منطقة الوحدة البعيدة
 
 ```typescript
 <RemoteBoundary
@@ -178,18 +178,18 @@ const SafeRemote = lazy(() =>
 
 ---
 
-### Making Remotes Optional
+### جعل الوحدات البعيدة اختيارية
 
-> Not all remotes are critical. Treat them accordingly.
+> ليست كل الوحدات البعيدة حرجة. عاملها على هذا الأساس.
 
-| Remote type | Failure behavior | Example |
+| نوع الوحدة البعيدة | سلوك الفشل | مثال |
 | --- | --- | --- |
-| **Critical** | Show error + block interaction | Checkout, Auth |
-| **Important** | Show degraded UI | Product recommendations |
-| **Optional** | Hide silently | Analytics widget, A/B banner |
+| **حرجة** | إظهار خطأ + حجب التفاعل | Checkout وAuth |
+| **مهمة** | إظهار واجهة منقوصة | توصيات المنتجات |
+| **اختيارية** | إخفاء صامت | أداة التحليلات، ولافتة A/B |
 
-- Feature flags to disable remotes entirely without a deploy.
-- Health checks before attempting to load non-critical remotes.
-- Stale-while-revalidate: serve cached version while fetching new one.
+- أعلام ميزات لتعطيل الوحدات البعيدة كليًا بلا نشر.
+- فحوص صحة قبل محاولة تحميل الوحدات غير الحرجة.
+- قديم أثناء إعادة التحقق: قدّم نسخة مخزّنة مؤقتًا أثناء جلب نسخة جديدة.
 
-So, the rule of thumb: error boundaries handle runtime rendering failures. Everything before that needs plain JavaScript error handling at the bootstrap level. If your architecture depends on external resources being available before React can mount, you need a fallback strategy that doesn’t depend on React.
+إذن، القاعدة العامة: حدود الأخطاء تتولّى أعطال التصيير وقت التشغيل. وكل ما قبل ذلك يحتاج معالجة أخطاء JavaScript عادية على مستوى الإقلاع. فإن كانت معماريتك تعتمد على توفّر موارد خارجية قبل أن يستطيع React التثبّت، فأنت تحتاج استراتيجية احتياطية لا تعتمد على React.

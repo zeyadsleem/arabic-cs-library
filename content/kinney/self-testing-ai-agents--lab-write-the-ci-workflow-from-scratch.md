@@ -1,34 +1,34 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر: اكتب سير عمل CI من الصفر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch"
 ---
 
-The Shelf starter doesn’t ship the workflows. Your job in this lab is to write them from scratch, using the current script surface as your source of truth. By the end you should be able to rebuild an equivalent workflow in your own project without relying on hidden starter scaffolding.
+لا يشحن مشروع Shelf الأولي ملفات سير العمل. مهمتك في هذا المختبر هي كتابتها من الصفر، باستخدام سطح الأوامر الحالي مصدرًا للحقيقة. وبحلول النهاية ينبغي أن تكون قادرًا على إعادة بناء سير عمل مكافئ في مشروعك الخاص دون الاعتماد على سقالات مخفية في المشروع الأولي.
 
-> **In the current starter**
+> **في المشروع الأولي الحالي**
 >
-> The minimal repo does not ship `.github/workflows/main.yml`. This lab is a true authoring exercise: the one required file here is `main.yml`. The nightly workflow is out of scope for this lab — the [appendix labs](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow) add `nightly.yml` when the commands it depends on actually exist.
+> لا يشحن المستودع الأدنى ملف `.github/workflows/main.yml`. هذا المختبر تمرين تأليف حقيقي: الملف الوحيد المطلوب هنا هو `main.yml`. سير العمل الليلي خارج نطاق هذا المختبر—[مختبرات الملحق](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow) تضيف `nightly.yml` عندما تصبح الأوامر التي يعتمد عليها موجودة فعلًا.
 
-> **Prerequisite**
+> **متطلب سابق**
 >
-> This lab assumes you’ve completed **Lab: Build a Failure Dossier for Shelf** and **Lab: Wire the Static Layer into Shelf** if you want the fuller CI shape with `knip`, gitleaks, and dossier uploads. If you’re still on the Shelf starter, begin with `lint`, `typecheck`, `test:unit`, and `test`, then extend the workflow as those later labs land.
+> يفترض هذا المختبر أنك أكملت **مختبر: ابنِ ملف أدلة فشل لـ Shelf** و**مختبر: وصّل الطبقة الثابتة بـ Shelf** إذا كنت تريد شكل CI الأكمل مع `knip` وgitleaks ورفع ملفات الأدلة. وإذا كنت ما زلت على مشروع Shelf الأولي، فابدأ بـ `lint` و`typecheck` و`test:unit` و`test`، ثم وسّع سير العمل مع وصول تلك المختبرات اللاحقة.
 
-## The task
+## المهمة
 
-Create `.github/workflows/main.yml` in the Shelf repo and walk each job with this lesson open alongside. For every step, ask: *what loop built earlier today is this step gating?* When you can answer that for every step, you’ve done the lab.
+أنشئ `.github/workflows/main.yml` في مستودع Shelf، وتنقّل في كل مهمة مع إبقاء هذا الدرس مفتوحًا بجانبك. اسأل عند كل خطوة: *أي حلقة بُنيت في وقت سابق اليوم تحرسها هذه الخطوة؟* عندما تستطيع الإجابة على ذلك لكل خطوة، تكون قد أنجزت المختبر.
 
-## What you can verify locally
+## ما يمكنك التحقق منه محليًا
 
-You can do the whole first pass locally. Write `.github/workflows/main.yml`, then run the commands each named step maps to. On the Shelf starter that is at least `npm run lint`, `npm run typecheck`, `npm run test:unit`, and `npm run test`. If you’ve already completed the static-layer and dossier labs, include `npm run knip`, gitleaks, and `npm run dossier` too. You can also confirm the Playwright job’s environment assumptions by checking that the workflow writes a small `.env`, points `DATABASE_URL` at a CI-local SQLite file such as `file:./ci.db`, and relies on the same `playwright.config.ts` web server you already use on your machine.
+يمكنك القيام بالجولة الأولى كاملة محليًا. اكتب `.github/workflows/main.yml`، ثم شغّل الأوامر التي تقابلها كل خطوة مسماة. في مشروع Shelf الأولي يكون ذلك على الأقل `npm run lint` و`npm run typecheck` و`npm run test:unit` و`npm run test`. وإذا كنت قد أكملت مختبرات الطبقة الثابتة وملف الأدلة بالفعل، فأدرج `npm run knip` وgitleaks و`npm run dossier` أيضًا. يمكنك كذلك تأكيد افتراضات البيئة في مهمة Playwright بالتحقق من أن سير العمل يكتب ملف `.env` صغيرًا، ويوجّه `DATABASE_URL` إلى ملف SQLite محلي في CI مثل `file:./ci.db`، ويعتمد على خادم الويب نفسه في `playwright.config.ts` الذي تستخدمه بالفعل على جهازك.
 
-## What remains manual or external
+## ما يبقى يدويًا أو خارجيًا
 
-The hosted part starts only when you push to a connected GitHub repository. Watching a broken branch fail in Actions, downloading the dossier artifact, and confirming branch protection are all real GitHub checks. If this clone has no remote, stop at local command parity plus valid workflow files and call the hosted loop pending.
+لا يبدأ الجزء المستضاف إلا عندما تدفع إلى مستودع GitHub موصول. ومشاهدة فرع معطل يفشل في Actions، وتنزيل قطعة أثرية لملف الأدلة، وتأكيد حماية الفروع، كلها فحوص GitHub حقيقية. إذا لم تكن لهذه النسخة المستنسخة مصدر بعيد، فتوقف عند تكافؤ الأوامر المحلية مع ملفات سير عمل صالحة، واعتبر الحلقة المستضافة معلّقة.
 
-## The shape
+## الشكل
 
-Open `.github/workflows/main.yml`. At the top are the three things a workflow needs to be safe and predictable:
+افتح `.github/workflows/main.yml`. في الأعلى توجد الأشياء الثلاثة التي يحتاج إليها سير العمل ليكون آمنًا وقابلًا للتوقع:
 
 ```yaml
 name: Main
@@ -41,19 +41,19 @@ permissions:
   contents: read
 ```
 
-`on:` lists the events. Push and pull request cover every code path into `main`. `permissions: contents: read` is the least-privilege default — the workflow can read the repo but cannot write to it. If you need to write (say, to comment on a PR), you opt in explicitly at the job level. Default-deny is cheaper than default-allow.
+`on:` يسرد الأحداث. ودفع التغييرات وطلب السحب يغطيان كل مسار كود إلى `main`. و`permissions: contents: read` هو افتراضي أقل امتياز—يمكن لسير العمل قراءة المستودع لكنه لا يستطيع الكتابة فيه. إذا احتجت إلى الكتابة (لنشر تعليق على طلب سحب مثلًا)، فأنت تشترك صراحةً على مستوى المهمة. الرفض الافتراضي أرخص من السماح الافتراضي.
 
-Then the three jobs: `static`, `unit`, `end-to-end`. They share the same setup shape — checkout, setup-node, cache, install — but each runs a different layer of the loop. `unit` and `end-to-end` both `needs: static`, so if lint, typecheck, knip, or gitleaks fail, the heavier jobs never start. Cheap gates run first.
+ثم المهام الثلاث: `static` و`unit` و`end-to-end`. إنها تتشارك شكل الإعداد نفسه—سحب الكود، وإعداد Node، والتخزين المؤقت، والتثبيت—لكن كل واحدة تشغّل طبقة مختلفة من الحلقة. وكل من `unit` و`end-to-end` يستخدم `needs: static`، لذا إذا فشل lint أو typecheck أو knip أو gitleaks، فلن تبدأ المهام الأثقل أبدًا. البوابات الرخيصة تعمل أولًا.
 
-The sections below walk each job. Open the file as you read.
+تتنقل الأقسام أدناه في كل مهمة. افتح الملف أثناء القراءة.
 
-## Walk the workflow
+## تنقّل في سير العمل
 
-### The static job
+### المهمة الثابتة
 
-The `static` job runs lint, typecheck, knip, and gitleaks in one job with sequential steps, not four jobs with dependencies. The setup overhead for separate jobs is larger than the benefit of splitting four short checks across four runners, and the gates are fast enough that sequencing them doesn’t cost anything meaningful.
+تشغّل مهمة `static` فحوص lint وtypecheck وknip وgitleaks في مهمة واحدة بخطوات متتابعة، لا في أربع مهام بتبعيات. فتكلفة الإعداد الزائدة لمهام منفصلة أكبر من فائدة تقسيم أربعة فحوص قصيرة على أربعة مشغلات، والبوابات سريعة بما يكفي بحيث لا يكلف تسلسلها شيئًا ذا معنى.
 
-Notice the gitleaks steps in `main.yml`:
+لاحظ خطوات gitleaks في `main.yml`:
 
 ```yaml
 - name: Install gitleaks
@@ -66,9 +66,9 @@ Notice the gitleaks steps in `main.yml`:
   run: gitleaks dir . --redact --config .gitleaks.toml
 ```
 
-That’s a direct CLI invocation, not the `gitleaks/gitleaks-action@v2` wrapper. The reason is operational: the action does a partial scan over `<prev>^..<current>` that fails on first-push branches with “no previous commit.” A direct `gitleaks dir .` scans the whole working tree and cannot confuse itself about what “previous” means. If you build your own CI, prefer the direct CLI for the same reason.
+هذا استدعاء CLI مباشر، لا غلاف `gitleaks/gitleaks-action@v2`. والسبب تشغيلي: الأكشن يقوم بفحص جزئي على `<prev>^..<current>` يفشل على الفروع ذات الدفع الأول برسالة «لا يوجد إيداع سابق». أما `gitleaks dir .` المباشر فيفحص شجرة العمل بأكملها ولا يمكن أن يخلط بينه وبين معنى «السابق». إذا بنيت CI الخاص بك، ففضّل CLI المباشر للسبب نفسه.
 
-Every named step maps to a real local command. Run these on a clean working tree:
+كل خطوة مسماة تقابل أمرًا محليًا حقيقيًا. شغّل هذه على شجرة عمل نظيفة:
 
 ```bash
 npm run lint
@@ -79,15 +79,15 @@ npm run test
 gitleaks dir . --redact --config .gitleaks.toml
 ```
 
-Each of those should exit zero. If any of them doesn’t, that is the underlying loop failing, not a CI problem.
+ينبغي أن يخرج كل واحد منها بالرمز صفر. وإذا لم يفعل أي منها ذلك، فالحلقة الأساسية هي التي تفشل، لا CI.
 
-### The unit job
+### مهمة الوحدة
 
-The `unit` job runs Vitest and `needs: static`. It reuses the same cache key. It doesn’t need browsers, so Playwright install is skipped. Short, cheap, predictable.
+تشغّل مهمة `unit` اختبارات Vitest وتستخدم `needs: static`. وهي تعيد استخدام مفتاح التخزين المؤقت نفسه. وهي لا تحتاج إلى متصفحات، لذا يُتخطى تثبيت Playwright. قصيرة ورخيصة وقابلة للتوقع.
 
-### The end-to-end job
+### مهمة من الطرف إلى الطرف
 
-`end-to-end` is the biggest one, and it does one thing `static` and `unit` don’t: it writes a `.env` file before running Playwright.
+`end-to-end` هي الأكبر، وهي تفعل شيئًا لا تفعله `static` و`unit`: تكتب ملف `.env` قبل تشغيل Playwright.
 
 ```yaml
 - name: Create .env for preview server
@@ -98,104 +98,104 @@ The `unit` job runs Vitest and `needs: static`. It reuses the same cache key. It
     EOF
 ```
 
-Two things worth noticing.
+ثمة أمران يستحقان الملاحظة.
 
-First, the values are explicit and boring. The point is not secrecy; the point is that CI owns its own database path instead of accidentally sharing a developer default.
+أولًا، القيم صريحة ومملة. النقطة ليست السرية؛ النقطة أن CI يملك مسار قاعدة بياناته الخاص بدلًا من مشاركة إعداد مطور افتراضي عن غير قصد.
 
-Second, the current Shelf starter does not need `ORIGIN`, `BETTER_AUTH_SECRET`, or a pre-created `tmp/` directory just to boot the preview server. If your later auth work introduces extra runtime env, add only the variables the app actually reads. Don’t cargo-cult stale CI scaffolding.
+ثانيًا، مشروع Shelf الأولي الحالي لا يحتاج إلى `ORIGIN` أو `BETTER_AUTH_SECRET` أو مجلد `tmp/` موجود مسبقًا لمجرد إقلاع خادم المعاينة. إذا أدخلت أعمال المصادقة اللاحقة متغيرات بيئة إضافية وقت التشغيل، فأضف فقط المتغيرات التي يقرأها التطبيق فعلًا. لا تقلّد سقالات CI قديمة.
 
-After the `.env` bootstrap, the job runs `npm run test`. On failure it runs `npm run dossier`, uploads `playwright-report/` as one artifact and `playwright-report/dossier.md` as another, both with a 7-day retention. `playwright-report/` already contains the trace, screenshots, video, and the HTML report. The dossier is a separate upload so an agent can grab the summary without pulling the whole report tarball.
+بعد تهيئة `.env`، تشغّل المهمة `npm run test`. وعند الفشل تشغّل `npm run dossier`، وترفع `playwright-report/` كقطعة أثرية واحدة و`playwright-report/dossier.md` كقطعة أخرى، وكلتاهما بمدة احتفاظ 7 أيام. يحتوي `playwright-report/` بالفعل على التتبع ولقطات الشاشة والفيديو وتقرير HTML. أما ملف الأدلة فرُفع منفصلًا كي يستطيع وكيل أخذ الملخص دون سحب أرشيف التقرير كاملًا.
 
-Shelf’s `playwright.config.ts` already starts the preview server through `webServer`, so the workflow does **not** need an extra server-boot step. Shelf uses `command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4173'` and `url: 'http://127.0.0.1:4173'` and does not set `reuseExistingServer`. If you build a CI workflow for a project that doesn’t already have a `webServer` block, add one that starts the same preview surface to the Playwright config first.
+يشغّل `playwright.config.ts` في Shelf خادم المعاينة بالفعل عبر `webServer`، لذا **لا** يحتاج سير العمل إلى خطوة إضافية لإقلاع الخادم. يستخدم Shelf `command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4173'` و`url: 'http://127.0.0.1:4173'` ولا يضبط `reuseExistingServer`. إذا بنيت سير عمل CI لمشروع لا يملك كتلة `webServer` بالفعل، فأضف أولًا إلى إعداد Playwright كتلة `webServer` تشغّل سطح المعاينة نفسه.
 
-### The visual regression safety
+### أمان الانحدار البصري
 
-The Playwright suite includes the screenshot tests from [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop). They run as part of the `end-to-end` job. Snapshot diffs land in `playwright-report/test-results/<spec>/` and get uploaded as part of the `playwright-report` artifact on failure. No separate upload step is needed.
+تتضمن حزمة Playwright اختبارات لقطات الشاشة من [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop). وهي تعمل كجزء من مهمة `end-to-end`. وتستقر فروق اللقطات في `playwright-report/test-results/<spec>/` وتُرفع كجزء من قطعة أثرية `playwright-report` عند الفشل. لا حاجة إلى خطوة رفع منفصلة.
 
-### The nightly workflow is out of scope
+### سير العمل الليلي خارج النطاق
 
-Do **not** build `.github/workflows/nightly.yml` in this lab. Authoring a placeholder with no real jobs invites cargo-culted command names. The appendix labs ([Lab: Add Cross-Browser Coverage](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage), [Lab: Add a Nightly Verification Workflow](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)) are where that broader or slower loop becomes real, and the workflow lands alongside the commands it gates. At this point in the course, the important thing is that `main.yml` is clean, honest, and mapped to real repository commands.
+**لا** تبنِ `.github/workflows/nightly.yml` في هذا المختبر. تأليف عنصر نائب بلا مهام حقيقية يستدعي أسماء أوامر منقولة بالتقليد. مختبرات الملحق ([مختبر: أضف تغطية عبر المتصفحات](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage)، [مختبر: أضف سير عمل تحقق ليلي](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)) هي المكان الذي تصبح فيه تلك الحلقة الأوسع أو الأبطأ حقيقية، وينزل سير العمل إلى جانب الأوامر التي يحرسها. في هذه المرحلة من الدورة، المهم أن `main.yml` نظيف وصادق ومقابل لأوامر مستودع حقيقية.
 
-> **Warning**
+> **تحذير**
 >
-> Do **not** wire `playwright test --update-snapshots` into a scheduled job, even as a stub. A cron that updates snapshots will silently rewrite every visual baseline whenever it runs and quietly destroy your visual regression gate. Snapshot updates should always be human-triggered (a `workflow_dispatch` job, or local `--update-snapshots` followed by a PR you review).
+> **لا** توصّل `playwright test --update-snapshots` بمهمة مجدولة، ولا حتى كعنصر نائب. فمهمة cron تحدّث اللقطات ستعيد كتابة كل خط أساس بصري بهدوء كلما عملت، وتدمّر بوابة الانحدار البصري لديك بهدوء. يجب أن يكون تحديث اللقطات دائمًا مطلقًا بشريًا (مهمة `workflow_dispatch`، أو `--update-snapshots` محليًا يتبعه طلب سحب تراجعه).
 
-### Branch protection
+### حماية الفروع
 
-In the GitHub repo settings, enable branch protection on `main`:
+في إعدادات مستودع GitHub، فعّل حماية الفروع على `main`:
 
-- Require status checks: `static`, `unit`, `end-to-end`.
-- Require up-to-date branches before merging.
-- Disallow force pushes.
+- اشترط فحوص الحالة: `static` و`unit` و`end-to-end`.
+- اشترط أن تكون الفروع محدثة قبل الدمج.
+- امنع الدفع القسري.
 
-This turns the CI jobs into hard gates. The workflow by itself is just a script; branch protection is what makes it a gate you cannot route around.
+هذا يحوّل مهام CI إلى بوابات صارمة. سير العمل بحد ذاته مجرد سكربت؛ وحماية الفروع هي ما يجعله بوابة لا يمكنك الالتفاف حولها.
 
-## Acceptance criteria
+## معايير القبول
 
-- You opened `.github/workflows/main.yml` and read every step in each of the three jobs.
-- You can point at the step that gates every layer built earlier today: lint, typecheck, knip, gitleaks, Vitest, Playwright, visual regression, the dossier upload.
-- You understand why the gitleaks step uses the direct CLI instead of the `gitleaks-action@v2` wrapper (first-push branches).
-- You understand why `end-to-end` writes a small `.env` file before running Playwright and why the current starter can use `DATABASE_URL=file:./ci.db` without extra directory setup.
-- You understand why `unit` and `end-to-end` both `needs: static` and what happens to them if a lint error lands on a pull request.
-- You ran the corresponding local commands (`npm run lint`, `npm run typecheck`, `npm run knip`, `npm run test:unit`, `npm run test`, `gitleaks dir . --redact --config .gitleaks.toml`) on a clean working tree and they all exited zero.
-- If your repository has a Git remote, you pushed a deliberately broken commit (a lint error, or a failing Playwright assertion) to a throwaway branch and watched the corresponding job fail with the dossier attached.
-- If your repository has a Git remote, branch protection is enabled on `main` requiring at least the `static` and `end-to-end` jobs to pass.
+- فتحت `.github/workflows/main.yml` وقرأت كل خطوة في كل مهمة من المهام الثلاث.
+- تستطيع الإشارة إلى الخطوة التي تحرس كل طبقة بُنيت في وقت سابق اليوم: lint، وtypecheck، وknip، وgitleaks، وVitest، وPlaywright، والانحدار البصري، ورفع ملف الأدلة.
+- تفهم لماذا تستخدم خطوة gitleaks واجهة CLI المباشرة بدلًا من غلاف `gitleaks-action@v2` (الفروع ذات الدفع الأول).
+- تفهم لماذا تكتب `end-to-end` ملف `.env` صغيرًا قبل تشغيل Playwright، ولماذا يمكن للمشروع الأولي الحالي استخدام `DATABASE_URL=file:./ci.db` دون إعداد مجلد إضافي.
+- تفهم لماذا يستخدم كل من `unit` و`end-to-end` قيمة `needs: static`، وماذا يحدث لهما إذا وصل خطأ lint في طلب سحب.
+- شغّلت الأوامر المحلية المقابلة (`npm run lint`، `npm run typecheck`، `npm run knip`، `npm run test:unit`، `npm run test`، `gitleaks dir . --redact --config .gitleaks.toml`) على شجرة عمل نظيفة وخرجت كلها بالرمز صفر.
+- إذا كان لمستودعك مصدر بعيد في Git، فقد دفعت إيداعًا معطلًا عمدًا (خطأ lint، أو تأكيد Playwright فاشل) إلى فرع مؤقت وشاهدت المهمة المقابلة تفشل مع إرفاق ملف الأدلة.
+- إذا كان لمستودعك مصدر بعيد في Git، فحماية الفروع مفعّلة على `main` وتشترط نجاح مهمتي `static` و`end-to-end` على الأقل.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-- If Playwright fails in CI because Chromium is missing, verify that the workflow runs `npx playwright install --with-deps chromium` before `npm run test`.
-- If the workflow YAML is valid but a named step does not exist locally, fix the repository command surface first. Do not solve that drift with workflow-only shell scripts.
-- If you are using a clone of Shelf without a Git remote, stop at local command parity plus valid workflow files. Do not claim the hosted artifact-download loop is working until the repository is connected to GitHub.
-- If you split the static checks into multiple jobs, make sure that decision is deliberate and explained. Shelf keeps them together because they are short and share the same setup cost.
+- إذا فشل Playwright في CI لأن Chromium مفقود، فتحقق من أن سير العمل يشغّل `npx playwright install --with-deps chromium` قبل `npm run test`.
+- إذا كان YAML سير العمل صالحًا لكن خطوة مسماة غير موجودة محليًا، فأصلح سطح أوامر المستودع أولًا. لا تحل هذا الانحراف بسكربتات shell خاصة بسير العمل.
+- إذا كنت تستخدم نسخة مستنسخة من Shelf بلا مصدر بعيد في Git، فتوقف عند تكافؤ الأوامر المحلية مع ملفات سير عمل صالحة. لا تدّعِ أن حلقة تنزيل القطع الأثرية المستضافة تعمل حتى يُوصل المستودع بـ GitHub.
+- إذا قسّمت الفحوص الثابتة إلى مهام متعددة، فتأكد أن ذلك القرار متعمد ومشروح. يُبقي Shelf عليها مجتمعة لأنها قصيرة وتتشارك تكلفة الإعداد نفسها.
 
-## The agent loop check
+## فحص حلقة الوكيل
 
-The whole point of this lesson: when CI fails, can the agent recover without you?
+المغزى الكامل من هذا الدرس: عندما يفشل CI، هل يستطيع الوكيل التعافي دونك؟
 
-Create a feature branch with a deliberate bug that only CI catches—something environment-specific. One easy option: a test that uses a local-only environment variable (`process.env.MY_MACHINE`) and fails when CI runs it on a fresh Linux box.
+أنشئ فرع ميزة بخطأ متعمد لا يلتقطه إلا CI—شيء خاص بالبيئة. أحد الخيارات السهلة: اختبار يستخدم متغير بيئة محليًا فقط (`process.env.MY_MACHINE`) ويفشل عندما يشغّله CI على جهاز Linux جديد.
 
-Push the branch. Wait for CI to fail.
+ادفع الفرع. انتظر حتى يفشل CI.
 
-Open Claude Code. Say:
+افتح Claude Code. قل:
 
-> The latest CI run on branch `<branch-name>` failed. Download the dossier artifact, read it, diagnose the failure, propose a fix, and push a new commit.
+> فشل أحدث تشغيل لـ CI على الفرع `<branch-name>`. نزّل قطعة أثرية ملف الأدلة، واقرأها، وشخّص الفشل، واقترح إصلاحًا، وادفع إيداعًا جديدًا.
 
-The agent should:
+ينبغي أن يقوم الوكيل بما يلي:
 
-1. Use `gh run list` or `gh run view` to find the failed run.
-2. Use `gh run download` to pull the dossier artifact.
-3. Read the dossier.
-4. Identify the environment-specific issue.
-5. Fix it.
-6. Push.
+1. استخدام `gh run list` أو `gh run view` للعثور على التشغيل الفاشل.
+2. استخدام `gh run download` لسحب قطعة أثرية ملف الأدلة.
+3. قراءة ملف الأدلة.
+4. تحديد المشكلة الخاصة بالبيئة.
+5. إصلاحها.
+6. الدفع.
 
-The new CI run should go green. You shouldn’t need to paste a single error message.
+ينبغي أن يتحول تشغيل CI الجديد إلى الأخضر. ولا ينبغي أن تحتاج إلى لصق رسالة خطأ واحدة.
 
-### Agent loop acceptance
+### قبول حلقة الوكيل
 
-- If your repository has a Git remote, you gave the agent only the branch name and the instruction to read the dossier.
-- If your repository has a Git remote, the agent retrieved the dossier from the GitHub Actions run without you copying it.
-- If your repository has a Git remote, the agent identified the root cause from the dossier alone.
-- If your repository has a Git remote, the agent pushed a fix that made CI green on the next run.
-- If your repository has a Git remote, you did not need to paste any error messages into the conversation.
+- إذا كان لمستودعك مصدر بعيد في Git، فقد أعطيت الوكيل اسم الفرع فقط وتعليمات قراءة ملف الأدلة.
+- إذا كان لمستودعك مصدر بعيد في Git، فقد استرجع الوكيل ملف الأدلة من تشغيل GitHub Actions دون أن تنسخه أنت.
+- إذا كان لمستودعك مصدر بعيد في Git، فقد حدد الوكيل السبب الجذري من ملف الأدلة وحده.
+- إذا كان لمستودعك مصدر بعيد في Git، فقد دفع الوكيل إصلاحًا جعل CI أخضر في التشغيل التالي.
+- إذا كان لمستودعك مصدر بعيد في Git، فلم تكن بحاجة إلى لصق أي رسائل خطأ في المحادثة.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a matrix strategy to the `end-to-end` job so Playwright runs against Chromium, Firefox, and WebKit on every run (or gate the matrix to PRs only to save minutes).
-- Add Playwright sharding to the `end-to-end` job to parallelize the suite across multiple runners.
-- Add a PR comment step that posts a summary of test results and links to artifacts, using the [GitHub Actions PR comment action](https://github.com/marketplace/actions/add-pr-comment) or equivalent.
-- Hook the custom MCP from [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper) into a post-deploy smoke test: after a merge to main, run `verify_shelf_page` against the staging environment.
-- Run Bugbot (if not already integrated) and make its completion a required status check.
-- Write a single `workflow_dispatch` entry point that lets you manually run the whole pipeline against any branch from the GitHub UI.
+- أضف استراتيجية مصفوفة إلى مهمة `end-to-end` كي يعمل Playwright على Chromium وFirefox وWebKit في كل تشغيل (أو احصر المصفوفة في طلبات السحب فقط لتوفير الدقائق).
+- أضف تقسيم Playwright (sharding) إلى مهمة `end-to-end` لتوازي الحزمة عبر عدة مشغلات.
+- أضف خطوة تعليق على طلب السحب تنشر ملخصًا لنتائج الاختبارات وروابط للقطع الأثرية، باستخدام [أكشن تعليق طلبات السحب في GitHub Actions](https://github.com/marketplace/actions/add-pr-comment) أو ما يعادله.
+- اربط MCP المخصص من [كتابة غلاف MCP مخصص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper) باختبار دخان بعد النشر: بعد الدمج في main، شغّل `verify_shelf_page` مقابل بيئة الاختبار.
+- شغّل Bugbot (إن لم يكن مدمجًا بالفعل) واجعل اكتماله فحص حالة مطلوبًا.
+- اكتب نقطة دخول واحدة `workflow_dispatch` تتيح لك تشغيل الخط بأكمله يدويًا على أي فرع من واجهة GitHub.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكره
 
-CI is where the whole day’s worth of loops meet for the last check before merge. Every job should correspond to a loop you built during the workshop—[the static layer](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment), [the Playwright tests](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy), [the screenshots](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop), [the dossier](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build). And every failure should be legible enough that the agent can recover without you. If CI works and the agent can’t recover, the dossier is weak. If the agent can recover but CI is slow, your caching and parallelism need work. Tune both until the loop runs without you.
+CI هو المكان الذي تلتقي فيه حلقات يوم كامل من العمل للفحص الأخير قبل الدمج. ينبغي أن تقابل كل مهمة حلقة بنيتها خلال الورشة—[الطبقة الثابتة](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)، [اختبارات Playwright](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)، [لقطات الشاشة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)، [ملف الأدلة](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build). وينبغي أن يكون كل فشل مقروءًا بما يكفي ليتمكن الوكيل من التعافي دونك. إذا كان CI يعمل ولا يستطيع الوكيل التعافي، فملف الأدلة ضعيف. وإذا كان الوكيل يستطيع التعافي لكن CI بطيء، فالتخزين المؤقت والتوازي لديك يحتاجان إلى عمل. اضبط الاثنين حتى تعمل الحلقة دونك.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/write-the-ci-workflow-from-scratch-solution)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
-- [Capstone: The Whole Loop, End to End](https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/write-the-ci-workflow-from-scratch-solution)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [التحقق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [حلقات التحقق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [المشروع الختامي: الحلقة بأكملها، من الطرف إلى الطرف](https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end)

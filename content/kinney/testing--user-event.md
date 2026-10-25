@@ -1,21 +1,21 @@
 ---
-title: "FireEvent vs UserEvent in Testing"
-lang: en
+title: "FireEvent مقابل UserEvent في الاختبار"
+lang: ar
 source: "https://stevekinney.com/courses/testing/user-event"
 ---
 
-`fireEvent` is useful for—umm—firing events, but generally speaking there is more to a user interaction than just one event. [Consider the list of events](https://stevekinney.com/courses/testing/fire-event-events) that `fireEvent` supports. that `fireEvent` supports. Let’s look at an over-simplified list of what happens when a user types into an `input` field:
+`fireEvent` مفيدة في — همم — إطلاق الأحداث، لكن بشكل عام هناك أكثر من حدث واحد في تفاعل المستخدم. [تأمّل قائمة الأحداث](https://stevekinney.com/courses/testing/fire-event-events) التي تدعمها `fireEvent`. التي تدعمها `fireEvent`. لنلقِ نظرة على قائمة مبسّطة جدًا لما يحدث عندما يكتب مستخدم في حقل `input`:
 
-- The user might click to focus on the field (`click`, `focus`).
-- They might press a key (`keydown`, `keypress`).
-- They’ll probably release that key (`keyup`).
-- That’ll trigger a `change` event on the input field.
+- قد ينقر المستخدم لتركيز الحقل (`click`، `focus`).
+- قد يضغط مفتاحًا (`keydown`، `keypress`).
+- سيحرّر ذلك المفتاح على الأرجح (`keyup`).
+- سيؤدي ذلك إلى إطلاق حدث `change` على حقل الإدخال.
 
-That’s not even all of it. But, you get the point. The idea is that we want to simulate what an actual user will do as opposed to getting too in the weeds about the events that the browser is firing on our behalf.
+هذا ليس كل شيء حتى. لكنك فهمت الفكرة. الفكرة أننا نريد محاكاة ما سيفعله مستخدم حقيقي فعلًا بدلًا من التورّط كثيرًا في الأحداث التي يطلقها المتصفح نيابةً عنا.
 
-In *most* cases, you’ll want to prefer using [`@testing-library/user-event`](https://www.npmjs.com/package/@testing-library/user-event) over the built-in `fireEvent`.
+في *معظم* الحالات، ستريد تفضيل [`@testing-library/user-event`](https://www.npmjs.com/package/@testing-library/user-event) على `fireEvent` المدمجة.
 
-Let’s take it for a spin with that `counter.test.ts` file that we were looking at earlier:
+لنجرّبها مع ملف `counter.test.ts` الذي كنا ننظر إليه سابقًا:
 
 ```typescript
 test('it should increment with the "Increment" button is pressed', () => {
@@ -30,9 +30,9 @@ test('it should increment with the "Increment" button is pressed', () => {
 });
 ```
 
-## Using `userEvent`
+## استخدام `userEvent`
 
-Our first attempt might be something like this:
+قد تكون محاولتنا الأولى شيئًا كهذا:
 
 ```typescript
 test('it should increment with the "Increment" button is pressed', () => {
@@ -48,9 +48,9 @@ test('it should increment with the "Increment" button is pressed', () => {
 });
 ```
 
-This test will fail. But, why?
+سيفشل هذا الاختبار. لكن لماذا؟
 
-The problem is that `user.click()` returns a `Promise`, so we need to make our test function `async`. Luckily, that’s an easy problem to solve:
+المشكلة أن `user.click()` تعيد `Promise`، لذا علينا جعل دالة اختبارنا غير متزامنة. لحسن الحظ، هذه مشكلة سهلة الحل:
 
 ```typescript
 test('it should increment with the "Increment" button is pressed', async () => {
@@ -66,9 +66,9 @@ test('it should increment with the "Increment" button is pressed', async () => {
 });
 ```
 
-## Additional Hype for `user-event`
+## ترويج إضافي لـ `user-event`
 
-You might not be totally sold on `user-event` just yet, but it comes with a bunch of other goodies that would be otherwise hard to emulate by hand. For example, let’s say you wanted to emulate a user pressing and holding the left shift key:
+قد لا تكون مقتنعًا تمامًا بـ `user-event` بعد، لكنها تأتي مع مجموعة أخرى من المزايا يصعب محاكاتها يدويًا. على سبيل المثال، لنفترض أنك أردت محاكاة مستخدم يضغط باستمرار على مفتاح Shift الأيسر:
 
 ```typescript
 const user = userEvent.setup();
@@ -77,8 +77,8 @@ await user.keyboard('[<ShiftLeft>]'); // Press Shift (without releasing it)
 await user.click(element); // Perform a click with `shiftKey: true`
 ```
 
-(**Source**: [`user-event` documentation](https://testing-library.com/docs/user-event/setup#starting-a-session-per-setup))
+(**المصدر**: [توثيق `user-event`](https://testing-library.com/docs/user-event/setup#starting-a-session-per-setup))
 
-> **Accident Counter with User Event**
+> **عدّاد الحوادث مع حدث المستخدم**
 >
-> You can take a look at a sollution for the Accident Counter example [using user event](https://stevekinney.com/courses/testing/accident-counter-with-user-event).
+> يمكنك الاطلاع على حل لمثال عدّاد الحوادث [باستخدام حدث المستخدم](https://stevekinney.com/courses/testing/accident-counter-with-user-event).

@@ -1,22 +1,22 @@
 ---
-title: "Measuring Performance"
-lang: en
+title: "قياس الأداء"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/measuring-performance-with-real-tools"
 ---
 
-Performance optimization without measurement is just wishful thinking with extra steps. You might *feel* like that component refactor made things faster, but feelings don’t ship reliable software. Whether you’re tracking down sluggish renders or proving to stakeholders that your optimization sprint was worth it, you need real data from real tools.
+تحسين الأداء بلا قياس ليس إلا أمنيات مع خطوات إضافية. قد *تشعر* أن إعادة هيكلة ذلك المكوّن جعلت الأمور أسرع، لكن المشاعر لا تُنتج برمجيات موثوقة. وسواء كنت تتعقّب عمليات تصيير بطيئة أو تُثبت لأصحاب المصلحة أن جولة التحسين التي قمت بها كانت تستحقّ، فأنت بحاجة إلى بيانات حقيقية من أدوات حقيقية.
 
-React performance debugging used to be a mix of console logs, timing code, and educated guessing. Not anymore. Between React DevTools Profiler, Chrome’s Performance tab, and modern flamegraph tooling, you can pinpoint exactly where your app is spending time—and more importantly, where it’s wasting it.
+كان تنقيح أداء React في السابق مزيجًا من سجلات console وشيفرة قياس الوقت وتخمينات مدروسة. لم يعد الأمر كذلك. فبين أداة Profiler في React DevTools وتبويب Performance في Chrome وأدوات مخططات اللهب (flamegraph) الحديثة، يمكنك تحديد الموضع الذي يستهلك فيه تطبيقك الوقت بدقة — والأهم من ذلك، الموضع الذي يهدره فيه.
 
-## The React DevTools Profiler: Your First Stop
+## أداة Profiler في React DevTools: محطتك الأولى
 
-The [React Developer Tools Profiler](https://react.dev/learn/react-developer-tools) is purpose-built for React apps and should be your go-to tool for understanding component behavior. It shows you which components rendered, why they rendered, and how long they took.
+صُمّمت [أداة Profiler في React Developer Tools](https://react.dev/learn/react-developer-tools) خصيصًا لتطبيقات React، وينبغي أن تكون أداتك المفضّلة لفهم سلوك المكوّنات. فهي تُظهر لك أيّ المكوّنات صُيّرت، ولماذا صُيّرت، وكم استغرقت.
 
-### Getting Started with the Profiler
+### البدء مع أداة Profiler
 
-First, install the [React Developer Tools browser extension](https://react.dev/learn/react-developer-tools). Once installed, you’ll see a “Profiler” tab in your browser’s dev tools when viewing a React app.
+أولًا، ثبّت [إضافة المتصفّح React Developer Tools](https://react.dev/learn/react-developer-tools). بعد التثبيت، سترى تبويب «Profiler» في أدوات تطوير المتصفّح عندما تعرض تطبيق React.
 
-Here’s how to capture a performance profile:
+إليك كيفية التقاط ملف تعريف للأداء:
 
 ```typescript
 // Sample component that might have performance issues
@@ -48,35 +48,35 @@ const ExpensiveList = ({ items, filter }: { items: Item[]; filter: string }) => 
 };
 ```
 
-To profile this component:
+لتحليل هذا المكوّن:
 
-1. Open React DevTools and click the “Profiler” tab
-2. Click the record button (the circle)
-3. Interact with your app (type in a filter, scroll, click buttons)
-4. Click stop recording
+1. افتح React DevTools وانقر تبويب «Profiler»
+2. انقر زر التسجيل (الدائرة)
+3. تفاعل مع تطبيقك (اكتب في عامل التصفية، ومرّر، وانقر الأزرار)
+4. انقر لإيقاف التسجيل
 
-### Reading Profiler Results
+### قراءة نتائج Profiler
 
-The Profiler shows you a flamegraph of your component tree. Each bar represents a component, and the width shows how long it took to render. Here’s what to look for:
+تعرض أداة Profiler مخطط لهب (flamegraph) لشجرة مكوّناتك. يمثّل كل شريط مكوّنًا، ويُظهر العرض مدّة تصييره. إليك ما ينبغي أن تبحث عنه:
 
-- **Wide bars**: Components taking a long time to render
-- **Tall stacks**: Deep component hierarchies that might benefit from optimization
-- **Frequent re-renders**: Components updating more than necessary
+- **أشرطة عريضة**: مكوّنات تستغرق وقتًا طويلًا في التصيير
+- **مكدّسات عالية**: تسلسلات هرمية عميقة للمكوّنات قد تستفيد من التحسين
+- **عمليات إعادة تصيير متكرّرة**: مكوّنات تتحدّث أكثر من اللازم
 
-> **Tip**
+> **نصيحة**
 >
-> Click on individual components in the flamegraph to see why they rendered. Common causes include props changes, state updates, and parent re-renders.
+> انقر على مكوّنات فردية في مخطط اللهب لترى لماذا صُيّرت. تشمل الأسباب الشائعة تغيّر الخصائص، وتحديثات الحالة، وإعادة تصيير المكوّن الأب.
 
-The Profiler also shows you the “Ranked” view, which lists components by render duration. This is gold for finding your worst offenders.
+تعرض أداة Profiler أيضًا طريقة العرض «Ranked»، التي تُدرج المكوّنات بحسب مدّة التصيير. هذه كنز للعثور على أسوأ المذنبين لديك.
 
-### Understanding Why Components Rendered
+### فهم سبب تصيير المكوّنات
 
-For each component, the Profiler tells you exactly why it rendered:
+لكل مكوّن، تخبرك أداة Profiler بدقة لماذا صُيّر:
 
-- **Hook changed**: A `useState` or `useReducer` hook updated
-- **Props changed**: Parent passed new props
-- **Parent rendered**: Component rendered because its parent did
-- **State changed**: Component’s own state was updated
+- **تغيّر خُطّاف**: تحديث خُطّاف `useState` أو `useReducer`
+- **تغيّرت الخصائص**: مرّر المكوّن الأب خصائص جديدة
+- **صُيّر المكوّن الأب**: صُيّر المكوّن لأن أباه صُيّر
+- **تغيّرت الحالة**: حُدِّثت حالة المكوّن نفسه
 
 ```typescript
 // Example: Debugging unnecessary re-renders
@@ -99,46 +99,46 @@ const UserProfile = () => {
 };
 ```
 
-In the Profiler, you’d see `ProfileButton` rendering with “Props changed” as the reason—even though `user` didn’t actually change. The culprit? That `handleEdit` function getting recreated every render.
+في أداة Profiler، سترى `ProfileButton` يُصيَّر والسبب «Props changed» — مع أن `user` لم يتغيّر فعليًا. فمن الجاني؟ دالة `handleEdit` التي يُعاد إنشاؤها عند كل عملية تصيير.
 
-## Chrome Performance Tab: The Deep Dive
+## تبويب Performance في Chrome: الغوص العميق
 
-When the React DevTools Profiler shows you *what’s* slow but you need to understand *why*, Chrome’s Performance tab gives you the full picture. It shows JavaScript execution, rendering, painting, and everything else happening in the browser.
+عندما تُظهر لك أداة Profiler في React DevTools *ما* هو بطيء لكنك تحتاج إلى فهم *لماذا*، يمنحك تبويب Performance في Chrome الصورة الكاملة. فهو يُظهر تنفيذ JavaScript، والتصيير، والرسم، وكل ما يجري في المتصفّح.
 
-### Recording a Performance Profile
+### تسجيل ملف تعريف للأداء
 
-1. Open Chrome DevTools (F12 or Cmd+Option+I)
-2. Go to the “Performance” tab
-3. Click the record button
-4. Interact with your app for 3-5 seconds
-5. Click stop
+1. افتح Chrome DevTools (‏F12 أو Cmd+Option+I)
+2. انتقل إلى تبويب «Performance»
+3. انقر زر التسجيل
+4. تفاعل مع تطبيقك لمدة 3-5 ثوانٍ
+5. انقر للإيقاف
 
-> **Warning**
+> **تحذير**
 >
-> Performance profiles can be huge. Keep recordings short (3-10 seconds) and focus on specific interactions.
+> قد تكون ملفات تعريف الأداء ضخمة. أبقِ التسجيلات قصيرة (3-10 ثوانٍ) وركّز على تفاعلات محدّدة.
 
-### Reading the Timeline
+### قراءة المخطط الزمني
 
-The Performance tab shows several tracks:
+يعرض تبويب Performance عدة مسارات:
 
-- **Main thread**: JavaScript execution, including React renders
-- **Compositor**: Layer compositing and animations
-- **GPU**: GPU-accelerated operations
-- **Network**: Resource loading
+- **الخيط الرئيسي**: تنفيذ JavaScript، بما في ذلك عمليات تصيير React
+- **المُركِّب (Compositor)**: تركيب الطبقات والحركات
+- **GPU**: عمليات مُسرَّعة بواسطة GPU
+- **الشبكة**: تحميل الموارد
 
-Look for:
+ابحث عن:
 
-- **Long tasks** (yellow/red blocks): JavaScript blocking the main thread
-- **Layout thrashing**: Repeated layout calculations
-- **Excessive garbage collection**: Memory pressure
+- **المهام الطويلة** (كتل صفراء/حمراء): JavaScript يعيق الخيط الرئيسي
+- **إرباك التخطيط (layout thrashing)**: حسابات تخطيط متكرّرة
+- **جمع نفايات مفرط**: ضغط على الذاكرة
 
-### Finding React Work in the Timeline
+### العثور على عمل React في المخطط الزمني
 
-React work appears in the Main thread timeline. Look for:
+يظهر عمل React في المخطط الزمني للخيط الرئيسي. ابحث عن:
 
-- Function calls like `commitRoot`, `performWorkUntilDeadline`
-- Your component names in the call stack
-- Time spent in `ReactDOMRoot.render`
+- استدعاءات دوال مثل `commitRoot` و`performWorkUntilDeadline`
+- أسماء مكوّناتك في مكدّس الاستدعاءات
+- الوقت المستغرق في `ReactDOMRoot.render`
 
 ```typescript
 // This component will show up clearly in Chrome's timeline
@@ -161,11 +161,11 @@ const SlowComponent = ({ data }: { data: number[] }) => {
 };
 ```
 
-In the Performance timeline, you’d see a long block of JavaScript execution when the sort button is clicked, with `SlowComponent` prominently featured in the call stack.
+في المخطط الزمني لأداة Performance، سترى كتلة طويلة من تنفيذ JavaScript عند النقر على زر الترتيب، مع ظهور `SlowComponent` بارزًا في مكدّس الاستدعاءات.
 
-## User Timing API: Custom Performance Markers
+## واجهة User Timing API: علامات أداء مخصّصة
 
-Sometimes you need to measure specific operations that don’t align with React’s render cycles. The User Timing API lets you add custom markers to the timeline.
+تحتاج أحيانًا إلى قياس عمليات محدّدة لا تتماشى مع دورات تصيير React. تتيح لك واجهة User Timing API إضافة علامات مخصّصة إلى المخطط الزمني.
 
 ```typescript
 const DataProcessor = ({ rawData }: { rawData: RawData[] }) => {
@@ -213,15 +213,15 @@ const DataProcessor = ({ rawData }: { rawData: RawData[] }) => {
 };
 ```
 
-These custom marks and measures appear in both Chrome’s Performance tab and React DevTools, giving you precise timing for your own operations.
+تظهر هذه العلامات والقياسات المخصّصة في تبويب Performance في Chrome وفي React DevTools معًا، ما يمنحك توقيتًا دقيقًا لعملياتك الخاصة.
 
-## Real World Performance Debugging
+## تنقيح الأداء في الواقع العملي
 
-Let’s walk through debugging a real performance problem. Imagine you have a dashboard with multiple widgets that’s feeling sluggish.
+لنمضِ خطوة بخطوة في تنقيح مشكلة أداء حقيقية. تخيّل أن لديك لوحة معلومات فيها عدة عناصر واجهة تشعر بأنها بطيئة.
 
-### Step 1: Identify the Problem Area
+### الخطوة 1: حدّد منطقة المشكلة
 
-Start with the React DevTools Profiler:
+ابدأ بأداة Profiler في React DevTools:
 
 ```typescript
 // Dashboard component that might be problematic
@@ -239,29 +239,29 @@ const Dashboard = () => {
 };
 ```
 
-Record a profile while selecting different widgets. You might see `WidgetChart` taking 500ms to render each time—even when the selected widget doesn’t affect the chart data.
+سجّل ملف تعريف أثناء تحديد عناصر واجهة مختلفة. قد ترى `WidgetChart` يستغرق 500 مللي ثانية في التصيير في كل مرة — حتى عندما لا يؤثّر عنصر الواجهة المحدّد في بيانات المخطط.
 
-### Step 2: Understand Why It’s Rendering
+### الخطوة 2: افهم لماذا يُصيَّر
 
-Look at the “Why did this render?” information in the Profiler. You might discover:
+انظر إلى معلومات «Why did this render?» في أداة Profiler. قد تكتشف ما يلي:
 
-- `WidgetChart` renders because its parent `Dashboard` renders
-- `Dashboard` renders because `selectedWidget` state changes
-- `WidgetChart` doesn’t actually use `selectedWidget` data
+- يُصيَّر `WidgetChart` لأن أباه `Dashboard` يُصيَّر
+- يُصيَّر `Dashboard` لأن حالة `selectedWidget` تتغيّر
+- لا يستخدم `WidgetChart` فعليًا بيانات `selectedWidget`
 
-### Step 3: Use Chrome Performance for Details
+### الخطوة 3: استخدم أداة Performance في Chrome للتفاصيل
 
-Switch to Chrome’s Performance tab to see what `WidgetChart` is actually doing during those 500ms:
+انتقل إلى تبويب Performance في Chrome لترى ما يفعله `WidgetChart` فعليًا خلال تلك الـ 500 مللي ثانية:
 
-- Is it JavaScript computation?
-- Layout and paint work?
-- Network requests?
+- هل هو حساب في JavaScript؟
+- عمل تخطيط ورسم؟
+- طلبات شبكة؟
 
-You might find it’s recalculating chart data that hasn’t changed.
+قد تجد أنه يعيد حساب بيانات مخطط لم تتغيّر.
 
-### Step 4: Optimize and Verify
+### الخطوة 4: حسّن وتحقّق
 
-Apply optimizations like `React.memo`, `useMemo`, or `useCallback`:
+طبّق تحسينات مثل `React.memo` أو `useMemo` أو `useCallback`:
 
 ```typescript
 // ✅ Optimized version
@@ -292,29 +292,29 @@ const Dashboard = () => {
 };
 ```
 
-### Step 5: Measure Again
+### الخطوة 5: قِس مرة أخرى
 
-Record another profile to confirm your optimizations worked. You should see:
+سجّل ملف تعريف آخر لتتأكّد أن تحسيناتك نجحت. ينبغي أن ترى:
 
-- `WidgetChart` no longer renders when selecting widgets
-- Overall interaction time decreased
-- Flamegraph shows less work being done
+- لم يعد `WidgetChart` يُصيَّر عند تحديد عناصر الواجهة
+- انخفاض زمن التفاعل الإجمالي
+- يُظهر مخطط اللهب عملًا أقل
 
-## Advanced Profiling Techniques
+## تقنيات تحليل متقدّمة
 
-### Simulating Slower Devices
+### محاكاة أجهزة أبطأ
 
-Chrome lets you throttle CPU performance to simulate slower devices:
+يتيح لك Chrome خفض أداء المعالج لمحاكاة أجهزة أبطأ:
 
-1. Open the Performance tab
-2. Click the gear icon
-3. Set CPU to “4x slowdown” or “6x slowdown”
+1. افتح تبويب Performance
+2. انقر أيقونة الترس
+3. اضبط المعالج على «4x slowdown» أو «6x slowdown»
 
-This reveals performance problems that might not be obvious on your development machine.
+يكشف هذا عن مشكلات أداء قد لا تكون واضحة على جهاز التطوير لديك.
 
-### Profiling in Production
+### التحليل في بيئة الإنتاج
 
-React DevTools Profiler works in production builds, but you need to enable it explicitly:
+تعمل أداة Profiler في React DevTools مع عمليات البناء الإنتاجية، لكن عليك تمكينها صراحةً:
 
 ```typescript
 // Only enable profiling in development or staging
@@ -330,17 +330,17 @@ if (shouldProfile) {
 }
 ```
 
-> **Danger**
+> **خطر**
 >
-> Profiling adds overhead. Don’t leave it enabled in production unless you’re actively debugging.
+> يضيف التحليل عبئًا إضافيًا. لا تُبقِه ممكّنًا في بيئة الإنتاج إلا إذا كنت تنقّح بنشاط.
 
-### Memory Profiling
+### تحليل الذاكرة
 
-Performance isn’t just about render speed—memory leaks can make your app progressively slower. Use Chrome’s Memory tab to:
+الأداء ليس مسألة سرعة تصيير فقط — فتسريبات الذاكرة قد تجعل تطبيقك أبطأ تدريجيًا. استخدم تبويب Memory في Chrome من أجل:
 
-- Take heap snapshots before and after interactions
-- Compare snapshots to find memory leaks
-- Profile allocations to see what’s creating objects
+- أخذ لقطات لذاكرة الكومة (heap) قبل التفاعلات وبعدها
+- مقارنة اللقطات للعثور على تسريبات الذاكرة
+- تحليل التخصيصات لترى ما الذي يُنشئ الكائنات
 
 ```typescript
 // Common memory leak pattern
@@ -359,9 +359,9 @@ const LeakyComponent = () => {
 };
 ```
 
-## Performance Testing in CI/CD
+## اختبار الأداء في CI/CD
 
-Don’t wait for users to report performance regressions. Integrate performance testing into your build process:
+لا تنتظر أن يبلّغ المستخدمون عن تراجع في الأداء. ادمج اختبار الأداء في عملية البناء لديك:
 
 ```typescript
 // Performance test using Lighthouse CI
@@ -388,16 +388,16 @@ const performanceTest = async () => {
 };
 ```
 
-## Key Takeaways
+## الخلاصات الرئيسية
 
-Performance optimization is an iterative process: measure, optimize, verify, repeat. Here’s your toolkit:
+تحسين الأداء عملية تكرارية: قِس، حسّن، تحقّق، ثم كرّر. إليك صندوق أدواتك:
 
-1. **React DevTools Profiler**: Start here for component-level insights
-2. **Chrome Performance tab**: Deep dive into browser behavior
-3. **User Timing API**: Add custom measurements for specific operations
-4. **Memory profiling**: Don’t forget about memory leaks
-5. **Automated testing**: Prevent regressions with CI/CD integration
+1. **أداة Profiler في React DevTools**: ابدأ من هنا للحصول على رؤى على مستوى المكوّنات
+2. **تبويب Performance في Chrome**: غوص عميق في سلوك المتصفّح
+3. **واجهة User Timing API**: أضف قياسات مخصّصة لعمليات محدّدة
+4. **تحليل الذاكرة**: لا تنسَ تسريبات الذاكرة
+5. **الاختبار الآلي**: امنع التراجع بدمج CI/CD
 
-Remember: premature optimization might be the root of all evil, but no optimization is the root of all user frustration. Use these tools to find the real bottlenecks, fix them with confidence, and ship faster experiences that users will actually notice.
+تذكّر: قد يكون التحسين المبكر أصل كل الشرور، لكن غياب التحسين أصل كل إحباط لدى المستخدمين. استخدم هذه الأدوات للعثور على نقاط الاختناق الحقيقية، وأصلحها بثقة، وقدّم تجارب أسرع سيلاحظها المستخدمون فعلًا.
 
-The next time someone asks “is it faster now?”, you’ll have data instead of hopes and dreams.
+في المرة القادمة التي يسألك فيها أحد «هل صار أسرع الآن؟»، ستكون لديك بيانات بدل الآمال والأحلام.

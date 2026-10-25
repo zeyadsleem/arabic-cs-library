@@ -1,34 +1,29 @@
 ---
-title: "Claude Code and Bash Scripts"
-lang: en
+title: "Claude Code وسكربتات Bash"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-and-bash-scripts"
 ---
 
-The first time an agent runs the wrong shell command confidently, you learn why
-terminal output needs to be evidence, not vibes.
+في أول مرة يشغّل فيها الوكيل أمر صدفة خاطئًا بثقة، تتعلم لماذا يحتاج مخرَج الطرفية إلى أن يكون دليلًا لا انطباعًا.
 
-[Claude Code](https://code.claude.com/docs/en/overview) can run shell commands,
-and users can run bash commands inside a session. As of [Claude Code 2.1.186](https://code.claude.com/docs/en/changelog), commands
-entered with `!` trigger a Claude response by default unless [`respondToBashCommands`](https://code.claude.com/docs/en/settings) is set to `false`.
+يستطيع [Claude Code](https://code.claude.com/docs/en/overview) تشغيل أوامر الصدفة، ويستطيع المستخدمون تشغيل أوامر bash داخل الجلسة. واعتبارًا من [Claude Code 2.1.186](https://code.claude.com/docs/en/changelog)، فإن الأوامر المُدخَلة بـ `!` تُطلق استجابة من Claude افتراضيًا إلا إذا ضُبط [`respondToBashCommands`](https://code.claude.com/docs/en/settings) على `false`.
 
-That makes terminal output part of the conversation. Treat it as evidence.
+وهذا يجعل مخرَج الطرفية جزءًا من المحادثة. فتعامل معه كدليل.
 
-## Prefer Repository Scripts
+## فضّل سكربتات المستودع
 
-Ask Claude to run documented scripts instead of ad hoc command chains:
+اطلب من Claude تشغيل السكربتات الموثّقة بدلًا من سلاسل أوامر مرتجلة:
 
 ```
 Run the targeted test command from package.json. If it fails, report the command
 and failure before editing files.
 ```
 
-Good scripts are repeatable. Long one-off shell pipelines are harder to review
-and easier to get wrong.
+السكربتات الجيدة قابلة للتكرار. أما خطوط أنابيب الصدفة الطويلة ذات الاستخدام الواحد فمراجعتها أصعب، والخطأ فيها أسهل.
 
-## Make Commands Bounded
+## اجعل الأوامر محدودة
 
-Avoid commands that can hang forever, write to production, or mutate broad state.
-For investigation, prefer:
+تجنّب الأوامر التي قد تتوقف بلا نهاية، أو تكتب إلى الإنتاج، أو تغيّر حالة واسعة. وللتحقيق، فضّل:
 
 ```bash
 rg "expired token" src tests
@@ -36,17 +31,15 @@ git status --short
 bun test src/lib/server/invitations.test.ts
 ```
 
-For dangerous operations, require an explicit explanation before execution:
+وللعمليات الخطيرة، اشترط شرحًا صريحًا قبل التنفيذ:
 
 ```
 Before running any command that deletes files, changes branches, or writes to an
 external service, explain the command and wait for approval.
 ```
 
-## Turn Repeated Shell Work into Scripts
+## حوّل عمل الصدفة المتكرر إلى سكربتات
 
-If a command sequence becomes part of the workflow, commit it as a script with a
-clear name. Then rules, skills, hooks, and humans can all call the same thing.
+إذا صار تسلسل أوامر جزءًا من سير العمل، فأودعه سكربتًا باسم واضح. عندئذٍ تستطيع القواعد والمهارات والخطّافات والبشر أن تنادي الشيء نفسه.
 
-Agents are good at reasoning over command output. Build systems should still be
-owned by the repository.
+الوكلاء بارعون في الاستدلال على مخرَج الأوامر. ومع ذلك يجب أن تبقى أنظمة البناء مملوكة للمستودع.

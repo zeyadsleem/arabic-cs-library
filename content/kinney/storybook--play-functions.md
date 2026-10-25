@@ -1,22 +1,22 @@
 ---
-title: "Play Functions"
-lang: en
+title: "دوال التشغيل (Play Functions)"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/play-functions"
 ---
 
-Consider this text area for a moment.
+تأمّل منطقة النص هذه لحظة.
 
-Text area component
+مكوّن منطقة النص
 
-If a `maxLength` attribute is passed in, then we display a character count at the bottom. In fact it has an extra feature: we’ll add styling to the text area in the event that the user blows past the character count.
+إذا مُرِّرت خاصية `maxLength`، فعندئذ نعرض عدد الأحرف في الأسفل. بل إن لديها ميزة إضافية: سنضيف تنسيقًا إلى منطقة النص في حال تجاوز المستخدم عدد الأحرف.
 
-An invalid text area
+منطقة نص غير صالحة
 
-What we’d like to do is verify this state. I suppose that we could cheat and have stories that put it in each state, but this has the drawback of needing to make sure look at the story every time we modify the component.
+وما نودّ فعله هو التحقق من هذه الحالة. أفترض أنه يمكننا الغش بأن تكون لدينا قصص تضعها في كل حالة، لكن هذا يعيبه أننا نحتاج إلى التأكد من النظر إلى القصة في كل مرة نعدّل فيها المكوّن.
 
-Instead, we can use a **Play** function to simulate a user interaction.
+بدلًا من ذلك، يمكننا استخدام دالة **Play** لمحاكاة تفاعل مستخدم.
 
-Let’s start by writing a story that checks to see if the length count works at all.
+لنبدأ بكتابة قصة تتحقق مما إذا كان عدّ الطول يعمل أصلًا.
 
 ```typescript
 export const MaxLength: Story = {
@@ -36,9 +36,9 @@ export const MaxLength: Story = {
 };
 ```
 
-## Accessing Args
+## الوصول إلى الوسائط
 
-We even have access to `args`.
+بل إن لدينا وصولًا إلى `args`.
 
 ```typescript
 export const LengthTooLong: Story = {
@@ -58,7 +58,7 @@ export const LengthTooLong: Story = {
 };
 ```
 
-We can even expand this to check for stuff like classes, styling, or accessibility attributes.
+يمكننا حتى توسيع هذا للتحقق من أشياء مثل الأصناف أو الأنماط أو خصائص إمكانية الوصول.
 
 ```typescript
 export const LengthTooLong: Story = {
@@ -82,11 +82,11 @@ export const LengthTooLong: Story = {
 };
 ```
 
-> **Quick Exercise**
+> **تمرين سريع**
 >
-> Can you write a test to check for the following:
+> هل يمكنك كتابة اختبار يتحقق مما يلي:
 >
-> - A disabled text area is—in fact—disabled.
-> - Typing in the text area does not change the value of the text area.
+> - منطقة نص معطّلة هي—في الحقيقة—معطّلة.
+> - الكتابة في منطقة النص لا تغيّر قيمة منطقة النص.
 >
-> A potential solution can be found [here](https://stevekinney.com/courses/storybook/text-area-disabled-play-function-solution).
+> ويمكن العثور على حل محتمل [هنا](https://stevekinney.com/courses/storybook/text-area-disabled-play-function-solution).

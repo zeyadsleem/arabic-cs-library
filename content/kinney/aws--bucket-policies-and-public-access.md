@@ -1,37 +1,37 @@
 ---
-title: "Bucket Policies and Public Access"
-lang: en
+title: "سياسات الحاويات والوصول العام"
+lang: ar
 source: "https://stevekinney.com/courses/aws/bucket-policies-and-public-access"
 ---
 
-Your files are in the bucket, but nobody can access them. That’s by design—S3’s default posture is “deny everything unless explicitly allowed.” To serve a static website, you need to tell S3 that the public is allowed to read your files. You do that with a **bucket policy**.
+ملفاتك موجودة في الحاوية، لكن لا أحد يستطيع الوصول إليها. وهذا مقصود—فالوضع الافتراضي في S3 هو «ارفض كل شيء ما لم يُسمح به صراحة». ولتقديم موقع ثابت، عليك أن تخبر S3 بأن الجمهور مسموح له بقراءة ملفاتك. تفعل ذلك عبر **سياسة حاوية**.
 
-If you want AWS’s version of the guardrails nearby, the [Amazon S3 User Guide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) and the [Block Public Access documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) are the official references.
+إن أردت نسخة AWS من الحواجز قريبة منك، فإن [دليل مستخدم Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) و[توثيق حظر الوصول العام](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html) هما المرجعان الرسميان.
 
-If you completed [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy) in the IAM foundation section, the structure of a bucket policy will look familiar. The JSON shape is nearly identical. The difference is where the policy lives and who it applies to.
+إذا كنت قد أكملت [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy) في قسم أساسيات IAM، فستبدو بنية سياسة الحاوية مألوفة لديك. فشكل JSON شبه مطابق. والفرق يكمن في مكان وجود السياسة ومن تنطبق عليه.
 
-## IAM Policies vs. Bucket Policies
+## سياسات IAM مقابل سياسات الحاويات
 
-In the IAM foundation section, you attached IAM policies to users, groups, or roles. Those policies travel with the identity: “This user is allowed to do these things.” A bucket policy is the reverse—it attaches to the resource and says: “These people are allowed to do things to me.”
+في قسم أساسيات IAM، أرفقت سياسات IAM بمستخدمين أو مجموعات أو أدوار. تلك السياسات تسافر مع الهوية: «هذا المستخدم مسموح له بفعل هذه الأشياء». أما سياسة الحاوية فهي العكس—تُرفق بالمورد وتقول: «هؤلاء الأشخاص مسموح لهم بفعل أشياء بي».
 
-Both are JSON documents with `Version`, `Statement`, `Effect`, `Action`, and `Resource`. The key difference is the **Principal** field:
+كلتاهما مستندات JSON تحتوي على `Version` و`Statement` و`Effect` و`Action` و`Resource`. والفرق الجوهري هو حقل **Principal**:
 
-- **IAM policies** have an implicit principal—whoever the policy is attached to.
-- **Bucket policies** have an explicit **Principal** field that specifies who the policy applies to. For public access, the principal is `"*"`, which means everyone.
+- **سياسات IAM** لها principal ضمني—أيًّا كان من أُرفقت به السياسة.
+- **سياسات الحاويات** لها حقل **Principal** صريح يحدد من تنطبق عليه السياسة. وللوصول العام، يكون الـ principal هو `"*"`، أي الجميع.
 
-I think of it this way: an IAM policy is a **badge** you wear. A bucket policy is a **sign on the door**.
+أفكر في الأمر هكذا: سياسة IAM هي **شارة** ترتديها، وسياسة الحاوية هي **لافتة على الباب**.
 
-> **Tip**
+> **نصيحة**
 >
-> When both an IAM policy and a bucket policy apply to the same request, AWS evaluates them together. An explicit `Deny` in either policy wins. If there’s no explicit `Deny`, then an `Allow` in either policy grants access. This is called **policy evaluation logic**, and understanding it saves hours of debugging “Access Denied” errors.
+> عندما تنطبق سياسة IAM وسياسة حاوية على الطلب نفسه، تقيّمهما AWS معًا. وأي `Deny` صريح في أي منهما يفوز. وإذا لم يوجد `Deny` صريح، فإن `Allow` في أي منهما يمنح الوصول. يُسمى هذا **منطق تقييم السياسات**، وفهمه يوفر ساعات من تصحيح أخطاء «Access Denied».
 
-## Disabling Block Public Access
+## تعطيل حظر الوصول العام
 
-Before you can attach a public bucket policy, you need to disable the Block Public Access settings that AWS enables by default. On a fresh bucket, the **Permissions** tab shows all four settings turned on.
+قبل أن تتمكن من إرفاق سياسة حاوية عامة، عليك تعطيل إعدادات حظر الوصول العام التي تُمكّنها AWS افتراضيًا. في حاوية جديدة، تُظهر علامة تبويب **Permissions** الإعدادات الأربعة كلها مفعّلة.
 
-S3 bucket Permissions tab showing the Block Public Access setting labeled On with all four restrictions active. Specifically, you need to turn off `BlockPublicPolicy` (so you can put a public policy on the bucket) and `RestrictPublicBuckets` (so the public policy actually takes effect).
+علامة تبويب Permissions في حاوية S3 تعرض إعداد حظر الوصول العام موسومًا بـ On مع تفعيل القيود الأربعة كلها. وتحديدًا، عليك إيقاف `BlockPublicPolicy` (حتى تستطيع وضع سياسة عامة على الحاوية) و`RestrictPublicBuckets` (حتى تصبح السياسة العامة سارية فعلًا).
 
-For simplicity and because we’re hosting a public static site, we’ll disable all four Block Public Access settings:
+ومن أجل البساطة، ولأننا نستضيف موقعًا ثابتًا عامًا، سنعطّل إعدادات حظر الوصول العام الأربعة كلها:
 
 ```bash
 aws s3api put-public-access-block \
@@ -41,7 +41,7 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-Verify the change:
+تحقق من التغيير:
 
 ```bash
 aws s3api get-public-access-block \
@@ -61,29 +61,29 @@ aws s3api get-public-access-block \
 }
 ```
 
-In the console, disabling all four settings on the **Edit Block Public Access** form looks like this—all checkboxes cleared.
+في وحدة التحكم، يبدو تعطيل الإعدادات الأربعة في نموذج **Edit Block Public Access** هكذا—كل مربعات الاختيار فارغة.
 
-The S3 Edit Block Public Access form with all four checkboxes unchecked, ready to save.
+نموذج Edit Block Public Access في S3 مع إلغاء تحديد مربعات الاختيار الأربعة، جاهزًا للحفظ.
 
-After saving, the **Permissions** tab confirms that Block Public Access is now **Off** with a success banner.
+بعد الحفظ، تؤكد علامة تبويب **Permissions** أن حظر الوصول العام أصبح الآن **Off** مع لافتة نجاح.
 
-The S3 bucket Permissions tab showing Block Public Access labeled Off with a success banner confirming the change was saved.
+علامة تبويب Permissions في حاوية S3 تعرض حظر الوصول العام موسومًا بـ Off مع لافتة نجاح تؤكد حفظ التغيير.
 
-> **Warning**
+> **تحذير**
 >
-> Disabling Block Public Access is appropriate for a bucket that serves public static website files. It is not appropriate for buckets containing user data, logs, backups, or anything sensitive. In the CloudFront section, you’ll switch to a different approach, Origin Access Control, that keeps the bucket private and lets only CloudFront read from it.
+> تعطيل حظر الوصول العام مناسب لحاوية تقدّم ملفات موقع ثابت عام. لكنه غير مناسب للحاويات التي تحتوي بيانات مستخدمين أو سجلات أو نسخًا احتياطية أو أي شيء حساس. وفي قسم CloudFront، ستنتقل إلى نهج مختلف هو Origin Access Control، يحافظ على خصوصية الحاوية ويسمح لـ CloudFront وحدها بالقراءة منها.
 
-> **Account-Level BPA**
+> **حظر الوصول العام على مستوى الحساب**
 >
-> Block Public Access exists at *two* levels: the bucket and the account. If the **account-level** BPA is on (the default on accounts created in recent years), it overrides bucket-level settings—your bucket will reject the public policy with an `AccessDenied` or `InvalidBucketAclWithBlockPublicAccess` error no matter what you set on the bucket itself. Check the account-level settings at **S3 Console → Block Public Access settings for this account**, or via `aws s3control get-public-access-block --account-id 123456789012`. Turn them off if the bucket-level change isn’t taking effect, or—better—skip this lesson’s public-bucket path entirely and go straight to CloudFront + OAC once you’ve read through the concepts here.
+> يوجد حظر الوصول العام على *مستويين*: الحاوية والحساب. فإذا كان حظر الوصول العام **على مستوى الحساب** مفعّلًا (وهو الافتراضي في الحسابات المنشأة في السنوات الأخيرة)، فإنه يتجاوز إعدادات مستوى الحاوية—سترفض حاويتك السياسة العامة بخطأ `AccessDenied` أو `InvalidBucketAclWithBlockPublicAccess` مهما ضبطت على الحاوية نفسها. تحقق من الإعدادات على مستوى الحساب عبر **S3 Console → Block Public Access settings for this account**، أو عبر `aws s3control get-public-access-block --account-id 123456789012`. عطّلها إن لم يكن التغيير على مستوى الحاوية ساريًا، أو—وهذا أفضل—تجاوز مسار الحاوية العامة في هذا الدرس بالكامل وانتقل مباشرة إلى CloudFront + OAC بعد أن تقرأ المفاهيم هنا.
 
-## Writing a Public Read Bucket Policy
+## كتابة سياسة حاوية للقراءة العامة
 
-> **Tip**
+> **نصيحة**
 >
-> All bucket policies from this lesson are available as standalone JSON files in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/policies/bucket-policies).
+> جميع سياسات الحاويات في هذا الدرس متاحة كملفات JSON مستقلة في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/policies/bucket-policies).
 
-Now you can attach a bucket policy. Here is a complete policy that allows anyone to read any object in the bucket:
+الآن يمكنك إرفاق سياسة حاوية. إليك سياسة كاملة تسمح لأي شخص بقراءة أي كائن في الحاوية:
 
 ```json
 {
@@ -100,22 +100,22 @@ Now you can attach a bucket policy. Here is a complete policy that allows anyone
 }
 ```
 
-Let’s break this down:
+لنفصّل هذا:
 
-- **`Version`**: Always `"2012-10-17"`—this is the policy language version, not a date you change.
-- **`Sid`**: A human-readable identifier for this statement. Optional but helpful for debugging.
-- **`Effect`**: `"Allow"`—grant access rather than deny it.
-- **`Principal`**: `"*"`—everyone, including unauthenticated users. This is what makes it public.
-- **`Action`**: `"s3:GetObject"`—only allow reading objects. Not listing, not deleting, not uploading. Just reading.
-- **`Resource`**: `"arn:aws:s3:::my-frontend-app-assets/*"`—applies to all objects inside the bucket. The `/*` is critical: without it, the policy applies to the bucket itself, not the objects inside it.
+- **`Version`**: دائمًا `"2012-10-17"`—هذه نسخة لغة السياسة، لا تاريخًا تحدّثه.
+- **`Sid`**: معرّف مقروء بشريًا لهذا البيان. اختياري لكنه مفيد عند تصحيح الأخطاء.
+- **`Effect`**: `"Allow"`—امنح الوصول بدلًا من منعه.
+- **`Principal`**: `"*"`—الجميع، بما في ذلك المستخدمون غير الموثّقين. هذا ما يجعلها عامة.
+- **`Action`**: `"s3:GetObject"`—السماح بقراءة الكائنات فقط. لا سرد، ولا حذف، ولا رفع. قراءة فقط.
+- **`Resource`**: `"arn:aws:s3:::my-frontend-app-assets/*"`—تنطبق على جميع الكائنات داخل الحاوية. و`/*` حرجة: فبدونها تنطبق السياسة على الحاوية نفسها، لا على الكائنات داخلها.
 
-> **Warning**
+> **تحذير**
 >
-> Notice the `Resource` ends with `/*`. The ARN `arn:aws:s3:::my-frontend-app-assets` (without `/*`) refers to the bucket. The ARN `arn:aws:s3:::my-frontend-app-assets/*` refers to the objects inside the bucket. The `s3:GetObject` action operates on objects, so you need the `/*`. Mixing these up is one of the most common bucket policy mistakes.
+> لاحظ أن `Resource` تنتهي بـ `/*`. فالـ ARN `arn:aws:s3:::my-frontend-app-assets` (بدون `/*`) يشير إلى الحاوية. والـ ARN `arn:aws:s3:::my-frontend-app-assets/*` يشير إلى الكائنات داخل الحاوية. وإجراء `s3:GetObject` يعمل على الكائنات، لذا تحتاج إلى `/*`. والخلط بينهما من أكثر أخطاء سياسات الحاويات شيوعًا.
 
-## Applying the Bucket Policy
+## تطبيق سياسة الحاوية
 
-Save the policy JSON to a file and apply it with the CLI:
+احفظ JSON السياسة في ملف وطبّقها عبر CLI:
 
 ```bash
 aws s3api put-bucket-policy \
@@ -124,11 +124,11 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-In the console, the same operation happens through the **Bucket Policy** editor on the **Permissions** tab. You paste the JSON directly into the editor.
+في وحدة التحكم، تحدث العملية نفسها عبر محرر **Bucket Policy** في علامة تبويب **Permissions**. وتلصق JSON مباشرة في المحرر.
 
-The S3 Bucket Policy editor showing the public-read JSON policy with Principal set to * and Action set to s3:GetObject.
+محرر سياسة حاوية S3 يعرض سياسة JSON للقراءة العامة مع تعيين Principal إلى * وAction إلى s3:GetObject.
 
-You can verify the policy was applied:
+يمكنك التحقق من تطبيق السياسة:
 
 ```bash
 aws s3api get-bucket-policy \
@@ -137,11 +137,11 @@ aws s3api get-bucket-policy \
   --output json
 ```
 
-The response wraps the policy in a `Policy` field as a JSON string. It’s not the prettiest output, but it confirms the policy is in place.
+تُغلّف الاستجابة السياسة في حقل `Policy` كسلسلة JSON. وليس هذا أجمل ناتج، لكنه يؤكد أن السياسة في مكانها.
 
-The S3 bucket Permissions tab showing the applied bucket policy granting public read access to all objects.
+علامة تبويب Permissions في حاوية S3 تعرض سياسة الحاوية المطبقة التي تمنح وصول قراءة عامًا إلى جميع الكائنات.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import { S3Client, PutBucketPolicyCommand, GetBucketPolicyCommand } from '@aws-sdk/client-s3';
@@ -173,38 +173,38 @@ const current = await s3.send(new GetBucketPolicyCommand({ Bucket: 'my-frontend-
 console.log(JSON.parse(current.Policy!));
 ```
 
-## What This Policy Does (and Does Not Do)
+## ما تفعله هذه السياسة (وما لا تفعله)
 
-This policy grants one specific permission: anyone can read (download) objects from the bucket. That’s exactly what you need for a static website—browsers need to download your HTML, CSS, and JavaScript.
+تمنح هذه السياسة إذنًا واحدًا محددًا: يمكن لأي شخص قراءة (تنزيل) الكائنات من الحاوية. وهذا بالضبط ما تحتاجه لموقع ثابت—فالمتصفحات تحتاج إلى تنزيل HTML وCSS وJavaScript الخاصة بك.
 
-Here’s what this policy does **not** allow:
+إليك ما **لا** تسمح به هذه السياسة:
 
-- **Listing the bucket contents** (`s3:ListBucket`). A visitor can’t browse your bucket and see all your files. They need to know the exact key.
-- **Uploading files** (`s3:PutObject`). Only you (or whatever IAM user or role has upload permissions) can add files to the bucket.
-- **Deleting files** (`s3:DeleteObject`). Same as above—only authorized users can delete.
-- **Modifying the bucket policy** (`s3:PutBucketPolicy`). Only your IAM user or role can change the policy itself.
+- **سرد محتويات الحاوية** (`s3:ListBucket`). فلا يستطيع الزائر تصفح حاويتك ورؤية كل ملفاتك. عليه أن يعرف المفتاح الدقيق.
+- **رفع الملفات** (`s3:PutObject`). فأنت وحدك (أو أي مستخدم IAM أو دور لديه أذونات رفع) يمكنك إضافة ملفات إلى الحاوية.
+- **حذف الملفات** (`s3:DeleteObject`). كما سبق—لا يحذف إلا المستخدمون المصرّح لهم.
+- **تعديل سياسة الحاوية** (`s3:PutBucketPolicy`). فلا يغيّر السياسة نفسها إلا مستخدم IAM أو الدور الخاص بك.
 
-This is the **principle of least privilege** in action: grant the minimum permissions necessary for the task. The public needs to read your files. They don’t need to do anything else.
+هذا هو **مبدأ أقل الامتيازات** في التطبيق: امنح الحد الأدنى من الأذونات اللازمة للمهمة. فالجمهور يحتاج إلى قراءة ملفاتك، ولا يحتاج إلى فعل أي شيء آخر.
 
-## Testing Public Access
+## اختبار الوصول العام
 
-Once the policy is applied, you can test that objects are publicly accessible using a direct URL. The URL format for S3 objects is:
+بعد تطبيق السياسة، يمكنك اختبار إمكانية الوصول إلى الكائنات علنًا باستخدام رابط مباشر. وصيغة URL لكائنات S3 هي:
 
 ```
 https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Try it with `curl`:
+جرّبها بـ `curl`:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-You should get a `200 OK` response with headers showing the content type and size. If you get `403 Forbidden`, double-check that Block Public Access is disabled and the bucket policy is applied correctly.
+ينبغي أن تحصل على استجابة `200 OK` مع ترويسات تُظهر نوع المحتوى والحجم. وإذا حصلت على `403 Forbidden`، فتحقق مرة أخرى من تعطيل حظر الوصول العام ومن تطبيق سياسة الحاوية بشكل صحيح.
 
-## A More Restrictive Policy
+## سياسة أكثر تقييدًا
 
-The policy above is the minimum for a public static site. But you might want to be more specific. Here is a policy that restricts public reads to only certain file types:
+السياسة أعلاه هي الحد الأدنى لموقع ثابت عام. لكن قد ترغب في أن تكون أكثر تحديدًا. إليك سياسة تقصر القراءة العامة على أنواع ملفات معينة فقط:
 
 ```json
 {
@@ -231,15 +231,15 @@ The policy above is the minimum for a public static site. But you might want to 
 }
 ```
 
-This is more work to maintain but limits exposure. In practice, the `/*` wildcard is fine for a static site bucket that contains only build output. If you start putting non-public files in the same bucket (don’t do this), a restrictive policy becomes necessary.
+هذا أكثر عملًا في الصيانة لكنه يحدّ من التعرض. وعمليًا، يُعدّ حرف البدل `/*` كافيًا لحاوية موقع ثابت لا تحتوي إلا مخرجات البناء. وإذا بدأت تضع ملفات غير عامة في الحاوية نفسها (لا تفعل هذا)، تصبح السياسة التقييدية ضرورية.
 
-## Combining IAM and Bucket Policies
+## الجمع بين سياسات IAM وسياسات الحاويات
 
-Your IAM user from the IAM foundation section can already access this bucket through IAM policies. The bucket policy adds public access on top of that. Both mechanisms work together:
+مستخدم IAM الخاص بك من قسم أساسيات IAM يستطيع بالفعل الوصول إلى هذه الحاوية عبر سياسات IAM. وسياسة الحاوية تضيف وصولًا عامًا فوق ذلك. والآليتان تعملان معًا:
 
-- Your IAM user can upload, delete, and list objects (granted by the IAM policy attached to your user or group).
-- The public can read objects (granted by the bucket policy).
+- مستخدم IAM الخاص بك يمكنه الرفع والحذف والسرد (بموجب سياسة IAM المرفقة بمستخدمك أو مجموعتك).
+- والجمهور يمكنه قراءة الكائنات (بموجب سياسة الحاوية).
 
-If you ever need to debug access issues, remember that AWS evaluates both policies. An explicit `Deny` in either one overrides any `Allow`. The most common mistake is having a bucket policy that allows access but forgetting to disable Block Public Access—the Block Public Access settings act as an additional layer of denial that overrides bucket policies.
+إذا احتجت يومًا إلى تصحيح مشكلات الوصول، فتذكّر أن AWS تقيّم السياستين معًا. وأي `Deny` صريح في أي منهما يتجاوز أي `Allow`. وأكثر خطأ شائع هو وجود سياسة حاوية تسمح بالوصول مع نسيان تعطيل حظر الوصول العام—فإعدادات حظر الوصول العام تعمل كطبقة إنكار إضافية تتجاوز سياسات الحاويات.
 
-You have files in the bucket and a policy that lets the public read them. But navigating to an S3 object URL isn’t the same as having a website. Next, you’ll enable **S3 static website hosting**, which gives you an actual website endpoint with support for index documents (so `https://your-url/` serves `index.html`) and custom error pages.
+لديك الآن ملفات في الحاوية وسياسة تسمح للجمهور بقراءتها. لكن الانتقال إلى رابط كائن S3 ليس مثل امتلاك موقع ويب. بعد ذلك، ستُفعّل **استضافة موقع S3 الثابت**، التي تمنحك نقطة نهاية موقع فعلية تدعم مستندات الفهرس (بحيث يقدّم `https://your-url/` الملف `index.html`) وصفحات خطأ مخصصة.

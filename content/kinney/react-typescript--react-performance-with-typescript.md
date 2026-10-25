@@ -1,16 +1,16 @@
 ---
-title: "React Performance with TypeScript"
-lang: en
+title: "أداء React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/react-performance-with-typescript"
 ---
 
-TypeScript isn’t just about catching bugs at compile time—it’s also a surprisingly powerful tool for encoding performance contracts in your React applications. When you use types to make performance boundaries explicit, you transform performance from a runtime guessing game into a design-time decision. We’re going to explore how strategic typing can guide memo boundaries, prevent unnecessary re-renders, help you build components that are both fast and maintainable, and provide type-safe performance monitoring.
+TypeScript ليس أداةً لالتقاط الأخطاء في وقت التجميع فحسب — بل هو أيضًا أداة قوية بشكل مفاجئ لترميز عقود الأداء في تطبيقات React لديك. وحين تستخدم الأنواع لجعل حدود الأداء صريحة، فإنّك تحوّل الأداء من تخمينٍ في وقت التشغيل إلى قرارٍ في وقت التصميم. وسنستكشف كيف يمكن للتحديد المدروس للأنواع أن يوجّه حدود memo ويمنع إعادة التصيير غير الضرورية، ويساعدك على بناء مكوّنات سريعة وقابلة للصيانة في آنٍ واحد، ويوفّر مراقبة أداء آمنة الأنواع.
 
-The secret sauce here is using TypeScript’s type system to make performance intentions explicit rather than implicit. Instead of crossing your fingers and hoping React.memo works as expected, you can design types that make it impossible to accidentally break your performance optimizations.
+والسرّ في هذا كلّه هو استخدام نظام أنواع TypeScript لجعل نوايا الأداء صريحة بدل أن تكون ضمنيّة. فبدلًا من تضييق أصابعك ورجاء أن يعمل React.memo كما هو متوقّع، يمكنك تصميم أنواع تجعل كسر تحسينات أداءك عن طريق الخطأ أمرًا مستحيلًا.
 
-## The Problem: Performance Through Hope
+## المشكلة: الأداء بالأمل
 
-Let’s start with a common scenario that looks innocent but hides performance landmines:
+لنبدأ بسيناريو شائع يبدو بريئًا لكنّه يخفي ألغامًا في الأداء:
 
 ```typescript
 // ❌ This looks fine but has hidden performance issues
@@ -38,11 +38,11 @@ const UserProfile = React.memo(({ user, onUpdate }: UserProfileProps) => {
 });
 ```
 
-This component will re-render every time the parent re-renders, even though we wrapped it with `React.memo`. Why? Because the `onUpdate` function is likely being recreated on every render, and that `any` type is doing us no favors in understanding what data actually matters for this component.
+سينعاد تصيير هذا المكوّن في كل مرّة يُعاد فيها تصيير المكوّن الأب، رغم أنّنا لففناه بـ `React.memo`. ولماذا؟ لأنّ دالة `onUpdate` يُرجَّح أنّها تُنشأ من جديد في كل تصيير، ونوع `any` ذاك لا يساعدنا البتّة في فهم أي البيانات تهمّ هذا المكوّن فعلًا.
 
-## Solution 1: Identity-Based Memo Boundaries
+## الحلّ 1: حدود memo المبنيّة على الهوية
 
-The first pattern is to use types to encode which props actually matter for rendering. Instead of hoping `React.memo` will figure it out, we make the performance contract explicit:
+النمط الأول هو استخدام الأنواع لترميز الخصائص التي تهمّ التصيير فعلًا. فبدلًا من رجاء أن يكتشف `React.memo` ذلك بنفسه، نجعل عقد الأداء صريحًا:
 
 ```typescript
 // ✅ Types that encode memo boundaries
@@ -79,15 +79,15 @@ const UserProfile = React.memo(
 );
 ```
 
-Now we’ve separated our data from our actions and made it clear which props actually affect rendering. The `readonly` modifiers signal that these values shouldn’t change unexpectedly, and our custom comparison function only checks the props that matter for rendering.
+لقد فصلنا الآن بياناتنا عن أفعالنا، وجعلنا واضحًا الخصائص التي تؤثّر فعليًا في التصيير. وتشير مُعدِّلات `readonly` إلى أنّ هذه القيم لا ينبغي أن تتغيّر بصورة غير متوقّعة، ودالة المقارنة المخصّصة لدينا لا تفحص إلّا الخصائص المهمة للتصيير.
 
-> **Tip**
+> **تلميح**
 >
-> Use separate interfaces for data and actions. Data props affect rendering; action props typically don’t (assuming they’re stable references).
+> استخدم واجهات منفصلة للبيانات والأفعال. خصائص البيانات تؤثّر في التصيير؛ أمّا خصائص الأفعال فعادةً لا تؤثّر (بافتراض أنّها مراجع ثابتة).
 
-## Solution 2: Stable Reference Types
+## الحلّ 2: أنواع المراجع الثابتة
 
-Here’s a pattern I’ve found incredibly useful: encoding reference stability directly in the type system.
+إليك نمطًا وجدتُه بالغ الفائدة: ترميز ثبات المرجع مباشرةً في نظام الأنواع.
 
 ```typescript
 // ✅ Types that enforce stable references
@@ -139,11 +139,11 @@ function UserDashboard() {
 }
 ```
 
-The `StableCallback` type acts as a compile-time contract: any function marked with this type promises to have a stable reference. You can’t accidentally pass an unstable callback without TypeScript complaining.
+نوع `StableCallback` يعمل كعقدٍ في وقت التجميع: أي دالة موسومة بهذا النوع تَعِد بمرجع ثابت. ولا يمكنك تمرير دالة غير ثابتة عن طريق الخطأ من دون أن يشتكي TypeScript.
 
-## Solution 3: Readonly Data Contracts
+## الحلّ 3: عقود البيانات للقراءة فقط
 
-One of the biggest sources of performance issues is accidentally mutating data that should be immutable. TypeScript’s `readonly` modifiers can help, but we can take it further:
+من أكبر مصادر مشكلات الأداء هو التعديل العَرَضي على بيانات ينبغي أن تكون غير قابلة للتغيير. يمكن لمُعدِّلات `readonly` في TypeScript أن تساعد، لكنّنا يمكننا أن نذهب أبعد من ذلك:
 
 ```typescript
 // ✅ Deep readonly types for performance contracts
@@ -186,11 +186,11 @@ const UserTable = React.memo(({ data, onDataChange }: UserTableProps) => {
 });
 ```
 
-By using `DeepReadonly`, we make immutability a compile-time contract rather than a runtime hope. This prevents the classic performance bug where someone accidentally mutates a prop, causing unnecessary re-renders.
+باستخدام `DeepReadonly` نجعل عدم القابلية للتغيير عقدًا في وقت التجميع بدل أن يكون أملًا في وقت التشغيل. وهذا يمنع خلل الأداء الكلاسيكي الذي يغيّر فيه أحدهم خاصية (prop) عن طريق الخطأ فيسبّب إعادة تصيير غير ضرورية.
 
-## Solution 4: Computed Value Types
+## الحلّ 4: أنواع القيم المحسوبة
 
-Sometimes you want to pass derived data to components, but you want to make sure that derivation is memoized. Here’s a pattern for encoding that contract in types:
+أحيانًا تريد تمرير بيانات مشتقّة إلى المكوّنات، لكنّك تريد التأكّد من أنّ هذا الاشتقاق مُخزَّن مؤقتًا. وإليك نمطًا لترميز ذلك العقد في الأنواع:
 
 ```typescript
 // ✅ Types for memoized computations
@@ -238,11 +238,11 @@ function UserDashboard({ users }: { users: User[] }) {
 }
 ```
 
-The `MemoizedValue` type ensures that any expensive computed values are properly memoized before being passed to components. If someone tries to pass a non-memoized computed value, TypeScript will catch it.
+يضمن نوع `MemoizedValue` أن تكون أي قيم محسوبة مكلفة قد خُزِّنت مؤقتًا على نحو صحيح قبل تمريرها إلى المكوّنات. وإذا حاول أحدهم تمرير قيمة محسوبة غير مخزَّنة مؤقتًا، فسيكتشف TypeScript ذلك.
 
-## Type-Safe Performance Monitoring
+## مراقبة أداء آمنة الأنواع
 
-You can create type-safe performance monitoring to catch regressions:
+يمكنك إنشاء مراقبة أداء آمنة الأنواع لالتقاط حالات التراجع:
 
 ```typescript
 // ✅ Typed performance monitoring hook
@@ -298,13 +298,13 @@ function ExpensiveComponent({ data }: { data: ComplexData[] }) {
 }
 ```
 
-## Creating Stable References with Types
+## إنشاء مراجع ثابتة بالأنواع
 
-The first step toward performance is ensuring stable references. TypeScript can help us catch unstable patterns before they become performance problems.
+الخطوة الأولى نحو الأداء هي ضمان استقرار المراجع. ويمكن لـ TypeScript أن يساعدنا في التقاط الأنماط غير المستقرة قبل أن تتحوّل إلى مشكلات أداء.
 
-### Typed Constants and Factories
+### ثوابت ومصانع مُنمَّطة
 
-Instead of creating objects inline, create them outside the component or use proper memoization:
+بدلًا من إنشاء الكائنات داخل المكوّن، أنشئها خارج المكوّن أو استخدم تخزينًا مؤقتًا (memoization) على نحو صحيح:
 
 ```typescript
 // ✅ Stable reference - created once
@@ -348,9 +348,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Type-Safe Callback Patterns
+### أنماط الاستدعاء الآمنة الأنواع
 
-One common pattern is creating typed callback factories to ensure stable references:
+أحد الأنماط الشائعة هو إنشاء مصانع استدعاء (callback factories) مُنمَّطة لضمان استقرار المراجع:
 
 ```typescript
 type CallbackFactory<T extends Record<string, unknown>> = {
@@ -394,9 +394,9 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-## Typed Selectors for Precise Re-renders
+## مُحدِّدات مُنمَّطة لإعادة تصيير دقيقة
 
-One of the biggest performance wins comes from using selectors that only trigger re-renders when relevant data actually changes. Here’s how to create type-safe selectors:
+من أكبر مكاسب الأداء تأتي من استخدام مُحدِّدات لا تسبّب إعادة التصيير إلّا حين تتغيّر البيانات ذات الصلة فعلًا. وإليك كيفية إنشاء مُحدِّدات آمنة الأنواع:
 
 ```typescript
 // ✅ Generic selector hook with proper typing
@@ -440,9 +440,9 @@ function UserDashboard({ userId }: { userId: string }) {
 }
 ```
 
-## Real-World Example: Performance-Typed Data Grid
+## مثال من العالم الحقيقي: شبكة بيانات مُنمَّطة للأداء
 
-Let’s put it all together in a realistic example—a data grid component that’s both fast and type-safe:
+لنجمع كل ذلك معًا في مثال واقعي — مكوّن شبكة بيانات سريع وآمن الأنواع في آنٍ واحد:
 
 ```typescript
 // Core data types
@@ -565,25 +565,25 @@ function UserDataGridContainer() {
 }
 ```
 
-## Performance Trade-offs and When to Use These Patterns
+## مفاضلات الأداء ومتى تستخدم هذه الأنماط
 
-These patterns aren’t free—they add type complexity and some runtime overhead for the type checking utilities. Here’s when each pattern makes sense:
+هذه الأنماط ليست مجّانية — فهي تضيف تعقيدًا في الأنواع وبعض الحمل الزائد في وقت التشغيل بسبب أدوات فحص الأنواع. وإليك متى يكون كل نمط منطقيًا:
 
-**Identity-Based Memo Boundaries**: Use when you have components that re-render frequently with similar props. The type complexity pays off when you have complex prop objects where only some properties affect rendering.
+**حدود memo المبنيّة على الهوية**: استخدمها عندما تكون لديك مكوّنات يُعاد تصييرها كثيرًا بخصائص متشابهة. ويعود تعقيد الأنواع بالفائدة عندما تكون لديك كائنات خصائص معقّدة لا يؤثّر في التصيير إلّا بعض خصائصها.
 
-**Stable Reference Types**: Essential for components that are passed as children or in render prop patterns. The `StableCallback` pattern prevents accidental re-renders in deeply nested component trees.
+**أنواع المراجع الثابتة**: ضرورية للمكوّنات التي تُمرَّر كأبناء أو ضمن أنماط خصائص التصيير. ويمنع نمط `StableCallback` إعادة التصيير العَرَضية في أشجار المكوّنات المتداخلة بعمق.
 
-**Readonly Data Contracts**: Most valuable in applications with complex state management where accidental mutations are common. The `DeepReadonly` type prevents entire classes of performance bugs.
+**عقود البيانات للقراءة فقط**: الأكثر قيمة في التطبيقات التي تحتوي على إدارة حالة معقّدة وتكثر فيها التعديلات العَرَضية. ويمنع نوع `DeepReadonly` فئات كاملة من أخطاء الأداء.
 
-**Computed Value Types**: Worth it for expensive computations that are passed to multiple components. The `MemoizedValue` type ensures expensive calculations aren’t accidentally repeated.
+**أنواع القيم المحسوبة**: تستحقّ العناء في الحسابات المكلفة التي تُمرَّر إلى عدّة مكوّنات. ويضمن نوع `MemoizedValue` ألّا تتكرّر الحسابات المكلفة عن طريق الخطأ.
 
-> **Warning**
+> **تحذير**
 >
-> Don’t over-engineer. These patterns are most valuable in performance-critical components or when working with large datasets. For simple components that render infrequently, the added complexity might not be worth it.
+> لا تفرط في هندسة التعقيد. هذه الأنماط أكثرها قيمة في المكوّنات الحرجة للأداء أو عند العمل مع مجموعات بيانات كبيرة. أمّا المكوّنات البسيطة التي نادرًا ما تُصيَّر فقد لا يستحقّ التعقيدُ الإضافي.
 
-## Common Anti-Patterns (and How to Fix Them)
+## الأنماط المضادة الشائعة (وكيفية إصلاحها)
 
-### Anti-Pattern 1: Inline Object Props
+### النمط المضاد 1: كائنات الخصائص المضمّنة
 
 ```typescript
 // ❌ Bad: New object on every render
@@ -602,7 +602,7 @@ function ParentComponent() {
 }
 ```
 
-### Anti-Pattern 2: Unstable Dependencies in Effects
+### النمط المضاد 2: اعتماديات غير ثابتة في التأثيرات
 
 ```typescript
 // ❌ Bad: Effect runs on every render due to unstable dependency
@@ -628,7 +628,7 @@ function UserComponent({ userId }: { userId: string }) {
 }
 ```
 
-### Anti-Pattern 3: Premature Optimization
+### النمط المضاد 3: التحسين المبكّر
 
 ```typescript
 // ❌ Bad: Memoizing everything without measuring
@@ -661,25 +661,25 @@ function SimpleComponent({ name }: { name: string }) {
 }
 ```
 
-> **Tip**
+> **تلميح**
 >
-> Measure first, optimize second. Not every component needs memoization—focus on components that re-render frequently or perform expensive operations.
+> قِس أولًا ثم حسّن ثانيًا. ليس كل مكوّن يحتاج إلى تخزين مؤقت — ركّز على المكوّنات التي يُعاد تصييرها كثيرًا أو التي تنفّذ عمليات مكلفة.
 
-## Next Steps
+## الخطوات التالية
 
-Performance patterns informed by types transform TypeScript from a bug-catching tool into a performance architecture guide. By encoding performance contracts in your types, you make performance issues visible at compile time rather than discovering them through profiling and debugging.
+أنماط الأداء المستنيرة إلى الأنواع تحوّل TypeScript من أداة لالتقاط الأخطاء إلى دليلٍ لهندسة الأداء. وبترميز عقود الأداء في أنماطك، تجعل مشكلات الأداء ظاهرةً في وقت التجميع بدلًا من اكتشافها عبر التنميط (profiling) والتنقيح.
 
-The key insight is that performance in React applications is largely about managing reference equality and avoiding unnecessary work. When you use TypeScript to make these concerns explicit in your type system, you get both better performance and more maintainable code.
+والفكرة المفتاحية هي أنّ الأداء في تطبيقات React يتعلّق في معظمه بإدارة المساواة بين المراجع وتجنّب العمل غير الضروري. وحين تستخدم TypeScript لجعل هذه الاهتمامات صريحة في نظام الأنواع، تحصل على أداء أفضل وشيفرة قابلة للصيانة في آنٍ واحد.
 
-Type-safe performance patterns aren’t about sprinkling `useMemo()` and `useCallback()` everywhere (that can actually hurt performance). They’re about using TypeScript to create predictable, stable patterns that prevent unnecessary work:
+أنماط الأداء الآمنة الأنواع ليست عن رشّ `useMemo()` و`useCallback()` في كل مكان (وهذا قد يضرّ بالأداء في الواقع). بل هي عن استخدام TypeScript لإنشاء أنماط قابلة للتنبؤ وثابتة تمنع العمل غير الضروري:
 
-- **Stable references**: Create objects and functions outside renders or memoize them properly
-- **Precise selectors**: Only re-render when relevant data actually changes
-- **Smart memoization boundaries**: Use `React.memo()` with stable dependencies
-- **Performance monitoring**: Track and catch regressions with typed metrics
+- **مراجع ثابتة**: أنشئ الكائنات والدوالّ خارج التصيير أو خزّنها مؤقتًا على نحو صحيح
+- **مُحدِّدات دقيقة**: لا تُعِد التصيير إلّا حين تتغيّر البيانات ذات الصلة فعلًا
+- **حدود تخزين ذكية**: استخدم `React.memo()` مع اعتماديات ثابتة
+- **مراقبة الأداء**: تتبّع التراجعات والتقاطها عبر مقاييس مُنمَّطة
 
-The best performance optimization is the one you never had to make because your code was structured correctly from the start. TypeScript helps you build that structure by catching unstable patterns and ensuring your performance optimizations actually work.
+أفضل تحسينٍ للأداء هو الذي لم تكن بحاجة إلى إجراءه أصلًا لأنّ شيفرتك كانت مهيّأة على نحو صحيح منذ البداية. يساعدك TypeScript على بناء تلك البنية عبر التقاط الأنماط غير الثابتة والتأكّد من أنّ تحسينات أداءك تعمل فعلًا.
 
-Try implementing one of these patterns in your current project—start with stable reference types if you have components that re-render frequently, or readonly data contracts if you’re dealing with complex state mutations. You’ll be surprised how much clearer your performance intentions become when they’re encoded in the type system.
+جرّب تطبيق أحد هذه الأنماط في مشروعك الحالي — ابدأ بأنواع المراجع الثابتة إن كانت لديك مكوّنات يُعاد تصييرها كثيرًا، أو بعقود البيانات للقراءة فقط إن كنت تتعامل مع تعديلات حالة معقّدة. وستندهش كم تصبح نوايا الأداء لديك أوضح حين تُرمَّز في نظام الأنواع.
 
-Remember: premature optimization is the root of all evil, but predictable patterns that prevent obvious performance footguns? That’s just good engineering.
+تذكّر: التحسين المبكّر هو أصل كل شرّ، لكنّ الأنماط القابلة للتنبؤ التي تمنع فخاخ الأداء الواضحة؟ هذا ببساطة هندسة جيّدة.

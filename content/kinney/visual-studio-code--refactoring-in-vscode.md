@@ -1,22 +1,22 @@
 ---
-title: "Refactoring"
-lang: en
+title: "إعادة الهيكلة في Visual Studio Code"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/refactoring-in-vscode"
 ---
 
-There are a bunch of little niceties in Visual Studio Code that make refactoring *way* easier.
+هناك مجموعة من اللمسات الجميلة في Visual Studio Code تجعل إعادة الهيكلة *أسهل بكثير*.
 
-## Rename Symbol
+## إعادة تسمية رمز
 
-Okay, so this is like my favorite feature that I use basically every single day.
+حسنًا، هذه على الأرجح ميزتي المفضّلة التي أستخدمها كل يوم تقريبًا.
 
-When you need to rename a variable, function, or class across your entire project, press `F2` on the symbol you want to rename. Visual Studio Code will prompt you for the new name, then update every reference to match. This operation is especially handy in strongly typed languages like TypeScript, where the editor can accurately track usage throughout your codebase.
+عندما تحتاج إلى إعادة تسمية متغيّر أو دالة أو صنف في مشروعك كله، اضغط `F2` على الرمز الذي تريد إعادة تسميته. وسيطلب منك Visual Studio Code الاسم الجديد، ثم يحدّث كل مرجع ليطابقه. وهذه العملية مفيدة خصوصًا في اللغات قوية الأنواع مثل TypeScript، حيث يمكن للمحرّر تتبّع الاستخدام في أنحاء قاعدة شيفرتك بدقة.
 
-> **If your project has a language server (for instance, the TypeScript Language Server), the rename feature can work seamlessly across multiple files, ensuring nothing is left behind.**
+> **إذا كان مشروعك يحتوي على خادم لغة (مثل TypeScript Language Server)، فيمكن لميزة إعادة التسمية أن تعمل بسلاسة عبر ملفات متعددة، فتضمن ألّا يبقى شيء دون تحديث.**
 
-## Extract Method or Function
+## استخراج تابع أو دالة
 
-Sometimes, a block of code in a function grows too large or handles multiple responsibilities. You can highlight that code segment, then look for the “Extract Method” or “Extract Function” action. Language extensions, such as the official TypeScript and JavaScript extensions, often provide this. Visual Studio Code then wraps the highlighted code in a new function, replacing the original section with a function call.
+أحيانًا تكبر كتلة شيفرة في دالة كثيرًا أو تتولّى مسؤوليات متعددة. ويمكنك إبراز مقطع الشيفرة هذا، ثم البحث عن إجراء «Extract Method» أو «Extract Function». وغالبًا ما توفّره إضافات اللغات، مثل إضافتي TypeScript و JavaScript الرسميتين. وحينها يلفّ Visual Studio Code الشيفرة المبرزة في دالة جديدة، ويستبدل المقطع الأصلي باستدعاء للدالة.
 
 ```typescript
 function processNumbers(nums: number[]): void {
@@ -39,11 +39,11 @@ function calculateAndLogSum(nums: number[]): void {
 }
 ```
 
-This approach makes your code more modular and easier to maintain.
+وتجعل هذه المقاربة شيفرتك أكثر وحداتية وأسهل صيانة.
 
-## Extract Variable or Constant
+## استخراج متغيّر أو ثابت
 
-A similar workflow applies when extracting common expressions into a separate variable or constant. You might start with repeated calculations or a hard-coded value scattered throughout your code. Highlight the expression, right-click, and choose an “Extract to constant” or “Extract to variable” refactoring. Visual Studio Code will replace every occurrence of that expression with a new variable or constant, declared once at the top of the scope.
+ينطبق سير عمل مشابه عند استخراج تعبيرات شائعة إلى متغيّر أو ثابت منفصل. فقد تبدأ بحسابات متكرّرة أو قيمة مكتوبة مباشرة مبعثرة في شيفرتك. أبرز التعبير، وانقر بزر الفأرة الأيمن، واختر إعادة هيكلة «Extract to constant» أو «Extract to variable». وسيستبدل Visual Studio Code كل حالة من ذلك التعبير بمتغيّر أو ثابت جديد، معرَّف مرة واحدة في أعلى النطاق.
 
 ```typescript
 // Before extraction:
@@ -55,38 +55,38 @@ const area = width * height;
 console.log(`Area is ${area}`);
 ```
 
-Use this feature to make your code self-documenting and reduce duplication.
+استخدم هذه الميزة لجعل شيفرتك توثّق نفسها بنفسها ولتقليل التكرار.
 
-> **Keep an eye on the Code Action lightbulb that appears in the editor gutter when you select or hover over code. This icon often indicates automated refactoring options, including extraction.**
+> **راقب مصباح إجراء الشيفرة الذي يظهر في هامش المحرّر عند تحديد شيفرة أو تمرير المؤشر فوقها. فكثيرًا ما تشير هذه الأيقونة إلى خيارات إعادة هيكلة آلية، بما فيها الاستخراج.**
 
-## Quick Fixes
+## إصلاحات سريعة
 
-As you code, you might notice a lightbulb icon or yellow squiggly lines under some code. These indicate Visual Studio Code (or rather, the language server or linter) has suggestions. For example, in a JS file, if you have an unused variable, you might see a gray underline. Or if you spelled `console` as `consle`, there might be a red squiggle and a lightbulb offering “Did you mean ‘console’?”. To trigger these **Quick Fix** suggestions manually, place the cursor on the error or underlined code and press `Ctrl-.` or `Cmd+.` . A context menu of fixes/refactorings appears. You can navigate it with arrows or click. For instance, on the misspelled `consle`, `Ctrl+.` might suggest “Change to ‘console’” – selecting it will automatically fix the typo. Another example: in TypeScript or C#, if you have a function call to a function that doesn’t exist, Quick Fix might offer “Create function definition for …” and generate a stub for you.
+أثناء البرمجة، قد تلاحظ أيقونة مصباح أو خطوطًا متعرّجة صفراء تحت بعض الشيفرة. وتشير هذه إلى أن Visual Studio Code (أو خادم اللغة أو الفاحص الساكن) لديه اقتراحات. فمثلًا، في ملف JS، إن كان لديك متغيّر غير مستخدم، فقد ترى تسطيرًا رماديًا. أو إن كتبت `console` خطأً هكذا `consle`، فقد يظهر خط متعرّج أحمر ومصباح يعرض «هل تقصد ‘console’؟». ولتشغيل اقتراحات **الإصلاح السريع** هذه يدويًا، ضع المؤشر على الخطأ أو الشيفرة المسطّرة واضغط `Ctrl-.` أو `Cmd+.`. فتظهر قائمة سياقية بالإصلاحات وعمليات إعادة الهيكلة. ويمكنك التنقل فيها بالأسهم أو النقر. فمثلًا، على `consle` المكتوبة خطأً، قد يقترح `Ctrl+.` تغييرها إلى «console» – واختيار ذلك سيصحّح الخطأ تلقائيًا. ومثال آخر: في TypeScript أو C#، إن كان لديك استدعاء لدالة غير موجودة، فقد يقدّم الإصلاح السريع «إنشاء تعريف دالة لـ …» ويولّد لك بديلًا.
 
-**Other Refactors:** Depending on language, `Ctrl+.` might offer things like “Extract function from selection” or “Convert to template string” or “Surround with try/catch”. It’s worth checking the lightbulb if you think “I wish I could quickly do X” – sometimes the language support has it. For example, in a JSX file, you might get “Wrap in div” etc., as a quick fix. Or simply “Remove unused import” if a module is imported but not used.
+**عمليات إعادة هيكلة أخرى:** حسب اللغة، قد يقدّم `Ctrl+.` أشياء مثل «استخراج دالة من التحديد» أو «التحويل إلى نص قالب» أو «التغليف بـ try/catch». ويستحق الأمر فحص المصباح إن فكرت «ليتني أستطيع فعل كذا سريعًا» – فأحيانًا يوفّره دعم اللغة. فمثلًا، في ملف JSX، قد تحصل على «التغليف في div» وغير ذلك كإصلاح سريع. أو ببساطة «إزالة الاستيراد غير المستخدم» إن كانت وحدة مستوردة لكنها غير مستخدمة.
 
-## The Problems Panel
+## لوحة المشكلات
 
-Keep an eye on the Problems panel (you can toggle with `Ctrl+Shift+M`). If there’s a number on the bottom left (status bar) like ❗3 or ⚠️1, that’s errors or warnings count. Clicking that opens Problems. You can click an item to jump to it. Quick Fix (if available) can often fix those warnings (like adding a missing import, or adding `// @ts-ignore`, etc., depending on context).
+راقب لوحة المشكلات (يمكنك تبديلها بـ `Ctrl+Shift+M`). وإن ظهر رقم في أسفل اليسار (شريط الحالة) مثل ❗3 أو ⚠️1، فهو عدد الأخطاء أو التحذيرات. والنقر عليه يفتح لوحة المشكلات. ويمكنك النقر على عنصر للانتقال إليه. وكثيرًا ما يستطيع الإصلاح السريع (إن توفّر) معالجة تلك التحذيرات (مثل إضافة استيراد مفقود، أو إضافة `// @ts-ignore`، وغير ذلك حسب السياق).
 
-## Inline Refactoring
+## إعادة الهيكلة التضمينية
 
-When a variable or function you previously extracted turns out to be redundant, use inline refactoring to reverse the process. This command replaces all instances of the symbol with its original value or code, then removes its declaration. Right-click the symbol and choose “Inline Variable” (or “Inline Function”), or invoke it from the Command Palette by searching for “Inline.” This helps simplify your code when extra abstraction is no longer needed.
+عندما يتبيّن أن متغيّرًا أو دالة استخرجتها سابقًا باتت زائدة، فاستخدم إعادة الهيكلة التضمينية لعكس العملية. يستبدل هذا الأمر كل حالات الرمز بقيمته أو شيفرته الأصلية، ثم يزيل إعلانه. انقر بزر الفأرة الأيمن على الرمز واختر «Inline Variable» (أو «Inline Function»)، أو استدعِ الأمر من لوحة الأوامر بالبحث عن «Inline». ويساعدك هذا على تبسيط شيفرتك عندما لا تعود هناك حاجة إلى تجريد إضافي.
 
-## Organize Imports
+## ترتيب الاستيرادات
 
-Unused or unsorted imports can clutter your files, especially in TypeScript projects. VS Code provides an “Organize Imports” action that automatically removes unused imports and sorts the remaining ones. Trigger it via the Command Palette or set it to run on save. This refactoring cleans up your file header, improving readability and maintainability.
+قد تزدحم ملفاتك باستيرادات غير مستخدمة أو غير مرتّبة، خصوصًا في مشاريع TypeScript. ويوفّر VS Code إجراء «Organize Imports» الذي يزيل الاستيرادات غير المستخدمة تلقائيًا ويرتّب الباقي. واستدعِه من لوحة الأوامر أو اضبطه ليعمل عند الحفظ. وتنظّف إعادة الهيكلة هذه ترويسة ملفك، فتحسّن الوضوح وقابلية الصيانة.
 
-## Move to New File
+## النقل إلى ملف جديد
 
-As your code evolves, you might find that certain functions, classes, or constants would be better placed in their own module. Some language extensions offer a “Move to New File” refactoring that automatically extracts the selected symbol into a new file and updates all references accordingly. This modularization makes your codebase easier to navigate and reuse across different parts of your project.
+مع تطوّر شيفرتك، قد ترى أن دوال أو أصناف أو ثوابت معيّنة أفضل موضعًا في وحدتها الخاصة. وتوفّر بعض إضافات اللغات إعادة هيكلة «Move to New File» التي تستخرج الرمز المحدّد تلقائيًا إلى ملف جديد وتحدّث كل المراجع وفق ذلك. وتجعل هذه الوحداتية قاعدة شيفرتك أسهل في التنقل وإعادة الاستخدام في أنحاء مشروعك.
 
-## Convert Function to Arrow Function
+## تحويل الدالة إلى دالة سهمية
 
-For JavaScript and TypeScript, converting traditional function expressions to arrow functions can lead to more concise and modern syntax. VS Code’s refactoring tools can offer a “Convert to Arrow Function” option that transforms your code while preserving its behavior. This is particularly useful when refactoring legacy code or adhering to contemporary coding standards.
+في JavaScript و TypeScript، قد يؤدي تحويل تعبيرات الدوال التقليدية إلى دوال سهمية إلى صيغة أكثر إيجازًا وحداثة. ويمكن لأدوات إعادة الهيكلة في VS Code أن تقدّم خيار «Convert to Arrow Function» الذي يحوّل شيفرتك مع الحفاظ على سلوكها. وهذا مفيد خصوصًا عند إعادة هيكلة شيفرة قديمة أو الالتزام بمعايير برمجية معاصرة.
 
-## Surround With
+## التغليف بـ Surround With
 
-Frequently wrapping code blocks with common structures—such as `try`/`catch` blocks, if/else statements, or custom snippets—can be automated using the “Surround With” refactoring. Select the code block, then trigger the refactoring from the Command Palette to choose from available wrapping templates. This feature speeds up repetitive tasks and ensures consistency in how you encapsulate code patterns.
+كثيرًا ما يمكن أتمتة تغليف كتل الشيفرة ببنى شائعة — مثل كتل `try`/`catch` أو عبارات if/else أو مقتطفات مخصّصة — باستخدام إعادة هيكلة «Surround With». حدّد كتلة الشيفرة، ثم استدعِ إعادة الهيكلة من لوحة الأوامر لاختيار قالب تغليف من المتاح. وتسريع هذه الميزة المهام المتكرّرة وتضمن الاتساق في طريقة تغليفك لأنماط الشيفرة.
 
-Each of these additional refactoring tools empowers you to streamline your code changes and maintain a clean, modular, and modern codebase.
+وتمكّنك كل أداة من أدوات إعادة الهيكلة الإضافية هذه من تبسيط تغييرات شيفرتك والحفاظ على قاعدة شيفرة نظيفة ووحداتية وحديثة.

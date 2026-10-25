@@ -1,14 +1,14 @@
 ---
-title: "Typing Headers and Cookies"
-lang: en
+title: "تحديد أنواع الترويسات وملفات تعريف الارتباط"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/typing-headers-and-cookies-in-express"
 ---
 
-Request and response headers play a crucial role in HTTP communication. TypeScript can help ensure they’re properly typed.
+تؤدّي ترويسات الطلب والاستجابة دورًا حاسمًا في تواصل HTTP. ويمكن لـ TypeScript أن يساعد في ضمان تحديد أنواعها تحديدًا سليمًا.
 
-## Typing Request Headers
+## تحديد أنواع ترويسات الطلب
 
-Headers arrive as strings or undefined:
+تصل الترويسات كنصوص أو بلا قيمة (undefined):
 
 ```typescript
 // Define expected authorization header
@@ -32,7 +32,7 @@ app.get('/protected', (req: Request<{}, {}, {}, {}, AuthHeaders>, res: Response)
 });
 ```
 
-But the fifth generic parameter of Request is less commonly used. A more practical approach is to use type assertions or header validation:
+لكن المعامل العام الخامس في Request أقل استخدامًا شيوعًا. والمقاربة العملية أكثر هي استخدام تأكيدات الأنواع أو التحقق من الترويسات:
 
 ```typescript
 // Header validation middleware
@@ -60,9 +60,9 @@ app.get('/protected', requireHeader('authorization'), (req: Request, res: Respon
 });
 ```
 
-## Setting Response Headers
+## تعيين ترويسات الاستجابة
 
-For response headers, TypeScript’s help is more limited because headers are set imperatively:
+في شأن ترويسات الاستجابة، تساعدك TypeScript بقدر أكثر محدودية لأن الترويسات تُعيَّن إجرائيًا:
 
 ```typescript
 app.get('/api/data', (req: Request, res: Response) => {
@@ -78,7 +78,7 @@ app.get('/api/data', (req: Request, res: Response) => {
 });
 ```
 
-We can improve this with constants and helper functions:
+ويمكننا تحسين ذلك بالثوابت ودوال مساعدة:
 
 ```typescript
 // Define header constants
@@ -122,9 +122,9 @@ app.get('/api/data', (req: Request, res: Response) => {
 });
 ```
 
-## Working with Cookies
+## العمل بملفات تعريف الارتباط
 
-Cookies add another layer of complexity. The popular `cookie-parser` middleware extends the request object:
+تضيف ملفات تعريف الارتباط (cookies) طبقة أخرى من التعقيد. ويوسّع وسيط `cookie-parser` الشائع كائن الطلب:
 
 ```typescript
 import cookieParser from 'cookie-parser';
@@ -188,4 +188,4 @@ app.post('/login', (req: Request, res: Response) => {
 });
 ```
 
-The cookie-parser types are included with `@types/cookie-parser`, which extends the Express Request interface.
+تأتي أنواع cookie-parser مضمنة في `@types/cookie-parser`، الذي يوسّع واجهة Request في Express.

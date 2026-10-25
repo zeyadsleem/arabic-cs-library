@@ -1,25 +1,25 @@
 ---
-title: "Module Federation with TypeScript"
-lang: en
+title: "اتحاد الوحدات بواسطة TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/module-federation-typescript"
 ---
 
-Module Federation is a technique for how we build and deploy React applications—particularly in large companies where teams haven’t figured out how to talk to each other. Instead of one monolithic bundle, you can create micro-frontends that share components, libraries, and even entire applications at runtime. But with great power comes great complexity, especially when adding TypeScript to the mix. Let’s explore how to build type-safe federated applications.
+اتحاد الوحدات (Module Federation) هو أسلوب لبناء تطبيقات React ونشرها — خصوصًا في الشركات الكبيرة التي لم تتيسر فرقُها على الحديث مع بعضها. بدلًا من حزمة موحّدة ضخمة، تستطيع إنشاء واجهاتٍ أمامية مصغّرة (micro-frontends) تتبادل المكوّنات والمكتبات بل وتطبيقات كاملةً عند وقت التشغيل. لكن مع القوة الكبيرة تعقيد كبير، خصوصًا حين يختلط TypeScript بالمشهد. لنتكشف كيف نبني تطبيقاتٍ اتحاديةً آمنة الأنواع.
 
-> **I don’t think micro-frontends are a Good Idea™**
+> **لا أظن الواجهات المصغّرة فكرةً حسنة™**
 >
-> I am coming up on almost of a decade of thinking micro-frontends are a technical solution for an organizational problem. So, don’t ask me to defend this practice or any of the ridiculous hoops people jump through below.
+> اقتربتُ من عقدٍ كامل وأنا أعتبر الواجهاتَ المصغّرة حلًّا تقنيًا لمشكلة تنظيمية. فلا تلتمس مني أن أدافع عن هذه الممارسة أو عن أي حلقاتٍ سخيفة يقفز الناس من خلالها فيما يلي.
 >
-> This content exists so that if someone asks me about it, I can point them to this page and hopefully, they’ll read this warning box.
+> وإنما وُجد هذا المضمون كي، إذا سألني أحدٌ عنه، أحيلَه إلى هذه الصفحة، وعسى أن يقرأ صندوق التحذير هذا.
 
-## Understanding Module Federation
+## فهم اتحاد الوحدات
 
-Module Federation allows you to:
+يسمح لك اتحاد الوحدات بـ:
 
-- **Share dependencies** between applications at runtime
-- **Load remote components** dynamically
-- **Deploy independently** while maintaining integration
-- **Scale teams** by owning separate micro-frontends
+- **مشاركة الاعتمادات (dependencies)** بين التطبيقات عند وقت التشغيل
+- **تحميل مكوّنات بعيدة** على نحو ديناميكي
+- **النشر باستقلال** مع المحافظة على التكامل
+- **توسيع الفرق** بقيام كل فريقٍ بامتلاك واجهةٍ مصغّرة منفصلة
 
 ```typescript
 // Host application loads remote components
@@ -39,11 +39,11 @@ const App = () => {
 };
 ```
 
-The challenge? TypeScript doesn’t know about these remote modules at build time.
+والتحدي؟ TypeScript لا يعلم شيئًا عن هذه الوحدات البعيدة عند وقت البناء.
 
-## Setting Up the Foundation
+## تهيئة الأساس
 
-### Host Application Configuration
+### تهيئة التطبيق المُضيّف (host)
 
 ```typescript
 // webpack.config.js (Host)
@@ -94,7 +94,7 @@ module.exports = {
 };
 ```
 
-### Remote Application Configuration
+### تهيئة التطبيق البعيد (remote)
 
 ```typescript
 // webpack.config.js (Remote)
@@ -145,11 +145,11 @@ module.exports = {
 };
 ```
 
-## Type Definitions for Remote Modules
+## تعريفات الأنواع للوحدات البعيدة
 
-### Manual Type Declarations
+### الإعلانات النوعية اليدوية
 
-Create type definitions for remote modules:
+أنشئ تعريفات أنواعٍ للوحدات البعيدة:
 
 ```typescript
 // types/remotes.d.ts
@@ -231,9 +231,9 @@ declare module 'remoteApp/types' {
 }
 ```
 
-## Automated Type Generation
+## التوليد الآلي للأنواع
 
-### Type Extraction Script
+### سكربت استخلاص الأنواع
 
 ```typescript
 // scripts/extract-types.ts
@@ -369,9 +369,9 @@ const types = extractor.extractTypes(exposedModules);
 fs.writeFileSync('./types/remote-types.d.ts', types);
 ```
 
-## Runtime Type Safety
+## أمان الأنواع عند وقت التشغيل
 
-### Type Guards for Remote Components
+### حرّاس الأنواع للمكوّنات البعيدة
 
 ```typescript
 // utils/typeGuards.ts
@@ -400,7 +400,7 @@ export function validateRemoteProps<T>(props: unknown, validator: (props: any) =
 }
 ```
 
-### Safe Remote Component Loader
+### محمّلٌ آمن للمكوّنات البعيدة
 
 ```typescript
 // components/RemoteComponentLoader.tsx
@@ -508,9 +508,9 @@ export function RemoteComponentLoader<T = any>({
 }
 ```
 
-## Type-Safe Remote Hooks
+## خُطّافاتٌ بعيدةٌ آمنة الأنواع
 
-### Remote Hook Loader
+### محمّل الخُطّافات البعيد
 
 ```typescript
 // hooks/useRemoteHook.ts
@@ -598,11 +598,11 @@ const UserProfileWithRemoteData: React.FC<{ userId: string }> = ({ userId }) => 
 };
 ```
 
-## Shared Type Definitions
+## تعريفات أنواع مشتركة
 
-### Centralized Type Package
+### حزمة أنواع مركزية
 
-Create a shared package for common types:
+أنشئ حزمة مشتركة للأنواع الشائعة:
 
 ```typescript
 // packages/shared-types/src/index.ts
@@ -663,7 +663,7 @@ export type UserEvent =
   | AppEvent<{ userId: string; profile: Partial<User>; action: 'profile_update' }>;
 ```
 
-### Package Configuration
+### تهيئة الحزمة
 
 ```json
 // packages/shared-types/package.json
@@ -701,9 +701,9 @@ export type UserEvent =
 }
 ```
 
-## Event-Driven Communication
+## التواصل المحرَّك بالأحداث
 
-### Type-Safe Event Bus
+### ناقل أحداثٍ آمن الأنواع
 
 ```typescript
 // utils/eventBus.ts
@@ -778,7 +778,7 @@ class TypedEventBus {
 export const eventBus = new TypedEventBus();
 ```
 
-### React Hook for Events
+### خُطّاف React للأحداث
 
 ```typescript
 // hooks/useEventBus.ts
@@ -832,9 +832,9 @@ export function useUserEvents() {
 }
 ```
 
-## Development and Testing
+## التطوير والاختبار
 
-### Mock Remote Components for Development
+### مكوّنات بعيدة مُحاكاةً للتطوير
 
 ```typescript
 // __mocks__/remoteComponents.tsx
@@ -935,7 +935,7 @@ export function createMockModule(moduleName: string) {
 }
 ```
 
-### Testing Federated Components
+### اختبار المكوّنات الاتحادية
 
 ```typescript
 // __tests__/RemoteComponentLoader.test.tsx
@@ -1051,9 +1051,9 @@ describe('Federated App Integration', () => {
 });
 ```
 
-## Production Considerations
+## اعتبارات الإنتاج
 
-### Environment-Specific Configuration
+### تهيئة خاصة بكل بيئة
 
 ```typescript
 // config/federation.ts
@@ -1116,7 +1116,7 @@ export const getFederationConfig = (): FederationConfig => {
 };
 ```
 
-### Error Recovery and Fallbacks
+### استرداد الأخطاء والبدائل الاحتياطية
 
 ```typescript
 // utils/resilientLoader.ts
@@ -1183,7 +1183,7 @@ export class ResilientRemoteLoader {
 export const resilientLoader = new ResilientRemoteLoader();
 ```
 
-### Monitoring and Analytics
+### المراقبة والتحليلات
 
 ```typescript
 // utils/federationMonitoring.ts
@@ -1246,9 +1246,9 @@ class FederationMonitor {
 export const federationMonitor = new FederationMonitor();
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Type Safety First
+### أمان الأنواع أولًا
 
 ```typescript
 // ✅ Always define types for remote modules
@@ -1269,7 +1269,7 @@ if (!isValidComponent(RemoteComponent)) {
 const validatedProps = validateRemoteProps(props, isValidProps);
 ```
 
-### Error Boundaries Everywhere
+### حدود أخطاء في كل مكان
 
 ```typescript
 // ✅ Wrap remote components in error boundaries
@@ -1285,7 +1285,7 @@ const FallbackComponent = () => (
 );
 ```
 
-### Performance Optimization
+### تحسين الأداء
 
 ```typescript
 // ✅ Lazy load remote components
@@ -1306,7 +1306,7 @@ useEffect(() => {
 </Suspense>
 ```
 
-### Version Management
+### إدارة الإصدارات
 
 ```typescript
 // ✅ Use semantic versioning in shared dependencies
@@ -1324,14 +1324,14 @@ if (remoteVersion !== hostVersion) {
 }
 ```
 
-## Summary
+## الخلاصة
 
-Module Federation with TypeScript enables:
+يتيح اتحاد الوحدات مع TypeScript:
 
-1. **Independent deployment** of micro-frontends
-2. **Runtime sharing** of dependencies and components
-3. **Type safety** across application boundaries
-4. **Graceful fallbacks** when remote modules fail
-5. **Event-driven communication** between federated apps
+1. **نشرًا مستقلًا** للواجهات المصغّرة
+2. **مشاركةً عند وقت التشغيل** للاعتمادات والمكوّنات
+3. **أمانًا نوعيًا** عبر حدود التطبيقات
+4. **بدائلٍ احتياطية رشيقة** حين تفشل الوحدات البعيدة
+5. **تواصلًا محرَّكًا بالأحداث** بين التطبيقات الاتحادية
 
-If this looks like a pain to you. Then, you and I agree.
+إن رأيت في كل هذا وجعًا، فأنا وأنت من التقين.

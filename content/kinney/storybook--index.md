@@ -1,31 +1,31 @@
 ---
-title: "Building Design Systems in Storybook"
-lang: en
+title: "بناء أنظمة التصميم في Storybook"
+lang: ar
 source: "https://stevekinney.com/courses/storybook"
 ---
 
-The material in this course is intended to go along with the [Design Systems with Storybook, v2](https://frontendmasters.com/courses/design-systems-v2/?utm_source=kinney&utm_medium=social&code=kinney) course with [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
+المواد في هذه الدورة مُعدّة لتسير جنبًا إلى جنب مع دورة [Design Systems with Storybook, v2](https://frontendmasters.com/courses/design-systems-v2/?utm_source=kinney&utm_medium=social&code=kinney) مع [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
 
-Even if you don’t work on the design systems team at your company, over a long enough period of time, you’re likely to find yourself working on a design system or component library. Having a standardized set of components saves you from having to reinvent the wheel every single time you tackle a new feature. And—arguably more importantly, it allows you to make large-scale changes without the tedium of manually tweaking every single element in your project.
+حتى إن لم تكن تعمل في فريق أنظمة التصميم في شركتك، فمن المرجح أن تجد نفسك بعد مدة طويلة بما يكفي تعمل على نظام تصميم أو مكتبة مكوّنات. وامتلاك مجموعة موحّدة من المكوّنات يوفّر عليك إعادة اختراع العجلة في كل مرة تتناول فيها ميزة جديدة. والأهم من ذلك—على الأرجح—أنه يتيح لك إجراء تغييرات واسعة النطاق دون عناء تعديل كل عنصر يدويًا في مشروعك.
 
-This workshop offers a comprehensive guide to building design systems using [Storybook](https://storybook.js.org/). Covering everything from basic setup to advanced features, attendees will learn about atomic design, accessibility, visual regression testing, responsive design, and dark mode implementation. The workshop emphasizes practical, hands-on learning for effective team collaboration and documentation.
+تقدّم هذه الورشة دليلًا شاملًا لبناء أنظمة التصميم باستخدام [Storybook](https://storybook.js.org/). وتغطي كل شيء من الإعداد الأساسي إلى الميزات المتقدّمة، وسيتعلّم الحاضرون التصميم الذرّي وإمكانية الوصول والاختبار المرئي للانحدار والتصميم المتجاوب وتنفيذ الوضع الداكن. وتشدّد الورشة على التعلّم العملي التطبيقي للتعاون والتوثيق الفعّالين في الفريق.
 
-> **Course Materials**
+> **مواد الدورة**
 >
-> Throughout our time together, we’ll be using [this repository](https://github.com/stevekinney/anthology).
+> خلال وقتنا معًا، سنستخدم [هذا المستودع](https://github.com/stevekinney/anthology).
 >
-> The Figma designs that inspire the components in this repository can be found [here](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=0%3A1&mode=design&t=Dr1OUnsNFnelFSUN-1).
+> ويمكن العثور على تصميمات Figma التي ألهمت مكوّنات هذا المستودع [هنا](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=0%3A1&mode=design&t=Dr1OUnsNFnelFSUN-1).
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-You’ll need the following in order to follow along with this course. You’ll have a chance to get set up with everything along the way. But, if you want to get a head start, get yourself set up with the tools below.
+ستحتاج إلى ما يلي لمتابعة هذه الدورة. وستسنح لك الفرصة للتهيئة بكل شيء على طول الطريق. لكن إن أردت بداية مبكرة، فهيّئ نفسك بالأدوات أدناه.
 
-- [A Chromatic account](https://www.chromatic.com/)
-- **Recommended, but not required**: [pnpm](https://pnpm.io/installation)
+- [حساب Chromatic](https://www.chromatic.com/)
+- **مُوصى به، لكنه ليس مطلوبًا**: [pnpm](https://pnpm.io/installation)
 
-## Libraries and Tools Used
+## المكتبات والأدوات المستخدمة
 
-In addition to Storybook, we’ll also be leveraging some other libraries along the way. They’ll be included in any of the example repositories where they’re needed, but I figured it’d be helpful to list them all in one place as well
+إضافة إلى Storybook، سنستفيد أيضًا من بعض المكتبات الأخرى على طول الطريق. وستُضمَّن في أي من المستودعات المثالية حيث تُحتاج، لكني رأيت أنه سيكون مفيدًا إدراجها كلها في مكان واحد أيضًا
 
 - [Tailwind CSS](https://tailwindcss.com/)
 - [clsx](https://npm.im/clsx)

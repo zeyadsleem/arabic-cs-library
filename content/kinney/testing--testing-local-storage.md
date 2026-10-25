@@ -1,10 +1,10 @@
 ---
-title: "Testing Local Storage"
-lang: en
+title: "اختبار التخزين المحلي"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-local-storage"
 ---
 
-Let’s say we have some code that touches `localStorage`. Normally, our tests run in Node, but `localStorage` isn’t in Node. Sure, we *could* use [mocks](https://stevekinney.com/courses/testing/mocks) or [stubs](https://stevekinney.com/courses/testing/stubs), but we could also just emulate the browser environment.
+لنفترض أن لدينا شيفرة تلمس `localStorage`. عادةً تعمل اختباراتنا في Node، لكن `localStorage` ليست في Node. صحيح أننا *نستطيع* استخدام [البدائل المُحاكاة](https://stevekinney.com/courses/testing/mocks) أو [البدائل](https://stevekinney.com/courses/testing/stubs)، لكن يمكننا أيضًا أن نحاكي بيئة المتصفح فحسب.
 
 ```javascript
 it('should properly assign to localStorage', () => {
@@ -16,9 +16,9 @@ it('should properly assign to localStorage', () => {
 });
 ```
 
-## One More Time: With Some DOM Interaction
+## مرة أخرى: مع بعض التفاعل مع DOM
 
-Consider this function that creates some elements for storing a secret into `localStorage`. You can find this example in `examples/element-factory/src/secret-input.js`.
+تأمّل هذه الدالة التي تُنشئ بعض العناصر لتخزين سرّ في `localStorage`. يمكنك العثور على هذا المثال في `examples/element-factory/src/secret-input.js`.
 
 ```javascript
 export function createSecretInput() {
@@ -50,7 +50,7 @@ export function createSecretInput() {
 }
 ```
 
-We could write the following tests to verify that that it does what we think it ought to do. Check out `examples/element-factory/src/secret-input.test.js`:
+يمكننا كتابة الاختبارات التالية للتحقّق من أنها تفعل ما نعتقد أنه ينبغي أن تفعله. ألقِ نظرة على `examples/element-factory/src/secret-input.test.js`:
 
 ```javascript
 import { describe, expect, it, beforeEach } from 'vitest';

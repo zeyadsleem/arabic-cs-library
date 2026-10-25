@@ -1,14 +1,14 @@
 ---
-title: "Button Exemplars"
-lang: en
+title: "نماذج الأزرار"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/button-exemplars"
 ---
 
-## Light Mode
+## الوضع الفاتح
 
-### Primary Variant
+### التنويع الأساسي
 
-*Primary Variant — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/04a20ae89b141d17a76a6d62f51f6483d55afe14f65b91d5d87462576b553214.html)*
+*التنويع الأساسي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/04a20ae89b141d17a76a6d62f51f6483d55afe14f65b91d5d87462576b553214.html)*
 
 ```html
 <button
@@ -18,9 +18,9 @@ source: "https://stevekinney.com/courses/tailwind/button-exemplars"
 </button>
 ```
 
-### Secondary Variant
+### التنويع الثانوي
 
-*Secondary Variant — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/0a01f10bc94e9cba678a8785f776c8f87fa324b92d9ebf8326a06249cc32a0e7.html)*
+*التنويع الثانوي — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0a01f10bc94e9cba678a8785f776c8f87fa324b92d9ebf8326a06249cc32a0e7.html)*
 
 ```html
 <button
@@ -30,9 +30,9 @@ source: "https://stevekinney.com/courses/tailwind/button-exemplars"
 </button>
 ```
 
-### Danger Variant
+### تنويع الخطر
 
-*Danger Variant — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/11d81599eba16adcaff6e0d0ead3a5758a8075160ed391a039baa6d2e304a648.html)*
+*تنويع الخطر — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/11d81599eba16adcaff6e0d0ead3a5758a8075160ed391a039baa6d2e304a648.html)*
 
 ```html
 <button
@@ -42,9 +42,9 @@ source: "https://stevekinney.com/courses/tailwind/button-exemplars"
 </button>
 ```
 
-### Ghost Variant
+### تنويع الشبح
 
-*Ghost Variant — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/2e01b2bee01d3b62a144b537767ce52e1d335d60bc8e3996caa804736f668206.html)*
+*تنويع الشبح — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2e01b2bee01d3b62a144b537767ce52e1d335d60bc8e3996caa804736f668206.html)*
 
 ```html
 <button
@@ -54,11 +54,11 @@ source: "https://stevekinney.com/courses/tailwind/button-exemplars"
 </button>
 ```
 
-## Dark Mode
+## الوضع الداكن
 
-For dark mode, wrap buttons in a container with the `dark` class:
+في الوضع الداكن، لُفّ الأزرار داخل حاوية تحمل الصنف `dark`:
 
-*Dark Mode — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/c5e6dd9d68c73bef1b3f2bce1095d4fd544ba15de4ad05557b0a104a0f6108cb.html)*
+*الوضع الداكن — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c5e6dd9d68c73bef1b3f2bce1095d4fd544ba15de4ad05557b0a104a0f6108cb.html)*
 
 ```html
 <div class="dark">
@@ -71,11 +71,11 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </div>
 ```
 
-## Disabled States
+## حالات التعطيل
 
-#### Primary Disabled
+#### الأساسي المعطَّل
 
-*Primary Disabled — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/adb0b7c62d1401d35029f77de648cb79fe4355d79721e9806a9f04ba5937afda.html)*
+*الأساسي المعطَّل — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/adb0b7c62d1401d35029f77de648cb79fe4355d79721e9806a9f04ba5937afda.html)*
 
 ```html
 <button
@@ -86,9 +86,9 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </button>
 ```
 
-#### Secondary Disabled
+#### الثانوي المعطَّل
 
-*Secondary Disabled — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/7fced9322ffcc59d1abb54d7739d95e8e2c0af4f43b754848d707f0825827aec.html)*
+*الثانوي المعطَّل — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7fced9322ffcc59d1abb54d7739d95e8e2c0af4f43b754848d707f0825827aec.html)*
 
 ```html
 <button
@@ -99,9 +99,9 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </button>
 ```
 
-#### Danger Disabled
+#### الخطر المعطَّل
 
-*Danger Disabled — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/d838f14cbc74719d6fcb9b6a420bc1d0b100e90e60971b72f88bb9868c4dfbfb.html)*
+*الخطر المعطَّل — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d838f14cbc74719d6fcb9b6a420bc1d0b100e90e60971b72f88bb9868c4dfbfb.html)*
 
 ```html
 <button
@@ -112,9 +112,9 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </button>
 ```
 
-#### Ghost Disabled
+#### الشبح المعطَّل
 
-*Ghost Disabled — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/1fa2ee623b5e8a5c5927c483a92fd0700cfc9bbd971d0fc239a3539f1e4e594a.html)*
+*الشبح المعطَّل — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1fa2ee623b5e8a5c5927c483a92fd0700cfc9bbd971d0fc239a3539f1e4e594a.html)*
 
 ```html
 <button
@@ -125,11 +125,11 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </button>
 ```
 
-## Full Width Variations
+## تنويعات العرض الكامل
 
-#### Primary Full Width
+#### الأساسي بعرض كامل
 
-*Primary Full Width — Example 10 — [Open example](https://stevekinney.com/generated/playgrounds/ee9b85247ee47aaaadd4ac996a6059b18eda605f077bcdc5fe349d3f2614a0eb.html)*
+*الأساسي بعرض كامل — المثال 10 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ee9b85247ee47aaaadd4ac996a6059b18eda605f077bcdc5fe349d3f2614a0eb.html)*
 
 ```html
 <button
@@ -139,9 +139,9 @@ For dark mode, wrap buttons in a container with the `dark` class:
 </button>
 ```
 
-#### Secondary Full Width
+#### الثانوي بعرض كامل
 
-*Secondary Full Width — Example 11 — [Open example](https://stevekinney.com/generated/playgrounds/643ac0a917da8d20c89666184c4f7ac5bc9a86b10a79db66cbd61f894ab8221d.html)*
+*الثانوي بعرض كامل — المثال 11 — [افتح المثال](https://stevekinney.com/generated/playgrounds/643ac0a917da8d20c89666184c4f7ac5bc9a86b10a79db66cbd61f894ab8221d.html)*
 
 ```html
 <button

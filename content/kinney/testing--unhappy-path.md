@@ -1,44 +1,44 @@
 ---
-title: "The Unhappy Path"
-lang: en
+title: "المسار غير السعيد"
+lang: ar
 source: "https://stevekinney.com/courses/testing/unhappy-path"
 ---
 
-No, this is *not* my new band name.
+لا، هذا *ليس* اسم فرقتي الموسيقية الجديدة.
 
-The “happy path” refers to the scenario where everything works as expected—inputs are valid, conditions are ideal, and no errors occur. However, the Real World™ is nowhere near as kind.
+يشير «المسار السعيد» إلى السيناريو الذي يعمل فيه كل شيء كما هو متوقّع—المدخلات صالحة، والظروف مثالية، ولا تحدث أخطاء. لكن العالم الحقيقي™ ليس لطيفًا إلى هذا الحد أبدًا.
 
-This is where testing the **unhappy path™** comes in. The unhappy path tests how your code behaves when things go wrong—invalid inputs, failed operations, or unexpected conditions.
+هنا يأتي دور اختبار **المسار غير السعيد™**. يختبر المسار غير السعيد كيف تتصرّف شيفرتك عندما تسوء الأمور—مدخلات غير صالحة، أو عمليات فاشلة، أو ظروف غير متوقّعة.
 
-Testing the unhappy path ensures your application handles edge cases, errors, and unexpected inputs gracefully. Vitest provides various tools to test these scenarios effectively.
+اختبار المسار غير السعيد يضمن أن تطبيقك يتعامل مع الحالات الحدّية والأخطاء والمدخلات غير المتوقّعة بلطف. ويوفّر Vitest أدوات متنوّعة لاختبار هذه السيناريوهات بفعالية.
 
-## Why Test the Unhappy Path?
+## لماذا تختبر المسار غير السعيد؟
 
-I suspect that I don’t really need to sell you on this, but just in case:
+أظن أنني لست بحاجة حقًا إلى إقناعك بهذا، لكن على سبيل الاحتياط:
 
-- **Robustness**: By testing how your code behaves under abnormal conditions, you ensure your application is robust and can handle real-world issues like invalid input, network failures, and more.
-- **Error Handling**: Verifying that your code throws and catches errors correctly is essential to ensure smooth recovery from failures.
-- **Security**: Testing edge cases helps prevent unexpected behaviors that could expose vulnerabilities.
-- **User Experience**: Users do the strangest things—right? Gracefully handling errors provides better user experiences by preventing crashes or unhandled exceptions.
+- **المتانة**: باختبار كيف تتصرّف شيفرتك في ظروف غير طبيعية، تضمن أن تطبيقك متين ويستطيع التعامل مع مشكلات العالم الحقيقي مثل المدخلات غير الصالحة وفشل الشبكة وغيرها.
+- **معالجة الأخطاء**: التحقّق من أن شيفرتك ترمي الأخطاء وتلتقطها بشكل صحيح أمر جوهري لضمان التعافي السلس من الإخفاقات.
+- **الأمان**: يساعد اختبار الحالات الحدّية في منع السلوكيات غير المتوقّعة التي قد تكشف ثغرات.
+- **تجربة المستخدم**: يفعل المستخدمون أغرب الأشياء—أليس كذلك؟ التعامل بلطف مع الأخطاء يوفّر تجارب مستخدم أفضل بمنع الأعطال أو الاستثناءات غير المعالجة.
 
-## Common Unhappy Path Scenarios
+## سيناريوهات شائعة للمسار غير السعيد
 
-Unhappy path testing involves various failure scenarios, such as:
+يشمل اختبار المسار غير السعيد سيناريوهات فشل متنوّعة، مثل:
 
-- Invalid inputs (e.g., empty strings, `null`, `undefined`, wrong data types).
-- Unsuccessful operations (e.g., network failures, database errors).
-- Boundary conditions (e.g., out-of-range values).
-- Exceptions thrown by external dependencies or functions.
+- مدخلات غير صالحة (مثل السلاسل الفارغة، و`null`، و`undefined`، وأنواع بيانات خاطئة).
+- عمليات غير ناجحة (مثل فشل الشبكة وأخطاء قاعدة البيانات).
+- شروط حدّية (مثل القيم الخارجة عن النطاق).
+- استثناءات ترميها اعتماديات أو دوال خارجية.
 
-## Testing Invalid Input
+## اختبار المدخلات غير الصالحة
 
-It takes like 3 minutes of talking to someone who writes some other programming language to hear the jokes about JavaScript.
+يكفي نحو ثلاث دقائق من الحديث مع شخص يكتب لغة برمجة أخرى لتسمع النكات عن JavaScript.
 
 - `true + true === 2`
 - `1 + '1' === '11'`
 - `NaN !== NaN`
 
-The list goes on—but we have better things to get to. Surely out basic arithmetic functions from earlier are susceptible to this right? What would happen in the following cases?
+القائمة تطول—لكن لدينا ما هو أهم. من المؤكد أن دوالنا الحسابية الأساسية من قبل عرضة لهذا، أليس كذلك؟ ماذا سيحدث في الحالات التالية؟
 
 - `add(1)`
 - `add(null, 1)`
@@ -47,16 +47,16 @@ The list goes on—but we have better things to get to. Surely out basic arithme
 - `subtract('1', 1)`
 - `divide(5, 0)`
 
-So on and so forth. The only *wrong* answer here is `:shrug:`. Really in any of these cases, we have about a grand total of two options:
+وهكذا دواليك. الإجابة *الخاطئة* الوحيدة هنا هي `:shrug:`. في أي من هذه الحالات حقًا، لدينا نحو خيارين اثنين لا أكثر:
 
-- Fail gracefully.
-- Flip a table (a.k.a. throw an error)
+- أن نفشل بلطف.
+- أن نقلب طاولة (أي نرمي خطأً)
 
-Our tests *need* to cover these edge cases and this is one of the nuances of test-driven development. There is nothing about TDD that precludes you from doing these things—but, calling a day after your red-green-refactor cycle is *also* not going to get you all the way there.
+*يجب* أن تغطي اختباراتنا هذه الحالات الحدّية، وهذا أحد الفروق الدقيقة في التطوير المدفوع بالاختبارات. لا يوجد في TDD ما يمنعك من فعل هذه الأشياء—لكن الاكتفاء بدورة الأحمر-الأخضر-إعادة الهيكلة *أيضًا* لن يوصلك إلى هناك تمامًا.
 
-### Additional Examples of Invalid Input
+### أمثلة إضافية على المدخلات غير الصالحة
 
-A common unhappy path is when the user provides invalid input. You should test how your code behaves when it receives input that doesn’t meet expectations.
+من المسارات غير السعيدة الشائعة أن يقدّم المستخدم مدخلات غير صالحة. ينبغي أن تختبر كيف تتصرّف شيفرتك حين تتلقّى مدخلات لا تلبي التوقّعات.
 
 ```javascript
 // Function to be tested
@@ -94,19 +94,19 @@ describe('parseAge', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- We test different invalid inputs (a string and `null`) and expect the function to throw an error.
-- We test out-of-range numbers to ensure the function throws an error when the input is outside the acceptable range.
-- The happy path is also included to check that the function behaves correctly with valid input.
+- نختبر مدخلات غير صالحة مختلفة (سلسلة و`null`) ونتوقّع أن ترمي الدالة خطأً.
+- نختبر أعدادًا خارج النطاق للتأكّد من أن الدالة ترمي خطأً عندما يكون المدخل خارج النطاق المقبول.
+- يُضمَّن المسار السعيد أيضًا للتحقّق من أن الدالة تتصرّف بشكل صحيح مع مدخل صالح.
 
-> **Let’s Learn How to Test The Unhappy Path**
+> **لنتعلّم كيف نختبر المسار غير السعيد**
 >
-> There a bunch of other examples below, but let’s take a moment to look at how to add a little bit more resiliency to the example we’ve currently been working with in [Testing Error Handling and Edge Cases](https://stevekinney.com/courses/testing/error-handling-and-edge-case-testing).
+> هناك مجموعة من الأمثلة الأخرى أدناه، لكن لنأخذ لحظة للنظر في كيفية إضافة مزيد من الصلابة إلى المثال الذي كنا نعمل عليه في [اختبار معالجة الأخطاء والحالات الحدّية](https://stevekinney.com/courses/testing/error-handling-and-edge-case-testing).
 
-## Testing Errors in Asynchronous Functions
+## اختبار الأخطاء في الدوال غير المتزامنة
 
-When working with asynchronous functions, such as API calls or database queries, it’s important to test failure scenarios like network errors, timeouts, or service unavailability.
+عند العمل مع دوال غير متزامنة، مثل استدعاءات API أو استعلامات قاعدة البيانات، من المهم اختبار سيناريوهات الفشل مثل أخطاء الشبكة أو المهل المنتهية أو عدم توفّر الخدمة.
 
 ```javascript
 // Asynchronous function to be tested
@@ -151,15 +151,15 @@ describe('fetchUserData', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- The first test checks that the function throws an error if the `userId` is missing.
-- The second test mocks the `fetch` function to simulate an API error and verifies that the function throws an error.
-- The happy path is also tested to ensure that valid data is handled correctly.
+- يتحقّق الاختبار الأول من أن الدالة ترمي خطأً إذا كان `userId` مفقودًا.
+- يحاكي الاختبار الثاني دالة `fetch` لمضاهاة خطأ في API ويتحقّق من أن الدالة ترمي خطأً.
+- يُختبر المسار السعيد أيضًا لضمان التعامل الصحيح مع البيانات الصالحة.
 
-## Testing Boundary Conditions
+## اختبار الشروط الحدّية
 
-Boundary conditions are another common source of errors. Testing the edges of valid ranges ensures that your code behaves correctly for both valid and invalid boundary values.
+الشروط الحدّية مصدر شائع آخر للأخطاء. اختبار أطراف النطاقات الصالحة يضمن أن شيفرتك تتصرّف بشكل صحيح مع القيم الحدّية الصالحة وغير الصالحة معًا.
 
 ```javascript
 // Function to be tested
@@ -191,14 +191,14 @@ describe('calculateDiscount', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- The unhappy path is tested by checking that negative prices throw an error.
-- The boundary condition for prices above 1000 is tested to ensure the correct discount is applied.
+- يُختبر المسار غير السعيد بالتحقّق من أن الأسعار السالبة ترمي خطأً.
+- يُختبر الشرط الحدّي للأسعار فوق 1000 لضمان تطبيق الخصم الصحيح.
 
-## Testing External Dependencies and Failures
+## اختبار الاعتماديات الخارجية وإخفاقاتها
 
-Many applications rely on external services, such as databases or APIs. Testing the unhappy path means simulating these external dependencies failing or returning unexpected results.
+تعتمد تطبيقات كثيرة على خدمات خارجية، مثل قواعد البيانات أو واجهات API. اختبار المسار غير السعيد يعني مضاهاة فشل هذه الاعتماديات الخارجية أو إعادتها نتائج غير متوقّعة.
 
 ```javascript
 // Mocking a database call
@@ -245,12 +245,12 @@ describe('getUserData', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- We simulate a database returning `null` to test the scenario where a user isn’t found.
-- We mock the database to simulate a failure and check that the function throws the correct error.
-- The happy path is also tested to ensure that the function works correctly when the user is found.
+- نحاكي قاعدة بيانات تُعيد `null` لاختبار سيناريو عدم العثور على المستخدم.
+- نحاكي قاعدة البيانات لمضاهاة إخفاق ونتحقّق من أن الدالة ترمي الخطأ الصحيح.
+- يُختبر المسار السعيد أيضًا لضمان أن الدالة تعمل بشكل صحيح عند العثور على المستخدم.
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Testing the unhappy path™ is critical for ensuring that your application can handle real-world scenarios, including invalid inputs, failed operations, and external service failures. By using Vitest’s powerful tools like `toThrow()`, `rejects.toThrow()`, and mocking, you can simulate these edge cases and verify that your code responds appropriately. Testing the unhappy path leads to more robust applications and better user experiences by gracefully handling errors and preventing crashes or unexpected behavior.
+اختبار المسار غير السعيد™ جوهري لضمان أن تطبيقك يستطيع التعامل مع سيناريوهات العالم الحقيقي، بما فيها المدخلات غير الصالحة والعمليات الفاشلة وإخفاقات الخدمات الخارجية. باستخدام أدوات Vitest القوية مثل `toThrow()` و`rejects.toThrow()` والمضاهاة، يمكنك محاكاة هذه الحالات الحدّية والتحقّق من أن شيفرتك تستجيب بشكل مناسب. اختبار المسار غير السعيد يؤدي إلى تطبيقات أكثر متانة وتجارب مستخدم أفضل بالتعامل بلطف مع الأخطاء ومنع الأعطال أو السلوك غير المتوقّع.

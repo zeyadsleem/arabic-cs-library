@@ -1,41 +1,41 @@
 ---
-title: "Mock Service Worker"
-lang: en
+title: "عامل الخدمة المُحاكى (Mock Service Worker)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-with-mock-service-worker"
 ---
 
-Mocking external network requests is a crucial part of testing applications that rely on APIs. **Mock Service Worker (MSW)** is a powerful tool that allows you to intercept and mock network requests at the network level. When combined with **Vitest**, a fast and modern JavaScript testing framework, you can create robust and reliable tests for your applications.
+محاكاة طلبات الشبكة الخارجية جزء حاسم من اختبار التطبيقات التي تعتمد على واجهات برمجة التطبيقات. **Mock Service Worker (MSW)** أداة قوية تتيح لك اعتراض طلبات الشبكة ومحاكاتها على مستوى الشبكة. عند دمجها مع **Vitest**، إطار اختبار JavaScript سريع وحديث، يمكنك إنشاء اختبارات متينة وموثوقة لتطبيقاتك.
 
-This post explores how to use MSW with Vitest to mock API calls effectively. We’ll cover setup, implementation, best practices, and potential pitfalls, helping you understand how to integrate MSW into your testing strategy.
+يستكشف هذا المقال كيفية استخدام MSW مع Vitest لمحاكاة نداءات واجهات برمجة التطبيقات بفعالية. سنغطي الإعداد والتنفيذ وأفضل الممارسات والمزالق المحتملة، بما يساعدك على فهم كيفية دمج MSW في استراتيجية الاختبار لديك.
 
-## What is Mock Service Worker (MSW)?
+## ما هو Mock Service Worker (MSW)؟
 
-MSW is a JavaScript library that lets you mock API requests by intercepting them at the network level. It works in both browser and Node.js environments, allowing you to:
+MSW مكتبة JavaScript تتيح لك محاكاة طلبات واجهات برمجة التطبيقات باعتراضها على مستوى الشبكة. تعمل في بيئتي المتصفح وNode.js معًا، ما يتيح لك:
 
-- Mock REST and GraphQL APIs.
-- Simulate different server responses, including errors.
-- Keep your tests close to real-world scenarios by not altering the actual code making the requests.
+- محاكاة واجهات REST وGraphQL.
+- محاكاة استجابات خادم مختلفة، بما في ذلك الأخطاء.
+- إبقاء اختباراتك قريبة من السيناريوهات الواقعية عبر عدم تغيير الشيفرة الفعلية التي تجري الطلبات.
 
-## Why Use MSW with Vitest?
+## لماذا تستخدم MSW مع Vitest؟
 
-- **Network-Level Mocking**: MSW intercepts actual network requests, providing more realistic test conditions.
-- **Flexibility**: Easily mock different responses without changing the code under test.
-- **Maintainability**: Keep your tests clean by avoiding hard-coded mocks or complex mocking setups.
-- **Consistency**: Use the same mocking approach for both development and testing environments.
+- **المحاكاة على مستوى الشبكة**: تعترض MSW طلبات الشبكة الفعلية، ما يوفر ظروف اختبار أكثر واقعية.
+- **المرونة**: محاكاة استجابات مختلفة بسهولة دون تغيير الشيفرة قيد الاختبار.
+- **قابلية الصيانة**: أبقِ اختباراتك نظيفة بتجنب البدائل المُحاكاة المضمّنة في الشيفرة أو إعدادات المحاكاة المعقدة.
+- **الاتساق**: استخدم نهج المحاكاة نفسه لبيئتي التطوير والاختبار.
 
-## Setting Up MSW with Vitest
+## إعداد MSW مع Vitest
 
-### Install MSW
+### تثبيت MSW
 
 ```bash
 npm install --save-dev msw
 ```
 
-### Configure MSW in Your Project
+### تهيئة MSW في مشروعك
 
-Create a `src/mocks` directory and set up the handlers for your API endpoints.
+أنشئ دليل `src/mocks` وأعدّ المعالجات (handlers) لنقاط نهاية واجهة برمجة التطبيقات لديك.
 
-**Example: Handlers Definition**
+**مثال: تعريف المعالجات**
 
 ```javascript
 // src/mocks/handlers.js
@@ -54,9 +54,9 @@ export const handlers = [
 ];
 ```
 
-### Set Up the Server for Testing
+### إعداد الخادم للاختبار
 
-Create a file to initialize the MSW server for testing.
+أنشئ ملفًا لتهيئة خادم MSW للاختبار.
 
 ```javascript
 // src/mocks/server.js
@@ -66,9 +66,9 @@ import { handlers } from './handlers';
 export const server = setupServer(…handlers);
 ```
 
-### Configure Vitest to Use MSW
+### تهيئة Vitest لاستخدام MSW
 
-In your test setup file (e.g., `setupTests.js`), start the server before tests run and clean up afterward.
+في ملف إعداد اختباراتك (مثل `setupTests.js`)، ابدأ الخادم قبل تشغيل الاختبارات ونظّف بعده.
 
 ```javascript
 // setupTests.js
@@ -86,7 +86,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 ```
 
-Update your `vitest.config.js` to include the setup file:
+حدّث `vitest.config.js` لتضمين ملف الإعداد:
 
 ```javascript
 // vitest.config.js
@@ -100,11 +100,11 @@ export default defineConfig({
 });
 ```
 
-## Writing Tests with MSW and Vitest
+## كتابة الاختبارات باستخدام MSW وVitest
 
-### Example: Testing a Component That Fetches Data
+### مثال: اختبار مكوّن يجلب البيانات
 
-Suppose you have a React component that fetches user data:
+افترض أن لديك مكوّن React يجلب بيانات المستخدم:
 
 ```jsx
 // UserProfile.jsx
@@ -129,7 +129,7 @@ export function UserProfile() {
 }
 ```
 
-**Test File:**
+**ملف الاختبار:**
 
 ```jsx
 // UserProfile.test.jsx
@@ -150,18 +150,18 @@ test('renders user profile after fetching data', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- The test renders the `UserProfile` component.
-- It checks for the loading state.
-- It uses `findByText` to wait for the asynchronous update.
-- MSW intercepts the `/api/user` request and returns the mocked response defined in `handlers.js`.
+- يُصيّر الاختبار مكوّن `UserProfile`.
+- يتحقق من حالة التحميل.
+- يستخدم `findByText` للانتظار حتى التحديث غير المتزامن.
+- تعترض MSW طلب `/api/user` وتعيد الاستجابة المُحاكاة المعرّفة في `handlers.js`.
 
-### Example: Testing Error Handling
+### مثال: اختبار معالجة الأخطاء
 
-You can mock error responses to test how your component handles failures.
+يمكنك محاكاة استجابات الأخطاء لاختبار كيفية تعامل مكوّنك مع الإخفاقات.
 
-**Adjust the Test:**
+**عدّل الاختبار:**
 
 ```jsx
 import { render, screen } from '@testing-library/react';
@@ -186,26 +186,26 @@ test('handles server error', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- **`server.use(…)`**: Overrides the `/api/user` handler for this test, simulating a server error.
-- The component should handle the error and display an appropriate message.
-- The test verifies that the error message is displayed.
+- **`server.use(…)`**: يتجاوز معالج `/api/user` لهذا الاختبار، محاكيًا خطأ خادم.
+- ينبغي أن يتعامل المكوّن مع الخطأ ويعرض رسالة مناسبة.
+- يتحقق الاختبار من عرض رسالة الخطأ.
 
-## Best Practices with MSW
+## أفضل الممارسات مع MSW
 
-### Centralize Request Handlers
+### تمركز معالجات الطلبات
 
-Define all your request handlers in one place (`handlers.js`) to keep your mocks organized.
+عرّف كل معالجات طلباتك في مكان واحد (`handlers.js`) للحفاظ على تنظيم بدائلك المُحاكاة.
 
-**Benefits:**
+**الفوائد:**
 
-- **Maintainability**: Easier to update and manage mock responses.
-- **Reusability**: Handlers can be reused across multiple tests.
+- **قابلية الصيانة**: تحديث استجابات المحاكاة وإدارتها أسهل.
+- **قابلية إعادة الاستخدام**: يمكن إعادة استخدام المعالجات عبر اختبارات متعددة.
 
-### Use Contextual Request Handlers for Specific Tests
+### استخدم معالجات طلبات سياقية لاختبارات محددة
 
-Override handlers within tests to simulate different scenarios.
+تجاوز المعالجات داخل الاختبارات لمحاكاة سيناريوهات مختلفة.
 
 ```javascript
 server.use(
@@ -215,14 +215,14 @@ server.use(
 );
 ```
 
-**Benefits:**
+**الفوائد:**
 
-- **Flexibility**: Test edge cases and error conditions without affecting other tests.
-- **Isolation**: Changes to handlers in one test don’t impact others.
+- **المرونة**: اختبر الحالات الطرفية وظروف الأخطاء دون التأثير في الاختبارات الأخرى.
+- **العزل**: لا تؤثر التغييرات في المعالجات داخل اختبار واحد على الآخرين.
 
-### Verify Requests in Tests
+### تحقق من الطلبات في الاختبارات
 
-You can assert that certain requests were made with expected parameters.
+يمكنك التحقق من أن طلبات معينة جرى إرسالها بمعاملات متوقعة.
 
 ```javascript
 import { expect, test } from 'vitest';
@@ -245,66 +245,66 @@ test('submits form data correctly', async () => {
 });
 ```
 
-### Handle Unhandled Requests
+### تعامل مع الطلبات غير المعالجة
 
-Configure MSW to alert you to unhandled requests, helping catch missing handlers.
+هيّئ MSW لتنبيهك إلى الطلبات غير المعالجة، بما يساعد في اكتشاف المعالجات المفقودة.
 
 ```javascript
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 ```
 
-Options for `onUnhandledRequest`:
+خيارات `onUnhandledRequest`:
 
-- `'bypass'`: Default behavior, unhandled requests proceed as normal.
-- `'warn'`: Logs a warning for unhandled requests.
-- `'error'`: Throws an error for unhandled requests.
+- `'bypass'`: السلوك الافتراضي، تمضي الطلبات غير المعالجة كما هي.
+- `'warn'`: يسجّل تحذيرًا للطلبات غير المعالجة.
+- `'error'`: يرفع خطأ للطلبات غير المعالجة.
 
-### Use TypeScript for Better Type Safety (Optional)
+### استخدم TypeScript لأمان أنواع أفضل (اختياري)
 
-If you’re using TypeScript, MSW provides type definitions to enhance your development experience.
+إذا كنت تستخدم TypeScript، توفر MSW تعريفات أنواع لتحسين تجربة التطوير لديك.
 
-## Potential Pitfalls and How to Avoid Them
+## المزالق المحتملة وكيفية تجنبها
 
-### Forgetting to Reset Handlers
+### نسيان إعادة تعيين المعالجات
 
-**Issue**: Overridden handlers persist across tests, causing unexpected behavior.
+**المشكلة**: تستمر المعالجات المتجاوَزة عبر الاختبارات، ما يسبب سلوكًا غير متوقع.
 
-**Solution**:
+**الحل**:
 
-- Use `server.resetHandlers()` in `afterEach` to reset handlers after each test.
+- استخدم `server.resetHandlers()` في `afterEach` لإعادة تعيين المعالجات بعد كل اختبار.
 
 ```javascript
 afterEach(() => server.resetHandlers());
 ```
 
-### Mocking Incorrectly Formatted Responses
+### محاكاة استجابات منسّقة بشكل خاطئ
 
-**Issue**: Returning responses that don’t match the expected format can cause test failures.
+**المشكلة**: إرجاع استجابات لا تطابق التنسيق المتوقع قد يسبب فشل الاختبارات.
 
-**Solution**:
+**الحل**:
 
-- Ensure that mocked responses match the shape and structure expected by the code under test.
+- تأكد من أن الاستجابات المُحاكاة تطابق الشكل والبنية المتوقعين من الشيفرة قيد الاختبار.
 
-### Ignoring Unhandled Requests
+### تجاهل الطلبات غير المعالجة
 
-**Issue**: Missing handlers for API calls can lead to unhandled requests, causing tests to pass when they should fail.
+**المشكلة**: يمكن أن تؤدي المعالجات المفقودة لنداءات واجهة برمجة التطبيقات إلى طلبات غير معالجة، ما يجعل الاختبارات تنجح حين ينبغي أن تفشل.
 
-**Solution**:
+**الحل**:
 
-- Set `onUnhandledRequest` to `'error'` during testing to catch unhandled requests.
+- اضبط `onUnhandledRequest` على `'error'` أثناء الاختبار لاكتشاف الطلبات غير المعالجة.
 
-### Over-Mocking
+### الإفراط في المحاكاة
 
-**Issue**: Over-mocking can lead to tests that don’t reflect real-world behavior.
+**المشكلة**: قد يؤدي الإفراط في المحاكاة إلى اختبارات لا تعكس السلوك الواقعي.
 
-**Solution**:
+**الحل**:
 
-- Mock only external network requests.
-- Avoid mocking internal functions or modules unnecessarily.
+- حاكِ طلبات الشبكة الخارجية فقط.
+- تجنب محاكاة الدوال أو الوحدات الداخلية دون داعٍ.
 
-## Examples in Practice
+## أمثلة عملية
 
-### Testing a Component with Multiple API Calls
+### اختبار مكوّن بنداءات متعددة لواجهة برمجة التطبيقات
 
 ```jsx
 // Dashboard.jsx
@@ -339,7 +339,7 @@ export function Dashboard() {
 }
 ```
 
-**Handlers:**
+**المعالجات:**
 
 ```javascript
 // handlers.js
@@ -359,7 +359,7 @@ export const handlers = [
 ];
 ```
 
-**Test:**
+**الاختبار:**
 
 ```jsx
 // Dashboard.test.jsx
@@ -380,45 +380,45 @@ test('renders user and notifications', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- MSW handles both `/api/user` and `/api/notifications` requests.
-- The test verifies that both user data and notifications are rendered correctly.
+- تتعامل MSW مع طلبي `/api/user` و`/api/notifications` معًا.
+- يتحقق الاختبار من تصيير بيانات المستخدم والإشعارات معًا بشكل صحيح.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Using Mock Service Worker with Vitest provides a powerful and flexible way to mock network requests in your tests. By intercepting requests at the network level, MSW allows you to create realistic and maintainable tests that closely mimic actual application behavior.
+استخدام Mock Service Worker مع Vitest يوفر طريقة قوية ومرنة لمحاكاة طلبات الشبكة في اختباراتك. باعتراض الطلبات على مستوى الشبكة، تتيح لك MSW إنشاء اختبارات واقعية وقابلة للصيانة تحاكي سلوك التطبيق الفعلي عن كثب.
 
-### Key Takeaways
+### النقاط الرئيسية
 
-#### MSW Benefits
+#### فوائد MSW
 
-- Mocks network requests at the network level.
-- Works seamlessly in both browser and Node.js environments.
-- Simplifies testing of components that rely on external APIs.
+- تحاكي طلبات الشبكة على مستوى الشبكة.
+- تعمل بسلاسة في بيئتي المتصفح وNode.js معًا.
+- تبسّط اختبار المكوّنات التي تعتمد على واجهات برمجة تطبيقات خارجية.
 
-#### Best Practices
+#### أفضل الممارسات {#best-practices}
 
-- Centralize request handlers for maintainability.
-- Use contextual handlers to simulate different scenarios.
-- Verify requests and responses within tests.
-- Handle unhandled requests to catch missing handlers.
+- مركّز معالجات الطلبات من أجل قابلية الصيانة.
+- استخدم معالجات سياقية لمحاكاة سيناريوهات مختلفة.
+- تحقق من الطلبات والاستجابات داخل الاختبارات.
+- تعامل مع الطلبات غير المعالجة لاكتشاف المعالجات المفقودة.
 
-#### Avoiding Pitfalls
+#### تجنب المزالق
 
-- Reset handlers between tests to prevent cross-test contamination.
-- Ensure mocked responses match expected formats.
-- Be cautious of over-mocking.
+- أعد تعيين المعالجات بين الاختبارات لمنع التلوث بينها.
+- تأكد من أن الاستجابات المُحاكاة تطابق التنسيقات المتوقعة.
+- كن حذرًا من الإفراط في المحاكاة.
 
-By integrating MSW into your testing workflow with Vitest, you can enhance the reliability and robustness of your tests, ultimately leading to higher-quality applications.
+بدمج MSW في سير عمل الاختبار لديك مع Vitest، يمكنك تحسين موثوقية اختباراتك ومتانتها، بما يؤدي في النهاية إلى تطبيقات أعلى جودة.
 
-### When to Use MSW
+### متى تستخدم MSW
 
-- **API-Dependent Components**: When testing components that make HTTP requests to external APIs.
-- **Error Handling Scenarios**: To simulate server errors and test how your application responds.
-- **Complex Response Structures**: When dealing with complex or large API responses that would be cumbersome to mock manually.
+- **المكوّنات المعتمدة على واجهات برمجة التطبيقات**: عند اختبار مكوّنات تجري طلبات HTTP إلى واجهات خارجية.
+- **سيناريوهات معالجة الأخطاء**: لمحاكاة أخطاء الخادم واختبار كيفية استجابة تطبيقك.
+- **بنى استجابات معقدة**: عند التعامل مع استجابات واجهة برمجة تطبيقات معقدة أو كبيرة يكون محاكاتها يدويًا مرهقًا.
 
-### Potential Limitations
+### القيود المحتملة
 
-- **Learning Curve**: Requires understanding of how MSW intercepts requests and how to configure handlers.
-- **Setup Overhead**: Initial setup may be more involved compared to simple mocking, but pays off in the long run.
+- **منحنى التعلم**: يتطلب فهم كيفية اعتراض MSW للطلبات وكيفية تهيئة المعالجات.
+- **عبء الإعداد**: قد يكون الإعداد الأولي أكثر تعقيدًا مقارنة بالمحاكاة البسيطة، لكنه يثمر على المدى الطويل.

@@ -1,89 +1,89 @@
 ---
-title: "Editor Layout"
-lang: en
+title: "تنسيق المحرّر (Editor Layout)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-editor-layout"
 ---
 
-The most reasonable place to start is getting comfortable with the editor itself. If we can take the little tedious stuff that we need to do and make it *faster*, then we have more mental bandwidth for all of the Big Brain™ stuff that is arguably what we get paid for—as opposed to mousing around looking for that important file.
+المكان الأكثر منطقية للبدء هو التأقلم مع المحرّر نفسه. إذا تمكّنا من جعل الأشياء الصغيرة المُتعبة التي نحتاج إلى فعلها *أسرع*، فسيكون لدينا مزيد من الطاقة الذهنية لجميع أشياء «الدماغ الكبير» (Big Brain™) التي arguably ما نُدفع لأجله — بدلاً من النقر بالفأرة بحثًا عن ذلك الملف المهم.
 
-Visual Studio Code allows you to rearrange views and panels so that the information you need is always front and center. You can drag and drop panels (such as `Explorer`, `Debug`, or `Terminal`) to different areas of the screen to match your preference. Under the `View` menu, you’ll find `Appearance`, where you can toggle side bars, activity bars, and the panel location.
+يتيح لك Visual Studio Code إعادة ترتيب العروض (views) واللوحات (panels) بحيث تكون المعلومات التي تحتاجها دائمًا في المقدّمة والمركز. يمكنك سحب وإسقاط اللوحات (مثل `Explorer`، `Debug`، أو `Terminal`) إلى مناطق مختلفة من الشاشة لتناسب تفضيلك. تحت قائمة `View`، ستجد `Appearance`، حيث يمكنك تبديل الأشرطة الجانبية، وأشرطة النشاط، وموقع اللوحة.
 
-If you like a cleaner setup, consider hiding the panel entirely. When you need it back, you can easily restore it through `View -> Appearance -> Show Panel`. This back-and-forth adjustment helps keep your editor free of clutter whenever deep focus is required.
+إن أحببت إعدادًا أنظف، ففكّر في إخفاء اللوحة بالكامل. عندما تحتاجها مرة أخرى، يمكنك استعادتها بسهولة عبر `View -> Appearance -> Show Panel`. يساعد هذا الضبط ذهابًا وإيابًا في إبقاء محرّرك خاليًا من الفوضى متى دعت الحاجة إلى تركيز عميق.
 
-> **When in doubt, use the Command Palette**
+> **عند الشك، استخدم لوحة الأوامر**
 >
-> If you ever lose track of a panel or side bar, use the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) to search for a command like `View: Toggle Sidebar Visibility` and bring it right back.
+> إن فقدت يومًا أثر لوحة أو شريط جانبي، فاستخدم لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P` على macOS) للبحث عن أمر مثل `View: Toggle Sidebar Visibility` وإعادته فورًا.
 
-## Open Editors
+## المحرّرات المفتوحة (Open Editors)
 
-The `Open Editors` section in the Explorer panel shows all files currently open in the editor. This feature acts as a quick reference to see everything you’re working on at a glance. If you have too many files listed there, close tabs you’re no longer using to keep the list lean and easier to scan.
+يعرض قسم `Open Editors` في لوحة Explorer جميع الملفات المفتوحة حاليًا في المحرّر. تعمل هذه الميزة كمرجع سريع لرؤية كل ما تعمل عليه بنظرة واحدة. إن تراكمت لديك ملفات كثيرة مدرجة there، فأغلق التبويبات التي لم تعد تستخدمها للحفاظ على القائمة موجزة وأسهل في المسح.
 
-A lesser-known perk of the `Open Editors` area is that it allows you to reorder open tabs by simply dragging filenames up or down in the list. It mirrors the order of your tabs in the top editor region, letting you manage your open files from either location without missing a beat.
+ميزة أقل شهرة في منطقة `Open Editors` هي أنها تتيح لك إعادة ترتيب التبويبات المفتوحة ببساطة عبر سحب أسماء الملفات لأعلى أو لأسفل في القائمة. إنها تُطابق ترتيب تبويباتك في منطقة المحرّر العلوية، مما يتيح لك إدارة ملفاتك المفتوحة من أي من الموقعين دون أن تفوتك نبضة.
 
-## Splitting
+## التقسيم (Splitting)
 
-Splitting the editor enables side-by-side comparisons or editing in multiple places at once. You can split vertically or horizontally. For instance, if you’re reviewing a React component’s TypeScript file while editing its related CSS, splitting your editor lets you see both files at the same time.
+يتيح تقسيم المحرّر مقارنات جنبًا إلى جنب أو التحرير في أماكن متعدّدة في آن واحد. يمكنك التقسيم عموديًا أو أفقيًا. على سبيل المثال، إن كنت تراجع ملف TypeScript لمكوّن React بينما تحرّر CSS المرتبط به، فإن تقسيم محرّرك يتيح لك رؤية كلا الملفين في الوقت نفسه.
 
-To split your editor quickly, right-click the tab of the file you’re viewing and select `Split Editor`. Alternatively, you can use the `View -> Editor Layout` menu or the split icons on the top right corner of your editor. Closing one panel is just a matter of clicking the `x` in the tab or dragging it back to its original position.
+لتقسيم محرّرك بسرعة، انقر بزر الفأرة الأيمن على تبويب الملف الذي تشاهده واختر `Split Editor`. بديلًا، يمكنك استخدام قائمة `View -> Editor Layout` أو أيقونات التقسيم في الزاوية العلوية اليمنى من محرّرك. إغلاق لوحة ما هو مجرد مسألة النقر على `x` في التبويب أو سحبه إلى موقعه الأصلي.
 
-> **Switching layouts**
+> **التبديل بين التخطيطات**
 >
-> Want to quickly switch between split layouts? Search for `View: Toggle Editor Group Layout` in the Command Palette to flip between horizontal and vertical splits. It’s like rotating your desk without having to move anything heavy.
+> هل تريد التبديل بسرعة بين تخطيطات التقسيم؟ ابحث عن `View: Toggle Editor Group Layout` في لوحة الأوامر للتبديل بين التقسيمات الأفقية والعمودية. الأمر أشبه بتدوير مكتبك دون الحاجة إلى تحريك أي شيء ثقيل.
 
-## Multiple Windows
+## نوافذ متعدّدة (Multiple Windows)
 
-I’m coming from a editor that didn’t have split panes—I’m looking at you, TextMate. So, this *used* to be how I lived my life. But, these days—I tend to stick with a single window with multiple editor groups. That said, I also don’t use multiple monitors.
+أنا قادم من محرّر لم تكن فيه لوحات مقسّمة — أقصدك أنت، TextMate. لذا، *هكذا* كنت أعيش حياتي. لكن في هذه الأيام — أميل إلى التمسّك بنافذة واحدة مع مجموعات محرّرات متعدّدة. هذا said، أنا أيضًا لا أستخدم شاشات متعدّدة.
 
-Sometimes, splitting isn’t enough. Multiple windows might be the solution if you’re juggling many files or separate projects. You can open another instance of Visual Studio Code from the `File -> New Window` menu, or by using the Command Palette command `New Window`. Each window can then focus on a distinct set of files or a different project folder.
+أحيانًا، التقسيم لا يكفي. قد تكون النوافذ المتعدّدة هي الحل إن كنت ت jongling many files or separate projects. يمكنك فتح مثيل آخر من Visual Studio Code من قائمة `File -> New Window`، أو باستخدام أمر لوحة الأوامر `New Window`. يمكن لكل نافذة بعدها التركيز على مجموعة distinct من الملفات أو مجلد مشروع مختلف.
 
-If you’re working on a large feature and also monitoring logs or a server file in another folder, multiple windows prevent you from losing context. Arrange these windows on multiple monitors or snap them side-by-side for a command-center vibe.
+إن كنت تعمل على ميزة كبيرة وتراقب أيضًا سجلات (logs) أو ملف خادم في مجلد آخر، فإن النوافذ المتعدّدة تمنعك من فقدان السياق. رتّب هذه النوافذ على شاشات متعدّدة أو ثبّتها جنبًا إلى جنب لمناخ «مركز القيادة».
 
-## Zen Mode
+## وضع Zen (Zen Mode)
 
-Zen Mode is the ultimate solution for code meditation. When activated, Zen Mode removes all bars, panels, and distractions, leaving you with a full-screen editor to focus on coding or reading code. To activate Zen Mode, toggle it under `View -> Appearance -> Zen Mode`, or search for `View: Toggle Zen Mode` in the Command Palette.
+وضع Zen هو الحل المثالي للتأمل في الشيفرة. عند تفعيله، يُزيل وضع Zen جميع الأشرطة، واللوحات، والمشتّتات، تاركًا لك محرّرًا بملء الشاشة للتركيز على كتابة الشيفرة أو قراءتها. لتفعيل وضع Zen، بدّله تحت `View -> Appearance -> Zen Mode`، أو ابحث عن `View: Toggle Zen Mode` في لوحة الأوامر.
 
-Once in Zen Mode, you can still hover near the edges of the screen to reveal hidden bars or use your favorite shortcuts as usual. Exit Zen Mode just as you entered it—through the same menu or by pressing `Escape` twice.
+بمجرد دخولك وضع Zen، يمكنك مع ذلك التحويم قرب حواف الشاشة لإظهار الأشرطة المخفية، أو استخدام اختصاراتك المعتادة كما هي. اخرج من وضع Zen بالطريقة نفسها التي دخلته بها — عبر نفس القائمة أو بالضغط على `Escape` مرتين.
 
-> **Adding keybindings for Zen Mode**
+> **إضافة اختصارات لوضع Zen**
 >
-> If you frequently use Zen Mode, assign a custom keyboard shortcut to it in your keybindings (`File -> Preferences -> Keyboard Shortcuts` or `Code -> Preferences -> Keyboard Shortcuts` on macOS). You’ll be a single keystroke away from that tranquil, minimalistic bliss.
+> إن كنت تستخدم وضع Zen بشكل متكرّر، فعيّن اختصار لوحة مفاتيح مخصصًا له في اختصاراتك (`File -> Preferences -> Keyboard Shortcuts` أو `Code -> Preferences -> Keyboard Shortcuts` على macOS). ستكون على مسافة ضغطة مفتاح واحدة من ذلك الصفاء البسيط المطمئن.
 
-## Splitting the Editor
+## تقسيم المحرّر (Splitting the Editor)
 
-Use `Cmd+\` or `Ctrl+\` to split the editor into a new pane.
+استخدم `Cmd+\` أو `Ctrl+\` لتقسيم المحرّر إلى لوحة جديدة.
 
-## Move Across Tabs
+## الانتقال عبر التبويبات (Move Across Tabs)
 
-Use `Cmd-Option-⃗➡️` and `Cmd-Option-⬅️` to move from tab to tab. On Windows, you can use `Ctrl-Alt-➡️` and `Ctrl-Alt-⬅️`.
+استخدم `Cmd-Option-⃗➡️` و `Cmd-Option-⬅️` للانتقال من تبويب إلى تبويب. على Windows، يمكنك استخدام `Ctrl-Alt-➡️` و `Ctrl-Alt-⬅️`.
 
-## Jump Between Editor Groups
+## القفز بين مجموعات المحرّر (Jump Between Editor Groups)
 
-You’ve got two options here.
+لديك خياران هنا.
 
-1. You can jump to a *particular* group.
-2. You can move around between the groups using the arrow keys.
+1. يمكنك القفز إلى مجموعة *محدّدة*.
+2. يمكنك التنقّل بين المجموعات باستخدام مفاتيح الأسهم.
 
-Switch Groups in Visual Studio Code
+التبديل بين المجموعات في Visual Studio Code
 
-## Jump to a Line
+## القفز إلى سطر (Jump to a Line)
 
-Use `Ctrl-G` to jump to a particular line.
+استخدم `Ctrl-G` للقفز إلى سطر محدد.
 
-Jump to a Line
+القفز إلى سطر
 
-## Go to Bracket
+## الانتقال إلى قوس (Go to Bracket)
 
-The **Go to Bracket** command jumps from the opening to the closing bracket. There is also ability to **Select to Bracket**, but it doesn’t have a keybinding—by default. We’ll look at how to add one later.
+أمر الانتقال إلى قوس (Go to Bracket) ينتقل من القوس الافتتاحي إلى القوس الختامي. هناك أيضًا إمكانية **Select to Bracket**، لكنها لا تملك اختصارًا — افتراضيًا. سننظر لاحقًا في كيفية إضافة واحد.
 
-Go to Bracket
+الانتقال إلى قوس
 
-## Open the Integrated Terminal
+## فتح الطرفية المدمجة (Open the Integrated Terminal)
 
-You can use `Ctrl-Backtick` to open the integrated terminal.
+يمكنك استخدام `Ctrl-Backtick` لفتح الطرفية المدمجة.
 
-## Customizing Your Panels
+## تخصيص لوحاتك (Customizing Your Panels)
 
-VS Code allows you to not only rearrange panels but also resize them for optimal focus. Adjust the borders between panels to allocate more space to your most-used views, such as the Explorer or Terminal. Once you have your ideal layout, save your workspace configuration to preserve these settings between sessions. For example, you can save your layout using:
+يتيح لك VS Code ليس فقط إعادة ترتيب اللوحات بل أيضًا تغيير حجمها للحصول على تركيز مثالي. اضبط الحدود بين اللوحات لتخصيص مزيد من المساحة للعروض الأكثر استخدامًا، مثل Explorer أو Terminal. بمجرد حصولك على تخطيطك المثالي، احفظ إعدادات مساحة العمل للحفاظ على هذه الإعدادات بين الجلسات. على سبيل المثال، يمكنك حفظ تخطيطك باستخدام:
 
 ```json
 // In your workspace configuration file
@@ -100,22 +100,22 @@ VS Code allows you to not only rearrange panels but also resize them for optimal
 }
 ```
 
-> **Save Your Layout**
+> **احفظ تخطيطك**
 >
-> Use `File → Save Workspace As…` to keep your customized panel sizes and positions intact.
+> استخدم `File → Save Workspace As…` للإبقاء على أحجام لوحاتك ومواقعها المخصّصة intact.
 
-## Managing Open Editors
+## إدارة المحرّرات المفتوحة (Managing Open Editors)
 
-The Open Editors section is more than a simple list—it can be optimized for enhanced productivity. Pin frequently used files to keep them visible, even when multiple tabs are open. You can also reorder the list to group related files together, which mirrors the order in the top editor area and helps maintain a neat workflow.
+قسم المحرّرات المفتوحة (Open Editors) هو أكثر من مجرد قائمة بسيطة — يمكن تحسينه لزيادة الإنتاجية. ثبّت الملفات المستخدمة بشكل متكرّر للإبقاء عليها مرئية، حتى عندما تكون تبويبات متعدّدة مفتوحة. يمكنك أيضًا إعادة ترتيب القائمة لتجميع الملفات ذات الصلة معًا، مما يُطابق الترتيب في منطقة المحرّر العلوية ويساعد في الحفاظ على سير عمل net.
 
-> **Keep It Organized**
+> **أبقِها منظّمة**
 >
-> Regularly close files you no longer need and pin those you access frequently for a cleaner Open Editors view.
+> أغلق الملفات التي لم تعد تحتاجها بانتظام وثبّت تلك التي تصل إليها بشكل متكرّر للحصول على عرض Open Editors أنظف.
 
-## Troubleshooting & Additional Tips
+## استكشاف الأخطاء ونصائح إضافية (Troubleshooting & Additional Tips)
 
-Even with a perfectly set up environment, you may encounter occasional glitches. If a panel or view suddenly disappears, use the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run commands such as `View: Reset View Locations` or `Toggle Sidebar Visibility`. For performance issues in larger projects, consider closing unused files or temporarily disabling non-essential extensions to keep VS Code running smoothly.
+حتى مع بيئة مُعدّة بشكل مثالي، قد تواجه أعطالًا عرضية. إن اختفت لوحة أو عرض فجأة، فاستخدم لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) وشغّل أوامر مثل `View: Reset View Locations` أو `Toggle Sidebar Visibility`. لمشكلات الأداء في المشاريع الأكبر، فكّر في إغلاق الملفات غير المستخدمة أو تعطيل الإضافات غير الأساسية مؤقتًا للإبقاء على VS Code يعمل بسلاسة.
 
-> **Stay Productive**
+> **ابقَ منتجًا**
 >
-> Regularly update your workspace settings and extensions to avoid common pitfalls and maintain an efficient coding environment.
+> حدّث إعدادات مساحة العمل والإضافات بانتظام لتجنّب الأخطاء الشائعة والحفاظ على بيئة تطوير فعّالة.

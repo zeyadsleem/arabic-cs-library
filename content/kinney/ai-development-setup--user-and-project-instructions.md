@@ -1,87 +1,87 @@
 ---
-title: "User and Project Instructions"
-lang: en
+title: "تعليمات المستخدم والمشروع"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions"
 ---
 
-Every project eventually grows an instruction file. It starts as five useful lines. A year later, it’s four hundred lines of history, opinions, and half-obsolete advice, and nobody, human or agent, can say which of them still matter.
+كل مشروع ينمو فيه ملف تعليمات في النهاية. يبدأ بخمسة أسطر مفيدة. وبعد سنة يصير أربعمئة سطر من التاريخ والآراء والنصائح نصف البائدة، ولا يستطيع أحد، إنسانًا كان أو وكيلًا، أن يقول أيّها ما زال مهمًّا.
 
-The fix is keeping that file small, specific, and honest about what it can’t do.
+والإصلاح هو أن تُبقي ذلك الملف صغيرًا ومحدّدًا وصادقًا في ما لا يستطيع فعله.
 
-## What the files are
+## ما هي هذه الملفات
 
-Claude Code reads a Markdown file called `CLAUDE.md` at the start of every session. [Codex](https://developers.openai.com/codex), OpenAI’s coding harness, reads [`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md) the same way. Recent Claude Code versions also fall back to `AGENTS.md`, but only when there’s no `CLAUDE.md` or `CLAUDE.local.md` in your working directory or above it. I’ll call whichever one your harness reads the *instruction file*. (The harness is the program wrapped around the model; a *session* is one conversation with the agent.)
+يقرأ Claude Code ملف Markdown اسمه `CLAUDE.md` في بداية كل جلسة. ويقرأ [Codex](https://developers.openai.com/codex)، وهو أداة البرمجة من OpenAI، ملف [`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md) بالطريقة نفسها. وتعود إصدارات Claude Code الحديثة أيضًا إلى `AGENTS.md`، لكن فقط حين لا يوجد `CLAUDE.md` أو `CLAUDE.local.md` في مجلد عملك أو فوقه. وسأسمّي أيًّا منهما تقرأه أداتك *ملف التعليمات*. (والأداة (harness) هي البرنامج الملتفّ حول النموذج؛ و*الجلسة* محادثة واحدة مع الوكيل.)
 
-In Claude Code, instruction files in the working directory and its ancestors load at launch. Descendant `CLAUDE.md` files load on demand, when Claude reads files in those directories, so they aren’t all there during initial planning or Bash-only exploration. Read a subtree’s instructions explicitly before planning work there. Claude Code’s [memory documentation](https://code.claude.com/docs/en/memory) has the loading rules.
+في Claude Code، تُحمَّل ملفات التعليمات في مجلد العمل وأسلافه عند الإطلاق. أما ملفات `CLAUDE.md` التابعة فتُحمَّل عند الطلب، حين يقرأ Claude ملفات في تلك المجلدات، فهي ليست كلها حاضرة أثناء التخطيط الأولي أو الاستكشاف بـ Bash وحده. فاقرأ تعليمات أي شجرة فرعية صراحةً قبل تخطيط العمل فيها. وتضم [وثائق الذاكرة](https://code.claude.com/docs/en/memory) في Claude Code قواعد التحميل.
 
-These files should reduce ambiguity. They should *not* become a second, drifting specification.
+ينبغي أن تقلّل هذه الملفات الغموض. و*لا* ينبغي أن تصير مواصفة ثانية منحرفة.
 
-## Scopes
+## النطاقات
 
-You have a few layers to work with, from broad to narrow:
+لديك بضع طبقات تعمل بها، من الأوسع إلى الأضيق:
 
-- **User scope**: Personal defaults across all your projects.
-- **Repository scope**: Shared architecture and commands for everyone working in this codebase.
-- **Directory scope**: Local rules for one subtree. You can nest an instruction file in a subdirectory.
-- **Task prompt**: The immediate goal and, ideally, the acceptance test.
+- **نطاق المستخدم**: إعدادات افتراضية شخصية عبر كل مشاريعك.
+- **نطاق المستودع**: معمارية وأوامر مشتركة لكل من يعمل في قاعدة الشيفرة هذه.
+- **نطاق المجلد**: قواعد محلية لشجرة فرعية واحدة. ويمكنك تضمين ملف تعليمات في مجلد فرعي.
+- **موجّه المهمة**: الهدف المباشر، واختبار القبول بشكل مثالي.
 
-You can also keep private preferences out of the shared file. In Claude Code, `CLAUDE.local.md` is loaded alongside `CLAUDE.md`, and you add it to `.gitignore`. In Codex, `AGENTS.override.md` *replaces* `AGENTS.md` at its level, so it has to carry everything from the file it hides.
+ويمكنك أيضًا إبقاء التفضيلات الخاصة خارج الملف المشترك. ففي Claude Code، يُحمَّل `CLAUDE.local.md` إلى جانب `CLAUDE.md`، وتضيفه إلى `.gitignore`. وفي Codex، *يستبدل* `AGENTS.override.md` ملف `AGENTS.md` في مستواه، فعليه أن يحمل كل شيء من الملف الذي يخفيه.
 
-What happens when two scopes disagree? Codex puts the files closest to your working directory last, and later guidance wins. Claude Code concatenates the files instead of overriding, and its documentation says that when two conflict, Claude may pick one arbitrarily. So don’t write a conflict and trust precedence to settle it. Keep the scopes from contradicting each other.
+وماذا يحدث حين يختلف نطاقان؟ يضع Codex الملفات الأقرب إلى مجلد عملك في الآخر، فيفوز التوجيه اللاحق. ويسلسل Claude Code الملفات بدلًا من استبدالها، وتقول وثائقه إن Claude قد يختار أحدهما اعتباطًا حين يتعارضان. فلا تكتب تعارضًا وتثق بالأسبقية لتحلّه. وحُل دون تناقض النطاقات.
 
-## Write operational facts
+## اكتب حقائق تشغيلية {#write-operational-facts}
 
-You’ve probably heard this before, but just in case: prefer operational facts.
+سمعت هذا على الأرجح من قبل، لكن للاحتياط: فضّل الحقائق التشغيلية.
 
-- “Run `pnpm test:billing` from `apps/api`” is a usable instruction.
-- “Maintain high quality” is difficult to test and difficult to act on.
+- «نفّذ `pnpm test:billing` من `apps/api`» تعليمة قابلة للاستعمال.
+- «حافظ على جودة عالية» يصعب اختباره ويصعب العمل به.
 
-A good instruction has three parts:
+للتعليمة الجيدة ثلاثة أجزاء:
 
-> When `$trigger`, do `$action`, then verify `$result`.
+> حين `$trigger`، نفّذ `$action`، ثم تحقّق من `$result`.
 
-A more practical version:
+وصيغة أعمليّة أكثر:
 
-> When editing invoice serialization, update the contract fixture and run its check.
+> حين تعدّل تسلسل الفاتورة، حدّث نصّ العقد (fixture) ونفّذ فحصه.
 
-Even better is a short list:
+والأفضل من ذلك قائمة قصيرة:
 
-> - Before editing billing code, read `docs/billing-invariants.md`.
-> - Run `pnpm test:billing` after changes.
-> - Do not change public invoice fields without updating the API contract.
+> - قبل تعديل شيفرة الفوترة، اقرأ `docs/billing-invariants.md`.
+> - نفّذ `pnpm test:billing` بعد التغييرات.
+> - لا تغيّر حقول الفاتورة العامة دون تحديث عقد API.
 
-Each one tells the agent what to do, and most tell it how to know it worked. That’s the same idea as a [task contract](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts), just scoped to a whole area of the codebase.
+كل واحدة تخبر الوكيل بما يفعل، ومعظمها يخبره كيف يعرف أنه نجح. وهذه الفكرة نفسها التي في [عقد المهمة](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts)، لكن محصورة في مجال كامل من قاعدة الشيفرة.
 
-## Instructions are not security boundaries
+## التعليمات ليست حدودًا أمنية
 
-“Never read `.env`” is an instruction. It’s not a guarantee. The model usually follows it, and the one time it doesn’t, nothing stops it.
+«لا تقرأ `.env` أبدًا» تعليمة. وليست ضمانًا. فالنموذج يتبعها عادةً، وفي المرة الواحدة التي لا يتبعها فيها، لا شيء يمنعه.
 
-When you need a real boundary, use permissions: settings that allow or deny specific tool calls, which the harness enforces whatever the model decides. We’ll sort out when to use each in [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder), and [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) covers the damage an agent can do when a boundary is missing.
+وحين تحتاج حدًّا حقيقيًا، فاستخدم الأذونات: إعدادات تسمح بنداءات أدوات محدّدة أو تمنعها، وتُنفّذها الأداة مهما قرّر النموذج. وسنوضّح متى نستخدم كلًّا منهما في [سلّم الإنفاذ](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder)، ويتناول [نطاق الانفجار](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) الضرر الذي قد يفعله وكيل عند غياب حدّ.
 
-## The giant living wiki
+## الويكي العملاق الحيّ
 
-The *giant living wiki* is what an instruction file turns into when everything gets dumped in it and nobody prunes it. Too much always-loaded detail hides the few rules that *do* matter.
+*الويكي العملاق الحيّ* هو ما يصير إليه ملف التعليمات حين يُلقى فيه كل شيء ولا يقلّمه أحد. فكثرة التفاصيل المحمّلة دائمًا تخفي القواعد القليلة التي *تهمّ* فعلًا.
 
-Instead, tell the agent where project documentation lives and when to go read it. A short pointer (“billing rules live in `docs/billing-invariants.md`; read it before touching billing code”) beats pasting the document in.
+وبدلًا من ذلك، أخبر الوكيل أين تعيش وثائق المشروع ومتى يذهب لقراءتها. فإشارة قصيرة («قواعد الفوترة في `docs/billing-invariants.md`؛ اقرأها قبل لمس شيفرة الفوترة») أفضل من لصق الوثيقة كاملة.
 
-If a block of instructions only applies to one kind of task, it might belong in a [skill](https://stevekinney.com/courses/ai-development-setup/skills), which loads on demand instead of every time.
+وإن كانت كتلة تعليمات لا تنطبق إلا على نوع واحد من المهام، فقد تنتمي إلى [مهارة](https://stevekinney.com/courses/ai-development-setup/skills)، تُحمَّل عند الطلب بدلًا من كل مرة.
 
-## Personal configuration in a shared repository
+## الإعداد الشخصي في مستودع مشترك
 
-Instruction files are Markdown the model reads. *Settings* files are different: they’re JSON (TOML in Codex) that configure the harness itself, including permission rules, hooks, and environment variables. For settings that are yours alone, on top of whatever’s checked in, Claude Code gives you `.claude/settings.local.json`, and it keeps the file out of Git when it creates it. Here’s how the pieces line up across the two tools:
+ملفات التعليمات Markdown يقرأها النموذج. أما ملفات *الإعدادات* فمختلفة: فهي JSON (وTOML في Codex) تهيّئ الأداة نفسها، بما فيها قواعد الأذونات والخطافات ومتغيّرات البيئة. وللإعدادات التي تخصك وحدك، فوق أي شيء مُودَع، يمنحك Claude Code ملف `.claude/settings.local.json`، ويبقيه خارج Git حين ينشئه. وإليك كيف تتناظر القطع بين الأداتين:
 
-| Claude Code | Codex | Purpose |
+| Claude Code | Codex | الغرض |
 | --- | --- | --- |
-| `.claude/settings.local.json` | `.codex/config.toml` | Project-level settings (the Claude Code file is yours alone) |
-| `CLAUDE.local.md` | `AGENTS.override.md` | Personal project instructions |
-| `CLAUDE.md` | `AGENTS.md` | Shared project instructions (the instruction file) |
-| `~/.claude/settings.json` | `~/.codex/config.toml` | User and global configuration |
-| `~/.claude/CLAUDE.md` | `~/.codex/AGENTS.md` | User and global instructions |
+| `.claude/settings.local.json` | `.codex/config.toml` | إعدادات على مستوى المشروع (وملف Claude Code يخصك وحدك) |
+| `CLAUDE.local.md` | `AGENTS.override.md` | تعليمات المشروع الشخصية |
+| `CLAUDE.md` | `AGENTS.md` | تعليمات المشروع المشتركة (ملف التعليمات) |
+| `~/.claude/settings.json` | `~/.codex/config.toml` | إعدادات المستخدم والعالمية |
+| `~/.claude/CLAUDE.md` | `~/.codex/AGENTS.md` | تعليمات المستخدم والعالمية |
 
-The [Claude Code settings documentation](https://code.claude.com/docs/en/settings) lists where each file is read from.
+وتسرد [وثائق إعدادات Claude Code](https://code.claude.com/docs/en/settings) من أين يُقرأ كل ملف.
 
-> **Repository-scoped skills without committing them**
+> **مهارات على نطاق المستودع دون إيداعها**
 >
-> If you’re working in a shared repository and want your own repository-scoped skills or configuration, add their patterns to the file at `git rev-parse --git-path info/exclude`. It works like `.gitignore`, but isn’t checked in. Ask Git for the path: in a linked worktree, `.git` is a pointer file, so constructing `.git/info/exclude` fails. Linked worktrees share the repository’s exclude file.
+> إن كنت تعمل في مستودع مشترك وتريد مهاراتك أو إعدادك الخاص على نطاق المستودع، فأضف أنماطها إلى الملف في `git rev-parse --git-path info/exclude`. وهو يعمل مثل `.gitignore`، لكنه غير مُودَع. واطلب من Git المسار: ففي شجرة عمل مرتبطة، `.git` ملف مؤشّر، فبناء `.git/info/exclude` يفشل. وتتشارك أشجار العمل المرتبطة ملف الاستبعاد الخاص بالمستودع.
 
-The best instruction file is the shortest one that still prevents the mistakes you keep seeing.
+أفضل ملف تعليمات هو أقصر ملف لا يزال يمنع الأخطاء التي تراها مرة بعد مرة.

@@ -1,26 +1,26 @@
 ---
-title: "Dependency Management in Monorepos"
-lang: en
+title: "إدارة الاعتماد في المستودعات الأحادية"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/dependency-management"
 ---
 
-Dependencies are where architecture stops being a whiteboard and starts becoming an operations problem. In a monolith, one lockfile and one deployable artifact can hide a lot of bad habits. In a multi-package repo or any distributed frontend estate, those same habits turn into version drift, duplicate dependency trees, phantom imports from hoisting, and a flood of upgrade PRs nobody wants to review.
+الاعتمادات هي حيث يتوقف المعمار عن كونه سبورة ويبدأ في أن يصبح مشكلة تشغيلية. ففي كتلة واحدة، يمكن لملف قفل واحد ومخرَج نشر واحد أن يخفيا كثيرًا من العادات السيئة. أما في مستودع متعدد الحزم أو أي منظومة واجهة أمامية موزّعة، فتتحوّل تلك العادات نفسها إلى انحراف الإصدارات، وأشجار اعتماد مكرّرة، واستيرادات شبحية من الرفع (hoisting)، وسيل من طلبات السحب للترقية لا يريد أحد مراجعتها.
 
-The fix is not “be more disciplined.” The fix is to make dependency policy executable in tooling and release automation.
+ليس الحل «كن أكثر انضباطًا»، بل الحل هو جعل سياسة الاعتماد قابلة للتنفيذ في الأدوات وأتمتة الإصدار.
 
-## The dependency problem
+## مشكلة الاعتماد
 
-The [workspace package managers](https://stevekinney.com/courses/enterprise-ui/workspace-package-managers) section covers *which* tool to use and how they compare. This section covers the dependency *management* problems that show up regardless of which tool you chose.
+يغطّي قسم [مديري حزم مساحة العمل](https://stevekinney.com/courses/enterprise-ui/workspace-package-managers) *أي* أداة تستخدم وكيف تتفاضل. أما هذا القسم فيغطّي مشكلات *إدارة* الاعتماد التي تظهر بصرف النظر عن الأداة التي اخترتها.
 
-### Version drift
+### انحراف الإصدارات
 
-The moment different packages or teams move shared dependencies independently, your “shared stack” stops being shared. Package A is on React 18.2, Package B is on 18.3, the shell is on 18.3.1, and nobody is sure which minor version introduced the behavior change that broke the dashboard last Tuesday.
+بلحظة أن تتحرّك حزم أو فرق مختلفة في الاعتمادات المشتركة باستقلالية، تكفّ «حزمتك المشتركة» عن كونها مشتركة. فالحزمة A على React 18.2، والحزمة B على 18.3، والقشرة على 18.3.1، ولا أحد متأكد أي إصدار ثانوي أدخل تغيير السلوك الذي كسر لوحة المعلومات الثلاثاء الماضي.
 
-The clean answer is to make one version the default policy for widely shared dependencies and force deviations to be explicit. [pnpm](https://pnpm.io/catalogs) gives you two strong primitives for this: **catalogs**, which define reusable version ranges centrally in `pnpm-workspace.yaml`, and root-level **overrides**, which force a single version of a dependency across the entire resolution graph.
+الجواب النظيف هو جعل إصدار واحد هو السياسة الافتراضية للاعتمادات المشتركة على نطاق واسع، وإجبار الانحرافات على أن تكون صريحة. ويمنحك [pnpm](https://pnpm.io/catalogs) أداتين أوليتين قويتين لذلك: **الكتالوجات (catalogs)**، التي تعرّف نطاقات إصدارات قابلة لإعادة الاستخدام مركزيًا في `pnpm-workspace.yaml`، و**التجاوزات (overrides)** على مستوى الجذر، التي تفرض إصدارًا واحدًا لاعتماد ما عبر مخطط الحلّ بأكمله.
 
-### Diamond dependencies
+### الاعتمادات الماسية
 
-Package A depends on `lib@^1.0.0` through one path, Package B depends on `lib@^2.0.0` through another, and the root depends on both A and B. Sometimes the package manager can collapse that into one copy. [npm’s dedupe documentation](https://docs.npmjs.com/cli/v8/commands/npm-dedupe) shows cases where nested duplicates can be reduced to a single compatible version. Sometimes it cannot, and then you keep multiple copies.
+تعتمد الحزمة A على `lib@^1.0.0` عبر مسار، وتعتمد الحزمة B على `lib@^2.0.0` عبر مسار آخر، ويعتمد الجذر على كلتيهما A وB. وأحيانًا يستطيع مدير الحزم طيّ ذلك في نسخة واحدة. وتُظهر [وثائق npm للإزالة المكرّرة (dedupe)](https://docs.npmjs.com/cli/v8/commands/npm-dedupe) حالات يمكن فيها تقليص التكرارات المتداخلة إلى إصدار واحد متوافق. وأحيانًا لا يستطيع، فتحتفظ بنسخ متعددة.
 
 ```
 graph TD
@@ -39,25 +39,25 @@ graph TD
     style Lib2 fill:#d4a373,color:#000
 ```
 
-Multiple copies are usually tolerable for stateless utility code. They are much less tolerable for framework runtimes, stateful libraries, or anything where “one instance” is part of the design assumption. Two copies of React in the same page is not a “dependency management issue.” It is a production incident waiting for a customer to find it.
+النسخ المتعددة مقبولة عادةً لشيفرة الأدوات بلا حالة. لكنها أقل قبولًا بكثير لبيئات تشغيل الأطر، أو المكتبات ذات الحالة، أو أي شيء يكون فيه «نسخة واحدة» جزءًا من الافتراض التصميمي. فوجود نسختين من React في الصفحة نفسها ليس «مشكلة إدارة اعتماد»، بل حادثة إنتاج تنتظر أن يكتشفها عميل.
 
-### Phantom dependencies
+### الاعتمادات الشبحية
 
-A **phantom dependency** is a package your code imports but does not declare in its own `package.json`. It “works” because another package in the repo caused it to be hoisted into a reachable location. Then someone changes an unrelated package, the hoist layout shifts, and the import breaks in CI or production with no code change in your package.
+**الاعتماد الشبحي** حزمة تستوردها شيفرتك لكنها لا تعلنها في ملف `package.json` الخاص بها. وهو «يعمل» لأن حزمة أخرى في المستودع تسبّبت في رفعه إلى موضع يمكن الوصول إليه. ثم يغيّر أحدهم حزمة غير ذات صلة، فيتغيّر تخطيط الرفع، فينكسر الاستيراد في CI أو الإنتاج دون أي تغيير في شيفرة حزمتك.
 
-pnpm’s default isolated linker creates a layout where application code outside `node_modules` cannot access undeclared dependencies. [pnpm’s hoisting documentation](https://pnpm.io/settings) describes this semistrict behavior: packages inside `node_modules` may still see undeclared dependencies due to hoisting within the virtual store, but your application code gets a stricter default than flat-hoisted installs.
+ينشئ الرابط المعزول الافتراضي في pnpm تخطيطًا لا تستطيع فيه شيفرة التطبيق خارج `node_modules` الوصول إلى الاعتمادات غير المعلَنة. وتصف [وثائق الرفع في pnpm](https://pnpm.io/settings) هذا السلوك شبه الصارم: قد ترى الحزم داخل `node_modules` اعتمادات غير معلَنة بسبب الرفع داخل المخزن الافتراضي، لكن شيفرة تطبيقك تحصل على افتراضي أكثر صرامة من عمليات التثبيت المرفوعة مسطّحة.
 
-That strictness only holds if you do not undo it. Setting `shamefullyHoist` or broadly configuring `publicHoistPattern` reintroduces the same phantom dependency hazards that pnpm was designed to prevent. The option exists for compatibility with legacy code, not as a permanent operating mode.
+وتلك الصرامة لا تصمد إلا إن لم تنقضها. فتعيين `shamefullyHoist` أو تهيئة `publicHoistPattern` على نطاق واسع يعيد إدخال مخاطر الاعتماد الشبحية نفسها التي صُمّم pnpm لمنعها. فالخيار موجود للتوافق مع الشيفرة القديمة، لا كنمط تشغيل دائم.
 
-### Update fatigue
+### إجهاد التحديث
 
-[Dependabot’s default behavior](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference) is to open a separate pull request for each outdated dependency. Renovate behaves similarly unless you configure grouping. That default is fine for tiny repos and terrible for large ones. The outcome is a pile of individually correct PRs and a team that slowly learns to ignore all of them—which is exactly the opposite of the intended effect.
+السلوك الافتراضي لـ [Dependabot](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference) هو فتح طلب سحب منفصل لكل اعتماد قديم. ويتصرّف Renovate بالمثل ما لم تهيّئ التجميع. وذلك الافتراضي جيد للمستودعات الصغيرة وسيئ للمستودعات الكبيرة. والنتيجة كومة من طلبات السحب الصحيحة فرديًا وفريق يتعلّم ببطء تجاهلها كلها—وهو عكس الأثر المقصود تمامًا.
 
-## Enforce a default version policy
+## فرض سياسة إصدار افتراضية
 
-### Catalogs and overrides
+### الكتالوجات والتجاوزات
 
-For a pnpm workspace, the cleanest setup is a root catalog plus root overrides. [Catalogs](https://pnpm.io/catalogs) centralize the allowed version ranges. Setting `catalogMode: strict` makes `pnpm add` reject versions outside the catalog. Overrides force the dependency graph onto one version where that policy makes sense.
+بالنسبة إلى مساحة عمل pnpm، أنظف تهيئة هي كتالوج جذري مع تجاوزات جذرية. فـ[الكتالوجات](https://pnpm.io/catalogs) تركّز نطاقات الإصدارات المسموح بها. وتعيين `catalogMode: strict` يجعل `pnpm add` يرفض الإصدارات خارج الكتالوج. وتفرض التجاوزات إصدارًا واحدًا على مخطط الاعتماد حيث تكون تلك السياسة منطقية.
 
 ```yaml
 # pnpm-workspace.yaml
@@ -78,13 +78,13 @@ overrides:
   typescript: 'catalog:'
 ```
 
-*Note:* These are the blessed versions. Every package in the repo uses them unless it has a very good reason.
+*ملاحظة:* هذه هي الإصدارات المعتمدة. وتستخدمها كل حزمة في المستودع إلا إن كان لديها سبب وجيه جدًا.
 
-The `catalog:` protocol can be used in `dependencies`, `devDependencies`, `peerDependencies`, and `overrides`, so the same central version policy drives both direct declarations and graph-wide enforcement.
+يمكن استخدام بروتوكول `catalog:` في `dependencies` و`devDependencies` و`peerDependencies` و`overrides`، فتقود سياسة الإصدار المركزية نفسها الإعلانات المباشرة والفرض على مستوى المخطط معًا.
 
-### Named catalogs for staged migrations
+### الكتالوجات المُسمّاة للترحيلات المتدرّجة
 
-If you genuinely need a staged migration—say, moving from React 18 to React 19 one package at a time—[named catalogs](https://pnpm.io/catalogs) are the sane exception path. One default catalog, several named catalogs for the in-progress migration:
+إن احتجت فعلًا إلى ترحيل متدرّج—مثلًا الانتقال من React 18 إلى React 19 حزمةً حزمة—فـ[الكتالوجات المُسمّاة](https://pnpm.io/catalogs) هي مسار الاستثناء المعقول. كتالوج افتراضي واحد، وعدة كتالوجات مُسمّاة للترحيل الجاري:
 
 ```yaml
 catalog:
@@ -97,13 +97,13 @@ catalogs:
     react-dom: ^19.0.0
 ```
 
-*Note:* Packages that have been migrated use catalog:react19 instead of the default.
+*ملاحظة:* الحزم التي رُحّلت تستخدم catalog:react19 بدلًا من الافتراضي.
 
-This lets you make “one version by default” the rule without pretending that no controlled exceptions will ever exist.
+وهذا يتيح لك جعل «إصدار واحد افتراضيًا» هو القاعدة دون التظاهر بأنه لن توجد استثناءات مضبوطة أبدًا.
 
-### The `workspace:` protocol
+### بروتوكول `workspace:`
 
-For internal workspace packages, use the `workspace:` protocol so local package resolution is explicit instead of opportunistic. [pnpm’s workspace documentation](https://pnpm.io/workspaces) warns that plain semver ranges can resolve to the registry if the expected local version does not match, which introduces uncertainty. With `workspace:`, installation fails instead of silently substituting a registry package.
+بالنسبة إلى حزم مساحة العمل الداخلية، استخدم بروتوكول `workspace:` ليصبح حلّ الحزمة المحلية صريحًا لا انتهازيًا. وتحذّر [وثائق مساحات العمل في pnpm](https://pnpm.io/workspaces) من أن نطاقات semver العادية قد تُحلّ من السجلّ إذا لم يطابق الإصدار المحلي المتوقّع، ما يُدخل عدم يقين. أما مع `workspace:` فيفشل التثبيت بدلًا من استبدال حزمة من السجلّ بصمت.
 
 ```json
 {
@@ -114,13 +114,13 @@ For internal workspace packages, use the `workspace:` protocol so local package 
 }
 ```
 
-On publish, pnpm rewrites `workspace:` specs to normal semver ranges, so consumers outside the monorepo still get ordinary packages.
+وعند النشر، يعيد pnpm كتابة مواصفات `workspace:` إلى نطاقات semver عادية، فيحصل المستهلكون خارج المستودع الأحادي على حزم عادية.
 
-## Make undeclared dependencies fail early
+## اجعل الاعتمادات غير المعلَنة تفشل مبكرًا
 
-The simplest dependency policy is still the best one: every direct import must be backed by an explicit dependency declaration. pnpm’s workspace model helps by default, since packages only get access to dependencies declared in their own `package.json`, even when there is a shared root lockfile and root `node_modules`.
+أبسط سياسة اعتماد ما زالت أفضلها: يجب أن يسند كل استيراد مباشر إعلان اعتماد صريح. ويساعد نموذج مساحة العمل في pnpm افتراضيًا، إذ لا تحصل الحزم إلا على الوصول إلى الاعتمادات المعلَنة في ملف `package.json` الخاص بها، حتى مع وجود ملف قفل جذري مشترك و`node_modules` جذرية.
 
-That same “explicit contract” rule should apply to internal packages. [Node’s package documentation](https://nodejs.org/api/packages.html) recommends the `exports` field for new packages, and it is explicit about encapsulation: once `exports` is defined, unlisted subpaths are encapsulated, and imports to undeclared subpaths fail with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+وينبغي أن تنطبق قاعدة «العقد الصريح» نفسها على الحزم الداخلية. وتوصي [وثائق حزم Node](https://nodejs.org/api/packages.html) بحقل `exports` للحزم الجديدة، وهي صريحة بشأن التغليف: بمجرد تعريف `exports`، تُغلَّف المسارات الفرعية غير المدرجة، وتفشل الاستيرادات إلى مسارات فرعية غير معلَنة بالخطأ `ERR_PACKAGE_PATH_NOT_EXPORTED`.
 
 ```json
 {
@@ -134,15 +134,15 @@ That same “explicit contract” rule should apply to internal packages. [Node�
 }
 ```
 
-*Note:* Only these three entry points are public. Everything else is encapsulated.
+*ملاحظة:* نقاط الدخول الثلاث هذه فقط هي العامة. وكل ما عداها مُغلَّف.
 
-This is exactly the behavior you want for shared internal packages. No deep imports into private files. No accidental APIs. No “it worked because someone reached into `dist/internal.js`” and now you cannot refactor without breaking three teams.
+هذا بالضبط السلوك الذي تريده للحزم الداخلية المشتركة. لا استيرادات عميقة إلى ملفات خاصة. ولا واجهات برمجية عرَضية. ولا «عمل لأنه نفذ أحدهم إلى `dist/internal.js`» والآن لا تستطيع إعادة الهيكلة دون كسر ثلاثة فرق.
 
-## Automate upgrades without the noise
+## أتمتة الترقيات دون الضجيج
 
 ### Dependabot
 
-Dependabot is the obvious starting point for native GitHub automation. [GitHub’s configuration docs](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configuring-dependabot-version-updates) describe how to enable version updates with a `dependabot.yml` file, and the `groups` feature lets you consolidate what would otherwise be one PR per dependency into fewer targeted PRs.
+Dependabot هو نقطة البداية الواضحة لأتمتة GitHub الأصلية. وتصف [وثائق تهيئة GitHub](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configuring-dependabot-version-updates) كيف تمكّن تحديثات الإصدارات بملف `dependabot.yml`، وتتيح لك ميزة `groups` دمج ما قد يكون طلب سحب واحدًا لكل اعتماد في طلبات سحب موجَّهة أقل عددًا.
 
 ```yaml
 # .github/dependabot.yml
@@ -169,11 +169,11 @@ updates:
           - 'prettier'
 ```
 
-*Note:* Group development tooling updates together. Nobody needs six separate PRs for ESLint plugins.
+*ملاحظة:* جمّع تحديثات أدوات التطوير معًا. فلا أحد يحتاج ستة طلبات سحب منفصلة لإضافات ESLint.
 
 ### Renovate
 
-Renovate is usually the better choice when you want more control. [Its configuration docs](https://docs.renovatebot.com/configuration-options/) describe how grouping is done through `groupName` on `packageRules` and how `automerge` can automatically merge passing updates. The power is in scoping all of this by dependency type and update type:
+Renovate هو عادةً الخيار الأفضل عندما تريد مزيدًا من التحكّم. وتصف [وثائق تهيئته](https://docs.renovatebot.com/configuration-options/) كيف يتم التجميع عبر `groupName` على `packageRules`، وكيف يستطيع `automerge` دمج التحديثات الناجحة تلقائيًا. والقوة في تحديد نطاق كل ذلك حسب نوع الاعتماد ونوع التحديث:
 
 ```json
 {
@@ -193,21 +193,21 @@ Renovate is usually the better choice when you want more control. [Its configura
 }
 ```
 
-*Note:* Major framework upgrades are never auto-merged. Humans review these.
+*ملاحظة:* ترقيات الأطر الرئيسية لا تُدمج تلقائيًا أبدًا. يراجعها البشر.
 
-This lets you do something rational like “group non-major devDependencies and automerge them after CI passes” without auto-merging majors into production because someone was feeling optimistic.
+وهذا يتيح لك فعل شيء عقلاني مثل «جمّع اعتمادات التطوير غير الرئيسية وادمجها تلقائيًا بعد نجاح CI» دون دمج الإصدارات الرئيسية تلقائيًا في الإنتاج لأن أحدهم كان متفائلًا.
 
-### The operating rule
+### قاعدة التشغيل
 
-Let bots do the boring work, but shape the PR stream so humans only have to think when thinking is actually required. Group by scope. Auto-merge low-risk updates after tests pass. Keep major or architecture-sensitive upgrades explicitly human-reviewed. [GitHub’s PR optimization docs](https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/optimizing-pr-creation-version-updates) and Renovate’s configuration both support that pattern.
+دع الروبوتات تؤدي العمل الممل، لكن شكّل سيل طلبات السحب بحيث لا يضطر البشر إلى التفكير إلا عندما يكون التفكير مطلوبًا فعلًا. جمّع حسب النطاق. وادمج التحديثات منخفضة المخاطر تلقائيًا بعد نجاح الاختبارات. وأبقِ الترقيات الرئيسية أو الحساسة معماريًا مراجَعة بشريًا صراحةً. وتدعم [وثائق تحسين طلبات السحب في GitHub](https://docs.github.com/en/code-security/tutorials/secure-your-dependencies/optimizing-pr-creation-version-updates) وتهيئة Renovate معًا ذلك النمط.
 
-## Versioning and release management
+## التنقيح وإدارة الإصدار
 
-The [Versioning and Release Management](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management) section covers semver contracts, token-based design system versioning, and Changesets fundamentals in detail. This section focuses on the release *automation* mechanics that make Changesets work in CI.
+يغطّي قسم [التنقيح وإدارة الإصدار](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management) عقود semver، وتنقيح نظام تصميم قائم على الرموز (tokens)، وأساسيات Changesets بالتفصيل. أما هذا القسم فيركّز على آليات *أتمتة* الإصدار التي تجعل Changesets يعمل في CI.
 
-### The changeset model
+### نموذج الـ changeset
 
-[Changesets](https://github.com/changesets/changesets/blob/main/docs/detailed-explanation.md) breaks release management into two phases: capturing intent at PR time and executing the release later. A changeset is a small Markdown file in `.changeset/` that records which packages changed, what kind of semver bump they need, and a human-readable summary:
+يقسّم [Changesets](https://github.com/changesets/changesets/blob/main/docs/detailed-explanation.md) إدارة الإصدار إلى مرحلتين: التقاط النية وقت طلب السحب، وتنفيذ الإصدار لاحقًا. والـ changeset ملف Markdown صغير في `.changeset/` يسجّل أي الحزم تغيّرت، وأي نوع من رفع semver تحتاج، وملخّصًا مقروءًا للبشر:
 
 ```markdown
 ---
@@ -218,11 +218,11 @@ The [Versioning and Release Management](https://stevekinney.com/courses/enterpri
 Add density tokens and expose the new compact button size.
 ```
 
-This captures versioning intent next to the code review that introduced the change, instead of leaving version selection to a release engineer three weeks later who is trying to reconstruct history from commit titles.
+وهذا يلتقط نية التنقيح بجوار مراجعة الشيفرة التي أدخلت التغيير، بدلًا من ترك اختيار الإصدار لمهندس إصدار بعد ثلاثة أسابيع يحاول إعادة بناء التاريخ من عناوين الإيداعات.
 
-### Fixed groups
+### المجموعات الثابتة
 
-When packages must move together, [Changesets supports fixed groups](https://github.com/changesets/changesets/blob/main/docs/fixed-packages.md). Fixed packages are versioned and published together even if some members did not change:
+عندما يجب أن تتحرّك الحزم معًا، يدعم [Changesets المجموعات الثابتة](https://github.com/changesets/changesets/blob/main/docs/fixed-packages.md). فالحزم الثابتة تُنَسَّق وتُنشر معًا حتى إن لم يتغيّر بعض أعضائها:
 
 ```json
 {
@@ -230,11 +230,11 @@ When packages must move together, [Changesets supports fixed groups](https://git
 }
 ```
 
-Use this for tightly coupled pairs like tokens and the core design-system package, where partial release is more confusing than helpful. Do not apply it to everything—that just reinvents lockstep release with extra syntax.
+استخدم هذا للأزواج المقترنة ارتباطًا وثيقًا مثل الرموز (tokens) وحزمة نظام التصميم الأساسية، حيث يكون الإصدار الجزئي أكثر إرباكًا من كونه مفيدًا. ولا تطبّقه على كل شيء—فهذا يعيد اختراع الإصدار المتزامن بصياغة إضافية.
 
-### Automating the release flow
+### أتمتة تدفّق الإصدار
 
-The standard automation uses the [Changesets GitHub Action](https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md) to create a “Version Packages” PR that stays up to date as changesets accumulate, and publishes when that PR is merged:
+تستخدم الأتمتة القياسية [إجراء GitHub الخاص بـ Changesets](https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md) لإنشاء طلب سحب «Version Packages» يبقى محدَّثًا مع تراكم الـ changesets، وينشر عند دمج ذلك الطلب:
 
 ```yaml
 # .github/workflows/changesets.yml
@@ -272,15 +272,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-*Note:* The action creates a PR to bump versions. When merged, it publishes to npm.
+*ملاحظة:* يُنشئ الإجراء طلب سحب لرفع الإصدارات. وعند دمجه، ينشر إلى npm.
 
-Use `changeset status --since=main` as a blocking CI check if you want merges to fail when no changeset is present. That enforces the discipline of recording intent at PR time rather than discovering unversioned changes at release time.
+استخدم `changeset status --since=main` كفحص CI مانع إن أردت أن تفشل عمليات الدمج عند غياب أي changeset. فهذا يفرض انضباط تسجيل النية وقت طلب السحب بدلًا من اكتشاف تغييرات غير منسّقة وقت الإصدار.
 
-### Prereleases and snapshots
+### الإصدارات الأولية واللقطات
 
-Changesets provides two distinct mechanisms for testing unreleased packages, and they serve different purposes.
+يوفّر Changesets آليتين متمايزتين لاختبار الحزم غير المنشورة، وتخدمان غرضين مختلفين.
 
-**Prerelease mode** is for a real semver prerelease channel. [Changesets’ prerelease documentation](https://github.com/changesets/changesets/blob/main/docs/prereleases.md) describes how `changeset pre enter <tag>` enters prerelease mode, `changeset version` appends tags like `-next.0`, and `changeset publish` uses the tag as the npm dist tag. Prerelease versions are not satisfied by most normal semver ranges, so dependent packages often need bumps they would not need in a stable release. This is the right tool for an actual beta or canary track.
+**نمط الإصدار الأولي** مخصّص لقناة إصدار أولي حقيقية في semver. وتصف [وثائق الإصدارات الأولية عند Changesets](https://github.com/changesets/changesets/blob/main/docs/prereleases.md) كيف يُدخل `changeset pre enter <tag>` نمط الإصدار الأولي، وكيف يضيف `changeset version` وسومًا مثل `-next.0`، وكيف يستخدم `changeset publish` الوسم كوسم توزيع npm. ولا تفي معظم نطاقات semver العادية بالإصدارات الأولية، لذا تحتاج الحزم التابعة غالبًا إلى رفعات لا تحتاجها في إصدار مستقر. وهذه هي الأداة الصحيحة لمسار تجريبي أو كناري فعلي.
 
 ```bash
 pnpm changeset pre enter canary
@@ -288,18 +288,18 @@ pnpm changeset version
 pnpm changeset publish --tag canary
 ```
 
-**Snapshot releases** are different. [Changesets’ snapshot documentation](https://github.com/changesets/changesets/blob/main/docs/snapshot-releases.md) describes snapshots as testing builds that do not update real versions, producing versions like `0.0.0-canary-DATETIMESTAMP`. You run `changeset version --snapshot <tag>` and then `changeset publish --tag <tag>`.
+**إصدارات اللقطات (snapshots)** مختلفة. وتصف [وثائق اللقطات عند Changesets](https://github.com/changesets/changesets/blob/main/docs/snapshot-releases.md) اللقطات كبنيات اختبارية لا تحدّث الإصدارات الحقيقية، فتنتج إصدارات مثل `0.0.0-canary-DATETIMESTAMP`. وتشغّل `changeset version --snapshot <tag>` ثم `changeset publish --tag <tag>`.
 
 ```bash
 pnpm changeset version --snapshot canary
 pnpm changeset publish --tag canary
 ```
 
-Snapshots are the better fit when you want a disposable build for integration testing—“build this branch and let people try it”—without putting the repo into an ongoing prerelease sequence.
+اللقطات أنسب عندما تريد بناءً قابلًا للتخلّص منه لاختبار التكامل—«ابنِ هذا الفرع ودع الناس يجرّبونه»—دون إدخال المستودع في تسلسل إصدار أولي مستمر.
 
-The split is straightforward: use prerelease mode for an actual beta channel that behaves like a real release stream. Use snapshots when you want a throwaway build without rewriting the package history.
+الفصل مباشر: استخدم نمط الإصدار الأولي لقناة تجريبية فعلية تتصرّف كتيّار إصدار حقيقي. واستخدم اللقطات عندما تريد بناءً للاستعمال مرة واحدة دون إعادة كتابة تاريخ الحزمة.
 
-## A practical operating model
+## نموذج تشغيل عملي
 
 ```
 graph TD
@@ -329,19 +329,19 @@ graph TD
     Action --> Snap
 ```
 
-The most stable setup is boring in the best way. Use one package manager for the repo. Keep one shared lockfile. Make a default catalog for shared dependencies. Use root overrides sparingly to pin graph-wide versions that genuinely must be unified. Use `workspace:` for internal packages so local resolution is explicit. Keep hoisting conservative so undeclared dependencies stay broken instead of accidentally working.
+أكثر تهيئة مستقرة مملّة بأفضل معنى. استخدم مدير حزم واحدًا للمستودع. واحتفظ بملف قفل مشترك واحد. واعمل كتالوجًا افتراضيًا للاعتمادات المشتركة. واستخدم التجاوزات الجذرية باعتدال لتثبيت الإصدارات على مستوى المخطط التي يجب توحيدها فعلًا. واستخدم `workspace:` للحزم الداخلية ليصبح الحلّ المحلي صريحًا. وأبقِ الرفع متحفّظًا لتبقى الاعتمادات غير المعلَنة مكسورة بدلًا من أن تعمل صدفةً.
 
-Then automate the noise away. Dependabot or Renovate should open fewer, better-shaped PRs—not a dependency blizzard. Group updates by scope. Keep security updates enabled. Auto-merge only the classes of updates you are genuinely comfortable delegating to CI.
+ثم أزِل الضجيج بالأتمتة. وينبغي أن يفتح Dependabot أو Renovate طلبات سحب أقل وأفضل تشكيلًا—لا عاصفة اعتماد. وجمّع التحديثات حسب النطاق. وأبقِ تحديثات الأمان مُفعَّلة. ولا تدمج تلقائيًا إلا أصناف التحديثات التي ترتاح فعلًا لتفويضها إلى CI.
 
-Treat shared packages as products. Give them explicit `exports`. Version them with semver. Require a changeset when they change. Publish through automation. Use prereleases or snapshots when you need canaries. That is how dependency management becomes predictable instead of theatrical. And predictable, tragically, is what keeps the repo alive long enough for everyone to keep arguing about architecture in the first place.
+عامل الحزم المشتركة كمنتجات. وامنحها `exports` صريحة. ونَسّقها بـ semver. واطلب changeset عند تغيّرها. وانشر عبر الأتمتة. واستخدم الإصدارات الأولية أو اللقطات عندما تحتاج كناري. فهكذا تصبح إدارة الاعتماد قابلة للتنبؤ بدلًا من أن تكون مسرحية. والقابلية للتنبؤ، للأسف، هي ما يُبقي المستودع حيًّا مدة كافية ليواصل الجميع الجدال حول المعمار من الأصل.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### pnpm Catalogs
+### كتالوجات pnpm
 
-> One place to define dependency versions for the entire monorepo.
+> مكان واحد لتعريف إصدارات الاعتماد للمستودع الأحادي بأكمله.
 
 ```yaml
 # pnpm-workspace.yaml
@@ -362,6 +362,6 @@ catalog:
 }
 ```
 
-- Update React once → every package gets it.
-- No more version drift across the monorepo.
-- `pnpm.overrides` for forcing transitive dependency versions.
+- حدّث React مرة → تحصل عليه كل حزمة.
+- لا مزيد من انحراف الإصدارات عبر المستودع الأحادي.
+- `pnpm.overrides` لفرض إصدارات الاعتمادات العابرة (transitive).

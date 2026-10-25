@@ -1,14 +1,14 @@
 ---
-title: "Type Inference"
-lang: en
+title: "استنتاج الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-type-inference-mastery"
 ---
 
-You’ve probably noticed TypeScript can be pretty smart about figuring out types on its own. But when should you let it work its magic, and when should you be explicit? Let’s master the art of type inference to write cleaner React code with less boilerplate.
+لعلّك لاحظت أن TypeScript ذكي إلى حدّ كبير في استنتاج الأنواع من تلقاء نفسه. لكن متى تتركه يعمل سحره، ومتى تكون صريحًا؟ فلنتقن فنّ استنتاج الأنواع لنكتب شيفرة React أنظف وأقلّ تكرارًا.
 
-## The Golden Rule
+## القاعدة الذهبية
 
-Here’s the thing about type inference: **be explicit at boundaries, implicit within implementations**. What does that mean? Let’s see it in action:
+الأمر المهمّ في استنتاج الأنواع هو: **كن صريحًا عند الحدود، ضمنيًّا في التنفيذ**. وماذا يعني ذلك؟ لنرَ ذلك في العمل:
 
 ```typescript
 // ❌ Over-annotating everything
@@ -30,11 +30,11 @@ const MyComponent = () => {
 };
 ```
 
-## When TypeScript Already Knows
+## عندما يكون TypeScript على علم
 
-TypeScript is surprisingly good at figuring things out from context. Here are the situations where you can trust inference:
+يتفاجأ TypeScript بمدى قدرته على استنتاع الأمور من السياق. وإليك المواقف التي يمكنك الوثوق بالاستنتاج فيها:
 
-### Variable Initialization
+### تهيئة المتغيّرات
 
 ```typescript
 // TypeScript infers these perfectly
@@ -49,7 +49,7 @@ const doubled = items.map((x) => x * 2); // number[]
 const names = users.map((u) => u.name); // string[]
 ```
 
-### Function Return Types (Sometimes)
+### أنواع إرجاع الدوال (في بعض الأحيان)
 
 ```typescript
 // Return type is inferred from implementation
@@ -65,7 +65,7 @@ const Button = ({ onClick, children }: ButtonProps) => {
 };
 ```
 
-### Array Methods and Callbacks
+### توابع المصفوفات والدوال التمريرية
 
 ```typescript
 const numbers = [1, 2, 3, 4, 5];
@@ -85,11 +85,11 @@ const names = users.map((user) => user.name); // string[]
 const adults = users.filter((user) => user.age >= 18); // same type as users
 ```
 
-## When to Be Explicit
+## متى تكون صريحًا
 
-Now let’s talk about when you SHOULD write types explicitly:
+الآن لنتحدّث عن المواقف التي ينبغي أن تكتب فيها الأنواع صراحةً:
 
-### Function Parameters
+### معاملات الدوال
 
 ```typescript
 // ❌ This won't work - parameters need types
@@ -104,7 +104,7 @@ function greet(name: string) {
 }
 ```
 
-### Component Props
+### خصائص المكوّنات
 
 ```typescript
 // ❌ Don't rely on inference for props
@@ -123,7 +123,7 @@ const Button = ({ onClick, children }: ButtonProps) => {
 };
 ```
 
-### Empty Arrays and Objects
+### المصفوفات والكائنات الفارغة
 
 ```typescript
 // ❌ TypeScript can't know what you'll put in here
@@ -140,7 +140,7 @@ items.push(123); // Error!
 const cache: Record<string, User> = {};
 ```
 
-### When You Want to Constrain Types
+### عندما تريد تقييد الأنواع
 
 ```typescript
 // You want to ensure this can only be specific values
@@ -156,11 +156,11 @@ const status: Status = 'pending'; // Status
 const status2: Status = 'complete'; // Error!
 ```
 
-## Advanced Inference Patterns
+## أنماط الاستنتاج المتقدّمة
 
-### Const Assertions
+### تأكيدات const
 
-Sometimes you want TypeScript to be more specific:
+أحيانًا تريد من TypeScript أن يكون أكثر تحديدًا:
 
 ```typescript
 // Without const assertion
@@ -182,9 +182,9 @@ const colors = ['red', 'green', 'blue'] as const;
 // Type: readonly ['red', 'green', 'blue']
 ```
 
-### Contextual Typing
+### الكتابة السياقية (contextual typing)
 
-TypeScript uses context to infer types in many situations:
+يستخدم TypeScript السياق لاستنتاج الأنواع في مواقف كثيرة:
 
 ```typescript
 // Event handlers in React
@@ -202,9 +202,9 @@ TypeScript uses context to infer types in many situations:
 });
 ```
 
-### Generic Inference
+### استنتاج الأنواع العامة
 
-TypeScript is great at inferring generic types:
+TypeScript متفوق في استنتاج الأنواع العامة:
 
 ```typescript
 // Generic function
@@ -222,9 +222,9 @@ const [user, setUser] = useState<User | null>(null);
 const [count, setCount] = useState(0); // Generic inferred as number
 ```
 
-## React-Specific Inference
+## الاستنتاج الخاص بـ React
 
-### `useState` Inference
+### استنتاج `useState`
 
 ```typescript
 // TypeScript infers from initial value
@@ -239,7 +239,7 @@ const [user, setUser] = useState({
 }); // { id: number; name: string }
 ```
 
-### `useReducer` Inference
+### استنتاج `useReducer`
 
 ```typescript
 // TypeScript infers a lot from your reducer
@@ -258,7 +258,7 @@ const reducer = (state: State, action: Action) => {
 const [state, dispatch] = useReducer(reducer, { count: 0 });
 ```
 
-### Event Handler Inference
+### استنتاج معالِج الأحداث
 
 ```typescript
 const Form = () => {
@@ -283,9 +283,9 @@ const Form = () => {
 };
 ```
 
-## Control Flow Inference
+## الاستنتاج عبر تدفّق التحكم
 
-TypeScript gets smarter as your code narrows types:
+يصبح TypeScript أذكى كلّما ضيّقَت أنماطك:
 
 ```typescript
 function processValue(value: string | number | null) {
@@ -304,7 +304,7 @@ function processValue(value: string | number | null) {
 }
 ```
 
-## Destructuring and Inference
+## التفكيك والاستنتاج
 
 ```typescript
 // TypeScript infers through destructuring
@@ -321,9 +321,9 @@ const [first, second] = [1, 2, 3]; // both are number
 const [str, num] = ['hello', 42]; // str is string, num is number
 ```
 
-## The satisfies Operator
+## معامل satisfies
 
-TypeScript 4.9 introduced `satisfies` for better inference with constraints:
+قدّم TypeScript 4.9 المعامل `satisfies` لتحسين الاستنتاج مع القيود:
 
 ```typescript
 // Without satisfies - loses specific types
@@ -341,9 +341,9 @@ const config = {
 config.port.toFixed(); // Works! port is number
 ```
 
-## Common Inference Pitfalls
+## أخطاء الاستنتاج الشائعة
 
-### Widening
+### التوسيع (widening)
 
 ```typescript
 // TypeScript widens types by default
@@ -357,7 +357,7 @@ const status = 'pending'; // 'pending'
 let status: 'pending' | 'complete' = 'pending';
 ```
 
-### Object Property Inference
+### استنتاج خصائص الكائنات
 
 ```typescript
 // Properties are widened
@@ -375,7 +375,7 @@ const config = {
 // Type: { readonly retries: 3; readonly timeout: 1000 }
 ```
 
-### Function Return Type Issues
+### مشكلات أنواع إرجاع الدوال
 
 ```typescript
 // Sometimes you need explicit return types
@@ -395,9 +395,9 @@ function createUser(name: string): User {
 }
 ```
 
-## Best Practices for React
+## أفضل الممارسات في React
 
-### Let Hooks Infer When Possible
+### دع الخُطّافات تستنتج متى أمكن
 
 ```typescript
 // ✅ Good - let TypeScript infer
@@ -411,7 +411,7 @@ const mounted = useRef<boolean>(false);
 const id: string = useId();
 ```
 
-### Be Explicit at Component Boundaries
+### كن صريحًا عند حدود المكوّنات
 
 ```typescript
 // ✅ Always type props
@@ -434,7 +434,7 @@ const Card = ({ title, description }: CardProps) => {
 };
 ```
 
-### Use Inference for Event Handlers
+### استخدم الاستنتاج لمعالِجات الأحداث
 
 ```typescript
 const SearchForm = () => {
@@ -458,9 +458,9 @@ const SearchForm = () => {
 };
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Type inference doesn’t affect runtime performance, but it can affect TypeScript compilation speed:
+لا يؤثّر استنتاج الأنواع في أداء وقت التشغيل، لكنه قد يؤثّر في سرعة تصريف TypeScript:
 
 ```typescript
 // Faster - explicit types
@@ -501,9 +501,9 @@ const UserList = ({
 };
 ```
 
-## Real-World Example
+## مثال من العالم الحقيقي
 
-Let’s put it all together with a real component:
+لنجمع كل ذلك معًا في مكوّن حقيقي:
 
 ```typescript
 // Define types at boundaries
@@ -581,34 +581,34 @@ const TaskList = ({ initialTasks = [], onTaskComplete }: TaskListProps) => {
 };
 ```
 
-## Guidelines Summary
+## خلاصة الإرشادات
 
-### When to Let TypeScript Infer:
+### متى تدع TypeScript يستنتج:
 
-1. Variable initialization with values
-2. Return types of simple functions
-3. Callback parameters in array methods
-4. Event handlers in JSX
-5. Generic type parameters with clear context
-6. Computed values and transformations
+1. تهيئة المتغيّرات بقيم
+2. أنواع إرجاع الدوال البسيطة
+3. معاملات الدوال التمريرية في توابع المصفوفات
+4. معالِجات الأحداث في JSX
+5. معاملات الأنواع العامة ذات السياق الواضح
+6. القيم المحسوبة والتحويلات
 
-### When to Be Explicit:
+### متى تكون صريحًا:
 
-1. Function parameters
-2. Component props
-3. Empty arrays and objects
-4. Union types and constraints
-5. Public API boundaries
-6. Complex return types
-7. When inference would be `any`
+1. معاملات الدوال
+2. خصائص المكوّنات
+3. المصفوفات والكائنات الفارغة
+4. أنواع الاتحادات والقيود
+5. حدود واجهة API العامة
+6. أنواع الإرجاع المعقّدة
+7. حين يكون الاستنتاج `any`
 
-## The Balance
+## التوازن
 
-The key is finding the right balance. Too many type annotations make your code verbose and harder to read. Too few, and you lose type safety. Follow these principles:
+المفتاح هو إيجاد التوازن الصحيح. فالإفراط في شروح الأنواع يجعل شيفرتك مطوّلة وأصعب في القراءة، والإفراط في نقصها يفقدك سلامة الأنواع. فاتّبع هذه المبادئ:
 
-1. **Be explicit at boundaries** - Function parameters, component props, module exports
-2. **Let inference work internally** - Local variables, computed values, simple transforms
-3. **Add types when they add value** - Constraints, documentation, preventing errors
-4. **Remove types that don’t** - Redundant annotations, obvious inferences
+1. **كن صريحًا عند الحدود** — معاملات الدوال، وخصائص المكوّنات، وتصديرات الوحدات
+2. **دع الاستنتاج يعمل في الداخل** — المتغيّرات المحلية، والقيم المحسوبة، والتحويلات البسيطة
+3. **أضف الأنواع حين تضيف قيمة** — القيود، والتوثيق، ومنع الأخطاء
+4. **احذف الأنواع التي لا تضيف شيئًا** — الشروح المكرّرة والاستنتاجات البديهية
 
-Remember: TypeScript’s inference is there to help you write cleaner, more maintainable code. Use it wisely, and your React components will be both type-safe and readable.
+تذكّر: استنتاج TypeScript موجود ليساعدك على كتابة شيفرة أنظف وأسهل في الصيانة. واستخدمه بحكمة، وستكون مكوّنات React لديك آمنةً من حيث الأنواع ومقروءةً في آنٍ واحد.

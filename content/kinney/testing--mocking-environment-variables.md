@@ -1,12 +1,12 @@
 ---
-title: "Mocking Environment Variables"
-lang: en
+title: "محاكاة متغيرات البيئة (Mocking Environment Variables)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-environment-variables"
 ---
 
-Maybe you want to make sure your code behaves as expected given different environment variables. You could get really fancy in the way you filter your tests—or, you could just mock those environment variables for a hot minute.
+ربما تريد التأكد من أن شيفرتك تتصرف كما هو متوقع في ظل متغيرات بيئة مختلفة. يمكنك أن تتفنن كثيرًا في طريقة تصفية اختباراتك — أو يمكنك ببساطة محاكاة متغيرات البيئة تلك لبرهة.
 
-Consider this example in `examples/logjam/src/log.test.js`.
+تأمل هذا المثال في `examples/logjam/src/log.test.js`.
 
 ```typescript
 describe('development', () => {
@@ -28,7 +28,7 @@ describe('development', () => {
 });
 ```
 
-More importantly, we probably want to make sure that *doesn’t* log in production.
+الأهم من ذلك، أننا نريد على الأرجح التأكد من أنها *لا* تسجّل في الإنتاج.
 
 ```typescript
 describe('production', () => {

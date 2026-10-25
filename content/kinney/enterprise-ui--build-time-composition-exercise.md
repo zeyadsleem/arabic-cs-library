@@ -1,33 +1,33 @@
 ---
-title: "Exercise 2: Build-Time Composition"
-lang: en
+title: "التمرين 2: التركيب وقت البناء"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/build-time-composition-exercise"
 ---
 
-You’ve seen [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation)’s runtime composition in [Exercise 1](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise)—two dev servers, remote entry manifests, shared dependency negotiation, cross-boundary state management. Now take the same analytics module and consume it as a regular workspace package. No remote entry, no shared dependency negotiation—just an npm import in a monorepo.
+لقد رأيت التركيب وقت التنفيذ (runtime composition) في [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) ضمن [التمرين 1](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise)—خادمَي تطوير، وبيانات مدخل الطرف البعيد (remote entry manifests)، والتفاوض على الاعتمادات المشتركة، وإدارة الحالة عبر الحدود. الآن خُذ وحدة التحليلات نفسها واستهلكها كحزمة مساحة عمل عادية. لا مدخل طرف بعيد، ولا تفاوض على اعتمادات مشتركة—مجرد استيراد npm داخل مستودع أحادي (monorepo).
 
-## Why It Matters
+## لماذا يهم هذا
 
-Build-time composition is the default choice for teams that don’t need independent deployments. You get compile-time type checking across package boundaries, instant hot reload, and zero runtime overhead. Most teams should start here and only move to runtime composition when they have a concrete operational reason (like independent deploy cadences across teams).
+التركيب وقت البناء هو الخيار الافتراضي للفرق التي لا تحتاج إلى عمليات نشر مستقلة. فتحصل على فحص الأنواع وقت التصريف عبر حدود الحزم، وإعادة تحميل فورية، وبلا أي كلفة وقت تنفيذ. وينبغي لمعظم الفرق أن تبدأ من هنا، وألا تنتقل إلى التركيب وقت التنفيذ إلا عندما يكون لديها سبب تشغيلي ملموس (مثل إيقاع نشر مستقل بين الفرق).
 
-## Setup
+## التهيئة
 
-From this point forward, we’re working in the [stevekinney/enterprise-ui-workshop](https://github.com/stevekinney/enterprise-ui-workshop) repostiory. Let’s do the traditional ceremony.
+من هذه النقطة فصاعدًا، سنعمل في مستودع [stevekinney/enterprise-ui-workshop](https://github.com/stevekinney/enterprise-ui-workshop). لنجرِ المراسم التقليدية.
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> This exercise starts from the `main` branch. If you’re beginning the workshop fresh, you’re already in the right place. If you need to reset, run `git checkout main`.
+> يبدأ هذا التمرين من فرع `main`. إذا كنت تبدأ الورشة من الصفر فأنت في المكان الصحيح بالفعل، وإذا احتجت إلى إعادة الضبط فشغّل `git checkout main`.
 
-Open [http://localhost:5173](http://localhost:5173/).
+افتح [http://localhost:5173](http://localhost:5173/).
 
-## Explore the Workspace Structure
+## استكشاف بنية مساحة العمل
 
-Here’s the full layout of what you’re working with:
+إليك التخطيط الكامل لما تعمل عليه:
 
 ```
 enterprise-ui-workshop/
@@ -71,9 +71,9 @@ enterprise-ui-workshop/
 └── pnpm-workspace.yaml
 ```
 
-The dashboard app is the only runnable application. The four packages under `packages/` are workspace dependencies—consumed via regular npm imports, resolved at build time through pnpm symlinks. `mocks/` is its own workspace package, imported by the dashboard’s Vite config to intercept API calls during development.
+تطبيق لوحة المعلومات (dashboard) هو التطبيق الوحيد القابل للتشغيل. والحزم الأربع تحت `packages/` هي اعتمادات مساحة العمل—تُستهلك عبر استيرادات npm العادية، وتُحلّ وقت البناء من خلال روابط pnpm الرمزية. أما `mocks/` فهي حزمة مساحة عمل قائمة بذاتها، يستوردها إعداد Vite الخاص بلوحة المعلومات لاعتراض نداءات API أثناء التطوير.
 
-Open `pnpm-workspace.yaml`—it declares four workspace groups:
+افتح `pnpm-workspace.yaml`—فهو يعلن أربع مجموعات لمساحة العمل:
 
 *pnpm-workspace.yaml*
 
@@ -85,7 +85,7 @@ packages:
   - 'codemods'
 ```
 
-Open `packages/analytics/package.json`—find the entry point:
+افتح `packages/analytics/package.json`—وابحث عن نقطة الدخول:
 
 *packages/analytics/package.json*
 
@@ -94,11 +94,11 @@ Open `packages/analytics/package.json`—find the entry point:
 "types": "./src/index.ts"
 ```
 
-> **Source imports, not built artifacts**
+> **استيرادات المصدر، لا مخرجات البناء**
 >
-> The `main` field points directly at TypeScript source. Vite resolves workspace packages via pnpm’s symlinks and processes them with its own TypeScript transform—no separate build step needed. This is the standard monorepo DX pattern: packages are consumed as source during development. You only need `dist/` output for publishing to a registry or for production builds.
+> يشير حقل `main` مباشرةً إلى شيفرة TypeScript المصدرية. ويحلّ Vite حزم مساحة العمل عبر روابط pnpm الرمزية ويعالجها بتحويل TypeScript الخاص به—دون حاجة إلى خطوة بناء منفصلة. هذا هو نمط تجربة المطوّر (DX) المعتاد في المستودعات الأحادية: تُستهلك الحزم كمصدر أثناء التطوير. ولا تحتاج مخرجات `dist/` إلا لنشرها إلى سجلّ (registry) أو لعمليات بناء الإنتاج.
 
-Open `packages/analytics/src/index.ts`—note the explicit public API:
+افتح `packages/analytics/src/index.ts`—ولاحظ الواجهة البرمجية العامة الصريحة:
 
 *packages/analytics/src/index.ts*
 
@@ -106,9 +106,9 @@ Open `packages/analytics/src/index.ts`—note the explicit public API:
 export { AnalyticsDashboard } from './analytics-dashboard';
 ```
 
-Only `AnalyticsDashboard` is exported. Internal components like `StatsBar`, `Chart`, and `BigTable` are not part of the public API.
+لا يُصدَّر سوى `AnalyticsDashboard`. أما المكوّنات الداخلية مثل `StatsBar` و`Chart` و`BigTable` فليست جزءًا من الواجهة البرمجية العامة.
 
-Open `apps/dashboard/src/routes/analytics.tsx`—the route imports from the package:
+افتح `apps/dashboard/src/routes/analytics.tsx`—فالمسار يستورد من الحزمة:
 
 *apps/dashboard/src/routes/analytics.tsx*
 
@@ -116,23 +116,23 @@ Open `apps/dashboard/src/routes/analytics.tsx`—the route imports from the pack
 import { AnalyticsDashboard } from '@pulse/analytics';
 ```
 
-This is a regular import—resolved at build time through the workspace, not fetched at runtime from a remote server.
+هذا استيراد عادي—يُحلّ وقت البناء عبر مساحة العمل، ولا يُجلب وقت التنفيذ من خادم بعيد.
 
-### Checkpoint
+### نقطة تحقّق
 
-You should see the dashboard running at `http://localhost:5173` with:
+ينبغي أن ترى لوحة المعلومات تعمل على `http://localhost:5173` مع:
 
-- A sidebar showing **“Pulse”** as the app name and **“Grace Hopper”** with **“admin”** below it
-- The analytics view with stat cards (12,847 / 3,291 / $284,100 / 3.2%)
-- A bar chart with time range toggles (7d / 30d / 90d)
-- A “Recent Activity” table below the chart
-- A green **“Viewing as: Grace Hopper”** badge in the header
+- شريط جانبي يعرض **“Pulse”** كاسم التطبيق و**“Grace Hopper”** وتحتها **“admin”**
+- عرض التحليلات مع بطاقات إحصائية (12,847 / 3,291 / $284,100 / 3.2%)
+- مخطط أعمدة مع مفاتيح تبديل النطاق الزمني (7d / 30d / 90d)
+- جدول **“النشاط الأخير”** أسفل المخطط
+- شارة خضراء **“العرض بصفة: Grace Hopper”** في الترويسة
 
-Analytics dashboard with stat cards, bar chart, and activity table
+لوحة معلومات التحليلات مع بطاقات إحصائية ومخطط أعمدة وجدول نشاط
 
-## Package Dependency Graph
+## مخطط اعتماد الحزم
 
-The workspace packages form a directed graph. The dashboard app sits at the top, consuming feature packages that in turn depend on lower-level shared libraries.
+تشكّل حزم مساحة العمل مخططًا موجّهًا. وتجلس لوحة المعلومات في القمة، فتستهلك حزم الميزات التي تعتمد بدورها على مكتبات مشتركة أدنى مستوى.
 
 ```
 graph TD
@@ -153,56 +153,56 @@ graph TD
     UI --> Shared
 ```
 
-## Compare with Runtime Composition
+## المقارنة مع التركيب وقت التنفيذ
 
-Think about the differences between this setup and the federation approach from Exercise 1:
+فكّر في الفروق بين هذه التهيئة ونهج الاتحاد (federation) من التمرين 1:
 
-| Concern | Runtime (Federation) | Build-Time (Workspace) |
+| الأمر | وقت التنفيذ (الاتحاد) | وقت البناء (مساحة العمل) |
 | --- | --- | --- |
-| Dev servers | 2 (host + remote) | 1 |
-| Type checking | Separate per remote | Across all packages |
-| Hot reload | Within boundary only | Across boundaries |
-| Deploy independence | Yes | No (monolith deploy) |
-| Shared dependency negotiation | Runtime (`singleton`, `eager`) | None needed |
-| Cross-boundary state | Nanostores (framework-agnostic) | React Context (standard) |
-| Entry point complexity | Async bootstrap + manifest | Regular `import` |
+| خوادم التطوير | 2 (مضيف + بعيد) | 1 |
+| فحص الأنواع | منفصل لكل طرف بعيد | عبر جميع الحزم |
+| إعادة التحميل الفوري | داخل الحد فقط | عبر الحدود |
+| استقلالية النشر | نعم | لا (نشر كتلة واحدة) |
+| التفاوض على الاعتماد المشترك | وقت التنفيذ (`singleton`، `eager`) | لا حاجة له |
+| الحالة عبر الحدود | Nanostores (مستقل عن الإطار) | React Context (قياسي) |
+| تعقيد نقطة الدخول | تمهيد غير متزامن + بيان | `import` عادي |
 
-> **The `workspace:*` protocol is pnpm’s way of declaring local dependencies**
+> **بروتوكول `workspace:*` هو طريقة pnpm في إعلان الاعتمادات المحلية**
 >
-> When you see `"@pulse/analytics": "workspace:*"` in a `package.json`, it tells pnpm to resolve that dependency to the matching package inside the monorepo workspace rather than fetching it from the npm registry. The `*` means “accept whatever version the local package declares.” pnpm creates a symlink from `node_modules/@pulse/analytics` to the actual `packages/analytics/` directory, which is why Vite can resolve imports to TypeScript source files without a build step. When you publish packages to a registry, pnpm automatically replaces `workspace:*` with the real version number at publish time—so this protocol is purely a development-time convenience that disappears in production artifacts.
+> عندما ترى `"@pulse/analytics": "workspace:*"` في `package.json`، فهذا يخبر pnpm بأن يحلّ ذلك الاعتماد إلى الحزمة المطابقة داخل مساحة عمل المستودع الأحادي بدلًا من جلبها من سجلّ npm. وتشير `*` إلى «اقبل أي إصدار يعلنه الملف المحلي». وينشئ pnpm رابطًا رمزيًا من `node_modules/@pulse/analytics` إلى الدليل الفعلي `packages/analytics/`، ولهذا يستطيع Vite حلّ الاستيرادات إلى ملفات مصدر TypeScript دون خطوة بناء. وعندما تنشر الحزم إلى سجلّ، يستبدل pnpm تلقائيًا `workspace:*` برقم الإصدار الحقيقي عند النشر—لذا هذا البروتوكول مجرد تسهيل يخص وقت التطوير ويختفي من مخرجات الإنتاج.
 
-### What to Try
+### ما يمكنك تجربته
 
-1. Open `apps/dashboard/src/shell/auth-provider.tsx`—the auth provider uses standard React Context. Compare this to Exercise 1 where you needed nanostores to cross the federation boundary.
-2. Open `packages/analytics/src/analytics-dashboard.tsx`—it imports `useAuth` from `@pulse/shared` directly. No nanostores, no store subscription—just `useContext` under the hood.
+1. افتح `apps/dashboard/src/shell/auth-provider.tsx`—فمزوّد المصادقة يستخدم React Context القياسي. قارن هذا بالتمرين 1 حيث احتجت إلى nanostores لعبور حد الاتحاد.
+2. افتح `packages/analytics/src/analytics-dashboard.tsx`—فهو يستورد `useAuth` من `@pulse/shared` مباشرةً. لا nanostores، ولا اشتراك في مخزن—مجرد `useContext` في الخلفية.
 
-> **Why React Context works here**
+> **لماذا يعمل React Context هنا**
 >
-> In build-time composition, all packages are bundled into a single React application. There is exactly one React instance, one component tree, and one context registry. When the `AuthProvider` in `apps/dashboard` provides a value, the `useAuth()` hook in `packages/analytics` reads from the same context—because they share the same module instance of `@pulse/shared`. This is the fundamental difference from federation, where separate builds create separate module instances.
+> في التركيب وقت البناء تُجمَّع كل الحزم في تطبيق React واحد. فهناك نسخة React واحدة بالضبط، وشجرة مكوّنات واحدة، وسجلّ سياق واحد. وعندما يوفّر `AuthProvider` في `apps/dashboard` قيمةً، يقرأ الخُطّاف `useAuth()` في `packages/analytics` من السياق نفسه—لأنهما يتشاركان نسخة الوحدة نفسها من `@pulse/shared`. وهذا هو الفرق الجوهري عن الاتحاد، حيث تُنشئ عمليات البناء المنفصلة نسخًا منفصلة من الوحدات.
 
-## Test Cross-Package Hot Reload
+## اختبار إعادة التحميل الفوري عبر الحزم
 
-One of the biggest DX wins of build-time composition is seamless hot reload across package boundaries.
+من أكبر مكاسب تجربة المطوّر في التركيب وقت البناء إعادة التحميل الفوري السلسة عبر حدود الحزم.
 
-Open `packages/analytics/src/chart.tsx` and change the bar fill class from `fill-gray-800` to `fill-blue-600`. Save the file—the browser updates instantly without a full page reload.
+افتح `packages/analytics/src/chart.tsx` وغيّر صنف تعبئة الأعمدة من `fill-gray-800` إلى `fill-blue-600`. احفظ الملف—فيتحدّث المتصفح فورًا دون إعادة تحميل كاملة للصفحة.
 
-In the federation setup, changes to the remote required rebuilding the remote and refreshing the host. Here, Vite watches all workspace packages and processes changes through its own transform pipeline.
+في تهيئة الاتحاد، كانت التغييرات على الطرف البعيد تتطلّب إعادة بناء الطرف البعيد وتحديث المضيف. أما هنا، فيراقب Vite جميع حزم مساحة العمل ويعالج التغييرات عبر خط تحويله الخاص.
 
-Revert the change back to `fill-gray-800`.
+أعِد التغيير إلى `fill-gray-800`.
 
-> **Hot Module Replacement (HMR)**
+> **استبدال الوحدات الساخن (HMR)**
 >
-> HMR swaps changed modules in the running application without a full page reload. When you save a file, Vite detects the change, recompiles only that module, and sends the update to the browser over a WebSocket connection. The browser replaces the old module in memory and re-renders the affected components while preserving application state—form inputs, scroll position, React component state, and navigation all survive the update. This is fundamentally different from a full page reload, which tears down the entire application, re-fetches all resources, re-parses all JavaScript, and restarts from the initial state. In a monorepo with build-time composition, HMR works across package boundaries because Vite treats all workspace packages as part of a single module graph—a change in `packages/analytics/src/chart.tsx` triggers an HMR update in `apps/dashboard` without any rebuild step.
+> يستبدل HMR الوحدات المتغيّرة في التطبيق قيد التشغيل دون إعادة تحميل كاملة للصفحة. فعندما تحفظ ملفًا، يكتشف Vite التغيير ويعيد تصريف تلك الوحدة وحدها ويرسل التحديث إلى المتصفح عبر اتصال WebSocket. ويستبدل المتصفح الوحدة القديمة في الذاكرة ويعيد تصيير المكوّنات المتأثرة مع الحفاظ على حالة التطبيق—فمدخلات النماذج وموضع التمرير وحالة مكوّنات React والتنقّل كلها تنجو من التحديث. وهذا مختلف جذريًا عن إعادة التحميل الكاملة للصفحة، التي تهدم التطبيق بأكمله وتعيد جلب كل الموارد وإعادة تحليل كل شيفرة JavaScript والبدء من الحالة الأولية. وفي مستودع أحادي بالتركيب وقت البناء، يعمل HMR عبر حدود الحزم لأن Vite يتعامل مع جميع حزم مساحة العمل كجزء من مخطط وحدات واحد—فالتغيير في `packages/analytics/src/chart.tsx` يطلق تحديث HMR في `apps/dashboard` دون أي خطوة إعادة بناء.
 
-### Checkpoint
+### نقطة تحقّق
 
-Changes to any file in `packages/analytics/` are reflected in the browser instantly via hot module replacement. No rebuild, no refresh.
+تنعكس التغييرات في أي ملف تحت `packages/analytics/` في المتصفح فورًا عبر استبدال الوحدات الساخن. لا إعادة بناء، ولا تحديث.
 
-## Examine the Public API Boundary
+## فحص حد الواجهة البرمجية العامة
 
-The analytics package only exports `AnalyticsDashboard` from its `index.ts`. But nothing currently prevents other packages from reaching into its internals.
+لا تُصدّر حزمة التحليلات سوى `AnalyticsDashboard` من ملف `index.ts` الخاص بها. لكن لا شيء يمنع الآن الحزم الأخرى من النفاذ إلى داخلياتها.
 
-Open `apps/dashboard/src/routes/analytics.tsx` and try adding a direct import of an internal component:
+افتح `apps/dashboard/src/routes/analytics.tsx` وحاول إضافة استيراد مباشر لمكوّن داخلي:
 
 *apps/dashboard/src/routes/analytics.tsx*
 
@@ -210,53 +210,53 @@ Open `apps/dashboard/src/routes/analytics.tsx` and try adding a direct import of
 import { StatsBar } from '@pulse/analytics/src/stats-bar';
 ```
 
-TypeScript resolves this just fine—the import works. But it bypasses the package’s public API. This is a common source of coupling in monorepos.
+يحلّ TypeScript هذا بلا مشكلة—فالاستيراد يعمل. لكنه يتجاوز الواجهة البرمجية العامة للحزمة. وهذا مصدر شائع للارتباط (coupling) في المستودعات الأحادية.
 
-> **This import should not be allowed**
+> **لا ينبغي السماح بهذا الاستيراد**
 >
-> In Exercise 6, you’ll configure `eslint-plugin-boundaries` to flag this as a lint error. For now, just note that the architectural boundary exists in convention (only `index.ts` exports are public) but is not enforced by tooling.
+> في التمرين 6 ستهيّئ `eslint-plugin-boundaries` ليعرض هذا كخطأ فحص. أما الآن فاكتفِ بملاحظة أن الحدّ المعماري موجود بالعُرف (فصادرات `index.ts` فقط هي العامة) لكن الأدوات لا تفرضه.
 
-Remove the import when you’re done.
+أزِل الاستيراد عند الانتهاء.
 
-### Checkpoint
+### نقطة تحقّق
 
-You’ve confirmed that internal imports work but shouldn’t—the public API is defined by `index.ts` exports, but nothing enforces it yet.
+لقد تأكّدت أن الاستيرادات الداخلية تعمل لكن لا ينبغي لها—فالواجهة البرمجية العامة تُعرَّف بصادرات `index.ts`، لكن لا شيء يفرضها بعد.
 
-## Navigate the Application
+## التنقّل في التطبيق
 
-The dashboard has routing—unlike the federation setup which only had a single analytics view.
+تتضمّن لوحة المعلومات توجيهًا (routing)—بخلاف تهيئة الاتحاد التي كان فيها عرض تحليلات واحد فقط.
 
-1. Click **“Settings”** in the sidebar navigation
-2. The settings page loads showing org information (Pulse Inc., pro plan)
-3. Click **“Analytics”** to go back—the analytics data is still loaded
+1. انقر **“الإعدادات”** في تنقّل الشريط الجانبي
+2. تُحمَّل صفحة الإعدادات عارضةً معلومات المؤسسة (Pulse Inc., pro plan)
+3. انقر **“التحليلات”** للعودة—فبيانات التحليلات ما زالت محمّلة
 
-> **Note**
+> **ملاحظة**
 >
-> The routes are lazy-loaded using `React.lazy()` and `Suspense`. When you navigate to Settings for the first time, React dynamically imports the route module. The `LoadingSkeleton` component shows during the import. On subsequent navigations, the module is cached.
+> تُحمَّل المسارات تحميلًا كسولًا باستخدام `React.lazy()` و`Suspense`. وعندما تنتقل إلى الإعدادات أول مرة، يستورد React وحدة المسار ديناميكيًا. ويظهر مكوّن `LoadingSkeleton` أثناء الاستيراد. وفي التنقّلات اللاحقة تُخزَّن الوحدة في ذاكرة مؤقتة.
 
-### Checkpoint
+### نقطة تحقّق
 
-Navigation between Analytics and Settings works. The sidebar highlights the active route. Both pages load data from MSW mock handlers.
+يعمل التنقّل بين التحليلات والإعدادات. ويُبرز الشريط الجانبي المسار النشط. وتحمّل الصفحتان بياناتهما من معالِجات MSW البديلة المُحاكاة.
 
-Settings page with organization data
+صفحة الإعدادات مع بيانات المؤسسة
 
-Users page with user list
+صفحة المستخدمين مع قائمة المستخدمين
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `02-streaming-start` branch:
+إن احتجت إلى اللحاق، فالحالة المكتملة لهذا التمرين متاحة على فرع `02-streaming-start`:
 
 ```bash
 git checkout 02-streaming-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add a new component to `packages/analytics`:** Create a `summary-header.tsx` component, export it from `index.ts`, and use it in the dashboard. See how TypeScript integration works across the boundary.
-- **Explore the mock API:** Open `mocks/src/handlers.ts` and change the delay on `/api/analytics/summary` from `200` to `3000`. Observe how the loading state behaves when the API is slow.
-- **Trace the dependency graph:** Starting from `apps/dashboard/package.json`, trace which packages depend on which. Draw the graph. This is the graph that Turborepo will optimize in Exercise 4.
+- **أضف مكوّنًا جديدًا إلى `packages/analytics`:** أنشئ مكوّن `summary-header.tsx`، وصدّره من `index.ts`، واستخدمه في لوحة المعلومات. ولاحظ كيف يعمل تكامل TypeScript عبر الحد.
+- **استكشف واجهة API البديلة المُحاكاة:** افتح `mocks/src/handlers.ts` وغيّر التأخير على `/api/analytics/summary` من `200` إلى `3000`. ولاحظ كيف تتصرّف حالة التحميل عندما تكون واجهة API بطيئة.
+- **تتبّع مخطط الاعتماد:** بدءًا من `apps/dashboard/package.json`، تتبّع أي حزم تعتمد على أي. وارسم المخطط. فهذا هو المخطط الذي سيُحسّنه Turborepo في التمرين 4.
 
-## What’s Next
+## ما التالي
 
-You’ve experienced build-time composition: one dev server, compile-time types across boundaries, instant hot reload. The analytics dashboard fetches three APIs at different speeds, but right now they all resolve together as a single loading state. In the next exercise, you’ll add streaming SSR and Suspense boundaries to progressively render each section as its data arrives.
+لقد جرّبت التركيب وقت البناء: خادم تطوير واحد، وأنواع وقت التصريف عبر الحدود، وإعادة تحميل فورية. تجلب لوحة معلومات التحليلات ثلاث واجهات API بسرعات مختلفة، لكنها الآن تُحلّ كلها معًا كحالة تحميل واحدة. وفي التمرين التالي ستضيف SSR بالبث وحدود Suspense لتصيير كل قسم تدريجيًا مع وصول بياناته.

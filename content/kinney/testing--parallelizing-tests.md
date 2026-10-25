@@ -1,14 +1,14 @@
 ---
-title: "Parallelizing Tests Using Test Context"
-lang: en
+title: "تشغيل الاختبارات بالتوازي باستخدام سياق الاختبار"
+lang: ar
 source: "https://stevekinney.com/courses/testing/parallelizing-tests"
 ---
 
-**Nota bene**: In order to parallelize tests, you have to use [test-context](https://stevekinney.com/courses/testing/test-context). So, if we haven’t talked about that, let’s pause and do that now.
+**ملاحظة مهمة**: كي تُشغّل الاختبارات بالتوازي، عليك استخدام [سياق الاختبار](https://stevekinney.com/courses/testing/test-context). لذا إن لم نكن قد تحدثنا عن ذلك، فلنتوقف ونفعله الآن.
 
-**TL;DR** Parallelizing tests is *basically* only useful when you’ve got a bunch of long-running asynchronous (read: *non-blocking*) tests.
+**باختصار**: تشغيل الاختبارات بالتوازي مفيد *أساسًا* فقط عندما تكون لديك مجموعة من الاختبارات غير المتزامنة طويلة التنفيذ (أي *غير الحاجزة*).
 
-Consider this ridiculous example as a though exercise:
+تأمّل هذا المثال السخيف كممارسة ذهنية:
 
 ```typescript
 const sleep = (time = 1000) => {
@@ -42,7 +42,7 @@ describe('sleep', () => {
 });
 ```
 
-Normally, your test suite will run these tests in series. This means that each test will need to complete before the next one runs. That said, this can add up.
+عادةً، تُشغّل مجموعة اختباراتك هذه الاختبارات على التوالي. هذا يعني أن كل اختبار يجب أن ينتهي قبل أن يبدأ التالي. ومع ذلك، قد يتراكم هذا الوقت.
 
 ```typescript
 ❯ sleep (4)
@@ -52,14 +52,14 @@ Normally, your test suite will run these tests in series. This means that each t
   ⠴ should sleep for 1500ms 1502ms
 ```
 
-We *can* choose to run our tests in parallel. Most of the time this is not needed, which is why it’s not the default behavior, but in certain cases, it can be useful.
+يمكننا *أن* نختار تشغيل اختباراتنا بالتوازي. معظم الوقت لا تكون الحاجة إلى ذلك قائمة، ولهذا ليس هو السلوك الافتراضي، لكنه قد يكون مفيدًا في حالات معيّنة.
 
-There are basically two rules:
+ثمّة قاعدتان أساسيتان:
 
-1. You must use the version `expect` bound to the test via the `context` argument passed to each test function (e.g. `context.expect`).
-2. You must annotate either the individual tests that you want to run concurrently *or* the entire suite.
+1. عليك استخدام نسخة `expect` المرتبطة بالاختبار عبر وسيط `context` الممرَّر إلى كل دالة اختبار (مثل `context.expect`).
+2. عليك أن تضع تعليقًا على الاختبارات الفردية التي تريد تشغيلها بالتزامن *أو* على المجموعة بأكملها.
 
-For example, if we refactor our tests as follows, they’ll run in parallel:
+على سبيل المثال، إن أعدنا كتابة اختباراتنا على النحو التالي، فستعمل بالتوازي:
 
 ```typescript
 describe.concurrent('sleep', () => {
@@ -85,8 +85,8 @@ describe.concurrent('sleep', () => {
 });
 ```
 
-Now each of the four tests will kick off at the same time. This cut the total time of the suite from around 3.77 seconds down to 1.5 seconds (which is the longest of the sleep times that we passed in.)
+الآن سينطلق كل اختبار من الاختبارات الأربعة في الوقت نفسه. وقد قلّص هذا الزمن الكلي للمجموعة من نحو 3.77 ثانية إلى 1.5 ثانية (وهو أطول زمن نوم مرّرناه).
 
-## Further Reading
+## قراءات إضافية
 
-- [Vitest: Running Tests Concurrently](https://vitest.dev/guide/features.html#running-tests-concurrently)
+- [Vitest: تشغيل الاختبارات بالتزامن](https://vitest.dev/guide/features.html#running-tests-concurrently)

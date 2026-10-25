@@ -1,31 +1,26 @@
 ---
-title: "Cursor Subagents"
-lang: en
+title: "وكلاء Cursor الفرعيون"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-subagents"
 ---
 
-[Cursor subagents](https://cursor.com/docs/subagents) are specialized agents with
-their own context. They can run in the editor, the command line interface, and
-Cloud Agents.
+[الوكلاء الفرعيون في Cursor](https://cursor.com/docs/subagents) وكلاء متخصصون لهم سياقهم الخاص. ويستطيعون العمل في المحرّر وواجهة سطر الأوامر ووكلاء السحابة.
 
-The value is isolation. A subagent can inspect one concern deeply without
-polluting the main agent’s context with every intermediate detail.
+القيمة في العزل. يستطيع وكيل فرعي فحص شاغل واحد بعمق دون أن يلوّث سياق الوكيل الرئيسي بكل تفصيل وسيط.
 
-## Built-In Subagents
+## الوكلاء الفرعيون المدمجون
 
-Cursor includes built-in subagents such as Explore, Bash, and Browser. They are
-useful for bounded tasks:
+يتضمن Cursor وكلاء فرعيين مدمجين مثل Explore و Bash و Browser. وهم مفيدون للمهام المحدودة:
 
-- Explore: inspect a repository or design space.
-- Bash: run terminal-heavy investigation.
-- Browser: inspect web or application behavior.
+- Explore: فحص مستودع أو فضاء تصميم.
+- Bash: تشغيل تحقيق كثيف الطرفية.
+- Browser: فحص سلوك الويب أو التطبيق.
 
-Use them when the task shape matches the tool. Do not split work just to make
-the prompt look sophisticated.
+استخدمهم عندما يطابق شكل المهمة الأداة. لا تجزّأ العمل فقط لكي يبدو الطلب متطورًا.
 
-## Custom Subagents
+## الوكلاء الفرعيون المخصّصون
 
-Custom subagents live in `.cursor/agents/`:
+يسكن الوكلاء الفرعيون المخصّصون في `.cursor/agents/`:
 
 ```markdown
 ---
@@ -39,22 +34,18 @@ Inspect the changed files and closest tests. Report missing coverage with file
 references. Do not edit files.
 ```
 
-Cursor also supports compatible agent definitions from `.claude/agents` and `.codex/agents`, which is useful in mixed-agent repositories.
+يدعم Cursor أيضًا تعريفات وكلاء متوافقة من `.claude/agents` و`.codex/agents`، وهو مفيد في المستودعات المختلطة الوكلاء.
 
-## Foreground and Background Work
+## العمل الأمامي والخلفي
 
-A foreground subagent blocks the main task until it returns. A background
-subagent can continue while the main agent proceeds. Background work is useful
-for independent research, but it needs a crisp return format:
+يمنع الوكيل الفرعي الأمامي المهمة الرئيسية حتى يعيد. ويستطيع الوكيل الفرعي في الخلفية المواصلة بينما يتقدّم الوكيل الرئيسي. والعمل في الخلفية مفيد للبحث المستقل، لكنه يحتاج صيغة إعادة حادة:
 
 ```
 Return only: findings, file references, and whether the main task should stop.
 ```
 
-Without a return contract, parallel work often creates more context than value.
+دون عقد إعادة، كثيرًا ما ينشئ العمل المتوازٍ سياقًا أكثر مما ينشئ قيمة.
 
-## When Not to Use a Subagent
+## متى لا تستخدم وكيلًا فرعيًا
 
-Do not use subagents for tiny edits, single-file fixes, or tasks where one
-developer needs to keep the whole mental model in view. Subagents are a way to
-reduce context pressure, not a way to avoid thinking.
+لا تستخدم الوكلاء الفرعيين للتعديلات الصغيرة أو إصلاحات الملف الواحد أو المهام التي يحتاج فيها مطوّر واحد إلى إبقاء النموذج الذهني كله أمامه. فالوكلاء الفرعيون وسيلة لتخفيف ضغط السياق، لا وسيلة للتهرب من التفكير.

@@ -1,67 +1,67 @@
 ---
-title: "Creating a Callout Component"
-lang: en
+title: "إنشاء مكوّن صندوق توضيحي (Callout)"
+lang: ar
 source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 ---
 
-Let’s look at taking some of the concepts we’ve learned so far and creating a **Callout** component that we can use in our designs. Our end result will look *something* like this.
+لننظر في أخذ بعض المفاهيم التي تعلّمناها حتى الآن وإنشاء مكوّن **Callout** يمكننا استخدامه في تصميماتنا. وستبدو النتيجة النهائية *شيئًا* كهذا.
 
-The completed callout component
+مكوّن الصندوق التوضيحي مكتملًا
 
-## Surface and Border Colors
+## ألوان السطح والحدود
 
-We’ll start with a basic frame, but we want to give it the background and border variables that we set up in the [semantic colors](https://stevekinney.com/courses/figma/semantic-colors) section.
+سنبدأ بإطار أساسي، لكننا نريد أن نمنحه متغيّرَي الخلفية والحدود اللذين أعددناهما في قسم [الألوان الدلالية](https://stevekinney.com/courses/figma/semantic-colors).
 
-The basics of a Figma callout with our semantic color variables
+أساسيات صندوق توضيحي في Figma بمتغيّرات ألواننا الدلالية
 
-## Border Radius
+## نصف قطر الحدود
 
-Next, we’ll attach our [border radius variable](https://stevekinney.com/courses/figma/number-variable-tokens).
+بعد ذلك، سنُرفق [متغيّر نصف قطر الحدود](https://stevekinney.com/courses/figma/number-variable-tokens).
 
-Using a Figma variable for the border radius
+استخدام متغيّر Figma لنصف قطر الحدود
 
-## Using an Auto Layout
+## استخدام التخطيط التلقائي
 
-We’re probably going to end with two auto layouts.
+سننتهي على الأرجح بتخطيطين تلقائيين.
 
-- One between the icon and title and the body text. This one will be the component itself.
-- One for the icon and title.
+- واحد بين الأيقونة والعنوان ونص المتن. وسيكون هذا المكوّن نفسه.
+- وآخر للأيقونة والعنوان.
 
-Pressing **Shift-A** on the component will turn it into an auto layout frame.
+الضغط على **Shift-A** على المكوّن سيحوّله إلى إطار تخطيط تلقائي.
 
-From here we’ll use our [spacing variables](https://stevekinney.com/courses/figma/number-variable-tokens) to set the padding and gap on the auto layout.
+ومن هنا سنستخدم [متغيّرات التباعد](https://stevekinney.com/courses/figma/number-variable-tokens) لضبط الحشو والفجوة في التخطيط التلقائي.
 
-We’ll use that **slight** spacing between the icon and the title and then our **base** spacing for the padding of the callout and the spacing between the title and the body.
+سنستخدم ذلك التباعد **الطفيف** بين الأيقونة والعنوان، ثم التباعد **الأساسي** لحشو الصندوق التوضيحي والمسافة بين العنوان والمتن.
 
-We now have a pretty good stating place for our callout component.
+أصبح لدينا الآن نقطة بداية جيدة لمكوّن الصندوق التوضيحي.
 
-The basic layout of our callout component
+التخطيط الأساسي لمكوّن الصندوق التوضيحي
 
-We’re ready to go ahead and select **Create a component**.
+أصبحنا جاهزين للمضي واختيار **Create a component**.
 
-## Setting up the Properties
+## إعداد الخصائص
 
-We’re going to want to expose some properties of our component in order to make it easier to work with.
+سنريد إظهار بعض خصائص مكوّننا لجعل العمل معه أسهل.
 
-Let’s expose the nested properties from the **Icon**. Click the **+** next to **Properties** and select **Expose properties from Nested Instances**.
+لنُظهر الخصائص المتداخلة من **Icon**. انقر على **+** بجوار **Properties** واختر **Expose properties from Nested Instances**.
 
-Expose properties from nested instances
+إظهار الخصائص من النسخ المتداخلة
 
-## Hiding and Showing the Body
+## إخفاء المتن وإظهاره
 
-We might not always want to show the body. In this case, we can connect it to a boolean [component property](https://stevekinney.com/courses/figma/component-properties) in order to create a toggle.
+قد لا نريد دائمًا إظهار المتن. وفي هذه الحالة يمكننا ربطه بـ [خاصية مكوّن](https://stevekinney.com/courses/figma/component-properties) منطقية لإنشاء مفتاح تشغيل وإيقاف.
 
-On the layer for the text of the body of the component, click on the little icon in the upper-right.
+على طبقة نص متن المكوّن، انقر على الأيقونة الصغيرة في أعلى اليمين.
 
-Create a boolean property
+إنشاء خاصية منطقية
 
-You’ll then see a prompt that has most of what you want in place.
+ثم سترى نافذة تحتوي على معظم ما تريده جاهزًا.
 
-Create a boolean property for the callout body
+إنشاء خاصية منطقية لمتن الصندوق التوضيحي
 
-## Adding Variants
+## إضافة الأنماط البديلة
 
-We now want to add the following variants:
+نريد الآن إضافة الأنماط البديلة التالية:
 
 - Primary
 - Secondary
@@ -70,13 +70,13 @@ We now want to add the following variants:
 - Warning
 - Danger
 
-You can create [variants](https://stevekinney.com/courses/figma/variants) where you adjust the colors according to the [semantic-colors](https://stevekinney.com/courses/figma/semantic-colors) that we set up earlier. You can also go ahead and set a default icon for each—this can be overridden with the nested properties that we set up earlier.
+يمكنك إنشاء [أنماط بديلة](https://stevekinney.com/courses/figma/variants) تعدّل فيها الألوان وفق [الألوان الدلالية](https://stevekinney.com/courses/figma/semantic-colors) التي أعددناها سابقًا. ويمكنك أيضًا المضي قدمًا وضبط أيقونة افتراضية لكل نمط — ويمكن تجاوز ذلك بالخصائص المتداخلة التي أعددناها سابقًا.
 
-The properties of our callout component
+خصائص مكوّن الصندوق التوضيحي
 
-## Extensions
+## إضافات
 
-In the name of time we’re going to move on, but if the spirit moves you—or, if it ends up moving me. You can take your component and apply the following:
+مراعاةً للوقت سنمضي قدمًا، لكن إن حدّثتك نفسك — أو إن حدّثتني أنا لاحقًا. يمكنك أن تأخذ مكوّنك وتطبّق ما يلي:
 
-- Some kind of shadow effect to the callout itself.
-- Apply our [typography](https://stevekinney.com/courses/figma/typography) styles to the title and body.
+- نوعًا من تأثير الظل على الصندوق التوضيحي نفسه.
+- تطبيق [أنماط الطباعة](https://stevekinney.com/courses/figma/typography) على العنوان والمتن.

@@ -1,30 +1,30 @@
 ---
-title: "useOptimistic and Typed Optimistic Updates"
-lang: en
+title: "useOptimistic والتحديثات المتفائلة ذات الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/useoptimistic-typed-optimism"
 ---
 
-React’s `useOptimistic` hook lets you show users immediate feedback while their actions are still processing on the server. Think of it as showing a “like” button as already pressed while the API call is still in flight—your users get instant gratification, and you handle the complexities behind the scenes. But here’s the thing: without proper TypeScript modeling, optimistic updates can quickly turn into a debugging nightmare when server responses don’t match your assumptions.
+يُتيح لك خطّاف `useOptimistic` في React إظهار تغذية راجعة فورية للمستخدمين بينما لا تزال أفعالهم قيد المعالجة على الخادم. فكّر في الأمر كإظهار زر «الإعجاب» وقد نُقر عليه بالفعل بينما لا يزال طلب API قيد الإرسال—يحصل المستخدمون على رضا فوري، وأنت تتعامل مع التعقيدات خلف الكواليس. لكن الأمر هنا: بدون نمذجة مناسبة بـ TypeScript، يمكن أن تتحول التحديثات المتفائلة بسرعة إلى كابوس في تصحيح الأخطاء عندما لا تتطابق ردود الخادم مع افتراضاتك.
 
-Let’s explore how to build robust, type-safe optimistic UI patterns that gracefully handle the happy path, network failures, and everything in between.
+لنستكشف كيفية بناء أنماط واجهة مستخدم متفائلة قوية وآمنة من حيث الأنواع، تتعامل برفق مع المسار السعيد، وأخطاء الشبكة، وكل ما بينهما.
 
-## What Are Optimistic Updates?
+## ما هي التحديثات المتفائلة؟
 
-Optimistic updates are a UI pattern where you immediately show the expected result of a user action, then reconcile with the actual server response afterward. Instead of showing a loading spinner while waiting for the server, you assume the action will succeed and update the UI accordingly.
+التحديثات المتفائلة (Optimistic Updates) هي نمط في واجهة المستخدم حيث تُظهر فورًا النتيجة المتوقعة لإجراء المستخدم، ثم تُطابِقها مع استجابة الخادم الفعلية بعد ذلك. بدلًا من عرض مؤشر التحميل أثناء انتظار الخادم، تفترض أن الإجراء سينجح وتُحدّث واجهة المستخدم وفقًا لذلك.
 
-Here’s the basic flow:
+إليك سير العمل الأساسي:
 
-1. User performs an action (clicks “like”, submits a form, deletes an item)
-2. Immediately update the UI as if the action succeeded
-3. Send the request to the server in the background
-4. If successful, keep the optimistic state
-5. If it fails, revert to the previous state and show an error
+1. يقوم المستخدم بإجراء ما (النقر على «إعجاب»، أو إرسال نموذج، أو حذف عنصر)
+2. تُحدّث واجهة المستخدم فورًا كأن الإجراء قد نجح
+3. يُرسل الطلب إلى الخادم في الخلفية
+4. إذا نجح الطلب، تبقى الحالة المتفائلة كما هي
+5. إذا فشل الطلب، تُعاد الحالة إلى ما كانت عليه وتُعرض رسالة خطأ
 
-The key insight is that most user actions succeed most of the time. By optimizing for the common case, you create a snappier user experience.
+الفكرة الرئيسية هي أن معظم إجراءات المستخدم تنجح في معظم الأوقات. من خلال التحسين للحالة الشائعة، تُنشئ تجربة مستخدم أسرع.
 
-## Understanding `useOptimistic`
+## فهم خطّاف `useOptimistic`
 
-React 19’s `useOptimistic` hook provides a clean abstraction for this pattern. It manages two pieces of state: the actual data and the optimistic version that might differ temporarily.
+يوفر خطّاف `useOptimistic` في React 19 تجريدًا نظيفًا لهذا النمط. يدير جزأين من الحالة: البيانات الفعلية والنسخة المتفائلة التي قد تختلف مؤقتًا.
 
 ```typescript
 import { useOptimistic } from 'react';
@@ -41,14 +41,14 @@ function MyComponent() {
 }
 ```
 
-The hook takes two parameters:
+يأخذ الخطّاف معلمتين:
 
-- **Current state**: The actual, confirmed state from your server
-- **Reducer function**: How to apply optimistic updates to that state
+- **الحالة الحالية (Current state)**: الحالة الفعلية والمؤكدة من الخادم
+- **دالة الاختزال (Reducer function)**: كيفية تطبيق التحديثات المتفائلة على تلك الحالة
 
-## Setting Up Types for Optimistic Updates
+## إعداد الأنواع للتحديثات المتفائلة
 
-Let’s build a like system with proper TypeScript modeling. First, we’ll define our core types:
+لنُنشئ نظام «إعجاب» بنمذجة مناسبة بـ TypeScript. أولًا، سنُعرّف الأنواع الأساسية:
 
 ```typescript
 // Base types for our data
@@ -77,11 +77,11 @@ type LikeResponse =
     };
 ```
 
-Notice how we’re modeling both the optimistic actions and the possible server responses. This gives us compile-time safety when handling different scenarios.
+لاحظ كيف نمذجنا كلًا من الإجراءات المتفائلة وردود الخادم المحتملة. هذا يمنحنا أمانًا أثناء الترجمة عند التعامل مع سيناريوهات مختلفة.
 
-## Building a Type-Safe Optimistic Hook
+## بناء خطّاف متفائل آمن من حيث الأنواع
 
-Let’s create a reusable hook that encapsulates the optimistic like logic:
+لنُنشئ خطّافًا قابلاً لإعادة الاستخدام يُغلّف منطق «الإعجاب» المتفائل:
 
 ```typescript
 import { useOptimistic, useCallback, useState } from 'react';
@@ -159,9 +159,9 @@ function useOptimisticLikes(posts: Post[]) {
 }
 ```
 
-## Handling Complex Optimistic State
+## التعامل مع حالة متفائلة معقّدة
 
-For more complex scenarios, you might need to model multiple types of optimistic updates. Let’s extend our example to handle comments:
+بالنسبة للسيناريوهات الأكثر تعقيدًا، قد تحتاج إلى نمذجة أنواع متعددة من التحديثات المتفائلة. لنوسّع مثالنا ليتعامل مع التعليقات:
 
 ```typescript
 type Comment = {
@@ -183,7 +183,7 @@ type PostWithComments = Post & {
 };
 ```
 
-Here’s the key insight: we use `tempId` for optimistic comments and `actualId` once the server confirms them. This lets us track which comments are confirmed vs. still pending:
+الفكرة الرئيسية هنا: نستخدم `tempId` للتعليقات المتفائلة و`actualId` بمجرد تأكيد الخادم لها. يتيح لنا هذا تتبّع التعليقات المؤكدة مقابل تلك قيد الانتظار:
 
 ```typescript
 function useOptimisticComments(postsWithComments: PostWithComments[]) {
@@ -276,11 +276,11 @@ function useOptimisticComments(postsWithComments: PostWithComments[]) {
 }
 ```
 
-## Reconciling with Server State
+## المطابقة مع حالة الخادم
 
-One of the trickiest aspects of optimistic updates is handling reconciliation when the server state changes. You need to be thoughtful about how optimistic state merges with fresh server data.
+أحد أصعب جوانب التحديثات المتفائلة هو التعامل مع المطابقة عندما تتغير حالة الخادم. تحتاج إلى توخي الحذر بشأن كيفية دمج الحالة المتفائلة مع بيانات الخادم الجديدة.
 
-Here’s a pattern for handling this with React Query or SWR:
+إليك نمط للتعامل مع هذا باستخدام React Query أو SWR:
 
 ```typescript
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -319,15 +319,15 @@ function PostsWithOptimisticUpdates() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> When the server data updates, `useOptimistic` automatically reconciles by applying any pending optimistic actions to the new server state. This means your optimistic updates “stick” until explicitly reverted.
+> عند تحديث بيانات الخادم، يُطابِق `useOptimistic` تلقائيًا عن طريق تطبيق أي إجراءات متفائلة معلّقة على حالة الخادم الجديدة. وهذا يعني أن تحديثاتك المتفائلة «تلتصق» حتى تُلغى صراحةً.
 
-## Error Handling Patterns
+## أنماط معالجة الأخطاء
 
-Robust optimistic updates require thoughtful error handling. Here are some patterns that work well:
+تتطلب التحديثات المتفائلة القوية معالجة مدروسة للأخطاء. إليك بعض الأنماط التي تعمل جيدًا:
 
-### Graceful Degradation
+### التدهور الرشيق
 
 ```typescript
 function useResilientOptimisticUpdates<T, A>(
@@ -379,9 +379,9 @@ function useResilientOptimisticUpdates<T, A>(
 }
 ```
 
-### Retry Logic
+### منطق إعادة المحاولة
 
-For critical actions, you might want automatic retries:
+بالنسبة للإجراءات الحرجة، قد ترغب في إعادة المحاولة تلقائيًا:
 
 ```typescript
 async function withRetry<T>(operation: () => Promise<T>, maxRetries = 3, delay = 1000): Promise<T> {
@@ -404,9 +404,9 @@ async function withRetry<T>(operation: () => Promise<T>, maxRetries = 3, delay =
 }
 ```
 
-## Testing Optimistic Updates
+## اختبار التحديثات المتفائلة
 
-Testing optimistic behavior requires simulating both success and failure scenarios:
+يتطلب اختبار السلوك المتفائل محاكاة سيناريوهات النجاح والفشل:
 
 ```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
@@ -451,13 +451,13 @@ describe('OptimisticLikes', () => {
 });
 ```
 
-## Real-World Considerations
+## اعتبارات من العالم الواقعي
 
-When implementing optimistic updates in production applications, keep these patterns in mind:
+عند تنفيذ التحديثات المتفائلة في تطبيقات الإنتاج، ضع هذه الأنماط في الاعتبار:
 
-### Conflict Resolution
+### حل التضارب
 
-When multiple users modify the same data simultaneously, you need strategies for handling conflicts:
+عندما يُعدّل مستخدمون متعددون نفس البيانات في الوقت نفسه، تحتاج إلى استراتيجيات للتعامل مع التضارب:
 
 ```typescript
 type ConflictResolution = 'server-wins' | 'client-wins' | 'merge' | 'prompt-user';
@@ -489,9 +489,9 @@ function resolveOptimisticConflict<T>(
 }
 ```
 
-### Bandwidth Considerations
+### اعتبارات عرض النطاق الترددي
 
-For users on slow connections, consider batching optimistic updates:
+بالنسبة للمستخدمين على اتصالات بطيئة، فكر في تجميع التحديثات المتفائلة:
 
 ```typescript
 function useBatchedOptimisticUpdates<T>(
@@ -521,9 +521,9 @@ function useBatchedOptimisticUpdates<T>(
 }
 ```
 
-### Accessibility
+### سهولة الوصول
 
-Don’t forget to announce optimistic state changes to screen readers:
+لا تنسَ الإعلان عن تغيّرات الحالة المتفائلة لقارئات الشاشة:
 
 ```typescript
 function useOptimisticAnnouncements() {
@@ -546,16 +546,16 @@ function useOptimisticAnnouncements() {
 }
 ```
 
-## Wrapping Up
+## الخاتمة
 
-Optimistic updates with `useOptimistic` can dramatically improve perceived performance, but they require careful TypeScript modeling to handle edge cases gracefully. The key principles to remember:
+يمكن للتحديثات المتفائلة باستخدام `useOptimistic` أن تحسّن بشكل كبير الأداء الظاهر، لكنها تتطلب نمذجة مدروسة بـ TypeScript للتعامل مع الحالات الاستثنائية برفق. المبادئ الرئيسية التي يجب تذكّرها:
 
-1. **Model your actions explicitly** with discriminated unions
-2. **Plan for failure** with revert mechanisms
-3. **Test both happy and sad paths** thoroughly
-4. **Consider reconciliation** when server state updates
-5. **Handle conflicts** between optimistic and server state
+1. **نمذج إجراءاتك صراحةً** باستخدام اتحادات مميّزة
+2. **خطّط للفشل** بآليات التراجع
+3. **اختبر المسار السعيد ومسار الفشل** بدقة
+4. **فكّر في المطابقة** عند تحديث حالة الخادم
+5. **تعامل مع التضاربات** بين الحالة المتفائلة وحالة الخادم
 
-When implemented thoughtfully, optimistic updates create delightfully responsive interfaces that feel instant to users while maintaining data integrity behind the scenes. The TypeScript safety net ensures you catch edge cases at compile time rather than in production—because nothing ruins the optimistic experience quite like a runtime error.
+عندما تُنفّذ بحكمة، تُنشئ التحديثات المتفائلة واجهات سريعة الاستجابة بشكل رائع تشعر المستخدمين بأنها فورية، مع الحفاظ على سلامة البيانات خلف الكواليس. تضمن شبكة الأمان من TypeScript اكتشاف الحالات الاستثنائية أثناء الترجمة بدلًا من الإنتاج—لأنّه لا شيء يُفسد تجربة التفاؤل مثل خطأ وقت التشغيل.
 
-The patterns we’ve explored here scale from simple like buttons to complex collaborative editing scenarios. Start with the basics, add complexity as needed, and always remember: optimism is great, but a little pessimistic planning goes a long way.
+تتوسّع الأنماط التي استكشفناها هنا من أزرار «الإعجاب» البسيطة إلى سيناريوهات التحرير التعاوني المعقّدة. ابدأ بالأساسيات، وأضف التعقيد عند الحاجة، وتذكّر دائمًا: التفاؤل رائع، لكن قليلًا من التخطيط المتشائم يقطع شوطًا طويلًا.

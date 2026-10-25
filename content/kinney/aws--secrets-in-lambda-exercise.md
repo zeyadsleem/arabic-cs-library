@@ -1,100 +1,100 @@
 ---
-title: "Exercise: Store and Retrieve a Secret in Lambda"
-lang: en
+title: "تمرين: تخزين سرّ واسترجاعه في Lambda"
+lang: ar
 source: "https://stevekinney.com/courses/aws/secrets-in-lambda-exercise"
 ---
 
-You’re going to store a secret in Parameter Store, write a Lambda function that reads it at startup, grant the function’s execution role the right permissions, and verify the whole chain works through API Gateway.
+ستخزّن سرًّا في Parameter Store، وتكتب دالة Lambda تقرأه عند بدء التشغيل، وتمنح دور تنفيذ الدالة الصلاحيات المناسبة، وتتحقق من أن السلسلة كاملة تعمل عبر API Gateway.
 
-This is the same workflow you’d use in production to keep API keys out of your environment variables and source code.
+هذا هو سير العمل نفسه الذي ستستخدمه في الإنتاج لإبقاء مفاتيح API بعيدة عن متغيّرات البيئة وعن شيفرة المصدر.
 
-If you want AWS’s version of the secret-storage workflow open while you work, keep the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) and the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) nearby.
+إن أردت نسخة AWS من سير عمل تخزين الأسرار مفتوحة أمامك أثناء العمل، فأبقِ [نظرة عامة على AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) و[وثائق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) قريبين منك.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-On Vercel, secrets are environment variables—you set them in the dashboard and trust the platform. On AWS, you choose where secrets live and who can access them. That choice has consequences: a secret in a Lambda environment variable is visible to anyone who can describe the function. A secret in Parameter Store is encrypted with KMS, scoped by IAM, and audited in CloudTrail. This exercise makes that difference real.
+على Vercel، الأسرار هي متغيّرات بيئة—تضبطها في لوحة التحكم وتثق بالمنصّة. أما على AWS، فأنت تختار أين تعيش الأسرار ومن يستطيع الوصول إليها. وهذا الخيار له عواقب: فالسرّ الموجود في متغيّر بيئة Lambda مرئي لأي شخص يستطيع وصف الدالة. أما السرّ في Parameter Store فمشفَّر بـ KMS، ومحدَّد النطاق بـ IAM، ومُدقَّق في CloudTrail. يجعل هذا التمرين ذلك الفرق ملموسًا.
 
-## Your Task
+## مهمتك
 
-1. Store a third-party API key in Parameter Store as a SecureString
-2. Write a Lambda function that reads the secret at init time and uses it in responses
-3. Grant the function’s execution role permission to read the parameter and decrypt it
-4. Invoke the function and verify it can access the secret
-5. Call the function through API Gateway from a browser or `curl`
+1. خزّن مفتاح API لطرف ثالث في Parameter Store على هيئة SecureString
+2. اكتب دالة Lambda تقرأ السرّ عند التهيئة وتستخدمه في الاستجابات
+3. امنح دور تنفيذ الدالة صلاحية قراءة المُعامل وفك تشفيره
+4. استدعِ الدالة وتحقق من قدرتها على الوصول إلى السرّ
+5. نادِ الدالة عبر API Gateway من متصفح أو من `curl`
 
-Use the account ID `123456789012`, region `us-east-1`, and the `nodejs22.x` runtime.
+استخدم معرّف الحساب `123456789012`، والمنطقة `us-east-1`، وبيئة التشغيل `nodejs22.x`.
 
-## Store the Secret in Parameter Store
+## تخزين السرّ في Parameter Store
 
-Create a SecureString parameter at the path `/my-frontend-app/production/third-party-api-key`. Use any value you want for the secret—something like `sk_test_exercise_abc123` is fine.
+أنشئ مُعامل SecureString في المسار `/my-frontend-app/production/third-party-api-key`. استخدم أي قيمة تريدها للسرّ—شيء مثل `sk_test_exercise_abc123` كافٍ.
 
-Use `aws ssm put-parameter` with:
+استخدم `aws ssm put-parameter` مع:
 
-- `--name` set to the full path
-- `--value` set to your test API key
-- `--type` set to `SecureString`
+- `--name` مضبوطًا على المسار الكامل
+- `--value` مضبوطًا على مفتاح API التجريبي الخاص بك
+- `--type` مضبوطًا على `SecureString`
 - `--region us-east-1`
 
-After creating it, verify the parameter exists by retrieving it with `aws ssm get-parameter`. Make sure to include the flag that decrypts the value—without it, you’ll see ciphertext instead of your key.
+بعد إنشائه، تحقّق من وجود المُعامل باسترجاعه بـ`aws ssm get-parameter`. واحرص على تضمين العلم الذي يفكّ تشفير القيمة—فبدونه سترى نصًا مشفّرًا بدلًا من مفتاحك.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws ssm get-parameter --name "/my-frontend-app/production/third-party-api-key" --with-decryption --region us-east-1 --output json` returns your parameter with the decrypted value.
+`aws ssm get-parameter --name "/my-frontend-app/production/third-party-api-key" --with-decryption --region us-east-1 --output json` يعيد مُعاملك مع القيمة مفكوكة التشفير.
 
-## Write the Lambda Handler
+## كتابة معالج Lambda
 
-Create a Lambda project (or reuse the one from the [Lambda Function Exercise](https://stevekinney.com/courses/aws/lambda-function-exercise)) with the following dependencies:
+أنشئ مشروع Lambda (أو أعد استخدام المشروع من [تمرين دالة Lambda](https://stevekinney.com/courses/aws/lambda-function-exercise)) بالاعتماديات التالية:
 
 ```bash
 npm install @aws-sdk/client-ssm
 npm install -D typescript @types/aws-lambda @types/node
 ```
 
-Write a handler in `src/handler.ts` that:
+اكتب معالجًا في `src/handler.ts` يقوم بما يلي:
 
-1. Imports `SSMClient` and `GetParameterCommand` from `@aws-sdk/client-ssm`
-2. Creates the SSM client at module level
-3. Declares a module-level variable for the cached API key
-4. Defines an async `loadConfig` function that fetches the parameter (with decryption) and caches it—but skips the fetch if the value is already cached
-5. Calls `loadConfig()` at the top of the handler
-6. Returns a JSON response with a `message` and the first 7 characters of the API key (to prove the function can read it without exposing the full value)
+1. يستورد `SSMClient` و`GetParameterCommand` من `@aws-sdk/client-ssm`
+2. ينشئ عميل SSM على مستوى الوحدة
+3. يعلن متغيّرًا على مستوى الوحدة لمفتاح API المخزّن مؤقتًا
+4. يعرّف دالة غير متزامنة `loadConfig` تجلب المُعامل (مع فك التشفير) وتخزّنه مؤقتًا—لكنها تتخطى الجلب إن كانت القيمة مخزّنة بالفعل
+5. ينادي `loadConfig()` في أعلى المعالج
+6. يعيد استجابة JSON تحتوي على `message` وعلى أول 7 أحرف من مفتاح API (لإثبات أن الدالة تستطيع قراءته دون كشف القيمة كاملة)
 
-Use the `APIGatewayProxyHandlerV2` type for the handler.
+استخدم النوع `APIGatewayProxyHandlerV2` للمعالج.
 
-Build the project and verify it compiles without errors.
+ابنِ المشروع وتحقّق من أنه يُترجَم بلا أخطاء.
 
-### Checkpoint
+### نقطة تحقق
 
-Running `npm run build` produces `dist/handler.js` with no TypeScript errors.
+تشغيل `npm run build` ينتج `dist/handler.js` دون أخطاء TypeScript.
 
-## Update the Execution Role
+## تحديث دور التنفيذ
 
-Your Lambda execution role (`my-frontend-app-lambda-role`) needs two new permissions:
+يحتاج دور تنفيذ Lambda الخاص بك (`my-frontend-app-lambda-role`) إلى صلاحيتين جديدتين:
 
-1. **`ssm:GetParameter`** on the specific parameter ARN. Remember: the ARN for a parameter named `/my-frontend-app/production/third-party-api-key` is `arn:aws:ssm:us-east-1:123456789012:parameter/my-frontend-app/production/third-party-api-key`. Note the path in the ARN doesn’t double the leading slash.
-2. **`kms:Decrypt`** on the AWS-managed SSM KMS key, so the function can decrypt the SecureString value.
+1. **`ssm:GetParameter`** على ARN المُعامل المحدد. تذكّر: ARN المُعامل المسمّى `/my-frontend-app/production/third-party-api-key` هو `arn:aws:ssm:us-east-1:123456789012:parameter/my-frontend-app/production/third-party-api-key`. لاحظ أن المسار في ARN لا يضاعف الشرطة المائلة الأولى.
+2. **`kms:Decrypt`** على مفتاح KMS الذي تديره AWS لخدمة SSM، حتى تستطيع الدالة فك تشفير قيمة SecureString.
 
-Write a policy JSON file and attach it to the execution role using `aws iam put-role-policy` (inline policy) or `aws iam create-policy` followed by `aws iam attach-role-policy` (managed policy). For this exercise, prefer the **inline** approach—the policy is specific to this one role and doesn’t need to be shared, which matches the pattern used in [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions). Managed policies are the right choice when the same policy is reused across multiple roles.
+اكتب ملف JSON للسياسة وأرفقه بدور التنفيذ باستخدام `aws iam put-role-policy` (سياسة مضمّنة) أو `aws iam create-policy` متبوعًا بـ`aws iam attach-role-policy` (سياسة مُدارة). في هذا التمرين، فضّل النهج **المضمّن**—فالسياسة خاصة بهذا الدور وحده ولا تحتاج إلى مشاركتها، وهذا يطابق النمط المستخدم في [أدوار وصلاحيات تنفيذ Lambda](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions). أما السياسات المُدارة فهي الخيار الصحيح عندما تُعاد السياسة نفسها عبر أدوار متعددة.
 
-Verify the policy is attached by listing the role’s policies.
+تحقّق من إرفاق السياسة بسرد سياسات الدور.
 
-### Checkpoint
+### نقطة تحقق
 
-The execution role has a policy that grants `ssm:GetParameter` on the specific parameter ARN and `kms:Decrypt` on the KMS key.
+لدور التنفيذ سياسة تمنح `ssm:GetParameter` على ARN المُعامل المحدد و`kms:Decrypt` على مفتاح KMS.
 
-## Deploy and Invoke
+## النشر والاستدعاء
 
-Package and deploy the Lambda function:
+حزّم دالة Lambda وانشرها:
 
-1. Build the TypeScript project
-2. Zip the contents of the `dist/` directory (plus `node_modules/`—bundle `@aws-sdk/client-ssm` even though the runtime includes it, so you control the exact SDK version rather than relying on whatever AWS pins in the runtime)
-3. Create or update the Lambda function
+1. ابنِ مشروع TypeScript
+2. اضغط محتويات مجلد `dist/` (مع `node_modules/`—احزم `@aws-sdk/client-ssm` رغم أن بيئة التشغيل تتضمنه، حتى تتحكم في نسخة SDK الدقيقة بدلًا من الاعتماد على ما تثبّته AWS في بيئة التشغيل)
+3. أنشئ دالة Lambda أو حدّثها
 
-> **Tip**
+> **نصيحة**
 >
-> If you already have a function named `my-frontend-app-api` from a previous exercise, use `aws lambda update-function-code` instead of `create-function`.
+> إن كان لديك بالفعل دالة باسم `my-frontend-app-api` من تمرين سابق، فاستخدم `aws lambda update-function-code` بدلًا من `create-function`.
 
-Invoke the function with a test event:
+استدعِ الدالة بحدث اختبار:
 
 ```bash
 aws lambda invoke \
@@ -106,25 +106,25 @@ aws lambda invoke \
   response.json
 ```
 
-Read the response file and verify the function returned the first 7 characters of your API key.
+اقرأ ملف الاستجابة وتحقّق من أن الدالة أعادت أول 7 أحرف من مفتاح API الخاص بك.
 
-### Checkpoint
+### نقطة تحقق
 
-The response file contains a 200 status code and a body with a message confirming the secret was loaded. The key prefix matches the first 7 characters of the value you stored.
+يحتوي ملف الاستجابة على رمز حالة 200 وجسم يحمل رسالة تؤكد تحميل السرّ. وتطابق بادئة المفتاح أول 7 أحرف من القيمة التي خزّنتها.
 
-## Test Through API Gateway
+## الاختبار عبر API Gateway
 
-If you have an API Gateway HTTP API from [Connecting API Gateway to Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda), add a route that points to this function—or invoke the existing endpoint if the function is already wired up.
+إن كانت لديك واجهة HTTP API في API Gateway من [توصيل API Gateway بـ Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)، فأضف مسارًا يشير إلى هذه الدالة—أو استدعِ نقطة النهاية الموجودة إن كانت الدالة موصولة بالفعل.
 
-If you don’t have an API Gateway set up, you can test with the CLI invocation from the previous section. The API Gateway integration is a stretch goal.
+وإن لم يكن لديك API Gateway مُعدّ، فيمكنك الاختبار باستدعاء سطر الأوامر من القسم السابق. وتكامل API Gateway هدف إضافي.
 
-### Checkpoint
+### نقطة تحقق
 
-A `curl` request to your API Gateway endpoint returns the JSON response with the secret loaded successfully.
+طلب `curl` إلى نقطة نهاية API Gateway يعيد استجابة JSON وقد حُمّل السرّ بنجاح.
 
-## Verify the Secret Isn’t in Environment Variables
+## التحقق من أن السرّ ليس في متغيّرات البيئة
 
-Run `get-function-configuration` and confirm the API key is **not** in the environment variables:
+شغّل `get-function-configuration` وتأكد من أن مفتاح API **ليس** ضمن متغيّرات البيئة:
 
 ```bash
 aws lambda get-function-configuration \
@@ -134,31 +134,31 @@ aws lambda get-function-configuration \
   --output json
 ```
 
-The output should show your non-sensitive configuration (like `TABLE_NAME`) but not the API key. The API key lives in Parameter Store, accessible only through the SDK with proper IAM permissions.
+ينبغي أن يُظهر الناتج إعدادك غير الحساس (مثل `TABLE_NAME`) دون مفتاح API. فمفتاح API يعيش في Parameter Store، ولا يمكن الوصول إليه إلا عبر SDK بصلاحيات IAM مناسبة.
 
-### Checkpoint
+### نقطة تحقق
 
-The function’s environment variables don’t contain the API key. The key exists only in Parameter Store.
+متغيّرات بيئة الدالة لا تحتوي على مفتاح API. فالمفتاح موجود في Parameter Store فقط.
 
-## Checkpoints Summary
+## ملخص نقاط التحقق
 
-- SecureString parameter exists at `/my-frontend-app/production/third-party-api-key`
-- `aws ssm get-parameter` with `--with-decryption` returns the correct value
-- Lambda handler compiles and reads the parameter using `SSMClient`
-- Execution role has `ssm:GetParameter` and `kms:Decrypt` permissions
-- Function invocation returns the first 7 characters of the API key
-- The API key does **not** appear in the function’s environment variables
+- مُعامل SecureString موجود في `/my-frontend-app/production/third-party-api-key`
+- `aws ssm get-parameter` مع `--with-decryption` يعيد القيمة الصحيحة
+- معالج Lambda يُترجَم ويقرأ المُعامل باستخدام `SSMClient`
+- دور التنفيذ لديه صلاحيتا `ssm:GetParameter` و`kms:Decrypt`
+- استدعاء الدالة يعيد أول 7 أحرف من مفتاح API
+- مفتاح API **لا** يظهر في متغيّرات بيئة الدالة
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **The handler throws an access error when reading the parameter:** The execution role is missing either `ssm:GetParameter` for the parameter path or `kms:Decrypt` for the key protecting the SecureString.
-- **The deployment succeeds but the function returns `undefined` or a stale value:** The parameter name in code does not match the stored path, or you updated the parameter but never redeployed the code that references it.
-- **The secret still appears in the function configuration:** You solved the fetch path but kept the old environment variable in place. Remove the secret from Lambda configuration entirely so Parameter Store is the only source of truth.
+- **المعالج يرمي خطأ وصول عند قراءة المُعامل:** دور التنفيذ تفتقده إما `ssm:GetParameter` لمسار المُعامل أو `kms:Decrypt` للمفتاح الذي يحمي SecureString.
+- **النشر ينجح لكن الدالة تعيد `undefined` أو قيمة قديمة:** اسم المُعامل في الشيفرة لا يطابق المسار المخزّن، أو أنك حدّثت المُعامل لكنك لم تعِد نشر الشيفرة التي تشير إليه.
+- **السرّ لا يزال يظهر في إعداد الدالة:** لقد أصلحت مسار الجلب لكنك أبقيت متغيّر البيئة القديم في مكانه. أزل السرّ من إعداد Lambda كليًا حتى يكون Parameter Store المصدر الوحيد للحقيقة.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Fetch multiple parameters with `GetParametersByPath`.** Store a second parameter at `/my-frontend-app/production/api-endpoint` as a plain `String`. Modify the handler to use `GetParametersByPathCommand` to load all parameters under `/my-frontend-app/production/` in a single call. Verify both values appear in the response.
-- **Add a cache TTL.** Modify the `loadConfig` function to re-fetch the parameter after 5 minutes instead of caching indefinitely. Test by updating the parameter value in Parameter Store and invoking the function after the TTL expires.
-- **Try the Lambda extension.** Add the AWS Parameters and Secrets Lambda Extension layer to your function. Modify the handler to fetch the parameter via `http://localhost:2773` instead of the SDK. Compare the cold start duration with and without the extension.
+- **جلب عدة مُعاملات باستخدام `GetParametersByPath`.** خزّن مُعاملًا ثانيًا في `/my-frontend-app/production/api-endpoint` على هيئة `String` عادي. عدّل المعالج ليستخدم `GetParametersByPathCommand` لتحميل كل المُعاملات تحت `/my-frontend-app/production/` في استدعاء واحد. تحقّق من ظهور القيمتين في الاستجابة.
+- **أضف مدة صلاحية للتخزين المؤقت.** عدّل دالة `loadConfig` لتعيد جلب المُعامل بعد 5 دقائق بدلًا من تخزينه مؤقتًا إلى ما لا نهاية. اختبر ذلك بتحديث قيمة المُعامل في Parameter Store ثم استدعاء الدالة بعد انتهاء مدة الصلاحية.
+- **جرّب امتداد Lambda.** أضف طبقة AWS Parameters and Secrets Lambda Extension إلى دالتك. عدّل المعالج ليجلب المُعامل عبر `http://localhost:2773` بدلًا من SDK. قارن مدة البدء البارد مع الامتداد وبدونه.
 
-When you’re ready, check your work against the [Solution: Store and Retrieve a Secret in Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-solution).
+حين تكون جاهزًا، تحقّق من عملك مقابل [الحل: تخزين سرّ واسترجاعه في Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-solution).

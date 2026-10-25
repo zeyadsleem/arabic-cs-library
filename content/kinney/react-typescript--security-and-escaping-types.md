@@ -1,18 +1,18 @@
 ---
-title: "Security and Escaping Types"
-lang: en
+title: "الأمن وأنواع التهريب"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/security-and-escaping-types"
 ---
 
-Cross-Site Scripting (XSS) attacks remain one of the most common web security vulnerabilities, and React applications aren’t immune. While React’s JSX provides some built-in protections by escaping values by default, there are still plenty of ways to shoot yourself in the foot—especially when dealing with user-generated content, third-party APIs, or that seemingly innocent `dangerouslySetInnerHTML` prop. Let’s explore how TypeScript can help us build safer React applications by creating type-safe abstractions for handling untrusted content.
+لا تزال هجمات البرمجة العابرة للموقع (XSS) واحدة من أكثر ثغرات أمن الويب شيوعًا، وتطبيقات React ليست بمنأى منها. ولأنّ JSX في React يوفّر بعض الحماية المدمجة عبر تهريب القيم افتراضيًا، ما زالت هناك طرق كثيرة لإيذاء نفسك — خاصةً عند التعامل مع المحتوى الذي ينشئه المستخدم، أو واجهات برمجية من طرف ثالث، أو تلك الخاصية التي تبدو بريئة `dangerouslySetInnerHTML`. لنستكشف كيف يمكن لـ TypeScript أن يساعدنا في بناء تطبيقات React أكثر أمانًا عبر إنشاء تجريدات آمنة من حيث الأنواع للتعامل مع المحتوى غير الموثوق.
 
-By the end of this guide, you’ll understand how to use TypeScript’s type system to enforce proper sanitization, create safe wrappers around dangerous operations, and build a mental model for thinking about trusted vs. untrusted data throughout your application.
+وفي نهاية هذا الدليل ستفهم كيف تستعمل نظام أنواع TypeScript لإلزام التنقية الصحيحة، وكيف تصنع أغلفة آمنة حول العمليات الخطرة، وكيف تبني نموذجًا ذهنيًا للتفكير في البيانات الموثوقة مقابل غير الموثوقة في كل أنحاء تطبيقك.
 
-## The Problem with Trust
+## المشكلة مع الثقة
 
-Before we dive into solutions, let’s establish the core issue: in a web application, not all strings are created equal. Some strings are safe to render directly, while others need to be sanitized or escaped first.
+قبل أن نغوص في الحلول، لنُرسِخ المشكلة الجوهرية: في تطبيق ويب، لا كل السلاسل متساوية. بعض السلاسل آمنة للتصيير مباشرةً، بينما يحتاج بعضها إلى تنقية أو تهريب أولًا.
 
-Consider this perfectly innocent-looking React component:
+تأمّل هذا المكوّن في React الذي يبدو بريئًا تمامًا:
 
 ```typescript
 // ❌ Dangerous - what if content contains <script> tags?
@@ -21,9 +21,9 @@ function UserProfile({ bio }: { bio: string }) {
 }
 ```
 
-If `bio` contains something like `<script>alert('XSS!');</script>`, you’ve just executed arbitrary JavaScript in your user’s browser. Not ideal.
+إذا احتوى `bio` على شيء مثل `<script>alert('XSS!');</script>`، فقد نفّذت للتوّ شيفرة JavaScript عشوائية في متصفّح المستخدم. ليس مثاليًا.
 
-The traditional approach is to remember to sanitize inputs manually:
+النهج التقليدي هو أن تتذكّر أن تنقّي المدخلات يدويًا:
 
 ```typescript
 import DOMPurify from 'dompurify';
@@ -35,13 +35,13 @@ function UserProfile({ bio }: { bio: string }) {
 }
 ```
 
-This works, but it relies on developer discipline. What happens when someone adds a new component six months from now and forgets the sanitization step? TypeScript can help us make this mistake impossible.
+هذا يعمل، لكنه يعتمد على انضباط المطوّر. وماذا يحدث عندما يضيف أحدهم مكوّنًا جديدًا بعد ستّة أشهر ويتّنسى خطوة التنقية؟ يمكن لـ TypeScript أن يساعدنا في جعل هذا الخطأ مستحيلًا.
 
-## Modeling Trust with Types
+## نمذجة الثقة عبر الأنواع
 
-The key insight is that we can use TypeScript’s type system to distinguish between trusted and untrusted strings. Once a string has been properly sanitized, we’ll wrap it in a branded type that can only be created through safe operations.
+الفكرة المحورية أنّنا يمكننا استعمال نظام أنواع TypeScript للتمييز بين السلاسل الموثوقة وغير الموثوقة. وبعد أن تُنقّى السلسلة تنقيةً سليمة، سنغلّفها في نوع موسوم (branded) لا يمكن إنشاؤه إلّا عبر عمليات آمنة.
 
-Let’s start by defining our core types:
+لنبدأ بتعريف أنواعنا الأساسية:
 
 ```typescript
 // Brand types to distinguish trusted from untrusted content
@@ -55,9 +55,9 @@ export function untrusted(value: string): UntrustedString {
 }
 ```
 
-These are **branded types**—they’re still strings at runtime, but TypeScript treats them as distinct types. The `__brand` property exists only in the type system and helps prevent accidental mixing of trusted and untrusted content.
+هذه **أنواع موسومة** — ما زالت نصوصًا وقت التشغيل، لكنّ TypeScript يتعامل معها كأنواع متمايزة. وخاصية `__brand` موجودة في نظام الأنواع وحده، وتساعد على منع الخلط العرضي بين المحتوى الموثوق وغير الموثوق.
 
-Now we can create functions that safely transform untrusted content into trusted content:
+الآن يمكننا إنشاء دوالّ تحوّل المحتوى غير الموثوق إلى محتوى موثوق بأمان:
 
 ```typescript
 import DOMPurify from 'dompurify';
@@ -83,9 +83,9 @@ export function escapeText(content: UntrustedString): TrustedText {
 }
 ```
 
-## Type-Safe HTML Rendering
+## تصيير HTML الآمن من حيث الأنواع
 
-Now we can create a component that only accepts trusted HTML:
+الآن يمكننا إنشاء مكوّن يقبل HTML موثوقًا فقط:
 
 ```typescript
 interface SafeHtmlProps {
@@ -98,7 +98,7 @@ function SafeHtml({ content, className }: SafeHtmlProps) {
 }
 ```
 
-The beauty of this approach is that `SafeHtml` can only be used with content that has been explicitly sanitized:
+جمال هذا النهج أنّ `SafeHtml` لا يمكن استعماله إلّا مع محتوى تنقيته صراحةً:
 
 ```typescript
 function UserProfile({ bio }: { bio: string }) {
@@ -114,9 +114,9 @@ function BrokenProfile({ bio }: { bio: string }) {
 }
 ```
 
-## Handling Form Inputs Safely
+## التعامل الآمن مع مدخلات النماذج
 
-Form inputs are another common source of XSS vulnerabilities. Let’s create a type-safe pattern for handling user input:
+مدخلات النماذج مصدر شائع آخر لثغرات XSS. لنصنع نمطًا آمنًا من حيث الأنواع للتعامل مع إدخال المستخدم:
 
 ```typescript
 interface FormData {
@@ -174,9 +174,9 @@ function UserForm() {
 }
 ```
 
-## Email Validation with Safety
+## التحقّق من البريد الإلكتروني بأمان
 
-Here’s how we might implement that `validateEmail` function with proper error handling:
+إليك كيف يمكننا تنفيذ دالة `validateEmail` تلك مع معالجة أخطاء سليمة:
 
 ```typescript
 export class ValidationError extends Error {
@@ -201,9 +201,9 @@ export function validateEmail(email: UntrustedString): TrustedText {
 }
 ```
 
-## Real-World Integration with APIs
+## التكامل مع واجهات البرمجة في العالم الحقيقي
 
-When working with external APIs, you often can’t trust the data you receive. Here’s how to handle API responses safely:
+عند العمل مع واجهات برمجية خارجية، غالبًا ما لا يمكنك الوثوق بالبيانات التي تتلقّاها. وإليك كيف تتعامل مع استجابات الواجهات البرمجية بأمان:
 
 ```typescript
 import { z } from 'zod';
@@ -244,11 +244,11 @@ async function fetchUser(userId: number): Promise<{
 }
 ```
 
-This approach combines Zod’s runtime validation with our security types, ensuring that data is both structurally correct and properly sanitized.
+يجمع هذا النهج بين تحقّق Zod وقت التشغيل وأنواع الأمان لدينا، بما يضمن أنّ البيانات صحيحة بنيويًا ومنقّاة تنقيةً سليمة في آنٍ واحد.
 
-## Advanced: Content Security Policies
+## متقدّم: سياسات أمن المحتوى
 
-For additional security, consider implementing Content Security Policy (CSP) headers alongside your type-safe sanitization:
+لأمان إضافي، فكّر في تنفيذ ترويسات سياسة أمن المحتوى (CSP) إلى جانب تنقيتك الآمنة من حيث الأنواع:
 
 ```typescript
 // In your HTML head or Next.js app
@@ -263,11 +263,11 @@ const cspDirectives = [
 // Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; ...
 ```
 
-CSP acts as a second line of defense—even if malicious content somehow makes it through your sanitization, the browser will block its execution.
+تعمل CSP كخطّ دفاع ثانٍ — حتى لو تسلّل المحتوى الخبيث بشكلٍ ما عبر تنقيتك، فسيحظر المتصفّح تنفيذه.
 
-## Utility Functions for Common Cases
+## دوالّ مساعدة للحالات الشائعة
 
-Here are some handy utilities you might want in your security toolkit:
+إليك بعض الدوالّ العملية التي قد ترغب في وجودها في حقيبة أدوات الأمان لديك:
 
 ```typescript
 // Create trusted content from compile-time constants
@@ -295,9 +295,9 @@ const userContent = sanitizeHtml(untrusted(userInput));
 const combined = html`<div>${staticContent}${userContent}</div>`;
 ```
 
-## Testing Your Security Measures
+## اختبار إجراءاتك الأمنية
 
-Don’t forget to test your sanitization logic! Here are some common XSS payloads to test against:
+لا تنسَ اختبار منطق التنقية لديك! وإليك بعض حمولات XSS الشائعة التي يمكنك الاختبار مقابلها:
 
 ```typescript
 // security.test.ts
@@ -331,13 +331,13 @@ describe('sanitization', () => {
 });
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Sanitization isn’t free—DOMPurify needs to parse and clean HTML, which can be expensive for large content. Consider these optimizations:
+التنقية ليست مجّانية — يحتاج DOMPurify إلى تحليل HTML وتنظيفه، وقد يكون ذلك مكلفًا مع المحتوى الكبير. فكّر في هذه التحسينات:
 
-- **Memoization**: Cache sanitized content to avoid re-processing
-- **Lazy sanitization**: Only sanitize content when it’s actually displayed
-- **Server-side sanitization**: Clean content once on the server rather than on every client render
+- **التخزين المؤقت (memoization)**: خزّن المحتوى المنقّى مؤقتًا لتفادي إعادة معالجته
+- **التنقية الكسولة (lazy sanitization)**: لا تنقِّ المحتوى إلّا عندما يُعرض فعلًا
+- **التنقية في الخادم**: نظّف المحتوى مرّة واحدة في الخادم بدلًا من كل تصيير في العميل
 
 ```typescript
 import { useMemo } from 'react';
@@ -350,20 +350,20 @@ function OptimizedUserProfile({ bio }: { bio: string }) {
 }
 ```
 
-## What We’ve Accomplished
+## ما أنجزناه
 
-By leveraging TypeScript’s type system, we’ve created a security model that:
+بالاستفادة من نظام أنواع TypeScript، أنشأنا نموذج أمان:
 
-- **Makes unsafe operations explicit** through branded types
-- **Forces sanitization** before dangerous operations like `dangerouslySetInnerHTML`
-- **Provides clear boundaries** between trusted and untrusted data
-- **Integrates with existing validation** libraries like Zod
-- **Scales across your application** without relying on developer discipline
+- **يجعل العمليات غير الآمنة صريحة** عبر الأنواع الموسومة
+- **يفرض التنقية** قبل العمليات الخطرة مثل `dangerouslySetInnerHTML`
+- **يوفّر حدودًا واضحة** بين البيانات الموثوقة وغير الموثوقة
+- **يندمج مع مكتبات التحقّق** القائمة مثل Zod
+- **يتّسع عبر تطبيقك** دون الاعتماد على انضباط المطوّر
 
-> **Tip**
+> **تلميح**
 >
-> Start by identifying all the places in your app where untrusted content enters the system—form inputs, API responses, URL parameters, localStorage values. These are your security boundaries.
+> ابدأ بتحديد كل المواضع في تطبيقك التي يدخل فيها المحتوى غير الموثوق إلى النظام — مدخلات النماذج، استجابات الواجهات البرمجية، معاملات URL، قيم localStorage. هذه هي حدودك الأمنية.
 
-The type system won’t catch every possible security issue, but it will eliminate the most common XSS vulnerabilities by making unsafe operations impossible to perform accidentally. Combined with proper testing, CSP headers, and security-minded code review, you’ll have a robust defense against client-side attacks.
+لن يلتقط نظام الأنواع كل مشكلة أمنية ممكنة، لكنّه سيُلغي أكثر ثغرات XSS شيوعًا بجعل تنفيذ العمليات غير الآمنة بالخطأ مستحيلًا. ومع الاختبارات الصحيحة وترويسات CSP ومراجعة الشيفرة بعقلية أمنية، تملك دفاعًا متينًا ضد هجمات العميل.
 
-Remember: security is about defense in depth. Types are one layer—make sure you’re thinking holistically about your application’s security posture.
+وتذكّر: الأمن هو الدفاع متعدّد الطبقات. الأنواع طبقة واحدة — تأكّد من التفكير شموليًا في الوضع الأمني لتطبيقك.

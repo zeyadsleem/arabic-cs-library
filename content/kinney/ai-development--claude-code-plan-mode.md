@@ -1,47 +1,42 @@
 ---
-title: "Plan Mode"
-lang: en
+title: "وضع الخطة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-plan-mode"
 ---
 
-Plan mode in [Claude Code](https://code.claude.com/docs/en/permissions) is a
-permission boundary. It lets Claude inspect and reason without immediately
-editing files.
+وضع الخطة في [Claude Code](https://code.claude.com/docs/en/permissions) هو حدّ صلاحيات. فهو يتيح لـ Claude الفحص والاستدلال دون تعديل الملفات فورًا.
 
-Use it when the task is unclear, risky, or broad.
+استخدمه عندما تكون المهمة غير واضحة أو محفوفة بالمخاطر أو واسعة.
 
-## What Plan Mode Should Produce
+## ما ينبغي أن ينتجه وضع الخطة
 
-A useful plan includes:
+تتضمن الخطة المفيدة:
 
-- The files Claude inspected.
-- The implementation options.
-- The chosen path and why it is smallest.
-- The files expected to change.
-- The verification commands.
-- The stop conditions.
+- الملفات التي فحصها Claude.
+- خيارات التنفيذ.
+- المسار المختار وسبب كونه الأصغر.
+- الملفات المتوقع تغيّرها.
+- أوامر التحقق.
+- شروط التوقف.
 
-Prompt:
+الطلب:
 
 ```
 Enter plan mode. Research the smallest safe way to add refresh-token rotation.
 Compare at most two implementation paths. Do not edit files.
 ```
 
-## Approving the Plan
+## الموافقة على الخطة
 
-Before switching from planning to implementation, check the file list and
-verification command. If either is missing, the plan is not ready.
+قبل الانتقال من التخطيط إلى التنفيذ، تحقّق من قائمة الملفات وأمر التحقق. وإذا كان أحدهما مفقودًا، فالخطة غير جاهزة.
 
-Good handoff:
+تسليم جيد:
 
 ```
 Implement option B only. Write the regression test first. Run the targeted test
 and bun run lint. Stop on unrelated failures.
 ```
 
-## Plan Mode Versus Opus Plan
+## وضع الخطة مقابل خطة Opus
 
-Plan mode controls permissions. `opusplan` controls model routing. They combine
-well for complex tasks, but they solve different problems. Plan mode says “do
-not edit yet.” `opusplan` says “use a stronger model for planning.”
+يتحكم وضع الخطة بالصلاحيات. أما `opusplan` فيتحكم بتوجيه النموذج. وهما يجتمعان جيدًا للمهام المعقّدة، لكنهما يحلّان مشكلتين مختلفتين. فوضع الخطة يقول «لا تعدّل بعد». و`opusplan` يقول «استخدم نموذجًا أقوى للتخطيط».

@@ -1,24 +1,24 @@
 ---
-title: "Avoiding Over Memoization"
-lang: en
+title: "تجنّب الإفراط في حفظ النتائج"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/avoiding-over-memoization"
 ---
 
-React’s memoization hooks are powerful performance tools. But like any tool, you can absolutely overuse them. When you memoize everything “just to be safe,” you might actually make your app slower. This guide focuses on identifying and avoiding over-memoization anti-patterns.
+خُطّافات حفظ النتائج في React أدوات أداء قوية. لكنك، كما هو الحال مع أي أداة، قد تفرط في استخدامها تمامًا. فعندما تحفظ نتائج كل شيء «احتياطًا»، فقد تجعل تطبيقك أبطأ في الواقع. يركّز هذا الدليل على تحديد أنماط الإفراط في حفظ النتائج وتجنّبها.
 
-For API details, see [useMemo and useCallback in React 19](https://stevekinney.com/courses/react-performance/usememo-usecallback-in-react-19). For component memoization, see [React.memo in React 19 and the Compiler Era](https://stevekinney.com/courses/react-performance/react-memo-react-19-and-compiler-era).
+للاطلاع على تفاصيل الواجهة البرمجية، راجع [useMemo وuseCallback في React 19](https://stevekinney.com/courses/react-performance/usememo-usecallback-in-react-19). وللاطلاع على حفظ نتائج المكوّنات، راجع [React.memo في React 19 وعصر المترجم](https://stevekinney.com/courses/react-performance/react-memo-react-19-and-compiler-era).
 
-## The Memoization Tax
+## ضريبة حفظ النتائج
 
-Every time you use `useMemo` or `useCallback`, you’re asking React to:
+في كل مرة تستخدم فيها `useMemo` أو `useCallback`، فأنت تطلب من React أن:
 
-1. **Store** the previous inputs and result in memory
-2. **Compare** the current inputs to the previous ones (using shallow equality)
-3. **Decide** whether to return the cached result or compute a new one
+1. **يخزّن** المدخلات والنتيجة السابقتين في الذاكرة
+2. **يقارن** المدخلات الحالية بالسابقة (باستخدام التساوي السطحي)
+3. **يقرّر** ما إذا كان سيعيد النتيجة المخزّنة مؤقتًا أم يحسب نتيجة جديدة
 
-This isn’t free. You’re trading memory for computation time, and you’re adding comparison overhead on every render. Sometimes this trade is absolutely worth it—but sometimes you’re just paying rent on a cache you never needed.
+هذا ليس مجانيًا. فأنت تقايض الذاكرة بوقت الحساب، وتضيف تكلفة مقارنة في كل تصيير. وأحيانًا تستحقّ هذه المقايضة العناء تمامًا — لكنك أحيانًا تدفع إيجارًا لذاكرة مؤقتة لم تكن بحاجة إليها أبدًا.
 
-Here’s a classic example of over-memoization:
+إليك مثالًا كلاسيكيًا على الإفراط في حفظ النتائج:
 
 ```typescript
 // ❌ Unnecessary memoization
@@ -39,7 +39,7 @@ function UserProfile({ user }: { user: User }) {
 }
 ```
 
-What’s wrong here? Both memoizations are costing more than they save. String concatenation is incredibly fast, and the `console.log` function doesn’t depend on any props or state. The comparison overhead outweighs any benefit.
+ما الخطأ هنا؟ كلا الحفظين يكلّف أكثر مما يوفّر. فدمج النصوص سريع للغاية، ودالة `console.log` لا تعتمد على أي خصائص أو حالة. وتكلفة المقارنة تفوق أي فائدة.
 
 ```typescript
 // ✅ Just let it render
@@ -58,11 +58,11 @@ function UserProfile({ user }: { user: User }) {
 }
 ```
 
-## When Memoization Actually Helps
+## متى يفيد حفظ النتائج فعلًا
 
-Memoization shines when you have **expensive computations** or when you need **referential stability** to prevent unnecessary re-renders downstream. Here are the scenarios where it’s genuinely useful:
+يتألّق حفظ النتائج عندما تكون لديك **حسابات مكلفة** أو عندما تحتاج إلى **استقرار المراجع** لمنع إعادات التصيير غير الضرورية في المكوّنات التابعة. وهذه هي الحالات التي يفيد فيها فعلًا:
 
-### Expensive Calculations
+### الحسابات المكلفة
 
 ```typescript
 // ✅ Good use of useMemo
@@ -80,7 +80,7 @@ function DataAnalysis({ dataset }: { dataset: number[] }) {
 }
 ```
 
-### Preventing Child Re-renders
+### منع إعادة تصيير المكوّنات الأبناء
 
 ```typescript
 // ✅ memo prevents unnecessary re-renders
@@ -117,7 +117,7 @@ function Parent({ items, selectedId }: Props) {
 }
 ```
 
-### Stable References for Effect Dependencies
+### مراجع مستقرة لاعتمادات التأثيرات
 
 ```typescript
 // ✅ Prevents infinite re-renders
@@ -139,24 +139,24 @@ function DataFetcher({ userId, filters }: Props) {
 }
 ```
 
-## The Mental Model: Profile Before You Optimize
+## النموذج الذهني: قِس الأداء قبل أن تحسّن
 
-Instead of memoizing defensively, profile strategically. React’s built-in profiler (or tools like React DevTools Profiler) will show you:
+بدلًا من حفظ النتائج بشكل دفاعي، قِس الأداء باستراتيجية. فمحلّل الأداء (profiler) المدمج في React (أو أدوات مثل React DevTools Profiler) سيريك:
 
-- Which components render most frequently
-- How long each render takes
-- Whether child components are re-rendering unnecessarily
+- أي المكوّنات تُصيَّر بأكبر تكرار
+- كم يستغرق كل تصيير من الوقت
+- ما إذا كانت المكوّنات الأبناء يُعاد تصييرها بلا داعٍ
 
-Here’s a practical workflow:
+إليك سير عمل عمليًا:
 
-1. **Build first, memoize later**: Get your component working correctly
-2. **Profile suspicious areas**: Use React DevTools to identify actual bottlenecks
-3. **Measure before and after**: Confirm memoization actually helps
-4. **Focus on user-facing performance**: A component that renders in 0.1ms doesn’t need optimization
+1. **ابنِ أولًا، واحفظ النتائج لاحقًا**: اجعل مكوّنك يعمل بشكل صحيح
+2. **قِس المناطق المشبوهة**: استخدم React DevTools لتحديد الاختناقات الفعلية
+3. **قِس قبل وبعد**: تأكّد من أن حفظ النتائج يفيد فعلًا
+4. **ركّز على الأداء الذي يراه المستخدم**: المكوّن الذي يُصيَّر في 0.1ms لا يحتاج إلى تحسين
 
-## Common Over-Memoization Patterns to Avoid
+## أنماط الإفراط الشائعة في حفظ النتائج التي يجب تجنّبها
 
-### Memoizing Primitives and Simple Computations
+### حفظ القيم الأولية والحسابات البسيطة
 
 ```typescript
 // ❌ Not worth it
@@ -170,7 +170,7 @@ const message = `Hello ${name}`;
 const isEmpty = items.length === 0;
 ```
 
-### Memoizing Functions That Don’t Cause Re-renders
+### حفظ دوال لا تسبّب إعادة تصيير
 
 ```typescript
 // ❌ Callback doesn't prevent any re-renders
@@ -184,9 +184,9 @@ const handleSubmit = useCallback(
 return <form onSubmit={handleSubmit}>/* ... */</form>;
 ```
 
-If the form isn’t wrapped in `memo`, the callback optimization is pointless.
+إذا لم يكن النموذج ملفوفًا بـ `memo`، فتحسين دالة الاستدعاء بلا جدوى.
 
-### Memoizing Every Single Prop
+### حفظ كل خاصية على حدة
 
 ```typescript
 // ❌ Memoization overload
@@ -212,13 +212,13 @@ function TodoList({ todos, filter, sortBy }: Props) {
 }
 ```
 
-You’ve created a dependency chain where each memoized value depends on the previous one. Often, it’s cleaner and faster to compute these values directly or chain them in a single `useMemo`.
+لقد أنشأت سلسلة اعتمادات تعتمد فيها كل قيمة محفوظة على القيمة السابقة لها. وغالبًا ما يكون حساب هذه القيم مباشرة أو ربطها في `useMemo` واحد أنظف وأسرع.
 
-## Smart Memoization Strategies
+## استراتيجيات ذكية لحفظ النتائج
 
-### Selective Memoization
+### الحفظ الانتقائي
 
-Focus on the expensive parts:
+ركّز على الأجزاء المكلفة:
 
 ```typescript
 // ✅ Memoize only the expensive calculation
@@ -237,9 +237,9 @@ function ProductList({ products, searchTerm, priceRange }: Props) {
 }
 ```
 
-### Memoize at the Right Level
+### احفظ النتائج في المستوى الصحيح
 
-Sometimes the problem isn’t that you’re memoizing too much—it’s that you’re memoizing in the wrong place:
+أحيانًا لا تكون المشكلة في أنك تحفظ أكثر من اللازم، بل في أنك تحفظ في المكان الخطأ:
 
 ```typescript
 // ❌ Memoizing in every instance
@@ -261,15 +261,15 @@ function TodoItem({ todo }: { todo: Todo }) {
 }
 ```
 
-## React 19 and Automatic Optimization
+## React 19 والتحسين التلقائي
 
-For detailed information on how React 19’s compiler changes memoization needs, see [React.memo in React 19 and the Compiler Era](https://stevekinney.com/courses/react-performance/react-memo-react-19-and-compiler-era) and [useMemo and useCallback in React 19](https://stevekinney.com/courses/react-performance/usememo-usecallback-in-react-19).
+للحصول على معلومات مفصّلة عن كيفية تغيير مترجم React 19 لاحتياجات حفظ النتائج، راجع [React.memo في React 19 وعصر المترجم](https://stevekinney.com/courses/react-performance/react-memo-react-19-and-compiler-era) و[useMemo وuseCallback في React 19](https://stevekinney.com/courses/react-performance/usememo-usecallback-in-react-19).
 
-The key takeaway: The React Compiler will handle many optimizations automatically, making manual memoization less necessary over time.
+والخلاصة الأساسية: سيتولّى مترجم React كثيرًا من التحسينات تلقائيًا، ما يقلّل الحاجة إلى الحفظ اليدوي بمرور الوقت.
 
-## Measuring the Impact
+## قياس الأثر
 
-Here’s a simple way to measure whether your memoization is helping:
+إليك طريقة بسيطة لقياس ما إذا كان حفظ النتائج يفيدك:
 
 ```typescript
 function ExpensiveComponent({ data }: Props) {
@@ -285,15 +285,15 @@ function ExpensiveComponent({ data }: Props) {
 }
 ```
 
-If the timer consistently shows values under 1-2ms, you probably don’t need the memoization. If it’s showing 10ms+ on slower devices, keep it.
+إذا أظهر المؤقّت باستمرار قيمًا أقل من 1-2ms، فأنت على الأرجح لا تحتاج إلى حفظ النتائج. وإذا كان يُظهر 10ms أو أكثر على الأجهزة الأبطأ، فأبقِ عليه.
 
-## The Pragmatic Approach
+## المنهج العملي
 
-Instead of adding `useMemo` and `useCallback` everywhere, try this approach:
+بدلًا من إضافة `useMemo` و`useCallback` في كل مكان، جرّب هذا المنهج:
 
-1. **Start simple**: Write your components without any memoization
-2. **Profile when you notice slowness**: Use React DevTools to find actual performance issues
-3. **Memoize strategically**: Add memoization only where profiling shows it helps
-4. **Remove when in doubt**: If you can’t measure the benefit, remove the memoization
+1. **ابدأ ببساطة**: اكتب مكوّناتك دون أي حفظ للنتائج
+2. **قِس الأداء عندما تلاحظ بطئًا**: استخدم React DevTools للعثور على مشكلات الأداء الفعلية
+3. **احفظ النتائج باستراتيجية**: لا تضف الحفظ إلا حيث يُظهر القياس أنه يفيد
+4. **أزِله عند الشك**: إذا لم تستطع قياس الفائدة، فأزل الحفظ
 
-Remember: premature optimization is the root of all evil, but so is ignoring real performance problems. The key is finding the balance—and that balance usually involves less memoization than you might think.
+تذكّر: التحسين قبل الأوان أصل كل الشرور، لكن تجاهل مشكلات الأداء الحقيقية كذلك. والمفتاح هو إيجاد التوازن — وعادة ما يتضمّن هذا التوازن حفظًا أقل للنتائج مما قد تظن.

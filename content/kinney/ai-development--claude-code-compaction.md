@@ -1,48 +1,38 @@
 ---
-title: "Compacting"
-lang: en
+title: "الضغط (Compaction)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-compaction"
 ---
 
-When a [Claude Code](https://code.claude.com/docs/en/overview) session gets long
-enough that nobody can remember which decision mattered, compaction starts to
-look attractive. It summarizes the session so work can continue with less
-context. That helps, but it is still compression. Details can be lost.
+عندما تطول جلسة [Claude Code](https://code.claude.com/docs/en/overview) إلى حدّ لا يتذكّر فيه أحد أي قرار كان مهمًا، يبدأ الضغط يبدو جاذبًا. فهو يلخّص الجلسة كي يستمر العمل بسياق أقل. وهذا يساعد، لكنه يبقى ضغطًا. وقد تضيع التفاصيل.
 
-## What to Preserve Before Compacting
+## ما يجب الحفاظ عليه قبل الضغط
 
-Before a long task compacts, make sure the important state is in the filesystem:
+قبل أن تُضغط مهمة طويلة، تأكد من أن الحالة المهمة موجودة في نظام الملفات:
 
-- The plan is written in a file or reflected in tests.
-- The branch diff is coherent.
-- Verification commands are known.
-- Blockers are documented with command output.
-- Decisions are captured in `CLAUDE.md`, rules, skills, or project
-documentation when they need to persist.
+- الخطة مكتوبة في ملف أو منعكسة في الاختبارات.
+- فرق الفرع متماسك.
+- أوامر التحقق معروفة.
+- العوائق موثّقة مع مخرَج الأوامر.
+- القرارات مسجّلة في `CLAUDE.md` أو القواعد أو المهارات أو توثيق المشروع حين تحتاج إلى البقاء.
 
-If a future session needs to remember a subtle decision, put that decision in a
-file before compaction.
+وإذا احتاجت جلسة مستقبلية إلى تذكّر قرار دقيق، فضع ذلك القرار في ملف قبل الضغط.
 
-## Manual Compaction
+## الضغط اليدوي
 
-Use compaction when the session is still on the same goal but the context is
-getting noisy. After compaction, ask Claude to restate:
+استخدم الضغط عندما تظل الجلسة على الهدف نفسه لكن السياق يصير مشوّشًا. وبعد الضغط، اطلب من Claude أن يعيد بيان:
 
 ```
 Restate the goal, files changed, remaining tasks, and verification commands.
 Do not edit files.
 ```
 
-Compare that answer with `git diff` and the task plan before continuing.
+وقارن تلك الإجابة بـ `git diff` وخطة المهمة قبل المتابعة.
 
-## Hooks Around Compaction
+## الخطّافات حول الضغط
 
-Claude Code exposes hook events around compaction. Use them sparingly for
-auditing or preserving status, not for hiding critical project state in an
-invisible automation.
+يكشف Claude Code أحداث خطّافات حول الضغط. استخدمها باعتدال للتدقيق أو الحفاظ على الحالة، لا لإخفاء حالة مشروع حساسة في أتمتة غير مرئية.
 
-## Large Context Is Not a Replacement
+## السياق الكبير ليس بديلًا
 
-Large-context model aliases such as [`sonnet[1m]`](https://code.claude.com/docs/en/model-config) and [`opus[1m]`](https://code.claude.com/docs/en/model-config) can reduce the need to
-compact, but they do not remove the need for clean task state. A million tokens
-of unclear conversation is still unclear.
+قد تقلّل أسماء النماذج ذات السياق الكبير مثل [`sonnet[1m]`](https://code.claude.com/docs/en/model-config) و[`opus[1m]`](https://code.claude.com/docs/en/model-config) الحاجة إلى الضغط، لكنها لا تلغي الحاجة إلى حالة مهمة نظيفة. فمليون رمز من محادثة غير واضحة يبقى غير واضح.

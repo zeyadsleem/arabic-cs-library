@@ -1,169 +1,169 @@
 ---
-title: "The Ralph Loop"
-lang: en
+title: "حلقة Ralph"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/the-ralph-loop"
 ---
 
-Long agent sessions rot. The conversation fills up, early decisions get buried, and the agent starts arguing with an earlier version of its own plan. The Ralph loop is the blunt fix: stop trying to keep one session healthy, and throw the session away every time.
+الجلسات الطويلة للوكلاء تتعفّن. تمتلئ المحادثة، وتُدفن القرارات المبكرة، ويبدأ الوكيل يجادل نسخة أقدم من خطته هو. وحلقة Ralph هي الإصلاح الفجّ: كفّ عن محاولة إبقاء جلسة واحدة سليمة، واطرح الجلسة كل مرة.
 
-The core idea is almost insultingly simple. Start a fresh agent, keep the progress on disk, give it one small task, and repeat. The [original version](https://ghuntley.com/ralph/), from Geoffrey Huntley, is one line of shell:
+الفكرة الجوهرية بسيطة إلى حدّ الإهانة. ابدأ وكيلًا جديدًا، واحفظ التقدّم على القرص، وأعطه مهمة صغيرة واحدة، وكرّر. و[النسخة الأصلية](https://ghuntley.com/ralph/)، من جيفري هانتلي، سطر واحد من الصدفة:
 
 ```bash
 while :; do cat PROMPT.md | claude ; done
 ```
 
-That feeds the same prompt to a brand-new Claude Code process, forever. Real loops run each pass as `claude -p` (print mode: one non-interactive run that exits when it’s done), and everything interesting happens in what you build around it.
+وهذا يغذّي عملية Claude Code جديدة تمامًا بالموجّه نفسه، إلى الأبد. والحلقات الحقيقية تشغّل كل دورة بـ `claude -p` (وضع الطباعة: تشغيل واحد غير تفاعلي يخرج عند انتهائه)، وكل ما يهمّ يحدث في ما تبنيه حوله.
 
-## A control loop, not a prompting trick
+## حلقة تحكّم، لا حيلة موجّهات
 
-Think of it as a **control loop** where the agent happens to be the part that does the work. A thermostat is a control loop: it measures the temperature, compares it to a target, acts, and measures again. The thermostat doesn’t need to be smart. It needs a trustworthy thermometer and a way to shut off.
+فكّر فيه كـ**حلقة تحكّم** يصادف أن الوكيل هو الجزء الذي يقوم بالعمل. ومنظّم الحرارة حلقة تحكّم: يقيس الحرارة، ويقارنها بهدف، ويتصرّف، ويقيس مرة أخرى. ومنظّم الحرارة لا يحتاج أن يكون ذكيًا. بل يحتاج مقياس حرارة موثوقًا وطريقة للإيقاف.
 
-In [Towards Systems Thinking](https://stevekinney.com/courses/ai-development-setup/why-systems), a single agent observes, chooses, acts, and observes again. Here your script takes over most of that: it measures, chooses the task, and decides whether to keep the result. The agent only does the work.
+في [نحو التفكير النظمي](https://stevekinney.com/courses/ai-development-setup/why-systems)، يراقب وكيل واحد ويختار ويتصرّف ويراقب مرة أخرى. وهنا يتولّى سكربتك معظم ذلك: فهو يقيس، ويختار المهمة، ويقرّر هل يحتفظ بالنتيجة. أما الوكيل فيقوم بالعمل وحده.
 
-## What it costs you
+## ما يكلّفك
 
-Every iteration (one pass through the loop, with one fresh agent) runs the same prompt, checks and commits its work, and only then updates the state on disk. Nothing rots, because nothing lives long enough to. The price is that the model’s reasoning gets thrown away every time. Files hold state like what’s done and what’s left perfectly well, but they only hold *reasoning* if someone writes it down. Have the agent record the *why* of each decision, or the next fresh agent will cheerfully undo it.
+كل تكرار (دورة واحدة عبر الحلقة، بوكيل جديد واحد) يشغّل الموجّه نفسه، ويفحص عمله ويودعه، ثم يحدّث الحالة على القرص بعد ذلك فقط. ولا يتعفّن شيء، لأن لا شيء يعيش طويلًا بما يكفي ليتعفّن. والثمن أن تعليل النموذج يُطرح كل مرة. والملفات تحفظ حالة مثل ما انتهى وما بقي جيدًا تمامًا، لكنها لا تحفظ *التعليل* إلا إن كتبه أحدهم. فاجعل الوكيل يسجّل *لماذا* لكل قرار، وإلا أبطله الوكيل الجديد التالي بسرور.
 
-## Set up the guardrails first
+## أعدّ الضوابط أولًا
 
-Make sure these exist before you press go:
+تأكّد من وجود هذه قبل أن تضغط زر البدء:
 
-- **Limits**: Maximum attempts, time, tokens, spend, and so on. Together with the next three items, these are your **governor**: whatever forces the loop to stop.
-- **Stall detection**: Some way to tell that the loop is spinning its wheels. Progress means the work was kept *and* the score improved. Anything else is a stall.
-- **A repeated-failure stop**: Stop when the same failure shows up again. You choose how many repeats you’ll tolerate.
-- **A stop file**: The loop checks for it at the start of every iteration and exits cleanly if it exists, so you never have to kill the shell process.
-- **A resource lock for shared builds**: Only one build runs at a time. You need this once more than one loop or agent shares a machine or a database, like several loops in separate [worktrees](https://stevekinney.com/courses/ai-development-setup/worktrees).
-- **Per-attempt logs and diffs**: So you can investigate when something goes wrong.
-- **A human integration gate**: The loop can keep or roll back work on its own branch, but a person decides what merges into the main branch.
+- **الحدود**: الحد الأقصى للمحاولات والوقت والرموز (tokens) والإنفاق وما إلى ذلك. وهذه، مع البنود الثلاثة التالية، هي **الحاكم (governor)**: كل ما يجبر الحلقة على التوقف.
+- **كشف التعطّل**: طريقة ما لمعرفة أن الحلقة تدور في مكانها. فالتقدّم يعني أن العمل حُفظ *و*أن النتيجة تحسّنت. وأي شيء آخر تعطّل.
+- **إيقاف عند تكرار الفشل**: توقّف حين يظهر الفشل نفسه مرة أخرى. وأنت تختار كم تكرارًا تتحمّل.
+- **ملف إيقاف**: تتحقّق الحلقة منه في بداية كل تكرار وتخرج بنظافة إن وُجد، فلا تضطر أبدًا إلى قتل عملية الصدفة.
+- **قفل موارد لعمليات البناء المشتركة**: لا يجري إلا بناء واحد في وقت واحد. وتحتاج هذا بمجرد أن تتشارك أكثر من حلقة أو وكيل آلة أو قاعدة بيانات، مثل حلقات عدة في [أشجار عمل](https://stevekinney.com/courses/ai-development-setup/worktrees) منفصلة.
+- **سجلات وفروق لكل محاولة**: لتتمكّن من التحقيق حين يسوء شيء.
+- **بوابة دمج بشرية**: تستطيع الحلقة الاحتفاظ بالعمل على فرعها الخاص أو التراجع عنه، لكن شخصًا يقرّر ما يُدمج في الفرع الرئيسي.
 
-## The five parts of a loop
+## الأجزاء الخمسة للحلقة
 
-Under the one-liner, a real loop has five parts:
+تحت السطر الواحد، للحلقة الحقيقية خمسة أجزاء:
 
-- **`measure()`**: Runs the checks and returns facts, like error counts, coverage, and open issues, plus a **score**: one number normalized so higher is better, like the negative of “type errors remaining.” Going from five errors (score `-5`) to two (score `-2`) improves the score. These checks are your **oracle**: the thing that decides whether the work is done. A good one is something the agent can’t edit or argue with.
-- **`pick()`**: Chooses one task from those facts.
-- **`run()`**: Calls the agent. This is the *only* part the agent controls.
-- **`accept()`**: Keeps the work only if nothing on your veto list fired (say, the agent touched the test files), the tests and build still pass, and the score didn’t drop. Run each attempt in a disposable checkout made from the last accepted snapshot. On rejection, save its logs and diff outside that checkout, then throw the checkout away. That removes tracked edits *and* new files. Bare `git reset` leaves working files unchanged, and even `--hard` doesn’t generally remove new untracked files, so neither is a complete rollback.
-- **The governor**: Enforces caps, detects stalls, and checks for the stop file.
+- **`measure()`**: يشغّل الفحوصات ويعيد وقائع، مثل عدد الأخطاء والتغطية والقضايا المفتوحة، إضافة إلى **نتيجة**: رقم واحد مُعاير بحيث الأكبر أفضل، مثل سالب «أخطاء الأنواع المتبقية». والانتقال من خمسة أخطاء (نتيجة `-5`) إلى اثنين (نتيجة `-2`) يحسّن النتيجة. وهذه الفحوصات هي **مُحكِّمك (oracle)**: الشيء الذي يقرّر هل انتهى العمل. والمُحكِّم الجيد شيء لا يستطيع الوكيل تعديله أو مجادلته.
+- **`pick()`**: يختار مهمة واحدة من تلك الوقائع.
+- **`run()`**: يستدعي الوكيل. وهذا هو الجزء *الوحيد* الذي يتحكّم فيه الوكيل.
+- **`accept()`**: يحتفظ بالعمل فقط إن لم يُطلق شيء من قائمة النقض لديك (مثل أن يكون الوكيل قد مسّ ملفات الاختبار)، ونجحت الاختبارات والبناء، ولم تهبط النتيجة. وشغّل كل محاولة في نسخة عمل قابلة للرمي مأخوذة من آخر لقطة مقبولة. وعند الرفض، احفظ سجلاتها وفرقها خارج تلك النسخة، ثم اطرح النسخة. فذلك يزيل التعديلات المتعقَّبة *و*الملفات الجديدة. أما `git reset` المجرّد فيُبقي ملفات العمل دون تغيير، وحتى `--hard` لا يزيل عمومًا الملفات الجديدة غير المتعقَّبة، فلا هذا ولا ذاك تراجع كامل.
+- **الحاكم**: ينفّذ الحدود، ويكشف التعطّل، ويتحقّق من ملف الإيقاف.
 
-Notice how small the agent’s part is: one task. It still reads the instruction file, the specs, and the plan, but measuring, choosing, accepting, and stopping all belong to your script.
+لاحظ كم جزء الوكيل صغير: مهمة واحدة. فهو لا يزال يقرأ ملف التعليمات والمواصفات والخطة، لكن القياس والاختيار والقبول والإيقاف كلها لسكربتك.
 
-## Setting it up
+## إعداده
 
-Explore the problem with the model interactively first. Then write specs (short documents that each describe one topic of the system’s behavior). *Then* start the loop. A good scope test for a spec: you can describe its topic in one sentence without the word “and.”
+استكشف المشكلة مع النموذج تفاعليًا أولًا. ثم اكتب مواصفات (وثائق قصيرة تصف كل واحدة موضوعًا واحدًا من سلوك النظام). و*بعدئذٍ* ابدأ الحلقة. واختبار نطاق جيد للمواصفة: أن تستطيع وصف موضوعها في جملة واحدة دون كلمة «و».
 
-The files:
+والملفات:
 
-- `loop.sh`: The outer script that runs the loop.
-- `PROMPT_plan.md` and `PROMPT_build.md`: The planning prompt compares the specs to the code and writes the plan. The building prompt does one task per iteration.
-- `AGENTS.md` (or `CLAUDE.md` for Claude Code): How to build and test, in about 60 lines. This is the [instruction file](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) the harness loads into context at the start of every session.
-- `IMPLEMENTATION_PLAN.md`: The task list. Throwaway. Regenerate it whenever it goes stale.
-- `specs/*.md`: One file per topic.
+- `loop.sh`: السكربت الخارجي الذي يشغّل الحلقة.
+- `PROMPT_plan.md` و`PROMPT_build.md`: موجّه التخطيط يقارن المواصفات بالشيفرة ويكتب الخطة. وموجّه البناء ينفّذ مهمة واحدة في كل تكرار.
+- `AGENTS.md` (أو `CLAUDE.md` لـ Claude Code): كيف تبني وتختبر، في نحو 60 سطرًا. وهذا هو [ملف التعليمات](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) الذي تحمّله الأداة إلى السياق في بداية كل جلسة.
+- `IMPLEMENTATION_PLAN.md`: قائمة المهام. للرمي. أعِد توليدها كلما قدمت.
+- `specs/*.md`: ملف واحد لكل موضوع.
 
-Every prompt needs:
+كل موجّه يحتاج:
 
-- One task per iteration.
-- “Search before you build,” so the agent doesn’t reinvent what already exists.
-- Tests the agent can’t weaken.
-- A defined way to stop when it’s stuck.
-- No ability to push, merge, close issues, or declare the run finished. Don’t just ask in the prompt; enforce it with `--disallowedTools` below.
+- مهمة واحدة في كل تكرار.
+- «ابحث قبل أن تبني»، فلا يعيد الوكيل اختراع ما هو موجود بالفعل.
+- اختبارات لا يستطيع الوكيل إضعافها.
+- طريقة محدّدة للتوقف حين يتعطّل.
+- بلا قدرة على الرفع أو الدمج أو إغلاق القضايا أو إعلان انتهاء التشغيل. ولا تكتفِ بالطلب في الموجّه؛ بل نفّذه بـ `--disallowedTools` أدناه.
 
-Keep the prompt *identical* every iteration within a run, and put the current task in a file instead. Then a fix to the prompt applies to every iteration after it. You can fill that file two ways. In a scripted loop, `pick()` writes one task to it and the script owns the choice. In the simpler plan-file version, `IMPLEMENTATION_PLAN.md` is that file and the agent takes the next unfinished item, so it picks, but only from a list whose scope you set.
+أبقِ الموجّه *مطابقًا* في كل تكرار ضمن التشغيل الواحد، وضع المهمة الحالية في ملف بدلًا من ذلك. فيسري أي إصلاح للموجّه على كل تكرار بعده. ويمكنك ملء ذلك الملف بطريقتين. في حلقة مكتوبة بسكربت، يكتب `pick()` مهمة واحدة فيه ويملك السكربت الاختيار. وفي نسخة ملف الخطة الأبسط، يكون `IMPLEMENTATION_PLAN.md` هو ذلك الملف ويأخذ الوكيل البند التالي غير المنتهي، فيختار هو، لكن فقط من قائمة أنت تحدّد نطاقها.
 
-The headless flags that matter:
+الأعلام بلا واجهة التي تهمّ:
 
-- `--output-format json`: Machine-readable output your script can parse.
-- `--max-turns`: Caps how many agentic turns (each model request and the tool calls it makes) a single iteration can take.
-- `--max-budget-usd`: Caps how much a single iteration can spend.
-- `--allowedTools`: Keep this tightly scoped to what the task needs.
-- `--disallowedTools`: Use it for anything irreversible.
+- `--output-format json`: مخرَج مقروء آليًا يستطيع سكربتك تحليله.
+- `--max-turns`: يحدّ عدد الأدوار الوكيلية (كل طلب نموذج ونداءات الأدوات التي يجريها) التي يمكن لتكرار واحد أن يستغرقها.
+- `--max-budget-usd`: يحدّ ما يمكن لتكرار واحد أن ينفقه.
+- `--allowedTools`: أبقِه محصورًا بإحكام فيما تحتاجه المهمة.
+- `--disallowedTools`: استخدمه لأي شيء غير قابل للتراجع.
 
-> **Check for `ANTHROPIC_API_KEY`**
+> **تفقّد `ANTHROPIC_API_KEY`**
 >
-> If `ANTHROPIC_API_KEY` is set in your environment, every iteration bills the API instead of your subscription. [Governors are your problem](#governors-are-your-problem) has the cautionary tale, and it’s expensive.
+> إن كان `ANTHROPIC_API_KEY` مضبوطًا في بيئتك، فكل تكرار يفوتر من API بدلًا من اشتراكك. ولدى [الحاكم مسؤوليتك](#governors-are-your-problem) القصة التحذيرية، وهي مكلفة.
 
-A shell script and a prompt file will get you running in five minutes. What you do in the next five hours decides whether you get a migrated codebase or a very large invoice.
+سكربت صدفي وملف موجّه يكفيان لتشغيلك في خمس دقائق. وما تفعله في الساعات الخمس التالية يقرّر هل تحصل على قاعدة شيفرة مرحَّلة أم على فاتورة ضخمة جدًا.
 
-## The oracle is load-bearing
+## المُحكِّم عنصر حملي {#the-oracle-is-load-bearing}
 
-The loop itself is the easy part. What decides whether you get anything useful is everything around it: the **queue** (the tasks still to do), the oracle, the governor, and the **record** (the log of what each iteration did). Of those, the oracle matters most, and it fails *silently*. It keeps returning “fine,” and every later iteration builds on nothing.
+الحلقة نفسها الجزء السهل. وما يقرّر هل تحصل على شيء مفيد هو كل ما حولها: **قائمة الانتظار** (المهام التي ما زالت باقية)، والمُحكِّم، والحاكم، و**السجل** (سجل ما فعله كل تكرار). ومن هذه، المُحكِّم هو الأهم، وهو يُخفق *في صمت*. فيظلّ يعيد «جيد»، ويبني كل تكرار لاحق على لا شيء.
 
-- **Rank your oracles**: An exit code from `rg -l` (a search that lists matching files, so no output means no matches) beats an error count. That beats a parity harness (a script that compares the new system’s behavior to the old one’s), which beats a green test suite, which beats a coverage percentage. An LLM referee goes last. That exit code comes from a check you wrote, *not* from the agent’s own process, which can return `0` even when a run failed. [Routines and Schedules](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules) explains that trap.
-- **Rank who can write “done”**: `touch done` lets the agent write its own approval. A promise string in the output is controlled by the model, and a mere mention can match. A `"passes": true` field in a JSON file is still agent-writable, and a test suite’s exit code is too if the agent can edit the tests. Files on disk plus tests the agent can’t edit are out of its reach, and a marker written by CI, a hook, or a human is better still. A good marker is at least as hard to satisfy as the work it stands for. The cheapest upgrade is a dual condition: the marker and a deterministic check both have to agree, and a claim the check disagrees with gets logged as premature while the loop keeps going.
-- **A small lie rate adds up**: Say each iteration has a chance `p` of really finishing and a chance `q` of claiming done when it hasn’t. If the loop trusts the marker alone, needs one real success, and has no governor, the chance it stops on a false “done” is `(1 − p) × q / (p + (1 − p) × q)`. These numbers are illustrative, not measured: with `p` at 0.35, a promise string that lies 15% of the time ends about 22% of runs falsely done. At `q` = 0.05 it’s about 8.5%, and at 0.01 about 1.8%. Every iteration is another chance to lie.
-- **Fail closed**: If the measurement step throws, stop the loop. A missing `tsc` binary makes “count the type errors” return zero, which looks an awful lot like done.
-- **The script closes the issue, never the agent.**
-- **Use typed exit codes**: Give each way the loop can end its own exit code so whatever supervises it can tell them apart. One set: success; failure (the oracle said no); blocked (the agent reported it can’t proceed); and broken (the loop’s own machinery errored, like a missing binary).
+- **رتّب مُحكِّميك**: رمز خروج من `rg -l` (بحث يسرد الملفات المطابقة، فلا مخرَج يعني لا تطابق) أفضل من عدد الأخطاء. وهذا أفضل من منصة تكافؤ (parity harness، سكربت يقارن سلوك النظام الجديد بسلوك القديم)، وهي أفضل من مجموعة اختبارات ناجحة، وهي أفضل من نسبة تغطية. ويأتي حَكَم LLM في الأخير. ورمز الخروج هذا يأتي من فحص كتبته أنت، *لا* من عملية الوكيل نفسه، التي قد تعيد `0` حتى حين يفشل تشغيل. ويشرح [الروتينات والجداول](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules) ذلك المأزق.
+- **رتّب من يمكنه كتابة «انتهى»**: `touch done` يتيح للوكيل كتابة موافقته بنفسه. وسلسلة الوعد في المخرَج يتحكّم بها النموذج، ومجرد ذكرها قد يطابق. وحقل `"passes": true` في ملف JSON لا يزال قابلًا لكتابة الوكيل، وكذلك رمز خروج مجموعة اختبارات إن كان الوكيل يستطيع تعديل الاختبارات. أما الملفات على القرص مع اختبارات لا يستطيع الوكيل تعديلها فهي خارج متناوله، وعلامة يكتبها CI أو خُطّاف أو إنسان أفضل من ذلك. والعلامة الجيدة أصعب إرضاءً على الأقل من العمل الذي تمثّله. وأرخص ترقية شرط مزدوج: أن تتفق العلامة وفحص حتمي معًا، ويُسجَّل الادعاء الذي يخالفه الفحص بوصفه سابقًا لأوانه بينما تستمر الحلقة.
+- **معدّل الكذب الصغير يتراكم**: لنقل إن لكل تكرار احتمال `p` أن ينتهي فعلًا واحتمال `q` أن يدّعي الانتهاء وهو لم ينتهِ. وإن كانت الحلقة تثق بالعلامة وحدها، وتحتاج نجاحًا حقيقيًا واحدًا، ولا حاكم لها، فاحتمال أن تتوقف على «انتهى» كاذب هو `(1 − p) × q / (p + (1 − p) × q)`. وهذه الأرقام توضيحية، لا مقيسة: مع `p` عند 0.35، تنتهي سلسلة وعد تكذب 15% من الوقت بنحو 22% من التشغيلات منتهية كذبًا. وعند `q` = 0.05 تكون نحو 8.5%، وعند 0.01 نحو 1.8%. وكل تكرار فرصة أخرى للكذب.
+- **أخفق مغلقًا**: إن رمى خطوة القياس استثناءً، فأوقف الحلقة. فغياب الملف التنفيذي `tsc` يجعل «عُدّ أخطاء الأنواع» تعيد صفرًا، وهو يشبه «انتهى» إلى حدّ كبير.
+- **السكربت يغلق القضية، لا الوكيل أبدًا.**
+- **استخدم رموز خروج مصنّفة**: أعطِ كل طريقة يمكن أن تنتهي بها الحلقة رمز خروجها الخاص ليميّزها أي شيء يشرف عليها. وإحدى المجموعات: النجاح؛ والفشل (قال المُحكِّم لا)؛ والحجب (أبلغ الوكيل أنه لا يستطيع المتابعة)؛ والعطب (خطأت آليات الحلقة نفسها، مثل غياب ملف تنفيذي).
 
-## Governors are your problem
+## الحاكم مسؤوليتك {#governors-are-your-problem}
 
-The harness gives you per-iteration caps, at best. Total spend, an iteration cap, stall detection, and the kill switch are all on you. Not every one of these runaway loops was a Ralph loop, but none had a governor:
+تمنحك الأداة حدودًا لكل تكرار في أفضل الأحوال. أما الإنفاق الإجمالي، وحدّ التكرارات، وكشف التعطّل، ومفتاح الإيقاف، فكلها عليك. ولم تكن كل واحدة من هذه الحلقات الجامحة حلقة Ralph، لكن لم يكن لأي منها حاكم:
 
-- [A loop that quietly billed the API instead of a subscription](https://dev.to/runvouch/my-claude-code-cron-ran-up-1800-in-two-nights-the-watchdog-that-stops-it-at-2-3npb): about $858 the first night and $960 the second. That’s $1,818 before anyone noticed.
-- [An overnight loop](https://www.makeuseof.com/someone-left-claude-code-running-overnight-and-it-cost-6000/) that re-sent a very large conversation every 30 minutes: about $6,000.
-- A summarizer that listed the same directory 14,000 times overnight, for $437, reported in [the same roundup](https://dev.to/runvouch/my-claude-code-cron-ran-up-1800-in-two-nights-the-watchdog-that-stops-it-at-2-3npb). It stopped only when it ran out of token quota.
-- `max_iterations: 0`, which meant “unlimited,” produced [1,966 attempts at the same task](https://dev.to/sean8/i-accidentally-made-claude-ask-itself-the-same-question-1966-times-1c5h).
+- [حلقة فوترت API في صمت بدلًا من اشتراك](https://dev.to/runvouch/my-claude-code-cron-ran-up-1800-in-two-nights-the-watchdog-that-stops-it-at-2-3npb): نحو 858 دولارًا في الليلة الأولى و960 دولارًا في الثانية. أي 1,818 دولارًا قبل أن يلاحظ أحد.
+- [حلقة ليلية](https://www.makeuseof.com/someone-left-claude-code-running-overnight-and-it-cost-6000/) أعادت إرسال محادثة ضخمة جدًا كل 30 دقيقة: نحو 6,000 دولار.
+- ملخِّص سرد المجلد نفسه 14,000 مرة في ليلة واحدة، مقابل 437 دولارًا، ذُكر في [التجميع نفسه](https://dev.to/runvouch/my-claude-code-cron-ran-up-1800-in-two-nights-the-watchdog-that-stops-it-at-2-3npb). ولم يتوقف إلا حين نفدت حصّة الرموز (tokens).
+- `max_iterations: 0`، التي عنت «بلا حدود»، أنتجت [1,966 محاولة للمهمة نفسها](https://dev.to/sean8/i-accidentally-made-claude-ask-itself-the-same-question-1966-times-1c5h).
 
-None of these tripped an alarm. They looked like healthy processes doing their jobs, and the stop was whoever ran out of money or quota first.
+لم يُطلق أي من هذه إنذارًا. فقد بدت كعمليات سليمة تؤدي عملها، وكان التوقف هو من ينفد ماله أو حصّته أولًا.
 
-Budget the first 10 to 15 percent of your total spend for calibration runs that you’ll throw away. You’re buying information about your own prompt and oracle.
+خصّص أول 10 إلى 15 بالمئة من إنفاقك الإجمالي لتشغيلات معايرة ستطرحها. فأنت تشتري معلومات عن موجّهك ومُحكِّمك أنت.
 
-## Anti-patterns
+## أنماط مضادة {#anti-patterns}
 
-- No spec, or several tasks per iteration.
-- Running it on a mature codebase full of unwritten conventions. A fresh agent can’t follow rules nobody wrote down.
-- Copying someone else’s prompt instead of tuning your own.
-- Loops that run inside one session long enough to hit compaction (replacing the conversation with a summary). That’s the thing the loop was supposed to avoid.
+- لا مواصفة، أو مهام عدة في كل تكرار.
+- تشغيلها على قاعدة شيفرة ناضجة مليئة بأعراف غير مكتوبة. فالوكيل الجديد لا يستطيع اتباع قواعد لم يكتبها أحد.
+- نسخ موجّه شخص آخر بدلًا من ضبط موجّهك.
+- حلقات تعمل داخل جلسة واحدة طويلًا بما يكفي لتبلغ الضغط (compaction، استبدال المحادثة بملخّص). وهذا هو الشيء الذي كان يُفترض بالحلقة تجنّبه.
 
-There’s one test for whether a task fits: can a script tell whether this iteration was better than the last one? If not, keep a human in charge.
+ثمة اختبار واحد لملاءمة مهمة: هل يستطيع سكربت أن يقول هل كان هذا التكرار أفضل من السابق؟ وإن لم يستطع، فأبقِ إنسانًا مسؤولًا.
 
-## Advanced techniques
+## تقنيات متقدّمة {#advanced-techniques}
 
-- **Planning and building prompts**: Keep the two separate, and give each branch its own plan. Decide scope when you write the plan, not when the agent picks a task. (This isn’t Claude Code’s read-only plan mode, just two different prompts.)
-- **Subagents**: Fan out reads and searches, but use exactly one worker for shared builds and tests. Ordinary Claude Code subagents default to 20 concurrent workers ([subagent limit](https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit)); dynamic workflows default to at most 16 and allow a configured limit up to 256 ([workflow limits](https://code.claude.com/docs/en/workflows#behavior-and-limits)). Start small anyway: parallel reads still compete for resources and spend, and shared builds can interfere with each other.
-- **A second-model reviewer**: Read-only tools, sees only the task and the diff, and returns a structured verdict. It’s advisory, and it only runs after the mechanical checks pass. See [Agent reviewers](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers).
-- **Queues**: Work out whether a task is done from the work itself (the file was ported, the test exists) rather than a separate checklist. Then the loop can find its place even if you delete your state file.
-- **Reverse mode**: Generate specs from an existing system, then rebuild from the specs. This raises legal questions, like whether you’re allowed to reimplement software you don’t own. Check before you try it.
+- **موجّهات التخطيط والبناء**: أبقِ الاثنين منفصلين، وأعطِ كل فرع خطته الخاصة. وقرّر النطاق عندما تكتب الخطة، لا عندما يختار الوكيل مهمة. (وهذا ليس وضع التخطيط للقراءة فقط في Claude Code، بل موجّهان مختلفان فقط.)
+- **الوكلاء الفرعيون**: وزّع القراءات والبحوث، لكن استخدم عاملًا واحدًا بالضبط لعمليات البناء والاختبار المشتركة. وافتراضي الوكلاء الفرعيين العاديين في Claude Code هو 20 عاملًا متزامنًا ([حدّ الوكيل الفرعي](https://code.claude.com/docs/en/sub-agents#concurrent-subagent-limit))؛ وافتراضي السيور الديناميكية 16 على الأكثر وتسمح بحدّ مضبوط يبلغ 256 ([حدود السيور](https://code.claude.com/docs/en/workflows#behavior-and-limits)). وابدأ صغيرًا على أي حال: فالقراءات المتوازية تتنافس على الموارد والإنفاق، وعمليات البناء المشتركة قد تتعارض مع بعضها.
+- **مراجع بنموذج ثانٍ**: أدوات للقراءة فقط، لا يرى إلا المهمة والفرق، ويعيد حكمًا منظّمًا. وهو استشاري، ولا يعمل إلا بعد نجاح الفحوصات الميكانيكية. انظر [مراجعون من الوكلاء](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers).
+- **قوائم الانتظار**: استنتج هل انتهت مهمة من العمل نفسه (نُقل الملف، وُجد الاختبار) بدلًا من قائمة تحقّق منفصلة. فيمكن للحلقة أن تجد مكانها حتى لو حذفت ملف حالتك.
+- **الوضع العكسي**: ولّد المواصفات من نظام موجود، ثم أعِد البناء من المواصفات. وهذا يثير أسئلة قانونية، مثل هل يُسمح لك بإعادة تنفيذ برمجية لا تملكها. فتحقّق قبل أن تجرّبه.
 
-## Where it works, and what it costs
+## أين ينجح، وكم يكلّف
 
-The strongest evidence is for file-by-file ports and migrations, with test-coverage campaigns right behind them. Cost depends heavily on the task. Per line of the existing codebase, a full language port ran roughly $0.17, versus about $0.004 for a test-coverage campaign.
+أقوى الأدلة على عمليات النقل والترحيل ملفًا بملف، وحملات تغطية الاختبارات تأتي خلفها مباشرة. والتكلفة تعتمد اعتمادًا كبيرًا على المهمة. ولكل سطر من قاعدة الشيفرة الموجودة، كلّف نقل لغة كامل نحو 0.17 دولار، مقابل نحو 0.004 دولار لحملة تغطية اختبارات.
 
-Coverage is cheap and well documented, yet near the bottom of the oracle ranking. A test that runs code without checking anything still raises the percentage, which is why coverage comes last in the “good first loops” under “What to build first” below.
+التغطية زهيدة وموثّقة جيدًا، ومع ذلك قريبة من أسفل ترتيب المُحكِّمات. فالاختبار الذي يشغّل الشيفرة دون فحص أي شيء لا يزال يرفع النسبة، ولهذا تأتي التغطية أخيرًا في «أول حلقات جيدة» تحت «ما تبنيه أولًا» أدناه.
 
-And don’t count on [prompt caching](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) to cut costs between iterations. Whether a fresh process reuses the previous one’s cache is unverified.
+ولا تعتمد على [تخزين الموجّهات مؤقتًا](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) لخفض التكاليف بين التكرارات. فهل تعيد عملية جديدة استخدام ذاكرة العملية السابقة المؤقتة أمر غير متحقَّق منه.
 
-## What to build first
+## ما تبنيه أولًا
 
-Build these in order:
+ابنِ هذه بالترتيب:
 
-1. The oracle, plus the known-bad changes that prove it can fail.
-2. A queue that can rebuild its state from disk.
-3. Spending limits, each with an actual number.
-4. A one-line-per-iteration log that includes the `session_id`: the ID Claude Code returns in the JSON result of each `claude -p` run, which ties your log line to that run’s transcript.
-5. *Then* the loop itself.
+1. المُحكِّم، إضافة إلى التغييرات المعروفة السوء التي تثبت أنه يستطيع الفشل.
+2. قائمة انتظار تستطيع إعادة بناء حالتها من القرص.
+3. حدود إنفاق، لكل منها رقم فعلي.
+4. سجل بسطر لكل تكرار يتضمّن `session_id`: المعرّف الذي يعيده Claude Code في نتيجة JSON لكل تشغيل `claude -p`، وهو يربط سطر سجلك بنص ذلك التشغيل.
+5. و*بعدئذٍ* الحلقة نفسها.
 
-Good first loops, in order: a mechanical migration across many files, then driving type errors to zero, then coverage, if at all.
+أول حلقات جيدة، بالترتيب: ترحيل ميكانيكي عبر ملفات كثيرة، ثم دفع أخطاء الأنواع إلى الصفر، ثم التغطية، إن حدث أصلًا.
 
-## Ralph loop versus `/goal`
+## حلقة Ralph مقابل `/goal`
 
-| Property | `/goal` | External loop |
+| الخصيصة | `/goal` | حلقة خارجية |
 | --- | --- | --- |
-| Context | Continuing thread | Fresh context for each attempt |
-| Judge | A separate model (Claude Code) or the worker itself (Codex) | A deterministic script verifies it |
-| Governor | A budget or condition you write into the goal, which nothing enforces by itself | Deterministic part of the script |
-| Durable state | The continuing thread | Git, files, logs |
+| السياق | خيط متواصل | سياق جديد لكل محاولة |
+| الحَكَم | نموذج منفصل (Claude Code) أو العامل نفسه (Codex) | سكربت حتمي يتحقّق منه |
+| الحاكم | ميزانية أو شرط تكتبه في الهدف، ولا شيء ينفّذه بنفسه | الجزء الحتمي من السكربت |
+| الحالة الدائمة | الخيط المتواصل | Git والملفات والسجلات |
 
-Zoom out and there are three ways to run this kind of loop:
+وإذا وسّعت النظر، فهناك ثلاث طرق لتشغيل هذا النوع من الحلقات:
 
-| Approach | Context | Who decides it’s done | Best for |
+| المقاربة | السياق | من يقرّر الانتهاء | الأفضل لـ |
 | --- | --- | --- | --- |
-| Bash loop | Fresh every iteration | Your script checks a fact on disk | 10+ iterations, overnight runs |
-| Stop-hook plugin | Builds up in one session | A promise string the model prints | Short debugging loops |
-| `/goal` | Builds up in one session | A separate model (or the worker itself) | Interactive work with a clear end state |
+| حلقة Bash | جديدة في كل تكرار | سكربتك يفحص واقعة على القرص | 10 تكرارات أو أكثر، وتشغيلات ليلية |
+| إضافة خُطّاف إيقاف | تتراكم في جلسة واحدة | سلسلة وعد يطبعها النموذج | حلقات تنقيح قصيرة |
+| `/goal` | تتراكم في جلسة واحدة | نموذج منفصل (أو العامل نفسه) | عمل تفاعلي بحالة انتهاء واضحة |
 
-A **Stop-hook plugin** is a plugin that uses a `Stop` hook to feed the same prompt back into one session until the model prints an agreed phrase. That phrase is a **sentinel**, a marker whose presence ends the loop. [Sentinels](https://stevekinney.com/courses/ai-development-setup/sentinels) is the whole story.
+**إضافة خُطّاف الإيقاف** إضافة تستخدم خُطّاف `Stop` لتغذية الجلسة نفسها بالموجّه نفسه مرة بعد مرة حتى يطبع النموذج عبارة متّفقًا عليها. وتلك العبارة **شاهد (sentinel)**، علامة يُنهي وجودها الحلقة. ولدى [الشواهد](https://stevekinney.com/courses/ai-development-setup/sentinels) القصة كاملة.
 
-The rule of thumb: fresh context for long runs, accumulating context for short debugging.
+القاعدة العامة: سياق جديد للتشغيلات الطويلة، وسياق متراكم للتنقيح القصير.
 
-Write the oracle first. Everything else in this lesson is damage control for skipping that step.
+اكتب المُحكِّم أولًا. وكل ما عداه في هذا الدرس هو احتواء للأضرار الناتجة عن تخطّي تلك الخطوة.

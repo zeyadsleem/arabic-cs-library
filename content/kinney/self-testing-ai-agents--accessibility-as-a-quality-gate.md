@@ -1,54 +1,54 @@
 ---
-title: "Accessibility as a Quality Gate"
-lang: en
+title: "إمكانية الوصول كبوابة جودة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/accessibility-as-a-quality-gate"
 ---
 
-If you’ve ever written a beautiful `getByRole` test and still shipped an inaccessible UI, welcome to the club. I’ve done it. The test suite felt righteous. The screen reader experience was still bad.
+إن كنت قد كتبت يومًا اختبار `getByRole` جميلًا وشحنت مع ذلك واجهة غير متاحة، فأهلًا بك في النادي. لقد فعلتها. كانت مجموعة الاختبارات تبدو صالحة مستقيمة، وكانت تجربة قارئ الشاشة مع ذلك سيئة.
 
-That is the hole this lesson closes.
+هذه هي الثغرة التي يُغلقها هذا الدرس.
 
-Semantic locators get you closer to accessible UI because they force names, roles, and labels into the markup. That’s real value. But they are still a side effect of testing behavior, not a dedicated accessibility loop. An agent needs a loop that says, explicitly, “this change introduced an accessibility regression, and that is a stop sign.”
+تقرّبك المحدّدات الدلالية من واجهة متاحة لأنها تفرض الأسماء والأدوار والتسميات في الترميز. وهذه قيمة حقيقية. لكنها تبقى أثرًا جانبيًا لاختبار السلوك، لا حلقة مخصّصة لإمكانية الوصول. فالوكيل يحتاج إلى حلقة تقول صراحةً: «هذا التغيير أدخل انحدارًا في إمكانية الوصول، وهذا علامة توقّف.»
 
-> **Prerequisite**
+> **متطلب مسبق**
 >
-> This lesson assumes you’ve already internalized [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). That lesson gives the agent better handles on the UI. This one turns accessibility itself into a gate.
+> يفترض هذا الدرس أنك استوعبت بالفعل [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). فذلك الدرس يمنح الوكيل مقابض أفضل على الواجهة. وهذا الدرس يحوّل إمكانية الوصول نفسها إلى بوابة.
 
-## Why locator discipline is necessary but insufficient
+## لماذا انضباط المحدّدات ضروري لكنه غير كافٍ
 
-Locator discipline mostly answers one question: *can the test find the thing the way a user would?*
+انضباط المحدّدات يجيب في الأغلب عن سؤال واحد: *هل يستطيع الاختبار أن يجد الشيء كما يجده المستخدم؟*
 
-Accessibility asks a wider set of questions:
+أما إمكانية الوصول فتسأل مجموعة أوسع من الأسئلة:
 
-- Can a keyboard user reach it?
-- Does the focus order make sense?
-- Does the control announce itself clearly to assistive technology?
-- Does the form expose the error state, not just render it in red?
-- Does the dialog trap focus and return it when it closes?
+- هل يستطيع مستخدم لوحة المفاتيح الوصول إليه؟
+- هل ترتيب التركيز منطقي؟
+- هل يعلن عنصر التحكّم عن نفسه بوضوح لتقنيات المساعدة؟
+- هل يُظهِر النموذج حالة الخطأ، لا أن يصيّرها بالأحمر فقط؟
+- هل يحبس الحوار المنبثق التركيز ويعيده عندما يُغلق؟
 
-Your `getByRole('button', { name: 'Save' })` test helps with exactly one slice of that. A useful slice, yes. The whole pie, no.
+اختبارك `getByRole('button', { name: 'Save' })` يساعد في شريحة واحدة من ذلك بالضبط. شريحة مفيدة، نعم. أما الفطيرة كلها، فلا.
 
-This is the mental model I want you to keep: **semantic locators are upstream pressure, accessibility checks are downstream proof.** You want both.
+هذا هو النموذج الذهني الذي أريدك أن تحتفظ به: **المحدّدات الدلالية ضغطٌ في المنبع، وفحوص إمكانية الوصول برهانٌ في المصبّ.** أنت تريد الاثنين.
 
-## What the automated gate should catch
+## ما الذي ينبغي أن تلتقطه البوابة الآلية
 
-The easiest automated gate to add is an [axe-core](https://www.deque.com/axe/core-documentation/) scan against your critical routes and flows. I like axe here because it is boring in the best possible way: mature rules, good output, and a clean “these are the violations” result that an agent can act on.
+أسهل بوابة آلية تضيفها هي مسح بـ [axe-core](https://www.deque.com/axe/core-documentation/) على مساراتك وتدفّقاتك الحرجة. وأنا أحبّ axe هنا لأنه مملّ على أفضل وجه: قواعد ناضجة، ومخرجات جيدة، ونتيجة نظيفة على شكل «هذه هي الانتهاكات» يستطيع الوكيل التصرّف بناءً عليها.
 
-What the automated pass is good at:
+ما يجيده المسح الآلي:
 
-- Missing or incorrect labels
-- Invalid ARIA relationships
-- Landmarks and heading structure problems
-- Some color-contrast issues
-- Form fields that are technically present but not actually named
+- التسميات المفقودة أو غير الصحيحة
+- علاقات ARIA غير الصالحة
+- مشكلات المعالم (landmarks) وبنية العناوين
+- بعض مشكلات تباين الألوان
+- حقول النماذج الموجودة تقنيًا لكن غير المسمّاة فعليًا
 
-That class of problem is perfect for an agent loop. The agent reads the violations, fixes the markup, reruns the scan, and moves on.
+هذا الصنف من المشكلات مثالي لحلقة وكيل. فالوكيل يقرأ الانتهاكات، ويصلح الترميز، ويعيد تشغيل المسح، ويمضي.
 
-What I do *not* want is a fuzzy accessibility story where the agent says “I used `getByRole`, so we’re probably fine.” Probably fine is how regressions get a free ride to production.
+وما *لا* أريده هو سرد ضبابي عن إمكانية الوصول يقول فيه الوكيل: «استخدمت `getByRole`، فنحن على الأرجح بخير». فـ«على الأرجح بخير» هي الطريقة التي تحصل بها الانحدارات على توصيلة مجانية إلى الإنتاج.
 
-## What the gate looks like in code
+## كيف تبدو البوابة في الشيفرة
 
-The Playwright integration for axe-core is small enough to fit in your head. You install one package (`@axe-core/playwright`), import its `AxeBuilder`, point it at a page, and call `.analyze()`. The result has a `violations` array that you assert against:
+تكامل Playwright مع axe-core صغير بما يكفي ليسع في رأسك. تُثبّت حزمة واحدة (`@axe-core/playwright`)، وتستورد `AxeBuilder` منها، وتوجّهها إلى صفحة، وتستدعي `.analyze()`. وللنتيجة مصفوفة `violations` تُؤكِّد عليها:
 
 ```typescript
 import AxeBuilder from '@axe-core/playwright';
@@ -63,22 +63,22 @@ test('shelf page has no automated accessibility violations', async ({ page }) =>
 });
 ```
 
-A few things worth understanding about that block before you start writing your own:
+وفيما يلي أمور يجدر فهمها عن تلك الكتلة قبل أن تبدأ كتابة كتلتي:
 
-- **`new AxeBuilder({ page })`** binds an axe run to the current Playwright `Page`. Each test gets its own builder; do not try to share one across tests.
-- **`.withTags(['wcag2a', 'wcag2aa'])`** scopes the rule set to WCAG 2.0 levels A and AA. This is the bar I want by default. You can add `'wcag21a'` and `'wcag21aa'` if you want WCAG 2.1, or pin to a specific rule with `.withRules(...)`. Without `withTags`, axe runs every rule it ships with — most of which are not failures you want to gate on.
-- **`.analyze()`** is the await point. It walks the DOM, runs the rule set, and returns a results object with `violations`, `passes`, `incomplete`, and `inapplicable` arrays.
-- **`expect(results.violations).toEqual([])`** is the gate. An empty `violations` array means axe found nothing wrong. Anything else fails the test, with the violation details printed in the failure output.
+- **`new AxeBuilder({ page })`** يربط تشغيل axe بصفحة Playwright الحالية (`Page`). فكل اختبار له بانيه الخاص؛ ولا تحاول مشاركة باني واحد بين اختبارات.
+- **`.withTags(['wcag2a', 'wcag2aa'])`** يحصر مجموعة القواعد في المستويين A وAA من WCAG 2.0. وهذا هو الحدّ الذي أريده افتراضيًا. ويمكنك إضافة `'wcag21a'` و`'wcag21aa'` إن أردت WCAG 2.1، أو التقييد بقاعدة بعينها عبر `.withRules(...)`. وبلا `withTags` يشغّل axe كل قاعدة يشحنها — وأكثرها ليست إخفاقات تريد أن تبوّب عليها.
+- **`.analyze()`** هو نقطة الانتظار. فهو يمشي على DOM، ويشغّل مجموعة القواعد، ويعيد كائن نتائج فيه مصفوفات `violations` و`passes` و`incomplete` و`inapplicable`.
+- **`expect(results.violations).toEqual([])`** هو البوابة. فمصفوفة `violations` الفارغة تعني أن axe لم يجد خطأً. وأي شيء آخر يُفشل الاختبار، مع طباعة تفاصيل الانتهاك في مخرجات الإخفاق.
 
-That is the entire shape. Three lines of setup, one assertion. The accessibility lab adds exactly this pattern to `tests/accessibility.spec.ts`, scoped to the highest-signal routes; once you understand the four pieces above you can read that file as a real-shape implementation rather than a mystery.
+هذا هو الشكل كله. ثلاثة أسطر إعداد، وتأكيد واحد. ويضيف مختبر إمكانية الوصول هذا النمط نفسه بالضبط إلى `tests/accessibility.spec.ts`، محصورًا في المسارات الأعلى إشارة؛ ومتى فهمت القطع الأربع أعلاه استطعت قراءة ذلك الملف كتنفيذ حقيقي الشكل لا كلغز.
 
-The Shelf starter omits this check. Once you trust the scan enough to make it part of the main gate, let `tests/accessibility.spec.ts` ride the normal `npm run test` loop instead of hiding it behind a sidecar command.
+تغفل النسخة الانطلاقية من Shelf هذا الفحص. ومتى وثقت بالمسح بما يكفي لتجعله جزءًا من البوابة الرئيسية، فدع `tests/accessibility.spec.ts` يسير في حلقة `npm run test` العادية بدلًا من إخفائه خلف أمر جانبي.
 
-## Structural accessibility checks with ARIA snapshots
+## فحوص إمكانية الوصول البنيوية بلقطات ARIA
 
-axe is great at rules. It is not trying to tell you whether the *shape* of a menu, dialog, tree, or form quietly changed in a way that still passes axe but is now wrong for assistive tech.
+axe بارع في القواعد. لكنه لا يحاول أن يخبرك هل تغيّر *شكل* قائمة أو حوار أو شجرة أو نموذج تغيّرًا هادئًا لا يزال يجتاز axe لكنه صار الآن خاطئًا لتقنيات المساعدة.
 
-That is where [ARIA snapshots](https://playwright.dev/docs/aria-snapshots) earn their keep. Playwright can capture the accessibility tree for a locator as YAML and compare it with `toMatchAriaSnapshot()`:
+وهنا تكسب [لقطات ARIA](https://playwright.dev/docs/aria-snapshots) قيمتها. يستطيع Playwright أن يلتقط شجرة إمكانية الوصول لمحدّد بصيغة YAML ويقارنها بـ `toMatchAriaSnapshot()`:
 
 ```typescript
 const dialog = page.getByRole('dialog', { name: 'Rate Station Eleven' });
@@ -96,69 +96,69 @@ await expect(dialog).toMatchAriaSnapshot(`
 `);
 ```
 
-You can also inspect the raw structure with `await dialog.ariaSnapshot()` when you are figuring out what to lock in.
+ويمكنك أيضًا فحص البنية الخام بـ `await dialog.ariaSnapshot()` حين تحاول معرفة ما الذي تثبّته.
 
-This is not a replacement for axe. It is the complement:
+هذه ليست بديلًا عن axe. بل هي المكمّل:
 
-- **axe** catches invalid labels, broken ARIA relationships, and rules violations
-- **ARIA snapshots** catch structural drift in the accessible tree
+- **axe** يلتقط التسميات غير الصالحة، وعلاقات ARIA المكسورة، وانتهاكات القواعد
+- **لقطات ARIA** تلتقط الانزياح البنيوي في الشجرة المتاحة
 
-Use them for the UI where accessible structure *is* the contract: dialogs, menus, nav landmarks, accordions, grouped forms, and anything else where the semantics matter more than the pixels.
+استخدمها في الواجهات التي تكون فيها البنية المتاحة *هي* العقد: الحوارات المنبثقة، والقوائم، ومعالم التنقّل، والأكورديونات، والنماذج المجمّعة، وكل ما تهمّ فيه الدلالة أكثر من البكسلات.
 
-Keep the snapshot focused. Snapshotting an entire page because “why not” is how you create noisy golden files nobody trusts.
+وأبقِ اللقطة مركّزة. فلقطة صفحة كاملة لأن «لمَ لا» هي الطريقة التي تصنع بها ملفات ذهبية صاخبة لا يثق بها أحد.
 
-## What the automated gate cannot prove
+## ما لا تستطيع البوابة الآلية إثباته
 
-Accessibility has a manual layer that you cannot wish away. The [W3C keyboard accessibility guidance](https://www.w3.org/WAI/WCAG22/Understanding/keyboard-accessible.html) is still the right bar here: all functionality must be operable from a keyboard, and focus cannot get trapped in weird places.
+لإمكانية الوصول طبقة يدوية لا تستطيع التخلص منها بالأماني. و[إرشادات W3C لإتاحة لوحة المفاتيح](https://www.w3.org/WAI/WCAG22/Understanding/keyboard-accessible.html) لا تزال هي الحدّ الصحيح هنا: كل الوظائف يجب أن تكون قابلة للتشغيل من لوحة المفاتيح، ولا يجوز أن يُحبَس التركيز في مواضع غريبة.
 
-An automated scan will not tell you:
+المسح الآلي لن يخبرك:
 
-- Whether the focus order is intuitive
-- Whether a modal feels sane when tabbing through it
-- Whether the announcement text is actually helpful, not merely present
-- Whether a drag-and-drop interaction has an equivalent path for non-pointer users
-- Whether motion, timeouts, or progressive disclosure make the flow exhausting to use
+- هل ترتيب التركيز بديهي
+- هل تبدو النافذة المنبثقة معقولة عند التنقّل فيها بمفتاح Tab
+- هل نص الإعلان مفيد فعلًا، لا مجرّد موجود
+- هل لتفاعل السحب والإفلات مسار مكافئ لمستخدمي غير المؤشّر
+- هل تجعل الحركة أو المهل أو الكشف التدريجي التدفّق مُنهِكًا في الاستخدام
 
-So, the gate has two parts:
+إذن للبوابة جزءان:
 
-- **Automated violations**: fail the loop immediately.
-- **Manual-only checks**: keep a short checklist for the flows that matter, and do not pretend the bot covered them.
+- **الانتهاكات الآلية**: تُفشل الحلقة فورًا.
+- **الفحوص اليدوية وحدها**: أبقِ قائمة تحقّق قصيرة للتدفّقات المهمّة، ولا تتظاهر بأن الروبوت غطّاها.
 
-That split matters. A short honest checklist beats a fake sense of completeness every time.
+هذا الانقسام مهم. فقائمة تحقّق قصيرة صادقة تتفوّق دائمًا على إحساس زائف بالاكتمال.
 
-## False positives, suppressions, and the part where people get sloppy
+## الإيجابيات الكاذبة والتجاوزات والموضع الذي يسترخي فيه الناس
 
-Here’s where teams usually ruin the loop: the first noisy result shows up, somebody disables the rule globally, and now the accessibility gate is decorative.
+هنا عادةً ما يفسد الفرق الحلقة: تظهر أول نتيجة صاخبة، فيعطّل أحدهم القاعدة عالميًا، فتصبح بوابة إمكانية الوصول زينة.
 
-Don’t do that.
+لا تفعل ذلك.
 
-The policy I use is simple:
+السياسة التي أستخدمها بسيطة:
 
-- Treat `violations` as blocking until proven otherwise.
-- Treat `incomplete` or manual-review-style results as a queue for human verification, not as a failed build.
-- If you suppress a rule, scope it as tightly as possible and leave a sentence explaining why the component is still accessible.
+- تعامل مع `violations` على أنها مانعة إلى أن يثبت العكس.
+- تعامل مع `incomplete` أو النتائج التي تحتاج مراجعة يدوية كطابور للتحقق البشري، لا كبناء فاشل.
+- إن عطّلت قاعدة، فاحصر التجاوز بأضيق نطاق ممكن واترك جملة تشرح لماذا يبقى المكوّن متاحًا.
 
-> **Suppressions**
+> **التجاوزات**
 >
-> A suppression without a written reason is not a suppression. It is a future mystery. Put the reason next to the suppression so the next agent does not cargo-cult it across the codebase.
+> التجاوز بلا سبب مكتوب ليس تجاوزًا. إنه لغز مستقبلي. ضع السبب بجوار التجاوز حتى لا ينقله الوكيل التالي تقليدًا أعمى في أنحاء قاعدة الشيفرة.
 
-The real goal is not “zero findings at all costs.” The goal is “every remaining finding is understood.”
+الهدف الحقيقي ليس «صفر نتائج بأي ثمن». الهدف هو «كل نتيجة متبقية مفهومة».
 
-## What the agent should do when the gate trips
+## ما الذي ينبغي أن يفعله الوكيل عندما تُطلَق البوابة
 
-I want the agent to treat an accessibility violation the same way it treats a failing test: not as a suggestion, and not as a thing to explain away in the summary.
+أريد من الوكيل أن يتعامل مع انتهاك إمكانية الوصول كما يتعامل مع اختبار فاشل: لا كاقتراح، ولا كشيء يُبرَّر في الملخّص.
 
-The loop is:
+الحلقة هي:
 
-1. Run the accessibility scan after UI changes.
-2. Fix every new violation.
-3. Re-run the scan.
-4. If a rule must be suppressed, document the reason in code and in the task summary.
-5. If the change affects keyboard flow, run the manual checklist before declaring done.
+1. شغّل مسح إمكانية الوصول بعد تغييرات الواجهة.
+2. أصلح كل انتهاك جديد.
+3. أعد تشغيل المسح.
+4. إن وجب تعطيل قاعدة، وثّق السبب في الشيفرة وفي ملخّص المهمة.
+5. إن أثّر التغيير في تدفّق لوحة المفاتيح، فشغّل قائمة التحقّق اليدوية قبل إعلان الإنجاز.
 
-That’s it. No speeches about how accessibility is important. The gate already said it is.
+هذا كل شيء. بلا خطب عن أهمية إمكانية الوصول. فالبوابة قالت ذلك بالفعل.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Accessibility
@@ -177,20 +177,20 @@ That’s it. No speeches about how accessibility is important. The gate already 
   use roles and labels. That is upstream pressure, not proof.
 ```
 
-## How You Know the Gate Is Working
+## كيف تعرف أن البوابة تعمل
 
-You know this loop is in place when:
+تعرف أن هذه الحلقة قائمة عندما:
 
-- Critical routes have an automated accessibility scan
-- Complex UI flows have a tiny manual keyboard checklist
-- The agent treats new accessibility violations as a red build, not a note
+- تكون للمسارات الحرجة لقطة مسح آلية لإمكانية الوصول
+- تكون لتدفّقات الواجهة المعقّدة قائمة تحقّق صغيرة يدوية للوحة المفاتيح
+- يتعامل الوكيل مع انتهاكات إمكانية الوصول الجديدة كبناء أحمر، لا كملاحظة
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Semantic locators make accessible markup more likely. They do not make accessibility done. If you care about accessibility, give it its own gate and make that gate loud enough that the agent cannot step over it.
+المحدّدات الدلالية تجعل الترميز المتاح أكثر احتمالًا. لكنها لا تُنجز إمكانية الوصول. فإن كانت إمكانية الوصول تهمّك، فأعطها بوابتها الخاصة، واجعل تلك البوابة صاخبة بما يكفي بحيث لا يستطيع الوكيل تجاوزها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [ARIA Snapshots](https://playwright.dev/docs/aria-snapshots)
-- [Lab: Wire Accessibility Checks Into Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf)
+- [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [لقطات ARIA](https://playwright.dev/docs/aria-snapshots)
+- [مختبر: وصّل فحوص إمكانية الوصول إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf)

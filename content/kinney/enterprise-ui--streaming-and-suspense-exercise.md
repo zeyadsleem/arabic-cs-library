@@ -1,18 +1,18 @@
 ---
-title: "Exercise 3: Streaming & Suspense"
-lang: en
+title: "تمرين 3: البث وSuspense"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/streaming-and-suspense-exercise"
 ---
 
-The analytics dashboard makes three API calls at different speeds: summary stats (200ms), chart data (800ms), and activity table (2000ms). Right now, the entire page shows a single loading spinner until all three resolve. You’re going to add Suspense boundaries around each section and implement `renderToPipeableStream` for streaming SSR so each section renders progressively as its data arrives.
+تُجري لوحة التحليلات ثلاثة نداءات إلى الواجهة البرمجية بسرعات مختلفة: إحصاءات الملخص (200ms)، وبيانات المخطط (800ms)، وجدول النشاط (2000ms). والآن تعرض الصفحة بأكملها مؤشر تحميل واحدًا حتى تُحلّ الثلاثة كلها. وستضيف حدود Suspense حول كل قسم وتطبّق `renderToPipeableStream` للتصيير المتدفّق من الخادم كي يُصيَّر كل قسم تدريجيًا مع وصول بياناته.
 
-## Why It Matters
+## لماذا يهم
 
-Suspense boundaries are architectural decisions, not styling choices. Where you place them determines what the user sees while waiting, what streams in together versus independently, and how your loading states compose across package boundaries. In a monorepo with feature packages that each fetch their own data, getting this right means the difference between a responsive application and one that feels frozen for two seconds every page load.
+حدود Suspense قرارات معمارية، لا خيارات تنسيق. فمكان وضعها يحدّد ما يراه المستخدم أثناء الانتظار، وما يبثّ معًا وما يبثّ باستقلال، وكيف تتكوّن حالات التحميل لديك عبر حدود الحزم. وفي مستودع أحادي بحزم ميزات تجلب كل منها بياناتها، فإن إتقان هذا يعني الفرق بين تطبيق مستجيب وتطبيق يبدو متجمدًا ثانيتين عند كل تحميل صفحة.
 
-## How Progressive Rendering Works
+## كيف يعمل التصيير التدريجي
 
-With per-component data fetching and Suspense boundaries, each section renders independently as its data arrives. The timeline below shows what the user sees at each moment.
+مع جلب البيانات لكل مكوّن على حدة وحدود Suspense، يُصيَّر كل قسم باستقلال مع وصول بياناته. ويعرض الخط الزمني أدناه ما يراه المستخدم في كل لحظة.
 
 ```
 gantt
@@ -32,13 +32,13 @@ gantt
     Fully loaded                :active, s3\, 2000, 2100
 ```
 
-## Refactor to Per-Component Data Fetching
+## أعد الهيكلة إلى جلب بيانات لكل مكوّن
 
-Currently, `AnalyticsDashboard` fetches all three datasets in a single `Promise.all` and passes them as props. This means the entire page waits for the slowest response (the table at ~2000ms) before anything renders. You’re going to refactor so each component fetches its own data—which is a prerequisite for Suspense boundaries to work.
+حاليًا، يجلب `AnalyticsDashboard` مجموعات البيانات الثلاث كلها في `Promise.all` واحد ويمرّرها كخصائص. وهذا يعني أن الصفحة بأكملها تنتظر أبطأ استجابة (الجدول عند ~2000ms) قبل أن يُصيَّر أي شيء. وستعيد الهيكلة بحيث يجلب كل مكوّن بياناته بنفسه—وهو شرط مسبق كي تعمل حدود Suspense.
 
-### What to Look At First
+### ما الذي تنظر إليه أولًا
 
-Open `packages/analytics/src/analytics-dashboard.tsx` and notice the centralized fetch pattern:
+افتح `packages/analytics/src/analytics-dashboard.tsx` ولاحظ نمط الجلب المركزي:
 
 *packages/analytics/src/analytics-dashboard.tsx*
 
@@ -50,21 +50,21 @@ const [summaryResponse, chartResponse, tableResponse] = await Promise.all([
 ]);
 ```
 
-All three responses are fetched together and passed as props to child components.
+تُجلب الاستجابات الثلاث كلها معًا وتُمرَّر كخصائص إلى المكوّنات التابعة.
 
-Next, open `mocks/src/handlers.ts` and find the three analytics endpoints. Note the `delay()` calls—200ms, 800ms, and 2000ms. These are deterministic, not randomized. Right now, the user waits 2000ms for everything because `Promise.all` blocks until the slowest one resolves.
+ثم افتح `mocks/src/handlers.ts` وابحث عن نقاط نهاية التحليلات الثلاث. ولاحظ نداءات `delay()`—200ms، و800ms، و2000ms. وهذه حتمية لا عشوائية. والآن ينتظر المستخدم 2000ms لكل شيء لأن `Promise.all` يحجب حتى تُحلّ أبطأ استجابة.
 
-> **Three data-fetching patterns**
+> **ثلاثة أنماط لجلب البيانات**
 >
-> Sequential fetching (fetch `A`, then fetch `B`, then fetch `C`) creates a “waterfall” where each request waits for the previous one to finish—total wait time is the sum of all response times. `Promise.all` fires all requests simultaneously, eliminating the waterfall, but the UI still blocks until the slowest response arrives—total wait time equals the maximum response time.
+> الجلب المتسلسل (اجلب `A`، ثم اجلب `B`، ثم اجلب `C`) ينشئ «شلالًا» ينتظر فيه كل طلب انتهاء الطلب السابق—وزمن الانتظار الكلي هو مجموع أزمنة الاستجابة كلها. أما `Promise.all` فيطلق كل الطلبات في الوقت نفسه، مانعًا الشلال، لكن الواجهة تظل محجوبة حتى تصل أبطأ استجابة—وزمن الانتظار الكلي يساوي أقصى زمن استجابة.
 >
-> Per-component fetching (what we’re are about to implement) also fires requests simultaneously, but each component renders independently as soon as its own data arrives—the user sees results progressively. The waterfall pattern is the worst case and often appears accidentally when data fetching is nested inside sequential `await` calls or `useEffect` chains that depend on each other’s results.
+> الجلب لكل مكوّن على حدة (وهو ما سنطبّقه الآن) يُطلق الطلبات في الوقت نفسه أيضًا، لكن كل مكوّن يُصيَّر باستقلال بمجرد وصول بياناته—فيرى المستخدم النتائج تدريجيًا. ونمط الشلال هو أسوأ الحالات، ويظهر غالبًا عن غير قصد عندما يُغلَّف جلب البيانات داخل نداءات `await` متسلسلة أو سلاسل `useEffect` تعتمد كل واحدة على نتائج الأخرى.
 
-### Refactor Each Component
+### أعد هيكلة كل مكوّن
 
-Move data fetching into each component so it manages its own loading state.
+انقل جلب البيانات إلى كل مكوّن كي يدير حالة التحميل الخاصة به.
 
-Open `packages/analytics/src/stats-bar.tsx`. Right now, `StatsBar` receives `stats` as a prop from the parent—it has no idea how the data gets there. You’re going to remove that prop and make the component fetch its own summary data. Replace the file contents with:
+افتح `packages/analytics/src/stats-bar.tsx`. حاليًا، يتلقى `StatsBar` الخاصية `stats` من المكوّن الأب—ولا يدري كيف وصلت البيانات. وستزيل تلك الخاصية وتجعل المكوّن يجلب بيانات الملخص بنفسه. استبدل محتوى الملف بـ:
 
 *packages/analytics/src/stats-bar.tsx*
 
@@ -115,9 +115,9 @@ export function StatsBar(): React.ReactElement {
 }
 ```
 
-*Note:* Fetches summary stats on mount—the fastest API at ~200ms
+*ملاحظة:* يجلب إحصاءات الملخص عند التثبيت—أسرع واجهة برمجية عند ~200ms
 
-Open `packages/analytics/src/chart.tsx`. This component previously received its `data` as a prop from the parent’s `Promise.all`. You’re going to remove the `data` prop and have `Chart` fetch based on its `range` prop instead. Replace the file contents with:
+افتح `packages/analytics/src/chart.tsx`. كان هذا المكوّن يتلقى `data` كخاصية من `Promise.all` في المكوّن الأب. وستزيل خاصية `data` وتجعل `Chart` يجلب بناءً على خاصيته `range` بدلًا من ذلك. استبدل محتوى الملف بـ:
 
 *packages/analytics/src/chart.tsx*
 
@@ -193,11 +193,11 @@ export function Chart({ range = "30d" }: { range?: TimeRange }): React.ReactElem
 }
 ```
 
-*Note:* Reset to null so the skeleton shows while refetching
+*ملاحظة:* تُعاد إلى null كي يظهر الهيكل العظمي أثناء إعادة الجلب
 
-*Note:* Re-fetches whenever the time range changes
+*ملاحظة:* يعيد الجلب كلما تغيّر النطاق الزمني
 
-Open `packages/analytics/src/big-table.tsx`. Like the other two components, `BigTable` currently receives its `data` as a prop. You’re going to remove that prop and have it fetch its own table rows. Replace the file contents with:
+افتح `packages/analytics/src/big-table.tsx`. ومثل المكوّنين الآخرين، يتلقى `BigTable` حاليًا `data` كخاصية. وستزيل تلك الخاصية وتجعله يجلب صفوف جدوله بنفسه. استبدل محتوى الملف بـ:
 
 *packages/analytics/src/big-table.tsx*
 
@@ -243,13 +243,13 @@ export function BigTable(): React.ReactElement {
 }
 ```
 
-*Note:* Fetches on mount—the slowest API at ~2000ms
+*ملاحظة:* يجلب عند التثبيت—أبطأ واجهة برمجية عند ~2000ms
 
-> **The table API returns a paginated response**
+> **واجهة الجدول البرمجية تعيد استجابة مقسّمة إلى صفحات**
 >
-> The `/api/analytics/table?page=1` endpoint wraps the rows in a `PaginatedResponse<TableRow>` object with `data`, `page`, `pageSize`, and `total` fields. You need to extract `result.data` to get the array of `TableRow` items.
+> تغلّف نقطة النهاية `/api/analytics/table?page=1` الصفوف في كائن `PaginatedResponse<TableRow>` بحقول `data` و`page` و`pageSize` و`total`. وتحتاج إلى استخراج `result.data` للحصول على مصفوفة عناصر `TableRow`.
 
-Now open `packages/analytics/src/analytics-dashboard.tsx` and strip out all the data-fetching logic. Delete the `Promise.all`, delete the three dataset state variables, and delete the props you were passing to each child. The dashboard becomes a pure layout shell—it doesn’t fetch anything, it just renders the three components and lets them handle their own data. Replace the file contents with:
+والآن افتح `packages/analytics/src/analytics-dashboard.tsx` وجرّده من كل منطق جلب البيانات. احذف `Promise.all`، واحذف متغيّرات حالة مجموعات البيانات الثلاث، واحذف الخصائص التي كنت تمرّرها إلى كل مكوّن تابع. وتصير لوحة التحليلات قشرة تخطيط خالصة: فهي لا تجلب شيئًا، بل تصيّر المكوّنات الثلاثة فقط وتتركها تتولى بياناتها بنفسها. استبدل محتوى الملف بـ:
 
 *packages/analytics/src/analytics-dashboard.tsx*
 
@@ -315,25 +315,25 @@ export function AnalyticsDashboard(): React.ReactElement {
 export default AnalyticsDashboard;
 ```
 
-*Note:* No data-fetching imports—this component is a pure layout shell
+*ملاحظة:* بلا استيرادات لجلب البيانات—هذا المكوّن قشرة تخطيط خالصة
 
-> **Why each component fetches its own data**
+> **لماذا يجلب كل مكوّن بياناته بنفسه**
 >
-> This is a deliberate architectural choice. By colocating data fetching with the component that needs it, each section can render independently as soon as its data arrives. The `StatsBar` renders after ~200ms without waiting for the table’s ~2000ms response. This pattern is what makes Suspense boundaries useful in Step 2: they give React the granularity to show partial results while other fetches are still in flight.
+> هذا اختيار معماري متعمّد. فبجمع جلب البيانات مع المكوّن الذي يحتاجها في مكان واحد، يستطيع كل قسم أن يُصيَّر باستقلال بمجرد وصول بياناته. فيُصيَّر `StatsBar` بعد ~200ms بلا انتظار استجابة الجدول عند ~2000ms. وهذا النمط هو ما يجعل حدود Suspense مفيدة في الخطوة 2: فهي تمنح React الدقة الكافية لعرض نتائج جزئية بينما ما زالت طلبات أخرى جارية.
 
-### Checkpoint
+### نقطة تحقق
 
-Reload the page at `http://localhost:5173`. You should now see each section appear independently—the stats bar first (~200ms), then the chart (~800ms), then the table (~2000ms). Each shows its own loading skeleton while waiting. This is the per-component fetching pattern you need before adding Suspense.
+أعد تحميل الصفحة على `http://localhost:5173`. ينبغي أن ترى الآن كل قسم يظهر باستقلال—شريط الإحصاءات أولًا (~200ms)، ثم المخطط (~800ms)، ثم الجدول (~2000ms). ويعرض كل منها هيكله العظمي الخاص أثناء الانتظار. وهذا نمط الجلب لكل مكوّن الذي تحتاجه قبل إضافة Suspense.
 
-Loading skeletons shown while data fetches
+هياكل عظمية للتحميل تظهر أثناء جلب البيانات
 
-## Make Data Fetching Suspense-Compatible
+## اجعل جلب البيانات متوافقًا مع Suspense
 
-The per-component `useEffect` + `useState` pattern from Step 1 already gives each section its own loading state. But Suspense boundaries need a different mechanism—a data source that **throws a promise** during loading instead of returning `null`. This is React’s signal for “not ready yet.”
+يمنح نمط `useEffect` + `useState` لكل مكوّن من الخطوة 1 كل قسم بالفعل حالة تحميل خاصة به. لكن حدود Suspense تحتاج آلية مختلفة: مصدر بيانات **يرمي وعدًا** أثناء التحميل بدل أن يعيد `null`. هذه إشارة React لـ«لسنا جاهزين بعد».
 
-### Create a Suspense Resource Helper
+### أنشئ مساعد موارد Suspense
 
-Open `packages/shared/src/api-client.ts` and add the following function. This is entirely new—there’s nothing in the file you need to change, just append this to the end:
+افتح `packages/shared/src/api-client.ts` وأضف الدالة التالية. هذه إضافة جديدة كليًا: لا شيء في الملف تحتاج إلى تغييره، فألحق هذا في آخره:
 
 *packages/shared/src/api-client.ts*
 
@@ -368,11 +368,11 @@ export function createSuspenseResource<T>(promise: Promise<T>): SuspenseResource
 }
 ```
 
-*Note:* Wraps a promise in a three-state machine: pending, success, or error
+*ملاحظة:* يلفّ وعدًا في آلة بثلاث حالات: قيد الانتظار، أو نجاح، أو خطأ
 
-*Note:* Throwing the promise tells React to show the nearest Suspense fallback
+*ملاحظة:* رمي الوعد يخبر React أن يعرض أقرب واجهة احتياطية لـSuspense
 
-Then add one line to `packages/shared/src/index.ts` to expose the new function:
+ثم أضف سطرًا واحدًا إلى `packages/shared/src/index.ts` لكشف الدالة الجديدة:
 
 *packages/shared/src/index.ts*
 
@@ -380,13 +380,13 @@ Then add one line to `packages/shared/src/index.ts` to expose the new function:
 export { createSuspenseResource } from './api-client';
 ```
 
-> **How the throw-promise pattern works**
+> **كيف يعمل نمط رمي الوعد**
 >
-> When a component calls `resource.read()` and the data isn’t ready, the function throws the pending promise. React catches this thrown promise, shows the nearest `<Suspense>` fallback, and re-renders the component when the promise resolves. This is fundamentally different from `useEffect`—instead of rendering with `null` and updating state later, the component *never renders* until data is available. This is what makes Suspense boundaries useful: they intercept the thrown promise and show a fallback UI.
+> عندما ينادي مكوّن `resource.read()` ولا تكون البيانات جاهزة، ترمي الدالة الوعد المعلّق. فيلتقط React هذا الوعد المرمي، ويعرض أقرب واجهة احتياطية `<Suspense>`، ويعيد تصيير المكوّن عندما يُحلّ الوعد. وهذا مختلف جذريًا عن `useEffect`: فبدل التصيير بـ`null` وتحديث الحالة لاحقًا، *لا يُصيَّر* المكوّن إطلاقًا حتى تصير البيانات متاحة. وهذا ما يجعل حدود Suspense مفيدة: فهي تعترض الوعد المرمي وتعرض واجهة احتياطية.
 
-### Update Components to Use Suspense Resources
+### حدّث المكوّنات لتستخدم موارد Suspense
 
-Open `packages/analytics/src/stats-bar.tsx` again. You’re making three changes: (1) swap the imports—drop `useEffect`, `useState`, and `LoadingSkeleton`, add `createSuspenseResource`; (2) replace the `useEffect`/`useState` fetch with a module-level Suspense resource; (3) delete the `if (!stats)` loading guard—Suspense handles that now. Update the file to:
+افتح `packages/analytics/src/stats-bar.tsx` مرة أخرى. وستُجري ثلاثة تغييرات: (1) بدّل الاستيرادات—أسقط `useEffect` و`useState` و`LoadingSkeleton`، وأضف `createSuspenseResource`؛ (2) استبدل جلب `useEffect`/`useState` بمورد Suspense على مستوى الوحدة؛ (3) احذف حارس التحميل `if (!stats)`—فـSuspense يتولى ذلك الآن. حدّث الملف إلى:
 
 *packages/analytics/src/stats-bar.tsx*
 
@@ -416,13 +416,13 @@ export function StatsBar(): React.ReactElement {
 }
 ```
 
-*Note:* No useEffect, no useState, no LoadingSkeleton—Suspense handles all of that
+*ملاحظة:* بلا useEffect، بلا useState، بلا LoadingSkeleton—فـSuspense يتولى كل ذلك
 
-*Note:* Module-level resource—the fetch starts at import time, not at render time
+*ملاحظة:* مورد على مستوى الوحدة—يبدأ الجلب وقت الاستيراد، لا وقت التصيير
 
-*Note:* Throws a promise if data is not ready—React shows the Suspense fallback instead
+*ملاحظة:* يرمي وعدًا إن لم تكن البيانات جاهزة—فيعرض React واجهة Suspense الاحتياطية بدلًا من ذلك
 
-Open `packages/analytics/src/chart.tsx` again. The same three changes apply—swap imports, replace `useEffect` with a Suspense resource, remove the loading guard—but the chart has a twist: data depends on the `range` prop, so you can’t use a single module-level resource. Instead, use a `Map` that caches one resource per range value. Update the file to:
+افتح `packages/analytics/src/chart.tsx` مرة أخرى. وتنطبق التغييرات الثلاثة نفسها: بدّل الاستيرادات، واستبدل `useEffect` بمورد Suspense، واحذف حارس التحميل—لكن في المخطط التفاف: فبياناته تعتمد على خاصية `range`، فلا يمكنك استخدام مورد واحد على مستوى الوحدة. استخدم بدلًا من ذلك `Map` يخزّن مؤقتًا موردًا واحدًا لكل قيمة نطاق. حدّث الملف إلى:
 
 *packages/analytics/src/chart.tsx*
 
@@ -506,13 +506,13 @@ export function Chart({
 }
 ```
 
-*Note:* No useEffect, no useState, no LoadingSkeleton—Suspense handles all of that
+*ملاحظة:* بلا useEffect، بلا useState، بلا LoadingSkeleton—فـSuspense يتولى كل ذلك
 
-*Note:* Map-based cache because the fetch URL depends on the range prop
+*ملاحظة:* ذاكرة مؤقتة قائمة على Map لأن عنوان الجلب يعتمد على خاصية range
 
-*Note:* Throws a promise if data for this range is not ready yet
+*ملاحظة:* يرمي وعدًا إن لم تكن بيانات هذا النطاق جاهزة بعد
 
-Open `packages/analytics/src/big-table.tsx` again. Same pattern as `StatsBar`—swap imports, replace `useEffect` with a module-level resource, delete the loading guard. Update the file to:
+افتح `packages/analytics/src/big-table.tsx` مرة أخرى. والنمط نفسه كـ`StatsBar`: بدّل الاستيرادات، واستبدل `useEffect` بمورد على مستوى الوحدة، واحذف حارس التحميل. حدّث الملف إلى:
 
 *packages/analytics/src/big-table.tsx*
 
@@ -553,21 +553,21 @@ export function BigTable(): React.ReactElement {
 }
 ```
 
-*Note:* No useEffect, no useState, no LoadingSkeleton—Suspense handles all of that
+*ملاحظة:* بلا useEffect، بلا useState، بلا LoadingSkeleton—فـSuspense يتولى كل ذلك
 
-*Note:* Module-level resource—the fetch starts at import time
+*ملاحظة:* مورد على مستوى الوحدة—يبدأ الجلب وقت الاستيراد
 
-*Note:* Throws a promise if data is not ready—React shows the Suspense fallback instead
+*ملاحظة:* يرمي وعدًا إن لم تكن البيانات جاهزة—فيعرض React واجهة Suspense الاحتياطية بدلًا من ذلك
 
-> **Module-level resources execute immediately**
+> **الموارد على مستوى الوحدة تُنفَّذ فورًا**
 >
-> The `statsResource` and `tableResource` are created at import time, which means the fetch starts as soon as the module loads—not when the component renders. This is actually desirable for Suspense: the earlier the fetch starts, the sooner data arrives. For resources that depend on props (like the chart’s time range), the `Map`-based cache creates a new resource on first access for each range value.
+> يُنشأ `statsResource` و`tableResource` وقت الاستيراد، ما يعني أن الجلب يبدأ بمجرد تحميل الوحدة—لا عند تصيير المكوّن. وهذا مرغوب فعلًا مع Suspense: فكلما بدأ الجلب أبكر، وصلت البيانات أسرع. وأما الموارد التي تعتمد على خصائص (مثل النطاق الزمني في المخطط)، فالذاكرة المؤقتة القائمة على `Map` تنشئ موردًا جديدًا عند أول وصول لكل قيمة نطاق.
 
-### Add Suspense Boundaries
+### أضف حدود Suspense
 
-Now open `packages/analytics/src/analytics-dashboard.tsx` one more time. You’re adding two imports and wrapping each child component in a `<Suspense>` boundary. The rest of the file stays the same.
+والآن افتح `packages/analytics/src/analytics-dashboard.tsx` مرة أخيرة. وستضيف استيرادين وتلفّ كل مكوّن تابع في حدّ `<Suspense>`. أما بقية الملف فتبقى كما هي.
 
-Update the imports at the top of the file—add `Suspense` from React and `LoadingSkeleton` from `@pulse/ui`:
+حدّث الاستيرادات في أعلى الملف—أضف `Suspense` من React و`LoadingSkeleton` من `@pulse/ui`:
 
 *packages/analytics/src/analytics-dashboard.tsx*
 
@@ -577,9 +577,9 @@ import { LoadingSkeleton } from '@pulse/ui';
 // ... other imports stay the same ...
 ```
 
-*Note:* Suspense for async boundaries; LoadingSkeleton for the fallback UI
+*ملاحظة:* Suspense للحدود غير المتزامنة؛ وLoadingSkeleton لواجهة الاستبدال الاحتياطية
 
-Then wrap each child component in the JSX. Find `<StatsBar />`, `<Chart />`, and `<BigTable />` and wrap each one:
+ثم لفّ كل مكوّن تابع في JSX. ابحث عن `<StatsBar />` و`<Chart />` و`<BigTable />` ولفّ كل واحد منها:
 
 *packages/analytics/src/analytics-dashboard.tsx*
 
@@ -599,33 +599,33 @@ Then wrap each child component in the JSX. Find `<StatsBar />`, `<Chart />`, and
 </Suspense>
 ```
 
-*Note:* Suspense catches the thrown promise from statsResource.read() and shows a skeleton
+*ملاحظة:* يلتقط Suspense الوعد المرمي من statsResource.read() ويعرض هيكلًا عظميًا
 
-*Note:* Each Suspense boundary resolves independently as its data arrives
+*ملاحظة:* يُحلّ كل حدّ Suspense باستقلال مع وصول بياناته
 
-*Note:* Table data takes ~2000ms—its skeleton stays visible the longest
+*ملاحظة:* تستغرق بيانات الجدول ~2000ms—فيبقى هيكله العظمي ظاهرًا أطول مدة
 
-Save and reload the page. Watch the rendering sequence:
+احفظ وأعد تحميل الصفحة. وراقب تسلسل التصيير:
 
-- The page shell (sidebar, header) renders immediately
-- Skeleton fallbacks appear for each section
-- `StatsBar` appears after ~200ms as the skeleton is replaced
-- `Chart` appears after ~800ms
-- `BigTable` appears after ~2000ms
+- تُصيَّر قشرة الصفحة (الشريط الجانبي، والترويسة) فورًا
+- تظهر الهياكل العظمية الاحتياطية لكل قسم
+- يظهر `StatsBar` بعد ~200ms مع استبدال الهيكل العظمي
+- يظهر `Chart` بعد ~800ms
+- يظهر `BigTable` بعد ~2000ms
 
-### Checkpoint
+### نقطة تحقق
 
-Each section of the analytics dashboard now loads independently via Suspense. The stats bar with its four metric cards appears first, the chart follows about 600ms later, and the table arrives last. Each shows its own skeleton placeholder while loading. The key difference from Step 1: the loading state is now managed by React’s Suspense mechanism, not by manual `useState` in each component.
+يُحمَّل كل قسم من لوحة التحليلات الآن باستقلال عبر Suspense. فيظهر شريط الإحصاءات ببطاقات مقاييسه الأربع أولًا، ويتبعه المخطط بعد نحو 600ms، ويصل الجدول أخيرًا. ويعرض كل منها عنصر الهيكل العظمي الخاص به أثناء التحميل. والفرق الجوهري عن الخطوة 1: أن حالة التحميل يديرها الآن آلية Suspense في React، لا `useState` اليدوي في كل مكوّن.
 
-Stats bar loaded while chart and table still show skeletons
+شريط الإحصاءات محمَّل بينما المخطط والجدول ما زالا يعرضان هياكل عظمية
 
-Chart loaded with stats bar, table still loading
+المخطط محمَّل مع شريط الإحصاءات، والجدول ما زال يُحمَّل
 
-All sections fully loaded
+كل الأقسام محمَّلة بالكامل
 
-## Streaming SSR with `renderToPipeableStream`
+## التصيير المتدفّق من الخادم مع `renderToPipeableStream`
 
-The Suspense boundaries you added in Step 2 serve double duty. On the client, they show skeleton fallbacks while data loads. On the server, they tell React’s streaming SSR where to split the HTML stream. Here’s what a streaming SSR implementation looks like using the Suspense boundaries you’ve already built:
+تخدم حدود Suspense التي أضفتها في الخطوة 2 غرضين. ففي العميل، تعرض هياكل عظمية احتياطية أثناء تحميل البيانات. وفي الخادم، تخبر التصيير المتدفّق من الخادم في React أين يقسّم دفق HTML. وإليك شكل تطبيق التصيير المتدفّق من الخادم باستخدام حدود Suspense التي بنيتها بالفعل:
 
 *server/render.tsx*
 
@@ -659,31 +659,31 @@ export function render(req: Request, res: Response) {
 }
 ```
 
-> **`onShellReady` vs. `onAllReady`**
+> **`onShellReady` مقابل `onAllReady`**
 >
-> The `renderToPipeableStream` API gives you two callback options for when to start piping HTML to the client. `onShellReady` fires as soon as everything *outside* of Suspense boundaries has rendered—the app shell, navigation, and skeleton fallbacks. Content inside Suspense boundaries streams in later as each one resolves. `onAllReady` waits until everything has resolved, including all Suspense boundaries—this gives you the old “wait for everything” behavior. For progressive rendering, always use `onShellReady`. Use `onAllReady` only for static site generation or crawlers that need complete HTML.
+> تمنحك واجهة `renderToPipeableStream` خياري استدعاء راجع لتحديد متى يبدأ تدفق HTML إلى العميل. فيُطلَق `onShellReady` بمجرد تصيير كل ما هو *خارج* حدود Suspense: قشرة التطبيق، والتنقل، والهياكل العظمية الاحتياطية. أما المحتوى داخل حدود Suspense فيتدفق لاحقًا مع حلّ كل حدّ. وينتظر `onAllReady` حتى يُحلّ كل شيء، بما في ذلك كل حدود Suspense—وهذا يمنحك سلوك «انتظر كل شيء» القديم. وللتصيير التدريجي، استخدم `onShellReady` دائمًا. ولا تستخدم `onAllReady` إلا للتوليد الساكن للمواقع أو للزواحف التي تحتاج HTML كاملًا.
 
-> **How streaming replacement works under the hood**
+> **كيف يعمل الاستبدال المتدفّق في الكواليس**
 >
-> When `onShellReady` fires, React sends the complete HTML for the shell—including the fallback content of each Suspense boundary rendered as real HTML (the skeleton components). As each Suspense boundary resolves on the server, React sends a `<script>` tag containing the resolved HTML and a tiny function that swaps it into the right place in the DOM. The browser executes this inline script immediately, replacing the skeleton with the final content—no JavaScript framework needed for the swap. This is why the page appears to “fill in” progressively even before React hydrates on the client.
+> عندما يُطلَق `onShellReady`، يرسل React HTML كاملًا للقشرة—بما في ذلك محتوى الاستبدال لكل حدّ Suspense مصيَّرًا كـHTML حقيقي (مكوّنات الهيكل العظمي). ومع حلّ كل حدّ Suspense على الخادم، يرسل React وسم `<script>` يحتوي HTML المحلول ودالة صغيرة تستبدله في موضعه الصحيح في DOM. وينفّذ المتصفح هذا السكربت المضمّن فورًا، مستبدلًا الهيكل العظمي بالمحتوى النهائي—بلا حاجة إلى أي إطار عمل JavaScript للاستبدال. ولهذا تبدو الصفحة وكأنها «تمتلئ» تدريجيًا حتى قبل أن يترطّب React في العميل.
 
-> **This step is conceptual**
+> **هذه الخطوة مفاهيمية**
 >
-> Setting up Express middleware or Vite SSR mode is outside the scope of this exercise. The key takeaway is that your Suspense boundaries automatically work with `renderToPipeableStream`—you don’t need to change any component code to enable streaming SSR. The architecture you’ve built in Steps 1-2 is SSR-ready by design.
+> إعداد وسيط Express أو وضع التصيير من الخادم في Vite خارج نطاق هذا التمرين. والخلاصة الجوهرية أن حدود Suspense لديك تعمل تلقائيًا مع `renderToPipeableStream`—ولست بحاجة إلى تغيير أي شيفرة مكوّن لتمكين التصيير المتدفّق من الخادم. فالمعمار الذي بنيته في الخطوتين 1-2 جاهز للتصيير من الخادم بحكم التصميم.
 
-> **Hydration**
+> **الترطيب**
 >
-> When the browser receives the initial HTML from streaming SSR, it is static markup—buttons do not respond to clicks, state changes do not trigger re-renders, and effects do not run. Hydration is when React walks the existing DOM, compares it against the component tree it would have rendered on the client, and “adopts” those DOM nodes by wiring up event handlers, refs, and state management. After hydration completes, the application becomes fully interactive. This is why streaming SSR is valuable even before hydration finishes: the user sees real content immediately (server-rendered HTML), and the page becomes interactive incrementally as React hydrates each Suspense boundary. A hydration mismatch—where the server-rendered HTML differs from what the client would render—causes React to discard the server markup and re-render from scratch, negating the performance benefit.
+> عندما يتلقى المتصفح HTML الأولي من التصيير المتدفّق من الخادم، يكون ترميزًا ساكنًا: فلا تستجيب الأزرار للنقر، ولا تُشغّل تغييرات الحالة إعادات تصيير، ولا تعمل التأثيرات. والترطيب هو أن يسير React في DOM القائم، ويقارنه بشجرة المكوّنات التي كان سيصيّرها في العميل، و«يتبنّى» عُقد DOM تلك بربط معالجات الأحداث والمراجع وإدارة الحالة. وبعد اكتمال الترطيب، يصير التطبيق تفاعليًا بالكامل. ولهذا يكون التصيير المتدفّق من الخادم قيّمًا حتى قبل انتهاء الترطيب: فيرى المستخدم محتوى حقيقيًا فورًا (HTML مصيَّرًا في الخادم)، ويصير تفاعليًا تدريجيًا مع ترطيب React لكل حدّ Suspense. أما عدم توافق الترطيب—حيث يختلف HTML المصيَّر في الخادم عمّا سيصيّره العميل—فيجعل React يتخلى عن ترميز الخادم ويعيد التصيير من الصفر، ملغيًا فائدة الأداء.
 
-### Checkpoint
+### نقطة تحقق
 
-You understand how `renderToPipeableStream` uses your Suspense boundaries to progressively stream HTML. The shell (sidebar, header, skeleton fallbacks) ships first, then each resolved Suspense boundary streams as a replacement `<script>` tag.
+فهمت كيف يستخدم `renderToPipeableStream` حدود Suspense لديك لبثّ HTML تدريجيًا. فالقشرة (الشريط الجانبي، والترويسة، والهياكل العظمية الاحتياطية) تُرسل أولًا، ثم يُبثّ كل حدّ Suspense محلول كوسم `<script>` استبدالي.
 
-## Experiment with Boundary Placement
+## جرّب مواضع الحدود
 
-The placement of Suspense boundaries changes the user experience. Try different configurations in `packages/analytics/src/analytics-dashboard.tsx` to feel the trade-offs.
+يغيّر موضع حدود Suspense تجربة المستخدم. جرّب تهيئات مختلفة في `packages/analytics/src/analytics-dashboard.tsx` لتلمس المقايضات.
 
-The component tree below shows how Suspense boundaries wrap each independently-fetching component. Each boundary catches thrown promises from its child and displays the corresponding fallback.
+تعرض شجرة المكوّنات أدناه كيف تلفّ حدود Suspense كل مكوّن يجلب بياناته باستقلال. ويلتقط كل حدّ الوعود المرمية من تابعه ويعرض الاستبدال المقابل.
 
 ```
 graph TD
@@ -703,7 +703,7 @@ graph TD
     SB_T --> Table
 ```
 
-### Configuration A: One Boundary Around Everything
+### التهيئة A: حدّ واحد حول كل شيء
 
 ```typescript
 <Suspense fallback={<LoadingSkeleton variant="page" />}>
@@ -713,9 +713,9 @@ graph TD
 </Suspense>
 ```
 
-This is the “all or nothing” approach. The entire analytics area shows a single skeleton until the slowest component (BigTable at 2000ms) resolves. The fast StatsBar data sits unused for 1800ms.
+هذه مقاربة «كل شيء أو لا شيء». فتعرض منطقة التحليلات بأكملها هيكلًا عظميًا واحدًا حتى يُحلّ أبطأ مكوّن (`BigTable` عند 2000ms). فتبقى بيانات `StatsBar` السريعة غير مستخدمة 1800ms.
 
-### Configuration B: Individual Boundaries (Current)
+### التهيئة B: حدود فردية (الحالية)
 
 ```typescript
 <Suspense fallback={<LoadingSkeleton variant="card" />}>
@@ -729,9 +729,9 @@ This is the “all or nothing” approach. The entire analytics area shows a sin
 </Suspense>
 ```
 
-Each section renders as soon as its data is ready. Maximum progressiveness, but the page shifts layout three times as sections pop in.
+يُصيَّر كل قسم بمجرد أن تصير بياناته جاهزة. أقصى تدريج ممكن، لكن الصفحة تنقل تخطيطها ثلاث مرات مع ظهور الأقسام تباعًا.
 
-### Configuration C: Grouped Boundaries
+### التهيئة C: حدود مجمّعة
 
 ```typescript
 <Suspense fallback={<LoadingSkeleton variant="card" />}>
@@ -743,35 +743,35 @@ Each section renders as soon as its data is ready. Maximum progressiveness, but 
 </Suspense>
 ```
 
-Stats bar streams in first (fast feedback), then chart and table appear together when the table resolves. Two layout shifts instead of three. The chart data is ready at 800ms but waits until 2000ms to render because it shares a boundary with BigTable.
+يُبثّ شريط الإحصاءات أولًا (تغذية راجعة سريعة)، ثم يظهر المخطط والجدول معًا عند حلّ الجدول. فتنقلبان مرتين بدل ثلاث. وبيانات المخطط جاهزة عند 800ms لكنها تنتظر حتى 2000ms لتُصيَّر لأنها تشترك في حدّ مع `BigTable`.
 
-> **There is no universally correct placement**
+> **لا يوجد موضع صحيح في كل الحالات**
 >
-> Configuration B gives the fastest time-to-first-content, but causes three layout shifts. Configuration C reduces layout shifts but delays the chart by 1200ms. Configuration A has the worst time-to-first-content but zero layout shifts. The right choice depends on your product: a real-time dashboard benefits from progressive rendering (B), while a data-dense report might prefer the stability of grouped boundaries (C). This is why Suspense boundaries are architectural decisions—they encode product priorities into your component tree.
+> تمنح التهيئة B أسرع زمن لوصول المحتوى الأول، لكنها تسبب ثلاث نقلات تخطيط. وتقلّل التهيئة C نقلات التخطيط لكنها تؤخر المخطط 1200ms. أما التهيئة A فلها أسوأ زمن لوصول المحتوى الأول لكن بلا أي نقلات تخطيط. والاختيار الصحيح يعتمد على منتجك: فلوحة تحكم لحظية تستفيد من التصيير التدريجي (B)، بينما قد يفضّل تقرير كثيف البيانات استقرار الحدود المجمّعة (C). ولهذا حدود Suspense قرارات معمارية: فهي ترمّز أولويات المنتج في شجرة مكوّناتك.
 
-### Try Each One
+### جرّب كل واحدة
 
-Switch between configurations A, B, and C. Watch the network waterfall in DevTools and pay attention to how the page feels as a user. Settle on whichever approach you prefer and leave it in place.
+بدّل بين التهيئات A وB وC. وراقب شلال الشبكة في DevTools وانتبه إلى إحساس الصفحة كمستخدم. ثم استقرّ على أي مقاربة تفضّل واتركها في مكانها.
 
-### Checkpoint
+### نقطة تحقق
 
-You’ve tried at least two different Suspense boundary placements and observed how each changes the loading experience. You can articulate the trade-off between time-to-first-content and layout stability.
+جرّبت موضعين مختلفين على الأقل لحدود Suspense ولاحظت كيف يغيّر كل منهما تجربة التحميل. وتستطيع أن تصف بدقة المقايضة بين زمن وصول المحتوى الأول واستقرار التخطيط.
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `04-monorepos-start` branch:
+إن كنت بحاجة إلى اللحاق، فالحالة المكتملة لهذا التمرين متاحة على الفرع `04-monorepos-start`:
 
 ```bash
 git checkout 04-monorepos-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add error boundaries alongside Suspense boundaries:** Wrap each Suspense boundary in an `ErrorBoundary` from `@pulse/ui`. Stop the mock API for one endpoint (modify the MSW handler to return a 500) and verify the error boundary catches it without crashing the rest of the dashboard.
-- **Nested Suspense:** Add a Suspense boundary inside `BigTable` around the pagination controls. When the user changes pages, the table header stays visible while only the rows show a loading state.
-- **`useTransition` for navigation:** Wrap route changes in `useTransition` so the previous route stays visible while the next route’s data loads, instead of showing a page-level skeleton.
+- **أضف حدود أخطاء إلى جانب حدود Suspense:** لفّ كل حدّ Suspense بـ`ErrorBoundary` من `@pulse/ui`. وأوقف الواجهة البرمجية المُحاكاة لنقطة نهاية واحدة (عدّل معالج MSW كي يعيد 500) وتحقق من أن حدّ الأخطاء يلتقط ذلك دون إسقاط بقية لوحة التحليلات.
+- **Suspense متداخل:** أضف حدّ Suspense داخل `BigTable` حول عناصر التحكم في التقسيم إلى صفحات. وعندما يغيّر المستخدم الصفحات، تبقى ترويسة الجدول ظاهرة بينما تعرض الصفوف وحدها حالة تحميل.
+- **`useTransition` للتنقل:** لفّ تغييرات المسار في `useTransition` كي يبقى المسار السابق ظاهرًا أثناء تحميل بيانات المسار التالي، بدل عرض هيكل عظمي على مستوى الصفحة.
 
-## What’s Next
+## ما التالي
 
-You’ve seen how Suspense boundaries control the loading experience across independently-fetching components. The dashboard now has multiple packages (analytics, ui, shared) but no build orchestration—`pnpm -r build` rebuilds everything every time. In the next exercise, you’ll add Turborepo to get cached, dependency-aware builds and feel the difference when a second build takes near-zero time.
+رأيت كيف تتحكم حدود Suspense في تجربة التحميل عبر مكوّنات تجلب بياناتها باستقلال. ولوحة التحليلات الآن بحزم متعددة (analytics وui وshared) لكن بلا تنسيق للبناء—فـ`pnpm -r build` يعيد بناء كل شيء في كل مرة. وفي التمرين التالي، ستضيف Turborepo للحصول على عمليات بناء واعية بالاعتمادات ومخزَّنة مؤقتًا، وتلمس الفرق عندما يستغرق البناء الثاني زمنًا يقارب الصفر.

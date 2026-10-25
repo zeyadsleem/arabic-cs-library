@@ -1,12 +1,12 @@
 ---
-title: "Custom Data Transformers with tRPC"
-lang: en
+title: "مُحوّلات البيانات المخصّصة (Custom Data Transformers) في tRPC"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/custom-data-transformers-with-trpc"
 ---
 
-### Custom Data Transformers
+### مُحوّلات البيانات المخصّصة
 
-When you need to serialize `Date`, `Map`, or `BigInt` fields, consider [SuperJSON](https://github.com/blitz-js/superjson). Install `superjson` and register it in both server and client:
+عندما تحتاج إلى تسلسل (serialization) حقول من نوع `Date` أو `Map` أو `BigInt`، فكّر في [SuperJSON](https://github.com/blitz-js/superjson). ثبّت `superjson` وسجّله على الخادم والعميل:
 
 ```typescript
 import superjson from 'superjson';
@@ -16,7 +16,7 @@ const t = initTRPC.create({
 });
 ```
 
-And on the client:
+وعلى العميل:
 
 ```typescript
 createTRPCClient<AppRouter>({
@@ -25,4 +25,4 @@ createTRPCClient<AppRouter>({
 });
 ```
 
-Now your date objects will remain actual `Date` objects on the client, not random strings.
+الآن ستبقى كائنات التاريخ (date) كائنات `Date` حقيقية على العميل، لا سلاسل نصية عشوائية.

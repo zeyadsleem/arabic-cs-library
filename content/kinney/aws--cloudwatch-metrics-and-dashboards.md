@@ -1,76 +1,76 @@
 ---
-title: "Metrics and Dashboards"
-lang: en
+title: "المقاييس ولوحات المعلومات"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudwatch-metrics-and-dashboards"
 ---
 
-Logs tell you what happened. **Metrics** tell you how things are going. Every AWS service you’ve deployed in this course—Lambda, API Gateway, DynamoDB—publishes numeric measurements to CloudWatch at regular intervals. Invocation counts, error rates, latency percentiles, throttled requests. This data has been accumulating since you first deployed your Lambda function. You just haven’t looked at it yet.
+تخبرك السجلات بما حدث. أما **المقاييس** (metrics) فتخبرك كيف تسير الأمور. كل خدمة AWS نشرتها في هذه الدورة — Lambda وAPI Gateway وDynamoDB — تنشر قياسات رقمية إلى CloudWatch على فترات منتظمة. أعداد الاستدعاءات، ومعدّلات الأخطاء، ومئينات زمن الاستجابة، والطلبات المقيّدة. وقد كانت هذه البيانات تتراكم منذ أن نشرت دالة Lambda لأول مرة. لكنك لم تنظر إليها بعد.
 
-If you want AWS’s version of the metrics model while you read, the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) is the canonical reference.
+إذا أردت أن تطّلع على نسخة AWS من نموذج المقاييس أثناء القراءة، فإن [نظرة CloudWatch العامة](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) هي المرجع المعتمد.
 
-In this lesson, you’ll learn which metrics matter for each service, how to query them from the CLI, and how to build a CloudWatch dashboard that shows your application’s health at a glance.
+في هذا الدرس، ستتعلم أي المقاييس تهم لكل خدمة، وكيف تستعلم عنها من CLI، وكيف تبني لوحة معلومات CloudWatch تعرض صحة تطبيقك بنظرة واحدة.
 
-## How Metrics Work
+## كيف تعمل المقاييس
 
-A **metric** is a time-ordered series of data points. Each data point has a timestamp, a value, and a unit. Lambda publishes a `Duration` data point every time your function runs—the value is the execution time in milliseconds. Over a day, you might have thousands of `Duration` data points, and CloudWatch can aggregate them into averages, maximums, percentiles, or sums over any time window you choose.
+**المقياس** سلسلة نقاط بيانات مرتبة زمنيًا. ولكل نقطة بيانات طابع زمني وقيمة ووحدة. وتنشر Lambda نقطة بيانات `Duration` في كل مرة تعمل فيها دالتك — والقيمة هي زمن التنفيذ بالمللي ثانية. وعلى مدى يوم، قد يكون لديك آلاف نقاط بيانات `Duration`، ويمكن لـ CloudWatch تجميعها في متوسطات أو قيم عظمى أو مئينات أو مجاميع على أي نافذة زمنية تختارها.
 
-Metrics are organized by **namespace** (which service published them), **metric name** (what’s being measured), and **dimensions** (which specific resource within that service). For example:
+تُنظّم المقاييس حسب **مساحة الأسماء** (الخدمة التي نشرتها)، و**اسم المقياس** (ما يُقاس)، و**الأبعاد** (أي مورد محدّد داخل تلك الخدمة). مثلًا:
 
-- Namespace: `AWS/Lambda`
-- Metric name: `Duration`
-- Dimension: `FunctionName = my-frontend-app-api`
+- مساحة الأسماء: `AWS/Lambda`
+- اسم المقياس: `Duration`
+- البُعد: `FunctionName = my-frontend-app-api`
 
-This combination uniquely identifies “how long does my specific Lambda function take to execute?”
+يحدّد هذا المزيج بشكل فريد «كم تستغرق دالة Lambda الخاصة بي للتنفيذ؟»
 
-## Key Metrics by Service
+## المقاييس الرئيسية حسب الخدمة
 
-You don’t need to monitor every metric AWS publishes. Here are the ones that matter for a frontend application backend.
+لست بحاجة إلى مراقبة كل مقياس تنشره AWS. وهذه هي المقاييس التي تهم لواجهة خلفية لتطبيق أمامي.
 
 ### Lambda (`AWS/Lambda`)
 
-| Metric | What It Tells You | Statistic to Watch |
+| المقياس | ما يخبرك به | الإحصاءة التي تراقبها |
 | --- | --- | --- |
-| `Invocations` | How many times your function ran | `Sum`—total call volume |
-| `Errors` | How many invocations returned an error | `Sum`—total failures |
-| `Duration` | How long each invocation took (ms) | `Average` and `p95`—typical and worst-case latency |
-| `Throttles` | Invocations rejected due to concurrency limits | `Sum`—should be zero |
-| `ConcurrentExecutions` | How many environments are running simultaneously | `Maximum`—peak concurrency |
+| `Invocations` | عدد مرات تشغيل دالتك | `Sum` — إجمالي حجم الاستدعاءات |
+| `Errors` | عدد الاستدعاءات التي أرجعت خطأً | `Sum` — إجمالي حالات الفشل |
+| `Duration` | مدة كل استدعاء (بالملي ثانية) | `Average` و`p95` — زمن الاستجابة النموذجي والأسوأ |
+| `Throttles` | الاستدعاءات المرفوضة بسبب حدود التزامن | `Sum` — يجب أن تكون صفرًا |
+| `ConcurrentExecutions` | عدد البيئات العاملة في الوقت نفسه | `Maximum` — ذروة التزامن |
 
-The error rate is `Errors / Invocations`. If `Invocations` is 1,000 and `Errors` is 50, your error rate is 5%. This is the single most important metric for any API backend. If I could only watch one number, this would be it.
+معدّل الأخطاء هو `Errors / Invocations`. فإذا كانت `Invocations` تساوي 1,000 و`Errors` تساوي 50، فمعدّل أخطائك 5%. وهذا أهم مقياس منفرد لأي واجهة خلفية API. ولو كان بوسعي مراقبة رقم واحد فقط، لكان هذا هو.
 
 ### API Gateway (`AWS/ApiGateway`)
 
-| Metric | What It Tells You | Statistic to Watch |
+| المقياس | ما يخبرك به | الإحصاءة التي تراقبها |
 | --- | --- | --- |
-| `Count` | Total API requests | `Sum`—traffic volume |
-| `4XXError` | Client errors (bad requests, not found, unauthorized) | `Sum` and `Average`—a high rate means your API contract is unclear or clients are misbehaving |
-| `5XXError` | Server errors (your Lambda failed or timed out) | `Sum`—should be near zero |
-| `Latency` | Total time from request receipt to response (ms) | `Average` and `p95` |
-| `IntegrationLatency` | Time spent in the Lambda function specifically (ms) | `Average`—compare with `Latency` to see API Gateway overhead |
+| `Count` | إجمالي طلبات API | `Sum` — حجم حركة المرور |
+| `4XXError` | أخطاء العميل (طلبات سيئة، غير موجود، غير مصرّح) | `Sum` و`Average` — المعدّل المرتفع يعني أن عقد API غير واضح أو أن العملاء يسيئون التصرف |
+| `5XXError` | أخطاء الخادم (فشلت دالة Lambda أو انتهت مهلتها) | `Sum` — يجب أن تكون قريبة من الصفر |
+| `Latency` | الزمن الكلي من استلام الطلب إلى الاستجابة (بالملي ثانية) | `Average` و`p95` |
+| `IntegrationLatency` | الزمن الذي قضته دالة Lambda تحديدًا (بالملي ثانية) | `Average` — قارنه بـ `Latency` لترى الحمل الإضافي لـ API Gateway |
 
-The gap between `Latency` and `IntegrationLatency` is API Gateway overhead. If `IntegrationLatency` is 50 ms but `Latency` is 200 ms, API Gateway is adding 150 ms—which might indicate a cold start or authorization overhead.
+الفجوة بين `Latency` و`IntegrationLatency` هي الحمل الإضافي لـ API Gateway. فإذا كانت `IntegrationLatency` تساوي 50 مللي ثانية بينما `Latency` تساوي 200 مللي ثانية، فإن API Gateway يضيف 150 مللي ثانية — وقد يشير ذلك إلى بدء بارد أو حمل إضافي من التفويض.
 
-> **Tip**
+> **نصيحة**
 >
-> API Gateway metrics use the dimension `ApiId` (your API’s unique identifier) rather than the API name. You can find your API ID with `aws apigatewayv2 get-apis --region us-east-1 --output json`.
+> تستخدم مقاييس API Gateway البُعد `ApiId` (المعرّف الفريد لواجهتك) بدلًا من اسم API. ويمكنك العثور على معرّف API باستخدام `aws apigatewayv2 get-apis --region us-east-1 --output json`.
 
 ### DynamoDB (`AWS/DynamoDB`)
 
-| Metric | What It Tells You | Statistic to Watch |
+| المقياس | ما يخبرك به | الإحصاءة التي تراقبها |
 | --- | --- | --- |
-| `ConsumedReadCapacityUnits` | Read throughput consumed | `Sum`—how much read capacity you’re using |
-| `ConsumedWriteCapacityUnits` | Write throughput consumed | `Sum`—how much write capacity you’re using |
-| `ThrottledRequests` | Requests rejected due to throughput limits | `Sum`—should be zero on on-demand tables |
-| `SuccessfulRequestLatency` | Time DynamoDB took to process a request (ms) | `Average`—DynamoDB is fast; if this spikes, something’s wrong with your access pattern |
-| `SystemErrors` | Internal DynamoDB errors | `Sum`—rare, but worth monitoring |
+| `ConsumedReadCapacityUnits` | معدّل النقل القرائي المستهلك | `Sum` — مقدار سعة القراءة التي تستخدمها |
+| `ConsumedWriteCapacityUnits` | معدّل النقل الكتابي المستهلك | `Sum` — مقدار سعة الكتابة التي تستخدمها |
+| `ThrottledRequests` | الطلبات المرفوضة بسبب حدود معدّل النقل | `Sum` — يجب أن تكون صفرًا في الجداول عند الطلب |
+| `SuccessfulRequestLatency` | الزمن الذي استغرقته DynamoDB لمعالجة طلب (بالملي ثانية) | `Average` — DynamoDB سريعة؛ فإن ارتفع هذا فثمة خطب في نمط وصولك |
+| `SystemErrors` | أخطاء DynamoDB الداخلية | `Sum` — نادرة، لكنها تستحق المراقبة |
 
-If you’re using on-demand capacity mode (which you set up in [What is DynamoDB?](https://stevekinney.com/courses/aws/what-is-dynamodb)), `ThrottledRequests` should stay at zero unless you’re hitting account-level limits.
+إذا كنت تستخدم وضع السعة عند الطلب (الذي أعددته في [ما هي DynamoDB؟](https://stevekinney.com/courses/aws/what-is-dynamodb))، فينبغي أن يبقى `ThrottledRequests` عند الصفر ما لم تكن تصل إلى حدود على مستوى الحساب.
 
-## Querying Metrics from the CLI
+## الاستعلام عن المقاييس من CLI
 
-You can pull metric data directly from the command line with `aws cloudwatch get-metric-statistics`. This is useful for quick checks without opening the console.
+يمكنك سحب بيانات المقاييس مباشرة من سطر الأوامر باستخدام `aws cloudwatch get-metric-statistics`. وهذا مفيد للفحوص السريعة دون فتح لوحة التحكم.
 
-Get Lambda error count for the last hour:
+احصل على عدد أخطاء Lambda للساعة الأخيرة:
 
 ```bash
 # macOS
@@ -90,7 +90,7 @@ aws cloudwatch get-metric-statistics \
   --output json
 ```
 
-This returns data points aggregated into 5-minute buckets (300 seconds):
+يُرجع هذا نقاط بيانات مجمّعة في حزم مدتها 5 دقائق (300 ثانية):
 
 ```json
 {
@@ -110,7 +110,7 @@ This returns data points aggregated into 5-minute buckets (300 seconds):
 }
 ```
 
-Get average Lambda duration for the last hour:
+احصل على متوسط مدة Lambda للساعة الأخيرة:
 
 ```bash
 aws cloudwatch get-metric-statistics \
@@ -125,17 +125,17 @@ aws cloudwatch get-metric-statistics \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> You can request multiple statistics in a single call by listing them after `--statistics`. `Average Maximum` gives you both the typical and worst-case duration in the same response.
+> يمكنك طلب إحصاءات متعددة في استدعاء واحد بسردها بعد `--statistics`. فـ `Average Maximum` يمنحك المدة النموذجية والأسوأ في الاستجابة نفسها.
 
-## Creating a CloudWatch Dashboard
+## إنشاء لوحة معلومات CloudWatch
 
-A **dashboard** is a customizable page of widgets that display metrics. Instead of running CLI commands every time you want to check your application’s health, you build a dashboard once and glance at it whenever you need to.
+**لوحة المعلومات** صفحة قابلة للتخصيص من الودجات (widgets) تعرض المقاييس. فبدلًا من تشغيل أوامر CLI كلما أردت فحص صحة تطبيقك، تبني لوحة معلومات مرة واحدة وتلقي عليها نظرة كلما احتجت.
 
-### Create the Dashboard
+### إنشاء لوحة المعلومات
 
-CloudWatch dashboards are defined as JSON. Each widget specifies which metrics to graph and how to display them. Here’s a dashboard with three widgets: Lambda errors, Lambda duration, and API Gateway latency.
+تُعرَّف لوحات معلومات CloudWatch بصيغة JSON. وتحدّد كل ودجة المقاييس التي تُرسم بيانيًا وكيفية عرضها. وهذه لوحة معلومات بثلاث ودجات: أخطاء Lambda، ومدة Lambda، وزمن استجابة API Gateway.
 
 ```bash
 aws cloudwatch put-dashboard \
@@ -214,11 +214,11 @@ aws cloudwatch put-dashboard \
   --output json
 ```
 
-The `x` and `y` properties control widget placement on a 24-column grid. The `width` and `height` properties control size. Two widgets side by side at width 12 each fill the full row.
+تتحكم خاصيتا `x` و`y` في موضع الودجة على شبكة من 24 عمودًا. وتتحكم خاصيتا `width` و`height` في الحجم. وودجتان جنبًا إلى جنب بعرض 12 لكل منهما تملآن الصف كاملًا.
 
-For percentile views, CloudWatch dashboard JSON accepts the short statistic form like `"stat": "p95"`. You don’t need to spell it as `p95.00`.
+لعرض المئينات، يقبل JSON لوحة معلومات CloudWatch الصيغة المختصرة للإحصاءة مثل `"stat": "p95"`. ولست بحاجة إلى كتابتها `p95.00`.
 
-### Verify the Dashboard
+### التحقق من لوحة المعلومات
 
 ```bash
 aws cloudwatch list-dashboards \
@@ -226,13 +226,13 @@ aws cloudwatch list-dashboards \
   --output json
 ```
 
-You can also open the CloudWatch console in your browser, navigate to **Dashboards**, and see `my-frontend-app-dashboard` with all four widgets rendering real data.
+يمكنك أيضًا فتح لوحة تحكم CloudWatch في متصفحك، والانتقال إلى **Dashboards**، ورؤية `my-frontend-app-dashboard` مع عرض جميع الودجات الأربع بيانات حقيقية.
 
-> **Warning**
+> **تحذير**
 >
-> CloudWatch dashboards are free for the first three dashboards (up to 50 metrics each). After that, each dashboard costs $3 per month. For a single application, one dashboard with a handful of widgets is all you need.
+> لوحات معلومات CloudWatch مجانية لأول ثلاث لوحات (حتى 50 مقياسًا لكل منها). وبعد ذلك، تكلّف كل لوحة 3 دولارات شهريًا. ولتطبيق واحد، لوحة واحدة بعدد قليل من الودجات هي كل ما تحتاجه.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -288,23 +288,23 @@ await cloudwatch.send(
 );
 ```
 
-## Choosing the Right Statistic
+## اختيار الإحصاءة الصحيحة
 
-Metrics support multiple statistics, and picking the wrong one gives you a misleading picture.
+تدعم المقاييس إحصاءات متعددة، واختيار الإحصاءة الخاطئة يمنحك صورة مضللة.
 
-- **Sum**: Total count. Use for `Invocations`, `Errors`, `Throttles`, `Count`. “How many errors happened in the last hour?”
-- **Average**: Arithmetic mean. Use for `Duration`, `Latency`. “What’s the typical response time?” Be careful—averages hide outliers.
-- **Maximum**: Worst case in the period. Useful for spotting cold starts in `Duration`.
-- **p95 / p99**: Percentile statistics. “95% of requests completed within X milliseconds.” This is almost always more useful than Average for latency metrics because it shows you what your slowest users experience.
-- **SampleCount**: How many data points were aggregated. Useful for verifying that your function is actually receiving traffic.
+- **Sum**: العدد الإجمالي. استخدمها مع `Invocations` و`Errors` و`Throttles` و`Count`. «كم خطأ حدث في الساعة الأخيرة؟»
+- **Average**: المتوسط الحسابي. استخدمها مع `Duration` و`Latency`. «ما زمن الاستجابة النموذجي؟» كن حذرًا — فالمتوسطات تخفي القيم الشاذة.
+- **Maximum**: أسوأ حالة في الفترة. مفيدة لرصد حالات البدء البارد في `Duration`.
+- **p95 / p99**: إحصاءات المئينات. «اكتملت 95% من الطلبات خلال X مللي ثانية.» وهذا مفيد دائمًا تقريبًا أكثر من Average لمقاييس زمن الاستجابة، لأنه يريك ما يعيشه أبطأ مستخدميك.
+- **SampleCount**: عدد نقاط البيانات التي جُمّعت. مفيد للتحقق من أن دالتك تتلقى حركة مرور فعلًا.
 
-For latency, always graph both Average and p95. If they’re close together, your performance is consistent. If p95 is three times the average, you have outliers (often cold starts) that are worth investigating.
+لزمن الاستجابة، ارسم دائمًا Average وp95 معًا. فإن كانا متقاربين، فأداؤك متسق. وإن كان p95 ثلاثة أضعاف المتوسط، فلديك قيم شاذة (غالبًا حالات بدء بارد) تستحق التحقيق.
 
-You can see your metrics now and you have a dashboard. But dashboards require you to look at them. In the next lesson, you’ll create alarms that watch these metrics for you and send email notifications when something goes wrong—so you find out about problems before your users do.
+يمكنك رؤية مقاييسك الآن ولديك لوحة معلومات. لكن لوحات المعلومات تتطلب منك أن تنظر إليها. في الدرس التالي، ستنشئ إنذارات تراقب هذه المقاييس نيابة عنك وترسل إشعارات بريد إلكتروني عندما يسوء شيء — لتكتشف المشكلات قبل مستخدميك.
 
-## Cleanup
+## التنظيف
 
-When you’re done with the dashboard, delete it to keep your CloudWatch workspace tidy:
+حين تنتهي من لوحة المعلومات، احذفها لتبقي مساحة عمل CloudWatch مرتبة:
 
 ```bash
 aws cloudwatch delete-dashboards \
@@ -312,4 +312,4 @@ aws cloudwatch delete-dashboards \
   --region us-east-1
 ```
 
-CloudWatch dashboards are free for the first three, so this isn’t a billing concern at course scale—but it’s a good habit to clean up what you create.
+لوحات معلومات CloudWatch مجانية لأول ثلاث، لذا فالأمر ليس شاغلًا فاتوريًا على نطاق الدورة — لكن تنظيف ما تنشئه عادة جيدة.

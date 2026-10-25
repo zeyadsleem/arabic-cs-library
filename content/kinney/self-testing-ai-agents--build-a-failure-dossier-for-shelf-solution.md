@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/build-a-failure-dossier-for-shelf-solution"
 ---
 
-A failure dossier is the difference between an agent that says “tests failed” and an agent that says “the rate-book dialog test failed on line 47 because the Save button wasn’t visible within 5 seconds — here’s the screenshot, here’s the trace, and here’s the exact command to reproduce it.” The first response starts a conversation. The second one starts a fix.
+ملفّ الإخفاق (failure dossier) هو الفرق بين وكيل يقول «فشلت الاختبارات» ووكيل يقول «فشل اختبار نافذة تسجيل التقييم في السطر 47 لأن زر الحفظ لم يكن مرئيًا خلال 5 ثوانٍ — ها هي لقطة الشاشة، وها هو التتبّع، وها هو الأمر الدقيق لإعادة إنتاجه». فالاستجابة الأولى تبدأ محادثة، والثانية تبدأ إصلاحًا.
 
-The Shelf starter doesn’t ship that infrastructure. This lab wires it back in: Playwright config that retains the right artifacts, a fixture that forwards browser console noise, and a script that reads the JSON report and renders a structured markdown dossier.
+لا يوفّر مشروع Shelf الابتدائي هذه البنية التحتية. وهذا التمرين يعيد وصلها: إعداد Playwright يحتفظ بالمخرجات الصحيحة، وبديل (fixture) يمرّر ضجيج وحدة تحكّم المتصفح، وسكربت يقرأ تقرير JSON ويعرض ملف إخفاق منظّمًا بصيغة markdown.
 
-## What to add
+## ما الذي تضيفه
 
-### `playwright.config.ts` — artifact retention settings
+### `playwright.config.ts` — إعدادات الاحتفاظ بالمخرجات
 
-Three settings in the `use` block control what Playwright saves when a test fails:
+ثلاثة إعدادات في كتلة `use` تتحكّم في ما يحفظه Playwright عند فشل اختبار:
 
 ```typescript
 use: {
@@ -23,11 +23,11 @@ use: {
 },
 ```
 
-- **`trace: 'retain-on-failure'`** records a full trace for every test but only *keeps* it when the test fails. Traces include DOM snapshots at every action, network requests, and console logs. They’re the single most useful debugging artifact Playwright produces.
-- **`screenshot: 'only-on-failure'`** captures a screenshot at the moment of failure. This is the “what did the page actually look like?” evidence.
-- **`video: 'retain-on-failure'`** records video but, like traces, only retains it on failure. Video is heavier than traces but occasionally shows timing-dependent issues that a snapshot misses.
+- يسجّل **`trace: 'retain-on-failure'`** تتبّعًا كاملًا لكل اختبار لكنه لا *يحتفظ* به إلا عندما يفشل الاختبار. تشمل التتبّعات لقطات DOM عند كل إجراء، وطلبات الشبكة، وسجلات وحدة التحكّم. وهي أكثر مخرجات التنقيح فائدةً من بين كل ما ينتجه Playwright.
+- تلتقط **`screenshot: 'only-on-failure'`** لقطة شاشة في لحظة الفشل. وهذا هو الدليل على «كيف كانت الصفحة تبدو فعلًا؟».
+- يسجّل **`video: 'retain-on-failure'`** فيديو، لكنه لا يحتفظ به إلا عند الفشل، مثل التتبّعات. والفيديو أثقل من التتبّعات، لكنه يُظهر أحيانًا مشكلات مرتبطة بالتوقيت تفوتها اللقطة.
 
-The reporter configuration is equally important:
+إعداد المُبلِّغ (reporter) لا يقل أهمية:
 
 ```typescript
 reporter: [
@@ -37,9 +37,9 @@ reporter: [
 ],
 ```
 
-The `json` reporter is what the dossier script reads. Without it, there’s no machine-readable report to summarize. The `html` reporter is for humans who want to browse failures interactively. The `list` reporter prints results to the terminal during the run.
+مُبلِّغ `json` هو ما يقرأه سكربت ملف الإخفاق. وبدونه لا يوجد تقرير قابل للقراءة آليًا لتلخيصه. أما مُبلِّغ `html` فللبشر الذين يريدون تصفّح الإخفاقات تفاعليًا. ومُبلِّغ `list` يطبع النتائج في الطرفية أثناء التشغيل.
 
-### `tests/fixtures.ts` — console forwarding
+### `tests/fixtures.ts` — تمرير مخرجات وحدة التحكّم
 
 ```typescript
 export const test = base.extend({
@@ -76,15 +76,15 @@ export const test = base.extend({
 });
 ```
 
-This fixture wraps every test’s `page` to forward browser-side noise to Node’s stderr. Why does this matter for the dossier? Because the forwarded lines show up in Playwright’s reporter output, the HTML report, and the JSON report. Without this, a `console.error('Cannot read properties of undefined')` happening in the browser would be invisible in the dossier — the test would just time out, and you’d have no idea why.
+هذا البديل يلفّ `page` في كل اختبار ليمرّر ضجيج جانب المتصفح إلى stderr في Node. ولماذا يهمّ هذا في ملف الإخفاق؟ لأن الأسطر الممرَّرة تظهر في مخرجات مُبلِّغ Playwright، وفي تقرير HTML، وفي تقرير JSON. وبدون ذلك، فإن `console.error('Cannot read properties of undefined')` الذي يحدث في المتصفح سيبقى غير مرئي في ملف الإخفاق — سينتهي الاختبار بمهلة فقط، ولن تكون لديك أي فكرة عن السبب.
 
-The `ERR_ABORTED` / `NS_BINDING_ABORTED` filter is there because those are normal navigation cancellations. Forwarding them would create noise that obscures real failures.
+مرشّح `ERR_ABORTED` / `NS_BINDING_ABORTED` موجود لأن هذه إلغاءات تنقّل طبيعية. وتمريرها سيخلق ضجيجًا يحجب الإخفاقات الحقيقية.
 
-### `scripts/summarize-failure-dossier.ts` — the dossier script
+### `scripts/summarize-failure-dossier.ts` — سكربت ملف الإخفاق
 
-This is the core of the lab. It reads `playwright-report/report.json`, walks the suite tree, collects failures, and renders a markdown file.
+هذا هو جوهر التمرين. يقرأ `playwright-report/report.json`، ويمشي في شجرة مجموعات الاختبارات، ويجمع الإخفاقات، ويعرض ملف markdown.
 
-The type definitions map Playwright’s JSON report structure:
+تعريفات الأنواع تعكس بنية تقرير JSON في Playwright:
 
 ```typescript
 type FailureSummary = {
@@ -99,9 +99,9 @@ type FailureSummary = {
 };
 ```
 
-This is the schema for each failure entry. Everything an agent needs to understand, reproduce, and fix a failure is captured here.
+هذا هو المخطّط لكل مُدخل إخفاق. وكل ما يحتاجه الوكيل ليفهم الإخفاق ويعيد إنتاجه ويصلحه مُلتقَط هنا.
 
-The suite-walking logic is recursive because Playwright nests suites arbitrarily deep (file > describe > describe > test):
+منطق المشي في المجموعات عودي لأن Playwright يُدخل المجموعات بعمق غير محدود (ملف ← describe ← describe ← اختبار):
 
 ```typescript
 const collectSpecs = (suites: PlaywrightSuite[]): PlaywrightSpec[] => {
@@ -109,7 +109,7 @@ const collectSpecs = (suites: PlaywrightSuite[]): PlaywrightSpec[] => {
 };
 ```
 
-Screenshot selection has an opinion about which image is most useful:
+اختيار لقطة الشاشة له رأي في أي صورة هي الأنفع:
 
 ```typescript
 const pickFailureScreenshot = (attachments: PlaywrightAttachment[] | undefined): string | null => {
@@ -128,18 +128,18 @@ const pickFailureScreenshot = (attachments: PlaywrightAttachment[] | undefined):
 };
 ```
 
-When Playwright does visual comparison testing, it generates three images: `expected`, `actual`, and `diff`. The `diff` image highlights exactly what changed, so it’s the most actionable. The `actual` image shows what the page looked like. The `expected` baseline is the least useful for debugging a failure. The function tries them in that order and falls back to any image attachment for non-visual failures that just have a generic screenshot.
+عندما يجري Playwright اختبار مقارنة بصرية، يولّد ثلاث صور: `expected` و`actual` و`diff`. وصورة `diff` تُبرز بالضبط ما تغيّر، لذا هي الأكثر قابلية للتنفيذ. وصورة `actual` تُظهر كيف كانت الصفحة تبدو. أما خط الأساس `expected` فهو الأقل فائدةً في تنقيح إخفاق. وتجرّب الدالة هذه الصور بهذا الترتيب، ثم ترجع إلى أي مرفق صورة في الإخفاقات غير البصرية التي تملك لقطة شاشة عامة فقط.
 
-The rendered dossier for each failure includes a reproduction command:
+ملف الإخفاق المعروض لكل إخفاق يتضمّن أمر إعادة إنتاج:
 
 ```typescript
 const projectFlag = failure.projectName ? `--project=${failure.projectName} ` : '';
 const reproduceCommand = `npx playwright test ${projectFlag}${failure.file} -g ${JSON.stringify(failure.title)}`;
 ```
 
-This is the line the agent (or you) can copy-paste to rerun just the failing test. The `--project` flag targets the right browser configuration *when the repo defines named projects* (the minimal starter doesn’t yet, so the guard keeps the flag out of the command until you add them), the file path narrows to the right spec, and `-g` filters to the specific test by title. No guessing, no reading through test files to figure out which test failed.
+هذا هو السطر الذي يمكن للوكيل (أو لك) نسخه ولصقه لإعادة تشغيل الاختبار الفاشل وحده. فعلم `--project` يستهدف إعداد المتصفح الصحيح *عندما يعرّف المستودع مشروعات مسمّاة* (المشروع الابتدائي الأدنى لا يفعل ذلك بعد، لذا يُبقي الحارس هذا العلم خارج الأمر حتى تضيفها)، ومسار الملف يضيّق النطاق إلى المواصفة الصحيحة، و`-g` يرشّح الاختبار المحدّد بالعنوان. لا تخمين، ولا قراءة ملفات الاختبار لمعرفة أي اختبار فشل.
 
-When there are no failures, the dossier says so plainly:
+وعندما لا توجد إخفاقات، يقول ملف الإخفاق ذلك بصراحة:
 
 ```typescript
 if (failures.length === 0) {
@@ -147,75 +147,75 @@ if (failures.length === 0) {
 }
 ```
 
-## What you still need to run
+## ما يبقى عليك تشغيله
 
-### Generate a green dossier first
+### ولّد ملف إخفاق أخضر أولًا
 
-Run the full test suite and then generate the dossier:
+شغّل مجموعة الاختبارات الكاملة ثم ولّد ملف الإخفاق:
 
 ```bash
 npx playwright test
 npm run dossier
 ```
 
-Open `playwright-report/dossier.md`. It should say “No failing tests.” This is your baseline — proof that the script runs and produces output even when everything passes.
+افتح `playwright-report/dossier.md`. ينبغي أن يعرض العبارة `No failing tests.` وهذا هو خط أساسك — دليل على أن السكربت يعمل وينتج مخرجات حتى عندما ينجح كل شيء.
 
-### The deliberate-break experiment
+### تجربة الكسر المتعمّد
 
-Now break something on purpose. A reliable way: open `src/routes/+page.svelte` (the public home page that `tests/smoke.spec.ts` asserts on) and change the `PageHeader` heading text — for example, replace `Build a shelf that remembers what you actually read` with anything else. The smoke spec’s `getByRole('heading', { name: /Build a shelf that remembers what you actually read/i })` assertion will fail. (Avoid editing `/shelf` itself — it’s gated behind auth and redirects unauthenticated requests to `/login`, so the starter’s smoke spec only asserts on the redirect, not the page heading.)
+اكسر شيئًا الآن بشكل متعمّد. وثمّة طريقة موثوقة: افتح `src/routes/+page.svelte` (الصفحة الرئيسية العامة التي يتحقّق منها `tests/smoke.spec.ts`) وغيّر نص عنوان `PageHeader` — مثلًا استبدل `Build a shelf that remembers what you actually read` بأي شيء آخر. حينها سيفشل التحقّق `getByRole('heading', { name: /Build a shelf that remembers what you actually read/i })` في مواصفة التدقيق. (تجنّب تحرير `/shelf` نفسها — فهي محجوبة خلف المصادقة وتعيد توجيه الطلبات غير الموثّقة إلى `/login`، لذا لا تتحقّق مواصفة التدقيق في المشروع الابتدائي إلا من إعادة التوجيه، لا من عنوان الصفحة.)
 
-Run the suite again:
+شغّل المجموعة مرة أخرى:
 
 ```bash
 npx playwright test
 ```
 
-You should see at least one failure. Now generate the dossier:
+ينبغي أن ترى إخفاقًا واحدًا على الأقل. ولّد ملف الإخفاق الآن:
 
 ```bash
 npm run dossier
 ```
 
-Open `playwright-report/dossier.md`. For each failure, you should see:
+افتح `playwright-report/dossier.md`. ولكل إخفاق، ينبغي أن ترى:
 
-- **The test title and file location** — which test broke and where it lives.
-- **The error message** — what Playwright actually reported.
-- **A screenshot path** — what the page looked like at the moment of failure.
-- **A trace path** — with the command to open it (`npx playwright show-trace <path>`).
-- **A reproduction command** — the exact `npx playwright test` invocation to rerun just that test.
+- **عنوان الاختبار وموضع الملف** — أي اختبار انكسر وأين يوجد.
+- **رسالة الخطأ** — ما أبلغ به Playwright فعليًا.
+- **مسار لقطة شاشة** — كيف كانت الصفحة تبدو في لحظة الفشل.
+- **مسار تتبّع** — مع الأمر اللازم لفتحه (`npx playwright show-trace <path>`).
+- **أمر إعادة إنتاج** — استدعاء `npx playwright test` الدقيق لإعادة تشغيل ذلك الاختبار وحده.
 
-Open the trace to confirm it’s real:
+افتح التتبّع لتتأكّد أنه حقيقي:
 
 ```bash
 npx playwright show-trace playwright-report/test-results/<the-trace-file>.zip
 ```
 
-The viewer shows the full timeline of actions, DOM snapshots at each step, and the exact point where the assertion failed.
+يُظهر العارض الخط الزمني الكامل للإجراءات، ولقطات DOM عند كل خطوة، والنقطة الدقيقة التي فشل عندها التحقّق.
 
-### Revert and confirm green
+### تراجع وتأكّد من الاخضرار
 
-Undo your deliberate break, run the suite again, regenerate the dossier, and confirm it’s back to “No failing tests.”
+ألغِ كسرك المتعمّد، وشغّل المجموعة مرة أخرى، وأعد توليد ملف الإخفاق، وتأكّد من عودته إلى `No failing tests.`
 
-### The agent loop
+### حلقة الوكيل
 
-This is the payoff. With the dossier infrastructure in place, the workflow becomes:
+هذه هي المكافأة. وبعد أن تصبح بنية ملف الإخفاق في مكانها، يصبح سير العمل:
 
-1. Tests fail (in CI or locally).
-2. Run `npm run dossier`.
-3. Hand the dossier to the agent (or let the agent read it directly — the `CLAUDE.md` “When a test fails” section already tells it to).
-4. The agent reads the error, opens the trace, identifies the bug, fixes it, and reruns the specific test.
+1. تفشل الاختبارات (في CI أو محليًا).
+2. شغّل `npm run dossier`.
+3. سلّم ملف الإخفاق إلى الوكيل (أو دعه يقرأه مباشرةً — فقسم «عندما يفشل اختبار» في `CLAUDE.md` يطلب منه ذلك بالفعل).
+4. يقرأ الوكيل الخطأ، ويفتح التتبّع، ويحدّد العلّة، ويصلحها، ويعيد تشغيل الاختبار المحدّد.
 
-The dossier replaces “hey, the tests are red, can you look?” with a structured brief that gives the agent everything it needs to start working immediately.
+يستبدل ملف الإخفاق عبارة «مرحبًا، الاختبارات حمراء، هل يمكنك النظر؟» بموجز منظّم يمنح الوكيل كل ما يحتاجه ليبدأ العمل فورًا.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **Artifacts are only useful if they’re retained.** `trace: 'retain-on-failure'` and `screenshot: 'only-on-failure'` are the settings that make debugging possible. Without them, a failure is just an error message with no context.
-- **JSON reporters are for machines, HTML reporters are for humans.** The dossier script reads the JSON report. You browse the HTML report. Both are generated from the same run. Wire both.
-- **Console forwarding closes the visibility gap.** Browser-side errors are invisible to the test runner unless you explicitly forward them. The fixture bridges that gap, and the forwarded output shows up in the dossier.
-- **Screenshot preference matters.** When visual regressions generate multiple images, the diff is the most useful. The dossier script encodes that preference so the agent sees the most actionable image first.
-- **Reproduction commands are an API.** A human can copy-paste the command. An agent can execute it directly. Either way, the path from “failure identified” to “failure reproduced” is a single command, not a research project.
+- **المخرجات لا تُفيد إلا إذا احتُفظ بها.** `trace: 'retain-on-failure'` و`screenshot: 'only-on-failure'` هما الإعدادان اللذان يجعلان التنقيح ممكنًا. وبدونهما، لا يكون الإخفاق سوى رسالة خطأ بلا سياق.
+- **مُبلِّغات JSON للآلات، ومُبلِّغات HTML للبشر.** يقرأ سكربت ملف الإخفاق تقرير JSON. وأنت تتصفّح تقرير HTML. وكلاهما يُولَّد من التشغيل نفسه. صِل الاثنين.
+- **تمرير مخرجات وحدة التحكّم يسدّ فجوة الرؤية.** أخطاء جانب المتصفح غير مرئية لمشغّل الاختبارات ما لم تمرّرها صراحةً. والبديل يجسر تلك الفجوة، فتظهر المخرجات الممرَّرة داخل ملف الإخفاق.
+- **تفضيل لقطة الشاشة مهم.** عندما تولّد الانحدارات البصرية صورًا متعددة، تكون صورة الفرق هي الأنفع. ويُضمّن سكربت ملف الإخفاق هذا التفضيل كي يرى الوكيل الصورة الأكثر قابلية للتنفيذ أولًا.
+- **أوامر إعادة الإنتاج واجهة برمجية.** يستطيع الإنسان نسخ الأمر ولصقه. ويستطيع الوكيل تنفيذه مباشرةً. وفي الحالتين، الطريق من «تحديد الإخفاق» إلى «إعادة إنتاج الإخفاق» أمر واحد، لا مشروع بحث.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Build a Failure Dossier for Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf)
-- [Failure Dossiers: What Agents Actually Need from a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [تمرين: بناء ملف إخفاق من أجل Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf)
+- [ملفات الإخفاق: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)

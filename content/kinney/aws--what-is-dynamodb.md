@@ -1,45 +1,45 @@
 ---
-title: "What DynamoDB Is and When to Use It"
-lang: en
+title: "ما هي DynamoDB ومتى تستخدمها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/what-is-dynamodb"
 ---
 
-You don’t need PostgreSQL for a todo list. You don’t need to learn SQL joins, manage connection pools, or pay for a database server that runs 24/7 whether or not anyone is using your app. If your frontend needs a place to store and retrieve data—user preferences, form submissions, a list of items—**DynamoDB** gives you a database without giving you a database server.
+لا تحتاج إلى PostgreSQL من أجل قائمة مهام. لا تحتاج إلى تعلّم وصلات SQL، ولا إدارة تجمّعات الاتصالات، ولا الدفع مقابل خادم قاعدة بيانات يعمل على مدار الساعة سواء كان أحد يستخدم تطبيقك أم لا. إن كانت واجهتك الأمامية تحتاج إلى مكان لتخزين البيانات واسترجاعها—تفضيلات المستخدم، أو نماذج مُرسلة، أو قائمة عناصر—فإن **DynamoDB** تمنحك قاعدة بيانات دون أن تمنحك خادم قاعدة بيانات.
 
-DynamoDB is a fully managed, serverless NoSQL database from AWS. You create a table, write data to it, read data from it, and AWS handles everything else: provisioning, replication, patching, backups, scaling. If that sounds familiar, it should—it’s the same “you write the code, we run the infrastructure” model you saw with Lambda in [What is Lambda?](https://stevekinney.com/courses/aws/what-is-lambda).
+DynamoDB قاعدة بيانات NoSQL بلا خوادم (serverless) ومُدارة بالكامل من AWS. تنشئ جدولًا، وتكتب فيه بيانات، وتقرأ منه، وتتولى AWS كل ما عدا ذلك: التوفير والتكرار والترقيع والنسخ الاحتياطي والتوسّع. وإن بدا هذا مألوفًا، فمن حقّه أن يبدو كذلك—إنه النموذج نفسه «أنت تكتب الكود ونحن نشغّل البنية التحتية» الذي رأيته مع Lambda في [ما هي Lambda؟](https://stevekinney.com/courses/aws/what-is-lambda).
 
-## Why This Matters
+## لماذا يهمّ هذا
 
-This is the moment Scratch Lab stops being “a frontend with an API” and becomes “an application with state.” Once you store notes, you need a database choice that matches the rest of the stack. DynamoDB fits the same serverless operating model as Lambda, which is why it shows up so often in frontend-heavy AWS architectures.
+هذه هي اللحظة التي يتوقف فيها Scratch Lab عن كونه «واجهة أمامية مع واجهة برمجية» ليصبح «تطبيقًا له حالة». فبمجرد أن تخزّن الملاحظات، تحتاج إلى اختيار قاعدة بيانات يتوافق مع بقية المكدّس. تنسجم DynamoDB مع نموذج التشغيل نفسه بلا خوادم الذي تتبعه Lambda، ولهذا تظهر كثيرًا في معماريات AWS التي تغلب عليها الواجهات الأمامية.
 
-## Builds On
+## يُبنى على
 
-- [What Lambda Is and Why Frontend Engineers Care](https://stevekinney.com/courses/aws/what-is-lambda)
-- [Connecting API Gateway to Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)
+- [ما هي Lambda ولماذا يهتم بها مهندسو الواجهة الأمامية](https://stevekinney.com/courses/aws/what-is-lambda)
+- [توصيل API Gateway بـ Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)
 
-## How It Differs from SQL Databases
+## كيف تختلف عن قواعد البيانات العلائقية
 
-If you’ve used PostgreSQL, MySQL, or even SQLite in a side project, you’re accustomed to the relational model: tables with rigid schemas, rows and columns, and SQL queries that can join across multiple tables. That model is powerful, but it comes with operational overhead that frontend engineers rarely need.
+إن كنت قد استخدمت PostgreSQL أو MySQL أو حتى SQLite في مشروع جانبي، فأنت معتاد على النموذج العلائقي: جداول ذات مخططات صارمة، وصفوف وأعمدة، واستعلامات SQL تستطيع الربط بين جداول متعددة. هذا النموذج قوي، لكنه يأتي بعبء تشغيلي قلّما يحتاجه مهندسو الواجهة الأمامية.
 
-DynamoDB uses a **key-value and document model** instead. Here’s how the two compare:
+تستخدم DynamoDB بدلًا من ذلك **نموذج المفتاح-القيمة والمستندات**. وإليك كيف يتقارن الاثنان:
 
-|  | Relational Database (PostgreSQL) | DynamoDB |
+|  | قاعدة بيانات علائقية (PostgreSQL) | DynamoDB |
 | --- | --- | --- |
-| Schema | Fixed columns, defined up front | Flexible—each item can have different attributes |
-| Query language | SQL | API calls (SDK or CLI) |
-| Joins | Yes, across multiple tables | No joins—design around single-table access |
-| Scaling | You manage (replicas, read/write scaling) | Automatic and on-demand |
-| Server | You provision and maintain it | Fully managed, no server |
-| Connection management | Connection pools, max connections | HTTP API—no persistent connections |
-| Pricing | Per hour (the server runs whether you use it or not) | Per request (you pay for what you use) |
+| المخطط | أعمدة ثابتة تُحدَّد مسبقًا | مرن—يمكن أن يختلف كل عنصر في سماته |
+| لغة الاستعلام | SQL | استدعاءات API (SDK أو CLI) |
+| الربط (Joins) | نعم، عبر جداول متعددة | لا يوجد ربط—صمّم حول الوصول إلى جدول واحد |
+| التوسّع | أنت تديره (النسخ المتماثلة، توسيع القراءة/الكتابة) | تلقائي وعند الطلب |
+| الخادم | أنت توفّره وتصونه | مُدار بالكامل، بلا خادم |
+| إدارة الاتصالات | تجمّعات اتصالات، وحدود قصوى للاتصالات | واجهة HTTP—بلا اتصالات دائمة |
+| التسعير | بالساعة (الخادم يعمل سواء استخدمته أم لا) | لكل طلب (تدفع مقابل ما تستخدمه) |
 
-The mental shift: with a relational database, you design your schema around your data and then figure out queries. With DynamoDB, you design your schema around your **access patterns**—the specific ways your application reads and writes data. This tripped me up at first, but once it clicks, it makes a lot of sense. For a frontend API backend, your access patterns are usually simple: “get this item by ID,” “list items for this user,” “create a new item,” “delete this item.” DynamoDB handles these patterns well.
+التحوّل الذهني هو: مع قاعدة بيانات علائقية، تصمّم مخططك حول بياناتك ثم تكتشف الاستعلامات. أما مع DynamoDB، فتصمّم مخططك حول **أنماط الوصول**—أي الطرق المحددة التي يقرأ بها تطبيقك البيانات ويكتبها. لقد أربكني هذا في البداية، لكنه يصبح منطقيًا جدًا بمجرد أن يستقرّ في ذهنك. وبالنسبة لواجهة خلفية برمجية أمامية، تكون أنماط وصولك عادةً بسيطة: «أحضِر هذا العنصر بمعرّفه»، «اسرد العناصر الخاصة بهذا المستخدم»، «أنشئ عنصرًا جديدًا»، «احذف هذا العنصر». وتتعامل DynamoDB مع هذه الأنماط جيدًا.
 
-## The Data Model
+## نموذج البيانات
 
-DynamoDB organizes data into **tables**. Each table contains **items** (think rows), and each item contains **attributes** (think columns). But unlike a relational database, items in the same table don’t need to have the same attributes. One item might have `title`, `status`, and `priority`. Another item in the same table might have `title` and `dueDate` but no `priority`. The only attributes that every item must have are the ones that make up the table’s **primary key**.
+تنظّم DynamoDB البيانات في **جداول**. يحتوي كل جدول على **عناصر** (فكّر فيها كصفوف)، ويحتوي كل عنصر على **سمات** (فكّر فيها كأعمدة). لكن على خلاف قاعدة البيانات العلائقية، لا يلزم أن تكون للعناصر في الجدول نفسه السمات نفسها. قد يحتوي عنصر على `title` و`status` و`priority`. وقد يحتوي عنصر آخر في الجدول نفسه على `title` و`dueDate` دون `priority`. والسمات الوحيدة التي يجب أن يمتلكها كل عنصر هي تلك التي يتكوّن منها **المفتاح الأساسي** للجدول.
 
-Here’s what an item looks like:
+هذا شكل العنصر:
 
 ```json
 {
@@ -51,65 +51,65 @@ Here’s what an item looks like:
 }
 ```
 
-This is just a JSON object. There’s no schema migration, no `ALTER TABLE`, no ORM. If you want to add a `priority` field next week, you just start including it in new items. Existing items are unaffected.
+هذا مجرد كائن JSON. لا توجد هجرة مخططات، ولا `ALTER TABLE`، ولا ORM. إن أردت إضافة حقل `priority` الأسبوع القادم، فما عليك إلا أن تبدأ بإدراجه في العناصر الجديدة. أما العناصر الموجودة فلن تتأثر.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’ve used Firebase’s Firestore or MongoDB, DynamoDB’s data model will feel familiar. The key difference is how you query it—DynamoDB doesn’t have the flexible query language that Firestore or MongoDB offers. You trade query flexibility for predictable performance at any scale.
+> إن كنت قد استخدمت Firestore من Firebase أو MongoDB، فسيبدو نموذج بيانات DynamoDB مألوفًا لك. والفرق الجوهري في كيفية الاستعلام عنه—إذ لا تملك DynamoDB لغة الاستعلام المرنة التي تتيحها Firestore أو MongoDB. أنت تقايض مرونة الاستعلام بأداء متوقع على أي حجم.
 
-## Why Serverless and Managed Matters
+## لماذا يهمّ كونها بلا خوادم ومُدارة
 
-DynamoDB is serverless in the same way Lambda is serverless: there’s no instance to provision, no operating system to patch, no disk to resize. You interact with it through API calls—PutItem, GetItem, Query, Scan—and AWS handles the physical infrastructure.
+DynamoDB بلا خوادم بالمعنى نفسه الذي تكون به Lambda بلا خوادم: لا توجد نسخة توفّرها، ولا نظام تشغيل تُرقّعه، ولا قرص تغيّر حجمه. تتفاعل معها عبر استدعاءات API—PutItem وGetItem وQuery وScan—وتتولى AWS البنية التحتية المادية.
 
-For frontend engineers, this matters because:
+وبالنسبة لمهندسي الواجهة الأمامية، يهمّ هذا لأن:
 
-- **No connection management.** Unlike PostgreSQL, which requires persistent connections and connection pooling (a common pain point in serverless architectures), DynamoDB uses HTTP-based API calls. Your Lambda function makes a request, gets a response, and moves on. No connection limits, no connection timeouts, no “too many connections” errors.
-- **No cold start penalty for the database.** Lambda has cold starts. DynamoDB doesn’t. Your table is always ready to accept requests.
-- **No server to keep running.** A PostgreSQL instance on RDS costs money every hour, even at 3 AM when nobody is using your app. DynamoDB with on-demand pricing charges you per request. Zero requests, zero cost.
+- **لا إدارة اتصالات.** على خلاف PostgreSQL، الذي يتطلب اتصالات دائمة وتجميع اتصالات (وهي نقطة ألم شائعة في المعماريات بلا خوادم)، تستخدم DynamoDB استدعاءات API قائمة على HTTP. تنفّذ دالة Lambda طلبًا، وتحصل على استجابة، وتنمضي. لا حدود للاتصالات، ولا مهل انتهاء للاتصالات، ولا أخطاء «عدد الاتصالات كبير جدًا».
+- **لا عقوبة بدء بارد لقاعدة البيانات.** لـ Lambda بدايات باردة. أما DynamoDB فلا. جدولك جاهز دائمًا لاستقبال الطلبات.
+- **لا خادم يجب إبقاؤه يعمل.** تكلف نسخة PostgreSQL على RDS مالًا كل ساعة، حتى في الثالثة صباحًا حين لا يستخدم أحد تطبيقك. أما DynamoDB بالتسعير عند الطلب فتتقاضى منك مقابل كل طلب. صفر طلبات، صفر تكلفة.
 
-## On-Demand Pricing
+## التسعير عند الطلب
 
-DynamoDB offers two pricing modes: **provisioned** and **on-demand**. For a frontend API backend, on-demand is almost always the right choice. You don’t need to predict traffic or configure capacity units.
+تقدّم DynamoDB وضعي تسعير: **المُوفَّر (provisioned)** و**عند الطلب (on-demand)**. وبالنسبة لواجهة خلفية برمجية أمامية، فالتسعير عند الطلب هو الخيار الصحيح دائمًا تقريبًا. فلست بحاجة إلى التنبؤ بحركة الزيارات أو ضبط وحدات السعة.
 
-AWS cut DynamoDB on-demand request pricing in late 2024, and the service still positions on-demand as the default choice for new or unpredictable workloads. Exact rates vary by Region and can change, so use the current [DynamoDB pricing page](https://aws.amazon.com/dynamodb/pricing/) or the AWS Pricing Calculator when you need a real number for production planning.
+خفّضت AWS أسعار طلبات DynamoDB عند الطلب في أواخر 2024، ولا تزال الخدمة تطرح التسعير عند الطلب كالخيار الافتراضي لأحمال العمل الجديدة أو غير المتوقعة. والأسعار الدقيقة تتفاوت بحسب المنطقة وقد تتغيّر، لذا استخدم [صفحة تسعير DynamoDB](https://aws.amazon.com/dynamodb/pricing/) الحالية أو حاسبة تسعير AWS حين تحتاج إلى رقم حقيقي لتخطيط الإنتاج.
 
-The practical point for this course is simpler: low-volume frontend workloads still cost pennies. A hobby project or learning app can read and write plenty of data before DynamoDB becomes a meaningful bill.
+أما النقطة العملية لهذه الدورة فأبسط من ذلك: أحمال العمل الأمامية منخفضة الحجم تكلّف بضع سنتات. يمكن لمشروع هواية أو تطبيق تعليمي أن يقرأ ويكتب قدرًا كبيرًا من البيانات قبل أن تصبح DynamoDB فاتورة ذات معنى.
 
-> **Note**
+> **ملاحظة**
 >
-> The DynamoDB free tier covers 25 GB of storage and read/write capacity for **provisioned-mode** tables only. On-demand tables don’t qualify for the free-tier capacity. That sounds alarming, but it isn’t—on-demand at development traffic (a few thousand requests a day) costs single-digit pennies per month. **For this course, stay on on-demand.** The free tier doesn’t subsidize it, but the actual bill is small enough that the operational simplicity is worth more than the pennies.
+> تغطي الطبقة المجانية من DynamoDB مساحة تخزين 25 غيغابايت وسعة قراءة/كتابة **لجداول الوضع المُوفَّر** فقط. أما الجداول عند الطلب فلا تستحق سعة الطبقة المجانية. يبدو ذلك مقلقًا، لكنه ليس كذلك—فالتسعير عند الطلب مع حركة زيارات التطوير (بضعة آلاف طلب يوميًا) يكلّف سنتات أحادية الرقم شهريًا. **في هذه الدورة، ابقَ على التسعير عند الطلب.** فالطبقة المجانية لا تدعمه، لكن الفاتورة الفعلية صغيرة بما يكفي لتصبح البساطة التشغيلية أنفع من تلك السنتات.
 
-## When DynamoDB Is the Right Choice
+## متى تكون DynamoDB الخيار الصحيح
 
-DynamoDB is a good fit when:
+تكون DynamoDB مناسبة حين:
 
-- Your access patterns are simple and well-defined (get by key, list by partition, create, update, delete)
-- You want zero operational overhead
-- Your data doesn’t require complex joins or aggregations
-- You’re building a serverless application with Lambda
+- تكون أنماط وصولك بسيطة ومحددة جيدًا (الإحضار بالمفتاح، السرد حسب التقسيم، الإنشاء، التحديث، الحذف)
+- تريد صفر عبء تشغيلي
+- لا تتطلب بياناتك عمليات ربط أو تجميع معقدة
+- تبني تطبيقًا بلا خوادم باستخدام Lambda
 
-DynamoDB isn’t a good fit when:
+ولا تكون DynamoDB مناسبة حين:
 
-- You need complex queries with joins across multiple tables
-- You need full-text search (use OpenSearch for that)
-- Your data model is deeply relational and requires referential integrity
-- You need SQL-compatible analytics across your entire dataset
+- تحتاج إلى استعلامات معقدة مع ربط عبر جداول متعددة
+- تحتاج إلى بحث نصي كامل (استخدم OpenSearch لذلك)
+- يكون نموذج بياناتك علائقيًا بعمق ويتطلب سلامة مرجعية
+- تحتاج إلى تحليلات متوافقة مع SQL على مجموعة بياناتك بأكملها
 
-For the typical frontend API backend—storing user data, tracking application state, persisting form submissions—DynamoDB handles the job with less complexity and lower cost than a relational database. Honestly, I reach for it any time I need a data layer for a side project and don’t want to think about infrastructure.
+بالنسبة لواجهة خلفية برمجية أمامية نمطية—تخزين بيانات المستخدم، وتتبّع حالة التطبيق، وحفظ النماذج المُرسلة—تنجز DynamoDB المهمة بتعقيد أقل وتكلفة أدنى من قاعدة بيانات علائقية. بصراحة، ألجأ إليها كلما احتجت إلى طبقة بيانات لمشروع جانبي ولم أرغب في التفكير في البنية التحتية.
 
-## Verification
+## التحقق
 
-By the end of this lesson, you should be able to explain why a serverless frontend stack would pick DynamoDB *before* you ever touch the CLI. If you want a quick concrete check, create a table name on paper and answer these three questions:
+بنهاية هذا الدرس، ينبغي أن تكون قادرًا على تفسير سبب اختيار مكدّس أمامي بلا خوادم لـ DynamoDB *قبل* أن تلمس واجهة سطر الأوامر. وإن أردت فحصًا ملموسًا سريعًا، فاكتب اسم جدول على ورقة وأجب عن هذه الأسئلة الثلاثة:
 
-- What is the partition key?
-- What are the first three access patterns the app needs?
-- Would those access patterns need joins?
+- ما هو مفتاح التقسيم؟
+- ما هي أول ثلاثة أنماط وصول يحتاجها التطبيق؟
+- هل تحتاج أنماط الوصول هذه إلى عمليات ربط؟
 
-If your answers are specific, you’re ready for the table design lesson.
+إن كانت أجوبتك محددة، فأنت جاهز لدرس تصميم الجداول.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Designing around the data shape instead of the access pattern:** that is the biggest DynamoDB mindset shift.
-- **Assuming flexible ad hoc queries will save you later:** DynamoDB rewards deliberate query design, not “we’ll figure it out in production.”
-- **Using Scan when you really needed Query:** it works at first, then becomes the slow, expensive habit you regret.
-- **Treating DynamoDB like serverless Postgres:** it is not trying to be that, and life gets easier once you stop asking it to.
+- **التصميم حول شكل البيانات بدلًا من نمط الوصول:** هذا هو أكبر تحوّل ذهني في DynamoDB.
+- **الافتراض بأن الاستعلامات المرنة العشوائية ستنقذك لاحقًا:** تكافئ DynamoDB تصميم الاستعلام المتأني، لا عبارة «سنكتشف الأمر في الإنتاج».
+- **استخدام Scan حين كنت تحتاج فعلًا إلى Query:** يعمل في البداية، ثم يصبح العادة البطيئة المكلفة التي تندم عليها.
+- **التعامل مع DynamoDB كأنها PostgreSQL بلا خوادم:** إنها لا تحاول أن تكون ذلك، وتصبح الحياة أسهل بمجرد أن تتوقف عن مطالبتها بذلك.

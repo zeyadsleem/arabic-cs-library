@@ -1,36 +1,36 @@
 ---
-title: "Agent Communication"
-lang: en
+title: "تواصل الوكلاء (Agent Communication)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/agent-communication"
 ---
 
-For a long time, the flow with a coding agent was always the same. You submit a prompt, the agent calls tools until it reaches some end state, and then you send another prompt. Subagents (helper agents the main agent starts with their own fresh context) worked the same way: the lead hands a helper a written brief, and the helper sends back only a final report when it’s done.
+لفترة طويلة، كان التدفّق مع وكيل البرمجة (coding agent) دائمًا هو نفسه. تُرسل طلبًا (prompt)، فيستدعي الوكيل الأدوات حتى يبلغ حالة نهائية ما، ثم تُرسل طلبًا آخر. وكانت الوكلاء الفرعيون (subagents، وكلاء مساعدون يبدأهم الوكيل الرئيسي بسياق جديد خاص بهم) تعمل بالطريقة ذاتها: يسلّم القائد (lead) إلى المساعد موجزًا مكتوبًا، ولا يرسل المساعد في المقابل سوى تقرير نهائي عند انتهائه.
 
-Recent versions of many harnesses (the programs wrapped around the model, like Claude Code and Codex) have added two things: outside events can reach an agent that’s already running, and agents can message each other. That helps most when an orchestrator needs to tell a running subagent something new after the task has started.
+لقد أضافت الإصدارات الحديثة من كثير من الأُطُر (harnesses، وهي البرامج التي تُغلّف النموذج، مثل Claude Code و Codex) أمرين: إمكانية وصول الأحداث الخارجية إلى وكيل يعمل بالفعل، وإمكانية تبادل الوكلاء الرسائل فيما بينهم. وهذا أنفع ما يكون حين يحتاج منسّق (orchestrator) إلى إبلاغ وكيل فرعي يعمل بأمر جديد بعد أن تكون المهمة قد بدأت.
 
-## Three kinds of communication
+## ثلاثة أنواع من التواصل
 
-- **Cross-agent**: A coordinator and workers exchange tasks and evidence.
-- **Channel**: An external system pushes an event into a live session.
-- **Tracker or queue**: Durable state that lasts across sessions.
+- **بين الوكلاء (Cross-agent)**: يتبادل المنسّق والعاملون المهام والأدلة.
+- **القناة (Channel)**: يدفع نظام خارجي حدثًا إلى جلسة قيد التشغيل.
+- **المتتبّع أو الطابور (Tracker or queue)**: حالة دائمة تبقى عبر الجلسات.
 
-The first two are live: a message reaches an agent that’s already running. Cross-agent communication splits into delegation and coordination, so together with channels you get three **planes**, each with a different sender and receiver.
+النوعان الأولان حيّان: تصل الرسالة إلى وكيل يعمل بالفعل. وينقسم التواصل بين الوكلاء إلى تفويض وتنسيق، فينتج مع القنوات ثلاثة **مستويات (planes)**، لكل منها مُرسِل ومُستقبِل مختلفان.
 
-| Plane | Sender | Receiver | Purpose |
+| المستوى | المُرسِل | المُستقبِل | الغرض |
 | --- | --- | --- | --- |
-| Delegation | Lead agent | Worker | Bounded task |
-| Coordination | Teammates | Teammates | Dependencies and handoffs |
-| Channel | External system | Live session | New event or steering |
+| التفويض (Delegation) | الوكيل القائد | العامل | مهمة محدودة |
+| التنسيق (Coordination) | الزملاء | الزملاء | الاعتمادات والتسليمات |
+| القناة (Channel) | نظام خارجي | جلسة قيد التشغيل | حدث جديد أو توجيه |
 
-Delegation is what [subagents](https://stevekinney.com/courses/ai-development-setup/subagents) do, now including mid-task messages from the lead. Coordination is what [agent teams](https://stevekinney.com/courses/ai-development-setup/agent-teams) add, where teammates message each other directly. The channel is new: it lets something that isn’t an agent talk to one.
+التفويض هو ما تفعله [الوكلاء الفرعيون](https://stevekinney.com/courses/ai-development-setup/subagents)، بما يشمل الآن رسائل منتصف المهمة من القائد. والتنسيق هو ما تضيفه [فرق الوكلاء](https://stevekinney.com/courses/ai-development-setup/agent-teams)، حيث يراسل الزملاء بعضهم بعضًا مباشرة. أما القناة فهي الجديدة: إنها تتيح لشيء ليس وكيلًا أن يتحدّث إلى وكيل.
 
-A tracker or queue isn’t a plane, because nothing is pushed. Agents read it on their own schedule. You build that yourself, and [Where State Lives](https://stevekinney.com/courses/ai-development-setup/where-state-lives) and [Sentinels](https://stevekinney.com/courses/ai-development-setup/sentinels) cover how.
+والمتتبّع أو الطابور ليس مستوى، لأن لا شيء يُدفع إليه، بل يقرؤه الوكلاء وفق جدولهم الخاص. وأنت تبني ذلك بنفسك، ويغطّي [أين تعيش الحالة](https://stevekinney.com/courses/ai-development-setup/where-state-lives) و [الحرّاس](https://stevekinney.com/courses/ai-development-setup/sentinels) كيفية ذلك.
 
-## Building a channel
+## بناء قناة
 
-A **channel** is an MCP server (a program that adds tools to the harness over the [Model Context Protocol](https://modelcontextprotocol.io/)) with one extra capability. Claude Code spawns it over stdio (standard input and output), and instead of waiting to be called, it *pushes* events into the session you already have open.
+**القناة** خادم MCP (برنامج يضيف أدوات إلى الإطار عبر [Model Context Protocol](https://modelcontextprotocol.io/)) بقدرة إضافية واحدة. يُشغّله Claude Code عبر stdio (المدخل والمخرج القياسيان)، وبدلًا من انتظار النداء عليه، فإنه *يدفع* الأحداث إلى الجلسة المفتوحة لديك بالفعل.
 
-Here’s a minimal one. It declares the `claude/channel` capability, tells Claude how to treat what it sends, and emits a notification when something happens.
+إليك أبسط قناة. تُعلن قدرة `claude/channel`، وتخبر Claude كيف يتعامل مع ما ترسله، وتصدر إشعارًا عند وقوع شيء ما.
 
 ```typescript
 const mcp = new Server(
@@ -51,34 +51,34 @@ await mcp.notification({
 });
 ```
 
-A few design decisions sit in that code:
+تكمن في تلك الشيفرة بضعة قرارات تصميم:
 
-- **One-way or two-way**: Add `tools: {}` and a `reply` tool if Claude should answer back.
-- **`instructions` explains the message**: Say what the `<channel>` attributes mean, whether to reply, and which attribute to pass back. This is model guidance, not an injection boundary.
-- **Gate on the sender**: Before every notification, check who wrote the message, not the room it arrived in. In a group chat those differ, and gating on the room lets anyone in an allowed group steer your agent. Even then, authentication tells you who delivered a message, not whether its contents are safe: an allowed CI bot can still forward attacker-controlled branch names, logs, or issue text. Validate the payload and reduce it to closed fields before an acting agent sees it, and independently authorize consequential actions. Arbitrary strings stay untrusted even in schema-valid JSON.
-- **Permission relay is optional**: Declare `claude/channel/permission`, and Claude Code forwards approval prompts to your server. Whoever can reply can approve tool calls, so only turn this on behind real authentication.
+- **أحادي الاتجاه أم ثنائي الاتجاه**: أضِف `tools: {}` وأداة `reply` إن كان ينبغي لـ Claude أن يرد.
+- **`instructions` يشرح الرسالة**: بيّن ما تعنيه خصائص `<channel>`، وهل ينبغي الرد، وأي خاصية تُمرَّر رجوعًا. هذا إرشاد للنموذج، وليس حدًّا للحقن.
+- **بوّب على المُرسِل**: قبل كل إشعار، تحقّق من كاتب الرسالة، لا من الغرفة التي وصلت منها. في محادثة جماعية يختلف الاثنان، والبوّابة على الغرفة تتيح لأي أحد في مجموعة مسموح لها أن يوجّه وكيلك. وحتى مع ذلك، تُخبرك المصادقة بمن سلّم الرسالة، لا بما إذا كان محتواها آمنًا: فيمكن لروبوت CI مسموح به أن يمرّر مع ذلك أسماء فروع أو سجلات أو نصّ قضايا يتحكّم بها مهاجم. تحقّق من الحمولة واختزلها إلى حقول مغلقة قبل أن يراها وكيل فاعل، وفوّض الإجراءات ذات العواقب بشكل مستقل. تبقى السلاسل الاعتباطية غير موثوقة حتى داخل JSON صالح وفق المخطط.
+- **ترحيل الأذونات اختياري**: أعلِن `claude/channel/permission`، فيمرّر Claude Code طلبات الموافقة إلى خادمك. من يستطيع الرد يستطيع الموافقة على نداءات الأدوات، فلا تفعّل هذا إلا خلف مصادقة حقيقية.
 
-The [channels documentation](https://code.claude.com/docs/en/channels) has the full reference.
+[وثائق القنوات](https://code.claude.com/docs/en/channels) تحوي المرجع الكامل.
 
-### Shipping it as a plugin
+### شحنه كإضافة
 
-A plugin is how you package this for other people, or for your other machines. The [plugins documentation](https://code.claude.com/docs/en/plugins) covers the basics. For a channel:
+الإضافة (plugin) هي وسيلتك لحزم هذا لآخرين، أو لآلاتك الأخرى. [وثائق الإضافات](https://code.claude.com/docs/en/plugins) تغطّي الأساسيات. أما القناة:
 
-- Declare the server under `mcpServers` in `plugin.json`, launched from `${CLAUDE_PLUGIN_ROOT}`. Keep state in `${CLAUDE_PLUGIN_DATA}`.
-- Add a `channels` entry bound to that server. It prompts for credentials when the plugin is enabled, and `sensitive: true` keeps them out of `settings.json`.
-- Test it with `claude --dangerously-load-development-channels plugin:<name>@<marketplace>`, or with `server:<name>` before you’ve wrapped it.
+- أعلِن الخادم تحت `mcpServers` في `plugin.json`، مشغّلًا من `${CLAUDE_PLUGIN_ROOT}`. واحفظ الحالة في `${CLAUDE_PLUGIN_DATA}`.
+- أضِف مدخل `channels` مرتبطًا بذلك الخادم. يطلب بيانات الاعتماد عند تمكين الإضافة، و `sensitive: true` يبقيها خارج `settings.json`.
+- اختبرها بـ `claude --dangerously-load-development-channels plugin:<name>@<marketplace>`، أو بـ `server:<name>` قبل أن تغلّفها.
 
-### Things that will bite you
+### أمور ستُزعجك {#things-that-will-bite-you}
 
-- **Yours isn’t on the allowlist**: Plain `--channels` won’t register a custom channel. You stay on the development flag, or an administrator adds it to `allowedChannelPlugins`, which *replaces* Anthropic’s list instead of extending it.
-- **Nothing is acknowledged**: If the session didn’t opt in, or the organization blocks channels, events vanish without an error.
-- **stdout belongs to the protocol**: A stray `console.log` breaks the connection. Log to stderr.
-- **Stay on the v1 MCP SDK**: A newer MCP protocol revision (2026-07-28) can’t carry channel messages, and a server that negotiates it doesn’t register as a channel. Starting with Claude Code 2.1.285, Anthropic is rolling out having Claude Code ask stdio servers for that revision by default. The v1 `@modelcontextprotocol/sdk` stays on the older revision, and so does setting `MCP_PROTOCOL_NEGOTIATION=legacy`.
-- **One process per session**: Claude Code starts a fresh copy of your channel for every session. A webhook listener usually binds a network port, so the second session’s copy fails to start because the first already holds it. If several sessions need the same events, put a **broker** in front: one process that owns the port and hands each event to every session’s channel.
-- **The session has to stay open**: And a permission prompt at 2 a.m. stalls every event queued behind it.
+- **قناتك ليست في قائمة السماح**: لن يسجّل `--channels` المجرّد قناة مخصّصة. فتبقى على علم التطوير، أو يضيفها مسؤول إلى `allowedChannelPlugins`، وهذا *يستبدل* قائمة Anthropic بدلًا من أن يوسّعها.
+- **لا شيء يُقرّ بالاستلام**: إن لم تشترك الجلسة، أو حجبت المؤسسة القنوات، اختفت الأحداث بلا خطأ.
+- **stdout ملك البروتوكول**: يقطع `console.log` شارد الاتصال. سجّل إلى stderr.
+- **ابقَ على MCP SDK من الإصدار الأول**: لا تستطيع مراجعة أحدث من بروتوكول MCP (2026-07-28) حمل رسائل القنوات، والخادم الذي يتفاوض عليها لا يُسجَّل كقناة. وبدءًا من Claude Code 2.1.285، تطرح Anthropic أن يطلب Claude Code من خوادم stdio تلك المراجعة افتراضيًا. وتبقى `@modelcontextprotocol/sdk` من الإصدار الأول على المراجعة الأقدم، وكذلك ضبط `MCP_PROTOCOL_NEGOTIATION=legacy`.
+- **عملية واحدة لكل جلسة**: يبدأ Claude Code نسخة جديدة من قناتك لكل جلسة. وعادة ما يربط مستمع webhook منفذ شبكة، فتفشل نسخة الجلسة الثانية في البدء لأن الأولى تحتفظ به. إن احتاجت عدة جلسات إلى الأحداث ذاتها، فضع **وسيطًا (broker)** في المقدّمة: عملية واحدة تملك المنفذ وتسلّم كل حدث إلى قناة كل جلسة.
+- **يجب أن تبقى الجلسة مفتوحة**: وطلب إذن في الثانية صباحًا يوقف كل حدث مصطفّ خلفه.
 
-> **Codex has no equivalent yet**
+> **لا نظير لـ Codex بعد**
 >
-> The closest thing is `ExternalMessage` in the Python SDK for [Codex](https://developers.openai.com/codex).
+> أقرب شيء هو `ExternalMessage` في حزمة Python SDK الخاصة بـ [Codex](https://developers.openai.com/codex).
 
-Authenticate the sender, validate the payload, and independently authorize consequential actions. Telling the agent that events are reports is good guidance, but it isn’t a boundary. [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) explains reducing untrusted input to closed values.
+صادِق المُرسِل، وتحقق من الحمولة، وفوّض الإجراءات ذات العواقب بشكل مستقل. إخبار الوكيل بأن الأحداث تقارير إرشاد جيد، لكنه ليس حدًّا. [نطاق الانفجار](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) يشرح اختزال المدخلات غير الموثوقة إلى قيم مغلقة.

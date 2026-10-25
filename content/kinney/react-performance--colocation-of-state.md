@@ -1,27 +1,27 @@
 ---
-title: "Colocation of State"
-lang: en
+title: "إبقاء الحالة قريبة من موضع استخدامها (Colocation of State)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/colocation-of-state"
 ---
 
-State colocation is one of those React performance patterns that sounds fancy but is really just common sense: keep your state as close as possible to where it’s actually used. Instead of hoisting everything to the top of your component tree “just in case,” you put state right where it belongs—near the components that actually need it.
+إبقاء الحالة قريبة من موضع استخدامها أحد أنماط أداء React التي يبدو اسمها متأنّقًا لكنها في حقيقتها مجرّد حكمة بديهية: أبقِ حالتك قريبة قدر الإمكان من موضع استخدامها الفعلي. فبدلًا من رفع كل شيء إلى قمة شجرة المكوّنات «تحسّبًا لأي طارئ»، تضع الحالة حيث تنتمي بالضبط — قرب المكوّنات التي تحتاجها فعلًا.
 
-This simple principle can dramatically reduce unnecessary re-renders, make your components easier to test and reason about, and save you from the dreaded prop-drilling nightmare. Plus, it makes your code more maintainable when you inevitably need to move components around (and trust me, you will).
+يمكن لهذا المبدأ البسيط أن يقلّل جذريًا عمليات إعادة التصيير غير الضرورية، وأن يجعل مكوّناتك أسهل في الاختبار والاستدلال، وأن ينجيك من كابوس تمرير الخصائص المتشعّب المخيف. فضلًا عن أنه يجعل شيفرتك أكثر قابلية للصيانة عندما تحتاج حتمًا إلى نقل المكوّنات هنا وهناك (وثق بي، ستحتاج إلى ذلك).
 
-## Why Colocation Matters
+## لماذا يهمّ إبقاء الحالة قريبة
 
-When state lives far from where it’s consumed, you end up with a few problems:
+عندما تعيش الحالة بعيدًا عن موضع استهلاكها، ينتهي بك الأمر إلى مشكلات عدة:
 
-- **Render storms**: Changes to high-level state trigger re-renders in components that don’t actually care about those changes
-- **Prop drilling**: You’re threading props through multiple component layers that don’t need them
-- **Tight coupling**: Components become dependent on parent state they shouldn’t know about
-- **Testing complexity**: You need to set up entire component trees just to test a small piece of functionality
+- **عواصف التصيير**: تغييرات الحالة عالية المستوى تُطلق إعادات تصيير في مكوّنات لا تهمّها تلك التغييرات فعلًا
+- **تمرير الخصائص المتشعّب**: تُمرّر الخصائص عبر طبقات مكوّنات متعددة لا تحتاج إليها
+- **الاقتران المحكم**: تصبح المكوّنات معتمدة على حالة أب لا ينبغي أن تعرف عنها شيئًا
+- **تعقيد الاختبار**: تحتاج إلى إعداد أشجار مكوّنات كاملة لمجرّد اختبار جزء صغير من الوظائف
 
-React’s default behavior is to re-render a component and all its children whenever state changes. If you have state at the root of your app that only affects a small part of your UI, you’re potentially re-rendering your entire application for no good reason.
+السلوك الافتراضي في React هو إعادة تصيير المكوّن وكل أبنائه كلما تغيّرت الحالة. وإذا كانت لديك حالة في جذر تطبيقك لا تؤثّر إلا في جزء صغير من واجهتك، فأنت ربما تعيد تصيير تطبيقك بأكمله بلا سبب وجيه.
 
-## The Anti-Pattern: Everything in App
+## النمط المضاد: كل شيء في App
 
-Let’s start with what *not* to do. Here’s a common anti-pattern where all state lives at the top level:
+لنبدأ بما *لا* ينبغي فعله. إليك نمطًا مضادًا شائعًا تعيش فيه كل الحالة في المستوى الأعلى:
 
 ```typescript
 // ❌ Bad: Everything lives in App
@@ -54,11 +54,11 @@ function App() {
 }
 ```
 
-This looks organized at first glance, but every single state change triggers a re-render of the entire `App` component and all its children. When someone types in the search bar, the header, cart, and modal all re-render unnecessarily.
+يبدو هذا منظّمًا للوهلة الأولى، لكن كل تغيير في الحالة يُطلق إعادة تصيير لمكوّن `App` بأكمله وكل أبنائه. فعندما يكتب أحدهم في شريط البحث، يُعاد تصيير الترويسة وسلة التسوّق والنافذة المنبثقة جميعًا بلا داعٍ.
 
-## Better: Colocated State
+## الأفضل: حالة قريبة من موضع استخدامها
 
-Here’s the same functionality with properly colocated state:
+إليك الوظائف نفسها مع حالة موضوعة على النحو الصحيح قرب موضع استخدامها:
 
 ```typescript
 // ✅ Good: State lives close to where it's used
@@ -104,11 +104,11 @@ function Cart() {
 }
 ```
 
-Now when someone types in the search bar, only the `SearchSection` component and its children re-render. The header and cart stay completely untouched.
+الآن عندما يكتب أحدهم في شريط البحث، لا يُعاد تصيير إلا مكوّن `SearchSection` وأبنائه. أما الترويسة وسلة التسوّق فتبقيان بمنأى تمامًا.
 
-## Real-World Example: Form State
+## مثال من الواقع: حالة نموذج
 
-Forms are a perfect example of where colocation shines. Let’s look at a user profile form that demonstrates the difference:
+النماذج مثال مثالي على الموضع الذي يتألّق فيه إبقاء الحالة قريبًا. لننظر إلى نموذج ملف تعريف مستخدم يوضّح الفرق:
 
 ```typescript
 // ❌ Bad: Form state scattered throughout parent components
@@ -148,7 +148,7 @@ function UserProfilePage() {
 }
 ```
 
-Every keystroke in the form triggers a re-render of `UserProfilePage`, `PageHeader`, and `Sidebar`. That’s wasteful.
+كل ضغطة مفتاح في النموذج تُطلق إعادة تصيير لـ `UserProfilePage` و`PageHeader` و`Sidebar`. وهذا إهدار.
 
 ```typescript
 // ✅ Good: Form state colocated
@@ -215,15 +215,15 @@ function UserProfileForm() {
 }
 ```
 
-Now form interactions only re-render the form itself. The page header and sidebar remain blissfully unaware of your typing.
+الآن لا تُعيد تفاعلات النموذج تصيير غير النموذج نفسه. وتبقى ترويسة الصفحة والشريط الجانبي في غفلة سعيدة عن كتابتك.
 
-## When NOT to Colocate
+## متى لا تُبقي الحالة قريبة
 
-There are definitely times when you shouldn’t colocate state. Here are the main exceptions:
+هناك بالتأكيد أوقات لا ينبغي فيها إبقاء الحالة قريبة من موضع الاستخدام. إليك الاستثناءات الرئيسية:
 
-### Shared State Between Siblings
+### حالة مشتركة بين مكوّنات شقيقة
 
-When multiple components at the same level need the same state:
+عندما تحتاج عدة مكوّنات في المستوى نفسه إلى الحالة ذاتها:
 
 ```typescript
 // ✅ Good: Shared state lives in common parent
@@ -243,9 +243,9 @@ function Dashboard() {
 }
 ```
 
-### Global Application State
+### حالة التطبيق العامة
 
-Some state genuinely needs to be global:
+بعض الحالة تحتاج فعلًا إلى أن تكون عامة:
 
 ```typescript
 // ✅ Good: Authentication state is global
@@ -263,9 +263,9 @@ function App() {
 }
 ```
 
-### State That Needs to Persist
+### حالة تحتاج إلى البقاء
 
-If state needs to survive component unmounting, it probably belongs higher up:
+إذا كانت الحالة تحتاج إلى البقاء بعد إلغاء تحميل المكوّن، فالأرجح أنها تنتمي إلى مستوى أعلى:
 
 ```typescript
 // ✅ Good: Draft state persists when modal closes
@@ -288,9 +288,9 @@ function App() {
 }
 ```
 
-## Advanced Pattern: State Lifting and Lowering
+## نمط متقدّم: رفع الحالة وخفضها
 
-Sometimes you’ll need to move state up and down the component tree as requirements change. This is totally normal! Here’s how to think about it:
+قد تحتاج أحيانًا إلى نقل الحالة صعودًا ونزولًا في شجرة المكوّنات مع تغيّر المتطلبات. وهذا طبيعي تمامًا! إليك كيف تفكّر في الأمر:
 
 ```typescript
 // Initial implementation: colocated
@@ -306,7 +306,7 @@ function ProductCard({ product }: { product: Product }) {
 }
 ```
 
-Later, you need to show liked products in a different part of the app:
+لاحقًا، تحتاج إلى عرض المنتجات المُعجَبة في جزء آخر من التطبيق:
 
 ```typescript
 // Lifted state for sharing
@@ -334,13 +334,13 @@ function ProductSection() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Start with colocated state and lift only when you have a concrete need to share it. Don’t lift state speculatively.
+> ابدأ بحالة قريبة من موضع استخدامها، ولا ترفعها إلا عندما تكون لديك حاجة ملموسة إلى مشاركتها. لا ترفع الحالة تحسّبًا.
 
-## Performance Impact in Numbers
+## أثر الأداء بالأرقام
 
-To put this in perspective, here’s what happens in a typical component tree:
+لوضع ذلك في المنظور الصحيح، إليك ما يحدث في شجرة مكوّنات نموذجية:
 
 ```typescript
 // ❌ State at root causes 100+ component re-renders
@@ -374,11 +374,11 @@ function MainContent() {
 }
 ```
 
-The difference becomes exponentially more important as your component tree grows. A change that triggers 5 re-renders instead of 100 is a 95% performance improvement!
+يصبح الفرق أهمّ أضعافًا مضاعفة مع نموّ شجرة مكوّناتك. فتغيير يُطلق 5 عمليات إعادة تصيير بدل 100 هو تحسين في الأداء بنسبة 95%!
 
-## Testing Benefits
+## فوائد الاختبار
 
-Colocated state makes testing much simpler since you don’t need to mock complex parent state:
+تُبسّط الحالة القريبة من موضع استخدامها الاختبار كثيرًا، إذ لا تحتاج إلى محاكاة حالة أب معقّدة:
 
 ```typescript
 // ✅ Easy to test - self-contained
@@ -397,14 +397,14 @@ describe('UserProfileForm', () => {
 });
 ```
 
-Compare this to testing the same logic when state lives in a parent component—you’d need to set up the entire component hierarchy just to test email validation.
+قارن هذا باختبار المنطق نفسه عندما تعيش الحالة في مكوّن أب — إذ ستحتاج إلى إعداد التسلسل الهرمي للمكوّنات بأكمله لمجرّد اختبار التحقّق من البريد الإلكتروني.
 
-## Quick Colocation Checklist
+## قائمة تحقّق سريعة لإبقاء الحالة قريبة
 
-Before you decide where to put state, ask yourself:
+قبل أن تقرّر أين تضع الحالة، اسأل نفسك:
 
-- **How many components actually need this state?** If it’s just one, colocate it.
-- **Do sibling components need to share this state?** If yes, lift to the common parent.
-- **Does this state need to persist when components unmount?** If yes, consider lifting it.
-- **Is this truly global state** (like authentication or theme)? If yes, put it in a provider or global store.
-- **Am I lifting state “just in case”?** Don’t do this—start colocated and lift when needed.
+- **كم مكوّنًا يحتاج هذه الحالة فعلًا؟** إن كان مكوّنًا واحدًا فقط، فأبقِها قريبة منه.
+- **هل تحتاج مكوّنات شقيقة إلى مشاركة هذه الحالة؟** إن كان نعم، فارفعها إلى الأب المشترك.
+- **هل تحتاج هذه الحالة إلى البقاء عند إلغاء تحميل المكوّنات؟** إن كان نعم، ففكّر في رفعها.
+- **هل هذه حالة عامة فعلًا** (مثل المصادقة أو السمة)؟ إن كان نعم، فضعها في مزوّد أو مخزن عام.
+- **هل أرفع الحالة «تحسّبًا لأي طارئ»؟** لا تفعل ذلك — ابدأ بحالة قريبة من موضع استخدامها وارفعها عند الحاجة.

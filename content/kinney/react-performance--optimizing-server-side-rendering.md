@@ -1,34 +1,34 @@
 ---
-title: "Optimizing Server‑Side Rendering"
-lang: en
+title: "تحسين التصيير على الخادم (SSR)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/optimizing-server-side-rendering"
 ---
 
-Server-side rendering (SSR) can dramatically improve your application’s perceived performance by delivering meaningful content before JavaScript loads—but poorly optimized SSR can actually hurt more than it helps. Between long server render times, waterfall data fetching, and expensive hydration, there are plenty of ways to shoot yourself in the foot. Let’s explore practical techniques for building SSR that’s genuinely fast: streaming responses, smart caching strategies, optimized data fetching patterns, and hydration that doesn’t block the main thread.
+يستطيع التصيير على الخادم (SSR) أن يحسّن الأداء الملموس لتطبيقك تحسينًا هائلًا عبر إيصال محتوى ذي معنى قبل تحميل JavaScript — لكن SSR ضعيف التحسين قد يضرّ أكثر مما ينفع. فبين أزمنة التصيير الطويلة على الخادم، وجلب البيانات على شكل شلال، والترطيب المكلف، توجد طرق كثيرة لإيذاء نفسك. لنستكشف تقنيات عملية لبناء SSR سريع حقًا: استجابات متدفقة، واستراتيجيات تخزين مؤقت ذكية، وأنماط محسّنة لجلب البيانات، وترطيب لا يحجب الخيط الرئيسي.
 
-## The SSR Performance Challenge
+## تحدّي أداء SSR
 
-SSR adds a crucial step to your rendering pipeline: your server needs to generate HTML *before* sending anything to the client. This introduces new performance bottlenecks that don’t exist in client-only applications:
+يضيف SSR خطوة حاسمة إلى خط التصيير لديك: إذ يحتاج خادمك إلى توليد HTML *قبل* إرسال أي شيء إلى العميل. وهذا يُدخل اختناقات أداء جديدة لا وجود لها في التطبيقات التي تعمل على العميل وحده:
 
-- **Time-to-first-byte (TTFB)** delays while your server fetches data and renders
-- **Waterfall data fetching** that blocks HTML generation
-- **Heavy hydration** that freezes the page once JavaScript loads
-- **Cache invalidation** complexity across server and client
+- **تأخيرات زمن الوصول إلى البايت الأول (TTFB)** بينما يجلب خادمك البيانات ويصيّر
+- **جلب البيانات على شكل شلال** الذي يحجب توليد HTML
+- **الترطيب الثقيل** الذي يجمّد الصفحة بمجرد تحميل JavaScript
+- تعقيد **إبطال الذاكرة المؤقتة** بين الخادم والعميل
 
-The good news? React 19 and modern frameworks give us powerful tools to solve these problems systematically.
+والخبر السار؟ أن React 19 والأطر الحديثة تمنحنا أدوات قوية لحلّ هذه المشكلات بصورة منهجية.
 
-## Streaming SSR Overview
+## نظرة عامة على SSR المتدفق
 
-Streaming SSR allows sending HTML as it’s generated rather than waiting for the complete page. This dramatically reduces Time to First Byte (TTFB) and improves perceived performance.
+يتيح SSR المتدفق إرسال HTML أثناء توليده بدل انتظار اكتمال الصفحة. وهذا يقلّل زمن الوصول إلى البايت الأول (TTFB) تقليلًا هائلًا ويحسّن الأداء الملموس.
 
-Key streaming benefits:
+أهم مزايا التدفق:
 
-- **Faster TTFB** - Send initial HTML immediately
-- **Progressive loading** - Stream content as data becomes available
-- **Better UX** - Users see content while slower sections load
-- **Improved Core Web Vitals** - Better LCP and FID scores
+- **TTFB أسرع** - أرسل HTML الأولي فورًا
+- **تحميل تدريجي** - بثّ المحتوى فور توفّر البيانات
+- **تجربة مستخدم أفضل** - يرى المستخدمون المحتوى بينما تُحمَّل الأقسام الأبطأ
+- **Core Web Vitals أفضل** - نتائج LCP وFID أحسن
 
-For detailed streaming implementation patterns, see [Streaming SSR Optimization](https://stevekinney.com/courses/react-performance/streaming-ssr-optimization).
+لأنماط تنفيذ التدفق المفصّلة، راجع [تحسين SSR المتدفق](https://stevekinney.com/courses/react-performance/streaming-ssr-optimization).
 
 ```typescript
 // Quick streaming example
@@ -45,9 +45,9 @@ const stream = await renderToReadableStream(<App />, {
 }
 ```
 
-### Strategic `Suspense` Boundaries
+### حدود `Suspense` الاستراتيجية
 
-Place `Suspense` boundaries around components that might delay the initial render:
+ضع حدود `Suspense` حول المكوّنات التي قد تؤخّر التصيير الأولي:
 
 ```typescript
 function ProductPage({ productId }: { productId: string }) {
@@ -88,17 +88,17 @@ async function ProductDetails({ productId }: { productId: string }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Place Suspense boundaries at the granularity where you’d naturally show loading states. Too many boundaries create complexity; too few lose streaming benefits.
+> ضع حدود Suspense عند مستوى التفصيل الذي كنت ستُظهر عنده حالات التحميل بصورة طبيعية. فكثرة الحدود تخلق تعقيدًا، وقلّتها تفقدك مزايا التدفق.
 
-## Smart Data Fetching Patterns
+## أنماط جلب البيانات الذكية
 
-The biggest SSR performance killer is sequential data fetching. Your components shouldn’t create data waterfalls—fetch what you need in parallel, and cache aggressively.
+أكبر قاتل لأداء SSR هو جلب البيانات المتسلسل. فلا ينبغي لمكوّناتك أن تنشئ شلالات بيانات — اجلب ما تحتاجه على التوازي، وخزّن مؤقتًا بلا تردّد.
 
-### Preload Critical Data
+### التحميل المسبق للبيانات الحرجة
 
-Start data fetching early in your request handler, before React even begins rendering:
+ابدأ جلب البيانات مبكرًا في معالج الطلب، قبل أن يبدأ React التصيير حتى:
 
 ```typescript
 export async function handleRequest(request: Request) {
@@ -128,9 +128,9 @@ export async function handleRequest(request: Request) {
 }
 ```
 
-### Use React’s `use()` Hook for Promise Unwrapping
+### استخدم خُطّاف `use()` في React لفكّ الوعود
 
-React 19’s `use()` hook lets components consume promises directly, eliminating the need for complex state management:
+يتيح خُطّاف `use()` في React 19 للمكوّنات استهلاك الوعود (promises) مباشرة، فيُغني عن إدارة حالة معقّدة:
 
 ```typescript
 function ProductDetails({ productPromise }: { productPromise: Promise<Product> }) {
@@ -155,9 +155,9 @@ function ProductPage({ productPromise }: { productPromise: Promise<Product> }) {
 }
 ```
 
-### Parallel Data Fetching with Error Boundaries
+### جلب البيانات على التوازي مع حدود الأخطاء
 
-Fetch independent data in parallel and handle failures gracefully:
+اجلب البيانات المستقلة على التوازي وتعامل مع الإخفاقات بلباقة:
 
 ```typescript
 async function getPageData(productId: string) {
@@ -196,13 +196,13 @@ function ProductPage({ data }: { data: Awaited<ReturnType<typeof getPageData>> }
 }
 ```
 
-## Caching Strategies That Actually Work
+## استراتيجيات تخزين مؤقت تنجح فعلًا
 
-Effective SSR caching operates at multiple levels: HTTP responses, rendered components, and data fetches. The key is invalidating each level appropriately.
+يعمل التخزين المؤقت الفعّال لـ SSR على مستويات متعددة: استجابات HTTP، والمكوّنات المصيّرة، وعمليات جلب البيانات. والمفتاح هو إبطال كل مستوى بالطريقة المناسبة.
 
-### HTTP-Level Response Caching
+### تخزين الاستجابات مؤقتًا على مستوى HTTP
 
-Cache complete HTML responses for pages that don’t change frequently:
+خزّن استجابات HTML الكاملة مؤقتًا للصفحات التي لا تتغيّر كثيرًا:
 
 ```typescript
 const cache = new Map<string, { html: string; timestamp: number }>();
@@ -252,9 +252,9 @@ async function streamToString(stream: ReadableStream): Promise<string> {
 }
 ```
 
-### Component-Level Caching
+### التخزين المؤقت على مستوى المكوّن
 
-Cache expensive component renders independently of the full page:
+خزّن تصييرات المكوّنات المكلفة مؤقتًا بمعزل عن الصفحة الكاملة:
 
 ```typescript
 const componentCache = new Map<string, React.ReactElement>();
@@ -284,9 +284,9 @@ function CachedExpensiveComponent({ data, ttl = 60000 }: { data: ComplexData; tt
 }
 ```
 
-### Data Fetching with Deduplication
+### جلب البيانات مع إزالة التكرار
 
-Prevent duplicate API calls when multiple components need the same data:
+امنع استدعاءات API المكرّرة عندما تحتاج مكوّنات متعددة إلى البيانات نفسها:
 
 ```typescript
 const dataCache = new Map<string, Promise<any>>();
@@ -325,13 +325,13 @@ async function ProductDetails({ productId }: { productId: string }) {
 }
 ```
 
-## Optimizing Hydration Performance
+## تحسين أداء الترطيب
 
-Hydration is where SSR applications often stumble—the server-rendered HTML becomes interactive, but this process can block the main thread for hundreds of milliseconds.
+عند الترطيب غالبًا ما تتعثّر تطبيقات SSR — إذ يصبح HTML المصيّر على الخادم تفاعليًا، لكن هذه العملية قد تحجب الخيط الرئيسي مئات الملّيثانية.
 
-### Selective Hydration with `Suspense`
+### الترطيب الانتقائي مع `Suspense`
 
-Don’t hydrate everything at once. Use Suspense boundaries to hydrate components progressively:
+لا تُرطّب كل شيء دفعة واحدة. استخدم حدود Suspense لترطيب المكوّنات تدريجيًا:
 
 ```typescript
 function App() {
@@ -359,9 +359,9 @@ function App() {
 }
 ```
 
-### Reduce JavaScript Bundle Size
+### تصغير حجم حزمة JavaScript
 
-Less JavaScript means faster hydration. Code-split aggressively and lazy-load non-critical components:
+JavaScript أقل يعني ترطيبًا أسرع. قسّم الشيفرة بلا تردّد وحمّل المكوّنات غير الحرجة عند الحاجة:
 
 ```typescript
 import { lazy } from 'react';
@@ -398,9 +398,9 @@ function ProductPage() {
 }
 ```
 
-### Avoid Hydration Mismatches
+### تجنّب عدم تطابق الترطيب
 
-Server-client mismatches force React to re-render everything from scratch. Common culprits include timestamps, random IDs, and browser-specific APIs:
+يجبر عدم التطابق بين الخادم والعميل React على إعادة تصيير كل شيء من الصفر. ومن الأسباب الشائعة الطوابع الزمنية، والمعرّفات العشوائية، وواجهات API الخاصة بالمتصفح:
 
 ```typescript
 // ❌ Will cause hydration mismatch
@@ -442,13 +442,13 @@ function StableComponent() {
 }
 ```
 
-## Real-World Implementation Strategy
+## استراتيجية التنفيذ الواقعية
 
-Here’s a practical approach for implementing optimized SSR in your application:
+إليك مقاربة عملية لتنفيذ SSR محسّن في تطبيقك:
 
-### Measure First, Optimize Second
+### قِس أولًا، ثم حسّن
 
-Establish performance baselines before making changes:
+أنشئ خطوط أساس للأداء قبل إجراء أي تغييرات:
 
 ```typescript
 // Add performance timing to your SSR handler
@@ -473,9 +473,9 @@ export async function handleSSRRequest(request: Request) {
 }
 ```
 
-### Progressive Enhancement Approach
+### مقاربة التحسين التدريجي
 
-Start with a solid SSR foundation, then layer on optimizations:
+ابدأ بأساس SSR متين، ثم أضف التحسينات طبقة فوق طبقة:
 
 ```typescript
 export class SSROptimizer {
@@ -531,9 +531,9 @@ export class SSROptimizer {
 }
 ```
 
-### Monitor and Iterate
+### راقب وكرّر
 
-Set up monitoring to track the metrics that matter:
+أعدّ المراقبة لتتبّع المقاييس المهمة:
 
 ```typescript
 interface SSRMetrics {
@@ -572,11 +572,11 @@ export function trackSSRMetrics(): SSRMetrics {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## المزالق الشائعة وكيفية تجنّبها
 
-### Overeager Data Fetching
+### جلب بيانات مفرط في الحماس
 
-Don’t fetch data you won’t use. Use conditional data fetching based on user permissions, feature flags, or URL parameters:
+لا تجلب بيانات لن تستخدمها. استخدم جلبًا مشروطًا للبيانات بناءً على أذونات المستخدم، أو أعلام الميزات (feature flags)، أو معاملات URL:
 
 ```typescript
 // ❌ Always fetches all data
@@ -616,9 +616,9 @@ async function getPageData(userId: string, currentUser?: User) {
 }
 ```
 
-### Cache Invalidation Complexity
+### تعقيد إبطال الذاكرة المؤقتة
 
-Keep cache invalidation simple with consistent patterns:
+أبقِ إبطال الذاكرة المؤقتة بسيطًا بأنماط متسقة:
 
 ```typescript
 export class CacheManager {

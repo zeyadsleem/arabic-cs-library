@@ -1,18 +1,18 @@
 ---
-title: "@property"
-lang: en
+title: "قاعدة @property"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/at-property"
 ---
 
-Tailwind 4 uses the CSS `@property` rule internally to enable modern features and performance improvements.
+يستخدم Tailwind 4 قاعدة CSS `@property` داخليًا لتفعيل الميزات الحديثة وتحسينات الأداء.
 
-## What is `@property`?
+## ما هي `@property`؟
 
-The `@property` rule registers custom CSS properties with:
+تسجّل قاعدة `@property` خصائص CSS المخصّصة مع:
 
-- **Type definition** (length, color, number, etc.)
-- **Initial value**
-- **Inheritance behavior**
+- **تعريف النوع** (طول، لون، رقم، إلخ)
+- **القيمة الأولية**
+- **سلوك التوريث**
 
 ```scss
 @property --my-color {
@@ -22,31 +22,31 @@ The `@property` rule registers custom CSS properties with:
 }
 ```
 
-## How Tailwind Uses It
+## كيف يستخدمها Tailwind
 
-Tailwind leverages `@property` internally for:
+يستفيد Tailwind من `@property` داخليًا من أجل:
 
-1. **Gradient animations** - Smooth transitions between gradient stops
-2. **Performance optimization** - Especially on large pages
-3. **Type-safe custom properties** - Better browser optimizations
+1. **حركات التدرّجات اللونية** - انتقالات سلسة بين نقاط التدرّج
+2. **تحسين الأداء** - خاصةً في الصفحات الكبيرة
+3. **خصائص مخصّصة آمنة النوع** - تحسينات أفضل في المتصفح
 
-You don’t write `@property` rules directly - Tailwind handles this behind the scenes.
+أنت لا تكتب قواعد `@property` مباشرة - يتولّى Tailwind ذلك في الكواليس.
 
-## Browser Requirements
+## متطلبات المتصفح
 
-This dependency means Tailwind 4 requires:
+تعني هذه التبعية أن Tailwind 4 يتطلّب:
 
 - Safari 16.4+
 - Chrome 111+
 - Firefox 128+
 
-**No support for older browsers.**
+**لا دعم للمتصفحات الأقدم.**
 
-## Key Distinctions
+## فروق جوهرية
 
-### `@theme` (You use this)
+### `@theme` (أنت تستخدم هذا)
 
-Define design tokens that generate utilities:
+عرّف رموز التصميم التي تولّد الأصناف المساعدة:
 
 ```scss
 @theme {
@@ -55,13 +55,13 @@ Define design tokens that generate utilities:
 }
 ```
 
-### `@property` (Tailwind uses this)
+### `@property` (Tailwind يستخدم هذا)
 
-Internal framework implementation for modern CSS features.
+تنفيذ داخلي للإطار يتيح ميزات CSS الحديثة.
 
-### `:root` variables
+### متغيّرات `:root`
 
-Still useful for non-utility CSS variables:
+لا تزال مفيدة لمتغيّرات CSS غير المرتبطة بالأصناف المساعدة:
 
 ```css
 :root {
@@ -69,13 +69,13 @@ Still useful for non-utility CSS variables:
 }
 ```
 
-## Impact on Your Code
+## الأثر على شيفرتك
 
-While `@property` works behind the scenes, you benefit from:
+بينما تعمل `@property` في الكواليس، فإنك تستفيد من:
 
-- Smoother animations
-- Better performance
-- Access to theme values as CSS variables
-- Modern CSS features that weren’t possible before
+- حركات أكثر سلاسة
+- أداء أفضل
+- الوصول إلى قيم السمة كمتغيّرات CSS
+- ميزات CSS الحديثة التي لم تكن ممكنة من قبل
 
-The trade-off: Modern browser requirement, no IE11 or legacy browser support.
+المقايضة: اشتراط متصفحات حديثة، دون دعم لـ IE11 أو المتصفحات القديمة.

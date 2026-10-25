@@ -1,10 +1,10 @@
 ---
-title: "List of Events You Can Fire"
-lang: en
+title: "قائمة الأحداث التي يمكنك إطلاقها"
+lang: ar
 source: "https://stevekinney.com/courses/testing/fire-event-events"
 ---
 
-In case you wanted to see a full list of the events that you can fire, I looked it up [in the source code for you](https://raw.githubusercontent.com/testing-library/dom-testing-library/main/src/event-map.js).
+إن كنت ترغب في رؤية قائمة كاملة بالأحداث التي يمكنك إطلاقها، فقد بحثت عنها [في الشيفرة المصدرية نيابةً عنك](https://raw.githubusercontent.com/testing-library/dom-testing-library/main/src/event-map.js).
 
 - `copy`
 - `cut`

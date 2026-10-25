@@ -1,33 +1,33 @@
 ---
-title: "Secret Scanning with Gitleaks"
-lang: en
+title: "فحص الأسرار باستخدام Gitleaks"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks"
 ---
 
-Short lesson. Important lesson.
+درس قصير. درس مهم.
 
-The [static-layer lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf) has you create a `sample-config.json` file containing a fake API key. That’s on purpose. It’s bait. The bait is there because an agent will, given half a chance, copy a “real example” secret from one file to another file that’s about to be committed, and I want us to see the feedback loop fire on a fake before you ever deploy to a real project.
+يطلب منك [مختبر الطبقة الساكنة](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf) إنشاء ملف `sample-config.json` يحتوي مفتاح API مزيّفًا. هذا مقصود. إنه طُعم. الطعم موجود لأن الوكيل، إذا أُعطي نصف فرصة، سينسخ سرًّا «حقيقيًا كمثال» من ملف إلى ملف آخر على وشك أن يُودَع، وأريد أن نرى حلقة التغذية الراجعة تنطلق على طعم مزيّف قبل أن تنشر إلى مشروع حقيقي أبدًا.
 
-This is not hypothetical. I have personally watched Claude Code, Cursor, and Codex all commit credentials in the last year. Every time, the fix was the same: install gitleaks, configure the hook, and the mistake becomes impossible to repeat. Every time, the reason it happened in the first place was that secret scanning wasn’t installed.
+هذا ليس افتراضًا نظريًا. لقد شاهدت بنفسي Claude Code وCursor وCodex وكلّها تُودِع بيانات اعتماد خلال السنة الماضية. في كل مرة، كان الإصلاح هو نفسه: ثبّت gitleaks، وهيِّئ الخطّاف، فيصبح تكرار الخطأ مستحيلًا. وفي كل مرة، كان سبب حدوثه أصلًا أن فحص الأسرار لم يكن مثبّتًا.
 
-Install it now. Before the agent commits something you actually have to rotate.
+ثبّته الآن. قبل أن يُودِع الوكيل شيئًا تضطر فعليًا إلى تدويره.
 
-## What Gitleaks does
+## ما الذي يفعله Gitleaks
 
-[Gitleaks](https://github.com/gitleaks/gitleaks) is a single binary. It scans files (or git history) for patterns that match known secret formats: AWS keys, GitHub tokens, Slack tokens, Stripe keys, OpenAI API keys, private keys, JWTs, generic “looks like a secret” strings. When it finds one, it fails loudly with the file path, line number, and a redacted preview of the match.
+[Gitleaks](https://github.com/gitleaks/gitleaks) ملف تنفيذي واحد. يفحص الملفات (أو سجل git) بحثًا عن أنماط تطابق صيغ أسرار معروفة: مفاتيح AWS، ورموز GitHub، ورموز Slack، ومفاتيح Stripe، ومفاتيح OpenAI API، والمفاتيح الخاصة، ورموز JWT، والنصوص العامة التي «تبدو كسرّ». وعندما يجد واحدًا، يفشل بصوت عالٍ مع مسار الملف ورقم السطر ومعاينة محجوبة للنتيجة.
 
-It has two practical modes in this workshop:
+له وضعان عمليان في هذه الورشة:
 
-- **Full repository or history scan.** Current Gitleaks releases expose this via commands like `gitleaks git ...`, and older tutorials often show `gitleaks detect ...`. Run the full scan once when you install it, and again in CI as a safety net.
-- **Staged-content scan.** In the completed static-layer version of Shelf, this is a repo-local helper script that snapshots the exact git index and runs `gitleaks dir` on that temporary directory. Fast. Use this in the pre-commit hook.
+- **فحص المستودع أو السجل كاملًا.** تعرض إصدارات Gitleaks الحالية هذا عبر أوامر مثل `gitleaks git ...`، وتعرض الدروس الأقدم غالبًا `gitleaks detect ...`. شغّل الفحص الكامل مرة عند التثبيت، ومرة أخرى في CI كشبكة أمان.
+- **فحص المحتوى المرحّل (staged).** في نسخة الطبقة الساكنة المكتملة من Shelf، هذا سكربت مساعد داخل المستودع يأخذ لقطة من فهرس git نفسه ويشغّل `gitleaks dir` على ذلك الدليل المؤقت. سريع. استخدمه في خطّاف ما قبل الالتزام.
 
-The combination catches both “the agent is about to commit a secret” and “a secret has already snuck in through some other path.”
+المزيج يلتقط كلا الحالتين: «الوكيل على وشك إيداع سرّ» و«سرّ تسلّل بالفعل عبر مسار آخر».
 
-In Shelf, this slot sits inside a wider static layer. The same lab that wires gitleaks also has you create or extend `eslint.config.js`, `tsconfig.json`, `knip.json`, `lefthook.yml`, `.gitleaks.toml`, and `scripts/run-gitleaks-staged.ts`, then run `npm run lint`, `npm run typecheck`, `npm run knip`, `npm run test`, `npm run pre-push`, and the lightweight `npm run lint -- --quiet` loop. Secret scanning is one layer in that stack, not a side quest.
+في Shelf، يجلس هذا الموضع داخل طبقة ساكنة أوسع. المختبر نفسه الذي يصل gitleaks يطلب منك أيضًا إنشاء أو توسيع `eslint.config.js` و`tsconfig.json` و`knip.json` و`lefthook.yml` و`.gitleaks.toml` و`scripts/run-gitleaks-staged.ts`، ثم تشغيل `npm run lint` و`npm run typecheck` و`npm run knip` و`npm run test` و`npm run pre-push` وحلقة `npm run lint -- --quiet` الخفيفة. فحص الأسرار طبقة واحدة في ذلك المكدّس، لا مهمة جانبية.
 
-## Installing Gitleaks
+## تثبيت Gitleaks
 
-Gitleaks is a Go binary, not an npm package. Install it with your OS package manager:
+Gitleaks ملف تنفيذي مكتوب بـ Go، لا حزمة npm. ثبّته بمدير حزم نظامك:
 
 ```bash
 # macOS
@@ -37,15 +37,15 @@ brew install gitleaks
 # See https://github.com/gitleaks/gitleaks#installing
 ```
 
-There’s also a Docker image and a [GitHub Action](https://docs.github.com/en/actions). I prefer the binary because it runs fast locally. Check gitleaks is on your `$PATH`:
+هناك أيضًا صورة Docker و[إجراء GitHub](https://docs.github.com/en/actions). أفضّل الملف التنفيذي لأنه يعمل بسرعة محليًا. تحقق من أن gitleaks على `$PATH` لديك:
 
 ```bash
 gitleaks version
 ```
 
-## Wiring it into the pre-commit hook
+## وصله بخطّاف ما قبل الالتزام
 
-Add `lint`, `format`, and `secrets` commands to the `pre-commit` block in `lefthook.yml`:
+أضف أوامر `lint` و`format` و`secrets` إلى كتلة `pre-commit` في `lefthook.yml`:
 
 ```yaml
 pre-commit:
@@ -63,9 +63,9 @@ pre-commit:
       run: npx tsx scripts/run-gitleaks-staged.ts
 ```
 
-In Shelf, that script materializes the exact staged snapshot into a temporary directory and runs `gitleaks dir` on it. That is more reliable than depending on whichever staged-file flags your installed Gitleaks version happens to support this month. Note the deliberate lack of a `glob` field on the `secrets` command — the wrapper script re-enumerates the staged index itself, so handing it a pre-filtered `{staged_files}` list would double-filter.
+في Shelf، يُجسّد ذلك السكربت لقطة المحتوى المرحّل بالضبط في دليل مؤقت ويشغّل `gitleaks dir` عليه. هذا أكثر موثوقية من الاعتماد على أي أعلام ملفات مرحّلة يدعمها إصدار Gitleaks المثبّت لديك هذا الشهر. لاحظ الغياب المتعمّد لحقل `glob` في أمر `secrets` — فسكربت الغلاف يعيد تعداد الفهرس المرحّل بنفسه، ومنحه قائمة `{staged_files}` مُفلترة مسبقًا سيفلتر مرتين.
 
-Test it:
+اختبره:
 
 ```bash
 echo "AWS_SECRET_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE" > fake.env
@@ -73,18 +73,18 @@ git add fake.env
 git commit -m "testing secret scanner"
 ```
 
-You should see a gitleaks report and an aborted commit. Clean up:
+ينبغي أن ترى تقرير gitleaks وإلغاءً للالتزام. نظّف:
 
 ```bash
 git reset HEAD fake.env
 rm fake.env
 ```
 
-If the hook didn’t fire, double-check gitleaks is installed and the `secrets` command is wired into `lefthook.yml` correctly.
+إذا لم ينطلق الخطّاف، فتحقق مرة أخرى من أن gitleaks مثبّت وأن أمر `secrets` موصول بشكل صحيح في `lefthook.yml`.
 
-## Running it on history, once
+## تشغيله على السجل، مرة واحدة
 
-If you’re adding Gitleaks to an existing project, run a full scan over the repository or git history first. There are almost always findings.
+إذا كنت تضيف Gitleaks إلى مشروع قائم، فشغّل فحصًا كاملًا على المستودع أو سجل git أولًا. هناك دائمًا نتائج تقريبًا.
 
 ```bash
 # Current releases usually expose this as:
@@ -94,19 +94,19 @@ gitleaks git --redact
 gitleaks detect --redact
 ```
 
-For each finding:
+لكل نتيجة:
 
-1. **Was it real?** If yes, rotate the credential *immediately*. That’s step one, before anything else. A committed secret is compromised, period, even if nobody “found” it. Rotate the key, then deal with the git history.
-2. **Scrub history.** Use `git filter-repo` or `bfg` to remove the secret from every past commit. This rewrites history, which means everyone on the team has to re-clone. Coordinate.
-3. **Document the incident.** Not blame. Incident. “On this date, this credential was exposed, we rotated it, we scrubbed it from history, here’s the gitleaks rule that would have caught it.” This becomes the training data for why you have the hook.
+1. **هل كانت حقيقية؟** إذا كانت كذلك، فدوّر بيانات الاعتماد *فورًا*. هذه الخطوة الأولى، قبل أي شيء آخر. السرّ المُودَع مخترق، انتهى الأمر، حتى لو لم «يجده» أحد. دوّر المفتاح، ثم تعامل مع سجل git.
+2. **امسح السجل.** استخدم `git filter-repo` أو `bfg` لإزالة السرّ من كل التزام سابق. هذا يعيد كتابة السجل، ما يعني أن على كل فرد في الفريق إعادة استنساخ المستودع. نسّق الأمر.
+3. **وثّق الحادث.** لا اللوم. الحادث. «في هذا التاريخ، انكشفت بيانات الاعتماد هذه، ودوّرناها، ومسحناها من السجل، وهذا هو حكم gitleaks الذي كان سيلتقطها.» يصبح هذا بيانات التدريب على سبب وجود الخطّاف لديك.
 
-If the finding is a false positive—a placeholder like `sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`—add an allowlist entry for the specific pattern so gitleaks stops flagging it. More on the allowlist below.
+إذا كانت النتيجة إيجابية كاذبة — عنصر نائب مثل `sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` — فأضف مدخلًا في قائمة السماح للنمط المحدّد حتى يتوقف gitleaks عن الإشارة إليه. المزيد عن قائمة السماح أدناه.
 
-## The `.gitleaks.toml` config
+## تهيئة `.gitleaks.toml`
 
-Most of the time you don’t need a config file—gitleaks’ defaults are good. But two use cases justify one.
+في معظم الوقت لا تحتاج إلى ملف تهيئة — افتراضيات gitleaks جيدة. لكن حالتين تستحقان واحدًا.
 
-**Allowlisting false positives.** In the completed static-layer lab, you create a `sample-config.json` bait file with a deliberately fake API key so you can prove the scanner works on a known-bad input. Then, *after* you’ve seen the failure, you add `sample-config.json` to the allowlist so the team isn’t tripping the rule on the same intentional file forever after. If you want to allowlist the starter’s seeded workshop credentials too, use `tests/data/` rather than an older fixture path. The config below is the “after the lab” version:
+**السماح بالإيجابيات الكاذبة.** في مختبر الطبقة الساكنة المكتمل، تنشئ ملف طُعم `sample-config.json` بمفتاح API مزيّف عمدًا حتى تثبت أن الفاحص يعمل على مدخل سيئ معروف. ثم، *بعد* أن ترى الفشل، تضيف `sample-config.json` إلى قائمة السماح كي لا يتعثر الفريق على الملف المتعمّد نفسه إلى الأبد. وإذا أردت السماح ببيانات اعتماد الورشة الأولية المزروعة أيضًا، فاستخدم `tests/data/` بدلًا من مسار fixture أقدم. التهيئة أدناه هي نسخة «ما بعد المختبر»:
 
 ```toml
 # .gitleaks.toml
@@ -122,9 +122,9 @@ paths = [
 ]
 ```
 
-The `paths` list skips files that match. `sample-config.json` is excluded *after* the lab demonstrates the bait getting caught. `tests/data/` is an optional follow-up allowlist because the starter stores fake workshop credentials there for the seeding labs.
+تتخطى قائمة `paths` الملفات المطابقة. يُستثنى `sample-config.json` *بعد* أن يبرهن المختبر أن الطعم يُلتقط. و`tests/data/` قائمة سماح اختيارية لاحقة لأن المشروع الأولي يخزّن بيانات اعتماد ورشة مزيفة هناك لمختبرات زرع البيانات.
 
-**Adding custom rules.** If your organization uses a proprietary token format that gitleaks’ defaults don’t cover, you can add a rule:
+**إضافة قواعد مخصّصة.** إذا كانت مؤسستك تستخدم صيغة رمز خاصة لا تغطيها افتراضيات gitleaks، فيمكنك إضافة قاعدة:
 
 ```toml
 [[rules]]
@@ -134,26 +134,26 @@ regex = '''shelf_tok_[a-zA-Z0-9]{40}'''
 tags = ["token", "shelf"]
 ```
 
-Gitleaks will now flag anything matching that pattern. Useful for “we have an internal secret format nobody else knows about.”
+سيشير Gitleaks الآن إلى أي شيء يطابق ذلك النمط. مفيد لحالة «لدينا صيغة سرّ داخلية لا يعرفها أحد آخر».
 
-## The `.gitleaksignore` file
+## ملف `.gitleaksignore`
 
-Sometimes Gitleaks flags a specific finding that you genuinely want to keep. Maybe it’s an example in documentation, maybe it’s a literal constant that happens to match a secret pattern. For one-off exemptions, use `.gitleaksignore`:
+أحيانًا يشير Gitleaks إلى نتيجة محدّدة تريد الاحتفاظ بها حقًا. ربما مثال في التوثيق، أو ثابت حرفي يصادف أنه يطابق نمط سرّ. للإعفاءات الفردية، استخدم `.gitleaksignore`:
 
 ```
 # .gitleaksignore
 path/to/file.md:generic-api-key:42
 ```
 
-The example above is already in the fingerprint format Gitleaks prints in its own output: `path/to/file:rule-id:line-number`. Copy the exact identifier straight from the report rather than hand-typing a bare line number—the fingerprint is how Gitleaks maps an ignore entry back to a specific finding. Much finer-grained than the path allowlist, which skips entire files.
+المثال أعلاه بصيغة البصمة التي يطبعها Gitleaks في مخرجاته: `path/to/file:rule-id:line-number`. انسخ المعرّف الدقيق مباشرة من التقرير بدلًا من كتابة رقم سطر مجرّد يدويًا — فالبصمة هي كيف يربط Gitleaks مدخل التجاهل بنتيجة محدّدة. أدقّ بكثير من قائمة السماح بالمسار، التي تتخطى ملفات كاملة.
 
-Do not let `.gitleaksignore` become a dumping ground. Every line is a promise you made to keep ignoring a finding, and every promise should be checked periodically. Review the file on a schedule.
+لا تدع `.gitleaksignore` يتحول إلى مكبّ نفايات. كل سطر وعدٌ قطعته على نفسك باستمرار تجاهل نتيجة، وكل وعد ينبغي مراجعته دوريًا. راجع الملف وفق جدول.
 
-## CI as the safety net
+## CI كشبكة أمان
 
-Even with a rock-solid pre-commit hook, run gitleaks in CI too. The pre-commit hook can be bypassed (`--no-verify`), can fail to install (new team member didn’t run `bun install`), can be misconfigured in a way that passes locally but not in CI. The CI run is the catch-all.
+حتى مع خطّاف ما قبل التزام صلب كالصخر، شغّل gitleaks في CI أيضًا. يمكن تجاوز خطّاف ما قبل الالتزام (`--no-verify`)، ويمكن أن يفشل تثبيته (عضو فريق جديد لم يشغّل `bun install`)، ويمكن أن يُهيَّأ خطأً بطريقة تنجح محليًا ولا تنجح في CI. تشغيل CI هو الملتقط الشامل.
 
-In GitHub Actions (we’ll go deeper on CI in [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)):
+في GitHub Actions (سنعمّق الحديث عن CI في [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)):
 
 ```yaml
 # .github/workflows/security.yml
@@ -165,13 +165,13 @@ In GitHub Actions (we’ll go deeper on CI in [CI as the Loop of Last Resort](ht
     # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 ```
 
-The official action is the easy path. It runs Gitleaks on every push and PR, fails the build on any finding, and gives you a clean CI gate even when someone bypasses the local hook. Personal repos can use only `GITHUB_TOKEN`; repos owned by an organization account additionally need `GITLEAKS_LICENSE` set to a free license key (obtainable from the gitleaks site).
+الإجراء الرسمي هو المسار السهل. يشغّل Gitleaks على كل دفعة وكل طلب سحب، ويفشل البناء عند أي نتيجة، ويمنحك بوابة CI نظيفة حتى عندما يتجاوز أحدهم الخطّاف المحلي. يمكن للمستودعات الشخصية استخدام `GITHUB_TOKEN` وحده؛ أما المستودعات المملوكة لحساب مؤسسة فتحتاج إضافةً إلى ذلك `GITLEAKS_LICENSE` مضبوطًا على مفتاح ترخيص مجاني (يمكن الحصول عليه من موقع gitleaks).
 
-> **Note**
+> **ملاحظة**
 >
-> Check the current licensing and setup requirements for `gitleaks/gitleaks-action@v2` before you standardize on it for organization repos. If the official action is a bad fit for your plan, invoke the CLI directly in a shell step instead. The important part is the CI gate, not the wrapper.
+> تحقق من متطلبات الترخيص والإعداد الحالية لـ `gitleaks/gitleaks-action@v2` قبل أن تعتمده معياريًا للمستودعات المؤسسية. إذا كان الإجراء الرسمي غير مناسب لخطتك، فاستدعِ سطر الأوامر مباشرة في خطوة shell بدلًا منه. الجزء المهم هو بوابة CI، لا الغلاف.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Secrets
@@ -190,23 +190,23 @@ The official action is the easy path. It runs Gitleaks on every push and PR, fai
   Do not add to `.gitleaksignore` without a comment.
 ```
 
-The “obviously-fake values” rule is specifically to prevent the agent’s favorite move: copying `AKIAIOSFODNN7EXAMPLE` out of a tutorial and pasting it into a real config file, where gitleaks then flags it because it looks real. Use obviously-fake values that don’t pattern-match any known secret format. `placeholder_value`, `replace_me`, `your_key_here`—all fine, all unambiguously not real.
+قاعدة «القيم المزيّفة بوضوح» وُضعت تحديدًا لمنع حركة الوكيل المفضّلة: نسخ `AKIAIOSFODNN7EXAMPLE` من درس وإلصاقه في ملف تهيئة حقيقي، حيث يشير إليه gitleaks لأنه يبدو حقيقيًا. استخدم قيمًا مزيّفة بوضوح لا تطابق نمط أي صيغة سرّ معروفة. `placeholder_value` و`replace_me` و`your_key_here` — كلها مقبولة، وكلها ليست حقيقية بلا لبس.
 
-## The 30-second version of this whole lesson
+## نسخة الثلاثين ثانية من هذا الدرس كله
 
-1. Install gitleaks.
-2. Add the staged-snapshot helper script as a `secrets` command in `lefthook.yml`.
-3. Run a full Gitleaks scan once on your existing history. Rotate anything real that it finds.
-4. Add the gitleaks GitHub Action to your CI as a safety net.
-5. Never bypass the hook. If gitleaks says it found a secret, it found a secret.
+1. ثبّت gitleaks.
+2. أضف سكربت لقطة المحتوى المرحّل كأمر `secrets` في `lefthook.yml`.
+3. شغّل فحص Gitleaks كاملًا مرة واحدة على سجلك القائم. دوّر أي شيء حقيقي يجده.
+4. أضف إجراء gitleaks في GitHub إلى CI كشبكة أمان.
+5. لا تتجاوز الخطّاف أبدًا. إذا قال gitleaks إنه وجد سرًّا، فقد وجد سرًّا.
 
-That’s the whole thing. Five steps, most of a Tuesday morning, and the problem of “the agent committed an API key” disappears from your life.
+هذا كل شيء. خمس خطوات، ومعظم صباح يوم ثلاثاء، وتختفي من حياتك مشكلة «الوكيل أودع مفتاح API».
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Secret scanning is one of the cheapest, highest-value things in the static layer. The hook catches mistakes before they’re public, the CI run catches mistakes the hook missed, and the allowlist lets you keep false positives out of the way. Install it this afternoon. Thank me later.
+فحص الأسرار من أرخص الأشياء وأعلاها قيمة في الطبقة الساكنة. يلتقط الخطّاف الأخطاء قبل أن تصبح علنية، ويلتقط تشغيل CI الأخطاء التي فاتت الخطّاف، وتتيح لك قائمة السماح إبعاد الإيجابيات الكاذبة عن الطريق. ثبّته بعد ظهر اليوم. اشكرني لاحقًا.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
-- [Lab: Wire the Static Layer into Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf)
+- [خطّافات Git باستخدام Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
+- [مختبر: وصّل الطبقة الساكنة بـ Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf)

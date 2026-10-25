@@ -1,40 +1,31 @@
 ---
-title: "Cursor Automations"
-lang: en
+title: "أتمتات Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-automations"
 ---
 
-[Cursor Automations](https://cursor.com/docs/cloud-agent/automations) run Cloud
-Agents from a schedule or event. As of [Cursor 3.8](https://cursor.com/changelog), automations can also be created from
-the `/automate` skill.
+تشغّل [أتمتات Cursor](https://cursor.com/docs/cloud-agent/automations) وكلاء السحابة وفق جدول أو حدث. واعتبارًا من [Cursor 3.8](https://cursor.com/changelog)، يمكن أيضًا إنشاء الأتمتات من مهارة `/automate`.
 
-Automations are useful for repeatable maintenance: dependency checks, flaky test
-triage, issue grooming, release readiness, and scheduled reports. They are risky
-when the prompt is vague or when the automation can change code without a human
-review path.
+الأتمتات مفيدة للصيانة القابلة للتكرار: فحوص الاعتماديات، وفرز الاختبارات المتذبذبة، وتنقيح المشكلات، وجاهزية الإصدار، والتقارير المجدولة. وهي محفوفة بالمخاطر عندما يكون الطلب غامضًا أو عندما تستطيع الأتمتة تغيير الشيفرة دون مسار مراجعة بشري.
 
-## Trigger Sources
+## مصادر التشغيل
 
-Cursor supports triggers from schedules, webhooks, version control events, [Slack](https://slack.com/), [Linear](https://linear.app/), [Sentry](https://sentry.io/), [PagerDuty](https://www.pagerduty.com/), and
-related integrations. [GitHub](https://github.com/) triggers can include issue
-comments, pull request review comments, submitted reviews, review thread updates,
-and workflow runs.
+يدعم Cursor مشغّلات من الجداول وخطافات الويب وأحداث التحكم بالإصدارات و [Slack](https://slack.com/) و [Linear](https://linear.app/) و [Sentry](https://sentry.io/) و [PagerDuty](https://www.pagerduty.com/) والتكاملات ذات الصلة. ويمكن أن تتضمن مشغّلات [GitHub](https://github.com/) تعليقات المشكلات، وتعليقات مراجعة طلبات السحب، والمراجعات المرسلة، وتحديثات خيوط المراجعة، وتشغيلات سير العمل.
 
-Pick the trigger that matches the workflow. Do not make an automation poll a
-system that can send a precise event.
+اختر المشغّل الذي يطابق سير العمل. لا تجعل أتمتة تستقصي نظامًا يمكنه إرسال حدث دقيق.
 
-## Prompt Contract
+## عقد الطلب
 
-Every automation prompt should include:
+ينبغي أن يتضمن كل طلب أتمتة:
 
-- What it may read.
-- What it may change.
-- The verification commands it must run.
-- Whether it may create a pull request.
-- What counts as blocked.
-- Where it should report results.
+- ما يجوز له قراءته.
+- ما يجوز له تغييره.
+- أوامر التحقق التي يجب أن يشغّلها.
+- هل يجوز له إنشاء طلب سحب.
+- ما الذي يُعدّ محجوبًا.
+- أين ينبغي أن يبلّغ بالنتائج.
 
-Example:
+مثال:
 
 ```
 When a workflow run fails on the main branch, inspect the failing job logs and
@@ -43,14 +34,10 @@ bun run lint and the failing test command. If the failure is product code or
 requires a dependency change, report the diagnosis without editing files.
 ```
 
-## Visibility and Ownership
+## الظهور والملكية
 
-Automations can be private, team visible, or team owned. Use team ownership for
-workflows that affect shared repositories. A private automation that opens pull
-requests against a team repository is hard to audit.
+يمكن أن تكون الأتمتات خاصة أو مرئية للفريق أو مملوكة للفريق. استخدم ملكية الفريق لسير العمل الذي يؤثر في مستودعات مشتركة. فالأتمتة الخاصة التي تفتح طلبات سحب على مستودع فريق يصعب تدقيقها.
 
-## Review the First Runs
+## راجع التشغيلات الأولى
 
-Treat the first few automation runs as production tests. Read the branch, pull
-request, logs, and comments. Tighten the prompt when the automation does
-something technically allowed but operationally unhelpful.
+عامل التشغيلات القليلة الأولى للأتمتة كاختبارات إنتاج. اقرأ الفرع وطلب السحب والسجلات والتعليقات. وأحكم الطلب عندما تفعل الأتمتة شيئًا مسموحًا تقنيًا لكنه غير مفيد تشغيليًا.

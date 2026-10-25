@@ -1,44 +1,44 @@
 ---
-title: "Exercise 8: Testing Strategies"
-lang: en
+title: "التمرين 8: استراتيجيات الاختبار"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/testing-strategies-exercise"
 ---
 
-## What You’re Doing
+## ما الذي تفعله
 
-You need end-to-end tests that exercise the composed application as a user would experience it — navigating between routes, seeing data load, interacting with UI. You’re going to write Playwright E2E tests for cross-route navigation, mock API responses with MSW, record HAR fixtures for deterministic replay, and discuss where contract testing fills the gaps these tests leave.
+تحتاج إلى اختبارات من الطرف إلى الطرف تمرّن التطبيق المُركَّب كما يعيشه المستخدم — التنقل بين المسارات، ورؤية البيانات تُحمَّل، والتفاعل مع واجهة المستخدم. وأنت ستكتب اختبارات E2E بـPlaywright للتنقل عبر المسارات، وتحاكي استجابات الواجهة البرمجية بـMSW، وتسجّل ملفات HAR لبدائل إعادة تشغيل حتمية، وتناقش أين يسدّ اختبار العقود الثغرات التي تتركها هذه الاختبارات.
 
-## Why It Matters
+## لماذا يهمّ
 
-In a monorepo architecture, unit tests verify that individual components work in isolation, but they miss the integration seams: does the route lazy-load correctly? Does the analytics dashboard render real data from the API? Does navigation state survive across page transitions? E2E tests catch these integration-level failures. MSW mocking gives you control over API responses without a real backend. HAR recording gives you deterministic snapshots of real API interactions. Together, these techniques let you test the composed application with confidence.
+في معمارية المستودع الأحادي، تتحقق اختبارات الوحدة من أن المكوّنات الفردية تعمل بمعزل، لكنها تفوّت مفاصل التكامل: هل يُحمَّل المسار كسولًا بشكل صحيح؟ هل تُصيّر لوحة التحليلات بيانات حقيقية من الواجهة البرمجية؟ هل تنجو حالة التنقل عبر انتقالات الصفحات؟ تلتقط اختبارات E2E هذه الأعطال على مستوى التكامل. وتمنحك محاكاة MSW تحكمًا في استجابات الواجهة البرمجية دون خادم خلفي حقيقي. ويمنحك تسجيل HAR لقطات حتمية لتفاعلات واجهة برمجية حقيقية. ومعًا، تتيح لك هذه التقنيات اختبار التطبيق المُركَّب بثقة.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
 - Node.js 20+
 - pnpm 9+
 
-## Setup
+## الإعداد
 
-You should be continuing from where Exercise 8 (CI/CD Pipeline) left off. If you need to catch up:
+ينبغي أن تكون مكملًا من حيث انتهى التمرين 8 (خط أنابيب CI/CD). وإن احتجت إلى اللحاق بالركب:
 
 ```bash
 git checkout 08-testing-start
 pnpm install
 ```
 
-Verify Playwright is installed:
+تحقّق من تثبيت Playwright:
 
 ```bash
 npx playwright install chromium
 ```
 
-Open `tests/e2e/cross-remote.spec.ts` — it contains TODO stubs.
+افتح `tests/e2e/cross-remote.spec.ts` — فهو يحتوي بدائل TODO.
 
-## Understand the Test Infrastructure
+## افهم بنية الاختبار
 
-Before writing tests, look at how the test environment is configured.
+قبل كتابة الاختبارات، انظر كيف تُهيّأ بيئة الاختبار.
 
-Open `tests/e2e/playwright.config.ts`:
+افتح `tests/e2e/playwright.config.ts`:
 
 *tests/e2e/playwright.config.ts*
 
@@ -59,17 +59,17 @@ export default defineConfig({
 });
 ```
 
-*Note:* Reuses a running dev server locally but always starts fresh in CI.
+*ملاحظة:* يعيد استخدام خادم تطوير قائم محليًا، لكنه يبدأ خادمًا جديدًا دائمًا في CI.
 
-> **The `webServer` configuration**
+> **تهيئة `webServer`**
 >
-> Playwright can start your dev server automatically before running tests and shut it down after. The `command` runs the dashboard’s dev server, and `url` is the health check — Playwright polls this URL until it responds before running any tests. `reuseExistingServer: !process.env.CI` means in local development, if you already have the dev server running, Playwright will use it instead of starting a new one. In CI, it always starts a fresh server.
+> يستطيع Playwright تشغيل خادم تطويرك تلقائيًا قبل تشغيل الاختبارات وإيقافه بعدها. ويشغّل `command` خادم تطوير لوحة المعلومات، و`url` هو فحص الصحة — يستطلع Playwright هذا العنوان حتى يستجيب قبل تشغيل أي اختبار. ويعني `reuseExistingServer: !process.env.CI` أنه في التطوير المحلي، إن كان خادم التطوير يعمل لديك سابقًا، سيستخدمه Playwright بدل بدء خادم جديد. أما في CI فيبدأ خادمًا جديدًا دائمًا.
 
 > **Mock Service Worker**
 >
-> MSW intercepts network requests at the Service Worker level, not by monkey-patching `fetch` or `XMLHttpRequest`. MSW registers a Service Worker in the browser (or uses a request interception library in Node.js) that sits between your application code and the network. When your component calls `fetch("/api/analytics/summary")`, the request is intercepted by the Service Worker before it ever leaves the browser, and MSW’s handlers return a mock response as if a real server had responded. Because interception happens at the network level, your application code is completely unaware that the response is mocked — the `fetch` call, the promise resolution, the response parsing all behave identically to a real network request. This is a fundamental advantage over mocking `fetch` directly: you test the actual network code path your application uses in production, including request headers, response status codes, and error handling, without running a real backend server.
+> يعترض MSW طلبات الشبكة على مستوى Service Worker، لا بتعديل `fetch` أو `XMLHttpRequest` يدويًا. فيسجّل MSW عامل خدمة في المتصفح (أو يستخدم مكتبة اعتراض طلبات في Node.js) يقف بين شيفرة تطبيقك والشبكة. وعندما ينادي مكوّنك `fetch("/api/analytics/summary")`، يعترض عامل الخدمة الطلب قبل أن يغادر المتصفح أصلًا، وتعيد معالجات MSW استجابة مُحاكاة كأن خادمًا حقيقيًا قد استجاب. ولأن الاعتراض يحدث على مستوى الشبكة، فشيفرة تطبيقك لا تدرك إطلاقًا أن الاستجابة مُحاكاة — فنداء `fetch`، وحلّ الوعد، وتحليل الاستجابة، كلها تتصرف تمامًا كطلب شبكة حقيقي. وهذه ميزة جوهرية على محاكاة `fetch` مباشرةً: فأنت تختبر مسار شيفرة الشبكة الفعلي الذي يستخدمه تطبيقك في الإنتاج، بما في ذلك ترويسات الطلب، ورموز حالة الاستجابة، ومعالجة الأخطاء، دون تشغيل خادم خلفي حقيقي.
 
-The diagram below shows how MSW intercepts network requests at the Service Worker level — your application’s `fetch` calls are caught before they reach the network, and mock responses are returned as if a real server responded.
+ويوضّح المخطط التالي كيف يعترض MSW طلبات الشبكة على مستوى Service Worker — فتُلتقط نداءات `fetch` في تطبيقك قبل وصولها إلى الشبكة، وتُعاد استجابات مُحاكاة كأن خادمًا حقيقيًا قد استجاب.
 
 ```
 sequenceDiagram
@@ -88,9 +88,9 @@ sequenceDiagram
     Note over Network: Request never reaches the network
 ```
 
-Next, open `mocks/src/handlers.ts` — these MSW handlers run during development and serve as the baseline API behavior during tests. The handlers return deterministic data with fixed delays.
+ثم افتح `mocks/src/handlers.ts` — تعمل معالجات MSW هذه أثناء التطوير وتكون سلوك الواجهة البرمجية الأساسي أثناء الاختبارات. وتعيد المعالجات بيانات حتمية بتأخيرات ثابتة.
 
-Then open `tests/e2e/cross-remote.spec.ts` — the stub file where you’ll write tests:
+ثم افتح `tests/e2e/cross-remote.spec.ts` — ملف البدائل الذي ستكتب فيه الاختبارات:
 
 *tests/e2e/cross-remote.spec.ts*
 
@@ -102,13 +102,13 @@ import { test, expect } from '@playwright/test';
 // TODO: Add loading state tests
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Playwright is installed and configured. The dev server starts automatically when you run tests. MSW handlers provide deterministic API responses.
+Playwright مثبَّت ومهيّأ. ويبدأ خادم التطوير تلقائيًا عند تشغيلك الاختبارات. وتوفّر معالجات MSW استجابات واجهة برمجية حتمية.
 
-## Write Cross-Route Navigation Tests
+## اكتب اختبارات التنقل عبر المسارات
 
-Replace the stub in `tests/e2e/cross-remote.spec.ts` with real tests:
+استبدل البديل في `tests/e2e/cross-remote.spec.ts` باختبارات حقيقية:
 
 *tests/e2e/cross-remote.spec.ts*
 
@@ -165,33 +165,33 @@ test.describe('Cross-route navigation', () => {
 });
 ```
 
-*Note:* Verifies that data survives a full round-trip navigation between routes.
+*ملاحظة:* يتحقق من أن البيانات تنجو من رحلة تنقل كاملة ذهابًا وإيابًا بين المسارات.
 
-Run the tests:
+شغّل الاختبارات:
 
 ```bash
 npx playwright test tests/e2e/cross-remote.spec.ts --config tests/e2e/playwright.config.ts
 ```
 
-> **Why we test navigation, not component rendering**
+> **لماذا نختبر التنقل، لا تصيير المكوّنات**
 >
-> Unit tests with Vitest and Testing Library verify that individual components render correctly given specific props. E2E tests verify the *integration* — that the router loads the correct lazy-loaded route, that MSW intercepts the API call, that the component correctly fetches and displays the data, and that navigating away and back doesn’t break state. These are the seams between packages, and they’re exactly the seams that break in a monorepo when someone changes a shared type or refactors a package’s public API.
+> تتحقق اختبارات الوحدة بـVitest وTesting Library من أن المكوّنات الفردية تُصيّر بشكل صحيح بخصائص محددة. أما اختبارات E2E فتتحقق من *التكامل* — أن الموجّه يحمّل المسار الكسول الصحيح، وأن MSW يعترض نداء الواجهة البرمجية، وأن المكوّن يجلب البيانات ويعرضها بشكل صحيح، وأن التنقل بعيدًا وعودة لا يكسر الحالة. فهذه هي المفاصل بين الحزم، وهي بالضبط المفاصل التي تنكسر في مستودع أحادي عندما يغيّر أحدهم نوعًا مشتركًا أو يعيد هيكلة الواجهة البرمجية العامة لحزمة.
 
-### Checkpoint
+### نقطة تحقّق
 
-At least three E2E tests pass. They cover navigation between analytics, users, and settings, verifying that data loads correctly across route transitions.
+تنجح ثلاثة اختبارات E2E على الأقل. وهي تغطّي التنقل بين التحليلات والمستخدمين والإعدادات، وتتحقق من تحميل البيانات بشكل صحيح عبر انتقالات المسارات.
 
-Playwright test results showing passing tests
+نتائج اختبارات Playwright تعرض اختبارات ناجحة
 
-## Write Tests with MSW Data Verification
+## اكتب اختبارات مع التحقق من بيانات MSW
 
-The dashboard uses MSW’s `setupWorker` which registers a Service Worker in the browser. The Suspense resources from Exercise 2 fire their fetch calls at module import time — before Playwright’s `page.route()` can intercept them. This means per-test API overrides via `page.route()` won’t work for the initial data load. Instead, write tests that verify the MSW mock data renders correctly and that interactive features work.
+تستخدم لوحة المعلومات `setupWorker` من MSW، الذي يسجّل عامل خدمة في المتصفح. وموارد Suspense من التمرين 2 تُطلق نداءات الجلب وقت استيراد الوحدة — قبل أن يستطيع `page.route()` في Playwright اعتراضها. وهذا يعني أن تجاوزات الواجهة البرمجية لكل اختبار عبر `page.route()` لن تعمل مع تحميل البيانات الأولي. وبدلًا من ذلك، اكتب اختبارات تتحقق من أن بيانات MSW المُحاكاة تُصيّر بشكل صحيح، وأن الميزات التفاعلية تعمل.
 
-> **Why `page.route()` doesn’t work here**
+> **لماذا لا يعمل `page.route()` هنا**
 >
-> The `createSuspenseResource` calls in `stats-bar.tsx`, `chart.tsx`, and `big-table.tsx` create their fetch promises at module scope — the moment the module is imported, the fetch fires. MSW’s Service Worker intercepts these fetches before they reach the network layer. By the time you could set up `page.route()` overrides, the data has already been fetched and cached. This is a trade-off of module-level Suspense resources: they’re fast (no waterfall) but not easily mockable per-test. HAR replay (Step 4) works because `routeFromHAR` is set up before navigation.
+> تنشئ نداءات `createSuspenseResource` في `stats-bar.tsx` و`chart.tsx` و`big-table.tsx` وعود جلبها في نطاق الوحدة — فبمجرد استيراد الوحدة، يُطلق الجلب. ويعترض عامل الخدمة في MSW هذه الجلب قبل وصولها إلى طبقة الشبكة. وبحلول الوقت الذي تستطيع فيه إعداد تجاوزات `page.route()`، تكون البيانات قد جُلبت وخُزّنت مؤقتًا. وهذه مقايضة موارد Suspense على مستوى الوحدة: إنها سريعة (بلا شلال طلبات) لكنها ليست قابلة للمحاكاة بسهولة لكل اختبار. أما إعادة تشغيل HAR (الخطوة 4) فتعمل لأن `routeFromHAR` يُعدّ قبل التنقل.
 
-Create a new test file `tests/e2e/analytics.spec.ts`:
+أنشئ ملف اختبار جديدًا `tests/e2e/analytics.spec.ts`:
 
 *tests/e2e/analytics.spec.ts*
 
@@ -225,27 +225,27 @@ test.describe('Analytics with mocked API', () => {
 });
 ```
 
-*Note:* MSW intercepts these fetches at the Service Worker level, returning deterministic data.
+*ملاحظة:* يعترض MSW هذه الجلب على مستوى Service Worker، فيعيد بيانات حتمية.
 
-Run the new tests:
+شغّل الاختبارات الجديدة:
 
 ```bash
 npx playwright test tests/e2e/analytics.spec.ts --config tests/e2e/playwright.config.ts
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-The analytics tests pass. They verify that MSW mock data renders correctly and that interactive chart controls work.
+تنجح اختبارات التحليلات. وهي تتحقق من أن بيانات MSW المُحاكاة تُصيّر بشكل صحيح، وأن عناصر التحكم التفاعلية في المخطط تعمل.
 
-## Record and Replay HAR Fixtures
+## سجّل ملفات HAR وأعد تشغيلها
 
-HAR (HTTP Archive) files capture real network interactions as JSON. Playwright can record these during a test run and replay them later for deterministic results.
+تلتقط ملفات HAR (أرشيف HTTP) تفاعلات شبكة حقيقية بصيغة JSON. ويستطيع Playwright تسجيلها أثناء تشغيل الاختبار وإعادة تشغيلها لاحقًا لنتائج حتمية.
 
-> **HAR (HTTP Archive)**
+> **HAR (أرشيف HTTP)**
 >
-> A HAR file captures every detail of a network request-response cycle: the request URL, method, headers, and body; the response status code, headers, and body; and timing information including DNS lookup, connection, TLS handshake, and time-to-first-byte. The format was originally designed for browser developer tools (you can export HAR files from Chrome DevTools’ Network tab) and is supported by virtually every HTTP debugging tool. Playwright’s `routeFromHAR` method reads these files and replays the recorded responses when matching requests are detected, making your tests completely independent of any running server. The key advantage over hand-written mocks is fidelity: a HAR file captures the exact response shape, headers, and status codes that a real server produced, so you are testing against realistic data without maintaining mock definitions by hand.
+> يلتقط ملف HAR كل تفصيل في دورة طلب-استجابة شبكية: عنوان الطلب، والتابع (method)، والترويسات، والجسم؛ ورمز حالة الاستجابة، وترويساتها، وجسمها؛ ومعلومات التوقيت بما فيها بحث DNS، والاتصال، ومصافحة TLS، وزمن أول بايت. وقد صُمّمت الصيغة أصلًا لأدوات مطوّري المتصفح (فيمكنك تصدير ملفات HAR من تبويب الشبكة في Chrome DevTools) وتدعمها فعليًا كل أداة تنقيح HTTP. ويقرأ تابع `routeFromHAR` في Playwright هذه الملفات ويعيد تشغيل الاستجابات المسجّلة عند اكتشاف طلبات مطابقة، ما يجعل اختباراتك مستقلة تمامًا عن أي خادم يعمل. والميزة الجوهرية على المحاكاة المكتوبة يدويًا هي الأمانة: فيلتقط ملف HAR شكل الاستجابة الدقيق، وترويساتها، ورموز حالتها، كما أنتجها خادم حقيقي، فأنت تختبر ببيانات واقعية دون صيانة تعريفات محاكاة يدويًا.
 
-Start by recording a HAR file. Add a recording test to `tests/e2e/analytics.spec.ts`:
+ابدأ بتسجيل ملف HAR. أضف اختبار تسجيل إلى `tests/e2e/analytics.spec.ts`:
 
 *tests/e2e/analytics.spec.ts*
 
@@ -268,23 +268,23 @@ test('record HAR fixture', async ({ page }) => {
 });
 ```
 
-*Note:* Setting update to true records live responses into the HAR file.
+*ملاحظة:* ضبط update على true يسجّل استجابات حيّة في ملف HAR.
 
-Run this test to create the HAR file:
+شغّل هذا الاختبار لإنشاء ملف HAR:
 
 ```bash
 npx playwright test tests/e2e/analytics.spec.ts -g "record HAR" --config tests/e2e/playwright.config.ts
 ```
 
-Check that the file was created:
+تحقّق من إنشاء الملف:
 
 ```bash
 ls tests/fixtures/analytics-summary.har
 ```
 
-The HAR file contains the full request/response cycle for every API call that matched the URL pattern. Open it — it’s JSON with request headers, response headers, response body, and timing information.
+يحتوي ملف HAR على دورة الطلب والاستجابة كاملة لكل نداء واجهة برمجية طابق نمط العنوان. افتحه — إنه JSON فيه ترويسات الطلب، وترويسات الاستجابة، وجسم الاستجابة، ومعلومات التوقيت.
 
-Now add a test to `tests/e2e/analytics.spec.ts` that replays the HAR instead of hitting the live API:
+والآن أضف إلى `tests/e2e/analytics.spec.ts` اختبارًا يعيد تشغيل HAR بدل ضرب الواجهة البرمجية الحيّة:
 
 *tests/e2e/analytics.spec.ts*
 
@@ -304,9 +304,9 @@ test('renders analytics from HAR fixture', async ({ page }) => {
 });
 ```
 
-*Note:* Setting update to false replays the recorded responses for deterministic results.
+*ملاحظة:* ضبط update على false يعيد تشغيل الاستجابات المسجّلة لنتائج حتمية.
 
-Finally, remove the recording test in `tests/e2e/analytics.spec.ts` (or skip it) — you only need it when regenerating fixtures:
+وأخيرًا، احذف اختبار التسجيل من `tests/e2e/analytics.spec.ts` (أو تخطّه) — فلن تحتاجه إلا عند إعادة توليد البدائل:
 
 *tests/e2e/analytics.spec.ts*
 
@@ -316,51 +316,51 @@ test.skip('record HAR fixture', async ({ page }) => {
 });
 ```
 
-> **HAR replay vs. `page.route()` mocking**
+> **إعادة تشغيل HAR مقابل المحاكاة بـ`page.route()`**
 >
-> HAR replay is useful when you want to capture the exact shape of real API responses — including headers, status codes, and response timing — without manually constructing mock data. It’s especially valuable for complex APIs with deeply nested response bodies. The downside is that HAR files go stale when the API changes. `page.route()` mocking is better when you need precise control over specific scenarios (error states, edge cases, custom data). Use HAR for “golden path” tests and `page.route()` for edge case tests.
+> إعادة تشغيل HAR مفيدة عندما تريد التقاط الشكل الدقيق لاستجابات واجهة برمجية حقيقية — بما فيها الترويسات، ورموز الحالة، وتوقيت الاستجابة — دون بناء بيانات محاكاة يدويًا. وهي قيّمة خصوصًا للواجهات المعقّدة بأجسام استجابات متداخلة بعمق. والعيب أن ملفات HAR تتقادم عندما تتغيّر الواجهة البرمجية. أما المحاكاة بـ`page.route()` فهي أفضل عندما تحتاج تحكمًا دقيقًا في سيناريوهات محددة (حالات الأخطاء، والحالات الحدّية، وبيانات مخصّصة). استخدم HAR لاختبارات «المسار الذهبي» و`page.route()` لاختبارات الحالات الحدّية.
 
-### Checkpoint
+### نقطة تحقّق
 
-A HAR file exists in `tests/fixtures/`. A test replays the HAR for deterministic results without hitting the live MSW handlers. The test passes with the same assertions.
+يوجد ملف HAR في `tests/fixtures/`. ويعيد اختبار تشغيل HAR لنتائج حتمية دون ضرب معالجات MSW الحيّة. وينجح الاختبار بالتأكيدات نفسها.
 
-## Contract Testing
+## اختبار العقود
 
-Run all the tests one more time:
+شغّل كل الاختبارات مرة أخرى:
 
 ```bash
 npx playwright test --config tests/e2e/playwright.config.ts
 ```
 
-All tests should pass. But consider this scenario: the backend team changes the `/api/analytics/summary` response from `{ totalUsers: number }` to `{ total_users: number }`. Your HAR files still have the old format. Your `page.route()` mocks still return the old format. Your MSW handlers still return the old format. Every test passes. The production app breaks.
+ينبغي أن تنجح كل الاختبارات. لكن تأمّل هذا السيناريو: يغيّر فريق الخادم استجابة `/api/analytics/summary` من `{ totalUsers: number }` إلى `{ total_users: number }`. وما زالت ملفات HAR لديك بالصيغة القديمة. وما زالت محاكاة `page.route()` لديك تعيد الصيغة القديمة. وما زالت معالجات MSW لديك تعيد الصيغة القديمة. وكل اختبار ينجح. وينكسر تطبيق الإنتاج.
 
-> **The gap that contract testing fills**
+> **الثغرة التي يسدّها اختبار العقود**
 >
-> E2E tests with mocked APIs verify that your frontend renders correctly given a specific API response shape. They don’t verify that the API actually returns that shape. Contract testing tools like Pact fill this gap: the frontend declares “I expect `GET /api/analytics/summary` to return `{ totalUsers: number }`” and the backend verifies that it satisfies that contract. When the backend changes `totalUsers` to `total_users`, the contract test fails on the backend side — before the change ships. This catches API drift without requiring the frontend and backend to deploy and test together.
+> تتحقق اختبارات E2E بواجهات برمجية مُحاكاة من أن واجهتك الأمامية تُصيّر بشكل صحيح بمعطى شكل استجابة محدد. لكنها لا تتحقق من أن الواجهة البرمجية تعيد ذلك الشكل فعلًا. وتسدّ أدوات اختبار العقود مثل Pact هذه الثغرة: فتعلن الواجهة الأمامية «أتوقع أن يعيد `GET /api/analytics/summary` القيمة `{ totalUsers: number }`» ويتحقق الخادم من أنه يحقق ذلك العقد. وعندما يغيّر الخادم `totalUsers` إلى `total_users`، يفشل اختبار العقد على جانب الخادم — قبل شحن التغيير. وهذا يلتقط انحراف الواجهة البرمجية دون أن يتطلب من الأمام والخلف النشر والاختبار معًا.
 
-This is a discussion point, not a hands-on exercise. Think about where in your CI pipeline contract testing would run and what it would catch that your current tests miss.
+هذه نقطة نقاش، لا تمرين عملي. فكّر أين سيعمل اختبار العقود في خط أنابيب CI لديك، وما الذي سيلتقطه وتفوّته اختباراتك الحالية.
 
-### Checkpoint
+### نقطة تحقّق
 
-All Playwright tests pass. You can articulate the testing pyramid for a monorepo: unit tests (Vitest) for component logic, E2E tests (Playwright) for integration behavior, and contract tests (Pact) for API compatibility.
+تنجح كل اختبارات Playwright. وتستطيع أن تبيّن هرم الاختبارات في مستودع أحادي: اختبارات الوحدة (Vitest) لمنطق المكوّنات، واختبارات E2E (Playwright) لسلوك التكامل، واختبارات العقود (Pact) لتوافق الواجهة البرمجية.
 
-Playwright HTML report with test summary
+تقرير HTML من Playwright مع ملخّص الاختبارات
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `09-migration-start` branch:
+إن احتجت إلى اللحاق بالركب، فالحالة المكتملة لهذا التمرين متاحة في فرع `09-migration-start`:
 
 ```bash
 git checkout 09-migration-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Visual regression testing:** Add `expect(page).toHaveScreenshot()` to capture a screenshot of the analytics dashboard and compare it against a baseline. Run the test twice — the second run compares against the first. Change a CSS class and watch the test fail.
-- **Accessibility testing:** Install `@axe-core/playwright` and add an accessibility audit to your test. Assert that the analytics dashboard has no critical accessibility violations.
-- **Parallel test execution:** Configure Playwright to run tests with `workers: 4` and verify they still pass. Check for shared state issues — tests that pass in isolation but fail when run in parallel are usually reading/writing shared state.
+- **اختبار الانحدار البصري:** أضف `expect(page).toHaveScreenshot()` لالتقاط لقطة شاشة للوحة التحليلات ومقارنتها بخط أساس. شغّل الاختبار مرتين — فالتشغيلة الثانية تقارن بالأولى. وغيّر صنف CSS وراقب فشل الاختبار.
+- **اختبار إمكانية الوصول:** ثبّت `@axe-core/playwright` وأضف تدقيق إمكانية وصول إلى اختبارك. وتأكّد من أن لوحة التحليلات بلا مخالفات حرجة لإمكانية الوصول.
+- **تنفيذ الاختبارات بالتوازي:** هيّئ Playwright لتشغيل الاختبارات بـ`workers: 4` وتحقّق من أنها ما زالت تنجح. وافحص مشكلات الحالة المشتركة — فالاختبارات التي تنجح بمعزل عن غيرها وتفشل عند تشغيلها بالتوازي تكون عادةً تقرأ حالة مشتركة أو تكتبها.
 
-## What’s Next
+## ما التالي
 
-You have a tested, linted, type-checked, CI-enforced monorepo. But what happens when a legacy application needs to coexist with your modern architecture? In the next exercise, you’ll set up a strangler fig pattern for incremental migration — routing some paths to the legacy app and others to the modern app — and write jscodeshift codemods to automate the tedious import rewrites.
+لديك الآن مستودع أحادي مختَبر ومفحوص بـlint ومفحوص الأنواع ومفروض في CI. لكن ماذا يحدث عندما يحتاج تطبيق قديم إلى التعايش مع معماريتك الحديثة؟ في التمرين التالي، ستُعدّ نمط الشجرة الخانقة للترحيل التدريجي — بتوجيه بعض المسارات إلى التطبيق القديم وأخرى إلى التطبيق الحديث — وستكتب codemods بـjscodeshift لأتمتة إعادات كتابة الاستيرادات المضجرة.

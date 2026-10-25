@@ -1,101 +1,101 @@
 ---
-title: "Jev"
-lang: en
+title: "Jev: نموذج القرارات السريع"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/jev"
 ---
 
-Most of what a coding agent does is not writing. It’s deciding. Which skill applies? Is this command safe? Is the work verified? Should we compact now? Today we make those calls by asking a large model to write a paragraph and then hoping the answer parses. That’s slow, expensive, and a little silly for a question with three possible answers.
+معظم ما يفعله وكيل البرمجة ليس الكتابة، بل القرار. أي مهارة تنطبق؟ هل هذا الأمر آمن؟ هل العمل متحقَّق منه؟ هل نضغط الآن؟ واليوم نتخذ هذه القرارات بأن نطلب من نموذج كبير كتابة فقرة ثم نأمل أن تكون الإجابة قابلة للتحليل. وهذا بطيء ومكلف وسخيف قليلًا لسؤال له ثلاثة أجوبة ممكنة.
 
-**Jev** is TypeSafe AI’s first “System One” model, [launched September 15, 2026](https://typesafe.ai/blog/introducing-system-one-models-and-jev). The name borrows from Kahneman’s fast, intuitive System 1 thinking, and TypeSafe uses it for models that make quick, structured decisions instead of generating text. Jev never writes text or code. You give it state and typed questions, and it returns choices, scores, or yes-probabilities with calibrated confidence, meaning its stated confidence should match how often it’s right.
+**Jev** أول نموذج «System One» من TypeSafe AI، [أُطلق في 15 سبتمبر 2026](https://typesafe.ai/blog/introducing-system-one-models-and-jev). والاسم مستعار من تفكير «النظام 1» السريع الحدسي عند Kahneman، وتستخدمه TypeSafe لنماذج تتخذ قرارات سريعة منظّمة بدلًا من توليد النص. و Jev لا يكتب نصًا ولا شيفرة أبدًا. تعطيه حالة وأسئلة مُنمَّطة (typed)، فيعيد اختيارات أو درجات أو احتمالات «نعم» بثقة مُعايَرة، أي أن ثقته المعلنة يجب أن تطابق معدّل صوابه.
 
-The short version: the LLM writes, Jev decides, and code acts.
+الخلاصة: النموذج اللغوي يكتب، و Jev يقرر، والشيفرة تتصرف.
 
-## The three question types
+## أنواع الأسئلة الثلاثة
 
-- **Choice**: Picks one option, out of up to 255.
-- **Score**: Places the state on an ordered rubric of 2 to 10 levels.
-- **Noul**: A yes/no question. It returns the probability of yes, from 0 to 1.
+- **اختيار (Choice)**: ينتقي خيارًا واحدًا من 255 كحد أقصى.
+- **درجة (Score)**: يضع الحالة على سلّم مرتّب من مستويين إلى 10.
+- **Noul**: سؤال بنعم/لا. ويعيد احتمال «نعم»، من 0 إلى 1.
 
-## Pricing and limits
+## التسعير والحدود
 
-It costs $0.042 per million input tokens, and output tokens are free. Calls take 70 to 500 milliseconds. A request can be up to 64,000 tokens. It’s text-only and strongest in English.
+يكلّف 0.042 دولار لكل مليون رمز (token) مدخل، ورموز المخرَج مجانية. ويستغرق النداء من 70 إلى 500 مللي ثانية. ويمكن أن يصل الطلب إلى 64,000 رمز. وهو نصي فقط، وأقواه في الإنجليزية.
 
-Those numbers are as of October 2026. The shape matters more than the digits: a call is cheap and fast enough to sit inside the loop.
+هذه الأرقام كما كانت في أكتوبر 2026. والشكل أهم من الأرقام: فالنداء رخيص وسريع بما يكفي ليستقر داخل الحلقة.
 
-## Where Jev fits in agentic coding
+## أين يقع Jev في البرمجة بالوكلاء
 
-It’s not a coding model, and no setting turns your agent into a “Jev agent.” You use it in one of two ways. Your agent can build apps that call Jev. Or Jev can sit inside the agent’s own harness through hooks (scripts the harness runs at lifecycle events), gateways (proxies between your agent and the model providers), or plugins.
+إنه ليس نموذج برمجة، ولا يحوّل أي إعداد وكيلك إلى «وكيل Jev». وتستخدمه بإحدى طريقتين. إما أن يبني وكيلك تطبيقات تنادي Jev، أو أن يستقر Jev داخل منصة الوكيل نفسه عبر الخطّافات (سكربتات تشغّلها المنصة عند أحداث دورة الحياة)، أو البوابات (وسطاء بين وكيلك ومزوّدي النماذج)، أو الإضافات.
 
-Inside the harness, the decision points look like this, in loop order:
+وداخل المنصة تبدو نقاط القرار هكذا، بترتيب الحلقة:
 
-1. Routing a request to a model or agent.
-2. Picking a skill and a subset of tools.
-3. Gating each tool call before it runs, through the `PreToolUse` [hook](https://stevekinney.com/courses/ai-development-setup/hooks) event, which can block the call.
-4. Screening tool output for injected instructions. That’s a cheap first-pass signal, not a security boundary, because injected text can steer Jev too. [Best practices](#best-practices) pairs it with a hard check so Jev can raise the risk level but never lower it.
-5. Deciding when to compact, meaning summarize the conversation to free up context. See [Managing a Long Session](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session).
-6. Checking that the work is verified before the agent stops.
+1. توجيه طلب إلى نموذج أو وكيل.
+2. اختيار مهارة ومجموعة فرعية من الأدوات.
+3. تقييد كل نداء أداة قبل تنفيذه، عبر الحدث `PreToolUse` [الخطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) الذي يستطيع حجبه.
+4. فحص مخرَج الأدوات بحثًا عن تعليمات محقونة. وهي إشارة أولى رخيصة، لا حدّ أمني، لأن النص المحقون قد يوجّه Jev أيضًا. وتقرنه [أفضل الممارسات](#best-practices) بفحص صارم حتى يرفع Jev مستوى الخطر لكن لا يخفضه أبدًا.
+5. تقرير موعد الضغط، أي تلخيص المحادثة لتحرير السياق. انظر [إدارة جلسة طويلة](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session).
+6. التحقق من أن العمل متحقَّق منه قبل أن يتوقف الوكيل.
 
-It’s only worth asking Jev when you can name the possible answers *before* the call. If you can’t list the options, you want a model that writes, not one that picks.
+ولا يستحق سؤال Jev إلا حين تستطيع تسمية الأجوبة الممكنة *قبل* النداء. وإن لم تستطع سرد الخيارات، فأنت تريد نموذجًا يكتب، لا نموذجًا ينتقي.
 
-## Setting up Jev
+## تهيئة Jev
 
-There are three ways in:
+هناك ثلاث طرق للدخول:
 
-- The TypeSafe API, with `TYPESAFE_API_KEY`.
-- [Vercel AI Gateway](https://vercel.com/ai-gateway), as `typesafe-ai/jev` through `experimental_evaluate`.
+- واجهة TypeSafe API، بمفتاح `TYPESAFE_API_KEY`.
+- [بوابة Vercel AI](https://vercel.com/ai-gateway)، بوصفها `typesafe-ai/jev` عبر `experimental_evaluate`.
 - [OpenRouter](https://openrouter.ai/).
 
-Install TypeSafe’s agent skill so Claude Code writes integrations against the *real* API instead of guessing. ([Skills](https://stevekinney.com/courses/ai-development-setup/skills) are packaged instructions an agent loads on demand.) Once you’ve tuned your thresholds, the confidence or probability cutoffs that decide when your code acts on an answer, pin `jev-1.13.0` and log the model version each response reports. Then a silent model update can’t change your behavior without you noticing.
+ثبّت مهارة الوكلاء من TypeSafe حتى يكتب Claude Code عمليات التكامل مقابل الواجهة *الحقيقية* بدلًا من التخمين. ([المهارات](https://stevekinney.com/courses/ai-development-setup/skills) تعليمات محزومة يحمّلها الوكيل عند الطلب.) وبعد أن تضبط عتباتك، أي حدود الثقة أو الاحتمال التي تقرر متى تتصرف شيفرتك بناءً على جواب، ثبّت `jev-1.13.0` وسجّل إصدار النموذج الذي يبلّغ به كل استجابة. عندئذٍ لا يستطيع تحديث صامت للنموذج أن يغيّر سلوكك دون أن تلاحظ.
 
-Community projects like jev-gateway, jev-kit, and jev-for-all are all unofficial and weeks old. Vet them before you install anything.
+والمشاريع المجتمعية مثل jev-gateway وjev-kit وjev-for-all كلها غير رسمية وعمرها أسابيع. فافحصها قبل أن تثبّت أي شيء.
 
-Jev is cheap enough that the temptation is to wire it in everywhere on day one. Resist that. Any classifier is wrong some of the time, and it’s your job to decide what a wrong answer costs.
+Jev رخيص بما يكفي ليكون الإغراء هو وصله في كل مكان من اليوم الأول. قاوم ذلك. فأي مصنّف يخطئ في بعض الأحيان، ومهمتك أن تقرر كلفة الجواب الخاطئ.
 
-## Best practices
+## أفضل الممارسات {#best-practices}
 
-- **Questions**: Give every option a distinct description, include the full list plus an “other” escape hatch, and say *exactly* what you mean. Jev reads literally.
-- **State**: Send evidence rather than summaries, filter out irrelevant detail, and redact secrets before anything gets sent.
-- **Batching**: Ask every question that shares the same state in one call: one request, not a fan-out. [Published runs](https://docs.typesafe.ai/cookbooks/parallel_questions) report it about 12 times cheaper and 10 times faster than separate calls.
-- **Thresholds**: Set them per action, based on what a wrong answer would cost. One number for everything doesn’t work.
-- **Rollout**: Go in this order. Shadow (run Jev alongside the real decision and only record what it would have said), label (check those answers against the truth), set thresholds, add a fallback, enforce, and then monitor.
-- **Failure modes**: Jev’s judgments should fail *open*, so a timeout or low confidence changes nothing. Hard safety checks, like regular expressions and allowlists, should fail *closed*. Combine them as `max(floor, jev)`: the hard check sets the floor, and Jev can raise risk above it but never lower it.
+- **الأسئلة**: امنح كل خيار وصفًا مميّزًا، وأدرج القائمة الكاملة مع مخرج «أخرى»، وقل *بالضبط* ما تعنيه. فـ Jev يقرأ حرفيًا.
+- **الحالة**: أرسل أدلة لا ملخصات، ورشّح التفاصيل غير ذات الصلة، وامحُ الأسرار قبل إرسال أي شيء.
+- **التجميع (Batching)**: اطرح كل سؤال يتشارك الحالة نفسها في نداء واحد: طلب واحد، لا تفريع. وتفيد [تجارب منشورة](https://docs.typesafe.ai/cookbooks/parallel_questions) بأنه أرخص بنحو 12 ضعفًا وأسرع 10 أضعاف من النداءات المنفصلة.
+- **العتبات**: اضبطها لكل إجراء، بناءً على كلفة الجواب الخاطئ. فرقم واحد لكل شيء لا ينجح.
+- **الإطلاق التدريجي**: سر بهذا الترتيب. الظل (شغّل Jev إلى جانب القرار الحقيقي وسجّل فقط ما كان سيقوله)، ثم التصنيف (تحقق من تلك الأجوبة مقابل الحقيقة)، ثم اضبط العتبات، ثم أضف بديلًا احتياطيًا، ثم افرض، ثم راقب.
+- **أنماط الفشل**: يجب أن تفشل أحكام Jev *مفتوحة*، فلا يغيّر شيء انتهاء مهلة أو ثقة منخفضة. أما فحوص الأمان الصارمة، مثل التعبيرات النمطية وقوائم السماح، فيجب أن تفشل *مغلقة*. واجمعها كـ `max(floor, jev)`: فالفحص الصارم يضع الحد الأدنى، ويستطيع Jev رفع الخطر فوقه لكن لا خفضه أبدًا.
 
-## Anti-patterns
+## الأنماط المضادة {#anti-patterns}
 
-- **Treating Jev’s pick as permission to act**: Choosing an action is not authorization.
-- **Using the confidence threshold as your safety net**: Confidence is a signal, not a wall.
-- **Asking it to do math, counting, or date comparisons**: Do those in code. And don’t ask it to write anything.
-- **Stale options and bloated state**: Keeping one fixed option list for a whole run, or passing the whole transcript as state.
-- **Measuring cost per call**: Measure cost per completed task instead. See [Measuring whether it works](https://stevekinney.com/courses/ai-development-setup/why-systems#measuring-whether-it-works).
-- **Believing it “can’t hallucinate”**: Its output always has the right *type*. It can still be confidently wrong.
+- **معاملة انتقاء Jev كإذن بالتصرف**: فاختيار إجراء ليس تخويلًا.
+- **استخدام عتبة الثقة كشبكة أمان**: فالثقة إشارة، لا جدار.
+- **الطلب منه إجراء حسابات أو عدّ أو مقارنات تواريخ**: افعل ذلك في الشيفرة. ولا تطلب منه كتابة أي شيء.
+- **خيارات قديمة وحالة منتفخة**: إبقاء قائمة خيارات ثابتة واحدة لكل تشغيل، أو تمرير النص الكامل كحالة.
+- **قياس الكلفة لكل نداء**: قِس الكلفة لكل مهمة مكتملة بدلًا من ذلك. انظر [قياس ما إذا كان ينجح](https://stevekinney.com/courses/ai-development-setup/why-systems#measuring-whether-it-works).
+- **الاعتقاد بأنه «لا يستطيع الهلوسة»**: فمخرَجه دائمًا بالـ*نمط* الصحيح. ومع ذلك يمكن أن يكون مخطئًا بثقة.
 
-## Known weaknesses
+## نقاط ضعف معروفة
 
-TypeSafe’s own list for Jev 1.13:
+قائمة TypeSafe نفسها لـ Jev 1.13:
 
-- It reads questions literally and struggles with indirection and double negatives.
-- It’s bad at numbers, dates, and values like hex or RGB colors.
-- Accuracy drops when the state is padded with irrelevant detail.
-- It doesn’t treat adversarial content as hostile, so injected instructions can steer it. (That’s [prompt injection](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius), and it applies to Jev too.)
-- It sometimes leans toward the first option in a list, which is why you shuffle the option order.
+- يقرأ الأسئلة حرفيًا ويعاني مع الإحالات غير المباشرة والنفي المزدوج.
+- ضعيف في الأرقام والتواريخ والقيم مثل الألوان السداسية (hex) أو RGB.
+- تنخفض الدقة عندما تُحشى الحالة بتفاصيل غير ذات صلة.
+- لا يعامل المحتوى العدائي كعدو، لذا قد توجّهه التعليمات المحقونة. (وهذا هو [حقن الطلبات](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius)، وهو ينطبق على Jev أيضًا.)
+- يميل أحيانًا إلى الخيار الأول في القائمة، ولهذا تخلط ترتيب الخيارات.
 
-## Advanced techniques
+## تقنيات متقدمة {#advanced-techniques}
 
-- **Compaction decisions**: After each turn, ask four questions in one call: Did the request switch gears? Did the last turn finish a unit of work? How much of the earlier work does the next step need? Is the agent in the middle of a multi-step edit? Context size stays in code, and code decides when to compact.
-- **Cheap reads**: Jev answers a question *about* a file so the agent never loads it. [One published run](https://github.com/disler/ten-levels-of-jev) was 187 times cheaper than an expensive model reading the same file.
-- **Files at scale**: Glob (match file names by pattern), prune in code, judge every file in parallel, then open only the match.
-- **Skill routing**: Two calls pick at most one skill. The first ranks the candidates, and the second re-checks the top few. In [TypeSafe’s test](https://docs.typesafe.ai/cookbooks/skill_suggestion), wrong skill loads dropped from 16.8% to 7.3%.
-- **Cascades**: A cheap model drafts, Jev checks each part, and the work goes to an expensive model only if a flag fires.
-- **Tier guard**: Block dispatches that send a [subagent](https://stevekinney.com/courses/ai-development-setup/subagents), a helper agent with its own fresh context, to a model tier well above what the task needs.
-- **Agentic Jev**: Give the agent an `ask_jev` tool and let it write its own questions.
-- **Observability**: Rerun questions and shuffle the option order to check consistency, and record a receipt for every decision.
+- **قرارات الضغط**: بعد كل دور، اطرح أربعة أسئلة في نداء واحد: هل غيّر الطلب مساره؟ هل أنهى الدور الأخير وحدة عمل؟ كم من العمل السابق تحتاج إليه الخطوة التالية؟ هل الوكيل في منتصف تحرير متعدد الخطوات؟ ويبقى حجم السياق في الشيفرة، والشيفرة تقرر متى تضغط.
+- **قراءات رخيصة**: يجيب Jev عن سؤال *حول* ملف فلا يحمّله الوكيل أبدًا. وكان [أحد التشغيلات المنشورة](https://github.com/disler/ten-levels-of-jev) أرخص 187 ضعفًا من قراءة نموذج مكلف للملف نفسه.
+- **الملفات على نطاق واسع**: استخدم Glob (مطابقة أسماء الملفات بنمط)، وقلّم في الشيفرة، واحكم على كل ملف على التوازي، ثم افتح المطابق وحده.
+- **توجيه المهارات**: ينتقي نداءان مهارة واحدة على الأكثر. الأول يرتّب المرشحات، والثاني يعيد فحص الأعلى قليلًا. وفي [اختبار TypeSafe](https://docs.typesafe.ai/cookbooks/skill_suggestion) هبطت تحميلات المهارات الخاطئة من 16.8% إلى 7.3%.
+- **الشلالات**: يكتب نموذج رخيص مسودة، ويفحص Jev كل جزء، ولا يذهب العمل إلى نموذج مكلف إلا إذا أُطلق مؤشر.
+- **حارس الطبقات**: احجب الإرسالات التي توجّه [وكيلًا فرعيًا](https://stevekinney.com/courses/ai-development-setup/subagents)، وهو وكيل مساعد بسياقه الجديد الخاص، إلى طبقة نموذج أعلى بكثير مما تحتاجه المهمة.
+- **Jev الوكيلي**: امنح الوكيل أداة `ask_jev` ودعه يكتب أسئلته بنفسه.
+- **الرصدية (Observability)**: أعد تشغيل الأسئلة واخلط ترتيب الخيارات للتحقق من الاتساق، وسجّل إيصالًا لكل قرار.
 
-## Where to start
+## من أين تبدأ
 
-Pick one frequent, reversible decision. A Bash command gate is a good candidate. Run it in shadow mode behind a `PreToolUse` [hook](https://stevekinney.com/courses/ai-development-setup/hooks) that fails open, calibrate on labeled cases, and *then* enforce. Only then move on to the next decision.
+اختر قرارًا متكررًا قابلًا للعكس. وبوابة أوامر Bash مرشّح جيد. شغّلها في نمط الظل خلف [خطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) `PreToolUse` يفشل مفتوحًا، وعاير على حالات مصنّفة، و*بعد ذلك* افرض. وحينها فقط انتقل إلى القرار التالي.
 
-## Check the numbers yourself
+## تحقق من الأرقام بنفسك
 
-Most of the speed and cost figures above come from TypeSafe or the authors themselves. In [independent tests](https://dev.to/gde/jev-after-eight-days-of-independent-tests-level-with-mid-price-llms-behind-the-frontier-1kln), Jev trailed frontier models on harder tasks: 61.8% versus 79.1% on invoice processing, and six of seven planted defects found versus seven of seven.
+معظم أرقام السرعة والكلفة أعلاه تأتي من TypeSafe أو من المؤلفين أنفسهم. وفي [اختبارات مستقلة](https://dev.to/gde/jev-after-eight-days-of-independent-tests-level-with-mid-price-llms-behind-the-frontier-1kln)، تخلف Jev عن النماذج الرائدة في المهام الأصعب: 61.8% مقابل 79.1% في معالجة الفواتير، واكتشف ست عيوب مزروعة من سبعة مقابل سبعة من سبعة.
 
-Jev is for the decisions you can enumerate. Treat it as a fast, cheap first opinion, and keep the final say with a human or a deterministic check you trust more.
+Jev مخصّص للقرارات التي تستطيع تعدادها. فعامله كرأي أول سريع رخيص، وأبقِ الكلمة الأخيرة لإنسان أو لفحص حتمي تثق به أكثر.

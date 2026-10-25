@@ -1,23 +1,23 @@
 ---
-title: "Mocking Dependencies"
-lang: en
+title: "محاكاة الاعتماديات (Mocking Dependencies)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-dependencies"
 ---
 
-When writing unit tests, it’s *super important* to isolate the code under test from its external dependencies. Dependencies could include services like databases, external APIs, file systems, or third-party libraries that you don’t want to interact with directly in your tests. By mocking these dependencies, you can simulate their behavior, control their output, and ensure that your tests remain fast, reliable, and focused on the logic being tested.
+عند كتابة اختبارات الوحدات، من *بالغ الأهمية* عزل الشيفرة قيد الاختبار عن اعتمادياتها الخارجية. قد تشمل الاعتماديات خدمات مثل قواعد البيانات، وواجهات برمجة التطبيقات الخارجية، وأنظمة الملفات، أو مكتبات خارجية لا تريد التفاعل معها مباشرة في اختباراتك. بمحاكاة هذه الاعتماديات، يمكنك محاكاة سلوكها والتحكم في مخرجاتها وضمان بقاء اختباراتك سريعة وموثوقة ومركّزة على المنطق الذي تختبره.
 
-## Why Mock Dependencies?
+## لماذا نحاكي الاعتماديات؟
 
-- **Isolation**: By mocking dependencies, you can test your code in isolation without relying on external services or systems.
-- **Control**: You can control the behavior of dependencies, such as simulating errors, returning specific data, or testing different scenarios.
-- **Performance**: Mocking allows you to avoid the overhead of interacting with slow or unavailable services like databases or network calls.
-- **Repeatability**: Mocks ensure consistent behavior, making tests more predictable and easier to debug when they fail.
+- **العزل**: بمحاكاة الاعتماديات، يمكنك اختبار شيفرتك بمعزل عن الخدمات أو الأنظمة الخارجية.
+- **التحكم**: يمكنك التحكم في سلوك الاعتماديات، مثل محاكاة الأخطاء أو إرجاع بيانات محددة أو اختبار سيناريوهات مختلفة.
+- **الأداء**: تتيح لك المحاكاة تجنب عبء التفاعل مع خدمات بطيئة أو غير متاحة مثل قواعد البيانات أو نداءات الشبكة.
+- **قابلية التكرار**: تضمن البدائل المُحاكاة سلوكًا متسقًا، ما يجعل الاختبارات أكثر قابلية للتوقع وأسهل في تصحيح الأخطاء عند فشلها.
 
-## How to Mock Dependencies in Vitest
+## كيف تحاكي الاعتماديات في Vitest
 
-Vitest provides powerful methods like `vi.fn()` and `vi.mock()` to mock functions, modules, and services that your code depends on. You can mock individual functions, or you can mock entire modules to replace their real implementations during testing.
+يوفر Vitest توابع قوية مثل `vi.fn()` و`vi.mock()` لمحاكاة الدوال والوحدات والخدمات التي تعتمد عليها شيفرتك. يمكنك محاكاة دوال فردية، أو محاكاة وحدات كاملة لاستبدال تنفيذاتها الحقيقية أثناء الاختبار.
 
-If we go back to our `log` function in `examples/logjam`—you’ll see that in production, we send the log to the “server” if we’re in production. `sendToServer` is a no-op because in a previous example, I didn’t want our test to blow up, but you can imagine that it’s calling `fetch` or something. And, you don’t particularly want that happening every time you run your tests. So, we can choose to mock out that function instead.
+إذا عدنا إلى دالتنا `log` في `examples/logjam` — سترى أننا في الإنتاج نرسل السجل إلى «الخادم» إذا كنا في وضع الإنتاج. إن `sendToServer` دالة فارغة (no-op) لأنني في مثال سابق لم أرد أن ينفجر اختبارنا، لكن يمكنك تخيل أنها تستدعي `fetch` أو شيئًا مشابهًا. وأنت لا تريد تحديدًا أن يحدث ذلك في كل مرة تشغّل فيها اختباراتك. لذا يمكننا اختيار محاكاة تلك الدالة بدلًا من ذلك.
 
 ```javascript
 vi.mock('./send-to-server', {
@@ -25,9 +25,9 @@ vi.mock('./send-to-server', {
 });
 ```
 
-`vi.mock()` takes a path fro a dependency and let’s you replace that functionality with a mock.
+يأخذ `vi.mock()` مسارًا لاعتمادية ويتيح لك استبدال تلك الوظيفة ببديل مُحاكى.
 
-Now, we can run our tests with that function mocked out.
+الآن، يمكننا تشغيل اختباراتنا مع محاكاة تلك الدالة.
 
 ```javascript
 beforeEach(() => {
@@ -46,26 +46,26 @@ it('sends messages to the server in production mode', () => {
 });
 ```
 
-### Auto-Mocking
+### المحاكاة التلقائية (Auto-Mocking)
 
-If all you’re doing is mocking out every function in a module, you can just use Vite’s [Auto-Mocking](https://stevekinney.com/courses/testing/auto-mocking) functionality.
+إذا كان كل ما تفعله هو محاكاة كل دالة في وحدة ما، فيمكنك ببساطة استخدام ميزة [المحاكاة التلقائية](https://stevekinney.com/courses/testing/auto-mocking) في Vite.
 
 ```javascript
 vi.mock('./send-to-server');
 ```
 
-This will do the same thing as the above example. The auto-mocking algorithm works something like this:
+سيفعل هذا الشيء نفسه كما في المثال أعلاه. تعمل خوارزمية المحاكاة التلقائية على نحو كهذا:
 
-- All arrays will be emptied.
-- All primitives and collections will stay the same.
-- All objects will be deeply cloned.
-- All instances of classes and their prototypes will be deeply cloned.
+- ستُفرَّغ كل المصفوفات.
+- ستبقى كل القيم الأولية (primitives) والمجموعات كما هي.
+- ستُستنسخ كل الكائنات استنساخًا عميقًا.
+- ستُستنسخ كل نسخ الأصناف ونماذجها الأولية استنساخًا عميقًا.
 
-## Mocking Individual Functions
+## محاكاة دوال فردية
 
-If your code depends on individual functions from a service or module, you can mock those specific functions using `vi.fn()` to simulate their behavior.
+إذا كانت شيفرتك تعتمد على دوال فردية من خدمة أو وحدة، يمكنك محاكاة تلك الدوال المحددة باستخدام `vi.fn()` لمحاكاة سلوكها.
 
-Here’s an example of mocking a database service function:
+إليك مثالًا على محاكاة دالة خدمة قاعدة بيانات:
 
 ```javascript
 // Database service that will be mocked
@@ -98,13 +98,13 @@ describe('getBandDetails', () => {
 });
 ```
 
-In this example, we replace the real `fetchBandData` function with a mock implementation that simulates a database call. This ensures that our test runs quickly and in isolation.
+في هذا المثال، نستبدل الدالة الحقيقية `fetchBandData` بتنفيذ بديل مُحاكى يحاكي نداء قاعدة بيانات. يضمن ذلك أن يعمل اختبارنا بسرعة وبمعزل.
 
-## Mocking Entire Modules
+## محاكاة وحدات كاملة
 
-In cases where your code depends on multiple functions from a module or service, you can mock the entire module using `vi.mock()`. This is particularly useful for mocking external libraries or services that provide multiple functionalities.
+في الحالات التي تعتمد فيها شيفرتك على دوال متعددة من وحدة أو خدمة، يمكنك محاكاة الوحدة بأكملها باستخدام `vi.mock()`. هذا مفيد بشكل خاص لمحاكاة المكتبات أو الخدمات الخارجية التي توفر وظائف متعددة.
 
-Here’s how to mock an entire module:
+إليك كيفية محاكاة وحدة كاملة:
 
 ```javascript
 // Imagine you have a module called 'api' with various functions
@@ -136,13 +136,13 @@ describe('getConcertDetails', () => {
 });
 ```
 
-In this example, the entire `api` module is mocked, and the `fetchConcerts` function is replaced with a mock that returns predefined concert data. This allows the test to run without making real API calls.
+في هذا المثال، تُحاكى الوحدة `api` بأكملها، وتُستبدل الدالة `fetchConcerts` ببديل مُحاكى يعيد بيانات حفلات محددة مسبقًا. يتيح ذلك للاختبار العمل دون إجراء نداءات حقيقية إلى واجهة برمجة التطبيقات.
 
-## Mocking Node.js Built-in Modules
+## محاكاة وحدات Node.js المدمجة
 
-You can also mock built-in Node.js modules like `fs` or `http` if your code interacts with the file system or performs network requests.
+يمكنك أيضًا محاكاة وحدات Node.js المدمجة مثل `fs` أو `http` إذا كانت شيفرتك تتفاعل مع نظام الملفات أو تجري طلبات شبكة.
 
-Here’s an example of mocking the `fs` module:
+إليك مثالًا على محاكاة وحدة `fs`:
 
 ```javascript
 import * as fs from 'fs';
@@ -169,11 +169,11 @@ describe('readConfigFile', () => {
 });
 ```
 
-In this test, the `fs.readFileSync` method is mocked to return predefined content, allowing you to test your function without needing an actual file on the file system.
+في هذا الاختبار، تُحاكى الدالة `fs.readFileSync` لإرجاع محتوى محدد مسبقًا، ما يتيح لك اختبار دالتك دون الحاجة إلى ملف فعلي على نظام الملفات.
 
-## Example: Mocking an External API
+## مثال: محاكاة واجهة برمجة تطبيقات خارجية
 
-Here’s a complete example of mocking an external API dependency using Vitest:
+إليك مثالًا كاملًا على محاكاة اعتمادية واجهة برمجة تطبيقات خارجية باستخدام Vitest:
 
 ```javascript
 // Assume you have an API module
@@ -204,14 +204,14 @@ describe('fetchConcertData', () => {
 });
 ```
 
-In this example, we mock the entire API module, ensuring the test doesn’t make any real API requests. The mock returns predefined data, allowing you to control the test scenario completely.
+في هذا المثال، نحاكي وحدة واجهة برمجة التطبيقات بأكملها، بما يضمن ألا يجري الاختبار أي طلبات حقيقية إليها. يعيد البديل المُحاكى بيانات محددة مسبقًا، ما يتيح لك التحكم في سيناريو الاختبار بالكامل.
 
-Whether you’re mocking APIs, databases, or file systems, mocking ensures that your tests remain predictable, fast, and focused on the logic under test. Always, always, always remember to reset or restore mocks after tests to maintain a clean and consistent test environment.
+سواء كنت تحاكي واجهات برمجة التطبيقات أو قواعد البيانات أو أنظمة الملفات، فإن المحاكاة تضمن بقاء اختباراتك قابلة للتوقع وسريعة ومركّزة على المنطق قيد الاختبار. تذكّر دائمًا ودائمًا ودائمًا بإعادة تعيين البدائل المُحاكاة أو استعادتها بعد الاختبارات للحفاظ على بيئة اختبار نظيفة ومتسقة.
 
 ## `vi.doMock`
 
-[`vi.doMock`](https://vitest.dev/api/vi.html#vi-domock) is basically the same as `vi.mock` except for the fact that it’s *not* hoisted to the top, which means you have access to variables. The *next* import of that module will be mocked.
+[`vi.doMock`](https://vitest.dev/api/vi.html#vi-domock) هو في الأساس نفس `vi.mock` باستثناء أنه *غير* مرفوع إلى الأعلى (hoisted)، مما يعني أن لديك وصولًا إلى المتغيرات. سيُحاكى الاستيراد *التالي* لتلك الوحدة.
 
-## Further Reading
+## قراءات إضافية
 
-- [Mocking the File System](https://stevekinney.com/courses/testing/mocking-the-file-system)
+- [محاكاة نظام الملفات](https://stevekinney.com/courses/testing/mocking-the-file-system)

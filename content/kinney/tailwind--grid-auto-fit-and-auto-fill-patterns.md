@@ -1,25 +1,25 @@
 ---
-title: "Auto-Fit and Auto-Fill Patterns"
-lang: en
+title: "أنماط auto-fit وauto-fill"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-auto-fit-and-auto-fill-patterns"
 ---
 
-Tailwind CSS enables fine-grained control over grid layouts. While fixed column counts (`grid-cols-4`) and subgrids (`grid-cols-subgrid`) are useful, some designs need grids that automatically adjust column numbers based on available space and content size. This is where CSS Grid’s `auto-fit` and `auto-fill` patterns are used.
+يتيح Tailwind CSS تحكمًا دقيقًا في تخطيطات الشبكة. ورغم أن أعداد الأعمدة الثابتة (`grid-cols-4`) والشبكات الفرعية (`grid-cols-subgrid`) مفيدة، فإن بعض التصاميم تحتاج إلى شبكات تعدّل عدد الأعمدة تلقائيًا بحسب المساحة المتاحة وحجم المحتوى. وهنا تُستخدم نمطا `auto-fit` و`auto-fill` في CSS Grid.
 
-## Dynamic Grid Track Sizing with `auto-fill` and `auto-fit`
+## تحديد أحجام المسارات ديناميكيًا بـ`auto-fill` و`auto-fit`
 
-CSS Grid’s `repeat()` function, with `auto-fill` and `auto-fit` keywords, defines dynamic track lists. Unlike fixed column counts (e.g., `repeat(4, 1fr)`), these keywords create as many columns as fit in the container, based on a specified track size.
+تعرّف دالة `repeat()` في CSS Grid، مع الكلمتين المفتاحيتين `auto-fill` و`auto-fit`، قوائم مسارات ديناميكية. وبخلاف أعداد الأعمدة الثابتة (مثل `repeat(4, 1fr)`)، تنشئ هاتان الكلمتان بقدر ما يتّسع في الحاوية من أعمدة، انطلاقًا من حجم مسار محدّد.
 
-### Understanding `auto-fill` and `auto-fit`
+### فهم `auto-fill` و`auto-fit`
 
-- **`auto-fill`**: Fills the row with as many columns as fit. Leftover space remains empty, but tracks are created, potentially resulting in empty columns if items don’t fill them.
-- **`auto-fit`**: Similar to `auto-fill`, but after placing items, it collapses empty tracks if there’s remaining space. This allows items to expand and fill the container width, even with fewer items than the maximum possible tracks.
+- **`auto-fill`**: يملأ الصف بقدر ما يتّسع من أعمدة. تبقى المساحة المتبقّية فارغة، لكن المسارات تُنشأ، وقد ينتج عن ذلك أعمدة فارغة إذا لم تملأها العناصر.
+- **`auto-fit`**: يشبه `auto-fill`، لكنه بعد وضع العناصر يطوي المسارات الفارغة إن تبقّى مساحة. وهذا يسمح للعناصر بالتمدد وملء عرض الحاوية، حتى مع وجود عناصر أقل من الحد الأقصى الممكن للمسارات.
 
-Both are often used with `minmax(<min>, <max>)` to define track sizes. A common pattern is `minmax(<min-width>, 1fr)`, creating tracks at least `<min-width>` wide, growing to share remaining space equally (`1fr`).
+يُستخدم كلاهما غالبًا مع `minmax(<min>, <max>)` لتحديد أحجام المسارات. والنمط الشائع هو `minmax(<min-width>, 1fr)`، إذ ينشئ مسارات عرضها `<min-width>` على الأقل، وهي تنمو لتتقاسم المساحة المتبقّية بالتساوي (`1fr`).
 
-## Implementing Auto-fit and Auto-fill in Tailwind CSS
+## تنفيذ auto-fit وauto-fill في Tailwind CSS
 
-Tailwind lacks dedicated `grid-cols-auto-fit` or `grid-cols-auto-fill` utilities. However, it supports custom CSS values via arbitrary value syntax: `grid-cols-[<value>]` and `grid-rows-[<value>]`.
+لا توفّر Tailwind أدوات مخصّصة باسم `grid-cols-auto-fit` أو `grid-cols-auto-fill`. لكنها تدعم قيم CSS المخصّصة عبر صيغة القيم العشوائية: `grid-cols-[<value>]` و`grid-rows-[<value>]`.
 
 ```css
 @theme {
@@ -28,13 +28,13 @@ Tailwind lacks dedicated `grid-cols-auto-fit` or `grid-cols-auto-fill` utilities
 }
 ```
 
-This syntax allows using native CSS `repeat()` with `auto-fill` or `auto-fit`.
+تتيح هذه الصيغة استخدام `repeat()` الأصلية في CSS مع `auto-fill` أو `auto-fit`.
 
-### Using `auto-fill`
+### استخدام `auto-fill`
 
-To create a grid that fills space with items, potentially leaving empty space:
+لإنشاء شبكة تملأ المساحة بالعناصر، مع احتمال ترك مساحة فارغة:
 
-*Using auto-fill — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ec1556997fec643c62c42dcdb6bd10350dd5b9a63280d7efd68e6beeded64896.html)*
+*استخدام auto-fill — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ec1556997fec643c62c42dcdb6bd10350dd5b9a63280d7efd68e6beeded64896.html)*
 
 ```html
 <div
@@ -48,13 +48,13 @@ To create a grid that fills space with items, potentially leaving empty space:
 </div>
 ```
 
-`grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))]` becomes `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));`. Columns are at least `200px` wide, growing to fill space. Fewer items than fitting columns may leave visual gaps.
+يصبح `grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))]` هو `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));`. ويكون عرض الأعمدة `200px` على الأقل، وهي تنمو لتملأ المساحة. وقد تترك العناصر الأقل من عدد الأعمدة المتّسع لها فجوات بصرية.
 
-### Using `auto-fit`
+### استخدام `auto-fit`
 
-For grids where items expand to fill container width by collapsing empty tracks:
+للشبكات التي تتمدّد فيها العناصر لتملأ عرض الحاوية عبر طي المسارات الفارغة:
 
-*Using auto-fit — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/9ffc3c243e73418cc2a55e0e25101abc7aa2ee4c1a541fd7cf093d16dbe70ddf.html)*
+*استخدام auto-fit — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9ffc3c243e73418cc2a55e0e25101abc7aa2ee4c1a541fd7cf093d16dbe70ddf.html)*
 
 ```html
 <div class="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-4 rounded-lg bg-gray-100 p-4">
@@ -65,13 +65,13 @@ For grids where items expand to fill container width by collapsing empty tracks:
 </div>
 ```
 
-`grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))]` becomes `grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));`. If fewer items fit at minimum width, `auto-fit` collapses unused tracks, letting existing items grow. Useful for responsive cards or galleries.
+يصبح `grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))]` هو `grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));`. وإذا لم تتّسع عدد أقل من العناصر عند العرض الأدنى، فإن `auto-fit` يطوي المسارات غير المستخدمة، ما يتيح للعناصر القائمة أن تنمو. وهو مفيد للبطاقات أو المعارض المستجيبة.
 
-### Flexibility with Arbitrary Values
+### المرونة مع القيم العشوائية
 
-Define `minmax` values with any CSS unit or CSS variables.
+عرّف قيم `minmax` بأي وحدة في CSS أو متغيّرات CSS.
 
-*Flexibility with Arbitrary Values — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/b95e3ff4811bb0c88e936daa0f7ec74ac93810346a0d17c3ddd3f1e346d404ac.html)[CSS](#playground-css-grid-vars)*
+*المرونة مع القيم العشوائية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b95e3ff4811bb0c88e936daa0f7ec74ac93810346a0d17c3ddd3f1e346d404ac.html)[CSS](#playground-css-grid-vars)*
 
 ```html
 <div
@@ -83,11 +83,11 @@ Define `minmax` values with any CSS unit or CSS variables.
 </div>
 ```
 
-This allows dynamic control of minimum column width via CSS variables (set by CSS or Tailwind 4+‘s `@theme`).
+يتيح هذا التحكم الديناميكي في الحد الأدنى لعرض العمود عبر متغيّرات CSS (المضبوطة في CSS أو في `@theme` الخاص بـTailwind 4+).
 
-### Arbitrary Values and CSS Variables Shorthand
+### القيم العشوائية والاختصار الخاص بمتغيّرات CSS
 
-Tailwind offers `grid-cols-(<custom-property>)` for arbitrary values that are solely CSS variables. If a CSS variable holds the entire `repeat()` function, this shorthand can be used.
+تقدّم Tailwind الاختصار `grid-cols-(<custom-property>)` للقيم العشوائية التي هي متغيّرات CSS فحسب. فإذا احتوى متغيّر CSS على دالة `repeat()` كاملة، فيمكن استخدام هذا الاختصار.
 
 ```css
 /* In main CSS, potentially within @theme */
@@ -96,7 +96,7 @@ Tailwind offers `grid-cols-(<custom-property>)` for arbitrary values that are so
 }
 ```
 
-*Arbitrary Values and CSS Variables Shorthand — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/9c81b8417b82f54365c20909b494c5e336d708732f5c989b7df9ac005ab275ab.html)[CSS](#playground-css-grid-vars)*
+*القيم العشوائية والاختصار الخاص بمتغيّرات CSS — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9c81b8417b82f54365c20909b494c5e336d708732f5c989b7df9ac005ab275ab.html)[CSS](#playground-css-grid-vars)*
 
 ```html
 <div class="grid grid-cols-(--auto-grid-cols) gap-4 rounded-lg bg-gray-100 p-4">
@@ -106,10 +106,10 @@ Tailwind offers `grid-cols-(<custom-property>)` for arbitrary values that are so
 </div>
 ```
 
-This relies on `--auto-grid-cols` being defined, possibly in your Tailwind theme via `@theme`. Theme variables become regular CSS variables.
+يعتمد هذا على وجود `--auto-grid-cols` معرَّفًا،ربما في سمة Tailwind لديك عبر `@theme`. وتصبح متغيّرات السمة متغيّرات CSS عادية.
 
-### Editor Support
+### الدعم في المحرّر
 
-The Tailwind CSS IntelliSense extension for VS Code helps with complex arbitrary grid definitions, offering autocomplete, syntax highlighting, and hover previews.
+يساعدك امتداد Tailwind CSS IntelliSense لـVS Code مع تعريفات الشبكات العشوائية المعقّدة، إذ يوفّر الإكمال التلقائي وتلوين الصياغة ومعاينات عند التحويم.
 
-In summary, while Tailwind has no explicit `auto-fit` or `auto-fill` classes, its arbitrary value syntax for `grid-cols` and `grid-rows` enables using these native CSS Grid patterns for dynamic, responsive layouts.
+خلاصةً، ورغم أن Tailwind لا يملك أصناف `auto-fit` أو `auto-fill` صريحة، فإن صيغة القيم العشوائية في `grid-cols` و`grid-rows` تتيح استخدام أنماط CSS Grid الأصلية هذه لتخطيطات ديناميكية ومستجيبة.

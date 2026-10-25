@@ -1,51 +1,51 @@
 ---
-title: "Headers, CORS, and Security Policies"
-lang: en
+title: "الترويسات وCORS وسياسات الأمان"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security"
 ---
 
-Your CloudFront distribution serves your static site over HTTPS, routes SPA paths correctly, and locks down S3 with Origin Access Control. But open your browser’s DevTools, inspect the response headers on any request, and you’ll notice something missing: there are no security headers. No `Strict-Transport-Security`. No `X-Content-Type-Options`. No `X-Frame-Options`. S3 doesn’t add these, and CloudFront doesn’t add them by default.
+يقدّم توزيع CloudFront الخاص بك موقعك الثابت عبر HTTPS، ويوجّه مسارات SPA بشكل صحيح، ويحمي S3 عبر التحكم في الوصول إلى الأصل (Origin Access Control). لكن افتح أدوات مطوّري المتصفح (DevTools)، وافحص ترويسات الاستجابة على أي طلب، وستلاحظ شيئًا ناقصًا: لا توجد ترويسات أمان. لا `Strict-Transport-Security`. لا `X-Content-Type-Options`. لا `X-Frame-Options`. لا يضيف S3 هذه الترويسات، ولا يضيفها CloudFront افتراضيًا.
 
-If you want AWS’s version of the response-header mechanics while you read, the [CloudFront response headers policy guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/modifying-response-headers.html) is the official reference.
+إذا أردت أن تطّلع على نسخة AWS من آليات ترويسات الاستجابة أثناء القراءة، فإن [دليل سياسة ترويسات استجابة CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/modifying-response-headers.html) هو المرجع الرسمي.
 
-On Vercel, you configure these in `vercel.json` or `next.config.js`. On Netlify, you use `_headers`. On AWS, you use a CloudFront **response headers policy**.
+على Vercel، تضبط هذه الترويسات في `vercel.json` أو `next.config.js`. وعلى Netlify، تستخدم `_headers`. وعلى AWS، تستخدم **سياسة ترويسات استجابة** (response headers policy) في CloudFront.
 
-## Why Security Headers Matter
+## لماذا تهم ترويسات الأمان
 
-Security headers are HTTP response headers that instruct the browser to behave in ways that protect your users. They don’t replace server-side security, but they close common attack vectors:
+ترويسات الأمان هي ترويسات استجابة HTTP توجّه المتصفح إلى التصرف بطرق تحمي مستخدميك. وهي لا تحلّ محل الأمان على جانب الخادم، لكنها تسدّ نواقل هجوم شائعة:
 
-- **`Strict-Transport-Security` (HSTS)**: Tells the browser to only connect to your site over HTTPS, even if the user types `http://`. Prevents protocol downgrade attacks and SSL stripping.
-- **`X-Content-Type-Options: nosniff`**: Prevents the browser from MIME-sniffing a response away from the declared `Content-Type`. Stops an attacker from tricking the browser into executing a file as JavaScript when it was supposed to be an image.
-- **`X-Frame-Options`**: Prevents your site from being embedded in an `<iframe>` on another domain. Blocks clickjacking attacks. `DENY` blocks all framing; `SAMEORIGIN` (what the managed `SecurityHeadersPolicy` sends) allows your own domain to frame itself. Pick `DENY` unless you have a specific reason to frame yourself.
-- **`Referrer-Policy: strict-origin-when-cross-origin`**: Controls how much referrer information is included in requests to other sites. Prevents leaking sensitive URL paths.
-- **`Content-Security-Policy`**: The big one. Defines which sources are allowed to load scripts, styles, images, and other resources. A well-configured CSP is the most effective defense against XSS attacks.
+- **`Strict-Transport-Security` (HSTS)**: تخبر المتصفح بأن يتصل بموقعك عبر HTTPS فقط، حتى لو كتب المستخدم `http://`. وتمنع هجمات تخفيض البروتوكول وتجريد SSL.
+- **`X-Content-Type-Options: nosniff`**: تمنع المتصفح من استنتاج نوع استجابة يخالف `Content-Type` المعلن عبر استنشاق MIME. وتمنع المهاجم من خداع المتصفح لتنفيذ ملف بوصفه JavaScript بينما كان يُفترض أن يكون صورة.
+- **`X-Frame-Options`**: تمنع تضمين موقعك داخل `<iframe>` في نطاق آخر. وتسدّ هجمات النقر المخادع (clickjacking). القيمة `DENY` تمنع كل تأطير؛ و`SAMEORIGIN` (وهي ما ترسله سياسة `SecurityHeadersPolicy` المُدارة) تسمح لنطاقك بتأطير نفسه. اختر `DENY` ما لم يكن لديك سبب محدّد لتأطير موقعك بنفسه.
+- **`Referrer-Policy: strict-origin-when-cross-origin`**: تتحكم في مقدار معلومات المُحيل (referrer) التي تُضمّن في الطلبات إلى مواقع أخرى. وتمنع تسريب مسارات URL الحساسة.
+- **`Content-Security-Policy`**: الترويسة الكبرى. تحدّد المصادر المسموح لها بتحميل السكربتات والأنماط والصور والموارد الأخرى. وسياسة CSP مضبوطة جيدًا هي أفضل دفاع فعّال ضد هجمات XSS.
 
-Without these headers, your site isn’t dangerous—but it isn’t hardened, either. Any security audit will flag their absence.
+من دون هذه الترويسات، موقعك ليس خطرًا — لكنه ليس محصّنًا أيضًا. وأي تدقيق أمني سيسجّل غيابها.
 
-## Managed vs. Custom Response Headers Policies
+## السياسات المُدارة مقابل سياسات ترويسات الاستجابة المخصّصة
 
-CloudFront offers **managed response headers policies** that cover common configurations, and you can also create **custom policies** for more control.
+تقدّم CloudFront **سياسات ترويسات استجابة مُدارة** تغطّي إعدادات شائعة، ويمكنك أيضًا إنشاء **سياسات مخصّصة** لمزيد من التحكم.
 
-The managed policies worth knowing:
+السياسات المُدارة الجديرة بالمعرفة:
 
-| Policy Name | ID | What It Includes |
+| اسم السياسة | المعرّف | ما تتضمنه |
 | --- | --- | --- |
-| **SecurityHeadersPolicy** | `67f7725c-6f97-4210-82d7-5512b31e9d03` | HSTS, X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, Referrer-Policy |
-| **SimpleCORS** | `60669652-455b-4ae9-85a4-c4c02393f86c` | `Access-Control-Allow-Origin: *` on all responses |
-| **CORS-with-preflight** | `5cc3b908-e619-4b99-88e5-2cf7f45965bd` | Full CORS with preflight support (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`) |
-| **CORS-with-preflight-and-SecurityHeadersPolicy** | `eaab4381-ed33-4a86-88ca-d9558dc6cd63` | Everything in CORS-with-preflight plus all security headers |
+| **SecurityHeadersPolicy** | `67f7725c-6f97-4210-82d7-5512b31e9d03` | HSTS وX-Content-Type-Options وX-Frame-Options وX-XSS-Protection وReferrer-Policy |
+| **SimpleCORS** | `60669652-455b-4ae9-85a4-c4c02393f86c` | `Access-Control-Allow-Origin: *` على كل الاستجابات |
+| **CORS-with-preflight** | `5cc3b908-e619-4b99-88e5-2cf7f45965bd` | CORS كامل مع دعم التحقق المسبق (`Access-Control-Allow-Origin` و`Access-Control-Allow-Methods` و`Access-Control-Allow-Headers`) |
+| **CORS-with-preflight-and-SecurityHeadersPolicy** | `eaab4381-ed33-4a86-88ca-d9558dc6cd63` | كل ما في CORS-with-preflight إضافة إلى كل ترويسات الأمان |
 
-For a static site that doesn’t serve API responses and doesn’t need CORS (your frontend and your assets are on the same domain), **SecurityHeadersPolicy** is the right starting point. If your frontend calls APIs on a different domain and those APIs are served through this same CloudFront distribution, use **CORS-with-preflight-and-SecurityHeadersPolicy**.
+لموقع ثابت لا يقدّم استجابات API ولا يحتاج CORS (فالواجهة الأمامية وأصولك على النطاق نفسه)، تعدّ **SecurityHeadersPolicy** نقطة البداية الصحيحة. وإذا كانت واجهتك الأمامية تستدعي واجهات API على نطاق مختلف وتُقدَّم تلك الواجهات عبر توزيع CloudFront نفسه، فاستخدم **CORS-with-preflight-and-SecurityHeadersPolicy**.
 
-In the console, the **Policies** page under **Response headers** lists all available managed policies with their descriptions.
+في لوحة التحكم، تسرد صفحة **Policies** ضمن **Response headers** كل السياسات المُدارة المتاحة مع أوصافها.
 
-The CloudFront Policies page showing the Response headers tab with managed policies including SecurityHeadersPolicy, CORS-With-Preflight, and CORS-and-SecurityHeadersPolicy.
+صفحة CloudFront Policies وهي تعرض تبويب Response headers مع سياسات مُدارة تشمل SecurityHeadersPolicy وCORS-With-Preflight وCORS-and-SecurityHeadersPolicy.
 
-## Attaching a Managed Policy
+## إرفاق سياسة مُدارة
 
-The fastest way to add security headers is to attach a managed policy to your default cache behavior. Fetch the current distribution config, add the `ResponseHeadersPolicyId`, and update.
+أسرع طريقة لإضافة ترويسات الأمان هي إرفاق سياسة مُدارة بسلوك التخزين المؤقت الافتراضي لديك. اجلب إعدادات التوزيع الحالية، وأضف `ResponseHeadersPolicyId`، ثم حدّث.
 
-Fetch:
+اجلب:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -54,7 +54,7 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config-current.json
 ```
 
-Add `ResponseHeadersPolicyId` to the `DefaultCacheBehavior`:
+أضف `ResponseHeadersPolicyId` إلى `DefaultCacheBehavior`:
 
 ```json
 {
@@ -76,7 +76,7 @@ Add `ResponseHeadersPolicyId` to the `DefaultCacheBehavior`:
 }
 ```
 
-Update:
+حدّث:
 
 ```bash
 aws cloudfront update-distribution \
@@ -87,11 +87,11 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-In the console, you attach the policy to a behavior from the **Edit behavior** form. The **Response headers policy** dropdown shows the managed policies alongside any custom policies you’ve created.
+في لوحة التحكم، ترفق السياسة بسلوك من نموذج **Edit behavior**. وتعرض قائمة **Response headers policy** المنسدلة السياسات المُدارة إلى جانب أي سياسات مخصّصة أنشأتها.
 
-The CloudFront Edit behavior form showing the Response headers policy section with SecurityHeadersPolicy selected from the dropdown.
+نموذج CloudFront Edit behavior وهو يعرض قسم Response headers policy مع اختيار SecurityHeadersPolicy من القائمة المنسدلة.
 
-After the distribution deploys, every response from CloudFront will include security headers:
+بعد نشر التوزيع، ستتضمن كل استجابة من CloudFront ترويسات الأمان:
 
 ```
 strict-transport-security: max-age=31536000
@@ -101,15 +101,15 @@ x-xss-protection: 1; mode=block
 referrer-policy: strict-origin-when-cross-origin
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> You can verify the headers with `curl -I https://d1234abcdef.cloudfront.net`. If you don’t see the security headers, wait for the distribution to finish deploying and try again. You may also need to clear the edge cache by creating an invalidation.
+> يمكنك التحقق من الترويسات باستخدام `curl -I https://d1234abcdef.cloudfront.net`. فإن لم ترَ ترويسات الأمان، فانتظر حتى يكتمل نشر التوزيع وحاول مرة أخرى. وقد تحتاج أيضًا إلى تفريغ ذاكرة الحافة المؤقتة بإنشاء إبطال (invalidation).
 
-## Creating a Custom Response Headers Policy
+## إنشاء سياسة ترويسات استجابة مخصّصة
 
-The managed policies cover common cases, but you might need custom configuration—maybe you want HSTS with a longer `max-age`, or you need a `Content-Security-Policy` header tailored to your application. For that, create a custom response headers policy.
+تغطّي السياسات المُدارة الحالات الشائعة، لكنك قد تحتاج إلى إعداد مخصّص — ربما تريد HSTS بـ `max-age` أطول، أو تحتاج ترويسة `Content-Security-Policy` مصمّمة لتطبيقك. لذلك أنشئ سياسة ترويسات استجابة مخصّصة.
 
-Save this as `response-headers-policy.json`:
+احفظ هذا باسم `response-headers-policy.json`:
 
 ```json
 {
@@ -174,7 +174,7 @@ Save this as `response-headers-policy.json`:
 }
 ```
 
-Create the policy:
+أنشئ السياسة:
 
 ```bash
 aws cloudfront create-response-headers-policy \
@@ -183,7 +183,7 @@ aws cloudfront create-response-headers-policy \
   --output json
 ```
 
-The response includes the policy’s ID:
+تتضمن الاستجابة معرّف السياسة:
 
 ```json
 {
@@ -196,52 +196,52 @@ The response includes the policy’s ID:
 }
 ```
 
-Use this ID in the `ResponseHeadersPolicyId` field of your cache behavior, the same way you attached the managed policy.
+استخدم هذا المعرّف في حقل `ResponseHeadersPolicyId` في سلوك التخزين المؤقت لديك، بالطريقة نفسها التي أرفقت بها السياسة المُدارة.
 
-## Breaking Down the Custom Policy
+## تفكيك السياسة المخصّصة
 
 ### SecurityHeadersConfig
 
-The security headers config gives you control over each header individually:
+يمنحك إعداد ترويسات الأمان تحكمًا في كل ترويسة على حدة:
 
-- **`StrictTransportSecurity`**: `max-age=63072000` (2 years), `includeSubDomains`, and `preload`. The `preload` flag makes your domain eligible for [HSTS preload lists](https://hstspreload.org/), which hardcode the HTTPS-only policy into browsers.
-- **`ContentTypeOptions`**: Adds `X-Content-Type-Options: nosniff`. No configuration needed beyond enabling it.
-- **`FrameOptions`**: `DENY` prevents your site from being embedded in any iframe. Use `SAMEORIGIN` if your site uses iframes internally (e.g., for embedding preview panels). I default to `DENY` and only loosen it when I have a *definite* reason to.
-- **`ReferrerPolicy`**: `strict-origin-when-cross-origin` sends the full URL for same-origin requests but only the origin (no path) for cross-origin requests.
-- **`XSSProtection`**: Adds `X-XSS-Protection: 1; mode=block`. Every current browser either ignores this header or has removed the underlying filter it used to control. It’s essentially dead—CSP (below) is the actual defense. Including it costs you nothing and is cheap defense-in-depth, but don’t count it toward your XSS story.
+- **`StrictTransportSecurity`**: `max-age=63072000` (سنتان)، و`includeSubDomains`، و`preload`. ويجعل العلم `preload` نطاقك مؤهلًا لـ [قوائم التحميل المسبق لـ HSTS](https://hstspreload.org/)، التي تثبّت سياسة HTTPS فقط داخل المتصفحات.
+- **`ContentTypeOptions`**: تضيف `X-Content-Type-Options: nosniff`. ولا تحتاج إعدادًا يتجاوز تمكينها.
+- **`FrameOptions`**: القيمة `DENY` تمنع تضمين موقعك في أي iframe. استخدم `SAMEORIGIN` إذا كان موقعك يستخدم iframes داخليًا (مثلًا لتضمين لوحات معاينة). أنا أختار `DENY` افتراضيًا ولا أرخيها إلا عندما يكون لدي سبب *مؤكد*.
+- **`ReferrerPolicy`**: ترسل `strict-origin-when-cross-origin` عنوان URL الكامل للطلبات ذات الأصل نفسه، لكنها ترسل الأصل فقط (دون المسار) للطلبات عبر الأصول المختلفة.
+- **`XSSProtection`**: تضيف `X-XSS-Protection: 1; mode=block`. وكل متصفح حالي إما يتجاهل هذه الترويسة أو أزال المرشّح الأساسي الذي كانت تتحكم فيه. فهي ميتة فعليًا — وCSP (أدناه) هي الدفاع الحقيقي. وتضمينها لا يكلّفك شيئًا ويعدّ دفاعًا رخيصًا متعدد الطبقات، لكن لا تحسبها ضمن حكايتك مع XSS.
 
-The **`Override`** field on each header determines whether CloudFront’s value overrides a value set by the origin. When `true`, CloudFront replaces any existing header from S3 with the value defined in the policy. When `false`, CloudFront only adds the header if the origin didn’t include it. For security headers, you almost always want `Override: true`—you’re the source of truth for security policy, not S3.
+يحدّد حقل **`Override`** في كل ترويسة ما إذا كانت قيمة CloudFront تتجاوز قيمة يضبطها الأصل. عندما تكون `true`، تستبدل CloudFront أي ترويسة موجودة من S3 بالقيمة المعرّفة في السياسة. وعندما تكون `false`، لا تضيف CloudFront الترويسة إلا إذا لم يكن الأصل قد ضمّنها. وبالنسبة إلى ترويسات الأمان، تريد دائمًا تقريبًا `Override: true` — فأنت مصدر الحقيقة لسياسة الأمان، لا S3.
 
 ### CorsConfig
 
-If your frontend application makes cross-origin API requests that are routed through CloudFront (e.g., a `/api/*` behavior pointing to API Gateway), the CORS config tells CloudFront to include the appropriate `Access-Control-Allow-*` headers. For a static site served entirely from one domain, CORS headers are optional but harmless.
+إذا كانت واجهتك الأمامية تجري طلبات API عبر الأصول المختلفة تُوجَّه عبر CloudFront (مثلًا سلوك `/api/*` يشير إلى API Gateway)، فإن إعداد CORS يخبر CloudFront بتضمين ترويسات `Access-Control-Allow-*` المناسبة. ولموقع ثابت يُقدَّم بالكامل من نطاق واحد، تكون ترويسات CORS اختيارية لكنها غير ضارة.
 
 ### CustomHeadersConfig
 
-Any header not covered by the security or CORS sections can be added here.
+يمكن إضافة أي ترويسة لا يغطّيها قسم الأمان أو CORS هنا.
 
-- **`Permissions-Policy`** (formerly `Feature-Policy`) controls which browser features your site can use—disabling camera, microphone, and geolocation access if your site doesn’t need them.
-- **`Content-Security-Policy`** is the real XSS defense. The example here is a tight starting point: scripts and styles only from your own origin, images from your origin and inline `data:` URIs, and XHR/fetch only to `https://api.example.com`. `frame-ancestors 'none'` duplicates `X-Frame-Options: DENY` for browsers that honor CSP over the legacy header. You’ll almost certainly need to relax this once you wire up a real app—start strict and add sources as the browser console complains.
+- **`Permissions-Policy`** (المعروفة سابقًا باسم `Feature-Policy`) تتحكم في ميزات المتصفح التي يمكن لموقعك استخدامها — فتعطّل الوصول إلى الكاميرا والميكروفون والموقع الجغرافي إن لم يكن موقعك بحاجة إليها.
+- **`Content-Security-Policy`** هي الدفاع الحقيقي ضد XSS. والمثال هنا نقطة بداية محكمة: السكربتات والأنماط من أصلك فقط، والصور من أصلك ومن عناوين `data:` المضمّنة، وXHR/fetch إلى `https://api.example.com` فقط. والقيمة `frame-ancestors 'none'` تكرّر `X-Frame-Options: DENY` للمتصفحات التي تحترم CSP بدلًا من الترويسة القديمة. ومن شبه المؤكد أنك ستحتاج إلى إرخائها بعد ربط تطبيق حقيقي — ابدأ صارمًا وأضف المصادر كلما اشتكت وحدة تحكم المتصفح.
 
-## CORS for API Calls
+## CORS لاستدعاءات API
 
-If your frontend calls an API on a different origin (e.g., your React app on `example.com` calls `api.example.com`), you need CORS headers on the API responses. There are two scenarios:
+إذا كانت واجهتك الأمامية تستدعي API على أصل مختلف (مثلًا تطبيق React على `example.com` يستدعي `api.example.com`)، فأنت تحتاج ترويسات CORS على استجابات API. وهناك سيناريوهان:
 
-**API served through CloudFront** (e.g., a `/api/*` behavior pointing to API Gateway): Configure CORS in the response headers policy attached to that behavior. CloudFront adds the headers for you.
+**API يُقدَّم عبر CloudFront** (مثلًا سلوك `/api/*` يشير إلى API Gateway): اضبط CORS في سياسة ترويسات الاستجابة المرفقة بذلك السلوك. وستضيف CloudFront الترويسات نيابة عنك.
 
-**API served separately** (e.g., API Gateway with its own domain): Configure CORS on API Gateway directly. That’s covered in the API Gateway section.
+**API يُقدَّم بشكل منفصل** (مثلًا API Gateway بنطاقه الخاص): اضبط CORS على API Gateway مباشرة. وهذا مشمول في قسم API Gateway.
 
-For a typical static frontend served entirely through one CloudFront distribution on one domain, you generally don’t need CORS headers on your static assets. The browser only enforces CORS on cross-origin requests, and your assets are same-origin.
+لواجهة أمامية ثابتة نموذجية تُقدَّم بالكامل عبر توزيع CloudFront واحد على نطاق واحد، لن تحتاج عمومًا إلى ترويسات CORS على أصولك الثابتة. فالمتصفح لا يفرض CORS إلا على الطلبات عبر الأصول المختلفة، وأصولك من الأصل نفسه.
 
-## Verifying Your Headers
+## التحقق من ترويساتك
 
-After updating the distribution, check the response headers:
+بعد تحديث التوزيع، افحص ترويسات الاستجابة:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-You should see your security headers in the response:
+ينبغي أن ترى ترويسات الأمان في الاستجابة:
 
 ```
 HTTP/2 200
@@ -253,10 +253,10 @@ x-xss-protection: 1; mode=block
 permissions-policy: camera=(), microphone=(), geolocation=()
 ```
 
-If any headers are missing, verify the response headers policy ID is attached to the correct cache behavior, the distribution has finished deploying, and you’re not seeing a cached response from before the update (invalidate if needed).
+إذا كانت أي ترويسة ناقصة، فتحقق من أن معرّف سياسة ترويسات الاستجابة مرفق بسلوك التخزين المؤقت الصحيح، وأن التوزيع أكمل النشر، وأنك لا ترى استجابة مخزّنة مؤقتًا من قبل التحديث (أبطل الذاكرة المؤقتة إن لزم).
 
-> **Warning**
+> **تحذير**
 >
-> Response headers policies apply to all responses served by the cache behavior they’re attached to—including cached responses. If you attach a policy after content is already cached, you may need to create an invalidation to ensure the headers appear immediately. Otherwise, cached responses will lack the new headers until their TTL expires.
+> تنطبق سياسات ترويسات الاستجابة على كل الاستجابات التي يقدّمها سلوك التخزين المؤقت المرفقة به — بما في ذلك الاستجابات المخزّنة مؤقتًا. فإذا أرفقت سياسة بعد تخزين المحتوى مؤقتًا، فقد تحتاج إلى إنشاء إبطال لضمان ظهور الترويسات فورًا. وإلا فستفتقر الاستجابات المخزّنة مؤقتًا إلى الترويسات الجديدة حتى تنتهي مدة صلاحيتها (TTL).
 
-You’ve got a fully configured CloudFront distribution: S3 origin with OAC, cache behaviors and invalidations for deployments, SPA routing via custom error responses, HTTPS with your ACM certificate, and security headers. The next step is connecting a custom domain in the Route 53 custom-domain-routing section. Before that, the exercise for this section will have you build all of this from scratch.
+أصبح لديك توزيع CloudFront مهيّأ بالكامل: أصل S3 مع OAC، وسلوكات تخزين مؤقت وعمليات إبطال للنشر، وتوجيه SPA عبر استجابات أخطاء مخصّصة، وHTTPS مع شهادة ACM، وترويسات أمان. والخطوة التالية هي ربط نطاق مخصّص في قسم توجيه النطاق المخصّص في Route 53. وقبل ذلك، سيطلب منك تمرين هذا القسم بناء كل هذا من الصفر.

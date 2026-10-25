@@ -1,32 +1,32 @@
 ---
-title: "useMemo and useCallback"
-lang: en
+title: "استخدام useMemo وuseCallback"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/usememo-usecallback-in-react-19"
 ---
 
-React’s `useMemo` and `useCallback` are performance optimization hooks—emphasis on *optimization*. They’re not magic bullets that make your app fast, but surgical tools for addressing specific performance bottlenecks. With React 19’s compiler optimizations and better default behavior, understanding when and how to use these hooks becomes even more crucial (and thankfully, less frequent).
+إنّ `useMemo` و`useCallback` في React خُطّافا تحسين للأداء — مع التركيز على كلمة *التحسين*. فهما ليسا حلًّا سحريًا يجعل تطبيقك سريعًا، بل أداتان جراحيتان لمعالجة اختناقات أداء محددة. ومع تحسينات المترجم (compiler) في React 19 وسلوكه الافتراضي الأفضل، يصبح فهم متى وكيف تستخدم هذين الخُطّافين أكثر إلحاحًا (ولحسن الحظ، أقل تكرارًا).
 
-In this guide, we’ll explore when memoization actually helps, when it hurts, and how React 19 changes the game. By the end, you’ll know exactly when to reach for these hooks and when to let React’s built-in optimizations do the heavy lifting.
+في هذا الدليل، سنستكشف متى يفيد حفظ النتائج فعلًا، ومتى يضرّ، وكيف يغيّر React 19 قواعد اللعبة. وبحلول النهاية، ستعرف تمامًا متى تلجأ إلى هذين الخُطّافين ومتى تترك تحسينات React المدمجة تقوم بالعمل الشاق.
 
-## What Memoization Actually Solves
+## ما الذي يحلّه حفظ النتائج فعلًا
 
-Before diving into the hooks themselves, let’s clarify what problems memoization addresses in React:
+قبل الغوص في الخُطّافين أنفسهما، لنوضّح المشكلات التي يعالجها حفظ النتائج في React:
 
-1. **Expensive calculations**: When a component re-renders, any expensive computations in the render function run again—even if the inputs haven’t changed.
-2. **Reference equality issues**: New objects and functions created on every render can trigger unnecessary re-renders in child components that depend on reference equality.
-3. **Dependency stability**: Hooks like `useEffect` depend on reference equality to determine when to re-run.
+1. **الحسابات المكلفة**: عندما يُعاد تصيير مكوّن، تُعاد أي حسابات مكلفة داخل دالة التصيير — حتى لو لم تتغيّر المدخلات.
+2. **مشكلات تساوي المراجع**: الكائنات والدوال الجديدة التي تُنشأ في كل تصيير قد تُسبّب إعادة تصيير غير ضرورية في المكوّنات الأبناء التي تعتمد على تساوي المراجع.
+3. **استقرار الاعتمادات**: خُطّافات مثل `useEffect` تعتمد على تساوي المراجع لتحديد موعد إعادة التشغيل.
 
-Think of memoization as caching—you’re storing a result and reusing it until the inputs change. But like all caches, it comes with overhead.
+فكّر في حفظ النتائج كالتخزين المؤقت — فأنت تخزّن نتيجة وتعيد استخدامها حتى تتغيّر المدخلات. لكنه، مثل كل ذاكرات التخزين المؤقت، يأتي بتكلفة إضافية.
 
-> **Warning**
+> **تحذير**
 >
-> Memoization isn’t free. Every memoized value requires memory to store and comparison logic to check dependencies. Don’t memoize unless you’re solving a real performance problem.
+> حفظ النتائج ليس مجانيًا. فكل قيمة محفوظة تحتاج إلى ذاكرة لتخزينها ومنطق مقارنة لفحص الاعتمادات. لا تلجأ إلى حفظ النتائج إلا إذا كنت تعالج مشكلة أداء حقيقية.
 
-## `useMemo`: Caching Expensive Calculations
+## `useMemo`: تخزين الحسابات المكلفة مؤقتًا
 
-`useMemo` caches the result of a computation and only recalculates when its dependencies change.
+يخزّن `useMemo` نتيجة عملية حسابية، ولا يعيد حسابها إلا عندما تتغيّر اعتماداته.
 
-### The Basic Pattern
+### النمط الأساسي
 
 ```typescript
 import { useMemo } from 'react';
@@ -49,13 +49,13 @@ function ExpensiveComponent({ items, searchTerm }: Props) {
 }
 ```
 
-Without `useMemo`, this filtering and sorting would happen on every render—even if `items` and `searchTerm` haven’t changed. With thousands of items, that’s wasteful.
+لولا `useMemo`، لجرى هذا الترشيح والترتيب في كل تصيير — حتى لو لم يتغيّر `items` و`searchTerm`. ومع وجود آلاف العناصر، يكون ذلك إسرافًا.
 
-### When `useMemo` Actually Helps
+### متى يفيد `useMemo` فعلًا
 
-Here are the scenarios where `useMemo` provides real value:
+هذه هي الحالات التي يقدّم فيها `useMemo` قيمة حقيقية:
 
-**1. Computationally expensive operations**
+**1. العمليات المكلفة حسابيًا**
 
 ```typescript
 function DataAnalyzer({ dataset }: { dataset: number[] }) {
@@ -75,7 +75,7 @@ function DataAnalyzer({ dataset }: { dataset: number[] }) {
 }
 ```
 
-**2. Complex data transformations**
+**2. تحويلات البيانات المعقّدة**
 
 ```typescript
 function UserList({ users, filters }: Props) {
@@ -109,7 +109,7 @@ function UserList({ users, filters }: Props) {
 }
 ```
 
-**3. Stabilizing object references for child components**
+**3. تثبيت مراجع الكائنات للمكوّنات الأبناء**
 
 ```typescript
 interface ChartConfig {
@@ -139,9 +139,9 @@ const ExpensiveChart = React.memo(({ data, config }: ChartProps) => {
 });
 ```
 
-### When `useMemo` Doesn’t Help (and Can Hurt)
+### متى لا يفيد `useMemo` (وقد يضرّ)
 
-**1. Simple calculations**
+**1. الحسابات البسيطة**
 
 ```typescript
 function UserCard({ user }: { user: User }) {
@@ -155,7 +155,7 @@ function UserCard({ user }: { user: User }) {
 }
 ```
 
-**2. Always-changing dependencies**
+**2. الاعتمادات التي تتغيّر دائمًا**
 
 ```typescript
 function Timer() {
@@ -179,7 +179,7 @@ function Timer() {
 }
 ```
 
-**3. Primitive values**
+**3. القيم الأولية**
 
 ```typescript
 function Counter({ count }: { count: number }) {
@@ -191,11 +191,11 @@ function Counter({ count }: { count: number }) {
 }
 ```
 
-## `useCallback`: Stabilizing Function References
+## `useCallback`: تثبيت مراجع الدوال
 
-`useCallback` memoizes a function definition—not its result. This is primarily useful for preventing unnecessary re-renders of child components that rely on function reference equality.
+يحفظ `useCallback` تعريف دالة — لا نتيجتها. وهذا مفيد بالأساس لمنع إعادة التصيير غير الضرورية في المكوّنات الأبناء التي تعتمد على تساوي مراجع الدوال.
 
-### The Basic Pattern
+### النمط الأساسي
 
 ```typescript
 function TodoList({ todos }: { todos: Todo[] }) {
@@ -232,11 +232,11 @@ const TodoItem = React.memo(({ todo, onToggleEdit, isEditing }: TodoItemProps) =
 });
 ```
 
-Without `useCallback`, `handleToggleEdit` would be a new function on every render, causing all `TodoItem` components to re-render even when their `todo` prop hasn’t changed.
+لولا `useCallback`، لكان `handleToggleEdit` دالة جديدة في كل تصيير، ما يؤدي إلى إعادة تصيير جميع مكوّنات `TodoItem` حتى عندما لا تتغيّر خاصية `todo` الخاصة بها.
 
-### Real-World `useCallback` Patterns
+### أنماط `useCallback` الواقعية
 
-**1. Event handlers for memoized components**
+**1. معالجات الأحداث للمكوّنات المحفوظة**
 
 ```typescript
 function UserManagement({ users }: { users: User[] }) {
@@ -275,7 +275,7 @@ function UserManagement({ users }: { users: User[] }) {
 }
 ```
 
-**2. Callback functions with external dependencies**
+**2. دوال الاستدعاء (callbacks) ذات الاعتمادات الخارجية**
 
 ```typescript
 function SearchResults({ searchTerm, onResultClick }: Props) {
@@ -306,9 +306,9 @@ function SearchResults({ searchTerm, onResultClick }: Props) {
 }
 ```
 
-### When `useCallback` Becomes Pointless
+### متى يصبح `useCallback` بلا جدوى
 
-**1. No memoized children**
+**1. لا توجد مكوّنات أبناء محفوظة**
 
 ```typescript
 function BadExample({ items }: { items: Item[] }) {
@@ -328,7 +328,7 @@ function BadExample({ items }: { items: Item[] }) {
 }
 ```
 
-**2. Functions that always change**
+**2. الدوال التي تتغيّر دائمًا**
 
 ```typescript
 function BadCounter() {
@@ -343,13 +343,13 @@ function BadCounter() {
 }
 ```
 
-## React 19: The Game Changer
+## React 19: نقطة التحوّل
 
-React 19 introduces significant changes that affect when you need these hooks:
+يقدّم React 19 تغييرات جوهرية تؤثّر في متى تحتاج إلى هذين الخُطّافين:
 
-### React Compiler Optimizations
+### تحسينات مترجم React
 
-The React Compiler in React 19 can automatically optimize many cases where you’d previously need manual memoization:
+يستطيع مترجم React في الإصدار 19 أن يحسّن تلقائيًا حالات كثيرة كنت تحتاج فيها سابقًا إلى حفظ النتائج يدويًا:
 
 ```typescript
 // React 19 can optimize this automatically
@@ -374,11 +374,11 @@ function AutoOptimized({ items, filter }: Props) {
 }
 ```
 
-### When to Still Use Manual Memoization
+### متى لا يزال الحفظ اليدوي مفيدًا
 
-Even with React 19’s improvements, manual memoization is still valuable in specific cases:
+حتى مع تحسينات React 19، يبقى حفظ النتائج اليدوي قيّمًا في حالات محددة:
 
-**1. Cross-component boundaries the compiler can’t see**
+**1. الحدود بين المكوّنات التي لا يراها المترجم**
 
 ```typescript
 // ✅ Still valuable: External API calls or complex integrations
@@ -392,7 +392,7 @@ function WeatherWidget({ location }: { location: string }) {
 }
 ```
 
-**2. Expensive third-party library integrations**
+**2. تكاملات مكتبات الطرف الثالث المكلفة**
 
 ```typescript
 function ChartComponent({ data }: { data: ChartData }) {
@@ -405,9 +405,9 @@ function ChartComponent({ data }: { data: ChartData }) {
 }
 ```
 
-## Measuring Performance Impact
+## قياس أثر الأداء
 
-Before adding memoization, measure the performance impact. React DevTools Profiler is your best friend here:
+قبل إضافة حفظ النتائج، قِس أثر الأداء. ويُعدّ React DevTools Profiler أفضل صديق لك هنا:
 
 ```typescript
 function ProfiledComponent({ data }: Props) {
@@ -424,25 +424,25 @@ function ProfiledComponent({ data }: Props) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Use React DevTools Profiler to record component render times before and after adding memoization. If the improvement is negligible (< 16ms for 60fps), skip the memoization.
+> استخدم React DevTools Profiler لتسجيل أزمنة تصيير المكوّنات قبل إضافة حفظ النتائج وبعده. إذا كان التحسّن ضئيلًا (< 16ms لـ 60fps)، فتخطَّ حفظ النتائج.
 
-## Best Practices and Guidelines
+## أفضل الممارسات والإرشادات
 
-### The Memoization Decision Tree
+### شجرة قرار حفظ النتائج
 
-1. **Is the computation actually expensive?** (> 5ms consistently) If no: Don’t memoize If yes: Continue
-  - If no: Don’t memoize
-  - If yes: Continue
-2. **Do the dependencies change frequently?** If yes: Memoization won’t help much If no: Continue
-  - If yes: Memoization won’t help much
-  - If no: Continue
-3. **Are you solving a real performance problem?** If no: Don’t prematurely optimize If yes: Memoize
-  - If no: Don’t prematurely optimize
-  - If yes: Memoize
+1. **هل الحساب مكلف فعلًا؟** (> 5ms باستمرار) إن كان لا: لا تلجأ إلى الحفظ، وإن كان نعم: تابع
+   - إن كان لا: لا تلجأ إلى الحفظ
+   - وإن كان نعم: تابع
+2. **هل تتغيّر الاعتمادات بشكل متكرر؟** إن كان نعم: لن يفيد الحفظ كثيرًا، وإن كان لا: تابع
+   - إن كان نعم: لن يفيد الحفظ كثيرًا
+   - وإن كان لا: تابع
+3. **هل تعالج مشكلة أداء حقيقية؟** إن كان لا: لا تُحسّن قبل الأوان، وإن كان نعم: احفظ النتائج
+   - إن كان لا: لا تُحسّن قبل الأوان
+   - وإن كان نعم: احفظ النتائج
 
-### Dependency Array Best Practices
+### أفضل ممارسات مصفوفة الاعتمادات
 
 ```typescript
 function GoodExample({ user, settings }: Props) {
@@ -462,9 +462,9 @@ function GoodExample({ user, settings }: Props) {
 }
 ```
 
-### Common Gotchas
+### المزالق الشائعة
 
-**1. Missing dependencies**
+**1. الاعتمادات الناقصة**
 
 ```typescript
 function BuggyComponent({ items, filter }: Props) {
@@ -481,7 +481,7 @@ function BuggyComponent({ items, filter }: Props) {
 }
 ```
 
-**2. Objects as dependencies**
+**2. الكائنات كاعتمادات**
 
 ```typescript
 function TrickyComponent({ config }: { config: Config }) {
@@ -497,9 +497,9 @@ function TrickyComponent({ config }: { config: Config }) {
 }
 ```
 
-## Testing Memoized Components
+## اختبار المكوّنات المحفوظة
 
-Memoized components require special testing considerations:
+تتطلّب المكوّنات المحفوظة اعتبارات خاصة عند اختبارها:
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -527,16 +527,16 @@ describe('MemoizedComponent', () => {
 });
 ```
 
-## When Not to Worry About Memoization
+## متى لا تقلق بشأن حفظ النتائج
 
-React 19’s improvements mean you can often skip manual optimization in these cases:
+تعني تحسينات React 19 أنه يمكنك غالبًا تخطّي التحسين اليدوي في هذه الحالات:
 
-- Simple components with minimal computation
-- Components that re-render infrequently
-- Development builds (focus on production performance)
-- Small lists (< 100 items typically)
-- Apps without performance issues
+- مكوّنات بسيطة بحسابات ضئيلة
+- مكوّنات لا يُعاد تصييرها إلا نادرًا
+- نُسخ التطوير (ركّز على أداء نسخة الإنتاج)
+- القوائم الصغيرة (أقل من 100 عنصر عادةً)
+- التطبيقات التي لا تعاني مشكلات أداء
 
-Remember: **premature optimization is the root of all evil**. Start with clean, readable code. Add memoization when you have actual performance problems, not imaginary ones.
+تذكّر: **التحسين قبل الأوان أصل كل الشرور**. ابدأ بشيفرة نظيفة ومقروءة. وأضف حفظ النتائج عندما تواجه مشكلات أداء فعلية، لا مشكلات متخيَّلة.
 
-## Wrapping Up
+## الخلاصة

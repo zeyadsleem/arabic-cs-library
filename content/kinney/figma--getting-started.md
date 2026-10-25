@@ -1,122 +1,122 @@
 ---
-title: "Getting Started"
-lang: en
+title: "البدء"
+lang: ar
 source: "https://stevekinney.com/courses/figma/getting-started"
 ---
 
-When you first enter Figma, you’re greeted with the option to either create a new project or select a recent one.
+عند دخولك إلى Figma لأول مرة، تُعرض عليك خيار إنشاء مشروع جديد أو اختيار مشروع حديث.
 
-Figma Home Upon entering a project, you’re presented with an interface similar to the screenshot below. Almost everything that you’re going to do in Figma is going to be in this workspace.
+في الشاشة الرئيسية (Figma Home)، عند دخولك إلى مشروع، تُعرض عليك واجهة مشابهة للقطة الشاشة أدناه. وكل ما ستفعله تقريبًا في Figma سيكون داخل مساحة العمل هذه.
 
-The Figma Workspace
+مساحة عمل Figma
 
-In the center, you have the Canvas. Here are some helpful tips for navigating around the canvas:
+في المنتصف لديك لوحة العمل (Canvas). إليك بعض النصائح المفيدة للتنقّل حول لوحة العمل:
 
-- **Pan Around the Canvas**: Hold the `Space` bar and drag or do a two-finger drag on your touchpad.
-- **Zoom In/Out**: `Command/Control +` or `Command/Control -`, hold the `Command` key while scrolling, or pinch on the touchpad.
+- **التحرّك حول لوحة العمل**: اضغط مفتاح `Space` واسحب، أو اسحب بإصبعين على لوحة اللمس.
+- **التكبير/التصغير**: `Command/Control +` أو `Command/Control -`، أو اضغط مفتاح `Command` أثناء التمرير، أو قرّب بإصبعين على لوحة اللمس.
 
-## The Toolbar
+## شريط الأدوات
 
-Figma's Toolbar
+شريط أدوات Figma
 
-The toolbar, located along the top, is where you find essential tools for drawing shapes, creating layers, adding comments, and more. A small caret next to some of the icons reveals a sub-menu with additional tools.
+يقع شريط الأدوات في الأعلى، وهو المكان الذي تجد فيه الأدوات الأساسية لرسم الأشكال وإنشاء الطبقات وإضافة التعليقات وغيرها. ويُظهر سهم صغير بجوار بعض الأيقونات قائمة فرعية بأدوات إضافية.
 
-- **Move Tool (V):** The default tool for selecting and moving objects.
-- **Frame Tool (F):** Creates frames, which are containers for other objects, useful for entire screens or components.
-- **Shape Tools:** Includes Rectangle (R), Line (L), Ellipse (O), Polygon (P), and Pen (P) tools for drawing basic shapes and custom paths.
-- **Text Tool (T):** Adds and edits text elements.
-- **Hand Tool (H):** Pans around the canvas, can be temporarily activated with the Spacebar.
-- **Zoom Tool (Z):** Zooms in and out of the canvas, also zoomable via keyboard shortcuts or trackpad gestures.
-- **Comment Tool (C):** Facilitates collaboration by enabling comments on the design.
+- **أداة التحريك (V):** الأداة الافتراضية لتحديد الكائنات ونقلها.
+- **أداة الإطار (F):** تُنشئ الإطارات (frames)، وهي حاويات لكائنات أخرى، وتفيد في الشاشات الكاملة أو المكوّنات.
+- **أدوات الأشكال:** تتضمّن أدوات المستطيل (R) والخط (L) والقطع الناقص (O) والمضلّع (P) والقلم (P) لرسم الأشكال الأساسية والمسارات المخصّصة.
+- **أداة النص (T):** تضيف عناصر النص وتحرّرها.
+- **أداة اليد (H):** تُحرّك العرض حول لوحة العمل، ويمكن تفعيلها مؤقتًا بمفتاح المسافة.
+- **أداة التكبير (Z):** تُكبّر لوحة العمل وتُصغّرها، ويمكن التكبير أيضًا باختصارات لوحة المفاتيح أو بإيماءات لوحة اللمس.
+- **أداة التعليق (C):** تسهّل التعاون بتمكين التعليقات على التصميم.
 
-### The Figma Menu
+### قائمة Figma
 
-The Figma Menu
+قائمة Figma
 
-At the toolbar’s leftmost end is the **Figma menu**. In the [desktop application](https://www.figma.com/downloads), this menu combines application menu bar items with additional preferences.
+في أقصى يسار شريط الأدوات توجد **قائمة Figma**. وفي [تطبيق سطح المكتب](https://www.figma.com/downloads)، تجمع هذه القائمة عناصر شريط قوائم التطبيق مع تفضيلات إضافية.
 
-The **Quick Actions…** menu item opens a command palette (using `Command/Control-/`) that lets you quickly search for and execute commands.
+ويفتح عنصر قائمة **Quick Actions…** لوحة أوامر (باستخدام `Command/Control-/`) تتيح لك البحث عن الأوامر وتنفيذها بسرعة.
 
-### File Options
+### خيارات الملف
 
-When you haven’t selected any layers, you’ll see information about the current file in the center of the toolbar.
+عندما لا تكون قد حدّدت أي طبقات، سترى معلومات عن الملف الحالي في وسط شريط الأدوات.
 
-The File Menu in Figma
+قائمة الملف في Figma
 
-The center of the toolbar displays the current file name, surrounded by various file-related options. Figma tracks revisions, allowing access to version history.
+يعرض وسط شريط الأدوات اسم الملف الحالي محاطًا بخيارات متنوّعة متعلّقة بالملف. ويتتبّع Figma المراجعات، ما يتيح الوصول إلى سجل الإصدارات.
 
-### Layer Options
+### خيارات الطبقة
 
-Selecting a layer changes the toolbar center to display a set of layer-specific tools. You’ll no longer see the name of the file in the center of toolbar until you deselect whatever layers that you’ve chosen.
+يؤدي تحديد طبقة إلى تغيير وسط شريط الأدوات ليعرض مجموعة أدوات خاصة بالطبقة. ولن ترى اسم الملف في وسط شريط الأدوات حتى تلغي تحديد الطبقات التي اخترتها.
 
-These options allow you to reset changes, create components, use masks, combine selections, and mark designs as ready for development.
+تتيح لك هذه الخيارات إعادة ضبط التغييرات وإنشاء المكوّنات واستخدام الأقنعة (masks) ودمج التحديدات ووسم التصاميم كجاهزة للتطوير.
 
-### Account, Sharing, and Dev Mode
+### الحساب والمشاركة وDev Mode
 
-The right end of the toolbar shows account information, sharing options, and a switch for [Dev Mode](https://stevekinney.com/courses/figma/dev-mode).
+يعرض الطرف الأيمن من شريط الأدوات معلومات الحساب وخيارات المشاركة ومفتاحًا لـ[Dev Mode](https://stevekinney.com/courses/figma/dev-mode).
 
-Right Section of Figma's Toolbar
+القسم الأيمن من شريط أدوات Figma
 
-We’ll talk a little bit more about [Dev Mode](https://stevekinney.com/courses/figma/dev-mode) in a little bit, but I’d be remiss if I didn’t point out that this feature is only available on paid plans and is *not* available on free plans.
+سنتحدث أكثر قليلًا عن [Dev Mode](https://stevekinney.com/courses/figma/dev-mode) بعد قليل، لكن من الإجحاف ألّا أشير إلى أن هذه الميزة متاحة فقط في الخطط المدفوعة و*ليست* متاحة في الخطط المجانية.
 
-## Left Side Panel: Layers and Assets
+## اللوحة الجانبية اليسرى: الطبقات والأصول
 
-This panel has two sections:
+تحتوي هذه اللوحة على قسمين:
 
-- **Layers Panel:** Displays the design’s hierarchical structure, crucial for organizing elements.
-- **Assets Panel:** Houses reusable components and styles for efficient and consistent design.
+- **لوحة الطبقات:** تعرض البنية الهرمية للتصميم، وهي أساسية لتنظيم العناصر.
+- **لوحة الأصول:** تضم المكوّنات والأنماط القابلة لإعادة الاستخدام لتصميم فعّال ومتّسق.
 
-### Pages and Layers
+### الصفحات والطبقات
 
-Figma allows you to organize your designs into pages. Within a page, you can see a list of all of the layers and objects in the currently selected page. The interface’s left side lets you navigate between pages and view layers for the selected page.
+يتيح لك Figma تنظيم تصاميمك في صفحات. وداخل الصفحة، يمكنك رؤية قائمة بكل الطبقات والكائنات في الصفحة المحدّدة حاليًا. ويتيح لك الجانب الأيسر من الواجهة التنقّل بين الصفحات وعرض طبقات الصفحة المحدّدة.
 
-Pages and Layers
+الصفحات والطبقات
 
-### Assets
+### الأصول {#assets}
 
-The Assets Panel is a repository for managing reusable components and styles, supporting team collaboration through shared libraries. This feature streamlines the design process and ensures design consistency.
+لوحة الأصول مستودع لإدارة المكوّنات والأنماط القابلة لإعادة الاستخدام، وتدعم تعاون الفريق عبر المكتبات المشتركة. وهذه الميزة تُبسّط عملية التصميم وتضمن اتّساق التصميم.
 
-## Right Side Panel: Design and Prototype
+## اللوحة الجانبية اليمنى: التصميم والنموذج الأوّلي
 
-This panel features two modes:
+تضم هذه اللوحة وضعين:
 
-- **Design Tab:** Contains properties for the appearance of selected objects.
-- **Prototype Tab:** Offers tools for creating interactive prototypes by defining user flows and interactions.
+- **تبويب التصميم:** يحتوي خصائص مظهر الكائنات المحدّدة.
+- **تبويب النموذج الأوّلي:** يوفّر أدوات لإنشاء نماذج أوّلية تفاعلية عبر تحديد مسارات المستخدم وتفاعلاته.
 
-> **Inspect Mode**
+> **وضع الفحص**
 >
-> Previously, Figma had a third mode, called **Inspect**, in this pane. This functionality has been moved into [Dev Mode](https://stevekinney.com/courses/figma/dev-mode) and is now only available for paid accounts.
+> سابقًا، كان لـFigma وضع ثالث في هذه اللوحة يُسمّى **Inspect**. وقد نُقلت هذه الوظيفة إلى [Dev Mode](https://stevekinney.com/courses/figma/dev-mode) وهي الآن متاحة فقط للحسابات المدفوعة.
 
-### Design
+### التصميم
 
-This is where the magic happens. The right side provides options for adjusting the properties of selected layers.
+هنا يحدث السحر. يوفّر الجانب الأيمن خيارات لضبط خصائص الطبقات المحدّدة.
 
-### Prototype
+### النموذج الأوّلي
 
-The **Prototype** tab enables the creation of detailed, interactive prototypes, enhancing the design process and facilitating user testing by simulating real user flows.
+يتيح تبويب **Prototype** إنشاء نماذج أوّلية تفاعلية مفصّلة، ما يعزّز عملية التصميم ويسهّل اختبار المستخدمين عبر محاكاة مسارات المستخدم الحقيقية.
 
-## Context Menu
+## قائمة السياق
 
-Right-clicking a layer opens a context menu for layer-specific actions just like it does in many other applications. The tasting note here, of course, is that this is clearly a bespoke context menu and is available both in the Web UI as well as in the Figma desktop application.
+يؤدي النقر بزر الفأرة الأيمن على طبقة إلى فتح قائمة سياق لإجراءات خاصة بالطبقة تمامًا كما يحدث في كثير من التطبيقات الأخرى. والملاحظة الطريفة هنا أن هذه قائمة سياق مصمّمة خصيصًا، وهي متاحة في واجهة الويب وفي تطبيق Figma لسطح المكتب معًا.
 
-Figma's Context Menu
+قائمة سياق Figma
 
-## The Command Palette
+## لوحة الأوامر
 
-Hitting `Command-P`/`Control-P` *or* `Command-/`/`Control-/` will allow you to pull up the Command Palette, which makes it easy to search for and jump to any command that you need. This is also a great way to learn about some of the keyboard shortcuts that are available for common tasks.
+الضغط على `Command-P`/`Control-P` *أو* `Command-/`/`Control-/` سيُظهر لك لوحة الأوامر، التي تسهّل البحث عن أي أمر تحتاجه والانتقال إليه. وهذه أيضًا طريقة رائعة للتعرّف على بعض اختصارات لوحة المفاتيح المتاحة للمهام الشائعة.
 
-Figma's Command Palette
+لوحة أوامر Figma
 
-## Keyboard Shortcuts
+## اختصارات لوحة المفاتيح
 
-You can either use the Command Palette *or* press `Control-Shift-?` and pull up this helpful guide for learning all of the keyboard shortcuts supported by Figma.
+يمكنك استخدام لوحة الأوامر *أو* الضغط على `Control-Shift-?` لإظهار هذا الدليل المفيد لتعلّم كل اختصارات لوحة المفاتيح التي يدعمها Figma.
 
-Figma Keyboard Shortcuts
+اختصارات لوحة مفاتيح Figma
 
-## Moving Around
+## التنقّل
 
-You have a few options when it comes to moving around:
+لديك بضعة خيارات عندما يتعلق الأمر بالتنقّل:
 
-- Hold the `Space` key and then drag and round.
-- Use two fingers on your track pad.
-- Switch to the Hand Tool and drag around. (This is basically the same as holding down`Space`)
+- اضغط مفتاح `Space` ثم اسحب وتحرّك.
+- استخدم إصبعين على لوحة اللمس.
+- انتقل إلى أداة اليد واسحب. (وهذا في الأساس مثل الضغط على`Space`)

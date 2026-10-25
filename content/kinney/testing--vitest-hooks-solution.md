@@ -1,10 +1,10 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/testing/vitest-hooks-solution"
 ---
 
-We could create the `Character` using a hook as follows seen below.
+يمكننا إنشاء `Character` باستخدام خطّاف كما يلي كما ترى أدناه.
 
 ```javascript
 import { describe, it, expect, beforeEach } from 'vitest';

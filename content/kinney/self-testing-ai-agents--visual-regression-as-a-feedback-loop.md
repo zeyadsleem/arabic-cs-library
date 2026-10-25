@@ -1,34 +1,34 @@
 ---
-title: "Visual Regression as a Feedback Loop"
-lang: en
+title: "الانحدار البصري كحلقة تغذية راجعة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop"
 ---
 
-I spent years thinking of visual regression testing as a CI-only concern. You check in a screenshot, CI compares against the screenshot on the next run, the build fails if there’s a diff. Nice-to-have, kind of annoying to maintain, skip it if you’re short on time.
+أمضيت سنوات أعتبر فيها اختبار الانحدار البصري شأنًا يخصّ CI وحده. تُودِع لقطة شاشة، ثم يقارنها CI باللقطة في التشغيل التالي، ويفشل البناء إن وُجد اختلاف. ميزة لطيفة إن توفّرت، ومزعجة بعض الشيء في صيانتها، فتتجاهلها إن كان وقتك ضيقًا.
 
-Then I started using agents seriously, and the whole thing flipped. Visual regression isn’t primarily a CI gate for me anymore. It’s the tightest feedback loop I have for telling an agent that its change *looks* wrong in ways that no assertion will catch.
+ثم بدأت أستخدم الوكلاء بجدّية، فانقلب الأمر رأسًا على عقب. لم يعد الانحدار البصري بالنسبة لي بوابة CI بالدرجة الأولى. بل صار أضيق حلقة تغذية راجعة أملكها لأخبر الوكيل أن تغييره *يبدو* خاطئًا بطرق لن يلتقطها أي تأكيد.
 
-Let me explain the reframe, and then we’ll look at how to actually wire it up.
+دعني أشرح إعادة التأطير هذه، ثم ننظر في كيفية ربطها فعليًا.
 
-## Why CI-only framing misses the point
+## لماذا يفوّت تأطير CI وحده الفكرة
 
-The CI-only story goes like this: you’re worried someone’s going to accidentally change the padding on a button, or flip a color, or break a layout, and no other test will catch it. Visual regression catches it by taking a screenshot and diffing it against the committed baseline.
+تسير رواية CI وحدها هكذا: أنت قلق من أن يغيّر أحدهم حشوة زرّ عن غير قصد، أو يقلب لونًا، أو يكسر تخطيطًا، ولن يلتقط ذلك أي اختبار آخر. يلتقطه الانحدار البصري بلقطة شاشة يقارنها بالأساس المُودَع.
 
-This is true, and it’s fine. But if that’s your only framing, you treat visual regression as insurance—something you pay for once, hope to never use, and grumble about when a baseline needs updating.
+هذا صحيح، ولا بأس به. لكن إن كان هذا تأطيرك الوحيد، فأنت تعامل الانحدار البصري كتأمين—تدفع ثمنه مرة واحدة، وتأمل ألّا تحتاجه أبدًا، وتتذمّر عندما يحتاج أساسٌ إلى تحديث.
 
-The agent reframing is different. When an agent touches the UI, there are two kinds of “wrong.” One is behavior wrong: a button doesn’t submit, a form doesn’t validate, a link goes to the wrong place. Your Playwright tests catch those. The other is appearance wrong: the button is there and it submits, but it’s three pixels taller than it was and now the card overflows, or the text is now white on white because of a cascade issue. Nothing in your test suite catches that, because no test asserts on visual appearance.
+تأطير الوكيل مختلف. عندما يلمس وكيل واجهة المستخدم، يوجد نوعان من «الخطأ». الأول خطأ في السلوك: زرّ لا يُرسل، أو نموذج لا يتحقّق، أو رابط يقود إلى المكان الخطأ. تلتقط اختبارات Playwright هذه الأخطاء. والثاني خطأ في المظهر: الزرّ موجود ويُرسل فعلًا، لكنه أطول بثلاثة بكسلات مما كان فأصبحت البطاقة تفيض، أو صار النص أبيض على أبيض بسبب مشكلة في التتالي. لا شيء في مجموعة اختباراتك يلتقط ذلك، لأن لا اختبار يؤكّد على المظهر البصري.
 
-Until you add a screenshot diff.
+إلى أن تضيف فرق لقطة شاشة.
 
-Now the agent has a signal. “You changed the button component. The shelf page screenshot is different. Here’s the diff. Was that intentional?” Most of the time the answer is “no, please fix it.” Sometimes it’s “yes, update the baseline.” Either way, the agent knows something happened that no functional test would have flagged.
+الآن صار لدى الوكيل إشارة. «لقد غيّرت مكوّن الزر. لقطة شاشة صفحة Shelf مختلفة. هذا هو الفرق. هل كان ذلك مقصودًا؟» في معظم الأحيان يكون الجواب «لا، أصلحه من فضلك». وأحيانًا يكون «نعم، حدّث الأساس». في الحالتين، يعرف الوكيل أن شيئًا قد حدث لن تشير إليه أي اختبارات وظيفية.
 
-And here’s the part I didn’t expect: **the diff is legible to the agent.** You can feed a visual regression diff into an agent that can read images, and it will tell you, in plain language, what changed. “The button in the top-right is now taller and no longer aligned with the search bar.” That’s real, actionable feedback that the agent can act on without a human in the loop.
+وهنا الجزء الذي لم أتوقّعه: **الفرق مقروء بالنسبة للوكيل.** يمكنك تمرير فرق انحدار بصري إلى وكيل يستطيع قراءة الصور، وسيخبرك بلغة واضحة بما تغيّر. «الزر في أعلى اليمين أصبح أطول ولم يعد محاذيًا لشريط البحث.» هذه تغذية راجعة حقيقية قابلة للتنفيذ يمكن للوكيل أن يتصرف بناءً عليها دون وجود إنسان في الحلقة.
 
-## Playwright’s built-in: `toHaveScreenshot`
+## الأداة المدمجة في Playwright: `toHaveScreenshot`
 
-Playwright has a screenshot assertion that’s good enough to build a real visual regression suite on. It’s not as flashy as [Chromatic](https://www.chromatic.com/) or [Percy](https://www.browserstack.com/percy), but it’s free, it runs locally, it commits snapshots to git alongside the code, and it does exactly what we need for the in-dev feedback loop.
+يملك Playwright تأكيدًا على لقطات الشاشة يكفي لبناء مجموعة انحدار بصري حقيقية عليه. ليس بلمعان [Chromatic](https://www.chromatic.com/) أو [Percy](https://www.browserstack.com/percy)، لكنه مجاني، ويعمل محليًا، ويُودِع اللقطات في git إلى جانب الشيفرة، ويفعل بالضبط ما نحتاجه لحلقة التغذية الراجعة أثناء التطوير.
 
-[Playwright’s `toHaveScreenshot`](https://playwright.dev/docs/test-snapshots) is the tool we’ll use for all visual regression in this workshop.
+[أداة `toHaveScreenshot` في Playwright](https://playwright.dev/docs/test-snapshots) هي الأداة التي سنستخدمها لكل الانحدار البصري في هذه الورشة.
 
 ```typescript
 test('shelf page matches visual baseline', async ({ page }) => {
@@ -37,23 +37,23 @@ test('shelf page matches visual baseline', async ({ page }) => {
 });
 ```
 
-Once you finish the companion lab, Shelf will run authenticated visual tests inside the same `authenticated` Playwright project the rest of the suite uses, with a `beforeEach` that calls `resetShelfContent` so every diff starts from the same seeded shelf state. If your project has a reason to separate visual reads from write-heavy tests (say, both suites racing the same user’s data), you can point a second Playwright project at a different storage-state file, but do not reach for that complexity until a concrete conflict forces it.
+بعد أن تنتهي من المختبر المرافق، سيشغّل Shelf اختبارات بصرية موثّقة داخل مشروع Playwright نفسه المسمّى `authenticated` الذي تستخدمه بقية المجموعة، مع `beforeEach` ينادي `resetShelfContent` كي يبدأ كل فرق من حالة رفّ مزروعة واحدة. إن كان لمشروعك سبب لفصل القراءات البصرية عن الاختبارات الكثيفة الكتابة (مثلًا لأن المجموعتين تتسابقان على بيانات المستخدم نفسه)، فيمكنك توجيه مشروع Playwright ثانٍ إلى ملف حالة تخزين مختلف، لكن لا تلجأ إلى هذا التعقيد قبل أن يفرضه تعارض ملموس.
 
-First run: Playwright takes a screenshot and writes it under `tests/visual-authenticated.spec.ts-snapshots/`. By default the filename also carries a project and platform suffix (for example, `shelf-page-authenticated-darwin.png`), because Playwright’s default `snapshotPathTemplate` appends `{-projectName}{-snapshotSuffix}` to the argument you passed. You can keep that suffix or override the template in `playwright.config.ts` if you want a shorter filename. The snapshot directory is still named after the test file, so a different `<test-file>.spec.ts` would produce a different `<test-file>.spec.ts-snapshots/` folder. The test “passes” because there’s nothing to compare against.
+في التشغيل الأول: يأخذ Playwright لقطة شاشة ويكتبها تحت `tests/visual-authenticated.spec.ts-snapshots/`. يحمل اسم الملف افتراضيًا لاحقة المشروع والمنصّة أيضًا (مثلًا `shelf-page-authenticated-darwin.png`)، لأن `snapshotPathTemplate` الافتراضي في Playwright يضيف `{-projectName}{-snapshotSuffix}` إلى الوسيط الذي مرّرته. يمكنك الإبقاء على تلك اللاحقة أو تجاوز القالب في `playwright.config.ts` إن أردت اسم ملف أقصر. يبقى مجلد اللقطات مسمّى باسم ملف الاختبار، لذا فإن ملفًا مختلفًا باسم `<test-file>.spec.ts` سينتج مجلد `<test-file>.spec.ts-snapshots/` مختلفًا. الاختبار «ينجح» لعدم وجود ما يُقارن به.
 
-Every subsequent run: Playwright takes a new screenshot and compares it to the committed baseline. If they match pixel-for-pixel (modulo a small tolerance), the test passes. If they don’t, the test fails, and Playwright writes three files to your report directory: the baseline, the actual, and a diff image highlighting the changed pixels.
+في كل تشغيل لاحق: يأخذ Playwright لقطة جديدة ويقارنها بالأساس المُودَع. إن تطابقتا بكسلًا ببكسل (مع هامش تفاوت صغير)، ينجح الاختبار. وإن لم تتطابقا، يفشل الاختبار، ويكتب Playwright ثلاثة ملفات في مجلد التقارير: الأساس، والفعلي، وصورة فرق تُبرز البكسلات المتغيّرة.
 
-You commit the baseline to git. When you make an intentional visual change, you regenerate the baseline (`--update-snapshots`) in the same commit. Reviewers see the old baseline being replaced with the new baseline in the diff and can eyeball whether the change was intentional.
+أنت تُودِع الأساس في git. وعندما تُجري تغييرًا بصريًا مقصودًا، تعيد توليد الأساس (`--update-snapshots`) في الالتزام نفسه. يرى المراجعون الأساس القديم يُستبدل بالأساس الجديد في الفرق، ويستطيعون الحكم بالنظر إن كان التغيير مقصودًا.
 
-After you complete the companion lab, Shelf will have `tests/visual-authenticated.spec.ts` using `expect.toHaveScreenshot(...)`, with the committed baselines under `tests/visual-authenticated.spec.ts-snapshots/`. The normal way through the loop is `npm run test`, the focused way is `npm run test -- --grep visual`, and the intentional-baseline-update path is `npm run test -- --update-snapshots`.
+بعد إكمال المختبر المرافق، سيصبح لدى Shelf الملف `tests/visual-authenticated.spec.ts` مستخدمًا `expect.toHaveScreenshot(...)`، مع الأساسات المُودَعة تحت `tests/visual-authenticated.spec.ts-snapshots/`. الطريق المعتاد عبر الحلقة هو `npm run test`، والطريق المركّز هو `npm run test -- --grep visual`، ومسار تحديث الأساس المقصود هو `npm run test -- --update-snapshots`.
 
-## Making screenshot tests reliable
+## جعل اختبارات لقطات الشاشة موثوقة
 
-The number-one complaint about visual regression is “the baselines are always flaky.” This is almost always fixable. Flakiness in screenshots comes from a few specific sources, and every one has a specific knob.
+الشكوى الأكثر شيوعًا بشأن الانحدار البصري هي «الأساسات دائمًا متقلّبة». وهذا قابل للإصلاح في كل الحالات تقريبًا. ينبع التقلّب في لقطات الشاشة من مصادر محدّدة قليلة، ولكل واحد منها مِقبض محدّد.
 
-**Font rendering differences.** Same font, different OS, different antialiasing. Test on your Mac, commit the baseline, CI (Linux) produces subtly different text. The fix is to run screenshots in a consistent environment. Either use Playwright’s Docker image everywhere or only run screenshot tests on CI with a pinned Linux image. My preference: do both runs in Docker so the baseline on your laptop matches the baseline on CI.
+**اختلافات رسم الخطوط.** الخط نفسه، ونظام تشغيل مختلف، وتنعيم حواف مختلف. تختبر على جهاز Mac، وتُودِع الأساس، ثم ينتج CI (على Linux) نصًا مختلفًا اختلافًا دقيقًا. الإصلاح هو تشغيل اللقطات في بيئة متّسقة. استخدم صورة Docker الخاصة بـ Playwright في كل مكان، أو شغّل اختبارات اللقطات على CI فقط بصورة Linux مثبّتة. تفضيلي: إجراء التشغيلين في Docker حتى يطابق الأساس على حاسوبك الأساس على CI.
 
-**Animations and transitions.** A button with a hover animation, a loading spinner, a fade-in transition—anything that moves is going to create a flaky screenshot. Playwright’s `toHaveScreenshot` supports `animations: 'disabled'` in config, which injects CSS to disable animations. Use it.
+**الحركات والانتقالات.** زرّ بحركة عند التحويم، أو مؤشّر تحميل دوّار، أو انتقال بتلاشٍ تدريجي—أي شيء يتحرّك سيصنع لقطة متقلّبة. يدعم `toHaveScreenshot` في Playwright الخيار `animations: 'disabled'` في الإعداد، وهو يحقن CSS يعطّل الحركات. استخدمه.
 
 ```typescript
 // playwright.config.ts
@@ -69,9 +69,9 @@ export default defineConfig({
 });
 ```
 
-`animations: 'disabled'` kills CSS transitions. `caret: 'hide'` hides the blinking text cursor in inputs (which changes every half second and ruins screenshots). `scale: 'css'` ensures the screenshot uses CSS pixels regardless of device pixel ratio.
+`animations: 'disabled'` يُنهي انتقالات CSS. و`caret: 'hide'` يخفي مؤشّر الكتابة الوامض في الحقول (وهو يتغيّر كل نصف ثانية ويُفسد اللقطات). و`scale: 'css'` يضمن أن تستخدم اللقطة بكسلات CSS بصرف النظر عن كثافة بكسلات الجهاز.
 
-**Dynamic content.** A timestamp that says “2 minutes ago” is going to be “3 minutes ago” by the next run. A user-generated avatar, a random quote of the day, a visible date—any of these will break the diff. You have two options: mock the dynamic content (for example, install `page.clock` and set a fixed time, or seed the database with fixed content) or mask the dynamic regions with the `mask` option:
+**المحتوى الديناميكي.** طابع زمني يقول «قبل دقيقتين» سيصبح «قبل ثلاث دقائق» في التشغيل التالي. صورة رمزية يولّدها المستخدم، أو اقتباس عشوائي لليوم، أو تاريخ ظاهر—أي من هذه سيكسر الفرق. أمامك خياران: محاكاة المحتوى الديناميكي (مثلًا تثبيت `page.clock` وضبط وقت ثابت، أو زرع قاعدة البيانات بمحتوى ثابت)، أو حجب المناطق الديناميكية بخيار `mask`:
 
 ```typescript
 await expect(page).toHaveScreenshot('shelf-page.png', {
@@ -79,12 +79,12 @@ await expect(page).toHaveScreenshot('shelf-page.png', {
 });
 ```
 
-Masked regions get painted with a solid color in both the baseline and the actual, so they never affect the diff.
+تُطلَى المناطق المحجوبة بلون صلب في الأساس والفعلي معًا، لذا لا تؤثر في الفرق أبدًا.
 
-Two underused screenshot knobs from the [Page assertions API](https://playwright.dev/docs/api/class-pageassertions) are `maskColor` and `stylePath`.
+من المقابض قليلة الاستخدام في [واجهة تأكيدات الصفحة](https://playwright.dev/docs/api/class-pageassertions) اثنان: `maskColor` و`stylePath`.
 
-- `maskColor` changes the default hot-pink mask to something less distracting in diffs.
-- `stylePath` applies a temporary stylesheet only while the screenshot is captured. Use it to kill pulse animations, hide a volatile badge, or neutralize a noisy embed without changing the app itself.
+- `maskColor` يغيّر لون الحجب الوردي الصارخ الافتراضي إلى لون أقل تشتيتًا في الفروق.
+- `stylePath` يطبّق ورقة أنماط مؤقتة أثناء التقاط اللقطة فقط. استخدمه لإنهاء حركات النبض، أو إخفاء شارة متقلّبة، أو تحييد تضمين مزعج دون تغيير التطبيق نفسه.
 
 ```typescript
 await expect(page).toHaveScreenshot('shelf-page.png', {
@@ -94,51 +94,51 @@ await expect(page).toHaveScreenshot('shelf-page.png', {
 });
 ```
 
-The sneaky useful part is `stylePath`. Playwright applies that stylesheet through Shadow DOM and inner frames too, which is exactly the kind of controlled cheating screenshot tests sometimes need. If you drop down to `page.screenshot()` instead of `toHaveScreenshot()`, the lower-level version of that knob is inline `style` rather than `stylePath`.
+الجزء الخفي النافع هو `stylePath`. يطبّق Playwright تلك الورقة عبر Shadow DOM والإطارات الداخلية أيضًا، وهو بالضبط نوع الغش المنضبط الذي تحتاجه اختبارات اللقطات أحيانًا. إن نزلت إلى `page.screenshot()` بدلًا من `toHaveScreenshot()`، فالنسخة الأدنى من ذلك المِقبض هي `style` المضمّنة بدلًا من `stylePath`.
 
-**Scrollbars.** They vary by OS. Playwright’s screenshots ignore them by default on most setups, but double-check if your layout includes scrollable regions.
+**أشرطة التمرير.** تختلف باختلاف نظام التشغيل. تتجاهلها لقطات Playwright افتراضيًا في معظم الإعدادات، لكن تحقّق مرتين إن كان تخطيطك يتضمّن مناطق قابلة للتمرير.
 
-Fix these four things and screenshot tests are boring and reliable. Skip them and they’re the flakiest tests in your suite. There is no in-between.
+أصلح هذه الأمور الأربعة، تصبح اختبارات اللقطات مملّة وموثوقة. تجاهلها، تصبح أكثر اختبارات مجموعتك تقلّبًا. لا يوجد حلّ وسط.
 
-## Component-level vs page-level screenshots
+## لقطات على مستوى المكوّن مقابل لقطات على مستوى الصفحة
 
-Page-level screenshots are what I showed above: `expect(page).toHaveScreenshot`. They’re what you want for catching layout regressions and big visual changes.
+اللقطات على مستوى الصفحة هي ما عرضته أعلاه: `expect(page).toHaveScreenshot`. وهي ما تريده لالتقاط انحدارات التخطيط والتغييرات البصرية الكبيرة.
 
-Component-level screenshots are what you want for catching design system drift. If you have a `<Button>` component used everywhere, take a screenshot of `<Button>` in every state (default, hover, disabled, loading) and assert against those. Now if someone changes the base button styles, the component screenshots fail *before* any page screenshot has a chance to fail, and the failure is much more specific.
+اللقطات على مستوى المكوّن هي ما تريده لالتقاط انحراف نظام التصميم. إن كان لديك مكوّن `<Button>` يُستخدم في كل مكان، فخذ لقطة له في كل حالة (الافتراضية، والتحويم، والتعطيل، والتحميل) وأكّد عليها. الآن إن غيّر أحدهم أنماط الزر الأساسية، تفشل لقطات المكوّن *قبل* أن تسنح لأي لقطة صفحة فرصة الفشل، ويكون الفشل أكثر تحديدًا بكثير.
 
-Playwright’s component testing lets you do this, but honestly, for SvelteKit the simpler pattern is to have a `/design-system` route (or [Storybook](https://storybook.js.org/), if you already use it) that renders every component in every state, and take a page screenshot of *that*. It’s less magical and it uses the same tooling as the rest of your end-to-end suite.
+يتيح لك اختبار المكوّنات في Playwright فعل ذلك، لكن بصراحة، النمط الأبسط في SvelteKit هو أن يكون لديك مسار `/design-system` (أو [Storybook](https://storybook.js.org/) إن كنت تستخدمه بالفعل) يعرض كل مكوّن في كل حالة، ثم تأخذ لقطة صفحة *له*. إنه أقل سحرًا ويستخدم الأدوات نفسها التي تستخدمها بقية مجموعة اختباراتك من طرف إلى طرف.
 
-Shelf is going to ship with a `/design-system` route specifically for this purpose. One screenshot test covers it. The whole design system is under visual regression with one line of code.
+سيأتي Shelf بمسار `/design-system` لهذا الغرض تحديدًا. اختبار لقطة واحد يغطّيه. نظام التصميم كله تحت الانحدار البصري بسطر شيفرة واحد.
 
-## Chromatic, Percy, and the cloud tools
+## Chromatic وPercy والأدوات السحابية
 
-Built-in screenshots are great for the dev loop. They’re more limited than the cloud tools in two ways:
+اللقطات المدمجة رائعة لحلقة التطوير. لكنها أكثر محدودية من الأدوات السحابية في أمرين:
 
-- **Cross-browser matrix.** Chromatic runs your screenshots across Chrome, Safari, Firefox, and a bunch of viewports in parallel. Playwright can do this too, but each browser is a separate project and the coordination is on you.
-- **Review workflow.** Chromatic’s web UI for reviewing visual diffs (approve, reject, compare branches) is substantially better than staring at PNG files in a PR. For a team that ships visual changes often, the review UX is worth the price.
+- **مصفوفة المتصفحات المتعددة.** يشغّل Chromatic لقطاتك عبر Chrome وSafari وFirefox وعدد من أحجام العرض بالتوازي. يستطيع Playwright فعل ذلك أيضًا، لكن كل متصفح مشروع منفصل والتنسيق عليك.
+- **سير عمل المراجعة.** واجهة Chromatic على الويب لمراجعة الفروق البصرية (الموافقة، والرفض، ومقارنة الفروع) أفضل بكثير من التحديق في ملفات PNG داخل طلب سحب. لفريق يشحن تغييرات بصرية كثيرًا، تجربة المراجعة تستحق الثمن.
 
-My recommendation: start with the built-in. If you find your team is drowning in manual diff review, or you need cross-browser coverage, then add Chromatic on top. Don’t reach for the cloud tool first just because it’s flashier. Built-in screenshots give the agent the feedback it needs during development, which is the harder problem.
+توصيتي: ابدأ بالمدمج. إن وجدت فريقك يغرق في مراجعة الفروق يدويًا، أو احتجت تغطية متعددة المتصفحات، فأضف Chromatic فوقه. لا تمدّ يدك إلى الأداة السحابية أولًا لمجرد أنها أكثر لمعانًا. اللقطات المدمجة تمنح الوكيل التغذية الراجعة التي يحتاجها أثناء التطوير، وهذه هي المشكلة الأصعب.
 
-## Feeding diffs to the agent
+## تغذية الفروق إلى الوكيل
 
-Here’s the bit that was news to me.
+وهنا الجزء الذي كان جديدًا عليّ.
 
-When a screenshot test fails, the failure report includes the diff image. Claude Code and other agents that can read images can use that diff directly.
+عندما يفشل اختبار لقطة، يتضمّن تقرير الفشل صورة الفرق. يستطيع Claude Code ووكلاء آخرون يستطيعون قراءة الصور استخدام ذلك الفرق مباشرة.
 
-One important correction, though: this is **not** a Git hook.
+لكن ثمة تصحيح مهم: هذا **ليس** خطّاف Git.
 
-Git hooks like the ones in [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) run on commit or push. They are good for forcing the screenshot test to run before code leaves your machine. They are not the right place to enrich the agent’s next turn with the failing artifact.
+خطّافات Git مثل تلك الموجودة في [خطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) تعمل عند الالتزام أو الدفع. وهي جيدة لإجبار اختبار اللقطة على العمل قبل أن يغادر الكود جهازك. لكنها ليست المكان المناسب لإثراء دورة الوكيل التالية بالأثر الفاشل.
 
-If you want the agent to react immediately after the screenshot test fails, the right abstraction is an **agent hook**:
+إن أردت أن يتفاعل الوكيل فورًا بعد فشل اختبار اللقطة، فالتجريد الصحيح هو **خطّاف وكيل**:
 
-- in Claude Code, a [`PostToolUseFailure` hook](https://code.claude.com/docs/en/hooks)
-- in Codex, a [`PostToolUse` or `PreToolUse` Bash hook](https://developers.openai.com/codex/hooks)
+- في Claude Code، [خطّاف `PostToolUseFailure`](https://code.claude.com/docs/en/hooks)
+- في Codex، [خطّاف Bash من نوع `PostToolUse` أو `PreToolUse`](https://developers.openai.com/codex/hooks)
 
-As of **April 14, 2026**, Codex hooks are still marked experimental and its Bash interception is still partial, so the concrete example below uses Claude Code. The same idea ports over: inspect the failed test command, find the newest screenshot diff on disk, and feed that path back into the agent loop.
+حتى **14 أبريل 2026**، ما تزال خطّافات Codex مصنّفة تجريبية، وما يزال اعتراض Bash فيها جزئيًا، لذا يستخدم المثال الملموس أدناه Claude Code. والفكرة نفسها تنتقل: افحص أمر الاختبار الفاشل، واعثر على أحدث فرق لقطة على القرص، ثم أعِد ذلك المسار إلى حلقة الوكيل.
 
-Also: the hook is not literally uploading PNG bytes into the model context. The documented hook APIs add **text context**. In practice, that means the hook should tell the agent exactly which diff file to open next.
+كذلك: الخطّاف لا يرفع بايتات PNG حرفيًا إلى سياق النموذج. واجهات الخطّافات الموثّقة تضيف **سياقًا نصيًا**. عمليًا، هذا يعني أن على الخطّاف أن يخبر الوكيل بالضبط أي ملف فرق يفتحه تاليًا.
 
-Here’s a minimal Claude Code hook that does that:
+إليك خطّاف Claude Code أدنى يفعل ذلك:
 
 ```json
 // .claude/settings.json
@@ -223,19 +223,19 @@ process.stdout.write(
 );
 ```
 
-What this hook buys you is simple:
+ما يمنحك إياه هذا الخطّاف بسيط:
 
-- the failing screenshot test is still the source of truth
-- the hook turns “a diff exists somewhere in `playwright-report/`” into “open this exact file next”
-- the agent gets the next step as structured feedback instead of improvising from a red test line
+- اختبار اللقطة الفاشل يبقى مصدر الحقيقة
+- يحوّل الخطّاف «يوجد فرق في مكان ما داخل `playwright-report/`» إلى «افتح هذا الملف تحديدًا تاليًا»
+- يحصل الوكيل على الخطوة التالية كتغذية راجعة منظمة بدلًا من الارتجال انطلاقًا من سطر اختبار أحمر
 
-The agent will say things like, “The ‘Rate’ button is now 4 pixels taller because the new icon component has extra padding. The `ShelfCard` component now overflows. Either reduce the padding or increase the card height.” That’s the diff read back in natural language, as a prompt for the next edit.
+سيقول الوكيل أشياء مثل: «زر «Rate» أصبح أطول بـ4 بكسلات لأن مكوّن الأيقونة الجديد يحمل حشوة إضافية. مكوّن `ShelfCard` أصبح يفيض الآن. إمّا أن تقلّل الحشوة أو أن تزيد ارتفاع البطاقة.» هذا هو الفرق مقروءًا باللغة الطبيعية، كتوجيه للتعديل التالي.
 
-This is the agent self-correcting on visual feedback. Not long ago, this was science fiction. Now it is a small hook in your agent runtime.
+هذا هو الوكيل يصحّح نفسه بناءً على تغذية راجعة بصرية. لم يكن هذا بعيدًا جدًا من الخيال العلمي. والآن صار خطّافًا صغيرًا في بيئة تشغيل وكيلك.
 
-And there is a natural next question after “did the UI change visually?”: “did the same change also make the app slower or heavier?” Screenshot diffs do not answer that. [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) does.
+وثمة سؤال تالٍ طبيعي بعد «هل تغيّرت الواجهة بصريًا؟»: «هل جعل التغيير نفسه التطبيق أبطأ أو أثقل؟» لا تجيب فروق اللقطات عن ذلك. أما [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop) فتفعل.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Visual regression
@@ -253,12 +253,12 @@ And there is a natural next question after “did the UI change visually?”: �
   re-enable them per test.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Visual regression is not insurance. It’s a communication channel between you (or your agent) and the UI. Every failed screenshot is the UI telling you, “something changed that none of your other tests noticed.” For the agent, it’s the only feedback loop that checks *appearance*, and that turns out to be exactly the class of bug agents introduce most often.
+الانحدار البصري ليس تأمينًا. إنه قناة تواصل بينك (أو بين وكيلك) وبين الواجهة. كل لقطة فاشلة هي الواجهة تخبرك: «شيء ما تغيّر لم تلاحظه أي من اختباراتك الأخرى.» وبالنسبة للوكيل، إنها حلقة التغذية الراجعة الوحيدة التي تفحص *المظهر*، وتبيّن أن هذا هو بالضبط صنف الأخطاء الذي يُدخله الوكلاء في أغلب الأحيان.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Lab: Wire Visual Regression Into the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop)
+- [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [مختبر: ربط الانحدار البصري بحلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop)

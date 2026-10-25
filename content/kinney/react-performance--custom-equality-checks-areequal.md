@@ -1,16 +1,16 @@
 ---
-title: "Custom Equality Checks with areEqual"
-lang: en
+title: "فحوصات التساوي المخصّصة عبر areEqual"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/custom-equality-checks-areequal"
 ---
 
-React’s memoization features like `React.memo()`, `useMemo()`, and `useCallback()` are powerful performance tools, but they’re only as smart as their equality checks. By default, React uses shallow comparison—which works great until it doesn’t. When you need more control over when your components re-render, custom equality functions with `areEqual` let you write domain-specific logic that’s both performant and correct.
+ميزات حفظ النتائج في React مثل `React.memo()` و`useMemo()` و`useCallback()` أدوات أداء قوية، لكنها لا تكون أذكى من فحوصات التساوي الخاصة بها. فافتراضيًا يستخدم React المقارنة السطحية — وهي تعمل على نحو ممتاز حتى تتوقف عن ذلك. وعندما تحتاج إلى تحكّم أكبر في موعد إعادة تصيير مكوّناتك، تتيح لك دوال التساوي المخصّصة مع `areEqual` كتابة منطق خاص بمجال عملك يكون سريعًا وصحيحًا في آن واحد.
 
-Understanding when and how to write custom equality checks is crucial for building React applications that stay fast as they scale. We’ll explore the tradeoffs, common patterns, and practical techniques for implementing `areEqual` functions that avoid the deep-compare performance trap while keeping your UI consistent.
+وإن فهم متى تكتب فحوصات التساوي المخصّصة وكيفية كتابتها أمر حاسم لبناء تطبيقات React تبقى سريعة مع نموّها. وسنستكشف المقايضات والأنماط الشائعة والتقنيات العملية لتنفيذ دوال `areEqual` التي تتجنّب فخ الأداء الناتج عن المقارنة العميقة مع الحفاظ على اتساق واجهتك.
 
-## Why Default Equality Isn’t Always Enough
+## لماذا لا يكفي التساوي الافتراضي دائمًا
 
-React’s default shallow equality works perfectly for primitives and simple object references:
+تعمل المقارنة السطحية الافتراضية في React بشكل مثالي مع القيم الأولية ومراجع الكائنات البسيطة:
 
 ```typescript
 // ✅ Shallow equality handles these well
@@ -24,7 +24,7 @@ const MemoizedCounter = React.memo(({ count, label }) => (
 <MemoizedCounter count={5} label="Items" />;
 ```
 
-But things get tricky with complex objects, arrays, or when you need business-logic-specific comparisons:
+لكن الأمور تتعقّد مع الكائنات المعقّدة والمصفوفات، أو عندما تحتاج إلى مقارنات خاصة بمنطق عملك:
 
 ```typescript
 // ❌ This will always re-render due to new object reference
@@ -40,11 +40,11 @@ const settings = { theme: 'dark', notifications: true };
 <Dashboard settings={settings} />;
 ```
 
-This is where custom equality functions shine—they let you define exactly what “equal” means for your specific use case.
+وهنا تتألّق دوال التساوي المخصّصة — فهي تتيح لك تحديد معنى «التساوي» بدقة لحالة استخدامك الخاصة.
 
-## The areEqual Function Signature
+## توقيع دالة areEqual
 
-When using `React.memo()` with a custom equality function, you’re implementing the `areEqual` pattern:
+عند استخدام `React.memo()` مع دالة تساوي مخصّصة، فأنت تنفّذ نمط `areEqual`:
 
 ```typescript
 const areEqual = (prevProps: Props, nextProps: Props): boolean => {
@@ -55,15 +55,15 @@ const areEqual = (prevProps: Props, nextProps: Props): boolean => {
 const MemoizedComponent = React.memo(Component, areEqual);
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> The return value is inverted from what you might expect: `true` means “don’t re-render” and `false` means “do re-render.”
+> قيمة الإرجاع معكوسة عمّا قد تتوقّع: فالقيمة `true` تعني «لا تُعِد التصيير» والقيمة `false` تعني «أعِد التصيير».
 
-## Practical areEqual Patterns
+## أنماط عملية لـ areEqual
 
-### Comparing Specific Object Properties
+### مقارنة خصائص محدّدة من الكائن
 
-Instead of deep-comparing entire objects, focus on the properties that actually matter:
+بدلًا من المقارنة العميقة لكائنات بأكملها، ركّز على الخصائص التي تهمّ فعلًا:
 
 ```typescript
 interface UserProfileProps {
@@ -99,11 +99,11 @@ const UserProfile = React.memo(
 );
 ```
 
-This component won’t re-render when `lastLogin` or `preferences` change, but will update when the user’s display information changes.
+لن يُعاد تصيير هذا المكوّن عند تغيّر `lastLogin` أو `preferences`، لكنه سيُحدَّث عند تغيّر معلومات العرض الخاصة بالمستخدم.
 
-### Array Content Comparison
+### مقارنة محتوى المصفوفات
 
-For arrays where order matters but you want to avoid unnecessary re-renders:
+للمصفوفات التي يهمّ فيها الترتيب لكنك تريد تجنّب إعادات التصيير غير الضرورية:
 
 ```typescript
 interface TaskListProps {
@@ -143,9 +143,9 @@ const TaskList = React.memo(({ tasks, filter }) => {
 }, areEqual);
 ```
 
-### Configuration Object Patterns
+### أنماط كائنات التهيئة
 
-When dealing with settings or configuration objects, you often care about logical equality rather than reference equality:
+عند التعامل مع كائنات الإعدادات أو التهيئة، غالبًا ما يهمّك التساوي المنطقي بدلًا من تساوي المراجع:
 
 ```typescript
 interface ChartProps {
@@ -190,11 +190,11 @@ const Chart = React.memo(({ data, options }) => {
 }, areEqual);
 ```
 
-## Advanced areEqual Techniques
+## تقنيات متقدّمة لـ areEqual
 
-### Using WeakMap for Performance
+### استخدام WeakMap من أجل الأداء
 
-For complex objects that you compare frequently, consider caching comparison results:
+للكائنات المعقّدة التي تقارنها كثيرًا، فكّر في تخزين نتائج المقارنة مؤقتًا:
 
 ```typescript
 const comparisonCache = new WeakMap();
@@ -223,9 +223,9 @@ const areEqual = (prev: ComplexProps, next: ComplexProps): boolean => {
 };
 ```
 
-### Fuzzy Equality for Numeric Data
+### تساوٍ تقريبي للبيانات الرقمية
 
-Sometimes exact equality is too strict—especially for floating-point numbers or visual properties:
+أحيانًا يكون التساوي التام صارمًا أكثر من اللازم — خصوصًا مع الأعداد العشرية أو الخصائص البصرية:
 
 ```typescript
 const EPSILON = 0.001;
@@ -251,8 +251,8 @@ const AnimatedElement = React.memo(
   ({ position, rotation, scale }) => (
     <div
       style={{
-        transform: `translate(${position.x}px, ${position.y}px) 
-                rotate(${rotation}deg) 
+        transform: `translate(${position.x}px, ${position.y}px)
+                rotate(${rotation}deg)
                 scale(${scale})`,
       }}
     >
@@ -263,9 +263,9 @@ const AnimatedElement = React.memo(
 );
 ```
 
-## Common Pitfalls and How to Avoid Them
+## مزالق شائعة وكيفية تجنّبها
 
-### The Deep Equality Trap
+### فخ التساوي العميق
 
 ```typescript
 // ❌ Don't do this - it's slow and defeats the purpose
@@ -274,9 +274,9 @@ const areEqual = (prev: Props, next: Props): boolean => {
 };
 ```
 
-Deep equality checks can be slower than just re-rendering. Instead, be selective about what you compare.
+قد تكون فحوصات التساوي العميق أبطأ من إعادة التصيير نفسها. فكن انتقائيًا في ما تقارنه بدلًا من ذلك.
 
-### Forgetting Function References
+### نسيان مراجع الدوال
 
 ```typescript
 // ❌ Missing function comparison
@@ -290,9 +290,9 @@ const areEqual = (prev: Props, next: Props): boolean => {
 };
 ```
 
-### Over-Optimizing
+### الإفراط في التحسين
 
-Not every component needs custom equality. Profile first, optimize second:
+ليست كل مكوّن بحاجة إلى تساوٍ مخصّص. قِس الأداء أولًا، وحسّن ثانيًا:
 
 ```typescript
 // ❌ Unnecessary complexity for a simple component
@@ -305,11 +305,11 @@ const SimpleButton = React.memo(
 const SimpleButton = React.memo(({ label, onClick }) => <button onClick={onClick}>{label}</button>);
 ```
 
-## Real World Use Cases™
+## حالات استخدام واقعية™
 
-### Form Field Optimization
+### تحسين حقول النماذج
 
-Forms with many fields benefit from granular equality checks:
+تستفيد النماذج ذات الحقول الكثيرة من فحوصات التساوي الدقيقة:
 
 ```typescript
 interface FormFieldProps {
@@ -346,9 +346,9 @@ const FormField = React.memo(
 );
 ```
 
-### Data Visualization Components
+### مكوّنات تصوير البيانات
 
-Charts and graphs often need custom equality for performance:
+غالبًا ما تحتاج الرسوم البيانية والمنحنيات إلى تساوٍ مخصّص من أجل الأداء:
 
 ```typescript
 interface DataVisualizationProps {
@@ -386,9 +386,9 @@ const areEqual = (prev: DataVisualizationProps, next: DataVisualizationProps): b
 };
 ```
 
-## Testing Your areEqual Functions
+## اختبار دوال areEqual
 
-Custom equality functions should be tested like any other business logic:
+ينبغي اختبار دوال التساوي المخصّصة مثل أي منطق عمل آخر:
 
 ```typescript
 describe('UserProfile areEqual', () => {
@@ -424,33 +424,33 @@ describe('UserProfile areEqual', () => {
 });
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### When to Use areEqual
+### متى تستخدم areEqual
 
-Use custom equality when:
+استخدم التساوي المخصّص عندما:
 
-- Default shallow comparison causes unnecessary re-renders
-- You’re dealing with complex nested objects
-- The component is expensive to render
-- You have domain-specific equality requirements
+- تُسبّب المقارنة السطحية الافتراضية إعادات تصيير غير ضرورية
+- تتعامل مع كائنات متداخلة معقّدة
+- يكون تصيير المكوّن مكلفًا
+- تكون لديك متطلبات تساوٍ خاصة بمجال عملك
 
-### When NOT to Use areEqual
+### متى لا تستخدم areEqual
 
-Skip custom equality when:
+تخطَّ التساوي المخصّص عندما:
 
-- The component is already fast to render
-- Props change frequently anyway
-- The equality logic itself is complex and slow
-- Default behavior works fine
+- يكون تصيير المكوّن سريعًا أصلًا
+- تتغيّر الخصائص بشكل متكرر على أي حال
+- يكون منطق التساوي نفسه معقّدًا وبطيئًا
+- يكون السلوك الافتراضي جيدًا بما يكفي
 
-> **Tip**
+> **نصيحة**
 >
-> Profile your app with React DevTools Profiler before optimizing. Sometimes the equality check itself can be more expensive than just re-rendering.
+> قِس أداء تطبيقك بـ React DevTools Profiler قبل التحسين. فأحيانًا يكون فحص التساوي نفسه أكثر تكلفة من مجرد إعادة التصيير.
 
-## Integration with Other Hooks
+## التكامل مع الخُطّافات الأخرى
 
-Custom equality isn’t just for `React.memo()`. You can apply similar patterns with other hooks:
+لا يقتصر التساوي المخصّص على `React.memo()`. فيمكنك تطبيق أنماط مشابهة مع خُطّافات أخرى:
 
 ```typescript
 // Custom comparison in useMemo

@@ -1,37 +1,38 @@
 ---
-title: "Constraints"
-lang: en
+title: "القيود"
+lang: ar
 source: "https://stevekinney.com/courses/figma/constraints"
 ---
 
-Constraints control how the layers within a frame should behave when the size of the frame changes. By default, a layer’s constraints are set to to top and left.
+تتحكّم القيود في كيفية تصرّف الطبقات داخل إطار عند تغيّر حجم الإطار. فافتراضيًا، تُضبط قيود الطبقة على الأعلى واليسار.
 
-**Pro Tip**: Constraints *only* show up when an object is inside of a frame.
+**نصيحة احترافية**: لا تظهر القيود *إلا* عندما يكون الكائن داخل إطار.
 
-In Figma, you can use constraints to adjust how elements scale, shift, or stay in place based on the frame edges. This feature helps designers keep padding, spacing, and alignment the same on all screen sizes, making the user experience even better.
+في Figma، يمكنك استخدام القيود لضبط كيفية تحجيم العناصر أو إزاحتها أو بقائها في مكانها استنادًا إلى حواف الإطار. وتساعد هذه الميزة المصمّمين على الحفاظ على الحشو والمسافات والمحاذاة نفسها في كل أحجام الشاشات، ما يجعل تجربة المستخدم أفضل.
 
-If we adjust the size of the frame to the right, you’ll see that box stays in it’s initial position. But, we can change this behavior.
+إذا عدّلنا حجم الإطار إلى اليمين، سترى أن المربّع يبقى في موضعه الأوّلي. لكن يمكننا تغيير هذا السلوك.
 
-## Setting Up Constraints
+## إعداد القيود
 
-Okay, let’s say you want to set up some constraints:
+حسنًا، لنفترض أنك تريد إعداد بعض القيود:
 
-1. **Select an Element:** Click on the element you want to apply constraints to within your frame.
-2. **Access the Constraints Panel:** In the right-hand side panel under the **Design** tab, locate the **Constraints** section.
-3. **Configure Constraints:** Choose how your element should behave horizontally and vertically. Options include: **Top/Left:** The element stays fixed to the top or left edge of the frame. **Bottom/Right:** The element remains anchored to the bottom or right edge. **Center:** The element stays centered as the frame resizes. **Scale:** The element scales proportionally with the frame.
-  - **Top/Left:** The element stays fixed to the top or left edge of the frame.
-  - **Bottom/Right:** The element remains anchored to the bottom or right edge.
-  - **Center:** The element stays centered as the frame resizes.
-  - **Scale:** The element scales proportionally with the frame.
+1. **حدّد عنصرًا:** انقر على العنصر الذي تريد تطبيق القيود عليه داخل إطارك.
+2. **افتح لوحة القيود:** في اللوحة الجانبية اليمنى ضمن تبويب **Design**، اعثر على قسم **Constraints**.
+3. **اضبط القيود:** اختر كيف ينبغي أن يتصرّف عنصرك أفقيًا ورأسيًا. تشمل الخيارات:
 
-## Some Practical Applications
+   - **Top/Left:** يبقى العنصر مثبّتًا على الحافة العلوية أو اليسرى للإطار.
+   - **Bottom/Right:** يبقى العنصر مرسوًّا على الحافة السفلية أو اليمنى.
+   - **Center:** يبقى العنصر في الوسط عند تغيير حجم الإطار.
+   - **Scale:** يتحجّم العنصر بالتناسب مع الإطار.
 
-- **Responsive Web Design**: Constraints are invaluable in responsive web design, allowing UI components to adjust gracefully as browser windows resize. For instance, setting side navigation to “Left & Scale” ensures it stretches correctly, while the main content area can be set to “Scale” to utilize available space efficiently.
-- **Adaptive Components**: Designing components like buttons and input fields with constraints means they can adapt to content changes without manual adjustment. For example, a button can be made to maintain consistent padding around its text label by setting the text to “Center” and the button background to “Scale.”
-- **Maintaining Aspect Ratios**: For elements that must maintain their aspect ratio (like logos and icons), applying constraints appropriately ensures they scale without distortion. This is crucial for preserving brand consistency across devices.
+## بعض التطبيقات العملية
 
-## Best Practices and Other Assorted Tips
+- **تصميم الويب المتجاوب**: القيود لا تُقدّر بثمن في تصميم الويب المتجاوب، إذ تتيح لمكوّنات واجهة المستخدم أن تتكيّف بلطف عند تغيير حجم نافذة المتصفّح. فمثلًا، ضبط التنقّل الجانبي على «Left & Scale» يضمن تمدّده بشكل صحيح، بينما يمكن ضبط منطقة المحتوى الرئيسية على «Scale» لاستغلال المساحة المتاحة بكفاءة.
+- **المكوّنات التكيّفية**: تصميم مكوّنات مثل الأزرار وحقول الإدخال مع القيود يعني أنها تستطيع التكيّف مع تغيّرات المحتوى دون ضبط يدوي. فمثلًا، يمكن ضبط زر بحيث يحافظ على حشو متّسق حول تسميته النصية بضبط النص على «Center» والخلفية على «Scale».
+- **الحفاظ على نسب الأبعاد**: بالنسبة إلى العناصر التي يجب أن تحافظ على نسبة أبعادها (مثل الشعارات والأيقونات)، يضمن تطبيق القيود بشكل مناسب تحجّمها دون تشوّه. وهذا أمر بالغ الأهمية للحفاظ على اتّساق العلامة التجارية عبر الأجهزة.
 
-- **Nest Frames:** To create complex responsive designs, use nested frames. Apply constraints within these frames for granular control over how each component behaves.
-- **Prototype and Test:** Use Figma’s prototyping features to test how your designs adapt to different screen sizes. This real-time feedback is essential for fine-tuning your responsive designs.
-- **Leverage Auto Layout:** Combining constraints with Figma’s Auto Layout feature can further streamline the responsiveness of your designs, especially for vertical resizing and spacing adjustments.
+## أفضل الممارسات ونصائح متنوّعة أخرى
+
+- **تداخل الإطارات:** لإنشاء تصاميم متجاوبة معقّدة، استخدم إطارات متداخلة. وطبّق القيود داخل هذه الإطارات لتحكّم دقيق في كيفية تصرّف كل مكوّن.
+- **النماذج الأوّلية والاختبار:** استخدم ميزات النماذج الأوّلية في Figma لاختبار كيفية تكيّف تصاميمك مع أحجام الشاشات المختلفة. فهذه الملاحظات الفورية أساسية لضبط تصاميمك المتجاوبة بدقة.
+- **استفد من Auto Layout:** يمكن الجمع بين القيود وميزة Auto Layout في Figma أن يزيد من تبسيط تجاوب تصاميمك، خصوصًا لتغيير الحجم رأسيًا وضبط المسافات.

@@ -1,19 +1,19 @@
 ---
-title: "An Incomplete List of Best Practices for Mocking"
-lang: en
+title: "قائمة غير مكتملة بأفضل الممارسات للمحاكاة"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-best-practices"
 ---
 
-Let’s look at some best practices when it comes to using [mocks](https://stevekinney.com/courses/testing/mocks), [stubs](https://stevekinney.com/courses/testing/stubs), [spies](https://stevekinney.com/courses/testing/spies), and other kinds of [test doubles](https://stevekinney.com/courses/testing/test-doubles).
+لننظر في بعض أفضل الممارسات عند استخدام [البدائل المُحاكاة](https://stevekinney.com/courses/testing/mocks)، و[البدائل](https://stevekinney.com/courses/testing/stubs)، و[الجواسيس](https://stevekinney.com/courses/testing/spies)، وأنواع أخرى من [البدائل الاختبارية](https://stevekinney.com/courses/testing/test-doubles).
 
-## Mock Only What You Need
+## حاكِ فقط ما تحتاجه
 
-- **Avoid Over-Mocking**: Mocking too much can make tests less valuable.
-- **Mock External Dependencies**: Focus on mocking APIs, databases, or modules outside your control.
+- **تجنّب الإفراط في المحاكاة**: المحاكاة المفرطة قد تجعل الاختبارات أقل قيمة.
+- **حاكِ الاعتمادات الخارجية**: ركّز على محاكاة واجهات API وقواعد البيانات أو الوحدات الخارجة عن سيطرتك.
 
-## Reset Mocks Between Tests
+## أعِد ضبط البدائل المُحاكاة بين الاختبارات
 
-**Ensure Isolation**: Use `vi.clearAllMocks()` or `vi.resetAllMocks()` in `afterEach` to reset mocks.
+**اضمن العزل**: استخدم `vi.clearAllMocks()` أو `vi.resetAllMocks()` داخل `afterEach` لإعادة ضبط البدائل المُحاكاة.
 
 ```javascript
 afterEach(() => {
@@ -21,53 +21,53 @@ afterEach(() => {
 });
 ```
 
-## Use Spies to Verify Interactions
+## استخدم الجواسيس للتحقق من التفاعلات
 
-**When Not to Mock**: If you want to test the actual implementation but still verify interactions, use spies.
+**متى لا تُحاكي**: إن أردت اختبار التنفيذ الفعلي مع التحقق من التفاعلات أيضًا، فاستخدم الجواسيس.
 
-## Keep Tests Readable
+## أبقِ الاختبارات قابلة للقراءة
 
-- **Descriptive Names**: Name your mocks and spies clearly to enhance readability.
-- **Arrange-Act-Assert Pattern**: Organize tests into setup, execution, and verification phases.
+- **أسماء وصفية**: سمِّ بدائلك المُحاكاة وجواسيسك بوضوح لتعزيز القراءة.
+- **نمط الترتيب-التنفيذ-التحقق**: نظّم الاختبارات في مراحل التهيئة والتنفيذ والتحقق.
 
-## Be Cautious with Global Mocks
+## توخَّ الحذر مع المحاكاة العامة
 
-- **Restore Globals**: When mocking global objects (like `fetch` or `console`), ensure they are restored after the test.
+- **أعِد الكائنات العامة**: عند محاكاة كائنات عامة (مثل `fetch` أو `console`)، احرص على إعادتها بعد الاختبار.
 
-## Common Pitfalls and How to Avoid Them
+## المزالق الشائعة وكيف تتجنّبها
 
-### Overusing Mocks
+### الإفراط في استخدام البدائل المُحاكاة
 
-**Issue**: Over-mocking can lead to tests that pass even when the code is broken.
+**المشكلة**: المحاكاة المفرطة قد تؤدي إلى اختبارات تنجح حتى عندما تكون الشيفرة معطوبة.
 
-**Solution**:
+**الحل**:
 
-- Mock only the external dependencies.
-- Allow the code under test to execute as much real logic as possible.
+- حاكِ الاعتمادات الخارجية فقط.
+- اسمح للشيفرة قيد الاختبار بتنفيذ أكبر قدر ممكن من المنطق الحقيقي.
 
-### Mock Leakage Between Tests
+### تسرّب البدائل المُحاكاة بين الاختبارات
 
-**Issue**: Mocks retain state between tests, causing unexpected behavior.
+**المشكلة**: تحتفظ البدائل المُحاكاة بحالتها بين الاختبارات، مما يسبب سلوكًا غير متوقع.
 
-**Solution**:
+**الحل**:
 
-- Use `vi.resetAllMocks()` or `vi.clearAllMocks()` in a `beforeEach` or `afterEach` hook.
+- استخدم `vi.resetAllMocks()` أو `vi.clearAllMocks()` داخل خُطّاف `beforeEach` أو `afterEach`.
 
-### Forgetting to Restore Mocked Modules
+### نسيان إعادة الوحدات المُحاكاة
 
-**Issue**: Mocked modules persist across tests.
+**المشكلة**: تبقى الوحدات المُحاكاة قائمة عبر الاختبارات.
 
-**Solution**:
+**الحل**:
 
-- Use `vi.resetModules()` to reset the module registry if needed. <code><span class="line"><span style="color:#82AAFF;font-style:italic">beforeEach</span><span style="color:#D6DEEB">(</span><span style="color:#D9F5DD">()</span><span style="color:#C792EA"> =></span><span style="color:#D6DEEB"> {</span></span>
+- استخدم `vi.resetModules()` لإعادة ضبط سجل الوحدات إن لزم. <code><span class="line"><span style="color:#82AAFF;font-style:italic">beforeEach</span><span style="color:#D6DEEB">(</span><span style="color:#D9F5DD">()</span><span style="color:#C792EA"> =></span><span style="color:#D6DEEB"> {</span></span>
 <span class="line"><span style="color:#7FDBCA;font-style:italic"> vi</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#82AAFF;font-style:italic">resetModules</span><span style="color:#D6DEEB">();</span></span>
 <span class="line"><span style="color:#D6DEEB">});</span></span></code>
 
-### Testing Implementation Details
+### اختبار تفاصيل التنفيذ
 
-**Issue**: Tests break when internal implementation changes, even if the external behavior is the same.
+**المشكلة**: تنكسر الاختبارات عندما يتغير التنفيذ الداخلي، حتى لو بقي السلوك الخارجي كما هو.
 
-**Solution**:
+**الحل**:
 
-- Focus on testing the outputs and side effects.
-- Use mocks and spies to verify interactions, not internal logic.
+- ركّز على اختبار المخرجات والآثار الجانبية.
+- استخدم البدائل المُحاكاة والجواسيس للتحقق من التفاعلات، لا من المنطق الداخلي.

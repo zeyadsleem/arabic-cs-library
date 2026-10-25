@@ -1,26 +1,26 @@
 ---
-title: "tRPC on the Client"
-lang: en
+title: "استخدام tRPC على العميل"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/trpc-on-the-client"
 ---
 
-This guide documents how we migrated the client-side API from using direct REST calls to using tRPC. Before implementing these changes, the following were set up:
+يوثّق هذا الدليل كيف نقلنا واجهة العميل البرمجية من استخدام طلبات REST المباشرة إلى استخدام tRPC. وقبل تنفيذ هذه التغييرات كان ما يلي قد جُهّز:
 
-- A tRPC server (in `/server/src/trpc.ts`)
-- Shared schemas between client and server (in `shared/schemas.ts`)
-- Existing REST API client (in `/client/src/api.ts`)
+- خادم tRPC (في `/server/src/trpc.ts`)
+- مخططات مشتركة بين العميل والخادم (في `shared/schemas.ts`)
+- عميل REST API قائم بالفعل (في `/client/src/api.ts`)
 
-## Install Dependencies
+## تثبيت الاعتمادات
 
-I already did this for you, but it feels appropriate to call it out explicitly. The first step was to install the necessary client-side tRPC packages:
+فعلت ذلك نيابةً عنك بالفعل، لكن يبدو من المناسب التنبيه إليه صراحةً. كانت الخطوة الأولى هي تثبيت حزم tRPC اللازمة على جانب العميل:
 
 ```bash
 npm install @trpc/client
 ```
 
-## Update API Client
+## تحديث عميل الواجهة البرمجية
 
-The existing REST API client was completely refactored to use tRPC:
+أُعيدت هيكلة عميل REST API القائم بالكامل لاستخدام tRPC:
 
 ```typescript
 import { type NewTask, type Task, type UpdateTask } from 'busy-bee-schema';
@@ -42,9 +42,9 @@ export const fetchTasks = async (showCompleted: boolean): Promise<Task[]> => {
 };
 ```
 
-### Key Changes Made
+### أبرز التغييرات التي أُجريت
 
-**Client Setup**: Created a tRPC proxy client that connects to the server endpoint:
+**إعداد العميل**: أنشأنا عميل tRPC الوسيط الذي يتصل بنقطة نهاية الخادم:
 
 ```typescript
 const client = createTRPCProxyClient<AppRouter>({
@@ -56,9 +56,9 @@ const client = createTRPCProxyClient<AppRouter>({
 });
 ```
 
-### Fetch Tasks
+### جلب المهام
 
-Updated to use tRPC query
+حُدِّث لاستخدام استعلام tRPC
 
 ```typescript
 export const fetchTasks = async (showCompleted: boolean): Promise<Task[]> => {
@@ -66,9 +66,9 @@ export const fetchTasks = async (showCompleted: boolean): Promise<Task[]> => {
 };
 ```
 
-### Get Single Task
+### جلب مهمة واحدة
 
-Updated to use tRPC query with ID parameter
+حُدِّث لاستخدام استعلام tRPC مع معامل المعرّف
 
 ```typescript
 export const getTask = async (id: string): Promise<Task> => {
@@ -80,9 +80,9 @@ export const getTask = async (id: string): Promise<Task> => {
 };
 ```
 
-### Create Task
+### إنشاء مهمة
 
-Updated to use tRPC mutation
+حُدِّث لاستخدام تعديل tRPC
 
 ```typescript
 export const createTask = async (task: NewTask): Promise<void> => {
@@ -90,9 +90,9 @@ export const createTask = async (task: NewTask): Promise<void> => {
 };
 ```
 
-### Update Task
+### تحديث مهمة
 
-Updated to use tRPC mutation with proper parameter structure
+حُدِّث لاستخدام تعديل tRPC مع بنية معاملات سليمة
 
 ```typescript
 export const updateTask = async (id: string, task: UpdateTask): Promise<void> => {
@@ -104,9 +104,9 @@ export const updateTask = async (id: string, task: UpdateTask): Promise<void> =>
 };
 ```
 
-### Delete Task
+### حذف مهمة
 
-Updated to use tRPC mutation
+حُدِّث لاستخدام تعديل tRPC
 
 ```typescript
 export const deleteTask = async (id: string): Promise<void> => {
@@ -114,16 +114,16 @@ export const deleteTask = async (id: string): Promise<void> => {
 };
 ```
 
-## Benefits of Using tRPC
+## فوائد استخدام tRPC
 
-1. **Type Safety**: Full end-to-end type safety between client and server
-2. **Simplified API Calls**: No need to manually construct URLs or handle HTTP errors
-3. **Automatic Type Inference**: Client automatically knows the shape of data from server
-4. **Reduced Boilerplate**: No need for explicit data validation or parsing
-5. **Better Developer Experience**: Autocomplete for available endpoints
+1. **أمان الأنواع**: أمان كامل للأنواع من طرف إلى طرف بين العميل والخادم
+2. **استدعاءات واجهة برمجية مبسّطة**: لا حاجة إلى بناء عناوين URL يدويًا أو التعامل مع أخطاء HTTP
+3. **استنتاج تلقائي للأنواع**: يعرف العميل تلقائيًا شكل البيانات القادمة من الخادم
+4. **تقليل الشيفرة المتكرّرة**: لا حاجة إلى تحقق صريح من البيانات أو تحليلها
+5. **تجربة مطوّر أفضل**: إكمال تلقائي لنقاط النهاية المتاحة
 
-## Next Steps
+## الخطوات التالية
 
-- Implement optimistic updates for improved user experience
-- Add error handling middleware
-- Consider implementing real-time updates with tRPC subscriptions
+- نفّذ تحديثات تفاؤلية لتحسين تجربة المستخدم
+- أضف وسيطًا لمعالجة الأخطاء
+- فكّر في تنفيذ تحديثات فورية باستخدام اشتراكات tRPC

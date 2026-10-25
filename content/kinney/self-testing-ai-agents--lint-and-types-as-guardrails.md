@@ -1,46 +1,46 @@
 ---
-title: "Lint and Types as Guardrails"
-lang: en
+title: "Lint والأنواع كقضبان حماية"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails"
 ---
 
-[ESLint](https://eslint.org/)’s recommended config is fine. [TypeScript](https://www.typescriptlang.org/)’s [strict mode](https://www.typescriptlang.org/tsconfig/#strict) is good. If you do nothing else, turn both on and you’ve already closed the door on whole categories of agent mistakes. I won’t spend time justifying either—if you’re here, you already believe in them.
+إعداد [ESLint](https://eslint.org/) الموصى به جيد. و[الوضع الصارم](https://www.typescriptlang.org/tsconfig/#strict) في [TypeScript](https://www.typescriptlang.org/) جيد. إن لم تفعل شيئًا آخر، فشغّل كليهما وستكون قد أغلقت الباب أمام فئات كاملة من أخطاء الوكيل. لن أضيع وقتًا في تبرير أي منهما — إن كنت هنا فأنت تؤمن بهما أصلًا.
 
-What I want to talk about is the rules *beyond* the defaults: the ones you write because your own codebase has its own failure modes, and because the agent keeps making the same mistake until a lint rule shouts at it.
+ما أريد الحديث عنه هو القواعد *التي تتجاوز* الافتراضات: تلك التي تكتبها لأن لقاعدة شيفرتك أنماط فشل خاصة بها، ولأن الوكيل يظل يرتكب الخطأ نفسه حتى تصرخ فيه قاعدة lint.
 
-## The custom rule mindset
+## عقلية القاعدة المخصصة
 
-Every rule from this morning is a candidate lint rule. That’s the frame.
+كل قاعدة من صباح اليوم مرشحة لأن تكون قاعدة lint. هذا هو الإطار.
 
-- Waiting: `page.waitForTimeout` is banned. Lint it.
-- Locators: `page.locator` with a CSS selector is discouraged. Lint it.
-- Authentication: `page.goto('/login')` in a non-setup test file is banned. Lint it.
-- Screenshots: adding a new screenshot baseline without a commit message that mentions it is suspicious. Lint it.
-- API handlers: reading `userId` from the request body is banned. Lint it.
-- Route handlers: `catch` that returns 200 is banned. Lint it.
+- الانتظار: `page.waitForTimeout` محظور. افحصه بـlint.
+- المحددات: `page.locator` بمحدد CSS غير مستحسن. افحصه بـlint.
+- المصادقة: `page.goto('/login')` في ملف اختبار غير إعدادي محظور. افحصه بـlint.
+- لقطات الشاشة: إضافة أساس لقطة جديد دون رسالة التزام تذكره أمر مريب. افحصه بـlint.
+- معالجات API: قراءة `userId` من جسم الطلب محظورة. افحصها بـlint.
+- معالجات المسارات: `catch` الذي يعيد 200 محظور. افحصه بـlint.
 
-Not every one of those is a lint rule today. Some are. Some need a custom rule. Some need a different tool. But the mindset is: *anything I keep finding in PR review that I could describe mechanically is something I can lint, and I should.*
+ليست كل واحدة من تلك قاعدة lint اليوم. بعضها كذلك. وبعضها يحتاج قاعدة مخصصة. وبعضها يحتاج أداة مختلفة. لكن العقلية هي: *أي شيء أظل أجده في مراجعة الـPR وأستطيع وصفه ميكانيكيًا هو شيء أستطيع فحصه بـlint، وينبغي أن أفعل.*
 
-This is the cheap end of the self-correcting loop. Every rule you add is a future mistake the agent catches and fixes without you.
+هذا الطرف الرخيص من حلقة التصحيح الذاتي. كل قاعدة تضيفها خطأ مستقبلي يلتقطه الوكيل ويصلحه دونك.
 
-## The ESLint rules worth enabling by default
+## قواعد ESLint التي تستحق التفعيل افتراضيًا
 
-A short list of [ESLint](https://eslint.org/) rules that pay for themselves in an agent-driven codebase, beyond what `@eslint/js/recommended` already covers:
+قائمة قصيرة بقواعد [ESLint](https://eslint.org/) التي تدفع ثمنها في قاعدة شيفرة يقودها وكيل، فيما يتجاوز ما يغطيه `@eslint/js/recommended` أصلًا:
 
-- [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax)—the swiss army knife of custom rules. Use it to ban `waitForTimeout`, `networkidle`, `goto('/login')` in tests, and anything else you can describe with an AST selector.
-- `@typescript-eslint/no-floating-promises`—every unawaited promise in an agent’s code is a race condition waiting to happen. Hard error.
-- `@typescript-eslint/no-misused-promises`—`await`ing in a boolean context, passing an async function to a callback that expects sync, etc. Hard error.
-- `@typescript-eslint/strict-boolean-expressions`—forces explicit null checks instead of `if (user)`, which catches a class of “the empty string is falsy” bugs. Worth it.
-- `no-console` with an allowlist for `error` and `warn`—prevents the `console.log` littering I warned about in [Failure Dossiers](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build).
-- [`eslint-plugin-unicorn`](https://github.com/sindresorhus/eslint-plugin-unicorn) has a bunch of opinionated rules that catch subtle modern-JavaScript mistakes. I don’t enable all of them, but `prefer-node-protocol`, `no-null`, and `error-message` all catch things.
+- [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax)—سكين الجيش السويسري للقواعد المخصصة. استخدمها لحظر `waitForTimeout`، و`networkidle`، و`goto('/login')` في الاختبارات، وأي شيء آخر تستطيع وصفه بمحدد AST.
+- `@typescript-eslint/no-floating-promises`—كل وعد غير مُنتظَر في شيفرة وكيل هو حالة تسابق تنتظر الحدوث. خطأ صارم.
+- `@typescript-eslint/no-misused-promises`—استخدام `await` في سياق منطقي، أو تمرير دالة غير متزامنة إلى دالة رد نداء تتوقّع مزامنة، إلخ. خطأ صارم.
+- `@typescript-eslint/strict-boolean-expressions`—تفرض فحوص null صريحة بدلًا من `if (user)`، فتلقط فئة من أخطاء «السلسلة الفارغة كاذبة». تستحق.
+- `no-console` مع قائمة سماح لـ`error` و`warn`—يمنع بعثرة `console.log` التي حذّرت منها في [ملفات تشخيص الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build).
+- لدى [`eslint-plugin-unicorn`](https://github.com/sindresorhus/eslint-plugin-unicorn) مجموعة قواعد ذات رأي تلتقط أخطاء JavaScript الحديثة الدقيقة. لا أفعّل كلها، لكن `prefer-node-protocol` و`no-null` و`error-message` كلها تلتقط أشياء.
 
-Your mileage varies on the last few based on team aesthetics. The first four are non-negotiable for me.
+قد يختلف نصيبك من الأخيرة حسب ذوق الفريق. الأربع الأولى غير قابلة للتفاوض عندي.
 
-## Writing a `no-restricted-syntax` rule
+## كتابة قاعدة `no-restricted-syntax`
 
-This is the rule that earns its keep. `no-restricted-syntax` takes an ESLint selector (a mini AST query language) and reports any node that matches. You can ban specific function calls, specific patterns, specific API usages, without writing a whole plugin.
+هذه هي القاعدة التي تستحق بقاءها. تأخذ `no-restricted-syntax` محدد ESLint (لغة استعلام AST صغيرة) وتبلّغ عن أي عقدة تطابقه. تستطيع حظر نداءات دوال محددة، وأنماط محددة، واستخدامات API محددة، دون كتابة إضافة كاملة.
 
-Ban `page.waitForTimeout`:
+احظر `page.waitForTimeout`:
 
 ```javascript
 // eslint.config.js
@@ -61,9 +61,9 @@ export default [
 ];
 ```
 
-Notice the error message. It names the violation, offers the alternatives, and points at the agent rules. When the agent trips this rule, the error message is a self-contained fix prompt—it tells the agent what to do next. Write your lint messages like prompts because they *are* prompts.
+لاحظ رسالة الخطأ. فهي تسمّي المخالفة، وتعرض البدائل، وتشير إلى قواعد الوكيل. وحين يتعثّر الوكيل بهذه القاعدة، تكون رسالة الخطأ مطالبة إصلاح قائمة بذاتها — تخبر الوكيل بما يفعله تاليًا. اكتب رسائل lint كأنها مطالبات لأنها *مطالبات*.
 
-Now extend the same rule to ban the other Playwright anti-patterns we hit in the [Playwright lessons](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy), plus one recurring server-side bug — handlers that pull `userId` out of the request body instead of the authenticated session. Each selector is a tiny AST query; read them below the code block for the mental model.
+الآن مدّ القاعدة نفسها لتحظر بقية أنماط Playwright المضادة التي اصطدمنا بها في [دروس Playwright](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)، زائد خطأ خادم متكرر — المعالجات التي تسحب `userId` من جسم الطلب بدلًا من الجلسة المُوثَّقة. كل محدد استعلام AST صغير؛ اقرأ تفسيرها تحت كتلة الشيفرة لتبني النموذج الذهني.
 
 ```javascript
 {
@@ -100,31 +100,31 @@ Now extend the same rule to ban the other Playwright anti-patterns we hit in the
 },
 ```
 
-Four rules, one config file. Translating each selector back into English:
+أربع قواعد، وملف إعداد واحد. وإليك ترجمة كل محدد إلى لغة بشرية مفهومة:
 
-- **`CallExpression[callee.property.name='waitForTimeout']`** matches *any* call whose callee is `<something>.waitForTimeout(...)`. The `CallExpression` part targets a function call. The `[callee.property.name='waitForTimeout']` attribute filter says “the callee has to be a member expression whose property name is `waitForTimeout`.” You get `page.waitForTimeout(100)` but also `otherPage.waitForTimeout(100)`, which is fine — both should be rewritten the same way.
-- **`CallExpression[callee.property.name='locator'][arguments.0.type='Literal']`** is the same shape, plus a constraint that the first argument (`arguments.0`) is a string/number/regex literal. That’s the “raw CSS” shape; `page.locator(heading)` where `heading` is a variable gets a pass because the first argument is an `Identifier`, not a `Literal`.
-- **`CallExpression[callee.property.name='waitForLoadState'] Literal[value='networkidle']`** uses the *descendant* combinator (space): “find any `Literal` whose value is exactly the string `networkidle`, anywhere inside a `waitForLoadState` call.” That’s how you match on the *argument* string rather than the method name.
-- **`MemberExpression[object.type='MemberExpression'][object.property.name='body'][property.name='userId']`** matches a nested member expression of the shape `<something>.body.userId`. The outer match targets the `.userId` access, and the `object` constraint says the thing being accessed must itself be an `<x>.body` access. It fires on `request.body.userId`, `body.userId`, and anything else of that shape, while leaving `locals.user.id` alone. The rule lives under `src/routes/api/**/*.ts` because that’s where the mistake matters.
+- **`CallExpression[callee.property.name='waitForTimeout']`** يطابق *أي* نداء يكون فيه المُنادي `<something>.waitForTimeout(...)`. جزء `CallExpression` يستهدف نداء دالة. ومرشّح السمة `[callee.property.name='waitForTimeout']` يقول «يجب أن يكون المُنادي تعبير عضو اسم خاصيته `waitForTimeout`». فتحصل على `page.waitForTimeout(100)` وأيضًا `otherPage.waitForTimeout(100)`، وهذا جيد — فكلاهما ينبغي إعادة كتابته بالطريقة نفسها.
+- **`CallExpression[callee.property.name='locator'][arguments.0.type='Literal']`** الشكل نفسه، زائد قيد أن الوسيط الأول (`arguments.0`) حرفي نص أو رقم أو regex. وهذا هو شكل «CSS الخام»؛ أما `page.locator(heading)` حيث `heading` متغيّر فيمرّ لأن الوسيط الأول `Identifier` لا `Literal`.
+- **`CallExpression[callee.property.name='waitForLoadState'] Literal[value='networkidle']`** يستخدم عامل التركيب *التابع* (المسافة): «اعثر على أي `Literal` قيمته بالضبط السلسلة `networkidle`، في أي مكان داخل نداء `waitForLoadState`». وهكذا تطابق سلسلة *الوسيط* لا اسم الدالة.
+- **`MemberExpression[object.type='MemberExpression'][object.property.name='body'][property.name='userId']`** يطابق تعبير عضو متداخلًا من الشكل `<something>.body.userId`. المطابقة الخارجية تستهدف الوصول إلى `.userId`، وقيد `object` يقول إن الشيء الذي يُوصَل إليه يجب أن يكون هو نفسه وصولًا إلى `<x>.body`. فينطلق على `request.body.userId` و`body.userId` وأي شيء آخر بهذا الشكل، بينما يترك `locals.user.id` وحده. والقاعدة تعيش تحت `src/routes/api/**/*.ts` لأن هناك يهمّ الخطأ.
 
-Four rules, one config file, all firing on every save. The next time the agent reaches for a banned pattern, the editor underlines it in red and the fix is one step away.
+أربع قواعد، وملف إعداد واحد، وكلها تنطلق عند كل حفظ. وفي المرة التالية التي يمدّ فيها الوكيل يده إلى نمط محظور، يضع المحرّر تحته خطًا أحمر ويكون الإصلاح على بعد خطوة.
 
-> **Write your ESLint rule messages like fix prompts**
+> **اكتب رسائل قواعد ESLint كأنها مطالبات إصلاح**
 >
-> Every error message above names the violation, points at the alternative, and references the agent rules. When the agent trips the rule, the message *is* the next instruction in its context. Treat these messages the same way you’d treat the [test failure dossier](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build): the richer the message, the less work the agent has to do to recover.
+> كل رسالة خطأ أعلاه تسمّي المخالفة، وتشير إلى البديل، وتذكر قواعد الوكيل. وحين يتعثّر الوكيل بالقاعدة، تكون الرسالة *هي* التعليم التالي في سياقه. تعامل مع هذه الرسائل كما تتعامل مع [ملف تشخيص فشل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build): كلما كانت الرسالة أغنى، قلّ العمل الذي على الوكيل فعله للتعافي.
 
-## The tricky one: banning `any` gradually
+## القاعدة الصعبة: حظر `any` تدريجيًا
 
-`@typescript-eslint/no-explicit-any` is a rule I want on, but flipping it to `error` in an existing codebase is suicide—every `any` everywhere erupts at once and the team hates me. The solution is gradual tightening.
+`@typescript-eslint/no-explicit-any` قاعدة أريدها مفعّلة، لكن قلبها إلى `error` في قاعدة شيفرة قائمة انتحار — كل `any` في كل مكان ينفجر دفعة واحدة ويكرهني الفريق. والحل هو التشديد التدريجي.
 
-- Start with `@typescript-eslint/no-explicit-any`: `warn`. The agent sees warnings but isn’t blocked.
-- Pair it with `@typescript-eslint/no-unsafe-assignment`, `no-unsafe-member-access`, and `no-unsafe-call` as `warn`. These catch the *downstream* effects of `any`—where `any` leaks into other code.
-- Set a “new files” rule via [eslint-plugin-boundaries](https://github.com/javierbrea/eslint-plugin-boundaries) or a simple `files: ['src/new-module/**']` override that flips the rules to `error` in new code.
-- Track the warning count in CI and refuse to merge PRs that increase it. I use a `bun run lint --max-warnings=<current-count>` script that pins the count.
+- ابدأ بـ`@typescript-eslint/no-explicit-any`: `warn`. يرى الوكيل التحذيرات لكنه لا يُحظر.
+- اقترنها بـ`@typescript-eslint/no-unsafe-assignment`، و`no-unsafe-member-access`، و`no-unsafe-call` كـ`warn`. فهي تلتقط الآثار *اللاحقة* لـ`any` — حيث يتسرّب `any` إلى شيفرة أخرى.
+- ضع قاعدة «الملفات الجديدة» عبر [eslint-plugin-boundaries](https://github.com/javierbrea/eslint-plugin-boundaries) أو تجاوز بسيط `files: ['src/new-module/**']` يقلب القواعد إلى `error` في الشيفرة الجديدة.
+- تتبّع عدد التحذيرات في CI وارفض دمج طلبات الـPR التي تزيده. أستخدم سكربت `bun run lint --max-warnings=<current-count>` يثبّت العدد.
 
-The effect: new code is strictly typed, old code gets cleaned up opportunistically, and the agent—which writes mostly new code—sees hard errors in its work but doesn’t drown in pre-existing warnings. This is the pattern that lets you enable strict rules on a 10,000-file codebase without burning it down.
+الأثر: الشيفرة الجديدة مكتوبة بأنواع صارمة، والشيفرة القديمة تُنظّف انتهازيًا، والوكيل — الذي يكتب شيفرة جديدة في الغالب — يرى أخطاء صارمة في عمله لكنه لا يغرق في تحذيرات موجودة سلفًا. هذا هو النمط الذي يتيح تفعيل قواعد صارمة على قاعدة شيفرة من 10,000 ملف دون إحراقها.
 
-## TypeScript: strict mode, with receipts
+## TypeScript: الوضع الصارم، مع الأدلّة
 
 `tsconfig.json`:
 
@@ -149,17 +149,17 @@ The effect: new code is strictly typed, old code gets cleaned up opportunistical
 }
 ```
 
-`strict: true` gets you most of these automatically. The ones worth naming explicitly because they’re off by default even under strict:
+`strict: true` يمنحك معظم هذه تلقائيًا. والتي تستحق التسمية صراحة لأنها معطّلة افتراضيًا حتى تحت strict:
 
-- **[`noUncheckedIndexedAccess`](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess)**—this is the one that turns `array[0]` into `T | undefined`. It’s annoying. It’s also the rule that catches “the agent assumed the array had an element at index 0 and it didn’t.” Keep it on. Swallow the annoyance.
-- **`exactOptionalPropertyTypes`**—this distinguishes `{ x?: number }` from `{ x: number | undefined }`, which is subtle but matters for API contracts.
-- **`noUnusedLocals` / `noUnusedParameters`**—catches dead imports and forgotten parameters. Bonus: it often catches half-written refactors where the agent renamed something and left the old reference behind.
+- **[`noUncheckedIndexedAccess`](https://www.typescriptlang.org/tsconfig/#noUncheckedIndexedAccess)**—هذه هي التي تحوّل `array[0]` إلى `T | undefined`. إنها مزعجة. وهي أيضًا القاعدة التي تلتقط «افترض الوكيل أن للمصفوفة عنصرًا عند الفهرس 0 ولم يكن كذلك». أبقِها مفعّلة. وابتلع الإزعاج.
+- **`exactOptionalPropertyTypes`**—تميّز بين `{ x?: number }` و`{ x: number | undefined }`، وهو فرق دقيق لكنه يهمّ عقود API.
+- **`noUnusedLocals` / `noUnusedParameters`**—تلتقط الاستيرادات الميتة والوسائط المنسية. ومكافأة إضافية: كثيرًا ما تلتقط عمليات إعادة هيكلة نصف مكتوبة حيث أعاد الوكيل تسمية شيء وترك المرجع القديم خلفه.
 
-All of these are cheap to enable on a new codebase and expensive to enable on an old one. If Shelf is new, turn everything on. If your real project is older, use the gradual tightening pattern from the `any` section above.
+كل هذه رخيصة التفعيل على قاعدة شيفرة جديدة ومكلفة على قاعدة قديمة. إن كان Shelf جديدًا، ففعّل كل شيء. وإن كان مشروعك الحقيقي أقدم، فاستخدم نمط التشديد التدريجي من قسم `any` أعلاه.
 
-## The agent rules
+## قواعد الوكيل
 
-The lint rules are worth nothing if the agent doesn’t run them. Update the instructions file:
+قواعد lint لا تساوي شيئًا إن لم يشغّلها الوكيل. حدّث ملف التعليمات:
 
 ```markdown
 ## Static checks
@@ -178,22 +178,22 @@ If typecheck fails, fix the types. Do not use `any`. Do not use
 before silencing.
 ```
 
-The “do not use `@ts-expect-error`” rule is specifically to prevent the agent’s favorite escape hatch. When an agent can’t make TypeScript happy, it will default to `@ts-expect-error` with a vague comment and move on. That’s a silent regression in your type safety. Block it at the rules level.
+قاعدة «لا تستخدم `@ts-expect-error`» موجودة تحديدًا لمنع مخرج الهروب المفضل لدى الوكيل. حين لا يستطيع وكيل إرضاء TypeScript، سيلجأ افتراضيًا إلى `@ts-expect-error` مع تعليق غامض ويمضي. وذلك انحدار صامت في سلامة أنواعك. احظره على مستوى القواعد.
 
-## What belongs next to lint and types in the static layer
+## ما ينتمي بجانب lint والأنواع في الطبقة الثابتة
 
-Lint and types are the *code-shape* part of the static layer. There are two other checks that belong in the same tier even though they are not ESLint rules. I’m naming them here so you know where they fit; each gets its own lesson.
+Lint والأنواع هما الجزء الخاص بـ*شكل الشيفرة* في الطبقة الثابتة. وهناك فحصان آخران ينتميان إلى المرتبة نفسها رغم أنهما ليسا قواعد ESLint. أذكرهما هنا لتعرف أين يقعان؛ ولكل منهما درسه.
 
-- **Dead code detection** with `knip`. Orphaned files that nobody imports anymore are a specific kind of lint finding. [Dead Code Detection](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection) covers the `knip.json` setup.
-- **Secret scanning** with `gitleaks`. This one is worth calling out because the static-layer lab expects you to wire it into `lefthook.yml` as a `secrets` command alongside the ESLint and Prettier commands, so pre-commit runs lint, formatting, and secret scan in parallel. See [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) for the full `secrets` command and the helper script that scans the *staged* snapshot rather than the working tree.
+- **كشف الشيفرة الميتة** بـ`knip`. فالملفات اليتيمة التي لم يعد أحد يستوردها نوع محدد من نتائج lint. ويغطي [كشف الشيفرة الميتة](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection) إعداد `knip.json`.
+- **فحص الأسرار** بـ`gitleaks`. هذه تستحق التنبيه لأن مختبر الطبقة الثابتة يتوقع منك ربطها في `lefthook.yml` كأمر `secrets` بجانب أمري ESLint وPrettier، كي يشغّل pre-commit lint والتنسيق وفحص الأسرار بالتوازي. راجع [فحص الأسرار مع Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) للأمر `secrets` الكامل والسكربت المساعد الذي يفحص اللقطة *المرحّلة* لا شجرة العمل.
 
-You don’t need to wire them up yet—that’s the lab. But you should have both in your head as “lives next to ESLint in the pre-commit loop” by the time you finish this lesson.
+لا تحتاج إلى ربطهما بعد — فذلك المختبر. لكن ينبغي أن يكون كلاهما في ذهنك كـ«يعيش بجانب ESLint في حلقة pre-commit» بحلول انتهائك من هذا الدرس.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-ESLint’s defaults are a floor, not a target. Every recurring agent mistake is a candidate custom rule, and `no-restricted-syntax` is expressive enough to encode most of them. Write the error messages like prompts, because they’re the first thing the agent reads when it trips the rule. Tight static checks pay back almost immediately—they’re the cheapest, fastest feedback loop in the whole stack.
+افتراضات ESLint أرضية، لا هدف. وكل خطأ وكيل متكرر مرشح لقاعدة مخصصة، و`no-restricted-syntax` معبّرة بما يكفي لتشفير معظمها. اكتب رسائل الخطأ كأنها مطالبات، لأنها أول ما يقرأه الوكيل حين يتعثّر بالقاعدة. والفحوص الثابتة المحكمة تعيد ثمنها فورًا تقريبًا — فهي أرخص وأسرع حلقة تغذية راجعة في المكدّس كله.
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Static Layer as Underlayment](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
-- [Dead Code Detection](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
+- [الطبقة الثابتة كبطانة أساس](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
+- [كشف الشيفرة الميتة](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)

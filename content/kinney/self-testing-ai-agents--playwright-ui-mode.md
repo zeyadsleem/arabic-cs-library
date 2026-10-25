@@ -1,120 +1,120 @@
 ---
-title: "Playwright UI Mode"
-lang: en
+title: "وضع واجهة المستخدم في Playwright"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode"
 ---
 
-You’ve written a test, you’ve used `getByRole` like a responsible adult, and the test fails with “element not found.” Now what? You stare at the error. You add a `console.log`. You add three more. You run the test again. You squint at the terminal output and try to reconstruct the page in your head from a wall of HTML.
+كتبتَ اختبارًا، واستخدمت `getByRole` كما يفعل شخص مسؤول، ثم فشل الاختبار برسالة «element not found». ماذا الآن؟ تُحدّق في الخطأ. تضيف `console.log`. تضيف ثلاثة أخرى. تُعيد تشغيل الاختبار. تُضيّق عينيك في مخرجات الطرفية وتحاول إعادة بناء الصفحة في ذهنك من جدار من HTML.
 
-Stop doing that. Playwright has a visual test runner that lets you *see* the page at every step of the test. It’s called UI Mode, and once you’ve used it, the `console.log` archaeology feels almost medieval.
+توقّف عن فعل ذلك. لدى Playwright مُشغّل اختبارات مرئي يتيح لك أن *ترى* الصفحة في كل خطوة من خطوات الاختبار. اسمه وضع واجهة المستخدم (UI Mode)، وبعد أن تستخدمه مرة واحدة ستبدو لك حفريات `console.log` أشبه بشيء من العصور الوسطى.
 
-Playwright UI
+واجهة Playwright
 
-## Launching UI Mode
+## تشغيل وضع واجهة المستخدم
 
 ```bash
 npx playwright test --ui
 ```
 
-That’s it. Playwright opens a browser window with its visual test runner. Your test files appear in a sidebar on the left, organized by file and test name. Click a test to run it. Click it again to re-run it.
+هذا كل شيء. يفتح Playwright نافذة متصفح تحمل مُشغّل الاختبارات المرئي. تظهر ملفات اختباراتك في شريط جانبي على اليسار، منظّمة حسب الملف واسم الاختبار. انقر على اختبار لتشغيله. وانقر عليه مرة أخرى لإعادة تشغيله.
 
-You can also scope it to a single file if you don’t want the full suite staring at you:
+ويمكنك أيضًا حصره في ملف واحد إن كنت لا تريد أن تحدّق فيك مجموعة الاختبارات كاملة:
 
 ```bash
 npx playwright test tests/smoke.spec.ts --ui
 ```
 
-## The action timeline
+## الخط الزمني للإجراءات
 
-When a test runs in UI Mode, every action—`goto`, `click`, `fill`, `expect`—appears as a step in a timeline on the left. Click any step and the DOM snapshot for *that exact moment* appears on the right. Before tab, After tab, side by side.
+عندما يعمل اختبار في وضع واجهة المستخدم، يظهر كل إجراء — `goto` و`click` و`fill` و`expect` — كخطوة في خط زمني على اليسار. انقر على أي خطوة فتظهر لقطة DOM *لتلك اللحظة بالذات* على اليمين. تبويب «قبل» وتبويب «بعد»، جنبًا إلى جنب.
 
-This is the thing that replaces the mental model you were trying to build from `console.log` output. Instead of imagining what the page looked like when the locator failed, you’re looking at it. You can see whether the button existed, whether it was visible, whether it had the accessible name you thought it had.
+هذا هو الشيء الذي يعوّض النموذج الذهني الذي كنت تحاول بناؤه من مخرجات `console.log`. فبدلًا من تخيّل شكل الصفحة لحظة فشل المحدّد، أنت تنظر إليه فعلًا. تستطيع أن ترى هل كان الزر موجودًا، وهل كان ظاهرًا، وهل كان يحمل الاسم المتاح الذي ظننته.
 
-The Before/After tabs are particularly useful for `click` and `fill` actions: you can see what the page looked like right before the interaction, then what changed as a result. If nothing changed, that’s your bug.
+تبويبا «قبل/بعد» مفيدان على نحو خاص مع إجراءي `click` و`fill`: ترى شكل الصفحة قبيل التفاعل مباشرةً، ثم ما تغيّر نتيجةً له. وإن لم يتغيّر شيء، فذلك هو الخطأ الذي تبحث عنه.
 
-## Pick locator
+## التقاط المحدّد
 
-This is the killer feature for this course.
+هذه هي الميزة القاتلة في هذه الدورة.
 
-Locator panel in Playwright UI
+لوحة المحدّد في واجهة Playwright
 
-Click the “Pick locator” button in the toolbar, then hover over any element in the DOM snapshot. Playwright suggests a locator for that element—and it follows the same hierarchy from the [locators lesson](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). Role first, then label, then text, then test ID, CSS as a last resort.
+انقر على زر «Pick locator» في شريط الأدوات، ثم مرّر المؤشر فوق أي عنصر في لقطة DOM. يقترح Playwright محدّدًا لذلك العنصر، وهو يتبع التسلسل الهرمي نفسه من [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). الدور أولًا، ثم التسمية، ثم النص، ثم معرّف الاختبار، وCSS كملاذ أخير.
 
-Click the element, and the suggested locator appears in a playground at the bottom of the panel. You can edit it, and the playground highlights which elements on the page match your edited locator in real time. Too many matches? Tighten the query. Zero matches? You misspelled something, or the element doesn’t have the accessible name you assumed.
+انقر على العنصر فيظهر المحدّد المقترح في ساحة تجريب أسفل اللوحة. يمكنك تعديله، وتُبرز الساحة في الوقت الحقيقي أي العناصر في الصفحة يطابقها محدّدك المعدّل. هل المطابقات كثيرة جدًا؟ ضيّق الاستعلام. هل المطابقات صفر؟ إذن أخطأت في الإملاء، أو أن العنصر لا يحمل الاسم المتاح الذي افترضته.
 
-Once you’re happy with the locator, copy it into your test. No guessing, no inspecting the DOM in a separate browser tab, no writing a locator and running the test to see if it finds anything.
+وحين ترضى عن المحدّد، انسخه إلى اختبارك. بلا تخمين، وبلا فحص DOM في تبويب متصفح منفصل، وبلا كتابة محدّد ثم تشغيل الاختبار لترى هل يجد شيئًا.
 
-For agents, this is the workflow you want to internalize: if you’re unsure what locator to use, don’t guess. Open UI Mode, pick the locator visually, and let Playwright tell you what works.
+أما للوكلاء، فهذا هو سير العمل الذي تريد أن تستوعبه: إن لم تكن متأكدًا من المحدّد الذي تستخدمه، فلا تخمّن. افتح وضع واجهة المستخدم، والتقط المحدّد بصريًا، ودع Playwright يخبرك بما ينجح.
 
-## Code-level locator debugging
+## تصحيح المحدّدات على مستوى الشيفرة
 
-UI Mode is still the first stop. But sometimes you are already in a headed run and you just need proof that your locator is pointing at the thing you think it is. [`locator.highlight()`](https://playwright.dev/docs/api/class-locator) is the code-level version of that check.
+يبقى وضع واجهة المستخدم المحطة الأولى. لكن أحيانًا تكون بالفعل في تشغيل بنافذة مرئية وتحتاج فقط إلى دليل على أن محدّدك يشير إلى الشيء الذي تظنه. [`locator.highlight()`](https://playwright.dev/docs/api/class-locator) هو النسخة البرمجية من ذلك الفحص.
 
 ```typescript
 const saveButton = page.getByRole('button', { name: 'Save draft' });
 await saveButton.highlight();
 ```
 
-Use it when:
+استخدمه عندما:
 
-- strict mode says the locator matches two things and you need to see which ones
-- a healed or generated locator keeps landing on the wrong card or button
-- you want to confirm that a chained locator is scoped to the right region before rewriting the test
+- يقول الوضع الصارم إن المحدّد يطابق عنصرين وتحتاج إلى رؤية أيهما
+- يظل محدّد مُصلَح أو مولَّد يهبط على البطاقة أو الزر الخطأ
+- تريد التأكد من أن محدّدًا متسلسلًا محصور في المنطقة الصحيحة قبل أن تعيد كتابة الاختبار
 
-Then delete it. `highlight()` is a debugging helper, not a committed part of the suite. Locator picking itself already lives in UI Mode, which is exactly where it belongs.
+ثم احذفه. `highlight()` أداة مساعدة للتنقيح، وليس جزءًا مُودَعًا من مجموعة الاختبارات. فالتقاط المحدّد نفسه يعيش أصلًا داخل وضع واجهة المستخدم، وهو مكانه الصحيح تمامًا.
 
-## Watch mode
+## وضع المراقبة
 
-See the eye icon next to each test in the sidebar? Click it. Now that test re-runs automatically every time the source file changes. Write the test, save, watch it fail. Write the implementation, save, watch it pass. Refactor, save, watch it stay green.
+أترى أيقونة العين بجوار كل اختبار في الشريط الجانبي؟ انقر عليها. الآن يُعاد تشغيل ذلك الاختبار تلقائيًا كلما تغيّر ملف المصدر. اكتب الاختبار، واحفظ، وشاهده يفشل. اكتب التنفيذ، واحفظ، وشاهده ينجح. أعد الهيكلة، واحفظ، وشاهده يبقى أخضر.
 
-It’s the red-green-refactor loop without the alt-tab-and-rerun ceremony.
+إنها حلقة الأحمر-الأخضر-إعادة الهيكلة دون مراسم التنقل بين النوافذ وإعادة التشغيل.
 
-UI Mode also gets much more useful once the suite is big enough to need archaeology instead of just debugging. You can filter by project, tag, and status, which is the difference between “open the whole suite” and “show me the failing Firefox-only `@critical` tests from yesterday.”
+ويصبح وضع واجهة المستخدم أكثر نفعًا بكثير حين تكبر مجموعة الاختبارات إلى حدّ تحتاج فيه إلى تنقيب لا إلى تنقيح فقط. يمكنك الترشيح حسب المشروع والوسم والحالة، وهذا هو الفرق بين «افتح المجموعة كلها» و«أرني اختبارات `@critical` الفاشلة التي تعمل على Firefox وحدها منذ أمس».
 
-## The other panels
+## اللوحات الأخرى
 
-UI Mode has a row of tabs along the bottom that give you different views into what happened during the test. Quick tour:
+في أسفل وضع واجهة المستخدم صفّ من التبويبات يمنحك زوايا نظر مختلفة إلى ما جرى أثناء الاختبار. جولة سريعة:
 
-- **Source:** Shows the test source code with the current action’s line highlighted. Useful for orienting yourself when you click through the timeline.
-- **Log:** What Playwright actually did behind the scenes for each action—scrolling the element into view, waiting for it to be actionable, retrying the locator. When a test is slow and you don’t know why, the log usually tells you.
-- **Errors:** Where the test broke and why. The stack trace, the expected-vs-received values, the accessibility tree at the point of failure.
-- **Console:** Browser console output. If the application logged something, it’s here.
-- **Network:** Every HTTP request the page made during the test, with timing, status codes, and payloads.
+- **Source:** يعرض شيفرة الاختبار مع إبراز سطر الإجراء الحالي. مفيد لتحديد موقعك حين تتنقّل في الخط الزمني.
+- **Log:** ما فعله Playwright فعليًا خلف الكواليس لكل إجراء — تمرير العنصر إلى مجال الرؤية، والانتظار حتى يصبح قابلًا للتنفيذ، وإعادة محاولة المحدّد. عندما يكون الاختبار بطيئًا ولا تعرف السبب، فالسجل هو من يخبرك عادةً.
+- **Errors:** أين انكسر الاختبار ولماذا. تتبّع المكدّس، والقيم المتوقعة مقابل المستلمة، وشجرة إمكانية الوصول عند نقطة الفشل.
+- **Console:** مخرجات طرفية المتصفح. إن سجّل التطبيق شيئًا، فهو هنا.
+- **Network:** كل طلب HTTP أرسلته الصفحة أثناء الاختبار، مع التوقيت وشيفرات الحالة والحُمولات.
 
-You don’t need to memorize these. You need to know they exist so you reach for the right one when you’re stuck.
+لا تحتاج إلى حفظ هذه اللوحات. تحتاج فقط إلى معرفة أنها موجودة حتى تمدّ يدك إلى اللوحة الصحيحة حين تتعثّر.
 
-## When to use what
+## متى تستخدم أيًّا منها
 
-Playwright gives you three flags for visual debugging, and they’re not interchangeable:
+يمنحك Playwright ثلاثة أعلام للتنقيح المرئي، وهي ليست بدائل لبعضها:
 
-- **`--ui`:** The full visual test runner. Interactive, explorable, pick-locator, watch mode. This is the one you’ll reach for most.
-- **`--headed`:** Runs the test in a visible browser window so you can watch it happen in real time, but no inspector, no timeline, no pick-locator. Good for a quick sanity check when you just want to *see* the flow.
-- **`--debug`:** Opens the Playwright Inspector, the older step-through debugger. You advance one action at a time with a “Step” button. Useful for surgical debugging of a single flaky interaction, but heavier than UI Mode for everyday work.
+- **`--ui`:** مُشغّل الاختبارات المرئي الكامل. تفاعلي، وقابل للاستكشاف، وفيه التقاط المحدّد ووضع المراقبة. هذا هو الذي ستستخدمه أكثر من غيره.
+- **`--headed`:** يشغّل الاختبار في نافذة متصفح مرئية لتشاهد ما يحدث في الوقت الحقيقي، لكن بلا فاحص، وبلا خط زمني، وبلا التقاط محدّد. جيد لفحص سريع حين تريد فقط أن *ترى* التدفّق.
+- **`--debug`:** يفتح فاحص Playwright، وهو المُنقّح الأقدم القائم على التقدّم خطوة خطوة. تتقدّم بإجراء واحد كل مرة عبر زر «Step». مفيد للتنقيح الجراحي لتفاعل متقلّب واحد، لكنه أثقل من وضع واجهة المستخدم في العمل اليومي.
 
-If you’re exploring or writing a new test, `--ui`. If you’re watching a test run to see if the flow looks right, `--headed`. If you need to pause on a specific line and inspect the live page, `--debug`.
+إن كنت تستكشف أو تكتب اختبارًا جديدًا، فاستخدم `--ui`. وإن كنت تشاهد اختبارًا يعمل لترى هل يبدو التدفّق سليمًا، فاستخدم `--headed`. وإن احتجت إلى التوقّف عند سطر بعينه وفحص الصفحة الحيّة، فاستخدم `--debug`.
 
-For those “pause right here” moments, keep two APIs in your pocket:
+وللحظات «توقّف هنا بالضبط»، أبقِ اثنتين من الواجهات البرمجية في جيبك:
 
-- [`page.pause()`](https://playwright.dev/docs/api/class-page#page-pause) stops immediately at that call site
-- [`browserContext.debugger.requestPause()`](https://playwright.dev/docs/api/class-debugger#debugger-request-pause) pauses before the **next** Playwright action
+- [`page.pause()`](https://playwright.dev/docs/api/class-page#page-pause) يتوقّف فورًا عند موضع الاستدعاء ذاك
+- [`browserContext.debugger.requestPause()`](https://playwright.dev/docs/api/class-debugger#debugger-request-pause) يتوقّف قبل إجراء Playwright **التالي**
 
-That second one is surprisingly useful when you want to stop just before the next click or fill without rewriting the whole flow around a hardcoded pause.
+والثانية مفيدة بشكل مفاجئ حين تريد التوقّف قبل النقرة أو التعبئة التالية دون إعادة كتابة التدفّق كله حول توقّف مُثبَّت في الشيفرة.
 
-## Connection to the locator hierarchy
+## الصلة بالتسلسل الهرمي للمحدّدات
 
-The pick locator tool doesn’t just suggest *any* locator—it suggests the best one it can, following the same priority order from the previous lesson. If you hover over a button and Playwright suggests `getByRole('button', { name: 'Add book' })`, that’s the tool confirming the component’s accessibility is solid.
+أداة التقاط المحدّد لا تقترح *أي* محدّد، بل تقترح أفضل ما تستطيع، وفق ترتيب الأولوية نفسه من الدرس السابق. فإن مرّرت المؤشر فوق زر واقترح Playwright `getByRole('button', { name: 'Add book' })`، فذلك تأكيد من الأداة بأن إمكانية الوصول في المكوّن متينة.
 
-If you hover over a button and Playwright suggests `getByTestId('add-book-btn')` instead, that’s a signal. It means the button doesn’t have an accessible name that Playwright can match on—the same signal the locators lesson described as a real bug. The pick locator tool just made that bug visible without you having to think about it.
+وإن مرّرت المؤشر فوق زر واقترح Playwright بدلًا من ذلك `getByTestId('add-book-btn')`، فذلك إشارة. معناها أن الزر لا يحمل اسمًا متاحًا يستطيع Playwright مطابقته — وهي الإشارة نفسها التي وصفها درس المحدّدات بأنها خطأ حقيقي. أداة التقاط المحدّد جعلت ذلك الخطأ مرئيًا دون أن تضطر إلى التفكير فيه.
 
-This is why UI Mode matters for agent-driven testing specifically: it’s a visual confirmation of the locator hierarchy you’re encoding in your agent instructions. The tool and the rule agree.
+ولهذا يهمّ وضع واجهة المستخدم في الاختبار الذي يقوده وكيل على وجه الخصوص: فهو تأكيد بصري للتسلسل الهرمي للمحدّدات الذي تُضمّنه في تعليمات وكيلك. الأداة والقاعدة تتفقان.
 
-## Things to Remember
+## أشياء تستحق التذكّر
 
-When a locator fails and you don’t know why, `--ui` is faster than `console.log`. Pick locator is faster than reading the DOM. And if the suggested locator isn’t `getByRole`, the component has a problem—not the test.
+حين يفشل محدّد ولا تعرف السبب، فـ`--ui` أسرع من `console.log`. والتقاط المحدّد أسرع من قراءة DOM. وإن لم يكن المحدّد المقترح `getByRole`، فالمكوّن فيه مشكلة — لا الاختبار.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [Playwright Codegen](https://stevekinney.com/courses/self-testing-ai-agents/playwright-codegen)
-- [UI Mode](https://playwright.dev/docs/test-ui-mode)
-- [Configuring Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)
+- [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [توليد شيفرة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-codegen)
+- [وضع واجهة المستخدم](https://playwright.dev/docs/test-ui-mode)
+- [تهيئة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)

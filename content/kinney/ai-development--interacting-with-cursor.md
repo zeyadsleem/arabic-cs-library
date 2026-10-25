@@ -1,51 +1,40 @@
 ---
-title: "Interacting with Cursor"
-lang: en
+title: "التفاعل مع Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/interacting-with-cursor"
 ---
 
-[Cursor](https://cursor.com/) gives you several interaction surfaces. They are not
-different skins on the same prompt. Each one has a different blast radius.
+يمنحك [Cursor](https://cursor.com/) عدة أسطح تفاعل. وهي ليست واجهات مختلفة للطلب نفسه، بل لكل منها نطاق تأثير مختلف.
 
-## Inline Edit
+## التحرير المضمّن
 
-Use inline edit for surgical changes to selected code. Select the relevant code,
-press `Cmd+K` or `Ctrl+K`, and ask for the change you want. This is the right
-tool when the surrounding file already tells the story.
+استخدم التحرير المضمّن لإجراء تغييرات دقيقة على شيفرة محدّدة. حدّد الشيفرة المعنية، واضغط `Cmd+K` أو `Ctrl+K`، واطلب التغيير الذي تريده. هذه هي الأداة الصحيحة عندما يروي الملف المحيط القصة بالفعل.
 
-Good inline prompts are narrow:
+الطلبات المضمّنة الجيدة ضيقة النطاق:
 
 ```
 Convert this function to return a discriminated union.
 Do not change the call sites.
 ```
 
-If the request needs repository search, tests, or multiple files, move up to the
-agent.
+وإذا احتاج الطلب البحث في المستودع أو الاختبارات أو عدة ملفات، فانتقل إلى الوكيل.
 
-## Chat
+## المحادثة
 
-Chat is useful for questions, debugging, and design discussion. Cursor can use
-open files, selected code, mentioned files, documentation references, images, and
-web context. Ask for citations when you need to understand where an answer came
-from.
+المحادثة مفيدة للأسئلة وتصحيح الأخطاء والنقاش التصميمي. ويستطيع Cursor استخدام الملفات المفتوحة، والشيفرة المحدّدة، والملفات المذكورة، ومراجع التوثيق، والصور، وسياق الويب. واطلب الاستشهادات عندما تحتاج إلى فهم مصدر الإجابة.
 
 ```
 Explain how authentication is wired in this project.
 Use file references and do not propose changes yet.
 ```
 
-Use Chat when the next best step is understanding. Use Agent when the next best
-step is changing code.
+استخدم المحادثة عندما تكون أفضل خطوة تالية هي الفهم. واستخدم الوكيل عندما تكون أفضل خطوة تالية هي تغيير الشيفرة.
 
-## Agent Mode
+## وضع الوكيل
 
-Agent mode opens from the side pane with `Cmd+I` or `Ctrl+I`. It can search the
-repository, read files, edit files, run shell commands, use configured MCP tools,
-open a browser, and ask clarifying questions while continuing with work it can
-already do.
+يُفتح وضع الوكيل من اللوحة الجانبية بـ `Cmd+I` أو `Ctrl+I`. ويستطيع البحث في المستودع، وقراءة الملفات، وتعديل الملفات، وتشغيل أوامر الصدفة، واستخدام أدوات MCP المضبوطة، وفتح متصفح، وطرح أسئلة توضيحية بينما يواصل العمل الذي يستطيع أداءه بالفعل.
 
-Give the agent a verifiable finish line:
+امنح الوكيل خط نهاية قابلًا للتحقق:
 
 ```
 Add validation for invalid invite tokens.
@@ -53,17 +42,13 @@ Write the failing test first, implement the fix, then run the targeted test and
 the repository lint command. Stop if either command fails for an unrelated reason.
 ```
 
-Cursor creates checkpoints during agent work, so you can inspect or roll back a
-bad turn. Checkpoints are a recovery feature. They are not a substitute for
-reviewing diffs.
+ينشئ Cursor نقاط استعادة أثناء عمل الوكيل، فيمكنك فحص دور سيّئ أو التراجع عنه. ونقاط الاستعادة ميزة تعافٍ، وليست بديلًا عن مراجعة الفروقات.
 
-## Plan and Ask Modes
+## وضعا الخطة والسؤال
 
-Plan mode is for research before edits. Ask mode is for answers without action.
-Use Plan mode when a request has multiple reasonable designs, unknown files, or
-security implications.
+وضع الخطة للبحث قبل التعديلات، ووضع السؤال للإجابات دون إجراء. استخدم وضع الخطة عندما يكون للطلب عدة تصاميم معقولة، أو ملفات مجهولة، أو آثار أمنية.
 
-A useful plan request names the decision you need:
+طلب الخطة المفيد يسمّي القرار الذي تحتاجه:
 
 ```
 Plan the smallest change that adds Slack notifications to failed imports.
@@ -71,13 +56,8 @@ Compare the two likely implementation paths and list the files each path touches
 Do not edit files.
 ```
 
-## Cloud and Terminal Workflows
+## سير العمل السحابي والطرفي
 
-Cloud Agents run in isolated cloud environments and are useful for tasks that can
-continue away from your laptop. Automations run Cloud Agents from schedules and
-events. The `agent` command line interface is useful for terminal-native review,
-scripts, and remote sessions.
+تعمل الوكلاء السحابيون في بيئات سحابية معزولة، وهم مفيدون للمهام التي يمكن أن تستمر بعيدًا عن حاسوبك المحمول. وتشغّل الأتمتات الوكلاء السحابيين وفق جداول وأحداث. وتفيد واجهة سطر الأوامر `agent` في المراجعة الأصلية للطرفية، والنصوص البرمجية، والجلسات البعيدة.
 
-These surfaces are powerful because they can act while you are not staring at
-the editor. That is also the risk. For cloud or terminal work, make permissions,
-verification commands, and failure signals explicit in the prompt.
+هذه الأسطح قوية لأنها تستطيع التصرّف بينما لا تحدّق في المحرّر. وهذا أيضًا هو الخطر. وفي العمل السحابي أو الطرفي، اجعل الصلاحيات وأوامر التحقق وإشارات الفشل صريحة في الطلب.

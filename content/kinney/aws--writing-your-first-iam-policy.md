@@ -1,16 +1,16 @@
 ---
-title: "Writing Your First IAM Policy"
-lang: en
+title: "كتابة أول سياسة IAM لك"
+lang: ar
 source: "https://stevekinney.com/courses/aws/writing-your-first-iam-policy"
 ---
 
-You know how every API endpoint in your frontend app has some middleware that checks whether the user has the right permissions before letting the request through? IAM policies are that middleware, but for all of AWS. They’re JSON documents—you already know JSON—and once you understand the five fields that matter, you can write them from scratch instead of copying examples from Stack Overflow and hoping for the best. (I’ve been there. We’ve all been there.)
+تعرف كيف أن لكل نقطة نهاية API في تطبيق الواجهة الأمامية برمجية وسيطة تتحقق مما إذا كان المستخدم يملك الأذونات الصحيحة قبل السماح بمرور الطلب؟ سياسات IAM هي تلك البرمجية الوسيطة، لكن لكل AWS. إنها مستندات JSON—وأنت تعرف JSON بالفعل—وبمجرد أن تفهم الحقول الخمسة المهمة، تستطيع كتابتها من الصفر بدلًا من نسخ أمثلة من Stack Overflow والأمل في الأفضل. (لقد مررت بذلك، وكلنا مررنا بذلك.)
 
-If you want AWS’s version of the policy language while you read, the [IAM JSON policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) is the official source of truth.
+إن أردت نسخة AWS من لغة السياسات أثناء القراءة، فإن [مرجع سياسات IAM بصيغة JSON](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) هو المصدر الرسمي الموثوق.
 
-## The Structure of an IAM Policy
+## بنية سياسة IAM
 
-Every **IAM policy** follows the same shape:
+كل **سياسة IAM** تتبع الشكل نفسه:
 
 ```json
 {
@@ -26,7 +26,7 @@ Every **IAM policy** follows the same shape:
 }
 ```
 
-Five fields. That’s it. Let’s break each one down.
+خمسة حقول. هذا كل شيء. لنفصّل كل واحد منها.
 
 ### Version
 
@@ -34,13 +34,13 @@ Five fields. That’s it. Let’s break each one down.
 "Version": "2012-10-17"
 ```
 
-This is the **policy language version**, not a date you update. The current (and only practical) version is `2012-10-17`. AWS introduced this version in 2012 and has kept it ever since. There’s an older version (`2008-10-17`) that lacks features like policy variables—don’t use it.
+هذه هي **نسخة لغة السياسة**، لا تاريخًا تحدّثه. والنسخة الحالية (والعملية الوحيدة) هي `2012-10-17`. طرحتها AWS في 2012 وأبقتها منذ ذلك الحين. وهناك نسخة أقدم (`2008-10-17`) تفتقر إلى ميزات مثل متغيرات السياسة—لا تستخدمها.
 
-Always include this field. Always set it to `2012-10-17`. Move on.
+أدرج هذا الحقل دائمًا، واضبطه دائمًا على `2012-10-17`، ثم انتقل.
 
 ### Statement
 
-The **Statement** is an array of individual permission rules. Each element in the array is one rule that either allows or denies specific actions on specific resources. A single policy can contain multiple statements:
+الـ **Statement** مصفوفة من قواعد الأذونات الفردية. كل عنصر في المصفوفة قاعدة واحدة تسمح أو تمنع إجراءات محددة على موارد محددة. ويمكن لسياسة واحدة أن تحتوي عدة بيانات:
 
 ```json
 "Statement": [
@@ -49,79 +49,79 @@ The **Statement** is an array of individual permission rules. Each element in th
 ]
 ```
 
-You can combine these into a single statement with an array of actions (we’ll get to that), but splitting them keeps each rule readable.
+يمكنك دمجها في بيان واحد بمصفوفة إجراءات (سنصل إلى ذلك)، لكن فصلها يحافظ على قابلية قراءة كل قاعدة.
 
-### Sid (Optional)
+### Sid (اختياري)
 
-The **Sid** (Statement ID) is an optional human-readable label for the statement. It has no functional effect on evaluation—it’s purely for you and your human teammates.
+الـ **Sid** (معرّف البيان) تسمية اختيارية مقروءة بشريًا للبيان. ولا أثر وظيفي له على التقييم—فهو لك ولزملائك البشر فقط.
 
 ```json
 "Sid": "AllowReadAccessToAssetsBucket"
 ```
 
-I’d recommend always including one. When you’re staring at a policy six months from now trying to figure out what it does, a descriptive Sid is worth its weight in gold.
+أنصحك بإدراج واحد دائمًا. فعندما تحدّق في سياسة بعد ستة أشهر محاولًا معرفة ما تفعله، فإن Sid وصفيًا يستحق وزنه ذهبًا.
 
 ### Effect
 
-**Effect** is either `"Allow"` or `"Deny"`. There are no other options. This field determines whether the statement grants or blocks access.
+**Effect** إما `"Allow"` أو `"Deny"`. ولا خيارات أخرى. ويحدد هذا الحقل ما إذا كان البيان يمنح الوصول أو يحجبه.
 
-As we covered in [IAM Mental Model](https://stevekinney.com/courses/aws/iam-mental-model), `Deny` always beats `Allow`. If one statement says Allow and another says Deny for the same action and resource, the Deny wins.
+كما شرحنا في [النموذج الذهني لـ IAM](https://stevekinney.com/courses/aws/iam-mental-model)، فإن `Deny` يتغلب على `Allow` دائمًا. فإذا قال بيان `Allow` وقال آخر `Deny` للإجراء والمورد نفسيهما، يفوز الـ `Deny`.
 
-> **`Effect` versus `Action`**
+> **`Effect` مقابل `Action`**
 >
-> Think of **Action** as *what someone is trying to do* and **Effect** as *AWS’s answer to that request*. `s3:GetObject` is the action. `"Allow"` or `"Deny"` is the effect. Put them together and you get a complete rule: “allow `s3:GetObject`” or “deny `s3:GetObject`.” Same action, different verdict.
+> فكّر في **Action** باعتباره *ما يحاول شخص فعله* وفي **Effect** باعتباره *جواب AWS على ذلك الطلب*. `s3:GetObject` هو الإجراء، و`"Allow"` أو `"Deny"` هو الأثر. وجمعهما معًا يعطيك قاعدة كاملة: «اسمح بـ `s3:GetObject`» أو «امنع `s3:GetObject`». الإجراء نفسه، والحكم مختلف.
 
 ### Action
 
-An **Action** specifies which AWS API operations the statement applies to. Actions follow the pattern `<service>:<operation>`:
+يحدد **Action** عمليات AWS API التي ينطبق عليها البيان. وتتبع الإجراءات النمط `<service>:<operation>`:
 
-- `s3:GetObject`—read a file from S3
-- `s3:PutObject`—upload a file to S3
-- `cloudfront:CreateInvalidation`—invalidate cached files in CloudFront
-- `iam:CreateUser`—create a new IAM user
+- `s3:GetObject`—قراءة ملف من S3
+- `s3:PutObject`—رفع ملف إلى S3
+- `cloudfront:CreateInvalidation`—إبطال الملفات المخزنة مؤقتًا في CloudFront
+- `iam:CreateUser`—إنشاء مستخدم IAM جديد
 
-You can specify a single action as a string or multiple actions as an array:
+يمكنك تحديد إجراء واحد كسلسلة أو إجراءات متعددة كمصفوفة:
 
 ```json
 "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
 ```
 
-Wildcards work too. `s3:*` means “every S3 action.” `s3:Get*` means “every S3 action that starts with Get.” We’ll talk about why wildcards are dangerous in [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege).
+تعمل أحرف البدل أيضًا. `s3:*` تعني «كل إجراءات S3»، و`s3:Get*` تعني «كل إجراءات S3 التي تبدأ بـ Get». وسنتحدث عن سبب خطورة أحرف البدل في [مبدأ أقل الامتيازات](https://stevekinney.com/courses/aws/principle-of-least-privilege).
 
-> **Tip**
+> **نصيحة**
 >
-> You don’t need to memorize action names. AWS documents every action for every service. Search for “IAM actions for S3” or “IAM actions for CloudFront” and you’ll find the complete list. The AWS Policy Generator tool can also help you discover the right action names.
+> لست بحاجة إلى حفظ أسماء الإجراءات. فـ AWS توثّق كل إجراء لكل خدمة. ابحث عن «IAM actions for S3» أو «IAM actions for CloudFront» وستجد القائمة الكاملة. ويمكن أن تساعدك أداة AWS Policy Generator أيضًا في اكتشاف أسماء الإجراءات الصحيحة.
 
 ### Resource
 
-The **Resource** field specifies which AWS resources the statement applies to, identified by their **ARN (Amazon Resource Name)**. ARNs are globally unique identifiers that follow this format:
+يحدد حقل **Resource** موارد AWS التي ينطبق عليها البيان، معرّفة بـ **ARN (Amazon Resource Name)**. والـ ARNs معرّفات فريدة عالميًا تتبع هذه الصيغة:
 
 ```
 arn:aws:<service>:<region>:<account-id>:<resource-type>/<resource-id>
 ```
 
-A few examples:
+بضعة أمثلة:
 
-| Resource | ARN |
+| المورد | ARN |
 | --- | --- |
-| A specific S3 bucket | `arn:aws:s3:::my-frontend-app-assets` |
-| All objects in that bucket | `arn:aws:s3:::my-frontend-app-assets/*` |
-| A specific CloudFront distribution | `arn:aws:cloudfront::123456789012:distribution/E1A2B3C4D5E6F7` |
-| All resources (dangerous) | `*` |
+| حاوية S3 محددة | `arn:aws:s3:::my-frontend-app-assets` |
+| كل الكائنات في تلك الحاوية | `arn:aws:s3:::my-frontend-app-assets/*` |
+| توزيع CloudFront محدد | `arn:aws:cloudfront::123456789012:distribution/E1A2B3C4D5E6F7` |
+| كل الموارد (خطير) | `*` |
 
-Notice that S3 bucket ARNs don’t include a region or account ID—bucket names are globally unique, so AWS doesn’t need them to identify the resource. Other services do include the region and account. You’ll get used to the pattern for each service as you use it.
+لاحظ أن ARNs حاويات S3 لا تتضمن منطقة أو معرّف حساب—فأسماء الحاويات فريدة عالميًا، لذا لا تحتاج AWS إليها لتحديد المورد. أما الخدمات الأخرى فتشمل المنطقة والحساب. وستألف نمط كل خدمة مع استخدامك لها.
 
-> **Warning**
+> **تحذير**
 >
-> The difference between `arn:aws:s3:::my-frontend-app-assets` (the bucket itself) and `arn:aws:s3:::my-frontend-app-assets/*` (the objects in the bucket) matters. `s3:ListBucket` operates on the bucket, while `s3:GetObject` operates on objects within the bucket. If you mix these up, your policy won’t work and the error messages won’t tell you why.
+> الفرق بين `arn:aws:s3:::my-frontend-app-assets` (الحاوية نفسها) و`arn:aws:s3:::my-frontend-app-assets/*` (الكائنات داخل الحاوية) مهم. فـ `s3:ListBucket` يعمل على الحاوية، بينما `s3:GetObject` يعمل على الكائنات داخل الحاوية. وإذا خلطت بينهما، فلن تعمل سياستك ولن تخبرك رسائل الخطأ بالسبب.
 
-## A Real Policy: Read-Only Access to Your Assets Bucket
+## سياسة حقيقية: وصول للقراءة فقط إلى حاوية الأصول
 
-> **Tip**
+> **نصيحة**
 >
-> All IAM policies from this lesson are available as standalone JSON files in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/policies/iam-policies).
+> جميع سياسات IAM في هذا الدرس متاحة كملفات JSON مستقلة في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/policies/iam-policies).
 
-Let’s write a policy that grants read-only access to your static assets bucket. This is the kind of policy you’d attach to a role that only needs to serve files—no uploading, no deleting.
+لنكتب سياسة تمنح وصولًا للقراءة فقط إلى حاوية أصولك الثابتة. هذا نوع السياسة الذي ترفقه بدور لا يحتاج إلا إلى تقديم الملفات—لا رفع ولا حذف.
 
 ```json
 {
@@ -143,29 +143,29 @@ Let’s write a policy that grants read-only access to your static assets bucket
 }
 ```
 
-*Note:* `s3:ListBucket` operates on the bucket ARN, not the objects inside it.
+*ملاحظة:* `s3:ListBucket` يعمل على ARN الحاوية، لا على الكائنات داخلها.
 
-*Note:* `s3:GetObject` operates on objects, so the ARN ends with `/*`.
+*ملاحظة:* `s3:GetObject` يعمل على الكائنات، لذا ينتهي الـ ARN بـ `/*`.
 
-Two statements, two different resource scopes. The first lets you list what’s in the bucket. The second lets you read individual files. Together, they give you read-only access. Nothing more.
+بيانان، ونطاقان مختلفان للموارد. الأول يتيح لك سرد ما في الحاوية، والثاني يتيح لك قراءة الملفات الفردية. ومعهما تحصل على وصول للقراءة فقط. لا أكثر.
 
-## Attaching a Policy
+## إرفاق سياسة
 
-A policy sitting by itself doesn’t do anything. You need to attach it to a user, group, or role.
+السياسة الموجودة بمفردها لا تفعل شيئًا. عليك إرفاقها بمستخدم أو مجموعة أو دور.
 
-### Using the Console
+### باستخدام وحدة التحكم
 
-1. Navigate to **IAM** > **Policies** > **Create policy**.
-2. Click the **JSON** tab (the visual editor is fine for exploration, but you should know the JSON).
-3. Paste your policy document.
-4. Click **Next**, give it a name like `S3AssetsReadOnly`, and click **Create policy**.
-5. Navigate to the user or role you want to grant these permissions to.
-6. Click **Add permissions** > **Attach policies**.
-7. Search for `S3AssetsReadOnly` and attach it.
+1. انتقل إلى **IAM** > **Policies** > **Create policy**.
+2. انقر على علامة تبويب **JSON** (المحرر المرئي جيد للاستكشاف، لكن يجب أن تعرف JSON).
+3. الصق مستند سياستك.
+4. انقر **Next**، وأعطها اسمًا مثل `S3AssetsReadOnly`، ثم انقر **Create policy**.
+5. انتقل إلى المستخدم أو الدور الذي تريد منحه هذه الأذونات.
+6. انقر **Add permissions** > **Attach policies**.
+7. ابحث عن `S3AssetsReadOnly` وأرفقها.
 
-### Using the CLI
+### باستخدام CLI
 
-You can also create and attach policies with the AWS CLI:
+يمكنك أيضًا إنشاء السياسات وإرفاقها عبر AWS CLI:
 
 ```bash
 aws iam create-policy \
@@ -175,7 +175,7 @@ aws iam create-policy \
   --output json
 ```
 
-This command returns the policy’s **ARN**, which you’ll need to attach it:
+يعيد هذا الأمر **ARN** الخاص بالسياسة، وستحتاجه لإرفاقها:
 
 ```bash
 aws iam attach-user-policy \
@@ -185,7 +185,7 @@ aws iam attach-user-policy \
   --output json
 ```
 
-### With the SDK
+### باستخدام SDK
 
 ```typescript
 import { IAMClient, CreatePolicyCommand, AttachUserPolicyCommand } from '@aws-sdk/client-iam';
@@ -223,9 +223,9 @@ await iam.send(
 );
 ```
 
-## A More Practical Policy: Deploy Permissions
+## سياسة أكثر عملية: أذونات النشر
 
-Here’s something closer to what you’ll actually need. This policy lets a user sync files to an S3 bucket and create CloudFront invalidations—the two operations required to deploy a static frontend:
+إليك شيئًا أقرب إلى ما ستحتاجه فعلًا. تتيح هذه السياسة لمستخدم مزامنة ملفات إلى حاوية S3 وإنشاء إبطالات CloudFront—وهما العمليتان اللازمتان لنشر واجهة أمامية ثابتة:
 
 ```json
 {
@@ -247,19 +247,19 @@ Here’s something closer to what you’ll actually need. This policy lets a use
 }
 ```
 
-*Note:* Scoped to one specific distribution, not all distributions in the account.
+*ملاحظة:* النطاق محصور في توزيع محدد واحد، لا في كل التوزيعات في الحساب.
 
-Notice that the **Resource** field in the CloudFront statement targets a specific distribution by its ARN. The user can’t invalidate caches on other distributions—only the one you specified. That’s intentional.
+لاحظ أن حقل **Resource** في بيان CloudFront يستهدف توزيعًا محددًا عبر ARN الخاص به. فلا يستطيع المستخدم إبطال ذاكرات التخزين المؤقت في توزيعات أخرى—فقط في التوزيع الذي حددته. وهذا مقصود.
 
-> **Tip**
+> **نصيحة**
 >
-> When building a policy, start by asking: “What CLI commands or SDK calls does this user need to run?” Each CLI command maps to one or more IAM actions. `aws s3 sync` needs `s3:PutObject`, `s3:DeleteObject`, and `s3:ListBucket`. `aws cloudfront create-invalidation` needs `cloudfront:CreateInvalidation`. Work backwards from the commands to the policy.
+> عند بناء سياسة، ابدأ بالسؤال: «ما أوامر CLI أو استدعاءات SDK التي يحتاج هذا المستخدم إلى تشغيلها؟» فكل أمر CLI يقابل إجراء IAM واحدًا أو أكثر. `aws s3 sync` يحتاج `s3:PutObject` و`s3:DeleteObject` و`s3:ListBucket`، و`aws cloudfront create-invalidation` يحتاج `cloudfront:CreateInvalidation`. اعمل بالاتجاه المعاكس من الأوامر إلى السياسة.
 
-## Condition Keys: Narrowing Allows
+## مفاتيح الشروط: تضييق عمليات السماح
 
-The five fields above (`Version`, `Statement`, `Effect`, `Action`, `Resource`) form a working policy. A sixth field, `Condition`, lets you narrow an allow to only fire when specific request attributes match. It’s how you turn “allow this action on this resource” into “allow this action on this resource *only when the request comes from my own region*” or “only when the caller’s source IP is in a certain range.”
+الحقول الخمسة أعلاه (`Version` و`Statement` و`Effect` و`Action` و`Resource`) تشكّل سياسة صالحة. والحقل السادس، `Condition`، يتيح لك تضييق السماح كي يعمل فقط عندما تطابق سمات طلب معينة. وهو ما يحوّل «اسمح بهذا الإجراء على هذا المورد» إلى «اسمح بهذا الإجراء على هذا المورد *فقط عندما يأتي الطلب من منطقتي أنا*» أو «فقط عندما يكون عنوان IP المصدر للمتصل ضمن نطاق معين».
 
-One concrete example: restrict an IAM user to operations in `us-east-1` only. Even if they have permission to call `ec2:RunInstances`, the condition refuses the call unless the request is scoped to `us-east-1`.
+مثال ملموس واحد: قصر مستخدم IAM على عمليات في `us-east-1` فقط. فحتى لو كان لديه إذن استدعاء `ec2:RunInstances`، يرفض الشرط الاستدعاء ما لم يكن الطلب محصور النطاق في `us-east-1`.
 
 ```json
 {
@@ -279,21 +279,21 @@ One concrete example: restrict an IAM user to operations in `us-east-1` only. Ev
 }
 ```
 
-`aws:RequestedRegion` is a **global condition key**—available on every request. Others worth knowing:
+`aws:RequestedRegion` هو **مفتاح شرط عالمي**—متاح في كل طلب. ومن المفاتيح الأخرى الجديرة بالمعرفة:
 
-- **`aws:SourceIp`** — CIDR-scoped access (office networks).
-- **`aws:SourceVpc`** — only from a specific VPC (for private workloads).
-- **`aws:MultiFactorAuthPresent`** — require MFA for sensitive actions.
-- **`aws:PrincipalTag/<tagKey>`** — ABAC-style gating by caller tag.
+- **`aws:SourceIp`** — وصول محصور بنطاق CIDR (شبكات المكتب).
+- **`aws:SourceVpc`** — من VPC محدد فقط (للأحمال الخاصة).
+- **`aws:MultiFactorAuthPresent`** — اشتراط MFA للإجراءات الحساسة.
+- **`aws:PrincipalTag/<tagKey>`** — تحكم بنمط ABAC عبر وسم المتصل.
 
-The full list lives in the [AWS global condition context keys reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html).
+القائمة الكاملة موجودة في [مرجع مفاتيح سياق الشروط العالمية في AWS](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html).
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Forgetting the `Version` field.** Without it, AWS falls back to the 2008 policy language, which behaves differently. Always include `"Version": "2012-10-17"`.
+**نسيان حقل `Version`.** بدونه، ترجع AWS إلى لغة سياسات 2008، التي تتصرف بشكل مختلف. أدرج دائمًا `"Version": "2012-10-17"`.
 
-**Using `Resource: "*"` by habit.** This grants access to every resource of the action’s type in your account. Sometimes it’s necessary (IAM actions like `iam:ListUsers` don’t support resource-level restrictions), but for S3 and CloudFront, always scope to specific ARNs.
+**استخدام `Resource: "*"` بدافع العادة.** هذا يمنح الوصول إلى كل مورد من نوع الإجراء في حسابك. وأحيانًا يكون ضروريًا (إجراءات IAM مثل `iam:ListUsers` لا تدعم قيودًا على مستوى المورد)، لكن بالنسبة إلى S3 وCloudFront، احصر النطاق دائمًا في ARNs محددة.
 
-**Confusing bucket ARNs and object ARNs.** `arn:aws:s3:::my-bucket` is the bucket. `arn:aws:s3:::my-bucket/*` is the objects inside the bucket. Some actions operate on the bucket (like `s3:ListBucket`), others operate on objects (like `s3:GetObject`). If your policy isn’t working, this is the first thing to check.
+**الخلط بين ARNs الحاويات وARNs الكائنات.** `arn:aws:s3:::my-bucket` هو الحاوية، و`arn:aws:s3:::my-bucket/*` هو الكائنات داخل الحاوية. فبعض الإجراءات تعمل على الحاوية (مثل `s3:ListBucket`)، وأخرى تعمل على الكائنات (مثل `s3:GetObject`). وإذا لم تعمل سياستك، فهذا أول ما تتحقق منه.
 
-You now know how to write a policy from scratch. In [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege), we’ll talk about how to make sure your policies aren’t granting more access than they should.
+أنت تعرف الآن كيف تكتب سياسة من الصفر. وفي [مبدأ أقل الامتيازات](https://stevekinney.com/courses/aws/principle-of-least-privilege)، سنتحدث عن كيفية التأكد من أن سياساتك لا تمنح وصولًا أكثر مما ينبغي.

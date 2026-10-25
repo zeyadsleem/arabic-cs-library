@@ -1,14 +1,14 @@
 ---
-title: "Mocking Reading And Writing Files"
-lang: en
+title: "محاكاة قراءة الملفات وكتابتها"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-the-file-system"
 ---
 
-Usually, when you’re testing something like file operations, you don’t actually want your tests messing around with your file system. We don’t want some rogue unit test changing the file that holds your coworkers’ lunch preferences or—god forbid—deleting it entirely. That’s where mocking comes in. With mocking, we can just *pretend* we’re reading and writing files. Vitest and modern tools like `fs/promises` make this super straightforward. So, let’s dig in.
+عادةً، عندما تختبر شيئًا مثل عمليات الملفات، فإنك لا تريد فعليًا أن تعبث اختباراتك بنظام ملفاتك. لا نريد لاختبار وحدة شارد أن يغيّر الملف الذي يحوي تفضيلات غداء زملائك في العمل، أو، حاشا لله، أن يحذفه بالكامل. هنا تأتي المحاكاة. فبالمحاكاة يمكننا أن *نتظاهر* فقط بأننا نقرأ الملفات ونكتبها. يجعل Vitest وأدوات حديثة مثل `fs/promises` هذا الأمر بالغ البساطة. فلنغص في التفاصيل.
 
-## Setting the Scene
+## تهيئة المشهد
 
-Let’s assume you’ve got this super fancy little module that reads from a file, modifies the data, and writes it back. Something really *real-world* like this:
+لنفترض أن لديك هذه الوحدة الصغيرة الفاخرة التي تقرأ من ملف، وتعدّل البيانات، ثم تكتبها مرة أخرى. شيء *واقعي* حقًا مثل هذا:
 
 ```javascript
 // fileOperations.js
@@ -22,15 +22,15 @@ export async function processFile(filePath, content) {
 }
 ```
 
-The dream here is that you’ll pass a file path and some new content, and it’ll append that content to whatever’s in the file. Pretty standard. But for the sake of our tests, we don’t want to actually read or write files.
+الحلم هنا أن تمرّر مسار ملف وبعض المحتوى الجديد، فيُلحق ذلك المحتوى بما في الملف. أمر معتاد تمامًا. لكن من أجل اختباراتنا، لا نريد أن نقرأ أو نكتب ملفات فعليًا.
 
-## Mocking the File System with Vitest
+## محاكاة نظام الملفات باستخدام Vitest
 
-We can mock `fs/promises` using Vitest’s `vi.mock()` function. This lets us *intercept* those calls to `readFile` and `writeFile` and return specific values we want.
+يمكننا محاكاة `fs/promises` باستخدام دالة `vi.mock()` في Vitest. يتيح لنا ذلك *اعتراض* تلك النداءات إلى `readFile` و`writeFile` وإعادة قيم محددة نريدها.
 
-### Write the Test
+### كتابة الاختبار
 
-Let’s first write the tests, mocking those file system calls so we don’t nuke any actual files.
+لنكتب الاختبارات أولًا، مع محاكاة نداءات نظام الملفات تلك كي لا نُدمّر أي ملفات حقيقية.
 
 ```javascript
 import { processFile } from './fileOperations';
@@ -63,35 +63,35 @@ describe('processFile', () => {
 });
 ```
 
-### Breaking it Down
+### تفكيك الأمر
 
-#### The Mock
+#### البديل المُحاكى
 
-`vi.mock('fs/promises')` essentially says, “Hey, Vitest, don’t even try interacting with the real file system—just mock everything in this module.”
+`vi.mock('fs/promises')` يقول أساسًا: «مرحبًا Vitest، لا تحاول حتى التفاعل مع نظام الملفات الحقيقي، حاكِ فقط كل شيء في هذه الوحدة.»
 
-#### Mocking `readFile`
+#### محاكاة `readFile`
 
-We want to simulate reading the file without actually doing it. `readFile.mockResolvedValue(mockExistingContent)` tells Vitest, “Yo, every time someone calls `readFile`, instead of hitting the disk, just hand them this mock content.”
+نريد أن نحاكي قراءة الملف دون القيام بذلك فعليًا. تقول `readFile.mockResolvedValue(mockExistingContent)` لـ Vitest: «كلما نادى أحدهم `readFile`، بدلًا من الوصول إلى القرص، أعطه هذا المحتوى المُحاكى فقط.»
 
-#### Asserting `writeFile`
+#### التحقق من `writeFile`
 
-After appending the contents, you’re gonna want to check that it’s calling `writeFile` correctly. With `expect(writeFile).toHaveBeenCalledWith(mockFilePath, expectedContent)`, you’re confirming it’s writing back what you’d expect.
+بعد إلحاق المحتوى، ستحتاج إلى التحقق من أنه ينادي `writeFile` بشكل صحيح. فعبارة `expect(writeFile).toHaveBeenCalledWith(mockFilePath, expectedContent)` تؤكد أنه يكتب ما تتوقعه.
 
-### Running the Test
+### تشغيل الاختبار
 
-Assuming you’ve got Vitest all set up, you can kick the test off by running:
+بافتراض أن Vitest معدّ بالكامل، يمكنك إطلاق الاختبار بتشغيل:
 
 ```bash
 npx vitest
 ```
 
-And if everything is wired up correctly, it’ll pass! 🎉
+وإن كان كل شيء موصولًا بشكل صحيح، فسينجح! 🎉
 
-## Common Pitfalls
+## المزالق الشائعة
 
-1. **Forgetting to mock the right thing:** The file system API lives under different names (`fs`, `fs/promises`). Make sure you’re mocking the right one! Newer Node.js code prefers `fs/promises`, which is why we’re mocking that.
-2. **Mocks returning undefined:** If you forget `mockResolvedValue`, Vitest will return `undefined` by default. So if you’re wondering why your test is throwing `undefined is not a function`—check those mocks!
+1. **نسيان محاكاة الشيء الصحيح:** تقع واجهة نظام الملفات تحت أسماء مختلفة (`fs`، `fs/promises`). تأكد من أنك تحاكي الاسم الصحيح! تفضّل شيفرة Node.js الأحدث `fs/promises`، ولهذا نحاكيه.
+2. **البدائل المُحاكاة التي تُعيد undefined:** إن نسيت `mockResolvedValue`، فسيُعيد Vitest القيمة `undefined` افتراضيًا. لذا إن كنت تتساءل لماذا يُطلق اختبارك `undefined is not a function`، فافحص تلك البدائل المُحاكاة!
 
-## Final Thoughts
+## أفكار ختامية
 
-Mocking file reading and writing can be a bit intimidating at first, but once you get the hang of it, your tests will be cleaner, faster, and less likely to wipe out someone’s precious files (e.g. your own).
+قد تكون محاكاة قراءة الملفات وكتابتها مخيفة قليلًا في البداية، لكن بمجرد أن تتقنها، ستصبح اختباراتك أنظف وأسرع وأقل احتمالًا لمحو ملفات ثمينة لأحدهم (ملفاتك أنت مثلًا).

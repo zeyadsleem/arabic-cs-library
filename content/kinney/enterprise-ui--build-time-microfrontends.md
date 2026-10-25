@@ -1,22 +1,22 @@
 ---
-title: "Build-Time Microfrontends"
-lang: en
+title: "الواجهات الأمامية الدقيقة وقت البناء"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/build-time-microfrontends"
 ---
 
-Build-time microfrontends are the package-based version of microfrontends. Instead of loading independently deployed slices at runtime, you publish or link each slice as a package and let the shell import them as ordinary dependencies during the application build. Martin Fowler’s [microfrontends article](https://martinfowler.com/articles/micro-frontends.html) describes this exact pattern: each microfrontend is published as a package and the container app includes them as library dependencies. He also calls out the central tradeoff immediately—you get a single deployable JavaScript bundle and can deduplicate common dependencies, but any change in one slice means recompiling and releasing the whole application.
+الواجهات الأمامية الدقيقة وقت البناء هي النسخة القائمة على الحزم من الواجهات الأمامية الدقيقة. فبدلًا من تحميل شرائح منشورة باستقلالية وقت التنفيذ، تنشر كل شريحة أو تربطها كحزمة وتدع القشرة (shell) تستوردها كاعتمادات عادية أثناء بناء التطبيق. وتصف [مقالة Martin Fowler عن الواجهات الأمامية الدقيقة](https://martinfowler.com/articles/micro-frontends.html) هذا النمط تحديدًا: تُنشر كل واجهة أمامية دقيقة كحزمة، ويضمّها التطبيق الحاوي كاعتمادات مكتبات. ويشير أيضًا فورًا إلى المقايضة الجوهرية—فأنت تحصل على حزمة JavaScript واحدة قابلة للنشر وتستطيع إزالة تكرار الاعتمادات الشائعة، لكن أي تغيير في شريحة واحدة يعني إعادة تصريف التطبيق بأكمله وإصداره.
 
-That’s why build-time microfrontends are usually closer to a modular monolith with package boundaries than to a fully runtime-composed microfrontend system. [Webpack](https://webpack.js.org/concepts/) describes its own job as building a static dependency graph and turning that graph into one or more bundles, while npm and pnpm describe workspaces as one top-level project managing multiple local packages. Once your shell imports every slice and your bundler emits one app, the runtime is basically one application, even if the source tree is cut into many packages.
+ولهذا تكون الواجهات الأمامية الدقيقة وقت البناء عادةً أقرب إلى كتلة واحدة معيارية ذات حدود حزم مما هي إلى نظام واجهات أمامية دقيقة مُركَّب بالكامل وقت التنفيذ. ويصف [Webpack](https://webpack.js.org/concepts/) مهمته بأنها بناء مخطط اعتماد ثابت وتحويل ذلك المخطط إلى حزمة أو أكثر، بينما تصف npm وpnpm مساحات العمل كمشروع واحد أعلى مستوى يدير حزمًا محلية متعددة. وبمجرد أن تستورد قشرتك كل شريحة ويُخرج مُجمِّعك تطبيقًا واحدًا، يصبح وقت التنفيذ تطبيقًا واحدًا في الأساس، حتى لو كانت شجرة المصدر مقطّعة إلى حزم كثيرة.
 
-If what you actually need is independent deployability per slice, then this is the wrong tool. [single-spa’s recommended setup](https://single-spa.js.org/docs/recommended-setup/) emphasizes that each application can be independently developed and deployed, and webpack’s Module Federation docs describe runtime consumption of modules from separate builds. Build-time integration doesn’t give you that property. It gives you package-level separation and build-time composition instead.
+إذا كان ما تحتاجه فعلًا هو قابلية النشر المستقلة لكل شريحة، فهذه هي الأداة الخطأ. فـ[الإعداد الموصى به من single-spa](https://single-spa.js.org/docs/recommended-setup/) يشدّد على أن كل تطبيق يمكن تطويره ونشره باستقلالية، وتصف وثائق Module Federation في webpack الاستهلاك وقت التنفيذ للوحدات من عمليات بناء منفصلة. لكن التكامل وقت البناء لا يمنحك تلك الخصيصة، بل يمنحك فصلًا على مستوى الحزم وتركيبًا وقت البناء بدلًا من ذلك.
 
-## Where It Makes Sense
+## أين يكون منطقيًا
 
-Build-time microfrontends make sense when the real problem is code ownership, package boundaries, and team-scale maintainability—not runtime autonomy. They’re a good fit when you want separate teams to own vertical slices of a product, but you’re still happy shipping one artifact, one SSR/SSG output, one release, and one browser runtime. Fowler’s guidance says teams should be organized around vertical business slices, often whole pages, rather than technical layers like styling or validation. [single-spa](https://single-spa.js.org/) similarly recommends route-based application splits over component-sized fragmentation.
+تكون الواجهات الأمامية الدقيقة وقت البناء منطقية عندما تكون المشكلة الحقيقية هي ملكية الشيفرة وحدود الحزم وقابلية الصيانة على مقياس الفرق—لا الاستقلالية وقت التنفيذ. وهي مناسبة عندما تريد لفرق منفصلة أن تمتلك شرائح رأسية من منتج، لكنك ما زلت راضيًا بإصدار مخرَج واحد، ومخرَج SSR/SSG واحد، وإصدار واحد، وبيئة تشغيل متصفح واحدة. وتقول إرشادات Fowler إن الفرق ينبغي أن تُنظَّم حول شرائح أعمال رأسية، غالبًا صفحات كاملة، لا حول طبقات تقنية مثل التنسيق أو التحقق. ويوصي [single-spa](https://single-spa.js.org/) بالمثل بتقسيم التطبيقات على أساس المسارات بدلًا من التجزئة بحجم المكوّن.
 
-That last point matters more than people admit. If your “microfrontends” are really just `@org/button`, `@org/forms`, and `@org/date-utils`, you don’t have microfrontends. You have libraries, which is fine, but let’s not put a fake mustache on package management and call it strategy. [single-spa](https://single-spa.js.org/) explicitly distinguishes route-based applications from utility modules, and it treats things like a component library, shared auth, and global error handling as utility modules, not as the main product slices.
+تلك النقطة الأخيرة أهم مما يعترف به الناس. فإذا كانت «واجهاتك الأمامية الدقيقة» مجرد `@org/button` و`@org/forms` و`@org/date-utils`، فليست لديك واجهات أمامية دقيقة، بل لديك مكتبات، وهذا لا بأس به، لكن لا نضع شاربًا مزيفًا على إدارة الحزم ونسمّيه استراتيجية. ويُميّز [single-spa](https://single-spa.js.org/) صراحةً بين التطبيقات القائمة على المسارات ووحدات الأدوات، ويعامل أشياء مثل مكتبة المكوّنات والمصادقة المشتركة ومعالجة الأخطاء الشاملة كوحدات أدوات، لا كشرائح المنتج الأساسية.
 
-A healthy build-time setup usually looks like one shell plus a small set of domain or route packages, with a few truly shared utility packages beside them.
+تبدو التهيئة الصحية وقت البناء عادةً كقشرة واحدة مضافًا إليها مجموعة صغيرة من حزم النطاق أو المسارات، وإلى جانبها بضع حزم أدوات مشتركة فعلًا.
 
 ```
 repo/
@@ -31,13 +31,13 @@ repo/
     api-client/
 ```
 
-That shape lines up with Fowler’s page-level slicing and with the common “applications plus utility modules” split described in [single-spa](https://single-spa.js.org/) guidance.
+يتوافق ذلك الشكل مع التقسيم الصفحي عند Fowler ومع الفصل الشائع «تطبيقات + وحدات أدوات» الموصوف في إرشادات [single-spa](https://single-spa.js.org/).
 
-## The Main Flavors
+## الأنماط الرئيسية
 
-The monorepo flavor is the simplest and usually the best starting point. [npm workspaces](https://docs.npmjs.com/cli/v9/using-npm/workspaces/) automatically symlink local packages into `node_modules`, and Node’s normal module resolution lets the shell consume those workspaces by package name. pnpm has built-in workspace support as well. In practice, that means your shell can import `@acme/order-food` exactly as if it were a published dependency, while local development still uses workspace linking.
+نمط المستودع الأحادي هو الأبسط والبداية الأفضل عادةً. فـ[مساحات عمل npm](https://docs.npmjs.com/cli/v9/using-npm/workspaces/) تنشئ تلقائيًا روابط رمزية للحزم المحلية داخل `node_modules`، ويسمح حلّ الوحدات العادي في Node للقشرة باستهلاك مساحات العمل هذه باسم الحزمة. كما أن pnpm فيه دعم مدمج لمساحات العمل. وعمليًا، يعني ذلك أن قشرتك تستطيع استيراد `@acme/order-food` تمامًا كما لو كانت اعتمادًا منشورًا، بينما يظل التطوير المحلي يستخدم ربط مساحة العمل.
 
-A minimal monorepo setup:
+تهيئة مستودع أحادي بسيطة:
 
 ```json
 // package.json at repo root
@@ -59,17 +59,17 @@ A minimal monorepo setup:
 }
 ```
 
-That’s just Fowler’s build-time package integration applied inside a workspace-aware repository. npm handles the linking, pnpm can make the local-package intent stricter, and the bundler sees an ordinary import graph.
+هذا مجرد تكامل الحزم وقت البناء عند Fowler مطبَّقًا داخل مستودع مدرك لمساحات العمل. فتتولّى npm الربط، ويستطيع pnpm جعل قصد الحزمة المحلية أكثر صرامة، ويرى المُجمِّع مخطط استيراد عاديًا.
 
-The published-package flavor is the multi-repo or private-registry version of the same idea. Each slice is versioned and published, and the shell depends on semver ranges. At that point, [SemVer](https://semver.org/) stops being optional ceremony and becomes part of the architecture, because the published package boundary is now your product contract.
+أما نمط الحزمة المنشورة فهو نسخة الفكرة نفسها في مستودعات متعددة أو سجلّ خاص. فتُنَسَّق كل شريحة وتُنشر، وتعتمد القشرة على نطاقات semver. وعند تلك النقطة يتوقف [SemVer](https://semver.org/) عن كونه مراسم اختيارية ويصبح جزءًا من المعمار، لأن حدّ الحزمة المنشورة هو الآن عقد منتجك.
 
-A hybrid is common in larger organizations: develop slices in a monorepo, but publish selected packages to an internal registry for use by other repos or products. [pnpm’s docs](https://pnpm.io/workspaces) say workspace release management is complex enough that it points people to dedicated tools like Changesets or Rush, and Changesets is explicitly designed for monorepo-friendly multi-package versioning with automatic updating of inter-package dependencies.
+النمط الهجين شائع في المؤسسات الأكبر: طوّر الشرائح في مستودع أحادي، لكن انشر حزمًا مختارة إلى سجلّ داخلي لاستخدامها من مستودعات أو منتجات أخرى. وتقول [وثائق pnpm](https://pnpm.io/workspaces) إن إدارة إصدارات مساحة العمل معقدة بما يكفي لتوجّه الناس إلى أدوات مخصّصة مثل Changesets أو Rush، وقد صُمّم Changesets صراحةً للتنقيح المتعدد الحزم الملائم للمستودعات الأحادية مع تحديث تلقائي للاعتمادات بين الحزم.
 
-## The Package Boundary Is the Contract
+## حدّ الحزمة هو العقد
 
-In build-time microfrontends, the package boundary matters more than the runtime boundary, because the package boundary is the only real boundary left. SemVer says the public API must be declared and clear. [Node’s package docs](https://nodejs.org/api/packages.html) recommend the `exports` field for new packages, and they’re explicit that once `exports` is defined, undeclared subpaths are encapsulated and unavailable to importers. Node’s publishing guide adds the sharp edge: adding `exports` can be a breaking change because it blocks deep imports that consumers may already be using.
+في الواجهات الأمامية الدقيقة وقت البناء، يهمّ حدّ الحزمة أكثر من حدّ وقت التنفيذ، لأن حدّ الحزمة هو الحدّ الحقيقي الوحيد المتبقي. ويقول SemVer إن الواجهة البرمجية العامة يجب أن تكون معلَنة وواضحة. وتوصي [وثائق حزم Node](https://nodejs.org/api/packages.html) بحقل `exports` للحزم الجديدة، وهي صريحة في أن المسارات الفرعية غير المعلَنة تصبح مُغلَّفة وغير متاحة للمستوردين بمجرد تعريف `exports`. ويضيف دليل النشر في Node الحدّ الحاد: قد تكون إضافة `exports` تغييرًا كاسرًا لأنه يحجب الاستيرادات العميقة التي قد يكون المستهلكون يستخدمونها بالفعل.
 
-So, the rule is simple: don’t let the shell or sibling slices import private files. No `@acme/order-food/src/internal/useSomething`. No `../../packages/foo/lib/private`. Export the entry points you support and nothing else.
+لذا القاعدة بسيطة: لا تدع القشرة أو الشرائح الشقيقة تستورد ملفات خاصة. لا `@acme/order-food/src/internal/useSomething`. ولا `../../packages/foo/lib/private`. صدّر نقاط الدخول التي تدعمها ولا شيء غيرها.
 
 ```json
 {
@@ -83,19 +83,19 @@ So, the rule is simple: don’t let the shell or sibling slices import private f
 }
 ```
 
-That’s the adult version of package boundaries. `exports` gives you a deliberate surface area, subpath entry points let you expose multiple supported modules, and deep imports stop being an accidental contract.
+هذه هي النسخة الناضجة من حدود الحزم. فـ `exports` يمنحك مساحة سطح مدروسة، وتتيح لك نقاط دخول المسارات الفرعية كشف وحدات مدعومة متعددة، ويتوقف الاستيراد العميق عن كونه عقدًا عرَضيًا.
 
-Module format is another place where teams get sloppy and later discover that packaging was, regrettably, part of the system all along. Node uses the `type` field to decide how `.js` files are interpreted, and its publishing guidance says it’s generally best to publish a single format—either CommonJS or ESM, not both. The same guide warns about the **dual-package hazard**: if both the CJS and ESM versions get loaded, you can end up with two instances of what you thought was one package, with separate state and surprising behavior. That’s a real edge case for stateful shared packages in build-time microfrontend setups.
+صيغة الوحدة موضع آخر يتراخى فيه الفرق ثم يكتشفون لاحقًا أن التغليف كان، للأسف، جزءًا من النظام طوال الوقت. يستخدم Node حقل `type` لتحديد كيف تُفسَّر ملفات `.js`، ويقول دليل النشر فيه إن الأفضل عمومًا نشر صيغة واحدة—إما CommonJS أو ESM، لا كلتيهما. ويحذّر الدليل نفسه من **خطر الحزمة المزدوجة**: إذا حُمِّلت نسختا CJS وESM معًا، فقد ينتهي بك الأمر إلى نسختين مما ظننته حزمة واحدة، بحالة منفصلة وسلوك مفاجئ. وهذه حالة حدّية حقيقية للحزم المشتركة ذات الحالة في تهيئات الواجهات الأمامية الدقيقة وقت البناء.
 
-## Dependency Strategy
+## استراتيجية الاعتماد
 
-If slices are compiled into one application, shared dependencies still need discipline. In a workspace, npm auto-symlinks packages and pnpm links workspace packages directly, but pnpm also points out an important ambiguity with ordinary semver ranges: without the `workspace:` protocol, a dependency might resolve from the workspace or from the registry depending on what’s available. `workspace:` removes that uncertainty and refuses to resolve to anything except a local workspace package. On publish, pnpm rewrites those `workspace:` ranges to normal semver ranges, which makes the resulting package consumable outside the workspace.
+إذا صُرِّفت الشرائح في تطبيق واحد، فإن الاعتمادات المشتركة ما زالت تحتاج إلى انضباط. ففي مساحة العمل، تنشئ npm روابط رمزية للحزم تلقائيًا ويربط pnpm حزم مساحة العمل مباشرةً، لكن pnpm يشير أيضًا إلى غموض مهم مع نطاقات semver العادية: فبدون بروتوكول `workspace:`، قد يُحلّ الاعتماد من مساحة العمل أو من السجلّ حسب المتاح. ويُزيل `workspace:` ذلك الغموض ويرفض الحلّ إلى أي شيء غير حزمة مساحة عمل محلية. وعند النشر، يعيد pnpm كتابة نطاقات `workspace:` تلك إلى نطاقات semver عادية، ما يجعل الحزمة الناتجة قابلة للاستهلاك خارج مساحة العمل.
 
-For host-provided frameworks like React, treat the relationship like a plugin/host contract. [npm’s package docs](https://docs.npmjs.com/cli/v9/configuring-npm/package-json/) recommend keeping peer dependency requirements as broad as compatibility really allows, and pnpm has workspace settings specifically for peer resolution. In a pnpm monorepo, `resolvePeersFromWorkspaceRoot` can make every project resolve peers from the workspace root so they all use the same version, and `strictPeerDependencies` can turn bad peer trees into install failures instead of shrugged-at warnings. That’s exactly what you want when several slices are supposed to share one framework runtime.
+بالنسبة إلى الأطر التي يوفّرها المضيف مثل React، عامل العلاقة كعقد إضافة/مضيف. وتوصي [وثائق حزم npm](https://docs.npmjs.com/cli/v9/configuring-npm/package-json/) بإبقاء متطلبات اعتماد النظراء (peer dependencies) واسعة قدر ما تسمح به التوافقية فعلًا، ولدى pnpm إعدادات مساحة عمل مخصّصة لحلّ النظراء. وفي مستودع pnpm أحادي، يستطيع `resolvePeersFromWorkspaceRoot` أن يجعل كل مشروع يحلّ النظراء من جذر مساحة العمل فيستخدمون جميعًا الإصدار نفسه، ويستطيع `strictPeerDependencies` تحويل أشجار النظراء السيئة إلى فشل في التثبيت بدلًا من تحذيرات مُتهاون بها. وهذا بالضبط ما تريده عندما يُفترض أن تتشارك عدة شرائح بيئة تشغيل إطار واحدة.
 
-If you use pnpm, [catalogs](https://pnpm.io/catalogs) are a nice extra layer of sanity. They let you define shared version ranges like `react` and `react-dom` once in `pnpm-workspace.yaml`, reference them as `catalog:` in package manifests, and change them in one place later. The benefits are plain: unique versions are easier to maintain, upgrades become one-line edits, and duplicated dependency versions are reduced.
+إن كنت تستخدم pnpm، فإن [الكتالوجات (catalogs)](https://pnpm.io/catalogs) طبقة إضافية لطيفة من الاتساق. فهي تتيح لك تعريف نطاقات إصدارات مشتركة مثل `react` و`react-dom` مرة واحدة في `pnpm-workspace.yaml`، والإشارة إليها بـ `catalog:` في بيانات الحزم، وتغييرها في مكان واحد لاحقًا. والفوائد واضحة: صيانة الإصدارات الفريدة أسهل، وتصبح الترقيات تعديلات من سطر واحد، وينخفض تكرار إصدارات الاعتماد.
 
-A reasonable package manifest for a host-coupled slice often looks like this:
+غالبًا ما تبدو بيانات حزمة معقولة لشريحة مقترنة بالمضيف هكذا:
 
 ```json
 {
@@ -111,15 +111,15 @@ A reasonable package manifest for a host-coupled slice often looks like this:
 }
 ```
 
-The point is to keep the framework truly shared, while ordinary internal packages remain ordinary dependencies. If you blur that line, duplicate runtimes and peer mismatches become your new hobby.
+الهدف هو إبقاء الإطار مشتركًا فعلًا، بينما تظل الحزم الداخلية العادية اعتمادات عادية. وإن طمست ذلك الخط، صارت بيئات التشغيل المكرّرة وعدم تطابق النظراء هوايتك الجديدة.
 
-One hard rule: keep the package graph acyclic. pnpm warns about cyclic workspace dependencies and can be configured to fail installation when cycles exist. Cycles aren’t just ugly. They’re usually evidence that the slices aren’t really slices anymore. They’re clumps.
+قاعدة صارمة واحدة: أبقِ مخطط الحزم بلا دورات (acyclic). فـ pnpm يحذّر من الاعتمادات الدورية في مساحة العمل ويمكن تهيئته ليفشل التثبيت عند وجود دورات. والدورات ليست قبيحة فحسب، بل هي عادةً دليل على أن الشرائح لم تعد شرائح فعلًا، بل صارت كتلًا متلاصقة.
 
-## Build System and TypeScript
+## نظام البناء وTypeScript
 
-Once you split a frontend into packages, the repo needs a real build graph—not one giant “hope TypeScript figures it out” config. [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html) are specifically designed to split programs into smaller pieces, improve build times, enforce logical separation, and work with `tsc --build`. For build-time microfrontends in TypeScript, that’s usually the cleanest way to keep package boundaries honest without turning editor performance into compost.
+بمجرد أن تقسّم واجهة أمامية إلى حزم، يحتاج المستودع إلى مخطط بناء حقيقي—لا إعداد واحد عملاق من نوع «لنأمل أن يكتشف TypeScript الأمر». فقد صُمّمت [مراجع مشروع TypeScript](https://www.typescriptlang.org/docs/handbook/project-references.html) خصيصًا لتقسيم البرامج إلى أجزاء أصغر، وتحسين أزمنة البناء، وفرض الفصل المنطقي، والعمل مع `tsc --build`. وبالنسبة إلى الواجهات الأمامية الدقيقة وقت البناء في TypeScript، فهذه عادةً أنظف طريقة لإبقاء حدود الحزم صادقة دون تحويل أداء المحرّر إلى سماد.
 
-A small root config often looks like this:
+غالبًا ما يبدو إعداد جذر صغير هكذا:
 
 ```json
 {
@@ -133,46 +133,46 @@ A small root config often looks like this:
 }
 ```
 
-That doesn’t make the frontend a distributed system. It just makes the build understand the same package graph your repo is already trying to express.
+هذا لا يحوّل الواجهة الأمامية إلى نظام موزّع، بل يجعل البناء يفهم مخطط الحزم نفسه الذي يحاول مستودعك التعبير عنه بالفعل.
 
-## Release Management
+## إدارة الإصدار
 
-Build-time microfrontends usually have two release stories, and teams get burned when they pretend there’s only one. One story is the package release story: which slice changed, what semver bump it needs, and whether downstream package versions need updating. The other story is the product release story: when the final shell application is built and shipped. pnpm explicitly says workspace versioning is complex and points people to external tooling, while Changesets is designed around coordinated versioning in multi-package repos and automatic inter-package dependency updates.
+عادةً ما يكون للواجهات الأمامية الدقيقة وقت البناء قصتان للإصدار، ويُحرَق الفرق عندما يتظاهرون بأن هناك قصة واحدة. القصة الأولى هي قصة إصدار الحزم: أي شريحة تغيّرت، وأي رفع semver تحتاج، وهل تحتاج إصدارات الحزم النهائية إلى تحديث. والقصة الأخرى هي قصة إصدار المنتج: متى يُبنى تطبيق القشرة النهائي ويُشحن. ويقول pnpm صراحةً إن تنقيح مساحة العمل معقّد ويوجّه الناس إلى أدوات خارجية، بينما صُمّم Changesets حول تنقيح منسّق في مستودعات متعددة الحزم وتحديثات تلقائية للاعتمادات بين الحزم.
 
-This is the part where build-time microfrontends most often reveal what they really are. If every meaningful change still waits for the shell app’s release train, you have package modularity, not runtime independence. That’s not bad. It’s just different. Fowler’s warning about lockstep release is the line not to forget.
+هنا غالبًا ما تكشف الواجهات الأمامية الدقيقة وقت البناء عن حقيقتها. فإذا كان كل تغيير ذي معنى ما زال ينتظر قطار إصدار تطبيق القشرة، فلديك معيارية الحزم لا الاستقلالية وقت التنفيذ. وهذا ليس سيئًا، بل مختلف فقط. وتحذير Fowler من الإصدار المتزامن (lockstep) هو السطر الذي لا يجب نسيانه.
 
-## Testing and Integration
+## الاختبار والتكامل
 
-Because composition happens at build time, the ugly failures are usually package contract failures, not remote-loader or CDN-manifest failures. The highest-value tests are package-level tests inside each slice, shell integration tests that import the real exported entry points, and contract tests around any route or module interfaces that multiple slices rely on. Fowler makes the route-contract version of this point explicitly: when routes become the contract between microfrontends, they should be protected by automated tests.
+لأن التركيب يحدث وقت البناء، فالإخفاقات القبيحة عادةً إخفاقات عقد الحزمة، لا إخفاقات مُحمِّل بعيد أو بيان CDN. والاختبارات الأعلى قيمة هي اختبارات على مستوى الحزمة داخل كل شريحة، واختبارات تكامل القشرة التي تستورد نقاط الدخول المُصدَّرة الحقيقية، واختبارات العقد حول أي واجهات مسار أو وحدة تعتمد عليها شرائح متعددة. ويصوغ Fowler نسخة عقد المسار من هذه النقطة صراحةً: عندما تصبح المسارات هي العقد بين الواجهات الأمامية الدقيقة، ينبغي حمايتها باختبارات آلية.
 
-It’s also useful to run a slice package in some kind of standalone preview or example host, but not to trust that preview completely. Fowler warns that simplified standalone development can drift from the real container, especially around shared/global styles and other environmental differences, so you still need regular integration in production-like environments. Replace “container” with “shell app” and the lesson remains exactly the same.
+من المفيد أيضًا تشغيل حزمة الشريحة في نوع من المعاينة المستقلة أو مضيف مثال، لكن دون الثقة بتلك المعاينة ثقة كاملة. فـ Fowler يحذّر من أن التطوير المستقل المبسّط قد ينحرف عن الحاوي الحقيقي، خاصةً حول الأنماط المشتركة/الشاملة والفروق البيئية الأخرى، لذا ما زلت تحتاج إلى تكامل منتظم في بيئات شبيهة بالإنتاج. استبدل «الحاوي» بـ «تطبيق القشرة» ويبقى الدرس نفسه تمامًا.
 
-## Where Build-Time Microfrontends Start Breaking
+## متى تبدأ الواجهات الأمامية الدقيقة وقت البناء في الانهيار
 
-They start breaking when the organization expects independent deployment from a model that fundamentally doesn’t provide it. Fowler says the package-based build-time approach forces recompilation and release of every slice for any change and recommends strongly against it for that reason. If the business wants per-slice release cadence, canaries, instant rollbacks, or late-binding runtime composition, package integration isn’t enough.
+تبدأ في الانهيار عندما تتوقّع المؤسسة نشرًا مستقلًا من نموذج لا يوفّره جوهريًا. ويقول Fowler إن النهج القائم على الحزم وقت البناء يفرض إعادة تصريف كل شريحة وإصدارها لأي تغيير، وينصح بشدة ضدّه لهذا السبب. وإذا أراد العمل إيقاع إصدار لكل شريحة، أو إصدارات كناري، أو تراجعات فورية، أو تركيبًا وقت التنفيذ مؤجَّل الربط، فتكامل الحزم لا يكفي.
 
-They also start breaking when the slice boundaries are too fine-grained or too chatty. single-spa’s guidance is to prefer route-based applications over component-level fragmentation, and it flatly says that if microfrontends are frequently sharing UI state you should consider merging them. Constant shared state is usually the architecture telling you it wanted a larger boundary all along.
+تبدأ أيضًا في الانهيار عندما تكون حدود الشرائح دقيقة أكثر من اللازم أو ثرثارة أكثر من اللازم. فإرشاد single-spa هو تفضيل التطبيقات القائمة على المسارات على التجزئة بمستوى المكوّن، ويقول بصراحة إنه إذا كانت الواجهات الأمامية الدقيقة تتشارك حالة الواجهة بشكل متكرر فينبغي أن تفكر في دمجها. والحالة المشتركة الدائمة هي عادةً المعمار يخبرك بأنه أراد حدًّا أكبر طوال الوقت.
 
-And they break when package hygiene is weak. Deep imports create accidental APIs. Ambiguous `type` / `exports` configuration creates module-format bugs. Dual CJS/ESM publishing can load two copies of the same stateful package. Invalid peers let slices silently drift. Workspace cycles tangle ownership. None of these are glamorous problems, but they’re the ones that actually hurt package-based architectures in real codebases.
+وتنكسر عندما تكون نظافة الحزم ضعيفة. فالاستيرادات العميقة تنشئ واجهات برمجية عرَضية. وإعداد `type` / `exports` الغامض ينشئ أخطاء في صيغة الوحدات. والنشر المزدوج CJS/ESM قد يحمّل نسختين من الحزمة ذات الحالة نفسها. والنظراء غير الصالحون يتركون الشرائح تنحرف بصمت. ودورات مساحة العمل تُشابك الملكية. لا شيء من هذه مشكلات برّاقة، لكنها التي تؤذي فعلًا المعمارات القائمة على الحزم في قواعد الشيفرة الحقيقية.
 
-## Build-Time Versus Runtime
+## وقت البناء مقابل وقت التنفيذ
 
-| Dimension | Build-time | Runtime |
+| البعد | وقت البناء | وقت التنفيذ |
 | --- | --- | --- |
-| Composition timing | During application build | In the browser or at server runtime |
-| Number of builds | One final artifact | Multiple independent builds |
-| Independent deployment | No (lockstep release) | Yes |
-| Shared dependencies | Deduplicated by bundler | Negotiated at runtime (share scopes) |
-| Bundle behavior | Standard bundler output | Async remote loading |
-| Operational complexity | Lower (one deploy pipeline) | Higher (per-remote pipelines) |
-| Best for | Package boundaries, team modularity | Autonomy, independent release cadence |
+| توقيت التركيب | أثناء بناء التطبيق | في المتصفح أو وقت تنفيذ الخادم |
+| عدد عمليات البناء | مخرَج نهائي واحد | عمليات بناء مستقلة متعددة |
+| النشر المستقل | لا (إصدار متزامن) | نعم |
+| الاعتمادات المشتركة | مُزال تكرارها بواسطة المُجمِّع | يُتفاوض عليها وقت التنفيذ (نطاقات المشاركة) |
+| سلوك الحزمة | مخرَج مُجمِّع قياسي | تحميل بعيد غير متزامن |
+| التعقيد التشغيلي | أقل (خط نشر واحد) | أعلى (خطوط لكل طرف بعيد) |
+| الأنسب لـ | حدود الحزم، معيارية الفريق | الاستقلالية، إيقاع الإصدار المستقل |
 
-The clean distinction is this. Build-time microfrontends give you package boundaries, static imports, one application build, one release artifact, and ordinary bundler behavior. Runtime microfrontends keep multiple builds alive past compilation and compose them in the browser or at runtime. single-spa’s recommended setup is based on in-browser ES modules and import maps, where each application can be independently developed and deployed. Webpack describes Module Federation as providing and consuming modules from separate builds at runtime.
+التمييز الواضح هو هذا. تمنحك الواجهات الأمامية الدقيقة وقت البناء حدود حزم، واستيرادات ثابتة، وبناء تطبيق واحد، ومخرَج إصدار واحد، وسلوك مُجمِّع عادي. أما الواجهات الأمامية الدقيقة وقت التنفيذ فتُبقي عمليات بناء متعددة حيّة بعد التصريف وتركّبها في المتصفح أو وقت التنفيذ. ويعتمد الإعداد الموصى به من single-spa على وحدات ES داخل المتصفح وخرائط الاستيراد (import maps)، حيث يمكن تطوير كل تطبيق ونشره باستقلالية. ويصف Webpack Module Federation بأنها توفير الوحدات واستهلاكها من عمليات بناء منفصلة وقت التنفيذ.
 
-Build-time microfrontends optimize for simpler operations and stronger compile-time integration. Runtime microfrontends optimize for autonomy and late binding. [single-spa](https://single-spa.js.org/) also highlights the runtime advantages directly: common libraries can be downloaded once, lazy loading of applications is straightforward, and teams can deploy on their own schedules. If those are the benefits you need, build-time packages are the wrong answer. If those aren’t your bottleneck, runtime composition may just be extra machinery with a heroic marketing budget.
+تُحسّن الواجهات الأمامية الدقيقة وقت البناء من أجل عمليات أبسط وتكامل أقوى وقت التصريف. وتُحسّن الواجهات الأمامية الدقيقة وقت التنفيذ من أجل الاستقلالية والربط المتأخر. ويُبرز [single-spa](https://single-spa.js.org/) أيضًا مزايا وقت التنفيذ مباشرةً: فيمكن تنزيل المكتبات الشائعة مرة واحدة، والتحميل الكسول للتطبيقات مباشر، وتستطيع الفرق النشر وفق جداولها الخاصة. وإن كانت هذه هي الفوائد التي تحتاجها، فحزم وقت البناء هي الجواب الخطأ. وإن لم تكن هذه عنق الزجاجة لديك، فقد يكون التركيب وقت التنفيذ مجرد آليات إضافية بميزانية تسويق بطولية.
 
-## The Recommendation
+## التوصية
 
-Use build-time microfrontends when you want vertical-slice packages, strong API boundaries, maybe multiple teams, and a cleaner codebase—but you’re still happy with one shipped artifact. Put them in workspaces, make the package exports explicit, use peer dependencies for host-provided frameworks, keep the graph acyclic, add TypeScript project references, and version the packages like real products.
+استخدم الواجهات الأمامية الدقيقة وقت البناء عندما تريد حزم شرائح رأسية، وحدود واجهات برمجية قوية، وربما فرقًا متعددة، وقاعدة شيفرة أنظف—لكنك ما زلت راضيًا بمخرَج واحد مشحون. ضعها في مساحات عمل، واجعل صادرات الحزم صريحة، واستخدم اعتمادات النظراء للأطر التي يوفّرها المضيف، وأبقِ المخطط بلا دورات، وأضف مراجع مشروع TypeScript، ونَسِّق الحزم كمنتجات حقيقية.
 
-Don’t use build-time microfrontends when the real goal is independent deployment. Fowler already gave the verdict on that: package-based build-time integration reintroduces lockstep release. At that point, stop flattering the package graph and move to runtime composition. Otherwise you haven’t built independently deployable frontends. You’ve built a modular monolith with better manners.
+لا تستخدم الواجهات الأمامية الدقيقة وقت البناء عندما يكون الهدف الحقيقي النشر المستقل. فقد أصدر Fowler الحكم في ذلك بالفعل: التكامل القائم على الحزم وقت البناء يعيد الإصدار المتزامن. وعند تلك النقطة، توقف عن مجاملة مخطط الحزم وانتقل إلى التركيب وقت التنفيذ. وإلا فلم تبنِ واجهات أمامية قابلة للنشر باستقلالية، بل بنيت كتلة واحدة معيارية بأخلاق أفضل.

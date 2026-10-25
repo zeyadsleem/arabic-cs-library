@@ -1,105 +1,105 @@
 ---
-title: "REST APIs vs. HTTP APIs"
-lang: en
+title: "REST APIs مقابل HTTP APIs"
+lang: ar
 source: "https://stevekinney.com/courses/aws/rest-apis-vs-http-apis"
 ---
 
-API Gateway offers two flavors of API: **REST APIs** and **HTTP APIs**. If you’ve ever tried to create an API in the console, you’ve seen both options sitting side by side with no clear guidance on which to pick. The naming doesn’t help—both can serve RESTful endpoints, and both speak HTTP. The difference is in what they include and what they cost.
+توفّر API Gateway نوعين من واجهات API: **REST APIs** و**HTTP APIs**. إن حاولت يومًا إنشاء API في وحدة التحكّم، فقد رأيت الخيارين جنبًا إلى جنب دون إرشاد واضح عن أيّهما تختار. ولا تساعد التسمية — فكلاهما يستطيع تقديم نقاط نهاية RESTful، وكلاهما يتحدّث HTTP. والفرق فيما يتضمّنانه وفي كلفتهما.
 
-If you want AWS’s version of the product surface while you read, the [HTTP APIs documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) is the official reference for the flavor this course uses.
+إن أردت نسخة AWS من سطح المنتج بينما تقرأ، فإن [توثيق HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) هو المرجع الرسمي للنوع الذي تستخدمه هذه الدورة.
 
-For this course, you’ll use HTTP APIs. They’re cheaper, faster, and simpler. But you should understand when REST APIs earn their overhead, because you’ll run into them on teams that have been using AWS longer.
+في هذه الدورة، ستستخدم HTTP APIs. فهي أرخص وأسرع وأبسط. لكن عليك أن تفهم متى تستحق REST APIs تكلفتها الإضافية، لأنك ستلتقي بها في فرق تستخدم AWS منذ وقت أطول.
 
-## Why This Matters
+## لماذا يهمّ هذا
 
-Choosing the wrong API Gateway product is one of those mistakes that does not break anything immediately. It just quietly makes every request more expensive, every configuration screen more cluttered, and every explanation to your future self more annoying. Scratch Lab does not need the heavyweight option, and most frontend-driven backends do not either.
+اختيار منتج API Gateway الخاطئ من تلك الأخطاء التي لا تكسر شيئًا فورًا. إنما يجعل كل طلب أكثر كلفة بهدوء، وكل شاشة إعداد أكثر ازدحامًا، وكل شرح لنفسك في المستقبل أكثر إزعاجًا. لا يحتاج Scratch Lab الخيار الثقيل، ومعظم الخلفيات المدفوعة بالواجهة الأمامية لا تحتاجه كذلك.
 
-## Builds On
+## يُبنى على
 
-This lesson builds on the Lambda foundation you already put in place. You already have compute. What you need now is the HTTP layer that turns a Lambda function into something your frontend can call with `fetch`.
+يُبنى هذا الدرس على أساس Lambda الذي أنشأته بالفعل. لديك الحوسبة الآن. وما تحتاجه هو طبقة HTTP التي تحوّل دالة Lambda إلى شيء تستطيع واجهتك الأمامية استدعاءه بـ`fetch`.
 
-## HTTP APIs: The Default Choice
+## HTTP APIs: الخيار الافتراضي
 
-**HTTP APIs** (sometimes called “v2” APIs) launched in 2019 as a streamlined alternative to REST APIs. AWS built them specifically for the most common use case: putting an HTTP layer in front of Lambda functions. Here’s what they give you:
+أُطلقت **HTTP APIs** (وتُسمّى أحيانًا واجهات «v2») في 2019 كبديل مبسّط لـ REST APIs. بنتها AWS خصيصًا لحالة الاستخدام الأكثر شيوعًا: وضع طبقة HTTP أمام دوال Lambda. وهذا ما تقدّمه لك:
 
-- **Lower cost.** HTTP APIs cost roughly 70% less than REST APIs—$1.00 per million requests versus $3.50 per million.
-- **Lower latency.** AWS reports that HTTP APIs have up to 60% lower latency compared to REST APIs. That latency reduction compounds when your frontend makes multiple API calls on a single page.
-- **Automatic deployments.** HTTP APIs deploy changes to the `$default` stage automatically. No manual deployment step.
-- **Built-in CORS.** CORS configuration is a first-class setting on the API itself. You configure it once and it applies to all routes.
-- **JWT authorizers.** Native JWT validation without writing a Lambda authorizer—point it at a Cognito user pool or any OIDC provider.
-- **Simpler routing.** Routes are defined as `METHOD /path`, and proxy integrations send the entire request to Lambda. No mapping templates, no Velocity templates, no request/response transformation language to learn.
+- **كلفة أقل.** تكلّف HTTP APIs أقل بنحو 70% من REST APIs — دولارًا واحدًا لكل مليون طلب مقابل 3.50 دولارات لكل مليون.
+- **زمن استجابة أقل.** تُفيد AWS بأن HTTP APIs أقل زمن استجابة بنسبة تصل إلى 60% مقارنة بـ REST APIs. ويتضاعف أثر خفض زمن الاستجابة عندما تجري واجهتك الأمامية استدعاءات API متعددة في صفحة واحدة.
+- **نشر تلقائي.** تنشر HTTP APIs التغييرات إلى المرحلة `$default` تلقائيًا. لا خطوة نشر يدوية.
+- **CORS مدمج.** إعداد CORS إعداد من الدرجة الأولى على واجهة API نفسها. تُعدّه مرة واحدة فيسري على كل المسارات.
+- **مُفوِّضات JWT.** تحقّق أصلي من JWT دون كتابة مُفوِّض Lambda — وجّهه إلى مجموعة مستخدمين في Cognito أو أي مزوّد OIDC.
+- **توجيه أبسط.** تُعرّف المسارات بصيغة `METHOD /path`، وتكاملات الوكيل ترسل الطلب كله إلى Lambda. لا قوالب تعيين، ولا قوالب Velocity، ولا لغة تحويل طلب/استجابة تتعلمها.
 
-If you’re building a frontend that calls a Lambda-backed API—which is exactly what we’re doing in this course—HTTP APIs are the right tool.
+إذا كنت تبني واجهة أمامية تستدعي API مدعومة بـ Lambda — وهو بالضبط ما نفعله في هذه الدورة — فإن HTTP APIs هي الأداة الصحيحة.
 
-## REST APIs: When You Need More Control
+## REST APIs: عندما تحتاج إلى مزيد من التحكّم
 
-**REST APIs** (sometimes called “v1” APIs) are the original API Gateway product. They include features that HTTP APIs deliberately left out:
+**REST APIs** (وتُسمّى أحيانًا واجهات «v1») هي منتج API Gateway الأصلي. وتتضمّن ميزات تركتها HTTP APIs عمدًا:
 
-- **API key usage plans.** If you need to issue API keys to third-party consumers and enforce rate limits per key, REST APIs have built-in usage plans and throttling.
-- **Request validation.** REST APIs can validate request bodies and query parameters against JSON schemas before your Lambda function ever runs. HTTP APIs leave validation to your handler code.
-- **Caching.** REST APIs have built-in response caching—you can cache responses at the API Gateway layer for a configurable TTL, reducing Lambda invocations and latency. HTTP APIs have no caching layer.
-- **WAF integration.** REST APIs integrate directly with AWS WAF (Web Application Firewall) for IP-based filtering, rate limiting, and bot detection. HTTP APIs don’t.
-- **Resource policies.** REST APIs support resource-based policies that restrict access by IP address, VPC, or AWS account. HTTP APIs rely on authorizers and IAM for access control.
-- **Request/response transformation.** REST APIs include Velocity Template Language (VTL) mapping templates that can transform requests and responses between the client and your integration. This is powerful but complex—and rarely needed when your frontend and backend are both under your control.
+- **خطط استخدام مفاتيح API.** إذا احتجت إلى إصدار مفاتيح API لمستهلكين خارجيين وفرض حدود معدّل لكل مفتاح، فلدى REST APIs خطط استخدام وخنق مدمجة.
+- **التحقّق من الطلب.** تستطيع REST APIs التحقّق من أجسام الطلبات ومعاملات الاستعلام مقابل مخططات JSON قبل أن تعمل دالة Lambda أصلًا. أما HTTP APIs فتترك التحقّق لشيفرة معالجك.
+- **التخزين المؤقت.** لدى REST APIs تخزين مؤقت مدمج للاستجابات — يمكنك تخزين الاستجابات مؤقتًا في طبقة API Gateway لمدة TTL قابلة للضبط، ما يقلّل استدعاءات Lambda وزمن الاستجابة. ولا تملك HTTP APIs طبقة تخزين مؤقت.
+- **تكامل WAF.** تتكامل REST APIs مباشرة مع AWS WAF (جدار حماية تطبيقات الويب) للتصفية حسب IP، وتحديد المعدّل، وكشف الروبوتات. أما HTTP APIs فلا.
+- **سياسات الموارد.** تدعم REST APIs سياسات قائمة على الموارد تقيّد الوصول حسب عنوان IP أو VPC أو حساب AWS. وتستند HTTP APIs إلى المُفوِّضات وIAM للتحكّم في الوصول.
+- **تحويل الطلب/الاستجابة.** تتضمّن REST APIs قوالب تعيين بلغة قوالب Velocity (VTL) تستطيع تحويل الطلبات والاستجابات بين العميل والتكامل. وهذا قوي لكنه معقّد — ونادرًا ما تحتاجه عندما تكون واجهتك الأمامية وخلفيتك تحت سيطرتك.
 
-## The Decision Table
+## جدول القرار
 
-| Feature | HTTP APIs | REST APIs |
+| الميزة | HTTP APIs | REST APIs |
 | --- | --- | --- |
-| Price per million requests | ~$1.00 | ~$3.50 |
-| Latency | Lower | Higher |
-| Lambda proxy integration | Yes | Yes |
-| CORS configuration | Built-in | Manual (per method) |
-| JWT authorizers | Native | Lambda authorizer required |
-| Lambda authorizers | Yes | Yes |
-| API keys and usage plans | No | Yes |
-| Request body validation | No | Yes |
-| Response caching | No | Yes |
-| AWS WAF integration | No | Yes |
-| Automatic deployments | Yes (`$default` stage) | No (manual deploy) |
-| Custom domain names | Yes | Yes |
-| WebSocket support | No | No (separate WebSocket API) |
+| السعر لكل مليون طلب | ~$1.00 | ~$3.50 |
+| زمن الاستجابة | أقل | أعلى |
+| تكامل وكيل Lambda | نعم | نعم |
+| إعداد CORS | مدمج | يدوي (لكل طريقة) |
+| مُفوِّضات JWT | أصلية | مُفوِّض Lambda مطلوب |
+| مُفوِّضات Lambda | نعم | نعم |
+| مفاتيح API وخطط الاستخدام | لا | نعم |
+| التحقّق من جسم الطلب | لا | نعم |
+| التخزين المؤقت للاستجابات | لا | نعم |
+| تكامل AWS WAF | لا | نعم |
+| النشر التلقائي | نعم (مرحلة `$default`) | لا (نشر يدوي) |
+| أسماء نطاقات مخصّصة | نعم | نعم |
+| دعم WebSocket | لا | لا (WebSocket API منفصلة) |
 
-## How to Choose
+## كيف تختار
 
-Start with HTTP APIs. Move to REST APIs only when you hit a feature you actually need. Here’s the short version:
+ابدأ بـ HTTP APIs. وانتقل إلى REST APIs فقط عندما تصطدم بميزة تحتاجها فعلًا. وهذا هو الملخّص السريع:
 
-**Use HTTP APIs when:**
+**استخدم HTTP APIs عندما:**
 
-- You’re building a backend for your own frontend (the scenario in this course)
-- You want the lowest cost and latency
-- JWT-based authentication is sufficient
-- You don’t need to cache responses at the gateway layer
+- تبني خلفية لواجهتك الأمامية (السيناريو في هذه الدورة)
+- تريد أقل كلفة وزمن استجابة
+- تكون المصادقة القائمة على JWT كافية
+- لا تحتاج إلى تخزين الاستجابات مؤقتًا في طبقة البوابة
 
-**Use REST APIs when:**
+**استخدم REST APIs عندما:**
 
-- You’re exposing a public API to third-party consumers who need API keys
-- You need request validation at the gateway layer before Lambda runs
-- You need response caching to reduce Lambda invocations
-- You need WAF integration for IP filtering or rate limiting
+- تعرّض API عامة لمستهلكين خارجيين يحتاجون مفاتيح API
+- تحتاج إلى التحقّق من الطلب في طبقة البوابة قبل تشغيل Lambda
+- تحتاج إلى التخزين المؤقت للاستجابات لتقليل استدعاءات Lambda
+- تحتاج إلى تكامل WAF للتصفية حسب IP أو تحديد المعدّل
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re not sure, use an HTTP API. You can migrate to a REST API later if you need a feature that HTTP APIs lack. The Lambda handler code is the same for both—only the API Gateway configuration differs.
+> إن لم تكن متأكدًا، فاستخدم HTTP API. يمكنك الانتقال إلى REST API لاحقًا إن احتجت ميزة تفتقر إليها HTTP APIs. شيفرة معالج Lambda هي نفسها في كليهما — ويختلف إعداد API Gateway فقط.
 
-## A Note on Naming
+## ملاحظة على التسمية
 
-AWS’s naming here is genuinely confusing. “REST API” is a product name, not a description of architectural style. An HTTP API can serve perfectly RESTful endpoints. When you see “REST API” in AWS documentation, it refers to the older, feature-rich API Gateway product. When you see “HTTP API,” it refers to the newer, streamlined product. The terms have nothing to do with whether your API follows REST principles.
+تسمية AWS هنا مربكة بحق. فـ«REST API» اسم منتج، لا وصف لنمط معماري. ويمكن لـ HTTP API أن تقدّم نقاط نهاية RESTful تمامًا. وعندما ترى «REST API» في توثيق AWS، فهو يشير إلى منتج API Gateway الأقدم والأغنى بالميزات. وعندما ترى «HTTP API»، فهو يشير إلى المنتج الأحدث والأبسط. ولا علاقة لهذين المصطلحين بما إذا كانت واجهتك تتبع مبادئ REST.
 
-> **Warning**
+> **تحذير**
 >
-> The AWS CLI uses different command families for each type. REST APIs use `aws apigateway` (without the “v2”). HTTP APIs use `aws apigatewayv2`. If you’re following tutorials or Stack Overflow answers, check which API type the commands target. A `create-rest-api` command won’t work when you meant to create an HTTP API.
+> يستخدم AWS CLI عائلات أوامر مختلفة لكل نوع. فتستخدم REST APIs الأمر `aws apigateway` (بلا «v2»)، وتستخدم HTTP APIs الأمر `aws apigatewayv2`. وإذا كنت تتبع دروسًا أو إجابات Stack Overflow، فتحقّق من نوع API الذي تستهدفه الأوامر. فلن يعمل أمر `create-rest-api` عندما تقصد إنشاء HTTP API.
 
-## Verification
+## التحقّق
 
-- You can explain why HTTP APIs are the default for this course without reducing the answer to “because they are newer.”
-- You can name at least two features that might justify a REST API’s extra cost and complexity.
-- You can tell, from the CLI command family alone, whether a tutorial is talking about REST APIs or HTTP APIs.
+- تستطيع أن تشرح لماذا HTTP APIs هي الافتراضي في هذه الدورة دون اختصار الجواب في «لأنها أحدث».
+- تستطيع أن تذكر ميزتين على الأقل قد تبرّران الكلفة والتعقيد الإضافيين لـ REST API.
+- تستطيع أن تعرف من عائلة أمر CLI وحدها ما إذا كان درس يتحدّث عن REST APIs أو HTTP APIs.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Picking REST APIs because the name sounds more “correct”:** In AWS, the product names are historical, not architectural guidance.
-- **Assuming migration cost is zero:** The handler code is portable, but the gateway configuration and operational surface are not identical.
-- **Following documentation for the wrong API family:** `apigateway` and `apigatewayv2` are easy to confuse and will waste time fast.
+- **اختيار REST APIs لأن الاسم يبدو «أصح»:** في AWS، أسماء المنتجات تاريخية، لا إرشاد معماري.
+- **افتراض أن كلفة الانتقال صفر:** شيفرة المعالج قابلة للنقل، لكن إعداد البوابة وسطح التشغيل ليسا متطابقين.
+- **اتّباع توثيق عائلة API الخاطئة:** يسهل الخلط بين `apigateway` و`apigatewayv2` وسيضيّع وقتك سريعًا.
 
-Next up, you’re going to create an HTTP API using the CLI. The process takes three commands: create the API, create an integration pointing to your Lambda function, and create a route that maps an HTTP method and path to that integration. You already have a deployed Lambda function from [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function)—now you’re going to give it a public URL.
+التالي، ستنشئ HTTP API باستخدام CLI. تستغرق العملية ثلاثة أوامر: إنشاء API، وإنشاء تكامل يشير إلى دالة Lambda، وإنشاء مسار يربط طريقة HTTP ومسارًا بذلك التكامل. لديك بالفعل دالة Lambda منشورة من [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function) — والآن ستمنحها عنوان URL عامًا.

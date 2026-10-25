@@ -1,105 +1,105 @@
 ---
-title: "Review Portability Beyond Bugbot"
-lang: en
+title: "قابلية نقل المراجعة إلى ما هو أبعد من Bugbot"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot"
 ---
 
-I like Bugbot. I also do not want your review loop to collapse the minute your team uses a different tool.
+يعجبني Bugbot. لكنني أيضًا لا أريد أن تنهار حلقة المراجعة لديك في اللحظة التي يستخدم فيها فريقك أداة مختلفة.
 
-That is the point of this appendix.
+وهذا هو مقصد هذا الملحق.
 
-The names change. The underlying loop does not. [Cursor Bugbot](https://cursor.com/docs/bugbot), [GitHub Copilot code review](https://docs.github.com/en/copilot/tutorials/optimize-code-reviews), and [Codex automatic review](https://help.openai.com/en/articles/11369540-codex-in-chatgpt) all live on the same skeleton: a second agent reads the diff, leaves findings, and the authoring agent or human turns repeated findings into upstream rules.
+تتغيّر الأسماء. أما الحلقة الكامنة فلا تتغيّر. [Cursor Bugbot](https://cursor.com/docs/bugbot) و[مراجعة الشيفرة في GitHub Copilot](https://docs.github.com/en/copilot/tutorials/optimize-code-reviews) و[المراجعة التلقائية في Codex](https://help.openai.com/en/articles/11369540-codex-in-chatgpt) كلها تقوم على الهيكل نفسه: وكيل ثانٍ يقرأ الفرق، ويترك ملاحظات، ثم يحوّل وكيل التأليف أو الإنسان الملاحظات المتكررة إلى قواعد في المنبع.
 
-> **Prerequisite**
+> **المتطلب السابق**
 >
-> Start with [The Second Opinion](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion) and [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase). This appendix assumes you already understand why the second-opinion loop matters. The only thing changing here is the vendor-specific surface area.
+> ابدأ بـ[الرأي الثاني](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion) و[ضبط Bugbot ليناسب قاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase). يفترض هذا الملحق أنك تفهم بالفعل لماذا تهمّ حلقة الرأي الثاني. والشيء الوحيد الذي يتغيّر هنا هو المساحة السطحية الخاصة بكل مورّد.
 
-## The portable parts of the loop
+## الأجزاء القابلة للنقل من الحلقة
 
-When I move from one review tool to another, these are the things I map first:
+حين أنتقل من أداة مراجعة إلى أخرى، هذه هي الأشياء التي أضع لها خريطة أولًا:
 
-- **Trigger**: when does the review happen?
-- **Instruction surface**: where does the reviewer learn the repository rules?
-- **Finding policy**: which comments are blocking, and which are advisory?
-- **Duplicate handling**: what happens when three pull requests in a row trip on the same category of issue?
-- **Re-review rule**: how does the tool know it should look again after a fix?
+- **المُشغِّل**: متى تجري المراجعة؟
+- **سطح التعليمات**: من أين يتعلّم المراجع قواعد المستودع؟
+- **سياسة الملاحظات**: أي التعليقات حاجزة، وأيها استشارية؟
+- **معالجة التكرار**: ماذا يحدث حين تتعثّر ثلاثة طلبات سحب متتالية في الفئة نفسها من المشكلات؟
+- **قاعدة إعادة المراجعة**: كيف تعرف الأداة أن عليها النظر مرة أخرى بعد إصلاح؟
 
-That is the real interface. Everything else is product chrome.
+هذه هي الواجهة الحقيقية. وكل ما عدا ذلك زخرفة منتج.
 
-## Trigger models
+## نماذج المُشغِّلات
 
-Some tools review automatically on pull request open. Some re-review on every push. Some need a comment or an explicit action.
+بعض الأدوات تراجع تلقائيًا عند فتح طلب السحب. وبعضها يعيد المراجعة مع كل دفعة. وبعضها يحتاج إلى تعليق أو إلى إجراء صريح.
 
-The portability rule is simple: **document the trigger in the repository, not just in your head.**
+وقاعدة النقل بسيطة: **وثّق المُشغِّل في المستودع، لا في رأسك فقط.**
 
-If the reviewer only runs when someone types a magic phrase, that is not self-testing. That is a ritual.
+فإن كان المراجع لا يعمل إلا حين يكتب أحدهم عبارة سحرية، فهذا ليس اختبارًا ذاتيًا. بل طقس.
 
-## Instruction surfaces vary more than people expect
+## أسطح التعليمات تتفاوت أكثر مما يتوقّع الناس
 
-This is the part that bites teams.
+هذا هو الجزء الذي يلسع الفرق.
 
-Bugbot might read `.cursor/BUGBOT.md`. Copilot might read `.github/copilot-instructions.md` plus any repository instructions you expose through GitHub. Codex might run from a repository-level prompt, a connected workflow, or a manual “review this diff” instruction. Plain GitHub review comments have no built-in instruction file at all, which means you need a playbook in the repo if you want consistency.
+قد يقرأ Bugbot الملف `.cursor/BUGBOT.md`. وقد يقرأ Copilot الملف `.github/copilot-instructions.md` إضافة إلى أي تعليمات مستودع تُظهرها عبر GitHub. وقد يعمل Codex انطلاقًا من مُوجِّه على مستوى المستودع، أو من سير عمل موصول، أو من تعليمة يدوية من نوع «راجع هذا الفرق». أما تعليقات المراجعة العادية في GitHub فليس لها ملف تعليمات مدمج على الإطلاق، ومعنى ذلك أنك تحتاج إلى دليل إرشادي في المستودع إن أردت الاتساق.
 
-Different entry points. Same job: give the reviewer enough context that it catches your problems instead of inventing new ones.
+مداخل مختلفة. والمهمة واحدة: أن تمنح المراجع سياقًا كافيًا ليلتقط مشكلاتك بدل أن يختلق مشكلات جديدة.
 
-So, when you port the loop, do not start with “which button do I click?” Start with “where does this reviewer read the rules?”
+لذا، حين تنقل الحلقة، لا تبدأ بـ«أي زر أنقر؟». ابدأ بـ«من أين يقرأ هذا المراجع القواعد؟».
 
-## Normalize the findings, not the tool
+## وحّد الملاحظات، لا الأداة
 
-The fastest way to make review tooling portable is to normalize how findings are interpreted.
+أسرع طريقة لجعل أدوات المراجعة قابلة للنقل هي توحيد كيفية تفسير الملاحظات.
 
-I like three buckets:
+وأنا أحب ثلاث سلال:
 
-- **Blocking**: security, data loss, broken auth, correctness issues
-- **Needs judgment**: architecture fit, naming, unclear logic, suspicious patterns
-- **Noise**: low-value style chatter or duplicate comments that do not change the patch
+- **حاجزة**: الأمان، وفقدان البيانات، وكسر المصادقة، ومشكلات الصحة
+- **تحتاج حكمًا**: ملاءمة المعمارية، والتسمية، والمنطق غير الواضح، والأنماط المريبة
+- **ضجيج**: ثرثرة أسلوب قليلة القيمة أو تعليقات مكرّرة لا تغيّر الرقعة
 
-If you classify findings this way, the vendor matters less. The agent or human author now knows how to respond even if the comment came from a different product. For the mechanical version of this normalization, a shared JSON schema passed to `claude -p --json-schema` or `codex exec --output-schema` forces every review tool into the same output shape—see [Structured CLI Output as Pipeline Glue](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue).
+إن صنّفت الملاحظات على هذا النحو، صار المورّد أقل أهمية. فوكيل التأليف أو الإنسان يعرف الآن كيف يستجيب حتى لو جاء التعليق من منتج مختلف. وللنسخة الميكانيكية من هذا التوحيد، فإن مخطط JSON مشتركًا يُمرَّر إلى `claude -p --json-schema` أو `codex exec --output-schema` يفرض على كل أداة مراجعة الشكل الناتج نفسه — انظر [مخرجات سطر الأوامر المهيكلة كغراء للخط الأنابيب](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue).
 
-## The rule of three still applies
+## قاعدة الثلاثة ما زالت تنطبق
 
-This part does not change just because the logo did.
+هذا الجزء لا يتغيّر لمجرد أن الشعار تغيّر.
 
-If three pull requests trip the same review finding:
+إن تعثّرت ثلاثة طلبات سحب في الملاحظة نفسها:
 
-- first, add or tighten the instruction
-- next, add a lint rule or static check if the problem is mechanical
-- finally, add a test if the problem is behavioral
+- أولًا، أضف التعليمة أو شدّدها
+- بعدها، أضف قاعدة فحص ثابت أو تحققًا ساكنًا إن كانت المشكلة ميكانيكية
+- وأخيرًا، أضف اختبارًا إن كانت المشكلة سلوكية
 
-That is how review feedback stops being repetitive and starts becoming infrastructure.
+وهكذا تتوقّف ملاحظات المراجعة عن التكرار وتبدأ في أن تصبح بنية تحتية.
 
-The important thing is that the escalation policy lives in the repository. Otherwise every tool migration resets the team back to folklore.
+والمهم أن تعيش سياسة التصعيد في المستودع. وإلا فإن كل انتقال بين الأدوات يعيد الفريق إلى الحكايات الشفهية.
 
-## A portable review matrix
+## مصفوفة مراجعة قابلة للنقل
 
-Here is the matrix I actually want written down:
+هذه هي المصفوفة التي أريدها مكتوبة فعلًا:
 
-| Surface | Trigger | Rule source | Re-review mechanism | Best use |
+| السطح | المُشغِّل | مصدر القواعد | آلية إعادة المراجعة | أفضل استخدام |
 | --- | --- | --- | --- | --- |
-| Bugbot | automatic on pull request activity | `.cursor/BUGBOT.md` plus repo conventions | push a fix or use the tool’s follow-up flow | sharp diff-level findings |
-| Copilot review | repository or pull request workflow setting | `.github/copilot-instructions.md` plus repo docs | push a fix and rerun review | lower-friction GitHub-native review |
-| Codex review | automatic or delegated review depending setup | repository prompt plus repo docs | push a fix or rerun the review workflow | code-review-plus-fix loop |
-| Plain GitHub review | human or manual agent review | repo playbook and reviewer judgment | request re-review | fallback that always exists |
+| Bugbot | تلقائي عند أي نشاط على طلب السحب | `.cursor/BUGBOT.md` إضافة إلى أعراف المستودع | ادفع إصلاحًا أو استخدم تدفّق المتابعة في الأداة | ملاحظات حادة على مستوى الفرق |
+| مراجعة Copilot | إعداد سير عمل المستودع أو طلب السحب | `.github/copilot-instructions.md` إضافة إلى وثائق المستودع | ادفع إصلاحًا وأعد تشغيل المراجعة | مراجعة أصلية في GitHub بأقل احتكاك |
+| مراجعة Codex | مراجعة تلقائية أو مفوّضة حسب الإعداد | مُوجِّه المستودع إضافة إلى وثائق المستودع | ادفع إصلاحًا أو أعد تشغيل سير عمل المراجعة | حلقة مراجعة وإصلاح في آن |
+| مراجعة GitHub العادية | مراجعة بشرية أو مراجعة وكيل يدوية | دليل المستودع وحكم المراجع | اطلب إعادة مراجعة | الملاذ الذي يوجد دائمًا |
 
-The point is not that this table is perfect forever. The point is that you now have something explicit to port.
+المقصود ليس أن هذا الجدول سيبقى كاملًا إلى الأبد. المقصود أن لديك الآن شيئًا صريحًا تنقله.
 
-> **Product drift**
+> **انحراف المنتجات**
 >
-> Availability, pricing, and exact setup steps for hosted review tools change fast. Re-check the current product docs before making any one tool a required merge gate.
+> يتغيّر توفّر أدوات المراجعة المستضافة وأسعارها وخطوات إعدادها بالضبط بسرعة. أعد التحقق من وثائق المنتج الحالية قبل أن تجعل أي أداة واحدة بوابة دمج إلزامية.
 
-## What goes in the repository
+## ما يوضع في المستودع
 
-If I want this loop to survive tool churn, I keep three artifacts in the repository:
+إن أردت لهذه الحلقة أن تصمد أمام تقلّب الأدوات، فأنا أبقي ثلاثة آثار في المستودع:
 
-- the tool-specific instruction file for whichever review surface I actually use
-- a vendor-neutral review playbook describing severity buckets, duplicate handling, and escalation rules
-- one place that says how repeated findings flow back into the agent rules, lint rules, and tests
+- ملف التعليمات الخاص بالأداة، لأي سطح مراجعة أستخدمه فعلًا
+- دليل مراجعة محايد تجاه المورّد يصف سلال الخطورة ومعالجة التكرار وقواعد التصعيد
+- مكان واحد يقول كيف تعود الملاحظات المتكررة إلى قواعد الوكيل وقواعد الفحص والاختبارات
 
-That is enough to keep the process portable even if the product does not stay still.
+هذا يكفي ليبقى العملية قابلة للنقل حتى لو لم يبق المنتج ساكنًا.
 
-### What the review playbook looks like
+### كيف يبدو دليل المراجعة
 
-The review playbook is the vendor-neutral artifact. Its job is to describe the loop in terms any reviewer (human, Bugbot, Copilot, Codex) can apply. Shelf’s would live at `docs/review-loop-playbook.md` — this file is what the lab will create — and has this shape:
+دليل المراجعة هو الأثر المحايد تجاه المورّد. ومهمته أن يصف الحلقة بمصطلحات يستطيع أي مراجع (إنسان، Bugbot، Copilot، Codex) أن يطبّقها. دليل Shelf سيعيش في `docs/review-loop-playbook.md` — وهذا الملف هو ما سينشئه المختبر — وله هذا الشكل:
 
 ```markdown
 # Review loop playbook
@@ -146,21 +146,21 @@ silent on a remaining blocking pattern, update its instructions
 file.
 ```
 
-Short. Explicit. Mechanical. The whole file fits on a page and every reviewer follows the same three-bucket categorization regardless of which tool is in the reviewer’s seat.
+قصير. صريح. ميكانيكي. الملف كله يتّسع في صفحة واحدة، وكل مراجع يتبع تصنيف السلال الثلاث نفسه بصرف النظر عن الأداة الجالسة في مقعد المراجع.
 
-## How You Know the Review Loop Travels
+## كيف تعرف أن حلقة المراجعة تنتقل معك
 
-You have a portable review loop when:
+تكون لديك حلقة مراجعة قابلة للنقل عندما:
 
-- at least one alternate review surface is documented alongside Bugbot
-- the repository defines blocking versus advisory findings explicitly
-- repeated findings have an agreed path back into upstream rules
+- يكون سطح مراجعة بديل واحد على الأقل موثّقًا إلى جانب Bugbot
+- يعرّف المستودع الملاحظات الحاجزة والاستشارية تعريفًا صريحًا
+- يكون للملاحظات المتكررة مسار متفق عليه للعودة إلى قواعد المنبع
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The review bot brand is not the loop. The loop is “a second set of eyes finds things the author missed, and repeated findings become repository rules.” Write *that* down, and the tooling can change without taking your process with it.
+علامة روبوت المراجعة ليست هي الحلقة. الحلقة هي «عين ثانية تجد ما فات المؤلف، والملاحظات المتكررة تصبح قواعد في المستودع». اكتب *ذلك*، فيمكن أن تتغيّر الأدوات دون أن تأخذ عمليتك معها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Second Opinion](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
-- [Lab: Port the Review Loop Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot)
+- [الرأي الثاني](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
+- [مختبر: انقل حلقة المراجعة إلى ما هو أبعد من Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot)

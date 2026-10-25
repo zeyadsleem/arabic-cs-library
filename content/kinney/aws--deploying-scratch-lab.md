@@ -1,20 +1,20 @@
 ---
-title: "Deploying Scratch Lab to CloudFront"
-lang: en
+title: "نشر Scratch Lab إلى CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/deploying-scratch-lab"
 ---
 
-Up to this point, you’ve been deploying a four-file playground site: an `index.html`, a stylesheet, a script, and an error page. That was intentional. When you’re learning S3 bucket policies and CloudFront cache behaviors, the last thing you need is a React build step muddying the feedback loop. But the playground site has done its job. You understand the pipeline. Now it’s time to put a real application on it.
+حتى الآن، كنت تنشر موقعًا تجريبيًا من أربعة ملفات: `index.html`، وورقة أنماط، وسكربت، وصفحة خطأ. كان ذلك مقصودًا. فعندما تتعلم سياسات حاويات S3 وسلوكات التخزين المؤقت في CloudFront، فإن آخر ما تحتاجه هو خطوة بناء React تعكّر حلقة التغذية الراجعة. لكن الموقع التجريبي أدّى مهمته. لقد فهمت المسار. والآن حان وقت وضع تطبيق حقيقي عليه.
 
-[Scratch Lab](https://github.com/stevekinney/scratch-lab) is a notepad application built with React, TypeScript, and Vite. It has client-side routing (`/`, `/notes/:id`), a real component tree, and enough complexity to expose the problems that edge functions exist to solve. You’re going to build it, deploy the output to your existing S3 bucket, and see what happens.
+[Scratch Lab](https://github.com/stevekinney/scratch-lab) تطبيق مفكّرة (notepad) مبني بـ React وTypeScript وVite. وله توجيه على جانب العميل (`/` و`/notes/:id`)، وشجرة مكوّنات حقيقية، وتعقيد كافٍ لكشف المشكلات التي وُجدت دوال الحافة لحلّها. وستبنيه، وتنشر مخرجاته إلى حاوية S3 الموجودة لديك، وترى ما يحدث.
 
-> **This is the app for the rest of the course**
+> **هذا هو التطبيق لبقية الدورة**
 >
-> From here on, Scratch Lab is what you’re building on. The Lambda and API Gateway sections add a backend. DynamoDB adds persistence. Secrets Manager stores credentials. By the end of the course, this notepad is a full-stack application deployed entirely on AWS.
+> من هنا فصاعدًا، Scratch Lab هو ما تبني عليه. تضيف أقسام Lambda وAPI Gateway واجهة خلفية. وتضيف DynamoDB الاستمرارية. ويخزّن Secrets Manager بيانات الاعتماد. وبنهاية الدورة، تصبح هذه المفكّرة تطبيقًا متكاملًا منشورًا بالكامل على AWS.
 
-## Clone and Build
+## استنساخ المستودع وبناؤه
 
-If you haven’t already, clone the Scratch Lab repository:
+إن لم تكن قد فعلت ذلك بعد، فاستنسخ مستودع Scratch Lab:
 
 ```bash
 git clone https://github.com/stevekinney/scratch-lab.git
@@ -22,13 +22,13 @@ cd scratch-lab
 npm install
 ```
 
-Build the application:
+ابنِ التطبيق:
 
 ```bash
 npm run build
 ```
 
-This produces a `dist/` directory with Vite’s standard output:
+ينتج هذا دليل `dist/` بمخرجات Vite القياسية:
 
 ```
 dist/
@@ -39,13 +39,13 @@ dist/
     └── index-DiDi9kH6.css
 ```
 
-Notice what’s *not* here: there’s no `notes/` directory, no `notes/abc123/index.html`. Every route in the application—`/`, `/notes/abc123`, `/not-found`—is handled by client-side JavaScript. The single `index.html` loads the JS bundle, and a custom router reads `window.location.pathname` to decide what to render.
+لاحظ ما *ليس* هنا: لا يوجد دليل `notes/`، ولا `notes/abc123/index.html`. فكل مسار في التطبيق — `/` و`/notes/abc123` و`/not-found` — يتولاه JavaScript على جانب العميل. ويحمّل `index.html` الوحيد حزمة JS، ويقرأ موجّه مخصّص `window.location.pathname` ليقرّر ما يعرضه.
 
-This is the same architecture as any Vite, Create React App, or Next.js static export build. And it’s the architecture that’s about to behave in ways you might not expect on your CloudFront distribution.
+وهذه هي البنية نفسها في أي بناء Vite أو Create React App أو تصدير ثابت من Next.js. وهي البنية التي ستتصرف قريبًا بطرق قد لا تتوقعها على توزيع CloudFront لديك.
 
-## Deploy to Your S3 Bucket
+## النشر إلى حاوية S3
 
-Replace the playground files with the Scratch Lab build output:
+استبدل ملفات الموقع التجريبي بمخرجات بناء Scratch Lab:
 
 ```bash
 aws s3 sync ./dist s3://my-frontend-app-assets \
@@ -54,9 +54,9 @@ aws s3 sync ./dist s3://my-frontend-app-assets \
   --output json
 ```
 
-The `--delete` flag removes the old playground files (`app.js`, `styles.css`, `error.html`). Your S3 bucket now contains only the Scratch Lab build.
+يزيل علم `--delete` ملفات الموقع التجريبي القديمة (`app.js` و`styles.css` و`error.html`). وتحتوي حاوية S3 لديك الآن على بناء Scratch Lab فقط.
 
-Invalidate the CloudFront cache so edge locations pick up the new files:
+أبطل ذاكرة CloudFront المؤقتة كي تلتقط مواقع الحافة الملفات الجديدة:
 
 ```bash
 aws cloudfront create-invalidation \
@@ -66,44 +66,44 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-Wait a minute or two, then visit your CloudFront domain in a browser. You should see the Scratch Lab notepad interface instead of the playground page.
+انتظر دقيقة أو دقيقتين، ثم زُر نطاق CloudFront في متصفح. وينبغي أن ترى واجهة مفكّرة Scratch Lab بدلًا من صفحة الموقع التجريبي.
 
-## What Happens with Client-Side Routes
+## ما يحدث مع المسارات على جانب العميل
 
-The app loads fine at the root URL. Click around—create a note, navigate to it. The URL bar updates to something like `/notes/abc123`. Everything works because the client-side router handles navigation with `history.pushState`, and the browser never makes a new request to CloudFront.
+يُحمَّل التطبيق جيدًا على عنوان URL الجذري. تنقّل فيه — أنشئ ملاحظة، وانتقل إليها. يتحدّث شريط العنوان إلى شيء مثل `/notes/abc123`. وكل شيء يعمل لأن الموجّه على جانب العميل يتولى التنقل باستخدام `history.pushState`، ولا يجري المتصفح طلبًا جديدًا إلى CloudFront أبدًا.
 
-Now **refresh the page** while you’re on `/notes/abc123`.
+الآن **حدّث الصفحة** بينما أنت على `/notes/abc123`.
 
-This is where it gets interesting. You configured custom error responses in the [CloudFront distribution exercise](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise)—403 and 404 errors from S3 get intercepted and serve `/index.html` with a 200 status code. So the page actually loads. The SPA router picks up the path, finds the note, and renders it. From the user’s perspective, it works.
+هنا يصبح الأمر مثيرًا. لقد أعددت استجابات أخطاء مخصّصة في [تمرين توزيع CloudFront](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise) — فأخطاء 403 و404 من S3 تُعترَض وتقدّم `/index.html` برمز حالة 200. لذا تُحمَّل الصفحة فعليًا. ويلتقط موجّه SPA المسار، ويجد الملاحظة، ويعرضها. ومن منظور المستخدم، إنها تعمل.
 
-But check the HTTP response:
+لكن افحص استجابة HTTP:
 
 ```bash
 curl -I https://YOUR_CLOUDFRONT_DOMAIN/notes/abc123
 ```
 
-Status code: **200 OK**. That’s correct for this URL—it’s a valid route.
+رمز الحالة: **200 OK**. وهذا صحيح لعنوان URL هذا — فهو مسار صالح.
 
-Now try a path that doesn’t exist in your app:
+الآن جرّب مسارًا غير موجود في تطبيقك:
 
 ```bash
 curl -I https://YOUR_CLOUDFRONT_DOMAIN/totally-fake-path
 ```
 
-Status code: still **200 OK**. The SPA renders its “not found” component, but the HTTP status says everything is fine. Try `/settings`, `/admin`, `/notes/` (with a trailing slash)—all 200.
+رمز الحالة: لا يزال **200 OK**. يعرض تطبيق SPA مكوّن «غير موجود» لديه، لكن حالة HTTP تقول إن كل شيء على ما يرام. جرّب `/settings` و`/admin` و`/notes/` (بشرطة مائلة في النهاية) — كلها 200.
 
-This matters for two reasons:
+وهذا يهم لسببين:
 
-1. **Search engines.** Google indexes pages based on HTTP status codes. A 200 on `/totally-fake-path` tells crawlers it’s a real page worth indexing. You end up with junk in your search results.
-2. **Monitoring.** If every path returns 200, you can’t distinguish real traffic from broken links, bots hitting random paths, or misconfigured redirects from other sites.
+1. **محركات البحث.** تفهرس Google الصفحات بناءً على رموز حالة HTTP. فرمز 200 على `/totally-fake-path` يقول للزواحف إنها صفحة حقيقية تستحق الفهرسة. وتنتهي بنفايات في نتائج بحثك.
+2. **المراقبة.** إذا أرجع كل مسار 200، فلا يمكنك التمييز بين حركة المرور الحقيقية والروابط المعطوبة والروبوتات التي تطرق مسارات عشوائية وإعادات التوجيه المهيّأة بشكل خاطئ من مواقع أخرى.
 
-The custom error responses got you 90% of the way—the app works for users. But the HTTP semantics are wrong, and that’s exactly the kind of problem that edge functions solve.
+أوصلتك استجابات الأخطاء المخصّصة إلى 90% من الطريق — فالتطبيق يعمل للمستخدمين. لكن دلالات HTTP خاطئة، وهذا بالضبط نوع المشكلة الذي تحلّه دوال الحافة.
 
-## What You’ll Fix Next
+## ما الذي ستصلحه تاليًا
 
-In the next few lessons, you’ll learn the difference between CloudFront Functions and Lambda@Edge, then:
+في الدروس القليلة التالية، ستتعلم الفرق بين CloudFront Functions وLambda@Edge، ثم:
 
-1. **Write a CloudFront Function** that rewrites URLs before they reach S3—so CloudFront requests `/index.html` directly instead of waiting for S3 to return a 403 and then intercepting it.
-2. **Write a Lambda@Edge function** that checks the original URL against your app’s known routes and returns a proper 404 status code for paths that don’t match.
+1. **تكتب CloudFront Function** تعيد كتابة عناوين URL قبل أن تصل إلى S3 — بحيث يطلب CloudFront الملف `/index.html` مباشرة بدلًا من انتظار S3 ليُرجع 403 ثم اعتراضه.
+2. **تكتب دالة Lambda@Edge** تفحص عنوان URL الأصلي مقابل مسارات تطبيقك المعروفة وتُرجع رمز حالة 404 صحيحًا للمسارات غير المطابقة.
 
-The result: your SPA routes work correctly, static assets are served directly, and unknown paths return 404 with the right HTTP semantics.
+والنتيجة: مسارات SPA لديك تعمل بشكل صحيح، والأصول الثابتة تُقدَّم مباشرة، والمسارات المجهولة تُرجع 404 بدلالات HTTP الصحيحة.

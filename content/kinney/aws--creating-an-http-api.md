@@ -1,18 +1,18 @@
 ---
-title: "Creating an HTTP API"
-lang: en
+title: "إنشاء HTTP API"
+lang: ar
 source: "https://stevekinney.com/courses/aws/creating-an-http-api"
 ---
 
-You picked HTTP APIs. Now you need to create one. On Vercel, an API endpoint exists the moment you create a file in the `api/` directory. On AWS, you create the API explicitly—a named resource with its own URL, its own configuration, and its own lifecycle. The upside is that you control everything. The downside is that you *have* to create everything.
+اخترت HTTP APIs. الآن تحتاج إلى إنشاء واحدة. على Vercel، توجد نقطة نهاية API بمجرد إنشاء ملف في دليل `api/`. وعلى AWS، تُنشئ واجهة API صراحةً — مورد مسمّى بعنوان URL خاص وإعدادات خاصة ودورة حياة خاصة. والميزة أنك تتحكم في كل شيء. والعيب أنك *مضطر* إلى إنشاء كل شيء.
 
-If you want AWS’s exact version of the HTTP API setup while you read, keep the [HTTP APIs documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) and the [`aws apigatewayv2 create-api` command reference](https://docs.aws.amazon.com/cli/latest/reference/apigatewayv2/create-api.html) open.
+إذا أردت نسخة AWS الدقيقة من إعداد HTTP API أثناء القراءة، فأبقِ [وثائق HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) و[مرجع أمر `aws apigatewayv2 create-api`](https://docs.aws.amazon.com/cli/latest/reference/apigatewayv2/create-api.html) مفتوحين.
 
-The good news: creating an HTTP API from the CLI takes a single command.
+الخبر السار: إنشاء HTTP API من CLI يتطلب أمرًا واحدًا.
 
-## Creating the API
+## إنشاء API
 
-Use `aws apigatewayv2 create-api` to create a new HTTP API:
+استخدم `aws apigatewayv2 create-api` لإنشاء HTTP API جديدة:
 
 ```bash
 aws apigatewayv2 create-api \
@@ -22,7 +22,7 @@ aws apigatewayv2 create-api \
   --output json
 ```
 
-The response includes the fields you’ll need for everything that follows:
+تتضمن الاستجابة الحقول التي ستحتاجها لكل ما يلي:
 
 ```json
 {
@@ -35,26 +35,26 @@ The response includes the fields you’ll need for everything that follows:
 }
 ```
 
-Two things to note here:
+أمران يستحقان الملاحظة هنا:
 
-- **`ApiId`**: This is the identifier you’ll use in every subsequent command. Save it. Every route, integration, stage, and domain configuration references this ID.
-- **`ApiEndpoint`**: This is the auto-generated URL where your API will be reachable.
+- **`ApiId`**: هذا هو المعرّف الذي ستستخدمه في كل أمر لاحق. احفظه. فكل مسار وتكامل ومرحلة وإعداد نطاق يشير إلى هذا المعرّف.
+- **`ApiEndpoint`**: هذا هو عنوان URL المولّد تلقائيًا الذي ستكون واجهتك متاحة عليه.
 
-In the console, the **Create API** page shows the choice between HTTP API, WebSocket API, and REST API upfront—HTTP API is the right choice for a Lambda-backed REST endpoint.
+في لوحة التحكم، تعرض صفحة **Create API** الاختيار بين HTTP API وWebSocket API وREST API منذ البداية — وHTTP API هو الخيار الصحيح لنقطة نهاية REST مدعومة بـ Lambda.
 
-The API Gateway Create API page showing HTTP API, WebSocket API, and REST API options with Build buttons. It follows the pattern `https://{api-id}.execute-api.{region}.amazonaws.com`. You’ll replace this with a custom domain later, but it works immediately for testing.
+صفحة API Gateway Create API وهي تعرض خيارات HTTP API وWebSocket API وREST API مع أزرار Build. وهي تتبع النمط `https://{api-id}.execute-api.{region}.amazonaws.com`. وستستبدل هذا بنطاق مخصّص لاحقًا، لكنه يعمل فورًا للاختبار.
 
-> **Tip**
+> **نصيحة**
 >
-> Save the `ApiId` to a shell variable so you can reference it in later commands without copying and pasting:
+> احفظ `ApiId` في متغيّر صدفة كي تشير إليه في الأوامر اللاحقة دون نسخ ولصق:
 >
 > ```bash
 > API_ID="abc123def4"
 > ```
 
-## The `$default` Stage
+## المرحلة `$default`
 
-When you create an HTTP API using the console or quick-create (`--target`), API Gateway automatically creates a **`$default` stage**. When you build the API step-by-step from the CLI (which is what we do in this course), you need to create it yourself:
+عندما تنشئ HTTP API باستخدام لوحة التحكم أو الإنشاء السريع (`--target`)، تنشئ API Gateway تلقائيًا **مرحلة `$default`**. وعندما تبني API خطوة بخطوة من CLI (وهو ما نفعله في هذه الدورة)، فأنت بحاجة إلى إنشائها بنفسك:
 
 ```bash
 aws apigatewayv2 create-stage \
@@ -65,14 +65,14 @@ aws apigatewayv2 create-stage \
   --output json
 ```
 
-The `$default` stage has two important properties:
+لمرحلة `$default` خاصيتان مهمتان:
 
-1. **Auto-deploy is enabled.** Any changes you make to routes, integrations, or configuration are deployed automatically. You don’t need to run a separate deploy command.
-2. **No stage prefix in the URL.** The `$default` stage serves your API at the root of the `ApiEndpoint` URL. If your endpoint is `https://abc123def4.execute-api.us-east-1.amazonaws.com`, a route at `/items` is reachable at `https://abc123def4.execute-api.us-east-1.amazonaws.com/items`—no `/prod` or `/dev` prefix needed.
+1. **النشر التلقائي ممكّن.** فأي تغييرات تجريها على المسارات أو التكاملات أو الإعدادات تُنشر تلقائيًا. ولست بحاجة إلى تشغيل أمر نشر منفصل.
+2. **لا بادئة مرحلة في عنوان URL.** تقدّم مرحلة `$default` واجهتك عند جذر عنوان `ApiEndpoint`. فإذا كانت نقطة نهايتك `https://abc123def4.execute-api.us-east-1.amazonaws.com`، فالمسار `/items` متاح على `https://abc123def4.execute-api.us-east-1.amazonaws.com/items` — بلا بادئة `/prod` أو `/dev`.
 
-This is different from REST APIs, where you always have a stage name in the URL (like `/prod/items`). The `$default` stage keeps your URLs clean and matches the routing behavior you’re used to from Vercel or Netlify.
+وهذا يختلف عن REST APIs، حيث يكون لديك دائمًا اسم مرحلة في عنوان URL (مثل `/prod/items`). وتحافظ مرحلة `$default` على نظافة عناوين URL وتطابق سلوك التوجيه الذي اعتدته من Vercel أو Netlify.
 
-You can verify the stage exists:
+يمكنك التحقق من وجود المرحلة:
 
 ```bash
 aws apigatewayv2 get-stages \
@@ -97,19 +97,19 @@ aws apigatewayv2 get-stages \
 }
 ```
 
-In the console, clicking the `$default` stage shows the **Invoke URL**—the base URL for all your routes.
+في لوحة التحكم، يعرض النقر على مرحلة `$default` **Invoke URL** — عنوان URL الأساسي لكل مساراتك.
 
-The API Gateway stage details page showing the $default stage name and its invoke URL in the us-east-1 region.
+صفحة تفاصيل مرحلة API Gateway وهي تعرض اسم المرحلة $default وعنوان URL للاستدعاء في منطقة us-east-1.
 
-## The Route Selection Expression
+## تعبير اختيار المسار
 
-The `RouteSelectionExpression` in the API output was `${request.method} ${request.path}`. This tells API Gateway how to match incoming requests to routes. For HTTP APIs, this is always `${request.method} ${request.path}`—the HTTP method followed by the path. You can’t change it, and you don’t need to.
+كان `RouteSelectionExpression` في مخرجات API هو `${request.method} ${request.path}`. وهذا يخبر API Gateway كيف يطابق الطلبات الواردة مع المسارات. ولـ HTTP APIs، يكون هذا دائمًا `${request.method} ${request.path}` — طريقة HTTP يتبعها المسار. ولا يمكنك تغييره، ولست بحاجة إلى ذلك.
 
-When a request comes in, API Gateway evaluates the method and path against your defined routes. A route key like `GET /items` matches GET requests to `/items`. A route key like `POST /items` matches POST requests to the same path. If no route matches, the request gets a 404.
+عندما يأتي طلب، تقيّم API Gateway الطريقة والمسار مقابل مساراتك المعرّفة. فمفتاح مسار مثل `GET /items` يطابق طلبات GET إلى `/items`. ومفتاح مسار مثل `POST /items` يطابق طلبات POST إلى المسار نفسه. وإن لم يطابق أي مسار، يحصل الطلب على 404.
 
-## Quick Create: The Shortcut
+## الإنشاء السريع: الاختصار
 
-If you already have a Lambda function and want to skip the separate integration and route steps (which we’ll cover in the next lesson), you can use the `--target` flag to create everything in one command:
+إذا كان لديك دالة Lambda بالفعل وتريد تخطّي خطوتَي التكامل والمسار المنفصلتين (اللتين سنغطّيهما في الدرس التالي)، فيمكنك استخدام علم `--target` لإنشاء كل شيء بأمر واحد:
 
 ```bash
 aws apigatewayv2 create-api \
@@ -120,15 +120,15 @@ aws apigatewayv2 create-api \
   --output json
 ```
 
-This creates the API, a `$default` catch-all route, and a Lambda proxy integration—all in one shot. It also creates the `$default` stage with auto-deploy enabled.
+ينشئ هذا واجهة API، ومسار التقاط شامل `$default`، وتكامل وكيل Lambda — كل ذلك في ضربة واحدة. وينشئ أيضًا مرحلة `$default` مع تمكين النشر التلقائي.
 
-The catch: quick create wires up a single catch-all route (`$default`) that sends every request to one Lambda function. That’s fine for simple APIs where your handler does its own routing, but it gives you less control over per-route configuration. For this course, we’ll create routes and integrations explicitly so you understand how the pieces fit together.
+المشكلة: يربط الإنشاء السريع مسار التقاط شامل واحدًا (`$default`) يرسل كل طلب إلى دالة Lambda واحدة. وهذا مناسب لواجهات API البسيطة التي يتولى فيها معالجك التوجيه بنفسه، لكنه يمنحك تحكمًا أقل في الإعداد لكل مسار. وفي هذه الدورة، سننشئ المسارات والتكاملات صراحةً لتفهم كيف تترابط القطع.
 
-> **Warning**
+> **تحذير**
 >
-> Quick create doesn’t automatically grant API Gateway permission to invoke your Lambda function. You still need to run `aws lambda add-permission` separately, which we cover in the next lesson. Without that permission, every request returns a 500 error with an “Internal Server Error” message and no useful details.
+> لا يمنح الإنشاء السريع API Gateway إذنًا لاستدعاء دالة Lambda تلقائيًا. فلا تزال بحاجة إلى تشغيل `aws lambda add-permission` بشكل منفصل، وهو ما نغطّيه في الدرس التالي. ومن دون ذلك الإذن، يُرجع كل طلب خطأ 500 برسالة «Internal Server Error» وبلا تفاصيل مفيدة.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -155,9 +155,9 @@ const created = await apigw.send(
 console.log(created.ApiId, created.ApiEndpoint);
 ```
 
-## Verifying Your API
+## التحقق من واجهتك
 
-Verify the API exists and check its configuration at any time:
+تحقّق من وجود API وافحص إعداداته في أي وقت:
 
 ```bash
 aws apigatewayv2 get-api \
@@ -166,7 +166,7 @@ aws apigatewayv2 get-api \
   --output json
 ```
 
-If you have multiple APIs and need to find the right one:
+إذا كانت لديك واجهات API متعددة وتحتاج إلى العثور على الصحيحة:
 
 ```bash
 aws apigatewayv2 get-apis \
@@ -174,11 +174,11 @@ aws apigatewayv2 get-apis \
   --output json
 ```
 
-At this point, you have an HTTP API with a `$default` stage and an auto-generated URL. The API doesn’t have any routes or integrations yet, so hitting the URL returns a `{"message":"Not Found"}` response. That’s correct—you haven’t told API Gateway where to send requests.
+في هذه المرحلة، لديك HTTP API بمرحلة `$default` وعنوان URL مولّد تلقائيًا. ولا تملك واجهة API أي مسارات أو تكاملات بعد، لذا فإن الوصول إلى عنوان URL يُرجع استجابة `{"message":"Not Found"}`. وهذا صحيح — فأنت لم تخبر API Gateway إلى أين يرسل الطلبات.
 
-## Cleaning Up
+## التنظيف
 
-If you need to start over or delete an API you created for testing:
+إذا احتجت إلى البدء من جديد أو حذف واجهة API أنشأتها للاختبار:
 
 ```bash
 aws apigatewayv2 delete-api \
@@ -187,6 +187,6 @@ aws apigatewayv2 delete-api \
   --output json
 ```
 
-This removes the API, all its routes, integrations, and stages. The Lambda function isn’t affected—it still exists, just without an API in front of it.
+يزيل هذا واجهة API وكل مساراتها وتكاملاتها ومراحلها. ولا تتأثر دالة Lambda — فهي لا تزال موجودة، لكن دون واجهة API أمامها.
 
-An API without routes is an API that returns 404 for everything. In the next lesson, you’ll create a Lambda proxy integration and wire routes to your Lambda function so that HTTP requests actually reach your handler. You’ll also grant API Gateway permission to invoke the function—a step that catches almost everyone the first time.
+واجهة API بلا مسارات هي واجهة API تُرجع 404 لكل شيء. في الدرس التالي، ستنشئ تكامل وكيل Lambda وتربط المسارات بدالة Lambda لديك بحيث تصل طلبات HTTP فعلًا إلى معالجك. وستمنح API Gateway أيضًا إذنًا لاستدعاء الدالة — وهي خطوة توقع الجميع تقريبًا في المرة الأولى.

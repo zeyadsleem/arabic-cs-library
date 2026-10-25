@@ -1,29 +1,29 @@
 ---
-title: "Variants and Variable Modes for Responsive Text"
-lang: en
+title: "الأنماط البديلة وأوضاع المتغيّرات للنص المتجاوب"
+lang: ar
 source: "https://stevekinney.com/courses/figma/variables-variants-responsive-text"
 ---
 
-Let’s start with a component that looks something like this:
+لنبدأ بمكوّن يبدو شيئًا كهذا:
 
-Edit variant property
+تحرير خاصية النمط البديل
 
-In the example above, we have one heading component that has three different variants: One for each size.
+في المثال أعلاه، لدينا مكوّن عنوان واحد له ثلاثة أنماط بديلة مختلفة: نمط لكل حجم.
 
-Next, we’ll set up a variable that has one of three modes: **Phone**, **Tablet**, and **Desktop**. The important part is that there should be a direct mapping from the variable’s value in each mode and the name of the variant.
+بعد ذلك، سنُنشئ متغيّرًا له أحد ثلاثة أوضاع: **Phone** و**Tablet** و**Desktop**. والمهم هنا أن تكون هناك مطابقة مباشرة بين قيمة المتغيّر في كل وضع واسم النمط البديل.
 
-Size modes using Figma variables
+أوضاع الأحجام باستخدام متغيّرات Figma
 
-Now, here is where the magic happens. Let’s treat our initial component as a base component. You can rename it to **Base Heading** if you want.
+الآن هنا يحدث السحر. لنعامل مكوّننا الأولي كمكوّن أساسي. يمكنك إعادة تسميته إلى **Base Heading** إن أردت.
 
-Create an instance of your base component and assign the variant to your new variable.
+أنشئ نسخة من مكوّنك الأساسي وأسنِد النمط البديل إلى متغيّرك الجديد.
 
-Bind a variant to a mode
+ربط نمط بديل بوضع
 
-Create a component out of that new instance you just created.
+أنشئ مكوّنًا من تلك النسخة الجديدة التي أنشأتها للتو.
 
-Responsive text using Figma variables
+نص متجاوب باستخدام متغيّرات Figma
 
-We’re not going to use the base component anymore at this point. Just our new **Heading** component. Now, you can set the mode of any parent frame and all of your components will instantly switch to the variant with that name.
+لن نستخدم المكوّن الأساسي بعد الآن في هذه المرحلة. بل مكوّن **Heading** الجديد فقط. الآن، يمكنك ضبط وضع أي إطار أب، وستنتقل كل مكوّناتك فورًا إلى النمط البديل الذي يحمل ذلك الاسم.
 
-Using Figma modes for responsive text
+استخدام أوضاع Figma للنص المتجاوب

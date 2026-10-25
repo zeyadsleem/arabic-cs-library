@@ -1,16 +1,16 @@
 ---
-title: "Image & Asset Optimization for React"
-lang: en
+title: "تحسين الصور والأصول لـ React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/image-and-asset-optimization"
 ---
 
-Images are the silent performance killers of the modern web. That hero image on your landing page? It’s probably 2MB. Those product thumbnails? They’re loading at full resolution. The blog post illustrations? They’re in PNG when they should be WebP. Your React app might have blazing-fast JavaScript, but if you’re shipping megabytes of unoptimized images, your users are still waiting—and waiting users become former users.
+الصور هي قاتل الأداء الصامت في الويب الحديث. صورة الواجهة الرئيسية في صفحتك التعريفية؟ غالبًا 2MB. صور المنتجات المصغّرة؟ تُحمَّل بدقتها الكاملة. رسومات مقالات المدونة؟ بصيغة PNG مع أنها يجب أن تكون WebP. قد يملك تطبيق React لديك شيفرة JavaScript فائقة السرعة، لكن إن كنت ترسل ميغابايتات من الصور غير المحسّنة، فمستخدموك لا يزالون ينتظرون — والمستخدمون المنتظرون يصبحون مستخدمين سابقين.
 
-The good news is that image optimization in React has never been more powerful. Modern formats like WebP and AVIF can cut file sizes by 50% or more. Responsive images ensure mobile users don’t download desktop-sized assets. Lazy loading keeps initial page loads snappy. And with the right CDN setup, your images load from servers near your users, not from across the globe. This guide shows you how to implement all of these techniques in your React applications.
+والخبر السار أن تحسين الصور في React لم يكن يومًا أقوى مما هو الآن. يمكن للصيغ الحديثة مثل WebP وAVIF خفض أحجام الملفات بنسبة 50% أو أكثر. وتضمن الصور المتجاوبة (responsive images) ألا ينزّل مستخدمو الجوال أصولًا بحجم سطح المكتب. ويُبقي التحميل الكسول أوقات التحميل الأولى سريعة. ومع تهيئة CDN الصحيحة، تُحمَّل صورك من خوادم قريبة من مستخدميك، لا من عبر الكرة الأرضية. يوضّح هذا الدليل كيفية تنفيذ كل هذه التقنيات في تطبيقات React لديك.
 
-## Understanding Image Performance Impact
+## فهم أثر أداء الصور
 
-Before optimizing, understand how images affect your app’s performance:
+قبل التحسين، افهم كيف تؤثر الصور في أداء تطبيقك:
 
 ```typescript
 // Image performance metrics and their impact
@@ -41,9 +41,9 @@ interface ImagePerformanceImpact {
 }
 ```
 
-## Modern Image Formats and When to Use Them
+## صيغ الصور الحديثة ومتى تستخدمها
 
-### Format Comparison and Selection
+### مقارنة الصيغ واختيارها
 
 ```typescript
 // utils/imageFormat.ts
@@ -121,7 +121,7 @@ export function selectOptimalFormat(
 }
 ```
 
-### React Component with Format Fallbacks
+### مكوّن React مع بدائل احتياطية للصيغ
 
 ```typescript
 // components/OptimizedImage.tsx
@@ -280,9 +280,9 @@ function supportsWebP(): boolean {
 }
 ```
 
-## Responsive Images Implementation
+## تنفيذ الصور المتجاوبة
 
-### Responsive Image Hook
+### خُطّاف الصور المتجاوبة
 
 ```typescript
 // hooks/useResponsiveImage.ts
@@ -403,7 +403,7 @@ function generateSizes(breakpoints: any): string {
 }
 ```
 
-### Art Direction with Picture Element
+### التوجيه الفني بعنصر picture
 
 ```typescript
 // components/ArtDirectedImage.tsx
@@ -462,9 +462,9 @@ export function ArtDirectedImage({ sources, alt, className }: ArtDirectedImagePr
 }
 ```
 
-## Advanced Lazy Loading Strategies
+## استراتيجيات التحميل الكسول المتقدمة
 
-### Progressive Image Loading
+### التحميل التدريجي للصور
 
 ```typescript
 // components/ProgressiveImage.tsx
@@ -550,7 +550,7 @@ export function ProgressiveImage({
 }
 ```
 
-### Native Lazy Loading with Fallback
+### التحميل الكسول الأصلي مع بديل احتياطي
 
 ```typescript
 // components/LazyImage.tsx
@@ -619,19 +619,19 @@ export function LazyImage({
 }
 ```
 
-## Advanced Image Optimization
+## تحسين الصور المتقدّم
 
-For comprehensive advanced image optimization including CDN integration, build-time processing, performance monitoring, and automated optimization pipelines, see [Advanced Image Optimization Techniques](https://stevekinney.com/courses/react-performance/image-optimization-advanced).
+للحصول على تحسين متقدّم وشامل للصور يشمل التكامل مع CDN، والمعالجة وقت البناء، ومراقبة الأداء، وخطوط التحسين المؤتمتة، راجع [تقنيات تحسين الصور المتقدمة](https://stevekinney.com/courses/react-performance/image-optimization-advanced).
 
-Key advanced topics covered:
+أبرز الموضوعات المتقدمة التي يغطيها:
 
-- **CDN Integration**: Multi-provider CDN configuration and optimization strategies
-- **Build-Time Optimization**: Webpack and Next.js image processing pipelines
-- **Performance Monitoring**: Real-time image performance metrics and analytics
-- **Adaptive Loading**: Network-aware loading with priority-based strategies
-- **Cache Optimization**: Advanced caching strategies for images and transformations
+- **التكامل مع CDN**: تهيئة CDN متعدد المزوّدين واستراتيجيات التحسين
+- **التحسين وقت البناء**: خطوط معالجة الصور في Webpack وNext.js
+- **مراقبة الأداء**: مقاييس أداء الصور في الوقت الحقيقي وتحليلاتها
+- **التحميل التكيّفي**: تحميل واعٍ بالشبكة باستراتيجيات قائمة على الأولوية
+- **تحسين الذاكرة المؤقتة**: استراتيجيات تخزين مؤقت متقدمة للصور والتحويلات
 
-## Image Optimization Checklist
+## قائمة التحقق لتحسين الصور
 
 ```typescript
 interface ImageOptimizationChecklist {

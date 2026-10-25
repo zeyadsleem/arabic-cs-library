@@ -1,38 +1,38 @@
 ---
-title: "Server Rendering Across Frameworks"
-lang: en
+title: "التصيير على الخادم عبر أطر العمل"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/server-rendering-across-frameworks"
 ---
 
-The [previous lecture](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) covered React’s answer to a set of questions that every server-rendered framework has to answer. Where does the server/client boundary sit? How does data get from the server to the component that needs it? How does HTML reach the browser? How do mutations flow back? React’s answers—RSC module boundaries, async Server Components, `renderToPipeableStream` with Suspense, Server Functions—are one coherent set of tradeoffs. They are not the only set.
+غطت [المحاضرة السابقة](https://stevekinney.com/courses/enterprise-ui/server-components-and-streaming) إجابة React عن مجموعة أسئلة يجب أن يجيب عنها كل إطار تصيير على الخادم. أين يقع حد الخادم/العميل؟ وكيف تنتقل البيانات من الخادم إلى المكوّن الذي يحتاجها؟ وكيف يصل HTML إلى المتصفح؟ وكيف تتدفق الطفرات عائدةً؟ وإجابات React — حدود وحدات RSC، ومكوّنات الخادم غير المتزامنة، و`renderToPipeableStream` مع Suspense، ودوال الخادم — مجموعة واحدة متماسكة من المقايضات. لكنها ليست المجموعة الوحيدة.
 
-Every serious framework has its own opinions on these questions, and the differences aren’t cosmetic. They reflect genuinely different beliefs about where complexity should live, how explicit the server/client split should be, and how much the framework should do for you versus how much it should stay out of your way. If you’re working in an enterprise architecture where different teams might be using different stacks—or where you’re evaluating which stack to standardize on—understanding how each framework solves these problems is more useful than memorizing one framework’s API.
+لكل إطار جادّ آراؤه الخاصة في هذه الأسئلة، والفروق ليست شكلية. فهي تعكس اعتقادات مختلفة فعلًا حول مكان التعقيد، ومدى صراحة الفصل بين الخادم والعميل، وكم ينبغي أن يفعل الإطار نيابةً عنك مقابل كم ينبغي أن يبقى بعيدًا عن طريقك. وإذا كنت تعمل في معمارية مؤسسية قد تستخدم فيها فرق مختلفة مكدّسات مختلفة — أو كنت تقيّم أي مكدّس تعتمده معيارًا — فإن فهم كيف يحل كل إطار هذه المشكلات أنفع من حفظ واجهة برمجة إطار واحد.
 
-## The Shared Problem Set
+## مجموعة المشكلات المشتركة
 
-Four questions keep showing up, regardless of framework:
+تتكرر أربعة أسئلة بصرف النظر عن إطار العمل:
 
-- **Where does the server/client boundary sit?** Which code runs on the server, which runs in the browser, and how does the framework enforce that split?
-- **How does data load?** How does the component that needs data get it from the server without an extra client-side round trip?
-- **How does HTML arrive?** Does the server send the entire page at once, or does it stream chunks progressively as data becomes available?
-- **How do mutations work?** When the user submits a form or triggers a write operation, how does that request get to the server, and how does the UI update afterward?
+- **أين يقع حد الخادم/العميل؟** أي شفرة تعمل على الخادم، وأيها تعمل في المتصفح، وكيف يفرض الإطار ذلك الفصل؟
+- **كيف تُحمَّل البيانات؟** كيف يحصل المكوّن المحتاج للبيانات عليها من الخادم دون رحلة إضافية إلى المتصفح؟
+- **كيف يصل HTML؟** هل يرسل الخادم الصفحة كاملة دفعة واحدة، أم يتدفق أجزاءً تدريجيًا كلما أصبحت البيانات متاحة؟
+- **كيف تعمل الطفرات؟** عندما يرسل المستخدم نموذجًا أو يُطلق عملية كتابة، كيف يصل ذلك الطلب إلى الخادم، وكيف تُحدَّث الواجهة بعد ذلك؟
 
-React’s answers from the previous lecture are the reference point. Now: how everyone else handles them.
+إجابات React من المحاضرة السابقة هي النقطة المرجعية. والآن: كيف يتعامل الجميع الآخرون معها.
 
-## Nuxt and Vue
+## Nuxt وVue
 
-Vue’s reactivity system—`ref`, `computed`, `watch`—works identically on server and client. That’s the foundation Nuxt builds on. Where React invented a new module-boundary model for server code, Nuxt takes Vue’s existing reactivity and wraps it in conventions that determine *when* code runs on the server versus the client.
+نظام التفاعلية في Vue — `ref` و`computed` و`watch` — يعمل بالطريقة نفسها على الخادم وفي المتصفح. وهذا هو الأساس الذي يبني عليه Nuxt. فبينما اخترعت React نموذج حدود وحدات جديدًا لشفرة الخادم، يأخذ Nuxt تفاعلية Vue القائمة ويلفّها باصطلاحات تحدد *متى* تعمل الشفرة على الخادم مقابل المتصفح.
 
-### Data Loading
+### تحميل البيانات
 
-Nuxt’s primary data-loading primitives are [`useAsyncData`](https://nuxt.com/docs/getting-started/data-fetching) and `useFetch`. Both run on the server during SSR, serialize the result into a payload object, and transfer it to the client so the browser doesn’t re-fetch the same data during hydration. The serialization uses [devalue](https://github.com/Rich-Harris/devalue), which handles Dates, Maps, Sets, and Vue refs—not just the JSON-safe subset.
+أساسيات تحميل البيانات في Nuxt هي [`useAsyncData`](https://nuxt.com/docs/getting-started/data-fetching) و`useFetch`. وكلتاهما تعمل على الخادم أثناء التصيير على الخادم، وتُسلسل النتيجة في كائن حِمل (payload)، وتنقله إلى المتصفح حتى لا يعيد جلب البيانات نفسها أثناء الترطيب. ويستخدم التسلسل [devalue](https://github.com/Rich-Harris/devalue)، الذي يتعامل مع Dates وMaps وSets ومراجع Vue — لا مع المجموعة الآمنة في JSON فقط.
 
 ```typescript
 // In a page or component setup
 const { data: posts } = await useFetch('/api/posts');
 ```
 
-`useFetch` is a convenience wrapper around `$fetch` (Nuxt’s HTTP utility) that automatically generates a cache key from the URL. `useAsyncData` is the more flexible version—you provide your own handler function and cache key, which is useful when data comes from a CMS client, a database query, or anything that isn’t a straightforward HTTP call.
+`useFetch` غلاف مريح حول `$fetch` (أداة HTTP في Nuxt) يولّد مفتاح ذاكرة مؤقتة من عنوان URL تلقائيًا. أما `useAsyncData` فالنسخة الأكثر مرونة — إذ تقدّم دالة المعالج ومفتاح الذاكرة المؤقتة بنفسك، وهذا مفيد عندما تأتي البيانات من عميل CMS أو استعلام قاعدة بيانات أو أي شيء ليس نداء HTTP مباشرًا.
 
 ```typescript
 const { data: product } = await useAsyncData(`product-${id}`, () =>
@@ -40,32 +40,32 @@ const { data: product } = await useAsyncData(`product-${id}`, () =>
 );
 ```
 
-The payload mechanism is the important detail. Nuxt’s [docs](https://nuxt.com/docs/getting-started/data-fetching) are explicit: if an API call is made on the server, the data is forwarded to the client in the payload, avoiding both a duplicate request and a hydration mismatch. The client receives the already-fetched data and doesn’t re-execute the composable until the next navigation.
+آلية الحِمل هي التفصيل المهم. و[توثيقات](https://nuxt.com/docs/getting-started/data-fetching) Nuxt صريحة: إذا أُجري نداء API على الخادم، فتُنقل البيانات إلى المتصفح في الحِمل، ما يتجنب طلبًا مكررًا وعدم تطابق في الترطيب معًا. ويتلقى المتصفح البيانات المجلوبة سابقًا ولا يعيد تنفيذ الـcomposable حتى التنقل التالي.
 
-### The Server/Client Boundary
+### حد الخادم/العميل
 
-Nuxt’s server code lives in a separate `server/` directory powered by [Nitro](https://nuxt.com/docs/getting-started/server), a standalone server engine. Files in `server/api/` and `server/routes/` define server endpoints—they never touch the client bundle. This is a *directory-level* boundary, not a directive-level one like React’s `'use client'`.
+تعيش شفرة الخادم في Nuxt في مجلد `server/` منفصل يعمل بمحرك [Nitro](https://nuxt.com/docs/getting-started/server)، وهو محرك خادم قائم بذاته. وتعرّف الملفات في `server/api/` و`server/routes/` نقاط نهاية الخادم — ولا تلامس حزمة المتصفح أبدًا. وهذا حد على *مستوى المجلد*، لا على مستوى التوجيه كما في `'use client'` في React.
 
-For components, Nuxt has [experimental support](https://nuxt.com/docs/guide/directory-structure/components) for server-only rendering via the `.server.vue` suffix. A component named `MyWidget.server.vue` renders on the server and is not hydrated on the client—conceptually similar to React Server Components, but using Vue’s reactivity system instead of React’s module graph. The feature is still maturing and doesn’t have the ecosystem depth that RSC has in Next.js.
+أما المكوّنات، فلـNuxt [دعم تجريبي](https://nuxt.com/docs/guide/directory-structure/components) للتصيير على الخادم فقط عبر لاحقة `.server.vue`. فالمكوّن المسمّى `MyWidget.server.vue` يُصيَّر على الخادم ولا يُرطَّب في المتصفح — مشابه مفاهيميًا لمكوّنات الخادم في React، لكنه يستخدم نظام تفاعلية Vue بدل مخطط وحدات React. والميزة ما زالت تنضج وليس لها العمق البيئي الذي لـRSC في Next.js.
 
-### Streaming
+### التدفق
 
-Vue 3 provides streaming APIs ([`renderToNodeStream` and `renderToWebStream`](https://vuejs.org/guide/scaling-up/ssr.html)) at the library level, but Nuxt’s integration of streaming SSR is still maturing. The default behavior in Nuxt 3 and 4 is to buffer the entire page on the server via `renderToString` before sending the response. Streaming—where the server starts sending HTML chunks before all data has resolved—is planned for full support in Nuxt 5 with Nitro v3. That means Nuxt currently waits for all `useAsyncData` and `useFetch` calls to finish before any HTML reaches the browser, unlike React’s Suspense-driven streaming or SvelteKit’s promise-based streaming covered below.
+توفّر Vue 3 واجهات تدفق ([`renderToNodeStream` و`renderToWebStream`](https://vuejs.org/guide/scaling-up/ssr.html)) على مستوى المكتبة، لكن تكامل Nuxt مع التصيير التدفقي على الخادم ما زال ينضج. والسلوك الافتراضي في Nuxt 3 و4 هو تخزين الصفحة كاملة على الخادم عبر `renderToString` قبل إرسال الاستجابة. أما التدفق — حيث يبدأ الخادم بإرسال أجزاء HTML قبل حلّ كل البيانات — فمخطّط لدعمه الكامل في Nuxt 5 مع Nitro v3. وهذا يعني أن Nuxt ينتظر حاليًا انتهاء كل نداءات `useAsyncData` و`useFetch` قبل أن يصل أي HTML إلى المتصفح، بخلاف التدفق المدفوع بـSuspense في React أو التدفق القائم على الوعود في SvelteKit المذكور أدناه.
 
-### Mutations
+### الطفرات (Mutations)
 
-Nuxt doesn’t have a built-in form-action or server-function primitive baked into the component model. Mutations typically go through `$fetch` calls to server API routes, or through `useAsyncData` with a `refresh()` call after a mutation. There’s a community module (`@hebilicious/form-actions-nuxt`) that adds SvelteKit-style form actions, but it’s not part of the core framework. If you want something like React’s Server Functions, you’re writing API routes and calling them from the client.
+لا يملك Nuxt أساسًا مدمجًا لإجراءات النماذج أو دوال الخادم مغروسًا في نموذج المكوّنات. فالطفرات تمر عادةً عبر نداءات `$fetch` إلى مسارات API في الخادم، أو عبر `useAsyncData` مع نداء `refresh()` بعد الطفرة. وهناك وحدة مجتمعية (`@hebilicious/form-actions-nuxt`) تضيف إجراءات نماذج على طراز SvelteKit، لكنها ليست جزءًا من الإطار الأساسي. وإذا أردت شيئًا مثل دوال الخادم في React، فستكتب مسارات API وتستدعيها من المتصفح.
 
 ## SvelteKit
 
-SvelteKit takes the most convention-driven approach to the server/client boundary. Where React uses a directive (`'use client'`) and Nuxt uses a directory (`server/`), SvelteKit uses *file suffixes* within the routing tree. The boundary is baked into the filesystem, which makes it hard to get wrong and easy to reason about.
+يتبنّى SvelteKit أكثر نهج مدفوع بالاصطلاحات لحد الخادم/العميل. فبينما تستخدم React توجيهًا (`'use client'`) ويستخدم Nuxt مجلدًا (`server/`)، يستخدم SvelteKit *لواحق ملفات* داخل شجرة التوجيه. فالحد مغروس في نظام الملفات، ما يجعله صعب الخطأ وسهل التبرير.
 
-### Data Loading
+### تحميل البيانات
 
-SvelteKit’s data-loading mechanism is the [`load` function](https://svelte.dev/docs/kit/load). Every route can have two files that provide data:
+آلية تحميل البيانات في SvelteKit هي [دالة `load`](https://svelte.dev/docs/kit/load). ولكل مسار أن يكون فيه ملفان يوفّران البيانات:
 
-- `+page.server.ts` runs *exclusively* on the server. It can access databases, read environment secrets, and do anything server-only. Its return value must be serializable.
-- `+page.ts` runs on *both* server and client. On the first request, it runs on the server during SSR. On subsequent navigations, it runs in the browser.
+- `+page.server.ts` يعمل *حصرًا* على الخادم. ويمكنه الوصول إلى قواعد البيانات وقراءة أسرار البيئة وفعل أي شيء خاص بالخادم. ويجب أن تكون قيمته المُرجعة قابلة للتسلسل.
+- `+page.ts` يعمل على الخادم *وفي المتصفح* معًا. فعند الطلب الأول يعمل على الخادم أثناء التصيير على الخادم. وفي التنقلات اللاحقة يعمل في المتصفح.
 
 ```typescript
 // +page.server.ts — server only
@@ -77,13 +77,13 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 ```
 
-The component receives the data through a `data` prop, and the types flow automatically from the `load` function’s return type. No `useEffect`, no `useAsyncData`, no composable—data is available when the component renders because the framework ran the loader first.
+ويتلقى المكوّن البيانات عبر خاصية `data`، وتتدفق الأنواع تلقائيًا من نوع إرجاع دالة `load`. بلا `useEffect`، وبلا `useAsyncData`، وبلا composable — فالبيانات متاحة عند تصيير المكوّن لأن الإطار شغّل المحمّل أولًا.
 
-The key difference from React: there’s no `'use client'` directive needed because the routing convention handles the split. A `.server.ts` file never reaches the client bundle. A `.ts` file without the `.server` suffix is universal code. The boundary is the filename, and the bundler enforces it.
+الفرق الجوهري عن React: لا حاجة إلى توجيه `'use client'` لأن اصطلاح التوجيه يتولى الفصل. فملف `.server.ts` لا يصل أبدًا إلى حزمة المتصفح. وملف `.ts` بلا لاحقة `.server` شفرة شاملة. والحد هو اسم الملف، والمجمّع يفرضه.
 
-### Streaming
+### التدفق
 
-SvelteKit streams by returning unawaited promises from server `load` functions. The page renders with whatever data is already available, and later chunks fill in as the promises resolve.
+يتدفق SvelteKit بإرجاع وعود غير منتظَرة من دوال `load` على الخادم. فتُصيَّر الصفحة بما هو متاح من البيانات، وتملأ الأجزاء اللاحقة الفراغ كلما حُلّت الوعود.
 
 ```typescript
 // +page.server.ts
@@ -95,7 +95,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 ```
 
-The component uses Svelte’s `{#await}` block to handle the streamed promise:
+ويستخدم المكوّن كتلة `{#await}` في Svelte للتعامل مع الوعد المتدفق:
 
 ```svelte
 <article>{data.post.content}</article>
@@ -107,13 +107,13 @@ The component uses Svelte’s `{#await}` block to handle the streamed promise:
 {/await}
 ```
 
-This is conceptually similar to React’s Suspense-driven streaming, but the mechanism is different. In React, the component tree *suspends* when it hits an unresolved promise, and the framework streams the fallback and later the resolved content. In SvelteKit, the `load` function explicitly controls what’s awaited (and therefore blocks the shell) versus what’s a promise (and therefore streams). The control lives in the data layer, not the component tree.
+هذا مشابه مفاهيميًا للتدفق المدفوع بـSuspense في React، لكن الآلية مختلفة. ففي React، *تُعلَّق* شجرة المكوّنات عند لقاء وعد غير محلول، ويتدفق الإطار البديل ثم المحتوى المحلول لاحقًا. أما في SvelteKit، فتتحكم دالة `load` صراحةً في ما يُنتظر (وبالتالي يعيق الهيكل) مقابل ما هو وعد (وبالتالي يتدفق). فالتحكم يعيش في طبقة البيانات، لا في شجرة المكوّنات.
 
-SvelteKit’s [docs](https://svelte.dev/docs/kit/load) note two caveats: streaming requires JavaScript on the client, and response headers and status codes cannot change after streaming begins.
+وتذكر [توثيقات](https://svelte.dev/docs/kit/load) SvelteKit تحفّظين: التدفق يتطلب JavaScript في المتصفح، ولا يمكن تغيير ترويسات الاستجابة ورموز الحالة بعد بدء التدفق.
 
-### Mutations
+### الطفرات
 
-SvelteKit has [form actions](https://svelte.dev/docs/kit/form-actions)—server-side functions that handle form submissions with progressive enhancement built in.
+لدى SvelteKit [إجراءات نماذج](https://svelte.dev/docs/kit/form-actions) — دوال على الخادم تتولى إرسال النماذج مع تعزيز تدريجي مدمج.
 
 ```typescript
 // +page.server.ts
@@ -136,27 +136,27 @@ export const actions: Actions = {
 </form>
 ```
 
-That form works without JavaScript. The browser submits a standard POST, the server runs the action, and the page reloads with the result. With SvelteKit’s `use:enhance` directive, the same form submits via fetch instead, updates the page without a full reload, and handles redirects and errors—all without changing the server-side code.
+يعمل هذا النموذج بلا JavaScript. فيُرسل المتصفح طلب POST معياريًا، ويشغّل الخادم الإجراء، وتُعيد الصفحة التحميل بالنتيجة. ومع توجيه `use:enhance` في SvelteKit، يُرسل النموذج نفسه عبر fetch بدل ذلك، ويحدّث الصفحة دون إعادة تحميل كاملة، ويتعامل مع إعادات التوجيه والأخطاء — كل ذلك دون تغيير شفرة الخادم.
 
-Form actions are scoped to the route—they live in `+page.server.ts` alongside the `load` function. That’s different from React’s Server Functions, which are importable from any client module. SvelteKit’s model is more constrained but also more predictable: every action belongs to a route, and every route’s data and mutations live in the same file.
+إجراءات النماذج محدودة النطاق بالمسار — فهي تعيش في `+page.server.ts` إلى جانب دالة `load`. وهذا مختلف عن دوال الخادم في React، التي يمكن استيرادها من أي وحدة عميل. ونموذج SvelteKit أكثر تقييدًا لكنه أكثر قابلية للتوقع: فكل إجراء ينتمي إلى مسار، وبيانات كل مسار وطفراته تعيش في الملف نفسه.
 
-### Page Options
+### خيارات الصفحة
 
-SvelteKit provides [per-route rendering control](https://svelte.dev/docs/kit/page-options) through exported constants: `ssr` (whether to server-render), `csr` (whether to hydrate), and `prerender` (whether to generate static HTML at build time). Setting `csr = false` removes all JavaScript from a page—useful for purely static content. These options cascade through layouts, so you can set defaults at the layout level and override per page.
+يوفّر SvelteKit [تحكمًا في التصيير لكل مسار](https://svelte.dev/docs/kit/page-options) عبر ثوابت مُصدَّرة: `ssr` (هل تُصيَّر على الخادم)، و`csr` (هل تُرطَّب)، و`prerender` (هل تُولَّد HTML ساكن وقت البناء). وضبط `csr = false` يزيل كل JavaScript من الصفحة — مفيد للمحتوى الساكن تمامًا. وتتتالى هذه الخيارات عبر التخطيطات، فيمكنك ضبط الافتراضيات على مستوى التخطيط وتجاوزها لكل صفحة.
 
 ## Astro
 
-The [island architecture lecture](https://stevekinney.com/courses/enterprise-ui/island-architecture) already covers Astro’s hydration model—how `.astro` components are server-only by default, how `client:` directives opt specific components into client-side interactivity, and how server islands defer personalized content. This section focuses on the parts that lecture didn’t cover: how Astro handles data loading, mutations, and its server rendering pipeline.
+تغطي [محاضرة معمارية الجزر](https://stevekinney.com/courses/enterprise-ui/island-architecture) أصلًا نموذج الترطيب في Astro — كيف تكون مكوّنات `.astro` خاصة بالخادم افتراضيًا، وكيف تُدخل توجيهات `client:` مكوّنات محددة في التفاعلية بالمتصفح، وكيف تؤجّل جزر الخادم المحتوى المخصّص. ويركّز هذا القسم على ما لم تغطّه تلك المحاضرة: كيف يتعامل Astro مع تحميل البيانات والطفرات وخط أنابيب التصيير على الخادم.
 
-### The Boundary
+### الحد
 
-Astro’s server/client boundary is the simplest of any framework here. A `.astro` component is *always* server-only. It renders to HTML on the server, ships no JavaScript, and is never hydrated. A React, Vue, or Svelte component embedded in an Astro page with a `client:*` directive is *always* client-hydrated. There’s no mixed-execution component and no directive to mark server code—`.astro` files *are* server code.
+حد الخادم/العميل في Astro هو الأبسط بين كل الأطر هنا. فمكوّن `.astro` *دائمًا* خاص بالخادم. يُصيَّر إلى HTML على الخادم، ولا يرسل JavaScript، ولا يُرطَّب أبدًا. ومكوّن React أو Vue أو Svelte مضمَّن في صفحة Astro مع توجيه `client:*` *دائمًا* يُرطَّب في المتصفح. ولا يوجد مكوّن مختلط التنفيذ ولا توجيه لتعليم شفرة الخادم — فملفات `.astro` *هي* شفرة الخادم.
 
-That bluntness is the point. You don’t need to think about module graphs or serialization boundaries because the file type tells you everything. If you’re writing `.astro`, you’re on the server. If you’re embedding a framework component, you choose its hydration strategy explicitly.
+هذه المباشرة هي المقصد. فلا تحتاج إلى التفكير في مخططات الوحدات أو حدود التسلسل لأن نوع الملف يخبرك بكل شيء. فإذا كنت تكتب `.astro` فأنت على الخادم. وإذا كنت تضمّن مكوّن إطار عمل، فأنت تختار استراتيجية ترطيبه صراحةً.
 
-### Data Loading
+### تحميل البيانات
 
-Astro components load data directly in their frontmatter block. For content-driven sites, Astro’s content collections provide [`getCollection()`](https://docs.astro.build/en/guides/content-collections/) and `getEntry()` for type-safe access to structured content:
+تحمّل مكوّنات Astro البيانات مباشرةً في كتلة المقدمة (frontmatter) الخاصة بها. وللمواقع المدفوعة بالمحتوى، توفّر مجموعات محتوى Astro [`getCollection()`](https://docs.astro.build/en/guides/content-collections/) و`getEntry()` للوصول الآمن أنواعيًا إلى المحتوى المنظم:
 
 ```astro
 ---
@@ -169,11 +169,11 @@ const posts = await getCollection('blog', ({ data }) => !data.draft);
 </ul>
 ```
 
-For non-content data, you `fetch` or query a database directly in the frontmatter. There’s no `load` function abstraction—the frontmatter *is* the server code.
+أما البيانات غير المحتوائية، فتستخدم `fetch` أو تستعلم قاعدة بيانات مباشرةً في المقدمة. ولا يوجد تجريد دالة `load` — فالمقدمة *هي* شفرة الخادم.
 
-### Mutations
+### الطفرات
 
-Astro Actions, [stable since Astro 4.15](https://docs.astro.build/en/guides/actions/), are type-safe server functions that you define in `src/actions/index.ts`:
+إجراءات Astro، [المستقرة منذ Astro 4.15](https://docs.astro.build/en/guides/actions/)، دوال خادم آمنة أنواعيًا تعرّفها في `src/actions/index.ts`:
 
 ```typescript
 import { defineAction } from 'astro:actions';
@@ -194,21 +194,21 @@ export const server = {
 };
 ```
 
-Actions use Zod for input validation, return typed results, and work with both JSON calls and HTML form submissions. From a client component, you call `actions.addComment({ postId, body })` and get back a typed `{ data, error }` result. From a form, you pass the action as the form’s `action` attribute and get progressive enhancement for free.
+تستخدم الإجراءات Zod للتحقق من المدخلات، وتُرجع نتائج بأنواع محددة، وتعمل مع نداءات JSON وإرسال نماذج HTML معًا. فمن مكوّن عميل، تستدعي `actions.addComment({ postId, body })` وتحصل على نتيجة `{ data, error }` محددة النوع. ومن نموذج، تمرّر الإجراء كخاصية `action` في النموذج وتحصل على التعزيز التدريجي مجانًا.
 
-Actions are closer to React’s Server Functions than anything else in this list. The main difference is that they’re defined in a central file rather than inline in components, and they use Zod schemas rather than relying on TypeScript alone for input safety.
+الإجراءات أقرب إلى دوال الخادم في React من أي شيء آخر في هذه القائمة. والفرق الرئيسي أنها تُعرَّف في ملف مركزي لا مضمّنة في المكوّنات، وأنها تستخدم مخططات Zod بدل الاعتماد على TypeScript وحده لأمان المدخلات.
 
-### Server Islands
+### جزر الخادم
 
-[Server islands](https://docs.astro.build/en/guides/server-islands/) extend the model by deferring slow or personalized server-rendered fragments out of the main page render. A component marked with `server:defer` renders separately from the page, with fallback content shown until the deferred fragment arrives. The page can be cached aggressively while personalized fragments load independently.
+تمدّ [جزر الخادم](https://docs.astro.build/en/guides/server-islands/) النموذج بتأجيل الشذرات البطيئة أو المخصّصة المُصيَّرة على الخادم خارج تصيير الصفحة الرئيسية. فالمكوّن الموسوم بـ`server:defer` يُصيَّر بمعزل عن الصفحة، ويُعرض محتوى بديل حتى وصول الشذرة المؤجَّلة. ويمكن تخزين الصفحة مؤقتًا بجرأة بينما تُحمَّل الشذرات المخصّصة باستقلال.
 
 ## Qwik
 
-Qwik approaches the server rendering problem from a fundamentally different angle than every other framework here. The [island architecture lecture](https://stevekinney.com/courses/enterprise-ui/island-architecture) introduced its core idea—**resumability**—where the application [serializes enough state into the HTML](https://qwik.dev/docs/concepts/resumable/) that the browser can resume where the server left off without replaying component initialization. This section covers how Qwik City (Qwik’s meta-framework) handles data loading and mutations.
+يقارب Qwik مشكلة التصيير على الخادم من زاوية مختلفة جذريًا عن كل إطار آخر هنا. وقد قدّمت [محاضرة معمارية الجزر](https://stevekinney.com/courses/enterprise-ui/island-architecture) فكرته الجوهرية — **قابلية الاستئناف** — حيث [يُسلسل التطبيق حالة كافية داخل HTML](https://qwik.dev/docs/concepts/resumable/) بحيث يستطيع المتصفح الاستئناف من حيث توقف الخادم دون إعادة تشغيل تهيئة المكوّنات. ويغطي هذا القسم كيف يتعامل Qwik City (إطار Qwik الفوقي) مع تحميل البيانات والطفرات.
 
-### The Boundary
+### الحد
 
-Qwik doesn’t draw a server/client boundary the way React or SvelteKit does. Instead, it uses the `$` suffix to mark **serialization boundaries**—points where the framework can split code into lazy-loadable chunks.
+لا يرسم Qwik حدًا بين الخادم والعميل كما تفعل React أو SvelteKit. بل يستخدم لاحقة `$` لوسم **حدود التسلسل** — نقاط يمكن للإطار عندها تقسيم الشفرة إلى أجزاء قابلة للتحميل الكسول.
 
 ```typescript
 import { component$ } from '@builder.io/qwik';
@@ -218,11 +218,11 @@ export default component$(() => {
 });
 ```
 
-`component$` and `onClick$` tell Qwik’s optimizer to extract those functions into separate importable chunks. The framework doesn’t download event handler code until the user actually interacts with the element. That’s not “server code versus client code”—it’s “code that runs now versus code that can wait.” The boundary isn’t about *where* code runs but *when* it loads.
+تُخبر `component$` و`onClick$` مُحسِّن Qwik باستخراج تلك الدوال إلى أجزاء منفصلة قابلة للاستيراد. فلا يُنزّل الإطار شفرة معالج الحدث حتى يتفاعل المستخدم فعليًا مع العنصر. وهذا ليس «شفرة خادم مقابل شفرة عميل» — بل «شفرة تعمل الآن مقابل شفرة يمكنها الانتظار». فالحد ليس في *أين* تعمل الشفرة بل في *متى* تُحمَّل.
 
-### Data Loading
+### تحميل البيانات
 
-Qwik City uses [`routeLoader$`](https://qwik.dev/docs/route-loader/) as its data-loading primitive. A `routeLoader$` runs on the server, serializes its result into the HTML, and makes it available to the component without a client-side fetch:
+يستخدم Qwik City [`routeLoader$`](https://qwik.dev/docs/route-loader/) كأساسه في تحميل البيانات. فـ`routeLoader$` يعمل على الخادم، ويسلسل نتيجته داخل HTML، ويتيحها للمكوّن دون جلب من المتصفح:
 
 ```typescript
 import { routeLoader$ } from '@builder.io/qwik-city';
@@ -237,11 +237,11 @@ export default component$(() => {
 });
 ```
 
-The data is embedded in the HTML as serialized state, so the component has it immediately on resume—no hydration fetch, no loading spinner for data the server already had.
+تُضمَّن البيانات في HTML كحالة مُسلسَلة، فيحصل عليها المكوّن فورًا عند الاستئناف — بلا جلب أثناء الترطيب، وبلا مؤشر تحميل لبيانات كانت لدى الخادم أصلًا.
 
-### Mutations
+### الطفرات
 
-[`routeAction$`](https://qwik.dev/docs/action/) handles mutations—server-side functions triggered by form submission, with Zod validation built in:
+[`routeAction$`](https://qwik.dev/docs/action/) يتولى الطفرات — دوال على الخادم تُستثار بإرسال النماذج، مع تحقق مدمج بـZod:
 
 ```typescript
 import { routeAction$, zod$, z } from '@builder.io/qwik-city';
@@ -258,21 +258,21 @@ export const useAddToCart = routeAction$(
 );
 ```
 
-Actions integrate with HTML forms for progressive enhancement. The pattern is similar to SvelteKit’s form actions and Astro’s Actions—define a server function, validate input, return a typed result.
+تتكامل الإجراءات مع نماذج HTML لأجل التعزيز التدريجي. والنمط مشابه لإجراءات النماذج في SvelteKit وإجراءات Astro — عرّف دالة خادم، وتحقق من المدخلات، وأرجع نتيجة محددة النوع.
 
-### Streaming
+### التدفق
 
-Qwik uses `renderToStream` to stream HTML to the browser. The server can start sending content immediately, and because Qwik serializes application state into the HTML rather than relying on client-side hydration to reconstruct it, the streamed content is interactive as soon as the relevant code chunks load—which might be never, if the user doesn’t interact with that part of the page.
+يستخدم Qwik `renderToStream` لتدفق HTML إلى المتصفح. فيمكن للخادم البدء بإرسال المحتوى فورًا، ولأن Qwik يسلسل حالة التطبيق داخل HTML بدل الاعتماد على الترطيب في المتصفح لإعادة بنائها، يصبح المحتوى المتدفق تفاعليًا بمجرد تحميل أجزاء الشفرة ذات الصلة — وقد لا يحدث ذلك أبدًا إن لم يتفاعل المستخدم مع ذلك الجزء من الصفحة.
 
 ## Angular
 
-Angular’s relationship with server rendering has historically been more bolt-on than built-in. Angular Universal (now [`@angular/ssr`](https://angular.dev/guide/ssr)) added SSR capability, but Angular was designed as a client-side framework first. Recent versions have narrowed that gap considerably.
+كانت علاقة Angular بالتصيير على الخادم تاريخيًا أقرب إلى الإضافة الملحقة منها إلى المدمجة. فقد أضاف Angular Universal (الآن [`@angular/ssr`](https://angular.dev/guide/ssr)) قدرة التصيير على الخادم، لكن Angular صُمّم إطارًا للمتصفح أولًا. وقد قلّصت الإصدارات الأخيرة تلك الفجوة كثيرًا.
 
-### Hydration
+### الترطيب
 
-Angular 17 introduced [non-destructive hydration](https://angular.dev/guide/hydration)—the client reuses the server-rendered DOM instead of re-rendering it from scratch. Before v17, Angular’s SSR would render HTML on the server, send it to the browser, and then *destroy and recreate* the entire DOM during hydration. Non-destructive hydration was a significant improvement that brought Angular in line with what React, Vue, and Svelte had been doing.
+قدّم Angular 17 [الترطيب غير الإتلافي](https://angular.dev/guide/hydration) — إذ يعيد المتصفح استخدام DOM المُصيَّر على الخادم بدل تصييره من الصفر. فقبل الإصدار 17، كان التصيير على الخادم في Angular يصيّر HTML على الخادم، ويرسله إلى المتصفح، ثم *يهدم* الـDOM كاملًا ويعيد إنشاءه أثناء الترطيب. وكان الترطيب غير الإتلافي تحسينًا كبيرًا جاء بـAngular إلى ما كانت React وVue وSvelte تفعله.
 
-You enable it in the application bootstrap:
+وتفعّله في إقلاع التطبيق:
 
 ```typescript
 import { provideClientHydration } from '@angular/platform-browser';
@@ -282,9 +282,9 @@ bootstrapApplication(App, {
 });
 ```
 
-### Incremental Hydration
+### الترطيب التدريجي
 
-Angular’s most interesting recent addition is [incremental hydration](https://angular.dev/guide/incremental-hydration) via `@defer` blocks. A `@defer` block tells the framework to keep part of the page in its server-rendered, dehydrated state until a trigger fires:
+أحدث إضافات Angular وأكثرها إثارةً [الترطيب التدريجي](https://angular.dev/guide/incremental-hydration) عبر كتل `@defer`. فكتلة `@defer` تخبر الإطار بإبقاء جزء من الصفحة في حالته المُصيَّرة على الخادم وغير المُرطَّبة حتى يُستثار مُشغّل:
 
 ```html
 @defer (hydrate on viewport) {
@@ -294,40 +294,40 @@ Angular’s most interesting recent addition is [incremental hydration](https://
 }
 ```
 
-The available triggers—`idle`, `viewport`, `interaction`, `hover`, `immediate`, `timer`—are similar in spirit to Astro’s `client:` directives but integrated into Angular’s template syntax. The deferred content is server-rendered and visible immediately; only the JavaScript and hydration work wait for the trigger. User interactions before hydration are captured via event replay and replayed after hydration completes.
+والمُشغّلات المتاحة — `idle` و`viewport` و`interaction` و`hover` و`immediate` و`timer` — مشابهة في الجوهر لتوجيهات `client:` في Astro لكنها مدمجة في صياغة قوالب Angular. فالمحتوى المؤجَّل مُصيَّر على الخادم ومرئي فورًا؛ ولا ينتظر المُشغّل إلا JavaScript وعمل الترطيب. وتُلتقط تفاعلات المستخدم قبل الترطيب عبر إعادة تشغيل الأحداث وتُعاد بعد اكتمال الترطيب.
 
-Incremental hydration shipped in developer preview in Angular 19 and graduated to stable in Angular 20.
+صدر الترطيب التدريجي في معاينة المطوّرين في Angular 19 وانتقل إلى الاستقرار في Angular 20.
 
-### Data Loading
+### تحميل البيانات
 
-Angular doesn’t have a framework-provided `load` function like SvelteKit or `routeLoader$` like Qwik. Data loading happens through services and route resolvers—standard Angular dependency injection patterns. The framework does provide a `TransferState` mechanism to avoid duplicate requests during hydration: `HttpClient` automatically caches GET and HEAD responses made during SSR and reuses them on the client, so the browser doesn’t re-fetch data the server already retrieved. The [hydration docs](https://angular.dev/guide/hydration) describe this as the HTTP transfer cache—it’s enabled by default when you use `provideClientHydration()`.
+لا يملك Angular دالة `load` يوفّرها الإطار كما في SvelteKit ولا `routeLoader$` كما في Qwik. فتحميل البيانات يحدث عبر الخدمات ومحلّلات المسارات — أنماط حقن التبعيات المعيارية في Angular. لكن الإطار يوفّر آلية `TransferState` لتفادي الطلبات المكررة أثناء الترطيب: فـ`HttpClient` يخزّن استجابات GET وHEAD المؤداة أثناء التصيير على الخادم ويستخدمها في المتصفح تلقائيًا، فلا يعيد المتصفح جلب بيانات كان الخادم قد جلبها. وتصف [توثيقات الترطيب](https://angular.dev/guide/hydration) ذلك بذاكرة نقل HTTP المؤقتة — وهي مفعّلة افتراضيًا عند استخدام `provideClientHydration()`.
 
-### Mutations
+### الطفرات
 
-Angular has no built-in form-action or server-function primitive. Mutations go through services that call HTTP endpoints—the same pattern Angular has used since the beginning. That’s honest but means less automatic optimization and no progressive enhancement by default. If you want a form to work without JavaScript, you’re building that yourself.
+لا يملك Angular أساسًا مدمجًا لإجراءات النماذج أو دوال الخادم. فالطفرات تمر عبر خدمات تنادي نقاط نهاية HTTP — النمط نفسه الذي استخدمه Angular منذ البداية. وهذا صريح لكنه يعني تحسينًا تلقائيًا أقل وبلا تعزيز تدريجي افتراضيًا. وإذا أردت نموذجًا يعمل بلا JavaScript، فأنت تبنيه بنفسك.
 
-### The Tradeoff
+### المقايضة
 
-Angular’s approach is less opinionated about server/client code boundaries than any other framework on this list. There’s no `.server.ts` convention, no `'use client'` directive, no `$` serialization marker. The server/client split is implicit—whatever you put in a service runs wherever Angular runs, and SSR is a deployment configuration rather than an architectural decision. That’s a reasonable position for a framework with Angular’s history, but it means you don’t get the automatic bundle-splitting or dead-code elimination that more opinionated boundaries provide.
+نهج Angular أقل تدخلًا في حدود شفرة الخادم/العميل من أي إطار آخر في هذه القائمة. فلا اصطلاح `.server.ts`، ولا توجيه `'use client'`، ولا علامة تسلسل `$`. والفصل بين الخادم والعميل ضمني — فما تضعه في خدمة يعمل حيث يعمل Angular، والتصيير على الخادم إعداد نشر لا قرار معماري. وهذا موقف معقول لإطار بتاريخ Angular، لكنه يعني أنك لا تحصل على تقسيم الحزم التلقائي أو إزالة الشفرة الميتة التي توفّرها حدود أكثر تدخلًا.
 
-## How the Answers Compare
+## كيف تتقارن الإجابات
 
-Every framework answers the same four questions. The answers reveal different priorities.
+يجيب كل إطار عن الأسئلة الأربعة نفسها. وتكشف الإجابات أولويات مختلفة.
 
-| Question | React/Next | SvelteKit | Nuxt/Vue | Astro | Qwik/Qwik City | Angular |
+| السؤال | React/Next | SvelteKit | Nuxt/Vue | Astro | Qwik/Qwik City | Angular |
 | --- | --- | --- | --- | --- | --- | --- |
-| Server/client boundary | `'use client'` directive | `.server.ts` file suffix | `server/` directory | `.astro` = always server | `$` serialization markers | Implicit (deployment concern) |
-| Data loading | Async Server Components | `load` functions | `useAsyncData` / `useFetch` | Frontmatter | `routeLoader$` | Services + resolvers + `TransferState` |
-| Streaming | Suspense boundaries | Unawaited promises in `load` | Buffered (streaming in Nuxt 5) | On-demand rendering mode | `renderToStream` + serialized state | Streaming SSR (v20+) |
-| Mutations | Server Functions | Form actions | API routes + `$fetch` | Actions (`defineAction`) | `routeAction$` | Services + HTTP endpoints |
-| Progressive enhancement | Yes | Yes (`use:enhance`) | Manual | Yes | Yes | Manual |
+| حد الخادم/العميل | توجيه `'use client'` | لاحقة ملف `.server.ts` | مجلد `server/` | `.astro` = خادم دائمًا | علامات تسلسل `$` | ضمني (شأن نشر) |
+| تحميل البيانات | مكوّنات خادم غير متزامنة | دوال `load` | `useAsyncData` / `useFetch` | المقدمة | `routeLoader$` | خدمات + محلّلات + `TransferState` |
+| التدفق | حدود Suspense | وعود غير منتظَرة في `load` | مخزَّنة (التدفق في Nuxt 5) | وضع تصيير عند الطلب | `renderToStream` + حالة مُسلسَلة | تصيير تدفقي على الخادم (v20+) |
+| الطفرات | دوال الخادم | إجراءات النماذج | مسارات API + `$fetch` | الإجراءات (`defineAction`) | `routeAction$` | خدمات + نقاط نهاية HTTP |
+| التعزيز التدريجي | نعم | نعم (`use:enhance`) | يدوي | نعم | نعم | يدوي |
 
-The trend across all of them: move data loading as close to the component as possible, make the server-fetched result available without a client-side re-fetch, and send the important parts of the page first.
+والاتجاه في كلها: نقل تحميل البيانات إلى أقرب ما يمكن من المكوّن، وإتاحة النتيجة المجلوبة من الخادم دون إعادة جلب من المتصفح، وإرسال الأجزاء المهمة من الصفحة أولًا.
 
-## What This Means for Enterprise Architecture
+## ماذا يعني هذا لمعمارية المؤسسات
 
-Framework choice shapes your server rendering strategy, which shapes your infrastructure, caching model, and deployment pipeline. A few things worth noting for teams making these decisions:
+يشكّل اختيار إطار العمل استراتيجية التصيير على الخادم لديك، وهي تشكّل بنيتك التحتية ونموذج التخزين المؤقت وخط أنابيب النشر. وفيما يلي أمور تستحق الملاحظة للفرق التي تتخذ هذه القرارات:
 
-Mixed-framework architectures—microfrontends with different stacks per remote—may have different server rendering models in different parts of the application. That’s fine as long as the composition layer (host shell, edge proxy, or backend-for-frontend) can handle the different response shapes. A React remote using RSC and a Vue remote using Nuxt’s SSR can coexist behind a shared shell, but the shell needs to know it’s assembling responses from fundamentally different rendering pipelines.
+قد يكون للمعماريات مختلطة الأطر — الواجهات الدقيقة بمكدّسات مختلفة لكل ريموت — نماذج تصيير على الخادم مختلفة في أجزاء مختلفة من التطبيق. وهذا مقبول ما دامت طبقة التركيب (هيكل المضيف، أو الوسيط الطرفي، أو الواجهة الخلفية للواجهة الأمامية) تستطيع التعامل مع أشكال الاستجابات المختلفة. فريموت React يستخدم RSC وريموت Vue يستخدم التصيير على الخادم في Nuxt يمكن أن يتعايشا خلف هيكل مشترك، لكن الهيكل يحتاج إلى معرفة أنه يجمّع استجابات من خطوط أنابيب تصيير مختلفة جذريًا.
 
-The trend across every framework is converging: move data loading closer to the component, make server/client boundaries explicit, stream HTML progressively, and treat mutations as first-class server operations. The syntax is different. The direction is the same. If you understand one framework’s answers to these four questions, you can read any other framework’s answers and know exactly what to look for.
+والاتجاه عبر كل الأطر متقارب: قرّب تحميل البيانات من المكوّن، واجعل حدود الخادم/العميل صريحة، ودفّق HTML تدريجيًا، وتعامل مع الطفرات كعمليات خادم من الدرجة الأولى. فالصياغة مختلفة. والاتجاه واحد. وإذا فهمت إجابات إطار واحد عن هذه الأسئلة الأربعة، استطعت قراءة إجابات أي إطار آخر ومعرفة ما تبحث عنه بالضبط.

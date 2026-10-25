@@ -1,16 +1,16 @@
 ---
-title: "Function Overloads for Flexible APIs"
-lang: en
+title: "الأحمال الزائدة للدوال واجهات برمجية مرنة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/function-overloads-in-react"
 ---
 
-Function overloads in TypeScript let you define multiple type signatures for a single implementation, creating APIs that feel intuitive and adapt to how developers actually want to use them. In React applications, this translates to components and hooks that “just work” regardless of whether you pass a string, an object, or different combinations of arguments. We’ll explore how to design flexible, type-safe APIs that make your components feel as polished as React’s built-ins.
+تتيح لك الأحمال الزائدة للدوال (function overloads) في TypeScript تعريف أكثر من توقيع نوع واحد لدالة واحدة، مما يخلق واجهات برمجية تبدو بديهية وتتكيّف مع الطريقة التي يرغب المطورون فعلاً في استخدامها. في تطبيقات React، يترجم ذلك إلى مكوّنات وخُطّافات تعمل ببساطة بغض النظر عما إذا كنت تمرّر سلسلة نصية أو كائناً أو تركيبات مختلفة من الوسائط. سنستكشف كيفية تصميم واجهات مرنة وآمنة من ناحية الأنواع تجعل مكوّناتك بمستوى مكوّنات React المدمجة (built-ins).
 
-Think of overloads as a way to say “this function can be called in these specific ways, and TypeScript will know exactly what to expect in each case.” Instead of forcing users into a single rigid API, you can support multiple calling patterns while maintaining full type safety.
+فكّر في الأحمال الزائدة باعتبارها طريقة للقول: «هذه الدالة يمكن استدعاؤها بهذه الطرق المحددة، وسيعرف TypeScript تماماً ما يمكن توقعه في كل حالة». بدلاً من إجبار المستخدمين على واجهة برمجية جامدة واحدة، يمكنك دعم أنماط استدعاء متعددة مع الحفاظ على أمان أنواع كامل.
 
-## The Problem: Rigid APIs vs. Real Usage
+## المشكلة: واجهات جامدة مقابل الاستخدام الواقعي
 
-Consider a simple `Button` component that accepts either a string or a configuration object:
+اعتبر مكوّن `Button` بسيطاً يقبل إما سلسلة نصية أو كائن تهيئة:
 
 ```typescript
 // ❌ Awkward: forces everyone into the same pattern
@@ -35,11 +35,11 @@ function Button({ config }: ButtonProps) {
 <Button config={{ text: "Submit", variant: "primary", disabled: false }} />
 ```
 
-This works, but it feels unnatural. Users have to wrap simple strings in a `config` object, and TypeScript can’t provide specific autocomplete based on how you’re calling the component.
+هذا يعمل، لكنه يبدو غير طبيعي. يضطر المستخدمون إلى تغليف السلاسل النصية البسيطة داخل كائن `config`، ولا يستطيع TypeScript توفير إكمال تلقائي دقيق بناءً على طريقة استدعائك للمكوّن.
 
-## Function Overloads: Multiple Signatures, One Implementation
+## الأحمال الزائدة للدوال: توقيعات متعددة وتنفيذ واحد
 
-Function overloads let you define multiple “call signatures” that map to the same underlying function. Here’s how we’d improve that Button component:
+تتيح لك الأحمال الزائدة تعريف عدة «توقيعات استدعاء» (call signatures) تشير جميعها إلى نفس الدالة الأساسية. وإليك كيف سنحسّن مكوّن Button:
 
 ```typescript
 // ✅ Multiple call signatures
@@ -63,15 +63,15 @@ function Button(textOrConfig: string | { text: string; variant: 'primary' | 'sec
 <Button config={{ text: "Submit", variant: "primary" }} />
 ```
 
-Now TypeScript knows that when you pass a string, you get a basic button. When you pass an object, it expects the full configuration interface and provides autocomplete for `variant` and `disabled`.
+الآن يعرف TypeScript أنه عند تمرير سلسلة نصية ستحصل على زر أساسي. وعند تمرير كائن، يتوقع واجهة التهيئة الكاملة ويوفر الإكمال التلقائي لـ `variant` و`disabled`.
 
-> **Note**
+> **ملاحظة**
 >
-> The implementation signature (the actual function body) must be compatible with all the overload signatures. TypeScript will only show users the overload signatures in IntelliSense, not the implementation signature.
+> يجب أن يكون التوقيع المنفِّذ (جسم الدالة الفعلي) متوافقاً مع جميع توقيعات الأحمال الزائدة. سيعرض TypeScript للمستخدمين توقيعات الأحمال الزائدة في IntelliSense فقط، وليس التوقيع المنفِّذ.
 
-## Real-World Pattern: Conditional Props
+## نمط واقعي: خصائص مشروطة
 
-Here’s a more sophisticated example—a `Modal` component that changes its props based on whether it’s controlled or uncontrolled:
+إليك مثالاً أكثر تطوراً — مكوّن `Modal` يغيّر خصائصه بناءً على كونه متحكَّماً فيه (controlled) أو غير متحكَّم فيه (uncontrolled):
 
 ```typescript
 interface BaseModalProps {
@@ -123,7 +123,7 @@ function Modal(props: ControlledModalProps | UncontrolledModalProps): JSX.Elemen
 }
 ```
 
-Users get different TypeScript experiences based on their intent:
+يحصل المستخدمون على تجربة TypeScript مختلفة بناءً على نيتهم:
 
 ```typescript
 // Controlled usage - TypeScript requires isOpen and onClose
@@ -144,9 +144,9 @@ Users get different TypeScript experiences based on their intent:
 </Modal>
 ```
 
-## Hook Overloads: Flexible State Management
+## الأحمال الزائدة للخُطّافات: إدارة حالة مرنة
 
-Custom hooks benefit enormously from overloads. Here’s a `useLocalStorage` hook that returns different shapes based on whether you want loading states:
+تستفيد الخُطّافات المخصّصة من الأحمال الزائدة بشكل كبير. إليك خُطّاف `useLocalStorage` يعيد أشكالاً مختلفة بناءً على رغبتك في تضمين حالات التحميل:
 
 ```typescript
 // Overload 1: Simple usage
@@ -209,7 +209,7 @@ function useLocalStorage<T>(
 }
 ```
 
-Now users get exactly the API they expect:
+الآن يحصل المستخدمون على الواجهة البرمجية التي يتوقعونها تماماً:
 
 ```typescript
 // Simple usage - no loading state
@@ -223,9 +223,9 @@ if (isLoading) {
 }
 ```
 
-## Advanced Pattern: Method Overloads
+## نمط متقدم: تابِعات محمّلة زائداً
 
-You can also use overloads for object methods, which is particularly useful for builder patterns or fluent interfaces:
+يمكنك أيضاً استخدام الأحمال الزائدة مع توابِع الكائنات، وهو أمر مفيد بشكل خاص لأنماط الباني أو الواجهات المتسلسلة (fluent interfaces):
 
 ```typescript
 class QueryBuilder<T> {
@@ -267,11 +267,11 @@ const query1 = new QueryBuilder<User>()
 const query2 = new QueryBuilder<User>().where({ age: 25, status: 'active' }).build();
 ```
 
-## Gotchas and Best Practices
+## الفخاخ وأفضل الممارسات
 
-### Implementation Must Handle All Cases
+### يجب أن يعالج التنفيذ جميع الحالات
 
-Your implementation function must handle every possible combination defined in your overloads:
+يجب أن تعالج دالة التنفيذ كل تركيبة ممكنة معرّفة في أحمالك الزائدة:
 
 ```typescript
 // ❌ Implementation doesn't handle all overload cases
@@ -297,9 +297,9 @@ function processData(data: string | number[]): string | number {
 }
 ```
 
-### Order Matters
+### الترتيب مهم
 
-TypeScript checks overloads from top to bottom and uses the first match:
+يفحص TypeScript الأحمال الزائدة من أعلى إلى أسفل ويستخدم أول تطابق:
 
 ```typescript
 // ❌ Order can cause unexpected behavior
@@ -313,9 +313,9 @@ function format(value: string): string;
 function format(value: any): string;
 ```
 
-### Don’t Overuse Overloads
+### لا تبالغ في استخدام الأحمال الزائدة
 
-Sometimes a simple union type or generic is clearer than overloads:
+أحياناً يكون نوع اتحادي بسيط أو نوع عام أوضح من الأحمال الزائدة:
 
 ```typescript
 // ❌ Overloads for something simple
@@ -331,17 +331,17 @@ function getId(userOrId: User | string): string {
 }
 ```
 
-Use overloads when you want to provide fundamentally different return types or when the calling patterns are distinct enough to warrant separate interfaces.
+استخدم الأحمال الزائدة عندما ترغب في توفير أنواع إرجاع مختلفة جوهرياً أو عندما تكون أنماط الاستدعاء متباينة بما يكفي لتستحق واجهات منفصلة.
 
-## When to Reach for Overloads
+## متى تلجأ إلى الأحمال الزائدة
 
-Function overloads shine when you have:
+تتألق الأحمال الزائدة للدوال عندما يكون لديك:
 
-- **Different return types based on inputs**: Like `useLocalStorage` returning different tuple lengths
-- **Mutually exclusive prop patterns**: Controlled vs. uncontrolled components
-- **Progressive enhancement**: Basic usage vs. advanced configuration
-- **Backward compatibility**: Supporting old API alongside new features
+- **أنواع إرجاع مختلفة بناءً على المدخلات**: مثل `useLocalStorage` الذي يعيد أطوالاً مختلفة للصفوف (tuples)
+- **أنماط خصائص متعارضة بالكامل**: مكوّنات متحكَّم فيها مقابل غير متحكَّم فيها
+- **تحسين تدريجي (progressive enhancement)**: الاستخدام الأساسي مقابل التهيئة المتقدمة
+- **التوافق مع الإصدارات السابقة**: دعم واجهة برمجية قديمة بجانب ميزات جديدة
 
-Overloads transform good TypeScript APIs into great ones. They let you support multiple usage patterns without sacrificing type safety, creating components and hooks that feel intuitive and adapt to how developers actually want to work. The key is finding the right balance—use them when they genuinely improve the developer experience, not just because you can.
+تحوّل الأحمال الزائدة واجهات TypeScript الجيدة إلى واجهات رائعة. فهي تتيح لك دعم أنماط استخدام متعددة دون التضحية بأمان الأنواع، مما يخلق مكوّنات وخُطّافات تبدو بديهية وتتكيّف مع الطريقة التي يرغب المطورون فعلاً في العمل بها. المفتاح هو إيجاد التوازن الصحيح — استخدمها عندما تحسّن تجربة المطور فعلاً، وليس لمجرد أنك تستطيع ذلك.
 
-When designed thoughtfully, overloaded functions become indistinguishable from React’s built-in APIs. Users don’t think about the overloads; they just use your API naturally and get the exact TypeScript experience they expect.
+عند تصميمها بعناية، تصبح الدوال المحمّلة زائداً غير قابلة للتمييز عن واجهات React المدمجة. فلا يفكر المستخدمون في الأحمال الزائدة؛ بل يستخدمون واجهتك البرمجية بشكل طبيعي ويحصلون على تجربة TypeScript التي يتوقعونها بالضبط.

@@ -1,16 +1,16 @@
 ---
-title: "Context API Performance Pitfalls"
-lang: en
+title: "مزالق أداء Context API"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/context-api-performance-pitfalls"
 ---
 
-Context seems like the perfect solution for prop drilling—until your entire app re-renders every time someone types in a search box. The Context API is simultaneously one of React’s most useful features and one of its biggest performance footguns. Use it wrong, and you’ll trigger re-render cascades that make your app feel like it’s running on a potato. Use it right, and you get clean component trees with efficient updates.
+يبدو Context حلًّا مثاليًا لتمرير الخصائص عبر الطبقات (prop drilling) — إلى أن يُعاد تصيير تطبيقك كاملًا في كل مرة يكتب فيها أحدهم في مربّع بحث. فـ Context API ميزة من أكثر ميزات React فائدة، وفي الوقت نفسه من أكبر مزالق الأداء فيها. فإن استخدمته بشكل خاطئ، أطلقت سلاسل إعادات تصيير تجعل تطبيقك يبدو وكأنه يعمل على جهاز عتيق. وإن أحسنت استخدامه، حصلت على شجرة مكوّنات نظيفة بتحديثات فعّالة.
 
-The problem isn’t Context itself—it’s how we use it. Throwing everything into a single context, not splitting state from actions, ignoring memo boundaries, and misunderstanding when Context triggers re-renders are the real culprits. This guide reveals every Context performance pitfall and, more importantly, shows you exactly how to avoid them while still leveraging Context’s power for clean, maintainable code.
+المشكلة ليست في Context نفسه، بل في طريقة استخدامنا له. فإلقاء كل شيء في سياق واحد، وعدم فصل الحالة عن الإجراءات، وتجاهل حدود الحفظ، وسوء فهم متى يُطلق Context إعادات التصيير — كلها الأسباب الحقيقية. يكشف هذا الدليل كل مزلق من مزالق أداء Context، والأهم من ذلك يريك بالضبط كيف تتجنّبها مع الاستفادة من قوة Context لشيفرة نظيفة قابلة للصيانة.
 
-## How Context Really Works
+## كيف يعمل Context حقًا
 
-First, let’s demystify what Context actually does and when it triggers re-renders:
+أولًا، لنُزل الغموض عن ما يفعله Context فعلًا ومتى يُطلق إعادات التصيير:
 
 ```typescript
 // Context doesn't optimize anything—it's just a broadcast mechanism
@@ -68,9 +68,9 @@ function CountConsumer() {
 }
 ```
 
-## The Classic Pitfalls
+## المزالق الكلاسيكية
 
-### Pitfall 1: The Mega Context
+### المزلق الأول: السياق العملاق
 
 ```typescript
 // ❌ Bad: Everything in one context
@@ -133,7 +133,7 @@ function Sidebar() {
 }
 ```
 
-### Pitfall 2: Unstable Context Values
+### المزلق الثاني: قيم سياق غير مستقرة
 
 ```typescript
 // ❌ Bad: Creating new objects/arrays/functions on every render
@@ -175,7 +175,7 @@ function StableProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-### Pitfall 3: Not Splitting State and Actions
+### المزلق الثالث: عدم فصل الحالة عن الإجراءات
 
 ```typescript
 // ❌ Bad: State and actions in same context
@@ -227,9 +227,9 @@ function OptimizedIncrementButton() {
 }
 ```
 
-## Advanced Context Patterns
+## أنماط متقدّمة للسياق
 
-### Pattern 1: Context Composition
+### النمط الأول: تركيب السياقات
 
 ```typescript
 // Split contexts by concern and compose them
@@ -275,7 +275,7 @@ function composeProviders(...providers: React.FC<{ children: ReactNode }>[]) {
 const AppProvider = composeProviders(AuthProvider, ThemeProvider, UIProvider, DataProvider);
 ```
 
-### Pattern 2: Selector Pattern with `useSyncExternalStore`
+### النمط الثاني: نمط المحدِّد مع `useSyncExternalStore`
 
 ```typescript
 // Create a context with selector support
@@ -372,7 +372,7 @@ function NotificationBell() {
 }
 ```
 
-### Pattern 3: Factory Pattern for Multiple Instances
+### النمط الثالث: نمط المصنع لعدة نُسخ
 
 ```typescript
 // Create multiple instances of the same context type
@@ -418,9 +418,9 @@ function FormsPage() {
 }
 ```
 
-## Optimization Techniques
+## تقنيات التحسين
 
-### Technique 1: Memo Boundaries
+### التقنية الأولى: حدود الحفظ
 
 ```typescript
 // Use memo to prevent context changes from propagating
@@ -463,7 +463,7 @@ const MemoizedRareUpdates = memo(function RareUpdates({ value }: { value: any })
 });
 ```
 
-### Technique 2: Context Proxy with Zustand
+### التقنية الثانية: وسيط سياق مع Zustand
 
 ```typescript
 // Use Zustand for complex state, Context for DI
@@ -528,7 +528,7 @@ function ThemeToggle() {
 }
 ```
 
-### Technique 3: Lazy Context Initialization
+### التقنية الثالثة: تهيئة السياق بتحميل كسول
 
 ```typescript
 // Defer expensive context initialization
@@ -569,7 +569,7 @@ function LazyProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
 ```typescript
 // Monitor context performance
@@ -637,7 +637,7 @@ function findChanges(prev: any, next: any): string[] {
 }
 ```
 
-## Context vs Other State Management
+## Context مقابل إدارة الحالة الأخرى
 
 ```typescript
 // When to use Context vs alternatives
@@ -685,7 +685,7 @@ function URLStateExample() {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface ContextBestPractices {

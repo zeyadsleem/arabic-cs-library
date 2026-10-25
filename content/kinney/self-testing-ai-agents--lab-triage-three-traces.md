@@ -1,16 +1,16 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-triage-three-traces"
 ---
 
-Time to cash the checks from the last two lessons. [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) taught you the four panes. [Flaky-Test Triage](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) gave you the four-bucket classification. This lab asks you to apply both, at the same time, to three real traces generated from three deliberately-broken specs in the Shelf starter.
+حان وقت تحصيل ما ادّخرته من الدرسين الأخيرين. [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) علّمك الألواح الأربعة. و[فرز الاختبارات المتذبذبة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) أعطاك التصنيف في أربع سلال. وهذا المختبر يطلب منك أن تطبّق الاثنين معًا، في الوقت نفسه، على ثلاثة تتبّعات حقيقية مولّدة من ثلاث مواصفات معطوبة عمدًا في بادئ Shelf.
 
-The three broken specs live in `tests/labs/broken-traces/`. The Shelf starter does not ship the trace-generator helper, and the root `playwright.config.ts` ignores `tests/labs/**` by default so the green starter loop stays green. Each of those specs also starts with `test.skip()` as a safety gate — your generator helper has to remove or wrap that call before Playwright will actually run them and produce failing traces. Additionally, the future `labs-broken-traces` project referenced in the spec comments isn’t defined in the starter’s `playwright.config.ts` yet; you add it as part of this lab alongside the generator helper. This lab is where you add `scripts/generate-lab-traces.mjs` (or an equivalent helper) plus whatever temporary config override you need to make those specs discoverable. Then you generate the traces, open them in the viewer, and write a four-field diagnosis per trace. The goal is muscle memory: classify-and-cite, classify-and-cite, classify-and-cite, until reading a trace stops feeling like reverse-engineering and starts feeling like reading.
+المواصفات المعطوبة الثلاث تقيم في `tests/labs/broken-traces/`. وبادئ Shelf لا يتضمّن دالة المساعدة المولّدة للتتبّعات، وملف `playwright.config.ts` الجذري يتجاهل `tests/labs/**` افتراضيًا لتبقى حلقة البادئ الخضراء خضراء. وتبدأ كل مواصفة من هذه أيضًا بـ`test.skip()` كبوابة أمان — فعلى دالة المساعدة المولّدة أن تحذف ذلك الاستدعاء أو تلتفّ حوله قبل أن تشغّلها Playwright فعلًا وتُنتج تتبّعات فاشلة. وإضافةً إلى ذلك، فإن مشروع `labs-broken-traces` المستقبلي المشار إليه في تعليقات المواصفة غير معرَّف في `playwright.config.ts` الخاص بالبادئ بعد؛ وتضيفه في هذا المختبر إلى جانب دالة المساعدة المولّدة. هذا المختبر هو حيث تضيف `scripts/generate-lab-traces.mjs` (أو دالة مساعدة مكافئة) إضافةً إلى أي تجاوز تهيئة مؤقت تحتاجه لجعل تلك المواصفات قابلة للاكتشاف. ثم تولّد التتبّعات، وتفتحها في العارض، وتكتب تشخيصًا بأربعة حقول لكل تتبّع. والهدف ذاكرة عضلية: صنّف واستشهد، صنّف واستشهد، صنّف واستشهد، حتى يكفّ قراءة التتبّع عن أن يكون هندسة عكسية ويبدأ في أن يكون قراءة.
 
-## Setup
+## الإعداد
 
-First, add the generator helper as `scripts/generate-lab-traces.mjs` (or equivalent), then wire a package script for it:
+أولًا، أضف دالة المساعدة المولّدة باسم `scripts/generate-lab-traces.mjs` (أو ما يكافئها)، ثم وصّل لها سكربتًا في الحزمة:
 
 ```json
 {
@@ -20,13 +20,13 @@ First, add the generator helper as `scripts/generate-lab-traces.mjs` (or equival
 }
 ```
 
-Then, from the Shelf repo root:
+ثم من جذر مستودع Shelf:
 
 ```bash
 npm run traces:generate
 ```
 
-That helper runs the deliberately-broken specs, tolerates the expected nonzero exit (the specs are red by design), and copies the three trace zips into `playwright-report/lab-traces/`:
+تشغّل تلك الدالة المساعدة المواصفات المعطوبة عمدًا، وتتحمّل الخروج غير الصفري المتوقّع (فالمواصفات حمراء بالتصميم)، وتنسخ ملفات zip الثلاثة للتتبّعات إلى `playwright-report/lab-traces/`:
 
 ```
 playwright-report/lab-traces/
@@ -35,67 +35,67 @@ playwright-report/lab-traces/
 └── trace-c-stale-locator.zip
 ```
 
-If any of the three files are missing, the script will fail loudly. That means the lab scaffolding is out of sync with something — the spec was accidentally fixed, the project was renamed, the outputDir drifted. Open the traces you have and file a bug.
+وإن كان أي من الملفات الثلاثة مفقودًا، فسيفشل السكربت بصوت عالٍ. وهذا يعني أن سقالة المختبر لم تعد متزامنة مع شيء ما — فقد أُصلحت المواصفة بالمصادفة، أو أُعيد تسمية المشروع، أو انحرف `outputDir`. افتح التتبّعات التي لديك وأبلغ عن خلل.
 
-> **Re-running the lab**
+> **إعادة تشغيل المختبر**
 >
-> If you add a `traces:clean` helper, have it remove `playwright-report/lab-traces/` so you can regenerate from a clean slate. Useful if you want to generate new traces after tweaking the broken specs.
+> إن أضفت دالة مساعدة `traces:clean`، فاجعلها تحذف `playwright-report/lab-traces/` لتستطيع التوليد من صفحة بيضاء. وهذا مفيد إن أردت توليد تتبّعات جديدة بعد تعديل المواصفات المعطوبة.
 
-## Your job
+## مهمتك
 
-Create a file next to the traces — say, `playwright-report/lab-traces/triage.md` — with a four-field diagnosis for each of the three traces. The four fields:
+أنشئ ملفًا بجوار التتبّعات — مثل `playwright-report/lab-traces/triage.md` — وفيه تشخيص بأربعة حقول لكل واحد من التتبّعات الثلاثة. والحقول الأربعة:
 
-1. **Failing step name**. If the spec doesn’t use `test.step`, use the test title plus the line number. If it does use steps, use the step label.
-2. **Smoking-gun pane**. One of: Timeline, DOM snapshot, Network, Console. This is the pane where the *specific* evidence that explains the failure lives. There’s usually exactly one right answer per trace.
-3. **Which of the four causes from [flaky-test-triage](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) applies**. One of: timing race, shared state leak, order-dependent rendering / locator ambiguity, config / auth mismatch.
-4. **Proposed fix**. The minimum code change that would turn this red trace green — a specific locator, a specific `waitForResponse`, a specific project wiring edit. Not “fix the test.” A concrete change.
+1. **اسم الخطوة الفاشلة**. إن لم تستخدم المواصفة `test.step`، فاستخدم عنوان الاختبار مع رقم السطر. وإن استخدمت الخطوات، فاستخدم تسمية الخطوة.
+2. **لوح الدليل الدامغ**. واحد من: الخط الزمني، لقطة DOM، الشبكة، الطرفية. وهذا هو اللوح الذي يقيم فيه الدليل *المحدّد* الذي يفسّر الفشل. وعادةً توجد إجابة صحيحة واحدة بالضبط لكل تتبّع.
+3. **أي من الأسباب الأربعة في [فرز الاختبارات المتذبذبة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) ينطبق**. واحد من: سباق التوقيت، تسريب الحالة المشتركة، تصيير معتمد على الترتيب / غموض المحدِّد، عدم تطابق التهيئة / المصادقة.
+4. **الإصلاح المقترح**. أقلّ تغيير في الشيفرة يحوّل هذا التتبّع الأحمر إلى أخضر — محدِّد بعينه، أو `waitForResponse` بعينه، أو تعديل بعينه في توصيل المشروع. لا «أصلح الاختبار». بل تغيير ملموس.
 
-Every diagnosis has to cite *specific evidence* from the trace: a network request URL, a DOM snapshot timestamp, a console error string. “The test seems to fail because of timing” is not a diagnosis. “The network pane shows `PATCH /api/shelf/abc123` still pending at 1.21s while the assertion ran at 1.20s” is.
+وكل تشخيص عليه أن يستشهد *بدليل محدّد* من التتبّع: عنوان طلب شبكة، أو طابع زمني للقطة DOM، أو نص خطأ في الطرفية. فـ«يبدو أن الاختبار يفشل بسبب التوقيت» ليس تشخيصًا. أما «يعرض لوح الشبكة `PATCH /api/shelf/abc123` ما زال معلّقًا عند 1.21ث بينما عمل التحقّق عند 1.20ث» فهو تشخيص.
 
-## Acceptance criteria
+## معايير القبول
 
-- `playwright-report/lab-traces/triage.md` exists and has a four-field diagnosis for each of the three traces.
-- Each diagnosis cites at least one specific piece of evidence (a URL, a timestamp, a DOM excerpt, a console string) from the relevant pane.
-- The *cause* field in each diagnosis is one of the four labels from the flaky-test-triage lesson. Not “unclear” or “mixed.”
-- The proposed fix for each trace is a concrete code change, not a vague intention.
+- يوجد `playwright-report/lab-traces/triage.md` وفيه تشخيص بأربعة حقول لكل واحد من التتبّعات الثلاثة.
+- يستشهد كل تشخيص بقطعة دليل محدّدة واحدة على الأقل (عنوان URL، أو طابع زمني، أو مقتطف DOM، أو نص من الطرفية) من اللوح ذي الصلة.
+- حقل *السبب* في كل تشخيص واحد من التسميات الأربعة من درس فرز الاختبارات المتذبذبة. لا «غير واضح» ولا «مختلط».
+- الإصلاح المقترح لكل تتبّع تغيير ملموس في الشيفرة، لا نيّة غامضة.
 
-## Suggested order of attack
+## ترتيب الهجوم المقترح
 
-Open Trace A first:
+افتح التتبّع A أولًا:
 
 ```bash
 npx playwright show-trace playwright-report/lab-traces/trace-a-config.zip
 ```
 
-Walk the four panes in order. Timeline, DOM snapshot, Network, Console. Where’s the disproportionately-long action? What does the DOM look like at the failure? What’s in the Network pane? What’s in the Console? The evidence will point at a bucket. Write the diagnosis.
+تَنقَّل في الألواح الأربعة بالترتيب. الخط الزمني، ثم لقطة DOM، ثم الشبكة، ثم الطرفية. أين الفعل الطويل بشكل غير متناسب؟ وكيف يبدو DOM عند الفشل؟ وما في لوح الشبكة؟ وما في الطرفية؟ سيشير الدليل إلى سلة. اكتب التشخيص.
 
-Then Trace B. The pattern is similar, but the signal lives in a different pane. Follow the same four-pane sweep, and notice how your *second* answer is in a different place than your first. That’s the skill this lab is training — stop looking at the same pane first every time.
+ثم التتبّع B. النمط مشابه، لكن الإشارة تقيم في لوح مختلف. اتبع المسح الرباعي نفسه، ولاحظ كيف تكون إجابتك *الثانية* في مكان مختلف عن الأولى. فهذه هي المهارة التي يدرّبها هذا المختبر — أن تكفّ عن النظر إلى اللوح نفسه أولًا كل مرة.
 
-Then Trace C. This one’s different again. Your diagnosis should end up citing something from the error/console pane or the DOM snapshot, not the timeline.
+ثم التتبّع C. وهذا مختلف مرة أخرى. ويجب أن ينتهي تشخيصك إلى الاستشهاد بشيء من لوح الأخطاء أو الطرفية، أو من لقطة DOM، لا من الخط الزمني.
 
-## Stretch: write the fix
+## إضافة: اكتب الإصلاح
 
-For at least one of the three traces, go beyond diagnosis and actually fix the spec. The broken specs live in `tests/labs/broken-traces/`. Edit the file, run `npm run traces:generate` again, and confirm the generator complains that the trace for your “fixed” spec is missing — because the spec passed, so Playwright didn’t write a `trace.zip` for a failed run.
+من أجل واحد من التتبّعات الثلاثة على الأقل، تجاوز التشخيص وأصلح المواصفة فعلًا. فالمواصفات المعطوبة تقيم في `tests/labs/broken-traces/`. عدّل الملف، وشغّل `npm run traces:generate` مرة أخرى، وتأكّد من أن المولّد يشكو من أن تتبّع مواصفتك «المصلَحة» مفقود — لأن المواصفة نجحت، فلم تكتب Playwright ملف `trace.zip` لتشغيل فاشل.
 
-That’s the signal: when the trace disappears, the test is green. The generator is telling you the fix worked.
+وتلك هي الإشارة: حين يختفي التتبّع، يكون الاختبار أخضر. فالمولّد يخبرك أن الإصلاح نجح.
 
-Revert the fix before committing. The broken specs are fixtures for the lab; they’re supposed to stay broken.
+وأعد الإصلاح قبل الإيداع. فالمواصفات المعطوبة تجهيزات للمختبر؛ ومن المفترض أن تبقى معطوبة.
 
-## Don’t
+## ما لا تفعله
 
-- Don’t cite “it felt like a race condition” without a network-pane fact to back it up.
-- Don’t classify into two buckets. Each trace has one primary cause. Pick one.
-- Don’t skip the Console pane on a trace just because the test doesn’t use `console.log`. Browser errors land there too.
-- Don’t propose `retries: 3` as a fix. You just spent the whole previous lesson learning why that’s a painkiller.
+- لا تستشهد بـ«بدا الأمر كحالة تسابق» دون حقيقة من لوح الشبكة تسنده.
+- لا تصنّف في سلتين. فلكل تتبّع سبب أولي واحد. اختر واحدًا.
+- لا تتجاوز لوح الطرفية في تتبّع لمجرد أن الاختبار لا يستخدم `console.log`. فأخطاء المتصفّح تحطّ هناك أيضًا.
+- لا تقترح `retries: 3` كإصلاح. فأنت للتوّ أنفقت الدرس السابق كله في تعلّم لماذا ذلك مسكّن للألم.
 
-## What success looks like
+## كيف يبدو النجاح
 
-After the first trace, you’re working through the panes methodically and writing a real diagnosis. After the second, you’ve noticed that the smoking gun lives in different panes for different bugs. After the third, you can classify a failure in under a minute without scrolling around aimlessly.
+بعد التتبّع الأول، تكون تعمل في الألواح بمنهجية وتكتب تشخيصًا حقيقيًا. وبعد الثاني، تكون قد لاحظت أن الدليل الدامغ يقيم في ألواح مختلفة لأخطاء مختلفة. وبعد الثالث، تستطيع تصنيف فشل في أقل من دقيقة دون التمرير هنا وهناك بلا هدف.
 
-When you come back to this lab a week later and regenerate the traces, you can walk all three in ten minutes. That’s muscle memory. That’s the goal.
+وحين تعود إلى هذا المختبر بعد أسبوع وتعيد توليد التتبّعات، تستطيع أن تمشي الثلاثة في عشر دقائق. تلك هي الذاكرة العضلية. وذلك هو الهدف.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — the lesson on what each pane means.
-- [Flaky-Test Triage: When Retries Are Lying to You](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — the four-bucket taxonomy you’re classifying into.
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — where the four-field diagnosis you’re writing becomes the structured artifact an agent actually uses.
+- [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — الدرس الذي يشرح معنى كل لوح.
+- [فرز الاختبارات المتذبذبة: حين تخدعك إعادة المحاولات](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — تصنيف السلال الأربع الذي تصنّف فيه.
+- [ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — حيث يصبح التشخيص الرباعي الذي تكتبه هو الأثر المنظّم الذي يستخدمه الوكيل فعلًا.

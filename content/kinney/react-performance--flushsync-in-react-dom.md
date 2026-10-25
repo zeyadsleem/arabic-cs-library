@@ -1,16 +1,16 @@
 ---
-title: "Flushsync In React Dom"
-lang: en
+title: "flushSync في react-dom"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/flushsync-in-react-dom"
 ---
 
-React’s concurrent rendering is one of its most powerful features—it batches updates, prioritizes work, and keeps your app responsive by breaking rendering into chunks. But sometimes you need to tell React, “No, really, I need this update to happen right now.” That’s where `flushSync` comes in—a sharp tool that forces React to synchronously flush updates immediately.
+التصيير المتزامن (concurrent rendering) في React واحد من أقوى مزاياه — فهو يجمع التحديثات في دفعات، ويرتّب أولويات العمل، ويُبقي تطبيقك سريع الاستجابة عبر تقسيم التصيير إلى قطع. لكن أحيانًا تحتاج إلى إخبار React: «لا، فعلًا، أحتاج أن يحدث هذا التحديث الآن». هنا يأتي دور `flushSync` — أداة حادة تُجبر React على دفع التحديثات فورًا وبشكل متزامن.
 
-Think of `flushSync` as the emergency brake of React’s rendering system. It’s incredibly useful when you need to coordinate with imperative APIs (like focusing elements, measuring DOM nodes, or triggering animations), but it comes with performance tradeoffs that make it something you should reach for sparingly and with intention.
+تخيّل `flushSync` كفرامل الطوارئ في نظام التصيير لدى React. إنه مفيد للغاية عندما تحتاج إلى التنسيق مع واجهات برمجية أمرية (imperative APIs)، مثل تركيز العناصر أو قياس عقد DOM أو تشغيل الحركات، لكنه يأتي بمقايضات أداء تجعله شيئًا ينبغي أن تلجأ إليه نادرًا وعن قصد.
 
-## What is `flushSync`?
+## ما هو `flushSync`؟
 
-`flushSync` is a function from `react-dom` that forces React to flush any pending updates synchronously before continuing. When you wrap a state update in `flushSync`, React immediately applies that update to the DOM—no batching, no concurrent scheduling, no waiting around.
+`flushSync` دالة من `react-dom` تُجبر React على دفع أي تحديثات معلّقة بشكل متزامن قبل المتابعة. وعندما تغلّف تحديث حالة داخل `flushSync`، تطبّق React ذلك التحديث على DOM فورًا — بلا تجميع في دفعات، وبلا جدولة متزامنة، وبلا انتظار.
 
 ```typescript
 import { flushSync } from 'react-dom';
@@ -32,15 +32,15 @@ function MyComponent() {
 }
 ```
 
-The key difference is timing: normally, React batches updates and flushes them during the next render cycle. With `flushSync`, you’re forcing that flush to happen immediately within the current synchronous execution.
+الفرق الجوهري هو التوقيت: عادةً تجمع React التحديثات في دفعات وتدفعها خلال دورة التصيير التالية. أما مع `flushSync` فأنت تُجبر هذا الدفع على الحدوث فورًا داخل التنفيذ المتزامن الحالي.
 
-## When You Actually Need `flushSync`
+## متى تحتاج إلى `flushSync` فعلًا
 
-Most of the time, you don’t need `flushSync`. React’s default behavior of batching updates is usually what you want. But there are specific scenarios where synchronous updates become necessary:
+في معظم الأوقات، لا تحتاج إلى `flushSync`. فالسلوك الافتراضي في React بتجميع التحديثات هو غالبًا ما تريده. لكن هناك سيناريوهات محددة تصبح فيها التحديثات المتزامنة ضرورية:
 
-### Coordinating with Focus Management
+### التنسيق مع إدارة التركيز
 
-One of the most common legitimate uses is managing focus after DOM changes:
+من أكثر الاستخدامات المشروعة شيوعًا إدارة التركيز بعد تغييرات DOM:
 
 ```typescript
 function SearchableList({ items }: { items: string[] }) {
@@ -93,11 +93,11 @@ function SearchableList({ items }: { items: string[] }) {
 }
 ```
 
-Without `flushSync`, the focus call might happen before React has updated the DOM, leading to focusing the wrong element or no element at all.
+من دون `flushSync`، قد يحدث استدعاء التركيز قبل أن تحدّث React الـ DOM، ما يؤدي إلى تركيز العنصر الخطأ أو عدم تركيز أي عنصر إطلاقًا.
 
-### Measuring DOM Elements After Updates
+### قياس عناصر DOM بعد التحديثات
 
-Sometimes you need to measure elements immediately after a state change:
+أحيانًا تحتاج إلى قياس العناصر فورًا بعد تغيّر الحالة:
 
 ```typescript
 function CollapsiblePanel({ children }: { children: React.ReactNode }) {
@@ -140,11 +140,11 @@ function CollapsiblePanel({ children }: { children: React.ReactNode }) {
 }
 ```
 
-Here, we need the content to be rendered (expanded) before we can measure its natural height for the animation.
+هنا نحتاج إلى تصيير المحتوى (موسّعًا) قبل أن نتمكن من قياس ارتفاعه الطبيعي لأجل الحركة.
 
-### Third-Party Library Integration
+### التكامل مع مكتبات الطرف الثالث
 
-When integrating with libraries that expect immediate DOM updates:
+عند التكامل مع مكتبات تتوقّع تحديثات DOM فورية:
 
 ```typescript
 function ChartComponent({ data }: { data: ChartData[] }) {
@@ -185,15 +185,15 @@ function ChartComponent({ data }: { data: ChartData[] }) {
 }
 ```
 
-The chart library needs the DOM to reflect the current state before it can properly initialize.
+تحتاج مكتبة المخططات إلى أن يعكس DOM الحالة الحالية قبل أن تتمكن من التهيئة على النحو الصحيح.
 
-## The Performance Cost
+## كلفة الأداء
 
-`flushSync` comes with real performance implications that you should understand:
+يأتي `flushSync` بتداعيات أداء حقيقية ينبغي أن تفهمها:
 
-### Breaking React’s Batching
+### كسر تجميع React للدفعات
 
-React normally batches multiple state updates into a single render cycle. `flushSync` breaks this optimization:
+عادةً تجمع React تحديثات حالة متعددة في دورة تصيير واحدة. ويكسر `flushSync` هذا التحسين:
 
 ```typescript
 // ❌ Bad: Multiple flushSync calls
@@ -228,9 +228,9 @@ function GoodExample() {
 }
 ```
 
-### Blocking the Main Thread
+### حجب الخيط الرئيسي
 
-`flushSync` forces synchronous work on the main thread, potentially causing jank:
+يُجبر `flushSync` عملًا متزامنًا على الخيط الرئيسي، ما قد يسبب تقطيعًا في الأداء:
 
 ```typescript
 // ❌ Problematic: Large synchronous update
@@ -274,11 +274,11 @@ function BetterList({ items }: { items: Item[] }) {
 }
 ```
 
-## Best Practices and Guidelines
+## أفضل الممارسات والإرشادات
 
-### Use Sparingly and With Purpose
+### استخدمه نادرًا وبهدف
 
-Only reach for `flushSync` when you have a specific coordination requirement:
+لا تلجأ إلى `flushSync` إلا عندما تكون لديك حاجة تنسيق محددة:
 
 ```typescript
 // ✅ Good: Clear coordination need
@@ -308,9 +308,9 @@ function Counter() {
 }
 ```
 
-### Prefer Alternatives When Possible
+### فضّل البدائل عندما يكون ذلك ممكنًا
 
-Often, React’s built-in mechanisms can handle your needs without `flushSync`:
+غالبًا ما تستطيع آليات React المدمجة تلبية احتياجاتك من دون `flushSync`:
 
 ```typescript
 // Instead of flushSync for DOM measurements, use useLayoutEffect
@@ -329,9 +329,9 @@ function MeasuredComponent({ content }: { content: string }) {
 }
 ```
 
-### Bundle Multiple Updates
+### اجمع تحديثات متعددة
 
-If you must use `flushSync`, bundle related updates together:
+إذا كان لا بد من استخدام `flushSync`، فاجمع التحديثات المرتبطة معًا:
 
 ```typescript
 // ✅ Good: Bundle related updates
@@ -354,13 +354,13 @@ const handleBadUpdate = () => {
 };
 ```
 
-## React 18+ Considerations
+## اعتبارات React 18+
 
-With React 18’s concurrent features, `flushSync` has some additional considerations:
+مع ميزات التصيير المتزامن في React 18، ثمة اعتبارات إضافية لـ `flushSync`:
 
-### Interrupting Transitions
+### مقاطعة الانتقالات
 
-`flushSync` will interrupt any ongoing transitions:
+سيقاطع `flushSync` أي انتقالات جارية:
 
 ```typescript
 function SearchResults() {
@@ -386,9 +386,9 @@ function SearchResults() {
 }
 ```
 
-### Working with `Suspense`
+### العمل مع `Suspense`
 
-`flushSync` doesn’t play nicely with Suspense boundaries:
+لا يتعامل `flushSync` بلطف مع حدود Suspense:
 
 ```typescript
 // ❌ Problematic: flushSync with Suspense
@@ -406,13 +406,13 @@ function ProblematicComponent() {
 }
 ```
 
-## Debugging `flushSync` Issues
+## تصحيح مشكلات `flushSync`
 
-When things go wrong with `flushSync`, here are common debugging approaches:
+عندما تسوء الأمور مع `flushSync`، إليك أساليب التصحيح الشائعة:
 
-### React DevTools Profiler
+### محلّل الأداء في React DevTools
 
-The React DevTools Profiler can show you the performance impact:
+يمكن لمحلّل الأداء في React DevTools أن يعرض لك أثر الأداء:
 
 ```typescript
 // Add labels to make profiling clearer
@@ -427,9 +427,9 @@ function ProfiledComponent() {
 }
 ```
 
-### Console Timing
+### قياس التوقيت بوحدة التحكم
 
-Measure the synchronous work:
+قِس العمل المتزامن:
 
 ```typescript
 function TimedComponent() {
@@ -446,11 +446,11 @@ function TimedComponent() {
 }
 ```
 
-## When NOT to Use `flushSync`
+## متى لا تستخدم `flushSync`
 
-Here are some common anti-patterns to avoid:
+إليك بعض الأنماط المضادة الشائعة التي ينبغي تجنّبها:
 
-### Form Validation
+### التحقق من صحة النماذج
 
 ```typescript
 // ❌ Don't use flushSync for form validation
@@ -468,7 +468,7 @@ function BadForm() {
 }
 ```
 
-### Animation Triggers
+### محفّزات الحركة
 
 ```typescript
 // ❌ Don't use flushSync for CSS animations
@@ -493,7 +493,7 @@ function GoodAnimation() {
 }
 ```
 
-### Data Fetching
+### جلب البيانات
 
 ```typescript
 // ❌ Don't use flushSync for loading states
@@ -513,9 +513,9 @@ function BadDataFetching() {
 }
 ```
 
-## Real-World Example: Modal Focus Management
+## مثال من الواقع: إدارة التركيز في النافذة المنبثقة
 
-Here’s a complete example showing proper `flushSync` usage for modal focus management:
+إليك مثالًا كاملًا يوضّح الاستخدام الصحيح لـ `flushSync` لإدارة التركيز في النافذة المنبثقة:
 
 ```typescript
 interface ModalProps {

@@ -1,28 +1,28 @@
 ---
-title: "In-Source Testing"
-lang: en
+title: "الاختبار داخل المصدر (In-Source Testing)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/in-source-testing"
 ---
 
-Picture this: You’re zipping along, writing your brand-new feature. Everything’s great, maybe even sipping a fresh cup of coffee. And then it hits you—**you forgot to write unit tests**. But the thought of context-switching, creating dedicated test files, setting up more boilerplate… *ugh*. It’s at these moments that the concept of **in-source testing** shines.
+تخيل هذا: أنت منطلق بسرعة، تكتب ميزتك الجديدة. كل شيء رائع، وربما تحتسي فنجان قهوة طازجًا. ثم تصدمك الحقيقة — **لقد نسيت كتابة اختبارات الوحدات**. لكن مجرد التفكير في تبديل السياق، وإنشاء ملفات اختبار مخصصة، وإعداد المزيد من الشيفرة النمطية… *أوف*. في هذه اللحظات تتألق فكرة **الاختبار داخل المصدر**.
 
-> **A Moment of Honesty**
+> **لحظة صراحة**
 >
-> I typically *only* use this when I am feeling lazy. And, I usually—on a long enough timeline—end up breaking the tests out into their own file.
+> أنا عادةً *لا* أستخدم هذا إلا عندما أشعر بالكسل. وعادةً — على مدى زمني طويل بما يكفي — أنتهي إلى نقل الاختبارات إلى ملفها الخاص.
 
-Instead of creating a separate test for every little file in your project, what if you could… test directly **in the source file itself**? Wild? Maybe. Convenient? Oh, absolutely. Vitest supports in-source testing, which can be your secret weapon for rapid experimentation during development. It’s not necessarily what you’d run in production, but for quick scaffolding, it’s gold.
+بدلًا من إنشاء اختبار منفصل لكل ملف صغير في مشروعك، ماذا لو استطعت… الاختبار مباشرة **داخل ملف المصدر نفسه**؟ جنون؟ ربما. مريح؟ أوه، بالتأكيد. يدعم Vitest الاختبار داخل المصدر، الذي يمكن أن يكون سلاحك السري للتجريب السريع أثناء التطوير. ليس بالضرورة ما ستشغّله في الإنتاج، لكن للتأسيس السريع، إنه ذهب.
 
-## Why Use In-Source Testing?
+## لماذا تستخدم الاختبار داخل المصدر؟
 
-- **Fewer context switches**. Your brain stays in one file. No hunting around to find corresponding test files.
-- **Quick hypothesis checks**. Need to test some logic fast? Bam. Do it right next to the code that’s bothering you.
-- **Keep it scrappy**. You’re not aiming for test perfection here. It’s sort of your playground, where you hone in on small pieces of functionality.
+- **تبديلات سياق أقل**. يبقى دماغك في ملف واحد. لا بحث عن ملفات اختبار مقابلة.
+- **فحص سريع للفرضيات**. تحتاج إلى اختبار بعض المنطق بسرعة؟ بام. افعل ذلك بجوار الشيفرة التي تزعجك.
+- **أبقِه عشوائيًا**. أنت لا تستهدف كمال الاختبار هنا. إنه نوع من ساحة لعبك، حيث تصقل قطعًا صغيرة من الوظائف.
 
-## Setting Up In-Source Tests with Vitest
+## إعداد الاختبارات داخل المصدر مع Vitest
 
-Enough talk. Let’s get to some code.
+كفى حديثًا. لننتقل إلى بعض الشيفرة.
 
-Imagine you’ve got this tiny utility function that adds two numbers, `add.js`:
+تخيل أن لديك هذه الدالة المساعدة الصغيرة التي تجمع رقمين، `add.js`:
 
 ```javascript
 export function add(a, b) {
@@ -30,7 +30,7 @@ export function add(a, b) {
 }
 ```
 
-You want to slap a quick test together. No need to pull out a whole separate file for this. You bring the test right to the function’s front door. Say hello to your integrated test suite:
+تريد أن تلصق اختبارًا سريعًا. لا حاجة لسحب ملف منفصل كامل لهذا. تجلب الاختبار إلى باب الدالة مباشرة. قل مرحبًا لمجموعة اختباراتك المدمجة:
 
 ```javascript
 import { describe, it, expect } from 'vitest';
@@ -54,35 +54,35 @@ if (import.meta.vitest) {
 }
 ```
 
-## What Just Happened Here?
+## ماذا حدث هنا للتو؟
 
-First off, that `import.meta.vitest` right there? That’s a little built-in Vitest trick that checks if you’re currently in a test environment. If yes, it fires up your test block. If not, it just skips right over it. In other words, you won’t be running tests when you’re in production, so it’s neat and safe.
+أولًا، هذا `import.meta.vitest` هناك؟ إنه خدعة مدمجة صغيرة في Vitest تتحقق مما إذا كنت حاليًا في بيئة اختبار. إن نعم، يشغّل كتلة اختبارك. وإن لا، يتخطاها ببساطة. بعبارة أخرى، لن تشغّل اختبارات في الإنتاج، لذا فهو أنيق وآمن.
 
-We’ve got a couple of simple `it()` tests in the same file as our function. Vitest’s `describe`, `it`, and `expect` work just like usual—no magic base-trickery here.
+لدينا بضعة اختبارات `it()` بسيطة في الملف نفسه الذي فيه دالتنا. تعمل `describe` و`it` و`expect` في Vitest كالمعتاد — لا سحر أساسي هنا.
 
-## Running In-Source Tests
+## تشغيل الاختبارات داخل المصدر
 
-Now, go ahead and run Vitest just like you normally would:
+الآن، واصل وشغّل Vitest كما تفعل عادةً:
 
 ```bash
 npx vitest
 ```
 
-Vitest will sweep up your test cases embedded in source files and execute them right alongside any of your traditional tests. It’s like you’re doubling down: same dev, fewer files!
+سينتقي Vitest حالات اختبارك المدمجة في ملفات المصدر وينفذها إلى جانب أي اختبارات تقليدية لديك. كأنك تضاعف: المطور نفسه، وملفات أقل!
 
-## A Few Gotchas
+## بعض المزالق
 
-Don’t get *too* carried away. In-source testing is perfect for quick, informal checks during development. But as your app scales (just like that slight creep of tech debt you pretend not to see), **best practices** of test organization still matter.
+لا تنجرف *كثيرًا*. الاختبار داخل المصدر مثالي للفحوص السريعة غير الرسمية أثناء التطوير. لكن مع نمو تطبيقك (تمامًا مثل ذلك الزحف الطفيف للدين التقني الذي تتظاهر بعدم رؤيته)، تبقى **أفضل الممارسات** لتنظيم الاختبارات مهمة.
 
-- **Keep production code clean**. You don’t want chunks of test logic shipped to production, so make sure the `import.meta.vitest` gate keeps you from loading those tests outside of dev/test environments.
-- **When features grow**, maybe *consider* switching to a dedicated test file. Your in-source testing should be for the quick and dirty experiments, not the 400-line monstrosities that make you cry.
+- **أبقِ شيفرة الإنتاج نظيفة**. لا تريد شيفرة اختبار مشحونة إلى الإنتاج، لذا تأكد من أن بوابة `import.meta.vitest` تمنعك من تحميل تلك الاختبارات خارج بيئات التطوير/الاختبار.
+- **عندما تنمو الميزات**، ربما *فكّر* في الانتقال إلى ملف اختبار مخصص. ينبغي أن يكون اختبارك داخل المصدر للتجارب السريعة والعابرة، لا للمسوخ ذات 400 سطر التي تبكيك.
 
-## In-Source Testing in Practice
+## الاختبار داخل المصدر عمليًا
 
-Here’s where this really shines: You’re in the middle of writing an algorithm, and you want to test specific edge cases quickly—without breaking your flow. Or you’ve got utility functions strewn about and want to know that each incremental step of your work is *rock solid*. In-source testing keeps you fluid and flexible. Perfect for proof-of-concept or when inspiration is rapped out on the keyboard.
+هنا يتألق هذا حقًا: أنت في منتصف كتابة خوارزمية، وتريد اختبار حالات طرفية محددة بسرعة — دون كسر تدفقك. أو لديك دوال مساعدة متناثرة وتريد أن تعرف أن كل خطوة تدريجية في عملك *صلبة كالصخر*. يبقيك الاختبار داخل المصدر سلسًا ومرنًا. مثالي لإثبات المفهوم أو عندما ينطلق الإلهام على لوحة المفاتيح.
 
-## Wrapping It Up
+## ختامًا
 
-In-source testing isn’t going to be your full-fledged test suite replacement, nor should it be. But when you’re in the middle of it, and the last thing you want to do is open another file to context-switch just to test that tiny piece of logic, this little feature can save you *tons* of time. It’s **low-investment testing**: quick hoop shots while you’re dribbling through a feature.
+لن يكون الاختبار داخل المصدر بديلًا كاملًا لمجموعة اختباراتك، ولا ينبغي أن يكون. لكن عندما تكون في خضم العمل، وآخر ما تريده هو فتح ملف آخر لتبديل السياق لمجرد اختبار تلك القطعة الصغيرة من المنطق، فقد توفر عليك هذه الميزة الصغيرة *أطنانًا* من الوقت. إنه **اختبار منخفض الاستثمار**: تسديدات سريعة أثناء تنطيطك عبر ميزة.
 
-Use it, enjoy it, but most importantly, don’t let it become another shortcut that causes future-you to suffer when debugging in six months.
+استخدمه، واستمتع به، لكن الأهم ألا تدعه يصبح اختصارًا آخر يجعل مستقبلك يعاني عند تصحيح الأخطاء بعد ستة أشهر.

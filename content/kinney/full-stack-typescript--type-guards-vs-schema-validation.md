@@ -1,10 +1,10 @@
 ---
-title: "Type Guards and Schema Validation"
-lang: en
+title: "حرّاس الأنواع والتحقّق عبر المخططات"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-guards-vs-schema-validation"
 ---
 
-Type guards are way to use runtime logic to help put TypeScript at ease that a given object is actually the type you think it ought to be. Here is a quick example.
+حرّاس الأنواع (type guards) طريقة لاستخدام منطق وقت التشغيل لتطمئن TypeScript بأن كائنًا معيّنًا هو فعلًا النوع الذي تظن أنه ينبغي أن يكونه. وإليك مثالًا سريعًا.
 
 ```typescript
 interface Circle {
@@ -31,7 +31,7 @@ function calculateArea(shape: Shape) {
 }
 ```
 
-A previous iteration of me might have thought he was was *really* smart when he made a type guard like this.
+قد تكون نسخة سابقة مني ظنّت أنها *ذكية حقًا* حين صنعت حارس أنواع كهذا.
 
 ```typescript
 // Define a type guard for User objects
@@ -46,7 +46,7 @@ function isUser(obj: any): obj is User {
 }
 ```
 
-Alternatively, you could do something like this.
+وبدلًا من ذلك، يمكنك أن تفعل شيئًا كهذا.
 
 ```typescript
 // Runtime type checking can impact performance
@@ -66,7 +66,7 @@ function validateUser(data: unknown): User {
 }
 ```
 
-Schema validation libraries are optimized for performance, making them better than hand-rolled validation. Let’s look at the same idea, but using Zod.
+مكتبات التحقّق بالمخططات مُحسّنة للأداء، ما يجعلها أفضل من التحقّق المكتوب يدويًا. لننظر إلى الفكرة نفسها، لكن باستخدام Zod.
 
 ```typescript
 // More efficient with schema validation libraries

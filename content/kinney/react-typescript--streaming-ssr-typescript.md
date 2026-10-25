@@ -1,18 +1,18 @@
 ---
-title: "Streaming SSR with TypeScript"
-lang: en
+title: "التصيير من جانب الخادم المتدفق مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/streaming-ssr-typescript"
 ---
 
-Streaming SSR in React 19 is like upgrading from dial-up to fiber optic. Instead of waiting for your entire page to render on the server before sending anything, you can start streaming HTML to the browser immediately, progressively sending chunks as they become ready. But here’s where it gets interesting: combining this with TypeScript means you need to think about types that work across the server-client boundary, handle partial hydration states, and ensure type safety during progressive enhancement.
+إن التصيير من جانب الخادم المتدفق (Streaming SSR) في React 19 يشبه الانتقال من اتصال هاتفي بطيء إلى ألياف بصرية فائقة السرعة. فبدلًا من انتظار تصيير صفحتك بالكامل على الخادم قبل إرسال أي شيء، يمكنك أن تبدأ في تدفق HTML إلى المتصفح فورًا، وترسل الأجزاء تدريجيًا فور جاهزيتها. لكن هنا يصبح الأمر مثيرًا للاهتمام: فدمج هذا الأسلوب مع TypeScript يعني أنك تحتاج إلى التفكير في أنواع بيانات تعمل عبر الحد الفاصل بين الخادم والعميل، والتعامل مع حالات الترطيب الجزئي، وضمان سلامة الأنواع أثناء التحسين التدريجي.
 
-Let’s dive into how streaming SSR works with TypeScript, covering everything from basic setup to advanced patterns that will make your apps feel instantaneous.
+لنغص في تفاصيل كيفية عمل التصيير المتدفق مع TypeScript، بدءًا من الإعداد الأساسي وصولًا إلى الأنماط المتقدمة التي ستجعل تطبيقاتك تبدو فورية.
 
-## Understanding Streaming SSR
+## فهم التصيير المتدفق من جانب الخادم
 
-Traditional SSR renders everything on the server, then sends one big HTML chunk. Streaming SSR sends HTML in pieces as they’re ready, which means users see content faster and time-to-first-byte (TTFB) improves dramatically.
+يُصيّر التصيير التقليدي من جانب الخادم كل شيء على الخادم، ثم يرسل كتلة HTML واحدة كبيرة. أما التصيير المتدفق فيرسل HTML على شكل قطع فور جاهزيتها، ما يعني أن المستخدمين يرون المحتوى بسرعة أكبر، وأن زمن الوصول إلى البايت الأول (TTFB) يتحسن تحسنًا هائلًا.
 
-### The Streaming Mental Model
+### النموذج الذهني للتدفق
 
 ```typescript
 // Traditional SSR: Everything waits for the slowest part
@@ -53,11 +53,11 @@ function StreamingPage() {
 }
 ```
 
-## Setting Up Streaming SSR with TypeScript
+## إعداد التصيير المتدفق مع TypeScript
 
-Let’s build a type-safe streaming SSR setup from the ground up.
+لنبنِ إعدادًا للتصيير المتدفق آمن الأنواع من الصفر.
 
-### Server Setup with Node.js Streams
+### إعداد الخادم باستخدام تدفقات Node.js
 
 ```typescript
 // server/streaming-renderer.ts
@@ -109,7 +109,7 @@ export function createStreamingRenderer(element: ReactElement, options: Streamin
 }
 ```
 
-### Type-Safe HTML Template
+### قالب HTML آمن الأنواع
 
 ```typescript
 // server/html-template.ts
@@ -167,7 +167,7 @@ export function createHtmlTemplate(options: HtmlTemplateOptions): {
 }
 ```
 
-### Express Server with Streaming
+### خادم Express مع التدفق
 
 ```typescript
 // server/app.ts
@@ -247,11 +247,11 @@ app.listen(3000, () => {
 });
 ```
 
-## Progressive Hydration Patterns
+## أنماط الترطيب التدريجي
 
-With streaming SSR, different parts of your app hydrate at different times. TypeScript helps manage this complexity.
+مع التصيير المتدفق، تترطّب أجزاء مختلفة من تطبيقك في أوقات مختلفة. ويساعدك TypeScript في إدارة هذا التعقيد.
 
-### Hydration Boundary Component
+### مكوّن حدّ الترطيب
 
 ```typescript
 // components/HydrationBoundary.tsx
@@ -307,7 +307,7 @@ function Page() {
 }
 ```
 
-### Progressive Enhancement Types
+### أنواع التحسين التدريجي
 
 ```typescript
 // types/progressive.ts
@@ -353,11 +353,11 @@ export function ProgressiveImage({ src, placeholder, alt, width, height }: Progr
 }
 ```
 
-## Streaming Data Patterns
+## أنماط تدفق البيانات
 
-Managing data fetching with streaming SSR requires careful typing to handle partial states.
+تتطلب إدارة جلب البيانات مع التصيير المتدفق دقة في كتابة الأنواع للتعامل مع الحالات الجزئية.
 
-### Streaming Data Fetcher
+### جالب البيانات المتدفق
 
 ```typescript
 // hooks/useStreamingData.ts
@@ -467,7 +467,7 @@ export async function fetchStreaming<T>(
 }
 ```
 
-### Server Components with Streaming
+### مكوّنات الخادم مع التدفق
 
 ```typescript
 // app/components/StreamingDataList.tsx
@@ -529,11 +529,11 @@ function ItemSkeleton() {
 }
 ```
 
-## `Suspense` Boundaries and Error Handling
+## حدود `Suspense` ومعالجة الأخطاء
 
-Streaming SSR requires careful error boundary placement and typing.
+يتطلب التصيير المتدفق وضعًا دقيقًا لحدود الأخطاء وكتابة أنواعها بعناية.
 
-### Type-Safe Error Boundaries
+### حدود أخطاء آمنة الأنواع
 
 ```typescript
 // components/StreamingErrorBoundary.tsx
@@ -633,7 +633,7 @@ export function useStreamingError() {
 }
 ```
 
-### Nested `Suspense` Patterns
+### أنماط `Suspense` المتداخلة
 
 ```typescript
 // components/NestedSuspense.tsx
@@ -697,11 +697,11 @@ function StreamingPage() {
 }
 ```
 
-## Optimizing Streaming Performance
+## تحسين أداء التدفق
 
-TypeScript can help optimize streaming performance through type-safe caching and prefetching.
+يمكن أن يساعد TypeScript في تحسين أداء التدفق عبر التخزين المؤقت والجلب المسبق الآمنين من حيث الأنواع.
 
-### Streaming Cache
+### ذاكرة التخزين المؤقت المتدفقة
 
 ```typescript
 // utils/streaming-cache.ts
@@ -807,7 +807,7 @@ export function useStreamingCache<T>(
 }
 ```
 
-### Prefetching Strategies
+### استراتيجيات الجلب المسبق
 
 ```typescript
 // utils/prefetch.ts
@@ -887,11 +887,11 @@ function PrefetchableSection({ id }: { id: string }) {
 }
 ```
 
-## Monitoring and Debugging
+## المراقبة وتصحيح الأخطاء
 
-Track streaming performance with TypeScript-powered monitoring.
+تتبّع أداء التدفق من خلال مراقبة مدعومة بـ TypeScript.
 
-### Performance Metrics
+### مقاييس الأداء
 
 ```typescript
 // utils/streaming-metrics.ts
@@ -981,11 +981,11 @@ export function useStreamingMonitor() {
 }
 ```
 
-## Production Deployment
+## النشر في بيئة الإنتاج
 
-Deploy streaming SSR with proper TypeScript configurations.
+انشر التصيير المتدفق مع إعدادات TypeScript المناسبة.
 
-### Build Configuration
+### إعدادات البناء
 
 ```typescript
 // build.config.ts
@@ -1051,7 +1051,7 @@ export const webpackConfig = {
 };
 ```
 
-### CDN and Edge Configuration
+### إعدادات CDN والحوسبة الطرفية
 
 ```typescript
 // edge/streaming-handler.ts
@@ -1125,8 +1125,8 @@ async function streamResponse(request: Request, writable: WritableStream): Promi
 }
 ```
 
-## Wrapping Up
+## خاتمة
 
-Streaming SSR with TypeScript transforms how users experience your React applications. By sending HTML as it’s ready, you dramatically improve perceived performance while maintaining type safety across the entire stack. The patterns we’ve explored—from progressive hydration to streaming data fetchers—give you the tools to build applications that feel instant.
+يغيّر التصيير المتدفق مع TypeScript طريقة تجربة مستخدميك لتطبيقات React. فبإرسال HTML فور جاهزيته، تحسّن الأداء المدرَك تحسنًا كبيرًا مع الحفاظ على سلامة الأنواع عبر الحزمة بأكملها. والأنماط التي استكشفناها — من الترطيب التدريجي إلى جالبات البيانات المتدفقة — تمنحك الأدوات اللازمة لبناء تطبيقات تبدو فورية.
 
-Remember: streaming SSR isn’t just about speed, it’s about user experience. Start with critical content, stream the rest, and use TypeScript to ensure everything stays type-safe from server to client. Your users will notice the difference, and your development team will appreciate the maintainability.
+تذكّر: التصيير المتدفق لا يتعلق بالسرعة وحدها، بل بتجربة المستخدم. ابدأ بالمحتوى الحرج، ودفّق الباقي، واستخدم TypeScript لضمان بقاء كل شيء آمن الأنواع من الخادم إلى العميل. سيلاحظ مستخدموك الفرق، وسيقدّر فريق التطوير لديك سهولة الصيانة.

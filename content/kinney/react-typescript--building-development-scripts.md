@@ -1,12 +1,12 @@
 ---
-title: "Building and Development Scripts"
-lang: en
+title: "سكربتات البناء والتطوير"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/building-development-scripts"
 ---
 
-## Building and Development Scripts
+## سكربتات البناء والتطوير
 
-Add these scripts to your `package.json`:
+أضف هذه السكربتات إلى ملف `package.json`:
 
 ```json
 {
@@ -22,7 +22,7 @@ Add these scripts to your `package.json`:
 }
 ```
 
-Create a simple `vite.config.ts`:
+أنشئ ملف `vite.config.ts` بسيطًا:
 
 ```typescript
 import { defineConfig } from 'vite';

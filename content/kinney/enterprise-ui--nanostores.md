@@ -1,20 +1,20 @@
 ---
-title: "Nanostores"
-lang: en
+title: "Nanostores: إدارة حالة محايدة تجاه الأطر"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/nanostores"
 ---
 
-[Nanostores](https://github.com/nanostores/nanostores) is a state management library that’s small enough to almost not exist. The core package is under 1 KB. It has no framework dependency, no provider components, no context wrappers, no boilerplate setup. You create a store, read from it, write to it, and subscribe to changes. That’s the entire programming model.
+[Nanostores](https://github.com/nanostores/nanostores) مكتبة إدارة حالة صغيرة إلى حد يكاد لا يكون لها وجود. فالحزمة الأساسية أقل من 1 كيلوبايت. ولا تعتمد على أي إطار، ولا مكوّنات مزوّد، ولا أغلفة سياق، ولا إعداد نمطي. تنشئ مخزنًا، وتقرأ منه، وتكتب فيه، وتشترك في تغييراته. هذا هو نموذج البرمجة كله.
 
-That simplicity is the whole point. In a world where your frontend might be React in one place, Vue in another, and a vanilla Web Component in a third—or where Module Federation remotes need to share state across separate builds—a state library that *doesn’t* care about your framework is genuinely valuable. Nanostores doesn’t care. It’s plain JavaScript objects with a subscription mechanism, and everything else is a thin binding that adapts those subscriptions to whatever framework you’re using.
+وهذه البساطة هي المقصد كله. في عالم قد تكون فيه واجهتك الأمامية React في موضع، وVue في آخر، ومكوّن ويب خامل في ثالث—أو حيث تحتاج وحدات اتحاد الوحدات البعيدة إلى مشاركة الحالة عبر بناءات منفصلة—فمكتبة حالة *لا يعنيها* إطارك قيّمة فعلًا. وNanostores لا يعنيها. فهي كائنات JavaScript عادية بآلية اشتراك، وكل ما عدا ذلك ربط رقيق يلائم تلك الاشتراكات مع أي إطار تستخدمه.
 
-## The Core Primitives
+## العناصر الأساسية
 
-Nanostores has four main store types. Each one is a reactive container with `.get()`, `.set()` (or `.setKey()`), `.subscribe()`, and `.listen()`. The differences are in what they hold and how they notify subscribers.
+لدى Nanostores أربعة أنواع مخازن رئيسية. وكل واحد منها حاوية تفاعلية بـ`.get()` و`.set()` (أو `.setKey()`) و`.subscribe()` و`.listen()`. والفروق في ما تحمله وكيف تُشعر المشتركين.
 
 ### `atom`
 
-An **atom** holds a single value. Any value—a string, a number, a boolean, an object, `null`. Calling `.set()` replaces the value and notifies all subscribers.
+يحمل **الذرّة (atom)** قيمة واحدة. أي قيمة—سلسلة، أو رقمًا، أو قيمة منطقية، أو كائنًا، أو `null`. ونداء `.set()` يستبدل القيمة ويُشعر كل المشتركين.
 
 ```typescript
 import { atom } from 'nanostores';
@@ -26,9 +26,9 @@ counter.set(1); // notifies subscribers
 counter.get(); // 1
 ```
 
-Atoms are the right choice for simple, single-value state: a user object, an auth token, a theme preference, a loading flag. If you’re reaching for `useState` in React but need the value to be shared across components without prop-drilling or context, an atom is the nanostores equivalent.
+والذرّات الخيار الصحيح للحالة البسيطة ذات القيمة الواحدة: كائن مستخدم، أو رمز مصادقة، أو تفضيل سمة، أو علم تحميل. وإن كنت تمتد إلى `useState` في React لكنك تحتاج القيمة مشتركة عبر المكوّنات دون تمرير خصائص أو سياق، فالذرّة هي مكافئ ذلك في Nanostores.
 
-Subscribing to an atom:
+والاشتراك في ذرّة:
 
 ```typescript
 const unsubscribe = counter.subscribe((value) => {
@@ -39,11 +39,11 @@ const unsubscribe = counter.subscribe((value) => {
 unsubscribe();
 ```
 
-`.subscribe()` calls the callback immediately with the current value, then again on every change. `.listen()` is the same but skips the initial call—it only fires on changes. That distinction matters when you’re wiring up UI that needs the current value on mount versus side effects that should only run on updates.
+وينادي `.subscribe()` النداء الراجع فورًا بالقيمة الحالية، ثم مجددًا عند كل تغيير. أما `.listen()` فمثله لكنه يتخطى النداء الأول—لا يعمل إلا عند التغييرات. وهذا الفرق مهم عندما توصل واجهة تحتاج القيمة الحالية عند التثبّت مقابل تأثيرات جانبية ينبغي أن تعمل عند التحديثات فقط.
 
 ### `map`
 
-A **map** holds a key-value object and lets you update individual keys without replacing the whole object.
+تحمل **الخريطة (map)** كائنًا بمفتاح وقيمة وتتيح لك تحديث مفاتيح فردية دون استبدال الكائن كامل.
 
 ```typescript
 import { map } from 'nanostores';
@@ -58,13 +58,13 @@ profile.get(); // { name: 'Grace Hopper', role: 'admin', theme: 'dark' }
 profile.setKey('theme', 'light'); // notifies subscribers, only 'theme' changed
 ```
 
-`.setKey()` is the important part. If you used an atom holding an object, every `.set()` would replace the entire object and notify subscribers regardless of which key changed. A map is smarter—it tracks key-level changes and can notify subscribers about which key was modified. Framework bindings can use this to avoid unnecessary re-renders.
+و`.setKey()` هي الجزء المهم. فلو استخدمت ذرّة تحمل كائنًا، فكل `.set()` ستستبدل الكائن كامل وتُشعر المشتركين بغض النظر عن المفتاح الذي تغيّر. أما الخريطة فأذكى—فهي تتبّع التغييرات على مستوى المفتاح وتستطيع إشعار المشتركين بالمفتاح الذي عُدّل. وتستطيع روابط الأطر استخدام ذلك لتجنب إعادات تصيير غير ضرورية.
 
-Maps are the right choice for structured state with independently updatable fields: user profiles, form state, settings objects, feature flags.
+والخرائط الخيار الصحيح للحالة المُهيكلة بحقول قابلة للتحديث باستقلال: ملفات المستخدمين، وحالة النماذج، وكائنات الإعدادات، وأعلام الميزات.
 
 ### `deepMap`
 
-A **deep map** extends map with support for nested paths.
+تمتد **الخريطة العميقة (deep map)** على الخريطة بدعم المسارات المتداخلة.
 
 ```typescript
 import { deepMap } from 'nanostores';
@@ -83,11 +83,11 @@ settings.setKey('notifications.push', true);
 settings.get().notifications.push; // true
 ```
 
-Deep maps use dot-notation paths for nested updates. They’re useful for deeply structured state where you want to update a leaf without replacing the entire tree. That said, if your state is deeply nested enough to need `deepMap`, consider whether the nesting is the real problem. Flat atoms or multiple maps are often clearer.
+تستخدم الخرائط العميقة مسارات بترميز نقطي للتحديثات المتداخلة. وهي مفيدة للحالة المُهيكلة بعمق حيث تريد تحديث ورقة دون استبدال الشجرة كاملة. ومع ذلك، إن كانت حالتك متداخلة لدرجة تحتاج فيها `deepMap`، ففكّر هل التداخل هو المشكلة الحقيقية. فالذرّات المسطّحة أو الخرائط المتعددة غالبًا أوضح.
 
 ### `computed`
 
-A **computed** store derives its value from one or more other stores. It recalculates when any dependency changes.
+المخزن **المحسوب (computed)** يستنبط قيمته من مخزن واحد أو أكثر. ويعيد الحساب عندما يتغيّر أي اعتماد.
 
 ```typescript
 import { atom, computed } from 'nanostores';
@@ -105,13 +105,13 @@ firstName.set('Ada');
 fullName.get(); // 'Ada Hopper'
 ```
 
-Computed stores are read-only—you can’t call `.set()` on them. They update automatically when their inputs change. This is the nanostores equivalent of derived state, selectors, or memoized computations in other libraries.
+المخازن المحسوبة للقراءة فقط—لا تستطيع نداء `.set()` عليها. وهي تتحدّث تلقائيًا عندما تتغيّر مدخلاتها. وهذا مكافئ Nanostores للحالة المستنبطة، أو المحدّدات، أو الحسابات المخزّنة مؤقتًا في مكتبات أخرى.
 
-You can depend on any combination of atoms, maps, and other computed stores. The dependency graph is resolved lazily—a computed store only recalculates when someone is actively subscribed to it. If nobody is listening, it skips the work.
+ويمكنك الاعتماد على أي تركيب من الذرّات والخرائط والمخازن المحسوبة الأخرى. ويُحلّ رسم الاعتمادات بكسل—فالمخزن المحسوب لا يعيد الحساب إلا عندما يكون أحدهم مشتركًا فيه فعليًا. وإن لم يكن أحد يستمع، يتخطى العمل.
 
-## How Stores Work Under the Hood
+## كيف تعمل المخازن في الداخل
 
-An atom is a remarkably small data structure. If you strip away the edge-case handling and lifecycle hooks, the entire implementation is a value, a `Set` of listener functions, and a few methods that read, write, and notify. Something roughly like this:
+الذرّة بنية بيانات صغيرة بشكل ملحوظ. وإن أزلت معالجة الحالات الحدّية وخُطّافات دورة الحياة، فالتمثيل كله قيمة، و`Set` من دوال الاستماع، وبضعة توابع تقرأ وتكتب وتُشعر. شيء مثل هذا تقريبًا:
 
 ```typescript
 function atom(initialValue) {
@@ -139,9 +139,9 @@ function atom(initialValue) {
 }
 ```
 
-That’s the whole idea. `.set()` replaces the value and iterates through the listener set. `.subscribe()` adds a callback, calls it immediately with the current value, and returns a function that removes it. `.listen()` is identical but skips the initial call. The real nanostores implementation adds lifecycle hooks, batching, and some safety checks, but the shape above is the essential machinery you’re working with.
+هذه هي الفكرة كلها. فـ`.set()` تستبدل القيمة وتمرّ على مجموعة المستمعين. و`.subscribe()` تضيف نداءً راجعًا وتناديه فورًا بالقيمة الحالية وتعيد دالة تزيله. و`.listen()` مطابقة لكنها تتخطى النداء الأولي. ويضيف تمثيل Nanostores الحقيقي خُطّافات دورة حياة وتجميعًا وبعض فحوص الأمان، لكن الشكل أعلاه هو الآلة الجوهرية التي تعمل بها.
 
-Computed stores are atoms that subscribe to other stores. When any dependency fires, the computed store recalculates its value and—if it actually changed—notifies its own subscribers.
+والمخازن المحسوبة ذرّات تشترك في مخازن أخرى. وعندما تعمل أي تبعية، يعيد المخزن المحسوب حساب قيمته—وإن تغيّرت فعلًا—يُشعر مشتركيه.
 
 ```typescript
 function computed(dependencies, derive) {
@@ -157,17 +157,17 @@ function computed(dependencies, derive) {
 }
 ```
 
-The real implementation is lazier than this—a computed store only subscribes to its dependencies when someone subscribes to *it*. If nobody is listening to the computed store, the dependency subscriptions don’t exist, and no recalculation happens. That lazy evaluation is what makes it safe to define a lot of computed stores without worrying about wasted work.
+والتمثيل الحقيقي أكسل من هذا—فالمخزن المحسوب لا يشترك في تبعياته إلا عندما يشترك أحدهم في *ه*. وإن لم يكن أحد يستمع إلى المخزن المحسوب، فلا توجد اشتراكات التبعيات، ولا يحدث أي إعادة حساب. وهذا التقييم الكسول هو ما يجعل تعريف كثير من المخازن المحسوبة آمنًا دون القلق من عمل مهدور.
 
-Maps use the same listener set, but `.setKey()` includes information about *which* key changed when it notifies subscribers. That’s what lets framework bindings like `@nanostores/react` skip re-renders for components that only depend on one key of a map. An atom holding an object would fire on every `.set()` regardless of what changed—a map is smarter because it gives subscribers enough information to decide whether they care.
+وتستخدم الخرائط مجموعة المستمعين نفسها، لكن `.setKey()` تضمّ معلومات عن *أي* مفتاح تغيّر عند إشعار المشتركين. وهذا ما يتيح لروابط الأطر مثل `@nanostores/react` تخطي إعادات التصيير للمكوّنات التي تعتمد على مفتاح واحد فقط في خريطة. أما ذرّة تحمل كائنًا فستعمل عند كل `.set()` بغض النظر عما تغيّر—والخريطة أذكى لأنها تمنح المشتركين معلومات تكفي ليقرّروا هل يهمّهم الأمر.
 
-The subscriber count is also what drives the lifecycle model covered in the next section. When the listener set goes from empty to non-empty, `onMount` fires. When the last listener unsubscribes and the set empties again, the cleanup function runs. The entire lifecycle system is just a counter on a `Set`.
+كما أن عدد المشتركين هو ما يقود نموذج دورة الحياة في القسم التالي. فعندما تنتقل مجموعة المستمعين من فارغة إلى غير فارغة، يعمل `onMount`. وعندما يلغي آخر مستمع اشتراكه وتفرغ المجموعة مجددًا، تعمل دالة التنظيف. ونظام دورة الحياة كله ليس إلا عدّادًا على `Set`.
 
-Now that you can see the machinery is just callbacks in a set, the framework bindings start to look almost trivially simple—because they are.
+والآن بعد أن رأيت أن الآلة ليست إلا نداءات راجعة في مجموعة، تبدأ روابط الأطر في الظهور ببساطة تافهة تقريبًا—لأنها كذلك.
 
-## Framework Bindings
+## روابط الأطر
 
-Nanostores itself is pure JavaScript. The framework bindings are separate packages that turn store subscriptions into idiomatic reactive state for each framework.
+Nanostores نفسها JavaScript خالص. وروابط الأطر حزم منفصلة تحوّل اشتراكات المخازن إلى حالة تفاعلية معتادة في كل إطار.
 
 ### React
 
@@ -181,7 +181,7 @@ function Counter() {
 }
 ```
 
-`useStore` subscribes to the store on mount, unsubscribes on unmount, and re-renders the component on every change. It returns the current value. That’s it—no provider, no context, no `useSelector`. The store is imported directly, and the hook handles the subscription lifecycle.
+يشترك `useStore` في المخزن عند التثبّت، ويلغي الاشتراك عند الفصل، ويعيد تصيير المكوّن عند كل تغيير. ويعيد القيمة الحالية. هذا كل شيء—بلا مزوّد، وبلا سياق، وبلا `useSelector`. فالمخزن يُستورد مباشرةً، والخُطّاف يتولّى دورة حياة الاشتراك.
 
 ### Vue
 
@@ -192,11 +192,11 @@ import { counter } from './stores';
 const count = useStore(counter);
 ```
 
-Same pattern, different framework. `useStore` returns a Vue `ref` that tracks the store’s value.
+النمط نفسه، وإطار مختلف. يعيد `useStore` مرجع `ref` في Vue يتتبّع قيمة المخزن.
 
 ### Svelte
 
-Svelte is the easiest case because Svelte’s reactive `$` syntax works with any object that has a `.subscribe()` method—which nanostores already provides. No binding package needed.
+Svelte أسهل الحالات لأن صيغة `$` التفاعلية فيه تعمل مع أي كائن له تابع `.subscribe()`—وهو ما توفّره Nanostores أصلًا. فلا حاجة إلى حزمة ربط.
 
 ```svelte
 <script>
@@ -208,7 +208,7 @@ Svelte is the easiest case because Svelte’s reactive `$` syntax works with any
 </button>
 ```
 
-The `$counter` syntax auto-subscribes and auto-unsubscribes. Nanostores was designed with this compatibility in mind—the `.subscribe()` contract matches Svelte’s store contract exactly.
+تصيغة `$counter` تشترك تلقائيًا وتلغي الاشتراك تلقائيًا. وقد صُمّمت Nanostores مع مراعاة هذا التوافق—فعقد `.subscribe()` يطابق عقد المخزن في Svelte تمامًا.
 
 ### Angular
 
@@ -229,11 +229,11 @@ export class CounterComponent {
 }
 ```
 
-The Angular binding returns an Observable, which means it works with the `async` pipe and Angular’s change detection. The community-maintained binding is less official than the React and Vue ones, but the pattern is the same.
+يعيد ربط Angular مرصدًا (Observable)، ما يعني أنه يعمل مع أنبوب `async` وكشف التغييرات في Angular. والربط الذي يصونه المجتمع أقل رسمية من ربطَي React وVue، لكن النمط واحد.
 
-### Vanilla JavaScript
+### JavaScript الخامل
 
-No binding needed. Just subscribe directly.
+لا حاجة إلى ربط. اشترك مباشرةً فقط.
 
 ```typescript
 import { counter } from './stores';
@@ -245,23 +245,23 @@ counter.subscribe((value) => {
 });
 ```
 
-This is useful for Web Components, legacy jQuery code, or any context where a framework binding doesn’t exist. The store doesn’t know or care what’s consuming it.
+وهذا مفيد لمكوّنات الويب، أو شيفرة jQuery القديمة، أو أي سياق لا يوجد فيه ربط إطار. فالمخزن لا يعرف ولا يهمّه من يستهلكه.
 
-## Why Framework-Agnostic Matters
+## لماذا يهمّ الحياد تجاه الأطر
 
-Most state libraries are married to a framework. Redux assumes React (or at least a React-like subscription model). Pinia assumes Vue. Svelte stores assume Svelte’s `$` syntax. That’s fine when your entire app is one framework, but it becomes a real problem in three situations.
+معظم مكتبات الحالة مرتبطة بإطار. فـRedux يفترض React (أو على الأقل نموذج اشتراك شبيهًا بـReact). وPinia يفترض Vue. ومخازن Svelte تفترض صيغة `$` في Svelte. وهذا جيد عندما يكون تطبيقك كله إطارًا واحدًا، لكنه يصير مشكلة حقيقية في ثلاث حالات.
 
-**Microfrontends with mixed frameworks.** If the host shell is React and one remote is Vue, any React-specific state library is useless for cross-boundary communication. Nanostores works in both because the core is plain JavaScript and each side uses its own framework binding.
+**واجهات أمامية دقيقة بأطر مختلطة.** إن كان الهيكل المضيف React وإحدى الوحدات البعيدة Vue، فأي مكتبة حالة خاصة بـReact لا نفع لها في التواصل عبر الحدود. أما Nanostores فتعمل في الاثنين لأن جوهرها JavaScript خالص وكل جانب يستخدم ربط إطاره.
 
-**Incremental migrations.** If you’re strangler-figging a legacy app from one framework to another, shared state between the old and new code is a real problem. A framework-agnostic store lets both sides read and write the same state during the migration, without maintaining two parallel state systems.
+**الترحيلات التدريجية.** إن كنت تُخنق تطبيقًا قديمًا من إطار إلى آخر، فالحالة المشتركة بين الشيفرة القديمة والجديدة مشكلة حقيقية. ويتيح مخزن محايد تجاه الأطر للجانبين قراءة الحالة نفسها والكتابة فيها أثناء الترحيل، دون صيانة نظامَي حالة متوازيين.
 
-**Web Components and custom elements.** Web Components don’t have a framework. They’re just classes that extend `HTMLElement`. A framework-agnostic store is the only state management option that works inside a Web Component *and* in the framework components that consume it.
+**مكوّنات الويب والعناصر المخصّصة.** لا إطار لمكوّنات الويب. إنها مجرد أصناف تمتد `HTMLElement`. والمخزن المحايد تجاه الأطر هو خيار إدارة الحالة الوحيد الذي يعمل داخل مكوّن ويب *و* في مكوّنات الأطر التي تستهلكه.
 
-Nanostores is not the only framework-agnostic option—you could use a plain `EventTarget`, an RxJS `BehaviorSubject`, or even a shared JavaScript object with manual subscriptions. But nanostores gives you a clean API, computed stores, key-level change tracking, and maintained framework bindings in a package so small it barely registers in your bundle.
+وNanostores ليست الخيار المحايد الوحيد تجاه الأطر—فيمكنك استخدام `EventTarget` عادي، أو `BehaviorSubject` من RxJS، أو حتى كائن JavaScript مشترك باشتراكات يدوية. لكن Nanostores تمنحك واجهة برمجية نظيفة، ومخازن محسوبة، وتتبّع تغييرات على مستوى المفتاح، وروابط أطر مصانة في حزمة صغيرة تكاد لا تُسجَّل في حزمتك.
 
-## Lifecycle and Memory
+## دورة الحياة والذاكرة
 
-Nanostores has a concept called **lifecycle events** that controls when stores start and stop doing expensive work. A store’s `onMount` callback runs when the first subscriber appears, and the cleanup function runs when the last subscriber disappears.
+لدى Nanostores مفهوم يسمى **أحداث دورة الحياة** يتحكم في متى تبدأ المخازن عملًا مكلفًا ومتى تتوقف. فالنداء الراجع `onMount` في المخزن يعمل عند ظهور أول مشترك، وتعمل دالة التنظيف عند اختفاء آخر مشترك.
 
 ```typescript
 import { atom, onMount } from 'nanostores';
@@ -277,17 +277,17 @@ onMount(currentTime, () => {
 });
 ```
 
-The timer only runs while something is actually subscribed to `currentTime`. If every component that uses it unmounts, the timer stops. When a new subscriber appears, it starts again. This is the nanostores equivalent of lazy initialization—the store’s expensive side effects only run when someone is listening.
+فالمؤقّت لا يعمل إلا عندما يكون هناك مشترك فعلي في `currentTime`. وإن فُصل كل مكوّن يستخدمه، يتوقف المؤقّت. وعند ظهور مشترك جديد، يبدأ مجددًا. وهذا مكافئ Nanostores للتهيئة الكسولة—فالتأثيرات الجانبية المكلفة في المخزن لا تعمل إلا عندما يستمع أحد.
 
-This lifecycle model is particularly useful for stores that fetch data, open WebSocket connections, or set up polling. The work starts on first subscribe and cleans up on last unsubscribe, which prevents resource leaks without requiring manual lifecycle management.
+ونموذج دورة الحياة هذا مفيد خصوصًا للمخازن التي تجلب بيانات، أو تفتح اتصالات WebSocket، أو تُعدّ استطلاعًا دوريًا. فيبدأ العمل عند أول اشتراك ويُنظّف عند آخر إلغاء اشتراك، ما يمنع تسريبات الموارد دون الحاجة إلى إدارة دورة حياة يدوية.
 
-## Nanostores in a Federation Context
+## Nanostores في سياق الاتحاد {#nanostores-in-a-federation-context}
 
-This is where nanostores earns its place in an enterprise UI course. In the [runtime composition exercise](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise), we used nanostores to solve a problem that React Context couldn’t: sharing auth state between a host shell and a federated remote.
+هنا تكسب Nanostores مكانها في دورة واجهات المؤسسات. ففي [تمرين التركيب وقت التشغيل](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise)، استخدمنا Nanostores لحلّ مشكلة لم يستطع سياق React حلها: مشاركة حالة المصادقة بين هيكل مضيف ووحدة بعيدة اتحادية.
 
-The reason it works is that nanostores stores are plain JavaScript objects. An `atom` created by `atom(initialValue)` is just an object with `.get()`, `.set()`, and `.subscribe()`. It doesn’t depend on React’s reconciler, Vue’s reactivity system, or any framework internals. If two pieces of code—regardless of how they were built or bundled—have a reference to the same atom object, they can read and write shared state through it.
+وسبب نجاح ذلك أن مخازن Nanostores كائنات JavaScript عادية. فالذرّة التي تنشئها `atom(initialValue)` ليست إلا كائنًا بـ`.get()` و`.set()` و`.subscribe()`. ولا تعتمد على مُوفِّق React، ولا نظام تفاعل Vue، ولا أي دواخل إطار. وإن كان لجزأين من الشيفرة—مهما كانت طريقة بنائهما أو حزمهما—مرجع إلى كائن الذرّة نفسه، فبوسعهما قراءة الحالة المشتركة والكتابة فيها عبره.
 
-The catch is the word “same.” In a Module Federation setup, “same” means the module that creates the atom must be a singleton shared dependency. If `@pulse/shared` creates the atom and both the host and remote import from `@pulse/shared`, the federation runtime needs to ensure both sides get the *same module instance*. That’s what `singleton: true` in the shared config does. Without it, each side evaluates the module independently, creates its own atom, and the two atoms are unrelated objects that happen to have the same initial value.
+والاستدراك في كلمة «نفسه». ففي إعداد اتحاد الوحدات، تعني «نفسه» أن الوحدة التي تنشئ الذرّة يجب أن تكون اعتمادًا مشتركًا من نوع النسخة الوحيدة. فإن كانت `@pulse/shared` هي التي تنشئ الذرّة وكان المضيف والوحدة البعيدة يستوردن من `@pulse/shared`، فعلى وقت تشغيل الاتحاد أن يضمن حصول الجانبين على *نسخة الوحدة نفسها*. وهذا ما يفعله `singleton: true` في إعداد `shared`. وبدونه، يقيّم كل جانب الوحدة باستقلال، وينشئ ذرّته الخاصة، فتصير الذرّتان كائنين غير مرتبطين صادف أن لهما القيمة الأولية نفسها.
 
 ```typescript
 // shared/src/auth-store.ts
@@ -312,32 +312,32 @@ import { authStore } from '@pulse/shared';
 const auth = useStore(authStore);
 ```
 
-Both `nanostores` and `@nanostores/react` also need to be singletons. If the store library itself is duplicated, the subscription mechanism in one copy is invisible to the other. All three packages—the shared package, nanostores, and the framework binding—form a singleton chain. Break any link and state stops flowing, silently.
+وكذلك تحتاج `nanostores` و`@nanostores/react` كلتاهما إلى أن تكونا نسختين وحيدتين. فإن تكرّرت مكتبة المخازن نفسها، كانت آلية الاشتراك في نسخة غير مرئية للأخرى. فالحزم الثلاث—الحزمة المشتركة، وNanostores، وربط الإطار—تكوّن سلسلة نسخ وحيدة. واكسر أي حلقة فتتوقف الحالة عن التدفق، بصمت.
 
-For cross-boundary communication that doesn’t depend on singleton shared modules, [`BroadcastChannel`](https://stevekinney.com/courses/enterprise-ui/broadcast-channel) is the alternative. It trades synchronous reads and reactive subscriptions for origin-scoped messaging that works regardless of how modules are bundled. Many teams use both: nanostores for in-page reactivity, `BroadcastChannel` for cross-tab sync.
+وبالنسبة إلى التواصل عبر الحدود غير المعتمد على وحدات مشتركة من نوع النسخة الوحيدة، فـ[`BroadcastChannel`](https://stevekinney.com/courses/enterprise-ui/broadcast-channel) هو البديل. فهو يقايض القراءات المتزامنة والاشتراكات التفاعلية بمراسلة محدودة النطاق بالمصدر تعمل بغض النظر عن طريقة حزم الوحدات. وتستخدم فرق كثيرة الاثنين: Nanostores للتفاعل داخل الصفحة، و`BroadcastChannel` للمزامنة بين التبويبات.
 
-## Nanostores versus the Alternatives
+## Nanostores مقابل البدائل
 
-| Alternative | Framework coupling | Bundle size | Cross-boundary use | Key tradeoff |
+| البديل | الاقتران بإطار | حجم الحزمة | الاستخدام عبر الحدود | المقايضة الجوهرية |
 | --- | --- | --- | --- | --- |
-| Nanostores | None | ~1 KB | Excellent | No middleware, devtools, or opinionated patterns |
-| Redux / Zustand | React-first | Medium–large | Poor | Rich ecosystem but framework-locked |
-| Jotai / Recoil | React-only | Small–medium | Poor | Suspense integration but no cross-framework use |
-| RxJS `BehaviorSubject` | None | Large (RxJS) | Good | Full reactive toolkit but heavy for simple state |
-| Plain `EventTarget` | None | Zero | Good | No computed stores, no framework bindings, DIY |
+| Nanostores | لا شيء | نحو 1 كيلوبايت | ممتاز | بلا وسيط، ولا أدوات تطوير، ولا أنماط صارمة |
+| Redux / Zustand | React أولًا | متوسط–كبير | ضعيف | نظام بيئي غني لكنه مقفل على الإطار |
+| Jotai / Recoil | React فقط | صغير–متوسط | ضعيف | تكامل مع Suspense لكن بلا استخدام عبر الأطر |
+| `BehaviorSubject` من RxJS | لا شيء | كبير (RxJS) | جيد | صندوق أدوات تفاعلي كامل لكنه ثقيل لحالة بسيطة |
+| `EventTarget` عادي | لا شيء | صفر | جيد | بلا مخازن محسوبة، وبلا روابط أطر، واصنعه بنفسك |
 
-**Versus Redux/Zustand**: Both are React-first. Redux has middleware, time-travel debugging, and a massive ecosystem. Zustand is smaller and simpler but still React-specific. Nanostores is dramatically smaller than both and works across frameworks, but it doesn’t have middleware, devtools, or the opinionated patterns (actions, reducers, slices) that Redux provides. If you need those patterns, nanostores is not a replacement. If you need cross-framework portability, Redux and Zustand can’t provide it.
+**مقابل Redux/Zustand**: كلاهما React أولًا. فلRedux وسيط وتنقيح سفر عبر الزمن ونظام بيئي ضخم. وZustand أصغر وأبسط لكنه خاص بـReact. أما Nanostores فصغيرهما كثيرًا ويعمل عبر الأطر، لكنه لا يملك وسيطًا ولا أدوات تطوير ولا الأنماط الصارمة (إجراءات، ومخفّضات، وشرائح) التي يوفّرها Redux. فإن احتجت تلك الأنماط، فNanostores ليس بديلًا. وإن احتجت قابلية النقل عبر الأطر، فلا يستطيع Redux وZustand توفيرها.
 
-**Versus Jotai/Recoil**: Jotai’s atoms are conceptually similar to nanostores atoms, but Jotai is deeply integrated with React’s concurrent features and Suspense. Nanostores atoms are simpler—no React-specific behavior, no Suspense integration, no provider required. Jotai is the better choice for complex React-specific derived state. Nanostores is the better choice when the consumer might not be React.
+**مقابل Jotai/Recoil**: ذرّات Jotai متشابهة مفهوميًا مع ذرّات Nanostores، لكن Jotai مندمج بعمق مع ميزات React المتزامنة وSuspense. أما ذرّات Nanostores فأبسط—بلا سلوك خاص بـReact، وبلا تكامل مع Suspense، وبلا مزوّد مطلوب. وJotai الخيار الأفضل للحالة المستنبطة المعقّدة الخاصة بـReact. وNanostores الخيار الأفضل عندما قد لا يكون المستهلك React.
 
-**Versus RxJS `BehaviorSubject`**: A `BehaviorSubject` is functionally similar to a nanostores atom—it holds a current value and notifies subscribers on change. RxJS gives you operators, pipelines, and the full reactive programming toolkit. Nanostores gives you a much simpler API with a much smaller bundle. If you’re already using RxJS, a `BehaviorSubject` works fine as cross-boundary state. If you’re not, adding RxJS just for state management is a lot of machinery.
+**مقابل `BehaviorSubject` من RxJS**: `BehaviorSubject` مشابه وظيفيًا لذرّة Nanostores—فهو يحمل قيمة حالية ويُشعر المشتركين عند التغيير. ويمنحك RxJS معاملات (operators) وخطوط أنابيب وصندوق أدوات البرمجة التفاعلية كاملًا. أما Nanostores فيمنحك واجهة برمجية أبسط بكثير بحزمة أصغر بكثير. وإن كنت تستخدم RxJS أصلًا، فيعمل `BehaviorSubject` بشكل جيد كحالة عبر الحدود. وإن لم تكن، فإضافة RxJS لإدارة الحالة وحدها آلة ثقيلة.
 
-**Versus plain `EventTarget`**: You can build the same subscription pattern with `new EventTarget()` and `CustomEvent`. It works, and it has zero dependencies. The downside is that you’re reimplementing `.get()`, `.set()`, computed stores, key-level change tracking, and framework bindings yourself. Nanostores is the “someone already did that correctly” version.
+**مقابل `EventTarget` العادي**: يمكنك بناء نمط الاشتراك نفسه بـ`new EventTarget()` و`CustomEvent`. وهو يعمل، وبلا أي اعتمادات. والعيب أنك تعيد تنفيذ `.get()` و`.set()` والمخازن المحسوبة وتتبّع التغييرات على مستوى المفتاح وروابط الأطر بنفسك. أما Nanostores فهي نسخة «أحدهم فعل ذلك بشكل صحيح سابقًا».
 
-## When Nanostores Is the Right Call
+## متى يكون Nanostores الخيار الصحيح
 
-Use nanostores when you need reactive state that’s shared across framework boundaries, Module Federation boundaries, or migration boundaries. Use it when the state is simple enough that Redux’s patterns would be overhead. Use it when bundle size matters and you can’t justify a larger state library for a few shared values.
+استخدم Nanostores عندما تحتاج حالة تفاعلية مشتركة عبر حدود الأطر، أو حدود اتحاد الوحدات، أو حدود الترحيل. واستخدمها عندما تكون الحالة أبسط من أن يكون نمط Redux عبئًا عليها. واستخدمها عندما يهمّ حجم الحزمة ولا يمكنك تبرير مكتبة حالة أكبر لقيم مشتركة قليلة.
 
-Don’t use nanostores when you need middleware, devtools, time-travel debugging, or the structural patterns that Redux or Zustand provide. Don’t use it as a wholesale replacement for framework-native state management in a single-framework app—React’s `useState` and `useReducer` are perfectly fine for component-local state, and adding a library for that is just adding a library.
+ولا تستخدم Nanostores عندما تحتاج وسيطًا، أو أدوات تطوير، أو تنقيح سفر عبر الزمن، أو الأنماط البنيوية التي يوفّرها Redux أو Zustand. ولا تستخدمها كبديل كامل عن إدارة الحالة الأصلية في الإطار داخل تطبيق بإطار واحد—فـ`useState` و`useReducer` في React كافيتان تمامًا للحالة المحلية بالمكوّن، وإضافة مكتبة لذلك مجرد إضافة مكتبة.
 
-The sweet spot is shared, cross-boundary, framework-agnostic state in architectures where the assumption of “one framework, one bundle, one memory space” doesn’t hold. That’s exactly the situation Module Federation creates—and it’s why nanostores keeps showing up in microfrontend conversations.
+والمنطقة المثلى هي الحالة المشتركة العابرة للحدود المحايدة تجاه الأطر في معماريات لا تصحّ فيها افتراضات «إطار واحد، وحزمة واحدة، ومساحة ذاكرة واحدة». وهذه بالضبط الحالة التي يُنشئها اتحاد الوحدات—ولهذا تستمر Nanostores في الظهور في أحاديث الواجهات الأمامية الدقيقة.

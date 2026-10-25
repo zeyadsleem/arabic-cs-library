@@ -1,23 +1,23 @@
 ---
-title: "Overriding Object Properties"
-lang: en
+title: "تجاوز خصائص الكائنات"
+lang: ar
 source: "https://stevekinney.com/courses/testing/overriding-object-properties"
 ---
 
-In some test scenarios, you may need to override or mock specific properties of objects rather than functions. This can be useful when testing code that relies on object properties like environment variables, configuration settings, or dynamic values that are read from objects at runtime. In Vitest, you can override object properties using `vi.spyOn()` or directly setting properties to mock values during your tests.
+في بعض سيناريوهات الاختبار، قد تحتاج إلى تجاوز خصائص معيّنة في الكائنات أو محاكاتها بدلًا من الدوال. يمكن أن يكون هذا مفيدًا عند اختبار شيفرة تعتمد على خصائص كائنات مثل متغيّرات البيئة، أو إعدادات التهيئة، أو قيم ديناميكية تُقرأ من الكائنات وقت التشغيل. في Vitest، يمكنك تجاوز خصائص الكائنات باستخدام `vi.spyOn()` أو بتعيين الخصائص مباشرةً إلى قيم مُحاكاة أثناء اختباراتك.
 
-## Use Cases for Overriding Object Properties
+## حالات استخدام تجاوز خصائص الكائنات
 
-- **Environment variables**: Simulating different environments by overriding `process.env` properties.
-- **Configuration objects**: Changing the values of configuration settings to test how your code behaves under different conditions.
-- **Global objects**: Overriding global objects like `window`, `navigator`, or `document` in browser-based applications.
-- **Dynamic properties**: Mocking values of properties that change over time, such as `Date.now` or `Math.random`.
+- **متغيّرات البيئة**: محاكاة بيئات مختلفة بتجاوز خصائص `process.env`.
+- **كائنات التهيئة**: تغيير قيم إعدادات التهيئة لاختبار كيفية تصرف شيفرتك في ظروف مختلفة.
+- **الكائنات العامة**: تجاوز كائنات عامة مثل `window` أو `navigator` أو `document` في التطبيقات القائمة على المتصفّح.
+- **الخصائص الديناميكية**: محاكاة قيم خصائص تتغيّر مع الوقت، مثل `Date.now` أو `Math.random`.
 
-## Overriding Object Properties with `vi.spyOn()`
+## تجاوز خصائص الكائنات باستخدام `vi.spyOn()`
 
-When overriding getter or setter properties, you can use `vi.spyOn()` to replace their behavior. This is especially useful for built-in object properties like `window.location` or `process.env` that you need to override in a test.
+عند تجاوز خصائص الجامع (getter) أو الضابط (setter)، يمكنك استخدام `vi.spyOn()` لاستبدال سلوكها. هذا مفيد بشكل خاص في خصائص الكائنات المدمجة مثل `window.location` أو `process.env` التي تحتاج إلى تجاوزها في اختبار.
 
-Here’s an example of overriding a getter:
+إليك مثالًا على تجاوز جامع:
 
 ```javascript
 // Spy on the global object property (e.g., window.location.href)
@@ -33,11 +33,11 @@ describe('URL Test', () => {
 });
 ```
 
-In this example, the `vi.spyOn()` method is used to spy on and mock the `location` property of the `window` object. It replaces the getter so that `window.location.href` returns the mocked value `'https://mocked-url.com'` instead of the real URL.
+في هذا المثال، تُستخدم الدالة `vi.spyOn()` للتجسّس على خاصية `location` في الكائن `window` ومحاكاتها. وهي تستبدل الجامع بحيث تُعيد `window.location.href` القيمة المُحاكاة `'https://mocked-url.com'` بدلًا من الرابط الحقيقي.
 
-## Directly Overriding Object Properties
+## تجاوز خصائص الكائنات مباشرةً
 
-You can also directly override object properties for more straightforward scenarios, such as modifying the `process.env` object or other custom properties.
+يمكنك أيضًا تجاوز خصائص الكائنات مباشرةً في السيناريوهات الأبسط، مثل تعديل الكائن `process.env` أو خصائص مخصّصة أخرى.
 
 ```javascript
 // Override process.env property directly
@@ -51,13 +51,13 @@ describe('API Key Test', () => {
 });
 ```
 
-In this example, the `process.env.API_KEY` property is directly overridden to simulate a different environment configuration for the test. After the test, you can restore the original value to ensure no side effects on other tests.
+في هذا المثال، تُتجاوز الخاصية `process.env.API_KEY` مباشرةً لمحاكاة تهيئة بيئة مختلفة للاختبار. وبعد الاختبار، يمكنك إعادة القيمة الأصلية لضمان عدم وجود آثار جانبية على اختبارات أخرى.
 
-## Overriding Getters and Setters
+## تجاوز الجامعات والضوابط
 
-For more complex scenarios where properties use getters or setters, you can override them directly by redefining the property using `Object.defineProperty()`.
+في السيناريوهات الأكثر تعقيدًا حين تستخدم الخصائص جامعات أو ضوابط، يمكنك تجاوزها مباشرةً بإعادة تعريف الخاصية باستخدام `Object.defineProperty()`.
 
-Here’s how to override a property with a custom getter:
+إليك كيفية تجاوز خاصية بجامع مخصّص:
 
 ```javascript
 // Override a property with a custom getter
@@ -73,11 +73,11 @@ describe('Window Width Test', () => {
 });
 ```
 
-In this example, we use `Object.defineProperty()` to mock `window.innerWidth` with a custom getter that returns the value `1024`. This allows you to control how the property behaves during your tests.
+في هذا المثال، نستخدم `Object.defineProperty()` لمحاكاة `window.innerWidth` بجامع مخصّص يُعيد القيمة `1024`. يتيح لك ذلك التحكم في كيفية تصرّف الخاصية أثناء اختباراتك.
 
-## Restoring Overridden Properties
+## إعادة الخصائص المتجاوَزة
 
-After overriding object properties, it’s important to restore them to their original state to avoid side effects in other tests. Vitest provides `mockRestore()` to reset spied or mocked properties.
+بعد تجاوز خصائص الكائنات، من المهم إعادتها إلى حالتها الأصلية لتجنّب آثار جانبية في اختبارات أخرى. يوفّر Vitest `mockRestore()` لإعادة ضبط الخصائص المتجسَّس عليها أو المُحاكاة.
 
 ```javascript
 const originalHref = window.location.href;
@@ -98,8 +98,8 @@ describe('URL Test', () => {
 });
 ```
 
-By restoring the original value of `window.location.href` in the `afterEach()` block, you ensure that the overridden property does not interfere with other tests.
+بإعادة القيمة الأصلية لـ `window.location.href` داخل كتلة `afterEach()`، تضمن ألا تتعارض الخاصية المتجاوَزة مع اختبارات أخرى.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Overriding object properties in Vitest is a powerful technique for testing code that relies on dynamic or external values like environment variables, configuration objects, or global properties. Whether you’re using `vi.spyOn()` to mock getters and setters, directly modifying properties, or using `Object.defineProperty()` for more advanced control, overriding properties allows you to test different scenarios in isolation. Always remember to reset or restore the original properties after the test to maintain clean, isolated test environments.
+تجاوز خصائص الكائنات في Vitest تقنية قوية لاختبار شيفرة تعتمد على قيم ديناميكية أو خارجية مثل متغيّرات البيئة، أو كائنات التهيئة، أو الخصائص العامة. وسواء استخدمت `vi.spyOn()` لمحاكاة الجامعات والضوابط، أو عدّلت الخصائص مباشرةً، أو استخدمت `Object.defineProperty()` لتحكّم أكثر تقدمًا، فإن تجاوز الخصائص يتيح لك اختبار سيناريوهات مختلفة في عزلة. تذكّر دائمًا إعادة ضبط الخصائص الأصلية أو استعادتها بعد الاختبار للحفاظ على بيئات اختبار نظيفة ومعزولة.

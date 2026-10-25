@@ -1,54 +1,54 @@
 ---
-title: "Working with Dev Containers"
-lang: en
+title: "العمل مع حاويات التطوير"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/working-with-dev-containers"
 ---
 
-Once you have a `.devcontainer` folder in your project, Visual Studio Code will recognize it and offer you options to work within the Dev Container.
+ما إن يصبح لديك مجلد `.devcontainer` في مشروعك، حتى يتعرّف عليه Visual Studio Code ويعرض عليك خيارات للعمل داخل حاوية التطوير.
 
-Visual Studio Code dialog showing option to reopen in container
+نافذة حوارية في Visual Studio Code تعرض خيار إعادة الفتح في الحاوية
 
-> **Docker Installation**
+> **تثبيت Docker**
 >
-> If Docker is not installed, Visual Studio Code will attempt to install it.
+> إن لم يكن Docker مثبّتًا، فسيحاول Visual Studio Code تثبيته.
 
-**What Happens When You “Reopen in Container”?**
+**ماذا يحدث عندما تختار “Reopen in Container”؟**
 
-- **Container Build—If Needed:** If the specified container image (or Dockerfile) needs to be built, Visual Studio Code will trigger a Docker build process. You’ll see build logs in the Output panel (select “Dev Containers” from the dropdown). Subsequent “Reopen in Container” operations will be faster if the image is already built (Docker caching).
-- **Container Start:** Docker starts the container based on the configuration.
-- **Visual Studio Code Connection:** Visual Studio Code establishes a connection to the running container.
-- **Workspace Mount:** Your project folder from your host machine is **bind-mounted** into the container at the `workspaceFolder` path (default `/workspace`). This means changes you make to files inside the container are reflected in your host project folder, and vice versa. This allows seamless file editing between host and container.
-- **Extension Installation (Inside Container):** Visual Studio Code automatically installs the extensions listed in the `extensions` property of `devcontainer.json` *inside* the container. These are separate from your host machine extensions.
-- **Settings Application (Inside Container):** Visual Studio Code applies the settings defined in the `settings` property of `devcontainer.json` *inside* the container environment.
+- **بناء الحاوية — عند الحاجة:** إذا كانت صورة الحاوية المحدّدة (أو Dockerfile) بحاجة إلى بناء، فسيُطلق Visual Studio Code عملية بناء Docker. وسترى سجلات البناء في لوحة Output (اختر “Dev Containers” من القائمة المنسدلة). وستكون عمليات “Reopen in Container” اللاحقة أسرع إذا كانت الصورة مبنية بالفعل (بفضل التخزين المؤقت في Docker).
+- **بدء الحاوية:** يبدأ Docker تشغيل الحاوية وفقًا للإعدادات.
+- **اتصال Visual Studio Code:** يُنشئ Visual Studio Code اتصالًا بالحاوية قيد التشغيل.
+- **تثبيت مساحة العمل:** يُثبَّت مجلد مشروعك من جهازك المضيف في الحاوية بـ**ربط مباشر** (bind mount) عند مسار `workspaceFolder` (والافتراضي `/workspace`). ويعني ذلك أن التغييرات التي تجريها على الملفات داخل الحاوية تنعكس في مجلد مشروعك على المضيف، والعكس صحيح. وهذا يتيح تحرير الملفات بسلاسة بين المضيف والحاوية.
+- **تثبيت الإضافات (داخل الحاوية):** يثبّت Visual Studio Code تلقائيًا الإضافات المدرَجة في خاصية `extensions` في `devcontainer.json` *داخل* الحاوية. وهذه منفصلة عن إضافات جهازك المضيف.
+- **تطبيق الإعدادات (داخل الحاوية):** يطبّق Visual Studio Code الإعدادات المعرّفة في خاصية `settings` في `devcontainer.json` *داخل* بيئة الحاوية.
 
-Once the container is up and running, you’ll be able to see it in **Docker Desktop**.
+ما إن تصبح الحاوية قيد التشغيل، ستتمكّن من رؤيتها في **Docker Desktop**.
 
-Docker Desktop showing a running container
+Docker Desktop يعرض حاوية قيد التشغيل
 
-## Building, Rebuilding, and Updating
+## البناء وإعادة البناء والتحديث
 
-Sometimes you need to modify your Dev Container configuration – update dependencies in the Dockerfile, add new extensions, change settings, etc. In such cases, you need to rebuild the Dev Container.
+تحتاج أحيانًا إلى تعديل إعدادات حاوية التطوير — تحديث الاعتمادات في Dockerfile، أو إضافة إضافات جديدة، أو تغيير الإعدادات، وغير ذلك. وفي هذه الحالات، يلزمك إعادة بناء حاوية التطوير.
 
-### Option 1: Command Palette - “Dev Containers: Rebuild Container
+### الخيار 1: لوحة الأوامر — “Dev Containers: Rebuild Container
 
-1. Ensure you are connected to your Dev Container (Visual Studio Code window says “(Dev Container)” in the bottom-left).
-2. Command Palette -> “Dev Containers: Rebuild Container”.
-3. This will rebuild the container image based on your updated `Dockerfile` or image specification, and then restart the container. Changes in `devcontainer.json` (like extensions or settings) are also applied during rebuild.
+1. تأكّد من أنك متّصل بحاوية التطوير (سترى في أسفل يسار نافذة Visual Studio Code عبارة “(Dev Container)”).
+2. لوحة الأوامر -> “Dev Containers: Rebuild Container”.
+3. سيؤدّي ذلك إلى إعادة بناء صورة الحاوية استنادًا إلى `Dockerfile` المحدَّث أو مواصفة الصورة، ثم إعادة تشغيل الحاوية. وتُطبَّق أيضًا تغييرات `devcontainer.json` (مثل الإضافات أو الإعدادات) أثناء إعادة البناء.
 
-### Option 2: Command Palette - “Dev Containers: Rebuild and Reopen in Container”
+### الخيار 2: لوحة الأوامر — “Dev Containers: Rebuild and Reopen in Container”
 
-1. Similar to “Rebuild Container”, but after rebuilding, it automatically reopens your project in the newly rebuilt container. This is often more convenient.
+1. يشبه “Rebuild Container”، لكنه بعد إعادة البناء يعيد فتح مشروعك تلقائيًا في الحاوية المُعاد بناؤها حديثًا. وهذا غالبًا أكثر ملاءمة.
 
-### When to Rebuild
+### متى تعيد البناء
 
-- **Changes to `Dockerfile`:** Whenever you modify your `Dockerfile` to add software, update dependencies, or change the base image.
-- **Changes to `devcontainer.json` (image/dockerFile):** If you switch to a different base image or Dockerfile.
-- **Software Updates in Container (Less Common):** If you manually installed software inside the container through the terminal and want to persist these changes, you might need to rebuild the container image (though it’s generally better to define software installations in your Dockerfile).
+- **تغييرات في `Dockerfile`:** كلما عدّلت `Dockerfile` لإضافة برمجيات، أو تحديث اعتمادات، أو تغيير الصورة الأساسية.
+- **تغييرات في `devcontainer.json` (صورة أو dockerFile):** إذا انتقلت إلى صورة أساسية مختلفة أو Dockerfile مختلف.
+- **تحديثات البرمجيات داخل الحاوية (أقل شيوعًا):** إذا ثبّتت برمجيات يدويًا داخل الحاوية عبر الطرفية وأردت إبقاء هذه التغييرات، فقد تحتاج إلى إعادة بناء صورة الحاوية (مع أن الأفضل عمومًا تعريف عمليات تثبيت البرمجيات في Dockerfile).
 
-## Accessing the Terminal
+## الوصول إلى الطرفية
 
-A key aspect of working with Dev Containers is accessing the integrated terminal within Visual Studio Code. This terminal runs *inside* the Dev Container, providing you with a shell environment directly within your containerized environment.
+من الجوانب الأساسية في العمل مع حاويات التطوير الوصول إلى الطرفية المدمجة في Visual Studio Code. فهذه الطرفية تعمل *داخل* حاوية التطوير، وتوفّر لك بيئة أوامر داخل بيئتك المحوَسة مباشرة.
 
-1. Ensure you are connected to your Dev Container.
-2. Open the Visual Studio Code integrated terminal (`Ctrl+Backtick` or `Command+Backtick`).
-3. The terminal prompt will indicate that you are now inside the container environment. The shell (e.g., bash, zsh) will be the one configured within your container image or `devcontainer.json` settings.
+1. تأكّد من أنك متّصل بحاوية التطوير.
+2. افتح الطرفية المدمجة في Visual Studio Code (`Ctrl+Backtick` أو `Command+Backtick`).
+3. سيشير موجّه الطرفية إلى أنك الآن داخل بيئة الحاوية. وستكون الأوامر (مثل bash وzsh) هي نفسها المهيّأة في صورة حاويتك أو في إعدادات `devcontainer.json`.

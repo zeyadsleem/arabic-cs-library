@@ -1,12 +1,12 @@
 ---
-title: "Typed Error Middleware with Express"
-lang: en
+title: "وسيط أخطاء محدّد الأنواع مع Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/typed-error-middleware-with-express"
 ---
 
-### Typed Error Middleware
+### وسيط أخطاء محدّد الأنواع
 
-Express error middleware has a distinct signature:
+لوسيط الأخطاء في Express توقيع مميّز:
 
 ```typescript
 // Define structured error types
@@ -103,9 +103,9 @@ app.post(
 );
 ```
 
-This structured approach to error handling ensures that:
+تضمن هذه المقاربة المنظّمة لمعالجة الأخطاء ما يلي:
 
-1. All errors are properly typed
-2. Error responses follow a consistent format
-3. Different error types result in appropriate HTTP status codes
-4. Error details are preserved when needed
+1. كل الأخطاء محدّدة الأنواع تحديدًا سليمًا
+2. تتبع استجابات الأخطاء صيغة متسقة
+3. تؤدي أنواع الأخطاء المختلفة إلى رموز حالة HTTP المناسبة
+4. تُحفظ تفاصيل الأخطاء عند الحاجة

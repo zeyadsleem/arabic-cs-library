@@ -1,28 +1,28 @@
 ---
-title: "Snapshot Testing"
-lang: en
+title: "اختبار اللقطات (Snapshot Testing)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/snapshot-testing"
 ---
 
-Snapshot testing is a powerful technique in software testing that captures the output of a piece of code and compares it against a reference snapshot stored alongside the test. If the output changes, the test fails, alerting developers to unexpected changes in the codebase.
+اختبار اللقطات تقنية قوية في اختبار البرمجيات تلتقط مخرجات قطعة من الشيفرة وتقارنها بلقطة مرجعية مخزّنة إلى جانب الاختبار. إذا تغيرت المخرجات، يفشل الاختبار، منبّهًا المطورين إلى تغييرات غير متوقعة في قاعدة الشيفرة.
 
-This post explores how to implement snapshot testing using Vitest, a fast unit testing framework for modern JavaScript applications. We’ll discuss best practices, benefits, and potential pitfalls, helping you understand when to use snapshots effectively.
+يستكشف هذا المقال كيفية تنفيذ اختبار اللقطات باستخدام Vitest، إطار اختبار وحدات سريع لتطبيقات JavaScript الحديثة. سنناقش أفضل الممارسات والفوائد والمزالق المحتملة، بما يساعدك على فهم متى تستخدم اللقطات بفعالية.
 
-## What is Snapshot Testing?
+## ما هو اختبار اللقطات؟
 
-Snapshot testing involves saving the output of a function or component and comparing it to a saved “snapshot” on subsequent test runs. It’s particularly useful for testing outputs that are complex or large, such as serialized objects, HTML structures, or API responses.
+يتضمن اختبار اللقطات حفظ مخرجات دالة أو مكوّن ومقارنتها بـ«لقطة» محفوظة في تشغيلات الاختبار اللاحقة. إنه مفيد بشكل خاص لاختبار المخرجات المعقدة أو الكبيرة، مثل الكائنات المتسلسلة أو بنى HTML أو استجابات واجهات برمجة التطبيقات.
 
-## How Does Snapshot Testing Work in Vitest?
+## كيف يعمل اختبار اللقطات في Vitest؟
 
-Vitest provides built-in support for snapshot testing. When you run a test that includes `expect(value).toMatchSnapshot()`, Vitest will:
+يوفر Vitest دعمًا مدمجًا لاختبار اللقطات. عندما تشغّل اختبارًا يتضمن `expect(value).toMatchSnapshot()`، سيقوم Vitest بما يلي:
 
-1. Generate a snapshot file (if it doesn’t exist) containing the serialized value.
-2. On subsequent runs, compare the current value to the saved snapshot.
-3. Report any differences as test failures.
+1. توليد ملف لقطة (إن لم يكن موجودًا) يحتوي القيمة المتسلسلة.
+2. في التشغيلات اللاحقة، مقارنة القيمة الحالية باللقطة المحفوظة.
+3. الإبلاغ عن أي اختلافات كإخفاقات اختبار.
 
-## Setting Up Snapshot Testing
+## إعداد اختبار اللقطات
 
-**Basic Example:**
+**مثال أساسي:**
 
 ```javascript
 // formatter.js
@@ -31,7 +31,7 @@ export function formatUser(user) {
 }
 ```
 
-**Test with Snapshot:**
+**اختبار مع لقطة:**
 
 ```javascript
 // formatter.test.js
@@ -45,37 +45,37 @@ test('formats user information correctly', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- The first time the test runs, Vitest creates a snapshot file containing the output of `formatUser(user)`.
-- On subsequent runs, Vitest compares the output to the snapshot.
-- If the output changes, the test fails.
+- في المرة الأولى التي يعمل فيها الاختبار، ينشئ Vitest ملف لقطة يحتوي مخرجات `formatUser(user)`.
+- في التشغيلات اللاحقة، يقارن Vitest المخرجات باللقطة.
+- إذا تغيرت المخرجات، يفشل الاختبار.
 
-## Updating Snapshots
+## تحديث اللقطات
 
-When intentional changes are made to the output, you can update the snapshots:
+عند إجراء تغييرات مقصودة على المخرجات، يمكنك تحديث اللقطات:
 
-- Run `vitest -u` or `vitest --update` to update all snapshots.
-- Alternatively, interactively update snapshots when prompted.
+- شغّل `vitest -u` أو `vitest --update` لتحديث كل اللقطات.
+- بدلًا من ذلك، حدّث اللقطات تفاعليًا عند المطالبة.
 
-## Best Practices for Snapshot Testing
+## أفضل الممارسات لاختبار اللقطات
 
-### Keep Snapshots Readable
+### أبقِ اللقطات قابلة للقراءة
 
-Ensure that snapshot files are human-readable:
+تأكد من أن ملفات اللقطات مقروءة للبشر:
 
-- Avoid capturing unnecessary data.
-- Format complex objects for clarity.
+- تجنب التقاط بيانات غير ضرورية.
+- نسّق الكائنات المعقدة للوضوح.
 
-Example:
+مثال:
 
 ```javascript
 expect(JSON.stringify(largeObject, null, 2)).toMatchSnapshot();
 ```
 
-### Use Descriptive Test Names
+### استخدم أسماء اختبارات وصفية
 
-Clear test names help identify which snapshot corresponds to which test.
+تساعد أسماء الاختبارات الواضحة في تحديد أي لقطة تقابل أي اختبار.
 
 ```javascript
 test('formats user information with full details', () => {
@@ -83,58 +83,58 @@ test('formats user information with full details', () => {
 });
 ```
 
-### Review Snapshots During Code Reviews
+### راجع اللقطات أثناء مراجعات الشيفرة
 
-Treat snapshot updates with the same scrutiny as code changes:
+تعامل مع تحديثات اللقطات بالتدقيق نفسه الذي تعامل به تغييرات الشيفرة:
 
-- Verify that changes are intentional.
-- Ensure that unexpected changes are investigated.
+- تحقق من أن التغييرات مقصودة.
+- تأكد من التحقيق في التغييرات غير المتوقعة.
 
-### Limit Snapshot Size
+### حدّ من حجم اللقطة
 
-Large snapshots are harder to review and maintain:
+اللقطات الكبيرة أصعب في المراجعة والصيانة:
 
-- Avoid snapshotting entire large objects or responses.
-- Focus on the relevant parts of the output.
+- تجنب أخذ لقطات لكائنات أو استجابات كبيرة بأكملها.
+- ركّز على الأجزاء ذات الصلة من المخرجات.
 
-### Combine with Other Assertions
+### ادمجها مع تحققات أخرى
 
-Use snapshots alongside explicit assertions for critical values:
+استخدم اللقطات إلى جانب تحققات صريحة للقيم الحرجة:
 
 ```javascript
 expect(user.name).toBe('Alice');
 expect(formattedUser).toMatchSnapshot();
 ```
 
-## When Are Snapshots Beneficial?
+## متى تكون اللقطات مفيدة؟
 
-### Rapid Feedback on UI Changes
+### تغذية راجعة سريعة على تغييرات واجهة المستخدم
 
-- **Use Case**: Testing serialized HTML or templated outputs.
-- **Benefit**: Quickly detects unintended changes in the rendered output.
+- **حالة الاستخدام**: اختبار HTML متسلسل أو مخرجات قوالب.
+- **الفائدة**: يكتشف بسرعة التغييرات غير المقصودة في المخرجات المصيّرة.
 
-### Testing Serializations
+### اختبار التسلسل
 
-- **Use Case**: Ensuring that objects are serialized consistently.
-- **Benefit**: Catches changes in serialization logic that may affect data storage or transmission.
+- **حالة الاستخدام**: ضمان تسلسل الكائنات بشكل متسق.
+- **الفائدة**: يلتقط التغييرات في منطق التسلسل التي قد تؤثر في تخزين البيانات أو نقلها.
 
-### Complex Outputs
+### مخرجات معقدة
 
-- **Use Case**: Functions that return complex data structures.
-- **Benefit**: Simplifies testing by avoiding numerous explicit assertions.
+- **حالة الاستخدام**: دوال تعيد بنى بيانات معقدة.
+- **الفائدة**: يبسّط الاختبار بتجنب العديد من التحققات الصريحة.
 
-## Potential Pitfalls of Snapshot Testing
+## المزالق المحتملة لاختبار اللقطات
 
-### Brittle Snapshots
+### لقطات هشة
 
-**Issue**: Snapshots can become brittle if they capture irrelevant changes, leading to frequent unnecessary updates.
+**المشكلة**: قد تصبح اللقطات هشة إذا التقطت تغييرات غير ذات صلة، ما يؤدي إلى تحديثات غير ضرورية متكررة.
 
-**Solution**:
+**الحل**:
 
-- Keep snapshots focused on stable outputs.
-- Exclude dynamic data like timestamps or IDs.
+- أبقِ اللقطات مركّزة على مخرجات مستقرة.
+- استبعد البيانات الديناميكية مثل الطوابع الزمنية أو المعرّفات.
 
-Example:
+مثال:
 
 ```javascript
 const user = { name: 'Alice', id: 12345, createdAt: new Date() };
@@ -144,38 +144,38 @@ expect(user).toMatchSnapshot({
 });
 ```
 
-### Over-reliance on Snapshots
+### الاعتماد المفرط على اللقطات
 
-**Issue**: Relying solely on snapshots may lead to missed bugs if the snapshot changes are not carefully reviewed.
+**المشكلة**: الاعتماد على اللقطات وحدها قد يؤدي إلى تفويت أخطاء إذا لم تُراجع تغييرات اللقطة بعناية.
 
-**Solution**:
+**الحل**:
 
-- Use snapshots as a complement to, not a replacement for, explicit assertions.
-- Regularly review snapshot changes during code reviews.
+- استخدم اللقطات مكمّلًا للتحققات الصريحة، لا بديلًا عنها.
+- راجع تغييرات اللقطات بانتظام أثناء مراجعات الشيفرة.
 
-### Large and Unwieldy Snapshots
+### لقطات كبيرة وعصية على الإدارة
 
-**Issue**: Large snapshots are hard to read and maintain, reducing their effectiveness.
+**المشكلة**: اللقطات الكبيرة صعبة القراءة والصيانة، ما يقلل فعاليتها.
 
-**Solution**:
+**الحل**:
 
-- Limit the size of snapshots.
-- Break down tests to focus on specific parts of the output.
+- حدّ من حجم اللقطات.
+- قسّم الاختبارات لتركّز على أجزاء محددة من المخرجات.
 
-### Ignoring Snapshot Failures
+### تجاهل إخفاقات اللقطات
 
-**Issue**: Developers may become desensitized to snapshot failures and update snapshots without proper investigation.
+**المشكلة**: قد يصبح المطورون غير مبالين بإخفاقات اللقطات ويحدّثونها دون تحقيق مناسب.
 
-**Solution**:
+**الحل**:
 
-- Encourage a culture of careful examination of snapshot changes.
-- Only update snapshots when changes are intentional and understood.
+- شجّع ثقافة الفحص الدقيق لتغييرات اللقطات.
+- حدّث اللقطات فقط عندما تكون التغييرات مقصودة ومفهومة.
 
-## Strategies to Manage Brittle Snapshots
+## استراتيجيات لإدارة اللقطات الهشة
 
-### Use Inline Snapshots
+### استخدم اللقطات المضمّنة
 
-Vitest supports inline snapshots, which store the snapshot within the test file.
+يدعم Vitest اللقطات المضمّنة، التي تخزّن اللقطة داخل ملف الاختبار.
 
 ```javascript
 test('formats user information correctly', () => {
@@ -185,14 +185,14 @@ test('formats user information correctly', () => {
 });
 ```
 
-**Benefits**:
+**الفوائد**:
 
-- Easier to review and maintain small snapshots.
-- Reduces the need to navigate between test and snapshot files.
+- مراجعة وصيانة اللقطات الصغيرة أسهل.
+- يقلل الحاجة إلى التنقل بين ملفات الاختبار واللقطات.
 
-### Customize Snapshot Serialization
+### تخصيص تسلسل اللقطات
 
-Implement custom serializers to control how objects are serialized in snapshots.
+نفّذ مسلسلات مخصصة (custom serializers) للتحكم في كيفية تسلسل الكائنات في اللقطات.
 
 ```javascript
 import { expect } from 'vitest';
@@ -203,14 +203,14 @@ expect.addSnapshotSerializer({
 });
 ```
 
-**Benefits**:
+**الفوائد**:
 
-- Provides consistent serialization for complex or custom data types.
-- Reduces noise in snapshots from irrelevant data.
+- يوفر تسلسلًا متسقًا لأنواع بيانات معقدة أو مخصصة.
+- يقلل الضوضاء في اللقطات الناتجة عن بيانات غير ذات صلة.
 
-### Use Property Matchers
+### استخدم مطابقات الخصائص
 
-Use matchers like `expect.any()` to ignore dynamic properties.
+استخدم مطابقات مثل `expect.any()` لتجاهل الخصائص الديناميكية.
 
 ```javascript
 expect(response).toMatchSnapshot({
@@ -219,14 +219,14 @@ expect(response).toMatchSnapshot({
 });
 ```
 
-**Benefits**:
+**الفوائد**:
 
-- Focuses the snapshot on relevant data.
-- Prevents snapshot failures due to expected variability.
+- يركّز اللقطة على البيانات ذات الصلة.
+- يمنع إخفاقات اللقطة بسبب تقلب متوقع.
 
-## Examples in Practice
+## أمثلة عملية
 
-### Testing API Responses
+### اختبار استجابات واجهة برمجة التطبيقات
 
 ```javascript
 // apiClient.js
@@ -236,7 +236,7 @@ export async function fetchData() {
 }
 ```
 
-**Test with Snapshot:**
+**اختبار مع لقطة:**
 
 ```javascript
 // apiClient.test.js
@@ -252,12 +252,12 @@ test('fetches data correctly', async () => {
 });
 ```
 
-**Explanation**:
+**الشرح**:
 
-- Dynamic properties like `id` and `createdAt` are matched with `expect.any()`.
-- The snapshot focuses on the structure and static content.
+- تُطابق الخصائص الديناميكية مثل `id` و`createdAt` باستخدام `expect.any()`.
+- تركّز اللقطة على البنية والمحتوى الثابت.
 
-### Testing Generated Markup
+### اختبار الترميز المولّد
 
 ```javascript
 // template.js
@@ -266,7 +266,7 @@ export function renderList(items) {
 }
 ```
 
-**Test with Snapshot:**
+**اختبار مع لقطة:**
 
 ```javascript
 // template.test.js
@@ -280,11 +280,11 @@ test('renders list correctly', () => {
 });
 ```
 
-**Explanation**:
+**الشرح**:
 
-- Captures the rendered HTML for the list.
-- Quickly detects changes in the template rendering logic.
+- يلتقط HTML المصيّر للقائمة.
+- يكتشف بسرعة التغييرات في منطق تصيير القالب.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Snapshot testing with Vitest is a valuable tool for verifying complex outputs with minimal effort. By understanding when to use snapshots and how to manage their potential brittleness, you can enhance your test suite’s effectiveness without compromising maintainability.
+اختبار اللقطات مع Vitest أداة قيّمة للتحقق من المخرجات المعقدة بأقل جهد. بفهم متى تستخدم اللقطات وكيف تدير هشاشتها المحتملة، يمكنك تحسين فعالية مجموعة اختباراتك دون المساس بقابلية الصيانة.

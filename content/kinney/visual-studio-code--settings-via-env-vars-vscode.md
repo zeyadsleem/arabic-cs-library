@@ -1,29 +1,29 @@
 ---
-title: "Controlling Settings With Environment Variables"
-lang: en
+title: "التحكّم في الإعدادات بمتغيّرات البيئة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/settings-via-env-vars-vscode"
 ---
 
-Environment variables allow you to dynamically configure Visual Studio Code settings based on your system environment. This is useful for adapting settings to different operating systems, development stages (development, staging, production), or user-specific configurations. You can reference environment variables in `settings.json` using the `${env:VARIABLE_NAME}` syntax.
+تتيح لك متغيّرات البيئة ضبط إعدادات Visual Studio Code ديناميكيًا بناءً على بيئة نظامك. ويفيد ذلك في تكييف الإعدادات مع أنظمة تشغيل مختلفة، أو مراحل تطوير مختلفة (التطوير والتهيئة والإنتاج)، أو تهيئات خاصة بمستخدم معيّن. ويمكنك الإشارة إلى متغيّرات البيئة في `settings.json` باستخدام الصياغة `${env:VARIABLE_NAME}`.
 
 ```json
 {
 	"terminal.integrated.defaultProfile.windows": "${env:WSL_DISTRO_NAME}", // Use WSL distro name as default terminal profile on Windows
 ```
 
-The syntax basically works like this:
+وتعمل الصياغة في الأساس هكذا:
 
-- `${env:VARIABLE_NAME}`: References the environment variable `VARIABLE_NAME`.
-- `${env:VARIABLE_NAME:DEFAULT_VALUE}`: Provides a default value (`DEFAULT_VALUE`) if the environment variable is not set.
+- `${env:VARIABLE_NAME}`: يشير إلى متغيّر البيئة `VARIABLE_NAME`.
+- `${env:VARIABLE_NAME:DEFAULT_VALUE}`: يوفّر قيمة افتراضية (`DEFAULT_VALUE`) إذا لم يُضبط متغيّر البيئة.
 
-Visual Studio Code also supports these variables out of the box:
+ويدعم Visual Studio Code أيضًا هذه المتغيّرات جاهزةً:
 
-- **`VSCODE_FONT_SIZE`:** Example used above to dynamically set font size.
-- **`VSCODE_DISABLE_EXTENSIONS`:** Disable all extensions when launching Visual Studio Code (useful for troubleshooting).
-- **`VSCODE_DEV`:** Launch Visual Studio Code in development mode.
+- **`VSCODE_FONT_SIZE`:** المثال المستخدم أعلاه لضبط حجم الخط ديناميكيًا.
+- **`VSCODE_DISABLE_EXTENSIONS`:** يعطّل كل الإضافات عند تشغيل Visual Studio Code (مفيد في تشخيص المشكلات).
+- **`VSCODE_DEV`:** يشغّل Visual Studio Code في وضع التطوير.
 
-## Potential Use Cases
+## حالات استخدام محتملة
 
-- **Cross-Platform Settings:** Use environment variables to set OS-specific paths or configurations in `settings.json`, making your settings portable across different operating systems.
-- **Environment-Aware Settings:** Adjust settings based on the development environment. For example, you might use different linters or formatters for development and production environments.
-- **User-Specific Customization:** Allow different users on a team to have slightly different Visual Studio Code configurations by using user-specific environment variables.
+- **إعدادات عابرة للأنظمة:** استخدم متغيّرات البيئة لضبط مسارات أو تهيئات خاصة بنظام تشغيل معيّن في `settings.json`، فيصبح لديك إعدادات قابلة للنقل بين أنظمة تشغيل مختلفة.
+- **إعدادات واعية بالبيئة:** عدّل الإعدادات بناءً على بيئة التطوير. فمثلًا قد تستخدم أدوات فحص أو منسّقات مختلفة لبيئتي التطوير والإنتاج.
+- **تخصيص خاص بكل مستخدم:** اسمح لمستخدمين مختلفين في الفريق بتهيئات Visual Studio Code مختلفة قليلًا باستخدام متغيّرات بيئة خاصة بكل مستخدم.

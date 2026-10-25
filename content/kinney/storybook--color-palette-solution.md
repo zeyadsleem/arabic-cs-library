@@ -1,10 +1,10 @@
 ---
-title: "Creating a Color Palette from Your Tailwind Theme"
-lang: en
+title: "إنشاء لوحة ألوان من سمة Tailwind لديك"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/color-palette-solution"
 ---
 
-Instead of referencing Tailwind’s default theme, we can look our our Tailwind configuration file. Add the following to `src/colors.mdx`.
+بدلًا من الرجوع إلى سمة Tailwind الافتراضية، يمكننا النظر في ملف تهيئة Tailwind لدينا. أضف ما يلي إلى `src/colors.mdx`.
 
 ```mdx
 import config from '../tailwind.config';

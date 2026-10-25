@@ -1,14 +1,14 @@
 ---
-title: "Adding Controls to a Story"
-lang: en
+title: "إضافة أدوات تحكم إلى قصة"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/controls"
 ---
 
-In the last section, we added styles for the button when it was in `disabled` state, but we don’t have a particularly good way to trigger that in our stories. We *could* add additional stories for the disabled state of each of our button variants, but that feels like it might get out of hand.
+في القسم السابق، أضفنا أنماطًا للزر عندما يكون في الحالة `disabled`، لكن ليس لدينا طريقة جيدة بشكل خاص لتفعيل ذلك في قصصنا. *يمكننا* إضافة قصص إضافية للحالة المعطّلة لكل من متغيّرات أزرارنا، لكن هذا يبدو وكأنه قد يخرج عن السيطرة.
 
-Luckily for us, Storybook allows us to create custom controls that we can manipulate on our stories.
+ولحسن حظنا، تتيح لنا Storybook إنشاء أدوات تحكم مخصّصة نستطيع التلاعب بها في قصصنا.
 
-All that we need to do is add the following to the `Meta` of our story.
+وكل ما نحتاج إلى فعله هو إضافة ما يلي إلى `Meta` في قصتنا.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -23,11 +23,11 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-Now, you’ll notice that we have the ability to set that property in our controls.
+الآن، ستلاحظ أن لدينا القدرة على تعيين تلك الخاصية في أدوات التحكم لدينا.
 
-An additional control to show the disabled state
+أداة تحكم إضافية لإظهار الحالة المعطّلة
 
-We have to click on it in order to set it. If we don’t want to do that, we can set the value in each of our stories.
+علينا النقر عليها لتعيينها. وإن لم نرد فعل ذلك، يمكننا تعيين القيمة في كل من قصصنا.
 
 ```typescript
 export const Primary: Story = {
@@ -55,13 +55,13 @@ export const Destructive: Story = {
 };
 ```
 
-And how, we’ll see that it’s set and we can save one extra click. I’ll leave it up to you to decide if that’s worth it or not.
+والآن، سنرى أنها معيَّنة ويمكننا توفير نقرة إضافية. وسأترك لك قرار ما إذا كان ذلك يستحق ذلك أم لا.
 
-Explicitly setting the value of the type
+تعيين قيمة النوع صراحةً
 
-## An Alternative Approach for Setting a Default Value
+## أسلوب بديل لتعيين قيمة افتراضية
 
-One of the cool things about Storybook stories is that they’re just ES Modules. You *could* use the spread operator if you find yourself needing to make wide-scale changes often. This is helpful if we want to use aspects of one story in the context of another story.
+من الأمور الرائعة في قصص Storybook أنها مجرّد وحدات ES. و*يمكنك* استخدام معامل النشر (spread) إن وجدت نفسك بحاجة إلى إجراء تغييرات واسعة النطاق كثيرًا. وهذا مفيد إذا أردنا استخدام جوانب من قصة في سياق قصة أخرى.
 
 ```typescript
 export const Primary: Story = {
@@ -87,4 +87,4 @@ export const Destructive: Story = {
 };
 ```
 
-That said, there is also a way to use [default arguments](https://stevekinney.com/courses/storybook/default-args) that are passed to every story and then overriding them when needed. But, first, let’s do a little [exercise](https://stevekinney.com/courses/storybook/adding-button-sizes-exercise).
+ومع ذلك، توجد أيضًا طريقة لاستخدام [الوسائط الافتراضية](https://stevekinney.com/courses/storybook/default-args) التي تُمرَّر إلى كل قصة ثم تُتجاوَز عند الحاجة إليها. لكن أولًا، لنؤدِّ [تمرينًا](https://stevekinney.com/courses/storybook/adding-button-sizes-exercise) صغيرًا.

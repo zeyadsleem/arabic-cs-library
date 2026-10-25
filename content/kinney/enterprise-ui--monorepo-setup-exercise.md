@@ -1,50 +1,50 @@
 ---
-title: "Exercise 4: Monorepo Setup"
-lang: en
+title: "التمرين 4: إعداد المستودع الأحادي"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/monorepo-setup-exercise"
 ---
 
-The workspace has four packages (`analytics`, `users`, `ui`, `shared`) and a dashboard app, but there is no build orchestration. Running `pnpm -r build` rebuilds everything every time, even unchanged packages. You’re going to create a `turbo.json` configuration and wire up Turborepo so builds are cached, dependency-aware, and fast.
+تضم مساحة العمل أربع حزم (`analytics` و`users` و`ui` و`shared`) وتطبيق لوحة معلومات، لكن لا يوجد تنسيق للبناء. وتشغيل `pnpm -r build` يعيد بناء كل شيء في كل مرة، حتى الحزم غير المتغيرة. وأنت ستنشئ تهيئة `turbo.json` وتربط Turborepo كي تصير البناءات مخزّنة مؤقتًا وواعية بالاعتمادات وسريعة.
 
-## Why It Matters
+## لماذا يهمّ
 
-Without a build orchestrator, every CI run and every local build starts from scratch. In a monorepo with 5 packages that takes a few seconds; in a monorepo with 50 packages it takes minutes. Turborepo’s content-aware hashing means a build that has already succeeded with the same inputs is never repeated. The second build is free. Changing one leaf package only rebuilds its dependents, not the entire graph. This is the tool that makes monorepos viable at scale.
+بلا منسّق بناء، تبدأ كل تشغيلة CI وكل بناء محلي من الصفر. وفي مستودع أحادي بخمس حزم يستغرق ذلك ثوانٍ؛ وفي مستودع بخمسين حزمة يستغرق دقائق. ويعني التجزئة الواعية بالمحتوى في Turborepo أن بناءً نجح سابقًا بالمدخلات نفسها لا يُعاد أبدًا. فالبناء الثاني مجاني. وتغيير حزمة ورقية واحدة يعيد بناء المعتمَدات عليها فقط، لا الرسم البياني كامل. وهذه هي الأداة التي تجعل المستودعات الأحادية مجدية على نطاق واسع.
 
-> **Note**
+> **ملاحظة**
 >
-> At this point the workspace has `packages/users` — a feature package for user management. It follows the same pattern as `packages/analytics`: its own `package.json`, `tsconfig.json`, and `src/index.ts` with an explicit public API.
+> في هذه المرحلة، تضم مساحة العمل `packages/users` — حزمة ميزة لإدارة المستخدمين. وهي تتبع النمط نفسه الذي يتبعه `packages/analytics`: ملف `package.json` خاص بها، و`tsconfig.json`، و`src/index.ts` بواجهة برمجية عامة صريحة.
 
-## Feel the Problem
+## اشعر بالمشكلة
 
-Run the build without Turborepo to understand what you’re fixing.
+شغّل البناء دون Turborepo لتفهم ما الذي تصلحه.
 
-Run the build across all workspace packages:
+شغّل البناء عبر كل حزم مساحة العمل:
 
 ```bash
 pnpm -r build
 ```
 
-Note the output — every package builds, sequentially. Note how long it takes.
+لاحظ المخرَج — كل حزمة تُبنى بالتتابع. ولاحظ كم يستغرق.
 
-Now run it again immediately, without changing anything:
+والآن شغّله مجددًا فورًا، دون تغيير أي شيء:
 
 ```bash
 pnpm -r build
 ```
 
-Same time. Same output. Every package rebuilt even though nothing changed. pnpm’s `--recursive` flag has no caching — it just runs the `build` script in every package that has one.
+الوقت نفسه. المخرَج نفسه. أُعيد بناء كل حزمة رغم أن شيئًا لم يتغيّر. فعلم `--recursive` في pnpm بلا تخزين مؤقت — إنه يشغّل سكربت `build` في كل حزمة لديها واحد فقط.
 
-> **Why pnpm alone isn’t enough**
+> **لماذا لا تكفي pnpm وحدها**
 >
-> pnpm workspaces handle package resolution and dependency linking — they ensure that `@pulse/analytics` can import `@pulse/ui` through the workspace protocol (`workspace:*`). But pnpm has no opinion on task orchestration. It doesn’t know that `@pulse/analytics` depends on `@pulse/ui` and therefore `@pulse/ui` must build first. It doesn’t cache outputs. It doesn’t skip unchanged packages. That’s what a build orchestrator like Turborepo adds on top.
+> تتولّى مساحات عمل pnpm حلّ الحزم وربط الاعتمادات — فهي تضمن أن `@pulse/analytics` يستطيع استيراد `@pulse/ui` عبر بروتوكول مساحة العمل (`workspace:*`). لكن pnpm ليس له رأي في تنسيق المهام. فهو لا يعرف أن `@pulse/analytics` يعتمد على `@pulse/ui`، وأنه لذلك يجب بناء `@pulse/ui` أولًا. ولا يخزّن المخرجات مؤقتًا. ولا يتخطى الحزم غير المتغيرة. وهذا ما يضيفه منسّق بناء مثل Turborepo فوق ذلك.
 
-### Checkpoint
+### نقطة تحقّق
 
-You’ve run `pnpm -r build` twice and both runs took roughly the same time. There is no caching, no dependency ordering, no parallelization.
+شغّلت `pnpm -r build` مرتين واستغرقت التشغيلتان وقتًا متقاربًا. لا تخزين مؤقت، ولا ترتيب اعتمادات، ولا توازٍ.
 
-## How Turborepo Orchestrates Builds
+## كيف ينسّق Turborepo البناءات
 
-Turborepo reads the dependency graph from your `package.json` files and uses the `^` prefix in `dependsOn` to determine build order. Packages at the same depth build in parallel. The cache stores outputs keyed by a hash of each package’s inputs.
+يقرأ Turborepo رسم الاعتمادات من ملفات `package.json` لديك ويستخدم سابقة `^` في `dependsOn` لتحديد ترتيب البناء. وتُبنى الحزم في العمق نفسه بالتوازي. ويخزّن المخزن المؤقت المخرجات بمفاتيح من تجزئة مدخلات كل حزمة.
 
 ```
 graph TD
@@ -90,15 +90,15 @@ flowchart LR
     Cache -->|"no match"| Miss
 ```
 
-## Install Turborepo and Create `turbo.json`
+## ثبّت Turborepo وأنشئ `turbo.json`
 
-Install Turborepo as a dev dependency at the workspace root:
+ثبّت Turborepo كاعتماد تطوير في جذر مساحة العمل:
 
 ```bash
 pnpm add -Dw turbo
 ```
 
-Create `turbo.json` at the root of the repository:
+أنشئ `turbo.json` في جذر المستودع:
 
 *turbo.json*
 
@@ -125,25 +125,25 @@ Create `turbo.json` at the root of the repository:
 }
 ```
 
-*Note:* The ^ prefix builds dependencies first. "outputs" tells Turborepo what to cache.
+*ملاحظة:* سابقة ^ تبني الاعتمادات أولًا. و«outputs» تخبر Turborepo بما يخزّنه مؤقتًا.
 
-*Note:* Long-running dev servers should never be cached.
+*ملاحظة:* لا ينبغي تخزين خوادم التطوير طويلة التشغيل مؤقتًا أبدًا.
 
-### What Each Field Means
+### ماذا يعني كل حقل
 
-- **`"dependsOn": ["^build"]`**: The `^` prefix means “run this task in my dependencies first.” Before `@pulse/analytics` builds, Turborepo ensures `@pulse/ui` and `@pulse/shared` have already built. Without the caret, `dependsOn: ["build"]` would mean “run build in *this* package first” (a self-dependency, usually not what you want).
-- **`“outputs”: [“dist/**”]`**: Tells Turborepo which files to cache. After a successful build, it hashes the inputs (source files, dependencies, env vars) and stores the outputs. On the next run with the same inputs, it replays the cached outputs instead of running the build again.
-- **`"lint": {}`**: No `dependsOn`, no `outputs`. Linting each package is independent — you don’t need to lint dependencies first, and there’s nothing to cache beyond the pass/fail result.
-- **`"cache": false`**: The `dev` task should never be cached. It’s a long-running process (a dev server), not a one-shot command.
-- **`"persistent": true`**: Tells Turborepo that `dev` is a long-running process that doesn’t exit. Without this, Turborepo would wait for it to finish before running dependent tasks (which would hang forever).
+- **`"dependsOn": ["^build"]`**: سابقة `^` تعني «شغّل هذه المهمة في اعتماداتي أولًا». فقبل بناء `@pulse/analytics`، يتأكد Turborepo أن `@pulse/ui` و`@pulse/shared` بُنيتا سابقًا. وبلا السابقة، سيعني `dependsOn: ["build"]` «شغّل build في *هذه* الحزمة أولًا» (اعتماد على الذات، وهو عادةً ليس ما تريد).
+- **`“outputs”: [“dist/**”]`**: يخبر Turborepo أي الملفات يخزّن. فبعد بناء ناجح، يجزّئ المدخلات (ملفات المصدر، والاعتمادات، ومتغيّرات البيئة) ويخزّن المخرجات. وفي التشغيل التالي بالمدخلات نفسها، يعيد تشغيل المخرجات المخزّنة بدل تنفيذ البناء مجددًا.
+- **`"lint": {}`**: بلا `dependsOn`، وبلا `outputs`. ففحص كل حزمة مستقل — لا تحتاج إلى فحص الاعتمادات أولًا، ولا شيء يُخزَّن مؤقتًا أبعد من نتيجة النجاح أو الفشل.
+- **`"cache": false`**: يجب ألا تُخزَّن مهمة `dev` مؤقتًا أبدًا. فهي عملية طويلة التشغيل (خادم تطوير)، لا أمرًا لمرة واحدة.
+- **`"persistent": true`**: يخبر Turborepo أن `dev` عملية طويلة التشغيل لا تنتهي. وبدونه، سينتظر Turborepo انتهاءها قبل تشغيل المهام المعتمدة (وهو ما سيتعلّق إلى الأبد).
 
-> **The `^` prefix is the most important concept in Turborepo**
+> **سابقة `^` أهم مفهوم في Turborepo**
 >
-> It encodes the dependency graph into your task pipeline. When you run `turbo build`, Turborepo reads every package’s `package.json` to construct the dependency graph, then uses `^build` to determine execution order. `@pulse/shared` has no dependencies, so it builds first. `@pulse/ui` depends on `@pulse/shared`, so it builds second. `@pulse/analytics` depends on both, so it builds third. The dashboard depends on everything, so it builds last. Turborepo runs packages at the same depth in parallel — `@pulse/ui` and `@pulse/users` can build at the same time because neither depends on the other.
+> إنها ترمّز رسم الاعتمادات في خط أنابيب مهامك. فعندما تشغّل `turbo build`، يقرأ Turborepo ملف `package.json` لكل حزمة ليبني رسم الاعتمادات، ثم يستخدم `^build` لتحديد ترتيب التنفيذ. فـ`@pulse/shared` بلا اعتمادات، فتُبنى أولًا. و`@pulse/ui` تعتمد على `@pulse/shared`، فتُبنى ثانيًا. و`@pulse/analytics` تعتمد على الاثنتين، فتُبنى ثالثًا. ولوحة المعلومات تعتمد على كل شيء، فتُبنى أخيرًا. ويشغّل Turborepo الحزم في العمق نفسه بالتوازي — فيمكن بناء `@pulse/ui` و`@pulse/users` في الوقت نفسه لأن إحداهما لا تعتمد على الأخرى.
 
-## Update Root `package.json` Scripts
+## حدّث سكربتات `package.json` في الجذر
 
-Open the root `package.json` and replace the existing `scripts` section. The old scripts ran pnpm commands directly—the new ones delegate to Turborepo:
+افتح `package.json` الجذري واستبدل قسم `scripts` القائم. كانت السكربتات القديمة تشغّل أوامر pnpm مباشرة — أما الجديدة فتفوّض الأمر إلى Turborepo:
 
 *package.json*
 
@@ -159,23 +159,23 @@ Open the root `package.json` and replace the existing `scripts` section. The old
 }
 ```
 
-*Note:* All scripts now delegate to Turborepo instead of running pnpm -r directly.
+*ملاحظة:* كل السكربتات الآن تفوّض الأمر إلى Turborepo بدل تشغيل pnpm -r مباشرةً.
 
-Now `pnpm build` delegates to Turborepo instead of running scripts directly.
+الآن يفوّض `pnpm build` الأمر إلى Turborepo بدل تشغيل السكربتات مباشرةً.
 
-> **Note**
+> **ملاحظة**
 >
-> **You can still use pnpm filters alongside Turborepo.** Running `pnpm turbo build --filter=@pulse/analytics` builds only `@pulse/analytics` and its dependencies. Running `pnpm turbo build --filter=@pulse/analytics...` (with the `...` suffix) builds `@pulse/analytics` and everything that depends on it. These filters are how CI pipelines build only what a pull request changed.
+> **ما زال بوسعك استخدام مرشّحات pnpm إلى جانب Turborepo.** فتشغيل `pnpm turbo build --filter=@pulse/analytics` يبني `@pulse/analytics` واعتماداتها فقط. وتشغيل `pnpm turbo build --filter=@pulse/analytics...` (باللاحقة `...`) يبني `@pulse/analytics` وكل ما يعتمد عليها. وبهذه المرشّحات تبني خطوط CI ما غيّره طلب سحب فقط.
 
-## Run Turborepo for the First Time
+## شغّل Turborepo لأول مرة
 
-Run the build through Turborepo:
+شغّل البناء عبر Turborepo:
 
 ```bash
 pnpm turbo build
 ```
 
-Watch the output. Turborepo prints each task as it runs, showing the dependency ordering:
+راقب المخرَج. يطبع Turborepo كل مهمة أثناء تشغيلها، عارضًا ترتيب الاعتمادات:
 
 ```
 @pulse/shared:build: cache miss, executing
@@ -186,15 +186,15 @@ Watch the output. Turborepo prints each task as it runs, showing the dependency 
 @pulse/dashboard:build: cache miss, executing
 ```
 
-Every task says “cache miss” because this is the first run — there is no cache yet.
+كل مهمة تقول «cache miss» لأن هذه أول تشغيلة — لا يوجد مخزن مؤقت بعد.
 
-Run it again immediately:
+شغّله مجددًا فورًا:
 
 ```bash
 pnpm turbo build
 ```
 
-Now the output is different:
+الآن يختلف المخرَج:
 
 ```
 @pulse/shared:build: cache hit, replaying logs
@@ -209,45 +209,45 @@ Cached:    6 cached, 6 total
   Time:    103ms >>> FULL TURBO
 ```
 
-Every task shows “cache hit.” The total time drops to under a second. `FULL TURBO` means every single task was served from cache.
+كل مهمة تعرض «cache hit». وينخفض الزمن الكامل إلى أقل من ثانية. و`FULL TURBO` تعني أن كل مهمة جاءت من المخزن المؤقت.
 
-> **How Turborepo’s cache works**
+> **كيف يعمل المخزن المؤقت في Turborepo**
 >
-> For each task, Turborepo computes a hash from:
+> لكل مهمة، يحسب Turborepo تجزئة من:
 >
-> 1. The source files in the package
-> 2. The hashes of all dependency packages
-> 3. The task definition in `turbo.json`
-> 4. Relevant environment variables
-> 5. The lockfile entries for external dependencies
+> 1. ملفات المصدر في الحزمة
+> 2. تجزئات كل حزم الاعتماد
+> 3. تعريف المهمة في `turbo.json`
+> 4. متغيّرات البيئة ذات الصلة
+> 5. مدخلات ملف القفل للاعتمادات الخارجية
 >
-> If the hash matches a previous run, Turborepo restores the cached `outputs` (the `dist/` directory) and replays the logged stdout/stderr instead of executing the command. The cache is local by default (stored in `node_modules/.cache/turbo`), but can be shared across CI runners with remote caching.
+> فإن طابقت التجزئة تشغيلة سابقة، استعاد Turborepo المخرجات المخزّنة (`outputs`، أي مجلد `dist/`) وأعاد تشغيل المخرجات المسجّلة stdout/stderr بدل تنفيذ الأمر. والمخزن محلي افتراضيًا (يُحفظ في `node_modules/.cache/turbo`)، لكن يمكن مشاركته عبر عوامل CI بالتخزين المؤقت البعيد.
 
-### Checkpoint
+### نقطة تحقّق
 
-`pnpm turbo build` on a clean cache builds everything. The second run shows `FULL TURBO` and completes in under a second.
+`pnpm turbo build` بمخزن مؤقت نظيف يبني كل شيء. والتشغيلة الثانية تعرض `FULL TURBO` وتكتمل في أقل من ثانية.
 
-First turbo build showing cache misses for all packages
+أول بناء بـturbo يعرض حالات cache miss لكل الحزم
 
-Second turbo build showing FULL TURBO with all cache hits
+البناء الثاني بـturbo يعرض FULL TURBO مع كل حالات cache hit
 
-## Observe Partial Rebuilds
+## راقب البناءات الجزئية
 
-Now change something and watch Turborepo rebuild only what’s necessary.
+والآن غيّر شيئًا وراقب Turborepo يعيد بناء ما يلزم فقط.
 
-Open `packages/ui/src/button.tsx` and make a small change — add a comment at the top of the file:
+افتح `packages/ui/src/button.tsx` وأجرِ تغييرًا صغيرًا — أضف تعليقًا في أعلى الملف:
 
 ```typescript
 // Updated button styling
 ```
 
-Save the file and run the build again:
+احفظ الملف وشغّل البناء مجددًا:
 
 ```bash
 pnpm turbo build
 ```
 
-Look at the output carefully:
+انظر إلى المخرَج بعناية:
 
 ```
 @pulse/shared:build: cache hit, replaying logs
@@ -258,50 +258,50 @@ Look at the output carefully:
 @pulse/dashboard:build: cache miss, executing
 ```
 
-`@pulse/shared` and `@pulse/legacy` are cache hits — they didn’t change and have no dependency on `@pulse/ui`. But `@pulse/ui` is a cache miss (you changed it), and everything that depends on `@pulse/ui` also rebuilds: `@pulse/analytics`, `@pulse/users`, and `@pulse/dashboard`.
+`@pulse/shared` و`@pulse/legacy` حالات cache hit — لم تتغيّرا ولا اعتماد لهما على `@pulse/ui`. لكن `@pulse/ui` حالة cache miss (لأنك غيّرتها)، وكل ما يعتمد على `@pulse/ui` يُعاد بناؤه أيضًا: `@pulse/analytics` و`@pulse/users` و`@pulse/dashboard`.
 
-> **Turborepo rebuilds dependents, not just the changed package**
+> **يعيد Turborepo بناء المعتمَدات، لا الحزمة المتغيرة فقط**
 >
-> This is because the hash includes dependency hashes. When `@pulse/ui` changes, its hash changes. `@pulse/analytics` depends on `@pulse/ui`, so its input hash includes `@pulse/ui`’s hash — which changed. The cascade continues up the graph. This is correct: a change in `@pulse/ui` could affect the build output of any package that imports it. The only safe optimization is to skip packages that provably cannot be affected — packages with no dependency path to the changed package.
+> لأن التجزئة تضم تجزئات الاعتمادات. فعندما تتغيّر `@pulse/ui`، تتغيّر تجزئتها. و`@pulse/analytics` تعتمد على `@pulse/ui`، فتضم تجزئة مدخلاتها تجزئة `@pulse/ui` — التي تغيّرت. وتستمر السلسلة صعودًا في الرسم البياني. وهذا صحيح: فتغيير في `@pulse/ui` قد يؤثر في مخرجات بناء أي حزمة تستوردها. والتحسين الآمن الوحيد هو تخطي الحزم التي يستحيل إثبات تأثرها — أي الحزم التي لا مسار اعتماد يصل بها إلى الحزمة المتغيرة.
 
-Revert your change to `packages/ui/src/button.tsx` (remove the comment) and run `pnpm turbo build` again. It should be `FULL TURBO` — the files are back to the cached state.
+أعد تغييرك في `packages/ui/src/button.tsx` (أزل التعليق) وشغّل `pnpm turbo build` مجددًا. ينبغي أن يكون `FULL TURBO` — فقد عادت الملفات إلى الحالة المخزّنة.
 
-### Checkpoint
+### نقطة تحقّق
 
-After changing `packages/ui`, only `@pulse/shared` shows a cache hit. Everything downstream of `@pulse/ui` rebuilds. After reverting, the cache is restored.
+بعد تغيير `packages/ui`، تظهر `@pulse/shared` وحدها كحالة cache hit. ويُعاد بناء كل ما هو أسفل `@pulse/ui`. وبعد التراجع، يُستعاد المخزن المؤقت.
 
-## Examine the Dependency Graph
+## افحص رسم الاعتمادات
 
-Turborepo can visualize the task graph it constructs.
+يستطيع Turborepo عرض رسم المهام الذي يبنيه.
 
-Generate the graph:
+ولّد الرسم:
 
 ```bash
 pnpm turbo build --graph=graph.html
 ```
 
-This generates an HTML file with a visualization of the dependency graph. Open `graph.html` in your browser. You should see:
+يولّد هذا ملف HTML فيه تصوّر لرسم الاعتمادات. افتح `graph.html` في متصفحك. ينبغي أن ترى:
 
-- `@pulse/shared` at the bottom (no dependencies)
-- `@pulse/ui` one level up (depends on `@pulse/shared`)
-- `@pulse/analytics` and `@pulse/users` at the next level (both depend on `@pulse/ui` and `@pulse/shared`)
-- `@pulse/dashboard` at the top (depends on everything)
+- `@pulse/shared` في الأسفل (بلا اعتمادات)
+- `@pulse/ui` في مستوى واحد أعلى (تعتمد على `@pulse/shared`)
+- `@pulse/analytics` و`@pulse/users` في المستوى التالي (كلتاهما تعتمد على `@pulse/ui` و`@pulse/shared`)
+- `@pulse/dashboard` في الأعلى (تعتمد على كل شيء)
 
-> **The graph is the architecture**
+> **الرسم البياني هو المعمارية**
 >
-> This visualization is not just a debugging tool — it’s a map of your system’s coupling. If you see a package at the bottom of the graph with edges going to every other package, that’s your most critical shared dependency. If you see two packages with no edges between them, they can build and test in parallel. The graph tells you where parallelism is possible, where bottlenecks are, and what the blast radius of a change will be.
+> هذا التصوّر ليس أداة تنقيح فقط — بل خريطة لاقتران نظامك. فإن رأيت حزمة في أسفل الرسم بحواف تصل إلى كل حزمة أخرى، فتلك أهم اعتماد مشترك لديك. وإن رأيت حزمتين بلا حواف بينهما، فبوسعهما البناء والاختبار بالتوازي. ويخبرك الرسم حيث يكون التوازي ممكنًا، وأين توجد الاختناقات، وما نطاق تأثير أي تغيير.
 
-Now try the filter with the graph:
+والآن جرّب المرشّح مع الرسم:
 
 ```bash
 pnpm turbo build --filter=@pulse/analytics... --graph=graph-analytics.html
 ```
 
-This generates a graph showing only the subgraph relevant to `@pulse/analytics` and its dependencies.
+يولّد هذا رسمًا يعرض فقط الرسم الفرعي المتصل بـ`@pulse/analytics` واعتماداتها.
 
-### Checkpoint
+### نقطة تحقّق
 
-You can visualize the dependency graph and identify which packages are upstream and downstream of any given package.
+تستطيع تصوّر رسم الاعتمادات وتحديد أي الحزم أعلى وأسفل أي حزمة معينة.
 
 ```
 graph TD
@@ -331,21 +331,21 @@ graph TD
     Shared --> Root
 ```
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `05-typescript-start` branch:
+إن احتجت إلى اللحاق بالركب، فالحالة المكتملة لهذا التمرين متاحة في فرع `05-typescript-start`:
 
 ```bash
 git checkout 05-typescript-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Filter builds:** Run `pnpm turbo build --filter=@pulse/analytics...` to build only analytics and its dependencies. Compare the task count to a full build.
-- **Dry run:** Run `pnpm turbo build --dry-run=json` to see exactly what Turborepo would execute without running anything. Inspect the JSON output to understand the hash computation.
-- **Environment variables:** Add an environment variable to the `build` task’s `env` key in `turbo.json` and observe that changing the variable invalidates the cache.
+- **بناءات مرشَّحة:** شغّل `pnpm turbo build --filter=@pulse/analytics...` لبناء analytics واعتماداتها فقط. وقارن عدد المهام ببناء كامل.
+- **تشغيل تجريبي:** شغّل `pnpm turbo build --dry-run=json` لترى بالضبط ما سينفّذه Turborepo دون تشغيل أي شيء. وافحص مخرَج JSON لفهم حساب التجزئة.
+- **متغيّرات البيئة:** أضف متغيّر بيئة إلى مفتاح `env` في مهمة `build` داخل `turbo.json` ولاحظ أن تغيير المتغيّر يُبطل المخزن المؤقت.
 
-## What’s Next
+## ما التالي
 
-You have cached, dependency-aware builds. But TypeScript still checks each package independently — there’s no incremental type checking across package boundaries. Changing a type in `@pulse/shared` forces a full recheck of every package. In the next exercise, you’ll add `composite: true` and project references so TypeScript can do incremental cross-package type checking.
+لديك الآن بناءات مخزّنة مؤقتًا وواعية بالاعتمادات. لكن TypeScript ما زال يفحص كل حزمة باستقلال — لا يوجد فحص أنواع تزايدي عبر حدود الحزم. فتغيير نوع في `@pulse/shared` يفرض إعادة فحص كاملة لكل حزمة. وفي التمرين التالي، ستضيف `composite: true` ومراجع المشاريع كي يستطيع TypeScript فحص الأنواع تزايديًا عبر الحزم.

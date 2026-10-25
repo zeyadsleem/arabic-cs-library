@@ -1,28 +1,22 @@
 ---
-title: "Subagents"
-lang: en
+title: "الوكلاء الفرعيون"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-sub-agents"
 ---
 
-[Claude Code subagents](https://code.claude.com/docs/en/sub-agents) are agents
-with their own context, tools, model, permissions, and optional memory. They are
-useful when one part of the task can be isolated from the main conversation.
+[وكلاء Claude Code الفرعيون](https://code.claude.com/docs/en/sub-agents) وكلاء لهم سياقهم وأدواتهم ونموذجهم وصلاحياتهم وذاكرتهم الاختيارية الخاصة. وهم مفيدون عندما يمكن عزل جزء من المهمة عن المحادثة الرئيسية.
 
-I use them when isolation makes the main thread simpler, not when I want the task
-to look more advanced than it is.
+أستخدمهم عندما يجعل العزل الخيط الرئيسي أبسط، لا عندما أريد أن تبدو المهمة أكثر تقدّمًا مما هي عليه.
 
-## Built-In Agents
+## الوكلاء المدمجون
 
-Claude Code includes built-in agents such as Explore, Plan, and
-general-purpose. Explore is useful for read-only investigation. Plan is useful
-for design. The general-purpose agent can take on broader work when you need a
-helper with tool access.
+يتضمن Claude Code وكلاء مدمجين مثل Explore و Plan و general-purpose. و Explore مفيد للتحقيق للقراءة فقط. و Plan مفيد للتصميم. ويستطيع وكيل general-purpose تولّي عمل أوسع عندما تحتاج مساعدًا له وصول إلى الأدوات.
 
-Pick the agent by job, not by novelty.
+اختر الوكيل حسب المهمة لا حسب الجِدّة.
 
-## Custom Agents
+## الوكلاء المخصّصون
 
-Project agents can live in `.claude/agents/`:
+يمكن أن يسكن وكلاء المشروع في `.claude/agents/`:
 
 ```markdown
 ---
@@ -40,24 +34,19 @@ Inspect the changed files and closest tests. Return missing coverage with file
 references. Do not edit files.
 ```
 
-Agent frontmatter can also control disallowed tools, MCP servers, hooks, maximum
-turns, skills, effort, background behavior, and isolation.
+ويمكن أن تتحكم ترويسة الوكيل أيضًا بالأدوات الممنوعة وخوادم MCP والخطّافات والحد الأقصى للأدوار والمهارات والجهد والسلوك في الخلفية والعزل.
 
-## Background Subagents
+## الوكلاء الفرعيون في الخلفية
 
-Background subagents are useful for independent research. Current Claude Code
-surfaces background subagent permission prompts in the main session, which makes
-their actions easier to audit.
+الوكلاء الفرعيون في الخلفية مفيدون للبحث المستقل. ويعرض Claude Code الحالي طلبات صلاحيات الوكلاء الفرعيين في الخلفية في الجلسة الرئيسية، ما يجعل أفعالهم أسهل في التدقيق.
 
-Give background agents a tight return contract:
+أعطِ وكلاء الخلفية عقد إعادة صارمًا:
 
 ```
 Return only confirmed findings, file references, and whether the main task
 should stop.
 ```
 
-## Agent Memory
+## ذاكرة الوكيل
 
-Subagents can maintain memory. Use that for repeated specialist behavior, not for
-facts that should be committed to the repository. If the memory affects future
-correctness, move it into a rule, skill, test, or documentation file.
+يستطيع الوكلاء الفرعيون الاحتفاظ بذاكرة. استخدم ذلك للسلوك المتخصص المتكرر، لا للحقائق التي ينبغي إيداعها في المستودع. وإذا أثّرت الذاكرة في الصحة مستقبلًا، فانقلها إلى قاعدة أو مهارة أو اختبار أو ملف توثيق.

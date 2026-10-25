@@ -1,22 +1,22 @@
 ---
-title: "Common Use Cases"
-lang: en
+title: "حالات الاستخدام الشائعة"
+lang: ar
 source: "https://stevekinney.com/courses/aws/edge-function-use-cases"
 ---
 
-Edge functions solve a specific category of problems: things you need to do on every request (or every response) before the client or origin sees the traffic. On platforms like Vercel or Netlify, this logic lives in configuration files, middleware, or edge functions with similar names. On AWS, it lives in CloudFront Functions or Lambda@Edge, depending on the complexity. In my experience, the URL rewrite and redirect cases come up constantly—the rest are situational but worth knowing.
+تحلّ دوال الحافة فئة محدّدة من المشكلات: أمورًا تحتاج إلى إنجازها في كل طلب (أو في كل استجابة) قبل أن يرى العميل أو الأصل حركة المرور. على منصات مثل Vercel أو Netlify، يعيش هذا المنطق في ملفات تهيئة أو وسيط أو دوال حافة بأسماء مشابهة. وعلى AWS، يعيش في CloudFront Functions أو Lambda@Edge، حسب التعقيد. ومن تجربتي، تتكرر حالتا إعادة كتابة URL وإعادة التوجيه باستمرار—أما البقية فظرفية لكنها تستحق المعرفة.
 
-If you want AWS’s version of the runtime behavior while you read, the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) is the official reference.
+إن أردت نسخة AWS من سلوك وقت التشغيل أثناء قراءتك، فـ[دليل CloudFront Functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) هو المرجع الرسمي.
 
-This lesson covers the most common use cases for frontend engineers. Each one includes a short code snippet you can adapt. For the full comparison of when to use CloudFront Functions versus Lambda@Edge, refer back to [Lambda@Edge vs CloudFront Functions](https://stevekinney.com/courses/aws/edge-compute-comparison).
+يغطّي هذا الدرس أكثر حالات الاستخدام شيوعًا عند مهندسي الواجهة الأمامية. وكل حالة تتضمن مقطع شيفرة قصيرًا يمكنك تكييفه. وللمقارنة الكاملة بين متى تستخدم CloudFront Functions ومتى تستخدم Lambda@Edge، ارجع إلى [Lambda@Edge مقابل CloudFront Functions](https://stevekinney.com/courses/aws/edge-compute-comparison).
 
-## URL Rewrites
+## إعادة كتابة URL
 
-URL rewrites change the request path without the client knowing. The browser still shows the original URL, but CloudFront (or the origin) serves content from a different path.
+تغيّر إعادة كتابة URL مسار الطلب دون أن يعلم العميل. فما زال المتصفح يعرض URL الأصلي، لكن CloudFront (أو الأصل) يقدّم المحتوى من مسار مختلف.
 
-The most common rewrite for frontend engineers: translating clean URLs to actual S3 object keys.
+أكثر إعادة كتابة شيوعًا عند مهندسي الواجهة الأمامية: ترجمة URLs النظيفة إلى مفاتيح كائنات S3 الفعلية.
 
-### CloudFront Function
+### دالة CloudFront
 
 ```javascript
 function handler(event) {
@@ -34,13 +34,13 @@ function handler(event) {
 }
 ```
 
-This is a **viewer request** function. It runs before the cache check, so CloudFront caches the content under the rewritten URI.
+هذه دالة **طلب المشاهد**. تعمل قبل فحص الذاكرة المؤقتة، لذا تخزّن CloudFront المحتوى مؤقتًا تحت URI المُعاد كتابته.
 
-## Redirects
+## إعادة التوجيه
 
-Redirects tell the browser to go to a different URL. Unlike rewrites, the client sees the new URL in the address bar.
+تخبر إعادة التوجيه المتصفح بالذهاب إلى URL مختلف. وخلافًا لإعادة الكتابة، يرى العميل URL الجديد في شريط العنوان.
 
-### CloudFront Function
+### دالة CloudFront
 
 ```javascript
 function handler(event) {
@@ -62,7 +62,7 @@ function handler(event) {
 }
 ```
 
-You can also build a redirect map for migrated pages:
+يمكنك أيضًا بناء خريطة إعادة توجيه للصفحات المرحّلة:
 
 ```javascript
 var redirects = {
@@ -89,15 +89,15 @@ function handler(event) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Keep the redirect map small. Your entire function must fit in 10 KB for CloudFront Functions. If you have hundreds of redirects, the right answer is **CloudFront KeyValueStore** (KVS, GA since December 2023): keep the function itself tiny, store the redirect map in a KVS instance, and read it at runtime via the `cf.kvs()` API. The function stays well under the size limit, and the data updates independently without redeploying the function. For truly complex logic that requires network access, use a Lambda@Edge function with an origin request trigger.
+> أبقِ خريطة إعادة التوجيه صغيرة. فيجب أن تتّسع دالتك كاملة في 10 KB عند استخدام CloudFront Functions. فإن كانت لديك مئات من عمليات إعادة التوجيه، فالجواب الصحيح هو **CloudFront KeyValueStore** (KVS، متاح عمومًا منذ ديسمبر 2023): أبقِ الدالة نفسها صغيرة، وخزّن خريطة إعادة التوجيه في نسخة KVS، واقرأها في وقت التشغيل عبر واجهة `cf.kvs()`. فتبقى الدالة أقل بكثير من حد الحجم، وتُحدَّث البيانات باستقلال دون إعادة نشر الدالة. أما المنطق المعقّد حقًا الذي يحتاج إلى وصول شبكي، فاستخدم دالة Lambda@Edge مع مشغّل طلب الأصل.
 
-## Security Headers
+## ترويسات الأمان
 
-You can add security headers using a CloudFront response headers policy—you set one up in [CloudFront Headers, CORS, and Security](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security). But if you need conditional header logic or headers that depend on the request, an edge function gives you more control.
+يمكنك إضافة ترويسات أمان باستخدام سياسة ترويسات استجابة في CloudFront—وقد أعددت واحدة في [ترويسات CloudFront وCORS والأمان](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security). لكن إن كنت تحتاج إلى منطق ترويسات شرطي أو ترويسات تعتمد على الطلب، فدالة الحافة تمنحك تحكمًا أكبر.
 
-### CloudFront Function (Viewer Response)
+### دالة CloudFront (استجابة المشاهد)
 
 ```javascript
 function handler(event) {
@@ -119,15 +119,15 @@ function handler(event) {
 }
 ```
 
-*Note:* Adjust the `Content-Security-Policy` directive to match your application's requirements.
+*ملاحظة:* عدّل توجيه `Content-Security-Policy` ليطابق متطلبات تطبيقك.
 
-This is a **viewer response** function. It runs after CloudFront has the response (from cache or origin) and before it sends it to the client.
+هذه دالة **استجابة المشاهد**. تعمل بعد أن يحصل CloudFront على الاستجابة (من الذاكرة المؤقتة أو من الأصل) وقبل أن يرسلها إلى العميل.
 
-## Geolocation-Based Routing
+## التوجيه الجغرافي
 
-CloudFront adds geolocation headers to requests before they reach your edge function. You can use these headers to route users to region-specific content or to customize the response based on location.
+تضيف CloudFront ترويسات تحديد الموقع الجغرافي إلى الطلبات قبل أن تصل إلى دالة الحافة لديك. ويمكنك استخدام هذه الترويسات لتوجيه المستخدمين إلى محتوى خاص بمنطقة أو لتخصيص الاستجابة حسب الموقع.
 
-### Lambda@Edge (Origin Request)
+### Lambda@Edge (طلب الأصل)
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -146,19 +146,19 @@ export const handler: CloudFrontRequestHandler = async (event) => {
 };
 ```
 
-*Note:* Default: serve the English version at the original URI.
+*ملاحظة:* الافتراضي: تقديم النسخة الإنجليزية على URI الأصلي.
 
-> **Warning**
+> **تحذير**
 >
-> The `cloudfront-viewer-country` header is only available if you’ve configured your cache behavior to forward it. In your distribution’s cache policy or origin request policy, you must whitelist the `CloudFront-Viewer-Country` header. Without this, the header won’t appear in your function’s event.
+> لا تتوفر ترويسة `cloudfront-viewer-country` إلا إذا كانت تهيئة سلوك الذاكرة المؤقتة لديك تمرّرها. في سياسة الذاكرة المؤقتة أو سياسة طلب الأصل في توزيعك، يجب أن تضع الترويسة `CloudFront-Viewer-Country` في القائمة المسموحة. فبدون ذلك، لن تظهر الترويسة في حدث دالتك.
 
-This is a Lambda@Edge function because geolocation routing typically needs to run at the **origin request** level—you want the routing decision to be cacheable per country, not re-evaluated on every viewer request.
+هذه دالة Lambda@Edge لأن التوجيه الجغرافي يحتاج عادةً إلى العمل على مستوى **طلب الأصل**—فأنت تريد أن يكون قرار التوجيه قابلًا للتخزين المؤقت لكل بلد، لا أن يُعاد تقييمه في كل طلب مشاهد.
 
-## Authentication Checks at the Edge
+## فحوصات المصادقة على الحافة
 
-For private content—member-only pages, admin dashboards, staging environments—you can validate authentication before the request ever reaches your origin.
+للمحتوى الخاص—صفحات الأعضاء فقط، ولوحات الإدارة، وبيئات الاختبار—يمكنك التحقق من المصادقة قبل أن يصل الطلب أصلًا إلى أصلك.
 
-### CloudFront Function (Basic Auth for Staging)
+### دالة CloudFront (مصادقة أساسية لبيئة الاختبار)
 
 ```javascript
 function handler(event) {
@@ -180,11 +180,11 @@ function handler(event) {
 }
 ```
 
-This is a minimal example for protecting a staging environment with HTTP Basic Auth (username: `staging`, password: `password`). It’s not a production authentication solution—the credentials are hardcoded and base64-encoded in the function.
+هذا مثال أدنى لحماية بيئة اختبار بمصادقة HTTP الأساسية (اسم المستخدم: `staging`، وكلمة المرور: `password`). وهو ليس حل مصادقة للإنتاج—فبيانات الاعتماد مضمّنة في الشيفرة ومشفّرة بـ base64 داخل الدالة.
 
-### Lambda@Edge (JWT Validation)
+### Lambda@Edge (التحقق من JWT)
 
-For real authentication, you need Lambda@Edge because you probably need to validate a JWT, which requires either a crypto library or a network call to a JWKS endpoint.
+من أجل مصادقة حقيقية، تحتاج إلى Lambda@Edge لأنك غالبًا تحتاج إلى التحقق من JWT، وهذا يتطلب إما مكتبة تشفير أو استدعاءً شبكيًا إلى نقطة نهاية JWKS.
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -233,17 +233,17 @@ function parseCookie(
 }
 ```
 
-This function validates a JWT from a cookie on every viewer request. It uses the `jsonwebtoken` npm package—which is why it must be Lambda@Edge, not a CloudFront Function.
+تتحقق هذه الدالة من JWT قادم من ملف تعريف ارتباط في كل طلب مشاهد. وهي تستخدم حزمة `jsonwebtoken` من npm—ولهذا يجب أن تكون Lambda@Edge لا CloudFront Function.
 
-> **Tip**
+> **نصيحة**
 >
-> If you embed the public key directly in the function (instead of fetching it from a JWKS endpoint), you avoid a network call on every request. The tradeoff is that you need to redeploy the function when the key rotates.
+> إن ضمّنت المفتاح العام مباشرة في الدالة (بدلًا من جلبه من نقطة نهاية JWKS)، فتتجنّب استدعاءً شبكيًا في كل طلب. والمقايضة أنك تحتاج إلى إعادة نشر الدالة عندما يُدوَّر المفتاح.
 
-## Language Detection
+## كشف اللغة
 
-Detecting the user’s preferred language from the `Accept-Language` header and serving localized content is another common pattern.
+كشف اللغة المفضّلة للمستخدم من ترويسة `Accept-Language` وتقديم محتوى محلي نمط شائع آخر.
 
-### CloudFront Function
+### دالة CloudFront
 
 ```javascript
 function handler(event) {
@@ -267,21 +267,21 @@ function handler(event) {
 }
 ```
 
-This sets a custom header that your origin or another edge function can use to serve the right content. It runs as a **viewer request** function so the language detection happens before the cache check.
+يضبط هذا ترويسة مخصّصة يستطيع أصلك أو دالة حافة أخرى استخدامها لتقديم المحتوى الصحيح. وتعمل الدالة كدالة **طلب مشاهد** كي يحدث كشف اللغة قبل فحص الذاكرة المؤقتة.
 
-## Choosing the Right Trigger
+## اختيار المشغّل الصحيح
 
-Every use case above maps to a specific event type. Here’s a quick reference:
+كل حالة استخدام أعلاه تقابل نوع حدث محدّدًا. إليك مرجعًا سريعًا:
 
-| Use Case | Event Type | Recommended |
+| حالة الاستخدام | نوع الحدث | الموصى به |
 | --- | --- | --- |
-| URL rewrites (clean URLs) | Viewer request | CloudFront Function |
-| Redirects | Viewer request | CloudFront Function |
-| Security headers | Viewer response | CloudFront Function |
-| Geolocation routing | Origin request | Lambda@Edge |
-| Basic auth for staging | Viewer request | CloudFront Function |
-| JWT validation | Viewer request | Lambda@Edge |
-| Language detection | Viewer request | CloudFront Function |
-| A/B testing | Viewer request | Either (depends on complexity) |
+| إعادة كتابة URL (URLs نظيفة) | طلب المشاهد | دالة CloudFront |
+| إعادة التوجيه | طلب المشاهد | دالة CloudFront |
+| ترويسات الأمان | استجابة المشاهد | دالة CloudFront |
+| التوجيه الجغرافي | طلب الأصل | Lambda@Edge |
+| المصادقة الأساسية لبيئة الاختبار | طلب المشاهد | دالة CloudFront |
+| التحقق من JWT | طلب المشاهد | Lambda@Edge |
+| كشف اللغة | طلب المشاهد | دالة CloudFront |
+| اختبار A/B | طلب المشاهد | أيّهما (يعتمد على التعقيد) |
 
-The next lesson, [A/B Testing at the Edge](https://stevekinney.com/courses/aws/ab-testing-at-the-edge), digs into one of the more interesting use cases in detail.
+الدرس التالي، [اختبار A/B على الحافة](https://stevekinney.com/courses/aws/ab-testing-at-the-edge)، يتعمّق في واحدة من أكثر حالات الاستخدام إثارة للاهتمام.

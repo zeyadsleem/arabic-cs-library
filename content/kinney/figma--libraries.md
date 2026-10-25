@@ -1,34 +1,34 @@
 ---
-title: "Working with Libraries in Figma"
-lang: en
+title: "العمل مع المكتبات في Figma"
+lang: ar
 source: "https://stevekinney.com/courses/figma/libraries"
 ---
 
-Libraries in Figma are a central repository for storing and sharing design components and styles across projects, significantly boosting productivity and ensuring consistency in design. This feature allows teams to create a single source of truth for all design elements, from UI components to text styles and colors, making it easier to maintain a cohesive look and feel across multiple projects. Let’s delve into how leveraging libraries can transform your design workflow in Figma.
+المكتبات في Figma مستودع مركزي لتخزين مكوّنات التصميم وأنماطه ومشاركتها عبر المشاريع، مما يعزّز الإنتاجية بشكل ملحوظ ويضمن الاتساق في التصميم. وتتيح هذه الميزة للفرق إنشاء مصدر واحد موثوق لكل عناصر التصميم، من مكوّنات واجهة المستخدم إلى أنماط النص والألوان، مما يسهّل الحفاظ على مظهر وإحساس متكاملين عبر مشاريع متعددة. ولنتعمّق في كيف يمكن للاستفادة من المكتبات أن تحوّل سير عمل التصميم لديك في Figma.
 
-## Core Features of Libraries
+## الميزات الأساسية للمكتبات
 
-Figma’s libraries allow you to publish components and styles that can be reused in any design file within your team or organization. This centralized system supports the following:
+تتيح لك مكتبات Figma نشر المكوّنات والأنماط التي يمكن إعادة استخدامها في أي ملف تصميم داخل فريقك أو مؤسستك. ويدعم هذا النظام المركزي ما يلي:
 
-- **Components:** Reusable UI elements such as buttons, icons, and input fields.
-- **Text Styles:** Defined typography styles including font, size, line height, and color.
-- **Color Styles:** Reusable color palettes for backgrounds, text, borders, and shadows.
-- **Effect Styles:** Consistent shadows, blurs, and other effects that can be applied to components.
+- **المكوّنات:** عناصر واجهة مستخدم قابلة لإعادة الاستخدام مثل الأزرار والأيقونات وحقول الإدخال.
+- **أنماط النص:** أنماط طباعة معرَّفة تتضمّن الخط والحجم وارتفاع السطر واللون.
+- **أنماط الألوان:** لوحات ألوان قابلة لإعادة الاستخدام للخلفيات والنص والحدود والظلال.
+- **أنماط التأثيرات:** ظلال وتضبيبات وتأثيرات أخرى متسقة يمكن تطبيقها على المكوّنات.
 
-## Setting Up and Using Libraries
+## إعداد المكتبات واستخدامها
 
-To set up a library in Figma, simply create a file with the components and styles you wish to share, and then publish it as a library. Once published, these assets become available to any member of your team, who can then easily access and insert these elements into their own designs.
+لإعداد مكتبة في Figma، ما عليك إلا إنشاء ملف يحوي المكوّنات والأنماط التي ترغب في مشاركتها، ثم نشره كمكتبة. وبمجرد نشره، تصبح هذه الأصول متاحة لأي عضو في فريقك، الذي يستطيع عندئذ الوصول إلى هذه العناصر وإدراجها بسهولة في تصاميمه.
 
-## Advantages of Using Libraries
+## مزايا استخدام المكتبات
 
-1. **Consistency Across Projects:** Ensures that all design elements remain consistent, reflecting your brand accurately across all projects.
-2. **Increased Efficiency:** Saves time by allowing designers to quickly find and use predefined components and styles, rather than recreating them.
-3. **Simplified Collaboration:** Facilitates better collaboration among team members by providing access to a shared set of design assets.
-4. **Easy to Update:** When a component or style in a library is updated, the changes can be effortlessly propagated across all files using that asset.
+1. **الاتساق عبر المشاريع:** يضمن بقاء كل عناصر التصميم متسقة، بما يعكس علامتك التجارية بدقة في جميع المشاريع.
+2. **زيادة الكفاءة:** يوفّر الوقت بإتاحة المجال للمصمّمين للعثور على المكوّنات والأنماط المعرَّفة مسبقًا واستخدامها سريعًا بدلًا من إعادة إنشائها.
+3. **تعاون مبسّط:** يسهّل تعاونًا أفضل بين أعضاء الفريق بتوفير الوصول إلى مجموعة مشتركة من أصول التصميم.
+4. **سهولة التحديث:** عندما يُحدَّث مكوّن أو نمط في مكتبة، يمكن نشر التغييرات بلا عناء عبر كل الملفات التي تستخدم ذلك الأصل.
 
-## Best Practices for Managing Libraries
+## أفضل الممارسات لإدارة المكتبات
 
-- **Organize Thoughtfully:** Keep your libraries well-organized by categorizing components and styles clearly, making it easier for team members to find what they need.
-- **Regular Updates:** Continually update and refine your libraries to reflect design iterations and ensure that all assets remain relevant.
-- **Limit Library Numbers:** While having specific libraries for different projects or themes can be useful, too many libraries can become overwhelming. Aim for a balance that suits your team’s needs.
-- **Educate Your Team:** Ensure all team members understand how to use libraries effectively, including how to access and implement shared components and styles in their designs.
+- **نظّم بعناية:** أبقِ مكتباتك منظّمة جيدًا بتصنيف المكوّنات والأنماط بوضوح، مما يسهّل على أعضاء الفريق العثور على ما يحتاجون إليه.
+- **تحديثات منتظمة:** حدِّث مكتباتك وحسّنها باستمرار لتواكب تكرارات التصميم وتضمن بقاء كل الأصول ذات صلة.
+- **حدّد عدد المكتبات:** رغم أن وجود مكتبات مخصّصة لمشاريع أو سمات مختلفة قد يكون مفيدًا، فإن كثرة المكتبات قد تصبح مرهقة. استهدف توازنًا يناسب احتياجات فريقك.
+- **درّب فريقك:** تأكّد من أن كل أعضاء الفريق يفهمون كيفية استخدام المكتبات بفاعلية، بما في ذلك كيفية الوصول إلى المكوّنات والأنماط المشتركة وتطبيقها في تصاميمهم.

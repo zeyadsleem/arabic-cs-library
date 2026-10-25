@@ -1,12 +1,12 @@
 ---
-title: "Type-Level Testing in Practice"
-lang: en
+title: "اختبار الأنواع (Type-Level Testing) في الممارسة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/type-level-testing-in-practice"
 ---
 
-Types can regress silently. Add type-level tests to catch breaks when refactoring generics, overloads, and public APIs.
+يمكن للأنواع أن تتدحرج (regress) بصمت. أضف اختبارات على مستوى الأنواع (type-level tests) للكشف عن الأعطال عند إعادة تشكيل الأنواع العامة (generics)، والتحميلات الزائدة (overloads)، والواجهات البرمجية العامة (public APIs).
 
-## `tsd` or `expectTypeOf`
+## `tsd` أو `expectTypeOf`
 
 ```typescript
 // vitest + expectTypeOf
@@ -22,13 +22,13 @@ describe('Foo', () => {
 });
 ```
 
-## CI and Type Coverage
+## التكامل المستمر (CI) وتغطية الأنواع
 
-- Run type tests in CI just like unit tests.
-- Track “type coverage” budgets: disallow `any`, enforce `noUncheckedIndexedAccess`.
-- Gate releases of component libraries on passing type assertions.
+- شغّل اختبارات الأنواع في CI تمامًا كما تفعل مع اختبارات الوحدة.
+- تتبّع ميزانيات «تغطية الأنواع»: امنع `any`، وفرض `noUncheckedIndexedAccess`.
+- اجعل إصدارات مكتبات المكوّنات مشروطة باجتياز تحقّقات الأنواع.
 
-## Testing Polymorphic Components
+## اختبار المكوّنات متعدّدة الأشكال (Polymorphic)
 
 ```typescript
 import { expectTypeOf, it } from 'vitest';
@@ -44,7 +44,7 @@ it('infers correct props for anchor', () => {
 });
 ```
 
-## Higher Order Component Props Preservation
+## الحفاظ على خصائص مكوّنات higher-order (HOC)
 
 ```typescript
 function withLogging<P>(Comp: React.ComponentType<P>) {
@@ -59,7 +59,7 @@ const LoggedInput = withLogging(Input);
 expectTypeOf<Parameters<typeof LoggedInput>[0]>().toEqualTypeOf<InputProps>();
 ```
 
-## `tsd` Setup (Alternative)
+## إعداد `tsd` (بديل)
 
 ```json
 // package.json
@@ -85,14 +85,14 @@ import { Button } from '../dist';
 expectType<JSX.Element>(<Button />);
 ```
 
-## Guarding Public APIs in Libraries
+## حماية الواجهات البرمجية العامة (Public APIs) في المكتبات
 
-- Export types (`export type { ButtonProps }`) and assert them in `test:types`.
-- Lock down overloads and generic defaults with targeted assertions.
+- صدّر الأنواع (`export type { ButtonProps }`) وتحقّق منها في `test:types`.
+- ثبّت overloads والقيم الافتراضية (defaults) للـ generics بتحقّقات موجّهة.
 
-## Snapshot Public Component Types
+## لقطات (Snapshots) لأنواع مكوّنات public
 
-Lock down your public API with type snapshots using `tsd` or `expectTypeOf`.
+ثبّت واجهتك البرمجية public بأنواع type snapshots باستخدام `tsd` أو `expectTypeOf`.
 
 ```typescript
 // tsd: Button and TextField public types

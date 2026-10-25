@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل: نقل حلقة Shelf إلى مكدّسك التقني"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/translate-the-shelf-loop-to-your-stack-solution"
 ---
 
-This lab doesn’t have shipped code. It has a shipped *process*—you create a `LOOP_TRANSLATION.md` that maps every Shelf feedback loop to the equivalent in your stack. The deliverable is yours.
+هذا المختبر ليس فيه شيفرة مشحونة. فيه *عملية* مشحونة — تنشئ ملف `LOOP_TRANSLATION.md` يضع لكل حلقة تغذية راجعة في Shelf ما يقابلها في مكدّسك التقني. والمُخرَج ملكك.
 
-But “map each loop to your stack” is the kind of instruction that produces either something extremely useful or a table full of hand-waving, depending on whether you’ve seen a good example. So, here’s a filled-in translation for a hypothetical Next.js + Prisma + Jest stack, followed by the judgment criteria for evaluating any translation—including your own.
+لكن «ضع لكل حلقة ما يقابلها في مكدّسك» من نوع التعليمات التي تُنتج إما شيئًا بالغ النفع وإما جدولًا مليئًا بالكلام المرسل، حسب ما إذا كنت قد رأيت مثالًا جيدًا. فإليك ترجمة مكتملة لمكدّس افتراضي من Next.js وPrisma وJest، يتبعها معايير الحكم لتقييم أي ترجمة — بما فيها ترجمتك.
 
-## Expected experience walkthrough
+## جولة على التجربة المتوقعة
 
-### The example translation
+### الترجمة المثال
 
-Imagine you’re translating Shelf’s loops to a Next.js 16 app with Prisma, Jest for unit tests, Playwright for browser tests, and GitHub Actions for CI. Here’s what the filled-in `LOOP_TRANSLATION.md` looks like:
+تخيّل أنك تنقل حلقات Shelf إلى تطبيق Next.js 16 مع Prisma، وJest لاختبارات الوحدة، وPlaywright لاختبارات المتصفح، وGitHub Actions للتكامل المستمر. وهكذا يبدو ملف `LOOP_TRANSLATION.md` مكتملًا:
 
 ```markdown
 # Loop Translation: Next.js + Prisma + Jest
@@ -147,28 +147,28 @@ failing test name, error message, screenshot path, and trace path, and writes a
 Playwright step and upload the dossier as an artifact alongside the HTML report.
 ```
 
-That’s the shape. Every row has four parts: what Shelf does, what the target stack does, the exact path, and the command. Where something is missing, the row says “Missing” and proposes the specific file or command that would fill the gap.
+هذا هو الشكل. في كل صف أربعة أجزاء: ما يفعله Shelf، وما يفعله المكدّس المستهدف، والمسار الدقيق، والأمر. وحيث يغيب شيء، يقول الصف «مفقود» ويقترح الملف أو الأمر المحدد الذي يسدّ الفجوة.
 
-### What makes this example useful
+### ما يجعل هذا المثال مفيدًا
 
-It’s not the Next.js specifics—those are just a vehicle. It’s the *discipline* of writing exact paths and commands instead of concepts. “We use Jest” is not a translation. ”`npm test` runs `jest.config.ts` which picks up `src/**/__tests__/*.test.ts`” is a translation. The difference is that the second version is something an agent can actually execute.
+ليس المقصود تفاصيل Next.js — فتلك مجرد وسيلة. المقصود هو *الانضباط* في كتابة مسارات وأوامر دقيقة بدلًا من مفاهيم. «نستخدم Jest» ليست ترجمة. أما «`npm test` يشغّل `jest.config.ts` الذي يلتقط `src/**/__tests__/*.test.ts`» فهي ترجمة. والفرق أن النسخة الثانية شيء يستطيع الوكيل تنفيذه فعلًا.
 
-The weakest-loop identification is the part most people skip, and it’s the most valuable part. Naming the weakest loop is naming the first thing to fix. If the translation doesn’t make you slightly uncomfortable about one specific gap, you probably glossed over it.
+تحديد الحلقة الأضعف هو الجزء الذي يتخطّاه معظم الناس، وهو الجزء الأكثر قيمة. فتسمية الحلقة الأضعف هي تسمية أول ما يجب إصلاحه. وإن لم تجعلك الترجمة غير مرتاح قليلًا بشأن فجوة محددة واحدة، فالأرجح أنك مررت عليها مرور الكرام.
 
-## Judgment criteria
+## معايير الحكم
 
-Your translation is good when:
+تكون ترجمتك جيدة عندما:
 
-- **Every Shelf loop has a mapped row.** Not “we don’t need that one”—every loop gets a row, even if the row says “Missing. Proposed: …”
-- **Exact paths and commands appear in every row.** If a row says “we use ESLint” but doesn’t say which config file or which command, it’s not a translation—it’s a vibe.
-- **Missing loops are explicit, not hidden.** “No post-deploy smoke” is useful. Silence on the topic is not.
-- **The weakest loop is identified and named.** Not “we could improve several things.” One loop. The weakest one. Named.
-- **One concrete first improvement is specific enough to execute.** “Add better testing” is not actionable. “Add `scripts/dossier.ts` that reads the Playwright JSON report and produces a plain-text summary” is actionable.
-- **At least one command has been run.** Running `npm test` and seeing it pass is proof of life. Running nothing is architecture fiction.
+- **لكل حلقة في Shelf صف مقابل.** ليس «لا نحتاج تلك» — كل حلقة تحصل على صف، حتى لو قال الصف «مفقود. المقترح: …»
+- **تظهر المسارات والأوامر الدقيقة في كل صف.** فإن قال صف «نستخدم ESLint» دون أن يقول أي ملف إعداد أو أي أمر، فليست ترجمة — بل انطباع.
+- **الحلقات الغائبة صريحة لا مخفية.** «لا فحص دخان بعد النشر» عبارة مفيدة. أما الصمت في الموضوع فليس كذلك.
+- **الحلقة الأضعف محددة ومسمّاة.** ليس «يمكننا تحسين عدة أشياء». حلقة واحدة. الأضعف. مسمّاة.
+- **أول تحسين ملموس محدد بما يكفي لتنفيذه.** «أضف اختبارًا أفضل» عبارة لا يمكن تنفيذها. أما «أضف `scripts/dossier.ts` الذي يقرأ تقرير Playwright بصيغة JSON وينتج ملخّصًا نصيًا بسيطًا» فهي قابلة للتنفيذ.
+- **أمر واحد على الأقل جرى تشغيله.** تشغيل `npm test` ورؤيته ينجح دليل حياة. أما عدم تشغيل أي شيء فخيال معماري.
 
-The translation is *not* good when it’s a symmetric table where every cell says “Same.” If your stack genuinely does everything Shelf does, you’re either lucky or you’re not looking closely enough.
+والترجمة *ليست* جيدة حين تكون جدولًا متماثلًا تقول كل خلية فيه «الشيء نفسه». فإن كان مكدّسك يفعل فعلًا كل ما يفعله Shelf، فإما أنك محظوظ وإما أنك لا تنظر بترقّب كافٍ.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Translate the Shelf Loop to Your Stack](https://stevekinney.com/courses/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack)
-- [Porting the Shelf Loop to Another Stack](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack)
+- [مختبر: انقل حلقة Shelf إلى مكدّسك التقني](https://stevekinney.com/courses/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack)
+- [نقل حلقة Shelf إلى مكدّس آخر](https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack)

@@ -1,14 +1,14 @@
 ---
-title: "Tracing Requests Across Services"
-lang: en
+title: "تتبّع الطلبات عبر الخدمات"
+lang: ar
 source: "https://stevekinney.com/courses/aws/tracing-requests-across-services"
 ---
 
-An alarm tells you something is broken. Logs tell you what happened. But when a user reports “I clicked the button and nothing happened,” you need to trace that single request from the moment it hit API Gateway, through your Lambda function, into DynamoDB, and back. That means connecting log entries across services into a single story.
+الإنذار يخبرك بأن شيئًا تعطّل. والسجلات تخبرك بما حدث. لكن عندما يبلّغ مستخدم بأن «نقرت على الزر ولم يحدث شيء»، تحتاج إلى تتبع ذلك الطلب الواحد من لحظة وصوله إلى API Gateway، مرورًا بدالة Lambda، إلى DynamoDB، ثم عودته. وهذا يعني ربط مدخلات السجلات عبر الخدمات في قصة واحدة.
 
-If you want AWS’s version of the monitoring stack nearby while you read, the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) is the official reference.
+إن أردت نسخة AWS من مكدّس المراقبة قريبة منك أثناء القراءة، فإن [نظرة عامة على CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) هي المرجع الرسمي.
 
-This is the difference between monitoring and **observability**. Monitoring tells you “errors went up.” Observability lets you ask “why did *this specific request* fail?” and follow the breadcrumbs to the answer. I find this distinction matters more than it sounds like it should.
+هذا هو الفرق بين المراقبة و**القابلية للملاحظة**. فالمراقبة تخبرك بأن «الأخطاء ارتفعت». أما القابلية للملاحظة فتتيح لك أن تسأل «لماذا فشل *هذا الطلب تحديدًا*؟» وتتبع الخيوط إلى الجواب. وأجد هذا التمييز أهم مما يبدو عليه.
 
 ```
 flowchart LR
@@ -21,21 +21,21 @@ flowchart LR
     Logs --> Insights["Logs Insights query by correlation ID"]
 ```
 
-## The Problem: Disconnected Logs
+## المشكلة: سجلات غير مترابطة
 
-Right now, your application produces logs in multiple places:
+الآن، ينتج تطبيقك سجلات في أماكن متعددة:
 
-- **API Gateway** logs the incoming HTTP request (method, path, status code, latency)
-- **Lambda** logs whatever you write with `console.log`—and with structured logging from [CloudWatch Log Groups and Structured Logging](https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structured-logging), each entry includes fields like `level`, `message`, and `duration`
-- **DynamoDB** publishes metrics (latency, consumed capacity) but doesn’t produce per-request logs
+- **API Gateway** يسجّل طلب HTTP الوارد (الطريقة، المسار، رمز الحالة، زمن الاستجابة)
+- **Lambda** يسجّل كل ما تكتبه بـ `console.log`—ومع التسجيل المهيكل من [مجموعات سجلات CloudWatch والتسجيل المهيكل](https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structured-logging)، يتضمن كل مدخل حقولًا مثل `level` و`message` و`duration`
+- **DynamoDB** ينشر مقاييس (زمن الاستجابة، السعة المستهلكة) لكنه لا ينتج سجلات لكل طلب
 
-The challenge: these logs live in separate log groups with no connection between them. API Gateway processed a request, Lambda ran a function, DynamoDB stored an item—but there’s nothing linking those three events together. If the Lambda function failed, you can’t tell which API Gateway request triggered it or which DynamoDB operation it was attempting.
+التحدي: هذه السجلات تعيش في مجموعات سجلات منفصلة بلا رابط بينها. عالج API Gateway طلبًا، وشغّلت Lambda دالة، وخزّن DynamoDB عنصرًا—لكن لا شيء يربط هذه الأحداث الثلاثة معًا. وإذا فشلت دالة Lambda، فلا يمكنك معرفة طلب API Gateway الذي أطلقها أو عملية DynamoDB التي كانت تحاولها.
 
-## Correlation IDs: The Connecting Thread
+## معرّفات الترابط: الخيط الرابط
 
-A **correlation ID** is a unique identifier that follows a request through every service it touches. API Gateway generates one for every incoming request—the `requestId` in the event object that Lambda receives. By including this ID in every log entry your Lambda function writes, you create a thread that ties everything together.
+**معرّف الترابط** معرّف فريد يتبع الطلب عبر كل خدمة يلمسها. ويولّد API Gateway واحدًا لكل طلب وارد—وهو `requestId` في كائن الحدث الذي تتلقاه Lambda. وبإدراج هذا المعرّف في كل مدخل سجل تكتبه دالة Lambda، تُنشئ خيطًا يربط كل شيء معًا.
 
-You saw this in the structured logging example from the previous lesson. Here’s a more complete version that logs at every stage of the request lifecycle:
+رأيت هذا في مثال التسجيل المهيكل من الدرس السابق. وإليك نسخة أكثر اكتمالًا تسجّل في كل مرحلة من دورة حياة الطلب:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -157,13 +157,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* The `requestId` from API Gateway becomes the correlation ID for this entire request.
+*ملاحظة:* `requestId` من API Gateway يصبح معرّف الترابط لهذا الطلب كله.
 
-Every log entry includes the same `requestId`. A single request produces multiple log entries—“Request started,” “DynamoDB read completed,” and potentially “Request failed”—all linked by the correlation ID.
+كل مدخل سجل يتضمن `requestId` نفسه. فالطلب الواحد ينتج مدخلات سجل متعددة—`Request started` و`DynamoDB read completed` وربما `Request failed`—كلها مرتبطة بمعرّف الترابط.
 
-## Querying by Correlation ID
+## الاستعلام بمعرّف الترابط
 
-When you need to trace a specific request, you run a Logs Insights query that filters by `requestId`:
+عندما تحتاج إلى تتبع طلب محدد، تشغّل استعلام Logs Insights يصفّي حسب `requestId`:
 
 ```
 fields @timestamp, level, message, requestId, operation, dynamoDuration, error
@@ -171,15 +171,15 @@ fields @timestamp, level, message, requestId, operation, dynamoDuration, error
 | sort @timestamp asc
 ```
 
-This returns every log entry for that request in chronological order. You can see:
+يعيد هذا كل مدخل سجل لذلك الطلب بترتيب زمني. ويمكنك أن ترى:
 
-1. When the request started
-2. What method and path were used
-3. Whether the DynamoDB operation succeeded
-4. How long DynamoDB took
-5. If and why the request failed
+1. متى بدأ الطلب
+2. أي طريقة ومسار استُخدما
+3. هل نجحت عملية DynamoDB
+4. كم استغرقت DynamoDB
+5. هل فشل الطلب ولماذا
 
-### Running the Query from the CLI
+### تشغيل الاستعلام من CLI
 
 ```bash
 aws logs start-query \
@@ -191,7 +191,7 @@ aws logs start-query \
   --output json
 ```
 
-Then fetch the results:
+ثم اجلب النتائج:
 
 ```bash
 aws logs get-query-results \
@@ -200,11 +200,11 @@ aws logs get-query-results \
   --output json
 ```
 
-## Common Tracing Queries
+## استعلامات تتبّع شائعة
 
-Beyond looking up a single request, Insights queries help you spot patterns.
+إلى جانب البحث عن طلب واحد، تساعدك استعلامات Insights على اكتشاف الأنماط.
 
-### Find the Slowest DynamoDB Operations
+### إيجاد أبطأ عمليات DynamoDB
 
 ```
 fields @timestamp, requestId, operation, dynamoDuration, itemId
@@ -213,9 +213,9 @@ fields @timestamp, requestId, operation, dynamoDuration, itemId
 | limit 20
 ```
 
-This shows you which requests had the slowest database interactions. If you see `GetItem` operations taking 200+ ms consistently, you might have a hot partition key—revisit [DynamoDB Tables and Keys](https://stevekinney.com/courses/aws/dynamodb-tables-and-keys) for key design.
+يُظهر لك هذا الطلبات التي كانت تفاعلاتها مع قاعدة البيانات هي الأبطأ. وإذا رأيت عمليات `GetItem` تستغرق 200+ مللي ثانية بانتظام، فقد يكون لديك مفتاح قسم ساخن—راجع [جداول ومفاتيح DynamoDB](https://stevekinney.com/courses/aws/dynamodb-tables-and-keys) لتصميم المفاتيح.
 
-### Find All Failed Requests in the Last Hour
+### إيجاد كل الطلبات الفاشلة في الساعة الأخيرة
 
 ```
 fields @timestamp, requestId, message, error
@@ -224,7 +224,7 @@ fields @timestamp, requestId, message, error
 | limit 50
 ```
 
-### Correlate Errors with Specific Operations
+### ربط الأخطاء بعمليات محددة
 
 ```
 fields @timestamp, requestId, operation, error
@@ -232,9 +232,9 @@ fields @timestamp, requestId, operation, error
 | sort @timestamp desc
 ```
 
-This shows you only the write failures—maybe your Lambda function has insufficient permissions to write to DynamoDB (check the execution role you set up in [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions)).
+يُظهر لك هذا إخفاقات الكتابة فقط—ربما لا تملك دالة Lambda أذونات كافية للكتابة إلى DynamoDB (تحقق من دور التنفيذ الذي أعددته في [أدوار وأذونات تنفيذ Lambda](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions)).
 
-### Calculate DynamoDB Latency Percentiles
+### حساب نسب زمن استجابة DynamoDB المئوية
 
 ```
 filter message = "DynamoDB read completed"
@@ -244,21 +244,21 @@ filter message = "DynamoDB read completed"
   by bin(5m)
 ```
 
-This gives you a time-series view of your database read latency, broken into 5-minute buckets. If p99 is climbing over time, something’s changing—maybe growing table size, maybe a shift in access patterns.
+يمنحك هذا عرضًا لسلاسل زمنية لزمن استجابة القراءة من قاعدة بياناتك، مقسّمًا إلى حزم من 5 دقائق. وإذا كان p99 يرتفع مع الوقت، فشيء ما يتغير—ربما حجم جدول متزايد، وربما تحوّل في أنماط الوصول.
 
-## Piecing Together the Full Request Path
+## تجميع مسار الطلب الكامل
 
-Here’s what a traced request looks like when you put it all together. A user calls your API, and you reconstruct the full path from logs:
+إليك كيف يبدو طلب متتبَّع عندما تجمع كل شيء. يستدعي مستخدم واجهة API الخاصة بك، فتعيد بناء المسار الكامل من السجلات:
 
-**Step 1: API Gateway receives the request.** You can see this in the API Gateway access logs (if enabled) or infer it from the Lambda log’s first entry. The `requestId` from API Gateway becomes your correlation ID.
+**الخطوة 1: يستقبل API Gateway الطلب.** يمكنك رؤية ذلك في سجلات وصول API Gateway (إن كانت مفعّلة) أو استنتاجه من أول مدخل في سجل Lambda. ويصبح `requestId` من API Gateway معرّف الترابط الخاص بك.
 
-**Step 2: Lambda starts executing.** Your first structured log entry fires: “Request started” with the `requestId`, method, path, and query parameters.
+**الخطوة 2: تبدأ Lambda التنفيذ.** يُطلق أول مدخل سجل مهيكل: `Request started` مع `requestId` والطريقة والمسار ومعاملات الاستعلام.
 
-**Step 3: Lambda calls DynamoDB.** Your log entry captures the operation type, table name, and how long the call took.
+**الخطوة 3: تستدعي Lambda خدمة DynamoDB.** يلتقط مدخل سجلك نوع العملية واسم الجدول وكم استغرق الاستدعاء.
 
-**Step 4: Lambda returns a response.** If the request succeeded, the final log entry says “Request completed” with the status code and total duration. If it failed, the error entry captures the error message and stack trace.
+**الخطوة 4: تعيد Lambda استجابة.** إذا نجح الطلب، يقول مدخل السجل الأخير `Request completed` مع رمز الحالة والمدة الإجمالية. وإذا فشل، يلتقط مدخل الخطأ رسالة الخطأ وتتبّع المكدس.
 
-A Logs Insights query that reconstructs this timeline:
+استعلام Logs Insights يعيد بناء هذا الجدول الزمني:
 
 ```
 fields @timestamp, level, message, operation, dynamoDuration, error
@@ -266,7 +266,7 @@ fields @timestamp, level, message, operation, dynamoDuration, error
 | sort @timestamp asc
 ```
 
-The result might look like:
+قد تبدو النتيجة هكذا:
 
 | @timestamp | level | message | operation | dynamoDuration | error |
 | --- | --- | --- | --- | --- | --- |
@@ -274,14 +274,14 @@ The result might look like:
 | 14:30:00.145 | INFO | DynamoDB read completed | GetItem | 42 |  |
 | 14:30:00.150 | INFO | Request completed |  |  |  |
 
-Three log entries, 50 milliseconds total, 42 of which were spent in DynamoDB. If this request had failed, the “Request completed” entry would be replaced by a “Request failed” entry with an error message and stack trace.
+ثلاثة مدخلات سجل، و50 مللي ثانية إجمالًا، منها 42 قضتها DynamoDB. ولو فشل هذا الطلب، لاستُبدل مدخل `Request completed` بمدخل `Request failed` مع رسالة خطأ وتتبّع مكدس.
 
-## Beyond Manual Tracing
+## أبعد من التتبع اليدوي
 
-What you’ve built here—correlation IDs plus structured logging plus Insights queries—is the foundation of request tracing. AWS offers more sophisticated tracing through **AWS X-Ray**, which automatically instruments SDK calls and produces visual service maps. X-Ray is the underlying infrastructure; **CloudWatch Application Signals** (GA July 2024) is the modern console surface where you view distributed traces, service maps, and SLOs. The open-source path is the **AWS Distro for OpenTelemetry (ADOT)**—AWS’s supported OpenTelemetry distribution, which lets you send traces to X-Ray *and* to third-party OTLP-compatible backends (Datadog, Honeycomb, Grafana Tempo). If you end up in a job description asking for “OpenTelemetry on AWS,” ADOT is what they mean. All three are beyond the scope of this course, but the structured logging patterns you’ve learned here work alongside them—correlation IDs and structured logs are the minimum viable observability for any production application.
+ما بنيته هنا—معرّفات الترابط مع التسجيل المهيكل مع استعلامات Insights—هو أساس تتبّع الطلبات. وتقدّم AWS تتبعًا أكثر تطورًا عبر **AWS X-Ray**، الذي يزوّد استدعاءات SDK بالقياس تلقائيًا وينتج خرائط خدمة مرئية. فـ X-Ray هي البنية التحتية الأساسية، و**CloudWatch Application Signals** (متاحة عمومًا في يوليو 2024) هي واجهة وحدة التحكم الحديثة التي تعرض فيها التتبعات الموزعة وخرائط الخدمة واتفاقيات مستوى الخدمة (SLOs). والمسار مفتوح المصدر هو **AWS Distro for OpenTelemetry (ADOT)**—توزيعة OpenTelemetry المدعومة من AWS، التي تتيح لك إرسال التتبعات إلى X-Ray *وإلى* خلفيات خارجية متوافقة مع OTLP (Datadog وHoneycomb وGrafana Tempo). وإذا صادفت وصفًا وظيفيًا يطلب «OpenTelemetry on AWS»، فـ ADOT هي المقصودة. وكل الثلاثة خارج نطاق هذه الدورة، لكن أنماط التسجيل المهيكل التي تعلمتها هنا تعمل إلى جانبها—فمعرّفات الترابط والسجلات المهيكلة هي الحد الأدنى القابل للتطبيق من القابلية للملاحظة لأي تطبيق إنتاجي.
 
-> **Tip**
+> **نصيحة**
 >
-> If your frontend returns a request ID to the user (in a response header or error message), support incidents become dramatically easier. The user says “I got error abc-123,” you run the Insights query, and you have the full trace in seconds.
+> إذا أعادت واجهتك الأمامية معرّف طلب إلى المستخدم (في ترويسة استجابة أو رسالة خطأ)، تصبح حوادث الدعم أسهل بكثير. يقول المستخدم «حصلت على الخطأ abc-123»، وتشغّل استعلام Insights، فتحصل على التتبع الكامل في ثوانٍ.
 
-You now have the complete monitoring stack: structured logs you can query, metrics dashboards you can glance at, alarms that tell you when things break, and correlation IDs that let you trace individual requests across services. In the exercise that follows, you’ll put the alarm skills to practice—creating error and duration alarms for your Lambda function, wiring them to SNS, and triggering them intentionally to verify the pipeline works end to end.
+لديك الآن مكدّس المراقبة الكامل: سجلات مهيكلة يمكنك الاستعلام عنها، ولوحات مقاييس يمكنك إلقاء نظرة عليها، وإنذارات تخبرك عندما تتعطل الأشياء، ومعرّفات ترابط تتيح لك تتبع الطلبات الفردية عبر الخدمات. وفي التمرين التالي، ستضع مهارات الإنذار موضع التطبيق—بإنشاء إنذارات للأخطاء والمدة لدالة Lambda، وربطها بـ SNS، وإطلاقها عمدًا للتحقق من أن خط الأنابيب يعمل من البداية إلى النهاية.

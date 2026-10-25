@@ -1,21 +1,21 @@
 ---
-title: "Asymmetric Matchers"
-lang: en
+title: "المطابقات غير المتماثلة (asymmetric matchers)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/asymmetric-matchers"
 ---
 
-Why are they called asymmetric matchers? I don’t know. But, that’s what the [Jest documentation calls them](https://jestjs.io/docs/expect#asymmetric-matchers), so that’s what I’m calling them. (The Vitest documentation doesn’t call them anything in particular.)
+لماذا تُسمى المطابقات غير المتماثلة؟ لا أعرف. لكن هذه تسمية [توثيق Jest لها](https://jestjs.io/docs/expect#asymmetric-matchers)، لذا سأسميها كذلك. (توثيق Vitest لا يسميها شيئًا بعينه.)
 
-Here are two of my *many* hot takes around testing:
+إليك رأيان من آرائي *الكثيرة* الحارة حول الاختبار:
 
-- Tests solely exist to give us confidence that we can make changes to our code base—large or small—without accidentally breaking things.
-- Tests that are more annoying then they are helpful will lead to your and your team deleting them and/or just abandoning testing.
+- الاختبارات موجودة فقط لتمنحنا الثقة بأننا نستطيع إجراء تغييرات في قاعدة شيفرتنا — كبيرة أو صغيرة — دون كسر الأشياء عن غير قصد.
+- الاختبارات التي تكون أكثر إزعاجًا مما هي مفيدة ستؤدي بك وبفريقك إلى حذفها و/أو التخلي عن الاختبار.
 
-Winston Churchill said that “perfection is the enemy of progress.” And this is somewhat true for our tests. Our tests exists to give us confidence that we can change our code. If they become too rigid (or brittle), they tend to slow us down more than they speed us up.
+قال وينستون تشرشل إن «الكمال عدو التقدم». وهذا صحيح إلى حد ما في اختباراتنا. اختباراتنا موجودة لتمنحنا الثقة بأننا نستطيع تغيير شيفرتنا. فإذا صارت جامدة جدًا (أو هشة)، تميل إلى إبطائنا أكثر مما تسرّعنا.
 
-Secondly, when a test fails, it would be nice if the failure was laser focused to what went wrong. A minor change might break a whole suite of tests. This could be dozens or even hundreds of tests. Good luck tracking down exactly what the culprit was.
+ثانيًا، عندما يفشل اختبار، سيكون من الجميل أن يكون الفشل مركّزًا بالليزر على ما ذهب خطأ. قد يكسر تغيير صغير مجموعة اختبارات كاملة. وقد يكون ذلك عشرات أو حتى مئات الاختبارات. حظًا موفقًا في تتبع الجاني بدقة.
 
-Consider this `Person` from `examples/characters/person.js` for a moment:
+تأمل لحظة صنف `Person` هذا من `examples/characters/person.js`:
 
 ```javascript
 import { v4 as id } from 'uuid';
@@ -33,11 +33,11 @@ export class Person {
 }
 ```
 
-The [`uuid`](https://npm.im/uuid) library generates a random `id` every time. Sure, there are way to get around this—name mocking and stuff, which we’ll talk about later. But generally speaking, we don’t really care about the `id`.
+تولّد مكتبة [`uuid`](https://npm.im/uuid) معرّفًا عشوائيًا في كل مرة. صحيح، ثمة طرق للالتفاف على هذا — المحاكاة وما شابه، وسنتحدث عنها لاحقًا. لكن عمومًا، لا يهمنا المعرّف `id` حقًا.
 
-Let’s say we just cared if they’re cool and they they have a first and last name that are strings. (I know, we have TypeScript, but I’m trying to make a point here.)
+لنفترض أننا نهتم فقط بأنهم رائعون وأن لديهم اسمًا أول واسمًا أخير من نوع نصي. (أعلم أن لدينا TypeScript، لكنني أحاول توضيح فكرة هنا.)
 
-This well-meaning test is going to fail:
+هذا الاختبار حسن النية سيفشل:
 
 ```javascript
 it('should create a person with a first name and last name', () => {
@@ -46,9 +46,9 @@ it('should create a person with a first name and last name', () => {
 });
 ```
 
-The test fails because of a random id
+يفشل الاختبار بسبب معرّف عشوائي.
 
-We don’t really care what the `id` is but maybe we want to make sure that there *is* an `id` and that it’s a string.
+لا يهمنا حقًا ما هو `id`، لكن ربما نريد التأكد من وجود `id` وأنه نصي.
 
 ```javascript
 it('should create a person with a first name and last name', () => {
@@ -61,7 +61,7 @@ it('should create a person with a first name and last name', () => {
 });
 ```
 
-We could even make sure that the string matches a certain pattern.
+يمكننا حتى التأكد من أن النص يطابق نمطًا معينًا.
 
 ```javascript
 it('should create a person with a first name and last name', () => {
@@ -74,15 +74,15 @@ it('should create a person with a first name and last name', () => {
 });
 ```
 
-## Put Another Way
+## بطريقة أخرى
 
-Think of asymmetric matchers as that friend who’s cool with “close enough.” Unlike regular matchers (which expect an **exact** match), asymmetric matchers let you define the parts you **care about** and ignore the rest. They’re less strict, more forgiving—and sometimes, that’s exactly what you need.
+تخيّل المطابقات غير المتماثلة كذاك الصديق المرتاح لفكرة «قريب بما يكفي». وعلى خلاف المطابقات العادية (التي تتوقع تطابقًا **تامًا**)، تتيح لك المطابقات غير المتماثلة تحديد الأجزاء التي **تهمك** وتجاهل الباقي. إنها أقل صرامة وأكثر تسامحًا — وأحيانًا يكون ذلك بالضبط ما تحتاجه.
 
-Here’s the big thing: asymmetric matchers only care about one side of the comparison. They don’t compare the actual value to a specific expected result; instead, they’ll say, “Meh, I’ll just validate whether this meets my conditions, it doesn’t need to match the whole thing perfectly.”
+إليك الأمر الكبير: المطابقات غير المتماثلة تهتم بجانب واحد فقط من المقارنة. فهي لا تقارن القيمة الفعلية بنتيجة متوقعة محددة؛ بل تقول: «حسنًا، سأتحقق فقط مما إذا كان هذا يستوفي شروطي، ولا يلزم أن يطابق الشيء كله تمامًا».
 
-## Just Match What Matters with `expect.objectContaining`
+## طابق ما يهم فقط باستخدام `expect.objectContaining`
 
-You’ve got some giant object returning all kinds of extra data, but you only care about a few key properties? Perfect, `objectContaining` is your bud.
+لديك كائن ضخم يعيد كل أنواع البيانات الإضافية، لكنك تهتم بخصائص قليلة فقط؟ ممتاز، `objectContaining` صديقك.
 
 ```javascript
 const strongestAvenger = {
@@ -100,15 +100,15 @@ expect(strongestAvenger).toEqual(
 );
 ```
 
-Even though the original object has `age` and `occupation`, we only care about his name and his weapon of choice. Calling `objectContaining` lets us be specific about the parts that matter, and ignore the rest (because honestly, how many characters do we need on screen, right?).
+رغم أن الكائن الأصلي يحوي `age` و`occupation`، فإننا نهتم فقط باسمه وسلاحه المفضل. يتيح لنا استدعاء `objectContaining` أن نكون محددين بشأن الأجزاء المهمة ونتجاهل الباقي (لأنه، بصراحة، كم شخصية نحتاج على الشاشة، أليس كذلك؟).
 
-> **Exercise**
+> **تمرين**
 >
-> Can you refactor the test for the person constructor to use `expect.objectContaining` just to make sure it’s got the correct first and last name?
+> هل يمكنك إعادة هيكلة اختبار منشئ الشخص للتأكد فقط من أن لديه الاسم الأول والأخير الصحيحين باستخدام `expect.objectContaining`؟
 
-## Let’s Not Sweat Every Item: `expect.arrayContaining`
+## لا نقلق على كل عنصر: `expect.arrayContaining`
 
-So right after you launch a new feature, your API doesn’t return exactly what you expected. Maybe there’s a new field randomly sliding into position two. Well, `arrayContaining` is like, “Hey, don’t worry about it, as long as your important stuff’s in there somewhere.”
+فبعد إطلاق ميزة جديدة مباشرة، لا تعيد واجهة API لديك ما توقعته بالضبط. ربما انزلق حقل جديد عشوائيًا إلى الموضع الثاني. حسنًا، `arrayContaining` كأنه يقول: «مرحبًا، لا تقلق، ما دامت أشياؤك المهمة موجودة في مكان ما».
 
 ```javascript
 const avengers = ['Iron Man', 'Captain America', 'Hulk', 'Black Widow'];
@@ -116,11 +116,11 @@ const avengers = ['Iron Man', 'Captain America', 'Hulk', 'Black Widow'];
 expect(avengers).toEqual(expect.arrayContaining(['Hulk', 'Captain America']));
 ```
 
-Notice that we’re not matching the exact sequence or every single Avenger in that list. We’re just making sure Cap and Hulk show up somewhere. It’s the “as long as they’re invited to the party” kind of test.
+لاحظ أننا لا نطابق التسلسل الدقيق ولا كل منتقم في تلك القائمة. نحن فقط نتأكد من ظهور Cap وHulk في مكان ما. إنه اختبار من نوع «ما داموا مدعوين إلى الحفلة».
 
-## Searching for That Needle in a Hay Stack: `expect.stringMatching`
+## البحث عن الإبرة في كومة القش: `expect.stringMatching`
 
-Ever had a string like an error message or some user input where you don’t know the exact wording, but you’re pretty sure it belongs? Welcome to `stringMatching`. Using regex (yes, the *wizardry* beloved by developers and feared by future maintainers), you can check if your log message or output string passes the vibe check.
+هل صادفت نصًا مثل رسالة خطأ أو بعض مدخلات المستخدم حيث لا تعرف الصياغة الدقيقة، لكنك واثق إلى حد كبير من انتمائه؟ مرحبًا بك في `stringMatching`. باستخدام التعبيرات النمطية (نعم، تلك *الشعوذة* المحبوبة لدى المطورين والمخيفة لدى الصيّانين مستقبلًا)، يمكنك التحقق مما إذا كانت رسالة السجل أو نص المخرجات لديك تستوفي الفحص العام.
 
 ```javascript
 const logMessage = 'User admin123 successfully logged in at 12:30 AM';
@@ -128,26 +128,26 @@ const logMessage = 'User admin123 successfully logged in at 12:30 AM';
 expect(logMessage).toEqual(expect.stringMatching(/admin\d+/));
 ```
 
-We don’t care if it’s `admin123`, `admin456`, or `adminGoPats`. As long as `admin` is followed by some digits, we’re good to go. Perfect for those unpredictable logs. Regular expressions to the rescue.
+لا يهمنا إن كان `admin123` أو `admin456` أو `adminGoPats`. ما دام `admin` متبوعًا ببعض الأرقام، فلا بأس. مثالي لتلك السجلات غير المتوقعة. التعبيرات النمطية تنقذ الموقف.
 
-## When to Use Asymmetric Matchers
+## متى تستخدم المطابقات غير المتماثلة
 
-So when should you use these? Here’s the pro tip: when **exact matches don’t matter**. You want to use asymmetric matchers when:
+إذن متى تستخدمها؟ إليك النصيحة الاحترافية: عندما **لا تهم التطابقات التامة**. تريد استخدام المطابقات غير المتماثلة عندما:
 
-- You want flexibility with test data.
-- You’re dealing with unpredictable fields that might change order, have extra values, or have variable content.
-- You only care about a specific part of an otherwise noisy response.
+- تريد مرونة مع بيانات الاختبار.
+- تتعامل مع حقول غير متوقعة قد تتغير رتبتها، أو تحوي قيمًا إضافية، أو محتوى متغيرًا.
+- تهتم بجزء محدد فقط من استجابة صاخبة لولا ذلك.
 
-Let’s be honest, as developers, we live in a world where APIs change, object structures pick up random fields, and arrays never seem to behave long-term. Keeping your tests passing without sacrificing thoroughness is key.
+لنكن صادقين، كمطورين، نعيش في عالم تتغير فيه واجهات API، وتلتقط فيه بنى الكائنات حقولًا عشوائية، ولا يبدو أن المصفوفات تستقر على سلوك طويل الأمد. الحفاظ على نجاح اختباراتك دون التضحية بالشمولية هو المفتاح.
 
-## When *Not* to Use Them
+## متى *لا* تستخدمها
 
-Use asymmetric matchers sparingly, though. They can be a slippery slope. You don’t want to end up with every test being so flexible that they’re practically meaningless. Save these matchers for when being exact won’t provide much value and will just clutter your tests.
+استخدم المطابقات غير المتماثلة باعتدال. فقد تكون منحدرًا زلقًا. لا تريد أن ينتهي بك الأمر بكل اختبار مرن لدرجة أنه بلا معنى عمليًا. احتفظ بهذه المطابقات للحالات التي لا يقدم فيها التطابق التام قيمة كبيرة ويكتفي بملء اختباراتك بالفوضى.
 
-If you care about every property and value, go ahead and use `toEqual` or `toBe` like a normal matcher. But when the kitchen sink smells and you only care that the faucet’s working, **asymmetric matchers** are the way to go.
+إن كنت تهتم بكل خاصية وقيمة، فامضِ واستخدم `toEqual` أو `toBe` كمطابق عادي. لكن عندما تكون الحوض كله كريه الرائحة ولا يهمك إلا أن الصنبور يعمل، فـ **المطابقات غير المتماثلة** هي الطريق.
 
-## A More Practical Example
+## مثال أكثر عملية
 
-And that’s the magic of asymmetric matchers. Now, go forth and write tests that breathe! Keep ‘em specific to what matters, but not so specific that you get a test failure for wearing the wrong color hoodie.
+وهذا سحر المطابقات غير المتماثلة. الآن، انطلق واكتب اختبارات تتنفس! أبقِها محددة بشأن ما يهم، لكن ليس لدرجة أن تفشل اختباراتك بسبب ارتداء قلنسوة بلون خاطئ.
 
-This is all well and good with small, easy-to-grok examples, but let’s quickly glance at an [example](https://stevekinney.com/courses/testing/asymmetric-matching-example).
+هذا كله جيد ومفيد مع أمثلة صغيرة سهلة الفهم، لكن لنلقِ نظرة سريعة على [مثال](https://stevekinney.com/courses/testing/asymmetric-matching-example).

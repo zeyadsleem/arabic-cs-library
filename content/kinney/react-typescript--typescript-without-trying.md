@@ -1,20 +1,20 @@
 ---
-title: "Using TypeScript Without Even Trying"
-lang: en
+title: "استخدام TypeScript دون أن تبذل جهدًا"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-without-trying"
 ---
 
-**Here is a main theme for this workshop**: TypeScript’s biggest superpower isn’t the explicit types you write—it’s the types you *don’t* have to write. Modern TypeScript is super good at figuring out what you meant, often giving you bulletproof type safety with zero extra effort. In our time together, I am going to argue that you know you’re on the right path when you can barely tell that you’re using TypeScript at all in your project.
+**إليك فكرة محورية في هذه الورشة**: ليست أعظم قوة خارقة في TypeScript هي الأنواع الصريحة التي تكتبها، بل الأنواع التي *لا* تضطر إلى كتابتها. فإن TypeScript الحديث بارع جدًا في استنتاج ما قصدته، وكثيرًا ما يمنحك سلامة أنواع محكمة دون أي جهد إضافي. وسأحاول خلال وقتنا معًا أن أقنعك بأنك تسير على الطريق الصحيح حين تكاد لا تلاحظ أنك تستخدم TypeScript في مشروعك أصلًا.
 
-## The Magic of Type Inference
+## سحر استدلال الأنواع
 
-TypeScript’s inference engine has gotten *scary good*. In many cases, you can write what looks like regular JavaScript and still get comprehensive type checking, autocomplete, and refactoring support. The secret? TypeScript analyzes your code’s structure, function signatures, and return values to build a complete picture of your types.
+أصبح محرّك الاستدلال في TypeScript *جيدًا إلى حدٍّ مخيف*. في حالات كثيرة يمكنك أن تكتب ما يشبه JavaScript العادي، ومع ذلك تحصل على فحص شامل للأنواع، وإكمال تلقائي، ودعم لإعادة الهيكلة. فما السر؟ إن TypeScript يحلّل بنية شيفرتك، وتوقيعات دوالك، وقيم الإرجاع فيها ليبني صورة كاملة عن أنواعك.
 
-Here’s the beautiful part: you’re probably already getting more TypeScript benefits than you realize.
+وهذا هو الجزء الجميل: من المرجّح أنك تحصل فعلًا على فوائد من TypeScript أكثر مما تدرك.
 
-## Component Props: Inference in Action
+## خصائص المكوّن (props): الاستدلال في العمل
 
-Consider this silly little component. As far as we can tell at this point, there is little-to-no evidence that it uses TypeScript at all. Granted, it both looks like JavaScript and behaves like JavaScript. If TypeScript cannot figure out the type of a given property, it will just denote it as `any`.
+تأمّل هذا المكوّن الصغير الساذج. وبحسب ما يمكننا ملاحظته في هذه المرحلة، لا يكاد يوجد دليل على أنه يستخدم TypeScript إطلاقًا. صحيح أنه يبدو مثل JavaScript ويتصرف مثل JavaScript في الوقت نفسه. وإذا لم يتمكّن TypeScript من استنتاج نوع خاصية معيّنة، فسيشير إليها ببساطة على أنها `any`.
 
 ```typescript
 // @ts-ignore
@@ -43,9 +43,9 @@ export const NameTag = ({ name, title, level, isOnline }) => {
 };
 ```
 
-It technically works, and we get a *tiny* benefit: IntelliSense is at least aware of what properties this component can take—even if it doesn’t know what the types those values ought to be.
+إنه يعمل من الناحية التقنية، ونحصل على فائدة *ضئيلة*: فعلى الأقل يعرف IntelliSense ما الخصائص التي يمكن أن يستقبلها هذا المكوّن، حتى وإن لم يكن يعرف ما الأنواع التي ينبغي أن تكون عليها تلك القيم.
 
-While this works, we can get even better inference by providing default parameters:
+ومع أن هذا يعمل، يمكننا الحصول على استدلال أفضل بتوفير قيم افتراضية للمعاملات:
 
 ```typescript
 // ✅ Better: defaults help TypeScript infer more precisely
@@ -58,11 +58,11 @@ export const NameTag = ({ name = '', title = '', level = 0, isOnline = false }) 
 };
 ```
 
-Now TypeScript knows that `name` should be a string, `level` should be a number, and `isOnline` should be a boolean—all without writing a single type annotation.
+الآن يعرف TypeScript أن `name` ينبغي أن يكون نصًا، وأن `level` ينبغي أن يكون رقمًا، وأن `isOnline` ينبغي أن يكون قيمة منطقية، وكل ذلك دون كتابة أي نوع صريح واحد.
 
-## Defining Types for Props
+## تعريف أنواع الخصائص
 
-Of course, we can make this even easier by explicitly calling out the props that our component expects.
+وبالطبع يمكننا جعل الأمر أسهل من ذلك بالتسمية الصريحة للخصائص التي يتوقعها مكوّننا.
 
 ```typescript
 type NameTagProps = {

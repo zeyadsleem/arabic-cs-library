@@ -1,20 +1,20 @@
 ---
-title: "Virtual DOM and Fiber Architecture"
-lang: en
+title: "الدوم الافتراضي ومعمارية Fiber"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/virtual-dom-fiber-architecture"
 ---
 
-You’ve heard it a thousand times:
+سمعت هذه العبارة ألف مرة:
 
-> React uses a Virtual DOM for performance.
+> تستخدم React دومًا افتراضيًا (Virtual DOM) من أجل الأداء.
 
-But when pressed for details, most developers hand-wave something about “diffing” and “batching updates.” The truth is far more fascinating. React’s Fiber architecture is a complete rewrite of React’s core algorithm, introducing concepts like time-slicing, priority scheduling, and interruptible rendering that fundamentally change how we should think about React performance.
+لكن عندما تُطلب التفاصيل، يلوّح معظم المطوّرين بكلام غامض عن «المقارنة» (diffing) و«تجميع التحديثات» (batching updates). والحقيقة أكثر إثارة بكثير. فمعمارية Fiber في React إعادة كتابة كاملة لخوارزمية React الأساسية، تقدّم مفاهيم مثل تقسيم الوقت (time-slicing)، وجدولة الأولويات (priority scheduling)، والتصيير القابل للمقاطعة (interruptible rendering)، وهي مفاهيم تغيّر جذريًا الطريقة التي ينبغي أن نفكّر بها في أداء React.
 
-Understanding Fiber isn’t just academic curiosity—it directly impacts how you write performant React code. When you know how React schedules work, prioritizes updates, and decides what to render when, you can structure your components and state updates to work with React’s algorithm instead of against it. This deep dive reveals the inner workings that power every React application.
+فهم Fiber ليس فضولًا أكاديميًا فحسب — بل يؤثّر مباشرة في كيفية كتابتك لشيفرة React عالية الأداء. فعندما تعرف كيف تجدول React العمل، وترتّب أولويات التحديثات، وتقرّر ما تصيّره ومتى، تستطيع بناء مكوّناتك وتحديثات حالتك لتعمل مع خوارزمية React لا ضدّها. يكشف هذا الغوص العميق الآليات الداخلية التي تُشغّل كل تطبيق React.
 
-## The Virtual DOM: More Than a Feeling
+## الدوم الافتراضي: أكثر من مجرّد شعور
 
-The Virtual DOM isn’t just a performance optimization—it’s a programming model that enables declarative UI:
+ليس DOM الافتراضي مجرّد تحسين للأداء — بل نموذج برمجي يتيح واجهات مستخدم تصريحية (declarative):
 
 ```typescript
 // What the Virtual DOM actually is
@@ -56,7 +56,7 @@ const ComponentVDOM = createElement(
 );
 ```
 
-### The Reconciliation Process
+### عملية المطابقة
 
 ```typescript
 // Simplified reconciliation algorithm
@@ -147,9 +147,9 @@ class SimpleReconciler {
 }
 ```
 
-## Fiber Architecture: The Game Changer
+## معمارية Fiber: نقطة التحوّل
 
-Fiber reimagines React’s reconciliation algorithm as an incremental, interruptible process:
+تُعيد Fiber تصوّر خوارزمية المطابقة في React كعملية تدريجية قابلة للمقاطعة:
 
 ```typescript
 // Fiber node structure (simplified)
@@ -223,7 +223,7 @@ enum Flags {
 }
 ```
 
-### The Fiber Work Loop
+### حلقة عمل Fiber
 
 ```typescript
 // Simplified Fiber work loop
@@ -360,9 +360,9 @@ class FiberScheduler {
 }
 ```
 
-## Priority and Scheduling
+## الأولوية والجدولة
 
-Fiber introduces priority-based scheduling to ensure high-priority updates (like user input) aren’t blocked by low-priority work:
+تقدّم Fiber جدولة قائمة على الأولوية لتضمن ألا تعيق الأعمال منخفضة الأولوية التحديثات عالية الأولوية (مثل إدخال المستخدم):
 
 ```typescript
 // Priority levels in React
@@ -525,9 +525,9 @@ class PriorityScheduler {
 }
 ```
 
-## Concurrent Mode Features
+## ميزات الوضع المتزامن (Concurrent Mode)
 
-Concurrent Mode leverages Fiber’s architecture to enable powerful features:
+يستفيد الوضع المتزامن من معمارية Fiber لتمكين ميزات قوية:
 
 ```typescript
 // Time Slicing Example
@@ -584,9 +584,9 @@ function AsyncComponent() {
 }
 ```
 
-## How Fiber Impacts Performance
+## كيف تؤثّر Fiber في الأداء
 
-### Batching and Auto-batching
+### التجميع والتجميع التلقائي
 
 ```typescript
 // React 18+ automatic batching
@@ -632,7 +632,7 @@ function AutoBatchingExample() {
 }
 ```
 
-### Optimizing for Fiber’s Algorithm
+### التحسين من أجل خوارزمية Fiber
 
 ```typescript
 // Component structured for Fiber optimization
@@ -693,7 +693,7 @@ const ExpensiveChild = memo(() => {
 });
 ```
 
-## Debugging Fiber Internals
+## تنقيح داخلية Fiber
 
 ```typescript
 // Accessing Fiber internals (development only)
@@ -757,7 +757,7 @@ function measureFiberPhases() {
 }
 ```
 
-## Practical Fiber Optimizations
+## تحسينات عملية باستخدام Fiber
 
 ```typescript
 // 1. Structure components for efficient reconciliation
@@ -847,26 +847,26 @@ function SuspenseBoundaries() {
 }
 ```
 
-## Wrapping Up
+## الختام
 
-The Virtual DOM and Fiber architecture are the beating heart of React’s performance story. The Virtual DOM provides the declarative programming model we love, while Fiber transforms that model into an efficient, interruptible, priority-aware rendering machine. Understanding these internals isn’t just academic—it directly informs how you structure components, manage state, and optimize performance.
+يمثّل DOM الافتراضي ومعمارية Fiber القلب النابض لقصة أداء React. فـ DOM الافتراضي يوفّر النموذج البرمجي التصريحي الذي نحبّه، بينما تحوّل Fiber ذلك النموذج إلى آلة تصيير كفؤة قابلة للمقاطعة وواعية بالأولويات. وفهم هذه الآليات الداخلية ليس أمرًا أكاديميًا فحسب — بل يوجّه مباشرة كيفية بناء مكوّناتك وإدارتك للحالة وتحسينك للأداء.
 
-The key insights: React can interrupt and resume work, different updates have different priorities, and the reconciliation algorithm rewards stable keys and shallow component trees. Write your React code with these principles in mind, and you’re working with the framework’s natural grain rather than against it.
+الرؤى الجوهرية: تستطيع React مقاطعة العمل واستئنافه، وللتحديثات المختلفة أولويات مختلفة، وتُكافئ خوارزمية المطابقة المفاتيح الثابتة وأشجار المكوّنات المسطّحة. اكتب شيفرة React لديك واضعًا هذه المبادئ في الحسبان، وستعمل مع الاتجاه الطبيعي للإطار لا ضدّه.
 
-## Prerequisites
+## المتطلّبات المسبقة {#prerequisites}
 
-- Solid understanding of React fundamentals
-- Knowledge of browser event loop and main thread
-- Experience with React performance optimization concepts
-- Basic understanding of computer science algorithms
+- فهم متين لأساسيات React
+- معرفة بحلقة أحداث المتصفّح (event loop) والخيط الرئيسي
+- خبرة بمفاهيم تحسين أداء React
+- فهم أساسي لخوارزميات علم الحاسوب
 
-## Practical Examples
+## أمثلة عملية
 
-Architecture knowledge applied to real scenarios:
+معرفة المعمارية مطبّقة على سيناريوهات حقيقية:
 
-- **Large data tables** - Efficient reconciliation with stable keys
-- **Animation-heavy UIs** - Priority scheduling for smooth interactions
-- **Progressive web apps** - Time-slicing for responsive loading
-- **Real-time dashboards** - Concurrent updates without blocking
+- **جداول بيانات كبيرة** - مطابقة كفؤة بمفاتيح ثابتة
+- **واجهات مليئة بالحركات** - جدولة بالأولوية لتفاعلات سلسة
+- **تطبيقات الويب التقدّمية** - تقسيم الوقت لتحميل سريع الاستجابة
+- **لوحات معلومات آنية** - تحديثات متزامنة بلا إعاقة
 
-Master Fiber’s mental model, and you’ll write React applications that aren’t just fast—they’re predictably fast, gracefully handling everything from smooth animations to massive lists without breaking a sweat.
+أتقن النموذج الذهني لـ Fiber، وستكتب تطبيقات React ليست سريعة فحسب — بل سريعة بشكل متوقّع، تتعامل بسلاسة مع كل شيء من الحركات الناعمة إلى القوائم الضخمة دون أي عناء.

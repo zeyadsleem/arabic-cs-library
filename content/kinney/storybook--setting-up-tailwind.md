@@ -1,31 +1,31 @@
 ---
-title: "Importing Styles, Using Tailwind, and Using Themes"
-lang: en
+title: "استيراد الأنماط واستخدام Tailwind واستخدام السمات"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/setting-up-tailwind"
 ---
 
-> **This is not necessarily Tailwind-specific**
+> **هذا ليس خاصًّا بـ Tailwind بالضرورة**
 >
-> Almost everything in this section can be applied to any stylesheets that you happen to be using in your application, but since we’re going to be using Tailwind in our design system, this has a mild-Tailwind flavor to it, but the content itself applies more broadly.
+> يمكن تطبيق كل ما في هذا القسم تقريبًا على أي أوراق أنماط تستخدمها في تطبيقك، لكن بما أننا سنستخدم Tailwind في نظام التصميم لدينا، فإن لهذا نكهة خفيفة من Tailwind، أما المحتوى نفسه فينطبق على نطاق أوسع.
 >
-> There are plenty of reasons why you might consider using Tailwind and equally as many as to why it might not be the best fit. I did my best to outline my thinking [here](https://stevekinney.com/writing/tailwind-and-design-systems).
+> هناك أسباب كثيرة تدعوك إلى التفكير في استخدام Tailwind، وأسباب مماثلة تمامًا قد تجعله ليس الخيار الأنسب. وقد بذلت جهدي في عرض تفكيري [هنا](https://stevekinney.com/writing/tailwind-and-design-systems).
 
-Integration with [Tailwind](https://tailwindcss.com/)—or, honestly—any other styles that you have set up is fairly easy with Storybook.
+التكامل مع [Tailwind](https://tailwindcss.com/) — أو، بصراحة، مع أي أنماط أخرى أعددتها — سهل إلى حدّ كبير مع Storybook.
 
-> **This has already been set up in the example project**
+> **هذا مُعدّ بالفعل في المشروع المثال**
 >
-> You can skip this step if you’re following along with our example repository. I’m just including this here for your reference later.
+> يمكنك تجاوز هذه الخطوة إن كنت تتابع مع مستودعنا المثال. أُدرج هذا هنا لمجرد الرجوع إليه لاحقًا.
 
-If you need to install Tailwind, you can run the following:
+إن احتجت إلى تثبيت Tailwind، يمكنك تشغيل ما يلي:
 
 ```bash
 npm install -D tailwindcss postcss autoprefixer
 npx tailwind init --ts -p
 ```
 
-## Adding Your Styles to Storybook
+## إضافة أنماطك إلى Storybook
 
-In `.storybook/preview.ts`, simply import any stylesheet that you want to include in your stories. These will *only* be applied to the canvas and *not* to the entire Storybook UI.
+في `.storybook/preview.ts`، ما عليك إلا استيراد أي ورقة أنماط تريد تضمينها في قصصك. وستُطبَّق هذه *فقط* على اللوحة (canvas) و*ليس* على واجهة Storybook بأكملها.
 
 ```diff
 diff --git a/.storybook/preview.ts b/.storybook/preview.ts
@@ -34,7 +34,7 @@ index adcda96..6725718 100644
 +++ b/.storybook/preview.ts
 @@ -1,5 +1,7 @@
  import type { Preview } from '@storybook/react';
-
+ 
 +import '../src/index.css';
 +
  const preview: Preview = {
@@ -42,11 +42,11 @@ index adcda96..6725718 100644
      controls: {
 ```
 
-## Supporting Dark Mode
+## دعم الوضع الداكن
 
-Tailwind comes with support out of the box for [Dark Mode](https://tailwindcss.com/docs/dark-mode). Tailwind defaults to using the browser’s preferences (using the [`prefers-color-scheme` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)) to determine if it should render content in dark mode, but it also allows you to determine if you’d prefer to trigger dark mode using a CSS selector.
+يأتي Tailwind بدعم جاهز لـ[الوضع الداكن](https://tailwindcss.com/docs/dark-mode). يستخدم Tailwind افتراضيًا تفضيلات المتصفح (باستخدام [استعلام الوسائط `prefers-color-scheme`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)) لتحديد ما إذا كان ينبغي تصيير المحتوى في الوضع الداكن، لكنه يتيح لك أيضًا تحديد ما إذا كنت تفضّل تفعيل الوضع الداكن عبر محدِّد CSS.
 
-We’re going to want to toggle between light and dark mode without needing to adjust our browser settings. So, let’s set that up.
+سنرغب في التبديل بين الوضعين الفاتح والداكن دون الحاجة إلى تعديل إعدادات متصفحنا. لذا، لنُعدّ ذلك.
 
 ```diff
 diff --git a/tailwind.config.ts b/tailwind.config.ts
@@ -54,7 +54,7 @@ index bc8a713..5015364 100644
 --- a/tailwind.config.ts
 +++ b/tailwind.config.ts
 @@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
-
+ 
  export default {
    content: ['./src/**/*.{js,jsx,ts,tsx,mdx,html}'],
 +  darkMode: ['class', '[data-mode="dark"]'],
@@ -63,19 +63,19 @@ index bc8a713..5015364 100644
    },
 ```
 
-## Using the Storybook Themes Addon
+## استخدام إضافة السمات في Storybook
 
-Storybook’s CLI has a helper to both install addons as a dependency as well as add the addon to `.storybook/main.ts`.
+تحتوي واجهة Storybook الطرفية على مساعد يثبّت الإضافات كاعتماد ويضيف الإضافة أيضًا إلى `.storybook/main.ts`.
 
 ```bash
 npx storybook@latest add @storybook/addon-themes
 ```
 
-> **If you get an error that Storybook can’t find your `main.js` config**
+> **إذا ظهرت لك رسالة خطأ مفادها أن Storybook لا يجد إعداد `main.js` لديك**
 >
-> You can just install the dependency and then [add it to the array of addons manually](https://stevekinney.com/courses/storybook/add-an-addon).
+> يمكنك ببساطة تثبيت الاعتماد ثم [إضافته يدويًّا إلى مصفوفة الإضافات](https://stevekinney.com/courses/storybook/add-an-addon).
 
-You will be asked the following question:
+سيُطرح عليك السؤال التالي:
 
 ```typescript
 ? How do you toggle themes? › - Use arrow-keys. Return to submit.
@@ -83,7 +83,7 @@ You will be asked the following question:
     Data attribute
 ```
 
-If you need to set this up manually, you can add the following to `.storybook/main.ts`.
+إن احتجت إلى إعداد ذلك يدويًّا، يمكنك إضافة ما يلي إلى `.storybook/main.ts`.
 
 ```diff
 diff --git a/.storybook/main.ts b/.storybook/main.ts
@@ -100,9 +100,9 @@ index 098b7b7..63965e0 100644
      name: '@storybook/react-vite',
 ```
 
-### Using a Data Attribute
+### استخدام خاصية بيانات
 
-We chose to use a data attribute for dark mode, but you could also use a class. Your mileage may vary, but my mileage is informed by adding dark mode to a legacy code base. So, I am going to opt to use a data attribute.
+اخترنا استخدام خاصية بيانات للوضع الداكن، لكن يمكنك أيضًا استخدام صنف (class). وقد تختلف النتيجة لديك، لكن نتيجتي مستمدّة من إضافة الوضع الداكن إلى قاعدة شيفرة قديمة. لذا سأختار استخدام خاصية بيانات.
 
 ```diff
 diff --git a/.storybook/preview.ts b/.storybook/preview.ts
@@ -112,9 +112,9 @@ index 6725718..f68d778 100644
 @@ -1,4 +1,5 @@
  import type { Preview } from '@storybook/react';
 +import { withThemeByDataAttribute } from '@storybook/addon-themes';
-
+ 
  import '../src/index.css';
-
+ 
 @@ -11,6 +12,16 @@ const preview: Preview = {
        },
      },
@@ -130,19 +130,19 @@ index 6725718..f68d778 100644
 +    }),
 +  ],
  };
-
+ 
  export default preview;
 ```
 
-Like I said, either answer is fine depending on your settings. I don’t have a strong opinion outside from the experience of migrating an existing code base and finding out the hard way that `dark` was already being used for other purposes, so I’m going to go with the data attribute.
+كما قلت، كلا الجوابين مقبول حسب إعداداتك. وليس لديّ رأي قوي خارج تجربة ترحيل قاعدة شيفرة قائمة واكتشاف — بالطريقة الصعبة — أن `dark` كان مستخدمًا بالفعل لأغراض أخرى، لذا سأمضي مع خاصية البيانات.
 
-If all goes well, you should see something like this:
+إن سار كل شيء على ما يرام، فمن المفترض أن ترى شيئًا كهذا:
 
-A notification from Storybook's CLI that the themes addon was successfully installed
+إشعار من واجهة Storybook الطرفية بأن إضافة السمات ثُبِّتت بنجاح
 
-In addition to installing the dependency, this will make the following changes to your Storybook configuration.
+إضافةً إلى تثبيت الاعتماد، سيجري هذا التغييرات التالية على إعداد Storybook لديك.
 
-- It will add [`@storybook/addon-themes`](https://storybook.js.org/addons/@storybook/addon-themes/) to your list of `addons` in `.storybook/main.ts`.
-- It will configure a [decorator](https://stevekinney.com/courses/storybook/decorators) in `.storybook/main.ts`.
+- سيضيف [`@storybook/addon-themes`](https://storybook.js.org/addons/@storybook/addon-themes/) إلى قائمة `addons` لديك في `.storybook/main.ts`.
+- سيُعدّ [مُزيِّنًا (decorator)](https://stevekinney.com/courses/storybook/decorators) في `.storybook/main.ts`.
 
-Dark mode in Storybook as powered by Tailwind
+الوضع الداكن في Storybook بفضل Tailwind

@@ -1,30 +1,30 @@
 ---
-title: "Why You Don't Need 100% Code Coverage"
-lang: en
+title: "لماذا لا تحتاج إلى تغطية شيفرة كاملة 100%"
+lang: ar
 source: "https://stevekinney.com/courses/testing/you-dont-need-perfect-code-coverage"
 ---
 
-Ah, [code coverage](https://stevekinney.com/courses/testing/code-coverage)—the metric that tempts us with thoughts of **perfection**. It dangles the promise that, if only we got 100%, our software would be an impenetrable fortress of correctness. But like many things in the beautiful yet chaotic world of development, that’s just not true.
+آه، [تغطية الشيفرة](https://stevekinney.com/courses/testing/code-coverage) — المقياس الذي يغوينا بأفكار **الكمال**. إنه يعلّق وعدًا بأن برمجياتنا ستكون حصنًا منيعًا من الصحة، لو أننا بلغنا 100% فقط. لكن مثل أمور كثيرة في عالم التطوير الجميل الفوضوي، هذا ليس صحيحًا.
 
-Here’s the deal: code coverage is **a tool**, not a goal. And making it your goal can lead to some *questionable* decisions that ultimately make your life worse—not better. Let’s break this down step by step with a combination of common sense, experience from the trenches, and maybe a dash of reality-check humor.
+إليك جوهر الأمر: تغطية الشيفرة **أداة**، لا هدف. وجعلها هدفك قد يؤدي إلى قرارات *مشكوك فيها* تجعل حياتك أسوأ في النهاية — لا أفضل. لنفكّك هذا خطوة بخطوة بمزيج من الحس السليم وخبرة من الخطوط الأمامية وربما رشة من فكاهة مواجهة الواقع.
 
-## What Code Coverage Actually Tells You
+## ما تخبرك به تغطية الشيفرة فعليًا
 
-Code coverage measures how much of your code gets executed during tests, and it breaks down into a few categories:
+تقيس تغطية الشيفرة كم من شيفرتك يُنفّذ أثناء الاختبارات، وهي تنقسم إلى بضع فئات:
 
-- **Line coverage**: How many lines of code get run.
-- **Function coverage**: How many functions get called.
-- **Branch coverage**: How many branches (like `if` conditions) are tested.
+- **تغطية الأسطر**: كم سطرًا من الشيفرة يُشغَّل.
+- **تغطية الدوال**: كم دالة تُنادَى.
+- **تغطية الفروع**: كم فرعًا (مثل شروط `if`) يُختبَر.
 
-It’s a **quantitative** measurement—it tells you *how much*, but not *how well*. We can get 100% code coverage, sure, but that number tells us *nothing* about whether our tests are *actually meaningful*. You could write thousands of lines of tests that don’t assert a single sensible thing and, uh, it’ll still say 100%. It’s a bit like telling yourself eating 100% of a family-sized pizza is *self-care*. The action feels good, but was it *really* healthy?
+إنه قياس **كمي** — يخبرك *بكم*، لا *بجودة*. يمكننا بلوغ تغطية 100%، بالتأكيد، لكن ذلك الرقم لا يخبرنا *بشيء* عن كون اختباراتنا *ذات معنى فعلًا*. يمكنك كتابة آلاف الأسطر من الاختبارات التي لا تتحقق من شيء منطقي واحد، و، آه، ستظل تقول 100%. الأمر أشبه بإقناع نفسك بأن أكل بيتزا بحجم عائلة كاملة بنسبة 100% هو *عناية بالذات*. الفعل يبدو جيدًا، لكن هل كان *صحيًا* حقًا؟
 
-## What Happens When You Chase 100%
+## ما يحدث عندما تطارد 100%
 
-Let’s consider this in practice. You’ve got your features all tested, but there are little pockets of imperfection: maybe some error-handling logic, a dead-end function that’s rarely used. And you think, “I’ll just test this real quick to push that coverage up!” But here’s what that process could look like:
+لننظر إلى هذا عمليًا. لديك مزاياك مختبَرة كلها، لكن هناك جيوب صغيرة من النقص: ربما بعض منطق معالجة الأخطاء، أو دالة مسدودة نادرًا ما تُستخدم. فتفكّر: «سأختبر هذا بسرعة لأرفع تلك التغطية!» لكن إليك كيف قد يبدو ذلك:
 
-### Writing Silly, Useless Tests
+### كتابة اختبارات سخيفة عديمة الفائدة
 
-To hit that sweet 100%, chances are you’ll end up writing tests that don’t do anything valuable:
+لبلوغ نسبة 100% اللطيفة تلك، غالبًا ستنتهي بكتابة اختبارات لا تفعل شيئًا قيّمًا:
 
 ```javascript
 it('loads with no errors', () => {
@@ -32,40 +32,40 @@ it('loads with no errors', () => {
 });
 ```
 
-Yeah, you ran some code. Congratulations? Getting those extra percentage points by writing trivial tests can feel satisfying, but in reality, you’ve added zero value. You’re testing for the sake of testing, not to catch potential issues or improve the design of your code.
+نعم، شغّلت بعض الشيفرة. مبروك؟ إن الحصول على تلك النقاط المئوية الإضافية بكتابة اختبارات تافهة قد يبدو مُرضيًا، لكنك في الواقع أضفت قيمة صفرًا. أنت تختبر من أجل الاختبار، لا لالتقاط مشكلات محتملة أو تحسين تصميم شيفرتك.
 
-### Ignoring Tests with Actual Value
+### تجاهل اختبارات ذات قيمة حقيقية
 
-You’re too focused on coverage, so you bypass tests that predict real-world failures. Like, what happens when users give you bizarre input? Or your database goes on vacation? These are valuable scenarios to handle, and they almost always require thinking beyond “Did I run this line of code?” But if you’re obsessed with that last 2% of coverage, you might just forget to cover *bad cases*, and that’s where bugs love to live.
+أنت مركّز جدًا على التغطية، فتتجاوز اختبارات تتنبأ بإخفاقات واقعية. مثل، ماذا يحدث حين يعطيك المستخدمون مُدخلات غريبة؟ أو حين يذهب قاعدة بياناتك في إجازة؟ هذه سيناريوهات قيّمة للتعامل معها، وهي تتطلب دائمًا تقريبًا تفكيرًا أبعد من «هل شغّلت هذا السطر من الشيفرة؟» لكن إن كنت مهووسًا بذلك 2% الأخير من التغطية، فقد تنسى تغطية *الحالات السيئة*، وهنا تحب الأخطاء أن تعيش.
 
-### You’re Encouraging Fragile Tests
+### أنت تشجّع اختبارات هشة
 
-Congrats, you hit 100%! But now someone refactors just one set of error handling paths, or they change up the internals slightly. All your coverage-pumping tests break, and they’re breaking because they weren’t *actually testing the important stuff*. That’s a mess. And nobody’s happy when suddenly you’re looking at 30 failed tests, none of which are helping you understand why reality is falling apart.
+مبروك، بلغت 100%! لكن الآن يعيد أحدهم هيكلة مجموعة واحدة من مسارات معالجة الأخطاء، أو يغيّر التفاصيل الداخلية قليلًا. تنكسر كل اختباراتك التي تضخّ التغطية، وتنكسر لأنها لم تكن *تختبر الأشياء المهمة فعلًا*. هذه فوضى. ولا أحد سعيد عندما تنظر فجأة إلى 30 اختبارًا فاشلًا، ولا واحد منها يساعدك في فهم لماذا يتفكك الواقع.
 
-## What Should You Do Instead?
+## ماذا ينبغي أن تفعل بدلًا من ذلك؟
 
-So instead of chasing 100% just to see those green bars light up, **focus on testing what actually matters**.
+إذن بدلًا من مطاردة 100% لمجرد رؤية تلك الأشرطة الخضراء تضيء، **ركّز على اختبار ما يهم فعلًا**.
 
-### Prioritize Critical Code Paths
+### أعطِ الأولوية لمسارات الشيفرة الحرجة
 
-You want to make sure you’re thoroughly testing the critical parts of your app—the kind of stuff that users are hitting all the time. Logging in, creating accounts, fetching data, handling payments. Make sure these workflows are airtight.
+تريد أن تتأكد من اختبار الأجزاء الحرجة من تطبيقك اختبارًا شاملًا — نوع الأشياء التي يلمسها المستخدمون طوال الوقت. تسجيل الدخول، إنشاء الحسابات، جلب البيانات، معالجة المدفوعات. تأكد من أن مهامك محكمة.
 
-Pro tip: Use Vitest’s built-in coverage tool just as a **guide** to identify parts of your program you’re not thinking about as much. If you’re missing important paths in the code, or any particularly ugly edge cases? Use the coverage report to focus you, but not to control you.
+نصيحة محترف: استخدم أداة التغطية المدمجة في Vitest **كمرشد** فقط لتحديد أجزاء برنامجك التي لا تفكّر فيها كثيرًا. إن كنت تفتقد مسارات مهمة في الشيفرة، أو أي حالات حدّية قبيحة بشكل خاص؟ استخدم تقرير التغطية ليركّزك، لا ليتحكم بك.
 
-### Test for Real-World Scenarios
+### اختبر سيناريوهات واقعية
 
-Think: “What could actually go wrong? What happens when the sun is shining and when it all goes bad?” Focus on tests that simulate realistic (and freakish) user behavior. For example, what does your app do if someone inputs 30,000 characters into a search box? Or if a third-party service returns a 500 error? Those aren’t lines covered, but **real scenarios guarded against**.
+فكّر: «ما الذي قد يسوء فعلًا؟ ماذا يحدث عندما تكون الشمس ساطعة وعندما يسوء كل شيء؟» ركّز على اختبارات تحاكي سلوك مستخدم واقعي (وغريب). على سبيل المثال، ماذا يفعل تطبيقك إن أدخل أحدهم 30,000 حرف في حقل بحث؟ أو إن أعادت خدمة خارجية خطأ 500؟ تلك ليست أسطرًا مغطاة، بل **سيناريوهات واقعية محمية**.
 
-### Write Meaningful, Maintainable Tests
+### اكتب اختبارات ذات معنى وقابلة للصيانة
 
-Every test you write should make sense to a future version of yourself or someone else who has to work on the code. Avoid testing implementation details! The more you tie your tests to the internal workings, the harder refactoring becomes.
+كل اختبار تكتبه ينبغي أن يكون منطقيًا لنسخة مستقبلية منك أو لشخص آخر عليه العمل على الشيفرة. تجنّب اختبار تفاصيل التنفيذ! فكلما ربطت اختباراتك أكثر بالتفاصيل الداخلية، صارت إعادة الهيكلة أصعب.
 
-And guess what? Vitest makes this simpler. With its tight integration into your coding workflow (it works with Vite, which is already delightfully fast), you’re encouraged to write meaningful tests *as you go*. No need to be bogged down by those pointless coverage chases.
+واحزر ماذا؟ Vitest يجعل هذا أبسط. بتكامله الوثيق مع سير عمل برمجتك (فهو يعمل مع Vite، السريع أصلًا بشكل مبهج)، تُشجَّع على كتابة اختبارات ذات معنى *أثناء عملك*. لا حاجة لأن تثقل بك تلك المطاردات العقيمة للتغطية.
 
-## Final Thoughts
+## أفكار ختامية
 
-I get it. That feeling of hitting 100% on your coverage report—it’s tantalizing. But don’t sacrifice sanity and meaningful tests for artificial perfection. When you lower the pressure to hit that arbitrary mark, you can focus on what’s *actually important*, which is answering, “Does my code work in **the real world**?”
+أتفهّم الأمر. ذلك الشعور ببلوغ 100% في تقرير تغطيتك — إنه مُغرٍ. لكن لا تضحّ بالسلامة العقلية والاختبارات ذات المعنى من أجل كمال مصطنع. عندما تخفّض الضغط لبلوغ ذلك الحد التعسفي، يمكنك التركيز على ما هو *مهم فعلًا*، وهو الإجابة عن: «هل تعمل شيفرتي في **العالم الحقيقي**؟»
 
-Let’s embrace a more reasonable challenge: shooting for **sufficient** code coverage, with tests that are thoughtful, maintainable, and make debugging worth your time. And hey, on a good day, if it reaches 80% and you can sleep soundly, that’s a win.
+لنحتضن تحديًا أكثر منطقية: السعي إلى تغطية شيفرة **كافية**، باختبارات مدروسة وقابلة للصيانة وتجعل التنقيح يستحق وقتك. ويا، في يوم جيد، إن بلغت 80% واستطعت النوم مرتاحًا، فهذا انتصار.
 
-Trust me—the users don’t care about your coverage stats. They care about whether the app *actually works*.
+ثق بي — المستخدمون لا يهتمون بإحصاءات تغطيتك. يهتمون بما إذا كان التطبيق *يعمل فعلًا*.

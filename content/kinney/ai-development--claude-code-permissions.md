@@ -1,19 +1,16 @@
 ---
-title: "Claude Code's Permission System"
-lang: en
+title: "نظام صلاحيات Claude Code"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-permissions"
 ---
 
-[Claude Code permissions](https://code.claude.com/docs/en/permissions) decide
-what the agent can do without asking. They are one of the most important parts
-of a safe setup.
+تحدّد [صلاحيات Claude Code](https://code.claude.com/docs/en/permissions) ما يستطيع الوكيل فعله دون سؤال. وهي من أهم أجزاء أي تهيئة آمنة.
 
-## Permission Outcomes
+## نتائج الصلاحيات
 
-Rules can allow, ask, or deny. Deny wins over ask, and ask wins over allow. That
-means a broad allow rule can still be constrained by a narrower deny rule.
+تستطيع القواعد أن تسمح أو تسأل أو ترفض. والرفض يتغلب على السؤال، والسؤال يتغلب على السماح. وهذا يعني أن قاعدة سماح واسعة قد تظل مقيّدة بقاعدة رفض أضيق.
 
-Rules can target tools and parameters:
+وتستطيع القواعد استهداف الأدوات والوسائط:
 
 ```
 Bash(bun test:*)
@@ -22,16 +19,13 @@ Edit(src/**)
 Agent(model:opus)
 ```
 
-Parameter-specific rules such as `Agent(model:opus)` are for deny and ask rules,
-not blanket allow rules. An allow rule for one parameter value does not prove the
-whole tool call is safe.
+القواعد الخاصة بوسيط معيّن مثل `Agent(model:opus)` هي لقواعد الرفض والسؤال، لا لقواعد السماح الشاملة. فقاعدة السماح لقيمة وسيط واحدة لا تثبت أن نداء الأداة كله آمن.
 
-Use narrow rules where possible. “Allow all Bash” is a very different policy
-from “allow the targeted test command.”
+استخدم قواعد ضيقة حيث أمكن. فـ «اسمح بكل أوامر Bash» سياسة مختلفة تمامًا عن «اسمح بأمر الاختبار المركّز».
 
-## Permission Modes
+## أوضاع الصلاحيات
 
-Claude Code supports modes such as:
+يدعم Claude Code أوضاعًا مثل:
 
 - `default`
 - `acceptEdits`
@@ -40,19 +34,17 @@ Claude Code supports modes such as:
 - `dontAsk`
 - `bypassPermissions`
 
-Use `plan` when you want research without edits. As of June 23, 2026, treat `auto` as a research-preview mode and review its behavior carefully. Reserve
-bypass-style modes for isolated environments where the risk is understood.
+استخدم `plan` عندما تريد بحثًا بلا تعديلات. واعتبارًا من 23 يونيو 2026، عامل `auto` كوضع معاينة بحثية وراجع سلوكه بعناية. واحفظ الأوضاع ذات الطابع التجاوزي للبيئات المعزولة حين تكون المخاطرة مفهومة.
 
-## A Practical Team Default
+## إعداد افتراضي عملي للفريق
 
-For most repositories:
+لمعظم المستودعات:
 
-- Allow read-only inspection.
-- Ask before editing files.
-- Ask before running shell commands that are not test or lint commands.
-- Deny production deployment commands.
-- Deny commands that print secrets.
-- Keep MCP write tools behind ask rules.
+- اسمح بالفحص للقراءة فقط.
+- اسأل قبل تعديل الملفات.
+- اسأل قبل تشغيل أوامر الصدفة التي ليست أوامر اختبار أو فحص.
+- ارفض أوامر النشر إلى الإنتاج.
+- ارفض الأوامر التي تطبع الأسرار.
+- أبقِ أدوات الكتابة في MCP خلف قواعد السؤال.
 
-Permissions should match the repository’s blast radius. A personal toy project
-and a payment system should not have the same policy.
+ينبغي أن تطابق الصلاحيات نطاق تأثير المستودع. فلا ينبغي أن يكون لمشروع شخصي صغير ولمنظومة مدفوعات السياسة نفسها.

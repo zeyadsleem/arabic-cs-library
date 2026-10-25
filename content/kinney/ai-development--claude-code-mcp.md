@@ -1,16 +1,14 @@
 ---
-title: "Using MCP Servers"
-lang: en
+title: "استخدام خوادم MCP"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-mcp"
 ---
 
-[Claude Code](https://code.claude.com/docs/en/mcp) connects to [MCP](https://modelcontextprotocol.io/) servers for external tools and data. Use
-it when the agent needs authoritative context or must interact with another
-system through a structured interface.
+يتصل [Claude Code](https://code.claude.com/docs/en/mcp) بخوادم [MCP](https://modelcontextprotocol.io/) للحصول على أدوات وبيانات خارجية. استخدمه عندما يحتاج الوكيل إلى سياق موثوق أو يجب أن يتفاعل مع نظام آخر عبر واجهة منظَّمة.
 
-## Add and Inspect Servers
+## أضف الخوادم وافحصها
 
-Use the command line interface:
+استخدم واجهة سطر الأوامر:
 
 ```bash
 claude mcp add
@@ -19,42 +17,38 @@ claude mcp get
 claude mcp remove
 ```
 
-For OAuth-backed servers, use:
+وللخوادم المدعومة بـ OAuth، استخدم:
 
 ```bash
 claude mcp login
 claude mcp logout
 ```
 
-Project-scoped servers can live in `.mcp.json`. Use project scope when the server
-is part of the repository workflow. Use user scope for personal tools.
+يمكن أن تسكن الخوادم ذات النطاق المشروع في `.mcp.json`. استخدم نطاق المشروع عندما يكون الخادم جزءًا من سير عمل المستودع. واستخدم نطاق المستخدم للأدوات الشخصية.
 
-## Prefer HTTP for New Remote Servers
+## فضّل HTTP للخوادم البعيدة الجديدة
 
-Claude Code supports `stdio`, HTTP, and SSE transports. For new remote servers,
-prefer HTTP where possible. SSE remains supported for compatibility, but the
-current documentation marks it as deprecated.
+يدعم Claude Code ناقلات `stdio` و HTTP و SSE. وللخوادم البعيدة الجديدة، فضّل HTTP حيث أمكن. ويظل SSE مدعومًا للتوافق، لكن التوثيق الحالي يصفه بأنه مهجور.
 
-## Permissions
+## الصلاحيات
 
-MCP tools run through Claude Code’s permission model. Keep write tools behind
-ask rules unless the environment is isolated and the action is low risk.
+تعمل أدوات MCP عبر نموذج صلاحيات Claude Code. أبقِ أدوات الكتابة خلف قواعد السؤال إلا إذا كانت البيئة معزولة والإجراء منخفض الخطورة.
 
-Prompt important tool use explicitly:
+اطلب استخدام الأدوات المهمة صراحةً:
 
 ```
 Use the GitHub MCP server only to read the pull request checks and comments.
 Do not post comments or update labels.
 ```
 
-## Security Review
+## مراجعة الأمان
 
-Before adding a server, answer:
+قبل إضافة خادم، أجب عن:
 
-- Which external systems can it access?
-- Which credentials does it receive?
-- Can it write to shared systems?
-- Does it expose logs, prompts, or tool arguments?
-- Can project configuration add or replace the server?
+- ما الأنظمة الخارجية التي يستطيع الوصول إليها؟
+- ما بيانات الاعتماد التي يتلقاها؟
+- هل يستطيع الكتابة إلى أنظمة مشتركة؟
+- هل يكشف السجلات أو الطلبات أو وسائط الأدوات؟
+- هل تستطيع تهيئة المشروع إضافة الخادم أو استبداله؟
 
-MCP is a capability boundary. Review it like one.
+MCP حدّ قدرات. فعامله على هذا الأساس.

@@ -1,22 +1,22 @@
 ---
-title: "Build Process & Tooling Integration"
-lang: en
+title: "عملية البناء وتكامل الأدوات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/build-process-and-tooling"
 ---
 
-Setting up Tailwind CSS properly in your development environment is pretty simple—if you follow the happy path, at least.
+إن إعداد Tailwind CSS على النحو الصحيح في بيئة تطويرك أمر بسيط جدًا — إن اتبعت المسار السهل، على الأقل.
 
-Tailwind CSS offers multiple installation methods to fit different project setups and requirements. We’ll cover the two most popular approaches: using Vite for modern build workflows and the Tailwind CLI for simpler setups.
+يوفّر Tailwind CSS طرق تثبيت متعدّدة تناسب إعدادات المشاريع ومتطلباتها المختلفة. سنغطّي الأكثر شيوعًا: استخدام Vite لسير عمل البناء الحديث، وTailwind CLI للإعدادات الأبسط.
 
-## Vite Integration
+## تكامل Vite
 
-> **This is the one that I use mostly.**
+> **هذه هي الطريقة التي أستخدمها في الغالب.**
 >
-> And it’s the only one we’ll be working with today.
+> وهي الوحيدة التي سنعمل بها اليوم.
 
-Vite has become one of the most popular build tools for modern web development, and it works exceptionally well with Tailwind CSS. You can check out the official instructions for [using Tailwind with Vite](https://tailwindcss.com/docs/installation/using-vite).
+أصبح Vite واحدًا من أشهر أدوات البناء في تطوير الويب الحديث، وهو يعمل على نحو استثنائي مع Tailwind CSS. يمكنك الاطّلاع على التعليمات الرسمية لـ[استخدام Tailwind مع Vite](https://tailwindcss.com/docs/installation/using-vite).
 
-But, basically, this is it:
+لكن، باختصار، هذا هو كل شيء:
 
 ```javascript
 import { defineConfig } from 'vite';
@@ -27,12 +27,12 @@ export default defineConfig({
 });
 ```
 
-### Adding Tailwind to Your CSS
+### إضافة Tailwind إلى CSS
 
-Simply import Tailwind in your CSS file:
+ما عليك سوى استيراد Tailwind في ملف CSS:
 
 ```css
 @import 'tailwindcss';
 ```
 
-This single import replaces the traditional three directives and provides better performance with faster builds.
+يحلّ هذا الاستيراد الواحد محل التوجيهات الثلاثة التقليدية ويوفّر أداءً أفضل وبناءً أسرع.

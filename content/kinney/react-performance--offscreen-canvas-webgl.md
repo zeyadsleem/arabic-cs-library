@@ -1,18 +1,18 @@
 ---
-title: "OffscreenCanvas & WebGL for React"
-lang: en
+title: "OffscreenCanvas وWebGL في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/offscreen-canvas-webgl"
 ---
 
-Your React app needs to render a complex chart with 100,000 data points. Or animate a 3D visualization. Or process real-time video streams. You implement it on the main thread, and suddenly your entire UI freezes. Every interaction becomes sluggish. The browser’s performance monitor shows one long, red bar blocking everything.
+يحتاج تطبيق React لديك إلى تصيير مخطط معقّد بنحو 100,000 نقطة بيانات. أو تحريك تصوّر ثلاثي الأبعاد. أو معالجة بثوث فيديو في الوقت الحقيقي. فتنفّذه على الخيط الرئيسي، وإذا بواجهتك كلها تتجمّد فجأة. ويصير كل تفاعل بطيئًا متثاقلًا. ويعرض مراقب أداء المتصفح شريطًا أحمر طويلًا يحجب كل شيء.
 
-Here’s the problem: canvas operations and WebGL rendering are computationally expensive, and when they run on the main thread, they block everything else. But there’s a solution that most React developers don’t know about: OffscreenCanvas. It lets you move all that heavy graphics work to a Web Worker, keeping your main thread free and your UI responsive.
+وهذه هي المشكلة: عمليات canvas وتصيير WebGL مكلفة حسابيًا، وحين تعمل على الخيط الرئيسي فإنها تحجب كل ما عداه. لكن هناك حل لا يعرفه معظم مطوّري React، وهو OffscreenCanvas. فهو يتيح لك نقل كل عمل الرسوميات الثقيل ذلك إلى Web Worker، فيبقى خيطك الرئيسي حرًا وتبقى واجهتك متجاوبة.
 
-Let’s explore how to build blazing-fast visualizations and graphics in React using OffscreenCanvas and WebGL, without sacrificing interactivity.
+لنستكشف كيف تبني تصوّرات ورسوميات فائقة السرعة في React باستخدام OffscreenCanvas وWebGL، من دون التضحية بالتفاعلية.
 
-## Understanding OffscreenCanvas
+## فهم OffscreenCanvas
 
-OffscreenCanvas enables canvas rendering in Web Workers:
+يتيح OffscreenCanvas تصيير canvas داخل عمال الويب (Web Workers):
 
 ```typescript
 interface OffscreenCanvasCapabilities {
@@ -33,9 +33,9 @@ const offscreen = canvas.transferControlToOffscreen();
 worker.postMessage({ canvas: offscreen }, [offscreen]);
 ```
 
-## Basic OffscreenCanvas Setup
+## الإعداد الأساسي لـ OffscreenCanvas
 
-### Creating the Worker Infrastructure
+### إنشاء البنية التحتية للعامل
 
 ```typescript
 // canvas.worker.ts
@@ -126,7 +126,7 @@ function resizeCanvas(width: number, height: number) {
 }
 ```
 
-### React Hook for OffscreenCanvas
+### خُطّاف React لـ OffscreenCanvas
 
 ```typescript
 const useOffscreenCanvas = (
@@ -229,9 +229,9 @@ const VisualizationComponent: React.FC = () => {
 };
 ```
 
-## WebGL with OffscreenCanvas
+## WebGL مع OffscreenCanvas
 
-### High-Performance WebGL Rendering
+### تصيير WebGL عالي الأداء
 
 ```typescript
 // webgl.worker.ts
@@ -513,9 +513,9 @@ function animate() {
 }
 ```
 
-## Complex Data Visualization
+## تصوّر بيانات معقّد
 
-### Chart Rendering with OffscreenCanvas
+### تصيير المخططات بـ OffscreenCanvas
 
 ```typescript
 // chart.worker.ts
@@ -658,7 +658,7 @@ interface ChartData {
 }
 ```
 
-### React Component for Data Visualization
+### مكوّن React لتصوّر البيانات
 
 ```typescript
 const DataVisualization: React.FC<{ data: any[] }> = ({ data }) => {
@@ -799,7 +799,7 @@ function renderOnMainThread(canvas: HTMLCanvasElement, data: any[]) {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
 ```typescript
 class CanvasPerformanceMonitor {
@@ -881,39 +881,39 @@ interface FrameTimer {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Use OffscreenCanvas for:**
+✅ **استخدم OffscreenCanvas في:**
 
-- Complex visualizations
-- Real-time data rendering
-- Image/video processing
-- 3D graphics and games
+- التصوّرات المعقّدة
+- تصيير البيانات في الوقت الحقيقي
+- معالجة الصور والفيديو
+- الرسوميات والألعاب ثلاثية الأبعاد
 
-✅ **Optimize worker communication:**
+✅ **حسّن التواصل مع العامل:**
 
-- Use transferable objects
-- Batch updates when possible
-- Minimize message size
-- Avoid frequent back-and-forth
+- استخدم الكائنات القابلة للنقل (transferable)
+- جمّع التحديثات حين أمكن
+- قلّل حجم الرسائل
+- تجنّب التبادل المتكرر ذهابًا وإيابًا
 
-✅ **Handle fallbacks:**
+✅ **تعامل مع البدائل الاحتياطية:**
 
-- Check for support
-- Provide main thread fallback
-- Test on various devices
-- Monitor performance
+- تحقّق من الدعم
+- وفّر بديلًا احتياطيًا على الخيط الرئيسي
+- اختبر على أجهزة متنوعة
+- راقب الأداء
 
-✅ **Manage resources:**
+✅ **أدر الموارد:**
 
-- Clean up workers
-- Dispose WebGL resources
-- Clear large buffers
-- Terminate unused workers
+- نظّف عمال الويب
+- تخلّص من موارد WebGL
+- أفرغ المخازن المؤقتة الكبيرة
+- أنهِ عمال الويب غير المستخدمة
 
-✅ **Profile performance:**
+✅ **حلّل الأداء:**
 
-- Monitor frame times
-- Track worker utilization
-- Measure transfer overhead
-- Identify bottlenecks
+- راقب أزمنة الإطارات
+- تتبّع استغلال العامل
+- قِس الكلفة الإضافية للنقل
+- حدّد الاختناقات

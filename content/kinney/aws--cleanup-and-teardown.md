@@ -1,53 +1,53 @@
 ---
-title: "Cleanup and Teardown"
-lang: en
+title: "التنظيف وإزالة كل شيء"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cleanup-and-teardown"
 ---
 
-The course opened with “real money, real infrastructure.” This is where we close that loop. Most of what you built costs pennies per month while it’s idle—but “pennies” across a dozen services, over a year you forgot about, compounds into real money. Worse, some services (ACM certificates, Route 53 hosted zones, CloudFront distributions) keep billing even when nobody uses them. This lesson tears everything down in the order AWS actually allows.
+افتُتحت الدورة بعبارة «مال حقيقي وبنية تحتية حقيقية». وهنا نغلق تلك الحلقة. معظم ما بنيته يكلّف سنتات شهريًا وهو خامل—لكن «السنتات» عبر دستة خدمات، على مدى سنة نسيتها، تتراكم إلى مال حقيقي. والأسوأ أن بعض الخدمات (شهادات ACM، والنطاقات المستضافة في Route 53، وتوزيعات CloudFront) تستمر في إصدار الفواتير حتى حين لا يستخدمها أحد. يهدم هذا الدرس كل شيء بالترتيب الذي تسمح به AWS فعلًا.
 
-If you want AWS’s canonical version of any of the delete commands, the [AWS CLI command reference](https://docs.aws.amazon.com/cli/latest/reference/) is the place to look. I’ll link specific commands inline where the flags are fiddly.
+إن أردت النسخة المعتمدة من AWS لأي من أوامر الحذف، فـ[مرجع أوامر AWS CLI](https://docs.aws.amazon.com/cli/latest/reference/) هو المكان الذي تبحث فيه. وسأضع روابط للأوامر المحددة في موضعها حين تكون الأعلام دقيقة وصعبة.
 
-## The Teardown Principle
+## مبدأ الهدم
 
-AWS resources have dependencies. You can’t delete a role while a Lambda is still using it; you can’t delete an S3 bucket that has objects in it; you can’t delete a CloudFront distribution that’s still `Enabled`. The rule is almost always: **delete things that depend on a resource before deleting the resource itself.**
+لموارد AWS تبعيات. لا يمكنك حذف دور بينما لا تزال دالة Lambda تستخدمه؛ ولا يمكنك حذف دلو S3 يحتوي على كائنات؛ ولا يمكنك حذف توزيع CloudFront لا يزال في حالة `Enabled`. والقاعدة دائمًا تقريبًا: **احذف الأشياء التي تعتمد على المورد قبل حذف المورد نفسه.**
 
-The order below is the one that actually works. Skipping around will produce `ResourceInUseException` and `DependencyViolation` errors until you give up and come back to it.
+الترتيب أدناه هو الترتيب الذي يعمل فعلًا. أما القفز هنا وهناك فسينتج أخطاء `ResourceInUseException` و`DependencyViolation` حتى تستسلم وتعود إليه.
 
-## What Keeps Charging
+## ما يستمر في إصدار الفواتير
 
-Before you start, a short list of services that keep billing you whether or not anyone uses them:
+قبل أن تبدأ، قائمة قصيرة بالخدمات التي تستمر في تقاضي المال منك سواء استخدمها أحد أم لا:
 
-- **CloudFront distributions.** Even disabled, they don’t cost much—but deleted costs zero.
-- **Route 53 hosted zones.** $0.50/month *per zone*. Forgotten hosted zones are the classic “$12/year” surprise.
-- **ACM certificates.** Free, but they count toward your quota. Delete unused certs.
-- **DynamoDB tables in on-demand mode.** Charge nothing for zero requests, but storage costs for existing items still accrue.
-- **CloudWatch Log Groups.** Indefinite retention by default. Delete or set retention when you tear down.
-- **Elastic IPs** (not used in this course, but: always delete these).
-- **S3 buckets with versioning enabled.** Every object version still costs you. Empty *all* versions before deleting.
+- **توزيعات CloudFront.** حتى وهي معطّلة لا تكلّف كثيرًا—لكن المحذوفة تكلّف صفرًا.
+- **النطاقات المستضافة في Route 53.** 0.50 دولار شهريًا *لكل نطاق*. النطاقات المستضافة المنسية هي مفاجأة «12 دولارًا سنويًا» الكلاسيكية.
+- **شهادات ACM.** مجانية، لكنها تُحتسب على حصتك. احذف الشهادات غير المستخدمة.
+- **جداول DynamoDB في وضع الطلب.** لا تتقاضى شيئًا عند صفر طلبات، لكن تكلفة تخزين العناصر الموجودة تظل تتراكم.
+- **مجموعات سجلات CloudWatch.** الاحتفاظ غير المحدد هو الوضع الافتراضي. احذفها أو اضبط مدة الاحتفاظ عند الهدم.
+- **عناوين IP المرنة (Elastic IPs)** (غير مستخدمة في هذه الدورة، لكن: احذفها دائمًا).
+- **دلاء S3 مع تمكين الإصدارات.** كل نسخة من كل كائن لا تزال تكلّفك. أفرغ *كل* الإصدارات قبل الحذف.
 
-## Order of Operations
+## ترتيب العمليات
 
-The safe sequence for this course’s footprint, top to bottom:
+التسلسل الآمن لبصمة هذه الدورة، من الأعلى إلى الأسفل:
 
-1. CloudFront distributions (disable, wait, delete) and OACs.
-2. Route 53 records (except NS and SOA) and hosted zones.
-3. ACM certificates.
-4. API Gateway APIs and custom domain names.
-5. Lambda functions, versions, and layer attachments.
-6. IAM execution roles and their policies (detach first, then delete).
-7. DynamoDB tables.
-8. Parameter Store parameters and Secrets Manager secrets.
-9. CloudWatch log groups, alarms, and SNS topics.
-10. S3 buckets (empty all versions, then delete).
-11. Budgets, cost alerts.
-12. IAM users you no longer need (deploy-bot, etc.) and their access keys.
+1. توزيعات CloudFront (عطّل، انتظر، احذف) ووحدات OAC.
+2. سجلات Route 53 (ما عدا NS وSOA) والنطاقات المستضافة.
+3. شهادات ACM.
+4. واجهات API Gateway البرمجية وأسماء النطاقات المخصصة.
+5. دوال Lambda وإصداراتها وطبقاتها المرتبطة.
+6. أدوار تنفيذ IAM وسياساتها (افصل أولًا، ثم احذف).
+7. جداول DynamoDB.
+8. مُعاملات Parameter Store وأسرار Secrets Manager.
+9. مجموعات سجلات CloudWatch والإنذارات وموضوعات SNS.
+10. دلاء S3 (أفرغ كل الإصدارات، ثم احذف).
+11. الميزانيات وتنبيهات التكلفة.
+12. مستخدمو IAM الذين لم تعد تحتاجهم (مثل deploy-bot) ومفاتيح وصولهم.
 
-Keep the root user, your `admin` user, and the account itself. Those stay for the next project.
+أبقِ المستخدم الجذري (root)، ومستخدم `admin` الخاص بك، والحساب نفسه. فهؤلاء يبقون للمشروع القادم.
 
 ## 1. CloudFront
 
-CloudFront distributions must be **disabled**, fully deployed in that disabled state, and *then* deleted. Disabling takes 15–30 minutes. Deletion is fast once the status is `Deployed`.
+يجب أن تكون توزيعات CloudFront **معطّلة**، ومنشورة بالكامل في تلك الحالة المعطّلة، وبعد *ذلك* تُحذف. يستغرق التعطيل من 15 إلى 30 دقيقة. أما الحذف فيكون سريعًا بمجرد أن تصبح الحالة `Deployed`.
 
 ```bash
 DIST_ID=E1A2B3C4D5E6F7
@@ -73,7 +73,7 @@ NEW_ETAG=$(aws cloudfront get-distribution-config --id "$DIST_ID" \
 aws cloudfront delete-distribution --id "$DIST_ID" --if-match "$NEW_ETAG"
 ```
 
-Then delete the OAC:
+ثم احذف وحدة OAC:
 
 ```bash
 OAC_ID=E1OAC2EXAMPLE
@@ -84,7 +84,7 @@ aws cloudfront delete-origin-access-control --id "$OAC_ID" --if-match "$OAC_ETAG
 
 ## 2. Route 53
 
-You can’t delete a hosted zone with any records other than the default `NS` and `SOA`. List what’s there, delete each record, then the zone.
+لا يمكنك حذف نطاق مستضاف يحتوي على أي سجلات غير السجلين الافتراضيين `NS` و`SOA`. اسرد ما هو موجود، واحذف كل سجل، ثم احذف النطاق.
 
 ```bash
 ZONE_ID=Z1ABCDEF123456
@@ -99,13 +99,13 @@ aws route53 list-resource-record-sets --hosted-zone-id "$ZONE_ID" \
 aws route53 delete-hosted-zone --id "$ZONE_ID"
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> If you registered the domain through Route 53, **don’t delete the hosted zone** unless you’re also transferring or abandoning the domain. Registered domains expect their hosted zone to exist.
+> إن سجّلت النطاق عبر Route 53، فلا **تحذف النطاق المستضاف** إلا إذا كنت ستنقل النطاق أو تتخلى عنه أيضًا. فالنطاقات المسجّلة تتوقع وجود نطاقها المستضاف.
 
-## 3. ACM Certificates
+## 3. شهادات ACM
 
-Certificates can’t be deleted while they’re attached to a CloudFront distribution or API Gateway custom domain. Do CloudFront and API Gateway first; then:
+لا يمكن حذف الشهادات وهي مرتبطة بتوزيع CloudFront أو بنطاق مخصص في API Gateway. أنجز CloudFront وAPI Gateway أولًا؛ ثم:
 
 ```bash
 aws acm delete-certificate \
@@ -130,16 +130,16 @@ aws apigatewayv2 delete-domain-name \
 
 ## 5. Lambda
 
-Delete each function. Versions attached to the function go with it. Lambda@Edge functions in CloudFront get replicated to edge locations—AWS cleans those up asynchronously after you delete the function; don’t be surprised if the console still shows replicas for up to a few hours.
+احذف كل دالة. الإصدارات المرتبطة بالدالة تذهب معها. أما دوال Lambda@Edge في CloudFront فتُنسخ إلى مواقع الحافة—وتنظّفها AWS بشكل غير متزامن بعد حذف الدالة؛ فلا تتفاجأ إن ظلّت وحدة التحكم تعرض نسخًا متماثلة لمدة تصل إلى بضع ساعات.
 
 ```bash
 aws lambda delete-function --function-name scratch-lab-api --region us-east-1
 aws lambda delete-function --function-name my-frontend-app-api --region us-east-1
 ```
 
-## 6. IAM Roles and Policies
+## 6. أدوار وسياسات IAM
 
-You can’t delete a role while policies are attached. Detach first.
+لا يمكنك حذف دور ما دامت هناك سياسات مرتبطة به. افصلها أولًا.
 
 ```bash
 ROLE=scratch-lab-api-role
@@ -159,7 +159,7 @@ done
 aws iam delete-role --role-name "$ROLE"
 ```
 
-Repeat for every execution role the course created. Delete customer-managed policies (`DeployBotPolicy`, etc.) after no role or user references them.
+كرّر ذلك مع كل دور تنفيذ أنشأته الدورة. واحذف السياسات التي يديرها العميل (`DeployBotPolicy` وغيرها) بعد ألا يشير إليها أي دور أو مستخدم.
 
 ## 7. DynamoDB
 
@@ -169,9 +169,9 @@ aws dynamodb delete-table \
   --region us-east-1
 ```
 
-If you had point-in-time recovery enabled, final backups may linger for the retention window.
+إن كنت قد فعّلت الاستعادة إلى نقطة زمنية، فقد تبقى النسخ الاحتياطية النهائية خلال نافذة الاحتفاظ.
 
-## 8. Parameter Store and Secrets Manager
+## 8. Parameter Store وSecrets Manager
 
 ```bash
 aws ssm delete-parameter \
@@ -204,7 +204,7 @@ aws sns delete-topic \
 
 ## 10. S3
 
-Versioning-enabled buckets need every version *and* every delete marker removed before the bucket can go.
+تحتاج الدلاء التي فُعّل فيها الإصدار إلى إزالة كل نسخة *و*كل علامة حذف قبل أن يمكن حذف الدلو.
 
 ```bash
 BUCKET=my-frontend-app-assets
@@ -223,7 +223,7 @@ aws s3api delete-objects --bucket "$BUCKET" --delete file://versions.json
 aws s3api delete-bucket --bucket "$BUCKET" --region us-east-1
 ```
 
-## 11. Budgets and Cost Alerts
+## 11. الميزانيات وتنبيهات التكلفة
 
 ```bash
 aws budgets delete-budget \
@@ -231,9 +231,9 @@ aws budgets delete-budget \
   --budget-name my-frontend-app-monthly
 ```
 
-## 12. IAM Users
+## 12. مستخدمو IAM
 
-If you created `deploy-bot` or any other service user purely for the course, delete it once its CloudFront/S3 work is gone. Access keys must be deleted first.
+إن كنت قد أنشأت `deploy-bot` أو أي مستخدم خدمة آخر خصيصًا للدورة، فاحذفه بعد أن يزول عمل CloudFront/S3 الخاص به. ويجب حذف مفاتيح الوصول أولًا.
 
 ```bash
 USER=deploy-bot
@@ -251,9 +251,9 @@ done
 aws iam delete-user --user-name "$USER"
 ```
 
-## Verifying Nothing Is Left
+## التحقق من عدم بقاء شيء
 
-A few quick sanity checks:
+بعض الفحوص السريعة:
 
 ```bash
 aws cloudfront list-distributions --query 'DistributionList.Items[].Id' --output text
@@ -263,8 +263,8 @@ aws s3 ls
 aws route53 list-hosted-zones --query 'HostedZones[].Name' --output text
 ```
 
-If every list is empty (or only contains things you deliberately kept), you’re clean.
+إن كانت كل قائمة فارغة (أو لا تحتوي إلا على أشياء أبقيتها عن قصد)، فأنت نظيف.
 
-Finally, check the [Billing console](https://console.aws.amazon.com/billing/home) a few days later. Ongoing charges after teardown mean something is still alive. The most common culprits are S3 versions you didn’t clear, a Route 53 hosted zone you forgot about, or a Lambda@Edge replica that hasn’t finished deleting.
+أخيرًا، تحقّق من [وحدة تحكم الفوترة](https://console.aws.amazon.com/billing/home) بعد بضعة أيام. فالرسوم المستمرة بعد الهدم تعني أن شيئًا ما لا يزال حيًا. وأكثر الأسباب شيوعًا هي نسخ S3 التي لم تُفرّغها، أو نطاق مستضاف في Route 53 نسيته، أو نسخة Lambda@Edge لم ينتهِ حذفها.
 
-The lights are off. Good work.
+الأضواء مطفأة. عمل جيد.

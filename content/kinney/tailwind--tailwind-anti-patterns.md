@@ -1,12 +1,12 @@
 ---
-title: "Anti-Patterns"
-lang: en
+title: "الأنماط المضادة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-anti-patterns"
 ---
 
-## Overusing the `@apply` Directive
+## الإفراط في استخدام توجيه `@apply`
 
-Using `@apply` to inline utility classes:
+استخدام `@apply` لتضمين الأصناف المساعدة:
 
 ```css
 /* ❌ Anti-pattern */
@@ -15,18 +15,18 @@ Using `@apply` to inline utility classes:
 }
 ```
 
-This breaks down for a few reasons:
+هذا ينهار لعدة أسباب:
 
-- Breaks utility-first paradigm
-- Creates inflexible styles
-- Variants don’t work as expected in Tailwind 4
-- Increases CSS bundle size
+- يكسر نموذج الأولوية للأدوات
+- ينشئ أنماطًا غير مرنة
+- لا تعمل المتغيّرات كما هو متوقع في Tailwind 4
+- يزيد حجم حزمة CSS
 
-**Use this *only* for**: Third-party library overrides or compatibility needs.
+**استخدمه *فقط* من أجل**: تجاوزات مكتبات الطرف الثالث أو احتياجات التوافق.
 
-## Expecting Variant Behavior in `@layer` Components
+## توقّع سلوك المتغيّرات في مكوّنات `@layer`
 
-Defining custom styles in `@layer` components expecting variant support:
+تعريف أنماط مخصصة في مكوّنات `@layer` مع توقّع دعم المتغيّرات:
 
 ```css
 /* ❌ Anti-pattern in Tailwind 4 */
@@ -38,7 +38,7 @@ Defining custom styles in `@layer` components expecting variant support:
 /* hover:my-button won't work */
 ```
 
-**Fix:** Use `@utility` for variant support:
+**الإصلاح:** استخدم `@utility` لدعم المتغيّرات:
 
 ```css
 /* ✅ Correct approach */
@@ -47,11 +47,11 @@ Defining custom styles in `@layer` components expecting variant support:
 }
 ```
 
-## Skipping Component-Based Architecture
+## تجاهل المعمارية القائمة على المكوّنات
 
-Obviously, you can use Tailwind *without* components, but it becomes quickly obviously how this could get rough.
+من الواضح أنك تستطيع استخدام Tailwind *دون* مكوّنات، لكن سرعان ما يتضح كم يمكن أن يصبح هذا صعبًا.
 
-*Skipping Component-Based Architecture — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/e4958d62b8ab1c724f2f6772aef503e9eab7bbdc74d4e28d2b9f8074c5f75c90.html)*
+*تجاهل المعمارية القائمة على المكوّنات — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e4958d62b8ab1c724f2f6772aef503e9eab7bbdc74d4e28d2b9f8074c5f75c90.html)*
 
 ```html
 <div class="space-x-2">
@@ -67,22 +67,22 @@ Obviously, you can use Tailwind *without* components, but it becomes quickly obv
 </div>
 ```
 
-**Fix:** Use component frameworks to avoid duplication. You’ve got options: React, Svelte, Angular, Vue, etc. I mean, you can use web components. You can even use jQuery. You can even use server-side templating. But, yea, if you’re typing all of this out by hand or something, then maybe Tailwind isn’t a good fit.
+**الإصلاح:** استخدم أُطر المكوّنات لتجنب التكرار. لديك خيارات: React وSvelte وAngular وVue وغيرها. أعني أنه يمكنك استخدام مكوّنات الويب. بل يمكنك حتى استخدام jQuery. بل يمكنك حتى استخدام القوالب من جهة الخادم. لكن، أجل، إن كنت تكتب كل هذا يدويًا أو ما شابه، فربما لا تكون Tailwind خيارًا مناسبًا.
 
-## Ignoring Theme Customization
+## تجاهل تخصيص القالب
 
-In a pinch, it might be tempting to use arbitrary values instead of design tokens.
+في وقت الضيق، قد يكون مغريًا استخدام قيم اعتباطية بدلًا من رموز التصميم.
 
-*Ignoring Theme Customization — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/62c785664e78eb184df5663fbda8e1db32c8e7344d7d84bd72a4535ead4f6ede.html)*
+*تجاهل تخصيص القالب — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/62c785664e78eb184df5663fbda8e1db32c8e7344d7d84bd72a4535ead4f6ede.html)*
 
 ```html
 <!-- ❌ Anti-pattern: Magic values -->
 <div class="bg-[#ff6b35] p-[123px] text-[14.5px]"></div>
 ```
 
-But, I think it’s pretty obvious how over a long enough period of time, you’re going to regret that choice.
+لكني أظن أنه واضح تمامًا أنك ستندم على هذا الاختيار بعد فترة طويلة بما يكفي.
 
-Instead, use CSS-first theme configuration:
+بدلًا من ذلك، استخدم تهيئة القالب أولًا بـ CSS:
 
 ```css
 /* ✅ Define consistent tokens */
@@ -92,23 +92,23 @@ Instead, use CSS-first theme configuration:
 }
 ```
 
-## Targeting Older Browsers Without Consideration
+## استهداف المتصفحات القديمة دون تفكير
 
-Tailwind 4 does a lot of what it does by leveraging modern browser features. It falls apart quickly if you’re trying to support browsers older than Chrome 111, Safari 16.4, or Firefox 128. In that case, just use Tailwind 3 with PostCSS to poly-fill these features. And like, get a new job.
+يفعل Tailwind 4 الكثير مما يفعله بالاستفادة من ميزات المتصفحات الحديثة. وينهار بسرعة إن كنت تحاول دعم متصفحات أقدم من Chrome 111 أو Safari 16.4 أو Firefox 128. في هذه الحالة، استخدم Tailwind 3 مع PostCSS لتوفير بدائل لهذه الميزات. וכן، ابحث عن وظيفة جديدة.
 
-At the minimum, you need to support these features.
+كحد أدنى، تحتاج إلى دعم هذه الميزات.
 
-- Cascade Layers (`@layer`)
-- Registered Custom Properties (`@property`)
-- `color-mix()` function
+- طبقات التسلسل (`@layer`)
+- الخصائص المخصصة المسجّلة (`@property`)
+- الدالة `color-mix()`
 
-## Using Traditional CSS Preprocessors
+## استخدام معالجات CSS التقليدية
 
-Since you’re going to ask me how to do this at some point, let me just handle this now. Just don’t use Sass, Less, or Stylus with Tailwind 4.
+بما أنك ستسألني كيف تفعل هذا في مرحلة ما، دعني أعالج الأمر الآن. لا تستخدم Sass أو Less أو Stylus مع Tailwind 4.
 
-## Applying Utilities to High-Level Components
+## تطبيق الأدوات على مكوّنات عالية المستوى
 
-Using low-level components and then building you larger UI out of those components makes makes it easier to make larger-scale changes faster.
+استخدام مكوّنات منخفضة المستوى ثم بناء واجهتك الأكبر من تلك المكوّنات يجعل إجراء تغييرات أكبر أسرع.
 
 ```jsx
 /* ❌ Anti-pattern */
@@ -132,10 +132,10 @@ function CheckoutForm() {
 }
 ```
 
-## TL;DR
+## باختصار
 
-- Embrace the utility-first approach in your HTML
-- Use component abstraction for reusability
-- Leverage `@theme` for consistent design tokens
-- Use `@utility` for custom utilities needing variant support
-- Understand browser compatibility requirements before adoption
+- تبنَّ نهج الأولوية للأدوات في HTML لديك
+- استخدم تجريد المكوّنات لإعادة الاستخدام
+- استفد من `@theme` لرموز تصميم متسقة
+- استخدم `@utility` للأدوات المخصصة التي تحتاج إلى دعم المتغيّرات
+- افهم متطلبات توافق المتصفحات قبل التبنّي

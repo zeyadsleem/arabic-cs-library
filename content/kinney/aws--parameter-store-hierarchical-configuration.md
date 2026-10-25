@@ -1,18 +1,18 @@
 ---
-title: "Parameter Store: Hierarchical Configuration"
-lang: en
+title: "Parameter Store: التهيئة الهرمية"
+lang: ar
 source: "https://stevekinney.com/courses/aws/parameter-store-hierarchical-configuration"
 ---
 
-**Parameter Store** is part of AWS Systems Manager (SSM). It’s a key-value store for configuration data—the same kind of data you’ve been putting in Lambda environment variables, but with encryption, access control, versioning, and a hierarchical namespace built in.
+**Parameter Store** جزء من AWS Systems Manager (SSM). إنه مخزن مفتاح-قيمة لبيانات التهيئة — نفس نوع البيانات التي كنت تضعها في متغيرات بيئة Lambda، لكن مع تشفير وتحكّم في الوصول وإصدارات وفضاء أسماء هرمي مدمج.
 
-If you want AWS’s version of the same feature while you read, the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) is the official reference.
+إذا أردت نسخة AWS من الميزة نفسها أثناء قراءتك، فإن [توثيق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) هو المرجع الرسمي.
 
-If Lambda environment variables are like a flat `.env` file, Parameter Store is like a structured configuration tree. I find that distinction helpful because it changes how you think about organizing your config. You organize parameters by application, environment, and purpose using paths that look like file system directories: `/my-frontend-app/production/api-key`. And unlike environment variables, you can share parameters across multiple Lambda functions without duplicating values.
+إذا كانت متغيرات بيئة Lambda أشبه بملف `.env` مسطّح، فإن Parameter Store أشبه بشجرة تهيئة منظّمة. أجد هذا التمييز مفيدًا لأنه يغيّر طريقة تفكيرك في تنظيم التهيئة. تنظّم المعاملات حسب التطبيق والبيئة والغرض باستخدام مسارات تشبه أدلّة نظام الملفات: `/my-frontend-app/production/api-key`. وعلى خلاف متغيرات البيئة، يمكنك مشاركة المعاملات بين عدة دوال Lambda دون تكرار القيم.
 
-## Creating Parameters with the CLI
+## إنشاء المعاملات باستخدام CLI
 
-The `put-parameter` command creates or updates a parameter. Here’s a plain text parameter:
+ينشئ الأمر `put-parameter` معاملًا جديدًا أو يحدّث معاملًا قائمًا. إليك معامل نص عادي:
 
 ```bash
 aws ssm put-parameter \
@@ -23,7 +23,7 @@ aws ssm put-parameter \
   --output json
 ```
 
-The response includes the version number and the tier:
+تتضمّن الاستجابة رقم الإصدار والطبقة:
 
 ```json
 {
@@ -32,7 +32,7 @@ The response includes the version number and the tier:
 }
 ```
 
-Now create a **SecureString** parameter for something sensitive—an API key:
+الآن أنشئ معامل **SecureString** لشيء حسّاس — مفتاح API:
 
 ```bash
 aws ssm put-parameter \
@@ -43,21 +43,21 @@ aws ssm put-parameter \
   --output json
 ```
 
-In the console, the **Create parameter** form shows the **SecureString** type option with the KMS key selector.
+في وحدة التحكم، يعرض نموذج **Create parameter** خيار النوع **SecureString** مع محدّد مفتاح KMS.
 
-The AWS Systems Manager Parameter Store Create parameter form showing the name /my-frontend-app/api-key filled in and SecureString selected as the type with the default KMS key.
+نموذج Create parameter في AWS Systems Manager Parameter Store يعرض الاسم /my-frontend-app/api-key مملوءًا وSecureString محدّدًا كنوع مع مفتاح KMS الافتراضي.
 
-The value is encrypted at rest using an AWS-managed KMS key. You can also specify your own KMS key with the `--key-id` flag, but the default key works fine for most use cases.
+تُشفَّر القيمة عند السكون باستخدام مفتاح KMS تديره AWS. يمكنك أيضًا تحديد مفتاح KMS خاص بك عبر العلم `--key-id`، لكن المفتاح الافتراضي يفي بالغرض في معظم حالات الاستخدام.
 
-> **Tip**
+> **نصيحة**
 >
-> To update an existing parameter, add the `--overwrite` flag. Without it, `put-parameter` fails if the parameter already exists. This is a safety feature—you don’t accidentally overwrite production values.
+> لتحديث معامل موجود، أضف العلم `--overwrite`. بدونه يفشل `put-parameter` إذا كان المعامل موجودًا بالفعل. هذه ميزة أمان — فلا تكتب فوق قيم الإنتاج عن غير قصد.
 
-## Hierarchical Paths
+## المسارات الهرمية
 
-The forward slashes in parameter names aren’t just cosmetic. They define a hierarchy that you can query, and more importantly, they let you scope IAM permissions to entire subtrees.
+الشرطات المائلة في أسماء المعاملات ليست مجرد مظهر. إنها تحدّد تسلسلًا هرميًا يمكنك الاستعلام عنه، والأهم من ذلك أنها تتيح لك حصر أذونات IAM في أشجار فرعية كاملة.
 
-Here’s a typical structure for a frontend application with two environments:
+إليك بنية نموذجية لتطبيق واجهة أمامية ببيئتين:
 
 ```
 /my-frontend-app/
@@ -73,13 +73,13 @@ Here’s a typical structure for a frontend application with two environments:
 │   └── feature-flags       (String)
 ```
 
-This hierarchy gives you two things. First, you can retrieve all parameters for a given environment in a single call. Second, you can write an IAM policy that grants a Lambda function access to `/my-frontend-app/production/*` without giving it access to staging parameters.
+يمنحك هذا التسلسل الهرمي أمرين. أولًا، يمكنك استرجاع جميع معاملات بيئة معيّنة في استدعاء واحد. ثانيًا، يمكنك كتابة سياسة IAM تمنح دالة Lambda وصولًا إلى `/my-frontend-app/production/*` دون منحها وصولًا إلى معاملات staging.
 
-In the console, the **Parameter Store** list view shows all parameters in your account. You can filter by path to see only the `/my-frontend-app/` hierarchy.
+في وحدة التحكم، تعرض قائمة **Parameter Store** جميع المعاملات في حسابك. يمكنك التصفية حسب المسار لرؤية تسلسل `/my-frontend-app/` فقط.
 
-The AWS Systems Manager Parameter Store list view showing parameters with their names, types, and last modified dates.
+تعرض قائمة AWS Systems Manager Parameter Store المعاملات بأسمائها وأنواعها وتواريخ آخر تعديل لها.
 
-Let’s populate a few more parameters:
+لنضِف بضعة معاملات أخرى:
 
 ```bash
 aws ssm put-parameter \
@@ -97,29 +97,29 @@ aws ssm put-parameter \
   --output json
 ```
 
-## String vs. SecureString
+## String مقابل SecureString
 
-Parameter Store supports three types:
+يدعم Parameter Store ثلاثة أنواع:
 
-| Type | Encryption | Use Case |
+| النوع | التشفير | حالة الاستخدام |
 | --- | --- | --- |
-| `String` | None | Table names, endpoint URLs, feature flags |
-| `StringList` | None | Comma-separated values |
-| `SecureString` | KMS | API keys, tokens, passwords, connection strings |
+| `String` | لا شيء | أسماء الجداول، وعناوين URL للنقاط الطرفية، ورايات الميزات |
+| `StringList` | لا شيء | قيم مفصولة بفواصل |
+| `SecureString` | KMS | مفاتيح API، والرموز، وكلمات المرور، وسلاسل الاتصال |
 
-**String** parameters are stored in plain text. Use them for configuration that isn’t sensitive—the same kind of values you’d put in Lambda environment variables.
+تُخزَّن معاملات **String** كنص عادي. استخدمها للتهيئة غير الحسّاسة — نفس نوع القيم التي تضعها في متغيرات بيئة Lambda.
 
-**SecureString** parameters are encrypted at rest with a KMS key. When you retrieve a SecureString, you must explicitly request decryption with the `--with-decryption` flag (CLI) or `WithDecryption: true` (SDK). Without it, you get the encrypted ciphertext, which is useless.
+تُشفَّر معاملات **SecureString** عند السكون بمفتاح KMS. عند استرجاع SecureString، يجب أن تطلب فك التشفير صراحةً عبر العلم `--with-decryption` (CLI) أو `WithDecryption: true` (SDK). وبدون ذلك تحصل على النص المشفّر، وهو بلا فائدة.
 
-**StringList** stores comma-separated values as a single parameter. It’s occasionally useful, but most of the time you’re better off using a JSON string in a regular `String` parameter.
+يخزّن **StringList** قيمًا مفصولة بفواصل في معامل واحد. يكون مفيدًا أحيانًا، لكن في معظم الأوقات يكون استخدام سلسلة JSON في معامل `String` عادي أفضل.
 
-> **Warning**
+> **تحذير**
 >
-> SecureString parameters require KMS permissions to decrypt. If your Lambda function’s execution role doesn’t have `kms:Decrypt` permission on the KMS key used to encrypt the parameter, the function can read the parameter name but can’t decrypt the value. You’ll get an access denied error at runtime, not at deploy time.
+> تتطلّب معاملات SecureString أذونات KMS لفك التشفير. إذا لم يكن دور تنفيذ دالة Lambda يملك إذن `kms:Decrypt` على مفتاح KMS المستخدم لتشفير المعامل، فيمكن للدالة قراءة اسم المعامل لكنها لا تستطيع فك تشفير القيمة. ستحصل على خطأ رفض الوصول وقت التشغيل، لا وقت النشر.
 
-## Retrieving Parameters
+## استرجاع المعاملات
 
-### Get a Single Parameter
+### الحصول على معامل واحد
 
 ```bash
 aws ssm get-parameter \
@@ -128,7 +128,7 @@ aws ssm get-parameter \
   --output json
 ```
 
-Response:
+الاستجابة:
 
 ```json
 {
@@ -143,7 +143,7 @@ Response:
 }
 ```
 
-For SecureString parameters, add `--with-decryption`:
+بالنسبة إلى معاملات SecureString، أضف `--with-decryption`:
 
 ```bash
 aws ssm get-parameter \
@@ -153,11 +153,11 @@ aws ssm get-parameter \
   --output json
 ```
 
-Without `--with-decryption`, the `Value` field contains the encrypted ciphertext.
+بدون `--with-decryption`، يحتوي الحقل `Value` على النص المشفّر.
 
-### Get All Parameters by Path
+### الحصول على كل المعاملات حسب المسار
 
-This is where the hierarchy pays off. Retrieve every parameter under a given path:
+هنا يُثمر التسلسل الهرمي. استرجع كل معامل تحت مسار معيّن:
 
 ```bash
 aws ssm get-parameters-by-path \
@@ -168,11 +168,11 @@ aws ssm get-parameters-by-path \
   --output json
 ```
 
-This returns all four parameters under `/my-frontend-app/production/` in a single API call. The `--recursive` flag includes parameters in nested paths. Without it, only direct children of the specified path are returned.
+يعيد هذا جميع المعاملات الأربعة تحت `/my-frontend-app/production/` في استدعاء API واحد. يتضمّن العلم `--recursive` المعاملات في المسارات المتداخلة. وبدونه تُعاد فقط العناصر الفرعية المباشرة للمسار المحدّد.
 
-## Retrieving Parameters with the SDK
+## استرجاع المعاملات باستخدام SDK
 
-Here’s how you retrieve a parameter from a Lambda function using the AWS SDK v3:
+إليك كيفية استرجاع معامل من دالة Lambda باستخدام AWS SDK v3:
 
 ```typescript
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
@@ -195,9 +195,9 @@ const getParameter = async (name: string): Promise<string> => {
 };
 ```
 
-*Note:* `WithDecryption: true` is required for `SecureString` parameters. It has no effect on `String` parameters, so you can safely set it for all parameters.
+*ملاحظة:* `WithDecryption: true` مطلوب لمعاملات `SecureString`. وليس له أي تأثير على معاملات `String`، لذا يمكنك ضبطه بأمان لجميع المعاملات.
 
-To retrieve all parameters under a path:
+لاسترجاع كل المعاملات تحت مسار:
 
 ```typescript
 import { SSMClient, GetParametersByPathCommand } from '@aws-sdk/client-ssm';
@@ -225,11 +225,11 @@ const getParametersByPath = async (path: string): Promise<Record<string, string>
 };
 ```
 
-*Note:* Strip the path prefix to get a clean key like `api-key` instead of the full path.
+*ملاحظة:* أزل بادئة المسار للحصول على مفتاح نظيف مثل `api-key` بدلًا من المسار الكامل.
 
-> **Warning**
+> **تحذير**
 >
-> `GetParametersByPath` caps at **10 parameters per call**. More than that and the response includes a `NextToken` that you must pass back in on a follow-up call. The example above ignores pagination—if you have more than 10 parameters under the path, you’ll silently only see the first 10. The correct shape is a loop:
+> يقتصر `GetParametersByPath` على **10 معاملات في كل استدعاء**. إذا كان العدد أكثر من ذلك، تتضمّن الاستجابة `NextToken` يجب تمريره في استدعاء متابعة. يتجاهل المثال أعلاه ترقيم الصفحات — فإذا كان لديك أكثر من 10 معاملات تحت المسار، فسترى أول 10 فقط دون أي تنبيه. الشكل الصحيح هو حلقة:
 >
 > ```typescript
 > let nextToken: string | undefined;
@@ -249,29 +249,29 @@ const getParametersByPath = async (path: string): Promise<Record<string, string>
 > } while (nextToken);
 > ```
 >
-> Or use the AWS SDK v3 paginator helper: `paginateGetParametersByPath({ client: ssm }, { Path: path })`.
+> أو استخدم مساعد ترقيم الصفحات في AWS SDK v3: `paginateGetParametersByPath({ client: ssm }, { Path: path })`.
 
-## Standard vs. Advanced Tier
+## الطبقة القياسية مقابل الطبقة المتقدّمة
 
-Parameter Store has two tiers:
+لـ Parameter Store طبقتان:
 
-| Feature | Standard | Advanced |
+| الميزة | القياسية | المتقدّمة |
 | --- | --- | --- |
-| **Cost** | Free | $0.05 per parameter per month |
-| **Max value size** | 4 KB | 8 KB |
-| **Max parameters per region** | 10,000 | 100,000 |
-| **Parameter policies** | No | Yes (expiration, notification) |
-| **Throughput** | 40 TPS (default) | Up to 1,000 TPS (higher throughput) |
+| **التكلفة** | مجانية | 0.05 دولار لكل معامل شهريًا |
+| **أقصى حجم للقيمة** | 4 KB | 8 KB |
+| **أقصى عدد معاملات لكل منطقة** | 10,000 | 100,000 |
+| **سياسات المعاملات** | لا | نعم (انتهاء الصلاحية، الإشعارات) |
+| **الإنتاجية** | 40 TPS (افتراضي) | حتى 1,000 TPS (إنتاجية أعلى) |
 
-For almost every frontend application, the standard tier is more than enough. You’re storing a handful of configuration values, not tens of thousands. The 4 KB value limit is the same as Lambda’s environment variable limit, and it’s plenty for API keys and configuration strings.
+بالنسبة إلى كل تطبيق واجهة أمامية تقريبًا، الطبقة القياسية أكثر من كافية. أنت تخزّن حفنة من قيم التهيئة، لا عشرات الآلاف. حدّ القيمة البالغ 4 KB هو نفسه حدّ متغيرات البيئة في Lambda، وهو وفير لمفاتيح API وسلاسل التهيئة.
 
-> **Tip**
+> **نصيحة**
 >
-> You don’t need to choose a tier upfront. Parameters default to Standard. If you later need Advanced features, you can change a parameter’s tier with `put-parameter --tier Advanced --overwrite`. You can also set the tier to `Intelligent-Tiering` and let AWS promote parameters to Advanced only when they exceed Standard limits.
+> لا تحتاج إلى اختيار طبقة مسبقًا. تكون المعاملات افتراضيًا في الطبقة القياسية. وإذا احتجت لاحقًا إلى ميزات متقدّمة، يمكنك تغيير طبقة المعامل عبر `put-parameter --tier Advanced --overwrite`. يمكنك أيضًا ضبط الطبقة على `Intelligent-Tiering` وترك AWS يرقّي المعاملات إلى المتقدّمة فقط عندما تتجاوز حدود الطبقة القياسية.
 
-## Versioning
+## إدارة الإصدارات
 
-Every time you update a parameter, Parameter Store increments its version number. You can retrieve a specific version by appending `:version` to the name:
+في كل مرة تحدّث فيها معاملًا، يزيد Parameter Store رقم إصداره. يمكنك استرجاع إصدار محدّد بإلحاق `:version` بالاسم:
 
 ```bash
 aws ssm get-parameter \
@@ -281,13 +281,13 @@ aws ssm get-parameter \
   --output json
 ```
 
-This gives you a lightweight audit trail and the ability to roll back a configuration change without redeploying anything.
+يمنحك هذا مسار تدقيق خفيفًا والقدرة على التراجع عن تغيير في التهيئة دون إعادة نشر أي شيء.
 
-Parameter Store handles most configuration needs, but it doesn’t rotate credentials for you. When you need automatic rotation—for database passwords, OAuth tokens, or any credential with a lifecycle—that’s where Secrets Manager comes in. The next lesson covers Secrets Manager and when it’s worth the cost.
+يتولّى Parameter Store معظم احتياجات التهيئة، لكنه لا يدوّر بيانات الاعتماد نيابةً عنك. عندما تحتاج إلى تدوير تلقائي — لكلمات مرور قواعد البيانات، أو رموز OAuth، أو أي بيانات اعتماد لها دورة حياة — فهنا يأتي دور Secrets Manager. يغطي الدرس التالي Secrets Manager ومتى يستحق تكلفته.
 
-## Cleanup
+## التنظيف
 
-Standard-tier parameters are free, so there’s no billing reason to delete them—but it keeps your parameter namespace clean:
+معاملات الطبقة القياسية مجانية، لذا لا يوجد سبب متعلّق بالفواتير لحذفها — لكن الحذف يبقي فضاء أسماء المعاملات نظيفًا:
 
 ```bash
 aws ssm delete-parameters \

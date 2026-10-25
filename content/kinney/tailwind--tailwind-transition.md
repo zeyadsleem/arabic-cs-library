@@ -1,64 +1,64 @@
 ---
-title: "Transitions"
-lang: en
+title: "الانتقالات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-transition"
 ---
 
-CSS transitions animate changes to CSS properties over time, creating smooth effects like fading elements, color changes, or layout shifts. Tailwind provides utility classes for implementing transitions directly in HTML.
+تُحرّك انتقالات CSS تغيّرات خصائص CSS بمرور الوقت، فتُنتج تأثيرات سلسة مثل تلاشي العناصر أو تغيّر الألوان أو تغيّر التخطيط. ويوفّر Tailwind أصنافًا مساعِدة لتطبيق الانتقالات مباشرةً داخل HTML.
 
-## Applying CSS Transitions
+## تطبيق انتقالات CSS
 
-Apply transitions using the `transition` utility class. This tells the browser to animate property changes rather than change them instantly.
+طَبِّق الانتقالات باستخدام الصنف المساعد `transition`. هذا يطلب من المتصفح تحريك تغيّرات الخصائص بدلًا من إجرائها فورًا.
 
-The base `transition` utility enables transitions for common properties: color, background color, border color, text decoration color, fill, stroke, gradient stops, opacity, box shadow, transform, translate, scale, rotate, and filter. It sets a default timing function (`cubic-bezier(0.4, 0, 0.2, 1)`) and duration (`150ms`).
+الصنف المساعد `transition` الأساسي يفعّل الانتقالات للخصائص الشائعة: اللون، ولون الخلفية، ولون الحدّ، ولون زخرفة النص، والتعبئة (fill)، والخطّ (stroke)، ومحطّات التدرّج، والعتامة، وظلّ الصندوق، والتحويل (transform)، والإزاحة (translate)، والتحجيم (scale)، والدوران (rotate)، والفلتر (filter). وهو يضبط دالة توقيت افتراضية (`cubic-bezier(0.4, 0, 0.2, 1)`) ومدةً افتراضية (`150ms`).
 
-Tailwind offers utilities for specific property groups:
+يوفّر Tailwind أصنافًا مساعِدة لمجموعات خصائص محدّدة:
 
-- `transition-all`: Transitions all animatable properties
-- `transition-colors`: Transitions color-related properties (`color`, `background-color`, `border-color`, etc.)
-- `transition-opacity`: Transitions only `opacity`
-- `transition-shadow`: Transitions only `box-shadow`
-- `transition-transform`: Transitions transform properties (`transform`, `translate`, `scale`, `rotate`)
-- `transition-none`: Prevents any transitions
+- `transition-all`: ينتقل بكل الخصائص القابلة للتحريك
+- `transition-colors`: ينتقل بالخصائص المتعلقة بالألوان (`color`، `background-color`، `border-color`، إلخ)
+- `transition-opacity`: ينتقل بـ`opacity` وحدها
+- `transition-shadow`: ينتقل بـ`box-shadow` وحدها
+- `transition-transform`: ينتقل بخصائص التحويل (`transform`، `translate`، `scale`، `rotate`)
+- `transition-none`: يمنع أي انتقالات
 
-Example:
+مثال:
 
-*Applying CSS Transitions — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/db42a4e0a57cc4e7cc5718eba87df9530a1751e6adfa8536512f98ab9825f306.html)*
+*تطبيق انتقالات CSS — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/db42a4e0a57cc4e7cc5718eba87df9530a1751e6adfa8536512f98ab9825f306.html)*
 
 ```html
 <div class="bg-blue-500 transition hover:bg-red-500">Hover over me</div>
 ```
 
-Here, `transition` animates property changes, and `hover:bg-red-500` specifies the target background color on hover.
+هنا، يُحرّك `transition` تغيّرات الخصائص، ويحدّد `hover:bg-red-500` لون الخلفية الهدف عند التحويم (hover).
 
-## Controlling Transition Properties
+## التحكّم في خصائص الانتقال
 
-For granular control, use `transition-*` utilities like `transition-colors` or `transition-transform` to target specific property sets.
+للتحكّم الدقيق، استخدم الأصناف `transition-*` مثل `transition-colors` أو `transition-transform` لاستهداف مجموعات خصائص محدّدة.
 
-For properties not in predefined sets, use arbitrary values with `transition-[<value>]` syntax:
+أمّا الخصائص غير الموجودة في المجموعات المحدّدة مسبقًا، فاستخدم القيم التعسّفية بصيغة `transition-[<value>]`:
 
-*Controlling Transition Properties — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/db0dd92eaa3a1fda4cd80ae9ea619172baab49112ebe80603022339854725362.html)*
+*التحكّم في خصائص الانتقال — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/db0dd92eaa3a1fda4cd80ae9ea619172baab49112ebe80603022339854725362.html)*
 
 ```html
 <div class="h-10 w-10 transition-[width,height] hover:h-20 hover:w-20">Resize me</div>
 ```
 
-Reference CSS variables using `transition-(<custom-property>)` syntax.
+ويمكنك الإشارة إلى متغيّرات CSS المرجعية بصيغة `transition-(<custom-property>)`.
 
-## Duration, Timing, and Delay
+## المدة والتوقيت والتأخير
 
-Control how long, how, and when transitions occur.
+تحكّم في طول الانتقال، وفي كيف يحدث، وفي متى يحدث.
 
-### Duration
+### المدة
 
-Duration determines animation length:
+تحدّد المدة طول الحركة:
 
-- `duration-<number>`: Sets duration in milliseconds (`duration-150`, `duration-700`)
-- `duration-initial`: Sets to initial value
-- `duration-(<custom-property>)`: Uses CSS variable
-- `duration-[<value>]`: Uses arbitrary CSS value
+- `duration-<number>`: تضبط المدة بالمللي ثانية (`duration-150`، `duration-700`)
+- `duration-initial`: تضبط القيمة الأولية
+- `duration-(<custom-property>)`: تستخدم متغيّر CSS
+- `duration-[<value>]`: تستخدم قيمة CSS تعسّفية
 
-*Duration — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/d5f85d3c312db16e0d47e3285f57e2b2064939284ced8f00d0ac9ee8864b05fd.html)*
+*المدة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d5f85d3c312db16e0d47e3285f57e2b2064939284ced8f00d0ac9ee8864b05fd.html)*
 
 ```html
 <div class="bg-blue-500 transition duration-500 hover:bg-red-500">
@@ -66,19 +66,19 @@ Duration determines animation length:
 </div>
 ```
 
-### Timing Function (Easing)
+### دالة التوقيت (التسارع)
 
-Controls acceleration curve:
+تتحكّم في منحنى التسارع:
 
-- `ease-linear`: Constant speed
-- `ease-in`: Starts slowly, speeds up (`cubic-bezier(0.4, 0, 1, 1)`)
-- `ease-out`: Starts quickly, slows down (`cubic-bezier(0, 0, 0.2, 1)`)
-- `ease-in-out`: Starts slowly, speeds up, ends slowly (`cubic-bezier(0.4, 0, 0.2, 1)`) - default for `transition`
-- `ease-initial`: Sets to initial value
-- `ease-(<custom-property>)`: Uses CSS variable
-- `ease-[<value>]`: Uses arbitrary value for custom `cubic-bezier` functions
+- `ease-linear`: سرعة ثابتة
+- `ease-in`: يبدأ ببطء ثم يتسارع (`cubic-bezier(0.4, 0, 1, 1)`)
+- `ease-out`: يبدأ بسرعة ثم يتباطأ (`cubic-bezier(0, 0, 0.2, 1)`)
+- `ease-in-out`: يبدأ ببطء، ويتسارع، وينتهي ببطء (`cubic-bezier(0.4, 0, 0.2, 1)`) - وهو الافتراضي لـ`transition`
+- `ease-initial`: تضبط القيمة الأولية
+- `ease-(<custom-property>)`: تستخدم متغيّر CSS
+- `ease-[<value>]`: تستخدم قيمة تعسّفية لدوال `cubic-bezier` المخصّصة
 
-*Timing Function (Easing) — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/5c01fe22540acf2564c485a7d62dfbb38385b9e12187c362331c1ab4955ea1b4.html)*
+*دالة التوقيت (التسارع) — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5c01fe22540acf2564c485a7d62dfbb38385b9e12187c362331c1ab4955ea1b4.html)*
 
 ```html
 <div class="bg-green-500 transition duration-300 ease-in-out hover:bg-yellow-500">
@@ -86,15 +86,15 @@ Controls acceleration curve:
 </div>
 ```
 
-### Delay
+### التأخير
 
-Specifies waiting period before transition begins:
+يحدّد مدّة الانتظار قبل بدء الانتقال:
 
-- `delay-<number>`: Sets delay in milliseconds (`delay-150`, `delay-700`)
-- `delay-(<custom-property>)`: Uses CSS variable
-- `delay-[<value>]`: Uses arbitrary CSS value
+- `delay-<number>`: يضبط التأخير بالمللي ثانية (`delay-150`، `delay-700`)
+- `delay-(<custom-property>)`: يستخدم متغيّر CSS
+- `delay-[<value>]`: يستخدم قيمة CSS تعسّفية
 
-*Delay — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/1e7693c5cae7fb6797c7593bced57d8fba9a6d72e1164e8e167d122416072f8d.html)*
+*التأخير — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1e7693c5cae7fb6797c7593bced57d8fba9a6d72e1164e8e167d122416072f8d.html)*
 
 ```html
 <div class="bg-purple-500 transition delay-150 duration-300 hover:bg-orange-500">
@@ -102,21 +102,21 @@ Specifies waiting period before transition begins:
 </div>
 ```
 
-## Specific Properties and Features
+## خصائص وميزات محدّدة
 
-Tailwind provides utilities for transitioning particular CSS features:
+يوفّر Tailwind أصنافًا مساعِدة للانتقال بين خصائص CSS بعينها:
 
-- **Transforms**: Use `transition-transform` for `rotate-*`, `scale-*`, `translate-*`, `skew-*`. Force hardware acceleration with `transform-gpu` or revert with `transform-cpu`. Set `transform-origin` and `transform-style` for 3D transforms.
-- **Filters**: Transition filters like `blur-*`, `brightness-*`, `contrast-*`, `drop-shadow-*`, etc. The base `transition` includes filter properties. Remove with `filter-none`.
-- **Box Shadows**: Handled by `transition-shadow` or base `transition`.
-- **Gradients**: Supported in base `transition` and `transition-colors`. In Tailwind 4, gradients interpolate in `oklab` color space by default.
-- **Discrete Properties**: Use `transition-discrete` for properties that normally change instantly (`display`, `visibility`).
+- **التحويلات (transforms)**: استخدم `transition-transform` مع `rotate-*` و`scale-*` و`translate-*` و`skew-*`. واستخدم `transform-gpu` لإجبار التسريع العتادي أو `transform-cpu` للرجوع عنه. واضبط `transform-origin` و`transform-style` للتحويلات ثلاثية الأبعاد.
+- **الفلاتر (filters)**: انتقل بالفلاتر مثل `blur-*` و`brightness-*` و`contrast-*` و`drop-shadow-*`، إلخ. ويشمل `transition` الأساسي خصائص الفلتر. وأزِله بـ`filter-none`.
+- **ظلال الصندوق**: تُعالَج بواسطة `transition-shadow` أو `transition` الأساسي.
+- **التدرّجات**: مدعومة في `transition` الأساسي وفي `transition-colors`. وفي Tailwind 4، تستيفى التدرّجات في فضاء الألوان `oklab` افتراضيًا.
+- **الخصائص المتقطّعة (discrete)**: استخدم `transition-discrete` للخصائص التي تتغيّر فورًا عادةً (`display`، `visibility`).
 
-## Styling Inert Elements
+## تنسيق العناصر الخاملة (inert)
 
-The HTML `inert` attribute marks elements as non-interactive. Use the `inert` variant to style these elements and transition their state changes.
+تضع السمة `inert` في HTML علامةً على العناصر على أنها غير تفاعلية. واستخدم مُبدّل `inert` لتنسيق هذه العناصر وتحريك تغيّرات حالتها.
 
-*Styling Inert Elements — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/2a268adbcd5a58282bc5ef3d98fdce3a06da76a175a6f5a6995eff804f60ee91.html)*
+*تنسيق العناصر الخاملة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2a268adbcd5a58282bc5ef3d98fdce3a06da76a175a6f5a6995eff804f60ee91.html)*
 
 ```html
 <div class="opacity-100 transition-opacity duration-300 inert:opacity-50" inert>
@@ -124,9 +124,9 @@ The HTML `inert` attribute marks elements as non-interactive. Use the `inert` va
 </div>
 ```
 
-The transition smoothly animates opacity changes when the `inert` attribute is toggled.
+يُحرّك الانتقال تغيّرات العتامة بسلاسة عند تبديل السمة `inert`.
 
-*Styling Inert Elements — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/165e61978bff924a5a35ae2ebe03b7ef3be7ebb3b9f20f7cf1d5ef62efc0aaa5.html)*
+*تنسيق العناصر الخاملة — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/165e61978bff924a5a35ae2ebe03b7ef3be7ebb3b9f20f7cf1d5ef62efc0aaa5.html)*
 
 ```html
 <button class="cursor-pointer transition-all duration-200 inert:cursor-not-allowed" inert>
@@ -134,13 +134,13 @@ The transition smoothly animates opacity changes when the `inert` attribute is t
 </button>
 ```
 
-## Transitions with Other Variants
+## الانتقالات مع مُبدّلات أخرى
 
-Combine transition utilities with state variants (`hover`, `focus`, `active`, `disabled`, `checked`, `group-hover`, `peer-focus`) and responsive variants (`sm:`, `md:`, `@container`).
+اجمع أصناف الانتقال مع مُبدّلات الحالة (`hover`، `focus`، `active`، `disabled`، `checked`، `group-hover`، `peer-focus`) ومع مُبدّلات الاستجابة (`sm:`، `md:`، `@container`).
 
-Apply transition only on hover:
+طَبِّق الانتقال عند التحويم فقط:
 
-*Transitions with Other Variants — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/593bb2c21a204257321d8fb3373b5b8244b1118067b878e1c907af409546655b.html)*
+*الانتقالات مع مُبدّلات أخرى — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/593bb2c21a204257321d8fb3373b5b8244b1118067b878e1c907af409546655b.html)*
 
 ```html
 <div class="bg-blue-500 hover:bg-red-500 hover:transition-colors hover:duration-300">
@@ -148,9 +148,9 @@ Apply transition only on hover:
 </div>
 ```
 
-More commonly, apply `transition` in default state for enter and exit animations:
+والأكثر شيوعًا، طَبِّق `transition` في الحالة الافتراضية لحركتي الدخول والخروج:
 
-*Transitions with Other Variants — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/b940969372352290865afcbc8c28e7447f1b7f17b340b07f5b23b109073b90f7.html)*
+*الانتقالات مع مُبدّلات أخرى — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b940969372352290865afcbc8c28e7447f1b7f17b340b07f5b23b109073b90f7.html)*
 
 ```html
 <div class="bg-blue-500 transition-colors duration-300 hover:bg-red-500">
@@ -158,9 +158,9 @@ More commonly, apply `transition` in default state for enter and exit animations
 </div>
 ```
 
-Stack variants for conditional transitions:
+واجمع المُبدّلات معًا للحصول على انتقالات شرطية:
 
-*Transitions with Other Variants — Example 10 — [Open example](https://stevekinney.com/generated/playgrounds/f582139e47d24c64c36149085e9ef0bf82fa14bcfa6c05eacd685184d6bf44e7.html)*
+*الانتقالات مع مُبدّلات أخرى — المثال 10 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f582139e47d24c64c36149085e9ef0bf82fa14bcfa6c05eacd685184d6bf44e7.html)*
 
 ```html
 <div class="transition-colors duration-300 md:hover:bg-red-500">
@@ -168,9 +168,9 @@ Stack variants for conditional transitions:
 </div>
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-The `will-change` CSS property hints to browsers that an element will change, allowing optimization. Tailwind provides utilities:
+تخبر خاصية CSS `will-change` المتصفحات بأنّ عنصرًا ما سيتغيّر، فتسمح بالتحسين. ويوفّر Tailwind أصنافًا مساعِدة:
 
 - `will-change-auto`
 - `will-change-scroll`
@@ -179,13 +179,13 @@ The `will-change` CSS property hints to browsers that an element will change, al
 - `will-change-(<custom-property>)`
 - `will-change-[<value>]`
 
-Apply just before animation begins and remove after completion. Overuse can harm performance.
+طَبِّقها قبل بدء الحركة مباشرةً وأزِلها بعد انتهائها. والإفراط في استخدامها قد يضرّ بالأداء.
 
-For transforms and opacity, hardware acceleration can improve performance. Use `transform-gpu` to force hardware acceleration or `transform-cpu` to revert.
+وبالنسبة للتحويلات والعتامة، يمكن للتسريع العتادي أن يحسّن الأداء. فاستخدم `transform-gpu` لإجبار التسريع العتادي أو `transform-cpu` للرجوع عنه.
 
-## Customizing Transition Values
+## تخصيص قيم الانتقال
 
-Customize transition values using CSS variables in the `@theme` directive:
+خصّص قيم الانتقال باستخدام متغيّرات CSS داخل التوجيه `@theme`:
 
 ```css
 @import 'tailwindcss';
@@ -196,6 +196,6 @@ Customize transition values using CSS variables in the `@theme` directive:
 }
 ```
 
-This enables utilities like `duration-long` and `ease-custom`. Override defaults by redefining variables with the same name.
+يتيح هذا أصنافًا مثل `duration-long` و`ease-custom`. وتُتجاوز القيم الافتراضية بإعادة تعريف المتغيّرات بالاسم نفسه.
 
-This CSS-first configuration approach aligns design tokens with their usage location, making Tailwind feel more native to CSS.
+ويجعل هذا الأسلوب في الإعداد، الذي يبدأ من CSS، رموز التصميم (design tokens) متّسقة مع موضع استخدامها، فيبدو Tailwind أكثر ألفةً بـCSS.

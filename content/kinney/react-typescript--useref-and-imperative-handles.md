@@ -1,16 +1,16 @@
 ---
-title: "useRef and Imperative Handles"
-lang: en
+title: "`useRef` والمقابض الإجرائية"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/useref-and-imperative-handles"
 ---
 
-Sometimes React’s declarative model isn’t quite enough—you need to imperatively focus an input, measure a DOM node, or call a method on a third-party library. Enter refs: React’s escape hatch for direct DOM access and component imperative APIs. We’ll explore how to type refs properly in TypeScript, understand when callback refs shine over `useRef`, and build clean imperative interfaces with `forwardRef` and `useImperativeHandle`.
+أحيانًا لا يكفي نموذج React التصريحي (declarative) تمامًا — فأنت بحاجة إلى تركيز حقل إدخال بشكل إجرائي، أو قياس عقدة DOM، أو استدعاء تابع في مكتبة من طرف ثالث. هنا يأتي دور المراجع (refs): مخرج React إلى الوصول المباشر إلى DOM وإلى الواجهات الإجرائية للمكوّنات. سنستكشف كيف تُنمّط المراجع بشكل صحيح في TypeScript، ونتفهم متى تتفوّق مراجع الاستدعاء (callback refs) على `useRef`، ونبني واجهات إجرائية نظيفة باستخدام `forwardRef` و`useImperativeHandle`.
 
-If you’ve ever found yourself muttering “just let me grab that DOM element,” then refs are your friend. But like any power tool, they come with sharp edges—especially in TypeScript where you need to wrangle types for DOM elements, mutable ref objects, and component interfaces.
+إذا سبق لك أن وجدت نفسك تقول «دعني فقط آخذ ذلك العنصر من DOM»، فالمراجع في صفّك. لكن مثل كل أداة قوية، لها حوافّ حادة — ولا سيما في TypeScript حيث تحتاج إلى مصارعة الأنواع الخاصة بعناصر DOM وكائنات المراجع القابلة للتغيير وواجهات المكوّنات.
 
-## The `useRef` Playground
+## ملعب `useRef`
 
-Let’s start with the most common ref pattern: `useRef` for accessing DOM elements. TypeScript needs to know what you’re storing, and DOM elements have specific types.
+لنبدأ بأشيع نمط مراجع: `useRef` للوصول إلى عناصر DOM. يحتاج TypeScript إلى أن يعرف ما الذي تخزّنه، وعناصر DOM لها أنواع محدّدة.
 
 ```typescript
 import { useRef, useEffect } from 'react';
@@ -28,9 +28,9 @@ export function InputFocus() {
 }
 ```
 
-The magic happens with that generic parameter: `useRef<HTMLInputElement>(null)`. This tells TypeScript you’re storing a reference to an input element, and the initial value is `null` (because React hasn’t rendered yet).
+السحر يحدث مع ذلك المعامل العام: `useRef<HTMLInputElement>(null)`. هذا يخبر TypeScript أنك تخزّن مرجعًا إلى عنصر إدخال، وأن القيمة الأولية هي `null` (لأن React لم يُصيّر بعد).
 
-Here’s a more comprehensive example showing different DOM element types:
+وهنا مثال أشمل يعرض أنواعًا مختلفة من عناصر DOM:
 
 ```typescript
 import { useRef } from 'react';
@@ -68,9 +68,9 @@ export function DOMReferences() {
 }
 ```
 
-## Storing Values with `useRef`
+## تخزين القيم باستخدام `useRef`
 
-`useRef` isn’t just for DOM elements—it’s also perfect for storing mutable values that persist across renders without triggering re-renders. Think of it as a “box” you can put anything into.
+`useRef` ليس مخصّصًا لعناصر DOM فحسب — بل مثالي أيضًا لتخزين القيم القابلة للتغيير التي تبقى بين التصييرات (renders) دون أن تسبّب تصييرات جديدة. فكّر فيه كـ«صندوق» يمكنك وضع أي شيء بداخله.
 
 ```typescript
 import { useRef, useEffect, useState } from 'react';
@@ -124,13 +124,13 @@ export function TimerComponent() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> When storing non-DOM values in refs, always type them explicitly. `useRef<number>()` without an initial value creates `MutableRefObject<number | undefined>`, which is usually what you want for timer IDs or other optional values.
+> عند تخزين قيم غير مرتبطة بـ DOM داخل المراجع، نمّطها صراحةً في كل مرة. فـ`useRef<number>()` دون قيمة أولية ينشئ `MutableRefObject<number | undefined>`، وهو ما تريده عادةً لمعرّفات المؤقّتات (timers) أو غيرها من القيم الاختيارية.
 
-## Callback Refs: When `useRef` Isn’t Enough
+## مراجع الاستدعاء: حين لا يكفي `useRef`
 
-Sometimes `useRef` feels clunky—like when you need to run code immediately when a DOM element becomes available, or when you’re working with dynamic elements. Callback refs let you pass a function instead of a ref object, and React calls it with the element.
+أحيانًا يبدو `useRef` مرهقًا — مثلًا حين تحتاج إلى تشغيل شيفرة فور توفّر عنصر DOM، أو حين تعمل مع عناصر ديناميكية. تتيح لك مراجع الاستدعاء تمرير دالة بدل كائن مرجع، ويستدعيها React مع العنصر.
 
 ```typescript
 import { useState, useCallback } from 'react';
@@ -167,7 +167,7 @@ export function CallbackRefExample() {
 }
 ```
 
-Callback refs really shine when you need to handle dynamic lists or conditionally rendered elements:
+وتتألق مراجع الاستدعاء حقًا حين تحتاج إلى التعامل مع قوائم ديناميكية أو عناصر تُصيَّر بشروط:
 
 ```typescript
 import { useState, useCallback } from 'react';
@@ -214,9 +214,9 @@ export function DynamicListRefs() {
 }
 ```
 
-## Forwarding Refs: Passing the Buck
+## تمرير المراجع: تفويض المسؤولية
 
-When you create reusable components, you often want parent components to access the underlying DOM elements. `forwardRef` lets you “forward” a ref through your component to the element inside.
+عندما تنشئ مكوّنات قابلة لإعادة الاستخدام، فغالبًا ما تريد للمكوّنات الأب أن تصل إلى عناصر DOM الداخلية. يتيح لك `forwardRef` «تمرير» مرجع عبر مكوّنك إلى العنصر في داخله.
 
 ```typescript
 import { forwardRef, useRef, useImperativeHandle } from 'react';
@@ -253,7 +253,7 @@ export const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
 CustomInput.displayName = 'CustomInput';
 ```
 
-Now parent components can get direct access to the input element:
+الآن تستطيع المكوّنات الأب الوصول المباشر إلى عنصر الإدخال:
 
 ```typescript
 import { useRef } from 'react';
@@ -286,13 +286,13 @@ export function ParentWithForwardedRef() {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> When using `forwardRef`, the component function receives `props` first, then `ref` second. This is different from the usual pattern where `ref` is part of props.
+> عند استخدام `forwardRef`، تستقبل دالة المكوّن `props` أولًا ثم `ref` ثانيًا. ويختلف هذا عن النمط المعتاد حيث يكون `ref` جزءًا من `props`.
 
-## Imperative Handles: Curated APIs
+## المقابض الإجرائية: واجهات منتقاة
 
-Sometimes you don’t want to expose the entire DOM element—you want to create a curated imperative API. `useImperativeHandle` lets you customize what gets exposed when a parent component accesses your ref.
+أحيانًا لا تريد كشف عنصر DOM بالكامل — بل تريد إنشاء واجهة إجرائية منتقاة. يتيح لك `useImperativeHandle` تخصيص ما يُكشف عندما يصل المكوّن الأب إلى مرجعك.
 
 ```typescript
 import { forwardRef, useRef, useImperativeHandle, useState } from 'react';
@@ -361,7 +361,7 @@ export const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(
 VideoPlayer.displayName = 'VideoPlayer';
 ```
 
-Now parent components get a clean, controlled API instead of the entire video element:
+الآن تحصل المكوّنات الأب على واجهة نظيفة ومتحكَّم بها بدل عنصر الفيديو كاملًا:
 
 ```typescript
 import { useRef, useState } from 'react';
@@ -398,11 +398,11 @@ export function VideoController() {
 }
 ```
 
-## Common Patterns and Pitfalls
+## الأنماط الشائعة والمزالق
 
-### The Null Check Dance
+### رقصة التحقّق من القيم الفارغة
 
-DOM refs start as `null`, so you’ll be doing null checks constantly. Here are some patterns to make it less painful:
+تبدأ مراجع DOM بقيمة `null`، لذا ستجري تحقّقات من `null` باستمرار. إليك بعض الأنماط التي تجعل ذلك أقل إزعاجًا:
 
 ```typescript
 import { useRef, useCallback } from 'react';
@@ -448,9 +448,9 @@ export function NullCheckPatterns() {
 }
 ```
 
-### Ref Timing Gotchas
+### مزالق التوقيت في المراجع
 
-Refs aren’t available during the first render—they’re set during the commit phase. If you need to run code when the ref becomes available, use `useEffect`:
+المراجع غير متاحة أثناء أول تصيير — تُضبط في مرحلة الالتزام (commit). إذا احتجت إلى تشغيل شيفرة عند توفّر المرجع، فاستخدم `useEffect`:
 
 ```typescript
 import { useRef, useEffect } from 'react';
@@ -476,9 +476,9 @@ export function RefTimingExample() {
 }
 ```
 
-### Combining Multiple Refs
+### الجمع بين عدة مراجع
 
-Sometimes you need to use both a forwarded ref and your own internal ref. Here’s how to handle that:
+أحيانًا تحتاج إلى استخدام مرجع مُمرَّر ومرجع داخلي خاص بك في الوقت نفسه. إليك كيفية التعامل مع ذلك:
 
 ```typescript
 import { forwardRef, useRef, useImperativeHandle } from 'react';
@@ -525,20 +525,20 @@ export const EnhancedButton = forwardRef<EnhancedButtonHandle, EnhancedButtonPro
 EnhancedButton.displayName = 'EnhancedButton';
 ```
 
-## When to Use What
+## متى تستخدم ماذا
 
-Here’s a quick decision tree for choosing the right ref approach:
+إليك شجرة قرار سريعة لاختيار نهج المرجع المناسب:
 
-- **Need to access a DOM element?** → `useRef<HTMLElementType>(null)`
-- **Need to store a mutable value across renders?** → `useRef<ValueType>(initialValue)`
-- **Need to run code when an element appears?** → Callback ref
-- **Working with dynamic lists?** → Callback refs with factories
-- **Building a reusable component that should expose its element?** → `forwardRef`
-- **Want to expose a curated API instead of the raw element?** → `forwardRef` + `useImperativeHandle`
+- **هل تحتاج إلى الوصول إلى عنصر DOM؟** → `useRef<HTMLElementType>(null)`
+- **هل تحتاج إلى تخزين قيمة قابلة للتغيير عبر التصييرات؟** → `useRef<ValueType>(initialValue)`
+- **هل تحتاج إلى تشغيل شيفرة عند ظهور عنصر؟** → مرجع استدعاء (callback ref)
+- **هل تعمل مع قوائم ديناميكية؟** → مراجع استدعاء مع دوال مُولِّدة (factories)
+- **هل تبني مكوّنًا قابلًا لإعادة الاستخدام ينبغي أن يكشف عنصره؟** → `forwardRef`
+- **هل تريد كشف واجهة منتقاة بدل العنصر الخام؟** → `forwardRef` + `useImperativeHandle`
 
-## Real World Use Cases™
+## حالات استخدام من العالم الحقيقي™
 
-### Focus Management
+### إدارة التركيز (Focus Management)
 
 ```typescript
 import { useRef, useEffect } from 'react';
@@ -585,7 +585,7 @@ export function FocusTrap({ children, active }: FocusTrapProps) {
 }
 ```
 
-### Form Field Coordination
+### تنسيق حقول النماذج
 
 ```typescript
 import { forwardRef, useImperativeHandle, useRef } from 'react';
@@ -641,15 +641,15 @@ export const FormField = forwardRef<FormFieldHandle, FormFieldProps>(
 FormField.displayName = 'FormField';
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Refs bridge React’s declarative world with the imperative DOM APIs you sometimes need. TypeScript makes them safer by catching type mismatches at compile time, but you still need to handle the runtime reality of null refs and proper lifecycle management.
+تربط المراجع عالم React التصريحي بواجهات DOM الإجرائية التي تحتاجها أحيانًا. يجعلها TypeScript أكثر أمانًا عبر التقاط عدم تطابق الأنواع وقت التصريف (compilation)، لكنك ما زلت بحاجة إلى معالجة واقع التشغيل لمراجع `null` وإدارة دورة الحياة بشكل صحيح.
 
-The key takeaways:
+أهم ما ينبغي أن تأخذه معك:
 
-- Always type your refs explicitly—`useRef<HTMLInputElement>(null)` beats `useRef(null)`
-- Use callback refs for dynamic scenarios and immediate DOM access
-- `forwardRef` + `useImperativeHandle` creates clean component APIs without exposing implementation details
-- Remember that refs are `null` until after the first render
+- نمّط مراجعك صراحةً دائمًا —‏ `useRef<HTMLInputElement>(null)` أفضل من `useRef(null)`
+- استخدم مراجع الاستدعاء في السيناريوهات الديناميكية وللوصول الفوري إلى DOM
+- ينشئ `forwardRef` مع `useImperativeHandle` واجهات مكوّنات نظيفة دون كشف تفاصيل التنفيذ
+- تذكّر أن المراجع تبقى `null` حتى بعد أول تصيير
 
-Refs are your escape hatch when React’s normal data flow isn’t enough. Use them judiciously, type them properly, and your future self will thank you when debugging DOM interactions at 2 AM.
+المراجع هي مخرجك حين لا يكفي تدفّق البيانات المعتاد في React. استخدمها بحكمة، ونمّطها بشكل صحيح، وسيشكرك نسختك المستقبلية عند تنقيح تفاعلات DOM في الساعة الثانية فجرًا.

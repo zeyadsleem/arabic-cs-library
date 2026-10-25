@@ -1,43 +1,43 @@
 ---
-title: "Setting Up Dev Containers"
-lang: en
+title: "تهيئة حاويات التطوير"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/setting-up-dev-containers"
 ---
 
-Setting up Dev Containers
+تهيئة حاويات التطوير
 
-Visual Studio Code and the community provide a rich collection of pre-built Dev Container definitions. These are incredibly useful for quickly setting up common development environments without writing `devcontainer.json` from scratch.
+يوفّر Visual Studio Code والمجتمع مجموعة غنية من تعريفات حاويات التطوير الجاهزة. وهي مفيدة للغاية للإعداد السريع لبيئات تطوير شائعة دون كتابة `devcontainer.json` من الصفر.
 
-**Accessing Pre-built Definitions:**
+**الوصول إلى التعريفات الجاهزة:**
 
-1. **When Creating a Dev Container:** When you use the “Dev Containers: Add Dev Container Configuration Files…” command, Visual Studio Code will offer a list of predefined definitions. These are fetched from the [vscode-dev-containers repository on GitHub](https://www.google.com/url?sa=E&source=gmail&q=https://github.com/devcontainers/templates&authuser=1).
-2. **Visual Studio Code Dev Containers Extension Documentation:** The documentation for the “Remote - Containers” extension also provides links to curated lists of pre-built definitions.
+1. **عند إنشاء حاوية تطوير:** عندما تستخدم الأمر “Dev Containers: Add Dev Container Configuration Files…“، سيعرض عليك Visual Studio Code قائمة من التعريفات المعرّفة مسبقًا. ويُجلب ذلك من [مستودع vscode-dev-containers على GitHub](https://www.google.com/url?sa=E&source=gmail&q=https://github.com/devcontainers/templates&authuser=1).
+2. **وثائق إضافة Visual Studio Code Dev Containers:** توفّر وثائق إضافة “Remote - Containers” أيضًا روابط إلى قوائم منسّقة من التعريفات الجاهزة.
 
-You can start with **Add Dev Container Configuration Files** from the Command Center.
+ويمكنك البدء بـ**Add Dev Container Configuration Files** من مركز الأوامر.
 
-Visual Studio Code interface showing the Dev Containers command location Next, select which container you’d like to use.
+واجهة Visual Studio Code تعرض موضع أمر Dev Containers. بعد ذلك، اختر الحاوية التي تريد استخدامها.
 
-Dialog for selecting a prebuilt container configuration
+نافذة حوارية لاختيار إعداد حاوية جاهز
 
-In the case of the **Node.js & TypeScript** image, you’ll be asked which version of Node, you’d like to use.
+في حال صورة **Node.js & TypeScript**، سيُسألك عن إصدار Node الذي تريد استخدامه.
 
-Dialog for selecting Node.js version for the container
+نافذة حوارية لاختيار إصدار Node.js للحاوية
 
-Once you’ve selected your container, you can also pick some additional software that you’d like to include.
+ بعد أن تختار حاويتك، يمكنك أيضًا انتقاء بعض البرمجيات الإضافية التي تريد ضمّها.
 
-Dialog for selecting additional features for the dev container
+نافذة حوارية لاختيار ميزات إضافية لحاوية التطوير
 
-You can filter this list to find whatever you’re looking for.
+ويمكنك تصفية هذه القائمة للعثور على ما تبحث عنه.
 
-Filtered list of dev container features
+قائمة مصفّاة بميزات حاويات التطوير
 
-Finally, you can add some bonus files.
+وأخيرًا، يمكنك إضافة بعض الملفات الإضافية.
 
-Dialog for selecting optional configuration files
+نافذة حوارية لاختيار ملفات إعدادات اختيارية
 
-## The End Result
+## النتيجة النهائية
 
-In the end, you should see something like this.
+في النهاية، ينبغي أن ترى شيئًا مثل هذا.
 
 ```json
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
@@ -64,6 +64,6 @@ In the end, you should see something like this.
 }
 ```
 
-## Customizing Pre-built Definitions
+## تخصيص التعريفات الجاهزة
 
-Pre-built definitions are excellent starting points. You can easily customize them further by modifying the generated `devcontainer.json` file. You can add more extensions, customize settings, forward ports, add `postCreateCommand`, and more, to tailor the pre-built environment to your specific project needs.
+التعريفات الجاهزة نقاط انطلاق ممتازة. ويمكنك تخصيصها أكثر بسهولة عبر تعديل ملف `devcontainer.json` المُولَّد. فيمكنك إضافة مزيد من الإضافات، وتخصيص الإعدادات، وتحويل المنافذ (forward ports)، وإضافة `postCreateCommand`، وغير ذلك، لتفصيل البيئة الجاهزة على مقاس احتياجات مشروعك تحديدًا.

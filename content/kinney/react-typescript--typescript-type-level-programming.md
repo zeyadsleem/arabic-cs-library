@@ -1,14 +1,14 @@
 ---
-title: "Type-Level Programming"
-lang: en
+title: "البرمجة على مستوى الأنواع (Type-Level Programming)"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-type-level-programming"
 ---
 
-Welcome to the deep end of TypeScript. If anything in this tutorial makes you want to cry, that’s probably a natural reaction. This is some nerdy stuff. Type-level programming means writing “code” that runs at compile time using TypeScript’s type system. It’s like having a programming language within a programming language. This is where TypeScript transforms from a type checker into a powerful meta-programming tool. Let’s explore how to compute, validate, and transform types at compile time.
+مرحبًا بك في العمق (deep end) of TypeScript. إذا جعلك أي شيء في هذا الدرس ترغب في البكاء، فذلك على الأرجح ردّ فعل طبيعي. هذه أشياء مهووسة (nerdy). البرمجة على مستوى الأنواع (type-level programming) تعني كتابة «شيفرة» تعمل في وقت الترجمة (compile time) باستخدام نظام أنواع TypeScript. إنها كأنك تملك لغة برمجة داخل لغة برمجة. هنا يتحوّل TypeScript من مُتحقق من الأنواع (type checker) إلى أداة meta-programming قوية. لنتعرّف كيف نحسب الأنواع ونتحقّق منها ونحوّلها في وقت الترجمة.
 
-## The Type System as a Programming Language
+## نظام الأنواع كلغة برمجة
 
-TypeScript’s type system is Turing complete, meaning you can theoretically compute anything at the type level—within recursion limits, of course.
+نظام أنواع TypeScript كامل (Turing complete)، مما يعني أنه يمكنك نظريًا حساب أي شيء على مستوى الأنواع — ضمن حدود التكرار (recursion limits)، بالطبع.
 
 ```typescript
 // Type-level addition
@@ -36,7 +36,7 @@ type Or<A extends boolean, B extends boolean> = A extends true
 type Not<A extends boolean> = A extends true ? false : true;
 ```
 
-## String Manipulation at Type Level
+## معالجة السلاسل (Strings) على مستوى الأنواع
 
 ```typescript
 // Split string into characters
@@ -67,7 +67,7 @@ type Reverse<S extends string> = S extends `${infer Head}${infer Tail}`
 type Reversed = Reverse<'hello'>; // 'olleh'
 ```
 
-## Type-Level State Machines
+## آلات الحالة (State Machines) على مستوى الأنواع
 
 ```typescript
 // Traffic light state machine
@@ -112,7 +112,7 @@ type PersonalStep = CurrentStep<'personal'>;
 // }
 ```
 
-## Type-Level Validation
+## التحقق (Validation) على مستوى الأنواع
 
 ```typescript
 // Email validation at type level
@@ -142,7 +142,7 @@ type ValidUrl = IsHttpUrl<'https://example.com/path'>; // true
 type InvalidUrl = IsHttpUrl<'ftp://example.com'>; // false
 ```
 
-## Type-Level Math
+## الرياضيات (Math) على مستوى الأنواع
 
 ```typescript
 // Compare numbers
@@ -182,7 +182,7 @@ type Fibonacci<
 type Fib5 = Fibonacci<5>; // 8
 ```
 
-## Type-Level Data Structures
+## هياكل البيانات (Data Structures) على مستوى الأنواع
 
 ```typescript
 // Type-level linked list
@@ -224,7 +224,7 @@ type InOrder<T extends Tree<any>> =
     : [];
 ```
 
-## React Component Type Builders
+## بناة خصائص (Props) المكوّنات (Components) في React
 
 ```typescript
 // Build component props from a schema
@@ -256,7 +256,7 @@ type GeneratedProps = SchemaToProps<PropSchema>;
 // { name: string; onClick: () => void; age?: number; }
 ```
 
-## Type-Level JSON Parser
+## محلّل JSON (JSON Parser) على مستوى الأنواع
 
 ```typescript
 // Parse JSON string types
@@ -295,7 +295,7 @@ type Parsed = ParseJSON<'{"name": "Alice", "age": 30}'>;
 // { name: "Alice"; age: number }
 ```
 
-## Type-Level Route Matching
+## مطابقة المسارات (Route Matching) على مستوى الأنواع
 
 ```typescript
 // Express-style route pattern matching
@@ -328,7 +328,7 @@ type Matched = MatchRoute<'/users/:id', '/users/123'>;
 // { id: '123' }
 ```
 
-## Type-Level SQL Query Builder
+## باني استعلامات SQL (SQL Query Builder) على مستوى الأنواع
 
 ```typescript
 // SQL query type builder
@@ -363,7 +363,7 @@ const result = query
   .execute(); // Promise<{ id: number; name: string }[]>
 ```
 
-## Type-Level Form Validation
+## التحقق من النماذج (Form Validation) على مستوى الأنواع
 
 ```typescript
 // Validation rule types
@@ -412,7 +412,7 @@ type FormFields<S> = {
 type LoginForm = FormFields<FormSchema>;
 ```
 
-## Type-Level Event System
+## نظام الأحداث (Event System) على مستوى الأنواع
 
 ```typescript
 // Event emitter with type-safe events
@@ -439,7 +439,7 @@ emitter.emit('user:login', { userId: '123', timestamp: new Date() }); // ✅
 // emitter.emit('user:login', { userId: 123 });  // ❌ Error: userId must be string
 ```
 
-## Type-Level Testing
+## اختبار (Testing) على مستوى الأنواع
 
 ```typescript
 // Type-level test framework
@@ -466,7 +466,7 @@ type TestNumberComparison = [
 type RunTests = [...TestStringUtilities, ...TestNumberComparison];
 ```
 
-## Performance Optimizations
+## تحسينات الأداء (Performance Optimizations)
 
 ```typescript
 // Tail recursion optimization pattern
@@ -502,7 +502,7 @@ type SafeRecursive<T, Depth extends number = 0> = Depth extends MaxDepth
   : /* recursive logic here */;
 ```
 
-## Real-World Application: Type-Safe GraphQL
+## تطبيق واقعي: GraphQL آمن الأنواع (Type-Safe)
 
 ```typescript
 // GraphQL schema to TypeScript types
@@ -538,9 +538,9 @@ const user = await client.query.user({ id: '123' }); // Promise<User>
 const users = await client.query.users({ limit: 10 }); // Promise<User[]>
 ```
 
-## Type-Level Design Patterns
+## أنماط تصميم (Design Patterns) على مستوى الأنواع
 
-### Builder Pattern
+### نمط Builder (Builder Pattern)
 
 ```typescript
 type Builder<T, Built = {}> = {
@@ -570,7 +570,7 @@ const user = createBuilder<User>()
   .build(); // Only available when all required fields are set
 ```
 
-### Visitor Pattern
+### نمط Visitor (Visitor Pattern)
 
 ```typescript
 type Visitor<T> = T extends { kind: infer K }
@@ -592,9 +592,9 @@ type ASTVisitor = Visitor<AST>;
 // }
 ```
 
-## Best Practices
+## أفضل الممارسات (Best Practices) {#best-practices}
 
-### Use Type Aliases for Complex Computations
+### استخدم أسماء الأنواع (Type Aliases) للحسابات المعقدة
 
 ```typescript
 // ✅ Good: Break down complex types
@@ -612,7 +612,7 @@ type ComplexType<T> = T extends any[]
   : false;
 ```
 
-### Provide Escape Hatches
+### وفّر مخرجات بديلة (Escape Hatches)
 
 ```typescript
 // Allow opting out of type-level validation
@@ -625,7 +625,7 @@ function validateEmail(email: string): email is Email {
 }
 ```
 
-### Document Complex Types
+### وثّق الأنواع المعقدة
 
 ```typescript
 /**
@@ -636,14 +636,14 @@ function validateEmail(email: string): email is Email {
 type DeepFlatten<T> = T extends readonly (infer U)[] ? DeepFlatten<U> : T;
 ```
 
-## Summary
+## الخلاصة (Summary)
 
-Type-level programming in TypeScript enables:
+البرمجة على مستوى الأنواع (type-level programming) في TypeScript تتيح:
 
-1. **Compile-time validation** - Catch errors before runtime
-2. **Type transformations** - Generate new types from existing ones
-3. **Type-safe APIs** - Build APIs that can’t be misused
-4. **Meta-programming** - Generate code from types
-5. **Zero runtime cost** - All computation happens at compile time
+1. **التحقق في وقت الترجمة (Compile-time validation)** - اكتشاف الأخطاء قبل التشغيل
+2. **تحويل الأنواع (Type transformations)** - إنشاء أنواع جديدة من existing ones
+3. **واجهات برمجة آمنة الأنواع (Type-safe APIs)** - بناء واجهات برمجة لا يمكن إساءة استخدامها
+4. **meta-programming** - توليد شيفرة من الأنواع
+5. ** costo صفر في وقت التشغيل (Zero runtime cost)** - جميع الحسابات تحدث في وقت الترجمة
 
-While powerful, use type-level programming judiciously. Complex type-level code can slow down compilation and make code harder to understand. Reserve it for library code, critical type safety, and situations where the compile-time guarantees justify the complexity!
+مع قوتها، استخدم البرمجة على مستوى الأنواع بحكمة. الشيفرة المعقدة على مستوى الأنواع يمكن أن تبطئ الترجمة (compilation) وتجعل الشيفرة أصعب في الفهم. احتفظ بها لشيفرة المكتبات (library code)، والسلامة الحرجة للأنواع (critical type safety)، والحالات التي تبرر فيها ضمانات وقت الترجمة التعقيد!

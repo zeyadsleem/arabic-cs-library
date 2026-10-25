@@ -1,16 +1,16 @@
 ---
-title: "Utility Types in Practice"
-lang: en
+title: "أنواع الأدوات في التطبيق العملي"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/utility-types-in-practice"
 ---
 
-TypeScript’s utility types aren’t just fancy academic constructs—they’re practical tools for building cleaner, more maintainable React components. When used thoughtfully, `Partial`, `Pick`, `Omit`, and `Record` can transform messy prop interfaces and state management into elegant, type-safe APIs that make your components a joy to work with.
+أنواع أدوات TypeScript ليست مجرّد بنيات أكاديميّة فاخرة — إنها أدوات عملية لبناء مكوّنات React أنظف وأسهل في الصيانة. فاستخدامها بعناية يُمكِّن `Partial` و`Pick` و`Omit` و`Record` من تحويل واجهات خصائص فوضوية وإدارة حالة معقّدة إلى واجهات أنيقة آمنة من حيث الأنواع تجعل العمل مع مكوّناتك متعةً.
 
-Let’s explore how these utility types solve Real World Problems™ in React applications, from simplifying state updates to creating flexible component APIs without the boilerplate.
+لنستكشف كيف تحلّ أنواع الأدوات هذه مشكلات العالم الحقيقي™ في تطبيقات React، من تبسيط تحديثات الحالة إلى إنشاء واجهات مكوّنات مرنة دون شيفرة متكرّرة.
 
-## The Problem with Rigid Types
+## المشكلة مع الأنواع الجامدة
 
-Consider this common scenario: you’re building a user profile form that needs to handle partial updates. Without utility types, you might end up with something like this mess:
+تأمّل هذا المشهد الشائع: أنت تبني نموذج ملف تعريف مستخدم يحتاج إلى التعامل مع تحديثات جزئية. ودون أنواع الأدوات، قد تنتهي إلى فوضى كهذه:
 
 ```typescript
 // ❌ Brittle and verbose
@@ -43,15 +43,15 @@ function ProfileForm({
 }
 ```
 
-This approach has several problems:
+ولهذا النهج عدّة مشكلات:
 
-- **Duplication**: You’re maintaining the same fields in multiple places
-- **Drift risk**: When `User` changes, you might forget to update `UserUpdateProps`
-- **Manual exclusions**: You have to remember which fields shouldn’t be updatable
+- **التكرار**: أنت تحافظ على الحقول نفسها في مواضع متعدّدة
+- **خطر الانحراف**: حين يتغيّر `User`، قد تنسى تحديث `UserUpdateProps`
+- **الاستثناءات اليدوية**: عليك أن تتذكّر أيّ الحقول لا يجوز تحديثها
 
-## Enter Utility Types
+## ولأنواع الأدوات موضعها
 
-Utility types solve these issues by transforming existing types rather than duplicating them. Here’s the same example, cleaned up:
+تحلّ أنواع الأدوات هذه المشكلات عبر تحويل الأنواع القائمة بدلًا من تكرارها. وإليك المثال نفسه بعد التنظيف:
 
 ```typescript
 // ✅ Clean and maintainable
@@ -72,13 +72,13 @@ function ProfileForm({ user, onUpdate }: { user: User; onUpdate: (updates: UserU
 }
 ```
 
-Now you have a single source of truth for your user shape, and your update type automatically stays in sync.
+أصبح لديك الآن مصدر واحد موثوق لشكل المستخدم، ويبقى نوع التحديث لديك متزامنًا معه تلقائيًا.
 
-## Partial: Making Everything Optional
+## Partial: جعل كل شيء اختياريًا
 
-`Partial<T>` makes all properties in `T` optional, which is perfect for state updates and configuration objects.
+يجعل `Partial<T>` جميع الخصائص في `T` اختيارية، وهو مثالي لتحديثات الحالة وكائنات الإعداد.
 
-### State Updates Made Simple
+### تحديثات الحالة بتصميم بسيط
 
 ```typescript
 interface FormState {
@@ -113,9 +113,9 @@ updateState({ email: 'alice@example.com', password: 'secret' });
 updateState({ confirmPassword: 'secret' });
 ```
 
-### Configuration Objects
+### كائنات الإعداد
 
-`Partial` shines when building flexible configuration APIs:
+يتألّق `Partial` عند بناء واجهات إعدادات مرنة:
 
 ```typescript
 interface ChartConfig {
@@ -154,11 +154,11 @@ function Chart({ config = {} }: { config?: Partial<ChartConfig> }) {
 <Chart config={{ width: 600, showLegend: false }} />
 ```
 
-## Pick: Selecting What You Need
+## Pick: اختيار ما تحتاجه
 
-`Pick<T, K>` creates a new type by selecting only the specified properties from `T`. It’s perfect for component props that need just a subset of a larger interface.
+ينشئ `Pick<T, K>` نوعًا جديدًا عبر انتقاء الخصائص المحدّدة فقط من `T`. وهو مثالي لخصائص المكوّنات التي تحتاج مجرّد مجموعة جزئية من واجهة أكبر.
 
-### Card Components with Flexible Data
+### مكوّنات البطاقات ببيانات مرنة
 
 ```typescript
 interface Article {
@@ -206,9 +206,9 @@ function ArticlePreview({ article }: {
 }
 ```
 
-### Form Field Components
+### مكوّنات حقول النماذج
 
-`Pick` is excellent for creating reusable form components that work with different data shapes:
+ممتاز `Pick` لإنشاء مكوّنات نماذج قابلة لإعادة الاستخدام تعمل مع أشكال بيانات مختلفة:
 
 ```typescript
 interface User {
@@ -251,11 +251,11 @@ function NameField<T extends { name: string }>({
 <NameField item={product} onChange={(name) => updateProduct({ name })} />
 ```
 
-## Omit: Excluding What You Don’t Want
+## Omit: استبعاد ما لا تريده
 
-`Omit<T, K>` creates a new type by excluding specified properties from `T`. It’s the inverse of `Pick` and perfect for creating public APIs from internal types.
+ينشئ `Omit<T, K>` نوعًا جديدًا عبر استبعاد الخصائص المحدّدة من `T`. وهو عكس `Pick` ومثالي لإنشاء واجهات عامة انطلاقًا من أنواع داخلية.
 
-### Public vs Private Component Props
+### خصائص المكوّنات العامة مقابل الخاصة
 
 ```typescript
 interface InternalButtonProps {
@@ -284,9 +284,9 @@ export function Button(props: ButtonProps) {
 }
 ```
 
-### Removing Conflicting Props
+### إزالة الخصائص المتعارضة
 
-Sometimes you need to wrap a native element but want to control certain behaviors:
+أحيانًا تحتاج إلى تغليف عنصر أصلي لكن مع التحكّم في سلوكيات معيّنة:
 
 ```typescript
 // ✅ Input that manages its own value but accepts all other input props
@@ -317,11 +317,11 @@ function ControlledInput({ value, onChange, ...inputProps }: ControlledInputProp
 />
 ```
 
-## Record: Creating Index Types
+## Record: إنشاء أنواع الفهرسة
 
-`Record<K, T>` creates an object type with keys of type `K` and values of type `T`. It’s perfect for dictionaries, lookup tables, and state that’s keyed by dynamic values.
+ينشئ `Record<K, T>` نوع كائن بمفاتيح من النوع `K` وقيم من النوع `T`. وهو مثالي للقاموس وجداول البحث والحالة التي تُفهرَس بقيم ديناميكية.
 
-### Dynamic Form State
+### حالة نموذج ديناميكية
 
 ```typescript
 // ✅ Type-safe form state for dynamic fields
@@ -366,9 +366,9 @@ function DynamicForm({ fieldNames }: { fieldNames: string[] }) {
 }
 ```
 
-### Component State by ID
+### حالة المكوّنات حسب المعرّف
 
-Managing collections where you need fast lookups by ID:
+إدارة المجموعات التي تحتاج فيها إلى عمليات بحث سريعة بالمعرّف:
 
 ```typescript
 interface User {
@@ -417,9 +417,9 @@ function useUserList() {
 }
 ```
 
-## Combining Utility Types
+## دمج أنواع الأدوات
 
-The real power comes from combining utility types to create exactly the interfaces you need:
+القوة الحقيقية تكمن في دمج أنواع الأدوات لإنشاء الواجهات التي تحتاجها بالضبط:
 
 ```typescript
 interface User {
@@ -458,11 +458,11 @@ function UserList({ users }: { users: UserSummary[] }) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Utility types happen at compile time—they don’t add any runtime overhead. But there are still some things to keep in mind:
+تحدث أنواع الأدوات وقت التصريف — فهي لا تضيف أي عبء في وقت التشغيل. لكن هناك أمور ينبغي إبقاءها في الحسبان:
 
-### Don’t Go Overboard
+### لا تبالغ
 
 ```typescript
 // ❌ Overly complex - hard to understand and debug
@@ -475,9 +475,9 @@ type EditableFields = Pick<PublicUser, 'name' | 'email'>;
 type UserUpdate = Partial<EditableFields>;
 ```
 
-### Consider Type Aliases
+### فكّر في الأسماء المستعارة (type aliases)
 
-For frequently used combinations, create named aliases:
+للتوليفات المستخدَمة كثيرًا، أنشئ أسماءً مستعارة مسمّاة:
 
 ```typescript
 // ✅ Clear, reusable type aliases
@@ -490,9 +490,9 @@ type ProductCreate = CreateRequest<Product>;
 type ProductUpdate = UpdateRequest<Product>;
 ```
 
-## When Not to Use Utility Types
+## متى لا تستخدم أنواع الأدوات
 
-Utility types aren’t always the answer. Sometimes explicit interfaces are clearer:
+ليست أنواع الأدوات هي الحلّ دائمًا. أحيانًا تكون الواجهات الصريحة أوضح:
 
 ```typescript
 // ❌ Over-engineered for a simple case
@@ -508,13 +508,13 @@ interface ButtonProps {
 }
 ```
 
-Use utility types when they eliminate duplication or express relationships between types. Use explicit interfaces when the type is simple or when clarity trumps cleverness.
+استخدم أنواع الأدوات حين تقضي على التكرار أو تعبّر عن علاقات بين الأنواع. واستخدم الواجهات الصريحة حين يكون النوع بسيطًا أو حين يتفوّق الوضوح على الذكاء.
 
-## Common Patterns and Gotchas
+## أنماط شائعة ومَطبّات
 
-### Combining with Generics
+### الدمج مع الأنواع العامة
 
-Utility types work beautifully with generic components:
+تعمل أنواع الأدوات بسلاسة مع المكوّنات ذات الأنواع العامة:
 
 ```typescript
 interface ApiResource {
@@ -545,7 +545,7 @@ function ResourceForm<T extends ApiResource>({
 }
 ```
 
-### Watch Out for `any` Creep
+### انتبه لتسرّب `any`
 
 ```typescript
 // ❌ Record with any loses type safety
@@ -555,17 +555,17 @@ const state: Record<string, any> = {};
 const state: Record<string, { value: string; error?: string }> = {};
 ```
 
-## Wrapping Up
+## خلاصة
 
-Utility types transform how you think about component APIs in React. Instead of duplicating interfaces or creating overly permissive prop types, you can derive exactly what you need from your core data shapes.
+تغيّر أنواع الأدوات طريقة تفكيرك في واجهات المكوّنات في React. فبدلًا من تكرار الواجهات أو إنشاء أنواع خصائص متساهلة أكثر من اللازم، يمكنك اشتقاق ما تحتاجه بالضبط من أشكال بياناتك الأساسية.
 
-The key is to use them strategically:
+المفتاح هو استخدامها بوعي استراتيجي:
 
-- **`Partial`** for optional updates and flexible configuration
-- **`Pick`** when components need specific slices of larger types
-- **`Omit`** to create clean public APIs from internal types
-- **`Record`** for dynamic, keyed data structures
+- **`Partial`** للتحديثات الاختيارية والإعدادات المرنة
+- **`Pick`** حين تحتاج المكوّنات أجزاء محدّدة من أنواع أكبر
+- **`Omit`** لإنشاء واجهات عامة نظيفة انطلاقًا من الأنواع الداخلية
+- **`Record`** لبنية البيانات الديناميكية المُفهرَسة
 
-Start simple, compose thoughtfully, and always prioritize clarity over cleverness. Your future self (and your teammates) will thank you for interfaces that express intent clearly and stay in sync automatically.
+ابدأ ببساطة، وركّب بعناية، وأعطِ الأولوية دائمًا للوضوح على الذكاء. وسيشكرك نفسك في المستقبل (وزملاؤك) على واجهات تعبّر عن النية بوضوح وتبقى متزامنة تلقائيًا.
 
-**Next**: [Advanced Type Tricks for React](https://stevekinney.com/courses/react-typescript/advanced-type-tricks-for-react)
+**التالي**: [حِيَل الأنواع المتقدّمة في React](https://stevekinney.com/courses/react-typescript/advanced-type-tricks-for-react)

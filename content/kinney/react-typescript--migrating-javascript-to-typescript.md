@@ -1,34 +1,34 @@
 ---
-title: "Migrating a React App from JS to TS"
-lang: en
+title: "ترحيل تطبيق React من JavaScript إلى TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/migrating-javascript-to-typescript"
 ---
 
-Moving your React application from JavaScript to TypeScript doesn’t have to be the kind of heroic weekend effort that leaves you questioning your life choices. With the right strategy, you can migrate incrementally—file by file, component by component—while keeping your app running in production. Let’s explore how to convert safely using an incremental TypeScript configuration, a gradual strictness ratchet, and proven patterns for typing legacy components without causing unnecessary churn.
+لا ينبغي أن يكون نقل تطبيقك في React من JavaScript إلى TypeScript مجهودًا بطوليًا في العطلة الأسبوعية يجعلك تسائل خياراتك في الحياة. باستراتيجية صحيحة تستطيع الترحيل تدريجيًا — ملفًا ملفًا، ومكوّنًا مكوّنًا — مع بقاء تطبيقك عاملًا في الإنتاج. لنتكشف كيف تحوّل بأمان باستخدام تهيئة TypeScript تدريجية، وعتلة تشدّد الصرامة تدريجيًا (strictness ratchet)، وأنماط مُجرَّبة لتنويع المكوّنات القديمة بلا اضطرابٍ غير ضروري.
 
-The key insight here is that TypeScript is designed for exactly this scenario. You don’t need to convert everything at once, and you definitely don’t need to shut down feature development while you do it.
+الفكرة الأساسية هنا أن TypeScript صُمِّم لهذا السيناريو بالضبط. لا تحتاج إلى تحويل كل شيء دفعة واحدة، ولا تحتاج قطعًا إلى إيقاف تطوير الميزات أثناء ذلك.
 
-## Why Migrate to TypeScript?
+## لماذا الترحيل إلى TypeScript؟
 
-Before we dive into the how, let’s quickly cover the why. TypeScript brings several advantages that become more valuable as your codebase grows:
+قبل الغوص في الكيف، لنجمل تغطية السبب. يوفّر TypeScript مزايا عدّة تتزايد قيمتها كلما نما حجم شيفرتك:
 
-- **Catch errors at compile time** instead of discovering them in production (or worse, user reports)
-- **Better IDE support** with autocomplete, refactoring, and navigation
-- **Self-documenting code** through explicit types and interfaces
-- **Easier onboarding** for new team members who can understand function signatures without diving into implementations
-- **Refactoring confidence** when you need to change APIs or component props
+- **التقاط الأخطاء عند وقت التصريف** بدلًا من اكتشافها في الإنتاج (أو الأسوأ، في تقارير المستخدمين)
+- **دعم أفضل من بيئة التطوير التكاملية (IDE)** مع الإكمال التلقائي وإعادة البناء والتنقل
+- **شيفرة توثّق نفسها** عبر أنواعٍ وواجهات صريحة
+- **تهيئة أيسر للأعضاء الجدد في الفريق**، إذ يفهمون توقيعات الدوال دون التعمّق في التنفيذات
+- **ثقة في إعادة البناء** عند حاجتك إلى تغيير واجهات البرمجة (APIs) أو خصائص المكوّنات
 
-> **Note**
+> **ملاحظة**
 >
-> TypeScript adoption in React codebases has grown significantly. Most major React libraries now ship with TypeScript definitions, making the ecosystem much more TypeScript-friendly than even a few years ago.
+> تزايد تبنّي TypeScript في شيفرات React تزايدًا كبيرًا. تُصدر أهم مكتبات React اليوم مع تعريفات TypeScript، فأصبح النظام البيئي أكثر ودًّا إلى TypeScript بمراحل مما كان قبل سنوات قليلة.
 
-## The Incremental Migration Strategy
+## استراتيجية الترحيل المتدرّج
 
-The secret to a successful migration is taking it one step at a time. Here’s the proven approach:
+سر الترحيل الموفَّق هو أن تُخذه خطوةً خطوة. هذا هو النهج المُجرَّب:
 
-### Phase 1: Set Up TypeScript Infrastructure
+### المرحلة 1: تهيئة البنية التحتية لـ TypeScript
 
-First, let’s get TypeScript installed and configured without changing any existing code:
+لنثبّت TypeScript ونضبطه أولًا دون تغيير أي شيفرة قائمة:
 
 ```bash
 # Install TypeScript and related dependencies
@@ -41,7 +41,7 @@ npm install --save-dev @types/jest
 npm install --save-dev ts-loader
 ```
 
-Create a `tsconfig.json` file that’s initially very permissive. This is crucial—we want TypeScript to accept all existing JavaScript patterns while we migrate:
+أنشئ ملف `tsconfig.json` متساهلًا جدًا في البداية. هذا جوهري — نريد أن يقبَل TypeScript كل أنماط JavaScript القائمة أثناء الترحيل:
 
 ```json
 {
@@ -65,17 +65,17 @@ Create a `tsconfig.json` file that’s initially very permissive. This is crucia
 }
 ```
 
-The key settings here:
+الإعدادات الأساسية هنا:
 
-- `allowJs: true` lets TypeScript process JavaScript files
-- `strict: false` disables strict type checking initially
-- `skipLibCheck: true` ignores type errors in node_modules
+- `allowJs: true` يتيح لـ TypeScript معالجة ملفات JavaScript
+- `strict: false` يعطّل التحقق النوعي الصارم في البداية
+- `skipLibCheck: true` يتجاهل أخطاء الأنواع في node_modules
 
-### Phase 2: Start Converting Files
+### المرحلة 2: البدء في تحويل الملفات
 
-Begin with leaf components—those that don’t import other local components. These are typically utility functions, constants, and simple presentational components.
+ابدأ بالمكوّنات الطرفية — أي ما لا يستورد مكوّنات محلية أخرى. وهي عادة دوال مساعِدة وثوابت ومكوّنات عرض بسيطة.
 
-Let’s look at a typical migration example. Here’s a JavaScript component:
+لننظر إلى مثال ترحيل نمطي. هذا مكوّن JavaScript:
 
 ```javascript
 // Button.js
@@ -99,7 +99,7 @@ const Button = ({ children, onClick, disabled, variant = 'primary' }) => {
 export default Button;
 ```
 
-Here’s the TypeScript version with proper typing:
+وهذه نسخة TypeScript مُنوَّعة الأنواع كما ينبغي:
 
 ```typescript
 // Button.tsx
@@ -135,13 +135,13 @@ const Button: React.FC<ButtonProps> = ({
 export default Button;
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Start with components that have clear, simple props. Complex components with lots of edge cases can wait until you’re more comfortable with the patterns.
+> ابدأ بالمكوّنات ذات الخصائص الواضحة البسيطة. أمّا المكوّنات المركّبة ذات الحالات الحدّية العديدة فيمكنها الانتظار حتى تتأقلم مع الأنماط أكثر.
 
-### Phase 3: Gradually Increase Strictness
+### المرحلة 3: زيادة الصرامة تدريجيًا
 
-As you convert more files, you can gradually tighten your TypeScript configuration. Add these compiler options one at a time:
+مع تحويل المزيد من الملفات يمكنك شدّ تهيئة TypeScript تدريجيًا. أضف خيارات المُصرِّف هذه واحدًا تِلو الآخر:
 
 ```json
 {
@@ -156,13 +156,13 @@ As you convert more files, you can gradually tighten your TypeScript configurati
 }
 ```
 
-Enable one option, fix the errors it reveals, then move to the next. This incremental approach prevents being overwhelmed by hundreds of type errors all at once.
+فعّل خيارًا واحدًا، وأصلح الأخطاء التي يكشفها، ثم انتقل إلى الذي يليه. يقيك هذا المنهج التدريجي من الغرق في مئات أخطاء الأنواع دفعة واحدة.
 
-## Common Migration Patterns
+## أنماط الترحيل الشائعة
 
-### Typing Props with Destructuring
+### تنويع الخصائص مع التفكيك (destructuring)
 
-One of the trickiest parts of migrating React components is handling props properly. Here are the most common patterns:
+من أصعب جوانب ترحيل مكوّنات React التعامل السليم مع الخصائص. هذه أكثر الأنماط شيوعًا:
 
 ```typescript
 // ✅ Good: Interface for props
@@ -182,7 +182,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onEdit, showEmail = true }) =
 };
 ```
 
-For components that accept a lot of props, you might need to be more flexible during migration:
+وبالنسبة إلى المكوّنات التي تقبل خصائصًا كثيرة فقد تحتاج إلى مرونة أكبر أثناء الترحيل:
 
 ```typescript
 // ⚠️ Acceptable during migration: Partial typing
@@ -196,9 +196,9 @@ interface UserCardProps {
 }
 ```
 
-### Handling Event Handlers
+### التعامل مع معالجات الأحداث
 
-React event handlers have specific types that are worth learning:
+تحمل معالجات أحداث React أنواعًا محددة يستحق تعلّمها:
 
 ```typescript
 interface FormProps {
@@ -225,9 +225,9 @@ const Form: React.FC<FormProps> = ({ onSubmit }) => {
 };
 ```
 
-### State Management Migration
+### ترحيل إدارة الحالة
 
-Converting useState calls is usually straightforward:
+تحويل استدعاءات useState يسير عادة:
 
 ```typescript
 // Before
@@ -245,7 +245,7 @@ const [user, setUser] = useState<User | null>(null);
 const [loading, setLoading] = useState<boolean>(false);
 ```
 
-For useReducer, you’ll want to type both the state and actions:
+أما مع useReducer فستريد تنويع الحالة والإجراءات معًا:
 
 ```typescript
 interface State {
@@ -275,9 +275,9 @@ const reducer = (state: State, action: Action): State => {
 };
 ```
 
-### API Data and External Libraries
+### بيانات API والمكتبات الخارجية
 
-When dealing with API responses, create interfaces for the data you expect:
+عند التعامل مع استجابات API، أنشئ واجهات للبيانات التي تتوقعها:
 
 ```typescript
 interface ApiUser {
@@ -310,25 +310,25 @@ const useUsers = () => {
 };
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Don’t trust API data without validation. Consider using a runtime validation library like [Zod](https://github.com/colinhacks/zod) to ensure your API responses match your TypeScript types.
+> لا تثق ببيانات API دون تحقّق. خُذ في الحسبان استخدام مكتبة تحقّق وقت التشغيل مثل [Zod](https://github.com/colinhacks/zod) لتضمن أن استجابات API تطابق أنواع TypeScript عندك.
 
-## Dealing with Third-Party Libraries
+## التعامل مع مكتبات الأطراف الثالثة
 
-Not all libraries come with TypeScript definitions. Here’s how to handle different scenarios:
+ليست كل المكتبات مصحوبة بتعريفات TypeScript. هكذا تتعامل مع الحالات المختلفة:
 
-### Libraries with @types packages
+### المكتبات ذات حزم @types
 
-Many popular libraries have community-maintained types:
+الكثير من المكتبات الشائعة لها أنواع تصونها أوساطة المطورين:
 
 ```bash
 npm install --save-dev @types/lodash @types/uuid @types/classnames
 ```
 
-### Libraries without types
+### المكتبات بلا أنواع
 
-For libraries without types, you can create declaration files:
+أما المكتبات بلا أنواع فيمكنك إنشاء ملفات إعلانات (declaration files) لها:
 
 ```typescript
 // types/react-some-library.d.ts
@@ -343,7 +343,7 @@ declare module 'react-some-library' {
 }
 ```
 
-Or use a more permissive approach during migration:
+أو استخدم نهجًا أكثر تساهلًا أثناء الترحيل:
 
 ```typescript
 // types/globals.d.ts
@@ -353,9 +353,9 @@ declare module 'react-some-library' {
 }
 ```
 
-## Testing During Migration
+## الاختبار أثناء الترحيل
 
-Your existing tests should continue to work, but you might want to add some TypeScript-specific testing patterns:
+من المفروض أن تستمر اختباراتك القائمة في العمل، لكنك قد ترغب في إضافة بعض أنماط الاختبار الخاصة بـ TypeScript:
 
 ```typescript
 // UserCard.test.tsx
@@ -386,9 +386,9 @@ const renderUserCard = (props: Partial<UserCardProps> = {}) => {
 };
 ```
 
-## Migration Gotchas and How to Avoid Them
+## فخاخ الترحيل وكيف تتجنبها
 
-### Don’t Convert Everything at Once
+### لا تحوّل كل شيء في وقت واحد
 
 ```typescript
 // ❌ Bad: Trying to perfectly type everything immediately
@@ -410,7 +410,7 @@ interface SuperComplexProps {
 }
 ```
 
-### Avoid any, But Don’t Fear It During Migration
+### تجنب any، لكن لا تخفه أثناء الترحيل
 
 ```typescript
 // ✅ Acceptable during migration
@@ -426,9 +426,9 @@ interface LegacyComponentProps {
 }
 ```
 
-### Handle defaultProps Migration
+### التعامل مع ترحيل defaultProps
 
-If you’re using class components with defaultProps, the migration needs some care:
+إن كنت تستخدم مكوّنات صنف (class components) مع defaultProps، فسيحتاج الترحيل بعض العناية:
 
 ```typescript
 // Before
@@ -459,11 +459,11 @@ const MyComponent: React.FC<MyComponentProps> = ({
 };
 ```
 
-## Migration Strategies and Patterns
+## استراتيجيات وأنماط الترحيل
 
-### The Migration Mindset
+### عقلية الترحيل
 
-Before diving deeper, understand this: **migration is not about perfection**. It’s about progress. Every file you convert makes your codebase more maintainable, even if you haven’t touched the rest.
+قبل أن نتعمّق أكثر، افهم هذا: **الترحيل ليست غايتُه الكمال**، بل التقدم. فكل ملف تحوّله يجعل شيفرتك أيسر صيانة، حتى لو لم تلمس البقية.
 
 ```typescript
 // This is perfectly valid during migration
@@ -476,9 +476,9 @@ export function processUser(user: any): string {
 }
 ```
 
-### Start with Type Declaration Files
+### ابدأ بملفات الإعلانات النوعية
 
-Create `.d.ts` files for your existing modules before converting them. This gives you type safety benefits even before migration:
+أنشئ ملفات `.d.ts` للوحدات القائمة لديك قبل تحويلها. فيوفر لك ذلك منافع أمان الأنواع حتى قبل بدء الترحيل:
 
 ```typescript
 // types/api.d.ts - Describe existing JS API
@@ -502,9 +502,9 @@ export declare function fetchUsers(): Promise<User[]>;
 export declare function createPost(data: Omit<Post, 'id' | 'createdAt'>): Promise<Post>;
 ```
 
-### The `any` Escape Hatch Strategy
+### استراتيجية باب الهروب `any`
 
-Use `any` strategically during migration:
+استخدم `any` بحكمة أثناء الترحيل:
 
 ```typescript
 // migration-helpers.ts - Temporary utility types
@@ -520,9 +520,9 @@ interface UserListProps {
 }
 ```
 
-### File-by-File Strictness
+### صرامة ملفًا ملفًا
 
-Use comment directives for file-level control:
+استخدم توجيهات التعليقات للتحكم في مستوى الملف:
 
 ```typescript
 // @ts-check - Enable checking in JS files
@@ -551,15 +551,15 @@ formatUser('Alice', '30'); // Error: Argument of type 'string' is not assignable
 const userData = api.getUserData(); // @ts-ignore - Will fix this later
 ```
 
-## Tools to Help Your Migration
+## أدوات تعينك في الترحيل
 
-### TypeScript Migration Assistant
+### مساعد الترحيل في TypeScript
 
-VS Code has excellent TypeScript support with helpful quick fixes. Look for the lightbulb icon when you have type errors—it often suggests the fix automatically.
+يقدم VS Code دعمًا ممتازًا لـ TypeScript مع إصلاحات سريعة نافعة. ابحث عن أيقونة المصباح حين تقع أمام أخطاء أنواع — غالبًا ما يقترح الإصلاح تلقائيًا.
 
-### ESLint Rules for TypeScript
+### قواعد ESLint لـ TypeScript
 
-Add these ESLint rules to catch common issues during migration:
+أضف قواعد ESLint هذه لالتقاط المشاكل الشائعة أثناء الترحيل:
 
 ```json
 // .eslintrc.json - Gradual rule introduction
@@ -583,9 +583,9 @@ Add these ESLint rules to catch common issues during migration:
 }
 ```
 
-### Type-only imports
+### الاستيرادات النوعية فقط
 
-Use type-only imports when you’re only importing for type annotations:
+استخدم الاستيراد النوعي (type-only imports) حين تستورد لأجل الإسناد النوعي وحده:
 
 ```typescript
 import type { User } from './types';
@@ -597,9 +597,9 @@ const UserProfile = ({ userId }: { userId: string }) => {
 };
 ```
 
-### Migration Scripts
+### سكربتات الترحيل
 
-Create helper scripts to automate common migration tasks:
+أنشئ سكربتات مساعدة تؤتمت مهام الترحيل الشائعة:
 
 ```bash
 #!/bin/bash
@@ -629,11 +629,11 @@ echo "2. Type event handlers"
 echo "3. Update imports in other files"
 ```
 
-## Team Migration Strategy
+## استراتيجية الترحيل للفريق
 
-### Code Review Guidelines
+### إرشادات مراجعة الشيفرة
 
-Create a PR template for migration work:
+أنشئ قالب PR لأعمال الترحيل:
 
 ```markdown
 ## TypeScript Migration Checklist
@@ -652,9 +652,9 @@ Create a PR template for migration work:
 - API endpoints typed: `___` / `___`
 ```
 
-### Track Your Progress
+### تتبّع تقدّمك
 
-Monitor your migration with simple metrics:
+راقب ترحيلك بمقاييس بسيطة:
 
 ```javascript
 // migration-stats.js - Run weekly
@@ -688,16 +688,16 @@ Total files: ${total}
 Progress: ${Math.round((tsFiles / total) * 100)}%`);
 ```
 
-## Key Takeaways
+## أهم الخلاصات
 
-Successful TypeScript migration is about **progress, not perfection**:
+الترحيل الناجح لـ TypeScript قائم على **التقدم لا الكمال**:
 
-1. **Start permissive** - Allow JavaScript, disable strict checks initially
-2. **Migrate boundaries first** - Component props, API functions, hooks
-3. **Use escape hatches** - `any` is okay temporarily
-4. **Go file by file** - Don’t try to migrate everything at once
-5. **Maintain compatibility** - Don’t break existing JavaScript code
-6. **Track progress** - Measure and celebrate incremental improvements
-7. **Enable strictness gradually** - Turn on rules as you improve coverage
+1. **ابدأ متساهلًا** — اسمح بـ JavaScript، وعطّل التحقق الصارم في البداية
+2. **رحّل الحدود أولًا** — خصائص المكوّنات ودوال API والخُطّافات
+3. **استخدم أبواب الهروب** — `any` مقبول مؤقتًا
+4. **امشِ ملفًا ملفًا** — لا تحاول ترحيل كل شيء دفعة واحدة
+5. **احفظ التوافق** — لا تكسر شيفرة JavaScript القائمة
+6. **تتبّع التقدم** — قِس التحسينات التدريجية واحتفل بها
+7. **فعّل الصرامة تدريجيًا** — شغّل القواعد كلما حسّنت التغطية
 
-Remember: A partially migrated TypeScript codebase is infinitely better than a JavaScript codebase you’re afraid to change. Every type you add makes your application more maintainable, even if the rest isn’t perfect yet. The goal isn’t to have perfect types everywhere—it’s to catch more bugs, improve developer experience, and make your code more maintainable over time.
+تذكّر: شيفرة TypeScript مُرحَّلة جزئيًا خيرُها لا يُحدَّ من شيفرة JavaScript تخشى أن تغيّرها. وكل نوع تضيفه يجعل تطبيقك أيسر صيانة، حتى لو لم تكن البقية متقنة بعد. والغاية ليست أن تكون لك أنواع متقنة في كل موضع، بل أن تصطاد عللًا أكثر، وأن تُحسّن تجربة المطوّر، وأن تجعل شيفرتك أيسر صيانة بمرور الزمن.

@@ -1,14 +1,14 @@
 ---
-title: "Forms, Events, and Number Inputs"
-lang: en
+title: "النماذج والأحداث وحقول الأرقام"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/forms-events-and-number-inputs"
 ---
 
-Building forms in React with TypeScript should be straightforward—define your state, handle events, render inputs. But then you hit the classic gotchas: event types that make no sense, `<input type="number">` that cheerfully returns strings anyway, and form handlers that need the same boilerplate everywhere. Let’s fix all of that with some solid patterns that’ll make your forms both type-safe and actually pleasant to work with.
+ينبغي أن يكون بناء النماذج في React باستخدام TypeScript أمرًا مباشرًا — حدّد حالتك، وتعامل مع الأحداث، وصيّر حقول الإدخال. لكنك تصطدم بالمزالق الكلاسيكية: أنواع أحداث لا معنى لها، و`<input type="number">` الذي يعيد سلاسل نصية على أي حال، ومعالِجات نماذج تحتاج إلى نفس الشيفرة المتكرّرة في كل مكان. لنُصلح كل ذلك بأنماط متينة تجعل نماذجك آمنة الأنواع وممتعة في العمل فعلًا.
 
-## The Problem with Event Types
+## المشكلة مع أنواع الأحداث
 
-React’s event system can feel like a maze of generic types. You start with a simple input handler and immediately get smacked with TypeScript errors that make you question your life choices:
+قد يبدو نظام أحداث React كمتاهة من الأنواع العامة. تبدأ بمعالِج بسيط لحقل إدخال، فتتلقّى فورًا أخطاء TypeScript التي تدفعك للتساؤل عن قراراتك في الحياة:
 
 ```typescript
 // ❌ What type is this supposed to be?
@@ -17,11 +17,11 @@ const handleChange = (e) => {
 };
 ```
 
-The compiler helpfully tells you that `Parameter 'e' implicitly has an 'any' type`, which is about as useful as a chocolate teapot. Let’s fix this once and for all.
+يخبرك المصرّف بكل لطف بأن `Parameter 'e' implicitly has an 'any' type`، وهو أمر عديم الفائدة كنسبة الشوكولاتة في إبريق الشاي. لنُصلح ذلك نهائيًا.
 
-## Generic Event Handlers That Actually Work
+## معالِج أحداث عامة تعمل فعلًا
 
-Here’s the pattern I use for 90% of form inputs—a generic handler that infers the correct types:
+إليك النمط الذي أستخدمه في 90% من حقول النماذج — معالِج عام يستنتج الأنواع الصحيحة:
 
 ```typescript
 import { ChangeEvent } from 'react';
@@ -54,11 +54,11 @@ function ContactForm() {
 }
 ```
 
-This generic approach works for inputs, textareas, and select elements. The `T extends HTMLInputElement | HTMLTextAreaElement` constraint ensures TypeScript knows what properties are available on `e.target`.
+يناسب هذا النهج العام حقول الإدخال ومناطق النص وعناصر الاختيار. يضمن القيد `T extends HTMLInputElement | HTMLTextAreaElement` أن يعرف TypeScript ما الخصائص المتاحة على `e.target`.
 
-## The Great Number Input Deception
+## خدعة حقول الأرقام الكبرى
 
-Here’s where things get spicy. You’d think `<input type="number">` would give you numbers, right? Wrong! It gives you strings that happen to look like numbers, because HTML form controls always return string values through the DOM API.
+هنا تصبح الأمور شهيرة. تظن أن `<input type="number">` سيعطيك أرقامًا، أليس كذلك؟ خطأ! إنه يعطيك سلاسل نصية تبدو كأرقام، لأن عناصر التحكم في نماذج HTML تعيد قيمًا نصية دائمًا عبر واجهة DOM.
 
 ```typescript
 // ❌ This will bite you eventually
@@ -69,9 +69,9 @@ const handleAgeChange = (e: ChangeEvent<HTMLInputElement>) => {
 };
 ```
 
-You have a few options here, and they all involve being explicit about the conversion:
+أمامك بعض الخيارات، وجميعها تتطلّب أن تكون صريحًا بشأن عملية التحويل:
 
-### Option 1: Convert at the Handler Level
+### الخيار 1: التحويل على مستوى المعالِج
 
 ```typescript
 const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,9 +80,9 @@ const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
 };
 ```
 
-### Option 2: Generic Number Handler with Validation
+### الخيار 2: معالِج أرقام عام مع تحقّق
 
-This is my preferred approach—a reusable handler that safely converts strings to numbers:
+هذا هو نهجي المفضّل — معالِج قابل لإعادة الاستخدام يحوّل السلاسل إلى أرقام بأمان:
 
 ```typescript
 const handleNumericInput = (e: ChangeEvent<HTMLInputElement>, setter: (value: number) => void) => {
@@ -106,9 +106,9 @@ const handleNumericInput = (e: ChangeEvent<HTMLInputElement>, setter: (value: nu
 <input type="number" value={age} onChange={(e) => handleNumericInput(e, setAge)} />;
 ```
 
-### Option 3: Custom Hook for Number Inputs
+### الخيار 3: خُطّاف مخصّص لحقول الأرقام
 
-For the Real World Use Cases™, I usually wrap this logic in a custom hook:
+في «حالات الاستخدام من العالم الحقيقي™»، أغلّف هذا المنطق عادةً في خُطّاف مخصّص:
 
 ```typescript
 function useNumberInput(initialValue: number = 0) {
@@ -144,13 +144,13 @@ function PriceInput() {
 }
 ```
 
-## Form Submission Without the Footguns
+## إرسال النماذج دون المزالق
 
-Form submission is another area where TypeScript can help prevent runtime errors. You’ll want to validate your form data before submission—this is where runtime validation becomes essential.
+إرسال النماذج هو مجال آخر يمكن فيه لـ TypeScript منع أخطاء وقت التشغيل. ستحتاج إلى التحقّق من بيانات نموذجك قبل الإرسال — وهنا يصبح التحقّق وقت التشغيل أمرًا جوهريًا.
 
-For comprehensive coverage of runtime validation with Zod including form validation patterns, see [Data Fetching and Runtime Validation](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation).
+للاطلاع على تغطية شاملة للتحقّق وقت التشغيل باستخدام Zod بما في ذلك أنماط تحقّق النماذج، راجع [جلب البيانات والتحقّق وقت التشغيل](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation).
 
-Here’s a simple TypeScript-first approach for basic form submission:
+وهنا منهج بسيط يبدأ من TypeScript لإرسال النماذج الأساسي:
 
 ```typescript
 import { FormEvent } from 'react';
@@ -198,15 +198,15 @@ function ContactForm() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> For production applications, use a schema validation library like Zod for runtime type safety and consistent error messages. See [Data Fetching and Runtime Validation](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation) for complete examples.
+> في تطبيقات الإنتاج، استخدم مكتبة تحقّق بمخطّطات مثل Zod لضمان أمان الأنواع وقت التشغيل ورسائل خطأ متّسقة. راجع [جلب البيانات والتحقّق وقت التشغيل](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation) أمثلة كاملة.
 
-## Controlled vs Uncontrolled: Pick Your Poison
+## المُتحكَّم به مقابل غير المُتحكَّم به: اختر سمّك
 
-React gives you two ways to handle form inputs, and both have their place:
+توفّر React لك طريقتين للتعامل مع حقول النماذج، ولكل منهما مكانها:
 
-### Controlled Components (Most Common)
+### المكوّنات المُتحكَّم بها (الأكثر شيوعًا)
 
 ```typescript
 function ControlledForm() {
@@ -216,9 +216,9 @@ function ControlledForm() {
 }
 ```
 
-**Pros**: Full React control, easy validation, predictable state **Cons**: Re-renders on every keystroke, more verbose for simple forms
+**الإيجابيات**: تحكّم كامل من React، وتحقّق سهل، وحالة يمكن التنبؤ بها **السلبيات**: إعادة تصيير عند كل ضغطة مفتاح، وطول أكبر للنماذج البسيطة
 
-### Uncontrolled Components (Sometimes Better)
+### المكوّنات غير المُتحكَّم بها (أحيانًا أفضل)
 
 ```typescript
 import { useRef, FormEvent } from 'react';
@@ -240,13 +240,13 @@ function UncontrolledForm() {
 }
 ```
 
-**Pros**: Less re-rendering, simpler for basic forms, works well with form libraries **Cons**: Harder to validate in real-time, less “React-y”
+**الإيجابيات**: إعادة تصيير أقل، وبساطة أكبر للنماذج الأساسية، وتوافق جيد مع مكتبات النماذج **السلبيات**: صعوبة أكبر في التحقّق الفوري، وأقل «بطابع React»
 
-For most cases, I stick with controlled components. But if you have a large form where performance matters, uncontrolled components with a library like [React Hook Form](https://react-hook-form.com/) can be a game-changer.
+في معظم الحالات ألتزم بالمكوّنات المُتحكَّم بها. لكن إن كان لديك نموذج كبير يهمّ فيه الأداء، فإن المكوّنات غير المُتحكَّم بها مع مكتبة مثل [React Hook Form](https://react-hook-form.com/) قد تُحدث فارقًا كبيرًا.
 
-## Advanced: Type-Safe Form Builder
+## متقدّم: باني نماذج آمن الأنواع
 
-For a more robust approach with runtime validation, see the Zod examples in [Data Fetching and Runtime Validation](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation). Here’s a TypeScript-focused pattern that creates type-safe form builders:
+للاطلاع على منهج أكثر متانة مع التحقّق وقت التشغيل، راجع أمثلة Zod في [جلب البيانات والتحقّق وقت التشغيل](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation). وإليك نمطًا يركّز على TypeScript وينشئ بانيات نماذج آمنة الأنواع:
 
 ```typescript
 type FormFieldConfig<T> = {
@@ -366,13 +366,13 @@ const UserFormBuilder = createFormBuilder(
 );
 ```
 
-This pattern gives you type safety, reusable validation, and consistent error handling across forms. It’s definitely more complex than you need for simple cases, but it scales well when you have dozens of forms to build.
+يمنحك هذا النمط أمان الأنواع، وتحقّقًا قابلًا لإعادة الاستخدام، ومعالجة متّسقة للخطأ عبر النماذج. وهو بالتأكيد أعقد مما تحتاجه في الحالات البسيطة، لكنه يتوسّع جيدًا حين يكون لديك عشرات النماذج لبنائها.
 
-## Common Pitfalls and How to Avoid Them
+## المزالق الشائعة وكيف تتجنّبها
 
-### Fighting the DOM API
+### محاربة واجهة DOM
 
-Remember: HTML inputs always return strings. Don’t fight it, convert it:
+تذكّر: حقول إدخال HTML تعيد سلاسل نصية دائمًا. لا تحاربها، بل حوّلها:
 
 ```typescript
 // ❌ Trying to force the DOM to be different than it is
@@ -382,9 +382,9 @@ const age: number = e.target.value; // Type error
 const age: number = Number(e.target.value) || 0;
 ```
 
-### Overly Complex Event Types
+### أنواع أحداث معقّدة أكثر من اللازم
 
-You don’t need to memorize every React event type. Start simple:
+لست بحاجة إلى حفظ كل نوع من أنواع أحداث React. ابدأ ببساطة:
 
 ```typescript
 // ✅ This covers 90% of cases
@@ -393,9 +393,9 @@ const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 };
 ```
 
-### Not Handling Edge Cases
+### إهمال الحالات الحدّية
 
-Empty strings, NaN values, and null refs are real—handle them:
+السلاسل الفارغة وقيم NaN والمراجع الفارغة هي واقع — تعامل معها:
 
 ```typescript
 // ✅ Defensive programming
@@ -406,11 +406,11 @@ if (!isNaN(numValue)) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Form inputs can cause a lot of re-renders, especially in controlled components. Here are a few strategies to keep things snappy:
+يمكن لحقول النماذج أن تسبّب إعادة تصيير كثيرة، ولا سيما في المكوّنات المُتحكَّم بها. إليك بعض الاستراتيجيات لإبقاء الأمور سريعة:
 
-### Debounce Expensive Operations
+### تأجيل العمليات المكلفة
 
 ```typescript
 import { useMemo } from 'react';
@@ -428,28 +428,28 @@ function SearchForm() {
 }
 ```
 
-### Split Large Forms
+### تقسيم النماذج الكبيرة
 
-Instead of one giant form component, split into smaller, focused components that only re-render when their specific fields change.
+بدلًا من مكوّن نموذج عملاق واحد، قسّمه إلى مكوّنات أصغر ومركّزة لا تُعاد تصييرها إلا حين تتغيّر حقولها المعنيّة.
 
-## When to Use Form Libraries
+## متى تستخدم مكتبات النماذج
 
-For simple forms (2-5 fields), the patterns above are usually sufficient. But when you hit forms with 10+ fields, complex validation, or dynamic field generation, consider reaching for a library:
+للنماذج البسيطة (من حقلين إلى خمسة)، تكفي الأنماط أعلاه عادةً. لكن حين تصطدم بنماذج فيها 10 حقول فأكثر، أو بتحقّق معقّد، أو بتوليد حقول ديناميكي، ففكّر في الوصول إلى مكتبة:
 
-- **[React Hook Form](https://react-hook-form.com/)**: Minimal re-renders, great TypeScript support
-- **[Formik](https://formik.org/)**: More traditional, well-established
-- **[React Final Form](https://final-form.org/react)**: Subscription-based updates, very performant
+- **[React Hook Form](https://react-hook-form.com/)**: إعادة تصيير في أدنى حد، ودعم ممتاز لـ TypeScript
+- **[Formik](https://formik.org/)**: أكثر تقليدية، ومُرسَخة جيدًا
+- **[React Final Form](https://final-form.org/react)**: تحديثات قائمة على الاشتراك، وأداء عالٍ جدًا
 
-## Wrapping Up
+## الخلاصة
 
-Forms in React don’t have to be a source of endless TypeScript frustration. With the right patterns—generic event handlers, safe number conversion, and runtime validation—you can build forms that are both type-safe and maintainable.
+لا يلزم أن تكون النماذج في React مصدرًا لا ينتهي من الإحباط مع TypeScript. ومع الأنماط الصحيحة — معالِج أحداث عامة، وتحويل آمن للأرقام، وتحقّق وقت التشغيل — يمكنك بناء نماذج آمنة الأنواع وقابلة للصيانة في آن واحد.
 
-The key takeaways:
+أهم ما ينبغي أن تأخذه معك:
 
-1. Use generic event handlers to reduce boilerplate
-2. Always convert number input values explicitly
-3. Add proper TypeScript types to all event handlers
-4. Consider performance implications for large forms
-5. Don’t over-engineer simple cases
+1. استخدم معالِج أحداث عامة لتقليل الشيفرة المتكرّرة
+2. حوّل قيم حقول الأرقام صراحةً في كل مرة
+3. أضِف أنواع TypeScript الصحيحة إلى كل معالِج أحداث
+4. خُذ في الحسبان آثار الأداء في النماذج الكبيرة
+5. لا تُعقّد الحالات البسيطة أكثر من اللازم
 
-Start with the simple patterns and add complexity only when you need it. Your future self will thank you when you’re debugging forms at 2 AM and everything just works as expected.
+ابدأ بالأنماط البسيطة وأضِف التعقيد فقط حين تحتاج إليه. وستشكرك نسختك المستقبلية حين تنقّح النماذج في الساعة الثانية فجرًا ويكون كل شيء يعمل كما هو متوقّع.

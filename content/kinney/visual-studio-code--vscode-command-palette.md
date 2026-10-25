@@ -1,19 +1,19 @@
 ---
-title: "The Command Palette"
-lang: en
+title: "لوحة الأوامر (The Command Palette)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-command-palette"
 ---
 
-Visual Studio Code has hundreds of commands spread across menus, settings screens, and keybindings. When you can’t remember where something lives, hunting through the UI is slow. The Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) solves this by offering fuzzy-search across all commands. Even if you only remember part of a command’s name, typing snippets of it in the Command Palette often reveals exactly what you need. For instance, typing `pref key` might surface commands like `Preferences: Open Keyboard Shortcuts` or `Preferences: Open User Settings`.
+يحتوي Visual Studio Code على مئات الأوامر موزّعة عبر القوائم، وشاشات الإعدادات، واختصارات لوحة المفاتيح. عندما لا تتمكّن من تذكّر مكان وجود شيء ما، فإن البحث في واجهة المستخدم بطيء. تحلّ لوحة الأوامر (`Ctrl+Shift+P` / `Cmd+Shift+P`) هذه المشكلة من خلال تقديم بحث تقريبي (fuzzy-search) عبر جميع الأوامر. حتى لو تذكّرت جزءًا فقط من اسم أمر، فإن كتابة مقاطع منه في لوحة الأوامر تكشف غالبًا بالضبط ما تحتاجه. على سبيل المثال، كتابة `pref key` قد تُظهر أوامر مثل `Preferences: Open Keyboard Shortcuts` أو `Preferences: Open User Settings`.
 
-As you get comfortable with the Command Palette, you’ll notice how partial matches quickly narrow down your options. This is incredibly useful for discovering new features or reminding yourself of rarely used commands. If you’re not sure what to type, just open the palette and scroll.
+مع اعتيادك على لوحة الأوامر، ستلاحظ كيف تضيّق المطابقات الجزئية خياراتك بسرعة. هذا مفيد جدًا لاكتشاف ميزات جديدة أو تذكّر أوامر نادرًا ما تُستخدم. إن لم تكن متأكدًا مما تكتب، فافتح اللوحة وتصفّحها.
 
-> **Find; don’t memorize**
+> **اعثر؛ لا تحفظ**
 >
-> Can’t recall a specific command name? Me either. Start typing related terms or synonyms. Visual Studio Code’s fuzzy-search often comes to the rescue, saving you from memory lapses.
+> لا يمكنك تذكّر اسم أمر محدد؟ أنا أيضًا. ابدأ بكتابة مصطلحات أو مرادفات ذات صلة. غالبًا ما ينقذك البحث التقريبي (fuzzy-search) في Visual Studio Code، مُنقذًا إياك من نوبات النسيان.
 
-Beyond its basic fuzzy-search capabilities, the Command Palette offers some advanced features that can further streamline your workflow. One such feature is its command history, which remembers recent actions and lets you quickly re-run previous commands. Simply use the up and down arrow keys to cycle through your command history, saving time on repetitive tasks.
+بما يتجاوز قدرات البحث التقريبي الأساسية، تقدّم لوحة الأوامر بعض الميزات المتقدّمة التي يمكن أن تُبسّط سير عملك أكثر. إحدى هذه الميزات هي سجل الأوامر (command history)، الذي يتذكّر الإجراءات الأخيرة ويتيح لك إعادة تشغيل الأوامر السابقة بسرعة. استخدم ببساطة مفاتيح الأسهم لأعلى ولأسفل للتنقّل عبر سجل أوامرك، مما يوفر الوقت في المهام المتكرّرة.
 
-> **Leverage Your History**
+> **استفد من سجلك**
 >
-> Use the arrow keys within the Command Palette to navigate through your recent commands. This feature not only saves time but also helps you rediscover powerful commands you might have forgotten.
+> استخدم مفاتيح الأسهم داخل لوحة الأوامر للتنقّل عبر أوامرك الأخيرة. هذه الميزة لا توفر الوقت فحسب، بل تساعدك أيضًا على إعادة اكتشاف أوامر قوية قد تكون نسيتها.

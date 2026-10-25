@@ -1,12 +1,12 @@
 ---
-title: "Middleware and Authentication with tRPC"
-lang: en
+title: "الوسيط والمصادقة والتسجيل في tRPC"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/middleware-auth-logging-for-trpc"
 ---
 
-### Middleware for Auth & Logging
+### وسيط للمصادقة والتسجيل
 
-You can create custom middlewares:
+يمكنك إنشاء وسيطات مخصّصة:
 
 ```typescript
 // server/src/trpc.ts
@@ -20,7 +20,7 @@ const isAuthed = t.middleware(({ ctx, next }) => {
 export const protectedProcedure = t.procedure.use(isAuthed);
 ```
 
-Use `protectedProcedure` when you want routes behind auth checks. For logging, similarly:
+استخدم `protectedProcedure` عندما تريد مسارات محمية بفحوصات مصادقة. وللتسجيل، بالمثل:
 
 ```typescript
 const logMiddleware = t.middleware(async ({ path, type, next }) => {

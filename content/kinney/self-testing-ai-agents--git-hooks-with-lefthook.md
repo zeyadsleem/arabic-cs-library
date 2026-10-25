@@ -1,27 +1,27 @@
 ---
-title: "Git Hooks with Lefthook"
-lang: en
+title: "خطّافات Git مع Lefthook"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook"
 ---
 
-If you’ve done the git hook dance before, you know how it usually goes: install [Husky](https://typicode.github.io/husky/), install [lint-staged](https://github.com/lint-staged/lint-staged), wire up a `.husky/pre-commit` shell script that calls a `package.json` script that calls lint-staged that calls the actual linter. Three packages, two config surfaces, one shell script, and a `prepare` hook to glue it all together.
+إن كنت قد جرّبت رقصة خطّافات git من قبل، فأنت تعرف كيف تسير عادةً: ثبّت [Husky](https://typicode.github.io/husky/)، وثبّت [lint-staged](https://github.com/lint-staged/lint-staged)، واربط سكربت صدفة `.husky/pre-commit` ينادي سكربتًا في `package.json` ينادي lint-staged الذي ينادي المُدقّق الفعلي. ثلاث حزم، وسطحا إعداد، وسكربت صدفة واحد، وخطّاف `prepare` يلصق كل ذلك معًا.
 
-It works. I’ve shipped it on plenty of projects. But, every time I set it up I think: this is a lot of indirection for “run ESLint on the files I’m about to commit.”
+إنه يعمل. وقد شحنته في كثير من المشاريع. لكن في كل مرة أُعِدّه أفكّر: هذا قدر كبير من الالتفاف مقابل «شغّل ESLint على الملفات التي أنا على وشك الالتزام بها».
 
-Left Hook
+الخطّاف الأيسر
 
-[Lefthook](https://github.com/evilmartians/lefthook) is the tool that made me stop thinking that. It’s a single binary (written in Go, distributed via npm if you want it) that replaces Husky *and* lint-staged in one configuration file. One YAML file. No shell scripts. No `prepare` hook. No second package to manage staged-file filtering—Lefthook handles that natively with its `glob` and `run` options.
+[Lefthook](https://github.com/evilmartians/lefthook) هو الأداة التي جعلتني أكفّ عن ذلك التفكير. إنه ملف ثنائي واحد (مكتوب بـ Go، ويُوزّع عبر npm إن أردت) يستبدل Husky *و*lint-staged في ملف إعداد واحد. ملف YAML واحد. بلا سكربتات صدفة. بلا خطّاف `prepare`. بلا حزمة ثانية تدير تصفية الملفات المرحّلة—فـ Lefthook يتولّى ذلك أصلًا بخياري `glob` و`run`.
 
-I’m covering it early in the day because the rest of the workshop assumes you have a working hook layer. The Shelf starter ships a lefthook configuration, and the static-layer lab later in the day assumes that’s what you’re wiring up. If you already have Husky wired up on your own project and you’re happy with it, that’s fine — the concepts below port directly. But if you’re starting fresh, Lefthook is the one I’d reach for now.
+أغطّيه مبكرًا في اليوم لأن بقية الورشة تفترض أن لديك طبقة خطّافات تعمل. تشحن نسخة Shelf الأولية إعداد lefthook، ومختبر الطبقة الثابتة لاحقًا في اليوم يفترض أن هذا ما تربطه. إن كان Husky مربوطًا بالفعل في مشروعك وكنت راضيًا عنه، فلا بأس — المفاهيم أدناه تنتقل إليه مباشرة. لكن إن كنت تبدأ من جديد، فـ Lefthook هو ما سأمدّ يدي إليه الآن.
 
-## Installation
+## التثبيت
 
 ```bash
 npm install --save-dev lefthook
 npx lefthook install
 ```
 
-That’s it. `lefthook install` writes the hook scripts into `.git/hooks/` so they fire on the right lifecycle events. No `prepare` script needed—though you can add one if you want automatic installation when teammates run `npm install`.
+هذا كل شيء. `lefthook install` يكتب سكربتات الخطّافات في `.git/hooks/` كي تنطلق عند أحداث دورة الحياة الصحيحة. لا حاجة إلى سكربت `prepare`—وإن كان يمكنك إضافته إن أردت تثبيتًا تلقائيًا عندما يشغّل زملاؤك `npm install`.
 
 ```json
 {
@@ -31,15 +31,15 @@ That’s it. `lefthook install` writes the hook scripts into `.git/hooks/` so th
 }
 ```
 
-In npm, [`prepare`](https://docs.npmjs.com/cli/v11/using-npm/scripts/) is a special lifecycle script. It runs on a local `npm install` and before `npm pack` or `npm publish`. In this case, that means “after dependencies are installed, make sure Lefthook writes the Git hook files into `.git/hooks/` again.” You are not invoking `prepare` manually here. npm sees the script name and runs it at the right points in the package lifecycle.
+في npm، [`prepare`](https://docs.npmjs.com/cli/v11/using-npm/scripts/) سكربت دورة حياة خاص. يعمل عند `npm install` محليًا وقبل `npm pack` أو `npm publish`. في هذه الحالة يعني ذلك «بعد تثبيت الاعتماديات، تأكّد أن Lefthook يكتب ملفات خطّافات Git في `.git/hooks/` مرة أخرى». أنت لا تستدعي `prepare` يدويًا هنا. يرى npm اسم السكربت فيشغّله في النقاط الصحيحة من دورة حياة الحزمة.
 
-> **Why `prepare` is optional**
+> **لماذا `prepare` اختياري**
 >
-> Lefthook’s `install` command is idempotent. Running it twice does nothing harmful. If your team all knows to run `npx lefthook install` after cloning, you can skip the `prepare` hook entirely. I add it out of habit because there’s always someone who forgets.
+> أمر `install` في Lefthook عديم الأثر عند التكرار. تشغيله مرتين لا يفعل شيئًا ضارًا. إن كان فريقك كله يعرف أنه يشغّل `npx lefthook install` بعد الاستنساخ، فيمكنك تخطّي خطّاف `prepare` تمامًا. أضيفه من العادة لأن هناك دائمًا من ينسى.
 
-## The configuration file
+## ملف الإعداد
 
-Lefthook reads a `lefthook.yml` at the root of your repository. Here’s a minimal setup that covers the same ground as the Husky + lint-staged combination:
+يقرأ Lefthook ملف `lefthook.yml` في جذر مستودعك. إليك إعدادًا أدنى يغطّي الأرضية نفسها التي تغطّيها تركيبة Husky + lint-staged:
 
 ```yaml
 pre-commit:
@@ -53,17 +53,17 @@ pre-commit:
       run: npx prettier --write {staged_files}
 ```
 
-`{staged_files}` is a Lefthook variable that expands to the list of staged files matching the `glob`. This is the lint-staged replacement: Lefthook filters the staged files for you, passes them as arguments, and restages any auto-fixed changes.
+`{staged_files}` متغيّر في Lefthook يتمدّد إلى قائمة الملفات المرحّلة المطابقة لـ `glob`. هذا هو بديل lint-staged: يصفّي Lefthook الملفات المرحّلة لك، ويمرّرها كوسائط، ويعيد ترحيل أي تغييرات صُحّحت تلقائيًا.
 
-The `parallel: true` flag runs `lint` and `format` concurrently. If one fails, the commit is blocked.
+المُعلَم `parallel: true` يشغّل `lint` و`format` معًا. وإن فشل أحدهما، يُحجب الالتزام.
 
-> **`commands:` vs `jobs:`**
+> **`commands:` مقابل `jobs:`**
 >
-> Lefthook also supports a newer `jobs:` key (list form) that you may see in current Lefthook docs and examples. Both `commands:` and `jobs:` are valid and supported; this lesson uses `commands:` because the named sub-keys (`lint:`, `format:`) are easier to read. Pick one style per repo and stay consistent.
+> يدعم Lefthook أيضًا مفتاح `jobs:` الأحدث (بصيغة قائمة) وقد تراه في وثائق Lefthook وأمثلتها الحالية. كل من `commands:` و`jobs:` صالح ومدعوم؛ ويستخدم هذا الدرس `commands:` لأن المفاتيح الفرعية المسمّاة (`lint:`، `format:`) أسهل قراءة. اختر نمطًا واحدًا لكل مستودع والتزم به.
 
-## Adding a pre-push hook
+## إضافة خطّاف pre-push
 
-Some checks are too slow for pre-commit but too important to skip entirely. Pre-push is where they go.
+بعض الفحوص بطيئة جدًا على pre-commit ومهمة جدًا بحيث لا تُتخطّى كليًا. وهنا مكان pre-push.
 
 ```yaml
 pre-push:
@@ -72,13 +72,13 @@ pre-push:
       run: npm run pre-push
 ```
 
-Same file, different lifecycle event. In the completed static-layer version of Shelf, `npm run pre-push` chains the slower local gates: typecheck, [knip](https://knip.dev/), and the unit test suite. If any of those fail, the push is blocked and you get the output right there in the terminal.
+الملف نفسه، وحدث دورة حياة مختلف. في نسخة Shelf المكتملة ذات الطبقة الثابتة، يربط `npm run pre-push` البوابات المحلية الأبطأ: فحص الأنواع، و[knip](https://knip.dev/)، ومجموعة اختبارات الوحدة. إن فشل أي منها، يُحجب الدفع وترى الناتج هناك في الطرفية.
 
-The rule I use: pre-commit takes under ten seconds, pre-push takes under two minutes. Anything slower belongs in CI.
+القاعدة التي أستخدمها: يستغرق pre-commit أقل من عشر ثوانٍ، ويستغرق pre-push أقل من دقيقتين. وكل ما هو أبطأ مكانه CI.
 
-## Secret scanning in the hook
+## فحص الأسرار في الخطّاف
 
-This is the one I care about most. Add [Gitleaks](https://github.com/gitleaks/gitleaks) to the pre-commit hook so credentials never leave your machine:
+هذا هو ما يهمّني أكثر. أضف [Gitleaks](https://github.com/gitleaks/gitleaks) إلى خطّاف pre-commit كي لا تغادر بيانات الاعتماد جهازك أبدًا:
 
 ```yaml
 pre-commit:
@@ -94,35 +94,35 @@ pre-commit:
       run: gitleaks git --staged --no-banner
 ```
 
-If Gitleaks finds a hardcoded API key or token in the staged diff, the commit is blocked. Zero agents and zero humans should be committing secrets, and this hook makes it mechanically difficult to do by accident. Some teams wrap the staged scan in a small shell or TypeScript helper for clarity — the [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) lesson covers that pattern and the exact invocation to use for your Gitleaks version.
+إن وجد Gitleaks مفتاح API أو رمزًا مكتوبًا صراحةً في الفرق المرحّل، يُحجب الالتزام. لا ينبغي لأي وكيل ولا أي إنسان أن يودع أسرارًا، وهذا الخطّاف يجعل فعل ذلك بالخطأ صعبًا آليًا. بعض الفرق تلفّ الفحص المرحّل في مساعد صغير بصدفة أو TypeScript للوضوح — ويغطّي درس [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) ذلك النمط والاستدعاء الدقيق الذي تستخدمه مع نسختك من Gitleaks.
 
-I’ll go deeper on Gitleaks in the [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) lesson. For now, just know it belongs in pre-commit.
+سأتعمّق في Gitleaks في درس [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks). الآن، اعرف فقط أن مكانه pre-commit.
 
-## Why one file matters
+## لماذا يهمّ ملف واحد
 
-The thing I like about Lefthook is that the entire hook configuration lives in one place. When a new team member asks “what runs on commit?”, the answer is “read `lefthook.yml`.” When the agent needs to know what gates it has to pass, you can point the agent rules at a single file.
+ما يعجبني في Lefthook أن إعداد الخطّافات كله يعيش في مكان واحد. عندما يسأل عضو جديد في الفريق «ما الذي يعمل عند الالتزام؟»، يكون الجواب «اقرأ `lefthook.yml`». وعندما يحتاج الوكيل إلى معرفة البوابات التي عليه عبورها، يمكنك توجيه قواعد الوكيل إلى ملف واحد.
 
-Compare this to the Husky + lint-staged setup: the hook lives in `.husky/pre-commit`, the staged-file filtering lives in the `lint-staged` key of `package.json` (or `.lintstagedrc`), and the actual commands live in `scripts` inside `package.json`. Three files, three formats. Lefthook collapses all of that into one YAML file with a clear hierarchy: lifecycle event → command name → what to run.
+قارن هذا بإعداد Husky + lint-staged: الخطّاف في `.husky/pre-commit`، وتصفية الملفات المرحّلة في مفتاح `lint-staged` داخل `package.json` (أو `.lintstagedrc`)، والأوامر الفعلية في `scripts` داخل `package.json`. ثلاثة ملفات، وثلاث صيغ. يجمع Lefthook كل ذلك في ملف YAML واحد بتسلسل واضح: حدث دورة الحياة ← اسم الأمر ← ما يُشغَّل.
 
-That’s not a knock on Husky. Husky is reliable, battle-tested, and used by half the JavaScript ecosystem. If you’re already using it, there’s no reason to migrate. But if you’re setting up a new project and you want fewer moving parts, Lefthook is the simpler tool.
+هذا ليس انتقاصًا من Husky. فـ Husky موثوق، ومجرّب في المعارك، ويستخدمه نصف منظومة JavaScript. إن كنت تستخدمه بالفعل، فلا سبب للهجرة. لكن إن كنت تُعِدّ مشروعًا جديدًا وتريد أجزاء متحركة أقل، فـ Lefthook هو الأداة الأبسط.
 
-## Lifecycle events Lefthook supports
+## أحداث دورة الحياة التي يدعمها Lefthook
 
-Lefthook hooks into every [Git hook](https://git-scm.com/docs/githooks) that Git supports. The ones I actually use:
+يتّصل Lefthook بكل [خطّاف Git](https://git-scm.com/docs/githooks) يدعمه Git. وتلك التي أستخدمها فعلًا:
 
-- **`pre-commit`:** Lint, format, secret scan. Staged files only. Under ten seconds.
-- **`commit-msg`:** Validate the commit message format, if you care about that. I mostly don’t, but some teams do.
-- **`pre-push`:** Typecheck, dead code scan, unit tests. The slightly-slower-but-still-local checks.
-- **`post-merge`:** Run `npm install` automatically after pulling, so dependencies stay in sync. This one is underrated.
-- **`post-checkout`:** Same idea—reinstall dependencies when switching branches that might have different lockfiles.
+- **`pre-commit`:** lint، والتنسيق، وفحص الأسرار. الملفات المرحّلة فقط. أقل من عشر ثوانٍ.
+- **`commit-msg`:** التحقّق من صيغة رسالة الالتزام، إن كان ذلك يهمّك. أنا لا يهمّني غالبًا، لكن بعض الفرق تهتم.
+- **`pre-push`:** فحص الأنواع، وفحص الشيفرة الميتة، واختبارات الوحدة. الفحوص الأبطأ قليلًا لكنها تبقى محلية.
+- **`post-merge`:** تشغيل `npm install` تلقائيًا بعد السحب كي تبقى الاعتماديات متزامنة. هذا الحدث أقلّ تقديرًا مما يستحق.
+- **`post-checkout`:** الفكرة نفسها—أعِد تثبيت الاعتماديات عند الانتقال بين فروع قد تكون ملفات قفلها مختلفة.
 
-You *can* hook into `pre-rebase`, `post-rewrite`, and a dozen others. I’ve never needed to. If you’re tempted to put logic in `pre-rebase`, you’re probably solving a process problem with a technical tool.
+يمكنك *بالفعل* الاتّصال بـ `pre-rebase` و`post-rewrite` وعشرة غيرها. لم أحتج إلى ذلك قط. وإن راودتك الرغبة في وضع منطق داخل `pre-rebase`، فأنت على الأرجح تحلّ مشكلة عملية بأداة تقنية.
 
-## Skipping hooks
+## تخطّي الخطّافات
 
-Same as with Husky: `git commit --no-verify` skips the hook. And the same rules apply: use it for real emergencies, not as a reflex. If the team starts reaching for `--no-verify` regularly, the hook is too strict. Tune it. Don’t fight the team.
+كما هو الحال مع Husky: `git commit --no-verify` يتخطّى الخطّاف. وتنطبق القواعد نفسها: استخدمه في الطوارئ الحقيقية، لا كردّ فعل تلقائي. إن بدأ الفريق يمدّ يده إلى `--no-verify` بانتظام، فالخطّاف صارم أكثر من اللازم. اضبطه. لا تصارع الفريق.
 
-For agents, the rule is simpler:
+بالنسبة للوكلاء، القاعدة أبسط:
 
 ```markdown
 ## Git hooks
@@ -133,17 +133,17 @@ For agents, the rule is simpler:
   taking longer, report it.
 ```
 
-That instruction belongs in your agent instructions, whether that file is `AGENTS.md`, `CLAUDE.md`, or `.cursor/rules`, but if you want an actual enforcement boundary, use the agent’s hook or permissions system. The implementation differs quite a bit across tools.
+هذه التعليمات مكانها في تعليمات وكيلك، سواء كان ذلك الملف `AGENTS.md` أو `CLAUDE.md` أو `.cursor/rules`، لكن إن أردت حدًّا تنفيذيًا فعليًا، فاستخدم نظام الخطّافات أو الأذونات في الوكيل. ويختلف التنفيذ اختلافًا كبيرًا بين الأدوات.
 
-## Stopping `--no-verify`
+## إيقاف `--no-verify`
 
-The goal here is simple: if an agent tries to run `git commit --no-verify`, block the command and tell it to fix the failing hook instead.
+الهدف هنا بسيط: إن حاول وكيل تشغيل `git commit --no-verify`، فاحجب الأمر وأخبره أن يصلح الخطّاف الفاشل بدلًا من ذلك.
 
 ### Claude
 
-[Claude Code hooks](https://docs.claude.com/en/docs/claude-code/hooks) are the cleanest option because a `PreToolUse` hook can inspect the full Bash command *before* it runs and return `permissionDecision: "deny"`.
+[خطّافات Claude Code](https://docs.claude.com/en/docs/claude-code/hooks) هي الخيار الأنظف لأن خطّاف `PreToolUse` يستطيع فحص أمر Bash كاملًا *قبل* تشغيله وإرجاع `permissionDecision: "deny"`.
 
-Add the hook to `.claude/settings.json`:
+أضف الخطّاف إلى `.claude/settings.json`:
 
 ```json
 {
@@ -163,7 +163,7 @@ Add the hook to `.claude/settings.json`:
 }
 ```
 
-Then inspect the pending shell command. The slightly weird-looking `fs.readFileSync(0, 'utf8')` is not reading a project file from disk. In Unix processes, file descriptor `0` is stdin, and Claude Code sends the hook payload JSON there for command hooks:
+ثم افحص أمر الصدفة المعلّق. التعبير `fs.readFileSync(0, 'utf8')` الغريب قليلًا لا يقرأ ملف مشروع من القرص. في عمليات Unix، واصف الملف `0` هو الإدخال القياسي، ويرسل Claude Code حمولة الخطّاف بصيغة JSON إلى هناك في خطّافات الأوامر:
 
 ```javascript
 import fs from 'node:fs';
@@ -189,17 +189,13 @@ process.stdout.write(
 process.exit(0);
 ```
 
-Because the hook sees the whole command string, this catches `--no-verify` even when it is not the first flag.
+لأن الخطّاف يرى سلسلة الأمر كاملة، فهو يلتقط `--no-verify` حتى عندما لا يكون المُعلَم الأول.
 
 ### Cursor
 
-[Cursor](https://www.cursor.com/)’s CLI permissions still live in `.cursor/cli.json`, but
-permissions are the wrong tool for a narrow “block only `git commit --no-verify`” policy.
-For that, use Cursor’s native [Hooks](https://cursor.com/docs/hooks) system. As of the
-current Cursor Hooks API, a `beforeShellExecution` hook can inspect the full shell command
-and deny it before it reaches the terminal.
+ما تزال أذونات CLI في [Cursor](https://www.cursor.com/) تعيش في `.cursor/cli.json`، لكن الأذونات ليست الأداة المناسبة لسياسة ضيّقة من نوع «احجب فقط `git commit --no-verify`». لذلك استخدم نظام [Hooks](https://cursor.com/docs/hooks) الأصلي في Cursor. بحسب واجهة Cursor Hooks الحالية، يستطيع خطّاف `beforeShellExecution` فحص أمر الصدفة كاملًا ورفضه قبل أن يصل إلى الطرفية.
 
-Create a `.cursor/hooks.json` file at the root of your project:
+أنشئ ملف `.cursor/hooks.json` في جذر مشروعك:
 
 ```json
 {
@@ -216,9 +212,7 @@ Create a `.cursor/hooks.json` file at the root of your project:
 }
 ```
 
-The matcher is just a fast filter. The hook script still needs to inspect the command so
-read-only Git commands and unrelated shell commands keep working. This example uses Python 3
-because `shlex` is a better fit than guessing at shell quoting with a regular expression:
+المُطابِق مجرّد مرشّح سريع. وما يزال سكربت الخطّاف بحاجة إلى فحص الأمر كي تبقى أوامر Git للقراءة فقط وأوامر الصدفة غير المتعلّقة تعمل. يستخدم هذا المثال Python 3 لأن `shlex` أنسب من تخمين اقتباسات الصدفة بتعبير نمطي:
 
 ```python
 #!/usr/bin/env python3
@@ -371,25 +365,22 @@ else:
     respond("allow")
 ```
 
-Because `failClosed` is `true`, Cursor blocks the matched command if the script crashes,
-returns invalid JSON, or cannot be executed. That is what you want for a policy hook, but it
-also means `python3` needs to be available wherever Cursor runs the hook.
+لأن `failClosed` قيمته `true`، يحجب Cursor الأمر المطابق إن انهار السكربت، أو أعاد JSON غير صالح، أو تعذّر تنفيذه. هذا ما تريده في خطّاف سياسة، لكنه يعني أيضًا أن `python3` يجب أن يكون متاحًا حيثما شغّل Cursor الخطّاف.
 
-This keeps general read-only Git tasks like `git status` and `git diff` available while
-blocking the bypass you actually care about, including `git commit --no-verify`, `git commit -n`, and common forms like `git -C path commit --no-verify`.
+هذا يُبقي مهام Git العامة للقراءة فقط مثل `git status` و`git diff` متاحة، ويحجب في الوقت نفسه التخطّي الذي يهمّك فعلًا، بما في ذلك `git commit --no-verify` و`git commit -n` والصيغ الشائعة مثل `git -C path commit --no-verify`.
 
 ### Codex
 
-[Codex hooks](https://developers.openai.com/codex/hooks) can intercept `Bash` in `PreToolUse`, which makes them the right tool for a flag-level policy like this. [`prefix_rule`](https://developers.openai.com/codex/rules) is great for prefix-based outside-sandbox policy, but `--no-verify` can appear later in the argument list, so a hook is the precise solution.
+تستطيع [خطّافات Codex](https://developers.openai.com/codex/hooks) اعتراض `Bash` في `PreToolUse`، وهذا يجعلها الأداة الصحيحة لسياسة على مستوى المُعلَم كهذه. [`prefix_rule`](https://developers.openai.com/codex/rules) رائع لسياسة خارج الصندوق الرملي مبنية على البادئة، لكن `--no-verify` قد يظهر لاحقًا في قائمة الوسائط، فالخطّاف هو الحل الدقيق.
 
-Enable hooks in `.codex/config.toml`:
+فعّل الخطّافات في `.codex/config.toml`:
 
 ```toml
 [features]
 codex_hooks = true
 ```
 
-Then register a `PreToolUse` hook in `.codex/hooks.json`:
+ثم سجّل خطّاف `PreToolUse` في `.codex/hooks.json`:
 
 ```json
 {
@@ -410,7 +401,7 @@ Then register a `PreToolUse` hook in `.codex/hooks.json`:
 }
 ```
 
-And inspect `tool_input.command` before the shell command runs. Same deal here: `0` means stdin, which is where Codex delivers the hook event payload for command hooks:
+وافحص `tool_input.command` قبل تشغيل أمر الصدفة. والأمر نفسه هنا: `0` يعني الإدخال القياسي، وهو حيث يسلّم Codex حمولة حدث الخطّاف في خطّافات الأوامر:
 
 ```javascript
 import fs from 'node:fs';
@@ -435,13 +426,13 @@ process.stdout.write(
 process.exit(0);
 ```
 
-If you want a broader Codex policy, use a `.rules` file to forbid `git commit` outside the sandbox entirely and reserve hooks for the more precise “spot this flag anywhere in the command” case.
+إن أردت سياسة Codex أوسع، فاستخدم ملف `.rules` لمنع `git commit` خارج الصندوق الرملي كليًا، واحتفظ بالخطّافات للحالة الأدق «التقط هذا المُعلَم في أي موضع من الأمر».
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Lefthook replaces Husky and lint-staged with a single YAML file. One file, one tool, all lifecycle events. Pre-commit for the fast stuff—lint, format, secret scan. Pre-push for the medium stuff—typecheck, dead code, tests. Everything else goes in CI. The hook that nobody runs is worse than the slower hook that still catches things, so keep it fast and keep it scoped.
+يستبدل Lefthook Husky وlint-staged بملف YAML واحد. ملف واحد، وأداة واحدة، وكل أحداث دورة الحياة. pre-commit للأشياء السريعة—lint والتنسيق وفحص الأسرار. وpre-push للأشياء المتوسطة—فحص الأنواع والشيفرة الميتة والاختبارات. وكل ما عدا ذلك يذهب إلى CI. الخطّاف الذي لا يشغّله أحد أسوأ من الخطّاف الأبطأ الذي ما يزال يلتقط الأشياء، فاحرص على أن يبقى سريعًا وأن يبقى محدود النطاق.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lint and Types as Guardrails](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
-- [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
+- [lint والأنواع كدرابزين](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
+- [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)

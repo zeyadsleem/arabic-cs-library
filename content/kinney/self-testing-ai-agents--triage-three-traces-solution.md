@@ -1,55 +1,55 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/triage-three-traces-solution"
 ---
 
-One walk through the three traces, with the evidence I’d cite for each. If your diagnoses look different in *details* — different fix wording, different specific line numbers — that’s fine. What should match is the bucket and the pane.
+جولة واحدة عبر الآثار الثلاثة، مع الدليل الذي سأستشهد به لكل منها. إن بدت تشخيصاتك مختلفة في *التفاصيل* — صياغة إصلاح مختلفة، أو أرقام أسطر محددة مختلفة — فلا بأس. الذي ينبغي أن يتطابق هو الدلو واللوحة.
 
-The traces come from three specs in `tests/labs/broken-traces/`. Each of those specs currently starts with `test.skip()` as a safety gate, and the future `labs-broken-traces` project isn’t defined in the starter’s `playwright.config.ts` yet — the generator helper you add in the lab has to remove (or wrap) the `test.skip()` calls and wire that project before any trace can actually be captured. After you add the generator helper in the lab, generate them with:
+تأتي الآثار من ثلاث مواصفات في `tests/labs/broken-traces/`. وكل واحدة من تلك المواصفات تبدأ حاليًا بـ`test.skip()` كبوابة أمان، ومشروع `labs-broken-traces` المستقبلي غير معرّف بعد في `playwright.config.ts` الخاص بنسخة البداية — فعلى دالة المولِّد المساعدة التي تضيفها في المختبر أن تزيل (أو تغلّف) نداءات `test.skip()` وتربط ذلك المشروع قبل أن يمكن التقاط أي أثر فعلًا. وبعد أن تضيف دالة المولِّد المساعدة في المختبر، ولّدها بـ:
 
 ```bash
 npm run traces:generate
 ```
 
-Then open each one with `npx playwright show-trace playwright-report/lab-traces/<name>.zip` and read along.
+ثم افتح كل واحدة بـ`npx playwright show-trace playwright-report/lab-traces/<name>.zip` واقرأ معي.
 
-## Trace A: config / auth mismatch
+## الأثر A: عدم تطابق التهيئة / المصادقة
 
-**Spec**: `trace-a-config.spec.ts`, which starts with `test.use({ storageState: { cookies: [], origins: [] } })` to opt out of the default authenticated context, then navigates to `/shelf` and asserts a “Your books” heading is visible.
+**المواصفة**: `trace-a-config.spec.ts`، وهي تبدأ بـ`test.use({ storageState: { cookies: [], origins: [] } })` للخروج من سياق المصادقة الافتراضي، ثم تنتقل إلى `/shelf` وتؤكد ظهور عنوان «Your books».
 
-**Failing step name**: `expect(heading).toBeVisible()` on line 25 (the spec doesn’t use `test.step` so we get the test title plus the line).
+**اسم الخطوة الفاشلة**: `expect(heading).toBeVisible()` في السطر 25 (المواصفة لا تستخدم `test.step`، فنحصل على عنوان الاختبار مع رقم السطر).
 
-**Smoking-gun pane**: Network.
+**اللوحة الحاملة للدليل القاطع**: الشبكة.
 
-**The evidence**: click the `goto('/shelf')` action in the timeline, then open the Network pane. The pane shows two requests:
+**الدليل**: انقر إجراء `goto('/shelf')` في الخط الزمني، ثم افتح لوحة الشبكة. تُظهر اللوحة طلبين:
 
-- `GET /shelf` → `302 Found`, with a `Location: /login` response header.
+- `GET /shelf` → `302 Found`، مع ترويسة استجابة `Location: /login`.
 - `GET /login` → `200 OK`.
 
-The app redirected to `/login` before the shelf page ever rendered. The DOM snapshot at the failure backs this up — the page shows a login form, not a shelf. The Console is empty because this is a server-side redirect, not a client-side error.
+أعاد التطبيق التوجيه إلى `/login` قبل أن تُصيَّر صفحة الرف إطلاقًا. وتؤكد ذلك لقطة DOM عند الفشل — فالصفحة تعرض نموذج تسجيل دخول، لا رفًا. ووحدة التحكم فارغة لأن هذا إعادة توجيه من جانب الخادم، لا خطأ من جانب العميل.
 
-**Cause**: config / auth mismatch. The test has no storage state, and `/shelf` is gated server-side on `locals.user` in the Shelf app.
+**السبب**: عدم تطابق التهيئة / المصادقة. فالاختبار بلا حالة تخزين، و`/shelf` محجوبة من جانب الخادم على `locals.user` في تطبيق Shelf.
 
-**Proposed fix**: once you’ve wired the future `labs-broken-traces` project (the current starter doesn’t define it — you add it alongside the storage-state lab), remove the `test.use({ storageState: { cookies: [], origins: [] } })` line at the top of the spec and let the project’s default `storageState: storageStatePath` take over. The default mounts the reader’s session cookie, so the redirect won’t fire.
+**الإصلاح المقترح**: بعد أن تربط مشروع `labs-broken-traces` المستقبلي (نسخة البداية الحالية لا تعرّفه — تضيفه إلى جانب مختبر حالة التخزين)، احذف سطر `test.use({ storageState: { cookies: [], origins: [] } })` في أعلى المواصفة ودع `storageState: storageStatePath` الافتراضي في المشروع يتولى الأمر. فالافتراضي يركّب ملف تعريف ارتباط جلسة القارئ، فلن يُطلق التوجيه.
 
-If you want to keep the unauthenticated scenario *and* still reach a shelf-like page, you’d need a different assertion — maybe check for the login form heading instead of “Your books.” But that’s a different test. The fix here is the wiring.
+إن أردت الاحتفاظ بالسيناريو غير الموثّق *و* الوصول إلى صفحة شبيهة بالرف، فستحتاج إلى تأكيد مختلف — ربما فحص عنوان نموذج تسجيل الدخول بدلًا من «Your books». لكن ذلك اختبار مختلف. أما الإصلاح هنا فهو الربط.
 
-## Trace B: timing race
+## الأثر B: حالة تسابق توقيتية
 
-**Spec**: `trace-b-race.spec.ts`, which clicks the rate-book star on Station Eleven and immediately asserts the rating text is visible with a `{ timeout: 1 }` grace period, without waiting for the `PATCH /api/shelf/:id` response.
+**المواصفة**: `trace-b-race.spec.ts`، وهي تنقر نجمة تقييم الكتاب على Station Eleven وتؤكد فورًا ظهور نص التقييم بفترة سماح `{ timeout: 1 }`، دون انتظار استجابة `PATCH /api/shelf/:id`.
 
-**Failing step name**: `expect(stationEleven.getByText('Rated: 4/5')).toBeVisible({ timeout: 1 })` on line 36.
+**اسم الخطوة الفاشلة**: `expect(stationEleven.getByText('Rated: 4/5')).toBeVisible({ timeout: 1 })` في السطر 36.
 
-**Smoking-gun pane**: Network.
+**اللوحة الحاملة للدليل القاطع**: الشبكة.
 
-**The evidence**: walk the timeline. The action list shows the click on the Save button, then the immediate `expect`, then a `PATCH /api/shelf/:entryId` request that’s *still pending* at the moment the assertion ran. The network row shows the request started at (say) 1.187s and completed at 1.420s. The assertion fired at 1.188s, gave up at 1.189s, and failed.
+**الدليل**: امشِ على الخط الزمني. تُظهر قائمة الإجراءات النقر على زر الحفظ، ثم `expect` الفوري، ثم طلب `PATCH /api/shelf/:entryId` *ما زال معلّقًا* في لحظة تشغيل التأكيد. ويُظهر صف الشبكة أن الطلب بدأ عند (ولنقل) 1.187s واكتمل عند 1.420s. أما التأكيد فقد أُطلق عند 1.188s، واستسلم عند 1.189s، وفشل.
 
-The DOM snapshot at the failure confirms it: the article for Station Eleven shows no “Rated: 4/5” text. The UI hasn’t updated because the server hasn’t responded, and the client doesn’t optimistically render the rating.
+وتؤكد لقطة DOM عند الفشل ذلك: مقال Station Eleven لا يُظهر نص «Rated: 4/5». فالواجهة لم تتحدّث لأن الخادم لم يستجب، والعميل لا يصيّر التقييم تفاؤليًا.
 
-**Cause**: timing race. The test asserted before the network round-trip completed.
+**السبب**: حالة تسابق توقيتية. فقد أكّد الاختبار قبل اكتمال رحلة الشبكة ذهابًا وإيابًا.
 
-**Proposed fix**: wait for the `PATCH` response before asserting the UI state:
+**الإصلاح المقترح**: انتظر استجابة `PATCH` قبل تأكيد حالة الواجهة:
 
 ```typescript
 const ratingResponse = page.waitForResponse(
@@ -61,17 +61,17 @@ await ratingResponse;
 await expect(stationEleven.getByText('Rated: 4/5')).toBeVisible();
 ```
 
-Notice the fix is *not* “bump the timeout from 1ms to 5000ms.” That would mask the race without solving it — the test would pass most of the time and fail on the one CI run where the server is slower than 5 seconds. The right fix is to wait for the specific thing you’re depending on, not to wait longer.
+لاحظ أن الإصلاح *ليس* «ارفع المهلة من 1ms إلى 5000ms». فذلك سيغطي على حالة التسابق دون حلّها — سينجح الاختبار معظم الوقت ويفشل في تشغيل CI الوحيد الذي يكون فيه الخادم أبطأ من 5 ثوانٍ. الإصلاح الصحيح هو انتظار الشيء المحدد الذي تعتمد عليه، لا الانتظار مدة أطول.
 
-This is the exact failure mode [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) warned you about.
+هذا هو نمط الفشل نفسه الذي حذّرك منه [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story).
 
-## Trace C: order-dependent rendering / locator ambiguity
+## الأثر C: تصيير معتمد على الترتيب / التباس في المحدد
 
-**Spec**: `trace-c-stale-locator.spec.ts`, which navigates to `/shelf` (which already has Station Eleven and Piranesi shelved by the seed helper from the deterministic-state lab) and calls `page.getByRole('button', { name: 'Rate this book' }).click()` without scoping to a specific article.
+**المواصفة**: `trace-c-stale-locator.spec.ts`، وهي تنتقل إلى `/shelf` (وفيه أصلًا Station Eleven وPiranesi على الرف بفضل دالة الزرع المساعدة من مختبر الحالة الحتمية) وتنادي `page.getByRole('button', { name: 'Rate this book' }).click()` دون تحديد النطاق إلى مقال بعينه.
 
-**Failing step name**: the click on line 33, `page.getByRole('button', { name: 'Rate this book' }).click()`.
+**اسم الخطوة الفاشلة**: النقر في السطر 33، `page.getByRole('button', { name: 'Rate this book' }).click()`.
 
-**Smoking-gun pane**: Console / source. The error pane shows Playwright’s strict-mode violation message directly:
+**اللوحة الحاملة للدليل القاطع**: وحدة التحكم / المصدر. تُظهر لوحة الخطأ رسالة مخالفة الوضع الصارم من Playwright مباشرة:
 
 ```
 Error: strict mode violation: getByRole('button', { name: 'Rate this book' })
@@ -80,11 +80,11 @@ resolved to 2 elements:
   2) <button>…Rate this book</button> aka getByRole('article', { name: /Piranesi/i }).getByRole('button')
 ```
 
-Playwright prints the two matching elements *along with a suggested accessibility path for each one*, which is a gift. The DOM snapshot confirms it: the shelf page has two `<article>` elements, each with its own `<button>Rate this book</button>`.
+تطبع Playwright العنصرين المطابقين *مع مسار وصول مقترح لكل منهما*، وهذه هدية. وتؤكد لقطة DOM ذلك: صفحة الرف فيها عنصرا `<article>`، لكل منهما `<button>Rate this book</button>` خاص به.
 
-**Cause**: order-dependent rendering / locator ambiguity. The locator matches multiple elements because the page has multiple books.
+**السبب**: تصيير معتمد على الترتيب / التباس في المحدد. فالمحدد يطابق عناصر متعددة لأن الصفحة فيها كتب متعددة.
 
-**Proposed fix**: scope the locator to a specific article first.
+**الإصلاح المقترح**: حدّد نطاق المحدد إلى مقال بعينه أولًا.
 
 ```typescript
 await page
@@ -93,31 +93,31 @@ await page
   .click();
 ```
 
-This is the exact pattern the [Locators lesson](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) calls “region-scoped locators.” The fix isn’t `.first()`, which would work but would silently break if the shelf order ever changed. The fix is *name the article you want*.
+هذا هو النمط نفسه الذي يسميه [درس المحددات](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) «المحددات محددة النطاق بالمنطقة». والإصلاح ليس `.first()`، فهي ستنجح لكنها ستنكسر بصمت إن تغيّر ترتيب الرف يومًا. الإصلاح هو *أن تسمّي المقال الذي تريده*.
 
-## The meta-lesson
+## الدرس الأعلى
 
-Notice where the smoking gun lived for each trace:
+لاحظ أين كان الدليل القاطع في كل أثر:
 
-- **Trace A**: Network.
-- **Trace B**: Network.
-- **Trace C**: Console / source.
+- **الأثر A**: الشبكة.
+- **الأثر B**: الشبكة.
+- **الأثر C**: وحدة التحكم / المصدر.
 
-Two of the three were in the Network pane, and each one was a *different* kind of network evidence. Trace A’s smoking gun was a 302 status code. Trace B’s smoking gun was a pending request. Same pane, completely different signal.
+اثنان من الثلاثة كانا في لوحة الشبكة، وكل واحد منهما كان نوعًا *مختلفًا* من أدلة الشبكة. فدليل الأثر A القاطع كان رمز الحالة 302. ودليل الأثر B القاطع كان طلبًا معلّقًا. اللوحة نفسها، وإشارة مختلفة تمامًا.
 
-Trace C’s smoking gun wasn’t in the network pane at all. It was in the error message Playwright printed directly — a level above the panes, which is easy to miss if you jump into the trace viewer and start clicking around.
+أما دليل الأثر C القاطع فلم يكن في لوحة الشبكة إطلاقًا. كان في رسالة الخطأ التي طبعتتها Playwright مباشرة — على مستوى أعلى من اللوحات، ويسهل تفويته إن قفزت إلى عارض الآثار وبدأت النقر هنا وهناك.
 
-The discipline the lab is training: *sweep all four panes* before deciding which one is the smoking gun. Agents default to clicking around the timeline and not opening the error pane because “the error is obvious, it’s in the test log.” Read the error pane anyway. Sometimes it tells you the whole story and you never have to open a snapshot.
+الانضباط الذي يدرّبه المختبر: *امسح اللوحات الأربع كلها* قبل أن تقرر أيها تحمل الدليل القاطع. فالوكلاء يميلون افتراضيًا إلى النقر في الخط الزمني وعدم فتح لوحة الخطأ لأن «الخطأ واضح، إنه في سجل الاختبار». اقرأ لوحة الخطأ على أي حال. أحيانًا تحكي لك القصة كاملة فلا تحتاج إلى فتح لقطة إطلاقًا.
 
-## The other thing
+## الشيء الآخر
 
-A trace is *data*. The lab’s generator script, `scripts/generate-lab-traces.mjs`, parses the `playwright-report/test-results/` directory structure and extracts three specific zip files by matching the project + spec prefix. It’s roughly 100-150 lines of Node, no dependencies, and it handles the case where Playwright exits nonzero because the lab specs are red by design. The Shelf starter doesn’t ship that helper, so this solution is the reference for the file you add during the lab.
+الأثر هو *بيانات*. سكربت المولِّد في المختبر، `scripts/generate-lab-traces.mjs`، يحلّل بنية مجلد `playwright-report/test-results/` ويستخرج ثلاثة ملفات zip محددة بمطابقة بادئة المشروع + المواصفة. إنه نحو 100-150 سطرًا من Node، بلا اعتماديات، ويتعامل مع الحالة التي تخرج فيها Playwright بقيمة غير صفرية لأن مواصفات المختبر حمراء بالتصميم. ونسخة Shelf الانطلاقية لا تشحن تلك الدالة المساعدة، فهذا الحل هو المرجع للملف الذي تضيفه أثناء المختبر.
 
-You could write a similar script to extract evidence from traces programmatically — feed it the trace zip, have it look at the network log for 4xx/5xx responses, have it flag pending requests at the moment of failure. That’s not a stretch goal for this lab; it’s a pointer at where this stuff leads. Traces are structured; you can script against them; you can build your own diagnostics on top of them. Most people don’t. That’s an opportunity.
+يمكنك كتابة سكربت مشابه لاستخراج الأدلة من الآثار برمجيًا — أعطه ملف zip الأثر، ودعه ينظر في سجل الشبكة بحثًا عن استجابات 4xx/5xx، ودعه يعلّم الطلبات المعلّقة في لحظة الفشل. وهذا ليس هدفًا إضافيًا لهذا المختبر؛ إنه إشارة إلى أين يقود هذا المسار. فالآثار بنيوية؛ يمكنك كتابة سكربتات عليها؛ ويمكنك بناء تشخيصاتك الخاصة فوقها. ومعظم الناس لا يفعلون. وتلك فرصة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — the pane-by-pane reference.
-- [Flaky-Test Triage: When Retries Are Lying to You](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — the four-bucket taxonomy.
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — the lesson Trace B lands right back in the middle of.
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) — the lesson Trace C lands in.
+- [قراءة أثر](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — المرجع لوحة بلوحة.
+- [فرز الاختبارات المتذبذبة: حين تكذب عليك إعادات المحاولة](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage) — تصنيف الدلاء الأربعة.
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — الدرس الذي يعود إليه الأثر B إلى وسطه تمامًا.
+- [المحددات وتسلسل الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) — الدرس الذي ينتهي إليه الأثر C.

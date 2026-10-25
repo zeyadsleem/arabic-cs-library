@@ -1,15 +1,15 @@
 ---
-title: "Running OpenClaw on Railway with Tailscale"
-lang: en
+title: "تشغيل OpenClaw على Railway مع Tailscale"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale"
 ---
 
-[Railway](https://railway.com/?referralCode=kinney) is a convenient place to run an always-on Gateway: you don’t manage a server, and volumes keep your state between deploys. A typical Railway deploy, though, gives the Gateway a public URL, and that’s the opposite of what we want for something that can read your files and use your accounts.
+[Railway](https://railway.com/?referralCode=kinney) مكان مريح لتشغيل بوابة (Gateway) تعمل باستمرار: فأنت لا تدير خادمًا، وتحتفظ وحدات التخزين (volumes) بحالتك بين عمليات النشر. غير أن عملية نشر نمطية على Railway تمنح البوابة عنوان URL عامًا، وذلك نقيض ما نريده لشيء يستطيع قراءة ملفاتك واستخدام حساباتك.
 
-This lesson uses [`stevekinney/openclaw-railway-template`](https://github.com/stevekinney/openclaw-railway-template), a minimal deployment with **no public domain at all**. Two Railway services run side by side:
+يستخدم هذا الدرس قالب [`stevekinney/openclaw-railway-template`](https://github.com/stevekinney/openclaw-railway-template)، وهو نشر بالغ البساطة **بلا نطاق عام على الإطلاق**. وتعمل خدمتان على Railway جنبًا إلى جنب:
 
-- **`openclaw`** runs the Gateway on Railway’s private network.
-- **`tailscale`** joins your tailnet and forwards traffic to the Gateway.
+- **`openclaw`** تشغّل البوابة على شبكة Railway الخاصة.
+- **`tailscale`** تنضم إلى شبكة tailnet لديك وتمرّر حركة المرور إلى البوابة.
 
 ```
  Mac app / browser / phone          (devices on your tailnet)
@@ -25,41 +25,41 @@ This lesson uses [`stevekinney/openclaw-railway-template`](https://github.com/st
  └────────────────────────────────────────────────────────────────────────┘
 ```
 
-> **This is a different setup from the previous lesson**
+> **هذا إعداد مختلف عن الدرس السابق**
 >
-> In [Connecting to Your OpenClaw Securely with Tailscale](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale), the Gateway manages Tailscale itself with `gateway.tailscale.mode: serve`. That requires Tailscale to run on the same machine as the Gateway. On Railway that doesn’t work, so Tailscale gets its own service and OpenClaw’s built-in integration stays off. The ideas are the same; the plumbing is different.
+> في [الاتصال بـ OpenClaw بأمان عبر Tailscale](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale)، تدير البوابة Tailscale بنفسها عبر `gateway.tailscale.mode: serve`. ويتطلب ذلك أن يعمل Tailscale على الجهاز نفسه الذي تعمل عليه البوابة. وهذا لا ينجح على Railway، لذا تحصل Tailscale على خدمة خاصة بها ويبقى تكامل OpenClaw المدمج معطّلًا. الأفكار واحدة، أما طريقة الربط فمختلفة.
 
-## Why a Separate Tailscale Service?
+## لماذا خدمة Tailscale منفصلة؟
 
-A few things make Railway different from a VPS:
+ثمة أمور قليلة تجعل Railway مختلفًا عن خادم VPS:
 
-- Railway containers can’t use the kernel networking that a normal Tailscale install wants, and you can’t run two long-lived processes in one container without a supervisor.
-- A Tailscale **subnet router** would expose every service in your Railway environment to your tailnet.
-- Railway’s private hostnames (like `openclaw.railway.internal`) only resolve inside Railway.
+- لا تستطيع حاويات Railway استخدام شبكات النواة (kernel networking) التي يحتاجها تثبيت Tailscale العادي، ولا يمكنك تشغيل عمليتين طويلتي الأمد في حاوية واحدة دون مشرف (supervisor).
+- **موجّه الشبكة الفرعية (subnet router)** في Tailscale سيكشف كل خدمة في بيئة Railway لديك لشبكة tailnet.
+- أسماء المضيفين الخاصة في Railway (مثل `openclaw.railway.internal`) لا تُحلّ إلا داخل Railway.
 
-So the `tailscale` service runs Tailscale in **userspace networking** mode, joins your tailnet as its own machine named `openclaw`, and forwards connections across Railway’s private network to the Gateway.
+لذا تشغّل خدمة `tailscale` برنامج Tailscale في وضع **الشبكات في فضاء المستخدم (userspace networking)**، وتنضم إلى شبكة tailnet كجهاز قائم بذاته باسم `openclaw`، وتمرّر الاتصالات عبر شبكة Railway الخاصة إلى البوابة.
 
-### Why raw TCP and not an HTTP proxy
+### لماذا TCP الخام لا وسيط HTTP؟
 
-Tailscale Serve can forward in two ways. The obvious one is as an HTTP reverse proxy, but that adds `X-Forwarded-*` and `Tailscale-User-*` headers to every request. The Gateway refuses requests carrying those headers unless they come from a proxy it has been told to trust, and the Tailscale container’s private IP changes on every deploy. You’d end up trusting a whole range of Railway’s network, or hitting a `Proxy client attribution is required` error.
+يستطيع Tailscale Serve التمرير بطريقتين. الطريقة البديهية هي وسيط عكسي (reverse proxy) لـ HTTP، لكنها تضيف ترويسات `X-Forwarded-*` و`Tailscale-User-*` إلى كل طلب. وترفض البوابة الطلبات التي تحمل تلك الترويسات إلا إذا جاءت من وسيط أُخبرت بالثقة به، كما أن عنوان IP الخاص بحاوية Tailscale يتغيّر مع كل عملية نشر. وستنتهي إلى الثقة بنطاق كامل من شبكة Railway، أو إلى الاصطدام بخطأ `Proxy client attribution is required`.
 
-This template forwards **raw TCP** instead. Bytes pass through untouched, so the Gateway sees an ordinary private-network client with no forwarded claims, and nothing is trusted that could be spoofed. TLS is still handled by Tailscale on port 443, using your tailnet’s real certificate.
+هذا القالب يمرّر **TCP الخام** بدلًا من ذلك. فالبايتات تمر كما هي دون تغيير، لذا ترى البوابة عميلًا عاديًا على الشبكة الخاصة بلا أي ادعاءات ممرَّرة، ولا شيء موثوق يمكن تزويره. ولا يزال TLS يُعالج في Tailscale على المنفذ 443، باستخدام شهادة شبكة tailnet الحقيقية.
 
-## Before You Start
+## قبل أن تبدأ
 
-You’ll need:
+ستحتاج إلى:
 
-- A [Railway](https://railway.com/?referralCode=kinney) account on a paid plan (the volumes are larger than the free tier allows) and the [Railway CLI](https://docs.railway.com/cli): `brew install railway`, then `railway login`.
-- A tailnet with **MagicDNS** and **HTTPS Certificates** turned on, as described in the previous lesson. Note your tailnet’s DNS name in the admin console under **DNS**. It looks like `tail1234.ts.net`.
-- An API key for a model provider. The examples use Anthropic.
+- حساب [Railway](https://railway.com/?referralCode=kinney) على خطة مدفوعة (فوحدات التخزين أكبر مما تسمح به الخطة المجانية)، وأداة [Railway CLI](https://docs.railway.com/cli): `brew install railway` ثم `railway login`.
+- شبكة tailnet مفعَّلة فيها **MagicDNS** و**شهادات HTTPS (HTTPS Certificates)**، كما هو موصوف في الدرس السابق. دوّن اسم DNS لشبكة tailnet في وحدة تحكم الإدارة تحت **DNS**. وهو يبدو مثل `tail1234.ts.net`.
+- مفتاح API لمزوّد نماذج. تستخدم الأمثلة Anthropic.
 
-> **Use a new Railway environment**
+> **استخدم بيئة Railway جديدة**
 >
-> The Gateway can only bind IPv4, and Railway environments created before 2025-10-16 resolve private hostnames to IPv6 only. A new project’s `production` environment is fine. An old one will fail to connect.
+> لا تستطيع البوابة الارتباط إلا بـ IPv4، وبيئات Railway التي أُنشئت قبل 2025-10-16 تُحلّ أسماء المضيفين الخاصة فيها إلى IPv6 فقط. وبيئة `production` في مشروع جديد سليمة. أما بيئة قديمة فسيفشل اتصالها.
 
-## Step 1: Prepare Your Tailnet’s Access Policy
+## الخطوة 1: جهّز سياسة الوصول لشبكة tailnet
 
-Do this before anything gets deployed. In the [admin console](https://login.tailscale.com/admin), open **Access controls** and add a tag, plus a grant that lets only you reach the Gateway. Replace `you@example.com` with your Tailscale login:
+افعل ذلك قبل نشر أي شيء. في [وحدة تحكم الإدارة](https://login.tailscale.com/admin)، افتح **ضوابط الوصول (Access controls)** وأضف وسمًا (tag)، مع منح (grant) لا يسمح لأحد سواك بالوصول إلى البوابة. واستبدل `you@example.com` بتسجيل الدخول الخاص بك في Tailscale:
 
 ```json
 {
@@ -74,91 +74,91 @@ Do this before anything gets deployed. In the [admin console](https://login.tail
 }
 ```
 
-Merge this into your existing policy instead of replacing it. If you’d rather not use a tag, see [Prefer Not to Tag?](#prefer-not-to-tag) in Step 2.
+ادمج هذا في سياستك القائمة بدلًا من استبدالها. وإن كنت تفضّل عدم استخدام وسم، فراجع [تفضّل عدم الوسم؟](#prefer-not-to-tag) في الخطوة 2.
 
-Two things to check:
+ثمة أمران يجب التحقق منهما:
 
-- If your policy still has the default allow-all rule (`"src": ["*"], "dst": ["*:*"]`), **every member of your tailnet can reach the Gateway**. Narrow it.
-- The new `openclaw` machine gets no grants of its own, so even if the Gateway were compromised, it couldn’t open connections to anything else on your tailnet.
+- إذا كانت سياستك لا تزال تحوي قاعدة السماح الشاملة الافتراضية (`"src": ["*"], "dst": ["*:*"]`)، فإن **كل عضو في شبكة tailnet يستطيع الوصول إلى البوابة**. فضيِّقها.
+- لا يحصل جهاز `openclaw` الجديد على أي منح خاص به، لذا حتى لو اختُرقت البوابة لما استطاعت فتح اتصالات بأي شيء آخر في شبكة tailnet.
 
-## Step 2: Generate an Auth Key
+## الخطوة 2: ولّد مفتاح مصادقة
 
-The `tailscale` service needs a one-time key so it can join your tailnet without anyone logging in by hand. Go to **Settings → Keys → Generate auth key**.
+تحتاج خدمة `tailscale` إلى مفتاح يُستخدم مرة واحدة كي تنضم إلى شبكة tailnet دون أن يسجّل أحد الدخول يدويًا. اذهب إلى **الإعدادات (Settings) → المفاتيح (Keys) → توليد مفتاح مصادقة (Generate auth key)**.
 
-The Tailscale Generate auth key dialog with Reusable, Ephemeral, and Tags toggles
+مربّع الحوار Generate auth key في Tailscale وفيه مفاتيح تبديل الخيارات Reusable وEphemeral وTags.
 
-Set it up like this:
+اضبطه على هذا النحو:
 
-| Setting | Value | Why |
+| الإعداد | القيمة | السبب |
 | --- | --- | --- |
-| Reusable | **Off** | The key is used once. After that, the node’s identity lives on its volume. |
-| Expiration | **1 day** | It only has to last until the first deploy. (The dialog defaults to 90 days.) |
-| Ephemeral | **Off** | An ephemeral machine disappears when it disconnects, including during every redeploy. |
-| Pre-approved | **On** if required | Turn it on if your tailnet requires device approval, so the node isn’t left waiting. |
-| Tags | **On**: `tag:openclaw` | Tagged machines only get the access your policy grants, and their node keys don’t expire. |
+| Reusable (قابل لإعادة الاستخدام) | **معطّل** | يُستخدم المفتاح مرة واحدة. بعد ذلك تعيش هوية العقدة على وحدة تخزينها (volume). |
+| Expiration (الانتهاء) | **يوم واحد** | لا يلزم أن يدوم إلا حتى أول عملية نشر. (القيمة الافتراضية في مربع الحوار 90 يومًا.) |
+| Ephemeral (مؤقت) | **معطّل** | الجهاز المؤقت يختفي حين ينقطع اتصاله، بما في ذلك أثناء كل إعادة نشر. |
+| Pre-approved (موافَق عليه مسبقًا) | **مفعّل** إن كان مطلوبًا | فعّله إذا كانت شبكة tailnet تتطلب الموافقة على الأجهزة، كي لا تبقى العقدة في انتظار. |
+| Tags (الوسوم) | **مفعّل**: `tag:openclaw` | الأجهزة الموسومة لا تحصل إلا على الوصول الذي تمنحه سياستك، ومفاتيح عقدها لا تنتهي صلاحيتها. |
 
-Copy the key when it’s shown. Tailscale won’t show it in full again.
+انسخ المفتاح حين يُعرض. فلن يعرضه Tailscale كاملًا مرة أخرى.
 
-> **Warning**
+> **تحذير**
 >
-> Treat the key like a password. Anyone who has it can add a machine to your tailnet. Don’t paste it into chat or commit it, and use the one-day expiration so a leaked key is quickly worthless.
+> عامل المفتاح كأنه كلمة مرور. فمن يملكه يستطيع إضافة جهاز إلى شبكة tailnet. لا تلصقه في محادثة ولا تُثبّته في المستودع، واستخدم انتهاء الصلاحية ليوم واحد كي يصبح المفتاح المسرَّب عديم القيمة سريعًا.
 
-### Prefer Not to Tag?
+### تفضّل عدم الوسم؟ {#prefer-not-to-tag}
 
-Tagging is recommended, but it isn’t required. If you’d rather not edit your policy’s `tagOwners`, leave **Tags** off in the dialog and the node joins as a regular machine owned by your user. Everything else in this lesson works. Three things change:
+الوسم مستحسن، لكنه ليس مطلوبًا. وإن كنت تفضّل عدم تعديل `tagOwners` في سياستك، فاترك **Tags** معطّلًا في مربع الحوار وستنضم العقدة كجهاز عادي يملكه مستخدمك. وكل ما عدا ذلك في هذا الدرس يعمل. وثمة ثلاثة أشياء تتغير:
 
-1. **You have to disable key expiry yourself.** Untagged nodes expire after 180 days by default, and then the Gateway silently drops off your tailnet. After the machine joins, open `openclaw` in the admin console and choose **Disable key expiry**. Tagged nodes skip this step.
-2. **The Step 1 grant won’t match.** It targets `tag:openclaw`, which an untagged node doesn’t have. Skip the `tagOwners` block, and once the machine appears, point the grant at it directly: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
+1. **عليك تعطيل انتهاء صلاحية المفتاح بنفسك.** فالعقد غير الموسومة تنتهي صلاحيتها بعد 180 يومًا افتراضيًا، وحينها تسقط البوابة من شبكة tailnet بصمت. بعد انضمام الجهاز، افتح `openclaw` في وحدة تحكم الإدارة واختر **تعطيل انتهاء صلاحية المفتاح (Disable key expiry)**. والعقد الموسومة تتجاوز هذه الخطوة.
+2. **منح الخطوة 1 لن ينطبق.** فهو يستهدف `tag:openclaw`، وهو وسم لا تملكه عقدة غير موسومة. فتجاوز كتلة `tagOwners`، وحين يظهر الجهاز وجّه المنح إليه مباشرة: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
 <span class="line"><span style="color:#7FDBCA"> "grants"</span><span style="color:#D6DEEB">: [</span></span>
 <span class="line"><span style="color:#D6DEEB"> {</span></span>
 <span class="line"><span style="color:#7FDBCA"> "src"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">you@example.com</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">],</span></span>
-<span class="line"><span style="color:#7FDBCA"> "dst"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6"><openclaw-tailnet-ip></span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">],</span></span>
+<span class="line"><span style="color:#7FDBCA"> "dst"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">&lt;openclaw-tailnet-ip&gt;</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">],</span></span>
 <span class="line"><span style="color:#7FDBCA"> "ip"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">tcp:443</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">, </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">tcp:18789</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">],</span></span>
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
 <span class="line"><span style="color:#D6DEEB"> ],</span></span>
-<span class="line"><span style="color:#7FDBCA"> "tests"</span><span style="color:#D6DEEB">: [{ </span><span style="color:#7FDBCA">"src"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">you@example.com</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">, </span><span style="color:#7FDBCA">"accept"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6"><openclaw-tailnet-ip>:443</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">] }],</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> You’ll find the IP on the machine’s page in the admin console.
-3. **The node carries your identity.** A tagged node gets only the access your policy grants it, and this one is granted none. An untagged node is *you* as far as the policy is concerned, so a compromised Gateway container could reach whatever your account can. The template’s documentation doesn’t walk through this case, so treat it as Tailscale’s general behavior rather than something the template guarantees. If your policy is still the default allow-all, that means everything on your tailnet, so narrow it either way.
+<span class="line"><span style="color:#7FDBCA"> "tests"</span><span style="color:#D6DEEB">: [{ </span><span style="color:#7FDBCA">"src"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">you@example.com</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">, </span><span style="color:#7FDBCA">"accept"</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">&lt;openclaw-tailnet-ip&gt;:443</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">] }],</span></span>
+<span class="line"><span style="color:#D6DEEB">}</span></span></code> وستجد عنوان IP في صفحة الجهاز في وحدة تحكم الإدارة.
+3. **العقدة تحمل هويتك.** فالعقدة الموسومة لا تحصل إلا على الوصول الذي تمنحه سياستها، وهذه العقدة لم تُمنح شيئًا. أما العقدة غير الموسومة فهي *أنت* بقدر ما تعنيه السياسة، لذا يمكن لحاوية بوابة مخترقة أن تصل إلى كل ما يستطيع حسابك الوصول إليه. ولا تتناول وثائق القالب هذه الحالة، لذا عاملها كسلوك عام في Tailscale لا كشيء يضمنه القالب. وإن كانت سياستك لا تزال السماح الشامل الافتراضي، فذلك يعني كل شيء في شبكة tailnet، لذا ضيّقها في كل الأحوال.
 
-For a Gateway that can run commands, the tag is cheap insurance. On a small personal tailnet with a tight policy, going without is a reasonable trade.
+بالنسبة إلى بوابة تستطيع تشغيل الأوامر، الوسم تأمين رخيص. أما على شبكة tailnet شخصية صغيرة بسياسة محكمة، فالاستغناء عنه مقايضة معقولة.
 
-## Step 3: Deploy the Template
+## الخطوة 3: انشر القالب
 
-Open the [OpenClaw Private Gateway template](https://railway.com/deploy/openclaw-private-gateway?referralCode=kinney) on Railway and fill in two variables:
+افتح [قالب بوابة OpenClaw الخاصة](https://railway.com/deploy/openclaw-private-gateway?referralCode=kinney) على Railway واملأ متغيرين:
 
-| Variable | Value |
+| المتغير | القيمة |
 | --- | --- |
 | `OPENCLAW_PUBLIC_ORIGIN` | `https://openclaw.<your-tailnet>.ts.net` |
-| `TS_AUTHKEY` | the key from Step 2 |
+| `TS_AUTHKEY` | المفتاح من الخطوة 2 |
 
-`OPENCLAW_PUBLIC_ORIGIN` is the address you’ll connect to. The Gateway also uses it as its list of allowed browser origins. The Gateway token (`OPENCLAW_GATEWAY_TOKEN`) is generated for you.
+`OPENCLAW_PUBLIC_ORIGIN` هو العنوان الذي ستتصل به. وتستخدمه البوابة أيضًا قائمةً بأصول المتصفحات المسموح بها. أما رمز البوابة (`OPENCLAW_GATEWAY_TOKEN`) فيُولَّد لك.
 
-Wait for both services to turn green. That takes about four minutes, because the first build pulls a large image. When it finishes, a machine named `openclaw` shows up in your tailnet’s **Machines** page.
+انتظر حتى تصبح الخدمتان باللون الأخضر. يستغرق ذلك نحو أربع دقائق، لأن البناء الأول يسحب صورة كبيرة. وعند انتهائه يظهر جهاز باسم `openclaw` في صفحة **الأجهزة (Machines)** في شبكة tailnet.
 
-If you already have a machine called `openclaw`, Tailscale names the new one `openclaw-1`. Remove the old one, or set `OPENCLAW_PUBLIC_ORIGIN` to match the new name.
+إن كان لديك جهاز باسم `openclaw` بالفعل، فسيسمّي Tailscale الجديد `openclaw-1`. أزل القديم، أو اضبط `OPENCLAW_PUBLIC_ORIGIN` ليطابق الاسم الجديد.
 
-> **Want to deploy from your own fork?**
+> **تريد النشر من نسختك المتفرعة؟**
 >
-> The repository also describes both services with Railway Infrastructure as Code in `.railway/railway.ts`. Use that if you plan to change the code. The template’s `DEPLOYMENT.md` walks through it.
+> يصف المستودع الخدمتين أيضًا بـ Railway Infrastructure as Code في `.railway/railway.ts`. استخدم ذلك إن كنت تنوي تغيير الشيفرة. ويشرح `DEPLOYMENT.md` في القالب ذلك خطوة بخطوة.
 
-## Step 4: Check the Tailnet Side
+## الخطوة 4: تحقق من جهة شبكة tailnet
 
-From a tailnet device that your policy allows:
+من جهاز على شبكة tailnet تسمح به سياستك:
 
 ```bash
 tailscale ping openclaw
 curl -fsS https://openclaw.<your-tailnet>.ts.net/healthz
 ```
 
-You should get a reply from `tailscale ping`, and `curl` should print `{"ok":true,"status":"live"}`. The first HTTPS request can take a few seconds while Tailscale issues the certificate.
+ينبغي أن تحصل على رد من `tailscale ping`، وأن يطبع `curl` القيمة `{"ok":true,"status":"live"}`. وقد يستغرق أول طلب HTTPS بضع ثوانٍ بينما يصدر Tailscale الشهادة.
 
-Then run the same `curl` from a device your policy **doesn’t** allow. It should time out. That’s the access policy doing its job, so check it as carefully as you check the success case.
+ثم شغّل الأمر `curl` نفسه من جهاز **لا** تسمح به سياستك. ينبغي أن تنتهي المهلة. فذلك هو عمل سياسة الوصول؛ فتحقق منها بعناية تماثل عنايتك بحالة النجاح.
 
-Finally, open the Railway dashboard and look at each service’s **Settings → Networking**. There should be no domains and no TCP proxy on either one.
+وأخيرًا، افتح لوحة تحكم Railway وانظر إلى **الإعدادات (Settings) → الشبكات (Networking)** في كل خدمة. لا ينبغي أن يوجد أي نطاق ولا أي وسيط TCP في أي منهما.
 
-## Step 5: Finish Setting Up the Gateway
+## الخطوة 5: أكمل إعداد البوابة
 
-At this point the Gateway is running, but it doesn’t have a model provider yet. Link the Railway CLI to the project, register an SSH key, and confirm you can reach the container:
+في هذه المرحلة تعمل البوابة، لكن ليس لديها مزوّد نماذج بعد. اربط Railway CLI بالمشروع، وسجّل مفتاح SSH، وتأكد من قدرتك على الوصول إلى الحاوية:
 
 ```bash
 railway link
@@ -166,15 +166,15 @@ railway ssh keys add --key ~/.ssh/id_ed25519.pub
 railway ssh --service openclaw -- openclaw health
 ```
 
-The first `railway ssh` asks you to trust `ssh.railway.com`. Railway doesn’t publish host-key fingerprints, so you can only accept it the first time.
+يطلب منك أول `railway ssh` الثقة بـ `ssh.railway.com`. ولا ينشر Railway بصمات مفاتيح المضيف (host-key fingerprints)، لذا لا يمكنك إلا قبولها في المرة الأولى.
 
-Add your model provider key. Copy it to the clipboard, then:
+أضف مفتاح مزوّد النماذج. انسخه إلى الحافظة، ثم:
 
 ```bash
 pbpaste | tr -d '\n' | railway variable set ANTHROPIC_API_KEY --stdin --service openclaw
 ```
 
-When that deploy turns green, run non-interactive onboarding inside the container:
+حين يصبح ذلك النشر أخضر، شغّل الإعداد الأولي غير التفاعلي داخل الحاوية:
 
 ```bash
 railway ssh --service openclaw -- openclaw onboard --non-interactive --accept-risk --skip-health \
@@ -183,64 +183,64 @@ railway ssh --service openclaw -- openclaw onboard --non-interactive --accept-ri
   --gateway-bind lan --skip-channels --no-install-daemon
 ```
 
-Onboarding changes a setting that needs a restart. Railway is the supervisor here, so the Gateway exits cleanly and Railway starts it again in about 30 seconds. Then check that the agent answers:
+يغيّر الإعداد الأولي إعدادًا يحتاج إلى إعادة تشغيل. وRailway هو المشرف هنا، لذا تخرج البوابة بسلام ويعيد Railway تشغيلها في نحو 30 ثانية. ثم تحقق من أن الوكيل يجيب:
 
 ```bash
 railway ssh --service openclaw -- openclaw agent --agent main --message "Reply with exactly: OK"
 ```
 
-For a provider other than Anthropic, set its key variable instead and change `--auth-choice`. `openclaw onboard --help` lists the options.
+لمزوّد غير Anthropic، اضبط متغير مفتاحه بدلًا من ذلك وغيّر `--auth-choice`. ويسرد `openclaw onboard --help` الخيارات.
 
-## Step 6: Connect Your Devices
+## الخطوة 6: صِل أجهزتك
 
-Everything uses one address. Use the secure `wss://` one:
+كل شيء يستخدم عنوانًا واحدًا. استخدم العنوان الآمن `wss://`:
 
 ```
 wss://openclaw.<your-tailnet>.ts.net
 ```
 
-There’s also a plaintext fallback at `ws://openclaw.<your-tailnet>.ts.net:18789`. The traffic is still encrypted by WireGuard inside the tailnet, but prefer `wss://` unless your tailnet can’t issue HTTPS certificates.
+وثمة بديل نصي صريح (plaintext) على `ws://openclaw.<your-tailnet>.ts.net:18789`. لا تزال حركة المرور مشفّرة بـ WireGuard داخل شبكة tailnet، لكن فضّل `wss://` إلا إذا كانت شبكة tailnet لا تستطيع إصدار شهادات HTTPS.
 
-### The macOS app
+### تطبيق macOS
 
-1. In the menu bar, open **Connection…**.
-2. Under **OpenClaw runs**, choose **Remote (another host)**.
-3. Choose **Gateway address or setup code** and enter the `wss://` address.
-4. Enter the Gateway token, which you can read from the `openclaw` service’s variables in Railway.
-5. Choose **Save connection**, then **Test**.
+1. في شريط القوائم، افتح **الاتصال… (Connection…)**.
+2. تحت **OpenClaw runs**، اختر **بعيد (Remote — مضيف آخر)**.
+3. اختر **عنوان البوابة أو رمز الإعداد (Gateway address or setup code)** وأدخل عنوان `wss://`.
+4. أدخل رمز البوابة، الذي يمكنك قراءته من متغيرات خدمة `openclaw` في Railway.
+5. اختر **حفظ الاتصال (Save connection)**، ثم **اختبار (Test)**.
 
-The first test reports that pairing is required. That’s expected.
+يبلّغ الاختبار الأول عن لزوم الاقتران (pairing). وهذا متوقع.
 
-### Approve the device
+### وافق على الجهاز
 
-Tailnet connections count as remote, so nothing is approved automatically. Approve each pending request from the Gateway:
+تُعدّ اتصالات شبكة tailnet اتصالات بعيدة، لذا لا يُوافق على شيء تلقائيًا. وافق على كل طلب معلّق من البوابة:
 
 ```bash
 railway ssh --service openclaw -- openclaw devices list
 railway ssh --service openclaw -- openclaw devices approve <requestId>
 ```
 
-The Mac app files two requests, one for the operator role and one for the node role. Approve both. It will then ask for permission to expose commands on your Mac, including running shell commands. Read that prompt carefully before approving it. The [paired node lesson](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) walks through what you’re agreeing to.
+يرفع تطبيق Mac طلبين، أحدهما لدور المشغّل (operator) والآخر لدور العقدة (node). وافق على كليهما. ثم سيطلب إذنًا لكشف الأوامر على جهاز Mac، بما في ذلك تشغيل أوامر shell. اقرأ ذلك الطلب بعناية قبل الموافقة. ويشرح [درس العقدة المقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) ما توافق عليه.
 
-### Browsers and phones
+### المتصفحات والهواتف
 
-- **A browser:** open `https://openclaw.<your-tailnet>.ts.net/` on a tailnet device and sign in with the Gateway token. Each browser profile counts as a separate device, so approve it the same way.
-- **iOS and Android:** with the phone on your tailnet, run `railway ssh --service openclaw -- openclaw qr` and scan the code in the OpenClaw app. Add `--limited` to withhold administrative access from the phone. The code contains a short-lived token, so don’t post it anywhere.
+- **متصفح:** افتح `https://openclaw.<your-tailnet>.ts.net/` على جهاز في شبكة tailnet وسجّل الدخول برمز البوابة. كل ملف تعريف في المتصفح يُعدّ جهازًا منفصلًا، لذا وافق عليه بالطريقة نفسها.
+- **iOS وAndroid:** بعد وضع الهاتف على شبكة tailnet، شغّل `railway ssh --service openclaw -- openclaw qr` وامسح الرمز في تطبيق OpenClaw. أضف `--limited` لحجب الوصول الإداري عن الهاتف. ويحتوي الرمز على رمز قصير الأمد، فلا تنشره في أي مكان.
 
-Pairing records are stored on the Gateway’s volume, so they survive redeploys.
+تُخزَّن سجلات الاقتران على وحدة تخزين البوابة، لذا تبقى بعد عمليات إعادة النشر.
 
-## Step 7: Clean Up
+## الخطوة 7: نظّف
 
-- **Drop the auth key.** Once the machine has joined, you can delete `TS_AUTHKEY` from the `tailscale` service. A used one-time key is useless anyway.
-- **Check key expiry.** If you tagged the key, the node never expires. If you didn’t, disable key expiry on the `openclaw` machine in the admin console, or it will drop off your tailnet after 180 days.
-- **Turn on backups.** In each service, open **Backups** and enable daily backups. The `openclaw` volume holds OAuth tokens, pairing records, and conversation history.
-- **Audit.** Run the security audit and make sure it comes back clean: <code><span class="line"><span style="color:#82AAFF;font-style:italic">railway</span><span style="color:#ECC48D"> ssh</span><span style="color:#82AAFF"> --service</span><span style="color:#ECC48D"> openclaw</span><span style="color:#82AAFF"> --</span><span style="color:#ECC48D"> openclaw</span><span style="color:#ECC48D"> security</span><span style="color:#ECC48D"> audit</span></span></code>
+- **أزل مفتاح المصادقة.** بعد انضمام الجهاز يمكنك حذف `TS_AUTHKEY` من خدمة `tailscale`. فالمفتاح المستخدم لمرة واحدة عديم الفائدة على أي حال.
+- **تحقق من انتهاء صلاحية المفتاح.** إن وسمت المفتاح، فإن العقدة لا تنتهي صلاحيتها أبدًا. وإن لم تفعل، فعطّل انتهاء صلاحية المفتاح على جهاز `openclaw` في وحدة تحكم الإدارة، وإلا سقط الجهاز من شبكة tailnet بعد 180 يومًا.
+- **فعّل النسخ الاحتياطي.** في كل خدمة، افتح **النسخ الاحتياطي (Backups)** وفعّل النسخ الاحتياطي اليومي. فوحدة تخزين `openclaw` تحوي رموز OAuth وسجلات الاقتران وسجل المحادثات.
+- **التدقيق.** شغّل التدقيق الأمني وتأكد من أنه يعود نظيفًا: <code><span class="line"><span style="color:#82AAFF;font-style:italic">railway</span><span style="color:#ECC48D"> ssh</span><span style="color:#82AAFF"> --service</span><span style="color:#ECC48D"> openclaw</span><span style="color:#82AAFF"> --</span><span style="color:#ECC48D"> openclaw</span><span style="color:#ECC48D"> security</span><span style="color:#ECC48D"> audit</span></span></code>
 
-Then keep going with the rest of the course: [add a channel](https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel) and [choose a DM policy](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy), and tighten what the agent is allowed to run.
+ثم تابع بقية الدورة: [أضف قناة](https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel) و[اختر سياسة رسائل مباشرة](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy)، وشدّد ما يُسمح للوكيل بتشغيله.
 
-## How the Tailscale Service Works
+## كيف تعمل خدمة Tailscale
 
-You don’t need to touch any of this to use the template, but it explains the behavior. The `tailscale` service builds from a small Dockerfile on top of the official Tailscale image, plus a Serve config that is baked in because Railway can’t mount files into a service:
+لا تحتاج إلى لمس أي من هذا لاستخدام القالب، لكنه يفسّر السلوك. فخدمة `tailscale` تُبنى من ملف Dockerfile صغير فوق صورة Tailscale الرسمية، إضافة إلى إعداد Serve مضمَّن في الصورة لأن Railway لا يستطيع تركيب ملفات داخل خدمة:
 
 ```json
 {
@@ -256,93 +256,93 @@ You don’t need to touch any of this to use the template, but it explains the b
 }
 ```
 
-Two consequences follow from that file:
+ينتج عن ذلك الملف نتيجتان:
 
-- **The Gateway service must be named `openclaw`.** Its private hostname is hardcoded here.
-- **Port 443 terminates TLS at Tailscale**, using your tailnet’s certificate. Port 18789 is the plaintext fallback. Both go to the same Gateway port.
+- **يجب أن تكون خدمة البوابة باسم `openclaw`.** فاسم مضيفها الخاص مكتوب مباشرة هنا.
+- **المنفذ 443 ينهي TLS في Tailscale**، باستخدام شهادة شبكة tailnet. والمنفذ 18789 هو البديل النصي الصريح. وكلاهما يذهب إلى منفذ البوابة نفسه.
 
-The environment variables that matter:
+متغيرات البيئة المهمة:
 
-| Variable | What it does |
+| المتغير | ما يفعله |
 | --- | --- |
-| `TS_USERSPACE=true` | Userspace networking, so no `/dev/net/tun` or extra Linux capabilities are needed. |
-| `TS_STATE_DIR` | Stores the node’s identity on the service’s volume. |
-| `TS_AUTH_ONCE=true` | Logs in only when it isn’t already, so a restart never consumes another key. |
-| `TS_SERVE_CONFIG` | Points at the Serve config above. |
-| `TS_HOSTNAME` | The MagicDNS name. Defaults to `openclaw`. |
-| `TS_ACCEPT_DNS` | Left off so Railway’s own resolver keeps working. `openclaw.railway.internal` depends on it. |
-| `TS_DEBUG_MTU=1236` | Shrinks tunnel packets to fit Railway’s network. See the troubleshooting table. |
-| `TS_AUTHKEY` | First login only. |
+| `TS_USERSPACE=true` | الشبكات في فضاء المستخدم، فلا حاجة إلى `/dev/net/tun` ولا إلى قدرات Linux إضافية. |
+| `TS_STATE_DIR` | يخزّن هوية العقدة على وحدة تخزين الخدمة. |
+| `TS_AUTH_ONCE=true` | يسجّل الدخول فقط حين لا يكون مسجّلًا بالفعل، فلا تستهلك إعادة التشغيل مفتاحًا آخر. |
+| `TS_SERVE_CONFIG` | يشير إلى إعداد Serve أعلاه. |
+| `TS_HOSTNAME` | اسم MagicDNS. القيمة الافتراضية `openclaw`. |
+| `TS_ACCEPT_DNS` | متروك معطّلًا كي يستمر مُحلِّل Railway نفسه في العمل. و`openclaw.railway.internal` يعتمد عليه. |
+| `TS_DEBUG_MTU=1236` | يصغّر حزم النفق لتناسب شبكة Railway. راجع جدول استكشاف الأخطاء. |
+| `TS_AUTHKEY` | لتسجيل الدخول الأول فقط. |
 
-Because the node’s identity lives on a volume, redeploys and restarts keep the same machine, address, and certificate.
+ولأن هوية العقدة تعيش على وحدة تخزين، تحافظ عمليات إعادة النشر وإعادة التشغيل على الجهاز والعنوان والشهادة نفسها.
 
-## Who Knows Who You Are?
+## من يعرف من أنت؟
 
-When you connect from your Mac, your phone, and a browser, it’s natural to assume something knows they’re all you. Three different layers each know something different, and it’s worth keeping them straight.
+حين تتصل من جهاز Mac وهاتفك ومتصفح، فمن الطبيعي أن تفترض أن شيئًا ما يعرف أنها كلها أنت. وثمة ثلاث طبقات مختلفة تعرف كل منها شيئًا مختلفًا، ويستحق الأمر إبقاءها واضحة.
 
-| Layer | What it knows | What it decides |
+| الطبقة | ما تعرفه | ما تقرره |
 | --- | --- | --- |
-| **Tailscale** | Which user owns each device on the tailnet | Whether a device can reach the Gateway at all |
-| **The Gateway token** | Nothing about you. It’s a shared secret | Whether a client may talk to the Gateway |
-| **Device pairing** | One device’s own key, which you approved by hand | What that particular device is allowed to do |
+| **Tailscale** | أي مستخدم يملك كل جهاز على شبكة tailnet | هل يستطيع الجهاز الوصول إلى البوابة أصلًا |
+| **رمز البوابة** | لا شيء عنك. فهو سر مشترك | هل يجوز لعميل التحدث إلى البوابة |
+| **اقتران الأجهزة** | المفتاح الخاص بجهاز واحد، الذي وافقت عليه يدويًا | ما يُسمح لذلك الجهاز بعينه بفعله |
 
-**Tailscale** is the only layer that knows your devices belong to the same person. Every device on your tailnet has an identity tied to your login, and your access policy (`"src": ["you@example.com"]`) is checked against it. That’s how your Mac, phone, and laptop all count as “you,” and how a stranger’s device gets turned away before it ever touches the Gateway.
+**Tailscale** هي الطبقة الوحيدة التي تعرف أن أجهزتك تخص الشخص نفسه. فكل جهاز على شبكة tailnet له هوية مرتبطة بتسجيل دخولك، وسياسة وصولك (`"src": ["you@example.com"]`) تُفحص مقابلها. وهكذا يُعدّ جهاز Mac وهاتفك وحاسوبك المحمول كلها «أنت»، وهكذا يُردّ جهاز غريب قبل أن يمسّ البوابة أصلًا.
 
-**The Gateway doesn’t get that information.** The `tailscale` service forwards raw TCP, which passes bytes through without adding any identity headers, and OpenClaw’s own Tailscale integration is off. In fact, the Gateway rejects requests that arrive with a `Tailscale-User-Login` header, because it has no way to verify one. From its point of view, every client is the Tailscale service’s private IP address. (That’s the same reason failed logins are rate limited together, and why its logs can’t tell your devices apart.)
+**البوابة لا تحصل على تلك المعلومات.** فخدمة `tailscale` تمرّر TCP الخام، وهو يمرّر البايتات دون إضافة أي ترويسات هوية، وتكامل Tailscale في OpenClaw معطّل. بل إن البوابة ترفض الطلبات التي تصل بترويسة `Tailscale-User-Login`، لأنها لا تملك وسيلة للتحقق منها. ومن وجهة نظرها، كل عميل هو عنوان IP الخاص لخدمة Tailscale. (ولهذا السبب نفسه تُقيَّد محاولات تسجيل الدخول الفاشلة معًا، ولهذا لا تستطيع سجلاتها التمييز بين أجهزتك.)
 
-So the Gateway builds its own picture of you from two things:
+لذا تبني البوابة صورتها عنك من أمرين:
 
-- **The token** is a shared secret. Every client presents the same one. It proves the client knows the secret and nothing else.
-- **Device pairing** gives each client its own key pair. A new device stays pending until you approve it, and a connection without a paired device identity gets no operator scopes. A client with only the token can call `health` but not read the configuration.
+- **الرمز** سر مشترك. فكل عميل يقدّم الرمز نفسه. وهو يثبت أن العميل يعرف السر ولا شيء غير ذلك.
+- **اقتران الأجهزة** يمنح كل عميل زوج مفاتيح خاصًا به. ويبقى الجهاز الجديد معلّقًا حتى توافق عليه، والاتصال الذي لا يحمل هوية جهاز مقترن لا يحصل على أي نطاقات صلاحية للمشغّل. والعميل الذي يملك الرمز وحده يستطيع استدعاء `health` لكنه لا يستطيع قراءة الإعدادات.
 
-The result is that OpenClaw sees your Mac app, each browser profile, and your phone as **separate devices**. They’re approved separately and revoked separately, and nothing links them together except that they all know the token. A private browser window forgets its device identity, so it needs approval every time.
+والنتيجة أن OpenClaw يرى تطبيق Mac وكل ملف تعريف في المتصفح وهاتفك **أجهزة منفصلة**. تُوافق عليها منفصلة وتُلغى منفصلة، ولا شيء يربطها إلا أنها كلها تعرف الرمز. ونافذة المتصفح الخاصة تنسى هوية جهازها، لذا تحتاج إلى موافقة في كل مرة.
 
-That has a few practical consequences:
+ولهذا نتائج عملية قليلة:
 
-- **The token is the thing that “is you.”** Keep it sealed in Railway, and rotate it if it leaks.
-- **Revoke by device.** To cut off a lost phone without touching your other devices, revoke just that one: <code><span class="line"><span style="color:#82AAFF;font-style:italic">railway</span><span style="color:#ECC48D"> ssh</span><span style="color:#82AAFF"> --service</span><span style="color:#ECC48D"> openclaw</span><span style="color:#82AAFF"> --</span><span style="color:#ECC48D"> openclaw</span><span style="color:#ECC48D"> devices</span><span style="color:#ECC48D"> list</span></span>
+- **الرمز هو الشيء الذي «هو أنت».** أبقِه محكمًا في Railway، وبدّله إن تسرّب.
+- **ألغِ بحسب الجهاز.** لقطع هاتف مفقود دون المساس بأجهزتك الأخرى، ألغِ ذلك الجهاز وحده: <code><span class="line"><span style="color:#82AAFF;font-style:italic">railway</span><span style="color:#ECC48D"> ssh</span><span style="color:#82AAFF"> --service</span><span style="color:#ECC48D"> openclaw</span><span style="color:#82AAFF"> --</span><span style="color:#ECC48D"> openclaw</span><span style="color:#ECC48D"> devices</span><span style="color:#ECC48D"> list</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">railway</span><span style="color:#ECC48D"> ssh</span><span style="color:#82AAFF"> --service</span><span style="color:#ECC48D"> openclaw</span><span style="color:#82AAFF"> --</span><span style="color:#ECC48D"> openclaw</span><span style="color:#ECC48D"> devices</span><span style="color:#ECC48D"> revoke</span><span style="color:#82AAFF"> --device</span><span style="color:#7FDBCA"> <</span><span style="color:#ECC48D">i</span><span style="color:#D6DEEB">d</span><span style="color:#7FDBCA">></span><span style="color:#82AAFF"> --role</span><span style="color:#7FDBCA"> <</span><span style="color:#ECC48D">rol</span><span style="color:#D6DEEB">e</span><span style="color:#7FDBCA">></span></span></code>
-- **For “which device did that?”, check Tailscale’s logs.** The Gateway’s logs only show the shared IP.
+- **لسؤال «أي جهاز فعل ذلك؟»، راجع سجلات Tailscale.** فسجلات البوابة لا تُظهر إلا عنوان IP المشترك.
 
-The [previous lesson’s](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale) setup works differently. When Tailscale runs on the Gateway host, OpenClaw can ask the local Tailscale daemon who is connecting and use that for Control UI sign-in. Railway can’t do that, which is the trade you make for keeping the Gateway off the public internet there.
+إعداد [الدرس السابق](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale) يعمل بشكل مختلف. فحين يعمل Tailscale على مضيف البوابة، يستطيع OpenClaw أن يسأل الخادم الخفي المحلي لـ Tailscale عن هوية المتصل ويستخدم ذلك لتسجيل الدخول إلى واجهة التحكم (Control UI). وRailway لا يستطيع فعل ذلك، وهي المقايضة التي تقبلها لإبقاء البوابة خارج الإنترنت العام هناك.
 
-## Trade-offs to Know About
+## مقايضات يجب معرفتها
 
-- **Everyone shares one IP.** The Gateway sees every tailnet client as the Tailscale service’s private address. Its logs won’t show which device connected (Tailscale’s logs will), and failed-login rate limiting is shared. Ten bad attempts in a minute lock out **all** your devices for five minutes.
-- **Anyone with Railway access has a root shell.** Project members can `railway ssh` into the containers. The volume holds tokens and history, so limit who is on the project.
-- **Never enable Funnel for this node.** The template’s tests fail if the Serve config enables Funnel or switches to HTTP proxying.
+- **الجميع يتشاركون عنوان IP واحدًا.** فالبوابة ترى كل عميل على شبكة tailnet كعنوان IP الخاص بخدمة Tailscale. ولن تُظهر سجلاتها أي جهاز اتصل (ستُظهره سجلات Tailscale)، وتقييد محاولات تسجيل الدخول الفاشلة مشترك. فعشر محاولات سيئة في دقيقة تقفل **كل** أجهزتك خمس دقائق.
+- **من يملك وصولًا إلى Railway يملك صدفة جذر (root shell).** فأعضاء المشروع يستطيعون الدخول إلى الحاويات عبر `railway ssh`. ووحدة التخزين تحوي الرموز والسجل، فحدّد من يكون في المشروع.
+- **لا تفعّل Funnel لهذه العقدة أبدًا.** فاختبارات القالب تفشل إن فعّل إعداد Serve خاصية Funnel أو تحوّل إلى وسيط HTTP.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-Start with the logs:
+ابدأ بالسجلات:
 
 ```bash
 railway logs --service tailscale
 railway logs --service openclaw
 ```
 
-| Symptom | Likely cause and fix |
+| العرَض | السبب المحتمل والإصلاح |
 | --- | --- |
-| `tailscale` is unhealthy and the log says `To authenticate, visit:` | It isn’t logged in. Set `TS_AUTHKEY`, or open the printed URL within five minutes. Anyone who can read the logs in that window could claim the node. |
-| The machine is called `openclaw-1` | The name was taken. Remove the stale machine or set `TS_HOSTNAME`, and keep `OPENCLAW_PUBLIC_ORIGIN` in sync. |
-| `curl` to the `wss://` address times out | Your device isn’t allowed by the access policy, or the node is offline. Check the grant and run `tailscale ping openclaw`. |
-| HTTPS fails, but port `18789` works | HTTPS certificates aren’t enabled for the tailnet. Turn them on under **DNS**. |
-| The log says `failed to TCP proxy port … to openclaw.railway.internal:8080` | The Gateway is down, the service isn’t named `openclaw`, or the environment is an old IPv6-only one. |
-| The connection works but is slow (handshakes take about a second) | Packets bigger than Railway’s network MTU are being lost. Keep `TS_DEBUG_MTU=1236` and don’t override it. |
-| `pairing required` or `disconnected (1008)` | A new device. Run `openclaw devices list`, then `devices approve`. |
-| `Proxy client attribution is required` (403) | Something is adding forwarded headers, usually because the Serve config was changed to an HTTP proxy. Restore raw TCP forwarding. Don’t add trusted proxies. |
-| `401 Unauthorized` everywhere | The token is wrong or was rotated, or the rate limit locked everyone out. Wait five minutes. |
+| `tailscale` غير سليمة ويقول السجل `To authenticate, visit:` | إنها غير مسجّلة الدخول. اضبط `TS_AUTHKEY`، أو افتح عنوان URL المطبوع في غضون خمس دقائق. فمن يستطيع قراءة السجلات في تلك النافذة يمكنه الاستيلاء على العقدة. |
+| الجهاز اسمه `openclaw-1` | كان الاسم محجوزًا. أزل الجهاز القديم أو اضبط `TS_HOSTNAME`، وأبقِ `OPENCLAW_PUBLIC_ORIGIN` متطابقًا. |
+| ينتهي `curl` إلى عنوان `wss://` بمهلة | سياستك لا تسمح بجهازك، أو العقدة غير متصلة. تحقق من المنح وشغّل `tailscale ping openclaw`. |
+| يفشل HTTPS، لكن المنفذ `18789` يعمل | شهادات HTTPS غير مفعّلة لشبكة tailnet. فعّلها تحت **DNS**. |
+| يقول السجل `failed to TCP proxy port … to openclaw.railway.internal:8080` | البوابة متوقفة، أو الخدمة ليست باسم `openclaw`، أو البيئة قديمة من نوع IPv6 فقط. |
+| الاتصال يعمل لكنه بطيء (تستغرق المصافحة نحو ثانية) | تُفقد الحزم الأكبر من وحدة MTU في شبكة Railway. أبقِ `TS_DEBUG_MTU=1236` ولا تتجاوزه. |
+| `pairing required` أو `disconnected (1008)` | جهاز جديد. شغّل `openclaw devices list`، ثم `devices approve`. |
+| `Proxy client attribution is required` (403) | شيء ما يضيف ترويسات ممرَّرة، غالبًا لأن إعداد Serve غُيّر إلى وسيط HTTP. أعد تمرير TCP الخام. ولا تضف وكلاء موثوقين. |
+| `401 Unauthorized` في كل مكان | الرمز خاطئ أو بُدّل، أو أن تقييد المعدل أقفل الجميع. انتظر خمس دقائق. |
 
-### If Tailscale Is Down
+### إن كانت Tailscale متوقفة
 
-Railway’s SSH gateway makes a break-glass fallback. It needs a Railway account on the project and a registered SSH key. Copy the `openclaw` service’s instance ID (press ⌘K in the dashboard and choose **Copy Service Instance ID**), then forward the Gateway port:
+توفّر بوابة SSH في Railway بديلًا للطوارئ. ويحتاج إلى حساب Railway في المشروع ومفتاح SSH مسجّل. انسخ معرّف نسخة خدمة `openclaw` (اضغط ⌘K في لوحة التحكم واختر **نسخ معرّف نسخة الخدمة (Copy Service Instance ID)**)، ثم مرّر منفذ البوابة:
 
 ```bash
 ssh -N -L 18789:127.0.0.1:8080 <service-instance-id>@ssh.railway.com
 ```
 
-Point the app at `ws://127.0.0.1:18789` with the Gateway token. Through the tunnel the Gateway sees a loopback client, so pairing is approved automatically. That’s no more access than the tunnel already gave you, since whoever can open it already has a root shell in the container.
+وجّه التطبيق إلى `ws://127.0.0.1:18789` مع رمز البوابة. فعبر النفق ترى البوابة عميلًا على الواجهة المحلية (loopback)، لذا يُوافق على الاقتران تلقائيًا. وذلك ليس وصولًا أكثر مما منحك النفق أصلًا، لأن من يستطيع فتحه يملك بالفعل صدفة جذر في الحاوية.
 
-> **Versions and updates**
+> **الإصدارات والتحديثات**
 >
-> This lesson follows the template as of OpenClaw `2026.9.8` and Tailscale `1.102.5`. Upgrades are an image change, so check the template’s repository for current instructions before you update.
+> يتبع هذا الدرس القالب كما هو في OpenClaw `2026.9.8` وTailscale `1.102.5`. والترقيات تغيير للصورة، لذا راجع مستودع القالب للحصول على التعليمات الحالية قبل التحديث.

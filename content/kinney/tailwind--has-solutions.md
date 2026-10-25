@@ -1,12 +1,12 @@
 ---
-title: "Solutions for `has-*` Challenges"
-lang: en
+title: "حلول تحديات أدوات has-*"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/has-solutions"
 ---
 
-## Challenge 1: Checkbox Container
+## التحدي 1: حاوية مربع الاختيار
 
-Let’s start with something like this:
+لنبدأ بشيء كهذا:
 
 ```html
 <div>
@@ -15,7 +15,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 1**: Add basic layout classes to the container
+**الخطوة 1**: أضف أصناف التخطيط الأساسية إلى الحاوية
 
 ```html
 <div class="flex items-center gap-3 rounded-lg border border-slate-200 p-4">
@@ -24,7 +24,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 2**: Add the `has-*` utility to change background when checkbox is checked
+**الخطوة 2**: أضف أداة `has-*` لتغيير الخلفية عندما يكون مربع الاختيار محدَّدًا
 
 ```html
 <div
@@ -35,7 +35,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 3**: Add border color change for complete feedback
+**الخطوة 3**: أضف تغيير لون الحد للحصول على تغذية راجعة كاملة
 
 ```html
 <div
@@ -46,13 +46,13 @@ Let’s start with something like this:
 </div>
 ```
 
-The `has-[input:checked]:` prefix targets when the container has a checked input child. You can apply multiple `has-*` utilities for different visual changes.
+تستهدف البادئة `has-[input:checked]:` الحالة التي تكون فيها الحاوية تحتوي على عنصر إدخال محدَّد. يمكنك تطبيق أدوات `has-*` متعددة لتغييرات بصرية مختلفة.
 
-## Challenge 2: Form Validation Feedback
+## التحدي 2: تغذية راجعة للتحقق من النماذج
 
-**Goal**: Create a form field container that shows green for valid input, red for invalid input.
+**الهدف**: إنشاء حاوية حقل نموذج تعرض اللون الأخضر للإدخال الصحيح والأحمر للإدخال غير الصحيح.
 
-Let’s start with something like this:
+لنبدأ بشيء كهذا:
 
 ```html
 <div>
@@ -61,7 +61,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 1**: Add container styling and layout
+**الخطوة 1**: أضف تنسيق الحاوية وتخطيطها
 
 ```html
 <div class="rounded-lg border border-slate-200 p-4">
@@ -75,7 +75,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 2**: Add valid state styling using `has-[input:valid]`
+**الخطوة 2**: أضف تنسيق الحالة الصحيحة باستخدام `has-[input:valid]`
 
 ```html
 <div
@@ -91,7 +91,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 3**: Add invalid state styling and smooth transitions
+**الخطوة 3**: أضف تنسيق الحالة غير الصحيحة وانتقالات سلسة
 
 ```html
 <div
@@ -107,13 +107,13 @@ Let’s start with something like this:
 </div>
 ```
 
-HTML5 validation states (`:valid` and `:invalid`) work automatically with `required` and `type="email"`. The container responds to the input’s validation state without JavaScript.
+تعمل حالات التحقق في HTML5 (`:valid` و`:invalid`) تلقائيًا مع `required` و`type="email"`. تستجيب الحاوية لحالة التحقق في الإدخال دون أي JavaScript.
 
-## Challenge 3: Conditional Content
+## التحدي 3: محتوى شرطي
 
-**Goal**: Build a survey question that reveals a text area when “Poor” is selected.
+**الهدف**: بناء سؤال في استبيان يكشف حقل نص عندما يُختار خيار «سيّئ».
 
-Let’s start with something like this:
+لنبدأ بشيء كهذا:
 
 ```html
 <div>
@@ -124,7 +124,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 1**: Add structure and hide the follow-up by default
+**الخطوة 1**: أضف البنية وأخفِ السؤال المتابع افتراضيًا
 
 ```html
 <div class="rounded-lg border border-slate-200 p-4">
@@ -141,7 +141,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 2**: Target the specific radio button value to show content
+**الخطوة 2**: استهدف قيمة زر الاختيار المحدّد لإظهار المحتوى
 
 ```html
 <div class="rounded-lg border border-slate-200 p-4">
@@ -160,7 +160,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 3**: Complete the follow-up section with proper styling
+**الخطوة 3**: أكمل قسم السؤال المتابع بتنسيق صحيح
 
 ```html
 <div class="rounded-lg border border-slate-200 p-4">
@@ -180,13 +180,13 @@ Let’s start with something like this:
 </div>
 ```
 
-You can target specific form values using attribute selectors like `input[value='poor']`. The `hidden` class combined with `has-*:block` creates show/hide behavior without JavaScript.
+يمكنك استهداف قيم نماذج معيّنة باستخدام محدّدات الخصائص مثل `input[value='poor']`. يصنع الصنف `hidden` المقترن مع `has-*:block` سلوك إظهار وإخفاء دون أي JavaScript.
 
-## Challenge 4: Multi-Element Response
+## التحدي 4: استجابة متعدّدة العناصر
 
-**Goal**: Design a contact form container that responds with blue for text input focus, green for textarea focus.
+**الهدف**: تصميم حاوية لنموذج اتصال تستجيب باللون الأزرق عند تركيز حقل النص، وباللون الأخضر عند تركيز حقل النص متعدّد الأسطر.
 
-Let’s start with something like this:
+لنبدأ بشيء كهذا:
 
 ```html
 <div>
@@ -197,7 +197,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 1**: Add basic form structure and styling
+**الخطوة 1**: أضف بنية النموذج الأساسية وتنسيقه
 
 ```html
 <div class="rounded-lg border border-slate-200 p-4">
@@ -214,7 +214,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 2**: Add different responses for input vs textarea focus
+**الخطوة 2**: أضف استجابات مختلفة لتركيز الإدخال مقابل تركيز حقل النص متعدّد الأسطر
 
 ```html
 <div
@@ -233,13 +233,13 @@ Let’s start with something like this:
 </div>
 ```
 
-You can target different element types (`input` vs `textarea`) with different `has-*` utilities. The container will respond differently depending on which child element is focused.
+يمكنك استهداف أنواع عناصر مختلفة (`input` مقابل `textarea`) بأدوات `has-*` مختلفة. ستستجيب الحاوية بصورة تختلف حسب العنصر التابع الذي يحمل التركيز.
 
-## Challenge 5: Complex Attribute Targeting
+## التحدي 5: استهداف الخصائص المعقّدة
 
-**Goal**: Create a file upload zone that responds to focus states *and* shows dashed border for file inputs.
+**الهدف**: إنشاء منطقة رفع ملفات تستجيب لحالات التركيز *و* تُظهر حدًا متقطّعًا حقول الملفات.
 
-Let’s start with something like this:
+لنبدأ بشيء كهذا:
 
 ```html
 <div>
@@ -249,7 +249,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 1**: Create the upload zone structure
+**الخطوة 1**: أنشئ بنية منطقة الرفع
 
 ```html
 <div class="rounded-lg border-2 border-slate-300 p-6 text-center">
@@ -265,7 +265,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 2**: Add file input detection with dashed border
+**الخطوة 2**: أضف كشف حقل الملف مع حد متقطّع
 
 ```html
 <div
@@ -283,7 +283,7 @@ Let’s start with something like this:
 </div>
 ```
 
-**Step 3**: Add different focus states for different input types
+**الخطوة 3**: أضف حالات تركيز مختلفة لأنواع الحقول المختلفة
 
 ```html
 <div
@@ -301,4 +301,4 @@ Let’s start with something like this:
 </div>
 ```
 
-You can combine multiple complex selectors like `input[type='file']:focus` to target specific element types in specific states. The `transition-all` class smoothly animates between all the different state combinations.
+يمكنك الجمع بين محدّدات معقّدة متعددة مثل `input[type='file']:focus` لاستهداف أنواع عناصر محدّدة في حالات محدّدة. ينتج عن الصنف `transition-all` تحريك سلس بين جميع تركيبات الحالات المختلفة.

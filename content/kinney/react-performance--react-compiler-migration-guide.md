@@ -1,16 +1,16 @@
 ---
-title: "React Compiler Migration Guide"
-lang: en
+title: "دليل الانتقال إلى مصرّف React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/react-compiler-migration-guide"
 ---
 
-The React Compiler fundamentally changes how we think about performance optimization in React. Instead of manually placing `useMemo`, `useCallback`, and `React.memo` throughout your codebase, the compiler automatically optimizes your components at build time. It’s not magic—it’s sophisticated static analysis that understands React’s rendering model and applies optimizations where they actually matter.
+يغيّر مصرّف React (React Compiler) جذريًا طريقة تفكيرنا في تحسين الأداء داخل React. فبدلًا من وضع `useMemo` و`useCallback` و`React.memo` يدويًا في أنحاء قاعدة شيفرتك، يحسّن المصرّف مكوّناتك تلقائيًا وقت البناء. وهو ليس سحرًا، بل تحليل ساكن متطوّر يفهم نموذج التصيير في React ويطبّق التحسينات حيث تهمّ فعلًا.
 
-But migration isn’t just “turn it on and delete all your memoization.” The compiler works best when your code follows certain patterns, and there are edge cases where manual optimization is still necessary. This guide walks you through the complete migration process: preparation, enabling the compiler, handling incompatibilities, measuring improvements, and knowing when to keep your manual optimizations.
+لكن الانتقال ليس مجرّد «شغّله ثم احذف كل تخزينك اليدوي للنتائج». فالمصرّف يعمل في أفضل حالاته حين تتبع شيفرتك أنماطًا معيّنة، وهناك حالات حدّية يبقى فيها التحسين اليدوي ضروريًا. يرشدك هذا الدليل خلال عملية الانتقال الكاملة: التحضير، وتفعيل المصرّف، ومعالجة حالات عدم التوافق، وقياس التحسّن، ومعرفة متى تُبقي تحسيناتك اليدوية.
 
-## Understanding the React Compiler
+## فهم مصرّف React
 
-The React Compiler analyzes your components during build time and automatically inserts optimizations. It’s like having an expert React performance engineer review every component and apply the perfect optimizations.
+يحلّل مصرّف React مكوّناتك وقت البناء ويُدرج التحسينات تلقائيًا. وكأن لديك مهندس أداء React خبيرًا يراجع كل مكوّن ويطبّق عليه التحسينات المثالية.
 
 ```typescript
 // What you write
@@ -54,17 +54,17 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
 }
 ```
 
-The compiler applies these optimizations intelligently—it won’t memoize expensive computations that change on every render, and it understands when memoization would actually hurt performance.
+يطبّق المصرّف هذه التحسينات بذكاء: فهو لا يحفظ نتائج الحسابات المكلفة التي تتغيّر في كل تصيير، ويفهم متى يضرّ حفظ النتائج بالأداء فعلًا.
 
-> **Tip**
+> **نصيحة**
 >
-> The React Compiler is opt-in for React 19. You need to explicitly enable it in your build configuration. It’s designed to be incrementally adoptable—you can enable it for specific components or entire directories.
+> تفعيل مصرّف React في React 19 اختياري (opt-in). وعليك تمكينه صراحةً في إعدادات البناء لديك. وقد صُمّم ليُتبنّى تدريجيًا، فتستطيع تفعيله لمكوّنات بعينها أو لمجلدات كاملة.
 
-## Pre-Migration Assessment
+## التقييم قبل الانتقال
 
-Before enabling the compiler, assess your current codebase to understand what optimizations you have and which ones might conflict:
+قبل تفعيل المصرّف، قيّم قاعدة شيفرتك الحالية لتفهم التحسينات الموجودة لديك وأيّها قد يتعارض مع المصرّف:
 
-### Audit Existing Optimizations
+### جرد التحسينات القائمة
 
 ```bash
 # Find all manual memoization in your codebase
@@ -259,9 +259,9 @@ console.log(report);
 fs.writeFileSync('optimization-audit.md', report);
 ```
 
-## Installation and Basic Setup
+## التثبيت والإعداد الأساسي
 
-### Installing the React Compiler
+### تثبيت مصرّف React
 
 ```bash
 # Install the React Compiler (React 19+)
@@ -273,7 +273,7 @@ yarn add react-compiler-runtime
 yarn add --dev babel-plugin-react-compiler
 ```
 
-### Babel Configuration
+### إعداد Babel
 
 ```javascript
 // babel.config.js
@@ -309,7 +309,7 @@ module.exports = {
 };
 ```
 
-### Webpack Configuration
+### إعداد Webpack
 
 ```javascript
 // webpack.config.js
@@ -350,7 +350,7 @@ module.exports = {
 };
 ```
 
-### TypeScript Configuration
+### إعداد TypeScript
 
 ```json
 // tsconfig.json
@@ -394,11 +394,11 @@ declare namespace ReactCompiler {
 }
 ```
 
-## Incremental Migration Strategy
+## استراتيجية الانتقال التدريجي
 
-### Phase 1: Leaf Components (Low Risk)
+### المرحلة 1: المكوّنات الطرفية (خطر منخفض)
 
-Start with simple, leaf components that don’t have complex dependencies:
+ابدأ بالمكوّنات الطرفية البسيطة التي لا اعتمادات معقّدة لها:
 
 ```typescript
 // ✅ Good candidates for early migration
@@ -439,9 +439,9 @@ function ProductCard({ product }: ProductCardProps) {
 }
 ```
 
-### Phase 2: Container Components (Medium Risk)
+### المرحلة 2: مكوّنات الحاويات (خطر متوسط)
 
-After validating the compiler works with leaf components, move to container components:
+بعد التأكد من أن المصرّف يعمل مع المكوّنات الطرفية، انتقل إلى مكوّنات الحاويات:
 
 ```typescript
 // Container component with state management
@@ -481,9 +481,9 @@ function UserList({ users, onUserSelect }: UserListProps) {
 }
 ```
 
-### Phase 3: Complex Components (Higher Risk)
+### المرحلة 3: المكوّنات المعقّدة (خطر أعلى)
 
-Finally, migrate complex components with effects, refs, and advanced patterns:
+وأخيرًا، انقل المكوّنات المعقّدة التي تتضمّن التأثيرات والمراجع وأنماطًا متقدّمة:
 
 ```typescript
 // Complex component with effects and refs
@@ -583,9 +583,9 @@ function DataTable({ data, columns, onSort, onFilter }: DataTableProps) {
 }
 ```
 
-## Handling Compiler Incompatibilities
+## معالجة حالات عدم التوافق مع المصرّف
 
-### Common Issues and Solutions
+### مشكلات شائعة وحلولها
 
 ```typescript
 // ❌ Issue: Dynamic hook usage (violates Rules of Hooks)
@@ -647,9 +647,9 @@ function FixedComponent({ items }: { items: Item[] }) {
 }
 ```
 
-### Compiler Escape Hatches
+### مخارج الطوارئ في المصرّف
 
-Sometimes you need to disable the compiler for specific components:
+تحتاج أحيانًا إلى تعطيل المصرّف لمكوّنات بعينها:
 
 ```typescript
 // Disable compiler for specific component
@@ -698,9 +698,9 @@ function ComplexComponent({ data }: ComplexProps) {
 }
 ```
 
-### Creating Compiler-Friendly APIs
+### إنشاء واجهات صديقة للمصرّف
 
-Design your APIs to work well with the compiler:
+صمّم واجهات برمجة التطبيقات لديك لتتوافق جيدًا مع المصرّف:
 
 ```typescript
 // ✅ Compiler-friendly API design
@@ -745,9 +745,9 @@ function useOptimizedSearch(items: Item[], searchTerm: string) {
 }
 ```
 
-## Performance Measurement and Validation
+## قياس الأداء والتحقّق منه
 
-### Before/After Comparison
+### مقارنة قبل/بعد
 
 ```typescript
 // performance-comparison.ts - Script to measure compiler impact
@@ -888,9 +888,9 @@ ${this.generateRecommendations(improvement)}
 }
 ```
 
-## Gradual Optimization Removal
+## الإزالة التدريجية للتحسينات
 
-### Strategy for Removing Manual Optimizations
+### استراتيجية إزالة التحسينات اليدوية
 
 ```typescript
 // migration-helper.ts - Tools to help remove manual optimizations
@@ -1003,9 +1003,9 @@ function createOptimizationRemovalCodemod() {
 }
 ```
 
-## Advanced Compiler Configuration
+## إعداد متقدّم للمصرّف
 
-### Custom Optimization Profiles
+### ملفات تعريف تحسين مخصّصة
 
 ```javascript
 // Advanced compiler configuration for different environments
@@ -1070,9 +1070,9 @@ module.exports = {
 };
 ```
 
-## Troubleshooting Common Issues
+## استكشاف المشكلات الشائعة وإصلاحها
 
-### Debugging Compiled Components
+### تنقيح المكوّنات المصرَّفة
 
 ```typescript
 // Development utilities for debugging compiler output

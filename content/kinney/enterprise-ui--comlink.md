@@ -1,24 +1,24 @@
 ---
-title: "Comlink"
-lang: en
+title: "Comlink: واجهة RPC لعمال الويب"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/comlink"
 ---
 
-[Comlink](https://github.com/GoogleChromeLabs/comlink) is a tiny library that turns `postMessage`-style communication into an RPC-like API built on ES6 `Proxy`. Instead of manually serializing requests, wiring message IDs, and pairing responses to callbacks like some kind of ritual punishment, you `expose()` a value on one side and `wrap()` it on the other. The [Comlink docs](https://github.com/GoogleChromeLabs/comlink) describe it exactly that way: an RPC implementation for `postMessage` and proxies, built to make Web Workers easier to use. It also depends on `Proxy`; browsers without native `Proxy` support need a polyfill.
+[Comlink](https://github.com/GoogleChromeLabs/comlink) مكتبة صغيرة تحوّل التواصل بأسلوب `postMessage` إلى واجهة برمجية شبيهة بـ RPC مبنية على `Proxy` في ES6. فبدلًا من أن تُسلسل الطلبات يدويًا، وتربط معرّفات الرسائل، وتقرن الاستجابات بالدوّال الراجعة كأنه نوع من العذاب الطقوسي، تُتيح لك `expose()` قيمةً في طرف و`wrap()`ها في الطرف الآخر. وتصفها [وثائق Comlink](https://github.com/GoogleChromeLabs/comlink) بهذه الطريقة نفسها: تطبيق RPC من أجل `postMessage` والوكلاء (proxies)، بُني لتسهيل استخدام Web Workers. وهي تعتمد أيضًا على `Proxy`؛ فالمتصفحات التي لا تدعم `Proxy` أصلًا تحتاج إلى polyfill.
 
-The reason this exists is simple. The [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) lets you run JavaScript off the main thread, which keeps the UI more responsive, but workers communicate through `postMessage`, where data is serialized with the structured clone algorithm. Workers also cannot directly manipulate the DOM, so the boundary between “UI work” and “background work” is real, not philosophical. Comlink does not remove that boundary. It just makes crossing it less miserable.
+سبب وجودها بسيط. فـ[واجهة Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) تتيح لك تشغيل JavaScript خارج الخيط الرئيسي، ما يُبقي الواجهة أكثر استجابة، لكن العمال يتواصلون عبر `postMessage`، حيث تُسلسل البيانات بخوارزمية الاستنساخ المُهيكل. كما لا يستطيع العمال معالجة DOM مباشرةً، فالحدّ بين «عمل الواجهة» و«العمل في الخلفية» حقيقي لا فلسفي. ولا يُزيل Comlink ذلك الحدّ، بل يجعل عبوره أقل بؤسًا.
 
-## What Problem Comlink Actually Solves
+## المشكلة التي يحلّها Comlink فعلًا
 
-Raw worker code is fundamentally message passing. You send an object, the other side receives it, does something, and sends another object back. That works, but the minute you want a rich API surface, error propagation, callbacks, or several methods on one worker, you start hand-rolling a mini RPC protocol. Comlink replaces that boilerplate with a proxy so the worker API feels like a normal object or function from the caller’s point of view. Under the hood it is still `postMessage`; it just stops making you live at that level all day.
+شيفرة العامل الخام هي في جوهرها تمرير رسائل. فترسل كائنًا، فيستقبله الطرف الآخر، ويفعل شيئًا، ويرسل كائنًا آخر عائدًا. هذا ينجح، لكن بمجرد أن تريد سطح واجهة برمجية غنيًا، أو نشر الأخطاء، أو دوّالًا راجعة، أو عدة توابع على عامل واحد، تبدأ في بناء بروتوكول RPC مصغّر يدويًا. ويستبدل Comlink تلك الشيفرة المتكرّرة بوكيل، فتبدو واجهة العامل كائنًا أو دالة عادية من منظور المستدعي. وفي الخفاء ما زال `postMessage`؛ لكنه يكفّ عن إجبارك على العيش في ذلك المستوى طوال اليوم.
 
-The key phrase in the [docs](https://github.com/GoogleChromeLabs/comlink) is “just like local values,” but you should not take that too literally. Comlink makes remote values *feel* local, not *be* local. Every property read, method call, and returned value still crosses a thread boundary, and Comlink’s API docs are explicit that proxy access and invocation are inherently asynchronous. If you are using a Comlink proxy, the working rule is still “put `await` in front of it.”
+العبارة المفتاحية في [الوثائق](https://github.com/GoogleChromeLabs/comlink) هي «تمامًا كالقيم المحلية»، لكن لا ينبغي أن تأخذها على محمل الحرفية. فـ Comlink يجعل القيم البعيدة *تبدو* محلية لا أن *تكون* محلية. فكل قراءة خاصية، ونداء تابع، وقيمة مُرجَعة ما زال يعبر حدّ خيط، ووثائق واجهة Comlink صريحة في أن الوصول إلى الوكيل واستدعاءه غير متزامنين بطبيعتهما. وإن كنت تستخدم وكيل Comlink، فالقاعدة العملية ما زالت «ضع `await` أمامه».
 
-## The Core Mental Model
+## النموذج الذهني الأساسي
 
-Comlink has two verbs that matter most: `expose()` and `wrap()`. On the worker side, you expose a function or object. On the main-thread side, you wrap the worker endpoint and get back a proxy. That proxy mirrors the exposed API, but every interaction is async and promise-based, including property reads. If the worker throws, Comlink catches the exception on one side and re-throws it on the other.
+لـ Comlink فعلان أهمّ من غيرهما: `expose()` و`wrap()`. فعلى جانب العامل تكشف دالةً أو كائنًا، وعلى جانب الخيط الرئيسي تلفّ نقطة نهاية العامل وتحصل على وكيل. ويعكس ذلك الوكيل الواجهة البرمجية المكشوفة، لكن كل تفاعل غير متزامن وقائم على الوعود (promises)، بما في ذلك قراءات الخصائص. وإن رمى العامل استثناءً، يلتقطه Comlink في طرف ويعيد رميه في الطرف الآخر.
 
-A minimal example looks like this:
+يبدو مثال بسيط هكذا:
 
 ```javascript
 // math.worker.js
@@ -49,19 +49,19 @@ console.log(await math.version);
 console.log(await math.fib(40));
 ```
 
-That is the Comlink story in one screen. Expose an object. Wrap the endpoint. `await` everything. The illusion is intentionally simple because the underlying mechanism is not.
+تلك هي قصة Comlink في شاشة واحدة. اكشف كائنًا. الفّ نقطة النهاية. و`await` كل شيء. والوهم بسيط عن قصد لأن الآلية الكامنة ليست كذلك.
 
-## What Actually Crosses the Boundary
+## ما يعبر الحدّ فعلًا
 
-By default, Comlink sends function arguments, return values, and object-property values using structured cloning. The [Comlink README](https://github.com/GoogleChromeLabs/comlink) says this directly, and MDN’s [structured clone docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) explain what that means: it deep-copies many ordinary JavaScript values, handles cycles, and is the mechanism used for worker messaging. It is not a perfect clone of JavaScript semantics, though. Functions cannot be cloned, DOM nodes cannot be cloned, property descriptors and getters/setters are not preserved, and prototype chains are not faithfully reproduced. Plain data works best. Clever object graphs work until they don’t.
+افتراضيًا، يرسل Comlink وسائط الدوال، والقيم المُرجَعة، وقيم خصائص الكائنات باستخدام الاستنساخ المُهيكل. ويقول [ملف README الخاص بـ Comlink](https://github.com/GoogleChromeLabs/comlink) هذا مباشرةً، وتشرح [وثائق الاستنساخ المُهيكل](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) من MDN معنى ذلك: فهو ينسخ نسخًا عميقًا كثيرًا من قيم JavaScript العادية، ويتعامل مع الدورات، وهو الآلية المستخدمة لتمرير رسائل العمال. لكنه ليس نسخًا مثاليًا لدلالات JavaScript. فلا يمكن استنساخ الدوال، ولا عُقد DOM، ولا يُحافَظ على واصفات الخصائص والدوال الجالبة/الضابطة، ولا تُعاد سلاسل النماذج (prototype chains) بأمانة. والبيانات المجرّدة تعمل أفضل ما يمكن. ومخططات الكائنات الذكية تعمل إلى أن تتوقف عن العمل.
 
-That has an immediate design consequence: your worker API should usually speak in plain objects, arrays, typed arrays, maps, sets, strings, numbers, booleans, and ordinary errors, not in DOM types, class-heavy models, or custom instances whose behavior depends on prototype methods or accessors. Workers are great for computation, parsing, indexing, search, transforms, compression, and similar off-main-thread work. They are bad homes for DOM-coupled logic because workers do not get [direct DOM access](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) in the first place.
+ولهذا نتيجة تصميمية فورية: ينبغي أن تتحدّث واجهة عاملك عادةً بكائنات مجرّدة، ومصفوفات، ومصفوفات مُنمّطة (typed arrays)، و`Map`، و`Set`، وسلاسل نصية، وأرقام، وقيم منطقية، وأخطاء عادية، لا بأنواع DOM، أو نماذج مثقلة بالأصناف، أو نسخ مخصّصة يعتمد سلوكها على توابع النموذج أو الوصولات. فالعمال رائعون للحساب والتحليل والفهرسة والبحث والتحويلات والضغط وما شابه من العمل خارج الخيط الرئيسي. وهم مواطن سيئة للمنطق المقترن بـ DOM لأن العمال لا يحصلون أصلًا على [وصول مباشر إلى DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API).
 
-## `transfer()` Versus `proxy()`
+## `transfer()` مقابل `proxy()`
 
-Comlink gives you two important escape hatches: `Comlink.transfer()` and `Comlink.proxy()`. They solve very different problems, and mixing them up is how people end up either copying too much data or accidentally sharing the wrong abstraction. The [docs](https://github.com/GoogleChromeLabs/comlink) present them together because they are both alternatives to the default structured-clone path.
+يمنحك Comlink مخارج طارئة مهمّين: `Comlink.transfer()` و`Comlink.proxy()`. وهما يحلّان مشكلتين مختلفتين جدًا، والخلط بينهما هو ما ينتهي به الناس إما إلى نسخ بيانات أكثر من اللازم أو مشاركة التجريد الخطأ عن غير قصد. وتعرضهما [الوثائق](https://github.com/GoogleChromeLabs/comlink) معًا لأنهما بديلان لمسار الاستنساخ المُهيكل الافتراضي.
 
-Use `Comlink.transfer(value, transferables)` when the value is or contains transferable resources and you want ownership moved instead of copied. MDN’s [transferable-object docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) explain the semantics precisely: after transfer, the original object is no longer usable in the sending context, and `ArrayBuffer` transfer can be a fast zero-copy operation. For large typed arrays or binary blobs, that difference is not cosmetic. It is the difference between “background work feels fine” and “we copied 64 MB twice because nobody was paying attention.”
+استخدم `Comlink.transfer(value, transferables)` عندما تكون القيمة موارد قابلة للنقل أو تحتويها، وتريد نقل الملكية بدلًا من نسخها. وتشرح [وثائق الكائنات القابلة للنقل](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) من MDN الدلالات بدقة: فبعد النقل، لا يعود الكائن الأصلي صالحًا للاستخدام في سياق الإرسال، وقد يكون نقل `ArrayBuffer` عملية سريعة بلا نسخ. وبالنسبة إلى المصفوفات المُنمّطة الكبيرة أو الكتل الثنائية، ليس ذلك الفرق شكليًا، بل هو الفرق بين «العمل في الخلفية يبدو جيدًا» و«نسخنا 64 ميجابايت مرتين لأن لا أحد كان ينتبه».
 
 ```javascript
 const bytes = new Uint8Array(1024 * 1024 * 8);
@@ -69,7 +69,7 @@ const bytes = new Uint8Array(1024 * 1024 * 8);
 await workerApi.processBuffer(Comlink.transfer(bytes, [bytes.buffer]));
 ```
 
-Use `Comlink.proxy(value)` when you do *not* want clone-or-transfer semantics at all and instead want Comlink to send a proxy for the value. The canonical use case is callbacks, because functions are not structured-cloneable and are not transferable. The Comlink [examples](https://github.com/GoogleChromeLabs/comlink) use `proxy()` exactly this way.
+استخدم `Comlink.proxy(value)` عندما *لا* تريد دلالات النسخ أو النقل إطلاقًا، بل تريد أن يرسل Comlink وكيلًا للقيمة. وحالة الاستخدام النموذجية هي الدوّال الراجعة، لأن الدوال ليست قابلة للاستنساخ المُهيكل ولا قابلة للنقل. وتستخدم [أمثلة Comlink](https://github.com/GoogleChromeLabs/comlink) الدالة `proxy()` بهذه الطريقة نفسها.
 
 ```javascript
 await workerApi.runJob(
@@ -79,33 +79,33 @@ await workerApi.runJob(
 );
 ```
 
-That distinction is the important one. `transfer()` is for moving ownership of transferable data. `proxy()` is for sharing a callable or object through another remote boundary. One is about bytes. The other is about behavior.
+ذلك التمييز هو المهم. فـ `transfer()` لنقل ملكية البيانات القابلة للنقل. و`proxy()` لمشاركة شيء قابل للنداء أو كائن عبر حدّ بعيد آخر. أحدهما يتعلّق بالبايتات، والآخر بالسلوك.
 
-## Transfer Handlers
+## معالِجات النقل
 
-Some values are neither cloneable nor transferable in the shape you want. `Event` is the classic example. The [Comlink docs](https://github.com/GoogleChromeLabs/comlink) call out the common failure mode explicitly: you try to pass an event listener across the boundary, nothing obvious throws, and then the callback never fires because `Event` is not structured-cloneable or transferable. The library’s answer is transfer handlers.
+بعض القيم ليست قابلة للاستنساخ ولا للنقل بالشكل الذي تريده. و`Event` هو المثال الكلاسيكي. وتذكر [وثائق Comlink](https://github.com/GoogleChromeLabs/comlink) نمط الإخفاق الشائع صراحةً: تحاول تمرير مستمع حدث عبر الحدّ، فلا يرمي شيء واضح استثناءً، ثم لا يُستدعى الراجع أبدًا لأن `Event` ليس قابلًا للاستنساخ المُهيكل ولا للنقل. وجواب المكتبة هو معالِجات النقل.
 
-A **transfer handler** is a custom serializer/deserializer pair registered on both sides of the channel. Comlink sends each argument or return value through registered handlers; if one says it can handle the value, that handler becomes responsible for turning the value into cloneable data and reconstructing it on the other side. The docs show this with an `Event` handler that serializes a tiny subset of `event.target`. It does *not* recreate a real DOM `Event`; it recreates only the data you chose to preserve. That is usually the right mindset. Treat transfer handlers as controlled adapters, not as excuses to smuggle entire live DOM-ish objects across a worker boundary.
+**معالِج النقل** هو زوج مخصّص من مُسلسِل/مُزيل تسلسل مسجَّل على طرفي القناة. ويرسل Comlink كل وسيطة أو قيمة مُرجَعة عبر المعالِجات المسجَّلة؛ فإن قال أحدها إنه يستطيع معالجة القيمة، صار ذلك المعالِج مسؤولًا عن تحويل القيمة إلى بيانات قابلة للاستنساخ وإعادة بنائها في الطرف الآخر. وتعرض الوثائق هذا بمعالِج `Event` يسلسل مجموعة صغيرة من `event.target`. وهو *لا* يعيد إنشاء `Event` حقيقي من DOM؛ بل يعيد إنشاء البيانات التي اخترت الحفاظ عليها فقط. وهذا عادةً هو العقلية الصحيحة. عامل معالِجات النقل كمحوّلات مضبوطة، لا كأعذار لتهريب كائنات حيّة شبيهة بـ DOM كاملة عبر حدّ العامل.
 
-## The Rest of the API That Matters
+## بقية الواجهة البرمجية التي تهمّ
 
-`Comlink.wrap(endpoint)` works with the “other end” of a `postMessage`-like endpoint. `Comlink.expose(value, endpoint?, allowedOrigins?)` exposes a value on an endpoint, and its optional `allowedOrigins` parameter lets you restrict which origins can access it when origin matters. Comlink defaults this permissively for the general case, which is fine for simple dedicated workers and less fine when you start talking to windows or frames. If an origin boundary exists, be deliberate. A wildcard is convenient right up until it isn’t.
+تعمل `Comlink.wrap(endpoint)` مع «الطرف الآخر» من نقطة نهاية شبيهة بـ `postMessage`. وتكشف `Comlink.expose(value, endpoint?, allowedOrigins?)` قيمةً على نقطة نهاية، وتتيح لك وسيطتها الاختيارية `allowedOrigins` تقييد الأصول التي يمكنها الوصول إليها عندما يكون الأصل مهمًّا. ويجعل Comlink ذلك متسامحًا افتراضيًا للحالة العامة، وهذا جيد للعمال المخصّصين البسطاء وأقل جودة عندما تبدأ بالتحدث إلى نوافذ أو إطارات. وإن وُجد حدّ أصل، فكن متعمّدًا. فحرف البدل (wildcard) مريح إلى أن يكفّ عن ذلك.
 
-Every proxy also gets some extra capabilities. `[Comlink.releaseProxy]()` detaches the proxy and exposed object from the message channel so both ends can be garbage-collected. If the runtime supports `WeakRef`, Comlink can call this automatically when the wrapped proxy is GC’d, but when you know the lifetime is over, explicit release is still the clearer habit. `[Comlink.finalizer]` lets the exposed object run cleanup logic when the proxy is released. `[Comlink.createEndpoint]()` returns a new `MessagePort` attached to the same exposed object, which is useful when you need to hand another endpoint to another consumer without exposing the original worker directly.
+كما يحصل كل وكيل على قدرات إضافية. فـ `[Comlink.releaseProxy]()` يفصل الوكيل والكائن المكشوف عن قناة الرسائل فيمكن جمع الطرفين كنفايات (garbage-collected). وإن كانت بيئة التشغيل تدعم `WeakRef`، يستطيع Comlink استدعاء هذا تلقائيًا عند جمع الوكيل الملفوف كنفاية، لكن عندما تعرف أن العمر انتهى، يظل الإفراج الصريح عادةً أوضح. ويتيح `[Comlink.finalizer]` للكائن المكشوف تشغيل منطق التنظيف عند الإفراج عن الوكيل. ويعيد `[Comlink.createEndpoint]()` منفذ رسائل (`MessagePort`) جديدًا مرتبطًا بالكائن المكشوف نفسه، وهذا مفيد عندما تحتاج إلى تسليم نقطة نهاية أخرى إلى مستهلك آخر دون كشف العامل الأصلي مباشرةً.
 
-## Shared Workers, Windows, Iframes, and Node
+## العمال المشتركون والنوافذ والإطارات وNode
 
-Comlink is not limited to the basic `new Worker()` case. The [README](https://github.com/GoogleChromeLabs/comlink) documents SharedWorker support explicitly, but the rule changes slightly: you wrap `worker.port`, not the `SharedWorker` object itself, and you call `Comlink.expose()` inside `onconnect`, using the connection port from `event.ports[0]`. That is because SharedWorkers communicate through ports, not through the worker object directly.
+لا يقتصر Comlink على حالة `new Worker()` الأساسية. ويوثّق [ملف README](https://github.com/GoogleChromeLabs/comlink) دعم SharedWorker صراحةً، لكن القاعدة تتغيّر قليلًا: تلفّ `worker.port` لا كائن `SharedWorker` نفسه، وتستدعي `Comlink.expose()` داخل `onconnect`، مستخدمًا منفذ الاتصال من `event.ports[0]`. وذلك لأن SharedWorkers تتواصل عبر المنافذ لا عبر كائن العامل مباشرةً.
 
-Comlink also supports talking to windows and iframes through `Comlink.windowEndpoint(window, context = self, targetOrigin = "*")`. The [README](https://github.com/GoogleChromeLabs/comlink) explains that windows and workers have slightly different `postMessage` behavior, so `windowEndpoint()` adapts a window into the shape Comlink expects. This is useful when the real boundary is `window.postMessage` rather than a worker. Just remember that once you are crossing window boundaries, `targetOrigin` and `allowedOrigins` stop being optional hygiene and start being actual security controls.
+يدعم Comlink أيضًا التواصل مع النوافذ والإطارات عبر `Comlink.windowEndpoint(window, context = self, targetOrigin = "*")`. ويشرح [ملف README](https://github.com/GoogleChromeLabs/comlink) أن للنوافذ والعمال سلوك `postMessage` مختلفًا قليلًا، لذا يكيّف `windowEndpoint()` نافذةً إلى الشكل الذي يتوقّعه Comlink. وهذا مفيد عندما يكون الحدّ الحقيقي هو `window.postMessage` لا عاملًا. فقط تذكّر أنه بمجرد أن تعبر حدود النوافذ، يتوقف `targetOrigin` و`allowedOrigins` عن كونهما نظافة اختيارية ويصبحان ضوابط أمنية فعلية.
 
-The [Comlink README](https://github.com/GoogleChromeLabs/comlink) also says it works with Node’s `worker_threads` module. So the abstraction is broader than “browser workers only.” The real contract is “something `postMessage`-like on one side, something `postMessage`-like on the other, and both ends agree to the Comlink protocol.”
+ويقول [ملف README الخاص بـ Comlink](https://github.com/GoogleChromeLabs/comlink) أيضًا إنه يعمل مع وحدة `worker_threads` في Node. فالتجريد أوسع من «عمال المتصفح فقط». والعقد الحقيقي هو «شيء شبيه بـ `postMessage` في طرف، وشيء شبيه بـ `postMessage` في الطرف الآخر، ويتفق الطرفان على بروتوكول Comlink».
 
 ## TypeScript
 
-Comlink ships TypeScript types, and the important one is `Comlink.Remote<T>`. The [docs](https://github.com/GoogleChromeLabs/comlink) say that if you `expose()` something of type `T`, the matching `wrap()` call gives you a `Comlink.Remote<T>`. The README also warns that this is best-effort typing and that some shapes are hard or impossible to represent perfectly in TypeScript, so you may occasionally need an assertion. That is a refreshingly honest thing for a type-heavy JavaScript library to admit.
+يشحن Comlink أنواع TypeScript، وأهمّها `Comlink.Remote<T>`. وتقول [الوثائق](https://github.com/GoogleChromeLabs/comlink) إنك إن كشفت بـ `expose()` شيئًا من النوع `T`، فسيمنحك نداء `wrap()` المطابق `Comlink.Remote<T>`. ويحذّر ملف README أيضًا من أن هذا تنميط بأفضل جهد، وأن بعض الأشكال يصعب أو يستحيل تمثيلها تمثيلًا مثاليًا في TypeScript، فقد تحتاج إلى تأكيد (assertion) أحيانًا. وهذا اعتراف صادق بشكل منعش من مكتبة JavaScript مثقلة بالأنواع.
 
-A typical pattern is:
+النمط المعتاد هو:
 
 ```typescript
 import * as Comlink from 'comlink';
@@ -124,32 +124,32 @@ const api = Comlink.wrap<MathApi>(worker);
 const result = await api.fib(42);
 ```
 
-The useful mental model is that `wrap<T>()` gives you a remote facade for `T`, not a local instance of `T`. The types help, but the async boundary is still real.
+النموذج الذهني المفيد هو أن `wrap<T>()` يمنحك واجهة أمامية بعيدة لـ `T`، لا نسخة محلية من `T`. فالأنواع تساعد، لكن الحدّ غير المتزامن ما زال حقيقيًا.
 
-## Designing a Good Comlink API
+## تصميم واجهة Comlink جيدة
 
-The best Comlink APIs are coarse-grained and data-oriented. Because every property access and method call becomes async RPC over `postMessage`, a chatty design is a bad design. If you expose ten tiny getters and setters and call them in loops from the main thread, you have recreated distributed-systems latency inside one browser tab. The [Comlink docs](https://github.com/GoogleChromeLabs/comlink) already tell you that every proxy access is asynchronous; the obvious design inference is to batch work into fewer, larger operations.
+أفضل واجهات Comlink خَشِنة الحبيبات (coarse-grained) وموجّهة بالبيانات. ولأن كل وصول إلى خاصية ونداء تابع يصيران RPC غير متزامن عبر `postMessage`، فالتصميم الثرثار تصميم سيئ. وإن كشفت عشرة دوال جالبة وضابطة صغيرة واستدعيتها في حلقات من الخيط الرئيسي، فقد أعدت إنشاء كمون الأنظمة الموزّعة داخل علامة تبويب واحدة. وتخبرك [وثائق Comlink](https://github.com/GoogleChromeLabs/comlink) أصلًا بأن كل وصول إلى الوكيل غير متزامن؛ والاستنتاج التصميمي الواضح هو تجميع العمل في عمليات أقل وأكبر.
 
-That means worker APIs should usually look like `analyze(document)`, `search(index, query)`, `transform(image)`, `parse(csvText)`, or `compress(blob)` rather than `getRow()`, `getCell()`, `setFoo()`, `setBar()`, `readOneFieldAtATime()`. Treat the worker like a service boundary, because for performance purposes, it is one. The fact that it lives in the same origin does not make round-trips free.
+وهذا يعني أن واجهات العمال ينبغي أن تبدو عادةً مثل `analyze(document)` و`search(index, query)` و`transform(image)` و`parse(csvText)` أو `compress(blob)` لا مثل `getRow()` و`getCell()` و`setFoo()` و`setBar()` و`readOneFieldAtATime()`. عامل العامل كحدّ خدمة، لأنه كذلك من أجل الأداء. وكونه في الأصل نفسه لا يجعل الرحلات ذهابًا وإيابًا مجانية.
 
-If large binary payloads are involved, prefer `transfer()` over plain cloning when ownership transfer is acceptable. If callbacks are involved, use `proxy()`. If the payload is weird or DOM-ish, map it into plain data or create a transfer handler. If the API needs synchronous semantics, it probably should not be a worker API in the first place.
+إن كانت الحمولات الثنائية كبيرة، فضّل `transfer()` على الاستنساخ العادي عندما يكون نقل الملكية مقبولًا. وإن كانت هناك دوّال راجعة، فاستخدم `proxy()`. وإن كانت الحمولة غريبة أو شبيهة بـ DOM، فحوّلها إلى بيانات مجرّدة أو أنشئ معالِج نقل. وإن كانت الواجهة تحتاج دلالات متزامنة، فعلى الأرجح لا ينبغي أن تكون واجهة عامل من الأصل.
 
-## Common Mistakes
+## الأخطاء الشائعة
 
-The first common mistake is forgetting that everything is async. A remote property access returning a simple number is still a promise. The [Comlink docs](https://github.com/GoogleChromeLabs/comlink) say this directly, but people still write `const x = workerApi.counter` and then act offended when the universe returns a promise.
+الخطأ الشائع الأول هو نسيان أن كل شيء غير متزامن. فالوصول البعيد إلى خاصية تُرجع رقمًا بسيطًا ما زال وعدًا (promise). وتقول [وثائق Comlink](https://github.com/GoogleChromeLabs/comlink) هذا مباشرةً، لكن الناس ما زالوا يكتبون `const x = workerApi.counter` ثم يستاؤون عندما يعيد الكون وعدًا.
 
-The second is trying to pass functions, DOM nodes, or raw browser events as if the [structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) were a magical deep-copy of all JavaScript reality. It is not. Functions and DOM nodes do not clone, and Comlink’s own event-listener example is there because `Event` is a common failure case. Use `proxy()` for callbacks. Use transfer handlers or plain DTOs for weird types.
+والثاني هو محاولة تمرير دوال، أو عُقد DOM، أو أحداث متصفح خام كما لو كانت [خوارزمية الاستنساخ المُهيكل](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) نسخًا عميقًا سحريًا لواقع JavaScript كله. وهي ليست كذلك. فالدوال وعُقد DOM لا تُستنسخ، ومثال مستمع الحدث في Comlink نفسه موجود لأن `Event` حالة إخفاق شائعة. استخدم `proxy()` للدوّال الراجعة، ومعالِجات النقل أو كائنات نقل بيانات (DTO) مجرّدة للأنواع الغريبة.
 
-The third is copying large buffers when transfer was the right choice. If you are moving `ArrayBuffer`-backed data around at size, use [transfer semantics](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) and accept that the sender loses ownership. That is how the platform is designed to make worker communication efficient.
+والثالث هو نسخ المخازن الكبيرة عندما كان النقل هو الخيار الصحيح. فإن كنت تنقل بيانات مدعومة بـ `ArrayBuffer` بأحجام كبيرة، فاستخدم [دلالات النقل](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) واقبل أن المُرسِل يفقد الملكية. فهكذا صُمّمت المنصة لجعل تواصل العمال فعّالًا.
 
-The fourth is exposing an object, keeping proxies alive forever, and never releasing them when the lifetime is actually over. Comlink has `releaseProxy` and `finalizer` for a reason. Use them when object lifetime is explicit.
+والرابع هو كشف كائن، وإبقاء الوكلاء أحياءً إلى الأبد، وعدم الإفراج عنها أبدًا عندما ينتهي عمرها فعلًا. فـ Comlink فيه `releaseProxy` و`finalizer` لسبب. استخدمهما عندما يكون عمر الكائن صريحًا.
 
-## When Comlink Is the Wrong Tool
+## متى يكون Comlink الأداة الخطأ
 
-Comlink is the wrong tool when the work is trivial, infrequent, or tightly coupled to the DOM. [Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) cannot manipulate the DOM directly, and every Comlink interaction is asynchronous over messaging, so if your code mostly tweaks UI state or needs synchronous, high-frequency object access, Comlink is solving the wrong problem. Raw local code will be simpler. Raw `postMessage` may even be simpler if the worker API surface is tiny enough.
+يكون Comlink الأداة الخطأ عندما يكون العمل تافهًا، أو غير متكرّر، أو مقترنًا ارتباطًا وثيقًا بـ DOM. فـ[العمال](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) لا يستطيعون معالجة DOM مباشرةً، وكل تفاعل مع Comlink غير متزامن عبر تمرير الرسائل، فإن كانت شيفرتك تعدّل حالة الواجهة في الغالب أو تحتاج وصولًا متزامنًا عالي التكرار إلى الكائنات، فـ Comlink يحلّ المشكلة الخطأ. ستكون الشيفرة المحلية الخام أبسط. وقد يكون `postMessage` الخام أبسط أيضًا إذا كان سطح واجهة العامل صغيرًا بما يكفي.
 
-It is also the wrong tool for hyper-chatty object models where the caller wants constant fine-grained reads and writes. Comlink makes worker boundaries pleasant, not free. If you need extremely frequent shared-memory-style coordination, you are in different territory entirely. The Web Workers API does have [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), but that is a different model with its own security and determinism concerns, not something Comlink magically turns into a normal object graph.
+وهو أيضًا الأداة الخطأ لنماذج الكائنات شديدة الثرثرة حيث يريد المستدعي قراءات وكتابات دقيقة الحبيبات باستمرار. فـ Comlink يجعل حدود العامل ممتعة لا مجانية. وإن كنت تحتاج تنسيقًا بأسلوب الذاكرة المشتركة بوتيرة عالية جدًا، فأنت في إقليم مختلف تمامًا. فواجهة Web Workers فيها بالفعل [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)، لكن ذلك نموذج مختلف له مخاوف أمنية وحتمية خاصة به، وليس شيئًا يحوّله Comlink سحريًا إلى مخطط كائنات عادي.
 
-## The Practical Bottom Line
+## الخلاصة العملية
 
-Comlink is the cleanest way to make workers feel like normal APIs instead of message buses. Use `expose()` on one side and `wrap()` on the other. Assume everything is async. Let structured cloning handle ordinary data. Use `transfer()` for big transferable payloads. Use `proxy()` for callbacks. Reach for transfer handlers only when plain data is not enough. And design the worker API as a coarse-grained background service, not as a remote object you plan to poke fifty times per animation frame. That way lies disappointment, and JavaScript already provides plenty of that for free.
+Comlink هو أنظف طريقة لجعل العمال يشعرون كواجهات برمجية عادية بدلًا من ناقلات رسائل. استخدم `expose()` في طرف و`wrap()` في الطرف الآخر. وافترض أن كل شيء غير متزامن. ودع الاستنساخ المُهيكل يتولّى البيانات العادية. واستخدم `transfer()` للحمولات الكبيرة القابلة للنقل. و`proxy()` للدوّال الراجعة. ولا تلجأ إلى معالِجات النقل إلا عندما لا تكفي البيانات المجرّدة. وصمّم واجهة العامل كخدمة خلفية خَشِنة الحبيبات، لا ككائن بعيد تخطط لطعنه خمسين مرة في كل إطار رسم. فذلك طريق الخيبة، وJavaScript تقدّم الكثير من ذلك مجانًا بالفعل.

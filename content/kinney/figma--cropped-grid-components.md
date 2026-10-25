@@ -1,20 +1,20 @@
 ---
-title: "Cropped Grid Components"
-lang: en
+title: "مكوّنات الشبكة المقصوصة"
+lang: ar
 source: "https://stevekinney.com/courses/figma/cropped-grid-components"
 ---
 
-As we learned with [components](https://stevekinney.com/courses/figma/components) and dug into a little bit with [placeholder components](https://stevekinney.com/courses/figma/placeholder-components), components can’t take what slotted children but we can do a one-for-one swap. But what if we want to swap in more than one component? One trick we can use is called **cropped grid components**.
+كما تعلّمنا مع [المكوّنات](https://stevekinney.com/courses/figma/components) وتعمّقنا قليلًا في [مكوّنات حجز المكان](https://stevekinney.com/courses/figma/placeholder-components)، لا يمكن للمكوّنات أن تستقبل أبناءً مُدرَجين في فتحات، لكن يمكننا إجراء استبدال واحد لواحد. لكن ماذا لو أردنا تبديل أكثر من مكوّن واحد؟ من الحيّل التي يمكننا استخدامها ما يُسمّى **مكوّنات الشبكة المقصوصة**.
 
-> **TL;DR**
+> **باختصار**
 >
-> The short version is that a cropped grid component is just a component that holds more than one of the same component and then we just only make it big enough to show the number we need—**cropping** out the the rest.
+> الخلاصة أن مكوّن الشبكة المقصوصة مجرّد مكوّن يحمل أكثر من نسخة من المكوّن نفسه، ثم نجعله بحجم يكفي فقط لعرض العدد الذي نحتاجه، مع **قصّ** الباقي.
 >
-> Yes, it feels like a hack, but it’s [an officially sanctioned thing](https://www.figma.com/best-practices/component-architecture/#setting-up-the-cropped-grid-components). I don’t make the rules around here.
+> نعم، يبدو حيلة، لكنه [أمر معتمد رسميًا](https://www.figma.com/best-practices/component-architecture/#setting-up-the-cropped-grid-components). أنا لا أضع القواعد هنا.
 
-We’re going to set up a frame to serve as out checklist component. And then fill it up with more stuff—in this case, the **Checklist Item** component that we made in [previous section](https://stevekinney.com/courses/figma/building-a-checkbox-component)—than we need.
+سنُعِدّ إطارًا ليكون مكوّن قائمة المهام لدينا. ثم نملؤه بعناصر أكثر — في هذه الحالة، مكوّن **Checklist Item** الذي أنشأناه في [القسم السابق](https://stevekinney.com/courses/figma/building-a-checkbox-component) — مما نحتاجه.
 
-1. Create an empty frame.
-2. Drag in one **Checklist Item** component.
-3. Duplicate it multiple times.
-4. Set the constraints to have it move along the top and then the center of the parent.
+1. أنشئ إطارًا فارغًا.
+2. اسحب مكوّن **Checklist Item** واحدًا إلى داخله.
+3. كرّره عدة مرات.
+4. اضبط القيود بحيث يتحرّك مع أعلى الإطار الأب ثم مع وسطه.

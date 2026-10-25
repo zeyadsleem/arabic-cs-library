@@ -1,12 +1,12 @@
 ---
-title: "Realtime Typing Websockets And Sse"
-lang: en
+title: "التحويل في الزمن الحقيقي عبر WebSocket وSSE"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/realtime-typing-websockets-and-sse"
 ---
 
-Design a real-time layer that stays type-safe across reconnects and protocol evolution—validate messages at the edge and keep UI state predictable.
+صمّم طبقة زمن حقيقي (real-time) تبقى آمنة الأنواع عبر إعادة الاتصال وتطوّر البروتوكول — تحقّق من صحة الرسائل عند الحافة (edge) وأبقِ حالة واجهة المستخدم متوقعة.
 
-## Message Schemas and Versioning
+## مخططات الرسائل والنسخ
 
 ```typescript
 import { z } from 'zod';
@@ -19,7 +19,7 @@ const MessageV1 = z.discriminatedUnion('type', [
 type Message = z.infer<typeof MessageV1>;
 ```
 
-## WebSocket Client with Validation
+## عميل WebSocket مع التحقق
 
 ```typescript
 const ws = new WebSocket('wss://example.com');
@@ -30,17 +30,17 @@ ws.onmessage = (e) => {
 };
 ```
 
-## SSE and Backoff
+## SSE والتراجع التدريجي
 
-- Use EventSource for low-overhead streams.
-- Reconnect with exponential backoff and jitter.
-- Buffer updates for React transitions.
+- استخدم EventSource للتدفقات خفيفة الحِمل.
+- أعِد الاتصال بتراجعٍ تدريجي أسّي (exponential backoff) مع تغيير عشوائي (jitter).
+- اخزّن التحديثات مؤقتًا لانتقالات React.
 
-## tRPC Subscriptions
+## اشتراكات tRPC
 
-Leverage tRPC’s subscription support to keep end‑to‑end types while pushing updates over WS.
+استفد من دعم tRPC للاشتراكات لتبقى الأنواع متّصلة من الطرف إلى الطرف (end-to-end) أثناء دفع التحديثات عبر WS.
 
-## `useWebSocket` Hook with Typed Messages
+## خُطّاف `useWebSocket` برسائل مُنوَّعة النوع
 
 ```typescript
 type OnMessage<M> = (msg: M) => void;
@@ -79,10 +79,10 @@ function useWebSocket<M extends object>(
 }
 ```
 
-## Schema Evolution Strategy
+## استراتيجية تطوّر المخطط
 
-- Keep old variants in the union and handle gracefully; introduce new fields as optional.
-- Add `version` field and branch by version for breaking changes.
+- أبقِ الصيغ القديمة في الاتحاد وعامِلها برفق؛ وقدّم الحقول الجديدة كاختيارية.
+- أضف حقل `version` وتفرّع بحسب الإصدار عند التغييرات الكاسرة.
 
 ```typescript
 const MessageV2 = z.discriminatedUnion('type', [
@@ -91,7 +91,7 @@ const MessageV2 = z.discriminatedUnion('type', [
 ]);
 ```
 
-## React 19 Transitions for Burst Updates
+## انتقالات React 19 للتحديثات المتدفقة
 
 ```typescript
 function LiveView() {

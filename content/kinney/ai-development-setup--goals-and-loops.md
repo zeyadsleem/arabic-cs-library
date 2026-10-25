@@ -1,94 +1,94 @@
 ---
-title: "Goals and Loops"
-lang: en
+title: "الأهداف والحلقات (Goals and Loops)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/goals-and-loops"
 ---
 
-Sooner or later you want the agent to keep going without you. Claude Code ships two commands for that, and people mix them up.
+عاجلًا أو آجلًا ستريد أن يواصل الوكيل العمل دونك. ويشحن Claude Code أمرين لذلك، ويخلط الناس بينهما.
 
-- `/loop` repeats a prompt on a schedule that lives inside your open [session](https://stevekinney.com/courses/ai-development-setup/why-systems) (one conversation with the agent, from launch until you exit).
-- `/goal` keeps the agent working until an evaluator decides a condition you wrote has been met.
+- `/loop` يكرّر طلبًا وفق جدول يعيش داخل [جلستك](https://stevekinney.com/courses/ai-development-setup/why-systems) المفتوحة (محادثة واحدة مع الوكيل، من الإطلاق حتى خروجك).
+- `/goal` يُبقي الوكيل يعمل حتى يقرّر مُقيّم أن شرطًا كتبته قد تحقّق.
 
-The short version: `/loop` is for waiting; `/goal` is for working. Use `/loop` to *notice* a change, like a deploy finishing. Use `/goal` to move work toward something you can check.
+النسخة المختصرة: `/loop` للانتظار؛ و `/goal` للعمل. استخدم `/loop` لـ*ملاحظة* تغيير، مثل انتهاء عملية نشر. واستخدم `/goal` لدفع العمل نحو شيء يمكنك فحصه.
 
-## Four jobs every automated loop needs
+## الوظائف الأربع التي تحتاجها كل حلقة آلية
 
-A **turn** is one round where the agent responds to a message, running as many commands as it needs before it waits. Some settings count **agentic turns** instead: one model request plus its tool calls, so one turn can contain dozens. Any loop that runs without you has four jobs:
+**الدورة (turn)** جولة واحدة يستجيب فيها الوكيل لرسالة، مشغّلًا ما يحتاجه من أوامر قبل أن ينتظر. وبعض الإعدادات تحصي **دورات الوكيل (agentic turns)** بدلًا من ذلك: طلب نموذج واحد إضافة إلى نداءات أدواته، فقد تحوي الدورة الواحدة العشرات. وأي حلقة تعمل دونك لها أربع وظائف:
 
-- **Trigger**: What starts the next turn.
-- **Target**: What should become true.
-- **Oracle**: What decides whether it’s true. A good oracle is one the agent being judged can’t edit or argue with.
-- **Governor**: What forces a stop: caps on time, agentic turns, tokens, spend, or attempts, plus stall detection and a kill switch.
+- **المُشغِّل (Trigger)**: ما يبدأ الدورة التالية.
+- **الهدف (Target)**: ما ينبغي أن يصير صحيحًا.
+- **المُحكِّم (Oracle)**: ما يقرّر ما إذا كان صحيحًا. والمُحكِّم الجيد هو ما لا يستطيع الوكيل المُحاكَم تحريره أو المجادلة فيه.
+- **الحاكم (Governor)**: ما يفرض التوقّف: حدود على الوقت، أو دورات الوكيل، أو الرموز، أو الإنفاق، أو المحاولات، إضافة إلى كشف التعطّل ومفتاح إيقاف.
 
-`/loop` only handles the trigger. `/goal` handles the target and uses a separate evaluator model as the oracle. That’s a weaker oracle than a test suite’s exit code: it judges only the evidence that gets surfaced, so a persuasive transcript can sway it, and it can’t verify files it never read. The governor is on you.
+و `/loop` يتعامل مع المُشغِّل فقط. و `/goal` يتعامل مع الهدف ويستخدم نموذج مُقيّم منفصل كمُحكِّم. وذلك مُحكِّم أضعف من رمز خروج مجموعة اختبارات: فهو يحكم على الأدلة التي تُعرَض عليه فقط، فيمكن لنصّ مقنع أن يستميله، ولا يستطيع التحقق من ملفات لم يقرأها. أما الحاكم فعليك.
 
-> **Codex’s `/goal` is a different pattern**
+> **`/goal` في Codex نمط مختلف**
 >
-> [Codex](https://developers.openai.com/codex) ships a command with the same name, but the model doing the work audits itself, and its budget only asks it to wrap up. [More on Codex’s `/goal`](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice#more-on-codexs-goal) has the details.
+> يشحن [Codex](https://developers.openai.com/codex) أمرًا بالاسم نفسه، لكن النموذج الذي ينفّذ العمل يدقّق نفسه، وميزانيته تطلب منه فقط أن ينهي. و [المزيد عن `/goal` في Codex](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice#more-on-codexs-goal) فيه التفاصيل.
 
-## What a good goal includes
+## ما يضمّه الهدف الجيد
 
-Put five things in the goal text:
+ضع خمسة أشياء في نصّ الهدف:
 
-- **Outcome**: The state you want when it’s finished. This is the target.
-- **Evidence**: What the agent should show to prove it got there. This is what the oracle looks at.
-- **Constraints**: What it must not touch along the way. None of the four jobs covers this one, so it’s easy to forget.
-- **Budget**: How much time, how many agentic turns, or how much money it may spend.
-- **Blocker**: What counts as stuck, and what to do about it.
+- **المحصّلة (Outcome)**: الحالة التي تريدها عند الانتهاء. هذا هو الهدف.
+- **الدليل (Evidence)**: ما ينبغي أن يعرضه الوكيل لإثبات وصوله. هذا ما ينظر إليه المُحكِّم.
+- **القيود (Constraints)**: ما يجب ألا يمسّه في الطريق. ولا يغطّي أيٌّ من الوظائف الأربع هذه، فيسهل نسيانها.
+- **الميزانية (Budget)**: كم من الوقت، أو كم من دورات الوكيل، أو كم من المال يمكنه إنفاقه.
+- **العائق (Blocker)**: ما يُحتسب تعطّلًا، وما يفعله حياله.
 
-Budget and blocker are governor inputs, but the goal text doesn’t enforce them. The evaluator can read them; nothing makes the agent stop at them.
+والميزانية والعائق مدخلان للحاكم، لكن نصّ الهدف لا يفرضهما. فيستطيع المُقيّم قراءتهما؛ ولا شيء يجعل الوكيل يتوقّف عندهما.
 
-You want three ways for a goal to end: success, blocked, and budget exhausted. The evaluator’s verdicts can produce only two of them. “Met” is success, and “impossible” (it judged the condition can never be satisfied) is close to blocked. Budget exhausted isn’t a verdict.
+وتريد ثلاث طرق لانتهاء هدف: النجاح، والتعطّل، ونفاد الميزانية. وأحكام المُقيّم لا تنتج منها إلا اثنين. «تحقّق» نجاح، و«مستحيل» (حكم بأن الشرط لا يمكن أن يتحقق أبدًا) قريب من التعطّل. ونفاد الميزانية ليس حكمًا.
 
-Three distinctions help. A checklist is *not* a goal: it lists steps, while a goal states the end condition. A schedule is *not* a budget: a `/loop` interval says when to run, not when to stop. And a test is a *proxy* for an objective, not the objective itself.
+وثمّة ثلاثة فروق تساعد. قائمة المهام *ليست* هدفًا: فهي تسرد خطوات، بينما الهدف يبيّن شرط النهاية. والجدول الزمني *ليس* ميزانية: ففاصل `/loop` يقول متى يعمل، لا متى يتوقّف. والاختبار *وكيل* عن غاية، لا الغاية نفسها.
 
-## Make the target falsifiable
+## اجعل الهدف قابلًا للتكذيب
 
-- **Bad**: “Make this polished.”
-- **Better**: “The following tests must pass, and the API examples must match the documentation.”
+- **سيئ**: «اجعل هذا مصقولًا.»
+- **أفضل**: «يجب أن تنجح الاختبارات التالية، ويجب أن تطابق أمثلة API الوثائق.»
 
-The first can never be wrong, so it can never be finished. The second can fail loudly, which is what you want.
+الأول لا يمكن أن يكون خاطئًا أبدًا، فلا يمكن أن ينتهي أبدًا. والثاني يمكن أن يفشل بصوت عالٍ، وهو ما تريده.
 
-## Limits are on you
+## الحدود عليك {#limits-are-on-you}
 
-Set a limit on time, agentic turns, tokens, or spend. Also write a no-progress limit into the condition: “stop after three attempts that don’t change the result.” That’s different from the stall guard below, which only notices the agent going quiet.
+اضبط حدًّا على الوقت، أو دورات الوكيل، أو الرموز، أو الإنفاق. واكتب أيضًا حدًّا لعدم التقدّم داخل الشرط: «توقّف بعد ثلاث محاولات لا تغيّر النتيجة.» وهذا مختلف عن حارس التعطّل أدناه، الذي يلاحظ فقط صمت الوكيل.
 
-`--max-budget-usd` and `--max-turns` (which counts agentic turns) only work in print mode: `claude -p`, one non-interactive run. Interactive sessions, `/loop`, and cloud routines have no per-run dollar cap, so you build your own governor. [The Ralph Loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) is how you build one.
+و `--max-budget-usd` و `--max-turns` (وهو يحصي دورات الوكيل) يعملان في وضع الطباعة فقط: `claude -p`، وهو تشغيل واحد غير تفاعلي. والجلسات التفاعلية، و `/loop`، والروتينات السحابية، ليس لها سقف دولاري لكل تشغيل، فتبني حاكمك الخاص. و [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) هي طريقتك لبنائه.
 
-## How `/goal` works
+## كيف يعمل `/goal`
 
-`/goal` is a `Stop` hook in disguise. A [hook](https://stevekinney.com/courses/ai-development-setup/hooks) usually runs a script automatically at a lifecycle event, and `Stop` fires when the agent finishes a turn. `/goal` installs a session-scoped, prompt-based one that asks a model to judge instead. After every turn, a small, fast model (Haiku, by default) reads your condition and the conversation so far and returns one of three verdicts:
+`/goal` خُطّاف `Stop` متنكّر. فـ [الخُطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) يشغّل عادةً سكربتًا آليًا عند حدث دورة حياة، و `Stop` يُطلَق عند إنهاء الوكيل دورة. و `/goal` يثبّت واحدًا محدود النطاق بالجلسة وقائمًا على طلب، يطلب من نموذج أن يحكم بدلًا من ذلك. بعد كل دورة، يقرأ نموذج صغير سريع (Haiku افتراضيًا) شرطك والمحادثة حتى الآن ويعيد أحد ثلاثة أحكام:
 
-- **Not yet met**: Claude keeps going, using the evaluator’s reason as guidance.
-- **Met**: The goal clears and is recorded as achieved.
-- **Impossible**: The evaluator judged the condition can never be satisfied. The goal clears and is recorded as failed.
+- **لم يتحقق بعد**: يواصل Claude، مستفيدًا من سبب المُقيّم كإرشاد.
+- **تحقّق**: يُرفع الهدف ويُسجَّل كمُنجَز.
+- **مستحيل**: حكم المُقيّم بأن الشرط لا يمكن أن يتحقق أبدًا. يُرفع الهدف ويُسجَّل كفاشل.
 
-The rest of the behavior:
+وبقية السلوك:
 
-- **Commands**: `/goal <condition>` sets a goal and starts working. A bare `/goal` shows status and token spend, and `/goal clear` removes it. Resuming a session restores an active goal.
-- **Stall guard**: If Claude stops using tools for several turns in a row, Claude Code hands control back to you. The goal stays set, and evaluation resumes after your next message.
-- **Permissions don’t change**: A goal doesn’t change your [permission mode](https://code.claude.com/docs/en/permissions), meaning how much the agent may do without asking. To walk away, use `auto`, where a classifier approves the actions it judges safe. Otherwise the next permission prompt just waits for you.
-- **Errors**: Authentication failures, an exhausted credit balance, an unfixable context overflow, and an unavailable model clear the goal. Fix the cause and set it again. Other errors leave it set: Claude Code retries ones that tend to clear on their own (an overloaded server) and pauses after three tries, or pauses at once when a retry would only repeat the failure, like a rate limit.
-- **Background work**: Evaluation waits while subagents or background shell commands are still running. If they *keep* running, Claude Code does a check-in at 30 minutes (then an hour, then every two hours). It lists the running tasks, and Claude reads their output, keeps waiting on ones that are progressing, and fixes or stops any that are stuck.
+- **الأوامر**: `/goal <condition>` يضبط هدفًا ويبدأ العمل. و `/goal` المجرّد يعرض الحالة وإنفاق الرموز، و `/goal clear` يزيله. واستئناف جلسة يستعيد هدفًا نشطًا.
+- **حارس التعطّل**: إن توقّف Claude عن استخدام الأدوات عدة دورات متتالية، يعيد Claude Code التحكّم إليك. ويبقى الهدف مضبوطًا، ويُستأنف التقييم بعد رسالتك التالية.
+- **الأذونات لا تتغيّر**: لا يغيّر الهدف [وضع الإذن](https://code.claude.com/docs/en/permissions) لديك، أي مقدار ما يجوز للوكيل فعله دون سؤال. وللانصراف، استخدم `auto`، حيث يوافق مصنّف على الإجراءات التي يحكم بأنها آمنة. وإلا فطلب الإذن التالي ينتظرك فقط.
+- **الأخطاء**: إخفاقات المصادقة، ورصيد أرصدة مستنفد، وفيض سياق غير قابل للإصلاح، ونموذج غير متاح، ترفع الهدف. أصلح السبب واضبطه من جديد. أما الأخطاء الأخرى فتتركه مضبوطًا: يعيد Claude Code محاولة الأخطاء التي تميل إلى الزوال من تلقائها (خادم محمّل بإفراط) ويتوقّف مؤقتًا بعد ثلاث محاولات، أو يتوقّف فورًا حين لا تكرّر إعادة المحاولة إلا الفشل، مثل حدّ معدّل.
+- **العمل في الخلفية**: ينتظر التقييم ما دامت الوكلاء الفرعية أو أوامر الصدفة في الخلفية تعمل. وإن *استمرّت* في العمل، يجري Claude Code تحقّقًا عند 30 دقيقة (ثم ساعة، ثم كل ساعتين). فيسرد المهام الجارية، ويقرأ Claude مخرجاتها، ويواصل الانتظار على ما يتقدّم منها، ويصلح أو يوقف أيًّا منها تعطّل.
 
-The [`/goal` documentation](https://code.claude.com/docs/en/goal) has the rest.
+و [`/goal` documentation](https://code.claude.com/docs/en/goal) فيه الباقي.
 
-## How `/loop` works
+## كيف يعمل `/loop`
 
-What you type decides which machine you get.
+ما تكتبه يحدّد أي آلة تحصل عليها.
 
-- **`/loop 5m …`**: A fixed, recurring cron job (a task that fires on a clock) with an ID.
-- **`/loop …` with no interval**: Self-paced. Claude picks a delay of 1 to 60 minutes after each run.
-- **A bare `/loop`**: Runs the built-in maintenance prompt (continue unfinished work, tend the current branch’s pull request, run cleanup passes when nothing else is pending), or your `loop.md` if you have one. [Goals and Loops in Practice](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice) covers `loop.md`.
+- **`/loop 5m …`**: مهمة cron ثابتة متكرّرة (مهمة تُطلَق على ساعة) بمعرّف.
+- **`/loop …` بلا فاصل**: بوتيرة ذاتية. يختار Claude تأخيرًا من 1 إلى 60 دقيقة بعد كل تشغيل.
+- **`/loop` المجرّد**: يشغّل طلب الصيانة المدمج (واصل العمل غير المكتمل، واعتنِ بطلب السحب للفرع الحالي، وشغّل تمريرات تنظيف حين لا شيء آخر معلّق)، أو `loop.md` خاصتك إن كان لديك. و [الأهداف والحلقات عمليًا](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice) يغطّي `loop.md`.
 
-Every run is an ordinary turn in the *current* conversation, so context accumulates. Each run costs a little more than the last until compaction (replacing the conversation so far with a summary) kicks in, and there are no interactive caps on turns, dollars, or iterations.
+وكل تشغيل دورة عادية في المحادثة *الحالية*، فيتراكم السياق. ويكلّف كل تشغيل أكثر قليلًا من سابقه حتى يبدأ الضغط (استبدال المحادثة حتى الآن بملخّص)، ولا توجد حدود تفاعلية على الدورات أو الدولارات أو التكرارات.
 
-Some sharp edges:
+وبعض الحدود الحادّة:
 
-- **Self-paced loops can die quietly**: If a run forgets to reschedule, Claude Code arms one fallback wakeup about 20 minutes later. If *that* run forgets too, the loop just ends, without telling you.
-- **Stopping is asymmetric**: Esc, or asking Claude to stop, ends a self-paced loop. A fixed-interval cron keeps firing until you delete it by ID.
-- **A `/loop` task belongs to its session**: `/clear` removes session tasks. Closing the session stops tasks firing. `--resume` or `--continue` restores unexpired fixed-interval `CronCreate` tasks, and recurring tasks expire after seven days. Self-paced loops, expired recurring tasks, and elapsed one-shot tasks don’t come back. The [scheduled-task limitations](https://code.claude.com/docs/en/scheduled-tasks#limitations) spell out these exceptions.
+- **الحلقات ذات الوتيرة الذاتية قد تموت بهدوء**: إن نسي تشغيل إعادة الجدولة، يضبط Claude Code إيقاظًا احتياطيًا واحدًا بعد نحو 20 دقيقة. وإن نسي ذلك التشغيل أيضًا، تنتهي الحلقة ببساطة، دون أن تخبرك.
+- **الإيقاف غير متماثل**: Esc، أو مطالبة Claude بالتوقّف، ينهي حلقة ذات وتيرة ذاتية. أما cron بفاصل ثابت فيواصل الإطلاق حتى تحذفه بمعرّفه.
+- **مهمة `/loop` تنتمي إلى جلستها**: `/clear` يزيل مهام الجلسة. وإغلاق الجلسة يوقف إطلاق المهام. و `--resume` أو `--continue` يستعيد مهام `CronCreate` ذات الفاصل الثابت غير المنتهية، وتنتهي المهام المتكرّرة بعد سبعة أيام. أما الحلقات ذات الوتيرة الذاتية، والمهام المتكرّرة المنتهية، والمهام الواحدة الماضية، فلا تعود. و [قيود المهام المجدولة](https://code.claude.com/docs/en/scheduled-tasks#limitations) تفصّل هذه الاستثناءات.
 
-A desktop scheduled task or a cloud routine outlives any session. [Routines and Schedules](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules) covers them, and the [scheduled tasks documentation](https://code.claude.com/docs/en/scheduled-tasks) covers the scheduler.
+ومهمة سطح مكتب مجدولة أو روتين سحابي يعيش أطول من أي جلسة. و [الروتينات والجداول](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules) يغطّيها، و [وثائق المهام المجدولة](https://code.claude.com/docs/en/scheduled-tasks) تغطّي المجدول.
 
-A goal you can’t fail is just a wish with a token meter running.
+هدف لا يمكنك إخفاقه ليس إلا أمنية مع عدّاد رموز يعمل.

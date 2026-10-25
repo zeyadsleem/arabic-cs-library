@@ -1,43 +1,43 @@
 ---
-title: "Windowing and Virtualization"
-lang: en
+title: "التصيير النوافذي والافتراضي في القوائم الطويلة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/windowing-and-virtualization"
 ---
 
-Rendering 10,000 list items in React? Your browser will politely decline with a frozen UI and a memory leak. The solution isn’t to throw more RAM at the problem—it’s to be smarter about what you render. Windowing (also called virtualization) renders only the items visible in the viewport, keeping your UI snappy even with massive datasets. We’ll explore how to implement this with `react-window`, handle edge cases, and keep accessibility in mind while turning sluggish lists into buttery-smooth experiences.
+هل تصيّر 10,000 عنصر قائمة في React؟ سيرفض متصفحك بأدب بواجهة مجمدة وتسريب ذاكرة. الحل ليس رمي مزيد من الذاكرة على المشكلة — بل أن تكون أذكى فيما تصيّره. التصيير النوافذي (windowing)، ويسمى أيضًا الافتراضية (virtualization)، يصيّر فقط العناصر الظاهرة في إطار العرض، فيبقي واجهتك سريعة حتى مع مجموعات بيانات ضخمة. سنستكشف كيفية تنفيذ ذلك باستخدام `react-window`، والتعامل مع الحالات الطرفية، ومراعاة إمكانية الوصول، مع تحويل القوائم المتثاقلة إلى تجارب بالغة السلاسة.
 
-## What is Windowing?
+## ما التصيير النوافذي؟
 
-Windowing is like looking through a window at a massive painting—you only see the part that fits in the frame. When you scroll, you reveal different sections, but the entire painting isn’t loaded into your view all at once. That would be ridiculous (and expensive).
+التصيير النوافذي كالنظر عبر نافذة إلى لوحة ضخمة — لا ترى إلا الجزء الذي يتسع في الإطار. وعندما تمرر، تكشف أقسامًا مختلفة، لكن اللوحة كاملة لا تُحمَّل في مجال رؤيتك دفعة واحدة. سيكون ذلك سخيفًا (ومكلفًا).
 
-In the context of React applications, windowing means:
+في سياق تطبيقات React، يعني التصيير النوافذي:
 
-1. **Only render visible items**: If your viewport shows 10 rows, render maybe 15-20 to handle smooth scrolling
-2. **Recycle DOM nodes**: As items scroll out of view, their DOM elements get reused for new items scrolling in
-3. **Maintain scroll position**: Users should never know items are being added and removed
+1. **أن تصيّر العناصر الظاهرة فقط**: إن كان إطار العرض يعرض 10 صفوف، فصيّر نحو 15-20 لمعالجة التمرير السلس
+2. **أن تعيد تدوير عقد DOM**: عندما تخرج عناصر من مجال الرؤية بالتمرير، تُعاد عقد DOM الخاصة بها للاستخدام مع عناصر جديدة تدخل
+3. **أن تحافظ على موضع التمرير**: يجب ألا يعرف المستخدمون أبدًا أن عناصر تُضاف وتُزال
 
-This technique transforms lists that would normally crash your browser into performant, responsive experiences.
+يحوّل هذا الأسلوب قوائم كانت ستنهار متصفحك عادةً إلى تجارب أداء واستجابة.
 
-## When You Need Windowing
+## متى تحتاج التصيير النوافذي
 
-Here are some Real World Use Cases™ where windowing becomes essential:
+إليك بعض حالات الاستخدام الواقعية™ التي يصبح فيها التصيير النوافذي ضروريًا:
 
-- **Data tables** with hundreds or thousands of rows
-- **Chat applications** with long message histories
-- **File explorers** with many items
-- **Social media feeds** (though infinite scrolling often pairs with windowing)
-- **Log viewers** displaying thousands of entries
-- **Dropdown menus** with hundreds of options
+- **جداول البيانات** بمئات الصفوف أو آلافها
+- **تطبيقات الدردشة** بسجلات رسائل طويلة
+- **مستكشفات الملفات** بالكثير من العناصر
+- **خلاصات التواصل الاجتماعي** (وإن كان التمرير اللانهائي يقترن غالبًا بالتصيير النوافذي)
+- **عارضات السجلات** التي تعرض آلاف المدخلات
+- **قوائم منسدلة** بمئات الخيارات
 
-The general rule: if you’re rendering more than 50-100 similar items, consider windowing.
+القاعدة العامة: إن كنت تصيّر أكثر من 50-100 عنصر متشابه، ففكّر في التصيير النوافذي.
 
-> **Tip**
+> **نصيحة**
 >
-> Start measuring performance once you hit around 50 items. You might be surprised how quickly things slow down, especially on mobile devices.
+> ابدأ قياس الأداء عند نحو 50 عنصرًا. قد تفاجئك سرعة التباطؤ، خصوصًا على الأجهزة المحمولة.
 
-## Installing react-window
+## تثبيت react-window
 
-We’ll use `react-window`, the most popular windowing library for React. It’s the successor to `react-virtualized` but with a smaller bundle size and simpler API.
+سنستخدم `react-window`، أشهر مكتبة تصيير نوافذي لـ React. إنها خليفة `react-virtualized` لكن بحجم حزمة أصغر وواجهة أبسط.
 
 ```bash
 npm install react-window
@@ -45,7 +45,7 @@ npm install react-window
 npm install --save-dev @types/react-window
 ```
 
-For more advanced use cases, you might also want:
+لحالات استخدام أكثر تقدمًا، قد ترغب أيضًا في:
 
 ```bash
 # For dynamic item heights and additional features
@@ -53,9 +53,9 @@ npm install react-window-infinite-loader
 npm install react-virtualized-auto-sizer
 ```
 
-## Basic Fixed-Size List
+## قائمة أساسية ثابتة الحجم
 
-Let’s start with the simplest case: a list where every item has the same height.
+لنبدأ بأبسط حالة: قائمة يكون فيها كل عنصر بالارتفاع نفسه.
 
 ```typescript
 import { FixedSizeList as List } from 'react-window';
@@ -100,15 +100,15 @@ const UserList: React.FC<{ users: Item[] }> = ({ users }) => {
 };
 ```
 
-Key points about this implementation:
+نقاط رئيسية في هذا التنفيذ:
 
-- **`style` prop**: Always apply this to your row’s root element—it positions items correctly
-- **`itemData`**: Pass your data through this prop rather than closure to avoid re-creating row components
-- **Fixed dimensions**: `height` and `itemSize` must be known ahead of time
+- **خاصية `style`**: طبّقها دائمًا على العنصر الجذر لصفك — فهي تضع العناصر في مواضعها الصحيحة
+- **`itemData`**: مرّر بياناتك عبر هذه الخاصية بدلًا من الإغلاق لتجنب إعادة إنشاء مكوّنات الصفوف
+- **أبعاد ثابتة**: يجب أن يكون `height` و`itemSize` معروفين مسبقًا
 
-## Variable-Size Lists
+## قوائم متغيرة الحجم
 
-Real-world data rarely fits into uniform boxes. Users have different name lengths, comments vary in size, and content is dynamic. For these cases, use `VariableSizeList`:
+نادرًا ما تناسب بيانات العالم الحقيقي صناديق موحدة. فأطوال الأسماء تختلف، وأحجام التعليقات تتفاوت، والمحتوى ديناميكي. في هذه الحالات، استخدم `VariableSizeList`:
 
 ```typescript
 import { VariableSizeList as List } from 'react-window';
@@ -163,13 +163,13 @@ const CommentList: React.FC<{ comments: Comment[] }> = ({ comments }) => {
 };
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Variable-size lists are trickier because `react-window` needs to know each item’s height before rendering. Poor estimates can cause scroll jumping or incorrect scroll positions.
+> القوائم متغيرة الحجم أعقد لأن `react-window` يحتاج إلى معرفة ارتفاع كل عنصر قبل التصيير. التقديرات الضعيفة قد تسبب قفزات في التمرير أو مواضع تمرير غير صحيحة.
 
-## Auto-Sizing the Container
+## التحجيم التلقائي للحاوية
 
-Hardcoding container dimensions isn’t always practical. `react-virtualized-auto-sizer` detects the parent container’s size and passes it to your list:
+ليس ترميز أبعاد الحاوية يدويًا عمليًا دائمًا. يكتشف `react-virtualized-auto-sizer` حجم الحاوية الأم ويمرره إلى قائمتك:
 
 ```typescript
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -198,11 +198,11 @@ const ResponsiveUserList: React.FC<{ users: Item[] }> = ({ users }) => {
 };
 ```
 
-This is particularly useful in responsive layouts where the list needs to fill available space.
+هذا مفيد خاصةً في التخطيطات المتجاوبة حيث تحتاج القائمة إلى ملء المساحة المتاحة.
 
-## Adding Scrolling Controls
+## إضافة عناصر تحكم في التمرير
 
-Sometimes you need programmatic scroll control—jumping to specific items, smooth scrolling, or restoring scroll position:
+أحيانًا تحتاج إلى تحكم برمجي في التمرير — الانتقال إلى عناصر محددة، أو التمرير السلس، أو استعادة موضع التمرير:
 
 ```typescript
 import { useRef, useCallback } from 'react';
@@ -256,9 +256,9 @@ const ControllableList: React.FC<{ users: Item[] }> = ({ users }) => {
 };
 ```
 
-## Handling Loading States and Infinite Scroll
+## التعامل مع حالات التحميل والتمرير اللانهائي
 
-Real applications often load data incrementally. Combine windowing with infinite scrolling to handle truly massive datasets:
+غالبًا ما تحمّل التطبيقات الواقعية البيانات تدريجيًا. اجمع التصيير النوافذي مع التمرير اللانهائي للتعامل مع مجموعات بيانات ضخمة فعلًا:
 
 ```typescript
 import { useState, useEffect, useCallback } from 'react';
@@ -348,11 +348,11 @@ const InfiniteUserList: React.FC<InfiniteUserListProps> = ({ loadMoreUsers }) =>
 };
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### Overscan Count
+### عدد التجاوز (overscan)
 
-By default, `react-window` renders a few extra items outside the viewport to make scrolling smoother. You can tune this:
+افتراضيًا، يصيّر `react-window` بعض العناصر الإضافية خارج إطار العرض لجعل التمرير أكثر سلاسة. يمكنك ضبط ذلك:
 
 ```typescript
 <List
@@ -363,11 +363,11 @@ By default, `react-window` renders a few extra items outside the viewport to mak
 </List>
 ```
 
-Higher values = smoother scrolling but more memory usage. Lower values = better memory usage but potential scroll jank.
+القيم الأعلى = تمرير أكثر سلاسة لكن استهلاك ذاكرة أكبر. القيم الأدنى = استهلاك ذاكرة أفضل لكن احتمال تعثّر التمرير.
 
-### Memoization
+### الحفظ (memoization)
 
-Prevent unnecessary re-renders of your row components:
+امنع إعادة التصيير غير الضرورية لمكوّنات صفوفك:
 
 ```typescript
 import { memo } from 'react';
@@ -384,9 +384,9 @@ const Row = memo<RowProps>(({ index, style, data }) => {
 });
 ```
 
-### Avoid Inline Objects
+### تجنّب الكائنات المضمّنة
 
-Don’t create objects in render—they’ll cause every row to re-render:
+لا تنشئ كائنات أثناء التصيير — فستسبب إعادة تصيير كل صف:
 
 ```typescript
 // ❌ Bad - creates new style object every render
@@ -397,9 +397,9 @@ const itemData = useMemo(() => ({ users, theme }), [users, theme]);
 <List itemData={itemData}>
 ```
 
-## Accessibility Considerations
+## اعتبارات إمكانية الوصول
 
-Windowing can break screen reader navigation since DOM elements are constantly being added and removed. Here’s how to maintain accessibility:
+قد يكسر التصيير النوافذي تنقّل قارئ الشاشة لأن عناصر DOM تُضاف وتُزال باستمرار. إليك كيفية الحفاظ على إمكانية الوصول:
 
 ```typescript
 const AccessibleRow: React.FC<RowProps> = ({ index, style, data }) => {
@@ -437,17 +437,17 @@ const AccessibleUserList: React.FC<{ users: Item[] }> = ({ users }) => {
 };
 ```
 
-Key accessibility attributes:
+خصائص إمكانية الوصول الرئيسية:
 
-- `role="list"` and `role="listitem"` for semantic structure
-- `aria-setsize` and `aria-posinset` help screen readers understand position
-- `aria-label` provides context for the entire list
+- `role="list"` و`role="listitem"` للبنية الدلالية
+- `aria-setsize` و`aria-posinset` يساعدان قارئات الشاشة على فهم الموضع
+- `aria-label` يوفر سياقًا للقائمة كاملة
 
-## Common Pitfalls
+## مزالق شائعة
 
-### Incorrect Height Calculations
+### حسابات ارتفاع غير صحيحة
 
-Variable-size lists are particularly sensitive to height miscalculations:
+القوائم متغيرة الحجم حساسة بشكل خاص لأخطاء حساب الارتفاع:
 
 ```typescript
 // ❌ Bad - can cause scroll jumping
@@ -464,9 +464,9 @@ const getItemSize = (index: number) => {
 };
 ```
 
-### Forgetting the Style Prop
+### نسيان خاصية style
 
-Every row component must apply the `style` prop:
+يجب على كل مكوّن صف أن يطبّق خاصية `style`:
 
 ```typescript
 // ❌ Bad - missing style prop
@@ -476,9 +476,9 @@ const Row = ({ index, data }) => <div>{data[index].name}</div>;
 const Row = ({ index, style, data }) => <div style={style}>{data[index].name}</div>;
 ```
 
-### Memory Leaks in Row Components
+### تسريبات ذاكرة في مكوّنات الصفوف
 
-Avoid creating event listeners or subscriptions in row components without cleanup:
+تجنّب إنشاء مستمعات أحداث أو اشتراكات في مكوّنات الصفوف دون تنظيف:
 
 ```typescript
 // ❌ Bad - potential memory leak
@@ -502,13 +502,13 @@ const Row = ({ index, style, data }) => {
 };
 ```
 
-## When Not to Use Windowing
+## متى لا تستخدم التصيير النوافذي
 
-Windowing isn’t always the right solution:
+التصيير النوافذي ليس الحل الصحيح دائمًا:
 
-- **Small lists** (< 50 items): The complexity usually isn’t worth it
-- **Lists with complex interactions**: Drag-and-drop, multi-selection across large ranges
-- **When you need all items in DOM**: Some third-party libraries expect all elements to be present
-- **SEO-critical content**: Search engines can’t index virtualized content
+- **القوائم الصغيرة** (أقل من 50 عنصرًا): التعقيد عادةً لا يستحق
+- **القوائم ذات التفاعلات المعقدة**: السحب والإفلات، التحديد المتعدد عبر نطاقات كبيرة
+- **عندما تحتاج كل العناصر في DOM**: بعض مكتبات الطرف الثالث تتوقع وجود كل العناصر
+- **المحتوى الحرج لمحركات البحث**: لا تستطيع محركات البحث فهرسة المحتوى الافتراضي
 
-## Next Steps
+## الخطوات التالية

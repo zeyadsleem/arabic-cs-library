@@ -1,20 +1,20 @@
 ---
-title: "Versioning, Lifecycle Rules, and Cost"
-lang: en
+title: "الإصدارات وقواعد دورة الحياة والكلفة"
+lang: ar
 source: "https://stevekinney.com/courses/aws/s3-versioning-lifecycle-and-cost"
 ---
 
-You have a working static site on S3. Now you need to protect it. Every deployment you run overwrites the previous version of your files. If a bad build goes out and you want to roll back, those old files are gone. If someone on your team accidentally runs `aws s3 sync --delete` against the wrong directory, everything is gone. (Ask me how I know.) **Versioning** solves this by keeping every version of every object in the bucket, and **lifecycle rules** keep versioning from running up your storage costs.
+لديك موقع ثابت عامل على S3. الآن تحتاج إلى حمايته. فكل عملية نشر تجريها تكتب فوق النسخة السابقة من ملفاتك. وإذا خرج بناء سيئ وأردت التراجع، فتلك الملفات القديمة قد اختفت. وإذا نفّذ شخص في فريقك بالخطأ `aws s3 sync --delete` على الدليل الخطأ، فكل شيء يختفي. (اسألني كيف أعرف.) **الإصدارات** تحلّ هذا بالاحتفاظ بكل إصدار من كل كائن في الحاوية، و**قواعد دورة الحياة** تمنع الإصدارات من رفع كلفة تخزينك.
 
-If you want the AWS source material next to this lesson, keep the [S3 Versioning guide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html), the [lifecycle rules reference](https://docs.aws.amazon.com/AmazonS3/latest/userguide/intro-lifecycle-rules.html), and the [Amazon S3 pricing page](https://aws.amazon.com/s3/pricing/) handy.
+إذا أردت مواد AWS المصدرية إلى جانب هذا الدرس، فأبقِ [دليل الإصدارات في S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) و[مرجع قواعد دورة الحياة](https://docs.aws.amazon.com/AmazonS3/latest/userguide/intro-lifecycle-rules.html) و[صفحة أسعار Amazon S3](https://aws.amazon.com/s3/pricing/) في متناول يدك.
 
-## Why Versioning Matters
+## لماذا تهمّ الإصدارات
 
-Without versioning, S3 is a “last write wins” system. When you upload a new `index.html`, the old one is silently replaced. When you delete `main.js`, it’s permanently gone. There’s no recycle bin, no undo, no “are you sure?” prompt.
+بدون الإصدارات، S3 نظام «الكتابة الأخيرة تفوز». فعندما ترفع `index.html` جديدًا، يُستبدل القديم بصمت. وعندما تحذف `main.js`، يختفي نهائيًا. لا سلة محذوفات، ولا تراجع، ولا مطالبة «هل أنت متأكد؟».
 
-With **versioning** enabled, S3 keeps every version of every object. Upload a new `index.html` and the old version is still there, accessible by its version ID. Delete `index.html` and S3 adds a **delete marker** instead of actually removing the object—the current version becomes invisible, but all previous versions are still retrievable.
+مع تمكين **الإصدارات**، تحتفظ S3 بكل إصدار من كل كائن. ارفع `index.html` جديدًا، وتبقى النسخة القديمة موجودة، ويمكن الوصول إليها بمعرّف إصدارها. واحذف `index.html`، فتضيف S3 **علامة حذف** بدلًا من إزالة الكائن فعليًا—فتصبح النسخة الحالية غير مرئية، لكن كل الإصدارات السابقة ما زالت قابلة للاسترجاع.
 
-This is your safety net. A bad deployment? Roll back to the previous version. Accidental delete? Remove the delete marker. Someone overwrote the wrong file? Every version is still there.
+هذه شبكة أمانك. نشر سيئ؟ تراجع إلى الإصدار السابق. حذف عرضي؟ أزل علامة الحذف. هل كتب شخص فوق الملف الخطأ؟ كل إصدار ما زال موجودًا.
 
 ```
 flowchart LR
@@ -26,9 +26,9 @@ flowchart LR
     Rule --> Expire["Expire or transition old versions"]
 ```
 
-## Enabling Versioning
+## تمكين الإصدارات
 
-Enable versioning on your bucket:
+مكّن الإصدارات على حاويتك:
 
 ```bash
 aws s3api put-bucket-versioning \
@@ -37,7 +37,7 @@ aws s3api put-bucket-versioning \
   --region us-east-1
 ```
 
-Verify it:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-versioning \
@@ -52,17 +52,17 @@ aws s3api get-bucket-versioning \
 }
 ```
 
-From this point forward, every object you upload gets a version ID, and overwriting or deleting an object preserves the previous versions.
+من هذه اللحظة فصاعدًا، يحصل كل كائن ترفعه على معرّف إصدار، والحذف أو الكتابة فوق كائن يحفظ الإصدارات السابقة.
 
-The S3 bucket Properties tab showing Bucket Versioning status set to Enabled with a success banner confirming the change.
+تبويب خصائص حاوية S3 وهو يعرض حالة الإصدارات مضبوطة على Enabled مع شريط نجاح يؤكد التغيير.
 
-> **Warning**
+> **تحذير**
 >
-> Versioning can’t be disabled once enabled—only suspended. When suspended, new objects are stored without version IDs, but existing versioned objects remain. If you enable versioning, plan to keep it on and use lifecycle rules to manage old versions. Toggling versioning on and off creates a confusing mix of versioned and unversioned objects.
+> لا يمكن تعطيل الإصدارات بعد تمكينها—بل تعليقها فقط. وعند التعليق، تُخزّن الكائنات الجديدة بلا معرّفات إصدار، لكن الكائنات ذات الإصدارات تبقى. فإن مكّنت الإصدارات، فخطّط لإبقائها مفعّلة واستخدام قواعد دورة الحياة لإدارة الإصدارات القديمة. فتبديل الإصدارات تشغيلًا وإيقافًا يُنشئ خليطًا مربكًا من الكائنات ذات الإصدارات وغيرها.
 
-## Working with Versions
+## العمل مع الإصدارات
 
-After enabling versioning and uploading a file a few times, you can list all versions:
+بعد تمكين الإصدارات ورفع ملف بضع مرات، يمكنك سرد كل الإصدارات:
 
 ```bash
 aws s3api list-object-versions \
@@ -93,7 +93,7 @@ aws s3api list-object-versions \
 }
 ```
 
-To retrieve a specific version:
+لاسترجاع إصدار محدّد:
 
 ```bash
 aws s3api get-object \
@@ -104,26 +104,26 @@ aws s3api get-object \
   index-previous.html
 ```
 
-This downloads the older version to a local file called `index-previous.html`. You can inspect it, diff it against the current version, or re-upload it to roll back.
+هذا ينزّل الإصدار الأقدم إلى ملف محلي يُسمى `index-previous.html`. ويمكنك فحصه، أو مقارنته بالإصدار الحالي، أو رفعه مجددًا للتراجع.
 
-## The Cost Problem
+## مشكلة الكلفة
 
-Versioning is great for safety, but it has a cost: every version of every object takes up storage. If you deploy your frontend three times a day and your build output is 50 MB, that’s 150 MB of versioned objects per day—roughly 4.5 GB per month. At S3 Standard pricing ($0.023 per GB per month), that’s about $0.10 per month. Not much.
+الإصدارات رائعة للسلامة، لكن لها كلفة: كل إصدار من كل كائن يشغل مساحة تخزين. فإذا نشرت واجهتك الأمامية ثلاث مرات يوميًا وكان ناتج بنائك 50 MB، فذلك 150 MB من الكائنات ذات الإصدارات يوميًا—نحو 4.5 GB شهريًا. وبسعر S3 Standard (0.023 دولار لكل GB شهريًا)، فهذا نحو 0.10 دولار شهريًا. ليس كثيرًا.
 
-But if you’ve been running for a year without lifecycle rules, you have 54 GB of old versions sitting around costing you about $1.25 per month. Still not much, but the principle matters: unused data shouldn’t accumulate indefinitely. This is where lifecycle rules come in.
+لكن إذا كنت تعمل منذ سنة بلا قواعد دورة حياة، فلديك 54 GB من الإصدارات القديمة راكدة تكلّفك نحو 1.25 دولار شهريًا. ما زال ليس كثيرًا، لكن المبدأ مهم: البيانات غير المستخدمة لا ينبغي أن تتراكم إلى ما لا نهاية. وهنا تأتي قواعد دورة الحياة.
 
-## Lifecycle Rules
+## قواعد دورة الحياة
 
-A **lifecycle rule** tells S3 what to do with objects (or old versions of objects) after a certain number of days. The two most useful actions for frontend deployments:
+**قاعدة دورة الحياة** تخبر S3 بما تفعله بالكائنات (أو الإصدارات القديمة من الكائنات) بعد عدد معيّن من الأيام. وأكثر إجراءين فائدة لنشر الواجهة الأمامية:
 
-1. **Transition** old versions to a cheaper storage class
-2. **Expire** (delete) old versions after a certain number of days
+1. **نقل** الإصدارات القديمة إلى فئة تخزين أرخص
+2. **إبطال** (حذف) الإصدارات القديمة بعد عدد معيّن من الأيام
 
-For a static site, the pragmatic approach is to delete noncurrent versions after a reasonable retention period. You’ll rarely need to roll back more than a few days.
+بالنسبة إلى موقع ثابت، النهج العملي هو حذف الإصدارات غير الحالية بعد فترة استبقاء معقولة. فنادرًا ما تحتاج إلى التراجع أكثر من بضعة أيام.
 
-### Creating a Lifecycle Rule
+### إنشاء قاعدة دورة حياة
 
-Create a lifecycle configuration file:
+أنشئ ملف إعداد لدورة الحياة:
 
 ```json
 {
@@ -142,13 +142,13 @@ Create a lifecycle configuration file:
 }
 ```
 
-This rule applies to all objects in the bucket (empty prefix means everything) and deletes noncurrent versions after 30 days. Current (latest) versions are never affected by this rule.
+تسري هذه القاعدة على كل الكائنات في الحاوية (البادئة الفارغة تعني كل شيء) وتحذف الإصدارات غير الحالية بعد 30 يومًا. أما الإصدارات الحالية (الأحدث) فلا تتأثر بهذه القاعدة أبدًا.
 
-In the console, the **Create lifecycle rule** form on the bucket’s **Management** tab lets you configure the same rule visually—giving it a name, setting the scope, and choosing the expiration action.
+في لوحة التحكم، يتيح لك نموذج **Create lifecycle rule** في تبويب **Management** في الحاوية إعداد القاعدة نفسها بصريًا—بإعطائها اسمًا، وضبط النطاق، واختيار إجراء الإبطال.
 
-The S3 Create Lifecycle Rule form showing the rule name expire-old-versions and scope options for filtering by prefix.
+نموذج S3 Create Lifecycle Rule وهو يعرض اسم القاعدة expire-old-versions وخيارات النطاق للتصفية حسب البادئة.
 
-Apply it:
+طبّقها:
 
 ```bash
 aws s3api put-bucket-lifecycle-configuration \
@@ -157,7 +157,7 @@ aws s3api put-bucket-lifecycle-configuration \
   --region us-east-1
 ```
 
-Verify it:
+تحقّق:
 
 ```bash
 aws s3api get-bucket-lifecycle-configuration \
@@ -166,13 +166,13 @@ aws s3api get-bucket-lifecycle-configuration \
   --output json
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Thirty days is a reasonable default for frontend deployments. You get a full month of rollback capability without accumulating years of old versions. If your deployment frequency is high and you’re confident in your CI/CD pipeline, you could reduce this to 7 or 14 days.
+> ثلاثون يومًا قيمة افتراضية معقولة لنشر الواجهة الأمامية. فتحصل على شهر كامل من إمكانية التراجع دون تكديس سنوات من الإصدارات القديمة. وإذا كان معدّل نشرك مرتفعًا وكنت واثقًا في خط أنابيب CI/CD، فيمكنك تقليله إلى 7 أو 14 يومًا.
 
-### A More Advanced Rule
+### قاعدة أكثر تقدّمًا
 
-If you want to save a bit more before deleting, you can transition old versions to a cheaper storage class first:
+إذا أردت توفير مزيد قبل الحذف، فيمكنك نقل الإصدارات القديمة إلى فئة تخزين أرخص أولًا:
 
 ```json
 {
@@ -197,9 +197,9 @@ If you want to save a bit more before deleting, you can transition old versions 
 }
 ```
 
-This moves noncurrent versions to **S3 Standard-IA** (Infrequent Access) after 30 days, then deletes them after 90 days. Standard-IA costs about $0.0125 per GB per month—roughly half the price of Standard storage. For a frontend site, the savings are tiny, but the pattern is worth knowing for when you’re managing buckets with more data.
+هذا ينقل الإصدارات غير الحالية إلى **S3 Standard-IA** (الوصول غير المتكرر) بعد 30 يومًا، ثم يحذفها بعد 90 يومًا. وتكلّف Standard-IA نحو 0.0125 دولار لكل GB شهريًا—نحو نصف سعر تخزين Standard. ولموقع واجهة أمامية، التوفير ضئيل، لكن النمط يستحق المعرفة عندما تدير حاويات ببيانات أكثر.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -240,52 +240,52 @@ const versions = await s3.send(new ListObjectVersionsCommand({ Bucket: 'my-front
 console.log(versions.Versions, versions.DeleteMarkers);
 ```
 
-## Understanding S3 Pricing
+## فهم أسعار S3
 
-S3 pricing has three components:
+لأسعار S3 ثلاثة مكوّنات:
 
-**Storage.** You pay for the total volume of data stored. S3 Standard costs $0.023 per GB per month for the first 50 TB. For a typical frontend application with a 50 MB build output and 30 days of versioned history, your monthly storage cost is well under $1.
+**التخزين.** تدفع مقابل الحجم الإجمالي للبيانات المخزّنة. ويكلّف S3 Standard 0.023 دولار لكل GB شهريًا لأول 50 TB. ولتطبيق واجهة أمامية نموذجي بناتج بناء 50 MB وتاريخ إصدارات 30 يومًا، تكون كلفة التخزين الشهرية أقل بكثير من دولار واحد.
 
-**Requests.** You pay per request. PUT, COPY, POST, and LIST requests cost $0.005 per 1,000 requests. GET and SELECT requests cost $0.0004 per 1,000 requests. For a low-to-moderate-traffic static site, this is pennies.
+**الطلبات.** تدفع لكل طلب. وتكلّف طلبات PUT وCOPY وPOST وLIST 0.005 دولار لكل 1,000 طلب. وتكلّف طلبات GET وSELECT 0.0004 دولار لكل 1,000 طلب. ولموقع ثابت بحركة مرور منخفضة إلى متوسطة، هذه بنسات.
 
-**Data transfer.** You pay for data transferred out of S3 to the internet. The first 100 GB per month is free. After that, it’s $0.09 per GB for the next 10 TB. For most frontend sites, you’ll stay well within the free tier—especially once you put CloudFront in front of S3, because CloudFront serves cached content from its edge locations instead of hitting S3 for every request.
+**نقل البيانات.** تدفع مقابل البيانات المنقولة من S3 إلى الإنترنت. وأول 100 GB شهريًا مجانية. وبعد ذلك، 0.09 دولار لكل GB للـ 10 TB التالية. ولمعظم مواقع الواجهة الأمامية، ستبقى داخل الفئة المجانية بسهولة—خصوصًا بمجرد وضع CloudFront أمام S3، لأن CloudFront يقدّم المحتوى المخبّأ من مواقعه الطرفية بدلًا من ضرب S3 مع كل طلب.
 
-> **Tip**
+> **نصيحة**
 >
-> The AWS Free Tier includes 5 GB of S3 Standard storage, 20,000 GET requests, and 2,000 PUT requests per month for the first 12 months. A personal project or course exercise will comfortably fit within these limits.
+> تتضمن فئة AWS المجانية 5 GB من تخزين S3 Standard، و20,000 طلب GET، و2,000 طلب PUT شهريًا للأشهر الاثني عشر الأولى. والمشروع الشخصي أو تمرين الدورة سيندرج بسهولة ضمن هذه الحدود.
 
-## Storage Classes at a Glance
+## فئات التخزين في لمحة
 
-S3 offers several **storage classes** with different price and access characteristics. For frontend deployments, you’ll almost exclusively use S3 Standard, but here’s the landscape:
+تقدّم S3 عدة **فئات تخزين** بخصائص سعر ووصول مختلفة. ولنشر الواجهة الأمامية، ستستخدم S3 Standard حصريًا تقريبًا، لكن إليك المشهد:
 
-| Storage Class | Cost per GB/month | Use Case |
+| فئة التخزين | الكلفة لكل GB/شهر | حالة الاستخدام |
 | --- | --- | --- |
-| S3 Standard | $0.023 | Frequently accessed data (your current build) |
-| S3 Standard-IA | $0.0125 | Infrequently accessed (old versions) |
-| S3 One Zone-IA | $0.01 | Infrequent, no need for multi-AZ resilience |
-| S3 Glacier Flexible Retrieval | $0.0036 | Archive (retrieval takes minutes to hours) |
-| S3 Glacier Deep Archive | $0.00099 | Long-term archive (retrieval takes hours) |
+| S3 Standard | $0.023 | بيانات يُوصل إليها بكثرة (بناؤك الحالي) |
+| S3 Standard-IA | $0.0125 | وصول غير متكرر (الإصدارات القديمة) |
+| S3 One Zone-IA | $0.01 | غير متكرر، ولا حاجة إلى مرونة متعددة مناطق التوفر |
+| S3 Glacier Flexible Retrieval | $0.0036 | أرشفة (استرجاع يستغرق دقائق إلى ساعات) |
+| S3 Glacier Deep Archive | $0.00099 | أرشفة طويلة الأمد (استرجاع يستغرق ساعات) |
 
-For this course, you only need Standard and possibly Standard-IA for lifecycle transitions. The Glacier classes are for archival workloads that don’t need fast access—not for serving a website.
+لهذه الدورة، تحتاج فقط إلى Standard وربما Standard-IA لانتقالات دورة الحياة. أما فئتا Glacier فلأحمال عمل الأرشفة التي لا تحتاج وصولًا سريعًا—لا لتقديم موقع.
 
-## What You Have Built
+## ما الذي بنيته
 
-At this point, you have a complete S3 static site setup:
+في هذه المرحلة، لديك إعداد موقع S3 ثابت كامل:
 
-- A bucket in `us-east-1` with a globally unique name
-- Build files uploaded via `aws s3 sync`
-- A bucket policy granting public read access
-- Static website hosting enabled with index and error documents
-- Versioning enabled to protect against accidental overwrites
-- A lifecycle rule to clean up old versions after 30 days
+- حاوية في `us-east-1` باسم فريد عالميًا
+- ملفات بناء مرفوعة عبر `aws s3 sync`
+- سياسة حاوية تمنح وصول قراءة عامًا
+- استضافة موقع ثابت ممكّنة مع مستندي الفهرس والخطأ
+- إصدارات ممكّنة للحماية من الكتابة فوق الملفات عرضيًا
+- قاعدة دورة حياة لتنظيف الإصدارات القديمة بعد 30 يومًا
 
-This is a working, publicly accessible website. It’s HTTP-only, served from a single region, and uses an ugly S3 endpoint URL—but it works. More importantly, you now understand the storage layer well enough to stop treating it like magic.
+هذا موقع عامل متاح للعامة. وهو HTTP فقط، ويُقدَّم من منطقة واحدة، ويستخدم عنوان URL قبيحًا لنقطة نهاية S3—لكنه يعمل. والأهم أنك الآن تفهم طبقة التخزين جيدًا بما يكفي لتتوقف عن التعامل معها كسحر.
 
-Next, you’re going to switch to the domain side of the story: how to control a domain, how Route 53 becomes authoritative for it, and why that has to exist before ACM validation can work cleanly. Then you’ll come back and build the production path on top of this S3 foundation.
+التالي، ستنتقل إلى جانب النطاقات من القصة: كيف تتحكم في نطاق، وكيف يصبح Route 53 مرجعًا موثوقًا له، ولماذا يجب أن يوجد ذلك قبل أن يعمل التحقق من ACM بنظافة. ثم ستعود وتبني مسار الإنتاج فوق أساس S3 هذا.
 
-## Cleanup
+## التنظيف
 
-A versioned bucket cannot be deleted until every object version **and** every delete marker has been removed. Run these two passes—one for versions, one for delete markers—guarded so a fresh bucket with nothing in one list doesn’t fail. Then remove the bucket:
+لا يمكن حذف حاوية ذات إصدارات حتى تُزال كل نسخة كائن **و**كل علامة حذف. نفّذ هاتين المرحلتين—واحدة للإصدارات وواحدة لعلامات الحذف—مع حماية بحيث لا تفشل حاوية جديدة فارغة من إحدى القائمتين. ثم أزل الحاوية:
 
 ```bash
 # 1. Delete every non-current object version (skip if there are none)
@@ -318,6 +318,6 @@ fi
 aws s3 rb s3://my-frontend-app-assets --region us-east-1
 ```
 
-> **Why the shell guards**
+> **لماذا الحراسات في الصدفة**
 >
-> `aws s3api list-object-versions` [returns `Versions` and `DeleteMarkers` as separate arrays](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) and omits either key entirely when it’s empty—a `--query` pulling the missing key back as `null`. Passing `{"Objects": null}` or `{"Objects": []}` to `delete-objects` fails with a parameter validation error, not a silent no-op, so each pass has to check the list before calling the API. Skip either pass when there *are* entries and `aws s3 rb` will fail with `BucketNotEmpty`: delete markers count as objects. If your bucket has more than 1,000 versions or delete markers, you’ll also need to paginate—`list-object-versions` caps each response at 1,000 entries.
+> `aws s3api list-object-versions` [يُرجع `Versions` و`DeleteMarkers` كمصفوفتين منفصلتين](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) ويحذف أيًّا من المفتاحين كليًا عندما يكون فارغًا—فـ `--query` الذي يجلب المفتاح المفقود يعيده كـ `null`. وتمرير `{"Objects": null}` أو `{"Objects": []}` إلى `delete-objects` يفشل بخطأ تحقّق من المعاملات، لا بعملية صامتة بلا أثر، لذا يجب على كل مرحلة فحص القائمة قبل استدعاء API. وتخطَّ أي مرحلة عندما *توجد* مدخلات وستفشل `aws s3 rb` بـ `BucketNotEmpty`: فعلامات الحذف تُحتسب كائنات. وإذا كانت حاويتك تضم أكثر من 1,000 إصدار أو علامة حذف، فستحتاج أيضًا إلى الترقيم الصفحي—فـ `list-object-versions` يحدّ كل استجابة عند 1,000 مدخل.

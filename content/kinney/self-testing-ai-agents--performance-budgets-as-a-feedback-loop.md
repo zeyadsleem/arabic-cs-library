@@ -1,52 +1,52 @@
 ---
-title: "Performance Budgets as a Feedback Loop"
-lang: en
+title: "ميزانيات الأداء كحلقة تغذية راجعة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop"
 ---
 
-There is a class of bug agents are weirdly good at introducing: the feature works, the tests pass, the screenshot matches, and the page is now noticeably slower.
+ثمة صنف من الأخطاء يبرع الوكلاء في إدخاله بشكل غريب: الميزة تعمل، والاختبارات تنجح، ولقطة الشاشة تطابق، والصفحة صارت الآن أبطأ بشكل ملحوظ.
 
-Nobody writes that bug on purpose. It still ships all the time.
+لا أحد يكتب ذلك الخطأ عن قصد. ومع ذلك يُشحن طوال الوقت.
 
-So, this lesson is about adding one more loop: a cheap, boring, enforceable performance budget. Not a heroic one. Not a “let’s do a full observability program before lunch” one. Just enough of a gate that an agent cannot quietly double your route weight or turn a fast interaction into a sticky one.
+إذن هذا الدرس عن إضافة حلقة أخرى: ميزانية أداء رخيصة ومملّة وقابلة للفرض. ليست بطولية. وليست من نوع «لنبنِ برنامج رصد كاملًا قبل الغداء». مجرد بوابة كافية لأن لا يستطيع وكيل أن يضاعف وزن مسارك بهدوء أو يحوّل تفاعلًا سريعًا إلى تفاعل لزج.
 
-> **Prerequisite**
+> **المتطلّبات المسبقة**
 >
-> This lesson assumes you’ve already wired visual regression. Screenshot diffs tell you *what changed visually*. Performance budgets tell you whether the same change also made the application heavier or slower.
+> يفترض هذا الدرس أنك ربطت الانحدار البصري بالفعل. فروق لقطات الشاشة تخبرك *بما تغيّر بصريًا*. أما ميزانيات الأداء فتخبرك ما إن كان التغيير نفسه قد جعل التطبيق أثقل أو أبطأ.
 
-## Why performance needs its own loop
+## لماذا تحتاج الأداءات حلقتها الخاصة
 
-Most of the loops we’ve built so far answer correctness questions.
+معظم الحلقات التي بنيناها حتى الآن تجيب عن أسئلة الصحة.
 
-- Does the UI behave?
-- Does it still look right?
-- Does the code follow the rules?
-- Did a second reviewer spot anything odd?
+- هل تتصرّف الواجهة كما ينبغي؟
+- هل ما تزال تبدو صحيحة؟
+- هل تتبع الشيفرة القواعد؟
+- هل رصد مراجع ثانٍ شيئًا غريبًا؟
 
-Performance is different because the failure mode is usually not binary. The page still renders. The form still submits. The bug is that it now takes 900 milliseconds longer, or the route chunk grew by 140 kilobytes, or the loading state sits on-screen just long enough to feel sticky.
+الأداء مختلف لأن نمط الفشل عادةً ليس ثنائيًا. الصفحة ما تزال تُرسَم. والنموذج ما يزال يُرسَل. الخطأ هو أنها صارت تستغرق 900 مللي ثانية أطول، أو أن حزمة المسار نمت بمقدار 140 كيلوبايت، أو أن حالة التحميل تبقى على الشاشة مدة كافية لتشعر باللزوجة.
 
-That kind of regression slips past every other loop unless you decide, ahead of time, that certain numbers are not allowed to drift quietly.
+هذا النوع من الانحدار يتسرّب من كل حلقة أخرى ما لم تقرّر مسبقًا أن أرقامًا معيّنة غير مسموح لها بالانحراف بهدوء.
 
-That’s what a budget is: a limit with consequences.
+وذلك هو الميزانية: حدّ له عواقب.
 
-## The two-budget model
+## نموذج الميزانيتين
 
-I do not want a giant performance program in a one-day workshop. I want two numbers the agent can actually enforce.
+لا أريد برنامج أداء عملاقًا في ورشة من يوم واحد. أريد رقمين يستطيع الوكيل فرضهما فعلًا.
 
-The model:
+النموذج:
 
-- **Build-time budget**: how big did the shipped client bundle get?
-- **Runtime budget**: how long did one critical route or interaction take in a reproducible environment?
+- **ميزانية وقت البناء**: كم كبرت حزمة العميل المشحونة؟
+- **ميزانية وقت التشغيل**: كم استغرق مسار حرج واحد أو تفاعل واحد في بيئة قابلة لإعادة الإنتاج؟
 
-That is enough to catch most accidental regressions.
+هذا يكفي لالتقاط معظم الانحدارات العرضية.
 
-By the end of the companion lab, Shelf will have `tests/performance.spec.ts` for the runtime side and the `npm run performance:*` script family for the build side, with `npm run performance:build` as the narrow “just gather the numbers” entry point. The whole point is that the budget lives behind named commands the agent can run, not behind a blog post about performance culture.
+بنهاية المختبر المرافق، سيكون لدى Shelf ملف `tests/performance.spec.ts` للجانب التشغيلي، وعائلة سكربتات `npm run performance:*` للجانب البنائي، مع `npm run performance:build` كنقطة الدخول الضيّقة «اجمع الأرقام فقط». وبيت القصيد أن تعيش الميزانية خلف أوامر مسمّاة يستطيع الوكيل تشغيلها، لا خلف مقال مدوّنة عن ثقافة الأداء.
 
-## Build-time budgets: catch weight gain early
+## ميزانيات وقت البناء: التقط زيادة الوزن مبكرًا
 
-In the lab you’ll add `npm run build:stats` to Shelf, which flips a `BUNDLE_STATS=1` environment variable and tells the Vite config to pipe [`rollup-plugin-visualizer`](https://github.com/btd/rollup-plugin-visualizer) into the output—producing both a `build/stats.html` treemap for humans and a `build/stats.json` raw data file for automation. You can follow the same shape with any bundler; the point is not the plugin.
+في المختبر ستضيف `npm run build:stats` إلى Shelf، وهي تقلب متغيّر بيئة `BUNDLE_STATS=1` وتخبر تهيئة Vite بأن تمرّر [`rollup-plugin-visualizer`](https://github.com/btd/rollup-plugin-visualizer) إلى الناتج—فتنتج خريطة شجرية `build/stats.html` للبشر وملف بيانات خام `build/stats.json` للأتمتة. ويمكنك اتّباع الشكل نفسه مع أي مُجمِّع؛ فالمقصود ليس الإضافة.
 
-The wiring inside `vite.config.ts` is small. You import `visualizer` from `rollup-plugin-visualizer`, conditionally include two instances in the Vite plugin list (one HTML, one JSON), and gate the whole block on the `BUNDLE_STATS` flag so a normal `npm run build` stays fast and silent:
+التوصيل داخل `vite.config.ts` صغير. تستورد `visualizer` من `rollup-plugin-visualizer`، وتضمّن نسختين شرطيًا في قائمة إضافات Vite (واحدة HTML وواحدة JSON)، وتقيّد الكتلة كلها براية `BUNDLE_STATS` كي يبقى `npm run build` العادي سريعًا وصامتًا:
 
 ```typescript
 // vite.config.ts (trimmed)
@@ -82,24 +82,24 @@ export default defineConfig({
 });
 ```
 
-Two notes about that block:
+ملاحظتان عن تلك الكتلة:
 
-- **`template: 'treemap'`** produces the HTML treemap a human can scroll through. **`template: 'raw-data'`** produces the JSON your check script will parse. You want both — humans use one, the loop uses the other.
-- **`emitFile: false`** writes the report to disk via `filename` instead of pushing it through the Rollup output graph. This keeps the report files out of the published bundle.
+- **`template: 'treemap'`** ينتج الخريطة الشجرية HTML التي يستطيع إنسان التمرير فيها. و**`template: 'raw-data'`** ينتج JSON الذي سيحلّله سكربت الفحص. تريد الاثنين معًا — البشر يستخدمون أحدهما، والحلقة تستخدم الآخر.
+- **`emitFile: false`** يكتب التقرير إلى القرص عبر `filename` بدلًا من دفعه عبر رسم ناتج Rollup. وهذا يُبقي ملفات التقرير خارج الحزمة المنشورة.
 
-After the companion lab, Shelf’s `vite.config.ts` will carry exactly this pattern. The point is that a green build produces machine-readable numbers you can compare against a threshold in version control.
+بعد المختبر المرافق، سيحمل `vite.config.ts` في Shelf هذا النمط بالضبط. والمقصود أن البناء الناجح ينتج أرقامًا مقروءة آليًا يمكنك مقارنتها بحدّ في التحكم بالمصادرات.
 
-What I want from the build-side loop:
+ما أريده من حلقة الجانب البنائي:
 
-- total client bundle size
-- biggest route or entry chunk
-- stable output file the agent can parse
+- الحجم الكلي لحزمة العميل
+- أكبر حزمة مسار أو نقطة دخول
+- ملف ناتج مستقر يستطيع الوكيل تحليله
 
-If those numbers jump, the loop goes red before the regression has a chance to become “well, it still technically works.”
+إن قفزت تلك الأرقام، تصبح الحلقة حمراء قبل أن تسنح للانحدار فرصة أن يصير «حسنًا، ما يزال يعمل تقنيًا».
 
-### What `build/stats.json` actually looks like
+### كيف يبدو `build/stats.json` فعليًا
 
-Before you can parse it, you have to know what it contains. `rollup-plugin-visualizer` with `template: 'raw-data'` emits a file that looks roughly like this (trimmed for readability):
+قبل أن تستطيع تحليله، عليك أن تعرف ما يحويه. فـ`rollup-plugin-visualizer` مع `template: 'raw-data'` يُخرج ملفًا يشبه هذا تقريبًا (مقتطع للقراءة):
 
 ```json
 {
@@ -126,16 +126,16 @@ Before you can parse it, you have to know what it contains. `rollup-plugin-visua
 }
 ```
 
-Two keys carry the signal we want:
+مفتاحان يحملان الإشارة التي نريدها:
 
-- **`nodeMetas`** — one entry per source file in the graph. Each meta has a `moduleParts` map whose keys are the *output* bundle files (like `_app/immutable/chunks/BiOosUrW.js`) and whose values are uids into `nodeParts`.
-- **`nodeParts`** — size information per piece of emitted code: `renderedLength` (raw bytes), `gzipLength`, `brotliLength`.
+- **`nodeMetas`** — مدخل واحد لكل ملف مصدري في الرسم. ولكل meta خريطة `moduleParts` مفاتيحها ملفات الحزمة *الناتجة* (مثل `_app/immutable/chunks/BiOosUrW.js`) وقيمها معرّفات uid داخل `nodeParts`.
+- **`nodeParts`** — معلومات الحجم لكل قطعة شيفرة مُخرَجة: `renderedLength` (بايتات خام)، و`gzipLength`، و`brotliLength`.
 
-Summing the gzip bytes for every `nodePart` that belongs to a given output file gives you that file’s compressed size. Summing those across every file under `_app/immutable/` (SvelteKit’s client chunk prefix) gives you the total client bundle gzip size. The largest of those sums is your worst-case route chunk.
+وجمع بايتات gzip لكل `nodePart` ينتمي إلى ملف ناتج معيّن يعطيك الحجم المضغوط لذلك الملف. وجمع ذلك عبر كل ملف تحت `_app/immutable/` (بادئة حزم العميل في SvelteKit) يعطيك الحجم الكلي لحزمة العميل بعد gzip. وأكبر تلك المجاميع هو حزمة المسار في أسوأ حالة.
 
-### The checker script
+### سكربت الفحص
 
-Once you know the shape, the checker is short. It reads both files, walks `nodeMetas` → `moduleParts` → `nodeParts`, aggregates by bundle file, filters to client chunks, and compares the totals against the stored thresholds:
+حين تعرف الشكل، يصبح الفحص قصيرًا. إنه يقرأ الملفين، ويمشي `nodeMetas` → `moduleParts` → `nodeParts`، ويجمّع حسب ملف الحزمة، ويصفّي إلى حزم العميل، ويقارن الإجماليات بالحدود المخزّنة:
 
 ```javascript
 // scripts/check-performance-budgets.mjs
@@ -208,7 +208,7 @@ console.log(
 );
 ```
 
-And `performance-budgets.json` is the stored-threshold file next to the script. Start with numbers slightly above the current measured baseline:
+و`performance-budgets.json` هو ملف الحدود المخزّنة بجانب السكربت. ابدأ بأرقام أعلى قليلًا من خط الأساس المقيس حاليًا:
 
 ```json
 {
@@ -222,66 +222,66 @@ And `performance-budgets.json` is the stored-threshold file next to the script. 
 }
 ```
 
-> **The lab ships this**
+> **المختبر يشحن هذا**
 >
-> When you finish the companion lab, Shelf’s `scripts/check-performance-budgets.mjs` will be a slightly longer version of this sketch that adds `try/catch` around the JSON parse and exposes `clientEntries` for future rules. The walk is identical. Read the sketch above to understand *how* the aggregation works, then compare it with your lab implementation or the course solution to see the exact shape.
+> حين تُكمل المختبر المرافق، سيكون `scripts/check-performance-budgets.mjs` في Shelf نسخة أطول قليلًا من هذا المخطط، تضيف `try/catch` حول تحليل JSON وتُعرّض `clientEntries` لقواعد مستقبلية. والمسير متطابق. اقرأ المخطط أعلاه لتفهم *كيف* يعمل التجميع، ثم قارنه بتنفيذ مختبرك أو بحل الدورة لترى الشكل الدقيق.
 
-## Runtime budgets: catch slowness where the user feels it
+## ميزانيات وقت التشغيل: التقط البطء حيث يشعر به المستخدم
 
-Build size is not the same thing as runtime speed. Sometimes the bundle barely changes and the route still gets slower because a query now runs twice, a component renders too much, or the page does expensive work on load.
+حجم البناء ليس الشيء نفسه كسرعة وقت التشغيل. أحيانًا لا تتغيّر الحزمة إلا قليلًا ومع ذلك يصبح المسار أبطأ لأن استعلامًا صار يعمل مرتين، أو مكوّنًا يرسم أكثر من اللازم، أو الصفحة تقوم بعمل مكلف عند التحميل.
 
-This is where the [Performance API](https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Performance_data) and Playwright traces earn their keep.
+هنا يستحق كل من [واجهة الأداء](https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Performance_data) وتتبّعات Playwright مكانه.
 
-I want one targeted runtime budget, not an entire dashboard:
+أريد ميزانية وقت تشغيل واحدة موجّهة، لا لوحة معلومات كاملة:
 
-- the `/shelf` route must load under a chosen threshold in a production-like preview
-- or the “rate a book” interaction must complete under a chosen threshold
+- أن يُحمَّل مسار `/shelf` تحت حدّ مختار في معاينة شبيهة بالإنتاج
+- أو أن يكتمل تفاعل «قيّم كتابًا» تحت حدّ مختار
 
-Pick one flow users actually feel. Measure it the same way every time. Store the threshold. Fail when it drifts.
+اختر تدفقًا واحدًا يشعر به المستخدمون فعلًا. وقِسه بالطريقة نفسها في كل مرة. وخزّن الحدّ. وافشل حين ينحرف.
 
-That is enough to make the loop real.
+هذا يكفي لجعل الحلقة حقيقية.
 
-## Why I am not defaulting to [Lighthouse](https://developer.chrome.com/docs/lighthouse) here
+## لماذا لا ألجأ افتراضيًا إلى [Lighthouse](https://developer.chrome.com/docs/lighthouse) هنا
 
-I like [Lighthouse](https://developer.chrome.com/docs/lighthouse). I also know what happens when people wire it in too early: they drown in scores, environment noise, and advice that is technically correct but useless to the task at hand.
+أحبّ [Lighthouse](https://developer.chrome.com/docs/lighthouse). وأعرف أيضًا ما يحدث حين يربطه الناس مبكرًا جدًا: يغرقون في الدرجات وضجيج البيئة ونصائح صحيحة تقنيًا لكنها عديمة الفائدة للمهمة المطروحة.
 
-For this workshop, I want the cheaper loop:
+لهذه الورشة، أريد الحلقة الأرخص:
 
-- build stats for weight
-- one reproducible runtime measurement for speed
-- Playwright trace or browser timing data when the number goes bad
+- إحصاءات البناء للوزن
+- قياس واحد قابل لإعادة الإنتاج لوقت التشغيل من أجل السرعة
+- تتبّع Playwright أو بيانات توقيت المتصفّح حين يسوء الرقم
 
-Once that loop is stable, *then* you can layer in bigger tooling. But I would not start there.
+حين تستقرّ تلك الحلقة، *حينها* يمكنك إضافة أدوات أكبر. لكني لن أبدأ من هناك.
 
-> **Measurement discipline**
+> **انضباط القياس**
 >
-> Measure runtime budgets against a stable preview target, not a hot-reloading dev server. If the environment changes every run, the number is telling you about the environment, not the feature.
+> قِس ميزانيات وقت التشغيل مقابل هدف معاينة مستقر، لا مقابل خادم تطوير بإعادة تحميل فورية. فإن تغيّرت البيئة في كل تشغيل، فالرقم يخبرك عن البيئة، لا عن الميزة.
 
-## How to set the numbers without making them fake
+## كيف تضبط الأرقام دون أن تجعلها زائفة
 
-The wrong way: invent ambitious numbers out of thin air and watch the team disable the check by Thursday.
+الطريقة الخاطئة: تختلق أرقامًا طموحة من الهواء وتراقب الفريق يعطّل الفحص بحلول الخميس.
 
-The right way:
+الطريقة الصحيحة:
 
-1. Measure the current green state.
-2. Decide what drift is acceptable.
-3. Store the threshold in version control.
-4. Tighten later if the team proves it can hold the line.
+1. قِس الحالة الخضراء الحالية.
+2. قرّر أي انحراف مقبول.
+3. خزّن الحدّ في التحكم بالمصادرات.
+4. شدّد لاحقًا إن أثبت الفريق أنه يستطيع الثبات على الخط.
 
-I usually start with “current baseline plus a small buffer” because it keeps the loop honest. The budget exists to catch accidental regressions first. Optimization heroics can come later.
+عادةً أبدأ بـ«خط الأساس الحالي زائد هامش صغير» لأن ذلك يُبقي الحلقة صادقة. فالميزانية موجودة لالتقاط الانحدارات العرضية أولًا. أما بطولات التحسين فيمكن أن تأتي لاحقًا.
 
-## What the agent should do when the budget breaks
+## ما ينبغي أن يفعله الوكيل عندما تُخترق الميزانية
 
-When the budget breaks, I want the agent to behave exactly the way it behaves on a failing test:
+حين تُخترق الميزانية، أريد أن يتصرّف الوكيل بالطريقة نفسها التي يتصرّف بها أمام اختبار فاشل:
 
-- inspect the changed files
-- inspect the build stats or trace
-- identify the thing that got heavier or slower
-- fix it or explicitly propose a budget change
+- يفحص الملفات المتغيّرة
+- يفحص إحصاءات البناء أو التتبّع
+- يحدّد الشيء الذي صار أثقل أو أبطأ
+- يصلحه أو يقترح تغيير الميزانية صراحةً
 
-The last part matters. A budget is allowed to change. But the change should be deliberate, reviewed, and explained, not smuggled in because the agent wanted the check to stop yelling.
+الجزء الأخير مهم. فالميزانية مسموح لها بالتغيّر. لكن التغيير ينبغي أن يكون متعمّدًا ومراجَعًا ومشروحًا، لا مُهرَّبًا لأن الوكيل أراد أن يتوقف الفحص عن الصراخ.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Performance budgets
@@ -296,19 +296,19 @@ The last part matters. A budget is allowed to change. But the change should be d
   to change, explain why in the summary or commit message.
 ```
 
-## How You Know the Budget Is Real
+## كيف تعرف أن الميزانية حقيقية
 
-You have this loop when:
+لديك هذه الحلقة عندما:
 
-- the repository emits build stats the agent can parse
-- one runtime-critical flow has a reproducible timing threshold
-- the agent treats budget failures as real failures, not advisory output
+- يُخرج المستودع إحصاءات بناء يستطيع الوكيل تحليلها
+- يكون لتدفق واحد حرج في وقت التشغيل حدّ توقيت قابل لإعادة الإنتاج
+- يتعامل الوكيل مع إخفاقات الميزانية كإخفاقات حقيقية، لا كمخرجات استشارية
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Performance budgets are not about chasing perfect scores. They are about making regressions impossible to ignore. Pick two numbers that matter, enforce them consistently, and let the agent trip over them before your users do.
+ميزانيات الأداء ليست عن مطاردة الدرجات المثالية. إنها عن جعل الانحدارات مستحيلة التجاهل. اختر رقمين يهمّان، وافرِضهما بثبات، ودع الوكيل يتعثّر بهما قبل مستخدميك.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
-- [Lab: Add Performance Budgets to Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf)
+- [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
+- [مختبر: إضافة ميزانيات أداء إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf)

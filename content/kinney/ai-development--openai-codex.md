@@ -1,69 +1,70 @@
 ---
-title: "OpenAI Codex"
-lang: en
+title: "OpenAI Codex: وكيل البرمجة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/openai-codex"
 ---
 
-> **About model names and what’s current**
+> **حول أسماء النماذج وما هو حديث**
 >
-> This page preserves the “Codex” framing because it matches the course recordings. In current OpenAI terminology, you’ll typically use the o‑series and GPT‑4o family for coding tasks (for example, o3 or o3‑mini for strong reasoning and low‑latency iterations, and GPT‑4o variants when you want multimodal context like screenshots or diagrams). The Assistants API and Realtime API are the common integration surfaces. The guidance below still maps well: where this page says “Codex,” think “current OpenAI coding models (o‑series/GPT‑4o) used with your repo, tests, and PR flow.”
+> تحافظ هذه الصفحة على صياغة «Codex» لأنها تطابق تسجيلات الدورة. وفي مصطلحات OpenAI الحالية، ستستخدم عادةً عائلة o‑series وGPT‑4o لمهام البرمجة (مثلًا o3 أو o3‑mini للاستدلال القوي والتكرارات منخفضة زمن الاستجابة، ومتغيّرات GPT‑4o عندما تريد سياقًا متعدّد الوسائط كالصور أو المخططات). وواجهتا Assistants API وRealtime API هما سطحا التكامل الشائعان. ولا يزال الإرشاد أدناه ينطبق جيدًا: حيث تقول هذه الصفحة «Codex»، فكّر في «نماذج OpenAI الحالية للبرمجة (o‑series/GPT‑4o) المستخدمة مع مستودعك واختباراتك وسير طلبات السحب».
 
-> **Historical context**
+> **سياق تاريخي**
 >
-> “OpenAI Codex” as a model name has been superseded. We keep the original language to stay faithful to the course and to illustrate a robust agent workflow. When implementing today, substitute the current model you prefer (e.g., o3 for reasoning‑heavy refactors or GPT‑4o for code + images) without changing the overall workflow: connect the repo, write tasks, run tests, and produce verifiable patches/PRs.
+> لم يعد اسم النموذج «OpenAI Codex» مستخدمًا، فقد تجاوزه الزمن. ونُبقي على اللغة الأصلية للوفاء للدورة ولتوضيح سير عمل وكيل متين. وعند التنفيذ اليوم، استبدل بالنموذج الحالي الذي تفضّله (مثل o3 لإعادة الهيكلة الثقيلة بالاستدلال أو GPT‑4o للشيفرة والصور) دون تغيير سير العمل العام: اربط المستودع، واكتب المهام، وشغّل الاختبارات، وأنتج رقعًا/طلبات سحب قابلة للتحقق.
 
-OpenAI Codex is an artificial intelligence model and a cloud-based software engineering agent developed by OpenAI, designed to transform how developers interact with codebases and build software. It is also available as a lightweight, open-source command-line interface (CLI) tool.
+‏OpenAI Codex هو نموذج ذكاء اصطناعي ووكيل هندسة برمجيات سحابي طوّرته OpenAI، صُمّم لتحويل طريقة تفاعل المطوّرين مع قواعد الشيفرة وبناء البرمجيات. وهو متاح أيضًا كأداة خفيفة مفتوحة المصدر بواجهة سطر أوامر (CLI).
 
-Here’s a detailed breakdown of what OpenAI Codex is:
+وفيما يلي تفصيل لما هو OpenAI Codex:
 
-## Core Identity and Purpose
+## الهوية الأساسية والغرض
 
-- Codex is an **AI model that translates plain language into code**. It acts as a **co-pilot for coding**, designed to handle routine and overwhelming parts of software engineering, allowing developers to focus on higher-level thinking. It aims to become an **indispensable part of a developer’s toolkit**.
-- It is considered an “autonomous software engineer” (A-SWE) agent and operates as a “senior programmer” that can work alongside developers 24 hours a day.
+- Codex **نموذج ذكاء اصطناعي يترجم اللغة العادية إلى شيفرة**. وهو يعمل كـ **مساعد للتوجيه في البرمجة (co-pilot)**، مصمّم للتعامل مع الأجزاء الروتينية والمرهقة من هندسة البرمجيات، مما يتيح للمطوّرين التركيز على التفكير الرفيع المستوى. ويهدف إلى أن يصبح **جزءًا لا غنى عنه في عدّة أدوات المطوّر**.
+- ويُعدّ وكيل «مهندس برمجيات مستقل» (A-SWE)، ويعمل كـ «مبرمج خبير» يستطيع العمل إلى جانب المطوّرين على مدار الساعة.
 
-## Underlying Technology and Models
+## التقنية والنماذج الكامنة
 
-- At its core, Codex utilizes **machine learning and deep learning**. It’s built on the **same base as GPT-3** and is described here as powered by a specialized “codex-1” model for code work. In today’s stack, you would choose an o‑series model (e.g., o3 or o3‑mini) or a GPT‑4o family model depending on the task (see the callout above).
-- A smaller version, described here as “codex‑mini,” maps well to a lightweight, lower‑latency model choice (for example, o3‑mini or a 4o‑mini variant) for quick edits, Q&A, and iterative drafts.
-- The model’s training objective is to generate code that functions flawlessly, mirrors human stylistic preferences, adheres precisely to instructions, and can iteratively run tests until a passing result is achieved. It is trained on massive amounts of public code repositories, tutorials, and open-source projects.
+- في جوهره، يستخدم Codex **تعلّم الآلة والتعلّم العميق**. وهو مبني على **الأساس نفسه الذي بُني عليه GPT-3**، ويوصَف هنا بأنه مدعوم بنموذج متخصّص هو «codex-1» لأعمال الشيفرة. وفي مجموعة التقنيات الحالية، ستختار نموذجًا من o‑series (مثل o3 أو o3‑mini) أو نموذجًا من عائلة GPT‑4o حسب المهمة (انظر الصندوق أعلاه).
+- أما النسخة الأصغر، الموصوفة هنا باسم «codex‑mini»، فتقابل جيدًا اختيار نموذج خفيف ومنخفض زمن الاستجابة (مثل o3‑mini أو أحد متغيّرات 4o‑mini) للتعديلات السريعة والأسئلة والأجوبة والمسودّات التكرارية.
+- هدف تدريب النموذج هو توليد شيفرة تعمل بلا خلل، وتحاكي التفضيلات الأسلوبية البشرية، وتلتزم بالتعليمات بدقة، وتستطيع تشغيل الاختبارات تكرارًا حتى تحقيق نتيجة ناجحة. وقد دُرّب على كميات ضخمة من مستودعات الشيفرة العامة والدروس والمشاريع مفتوحة المصدر.
 
-## Key Capabilities and Features
+## القدرات والميزات الرئيسية
 
-Codex is engineered to handle a diverse range of tasks, including:
+صُمّم Codex للتعامل مع طائفة متنوّعة من المهام، منها:
 
-- **Writing new features**.
-- **Answering intricate questions about a codebase**.
-- **Identifying and fixing bugs**.
-- **Drafting GitHub pull requests automatically**.
-- **Navigating codebases** to suggest improvements.
-- **Running lint and tests** to ensure code quality.
-- **Explaining overall code structure**.
-- **Reviewing for minor issues** such as typos or broken tests.
-- **Generating multiple implementation suggestions** for a task (“Best-of-N”).
-- **Converting code to use different frameworks** (e.g., converting NUI to React).
-- **Automating boilerplate code generation and scripting** for various applications.
-- **Assisting in learning and coding education** by explaining concepts and troubleshooting errors.
-- **Enhancing code review and debugging** by spotting bugs or suggesting improvements.
-- **Managing Git workflows**, including creating commits, PRs, and resolving merge conflicts.
-- **Onboarding developers to unfamiliar codebases** quickly.
+- **كتابة ميزات جديدة**.
+- **الإجابة عن أسئلة معقّدة حول قاعدة شيفرة**.
+- **تحديد الأخطاء وإصلاحها**.
+- **صياغة طلبات سحب GitHub تلقائيًا**.
+- **التنقّل في قواعد الشيفرة** لاقتراح تحسينات.
+- **تشغيل فحص الشيفرة (lint) والاختبارات** لضمان جودة الشيفرة.
+- **شرح بنية الشيفرة العامة**.
+- **المراجعة بحثًا عن مشكلات بسيطة** كالأخطاء المطبعية أو الاختبارات المعطّلة.
+- **توليد اقتراحات تنفيذ متعدّدة** للمهمة («الأفضل من N»).
+- **تحويل الشيفرة لاستخدام أطر مختلفة** (مثل تحويل NUI إلى React).
+- **أتمتة توليد الشيفرة القالبية (boilerplate) والنصوص البرمجية** لتطبيقات متنوّعة.
+- **المساعدة في التعلّم وتعليم البرمجة** بشرح المفاهيم وتشخيص الأخطاء.
+- **تعزيز مراجعة الشيفرة وتصحيح الأخطاء** برصد العلل أو اقتراح تحسينات.
+- **إدارة سير عمل Git**، بما في ذلك إنشاء الإيداعات وطلبات السحب وحل تعارضات الدمج.
+- **تهيئة المطوّرين على قواعد شيفرة غير مألوفة** بسرعة.
 
-## Operational Modes and Environments
+## أوضاع التشغيل والبيئات
 
-- **Cloud-Based Agent (ChatGPT Codex)**: This version runs in **isolated cloud sandbox environments**. Each task is processed independently in its own container, preloaded with the relevant codebase, allowing Codex to read, edit files, and execute commands without interference. Internet access is typically disabled during task execution for security, though it can be optionally enabled by admins. Tasks typically range from 1 to 30 minutes in completion time, with a hard cutoff of an hour in development mode.
-- **Codex CLI**: A local-first architecture, originally built with Node.js and transitioning to native Rust for enhanced efficiency and security. It operates with configurable autonomy levels: **Suggest Mode**: Reads files but requires approval for changes. **Auto Edit Mode**: Automatically applies file changes but requires command approval. **Full Auto Mode**: Executes both file operations and commands without requiring approval. Full auto mode increases sandboxing for safety.
-  - **Suggest Mode**: Reads files but requires approval for changes.
-  - **Auto Edit Mode**: Automatically applies file changes but requires command approval.
-  - **Full Auto Mode**: Executes both file operations and commands without requiring approval. Full auto mode increases sandboxing for safety.
+- **وكيل سحابي (ChatGPT Codex)**: تعمل هذه النسخة في **بيئات صندوق رملي سحابية معزولة**. وتُعالَج كل مهمة باستقلالية في حاويتها الخاصة، محمّلة مسبقًا بقاعدة الشيفرة المعنية، مما يتيح لـ Codex قراءة الملفات وتعديلها وتنفيذ الأوامر دون تداخل. ويُعطَّل الوصول إلى الإنترنت عادةً أثناء تنفيذ المهمة لأسباب أمنية، وإن كان يمكن للمشرفين تمكينه اختياريًا. وتتراوح مدّة إكمال المهام عادةً بين دقيقة و30 دقيقة، مع حدّ أقصى صارم قدره ساعة في وضع التطوير.
+- **Codex CLI**: بنية محلية أولًا، بُنيت أصلًا بـ Node.js وتنتقل إلى Rust الأصلي لمزيد من الكفاءة والأمان. وتعمل بمستويات استقلالية قابلة للضبط:
 
-## Workflow and Interaction
+  - **وضع الاقتراح (Suggest Mode)**: يقرأ الملفات لكنه يتطلّب موافقة على التغييرات.
+  - **وضع التعديل التلقائي (Auto Edit Mode)**: يطبّق تغييرات الملفات تلقائيًا لكنه يتطلّب موافقة على الأوامر.
+  - **الوضع التلقائي الكامل (Full Auto Mode)**: ينفّذ عمليات الملفات والأوامر معًا دون طلب موافقة. ويزيد الوضع التلقائي الكامل العزل في الصندوق الرملي للأمان.
 
-- Developers access Codex through a dedicated section in the ChatGPT sidebar. They connect a GitHub repository or organization, and Codex filters repositories they have access to.
-- Tasks can be assigned by typing a prompt and initiating “Code” for file mutations and patches, or “Ask” for codebase questions. Codex supports **parallel processing**, allowing multiple tasks to run simultaneously. Older course recordings mentioned research-preview concurrency limits; treat those as historical product context, not current guidance.
-- Codex provides **verifiable evidence of its actions** through citations of terminal logs and test outputs. Once a task is completed, it commits its changes within its environment and allows users to open a GitHub pull request or integrate changes locally.
-- **Guidance via AGENTS.md**: Developers can guide Codex’s behavior using `AGENTS.md` files within the repository. These files serve as a communication channel, informing Codex how to navigate the codebase, which commands to run for testing, and how to adhere to project coding standards. Instructions in `AGENTS.md` take precedence based on nesting depth, though direct user prompts can override them.
-- **Prompting Habits**: Effective prompts are clear and detailed, similar to assigning work to a junior engineer, focusing on clear goals, success criteria, and testing instructions. Providing existing tests is encouraged, as Codex optimizes for passing them. It’s recommended to chunk work into many narrow tasks for parallelism.
+## سير العمل والتفاعل
 
-## Benefits and Limitations
+- يصل المطوّرون إلى Codex عبر قسم مخصّص في الشريط الجانبي لـ ChatGPT. ويصلون مستودعًا أو مؤسسة على GitHub، ويرشّح Codex المستودعات التي لديهم صلاحية الوصول إليها.
+- يمكن إسناد المهام بكتابة طلب وبدء «Code» لتغييرات الملفات والرقع، أو «Ask» لأسئلة قاعدة الشيفرة. ويدعم Codex **المعالجة المتوازية**، مما يتيح تشغيل عدة مهام في آن واحد. وقد ذكرت تسجيلات الدورة الأقدم حدود التزامن في المعاينة البحثية؛ عاملها كسياق منتج تاريخي لا كإرشاد حالي.
+- يقدّم Codex **دليلًا قابلًا للتحقق على أفعاله** عبر الاستشهاد بسجلات الطرفية ومخرجات الاختبارات. وبمجرد إكمال المهمة، يُودع تغييراته داخل بيئته ويتيح للمستخدمين فتح طلب سحب على GitHub أو دمج التغييرات محليًا.
+- **الإرشاد عبر AGENTS.md**: يستطيع المطوّرون توجيه سلوك Codex باستخدام ملفات `AGENTS.md` داخل المستودع. وتعمل هذه الملفات كقناة تواصل تخبر Codex كيف يتنقّل في قاعدة الشيفرة، وأي الأوامر يشغّل للاختبار، وكيف يلتزم بمعايير البرمجة في المشروع. وتتقدّم التعليمات في `AGENTS.md` بحسب عمق التداخل، مع أن طلبات المستخدم المباشرة يمكنها تجاوزها.
+- **عادات كتابة الطلبات**: تكون الطلبات الفعّالة واضحة ومفصّلة، أشبه بإسناد عمل إلى مهندس مبتدئ، مع التركيز على أهداف واضحة ومعايير نجاح وتعليمات اختبار. ويُشجَّع على تقديم اختبارات موجودة، لأن Codex يحسّن أداءه لاجتيازها. ويُوصى بتقسيم العمل إلى مهام ضيقة كثيرة لأجل التوازي.
 
-- **Benefits**: Boosts productivity, speeds up prototyping, makes coding more accessible, automates repetitive tasks, and allows developers to offload complex tasks. It produces cleaner, more reviewable patches compared to general-purpose models.
-- **Limitations**: It may produce inaccurate code, miss complex logic, or have biases from training data. It might occasionally generate “code hallucinations” referencing non-existent components. It requires WSL for Windows support. Users must still manually review and validate all agent-generated code before integration. It lacks features like image inputs for frontend development and the ability to course-correct mid-task.
+## الفوائد والقيود
+
+- **الفوائد**: يرفع الإنتاجية، ويُسرّع النمذجة الأولية، ويجعل البرمجة أيسر منالًا، ويؤتمت المهام المتكرّرة، ويتيح للمطوّرين تفويض المهام المعقّدة. وينتج رقعًا أنظف وأسهل مراجعة مقارنة بالنماذج عامّة الغرض.
+- **القيود**: قد ينتج شيفرة غير دقيقة، أو يفوت منطقًا معقّدًا، أو يحمل تحيّزات من بيانات التدريب. وقد يولّد أحيانًا «هلوسات شيفرة» تشير إلى مكوّنات غير موجودة. ويتطلّب WSL لدعم Windows. ولا يزال على المستخدمين مراجعة كل شيفرة يولّدها الوكيل والتحقق منها يدويًا قبل الدمج. وينقصه التمتّع بميزات كإدخال الصور لتطوير الواجهات الأمامية والقدرة على تصحيح المسار في منتصف المهمة.

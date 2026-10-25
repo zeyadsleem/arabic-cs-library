@@ -1,53 +1,53 @@
 ---
-title: "Complex Grid Templates"
-lang: en
+title: "قوالب Grid المعقّدة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/complex-grid-templates"
 ---
 
-Tailwind CSS offers utilities for grid layouts, controlling grid structure and item placement. Defining the grid template (columns and rows) is key.
+يوفّر Tailwind CSS أدوات لتخطيطات grid، تتحكّم في بنية grid وفي وضع العناصر. وتعريف قالب grid (الأعمدة والصفوف) هو المفتاح.
 
-## Specifying Grid Structures
+## تحديد بنى Grid
 
-Tailwind utilities map to CSS `grid-template-columns` and `grid-template-rows` to define grid tracks (columns and rows).
+تقابل أدوات Tailwind خاصيتي CSS `grid-template-columns` و`grid-template-rows` لتعريف مسارات grid (الأعمدة والصفوف).
 
-### Defining Columns
+### تعريف الأعمدة
 
-Use `grid-cols-*` utilities for columns. For a fixed number of equal columns, use `grid-cols-2` (two columns) or `grid-cols-4` (four columns). This generates CSS like `grid-template-columns: repeat(<number>, minmax(0, 1fr));`, creating flexible columns that don’t shrink below zero.
+استخدم أدوات `grid-cols-*` للأعمدة. فعدد ثابت من الأعمدة المتساوية يعني `grid-cols-2` (عمودان) أو `grid-cols-4` (أربعة أعمدة). وهذا يُنتج CSS من الشكل `grid-template-columns: repeat(<number>, minmax(0, 1fr));`، فتُنشئ أعمدة مرنة لا تنكمش تحت الصفر.
 
-Use `grid-cols-none` to remove column definitions (`grid-template-columns: none;`).
+استخدم `grid-cols-none` لإزالة تعريفات الأعمدة (`grid-template-columns: none;`).
 
-### Defining Rows
+### تعريف الصفوف
 
-Use `grid-rows-*` utilities for rows, similar to columns. `grid-rows-2` or `grid-rows-4` create a fixed number of equal rows, generating `grid-template-rows: repeat(<number>, minmax(0, 1fr));`.
+استخدم أدوات `grid-rows-*` للصفوف، على نحو مشابه للأعمدة. فتُنشئ `grid-rows-2` أو `grid-rows-4` عددًا ثابتًا من الصفوف المتساوية، وتُنتج `grid-template-rows: repeat(<number>, minmax(0, 1fr));`.
 
-Use `grid-rows-none` to remove row definitions (`grid-template-rows: none;`).
+استخدم `grid-rows-none` لإزالة تعريفات الصفوف (`grid-template-rows: none;`).
 
-### Implementing Subgrids
+### تطبيق الشبكات الفرعية
 
-For nested grids, Tailwind supports subgrids. `grid-cols-subgrid` makes a nested grid adopt its parent’s column tracks (`grid-template-columns: subgrid`). Similarly, `grid-rows-subgrid` adopts parent row tracks (`grid-template-rows: subgrid`).
+للشبكات المتداخلة، يدعم Tailwind الشبكات الفرعية. فتجعل `grid-cols-subgrid` الشبكة المتداخلة تتبنّى مسارات أعمدة أبيها (`grid-template-columns: subgrid`). وعلى نحو مماثل، تتبنّى `grid-rows-subgrid` مسارات صفوف الأب (`grid-template-rows: subgrid`).
 
-### Advanced Template Definitions
+### تعاريف القوالب المتقدّمة
 
-For precise control, Tailwind offers options for complex grid templates using arbitrary values and CSS custom properties.
+للتحكّم الدقيق، يوفّر Tailwind خيارات لقوالب grid المعقّدة عبر القيم التعسّفية والخصائص المخصّصة في CSS.
 
-#### Using Arbitrary Values
+#### استخدام القيم التعسّفية
 
-Define grid templates with arbitrary values in HTML using square brackets: `grid-cols-[<value>]` for columns and `grid-rows-[<value>]` for rows. `<value>` can be any valid CSS for `grid-template-columns` or `grid-template-rows` respectively. This allows mixing units (px, rem, fr), named grid lines, or functions like `repeat()`, `minmax()`, `fit-content()`.
+عرّف قوالب grid بقيم تعسّفية داخل HTML باستخدام الأقواس المربّعة: `grid-cols-[<value>]` للأعمدة و`grid-rows-[<value>]` للصفوف. ويمكن أن تكون `<value>` أي CSS صالح لـ `grid-template-columns` أو `grid-template-rows` على التوالي. وهذا يسمح بمزج الوحدات (px وrem وfr)، أو سطور grid مسمّاة، أو دوال مثل `repeat()` و`minmax()` و`fit-content()`.
 
-Example: `grid-cols-[200px_1fr]` for a fixed sidebar and flexible content, or `grid-template-columns: [sidebar-start] 1fr [sidebar-end content-start] 2fr [content-end];` for named lines.
+مثال: `grid-cols-[200px_1fr]` لشريط جانبي ثابت ومحتوى مرن، أو `grid-template-columns: [sidebar-start] 1fr [sidebar-end content-start] 2fr [content-end];` لسطور مسمّاة.
 
-#### Using Custom Properties
+#### استخدام الخصائص المخصّصة
 
-Define complex grid templates with CSS custom properties (variables) and reference them in Tailwind classes: `grid-cols-(<custom-property>)` for columns and `grid-rows-(<custom-property>)` for rows. Manage complex grid definitions in CSS and apply them with Tailwind.
+عرّف قوالب grid معقّدة عبر الخصائص المخصّصة في CSS (المتغيّرات) وأشِر إليها في أصناف Tailwind: `grid-cols-(<custom-property>)` للأعمدة و`grid-rows-(<custom-property>)` للصفوف. فتُدار تعريفات grid المعقّدة في CSS وتُطبَّق عبر Tailwind.
 
-Define custom properties in your CSS (e.g., in `@theme` or `:root`) and apply with `grid-cols-(...)` or `grid-rows-(...)`.
+عرّف الخصائص المخصّصة في CSS لديك (مثلًا في `@theme` أو `:root`) وطبّقها عبر `grid-cols-(...)` أو `grid-rows-(...)`.
 
-## Responsive Grid Templates
+## قوالب Grid المتجاوبة
 
-Apply grid template utilities conditionally based on viewport width using responsive variants (`md:`, `lg:`).
+طبّق أدوات قالب grid بشكل مشروط بحسب عرض نافذة العرض باستخدام المتغيّرات المتجاوبة (`md:` و`lg:`).
 
-Example: Start with a single column layout, then switch to multi-column at larger breakpoints. `grid-cols-1 md:grid-cols-2 lg:grid-cols-3` creates one column by default, two on medium screens, and three on large screens.
+مثال: ابدأ بتخطيط بعمود واحد، ثم انتقل إلى تعدّد الأعمدة عند نقاط التوقّف الأكبر. فـ `grid-cols-1 md:grid-cols-2 lg:grid-cols-3` ينشئ عمودًا واحدًا افتراضيًا، وعمودين على الشاشات المتوسطة، وثلاثة أعمدة على الشاشات الكبيرة.
 
-This applies to all grid template utilities, including those with arbitrary values or custom properties, allowing different complex grid structures at various breakpoints.
+وهذا ينطبق على جميع أدوات قالب grid، بما فيها تلك ذات القيم التعسّفية أو الخصائص المخصّصة، ما يسمح ببنى grid معقّدة مختلفة عند نقاط التوقّف المختلفة.
 
-After defining the grid template, position and size items using utilities like `col-span-*`, `row-span-*`, `col-start-*`, etc., and control spacing with `gap-*`. These operate within the defined grid template.
+وبعد تعريف قالب grid، ضع العناصر وحدّد مقاساتها عبر أدوات مثل `col-span-*` و`row-span-*` و`col-start-*` وغيرها، وتحكّم في المسافات عبر `gap-*`. وتعمل هذه الأدوات ضمن قالب grid المعرَّف.

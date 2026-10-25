@@ -1,16 +1,16 @@
 ---
-title: "The cache() API"
-lang: en
+title: "واجهة cache()"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/react-cache-api"
 ---
 
-React’s `cache()` function takes pure functions and makes them memoized, deduplicated, and stable across your entire React tree. Think of it as a supercharged version of `useMemo()` that works at the function level instead of the component level—and crucially, shares results between components when they call the same function with the same arguments.
+تأخذ دالة `cache()` في React الدوال النقية فتحوّلها إلى دوال محفوظة النتائج ومعزولة التكرار ومستقرة في شجرة React كلها. اعتبرها نسخة معزّزة من `useMemo()` تعمل على مستوى الدالة لا على مستوى المكوّن، والأهم أنها تشارك النتائج بين المكوّنات حين تستدعي الدالة نفسها بالوسائط نفسها.
 
-While `cache()` is primarily designed for React Server Components and server-side rendering, understanding how it works gives you powerful tools for optimizing expensive operations across your entire application. You can eliminate redundant API calls, database queries, and heavy computations that would otherwise run multiple times for the same data.
+ومع أن `cache()` مصمّمة أساسًا لمكوّنات الخادم في React (React Server Components) والتصيير على الخادم، فإن فهم طريقة عملها يمنحك أدوات قوية لتحسين العمليات المكلفة في تطبيقك كله. فتستطيع أن تلغي نداءات API المكررة، واستعلامات قاعدة البيانات، والحسابات الثقيلة التي كانت ستُنفَّذ مرات عدة على البيانات نفسها.
 
-## What Problems Does cache() Solve?
+## ما المشكلات التي تحلّها cache()؟
 
-Before diving into how `cache()` works, let’s understand the problems it addresses. Consider this scenario: you have a blog post component that needs user information, and several child components that also need that same user data.
+قبل الغوص في طريقة عمل `cache()`، لنفهم المشكلات التي تعالجها. تخيّل هذا السيناريو: لديك مكوّن لمنشور مدوّنة يحتاج معلومات المستخدم، وعدة مكوّنات ابنة تحتاج هي أيضًا بيانات المستخدم نفسها.
 
 ```typescript
 // ❌ Without cache() - multiple redundant calls
@@ -32,11 +32,11 @@ async function UserAvatar({ userId }: { userId: string }) {
 }
 ```
 
-Without `cache()`, each component makes its own call to `fetchUser()`, even when they’re asking for the same user. This creates unnecessary network requests, database hits, and performance bottlenecks.
+من دون `cache()`، يستدعي كل مكوّن `fetchUser()` بنفسه، حتى وإن كانت جميعها تطلب المستخدم نفسه. وهذا يخلق طلبات شبكة غير ضرورية، وضربات متكررة على قاعدة البيانات، وعقبات في الأداء.
 
-## Basic Usage
+## الاستخدام الأساسي {#basic-usage}
 
-The `cache()` function is simple to use—you wrap any pure function, and React handles deduplication automatically:
+استخدام دالة `cache()` بسيط: تغلّف أي دالة نقية، ويتولّى React إزالة التكرار تلقائيًا:
 
 ```typescript
 import { cache } from 'react';
@@ -66,15 +66,15 @@ async function UserAvatar({ userId }: { userId: string }) {
 }
 ```
 
-With `cache()`, React tracks function calls by their arguments and returns the same result for identical inputs. The “Fetching user” log appears only once per unique `userId`, regardless of how many components call the function.
+مع `cache()`، يتتبّع React نداءات الدوال وفق وسائطها ويعيد النتيجة نفسها للمدخلات المطابقة. ولا يظهر سجل «Fetching user» إلا مرة واحدة لكل `userId` فريد، مهما كان عدد المكوّنات التي تستدعي الدالة.
 
-## Cache Scope and Lifecycle
+## نطاق الذاكرة المؤقتة ودورة حياتها
 
-Understanding when and where `cache()` works is crucial for using it effectively. The cache has specific boundaries:
+فهم متى وأين تعمل `cache()` أمر جوهري لاستخدامها بفعالية. فللذاكرة المؤقتة حدود محدّدة:
 
-### Server-Side Scope
+### النطاق على الخادم
 
-In React Server Components and SSR, the cache lasts for the duration of a single request:
+في مكوّنات الخادم في React والتصيير على الخادم (SSR)، تدوم الذاكرة المؤقتة طوال طلب واحد فقط:
 
 ```typescript
 const getPostWithComments = cache(async (postId: string) => {
@@ -100,9 +100,9 @@ async function BlogPost({ postId }: { postId: string }) {
 }
 ```
 
-### Client-Side Behavior
+### السلوك على جهة العميل
 
-On the client side, `cache()` behavior depends on your React version and setup. In React 19+, cached functions maintain their cache as long as the function reference stays stable:
+على جهة العميل، يعتمد سلوك `cache()` على إصدار React وإعداداتك. وفي React 19 وما بعده، تحافظ الدوال المخزّنة على ذاكرتها المؤقتة ما دام مرجع الدالة مستقرًا:
 
 ```typescript
 const expensiveCalculation = cache((data: number[]) => {
@@ -123,15 +123,15 @@ function DataVisualization({ dataset }: { dataset: number[] }) {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Client-side caching with `cache()` is still evolving. For production applications, consider it primarily a server-side optimization tool.
+> لا يزال التخزين المؤقت على جهة العميل بواسطة `cache()` في تطوّر مستمر. وفي تطبيقات الإنتاج، اعتبره أداة تحسين على الخادم بالأساس.
 
-## Advanced Patterns
+## أنماط متقدّمة
 
-### Caching with Complex Arguments
+### التخزين المؤقت مع وسائط معقّدة
 
-The `cache()` function uses shallow comparison for arguments, so object references matter:
+تستخدم دالة `cache()` مقارنة سطحية للوسائط، لذا تهمّ مراجع الكائنات:
 
 ```typescript
 const queryProducts = cache(async (filters: ProductFilters) => {
@@ -156,7 +156,7 @@ function ProductList() {
 }
 ```
 
-For dynamic filters, consider using a separate caching strategy or normalizing the filter object:
+أما المرشّحات المتغيّرة، ففكّر في استراتيجية تخزين مؤقت منفصلة أو في تطبيع كائن المرشّحات:
 
 ```typescript
 const normalizeFilters = (filters: ProductFilters) => {
@@ -171,9 +171,9 @@ const queryProducts = cache(async (filters: ProductFilters) => {
 });
 ```
 
-### Combining with Other React Features
+### الدمج مع ميزات React الأخرى
 
-Cache works beautifully with Suspense and error boundaries:
+تعمل الذاكرة المؤقتة بانسجام تام مع Suspense وحدود الأخطاء (error boundaries):
 
 ```typescript
 const fetchUserProfile = cache(async (userId: string) => {
@@ -206,9 +206,9 @@ async function UserSettings({ userId }: { userId: string }) {
 }
 ```
 
-### Cache Invalidation Patterns
+### أنماط إبطال الذاكرة المؤقتة
 
-Since `cache()` doesn’t provide built-in invalidation, you’ll need strategies for handling stale data:
+بما أن `cache()` لا توفّر إبطالًا مدمجًا، فستحتاج إلى استراتيجيات للتعامل مع البيانات القديمة:
 
 ```typescript
 // Strategy 1: Time-based cache busting
@@ -240,11 +240,11 @@ function DataComponent({ key }: { key: string }) {
 }
 ```
 
-## Real-World Use Cases™
+## حالات استخدام من العالم الحقيقي™
 
-### Database Query Optimization
+### تحسين استعلامات قاعدة البيانات
 
-Perfect for eliminating N+1 query problems in server components:
+مثالية لإلغاء مشكلات الاستعلامات N+1 في مكوّنات الخادم:
 
 ```typescript
 const getUserById = cache(async (id: string) => {
@@ -276,9 +276,9 @@ async function UserPage({ userId }: { userId: string }) {
 }
 ```
 
-### API Response Deduplication
+### إزالة تكرار استجابات API
 
-Eliminate redundant external API calls across your component tree:
+ألغِ نداءات API الخارجية المكررة في شجرة مكوّناتك:
 
 ```typescript
 const fetchWeatherData = cache(async (city: string) => {
@@ -299,9 +299,9 @@ function WeatherDashboard({ city }: { city: string }) {
 }
 ```
 
-### Expensive Computations
+### الحسابات المكلفة
 
-Cache heavy calculations that depend on stable inputs:
+خزّن الحسابات الثقيلة التي تعتمد على مدخلات مستقرة:
 
 ```typescript
 const calculateComplexMetrics = cache((rawData: DataPoint[]) => {
@@ -328,13 +328,13 @@ function AnalyticsDashboard({ data }: { data: DataPoint[] }) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-While `cache()` is powerful, use it thoughtfully:
+مع أن `cache()` قوية، استخدمها بتأنٍّ:
 
-### Memory Usage
+### استهلاك الذاكرة
 
-Cached results stay in memory until the cache scope ends. For server requests, this means until the request completes. Be mindful of large data structures:
+تبقى النتائج المخزّنة في الذاكرة إلى أن ينتهي نطاق التخزين المؤقت. وفي طلبات الخادم يعني ذلك إلى أن يكتمل الطلب. فاحترس من بنى البيانات الضخمة:
 
 ```typescript
 // ❌ Potentially memory-heavy
@@ -351,9 +351,9 @@ const loadUserSubset = cache(async (userId: string) => {
 });
 ```
 
-### Function Purity
+### نقاء الدوال
 
-Only cache pure functions—functions that return the same output for the same input and have no side effects:
+لا تخزّن إلا الدوال النقية، أي الدوال التي تعيد المخرج نفسه للمدخل نفسه ولا آثار جانبية لها:
 
 ```typescript
 // ❌ Not pure - has side effects
@@ -369,9 +369,9 @@ const fetchUser = cache(async (id: string) => {
 });
 ```
 
-### Argument Complexity
+### تعقيد الوسائط
 
-Simple arguments work best. Complex objects require careful consideration:
+الوسائط البسيطة هي الأفضل. أما الكائنات المعقّدة فتتطلّب عناية ودقّة:
 
 ```typescript
 // ✅ Simple, stable arguments
@@ -388,15 +388,15 @@ const complexQuery = cache(async (filters: ComplexFilters) => {
 });
 ```
 
-## When NOT to Use cache()
+## متى لا تستخدم cache()
 
-Cache isn’t always the right choice:
+ليست الذاكرة المؤقتة الخيار الصحيح دائمًا:
 
-1. **Frequently changing data**: If inputs change on every call, caching provides no benefit
-2. **Side-effectful functions**: Functions that modify external state shouldn’t be cached
-3. **Memory-constrained environments**: Large cached results can cause memory issues
-4. **Client-side React 18 and below**: Limited support and unpredictable behavior
+1. **بيانات تتغيّر باستمرار**: إذا تغيّرت المدخلات في كل نداء، فلا فائدة من التخزين المؤقت
+2. **الدوال ذات الآثار الجانبية**: الدوال التي تعدّل حالة خارجية يجب ألا تُخزَّن
+3. **البيئات المحدودة الذاكرة**: قد تسبب النتائج المخزّنة الكبيرة مشكلات في الذاكرة
+4. **React 18 وما دونه على جهة العميل**: دعم محدود وسلوك غير متوقّع
 
-## Next Steps
+## الخطوات التالية
 
-Now that you understand `cache()`, you can eliminate redundant work across your React applications. Consider how this pairs with other React 19 features like Server Components and the `use()` hook for building efficient, performant applications.
+الآن بعد أن فهمت `cache()`، تستطيع أن تلغي العمل المكرر في تطبيقات React لديك. وفكّر في كيف تتكامل مع ميزات React 19 الأخرى مثل مكوّنات الخادم وخُطّاف `use()` لبناء تطبيقات كفؤة وعالية الأداء.

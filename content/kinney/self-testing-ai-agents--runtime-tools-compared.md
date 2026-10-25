@@ -1,100 +1,100 @@
 ---
-title: "Runtime Tools Compared"
-lang: en
+title: "أدوات وقت التشغيل: مقارنة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/runtime-tools-compared"
 ---
 
-We spent the morning making the scripted test suite something an agent can rely on. That’s the slow, durable, repeatable loop. This lesson is about the fast, interactive loop: letting the agent *drive* a browser in real time during development, poke at the page, read the console, and figure out what’s going on.
+أمضينا الصباح في جعل مجموعة الاختبارات المكتوبة شيئًا يستطيع الوكيل الاعتماد عليه. تلك هي الحلقة البطيئة المتينة القابلة للتكرار. وهذا الدرس عن الحلقة السريعة التفاعلية: أن تدع الوكيل *يقود* متصفّحًا في الزمن الحقيقي أثناء التطوير، ويجسّ الصفحة، ويقرأ الطرفية، ويكتشف ما يجري.
 
-There are three tools in this space that you should know about, and they are different enough that choosing between them matters.
+هناك ثلاث أدوات في هذا المجال ينبغي أن تعرفها، وهي مختلفة بما يكفي لأن الاختيار بينها مهم.
 
-- [**Playwright MCP**](https://github.com/microsoft/playwright-mcp)—exposes Playwright’s browser automation as MCP tools
-- [**Chrome DevTools MCP**](https://github.com/ChromeDevTools/chrome-devtools-mcp)—exposes Chrome DevTools Protocol as MCP tools
-- [**Claude in Chrome**](https://www.anthropic.com/news/claude-for-chrome)—an actual browser extension that puts the agent inside your live browser session
+- [**Playwright MCP**](https://github.com/microsoft/playwright-mcp) — يعرّض أتمتة المتصفّح في Playwright كأدوات MCP
+- [**Chrome DevTools MCP**](https://github.com/ChromeDevTools/chrome-devtools-mcp) — يعرّض بروتوكول Chrome DevTools كأدوات MCP
+- [**Claude in Chrome**](https://www.anthropic.com/news/claude-for-chrome) — إضافة متصفّح حقيقية تضع الوكيل داخل جلسة متصفّحك الحيّة
 
-> **Note**
+> **ملاحظة**
 >
-> As of early 2026, Playwright also ships a dedicated CLI for coding-agent workflows in addition to Playwright MCP. This workshop still uses MCP as the primary runtime tool because the later lessons depend on MCP-style tool calls, accessibility snapshots, and custom MCP wrappers. Also note that current Playwright MCP defaults to a persistent browser profile; use `--isolated` or an explicit storage state when you want clean-room reproduction.
+> مع مطلع عام 2026، صارت Playwright تشحن أيضًا أداة سطر أوامر مخصّصة لسير عمل وكلاء البرمجة، إضافةً إلى Playwright MCP. ومع ذلك، لا تزال هذه الورشة تستخدم MCP كأداة وقت التشغيل الأساسية لأن الدروس اللاحقة تعتمد على استدعاءات أدوات بنمط MCP، وعلى لقطات إمكانية الوصول، وعلى أغلفة MCP مخصّصة. لاحظ أيضًا أن Playwright MCP الحالي يستخدم افتراضيًا ملفّ تعريف متصفّح دائمًا؛ فاستخدم `--isolated` أو حالة تخزين صريحة حين تريد إعادة إنتاج في غرفة نظيفة.
 
-They all let the agent interact with a browser. They are not interchangeable. This lesson is a field guide to which one to reach for.
+كلها تتيح للوكيل التفاعل مع متصفّح. وهي ليست قابلة للتبادل. وهذا الدرس دليل ميداني لأي واحدة تمدّ يدك إليها.
 
-## The short version
+## النسخة القصيرة
 
-If you want a table to glance at:
+إن أردت جدولًا تلقى عليه نظرة:
 
-| Tool | Runs | Best at | Worst at |
+| الأداة | ما تشغّله | الأفضل في | الأسوأ في |
 | --- | --- | --- | --- |
-| Playwright MCP | A Playwright-controlled browser session, persistent by default | Repeatable probes, scripted exploration, “can you reproduce this bug” | Interactive work against your real logged-in accounts |
-| Chrome DevTools MCP | A Chrome instance you point it at | Reading the console, inspecting network, performance profiling | Writing tests, driving workflows |
-| Claude in Chrome | Inside your live Chrome session | Real user accounts, complex state, “the thing I’m looking at right now” | Clean-room repro, deterministic scripting |
+| Playwright MCP | جلسة متصفّح يتحكّم بها Playwright، دائمة افتراضيًا | المسابر القابلة للتكرار، والاستكشاف المكتوب، و«هل تستطيع إعادة إنتاج هذا الخلل» | العمل التفاعلي مع حساباتك الحقيقية المسجّل الدخول إليها |
+| Chrome DevTools MCP | نسخة Chrome توجّهها إليها | قراءة الطرفية، وفحص الشبكة، وتوصيف الأداء | كتابة الاختبارات، وقيادة سير العمل |
+| Claude in Chrome | داخل جلسة Chrome الحيّة لديك | حسابات المستخدمين الحقيقية، والحالة المعقّدة، و«الشيء الذي أنظر إليه الآن» | إعادة الإنتاج في غرفة نظيفة، والكتابة الحتمية |
 
-That’s the whole lesson compressed. The rest is why.
+هذا هو الدرس كله مضغوطًا. والباقي هو السبب.
 
-## Playwright MCP: the scripted browser for agents
+## Playwright MCP: المتصفّح المكتوب للوكلاء
 
-Playwright MCP wraps Playwright’s automation API as MCP tools. The agent says “open this URL, click this button, read this text,” and under the hood, Playwright launches and controls a browser for it. In current releases that browser profile is persistent unless you opt into isolation, which is great for ongoing work and the wrong default for reproducible debugging unless you configure it intentionally.
+يلفّ Playwright MCP واجهة الأتمتة في Playwright كأدوات MCP. فيقول الوكيل «افتح هذا الرابط، وانقر هذا الزر، واقرأ هذا النص»، وفي الخلف تُطلق Playwright متصفّحًا وتتحكّم فيه. وفي الإصدارات الحالية يكون ملفّ تعريف ذلك المتصفّح دائمًا ما لم تختر العزل، وهذا ممتاز للعمل المستمر وسيّئ كخيار افتراضي لتصحيح الأخطاء القابل لإعادة الإنتاج، ما لم تهيّئه عن قصد.
 
-What this gives you:
+ما يمنحك إياه هذا:
 
-- **Controllable state.** You can run isolated for clean repro, or persistent when the task benefits from keeping session state around.
-- **Full Playwright API.** Locators, assertions, waits, network interception, screenshots. Everything we covered in the [Playwright](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) lessons is available to the agent directly.
-- **Reproducibility.** The agent’s actions are effectively Playwright calls. If something works, you can often translate it directly into a scripted test.
+- **حالة قابلة للتحكّم.** تستطيع التشغيل معزولًا لإعادة إنتاج نظيفة، أو دائمًا حين تستفيد المهمة من إبقاء حالة الجلسة.
+- **واجهة Playwright كاملة.** المحدِّدات، والتحقّقات، والانتظارات، واعتراض الشبكة، ولقطات الشاشة. كل ما غطّيناه في دروس [Playwright](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) متاح للوكيل مباشرةً.
+- **قابلية إعادة الإنتاج.** أفعال الوكيل هي استدعاءات Playwright في جوهرها. فإن نجح شيء، تستطيع غالبًا ترجمته مباشرةً إلى اختبار مكتوب.
 
-What this does *not* give you:
+ما *لا* يمنحك إياه هذا:
 
-- **Your real accounts.** The agent is not logged into Gmail as you. It’s logged into nothing, unless you set up [storage state](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) the way we did earlier.
-- **Your real environment.** Extensions, devtools tweaks, the experimental feature flags you’ve enabled—none of those are present.
-- **Your real tabs.** The agent can’t look at what you have open.
+- **حساباتك الحقيقية.** الوكيل غير مسجَّل الدخول إلى Gmail باسمك. إنه غير مسجَّل الدخول إلى شيء، ما لم تُعِدّ [حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) كما فعلنا سابقًا.
+- **بيئتك الحقيقية.** الإضافات، وتعديلات أدوات التطوير، وأعلام الميزات التجريبية التي فعّلتها — لا شيء من ذلك موجود.
+- **ألسنتك الحقيقية.** لا يستطيع الوكيل النظر إلى ما هو مفتوح عندك.
 
-This is the tool I reach for when I want the agent to *reproduce* something. “Here’s a bug report, can you open the app, try to reproduce, and report what you see?” is a perfect Playwright MCP task. The agent opens a browser it controls, clicks through the steps, and tells you what happened. If you need a clean-room repro, run it isolated or with a known storage state. If it can reproduce, you now have a script you can harden into a test. If it can’t, you learn something about the bug report.
+هذه هي الأداة التي أمدّ إليها يدي حين أريد الوكيل أن *يعيد إنتاج* شيء. «هذا تقرير خلل، هل تستطيع فتح التطبيق ومحاولة إعادة إنتاجه وإخباري بما تراه؟» مهمة مثالية لـPlaywright MCP. يفتح الوكيل متصفّحًا يتحكّم فيه، وينقر عبر الخطوات، ويخبرك بما حدث. وإن احتجت إعادة إنتاج في غرفة نظيفة، فشغّله معزولًا أو بحالة تخزين معروفة. وإن استطاع إعادة الإنتاج، صار لديك سكربت يمكنك تقويته إلى اختبار. وإن لم يستطع، تعلّمت شيئًا عن تقرير الخلل.
 
-I also reach for it when I want the agent to *explore* a UI I’m building. “Open localhost:5173, navigate to /shelf, tell me what happens if you click Add Book without being logged in.” The agent pokes around, reports back, and you get a quick sanity check without switching context yourself.
+وأمدّ إليها يدي أيضًا حين أريد الوكيل أن *يستكشف* واجهة أبنيها. «افتح localhost:5173، وانتقل إلى /shelf، وأخبرني ما يحدث إن نقرت Add Book دون تسجيل دخول.» فيجسّ الوكيل هنا وهناك، ويعود بالتقرير، فتحصل على فحص سلامة سريع دون أن تنقل سياقك بنفسك.
 
-## Chrome DevTools MCP: the diagnostic layer
+## Chrome DevTools MCP: طبقة التشخيص
 
-Chrome DevTools MCP is different. Instead of spinning up a fresh browser, it connects to a running Chrome instance over the Chrome DevTools Protocol (CDP) and exposes the protocol’s capabilities as MCP tools. The headline capabilities are the ones you’d expect from the DevTools panel:
+Chrome DevTools MCP مختلف. فبدلًا من إطلاق متصفّح جديد، يتصل بنسخة Chrome قيد التشغيل عبر بروتوكول Chrome DevTools (CDP)، ويعرّض قدرات البروتوكول كأدوات MCP. والقدرات الرئيسية هي ما تتوقّعه من لوحة DevTools:
 
-- Read the console.
-- Read network requests and responses, including timing.
-- Take performance traces.
-- Inspect the DOM.
-- Evaluate JavaScript in the page context.
+- قراءة الطرفية.
+- قراءة طلبات الشبكة واستجاباتها، بما فيها التوقيت.
+- أخذ تتبّعات للأداء.
+- فحص DOM.
+- تنفيذ JavaScript في سياق الصفحة.
 
-Notice what’s not in that list: “drive a scripted test suite.” Chrome DevTools MCP isn’t really about navigation and clicks, even though it can do those. It’s about *diagnosing* what’s happening in a page, the same way you’d open DevTools as a human developer.
+لاحظ ما ليس في تلك القائمة: «قيادة مجموعة اختبارات مكتوبة». فـChrome DevTools MCP ليس في الحقيقة عن التنقّل والنقرات، وإن كان يستطيع فعلها. إنه عن *تشخيص* ما يحدث في صفحة، بالطريقة نفسها التي تفتح بها DevTools كمطوّر بشري.
 
-This is the tool I reach for when the question is “why is this slow?” or “what’s in the console?” or “which request is failing?” The agent can pull the network tab, find the failing request, show you the response body, and tell you whether the 500 is in the request or the response. For performance issues, it can take a profile, parse the trace, and tell you where the time went.
+هذه هي الأداة التي أمدّ إليها يدي حين يكون السؤال «لماذا هذا بطيء؟» أو «ماذا في الطرفية؟» أو «أي طلب يفشل؟». يستطيع الوكيل سحب تبويب الشبكة، والعثور على الطلب الفاشل، وعرض جسم الاستجابة عليك، وإخبارك هل الخطأ 500 في الطلب أم في الاستجابة. ولقضايا الأداء، يستطيع أخذ ملفّ توصيف، وتحليل التتبّع، وإخبارك أين ذهب الوقت.
 
-It is not what I’d use for “please click through the checkout flow.” That’s what Playwright MCP is for.
+وهي ليست ما سأستخدمه لـ«من فضلك انقر عبر تدفّق الشراء». فذلك ما Playwright MCP له.
 
-A good mental model: Chrome DevTools MCP is for the agent to *observe*. Playwright MCP is for the agent to *act*.
+نموذج ذهني جيد: Chrome DevTools MCP لـ*ملاحظة* الوكيل. وPlaywright MCP لـ*فعل* الوكيل.
 
-## Claude in Chrome: the agent in your browser
+## Claude in Chrome: الوكيل في متصفّحك
 
-Claude in Chrome is the most different of the three. It’s a browser extension that injects the agent into your actual Chrome session. The agent sees what you see, uses the tabs you have open, and—if you grant it—can click around inside apps you’re already logged into.
+Claude in Chrome هو الأكثر اختلافًا بين الثلاثة. إنه إضافة متصفّح تحقن الوكيل في جلسة Chrome الفعلية لديك. فيرى الوكيل ما تراه، ويستخدم التبويبات المفتوحة عندك، ويستطيع — إن منحته ذلك — أن ينقر هنا وهناك داخل تطبيقات أنت مسجَّل الدخول إليها أصلًا.
 
-This is the one I reach for when the task depends on state that only exists in my real browser. “Please find all the Linear tickets assigned to me this week that mention ‘flaky test’ and summarize them.” That task needs me to be logged into Linear, which means it needs my actual session, which means Playwright MCP is the wrong tool because it starts from zero. Claude in Chrome is right here.
+هذه هي التي أمدّ إليها يدي حين تعتمد المهمة على حالة لا توجد إلا في متصفّحي الحقيقي. «من فضلك اعثر على كل تذاكر Linear المسندة إليّ هذا الأسبوع والتي تذكر «flaky test»، ولخّصها.» تلك المهمة تحتاج أن أكون مسجَّل الدخول إلى Linear، وهذا يعني أنها تحتاج جلستي الفعلية، وهذا يعني أن Playwright MCP أداة خطأ لأنها تبدأ من الصفر. وClaude in Chrome هو الصواب هنا.
 
-The tradeoff is that you lose everything that comes from a clean room. The agent might be looking at a stale tab. Your browser extensions might be interfering with the page. The state you’re seeing is the state *right now*, which is not reproducible for anybody but you. For the specific class of tasks where that’s what you want, it’s magical. For testing and verification, it’s the wrong shape.
+والمقايضة أنك تخسر كل ما يأتي من غرفة نظيفة. فقد ينظر الوكيل إلى تبويب قديم. وقد تتداخل إضافات متصفّحك مع الصفحة. والحالة التي تراها هي حالة *الآن*، وهي غير قابلة لإعادة الإنتاج لأي أحد غيرك. وللفئة المحدّدة من المهام التي تريد فيها ذلك، إنه ساحر. وللاختبار والتحقّق، إنه الشكل الخطأ.
 
-It’s also the tool that needs the most user judgment because the agent is interacting with your real accounts on your real services. The rules in your head about “don’t let the agent click on this email link” apply in full. Claude in Chrome has a safety model that’s thoughtful about this, but the responsibility doesn’t disappear—it shifts to you.
+وهو أيضًا الأداة التي تحتاج أكبر قدر من حكم المستخدم، لأن الوكيل يتفاعل مع حساباتك الحقيقية على خدماتك الحقيقية. فالقواعد في رأسك عن «لا تدع الوكيل ينقر على رابط البريد هذا» تنطبق بالكامل. ولـClaude in Chrome نموذج أمان متأنٍّ في هذا، لكن المسؤولية لا تختفي — بل تنتقل إليك.
 
-## So which one for this workshop
+## فأي واحدة لهذه الورشة
 
-For today, Playwright MCP is the primary runtime tool, because today is about verification and the verification loop needs to be reproducible. When a lesson says “the agent probes the UI at runtime,” assume Playwright MCP in an isolated or explicitly-configured state unless I specify otherwise.
+لليوم، Playwright MCP هو أداة وقت التشغيل الأساسية، لأن اليوم عن التحقّق وحلقة التحقّق تحتاج أن تكون قابلة لإعادة الإنتاج. وحين يقول درس «الوكيل يجسّ الواجهة في وقت التشغيل»، افترض Playwright MCP في حالة معزولة أو مهيّأة صراحةً، ما لم أحدّد غير ذلك.
 
-Chrome DevTools MCP comes in when we talk about [failure dossiers](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)—reading the console and network is exactly what DevTools MCP is for, and a dossier that includes a captured console log is much more valuable than one that doesn’t.
+ويأتي Chrome DevTools MCP حين نتحدّث عن [ملفات الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — فقراءة الطرفية والشبكة هو بالضبط ما DevTools MCP له، وملف فشل يتضمّن سجل طرفية مُلتقطًا أنفع بكثير من ملف لا يتضمّنه.
 
-Claude in Chrome is an honorable mention. I’ll call it out in a couple of places where the task genuinely needs your real session. It’s not the default for anything in this workshop, but it’s the right tool for a narrow class of “look at the thing I’m already looking at” problems, and knowing it exists is part of being well-equipped.
+وClaude in Chrome ذكر تشريفي. سأشير إليه في موضعين حيث تحتاج المهمة جلستك الحقيقية فعلًا. إنه ليس الافتراضي لأي شيء في هذه الورشة، لكنه الأداة الصحيحة لفئة ضيّقة من مشكلات «انظر إلى الشيء الذي أنظر إليه أصلًا»، ومعرفة أنه موجود جزء من كونك مجهّزًا جيدًا.
 
-## The bigger point
+## النقطة الأكبر
 
-All three of these tools exist to give the agent a runtime reality check. Static analysis tells the agent “your code compiles.” Tests tell the agent “your code behaves in the ways I thought to check.” Runtime tools tell the agent “the code actually runs in a real browser and here’s what happened.” They’re the layer between writing code and shipping code, and until recently they didn’t exist for agents at all.
+هذه الأدوات الثلاث كلها موجودة لتمنح الوكيل فحصًا واقعيًا في وقت التشغيل. فالتحليل الساكن يقول للوكيل «شيفرتك تُصرَّف». والاختبارات تقول للوكيل «شيفرتك تتصرف بالطرق التي فكّرت في فحصها». وأدوات وقت التشغيل تقول للوكيل «الشيفرة تجري فعلًا في متصفّح حقيقي وهذا ما حدث». إنها الطبقة بين كتابة الشيفرة وشحنها، وإلى عهد قريب لم تكن موجودة للوكلاء أصلًا.
 
-(This entire ecosystem is built on the [Model Context Protocol](https://modelcontextprotocol.io/), which is how agents discover and call tools. If you’re curious about the plumbing, go read the spec.)
+(هذا النظام البيئي كله مبني على [بروتوكول سياق النموذج](https://modelcontextprotocol.io/)، وهو كيف يكتشف الوكلاء الأدوات ويستدعونها. وإن كنت فضوليًا بشأن التوصيلات، اذهب واقرأ المواصفة.)
 
-The thing I want to flag before we move on: **the runtime loop is where agents currently add the most marginal value per minute.** A unit test catches mistakes before runtime. A runtime probe catches mistakes the test didn’t think of. And because runtime probes are slower and more expensive than unit tests, the agent is a much better fit for them than a developer—the agent doesn’t mind running the probe eight times in an afternoon. You would.
+والشيء الذي أريد التنبيه إليه قبل أن نمضي: **حلقة وقت التشغيل هي حيث يضيف الوكلاء حاليًا أكبر قيمة هامشية في الدقيقة.** فالاختبار الوحدوي يلتقط الأخطاء قبل وقت التشغيل. والمسبر في وقت التشغيل يلتقط أخطاء لم تفكّر فيها الاختبارات. ولأن مسابر وقت التشغيل أبطأ وأغلى من الاختبارات الوحدوية، فالوكيل أنسب لها بكثير من المطوّر — فالوكيل لا يمانع تشغيل المسبر ثماني مرات في ظهيرة واحدة. أما أنت فتمانع.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Runtime Probes in the Development Loop](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [مسابر وقت التشغيل في حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
+- [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)

@@ -1,26 +1,26 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/wire-accessibility-checks-into-shelf-solution"
 ---
 
-This lab ships two files. One is a Playwright spec that runs axe-core against Shelf’s highest-signal routes. The other is a five-item markdown checklist for the things the scanner cannot prove. Together, they turn “we care about accessibility” into “accessibility regressions break the build.” That is the whole point.
+يشحن هذا المختبر ملفين. أحدهما مواصفة Playwright تشغّل axe-core على مسارات Shelf الأعلى إشارة. والآخر قائمة تحقّق markdown من خمسة بنود للأمور التي لا يستطيع الماسح إثباتها. معًا، يحوّلان «نحن نهتم بإمكانية الوصول» إلى «انحدارات إمكانية الوصول تكسر البناء». وهذا هو المقصود كله.
 
-## What to add
+## ما يجب إضافته
 
-### The dependency
+### الاعتماد
 
-`@axe-core/playwright` may already be in `devDependencies`. If it is not, add it:
+قد يكون `@axe-core/playwright` موجودًا بالفعل في `devDependencies`. إن لم يكن، فأضفه:
 
 ```bash
 npm install -D @axe-core/playwright
 ```
 
-One dependency. No runtime cost in production. No plugin carnival.
+اعتماد واحد. لا كلفة وقت تشغيل في الإنتاج. ولا كرنفال إضافات.
 
-### The spec: `tests/accessibility.spec.ts`
+### المواصفة: `tests/accessibility.spec.ts`
 
-Here is a clean first version that matches the current Shelf starter shape:
+إليك نسخة أولى نظيفة تطابق شكل بادئة Shelf الحالية:
 
 ```typescript
 import AxeBuilder from '@axe-core/playwright';
@@ -50,17 +50,17 @@ test('design-system page has no automated accessibility violations', async ({ pa
 });
 ```
 
-Three things matter here.
+ثلاثة أمور تهمّ هنا.
 
-First: these are public routes. That is deliberate. The current starter already has a public Playwright loop, so this spec drops straight into `tests/` and starts paying rent immediately. You can add authenticated routes later once the storage-state and seed-helper labs are in place. Do not make the first accessibility pass harder than it needs to be.
+أولًا: هذه مسارات عامة. وهذا متعمد. البادئة الحالية لديها بالفعل حلقة Playwright عامة، لذا تنزل هذه المواصفة مباشرة في `tests/` وتبدأ في دفع إيجارها فورًا. يمكنك إضافة المسارات المصادَقة لاحقًا عندما تكون مختبرات حالة التخزين ومساعد التهيئة في مكانها. لا تجعل أول تمريرة لإمكانية الوصول أصعب مما تحتاج.
 
-Second: each test waits for a real element before running axe. The scan runs against the current DOM, so firing it immediately after `goto()` is how you end up auditing a loading state and calling it a website. Waiting for the `h1` is cheap and honest.
+ثانيًا: كل اختبار ينتظر عنصرًا حقيقيًا قبل تشغيل axe. يعمل الفحص على DOM الحالي، لذا فإن إطلاقه فورًا بعد `goto()` هو الطريق إلى تدقيق حالة تحميل وتسميتها موقعًا. انتظار `h1` رخيص وصادق.
 
-Third: `.withTags(['wcag2a', 'wcag2aa'])` scopes the scan to the rules most teams actually need as a gate. Pulling in every axe rule up front is how you turn a useful check into a suggestion engine nobody trusts.
+ثالثًا: `.withTags(['wcag2a', 'wcag2aa'])` يحصر الفحص في القواعد التي تحتاجها معظم الفرق فعلًا كبوابة. جلب كل قاعدة في axe من البداية هو كيف تحوّل فحصًا نافعًا إلى محرك اقتراحات لا يثق به أحد.
 
-If you’ve already built the authenticated project from the earlier auth labs, extend the file with a `/shelf` check. At that point the pattern is the same: reseed the shelf, navigate to `/shelf`, wait for the heading plus one seeded article, then run the scan. The important part is that public routes come first because the current starter can run them immediately.
+إن كنت قد بنيت مشروع المصادقة من مختبرات المصادقة السابقة، فوسّع الملف بفحص `/shelf`. عندئذٍ يكون النمط نفسه: أعد تهيئة الرف، وانتقل إلى `/shelf`، وانتظر العنوان مع مقالة واحدة مهيأة، ثم شغّل الفحص. المهم أن المسارات العامة تأتي أولًا لأن البادئة الحالية تستطيع تشغيلها فورًا.
 
-### The checklist: `docs/accessibility-smoke-checklist.md`
+### قائمة التحقّق: `docs/accessibility-smoke-checklist.md`
 
 ```markdown
 # Accessibility smoke checklist
@@ -81,13 +81,13 @@ covers what a scanner can prove — this file covers what it cannot.
   in a screen reader when they appear?
 ```
 
-Five checks. Each one names a concrete interaction and a concrete success condition. None of them can be proven by axe-core alone, which is why the checklist exists.
+خمسة فحوصات. كل واحد يسمّي تفاعلًا ملموسًا وشرط نجاح ملموسًا. لا يمكن إثبات أي منها بـ axe-core وحده، ولهذا توجد القائمة.
 
-Notice the framing in the opener: “the automated axe scan covers what a scanner can prove — this file covers what it cannot.” That sentence does real work. It stops people from treating the checklist as redundant with the spec.
+لاحظ الصياغة في المقدمة: «فحص axe الآلي يغطي ما يستطيع الماسح إثباته — وهذا الملف يغطي ما لا يستطيع». تلك الجملة تؤدي عملًا حقيقيًا. إنها تمنع الناس من اعتبار القائمة زائدة عن المواصفة.
 
-### The CLAUDE.md tie-in
+### الصلة بـ CLAUDE.md
 
-The instructions file should name both artifacts explicitly:
+ينبغي أن يسمّي ملف التعليمات كلا الأثرين صراحة:
 
 ```markdown
 ## Accessibility
@@ -99,46 +99,46 @@ The instructions file should name both artifacts explicitly:
 - Suppressions must be scoped narrowly with a written reason in code.
 ```
 
-Without this, the spec is just another file the agent may or may not notice. The loop only closes when the instructions tell the agent the check exists and when to run it.
+بلا هذا، تبقى المواصفة مجرد ملف آخر قد يلاحظه الوكيل أو لا يلاحظه. لا تُغلق الحلقة إلا عندما تخبر التعليمات الوكيل أن الفحص موجود ومتى يشغّله.
 
-## What you still need to run
+## ما ما زلت بحاجة إلى تشغيله
 
-Confirm the dependency:
+تأكد من الاعتماد:
 
 ```bash
 grep '@axe-core/playwright' package.json
 ```
 
-Confirm both files exist:
+تأكد من وجود الملفين:
 
 ```bash
 ls tests/accessibility.spec.ts
 ls docs/accessibility-smoke-checklist.md
 ```
 
-Run the spec directly:
+شغّل المواصفة مباشرة:
 
 ```bash
 npx playwright test tests/accessibility.spec.ts
 ```
 
-Or run it through the main suite:
+أو شغّلها عبر المجموعة الرئيسية:
 
 ```bash
 npm run test -- tests/accessibility.spec.ts
 ```
 
-If you later add the authenticated `/shelf` check, make sure it still runs through the same main loop instead of turning into a one-off ritual no one remembers.
+إن أضفت لاحقًا فحص `/shelf` المصادَق، فتأكد من أنه ما زال يعمل عبر الحلقة الرئيسية نفسها بدلًا من أن يتحول إلى طقس منفرد لا يتذكره أحد.
 
-## Patterns to take away
+## أنماط تستحق الاحتفاظ بها
 
-- Start with routes the current starter can run immediately. Public pages first, authenticated pages once the auth loop exists.
-- Scan after render, not after navigation. The DOM you audit should be the DOM the user sees.
-- Scope the ruleset. `wcag2a` and `wcag2aa` are the right default for a trusted gate.
-- Document the gap. Axe catches a class of issues, not the whole problem.
-- Name the files in `CLAUDE.md`. A test the agent never runs is not a gate.
+- ابدأ بمسارات تستطيع البادئة الحالية تشغيلها فورًا. الصفحات العامة أولًا، والصفحات المصادَقة عندما توجد حلقة المصادقة.
+- افحص بعد التصيير، لا بعد الانتقال. يجب أن يكون DOM الذي تدققه هو DOM الذي يراه المستخدم.
+- احصر مجموعة القواعد. `wcag2a` و`wcag2aa` هما الافتراضي الصحيح لبوابة موثوقة.
+- وثّق الفجوة. يلتقط Axe فئة من المشكلات، لا المشكلة كلها.
+- سمّ الملفات في `CLAUDE.md`. اختبار لا يشغّله الوكيل أبدًا ليس بوابة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Wire Accessibility Checks Into Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf)
-- [Accessibility as a Quality Gate](https://stevekinney.com/courses/self-testing-ai-agents/accessibility-as-a-quality-gate)
+- [مختبر: توصيل فحوصات إمكانية الوصول إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-accessibility-checks-into-shelf)
+- [إمكانية الوصول كبوابة جودة](https://stevekinney.com/courses/self-testing-ai-agents/accessibility-as-a-quality-gate)

@@ -1,12 +1,12 @@
 ---
-title: "Building a Navigation Menu"
-lang: en
+title: "بناء قائمة تنقّل"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/navigation-menu-container-queries"
 ---
 
-Let’s start with our basic HTML structure for a simple navigation menu.
+لنبدأ ببنية HTML الأساسية الخاصة بقائمة تنقّل بسيطة.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/50b623a2525b1668398de857194d42e94caf9d912b7bf6c317f4ac94f9b4f32f.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/50b623a2525b1668398de857194d42e94caf9d912b7bf6c317f4ac94f9b4f32f.html)*
 
 ```html
 <div>
@@ -25,28 +25,28 @@ Let’s start with our basic HTML structure for a simple navigation menu.
 </div>
 ```
 
-We have a basic navigation with a brand logo and five navigation links, but they’re stacked vertically and completely unstyled. Let’s transform this into an intelligent navigation that adapts not to the screen size, but to the size of its container—making it truly reusable in headers, sidebars, or any layout context.
+لدينا تنقّل أساسي فيه شعار العلامة التجارية وخمسة روابط تنقّل، لكنها مكدّسة رأسيًا وبلا أي تنسيق. لنحوّلها إلى تنقّل ذكي يتكيّف مع حجم حاويته لا مع حجم الشاشة — ما يجعله قابلًا لإعادة الاستخدام حقًا في الترويسات أو الأشرطة الجانبية أو أي سياق تخطيط.
 
-## Understanding Container vs Media Queries
+## فهم الحاوية مقابل استعلامات الوسائط
 
-Before we start building, it’s crucial to understand why container queries are revolutionary for navigation design. Traditional responsive navigation uses media queries that respond to viewport size:
+قبل أن نبدأ البناء، من الضروري أن نفهم لماذا تُعدّ استعلامات الحاوية ثورية في تصميم التنقّل. فالتنقّل المستجيب التقليدي يستخدم استعلامات وسائط تستجيب لحجم إطار العرض:
 
-**Media queries think globally**: “When the browser window is 768px wide, switch to mobile menu” **Container queries think locally**: “When this navigation’s container is 384px wide, switch to mobile menu”
+**استعلامات الوسائط تفكّر عالميًا**: «عندما يبلغ عرض نافذة المتصفح 768px، انتقل إلى قائمة الجوال» **استعلامات الحاوية تفكّر محليًا**: «عندما يبلغ عرض حاوية هذا التنقّل 384px، انتقل إلى قائمة الجوال»
 
-This means our navigation will work perfectly whether it’s:
+وهذا يعني أن تنقّلنا سيعمل بشكل مثالي سواء كان:
 
-- Full-width in a page header
-- Constrained in a dashboard sidebar
-- Embedded in a narrow widget
-- Part of a multi-column layout
+- بعرض كامل في ترويسة صفحة
+- مقيَّدًا في شريط جانبي للوحة معلومات
+- مضمّنًا في أداة ضيّقة
+- جزءًا من تخطيط متعدّد الأعمدة
 
-Let’s build this step by step using container queries to create truly modular navigation.
+لنبنِ هذا خطوة بخطوة باستخدام استعلامات الحاوية لخلق تنقّل معياريّ حقًا.
 
-## Setting Up Container Query Context
+## تهيئة سياق استعلام الحاوية
 
-First, let’s establish our container as a query context and add basic navigation styling, building on techniques from our [statistics card tutorial](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
+أولًا، لنثبّت حاويتنا بوصفها سياق استعلام، ونضيف تنسيقًا أساسيًا للتنقّل، انطلاقًا من التقنيات التي تعلّمناها في [درس بطاقة الإحصاءات](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
 
-*Setting Up Container Query Context — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/c7b5a6def23094a2f55da3176f8c65916ebb2e7691aea534f81e6c53f5570d37.html)*
+*تهيئة سياق استعلام الحاوية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c7b5a6def23094a2f55da3176f8c65916ebb2e7691aea534f81e6c53f5570d37.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -65,22 +65,22 @@ First, let’s establish our container as a query context and add basic navigati
 </div>
 ```
 
-Foundation setup:
+الإعداد الأساسي:
 
-- `@container`: Establishes this element as a container query context—child elements can now respond to this container’s width
-- `flex items-center justify-between`: Creates a horizontal layout with brand on left, links on right
-- `px-4 py-3`: 16px horizontal and 12px vertical padding for comfortable spacing
-- `text-xl font-bold`: Prominent brand typography (20px, 700 weight)
-- `gap-6`: 24px spacing between navigation links for readability
-- `hover:text-slate-900`: Darker text on hover for interactive feedback
+- `@container`: يثبّت هذا العنصر بوصفه سياق استعلام حاوية — فيمكن لعناصره الآن أن تستجيب لعرض هذه الحاوية
+- `flex items-center justify-between`: ينشئ تخطيطًا أفقيًا بعلامة تجارية على اليسار وروابط على اليمين
+- `px-4 py-3`: حشو أفقي 16px ورأسي 12px لتباعد مريح
+- `text-xl font-bold`: طباعة بارزة للعلامة التجارية (20px، بوزن 700)
+- `gap-6`: تباعد قدره 24px بين روابط التنقّل من أجل قابلية القراءة
+- `hover:text-slate-900`: نص أغمق عند التحويم لتوفير تغذية راجعة تفاعلية
 
-This creates a clean horizontal navigation that works well in wide containers, but will overflow in narrow spaces.
+ينشئ هذا تنقّلًا أفقيًا نظيفًا يعمل جيدًا في الحاويات العريضة، لكنه سيفيض في المساحات الضيّقة.
 
-## Adding Container-Responsive Link Spacing
+## إضافة تباعد الروابط المستجيب للحاوية
 
-Now let’s make the navigation adapt its spacing based on container width. In medium-width containers, we’ll use tighter spacing to fit more content.
+الآن لنجعل التنقّل يتكيّف مع تباعده بحسب عرض الحاوية. ففي الحاويات متوسطة العرض سنستخدم تباعدًا أضيق لاستيعاب محتوى أكثر.
 
-*Adding Container-Responsive Link Spacing — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/0f0506cbd67bf5b1355d85cd8809eff1b61c0f0d81baa17c7a762d9929e5faf3.html)*
+*إضافة تباعد الروابط المستجيب للحاوية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0f0506cbd67bf5b1355d85cd8809eff1b61c0f0d81baa17c7a762d9929e5faf3.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -109,18 +109,18 @@ Now let’s make the navigation adapt its spacing based on container width. In m
 </div>
 ```
 
-Container-responsive spacing:
+التباعد المستجيب للحاوية:
 
-- `gap-3 @lg:gap-6`: 12px gap by default, expanding to 24px when the container is at least 512px wide
-- `transition-colors`: Smooth color transitions for polished hover effects
+- `gap-3 @lg:gap-6`: فاصل 12px افتراضيًا، يتّسع إلى 24px عندما يبلغ عرض الحاوية 512px على الأقل
+- `transition-colors`: انتقالات ألوان ناعمة لتأثيرات تحويم مصقولة
 
-The `@lg:` prefix means “when this container (not the viewport) is large.” This ensures optimal spacing regardless of where the navigation is placed in your layout.
+تعني البادئة `@lg:` «عندما تكون هذه الحاوية (لا إطار العرض) كبيرة». وهذا يضمن التباعد الأمثل أينما وُضع التنقّل في تخطيطك.
 
-## Creating Compact Navigation Layout
+## إنشاء تخطيط تنقّل مضغوط
 
-For medium-width containers, let’s create a more compact layout where some links might be abbreviated or repositioned.
+في الحاويات متوسطة العرض، لننشئ تخطيطًا أكثر إحكامًا حيث قد تُختصر بعض الروابط أو يُعاد ترتيبها.
 
-*Creating Compact Navigation Layout — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/b44697b8d2d537dece48b72e1c0c6dd416d00a9b95d605b9a123167f2a2bc14b.html)*
+*إنشاء تخطيط تنقّل مضغوط — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b44697b8d2d537dece48b72e1c0c6dd416d00a9b95d605b9a123167f2a2bc14b.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -152,20 +152,20 @@ For medium-width containers, let’s create a more compact layout where some lin
 </div>
 ```
 
-Compact layout refinements:
+تحسينات التخطيط المضغوط:
 
-- `text-lg @lg:text-xl`: Brand text scales from 18px to 20px based on container space
-- `hidden @sm:flex`: Navigation links are hidden by default, appear when container is at least 384px wide
-- `gap-2 @md:gap-3 @lg:gap-6`: Progressive spacing that adapts to container width (8px → 12px → 24px)
-- `hidden @md:block` on Portfolio: This link disappears in the most constrained horizontal layout
+- `text-lg @lg:text-xl`: يتكبّر نص العلامة التجارية من 18px إلى 20px بحسب المساحة المتاحة في الحاوية
+- `hidden @sm:flex`: روابط التنقّل مخفية افتراضيًا، وتظهر عندما يبلغ عرض الحاوية 384px على الأقل
+- `gap-2 @md:gap-3 @lg:gap-6`: تباعد تصاعدي يتكيّف مع عرض الحاوية (8px → 12px → 24px)
+- `hidden @md:block` على Portfolio: يختفي هذا الرابط في أكثر التخطيطات تقييدًا أفقيًا
 
-This creates a smart progressive disclosure where less critical navigation items disappear as space becomes limited.
+وهذا ينشئ كشفًا تصاعديًا ذكيًا تختفي فيه عناصر التنقّل الأقل أهمية مع ضيق المساحة.
 
-## Adding Hamburger Menu for Narrow Containers
+## إضافة قائمة برغر للحاويات الضيّقة
 
-Now let’s add a hamburger menu that appears when the container is too narrow for horizontal navigation.
+الآن لنضف قائمة برغر تظهر عندما تكون الحاوية ضيّقة أكثر من اللازم للتنقّل الأفقي.
 
-*Adding Hamburger Menu for Narrow Containers — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/fee8866ceed266c0cb0d642c3441683c535a0e74b9d90fd8fef52b420d2c2ff5.html)*
+*إضافة قائمة برغر للحاويات الضيّقة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/fee8866ceed266c0cb0d642c3441683c535a0e74b9d90fd8fef52b420d2c2ff5.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -216,21 +216,21 @@ Now let’s add a hamburger menu that appears when the container is too narrow f
 </div>
 ```
 
-Hamburger menu addition:
+إضافة قائمة برغر:
 
-- `@sm:hidden`: Mobile menu button appears only when container is less than 384px wide
-- `w-8 h-8`: 32px square button provides adequate touch target
-- `rounded-md hover:bg-slate-100`: Subtle hover feedback with light background
-- SVG hamburger icon with `w-5 h-5`: 20px icon size for good visual balance
-- `text-slate-600`: Muted icon color that darkens to `currentColor` on hover
+- `@sm:hidden`: لا يظهر زر قائمة الجوال إلا عندما يقلّ عرض الحاوية عن 384px
+- `w-8 h-8`: زر مربّع بحجم 32px يوفّر مساحة لمس مناسبة
+- `rounded-md hover:bg-slate-100`: تغذية راجعة خفيفة عند التحويم عبر خلفية فاتحة
+- أيقونة برغر SVG بحجم `w-5 h-5`: حجم أيقونة 20px لتوازن بصري جيد
+- `text-slate-600`: لون أيقونة خافت يتّغمق إلى `currentColor` عند التحويم
 
-Now we have intelligent navigation that shows the hamburger menu only when the container is truly constrained—not based on screen size, but on actual available space.
+الآن لدينا تنقّل ذكي يُظهر قائمة البرغر فقط عندما تكون الحاوية مقيَّدة فعلًا — لا بناءً على حجم الشاشة، بل على المساحة المتاحة فعليًا.
 
-## Adding Dropdown Menu Implementation
+## إضافة تنفيذ قائمة منسدلة
 
-Let’s complete the hamburger functionality with a dropdown menu that appears when the button is activated.
+لنُكمل وظيفة البرغر بقائمة منسدلة تظهر عند تفعيل الزر.
 
-*Adding Dropdown Menu Implementation — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/663fbef78df758ab2dc743ab12e8af263aede09b112aaf230bbb3450c6a8e65e.html)*
+*إضافة تنفيذ قائمة منسدلة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/663fbef78df758ab2dc743ab12e8af263aede09b112aaf230bbb3450c6a8e65e.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -350,22 +350,22 @@ Let’s complete the hamburger functionality with a dropdown menu that appears w
 </div>
 ```
 
-Dropdown menu implementation:
+تنفيذ القائمة المنسدلة:
 
-- `peer sr-only`: Hidden checkbox that manages the menu state using the peer system
-- `peer-checked:hidden` and `hidden peer-checked:block`: Icon switching between hamburger and X
-- `hidden peer-checked:block @sm:hidden`: Dropdown appears when checkbox is checked AND container is narrow
-- `border-t border-slate-200 bg-slate-50`: Visual separation with subtle background
-- `block px-3 py-2`: Stacked vertical links with comfortable touch targets
-- `space-y-1`: 4px spacing between menu items
+- `peer sr-only`: مربع اختيار مخفي يدير حالة القائمة باستخدام نظام peer
+- `peer-checked:hidden` و`hidden peer-checked:block`: تبديل الأيقونة بين البرغر وX
+- `hidden peer-checked:block @sm:hidden`: تظهر القائمة المنسدلة عندما يكون مربع الاختيار محدَّدًا **و** تكون الحاوية ضيّقة
+- `border-t border-slate-200 bg-slate-50`: فصل بصري مع خلفية خفيفة
+- `block px-3 py-2`: روابط رأسية مكدّسة مع مساحات لمس مريحة
+- `space-y-1`: تباعد قدره 4px بين عناصر القائمة
 
-The beauty is that all menu items appear in the dropdown—even “Portfolio” which was hidden in the compact horizontal layout!
+الجمال هنا أن كل عناصر القائمة تظهر في القائمة المنسدلة — حتى «Portfolio» التي كانت مخفية في التخطيط الأفقي المضغوط!
 
-## Adding Focus States and Accessibility
+## إضافة حالات التركيز وتحسين الوصولية
 
-Let’s enhance accessibility with proper focus states and ARIA attributes.
+لنُحسّن الوصولية بحالات تركيز سليمة وخصائص ARIA.
 
-*Adding Focus States and Accessibility — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/af637381985d062059b40072ada89794581e935cb9ba6a66f6fa32954c952cbf.html)*
+*إضافة حالات التركيز وتحسين الوصولية — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/af637381985d062059b40072ada89794581e935cb9ba6a66f6fa32954c952cbf.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white">
@@ -493,21 +493,21 @@ Let’s enhance accessibility with proper focus states and ARIA attributes.
 </div>
 ```
 
-Accessibility enhancements:
+تحسينات الوصولية:
 
-- `role="navigation" aria-label="Main navigation"`: Clearly identifies the navigation landmark for screen readers
-- `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600`: Blue focus rings for keyboard navigation
-- `aria-label="Toggle navigation menu"`: Descriptive label for the mobile menu button
-- `aria-hidden="true"` on SVG icons: Prevents screen readers from announcing decorative icons
-- `focus-within:` states: Visual feedback when the mobile menu button receives focus
+- `role="navigation" aria-label="Main navigation"`: يوضّح بجلاء معلم التنقّل لقارئات الشاشة
+- `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600`: حلقات تركيز زرقاء للتنقّل بلوحة المفاتيح
+- `aria-label="Toggle navigation menu"`: تسمية وصفية لزر قائمة الجوال
+- `aria-hidden="true"` على أيقونات SVG: يمنع قارئات الشاشة من إعلان الأيقونات الزخرفية
+- حالات `focus-within:`: تغذية راجعة بصرية عند تحوّل التركيز إلى زر قائمة الجوال
 
-The `focus-visible` pseudo-class ensures focus rings only appear for keyboard navigation, providing excellent UX for both mouse and keyboard users.
+تضمن الصنف الزائف `focus-visible` أن حلقات التركيز لا تظهر إلا عند التنقّل بلوحة المفاتيح، ما يوفّر تجربة ممتازة لمستخدمي الفأرة ولوحة المفاتيح على حدّ سواء.
 
-## Adding Polish and Active States
+## إضافة اللمسات النهائية وحالات النشط
 
-Finally, let’s add some polish with active navigation states and smooth transitions throughout.
+أخيرًا، لنضف بعض اللمسات النهائية بحالات تنقّل نشطة وانتقالات ناعمة في كل مكان.
 
-*Adding Polish and Active States — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/093abbe54d25a41107baee2490f3ee1fa6397e55bf2be28a0c094501c514a9eb.html)*
+*إضافة اللمسات النهائية وحالات النشط — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/093abbe54d25a41107baee2490f3ee1fa6397e55bf2be28a0c094501c514a9eb.html)*
 
 ```html
 <div class="@container border-b border-slate-200 bg-white shadow-sm">
@@ -637,22 +637,22 @@ Finally, let’s add some polish with active navigation states and smooth transi
 </div>
 ```
 
-Polish enhancements:
+تحسينات اللمسات النهائية:
 
-- `shadow-sm`: Subtle shadow adds depth to the navigation bar
-- `@lg:px-6`: Increased horizontal padding in larger containers for better proportions
-- `bg-blue-50 text-blue-700`: Active state styling for current page (Home)
-- `px-3 py-1.5 rounded-md`: Button-like styling for all navigation links
-- `hover:bg-slate-50`: Consistent hover background across horizontal links
-- `bg-slate-50/80 backdrop-blur-sm`: Slightly transparent dropdown with backdrop blur for modern feel
-- `py-2.5`: Slightly taller touch targets in mobile menu (10px vs 8px)
-- `transition-all` on icons: Smooth transitions for icon changes
+- `shadow-sm`: ظل خفيف يضيف عمقًا إلى شريط التنقّل
+- `@lg:px-6`: حشو أفقي أكبر في الحاويات الأكبر لنسب أفضل
+- `bg-blue-50 text-blue-700`: تنسيق حالة النشط للصفحة الحالية (Home)
+- `px-3 py-1.5 rounded-md`: تنسيق يشبه الأزرار لجميع روابط التنقّل
+- `hover:bg-slate-50`: خلفية تحويم موحّدة عبر الروابط الأفقية
+- `bg-slate-50/80 backdrop-blur-sm`: قائمة منسدلة شبه شفافة مع تمويه الخلفية لإحساس عصري
+- `py-2.5`: مساحات لمس أطول قليلًا في قائمة الجوال (10px مقابل 8px)
+- `transition-all` على الأيقونات: انتقالات ناعمة عند تغيّر الأيقونات
 
-## Why Container Queries are Revolutionary
+## لماذا استعلامات الحاوية ثورية
 
-This navigation demonstrates the fundamental shift from viewport-responsive to container-responsive design:
+يُظهر هذا التنقّل التحوّل الجوهري من التصميم المستجيب لإطار العرض إلى التصميم المستجيب للحاوية:
 
-**Traditional Media Query Approach:**
+**نهج استعلام الوسائط التقليدي:**
 
 ```css
 /* Always responds to screen size */
@@ -666,7 +666,7 @@ This navigation demonstrates the fundamental shift from viewport-responsive to c
 }
 ```
 
-**Our Container Query Approach:**
+**نهج استعلام الحاوية لدينا:**
 
 ```css
 /* Responds to container size */
@@ -680,23 +680,23 @@ This navigation demonstrates the fundamental shift from viewport-responsive to c
 }
 ```
 
-**Real-world benefits:**
+**الفوائد في العالم الحقيقي:**
 
-**Sidebar Integration**: Place this navigation in a 300px dashboard sidebar—it automatically becomes a hamburger menu even on desktop, because the container is narrow.
+**التكامل مع الشريط الجانبي**: ضع هذا التنقّل في شريط جانبي للوحة معلومات بعرض 300px — يتحوّل تلقائيًا إلى قائمة برغر حتى على سطح المكتب، لأن الحاوية ضيّقة.
 
-**Widget Contexts**: Embed it in a narrow widget or card—the navigation adapts to the space available, not the screen size.
+**سياقات الأدوات**: ضمّنه في أداة ضيّقة أو بطاقة — يتكيّف التنقّل مع المساحة المتاحة لا مع حجم الشاشة.
 
-**Flexible Layouts**: Use it in CSS Grid areas or Flexbox containers of any size—the navigation intelligence is self-contained.
+**التخطيطات المرنة**: استخدمه في مناطق CSS Grid أو حاويات Flexbox بأي حجم — ذكاء التنقّل محصور ذاتيًّا.
 
-**Component Reusability**: The same navigation component works perfectly in headers, sidebars, modals, or any layout context without modification.
+**إعادة استخدام المكوّنات**: يعمل مكوّن التنقّل نفسه بشكل مثالي في الترويسات والأشرطة الجانبية والنوافذ المنبثقة أو أي سياق تخطيط دون تعديل.
 
-**No JavaScript Required**: All the responsive behavior is pure CSS, making it lightweight and reliable.
+**لا حاجة إلى JavaScript**: كل السلوك المستجيب هو CSS خالص، ما يجعله خفيفًا وموثوقًا.
 
-Container queries make components truly modular—they bring their own responsive intelligence instead of relying on global breakpoints that may not match their actual context.
+تجعل استعلامات الحاوية المكوّنات معيارية حقًا — فهي تجلب ذكاءها الاستجابي معها بدلًا من الاعتماد على نقاط توقف عامة قد لا تطابق سياقها الفعلي.
 
-## Challenges
+## التحديات
 
-Try building these variations:
+جرّب بناء هذه الصيغ:
 
-1. **Breadcrumb Navigation**: Create a breadcrumb component that progressively collapses items (showing “Home > … > Current”) when the container gets narrow, using similar container query techniques.
-2. **Tabbed Navigation**: Build a tab interface that switches from horizontal tabs to a dropdown selector when the container width can’t accommodate all tabs, demonstrating container queries with different UI patterns.
+1. **تنقّل مسار التنقّل (Breadcrumbs)**: أنشئ مكوّن breadcrumbs ينهار تدريجيًا (يُظهر «Home > … > Current») عندما تضيق الحاوية، باستخدام تقنيات استعلام الحاوية المشابهة.
+2. **تنقّل بتبويبات**: ابنِ واجهة تبويبات تنتقل من التبويبات الأفقية إلى مُحدِّد منسدل عندما لا يتّسع عرض الحاوية لكل التبويبات، بما يُظهر استعلامات الحاوية مع أنماط واجهة مختلفة.

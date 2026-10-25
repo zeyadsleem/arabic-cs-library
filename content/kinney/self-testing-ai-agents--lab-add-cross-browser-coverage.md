@@ -1,61 +1,61 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر: إضافة تغطية عبر المتصفحات"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage"
 ---
 
-This lab takes the abstract advice and turns it into an actual Playwright layout the agent can run without melting the fast loop.
+يأخذ هذا المختبر النصيحة المجرّدة ويحوّلها إلى تخطيط Playwright فعلي يستطيع الوكيل تشغيله دون إذابة الحلقة السريعة.
 
-> **Prerequisite**
+> **المتطلّب المسبق**
 >
-> Complete [Cross-Browser Validation Without Burning the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop) first. This lab assumes you are deliberately *not* putting the full suite on every browser.
+> أكمل [التحقّق عبر المتصفحات دون إحراق حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop) أولًا. يفترض هذا المختبر أنك *لا* تضع المجموعة الكاملة على كل متصفح عن قصد.
 
-## The task
+## المهمة
 
-Add Firefox and WebKit coverage to a tagged smoke subset in Shelf while keeping Chromium as the default local and pull-request browser.
+أضف تغطية Firefox وWebKit إلى مجموعة فرعية موسومة من اختبارات الدخان في Shelf مع إبقاء Chromium المتصفح الافتراضي محليًا وفي طلبات السحب.
 
-## Step 1: add browser projects
+## الخطوة 1: أضف مشاريع المتصفحات
 
-Update `playwright.config.ts` in Shelf so it defines projects for:
+حدّث `playwright.config.ts` في Shelf كي يعرّف مشاريع من أجل:
 
 - Chromium
 - Firefox
 - WebKit
 
-Keep Chromium as the default project you run most often.
+أبقِ Chromium المشروع الافتراضي الذي تشغّله أكثر من غيره.
 
-The lesson’s **The Playwright projects that split the work** section in [Cross-Browser Validation Without Burning the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop) has a complete multi-project configuration block for Shelf. On the current starter, the smallest practical version is:
+يحتوي قسم **مشاريع Playwright التي تقسّم العمل** في درس [التحقّق عبر المتصفحات دون إحراق حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop) على كتلة إعداد كاملة متعددة المشاريع لـShelf. وفي النسخة الانطلاقية الحالية، أصغر نسخة عملية هي:
 
-- `chromium` for your normal local loop
-- `firefox-smoke` for the tagged public smoke subset
-- `webkit-smoke` for the tagged public smoke subset
+- `chromium` للحلقة المحلية العادية
+- `firefox-smoke` لمجموعة الدخان العامة الموسومة
+- `webkit-smoke` لمجموعة الدخان العامة الموسومة
 
-If you’ve already built `setup` and `authenticated` projects in the earlier auth labs, keep those in Chromium too. The key trick is that the default `test` script explicitly runs only the fast Chromium project, so Firefox and WebKit stay out of the everyday loop.
+إن كنت بنيت أصلًا مشروعي `setup` و`authenticated` في مختبرات المصادقة السابقة، فأبقهما في Chromium أيضًا. والحيلة الأساسية أن سكربت `test` الافتراضي يشغّل صراحة مشروع Chromium السريع وحده، فيبقى Firefox وWebKit خارج الحلقة اليومية.
 
-Before you can actually *run* the new projects locally, install the alternate browsers Playwright did not pull down when you set up the fast loop:
+قبل أن تستطيع فعلًا *تشغيل* المشاريع الجديدة محليًا، ثبّت المتصفحات البديلة التي لم ينزّلها Playwright حين أعددت الحلقة السريعة:
 
 ```bash
 npx playwright install --with-deps firefox webkit
 ```
 
-The lesson’s **Install the extra browsers first** callout explains why this is required (Playwright defaults to Chromium-only). Do this once per machine; CI runners will need it too — the nightly workflow you build in the next lab should run the same line before the test step for that reason.
+يشرح تنبيه **ثبّت المتصفحات الإضافية أولًا** في الدرس لماذا هذا مطلوب (فـPlaywright يقصر افتراضيًا على Chromium). افعل هذا مرة واحدة لكل آلة؛ وسيحتاج منفّذو CI إليه أيضًا — ولهذا ينبغي أن يشغّل سير العمل الليلي الذي تبنيه في المختبر التالي السطر نفسه قبل خطوة الاختبار.
 
-## Step 2: tag the smoke subset
+## الخطوة 2: وسّم مجموعة الدخان الفرعية
 
-Pick a small set of tests and tag them for cross-browser execution.
+اختر مجموعة صغيرة من الاختبارات ووسّمها للتنفيذ عبر المتصفحات.
 
-Good candidates:
+مرشحات جيدة:
 
-- the starter `tests/smoke.spec.ts`
-- the public `tests/playground.spec.ts` file if you built it in the locator lab
-- one form flow
-- one modal or drawer interaction
+- ملف `tests/smoke.spec.ts` الانطلاقي
+- ملف `tests/playground.spec.ts` العام إن كنت بنيته في مختبر المحددات
+- تدفّق نموذج واحد
+- تفاعل نافذة منبثقة أو درج واحد
 
-The lesson’s **Tag the right tests, not all the tests** section shows the Playwright tag syntax — `test('...', { tag: '@cross-browser' }, async ({ page }) => {...})` — and the matching `--grep @cross-browser` CLI invocation. Use that pattern directly. The simplest current Shelf shape is to tag the tests in `tests/smoke.spec.ts` and let the Firefox and WebKit projects match only that tagged subset.
+يعرض قسم **وسّم الاختبارات الصحيحة، لا كل الاختبارات** في الدرس صيغة الوسم في Playwright — `test('...', { tag: '@cross-browser' }, async ({ page }) => {...})` — ونداء CLI المطابق `--grep @cross-browser`. استخدم ذلك النمط مباشرة. وأبسط شكل حالي في Shelf هو وسم الاختبارات في `tests/smoke.spec.ts` وترك مشروعي Firefox وWebKit يطابقان تلك المجموعة الموسومة وحدها.
 
-## Step 3: add focused commands
+## الخطوة 3: أضف أوامر مركّزة
 
-Expose commands like these:
+اعرض أوامر كهذه:
 
 ```json
 {
@@ -66,63 +66,63 @@ Expose commands like these:
 }
 ```
 
-The exact script names can vary. The split should not.
+قد تختلف أسماء السكربتات الدقيقة. أما التقسيم فلا ينبغي أن يختلف.
 
-## Step 4: keep the artifacts browser-specific
+## الخطوة 4: أبقِ العناصر خاصة بكل متصفح
 
-If your Playwright config or CI job uploads traces and screenshots, make sure the browser name is visible in the artifact path or job name.
+إن كان إعداد Playwright أو مهمة CI لديك يرفع الآثار ولقطات الشاشة، فتأكّد من ظهور اسم المتصفح في مسار العنصر أو اسم المهمة.
 
-You want failures to read like this:
+تريد أن تُقرأ الإخفاقات هكذا:
 
-- Firefox failed on the login smoke test
-- WebKit failed on the modal focus smoke test
+- فشل Firefox في اختبار دخان تسجيل الدخول
+- فشل WebKit في اختبار دخان تركيز النافذة المنبثقة
 
-Not this:
+لا هكذا:
 
-- some browser failed somewhere, good luck
+- فشل متصفح ما في مكان ما، حظًا سعيدًا
 
-## Step 5: verify the split
+## الخطوة 5: تحقّق من التقسيم
 
-Run both commands:
+شغّل الأمرين:
 
-- the default Chromium loop
-- the cross-browser smoke loop
+- حلقة Chromium الافتراضية
+- حلقة الدخان عبر المتصفحات
 
-Then intentionally break something that one alternate browser is likely to care about:
+ثم اكسر شيئًا عمدًا من المرجّح أن يهمّ أحد المتصفحات البديلة:
 
-- a focus-management assertion
-- a layout-sensitive selector
-- a form-control behavior
+- تأكيد إدارة التركيز
+- محدد حسّاس للتخطيط
+- سلوك عنصر تحكّم في نموذج
 
-You are not trying to produce a fake “Safari bug.” You are checking that the workflow can make a browser-specific failure legible.
+أنت لا تحاول إنتاج «خطأ Safari» مزيف. أنت تتحقّق من أن سير العمل يستطيع جعل إخفاق خاص بمتصفح مقروءًا.
 
-## Acceptance criteria
+## معايير القبول
 
-- Shelf defines Chromium, Firefox, and WebKit Playwright projects
-- Chromium remains the default fast browser command
-- A tagged smoke subset exists for cross-browser coverage
-- A named command runs the cross-browser smoke subset across all three browser projects
-- Browser-specific artifacts or job names make failures easy to distinguish
-- The default Chromium command still works without pulling the full multi-browser matrix into every run
+- يعرّف Shelf مشاريع Playwright لـChromium وFirefox وWebKit
+- يبقى Chromium أمر المتصفح السريع الافتراضي
+- توجد مجموعة دخان موسومة للتغطية عبر المتصفحات
+- أمر مسمّى يشغّل مجموعة الدخان عبر المتصفحات على مشاريع المتصفحات الثلاثة كلها
+- العناصر أو أسماء المهام الخاصة بكل متصفح تجعل الإخفاقات سهلة التمييز
+- يظل أمر Chromium الافتراضي يعمل دون سحب مصفوفة المتصفحات الكاملة إلى كل تشغيل
 
-## Troubleshooting
+## استكشاف الأخطاء
 
-- If the cross-browser set is slow, cut the test list before you optimize the infrastructure.
-- If the same test is flaky in every browser, you do not have a browser problem. You have a waiting or determinism problem.
-- If WebKit behaves differently, treat that as signal first. You can decide later whether it is a product bug, a browser quirk, or a test assumption.
+- إن كانت مجموعة المتصفحات المتعددة بطيئة، فقلّص قائمة الاختبارات قبل أن تحسّن البنية التحتية.
+- إن كان الاختبار نفسه متذبذبًا في كل متصفح، فليست لديك مشكلة متصفح. لديك مشكلة انتظار أو حتمية.
+- إن تصرّف WebKit بشكل مختلف، فاعتبر ذلك إشارة أولًا. وتستطيع أن تقرّر لاحقًا إن كان خطأ منتج، أو غرابة متصفح، أو افتراضًا في الاختبار.
 
-## Stretch goals
+## أهداف إضافية
 
-- Run the cross-browser smoke subset only on pull requests touching UI paths.
-- Add one browser-specific reproduction command to `CLAUDE.md`.
-- Store a short note in the repository listing which routes have earned cross-browser smoke coverage and why.
+- شغّل مجموعة الدخان عبر المتصفحات فقط على طلبات السحب التي تمسّ مسارات الواجهة.
+- أضف أمر إعادة إنتاج خاص بمتصفح إلى `CLAUDE.md`.
+- خزّن ملاحظة قصيرة في المستودع تسرد المسارات التي استحقّت تغطية دخان عبر المتصفحات ولماذا.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The win here is not “we run more browsers.” The win is “we run the right browsers against the right tests without making the fast loop unusable.”
+المكسب هنا ليس «نشغّل متصفحات أكثر». المكسب هو «نشغّل المتصفحات الصحيحة على الاختبارات الصحيحة دون جعل الحلقة السريعة غير قابلة للاستخدام».
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/add-cross-browser-coverage-solution)
-- [Cross-Browser Validation Without Burning the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/add-cross-browser-coverage-solution)
+- [التحقّق عبر المتصفحات دون إحراق حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)
+- [حلقات التحقّق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)

@@ -1,18 +1,18 @@
 ---
-title: "Design System Governance"
-lang: en
+title: "حوكمة نظام التصميم"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/design-system-governance"
 ---
 
-When you have one application, your design system is just… your code. A shared `Button` component, some color variables, maybe a Tailwind config. Nobody needs a governance strategy for that.
+عندما تكون لديك تطبيق واحد، يصبح نظام التصميم لديك ببساطة… شفرتك. مكوّن `Button` مشترك، وبعض متغيرات الألوان، وربما إعداد Tailwind. لا يحتاج أحد إلى استراتيجية حوكمة لذلك.
 
-But, the moment you have multiple applications—separate repos, separate teams, separate deploy pipelines—consistency stops being automatic. Each team makes locally reasonable decisions that diverge over time. Six months later you’ve got three different shades of blue, two button APIs, and a Slack channel called `#design-system-help` that nobody reads.
+لكن بمجرد أن تصبح لديك تطبيقات متعددة — مستودعات منفصلة، وفرق منفصلة، وخطوط نشر منفصلة — يتوقف الاتساق عن كونه تلقائيًا. كل فريق يتخذ قرارات معقولة محليًا لكنها تتباعد بمرور الوقت. وبعد ستة أشهر تجد نفسك بثلاث درجات مختلفة من الأزرق، وواجهتَي برمجة لزر واحد، وقناة Slack تُسمى `#design-system-help` لا يقرأها أحد.
 
-The pattern we’re looking at here is the **polyrepo with a shared design system**: each application lives in its own repository with its own pipeline and release process, and consistency is achieved by sharing versioned artifacts—components, tokens, guidelines—rather than runtime composition. This fits organizations where products are related but operationally independent, and semver contracts are preferred over shared runtime infrastructure.
+النمط الذي ننظر إليه هنا هو **تعدد المستودعات مع نظام تصميم مشترك**: يقطن كل تطبيق في مستودعه الخاص بخط أنابيب وعملية إصدار خاصة به، ويتحقق الاتساق عبر مشاركة عناصر مُصدّرة بإصدارات — مكوّنات ورموز تصميم وإرشادات — لا عبر التركيب وقت التشغيل. يناسب هذا النمط المؤسسات التي تكون منتجاتها مترابطة لكنها مستقلة تشغيليًا، والتي تُفضّل فيها عقود semver على بنية تحتية مشتركة وقت التشغيل.
 
-## Why This Is Harder Than It Sounds
+## لماذا هذا أصعب مما يبدو
 
-The architecture shape is straightforward:
+شكل المعمارية واضح ومباشر:
 
 ```
 graph TD
@@ -25,21 +25,21 @@ graph TD
   AppC --> DeployC[Deploy C]
 ```
 
-You publish your design system to a registry. Applications consume it as a dependency. Clean, right?
+تنشر نظام التصميم إلى سجل حزم. وتستهلكه التطبيقات كتبعية. أنيق، أليس كذلك؟
 
-In practice, the hard part isn’t the architecture diagram. It’s everything that happens *after* you draw it:
+عمليًا، الجزء الصعب ليس مخطط المعمارية. بل كل ما يحدث *بعد* رسمه:
 
-- Cross-repo refactors are expensive and slow to roll out.
-- Dependency update lag leads to version fragmentation—one app on v3, another still on v1.
-- It’s harder to enforce uniform code quality and architecture standards across repos you don’t own.
-- Duplicate tooling and boilerplate accumulate because each team scaffolds independently.
-- Reusable code becomes invisible without deliberate platform support.
+- إعادة الهيكلة عبر المستودعات مكلفة وبطيئة في الطرح.
+- تأخّر تحديث التبعيات يؤدي إلى تشظّي الإصدارات — تطبيق على v3 وآخر ما زال على v1.
+- من الأصعب فرض معايير موحدة لجودة الشفرة والمعمارية على مستودعات لا تملكها.
+- تتراكم الأدوات والنماذج المتكررة لأن كل فريق يبني هيكله بشكل مستقل.
+- تصبح الشفرة القابلة لإعادة الاستخدام غير مرئية دون دعم منصّي متعمد.
 
-The upside is real, though: strong repo-level autonomy, independent delivery pipelines, low runtime coupling, clear ownership boundaries, and design consistency that scales through shared artifacts rather than shared infrastructure.
+لكن الجانب الإيجابي حقيقي: استقلالية قوية على مستوى المستودع، وخطوط تسليم مستقلة، واقتران منخفض وقت التشغيل، وحدود ملكية واضحة، واتساق تصميمي يتوسّع عبر عناصر مشتركة لا عبر بنية تحتية مشتركة.
 
-## Design Tokens as the Shared Foundation
+## رموز التصميم كأساس مشترك
 
-The lowest-friction starting point is tokens. A design token is a named value—a color, a spacing unit, a font stack—that represents a design decision. Publish them as a dedicated package and every application consumes the same source of truth.
+نقطة البداية الأقل احتكاكًا هي الرموز. رمز التصميم هو قيمة مُسمّاة — لون، أو وحدة تباعد، أو مجموعة خطوط — تمثّل قرارًا تصميميًا. انشرها كحزمة مخصصة وستستهلك كل التطبيقات المصدر نفسه للحقيقة.
 
 ```css
 /* @acme/design-tokens/tokens.css */
@@ -73,11 +73,11 @@ The lowest-friction starting point is tokens. A design token is a named value—
 }
 ```
 
-CSS custom properties are the right delivery mechanism here because they’re framework-agnostic. A React app, a Svelte app, and a static HTML page can all consume the same token file. No build step required at the consumption site.
+الخصائص المخصصة في CSS هي آلية التسليم الصحيحة هنا لأنها مستقلة عن أي إطار عمل. يستطيع تطبيق React، وتطبيق Svelte، وصفحة HTML ساكنة أن تستهلك ملف الرموز نفسه. ولا حاجة إلى خطوة بناء في جهة الاستهلاك.
 
-### Multi-format token output
+### إخراج الرموز بصيغ متعددة
 
-If your repos need tokens in both CSS and JavaScript/TypeScript, generate all outputs from one source using **Style Dictionary**:
+إذا كانت مستودعاتك تحتاج إلى الرموز بصيغتي CSS وJavaScript/TypeScript معًا، فولّد كل المخرجات من مصدر واحد باستخدام **Style Dictionary**:
 
 ```javascript
 // style-dictionary.config.js
@@ -103,19 +103,19 @@ module.exports = {
 };
 ```
 
-One JSON source, three outputs. No hand-synchronization. The [Design Tokens Community Group (DTCG) format](https://www.designtokens.org/TR/2025.10/format/) is stabilizing as the interchange standard, so if you’re starting fresh, consider authoring in that format from the beginning.
+مصدر JSON واحد وثلاثة مخرجات. بلا مزامنة يدوية. وتستقرّ [صيغة مجموعة Design Tokens المجتمعية (DTCG)](https://www.designtokens.org/TR/2025.10/format/) كمعيار للتبادل، لذا إذا بدأت من الصفر ففكّر في التأليف بهذه الصيغة منذ البداية.
 
-### Treating tokens as API
+### التعامل مع الرموز كواجهة برمجة
 
-This is the mindset shift that matters: token *names* and *semantic roles* are your API surface. `--acme-color-primary` is a contract. Renaming it or changing what it means is a breaking change, same as renaming a function parameter. Publish machine-readable status metadata (`active`, `deprecated`, `deleted`) alongside your tokens so consuming teams can lint against deprecations before they become breakages.
+هذا هو التحوّل الذهني المهم: *أسماء* الرموز و*أدوارها الدلالية* هي سطح واجهة برمجة التطبيقات لديك. `--acme-color-primary` عقد. وإعادة تسميته أو تغيير معناه تغيير كاسر، تمامًا كإعادة تسمية معامل دالة. انشر بيانات وصفية للحالة قابلة للقراءة آليًا (`active`, `deprecated`, `deleted`) إلى جانب رموزك حتى تستطيع الفرق المستهلكة فحص الإهمالات قبل أن تصبح أعطالًا.
 
-## Shared Components
+## مكوّنات مشتركة
 
-Tokens get you color and spacing consistency. Components get you interaction and layout consistency. The question is how to deliver them across repositories that might use different frameworks.
+تمنحك الرموز اتساقًا في الألوان والتباعد. وتمنحك المكوّنات اتساقًا في التفاعل والتخطيط. والسؤال هو كيف توصل هذه المكوّنات إلى مستودعات قد تستخدم أطر عمل مختلفة.
 
-### Web Components for portability
+### مكوّنات الويب (Web Components) لقابلية النقل
 
-In a polyrepo environment where teams have framework autonomy, **Web Components** reduce framework lock-in. A Lit-based component works in React, Vue, Svelte, and plain HTML:
+في بيئة متعددة المستودعات تتمتع فيها الفرق باستقلالية في اختيار إطار العمل، تقلّل **مكوّنات الويب** الارتباط القسري بإطار واحد. فمكوّن مبني على Lit يعمل في React وVue وSvelte وHTML العادي:
 
 ```typescript
 // @acme/ui/src/acme-button.ts
@@ -160,20 +160,20 @@ export class AcmeButton extends LitElement {
 }
 ```
 
-Consumption is just HTML:
+الاستهلاك مجرد HTML:
 
 ```html
 <acme-button variant="primary">Save</acme-button>
 <acme-button variant="danger" disabled>Delete</acme-button>
 ```
 
-Notice how the component consumes tokens through CSS custom properties. The theme contract flows *through* the Shadow DOM boundary without any framework-specific wiring. React teams can use `@lit/react` wrappers to avoid custom-element interop friction.
+لاحظ كيف يستهلك المكوّن الرموز عبر الخصائص المخصصة في CSS. يعبر عقد السمة *عبر* حدود Shadow DOM دون أي ربط خاص بإطار عمل. ويمكن لفرق React استخدام مغلّفات `@lit/react` لتجنّب احتكاك التوافق مع العناصر المخصصة.
 
-The tradeoff with Web Components is real, though: Shadow DOM encapsulation means consumers can’t restyle internals unless you explicitly expose them via `::part()`. That’s a feature when you want strict consistency and a frustration when teams need legitimate customization. Expose minimal, sanctioned styling surfaces and document them as API.
+لكن المقايضة في مكوّنات الويب حقيقية: تغليف Shadow DOM يعني أن المستهلكين لا يستطيعون إعادة تصميم الأجزاء الداخلية ما لم تُعرّضها صراحةً عبر `::part()`. وهذه ميزة عندما تريد اتساقًا صارمًا، ومصدر إحباط عندما تحتاج الفرق إلى تخصيص مشروع. اعرض أسطح تنسيق محدودة ومُعتمدة ووثّقها كواجهة برمجة.
 
-### Tailwind presets for utility-first repos
+### قوالب Tailwind المسبقة لمستودعات التصميم بالأدوات المساعدة
 
-If your repos use Tailwind, a shared preset keeps the utility class palette consistent:
+إذا كانت مستودعاتك تستخدم Tailwind، فإن إعدادًا مسبقًا مشتركًا يحافظ على اتساق لوحة فئات الأدوات المساعدة:
 
 ```typescript
 // @acme/tailwind-preset/index.ts
@@ -204,13 +204,13 @@ export default {
 } satisfies Config;
 ```
 
-Prefix by app (`cart-`, `settings-`, `admin-`) to avoid class collisions if these surfaces ever get composed together.
+استخدم بادئة لكل تطبيق (`cart-`, `settings-`, `admin-`) لتفادي تعارض الفئات إذا جُمعت هذه الواجهات معًا يومًا ما.
 
-## CSS Isolation
+## عزل CSS
 
-Style collisions across team boundaries are one of the most common sources of visual bugs in multi-app environments. A layered isolation strategy handles this:
+تعارض الأنماط عبر حدود الفرق أحد أكثر مصادر الأخطاء البصرية شيوعًا في البيئات متعددة التطبيقات. وتتعامل معه استراتيجية عزل طبقية:
 
-**CSS Modules** for default app-level scoping—each component gets locally-scoped class names without any runtime cost:
+**وحدات CSS (CSS Modules)** للنطاق الافتراضي على مستوى التطبيق — يحصل كل مكوّن على أسماء فئات محلية النطاق دون أي كلفة وقت تشغيل:
 
 ```css
 /* CartItem.module.css */
@@ -223,7 +223,7 @@ Style collisions across team boundaries are one of the most common sources of vi
 }
 ```
 
-**CSS cascade layers** for deterministic ordering—when multiple sources of styles exist (tokens, resets, app code), layers eliminate specificity guesswork:
+**طبقات التتالي في CSS (cascade layers)** لترتيب حتمي — عندما توجد مصادر متعددة للأنماط (الرموز، وإعادة التصفير، وشفرة التطبيق)، تُلغي الطبقات التخمين في الأولوية:
 
 ```css
 @layer tokens, reset, app;
@@ -244,15 +244,15 @@ Style collisions across team boundaries are one of the most common sources of vi
 }
 ```
 
-**Shadow DOM** for high-isolation shared components—when a component absolutely must not be affected by surrounding styles. This is the Web Components approach from above.
+**Shadow DOM** للمكوّنات المشتركة عالية العزل — عندما يجب ألا يتأثر مكوّن إطلاقًا بالأنماط المحيطة. وهذا هو نهج مكوّنات الويب المذكور أعلاه.
 
-The combination gives you scoping at the app level, predictable cascade ordering across layers, and hard encapsulation where you need it.
+يمنحك الجمع بينها نطاقًا على مستوى التطبيق، وترتيب تتالٍ متوقعًا عبر الطبقات، وتغليفًا صارمًا حيث تحتاج إليه.
 
-## Visual Regression in CI
+## اختبارات الانحدار البصري في CI
 
-Every repo should run visual tests against its own components. Platform repos should *also* run composed-view tests that verify what users actually see when multiple applications appear together.
+ينبغي أن يشغّل كل مستودع اختبارات بصرية على مكوّناته. كما ينبغي أن تشغّل مستودعات المنصة *أيضًا* اختبارات للعرض المُركّب تتحقق مما يراه المستخدمون فعلًا عندما تظهر تطبيقات متعددة معًا.
 
-**Chromatic** handles the isolated component case:
+تتولى **Chromatic** حالة المكوّن المعزول:
 
 ```json
 {
@@ -262,7 +262,7 @@ Every repo should run visual tests against its own components. Platform repos sh
 }
 ```
 
-For composed views, you need a Storybook story or test page that mounts multiple application slices together:
+بالنسبة للعروض المُركّبة، تحتاج إلى قصة Storybook أو صفحة اختبار تُركّب شرائح تطبيق متعددة معًا:
 
 ```typescript
 import { mountCart } from 'cart-mfe/mount';
@@ -295,7 +295,7 @@ export const ComposedDashboard = () => {
 };
 ```
 
-And **Playwright** for snapshot testing the composed result:
+و**Playwright** لاختبار اللقطات (snapshot) للنتيجة المُركّبة:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -310,13 +310,13 @@ test('composed view matches snapshot', async ({ page }) => {
 });
 ```
 
-## Enforcing Consistency at Build Time
+## فرض الاتساق وقت البناء
 
-Documentation gets ignored. Lint rules don’t.
+التوثيق يُتجاهل. أما قواعد الفحص (lint) فلا.
 
-### Token enforcement with Stylelint
+### فرض الرموز باستخدام Stylelint
 
-Prevent hardcoded color values by requiring token usage:
+امنع قيم الألوان المكتوبة مباشرة بفرض استخدام الرموز:
 
 ```javascript
 // .stylelintrc.js
@@ -335,9 +335,9 @@ module.exports = {
 };
 ```
 
-### Component policy with ESLint
+### سياسة المكوّنات باستخدام ESLint
 
-Ban raw HTML elements when a design system component exists:
+امنع عناصر HTML الخام عند وجود مكوّن في نظام التصميم:
 
 ```javascript
 module.exports = {
@@ -356,122 +356,122 @@ module.exports = {
 };
 ```
 
-These rules live in shared lint preset packages that every repo installs. CI enforces them. Nobody has to remember the policy—the build fails if you violate it.
+تعيش هذه القواعد في حزم إعدادات فحص مشتركة يثبّتها كل مستودع. ويفرضها CI. ولا يحتاج أحد إلى تذكّر السياسة — يفشل البناء إذا خالفتها.
 
-## The Governance Model
+## نموذج الحوكمة
 
-The technical tooling only works if the organizational model supports it. Here’s the pattern I’ve seen work:
+لا تنجح الأدوات التقنية إلا إذا دعمها النموذج التنظيمي. وهذا هو النمط الذي رأيته ينجح:
 
-A **central platform team** owns the cross-cutting contracts: tokens, theme and context schema, shared dependency policy, accessibility baseline, and the enforcement tooling (lint presets, CI templates, testing infrastructure). They treat the design system as a product with a roadmap and SLAs, not a side project that somebody maintains when they have time.
+يملك **فريق منصة مركزي** العقود الشاملة: الرموز، ومخطط السمة والسياق، وسياسة التبعيات المشتركة، وخط أساس إمكانية الوصول، وأدوات الفرض (إعدادات الفحص، وقوالب CI، وبنية الاختبار). ويتعاملون مع نظام التصميم كمنتج له خارطة طريق واتفاقيات مستوى خدمة، لا كمشروع جانبي يصونه أحدهم حين يتوفر لديه وقت.
 
-**Federated product teams** own their feature implementations within those contracts. They have full autonomy over their repos, their frameworks, their deploy schedules. The constraint is that they consume the shared tokens, use the shared components where they exist, and pass CI checks that enforce the boundaries.
+وتملك **فرق المنتجات الاتحادية** تنفيذ ميزاتها ضمن تلك العقود. ولديها استقلالية كاملة في مستودعاتها وأطر عملها وجداول نشرها. والقيود هي أن تستهلك الرموز المشتركة، وتستخدم المكوّنات المشتركة حيث توجد، وتجتاز فحوصات CI التي تفرض الحدود.
 
-A **governance board** resolves disputes about contract-level decisions and version policy exceptions. This sounds bureaucratic, but in practice it’s a monthly meeting where someone asks “can we break this token name?” and the group decides whether the migration cost is worth it.
+ويحلّ **مجلس حوكمة** الخلافات حول القرارات على مستوى العقود واستثناءات سياسة الإصدارات. يبدو هذا بيروقراطيًا، لكنه عمليًا اجتماع شهري يسأل فيه أحدهم «هل يمكننا كسر اسم هذا الرمز؟» فتقرر المجموعة ما إذا كانت كلفة الترحيل تستحق ذلك.
 
-The critical governance artifacts:
+عناصر الحوكمة الجوهرية:
 
-- **Platform context contract**: theme, locale, directionality, density, accessibility preferences.
-- **Styling precedence contract**: layer ordering and override policy.
-- **Dependency sharing contract**: what’s shared, how, and with which compatibility guarantees.
-- **Exception policy**: owner, expiry date, and remediation path for every exception.
+- **عقد سياق المنصة**: السمة، واللغة، والاتجاه، والكثافة، وتفضيلات إمكانية الوصول.
+- **عقد أولوية التنسيق**: ترتيب الطبقات وسياسة التجاوز.
+- **عقد مشاركة التبعيات**: ما هو مشترك، وكيف، وبأي ضمانات توافق.
+- **سياسة الاستثناءات**: المالك، وتاريخ الانتهاء، ومسار المعالجة لكل استثناء.
 
-The principle: decentralize feature delivery, centralize contracts and enforcement tooling. Enforce with CI, not policy docs alone.
+المبدأ: لامركزية تسليم الميزات، ومركزية العقود وأدوات الفرض. وفرضها عبر CI، لا عبر وثائق السياسات وحدها.
 
-## Versioning and Migration
+## الإصدارات والترحيل
 
-Version *contracts*, not just packages. Your contract surfaces include:
+ضع إصدارات *للعقود*، لا للحزم فقط. وتشمل أسطح عقودك:
 
-- Token schema and semantic meaning.
-- Component APIs and sanctioned styling surfaces (`::part()` names, CSS custom property hooks).
-- Theme and context APIs.
-- Event and telemetry schemas used across applications.
+- مخطط الرموز ومعناها الدلالي.
+- واجهات برمجة المكوّنات وأسطح التنسيق المعتمدة (أسماء `::part()`، وخُطّافات الخصائص المخصصة في CSS).
+- واجهات برمجة السمة والسياق.
+- مخططات الأحداث والقياس عن بُعد المستخدمة عبر التطبيقات.
 
-Use semver with declared public API. Keep long compatibility windows for platform contracts—support at least N and N-1 where feasible. Publish deprecation timelines with dates and upgrade paths, not just “this is deprecated, good luck.”
+استخدم semver مع إعلان واجهة برمجة عامة. واحتفظ بنوافذ توافق طويلة لعقود المنصة — ادعم الإصدار N و N-1 على الأقل حيثما أمكن. وانشر جداول زمنية للإهمال بتواريخ ومسارات ترقية، لا مجرد «هذا مهمَل، حظًا سعيدًا».
 
-For the migration tooling baseline:
+أما خط أساس أدوات الترحيل:
 
-- **Codemods** for mechanical API and token migrations (jscodeshift for JS/TS, PostCSS plugins for CSS).
-- **Lint rules** that flag deprecated tokens and anti-patterns with auto-fix paths.
-- **Per-architecture migration guides**, not just package changelogs.
+- **أدوات التحويل البرمجي (Codemods)** للترحيلات الميكانيكية لواجهات البرمجة والرموز (jscodeshift لـ JS/TS، وإضافات PostCSS لـ CSS).
+- **قواعد الفحص** التي تُعلّم الرموز المهمَلة والأنماط المضادة مع مسارات إصلاح تلقائي.
+- **أدلة ترحيل لكل معمارية**، لا مجرد سجلات تغييرات للحزم.
 
-Atlassian’s design system team is a good reference here—they invested heavily in lifecycle-based token governance with migration tooling, linting, and codemods. The lesson: enterprise migrations succeed with automation, not documentation alone.
+فريق نظام التصميم في Atlassian مرجع جيد هنا — فقد استثمروا بكثافة في حوكمة الرموز القائمة على دورة الحياة مع أدوات الترحيل والفحص والتحويل البرمجي. والدرس: تنجح ترحيلات المؤسسات بالأتمتة، لا بالتوثيق وحده.
 
-## Quality at the Composed Level
+## الجودة على المستوى المُركّب
 
-Distributed UX quality requires layered verification:
+تتطلب جودة تجربة المستخدم الموزعة تحققًا طبقًا:
 
-- **Contract tests**: token availability, context shape, dependency policy checks.
-- **Slice tests**: component behavior and accessibility in isolation.
-- **Composed integration tests**: cross-slice routing, focus order, theme propagation.
-- **Visual regression**: canonical theme, density, and contrast variants.
+- **اختبارات العقود**: توفر الرموز، وشكل السياق، وفحوصات سياسة التبعيات.
+- **اختبارات الشرائح**: سلوك المكوّن وإمكانية الوصول بمعزل عن غيره.
+- **اختبارات التكامل المُركّبة**: التوجيه بين الشرائح، وترتيب التركيز، وانتشار السمة.
+- **الانحدار البصري**: السمة الأساسية، والكثافة، ومتغيرات التباين.
 
-For accessibility, align with WCAG 2.2 and WAI-ARIA 1.2. Treat keyboard traps and focus-loss defects as release blockers. And—this is the part people miss—validate accessibility in *composed* environments, not only in isolated Storybook stories. A component can be perfectly accessible in isolation and completely broken when mounted alongside three other applications that all fight over focus.
+فيما يخص إمكانية الوصول، توافق مع WCAG 2.2 وWAI-ARIA 1.2. وتعامل مع مصائد لوحة المفاتيح وعيوب فقدان التركيز كمانعات إصدار. و — وهذا الجزء الذي يغفله الناس — تحقق من إمكانية الوصول في بيئات *مُركّبة*، لا في قصص Storybook المعزولة فقط. فقد يكون مكوّن سليمًا تمامًا في إمكانية الوصول بمعزل عن غيره ومعطلًا كليًا عند تركيبه إلى جانب ثلاثة تطبيقات أخرى تتصارع كلها على التركيز.
 
-For release safety, canary all contract-affecting releases. Evaluate against explicit error, performance, and accessibility budgets. Keep mitigation-first incident playbooks and tested rollback paths (import-map revert, remote disable, feature flag kill switch).
+لسلامة الإصدار، أطلق كل الإصدارات المؤثرة في العقود على أساس كناري. وقيّمها في مقابل ميزانيات صريحة للأخطاء والأداء وإمكانية الوصول. واحتفظ بأدلة تشغيل للحوادث تعطي الأولوية للتخفيف وبمسارات تراجع مُختبرة (إرجاع خريطة الاستيراد، وتعطيل الريموت، ومفتاح إيقاف علم الميزة).
 
-## What to Measure
+## ما ينبغي قياسه
 
-- **Design system version distribution** across applications—how fragmented are you?
-- **Median time to adopt** a design system major or minor release.
-- **Cross-repo defect rate** tied to divergent implementations.
-- **Engineering effort** spent on duplicated platform work.
-- **Deployment frequency and change failure rate** (standard DORA metrics).
-- **Route-level performance** (TTFB, FCP, INP) for critical user journeys.
+- **توزيع إصدارات نظام التصميم** عبر التطبيقات — إلى أي حد أنت مشظّى؟
+- **الزمن الوسيط للتبني** لإصدار رئيسي أو ثانوي من نظام التصميم.
+- **معدل العيوب عبر المستودعات** المرتبط بالتنفيذات المتباعدة.
+- **الجهد الهندسي** المصروف على عمل منصّي مكرر.
+- **وتيرة النشر ومعدل فشل التغييرات** (مقاييس DORA المعيارية).
+- **الأداء على مستوى المسار** (TTFB، FCP، INP) لرحلات المستخدم الحرجة.
 
-## Investment Guide
+## دليل الاستثمار
 
-| Strategy | Role | Investment |
+| الاستراتيجية | الدور | الاستثمار |
 | --- | --- | --- |
-| Tokens (CSS custom properties) | Required visual contract | Low |
-| Style Dictionary | Multi-target token output | Medium |
-| Shared components (Lit/Web Components) | Cross-repo UI consistency | Medium–High |
-| Tailwind preset with app prefix | Utility-first standardization | Low |
-| CSS Modules + cascade layers | Style isolation and cascade control | Low |
-| Chromatic and Playwright | Visual regression safety | Medium |
-| Lint enforcement (Stylelint + ESLint) | Contract compliance in CI | Medium |
+| الرموز (خصائص CSS المخصصة) | عقد بصري مطلوب | منخفض |
+| Style Dictionary | إخراج الرموز لعدة أهداف | متوسط |
+| مكوّنات مشتركة (Lit/Web Components) | اتساق واجهة المستخدم عبر المستودعات | متوسط–مرتفع |
+| إعداد Tailwind مسبق ببادئة التطبيق | توحيد المنهج القائم على الأدوات المساعدة | منخفض |
+| وحدات CSS + طبقات التتالي | عزل الأنماط والتحكم في التتالي | منخفض |
+| Chromatic وPlaywright | سلامة الانحدار البصري | متوسط |
+| فرض الفحص (Stylelint + ESLint) | الامتثال للعقود في CI | متوسط |
 
-## When This Pattern Fits
+## متى يناسب هذا النمط
 
-- Applications are operationally independent but should look and feel coherent.
-- Teams need full repo and release autonomy.
-- Runtime composition is unnecessary or undesirable.
-- The organization can sustain a design system product team.
+- التطبيقات مستقلة تشغيليًا لكن ينبغي أن تبدو وتُحَسّ متماسكة.
+- تحتاج الفرق استقلالية كاملة في المستودع والإصدار.
+- التركيب وقت التشغيل غير ضروري أو غير مرغوب.
+- تستطيع المؤسسة إدامة فريق منتج لنظام التصميم.
 
-## When to Avoid It
+## متى نتجنبه
 
-- You need frequent cross-application coordinated behavior changes.
-- The organization can’t maintain a dedicated design system team. (Without one, the shared artifacts rot and teams route around them.)
+- تحتاج إلى تغييرات سلوكية منسّقة ومتكررة عبر التطبيقات.
+- لا تستطيع المؤسسة صيانة فريق مخصص لنظام التصميم. (وبدونه تتعفن العناصر المشتركة وتلتف الفرق حولها.)
 
-## Lessons from the Field
+## دروس من الميدان
 
-**IBM Carbon**: strong on explicit migration and deprecation communication. The transferable lesson is that package reshaping needs dates, replacement paths, and consumer-specific guidance—not just a changelog entry.
+**IBM Carbon**: قوي في التواصل الصريح حول الترحيل والإهمال. والدرس القابل للنقل هو أن إعادة تشكيل الحزم تحتاج تواريخ ومسارات بديلة وإرشادات خاصة بكل مستهلك — لا مجرد مدخل في سجل التغييرات.
 
-**Shopify Polaris**: strategic move toward framework-agnostic boundaries with Web Components. The lesson is that Web Component boundaries can improve adoption in polyglot organizations, but transition periods fragment the source of truth unless token contracts are centralized first.
+**Shopify Polaris**: خطوة استراتيجية نحو حدود مستقلة عن إطار العمل باستخدام مكوّنات الويب. والدرس هو أن حدود مكوّنات الويب قد تحسّن التبني في المؤسسات متعددة التقنيات، لكن فترات الانتقال تشظّي مصدر الحقيقة ما لم تُمركز عقود الرموز أولًا.
 
-**Atlassian Design System**: lifecycle-based token governance with migration tooling, linting, and codemods at scale. The lesson is that centralized contribution control can bottleneck throughput without clear extension paths for product teams.
+**نظام تصميم Atlassian**: حوكمة رموز قائمة على دورة الحياة مع أدوات ترحيل وفحص وتحويل برمجي على نطاق واسع. والدرس هو أن التحكم المركزي في المساهمات قد يخنق الإنتاجية دون مسارات توسعة واضحة لفرق المنتجات.
 
-**GitHub Primer**: high-quality contribution and documentation standards. The lesson is that stable foundations plus rigorous review processes improve long-term consistency, even when it slows down the initial contribution cycle.
+**GitHub Primer**: معايير عالية الجودة للمساهمات والتوثيق. والدرس هو أن الأسس المستقرة مع عمليات مراجعة صارمة تحسّن الاتساق على المدى الطويل، حتى وإن أبطأت دورة المساهمة الأولية.
 
-The cross-case pattern: contract clarity plus migration tooling plus operational release discipline is the durable formula. No amount of Figma polish substitutes for those three things.
+النمط المشترك بين الحالات: وضوح العقود مع أدوات الترحيل مع انضباط النشر التشغيلي هي الصيغة المتينة. ولا يغني أي قدر من تلميع Figma عن هذه الأمور الثلاثة.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-*Note: The existing slide deck already contains a “Design System Governance” slide. The slides below provide additional depth for this section.*
+*ملاحظة: تحتوي مجموعة الشرائح الحالية بالفعل على شريحة «حوكمة نظام التصميم». وتوفّر الشرائح أدناه عمقًا إضافيًا لهذا القسم.*
 
-### Governance That Scales
+### حوكمة تتوسّع
 
-> Rules without tooling are just suggestions.
+> القواعد بلا أدوات مجرد اقتراحات.
 
-- **Lint rules** enforce token usage and component API conventions at build time.
-- **Visual regression tests** (Chromatic, Percy) catch unintended visual changes in CI.
-- **Deprecation workflow** — mark old patterns, provide codemods, set removal timelines.
-- **Adoption dashboards** — track which apps use which versions. Know where the debt is.
+- **قواعد الفحص** تفرض استخدام الرموز واصطلاحات واجهة برمجة المكوّنات وقت البناء.
+- **اختبارات الانحدار البصري** (Chromatic، Percy) تلتقط التغييرات البصرية غير المقصودة في CI.
+- **سير عمل الإهمال** — علّم الأنماط القديمة، ووفّر أدوات تحويل، وحدّد جداول الإزالة.
+- **لوحات التبني** — تتبّع أي التطبيقات تستخدم أي الإصدارات. واعرف أين يتراكم الدين.
 
-**The governance stack:**
+**مكدّس الحوكمة:**
 
-1. Tokens → enforced by lint rules
-2. Components → enforced by visual regression + a11y tests
-3. Patterns → enforced by architectural lint rules + code review
-4. Contribution → enforced by RFC process + SLA on reviews
+1. الرموز ← تفرضها قواعد الفحص
+2. المكوّنات ← يفرضها الانحدار البصري + اختبارات إمكانية الوصول
+3. الأنماط ← تفرضها قواعد فحص معمارية + مراجعة الشفرة
+4. المساهمة ← تفرضها عملية RFC + اتفاقية مستوى خدمة على المراجعات

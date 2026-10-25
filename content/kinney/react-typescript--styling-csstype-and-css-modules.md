@@ -1,33 +1,33 @@
 ---
-title: "Styling Csstype And Css Modules"
-lang: en
+title: "التنسيق (Styling) باستخدام Csstype ووحدات CSS (CSS Modules)"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/styling-csstype-and-css-modules"
 ---
 
-Styling in React with TypeScript doesn’t have to feel like a constant battle with the type checker. Whether you’re using inline styles, CSS Modules, or building a design system, TypeScript can actually make your styling more robust and developer-friendly. Let’s explore how to properly type your styles using `csstype`, CSS Modules, and inline style patterns that scale.
+التنسيق في React مع TypeScript لا يجب أن يشعر وكأنه معركة مستمرة مع مدقق الأنواع. سواء كنت تستخدم أنماط inline، أو وحدات CSS (CSS Modules)، أو تبني نظام تصميم (design system)، يمكن لـ TypeScript أن يجعل تنسيقك أكثر متانة وودية للمطوّر. لنتعرّف على كيفية كتابة أنماطك بشكل آمن الأنواع باستخدام `csstype`، ووحدات CSS، وأنماط inline styles التي تتوسّع.
 
-## The Challenge with Styling and TypeScript
+## التحدي في التنسيق وTypeScript
 
-When you’re styling React components, you often find yourself in one of these situations:
+عند تنسيق مكوّنات React، 종종 تجد نفسك في أحد هذه المواقف:
 
-- Writing inline styles and wondering what properties are actually valid
-- Using CSS Modules and losing type safety between your CSS and TypeScript
-- Building design system components where style props need strict typing
-- Getting frustrated with `any` escapes just to make the type checker happy
+- كتابة أنماط inline والتساؤل أي الخصائص فعليًا صالحة
+- استخدام وحدات CSS وفقدان سلامة الأنواع بين CSS وTypeScript
+- بناء مكوّنات نظام تصميم حيث خصائص النمط (style props) بحاجة إلى كتابة صارمة
+- الإحباط من escapes `any` فقط لإرضاء مدقق الأنواع
 
-The good news? TypeScript’s ecosystem has evolved sophisticated tools to handle all of these scenarios gracefully.
+الخبر السار؟ تطوّر نظام TypeScript أدوات متطوّرة للتعامل مع كل هذه السيناريوهات بسلاسة.
 
-## Enter csstype: The Foundation
+## دخول csstype: الأساس
 
-The [`csstype`](https://www.npmjs.com/package/csstype) package provides comprehensive TypeScript definitions for all CSS properties and values. It’s what React’s built-in `CSSProperties` type is based on, and understanding it unlocks better styling patterns.
+حزمة [`csstype`](https://www.npmjs.com/package/csstype) توفّر تعريفات TypeScript شاملة لجميع خصائص وقيم CSS. هي ما بُني عليه نوع `CSSProperties` المدمج في React، وفهمها يفتح أنماط تنسيق أفضل.
 
 ```bash
 npm install csstype
 ```
 
-### Basic `csstype` Usage
+### الاستخدام الأساسي لـ `csstype` {#basic-usage}
 
-At its simplest, `csstype` gives you precise types for CSS properties:
+في أبسط صوره، يمنحك `csstype` أنواعًا دقيقة لخصائص CSS:
 
 ```typescript
 import { Property } from 'csstype';
@@ -41,11 +41,11 @@ const color: Property.Color = '#3b82f6';
 // const invalidDisplay: Property.Display = 'invalid'; // Type error!
 ```
 
-This is already more precise than using `string` everywhere, but the real power comes when building reusable components.
+هذا بالفعل أدق من استخدام `string` في كل مكان، لكن القوة الحقيقية تأتي عند بناء مكوّنات قابلة لإعادة الاستخدام.
 
-## Typing Inline Styles Properly
+## كتابة Anماط Inline (Inline Styles) بشكل صحيح
 
-React’s `CSSProperties` is built on `csstype`, but you can extend it for more specific use cases:
+`CSSProperties` في React مبني على `csstype`، لكن يمكنك توسيعه لحالات استخدام أكثر تحديدًا:
 
 ```typescript
 import React from 'react';
@@ -83,9 +83,9 @@ const StyledBox: React.FC<StyledBoxProps> = ({ children, style }) => {
 </StyledBox>
 ```
 
-### Creating Custom Style Types
+### إنشاء أنواع نمط (Style Types) مخصّصة
 
-For design systems, you often want to restrict certain properties to specific values:
+لأنظمة التصميم، 종종 تريد تقييد خصائص معينة بقيم محدّدة:
 
 ```typescript
 import { CSSProperties } from 'react';

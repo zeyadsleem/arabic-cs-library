@@ -1,28 +1,28 @@
 ---
-title: "Lab: Refactor Shelf's Fixtures"
-lang: en
+title: "مختبر: إعادة هيكلة تجهيزات Shelf"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-refactor-shelf-fixtures"
 ---
 
-The fixtures lesson gave you the rules. This lab makes you apply them to real code. The Shelf starter ships a committed starting point at `tests/labs/fixtures/fixtures.ts` — a fixture file that becomes runnable once you have the earlier auth and seeding labs in place, and then shows every smell the lesson calls out.
+أعطاك درس التجهيزات القواعد. وهذا المختبر يجعلك تطبّقها على شيفرة حقيقية. يشحن بادئ Shelf نقطة بداية مُودَعة في `tests/labs/fixtures/fixtures.ts` — ملف تجهيزات يصبح قابلًا للتشغيل بمجرد أن تكون مختبرات المصادقة والزرع السابقة في مكانها، ثم يُظهر كل عيب أشار إليه الدرس.
 
-The lab is not about making the spec pass. It already passes. The lab is about making the fixture file match the discipline the lesson taught.
+المختبر ليس عن جعل المواصفة تنجح. فهي تنجح بالفعل. المختبر عن جعل ملف التجهيزات يطابق الانضباط الذي علّمه الدرس.
 
-> **Isolation**
+> **العزل**
 >
-> The lab lives under `tests/labs/fixtures/`, and the current starter’s root `playwright.config.ts` ignores that subtree on purpose so `npm run test` stays green by default. Create a throwaway local config for this lab run, or use another narrow equivalent, so the production suite stays green while you refactor the lab slice.
+> يعيش المختبر تحت `tests/labs/fixtures/`، وملف `playwright.config.ts` الجذري في البادئ الحالي يتجاهل ذلك الفرع عمدًا حتى يبقى `npm run test` أخضر افتراضيًا. أنشئ ملف إعداد محليًا مؤقتًا لتشغيل هذا المختبر، أو استخدم بديلًا ضيقًا مكافئًا، حتى تبقى مجموعة اختبارات الإنتاج خضراء أثناء إعادة هيكلة شريحة المختبر.
 
-> **Why this lab now sits later in the sequence**
+> **لماذا جاء هذا المختبر متأخرًا في التسلسل**
 >
-> The committed lab fixture calls `resetShelfContent()` from `tests/helpers/seed.ts`. That helper gets built in [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation). By the time you reach this lab in the normal course order, it should already exist. If you skipped ahead, build that helper first or treat this lab as a dry refactor until it does.
+> ملف التجهيزات المُودَع في المختبر يستدعي `resetShelfContent()` من `tests/helpers/seed.ts`. وتُبنى تلك الأداة المساعدة في [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation). وحين تصل إلى هذا المختبر في ترتيب الدورة الطبيعي، يفترض أن تكون موجودة بالفعل. فإن كنت قد تقدّمت بالترتيب، فابنِ تلك الأداة أولًا أو تعامل مع هذا المختبر كإعادة هيكلة تدريبية إلى أن تصبح جاهزة.
 
-> **Auth prerequisite**
+> **متطلب المصادقة**
 >
-> This lab also assumes you already built whatever authenticated Playwright setup you use for the protected Shelf pages earlier in the course. The starting `authedPage` fixture is intentionally redundant against that setup. Part of the refactor is recognizing the redundancy and deleting it.
+> يفترض هذا المختبر أيضًا أنك بنيت بالفعل إعداد Playwright الموثَّق الذي تستخدمه لصفحات Shelf المحمية في وقت سابق من الدورة. والتجهيزة الابتدائية `authedPage` مكرّرة عمدًا مقابل ذلك الإعداد. وجزء من إعادة الهيكلة هو إدراك هذا التكرار وحذفه.
 
-## The starting point
+## نقطة البداية
 
-Open `tests/labs/fixtures/fixtures.ts` in the Shelf starter. The file defines five fixtures:
+افتح `tests/labs/fixtures/fixtures.ts` في بادئ Shelf. يعرّف الملف خمس تجهيزات:
 
 - `setupUser`
 - `setupEmptyShelf`
@@ -30,33 +30,33 @@ Open `tests/labs/fixtures/fixtures.ts` in the Shelf starter. The file defines fi
 - `authedPage`
 - `loggedOutPage`
 
-Each one has at least one of the smells the lesson catalogued. Count them. I get seven. See if you can find more.
+في كل واحدة منها عيب واحد على الأقل من العيوب التي فهرسها الدرس. عُدّها. أنا أعدّ سبعة. جرّب أن تجد المزيد.
 
-- Fixture names that describe *what the fixture does* instead of *what it provides* (`setupUser` instead of `seededReader`).
-- Fixtures that mutate server state with no teardown half.
-- A fixture (`setupShelfWithBooks`) that duplicates what `resetShelfContent` already does — a helper wearing a fixture costume.
-- A fixture (`setupUser`) that’s a one-line constant pretending to be infrastructure.
-- A fixture (`authedPage`) that just navigates to `/shelf` and asserts a URL, which is a line of code, not a fixture.
-- Zero scope-justification comments anywhere.
-- A `loggedOutPage` fixture that opens a fresh browser context but fights the authenticated default browser state you already set up for the lab run — awkward to compose, only used in one test.
+- أسماء تجهيزات تصف *ما تفعله التجهيزة* بدلًا من *ما توفّره* (`setupUser` بدلًا من `seededReader`).
+- تجهيزات تغيّر حالة الخادم بلا نصف تفكيك.
+- تجهيزة (`setupShelfWithBooks`) تكرّر ما يفعله `resetShelfContent` أصلًا — أداة مساعدة ترتدي زي تجهيزة.
+- تجهيزة (`setupUser`) هي ثابت من سطر واحد يتظاهر بأنه بنية تحتية.
+- تجهيزة (`authedPage`) تنتقل فقط إلى `/shelf` وتتحقق من مسار، وهذا سطر شيفرة لا تجهيزة.
+- صفر تعليقات تبرّر النطاق في أي مكان.
+- تجهيزة `loggedOutPage` تفتح سياق متصفح جديدًا لكنها تصارع حالة المتصفح الموثَّقة الافتراضية التي أعددتها بالفعل لتشغيل المختبر — عسيرة التركيب، وتُستخدم في اختبار واحد فقط.
 
-## Your job
+## مهمتك
 
-Refactor `fixtures.ts` without breaking `fixtures-lab.spec.ts`. You may (and should) edit the spec file to match your new fixture names and shapes — changing what each test *asks for* is part of the refactor. Do **not** change what each test is *checking*. The discipline of keeping assertions stable is what keeps the exercise about fixture design rather than test rewriting.
+أعد هيكلة `fixtures.ts` دون كسر `fixtures-lab.spec.ts`. يجوز لك (بل ينبغي لك) تعديل ملف المواصفة ليطابق أسماء تجهيزاتك الجديدة وأشكالها — فتغيير ما *يطلبه* كل اختبار جزء من إعادة الهيكلة. لكن **لا** تغيّر ما *يتحقق منه* كل اختبار. وانضباط إبقاء التحققات مستقرة هو ما يُبقي التمرين عن تصميم التجهيزات لا عن إعادة كتابة الاختبارات.
 
-When you’re done, compare your version against the [solution walkthrough](https://stevekinney.com/courses/self-testing-ai-agents/refactor-shelf-fixtures-solution). The two won’t match byte-for-byte, and that’s fine. What should match is the spirit:
+وحين تنتهي، قارن نسختك بـ[شرح الحل](https://stevekinney.com/courses/self-testing-ai-agents/refactor-shelf-fixtures-solution). لن تتطابق النسختان حرفًا بحرف، ولا بأس في ذلك. الذي ينبغي أن يتطابق هو الروح:
 
-- Names describe what each fixture provides.
-- Every mutating fixture has an `await`-ed teardown half.
-- Scope choices are justified in a one-line comment.
-- At least one “fixture” has been demoted back to a plain helper function.
-- Any fixture that still exists earns its keep across more than one test.
+- الأسماء تصف ما توفّره كل تجهيزة.
+- كل تجهيزة تغيّر الحالة لها نصف تفكيك مسبوق بـ`await`.
+- اختيارات النطاق مبرَّرة في تعليق من سطر واحد.
+- تجهيزة واحدة على الأقل أُنزلت رتبةً إلى دالة مساعدة عادية.
+- أي تجهيزة لا تزال موجودة تستحق بقاءها عبر أكثر من اختبار واحد.
 
-## Acceptance criteria
+## معايير القبول
 
-Run this from the Shelf repo root:
+نفّذ ما يلي من جذر مستودع Shelf:
 
-Run the lab slice with whichever narrow command you chose for isolation. One workable shape today is a throwaway config file plus the lab opt-in flag:
+شغّل شريحة المختبر بالأمر الضيق الذي اخترته للعزل. ومن الأشكال القابلة للعمل اليوم ملف إعداد مؤقت مع علم اشتراك المختبر:
 
 ```typescript
 // playwright.lab.local.config.ts
@@ -73,44 +73,44 @@ export default defineConfig({
 PLAYWRIGHT_INCLUDE_LABS=1 npx playwright test --config=playwright.lab.local.config.ts tests/labs/fixtures/fixtures-lab.spec.ts
 ```
 
-Do not commit that temp config. It exists only to let this ignored lab slice run against the single-config starter.
+لا تُودِع ملف الإعداد المؤقت ذاك. فهو موجود فقط ليتمكّن فرع المختبر المتجاهَل هذا من العمل مع البادئ ذي الإعداد الواحد.
 
-A dedicated script is fine too if you add one during the lab. It should still pass cleanly after your refactor. If it doesn’t, you broke the spec contract, not the fixture design.
+وسكربت مخصّص لا بأس به أيضًا إن أضفته أثناء المختبر. ويجب أن يبقى ناجحًا بلا شوائب بعد إعادة هيكلتك. فإن لم يكن، فأنت من كسر عقد المواصفة، لا تصميم التجهيزات.
 
-Then, eyeballing the file:
+ثم، بالنظر إلى الملف:
 
-- Every fixture in your refactored `fixtures.ts` has a one-line comment naming the scope choice and why.
-- Every fixture that mutates state (seeds, resets, logs in) has a teardown half after `await use(...)`, and the teardown is awaited.
-- At least one of the five original fixtures has been moved out of the fixtures file into a plain helper function, and the spec now calls the helper directly instead of asking for it as a fixture.
-- There is no fixture named for a setup verb — no `setupUser`, no `doLogin`, no `initializeShelf`. Rename anything that looks like that.
-- Your lab-only fixture command runs ten times in a row without a single failure: <code><span class="line"><span style="color:#C792EA;font-style:italic">for</span><span style="color:#C5E478"> i</span><span style="color:#C792EA;font-style:italic"> in</span><span style="color:#D6DEEB"> {</span><span style="color:#82AAFF;font-style:italic">1..10}</span><span style="color:#D6DEEB">; </span><span style="color:#C792EA;font-style:italic">do</span><span style="color:#7FDBCA"> <</span><span style="color:#D6DEEB">your-lab-command</span><span style="color:#7FDBCA">></span><span style="color:#7FDBCA"> ||</span><span style="color:#C792EA;font-style:italic"> break</span><span style="color:#D6DEEB">; </span><span style="color:#C792EA;font-style:italic">done</span></span></code>
+- كل تجهيزة في `fixtures.ts` بعد إعادة الهيكلة لها تعليق من سطر واحد يسمّي اختيار النطاق وسببه.
+- كل تجهيزة تغيّر الحالة (تزرع، أو تعيد الضبط، أو تسجّل الدخول) لها نصف تفكيك بعد `await use(...)`، ونصف التفكيك هذا مسبوق بـ`await`.
+- تجهيزة واحدة على الأقل من الخمس الأصلية نُقلت خارج ملف التجهيزات إلى دالة مساعدة عادية، والمواصفة الآن تستدعي الأداة المساعدة مباشرةً بدل أن تطلبها كتجهيزة.
+- لا توجد تجهيزة مسمّاة بفعل إعداد — لا `setupUser`، ولا `doLogin`، ولا `initializeShelf`. أعد تسمية أي شيء يشبه ذلك.
+- أمر الاختبار الخاص بالمختبر فقط يعمل عشر مرات متتالية دون فشل واحد، وإن انقطع في أي تكرار من التكرارات العشرة فالتقلّب ما زال كامنًا في ملفك ولم تعالجه بعد، فلا تُودِع الملف قبل أن يمرّ الأمر عشر مرات متتابعة بلا إخفاق: <code><span class="line"><span style="color:#C792EA;font-style:italic">for</span><span style="color:#C5E478"> i</span><span style="color:#C792EA;font-style:italic"> in</span><span style="color:#D6DEEB"> {</span><span style="color:#82AAFF;font-style:italic">1..10}</span><span style="color:#D6DEEB">; </span><span style="color:#C792EA;font-style:italic">do</span><span style="color:#7FDBCA"> <</span><span style="color:#D6DEEB">your-lab-command</span><span style="color:#7FDBCA">></span><span style="color:#7FDBCA"> ||</span><span style="color:#C792EA;font-style:italic"> break</span><span style="color:#D6DEEB">; </span><span style="color:#C792EA;font-style:italic">done</span></span></code>
 
-## Suggested order of attack
+## ترتيب الهجوم المقترح
 
-Work top-down. Fix one smell, run the spec, move on.
+اعمل من الأعلى إلى الأسفل. أصلح عيبًا واحدًا، ثم شغّل المواصفة، ثم واصل.
 
-First, rename. `setupUser` becomes `seededReader`, `setupEmptyShelf` and `setupShelfWithBooks` collapse into one `seededShelf` with a clearer name. Update the spec file to match. The spec should still pass.
+أولًا، أعد التسمية. تصبح `setupUser` هي `seededReader`، وتندمج `setupEmptyShelf` و`setupShelfWithBooks` في `seededShelf` واحدة باسم أوضح. حدّث ملف المواصفة ليطابق ذلك. ويجب أن تبقى المواصفة ناجحة.
 
-Next, add teardowns. Any fixture that calls `resetShelfContent` or mutates state through the `request` fixture gets an `await resetShelfContent()` on the teardown side of `await use(...)`. This is the change the lesson cares about the most.
+بعدها، أضف عمليات التفكيك. أي تجهيزة تستدعي `resetShelfContent` أو تغيّر الحالة عبر تجهيزة `request` تحصل على `await resetShelfContent()` في جانب التفكيك من `await use(...)`. وهذا هو التغيير الذي يهمّ الدرس أكثر من غيره.
 
-Then, decide what’s actually a fixture. `setupUser` returning `{ email: 'alice@example.com' }` is a constant, not a fixture — you can either keep it as a fixture if you want the shape (so future labs can swap users) or move it out entirely. Make the choice explicit in a comment.
+ثم قرّر ما هي التجهيزة فعلًا. إن `setupUser` التي تعيد `{ email: 'alice@example.com' }` ثابت لا تجهيزة — فيمكنك إبقاؤها كتجهيزة إن أردت الشكل (حتى تستبدل المختبرات المستقبلية المستخدمين)، أو نقلها خارجًا كليًا. واجعل الخيار صريحًا في تعليق.
 
-Finally, handle `loggedOutPage`. One test uses it. It’s a helper function wearing a fixture costume. Turn it into a plain helper function (the solution walkthrough shows one way) and have the spec call it directly. Note the tradeoff: the helper has to hand teardown responsibility back to the caller, because only fixtures can *own* teardown. This is especially obvious once you already have authenticated default browser state in place — the helper exists specifically to opt *out* of that setup for one test, not to become a new shared abstraction.
+وأخيرًا، تعامل مع `loggedOutPage`. اختبار واحد يستخدمها. إنها دالة مساعدة ترتدي زي تجهيزة. حوّلها إلى دالة مساعدة عادية (ويُظهر شرح الحل طريقة واحدة لفعل ذلك) ودع المواصفة تستدعيها مباشرةً. ولاحظ المقايضة: على الأداة المساعدة أن تعيد مسؤولية التفكيك إلى المستدعي، لأن التجهيزات وحدها تستطيع أن *تملك* التفكيك. وهذا أوضح ما يكون حين تكون حالة المتصفح الافتراضية الموثَّقة جاهزة عندك بالفعل — فالأداة المساعدة موجودة تحديدًا لتخرج من ذلك الإعداد لاختبار واحد، لا لتصبح تجريدًا مشتركًا جديدًا.
 
-## Stretch
+## أهداف إضافية
 
-Add a `resetBetweenTests` fixture that wraps `resetShelfContent()` so every test in the lab project gets a clean shelf without needing a `beforeEach`. Write the teardown half, too — even though `resetShelfContent` is idempotent, the muscle memory matters.
+أضف تجهيزة `resetBetweenTests` تلفّ `resetShelfContent()` بحيث يحصل كل اختبار في مشروع المختبر على رفّ نظيف دون حاجة إلى `beforeEach`. واكتب نصف التفكيك أيضًا — فرغم أن `resetShelfContent` عديم الأثر عند التكرار، فالذاكرة العضلية تهمّ.
 
-But: pause before you ship it. Is this better than a `beforeEach` in the spec? Sometimes the answer is no. A fixture with no teardown and one line of setup is a fixture that should have been a `beforeEach`. Make the call, and write it in the commit message.
+لكن: توقّف قبل أن تشحنه. هل هذا أفضل من `beforeEach` في المواصفة؟ أحيانًا يكون الجواب لا. فتجهيزة بلا تفكيك وفيها سطر إعداد واحد هي تجهيزة كان يجب أن تكون `beforeEach`. اتخذ القرار، واكتبه في رسالة الإيداع.
 
-## What a Good Refactor Leaves Behind
+## ما تتركه إعادة الهيكلة الجيدة
 
-Your `fixtures.ts` is now shorter, not longer. The spec still passes. You compare it against the solution walkthrough and realize your refactor made different choices than the solution made — and you can defend both.
+ملف `fixtures.ts` لديك الآن أقصر، لا أطول. والمواصفة ما زالت تنجح. تقارنه بشرح الحل فتدرك أن إعادة هيكلتك اتخذت خيارات مختلفة عن خيارات الحل — وتستطيع الدفاع عن كليهما.
 
-The commit you’d be willing to merge is the one where future-you reads this file in six months and isn’t annoyed at anyone.
+الإيداع الذي ترضى بدمجه هو الإيداع الذي يقرأ فيه مستقبلك هذا الملف بعد ستة أشهر فلا يغضب من أحد.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — the lesson this lab exercises.
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation) — for the `resetShelfContent` and `seedFreshDatabase` helpers you’ll be wrapping in teardowns.
-- [Lab: Harden the Flaky Rate-Book Test](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test) — the other real-refactor lab in this course, for when you want more of this kind of thing.
+- [التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — الدرس الذي يتمرّن عليه هذا المختبر.
+- [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation) — لأداتي `resetShelfContent` و`seedFreshDatabase` المساعدتين اللتين ستلفّهما في عمليات التفكيك.
+- [مختبر: تحصين اختبار دفتر الأسعار المتقلّب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test) — المختبر الآخر لإعادة الهيكلة الحقيقية في هذه الدورة، حين تريد المزيد من هذا النوع.

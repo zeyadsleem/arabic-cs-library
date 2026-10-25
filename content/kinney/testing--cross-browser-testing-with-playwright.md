@@ -1,28 +1,28 @@
 ---
-title: "Cross-Browser Tests with Playwright"
-lang: en
+title: "الاختبارات عبر المتصفحات مع Playwright (Cross-Browser Tests with Playwright)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/cross-browser-testing-with-playwright"
 ---
 
-Let’s talk about cross-browser testing, because let’s be real, the odds that your app is only ever going to be used on the latest Chrome version are about as good as finishing a Friday without hitting *at least* one merge conflict. You’ve got users out there with different setups—Safari, Firefox, Edge, maybe even IE11 (gross).
+لنتحدث عن الاختبار عبر المتصفحات، لأننا لنكن صادقين، احتمال أن يستخدم تطبيقك نسخة Chrome الأحدث فقط طوال الوقت يقارب احتمال إنهاء يوم جمعة دون الاصطدام بـ*تعارض دمج* واحد على الأقل. لديك مستخدمون بإعدادات مختلفة — Safari وFirefox وEdge، وربما حتى IE11 (مقرف).
 
-Let’s explore a quick and practical way to set up cross-browser testing so you can handle browser quirks without rage-clicking into oblivion.
+لنستكشف طريقة سريعة وعملية لإعداد الاختبار عبر المتصفحات حتى تتعامل مع غرائب المتصفحات دون النقر بغضب إلى النسيان.
 
-## Install Vitest with Playwright
+## تثبيت Vitest مع Playwright
 
-To test an app across multiple browsers, we need a headless browser automation tool to simulate them. We’re going to use **Playwright** because it allows us to run tests in different browsers like Chrome (or its shy sibling, Chromium), Firefox, and WebKit (covers Safari). Best part? It snaps right into your Vitest setup.
+لاختبار تطبيق عبر متصفحات متعددة، نحتاج إلى أداة أتمتة متصفح بلا واجهة (headless) لمحاكاتها. سنستخدم **Playwright** لأنه يتيح تشغيل الاختبارات في متصفحات مختلفة مثل Chrome (أو شقيقه الخجول Chromium) وFirefox وWebKit (يغطي Safari). أفضل جزء؟ يتصل مباشرة بإعداد Vitest لديك.
 
-First, you need to get Vitest and Playwright working in cosmic harmony:
+أولًا، تحتاج إلى جعل Vitest وPlaywright يعملان في وئام كوني:
 
 ```bash
 npm install vitest @playwright/test
 ```
 
-That gives you access to Playwright’s automated browsers inside Vitest. It’s like peanut butter and jelly, but for JavaScript testing.
+يمنحك ذلك وصولًا إلى متصفحات Playwright المؤتمتة داخل Vitest. مثل زبدة الفول السوداني والمربى، لكن لاختبار JavaScript.
 
-## Configure Vitest for Playwright
+## تهيئة Vitest لـ Playwright
 
-Next up: managing browser environments with Vitest. However, before we jump in, let’s set up our Playwright config. Create a file `playwright.config.ts` in your root directory:
+التالي: إدارة بيئات المتصفح مع Vitest. ومع ذلك، قبل أن نقفز، لنعدّ تهيئة Playwright. أنشئ ملف `playwright.config.ts` في الدليل الجذري:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
@@ -39,13 +39,13 @@ export default defineConfig({
 });
 ```
 
-Make sure your local server runs on port 3000. You can change that up, depending on your setup. Playwright’s built-in config is super helpful here because it knows how to control browser settings.
+تأكد من أن خادمك المحلي يعمل على المنفذ 3000. يمكنك تغيير ذلك حسب إعدادك. تهيئة Playwright المدمجة مفيدة جدًا هنا لأنها تعرف كيفية التحكم في إعدادات المتصفح.
 
-## Writing a Cross-Browser Test
+## كتابة اختبار عبر المتصفحات
 
-Now, let’s write a feature test and run it through a bunch of browsers.
+الآن، لنكتب اختبار ميزة ونشغّله عبر مجموعة متصفحات.
 
-First, in your test file, import what we need for automated testing:
+أولًا، في ملف اختبارك، استورد ما نحتاجه للاختبار المؤتمت:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -71,11 +71,11 @@ test.describe('Cross-browser button test', () => {
 });
 ```
 
-You could get fancier with this, but we’re trying to keep it simple for now. Here, Vitest is forcing Chrome (via `chromium`), Firefox, and WebKit (hello, Safari!) to go to `localhost:3000` and check if the button labeled ‘Submit’ exists. It’s like a check-in for all major browsers.
+يمكنك أن تتفنن أكثر في هذا، لكننا نحاول إبقاءه بسيطًا الآن. هنا، يجبر Vitest كروم (عبر `chromium`) وFirefox وWebKit (مرحبًا Safari!) على الذهاب إلى `localhost:3000` والتحقق من وجود زر مكتوب عليه «Submit». إنه مثل تسجيل حضور لكل المتصفحات الرئيسية.
 
-## Running the Tests
+## تشغيل الاختبارات {#running-the-tests}
 
-To kick off your tests, create a simple script in your `package.json`:
+لبدء اختباراتك، أنشئ سكربتًا بسيطًا في `package.json`:
 
 ```json
 "scripts": {
@@ -83,17 +83,17 @@ To kick off your tests, create a simple script in your `package.json`:
 }
 ```
 
-Then run the script with:
+ثم شغّل السكربت بـ:
 
 ```bash
 npm run test:e2e
 ```
 
-Vitest will spin up the Playwright scripts, pull up virtual browsers, and run the tests. The browsers don’t actually pop open on your screen because we’re in `headless` mode, but trust me—they’re doing the hard work in the background.
+سيطلق Vitest سكربتات Playwright، ويحضر متصفحات افتراضية، ويشغّل الاختبارات. لا تنبثق المتصفحات فعليًا على شاشتك لأننا في وضع `headless`، لكن ثق بي — إنها تقوم بالعمل الشاق في الخلفية.
 
-## Test in Multiple Browsers Simultaneously
+## اختبر في متصفحات متعددة في الوقت نفسه
 
-If you’d rather **test multiple browsers in parallel**, you can modify the syntax with loops or Playwright’s `projects` feature. Playwright can run tests across multiple browsers like a multitasking wizard, but without making you burn extra brain cycles:
+إذا كنت تفضّل **اختبار متصفحات متعددة على التوازي**، يمكنك تعديل الصياغة بحلقات أو ميزة `projects` في Playwright. يستطيع Playwright تشغيل الاختبارات عبر متصفحات متعددة مثل ساحر متعدد المهام، دون أن يجعلك تحرق دورات دماغية إضافية:
 
 ```typescript
 test.use({ browserName: 'webkit' });
@@ -108,10 +108,10 @@ test('firefox test', async ({ page }) => {
 });
 ```
 
-This efficiently loops through the browser tests so you’re not cluttering your `test.describe`.
+هذا يتنقل بكفاءة عبر اختبارات المتصفحات فلا تزدحم `test.describe` لديك.
 
-## Wrapping Up
+## خاتمة
 
-The great thing is that Vitest lets Playwright do most of the heavy lifting, running your app inside the simulated browsers with minimal setup. Not only do you get faster feedback, but you’ve also got some serious coverage across the major browsers without installing half a dozen VMs or keeping an ancient version of IE lying around.
+الشيء الرائع هو أن Vitest يتيح لـ Playwright القيام بمعظم العمل الشاق، بتشغيل تطبيقك داخل المتصفحات المحاكاة بأقل إعداد. لا تحصل على تغذية راجعة أسرع فحسب، بل لديك أيضًا تغطية جدية عبر المتصفحات الرئيسية دون تثبيت نصف دستة من الأجهزة الافتراضية أو الاحتفاظ بنسخة قديمة من IE.
 
-Is cross-browser testing still painful? Meh, a little. But, at least we’ve got the tools to help make it just painful *enough*.
+هل ما زال الاختبار عبر المتصفحات مؤلمًا؟ آه، قليلًا. لكن على الأقل لدينا الأدوات التي تساعد في جعله مؤلمًا *بالقدر الكافي*.

@@ -1,14 +1,14 @@
 ---
-title: "Testing Zod Schema"
-lang: en
+title: "اختبار مخطط Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/testing-zod-schema"
 ---
 
-Writing comprehensive unit tests for your Zod schemas is essential to ensure their correctness and prevent regressions as your application evolves. Here are key strategies for testing Zod schemas:
+تُعدّ كتابة اختبارات وحدة شاملة لمخططات Zod ضرورية لضمان صحتها ومنع الانحدارات مع تطوّر تطبيقك. وإليك استراتيجيات أساسية لاختبار مخططات Zod:
 
-## Test Valid Inputs
+## اختبار المدخلات الصحيحة
 
-Create test cases with valid input data that should successfully parse against your schema. Assert that `schema.parse()` or `schema.safeParse()` returns the expected validated data without errors.
+أنشئ حالات اختبار ببيانات مدخلة صحيحة ينبغي أن تُحلَّل بنجاح وفق مخططك. وتأكد من أن `schema.parse()` أو `schema.safeParse()` يعيد البيانات المتحقَّق منها المتوقعة دون أخطاء.
 
 ```typescript
 import { z } from 'zod';
@@ -28,9 +28,9 @@ describe('User Schema', () => {
 });
 ```
 
-## Test Invalid Inputs
+## اختبار المدخلات غير الصحيحة
 
-Create test cases with invalid input data that should *fail* validation. Assert that `schema.parse()` throws a `ZodError` or that `schema.safeParse()` returns `success: false`. Examine the `error.errors` array to verify specific error messages and error paths are as expected.
+أنشئ حالات اختبار ببيانات مدخلة غير صحيحة ينبغي أن *تفشل* في التحقق. وتأكد من أن `schema.parse()` يرمي `ZodError` أو أن `schema.safeParse()` يعيد `success: false`. وافحص مصفوفة `error.errors` للتحقق من أن رسائل الخطأ ومسارات الخطأ المحددة كما هي متوقعة.
 
 ```typescript
 import { z } from 'zod';
@@ -67,10 +67,10 @@ describe('User Schema', () => {
 });
 ```
 
-## Test Edge Cases and Boundary Conditions
+## اختبار الحالات الحدية والشروط الحدودية
 
-Consider edge cases and boundary conditions for your schemas (e.g., empty strings, null values where nullable is not specified, maximum allowed lengths, minimum/maximum values). Create test cases to ensure your schemas handle these scenarios correctly.
+خُذ في الحسبان الحالات الحدية والشروط الحدودية لمخططاتك (مثل السلاسل الفارغة، وقيم null حين لا يُحدَّد القبول بها، والأطوال القصوى المسموح بها، والقيم الدنيا والعليا). وأنشئ حالات اختبار للتأكد من أن مخططاتك تعالج هذه السيناريوهات على نحو صحيح.
 
-## Test Custom Refinements and Transformations
+## اختبار التحسينات والتحويلات المخصّصة
 
-Thoroughly test your `.refine()`, `.superRefine()`, and `.transform()` methods to ensure your custom validation and transformation logic works as expected.
+اختبر دوالك `.refine()` و`.superRefine()` و`.transform()` اختبارًا شاملًا للتأكد من أن منطق التحقق والتحويل المخصّص لديك يعمل كما هو متوقع.

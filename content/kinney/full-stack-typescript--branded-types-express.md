@@ -1,10 +1,10 @@
 ---
-title: "Branded Types with Express"
-lang: en
+title: "الأنواع الموسومة مع Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/branded-types-express"
 ---
 
-Sometimes basic types aren’t enough. For IDs, tokens, and other special strings, we can use branded types:
+أحيانًا لا تكفي الأنواع الأساسية. فالمعرّفات والرموز (tokens) وغيرها من النصوص الخاصة يمكن أن نستخدم لها الأنواع الموسومة (branded types):
 
 ```typescript
 // Define branded types
@@ -67,4 +67,4 @@ app.post('/login', (req: Request, res: Response<AuthResponse>) => {
 });
 ```
 
-Branded types ensure that you don’t accidentally mix up different types of IDs or tokens, even though they’re all strings underneath.
+تضمن الأنواع الموسومة ألّا تخلط بالخطأ بين أنواع مختلفة من المعرّفات أو الرموز، حتى وإن كانت جميعها نصوصًا في جوهرها.

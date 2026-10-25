@@ -1,29 +1,29 @@
 ---
-title: "Automating Deploys with the AWS CLI"
-lang: en
+title: "أتمتة عمليات النشر باستخدام AWS CLI"
+lang: ar
 source: "https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli"
 ---
 
-Running two CLI commands after every build is fine for a Saturday afternoon project. It’s not fine for a team shipping to production. You want a single command: `./deploy.sh`—build the site, upload the files, invalidate the cache, done. This lesson turns the manual deployment process from [The Full Static Site Pipeline](https://stevekinney.com/courses/aws/full-static-pipeline) into a repeatable, copy-pasteable deploy script.
+تشغيل أمرين من أوامر CLI بعد كل عملية بناء لا بأس به في مشروع تعمل عليه في أصيل يوم سبت. لكنه ليس مقبولًا لفريق يشحن إلى الإنتاج. أنت تريد أمرًا واحدًا: `./deploy.sh`—ابنِ الموقع، وارفع الملفات، وأبطل صلاحية التخزين المؤقت، وانتهيت. يحوّل هذا الدرس عملية النشر اليدوية من [خط أنابيب الموقع الثابت الكامل](https://stevekinney.com/courses/aws/full-static-pipeline) إلى سكربت نشر قابل للتكرار ويسهل نسخه ولصقه.
 
-If you want AWS’s version of the exact command surfaces while you read, keep the [`aws s3 sync` command reference](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) and the [`aws cloudfront create-invalidation` command reference](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) open.
+إن أردت الاطلاع على نسخة AWS من أسطح الأوامر الدقيقة أثناء قراءتك، فأبقِ [مرجع الأمر `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) و[مرجع الأمر `aws cloudfront create-invalidation`](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) مفتوحين.
 
-## The Two Commands You’re Automating
+## الأمران اللذان تؤتمتهما
 
-You already know the core operations from [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations):
+أنت تعرف بالفعل العمليتين الأساسيتين من [سلوكيات التخزين المؤقت وإبطال الصلاحية](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations):
 
-1. **`aws s3 sync`**: Upload your build output to S3, removing files that no longer exist.
-2. **`aws cloudfront create-invalidation`**: Tell CloudFront to drop cached copies so edge locations pick up the new files.
+1. **`aws s3 sync`**: ارفع مخرجات البناء إلى S3، مع إزالة الملفات التي لم تعد موجودة.
+2. **`aws cloudfront create-invalidation`**: أخبر CloudFront بإسقاط النسخ المخزّنة مؤقتًا حتى تلتقط مواقع الحافة الملفات الجديدة.
 
-The script wraps these with error handling, differentiated cache headers, and status output.
+يلفّ السكربت هذين الأمرين بمعالجة الأخطاء، وترويسات تخزين مؤقت متمايزة، وإخراج للحالة.
 
-## The Deploy Script
+## سكربت النشر
 
-> **Tip**
+> **نصيحة**
 >
-> This script is available as [`deploy.sh`](https://github.com/stevekinney/scratch-lab/blob/main/deploy.sh) in the Scratch Lab repository.
+> هذا السكربت متاح باسم [`deploy.sh`](https://github.com/stevekinney/scratch-lab/blob/main/deploy.sh) في مستودع Scratch Lab.
 
-Save this as `deploy.sh` in the root of your project:
+احفظ هذا باسم `deploy.sh` في جذر مشروعك:
 
 ```bash
 #!/usr/bin/env bash
@@ -81,43 +81,43 @@ echo "Invalidation created: $INVALIDATION_ID"
 echo "Deploy complete."
 ```
 
-*Note:* The `--delete` flag removes old hashed files from S3 that your build no longer produces.
+*ملاحظة:* تزيل علامة `--delete` الملفات القديمة المُجزّأة من S3 التي لم يعد بناؤك ينتجها.
 
-Make it executable:
+اجعل السكربت قابلًا للتنفيذ:
 
 ```bash
 chmod +x deploy.sh
 ```
 
-Run it:
+شغّله:
 
 ```bash
 ./deploy.sh
 ```
 
-## What the Script Does
+## ما الذي يفعله السكربت
 
-The script splits the upload into three phases, each with different `Cache-Control` headers. This is the caching strategy from [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations) applied to the deployment process:
+يقسّم السكربت الرفع إلى ثلاث مراحل، لكل منها ترويسات `Cache-Control` مختلفة. وهذه هي استراتيجية التخزين المؤقت من [سلوكيات التخزين المؤقت وإبطال الصلاحية](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations) مطبَّقة على عملية النشر:
 
-1. **Hashed assets** (`/assets/*`): `max-age=31536000, immutable`. These are your bundler’s output: `main.a1b2c3.js`, `styles.d4e5f6.css`. The filenames change when the content changes, so they can be cached forever. The `immutable` directive tells browsers not to bother revalidating.
-2. **`index.html`**: `max-age=60`. Your entry point must update quickly. Sixty seconds is short enough that users see your latest deploy within a minute, but long enough to absorb traffic spikes.
-3. **Everything else**: `favicon.ico`, `robots.txt`, `manifest.json`, and anything else in your build directory. These use S3’s default caching behavior.
+1. **الأصول المُجزّأة** (`/assets/*`): `max-age=31536000, immutable`. هذه هي مخرجات أداة التجميع لديك: `main.a1b2c3.js`، و`styles.d4e5f6.css`. تتغيّر أسماء الملفات عندما يتغيّر المحتوى، لذا يمكن تخزينها مؤقتًا إلى الأبد. وتوجّه تعليمة `immutable` المتصفحات إلى عدم إزعاج نفسها بإعادة التحقق.
+2. **`index.html`**: `max-age=60`. يجب أن تتحدث نقطة الدخول لديك بسرعة. ستون ثانية مدة قصيرة بما يكفي ليرى المستخدمون أحدث عملية نشر خلال دقيقة، وطويلة بما يكفي لاستيعاب ذُرى الزيارات.
+3. **كل شيء آخر**: `favicon.ico`، و`robots.txt`، و`manifest.json`، وأي شيء آخر في دليل البناء لديك. تستخدم هذه سلوك التخزين المؤقت الافتراضي في S3.
 
-## The `--delete` Flag
+## علامة `--delete`
 
-The `--delete` flag on `aws s3 sync` is critical. Without it, every version of every hashed asset accumulates in your bucket. After a few months, you’ve got thousands of orphaned files: `main.a1b2c3.js`, `main.d4e5f6.js`, `main.g7h8i9.js`, all sitting in S3, all costing you (very little, but still) storage fees.
+علامة `--delete` في `aws s3 sync` حاسمة. فبدونها تتراكم كل نسخة من كل أصل مُجزّأ في حاوية S3 لديك. وبعد بضعة أشهر، ستكون لديك آلاف الملفات اليتيمة: `main.a1b2c3.js`، و`main.d4e5f6.js`، و`main.g7h8i9.js`، كلها راقدة في S3، وكلها تكلّفك رسوم تخزين (ضئيلة جدًا، لكنها رسوم على أي حال).
 
-With `--delete`, `aws s3 sync` compares your local build directory to the bucket and removes anything in the bucket that isn’t in the local directory. Old hashed assets get cleaned up automatically.
+مع `--delete`، يقارن `aws s3 sync` دليل البناء المحلي لديك بالحاوية، ويزيل أي شيء في الحاوية غير موجود في الدليل المحلي. وبذلك تُنظَّف الأصول المُجزّأة القديمة تلقائيًا.
 
-> **Warning**
+> **تحذير**
 >
-> The `--delete` flag means your build directory is the source of truth. If your build is incomplete or broken, `--delete` will remove the working files from S3 and replace them with whatever is in your build directory. Always run your build command before deploying. The script checks that the build directory exists, but it can’t verify that the build succeeded.
+> تعني علامة `--delete` أن دليل البناء لديك هو مصدر الحقيقة. فإذا كان بناؤك ناقصًا أو معطوبًا، فستزيل `--delete` الملفات العاملة من S3 وتستبدلها بما يوجد في دليل البناء لديك. شغّل أمر البناء دائمًا قبل النشر. يتحقق السكربت من وجود دليل البناء، لكنه لا يستطيع التحقق من نجاح البناء.
 
-## Selective Invalidation vs. `/*`
+## الإبطال الانتقائي مقابل `/*`
 
-The script uses `--paths "/*"` to invalidate everything. This is the simplest approach and works well for most projects. But you have options:
+يستخدم السكربت `--paths "/*"` لإبطال كل شيء. وهذه أبسط طريقة وتعمل جيدًا مع معظم المشاريع. لكن لديك خيارات:
 
-**Full invalidation** (`/*`): Clears every cached object across all edge locations. Counts as one invalidation path. After a `/*` invalidation, the next request for any file is a cache miss.
+**الإبطال الكامل** (`/*`): يمسح كل كائن مخزّن مؤقتًا في جميع مواقع الحافة. ويُحتسب مسار إبطال واحدًا. وبعد إبطال `/*`، يكون الطلب التالي لأي ملف إخفاقًا في التخزين المؤقت.
 
 ```bash
 aws cloudfront create-invalidation \
@@ -127,7 +127,7 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-**Selective invalidation**: Invalidate only the files that actually changed. More surgical, but requires you to know which files changed.
+**الإبطال الانتقائي**: أبطل صلاحية الملفات التي تغيّرت فعليًا فقط. وهو أدقّ جراحيًا، لكنه يتطلب منك معرفة الملفات التي تغيّرت.
 
 ```bash
 aws cloudfront create-invalidation \
@@ -137,31 +137,31 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-**When to use selective invalidation**: If you’re deploying to a high-traffic site and most of your cached content didn’t change, selective invalidation avoids a burst of cache misses for files that are still valid. In practice, since your hashed assets have new filenames on every deploy anyway, the only file that truly needs invalidation is `index.html`. The old hashed assets will expire naturally.
+**متى تستخدم الإبطال الانتقائي**: إذا كنت تنشر إلى موقع عالي الزيارات ولم يتغيّر معظم محتواك المخزّن مؤقتًا، فإن الإبطال الانتقائي يتجنب موجة من إخفاقات التخزين المؤقت لملفات ما تزال صالحة. وعمليًا، وبما أن أصولك المُجزّأة تحمل أسماء ملفات جديدة في كل عملية نشر على أي حال، فالملف الوحيد الذي يحتاج فعلًا إلى إبطال هو `index.html`. أما الأصول المُجزّأة القديمة فستنتهي صلاحيتها طبيعيًا.
 
-> **Tip**
+> **نصيحة**
 >
-> For most frontend projects, `/*` is the right choice. The first 1,000 invalidation paths per month are free, and `/*` counts as a single path. You’re not saving money by being selective—you’re saving cache efficiency. Unless you’re handling millions of requests per minute, the cache refill after a `/*` invalidation is negligible.
+> بالنسبة إلى معظم مشاريع الواجهة الأمامية، `/*` هو الخيار الصحيح. فأول 1,000 مسار إبطال شهريًا مجاني، و`/*` يُحتسب مسارًا واحدًا. أنت لا توفّر المال بكونك انتقائيًا—بل توفّر كفاءة التخزين المؤقت. وما لم تكن تتعامل مع ملايين الطلبات في الدقيقة، فإن إعادة ملء التخزين المؤقت بعد إبطال `/*` لا تُذكر.
 
-## Cache Busting Strategies
+## استراتيجيات كسر التخزين المؤقت
 
-The deploy script already uses the most effective cache busting strategy: **hashed filenames** for assets and **short TTLs** for `index.html`. But there are two other approaches worth understanding:
+يستخدم سكربت النشر بالفعل أكثر استراتيجيات كسر التخزين المؤقت فعالية: **أسماء ملفات مُجزّأة** للأصول و**مدد TTL قصيرة** لـ `index.html`. لكن هناك مقاربتين أخريين تستحقان الفهم:
 
-### Query String Versioning
+### إصدار سلاسل الاستعلام
 
-Append a version query string to asset URLs: `main.js?v=202603181200`. CloudFront treats each unique URL (including query strings, if the cache policy includes them) as a separate cached object. This avoids invalidations entirely—the new URL is a cache miss by definition.
+ألحق سلسلة استعلام للإصدار بروابط الأصول: `main.js?v=202603181200`. يعامل CloudFront كل رابط فريد (بما في ذلك سلاسل الاستعلام، إذا كانت سياسة التخزين المؤقت تشملها) ككائن منفصل مخزّن مؤقتًا. وهذا يتجنب عمليات الإبطال تمامًا—فالرابط الجديد إخفاق في التخزين المؤقت بحكم التعريف.
 
-The problem: CloudFront’s default `CachingOptimized` policy doesn’t include query strings in the cache key. You’d need a custom cache policy. And your HTML must reference the versioned URLs, which means your build tool must inject the version string. Modern bundlers already hash filenames, which is a better approach because the hash is content-based, not time-based.
+المشكلة: سياسة `CachingOptimized` الافتراضية في CloudFront لا تشمل سلاسل الاستعلام في مفتاح التخزين المؤقت. وستحتاج إلى سياسة تخزين مؤقت مخصّصة. كما يجب أن تشير شيفرة HTML لديك إلى الروابط ذات الإصدار، ما يعني أن أداة البناء لديك يجب أن تحقن سلسلة الإصدار. أدوات التجميع الحديثة تُجزّئ أسماء الملفات بالفعل، وهي مقاربة أفضل لأن التجزئة قائمة على المحتوى لا على الوقت.
 
-### Timestamped Directories
+### أدلّة ذات طوابع زمنية
 
-Upload each deployment to a versioned directory: `s3://my-frontend-app-assets/v20260318/`. Point CloudFront at the latest version. This gives you instant rollbacks (just point CloudFront to the previous version) but adds complexity to your deployment pipeline and bucket structure.
+ارفع كل عملية نشر إلى دليل ذي إصدار: `s3://my-frontend-app-assets/v20260318/`. ووجّه CloudFront إلى أحدث إصدار. وهذا يمنحك تراجعًا فوريًا (ما عليك إلا توجيه CloudFront إلى الإصدار السابق) لكنه يضيف تعقيدًا إلى خط أنابيب النشر وبنية الحاوية لديك.
 
-For most frontend projects, hashed filenames plus `/*` invalidation is the right balance of simplicity and effectiveness. Honestly, I’ve never needed anything more than this.
+بالنسبة إلى معظم مشاريع الواجهة الأمامية، تمثّل أسماء الملفات المُجزّأة مع إبطال `/*` التوازن الصحيح بين البساطة والفعالية. وبصراحة، لم أحتج يومًا إلى أكثر من ذلك.
 
-## Adding a Build Step
+## إضافة خطوة بناء
 
-In practice, you rarely deploy without building first. Here’s the script extended with a build step:
+عمليًا، نادرًا ما تنشر دون أن تبني أولًا. إليك السكربت موسّعًا بخطوة بناء:
 
 ```bash
 #!/usr/bin/env bash
@@ -210,11 +210,11 @@ INVALIDATION_ID=$(aws cloudfront create-invalidation \
 echo "Deploy complete. Invalidation: $INVALIDATION_ID"
 ```
 
-The `set -euo pipefail` at the top ensures the script stops immediately if any command fails. If `npm run build` exits non-zero, the deploy doesn’t proceed. If `aws s3 sync` fails, the invalidation doesn’t run. This prevents partial deployments.
+يضمن `set -euo pipefail` في الأعلى أن يتوقف السكربت فورًا إذا فشل أي أمر. فإذا خرج `npm run build` بقيمة غير صفرية، لا يستمر النشر. وإذا فشل `aws s3 sync`، لا يعمل الإبطال. وهذا يمنع عمليات النشر الجزئية.
 
-## Deployment Versioning
+## إصدار عمليات النشر
 
-For auditability, you might want to tag each deployment. Add this to your script:
+لأغراض التدقيق، قد ترغب في وسم كل عملية نشر. أضف هذا إلى سكربتك:
 
 ```bash
 DEPLOY_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -223,7 +223,7 @@ GIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 echo "Deploying commit $GIT_SHA at $DEPLOY_TIMESTAMP"
 ```
 
-This gives you a trail in your terminal output. For more durable tracking, you could write a deployment manifest to S3:
+يمنحك هذا أثرًا في مخرجات الطرفية لديك. ولمزيد من التتبع الدائم، يمكنك كتابة بيان نشر إلى S3:
 
 ```bash
 echo "{\"commit\": \"$GIT_SHA\", \"timestamp\": \"$DEPLOY_TIMESTAMP\"}" | \
@@ -232,11 +232,11 @@ echo "{\"commit\": \"$GIT_SHA\", \"timestamp\": \"$DEPLOY_TIMESTAMP\"}" | \
   --region "$REGION"
 ```
 
-Now you can always check which version is deployed by fetching `https://example.com/_deploy-manifest.json`.
+الآن يمكنك دائمًا التحقق من الإصدار المنشور بجلب `https://example.com/_deploy-manifest.json`.
 
-## SDK-Based Deploy Script
+## سكربت نشر قائم على SDK
 
-Teams that already live in TypeScript tend to prefer a Node-based deploy script over a Bash one—it’s easier to share types with the rest of the codebase, and it runs identically on every developer’s machine without the `bash` / `zsh` / `fish` quirks. Here’s the same pipeline in TypeScript:
+الفرق التي تعيش أصلًا في TypeScript تميل إلى تفضيل سكربت نشر قائم على Node على سكربت Bash—فمشاركة الأنواع مع بقية قاعدة الشيفرة أسهل، وهو يعمل بالطريقة نفسها على جهاز كل مطوّر دون غرائب `bash` / `zsh` / `fish`. إليك خط الأنابيب نفسه في TypeScript:
 
 ```typescript
 // scripts/deploy.ts
@@ -310,6 +310,6 @@ await cloudfront.send(
 );
 ```
 
-Run it with `npx tsx scripts/deploy.ts`. The pipeline is identical—the choice between the Bash version and this one is purely developer preference.
+شغّله بـ `npx tsx scripts/deploy.ts`. خط الأنابيب متطابق—والاختيار بين نسخة Bash وهذه النسخة مسألة تفضيل المطوّر وحده.
 
-The deploy script works, but you still have to run it manually. Next up, you’ll move this into a GitHub Actions workflow that runs automatically on every push to `main`, including how to authenticate GitHub Actions with AWS using OIDC instead of long-lived access keys.
+سكربت النشر يعمل، لكن ما يزال عليك تشغيله يدويًا. في الخطوة التالية، ستنقل هذا إلى سير عمل GitHub Actions يعمل تلقائيًا عند كل دفعة إلى `main`، بما في ذلك كيفية مصادقة GitHub Actions مع AWS باستخدام OIDC بدلًا من مفاتيح وصول طويلة العمر.

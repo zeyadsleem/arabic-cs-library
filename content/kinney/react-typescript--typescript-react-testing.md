@@ -1,16 +1,16 @@
 ---
-title: "TypeScript React Testing"
-lang: en
+title: "اختبار React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-react-testing"
 ---
 
-Testing React components with TypeScript adds an extra layer of confidence to your test suite. Not only do you verify behavior, but you also ensure type safety throughout your tests. This guide covers essential patterns for testing React components with TypeScript, from basic component tests to complex mocking scenarios.
+اختبار مكوّنات React مع TypeScript يضيف طبقة إضافية من الثقة إلى مجموعة اختباراتك. لا تتحقق من السلوك فحسب، بل تضمن أيضًا سلامة الأنواع طوال الاختبارات. يغطي هذا الدليل الأنماط الأساسية لاختبار مكوّنات React مع TypeScript، من اختبارات المكوّنات الأساسية إلى سيناريوهات المحاكاة (mocking) المعقدة.
 
-## Setting Up TypeScript with React Testing Library
+## إعداد TypeScript لاختبار React
 
-First, let’s establish the foundation for type-safe React testing.
+أولاً، لنضع الأساس لاختبار React آمن الأنواع.
 
-### Type Definitions and Configuration
+### تعريفات الأنواع والتهيئة
 
 ```typescript
 // test-utils.tsx
@@ -61,7 +61,7 @@ export function getByTestId<T extends HTMLElement = HTMLElement>(
 }
 ```
 
-### Jest Configuration with TypeScript
+### تهيئة Jest مع TypeScript
 
 ```typescript
 // jest.config.ts
@@ -91,9 +91,9 @@ const config: Config.InitialOptions = {
 export default config;
 ```
 
-## Component Testing Patterns
+## أنماط اختبار المكوّنات
 
-### Basic Component Testing
+### اختبار مكوّن أساسي
 
 ```typescript
 import { render, screen, fireEvent } from '../test-utils';
@@ -130,7 +130,7 @@ describe('Button Component', () => {
 });
 ```
 
-### Testing Props and Types
+### اختبار الخصائص (Props) والأنواع
 
 ```typescript
 // Type-safe prop testing
@@ -190,9 +190,9 @@ describe('Card Component', () => {
 });
 ```
 
-## Testing Hooks
+## اختبار الخُطّافات (Hooks)
 
-### Testing Custom Hooks
+### اختبار الخُطّافات المخصّصة
 
 ```typescript
 import { renderHook, act, waitFor } from '@testing-library/react';
@@ -270,7 +270,7 @@ describe('useFetch Hook', () => {
 });
 ```
 
-### Testing Hook State Changes
+### اختبار تغيّرات حالة الخُطّاف
 
 ```typescript
 interface UseFormReturn<T> {
@@ -346,9 +346,9 @@ describe('useForm Hook', () => {
 });
 ```
 
-## Mocking Patterns
+## أنماط المحاكاة (Mocking)
 
-### Type-Safe Module Mocks
+### المحاكاة (Mock) آمنة الأنواع للوحدات (Modules)
 
 ```typescript
 // __mocks__/api.ts
@@ -391,7 +391,7 @@ describe('UserProfile Component', () => {
 });
 ```
 
-### Mocking React Components
+### المحاكاة (Mock) مكوّنات React
 
 ```typescript
 // Type-safe component mocks
@@ -424,7 +424,7 @@ describe('Parent Component', () => {
 });
 ```
 
-### Mocking Hooks
+### المحاكاة (Mock) الخُطّافات (Hooks)
 
 ```typescript
 // Mock a custom hook
@@ -464,9 +464,9 @@ describe('ProtectedComponent', () => {
 });
 ```
 
-## Event Testing
+## اختبار الأحداث (Events)
 
-### Type-Safe Event Simulation
+### محاكاة الأحداث آمنة الأنواع
 
 ```typescript
 import { fireEvent, userEvent } from '@testing-library/react';
@@ -543,9 +543,9 @@ describe('LoginForm', () => {
 });
 ```
 
-## Async Testing
+## اختبار غير المتزامن (Async)
 
-### Testing Async Components
+### اختبار مكوّنات غير متزامنة
 
 ```typescript
 interface AsyncListProps<T> {
@@ -630,9 +630,9 @@ describe('AsyncList', () => {
 });
 ```
 
-## Custom Matchers
+## مطابقات مخصّصة (Custom Matchers)
 
-### Type-Safe Custom Matchers
+### مطابقات مخصّصة آمنة الأنواع
 
 ```typescript
 // custom-matchers.ts
@@ -711,9 +711,9 @@ describe('Custom Matchers', () => {
 });
 ```
 
-## Testing Factory Patterns
+## أنماط المصنع (Factory Patterns)
 
-### Component Test Factories
+### مصانع اختبار المكوّنات
 
 ```typescript
 // test-factories.ts
@@ -771,7 +771,7 @@ describe('UserProfile with Factory', () => {
 });
 ```
 
-### Test Data Builders
+### بناة بيانات الاختبار (Test Data Builders)
 
 ```typescript
 // test-builders.ts
@@ -840,9 +840,9 @@ describe('User Components', () => {
 });
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Do’s ✅
+### ما يُنصح به ✅
 
 ```typescript
 // ✅ Use type-safe test utilities
@@ -861,7 +861,7 @@ await user.click(submitButton);
 await waitFor(() => expect(mockApi).toHaveBeenCalled());
 ```
 
-### Don’ts ❌
+### ما يُتجنّب ❌
 
 ```typescript
 // ❌ Don't use any in tests
@@ -881,6 +881,6 @@ container.querySelector('.btn-primary');
 expect(invalidCall()).toBe(true);
 ```
 
-## Summary
+## الخلاصة
 
-Type-safe testing in React ensures your tests are as robust as your application code. By leveraging TypeScript’s type system in your tests, you catch errors earlier, improve test maintainability, and create more reliable test suites. Remember: good tests focus on user behavior, not implementation details, and TypeScript helps ensure you’re testing the right things in the right ways.
+الاختبار آمن الأنواع في React يضمن أن اختباراتك قوية بقدر شفرة تطبيقك. من خلال الاستفادة من نظام أنواع TypeScript في اختباراتك، تكتشف الأخطاء مبكرًا، وتُحسّن قابلية صيانة الاختبارات، وتُنشئ مجموعات اختبار أكثر موثوقية. تذكّر: الاختبارات الجيدة تركز على سلوك المستخدم، لا على تفاصيل التنفيذ، وTypeScript يساعد على ضمان أنك تختبر الأشياء الصحيحة بالطرق الصحيحة.

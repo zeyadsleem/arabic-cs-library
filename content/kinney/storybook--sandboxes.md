@@ -1,17 +1,17 @@
 ---
-title: "Storybook Sandboxes"
-lang: en
+title: "بيئات Storybook المعزولة (Sandboxes)"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/sandboxes"
 ---
 
-> **We’ll be using our own repository for this course**
+> **سنستخدم مستودعنا الخاص في هذه الدورة**
 >
-> That said, Storybook Sandboxes are *really* cool for trying out new things without all of the overhead of needing to install Storybook into your current project or spinning up a whole new project *just* to install Storybook. So, I wanted to give them a special callout here. And, who know? We might end up spinning one up at some point.
+> ومع ذلك، فإن بيئات Storybook المعزولة *رائعة* فعلًا لتجربة أشياء جديدة دون كلّ العبء المتمثّل في تثبيت Storybook داخل مشروعك الحالي أو إنشاء مشروع جديد بالكامل *فقط* لتثبيت Storybook. لذلك أردت أن أُخصّها بصندوق تنبيه هنا. ومن يدري؟ قد نُنشئ واحدة منها في مرحلة ما.
 
-Storybook allows you to set up pre-configured sandboxes. This is useful if you just want to test something out or—hypothetically—if you’re teaching a workshop and want to spin up a quick example.
+يتيح لك Storybook إعداد بيئات معزولة مهيّأة مسبقًا. وهذا مفيد إن أردت تجربة شيء ما فحسب، أو — افتراضًا — إن كنت تُدرّب ورشة عمل وتريد إنشاء مثال سريع.
 
 ```typescript
 npx storybook@latest sandbox
 ```
 
-Creating a Storybook sandbox from the CLI
+إنشاء بيئة Storybook معزولة من سطر الأوامر

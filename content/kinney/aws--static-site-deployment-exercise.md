@@ -1,40 +1,40 @@
 ---
-title: "Exercise: End-to-End Static Site Deployment"
-lang: en
+title: "تمرين: نشر موقع ثابت من طرف إلى طرف"
+lang: ar
 source: "https://stevekinney.com/courses/aws/static-site-deployment-exercise"
 ---
 
-You’re going to deploy a static site from zero to production. No shortcuts, no skipping steps. This is my favorite exercise in the whole course. By the end, your site will be live on a `*.cloudfront.net` domain—served through CloudFront, secured with HTTPS, and stored in a private S3 bucket. This exercise integrates the core static-hosting arc: IAM, S3, CloudFront, and OAC.
+ستنشر موقعًا ثابتًا من الصفر إلى الإنتاج. بلا اختصارات، وبلا تخطّي خطوات. هذا هو تمريني المفضّل في الدورة كلها. وبحلول النهاية، سيكون موقعك متاحًا مباشرةً على نطاق `*.cloudfront.net`—يُقدَّم عبر CloudFront، ومؤمّنًا بـHTTPS، ومخزّنًا في حاوية S3 خاصة. يدمج هذا التمرين مسار الاستضافة الثابتة الأساسي: IAM وS3 وCloudFront وOAC.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-You’ve built each piece individually across the early static-hosting sections. This exercise proves they compose into a working deployment. It’s also a dry run for the workflow you’ll automate with GitHub Actions: every manual step here maps to a step in your CI/CD pipeline. If you can do it by hand, you understand what the automation is doing.
+لقد بنيت كل قطعة على حدة في أقسام الاستضافة الثابتة المبكّرة. ويثبت هذا التمرين أنها تتكامل في نشر عامل. وهو أيضًا تجربة أولية لسير العمل الذي ستؤتمته بـGitHub Actions: فكل خطوة يدوية هنا تقابل خطوة في خط أنابيب CI/CD لديك. وإن استطعت فعلها يدويًا، فأنت تفهم ما تفعله الأتمتة.
 
-If you want the AWS version of the end-to-end workflow open while you work, keep the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) and the [CloudFront OAC guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) nearby.
+إن أردت نسخة AWS من سير العمل من طرف إلى طرف مفتوحة أثناء عملك، فأبقِ [درس موقع S3 الثابت](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) و[دليل OAC في CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) قريبين منك.
 
-## Prerequisites
+## المتطلّبات المسبقة {#prerequisites}
 
-Before you start:
+قبل أن تبدأ:
 
-- AWS CLI v2 configured with credentials that have admin-level permissions (or at minimum: S3, CloudFront, and IAM access). See [Setting Up the AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli).
-- A static site build directory with at least an `index.html` file. If you don’t have one, create a minimal site:
+- AWS CLI الإصدار 2 مهيّأ ببيانات اعتماد تملك أذونات بمستوى المسؤول (أو على الأقل: الوصول إلى S3 وCloudFront وIAM). راجع [إعداد AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli).
+- دليل بناء موقع ثابت يحتوي على الأقل ملف `index.html`. وإن لم يكن لديك واحد، فأنشئ موقعًا بسيطًا:
 
 ```bash
 mkdir -p build
 echo '<!DOCTYPE html><html><head><title>My Site</title></head><body><h1>It works.</h1></body></html>' > build/index.html
 ```
 
-## Create the S3 Bucket
+## إنشاء حاوية S3
 
-Create a bucket to hold your static files. Block all public access from the start—CloudFront will be the only way to reach these files.
+أنشئ حاوية لحفظ ملفاتك الثابتة. واحجب كل وصول عام من البداية—فسيكون CloudFront الطريق الوحيد للوصول إلى هذه الملفات.
 
-- Create the bucket with `aws s3 mb`.
-- Enable Block Public Access with `aws s3api put-public-access-block`.
-- Verify the bucket exists with `aws s3 ls`.
+- أنشئ الحاوية عبر `aws s3 mb`.
+- فعّل حجب الوصول العام عبر `aws s3api put-public-access-block`.
+- تحقّق من وجود الحاوية عبر `aws s3 ls`.
 
-Refer to [Creating and Configuring a Bucket](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket) for the commands.
+راجع [إنشاء حاوية وتهيئتها](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket) للأوامر.
 
-### Checkpoint
+### نقطة تحقّق
 
 ```bash
 aws s3api get-public-access-block \
@@ -43,11 +43,11 @@ aws s3api get-public-access-block \
   --output json
 ```
 
-All four settings should be `true`.
+ينبغي أن تكون الإعدادات الأربعة كلها `true`.
 
-## Upload Your Site
+## تحميل موقعك
 
-Sync your build directory to the bucket:
+زامن دليل بنائك مع الحاوية:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -55,28 +55,28 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --output json
 ```
 
-Refer to [Uploading and Organizing Files](https://stevekinney.com/courses/aws/uploading-and-organizing-files) for options like `--cache-control` headers.
+راجع [تحميل الملفات وتنظيمها](https://stevekinney.com/courses/aws/uploading-and-organizing-files) لخيارات مثل ترويسات `--cache-control`.
 
-### Checkpoint
+### نقطة تحقّق
 
 ```bash
 aws s3 ls s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-You should see your `index.html` (and any other files) listed.
+ينبغي أن ترى `index.html` (وأي ملفات أخرى) مدرجة.
 
-## Create an Origin Access Control
+## إنشاء تحكّم بالوصول إلى الأصل
 
-Create an OAC that CloudFront will use to authenticate requests to your S3 bucket:
+أنشئ OAC سيستخدمه CloudFront لمصادقة الطلبات إلى حاوية S3 لديك:
 
-- Use `aws cloudfront create-origin-access-control`.
-- Set `SigningProtocol` to `sigv4`, `SigningBehavior` to `always`, `OriginAccessControlOriginType` to `s3`.
-- Save the OAC `Id` from the response.
+- استخدم `aws cloudfront create-origin-access-control`.
+- اضبط `SigningProtocol` على `sigv4`، و`SigningBehavior` على `always`، و`OriginAccessControlOriginType` على `s3`.
+- احفظ `Id` الخاص بـOAC من الاستجابة.
 
-Refer to [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3).
+راجع [التحكّم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3).
 
-### Checkpoint
+### نقطة تحقّق
 
 ```bash
 aws cloudfront list-origin-access-controls \
@@ -85,26 +85,26 @@ aws cloudfront list-origin-access-controls \
   --query "OriginAccessControlList.Items[*].{Id:Id,Name:Name}"
 ```
 
-Your OAC should appear in the list.
+ينبغي أن يظهر OAC الخاص بك في القائمة.
 
-## Create the CloudFront Distribution
+## إنشاء توزيع CloudFront
 
-Create a distribution that ties the bucket, OAC, and certificate together. Your distribution config should include:
+أنشئ توزيعًا يربط الحاوية وOAC والشهادة معًا. وينبغي أن تتضمّن تهيئة توزيعك:
 
-- **Origin**: Your S3 bucket with the OAC ID attached.
-- **Default root object**: `index.html`.
-- **Viewer protocol policy**: `redirect-to-https`.
-- **Cache policy**: The managed `CachingOptimized` policy (`658327ea-f89d-4fab-a63d-7e88639e58f6`).
-- **Custom error responses**: Map 403 and 404 to `/index.html` with a 200 response code.
-- **Viewer certificate**: Use the CloudFront default certificate (`CloudFrontDefaultCertificate: true`).
+- **الأصل**: حاوية S3 لديك مع إرفاق معرّف OAC.
+- **كائن الجذر الافتراضي**: `index.html`.
+- **سياسة بروتوكول المشاهد**: `redirect-to-https`.
+- **سياسة التخزين المؤقت**: السياسة المُدارة `CachingOptimized` (`658327ea-f89d-4fab-a63d-7e88639e58f6`).
+- **استجابات الأخطاء المخصّصة**: اربط 403 و404 بـ`/index.html` مع رمز استجابة 200.
+- **شهادة المشاهد**: استخدم شهادة CloudFront الافتراضية (`CloudFrontDefaultCertificate: true`).
 
-Refer to [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) and [Custom Error Pages and SPA Routing](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
+راجع [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution) و[صفحات الأخطاء المخصّصة وتوجيه SPA](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
 
-Save the distribution ID and domain name from the response.
+احفظ معرّف التوزيع واسم النطاق من الاستجابة.
 
-### Checkpoint
+### نقطة تحقّق
 
-Wait for deployment:
+انتظر النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -112,44 +112,44 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-Then verify the CloudFront domain serves your site:
+ثم تحقّق من أن نطاق CloudFront يقدّم موقعك:
 
 ```bash
 curl -I https://YOUR_CLOUDFRONT_DOMAIN/index.html
 ```
 
-You should get `200 OK`.
+ينبغي أن تحصل على `200 OK`.
 
-## Update the S3 Bucket Policy
+## تحديث سياسة حاوية S3
 
-Replace the bucket policy to allow only CloudFront to read from the bucket:
+استبدل سياسة الحاوية بحيث تسمح لـCloudFront فقط بالقراءة من الحاوية:
 
-- **Principal**: `cloudfront.amazonaws.com` service principal.
-- **Action**: `s3:GetObject`.
-- **Resource**: `arn:aws:s3:::my-frontend-app-assets/*`.
-- **Condition**: `StringEquals` on `AWS:SourceArn` matching your distribution’s ARN.
+- **الأصل**: أصل الخدمة `cloudfront.amazonaws.com`.
+- **الإجراء**: `s3:GetObject`.
+- **المورد**: `arn:aws:s3:::my-frontend-app-assets/*`.
+- **الشرط**: `StringEquals` على `AWS:SourceArn` مطابقًا لـARN توزيعك.
 
-Refer to [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3) and [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access).
+راجع [التحكّم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3) و[سياسات الحاوية والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access).
 
-### Checkpoint
+### نقطة تحقّق
 
-CloudFront should still work:
+ينبغي أن يظل CloudFront يعمل:
 
 ```bash
 curl -I https://YOUR_CLOUDFRONT_DOMAIN/index.html
 ```
 
-Direct S3 access should be blocked:
+وينبغي أن يكون الوصول المباشر إلى S3 محجوبًا:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Should return `403 Forbidden`.
+ينبغي أن يُرجع `403 Forbidden`.
 
-## Verify the Complete Pipeline
+## التحقّق من خط الأنابيب الكامل
 
-Run through every layer of the pipeline:
+مرّ على كل طبقة من طبقات خط الأنابيب:
 
 ```bash
 # HTTPS works on the CloudFront domain
@@ -162,18 +162,18 @@ curl -I https://YOUR_CLOUDFRONT_DOMAIN/any/spa/route
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- `curl -I https://YOUR_CLOUDFRONT_DOMAIN` returns `200 OK`
-- `curl -I https://YOUR_CLOUDFRONT_DOMAIN/any/spa/route` returns `200 OK` (SPA routing)
-- Direct S3 access returns `403 Forbidden`
+- `curl -I https://YOUR_CLOUDFRONT_DOMAIN` يعيد `200 OK`
+- `curl -I https://YOUR_CLOUDFRONT_DOMAIN/any/spa/route` يعيد `200 OK` (توجيه SPA)
+- الوصول المباشر إلى S3 يعيد `403 Forbidden`
 
-## Test a Deployment
+## اختبار عملية نشر
 
-Deploy a change to verify the update cycle works:
+انشر تغييرًا للتحقّق من أن دورة التحديث تعمل:
 
-1. Edit your `index.html` (change the heading text).
-2. Sync the updated file to S3:
+1. عدّل `index.html` (غيّر نص العنوان).
+2. زامن الملف المحدّث مع S3:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -182,7 +182,7 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --output json
 ```
 
-1. Invalidate the CloudFront cache:
+1. أبطل ذاكرة CloudFront المؤقتة:
 
 ```bash
 aws cloudfront create-invalidation \
@@ -192,25 +192,25 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-1. Wait a minute, then reload `https://YOUR_CLOUDFRONT_DOMAIN`. You should see the updated content.
+1. انتظر دقيقة، ثم أعد تحميل `https://YOUR_CLOUDFRONT_DOMAIN`. ينبغي أن ترى المحتوى المحدّث.
 
-### Checkpoint
+### نقطة تحقّق
 
-Your updated content is live at `https://YOUR_CLOUDFRONT_DOMAIN`. The deployment cycle (sync + invalidate) works end to end.
+محتواك المحدّث متاح مباشرةً على `https://YOUR_CLOUDFRONT_DOMAIN`. ودورة النشر (المزامنة + الإبطال) تعمل من طرف إلى طرف.
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **CloudFront returns `403 Forbidden` for files that exist:** The S3 bucket policy does not trust your distribution’s Origin Access Control, or the origin is still configured incorrectly.
-- **The updated page never appears after sync:** The new file reached S3, but CloudFront is still serving the cached version. Confirm the invalidation completed before retesting.
+- **يعيد CloudFront الخطأ `403 Forbidden` لملفات موجودة:** سياسة حاوية S3 لا تثق بتحكّم الوصول إلى الأصل الخاص بتوزيعك، أو أن الأصل لا يزال مهيّأً بشكل غير صحيح.
+- **لا تظهر الصفحة المحدّثة أبدًا بعد المزامنة:** وصل الملف الجديد إلى S3، لكن CloudFront لا يزال يقدّم النسخة المخزّنة مؤقتًا. تأكّد من اكتمال الإبطال قبل إعادة الاختبار.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Differentiated cache headers**: Re-upload your assets with `--cache-control "public, max-age=31536000, immutable"` for hashed files and `--cache-control "public, max-age=60"` for `index.html`. Verify the headers appear in `curl -I` responses.
-- **Security headers**: Attach the managed `SecurityHeadersPolicy` (`67f7725c-6f97-4210-82d7-5512b31e9d03`) to your distribution’s default cache behavior. Verify `strict-transport-security`, `x-content-type-options`, and `x-frame-options` appear in the response headers.
-- **Deploy script**: Write a `deploy.sh` script that automates the sync and invalidation steps. Refer to [Automating Deploys with the AWS CLI](https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli) for the template.
+- **ترويسات تخزين مؤقت متباينة**: أعد تحميل أصولك مع `--cache-control "public, max-age=31536000, immutable"` للملفات المُجزَّأة و`--cache-control "public, max-age=60"` لـ`index.html`. تحقّق من ظهور الترويسات في استجابات `curl -I`.
+- **ترويسات أمان**: أرفق السياسة المُدارة `SecurityHeadersPolicy` (`67f7725c-6f97-4210-82d7-5512b31e9d03`) بسلوك التخزين المؤقت الافتراضي لتوزيعك. تحقّق من ظهور `strict-transport-security` و`x-content-type-options` و`x-frame-options` في ترويسات الاستجابة.
+- **سكربت نشر**: اكتب سكربت `deploy.sh` يؤتمت خطوتي المزامنة والإبطال. راجع [أتمتة النشر باستخدام AWS CLI](https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli) للقالب.
 
-> **Tip**
+> **نصيحة**
 >
-> Want to put this behind a custom domain with HTTPS on your own certificate? See the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course. It walks through Route 53, ACM, and wiring everything together.
+> أتريد وضع هذا خلف نطاق مخصّص مع HTTPS على شهادتك الخاصة؟ راجع القسم الاختياري [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) في نهاية الدورة. فهو يستعرض Route 53 وACM وربط كل شيء معًا.
 
-When you’re ready, check your work against the [Solution: End-to-End Static Site Deployment](https://stevekinney.com/courses/aws/static-site-deployment-solution).
+حين تصبح جاهزًا، قارن عملك بـ[الحل: نشر موقع ثابت من طرف إلى طرف](https://stevekinney.com/courses/aws/static-site-deployment-solution).

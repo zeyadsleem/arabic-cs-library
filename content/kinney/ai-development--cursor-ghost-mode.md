@@ -1,62 +1,43 @@
 ---
-title: "Cursor Privacy Mode"
-lang: en
+title: "وضع الخصوصية في Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-ghost-mode"
 ---
 
-Older Cursor material sometimes referred to “Ghost Mode.” The current product
-language is [Privacy Mode](https://cursor.com/help/security-and-privacy/privacy).
-Use the current term when documenting security and governance, but do not treat
-old Ghost Mode claims as automatically equivalent to Privacy Mode. Re-check the
-actual data path and retention guarantees instead of assuming a local-only
-posture.
+كانت مواد Cursor الأقدم تشير أحيانًا إلى «Ghost Mode». أما لغة المنتج الحالية فهي [وضع الخصوصية](https://cursor.com/help/security-and-privacy/privacy). استخدم المصطلح الحالي عند توثيق الأمان والحوكمة، لكن لا تعامل ادّعاءات Ghost Mode القديمة كمعادلة تلقائيًا لوضع الخصوصية. أعد فحص مسار البيانات الفعلي وضمانات الاحتفاظ بدلًا من افتراض وضع محلي فقط.
 
-## What Privacy Mode Means
+## ما الذي يعنيه وضع الخصوصية
 
-When Privacy Mode is enabled, Cursor says your code is not used to train Cursor
-or third-party models. That is the central promise. It does not mean no data ever
-leaves your machine.
+عند تفعيل وضع الخصوصية، تقول Cursor إن شيفرتك لا تُستخدم لتدريب Cursor أو نماذج الأطراف الثالثة. هذا هو الوعد المحوري. وهو لا يعني أن لا بيانات تغادر جهازك أبدًا.
 
-Model requests still need the prompt and relevant code context. Repository
-indexing can store embeddings, obfuscated paths, and line-number metadata so
-Cursor can search the codebase without storing raw code. The practical security
-question is not “local or remote?” It is “what data is sent, stored, retained,
-and governed?”
+فطلبات النموذج لا تزال تحتاج إلى الطلب وسياق الشيفرة ذي الصلة. وقد يخزّن فهرسة المستودع التضمينات والمسارات المُعمّاة وبيانات وصفية لأرقام الأسطر كي يستطيع Cursor البحث في قاعدة الشيفرة دون تخزين الشيفرة الخام. والسؤال الأمني العملي ليس «محلي أم بعيد؟». بل «أي بيانات تُرسل، وتُخزَّن، ويُحتفظ بها، وتُحكَم؟».
 
-## Cloud Agents Change the Storage Story
+## وكلاء السحابة يغيّرون قصة التخزين
 
-Cloud Agents require a remote execution environment. That means Cursor
-temporarily stores enough repository data to clone, build, test, and operate in
-that environment. The storage should be treated as part of your vendor risk
-review.
+يحتاج وكلاء السحابة إلى بيئة تنفيذ بعيدة. وهذا يعني أن Cursor يخزّن مؤقتًا بيانات مستودع تكفي للاستنساخ والبناء والاختبار والعمل في تلك البيئة. وينبغي أن يُعامل التخزين كجزء من مراجعة مخاطر المورّد.
 
-For sensitive repositories, decide explicitly:
+وللمستودعات الحساسة، قرّر صراحةً:
 
-- Whether Cloud Agents are allowed.
-- Which repositories they can access.
-- Which secrets can be mounted.
-- Which MCP servers can be used.
-- Which model providers and retention policies are allowed.
+- هل يُسمح بوكلاء السحابة.
+- ما المستودعات التي يستطيعون الوصول إليها.
+- ما الأسرار التي يمكن تركيبها.
+- ما خوادم MCP التي يمكن استخدامها.
+- ما مزوّدو النماذج وسياسات الاحتفاظ المسموح بها.
 
-## Model Retention Exceptions
+## استثناءات احتفاظ النماذج
 
-Some models or providers can have retention behavior that differs from the
-default privacy posture. Cursor’s enterprise controls can require approval before
-using models with retention exceptions. As of June 23, 2026, [Claude Fable 5](https://cursor.com/docs/models-and-pricing) is called out in
-Cursor documentation as requiring approval in contexts where model retention
-matters.
+قد يكون لبعض النماذج أو المزوّدين سلوك احتفاظ يختلف عن الموقف الافتراضي للخصوصية. وتستطيع ضوابط المؤسسات في Cursor اشتراط موافقة قبل استخدام نماذج لها استثناءات احتفاظ. واعتبارًا من 23 يونيو 2026، يُذكر [Claude Fable 5](https://cursor.com/docs/models-and-pricing) في توثيق Cursor بوصفه يتطلب موافقة في السياقات التي يهمّ فيها احتفاظ النموذج.
 
-Do not write a team rule that blindly selects a model for every task. Write a
-governance rule that names who can approve retention exceptions.
+لا تكتب قاعدة فريق تختار نموذجًا بشكل أعمى لكل مهمة. اكتب قاعدة حوكمة تسمّي من يستطيع الموافقة على استثناءات الاحتفاظ.
 
-## Course-Level Guidance
+## إرشاد على مستوى الدورة
 
-For most teams, the working policy is:
+لمعظم الفرق، السياسة العملية هي:
 
-- Enable Privacy Mode.
-- Keep secrets out of prompts and rules.
-- Use repository-owned rules and skills for auditable instruction.
-- Require explicit approval for Cloud Agents on sensitive repositories.
-- Review MCP servers like production integrations, not editor plugins.
+- فعّل وضع الخصوصية.
+- أبقِ الأسرار خارج الطلبات والقواعد.
+- استخدم قواعد ومهارات مملوكة للمستودع لتعليمات قابلة للتدقيق.
+- اشترط موافقة صريحة لوكلاء السحابة على المستودعات الحساسة.
+- راجع خوادم MCP كتكاملات إنتاج، لا كإضافات محرّر.
 
-Security is a workflow. A toggle helps, but it is not the workflow.
+الأمان سير عمل. والمفتاح يساعد، لكنه ليس سير العمل.

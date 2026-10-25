@@ -1,16 +1,16 @@
 ---
-title: "Tasks: Examples"
-lang: en
+title: "المهام: أمثلة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-task-examples"
 ---
 
-## Tasks for a Vite Project
+## مهام لمشروع Vite
 
-In the example below, we’ve got separate tasks for linting, testing, building, and serving a Vite app.
+في المثال أدناه، لدينا مهام منفصلة لفحص الشيفرة والاختبار والبناء وتشغيل تطبيق Vite.
 
-The `"group"` property tags the lint task as a build-related task and the test task as a test group task, enabling quick access via **Run Build Task** or **Run Test Task** commands. The build task runs the project’s production build (using Vite or `tsc`) and associates the TypeScript problem matcher to catch compile errors.
+توسم خاصية `"group"` مهمة الفحص كمهمة متعلّقة بالبناء ومهمة الاختبار كمهمة في مجموعة الاختبار، ما يتيح وصولًا سريعًا عبر أمري **Run Build Task** و **Run Test Task**. وتشغّل مهمة البناء بناء مشروعك للإنتاج (باستخدام Vite أو `tsc`) وتربط مطابِق مشكلات TypeScript لالتقاط أخطاء الترجمة.
 
-The development server task runs in the background so you can continue working while it watches for file changes. Marking it with `"isBackground": true` prevents Visual Studio Code from treating it as finished – it will keep running until you terminate it manually.
+وتعمل مهمة خادم التطوير في الخلفية لتستمر في العمل بينما تراقب تغييرات الملفات. ووسمها بـ `"isBackground": true` يمنع Visual Studio Code من اعتبارها منتهية، فتبقى عاملة حتى توقفها يدويًا.
 
 ```json
 // .vscode/tasks.json (excerpt)
@@ -48,9 +48,9 @@ The development server task runs in the background so you can continue working w
 }
 ```
 
-### Adding a Backend Server
+### إضافة خادم خلفي
 
-So, now let’s say we *also* wanted to spin up the backend API. We can add some additional tasks.
+فلنفترض الآن أننا أردنا *أيضًا* تشغيل واجهة API الخلفية. فيمكننا إضافة بعض المهام الإضافية.
 
 ```json
 // Compound task to run frontend and backend concurrently
@@ -76,9 +76,9 @@ So, now let’s say we *also* wanted to spin up the backend API. We can add some
 }
 ```
 
-## Some Other Examples
+## أمثلة أخرى
 
-### Compiling TypeScript, Then Running Unit Tests
+### ترجمة TypeScript ثم تشغيل اختبارات الوحدة
 
 ```json
 {
@@ -102,12 +102,12 @@ So, now let’s say we *also* wanted to spin up the backend API. We can add some
 }
 ```
 
-- `dependsOn` ensures `Compile TypeScript` completes before `Run Tests`.
-- `problemMatcher` is set to `$tsc`, letting Visual Studio Code highlight TS errors in the editor.
+- يضمن `dependsOn` اكتمال `Compile TypeScript` قبل `Run Tests`.
+- ضُبط `problemMatcher` على `$tsc`، ما يتيح لـ Visual Studio Code إبراز أخطاء TS في المحرّر.
 
-### Docker Build and Push
+### بناء Docker ودفعه
 
-Let’s say you have a Dockerfile, and you want to build and push to a container registry in one step:
+افترض أن لديك ملف Dockerfile وتريد البناء والدفع إلى سجل حاويات في خطوة واحدة:
 
 ```json
 {
@@ -130,12 +130,12 @@ Let’s say you have a Dockerfile, and you want to build and push to a container
 }
 ```
 
-- No major problem matchers here, but the tasks still give you a handy single-click solution.
-- We chain tasks with `dependsOn`.
+- لا توجد مطابِقات مشكلات مهمة هنا، لكن المهام تمنحك مع ذلك حلًا مريحًا بنقرة واحدة.
+- ونربط المهام بـ `dependsOn`.
 
-## Using Variables and Inputs
+## استخدام المتغيّرات والمدخلات
 
-Visual Studio Code supports [variable substitution](https://code.visualstudio.com/docs/editor/variables-reference) and user inputs. Let’s allow the user to input a custom environment, like `production` or `staging`:
+يدعم Visual Studio Code [استبدال المتغيّرات](https://code.visualstudio.com/docs/editor/variables-reference) ومدخلات المستخدم. ولنسمح للمستخدم بإدخال بيئة مخصّصة، مثل `production` أو `staging`:
 
 ```json
 {
@@ -159,5 +159,5 @@ Visual Studio Code supports [variable substitution](https://code.visualstudio.co
 }
 ```
 
-- When you run `Deploy`, Visual Studio Code will pop up a picker to select the environment, substituting that choice in the command.
-- Perfect for scripts that differ by environment or other parameters.
+- عند تشغيل `Deploy`، سيعرض Visual Studio Code منتقيًا لاختيار البيئة، ويستبدل اختيارك في الأمر.
+- وهو مثالي للسكربتات التي تختلف حسب البيئة أو حسب معاملات أخرى.

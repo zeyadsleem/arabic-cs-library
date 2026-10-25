@@ -1,14 +1,14 @@
 ---
-title: "Settings for Managing Files"
-lang: en
+title: "إعدادات إدارة الملفات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-settings-for-managing-files"
 ---
 
-The **Files and Workspaces** settings category allows you to configure how Visual Studio Code handles files, folders, and workspaces, streamlining project management and file type associations.
+تتيح لك فئة الإعدادات **Files and Workspaces** ضبط طريقة تعامل Visual Studio Code مع الملفات والمجلدات ومساحات العمل، ما يبسّط إدارة المشاريع وربط أنواع الملفات.
 
 ## `files.associations`
 
-You can associate file extensions with specific language modes. This is crucial for syntax highlighting, IntelliSense, and language-specific features.
+يمكنك ربط امتدادات الملفات بأوضاع لغات محدّدة. وهذا بالغ الأهمية في تلوين الصياغة وIntelliSense والميزات الخاصة بكل لغة.
 
 ```json
 "files.associations": {
@@ -17,7 +17,7 @@ You can associate file extensions with specific language modes. This is crucial 
 }
 ```
 
-You can also override language detection for specific files using glob patterns:
+ويمكنك أيضًا تجاوز اكتشاف اللغة لملفات محدّدة باستخدام أنماط glob:
 
 ```json
 "files.associations": {
@@ -27,7 +27,7 @@ You can also override language detection for specific files using glob patterns:
 
 ## `files.exclude`
 
-Specify file patterns to exclude from the Explorer, Search, and Go to File. Useful for hiding build artifacts, dependency folders (like `node_modules`), and temporary files.
+حدّد أنماط الملفات التي تريد استثناءها من مستكشف الملفات والبحث وأمر «Go to File». ويفيد ذلك في إخفاء مخلفات البناء ومجلدات الاعتمادات (مثل `node_modules`) والملفات المؤقتة.
 
 ```json
 "files.exclude": {
@@ -38,41 +38,41 @@ Specify file patterns to exclude from the Explorer, Search, and Go to File. Usef
 }
 ```
 
-This one probably makes more sense as a workspace setting since most of the normal culprits are already included by default.
+من المنطقي أكثر على الأرجح أن يكون هذا إعدادًا لمساحة العمل، لأن معظم المتّهمين المعتادين مُدرجون افتراضيًا بالفعل.
 
-## Setting a Default Language for Empty Files: `files.defaultLanguage`
+## ضبط لغة افتراضية للملفات الفارغة: `files.defaultLanguage`
 
-`files.defaultLanguage` lets you set the default language mode for new files or files without a recognized extension.
+يتيح لك `files.defaultLanguage` ضبط وضع اللغة الافتراضي للملفات الجديدة أو الملفات التي ليس لها امتداد معروف.
 
-Depending on the project, I will typically set this to either `markdown` or `typescript`.
+وحسب المشروع، أضبط هذا عادةً على `markdown` أو `typescript`.
 
-## Auto Save (`files.autoSave`)
+## الحفظ التلقائي (`files.autoSave`)
 
-To maintain a smooth workflow without constantly worrying about saving your work, consider enabling `files.autoSave`. This setting automatically saves your changes either after a specified delay or when focus shifts away from the editor. This ensures your work is always up to date and can help prevent accidental data loss.
+للحفاظ على سير عمل سلس دون قلق دائم على حفظ عملك، فكّر في تمكين `files.autoSave`. يحفظ هذا الإعداد تغييراتك تلقائيًا إما بعد مهلة محدّدة، وإما عند انتقال التركيز بعيدًا عن المحرّر. وهذا يضمن أن عملك محدّث دائمًا، ويساعد على منع فقدان البيانات دون قصد.
 
 ```json
 "files.autoSave": "afterDelay",
 "files.autoSaveDelay": 1000
 ```
 
-> **Auto Save is particularly beneficial during long coding sessions, keeping your changes secure without interrupting your focus.**
+> **يفيد الحفظ التلقائي بوجه خاص في جلسات البرمجة الطويلة، إذ يبقي تغييراتك آمنة دون مقاطعة تركيزك.**
 
-## Trim Trailing Whitespace : `files.trimTrailingWhitespace`
+## قصّ المسافات البيضاء في نهاية الأسطر : `files.trimTrailingWhitespace`
 
-Clean code is easier to maintain and review. By enabling `files.trimTrailingWhitespace`, Visual Studio Code will automatically remove any extra spaces at the end of lines whenever you save a file. This not only improves the aesthetics of your code but also helps prevent unnecessary diffs in version control.
+الشيفرة النظيفة أسهل صيانةً ومراجعة. وبتمكين `files.trimTrailingWhitespace`، يزيل Visual Studio Code تلقائيًا أي مسافات زائدة في نهاية الأسطر كلما حفظت ملفًا. ولا يحسّن ذلك جمال شيفرتك فحسب، بل يساعد أيضًا على منع فروق غير ضرورية في التحكّم في الإصدارات.
 
 ```json
 "files.trimTrailingWhitespace": true
 ```
 
-> **A tidier file not only looks better but also reduces noise in your commit history, making code reviews smoother.**
+> **الملف الأنظف لا يبدو أفضل فحسب، بل يقلّل أيضًا الضوضاء في سجل الإيداعات، فيصبح مراجعة الشيفرة أكثر سلاسة.**
 
-## Insert Final Newline: `files.insertFinalNewline`
+## إدراج سطر جديد نهائي: `files.insertFinalNewline`
 
-Some coding standards require that files end with a newline character. With the `files.insertFinalNewline` setting, VS Code automatically adds a newline at the end of a file upon saving. This small tweak can help avoid warnings from linters and ensure consistency across your codebase.
+تشترط بعض معايير البرمجة أن تنتهي الملفات بمحرف سطر جديد. ومع إعداد `files.insertFinalNewline`، يضيف VS Code تلقائيًا سطرًا جديدًا في نهاية الملف عند الحفظ. ويساعد هذا التعديل الصغير على تفادي تحذيرات أدوات فحص الشيفرة، ويضمن الاتساق في قاعدتك البرمجية.
 
 ```json
 "files.insertFinalNewline": true
 ```
 
-> **Adding a final newline is a simple practice that contributes to cleaner code formatting and better collaboration across diverse development environments.**
+> **إضافة سطر جديد نهائي ممارسة بسيطة تسهم في تنسيق شيفرة أنظف وتعاون أفضل بين بيئات تطوير متنوعة.**

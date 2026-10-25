@@ -1,66 +1,57 @@
 ---
-title: "Hook Control Flow"
-lang: en
+title: "مسار تحكّم الخطّافات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-hook-control-flow"
 ---
 
-Hook control flow is where [Claude Code](https://code.claude.com/docs/en/hooks) stops being “just prompting” and starts looking like a small policy engine.
+مسار تحكّم الخطّافات هو حيث يتوقف [Claude Code](https://code.claude.com/docs/en/hooks) عن كونه «مجرد طلب نصي» ويبدأ يشبه محرّك سياسات صغيرًا.
 
-## The Basic Flow
+## المسار الأساسي
 
-A typical tool action can pass through:
+يمكن أن يمرّ إجراء أداة نموذجي عبر:
 
-1. Prompt expansion or instruction hooks.
-2. Pre-tool hooks.
-3. Permission checks.
-4. Tool execution.
-5. Post-tool or failure hooks.
-6. Agent response.
+1. توسيع الطلب أو خطّافات التعليمات.
+2. الخطّافات قبل الأداة.
+3. فحوص الصلاحيات.
+4. تنفيذ الأداة.
+5. الخطّافات بعد الأداة أو عند الفشل.
+6. استجابة الوكيل.
 
-Different hook types can observe, add context, block, or request a decision.
+وتستطيع أنواع الخطّافات المختلفة أن تراقب أو تضيف سياقًا أو تحجب أو تطلب قرارًا.
 
-## The Blocking Contract
+## عقد الحجب
 
-For command hooks, the output stream and exit behavior matter:
+في خطّافات الأوامر، يهمّ مخرَج البثّ وسلوك رمز الخروج:
 
-| Hook response | What it means |
+| استجابة الخطّاف | ما تعنيه |
 | --- | --- |
-| Exit `0` | Continue. Use `stdout` only for intentional structured output. |
-| Exit `2` | Block or steer the action when the event supports blocking. Put the reason in `stderr` so the user and agent can see it. |
-| Other non-zero exit | Treat as hook failure. Surface the failure instead of silently continuing. |
-| PreToolUse JSON on `stdout` | Put permission decisions under `hookSpecificOutput.permissionDecision`. |
-| Other hook JSON on `stdout` | Use documented top-level fields such as `decision`, `reason`, and `continue` when that event supports them. |
+| الخروج بـ `0` | المتابعة. استخدم `stdout` فقط لمخرَج منظَّم مقصود. |
+| الخروج بـ `2` | احجب الإجراء أو وجّهه عندما يدعم الحدث الحجب. ضع السبب في `stderr` كي يراه المستخدم والوكيل. |
+| أي رمز خروج آخر غير صفري | تعامل معه كفشل في الخطّاف. أظهر الفشل بدلًا من المتابعة بصمت. |
+| JSON الخاص بـ PreToolUse على `stdout` | ضع قرارات الصلاحيات تحت `hookSpecificOutput.permissionDecision`. |
+| JSON آخر للخطّاف على `stdout` | استخدم الحقول الموثّقة في المستوى الأعلى مثل `decision` و`reason` و`continue` حين يدعمها ذلك الحدث. |
 
-Not every event can block the same way. Pre-tool and permission-oriented hooks
-are the right place for guardrails. Post-tool hooks are better for logging,
-auditing, and follow-up context.
+ليست كل الأحداث قادرة على الحجب بالطريقة نفسها. فالخطّافات قبل الأداة والخطّافات المتعلقة بالصلاحيات هي الموضع الصحيح للحواجز. أما الخطّافات بعد الأداة فهي أفضل للتسجيل والتدقيق والسياق اللاحق.
 
-## Deny Clearly
+## ارفض بوضوح
 
-When a hook blocks an action, return a message that tells the agent and human
-what happened:
+عندما يحجب خطّاف إجراءً، أعد رسالة تخبر الوكيل والإنسان بما حدث:
 
 ```
 Denied: generated files under applications/website/.generated must not be edited
 directly. Change the source generator and rerun the content build.
 ```
 
-A vague denial causes loops. A precise denial creates the next step.
+فالرفض الغامض يسبب حلقات تكرار. أما الرفض الدقيق فينشئ الخطوة التالية.
 
-## Prefer Declarative Permission Rules First
+## فضّل قواعد الصلاحيات التصريحية أولًا
 
-If a permission rule can express the policy, use the permission rule. Reach for a
-hook when the decision depends on logic: file contents, command parsing, current
-branch, changed files, or external state.
+إذا استطاعت قاعدة صلاحيات التعبير عن السياسة، فاستخدم قاعدة الصلاحيات. والجأ إلى خطّاف عندما يعتمد القرار على منطق: محتوى الملفات، أو تحليل الأوامر، أو الفرع الحالي، أو الملفات المتغيّرة، أو حالة خارجية.
 
-## Avoid Hidden Retries
+## تجنّب إعادات المحاولة الخفية
 
-Do not use hooks to silently retry failing commands, raise timeouts, or suppress
-warnings. A failed hook should surface the issue. Hidden retries make the session
-harder to reason about and can hide real bugs.
+لا تستخدم الخطّافات لإعادة محاولة الأوامر الفاشلة بصمت، أو رفع المهلات، أو كتم التحذيرات. فالخطّاف الفاشل ينبغي أن يظهر المشكلة. وإعادات المحاولة الخفية تجعل الجلسة أصعب في الاستدلال عليها وقد تخفي أخطاء حقيقية.
 
-## Test Hook Scripts
+## اختبر سكربتات الخطّافات
 
-If a hook calls a script, test the script directly with captured input fixtures.
-The hook configuration should be boring; the tested script should own the
-policy.
+إذا نادى خطّاف سكربتًا، فاختبر السكربت مباشرةً بمدخلات اختبار محتجَزة. فينبغي أن تكون تهيئة الخطّاف مملّة؛ وأن يملك السكربت المُختبَر السياسة.

@@ -1,38 +1,38 @@
 ---
-title: "Selecting and Inspecting"
-lang: en
+title: "التحديد والفحص"
+lang: ar
 source: "https://stevekinney.com/courses/figma/selecting-and-inspecting"
 ---
 
-Some of the standard tips that we’ve picked up from most GUIs apply to Figma as well:
+بعض النصائح القياسية التي اكتسبناها من معظم واجهات المستخدم الرسومية تنطبق على Figma أيضًا:
 
-- Hold `Shift` to select multiple objects.
-- Click and drag on the canvas to create a square that represents the range of objects that you want to select.
+- اضغط `Shift` لتحديد عدة كائنات.
+- انقر واسحب على لوحة العمل لإنشاء مربّع يمثّل نطاق الكائنات التي تريد تحديدها.
 
-**Pro Tip**: Holding the `Command` key will always allow you to drag to select an area even when you might have otherwise ended up clicking on an individual frame.
+**نصيحة احترافية**: الضغط على مفتاح `Command` سيتيح لك دائمًا السحب لتحديد منطقة حتى وإن كان من المفترض أن ينتهي بك الأمر بالنقر على إطار فردي.
 
-## Selecting Similar Objects
+## تحديد الكائنات المتشابهة
 
-- Hold down the `Command` key on macOS or the `Control` key on Windows to select the exact element that you’re presently hovering over.
-- With an element selected, click on the Inspect tab at the top of the right sidebar.
-- Select one of the blue buttons, go to the Figma menu in the upper-left corner, select the Edit menu, and see how you can select similar elements with the same properties.
+- اضغط مطوّلًا على مفتاح `Command` في نظام macOS أو مفتاح `Control` في Windows لتحديد العنصر نفسه الذي تمرّ عليه بالتحويم.
+- مع تحديد عنصر، انقر على تبويب Inspect في أعلى الشريط الجانبي الأيمن.
+- حدّد أحد الأزرار الزرقاء، واذهب إلى قائمة Figma في الزاوية العلوية اليسرى، واختر قائمة Edit، ولاحظ كيف يمكنك تحديد عناصر متشابهة بالخصائص نفسها.
 
-Select similar in Figma
+تحديد المتشابه في Figma
 
-> **Note**
+> **ملاحظة**
 >
-> One thing to note is that this will select all of the matching object with in the same frame and will *not* work across frames or for objects that are not inside of a frame.
+> ينبغي الانتباه إلى أن هذا سيحدّد كل الكائنات المطابقة داخل الإطار نفسه و*لن* يعمل عبر الإطارات أو مع الكائنات غير الموجودة داخل إطار.
 
-## Measuring the Distance Between Layers
+## قياس المسافة بين الطبقات
 
-Select an element on the page and hold down either the `Alt` or `Option` key. As you move your mouse around, you’ll see its relative distance from other objects. This is super useful for when we are trying to implement a design.
+حدّد عنصرًا على الصفحة واضغط مطوّلًا على مفتاح `Alt` أو `Option`. وعندما تحرّك الفأرة حول الصفحة، سترى المسافة النسبية بينه وبين الكائنات الأخرى. وهذا مفيد جدًا عندما نحاول تنفيذ تصميم ما.
 
-## Selecting and Adjusting Multiple Layers
+## تحديد طبقات متعددة وضبطها
 
-Drawing objects and giving them fill-sizes and whatnot is pretty straight-forward. But, like most things in our industry, the tricky part comes when you want to refactor or change things at scale.
+رسم الكائنات ومنحها أحجام تعبئة وما شابه أمر واضح ومباشر. لكن، كما في معظم الأمور في مجالنا، يأتي الجزء الصعب عندما تريد إعادة هيكلة الأشياء أو تغييرها على نطاق واسع.
 
-What would happen if we wanted to change the color of all of the green boxes to another color? Sure, we could select all of the boxes with that color and adjust them—but, that only works for the given page that you’re looking at.
+ماذا سيحدث لو أردنا تغيير لون جميع المربّعات الخضراء إلى لون آخر؟ بالتأكيد يمكننا تحديد كل المربّعات بذلك اللون وضبطها — لكن هذا يعمل فقط في الصفحة التي تنظر إليها.
 
-> **There are better ways to make changes at scale**
+> **هناك طرق أفضل لإجراء تغييرات على نطاق واسع**
 >
-> Later on, we’ll look at [styles](https://stevekinney.com/courses/figma/styles), [variables](https://stevekinney.com/courses/figma/variables), and [components](https://stevekinney.com/courses/figma/components).
+> سنتناول لاحقًا [الأنماط](https://stevekinney.com/courses/figma/styles) و[المتغيّرات](https://stevekinney.com/courses/figma/variables) و[المكوّنات](https://stevekinney.com/courses/figma/components).

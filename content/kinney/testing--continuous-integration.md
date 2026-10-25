@@ -1,30 +1,30 @@
 ---
-title: "Setting Up Continuous Integration"
-lang: en
+title: "إعداد التكامل المستمر (Setting Up Continuous Integration)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/continuous-integration"
 ---
 
-Continuous Integration (CI) is a crucial practice in modern software development, enabling teams to detect issues early by automatically running tests on code changes. **GitHub Actions** provides a powerful platform for automating workflows directly within your GitHub repository. This guide will walk you through setting up GitHub Actions to run your **Vitest** unit tests on each Pull Request (PR), ensuring that only passing code gets merged.
+التكامل المستمر (CI) ممارسة حاسمة في تطوير البرمجيات الحديث، تتيح للفرق اكتشاف المشكلات مبكرًا بتشغيل الاختبارات تلقائيًا على تغييرات الشيفرة. يوفر **GitHub Actions** منصة قوية لأتمتة سير العمل مباشرة داخل مستودع GitHub لديك. سيرشدك هذا الدليل خلال إعداد GitHub Actions لتشغيل اختبارات وحدات **Vitest** في كل طلب سحب (PR)، بما يضمن ألا يُدمج إلا الكود الناجح.
 
-## Why Automate Tests with GitHub Actions?
+## لماذا نؤتمت الاختبارات باستخدام GitHub Actions؟
 
-- **Early Detection**: Catch bugs and issues as soon as code is pushed.
-- **Consistency**: Ensure that all code changes meet the project’s testing standards.
-- **Efficiency**: Automate the testing process to save time and reduce manual effort.
-- **Collaboration**: Provide immediate feedback to contributors through PR checks.
+- **الكشف المبكر**: اكتشف الأخطاء والمشكلات فور دفع الشيفرة.
+- **الاتساق**: تأكد من أن كل تغييرات الشيفرة تلبي معايير الاختبار في المشروع.
+- **الكفاءة**: أتمت عملية الاختبار لتوفير الوقت وتقليل الجهد اليدوي.
+- **التعاون**: وفر تغذية راجعة فورية للمساهمين عبر فحوص طلبات السحب.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-- A GitHub repository containing your project.
-- Vitest installed and configured in your project.
-- Existing unit tests written with Vitest.
-- Node.js and a package manager configured in your project (npm, pnpm, yarn, or bun).
+- مستودع GitHub يحتوي مشروعك.
+- Vitest مثبّت ومهيأ في مشروعك.
+- اختبارات وحدات موجودة مكتوبة بـ Vitest.
+- Node.js ومدير حزم مهيأ في مشروعك (npm أو pnpm أو yarn أو bun).
 
-## Step-by-Step Guide
+## دليل خطوة بخطوة
 
-### Create a GitHub Actions Workflow File
+### أنشئ ملف سير عمل GitHub Actions
 
-In your repository, create a directory called `.github/workflows` if it doesn’t exist. Inside this directory, create a new YAML file for your workflow, such as `ci.yml`.
+في مستودعك، أنشئ دليلًا اسمه `.github/workflows` إن لم يكن موجودًا. داخل هذا الدليل، أنشئ ملف YAML جديدًا لسير عملك، مثل `ci.yml`.
 
 ```typescript
 your-repo/
@@ -33,9 +33,9 @@ your-repo/
 │       └── ci.yml
 ```
 
-### Define the Workflow Configuration
+### عرّف تهيئة سير العمل
 
-Open `ci.yml` and define the workflow:
+افتح `ci.yml` وعرّف سير العمل:
 
 ```yaml
 # .github/workflows/ci.yml
@@ -70,29 +70,29 @@ jobs:
         run: npm test
 ```
 
-- **`name: CI`**: Names the workflow “CI” (Continuous Integration).
-- **`on: pull_request`**: Triggers the workflow on PRs targeting the `main` branch.
-- **`jobs`**: Defines the jobs to run; in this case, a single job named `build`.
-- **`runs-on`**: Specifies the OS environment (`ubuntu-latest`).
-- **`strategy.matrix.node-version`**: Allows testing on different Node.js versions (adjust as needed).
-- **`steps`**: Lists the steps to execute in the job.
+- **`name: CI`**: يسمي سير العمل «CI» (التكامل المستمر).
+- **`on: pull_request`**: يشغّل سير العمل عند طلبات السحب الموجّهة إلى فرع `main`.
+- **`jobs`**: يحدد المهام التي ستُشغَّل؛ في هذه الحالة، مهمة واحدة اسمها `build`.
+- **`runs-on`**: يحدد بيئة نظام التشغيل (`ubuntu-latest`).
+- **`strategy.matrix.node-version`**: يتيح الاختبار على إصدارات Node.js مختلفة (عدّل حسب الحاجة).
+- **`steps`**: يسرد الخطوات التي ستُنفَّذ في المهمة.
 
-> **Note**: Node.js 16 is deprecated and no longer supported by GitHub Actions. Use the active LTS versions (for example, 18.x/20.x/22.x).
+> **ملاحظة**: Node.js 16 مهجور ولم يعد مدعومًا من GitHub Actions. استخدم إصدارات LTS النشطة (مثل 18.x/20.x/22.x).
 
-### Breakdown of Workflow Steps
+### تفصيل خطوات سير العمل
 
-#### Checkout the Repository
+#### سحب المستودع
 
-First things first: Let’s tell the action to check out your repository.
+أولًا وقبل كل شيء: لنخبر الإجراء بسحب مستودعك.
 
 ```yaml
 - name: Checkout code
   uses: actions/checkout@v3
 ```
 
-This uses the `actions/checkout` action to clone your repository.
+يستخدم هذا إجراء `actions/checkout` لاستنساخ مستودعك.
 
-#### Set Up a Node Environment
+#### إعداد بيئة Node
 
 ```yaml
 - name: Use Node.js ${{ matrix.node-version }}
@@ -102,32 +102,32 @@ This uses the `actions/checkout` action to clone your repository.
     cache: 'npm'
 ```
 
-This step:
+هذه الخطوة:
 
-- sets up the specified Node version, and
-- caches `npm` dependencies to speed up the workflow.
+- تهيّئ إصدار Node المحدد، و
+- تخزّن اعتماديات `npm` مؤقتًا لتسريع سير العمل.
 
-#### Install Your Dependencies
+#### ثبّت اعتمادياتك
 
 ```yaml
 - name: Install dependencies
   run: npm install
 ```
 
-Nothing particularly special to see here. This installs project dependencies defined in `package.json`.
+لا شيء مميز بشكل خاص هنا. يثبّت هذا اعتماديات المشروع المعرّفة في `package.json`.
 
-#### Run the Tests
+#### شغّل الاختبارات
 
 ```yaml
 - name: Run tests
   run: npm test
 ```
 
-This executes the test script defined in your `package.json`.
+ينفّذ هذا سكربت الاختبار المعرّف في `package.json`.
 
-### Using pnpm, yarn, or bun instead of npm
+### استخدام pnpm أو yarn أو bun بدلًا من npm
 
-If you use a different package manager, add its setup step and swap the install/test commands. For example, with **pnpm**:
+إذا كنت تستخدم مدير حزم مختلفًا، فأضف خطوة إعداده واستبدل أوامر التثبيت/الاختبار. على سبيل المثال، مع **pnpm**:
 
 ```yaml
 - name: Set up pnpm
@@ -142,11 +142,11 @@ If you use a different package manager, add its setup step and swap the install/
   run: pnpm test
 ```
 
-For **yarn**, enable Corepack and use `yarn install`/`yarn test`. For **bun**, use `oven-sh/setup-bun@v2` and run `bun install`/`bun test`. Adjust the `cache` value in `actions/setup-node` to match your package manager (`pnpm`/`yarn`).
+أما **yarn**، ففعّل Corepack واستخدم `yarn install`/`yarn test`. وأما **bun**، فاستخدم `oven-sh/setup-bun@v2` وشغّل `bun install`/`bun test`. عدّل قيمة `cache` في `actions/setup-node` لتطابق مدير حزمك (`pnpm`/`yarn`).
 
-### Commit and Push the Workflow File
+### أودع ملف سير العمل وادفعه
 
-Add the workflow file to your repository and push it to GitHub:
+أضف ملف سير العمل إلى مستودعك وادفعه إلى GitHub:
 
 ```bash
 git add .github/workflows/ci.yml
@@ -154,24 +154,24 @@ git commit -m "Add CI workflow for running Vitest tests"
 git push origin main
 ```
 
-### Verify the Workflow Execution
+### تحقق من تنفيذ سير العمل
 
-After pushing the workflow file:
+بعد دفع ملف سير العمل:
 
-- Open your GitHub repository.
-- Navigate to the **Actions** tab.
-- You should see the **CI** workflow listed.
-- Click on it to see the details of the workflow runs.
+- افتح مستودعك على GitHub.
+- انتقل إلى تبويب **Actions**.
+- ينبغي أن ترى سير عمل **CI** مدرجًا.
+- انقر عليه لرؤية تفاصيل تشغيلات سير العمل.
 
-### Test the Workflow with a Pull Request
+### اختبر سير العمل بطلب سحب
 
-Create a new branch.
+أنشئ فرعًا جديدًا.
 
 ```bash
 git checkout -b test-ci
 ```
 
-Make a small change or add a dummy commit.
+أجرِ تغييرًا صغيرًا أو أضف إيداعًا وهميًا.
 
 ```bash
 touch dummy.txt
@@ -180,25 +180,25 @@ git commit -m "Test CI workflow"
 git push origin test-ci
 ```
 
-- Create a Pull Request targeting the `main` branch.
-- The CI workflow should automatically trigger.
-- Check the PR page to see the status of the checks.
+- أنشئ طلب سحب موجّهًا إلى فرع `main`.
+- ينبغي أن يُشغَّل سير عمل CI تلقائيًا.
+- افحص صفحة طلب السحب لرؤية حالة الفحوص.
 
-### Handling Test Failures
+### التعامل مع إخفاقات الاختبارات
 
-If your tests fail:
+إذا فشلت اختباراتك:
 
-- The workflow will mark the build as failed.
-- The PR will show that checks have failed.
-- Click on the **Details** link to view the logs and identify the issues.
-- Fix the tests or code causing the failure.
-- Push the changes; the workflow will rerun.
+- سيميّز سير العمل البناء كمُخفِق.
+- سيعرض طلب السحب أن الفحوص فشلت.
+- انقر رابط **التفاصيل** لعرض السجلات وتحديد المشكلات.
+- أصلح الاختبارات أو الشيفرة المسببة للفشل.
+- ادفع التغييرات؛ سيعيد سير العمل التشغيل.
 
-### Adding Coverage Reporting (Optional)
+### إضافة تقارير التغطية (اختياري)
 
-If you want to include coverage reporting:
+إذا أردت تضمين تقارير التغطية:
 
-Adjust your test script in `package.json`:
+عدّل سكربت الاختبار في `package.json`:
 
 ```json
 {
@@ -208,7 +208,7 @@ Adjust your test script in `package.json`:
 }
 ```
 
-Update the workflow to upload coverage artifacts:
+حدّث سير العمل لرفع عناصر التغطية الأثرية:
 
 ```yaml
 - name: Run tests with coverage
@@ -221,22 +221,22 @@ Update the workflow to upload coverage artifacts:
     path: coverage
 ```
 
-The coverage report will be available in the workflow artifacts.
+سيكون تقرير التغطية متاحًا في عناصر سير العمل الأثرية.
 
-### Optional: Enforcing Required Status Checks
+### اختياري: فرض فحوص الحالة المطلوبة
 
-To prevent merging code with failing tests:
+لمنع دمج شيفرة باختبارات فاشلة:
 
-- Go to your repository’s **Settings** > **Branches**.
-- Under **Branch protection rules**, click **Add rule**.
-- Specify the branch name pattern (e.g., `main`).
-- Enable **Require status checks to pass before merging**.
-- Select the **CI** workflow as a required check.
-- Save changes.
+- اذهب إلى **Settings** > **Branches** في مستودعك.
+- تحت **Branch protection rules**، انقر **Add rule**.
+- حدد نمط اسم الفرع (مثل `main`).
+- فعّل **Require status checks to pass before merging**.
+- اختر سير عمل **CI** كفحص مطلوب.
+- احفظ التغييرات.
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-**Use Caching**: Cache dependencies to speed up workflow runs.
+**استخدم التخزين المؤقت**: خزّن الاعتماديات مؤقتًا لتسريع تشغيلات سير العمل.
 
 ```yaml
 with:
@@ -244,7 +244,7 @@ with:
   cache: 'npm'
 ```
 
-**Test Multiple Node Versions**: Ensure compatibility across different environments. This is probably only important if you’re testing server-side code.
+**اختبر إصدارات Node متعددة**: تأكد من التوافق عبر بيئات مختلفة. هذا على الأرجح مهم فقط إذا كنت تختبر شيفرة من جهة الخادم.
 
 ```yaml
 strategy:
@@ -252,35 +252,35 @@ strategy:
     node-version: [18.x, 20.x, 22.x]
 ```
 
-**Fail Fast**: Use the `fail-fast` option to stop running jobs on first failure.
+**الفشل السريع**: استخدم خيار `fail-fast` لإيقاف تشغيل المهام عند أول فشل.
 
 ```yaml
 strategy:
   fail-fast: true
 ```
 
-**Parallelize Jobs**: If you have multiple test suites, run them in parallel to reduce total build time.
+**وازِ بين المهام**: إذا كانت لديك مجموعات اختبارات متعددة، فشغّلها على التوازي لتقليل إجمالي زمن البناء.
 
-**Secure Your Secrets**: Avoid hardcoding sensitive information in workflows. Use GitHub’s encrypted secrets.
+**أمّن أسرارك**: تجنب تضمين المعلومات الحساسة في سير العمل. استخدم أسرار GitHub المشفّرة.
 
-**Keep Workflows Updated**: Regularly update action versions to benefit from improvements and security patches.
+**أبقِ سير العمل محدّثًا**: حدّث إصدارات الإجراءات بانتظام للاستفادة من التحسينات وتصحيحات الأمان.
 
-## Troubleshooting Tips
+## نصائح استكشاف الأخطاء وإصلاحها
 
-If things go wrong, here are some common things that it might be.
+إذا ساءت الأمور، فإليك بعض الأسباب الشائعة المحتملة.
 
-- **Permission Issues**: Ensure the workflow file is in the default branch (e.g., `main`) to trigger on PRs.
-- **Syntax Errors**: YAML isn’t code. It’s yet another markup language (YAML). Use a YAML linter or GitHub’s workflow editor to validate your YAML files.
-- **Caching Not Working**: Verify that the cache key is correctly set and that cache dependencies haven’t changed.
-- **Environment Differences**: If tests pass locally but fail in CI, ensure that environment variables and configurations are consistent.
+- **مشكلات الأذونات**: تأكد من وجود ملف سير العمل في الفرع الافتراضي (مثل `main`) ليعمل عند طلبات السحب.
+- **أخطاء الصياغة**: YAML ليس شيفرة. إنه لغة ترميز أخرى (YAML). استخدم مدقق YAML أو محرر سير العمل في GitHub للتحقق من ملفات YAML.
+- **التخزين المؤقت لا يعمل**: تحقق من تعيين مفتاح التخزين المؤقت بشكل صحيح ومن عدم تغيّر اعتماديات التخزين المؤقت.
+- **اختلافات البيئة**: إذا نجحت الاختبارات محليًا وفشلت في CI، فتأكد من اتساق متغيرات البيئة والتهيئات.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Setting up GitHub Actions to run your Vitest unit tests on each Pull Request enhances your development workflow by automating the testing process. It helps maintain code quality, prevents bugs from reaching production, and fosters a culture of continuous integration. By following this guide, you now have a CI pipeline that automatically runs your tests, providing immediate feedback to contributors and maintaining the integrity of your codebase.
+إعداد GitHub Actions لتشغيل اختبارات وحدات Vitest في كل طلب سحب يحسّن سير عمل التطوير لديك بأتمتة عملية الاختبار. يساعد في الحفاظ على جودة الشيفرة، ويمنع وصول الأخطاء إلى الإنتاج، ويعزز ثقافة التكامل المستمر. باتباع هذا الدليل، لديك الآن خط أنابيب CI يشغّل اختباراتك تلقائيًا، ويوفر تغذية راجعة فورية للمساهمين، ويحافظ على سلامة قاعدة شيفرتك.
 
-## Additional Resources
+## موارد إضافية
 
-- **Vitest Documentation**: [https://vitest.dev/](https://vitest.dev/)
-- **GitHub Actions Documentation**: [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
-- **Caching Dependencies**: [Caching dependencies to speed up workflows](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
-- **GitHub Actions for JavaScript and Node.js**: [Official GitHub guide](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)
+- **توثيق Vitest**: [https://vitest.dev/](https://vitest.dev/)
+- **توثيق GitHub Actions**: [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
+- **تخزين الاعتماديات مؤقتًا**: [تخزين الاعتماديات مؤقتًا لتسريع سير العمل](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows)
+- **GitHub Actions لـ JavaScript وNode.js**: [الدليل الرسمي من GitHub](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs)

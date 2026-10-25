@@ -1,40 +1,40 @@
 ---
-title: "Skills and ClawHub"
-lang: en
+title: "المهارات وClawHub"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/skills-and-clawhub"
 ---
 
-A **skill** is a folder with a `SKILL.md` file in it. The file teaches your agent a procedure: when to do something, which tools to use, and what a good result looks like. Skills are how most people extend OpenClaw day to day, and the most common pattern in the community is asking the agent to write one for itself.
+**المهارة (skill)** مجلد يحتوي على ملف `SKILL.md`. ويعلّم الملف وكيلك إجراءً: متى يفعل شيئًا، وأي الأدوات يستخدم، وكيف تبدو النتيجة الجيدة. بالمهارات يوسّع معظم الناس OpenClaw يومًا بيوم، والنمط الأكثر شيوعًا في المجتمع هو أن يطلبوا من الوكيل أن يكتب واحدة لنفسه.
 
-OpenClaw’s documentation puts the difference between the three kinds of extension neatly: tools are actions the agent can call, skills teach it how to work, and plugins add new runtime capabilities. Reach for a skill when the agent already has the tools it needs and just needs to know how to use them well.
+تضع وثائق OpenClaw الفرق بين أنواع التوسعة الثلاثة بوضوح: الأدوات أفعال يستطيع الوكيل استدعاءها، والمهارات تعلّمه كيف يعمل، والإضافات تضيف قدرات تشغيل جديدة. فالتجأ إلى مهارة حين يملك الوكيل الأدوات التي يحتاجها بالفعل ولا يبقى عليه سوى معرفة كيف يستخدمها جيدًا.
 
-> **A skill teaches. It doesn’t grant, and it isn’t sandboxed.**
+> **المهارة تعلّم. إنها لا تمنح، وليست معزولة.**
 >
-> A skill can’t give your agent a tool, a credential, or shell access it didn’t already have. But that cuts both ways: once installed, a skill runs with all of the agent’s privileges, and nothing isolates it from them. A community skill is untrusted code and instructions. Read it before you enable it.
+> لا تستطيع المهارة أن تمنح وكيلك أداة، ولا بيانات اعتماد، ولا وصولًا إلى سطر الأوامر لم يكن يملكه بالفعل. لكن هذا يعمل في الاتجاهين: فبمجرد تثبيتها، تعمل المهارة بكل صلاحيات الوكيل، ولا شيء يعزلها عنها. والمهارة المجتمعية شيفرة وتعليمات غير موثوقة. اقرأها قبل أن تُفعّلها.
 
-## Where Skills Live
+## أين تعيش المهارات
 
-OpenClaw looks for skills in several places. When two skills share a name, the one higher in this list wins:
+يبحث OpenClaw عن المهارات في عدة مواضع. وعندما تشترك مهارتان في الاسم، تفوز المهارة الأعلى في هذه القائمة:
 
-| # | Location | Who sees it |
+| # | الموضع | من يراها |
 | --- | --- | --- |
-| 1 | `<workspace>/skills/` | The agent that owns that workspace |
-| 2 | `<workspace>/.agents/skills/` | The same agent (project-style layout) |
-| 3 | `~/.agents/skills/` | Every agent (your personal skills) |
-| 4 | `~/.openclaw/skills/` | Every agent on the Gateway (`--global` installs) |
-| 5 | `~/.openclaw/agents/<agentId>/agent/workshop-skills/` | One agent’s self-written skills (see [below](#skills-that-write-themselves)) |
-| 6 | Bundled with OpenClaw | Every agent |
-| 7 | `skills.load.extraDirs` and plugin skills | Every agent |
+| 1 | `<workspace>/skills/` | الوكيل الذي يملك مساحة العمل تلك |
+| 2 | `<workspace>/.agents/skills/` | الوكيل نفسه (تخطيط بنمط المشروع) |
+| 3 | `~/.agents/skills/` | كل وكيل (مهاراتك الشخصية) |
+| 4 | `~/.openclaw/skills/` | كل وكيل على البوابة (تثبيتات `--global`) |
+| 5 | `~/.openclaw/agents/<agentId>/agent/workshop-skills/` | المهارات التي يكتبها وكيل واحد بنفسه (انظر [أدناه](#skills-that-write-themselves)) |
+| 6 | مرفقة مع OpenClaw | كل وكيل |
+| 7 | `skills.load.extraDirs` ومهارات الإضافات | كل وكيل |
 
-The default workspace is `~/.openclaw/workspace`, so your own skills usually go in `~/.openclaw/workspace/skills/<name>/SKILL.md`.
+مساحة العمل الافتراضية هي `~/.openclaw/workspace`، لذا توضع مهاراتك عادةً في `~/.openclaw/workspace/skills/<name>/SKILL.md`.
 
-These paths are on the **Gateway host**, not necessarily the computer you’re typing on. On the [Railway template](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale), for example, the state directory lives on the volume under `/data/.openclaw`.
+هذه المسارات على **مضيف البوابة (Gateway host)**، وليس بالضرورة على الحاسوب الذي تكتب عليه. في [قالب Railway](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale) مثلًا، يعيش دليل الحالة على وحدة التخزين تحت `/data/.openclaw`.
 
-Precedence explains a frustrating failure: if you edit a skill and nothing changes, check whether a copy with the same name exists higher in the list. The higher copy wins silently.
+تفسّر الأولوية عطلًا محبِطًا: إن عدّلت مهارة ولم يتغيّر شيء، فتحقق مما إذا كانت هناك نسخة بالاسم نفسه في موضع أعلى من القائمة. فالنسخة الأعلى تفوز بصمت.
 
-## See What You Already Have
+## اعرف ما لديك بالفعل
 
-OpenClaw ships with a few dozen bundled skills, and the [Gmail lesson](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration) already had you look for one of them, `gog`. Three commands show what’s loaded:
+يأتي OpenClaw بعدة عشرات من المهارات المرفقة، وقد طلب منك [درس Gmail](https://stevekinney.com/courses/openclaw/gmail-and-google-calendar-integration) بالفعل أن تبحث عن واحدة منها، وهي `gog`. وتُظهر ثلاثة أوامر ما هو محمَّل:
 
 ```bash
 openclaw skills list
@@ -42,9 +42,9 @@ openclaw skills check
 openclaw skills info <name>
 ```
 
-All three ask the Gateway, so they report the Gateway’s view even when you run them from another machine.
+تسأل الأوامر الثلاثة البوابة، فتبلّغك برؤية البوابة حتى حين تشغّلها من جهاز آخر.
 
-`list` shows every skill with a status: **ready**, **needs setup**, or **disabled**. `check` summarizes what one agent can actually use:
+يعرض `list` كل مهارة مع حالتها: **جاهزة**، أو **تحتاج تهيئة**، أو **معطّلة**. ويلخّص `check` ما يستطيع وكيل واحد استخدامه فعلًا:
 
 ```
 Agent: main
@@ -58,12 +58,12 @@ Excluded by agent allowlist: 0
 ✗ Missing requirements: 3
 ```
 
-Your numbers will differ. Here’s what the lines mean:
+ستختلف أرقامك. وهذا معنى السطور:
 
-- **Visible to model** means the skill’s name and description are in the agent’s prompt, so it can choose the skill on its own.
-- **Available as command** means you can also call it as a slash command. It can be lower than “visible” because some skills opt out of being commands.
-- **Disabled** skills are turned off in config, so they’re never offered.
-- **Missing requirements** means the skill needs something the host doesn’t have. `info` tells you what:
+- **ظاهرة للنموذج** تعني أن اسم المهارة ووصفها موجودان في مطالبة الوكيل، فيستطيع اختيار المهارة بنفسه.
+- **متاحة كأمر** تعني أنك تستطيع أيضًا استدعاءها كأمر شرطة مائلة (slash command). وقد يكون عددها أقل من «الظاهرة» لأن بعض المهارات تختار ألا تكون أوامر.
+- المهارات **المعطّلة** مُطفأة في الإعدادات، فلا تُعرض أبدًا.
+- **المتطلبات المفقودة** تعني أن المهارة تحتاج شيئًا لا يملكه المضيف. ويخبرك `info` بما هو:
 
 ```
 ⏰ apple-reminders △ Needs setup
@@ -75,25 +75,25 @@ Requirements:
   OS: ✓ (darwin)
 ```
 
-Install the missing binary on the Gateway host (or on a [paired node](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) that provides it) and the skill becomes ready.
+ثبّت الثنائي المفقود على مضيف البوابة (أو على [عقدة مقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) توفّره) فتصبح المهارة جاهزة.
 
-## Write Your First Skill
+## اكتب مهارتك الأولى
 
-Start with a skill that needs no tools at all, so the only thing you’re testing is whether OpenClaw finds it and uses it.
+ابدأ بمهارة لا تحتاج إلى أي أدوات إطلاقًا، فلا يكون الشيء الوحيد الذي تختبره سوى ما إذا كان OpenClaw يجدها ويستخدمها.
 
-### Step 1: Create the Folder
+### الخطوة 1: أنشئ المجلد
 
-On the Gateway host:
+على مضيف البوابة:
 
 ```bash
 mkdir -p ~/.openclaw/workspace/skills/meeting-notes
 ```
 
-Keep the folder name and the skill’s `name` the same.
+أبقِ اسم المجلد و`name` الخاص بالمهارة متماثلين.
 
-### Step 2: Write `SKILL.md`
+### الخطوة 2: اكتب `SKILL.md`
 
-Create `~/.openclaw/workspace/skills/meeting-notes/SKILL.md`:
+أنشئ `~/.openclaw/workspace/skills/meeting-notes/SKILL.md`:
 
 ```markdown
 ---
@@ -113,35 +113,35 @@ Use this when the user pastes notes from a meeting and asks you to clean them up
 5. Don't add commentary or recommendations unless the user asks for them.
 ```
 
-The frontmatter is the part OpenClaw reads to decide *when* to use the skill. The body is what the agent reads once it has decided to. Write the `description` as a one-line answer to “when should the agent reach for this?”, in under 160 characters.
+الواجهة الأمامية (frontmatter) هي الجزء الذي يقرأه OpenClaw ليقرّر *متى* يستخدم المهارة. أما المتن فهو ما يقرأه الوكيل بعد أن يقرّر ذلك. واكتب `description` كإجابة من سطر واحد عن سؤال «متى ينبغي للوكيل أن يلجأ إلى هذه؟»، في أقل من 160 حرفًا.
 
-### Step 3: Confirm It Loaded
+### الخطوة 3: تأكّد من أنها حُمِّلت
 
 ```bash
 openclaw skills info meeting-notes
 ```
 
-You want `Source: openclaw-workspace` and `Visible to model: yes`.
+تريد أن ترى `Source: openclaw-workspace` و`Visible to model: yes`.
 
-OpenClaw watches skill folders, so a new or edited skill shows up on the agent’s next turn. If it doesn’t, the session may be holding an old snapshot. Send `/new` to start a fresh session, or restart the Gateway.
+يراقب OpenClaw مجلدات المهارات، فتظهر المهارة الجديدة أو المعدّلة في دور الوكيل التالي. وإن لم يحدث ذلك، فقد تكون الجلسة محتفظة بنسخة قديمة. أرسل `/new` لبدء جلسة جديدة، أو أعد تشغيل البوابة.
 
-### Step 4: Use It
+### الخطوة 4: استخدمها
 
-There are three ways to invoke a skill:
+هناك ثلاث طرق لاستدعاء مهارة:
 
-| How | Example |
+| الطريقة | مثال |
 | --- | --- |
-| Let the agent choose it from the description | “Can you clean up these notes? …” |
-| Reference it in a message with `$` | `$meeting-notes` followed by notes |
-| Call it as a slash command | `/meeting_notes ...` or `/skill meeting-notes ...` |
+| أن يختارها الوكيل من الوصف | «أيمكنك ترتيب هذه الملاحظات؟ …» |
+| الإشارة إليها في رسالة بعلامة `$` | `$meeting-notes` متبوعة بالملاحظات |
+| استدعاؤها كأمر شرطة مائلة | `/meeting_notes ...` أو `/skill meeting-notes ...` |
 
-Slash command names can only use lowercase letters, digits, and underscores, so hyphens become underscores. `/skill <name>` always works, whatever the name.
+لا يمكن لأسماء أوامر الشرطة المائلة أن تستخدم سوى الحروف الصغيرة والأرقام والشرطات السفلية، لذا تصبح الشرطات العادية شرطات سفلية. ويعمل `/skill <name>` دائمًا، أيًّا كان الاسم.
 
-**Test the first way, not just the last two.** Paste some messy notes without naming the skill. If the agent doesn’t use it, your description isn’t saying clearly enough when it applies. Rewrite it and try again.
+**اختبر الطريقة الأولى، لا الأخيرتين فقط.** الصق بعض الملاحظات غير المرتبة دون تسمية المهارة. فإن لم يستخدمها الوكيل، فوصفك لا يقول بوضوح كافٍ متى تنطبق. أعد كتابته وحاول مرة أخرى.
 
-## Add a Script
+## أضف سكربتًا
 
-Skills get more useful when they bundle a script. The agent still runs the script with its own `exec` tool, so everything in [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals) applies.
+تصبح المهارات أكثر فائدة حين تضمّ سكربتًا. وما زال الوكيل يشغّل السكربت بأداة `exec` الخاصة به، لذا ينطبق كل ما في [الأمن والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals).
 
 ```
 ~/.openclaw/workspace/skills/repo-standup/
@@ -178,46 +178,46 @@ cd "$1"
 git log --since="24 hours ago" --no-merges --pretty=format:'%h %an %s'
 ```
 
-Make the script executable with `chmod +x scripts/standup.sh`.
+اجعل السكربت قابلًا للتنفيذ بـ `chmod +x scripts/standup.sh`.
 
-Two things are new here:
+هناك شيئان جديدان هنا:
 
-- **`{baseDir}`** resolves to the skill’s own folder, so you never hard-code a home directory.
-- **`metadata.openclaw.requires.bins`** is a gate. If `git` isn’t on the host’s `PATH`, the skill shows as “needs setup” and stays out of the prompt, instead of failing halfway through.
+- يرجع **`{baseDir}`** إلى مجلد المهارة نفسه، فلا تُثبّت أبدًا دليل المنزل في الشيفرة.
+- **`metadata.openclaw.requires.bins`** بوابة. فإن لم يكن `git` على `PATH` الخاص بالمضيف، ظهرت المهارة بحالة «تحتاج تهيئة» وبقيت خارج التوجيه، بدلًا من أن تفشل في منتصف الطريق.
 
-If your exec policy asks before running unfamiliar commands, the first run produces an approval prompt. Choosing **Allow always** approves this exact command in this working directory, so later runs against the same repository won’t ask again.
+إن كانت سياسة التنفيذ لديك تسأل قبل تشغيل أوامر غير مألوفة، فسيُنتج التشغيل الأول طلب موافقة. واختيار **السماح دائمًا** يوافق على هذا الأمر بالضبط في دليل العمل هذا، فلا تسأل عمليات التشغيل اللاحقة ضد المستودع نفسه مرة أخرى.
 
-## Frontmatter Reference
+## مرجع الواجهة الأمامية {#frontmatter-reference}
 
-| Key | Default | What it does |
+| المفتاح | الافتراضي | ما يفعله |
 | --- | --- | --- |
-| `name` | — | Required. Lowercase letters, digits, and hyphens |
-| `description` | — | Required. One line, under 160 characters |
-| `user-invocable` | `true` | Set `false` to hide the skill from slash commands |
-| `disable-model-invocation` | `false` | Set `true` so the agent never picks it alone; `$name` still works |
-| `homepage` | — | A link shown in the UI |
+| `name` | — | مطلوب. حروف صغيرة وأرقام وشرطات عادية |
+| `description` | — | مطلوب. سطر واحد، في أقل من 160 حرفًا |
+| `user-invocable` | `true` | اضبط `false` لإخفاء المهارة من أوامر الشرطة المائلة |
+| `disable-model-invocation` | `false` | اضبط `true` حتى لا يختارها الوكيل بنفسه أبدًا؛ ويظل `$name` يعمل |
+| `homepage` | — | رابط يُعرض في واجهة المستخدم |
 
-Gates go under `metadata.openclaw`. A skill with no gates is always eligible.
+تقع البوابات تحت `metadata.openclaw`. والمهارة التي بلا بوابات مؤهَّلة دائمًا.
 
-| Key | Rule |
+| المفتاح | القاعدة |
 | --- | --- |
-| `requires.bins` | Every listed binary must be on `PATH` |
-| `requires.anyBins` | At least one must be on `PATH` |
-| `requires.env` | Each environment variable must be set, or provided through config |
-| `requires.config` | Each listed `openclaw.json` path must be truthy |
-| `os` | `darwin`, `linux`, and/or `win32` |
-| `always` | Skip the `requires` checks (but not `os`) |
-| `primaryEnv` | The environment variable that `skills.entries.<name>.apiKey` fills |
+| `requires.bins` | يجب أن يكون كل ثنائي مدرج على `PATH` |
+| `requires.anyBins` | يجب أن يكون واحد على الأقل على `PATH` |
+| `requires.env` | يجب أن يُضبط كل متغيّر بيئة، أو يُوفَّر عبر الإعدادات |
+| `requires.config` | يجب أن يكون كل مسار `openclaw.json` مدرج صادقًا (truthy) |
+| `os` | `darwin` و`linux` و/أو `win32` |
+| `always` | تخطّي فحوص `requires` (لكن ليس `os`) |
+| `primaryEnv` | متغيّر البيئة الذي يملؤه `skills.entries.<name>.apiKey` |
 
-Note that `os` and `always` sit next to `requires`, not inside it:
+لاحظ أن `os` و`always` يقعان بجوار `requires` لا داخله:
 
 ```markdown
 metadata: { "openclaw": { "os": ["darwin"], "requires": { "bins": ["memo"] } } }
 ```
 
-### Giving a Skill a Key
+### منح مهارة مفتاحًا
 
-Never put a credential in `SKILL.md` or its files. If the skill declares a `primaryEnv`, give it the key through config instead:
+لا تضع بيانات اعتماد أبدًا في `SKILL.md` أو ملفاته. وإن أعلنت المهارة عن `primaryEnv`، فأعطها المفتاح عبر الإعدادات بدلًا من ذلك:
 
 ```json5
 {
@@ -231,101 +231,101 @@ Never put a credential in `SKILL.md` or its files. If the skill declares a `prim
 }
 ```
 
-The key is injected into the environment only for that agent turn, and only on the host. **It doesn’t reach a sandbox.** A sandboxed agent needs the variable passed through `agents.defaults.sandbox.docker.env` instead, and the gated binary installed inside the container.
+يُحقن المفتاح في البيئة لدور الوكيل ذلك فقط، وعلى المضيف وحده. **وهو لا يصل إلى بيئة معزولة.** ويحتاج الوكيل المعزول إلى تمرير المتغيّر عبر `agents.defaults.sandbox.docker.env` بدلًا من ذلك، وإلى تثبيت الثنائي المبوَّب داخل الحاوية.
 
-## Finding Skills on ClawHub
+## العثور على المهارات في ClawHub
 
-[ClawHub](https://clawhub.ai/) is the public registry for OpenClaw skills and plugins. You can browse it on the web or search from the terminal:
+[ClawHub](https://clawhub.ai/) هو السجل العام لمهارات OpenClaw وإضافاته. ويمكنك تصفّحه على الويب أو البحث من الطرفية:
 
 ```bash
 openclaw skills search "calendar"
 ```
 
-Each skill has a page with its install command, its `SKILL.md`, its files, its version history, and a security audit:
+لكل مهارة صفحة تضم أمر تثبيتها، و`SKILL.md` الخاص بها، وملفاتها، وسجل إصداراتها، وفحصًا أمنيًا:
 
-The ClawHub page for the gog skill, showing the install command, tabs for SKILL.md, Skill Card, Files, Versions, and Requirements, and a security audit result of Pass
+صفحة ClawHub لمهارة gog، تعرض أمر التثبيت، وتبويبات SKILL.md وSkill Card وFiles وVersions وRequirements، ونتيجة فحص أمني هي Pass
 
-Refer to skills by **owner and name**, like `@steipete/gog`. Popular names attract look-alikes: a search for “calendar” returns several skills from different owners with nearly identical descriptions. The owner is part of what you’re trusting.
+أشِر إلى المهارات بـ**المالك والاسم**، مثل `@steipete/gog`. فالأسماء الشائعة تجذب المتشابهات: بحث عن «calendar» يعيد عدة مهارات من مالكين مختلفين بأوصاف متطابقة تقريبًا. والمالك جزء مما تثق به.
 
-## Vetting a Skill Before You Install It
+## فحص مهارة قبل تثبيتها
 
-Every release gets a ClawHub security audit. Click the result on the skill’s page to read the full report:
+يحصل كل إصدار على فحص أمني من ClawHub. انقر النتيجة في صفحة المهارة لقراءة التقرير الكامل:
 
-The ClawHub security audit page for the gog skill, with an overview of what the skill does, an outcome of Pass, the audit date, and a list of vulnerability patterns it was checked against
+صفحة الفحص الأمني في ClawHub لمهارة gog، وفيها نظرة عامة على ما تفعله المهارة، ونتيجة Pass، وتاريخ الفحص، وقائمة بأنماط الثغرات التي فُحصت مقابلها
 
-The audit gives two separate answers. The **status** says what to do with the result:
+يعطي الفحص إجابتين منفصلتين. أما **الحالة** فتقول ما تفعله بالنتيجة:
 
-| Status | What it means |
+| الحالة | ما تعنيه |
 | --- | --- |
-| Pass | Nothing above low risk was found |
-| Review | Read the findings first. The skill may still be legitimate |
-| Warn | A high-impact concern was found. Be extra careful |
-| Malicious | Don’t install it |
-| Pending | The audit hasn’t finished |
-| Error | The audit couldn’t be completed |
+| Pass | لم يُعثر على أي شيء يتجاوز الخطورة المنخفضة |
+| Review | اقرأ النتائج أولًا. فقد تظل المهارة مشروعة |
+| Warn | عُثر على مشكلة عالية الأثر. توخَّ حذرًا شديدًا |
+| Malicious | لا تثبّتها |
+| Pending | لم ينته الفحص بعد |
+| Error | تعذّر إكمال الفحص |
 
-The **risk level** (Low, Medium, or High) says how much power the skill has if it works exactly as intended. A skill that sends email can be completely honest and still be Medium risk, because sending email as you is a lot of power.
+ويقول **مستوى الخطورة** (منخفض أو متوسط أو مرتفع) مقدار القوة التي تملكها المهارة إن عملت تمامًا كما يُقصد بها. فالمهارة التي ترسل البريد يمكن أن تكون صادقة تمامًا وتبقى متوسطة الخطورة، لأن إرسال البريد باسمك قوة كبيرة.
 
-You can check the same information from the terminal:
+يمكنك التحقق من المعلومات نفسها من الطرفية:
 
 ```bash
 openclaw skills verify @steipete/gog --card
 openclaw skills verify @steipete/gog
 ```
 
-The first prints the skill card, which is a short list of the skill’s risks and how to reduce them. The second prints ClawHub’s verdict and, when available, a link to the exact source commit that was scanned. It doesn’t rescan anything or check the files on your disk.
+يطبع الأمر الأول بطاقة المهارة، وهي قائمة قصيرة بمخاطر المهارة وكيفية تقليلها. ويطبع الثاني حكم ClawHub، وعند توفره رابطًا إلى إيداع المصدر بالضبط الذي فُحص. وهو لا يعيد فحص أي شيء ولا يفحص الملفات على قرصك.
 
-A **Pass** is a good sign, not a guarantee. Before installing, also do this:
+**النجاح (Pass)** علامة جيدة لا ضمان. وقبل التثبيت، افعل هذا أيضًا:
 
-1. **Read `SKILL.md`** on the Files tab. Look for instructions that change the agent’s goals, write to memory, or tell it to ignore its rules.
-2. **Read every script.** Look for downloads, network calls to places the skill has no reason to contact, and anything that reads environment variables or credential files.
-3. **Check the requirements.** Which binaries and environment variables does it need, and do they fit what the skill claims to do?
-4. **Check the owner and version history.** A long-lived skill from a verified publisher is a different bet than one published yesterday.
-5. **Install narrowly.** Install into one agent’s workspace rather than globally, and pin a version once you’ve reviewed it.
+1. **اقرأ `SKILL.md`** في تبويب Files. وابحث عن تعليمات تغيّر أهداف الوكيل، أو تكتب إلى الذاكرة، أو تطلب منه تجاهل قواعده.
+2. **اقرأ كل سكربت.** وابحث عن التنزيلات، ونداءات الشبكة إلى مواضع لا سبب للمهارة في الاتصال بها، وأي شيء يقرأ متغيّرات البيئة أو ملفات بيانات الاعتماد.
+3. **افحص المتطلبات.** أي الثنائيات ومتغيّرات البيئة تحتاجها، وهل تناسب ما تدّعي المهارة أنها تفعله؟
+4. **افحص المالك وسجل الإصدارات.** فمهارة قديمة من ناشر موثّق رهان مختلف عن مهارة نُشرت أمس.
+5. **ثبّت بضيق.** ثبّتها في مساحة عمل وكيل واحد بدلًا من التثبيت العام، وثبّت إصدارًا بعينه بعد أن تراجعها.
 
-> **Not every source is scanned**
+> **ليست كل المصادر مفحوصة**
 >
-> Skills installed with a `skills-sh:` reference are resolved by ClawHub to a GitHub commit but are marked **Not scanned by ClawHub**. Skills installed straight from Git or a local folder aren’t scanned at all. For those, your own review is the only review.
+> المهارات المثبّتة بمرجع `skills-sh:` يحلّها ClawHub إلى إيداع GitHub لكنها تُوسم بأنها **غير مفحوصة من ClawHub**. أما المهارات المثبّتة مباشرة من Git أو من مجلد محلي فلا تُفحص إطلاقًا. وفي تلك الحالات، تكون مراجعتك أنت هي المراجعة الوحيدة.
 
-## Installing, Updating, and Removing
+## التثبيت والتحديث والإزالة
 
-Install a reviewed skill with:
+ثبّت مهارة راجعتها بـ:
 
 ```bash
 openclaw skills install @steipete/gog
 ```
 
-By default it goes into the current agent’s workspace `skills/` folder. Use `--agent <id>` to pick a specific agent, `--global` to install into `~/.openclaw/skills` for every agent, and `--version <version>` to pin a release.
+افتراضيًا تذهب إلى مجلد `skills/` في مساحة عمل الوكيل الحالي. استخدم `--agent <id>` لاختيار وكيل بعينه، و`--global` للتثبيت في `~/.openclaw/skills` لكل وكيل، و`--version <version>` لتثبيت إصدار بعينه.
 
-`install` writes to a workspace on the machine where you run it, so **run it on the Gateway host**. If your Gateway is remote, either run it there (on the [Railway](https://railway.com/?referralCode=kinney) template, through `railway ssh --service openclaw -- openclaw skills install ...`) or install from the Control UI: open **Plugins**, switch to the **Skills** tab, and use the ClawHub search there.
+يكتب `install` إلى مساحة عمل على الجهاز الذي تشغّله عليه، لذا **شغّله على مضيف البوابة**. وإن كانت بوابتك بعيدة، فإما أن تشغّله هناك (على [قالب Railway](https://railway.com/?referralCode=kinney)، عبر `railway ssh --service openclaw -- openclaw skills install ...`) أو تثبّت من واجهة التحكم: افتح **Plugins**، وانتقل إلى تبويب **Skills**، واستخدم بحث ClawHub هناك.
 
-Before downloading, the install checks the release’s audit:
+قبل التنزيل، يفحص التثبيت الفحص الأمني الخاص بالإصدار:
 
-- **Review** prints the audit summary and a link, then continues.
-- **Malicious** or blocked releases are refused.
-- **Pending** GitHub-backed skills wait for the scan. There’s a `--force-install` flag to skip the wait. Don’t use it just to get past the check.
+- تطبع **Review** ملخّص الفحص ورابطًا، ثم تتابع.
+- تُرفض الإصدارات **الخبيثة** أو المحظورة.
+- تنتظر المهارات المدعومة من GitHub والتي حالتها **Pending** انتهاء الفحص. وهناك علم `--force-install` لتخطّي الانتظار. لا تستخدمه لمجرد تجاوز الفحص.
 
-To update:
+للتحديث:
 
 ```bash
 openclaw skills update @steipete/gog
 openclaw skills update --all
 ```
 
-Updates only apply to skills installed from ClawHub. If you’ve edited an installed skill, the update refuses rather than overwriting your changes, unless you pass `--force`.
+تنطبق التحديثات على المهارات المثبّتة من ClawHub فقط. وإن كنت قد عدّلت مهارة مثبّتة، رفض التحديث بدلًا من الكتابة فوق تغييراتك، إلا إذا مرّرت `--force`.
 
-There’s no `openclaw skills uninstall`. Removal goes through ClawHub’s own CLI, pointed at the folder you installed into:
+لا يوجد `openclaw skills uninstall`. فالإزالة تتم عبر واجهة سطر أوامر ClawHub نفسها، موجّهة إلى المجلد الذي ثبّتت فيه:
 
 ```bash
 npm install -g clawhub
 clawhub --workdir ~/.openclaw/workspace uninstall @steipete/gog
 ```
 
-For a `--global` install, use `--workdir ~/.openclaw` instead. Then confirm the skill is gone with `openclaw skills list`.
+وفي تثبيت `--global`، استخدم `--workdir ~/.openclaw` بدلًا من ذلك. ثم تأكّد من اختفاء المهارة بـ `openclaw skills list`.
 
-## Choosing Which Agents See Which Skills
+## اختيار المهارات التي يراها كل وكيل
 
-By default, every agent sees every eligible skill. You can narrow that with allowlists:
+افتراضيًا، يرى كل وكيل كل مهارة مؤهَّلة. ويمكنك تضييق ذلك بقوائم السماح:
 
 ```json5
 {
@@ -341,33 +341,33 @@ By default, every agent sees every eligible skill. You can narrow that with allo
 }
 ```
 
-- An agent’s own list **replaces** the default list. It doesn’t add to it.
-- `[]` means no skills at all.
-- To turn a skill off everywhere, set `skills.entries.<name>.enabled: false`.
+- قائمة الوكيل نفسه **تستبدل** القائمة الافتراضية. وهي لا تضيف إليها.
+- `[]` تعني لا مهارات إطلاقًا.
+- لإطفاء مهارة في كل مكان، اضبط `skills.entries.<name>.enabled: false`.
 
-You can also turn skills on and off for a single conversation in the Control UI: in the message composer, click **+** and then **Skills**.
+ويمكنك أيضًا تشغيل المهارات وإطفاءها لمحادثة واحدة في واجهة التحكم: في محرّر الرسالة، انقر **+** ثم **Skills**.
 
-An allowlist only decides which skills an agent *knows about*. It isn’t a permission boundary. An agent that can run shell commands can still run any binary on the host, whether or not a skill mentions it. Command permissions are set by [exec approvals](https://stevekinney.com/courses/openclaw/security-and-approvals), not by skills.
+قائمة السماح تقرّر فقط المهارات التي *يعرف عنها* الوكيل. وهي ليست حدًّا للصلاحيات. فالوكيل الذي يستطيع تشغيل أوامر سطر الأوامر يمكنه أيضًا تشغيل أي ثنائي على المضيف، سواء ذكرته مهارة أو لم تذكره. وأذونات الأوامر تحددها [موافقات التنفيذ](https://stevekinney.com/courses/openclaw/security-and-approvals)، لا المهارات.
 
-## Skills That Write Themselves
+## المهارات التي تكتب نفسها {#skills-that-write-themselves}
 
-The **Skill Workshop** lets your agent create and improve its own skills from experience. Out of the box, it’s more autonomous than you might expect:
+تتيح **ورشة المهارات (Skill Workshop)** لوكيلك إنشاء مهاراته الخاصة وتحسينها من الخبرة. وهي كما تأتي جاهزة أكثر استقلالية مما قد تتوقع:
 
-| Setting | Default | What the default means |
+| الإعداد | الافتراضي | ما يعنيه الافتراضي |
 | --- | --- | --- |
-| `skills.workshop.autonomous.mode` | `auto` | The agent edits its own Workshop skills directly with its file tools |
-| `skills.workshop.approvalPolicy` | `auto` | The agent can apply its own proposals without asking you |
+| `skills.workshop.autonomous.mode` | `auto` | يعدّل الوكيل مهارات الورشة الخاصة به مباشرةً بأدوات الملفات لديه |
+| `skills.workshop.approvalPolicy` | `auto` | يستطيع الوكيل تطبيق مقترحاته الخاصة دون أن يسألك |
 
-The guardrail in `auto` mode is a directory boundary, not a reviewer. The agent can only write inside its own `workshop-skills` folder and never touches a skill from another source. But inside that folder, changes don’t go through a proposal, a scan, or a rollback snapshot.
+الضابط في وضع `auto` هو حدّ دليل، لا مراجع بشري. فلا يستطيع الوكيل الكتابة إلا داخل مجلد `workshop-skills` الخاص به، ولا يمسّ أبدًا مهارة من مصدر آخر. لكن داخل ذلك المجلد، لا تمرّ التغييرات عبر مقترح ولا فحص ولا لقطة استرجاع.
 
-If you’d rather approve every change, switch to proposals:
+وإن كنت تفضّل الموافقة على كل تغيير، فانتقل إلى المقترحات:
 
 ```bash
 openclaw config set skills.workshop.autonomous.mode propose
 openclaw config set skills.workshop.approvalPolicy pending
 ```
 
-Then review what the agent suggests:
+ثم راجع ما يقترحه الوكيل:
 
 ```bash
 openclaw skills workshop list
@@ -376,32 +376,32 @@ openclaw skills workshop apply <proposal-id>
 openclaw skills workshop reject <proposal-id> --reason "Too specific"
 ```
 
-The same queue is in the Control UI under **Plugins**, on the **Skill Workshop** tab, under **Suggestions**.
+القائمة نفسها موجودة في واجهة التحكم تحت **Plugins**، في تبويب **Skill Workshop**، تحت **Suggestions**.
 
-The Skill workshop tab in the Control UI, with Skills and Suggestions subtabs, a Self-learning toggle, and the agent's installed workshop skills listed beside a preview of the selected skill
+تبويب ورشة المهارات في واجهة التحكم، وفيه تبويبان فرعيان Skills وSuggestions، ومفتاح Self-learning، ومهارات الورشة المثبّتة للوكيل مسرودة بجوار معاينة للمهارة المختارة
 
-Whatever the mode, you can ask for a skill directly. Send `/learn` after a conversation that went well, optionally with a request like `/learn a skill for triaging my GitHub notifications`. It drafts one skill for review and never applies it on its own.
+أيًّا كان الوضع، يمكنك طلب مهارة مباشرةً. أرسل `/learn` بعد محادثة سارت على ما يرام، واختياريًا مع طلب مثل `/learn a skill for triaging my GitHub notifications`. وهي تصوغ مهارة واحدة للمراجعة ولا تطبّقها بنفسها أبدًا.
 
-## Try It Out
+## جرّب بنفسك
 
-1. **Prove discovery works.** Create `meeting-notes`, confirm it with `openclaw skills info`, and get the agent to use it without naming it.
-2. **Break a gate on purpose.** Change `repo-standup` to require a binary that doesn’t exist, like `gitx`. Confirm `openclaw skills check` lists it under missing requirements and the agent no longer offers it. Change it back.
-3. **Lose a precedence fight.** Put a second `meeting-notes` folder in `~/.openclaw/skills/` with a different body. Ask the agent to use it and confirm the workspace copy still wins. Delete the extra copy.
-4. **Vet a real skill.** Pick a skill on ClawHub you might actually want. Read its audit, its `SKILL.md`, and its scripts, and run `openclaw skills verify @owner/name --card`. Write down one thing you’d want to know before installing it.
-5. **Have the agent write one.** After a task you do often, send `/learn`. Inspect the draft before anything is applied.
+1. **أثبت أن الاكتشاف يعمل.** أنشئ `meeting-notes`، وتأكّد منها بـ `openclaw skills info`، واجعل الوكيل يستخدمها دون أن تسمّيها.
+2. **اكسر بوابة عن قصد.** عدّل `repo-standup` لتتطلب ثنائيًا غير موجود، مثل `gitx`. تأكّد أن `openclaw skills check` يسردها تحت المتطلبات المفقودة وأن الوكيل لم يعد يعرضها. ثم أعدها كما كانت.
+3. **اخسر معركة أولوية.** ضع مجلد `meeting-notes` ثانيًا في `~/.openclaw/skills/` بمتن مختلف. اطلب من الوكيل استخدامه وتأكّد أن نسخة مساحة العمل ما زالت تفوز. احذف النسخة الإضافية.
+4. **افحص مهارة حقيقية.** اختر مهارة على ClawHub قد تريدها فعلًا. اقرأ فحصها الأمني، و`SKILL.md` الخاص بها، وسكربتاتها، وشغّل `openclaw skills verify @owner/name --card`. ودوّن شيئًا واحدًا تريد معرفته قبل تثبيتها.
+5. **دع الوكيل يكتب واحدة.** بعد مهمة تكرّرها كثيرًا، أرسل `/learn`. وافحص المسودة قبل تطبيق أي شيء.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Symptom | Check |
+| العَرَض | ما تفحصه |
 | --- | --- |
-| The skill isn’t in `openclaw skills list` | The folder and file name (`SKILL.md`), the `name` field, and that it’s on the Gateway host |
-| It’s listed but the agent never uses it | The description, the agent’s skill allowlist, and `disable-model-invocation` |
-| It says “needs setup” | `openclaw skills info <name>` for the missing binary, environment variable, or OS |
-| Your edits don’t show up | A same-named skill higher in the precedence list, or a stale session (send `/new`) |
-| It works normally but fails in a sandbox | Keys aren’t passed into sandboxes, and gated binaries must exist inside the container |
-| It fails when run by a subagent | Subagents may be denied `exec`. See [Subagents and Orchestration](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) |
-| `openclaw skills uninstall` doesn’t exist | Use `clawhub --workdir <folder> uninstall @owner/name` |
+| المهارة ليست في `openclaw skills list` | اسم المجلد والملف (`SKILL.md`)، وحقل `name`، وكونها على مضيف البوابة |
+| إنها مسرودة لكن الوكيل لا يستخدمها أبدًا | الوصف، وقائمة سماح المهارات لدى الوكيل، و`disable-model-invocation` |
+| تقول «تحتاج تهيئة» | `openclaw skills info <name>` للثنائي المفقود أو متغيّر البيئة أو نظام التشغيل |
+| تعديلاتك لا تظهر | مهارة بالاسم نفسه أعلى في قائمة الأولوية، أو جلسة قديمة (أرسل `/new`) |
+| تعمل عادةً لكنها تفشل في بيئة معزولة | المفاتيح لا تُمرَّر إلى البيئات المعزولة، ويجب أن توجد الثنائيات المبوَّبة داخل الحاوية |
+| تفشل عند تشغيلها بواسطة وكيل فرعي | قد يُمنع `exec` على الوكلاء الفرعيين. انظر [الوكلاء الفرعيون والتنسيق](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) |
+| `openclaw skills uninstall` غير موجود | استخدم `clawhub --workdir <folder> uninstall @owner/name` |
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> يطابق هذا الدرس إصدار OpenClaw `2026.9.8`. وإن لم يتصرّف شيء كما هو موصوف، فشغّل الأمر مع `--help` وراجع [وثائق OpenClaw](https://docs.openclaw.ai/).

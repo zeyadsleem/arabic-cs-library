@@ -1,16 +1,16 @@
 ---
-title: "Utility Types Complete Guide"
-lang: en
+title: "دليل أنواع الأدوات (Utility Types)"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-utility-types-complete"
 ---
 
-TypeScript provides a treasure trove of built-in utility types that save you from writing boilerplate type transformations. Think of them as your type-level standard library - pre-built tools for common type manipulations. Let’s explore every utility type and learn how to create our own.
+يوفر TypeScript كنزًا من أنواع الأدوات المدمجة التي تجنبك كتابة تحويلات الأنواع (type transformations). اعتبرها المكتبة القياسية على مستوى الأنواع — أدوات جاهزة للتعاملات الشائعة. لنتعرف على كل نوع أداة ونتعلم كيفية إنشاء أنواعنا الخاصة.
 
-## Object Manipulation Utilities
+## أدوات التعامل مع الكائنات
 
-### Partial<T>
+### Partial&lt;T&gt;
 
-Makes all properties optional:
+يجعل جميع الخصائص اختيارية:
 
 ```typescript
 interface User {
@@ -38,9 +38,9 @@ updateUser('123', { name: 'Alice' }); // ✅ Only updating name
 updateUser('123', {}); // ✅ No updates
 ```
 
-### Required<T>
+### Required&lt;T&gt;
 
-Makes all properties required:
+يجعل جميع الخصائص مطلوبة:
 
 ```typescript
 interface Config {
@@ -63,9 +63,9 @@ function initialize(config: Required<Config>) {
 }
 ```
 
-### Readonly<T>
+### Readonly&lt;T&gt;
 
-Makes all properties readonly:
+يجعل جميع الخصائص للقراءة فقط:
 
 ```typescript
 interface State {
@@ -88,7 +88,7 @@ function processState(state: Readonly<State>) {
 
 ### Record<K, T>
 
-Creates an object type with keys K and values T:
+ينشئ نوع كائن بمفاتيح K وقيم T:
 
 ```typescript
 type Role = 'admin' | 'user' | 'guest';
@@ -114,11 +114,11 @@ const userCache: Cache<User> = {
 };
 ```
 
-## Property Selection Utilities
+## أدوات اختيار الخصائص
 
 ### Pick<T, K>
 
-Picks specific properties from a type:
+يختار خصائص محددة من نوع:
 
 ```typescript
 interface User {
@@ -143,7 +143,7 @@ function displayUser(user: Pick<User, 'name' | 'email'>) {
 
 ### Omit<T, K>
 
-Omits specific properties from a type:
+يحذف خصائص محددة من نوع:
 
 ```typescript
 type UserWithoutPassword = Omit<User, 'password'>;
@@ -159,11 +159,11 @@ function sanitizeUser(user: User): Omit<User, 'password'> {
 }
 ```
 
-## Union Manipulation Utilities
+## أدوات التعامل مع الاتحادات
 
 ### Exclude<T, U>
 
-Excludes types from a union:
+يستبعد أنواعًا من اتحاد:
 
 ```typescript
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -182,7 +182,7 @@ type NonFormEvents = Exclude<Events, 'change' | 'submit'>;
 
 ### Extract<T, U>
 
-Extracts types from a union:
+يستخرج أنواعًا من اتحاد:
 
 ```typescript
 type Status = 'idle' | 'loading' | 'success' | 'error';
@@ -204,9 +204,9 @@ type Functions = Extract<Mixed, Function>;
 // (() => void) | (() => string)
 ```
 
-### NonNullable<T>
+### NonNullable&lt;T&gt;
 
-Removes null and undefined:
+يزيل null و undefined:
 
 ```typescript
 type MaybeString = string | null | undefined;
@@ -226,11 +226,11 @@ function processValue<T>(value: T | null | undefined): NonNullable<T> {
 }
 ```
 
-## Function Utilities
+## أدوات الدوال
 
-### Parameters<T>
+### Parameters&lt;T&gt;
 
-Extracts function parameters:
+يستخرج معاملات الدالة:
 
 ```typescript
 function createUser(name: string, age: number, email?: string): User {
@@ -257,9 +257,9 @@ function applyFunction<F extends (...args: any[]) => any>(
 }
 ```
 
-### ReturnType<T>
+### ReturnType&lt;T&gt;
 
-Extracts function return type:
+يستخرج نوع إرجاع الدالة:
 
 ```typescript
 function getUser(): User {
@@ -286,9 +286,9 @@ type StringIdentity = ReturnType<typeof identity<string>>;
 // string
 ```
 
-### ConstructorParameters<T>
+### ConstructorParameters&lt;T&gt;
 
-Extracts constructor parameters:
+يستخرج معاملات المُنشئ:
 
 ```typescript
 class User {
@@ -311,9 +311,9 @@ function createInstance<T extends new (...args: any[]) => any>(
 }
 ```
 
-### InstanceType<T>
+### InstanceType&lt;T&gt;
 
-Gets instance type of a constructor:
+يحصل على نوع المثيل للمُنشئ:
 
 ```typescript
 type UserInstance = InstanceType<typeof User>;
@@ -332,9 +332,9 @@ function factory<T extends new (...args: any[]) => any>(Constructor: T): Instanc
 }
 ```
 
-## String Manipulation Utilities
+## أدوات التعامل مع السلاسل
 
-### Uppercase<T>
+### Uppercase&lt;T&gt;
 
 ```typescript
 type Shout = Uppercase<'hello'>;
@@ -345,7 +345,7 @@ type UpperMethods = Uppercase<Methods>;
 // 'GET' | 'POST' | 'PUT' | 'DELETE'
 ```
 
-### Lowercase<T>
+### Lowercase&lt;T&gt;
 
 ```typescript
 type Whisper = Lowercase<'HELLO'>;
@@ -356,7 +356,7 @@ type LowerMethods = Lowercase<HTTPMethods>;
 // 'get' | 'post' | 'put' | 'delete'
 ```
 
-### Capitalize<T>
+### Capitalize&lt;T&gt;
 
 ```typescript
 type Title = Capitalize<'hello world'>;
@@ -367,7 +367,7 @@ type HandlerNames = `on${Capitalize<EventNames>}`;
 // 'onClick' | 'onFocus' | 'onBlur'
 ```
 
-### Uncapitalize<T>
+### Uncapitalize&lt;T&gt;
 
 ```typescript
 type Normal = Uncapitalize<'Hello World'>;
@@ -378,11 +378,11 @@ type LowerPropertyNames = Uncapitalize<PropertyNames>;
 // 'name' | 'age' | 'email'
 ```
 
-## Promise Utilities
+## أدوات Promise
 
-### Awaited<T>
+### Awaited&lt;T&gt;
 
-Unwraps Promise types:
+يفك أنواع Promise:
 
 ```typescript
 type PromiseString = Promise<string>;
@@ -403,9 +403,9 @@ type FetchedUser = Awaited<ReturnType<typeof fetchUser>>;
 // User
 ```
 
-## React-Specific Utility Patterns
+## أنماط الأدوات الخاصة بـ React
 
-### Component Props Utilities
+### أدوات خصائص المكوّن
 
 ```typescript
 // Extract props from any component
@@ -424,7 +424,7 @@ type FlexibleButton = Optional<ButtonProps, 'disabled' | 'onClick'>;
 // { label: string; disabled?: boolean; onClick?: () => void; }
 ```
 
-### Event Handler Types
+### أنواع معالجات الأحداث
 
 ```typescript
 // Extract event type from handler
@@ -439,7 +439,7 @@ type Handler<E> = (event: E) => void;
 type MouseHandler = Handler<React.MouseEvent>;
 ```
 
-## Custom Utility Types
+## أنواع الأدوات المخصصة
 
 ### DeepPartial
 
@@ -550,7 +550,7 @@ type ColorValue = ValueOf<Colors>;
 // '#ff0000' | '#00ff00' | '#0000ff'
 ```
 
-## Advanced Combinations
+## توليفات متقدمة
 
 ### API Response Types
 
@@ -637,7 +637,7 @@ type ThemedButton = WithTheme<ButtonProps>;
 // { label: string; onClick: () => void; theme?: ThemeProps['theme']; }
 ```
 
-## Type Guards with Utilities
+## حارسات الأنواع مع الأدوات
 
 ```typescript
 // Create type guards for utility types
@@ -662,9 +662,9 @@ function processUser(user: Partial<User> | User) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### Avoid Deep Nesting
+### تجنّب التداخل العميق
 
 ```typescript
 // ❌ Can be slow
@@ -680,7 +680,7 @@ type LimitedDepth<T, D extends number = 3> = D extends 0
 type Prev = [never, 0, 1, 2, 3];
 ```
 
-### Use Type Aliases
+### استخدم أسماء الأنواع (Aliases)
 
 ```typescript
 // ✅ Good: Reusable and clear
@@ -692,9 +692,9 @@ function update(data: Partial<Omit<User, 'id'>>) {}
 function display(user: Pick<User, 'id' | 'name' | 'email'>) {}
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Combine for Clarity
+### اجمع من أجل الوضوح
 
 ```typescript
 // Instead of complex inline types
@@ -708,7 +708,7 @@ type UserFormData2 = {
 };
 ```
 
-### Create Domain-Specific Utilities
+### أنشئ أدوات خاصة بالمجال
 
 ```typescript
 // Project-specific utilities
@@ -728,7 +728,7 @@ type Identifiable<T> = T & {
 };
 ```
 
-### Document Complex Utilities
+### وثّق الأدوات المعقدة
 
 ```typescript
 /**
@@ -740,15 +740,15 @@ type Identifiable<T> = T & {
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 ```
 
-## Summary
+## ملخص
 
-Utility types are essential tools in your TypeScript toolbox:
+أنواع الأدوات هي أدوات أساسية في صندوق أدوات TypeScript الخاص بك:
 
-1. **Object utilities** (`Partial`, `Required`, `Readonly`, `Record`) - Transform object types
-2. **Selection utilities** (`Pick`, `Omit`) - Select or exclude properties
-3. **Union utilities** (`Exclude`, `Extract`, `NonNullable`) - Manipulate union types
-4. **Function utilities** (`Parameters`, `ReturnType`) - Extract function type information
-5. **String utilities** (`Uppercase`, `Lowercase`, etc.) - Transform string literal types
-6. **Custom utilities** - Build your own for domain-specific needs
+1. **أدوات الكائنات** (`Partial`، `Required`، `Readonly`، `Record`) - تحويل أنواع الكائنات
+2. **أدوات الاختيار** (`Pick`، `Omit`) - اختيار أو استبعاد الخصائص
+3. **أدوات الاتحاد** (`Exclude`، `Extract`، `NonNullable`) - التعامل مع أنواع الاتحاد
+4. **أدوات الدوال** (`Parameters`، `ReturnType`) - استخراج معلومات نوع الدالة
+5. **أدوات السلاسل** (`Uppercase`، `Lowercase`، إلخ) - تحويل أنواع السلاسل الحرفيّة
+6. **الأدوات المخصصة** - ابنِ أدواتك الخاصة للاحتياجات الخاصة بالمجال
 
-Master these utilities, and you’ll write cleaner, more maintainable TypeScript code with less repetition!
+أتقن هذه الأدوات، وستكتب شيفرة TypeScript أنظف وأسهل صيانة مع تكرار أقل!

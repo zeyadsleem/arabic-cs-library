@@ -1,16 +1,16 @@
 ---
-title: "React 19 + TypeScript Mental Models"
-lang: en
+title: "النماذج الذهنية لـ React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/react-typescript-mental-models"
 ---
 
-The secret to mastering React with TypeScript isn’t memorizing every hook signature or generic constraint—it’s building the right mental models. When you understand how JSX transforms into function calls, why types disappear at runtime, and how TypeScript becomes your design documentation, everything else clicks into place.
+سر إتقان React مع TypeScript ليس حفظ توقيع كل خُطّاف (hook) أو قيد كل نوع عام (generic)، بل بناء النماذج الذهنية الصحيحة. حين تفهم كيف تتحوّل JSX إلى استدعاءات دوال، ولماذا تختفي الأنواع عند وقت التشغيل، وكيف يصبح TypeScript توثيقًا للتصميم، تتّضح كل بقيّة الأمور من تلقاء نفسها.
 
-Let’s build those mental models from the ground up, starting with the fundamental shift that changes how you think about React components forever.
+لنبُنِ هذه النماذج الذهنية من القاع، بدءًا من التحول الأساسي الذي يغيّر طريقة تفكيرك في مكوّنات React (components) إلى الأبد.
 
-## JSX is Just Function Calls
+## JSX ليست إلا استدعاءات دوال
 
-Here’s the thing that changes everything: JSX isn’t magic markup. It’s syntactic sugar for function calls. Once you internalize this, React components start making sense in a whole new way.
+هذه الحقيقة التي تغيّر كل شيء: JSX ليست وسومًا سحرية، بل هي سكر نحوي (syntactic sugar) لاستدعاءات دوال. حين تستوعب هذا، تبدأ مكوّنات React في أن تصبح مفهومة بطريقة جديدة كليًا.
 
 ```typescript
 // ✅ This JSX...
@@ -20,7 +20,7 @@ const element = <div className="container">Hello, world!</div>;
 const element = React.createElement('div', { className: 'container' }, 'Hello, world!');
 ```
 
-This mental model explains why you can do things that seem impossible with HTML:
+يشرح هذا النموذج الذهني لماذا يمكنك فعل أشياء تبدو مستحيلة مع HTML:
 
 ```typescript
 // ✅ You can store JSX in variables (because it's just function return values)
@@ -37,9 +37,9 @@ const getWelcomeMessage = (isLoggedIn: boolean) => {
 };
 ```
 
-### Components Are Just Functions
+### المكوّنات ليست إلا دوال
 
-Since JSX compiles to function calls, React components are literally just functions that return what `React.createElement` expects:
+بما أن JSX تُترجَم إلى استدعاءات دوال، فمكوّنات React حرفيًا دوال تُعيد ما تتوقعه `React.createElement`:
 
 ```typescript
 // ✅ A component is a function that returns JSX
@@ -56,13 +56,13 @@ function UserProfile({ name, email }: { name: string; email: string }) {
 const profile = UserProfile({ name: 'Alice', email: 'alice@example.com' });
 ```
 
-This is why props work the way they do—they’re just function parameters. And it’s why TypeScript can give you such precise IntelliSense: it knows exactly what arguments each function expects.
+لهذا تعمل الخصائص (props) على النحو الذي تعمل به — فهي مجرّد وسائط دوال. ولذلك يستطيع TypeScript أن يمنحك تلميحات IntelliSense دقيقة للغاية: فهو يعرف تمامًا ما تتوقعه كل دالة من وسائط.
 
-## Compile-Time vs Runtime Reality
+## واقع وقت التصريف مقابل وقت التشغيل
 
-TypeScript types exist in a parallel universe that disappears when your code runs. This creates a fascinating duality that trips up many developers, but once you get it, you’ll write better React code.
+توجد أنواع TypeScript في عالم موازٍ يختفي عند تشغيل شيفرتك. يخلق هذا ثنائيةً عجيبة تُحيّر مطوّرين كثيرين، لكن حين تفهمها ستكتب شيفرة React أفضل.
 
-### Types Disappear at Runtime
+### الأنواع تختفي عند وقت التشغيل
 
 ```typescript
 // ✅ At compile time, TypeScript knows about these types
@@ -83,7 +83,7 @@ function UserCard({ user }) {
 }
 ```
 
-This explains why you need runtime validation for external data:
+لهذا تحتاج إلى تحقّقٍ وقت التشغيل (runtime validation) للبيانات الخارجية:
 
 ```typescript
 // ❌ TypeScript can't protect you from bad API data
@@ -111,9 +111,9 @@ const fetchUser = async (id: number): Promise<User> => {
 type User = z.infer<typeof UserSchema>;
 ```
 
-### Component Props Live in Both Worlds
+### خصائص المكوّنات تعيش في العالمين
 
-Props are fascinating because they exist at compile-time (for TypeScript) and runtime (for React):
+الخصائص ممتعة لأنها موجودة عند وقت التصريف (من أجل TypeScript) وعند وقت التشغيل (من أجل React):
 
 ```typescript
 // ✅ Compile-time: TypeScript enforces the contract
@@ -135,11 +135,11 @@ function Button({ variant, disabled = false, onClick }: ButtonProps) {
 }
 ```
 
-## Types as Design Documentation
+## الأنواع بوصفها توثيقًا للتصميم
 
-The best React TypeScript code treats types as executable design documentation. Your types should tell the story of your component’s purpose, constraints, and relationships.
+أفضل شيفرة React مع TypeScript تعامل أنواعَها بوصفها توثيقًا للتصميم قابلًا للتنفيذ. يجب أن تروي أنواعك قصة غرض مكوّنك وقيوده وعلاقاته.
 
-### Types That Tell Stories
+### أنواع تروي القصة
 
 ```typescript
 // ❌ Vague types that don't communicate intent
@@ -162,13 +162,13 @@ interface UserListProps {
 }
 ```
 
-## The TypeScript-React Feedback Loop
+## حلقة التغذية الراجعة بين TypeScript وReact
 
-The most powerful aspect of React with TypeScript is the tight feedback loop between your types and your implementation. Changes in one place ripple through your entire codebase, catching errors before they become bugs.
+أقوى جانب في العمل بـ React مع TypeScript هو حلقة التغذية الراجعة الوثيقة بين أنواعك وتنفيذك. يبثّ التغيير في موضعٍ واحد أثره عبر شيفرتك كاملةً، فيلتقط الأخطاء قبل أن تتحوّل إلى عللًا (bugs).
 
-### Refactoring with Confidence
+### إعادة البناء بثقة
 
-When you change an interface, TypeScript shows you every place that needs updating:
+عندما تغيّر واجهةً، يُظهر لك TypeScript كل موضعٍ يحتاج إلى تحديث:
 
 ```typescript
 // ✅ Before: Simple user interface
@@ -195,9 +195,9 @@ function UserCard({ user }: { user: User }) {
 }
 ```
 
-### Types Guide Implementation
+### الأنواع توجّه التنفيذ
 
-Well-designed types can guide you toward better component architecture:
+يمكن للأنواع المصمّمة بعناية أن توجّهك نحو بنية مكوّنات أفضل:
 
 ```typescript
 // ✅ This type suggests a clear separation of concerns
@@ -224,8 +224,8 @@ function ProductItem({ product, displayMode, onAddToCart, onToggleWishlist }: Pr
 }
 ```
 
-## Putting It All Together
+## تجميع كل شيء
 
-These mental models work together to create a powerful development experience. JSX as function calls helps you understand component composition. Compile-time vs runtime awareness keeps you safe from external data. Types as documentation make your code self-explaining. React 19’s improvements make everything smoother. And the feedback loop helps you build better software.
+تعمل هذه النماذج الذهنية معًا لخلق تجربة تطوير قوية. فهمُ JSX بوصفها استدعاءات دوال يساعدك في فهم تركيب المكوّنات. والوعي بالفرق بين وقت التصريف ووقت التشغيل يبقيك آمنًا أمام البيانات الخارجية. والأنواع بوصفها توثيقًا تجعل شيفرتك تشرح نفسها بنفسها. وتحسينات React 19 تجعل كل شيء أكثر سلاسة. وحلقة التغذية الراجعة تساعدك في بناء برمجيات أفضل.
 
-The key insight is that TypeScript + React isn’t about adding complexity—it’s about surfacing complexity that was already there and giving you tools to manage it systematically. Once you internalize these mental models, you’ll find yourself writing components that are easier to understand, modify, and debug. The beautiful thing about mental models is that they compound. Each one you internalize makes the next one easier to grasp, until suddenly you’re thinking in React + TypeScript fluently—and wondering how you ever built user interfaces any other way.
+الفكرة الأساسية هي أن TypeScript مع React لا يضيفان تعقيدًا، بل يكشفان تعقيدًا كان موجودًا بالفعل ويمنحانك أدوات لإدارته بأسلوب منهجي. حين تستوعب هذه النماذج الذهنية ستجد نفسك تكتب مكوّنات أيسر فهمًا وتعديلًا وتصحيحًا (debug). وجمال النماذج الذهنية أنها تتضاعف أثرها؛ فكل نموذج تستوعبه يجعل النموذج الذي بعده أسهل إدراكًا، حتى تلاحظ فجأة أنك تفكر بـ React مع TypeScript بطلاقة — وتتساءل كيف سبق لك أن بنيتَ واجهات المستخدم بطريقة أخرى.

@@ -1,16 +1,16 @@
 ---
-title: "GraphQL & React Performance"
-lang: en
+title: "GraphQL وأداء React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/graphql-react-performance"
 ---
 
-GraphQL promises to solve over-fetching and under-fetching, but implement it carelessly in your React app and you’ll create performance problems that make REST look speedy. Waterfall requests, cache invalidation nightmares, bundle bloat from generated types, and the infamous N+1 query problem—GraphQL brings its own unique set of performance challenges that can tank your React application if you’re not careful.
+يَعِد GraphQL بحل مشكلتي جلب بيانات أكثر مما يلزم وأقل مما يلزم، لكنك إن نفّذته بإهمال في تطبيق React لديك فستُنشئ مشكلات أداء تجعل REST يبدو سريعًا. طلبات متسلسلة كالشلال، وكوابيس إبطال الذاكرة المؤقتة، وتضخّم الحزمة بسبب الأنواع المولّدة، ومشكلة استعلامات N+1 سيئة الصيت — يجلب GraphQL مجموعته الفريدة من تحديات الأداء التي قد تُغرق تطبيق React لديك إن لم تكن حذرًا.
 
-But get it right, and GraphQL becomes a performance superpower. Fragment colocation ensures components only request the data they need. Normalized caching eliminates redundant network requests. Optimistic updates make your UI feel instant. And subscription-based real-time updates keep your app in sync without polling. This guide shows you how to leverage GraphQL’s strengths while avoiding its performance pitfalls in React applications.
+لكن أحسِن تنفيذه، يصبح GraphQL قوة خارقة في الأداء. يضمن تجاور الشظايا (fragment colocation) ألا تطلب المكوّنات إلا البيانات التي تحتاجها. ويلغي التخزين المؤقت المُعيّر (normalized caching) الطلبات الشبكية المكرّرة. وتجعل التحديثات المتفائلة واجهتك تبدو فورية. وتُبقي تحديثات الوقت الحقيقي القائمة على الاشتراكات تطبيقك متزامنًا بلا استقصاء دوري. يوضّح هذا الدليل كيف تستفيد من نقاط قوة GraphQL مع تجنّب مزالقه ومطباته في تطبيقات React.
 
-## Understanding GraphQL Performance Fundamentals
+## فهم أساسيات أداء GraphQL
 
-GraphQL’s performance characteristics differ fundamentally from REST:
+تختلف خصائص أداء GraphQL جذريًا عن REST:
 
 ```typescript
 // GraphQL performance model
@@ -75,9 +75,9 @@ const USER_QUERY = gql`
 `;
 ```
 
-## Fragment Colocation Pattern
+## نمط تجاور الشظايا
 
-Fragment colocation ensures components declare their own data requirements:
+يضمن تجاور الشظايا (fragment colocation) أن تعلن المكوّنات متطلباتها الخاصة من البيانات:
 
 ```typescript
 // ❌ Bad: Data requirements scattered
@@ -199,20 +199,20 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Apollo Client Optimization
+## تحسين Apollo Client
 
-For comprehensive Apollo Client performance optimization including cache configuration, query batching, optimistic updates, and subscription management, see [Apollo Client Performance Optimization](https://stevekinney.com/courses/react-performance/apollo-client-optimization).
+للحصول على تحسين شامل لأداء Apollo Client يشمل تهيئة الذاكرة المؤقتة، وتجميع الاستعلامات في دفعات، والتحديثات المتفائلة، وإدارة الاشتراكات، راجع [تحسين أداء Apollo Client](https://stevekinney.com/courses/react-performance/apollo-client-optimization).
 
-Key Apollo Client topics covered:
+أبرز موضوعات Apollo Client التي يغطيها:
 
-- **Cache Configuration**: Type policies, merge functions, and cache persistence
-- **Query Batching**: Reducing network requests with smart batching strategies
-- **Optimistic Updates**: Making mutations feel instant with optimistic responses
-- **Subscription Management**: Efficient real-time updates with WebSocket optimization
+- **تهيئة الذاكرة المؤقتة**: سياسات الأنواع، ودوال الدمج، واستمرارية الذاكرة المؤقتة
+- **تجميع الاستعلامات في دفعات**: تقليل طلبات الشبكة باستراتيجيات تجميع ذكية
+- **التحديثات المتفائلة**: جعل الطفرات (mutations) تبدو فورية باستجابات متفائلة
+- **إدارة الاشتراكات**: تحديثات فورية فعّالة مع تحسين WebSocket
 
-## Query Complexity and Performance
+## تعقيد الاستعلامات والأداء
 
-Prevent expensive queries from killing performance:
+امنع الاستعلامات المكلفة من القضاء على الأداء:
 
 ```typescript
 // Query complexity analysis
@@ -304,9 +304,9 @@ const complexityLink = new ApolloLink((operation, forward) => {
 });
 ```
 
-## Lazy Query Loading
+## التحميل الكسول للاستعلامات
 
-Load queries on demand:
+حمّل الاستعلامات عند الطلب:
 
 ```typescript
 // Lazy query pattern
@@ -379,9 +379,9 @@ function LazySection() {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track GraphQL performance metrics:
+تتبّع مقاييس أداء GraphQL:
 
 ```typescript
 // Performance monitoring link
@@ -464,9 +464,9 @@ function useQueryPerformance() {
 }
 ```
 
-## Bundle Size Optimization
+## تحسين حجم الحزمة
 
-Reduce GraphQL client bundle size:
+قلّل حجم حزمة عميل GraphQL:
 
 ```typescript
 // Minimal Apollo Client setup
@@ -525,7 +525,7 @@ generates:
       immutableTypes: true
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface GraphQLPerformanceBestPractices {

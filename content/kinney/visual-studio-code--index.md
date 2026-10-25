@@ -1,24 +1,24 @@
 ---
-title: "Visual Studio Code"
-lang: en
+title: "Visual Studio Code: محرّر الشيفرة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code"
 ---
 
-> **Prerequisites**
+> **المتطلبات المسبقة**
 >
-> Please make sure you have the following installed.
+> يرجى التأكد من تثبيت ما يلي.
 >
 > - [Visual Studio Code](https://code.visualstudio.com/download)
-> - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Optional. Used for the section on Dev Containers.)
+> - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (اختياري. يُستخدم لقسم حاويات Dev Containers.)
 
-This comprehensive Visual Studio Code course covers a wide range of features to make you appear *way more* productive than your co-workers.
+تغطي هذه الدورة الشاملة لـ Visual Studio Code مجموعة واسعة من الميزات لجعلك تبدو *أكثر* إنتاجية بكثير من زملائك.
 
-> **Example Repository**
+> **مستودع الأمثلة**
 >
-> We’re going to be playing around with some of the examples in [this repository](https://github.com/stevekinney/vscode-examples).
+> سنلعب قليلًا مع بعض الأمثلة في [هذا المستودع](https://github.com/stevekinney/vscode-examples).
 
-We’ll begin with editor basics including layout customization, command palette usage, integrated terminal, multiple cursor techniques, and navigation capabilities. Next, we’ll dive into configuration management through settings precedence, and profiles.
+سنبدأ بأساسيات المحرّر بما في ذلك تخصيص التخطيط، واستخدام لوحة الأوامر، والطرفية المدمجة، وتقنيات المؤشرات المتعدّدة، وقدرات التنقّل. ثم سنغوص في إدارة الإعدادات من خلال ترتيب الأسبقية للإعدادات، والملفات الشخصية.
 
-More advanced topics include code snippets creation and management, task automation, debugging techniques from basic breakpoints to advanced data inspection, and source control integration with Git. The course also thoroughly explores Dev Containers functionality for creating consistent development environments.
+تشمل الموضوعات الأكثر تقدمًا إنشاء المقتطفات (snippets) وإدارتها، وأتمتة المهام، وتقنيات التصحيح (debugging) من نقاط التوقّف (breakpoints) الأساسية إلى فحص البيانات المتقدّم، ودمج التحكّم في الإصدارات (source control) مع Git. كما تستكشف الدورة بعمق وظائف حاويات Dev Containers لإنشاء بيئات تطوير متسقة.
 
-The course emphasizes practical skills with dedicated sections on refactoring tools, search and replace operations, multi-root workspaces for managing multiple projects, and Emmet for faster HTML/CSS authoring. Throughout the modules, there’s a balance between covering built-in functionality and highlighting useful extensions. Each topic includes detailed explanations, code examples, and best practices, with specific attention to keyboard shortcuts and command patterns that streamline the development experience. The material progressively builds from fundamental concepts to more specialized features, helping developers transition from basic usage to mastering Visual Studio Code as a powerful development environment.
+تؤكد الدورة على المهارات العملية مع أقسام مخصّصة لأدوات إعادة البناء (refactoring)، وعمليات البحث والاستبدال، ومساحات العمل متعدّدة الجذور (multi-root workspaces) لإدارة عدّة مشاريع، وEmmet لتأليف HTML/CSS بسرعة. طوال الوحدات، هناك توازن بين تغطية الوظائف المدمجة وإبراز الإضافات (extensions) المفيدة. يتضمن كل موضوع شروحات مفصّلة، وأمثلة شيفرة، وأفضل الممارسات، مع اهتمام خاص باختصارات لوحة المفاتيح وأنماط الأوامر التي تُبسّط تجربة التطوير. يبني المحتوى تدريجيًا من المفاهيم الأساسية إلى الميزات المتخصّصة، مساعدًا المطوّرين على الانتقال من الاستخدام الأساسي إلى إتقان Visual Studio Code كبيئة تطوير قوية.

@@ -1,18 +1,18 @@
 ---
-title: "Organizational Patterns and Team Topology"
-lang: en
+title: "الأنماط التنظيمية وبنية الفرق"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/organizational-patterns-and-team-topology"
 ---
 
-You can spend weeks designing the perfect microfrontend boundary. You can draw the cleanest dependency graph anyone has ever seen. And then the org chart will route around your architecture like water finding cracks in concrete.
+يمكنك أن تمضي أسابيع في تصميم حدّ الواجهة المصغّرة المثالي. وأن ترسم أنظف رسم اعتمادات رآه أحد. ثم يلتفّ المخطط التنظيمي حول معماريتك كما يجد الماء شقوقًا في الخرسانة.
 
-We touched on [Conway’s Law in the intro](https://stevekinney.com/courses/enterprise-ui/monoliths-microfrontends-and-monorepos)—the idea that software boundaries tend to mirror communication boundaries. But, that was a paragraph. This topic deserves more, because the most consequential architecture decisions you’ll make aren’t about bundlers or frameworks. They’re about *people*. How teams are structured, how they communicate, where ownership lives, and how decisions get documented—these forces shape your frontend architecture more than any technology choice ever will.
+تطرّقنا إلى [قانون كونوي في المقدمة](https://stevekinney.com/courses/enterprise-ui/monoliths-microfrontends-and-monorepos) — فكرة أن حدود البرمجيات تميل إلى محاكاة حدود التواصل. لكن ذلك كان فقرة واحدة. وهذا الموضوع يستحق أكثر، لأن أكثر قرارات المعمارية أثرًا التي ستتخذها ليست عن الحازمات أو الأطر، بل عن *الناس*. فكيف تُبنى الفرق، وكيف تتواصل، وأين تقع الملكية، وكيف تُوثَّق القرارات — هذه القوى تشكّل معمارية واجهتك الأمامية أكثر مما سيفعله أي اختيار تقني.
 
-## Conway’s Law, for Real This Time
+## قانون كونوي، بجد هذه المرة
 
-Melvin Conway published his observation in 1968: organizations that design systems are constrained to produce designs that copy their communication structures. [Martin Fowler’s writeup](https://martinfowler.com/bliki/ConwaysLaw.html) sharpens the mechanism—software coupling is *enabled and encouraged* by human communication. If two developers sit next to each other, their modules will become coupled through shared assumptions and hallway conversations. If they can’t talk easily, their code stays decoupled by default.
+نشر Melvin Conway ملاحظته عام 1968: المنظمات التي تصمّم أنظمة مقيّدة بإنتاج تصميمات تنسخ بنى تواصلها. و[مقال Martin Fowler](https://martinfowler.com/bliki/ConwaysLaw.html) يشحذ الآلية — فالارتباط البرمجي *مُمكَّن ومشجَّع* بالتواصل البشري. فإن جلس مطوّران جنبًا إلى جنب، صارت وحداتهما مترابطة عبر افتراضات مشتركة وأحاديث الممرات. وإن تعذّر عليهما التحدث بسهولة، بقيت شيفرتهما غير مترابطة افتراضيًا.
 
-This isn’t metaphor. It’s structural constraint.
+وهذا ليس استعارة، بل قيد بنيوي.
 
 ```
 graph LR
@@ -31,21 +31,21 @@ graph LR
   Infra -.->|"mirrors"| Ops
 ```
 
-A Harvard Business School study compared codebases produced by co-located, tightly coupled teams against those from distributed open-source communities. Tightly coupled teams produced monolithic systems. The loosely connected communities produced modular, decomposed architectures. Same problem, different communication topology, different code shape.
+قارنت دراسة من كلية هارفارد للأعمال قواعد شيفرة أنتجتها فرق متجاورة مترابطة ترابطًا وثيقًا بقواعد أنتجتها مجتمعات مفتوحة المصدر موزّعة. فأنتجت الفرق المترابطة ترابطًا وثيقًا أنظمة أحادية. وأنتجت المجتمعات المتراخية الترابط معماريات معيارية مفكّكة. المسألة نفسها، وبنية تواصل مختلفة، وشكل شيفرة مختلف.
 
-The most common failure mode in frontend organizations is the **layer-based team structure**: a frontend team, a backend team, a database team, and an infrastructure team. Every feature requires cross-team coordination. Every ticket bounces between Jira boards. Every standup includes the phrase “we’re blocked waiting on the API team.” Fowler calls this the *PresentationDomainDataLayering* trap—the architecture is technically sound, but it fights against how features actually need to be delivered.
+وأكثر أنماط الفشل شيوعًا في منظمات الواجهة الأمامية هو **بنية الفرق القائمة على الطبقات**: فريق للواجهة الأمامية، وفريق للخلفية، وفريق لقاعدة البيانات، وفريق للبنية التحتية. فكل ميزة تتطلب تنسيقًا عابرًا للفرق. وكل تذكرة تتنقل بين لوحات Jira. وكل اجتماع يومي يتضمن عبارة «نحن متوقفون في انتظار فريق الواجهة البرمجية». ويسمي Fowler هذا فخ *PresentationDomainDataLayering* — فالمعمارية سليمة تقنيًا، لكنها تصارع الطريقة التي تحتاج الميزات فعلًا إلى أن تُسلَّم بها.
 
-Amazon’s two-pizza rule wasn’t a staffing curiosity. It was a deliberate architectural strategy. Small autonomous teams produce small, independently deployable services because they *can only communicate with each other through explicit APIs*, not hallway conversations. Conway’s Law became a tool instead of a constraint.
+ولم تكن قاعدة البيتزتين في Amazon فضولًا إداريًا، بل استراتيجية معمارية متعمّدة. فالفرق الصغيرة المستقلة تنتج خدمات صغيرة قابلة للنشر باستقلال لأنها *لا تستطيع التواصل بعضها مع بعض إلا عبر واجهات برمجية صريحة*، لا عبر أحاديث الممرات. فتحوّل قانون كونوي من قيد إلى أداة.
 
-> **The Six-Subsystem Prediction**
+> **توقع الأنظمة الفرعية الستة**
 >
-> Fowler documents a telling anecdote: a technical leader appointed as architect for a distributed six-team project immediately recognized the organizational reality before writing a line of design—“There are going to be six major subsystems. I have no idea what they are going to be, but there are going to be six of them.”
+> يوثّق Fowler حكاية معبّرة: قائد تقني عُيّن معماريًا لمشروع موزّع من ستة فرق أدرك الواقع التنظيمي فورًا قبل أن يكتب سطرًا من التصميم — «سيكون هناك ستة أنظمة فرعية رئيسية. لا فكرة لديّ عمّا ستكون، لكن سيكون هناك ستة منها.»
 
-### The Inverse Conway Maneuver
+### المناورة العكسية لكونوي
 
-So if org structure dictates architecture, the obvious next move is to design the org structure *first* and let the architecture follow. That’s the **Inverse Conway Maneuver**—a term coined by Jonny LeRoy and Matt Simons in 2010 and added to [ThoughtWorks’ Technology Radar](https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver) in 2014.
+فإن كانت البنية التنظيمية تفرض المعمارية، فالخطوة التالية البديهية هي تصميم البنية التنظيمية *أولًا* وترك المعمارية تتبعها. وتلك هي **المناورة العكسية لكونوي** — مصطلح صاغه Jonny LeRoy وMatt Simons عام 2010 وأُضيف إلى [رادار التقنية عند ThoughtWorks](https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver) عام 2014.
 
-Instead of drawing an architecture diagram and hoping the organization conforms, you reshape team boundaries and communication patterns to produce the architecture you want. If the goal is a modular, loosely coupled platform, you move away from a matrix model that forces dozens of handoffs and instead align small, cross-functional teams with end-to-end value streams.
+فبدل أن ترسم مخطط معمارية وتأمل أن تتوافق المنظمة معه، تعيد تشكيل حدود الفرق وأنماط التواصل لإنتاج المعمارية التي تريدها. وإن كان الهدف منصة معيارية متراخية الترابط، فأنت تبتعد عن نموذج المصفوفة الذي يفرض عشرات عمليات التسليم، وتوائم بدلًا من ذلك فرقًا صغيرة متعددة التخصصات مع تدفقات قيمة من الطرف إلى الطرف.
 
 ```
 graph TD
@@ -62,27 +62,27 @@ graph TD
   FE2 -.->|"Inverse Conway<br/>Maneuver"| SA1
 ```
 
-ThoughtWorks documented this in practice with a 150-developer organization facing declining development speed after a failed previous transformation. The intervention was explicitly socio-technical—product delivery, organizational design, and operating model all changed together. They started with one to three pioneer teams delivering incremental value, then expanded based on what actually worked rather than organizational pressure.
+وثّقت ThoughtWorks ذلك عمليًا في منظمة فيها 150 مطوّرًا تواجه تباطؤًا في سرعة التطوير بعد تحوّل سابق فاشل. وكان التدخل اجتماعيًا-تقنيًا صراحةً — فتغيّرت تسليمات المنتج، والتصميم التنظيمي، ونموذج التشغيل معًا. وبدأوا بفريق أو ثلاثة فرق رائدة تقدّم قيمة تدريجية، ثم توسّعوا بناءً على ما نجح فعلًا، لا بناءً على ضغط تنظيمي.
 
-The critical failure mode, per Fowler: if you have an existing system with a rigid architecture that you want to change, changing the org chart won’t be an instant fix. It’s more likely to produce a mismatch between developers and code that adds *more* friction. The Inverse Conway Maneuver requires patient incremental migration, not a big-bang reorganization.
+ونمط الفشل الحاسم، حسب Fowler: إن كان لديك نظام قائم بمعمارية جامدة تريد تغييرها، فلن يكون تغيير المخطط التنظيمي إصلاحًا فوريًا. والأرجح أن ينتج عدم توافق بين المطوّرين والشيفرة يضيف *مزيدًا* من الاحتكاك. فالمناورة العكسية لكونوي تتطلب ترحيلًا تدريجيًا صبورًا، لا إعادة تنظيم كاسحة دفعة واحدة.
 
-## Team Topologies
+## بنية الفرق
 
-The [Team Topologies framework](https://teamtopologies.com/key-concepts), from Matthew Skelton and Manuel Pais, provides a structured vocabulary for organizing engineering teams to optimize for fast delivery flow. Their central argument is that most organizational friction isn’t a people problem—it’s a structural problem. Teams are given too many responsibilities, too little support, and unclear interfaces with other teams. The result is cognitive overload.
+يوفّر [إطار Team Topologies](https://teamtopologies.com/key-concepts)، من Matthew Skelton وManuel Pais، مفردات منظمة لتنظيم فرق الهندسة على نحو يحسّن سرعة تدفّق التسليم. وحجتهم المركزية أن معظم الاحتكاك التنظيمي ليس مشكلة أشخاص — بل مشكلة بنيوية. فالفرق تُمنح مسؤوليات أكثر من اللازم، ودعمًا أقل من اللازم، وواجهات غير واضحة مع الفرق الأخرى. والنتيجة هي الحمل المعرفي الزائد.
 
-### Cognitive Load as a Design Constraint
+### الحمل المعرفي كقيد تصميمي
 
-Skelton and Pais adapt cognitive load theory from educational psychology and apply it at the team level. Three types of load matter:
+يكيّف Skelton وPais نظرية الحمل المعرفي من علم النفس التربوي ويطبقانها على مستوى الفريق. وثلاثة أنواع من الحمل تهمّ:
 
-- **Intrinsic load**: the inherent complexity of the domain itself—what the team is building
-- **Extraneous load**: incidental complexity from environment and tooling—deployment configuration, inconsistent tooling, build pipeline maintenance
-- **Germane load**: the thinking required to solve novel domain problems—where actual value gets created
+- **الحمل الجوهري**: التعقيد الكامن في المجال نفسه — ما الذي يبنيه الفريق
+- **الحمل الدخيل**: التعقيد العارض من البيئة والأدوات — إعداد النشر، وتضارب الأدوات، وصيانة خط أنابيب البناء
+- **الحمل المثمر**: التفكير المطلوب لحل مشكلات المجال الجديدة — حيث تُخلَق القيمة الفعلية
 
-The organizational prescription: minimize intrinsic load through good domain boundaries, *eliminate* extraneous load through platform services and automation, and maximize germane load. When teams say “there’s too much to deal with,” the symptom is almost always high extraneous load crowding out germane load.
+والوصفة التنظيمية: قلّل الحمل الجوهري عبر حدود مجالات جيدة، و*أزِل* الحمل الدخيل عبر خدمات المنصة والأتمتة، وزِد الحمل المثمر إلى أقصى حد. وعندما تقول الفرق «هناك أكثر مما نستطيع التعامل معه»، فالعرَض دائمًا تقريبًا حمل دخيل مرتفع يزاحم الحمل المثمر.
 
-A frontend team that must also manage its own Kubernetes configuration, set up its own observability pipeline, negotiate CDN configuration, and maintain its own CI/CD pipeline is carrying massive extraneous load. A platform team providing deployment-as-a-service and observability-as-a-service lets that team focus on building product.
+فريق واجهة أمامية مضطر أيضًا إلى إدارة إعداد Kubernetes الخاص به، وبناء خط أنابيب الملاحظة الخاص به، والتفاوض على إعداد شبكة توصيل المحتوى، وصيانة خط أنابيب CI/CD الخاص به — يحمل حملًا دخيلًا هائلًا. أما فريق منصة يوفّر النشر كخدمة والملاحظة كخدمة فيتيح لذلك الفريق التركيز على بناء المنتج.
 
-### The Four Team Types
+### أنواع الفرق الأربعة
 
 ```
 graph TB
@@ -99,40 +99,40 @@ graph TB
   EN -.->|"Collaboration<br/>(temporary)"| SA
 ```
 
-**Stream-aligned teams** are the primary team type. Each one is dedicated to a continuous flow of work from a specific business domain—an end-to-end slice of user value with no handoffs required. In frontend engineering, a stream-aligned team might own the entire checkout experience: the UI, the API integration layer, the A/B testing, and the observability. This is the “you build it, you run it” model, and it maps directly to [vertical microfrontends](https://stevekinney.com/courses/enterprise-ui/monoliths-microfrontends-and-monorepos).
+**الفرق المحاذية للتدفق** هي نوع الفريق الأساسي. وكل واحد منها مخصص لتدفق مستمر من العمل من مجال تجاري بعينه — شريحة من قيمة المستخدم من الطرف إلى الطرف بلا عمليات تسليم مطلوبة. وفي هندسة الواجهة الأمامية، قد يملك فريق محاذٍ للتدفق تجربة الدفع كاملة: واجهة المستخدم، وطبقة تكامل الواجهة البرمجية، واختبار A/B، والملاحظة. وهذا هو نموذج «أنت تبنيه، وأنت تشغّله»، وهو يناظر مباشرة [الواجهات المصغّرة العمودية](https://stevekinney.com/courses/enterprise-ui/monoliths-microfrontends-and-monorepos).
 
-**Platform teams** provide shared infrastructure as an internal product. In the frontend domain, the “platform” typically includes the [design system](https://stevekinney.com/courses/enterprise-ui/design-system-governance), build tooling, observability SDKs, and shared utility libraries. The key constraint: platform teams must treat stream-aligned teams as their *customers*. Providing too much overwhelms consuming teams, while providing too little forces them to build their own solutions.
+**فرق المنصة** توفّر بنية تحتية مشتركة كمنتج داخلي. وفي مجال الواجهة الأمامية، تشمل «المنصة» عادةً [نظام التصميم](https://stevekinney.com/courses/enterprise-ui/design-system-governance)، وأدوات البناء، وحزم تطوير الملاحظة، ومكتبات الأدوات المساعدة المشتركة. والقيد الجوهري: على فرق المنصة أن تعامل الفرق المحاذية للتدفق *عملاء*. فتوفير الكثير يُغرق الفرق المستهلكة، وتوفير القليل يدفعها إلى بناء حلولها الخاصة.
 
-**Enabling teams** are composed of specialists who bridge knowledge gaps. They act as temporary mentors—helping stream-aligned teams adopt new technologies like a migration from Angular to React, or the implementation of advanced accessibility standards. Unlike platform teams, which provide long-term services, enabling teams withdraw once the stream-aligned team is self-sufficient. This is facilitation, not ownership.
+**الفرق التمكينية** تتكوّن من متخصصين يسدّون فجوات المعرفة. وهي تعمل مرشدًا مؤقتًا — فتساعد الفرق المحاذية للتدفق على تبنّي تقنيات جديدة مثل الترحيل من Angular إلى React، أو تنفيذ معايير وصول متقدمة. وبخلاف فرق المنصة التي توفّر خدمات طويلة الأمد، تنسحب الفرق التمكينية متى صار الفريق المحاذي للتدفق مكتفيًا بذاته. فهذا تسهيل، لا تملك.
 
-**Complicated-subsystem teams** manage areas so technically demanding that they require specialized expertise. Common frontend examples include teams owning real-time collaboration engines (CRDTs, WebSockets), complex data visualization libraries (D3.js, WebGL), or highly specialized accessibility infrastructure. By isolating this complexity, the organization ensures these critical components are maintained by experts while everyone else consumes them as stable interfaces.
+**فرق الأنظمة الفرعية المعقّدة** تدير مجالات شديدة التعقيد التقني بحيث تتطلب خبرة تخصصية. ومن أمثلتها الشائعة في الواجهة الأمامية فرق تملك محرّكات التعاون الفوري (CRDTs وWebSockets)، أو مكتبات تصوير البيانات المعقّدة (D3.js وWebGL)، أو بنية تحتية متخصصة لإمكانية الوصول. وبعزل هذا التعقيد، تضمن المؤسسة أن هذه المكوّنات الحرجة تصونها أيدٍ خبيرة بينما يستهلكها الآخرون كواجهات مستقرة.
 
-### Three Interaction Modes
+### أنماط التفاعل الثلاثة
 
-The framework defines three ways teams interact:
+يعرّف الإطار ثلاث طرق تتفاعل بها الفرق:
 
-- **Collaboration**: two teams work closely together for a bounded time period. High bandwidth, high cost—it can’t be sustained indefinitely. Use it to establish new capabilities, then transition to X-as-a-Service.
-- **X-as-a-Service**: one team provides something, another consumes it through clear API contracts and documented interfaces. Low coordination cost. This is the steady state that collaboration is trying to produce.
-- **Facilitation**: one team (typically enabling) helps another develop capability through coaching, pairing, or temporary embedding. The success condition is that the facilitated team no longer needs facilitation.
+- **التعاون**: يعمل فريقان معًا عن قرب لفترة محدودة. نطاق ترددي عالٍ وكلفة عالية — ولا يمكن أن يستمر إلى ما لا نهاية. استخدمه لتأسيس قدرات جديدة، ثم انتقل إلى الخدمة بصيغة X-as-a-Service.
+- **الخدمة بصيغة X-as-a-Service**: يوفّر فريق شيئًا ويستهلكه آخر عبر عقود واجهات برمجية واضحة وواجهات موثّقة. كلفة تنسيق منخفضة. وهذا هو الحال المستقر الذي يسعى التعاون إلى إنتاجه.
+- **التسهيل**: يساعد فريق (عادةً تمكيني) فريقًا آخر على تطوير قدرة عبر التدريب أو الاقتران أو التضمين المؤقت. وشرط النجاح أن لا يحتاج الفريق المُسهَّل إلى تسهيل بعد الآن.
 
-| Topology | Frontend Pattern | Primary Interaction |
+| البنية | النمط في الواجهة الأمامية | التفاعل الأساسي |
 | --- | --- | --- |
-| **Stream-Aligned** | Vertical microfrontends, BFF ownership | Collaboration (temporary) |
-| **Platform** | Design system, build tooling, shared libraries | X-as-a-Service |
-| **Enabling** | Technology migrations, accessibility mentorship | Facilitation |
-| **Complicated-Subsystem** | Data visualization, real-time collaboration, CRDTs | X-as-a-Service |
+| **محاذية للتدفق** | واجهات مصغّرة عمودية، وتملك الـBFF | التعاون (مؤقت) |
+| **المنصة** | نظام التصميم، وأدوات البناء، والمكتبات المشتركة | الخدمة بصيغة X-as-a-Service |
+| **تمكينية** | ترحيلات التقنيات، وإرشاد إمكانية الوصول | التسهيل |
+| **أنظمة فرعية معقّدة** | تصوير البيانات، والتعاون الفوري، وCRDTs | الخدمة بصيغة X-as-a-Service |
 
-## Ownership Models
+## نماذج الملكية
 
-The way an organization draws boundaries around its code reflects its underlying philosophy of ownership. And honestly, it predicts about 80% of the architectural debates that will happen at that company.
+تعكس الطريقة التي ترسم بها منظمة حدودًا حول شيفرتها فلسفتها الجوهرية في التملك. وبصراحة، إنها تتنبأ بنحو 80% من الجدالات المعمارية التي ستقع في تلك الشركة.
 
-### Horizontal Layer Ownership
+### الملكية الأفقية بالطبقات
 
-The traditional model: teams divided into “Frontend,” “Backend,” and “Operations.” This promotes deep technical expertise within a layer, but every feature requires cross-team coordination. Every sprint planning session turns into a negotiation across Jira boards. The architecture mirrors the layers, and the release cadence mirrors the coordination overhead—which is to say, slow.
+النموذج التقليدي: فرق مقسّمة إلى «الواجهة الأمامية» و«الخلفية» و«العمليات». وهذا يعزّز خبرة تقنية عميقة داخل الطبقة، لكن كل ميزة تتطلب تنسيقًا عابرًا للفرق. وكل جلسة تخطيط سبرنت تتحول إلى مفاوضة عبر لوحات Jira. فالمعمارية تحاكي الطبقات، ووتيرة الإصدارات تحاكي عبء التنسيق — أي باختصار، بطيئة.
 
-### Vertical Slice Ownership
+### الملكية العمودية بالشريحة
 
-In this model, teams are domain-aligned and cross-functional. A team responsible for “Search” owns everything required to render the search bar, fetch results via a [BFF](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends), and manage the underlying search index. This is the primary driver behind microfrontend architectures, which decompose the monolith into independently deployable units.
+في هذا النموذج، تكون الفرق موائمة للمجال ومتعددة التخصصات. ففريق مسؤول عن «البحث» يملك كل ما يلزم لتصيير شريط البحث، وجلب النتائج عبر [BFF](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends)، وإدارة فهرس البحث الكامن. وهذا هو الدافع الأساسي وراء معماريات الواجهات المصغّرة، التي تفكّك التطبيق الأحادي إلى وحدات قابلة للنشر باستقلال.
 
 ```
 graph TB
@@ -157,48 +157,48 @@ graph TB
   S2 -.- S3
 ```
 
-[Vercel’s adoption of vertical microfrontends](https://vercel.com/blog/how-vercel-adopted-microfrontends) is a prominent case study. They split their monolithic Next.js app into three core areas—marketing, documentation, and a logged-in dashboard—and halved build times while streamlining ownership. Each area manages its own logic and data, communicating with others only through well-defined shared packages in a monorepo. The migration was incremental: pages existed in both the original monolith and the new microfrontend simultaneously, with feature flags controlling which version received traffic. A page was removed from the monolith only after the new version had served live traffic for at least a week without errors.
+و[تبنّي Vercel للواجهات المصغّرة العمودية](https://vercel.com/blog/how-vercel-adopted-microfrontends) دراسة حالة بارزة. فقد قسّموا تطبيق Next.js الأحادي إلى ثلاثة مجالات أساسية — التسويق، والتوثيق، ولوحة معلومات المُسجَّلين — فانخفضت أزمنة البناء إلى النصف وتبسّطت الملكية. ويدير كل مجال منطقه وبياناته، ويتواصل مع الآخرين عبر حزم مشتركة محددة جيدًا في مستودع أحادي فقط. وكان الترحيل تدريجيًا: وُجدت الصفحات في التطبيق الأحادي الأصلي وفي الواجهة المصغّرة الجديدة في الوقت نفسه، مع رايات ميزات تتحكم بأي إصدار يتلقى الزيارات. ولم تُزل صفحة من التطبيق الأحادي إلا بعد أن خدم الإصدار الجديد زيارات حية أسبوعًا على الأقل بلا أخطاء.
 
-IKEA found that vertical team splits worked well up to about 10–12 people per team. At that size, teams could function autonomously and deploy independently. Larger than that, and the coordination overhead started creeping back in.
+ووجدت IKEA أن التقسيمات العمودية للفرق نجحت حتى نحو 10–12 شخصًا لكل فريق. فبهذا الحجم، استطاعت الفرق العمل باستقلال والنشر باستقلال. وأكبر من ذلك، بدأ عبء التنسيق يعود من جديد.
 
-> **Avoid layer-based team splits for microfrontends**
+> **تجنّب التقسيم الطبقي للفرق في الواجهات المصغّرة**
 >
-> Martin Fowler’s guidance is direct: do not organize teams by technical layers when implementing microfrontends. A separate “UI components team” or “business logic team” reintroduces the handoff friction that microfrontends are designed to eliminate. Organize around business capabilities or user journeys.
+> إرشاد Martin Fowler مباشر: لا تنظّم الفرق بالطبقات التقنية عند تنفيذ الواجهات المصغّرة. فـ«فريق مكوّنات واجهة المستخدم» أو «فريق منطق العمل» المنفصل يعيد إدخال احتكاك التسليم الذي صُمّمت الواجهات المصغّرة لإلغائه. نظّم حول القدرات التجارية أو رحلات المستخدم.
 
-### Hybrid Models
+### النماذج الهجينة
 
-Most mature organizations converge on a hybrid. Stream-aligned teams handle vertical feature ownership while centralized platform teams handle horizontal concerns like performance monitoring, authentication, and the core [design system](https://stevekinney.com/courses/enterprise-ui/design-system-governance). This concentric model embeds governance within the platform itself—using interface contracts and automated tooling to enforce policy rather than relying on manual approvals.
+تنتهي معظم المنظمات الناضجة إلى نموذج هجين. فتتولى الفرق المحاذية للتدفق الملكية العمودية للميزات، بينما تتولى فرق المنصة المركزية الشواغل الأفقية مثل مراقبة الأداء، والمصادقة، و[نظام التصميم](https://stevekinney.com/courses/enterprise-ui/design-system-governance) الأساسي. ويضمّن هذا النموذج المركزي الحوكمة داخل المنصة نفسها — باستخدام عقود الواجهات والأدوات الآلية لإنفاذ السياسة بدل الاعتماد على موافقات يدوية.
 
-| Model | Team Scope | Benefits | Tradeoffs |
+| النموذج | نطاق الفريق | المنافع | المقايضات |
 | --- | --- | --- | --- |
-| **Horizontal** | Single technical layer (UI only) | Technical consistency, specialized depth | High coordination cost, frequent blocks |
-| **Vertical** | Full feature slice (UI to backend) | High velocity, domain expertise, autonomy | Fragmentation risk, potential duplication |
-| **Hybrid** | Vertical squads + central platform | Balanced speed and consistency | Requires sophisticated internal tooling |
+| **أفقي** | طبقة تقنية واحدة (واجهة المستخدم فقط) | اتساق تقني، وعمق تخصصي | كلفة تنسيق عالية، وتوقفات متكررة |
+| **عمودي** | شريحة ميزة كاملة (من الواجهة إلى الخلفية) | سرعة عالية، وخبرة بالمجال، واستقلال | خطر التشظّي، وتكرار محتمل |
+| **هجين** | مجموعات عمودية + منصة مركزية | توازن بين السرعة والاتساق | يتطلب أدوات داخلية متقدمة |
 
-## The Platform Team in Microfrontend Architectures
+## فريق المنصة في معماريات الواجهات المصغّرة
 
-In a microfrontend architecture, the platform team becomes especially critical. Without one, each team implements routing, state management, and observability independently. You get fragmentation instead of autonomy. The platform team’s job is to make the “Golden Path” so smooth that teams choose it willingly.
+في معمارية الواجهات المصغّرة، يصبح فريق المنصة حاسمًا بشكل خاص. فبدونه ينفّذ كل فريق التوجيه، وإدارة الحالة، والملاحظة بنفسه. فتحصل على تشظٍّ بدل استقلال. ومهمة فريق المنصة أن يجعل «المسار الذهبي» سهلًا إلى حد يختاره الفرق بمحض إرادتها.
 
-What that typically includes:
+وما يشمله ذلك عادةً:
 
-- **Microfrontend scaffolding and templates**: tools to spin up a new microfrontend with all necessary configuration
-- **The application shell**: routing, authentication, global navigation—the container that all microfrontends integrate with
-- **CI/CD pipeline templates**: standardized build and deployment workflows
-- **[Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) or federation tooling configuration**: consistent dependency sharing and versioning policies
-- **Observability and monitoring**: centralized error tracking, performance monitoring, distributed tracing SDKs
-- **The design system**: ensuring visual and behavioral consistency
+- **هياكل وقوالب الواجهات المصغّرة**: أدوات لإنشاء واجهة مصغّرة جديدة بكل الإعداد اللازم
+- **قشرة التطبيق**: التوجيه، والمصادقة، والتنقل العام — الحاوية التي تتكامل معها كل الواجهات المصغّرة
+- **قوالب خطوط أنابيب CI/CD**: سير عمل موحّد للبناء والنشر
+- **إعداد [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) أو أدوات التوحيد**: سياسات متسقة لمشاركة الاعتمادات وإصداراتها
+- **الملاحظة والمراقبة**: تتبّع أخطاء مركزي، ومراقبة أداء، وحزم تطوير للتتبّع الموزّع
+- **نظام التصميم**: ضمان الاتساق البصري والسلوكي
 
-Shopify’s platform engineering story is instructive. They realized that giving developers “ops ownership” without proper tools led to burnout. Their solution was a layered platform model where specialized infrastructure teams manage the underlying Kubernetes clusters (over 400 of them), while application developers focus purely on their application code. The platform provides a Golden Path that accelerates delivery while maintaining a unified deployment standard. [Shopify](https://logz.io/blog/scaling-platform-engineering-shopify-blueprint/) calls it a “platform of platforms”—and it works precisely because the platform team treats application teams as customers, not subordinates.
+وقصة هندسة المنصة في Shopify مفيدة. فقد أدركوا أن منح المطوّرين «ملكية العمليات» بلا أدوات مناسبة يؤدي إلى الإنهاك. وكان حلهم نموذج منصة طبقيًا تدير فيه فرق بنية تحتية متخصصة عناقيد Kubernetes الكامنة (أكثر من 400 منها)، بينما يركّز مطوّرو التطبيقات على شيفرة تطبيقاتهم فقط. وتوفّر المنصة مسارًا ذهبيًا يسرّع التسليم مع الحفاظ على معيار نشر موحّد. وتسميه [Shopify](https://logz.io/blog/scaling-platform-engineering-shopify-blueprint/) «منصة منصات» — وهو ينجح تحديدًا لأن فريق المنصة يعامل فرق التطبيقات عملاء، لا مرؤوسين.
 
-## Decision-Making Without a Chief Architect
+## اتخاذ القرار بلا معماري رئيسي
 
-In decentralized organizations, nobody gets to mandate every choice from on high. Decisions have to be made through transparent, discoverable frameworks. The two most effective mechanisms are Architecture Decision Records and Requests for Comments.
+في المنظمات اللامركزية، لا يملك أحد صلاحية فرض كل خيار من فوق. فالقرارات يجب أن تُتخذ عبر أطر شفافة قابلة للاكتشاف. وأكثر آليتين فعالية هما سجلات قرارات المعمارية وطلبات التعليقات.
 
-### Architecture Decision Records
+### سجلات قرارات المعمارية
 
-An **ADR** is a point-in-time document that captures a significant architectural choice, the context in which it was made, and the resulting consequences. [Michael Nygard](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions) created the format in 2011, and his motivation was straightforward: “One of the hardest things to track during the life of a project is the motivation behind certain decisions. A new person joining the project hears a whispered chant: ‘We never touch the Arduous Module.’ A team member who remembers why is a single point of failure.”
+**سجل قرارات المعمارية (ADR)** مستند لحظي يوثّق خيارًا معماريًا مهمًا، والسياق الذي اتُّخذ فيه، والنتائج المترتبة عليه. وابتكر [Michael Nygard](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions) هذا الصيغة عام 2011، وكان دافعه واضحًا: «من أصعب الأشياء تتبّعًا خلال عمر مشروع ما هو الدافع وراء قرارات معينة. فالوافد الجديد إلى المشروع يسمع همسًا: ‹لا نلمس وحدة الشدائد أبدًا›. وعضو الفريق الذي يتذكر السبب نقطة فشل واحدة.»
 
-The original format is five sections, and it fits on one page:
+والصيغة الأصلية خمسة أقسام، وتتسع لصفحة واحدة:
 
 ```markdown
 # ADR 042: Adopt React Query for server-state management
@@ -229,32 +229,32 @@ in component state or Zustand.
   unless they use React Query's configuration surface.
 ```
 
-To be effective, ADRs must be:
+ولتكون السجلات فعالة، يجب أن تكون:
 
-- **Specific**: one decision per record—“Adopt React Query for data fetching,” not “Improve our data layer.”
-- **Discoverable**: stored in version control, often at `docs/architecture/decisions/` alongside the source code.
-- **Immutable**: existing ADRs are never edited. If a decision changes, a new ADR is written that supersedes the previous one, preserving the historical lineage.
+- **محددة**: قرار واحد لكل سجل — «تبنّي React Query لجلب البيانات»، لا «تحسين طبقة بياناتنا».
+- **قابلة للاكتشاف**: محفوظة في التحكم بالإصدارات، غالبًا في `docs/architecture/decisions/` بجوار الشيفرة المصدرية.
+- **غير قابلة للتعديل**: لا تُحرَّر السجلات القائمة أبدًا. فإن تغيّر قرار، يُكتب سجل جديد يلغي السابق، حفاظًا على النسب التاريخي.
 
-ADRs also help with **reversibility classification**. Categorize choices as “two-way door” decisions (easily changed) or “one-way door” decisions (high impact, hard to reverse). For two-way doors, the best practice is to decide and try fast rather than deliberate endlessly.
+وتساعد السجلات أيضًا في **تصنيف القابلية للعكس**. صنّف الخيارات إلى قرارات «باب باتجاهين» (يسهل تغييرها) وقرارات «باب باتجاه واحد» (بالغة الأثر وصعبة العكس). وفي الأبواب ذات الاتجاهين، الممارسة الأفضل هي أن تقرّر وتجرّب سريعًا بدل التداول بلا نهاية.
 
-| Status | Definition |
+| الحالة | التعريف |
 | --- | --- |
-| **Proposed** | Under review, not yet binding |
-| **Accepted** | Finalized and active—all teams follow this standard |
-| **Deprecated** | No longer relevant or recommended |
-| **Superseded** | Replaced by a newer ADR (link to the replacement) |
+| **مقترح** | تحت المراجعة، وليس ملزمًا بعد |
+| **مقبول** | نهائي ونشط — كل الفرق تتبع هذا المعيار |
+| **مهجور** | لم يعد ذا صلة أو موصى به |
+| **ملغى** | استُبدل بسجل أحدث (رابط إلى البديل) |
 
-### The RFC Process
+### عملية طلبات التعليقات (RFC)
 
-While ADRs document the *outcome*, RFCs document the *process* of reaching it. An RFC is a proposal for a major change, shared with the engineering community for asynchronous review. The format forces the author to think through the problem and alternatives *before* bringing it to a meeting, which prevents circular discussions.
+بينما توثّق سجلات قرارات المعمارية *النتيجة*، توثّق طلبات التعليقات *عملية* الوصول إليها. فطلب التعليقات اقتراح لتغيير كبير يُشارَك مع مجتمع الهندسة لمراجعة غير متزامنة. وتفرض الصيغة على الكاتب أن يفكر في المشكلة والبدائل *قبل* عرضها في اجتماع، ما يمنع النقاشات الدائرية.
 
-High-performing teams often adopt a “readout” style for RFC meetings. Participants spend the first 10–15 minutes reading the document in silence and writing comments. This ensures everyone has the same context and allows for more thoughtful, inclusive participation than a presentation-with-interruptions ever could. When someone disagrees, the resolution isn’t “who argues louder.” It’s “what do our ranked priorities say the answer should be?”
+وغالبًا ما تتبنّى الفرق عالية الأداء نمط «القراءة الصامتة» لاجتماعات طلبات التعليقات. فيقضي المشاركون الدقائق 10–15 الأولى في قراءة المستند بصمت وكتابة تعليقات. وهذا يضمن أن الجميع يملك السياق نفسه، ويتيح مشاركة أكثر عمقًا وشمولًا مما قد يتيحه عرض تقديمي مع مقاطعات. وعندما يعترض أحدهم، فالبتّ ليس «من يجادل بصوت أعلى»، بل «ما الذي تقوله أولوياتنا المرتّبة إن القرار يجب أن يكون».
 
-## Inner-Source for Frontend Infrastructure
+## المصدر الداخلي لبنية الواجهة الأمامية التحتية
 
-Shared infrastructure like design systems or utility libraries faces what you might call the bottleneck problem. A central team can’t possibly keep up with feature requests from dozens of stream-aligned teams. The **inner-source** model addresses this by applying open-source contribution patterns to proprietary code.
+تواجه البنية التحتية المشتركة، مثل أنظمة التصميم أو مكتبات الأدوات، ما يمكن تسميته مشكلة عنق الزجاجة. فلا يستطيع فريق مركزي أن يواكب طلبات الميزات من عشرات الفرق المحاذية للتدفق. ويعالج نموذج **المصدر الداخلي** ذلك بتطبيق أنماط المساهمة في المصادر المفتوحة على الشيفرة الاحتكارية.
 
-In an inner-source design system, a core team provides foundational components and ensures visual consistency, but *any developer in the organization* can contribute a new component or bug fix. This promotes efficient code reuse and breaks down traditional departmental silos.
+في نظام تصميم بمصدر داخلي، يوفّر فريق أساسي المكوّنات التأسيسية ويضمن الاتساق البصري، لكن *أي مطوّر في المنظمة* يستطيع المساهمة بمكوّن جديد أو إصلاح خطأ. وهذا يعزّز إعادة استخدام الشيفرة بكفاءة ويفكّك الصوامع الإدارية التقليدية.
 
 ```
 graph LR
@@ -274,85 +274,85 @@ graph LR
   Lib --> T3
 ```
 
-### Making It Work
+### جعله ينجح
 
-Inner-source without infrastructure is just optimism. The pieces that make it real:
+المصدر الداخلي بلا بنية تحتية ليس إلا تفاؤلًا. والأجزاء التي تجعله حقيقيًا:
 
-- **`CONTRIBUTING.md`**: how to contribute, the review process, coding standards, and how to set up a local development environment. Without this, the first contribution attempt turns into a direct support request.
-- **Pull request templates**: checklists ensuring every contribution follows standards for accessibility, testing, and style.
-- **`CODEOWNERS` files**: automatically tagging core maintainers for reviews while allowing cross-team feedback.
-- **Staging deployments**: automatic Storybook previews for every feature branch to facilitate visual review by designers.
+- **`CONTRIBUTING.md`**: كيف تساهم، وعملية المراجعة، ومعايير الشيفرة، وكيف تهيّئ بيئة تطوير محلية. بدون هذا، تتحول أول محاولة مساهمة إلى طلب دعم مباشر.
+- **قوالب طلبات السحب**: قوائم تحقق تضمن أن كل مساهمة تتبع معايير إمكانية الوصول والاختبار والأناقة.
+- **ملفات `CODEOWNERS`**: توسم المشرفين الأساسيين تلقائيًا للمراجعات مع السماح بتغذية راجعة عابرة للفرق.
+- **عمليات النشر إلى بيئة التجهيز**: معاينات Storybook تلقائية لكل فرع ميزة لتسهيل المراجعة البصرية من المصمّمين.
 
-### The 30-Day Warranty
+### ضمان الثلاثين يومًا
 
-The [InnerSource Commons](https://patterns.innersourcecommons.org/) community codified a pattern that solves the biggest political objection to inner-source: “if we accept their code, we have to maintain it forever.”
+قنّن مجتمع [InnerSource Commons](https://patterns.innersourcecommons.org/) نمطًا يحل أكبر اعتراض سياسي على المصدر الداخلي: «إن قبلنا شيفرتهم، وجب علينا صيانتها إلى الأبد».
 
-The **30-day warranty** works like this: when Team Alpha contributes a `<DateRangePicker>` to the design system, they agree to be the first responders for bugs against that component for 30 days after it ships to production. They commit to releasing a patch within two business days of a critical bug report. After 30 days, the design system team assumes full ownership.
+و**ضمان الثلاثين يومًا** يعمل هكذا: عندما يساهم فريق Alpha بمكوّن `<DateRangePicker>` في نظام التصميم، يوافق على أن يكون المستجيب الأول لأخطاء ذلك المكوّن لمدة 30 يومًا بعد وصوله إلى الإنتاج. ويلتزم بإصدار ترقيع خلال يومي عمل من الإبلاغ عن خطأ حرج. وبعد 30 يومًا، يتولى فريق نظام التصميم الملكية الكاملة.
 
-This gives the receiving team confidence to accept contributions, and it ensures the contributing team has appropriate skin in the game. It’s a small social contract, but it unblocks a huge amount of cross-team collaboration.
+ويمنح ذلك الفريق المستقبِل ثقةً بقبول المساهمات، ويكفل أن تكون للفريق المساهم مصلحة حقيقية في الأمر. إنه عقد اجتماعي صغير، لكنه يزيل عوائق كمّ هائل من التعاون العابر للفرق.
 
-## Guilds, Chapters, and Communities of Practice
+## النقابات والفصول ومجتمعات الممارسة
 
-Maintaining technical coherence in a decentralized squad model requires social structures that transcend team boundaries. These come in a few flavors.
+يتطلب الحفاظ على التماسك التقني في نموذج المجموعات اللامركزي بنى اجتماعية تتخطى حدود الفرق. وهذه تأتي بأشكال قليلة.
 
-A **chapter** groups individuals with similar roles—such as “Frontend Engineers”—who work in different squads. The chapter lead acts as coach and mentor, focusing on career development and technical standards. This gives engineers a professional home even as they move between product missions.
+**الفصل** يجمع أفرادًا بأدوار متشابهة — مثل «مهندسي الواجهة الأمامية» — يعملون في مجموعات مختلفة. ويعمل قائد الفصل مدربًا ومرشدًا، مركّزًا على التطوير المهني والمعايير التقنية. وهذا يمنح المهندسين بيتًا مهنيًا حتى وهم يتنقلون بين مهام المنتج.
 
-A **guild** is a more informal, cross-cutting interest group that connects people across the entire organization. A “Performance Guild” or an “Accessibility Guild” might have members from dozens of different teams. They meet to share knowledge, discuss discoveries, and document best practices. The [8th Light Infrastructure Guild](https://8thlight.com/guilds) is a good example—regular meetings to discuss operational challenges, with findings documented so the next person facing a similar problem doesn’t have to start from scratch.
+أما **النقابة** فمجموعة اهتمام غير رسمية وعابرة للاختصاصات تربط الناس في المنظمة كلها. وقد تضم «نقابة الأداء» أو «نقابة إمكانية الوصول» أعضاء من عشرات الفرق المختلفة. يجتمعون لتشارك المعرفة، ومناقشة الاكتشافات، وتوثيق أفضل الممارسات. و[نقابة البنية التحتية في 8th Light](https://8thlight.com/guilds) مثال جيد — اجتماعات منتظمة لمناقشة تحديات التشغيل، مع توثيق النتائج حتى لا يضطر التالي الذي يواجه مشكلة مشابهة إلى البدء من الصفر.
 
-**Communities of Practice** focus on long-term skill development and cultural reinforcement. Internal conferences, unconferences, and rotation programs prevent the isolation that can occur in highly autonomous teams. As organizations scale, these informal coordination mechanisms often become more critical than rigid processes for maintaining innovation speed and shared knowledge.
+وتركز **مجتمعات الممارسة** على تطوير المهارات طويل الأمد وتعزيز الثقافة. فالمؤتمرات الداخلية، والمؤتمرات غير التقليدية، وبرامج التناوب تمنع العزلة التي قد تحدث في الفرق شديدة الاستقلال. ومع توسّع المنظمات، غالبًا ما تصبح آليات التنسيق غير الرسمية هذه أهم من العمليات الجامدة للحفاظ على سرعة الابتكار والمعرفة المشتركة.
 
-> **A word about the Spotify model**
+> **كلمة عن نموذج Spotify**
 >
-> The “Spotify model” (squads, tribes, chapters, guilds) spread through the tech industry based on aspirational blog posts from 2012. [Jeremiah Lee](https://www.jeremiahlee.com/posts/failed-squad-goals/), a former Spotify product manager, documented what actually happened: “Even at the time we wrote it, we weren’t doing it. It was part ambition, part approximation. People have really struggled to copy something that didn’t really exist.” Spotify itself quietly moved toward more conventional management structures as it scaled. The vocabulary is useful. The model as commonly understood was never real. Study the *principles* behind organizational design—Team Topologies, in particular—rather than copying a specific implementation from a conference talk.
+> انتشر «نموذج Spotify» (المجموعات والقبائل والفصول والنقابات) في صناعة التقنية بناءً على تدوينات طموحة من عام 2012. وقد وثّق [Jeremiah Lee](https://www.jeremiahlee.com/posts/failed-squad-goals/)، وهو مدير منتج سابق في Spotify، ما حدث فعلًا: «حتى في وقت كتبناه، لم نكن نطبّقه. كان جزءًا منه طموحًا، وجزءًا تقريبًا. وقد واجه الناس صعوبة حقيقية في نسخ شيء لم يكن موجودًا فعلًا.» وانتقلت Spotify نفسها بهدوء نحو بنى إدارية أكثر تقليدية مع توسّعها. المفردات مفيدة. أما النموذج كما يُفهم عادةً فلم يكن حقيقيًا قط. ادرس *المبادئ* الكامنة وراء التصميم التنظيمي — وبخاصة Team Topologies — بدل نسخ تنفيذ بعينه من محاضرة مؤتمر.
 
-## Technical Leadership Without Direct Authority
+## القيادة التقنية بلا سلطة مباشرة
 
-The role of leadership changes as frontend organizations scale. Traditional hierarchical management gives way to technical leadership without direct authority—Staff Frontend Engineers and Frontend Architects who influence through expertise, not org chart position.
+يتغير دور القيادة مع توسّع منظمات الواجهة الأمامية. فالإدارة الهرمية التقليدية تفسح المجال لقيادة تقنية بلا سلطة مباشرة — مهندسو الواجهة الأمامية من فئة Staff ومعماريو الواجهة الأمامية الذين يؤثرون بخبرتهم، لا بموقعهم في المخطط التنظيمي.
 
-A Staff Frontend Engineer solves technical problems of the highest scope and complexity. At [GitLab](https://handbook.gitlab.com/job-families/engineering/development/frontend/staff/), Staff Engineers are expected to exert significant influence on the overall vision and long-range goals of their team, serving as a spokesperson for their technical area. One of their most critical functions is the proactive resolution of **architectural debt**—structural impediments that slow down the entire team’s velocity.
+ويحل مهندس الواجهة الأمامية من فئة Staff مشكلات تقنية في أوسع نطاق وأعلى تعقيد. وفي [GitLab](https://handbook.gitlab.com/job-families/engineering/development/frontend/staff/)، يُتوقع من مهندسي Staff أن يبذلوا تأثيرًا معتبرًا في الرؤية العامة والأهداف البعيدة لفريقهم، وأن يعملوا متحدثًا باسم مجالهم التقني. ومن أهم وظائفهم المعالجة الاستباقية لـ**الدين المعماري** — العوائق البنيوية التي تبطئ سرعة الفريق كله.
 
-Organizations typically choose between two models for deploying this expertise:
+وتختار المنظمات عادةً بين نموذجين لتوظيف هذه الخبرة:
 
-- **The embedded expert**: senior or staff engineers live within stream-aligned teams, providing daily technical guidance and ensuring best practices are followed on the ground.
-- **The centralized platform architect**: experts are pooled in a core infrastructure group that builds tools for the entire organization, which is more efficient for scaling specialized infrastructure.
+- **الخبير المضمَّن**: يعيش المهندسون الأقدم أو من فئة Staff داخل الفرق المحاذية للتدفق، فيوفّرون إرشادًا تقنيًا يوميًا ويضمنون اتباع أفضل الممارسات على أرض الواقع.
+- **معماري المنصة المركزي**: تُجمَّع الخبرات في مجموعة بنية تحتية أساسية تبني أدوات للمنظمة كلها، وهو أكثر كفاءة في توسيع بنية تحتية متخصصة.
 
-Most large organizations use a mix. The platform team builds the Golden Path, and staff engineers in stream-aligned teams push the boundaries of that platform, identifying new needs that should eventually be folded into the core.
+ومعظم المنظمات الكبيرة تستخدم مزيجًا. فيبني فريق المنصة المسار الذهبي، ويدفع مهندسو Staff في الفرق المحاذية للتدفق حدود تلك المنصة، محدّدين احتياجات جديدة ينبغي أن تُدمج في النواة في نهاية المطاف.
 
-## Measuring Whether Any of This Works
+## قياس ما إذا كان أي من هذا ينجح
 
-How do you know if your team structure and architecture are actually working? Velocity alone doesn’t tell you. You need to look at speed, stability, and developer experience together.
+كيف تعرف إن كانت بنية فريقك ومعماريتك تعمل فعلًا؟ السرعة وحدها لا تخبرك. بل تحتاج إلى النظر إلى السرعة والاستقرار وتجربة المطوّر معًا.
 
-### DORA Metrics for Frontend
+### مقاييس DORA للواجهة الأمامية
 
-The [DORA metrics](https://dora.dev/guides/dora-metrics-four-keys/) provide an objective baseline for software delivery performance. The research—from Nicole Forsgren, Jez Humble, and Gene Kim—established that software delivery performance predicts organizational performance. Their most important finding: elite performers achieve *both* high deployment frequency *and* low change failure rate simultaneously. Teams that deploy rarely don’t have lower failure rates. They have *higher* ones.
+توفّر [مقاييس DORA](https://dora.dev/guides/dora-metrics-four-keys/) خط أساس موضوعيًا لأداء تسليم البرمجيات. وقد أثبت البحث — من Nicole Forsgren وJez Humble وGene Kim — أن أداء تسليم البرمجيات يتنبأ بالأداء التنظيمي. وأهم نتيجة توصلوا إليها: أن الأداء النخبوي يحقق *كلا* الأمرين معًا: تكرار نشر عالٍ ومعدّل فشل تغييرات منخفض. فالفرق التي تنشر نادرًا لا تملك معدّلات فشل أقل، بل *أعلى*.
 
-| Metric | What It Means for Frontend | Elite Benchmark |
+| المقياس | ما يعنيه للواجهة الأمامية | معيار النخبة |
 | --- | --- | --- |
-| **Deployment frequency** | How often code ships to production per application or microfrontend | Multiple times per day |
-| **Change lead time** | Time from PR merge to live, including CDN invalidation and promotion | Less than one hour |
-| **Change failure rate** | Percentage of deploys requiring rollback or causing Core Web Vitals regression | Under 5% |
-| **Failed deployment recovery time** | How quickly you can roll back a bad frontend deploy | Less than one hour |
+| **تكرار النشر** | كم مرة تُشحن الشيفرة إلى الإنتاج لكل تطبيق أو واجهة مصغّرة | عدة مرات في اليوم |
+| **زمن الوصول للتغيير** | الزمن من دمج طلب السحب إلى الحياة، بما فيه إبطال الذاكرة المؤقتة في CDN والترقية | أقل من ساعة |
+| **معدّل فشل التغييرات** | نسبة عمليات النشر التي تتطلب تراجعًا أو تسبب انحدارًا في مؤشرات الويب الأساسية | أقل من 5% |
+| **زمن التعافي من نشر فاشل** | مدى سرعة تراجعك عن نشر واجهة أمامية سيئ | أقل من ساعة |
 
-Feature flags dramatically reduce recovery time—a rollback becomes a configuration change, not a redeployment. This is one reason [deployment and release patterns](https://stevekinney.com/courses/enterprise-ui/deployment-and-release-patterns) matter so much.
+وتقلّل رايات الميزات زمن التعافي تقليلًا هائلًا — فيصبح التراجع تغييرًا في الإعداد، لا إعادة نشر. ولهذا السبب تحديدًا تكتسب [أنماط النشر والإصدار](https://stevekinney.com/courses/enterprise-ui/deployment-and-release-patterns) أهمية بالغة.
 
-> **Compare against yourself, not the industry**
+> **قارن نفسك بنفسك، لا بالصناعة**
 >
-> The key principle from dora.dev: “These metrics are meaningful when compared for the same application over time.” The trend matters more than the absolute number. A team going from monthly deploys to weekly deploys has made a significant improvement regardless of what “elite” looks like.
+> المبدأ الجوهري من dora.dev: «هذه المقاييس ذات معنى عندما تُقارن للتطبيق نفسه عبر الزمن.» فالاتجاه أهم من الرقم المطلق. والفريق الذي ينتقل من النشر الشهري إلى النشر الأسبوعي قد حقق تحسنًا معتبرًا مهما كان شكل «النخبة».
 
-### Architectural Fitness Functions
+### دوال اللياقة المعمارية
 
-While DORA measures the *process*, fitness functions measure the *code*. A **fitness function** is an automated mechanism that provides an objective integrity assessment of an architectural characteristic. These are the guardrails that keep your architecture honest without requiring a human reviewer to catch every drift.
+بينما تقيس DORA *العملية*، تقيس دوال اللياقة *الشيفرة*. و**دالة اللياقة** آلية مؤتمتة تقدّم تقييمًا موضوعيًا لسلامة خاصية معمارية. وهذه هي الحواجز التي تُبقي معماريتك صادقة دون الحاجة إلى مراجع بشري يلتقط كل انحراف.
 
-Common frontend fitness functions:
+ودوال اللياقة الشائعة في الواجهة الأمامية:
 
-- **Bundle size budgets**: CI pipelines that fail if a JavaScript bundle exceeds a specific cap. We cover this in [performance budgets](https://stevekinney.com/courses/enterprise-ui/performance-budgets).
-- **Performance gates**: automated Lighthouse CI to enforce minimum Core Web Vitals scores before merging a PR.
-- **Accessibility lints**: enforcing semantic HTML and ARIA attribute presence at the build level.
-- **Dependency boundary rules**: [ESLint rules](https://stevekinney.com/courses/enterprise-ui/writing-eslint-rules) or Nx boundary constraints ensuring no circular dependencies and proper layering between packages.
+- **ميزانيات حجم الحزمة**: خطوط أنابيب CI تفشل إن تجاوزت حزمة JavaScript حدًا معينًا. وقد تناولنا ذلك في [ميزانيات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets).
+- **بوابات الأداء**: Lighthouse CI آلي لفرض حد أدنى لدرجات مؤشرات الويب الأساسية قبل دمج أي طلب سحب.
+- **فحوص إمكانية الوصول**: إنفاذ HTML الدلالي ووجود خصائص ARIA على مستوى البناء.
+- **قواعد حدود الاعتمادات**: [قواعد ESLint](https://stevekinney.com/courses/enterprise-ui/writing-eslint-rules) أو قيود الحدود في Nx تضمن غياب الاعتمادات الدائرية والطبقات الصحيحة بين الحزم.
 
-### Developer Experience Surveys
+### استبيانات تجربة المطوّر
 
-Metrics can be gamed. DORA numbers can show high velocity while developers are burning out and cursing the build tooling. Developer Experience surveys capture the qualitative side—perceived productivity, frustration with tools, confidence in deployments. If DORA shows high velocity but DX surveys show high burnout, something is structurally wrong.
+يمكن التلاعب بالمقاييس. فقد تُظهر أرقام DORA سرعة عالية بينما المطوّرون ينهارون ويلعنون أدوات البناء. وتلتقط استبيانات تجربة المطوّر الجانب النوعي — الإنتاجية المُدرَكة، والإحباط من الأدوات، والثقة بعمليات النشر. فإن أظهرت DORA سرعة عالية بينما أظهرت استبيانات تجربة المطوّر إنهاكًا مرتفعًا، فهناك خلل بنيوي.
 
 ```
 graph LR
@@ -367,105 +367,105 @@ graph LR
   DX --> Insight
 ```
 
-## Technical Debt Versus Architecture Debt
+## الدين التقني مقابل دين المعمارية
 
-Not all debt is the same, and confusing the two leads to bad prioritization.
+ليس كل دين سواءً، والخلط بين النوعين يؤدي إلى ترتيب أولويات سيئ.
 
-**Technical debt** is a local issue in the codebase—a messy component, a missing test, a function that needs refactoring. One team can fix it in a sprint or two. It shows up in pull requests and code scanners.
+**الدين التقني** مشكلة موضعية في قاعدة الشيفرة — مكوّن غير مرتب، أو اختبار مفقود، أو دالة تحتاج إعادة هيكلة. ويستطيع فريق واحد إصلاحه في سبرنت أو اثنين. وهو يظهر في طلبات السحب وماسحات الشيفرة.
 
-**Architecture debt** is systemic. Platform sprawl, fragmented data models, inconsistent authentication patterns across microfrontends, six different state management libraries because nobody wrote an ADR. Architecture debt remains invisible on traditional dashboards until it stalls a major initiative like a cloud migration or an AI integration. It requires board-level design and cross-domain governance to resolve.
+أما **دين المعمارية** فجهازي. تفشّي المنصات، وتجزؤ نماذج البيانات، وأنماط مصادقة غير متسقة عبر الواجهات المصغّرة، وست مكتبات مختلفة لإدارة الحالة لأن لا أحد كتب سجل قرار. ويظل دين المعمارية غير مرئي في اللوحات التقليدية حتى يعطّل مبادرة كبرى مثل الترحيل إلى السحابة أو دمج الذكاء الاصطناعي. ويتطلب تصميمًا على مستوى مجلس الإدارة وحوكمة عابرة للمجالات لحله.
 
-|  | Technical Debt | Architecture Debt |
+|  | الدين التقني | دين المعمارية |
 | --- | --- | --- |
-| **Visibility** | Obvious in PRs and code scanners | Silent, systemic |
-| **Fix scope** | Refactoring, better test coverage | Structural redesign, platform unification |
-| **Primary risk** | Local bugs, slower features | Program failure, gridlock, security gaps |
-| **Resolution** | Team-level effort | Architecture boards, funding changes |
+| **الظهور** | واضح في طلبات السحب وماسحات الشيفرة | صامت وجهازي |
+| **نطاق الإصلاح** | إعادة الهيكلة، وتغطية اختبار أفضل | إعادة تصميم بنيوي، وتوحيد المنصة |
+| **الخطر الأساسي** | أخطاء موضعية، وميزات أبطأ | فشل البرنامج، والجمود، وثغرات أمنية |
+| **الحل** | جهد على مستوى الفريق | مجالس معمارية، وتغييرات في التمويل |
 
-### Advocating for Foundational Work
+### الدفاع عن العمل التأسيسي
 
-To successfully advocate for foundational work when leadership wants features, speak the language of the business. Instead of “the code is hard to maintain,” the more effective framing is: “Every new feature in this area takes three times longer because of structural debt, costing us $15,000 in developer time every quarter.”
+لتدافع بنجاح عن العمل التأسيسي حين تريد القيادة ميزات، تحدث بلغة العمل. فبدل «الشيفرة صعبة الصيانة»، يكون التأطير الأكثر فعالية: «كل ميزة جديدة في هذا المجال تستغرق ثلاثة أضعاف الوقت بسبب الدين البنيوي، ما يكلفنا 15000 دولار من وقت المطوّرين كل ربع سنة».
 
-The **70/20/10 allocation model** is a useful rule of thumb for sustainable health: 70% of resources for the roadmap, 20% for medium-term technical health, and 10% for long-term cleanup or experiments. Frame refactoring as an investment with clear ROI—show how spending one week on cleanup cuts future development time in half for a critical feature area.
+ويُعدّ **نموذج التوزيع 70/20/10** قاعدة إرشادية مفيدة لصحة مستدامة: 70% من الموارد لخريطة الطريق، و20% للصحة التقنية متوسطة الأمد، و10% للتنظيف أو التجارب بعيدة الأمد. وأطّر إعادة الهيكلة كاستثمار بعائد واضح — أظهر كيف أن إنفاق أسبوع على التنظيف يقلّص زمن التطوير المستقبلي إلى النصف في مجال ميزة حرج.
 
-## Case Studies
+## دراسات حالة
 
-### Vercel: Vertical Splits in a Monorepo
+### Vercel: التقسيم العمودي في مستودع أحادي
 
-[Vercel’s microfrontend migration](https://vercel.com/blog/how-vercel-adopted-microfrontends) split their monolithic Next.js application into three zones—marketing, documentation, and the logged-in dashboard—using Next.js Multi-Zones, [Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo), and feature-flag-controlled traffic routing. Build times dropped over 40%. Core Web Vitals improved because each application only bundles its own dependencies. The teams can deploy independently.
+قسّم [ترحيل Vercel إلى الواجهات المصغّرة](https://vercel.com/blog/how-vercel-adopted-microfrontends) تطبيق Next.js الأحادي لديهم إلى ثلاث مناطق — التسويق، والتوثيق، ولوحة معلومات المُسجَّلين — باستخدام Next.js Multi-Zones، و[Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo)، وتوجيه زيارات محكوم برايات الميزات. فانخفضت أزمنة البناء أكثر من 40%. وتحسّنت مؤشرات الويب الأساسية لأن كل تطبيق لا يحزم إلا اعتماداته. وتستطيع الفرق النشر باستقلال.
 
-The important detail: they kept everything in a monorepo. Shared components (header, footer, navigation, design tokens) were extracted into shared packages. The vertical splits gave teams deployment independence. The monorepo gave them shared code visibility and atomic migrations. This is the hybrid model in practice.
+والتفصيل المهم: أبقوا كل شيء في مستودع أحادي. فاستُخرجت المكوّنات المشتركة (الترويسة، والتذييل، والتنقل، ورموز التصميم) إلى حزم مشتركة. ومنحت التقسيمات العمودية الفرق استقلال النشر، ومنحهم المستودع الأحادي ظهورًا مشتركًا للشيفرة وترحيلات ذرّية. وهذا هو النموذج الهجين في التطبيق.
 
-### Spotify: What Actually Happened
+### Spotify: ما حدث فعلًا
 
-Spotify’s “squad model” spread through the industry based on aspirational 2012 blog posts. Over time, the reality was messier. Absolute team autonomy led to architectural fragmentation—over 100 distinct systems that were difficult to integrate. The company introduced a “System Owner” role to maintain architectural integrity and gradually moved toward more conventional management structures.
+انتشر «نموذج المجموعات» في Spotify في الصناعة بناءً على تدوينات طموحة من عام 2012. ومع الوقت كان الواقع أكثر فوضى. فقد أدى الاستقلال المطلق للفرق إلى تشظٍّ معماري — أكثر من 100 نظام متمايز يصعب دمجها. فأدخلت الشركة دور «مالك النظام» للحفاظ على السلامة المعمارية، وانتقلت تدريجيًا نحو بنى إدارية أكثر تقليدية.
 
-The lesson isn’t that autonomous teams are bad. It’s that autonomy without platform investment, without shared standards, and without honest documentation of how things actually work produces fragmentation, not innovation.
+والدرس ليس أن الفرق المستقلة سيئة، بل أن الاستقلال بلا استثمار في المنصة، وبلا معايير مشتركة، وبلا توثيق صادق لكيفية عمل الأشياء فعلًا، ينتج تشظيًا لا ابتكارًا.
 
-### Shopify: Platform of Platforms
+### Shopify: منصة المنصات
 
-Shopify’s restructuring focused on the ops burden on developers. Giving developers “ops ownership” without proper tools led to burnout. Their solution was a layered platform model—specialized infrastructure teams manage the underlying clusters, while application developers focus on application code. The [platform engineering blueprint](https://logz.io/blog/scaling-platform-engineering-shopify-blueprint/) provides a Golden Path that accelerates delivery while maintaining a unified deployment standard.
+ركّزت إعادة هيكلة Shopify على عبء العمليات على المطوّرين. فمنح المطوّرين «ملكية العمليات» بلا أدوات مناسبة أدى إلى الإنهاك. وكان حلهم نموذج منصة طبقيًا — تدير فرق بنية تحتية متخصصة العناقيد الكامنة، بينما يركّز مطوّرو التطبيقات على شيفرة التطبيق. و[مخطط هندسة المنصة](https://logz.io/blog/scaling-platform-engineering-shopify-blueprint/) يوفّر مسارًا ذهبيًا يسرّع التسليم مع الحفاظ على معيار نشر موحّد.
 
-## Putting It All Together
+## تجميع الصورة كاملة
 
-The evolution of frontend architecture in the enterprise is moving away from command-and-control models toward decentralized, socio-technical ecosystems. Conway’s Law teaches that you can’t ignore communication structures. Team Topologies provides the framework for optimizing them. Vertical slices give teams ownership. Platform teams absorb complexity. ADRs make decisions discoverable. Inner-source keeps shared infrastructure from becoming a bottleneck. And DORA metrics, fitness functions, and DX surveys give you the feedback loops to know whether any of it is actually working.
+يتحرك تطوّر معمارية الواجهة الأمامية في المؤسسات بعيدًا عن نماذج القيادة والسيطرة نحو نظم بيئية اجتماعية-تقنية لامركزية. فقانون كونوي يعلّمك أنك لا تستطيع تجاهل بنى التواصل. وTeam Topologies يوفّر الإطار لتحسينها. والشرائح العمودية تمنح الفرق الملكية. وفرق المنصة تمتص التعقيد. وسجلات قرارات المعمارية تجعل القرارات قابلة للاكتشاف. والمصدر الداخلي يمنع البنية التحتية المشتركة من أن تصبح عنق زجاجة. ومقاييس DORA ودوال اللياقة واستبيانات تجربة المطوّر تمنحك حلقات التغذية الراجعة لتعرف هل أي من هذا يعمل فعلًا.
 
-The role of the architect in this world isn’t to dictate code from above. It’s to facilitate the social and technical conditions that allow every team to succeed autonomously within a coherent organizational whole. That’s harder than drawing a diagram. It’s also the part that matters most.
-
----
-
-## TL;DR
-
-### Conway’s Law
-
-> “Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations.”
-
-- Tight team coupling produces monolithic code. Loose coupling produces modular architectures.
-- **Inverse Conway Maneuver:** Reshape the org structure *first* to produce the architecture you want.
-- Layer-based teams (frontend team, backend team, database team) create handoff bottlenecks. Every feature crosses every layer.
-- Vertical slices—one team owns search end-to-end, another owns checkout—align naturally with microfrontend boundaries.
+ودور المعماري في هذا العالم ليس فرض الشيفرة من فوق، بل تهيئة الظروف الاجتماعية والتقنية التي تتيح لكل فريق أن ينجح باستقلال داخل كلٍّ تنظيمي متماسك. وهذا أصعب من رسم مخطط. وهو أيضًا الجزء الأهم.
 
 ---
 
-### Four Team Topologies
+## الخلاصة السريعة
 
-> A vocabulary for how teams interact, not a mandate for how to organize.
+### قانون كونوي
 
-| Topology | Purpose | Interaction mode |
+> «المنظمات التي تصمّم أنظمة مقيّدة بإنتاج تصميمات تكون نسخًا من بنى التواصل في تلك المنظمات.»
+
+- الارتباط الوثيق بين الفرق ينتج شيفرة أحادية. والترابط المتراخي ينتج معماريات معيارية.
+- **المناورة العكسية لكونوي:** أعد تشكيل البنية التنظيمية *أولًا* لإنتاج المعمارية التي تريدها.
+- الفرق القائمة على الطبقات (فريق الواجهة الأمامية، وفريق الخلفية، وفريق قاعدة البيانات) تخلق عوائق تسليم. فكل ميزة تعبر كل طبقة.
+- الشرائح العمودية — فريق يملك البحث من الطرف إلى الطرف، وآخر يملك الدفع — تتوائم طبيعيًا مع حدود الواجهات المصغّرة.
+
+---
+
+### بنية الفرق الأربع
+
+> مفردات لكيفية تفاعل الفرق، لا تكليف بكيفية التنظيم.
+
+| البنية | الغرض | نمط التفاعل |
 | --- | --- | --- |
-| **Stream-aligned** | Delivers business value directly | Owns a vertical slice |
-| **Platform** | Reduces cognitive load | X-as-a-Service |
-| **Enabling** | Transfers capability | Collaboration (temporary) |
-| **Complicated-subsystem** | Isolates specialist domain | X-as-a-Service |
+| **محاذية للتدفق** | تقدّم قيمة تجارية مباشرة | تملك شريحة عمودية |
+| **المنصة** | تقلّل الحمل المعرفي | الخدمة بصيغة X-as-a-Service |
+| **تمكينية** | تنقل القدرات | التعاون (مؤقت) |
+| **أنظمة فرعية معقّدة** | تعزل مجالًا تخصصيًا | الخدمة بصيغة X-as-a-Service |
 
-- Platform teams must treat stream-aligned teams as *customers*, not subordinates.
-- Enabling teams exist to make themselves unnecessary—they mentor, then step away.
-- If a platform team is blocking feature delivery, it’s not a platform team. It’s a bottleneck.
-
----
-
-### Architecture Decision Records
-
-> ADRs make decisions discoverable without making them bureaucratic.
-
-- **Status:** Proposed → Accepted → Deprecated → Superseded.
-- **Context:** What forces are at play? What’s the problem?
-- **Decision:** What did we decide and why?
-- **Consequences:** What changes? What do we gain? What do we lose?
-- Store ADRs in version control alongside the code they describe. Not in Confluence. Not in Slack.
-- Decisions are *immutable*. New decisions supersede old ones—they don’t edit them.
+- على فرق المنصة أن تعامل الفرق المحاذية للتدفق *عملاء*، لا مرؤوسين.
+- الفرق التمكينية موجودة لتجعل نفسها غير ضرورية — ترشد، ثم تنسحب.
+- إن كان فريق منصة يعيق تسليم الميزات، فهو ليس فريق منصة، بل عنق زجاجة.
 
 ---
 
-### Measuring What Matters
+### سجلات قرارات المعمارية
 
-> If you can’t measure it, you’re guessing.
+> تجعل السجلات القرارات قابلة للاكتشاف دون أن تجعلها بيروقراطية.
 
-| Category | What to measure | Tool / Source |
+- **الحالة:** مقترح → مقبول → مهجور → ملغى.
+- **السياق:** ما القوى الفاعلة؟ وما المشكلة؟
+- **القرار:** ماذا قرّرنا ولماذا؟
+- **النتائج:** ما الذي يتغير؟ وما الذي نكسبه؟ وما الذي نخسره؟
+- خزّن السجلات في التحكم بالإصدارات بجوار الشيفرة التي تصفها. لا في Confluence. ولا في Slack.
+- القرارات *غير قابلة للتعديل*. القرارات الجديدة تلغي القديمة — ولا تحرّرها.
+
+---
+
+### قياس ما يهم
+
+> إن لم تستطع قياسه، فأنت تخمّن.
+
+| الفئة | ما يُقاس | الأداة / المصدر |
 | --- | --- | --- |
-| **Process health** | Deploy frequency, lead time, failure rate, MTTR (DORA) | CI/CD metrics |
-| **Code health** | Bundle size, test coverage, dependency freshness | Fitness functions |
-| **Team health** | Cognitive load, tooling friction, onboarding time | DX surveys |
+| **صحة العملية** | تكرار النشر، وزمن الوصول، ومعدّل الفشل، وزمن التعافي (DORA) | مقاييس CI/CD |
+| **صحة الشيفرة** | حجم الحزمة، وتغطية الاختبارات، وحداثة الاعتمادات | دوال اللياقة |
+| **صحة الفريق** | الحمل المعرفي، واحتكاك الأدوات، وزمن الإعداد | استبيانات تجربة المطوّر |
 
-- DORA metrics measure the *process*. Fitness functions measure the *code*. DX surveys measure the *people*.
-- Track cognitive load in three buckets: intrinsic (domain complexity), extraneous (tooling friction), germane (novel problem-solving).
+- تقيس مقاييس DORA *العملية*. وتقيس دوال اللياقة *الشيفرة*. وتقيس استبيانات تجربة المطوّر *الناس*.
+- تتبّع الحمل المعرفي في ثلاث سلال: الجوهري (تعقيد المجال)، والدخيل (احتكاك الأدوات)، والمثمر (حل المشكلات الجديدة).

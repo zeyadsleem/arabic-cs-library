@@ -1,30 +1,30 @@
 ---
-title: "Arrange-Act-Assert (AAA) Pattern"
-lang: en
+title: "نمط الترتيب والتنفيذ والتحقق (AAA)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/structure-of-a-unit-test"
 ---
 
-## Arrange-Act-Assert (AAA) Pattern
+## نمط الترتيب والتنفيذ والتحقق (AAA)
 
-The Arrange-Act-Assert (AAA) pattern is a structured approach to writing unit tests that enhances readability and maintainability. It divides each test into three distinct sections:
+نمط Arrange-Act-Assert (AAA) مقاربة منظّمة لكتابة اختبارات الوحدات تعزّز القابلية للقراءة والصيانة. وهو يقسّم كل اختبار إلى ثلاثة أقسام متمايزة:
 
-1. **Arrange**: Set up the conditions and inputs required for the test.
-2. **Act**: Execute the code or function being tested.
-3. **Assert**: Verify that the outcome matches the expected result.
+1. **الترتيب (Arrange)**: جهّز الشروط والمُدخلات المطلوبة للاختبار.
+2. **التنفيذ (Act)**: نفّذ الشيفرة أو الدالة قيد الاختبار.
+3. **التحقق (Assert)**: تحقّق من أن النتيجة تطابق بالنتيجة المتوقعة.
 
-### Why It’s a Best Practice
+### لماذا يُعدّ أفضل ممارسة
 
-- **Clarity**: Clearly separating setup, execution, and verification makes tests easier to read and understand.
-- **Consistency**: A uniform structure across tests simplifies writing and maintaining them.
-- **Maintainability**: Well-organized tests are easier to update as the codebase evolves.
-- **Debugging Efficiency**: Identifying where a test fails becomes straightforward.
-- **Single Responsibility**: Encourages testing one functionality at a time, leading to more precise tests.
+- **الوضوح**: الفصل الواضح بين التجهيز والتنفيذ والتحقق يجعل الاختبارات أسهل في القراءة والفهم.
+- **الاتساق**: البنية الموحّدة بين الاختبارات تبسّط كتابتها وصيانتها.
+- **القابلية للصيانة**: الاختبارات المنظّمة جيدًا أسهل في التحديث مع تطوّر قاعدة الشيفرة.
+- **كفاءة التنقيح**: يصبح تحديد موضع فشل الاختبار مباشرًا.
+- **المسؤولية الواحدة**: يشجّع على اختبار وظيفة واحدة في كل مرة، ما يؤدي إلى اختبارات أكثر دقة.
 
-### Examples in Practice
+### أمثلة في الممارسة
 
-#### Example 1: Testing a Simple Function
+#### المثال 1: اختبار دالة بسيطة
 
-Consider a function that calculates the factorial of a number:
+تأمّل دالة تحسب مضروب عدد:
 
 ```javascript
 function factorial(n) {
@@ -33,7 +33,7 @@ function factorial(n) {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('calculates factorial of a positive integer', () => {
@@ -49,15 +49,15 @@ test('calculates factorial of a positive integer', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Set up the input value and expected output.
-- *Act*: Call the `factorial` function with the input.
-- *Assert*: Check that the result matches the expected output.
+- *الترتيب*: جهّز قيمة المُدخل والمخرج المتوقع.
+- *التنفيذ*: نادِ دالة `factorial` بالمُدخل.
+- *التحقق*: تأكد من أن النتيجة تطابق المخرج المتوقع.
 
-#### Example 2: Testing Error Handling
+#### المثال 2: اختبار معالجة الأخطاء
 
-Testing how a function handles invalid input:
+اختبار كيفية تعامل دالة مع مُدخل غير صالح:
 
 ```javascript
 function divide(a, b) {
@@ -66,7 +66,7 @@ function divide(a, b) {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('throws an error when dividing by zero', () => {
@@ -81,14 +81,14 @@ test('throws an error when dividing by zero', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Initialize the numerator and set the denominator to zero.
-- *Act and Assert*: Execute the function inside an assertion to check for the expected error.
+- *الترتيب*: هيّئ البسط واضبط المقام على صفر.
+- *التنفيذ والتحقق*: نفّذ الدالة داخل تحقّق للبحث عن الخطأ المتوقع.
 
-#### Example 3: Testing Asynchronous Code
+#### المثال 3: اختبار الشيفرة غير المتزامنة
 
-Suppose there’s an asynchronous function that fetches data from an API:
+افترض وجود دالة غير متزامنة تجلب بيانات من واجهة برمجة تطبيقات:
 
 ```javascript
 async function fetchData(url) {
@@ -97,7 +97,7 @@ async function fetchData(url) {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('fetches data successfully from an API', async () => {
@@ -123,15 +123,15 @@ test('fetches data successfully from an API', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Mock the `fetch` function to return predefined data.
-- *Act*: Call the `fetchData` function.
-- *Assert*: Verify that the returned data matches the mock data and that `fetch` was called with the correct URL.
+- *الترتيب*: استبدل دالة `fetch` ببديل مُحاكى يعيد بيانات محدّدة مسبقًا.
+- *التنفيذ*: نادِ دالة `fetchData`.
+- *التحقق*: تأكد من أن البيانات المُعادة تطابق البيانات المُحاكاة وأن `fetch` نُوديت بعنوان URL الصحيح.
 
-#### Example 4: Testing a Class Method
+#### المثال 4: اختبار تابع في صنف
 
-Consider a simple `Calculator` class:
+تأمّل صنف `Calculator` بسيطًا:
 
 ```javascript
 class Calculator {
@@ -141,7 +141,7 @@ class Calculator {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('adds two numbers correctly using Calculator class', () => {
@@ -159,15 +159,15 @@ test('adds two numbers correctly using Calculator class', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Create an instance of `Calculator` and set up the numbers.
-- *Act*: Invoke the `add` method with the numbers.
-- *Assert*: Check that the result equals the expected sum.
+- *الترتيب*: أنشئ نسخة من `Calculator` وجهّز الأعداد.
+- *التنفيذ*: استدعِ التابع `add` بالأعداد.
+- *التحقق*: تأكد من أن النتيجة تساوي المجموع المتوقع.
 
-#### Example 5: Testing a Function with Side Effects
+#### المثال 5: اختبار دالة ذات تأثيرات جانبية
 
-Suppose a function logs a message to the console:
+افترض أن دالة تسجّل رسالة في الطرفية:
 
 ```javascript
 function logMessage(message) {
@@ -175,7 +175,7 @@ function logMessage(message) {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('logs the correct message to the console', () => {
@@ -194,16 +194,16 @@ test('logs the correct message to the console', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Spy on the `console.log` method.
-- *Act*: Call `logMessage` with a test message.
-- *Assert*: Verify that `console.log` was called with the correct message.
-- *Cleanup*: Restore the original `console.log` method.
+- *الترتيب*: راقب التابع `console.log`.
+- *التنفيذ*: نادِ `logMessage` برسالة اختبار.
+- *التحقق*: تأكد من أن `console.log` نُوديت بالرسالة الصحيحة.
+- *التنظيف*: استعد التابع الأصلي `console.log`.
 
-#### Example 6: Testing Edge Cases
+#### المثال 6: اختبار الحالات الحدّية
 
-Testing a function that processes an array:
+اختبار دالة تعالج مصفوفة:
 
 ```javascript
 function getFirstElement(array) {
@@ -212,7 +212,7 @@ function getFirstElement(array) {
 }
 ```
 
-**Test Using AAA Pattern:**
+**اختبار باستخدام نمط AAA:**
 
 ```javascript
 test('returns undefined for an empty array', () => {
@@ -228,15 +228,15 @@ test('returns undefined for an empty array', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Prepare an empty array.
-- *Act*: Call `getFirstElement` with the empty array.
-- *Assert*: Verify that the result is `undefined`.
+- *الترتيب*: جهّز مصفوفة فارغة.
+- *التنفيذ*: نادِ `getFirstElement` بالمصفوفة الفارغة.
+- *التحقق*: تأكد من أن النتيجة هي `undefined`.
 
-#### Example 7: Testing with Mock Service Worker (MSW)
+#### المثال 7: الاختبار باستخدام Mock Service Worker (MSW)
 
-Testing a function that makes an API call, using MSW to mock the network request:
+اختبار دالة تُجري طلبًا إلى واجهة برمجة تطبيقات، باستخدام MSW لمحاكاة طلب الشبكة:
 
 ```javascript
 // Function to fetch user data
@@ -246,7 +246,7 @@ async function getUser(id) {
 }
 ```
 
-**Test Using AAA Pattern with MSW:**
+**اختبار باستخدام نمط AAA مع MSW:**
 
 ```javascript
 import { rest } from 'msw';
@@ -275,18 +275,18 @@ test('fetches user data successfully', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- *Arrange*: Set up MSW to intercept network requests and return mock data.
-- *Act*: Call the `getUser` function with a test user ID.
-- *Assert*: Verify that the returned user data matches the mock data.
+- *الترتيب*: جهّز MSW لاعتراض طلبات الشبكة وإعادة بيانات مُحاكاة.
+- *التنفيذ*: نادِ دالة `getUser` بمعرّف مستخدم للاختبار.
+- *التحقق*: تأكد من أن بيانات المستخدم المُعادة تطابق البيانات المُحاكاة.
 
-### Key Takeaways
+### الخلاصات الرئيسية
 
-With all of that said, here’s the gist:
+بعد كل ما سبق، هذا هو جوهر الأمر:
 
-- **Separation of Concerns**: The AAA pattern enforces a clear separation between setup, execution, and verification.
-- **Readability**: Tests become self-explanatory, serving as documentation for the code’s expected behavior.
-- **Consistency**: Following a standard pattern reduces cognitive load when switching between different tests or projects.
-- **Maintainability**: Easier to update tests when changes occur in the codebase.
-- **Debugging Efficiency**: Simplifies identifying where a test might be failing.
+- **فصل الاهتمامات**: يفرض نمط AAA فصلًا واضحًا بين التجهيز والتنفيذ والتحقق.
+- **القابلية للقراءة**: تصبح الاختبارات مفسّرة لنفسها، وتعمل توثيقًا للسلوك المتوقع للشيفرة.
+- **الاتساق**: اتباع نمط قياسي يقلل الحمل المعرفي عند الانتقال بين اختبارات أو مشاريع مختلفة.
+- **القابلية للصيانة**: يصبح تحديث الاختبارات أسهل عند حدوث تغييرات في قاعدة الشيفرة.
+- **كفاءة التنقيح**: يبسّط تحديد موضع فشل الاختبار المحتمل.

@@ -1,16 +1,16 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/wire-visual-regression-into-the-dev-loop-solution"
 ---
 
-Two spec files, four config lines, and a committed PNG. That’s the entire visual regression setup. The hard part isn’t the code—it’s understanding why each piece exists and what happens when you skip it.
+ملفّا مواصفة، وأربعة أسطر إعداد، وملف PNG مُودَع. هذا هو إعداد الانحدار البصري بأكمله. والجزء الصعب ليس الشيفرة — بل فهم لماذا يوجد كل جزء، وما يحدث حين تتخطّاه.
 
-## The files you add in this lab
+## الملفات التي تضيفها في هذا التمرين
 
 ### `tests/visual.spec.ts`
 
-This file covers public pages that don’t need authentication.
+يغطّي هذا الملف الصفحات العامة التي لا تحتاج إلى مصادقة.
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -22,19 +22,19 @@ test('design system matches the starter visual baseline', async ({ page }) => {
 });
 ```
 
-Three lines of real work. Navigate, wait for the page to be ready, take the screenshot. Let’s talk about each one.
+ثلاثة أسطر من العمل الحقيقي. انتقل، وانتظر حتى تجهز الصفحة، والتقط لقطة الشاشة. ولنتحدّث عن كل واحد منها.
 
-`page.goto('/design-system')` targets the curated component gallery. This is the best page in the app for visual regression because it exercises every component in a controlled layout. One screenshot catches button styles, card layouts, typography, color tokens—everything that matters visually.
+يستهدف `page.goto('/design-system')` معرض المكوّنات المنسّق. وهذه أفضل صفحة في التطبيق للانحدار البصري لأنها تختبر كل مكوّن في تخطيط مضبوط. فلقطة واحدة تلتقط أنماط الأزرار، وتخطيطات البطاقات، والطباعة، ورموز الألوان — كل ما يهم بصريًا.
 
-`await expect(page.getByRole('heading', { level: 1 })).toBeVisible()` is the stability gate. You need *something* on the page to be confirmed-visible before you take the screenshot. Without this, you occasionally capture a blank page mid-render. The heading works because it’s one of the first elements to paint, and if the heading isn’t there, the page didn’t load.
+و`await expect(page.getByRole('heading', { level: 1 })).toBeVisible()` هي بوابة الاستقرار. فأنت تحتاج إلى *شيء* في الصفحة يكون مؤكّد الظهور قبل أن تلتقط لقطة الشاشة. وبدون ذلك، تلتقط أحيانًا صفحة فارغة في منتصف التصيير. والعنوان ينفع لأن من أوائل العناصر التي تُرسم، وإن لم يكن العنوان موجودًا فالصفحة لم تُحمَّل.
 
-`toHaveScreenshot('design-system.png', { fullPage: true })` does two things. The first time you run it, it creates the baseline PNG. Every subsequent run, it compares the current page against that baseline pixel-by-pixel (within the configured tolerance). `fullPage: true` captures the entire scrollable page, not just the viewport.
+و`toHaveScreenshot('design-system.png', { fullPage: true })` تفعل شيئين. في أول تشغيل تُنشئ ملف PNG لخط الأساس. وفي كل تشغيل لاحق تقارن الصفحة الحالية بذلك الأساس بكسلًا بكسلًا (ضمن التجاوز المسموح المُعدّ). و`fullPage: true` تلتقط الصفحة القابلة للتمرير بأكملها، لا منفذ العرض فقط.
 
-The explicit filename (`'design-system.png'`) is intentional. Without it, Playwright auto-generates a name from the test title, which works but produces filenames like `design-system-matches-the-starter-visual-baseline-1-chromium-darwin.png`. The explicit name is easier to find in the snapshot directory and easier to reason about in diffs.
+اسم الملف الصريح (`'design-system.png'`) مقصود. فبدونه يولّد Playwright اسمًا تلقائيًا من عنوان الاختبار، وهذا يعمل لكنه ينتج أسماء مثل `design-system-matches-the-starter-visual-baseline-1-chromium-darwin.png`. والاسم الصريح أسهل في العثور عليه داخل مجلد اللقطات، وأسهل في التفكير فيه عند قراءة الفروق.
 
 ### `tests/visual-authenticated.spec.ts`
 
-This file covers pages that require a logged-in user and seeded data.
+يغطّي هذا الملف الصفحات التي تحتاج إلى مستخدم مسجّل الدخول وإلى بيانات مبذورة (seeded).
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -52,13 +52,13 @@ test('shelf page matches the seeded visual baseline', async ({ page }) => {
 });
 ```
 
-Two differences from the public version. First: `resetShelfContent` in `beforeEach`. Visual regression without deterministic data is a nightmare—every run produces a different shelf, which means every run produces a different screenshot, which means every run fails. The seed ensures Station Eleven is always there, always in the same position, always unrated.
+ثمّة اختلافان عن النسخة العامة. الأول: `resetShelfContent` في `beforeEach`. فالانحدار البصري بلا بيانات حتمية كابوس — كل تشغيل ينتج رفًّا مختلفًا، ما يعني أن كل تشغيل ينتج لقطة مختلفة، ما يعني أن كل تشغيل يفشل. والبذر يضمن وجود Station Eleven دائمًا، وفي الموضع نفسه دائمًا، وبلا تقييم دائمًا.
 
-Second: the extra `toBeVisible` check on the Station Eleven article. The heading tells you the page loaded. The article tells you the *data* loaded. If you only wait for the heading, you sometimes capture the page in a state where the heading is painted but the book cards haven’t rendered yet. That produces a false positive on the very first run and a false negative on every subsequent run. Wait for the data.
+والثاني: التحقّق الإضافي `toBeVisible` على مقالة Station Eleven. فالعنوان يخبرك أن الصفحة حُمّلت، أما المقالة فتخبرك أن *البيانات* حُمّلت. وإن اكتفيت بانتظار العنوان، تلتقط أحيانًا الصفحة في حالة رُسم فيها العنوان لكن بطاقات الكتب لم تُصيَّر بعد. وهذا ينتج نتيجة إيجابية كاذبة في أول تشغيل، وسلبية كاذبة في كل تشغيل لاحق. انتظر البيانات.
 
-## The config
+## الإعداد
 
-Four lines in `playwright.config.ts` under `expect.toHaveScreenshot`:
+أربعة أسطر في `playwright.config.ts` تحت `expect.toHaveScreenshot`:
 
 ```typescript
 expect: {
@@ -71,55 +71,55 @@ expect: {
 },
 ```
 
-Each one solves a specific false-positive scenario.
+كل سطر منها يحلّ سيناريو معيّنًا من النتائج الإيجابية الكاذبة.
 
-**`animations: 'disabled'`** freezes all CSS animations and transitions before taking the screenshot. Without this, a spinning loader or a fade-in transition can produce different frames on different runs. The screenshot captures the *end state*, not a random mid-animation frame.
+**`animations: 'disabled'`** يجمّد كل حركات CSS وانتقالاتها قبل أخذ اللقطة. وبدونه، قد ينتج مُحمِّل دوّار أو انتقال تلاشٍ إطارات مختلفة في تشغيلات مختلفة. فاللقطة تلتقط *الحالة النهائية*، لا إطارًا عشوائيًا في منتصف الحركة.
 
-**`caret: 'hide'`** hides the blinking text cursor. If any input on the page has focus, the cursor blink produces a 1-pixel difference every other run. Hiding it eliminates that noise entirely.
+**`caret: 'hide'`** يُخفي مؤشّر النص الوامض. فإن كان أي حقل إدخال في الصفحة يحمل التركيز، أنتج وميض المؤشّر فرقًا بمقدار بكسل واحد في تشغيل من كل اثنين. وإخفاؤه يزيل ذلك الضجيج تمامًا.
 
-**`scale: 'css'`** normalizes the screenshot to CSS pixels instead of device pixels. Without this, a Retina display produces a 2x image while CI (usually running headless on a non-Retina machine) produces a 1x image. The baselines won’t match. `scale: 'css'` ensures both environments produce the same resolution.
+**`scale: 'css'`** يُطبّع اللقطة على بكسلات CSS بدل بكسلات الجهاز. وبدونه، تنتج شاشة Retina صورة بدقة 2x بينما ينتج CI (الذي يعمل عادةً بلا واجهة على جهاز غير Retina) صورة بدقة 1x، وحينها لن تتطابق خطوط الأساس. أما `scale: 'css'` فيضمن أن ينتج البيئتان الدقة نفسها.
 
-**`maxDiffPixelRatio: 0.01`** allows up to 1% of pixels to differ before the test fails. This is the tolerance knob. Zero tolerance sounds rigorous, but in practice it fails on sub-pixel anti-aliasing differences between OS versions. 1% absorbs that noise while still catching any real visual change. If you find it’s too loose (missing real changes) or too tight (flaking on font rendering), adjust it—but 0.01 is a solid starting point.
+**`maxDiffPixelRatio: 0.01`** يسمح باختلاف 1% من البكسلات كحد أقصى قبل أن يفشل الاختبار. وهذا هو مقبض التجاوز المسموح. والتجاوز الصفري يبدو صارمًا، لكنه عمليًا يفشل بسبب فروق تمويه الحدود دون البكسل بين إصدارات أنظمة التشغيل. و1% يمتصّ ذلك الضجيج مع استمراره في التقاط أي تغيّر بصري حقيقي. فإن وجدته مرتخيًا جدًا (يفوّت تغيّرات حقيقية) أو مشدودًا جدًا (يتذبذب بسبب تصيير الخطوط)، فعدّله — لكن 0.01 نقطة بداية متينة.
 
-## Generating and committing baselines
+## توليد خطوط الأساس وإيداعها
 
-The first run creates the baseline PNGs:
+أول تشغيل يُنشئ ملفات PNG لخطوط الأساس:
 
 ```bash
 npm run test -- --update-snapshots
 ```
 
-This produces snapshot directories next to each spec file:
+ينتج هذا مجلدات لقطات بجوار كل ملف مواصفة:
 
 - `tests/visual.spec.ts-snapshots/design-system.png`
 - `tests/visual-authenticated.spec.ts-snapshots/shelf-page.png`
 
-Yes, you commit these PNGs to git. That’s the deal. They’re small (usually 50-200KB each for a full-page screenshot), and they need to be version-controlled so the comparison works on every machine and in CI.
+نعم، تُودِع ملفات PNG هذه في git. هذا هو الاتفاق. فهي صغيرة (عادةً 50-200KB لكل لقطة صفحة كاملة)، وتحتاج إلى التحكّم في إصداراتها كي تعمل المقارنة على كل جهاز وفي CI.
 
-Check that `.gitignore` doesn’t exclude them. Some `.gitignore` templates include `*.png` or `**/*.png`—if yours does, add an exception for the snapshot directories:
+تأكّد من أن `.gitignore` لا يستثنيها. فبعض قوالب `.gitignore` تتضمّن `*.png` أو `**/*.png` — وإن فعل قالبك ذلك، فأضف استثناءً لمجلدات اللقطات:
 
 ```
 # .gitignore
 !tests/*-snapshots/*.png
 ```
 
-After committing the baselines, run the suite cleanly:
+بعد إيداع خطوط الأساس، شغّل المجموعة على نظافة:
 
 ```bash
 npm run test
 ```
 
-Then run it five times to verify stability:
+ثم شغّلها خمس مرات للتحقّق من الاستقرار:
 
 ```bash
 for i in {1..5}; do npm run test || break; done
 ```
 
-If any iteration fails, you have a false positive. The usual suspects: an animation you didn’t freeze, a timestamp or relative date on the page (“2 hours ago” changes every run), or a random avatar. Fix the source (disable the animation, mock the date, seed the avatar) rather than loosening the tolerance.
+إن فشل أي تكرار، فلديك نتيجة إيجابية كاذبة. والمشتبه بهم المعتادون: حركة لم تجمّدها، أو طابع زمني أو تاريخ نسبي في الصفحة («قبل ساعتين» يتغيّر في كل تشغيل)، أو صورة رمزية عشوائية. أصلح المصدر (عطّل الحركة، أو حاكِ التاريخ، أو ابذر الصورة الرمزية) بدلًا من إرخاء التجاوز المسموح.
 
-## Part two: break something and watch it fire
+## الجزء الثاني: اكسر شيئًا وراقبه ينطلق
 
-The lab asks you to change button padding in `src/lib/components/button.svelte`:
+يطلب التمرين تغيير حشوة الزر في `src/lib/components/button.svelte`:
 
 ```svelte
 <!-- before -->
@@ -128,56 +128,56 @@ The lab asks you to change button padding in `src/lib/components/button.svelte`:
 'inline-flex items-center justify-center rounded-(--radius-control) px-6 py-3 text-sm font-semibold ...',
 ```
 
-Run the visual specs:
+شغّل مواصفات الانحدار البصري:
 
 ```bash
 npm run test -- --grep visual
 ```
 
-Both tests should fail. The design system page has buttons. The shelf page has buttons. Bigger buttons mean different screenshots.
+ينبغي أن يفشل الاختباران. فصفحة نظام التصميم فيها أزرار، وصفحة الرف فيها أزرار. والأزرار الأكبر تعني لقطات مختلفة.
 
-Open the HTML report:
+افتح تقرير HTML:
 
 ```bash
 npx playwright show-report playwright-report/html
 ```
 
-Find the failing test and look at the three-panel view. The report shows:
+اعثر على الاختبار الفاشل وانظر إلى العرض ثلاثي الألواح. يُظهر التقرير:
 
-- **Expected**: the committed baseline with the original button sizes.
-- **Actual**: the current page with the wider buttons.
-- **Diff**: a pink/red overlay highlighting every pixel that changed.
+- **المتوقّع (Expected)**: خط الأساس المُودَع بأحجام الأزرار الأصلية.
+- **الفعلي (Actual)**: الصفحة الحالية بالأزرار الأعرض.
+- **الفرق (Diff)**: تراكب وردي/أحمر يُبرز كل بكسل تغيّر.
 
-The diff should clearly show the buttons got bigger. On the shelf page, the bigger buttons might also push card content around, cascading the visual change beyond just the buttons themselves. That’s good—it’s exactly the kind of ripple effect that’s invisible in a unit test and obvious in a screenshot.
+ينبغي أن يُظهر الفرق بوضوح أن الأزرار صارت أكبر. وفي صفحة الرف، قد تدفع الأزرار الأكبر محتوى البطاقات أيضًا، فتتسلسل التغيّرات البصرية إلى ما هو أبعد من الأزرار نفسها. وهذا جيد — فهو بالضبط نوع الأثر المتسلسل الذي يبقى غير مرئي في اختبار وحدة ويكون واضحًا في لقطة الشاشة.
 
-### Showing the diff to an agent
+### عرض الفرق على الوكيل
 
-Copy the diff image path from the report and paste it into your Claude Code conversation:
+انسخ مسار صورة الفرق من التقرير وألصقه في محادثة Claude Code:
 
-> “The visual regression test failed. Here’s the diff. What changed, and is the change intentional?”
+> «فشل اختبار الانحدار البصري. هذا هو الفرق. ما الذي تغيّر، وهل التغيّر مقصود؟»
 
-A good agent response identifies the specific change (button padding increased), describes the visual impact (buttons are wider and taller, some layout shifted), and asks whether this was intentional. It should not guess at whether the change is a bug—that’s your call. It should surface the information you need to make that call.
+استجابة الوكيل الجيدة تحدّد التغيّر المحدّد (زادت حشوة الزر)، وتصف الأثر البصري (الأزرار أعرض وأطول، وبعض التخطيط انزاح)، وتسأل إن كان ذلك مقصودًا. ولا ينبغي أن يخمّن إن كان التغيّر علّة — فالقرار قرارك. بل ينبغي أن يُظهر المعلومات التي تحتاجها لاتخاذ ذلك القرار.
 
-### Closing the loop
+### إغلاق الحلقة
 
-You have two options:
+أمامك خياران:
 
-**Revert the change.** Undo the padding edit, run the tests again. They pass. The baselines are still the original committed PNGs. This is the “no, that wasn’t intentional” path.
+**تراجع عن التغيّر.** ألغِ تعديل الحشوة، وشغّل الاختبارات مرة أخرى. ستنجح، وتبقى خطوط الأساس هي ملفات PNG الأصلية المُودَعة. وهذا هو مسار «لا، لم يكن ذلك مقصودًا».
 
-**Update the baselines.** If the wider buttons are the new design, run `npm run test -- --update-snapshots` to regenerate the PNGs. Commit the new baselines as a separate commit with a message like “update visual baselines for wider button padding.” This is the “yes, that was intentional” path.
+**حدّث خطوط الأساس.** إن كانت الأزرار الأعرض هي التصميم الجديد، فشغّل `npm run test -- --update-snapshots` لإعادة توليد ملفات PNG. وأودِع خطوط الأساس الجديدة في إيداع منفصل برسالة مثل `update visual baselines for wider button padding`. وهذا هو مسار «نعم، كان ذلك مقصودًا».
 
-Either way, your git history should show the experiment as discrete commits. The sequence should be legible: “here’s where the padding changed, here’s where the test caught it, here’s where we decided what to do about it.”
+وفي الحالتين، ينبغي أن يُظهر سجل git لديك التجربة كإيداعات منفصلة. وينبغي أن يكون التسلسل مقروءًا: «هنا تغيّرت الحشوة، وهنا التقطها الاختبار، وهنا قرّرنا ما نفعله بشأنها».
 
-## What makes this work
+## ما الذي يجعل هذا ينجح
 
-The visual regression gate is valuable precisely because it’s dumb. It doesn’t understand buttons or padding or layout. It compares pixels. That means it catches things that no amount of unit testing or integration testing would catch: a CSS specificity conflict that turns all your buttons blue, a font-weight change that makes body text hard to read, a z-index collision that hides the rating modal behind the header.
+بوابة الانحدار البصري قيّمة تحديدًا لأنها غبيّة. فهي لا تفهم الأزرار ولا الحشوة ولا التخطيط، بل تقارن البكسلات. وهذا يعني أنها تلتقط أشياء لا يلتقطها أي قدر من اختبار الوحدات أو اختبار التكامل: تعارض في أولوية CSS يحوّل كل أزرارك إلى الأزرق، أو تغيّر في وزن الخط يجعل نص المتن عصيّ القراءة، أو تصادم في z-index يُخفي نافذة التقييم خلف الترويسة.
 
-The cost is false positives from non-determinism. The four config lines and the seeding discipline exist to drive that cost to zero. If your false-positive rate is zero, the visual gate becomes free—it runs in the background, never bothers you when nothing changed, and catches everything when something did.
+الثمن هو النتائج الإيجابية الكاذبة الناتجة عن عدم الحتمية. وأسطر الإعداد الأربعة وانضباط البذر موجودة لدفع ذلك الثمن إلى الصفر. فإن كان معدّل نتائجك الإيجابية الكاذبة صفرًا، صارت البوابة البصرية مجانية — تعمل في الخلفية، ولا تزعجك حين لا يتغيّر شيء، وتلتقط كل شيء حين يتغيّر.
 
-A failed screenshot test is a conversation opener. The diff image is the message. Once your agent can read the diff, the loop closes itself.
+اختبار لقطة الشاشة الفاشل هو افتتاحية محادثة. وصورة الفرق هي الرسالة. وبمجرد أن يستطيع وكيلك قراءة الفرق، تُغلق الحلقة نفسها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Wire Visual Regression Into the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop)
-- [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
-- [Runtime Probes in the Development Loop](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
+- [تمرين: وصل الانحدار البصري بحلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop)
+- [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
+- [مسابر وقت التشغيل في حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)

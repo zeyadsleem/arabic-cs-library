@@ -30,3 +30,4 @@ content-src/learn-ocaml/mimetype
 
 # Temporary translation batch lists
 .chunks/
+.kinney-batches/

@@ -1,16 +1,16 @@
 ---
-title: "Fetching Data with useState and useEffect"
-lang: en
+title: "جلب البيانات باستخدام `useState` و`useEffect`"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/fetching-data-usestate"
 ---
 
-Fetching data is where React apps meet the real world, and it’s where TypeScript truly shines. When you combine `useState` with `useEffect` for data fetching, TypeScript helps you handle all the edge cases: loading states, error handling, race conditions, and cleanup. No more “Cannot read property ‘title’ of undefined” errors in production.
+جلب البيانات هو النقطة التي تلتقي فيها تطبيقات React بالعالم الحقيقي، وهو أيضًا حيث يبدع TypeScript حقًا. حين تجمع بين `useState` و`useEffect` لجلب البيانات، يساعدك TypeScript على التعامل مع جميع الحالات الحدّية: حالات التحميل، ومعالجة الأخطاء، وسباقات الطلبات (race conditions)، والتنظيف (cleanup). لا مزيد من أخطاء «Cannot read property 'title' of undefined» في بيئة الإنتاج.
 
-In this tutorial, we’ll build robust data fetching patterns using the JSONPlaceholder todos API, starting with basic fetching and progressing to production-ready patterns with proper error handling and race condition prevention.
+في هذا الدليل سنبني أنماطًا متينة لجلب البيانات باستخدام واجهة مهام JSONPlaceholder، بدءًا من الجلب الأساسي وصولًا إلى أنماط جاهزة للإنتاج مع معالجة أخطاء سليمة ومنع سباقات الطلبات.
 
-## The Basic Fetch Pattern
+## النمط الأساسي للجلب
 
-Let’s start with a simple fetch that gets all todos:
+لنبدأ بجلب بسيط يجلب كل المهام:
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -60,11 +60,11 @@ function TodoList() {
 }
 ```
 
-This works, but there are several improvements we can make for production code.
+هذا يعمل، لكن هناك عدة تحسينات يمكننا إجراءها لشيفرة الإنتاج.
 
-## Async/Await Pattern with Proper Error Handling
+## نمط async/await مع معالجة أخطاء سليمة
 
-The async/await syntax is cleaner and makes error handling more straightforward:
+صياغة async/await أنظف تجعل معالجة الأخطاء أكثر وضوحًا:
 
 ```typescript
 function ImprovedTodoList() {
@@ -120,9 +120,9 @@ function ImprovedTodoList() {
 }
 ```
 
-## Preventing Race Conditions with Cleanup
+## منع سباقات الطلبات عبر التنظيف
 
-When fetching data based on props or state, you need to handle the case where the component updates before the previous fetch completes:
+حين تجلب البيانات اعتمادًا على الخصائص (props) أو الحالة، عليك التعامل مع الحالة التي يُحدَّث فيها المكوّن قبل اكتمال الطلب السابق:
 
 ```typescript
 function UserTodos({ userId }: { userId: number }) {
@@ -186,9 +186,9 @@ function UserTodos({ userId }: { userId: number }) {
 }
 ```
 
-## Using AbortController for True Cancellation
+## استخدام AbortController للإلغاء الحقيقي
 
-For even better control, use AbortController to actually cancel the network request:
+للتحكم الأفضل، استخدم AbortController لإلغاء طلب الشبكة فعليًا:
 
 ```typescript
 function CancellableTodoList() {
@@ -249,9 +249,9 @@ function CancellableTodoList() {
 }
 ```
 
-## Generic Fetch Hook for Reusability
+## خُطّاف جلب عام لإعادة الاستخدام
 
-Let’s create a reusable hook that handles all the boilerplate:
+لنصنع خُطّافًا قابلًا لإعادة الاستخدام يتولى كل الشيفرة المتكرّرة (boilerplate):
 
 ```typescript
 // Generic type for any API response
@@ -319,9 +319,9 @@ function TodoListWithHook() {
 }
 ```
 
-## Handling Multiple Async States
+## التعامل مع عدة حالات غير متزامنة
 
-When you need to coordinate multiple fetches:
+حين تحتاج إلى تنسيق عدة عمليات جلب:
 
 ```typescript
 interface User {
@@ -400,9 +400,9 @@ function TodoWithUserInfo({ todoId }: { todoId: number }) {
 }
 ```
 
-## Parallel Fetching with Promise.all
+## الجلب المتوازي عبر Promise.all
 
-When fetches don’t depend on each other, run them in parallel:
+حين لا تعتمد عمليات الجلب بعضها على بعض، شغّلها بالتوازي:
 
 ```typescript
 function DashboardData() {
@@ -474,9 +474,9 @@ function DashboardData() {
 }
 ```
 
-## Pagination and Infinite Scroll
+## الترقيم الصفحي والتمرير اللانهائي
 
-Handling paginated data with TypeScript:
+التعامل مع البيانات المقسّمة إلى صفحات باستخدام TypeScript:
 
 ```typescript
 function PaginatedTodos() {
@@ -554,9 +554,9 @@ function PaginatedTodos() {
 }
 ```
 
-## Debounced Search
+## البحث المؤجَّل (Debounced)
 
-For search functionality, debounce the API calls:
+في ميزة البحث، أجّل استدعاءات الواجهة البرمجية (debounce):
 
 ```typescript
 function TodoSearch() {
@@ -633,9 +633,9 @@ function TodoSearch() {
 }
 ```
 
-## Retry Logic for Failed Requests
+## منطق إعادة المحاولة للطلبات الفاشلة
 
-Add automatic retry for transient failures:
+أضف إعادة محاولة تلقائية للأعطال العابرة:
 
 ```typescript
 function TodosWithRetry() {
@@ -720,9 +720,9 @@ function TodosWithRetry() {
 }
 ```
 
-## Best Practices and Common Pitfalls
+## أفضل الممارسات والأخطاء الشائعة
 
-### Always Handle the Loading State
+### تعامل دائمًا مع حالة التحميل
 
 ```typescript
 // ❌ Bad: No loading state
@@ -758,7 +758,7 @@ function GoodExample() {
 }
 ```
 
-### Don’t Forget Cleanup
+### لا تنسَ التنظيف
 
 ```typescript
 // ❌ Bad: No cleanup, can cause memory leaks
@@ -794,7 +794,7 @@ function GoodCleanup({ id }: { id: number }) {
 }
 ```
 
-### Type Your API Responses
+### صرّح بأنواع استجابات الواجهة البرمجية
 
 ```typescript
 // ❌ Bad: Using 'any' type
@@ -811,18 +811,18 @@ const data = await response.json();
 const validatedData = TodoSchema.parse(data); // Using Zod
 ```
 
-## Summary
+## الخلاصة
 
-Fetching data with `useState` and `useEffect` requires careful attention to:
+جلب البيانات باستخدام `useState` و`useEffect` يتطلب عناية دقيقة بما يلي:
 
-1. **Loading states** - Always show appropriate feedback
-2. **Error handling** - Catch and display errors gracefully
-3. **Race conditions** - Cancel outdated requests
-4. **Cleanup** - Prevent memory leaks and state updates after unmount
-5. **TypeScript types** - Type your API responses explicitly
+1. **حالات التحميل** — اعرض دائمًا تغذية راجعة مناسبة
+2. **معالجة الأخطاء** — التقط الأخطاء واعرضها برشاقة
+3. **سباقات الطلبات** — ألغِ الطلبات القديمة
+4. **التنظيف** — امنع تسريبات الذاكرة وتحديثات الحالة بعد إزالة المكوّن
+5. **أنواع TypeScript** — صرّح بأنواع استجابات الواجهة البرمجية صراحةً
 
-With these patterns, you can build robust data fetching that handles all the edge cases users will encounter in production.
+بهذه الأنماط تستطيع بناء جلب بيانات متين يتعامل مع جميع الحالات الحدّية التي سيواجهها المستخدمون في بيئة الإنتاج.
 
-## What’s Next?
+## ما التالي؟
 
-In the next tutorial, we’ll dive deeper into loading states and error handling patterns, including discriminated unions for representing async states, error boundaries, and user-friendly error messages.
+في الدليل التالي، سنغوص أعمق في أنماط حالات التحميل ومعالجة الأخطاء، بما في ذلك الاتحادات المُميَّزة لتمثيل الحالات غير المتزامنة، وحدود الأخطاء، ورسائل الأخطاء المفهومة للمستخدم.

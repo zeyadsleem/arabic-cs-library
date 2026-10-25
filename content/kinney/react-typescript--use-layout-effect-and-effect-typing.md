@@ -1,16 +1,16 @@
 ---
-title: "Use Layout Effect And Effect Typing"
-lang: en
+title: "استخدام useLayoutEffect وتحديد أنواع التأثيرات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/use-layout-effect-and-effect-typing"
 ---
 
-React’s `useEffect` and `useLayoutEffect` look nearly identical on the surface, but their timing differences can make or break your UI. One runs after the DOM updates, the other runs synchronously before the browser paints—and choosing wrong can lead to flickering layouts or janky animations. With TypeScript, we can make these effects type-safe and catch common pitfalls before they reach production.
+يبدو `useEffect` و`useLayoutEffect` في React متطابقين تقريبًا على السطح، لكن فروق التوقيت بينهما قد تصنع واجهتك أو تهدمها. أحدهما يعمل بعد تحديث DOM، والآخر يعمل بشكل متزامن قبل أن يرسم المتصفح—واختيار الخطأ قد يؤدي إلى تخطيطات وامضة أو حركات متقطعة. ومع TypeScript، يمكننا جعل هذه التأثيرات آمنة من حيث الأنواع والتقاط المزالق الشائعة قبل أن تصل إلى الإنتاج.
 
-Understanding when to reach for `useLayoutEffect` instead of `useEffect` is crucial for building performant React applications. The key difference isn’t just *when* they run—it’s about preventing visual inconsistencies that make your app feel broken to users.
+إن فهم متى تلجأ إلى `useLayoutEffect` بدلًا من `useEffect` أمر بالغ الأهمية لبناء تطبيقات React عالية الأداء. الفرق الجوهري ليس فقط *متى* يعمل كل منهما—بل يتعلق بمنع التفاوتات البصرية التي تجعل تطبيقك يبدو معطوبًا في نظر المستخدمين.
 
-## The Fundamental Difference
+## الفرق الجوهري
 
-Both hooks follow the same API, but their execution timing is completely different:
+يتبع كلا الخطافين الواجهة البرمجية نفسها، لكن توقيت تنفيذهما مختلف تمامًا:
 
 ```typescript
 // ✅ useEffect: Runs asynchronously after DOM updates and paint
@@ -26,22 +26,22 @@ useLayoutEffect(() => {
 }, []);
 ```
 
-Think of it this way: `useEffect` is like sending a postcard—it gets there eventually, after everything else is done. `useLayoutEffect` is like a phone call—it happens immediately and blocks everything else until it’s finished.
+فكّر في الأمر هكذا: `useEffect` يشبه إرسال بطاقة بريدية—تصل في النهاية، بعد الانتهاء من كل شيء آخر. أما `useLayoutEffect` فيشبه مكالمة هاتفية—تحدث فورًا وتعطّل كل شيء آخر حتى تنتهي.
 
-> **Note**
+> **ملاحظة**
 >
-> Both hooks have identical TypeScript signatures, but their timing implications affect how you should type their dependencies and cleanup functions.
+> لكلا الخطافين توقيعان متطابقان في TypeScript، لكن آثار التوقيت لديهما تؤثر في كيفية تحديد أنواع اعتمادياتهما ودوال التنظيف.
 
-## When to Use `useLayoutEffect`
+## متى تستخدم `useLayoutEffect`
 
-Use `useLayoutEffect` when you need to:
+استخدم `useLayoutEffect` عندما تحتاج إلى:
 
-1. **Measure DOM elements** before the browser paints
-2. **Modify styles** that would cause visible layout shifts
-3. **Synchronously update** state based on DOM measurements
-4. **Prevent flickering** in animations or transitions
+1. **قياس عناصر DOM** قبل أن يرسم المتصفح
+2. **تعديل الأنماط** التي قد تسبب إزاحات تخطيط مرئية
+3. **تحديث الحالة بشكل متزامن** بناءً على قياسات DOM
+4. **منع الوميض** في الحركات أو الانتقالات
 
-Here’s a common Real World Use Case™—measuring an element’s dimensions:
+إليك حالة استخدام شائعة من العالم الحقيقي™—قياس أبعاد عنصر:
 
 ```typescript
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -83,15 +83,15 @@ function useMeasure<T extends HTMLElement>(): [React.RefObject<T>, ElementDimens
 }
 ```
 
-Notice how we’re using `useLayoutEffect` here because we need the DOM measurements *before* the browser paints. If we used `useEffect`, the component would render with `width: 0, height: 0` initially, then jump to the correct dimensions—causing a visual flicker.
+لاحظ أننا نستخدم `useLayoutEffect` هنا لأننا نحتاج إلى قياسات DOM *قبل* أن يرسم المتصفح. لو استخدمنا `useEffect`، لكان المكوّن يُرسم بـ `width: 0, height: 0` في البداية، ثم يقفز إلى الأبعاد الصحيحة—مما يسبب وميضًا بصريًا.
 
-> **Tip**
+> **نصيحة**
 >
-> TypeScript’s strict null checks help catch ref access errors. Always check `ref.current` exists before using it, even in layout effects.
+> تساعد فحوصات null الصارمة في TypeScript على التقاط أخطاء الوصول إلى ref. تحقق دائمًا من وجود `ref.current` قبل استخدامه، حتى في تأثيرات التخطيط.
 
-## Typing Effect Dependencies
+## تحديد أنواع اعتماديات التأثيرات
 
-Both effects require careful typing of their dependencies. Here’s how to avoid common TypeScript pitfalls:
+يتطلب كلا التأثيرين تحديد أنواع اعتمادياته بعناية. إليك كيفية تجنب المزالق الشائعة في TypeScript:
 
 ```typescript
 // ❌ Bad: Poorly typed dependencies
@@ -157,9 +157,9 @@ function GoodExample({ userId }: { userId: string | undefined }) {
 }
 ```
 
-## Typing Cleanup Functions
+## تحديد أنواع دوال التنظيف
 
-Both effects can return cleanup functions, and TypeScript helps ensure they’re properly typed:
+يمكن لكلا التأثيرين إرجاع دوال تنظيف، ويساعد TypeScript على ضمان تحديد أنواعها بشكل صحيح:
 
 ```typescript
 // ✅ Good: Properly typed cleanup with explicit return type
@@ -180,9 +180,9 @@ useLayoutEffect((): (() => void) | void => {
 }, []);
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Never return a promise from an effect cleanup function. React expects cleanup to be synchronous.
+> لا تُعد أبدًا promise من دالة تنظيف تأثير. يتوقع React أن يكون التنظيف متزامنًا.
 
 ```typescript
 // ❌ Bad: Returning a promise from cleanup
@@ -202,9 +202,9 @@ useEffect(() => {
 }, []);
 ```
 
-## Performance Considerations and Typing
+## اعتبارات الأداء وتحديد الأنواع
 
-`useLayoutEffect` is synchronous and blocks painting, so TypeScript can help us be more intentional about expensive operations:
+`useLayoutEffect` متزامن ويعطّل الرسم، لذلك يمكن أن يساعدنا TypeScript على أن نكون أكثر وعيًا بالعمليات المكلفة:
 
 ```typescript
 interface ExpensiveCalculationResult {
@@ -260,9 +260,9 @@ function GoodPerformance() {
 }
 ```
 
-## Common TypeScript Pitfalls
+## مزالق TypeScript الشائعة
 
-### Stale Closures with Event Handlers
+### الإغلاقات القديمة مع معالجات الأحداث
 
 ```typescript
 // ❌ Bad: Stale closure captures old count value
@@ -310,7 +310,7 @@ function FreshClosureExample() {
 }
 ```
 
-### Ref Current Type Guards
+### حراس الأنواع على ref.current
 
 ```typescript
 // ❌ Bad: Not checking ref.current exists
@@ -351,9 +351,9 @@ function SafeRefAccess() {
 }
 ```
 
-## Real-World Example: Tooltip Positioning
+## مثال من العالم الحقيقي: تحديد موضع التلميح
 
-Here’s a practical example that combines proper typing with `useLayoutEffect` for tooltip positioning:
+إليك مثالًا عمليًا يجمع بين تحديد الأنواع الصحيح و`useLayoutEffect` لتحديد موضع التلميح:
 
 ```typescript
 interface Position {
@@ -427,17 +427,17 @@ function Tooltip({ children, content, isVisible }: TooltipProps) {
 }
 ```
 
-This example uses `useLayoutEffect` because we need to:
+يستخدم هذا المثال `useLayoutEffect` لأننا نحتاج إلى:
 
-1. Measure the trigger and tooltip elements
-2. Calculate the optimal position
-3. Apply the position before the browser paints
+1. قياس عنصري المُشغِّل والتلميح
+2. حساب الموضع الأمثل
+3. تطبيق الموضع قبل أن يرسم المتصفح
 
-Using `useEffect` here would cause the tooltip to briefly appear in the wrong position before jumping to the correct spot.
+استخدام `useEffect` هنا سيجعل التلميح يظهر لفترة وجيزة في الموضع الخاطئ قبل أن يقفز إلى المكان الصحيح.
 
-## Testing Layout Effects
+## اختبار تأثيرات التخطيط
 
-Testing components with `useLayoutEffect` requires special consideration since they run synchronously:
+يتطلب اختبار المكوّنات التي تستخدم `useLayoutEffect` اعتبارًا خاصًا لأنها تعمل بشكل متزامن:
 
 ```typescript
 import { render, screen } from '@testing-library/react';
@@ -474,18 +474,18 @@ test('measures element dimensions synchronously', () => {
 });
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Always wrap renders that trigger layout effects in `act()` to ensure they complete before your assertions run.
+> غلّف دائمًا عمليات الرسم التي تشغّل تأثيرات التخطيط داخل `act()` لتضمن اكتمالها قبل تنفيذ التحققات.
 
-## Key Takeaways
+## النقاط الرئيسية
 
-- **Use `useLayoutEffect`** when you need synchronous DOM measurements or style updates that prevent visual flicker
-- **Use `useEffect`** for asynchronous operations, API calls, and side effects that don’t need to block painting
-- **Always type your dependencies** explicitly and use proper type guards for refs and nullable values
-- **Be mindful of performance**—`useLayoutEffect` blocks the browser paint cycle
-- **Test layout effects** with `act()` to ensure they complete before assertions
+- **استخدم `useLayoutEffect`** عندما تحتاج إلى قياسات DOM متزامنة أو تحديثات أنماط تمنع الوميض البصري
+- **استخدم `useEffect`** للعمليات غير المتزامنة واستدعاءات API والآثار الجانبية التي لا تحتاج إلى تعطيل الرسم
+- **حدد أنواع اعتمادياتك دائمًا** بشكل صريح واستخدم حراس الأنواع المناسبين لقيم ref والقيم القابلة لأن تكون null
+- **كن واعيًا بالأداء**—`useLayoutEffect` يعطّل دورة الرسم في المتصفح
+- **اختبر تأثيرات التخطيط** باستخدام `act()` لتضمن اكتمالها قبل التحققات
 
-The choice between these hooks often comes down to user experience. If your users would notice a visual jump or flicker, reach for `useLayoutEffect`. If they wouldn’t notice the delay, stick with `useEffect` and keep the main thread responsive.
+غالبًا ما يتلخص الاختيار بين هذين الخطافين في تجربة المستخدم. إذا كان مستخدموك سيلاحظون قفزة بصرية أو وميضًا، فالجأ إلى `useLayoutEffect`. وإذا لم يلاحظوا التأخير، فالتزم بـ `useEffect` وأبقِ الخيط الرئيسي مستجيبًا.
 
-With proper TypeScript typing, you can catch potential issues early and ensure your effects handle edge cases gracefully—leading to more robust, performant React applications that feel polished to your users.
+مع تحديد الأنواع الصحيح في TypeScript، يمكنك التقاط المشكلات المحتملة مبكرًا وضمان تعامل تأثيراتك مع الحالات الحدية بأناقة—مما يؤدي إلى تطبيقات React أكثر قوة وأداءً وتبدو مصقولة لمستخدميك.

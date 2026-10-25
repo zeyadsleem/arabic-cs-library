@@ -1,38 +1,38 @@
 ---
-title: "Mocking Browser APIs"
-lang: en
+title: "محاكاة واجهات المتصفح البرمجية"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/mocking-browser-apis"
 ---
 
-Network mocking gets all the attention because it is loud. Browser API mocking is quieter, and it bites just as hard. Your app reads `matchMedia`, `navigator.clipboard`, `Notification.permission`, `ResizeObserver`, or some shiny experimental API. The test runner lives in a browser that does not quite behave the way your users’ browsers behave. Suddenly the test is not about your feature anymore. It is about the gap between “real browser enough” and “the exact browser surface this component assumes.”
+تحظى محاكاة الشبكة بكل الاهتمام لأنها صاخبة. أما محاكاة واجهات المتصفح البرمجية فأهدأ، لكنها تعضّ بقوة مماثلة. يقرأ تطبيقك `matchMedia` أو `navigator.clipboard` أو `Notification.permission` أو `ResizeObserver` أو واجهة تجريبية لامعة ما. ويعيش مشغّل الاختبار في متصفح لا يتصرف تمامًا كما تتصرف متصفحات مستخدميك. وفجأة لم يعد الاختبار عن ميزتك. بل صار عن الفجوة بين «متصفح حقيقي بما يكفي» و«سطح المتصفح المحدد الذي يفترضه هذا المكوّن».
 
-[Playwright](https://playwright.dev/) has an official [Mock browser APIs guide](https://playwright.dev/docs/mock-browser-apis), and the big idea is dead simple: if Playwright already gives you a first-class knob, use that. If it doesn’t, install the mock *before the page loads* and make the mock behave enough like the real API that your app is not being tested against fiction.
+لدى [Playwright](https://playwright.dev/) دليل رسمي هو [Mock browser APIs](https://playwright.dev/docs/mock-browser-apis)، والفكرة الكبرى فيه بسيطة للغاية: إن كان Playwright يمنحك أصلًا مقبضًا من الدرجة الأولى، فاستخدمه. وإن لم يفعل، فثبّت البديل المُحاكى *قبل تحميل الصفحة* واجعل سلوكه شبيهًا بالواجهة الحقيقية بما يكفي كي لا يكون تطبيقك تحت الاختبار في مواجهة خيال.
 
-## Use the real knob first
+## استخدم المقبض الحقيقي أولًا
 
-Before you write a mock, check whether Playwright already models the thing directly.
+قبل أن تكتب بديلًا مُحاكى، تحقّق مما إذا كان Playwright يمثّل الشيء مباشرة بالفعل.
 
-Good examples:
+أمثلة جيدة:
 
-- [`geolocation`](https://playwright.dev/docs/emulation#geolocation) plus [`grantPermissions`](https://playwright.dev/docs/api/class-browsercontext#browser-context-grant-permissions) instead of mocking location APIs by hand
-- [`locale`](https://playwright.dev/docs/emulation#locale--timezone), `timezoneId`, `colorScheme`, and viewport options instead of ad-hoc globals
-- [`Clock`](https://playwright.dev/docs/clock) instead of overriding `Date.now()` with a brittle one-off patch
-- [`storageState`](https://playwright.dev/docs/auth) instead of manually stuffing auth state into `localStorage`
+- [`geolocation`](https://playwright.dev/docs/emulation#geolocation) مع [`grantPermissions`](https://playwright.dev/docs/api/class-browsercontext#browser-context-grant-permissions) بدلًا من محاكاة واجهات الموقع يدويًا
+- [`locale`](https://playwright.dev/docs/emulation#locale--timezone) و`timezoneId` و`colorScheme` وخيارات منفذ العرض بدلًا من متغيرات عامة مرتجلة
+- [`Clock`](https://playwright.dev/docs/clock) بدلًا من تجاوز `Date.now()` برقعة هشة لمرة واحدة
+- [`storageState`](https://playwright.dev/docs/auth) بدلًا من حشو حالة المصادقة يدويًا في `localStorage`
 
-The rule is not “never mock.” The rule is “prefer the browser model Playwright already knows how to drive.” A first-class API buys you less code, fewer lies, and better cross-browser behavior.
+القاعدة ليست «لا تحاكِ أبدًا». القاعدة هي «فضّل نموذج المتصفح الذي يعرف Playwright كيف يقوده بالفعل». فالواجهة من الدرجة الأولى تشتري لك شيفرة أقل، وأكاذيب أقل، وسلوكًا أفضل عبر المتصفحات.
 
-## Clock control is richer than “freeze time”
+## التحكم في الساعة أغنى من «تجميد الوقت»
 
-The [Clock docs](https://playwright.dev/docs/clock) are worth reading all the way through once because there are really two levels here.
+يستحق [دليل Clock](https://playwright.dev/docs/clock) أن تقرأه كاملًا مرة واحدة، لأن هناك مستويين هنا في الحقيقة.
 
-Use `clock.setFixedTime()` when all you need is deterministic wall-clock reads:
+استخدم `clock.setFixedTime()` حين لا تحتاج إلا إلى قراءات حتمية لساعة الحائط:
 
 ```typescript
 await page.clock.setFixedTime(new Date('2026-04-14T09:00:00-05:00'));
 await page.goto('/dashboard');
 ```
 
-Use `clock.install()` when the app depends on timers, animation frames, or elapsed time:
+واستخدم `clock.install()` حين يعتمد التطبيق على مؤقتات أو إطارات حركة أو وقت منقضٍ:
 
 ```typescript
 await page.clock.install();
@@ -44,15 +44,15 @@ await page.clock.runFor(10_000);
 await page.clock.resume();
 ```
 
-`install()` is the heavy-duty version. It overrides timers, `Date`, animation frame APIs, `performance`, and the rest of the time surface. `setFixedTime()` is the lighter “just make `Date.now()` deterministic” version.
+`install()` هي النسخة الثقيلة. إنها تتجاوز المؤقتات و`Date` وواجهات إطارات الحركة و`performance` وبقية سطح الوقت. أما `setFixedTime()` فهي النسخة الأخف: «اجعل `Date.now()` حتميًا فقط».
 
-Pair this with `timezoneId` in the browser context when the feature under test is date-sensitive. Freezing the clock and leaving the timezone floating is how teams end up debugging “works in Chicago, fails in UTC” nonsense they wrote themselves.
+اقرن هذا بخيار `timezoneId` في سياق المتصفح حين تكون الميزة تحت الاختبار حساسة للتواريخ. فتجميد الساعة وترك المنطقة الزمنية طليقة هو الطريق الذي تنتهي به الفرق إلى تصحيح هراء «يعمل في شيكاغو ويفشل في UTC» الذي كتبته بنفسها.
 
-## Install mocks before navigation
+## ثبّت البدائل المُحاكاة قبل التنقّل
 
-The official docs make this point for a reason: if the page calls the API during boot, your mock has to exist *before* the page starts loading. That means [`page.addInitScript()`](https://playwright.dev/docs/api/class-page#page-add-init-script) or [`browserContext.addInitScript()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-init-script), not `page.evaluate()` after `goto`.
+يشدد الدليل الرسمي على هذه النقطة لسبب: إن كانت الصفحة تنادي الواجهة أثناء الإقلاع، فيجب أن يوجد بديلك المُحاكى *قبل* أن تبدأ الصفحة التحميل. وهذا يعني [`page.addInitScript()`](https://playwright.dev/docs/api/class-page#page-add-init-script) أو [`browserContext.addInitScript()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-init-script)، لا `page.evaluate()` بعد `goto`.
 
-This is the minimal pattern:
+هذا هو النمط الأدنى:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -78,17 +78,17 @@ test('respects reduced motion preference', async ({ page }) => {
 });
 ```
 
-The timing is the important part. If you move the mock after `goto`, the app already read the real `matchMedia` result and your test is now proving something about your patch timing, not your UI.
+التوقيت هو الجزء المهم. فإن نقلت البديل المُحاكى إلى ما بعد `goto`، فقد قرأ التطبيق نتيجة `matchMedia` الحقيقية بالفعل، واختبارك الآن يثبت شيئًا عن توقيت رقعتك، لا عن واجهتك.
 
-If you mix `browserContext.addInitScript()` and `page.addInitScript()`, do not build a test that depends on their relative ordering. Keep related boot-time logic in one place unless you are intentionally testing the layering.
+وإن خلطت بين `browserContext.addInitScript()` و`page.addInitScript()`، فلا تبنِ اختبارًا يعتمد على ترتيبهما النسبي. أبقِ المنطق المرتبط بوقت الإقلاع في مكان واحد، إلا إذا كنت تختبر الطبقات عن قصد.
 
-> **This mock is intentionally minimal**
+> **هذا البديل المُحاكى أدنى عمدًا**
 >
-> If your code subscribes with `addEventListener`, `addListener`, or expects live media-query updates, this snippet is not enough. Use an event-capable version in a shared fixture so the test exercises the same contract your component uses in production.
+> إن كانت شيفرتك تشترك عبر `addEventListener` أو `addListener` أو تتوقع تحديثات حية لاستعلامات الوسائط، فهذه القصاصة لا تكفي. استخدم نسخة قادرة على الأحداث في تجهيزة مشتركة كي يمارس الاختبار العقد نفسه الذي يستخدمه مكوّنك في الإنتاج.
 
-## Read-only APIs need a different move
+## الواجهات للقراءة فقط تحتاج حركة مختلفة
 
-Some browser APIs are writable. Some are not. The Playwright docs use `navigator.cookieEnabled` as the example, and it is a good one: assigning to it directly does nothing. If the property is configurable, use [`Object.defineProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) against the right prototype instead.
+بعض واجهات المتصفح البرمجية قابلة للكتابة. وبعضها ليس كذلك. يستخدم دليل Playwright المثال `navigator.cookieEnabled`، وهو مثال جيد: الإسناد إليه مباشرة لا يفعل شيئًا. فإن كانت الخاصية قابلة للتهيئة، فاستخدم [`Object.defineProperty`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) على النموذج الأولي الصحيح بدلًا من ذلك.
 
 ```typescript
 await page.addInitScript(() => {
@@ -98,81 +98,81 @@ await page.addInitScript(() => {
 });
 ```
 
-This is the part that catches people off guard. The test “set” the property. The app still saw the original value. The bug was not in the feature. The bug was in the mock.
+هذا هو الجزء الذي يفاجئ الناس. الاختبار «عيّن» الخاصية. والتطبيق ما زال يرى القيمة الأصلية. ولم يكن العيب في الميزة. كان العيب في البديل المُحاكى.
 
-## Model events, not just values
+## مثّل الأحداث، لا القيم فقط
 
-This is the biggest browser-API-mocking mistake by a mile.
+هذا أكبر خطأ في محاكاة واجهات المتصفح بفارق كبير.
 
-The first version of the mock returns a value. The app renders correctly on first paint. Everybody feels good. Then the real feature breaks because the app was listening for updates and the mock never emitted them.
+النسخة الأولى من البديل المُحاكى تعيد قيمة. فيُصيّر التطبيق بشكل صحيح عند أول رسم. ويشعر الجميع بالرضا. ثم تتعطل الميزة الحقيقية لأن التطبيق كان يستمع إلى تحديثات ولم يصدرها البديل المُحاكى قط.
 
-If your component subscribes to changes, your mock needs to support changes.
+إن كان مكوّنك يشترك في التغييرات، فيجب أن يدعم بديلك المُحاكى التغييرات.
 
-The [Playwright guide’s battery example](https://playwright.dev/docs/mock-browser-apis) is worth studying for exactly this reason: it stores listeners, updates internal state, and fires the same events a real implementation would. That is the bar. Not perfect browser fidelity. Just enough behavior that the component is being tested against the same contract it uses in production.
+[مثال البطارية في دليل Playwright](https://playwright.dev/docs/mock-browser-apis) يستحق الدراسة لهذا السبب بالضبط: إنه يخزّن المستمعين، ويحدّث الحالة الداخلية، ويطلق الأحداث نفسها التي يطلقها التنفيذ الحقيقي. هذا هو السقف. لا دقة متصفح مثالية. بل سلوك يكفي لأن يُختبر المكوّن مقابل العقد نفسه الذي يستخدمه في الإنتاج.
 
-I use this mental model:
+أستخدم هذا النموذج الذهني:
 
-- If the app only reads once, a simple return value can be enough.
-- If the app subscribes, the mock must support listeners.
-- If the app branches on permission state, the permission and the API surface both need to agree.
+- إن كانت الصفحة تقرأ مرة واحدة فقط، فقد تكفي قيمة إرجاع بسيطة.
+- وإن كانت تشترك، فيجب أن يدعم البديل المُحاكى المستمعين.
+- وإن كانت تتفرّع على حالة الإذن، فيجب أن يتفق الإذن وسطح الواجهة معًا.
 
-## Verify the calls when the contract matters
+## تحقّق من النداءات حين يكون العقد مهمًا
 
-Sometimes the interesting part is not just “the UI changed.” Sometimes you want to prove the page asked the browser for the thing it was supposed to ask for. The Playwright docs recommend [`page.exposeFunction()`](https://playwright.dev/docs/api/class-page#page-expose-function) for this, and it is a nice trick.
+أحيانًا لا يكون الجزء المثير مجرد «تغيّرت الواجهة». أحيانًا تريد أن تثبت أن الصفحة طلبت من المتصفح الشيء الذي كان ينبغي أن تطلبه. ويوصي دليل Playwright بـ[`page.exposeFunction()`](https://playwright.dev/docs/api/class-page#page-expose-function) لهذا، وهي حيلة لطيفة.
 
-Expose a logger from the test, have the mock call it, and assert on the call sequence. That turns “I think the app probably queried the API” into a real contract.
+اعرض مسجّلًا من الاختبار، ودع البديل المُحاكى يناديه، ثم أكّد على تسلسل النداءات. هذا يحوّل «أظن أن التطبيق استعلم الواجهة على الأرجح» إلى عقد حقيقي.
 
-This matters a lot for:
+وهذا مهم جدًا في:
 
-- subscription APIs
-- permission requests
-- clipboard reads and writes
-- feature-detection branches like `if ('share' in navigator)`
+- واجهات الاشتراك
+- طلبات الإذن
+- قراءات الحافظة وكتاباتها
+- فروع كشف الميزات مثل `if ('share' in navigator)`
 
-If you only assert on the final UI, a stale cached value can make the test pass for the wrong reason.
+إن اكتفيت بالتأكيد على الواجهة النهائية، فقد تجعل قيمة مخزّنة مؤقتًا قديمة الاختبار ينجح للسبب الخطأ.
 
-## The common use cases
+## حالات الاستخدام الشائعة
 
-This is the part I wish more teams wrote down. Browser API mocking is not exotic. It shows up constantly.
+هذا هو الجزء الذي كنت أتمنى أن تدوّنه مزيد من الفرق. محاكاة واجهات المتصفح البرمجية ليست غريبة. إنها تظهر باستمرار.
 
-### Media and preference APIs
+### واجهات الوسائط والتفضيلات
 
-[`matchMedia`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) for:
+[`matchMedia`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) من أجل:
 
 - `prefers-reduced-motion`
 - `prefers-color-scheme`
-- breakpoint-driven UI branches
+- فروع الواجهة المدفوعة بنقاط التوقف
 
-If the app changes layout or animation behavior based on browser preferences, a mock is often the simplest deterministic path.
+إن كان التطبيق يغيّر التخطيط أو سلوك الحركة بناءً على تفضيلات المتصفح، فالبديل المُحاكى هو غالبًا أبسط طريق حتمي.
 
-### Clipboard
+### الحافظة
 
-[`Clipboard API`](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) support is a classic example. “Copy invite link” buttons are easy to test once you replace `navigator.clipboard.writeText` with a stub that records the written value.
+دعم [`Clipboard API`](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) مثال كلاسيكي. أزرار «انسخ رابط الدعوة» يسهل اختبارها بمجرد أن تستبدل `navigator.clipboard.writeText` ببديل يسجّل القيمة المكتوبة.
 
-### Observer APIs
+### واجهات المراقب
 
-[`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) and [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) show up in lazy loading, sticky headers, virtualization, and responsive components. They are also where incomplete mocks go to die. If your framework expects `observe`, `unobserve`, and callback timing semantics, the mock has to supply them.
+تظهر [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) و[`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) في التحميل الكسول والترويسات اللاصقة والتجزيء والمكوّنات المتجاوبة. وهي أيضًا المكان الذي تموت فيه البدائل المُحاكاة الناقصة. فإن كان إطارك يتوقع `observe` و`unobserve` ودلالات توقيت النداء الراجع، فعلى البديل المُحاكى أن يوفرها.
 
-### Permissions and browser capabilities
+### الأذونات وقدرات المتصفح
 
-`Notification.permission`, `navigator.share`, and `navigator.permissions.query()` are all places where the app can fork based on browser support or permission state. These tests are usually not about the browser feature itself. They are about your fallback UI, your enablement flow, or your error handling.
+`Notification.permission` و`navigator.share` و`navigator.permissions.query()` كلها مواضع يمكن أن يتفرّع فيها التطبيق بناءً على دعم المتصفح أو حالة الإذن. وهذه الاختبارات ليست عادة عن ميزة المتصفح نفسها. بل عن واجهتك البديلة، أو تدفق التمكين لديك، أو معالجة الأخطاء لديك.
 
-### Experimental or not-fully-supported APIs
+### الواجهات التجريبية أو غير المدعومة بالكامل
 
-This is the bucket the official Playwright guide is really aimed at. Battery status. Device memory. Some hardware-adjacent APIs. The feature exists in your product. The automation surface is not first-class everywhere. Mocking is the practical move.
+هذا هو الدلو الذي يستهدفه دليل Playwright الرسمي فعلًا. حالة البطارية. ذاكرة الجهاز. بعض الواجهات القريبة من العتاد. الميزة موجودة في منتجك. وسطح الأتمتة ليس من الدرجة الأولى في كل مكان. والمحاكاة هي الحركة العملية.
 
-## Where fixtures help
+## أين تساعد التجهيزات
 
-The full helper-versus-fixture decision tree lives in [Where Fixtures Actually Help](https://stevekinney.com/courses/self-testing-ai-agents/where-fixtures-actually-help). Here, the one-line rule is simpler: if multiple tests need the same browser contract, make it a fixture.
+شجرة القرار الكاملة بين الدوال المساعدة والتجهيزات موجودة في [أين تساعد التجهيزات فعلًا](https://stevekinney.com/courses/self-testing-ai-agents/where-fixtures-actually-help). وهنا القاعدة في سطر واحد أبسط: إن كانت اختبارات عدة تحتاج عقد المتصفح نفسه، فاجعلها تجهيزة.
 
-Good fixture candidates:
+مرشحات جيدة للتجهيزات:
 
-- a `reducedMotionPage` used across a whole accessibility-focused spec file
-- a `clipboardRecorder` fixture that installs the mock and exposes captured writes
-- a `batteryAwarePage` or `offlineCapablePage` used across multiple scenarios
-- a shared `context` fixture that blocks service workers and installs boot-time browser shims
+- `reducedMotionPage` تُستخدم في ملف مواصفات كامل يركّز على الوصول
+- تجهيزة `clipboardRecorder` تثبّت البديل المُحاكى وتكشف الكتابات الملتقطة
+- `batteryAwarePage` أو `offlineCapablePage` تُستخدم في سيناريوهات متعددة
+- تجهيزة `context` مشتركة تحجب عمّال الخدمة وتثبّت طبقات محاكاة المتصفح وقت الإقلاع
 
-This keeps the interesting part of the spec visible:
+هذا يبقي الجزء المثير في المواصفة ظاهرًا:
 
 ```typescript
 test('copies the invite link', async ({ clipboardRecorder, page }) => {
@@ -182,33 +182,33 @@ test('copies the invite link', async ({ clipboardRecorder, page }) => {
 });
 ```
 
-(This `/settings/team` flow is a constructed illustration; Shelf doesn’t ship an invite-link page today.)
+(تدفق `/settings/team` هذا مثال مُركَّب للتوضيح؛ Shelf لا يشحن صفحة رابط دعوة اليوم.)
 
-That reads like behavior, not setup.
+فيُقرأ ذلك كسلوك، لا كإعداد.
 
-## The gotchas
+## المزالق
 
-### Mocking too late
+### المحاكاة في وقت متأخر جدًا
 
-If the app boots before the mock exists, you are already wrong.
+إن كان التطبيق يُقلع قبل وجود البديل المُحاكى، فأنت مخطئ بالفعل.
 
-### Using a mock when Playwright already has real support
+### استخدام بديل مُحاكى بينما يملك Playwright دعمًا حقيقيًا
 
-If the thing is geolocation, permissions, clock, locale, viewport, or storage state, start with the first-class Playwright feature. A hand-written mock is usually a downgrade there.
+إن كان الشيء هو الموقع الجغرافي أو الأذونات أو الساعة أو اللغة أو منفذ العرض أو حالة التخزين، فابدأ بميزة Playwright من الدرجة الأولى. فالبديل المكتوب يدويًا تراجع عادة في هذه الحالات.
 
-### Returning the value without the shape
+### إعادة القيمة بلا الشكل
 
-Framework code often expects methods and event registration points to exist even if the specific test does not care about them. “It returns the right boolean” is not enough if the component also calls `addEventListener`.
+غالبًا ما تتوقع شيفرة الأطر وجود توابع ونقاط تسجيل أحداث حتى لو لم يهتم الاختبار المعني بها. «إنها تعيد القيمة المنطقية الصحيحة» لا يكفي إن كان المكوّن ينادي `addEventListener` أيضًا.
 
-### Mocking auth through `localStorage`
+### محاكاة المصادقة عبر `localStorage`
 
-If the real app authenticates through browser state, use `storageState` or the app’s real login flow. Mocking auth storage by hand is a great way to create a suite that passes while the actual login path is broken.
+إن كان التطبيق الحقيقي يصادق عبر حالة المتصفح، فاستخدم `storageState` أو تدفق تسجيل الدخول الحقيقي في التطبيق. محاكاة تخزين المصادقة يدويًا طريقة رائعة لصنع مجموعة اختبارات تنجح بينما مسار تسجيل الدخول الفعلي معطل.
 
-### Forgetting cross-browser differences
+### نسيان فروق المتصفحات
 
-The more custom your mock gets, the easier it is to accidentally hard-code [Chromium](https://www.chromium.org/chromium-projects/) behavior into a test that you think is portable. This is one of those places where a small smoke pass in [Firefox](https://www.mozilla.org/firefox/) or [WebKit](https://webkit.org/) earns its keep.
+كلما صار بديلك المُحاكى أكثر تخصيصًا، صار أسهل أن تثبّت سلوك [Chromium](https://www.chromium.org/chromium-projects/) بالخطأ داخل اختبار تحسبه محمولًا. وهذا أحد المواضع التي تستحق فيها جولة دخان صغيرة في [Firefox](https://www.mozilla.org/firefox/) أو [WebKit](https://webkit.org/) عناءها.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Mocking browser APIs
@@ -225,13 +225,13 @@ The more custom your mock gets, the easier it is to accidentally hard-code [Chro
   `storageState` or the real login flow exists.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-Browser API mocks are only useful when they preserve the contract your app actually uses. That means early installation, the right object shape, and real event behavior when the component subscribes. Anything less is a fast way to prove your mock works.
+البدائل المُحاكاة لواجهات المتصفح لا تكون مفيدة إلا حين تحفظ العقد الذي يستخدمه تطبيقك فعلًا. وهذا يعني التثبيت المبكر، وشكل الكائن الصحيح، وسلوك الأحداث الحقيقي حين يشترك المكوّن. وأي شيء أقل من ذلك طريق سريع لتثبت أن بديلك المُحاكى يعمل.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Route-Based Network Interception](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Where Fixtures Actually Help](https://stevekinney.com/courses/self-testing-ai-agents/where-fixtures-actually-help)
-- [Cross-Browser Validation Without Burning the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)
+- [اعتراض الشبكة عبر المسارات](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [أين تساعد التجهيزات فعلًا](https://stevekinney.com/courses/self-testing-ai-agents/where-fixtures-actually-help)
+- [التحقق عبر المتصفحات دون حرق حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)

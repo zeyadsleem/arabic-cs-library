@@ -1,46 +1,46 @@
 ---
-title: "Claude Code Mods"
-lang: en
+title: "تعديلات Claude Code (Claude Code Mods)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/claude-code-mods"
 ---
 
-Settings [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) (scripts the harness runs at lifecycle events), [skills](https://stevekinney.com/courses/ai-development-setup/skills) (folders of instructions the agent loads on demand), and MCP servers (programs that add tools over the [Model Context Protocol](https://modelcontextprotocol.io/)) all work from the outside. They can react to what Claude Code does or hand it text, but they can’t change the interface or step into a request to the model.
+الإعدادات [الخُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) (سكربتات يشغّلها الإطار عند أحداث دورة الحياة)، و [المهارات](https://stevekinney.com/courses/ai-development-setup/skills) (مجلدات تعليمات يحمّلها الوكيل عند الطلب)، وخوادم MCP (برامج تضيف أدوات عبر [Model Context Protocol](https://modelcontextprotocol.io/)) كلها تعمل من الخارج. يمكنها أن تتفاعل مع ما يفعله Claude Code أو أن تسلّمه نصًّا، لكنها لا تستطيع تغيير الواجهة أو التقدّم داخل طلب إلى النموذج.
 
-A **mod** can. It’s a [plugin](https://code.claude.com/docs/en/plugins) (a bundle of extensions you install into Claude Code) whose JavaScript or TypeScript functions run *inside* Claude Code’s own process. You still don’t edit Claude Code’s source; a mod works through the events it exposes. Mods are on by default as of Claude Code v2.1.287, in both the command-line tool and the desktop app’s Code tab.
+**التعديل (mod)** يستطيع ذلك. إنه [إضافة](https://code.claude.com/docs/en/plugins) (حزمة امتدادات تثبّتها في Claude Code) تعمل دوالها بـ JavaScript أو TypeScript *داخل* عملية Claude Code نفسها. ولا تزال لا تحرّر شيفرة Claude Code؛ فالتعديل يعمل عبر الأحداث التي يعرّضها. والتعديلات مُفعَّلة افتراضيًا منذ Claude Code v2.1.287، في كل من أداة سطر الأوامر وتبويب Code في تطبيق سطح المكتب.
 
-The short version: a mod is unsandboxed code running as you.
+النسخة المختصرة: التعديل شيفرة بلا صندوق رمل تعمل باسمك.
 
-## What only a mod can do
+## ما لا يقدر عليه إلا التعديل
 
-- Draw its own interface: panes, or the band above the prompt.
-- Redraw parts of Claude Code’s interface: the spinner, tool rows, messages.
-- Step into a model request. Your function sits in the path of the request, and it can pass it along, change it, or answer it itself.
-- Answer a tool call yourself, so the tool never runs. A settings hook can block a call or adjust its input; only a mod can supply the result or override the final permission decision.
-- Add `/commands` that run instantly, with no Claude turn at all.
+- أن يرسم واجهته الخاصة: ألواحًا، أو الشريط فوق الطلب.
+- أن يعيد رسم أجزاء من واجهة Claude Code: المؤشّر الدوّار، وصفوف الأدوات، والرسائل.
+- أن يتقدّم داخل طلب نموذج. فدالتك تقف في مسار الطلب، ويمكنها تمريره، أو تغييره، أو الإجابة عنه بنفسها.
+- أن يجيب عن نداء أداة بنفسه، فلا تعمل الأداة أبدًا. وخُطّاف الإعدادات يستطيع منع نداء أو تعديل مدخله؛ أما التعديل وحده فيستطيع تقديم النتيجة أو تجاوز قرار الإذن النهائي.
+- أن يضيف `/commands` تعمل فورًا، بلا دورة Claude على الإطلاق.
 
-Blocking, allowing, or logging with a script you already have? Settings hook. Instructions Claude should read? Skill. Reaching an external system? MCP server. Reach for a mod only when you need the inside.
+هل تمنع أو تسمح أو تسجّل بسكربت لديك بالفعل؟ خُطّاف إعدادات. تعليمات ينبغي أن يقرأها Claude؟ مهارة. الوصول إلى نظام خارجي؟ خادم MCP. ولا تمدّ يدك إلى تعديل إلا حين تحتاج الداخل.
 
-## How a mod works
+## كيف يعمل التعديل
 
-You need three files:
+تحتاج ثلاثة ملفات:
 
-- `plugin.json`: The manifest, which names the plugin and describes what it contains.
-- `hooks/hooks.json`: Includes `"modules": ["./register.js"]`. That key makes the plugin a mod.
-- The hooks module, which exports `register(on)`. Claude Code calls it once, handing you `on` to attach hooks to events.
+- `plugin.json`: البيان، الذي يسمّي الإضافة ويصف ما تحويه.
+- `hooks/hooks.json`: يتضمّن `"modules": ["./register.js"]`. وهذا المفتاح هو ما يجعل الإضافة تعديلًا.
+- وحدة الخُطّافات، التي تصدّر `register(on)`. يستدعيها Claude Code مرة واحدة، مسلّمًا إياك `on` لربط خُطّافات بالأحداث.
 
-Every hook receives `($, e, next)`. If you’ve ever written [Express](https://expressjs.com/) middleware (functions that each handle a request and pass it along), you basically already have the gist:
+كل خُطّاف يستقبل `($, e, next)`. وإن سبق أن كتبت [وسيط](https://expressjs.com/) Express (دوال تعالج كل منها طلبًا وتمرّره)، فلديك الفكرة أساسًا:
 
-- **`$`**: The mods API. It’s the *only* way your code reaches files, processes, the network, models, or the interface.
-- **`e`**: The event, as plain data you can’t change in place. To change it, pass a copy to `next`.
-- **`next(e)`**: Runs the remaining mods, then Claude Code’s own behavior.
+- **`$`**: واجهة برمجة التعديلات. وهي *الطريقة الوحيدة* التي تصل بها شيفرتك إلى الملفات، والعمليات، والشبكة، والنماذج، وواجهة المستخدم.
+- **`e`**: الحدث، كبيانات عادية لا تستطيع تغييرها في مكانها. لتغييرها، مرّر نسخة إلى `next`.
+- **`next(e)`**: يشغّل التعديلات المتبقية، ثم سلوك Claude Code نفسه.
 
-A hook does one of three things:
+ويفعل الخُطّاف واحدًا من ثلاثة:
 
-- **Observe**: Do your work, then `return next(e)`.
-- **Rewrite**: `return next({ …e, changed })`.
-- **Answer**: Return a result *without* calling `next`. Nothing after your hook runs.
+- **يلاحظ**: أنجز عملك، ثم `return next(e)`.
+- **يعيد الكتابة**: `return next({ …e, changed })`.
+- **يجيب**: أعِد نتيجة *دون* استدعاء `next`. فلا يعمل شيء بعد خُطّافك.
 
-Here’s the observe case: a hook that watches every prompt you submit and leaves it alone.
+إليك حالة الملاحظة: خُطّاف يراقب كل طلب ترسله ويتركه كما هو.
 
 ```typescript
 export function register(on) {
@@ -51,88 +51,88 @@ export function register(on) {
 }
 ```
 
-Matchers narrow when a hook runs: `{ tool: 'Bash' }`, `{ component: 'Pane' }`, an array of values, or a regular expression.
+تضيّق المُطابِقات متى يعمل الخُطّاف: `{ tool: 'Bash' }`، أو `{ component: 'Pane' }`، أو مصفوفة قيم، أو تعبير نمطي.
 
-## Key events
+## الأحداث الرئيسية
 
-- **Tools**: `tool.call` fires when Claude asks to run a tool. It can deny the call, change its arguments, or return a result itself. `tool.check` fires where the permission decision is made, and it can override that final allow, ask, or deny. (Deny rules have a catch; [Security and governance](#security-and-governance) explains when a user’s mod can’t override them.)
-- **Prompts**: `prompt.submit` can rewrite the prompt, add context only Claude reads, or drop the prompt entirely.
-- **Turns**: `turn.step` covers each request to the model. It streams, so you write it as an async generator. `turn.complete` fires when the turn ends.
-- **Session and commands**: Register commands and tools in `session.start`. Answer your commands in `command.run`.
-- **Interface**: `ui.render` decides what a pane, the band, or an existing part of the interface draws.
-- **Other mods**: `plugin.register` lets a policy mod refuse other mods before they load. And every `$` method is also an event (`fs.read`, `http.fetch`), so one mod can police another’s calls.
-- **Settings hook events**: Each one is also available as `classic.<Event>`, so a mod can handle everything your existing hooks handle.
+- **الأدوات**: يُطلَق `tool.call` حين يطلب Claude تشغيل أداة. ويمكنه رفض النداء، أو تغيير وسائطه، أو إعادة نتيجة بنفسه. ويُطلَق `tool.check` حيث يُتّخذ قرار الإذن، ويمكنه تجاوز ذلك السماح أو السؤال أو الرفض النهائي. (لقواعد الرفض تحفّظ؛ [الأمن والحوكمة](#security-and-governance) يشرح متى لا يستطيع تعديل المستخدم تجاوزها.)
+- **الطلبات**: يستطيع `prompt.submit` إعادة كتابة الطلب، أو إضافة سياق يقرؤه Claude وحده، أو إسقاط الطلب كليًا.
+- **الدورات**: يغطّي `turn.step` كل طلب إلى النموذج. وهو متدفّق، فتكتبه كمُولِّد غير متزامن. ويُطلَق `turn.complete` عند انتهاء الدورة.
+- **الجلسة والأوامر**: سجّل الأوامر والأدوات في `session.start`. وأجِب عن أوامرك في `command.run`.
+- **الواجهة**: يقرّر `ui.render` ما يرسمه لوح، أو الشريط، أو جزء قائم من الواجهة.
+- **التعديلات الأخرى**: يتيح `plugin.register` لتعديل سياسات أن يرفض تعديلات أخرى قبل أن تُحمَّل. وكل تابع `$` هو أيضًا حدث (`fs.read`, `http.fetch`)، فيستطيع تعديل واحد أن يراقب نداءات آخر.
+- **أحداث خُطّافات الإعدادات**: كل منها متاح أيضًا بصيغة `classic.<Event>`، فيستطيع التعديل معالجة كل ما تعالجه خُطّافاتك القائمة.
 
-## Developing a mod
+## تطوير تعديل
 
-- `claude --plugin-dir ./my-mod` loads a folder for one session and reloads it on every save.
-- The fastest start is asking Claude to write it. It’ll use the built-in `plugin-authoring` skill.
-- `claude plugin validate ./my-mod` reads your source without running it, lists the `hooks:` it handles and the `calls:` it makes, and catches misspelled events. A module it can’t read won’t load.
-- `claude plugin test` runs your tests with no session, no sign-in, and no network. It exits `1` on failure, so it works in CI.
-- Claude Code writes TypeScript declaration files for your exact version into `.claude-plugin/types/`. When they disagree with the documentation, trust the types.
+- `claude --plugin-dir ./my-mod` يحمّل مجلدًا لجلسة واحدة ويعيد تحميله عند كل حفظ.
+- أسرع بداية أن تطلب من Claude كتابته. سيستخدم مهارة `plugin-authoring` المدمجة.
+- `claude plugin validate ./my-mod` يقرأ شيفرتك دون تشغيلها، ويسرد ما يعالجه من `hooks:` وما يجريه من `calls:`، ويلتقط الأحداث المكتوبة خطأً. والوحدة التي لا يستطيع قراءتها لن تُحمَّل.
+- `claude plugin test` يشغّل اختباراتك بلا جلسة، وبلا تسجيل دخول، وبلا شبكة. ويخرج بالرمز `1` عند الفشل، فيعمل في CI.
+- يكتب Claude Code ملفات تعريف TypeScript لإصدارك بالتحديد في `.claude-plugin/types/`. وحين تتعارض مع الوثائق، ثق بالأنواع.
 
-A mod runs with your permissions inside Claude Code’s process, so its mistakes cost more than a script’s.
+يعمل التعديل بأذوناتك داخل عملية Claude Code، فأخطاؤه تكلّف أكثر من أخطاء سكربت.
 
-## Security and governance
+## الأمن والحوكمة {#security-and-governance}
 
-A mod can read your files and secrets, see every prompt and tool call, approve tool calls on your behalf, and spend your usage. Before installing one, run `claude plugin validate` and actually read the `calls:` and `hooks:` lines: what the mod can reach and what it listens to.
+يستطيع التعديل قراءة ملفاتك وأسرارك، ورؤية كل طلب ونداء أداة، والموافقة على نداءات الأدوات نيابةً عنك، وإنفاق استخدامك. وقبل تثبيت أحدها، شغّل `claude plugin validate` واقرأ فعلًا سطرَي `calls:` و `hooks:`: ما الذي يصل إليه التعديل وما الذي يستمع إليه.
 
-When the built-in guard (`sec-default`) loads, a user’s mod *can’t* get past deny rules, managed `PreToolUse` hooks, or managed instructions, not even with `tool.check`. (“Managed” means set by an administrator, in settings the user can’t override.) `sec-default` loads outermost on a machine with managed settings, or for a Team or Enterprise organization, unless managed `prependPlugins` says otherwise. On a personal machine with neither, the documentation describes no such protection, so assume a mod you install can override your own deny rules. No mod can change what the permission prompt shows.
+عند تحميل الحارس المدمج (`sec-default`)، *لا يستطيع* تعديل المستخدم تجاوز قواعد الرفض، أو خُطّافات `PreToolUse` المُدارة، أو التعليمات المُدارة، ولا حتى بـ `tool.check`. («مُدار» تعني مضبوطًا من مسؤول، في إعدادات لا يستطيع المستخدم تجاوزها.) ويُحمَّل `sec-default` في الطبقة الخارجية على جهاز بإعدادات مُدارة، أو لمنظمة Team أو Enterprise، ما لم تنصّ خُطّافات `prependPlugins` المُدارة على خلاف ذلك. وعلى جهاز شخصي بلا أي منهما، لا تصف الوثائق أي حماية كهذه، فافترض أن تعديلًا تثبّته قادر على تجاوز قواعد الرفض الخاصة بك. ولا يستطيع أي تعديل تغيير ما يعرضه طلب الإذن.
 
-What a mod *can* get past:
+وما *يستطيع* التعديل تجاوزه:
 
-- `ask` rules, the permission rules that make Claude Code prompt you.
-- `PreToolUse` [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) that don’t come from managed settings.
-- The auto-mode classifier, for calls the mod approves.
-- **Your deny rules, for the mod’s own `$.fs` and `$.process` calls.**
+- قواعد `ask`، وهي قواعد الإذن التي تجعل Claude Code يسألك.
+- `PreToolUse` [خُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) لا تأتي من إعدادات مُدارة.
+- مصنّف الوضع التلقائي، للنداءات التي يوافق عليها التعديل.
+- **قواعد الرفض الخاصة بك، لنداءات `$.fs` و `$.process` الخاصة بالتعديل نفسه.**
 
-That last one surprises people. Deny rules restrict Claude, not a mod that reads files on its own.
+هذه الأخيرة تفاجئ الناس. فقواعد الرفض تقيّد Claude، لا تعديلًا يقرأ الملفات بنفسه.
 
-For admins, in managed settings:
+وللمسؤولين، في الإعدادات المُدارة:
 
-- `allowManagedModsOnly`: Stops users’ own mods from loading.
-- `prependPlugins` and `appendPlugins`: Set where your organization’s mods run relative to users’.
-- `disableSideloadFlags`: Blocks `--plugin-dir`.
-- `disableAllHooks`: Stops all mods *and* all hooks.
+- `allowManagedModsOnly`: يمنع تحميل تعديلات المستخدمين أنفسهم.
+- `prependPlugins` و `appendPlugins`: يحدّدان أين تعمل تعديلات مؤسستك نسبةً إلى تعديلات المستخدمين.
+- `disableSideloadFlags`: يمنع `--plugin-dir`.
+- `disableAllHooks`: يوقف كل التعديلات *و* كل الخُطّافات.
 
-For you: `--safe-mode` for one session, or `"disableAllHooks": true` in your settings for every session.
+ولك أنت: `--safe-mode` لجلسة واحدة، أو `"disableAllHooks": true` في إعداداتك لكل جلسة.
 
-## Best practices
+## أفضل الممارسات {#best-practices}
 
-- **Make guards fail closed**: A hook that throws or hits the host timeout gets skipped, so the guard lets the call through. Return a denial from `.catch()`, and race any pending operation against your own deadline, since `.catch()` can’t settle a promise that hangs. Use `$.clock.sleep` for that, for example a five-second wait mapped to `{ deny: "Guard deadline exceeded" }` for `tool.call`, comfortably inside the host’s 10-second deadline. Test success, rejection, and a never-settling operation. No internal timer survives a crashed or unloaded mod runtime, so enforce invariants that must survive that with an external permission rule, managed hook, sandbox, or OS boundary.
-- **Write deny text as an instruction**: Claude reads it as the tool’s result, so tell it what to do instead.
-- **Keep waiting inside `$` calls**: A hook gets 10 seconds of its own running time. Waiting on `next()` or `$.ui.ask` doesn’t count. Awaiting your own promises does.
-- **Choose storage by how long a value has to last**: A module variable is lost on every reload. `$.state` lasts the session, and writing to it redraws whatever depends on it. `$.store` persists across sessions and is shared by all of them.
-- **Reload `$.state` after `/clear`**: `/clear`, `/resume`, and `/branch` (the commands that empty, reopen, or fork a conversation) reset it, so copy saved values back from `$.store` in `classic.SessionStart`.
-- **Redraw explicitly for everything else**: When something other than `$.state` changes what should be on screen, like a module variable or a value from `$.store`, call `$.ui.invalidate('ui.render')`, give every control a `key`, and check `e.surface`, because some elements only draw in the terminal or only in the desktop app.
-- **Open panes only when the user asks**: A pane your mod opens on its own needs a 144-column terminal. Use `$.ui.toast` (a brief on-screen notification) to announce things instead.
+- **اجعل الحرّاس يفشلون مغلقين**: يُتخطّى الخُطّاف الذي يَطرح استثناءً أو يبلغ مهلة المضيف، فيمرّر الحارس النداء. أعِد رفضًا من `.catch()`، وسابق أي عملية معلّقة بمهلة خاصة بك، لأن `.catch()` لا يستطيع حسم وعد معلّق. استخدم `$.clock.sleep` لذلك، مثلًا انتظار خمس ثوانٍ يُقابَل بـ `{ deny: "Guard deadline exceeded" }` لـ `tool.call`، داخل مهلة المضيف البالغة 10 ثوانٍ بأريحية. اختبر النجاح، والرفض، وعملية لا تُحسم أبدًا. ولا ينجو أي مؤقّت داخلي من انهيار بيئة تشغيل التعديل أو إلغاء تحميلها، فافرِض الثوابت التي يجب أن تنجو من ذلك بقاعدة إذن خارجية، أو خُطّاف مُدار، أو صندوق رمل، أو حدّ نظام تشغيل.
+- **اكتب نصّ الرفض كتعليمة**: يقرؤه Claude كنتيجة الأداة، فأخبره بما يفعله بدلًا من ذلك.
+- **أبقِ الانتظار داخل نداءات `$`**: يحصل الخُطّاف على 10 ثوانٍ من زمن تشغيله الخاص. والانتظار على `next()` أو `$.ui.ask` لا يُحتسب. أما انتظار وعودك الخاصة فيُحتسب.
+- **اختر التخزين بحسب طول ما يجب أن يبقى**: يُفقد متغيّر الوحدة عند كل إعادة تحميل. و `$.state` يبقى مدى الجلسة، والكتابة إليه تعيد رسم كل ما يعتمد عليه. و `$.store` يبقى عبر الجلسات ويتشاركه كل من فيها.
+- **أعِد تحميل `$.state` بعد `/clear`**: فـ `/clear` و `/resume` و `/branch` (الأوامر التي تفرّغ المحادثة أو تعيد فتحها أو تفرّعها) تعيد ضبطه، فانسخ القيم المحفوظة رجوعًا من `$.store` في `classic.SessionStart`.
+- **أعِد الرسم صراحةً لكل ما عدا ذلك**: حين يغيّر شيء آخر غير `$.state` ما ينبغي أن يظهر على الشاشة، مثل متغيّر وحدة أو قيمة من `$.store`، فاستدعِ `$.ui.invalidate('ui.render')`، وامنح كل عنصر تحكم `key`، وتحقق من `e.surface`، لأن بعض العناصر تُرسم في الطرفية فقط أو في تطبيق سطح المكتب فقط.
+- **لا تفتح الألواح إلا حين يطلب المستخدم**: فاللوح الذي يفتحه تعديلك من تلقاء نفسه يحتاج طرفية بعرض 144 عمودًا. استخدم `$.ui.toast` (إشعار قصير على الشاشة) للإعلان عن الأمور بدلًا من ذلك.
 
-## Anti-patterns
+## أنماط مضادة {#anti-patterns}
 
-- **Code the validator rejects**: Aliasing or destructuring `$`, non-literal event names, two `session.start` hooks with no matcher, and dynamic `import()`.
-- **Reaching for the usual JavaScript tools**: `setTimeout`, `fetch`, and the Node APIs don’t exist in a mod. Use `$.clock`, `$.http`, `$.fs`, and `$.process`.
-- **Editing the installed copy**: It’s cached by version. Develop against `--plugin-dir`.
-- **Treating a regular-expression guard as security**: A pattern written for `--force` misses `git push -f`. See [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) for ways to enforce a rule more reliably.
-- **Assuming deny rules restrict the mod itself**: They don’t. See [Security and governance](#security-and-governance).
-- **Busy loops**: They crash the shared worker thread that runs installed mods, and repeated crashes unload *all* of them.
-- **Changing system-prompt text on every request**: It breaks the [prompt cache](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) (the provider’s cache of a conversation prefix it has already processed, which makes resending that prefix much cheaper), so every request pays full price. Every. Single. Time.
+- **شيفرة يرفضها المدقّق**: إعطاء `$` اسمًا مستعارًا أو تفكيكه، وأسماء أحداث غير حرفية، وخُطّافا `session.start` بلا مُطابِق، و `import()` الديناميكي.
+- **مدّ اليد إلى أدوات JavaScript المعتادة**: لا وجود لـ `setTimeout` و `fetch` وواجهات Node في التعديل. استخدم `$.clock` و `$.http` و `$.fs` و `$.process`.
+- **تحرير النسخة المثبّتة**: إنها مخزّنة مؤقتًا حسب الإصدار. طوّر مقابل `--plugin-dir`.
+- **التعامل مع حارس تعبير نمطي كأمن**: فنمط مكتوب من أجل `--force` تفوته `git push -f`. انظر [سلّم الإلزام](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) لطرق فرض قاعدة بموثوقية أكبر.
+- **افتراض أن قواعد الرفض تقيّد التعديل نفسه**: إنها لا تفعل. انظر [الأمن والحوكمة](#security-and-governance).
+- **حلقات مشغولة**: تُسقِط خيط العمل المشترك الذي يشغّل التعديلات المثبّتة، والانهيارات المتكرّرة تلغي تحميل *كلها*.
+- **تغيير نص مطالبة النظام في كل طلب**: يكسر [ذاكرة التخزين المؤقت للطلبات](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) (ذاكرة المزوّد لبادئة محادثة عالجها بالفعل، وهو ما يجعل إعادة إرسال تلك البادئة أرخص بكثير)، فيدفع كل طلب الثمن كاملًا. كل. مرة. واحدة.
 
-## Advanced levers
+## روافع متقدّمة
 
-- `turn.step` to route individual requests to another model, or to log cache hits.
-- `$.tool.register` to give Claude a new tool.
-- `$.model.complete` for a model call of your own, with no conversation history.
-- `$.model.fork` to ask a question over the current conversation, mostly served from cache. Handy for writing a handoff brief.
-- Timers (`$.clock.every`), plus `$.prompt.submit` to start a turn from background work.
-- `$.session.send` to message another session.
-- `session.append` to rewrite conversation rows before they’re stored, for redaction, say.
-- `Raster` and `$.ui.blit` for grids and animation in the terminal.
-- Policy mods: `plugin.register` to refuse other mods, plus hooks on `$` methods to audit them.
+- `turn.step` لتوجيه طلبات فردية إلى نموذج آخر، أو لتسجيل إصابات ذاكرة التخزين المؤقت.
+- `$.tool.register` لمنح Claude أداة جديدة.
+- `$.model.complete` لنداء نموذج من عندك، بلا تاريخ محادثة.
+- `$.model.fork` لطرح سؤال على المحادثة الحالية، يُخدَم معظمه من ذاكرة التخزين المؤقت. مفيد لكتابة موجز تسليم.
+- المؤقّتات (`$.clock.every`)، إضافة إلى `$.prompt.submit` لبدء دورة من عمل في الخلفية.
+- `$.session.send` لمراسلة جلسة أخرى.
+- `session.append` لإعادة كتابة صفوف المحادثة قبل تخزينها، للحجب مثلًا.
+- `Raster` و `$.ui.blit` للشبكات والرسوم المتحرّكة في الطرفية.
+- تعديلات السياسات: `plugin.register` لرفض تعديلات أخرى، وخُطّافات على توابع `$` لتدقيقها.
 
-## Learn from real code
+## تعلّم من شيفرة حقيقية
 
-Start with the built-in mods (`diff`, `agents-md`, `sec-default`, `telemetry`) in [`anthropics/claude-code/mods`](https://github.com/anthropics/claude-code/tree/main/mods). Then try Anthropic’s samples: token-weather, blast-radius, and replay-theater.
+ابدأ بالتعديلات المدمجة (`diff`, `agents-md`, `sec-default`, `telemetry`) في [`anthropics/claude-code/mods`](https://github.com/anthropics/claude-code/tree/main/mods). ثم جرّب عيّنات Anthropic: token-weather، و blast-radius، و replay-theater.
 
-From the community, there’s [OneWave’s ten example mods](https://github.com/OneWave-AI/claude-code-mods), and [paddo’s ccseats write-up](https://paddo.dev/blog/claude-code-mods) on real-world gotchas.
+ومن المجتمع، هناك [عشرة تعديلات نموذجية من OneWave](https://github.com/OneWave-AI/claude-code-mods)، و [مقال ccseats من paddo](https://paddo.dev/blog/claude-code-mods) عن المزالق الواقعية.
 
-Start with `validate` and `--plugin-dir`, learn from the built-in mods first, and treat every mod, including your own, as code with the keys to everything.
+ابدأ بـ `validate` و `--plugin-dir`، وتعلّم من التعديلات المدمجة أولًا، وتعامل مع كل تعديل، بما فيه تعديلك، كشيفرة تحمل مفاتيح كل شيء.

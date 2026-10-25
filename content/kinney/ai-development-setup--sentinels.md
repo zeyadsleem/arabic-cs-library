@@ -1,157 +1,158 @@
 ---
-title: "Sentinels"
-lang: en
+title: "العلامات الحارسة (Sentinels)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/sentinels"
 ---
 
-Agents don’t remember anything between sessions, and they don’t know what each other are doing. Sooner or later you need one fact to cross that gap: “the review finished,” “this task is done,” “this change was approved.” The simplest fix is almost embarrassingly low-tech: external state, which can literally be a text file.
+لا يتذكّر الوكلاء شيئًا بين الجلسات، ولا يعرفون ما يفعله بعضهم بعضًا. وعاجلًا أو آجلًا تحتاج حقيقة واحدة تعبر تلك الفجوة: «انتهت المراجعة»، «هذه المهمة منتهية»، «تمت الموافقة على هذا التغيير». وأبسط حل منخفض التقنية إلى حدّ محرج: الحالة الخارجية، التي يمكن أن تكون حرفيًا ملفًا نصيًا.
 
-Here’s an example. A few reviewer [subagents](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) each read a diff. When they finish, something writes a marker recording that they reviewed *this exact* set of changes. Anything that needs to know whether the current changes were reviewed checks the marker instead of asking an agent.
+وهذا مثال. يقرأ بضعة [وكلاء فرعيين](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) مراجعين كل واحد فرقًا (diff). وحين ينتهون، يكتب شيء ما علامة تسجّل أنهم راجعوا هذه المجموعة *بالضبط* من التغييرات. وكل ما يحتاج معرفة هل روجعت التغييرات الحالية يفحص العلامة بدلًا من سؤال وكيل.
 
-## What a sentinel is
+## ما هي العلامة الحارسة
 
-More formally, a **sentinel** is a marker whose presence ends a loop or unlocks an action: a string in the output or a file on disk. It inherits the classic sentinel-value flaw. If real data can look like the sentinel, the loop stops early.
+وبشكل أدق، **العلامة الحارسة** علامة يُنهي وجودُها حلقة أو يفتح إجراءً: نص في المخرجات أو ملف على القرص. وهي ترث عيب قيمة العلامة الحارسة الكلاسيكي. فإذا استطاعت بيانات حقيقية أن تبدو كالعلامة الحارسة، توقفت الحلقة مبكرًا.
 
-That flaw is the whole lesson in miniature. A sentinel is only as trustworthy as the difficulty of producing it by accident, or on purpose.
+وذلك العيب هو الدرس كله مصغّرًا. والعلامة الحارسة لا تكون موثوقة إلا بقدر صعوبة إنتاجها عَرَضًا، أو عن قصد.
 
-## Two kinds of sentinel
+## نوعان من العلامات الحارسة
 
-- **Completion sentinel**: A string the model writes into its own output, like `<promise>COMPLETE</promise>`. The loop wrapping the agent searches the output for it. That loop is a bash script or a `Stop` [hook](https://stevekinney.com/courses/ai-development-setup/hooks), a script the harness runs when the agent finishes a turn.
-- **File sentinel**: A file on disk that outlives the session. A later session, a hook, or a scheduler reads it to decide whether to resume or proceed.
+- **علامة إتمام حارسة**: نص يكتبه النموذج في مخرجاته، مثل `<promise>COMPLETE</promise>`. وتبحث الحلقة التي تغلّف الوكيل عنها في المخرجات. وتلك الحلقة سكربت bash أو [خُطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) `Stop`، وهو سكربت تشغّله البيئة حين يُنهي الوكيل دورًا.
+- **علامة ملف حارسة**: ملف على القرص يعيش أطول من الجلسة. فتقرؤه جلسة لاحقة، أو خُطّاف، أو مُجدوِل، لتقرير هل تستأنف أو تمضي.
 
-They fail in opposite ways. A string is easy to emit by accident, but a false one dies with the transcript. A model doesn’t create a file by accident the way it can print a sentence, but a false file *persists* and gets trusted by a reader with none of the original context. (Code can write one for the wrong reason, too. See [the four-outcomes trap](#anti-patterns).)
+وهما يفشلان بطريقتين متعاكستين. فالنص سهل الإصدار عَرَضًا، لكن نصًا زائفًا يموت مع نصّ المحادثة. ولا ينشئ النموذج ملفًا عَرَضًا كما يستطيع طبع جملة، لكن ملفًا زائفًا *يستمر* ويُوثق به قارئ لا يملك أيًّا من السياق الأصلي. (ويمكن للشيفرة كتابة واحد لسبب خاطئ أيضًا. راجع [فخ المخرجات الأربع](#anti-patterns).)
 
-## How strong is your marker?
+## ما مدى قوة علامتك؟ {#how-strong-is-your-marker}
 
-One test governs both: **a good marker is at least as hard to satisfy as the work it stands for.** This first list ranks *markers*, the tokens that claim the work is done, from weakest to strongest:
+ويحكم اختبار واحد كليهما: **العلامة الجيدة لا تقلّ صعوبة في استيفائها عن العمل الذي تمثّله.** وهذه القائمة الأولى ترتّب *العلامات*، وهي الرموز التي تدّعي أن العمل منتهٍ، من الأضعف إلى الأقوى:
 
 1. `touch done`.
-2. A promise string.
-3. A `"passes": true` field in a JSON file.
-4. A test suite’s exit code.
-5. A check of the files on disk, plus tests the agent can’t edit.
-6. A marker written by an independently protected writer, CI job, or human.
+2. نص وعد (promise string).
+3. حقل `"passes": true` في ملف JSON.
+4. رمز خروج مجموعة اختبارات.
+5. فحص للملفات على القرص، مع اختبارات لا يستطيع الوكيل تحريرها.
+6. علامة يكتبها كاتب محميّ باستقلالية، أو مهمة CI، أو إنسان.
 
-`touch done` is weakest because it costs the agent nothing: any process can create it at any time. Item 6 is strongest only when the agent cannot write the marker or alter the writer, its dependencies, or its configuration. A repository hook the agent can edit does not meet that condition. [Keeping the agent away from the marker](#keeping-the-agent-away-from-the-marker) covers protecting both the marker and its writer.
+و`touch done` أضعفها لأنها لا تكلّف الوكيل شيئًا: فأي عملية تستطيع إنشاءها في أي وقت. والبند 6 أقواها فقط حين لا يستطيع الوكيل كتابة العلامة ولا تغيير الكاتب أو اعتماداته أو إعداده. وخُطّاف مستودع يستطيع الوكيل تحريره لا يستوفي ذلك الشرط. ويغطّي [إبعاد الوكيل عن العلامة](#keeping-the-agent-away-from-the-marker) حماية كلٍّ من العلامة وكاتبها.
 
-The second list ranks *exit conditions*, the things that tell a loop to stop, in the same order:
+والقائمة الثانية ترتّب *شروط الخروج*، وهي الأشياء التي تخبر حلقة بالتوقف، بالترتيب نفسه:
 
-1. A string in the output.
-2. A tool call that declares completion.
-3. A separate model judging the transcript.
-4. An agent hook that inspects the repository.
-5. A deterministic check, like an exit code, a `jq` query, or an empty diff.
-6. A validated artifact: its contents satisfy the contract and its downstream checks pass.
+1. نص في المخرجات.
+2. استدعاء أداة يعلن الإتمام.
+3. نموذج منفصل يحكم على نصّ المحادثة.
+4. خُطّاف وكيل يفحص المستودع.
+5. فحص حتمي، مثل رمز خروج، أو استعلام `jq`، أو فرق فارغ.
+6. مُخرَج مُتحقَّق منه: تستوفي محتوياته العقد وتنجح فحوصه اللاحقة.
 
-File presence only tells you something was written. A ported module can exist without compiling, and a generated report can be empty or partial, so validate an artifact’s contents and behavior before you treat it as an exit condition. Even an empty marker from a trusted external process is still a claim about a check: bind it to the exact artifact and verify the evidence behind it.
+فوجود الملف يخبرك فقط أن شيئًا قد كُتب. ويمكن لوحدة منقولة أن توجد دون أن تُصرَّف، ويمكن لتقرير مُولَّد أن يكون فارغًا أو جزئيًا، فتحقّق من محتوى المُخرَج وسلوكه قبل أن تعامله كشرط خروج. وحتى علامة فارغة من عملية خارجية موثوقة تظل ادّعاءً عن فحص: اربطها بالمُخرَج بالضبط وتحقّق من الدليل خلفها.
 
-Always know which one you’re relying on.
+واعرف دائمًا أيّها تعتمد عليه.
 
-## How completion sentinels work
+## كيف تعمل علامات الإتمام الحارسة {#how-completion-sentinels-work}
 
-Each harness wires this up a little differently:
+كل بيئة (harness) توصّل هذا على نحو مختلف قليلًا:
 
-- **A bash loop**: A fresh process every pass. Run the agent, do a substring match on its output for the token, and exit non-zero when the iteration cap is hit. (This is the [Ralph loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop).)
-- **The `ralph-wiggum` plugin**: [Anthropic’s Ralph loop plugin](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md). You start it with `/ralph-loop "<prompt>" --max-iterations <n> --completion-promise "<text>"`. A `Stop` hook returns `{"decision":"block","reason":<the same prompt>}` until the promise matches or the cap is reached.
-- **Claude Code’s `/goal`**: A small model returns met, not yet met, or impossible after each turn. See [Goals and Loops](https://stevekinney.com/courses/ai-development-setup/goals-and-loops).
-- **Codex’s `/goal`**: The model declares completion through an `update_goal` tool call, after an audit spelled out in the continuation prompt. [More on Codex’s `/goal`](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice#more-on-codexs-goal) covers its budget.
-- **`Stop` hooks in general**: Returning `decision: block` keeps the agent working. `stop_hook_active` means this hook’s last block already forced a continuation. Checking it lets the hook allow the second stop, which turns the gate into a single nudge. Read `last_assistant_message`, not the transcript, which can lag behind the current turn.
+- **حلقة bash**: عملية جديدة في كل دورة. شغّل الوكيل، وابحث في مخرجاته عن مطابقة جزئية للرمز، واخرج بقيمة غير صفرية عند بلوغ سقف التكرار. (وهذه هي [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop).)
+- **إضافة `ralph-wiggum`**: [إضافة حلقة Ralph من Anthropic](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md). تبدأها بـ `/ralph-loop "<prompt>" --max-iterations <n> --completion-promise "<text>"`. ويعيد خُطّاف `Stop` الوسيط `{"decision":"block","reason":<the same prompt>}` حتى يطابق الوعد أو يُبلغ السقف.
+- **`/goal` في Claude Code**: يعيد نموذج صغير بعد كل دور: مُستوفى، أو لم يُستوفَ بعد، أو مستحيل. راجع [الأهداف والحلقات](https://stevekinney.com/courses/ai-development-setup/goals-and-loops).
+- **`/goal` في Codex**: يعلن النموذج الإتمام عبر استدعاء أداة `update_goal`، بعد تدقيق مفصّل في طلب المتابعة. و[المزيد عن `/goal` في Codex](https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice#more-on-codexs-goal) يغطّي ميزانيته.
+- **خُطّافات `Stop` عمومًا**: إعادة `decision: block` تُبقي الوكيل عاملًا. و`stop_hook_active` تعني أن آخر منع من هذا الخُطّاف قد فرض استمرارًا بالفعل. وفحصها يتيح للخُطّاف السماح بالتوقف الثاني، مما يحوّل البوابة إلى دفعة واحدة. واقرأ `last_assistant_message`، لا نصّ المحادثة، الذي قد يتخلّف عن الدور الحالي.
 
-The plugin’s comparison is strict, but it can’t tell a declaration from a mention:
+ومقارنة الإضافة صارمة، لكنها لا تميّز إعلانًا من مجرد ذكر:
 
-- It takes the *first* promise tag pair in the last message, collapses whitespace, and compares the text inside to your `--completion-promise` exactly.
-- A sentence that merely *mentions* the promise, tags included, still matches.
-- A bare `DONE` can match too. If the last message is just that word, the plugin’s regex falls back to comparing the whole message.
-- `--max-iterations` defaults to unlimited. Always set it, with a space and not `=`. `--max-iterations=5` gets silently read as part of the prompt.
+- تأخذ *أول* زوج من وسوم الوعد في الرسالة الأخيرة، وتطوي المسافات البيضاء، وتقارن النص في داخله بـ `--completion-promise` عندك بالضبط.
+- والجملة التي *تذكر* الوعد فقط، بما في ذلك الوسوم، تطابق أيضًا.
+- و`DONE` المجرّدة يمكن أن تطابق أيضًا. فإذا كانت الرسالة الأخيرة تلك الكلمة فقط، يتراجع تعبير الإضافة النمطي إلى مقارنة الرسالة كلها.
+- و`--max-iterations` افتراضيًا بلا حد. اضبطها دائمًا بمسافة لا بـ `=`. فقراءة `--max-iterations=5` تُتَمّ بصمت كجزء من الطلب.
 
-Other harnesses are moving toward “finish as a tool call”: OpenHands has `finish`, and Codex has `update_goal`. Claude Code’s self-paced `/loop` works the same way: it re-arms itself with a `ScheduleWakeup` tool call, and calling it with `stop: true` ends the loop. The model still decides, but through a structured action that’s harder to emit by accident than a sentence.
+وتتحرك بيئات أخرى نحو «الإتمام كاستدعاء أداة»: فـ OpenHands لديها `finish`، وCodex لديه `update_goal`. ويعمل `/loop` ذاتي الوتيرة في Claude Code بالطريقة نفسها: يعيد تسليح نفسه باستدعاء أداة `ScheduleWakeup`، واستدعاؤه بـ `stop: true` ينهي الحلقة. ولا يزال النموذج هو من يقرّر، لكن عبر إجراء مهيكل يصعب إصداره عَرَضًا أكثر من جملة.
 
-## How file sentinels work
+## كيف تعمل علامات الملف الحارسة {#how-file-sentinels-work}
 
-Why disk at all? A new session needs state it can read without the old context. A [SessionEnd hook](https://code.claude.com/docs/en/hooks#sessionend) can save a handoff file when the session terminates. It can’t block termination or inject JSON output, and its default execution budget is only 1.5 seconds, so keep the write small and verify it completed. A `Stop` hook can checkpoint after each turn instead. Label those records as intermediate so they don’t overwrite a final handoff. Read the saved state in `SessionStart`, whose `startup`, `resume`, `clear`, `compact`, and `fork` matchers tell you how the session began.
+ولماذا القرص أصلًا؟ تحتاج الجلسة الجديدة إلى حالة تستطيع قراءتها دون السياق القديم. ويمكن لـ[خُطّاف SessionEnd](https://code.claude.com/docs/en/hooks#sessionend) أن يحفظ ملف تسليم عند إنهاء الجلسة. ولا يستطيع منع الإنهاء ولا حقن مخرجات JSON، وميزانية تنفيذه الافتراضية 1.5 ثانية فقط، فأبقِ الكتابة صغيرة وتحقّق من أنها اكتملت. ويمكن لخُطّاف `Stop` أن يسجّل نقطة تفتيش بعد كل دور بدلًا من ذلك. وسم تلك السجلات بأنها وسيطة كي لا تطمس تسليمًا نهائيًا. واقرأ الحالة المحفوظة في `SessionStart`، الذي تخبرك مُطابِقاته `startup` و`resume` و`clear` و`compact` و`fork` كيف بدأت الجلسة.
 
-Files come in three shapes:
+والملفات تأتي بثلاث صور:
 
-- **An empty marker**: For a gate. Its existence is the whole message.
-- **A structured JSON payload**: Records the outcome.
-- **A prose progress file**: Orients the next agent. Never gate on it.
+- **علامة فارغة**: لبوابة. فوجودها هو الرسالة كلها.
+- **حُمولة JSON مهيكلة**: تسجّل النتيجة.
+- **ملف تقدّم نثري**: يوجّه الوكيل التالي. لا تبنِ بوابة عليه أبدًا.
 
-The best design pairs an empty marker for the gate with a payload beside it for the audit trail. Then decide which one you’re building:
+أفضل تصميم يقرن علامة فارغة للبوابة بحُمولة بجانبها لمسار التدقيق. ثم قرّر أيّهما تبني:
 
-- **A handoff** only orients the next agent. If it’s missing or broken, carry on with less context. Handoffs *fail open*.
-- **A gate** controls whether an action proceeds. If it’s missing, malformed, stale, or keyed wrong, deny. Gates *fail closed*: anything the gate can’t interpret is a denial, or a question for a human if a person could resolve it.
+- **التسليم** يوجّه الوكيل التالي فقط. وإن كان مفقودًا أو معطوبًا، فامضِ بسياق أقل. والتسليمات *تفشل مفتوحة*.
+- **البوابة** تتحكّم في هل يمضي إجراء. وإن كانت مفقودة، أو مشوّهة، أو قديمة، أو مفتاحية خطأ، فارفض. والبوابات *تفشل مغلقة*: فكل ما لا تستطيع البوابة تفسيره رفضٌ، أو سؤال لإنسان إن كان يستطيع حلّه.
 
-Record the result, not just “done”: a status field that says `passed`, `failed`, `blocked`, or `aborted`. That’s how [Stripe’s idempotency keys](https://stripe.com/blog/idempotency) work: the stored record says what happened the first time, so a retry doesn’t have to guess.
+سجّل النتيجة، لا «منتهي» فقط: حقل حالة يقول `passed` أو `failed` أو `blocked` أو `aborted`. وهكذا تعمل [مفاتيح اللاتكرار في Stripe](https://stripe.com/blog/idempotency): فالسجل المخزَّن يقول ما حدث في المرة الأولى، فلا يضطر إعادة المحاولة إلى التخمين.
 
-## Designing sentinel files
+## تصميم ملفات العلامات الحارسة
 
-A sentinel file is a tiny piece of infrastructure, and tiny infrastructure fails in tiny, specific ways. A half-written file. A stale approval that still looks fresh. An agent that quietly wrote its own pass. What follows is each failure and its fix. The examples keep sentinel files in `.agent-state/`. The name is arbitrary; what matters is that the agent can’t write there.
+ملف العلامة الحارسة قطعة بنية تحتية صغيرة، والبنية التحتية الصغيرة تفشل بطرق صغيرة ومحددة. ملف نصف مكتوب. موافقة قديمة لا تزال تبدو طازجة. وكيل كتب نجاحه الخاص بهدوء. وفي ما يلي كل فشل وإصلاحه. وتُبقي الأمثلة ملفات العلامات الحارسة في `.agent-state/`. والاسم اعتباطي؛ والمهم أن الوكيل لا يستطيع الكتابة هناك.
 
-### Keying, writing, and reading markers
+### توليد المفاتيح، والكتابة، وقراءة العلامات {#keying-writing-and-reading-markers}
 
-- **Key the name to the inputs**: Name each marker after a hash of everything that matters: the procedure version, the inputs, the Git tree hash (the hash Git computes for the exact contents of the files in a commit), the lockfile. A stale marker then has a different name and is simply *absent*. That beats checking for staleness.
-- **Never key on modification time**: Clones, [worktrees](https://stevekinney.com/courses/ai-development-setup/worktrees), and containers scramble timestamps while the content stays exactly the same.
-- **Write atomically**: Write a temp file in the same directory, then rename it into place. Writing JSON with a plain `>` redirect is how you end up with half a file.
-- **Claim one-time markers with `ln` or `O_EXCL`**: Both fail if the claim already exists. `mv` overwrites silently, so it can’t do this job.
-- **Read defensively**: Reject symlinks, cap the file size, require a schema version, and treat anything you can’t parse as absent.
-- **Never `cat` a gate marker into the context**: Write your own fixed text instead, or the file becomes a way to inject instructions. A handoff note *is* meant for the next agent, so validate it and treat its contents as information, not instructions.
-- **Locate files with the hook’s `cwd` or `git rev-parse --show-toplevel`**: `$CLAUDE_PROJECT_DIR` stays at the original project root, so parallel worktrees end up sharing one path. (Codex has no root variable at all.)
+- **اربط الاسم بالمدخلات**: سمِّ كل علامة بعد تجزئة (hash) لكل ما يهم: نسخة الإجراء، والمدخلات، وتجزئة شجرة Git (التجزئة التي يحسبها Git للمحتوى الدقيق لملفات إيداع)، وملف القفل. فتصبح العلامة القديمة ذات اسم مختلف و*غائبة* ببساطة. وهذا أفضل من فحص التقادم.
+- **لا تربط المفتاح بوقت التعديل أبدًا**: فنسخ الاستنساخ، و[أشجار العمل](https://stevekinney.com/courses/ai-development-setup/worktrees)، والحاويات تخلط الطوابع الزمنية بينما يبقى المحتوى كما هو بالضبط.
+- **اكتب ذريًا**: اكتب ملفًا مؤقتًا في الدليل نفسه، ثم أعِد تسميته إلى موضعه. فكتابة JSON بإعادة توجيه `>` بسيطة هي كيف تنتهي بنصف ملف.
+- **احجز العلامات لمرة واحدة بـ `ln` أو `O_EXCL`**: كلاهما يفشل إن وُجد الحجز بالفعل. و`mv` يطمس بصمت، فلا يصلح لهذه المهمة.
+- **اقرأ دفاعيًا**: ارفض الروابط الرمزية، وحدّد حجم الملف، واشترط نسخة مخطّط، وعامل كل ما لا تستطيع تحليله كغائب.
+- **لا تُدخل علامة بوابة إلى السياق بـ `cat` أبدًا**: اكتب نصك الثابت بدلًا من ذلك، وإلا صار الملف وسيلة لحقن تعليمات. أما مذكّرة التسليم فهي *مقصودة* للوكيل التالي، فتحقّق منها وعامل محتواها كمعلومة لا كتعليمات.
+- **حدّد موقع الملفات بـ `cwd` في الخُطّاف أو `git rev-parse --show-toplevel`**: فـ`$CLAUDE_PROJECT_DIR` يبقى عند جذر المشروع الأصلي، فتنتهي أشجار العمل المتوازية بمشاركة مسار واحد. (ولا يملك Codex متغيّر جذر على الإطلاق.)
 
-### Keeping the agent away from the marker
+### إبعاد الوكيل عن العلامة {#keeping-the-agent-away-from-the-marker}
 
-If the agent can write its own approval, the gate is an honor system, and no clever filename changes that. The **writer** is whatever creates the marker: a hook, a CI job, or your own script. Move it out of the agent’s reach, in layers:
+إن استطاع الوكيل كتابة موافقته الخاصة، صارت البوابة نظام شرف، ولن يغيّر أي اسم ملف بارع ذلك. و**الكاتب** هو كل ما ينشئ العلامة: خُطّاف، أو مهمة CI، أو سكربتك الخاص. فأبعده عن متناول الوكيل، في طبقات:
 
-- **Deny `Edit(/.agent-state/**)`in project permissions**: Put this in`.claude/settings.json`or`.claude/settings.local.json`, and start the session at the project or worktree root. The leading slash anchors to the settings source: in user settings it would protect`~/.claude/.agent-state`, not the project marker. Verify a direct file-tool write is denied in every worktree. On its own, a path deny rule is friction, not a boundary. See the [Read and Edit path rules](https://code.claude.com/docs/en/permissions#read-and-edit).
-- **Add a sandbox `denyWrite` for the directory**: A sandbox is operating-system-level isolation for the agent’s shell commands. This rule only covers Bash and PowerShell commands and their children, not `Edit` or `Write`.
-- **Set `allowUnsandboxedCommands: false`**: Otherwise, a denied command can just be retried outside the sandbox.
-- **Protect the writer and its configuration**: Command hooks run with the user’s full permissions, as the [hook security reference](https://code.claude.com/docs/en/hooks#security-considerations) explains. Running outside the sandbox doesn’t help if the executable lives in the agent-writable repository. Keep the writer, its dependencies, and its configuration outside every agent-writable root, protected from both file tools and subprocesses. If they must stay in the repository, deny edits and OS-protect those paths too. The gate is a boundary only when the agent can alter neither the marker nor the code and configuration that write it.
+- **ارفض `Edit(/.agent-state/**)` في أذونات المشروع**: ضع هذا في `.claude/settings.json` أو `.claude/settings.local.json`، وابدأ الجلسة عند جذر المشروع أو شجرة العمل. والشرطة المائلة البادئة ترسو على مصدر الإعدادات: ففي إعدادات المستخدم ستحمي `~/.claude/.agent-state`، لا علامة المشروع. وتحقّق من رفض كتابة مباشرة بأداة ملفات في كل شجرة عمل. وقاعدة رفض مسار، بذاتها، احتكاك لا حدّ. راجع [قواعد مسارات القراءة والتحرير](https://code.claude.com/docs/en/permissions#read-and-edit).
+- **أضف `denyWrite` للصندوق الرملي على الدليل**: والصندوق الرملي عزل على مستوى نظام التشغيل لأوامر صدفة الوكيل. وهذه القاعدة تغطّي أوامر Bash وPowerShell وذرّياتها فقط، لا `Edit` أو `Write`.
+- **اضبط `allowUnsandboxedCommands: false`**: وإلا، يمكن ببساطة إعادة محاولة أمر مرفوض خارج الصندوق الرملي.
+- **احمِ الكاتب وإعداده**: خُطّافات الأوامر تعمل بكامل أذونات المستخدم، كما يوضّح [مرجع أمان الخُطّافات](https://code.claude.com/docs/en/hooks#security-considerations). والعمل خارج الصندوق الرملي لا يفيد إذا كان الملف التنفيذي يعيش في مستودع يستطيع الوكيل الكتابة فيه. أبقِ الكاتب واعتماداته وإعداده خارج كل جذر يستطيع الوكيل الكتابة فيه، محميًّا من أدوات الملفات والعمليات الفرعية كليهما. وإن لزم بقاؤها في المستودع، فارفض التحرير واحمِ تلك المسارات على مستوى نظام التشغيل أيضًا. والبوابة حدّ فقط حين لا يستطيع الوكيل تغيير العلامة ولا الشيفرة والإعداد اللذين يكتبانها.
 
-Test every gate negatively: delete the marker, attempt the action, and assert the denial. Then try to modify the writer and its configuration through both file tools and a subprocess. Every attempt must fail. A passing run proves nothing, because a gate that allows everything passes too.
+اختبر كل بوابة سلبيًا: احذف العلامة، وحاول الإجراء، وأكّد الرفض. ثم حاول تعديل الكاتب وإعداده عبر أدوات الملفات وعملية فرعية كليهما. ويجب أن يفشل كل محاولة. فالتشغيل الناجح لا يثبت شيئًا، لأن بوابة تسمح بكل شيء تنجح أيضًا.
 
-### Best practices
+### أفضل الممارسات {#best-practices}
 
-- **Layer the exits**: Use a cap that’s always on (iterations, dollars, a stall detector, the same error repeating, the hook block cap). Add a check of the world that actually decides. Then add a sentinel that may only end the loop early when that check agrees.
-- **Use distinct endings**: `COMPLETE`, cap reached, `BLOCKED`, needs a decision. Put the signal alone on the last line, give each one its own exit code, and make the loop report which one fired. Endings say *why the loop stopped*; the marker statuses in [How file sentinels work](#how-file-sentinels-work) say *what a check found*. Keep the two vocabularies separate. A Ralph loop’s [typed exit codes](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop#the-oracle-is-load-bearing) are the same idea as endings, applied to the process.
-- **Give the agent an honest way out**: [ImpossibleBench](https://arxiv.org/abs/2510.20270) builds coding tasks whose tests contradict the written spec, so any pass means the agent exploited the tests. Giving GPT-5 a `flag_for_human_intervention` option cut that cheating from 54% to 9%. “Do not lie to exit” with no `BLOCKED` path makes lying the only way out.
-- **Check the cheaper alternatives first**: Each of these is easier to trust than a file nobody can re-derive, so try them in order: Re-derive the fact. A Git note, which attaches a fact to a commit without changing it. A Git tag. A real database or queue. The issue tracker. A lock, if all you need is “only one worker does this at a time.” *Then* a sentinel file.
-  1. Re-derive the fact.
-  2. A Git note, which attaches a fact to a commit without changing it.
-  3. A Git tag.
-  4. A real database or queue.
-  5. The issue tracker.
-  6. A lock, if all you need is “only one worker does this at a time.”
-  7. *Then* a sentinel file.
+- **طابق المخارج في طبقات**: استخدم سقفًا دائم التشغيل (التكرارات، الدولارات، كاشف توقّف، تكرار الخطأ نفسه، سقف منع الخُطّاف). وأضف فحصًا للعالم هو من يقرّر فعلًا. ثم أضف علامة حارسة لا يجوز لها إنهاء الحلقة مبكرًا إلا حين يوافق ذلك الفحص.
+- **استخدم نهايات متمايزة**: `COMPLETE`، بلوغ السقف، `BLOCKED`، يحتاج قرارًا. ضع الإشارة وحدها في السطر الأخير، وأعطِ كلًّا منها رمز خروج خاصًا به، واجعل الحلقة تبلّغ أيّها انطلق. والنهايات تقول *لماذا توقفت الحلقة*؛ أما حالات العلامة في [كيف تعمل علامات الملف الحارسة](#how-file-sentinels-work) فتقول *ما وجده فحص*. أبقِ المفردتين منفصلتين. و[رموز الخروج المكتوبة النوع](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop#the-oracle-is-load-bearing) في حلقة Ralph هي الفكرة نفسها كنهايات، مطبَّقة على العملية.
+- **أعطِ الوكيل مخرجًا صادقًا**: يبني [ImpossibleBench](https://arxiv.org/abs/2510.20270) مهام برمجة تتناقض اختباراتها مع المواصفة المكتوبة، فأي نجاح يعني أن الوكيل استغلّ الاختبارات. ومنح GPT-5 خيار `flag_for_human_intervention` خفض ذلك الغشّ من 54% إلى 9%. و«لا تكذب لتخرج» بلا مسار `BLOCKED` يجعل الكذب المخرج الوحيد.
+- **افحص البدائل الأرخص أولًا**: كل واحد من هذه أسهل ثقةً من ملف لا يستطيع أحد إعادة اشتقاقه، فجرّبها بالترتيب:
 
-### Anti-patterns
+  1. أعِد اشتقاق الحقيقة.
+  2. ملاحظة Git، تُلحق حقيقة بإيداع دون تغييره.
+  3. وسم Git.
+  4. قاعدة بيانات أو طابور حقيقي.
+  5. متتبّع المشكلات (issue tracker).
+  6. قفل، إن كان كل ما تحتاجه هو «عامل واحد فقط يفعل هذا في كل مرة».
+  7. *ثم* ملف علامة حارسة.
 
-- **The string as the only exit**: The model controls the verdict.
-- **Searching all of the output for the token**: Any mention of it, or an echoed prompt, ends the run. The bash loop in [How completion sentinels work](#how-completion-sentinels-work) does a substring match too. That’s only safe when the token is distinctive, it’s alone on the last line, and a real check backs it up.
-- **One string standing for every outcome.**
-- **A cap nobody enforces**: [One run](https://github.com/anthropics/claude-code/issues/18646) made it past iteration 459 after its cap was silently ignored. (The [1,966-attempt story](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop#governors-are-your-problem) is another one.)
-- **“Please don’t cheat” in the prompt**: [METR measured](https://metr.org/blog/2025-06-05-recent-reward-hacking/) a model gaming the scorer on one task in 80% of runs. With “Please do not cheat” added, it was still 80%.
-- **Committing gate sentinels**: A cloned repository can arrive with an approval already in it.
-- **Using a sentinel as the only record of something irreversible**: If the file is lost or forged, you can’t re-derive what happened.
-- **Treating a progress file as proof.**
-- **Spin loops**: Goals that never accept “done.” [One Codex user found](https://github.com/openai/codex/issues/44909) that 1.4% of their goal sessions used 49% of their input tokens.
-- **The four-outcomes trap**: A genuine approval, a forced approval at the round cap (a review loop’s maximum number of back-and-forth rounds), a write while the reviewer was down, and a human override all produced the *same* zero-byte file. Every path that isn’t a genuine approval has to leave a distinct marker, and the gate has to deny on it. My [committee-review skill](https://stevekinney.com/courses/ai-development-setup/committee-review#what-gets-harder) is a working example of walking into this one.
+### أنماط مضادة {#anti-patterns}
 
-### Advanced techniques
+- **النص كمخرج وحيد**: النموذج يتحكّم في الحكم.
+- **البحث عن الرمز في كل المخرجات**: أي ذكر له، أو طلب مُصدَّر (echoed)، يُنهي التشغيل. وحلقة bash في [كيف تعمل علامات الإتمام الحارسة](#how-completion-sentinels-work) تُجري مطابقة جزئية أيضًا. وهذا آمن فقط حين يكون الرمز مميزًا، ويكون وحده في السطر الأخير، ويدعمه فحص حقيقي.
+- **نص واحد يمثّل كل نتيجة.**
+- **سقف لا يفرضه أحد**: [تشغيل واحد](https://github.com/anthropics/claude-code/issues/18646) تجاوز التكرار 459 بعد تجاهل سقفه بصمت. (و[قصة المحاولات الـ 1,966](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop#governors-are-your-problem) واحدة أخرى.)
+- **«من فضلك لا تغشّ» في الطلب**: [قاس METR](https://metr.org/blog/2025-06-05-recent-reward-hacking/) نموذجًا يتلاعب بالمقيّم في مهمة واحدة في 80% من التشغيلات. ومع إضافة «من فضلك لا تغشّ»، بقي 80%.
+- **إيداع علامات البوابة**: يمكن لمستودع مُستنسخ أن يصل وفيه موافقة بالفعل.
+- **استخدام علامة حارسة كسجل وحيد لشيء لا رجعة فيه**: إن فُقد الملف أو زُوّر، لا تستطيع إعادة اشتقاق ما حدث.
+- **معاملة ملف تقدّم كدليل.**
+- **حلقات الدوران**: أهداف لا تقبل «منتهي» أبدًا. [وجد أحد مستخدمي Codex](https://github.com/openai/codex/issues/44909) أن 1.4% من جلسات أهدافه استهلكت 49% من رموز مدخلاته.
+- **فخ المخرجات الأربع**: موافقة حقيقية، وموافقة مفروضة عند سقف الجولات (أقصى عدد من جولات الأخذ والرد في حلقة مراجعة)، وكتابة بينما كان المراجع معطّلًا، وتجاوز بشري، أنتجت جميعًا الملف *نفسه* بصفر بايت. وكل مسار ليس موافقة حقيقية يجب أن يترك علامة متمايزة، وعلى البوابة أن ترفض عندها. و[مهارة committee-review](https://stevekinney.com/courses/ai-development-setup/committee-review#what-gets-harder) عندي مثال عامل على الوقوع في هذه.
 
-- **Dual condition**: The sentinel and the check have to agree. Log every premature claim, and you get a false-completion rate you can actually track.
-- **Proof-carrying markers**: The marker holds a digest of the reviewer’s response, a handle the gate can re-query itself, or a signature from outside the sandbox. Now a marker that exists but *doesn’t* verify is positive evidence of gaming, not just a missing approval.
-- **Fallback approvals**: If there’s no approval for the exact tree, fall back to one for the tree of the parent commit and review only the diff. (Nobody seems to be shipping this yet.)
-- **Git notes for commit-scoped facts**: “I already reviewed this commit.”
-- **Validated artifacts**: The work product can serve as the record, but only after its contents and downstream checks satisfy the contract. An empty or partial file is not completion evidence; verify it before resuming or accepting it.
-- **Control channels from you to the loop**: Editing `loop.md` steers a running `/loop`. A stop file like `.ralph/STOP` is a kill switch the loop checks every iteration.
+### تقنيات متقدمة {#advanced-techniques}
 
-### When a scheme has already failed
+- **شرط مزدوج**: يجب أن تتفق العلامة الحارسة والفحص. وسجّل كل ادّعاء مبكر، فتحصل على معدّل إتمام زائف يمكنك تتبّعه فعلًا.
+- **علامات تحمل إثباتًا**: تحمل العلامة ملخّصًا (digest) لاستجابة المراجع، أو مقبضًا تستطيع البوابة الاستعلام عنه بنفسها، أو توقيعًا من خارج الصندوق الرملي. والآن صارت علامة موجودة لكنها *لا* تتحقّق دليلًا إيجابيًا على التلاعب، لا مجرد موافقة مفقودة.
+- **موافقات احتياطية**: إن لم تكن هناك موافقة على الشجرة بالضبط، فارجع إلى موافقة على شجرة الإيداع الأب واقتصر على مراجعة الفرق. (يبدو أنه لا أحد يشحن هذا بعد.)
+- **ملاحظات Git لحقائق مقصورة على الإيداع**: «راجعت هذا الإيداع بالفعل».
+- **مخرجات متحقَّق منها**: يمكن لناتج العمل أن يخدم كسجل، لكن فقط بعد أن تستوفي محتوياته وفحوصه اللاحقة العقد. فالملف الفارغ أو الجزئي ليس دليل إتمام؛ تحقّق منه قبل الاستئناف أو القبول.
+- **قنوات تحكّم منك إلى الحلقة**: تحرير `loop.md` يوجّه `/loop` الجارية. وملف إيقاف مثل `.ralph/STOP` مفتاح إيقاف تفحصه الحلقة في كل تكرار.
 
-Do these in order:
+### عندما يفشل مخطط بالفعل {#when-a-scheme-has-already-failed}
 
-1. Deny the gated tool structurally.
-2. Find the blast radius: which actions were approved by suspect markers?
-3. Quarantine the suspect markers. Don’t delete them. They’re evidence.
-4. Re-derive the markers. Never repair one by hand.
-5. Redesign before you resume.
+افعل هذه بالترتيب:
 
-**A persisted claim has to be independently checkable.** The string says the model *thinks* it’s done. The file says someone *once* thought so. Only a check you run right now says it’s true. Whatever you build, never let the agent write its own approval.
+1. ارفض الأداة المحكومة بالبوابة بنيويًا.
+2. اعثر على نطاق التأثير: أي إجراءات وافقت عليها علامات مشتبه بها؟
+3. اعزل العلامات المشتبه بها. لا تحذفها. فهي أدلة.
+4. أعِد اشتقاق العلامات. لا تصلح إحداها يدويًا أبدًا.
+5. أعِد التصميم قبل أن تستأنف.
+
+**الادّعاء المستمر يجب أن يكون قابلًا للفحص باستقلالية.** فالنص يقول إن النموذج *يعتقد* أنه انتهى. والملف يقول إن أحدهم *اعتقد* ذلك مرة. وفحص واحد فقط تجريه الآن يقول إنه صحيح. ومهما بنيت، لا تدع الوكيل يكتب موافقته الخاصة أبدًا.

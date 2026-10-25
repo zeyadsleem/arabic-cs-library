@@ -1,16 +1,16 @@
 ---
-title: "Validating Zod Schemas (Solutions)"
-lang: en
+title: "التحقق من مخططات Zod (الحلول)"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-zod-schemas-solution"
 ---
 
-Below are the solutions for the exercises found [here](https://stevekinney.com/courses/full-stack-typescript/validating-zod-schema-exercises).
+في ما يلي حلول التمارين الموجودة [هنا](https://stevekinney.com/courses/full-stack-typescript/validating-zod-schema-exercises).
 
-## Solutions
+## الحلول
 
-### Hello Zod
+### مرحبًا Zod
 
-**Goal**: Validate an object with required name (string) and age (non-negative number).
+**الهدف**: التحقق من كائن يتضمّن اسمًا مطلوبًا (نص) وعمرًا (رقم غير سالب).
 
 ```typescript
 import { z } from 'zod';
@@ -49,13 +49,13 @@ try {
 }
 ```
 
-**Note**: This should illustrate how `.parse()` will throw an error for the invalid objects.
+**ملاحظة**: ينبغي أن يوضّح هذا كيف سيُطلق `.parse()` خطأً للكائنات غير الصالحة.
 
-## Solutions
+## الحلول
 
-### All About Options
+### كل شيء عن الخيارات
 
-**Goal**: Make age optional. If not provided, either default it to 0 or show an error.
+**الهدف**: اجعل العمر اختياريًا. وإذا لم يُوفَّر، فإمّا أن تجعل قيمته الافتراضية 0 أو أن تعرض خطأً.
 
 ```typescript
 import { z } from 'zod';
@@ -88,13 +88,13 @@ try {
 }
 ```
 
-**Note**: If you wanted to throw an error instead of defaulting, omit the .transform(…) or throw in .refine().
+**ملاحظة**: إن أردت إطلاق خطأ بدلًا من استخدام القيمة الافتراضية، فاحذف .transform(…) أو أطلق الخطأ داخل .refine().
 
-## Solutions
+## الحلول
 
-### On the Street Where You Live
+### في الشارع الذي تسكن فيه
 
-**Goal**: Nested objects, arrays of addresses, at least one address required.
+**الهدف**: كائنات متداخلة، ومصفوفات من العناوين، وعنوان واحد مطلوب على الأقل.
 
 ```typescript
 import { z } from 'zod';
@@ -148,11 +148,11 @@ try {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Now for Something Completely Different: Unions
+### الآن لشيء مختلف تمامًا: الأنواع الاتحادية
 
-**Goal**: Accept either the string “anonymous” or an object with id (number) and name (string).
+**الهدف**: اقبل إمّا النص “anonymous” أو كائنًا يتضمّن id (رقمًا) وname (نصًا).
 
 ```typescript
 import { z } from 'zod';
@@ -181,11 +181,11 @@ try {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Refining Your Tastes
+### صقل الأذواق
 
-**Goal**: Use `.refine()` to check if a number is prime.
+**الهدف**: استخدم `.refine()` للتحقق مما إذا كان العدد أوليًا.
 
 ```typescript
 import { z } from 'zod';
@@ -211,11 +211,11 @@ try {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Transform-ers: Validation in Disguise
+### المحوّلات: تحقق متنكّر
 
-**Goal**: Accept a YYYY-MM-DD string, transform it to a Date.
+**الهدف**: اقبل نصًا بصيغة YYYY-MM-DD وحوّله إلى كائن Date.
 
 ```typescript
 import { z } from 'zod';
@@ -245,11 +245,11 @@ try {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Adding a Little Brand to Your Life
+### إضافة قليل من الوسم إلى حياتك
 
-**Goal**: A UserId branded type that’s a valid UUID string.
+**الهدف**: نوع UserId موسوم يكون نصًا صالحًا للـ UUID.
 
 ```typescript
 import { z } from 'zod';
@@ -275,15 +275,15 @@ try {
 
 > **Zod v4**
 >
-> In Zod v4, this would be written as `z.uuid().brand<'UserId'>()`. The top-level `z.uuid()` replaces `z.string().uuid()`, and v4’s `z.uuid()` enforces stricter RFC 9562 validation. Use `z.guid()` for v3-compatible behavior.
+> في Zod v4، تُكتب هذه الصيغة هكذا `z.uuid().brand<'UserId'>()`. وتحلّ `z.uuid()` على المستوى الأعلى محل `z.string().uuid()`، ويفرض `z.uuid()` في الإصدار الرابع تحققًا أكثر صرامة وفق RFC 9562. استخدم `z.guid()` لسلوك متوافق مع الإصدار الثالث.
 
-**Test Branding**: If you have a function that expects a UserId type, passing a normal string should fail type-check (in TypeScript). This won’t fail at runtime, but at compile time.
+**اختبار الوسم**: إذا كان لديك دالة تتوقع نوع UserId، فينبغي أن يفشل تمرير نص عادي في فحص الأنواع (في TypeScript). ولن يفشل ذلك وقت التشغيل، بل وقت التصريف.
 
-## Solutions
+## الحلول
 
-### Making “Partial,” “Pick,” or “Omit” Your Best Friends
+### اجعل “Partial” و“Pick” و“Omit” أفضل أصدقائك
 
-**Goal**: Use an existing large schema, then create partial or subset schemas using .partial(), .pick(), .omit().
+**الهدف**: استخدم مخططًا كبيرًا موجودًا، ثم أنشئ مخططات جزئية أو فرعية باستخدام .partial() و.pick() و.omit().
 
 ```typescript
 import { z } from 'zod';
@@ -348,11 +348,11 @@ try {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Custom Schemas with z.custom()
+### مخططات مخصّصة باستخدام z.custom()
 
-**Goal**: Validate a hex color string: must start with # and be 3 or 6 hex digits.
+**الهدف**: التحقق من نص لون سداسي عشري: يجب أن يبدأ بـ # ويتكوّن من 3 أو 6 أرقام سداسية عشرية.
 
 ```typescript
 import { z } from 'zod';
@@ -390,11 +390,11 @@ for (const color of invalidColors) {
 }
 ```
 
-## Solutions
+## الحلول
 
-### Put It All Together: Build a Form Validator
+### لنضع كل شيء معًا: بناء أداة تحقق للنماذج
 
-**Goal**: A registration form requiring username, password, email, optional birthDate as a valid date, and each field with its own constraints.
+**الهدف**: نموذج تسجيل يتطلّب اسم مستخدم وكلمة مرور وبريدًا إلكترونيًا، وتاريخ ميلاد اختياريًا صالحًا، مع قيود خاصة بكل حقل.
 
 ```typescript
 import { z } from 'zod';
@@ -478,10 +478,10 @@ try {
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().email()` is preferably `z.email()`, and the `{ message: "..." }` option in validators like `.min()` and `.refine()` is deprecated in favor of `{ error: "..." }`.
+> في Zod v4، الأفضل أن تكون `z.string().email()` هي `z.email()`، وخيار `{ message: "..." }` في المدقّقات مثل `.min()` و`.refine()` مهجور لصالح `{ error: "..." }`.
 
-**Key Takeaways**:
+**النقاط الأساسية**:
 
-1. Use separate schemas per field or concept.
-2. Compose them with `z.object()`.
-3. Lean on `.refine()`, `.transform()`, branding, or any other Zod technique you find handy.
+1. استخدم مخططات منفصلة لكل حقل أو مفهوم.
+2. ركّبها معًا باستخدام `z.object()`.
+3. اعتمد على `.refine()` و`.transform()` والوسم أو أي تقنية أخرى في Zod تجدها مفيدة.

@@ -1,27 +1,27 @@
 ---
-title: "Towards Systems Thinking"
-lang: en
+title: "نحو التفكير المنظومي"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/why-systems"
 ---
 
-If you’ve used a coding agent for more than a week, you’ve already run this experiment—even if you didn’t mean to. Ask it to “fix the lint errors and get the lint check passing,” and it probably nails it. Ask it to “build an inventory management system, make no mistakes,” and you get something that *looks* finished and isn’t.
+إن كنت قد استخدمت وكيل برمجة لأكثر من أسبوع، فقد أجريت هذه التجربة بالفعل — حتى إن لم تقصد ذلك. اطلب منه «أصلح أخطاء الفحص واجعل فحص الـ lint ينجح»، وعلّ الأرجح أنه يتقنها. واطلب منه «ابنِ نظام إدارة مخزون، دون أي أخطاء»، فتحصل على شيء يبدو *مكتملًا* وهو ليس كذلك.
 
-Part of that is size, sure. But, the bigger difference is that the first request comes with a way to check the work. The agent can run the linter and keep going until it passes. The second request gives it nothing to check against.
+جزء من ذلك يرجع إلى الحجم، بالتأكيد. لكن الفرق الأكبر أن الطلب الأول يأتي معه طريقة للتحقق من العمل. يستطيع الوكيل تشغيل أداة الـ lint والاستمرار حتى تنجح. أما الطلب الثاني فلا يمنحه شيئًا يتحقق مقابل.
 
-## The model and the harness
+## النموذج والمنصة
 
-Two things usually get lumped together:
+غالبًا ما يُخلط بين أمرين:
 
-- **The model** proposes the next step: “read this file,” “edit that function,” “run the tests.” Think Claude Opus, OpenAI’s GPT-6.1 Sol, or DeepSeek.
-- **The harness** is the program around the model that carries those steps out. Think [Claude Code](https://code.claude.com/docs/en/overview), [Codex](https://developers.openai.com/codex), or [Cursor](https://cursor.com/). It supplies the **tools** (actions like reading a file or running a shell command), the **context** (everything the model can see when it picks its next step: your messages, its instructions, and every file or command output so far), the permissions, and the hooks (scripts that run automatically at set points).
+- **النموذج** يقترح الخطوة التالية: «اقرأ هذا الملف»، «عدّل تلك الدالة»، «شغّل الاختبارات». فكّر في Claude Opus أو GPT-6.1 Sol من OpenAI أو DeepSeek.
+- **المنصة** هي البرنامج المحيط بالنموذج والذي ينفّذ تلك الخطوات. فكّر في [Claude Code](https://code.claude.com/docs/en/overview) أو [Codex](https://developers.openai.com/codex) أو [Cursor](https://cursor.com/). إنها توفّر **الأدوات** (أفعال مثل قراءة ملف أو تشغيل أمر صدفة)، و**السياق** (كل ما يستطيع النموذج رؤيته حين يختار خطوته التالية: رسائلك، وتعليماته، وكل ملف أو خرج أمر حتى الآن)، والأذونات، والخطافات (سكربتات تعمل تلقائيًا عند نقاط محددة).
 
-You don’t get to edit Claude Code’s source. (Mods, near the end of the course, change its behavior from the inside, but that’s an advanced move.) You *can* configure nearly everything around it: the instructions it reads, what it’s allowed to do, the checks it runs, and where it keeps notes. When I say **the system**, I mean all of that together—the harness, its configuration, and the checks and state around it. I care more about the system than about any particular model.
+لا تستطيع تعديل الشيفرة المصدرية لـ Claude Code. (التعديلات، قرب نهاية الدورة، تغيّر سلوكه من الداخل، لكن تلك خطوة متقدمة.) لكنك *تستطيع* ضبط كل شيء حوله تقريبًا: التعليمات التي يقرأها، وما يُسمح له بفعله، والفحوصات التي يشغّلها، والمكان الذي يحتفظ فيه بملاحظاته. وحين أقول **المنظومة**، أعني كل ذلك مجتمعًا — المنصة وإعدادها والفحوصات والحالة حولها. يهمّني النظام أكثر من أي نموذج بعينه.
 
-I’m not dogmatic about harnesses. My daily drivers are Claude Code, Codex, and [OpenClaw](https://openclaw.ai/) (an open-source AI assistant), with [GitHub Copilot](https://github.com/features/copilot) and Cursor when I need them. Claude Code is the default here, and I’ll point out where Codex differs. The ideas are converging anyway: [skills](https://stevekinney.com/courses/ai-development-setup/skills) (packaged instructions the agent loads on demand) follow an [open standard](https://agentskills.io/), Codex’s hooks were modeled on Claude Code’s and share the same basic contract, and the two tools’ subagents (helper agents the main agent hands work to) are close cousins.
+لست متزمّتًا بشأن المنصات. أدواتي اليومية هي Claude Code وCodex و[OpenClaw](https://openclaw.ai/) (مساعد ذكاء اصطناعي مفتوح المصدر)، مع [GitHub Copilot](https://github.com/features/copilot) وCursor عند الحاجة. وClaude Code هو الافتراضي هنا، وسأشير إلى المواضع التي يختلف فيها Codex. الأفكار تتقارب على كل حال: [المهارات](https://stevekinney.com/courses/ai-development-setup/skills) (تعليمات معبَّأة يحمّلها الوكيل عند الطلب) تتبع [معيارًا مفتوحًا](https://agentskills.io/)، وخطافات Codex صُمّمت على غرار خطافات Claude Code وتتقاسم العقد الأساسي نفسه، والوكلاء الفرعيون في الأداتين (وكلاء مساعدون يسلّمهم الوكيل الرئيسي عملًا) قريبون جدًا.
 
-## The minimum closed loop
+## الحلقة المغلقة الدنيا
 
-Here’s the smallest loop that can check its own work:
+إليك أصغر حلقة تستطيع التحقق من عملها:
 
 ```
 flowchart LR
@@ -33,127 +33,127 @@ flowchart LR
   E -- Yes --> F["Stop"]
 ```
 
-The agent looks at the current state—the code, the test output—makes a move, then looks again. If it’s not done, it picks a new move based on what it just saw.
+ينظر الوكيل إلى الحالة الراهنة — الشيفرة، وخرج الاختبار — ويقوم بخطوة، ثم ينظر مرة أخرى. فإن لم يكن قد انتهى، يختار خطوة جديدة بناءً على ما رآه للتو.
 
-That diamond at the end is the whole game. If you can turn “did we do the thing?” into something deterministic—a test, a lint check, a command with an exit code—the agent can go around the loop on its own until the answer is yes. If you can’t, the answer comes from the agent’s opinion of its own work, which is a much weaker signal.
+ذلك المعيّن في النهاية هو اللعبة كلها. إن استطعت تحويل «هل فعلنا الشيء؟» إلى شيء حتمي — اختبار، أو فحص lint، أو أمر له رمز خروج — استطاع الوكيل أن يدور في الحلقة وحده حتى تكون الإجابة نعم. وإن لم تستطع، جاءت الإجابة من رأي الوكيل في عمله هو، وهو إشارة أضعف بكثير.
 
-## A request is not a task contract
+## الطلب ليس عقد مهمة
 
-“Make checkout better” is a *request*. It leaves three things undefined: what outcome you want, how far the agent may go, and what would prove it worked.
+«حسّن إتمام الشراء» هو *طلب*. يترك ثلاثة أمور غير محددة: النتيجة التي تريدها، ومدى ما يجوز للوكيل أن يمضي إليه، وما الذي سيثبت أنه نجح.
 
-A **task contract** pins all three down. Compare:
+**عقد المهمة** يثبّت الثلاثة جميعًا. قارن:
 
-> Reduce duplicate-submit failures without changing payment semantics. Reproduce the bug with the `duplicate-submit` test.
+> قلّل إخفاقات الإرسال المكرر دون تغيير دلالات الدفع. أعد إنتاج الخلل باختبار `duplicate-submit`.
 
-Now there’s a behavior to change, a boundary not to cross, and a check: that test fails before the fix and should pass after it. Not every task needs this much ceremony; [Planning and Task Contracts](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts) covers how much a given task deserves.
+الآن هناك سلوك يجب تغييره، وحدّ يجب ألا يُتجاوز، وفحص: ذلك الاختبار يفشل قبل الإصلاح ويجب أن ينجح بعده. ليست كل مهمة تحتاج كل هذه الشكليات؛ [التخطيط وعقود المهام](https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts) يغطي مقدار ما تستحقه مهمة معينة.
 
-## Don’t be a meat proxy
+## لا تكن وسيطًا بشريًا
 
-There’s a failure mode I see constantly. The agent writes some code. You run the tests, see them fail, and paste the error back. It tries again. You run the tests again. You’ve become a **[meat proxy](https://dontbeameatproxy.com/)**—a human whose only job is carrying messages between the agent and a test runner it could have run itself, if anyone had set it up to.
+هناك نمط فشل أراه باستمرار. يكتب الوكيل بعض الشيفرة. تشغّل الاختبارات، تراها تفشل، وتلصق الخطأ عائدًا. يحاول مجددًا. تشغّل الاختبارات مرة أخرى. لقد صرت **[وسيطًا بشريًا](https://dontbeameatproxy.com/)** — إنسانًا عمله الوحيد نقل الرسائل بين الوكيل ومشغّل اختبارات كان يستطيع تشغيله بنفسه، لو أعدّ أحدهم لذلك.
 
-Your time is worth more than that. The high-value work has *always* been systems thinking: deciding how the software should behave, which trade-offs to make, and how to keep it easy to change direction later. Who typed the syntax was never the interesting part. (So, yes: all those books on designing software systems that nobody had time to read are relevant again.)
+وقتك أثمن من ذلك. العمل عالي القيمة كان *دائمًا* هو التفكير المنظومي: تقرير كيف ينبغي أن يتصرف البرنامج، وأي المقايضات تُتخذ، وكيف يبقى من السهل تغيير الاتجاه لاحقًا. من كتب الصياغة لم يكن الجزء المثير قط. (لذا، نعم: كل تلك الكتب عن تصميم الأنظمة البرمجية التي لم يجد أحد وقتًا لقراءتها صارت ذات صلة مجددًا.)
 
-Building the loop doesn’t take you out of it. It moves you to the parts that need taste and judgment—the ones that stay yours no matter how good the model gets:
+بناء الحلقة لا يُخرجك منها. بل ينقلك إلى الأجزاء التي تحتاج ذوقًا وحكمًا — تلك التي تبقى لك مهما بلغ جودة النموذج:
 
-- Selecting and framing the task.
-- Deciding what the agent may touch and how much risk you’ll accept.
-- Inspecting the evidence—test results, diffs, screenshots—behind any claim that matters.
-- Resolving ambiguity, and cleaning up when the agent breaks something.
-- Improving the system after something fails.
+- اختيار المهمة وتأطيرها.
+- تقرير ما يجوز للوكيل لمسه ومقدار المخاطرة التي تقبلها.
+- فحص الأدلة — نتائج الاختبارات، والفروق، ولقطات الشاشة — وراء أي ادعاء يهم.
+- حلّ الغموض، والتنظيف حين يكسر الوكيل شيئًا.
+- تحسين النظام بعد أي فشل.
 
-## Five concerns
+## خمسة انشغالات
 
-Out of the box, the model and harness are very capable, with generic defaults that know nothing about your project. A working system has to answer five questions, and most of this course is about answering them:
+خارج الصندوق، يكون النموذج والمنصة بالغَي القدرة، بإعدادات افتراضية عامة لا تعرف شيئًا عن مشروعك. والنظام العامل عليه أن يجيب عن خمسة أسئلة، ومعظم هذه الدورة يدور حول الإجابة عنها:
 
-- **Context**: What goes in front of the model? What does it know about the codebase, the deployment pipeline, and your team’s conventions?
-- **Capability**: What can it do? Which tools and command-line programs can it run, and how does it use them?
-- **Control**: What’s allowed to happen, and when? The harness ships with general-purpose permissions. You tighten them to fit your code.
-- **State**: What survives this *session*—one conversation with the agent—and where does it live?
-- **Evidence**: What proves we did the thing? That’s the check—a test, a linter, a command with an exit code—plus whoever acts on its result and calls the work finished: an automated gate, a reviewer, or you.
+- **السياق**: ما الذي يوضع أمام النموذج؟ وماذا يعرف عن قاعدة الشيفرة، وخط نشر الإنتاج، وأعراف فريقك؟
+- **القدرة**: ماذا يستطيع أن يفعل؟ وأي الأدوات وبرامج سطر الأوامر يستطيع تشغيلها، وكيف يستخدمها؟
+- **التحكم**: ما المسموح بحدوثه، ومتى؟ تُشحَن المنصة بأذونات عامة الغرض. وأنت تشدّدها لتناسب شيفرتك.
+- **الحالة**: ما الذي يبقى بعد هذه *الجلسة* — محادثة واحدة مع الوكيل — وأين يعيش؟
+- **الأدلة**: ما الذي يثبت أننا فعلنا الشيء؟ ذلك هو الفحص — اختبار، أو أداة lint، أو أمر له رمز خروج — إضافة إلى من يتصرف بناءً على نتيجته ويحكم على العمل بأنه منتهٍ: بوابة آلية، أو مراجع، أو أنت.
 
-Nearly any agent problem is one of these going missing. The convention was never put in front of the agent: context. It had no way to run the tests: capability. It was told not to push to that branch and did anyway: control. It figured something out yesterday and it’s gone today: state. It said it was done and wasn’t: evidence.
+تكاد أي مشكلة مع وكيل تكون أحد هذه غاب. لم يوضع العُرف أمام الوكيل قط: سياق. لم تكن لديه طريقة لتشغيل الاختبارات: قدرة. قيل له ألا يدفع إلى ذلك الفرع فدفع رغم ذلك: تحكم. اكتشف شيئًا أمس وضاع اليوم: حالة. قال إنه انتهى ولم يكن: أدلة.
 
-## Where each concern lives
+## أين يعيش كل انشغال
 
-Each concern has one or more natural homes in the system, each with its own lesson:
+لكل انشغال موطن أو أكثر في النظام، ولكل موطن درسه الخاص:
 
-- **Standing rules** go in the instruction file: `CLAUDE.md` for Claude Code, `AGENTS.md` in Codex. It carries the context that’s true for the whole project. In Claude Code, working-directory and ancestor instructions load at launch; descendant `CLAUDE.md` files load only when Claude reads files in that subtree. Put rules needed for initial planning in a launch-loaded file, and explicitly read subtree instructions before planning there. See [User and Project Instructions](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions).
-- **A reusable procedure** goes in a [skill](https://stevekinney.com/courses/ai-development-setup/skills): a folder of instructions the agent loads only when the task calls for it.
-- **An independent, bounded task** goes to a [subagent](https://stevekinney.com/courses/ai-development-setup/subagents): a helper agent with its own working context that reports back when it’s finished.
-- **A deterministic gate** is a [hook](https://stevekinney.com/courses/ai-development-setup/hooks) or plain old code. This is where control lives when “usually” isn’t good enough.
-- **A durable objective** is a goal, a queue, or a tracker: state that outlives any one conversation. See [Goals and Loops](https://stevekinney.com/courses/ai-development-setup/goals-and-loops) and [Where State Lives](https://stevekinney.com/courses/ai-development-setup/where-state-lives).
-- **A repeatable trigger** is a schedule or an event, so the work starts without you. That’s control over *when* work happens. See [Routines and Schedules](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules).
-- **A reviewable output** is a file, a diff, a report, or an artifact: something a person or a script can inspect without replaying the session. See [Verification and Evidence](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence).
+- **القواعد الدائمة** توضع في ملف التعليمات: `CLAUDE.md` لـ Claude Code، و`AGENTS.md` في Codex. يحمل السياق الصحيح للمشروع كله. في Claude Code، تُحمَّل تعليمات مجلد العمل والمجلدات الأب عند الإطلاق؛ أما ملفات `CLAUDE.md` الفرعية فتُحمَّل فقط حين يقرأ Claude ملفات في ذلك الفرع. ضع القواعد اللازمة للتخطيط الأولي في ملف يُحمَّل عند الإطلاق، واقرأ تعليمات الفروع الفرعية صراحةً قبل التخطيط فيها. انظر [تعليمات المستخدم والمشروع](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions).
+- **إجراء قابل لإعادة الاستخدام** يوضع في [مهارة](https://stevekinney.com/courses/ai-development-setup/skills): مجلد من التعليمات يحمّله الوكيل فقط حين تقتضي المهمة ذلك.
+- **مهمة مستقلة محدودة النطاق** تُسند إلى [وكيل فرعي](https://stevekinney.com/courses/ai-development-setup/subagents): وكيل مساعد له سياق عمله الخاص ويبلّغ حين ينتهي.
+- **بوابة حتمية** هي [خطاف](https://stevekinney.com/courses/ai-development-setup/hooks) أو شيفرة صريحة قديمة. هنا يعيش التحكم حين لا يكفي «عادةً».
+- **هدف دائم** هو غاية أو طابور أو متتبّع: حالة تعيش أطول من أي محادثة واحدة. انظر [الأهداف والحلقات](https://stevekinney.com/courses/ai-development-setup/goals-and-loops) و[أين تعيش الحالة](https://stevekinney.com/courses/ai-development-setup/where-state-lives).
+- **مُشغّل قابل للتكرار** هو جدول أو حدث، ليبدأ العمل دونك. ذلك تحكم في *متى* يحدث العمل. انظر [الروتينات والجداول](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules).
+- **خرج قابل للمراجعة** هو ملف أو فرق أو تقرير أو مصنوع: شيء يستطيع إنسان أو سكربت فحصه دون إعادة تشغيل الجلسة. انظر [التحقق والأدلة](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence).
 
-That’s seven places for five concerns, and they don’t line up one-to-one. A skill mostly supplies context: how to do a task, including how to use a capability the agent already has. A hook is a control. A tracker is state. A reviewable output is evidence.
+تلك سبعة مواطن لخمسة انشغالات، وهي لا تتقابل واحدًا بواحد. فالمهارة توفّر السياق غالبًا: كيف تُنجز مهمة، بما في ذلك كيفية استخدام قدرة يمتلكها الوكيل أصلًا. والخطاف تحكم. والمتتبّع حالة. والخرج القابل للمراجعة دليل.
 
-## Start with a blank canvas
+## ابدأ بلوحة فارغة
 
-Knowing where things go is half of it. The other half is not putting too much there. Most people build their agent setup by installing things. A plugin (a bundle of skills, hooks, and other pieces installed in one go) here, a pile of rules there, a skill someone posted last week. Six months later, nobody can say which piece does what, and the agent is following three instructions that contradict each other.
+معرفة أين تذهب الأشياء نصف الأمر. والنصف الآخر ألا تضع فيها الكثير. معظم الناس يبنون إعداد وكيلهم بتثبيت الأشياء. إضافة (حزمة من المهارات والخطافات وغيرها تُثبَّت دفعة واحدة) هنا، وكومة قواعد هناك، ومهارة نشرها أحدهم الأسبوع الماضي. وبعد ستة أشهر، لا يستطيع أحد أن يقول أي قطعة تفعل ماذا، والوكيل يتبع ثلاث تعليمات تتناقض إحداها مع الأخرى.
 
-Boris Cherny, the creator of Claude Code, put the alternative bluntly in a talk at [Y Combinator Startup School in 2026](https://www.ycombinator.com/library/UN-boris-cherny-building-claude-code):
+بوبي تشيرني، مبتكر Claude Code، طرح البديل بصراحة في حديث في [مدرسة Y Combinator لبدء الشركات في 2026](https://www.ycombinator.com/library/UN-boris-cherny-building-claude-code):
 
-> For people who aren’t building agentic products but are using Claude Code, every six months, delete your `CLAUDE.md` file, delete your skills, and delete your hooks. Then see what the model does. It might surprise you.
+> لمن لا يبنون منتجات وكيلية لكنهم يستخدمون Claude Code، احذفوا ملف `CLAUDE.md` كل ستة أشهر، واحذفوا مهاراتكم، واحذفوا خطافاتكم. ثم انظروا ماذا يفعل النموذج. قد يفاجئكم.
 >
-> For Opus 5, we strongly recommend trying to delete all of these things because the model may no longer need the extensive instructions that were necessary for previous models.
+> مع Opus 5، نوصي بشدة بمحاولة حذف كل هذه الأشياء لأن النموذج قد لا يحتاج بعد الآن التعليمات المطوّلة التي كانت ضرورية للنماذج السابقة.
 
-That’s the crux of this course. The tools keep changing (and, occasionally, regressing), while the principles have held steady for a hot minute now. So instead of memorizing one tool’s settings, build your own light saber: a small system you assembled yourself and understand completely, which you can carry to the next tool or through an upgrade of this one.
+هذا هو لبّ هذه الدورة. الأدوات تتغيّر باستمرار (وترتد أحيانًا)، بينما بقيت المبادئ ثابتة منذ مدة لا بأس بها. لذا بدلًا من حفظ إعدادات أداة واحدة، اصنع سيفك الضوئي: نظام صغير جمعته بنفسك وتفهمه تمامًا، تستطيع حمله إلى الأداة التالية أو عبر ترقية هذه الأداة.
 
-The approach is *very* simple:
+والمنهج *بالغ* البساطة:
 
-- **Start empty**: No plugins, no borrowed rules. Just the harness and your project.
-- **Notice what you repeat**: The instructions you type over and over are your candidates. Standing rules go in the instruction file. Repeatable procedures go in a skill.
+- **ابدأ فارغًا**: لا إضافات، ولا قواعد مستعارة. فقط المنصة ومشروعك.
+- **لاحظ ما تكرّره**: التعليمات التي تكتبها مرارًا وتكرارًا هي مرشّحاتك. القواعد الدائمة توضع في ملف التعليمات. والإجراءات القابلة لإعادة الاستخدام توضع في مهارة.
 
-A small system you understand and know how to tweak will almost always beat seven plugins full of conflicting skills and instructions and a hopeful shrug.
+نظام صغير تفهمه وتعرف كيف تعدّله سيهزم دائمًا تقريبًا سبع إضافات مملوءة بمهارات وتعليمات متعارضة وترجٍّ متفائل.
 
-## Fix the floor first
+## أصلح الأرضية أولًا
 
-Before this course, I had agents audit nearly 13,000 of my own sessions. A surprising amount of the failure had *nothing* to do with the model. It was the environment the agent was standing on:
+قبل هذه الدورة، جعلت وكلاء يدققون في نحو 13000 من جلساتي. قدر مفاجئ من الفشل لم تكن له *أي* علاقة بالنموذج. كان البيئة التي يقف عليها الوكيل:
 
-- A broken `asdf` Python shim (a small launcher script that picks which Python version runs) broke 252 sessions until I pinned a version. Then it broke zero.
-- Bun’s TypeScript type definitions (`@types/bun`) weren’t being found, which broke type checking in 131 sessions. It vanished the moment I fixed the TypeScript configuration.
-- Agents kept guessing at `gh --json` fields that the installed GitHub command-line tool rejects.
-- macOS doesn’t ship a `timeout` command, non-interactive zsh didn’t have my `PATH`, and zsh’s `nomatch` option aborted any command containing a SvelteKit route like `[slug]`.
+- شيم Python مكسور لـ `asdf` (سكربت مُشغّل صغير يختار إصدار Python الذي يعمل) كسر 252 جلسة حتى ثبّتّ إصدارًا. ثم كسر صفرًا.
+- تعريفات أنواع TypeScript الخاصة بـ Bun (`@types/bun`) لم تكن تُوجد، فكسرت فحص الأنواع في 131 جلسة. اختفت في اللحظة التي أصلحت فيها إعداد TypeScript.
+- ظلّ الوكلاء يخمّنون حقول `gh --json` التي ترفضها أداة سطر أوامر GitHub المثبَّتة.
+- macOS لا تأتي بأمر `timeout`، وzsh غير التفاعلي لم يكن يحمل `PATH` لدي، وخيار `nomatch` في zsh كان يُبطِل أي أمر يحتوي مسار SvelteKit مثل `[slug]`.
 
-None of those get better with a smarter model. They get better when you fix the shell. How many of these have you been blaming on the model?
+لن يتحسّن أي من ذلك بنموذجٍ أذكى. إنه يتحسّن حين تصلح الصدفة. كم من هذه كنت تلوم النموذج عليها؟
 
-## Measuring whether it works
+## قياس ما إذا كان ينجح {#measuring-whether-it-works}
 
-Here’s the uncomfortable part: you’re not a reliable instrument for judging whether your setup helps. In [METR’s randomized trial](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/), experienced maintainers were 19% *slower* with AI tools and still believed afterward that they’d been 20% faster. The tooling has improved since, and METR has [revised its numbers](https://metr.org/blog/2026-02-24-uplift-update/), but the lesson holds: doing the task is not a measurement of the task.
+إليك الجزء المقلق: لستَ آلة موثوقة للحكم على ما إذا كان إعدادك يساعد. في [تجربة METR العشوائية](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)، كان المشرفون ذوو الخبرة أبطأ بنسبة 19% مع أدوات الذكاء الاصطناعي، ومع ذلك ظنّوا بعد ذلك أنهم كانوا أسرع بنسبة 20%. تحسّنت الأدوات منذ ذلك الحين، و[راجعت METR أرقامها](https://metr.org/blog/2026-02-24-uplift-update/)، لكن الدرس قائم: أداء المهمة ليس قياسًا للمهمة.
 
-Measure **time to an accepted result** (not to a first draft), **rework** (how often a human has to touch the work afterward), **review minutes**, and **cost per accepted result** (not per run). Ignore lines of code, suggestion acceptance rates (they go *up* when you stop reading), and raw token counts. Pick one and record a baseline before you change anything. “We didn’t measure it” is a legitimate verdict. “I feel faster” isn’t.
+قِس **الزمن حتى نتيجة مقبولة** (لا حتى مسودة أولى)، و**إعادة العمل** (كم مرة يضطر إنسان للمس العمل بعد ذلك)، و**دقائق المراجعة**، و**التكلفة لكل نتيجة مقبولة** (لا لكل تشغيل). وتجاهل أسطر الشيفرة، ومعدلات قبول الاقتراحات (إنها ترتفع حين تتوقف عن القراءة)، وأعداد الرموز الخام. اختر واحدًا وسجّل خط أساس قبل أن تغيّر أي شيء. «لم نقِسه» حكم مشروع. أما «أشعر أنني أسرع» فليس كذلك.
 
-The audit above came from my session logs—the transcripts Claude Code and Codex save to disk—and I had agents do the reading. What made it trustworthy:
+جاء التدقيق أعلاه من سجلات جلساتي — النصوص التي يحفظها Claude Code وCodex على القرص — وجعلت وكلاء يقومون بالقراءة. وما جعله موثوقًا:
 
-- **Scripts parse, and models read digests**: Deterministic code extracts, redacts, and compresses the logs before a model sees them.
-- **Every quoted piece of evidence must appear verbatim in the log**: About 16% of them didn’t.
-- **Count in code**: When models merged overlapping findings, they double-counted sessions. One count came back as 436 when the real number was 95.
-- **Keep a control row**: Include a problem you already fixed. It should stay at zero.
+- **السكربتات تحلّل، والنماذج تقرأ الخلاصات**: شيفرة حتمية تستخرج السجلات وتنقّيها وتضغطها قبل أن يراها نموذج.
+- **كل قطعة دليل مقتبسة يجب أن تظهر حرفيًا في السجل**: نحو 16% منها لم تفعل.
+- **عُدّ في الشيفرة**: حين دمجت النماذج نتائج متداخلة، عدّت الجلسات مرتين. رجع أحد الأعداد 436 بينما كان العدد الحقيقي 95.
+- **احتفظ بصف تحكم**: أدرج مشكلة أصلحتها بالفعل. ينبغي أن تبقى عند صفر.
 
-Almost everything I found was one mistake in different outfits: treating writing something down as the same as doing it. If it matters, make it executable, then check the logs to see whether it actually stopped.
+كل ما وجدته تقريبًا كان خطأ واحدًا في أزياء مختلفة: معاملة كتابة شيء ما كأنها القيام به. إن كان الأمر يهم، اجعله قابلًا للتنفيذ، ثم افحص السجلات لترى هل توقف فعلًا.
 
-## Three things that help
+## ثلاثة أشياء تساعد
 
-I’ve recently added these to my own workflow, and each makes the starting state of a session less of a guess. They’re examples of the method, not a starter kit. Add one only when you keep fixing the same start-of-session problem by hand.
+أضفت هذه مؤخرًا إلى سير عملي، وكل واحدة تجعل حالة البداية للجلسة أقل تخمينًا. إنها أمثلة على المنهج، لا عدة بداية. أضف واحدة فقط حين تظل تصلح مشكلة بداية الجلسة نفسها يدويًا.
 
-- **A `SessionStart` bootstrapper**: A `SessionStart` [hook](https://stevekinney.com/courses/ai-development-setup/hooks) runs when a session begins and injects the branch, worktree (an extra checkout of the same Git repository, in its own directory), ticket, and which local services (a dev server, a database) are running, so the agent doesn’t have to go looking. [Writing Good Hooks](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) has a table of example hooks, including a context bootstrapper like this one.
-- **A smoke test on entry**: Before touching anything, the agent runs the app and the test suite to establish a baseline. If the baseline is already red, that’s the first finding, not something you discover after your change.
-- **An initializer session for long-running work**: Session zero writes *no* feature code. It sets up the start script, a feature list where every item starts out failing, a progress file, and a baseline commit, so every later session starts from facts instead of guesses. The [project initializer skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) does this, and the [test ratchet](https://stevekinney.com/courses/ai-development-setup/patterns-for-proving-it-works#test-ratchet) covers keeping that feature list honest.
+- **ممهّد `SessionStart`**: يبدأ [خطاف](https://stevekinney.com/courses/ai-development-setup/hooks) من نوع `SessionStart` عند بدء الجلسة ويحقن الفرع وشجرة العمل (نسخة إضافية من مستودع Git نفسه، في مجلدها الخاص) والتذكرة والخدمات المحلية العاملة (خادم تطوير، قاعدة بيانات)، فلا يضطر الوكيل إلى البحث عنها. [كتابة خطافات جيدة](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) فيه جدول بخطافات مثال، بما في ذلك ممهّد سياق مثل هذا.
+- **اختبار سريع عند الدخول**: قبل لمس أي شيء، يشغّل الوكيل التطبيق ومجموعة الاختبارات لإرساء خط أساس. فإن كان خط الأساس أحمر أصلًا، فتلك أول ملاحظة، لا شيء تكتشفه بعد تغييرك.
+- **جلسة تهيئة للعمل الطويل**: الجلسة صفر لا تكتب *أي* شيفرة ميزة. تُنشئ سكربت البدء، وقائمة ميزات تبدأ كل عنصر فيها فاشلًا، وملف تقدّم، وحفظًا أساسيًا، لتبدأ كل جلسة لاحقة من وقائع لا تخمينات. [مهارة تهيئة المشروع](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) تفعل ذلك، و[سقّاطة الاختبارات](https://stevekinney.com/courses/ai-development-setup/patterns-for-proving-it-works#test-ratchet) تغطي إبقاء قائمة الميزات صادقة.
 
-That last one makes more sense once you’ve seen how state survives between sessions in [Where State Lives](https://stevekinney.com/courses/ai-development-setup/where-state-lives).
+تلك الأخيرة تصبح أوضح بعد أن ترى كيف تنجو الحالة بين الجلسات في [أين تعيش الحالة](https://stevekinney.com/courses/ai-development-setup/where-state-lives).
 
-## When something goes wrong
+## حين يحدث خطأ
 
-The response is *not* to log into Reddit and declare that the model is garbage now. It’s usually not to write another instruction, either—that one tends to get quietly ignored three sessions later. Get curious about *why* it failed, and ask which concern went missing before you reach for a fix.
+الرد *ليس* أن تدخل إلى Reddit وتعلن أن النموذج صار نفاية الآن. وهو عادةً ليس أن تكتب تعليمة أخرى — تلك تميل إلى أن تُتجاهل بهدوء بعد ثلاث جلسات. كن فضوليًا بشأن *لماذا* فشل، واسأل أي انشغال غاب قبل أن تمدّ يدك إلى إصلاح.
 
-Three of them look alike from the outside:
+ثلاثة منها تبدو متشابهة من الخارج:
 
-- **Context**: The information was never in front of the agent, or the task contract asked for the wrong thing or asked too vaguely. Put it there: a sharper task contract, an instruction file, or a skill.
-- **Control**: The information *was* there, and the agent ignored it or lost track of it. A louder sentence won’t help. You need a gate that doesn’t depend on the agent remembering.
-- **State**: The agent learned something once and lost it, often because the session ended or the conversation was compacted (replaced with a summary to free up context). Or it worked from information that was stale or sitting somewhere it never looked. Write it somewhere that survives, and that the agent will actually read.
+- **السياق**: المعلومة لم تكن أمام الوكيل قط، أو عقد المهمة طلب الشيء الخطأ أو طلبه بغموض شديد. ضعها هناك: عقد مهمة أحكم، أو ملف تعليمات، أو مهارة.
+- **التحكم**: المعلومة *كانت* هناك، فتجاهلها الوكيل أو فقد تتبّعها. جملة أعلى صوتًا لن تساعد. تحتاج بوابة لا تعتمد على تذكّر الوكيل.
+- **الحالة**: تعلّم الوكيل شيئًا مرة وفقده، غالبًا لأن الجلسة انتهت أو لأن المحادثة ضُغطت (استُبدلت بخلاصة لتحرير السياق). أو عمل من معلومات قديمة أو جالسة في مكان لم ينظر إليه قط. اكتبها في مكان ينجو، ويقرأه الوكيل فعلًا.
 
-If you keep re-reading the transcript to find out whether it worked, the missing concern is evidence. Sometimes there was simply no check, so nothing caught the mistake.
+إن ظللت تعيد قراءة النص لتعرف هل نجح الأمر، فالانشغال الغائب هو الأدلة. أحيانًا لم يكن هناك فحص أصلًا، فلم يمسك شيء بالخطأ.
 
-The most common mistake is writing a rule when what you needed was a check. The [enforcement ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder), which ranks ways of keeping a rule from a request the agent can ignore up to a refusal it can’t, is how you tell the difference.
+أشيع خطأ هو كتابة قاعدة حين كان ما تحتاجه فحصًا. [سلّم الإنفاذ](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder)، الذي يرتّب طرق منع القاعدة من طلب يستطيع الوكيل تجاهله وصولًا إلى رفض لا يستطيع، هو كيف تميّز بين الاثنين.
 
-Whatever it was, fix the system rather than the single result, and put the fix in the place built for that concern. Build small. Delete often. And before you ask for a smarter model, fix the floor.
+أيًّا كان الأمر، أصلح النظام لا النتيجة الواحدة، وضع الإصلاح في الموطن المبني لذلك الانشغال. ابنِ صغيرًا. واحذف كثيرًا. وقبل أن تطلب نموذجًا أذكى، أصلح الأرضية.

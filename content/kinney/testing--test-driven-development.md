@@ -1,19 +1,19 @@
 ---
-title: "Understanding Test-Driven Development"
-lang: en
+title: "فهم التطوير المدفوع بالاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/testing/test-driven-development"
 ---
 
-Test-Driven Developer (TDD) is way simpler than a lot of people want to make it sound. You basically follow these steps:
+التطوير المدفوع بالاختبارات (TDD) أبسط بكثير مما يحاول كثيرون أن يجعلوه يبدو. تتبع هذه الخطوات أساسًا:
 
-1. **Write a Test**: Write a test for the next bit of functionality you want to add.
-2. **Run the Test and See It Fail**: This confirms that the test is detecting the absence of the desired functionality.
-3. **Write the Minimal Code to Pass the Test**: Implement just enough code to make the test pass.
-4. **Refactor**: Improve the code while keeping the tests passing.
-5. **Repeat**: Continue with the next functionality.
+1. **اكتب اختبارًا**: اكتب اختبارًا للجزء التالي من الوظائف الذي تريد إضافته.
+2. **شغّل الاختبار وشاهده يفشل**: هذا يؤكد أن الاختبار يكتشف غياب الوظيفة المطلوبة.
+3. **اكتب أقل شيفرة تجعل الاختبار ينجح**: نفّذ شيفرة كافية فقط لجعل الاختبار ينجح.
+4. **أعد الهيكلة**: حسّن الشيفرة مع إبقاء الاختبارات ناجحة.
+5. **كرّر**: تابع مع الوظيفة التالية.
 
-This cycle is often referred to as **Red-Green-Refactor**:
+غالبًا ما تُسمّى هذه الدورة **الأحمر-الأخضر-إعادة الهيكلة** (Red-Green-Refactor):
 
-- **Red**: Write a failing test.
-- **Green**: Write code to pass the test.
-- **Refactor**: Improve the code.
+- **الأحمر**: اكتب اختبارًا فاشلًا.
+- **الأخضر**: اكتب شيفرة لنجاح الاختبار.
+- **إعادة الهيكلة**: حسّن الشيفرة.

@@ -1,10 +1,10 @@
 ---
-title: "Creating an Icon Component"
-lang: en
+title: "إنشاء مكوّن أيقونة"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/creating-an-icon-component"
 ---
 
-I’m not sure that we’re going to do this together, but I thought I’d show you my very naïve implementation of an `Icon` component. I want to limit the number of available icons *and* I want auto-complete to help me find the icon that I need. Here is my very simple icon component that we can start with.
+لست متأكدًا من أننا سنفعل هذا معًا، لكني فكرت أن أريك تنفيذي الساذج جدًا لمكوّن `Icon`. أريد تحديد عدد الأيقونات المتاحة *و*أريد أن تساعدني الإكمال التلقائي في العثور على الأيقونة التي أحتاجها. وإليك مكوّن الأيقونة البسيط جدًا الذي يمكننا البدء به.
 
 ```typescript
 import {

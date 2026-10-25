@@ -1,35 +1,35 @@
 ---
-title: "Security and Approvals"
-lang: en
+title: "الأمن والموافقات"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/security-and-approvals"
 ---
 
-Your agent can read your files, run commands, and act through your accounts. That’s the point of it, and it’s also why every other lesson in this course has a warning in it somewhere. This lesson puts all of those warnings in one place: what decides what your agent is allowed to do, how to make it ask before doing things, and how to check that your setup is what you think it is.
+يستطيع وكيلك قراءة ملفاتك وتشغيل الأوامر والتصرّف عبر حساباتك. هذا هو جوهره، ولهذا تحديدًا يحمل كل درس آخر في هذه الدورة تحذيرًا في مكان ما. يجمع هذا الدرس كل تلك التحذيرات في مكان واحد: ما الذي يقرّر ما يُسمح لوكيلك بفعله، وكيف تجعله يسأل قبل القيام بالأشياء، وكيف تتحقّق من أن تهيئتك هي ما تظنّه.
 
-Start with the defaults, because they surprise people. **Out of the box, OpenClaw runs commands without asking and doesn’t sandbox anything.** The documentation describes this as the intended experience for a single trusted operator, not a vulnerability. It’s a reasonable default when you’re the only person who can reach the agent and you trust everything it reads. Most setups stop meeting both of those conditions as soon as you connect a chat channel, an inbox, or a browser.
+ابدأ بالإعدادات الافتراضية، لأنها تُدهش الناس. **افتراضيًا، يشغّل OpenClaw الأوامر دون أن يسأل ولا يضع أي شيء في بيئة معزولة.** تصف الوثائق هذا بأنه التجربة المقصودة لمشغّل واحد موثوق به، لا بوصفه ثغرة أمنية. وهو افتراضي معقول عندما تكون الشخص الوحيد الذي يستطيع الوصول إلى الوكيل وتثق بكل ما يقرأه. ومعظم التهويئات تتوقف عن تلبية هذين الشرطين بمجرد ربط قناة دردشة أو بريد وارد أو متصفّح.
 
-## The Four Layers
+## الطبقات الأربع
 
-Every action your agent takes passes through four separate checks:
+تمرّ كل عملية يقوم بها وكيلك بأربعة فحوص منفصلة:
 
-| Layer | Question it answers | Where it’s covered |
+| الطبقة | السؤال الذي يجيب عنه | أين يُعالَج |
 | --- | --- | --- |
-| 1. Access | Who can talk to the agent at all? | [Choosing a DM Policy](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy) |
-| 2. Tool policy | Which tools does the agent have? | [Below](#layer-2-which-tools-exist) |
-| 3. Exec approvals | Does this command need a human first? | [Below](#layer-3-exec-approvals) |
-| 4. Sandboxing | Where does the command run? | [Below](#layer-4-sandboxing) |
+| 1. الوصول | من يحقّ له التحدّث مع الوكيل أصلًا؟ | [اختيار سياسة الرسائل الخاصة](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy) |
+| 2. سياسة الأدوات | ما الأدوات التي يملكها الوكيل؟ | [أدناه](#layer-2-which-tools-exist) |
+| 3. موافقات التنفيذ | هل يحتاج هذا الأمر إلى بشر أولًا؟ | [أدناه](#layer-3-exec-approvals) |
+| 4. العزل | أين يُشغَّل الأمر؟ | [أدناه](#layer-4-sandboxing) |
 
-A few rules hold across all of them:
+وهناك قواعد قليلة تنطبق على كلها:
 
-- **Later layers can only narrow.** Nothing in a later layer can bring back a tool that an earlier one removed. Sandboxing can’t, elevated mode can’t, and neither can a slash command.
-- **Deny wins.** If any applicable rule denies a tool, an allow somewhere else doesn’t override it.
-- **A removed tool is invisible.** When policy takes a tool away, the model never sees it. There’s no failed call to look for, because the agent was never offered the tool.
+- **لا تستطيع الطبقات اللاحقة إلا التضييق.** فلا شيء في طبقة لاحقة يستطيع إرجاع أداة أزالتها طبقة سابقة. لا العزل يستطيع ذلك، ولا الوضع المرفوع، ولا أمر الشرطة المائلة (slash command).
+- **المنع هو الأعلى.** إذا منعت أي قاعدة مطبّقة أداة ما، فإن السماح في مكان آخر لا يُلغي ذلك.
+- **الأداة المزالة غير مرئية.** حين تسلب السياسة أداة من الوكيل، لا يرى النموذج أبدًا إياها. لا استدعاء فاشل يمكن البحث عنه، لأن الوكيل لم تُعرض عليه الأداة إطلاقًا.
 
-The layers are independent. A strict DM policy doesn’t make commands safe, and approvals don’t stop strangers from talking to your bot. You want all four.
+الطبقات مستقلّة. فالسياسة الصارمة للرسائل الخاصة لا تجعل الأوامر آمنة، والموافقات لا تمنع الغرباء من التحدّث مع روبوتك. وأنت تحتاج إلى الطبقات الأربع معًا.
 
-## Check Where You Stand
+## اعرف موقعك
 
-Run these on the machine where the Gateway runs:
+شغّل هذه على الجهاز الذي تعمل عليه البوابة:
 
 ```bash
 openclaw exec-policy show
@@ -37,38 +37,38 @@ openclaw sandbox explain
 openclaw security audit
 ```
 
-- `exec-policy show` prints the command approval policy you asked for, what the host approvals file says, and the effective result. On a fresh install, the one-line summary reads something like `auto · full · no approval prompts · fallback deny`. The `auto` there is the host the command runs on, not a mode.
-- `sandbox explain` shows whether this session is sandboxed (by default, `mode: off`), which tools the sandbox would allow, and the config keys that control each one.
-- `security audit` checks the whole configuration for known footguns. It gets [its own section](#run-the-security-audit) below.
+- `exec-policy show` يطبع سياسة موافقات الأوامر التي طلبتها، وما يحمله ملف الموافقات على المضيف، والنتيجة النهائية الفعّالة. وفي التثبيت الجديد، يقرأ الملخّص في السطر الواحد شكلًا مثل `auto · full · no approval prompts · fallback deny`. وكلمة `auto` هناك تعني المضيف الذي يُشغَّل عليه الأمر، لا وضعًا من الأوضاع.
+- `sandbox explain` يُظهر ما إذا كانت هذه الجلسة معزولة (وافتراضيًا `mode: off`)، والأدوات التي سيسمح بها العزل، ومفاتيح الإعدادات التي تتحكم في كل منها.
+- `security audit` يفحص الإعدادات الكاملة بحثًا عن مشكلات معروفة. وسيحصل على [قسم خاص به](#run-the-security-audit) أدناه.
 
-## Layer 2: Which Tools Exist
+## الطبقة 2: الأدوات المتاحة {#layer-2-which-tools-exist}
 
-A **tool profile** is a starting set of tools. You then add or remove individual tools and groups:
+**ملف الأدوات (tool profile)** هو مجموعة بداية من الأدوات. ثم تضيف أو تحذف أدوات وفئات فردية:
 
-| Profile | What it includes |
+| الملف | ما يضمّه |
 | --- | --- |
-| `minimal` | Almost nothing: session status and the ability to apply updates |
-| `coding` | Files, shell, web, memory, sessions, scheduling, media. No messaging tool |
-| `messaging` | Messaging and session tools. No files and no shell |
-| `full` | Everything, including optional plugin tools |
+| `minimal` | لا شيء تقريبًا: حالة الجلسة والقدرة على تطبيق التحديثات |
+| `coding` | الملفات، وسطر الأوامر، والويب، والذاكرة، والجلسات، والجدولة، والوسائط. بلا أداة مراسلة |
+| `messaging` | أدوات المراسلة والجلسات. بلا ملفات وبلا سطر أوامر |
+| `full` | كل شيء، بما في ذلك أدوات الإضافات الاختيارية |
 
-If you don’t set a profile, core tools aren’t filtered at all. Onboarding may set `full` for you.
+إن لم تعيّن ملفًا، فلن تُرشَّح الأدوات الأساسية إطلاقًا. وقد يضبط لك الإعداد الابتدائي الوضع `full`.
 
-Groups save you from listing tools one by one:
+توفر عليك الفئات سرد الأدوات واحدة تلو الأخرى:
 
-| Group | Tools |
+| الفئة | الأدوات |
 | --- | --- |
-| `group:runtime` | `exec`, `process`, `code_execution` |
-| `group:fs` | `read`, `write`, `edit`, `apply_patch` |
-| `group:web` | `web_search`, `x_search`, `web_fetch` |
-| `group:ui` | `browser`, `canvas`, `screen`, and other UI tools |
-| `group:automation` | `automations` (scheduled jobs), `gateway`, `plugins`, and `openclaw` |
+| `group:runtime` | `exec`، `process`، `code_execution` |
+| `group:fs` | `read`، `write`، `edit`، `apply_patch` |
+| `group:web` | `web_search`، `x_search`، `web_fetch` |
+| `group:ui` | `browser` و`canvas` و`screen` وأدوات واجهة المستخدم الأخرى |
+| `group:automation` | `automations` (مهام مجدولة) و`gateway` و`plugins` و`openclaw` |
 | `group:messaging` | `message` |
-| `group:nodes` | `nodes`, `computer` |
+| `group:nodes` | `nodes` و`computer` |
 
-Send `/tools` in a chat to see exactly what the current agent can use right now.
+أرسل `/tools` داخل محادثة لترى بالضبط ما يستطيع الوكيل الحالي استخدامه الآن.
 
-Here’s a profile for an agent that can browse and work with files but never touches the shell:
+إليك ملف لوكيل يستطيع التصفّح والعمل مع الملفات لكنه لا يمسّ سطر الأوامر أبدًا:
 
 ```json5
 {
@@ -86,48 +86,48 @@ Here’s a profile for an agent that can browse and work with files but never to
 }
 ```
 
-Three details trip people up:
+ثلاثة تفاصيل تربك الناس:
 
-- **Use `alsoAllow` to add to a profile.** `allow` and `alsoAllow` can’t be used together at the same level, and validation rejects the config if you try.
-- **Denying `write` doesn’t deny `apply_patch`.** Allowing `write` turns on `apply_patch` too, but denying it doesn’t turn it off. To make an agent read-only, deny `group:fs` or each of the four tools by name.
-- **A shell is a shell.** If `exec` is allowed, denying the file tools doesn’t make the agent read-only. It can still write files with a command. A truly read-only agent needs `group:runtime` denied as well.
+- **استخدم `alsoAllow` للإضافة إلى ملف.** لا يمكن استخدام `allow` و`alsoAllow` معًا في المستوى نفسه، وترفض أدوات التحقّق الإعدادات إن حاولت ذلك.
+- **منع `write` لا يمنع `apply_patch`.** فالسماح بـ `write` يُفعّل `apply_patch` أيضًا، لكن منعه لا يُطفئه. ولجعل الوكيل للقراءة فقط، امنع `group:fs` أو كلًا من الأدوات الأربع بالاسم.
+- **سطر الأوامر هو سطر الأوامر.** فإذا كان `exec` مسموحًا، فإن منع أدوات الملفات لا يجعل الوكيل للقراءة فقط، فهو يستطيع كتابة الملفات بأمر. والوكيل للقراءة فقط حقًّا يحتاج أيضًا إلى منع `group:runtime`.
 
-## Layer 3: Exec Approvals
+## الطبقة 3: موافقات التنفيذ {#layer-3-exec-approvals}
 
-Tool policy decides whether the agent has `exec` at all. **Exec approvals** decide which commands it can run without asking. This is the layer you’ll interact with most.
+تحدد سياسة الأدوات ما إذا كان الوكيل يملك `exec` أصلًا. أمّا **موافقات التنفيذ** فتحدد الأوامر التي يستطيع تشغيلها دون أن يسأل. وهذه هي الطبقة الأكثر تعاملًا معها.
 
-### Pick a Mode
+### اختر وضعًا
 
-The policy is set with `tools.exec.mode`:
+تُضبط السياسة عبر `tools.exec.mode`:
 
-| Mode | What happens to a command that isn’t on the allowlist |
+| الوضع | ما يحدث للأمر غير الموجود في قائمة السماح |
 | --- | --- |
-| `full` | It runs. No prompts. **This is the default.** |
-| `ask` | It waits until a human approves it |
-| `auto` | An AI reviewer allows it, denies it, or asks a human |
-| `allowlist` | It’s silently denied |
-| `deny` | All commands are blocked |
+| `full` | يُشغَّل دون أي مطالبات. **هذا هو الافتراضي.** |
+| `ask` | ينتظر حتى يوافق عليه بشر |
+| `auto` | يسمح به مراجع من الذكاء الاصطناعي، أو يمنعه، أو يسأل بشرًا |
+| `allowlist` | يُمنع بصمت |
+| `deny` | تُعطَّل جميع الأوامر |
 
-Older guides set `tools.exec.security` and `tools.exec.ask` instead. Those still work, and `ask` mode is the same as `security: allowlist` plus `ask: on-miss`. Just don’t set `mode` and the older pair in the same place, because OpenClaw rejects the combination. `openclaw doctor --fix` migrates the old form.
+تضبط الأدلة الأقدم `tools.exec.security` و`tools.exec.ask` بدلًا من ذلك. وما زالت تعمل، ووضع `ask` يعادل `security: allowlist` مع `ask: on-miss`. فقط لا تضبط `mode` والزوج الأقدم في المكان نفسه، لأن OpenClaw يرفض هذا المزيج. و`openclaw doctor --fix` يُحوّل الصيغة القديمة إلى الجديدة.
 
-**We recommend `ask`.** The easiest way to get there is a preset, which updates the config and the host’s approvals file together:
+**نوصي بوضع `ask`.** وأسهل وسيلة للوصول إليه هي إعداد مسبق (preset) يحدّث ملف الإعدادات وملف موافقات المضيف معًا:
 
 ```bash
 openclaw exec-policy preset cautious
 openclaw exec-policy show
 ```
 
-`cautious` sets `ask` mode with a fallback of `deny`: if a command needs approval and nobody can be asked, it doesn’t run. The other presets are `yolo` (no prompts) and `deny-all`.
+يضبط `cautious` الوضع `ask` مع قيمة افتراضية بديلة `deny`: فإذا احتاج الأمر إلى موافقة ولم يكن هناك من يُسأل، فلا يُشغَّل. والإعدادات المسبقة الأخرى هي `yolo` (بلا مطالبات) و`deny-all`.
 
-`exec-policy` only changes the machine you run it on. On a remote Gateway, run it there. On the [Railway](https://railway.com/?referralCode=kinney) template, that’s `railway ssh --service openclaw -- openclaw exec-policy preset cautious`.
+لا يغيّر `exec-policy` سوى الجهاز الذي تشغّله عليه. وعلى بوابة بعيدة، شغّله هناك. وعلى [قالب Railway](https://railway.com/?referralCode=kinney)، يكون الأمر `railway ssh --service openclaw -- openclaw exec-policy preset cautious`.
 
-> **Nodes have their own policy**
+> **لكل عقدة سياستها الخاصة**
 >
-> A [paired node](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) starts with the same no-prompts default as the Gateway, and the Gateway’s preset doesn’t change it. That’s why the node lesson sets the Mac’s approvals policy *before* pairing.
+> تبدأ [العقدة المقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node) بنفس الافتراضي الذي بلا مطالبات كالبوابة، وإعداد البوابة المسبق لا يغيّر ذلك. ولهذا يضبط درس العقدة سياسة موافقات الـ Mac *قبل* الاقتران.
 
-### Answer an Approval
+### أجب عن طلب موافقة
 
-With `ask` mode on, a command that isn’t allowlisted pauses and sends an approval request. You’ll see it in the Control UI, the macOS app, and the iOS and Android apps. In chat, you can answer with `/approve`:
+مع تفعيل وضع `ask`، يتوقف الأمر غير المدرج في قائمة السماح ويرسل طلب موافقة. وستراه في واجهة التحكم، وفي تطبيق macOS، وفي تطبيقات iOS وAndroid. وفي المحادثة يمكنك الإجابة عبر `/approve`:
 
 ```
 /approve <id> allow-once
@@ -135,142 +135,142 @@ With `ask` mode on, a command that isn’t allowlisted pauses and sends an appro
 /approve <id> deny
 ```
 
-On Telegram, approval prompts go to the approvers’ DMs, and only approvers can answer them. Approvers default to the command owners you set with `commands.ownerAllowFrom` in the [DM policy lesson](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy). Someone who can chat with the agent can trigger a request but can’t approve it unless they’re also an approver.
+على Telegram، تذهب مطالبات الموافقة إلى الرسائل الخاصة للموافقين، ولا يستطيع الإجابة عنها سوى الموافقين. ويقوم الموافقون افتراضيًا بأدوار ملاك الأوامر الذين عيّنتهم عبر `commands.ownerAllowFrom` في [درس سياسة الرسائل الخاصة](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy). ومن يستطيع التحدث مع الوكيل يمكنه إطلاق طلب، لكنه لا يستطيع الموافقة عليه ما لم يكن هو أيضًا موافقًا.
 
-From a terminal:
+من طرفية:
 
 ```bash
 openclaw approvals pending
 openclaw approvals resolve <id> allow-once
 ```
 
-The three answers mean:
+الإجابات الثلاث تعني:
 
-- **Allow once** runs this command this one time.
-- **Allow always** means “always allow *here*.” It approves this exact command line in this working directory, not the program in general. Running the same program with different arguments asks again.
-- **Deny** stops it. The agent is told it was denied.
+- **السماح مرة واحدة** يشغّل هذا الأمر هذه المرة وحدها.
+- **السماح دائمًا** تعني «السماح دائمًا *هنا*». فتوافق على سطر الأمر هذا بالضبط داخل دليل العمل هذا، لا على البرنامج عمومًا. وتشغيل البرنامج نفسه بوسائط مختلفة يُعيد السؤال.
+- **المنع** يوقفه، ويُبلَّغ الوكيل بأنه مُنع.
 
-A request nobody answers expires after 30 minutes and counts as a denial. Typing “yes” isn’t an approval. Use `/approve` with the request’s ID, or an approval button.
+ينتهي الطلب الذي لا يُجب عنه بعد 30 دقيقة ويُعدّ رفضًا. وكتابة «نعم» ليست موافقة. استخدم `/approve` مع معرّف الطلب، أو زر الموافقة.
 
-### Build an Allowlist
+### ابنِ قائمة سماح
 
-Commands you approve all the time can go on the allowlist so they never prompt:
+الأوامر التي توافق عليها طوال الوقت يمكن إدراجها في قائمة السماح حتى لا تُصدر مطالبات أبدًا:
 
 ```bash
 openclaw approvals allowlist add --agent main rg
 openclaw approvals get
 ```
 
-Like `exec-policy`, this edits the local machine’s approvals by default. Add `--gateway` to edit the Gateway’s copy from another computer, or `--node <id>` for a node.
+وبمثل `exec-policy`، يعدّل هذا موافقات الجهاز المحلي افتراضيًا. أضف `--gateway` لتعديل نسخة البوابة من حاسوب آخر، أو `--node <id>` لعقدة.
 
-How matching works:
+كيف تعمل المطابقة:
 
-- A bare name like `rg` matches that program when it’s found through `PATH`. It won’t match `./rg`.
-- In a chained command like `git status && rg TODO`, **every** part has to match.
-- A handful of harmless, input-only tools (`cut`, `uniq`, `head`, `tail`, `tr`, `wc`) run without allowlist entries.
+- الاسم العاري مثل `rg` يطابق ذلك البرنامج حين يُعثر عليه عبر `PATH`، لكنه لا يطابق `./rg`.
+- في أمر مترابط مثل `git status && rg TODO`، يجب أن يطابق **كل** جزء فيه.
+- بضع أدوات قليلة غير ضارة تقتصر على الإدخال (`cut` و`uniq` و`head` و`tail` و`tr` و`wc`) تُشغَّل دون أي إدخالات في قائمة السماح.
 
-> **Never allowlist an interpreter**
+> **لا تضع منفّذًا (interpreter) في قائمة السماح أبدًا**
 >
-> Putting `python3`, `node`, `bash`, or similar on the allowlist approves *any* program, because `python3 -c '...'` can do anything. If you really need one, also turn on `tools.exec.strictInlineEval`, which makes inline code like `python3 -c` and `node -e` ask every time.
+> إن وضعت `python3` أو `node` أو `bash` أو ما يشبهها في قائمة السماح، فأنت توافق على *أي* برنامج، لأن `python3 -c '...'` يستطيع فعل أي شيء. وإن احتجت واحدًا فعلًا، ففعّل أيضًا `tools.exec.strictInlineEval`، الذي يجعل الشيفرة السطرية مثل `python3 -c` و`node -e` تسأل في كل مرة.
 
-### When Nobody’s There
+### عندما لا يوجد أحد {#when-nobodys-there}
 
-Approvals assume someone is around to answer. Two situations change that.
+تفترض الموافقات وجود من يجيب. وهناك وضعان يغيّران ذلك.
 
-**Interactive conversations** use the fallback. If a prompt is needed and no approval surface is reachable, the fallback decides, and with `cautious` that’s `deny`.
+تستخدم **المحادثات التفاعلية** القيمة البديلة. فإذا احتاج الأمر إلى مطالبة ولم تتوفر واجهة موافقة يمكن الوصول إليها، قرّر البديل، ومع `cautious` يكون ذلك `deny`.
 
-**Scheduled automations** are stricter. Their approval requests go only to connected approval apps: the Control UI, the macOS app, and the iOS and Android apps. They never go to chat channels, and the terminal UI doesn’t show them. **If no approval app is connected, the request is denied immediately.**
+أما **الأتمتة المجدولة** فأشدّ صرامة. تذهب طلبات موافقتها فقط إلى تطبيقات الموافقة المتصلة: واجهة التحكم، وتطبيق macOS، وتطبيقات iOS وAndroid. ولا تذهب أبدًا إلى قنوات الدردشة، ولا تعرضها واجهة الطرفية. **إن لم يكن أي تطبيق موافقة متصلًا، يُرفض الطلب فورًا.**
 
-When you do approve an automation’s command with **Always allow**, OpenClaw creates a **standing grant** instead of an allowlist entry. The grant is tied to that one job, that agent, and the exact command, working directory, and environment. If the job is edited, or the command changes by a single character, it asks again.
+وحين توافق فعلًا على أمر أتمتة بخيار **السماح دائمًا**، ينشئ OpenClaw **إذنًا دائمًا (standing grant)** بدلًا من إدخال في قائمة السماح. ويرتبط الإذن بتلك المهمة تحديدًا، وبذلك الوكيل، وبالأمر ودليل العمل والبيئة بالضبط. وإذا رُتّبت المهمة، أو تغيّر الأمر بحرف واحد، يُعيد السؤال.
 
-You can review and revoke standing grants in the Control UI under **Settings → Approvals**, which also lists a rolling 30-day history of resolved approvals. You can also do it from the terminal:
+يمكنك مراجعة الأذونات الدائمة وإبطالها في واجهة التحكم تحت **الإعدادات ← الموافقات**، وهي تسرد أيضًا سجلًّا متدحرجًا لآخر 30 يومًا من الموافقات التي حُلّت. ويمكنك فعل ذلك أيضًا من الطرفيّة:
 
-The Approvals page in the OpenClaw settings, with empty tables for standing grants and approval history
+صفحة الموافقات في إعدادات OpenClaw، بجداول فارغة للأذونات الدائمة ولسجل الموافقات
 
 ```bash
 openclaw approvals grants list
 openclaw approvals grants revoke <grant-id>
 ```
 
-Grants last until you revoke them. To make future grants expire, set `tools.exec.grantExpiryDays`.
+تستمر الأذونات حتى تبطلها. ولجعل الأذونات المستقبلية تنتهي، اضبط `tools.exec.grantExpiryDays`.
 
-This is what the guardrails in [Automation Ideas](https://stevekinney.com/courses/openclaw/automation-ideas) are getting at: have a job ask once while you’re watching, approve it with **Always allow**, and later runs of that exact job will go through unattended.
+هذا بالضبط ما تسعى إليه الضوابط في [أفكار الأتمتة](https://stevekinney.com/courses/openclaw/automation-ideas): اجعل المهمة تسأل مرة واحدة وأنت متابِع، ثم وافق عليها بخيار **السماح دائمًا**، وستمرّ بقية عمليات التشغيل لتلك المهمة ذاتها دون إشراف.
 
-### Tighten One Message
+### شدّد رسالة واحدة
 
-`/exec` adjusts approvals for a single message. Send it together with the task:
+يعدّل `/exec` الموافقات لرسالة واحدة. أرسله مع المهمة:
 
 ```
 /exec security=deny Summarize what's in ~/Downloads, but don't run anything.
 ```
 
-The `security` and `ask` settings apply only to that message, and only senders you’ve authorized can use them. Use them to tighten things: the host’s approval rules still apply, and `/exec` can’t bring back an `exec` tool that tool policy denied. To turn the shell off completely, deny it: `tools.deny: ["exec"]`.
+تنطبق إعدادات `security` و`ask` على تلك الرسالة وحدها، ولا يستطيع استخدامها سوى المُرسِلين الذين رخّصت لهم. استخدمها لتضييق الأمور: فقواعد موافقات المضيف لا تزال مطبَّقة، ولا يستطيع `/exec` إعادة أداة `exec` التي منعتها سياسة الأدوات. ولإطفاء سطر الأوامر تمامًا، امنعه: `tools.deny: ["exec"]`.
 
-## Session Permission Modes
+## أوضاع أذونات الجلسة
 
-The Control UI adds one more dial per conversation. In the chat composer, the **Execution permissions** menu sets a **permission mode** for that session:
+تضيف واجهة التحكم مفتاحًا إضافيًا لكل محادثة. وفي محرّر المحادثة، تضبط قائمة **أذونات التنفيذ** **وضع الأذونات** لهذه الجلسة:
 
-| Mode | Files | Commands outside the allowlist |
+| الوضع | الملفات | الأوامر خارج قائمة السماح |
 | --- | --- | --- |
-| Read Only | Read inside the session’s folder | Denied |
-| Guarded | Read and write inside the folder | Ask a human |
-| Workspace | Read and write inside the folder | An AI reviewer decides, or asks you |
-| Full Access | Anywhere | Run without asking |
+| للقراءة فقط | القراءة داخل مجلد الجلسة | ممنوعة |
+| محميّ | القراءة والكتابة داخل المجلد | يُسأل بشر |
+| مساحة العمل | القراءة والكتابة داخل المجلد | يقرّر مراجع من الذكاء الاصطناعي، أو يسألك أنت |
+| وصول كامل | في أي مكان | تُشغَّل دون سؤال |
 
-The Execution permissions menu in the chat composer, listing Default, Read Only, Guarded, Workspace, and Full Access
+قائمة أذونات التنفيذ في محرّر المحادثة، تسرد الافتراضي والقراءة فقط والمحميّ ومساحة العمل والوصول الكامل
 
-A session with no mode uses your global policy. The menu’s **Default** entry follows that policy, and its label spells out what the policy currently allows, such as **Default (Full Access)**. Without any of the settings in this lesson, the default is full access.
+الجلسة التي بلا وضع تستخدم سياستك العامة. ومدخل **الافتراضي** في القائمة يتبع تلك السياسة، ويشرح عنوانه ما تسمح به السياسة حاليًا، مثل **الافتراضي (وصول كامل)**. وبدون أي من إعدادات هذا الدرس، يكون الافتراضي وصولًا كاملًا.
 
-Choosing **Full Access** needs admin rights on the Gateway, and it overrides the host’s approval rules for that session. Changing the mode partway through a task cancels anything waiting for approval. It doesn’t undo anything that already ran.
+يتطلب اختيار **الوصول الكامل** صلاحيات مسؤول على البوابة، ويتجاوز قواعد موافقات المضيف في تلك الجلسة. وتغيير الوضع في منتصف المهمة يُلغي كل ما ينتظر الموافقة، دون التراجع عمّا سبق تشغيله.
 
-## Layer 4: Sandboxing
+## الطبقة 4: العزل {#layer-4-sandboxing}
 
-Sandboxing runs the agent’s tools inside a container instead of directly on the Gateway host. The Gateway itself stays on the host. **It’s off by default**, and it needs Docker or Podman on the Gateway host. The Railway template, for example, doesn’t have either.
+يشغّل العزل أدوات الوكيل داخل حاوية (container) بدلًا من تشغيلها مباشرة على مضيف البوابة. وتبقى البوابة نفسها على المضيف. **وهو معطّل افتراضيًا**، ويحتاج إلى Docker أو Podman على مضيف البوابة. وقالب Railway مثلًا لا يحتوي على أيٍّ منهما.
 
-The main setting is `agents.defaults.sandbox.mode`:
+الإعداد الرئيسي هو `agents.defaults.sandbox.mode`:
 
-| Mode | What it sandboxes |
+| الوضع | ما يعزله |
 | --- | --- |
-| `off` | Nothing (the default) |
-| `non-main` | Every session except the agent’s main one, including group chats |
-| `all` | Every session |
+| `off` | لا شيء (الافتراضي) |
+| `non-main` | كل الجلسات عدا جلسة الوكيل الرئيسية، بما فيها محادثات المجموعات |
+| `all` | كل الجلسات |
 
-`non-main` is a good fit if your agent sits in group chats. Your own main conversation keeps full access, and conversations with other people run in a container.
+`non-main` مناسب إن كان وكيلك يجلس في محادثات المجموعات. تبقى محادثتك الرئيسية أنت بوصول كامل، بينما تُشغَّل المحادثات مع الآخرين داخل حاوية.
 
-The Docker sandbox has no network access and a read-only filesystem by default. `workspaceAccess` decides what the container can see of the agent’s workspace: `none` (the default), `ro`, or `rw`.
+لا يملك عزل Docker وصولًا إلى الشبكة ولا نظام ملفات للكتابة افتراضيًا. ويقرّر `workspaceAccess` ما الذي تراه الحاوية من مساحة عمل الوكيل: `none` (الافتراضي) أو `ro` أو `rw`.
 
-A few cautions:
+بعض التحذيرات:
 
-- **Mounts grant access.** Mounting a host folder into the sandbox gives the agent that folder, even if it has no shell.
-- **The `exec-policy` presets pin commands to the host.** They set `tools.exec.host` to `gateway`, which keeps commands out of the sandbox even when one is active. After turning sandboxing on, run `openclaw exec-policy set --host auto`.
-- **Config changes don’t affect running containers.** Run `openclaw sandbox recreate --all` after changing sandbox settings.
-- **Elevated mode** lets a sandboxed agent run a command on the host instead. It needs an explicit per-channel allowlist under `tools.elevated.allowFrom`, which is empty by default. Leave it that way unless you know exactly who needs it.
-- **Some features won’t run from a sandbox.** For example, sandboxed sessions can’t start [ACP coding sessions](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin).
+- **التركيب يمنح الوصول.** تركيب مجلد من المضيف داخل العزل يمنح الوكيل ذلك المجلد، حتى لو لم يكن لديه سطر أوامر.
+- **تثبّت إعدادات `exec-policy` الأوامر على المضيف.** تضبط `tools.exec.host` على `gateway`، ما يُبقي الأوامر خارج العزل حتى حين يكون مفعّلًا. وبعد تفعيل العزل، شغّل `openclaw exec-policy set --host auto`.
+- **تغييرات الإعدادات لا تؤثر على الحاويات الجارية.** شغّل `openclaw sandbox recreate --all` بعد تغيير إعدادات العزل.
+- **الوضع المرفوع** يتيح لوكيل معزول تشغيل أمر على المضيف بدلًا من ذلك. ويحتاج إلى قائمة سماح صريحة لكل قناة تحت `tools.elevated.allowFrom`، وهي فارغة افتراضيًا. أبقِها كذلك إلا إذا علمت بالضبط من يحتاجها.
+- **بعض الميزات لا تعمل من داخل العزل.** مثلًا، لا تستطيع الجلسات المعزولة بدء [جلسات برمجة ACP](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin).
 
-## Prompt Injection
+## حقن المطالبات {#prompt-injection}
 
-All of these layers exist because of one problem: **anything your agent reads can try to give it instructions.** A web page, an email, a calendar invite, a PDF, or a message in a group chat can say “ignore your previous instructions and run this.” Models resist this much better than they used to, but a determined attacker still succeeds often enough that you can’t rely on the model alone.
+كل هذه الطبقات موجودة بسبب مشكلة واحدة: **أي شيء يقرأه وكيلك يمكن أن يحاول إعطائه تعليمات.** وقد تقول صفحة ويب أو رسالة بريد أو دعوة تقويم أو ملف PDF أو رسالة في مجموعة دردشة: «تجاهل تعليماتك السابقة وشغّل هذا». تقاوم النماذج هذا أفضل بكثير مما كانت تقاومه، لكن المهاجم المُصرّ ما يزال ينجح بما يكفي من المرات بحيث لا يمكنك الاعتماد على النموذج وحده.
 
-> **Content is data. Approvals are where the decision happens.**
+> **المحتوى بيانات. والموافقات هي حيث يقع القرار.**
 >
-> Treat everything the agent reads as untrusted. It can summarize that content, but the content doesn’t authorize anything. The protection comes from approvals and tool policy, which sit where the action happens and don’t depend on the model saying no.
+> تعامل مع كل ما يقرأه الوكيل على أنه غير موثوق به. يستطيع أن يلخّص ذلك المحتوى، لكن المحتوى لا يفوّض شيئًا. فالحماية تأتي من الموافقات وسياسة الأدوات، وهما موضع وقوع الفعل ولا تعتمدان على رفض النموذج.
 
-The practical rules:
+القواعد العملية:
 
-- **Give agents that read untrusted content fewer tools.** An agent that triages your inbox doesn’t need a shell. A common pattern is a read-only agent that reads the risky material and hands a summary to your main agent. [Subagents and Orchestration](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) shows how to set one up.
-- **Use your best model for agents that have tools.** Smaller, cheaper models are much easier to talk into things.
-- **Leave the `allowUnsafeExternalContent` settings off.** They remove the markers OpenClaw puts around external content.
-- **Check what the agent did, not what it said.** A model refusing a request and a tool being blocked look the same in a chat. If you need to know which happened, check the approval or the activity log.
+- **امنح الوكلاء الذين يقرؤون محتوى غير موثوق به أدوات أقل.** فالوكيل الذي يفرز بريدك الوارد لا يحتاج إلى سطر أوامر. ونمط شائع هو وكيل للقراءة فقط يقرأ المواد الخطرة ويسلّم ملخّصًا إلى وكيلك الرئيسي. ويشرح [الوكلاء الفرعيون والتنسيق](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) كيفية إعداد واحد منهم.
+- **استخدم أفضل نموذج لديك للوكلاء الذين يملكون الأدوات.** النماذج الأصغر والأرخص أسهل بكثير في إقناعها.
+- **أبقِ إعدادات `allowUnsafeExternalContent` معطّلة.** إنها تزيل العلامات التي يضعها OpenClaw حول المحتوى الخارجي.
+- **افحص ما فعله الوكيل، لا ما قاله.** رفض النموذج لطلب ما وحظر أداة يبدوان متطابقين في المحادثة. وإن أردت معرفة أيّهما حدث، فراجع الموافقة أو سجل النشاط.
 
-## Run the Security Audit
+## شغّل فحص الأمان {#run-the-security-audit}
 
-`openclaw security audit` checks your configuration against a long list of known problems: exposed Gateway ports, missing authentication, open DM policies, loose file permissions, risky plugin and tool combinations, and more.
+يفحص `openclaw security audit` إعداداتك مقابل قائمة طويلة من المشكلات المعروفة: منافذ بوابة مكشوفة، ومصادقة مفقودة، وسياسات رسائل خاصة مفتوحة، وأذونات ملفات سائبة، ومجموعات خطيرة من الإضافات والأدوات، وغيرها الكثير.
 
 ```bash
 openclaw security audit
 ```
 
-Here’s a trimmed example of the output:
+إليك مقتطفًا مختصرًا من المخرجات:
 
 ```
 OpenClaw security audit
@@ -284,20 +284,20 @@ gateway.trusted_proxies_missing Reverse proxy headers are not trusted
   Fix: Set gateway.trustedProxies to your proxy IPs or keep the Control UI local-only.
 ```
 
-Each finding has an ID, a severity (`critical`, `warn`, or `info`), an explanation, and a fix. Some of the ones you’re most likely to see:
+لكل نتيجة معرّف، ودرجة خطورة (`critical` أو `warn` أو `info`)، وشرح، وإصلاح. ومن النتائج الأكثر احتمالًا أن تراها:
 
-| Finding | What it means |
+| النتيجة | ما تعنيه |
 | --- | --- |
-| `gateway.bind_no_auth` | The Gateway is reachable beyond localhost with no authentication |
-| `gateway.loopback_no_auth` | No auth secret is set, which a reverse proxy would turn into open access |
-| `gateway.tailscale_funnel` | The Gateway is published to the public internet through Funnel |
-| `fs.config.perms_world_readable` | Other users on the machine can read your config, which can hold tokens |
-| `channels.<provider>.dm.open` | Anyone can DM the agent on that channel |
-| `security.exposure.open_groups_with_elevated` | An open group chat can reach elevated commands |
-| `plugins.extensions_no_allowlist` | Plugins are installed but `plugins.allow` doesn’t limit which load |
-| `tools.exec.auto_allow_skills_enabled` | Binaries mentioned by skills are automatically approved on nodes |
+| `gateway.bind_no_auth` | يمكن الوصول إلى البوابة خارج localhost دون مصادقة |
+| `gateway.loopback_no_auth` | لا يوجد سرّ مصادقة معيّن، وهو ما كان الوكيل العكسي سيحوّله إلى وصول مفتوح |
+| `gateway.tailscale_funnel` | تُنشر البوابة على الإنترنت العام عبر Funnel |
+| `fs.config.perms_world_readable` | يستطيع المستخدمون الآخرون على الجهاز قراءة إعداداتك، وقد تحمل رموزًا (tokens) |
+| `channels.<provider>.dm.open` | يستطيع أي شخص إرسال رسالة خاصة إلى الوكيل على تلك القناة |
+| `security.exposure.open_groups_with_elevated` | يمكن لمجموعة دردشة مفتوحة الوصول إلى الأوامر المرفوعة |
+| `plugins.extensions_no_allowlist` | الإضافات مثبّتة لكن `plugins.allow` لا يحدّ من أيّها يُحمَّل |
+| `tools.exec.auto_allow_skills_enabled` | تُوافق تلقائيًا على الثنائيات التي تذكرها المهارات على العقد |
 
-Other useful forms:
+صيغ مفيدة أخرى:
 
 ```bash
 openclaw security audit --deep
@@ -305,40 +305,40 @@ openclaw security audit --json
 openclaw security audit --fix
 ```
 
-- `--deep` adds live checks against the running Gateway and scans plugin and skill code.
-- `--json` is for scripting, for example `openclaw security audit --json | jq '.summary'`.
-- `--fix` is narrower than it sounds. It tightens file permissions and switches open group policies to allowlists. It **doesn’t** rotate secrets, change tools, or touch network settings.
+- يضيف `--deep` فحوصًا حيّة مقابل البوابة العاملة، ويفحص شيفرة الإضافات والمهارات.
+- `--json` مخصّص للبرمجة النصية (السكربتات)، مثل `openclaw security audit --json | jq '.summary'`.
+- `--fix` أضيق مما يبدو. فهو يشدّد أذونات الملفات ويحوّل سياسات المجموعات المفتوحة إلى قوائم سماح. وهو **لا** يدوّر الأسرار، ولا يغيّر الأدوات، ولا يمسّ إعدادات الشبكة.
 
-Treat the audit as a loop, not a pass/fail gate. Fix the top finding, then run it again, because fixing one problem often reveals the next. And keep in mind what a clean audit means: your configuration matches known-good settings. It doesn’t mean nothing bad can happen.
+عامل الفحص كدورة مستمرة، لا كبوابة نجاح أو إخفاق. أصلح النتيجة الأولى ثم شغّله مرة أخرى، لأن إصلاح مشكلة واحدة يكشف غالبًا المشكلة التالية. وانتبه إلى ما يعنيه الفحص النظيف: إعداداتك تطابق إعدادات معروفة بالصحّة، ولا يعني ذلك أن شيئًا سيئًا لا يمكن أن يحدث.
 
-If a finding is intentional, you can suppress it with a reason under `security.audit.suppressions`, so it stops hiding new findings.
+إن كانت النتيجة مقصودة، يمكنك كتمها مع ذكر سبب تحت `security.audit.suppressions`، فيكفّ عن إخفاء النتائج الجديدة.
 
-## Our Recommendation
+## توصيتنا
 
-For a personal assistant that you reach through a chat app:
+لمساعد شخصي تصل إليه عبر تطبيق دردشة:
 
-1. **Lock the front door.** Use `allowlist` DM policies, as in [Choosing a DM Policy](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy), and keep the Gateway private, as in [the Tailscale lesson](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale).
-2. **Make commands ask.** Run `openclaw exec-policy preset cautious` on the Gateway host.
-3. **Connect an approval app.** Keep the Control UI, the macOS app, or the phone app signed in so approvals have somewhere to go. Without one, automation commands are denied.
-4. **Set approvers.** Make sure `commands.ownerAllowFrom` names only you.
-5. **Lock down nodes before pairing them.** Follow the steps in [the node lesson](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
-6. **Give risky readers fewer tools.** Agents that handle email, web pages, or group chats get a narrower profile or a sandbox.
-7. **Leave elevated mode alone.** Don’t add anyone to `tools.elevated.allowFrom` until you need to.
-8. **Audit until clean.** Run `openclaw security audit`, fix, and repeat.
+1. **أقفل الباب الأمامي.** استخدم سياسات رسائل خاصة من نوع `allowlist` كما في [اختيار سياسة الرسائل الخاصة](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy)، وأبقِ البوابة خاصة كما في [درس Tailscale](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale).
+2. **اجعل الأوامر تسأل.** شغّل `openclaw exec-policy preset cautious` على مضيف البوابة.
+3. **وصّل تطبيق موافقات.** أبقِ واجهة التحكم أو تطبيق macOS أو تطبيق الهاتف مسجّل الدخول حتى تجد الموافقات وجهة تذهب إليها. وبدونه، تُمنع أوامر الأتمتة.
+4. **عيّن الموافقين.** تأكّد أن `commands.ownerAllowFrom` لا يسمّي سواك.
+5. **أقفل العقد قبل اقترانها.** اتبع الخطوات في [درس العقد](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
+6. **امنح القارئين الخطرين أدوات أقل.** فالوكلاء الذين يتعاملون مع البريد أو صفحات الويب أو محادثات المجموعات يحصلون على ملف أضيق أو على عزل.
+7. **دع الوضع المرفوع وشأنه.** لا تُضِف أحدًا إلى `tools.elevated.allowFrom` حتى تحتاج إلى ذلك.
+8. **افحص حتى ينظُف.** شغّل `openclaw security audit`، ثم أصلح، ثم كرّر.
 
-Then **test the negative case**. Ask your agent to run `uname -a`. You should get an approval request instead of an answer. Deny it, and confirm the agent tells you it was blocked. Then ask again and choose **Allow once**, and check that `openclaw approvals get` didn’t gain an allowlist entry. If the command ran without asking, your policy isn’t what you think. Run `openclaw exec-policy show` to find out why.
+ثم **اختبر الحالة السلبية**. اطلب من وكيلك تشغيل `uname -a`. يجب أن تحصل على طلب موافقة بدلًا من إجابة. امنعه، وتأكّد من أن الوكيل يخبرك بأنه حُظر. ثم اطلب مرة أخرى واختر **السماح مرة واحدة**، وافحص أن `openclaw approvals get` لم يكتسب إدخالًا في قائمة السماح. وإن شغّل الأمر دون أن يسأل، فسياساتك ليست ما تظنّه. شغّل `openclaw exec-policy show` لمعرفة السبب.
 
-## If Something Goes Wrong
+## إذا حدث خطأ ما
 
-If you think a token leaked, a stranger got in, or the agent did something it shouldn’t have:
+إن ظننت أن رمزًا (token) قد تسرب، أو أن غريبًا اقتحم، أو أن الوكيل فعل ما لا ينبغي له فعله:
 
-1. **Contain it.** Stop the Gateway, or set every channel’s `dmPolicy` to `disabled`. Turn off Tailscale Funnel or Serve if you use them.
-2. **Find out what happened before you rotate.** Look at `openclaw logs`, the session transcripts under `~/.openclaw/agents/<agentId>/sessions/`, and the activity log with `openclaw audit`. Rotating first can erase the clues about which credential was used.
-3. **Rotate credentials.** Rotate the Gateway token, then model provider keys and channel tokens.
-4. **Re-audit.** Run `openclaw security audit --deep` and fix what it finds before reopening anything.
+1. **احتوِه.** أوقف البوابة، أو اضبط `dmPolicy` لكل قناة على `disabled`. وأطفئ Tailscale Funnel أو Serve إن كنت تستخدمهما.
+2. **اعرف ما حدث قبل أن تدوّر.** انظر في `openclaw logs`، وفي نصوص الجلسات تحت `~/.openclaw/agents/<agentId>/sessions/`، وفي سجل النشاط عبر `openclaw audit`. فالتدوير أولًا قد يمحو الأدلة التي تشير إلى أيّ بيانات اعتماد استُخدمت.
+3. **دوّر بيانات الاعتماد.** دوّر رمز البوابة، ثم مفاتيح مزوّد النموذج ورموز القنوات.
+4. **أعد الفحص.** شغّل `openclaw security audit --deep` وأصلح ما يجده قبل إعادة فتح أي شيء.
 
-The activity log is worth knowing about before you need it. `openclaw audit` lists agent runs and tool actions from the last 30 days. It records who did what and whether it succeeded, but never the content. `openclaw audit --kind tool_action --limit 50` is a good place to start. A missing entry doesn’t prove nothing happened, though, so treat it as a lead, not a verdict.
+من الجدير معرفة سجل النشاط قبل أن تحتاج إليه. يسرد `openclaw audit` عمليات تشغيل الوكيل وإجراءات الأدوات خلال آخر 30 يومًا. ويسجّل من فعل ماذا وما إذا كان ناجحًا، لكنه لا يسجّل المحتوى أبدًا. و`openclaw audit --kind tool_action --limit 50` نقطة انطلاق جيدة. غير أن غياب إدخال لا يثبت أن شيئًا لم يحدث، فتعامل معه كخيط يُستدلّ به لا كحكم نهائي.
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> يطابق هذا الدرس إصدار OpenClaw `2026.9.8`. وإن لم يتصرّف شيء كما هو موصوف، شغّل الأمر مع `--help` وراجع [وثائق OpenClaw](https://docs.openclaw.ai/).

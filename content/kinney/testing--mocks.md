@@ -1,26 +1,26 @@
 ---
-title: "Mocks"
-lang: en
+title: "البدائل المُحاكاة (Mocks)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocks"
 ---
 
-Generally, speaking it’s not helpful to test code that you don’t control.
+بوجه عام، ليس من المفيد اختبار شيفرة لا تتحكّم فيها.
 
-The TL;DR of mocking is that sometimes we need to swap out things we don’t control with things that we *do*. For example, it might be outside of the scope of our test to make sure that a third-party API goes down. Or, if that API isn’t free, you don’t necessarily want to run up a bill every time you run your test suite, right?
+خلاصة المضاهاة أننا نحتاج أحيانًا إلى استبدال أشياء لا نتحكّم فيها بأشياء *نتحكّم* فيها. على سبيل المثال، قد يكون التأكّد من تعطّل API خارجية خارج نطاق اختبارنا. أو إن لم تكن تلك API مجانية، فأنت لا تريد بالضرورة أن تتراكم عليك فاتورة في كل مرة تشغّل فيها مجموعة اختباراتك، أليس كذلك؟
 
-A *mock* is a more powerful and flexible type of [test doubles](https://stevekinney.com/courses/testing/test-doubles) that can both define behavior (like a [stub](https://stevekinney.com/courses/testing/stubs)) and record information (like a [spy](https://stevekinney.com/courses/testing/spies)). Mocks allow you to specify exactly how a function should behave, including return values, thrown errors, or complex interactions, while also tracking the number of calls and arguments passed.
+*البديل المُحاكى* نوع أكثر قوة ومرونة من [البدائل الاختبارية](https://stevekinney.com/courses/testing/test-doubles) يستطيع أن يعرّف السلوك (مثل [البديل](https://stevekinney.com/courses/testing/stubs)) ويسجّل المعلومات (مثل [الجاسوس](https://stevekinney.com/courses/testing/spies)) معًا. وتتيح لك البدائل المُحاكاة تحديد كيفية تصرّف الدالة بدقة، بما في ذلك القيم المُعادة والأخطاء المرمية والتفاعلات المعقّدة، مع تتبّع عدد الاستدعاءات والوسائط الممرّرة أيضًا.
 
-> **Best Practices and Common Pitfalls**
+> **أفضل الممارسات والمزالق الشائعة**
 >
-> We’ll cover this in the slides, but you can review the [best practices and common pitfalls with mocking here](https://stevekinney.com/courses/testing/mocking-best-practices)
+> سنغطّي هذا في الشرائح، لكن يمكنك مراجعة [أفضل الممارسات والمزالق الشائعة في المضاهاة هنا](https://stevekinney.com/courses/testing/mocking-best-practices)
 
-## Key Features of Mocks
+## الخصائص الرئيسية للبدائل المُحاكاة
 
-- **Configurable Behavior**: Mocks can replace the actual implementation and allow you to configure how they behave in different test cases.
-- **Recording Calls**: Like spies, mocks keep track of how many times a function was called and with what arguments.
-- **Versatile**: Mocks combine the benefits of both stubs and spies, making them useful in more complex testing scenarios.
+- **سلوك قابل للتهيئة**: تستطيع البدائل المُحاكاة استبدال التنفيذ الفعلي وتتيح لك تهيئة كيفية تصرّفها في حالات اختبار مختلفة.
+- **تسجيل الاستدعاءات**: مثل الجواسيس، تتتبّع البدائل المُحاكاة عدد مرات استدعاء دالة والوسائط التي استُدعيت بها.
+- **متعددة الاستخدامات**: تجمع البدائل المُحاكاة مزايا البدائل والجواسيس معًا، مما يجعلها مفيدة في سيناريوهات اختبار أكثر تعقيدًا.
 
-You can create a mock function using `vi.fn()` (or, `jest.fn()`), which takes a callback function. If you you don’t provide one, it’ll just use an empty function as the implementation (e.g. `() => undefined`).
+يمكنك إنشاء دالة بديلة مُحاكاة باستخدام `vi.fn()` (أو `jest.fn()`)، التي تأخذ دالة رد نداء. وإن لم تُقدّم واحدة، فستستخدم ببساطة دالة فارغة كتنفيذ (مثل `() => undefined`).
 
 ```typescript
 const getNumber = vi.fn(() => 5000);
@@ -32,22 +32,22 @@ expect(getNumber).toHaveBeenCalled();
 expect(number).toHaveReturnedWith(5000);
 ```
 
-## Methods
+## التوابع
 
-- `mockImplementation`: Takes a function that you want your mock function to call whenever it’s called.
-- `mockImplementationOnce`: Accepts a function that will only be used the *next time* a function is called.
-- `withImplementation`: Overrides the original mock implementation temporarily while the callback is being executed. Calls the function immediately.
-- `mockReturnValue`: Nevermind the implementation, we just know we want it to return whatever value.
-- `mockReturnValueOnce`: Set the return value—but only the *next time* it’s called.
-- `mockResolvedValue`: Sets the value of the promise when it resolves.
-- `mockResolvedValueOnce`: Set the resolved value of a promise *next time* it resolves.
-- `mockRejectedValue`: Rejects a promise with the error provided.
-- `mockRejectedValueOnce`: Rejects a promise with the error provided *next time*.
-- `mockReturnThis`: Sets the value of `this`.
+- `mockImplementation`: يأخذ دالة تريد أن تستدعيها دالتك البديلة المُحاكاة في كل مرة تُستدعى فيها.
+- `mockImplementationOnce`: يقبل دالة تُستخدم فقط في *المرة التالية* التي تُستدعى فيها الدالة.
+- `withImplementation`: يتجاوز تنفيذ البديل المُحاكى الأصلي مؤقتًا أثناء تنفيذ رد النداء. ويستدعي الدالة فورًا.
+- `mockReturnValue`: بغض النظر عن التنفيذ، نعرف فقط أننا نريدها أن تُعيد أيا كانت القيمة.
+- `mockReturnValueOnce`: يضبط القيمة المُعادة—لكن في *المرة التالية* فقط التي تُستدعى فيها.
+- `mockResolvedValue`: يضبط قيمة الوعد عندما يُحلّ.
+- `mockResolvedValueOnce`: يضبط قيمة الوعد المُحلّة *في المرة التالية* التي يُحلّ فيها.
+- `mockRejectedValue`: يرفض وعدًا بالخطأ المقدّم.
+- `mockRejectedValueOnce`: يرفض وعدًا بالخطأ المقدّم *في المرة التالية*.
+- `mockReturnThis`: يضبط قيمة `this`.
 
-### Example
+### مثال
 
-Suppose you need to mock a function that processes ticket sales and handles different scenarios (success and failure):
+لنفترض أنك تحتاج إلى محاكاة دالة تعالج مبيعات التذاكر وتتعامل مع سيناريوهات مختلفة (النجاح والفشل):
 
 ```javascript
 // Mock a payment function
@@ -63,42 +63,42 @@ expect(paymentMock()).toBe('Payment Failed');
 expect(paymentMock).toHaveBeenCalledTimes(2);
 ```
 
-In this example, the mock simulates different outcomes for the payment process and tracks the number of calls to ensure everything happens as expected.
+في هذا المثال، يحاكي البديل المُحاكى نتائج مختلفة لعملية الدفع ويتتبّع عدد الاستدعاءات لضمان حدوث كل شيء كما هو متوقّع.
 
-### Difference Between Mocks and Stubs
+### الفرق بين البدائل المُحاكاة والبدائل
 
-While both mocks and stubs replace the real implementation of functions, there are important differences between them:
+رغم أن البدائل المُحاكاة والبدائل تستبدل التنفيذ الحقيقي للدوال، فهناك فروق مهمة بينها:
 
-- **Stubs**: Stubs only provide predefined behavior when called, but they do not keep track of how many times the function was called or with what arguments.
-- **Mocks**: Mocks not only replace the real implementation, but they also keep track of calls, arguments, and context, allowing you to verify interactions in more detail. Mocks can be configured dynamically to return specific values or simulate different conditions during the test.
+- **البدائل**: توفّر البدائل سلوكًا محدّدًا مسبقًا عند الاستدعاء فقط، لكنها لا تتتبّع عدد مرات استدعاء الدالة أو الوسائط التي استُدعيت بها.
+- **البدائل المُحاكاة**: لا تستبدل البدائل المُحاكاة التنفيذ الحقيقي فحسب، بل تتتبّع أيضًا الاستدعاءات والوسائط والسياق، بما يتيح لك التحقّق من التفاعلات بتفصيل أكبر. ويمكن تهيئة البدائل المُحاكاة ديناميكيًا لتُعيد قيمًا محدّدة أو تحاكي ظروفًا مختلفة أثناء الاختبار.
 
-Mocks are more powerful than stubs because they provide both behavior definition and interaction tracking, making them suitable for testing more complex scenarios.
+البدائل المُحاكاة أقوى من البدائل لأنها توفّر تعريف السلوك وتتبّع التفاعلات معًا، مما يجعلها مناسبة لاختبار سيناريوهات أكثر تعقيدًا.
 
-### Creating Mocks With Vitest
+### إنشاء البدائل المُحاكاة مع Vitest
 
-In Vitest, you can create mocks using the `vi.fn()` method, which allows you to define how a function should behave and track calls made to it.
+في Vitest، يمكنك إنشاء بدائل مُحاكاة باستخدام التابع `vi.fn()`، الذي يتيح لك تعريف كيفية تصرّف دالة وتتبّع الاستدعاءات الموجّهة إليها.
 
-Here’s a simple example of creating a mock:
+إليك مثالًا بسيطًا على إنشاء بديل مُحاكى:
 
 ```javascript
 const paymentMock = vi.fn();
 ```
 
-This mock can be customized to return values, throw errors, or simulate any behavior you need for testing.
+يمكن تخصيص هذا البديل المُحاكى ليُعيد قيمًا أو يرمي أخطاءً أو يحاكي أي سلوك تحتاجه للاختبار.
 
-You can also define specific behavior for different test scenarios using `mockReturnValue` or `mockImplementation`.
+يمكنك أيضًا تعريف سلوك محدّد لسيناريوهات اختبار مختلفة باستخدام `mockReturnValue` أو `mockImplementation`.
 
 ```javascript
 paymentMock.mockReturnValueOnce('Payment Successful').mockReturnValueOnce('Payment Failed');
 ```
 
-In this case, the mock will return ‘Payment Successful’ the first time it is called and ‘Payment Failed’ the second time.
+في هذه الحالة، سيُعيد البديل المُحاكى «Payment Successful» في المرة الأولى التي يُستدعى فيها و«Payment Failed» في المرة الثانية.
 
-### Example: Mocking a Database or an External API
+### مثال: محاكاة قاعدة بيانات أو API خارجية
 
-Let’s consider an example where we mock an external API that fetches concert details for a band. We’ll use the mock to simulate different scenarios, such as a successful API call and a failure.
+لننظر إلى مثال نحاكي فيه API خارجية تجلب تفاصيل حفلات موسيقية لفرقة. سنستخدم البديل المُحاكى لمحاكاة سيناريوهات مختلفة، مثل استدعاء API ناجح وفشل.
 
-Here’s the function we want to test:
+إليك الدالة التي نريد اختبارها:
 
 ```javascript
 async function getConcertDetails(band) {
@@ -108,7 +108,7 @@ async function getConcertDetails(band) {
 }
 ```
 
-Now, we’ll mock the `fetch` function in our test:
+الآن، سنحاكي دالة `fetch` في اختبارنا:
 
 ```javascript
 import { describe, it, expect, vi } from 'vitest';
@@ -141,13 +141,13 @@ describe('getConcertDetails', () => {
 });
 ```
 
-In this example, `fetchMock` simulates the behavior of the real `fetch` function, allowing us to test the `getConcertDetails` function without making a real network request. We also verify that the mock was called exactly once.
+في هذا المثال، يحاكي `fetchMock` سلوك دالة `fetch` الحقيقية، بما يتيح لنا اختبار دالة `getConcertDetails` دون إجراء طلب شبكة حقيقي. ونتحقّق أيضًا من أن البديل المُحاكى استُدعي مرة واحدة بالضبط.
 
-### Asserting Interactions and Behavior of Mocks
+### التأكيد على تفاعلات البدائل المُحاكاة وسلوكها
 
-Mocks in Vitest allow you to assert not only the return values and errors, but also interactions such as how many times the mock was called, what arguments were passed, and the order of calls.
+تتيح لك البدائل المُحاكاة في Vitest التأكيد ليس على القيم المُعادة والأخطاء فحسب، بل على التفاعلات أيضًا، مثل عدد مرات استدعاء البديل المُحاكى، والوسائط الممرّرة، وترتيب الاستدعاءات.
 
-Here’s how you can assert different interactions with mocks:
+إليك كيف يمكنك التأكيد على تفاعلات مختلفة مع البدائل المُحاكاة:
 
 ```javascript
 // Create a mock function
@@ -169,6 +169,6 @@ expect(fetchMock).toHaveBeenCalledWith('Green Day');
 expect(fetchMock()).toBe('Concert Data');
 ```
 
-In this example, we verify that `fetchMock` was called exactly once, passed the correct argument, and returned the expected value.
+في هذا المثال، نتحقّق من أن `fetchMock` استُدعي مرة واحدة بالضبط، ومُرّر إليه الوسيط الصحيح، وأعاد القيمة المتوقّعة.
 
-Mocks offer full control over both behavior and interactions, making them an essential tool for testing complex systems where you need detailed insights into how functions are being used and what they return.
+توفّر البدائل المُحاكاة تحكّمًا كاملًا في السلوك والتفاعلات معًا، مما يجعلها أداة جوهرية لاختبار الأنظمة المعقّدة التي تحتاج فيها إلى رؤى مفصّلة عن كيفية استخدام الدوال وما تُعيده.

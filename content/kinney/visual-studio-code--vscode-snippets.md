@@ -1,22 +1,22 @@
 ---
-title: "Using Snippets"
-lang: en
+title: "استخدام المقتطفات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-snippets"
 ---
 
-Snippets are pre-written blocks of code that you can quickly insert into your editor using a short keyword or prefix. It’s not unfair of them as code templates or shortcuts for frequently used code structures. In Visual Studio Code, snippets are more than just static text; they are dynamic and interactive, allowing you to customize and adapt them to your specific needs.
+المقتطفات (snippets) كتل شيفرة مكتوبة مسبقًا يمكنك إدراجها سريعًا في محرّرك بكلمة مفتاحية أو بادئة قصيرة. ولا يظلمها من يصفها بأنها قوالب شيفرة أو اختصارات لبنى الشيفرة كثيرة الاستخدام. وفي Visual Studio Code، المقتطفات أكثر من مجرد نص ثابت، فهي ديناميكية وتفاعلية وتتيح لك تخصيصها وتكييفها مع احتياجاتك المحدّدة.
 
-I don’t really feel like you need a sales pitch on snippets, but just in case—here you go:
+لا أظنّ أنك تحتاج فعلًا إلى عرض ترويجي عن المقتطفات، لكن هاك واحدًا على أي حال:
 
-- **Automation of Repetitive Coding Tasks:** Snippets eliminate the need to manually type out common code patterns repeatedly. Imagine writing loops, function definitions, or class structures from scratch every time. Snippets automate this, saving you valuable time and effort.
-- **Boosting Coding Speed:** By inserting code blocks with just a few keystrokes, snippets drastically speed up your coding process. You spend less time typing boilerplate code and more time focusing on the core logic of your application.
-- **Reducing Errors:** Manual coding is prone to errors, especially with repetitive tasks. Snippets provide pre-tested and error-free code blocks, reducing the chances of typos, syntax errors, and logical mistakes.
-- **Enforcing Code Consistency:** Snippets ensure consistency across your codebase by providing standardized code structures. This is particularly beneficial in team projects where maintaining a uniform coding style is crucial. You can create snippets for company-specific coding standards, ensuring everyone adheres to the same patterns.
-- **Learning New Languages and Frameworks:** Snippets can serve as handy references and learning aids for new languages or frameworks. By creating snippets for common constructs, you familiarize yourself with the syntax and best practices.
+- **أتمتة مهام البرمجة المتكرّرة:** تُغني المقتطفات عن كتابة أنماط الشيفرة الشائعة يدويًا مرارًا وتكرارًا. تخيّل كتابة الحلقات أو تعريفات الدوال أو بنى الأصناف من الصفر في كل مرة. والمقتطفات تؤتمت ذلك، فتوفّر عليك وقتًا وجهدًا ثمينين.
+- **رفع سرعة البرمجة:** بإدراج كتل الشيفرة ببضع ضغطات مفاتيح فقط، تسرّع المقتطفات عملية البرمجة سرعة هائلة. فتقضي وقتًا أقل في كتابة الشيفرة الجاهزة المتكرّرة، ووقتًا أكثر في التركيز على المنطق الأساسي لتطبيقك.
+- **تقليل الأخطاء:** البرمجة اليدوية معرّضة للأخطاء، خصوصًا في المهام المتكرّرة. وتوفّر المقتطفات كتل شيفرة مختبَرة مسبقًا وخالية من الأخطاء، ما يقلّل احتمال الأخطاء المطبعية وأخطاء الصياغة والأخطاء المنطقية.
+- **فرض اتساق الشيفرة:** تضمن المقتطفات الاتساق في قاعدتك البرمجية بتوفير بنى شيفرة موحّدة. وهذا مفيد بوجه خاص في مشاريع الفرق حيث يكون الحفاظ على نمط برمجة موحّد أمرًا بالغ الأهمية. ويمكنك إنشاء مقتطفات لمعايير البرمجة الخاصة بشركتك، فتضمن التزام الجميع بالأنماط نفسها.
+- **تعلّم لغات وأطر جديدة:** يمكن أن تكون المقتطفات مراجع وأدوات تعليمية مفيدة للغات أو الأطر الجديدة. فبإنشاء مقتطفات للبنى الشائعة، تتعوّد على الصياغة وأفضل الممارسات.
 
-## Snippet Structure
+## بنية المقتطف
 
-A snippet in Visual Studio Code is defined as a JSON object with the following key fields:
+يُعرَّف المقتطف في Visual Studio Code ككائن JSON بالحقول الرئيسية التالية:
 
 ```json
 {
@@ -28,16 +28,16 @@ A snippet in Visual Studio Code is defined as a JSON object with the following k
 }
 ```
 
-The snippet name is just the name you give to your snippet. It’s used for organization and identification within your snippet configuration file. Choose descriptive names that reflect the snippet’s purpose.
+اسم المقتطف هو مجرد الاسم الذي تعطيه لمقتطفك، ويُستخدم للتنظيم والتعريف داخل ملف تهيئة المقتطفات. فاختر أسماء وصفية تعبّر عن غرض المقتطف.
 
-Let’s break down each field:
+ولنفصّل كل حقل:
 
-- **`prefix` (String, Required):** This is the trigger word or characters you type in the editor to activate the snippet suggestion. When you type the `prefix`, Visual Studio Code will suggest your snippet in the IntelliSense dropdown. Choose a short, memorable, and unique prefix to avoid conflicts with existing commands or keywords.
-- **`body` (Array of Strings, Required):** This is the core of the snippet – the actual code block that will be inserted. Each element in the array represents a line of code. Visual Studio Code will join these strings and insert them into the document, respecting indentation and line breaks. You can use placeholders, variables, and choices within the `body` to make your snippets dynamic.
-- **`description` (String, Optional):** A brief explanation of what the snippet does. This description is displayed in the IntelliSense suggestion list, helping you understand the snippet’s purpose when choosing from multiple suggestions. Providing clear descriptions is crucial for managing a large collection of snippets.
-- **`scope` (String, Optional):** Defines the languages or file types where the snippet should be available. If omitted, the snippet is considered global and will be available in all languages. You can specify a single language identifier (e.g., `"javascript"`, `"python"`) or a comma-separated list of language identifiers (e.g., `"javascript,typescript"`). You can find a list of language identifiers [here](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/docs/languages/identifiers&authuser=1).
+- **`prefix` (String، مطلوب):** هذه الكلمة أو الأحرف المُشغِّلة التي تكتبها في المحرّر لتفعيل اقتراح المقتطف. وعند كتابتك للـ `prefix`، سيقترح Visual Studio Code مقتطفك في قائمة IntelliSense المنسدلة. فاختر بادئة قصيرة يسهل تذكّرها وفريدة لتفادي التعارض مع الأوامر أو الكلمات المفتاحية الموجودة.
+- **`body` (Array of Strings، مطلوب):** هذا هو جوهر المقتطف، أي كتلة الشيفرة الفعلية التي ستُدرج. وكل عنصر في المصفوفة يمثّل سطرًا من الشيفرة. وسيضم Visual Studio Code هذه النصوص بعضها إلى بعض ويدرجها في المستند مع مراعاة المسافات البادئة وفواصل الأسطر. ويمكنك استخدام عناصر نائبة ومتغيّرات وخيارات داخل `body` لتجعل مقتطفاتك ديناميكية.
+- **`description` (String، اختياري):** شرح موجز لما يفعله المقتطف. ويُعرض هذا الوصف في قائمة اقتراحات IntelliSense، ما يساعدك على فهم غرض المقتطف عند الاختيار من بين اقتراحات متعددة. وتوفير أوصاف واضحة أمر بالغ الأهمية لإدارة مجموعة كبيرة من المقتطفات.
+- **`scope` (String، اختياري):** يحدّد اللغات أو أنواع الملفات التي ينبغي أن يكون المقتطف متاحًا فيها. وإذا حُذف، يُعدّ المقتطف عامًّا ومتاحًا في كل اللغات. ويمكنك تحديد معرّف لغة واحد (مثل `"javascript"` و `"python"`) أو قائمة معرّفات لغات مفصولة بفواصل (مثل `"javascript,typescript"`). وتجد قائمة بمعرّفات اللغات [هنا](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/docs/languages/identifiers&authuser=1).
 
-## Example: A `for`/`of` Loop
+## مثال: حلقة `for`/`of`
 
 JSON
 
@@ -54,54 +54,54 @@ JSON
 }
 ```
 
-In this example:
+في هذا المثال:
 
-- **“for/of Loop”** is the snippet name.
-- **`forloop`** is the prefix. Typing `forloop` in a JavaScript file will trigger this snippet.
-- The `body` contains the JavaScript `for` loop structure with placeholders.
-- **“Basic for loop in JavaScript”** is the description.
+- **“for/of Loop”** هو اسم المقتطف.
+- **`forloop`** هي البادئة. وكتابة `forloop` في ملف JavaScript تُشغّل هذا المقتطف.
+- يحتوي `body` على بنية حلقة `for` في JavaScript مع عناصر نائبة.
+- **“Basic for loop in JavaScript”** هو الوصف.
 
-## Snippet Syntax: Placeholders, Variables, and Choices
+## صياغة المقتطف: العناصر النائبة والمتغيّرات والخيارات
 
-Snippets in Visual Studio Code are powerful because they support dynamic content through placeholders, variables, and choices.
+تكون المقتطفات في Visual Studio Code قوية لأنها تدعم محتوى ديناميكيًا عبر العناصر النائبة والمتغيّرات والخيارات.
 
-- **Placeholders (`$1`, `$2`, `$3`, … and `$0`):** Placeholders represent cursor positions within the snippet. When you insert a snippet, the cursor initially jumps to `$1`. Pressing `Tab` moves the cursor to `$2`, then `$3`, and so on. `$0` is the final cursor position after you’ve navigated through all numbered placeholders. You can also use placeholder names like `${1:variableName}` to provide a default value or hint for the placeholder. In the `for` loop example above: `${1:array}`: The first placeholder, suggesting “array” as a default value. `${2:element}`: The second placeholder, suggesting “element” as a default value. `${0:// body}`: The final cursor position, placed inside the loop body with a comment.
-  - In the `for` loop example above: `${1:array}`: The first placeholder, suggesting “array” as a default value. `${2:element}`: The second placeholder, suggesting “element” as a default value. `${0:// body}`: The final cursor position, placed inside the loop body with a comment.
-    - `${1:array}`: The first placeholder, suggesting “array” as a default value.
-    - `${2:element}`: The second placeholder, suggesting “element” as a default value.
-    - `${0:// body}`: The final cursor position, placed inside the loop body with a comment.
-- **Variables (`${variable_name}`):** Visual Studio Code provides a rich set of predefined variables that you can use within snippets to insert dynamic information based on the context. Variables are enclosed in `${}`. Some commonly used variables include: **File and Path Variables:** `${TM_FILENAME}`: The current filename (e.g., `my_script.js`). `${TM_FILENAME_BASE}`: The current filename without the extension (e.g., `my_script`). `${TM_DIRECTORY}`: The directory of the current file. `${TM_FILEPATH}`: The full file path of the current file. `${WORKSPACE_NAME}`: The name of the opened workspace or folder. `${WORKSPACE_FOLDER}`: The path of the opened workspace or folder. **Date and Time Variables:** `${CURRENT_YEAR}`: The current year (e.g., `2025`). `${CURRENT_YEAR_SHORT}`: The current year in two digits (e.g., `25`). `${CURRENT_MONTH}`: The month as two digits (e.g., `03`). `${CURRENT_MONTH_NAME}`: The full name of the month (e.g., `March`). `${CURRENT_MONTH_NAME_SHORT}`: The short name of the month (e.g., `Mar`). `${CURRENT_DATE}`: The day of the month as two digits (e.g., `07`). `${CURRENT_DAY_NAME}`: The name of the day (e.g., `Friday`). `${CURRENT_DAY_NAME_SHORT}`: The short name of the day (e.g., `Fri`). `${CURRENT_HOUR}`: The current hour in 24-hour format (e.g., `17`). `${CURRENT_MINUTE}`: The current minute (e.g., `08`). `${CURRENT_SECOND}`: The current second (e.g., `14`). `${CURRENT_TIMEZONE_OFFSET}`: The timezone offset from UTC (e.g., `-0700` for MST). `${CURRENT_TIMESTAMP}`: The current Unix timestamp. **User and Environment Variables:** `${CLIPBOARD}`: The content of your clipboard. `${RANDOM}`: 6 random Base-16 characters. `${RANDOM_HEX}`: A random Base-16 number. `${UUID}`: A version 4 UUID. `${USER_NAME}`: Your operating system username. You can find a comprehensive list of predefined variables [here](https://www.google.com/search?q=https://code.visualstudio.com/docs/editor/userdefinedsnippets%23_variables&authuser=1).
-  - **File and Path Variables:** `${TM_FILENAME}`: The current filename (e.g., `my_script.js`). `${TM_FILENAME_BASE}`: The current filename without the extension (e.g., `my_script`). `${TM_DIRECTORY}`: The directory of the current file. `${TM_FILEPATH}`: The full file path of the current file. `${WORKSPACE_NAME}`: The name of the opened workspace or folder. `${WORKSPACE_FOLDER}`: The path of the opened workspace or folder.
-    - `${TM_FILENAME}`: The current filename (e.g., `my_script.js`).
-    - `${TM_FILENAME_BASE}`: The current filename without the extension (e.g., `my_script`).
-    - `${TM_DIRECTORY}`: The directory of the current file.
-    - `${TM_FILEPATH}`: The full file path of the current file.
-    - `${WORKSPACE_NAME}`: The name of the opened workspace or folder.
-    - `${WORKSPACE_FOLDER}`: The path of the opened workspace or folder.
-  - **Date and Time Variables:** `${CURRENT_YEAR}`: The current year (e.g., `2025`). `${CURRENT_YEAR_SHORT}`: The current year in two digits (e.g., `25`). `${CURRENT_MONTH}`: The month as two digits (e.g., `03`). `${CURRENT_MONTH_NAME}`: The full name of the month (e.g., `March`). `${CURRENT_MONTH_NAME_SHORT}`: The short name of the month (e.g., `Mar`). `${CURRENT_DATE}`: The day of the month as two digits (e.g., `07`). `${CURRENT_DAY_NAME}`: The name of the day (e.g., `Friday`). `${CURRENT_DAY_NAME_SHORT}`: The short name of the day (e.g., `Fri`). `${CURRENT_HOUR}`: The current hour in 24-hour format (e.g., `17`). `${CURRENT_MINUTE}`: The current minute (e.g., `08`). `${CURRENT_SECOND}`: The current second (e.g., `14`). `${CURRENT_TIMEZONE_OFFSET}`: The timezone offset from UTC (e.g., `-0700` for MST). `${CURRENT_TIMESTAMP}`: The current Unix timestamp.
-    - `${CURRENT_YEAR}`: The current year (e.g., `2025`).
-    - `${CURRENT_YEAR_SHORT}`: The current year in two digits (e.g., `25`).
-    - `${CURRENT_MONTH}`: The month as two digits (e.g., `03`).
-    - `${CURRENT_MONTH_NAME}`: The full name of the month (e.g., `March`).
-    - `${CURRENT_MONTH_NAME_SHORT}`: The short name of the month (e.g., `Mar`).
-    - `${CURRENT_DATE}`: The day of the month as two digits (e.g., `07`).
-    - `${CURRENT_DAY_NAME}`: The name of the day (e.g., `Friday`).
-    - `${CURRENT_DAY_NAME_SHORT}`: The short name of the day (e.g., `Fri`).
-    - `${CURRENT_HOUR}`: The current hour in 24-hour format (e.g., `17`).
-    - `${CURRENT_MINUTE}`: The current minute (e.g., `08`).
-    - `${CURRENT_SECOND}`: The current second (e.g., `14`).
-    - `${CURRENT_TIMEZONE_OFFSET}`: The timezone offset from UTC (e.g., `-0700` for MST).
-    - `${CURRENT_TIMESTAMP}`: The current Unix timestamp.
-  - **User and Environment Variables:** `${CLIPBOARD}`: The content of your clipboard. `${RANDOM}`: 6 random Base-16 characters. `${RANDOM_HEX}`: A random Base-16 number. `${UUID}`: A version 4 UUID. `${USER_NAME}`: Your operating system username.
-    - `${CLIPBOARD}`: The content of your clipboard.
-    - `${RANDOM}`: 6 random Base-16 characters.
-    - `${RANDOM_HEX}`: A random Base-16 number.
-    - `${UUID}`: A version 4 UUID.
-    - `${USER_NAME}`: Your operating system username.
+- **العناصر النائبة (`$1` و `$2` و `$3` و … و `$0`):** تمثّل العناصر النائبة مواضع المؤشر داخل المقتطف. فعند إدراج مقتطف، ينتقل المؤشر ابتداءً إلى `$1`. ويؤدي الضغط على `Tab` إلى نقل المؤشر إلى `$2` ثم `$3` وهكذا. و`$0` هو موضع المؤشر النهائي بعد تنقّلك في كل العناصر النائبة المرقّمة. ويمكنك أيضًا استخدام أسماء للعناصر النائبة مثل `${1:variableName}` لتوفير قيمة افتراضية أو تلميح لها. وفي مثال حلقة `for` أعلاه: `${1:array}`: العنصر النائب الأول، ويقترح “array” كقيمة افتراضية. `${2:element}`: العنصر النائب الثاني، ويقترح “element” كقيمة افتراضية. `${0:// body}`: موضع المؤشر النهائي، موضوعًا داخل جسم الحلقة مع تعليق.
+  - في مثال حلقة `for` أعلاه: `${1:array}`: العنصر النائب الأول، ويقترح “array” كقيمة افتراضية. `${2:element}`: العنصر النائب الثاني، ويقترح “element” كقيمة افتراضية. `${0:// body}`: موضع المؤشر النهائي، موضوعًا داخل جسم الحلقة مع تعليق.
+    - `${1:array}`: العنصر النائب الأول، ويقترح “array” كقيمة افتراضية.
+    - `${2:element}`: العنصر النائب الثاني، ويقترح “element” كقيمة افتراضية.
+    - `${0:// body}`: موضع المؤشر النهائي، موضوعًا داخل جسم الحلقة مع تعليق.
+- **المتغيّرات (`${variable_name}`):** يوفّر Visual Studio Code مجموعة غنية من المتغيّرات المعرّفة مسبقًا التي يمكنك استخدامها داخل المقتطفات لإدراج معلومات ديناميكية بناءً على السياق. وتُحاط المتغيّرات بـ `${}`. ومن المتغيّرات الشائعة الاستخدام: **متغيّرات الملفات والمسارات:** `${TM_FILENAME}`: اسم الملف الحالي (مثل `my_script.js`). `${TM_FILENAME_BASE}`: اسم الملف الحالي دون الامتداد (مثل `my_script`). `${TM_DIRECTORY}`: مجلد الملف الحالي. `${TM_FILEPATH}`: المسار الكامل للملف الحالي. `${WORKSPACE_NAME}`: اسم مساحة العمل أو المجلد المفتوح. `${WORKSPACE_FOLDER}`: مسار مساحة العمل أو المجلد المفتوح. **متغيّرات التاريخ والوقت:** `${CURRENT_YEAR}`: السنة الحالية (مثل `2025`). `${CURRENT_YEAR_SHORT}`: السنة الحالية برقمين (مثل `25`). `${CURRENT_MONTH}`: الشهر برقمين (مثل `03`). `${CURRENT_MONTH_NAME}`: اسم الشهر الكامل (مثل `March`). `${CURRENT_MONTH_NAME_SHORT}`: الاسم المختصر للشهر (مثل `Mar`). `${CURRENT_DATE}`: يوم الشهر برقمين (مثل `07`). `${CURRENT_DAY_NAME}`: اسم اليوم (مثل `Friday`). `${CURRENT_DAY_NAME_SHORT}`: الاسم المختصر لليوم (مثل `Fri`). `${CURRENT_HOUR}`: الساعة الحالية بنظام 24 ساعة (مثل `17`). `${CURRENT_MINUTE}`: الدقيقة الحالية (مثل `08`). `${CURRENT_SECOND}`: الثانية الحالية (مثل `14`). `${CURRENT_TIMEZONE_OFFSET}`: إزاحة المنطقة الزمنية عن UTC (مثل `-0700` لـ MST). `${CURRENT_TIMESTAMP}`: الطابع الزمني الحالي بنظام Unix. **متغيّرات المستخدم والبيئة:** `${CLIPBOARD}`: محتوى الحافظة لديك. `${RANDOM}`: ستة أحرف عشوائية بالنظام السداسي عشري. `${RANDOM_HEX}`: رقم عشوائي بالنظام السداسي عشري. `${UUID}`: معرّف UUID من الإصدار 4. `${USER_NAME}`: اسم مستخدم نظام التشغيل لديك. وتجد قائمة شاملة بالمتغيّرات المعرّفة مسبقًا [هنا](https://www.google.com/search?q=https://code.visualstudio.com/docs/editor/userdefinedsnippets%23_variables&authuser=1).
+  - **متغيّرات الملفات والمسارات:** `${TM_FILENAME}`: اسم الملف الحالي (مثل `my_script.js`). `${TM_FILENAME_BASE}`: اسم الملف الحالي دون الامتداد (مثل `my_script`). `${TM_DIRECTORY}`: مجلد الملف الحالي. `${TM_FILEPATH}`: المسار الكامل للملف الحالي. `${WORKSPACE_NAME}`: اسم مساحة العمل أو المجلد المفتوح. `${WORKSPACE_FOLDER}`: مسار مساحة العمل أو المجلد المفتوح.
+    - `${TM_FILENAME}`: اسم الملف الحالي (مثل `my_script.js`).
+    - `${TM_FILENAME_BASE}`: اسم الملف الحالي دون الامتداد (مثل `my_script`).
+    - `${TM_DIRECTORY}`: مجلد الملف الحالي.
+    - `${TM_FILEPATH}`: المسار الكامل للملف الحالي.
+    - `${WORKSPACE_NAME}`: اسم مساحة العمل أو المجلد المفتوح.
+    - `${WORKSPACE_FOLDER}`: مسار مساحة العمل أو المجلد المفتوح.
+  - **متغيّرات التاريخ والوقت:** `${CURRENT_YEAR}`: السنة الحالية (مثل `2025`). `${CURRENT_YEAR_SHORT}`: السنة الحالية برقمين (مثل `25`). `${CURRENT_MONTH}`: الشهر برقمين (مثل `03`). `${CURRENT_MONTH_NAME}`: اسم الشهر الكامل (مثل `March`). `${CURRENT_MONTH_NAME_SHORT}`: الاسم المختصر للشهر (مثل `Mar`). `${CURRENT_DATE}`: يوم الشهر برقمين (مثل `07`). `${CURRENT_DAY_NAME}`: اسم اليوم (مثل `Friday`). `${CURRENT_DAY_NAME_SHORT}`: الاسم المختصر لليوم (مثل `Fri`). `${CURRENT_HOUR}`: الساعة الحالية بنظام 24 ساعة (مثل `17`). `${CURRENT_MINUTE}`: الدقيقة الحالية (مثل `08`). `${CURRENT_SECOND}`: الثانية الحالية (مثل `14`). `${CURRENT_TIMEZONE_OFFSET}`: إزاحة المنطقة الزمنية عن UTC (مثل `-0700` لـ MST). `${CURRENT_TIMESTAMP}`: الطابع الزمني الحالي بنظام Unix.
+    - `${CURRENT_YEAR}`: السنة الحالية (مثل `2025`).
+    - `${CURRENT_YEAR_SHORT}`: السنة الحالية برقمين (مثل `25`).
+    - `${CURRENT_MONTH}`: الشهر برقمين (مثل `03`).
+    - `${CURRENT_MONTH_NAME}`: اسم الشهر الكامل (مثل `March`).
+    - `${CURRENT_MONTH_NAME_SHORT}`: الاسم المختصر للشهر (مثل `Mar`).
+    - `${CURRENT_DATE}`: يوم الشهر برقمين (مثل `07`).
+    - `${CURRENT_DAY_NAME}`: اسم اليوم (مثل `Friday`).
+    - `${CURRENT_DAY_NAME_SHORT}`: الاسم المختصر لليوم (مثل `Fri`).
+    - `${CURRENT_HOUR}`: الساعة الحالية بنظام 24 ساعة (مثل `17`).
+    - `${CURRENT_MINUTE}`: الدقيقة الحالية (مثل `08`).
+    - `${CURRENT_SECOND}`: الثانية الحالية (مثل `14`).
+    - `${CURRENT_TIMEZONE_OFFSET}`: إزاحة المنطقة الزمنية عن UTC (مثل `-0700` لـ MST).
+    - `${CURRENT_TIMESTAMP}`: الطابع الزمني الحالي بنظام Unix.
+  - **متغيّرات المستخدم والبيئة:** `${CLIPBOARD}`: محتوى الحافظة لديك. `${RANDOM}`: ستة أحرف عشوائية بالنظام السداسي عشري. `${RANDOM_HEX}`: رقم عشوائي بالنظام السداسي عشري. `${UUID}`: معرّف UUID من الإصدار 4. `${USER_NAME}`: اسم مستخدم نظام التشغيل لديك.
+    - `${CLIPBOARD}`: محتوى الحافظة لديك.
+    - `${RANDOM}`: ستة أحرف عشوائية بالنظام السداسي عشري.
+    - `${RANDOM_HEX}`: رقم عشوائي بالنظام السداسي عشري.
+    - `${UUID}`: معرّف UUID من الإصدار 4.
+    - `${USER_NAME}`: اسم مستخدم نظام التشغيل لديك.
 
-### Adding Choices
+### إضافة الخيارات
 
-Choices provide a dropdown list of options when you reach a placeholder. The syntax is `${placeholder_number|option1,option2,option3|}`. When you insert the snippet and reach this placeholder, Visual Studio Code will display a quick pick menu with `option1`, `option2`, and `option3`. You can select one of these options, or type in your own value.
+توفّر الخيارات قائمة منسدلة بالخيارات عند وصولك إلى عنصر نائب. والصياغة هي `${placeholder_number|option1,option2,option3|}`. وعند إدراج المقتطف ووصولك إلى هذا العنصر النائب، سيعرض Visual Studio Code قائمة انتقاء سريعة تضم `option1` و `option2` و `option3`. ويمكنك اختيار أحد هذه الخيارات أو كتابة قيمتك الخاصة.
 
 ```json
   "Log Message": {
@@ -116,16 +116,16 @@ Choices provide a dropdown list of options when you reach a placeholder. The syn
 }
 ```
 
-When you use this snippet, the first placeholder `${1|DEBUG,INFO,WARNING,ERROR,CRITICAL|}` will present a dropdown with logging levels. Choosing an option will automatically populate both instances of `${1|…|}` with the selected level.
+وعند استخدام هذا المقتطف، سيعرض العنصر النائب الأول `${1|DEBUG,INFO,WARNING,ERROR,CRITICAL|}` قائمة منسدلة بمستويات السجلّ. وسيؤدي اختيار خيار إلى ملء كل من موضعَي `${1|…|}` تلقائيًا بالمستوى المختار.
 
-## Snippet Scope
+## نطاق المقتطف
 
-Snippet scope determines where your snippets are available within Visual Studio Code. You can define snippets at three levels:
+يحدّد نطاق المقتطف أين تكون مقتطفاتك متاحة داخل Visual Studio Code. ويمكنك تعريف المقتطفات على ثلاثة مستويات:
 
-- **Global Snippets (User Snippets):** These snippets are available in all Visual Studio Code workspaces and for all languages (unless a `scope` is explicitly defined). They are ideal for commonly used code patterns that are language-agnostic or applicable across multiple projects.
-- **Language-Specific Snippets:** These snippets are specific to a particular programming language. They are only available when you are working with files of that language type (e.g., JavaScript snippets will only appear in `.js` files). This is useful for language-specific syntax and constructs.
-- **Project-Specific Snippets (Workspace Snippets):** These snippets are specific to the current Visual Studio Code workspace or project folder. They are stored within the `.vscode` folder at the root of your project. Project-specific snippets are perfect for enforcing coding standards or providing shortcuts that are unique to a particular project.
+- **المقتطفات العامة (مقتطفات المستخدم):** تكون هذه المقتطفات متاحة في كل مساحات عمل Visual Studio Code ولكل اللغات (ما لم يُحدَّد `scope` صراحةً). وهي مثالية لأنماط الشيفرة كثيرة الاستخدام التي لا ترتبط بلغة بعينها أو تنطبق على مشاريع متعددة.
+- **مقتطفات خاصة بلغة:** تكون هذه المقتطفات خاصة بلغة برمجة معيّنة، ولا تكون متاحة إلا عند العمل على ملفات من نوع تلك اللغة (فمثلًا لا تظهر مقتطفات JavaScript إلا في ملفات `.js`). وهذا مفيد للصياغة والبنى الخاصة بلغة بعينها.
+- **مقتطفات خاصة بمشروع (مقتطفات مساحة العمل):** تكون هذه المقتطفات خاصة بمساحة عمل Visual Studio Code الحالية أو بمجلد المشروع. وتُخزَّن داخل مجلد `.vscode` في جذر مشروعك. والمقتطفات الخاصة بمشروع مثالية لفرض معايير البرمجة أو لتوفير اختصارات فريدة لمشروع بعينه.
 
-> **The filename is unimportant.**
+> **اسم الملف غير مهم.**
 >
-> The file name itself isn’t critical to how snippets work—Visual Studio Code just cares about the JSON structure and where you place the file (in the proper snippets directory). However, naming your snippet file descriptively (like `javascript.json` or `global-snippets.json`) makes it easier for you to organize and maintain your snippets over time. Otherwise, you might end up searching for that file like it’s hidden treasure in your settings folder!
+> اسم الملف نفسه ليس حاسمًا لعمل المقتطفات، فVisual Studio Code يهتم فقط ببنية JSON وبمكان وضع الملف (في مجلد المقتطفات المناسب). ومع ذلك، فإن تسمية ملف مقتطفاتك تسمية وصفية (مثل `javascript.json` أو `global-snippets.json`) تسهّل عليك تنظيم مقتطفاتك وصيانتها مع الوقت. وإلا فقد ينتهي بك الأمر إلى البحث عن ذلك الملف كما لو كان كنزًا مخفيًا في مجلد إعداداتك!

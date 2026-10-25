@@ -1,16 +1,16 @@
 ---
-title: "Service Worker Strategies for React Apps"
-lang: en
+title: "استراتيجيات Service Worker في تطبيقات React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/service-worker-strategies"
 ---
 
-Your React app loads instantly—until the user loses their internet connection. Then it’s a blank screen, spinning wheels, and frustrated users. Service Workers change that game entirely. They’re your app’s personal proxy server, sitting between your React code and the network, intercepting requests, serving cached responses, and even working offline. But implement them wrong, and you’ll cache stale data forever, break your app updates, or worse, serve the wrong content to the wrong users.
+يُحمَّل تطبيق React لديك فورًا — إلى أن يفقد المستخدم اتصاله بالإنترنت. عندها تصبح الشاشة فارغة، والعجلات تدور، والمستخدمون محبطون. تغيّر Service Workers هذه اللعبة تمامًا. فهي خادمك الوسيط الشخصي لتطبيقك، يقف بين شيفرة React لديك والشبكة، يعترض الطلبات، ويقدّم استجابات مخزّنة مؤقتًا، ويعمل حتى دون اتصال. لكن إن نفّذتها على نحو خاطئ، فستخزّن بيانات قديمة إلى الأبد، أو تكسر تحديثات تطبيقك، أو الأسوأ، تقدّم المحتوى الخطأ للمستخدمين الخطأ.
 
-The power of Service Workers goes far beyond offline support. They enable instant loading with cache-first strategies, background data synchronization when connectivity returns, push notifications to re-engage users, and even periodic background updates. This guide shows you how to implement Service Workers correctly in React applications, from basic caching strategies to advanced patterns that make your app feel native.
+تمتد قوة Service Workers إلى ما هو أبعد بكثير من دعم العمل دون اتصال. فهي تتيح التحميل الفوري باستراتيجيات التخزين المؤقت أولًا، ومزامنة البيانات في الخلفية عند عودة الاتصال، وإشعارات الدفع لإعادة جذب المستخدمين، وحتى تحديثات دورية في الخلفية. يوضح هذا الدليل كيفية تنفيذ Service Workers على نحو صحيح في تطبيقات React، من استراتيجيات التخزين المؤقت الأساسية إلى الأنماط المتقدمة التي تجعل تطبيقك يبدو أصيلًا كالتطبيقات الأصلية.
 
-## Understanding Service Workers in React Context
+## فهم Service Workers في سياق React
 
-Service Workers are JavaScript workers that run in a separate thread from your React app:
+Service Workers عبارة عن عمّال JavaScript يعملون في خيط منفصل عن تطبيق React:
 
 ```typescript
 // Service Worker lifecycle and capabilities
@@ -103,9 +103,9 @@ function ServiceWorkerProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-## Caching Strategies
+## استراتيجيات التخزين المؤقت
 
-Different content requires different caching strategies:
+يتطلب كل نوع من المحتوى استراتيجية تخزين مؤقت مختلفة:
 
 ```javascript
 // sw.js - Service Worker implementation
@@ -247,9 +247,9 @@ async function cacheOnly(request, cacheName) {
 }
 ```
 
-## Advanced Caching with Workbox
+## التخزين المؤقت المتقدم باستخدام Workbox
 
-Workbox simplifies Service Worker implementation:
+يبسّط Workbox تنفيذ Service Worker:
 
 ```javascript
 // sw.js with Workbox
@@ -333,9 +333,9 @@ registerRoute(
 );
 ```
 
-## Background Sync Implementation
+## تنفيذ المزامنة في الخلفية
 
-Sync data when connectivity returns:
+زامن البيانات عند عودة الاتصال:
 
 ```typescript
 // React hook for background sync
@@ -457,9 +457,9 @@ async function syncData() {
 }
 ```
 
-## Push Notifications
+## إشعارات الدفع
 
-Implement push notifications for engagement:
+نفّذ إشعارات الدفع لتعزيز التفاعل:
 
 ```typescript
 // Push notification setup
@@ -552,9 +552,9 @@ self.addEventListener('notificationclick', (event) => {
 });
 ```
 
-## Offline-First React Components
+## مكوّنات React العاملة دون اتصال
 
-Build components that work offline:
+ابنِ مكوّنات تعمل دون اتصال:
 
 ```typescript
 // Offline-aware data fetching
@@ -712,9 +712,9 @@ function OfflineIndicator() {
 }
 ```
 
-## Cache Management Strategies
+## استراتيجيات إدارة ذاكرة التخزين المؤقت
 
-Intelligent cache management for optimal performance:
+إدارة ذكية لذاكرة التخزين المؤقت لأداء أمثل:
 
 ```javascript
 // Advanced cache management
@@ -813,9 +813,9 @@ self.addEventListener('message', (event) => {
 });
 ```
 
-## Service Worker Updates
+## تحديثات Service Worker
 
-Handle updates gracefully:
+تعامل مع التحديثات بلطف:
 
 ```typescript
 // Update prompt component
@@ -872,9 +872,9 @@ function ServiceWorkerUpdatePrompt() {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track Service Worker performance:
+تتبّع أداء Service Worker:
 
 ```javascript
 // Service Worker performance metrics
@@ -931,7 +931,7 @@ class ServiceWorkerMetrics {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface ServiceWorkerBestPractices {

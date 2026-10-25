@@ -1,52 +1,52 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf"
 ---
 
-This lab is the part of the workshop where “green CI” stops being the finish line.
+هذا المختبر هو الجزء من الورشة الذي يتوقّف فيه «CI الأخضر» عن كونه خط النهاية.
 
-You’re going to add the tiny post-deploy smoke check Shelf used to ship, prove you understand each moving part locally, and then name the hosted gap honestly if you do not have a real deploy target yet.
+ستضيف فحص الدخان الصغير بعد النشر الذي كان Shelf يشحنه، وتُثبت أنك تفهم كل جزء متحرك منه محليًا، ثم تسمّي الفجوة المستضافة بصدق إن لم يكن لديك هدف نشر حقيقي بعد.
 
-> **Prerequisite**
+> **متطلب مسبق**
 >
-> Complete [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) first. This lab also assumes the CI workflow from [Lab: Write the CI Workflow from Scratch](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch) exists or is at least sketched out.
+> أكمل [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) أولًا. ويفترض هذا المختبر أيضًا أن سير عمل CI من [مختبر: اكتب سير عمل CI من الصفر](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch) موجود، أو مرسوم على الأقل.
 
-> **In the current starter**
+> **في البادئ الحالي**
 >
-> Shelf now ships only the main `playwright.config.ts` and the minimal `npm run test` loop. This lab is where you add `tests/smoke/post-deploy.spec.ts`, the `test:smoke` script, `docs/post-deploy-playbook.md`, and the deploy-workflow shape.
+> لم يبقَ Shelf يشحن إلا `playwright.config.ts` الرئيسي وحلقة `npm run test` الدنيا. وهذا المختبر هو حيث تضيف `tests/smoke/post-deploy.spec.ts`، وسكربت `test:smoke`، و`docs/post-deploy-playbook.md`، وشكل سير عمل النشر.
 
-## The task
+## المهمة
 
-Create the smoke test, the script, the playbook, and the workflow. Make sure you can explain why each one exists, then run the local stand-in so you know what the hosted version is supposed to prove.
+أنشئ اختبار الدخان، والسكربت، ودليل التشغيل، وسير العمل. واحرص على أن تستطيع تفسير سبب وجود كل واحد منها، ثم شغّل البديل المحلي لتعرف ما يُفترض أن يُثبته الإصدار المستضاف.
 
-## What you can verify locally
+## ما يمكنك التحقق منه محليًا
 
-You can do the whole first pass locally: create `tests/smoke/post-deploy.spec.ts`, add `npm run test:smoke`, write `docs/post-deploy-playbook.md`, and sketch `.github/workflows/deploy.yml`. If you do not have a hosted target, use a local preview stand-in and make sure the smoke spec still fails loudly when you break it on purpose.
+يمكنك إنجاز الجولة الأولى كلها محليًا: أنشئ `tests/smoke/post-deploy.spec.ts`، وأضف `npm run test:smoke`، واكتب `docs/post-deploy-playbook.md`، وارسم `.github/workflows/deploy.yml`. وإن لم يكن لديك هدف مستضاف، فاستخدم بديلًا محليًا للمعاينة واحرص على أن مواصفة الدخان ما زالت تفشل بصوت عالٍ عندما تكسرها عمدًا.
 
-## What remains manual or external
+## ما يبقى يدويًا أو خارجيًا
 
-The real post-deploy loop starts only when a connected preview or production-like URL exists. Capturing the deployed URL from the host, running the smoke job against that URL, and treating a failure as an actual stop-ship signal are hosted concerns. If that environment does not exist yet, document the gap instead of pretending the local preview is the full loop.
+لا تبدأ حلقة ما بعد النشر الحقيقية إلا حين توجد معاينة موصولة أو عنوان URL يشبه الإنتاج. فالتقاط عنوان URL المنشور من المستضيف، وتشغيل مهمة الدخان مقابل ذلك العنوان، ومعاملة الفشل كإشارة حقيقية لإيقاف الشحن — كلها شؤون استضافة. وإن لم تكن تلك البيئة موجودة بعد، فوثّق الفجوة بدلًا من التظاهر بأن المعاينة المحلية هي الحلقة الكاملة.
 
-## Step 1: inspect the deployed-URL smoke spec
+## الخطوة 1: افحص مواصفة الدخان الخاصة بعنوان URL المنشور
 
-Create `tests/smoke/post-deploy.spec.ts` in the Shelf repository.
+أنشئ `tests/smoke/post-deploy.spec.ts` في مستودع Shelf.
 
-Keep it small. The test should prove only the most important path:
+أبقِها صغيرة. ينبغي للاختبار ألا يُثبت إلا أهم مسار:
 
-- the URL loads
-- the main route renders
-- one critical UI affordance is present
+- أن عنوان URL يُحمَّل
+- أن المسار الرئيسي يُصيَّر
+- أن عنصر واجهة حرجًا واحدًا موجود
 
-If auth is required, reuse the existing storage-state or login bootstrap. Do not build a second authentication story just for this lab.
+وإن كانت المصادقة مطلوبة، فأعد استخدام حالة التخزين أو تمهيد تسجيل الدخول الموجود. لا تبنِ قصة مصادقة ثانية لهذا المختبر فقط.
 
-The spec should read from an environment variable such as `SMOKE_BASE_URL` so the same test can run against preview, staging, or production.
+وينبغي أن تقرأ المواصفة من متغيّر بيئة مثل `SMOKE_BASE_URL` كي يعمل الاختبار نفسه مقابل معاينة أو بيئة اختبار تمهيدي أو الإنتاج.
 
-The lesson shows the exact spec shape in the **What the smoke spec actually looks like** section of [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation). Compare your file against that two-assertion skeleton and make sure you can defend why it stays this small.
+يعرض الدرس شكل المواصفة الدقيق في قسم **كيف تبدو مواصفة الدخان فعلًا** من [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation). قارن ملفك بذلك الهيكل ذي التحقّقين واحرص على أن تستطيع الدفاع عن سبب بقائه بهذا الصغر.
 
-## Step 2: inspect the named smoke-test command
+## الخطوة 2: افحص أمر اختبار الدخان المسمّى
 
-Open `package.json` and find the smoke-test command:
+افتح `package.json` واعثر على أمر اختبار الدخان:
 
 ```json
 {
@@ -56,92 +56,92 @@ Open `package.json` and find the smoke-test command:
 }
 ```
 
-The workflow should set `SMOKE_BASE_URL`. The test command should stay boring.
+ينبغي لسير العمل أن يضبط `SMOKE_BASE_URL`. وينبغي لأمر الاختبار أن يبقى مملًّا.
 
-> **The plain-form script inherits the main `webServer` block**
+> **السكربت بالصيغة العادية يرث كتلة `webServer` الرئيسية**
 >
-> This shorter form implicitly uses the main `playwright.config.ts`, which means Playwright will still try to run `npm run build && npm run preview` before hitting your target. That is almost never what you want when `SMOKE_BASE_URL` points at a real deployed URL — the smoke run ends up booting a local preview it does not need. If you’re pointing this at anything other than `127.0.0.1:4173`, prefer the split-config form shown in the NOTE below.
+> تستخدم هذه الصيغة الأقصر `playwright.config.ts` الرئيسي ضمنًا، ما يعني أن Playwright سيحاول مع ذلك تشغيل `npm run build && npm run preview` قبل الوصول إلى هدفك. وهذا ليس ما تريده تقريبًا أبدًا حين يشير `SMOKE_BASE_URL` إلى عنوان URL منشور حقيقي — إذ ينتهي تشغيل الدخان إلى إقلاع معاينة محلية لا يحتاجها. فإن كنت توجّه هذا إلى أي شيء غير `127.0.0.1:4173`، ففضّل صيغة الإعداد المنفصل المعروضة في الملاحظة أدناه.
 
-> **One good final shape uses a split config**
+> **أحد الأشكال النهائية الجيدة يستخدم إعدادًا منفصلًا**
 >
-> A common final version of this script is `"test:smoke": "playwright test --config=playwright.smoke.config.ts"`—a separate Playwright config scoped to the smoke suite. The split exists so the smoke run doesn’t inherit the main config’s local `webServer` block or any authenticated or browser-specific projects you added later. Both shapes work. Create the split-config version if you want the smoke loop fully isolated from the local dev loop.
+> من الصيغ النهائية الشائعة لهذا السكربت `"test:smoke": "playwright test --config=playwright.smoke.config.ts"` — أي إعداد Playwright منفصل مقصور على مجموعة الدخان. ووُجد هذا الانفصال كي لا يرث تشغيل الدخان كتلة `webServer` المحلية في الإعداد الرئيسي، ولا أي مشاريع موثَّقة أو خاصة بمتصفح أضفتها لاحقًا. والشكلان يعملان. فأنشئ نسخة الإعداد المنفصل إن أردت عزل حلقة الدخان عن حلقة التطوير المحلية عزلًا كاملًا.
 
-## Step 3: inspect the rollback playbook
+## الخطوة 3: افحص دليل التراجع
 
-Create `docs/post-deploy-playbook.md`.
+أنشئ `docs/post-deploy-playbook.md`.
 
-Document:
+وثّق فيه:
 
-- what URL the smoke test targets
-- what counts as a stop-ship failure
-- who or what rolls back the deployment
-- which health signals you watch for the first few minutes after deploy
+- أي عنوان URL يستهدفه اختبار الدخان
+- ما يُحتسب فشلًا يوقف الشحن
+- من أو ما الذي يتراجع عن النشر
+- أي إشارات صحة تراقبها في الدقائق الأولى بعد النشر
 
-This file exists so the agent can make a crisp recommendation instead of narrating a problem vaguely.
+هذا الملف موجود كي يستطيع الوكيل تقديم توصية حاسمة بدلًا من سرد مشكلة بشكل مبهم.
 
-## Step 4: inspect the workflow wiring
+## الخطوة 4: افحص وصل سير العمل
 
-Create `.github/workflows/deploy.yml`. The lesson’s **The deployment workflow that runs the smoke check** section has the same two-job shape (deploy + smoke). Make sure you can point at the step that captures the URL and the step that consumes it.
+أنشئ `.github/workflows/deploy.yml`. وفي قسم **سير عمل النشر الذي يشغّل فحص الدخان بعد النشر** من الدرس الشكل نفسه ذو المهمتين (النشر + الدخان). احرص على أن تستطيع الإشارة إلى الخطوة التي تلتقط عنوان URL والخطوة التي تستهلكه.
 
-The minimal shape:
+والشكل الأدنى:
 
-- trigger on `push` to `main` or `workflow_dispatch`
-- deploy to your preview, staging, or production-preview target
-- capture the deployed URL
-- run `npm run test:smoke` with `SMOKE_BASE_URL` set to that URL
-- upload the Playwright report on failure
+- يُشتغَل عند `push` إلى `main` أو عند `workflow_dispatch`
+- ينشر إلى هدف المعاينة أو بيئة الاختبار التمهيدي أو معاينة الإنتاج
+- يلتقط عنوان URL المنشور
+- يشغّل `npm run test:smoke` مع ضبط `SMOKE_BASE_URL` على ذلك العنوان
+- يرفع تقرير Playwright عند الفشل
 
-If you do **not** have a real hosted target yet, use a local build-and-preview stand-in, run the smoke test against `http://127.0.0.1:4173`, and document the hosted gap honestly in `docs/post-deploy-playbook.md`.
+وإن **لم** يكن لديك هدف مستضاف حقيقي بعد، فاستخدم بديلًا محليًا للبناء والمعاينة، وشغّل اختبار الدخان مقابل `http://127.0.0.1:4173`، ووثّق الفجوة المستضافة بصدق في `docs/post-deploy-playbook.md`.
 
-That still teaches the loop.
+فذلك ما زال يعلّمك الحلقة.
 
-## Step 5: verify the failure path
+## الخطوة 5: تحقّق من مسار الفشل
 
-Break the smoke test on purpose once.
+اكسر اختبار الدخان عمدًا مرة واحدة.
 
-Examples:
+أمثلة:
 
-- assert the wrong heading
-- point `SMOKE_BASE_URL` at the wrong route
-- remove the expected element temporarily
+- تحقّق من عنوان خاطئ
+- وجّه `SMOKE_BASE_URL` إلى مسار خاطئ
+- احذف العنصر المتوقع مؤقتًا
 
-Then confirm the workflow or local preview run:
+ثم أكّد أن سير العمل أو تشغيل المعاينة المحلية:
 
-- fails loudly
-- writes a report artifact
-- gives you enough evidence to recommend rollback or stop-ship
+- يفشل بصوت عالٍ
+- يكتب أثرًا للتقرير
+- يعطيك أدلة كافية لتوصية بالتراجع أو بإيقاف الشحن
 
-If the failure path is mushy, the loop is not done.
+فإن كان مسار الفشل رخوًا، فالحلقة لم تكتمل.
 
-## Acceptance criteria
+## معايير القبول
 
-- `tests/smoke/post-deploy.spec.ts` exists
-- The smoke test reads the deployed base URL from `SMOKE_BASE_URL` or an equivalent environment variable
-- `package.json` exposes a named smoke-test command
-- `docs/post-deploy-playbook.md` exists and includes rollback triggers
-- `.github/workflows/deploy.yml` exists or the existing deploy workflow runs the smoke test after deploy
-- On failure, the workflow uploads a Playwright report or equivalent artifact
-- The current green deployment target or preview target passes the smoke test
-- A deliberate failure produces a red run and a legible failure artifact
+- `tests/smoke/post-deploy.spec.ts` موجود
+- يقرأ اختبار الدخان عنوان URL الأساسي المنشور من `SMOKE_BASE_URL` أو متغيّر بيئة مكافئ
+- `package.json` يعرض أمر اختبار دخان مسمّى
+- `docs/post-deploy-playbook.md` موجود ويتضمن محفّزات التراجع
+- `.github/workflows/deploy.yml` موجود، أو سير عمل النشر الحالي يشغّل اختبار الدخان بعد النشر
+- عند الفشل، يرفع سير العمل تقرير Playwright أو أثرًا مكافئًا
+- هدف النشر الأخضر الحالي أو هدف المعاينة ينجح في اختبار الدخان
+- الفشل المتعمّد يُنتج تشغيلًا أحمر وأثر فشل مقروءًا
 
-## Troubleshooting
+## استكشاف الأخطاء
 
-- If the smoke test works locally but not on the deployed URL, assume environment drift first: cookies, callbacks, base URL, secrets, and build-time variables are the usual suspects.
-- If you have no hosted target yet, stop at the build-plus-preview version and document the gap explicitly. Do not claim you have a post-deploy loop when you have a thought experiment.
-- If the smoke check is bloated, cut it down. Post-deploy smoke tests should feel like a tripwire, not a second full regression suite.
+- إن عمل اختبار الدخان محليًا ولم يعمل على عنوان URL المنشور، فافترض انحراف البيئة أولًا: الكوكيز، والاستدعاءات الراجعة، وعنوان URL الأساسي، والأسرار، ومتغيّرات وقت البناء هي المشتبه بهم المعتادون.
+- إن لم يكن لديك هدف مستضاف بعد، فتوقّف عند نسخة البناء مع المعاينة ووثّق الفجوة صراحةً. لا تدّعِ أن لديك حلقة ما بعد نشر وأنت تملك تجربة فكرية فقط.
+- إن كان فحص الدخان منتفخًا، فقلّمه. ينبغي أن يشعر اختبار الدخان بعد النشر بأنه سلك تعثّر، لا مجموعة انحدار كاملة ثانية.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a workflow summary step that prints the deployed URL and the smoke-test status.
-- Upload a failure dossier alongside the Playwright report.
-- Add a manual approval gate on the deployment environment before production rollout.
+- أضف خطوة ملخّص في سير العمل تطبع عنوان URL المنشور وحالة اختبار الدخان.
+- ارفع ملفّ أدلة الفشل إلى جانب تقرير Playwright.
+- أضف بوابة موافقة يدوية على بيئة النشر قبل الإطلاق إلى الإنتاج.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The smoke test after deploy should be small enough to trust, fast enough to run every time, and sharp enough to tell you when the rollout needs to stop.
+ينبغي أن يكون اختبار الدخان بعد النشر صغيرًا بما يكفي ليثق به، وسريعًا بما يكفي ليعمل في كل مرة، وحادًا بما يكفي ليخبرك متى يجب أن يتوقّف الإطلاق.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/add-post-deploy-smoke-checks-to-shelf-solution)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/add-post-deploy-smoke-checks-to-shelf-solution)
+- [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)

@@ -1,36 +1,32 @@
 ---
-title: "Installation and Configuration"
-lang: en
+title: "التثبيت والتهيئة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/installing-claude-code"
 ---
 
-[Claude Code](https://code.claude.com/docs/en/overview) is [Anthropic](https://www.anthropic.com/)’s agentic development tool. It runs in
-the terminal, IDEs, desktop and web surfaces, and automation contexts.
+[Claude Code](https://code.claude.com/docs/en/overview) هي أداة التطوير الوكيلية من [Anthropic](https://www.anthropic.com/). وهي تعمل في الطرفية وبيئات التطوير المتكاملة وأسطح سطح المكتب والويب وسياقات الأتمتة.
 
-The current primary install path is the native installer. Do not teach npm as the
-default install path for new users.
+مسار التثبيت الأساسي الحالي هو المثبّت الأصلي (native installer). فلا تُعلّم npm كمسار التثبيت الافتراضي للمستخدمين الجدد.
 
-## Native Installer
+## المثبّت الأصلي
 
-On macOS and Linux:
+على macOS و Linux:
 
 ```bash
 curl -fsSL https://claude.ai/install.sh | bash
 ```
 
-On Windows PowerShell:
+على Windows PowerShell:
 
 ```powershell
 irm https://claude.ai/install.ps1 | iex
 ```
 
-The native installer supports auto-updates and release channels. That is the main
-reason to prefer it over package-manager installs for most developers.
+يدعم المثبّت الأصلي التحديثات التلقائية وقنوات الإصدار. وهذا هو السبب الرئيسي لتفضيله على التثبيت عبر مديري الحزم عند معظم المطوّرين.
 
-## Package Managers
+## مديرو الحزم
 
-[Homebrew](https://brew.sh/) and [WinGet](https://learn.microsoft.com/windows/package-manager/winget/) are
-supported alternatives:
+[Homebrew](https://brew.sh/) و[WinGet](https://learn.microsoft.com/windows/package-manager/winget/) بديلان مدعومان:
 
 ```bash
 brew install --cask claude-code
@@ -40,29 +36,23 @@ brew install --cask claude-code
 winget install Anthropic.ClaudeCode
 ```
 
-The tradeoff is update behavior. Homebrew and WinGet installations do not use
-Claude Code’s built-in auto-update path, so the package manager owns updates.
+والمقايضة هي سلوك التحديث. فتثبيت Homebrew و WinGet لا يستخدم مسار التحديث التلقائي المدمج في Claude Code، لذا يتولّى مدير الحزم مسؤولية التحديثات.
 
-## Windows and WSL
+## Windows و WSL
 
-Claude Code supports native Windows installation. Windows Subsystem for Linux is
-still useful when the repository and toolchain are Linux-oriented. Choose the
-environment that matches the project, not the one that makes installation look
-shorter.
+يدعم Claude Code التثبيت الأصلي على Windows. ولا يزال Windows Subsystem for Linux مفيدًا عندما يكون المستودع وسلسلة الأدوات موجّهين إلى Linux. فاختر البيئة التي تناسب المشروع، لا البيئة التي تجعل التثبيت يبدو أقصر.
 
-## Verify the Setup
+## تحقّق من الإعداد
 
-Run:
+شغّل:
 
 ```bash
 claude --version
 claude doctor
 ```
 
-`claude doctor` checks common environment and authentication problems. Use it
-before debugging a repository-specific failure.
+يفحص `claude doctor` مشكلات البيئة والمصادقة الشائعة. فاستخدمه قبل تشخيص فشل خاص بمستودع بعينه.
 
-## Release Channels
+## قنوات الإصدار
 
-Claude Code supports stable and latest channels through settings such as `autoUpdatesChannel`. For teaching and team onboarding, prefer stable unless a
-lesson explicitly depends on a new feature from the latest channel.
+يدعم Claude Code قناتَي stable و latest عبر إعدادات مثل `autoUpdatesChannel`. ولأغراض التعليم وتهيئة الفريق، فضّل stable إلا إذا كان درس ما يعتمد صراحة على ميزة جديدة من قناة latest.

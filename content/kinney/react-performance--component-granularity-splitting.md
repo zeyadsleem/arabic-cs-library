@@ -1,25 +1,25 @@
 ---
-title: "Component Granularity Splitting"
-lang: en
+title: "دقّة تقسيم المكوّنات"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/component-granularity-splitting"
 ---
 
-Component splitting is React performance optimization’s double-edged sword. Split too little and you get monolithic components that re-render everything when a single prop changes. Split too much and you end up with component confetti—dozens of tiny pieces scattered across your codebase that make debugging feel like archaeological excavation. The secret is finding that sweet spot where each component has a single responsibility and clear boundaries, making your app both fast and maintainable.
+تقسيم المكوّنات سيف ذو حدّين في تحسين أداء React. إن قسّمت قليلًا حصلت على مكوّنات متجانسة ضخمة تُعيد تصيير كل شيء عند تغيّر خاصية واحدة. وإن قسّمت كثيرًا انتهيت إلى «قصاصات مكوّنات» متناثرة — عشرات القطع الصغيرة المبعثرة في أنحاء مستودعك تجعل تصحيح الأخطاء أشبه بالتنقيب الأثري. والسرّ هو العثور على النقطة المثالية حيث تتولّى كل قطعة مسؤولية واحدة بحدود واضحة، فيصبح تطبيقك سريعًا وقابلًا للصيانة معًا.
 
-## Why Component Granularity Matters
+## لماذا تهمّ دقّة تقسيم المكوّنات
 
-Every time a component re-renders in React, it potentially triggers a cascade of child re-renders. When you have a large component managing multiple pieces of state, changing any single piece can cause the entire component tree to re-render unnecessarily. This becomes particularly painful when you have:
+في كل مرة يُعاد تصيير مكوّن في React، قد يُطلق ذلك سلسلة من عمليات إعادة تصيير الأبناء. وعندما يكون لديك مكوّن كبير يدير عدة قطع من الحالة، فقد يؤدي تغيير أي قطعة واحدة إلى إعادة تصيير شجرة المكوّنات بأكملها بلا داعٍ. ويصبح هذا مؤلمًا بشكل خاص عندما تكون لديك:
 
-- Complex forms with multiple input fields
-- Lists with interactive items
-- Dashboard-style layouts with multiple widgets
-- Shopping carts with item quantities and totals
+- نماذج معقّدة فيها حقول إدخال متعددة
+- قوائم بعناصر تفاعلية
+- تخطيطات على نمط لوحات المعلومات فيها ودجات متعددة
+- عربات تسوّق فيها كميات العناصر والمجاميع
 
-The goal isn’t to create the most components possible—it’s to create components that change together, stay together.
+الهدف ليس إنشاء أكبر عدد ممكن من المكوّنات — بل إنشاء مكوّنات تتغيّر معًا فتبقى معًا.
 
-## The Monolithic Component Problem
+## مشكلة المكوّن المتجانس الضخم
 
-Let’s start with a classic example: a product card that displays too much and does too much.
+لنبدأ بمثال كلاسيكي: بطاقة منتج تعرض أكثر مما ينبغي وتفعل أكثر مما ينبغي.
 
 ```typescript
 // ❌ Monolithic component - everything re-renders when anything changes
@@ -90,11 +90,11 @@ function ProductCard({ product }: { product: Product }) {
 }
 ```
 
-This component has too many responsibilities. When the quantity changes, the entire card re-renders—including the reviews section, which might contain dozens of review components. When you toggle the wishlist, the quantity selector re-renders unnecessarily.
+يحمّل هذا المكوّن مسؤوليات أكثر من اللازم. عندما تتغيّر الكمية، تُعاد البطاقة بأكملها للتصيير — بما في ذلك قسم المراجعات الذي قد يضمّ عشرات من مكوّنات المراجعة. وعندما تبدّل حالة قائمة الرغبات، يُعاد تصيير محدد الكمية بلا داعٍ.
 
-## Strategic Component Splitting
+## التقسيم الاستراتيجي للمكوّنات
 
-The key is to split components along state boundaries. Each piece of independent state should generally live in its own component (or at least be isolated from unrelated state).
+المفتاح هو تقسيم المكوّنات على حدود الحالة. ينبغي عمومًا أن تعيش كل قطعة حالة مستقلة في مكوّنها الخاص (أو على الأقل أن تُعزل عن الحالة غير المرتبطة بها).
 
 ```typescript
 // ✅ Split into focused components
@@ -185,13 +185,13 @@ const ReviewItem = memo(({ review }: { review: Review }) => (
 ));
 ```
 
-Now when you change the quantity, only the `QuantitySelector` re-renders. When you toggle the wishlist, only the `WishlistButton` re-renders. The expensive reviews list only renders when needed and never re-renders due to unrelated state changes.
+الآن عندما تغيّر الكمية، لن يُعاد تصيير إلا `QuantitySelector`. وعندما تبدّل حالة قائمة الرغبات، لن يُعاد تصيير إلا `WishlistButton`. أما قائمة المراجعات المكلفة فلا تُصيّر إلا عند الحاجة، ولا يُعاد تصييرها أبدًا بسبب تغييرات حالة غير مرتبطة بها.
 
-## The Art of Choosing Split Points
+## فنّ اختيار نقاط التقسيم
 
-Not every piece of JSX needs its own component. Here’s how to identify good split points:
+ليست كل قطعة من JSX تحتاج إلى مكوّن خاص بها. إليك كيف تحدّد نقاط التقسيم الجيدة:
 
-### Split When State is Independent
+### قسّم عندما تكون الحالة مستقلة
 
 ```typescript
 // ✅ Good split - each piece of state is independent
@@ -220,9 +220,9 @@ function UserProfile() {
 }
 ```
 
-### Split When Components Get Complex
+### قسّم عندما تصبح المكوّنات معقّدة
 
-Use the “scroll test”—if you can’t see the entire component on your screen at once, it’s probably doing too much.
+استخدم «اختبار التمرير» — إن لم تستطع رؤية المكوّن بأكمله على شاشتك دفعة واحدة، فهو على الأرجح يفعل أكثر من اللازم.
 
 ```typescript
 // ✅ Break down complex forms
@@ -251,9 +251,9 @@ function ShippingAddress() {
 }
 ```
 
-### Split When You Need Different Update Frequencies
+### قسّم عندما تحتاج إلى وتائر تحديث مختلفة
 
-Some parts of your UI update frequently while others remain static. Separate them to avoid unnecessary work.
+بعض أجزاء واجهتك تتحدّث كثيرًا بينما يبقى بعضها ساكنًا. افصل بينها لتجنّب العمل غير الضروري.
 
 ```typescript
 // ✅ Separate frequently updating components
@@ -288,9 +288,9 @@ function LivePriceTracker() {
 }
 ```
 
-## Common Splitting Pitfalls
+## المزالق الشائعة في التقسيم
 
-### Over-Splitting: The Component Confetti Problem
+### الإفراط في التقسيم: مشكلة قصاصات المكوّنات
 
 ```typescript
 // ❌ Over-split - creates unnecessary complexity
@@ -324,9 +324,9 @@ function BlogPost({ post }: { post: Post }) {
 }
 ```
 
-### Prop Drilling From Over-Splitting
+### تمرير الخصائص عبر الطبقات بسبب الإفراط في التقسيم
 
-When you split components too aggressively, you might create prop-drilling problems. Consider using context or state management libraries for deeply shared state.
+عندما تقسّم المكوّنات بشراسة مفرطة، قد تُنشئ مشكلات في تمرير الخصائص عبر طبقات متعددة (prop drilling). فكّر في استخدام السياق أو مكتبات إدارة الحالة للحالة المشتركة على أعماق بعيدة.
 
 ```typescript
 // ❌ Creates prop drilling
@@ -368,9 +368,9 @@ function App() {
 }
 ```
 
-## Testing Split Components
+## اختبار المكوّنات المقسمة
 
-One major benefit of proper component splitting is improved testability. Smaller, focused components are easier to test in isolation.
+من أكبر فوائد التقسيم الصحيح للمكوّنات تحسّن قابلية الاختبار. فالمكوّنات الأصغر والأكثر تركيزًا أسهل اختبارًا بمعزل عن غيرها.
 
 ```typescript
 // ✅ Easy to test in isolation
@@ -401,15 +401,15 @@ test('decrements quantity when minus button is clicked', () => {
 });
 ```
 
-Compare this to testing a monolithic component where you’d need to set up the entire product context just to test quantity logic.
+قارن هذا باختبار مكوّن متجانس ضخم حيث تحتاج إلى تهيئة سياق المنتج بأكمله لمجرد اختبار منطق الكمية.
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Use React DevTools Profiler to measure the impact of your component splits. Look for:
+استخدم مُنمّق React DevTools (Profiler) لقياس أثر تقسيمات مكوّناتك. وابحث عن:
 
-- **Reduced render time** for individual components
-- **Fewer unnecessary re-renders** when state changes
-- **Smaller commit phases** in the profiler
+- **زمن تصيير أقل** للمكوّنات الفردية
+- **إعادات تصيير غير ضرورية أقل** عند تغيّر الحالة
+- **مراحل إيداع أصغر** في المنمّق
 
 ```typescript
 // Add display names for easier profiling
@@ -418,18 +418,18 @@ WishlistButton.displayName = 'WishlistButton';
 ReviewsList.displayName = 'ReviewsList';
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Profile before and after splitting to ensure you’re actually improving performance, not just moving complexity around.
+> قِس الأداء قبل التقسيم وبعده لتتأكد من أنك تحسّن الأداء فعلًا، لا أنك تنقل التعقيد من مكان إلى آخر فحسب.
 
-## When NOT to Split
+## متى لا تقسّم
 
-Sometimes keeping components together is the right choice:
+أحيانًا يكون إبقاء المكوّنات معًا هو الخيار الصحيح:
 
-- **Tightly coupled logic** that always changes together
-- **Simple, static content** that never re-renders
-- **Components smaller than 50 lines** with single responsibility
-- **When splitting would create complex prop passing**
+- **منطق مترابط بإحكام** يتغيّر دائمًا معًا
+- **محتوى بسيط وساكن** لا يُعاد تصييره أبدًا
+- **مكوّنات أصغر من 50 سطرًا** ذات مسؤولية واحدة
+- **عندما يُنشئ التقسيم تمريرًا معقّدًا للخصائص**
 
 ```typescript
 // ✅ Keep simple, coupled logic together
@@ -469,14 +469,14 @@ function LoginForm() {
 }
 ```
 
-## Real-World Splitting Strategy
+## استراتيجية تقسيم واقعية
 
-Here’s a practical approach for splitting existing components:
+إليك نهجًا عمليًا لتقسيم مكوّنات قائمة:
 
-1. **Identify state boundaries** - Group related state together
-2. **Find expensive operations** - Isolate heavy computations or API calls
-3. **Look for independent features** - Things that can work standalone
-4. **Consider user interaction patterns** - What gets clicked/changed together?
-5. **Profile and measure** - Verify that splits actually improve performance
+1. **حدّد حدود الحالة** - جمّع الحالة المترابطة معًا
+2. **اعثر على العمليات المكلفة** - اعزل الحسابات الثقيلة أو نداءات API
+3. **ابحث عن ميزات مستقلة** - أشياء يمكن أن تعمل بمعزل عن غيرها
+4. **راعِ أنماط تفاعل المستخدم** - ما الذي يُنقر أو يتغيّر معًا؟
+5. **قِس الأداء وراقبه** - تحقّق من أن التقسيمات تحسّن الأداء فعلًا
 
-The goal is components that are **focused, testable, and performant**—not the maximum number of components possible. Every split should have a clear justification: either performance, maintainability, or reusability.
+الهدف هو مكوّنات **مركّزة وقابلة للاختبار وعالية الأداء** — لا أكبر عدد ممكن من المكوّنات. وينبغي أن يكون لكل تقسيم مبرّر واضح: الأداء، أو قابلية الصيانة، أو قابلية إعادة الاستخدام.

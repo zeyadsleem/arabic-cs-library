@@ -1,10 +1,10 @@
 ---
-title: "Generating Tests with test.each and describe.each"
-lang: en
+title: "توليد الاختبارات باستخدام test.each وdescribe.each"
+lang: ar
 source: "https://stevekinney.com/courses/testing/parameterizing-tests"
 ---
 
-We can use test.each and describe.each to programmatically generate tests and test suites for us. Consider the following example:
+يمكننا استخدام test.each وdescribe.each لتوليد اختبارات ومجموعات اختبارات برمجيًا نيابةً عنا. تأمّل المثال التالي:
 
 ```typescript
 export class Polygon {
@@ -32,11 +32,11 @@ export class Polygon {
 }
 ```
 
-Maybe we want to test that we’re getting the correct name depending on the number of sides. It’s *not* that hard to write a bunch of tests for this, but you can put on your imagination hats for a moment and imagine a world where you have a lot more cases.
+ربما نريد اختبار أننا نحصل على الاسم الصحيح حسب عدد الأضلاع. ليس *بالغ* الصعوبة كتابة مجموعة من الاختبارات لهذا، لكن يمكنك أن تضع قبّعة الخيال لحظةً وتتخيّل عالمًا لديك فيه حالات أكثر بكثير.
 
-`describe.each` and `it.each` (or, `test.each`) allow us to use an array or table to automatically generate tests for ourselves.
+يتيح لنا `describe.each` و`it.each` (أو `test.each`) استخدام مصفوفة أو جدول لتوليد اختبارات لأنفسنا تلقائيًا.
 
-For examples, we can use an array of arrays:
+على سبيل المثال، يمكننا استخدام مصفوفة من المصفوفات:
 
 ```typescript
   it.each([
@@ -55,13 +55,13 @@ For examples, we can use an array of arrays:
 });
 ```
 
-This will generate a number of tests on our behalf. You’ll notice that the first element of the array is the first argument being passed to the test function, the second element is the second argument, and so on.
+سيولّد هذا عددًا من الاختبارات نيابةً عنا. ستلاحظ أن العنصر الأول في المصفوفة هو الوسيط الأول الممرَّر إلى دالة الاختبار، والعنصر الثاني هو الوسيط الثاني، وهكذا.
 
-You’ll also notice that we can use formatted strings to generate test names.
+ستلاحظ أيضًا أننا نستطيع استخدام نصوص منسّقة لتوليد أسماء الاختبارات.
 
-## Using an Array of Objects
+## استخدام مصفوفة من الكائنات
 
-Alternatively, you can use an array of objects to generate your tests.
+بدلًا من ذلك، يمكنك استخدام مصفوفة من الكائنات لتوليد اختباراتك.
 
 ```typescript
 it.each([
@@ -79,13 +79,13 @@ it.each([
 });
 ```
 
-In this example you’ll notice that I’m destructuring an object to get the values int he function and I can use `$property` in the string that defines the test name,
+في هذا المثال ستلاحظ أنني أُفكّك كائنًا للحصول على القيم داخل الدالة، وأنني أستطيع استخدام `$property` في النص الذي يحدّد اسم الاختبار،
 
-## Using a Table
+## استخدام جدول
 
-There is one other way to generate tests and that’s by using a Markdown table.
+ثمّة طريقة أخرى لتوليد الاختبارات، وهي استخدام جدول Markdown.
 
-We might have something like this:
+قد يكون لدينا شيء مثل هذا:
 
 ```typescript
 polygonType        | sides | sumOfAngles | perimeter | area
@@ -99,7 +99,7 @@ ${'nonagon'}       | ${9}  | ${1260}     | ${90}     | ${618.18241937729}
 ${'decagon'}       | ${10} | ${1440}     | ${100}    | ${769.420884293813}
 ```
 
-We can generate a series of tests by passing this in as a template literal to the function:
+يمكننا توليد سلسلة من الاختبارات بتمرير هذا إلى الدالة كنص قالب:
 
 ```typescript
 describe.each`
@@ -117,12 +117,12 @@ describe.each`
 });
 ```
 
-## Exercise
+## تمرين
 
-Take a look at `src/examples/parameterizing-tests/polygon.test.ts`. Can you generate tests based on the data?
+ألقِ نظرة على `src/examples/parameterizing-tests/polygon.test.ts`. هل تستطيع توليد اختبارات بناءً على البيانات؟
 
-## A Secret
+## سرّ
 
-**Nota bene**: This is part of a series of tips and tricks that are definitely bad ideas. That said, they’re surprising effective and sometimes you have to break the rules, right?
+**ملاحظة مهمة**: هذا جزء من سلسلة نصائح وحيل هي أفكار سيئة بلا شك. ومع ذلك، فهي فعّالة بشكل مفاجئ، وأحيانًا عليك أن تخرق القواعد، أليس كذلك؟
 
-I know. I have TypeScript to verify that a function will only get the arguments that I say it will. But, TypeScript can only analyze your code base. If a piece of my code has any interaction with the outside world, I might choose to add some guards in order to make sure it doesn’t blow up. I’ll use test parameters to make this easy for myself.
+أعرف. لدي TypeScript للتحقق من أن الدالة لن تتلقى سوى الوسائط التي أقول إنها ستتلقاها. لكن TypeScript لا يستطيع تحليل سوى قاعدة شيفرتك. فإن كان لجزء من شيفرتي أي تفاعل مع العالم الخارجي، فقد أختار إضافة بعض الحُرّاس للتأكد من أنها لا تنفجر. وسأستخدم وسائط الاختبار لجعل ذلك سهلًا على نفسي.

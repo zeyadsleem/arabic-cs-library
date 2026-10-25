@@ -1,26 +1,26 @@
 ---
-title: "Before and After Hooks"
-lang: en
+title: "خطّافات قبل وبعد"
+lang: ar
 source: "https://stevekinney.com/courses/testing/setting-up-and-tearing-down-with-hooks"
 ---
 
-Hooks are functions that run at specific stages of your test execution lifecycle. They allow you to perform setup and teardown operations, ensuring that each test runs in a consistent environment. Vitest provides several hooks that mirror those found in other testing frameworks:
+الخطّافات (hooks) هي دوال تعمل في مراحل محدّدة من دورة حياة تنفيذ اختباراتك. تتيح لك أداء عمليات التهيئة والتفكيك، بما يضمن أن كل اختبار يعمل في بيئة متّسقة. ويوفّر Vitest عدّة خطّافات تحاكي تلك الموجودة في أطر الاختبار الأخرى:
 
-- `beforeAll`: Runs once before all tests in a suite.
-- `afterAll`: Runs once after all tests in a suite.
-- `beforeEach`: Runs before each test in a suite.
-- `afterEach`: Runs after each test in a suite.
+- `beforeAll`: يعمل مرة واحدة قبل كل الاختبارات في مجموعة الاختبارات.
+- `afterAll`: يعمل مرة واحدة بعد كل الاختبارات في مجموعة الاختبارات.
+- `beforeEach`: يعمل قبل كل اختبار في مجموعة الاختبارات.
+- `afterEach`: يعمل بعد كل اختبار في مجموعة الاختبارات.
 
-## Why Use Hooks?
+## لماذا تستخدم الخطّافات؟
 
-- **Setup and Teardown**: Prepare the testing environment before tests run and clean up afterward.
-- **Avoid Code Duplication**: Share common setup code among multiple tests.
-- **Test Isolation**: Ensure that tests do not interfere with each other by resetting the state before each test.
-- **Improved Readability**: Keep tests focused on assertions rather than setup details.
+- **التهيئة والتفكيك**: جهّز بيئة الاختبار قبل تشغيل الاختبارات ونظّف بعدها.
+- **تجنّب تكرار الشيفرة**: شارك شيفرة التهيئة المشتركة بين اختبارات متعددة.
+- **عزل الاختبارات**: اضمن ألّا تتداخل الاختبارات مع بعضها بإعادة ضبط الحالة قبل كل اختبار.
+- **تحسين القراءة**: أبقِ الاختبارات مركّزة على التحقّقات بدلًا من تفاصيل التهيئة.
 
-## Example 1: Using `beforeEach` and `afterEach`
+## المثال 1: استخدام `beforeEach` و`afterEach`
 
-Suppose you’re testing a simple counter object:
+لنفترض أنك تختبر كائن عدّاد بسيطًا:
 
 ```javascript
 // counter.js
@@ -42,7 +42,7 @@ export const counter = {
 };
 ```
 
-These tests will fail because the counter is going to maintain state between the tests.
+هذه الاختبارات ستفشل لأن العدّاد سيحتفظ بالحالة بين الاختبارات.
 
 ```javascript
 describe('Counter', () => {
@@ -64,9 +64,9 @@ describe('Counter', () => {
 });
 ```
 
-For exta fun, try out `describe.shuffle` to see it get into some other weird states.
+لمزيد من المتعة، جرّب `describe.shuffle` لتراه يدخل في بعض الحالات الغريبة الأخرى.
 
-### Solution: Use the `beforeEach` Hook
+### الحل: استخدام الخطّاف `beforeEach`
 
 ```javascript
 // counter.test.js
@@ -96,12 +96,12 @@ describe('Counter', () => {
 });
 ```
 
-- The `beforeEach` hook resets the counter to zero before each test.
-- Each test can assume the counter starts at zero, ensuring test isolation.
+- يعيد الخطّاف `beforeEach` ضبط العدّاد إلى الصفر قبل كل اختبار.
+- يمكن لكل اختبار أن يفترض أن العدّاد يبدأ من الصفر، بما يضمن عزل الاختبارات.
 
-## Using `beforeAll` and `afterAll`
+## استخدام `beforeAll` و`afterAll`
 
-Suppose you have tests that require setting up a database connection:
+لنفترض أن لديك اختبارات تتطلّب إعداد اتصال بقاعدة بيانات:
 
 ```javascript
 // db.js
@@ -118,7 +118,7 @@ export const db = {
 };
 ```
 
-Here is a fun example of what a test suite might look like using hooks.
+إليك مثالًا ممتعًا على شكل مجموعة اختبارات قد تستخدم الخطّافات.
 
 ```javascript
 // db.test.js
@@ -151,15 +151,15 @@ test('updates data in the database', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- `beforeAll` connects to the database once before the tests run.
-- `afterAll` disconnects from the database after all tests have completed.
-- `beforeEach` clears the database before each test to ensure a clean state.
+- يتّصل `beforeAll` بقاعدة البيانات مرة واحدة قبل تشغيل الاختبارات.
+- يقطع `afterAll` الاتصال بقاعدة البيانات بعد اكتمال كل الاختبارات.
+- يُفرغ `beforeEach` قاعدة البيانات قبل كل اختبار لضمان حالة نظيفة.
 
-## Nesting Hooks with `describe`
+## تداخل الخطّافات مع `describe`
 
-When organizing tests into groups using `describe`, you can have hooks that apply only to that group.
+عند تنظيم الاختبارات في مجموعات باستخدام `describe`، يمكن أن تكون لديك خطّافات تنطبق على تلك المجموعة وحدها.
 
 ```javascript
 import { test, expect, describe, beforeEach } from 'vitest';
@@ -187,14 +187,14 @@ describe('Group 2', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- Each `describe` block has its own `beforeEach` hook.
-- The `data` variable is set differently for each group, isolating the tests.
+- لكل كتلة `describe` خطّاف `beforeEach` خاص بها.
+- يُضبط المتغيّر `data` بقيمة مختلفة لكل مجموعة، بما يعزل الاختبارات.
 
-### Example 4: Asynchronous Hooks
+### المثال 4: الخطّافات غير المتزامنة
 
-Hooks can be asynchronous, allowing you to perform operations like fetching data or waiting for promises.
+يمكن أن تكون الخطّافات غير متزامنة، بما يتيح لك أداء عمليات مثل جلب البيانات أو انتظار الوعود.
 
 ```javascript
 import { test, expect, beforeEach } from 'vitest';
@@ -219,22 +219,22 @@ async function fetchUser() {
 }
 ```
 
-**Explanation:**
+**الشرح:**
 
-- The `beforeEach` hook is marked as `async` and waits for `fetchUser`.
-- Tests can rely on `user` being available and populated.
+- الخطّاف `beforeEach` مُعلَّم بـ`async` وينتظر `fetchUser`.
+- يمكن للاختبارات أن تعتمد على توفّر `user` واحتوائه على البيانات.
 
-## Some Best Practices with Hooks in Vitest
+## بعض أفضل الممارسات مع الخطّافات في Vitest
 
-- **Keep Hooks Lean**: Avoid putting too much logic in hooks. They should set up the environment, not perform complex operations.
-- **Use the Appropriate Hook**: Choose `beforeAll` or `beforeEach` based on whether the setup needs to run once or before every test.
-- **Test Isolation**: Ensure that the state is reset between tests to prevent flaky tests.
-- **Avoid Shared State**: Be cautious with global variables. If used, make sure they’re properly managed within hooks.
-- **Handle Asynchronous Code Properly**: Use `async`/`await` in hooks when dealing with asynchronous operations.
-- **Error Handling in Hooks**: If a hook fails, Vitest will skip the tests in that suite. Make sure to handle errors appropriately.
+- **أبقِ الخطّافات خفيفة**: تجنّب وضع منطق كثير في الخطّافات. ينبغي أن تهيّئ البيئة، لا أن تؤدّي عمليات معقّدة.
+- **استخدم الخطّاف المناسب**: اختر `beforeAll` أو `beforeEach` بناءً على ما إذا كانت التهيئة تحتاج إلى العمل مرة واحدة أو قبل كل اختبار.
+- **عزل الاختبارات**: اضمن إعادة ضبط الحالة بين الاختبارات لمنع الاختبارات المتذبذبة.
+- **تجنّب الحالة المشتركة**: كن حذرًا مع المتغيّرات العامة. إن استخدمتها، فتأكّد من إدارتها بشكل سليم داخل الخطّافات.
+- **تعامل مع الشيفرة غير المتزامنة بشكل صحيح**: استخدم `async`/`await` في الخطّافات عند التعامل مع عمليات غير متزامنة.
+- **معالجة الأخطاء في الخطّافات**: إذا فشل خطّاف، سيتخطّى Vitest الاختبارات في تلك المجموعة. تأكّد من معالجة الأخطاء بشكل مناسب.
 
-## Common Pitfalls
+## المزالق الشائعة
 
-- **Forgetting to Return or Await Promises**: If you have asynchronous code in your hooks, ensure you’re returning the promise or using `async`/`await`.
-- **Overusing Global Hooks**: Placing too much logic in `beforeAll` can lead to tests that are hard to understand or debug.
-- **Not Cleaning Up**: Failing to reset or clean up resources can cause tests to interfere with each other.
+- **نسيان إعادة الوعد أو انتظاره**: إذا كانت لديك شيفرة غير متزامنة في خطّافاتك، فتأكّد من إعادة الوعد أو استخدام `async`/`await`.
+- **الإفراط في استخدام الخطّافات العامة**: وضع منطق كثير في `beforeAll` قد يؤدي إلى اختبارات يصعب فهمها أو تنقيحها.
+- **عدم التنظيف**: الفشل في إعادة ضبط الموارد أو تنظيفها قد يجعل الاختبارات تتداخل مع بعضها.

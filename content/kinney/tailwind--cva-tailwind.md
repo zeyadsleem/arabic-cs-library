@@ -1,25 +1,25 @@
 ---
-title: "Class Variance Authority"
-lang: en
+title: "أداة Class Variance Authority"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/cva-tailwind"
 ---
 
-[Class Variance Authority](https://cva.style/) is a framework agnostic tool for creating variants of a component with different classes. It’s super simple and you probably *could* write it yourself if you had to—but, you don’t have to because it already exists.
+[Class Variance Authority](https://cva.style/) هي أداة محايدة تجاه الأطر لإنشاء تنويعات المكوّن بأصناف مختلفة. إنها بسيطة جدًا، ومن المرجّح أنك *تستطيع* كتابتها بنفسك إن اضطررت — لكنك لست مضطرًا لذلك لأنها موجودة بالفعل.
 
-CVA allows you to:
+تتيح لك CVA أن:
 
-1. Define a set of base styles for the component.
-2. Define the styles unique to each variant.
-3. Allow you to define default variants when one isn’t explicitly specified.
-4. It allows you to create compound variants.
+1. تعرّف مجموعة من الأنماط الأساسية للمكوّن.
+2. تعرّف الأنماط الفريدة لكل تنويع.
+3. تتيح لك تعريف تنويعات افتراضية حين لا يُحدَّد أحدها صراحةً.
+4. تتيح لك إنشاء تنويعات مركّبة.
 
-It works *super well* with Tailwind, but you don’t need use Tailwind to use CVA. You can use any utility classes that you want or even just the classes from our CSS modules like we did earlier.
+تعمل *بشكل ممتاز* مع Tailwind، لكنك لا تحتاج إلى استخدام Tailwind لاستخدام CVA. يمكنك استخدام أي أصناف مساعدة تريدها، أو حتى مجرد الأصناف من وحدات CSS الخاصة بنا كما فعلنا في وقت سابق.
 
-> **Using Tailwind’s IntelliSense with Class Variance Authority**
+> **استخدام IntelliSense الخاص بـ Tailwind مع Class Variance Authority**
 >
-> If you’re using Tailwind and Visual Studio Code and CVA and the [Tailwind CSS IntelliSense extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), then you might want to make [this](https://cva.style/docs/getting-started/installation#tailwind-css) tweak to the `settings.json` in your project.
+> إن كنت تستخدم Tailwind وVisual Studio Code وCVA و[امتداد Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)، فقد ترغب في إجراء [هذا](https://cva.style/docs/getting-started/installation#tailwind-css) التعديل على ملف `settings.json` في مشروعك.
 
-## Example
+## مثال
 
 ```typescript
 import type { ComponentProps } from 'preact';

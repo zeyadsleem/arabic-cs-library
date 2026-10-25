@@ -1,18 +1,18 @@
 ---
-title: "Pulse and Loading Indicator Patterns"
-lang: en
+title: "أنماط النبض ومؤشّرات التحميل"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/pulse-and-loading-indicator-patterns"
 ---
 
-Providing immediate feedback during data fetching or content loading is crucial. Tailwind CSS offers utilities to create loading indicators, from pulse animations to complex patterns.
+تقديم تغذية راجعة فورية أثناء جلب البيانات أو تحميل المحتوى أمر بالغ الأهمية. ويوفّر Tailwind CSS أصنافًا مساعِدة لإنشاء مؤشّرات التحميل، من حركات النبض البسيطة إلى الأنماط المعقّدة.
 
-## Using `animate-pulse` for Skeleton Screens
+## استخدام `animate-pulse` لهياكل التحميل (skeleton)
 
-Tailwind’s `animate-pulse` utility creates skeleton screens—placeholder previews that reduce perceived load time. The class applies a pulsing animation by fading opacity in and out.
+ينشئ الصنف المساعد `animate-pulse` في Tailwind هياكل تحميل—وهي معاينات نائبة تُقلّل الإحساس بزمن التحميل. ويطبّق الصنف حركة نابضة عبر تلاشي العتامة وإظهارها.
 
-Apply it to any element to suggest loading. Use placeholder shapes that mimic the eventual content structure.
+طَبِّقه على أي عنصر ليُشير إلى التحميل. واستخدم أشكالًا نائبة تحاكي بنية المحتوى النهائي.
 
-*Using animate-pulse for Skeleton Screens — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/4572875f03aaf7b51f3864ef540413ec477fe35c21691d6f0cebad008135d9b1.html)*
+*استخدام animate-pulse لهياكل التحميل — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4572875f03aaf7b51f3864ef540413ec477fe35c21691d6f0cebad008135d9b1.html)*
 
 ```html
 <div class="mx-auto w-full max-w-sm rounded-md border border-blue-300 p-4 shadow">
@@ -32,17 +32,17 @@ Apply it to any element to suggest loading. Use placeholder shapes that mimic th
 </div>
 ```
 
-Elements with `bg-slate-200` (or `dark:bg-slate-700`) create content card shapes. The `animate-pulse` class on the parent makes all child placeholders pulse together.
+تنشئ العناصر ذات `bg-slate-200` (أو `dark:bg-slate-700`) أشكال بطاقات المحتوى. ويجعل صنف `animate-pulse` على العنصر الأب جميع العناصر النائبة الفرعية تنبض معًا.
 
-### Customizing Pulse Animation
+### تخصيص حركة النبض
 
-`animate-pulse` provides a default animation. Customize speed or opacity by defining custom keyframes in `tailwind.config.js`, though the default usually suffices.
+يوفّر `animate-pulse` حركة افتراضية. وخصّص السرعة أو العتامة عبر تعريف إطارات مفاتيح (keyframes) مخصّصة في `tailwind.config.js`، وإن كان الافتراضي كافيًا في الغالب.
 
-## Creating Spinners with `animate-spin`
+## إنشاء الدوائر الدوّارة (spinners) باستخدام `animate-spin`
 
-For traditional loading indicators, use `animate-spin`. This applies circular spinning animation, commonly used for icons or geometric shapes.
+لمؤشّرات التحميل التقليدية، استخدم `animate-spin`. وهذه تطبّق حركة دوران دائري، تُستخدم عادةً للأيقونات أو الأشكال الهندسية.
 
-*Creating Spinners with animate-spin — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/63344d4a79568129d9661c75d72c157b63747df2ac970a8b04f010c07e96bb28.html)*
+*إنشاء الدوائر الدوّارة باستخدام animate-spin — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/63344d4a79568129d9661c75d72c157b63747df2ac970a8b04f010c07e96bb28.html)*
 
 ```html
 <div class="flex items-center justify-center space-x-2">
@@ -53,13 +53,13 @@ For traditional loading indicators, use `animate-spin`. This applies circular sp
 </div>
 ```
 
-A `div` styled as a circle with transparent top border. `animate-spin` makes it rotate, creating a classic spinner. Adjust border color, size, and speed through Tailwind configuration.
+هذا عنصر `div` مُنسَّق كدائرة ذات حدّ علوي شفاف. ويجعل `animate-spin` يدور، فيُنتج دوّارة دوّارة كلاسيكية. واضبط لون الحدّ والحجم والسرعة عبر إعدادات Tailwind.
 
-## Custom Loading Animations
+## حركات تحميل مخصّصة
 
-For complex animations, define custom keyframes in `tailwind.config.js`.
+للحركات المعقّدة، عرّف إطارات مفاتيح (keyframes) مخصّصة في `tailwind.config.js`.
 
-Example “dots” loading animation:
+مثال حركة تحميل بـ«نقاط»:
 
 ```javascript
 // tailwind.config.js
@@ -81,9 +81,9 @@ module.exports = {
 };
 ```
 
-Use `animate-bounce-dots` in HTML:
+استخدم `animate-bounce-dots` في HTML:
 
-*Custom Loading Animations — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/4c62382ad7b7e4bcc62104b6d18dbe908ef6292cfb2b4ecdf098ab7e06ad07c9.html)*
+*حركات تحميل مخصّصة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4c62382ad7b7e4bcc62104b6d18dbe908ef6292cfb2b4ecdf098ab7e06ad07c9.html)*
 
 ```html
 <div class="flex items-center justify-center space-x-2">
@@ -94,15 +94,15 @@ Use `animate-bounce-dots` in HTML:
 </div>
 ```
 
-Three dots bounce in sequence. `animation-delay` (using arbitrary values) staggers animation for dynamic effect.
+تقفز ثلاث نقاط بالتتابع. و`animation-delay` (باستخدام قيم تعسّفية) يؤخّر الحركة بالتدرّج لإعطاء تأثير ديناميكي.
 
-## SVG-Based Loading Indicators
+## مؤشّرات التحميل المعتمدة على SVG
 
-SVGs offer custom or intricate loading animations. Embed directly in HTML and use Tailwind utilities for styling and animation control.
+توفّر SVG حركات تحميل مخصّصة أو معقّدة. وأدرجها مباشرةً داخل HTML واستخدم أصناف Tailwind المساعِدة للتنسيق والتحكّم بالحركة.
 
-SVG spinner with `animate-spin`:
+دوّارة دوّارة باستخدام `animate-spin`:
 
-*SVG-Based Loading Indicators — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/06b160a4fe5ec6da357c8c15695371ca4b1194545b5770cd0eae6520ace4a851.html)*
+*مؤشّرات التحميل المعتمدة على SVG — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/06b160a4fe5ec6da357c8c15695371ca4b1194545b5770cd0eae6520ace4a851.html)*
 
 ```html
 <svg
@@ -120,18 +120,18 @@ SVG spinner with `animate-spin`:
 </svg>
 ```
 
-Two parts: faint circle track and opaque spinning arc. `animate-spin` handles rotation; `h-5 w-5 text-blue-500` control size and color.
+جزآن: مسار دائري باهت، وقوس دوّار معتم. ويتولّى `animate-spin` الدوران؛ بينما يتحكّم `h-5 w-5 text-blue-500` في الحجم واللون.
 
-## Accessibility Considerations
+## اعتبارات إمكانية الوصول
 
-Consider accessibility when implementing loading indicators:
+راعِ إمكانية الوصول عند تنفيذ مؤشّرات التحميل:
 
-1. **`aria-live` Regions**: Use `aria-live="polite"` or `aria-live="assertive"` for dynamic content updates.
-2. **`aria-busy`**: Apply `aria-busy="true"` to loading regions. Set to `false` when complete.
-3. **Screen Reader Text**: Include `sr-only` text for visual-only indicators (`<span class="sr-only">Loading content...</span>`).
-4. **Reduce Motion**: Use `motion-safe` and `motion-reduce` variants to respect user preferences.
+1. **مناطق `aria-live`**: استخدم `aria-live="polite"` أو `aria-live="assertive"` لتحديثات المحتوى الديناميكي.
+2. **`aria-busy`**: طَبِّق `aria-busy="true"` على مناطق التحميل. واضبطه على `false` عند الانتهاء.
+3. **نص قارئ الشاشة**: أدرج نصًا بـ`sr-only` للمؤشّرات البصرية فقط (`<span class="sr-only">Loading content...</span>`).
+4. **تقليل الحركة**: استخدم مُبدّلات `motion-safe` و`motion-reduce` لاحترام تفضيلات المستخدم.
 
-*Accessibility Considerations — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/959c80270e061b167847be8d3ec18b15317299923eb9eb26cb115690e5606a63.html)*
+*اعتبارات إمكانية الوصول — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/959c80270e061b167847be8d3ec18b15317299923eb9eb26cb115690e5606a63.html)*
 
 ```html
 <div role="status" aria-live="polite" class="flex items-center justify-center space-x-2">
@@ -146,15 +146,15 @@ Consider accessibility when implementing loading indicators:
 </div>
 ```
 
-Spinner is hidden for reduced motion; alternative text is shown.
+تُخفى الدوّارة عند تقليل الحركة، ويُعرض النص البديل.
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-- **Be Informative**: Clearly communicate system is working.
-- **Match Perceived Performance**: Avoid indicators for very quick operations (under 1 second).
-- **Consistency**: Use consistent loading styles throughout your application.
-- **Avoid “Jank”**: Ensure smooth animations. CSS animations are performant.
-- **Contextual Indicators**: Show loading within specific updating components.
-- **Provide Progress**: Use progress bars for long operations when possible.
+- **كن مُفصِحًا**: أبلغ بوضوح بأنّ النظام يعمل.
+- **طابِق الأداء المُدرَك**: تجنّب المؤشّرات للعمليات سريعة جدًّا (أقل من ثانية واحدة).
+- **الثبات**: استخدم أنماط تحميل متّسقة في تطبيقك كلّه.
+- **تجنّب "الاهتزاز" (jank)**: تأكّد من انسيابية الحركات. وحركات CSS أداؤها جيّد.
+- **مؤشّرات سياقية**: اعرض التحميل داخل المكوّنات المحدّثة بعينها.
+- **وفّر مؤشّر التقدّم**: استخدم أشرطة التقدّم في العمليات الطويلة كلما أمكن.
 
-Tailwind’s animation utilities and accessibility considerations create effective, user-friendly loading patterns.
+وتُنشئ أصناف Tailwind المساعِدة للحركة، مع مراعاة إمكانية الوصول، أنماط تحميل فعّالة وسهلة الاستخدام.

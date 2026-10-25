@@ -1,12 +1,12 @@
 ---
-title: "Building a Blog Layout"
-lang: en
+title: "بناء تخطيط مدوّنة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-blog-layout"
 ---
 
-Let’s start with our basic HTML structure for a simple blog post layout.
+لنبدأ ببنية HTML الأساسية الخاصة بتخطيط مقال مدوّنة بسيط.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/29168963c3ff12c38a8729b349b5ca06e2f15b441f7c11a696b43a8fa143870a.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/29168963c3ff12c38a8729b349b5ca06e2f15b441f7c11a696b43a8fa143870a.html)*
 
 ```html
 <div class="mx-auto max-w-sm rounded-lg bg-gray-100 p-4">
@@ -49,13 +49,13 @@ Let’s start with our basic HTML structure for a simple blog post layout.
 </div>
 ```
 
-We have a blog post with header, sidebar navigation, and main content, but they’re stacked vertically. Let’s transform this into a professional 2-column layout using the semantic power of CSS Grid Template Areas.
+لدينا مقال مدوّنة فيه ترويسة وتنقّل جانبي ومحتوى رئيسي، لكنها جميعًا مكدّسة رأسيًا. لنحوّلها إلى تخطيط احترافي من عمودين باستخدام القوة الدلالية لمناطق قوالب الشبكة في CSS.
 
-## Understanding Semantic Grid Areas
+## فهم المناطق الدلالية في الشبكة
 
-Building on techniques from our [dashboard tutorial](https://stevekinney.com/courses/tailwind/building-a-dashboard), let’s use named grid areas instead of numeric positioning. This creates more maintainable, readable layouts where the CSS literally describes the visual structure.
+انطلاقًا من التقنيات التي تعلّمناها في [درس لوحة المعلومات](https://stevekinney.com/courses/tailwind/building-a-dashboard)، لنستخدم مناطق شبكة مسمّاة بدل التموضع الرقمي. وهذا ينشئ تخطيطات أكثر قابلية للصيانة والقراءة، حيث يصف CSS حرفيًا البنية البصرية.
 
-*Understanding Semantic Grid Areas — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/3d0778b3b7f44cb689cb4c8e11fb3964223e0730de4b6b6bb94405b64ac56052.html)*
+*فهم المناطق الدلالية في الشبكة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3d0778b3b7f44cb689cb4c8e11fb3964223e0730de4b6b6bb94405b64ac56052.html)*
 
 ```html
 <div class="mx-auto max-w-sm rounded-lg bg-gray-100 p-4">
@@ -110,21 +110,21 @@ Building on techniques from our [dashboard tutorial](https://stevekinney.com/cou
 </div>
 ```
 
-Grid Template Areas setup:
+إعداد مناطق قوالب الشبكة:
 
-- `@container`: Establishes container query context so the layout responds to its container size, not viewport
-- `[grid-template-areas:'header''sidebar''main']`: Mobile-first single column with semantic area names
-- `@lg:[grid-template-areas:'header_header''sidebar_main']`: Two-column layout where header spans both columns
-- `@lg:grid-cols-[200px_1fr]`: Fixed 200px sidebar, flexible main content area
-- `[grid-area:header]`: Assigns each element to its named area
+- `@container`: ينشئ سياق استعلام حاوية ليتكيّف التخطيط مع حجم حاويته لا مع إطار العرض
+- `[grid-template-areas:'header''sidebar''main']`: عمود واحد يبدأ بالجوال أولًا مع أسماء مناطق دلالية
+- `@lg:[grid-template-areas:'header_header''sidebar_main']`: تخطيط من عمودين تمتدّ فيه الترويسة على العمودين
+- `@lg:grid-cols-[200px_1fr]`: شريط جانبي ثابت بعرض 200px ومنطقة محتوى رئيسي مرنة
+- `[grid-area:header]`: يُسند كل عنصر إلى منطقته المسمّاة
 
-The beauty is in the template areas string—it’s literally a visual map of your layout!
+الجمال يكمن في سلسلة مناطق القوالب — فهي خريطة بصرية حرفيّة لتخطيطك!
 
-## Why Named Areas Beat Column Spans
+## لماذا تتفوق المناطق المسمّاة على مدّ الأعمدة
 
-Let’s compare the semantic approach we’re using versus traditional column positioning to understand why named areas are superior.
+لنقارن النهج الدلالي الذي نستخدمه بالتموضع التقليدي للأعمدة، لنفهم لماذا تتفوّق المناطق المسمّاة.
 
-**Traditional numeric approach:**
+**النهج الرقمي التقليدي:**
 
 ```css
 .header {
@@ -141,7 +141,7 @@ Let’s compare the semantic approach we’re using versus traditional column po
 }
 ```
 
-**Our semantic approach:**
+**نهجنا الدلالي:**
 
 ```css
 grid-template-areas:
@@ -149,20 +149,20 @@ grid-template-areas:
   'sidebar main';
 ```
 
-The named areas approach provides several advantages:
+يقدّم نهج المناطق المسمّاة عدّة مزايا:
 
-- **Visual clarity**: You can literally see the layout structure in the CSS
-- **Self-documenting**: Area names like “header” and “sidebar” are immediately understandable
-- **Easier maintenance**: Changing layouts means updating one visual string, not multiple numeric coordinates
-- **Better responsive design**: Different layouts at different breakpoints are crystal clear
+- **وضوح بصري**: يمكنك أن ترى بنية التخطيط حرفيًا في CSS
+- **توثيق ذاتي**: أسماء المناطق مثل «header» و«sidebar» مفهومة فورًا
+- **صيانة أسهل**: تغيير التخطيطات يعني تحديث سلسلة بصرية واحدة لا إحداثيات رقمية متعدّدة
+- **تصميم مستجيب أفضل**: التخطيطات المختلفة عند نقاط التوقف المختلفة واضحة تمامًا
 
-This makes complex layouts much more maintainable, especially when working in teams.
+هذا يجعل التخطيطات المعقّدة أكثر قابلية للصيانة بكثير، ولا سيما عند العمل ضمن فريق.
 
-## Adding Professional Styling and Typography
+## إضافة تنسيق وطباعة احترافية
 
-Let’s enhance our layout with proper styling, building on patterns from our [card tutorial](https://stevekinney.com/courses/tailwind/building-a-card) and [form tutorials](https://stevekinney.com/courses/tailwind/building-a-form-input).
+لنُحسّن تخطيطنا بتنسيق مناسب، انطلاقًا من الأنماط التي تعلّمناها في [درس البطاقة](https://stevekinney.com/courses/tailwind/building-a-card) و[دروس النماذج](https://stevekinney.com/courses/tailwind/building-a-form-input).
 
-*Adding Professional Styling and Typography — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/c08d5844cd45dac2c2cf8f961f7046dd6be3b97f85c251521fc4befbcd347463.html)*
+*إضافة تنسيق وطباعة احترافية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c08d5844cd45dac2c2cf8f961f7046dd6be3b97f85c251521fc4befbcd347463.html)*
 
 ```html
 <div class="mx-auto max-w-sm">
@@ -251,23 +251,23 @@ Let’s enhance our layout with proper styling, building on patterns from our [c
 </div>
 ```
 
-Professional enhancements:
+التحسينات الاحترافية:
 
-- `border-b border-slate-200 pb-6`: Subtle separator below header for visual hierarchy
-- `@lg:text-3xl`: Responsive typography that scales with container size
-- SVG icons with `h-4 w-4`: 16px calendar and user icons for visual interest
-- `sticky top-4`: Sidebar navigation stays visible during scroll
-- `shadow-sm`: Subtle depth for the navigation panel
-- `transition-colors hover:bg-blue-50`: Smooth hover states for navigation links
-- `prose prose-slate max-w-none`: Typography utilities for readable article content
+- `border-b border-slate-200 pb-6`: فاصل خفيف أسفل الترويسة لخلق تسلسل هرمي بصري
+- `@lg:text-3xl`: طباعة مستجيبة تتكبّر مع حجم الحاوية
+- أيقونات SVG بحجم `h-4 w-4`: أيقونة تقويم وأيقونة مستخدم بحجم 16px لإضافة لمسة بصرية
+- `sticky top-4`: يبقى التنقّل الجانبي ظاهرًا أثناء التمرير
+- `shadow-sm`: عمق خفيف للوحة التنقّل
+- `transition-colors hover:bg-blue-50`: حالات تحويم ناعمة لروابط التنقّل
+- `prose prose-slate max-w-none`: أدوات طباعة لقراءة مقال مريح
 
-The `sticky` positioning ensures the table of contents remains accessible as users scroll through long articles.
+يضمن التموضع `sticky` بقاء جدول المحتويات في متناول المستخدمين أثناء تمرّهم في المقالات الطويلة.
 
-## Container-Responsive Layout Refinements
+## تحسينات إضافية على التخطيط المستجيب للحاوية
 
-Let’s add more sophisticated responsive behavior using container queries, building on techniques from our [statistics card tutorial](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
+لنضف سلوكًا استجابيًا أكثر تطوّرًا باستخدام استعلامات الحاوية، انطلاقًا من التقنيات التي تعلّمناها في [درس بطاقة الإحصاءات](https://stevekinney.com/courses/tailwind/building-a-statistics-card).
 
-*Container-Responsive Layout Refinements — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/10b264281115f7ac53239e439fd74c70570827716f01393d6daa0e864282dc96.html)*
+*تحسينات إضافية على التخطيط المستجيب للحاوية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/10b264281115f7ac53239e439fd74c70570827716f01393d6daa0e864282dc96.html)*
 
 ```html
 <div class="mx-auto max-w-sm">
@@ -362,42 +362,42 @@ Let’s add more sophisticated responsive behavior using container queries, buil
 </div>
 ```
 
-Container-responsive refinements:
+تحسينات الاستجابة للحاوية:
 
-- `@md:gap-6`: Progressive spacing that grows with container size
-- `@lg:grid-cols-[220px_1fr] @xl:grid-cols-[250px_1fr]`: Sidebar width adapts to available space
-- `@lg:sticky @lg:top-4`: Sticky positioning only activates in larger containers
-- `@md:text-2xl @lg:text-3xl`: Typography scales across container breakpoints
-- `prose-headings:scroll-mt-4`: Accounts for sticky navigation when scrolling to anchors
+- `@md:gap-6`: تباعد تصاعدي يكبر مع حجم الحاوية
+- `@lg:grid-cols-[220px_1fr] @xl:grid-cols-[250px_1fr]`: يتكيّف عرض الشريط الجانبي مع المساحة المتاحة
+- `@lg:sticky @lg:top-4`: لا يُفعَّل التموضع اللاصق إلا في الحاويات الأكبر
+- `@md:text-2xl @lg:text-3xl`: تتكبّر الطباعة عبر نقاط توقف الحاوية
+- `prose-headings:scroll-mt-4`: يراعي التنقّل اللاصق عند التمرير إلى المراسي
 
-The key insight is that container queries make the layout truly modular—it adapts to its container size regardless of where it’s placed in your application.
+الفكرة المحورية هي أن استعلامات الحاوية تجعل التخطيط معياريًا حقًا — فهو يتكيّف مع حجم حاويته أينما وُضع في تطبيقك.
 
-## Understanding Container vs Media Queries
+## فهم الفرق بين الحاوية واستعلامات الوسائط
 
-This layout demonstrates the fundamental difference between container queries (`@md:`, `@lg:`) and media queries (`md:`, `lg:`):
+يبيّن هذا التخطيط الفرق الجوهري بين استعلامات الحاوية (`@md:` و`@lg:`) واستعلامات الوسائط (`md:` و`lg:`):
 
-**Media queries** respond to viewport size:
+**استعلامات الوسائط** تستجيب لحجم إطار العرض:
 
-- “When the browser window is 768px wide, do this”
-- Global breakpoints that affect the entire page
+- «عندما يبلغ عرض نافذة المتصفح 768px، افعل هذا»
+- نقاط توقف عامة تؤثر في الصفحة كلها
 
-**Container queries** respond to container size:
+**استعلامات الحاوية** تستجيب لحجم الحاوية:
 
-- “When this component’s container is 512px wide, do this”
-- Local breakpoints that make components truly modular
+- «عندما يبلغ عرض حاوية هذا المكوّن 512px، افعل هذا»
+- نقاط توقف محلية تجعل المكوّنات معيارية حقًا
 
-This blog layout will work perfectly whether it’s:
+سيعمل تخطيط المدوّنة هذا بشكل مثالي سواء كان:
 
-- Full-width on a desktop page
-- In a narrow sidebar widget
-- Part of a dashboard panel
-- Embedded in an article preview
+- بعرض كامل في صفحة على سطح المكتب
+- داخل أداة في شريط جانبي ضيّق
+- جزءًا من لوحة معلومات
+- مضمّنًا في معاينة مقال
 
-The layout intelligence is contained within the component itself, making it infinitely reusable.
+ذكاء التخطيط محصور داخل المكوّن نفسه، ما يجعله قابلًا لإعادة الاستخدام بلا حدود.
 
-## Challenges
+## التحديات
 
-Try building these variations:
+جرّب بناء هذه الصيغ:
 
-1. **Three-Column Layout**: Extend to include an “aside” area for related articles using template areas like `"header header header" "sidebar main aside"` with responsive collapsing
-2. **Dynamic Table of Contents**: Use the techniques from our [details disclosure tutorial](https://stevekinney.com/courses/tailwind/building-details-disclosure) to make the table of contents collapsible on mobile while keeping it always visible on larger containers
+1. **تخطيط من ثلاثة أعمدة**: وسّعه ليضمّ منطقة «aside» للمقالات ذات الصلة باستخدام مناطق قوالب مثل `"header header header" "sidebar main aside"` مع انهيار مستجيب
+2. **جدول محتويات ديناميكي**: استخدم التقنيات التي تعلّمناها في [درس التفاصيل القابلة للطي](https://stevekinney.com/courses/tailwind/building-details-disclosure) تجعل جدول المحتويات قابلًا للطي على الجوال مع بقائه ظاهرًا دائمًا في الحاويات الأكبر

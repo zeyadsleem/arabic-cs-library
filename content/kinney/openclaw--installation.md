@@ -1,39 +1,39 @@
 ---
-title: "Installing OpenClaw"
-lang: en
+title: "تثبيت OpenClaw"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/installation"
 ---
 
-You can download the application from the [OpenClaw website](https://openclaw.ai/).
+يمكنك تنزيل التطبيق من [موقع OpenClaw](https://openclaw.ai/).
 
-The OpenClaw website's quick start section showing desktop app downloads for macOS, Windows, and Linux
+قسم البدء السريع في موقع OpenClaw يعرض تنزيلات تطبيق سطح المكتب لكل من macOS وWindows وLinux
 
-Alternatively, you can run this from the command line:
+ويمكنك أيضًا تشغيل هذا الأمر من سطر الأوامر:
 
 ```bash
 curl -fsSL https://openclaw.ai/install.sh | bash
 ```
 
-If we hop over to the desktop application, we’ll see something that looks like this.
+وإذا انتقلنا إلى تطبيق سطح المكتب، سنرى شيئًا يشبه هذا.
 
-The OpenClaw welcome screen
+شاشة ترحيب OpenClaw
 
-You can use the application to install OpenClaw onto your computer or connect to a remote OpenClaw gateway. For our purposes, we’ll install it locally on this machine.
+يمكنك استخدام التطبيق لتثبيت OpenClaw على حاسوبك أو للاتصال ببوابة OpenClaw بعيدة. ولغرضنا، سنثبّته محليًا على هذا الجهاز.
 
-The onboarding screen asking where the assistant should live, with the On this Mac option selected
+شاشة الإعداد التي تسأل أين ينبغي أن يعمل المساعد، مع اختيار خيار «على هذا الجهاز»
 
-It will then go ahead and get itself all installed and configured.
+ثم يمضي قُدُمًا في تثبيت كل شيء وإعداده.
 
-The onboarding screen installing OpenClaw and starting the Gateway background service
+شاشة الإعداد أثناء تثبيت OpenClaw وتشغيل خدمة البوابة في الخلفية
 
-You can go ahead and let it cook—it’ll take a bit before it’s ready. It’s also installing the CLI and the background agent so that OpenClaw will continue working even when you’ve closed the application—as long as your computer is running.
+اتركه يمضي قُدُمًا، فسيستغرق بعض الوقت حتى يصبح جاهزًا. كما أنه يثبّت واجهة سطر الأوامر (CLI) والوكيل العامل في الخلفية، ليبقى OpenClaw مستمرًّا في العمل حتى بعد إغلاقك التطبيق، ما دام حاسوبك يعمل.
 
-Once that’s rocking and rolling, you can go through the process of connecting it to our model provider of choice.
+وبمجرد أن يبدأ العمل، يمكنك اتباع عملية ربطه بمزوّد النموذج الذي نختاره.
 
-The Connect your AI screen listing Claude Code, Codex, LM Studio, and Ollama
+شاشة «Connect your AI» التي تسرد Claude Code وCodex وLM Studio وOllama
 
-And once you’ve done that—you should be ready to rock and roll.
+وبمجرد أن تفعل ذلك، ستكون جاهزًا للانطلاق.
 
-The OpenClaw chat window reporting that inference is ready
+نافذة دردشة OpenClaw تبلّغ بأن الاستدلال جاهز
 
-My advice at this point is to run `openclaw doctor` or `openclaw doctor --fix` to have it audit your setup and make any adjustments.
+نصيحتي في هذه المرحلة هي تشغيل `openclaw doctor` أو `openclaw doctor --fix` ليجري فحص تهيئتك ويطبّق أي تعديلات لازمة.

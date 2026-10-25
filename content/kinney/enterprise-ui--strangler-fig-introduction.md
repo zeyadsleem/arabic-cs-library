@@ -1,16 +1,16 @@
 ---
-title: "The Strangler Fig Pattern"
-lang: en
+title: "نمط الشجرة الخانقة (Strangler Fig)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/strangler-fig-introduction"
 ---
 
-So, you’ve got a legacy system. Maybe it’s a monolith that’s been accumulating features for years. Maybe it’s a frontend built on a framework that’s two major versions behind. The business can’t stop shipping features while you rewrite it, the system still has to serve real traffic, and a full rewrite is—let’s be honest—a gamble that rarely pays off on schedule.
+إذن، لديك نظام قديم. ربما تطبيق متجانس يراكم الميزات منذ سنوات، وربما واجهة أمامية مبنية على إطار متأخر بإصدارين رئيسيين. ولا تستطيع الأعمال إيقاف شحن الميزات بينما تعيد الكتابة، وما زال على النظام خدمة حركة حقيقية، وإعادة الكتابة الكاملة—لنكن صادقين—مقامرة نادرًا ما تسدّد في موعدها.
 
-The **Strangler Fig pattern** is an incremental replacement strategy. You put a façade or proxy in front of the existing system, keep the client-facing interface stable, and gradually route individual capabilities from the old implementation to the new one until the legacy piece can be shut off. Martin Fowler [coined the metaphor](https://martinfowler.com/bliki/StranglerFigApplication.html) after seeing strangler fig trees in Queensland grow around a host tree until the fig becomes self-sustaining. It’s one of the few enterprise migration ideas that is both memorable and not completely ridiculous.
+**نمط الشجرة الخانقة (Strangler Fig)** استراتيجية استبدال تدريجي. تضع واجهة أو وسيطًا أمام النظام القائم، وتبقي الواجهة المواجهة للعميل مستقرة، وتوجّه القدرات واحدة تلو الأخرى تدريجيًا من التنفيذ القديم إلى الجديد حتى يمكن إيقاف الجزء القديم. وقد [صاغ Martin Fowler هذه الاستعارة](https://martinfowler.com/bliki/StranglerFigApplication.html) بعد أن رأى أشجار التين الخانقة في كوينزلاند تنمو حول شجرة مضيفة حتى تصير الشجرة مستقلة بنفسها. وهو من الأفكار القليلة في ترحيل أنظمة المؤسسات التي لا تُنسى وليست سخيفة تمامًا.
 
-## How It Works
+## كيف يعمل
 
-At its simplest:
+في أبسط صوره:
 
 ```
 flowchart TD
@@ -24,154 +24,154 @@ flowchart TD
     Facade --> New
 ```
 
-The façade is the control point. Early on, it routes almost everything to the legacy system. As new slices are implemented, it starts sending only those slices to the new code. The client ideally doesn’t need to know which side owns a given feature.
+الواجهة هي نقطة التحكم. في البداية توجّه كل شيء تقريبًا إلى النظام القديم. ومع تنفيذ شرائح جديدة، تبدأ بإرسال تلك الشرائح وحدها إلى الشيفرة الجديدة. ولا يحتاج العميل مثاليًا إلى معرفة أي الجانبين يملك ميزة معينة.
 
-When the old system still depends on something that’s already been extracted, you often need an **anti-corruption layer** or adapter inside the monolith so the old interface can call the new one safely. That’s the part of the diagram people forget to draw—and the part that causes the most headaches if you don’t plan for it.
+وعندما يبقى النظام القديم معتمدًا على شيء سبق استخراجه، فأنت غالبًا تحتاج **طبقة مقاومة للفساد** أو مهايئًا داخل التطبيق المتجانس كي تستطيع الواجهة القديمة نداء الجديدة بأمان. وهذا هو الجزء الذي ينسى الناس رسمه في المخطط—والجزء الذي يسبب أكثر الصداع إن لم تخطّط له.
 
-## The Migration Loop
+## حلقة الترحيل
 
-[AWS summarizes](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-decomposing-monoliths/strangler-fig.html) the migration in three verbs: **transform**, **coexist**, **eliminate**.
+[يوجز AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-decomposing-monoliths/strangler-fig.html) الترحيل في ثلاثة أفعال: **حوّل**، **تعايش**، **أزِل**.
 
-1. **Transform**: Build the new component in parallel.
-2. **Coexist**: Old and new implementations run behind the routing layer so traffic can be shifted safely and rolled back if needed.
-3. **Eliminate**: Once the new path is proven, retire the old functionality.
+1. **حوّل**: ابنِ المكوّن الجديد بالتوازي.
+2. **تعايش**: يعمل التنفيذان القديم والجديد خلف طبقة التوجيه كي يمكن نقل الحركة بأمان والتراجع عند الحاجة.
+3. **أزِل**: بعد إثبات المسار الجديد، أحِل الوظيفة القديمة إلى التقاعد.
 
-There’s a cleanup step that teams love to skip: after all traffic is on the new system, you can remove the façade or keep it only as a temporary compatibility adapter for older clients. If you never do this step, you haven’t completed a migration. You’ve just added a layer.
+وهناك خطوة تنظيف تحبّ الفرق تجاوزها: بعد انتقال كل الحركة إلى النظام الجديد، تستطيع إزالة الواجهة أو إبقاءها فقط كمهايئ توافق مؤقت للعملاء الأقدم. وإن لم تنفّذ هذه الخطوة قط، فأنت لم تكمل ترحيلًا، بل أضفت طبقة فحسب.
 
-One detail that matters more than people think: **new features go into the new system**, not back into the monolith. Ordinary bug fixes can continue in the monolith to keep it stable during the transition, but if new work keeps flowing into the legacy code, you’re not strangling it. You’re feeding it vitamins.
+وتفصيل يهمّ أكثر مما يظن الناس: **الميزات الجديدة تدخل النظام الجديد**، لا تعود إلى التطبيق المتجانس. يمكن أن تستمر إصلاحات الأخطاء العادية في التطبيق المتجانس لإبقائه مستقرًا أثناء الانتقال، لكن إن استمر العمل الجديد بالتدفق إلى الشيفرة القديمة، فأنت لا تخنقها، بل تغذّيها بالفيتامينات.
 
-## What Counts as a “Slice”
+## ما الذي يُعدّ «شريحة»
 
-The migration unit should be a vertical capability with clear business meaning and manageable dependencies. Not “all persistence,” not “all utilities,” not some technically neat but operationally useless chunk.
+ينبغي أن تكون وحدة الترحيل قدرة رأسية بمعنى تجاري واضح واعتمادات قابلة للإدارة. لا «كل الثبات»، ولا «كل الأدوات المساعدة»، ولا قطعة أنيقة تقنيًا لكنها عديمة الجدوى تشغيليًا.
 
-[AWS recommends](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html) using domain-driven design and event storming to understand boundaries, and warns that premature decomposition is costly when the domain is unclear. Start where the seams are real, not where the architecture deck looks pretty.
+و[يوصي AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html) باستخدام التصميم المدفوع بالنطاق وعصف الأحداث لفهم الحدود، ويحذّر من أن التفكيك المبكر مكلف عندما يكون النطاق غير واضح. ابدأ حيث تكون المفاصل حقيقية، لا حيث يبدو مخطط المعمارية جميلًا.
 
-A good first slice tends to have:
+والشريحة الأولى الجيدة تميل إلى أن تكون لها:
 
-- Visible business value (so stakeholders stay invested).
-- A clear owner (so somebody is accountable).
-- A low blast radius (so your proof of concept doesn’t also become your first outage).
+- قيمة تجارية مرئية (كي يبقى أصحاب المصلحة مستثمرين).
+- مالك واضح (كي يكون أحدهم مسؤولًا).
+- نطاق تأثير منخفض (كي لا يصير إثبات مفهومك أول انقطاع لديك أيضًا).
 
-That gives you a real proof of concept instead of a months-long archaeology dig. [Google’s modernization guidance](https://cloud.google.com/resources/rearchitecting-to-cloud-native) makes the same broader point: start with a team that has the capacity and authority to prove the approach, then spread the lessons. Don’t declare a grand migration crusade and hope morale can be used as infrastructure.
+وهذا يمنحك إثبات مفهوم حقيقيًا بدل رحلة تنقيب تستغرق شهورًا. و[إرشاد Google للتحديث](https://cloud.google.com/resources/rearchitecting-to-cloud-native) يقول النقطة الأوسع نفسها: ابدأ بفريق يملك السعة والصلاحية لإثبات النهج، ثم انشر الدروس. لا تعلن حملة ترحيل كبرى وتأمل أن تُستخدم الروح المعنوية كبنية تحتية.
 
-## Beyond Microservices: In-Process Migrations
+## ما هو أبعد من الخدمات الدقيقة: الترحيل داخل العملية
 
-People often describe Strangler Fig as a monolith-to-microservices pattern, but the core idea is broader than that. Old and new implementations coexist behind a stable boundary, and traffic (or calls) moves gradually. For in-process codebase migrations—framework swaps, package extractions, UI rewrites—the close cousin is Fowler’s [Branch by Abstraction](https://martinfowler.com/bliki/BranchByAbstraction.html) pattern.
+كثيرًا ما يصف الناس نمط الشجرة الخانقة كنمط من تطبيق متجانس إلى خدمات دقيقة، لكن الفكرة الجوهرية أوسع من ذلك. فالتنفيذان القديم والجديد يتعايشان خلف حدّ مستقر، وتنتقل الحركة (أو النداءات) تدريجيًا. وبالنسبة إلى ترحيلات قواعد الشيفرة داخل العملية—تبديل الأطر، واستخراج الحزم، وإعادة كتابة واجهات المستخدم—فالقريب الشقيق هو نمط [Branch by Abstraction](https://martinfowler.com/bliki/BranchByAbstraction.html) عند Fowler.
 
-The recipe:
+والوصفة:
 
-1. Create an abstraction layer in code.
-2. Move callers behind it.
-3. Build the new implementation against the same abstraction.
-4. Switch callers over incrementally.
-5. Delete the old implementation—and usually the temporary abstraction too.
+1. أنشئ طبقة تجريد في الشيفرة.
+2. انقل المستطلعين خلفها.
+3. ابنِ التنفيذ الجديد مقابل التجريد نفسه.
+4. انقل المستطلعين تدريجيًا.
+5. احذف التنفيذ القديم—وغالبًا التجريد المؤقت أيضًا.
 
-In practice, large migrations often use both patterns together: Strangler Fig at the system boundary and Branch by Abstraction inside the codebase. The heart of it isn’t “microservices.” The heart of it is controlled coexistence plus gradual cutover.
+وعمليًا، تستخدم الترحيلات الكبيرة النمطين معًا في كثير من الأحيان: الشجرة الخانقة عند حدّ النظام، وBranch by Abstraction داخل قاعدة الشيفرة. والقلب ليس «الخدمات الدقيقة»، بل التعايش المضبوط مع الانتقال التدريجي.
 
-A key benefit that Fowler stresses: the system can keep building and releasing while the migration is underway, instead of disappearing into a long-lived branch or rewrite bunker.
+ومن الفوائد الأساسية التي يشدّد عليها Fowler: أن يبقى النظام قادرًا على البناء والإصدار بينما الترحيل جارٍ، بدل أن يختفي في فرع طويل العمر أو مخبأ إعادة كتابة.
 
-## Data Is the Hard Part
+## البيانات هي الجزء الصعب
 
-The routing story is the easy diagram. Data is where the migration becomes real.
+قصة التوجيه هي المخطط السهل. أما البيانات فهي حيث يصير الترحيل حقيقيًا.
 
-[Azure’s example](https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig) shows a common sequence:
+و[مثال Azure](https://learn.microsoft.com/en-us/azure/architecture/patterns/strangler-fig) يعرض تسلسلًا شائعًا:
 
-1. The new system initially reads and writes through the legacy database.
-2. A new database is introduced.
-3. Historical data is backfilled with ETL.
-4. Shadow writes update both databases in parallel.
-5. Reads keep validating against the legacy source.
-6. Only later does the new database become the system of record.
+1. يقرأ النظام الجديد ويكتب عبر قاعدة البيانات القديمة في البداية.
+2. تُدخَل قاعدة بيانات جديدة.
+3. يُعاد ملء البيانات التاريخية بـETL.
+4. تحدّث الكتابات الظلّية قاعدتَي البيانات بالتوازي.
+5. تظل القراءات تتحقق من المصدر القديم.
+6. وبعد ذلك فقط تصير قاعدة البيانات الجديدة نظام السجل.
 
-[AWS makes the tradeoff explicit](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html): during migration, new services may need their own stores, and the old monolith may still need to access related data. Synchronizing through queues or agents can work, but it introduces duplication and eventual consistency. That’s a tactical step, not a healthy end state.
+و[يُصرّح AWS بالمقايضة](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/strangler-fig.html): أثناء الترحيل، قد تحتاج الخدمات الجديدة إلى مخازنها الخاصة، وقد يحتاج التطبيق المتجانس القديم إلى الوصول إلى بيانات ذات صلة. وقد ينجح التزامن عبر الطوابير أو الوكلاء، لكنه يُدخل التكرار والاتساق النهائي. وهذه خطوة تكتيكية، لا حالة نهائية صحية.
 
-The real rule: shared databases and translation adapters are acceptable migration tools, but they’re not the destination. If they become permanent, you haven’t completed a strangler migration. You’ve built a permanent diplomatic border between two systems that dislike each other.
+والقاعدة الحقيقية: قواعد البيانات المشتركة ومهايئات الترجمة أدوات ترحيل مقبولة، لكنها ليست المقصد. فإن صارت دائمة، فأنت لم تكمل ترحيلًا بالنمط الخانق، بل بنيت حدًا دبلوماسيًا دائمًا بين نظامين لا يحبان بعضهما.
 
-## Release, Testing, and Rollback
+## الإصدار والاختبار والتراجع
 
-The release strategy is incremental by design. Keep one entry point, move a small amount of behavior to the new implementation, watch it, and retain the ability to send traffic back to the old path quickly. [AWS explicitly says](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-decomposing-monoliths/strangler-fig.html) each refactored service needs a rollback plan.
+استراتيجية الإصدار تدريجية بالتصميم. أبقِ نقطة دخول واحدة، وانقل قدرًا صغيرًا من السلوك إلى التنفيذ الجديد، وراقبه، واحتفظ بالقدرة على إعادة الحركة إلى المسار القديم بسرعة. و[تقول AWS صراحةً](https://docs.aws.amazon.com/prescriptive-guidance/latest/modernization-decomposing-monoliths/strangler-fig.html) إن كل خدمة مُعاد هيكلتها تحتاج خطة تراجع.
 
-Branch by Abstraction gives the same logic at code level: old and new implementations coexist behind one abstraction so the system stays releasable while the change is in progress. Feature flags can be used in test environments to compare behaviors while the migration is underway.
+ويمنح Branch by Abstraction المنطق نفسه على مستوى الشيفرة: يتعايش التنفيذان القديم والجديد خلف تجريد واحد فيبقى النظام قابلًا للإصدار بينما التغيير جارٍ. ويمكن استخدام أعلام الميزات في بيئات الاختبار لمقارنة السلوكيات بينما الترحيل جارٍ.
 
-Azure’s database example adds another useful tactic: shadow writes and validation *before* making the new store authoritative. That mindset applies beyond data. The more you can compare old and new behavior safely before full cutover, the lower the migration risk.
+ويضيف مثال قاعدة البيانات عند Azure تكتيكًا مفيدًا آخر: الكتابات الظلّية والتحقق *قبل* جعل المخزن الجديد مرجعيًا. وهذه الذهنية تنطبق خارج البيانات. فكلما زاد ما تستطيع مقارنته بأمان بين السلوك القديم والجديد قبل الانتقال الكامل، انخفض خطر الترحيل.
 
-The important point: “gradual” has to mean more than splitting work into sprints. It means the system can actually run with both implementations present and switch between them safely.
+والنقطة المهمة: «تدريجي» يجب أن يعني أكثر من تقسيم العمل إلى سبرنتات، بل يعني أن يستطيع النظام العمل فعلًا بالتنفيذين معًا والتبديل بينهما بأمان.
 
-## Organizational Implications
+## الآثار التنظيمية
 
-This pattern isn’t just a routing trick. AWS ties the benefits of decomposition to team ownership and delivery speed—smaller components can be released independently, scaled independently, and owned more clearly. [Google says](https://cloud.google.com/resources/rearchitecting-to-cloud-native) teams need enough authority and capacity to make architectural evolution part of daily work instead of treating modernization as a side quest.
+هذا النمط ليس حيلة توجيه فقط. فـAWS يربط فوائد التفكيك بملكية الفريق وسرعة التسليم—فالمكوّنات الأصغر تُصدر باستقلال، وتتوسّع باستقلال، وتملك ملكية أوضح. و[تقول Google](https://cloud.google.com/resources/rearchitecting-to-cloud-native) إن الفرق تحتاج صلاحية وسعة كافية لجعل التطور المعماري جزءًا من العمل اليومي بدل معاملة التحديث كمهمة جانبية.
 
-In practice, Strangler Fig works best when business boundaries, code boundaries, deployment boundaries, and team boundaries more or less agree. When they don’t, the migration turns into a long chain of coordination meetings pretending to be architecture.
+وعمليًا، يعمل نمط الشجرة الخانقة أفضل ما يعمل عندما تتفق حدود العمل، وحدود الشيفرة، وحدود النشر، وحدود الفرق، أكثر أو أقل. وعندما لا تتفق، يتحوّل الترحيل إلى سلسلة طويلة من اجتماعات التنسيق متنكّرة في هيئة معمارية.
 
-## When to Use It
+## متى تستخدمه
 
-- The old system can continue to exist for a while.
-- Requests can be intercepted through a façade or proxy.
-- Replacing the whole thing at once would be risky.
-- You must keep shipping features during the migration.
-- Clients shouldn’t have to understand two different backends.
+- يستطيع النظام القديم البقاء لفترة.
+- يمكن اعتراض الطلبات عبر واجهة أو وسيط.
+- استبدال النظام كامل دفعة واحدة سيكون محفوفًا بالمخاطر.
+- عليك مواصلة شحن الميزات أثناء الترحيل.
+- لا ينبغي أن يضطر العملاء إلى فهم نظامين خلفيين مختلفين.
 
-The pattern also works for API versioning and for continuing to support legacy interactions that won’t be upgraded immediately.
+ويعمل النمط أيضًا لإصدار الواجهات البرمجية وللاستمرار في دعم تفاعلات قديمة لن تُرقّى فورًا.
 
-## When Not to Use It
+## متى لا تستخدمه
 
-- The system is small enough that a direct replacement is simpler.
-- Requests can’t be intercepted.
-- You need to decommission the original solution quickly.
+- النظام صغير بما يكفي ليكون الاستبدال المباشر أبسط.
+- لا يمكن اعتراض الطلبات.
+- تحتاج إلى إيقاف الحل الأصلي بسرعة.
 
-For a tiny service, “introduce façade, route traffic, shadow writes, dual stores, adapters, decommission” isn’t strategy. It’s performance art.
+فبالنسبة إلى خدمة صغيرة، فإن «أدخل واجهة، ووجّه الحركة، وكتابات ظلّية، ومخزنان، ومهايئات، وإيقاف» ليس استراتيجية، بل فن أدائي.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-Most failed strangler migrations fail in boringly predictable ways:
+معظم ترحيلات الشجرة الخانقة الفاشلة تفشل بطرق متوقّعة إلى حد الملل:
 
-- **The façade becomes a bottleneck.** The proxy introduces latency or becomes a single point of failure. Monitor it like the critical infrastructure it is.
-- **Wrong decomposition boundaries.** The domain wasn’t understood before extraction started. Do the domain modeling work *first*.
-- **Permanent dual-write pain.** Data synchronization was supposed to be tactical and became permanent. Set explicit timelines for retiring the old store.
-- **The monolith keeps growing.** New features keep flowing into legacy code, so it never shrinks. Enforce the rule: new work goes into the new system.
-- **Nobody cleans up.** Temporary adapters and compatibility layers are never deleted, leaving the system in a permanent half-migrated state. Schedule the cleanup. Put it on the roadmap. If it’s not scheduled, it won’t happen.
+- **تصير الواجهة عنق زجاجة.** فيُدخل الوسيط زمن استجابة أو يصير نقطة فشل وحيدة. راقبه كما تراقب بنية تحتية حرجة، لأنه كذلك.
+- **حدود تفكيك خاطئة.** لم يُفهم النطاق قبل بدء الاستخراج. أنجز عمل نمذجة النطاق *أولًا*.
+- **ألم كتابة مزدوجة دائم.** كان يفترض بالتزامن البيانات أن يكون تكتيكيًا فصار دائمًا. حدّد جداول زمنية صريحة لإحالة المخزن القديم إلى التقاعد.
+- **التطبيق المتجانس يستمر في النمو.** تستمر الميزات الجديدة في التدفق إلى الشيفرة القديمة فلا يتقلص أبدًا. افرض القاعدة: العمل الجديد يذهب إلى النظام الجديد.
+- **لا أحد ينظّف.** لا تُحذف المهايئات المؤقتة وطبقات التوافق قط، فيبقى النظام في حالة نصف مرحلة دائمة. اجدول التنظيف. ضعه في خارطة الطريق. فإن لم تُجدوله لن يحدث.
 
-## The Shortest Useful Definition
+## أقصر تعريف مفيد
 
-Keep a stable front door. Move one meaningful slice at a time. Let old and new coexist safely. Shift traffic gradually. Migrate data with discipline. Delete the old path completely when the new one proves itself.
+أبقِ بابًا أماميًا مستقرًا. انقل شريحة ذات معنى واحدة في كل مرة. دع القديم والجديد يتعايشان بأمان. انقل الحركة تدريجيًا. رحّل البيانات بانضباط. احذف المسار القديم تمامًا عندما يثبت الجديد نفسه.
 
-If you can’t do the coexistence and cutover safely, you don’t really have a strangler migration. You have a rewrite with optimistic branding.
+وإن لم تستطع تحقيق التعايش والانتقال بأمان، فليس لديك ترحيل بالنمط الخانق فعلًا، بل إعادة كتابة بعلامة تجارية متفائلة.
 
-We’ll put this into practice in [Exercise 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise), where we’ll use a Vite proxy as the façade layer and jscodeshift codemods to mechanically transform code during the migration.
-
----
-
-## TL;DR
-
-### The Three-Phase Loop
-
-> Transform, coexist, eliminate. Repeat until the legacy system is gone.
-
-- **Transform:** Build the new implementation for one slice.
-- **Coexist:** Run both systems behind a façade (proxy, router, feature flag). Roll back if needed.
-- **Eliminate:** Delete the legacy code path entirely. If you skip this step, you don’t have a migration—you have two systems forever.
-- New features go to the new system. Always. Feeding features back into legacy prevents strangulation.
+وسنضع هذا موضع التطبيق في [التمرين 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise)، حيث سنستخدم وسيط Vite كطبقة الواجهة، وcodemods بـjscodeshift لتحويل الشيفرة ميكانيكيًا أثناء الترحيل.
 
 ---
 
-### What Counts as a Slice
+## الخلاصة السريعة (TL;DR)
 
-> The migration unit is a vertical slice with clear business meaning.
+### الحلقة ثلاثية المراحل
 
-- Has visible value to someone (users, operators, another team).
-- Has a clear owner.
-- Has low blast radius—if it breaks, the damage is contained.
-- Is *not* “rewrite the data layer” or “migrate all the forms.” Those are horizontal cuts that never finish.
-- Start with the easiest slice, not the most important one. You’re building confidence in the process.
+> حوّل، تعايش، أزِل. وكرّر حتى يختفي النظام القديم.
+
+- **حوّل:** ابنِ التنفيذ الجديد لشريحة واحدة.
+- **تعايش:** شغّل النظامين خلف واجهة (وسيط، موجّه، علم ميزة). وتراجع عند الحاجة.
+- **أزِل:** احذف مسار الشيفرة القديمة تمامًا. فإن تجاوزت هذه الخطوة، فليس لديك ترحيل—بل نظامان إلى الأبد.
+- الميزات الجديدة تذهب إلى النظام الجديد. دائمًا. فتغذية الميزات عائدةً إلى القديم تمنع الخَنْق.
 
 ---
 
-### Common Failure Modes
+### ما الذي يُعدّ شريحة
 
-> Most strangler fig migrations don’t fail because of the technology.
+> وحدة الترحيل شريحة رأسية بمعنى تجاري واضح.
 
-- **Façade becomes a bottleneck:** The routing layer accumulates logic and becomes its own monolith.
-- **Wrong decomposition:** You carved along technical boundaries instead of business boundaries. Now every feature change touches both systems.
-- **Permanent dual-writes:** The “temporary” data synchronization layer becomes load-bearing infrastructure nobody dares remove.
-- **No cleanup:** Compatibility layers and adapters survive long past their usefulness. Schedule the deletion. Put it on the roadmap.
-- **The monolith keeps growing:** If new features still land in the legacy system, the migration will never converge.
+- لها قيمة مرئية لأحدهم (مستخدمون، مشغّلون، فريق آخر).
+- لها مالك واضح.
+- لها نطاق تأثير منخفض—فإن تعطّلت، احتُوي الضرر.
+- و*ليست* «أعد كتابة طبقة البيانات» أو «رحّل كل النماذج». فتلك قطع أفقية لا تنتهي أبدًا.
+- ابدأ بأسهل شريحة، لا بأهمها. فأنت تبني الثقة في العملية.
+
+---
+
+### أنماط الفشل الشائعة
+
+> معظم ترحيلات الشجرة الخانقة لا تفشل بسبب التقنية.
+
+- **الواجهة تصير عنق زجاجة:** تتراكم المنطق في طبقة التوجيه فتصير تطبيقًا متجانسًا بذاتها.
+- **تفكيك خاطئ:** قطعت على حدود تقنية لا حدود تجارية. والآن كل تغيير ميزة يلمس النظامين.
+- **كتابات مزدوجة دائمة:** تصير طبقة تزامن البيانات «المؤقتة» بنية تحتية حاملة لا يجرؤ أحد على إزالتها.
+- **لا تنظيف:** تبقى طبقات التوافق والمهايئات أطول بكثير من نفعها. اجدول الحذف. ضعه في خارطة الطريق.
+- **التطبيق المتجانس يستمر في النمو:** إن بقيت الميزات الجديدة تهبط في النظام القديم، فلن يتقارب الترحيل أبدًا.

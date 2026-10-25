@@ -40,11 +40,11 @@ title: "تنسيق المحرّر (Editor Layout)"
 
 وضع Zen هو الحل المثالي للتأمل في الشيفرة. عند تفعيله، يُزيل وضع Zen جميع الأشرطة، واللوحات، والمشتّتات، تاركًا لك محرّرًا بملء الشاشة للتركيز على كتابة الشيفرة أو قراءتها. لتفعيل وضع Zen، بدّله تحت `View -> Appearance -> Zen Mode`، أو ابحث عن `View: Toggle Zen Mode` في لوحة الأوامر.
 
-بمجرد دخولك وضع Zen، يمكنك لا يزال التحويم near edges of the screen to reveal hidden bars or use your favorite shortcuts as usual. اخرج من وضع Zen بالطريقة نفسها التي دخلته بها — عبر نفس القائمة أو بالضغط على `Escape` مرتين.
+بمجرد دخولك وضع Zen، يمكنك مع ذلك التحويم قرب حواف الشاشة لإظهار الأشرطة المخفية، أو استخدام اختصاراتك المعتادة كما هي. اخرج من وضع Zen بالطريقة نفسها التي دخلته بها — عبر نفس القائمة أو بالضغط على `Escape` مرتين.
 
 > **إضافة اختصارات لوضع Zen**
 >
-> إن كنت تستخدم وضع Zen بشكل متكرّر، فعيّن اختصار لوحة مفاتيح مخصصًا له في اختصاراتك (`File -> Preferences -> Keyboard Shortcuts` أو `Code -> Preferences -> Keyboard Shortcuts` على macOS). ستكون على مسافة ضغطة مفتاح واحدة من ذلك الهدوء minimalistic bliss.
+> إن كنت تستخدم وضع Zen بشكل متكرّر، فعيّن اختصار لوحة مفاتيح مخصصًا له في اختصاراتك (`File -> Preferences -> Keyboard Shortcuts` أو `Code -> Preferences -> Keyboard Shortcuts` على macOS). ستكون على مسافة ضغطة مفتاح واحدة من ذلك الصفاء البسيط المطمئن.
 
 ## تقسيم المحرّر (Splitting the Editor)
 

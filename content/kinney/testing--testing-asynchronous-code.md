@@ -1,12 +1,12 @@
 ---
-title: "Testing Asynchronous Code"
-lang: en
+title: "اختبار الشيفرة غير المتزامنة"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-asynchronous-code"
 ---
 
-As with almost everything in JavaScript, asynchronous code makes everything harder. (**Spoiler**: But, also—as with almost everything in JavaScript relating to asynchronous code, `async`/`await` tends to make that hard part easier.)
+كما هو الحال مع كل شيء تقريبًا في JavaScript، تجعل الشيفرة غير المتزامنة كل شيء أصعب. (**حرق المفاجأة**: لكن أيضًا—كما هو الحال مع كل شيء تقريبًا في JavaScript يتعلّق بالشيفرة غير المتزامنة، فإن `async`/`await` يميل إلى جعل ذلك الجزء الصعب أسهل.)
 
-Consider this test for a moment:
+تأمّل هذا الاختبار للحظة:
 
 ```typescript
 test('Asynchronous code accidentally passes', () => {
@@ -16,7 +16,7 @@ test('Asynchronous code accidentally passes', () => {
 });
 ```
 
-It’s not that this test is any good, it’s just that the assertion never runs.
+ليست المشكلة أن هذا الاختبار جيد بأي حال، بل إن التحقّق لا يُنفَّذ أبدًا.
 
 ```typescript
 test('Asynchronous code has zero expectations', () => {
@@ -28,7 +28,7 @@ test('Asynchronous code has zero expectations', () => {
 });
 ```
 
-Put another way, we can assert that our assertion never—umm—*asserts*.
+بعبارة أخرى، يمكننا التأكيد على أن تحقّقنا لا… همم… *يتحقّق* أبدًا.
 
 ```typescript
 test.fails('Code inside of callback never runs', () => {
@@ -40,7 +40,7 @@ test.fails('Code inside of callback never runs', () => {
 });
 ```
 
-In some frameworks, you’d be able to do something like this.
+في بعض الأطر، ستستطيع فعل شيء كهذا.
 
 ```typescript
 // 🚨 This will not work in Vitest.
@@ -56,13 +56,13 @@ test('Code inside of callback never runs', (done) => {
 });
 ```
 
-As the comment says, this will *not* work in Vitest. I only mention it because this course isn’t supposed to be Vitest-specific—that’s the just the tool we chose to use. Regardless, what follows is *probably* what you want anyway.
+كما تقول التعليقات، هذا *لن* يعمل في Vitest. أذكره فقط لأن هذه الدورة ليست مخصّصة لـVitest—فتلك هي الأداة التي اخترنا استخدامها فحسب. على أي حال، ما يأتي هو *على الأرجح* ما تريده بالفعل.
 
-## Using `async`/`await`
+## استخدام `async`/`await`
 
-We no longer live in a world riddled with callbacks. These days, most of our asynchronous code either uses `async`/`await` or—at least—uses promises.
+لم نعد نعيش في عالم مليء بردود النداء. في هذه الأيام، تستخدم معظم شيفرتنا غير المتزامنة إمّا `async`/`await` أو—على الأقل—الوعود.
 
-Consider the following two tests:
+تأمّل الاختبارين التاليين:
 
 ```typescript
 const addAsync = (a: number, b: number) => Promise.resolve(a + b);
@@ -80,7 +80,7 @@ it('passes if use an `async/await`', async () => {
 });
 ```
 
-The first test fails with the following error:
+يفشل الاختبار الأول بالخطأ التالي:
 
 ```diff
 - Expected "5"
@@ -88,11 +88,11 @@ The first test fails with the following error:
 + Received "Promise {}"
 ```
 
-> **Working with Promises**
+> **العمل مع الوعود**
 >
-> If you’re working with Promises, [Vitest also has some special functionality](https://stevekinney.com/courses/testing/testing-promises) that you could optionally use.
+> إذا كنت تعمل مع الوعود (Promises)، فإن [لدى Vitest أيضًا بعض الوظائف الخاصة](https://stevekinney.com/courses/testing/testing-promises) التي يمكنك استخدامها اختياريًا.
 
-## Further Reading
+## قراءات إضافية
 
-- [Testing Promises](https://stevekinney.com/courses/testing/testing-promises)
-- [Testing Asynchronous Errors](https://stevekinney.com/courses/testing/testing-asynchronous-errors)
+- [اختبار الوعود](https://stevekinney.com/courses/testing/testing-promises)
+- [اختبار الأخطاء غير المتزامنة](https://stevekinney.com/courses/testing/testing-asynchronous-errors)

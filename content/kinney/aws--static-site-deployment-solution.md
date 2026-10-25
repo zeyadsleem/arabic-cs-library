@@ -1,35 +1,35 @@
 ---
-title: "Solution: End-to-End Static Site Deployment"
-lang: en
+title: "الحل: نشر موقع ثابت من البداية إلى النهاية"
+lang: ar
 source: "https://stevekinney.com/courses/aws/static-site-deployment-solution"
 ---
 
-This is the complete solution for the [End-to-End Static Site Deployment exercise](https://stevekinney.com/courses/aws/static-site-deployment-exercise). I’ve included every command with its expected output so you can compare as you go.
+هذا هو الحل الكامل لـ[تمرين نشر موقع ثابت من البداية إلى النهاية](https://stevekinney.com/courses/aws/static-site-deployment-exercise). وقد أدرجت كل أمر مع ناتجه المتوقع كي تقارن أثناء عملك.
 
-## Why This Works
+## لماذا يعمل هذا
 
-- This workflow turns two services into one deployment path: S3 stores the files, CloudFront serves them over HTTPS on a `*.cloudfront.net` domain.
-- The bucket stays private because CloudFront is the only public entry point that needs direct read access.
-- The final sync-plus-invalidation loop is the practical deployment cycle you will repeat long after the exercise is over.
+- يحوّل سير العمل هذا خدمتين إلى مسار نشر واحد: S3 يخزّن الملفات، وCloudFront يقدّمها عبر HTTPS على نطاق `*.cloudfront.net`.
+- تبقى الحاوية خاصة لأن CloudFront هو نقطة الدخول العامة الوحيدة التي تحتاج إلى وصول قراءة مباشر.
+- حلقة المزامنة مع الإبطال في النهاية هي دورة النشر العملية التي ستكررها طويلًا بعد انتهاء التمرين.
 
-If you want the AWS version of the end-to-end workflow open while you work, keep the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) and the [CloudFront OAC guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) nearby.
+إن أردت نسخة AWS من سير العمل من البداية إلى النهاية مفتوحة أثناء عملك، فأبقِ [درس موقع S3 الثابت](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) و[دليل OAC في CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) قريبين.
 
-## Create the S3 Bucket
+## إنشاء حاوية S3
 
-Create the bucket:
+أنشئ الحاوية:
 
 ```bash
 aws s3 mb s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```
 make_bucket: my-frontend-app-assets
 ```
 
-Enable Block Public Access:
+مكّن حظر الوصول العام:
 
 ```bash
 aws s3api put-public-access-block \
@@ -39,9 +39,9 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-No output on success.
+لا ناتج عند النجاح.
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3api get-public-access-block \
@@ -50,7 +50,7 @@ aws s3api get-public-access-block \
   --output json
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -63,16 +63,16 @@ Expected:
 }
 ```
 
-## Upload Your Site
+## ارفع موقعك
 
-Create a minimal site if you don’t have one:
+أنشئ موقعًا أدنى إن لم يكن لديك واحد:
 
 ```bash
 mkdir -p build
 echo '<!DOCTYPE html><html><head><title>My Site</title></head><body><h1>It works.</h1></body></html>' > build/index.html
 ```
 
-Upload:
+ارفع:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -80,26 +80,26 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```
 upload: build/index.html to s3://my-frontend-app-assets/index.html
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws s3 ls s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Expected:
+المتوقع:
 
 ```
 2026-03-18 12:00:00        102 index.html
 ```
 
-## Create an Origin Access Control
+## إنشاء Origin Access Control
 
 ```bash
 aws cloudfront create-origin-access-control \
@@ -114,7 +114,7 @@ aws cloudfront create-origin-access-control \
   --output json
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -133,11 +133,11 @@ Expected:
 }
 ```
 
-Save the `Id` value (`E1OAC2EXAMPLE`).
+احفظ قيمة `Id` (`E1OAC2EXAMPLE`).
 
-## Create the CloudFront Distribution
+## إنشاء توزيع CloudFront
 
-Save the following as `distribution-config.json`:
+احفظ ما يلي باسم `distribution-config.json`:
 
 ```json
 {
@@ -204,7 +204,7 @@ Save the following as `distribution-config.json`:
 }
 ```
 
-Create the distribution:
+أنشئ التوزيع:
 
 ```bash
 aws cloudfront create-distribution \
@@ -213,7 +213,7 @@ aws cloudfront create-distribution \
   --output json
 ```
 
-Expected (abridged):
+المتوقع (مختصرًا):
 
 ```json
 {
@@ -226,9 +226,9 @@ Expected (abridged):
 }
 ```
 
-Save the distribution ID and domain name.
+احفظ معرّف التوزيع واسم النطاق.
 
-Wait for deployment:
+انتظر النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -236,22 +236,22 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-No output on success. Verify:
+لا ناتج عند النجاح. تحقّق:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 200
 content-type: text/html
 ```
 
-## Update the S3 Bucket Policy
+## تحديث سياسة حاوية S3
 
-Save the following as `bucket-policy-oac.json`:
+احفظ ما يلي باسم `bucket-policy-oac.json`:
 
 ```json
 {
@@ -275,7 +275,7 @@ Save the following as `bucket-policy-oac.json`:
 }
 ```
 
-Apply the policy:
+طبّق السياسة:
 
 ```bash
 aws s3api put-bucket-policy \
@@ -284,32 +284,32 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-No output on success.
+لا ناتج عند النجاح.
 
-Verify CloudFront still works:
+تحقّق من أن CloudFront ما زال يعمل:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-Expected: `200 OK`.
+المتوقع: `200 OK`.
 
-Verify direct S3 access is blocked:
+تحقّق من أن الوصول المباشر إلى S3 محظور:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Expected: `403 Forbidden`.
+المتوقع: `403 Forbidden`.
 
-## Verify the Complete Pipeline
+## التحقق من خط الأنابيب الكامل
 
 ```bash
 # HTTPS works on the CloudFront domain
 curl -I https://d1234abcdef.cloudfront.net
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 200
@@ -321,7 +321,7 @@ content-type: text/html
 curl -I https://d1234abcdef.cloudfront.net/any/spa/route
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 200
@@ -333,21 +333,21 @@ content-type: text/html
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/1.1 403 Forbidden
 ```
 
-## Test a Deployment
+## اختبار عملية نشر
 
-Update the site content:
+حدّث محتوى الموقع:
 
 ```bash
 echo '<!DOCTYPE html><html><head><title>My Site</title></head><body><h1>Updated content.</h1></body></html>' > build/index.html
 ```
 
-Sync to S3:
+زامن إلى S3:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -356,13 +356,13 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --output json
 ```
 
-Expected:
+المتوقع:
 
 ```
 upload: build/index.html to s3://my-frontend-app-assets/index.html
 ```
 
-Invalidate the cache:
+أبطل الذاكرة المؤقتة:
 
 ```bash
 aws cloudfront create-invalidation \
@@ -372,7 +372,7 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -391,30 +391,30 @@ Expected:
 }
 ```
 
-Wait a minute, then verify:
+انتظر دقيقة، ثم تحقّق:
 
 ```bash
 curl -s https://d1234abcdef.cloudfront.net | grep "Updated content"
 ```
 
-Expected:
+المتوقع:
 
 ```
 <h1>Updated content.</h1>
 ```
 
-## Summary of Resources Created
+## ملخص الموارد المنشأة
 
-| Resource | Identifier |
+| المورد | المعرّف |
 | --- | --- |
-| S3 Bucket | `my-frontend-app-assets` |
+| حاوية S3 | `my-frontend-app-assets` |
 | Origin Access Control | `E1OAC2EXAMPLE` |
-| CloudFront Distribution | `E1A2B3C4D5E6F7` |
-| CloudFront Domain | `d1234abcdef.cloudfront.net` |
-| S3 Bucket Policy | CloudFront-only access via OAC |
+| توزيع CloudFront | `E1A2B3C4D5E6F7` |
+| نطاق CloudFront | `d1234abcdef.cloudfront.net` |
+| سياسة حاوية S3 | وصول CloudFront فقط عبر OAC |
 
-Your static site is live at `https://d1234abcdef.cloudfront.net`, served globally through CloudFront, stored in a private S3 bucket, and secured with HTTPS via the default CloudFront certificate. The deployment cycle (sync + invalidate) updates the site in under a minute.
+موقعك الثابت الآن مباشر على `https://d1234abcdef.cloudfront.net`، مقدَّمًا عالميًا عبر CloudFront، ومخزَّنًا في حاوية S3 خاصة، ومؤمَّنًا بـ HTTPS عبر شهادة CloudFront الافتراضية. وتحدّث دورة النشر (المزامنة + الإبطال) الموقع في أقل من دقيقة.
 
-> **Tip**
+> **نصيحة**
 >
-> Want to put this behind a custom domain? See the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course.
+> أتريد وضع هذا خلف نطاق مخصّص؟ راجع قسم [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) الاختياري في نهاية الدورة.

@@ -1,12 +1,12 @@
 ---
-title: "Assigning Keybindings to Snippets"
-lang: en
+title: "إسناد اختصارات لوحة المفاتيح للمقتطفات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/keybindings-for-snippets-vscode"
 ---
 
-Custom keybindings aren’t limited to built-in commands. You can also bind snippets, custom tasks, or extension-specific features.
+لا تقتصر اختصارات لوحة المفاتيح المخصّصة على الأوامر المدمجة، إذ يمكنك أيضًا ربط المقتطفات أو المهام المخصّصة أو الميزات الخاصة بإضافة معيّنة.
 
-For instance, if you want a quick snippet of a React component:
+فمثلًا، إن أردت مقتطفًا سريعًا لمكوّن React:
 
 ```json
 {
@@ -20,8 +20,8 @@ For instance, if you want a quick snippet of a React component:
 }
 ```
 
-This snippet triggers a predefined snippet named `ReactFunctionalComponent` whenever you press `Ctrl+Alt+R` in a TypeScript React file. It’s a neat way to supercharge your coding rhythm, especially if you find yourself creating a ton of boilerplate.
+يشغّل هذا المقتطف مقتطفًا معرّفًا مسبقًا اسمه `ReactFunctionalComponent` كلما ضغطت `Ctrl+Alt+R` في ملف TypeScript React. وهي طريقة أنيقة لتعزيز إيقاع برمجتك، خصوصًا إن كنت تُنشئ كثيرًا من الشيفرة الجاهزة المتكرّرة.
 
-> **I don’t use this feature a lot.**
+> **لا أستخدم هذه الميزة كثيرًا.**
 >
-> I should, but I am very anxious about running out of keybindings for Other Stuff™.
+> يجب أن أستخدمها، لكني قلق جدًا من أن تنفد اختصارات لوحة المفاتيح المخصّصة لأشياء أخرى™.

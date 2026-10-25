@@ -1,88 +1,88 @@
 ---
-title: "Choosing an Orchestration Tool"
-lang: en
+title: "اختيار أداة التنسيق"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/choosing-an-orchestration-tool"
 ---
 
-By now you’ve seen several ways to get work done without typing every step: scheduled automations, subagents, ACP coding sessions, Lobster workflows, swarms. They overlap, and it’s not always obvious which one a job calls for. This lesson is the map. It also covers three smaller tools that haven’t had a lesson of their own (goals, standing intents, and inbound webhooks) and explains what happened to TaskFlow.
+حتى الآن رأيت طرقًا عدة لإنجاز العمل دون كتابة كل خطوة: الأتمتات المجدولة، والوكلاء الفرعيون، وجلسات برمجة ACP، وسيور عمل Lobster، والأسراب. وهي متشابكة، وليس واضحًا دائمًا أيّها يناسب مهمة بعينها. هذا الدرس هو الخريطة. ويتناول أيضًا ثلاث أدوات أصغر لم يحصل كل منها على درس مستقل (الأهداف، والنوايا القائمة، وخطافات الويب الواردة) ويشرح ما حدث لـ TaskFlow.
 
-## What Happened to TaskFlow
+## ما حدث لـ TaskFlow
 
-If you’ve read older OpenClaw guides, you’ve seen **TaskFlow** and the **Tasks ledger**. The Tasks ledger was a shared record of all detached work, and you inspected it with `openclaw tasks list`. TaskFlow added durable multi-step “flows” on top of it, with stages, waits, and linked child tasks.
+إن كنت قد قرأت أدلة OpenClaw الأقدم، فقد رأيت **TaskFlow** و**سجل المهام (Tasks ledger)**. كان سجل المهام سجلًا مشتركًا لكل الأعمال المنفصلة، وكنت تفحصه بـ `openclaw tasks list`. وأضاف TaskFlow فوقه «سيورًا» دائمة متعددة الخطوات، لها مراحل وانتظارات ومهام أبناء مرتبطة.
 
-**Both were removed in OpenClaw `2026.9.7`.** The project’s reasoning was that the ledger duplicated state that each runtime already tracks for itself. Automations keep their own run history, subagents track their own children, and ACP sessions manage their own lifecycle. The docs sum it up as: each runtime owns execution and completion.
+**أُزيل الاثنان في OpenClaw `2026.9.7`.** وكان تعليل المشروع أن السجل يكرّر حالة كل بيئة تشغيل تتعقّبها بنفسها أصلًا. فالأتمتات تحتفظ بتاريخ تشغيلها، والوكلاء الفرعيون يتعقّبون أبناءهم، وجلسات ACP تدير دورة حياتها. وتلخّص الوثائق ذلك بأن: كل بيئة تشغيل تملك التنفيذ والإتمام.
 
-What that means in practice:
+وما يعنيه ذلك عمليًا:
 
-- `openclaw tasks` no longer exists. Running it gets you `OpenClaw does not know the command "tasks"`.
-- Old task and flow records stay in the database but nothing reads them, and nothing converts old flows into something else.
-- If you used the **TaskFlow Webhooks** plugin, its config is now ignored with a `plugin removed: webhooks` warning. `openclaw doctor --fix` cleans it up.
+- لم يعد `openclaw tasks` موجودًا. وتشغيله يعطيك `OpenClaw does not know the command "tasks"`.
+- تبقى سجلات المهام والسيور القديمة في قاعدة البيانات لكن لا شيء يقرأها، ولا شيء يحوّل السيور القديمة إلى شيء آخر.
+- إن كنت تستخدم إضافة **TaskFlow Webhooks**، فإعدادها الآن متجاهَل مع تحذير `plugin removed: webhooks`. وينظّفه `openclaw doctor --fix`.
 
-Here’s where each old job went:
+وإليك أين ذهبت كل مهمة قديمة:
 
-| You used to… | Now use |
+| كنت… | استخدم الآن |
 | --- | --- |
-| Check on delegated work with `tasks list` | `/subagents list`, `info`, and `log` ([Subagents](https://stevekinney.com/courses/openclaw/subagents-and-orchestration)) |
-| Check scheduled runs with `tasks list` | `openclaw automations runs <job-id>` |
-| Stop work with `tasks cancel` | `/stop`, the **Stop** button in the Control UI, or `/acp` controls for ACP sessions |
-| Wait for several children to finish | Let the parent wait for their announcements, or use a [swarm](https://stevekinney.com/courses/openclaw/swarms) |
-| Run a multi-step flow with approval gates | A [Lobster workflow](https://stevekinney.com/courses/openclaw/lobster-workflows) |
-| Wait for an outside event | An automation with a trigger script, or an [inbound webhook](#inbound-webhooks) |
-| Track one long objective | A [goal](#goals) |
-| Audit what ran | `openclaw audit` |
+| تتابع العمل المفوَّض بـ `tasks list` | `/subagents list` و`info` و`log` ([الوكلاء الفرعيون](https://stevekinney.com/courses/openclaw/subagents-and-orchestration)) |
+| تفحص التشغيلات المجدولة بـ `tasks list` | `openclaw automations runs <job-id>` |
+| توقف العمل بـ `tasks cancel` | `/stop`، أو زر **Stop** في واجهة التحكم، أو أدوات `/acp` لجلسات ACP |
+| تنتظر انتهاء عدة أبناء | اتـرك الأصل ينتظر إبلاغاتهم، أو استخدم [سربًا](https://stevekinney.com/courses/openclaw/swarms) |
+| تشغّل سيرًا متعدد الخطوات ببوابات موافقة | [سير عمل Lobster](https://stevekinney.com/courses/openclaw/lobster-workflows) |
+| تنتظر حدثًا خارجيًا | أتمتة بسكربت مشغّل، أو [خطاف ويب وارد](#inbound-webhooks) |
+| تتعقّب هدفًا واحدًا طويلًا | [هدف](#goals) |
+| تدقّق ما جرى | `openclaw audit` |
 
-One gap is real. Nothing today replaces a durable, revision-tracked flow that coordinates work across different runtimes. Lobster is the closest fit for multi-step work, but its saved state is a set of files on disk, not a shared ledger.
+ثمة ثغرة حقيقية واحدة. لا شيء اليوم يعوّض سيرًا دائمًا متعقَّب المراجعات ينسّق العمل عبر بيئات تشغيل مختلفة. وLobster أقرب ما يلائم العمل متعدد الخطوات، لكن حالته المحفوظة مجموعة ملفات على القرص، لا سجل مشترك.
 
-## The Map
+## الخريطة
 
-| Tool | Starts when | Good for |
+| الأداة | تبدأ متى | تصلح لـ |
 | --- | --- | --- |
-| [Scheduled automation](https://stevekinney.com/courses/openclaw/automation-ideas) | A clock, an interval, or a condition script | Briefs, digests, watchers, reminders |
-| Heartbeat | Every 30 minutes, on your main session | Ambient “anything need my attention?” checks |
-| Standing order | Always loaded from `AGENTS.md` | An ongoing responsibility, paired with a schedule |
-| [Standing intent](#standing-intents) | Something specific comes up in conversation | “When X comes up, remind me about Y” |
-| [Goal](#goals) | You set one in a session | One concrete outcome pursued over many turns |
-| [Subagent](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) | Your agent decides to delegate | A few independent pieces of work in parallel |
-| [Swarm](https://stevekinney.com/courses/openclaw/swarms) | Your agent runs a fan-out script | Five or more similar tasks with structured results |
-| [ACP session](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) | Your agent hands work to a coding harness | Real coding work in Claude Code, Codex, and others |
-| [Lobster workflow](https://stevekinney.com/courses/openclaw/lobster-workflows) | Your agent or an automation runs a pipeline | A fixed recipe with steps that need sign-off |
-| [LLM Task](https://stevekinney.com/courses/openclaw/llm-task) | A workflow needs one structured answer | Classifying, extracting, or deciding, as JSON |
-| [Inbound webhook](#inbound-webhooks) | An outside service calls your Gateway | Reacting to events from other systems |
+| [أتمتة مجدولة](https://stevekinney.com/courses/openclaw/automation-ideas) | ساعة، أو فاصل، أو سكربت شرط | الإحاطات والملخّصات والمراقبات والتذكيرات |
+| نبضة (Heartbeat) | كل 30 دقيقة، على جلستك الرئيسية | فحوصات محيطة من نوع «هل يحتاج شيء انتباهي؟» |
+| أمر دائم | يُحمَّل دائمًا من `AGENTS.md` | مسؤولية مستمرة، مقترنة بجدولة |
+| [نية قائمة](#standing-intents) | يظهر شيء محدّد في المحادثة | «حين يظهر X، ذكّرني بـ Y» |
+| [هدف](#goals) | تضبطه في جلسة | نتيجة ملموسة واحدة تُتابَع على مدى أدوار كثيرة |
+| [وكيل فرعي](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) | يقرّر وكيلك التفويض | بضع قطع عمل مستقلة بالتوازي |
+| [سرب](https://stevekinney.com/courses/openclaw/swarms) | يشغّل وكيلك سكربت توزيع | خمس مهام متشابهة أو أكثر بنتائج منظّمة |
+| [جلسة ACP](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) | يسلّم وكيلك العمل إلى أداة برمجة | عمل برمجة حقيقي في Claude Code وCodex وغيرهما |
+| [سير عمل Lobster](https://stevekinney.com/courses/openclaw/lobster-workflows) | يشغّل وكيلك أو أتمتة خطّ معالجة | وصفة ثابتة بخطوات تحتاج إقرارًا |
+| [مهمة LLM](https://stevekinney.com/courses/openclaw/llm-task) | يحتاج سير عمل إجابة منظّمة واحدة | التصنيف أو الاستخلاص أو القرار، بصيغة JSON |
+| [خطاف ويب وارد](#inbound-webhooks) | تستدعي خدمة خارجية بوابتك | التفاعل مع أحداث من أنظمة أخرى |
 
-They’re meant to be combined. A weekly report might be a standing order that says what the agent owns, an automation that wakes it on Fridays, a Lobster workflow that gathers data and pauses before sending, and an LLM Task step inside that workflow that classifies each item.
+والمقصود أن تُدمج. فقد يكون التقرير الأسبوعي أمرًا دائمًا يقول ما يملكه الوكيل، وأتمتة توقظه أيام الجمعة، وسير عمل Lobster يجمع البيانات ويتوقّف قبل الإرسال، وخطوة مهمة LLM داخل ذلك السير تصنّف كل عنصر.
 
-## How to Choose
+## كيف تختار
 
-Ask these in order:
+اسأل هذه بالترتيب:
 
-1. **Does it happen at a particular time?** Use a scheduled automation.
-2. **Does it happen when something comes up in conversation?** Use a standing intent.
-3. **Does it happen when another system says so?** Use an inbound webhook. If your Gateway is private, use an automation that checks every few minutes instead.
-4. **Is the sequence of steps known in advance, with side effects that need your sign-off?** Use Lobster. If one step needs a judgment call, make it an LLM Task step.
-5. **Can the work be split into independent pieces?** For a few, use subagents. For many similar ones, use a swarm.
-6. **Does it need a real coding harness?** Use ACP.
-7. **Is it one outcome you’ll chip away at over a long conversation?** Set a goal.
-8. **Is it an ongoing responsibility?** Write a standing order and schedule it.
+1. **هل يحدث في وقت بعينه؟** استخدم أتمتة مجدولة.
+2. **هل يحدث حين يظهر شيء في المحادثة؟** استخدم نية قائمة.
+3. **هل يحدث حين يقول نظام آخر ذلك؟** استخدم خطاف ويب وارد. وإن كانت بوابتك خاصة، فاستخدم أتمتة تفحص كل بضع دقائق بدلًا من ذلك.
+4. **هل تسلسل الخطوات معروف مسبقًا، بآثار جانبية تحتاج إقرارك؟** استخدم Lobster. وإن احتاجت خطوة حكمًا تقديريًا، فاجعلها خطوة مهمة LLM.
+5. **هل يمكن تقسيم العمل إلى قطع مستقلة؟** لعدد قليل، استخدم الوكلاء الفرعيين. ولعدد كبير منها متشابه، استخدم سربًا.
+6. **هل يحتاج أداة برمجة حقيقية؟** استخدم ACP.
+7. **هل هو نتيجة واحدة ستنال منها شيئًا فشيئًا على مدى محادثة طويلة؟** اضبط هدفًا.
+8. **هل هي مسؤولية مستمرة؟** اكتب أمرًا دائمًا وجدوله.
 
-If you’re unsure, start with a plain conversation. Promote it to a tool once you’ve done the same thing by hand three times.
+إن لم تكن متأكدًا، فابدأ بمحادثة عادية. وارقِ الأمر إلى أداة بعد أن تفعل الشيء نفسه يدويًا ثلاث مرات.
 
-## What Survives a Restart
+## ما ينجو من إعادة التشغيل
 
-The tools differ in what happens when the Gateway restarts and in how approvals reach you. That matters most for anything that runs while you’re away.
+تختلف الأدوات في ما يحدث عند إعادة تشغيل البوابة وفي كيفية وصول الموافقات إليك. وذلك يهمّ أكثر ما يهمّ في كل ما يعمل أثناء غيابك.
 
-| Tool | After a restart | Approvals |
+| الأداة | بعد إعادة التشغيل | الموافقات |
 | --- | --- | --- |
-| Automation | Jobs and history persist. Missed jobs are rescheduled | Go to connected approval apps only. None connected means denied |
-| Goal | Persists with the session. `/new` and `/reset` clear it | A goal never approves anything |
-| Standing intent | Persists in the agent’s database | Only command owners can create one |
-| Subagent | Interrupted runs are finished off as interrupted, not restarted | Wait for a decision like any other run |
-| Swarm | Collectors are subagents. Don’t automatically re-run a batch | A collector never asks. Anything needing approval is denied |
-| Lobster | A paused run’s state is saved to disk, so you can resume it later | Built in: a step that needs approval pauses until you answer |
-| Inbound webhook | Repeated requests with the same idempotency key replay the same run | Treated as unattended, like an isolated automation |
+| أتمتة | تبقى المهام والسجل. وتُعاد جدولة المهام الفائتة | تذهب إلى تطبيقات الموافقة المتصلة فقط. ولا شيء متصل يعني الرفض |
+| هدف | يبقى مع الجلسة. ويُزيله `/new` و`/reset` | الهدف لا يوافق على شيء أبدًا |
+| نية قائمة | تبقى في قاعدة بيانات الوكيل | لا ينشئها إلا مالكو الأوامر |
+| وكيل فرعي | تُنهى التشغيلات المتقطعة بوصفها متقطعة، لا تُعاد | ينتظر قرارًا كأي تشغيل آخر |
+| سرب | الجامعون وكلاء فرعيون. لا تُعِد تشغيل دفعة تلقائيًا | الجامع لا يسأل أبدًا. وكل ما يحتاج موافقة يُرفض |
+| Lobster | تُحفظ حالة التشغيل المتوقّف على القرص، فتستطيع استئنافه لاحقًا | مدمج: الخطوة التي تحتاج موافقة تتوقّف حتى تجيب |
+| خطاف ويب وارد | الطلبات المتكرّرة بمفتاح إعادة الأثر (idempotency key) نفسه تُعيد تشغيل التشغيل نفسه | يُعامَل بوصفه بلا إشراف، كأتمتة معزولة |
 
-## Goals
+## الأهداف {#goals}
 
-A **goal** is one objective attached to the current session. It stays visible to the agent on every turn until it’s done, so a long conversation doesn’t drift away from what you were trying to finish.
+**الهدف (goal)** غاية واحدة مرتبطة بالجلسة الحالية. ويبقى ظاهرًا للوكيل في كل دور حتى ينتهي، فلا تنحرف محادثة طويلة عمّا كنت تحاول إنجازه.
 
 ```
 /goal start Draft a one-page plan for migrating my blog to a new host, with a cost estimate
@@ -93,32 +93,32 @@ A **goal** is one objective attached to the current session. It stays visible to
 /goal clear
 ```
 
-In the Control UI, a goal also shows up as a banner above the message box, with buttons to edit, pause, or clear it.
+وفي واجهة التحكم، يظهر الهدف أيضًا كشريط فوق مربّع الرسالة، مع أزرار لتعديله أو إيقافه مؤقتًا أو مسحه.
 
-The Control UI chat with a Pursuing goal banner above the message box, showing the goal text, a timer, and edit, pause, and clear buttons
+محادثة واجهة التحكم مع شريط هدف بحالة «Pursuing» فوق مربّع الرسالة، يعرض نص الهدف ومؤقّتًا وأزرار التعديل والإيقاف المؤقت والمسح
 
-What to know:
+ما ينبغي معرفته:
 
-- **One per session.** Starting a second fails with `goal already exists` until you clear the first.
-- **The agent can only finish or block it.** It can mark the goal complete, or blocked after reporting the same blocker three turns in a row. Only you can pause, resume, edit, or clear it.
-- **`/new` and `/reset` clear it,** because they start a fresh session.
-- **It isn’t a scheduler or a queue.** A goal doesn’t run anything on its own, and it doesn’t approve anything.
+- **هدف واحد لكل جلسة.** بدء هدف ثانٍ يفشل بـ `goal already exists` حتى تمسح الأول.
+- **لا يستطيع الوكيل إلا إنهاءه أو حجبه.** فيمكنه وسم الهدف مكتملًا، أو محجوبًا بعد الإبلاغ عن الحاجز نفسه ثلاثة أدوار متتالية. وأنت وحدك من يوقفه مؤقتًا أو يستأنفه أو يعدّله أو يمسحه.
+- **يمسحه `/new` و`/reset`،** لأنهما يبدآن جلسة جديدة.
+- **ليس مجدولًا ولا قائمة انتظار.** فالهدف لا يشغّل شيئًا بنفسه، ولا يوافق على شيء.
 
-## Standing Intents
+## النوايا القائمة {#standing-intents}
 
-A **standing intent** is a reminder tied to an event instead of a time. Just ask for one:
+**النية القائمة (standing intent)** تذكير مرتبط بحدث بدلًا من وقت. فاطلب واحدة فقط:
 
-> When I mention the launch checklist, remind me to confirm who owns the rollback.
+> حين أذكر قائمة إطلاق المنتج، ذكّرني بتأكيد من يملك التراجع.
 
-The next time a message contains those words, the reminder is added to the agent’s context and it brings it up. Matching is a keyword check, not a model call, so it doesn’t get fuzzier as the conversation gets longer.
+وفي المرة التالية التي تحتوي فيها رسالة على تلك الكلمات، يُضاف التذكير إلى سياق الوكيل فيطرحه. والمطابقة فحص كلمات مفتاحية، لا نداء نموذج، فلا تصبح أضبابية كلما طالت المحادثة.
 
-The defaults are deliberately cautious: each intent fires at most 3 times, waits 24 hours between fires, and expires after 90 days. By default it only applies in the channel and with the person where you created it. Only command owners (`commands.ownerAllowFrom`) can create one, and you have to do it from a chat channel.
+الإعدادات الافتراضية حذرة عن قصد: تُطلق كل نية 3 مرات على الأكثر، وتنتظر 24 ساعة بين إطلاق وآخر، وتنتهي بعد 90 يومًا. وهي افتراضيًا لا تنطبق إلا في القناة ومع الشخص اللذين أنشأتها فيهما. ولا ينشئها إلا مالكو الأوامر (`commands.ownerAllowFrom`)، وعليك أن تفعل ذلك من قناة محادثة.
 
-Ask the agent to list your standing intents to see their status, and to cancel one by name. The agent never cancels one on its own.
+اطلب من الوكيل أن يسرد نواياك القائمة لترى حالتها، وأن يلغي واحدة بالاسم. والوكيل لا يلغي واحدة بنفسه أبدًا.
 
-## Inbound Webhooks
+## خطافات الويب الواردة {#inbound-webhooks}
 
-**Inbound webhooks** let another service start an agent turn by calling your Gateway over HTTP. They’re off by default. To turn them on, add this to your config with a long random token that you use only for hooks:
+**خطافات الويب الواردة (inbound webhooks)** تتيح لخدمة أخرى بدء دور للوكيل باستدعاء بوابتك عبر HTTP. وهي معطّلة افتراضيًا. ولتفعيلها، أضف هذا إلى إعدادك برمز عشوائي طويل لا تستخدمه إلا للخطافات:
 
 ```json5
 {
@@ -132,60 +132,60 @@ Ask the agent to list your standing intents to see their status, and to cancel o
 }
 ```
 
-`allowedAgentIds` limits which agents a caller can reach. Without it, `openclaw security audit` warns that any authenticated caller can route to any agent.
+يحدّ `allowedAgentIds` أي الوكلاء يستطيع المتصل الوصول إليه. وبدونه يحذّر `openclaw security audit` من أن أي متصل موثَّق يمكنه التوجيه إلى أي وكيل.
 
-The 200 response from a webhook only means the request was accepted. It doesn’t mean the run finished, unless you ask the request to wait, as shown in exercise 4 below.
+استجابة 200 من خطاف الويب تعني فقط أن الطلب قُبل. وهي لا تعني أن التشغيل انتهى، إلا إذا طلبت من الطلب أن ينتظر، كما يوضّح التمرين 4 أدناه.
 
-> **A private Gateway can’t receive outside webhooks**
+> **بوابة خاصة لا تستطيع تلقّي خطافات ويب من الخارج**
 >
-> GitHub, Stripe, and similar services can’t reach a Gateway that’s only on your tailnet, as in [the Railway lesson](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale). Webhooks still work from machines inside your tailnet. For outside services, an automation that polls is usually the safer choice.
+> لا تستطيع GitHub وStripe وما شابههما الوصول إلى بوابة موجودة على شبكة tailnet وحدها، كما في [درس Railway](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale). ولا تزال خطافات الويب تعمل من الأجهزة داخل شبكة tailnet. وللخدمات الخارجية، فإن أتمتة تستطلع الحالة هي الخيار الأكثر أمانًا عادةً.
 
-## Try It Out
+## جرّبها
 
-These all run against your real Gateway.
+كل هذه تُشغَّل مقابل بوابتك الحقيقية.
 
-### 1. Take Inventory
+### 1. جرد ما لديك
 
-Before adding anything, see what’s already running:
+قبل إضافة أي شيء، انظر ما يعمل بالفعل:
 
 ```bash
 openclaw automations list --all
 openclaw audit --limit 20
 ```
 
-Then, in a chat with your agent:
+ثم، في محادثة مع وكيلك:
 
 ```
 /subagents list
 /goal
 ```
 
-You should see at least the system heartbeat job in the automation list. Note anything you don’t recognize and find out what created it.
+ينبغي أن ترى على الأقل مهمة نبضة النظام في قائمة الأتمتات. ودوّن أي شيء لا تعرفه واكتشف ما الذي أنشأه.
 
-### 2. Carry a Goal Through a Conversation
+### 2. امضِ بهدف عبر محادثة
 
-Pick something that takes a few turns, like the blog migration plan above. Start it with `/goal start ...`, work on it for three or four messages, and check `/goal` along the way to see the status and token use. Pause it, send an unrelated message, and confirm the agent doesn’t keep working on the goal. Resume it, finish, and run `/goal complete`.
+اختر شيئًا يستغرق بضعة أدوار، مثل خطة ترحيل المدوّنة أعلاه. ابدأه بـ `/goal start ...`، واعمل عليه ثلاث أو أربع رسائل، وافحص `/goal` في الطريق لترى الحالة واستخدام الرموز (tokens). أوقفه مؤقتًا، وأرسل رسالة غير ذات صلة، وأكّد أن الوكيل لا يواصل العمل على الهدف. ثم استأنفه، وأنهِه، ونفّذ `/goal complete`.
 
-Then start another one and send `/new`. Run `/goal` and confirm it’s gone.
+ثم ابدأ هدفًا آخر وأرسل `/new`. ونفّذ `/goal` وأكّد أنه اختفى.
 
-### 3. Set a Standing Intent and Trip It
+### 3. اضبط نية قائمة وأطلقها
 
-From Telegram, as the command owner:
+من Telegram، بصفتك مالك الأوامر:
 
-> When I mention “dentist”, remind me that I need to reschedule my cleaning.
+> حين أذكر «طبيب الأسنان»، ذكّرني بأنني بحاجة إلى إعادة جدولة تنظيف أسناني.
 
-Then send a message that mentions your dentist. The agent should bring up the reminder. Send another one right away; the 24-hour cooldown means it shouldn’t remind you again. Ask the agent to list your standing intents and confirm the intent shows that it has fired once. Then ask it to cancel the intent, and list them again to confirm it’s cancelled.
+ثم أرسل رسالة تذكر طبيب أسنانك. وينبغي أن يطرح الوكيل التذكير. وأرسل أخرى في الحال؛ فمهلة التهدئة البالغة 24 ساعة تعني أنه لا ينبغي أن يذكّرك مرة أخرى. واطلب من الوكيل أن يسرد نواياك القائمة وأكّد أن النية تُظهر أنها أُطلقت مرة. ثم اطلب منه إلغاء النية، واسردها مرة أخرى لتأكيد إلغائها.
 
-### 4. Send Your Gateway a Webhook
+### 4. أرسل خطاف ويب إلى بوابتك
 
-Enable hooks with the config above, then validate and restart. Run these on the Gateway host:
+فعّل الخطافات بالإعداد أعلاه، ثم تحقّق وأعد التشغيل. ونفّذ هذه على مضيف البوابة:
 
 ```bash
 openclaw config validate
 openclaw gateway restart
 ```
 
-From the Gateway host, send a test event that waits for the result but doesn’t deliver anything to your chat:
+من مضيف البوابة، أرسل حدث اختبار ينتظر النتيجة لكنه لا يوصّل شيئًا إلى محادثتك:
 
 ```bash
 curl --include http://127.0.0.1:18789/hooks/agent \
@@ -195,14 +195,14 @@ curl --include http://127.0.0.1:18789/hooks/agent \
   --data '{"message":"Summarize this test event: the sample import completed.","name":"Webhook smoke test","agentId":"main","deliver":false,"waitForCompletion":true}'
 ```
 
-You should get HTTP `200` with a `runId` and a `completion` object whose `status` is `ok`. Send the exact same request again: because the idempotency key matches, you get the same `runId` back instead of a second run. Then try a request with a wrong token and confirm it’s rejected.
+ينبغي أن تحصل على HTTP `200` مع `runId` وكائن `completion` حالته `ok`. وأرسل الطلب نفسه تمامًا مرة أخرى: فلأن مفتاح إعادة الأثر يطابق، تحصل على `runId` نفسه بدلًا من تشغيل ثانٍ. ثم جرّب طلبًا برمز خاطئ وأكّد أنه مرفوض.
 
-On the [Railway](https://railway.com/?referralCode=kinney) template, run these through `railway ssh --service openclaw -- ...`. If you don’t plan to use webhooks, set `hooks.enabled` back to `false` afterward.
+وفي قالب [Railway](https://railway.com/?referralCode=kinney)، نفّذ هذه عبر `railway ssh --service openclaw -- ...`. وإن كنت لا تخطّط لاستخدام خطافات الويب، فأعِد `hooks.enabled` إلى `false` بعد ذلك.
 
-### 5. If You Used TaskFlow Before
+### 5. إن كنت قد استخدمت TaskFlow سابقًا
 
-Run `openclaw doctor`. If it reports `plugin removed: webhooks`, run `openclaw doctor --fix` to clean up the old config. Then rebuild anything that relied on flows using the table at the top of this lesson.
+نفّذ `openclaw doctor`. وإن أفاد بـ `plugin removed: webhooks`، فنفّذ `openclaw doctor --fix` لتنظيف الإعداد القديم. ثم أعِد بناء أي شيء كان يعتمد على السيور باستخدام الجدول في أعلى هذا الدرس.
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> هذا الدرس يطابق OpenClaw `2026.9.8`. وإن لم يتصرّف شيء كما هو موصوف، فنفّذ الأمر مع `--help` وتفقّد [وثائق OpenClaw](https://docs.openclaw.ai/).

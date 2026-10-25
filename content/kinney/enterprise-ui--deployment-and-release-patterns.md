@@ -1,26 +1,26 @@
 ---
-title: "Deployment and Release Patterns"
-lang: en
+title: "أنماط النشر والإطلاق"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/deployment-and-release-patterns"
 ---
 
-If you’ve ever worked on a team where “deploying” and “releasing” mean the same thing, you’ve felt the tension. Deploying means pushing code to production infrastructure. Releasing means letting users see it. When those two actions are fused into one, every deploy is a public event, every rollback is an emergency, and nobody ships on Fridays because Fridays are for the brave or the reckless.
+إن كنت قد عملت يومًا في فريق يكون فيه «النشر» و«الإطلاق» شيئًا واحدًا، فقد شعرت بذلك التوتّر. النشر يعني دفع الشيفرة إلى بنية الإنتاج التحتية. والإطلاق يعني السماح للمستخدمين برؤيتها. وعندما يُدمج هذان الإجراءان في واحد، يتحوّل كل نشر إلى حدث عام، ويصبح كل تراجع حالة طارئة، ولا يشحن أحد يوم الجمعة لأن الجمعة لمن هم شجعان أو متهوّرون.
 
-The whole point of modern delivery architecture is to pull those apart. You should be able to deploy code that’s invisible to users, release features to 1% of traffic before anyone else sees them, roll back a bad release without touching the deployment pipeline, and give every pull request its own live environment for review. None of that is exotic anymore. It’s table stakes for teams that ship fast without gambling on stability.
+بيت القصيد في معمار التسليم الحديث هو فصل هذين الأمرين. ينبغي أن تكون قادرًا على نشر شيفرة غير مرئية للمستخدمين، وإطلاق الميزات لنسبة 1% من المرور قبل أن يراها أي شخص آخر، والتراجع عن إطلاق سيئ دون لمس خط أنابيب النشر، ومنح كل طلب سحب بيئته الحيّة الخاصة للمراجعة. لا شيء من ذلك غريب بعد الآن. بل هو الحد الأدنى المتوقّع للفرق التي تشحن بسرعة دون مقامرة على الاستقرار.
 
-This lecture covers the deployment, release, and environment patterns that make that possible. For the CI pipeline mechanics, see the [GitHub Actions lecture](https://stevekinney.com/courses/enterprise-ui/github-actions). For monorepo orchestration and caching, see the [Turborepo lecture](https://stevekinney.com/courses/enterprise-ui/turborepo). For versioning, see [versioning and release management](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management).
+يغطّي هذا الدرس أنماط النشر والإطلاق والبيئات التي تجعل ذلك ممكنًا. أما آليات خط أنابيب CI فراجع [درس GitHub Actions](https://stevekinney.com/courses/enterprise-ui/github-actions). ولتنسيق المستودعات الأحادية والتخزين المؤقت راجع [درس Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo). وللإصدارات راجع [إدارة الإصدارات والإطلاق](https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management).
 
-## Immutable Deployments and Content Hashing
+## عمليات النشر غير القابلة للتغيير وتجزئة المحتوى
 
-The foundation of reliable frontend deployment is **immutable infrastructure** for static assets. Modern build tools generate content-hashed filenames—`app.a1b2c3.js`, `styles.d4e5f6.css`—where the hash changes when the source changes. That unique fingerprint makes every build artifact immutable. If the content changes, the URL changes. If the URL is the same, the content is guaranteed identical.
+أساس النشر الموثوق للواجهة الأمامية هو **البنية التحتية غير القابلة للتغيير (immutable infrastructure)** للأصول الساكنة. تولّد أدوات البناء الحديثة أسماء ملفات مجزّأة المحتوى—`app.a1b2c3.js`، `styles.d4e5f6.css`—حيث تتغيّر التجزئة عندما يتغيّر المصدر. تلك البصمة الفريدة تجعل كل مخرَج بناء غير قابل للتغيير. فإن تغيّر المحتوى تغيّر الرابط. وإن بقي الرابط نفسه فالمحتوى مضمون التطابق.
 
-This one property unlocks three things that matter:
+خاصية واحدة تفتح ثلاثة أمور مهمّة:
 
-**Coexistence.** Hashed assets can be uploaded to a CDN without overwriting previous versions. Multiple releases can live side by side on the same origin. A deployment is just adding new files, not replacing old ones.
+**التعايش.** يمكن رفع الأصول المجزّأة إلى CDN دون الكتابة فوق الإصدارات السابقة. ويمكن أن تتجاور إطلاقات متعددة على المنشأ نفسه. فالنشر مجرّد إضافة ملفات جديدة، لا استبدال ملفات قديمة.
 
-**Aggressive caching.** Hashed assets can be served with `Cache-Control: public, max-age=31536000, immutable`. The `immutable` directive tells browsers and CDN edges never to revalidate—since the URL changes when the content changes, the old URL is correct forever. This is the single most impactful caching header for frontend assets.
+**التخزين المؤقت العدواني.** يمكن تقديم الأصول المجزّأة وفق `Cache-Control: public, max-age=31536000, immutable`. وتخبر التوجيه `immutable` المتصفحات وحواف CDN بألا تعيد التحقق أبدًا—ولأن الرابط يتغيّر عندما يتغيّر المحتوى، يبقى الرابط القديم صحيحًا إلى الأبد. وهذا هو ترويسة التخزين المؤقت الأكثر تأثيرًا على أصول الواجهة الأمامية.
 
-**Atomic rollouts.** A “deployment” reduces to two steps: upload the new hashed assets to the CDN, then update the `index.html` to reference the new entry points. The HTML file is the only mutable resource. Everything it points to is immutable. Rolling back means pointing the HTML at the previous set of hashes.
+**الطرح الذرّي.** يختزل «النشر» إلى خطوتين: رفع الأصول المجزّأة الجديدة إلى CDN، ثم تحديث `index.html` ليشير إلى نقاط الدخول الجديدة. ملف HTML هو المورد الوحيد القابل للتغيير. وكل ما يشير إليه غير قابل للتغيير. والتراجع يعني توجيه HTML إلى مجموعة التجزئات السابقة.
 
 ```
 deploy v1:
@@ -34,64 +34,64 @@ deploy v2:
   /index.html               ← updated to reference 789xyz + def456
 ```
 
-The user’s browser already has `styles.def456.css` cached from v1. It only downloads the new JavaScript bundle. The old JavaScript bundle stays on the CDN in case anyone has a tab open from before the deploy.
+مستعرض المستخدم لديه أصلًا `styles.def456.css` مخزّن مؤقتًا من الإصدار v1. فلا ينزّل إلا حزمة JavaScript الجديدة. وتبقى حزمة JavaScript القديمة على CDN تحسّبًا لمن لديه تبويب مفتوح من قبل النشر.
 
-## CDN Caching and the Edge Cases That Bite
+## التخزين المؤقت في CDN والحالات الحدّية المؤلمة
 
-Content-hashed assets with immutable cache headers are the easy part. The hard part is the HTML.
+الأصول المجزّأة المحتوى مع ترويسات تخزين مؤقت غير قابلة للتغيير هي الجزء السهل. أما الجزء الصعب فهو HTML.
 
-### The Stale HTML Problem
+### مشكلة HTML القديم
 
-If `index.html` is cached at the CDN edge with a long TTL, it can keep pointing to old JavaScript bundles after a deploy. Worse, if you *also* aggressively clean up old assets from the origin, the cached HTML points to files that no longer exist. The user gets a white page.
+إذا خُزّن `index.html` مؤقتًا على حافة CDN بزمن صلاحية طويل، فقد يظل يشير إلى حزم JavaScript قديمة بعد النشر. والأسوأ أنك إن *نظّفت أيضًا* الأصول القديمة من المنشأ بقوة، فسيشير HTML المخزّن إلى ملفات لم تعد موجودة. فيحصل المستخدم على صفحة بيضاء.
 
-The solution is to treat `index.html` as the single mutable entry point with a short or zero cache TTL. Hashed assets get `max-age=31536000, immutable`. The HTML gets `no-cache` or a very short `max-age` with `must-revalidate`, so CDN edges always check with the origin for freshness. That asymmetry is the whole model—long-lived cache for immutable assets, short-lived cache for the pointer that references them.
+الحل هو معاملة `index.html` كنقطة الدخول الوحيدة القابلة للتغيير بزمن صلاحية قصير أو صفري. تحصل الأصول المجزّأة على `max-age=31536000, immutable`. ويحصل HTML على `no-cache` أو `max-age` قصير جدًا مع `must-revalidate`، بحيث تتحقق حواف CDN دائمًا من المنشأ للحداثة. هذا التباين هو النموذج بأكمله—تخزين طويل الأجل للأصول غير القابلة للتغيير، وتخزين قصير الأجل للمؤشر الذي يشير إليها.
 
-When you deploy, invalidate the HTML path immediately. Most CDN providers support targeted cache invalidation:
+عند النشر، أبطِل مسار HTML فورًا. تدعم معظم مزوّدي CDN الإبطال الموجّه للتخزين المؤقت:
 
-- **Single URL purge.** Invalidate just `/index.html` or `/` on deploy. Fast, surgical, and sufficient for most applications.
-- **Cache tags (surrogate keys).** Tag all assets associated with a release. A single API call purges everything with that tag. Useful when a deploy touches multiple HTML pages or API responses.
-- **Stale-while-revalidate.** The `stale-while-revalidate` directive tells the CDN to serve the cached version immediately and fetch a fresh copy in the background. Users see the previous version briefly, and the next request gets the update. This is a good default for non-critical pages where a few seconds of staleness is acceptable.
+- **إبطال رابط واحد.** أبطِل `/index.html` أو `/` فقط عند النشر. سريع ودقيق وكافٍ لمعظم التطبيقات.
+- **وسوم التخزين المؤقت (المفاتيح البديلة).** ضع وسمًا على كل الأصول المرتبطة بإطلاق ما. ويُبطل استدعاء واحد كل شيء يحمل ذلك الوسم. مفيد عندما يمسّ النشر صفحات HTML متعددة أو استجابات API.
+- **قديم مع إعادة التحقق الجديدة.** يخبر التوجيه `stale-while-revalidate` الـ CDN بتقديم النسخة المخزّنة فورًا وجلب نسخة حديثة في الخلفية. يرى المستخدمون الإصدار السابق للحظات، ويحصل الطلب التالي على التحديث. هذا افتراض جيد للصفحات غير الحرجة حيث تكون بضع ثوانٍ من التقادم مقبولة.
 
-### Cache Stampedes
+### تدافع الذاكرة المؤقتة
 
-When a popular cached resource expires or gets invalidated, thousands of concurrent users can hit the origin simultaneously. This is a **cache stampede**, and it can take down your origin server during a deploy.
+عندما ينتهي مورد مخزّن مؤقتًا شائع أو يُبطَل، يمكن أن تصل آلاف المستخدمين المتزامنين إلى المنشأ في اللحظة نفسها. هذا هو **تدافع الذاكرة المؤقتة (cache stampede)**، ويمكن أن يُسقط خادم المنشأ أثناء النشر.
 
-Two CDN-level mitigations:
+تخفيفان على مستوى CDN:
 
-- **Request collapsing.** The CDN holds duplicate requests for the same resource while the first one fetches from the origin. Only one request actually hits the origin; the rest wait for that result. [Vercel’s CDN](https://vercel.com/blog/cdn-request-collapsing) uses this approach, and most major CDN providers support it.
-- **Origin shielding.** An additional cache layer sits between edge locations and the origin. All edge misses route through the shield first, which collapses requests before they reach your backend. This is especially useful for globally distributed CDNs where dozens of edge locations could each independently cache-miss at the same time.
+- **دمج الطلبات.** يُمسك الـ CDN بالطلبات المكرّرة للمورد نفسه بينما يجلب الطلب الأول من المنشأ. فلا يصل إلى المنشأ إلا طلب واحد فعليًا، وتنتظر البقية تلك النتيجة. [يستخدم CDN من Vercel](https://vercel.com/blog/cdn-request-collapsing) هذا النهج، وتدعمه معظم مزوّدي CDN الكبار.
+- **درع المنشأ.** طبقة تخزين مؤقت إضافية تجلس بين مواقع الحافة والمنشأ. وتمرّ كل إخفاقات الحافة عبر الدرع أولًا، فيدمج الطلبات قبل وصولها إلى خلفيتك. هذا مفيد بشكل خاص لشبكات CDN الموزّعة عالميًا حيث يمكن لعشرات مواقع الحافة أن تفشل في التخزين المؤقت كل على حدة في الوقت نفسه.
 
-## Release Strategies
+## استراتيجيات الإطلاق
 
-With immutable deployments in place, you can deploy code to production infrastructure without users seeing it. The release is a separate decision—controlled by routing, feature flags, or traffic splitting—about *who* sees the new version and *when*.
+مع وجود عمليات نشر غير قابلة للتغيير، يمكنك نشر الشيفرة إلى بنية الإنتاج التحتية دون أن يراها المستخدمون. والإطلاق قرار منفصل—تتحكّم فيه التوجيهات أو أعلام الميزات أو تقسيم المرور—حول *من* يرى الإصدار الجديد و*متى*.
 
-### Blue/Green
+### الأزرق/الأخضر
 
-Run two identical production environments. Deploy the new version to the “green” environment while “blue” continues serving traffic. Validate green, then switch the router (DNS, load balancer, or CDN configuration) to point at green. If something breaks, switch back to blue. Zero downtime, instant rollback.
+شغّل بيئتي إنتاج متطابقتين. انشر الإصدار الجديد إلى بيئة «الأخضر» بينما يواصل «الأزرق» تقديم المرور. تحقّق من الأخضر، ثم بدّل الموجّه (DNS أو موازن التحميل أو تهيئة CDN) ليشير إلى الأخضر. وإن انكسر شيء، فبدّل عائدًا إلى الأزرق. توقّف صفري وتراجع فوري.
 
-The tradeoff is cost—you maintain two full production environments—and complexity around stateful resources like databases, which can’t simply be swapped. For stateless frontend assets served from a CDN, blue/green is natural because both versions already coexist on the same CDN, and the “switch” is just updating which HTML file the CDN serves at the root URL.
+المقايضة هي التكلفة—فأنت تحافظ على بيئتي إنتاج كاملتين—والتعقيد حول الموارد ذات الحالة كقواعد البيانات، التي لا يمكن تبديلها ببساطة. أما لأصول الواجهة الأمامية بلا حالة والمقدّمة من CDN، فالأزرق/الأخضر طبيعي لأن الإصدارين يتجاوران أصلًا على CDN نفسه، و«التبديل» مجرّد تحديث لأي ملف HTML يقدّمه CDN على رابط الجذر.
 
-### Canary
+### الكناري
 
-Instead of switching all traffic at once, route a small percentage—1%, 5%, 10%—to the new version. Monitor error rates, latency, and business metrics for the canary group. If the numbers look healthy, gradually expand to 100%. If something goes wrong, route the canary traffic back to the stable version.
+بدلًا من تبديل المرور كله دفعة واحدة، وجّه نسبة صغيرة—1% أو 5% أو 10%—إلى الإصدار الجديد. راقب معدلات الأخطاء وزمن الاستجابة والمقاييس التجارية لمجموعة الكناري. فإن بدت الأرقام سليمة، وسّع تدريجيًا إلى 100%. وإن حدث خطأ، وجّه مرور الكناري عائدًا إلى الإصدار المستقر.
 
-Canary deployments are the operational sweet spot for most teams. They reduce the blast radius of a bad release to a small user population, and they give you real production data about the new version before it reaches everyone. The [GitHub Actions lecture](https://stevekinney.com/courses/enterprise-ui/github-actions) covers the CI mechanics; the canary logic typically lives in the CDN or load balancer configuration, or in a deployment platform like Vercel, Cloudflare Pages, or AWS CloudFront with Lambda@Edge.
+عمليات النشر الكنارية هي النقطة المثالية تشغيليًا لمعظم الفرق. فهي تقلّل نطاق التأثير لإطلاق سيئ إلى جمهور صغير من المستخدمين، وتمنحك بيانات إنتاج حقيقية عن الإصدار الجديد قبل أن يصل إلى الجميع. ويغطّي [درس GitHub Actions](https://stevekinney.com/courses/enterprise-ui/github-actions) آليات CI؛ أما منطق الكناري فيسكن عادةً في تهيئة CDN أو موازن التحميل، أو في منصة نشر مثل Vercel أو Cloudflare Pages أو AWS CloudFront مع Lambda@Edge.
 
-Uber takes this further with tiered rollouts. Changes deploy first to less-critical services (Tier 5), soak there to verify stability, and only then propagate to mission-critical services (Tier 0). Their [engineering blog](https://www.uber.com/blog/controlling-the-rollout-of-large-scale-monorepo-changes/) describes an asynchronous state machine that manages rollout ordering—if a change triggers alerts in the early tiers, all downstream rollouts for that commit are automatically halted.
+يذهب Uber أبعد من ذلك مع عمليات طرح متدرّجة. تُنشر التغييرات أولًا إلى الخدمات الأقل حرجًا (الفئة 5)، وتتشبّع هناك للتحقق من الاستقرار، ثم لا تنتشر إلا بعد ذلك إلى الخدمات الحرجة للمهمة (الفئة 0). ويصف [منشور مدوّنتهم الهندسية](https://www.uber.com/blog/controlling-the-rollout-of-large-scale-monorepo-changes/) آلة حالة غير متزامنة تدير ترتيب الطرح—فإن أثار تغيير تنبيهات في الفئات المبكّرة، تُوقف تلقائيًا كل عمليات الطرح اللاحقة لذلك الإيداع.
 
-### A/B Testing at the Deployment Layer
+### اختبار A/B على طبقة النشر
 
-A/B tests split traffic between two variants to measure business impact—conversion rates, engagement, revenue. Unlike canary deploys, which focus on *safety* (does the new version break anything?), A/B tests focus on *experimentation* (does the new version improve something?).
+تقسّم اختبارات A/B المرور بين متغيّرين لقياس الأثر التجاري—معدلات التحويل والتفاعل والإيرادات. وخلافًا لنشرات الكناري، التي تركّز على *السلامة* (هل يكسر الإصدار الجديد شيئًا؟)، تركّز اختبارات A/B على *التجريب* (هل يحسّن الإصدار الجديد شيئًا؟).
 
-At the infrastructure level, A/B tests and canary deploys look similar—both involve traffic splitting. The difference is intent and measurement. Canary deploys compare error rates and latency. A/B tests compare business metrics. Feature flag platforms like LaunchDarkly and Statsig handle both cases, which is why the line between them often blurs in practice.
+على مستوى البنية التحتية، تبدو اختبارات A/B ونشرات الكناري متشابهة—فكلاهما يتضمّن تقسيم المرور. والفرق في النية والقياس. تقارن نشرات الكناري معدلات الأخطاء وزمن الاستجابة. وتقارن اختبارات A/B المقاييس التجارية. وتتعامل منصات أعلام الميزات مثل LaunchDarkly وStatsig مع الحالتين، ولهذا يضطرب الحدّ بينهما في الممارسة.
 
-## Feature Flags
+## أعلام الميزات
 
-Feature flags are the mechanism that makes trunk-based development viable at scale. With flags, incomplete code can be merged to main, deployed to production, and remain invisible to users until someone flips a switch. No long-lived feature branches. No merge conflicts that require an archaeology degree to resolve. No “big bang” releases where three months of work ship at once and nobody knows which change broke what.
+أعلام الميزات هي الآلية التي تجعل التطوير المعتمد على الجذع مجديًا على نطاق واسع. فبالأعلام، يمكن دمج شيفرة ناقصة إلى main، ونشرها إلى الإنتاج، وبقاؤها غير مرئية للمستخدمين حتى يُقلب مفتاح. لا فروع ميزات طويلة العمر. ولا تعارضات دمج تتطلّب شهادة في علم الآثار لحلّها. ولا إطلاقات «الانفجار الكبير» حيث تُشحن ثلاثة أشهر من العمل دفعة واحدة ولا أحد يعرف أي تغيير كسر أي شيء.
 
-### How They Decouple Deployment from Release
+### كيف تفصل النشر عن الإطلاق
 
-The pattern is straightforward. Wrap the new code path in a conditional:
+النمط مباشر. غلّف مسار الشيفرة الجديد في شرط:
 
 ```typescript
 function Dashboard() {
@@ -107,155 +107,155 @@ function Dashboard() {
 }
 ```
 
-The code for `NewAnalyticsChart` ships to production with every deploy. It’s in the bundle. It’s on the CDN. But, nobody sees it until the flag is enabled. You can enable it for internal users first (a “dark launch”), then for 5% of users, then 50%, then 100%. If something goes wrong, disable the flag. The “rollback” is instant and requires no deployment.
+تُشحن شيفرة `NewAnalyticsChart` إلى الإنتاج مع كل نشر. إنها في الحزمة. وإنها على CDN. لكن لا أحد يراها حتى يُفعّل العلم. يمكنك تفعيلها للمستخدمين الداخليين أولًا («إطلاق مظلم»)، ثم لنسبة 5% من المستخدمين، ثم 50%، ثم 100%. وإن حدث خطأ، عطّل العلم. «التراجع» فوري ولا يتطلّب أي نشر.
 
-### Flag Lifecycle and the Problem of Flag Debt
+### دورة حياة العلم ومشكلة دين الأعلام
 
-Feature flags are easy to create and easy to forget. A flag that was supposed to be temporary becomes permanent. The code behind it becomes the only code path anyone uses, but the conditional and the old path stay in the codebase forever. This is **flag debt**, and it accumulates the same way technical debt does—quietly, until someone asks why there are 400 feature flags in the system and nobody knows which ones are still active.
+إنشاء أعلام الميزات سهل ونسيانها سهل. فيتحوّل علم كان يُفترض أن يكون مؤقتًا إلى دائم. وتصبح الشيفرة خلفه المسار الوحيد الذي يستخدمه أحد، لكن الشرط والمسار القديم يبقيان في قاعدة الشيفرة إلى الأبد. هذا **دين الأعلام (flag debt)**، ويتراكم كما يتراكم الدين التقني—بهدوء، حتى يسأل أحدهم لماذا هناك 400 علم ميزات في النظام ولا أحد يعرف أيها ما زال نشطًا.
 
-The discipline that actually works:
+الانضباط الذي ينجح فعلًا:
 
-- **Ownership.** Every flag has an owner—a person, not a team. Someone is responsible for cleaning it up.
-- **Expiration dates.** Set a “kill date” when the flag is created. After that date, the monitoring system or CI pipeline alerts that the flag should be removed. Some teams enforce this with lint rules that flag stale toggles.
-- **Governance for production changes.** In enterprise environments, modifying a flag in production should require approval (the “four-eyes principle”) and produce an audit log. This isn’t bureaucracy—it’s the same rigor you’d apply to any production configuration change.
+- **الملكية.** لكل علم مالك—شخص، لا فريق. فهناك من هو مسؤول عن تنظيفه.
+- **تواريخ الانتهاء.** حدّد «تاريخ إعدام» عند إنشاء العلم. وبعد ذلك التاريخ ينبّه نظام المراقبة أو خط أنابيب CI إلى ضرورة إزالة العلم. وتفرض بعض الفرق ذلك بقواعد فحص تخبر عن المفاتيح القديمة.
+- **الحوكمة للتغييرات في الإنتاج.** في بيئات المؤسسات، ينبغي أن يتطلّب تعديل علم في الإنتاج موافقة («مبدأ الأربع عيون») وأن ينتج سجل تدقيق. هذا ليس بيروقراطية—بل هو الصرامة نفسها التي تطبّقها على أي تغيير في تهيئة الإنتاج.
 
-### Choosing a Flag Platform
+### اختيار منصة أعلام
 
-| Platform | Core strength | Delivery model | Self-hostable |
+| المنصة | القوة الجوهرية | نموذج التوصيل | قابلية الاستضافة الذاتية |
 | --- | --- | --- | --- |
-| LaunchDarkly | Release governance, enterprise controls | Streaming (sub-200ms updates) | No |
-| Statsig | Unified experimentation and flags | Cloud-hosted | No |
-| Unleash | Privacy, self-hosting, open source | Polling (configurable interval) | Yes |
-| Flagsmith | Open-source alternative to LaunchDarkly | Cloud or self-hosted | Yes |
-| Custom | Zero external dependency | Whatever you build | By definition |
+| LaunchDarkly | حوكمة الإطلاق، وضوابط المؤسسات | بث (تحديثات أقل من 200 مللي ثانية) | لا |
+| Statsig | تجارب وأعلام موحّدة | مستضافة سحابيًا | لا |
+| Unleash | الخصوصية، والاستضافة الذاتية، والمصدر المفتوح | استطلاع (فترة قابلة للتهيئة) | نعم |
+| Flagsmith | بديل مفتوح المصدر لـ LaunchDarkly | سحابيًا أو مستضاف ذاتيًا | نعم |
+| Custom | بلا اعتماد خارجي | أيًا كان ما تبنيه | بحكم التعريف |
 
-The architectural choice that matters most is **streaming versus polling**. Streaming platforms push flag updates to connected clients in near real-time. Polling clients check for updates on an interval—every 15 seconds, every 60 seconds. During a flag change, polling creates a window where different users see different versions of a feature, which is either a minor inconvenience or a data-integrity problem depending on what the flag controls.
+الخيار المعماري الأهم هو **البث مقابل الاستطلاع**. فمنصات البث تدفع تحديثات الأعلام إلى العملاء المتصلين في الوقت شبه الحقيقي. أما عملاء الاستطلاع فيتفقّدون التحديثات على فترة—كل 15 ثانية أو كل 60 ثانية. وأثناء تغيير علم، ينشئ الاستطلاع نافذة يرى فيها مستخدمون مختلفون إصدارات مختلفة من ميزة، وهذا إما إزعاج طفيف أو مشكلة سلامة بيانات حسب ما يتحكّم به العلم.
 
-For high-traffic applications where flag consistency matters (feature rollouts, kill switches, experiment assignments), streaming is the safer default. For internal tools or lower-traffic applications, polling with a short interval is usually fine.
+للتطبيقات عالية المرور حيث يهمّ اتساق الأعلام (طرح الميزات، ومفاتيح الإيقاف، وتوزيعات التجارب)، يكون البث هو الافتراض الأكثر أمانًا. أما للأدوات الداخلية أو التطبيقات الأقل مرورًا، فالاستطلاع بفترة قصيرة يكون كافيًا عادةً.
 
-The cost model also matters at scale. Flag platforms are typically priced by seat count and evaluation volume. At enterprise scale with millions of daily active users, evaluation volume dominates. Client-side caching (evaluate flags once per session, not per render) and server-side evaluation (reduce client-side payload and evaluation count) are the standard mitigations.
+يهمّ نموذج التكلفة أيضًا على نطاق واسع. فمنصات الأعلام تُسعّر عادةً بعدد المقاعد وحجم التقييم. وعلى نطاق المؤسسات مع ملايين المستخدمين النشطين يوميًا، يطغى حجم التقييم. والتخزين المؤقت على العميل (قيّم الأعلام مرة لكل جلسة، لا لكل تصيير) والتقييم على الخادم (تقليل حمولة العميل وعدد التقييمات) هما التخفيفان المعياريان.
 
-## Preview Environments
+## بيئات المعاينة
 
-A shared staging server is a bottleneck. When three teams are trying to test three different features on the same staging instance, nobody’s testing anything cleanly. **Preview environments** solve this by spinning up an isolated, temporary instance of the application for every pull request.
+خادم اختبار مشترك عنق زجاجة. فعندما تحاول ثلاثة فرق اختبار ثلاث ميزات مختلفة على نسخة الاختبار نفسها، لا يختبر أحد أي شيء بشكل نظيف. **بيئات المعاينة** تحلّ ذلك بإنشاء نسخة معزولة مؤقتة من التطبيق لكل طلب سحب.
 
-### How They Work
+### كيف تعمل
 
-The basic flow:
+التدفّق الأساسي:
 
-- A pull request is opened or updated.
-- The CI pipeline builds the application from the PR branch.
-- A new environment is provisioned with its own URL—something like `pr-123.preview.example.com`.
-- Stakeholders review the live change without needing a local dev setup.
-- When the PR is merged or closed, the environment is automatically destroyed.
+- يُفتح طلب سحب أو يُحدَّث.
+- يبني خط أنابيب CI التطبيق من فرع طلب السحب.
+- تُجهَّز بيئة جديدة برابط خاص بها—شيء مثل `pr-123.preview.example.com`.
+- يراجع أصحاب المصلحة التغيير الحيّ دون الحاجة إلى تهيئة تطوير محلية.
+- عند دمج طلب السحب أو إغلاقه، تُدمَّر البيئة تلقائيًا.
 
-For frontend applications deployed to platforms like Vercel, Netlify, or Cloudflare Pages, preview environments are essentially free—the platform builds each PR branch and gives it a unique URL, and idle environments consume no compute. For more complex architectures involving backend services or databases, preview environments are usually built on Kubernetes with GitOps tooling like ArgoCD, where each PR gets its own namespace.
+بالنسبة لتطبيقات الواجهة الأمامية المنشورة على منصات مثل Vercel أو Netlify أو Cloudflare Pages، تكون بيئات المعاينة مجانية أساسًا—إذ تبني المنصة كل فرع طلب سحب وتمنحه رابطًا فريدًا، والبيئات الخاملة لا تستهلك أي حوسبة. ولمعمّارات أكثر تعقيدًا تتضمّن خدمات خلفية أو قواعد بيانات، تُبنى بيئات المعاينة عادةً على Kubernetes بأدوات GitOps مثل ArgoCD، حيث يحصل كل طلب سحب على مساحة أسماء خاصة به.
 
-### Managing the Cost
+### إدارة التكلفة
 
-The cost of preview environments scales linearly with the number of open pull requests. For a team with 50 active PRs, that’s 50 environments consuming compute and networking resources. Mitigations:
+تتزايد تكلفة بيئات المعاينة خطيًا مع عدد طلبات السحب المفتوحة. لفريق به 50 طلب سحب نشطًا، يعني ذلك 50 بيئة تستهلك موارد حوسبة وشبكة. التخفيفات:
 
-- **Serverless targets.** Platforms like Vercel and Cloudflare Pages charge nothing for idle preview deployments. If your architecture supports them, preview costs approach zero.
-- **Hybrid dependencies.** Instead of replicating the entire backend per PR, connect the preview frontend to a shared staging backend. Only isolate the specific service or database being changed.
-- **Auto-teardown.** Destroy environments automatically when the PR is merged, closed, or inactive for more than 48 hours. Stale preview environments are the most common source of unnecessary cost.
-- **Build only what changed.** In monorepos, build only the affected packages plus the shell, not every remote and every service. The [Turborepo lecture](https://stevekinney.com/courses/enterprise-ui/turborepo) covers affected-target detection for exactly this scenario.
+- **أهداف بلا خادم.** منصات مثل Vercel وCloudflare Pages لا تتقاضى شيئًا مقابل عمليات نشر المعاينة الخاملة. وإن دعم معمارك ذلك، تقترب تكاليف المعاينة من الصفر.
+- **اعتمادات هجينة.** بدل تكرار الخلفية بأكملها لكل طلب سحب، اربط واجهة المعاينة الأمامية بخلفية اختبار مشتركة. واعزل فقط الخدمة أو قاعدة البيانات المحدّدة التي تتغيّر.
+- **الإنهاء التلقائي.** دمّر البيئات تلقائيًا عند دمج طلب السحب أو إغلاقه أو خموله أكثر من 48 ساعة. فبيئات المعاينة القديمة هي المصدر الأكثر شيوعًا للتكلفة غير الضرورية.
+- **ابنِ ما تغيّر فقط.** في المستودعات الأحادية، ابنِ فقط الحزم المتأثّرة مع القشرة، لا كل وحدة بعيدة وكل خدمة. ويغطّي [درس Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo) كشف الأهداف المتأثّرة لهذا السيناريو تحديدًا.
 
-For [microfrontend architectures](https://stevekinney.com/courses/enterprise-ui/module-federation), a composed preview requires orchestrating the modified remote alongside the shell and any other remotes it interacts with. The simplest approach is to build the changed remote from the PR branch and compose it with the latest stable versions of everything else.
+بالنسبة لـ [معمارات الواجهات الأمامية الدقيقة](https://stevekinney.com/courses/enterprise-ui/module-federation)، تتطلّب المعاينة المركّبة تنسيق الوحدة البعيدة المعدّلة إلى جانب القشرة وأي وحدات بعيدة أخرى تتفاعل معها. وأبسط نهج هو بناء الوحدة البعيدة المتغيّرة من فرع طلب السحب وتركيبها مع أحدث الإصدارات المستقرة لكل ما تبقّى.
 
-## Environment Management
+## إدارة البيئات
 
-The staging environment is supposed to answer the question “will this work in production?” If staging doesn’t actually resemble production, it’s answering a different question—“will this work in a slightly fictional environment that used to resemble production three months ago?”
+يُفترض أن تجيب بيئة الاختبار على سؤال «هل سيعمل هذا في الإنتاج؟». فإن لم تشبه بيئة الاختبار الإنتاج فعليًا، فهي تجيب على سؤال آخر—«هل سيعمل هذا في بيئة خيالية قليلًا كانت تشبه الإنتاج قبل ثلاثة أشهر؟».
 
-### Staging-Production Parity
+### تكافؤ بيئة الاختبار والإنتاج
 
-**Environment drift** is the silent killer of release confidence. Staging drifts from production through a hundred small decisions: someone patches a dependency on staging but not prod, a configuration value gets hardcoded during debugging, a database migration runs in a different order, an infrastructure upgrade ships to prod but not staging.
+**انحراف البيئة** هو القاتل الصامت لثقة الإطلاق. تنحرف بيئة الاختبار عن الإنتاج عبر مئة قرار صغير: يرقّع أحدهم اعتمادًا في الاختبار لا في الإنتاج، أو تُثبَّت قيمة تهيئة أثناء التنقيح، أو تُشغَّل هجرة قاعدة بيانات بترتيب مختلف، أو تُشحَن ترقية بنية تحتية إلى الإنتاج لا إلى الاختبار.
 
-The mitigations are boring but effective:
+التخفيفات مملّة لكنها فعّالة:
 
-- **Infrastructure as Code.** Use Terraform, Pulumi, or similar tools to define infrastructure declaratively. The staging and production definitions should differ only in scale and in secrets, not in topology or service versions.
-- **Automated configuration sync.** Periodically sync non-secret configuration from production to staging. This catches drift before it catches you.
-- **Anonymized data.** Staging should use data that resembles production in volume and complexity, but with personally identifiable information scrubbed or replaced with synthetic data. Testing against an empty database tells you nothing about performance under load. Testing against real PII tells regulators something about your judgment.
-- **Environment-specific feature flags.** Maintain separate flag configurations per environment. A feature might be 100% enabled in development, 50% in staging for QA, and 0% in production until the team is ready. The flag platform becomes the translation layer between “this code exists” and “this feature is visible.”
+- **البنية التحتية كشيفرة.** استخدم Terraform أو Pulumi أو أدوات مشابهة لتعريف البنية التحتية تصريحيًا. وينبغي أن يختلف تعريفا الاختبار والإنتاج في المقياس والأسرار فقط، لا في الطوبولوجيا أو إصدارات الخدمات.
+- **مزامنة التهيئة الآلية.** زامن دوريًا التهيئة غير السرّية من الإنتاج إلى الاختبار. فهذا يلتقط الانحراف قبل أن يلتقطك.
+- **بيانات مجهولة الهوية.** ينبغي أن تستخدم بيئة الاختبار بيانات تشبه الإنتاج في الحجم والتعقيد، لكن مع تنقية المعلومات التعريفية الشخصية أو استبدالها ببيانات اصطناعية. فالاختبار على قاعدة بيانات فارغة لا يخبرك بشيء عن الأداء تحت الحمل. والاختبار على معلومات تعريفية شخصية حقيقية يخبر الجهات التنظيمية بشيء عن حكمك.
+- **أعلام ميزات خاصة بالبيئة.** حافظ على تهيئات أعلام منفصلة لكل بيئة. فقد تكون ميزة مفعّلة بنسبة 100% في التطوير، و50% في الاختبار لضمان الجودة، و0% في الإنتاج حتى يصبح الفريق جاهزًا. فمنصة الأعلام تصبح طبقة الترجمة بين «هذه الشيفرة موجودة» و«هذه الميزة مرئية».
 
-### Reliability Rituals
+### طقوس الموثوقية
 
-The teams that trust their staging environment treat it like infrastructure, not a suggestion.
+الفرق التي تثق ببيئة اختبارها تعاملها كبنية تحتية، لا كاقتراح.
 
-- **Regular refreshes.** Automate the sync of configurations and anonymized data from production. Weekly is a reasonable cadence. Monthly is when drift starts to matter.
-- **Practiced rollbacks.** Test the rollback procedure in staging during every release cycle. If you’ve never practiced a rollback, you don’t have a rollback procedure—you have a theory.
-- **Load testing.** Run production-level traffic volumes against staging before major releases. The performance characteristics of an empty staging environment tell you nothing about how the application will behave under real load.
+- **تحديثات منتظمة.** أتمت مزامنة التهيئات والبيانات المجهولة من الإنتاج. وأسبوعي وتيرة معقولة. أما الشهري فهو حين يبدأ الانحراف يهمّ.
+- **تراجعات مُتدرَّب عليها.** اختبر إجراء التراجع في بيئة الاختبار خلال كل دورة إطلاق. فإن لم تتدرب على تراجع قط، فليس لديك إجراء تراجع—بل لديك نظرية.
+- **اختبار الحمل.** شغّل أحجام مرور بمستوى الإنتاج على بيئة الاختبار قبل الإطلاقات الكبرى. فخصائص أداء بيئة اختبار فارغة لا تخبرك بشيء عن كيفية تصرّف التطبيق تحت حمل حقيقي.
 
-## Microfrontend Deployment Coordination
+## تنسيق نشر الواجهات الأمامية الدقيقة
 
-Microfrontends introduce a deployment coordination problem that monoliths don’t have. Each remote is deployed independently, but the composed application only works when the shell and all its remotes are compatible. The [Module Federation lecture](https://stevekinney.com/courses/enterprise-ui/module-federation) covers the runtime composition model. This section covers the deployment patterns that keep independently deployed remotes from breaking the assembled page.
+تُدخل الواجهات الأمامية الدقيقة مشكلة تنسيق نشر لا تعاني منها النظم الأحادية. فكل وحدة بعيدة تُنشر باستقلالية، لكن التطبيق المركّب لا يعمل إلا عندما تكون القشرة وكل وحداتها البعيدة متوافقة. ويغطّي [درس Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) نموذج التركيب في وقت التشغيل. أما هذا القسم فيغطّي أنماط النشر التي تمنع الوحدات البعيدة المنشورة باستقلالية من كسر الصفحة المجمّعة.
 
-### Versioned Manifests
+### بيانات وصفية مُصدَّرة
 
-The shell fetches a manifest at runtime that maps remote names to their current entry-point URLs. Deploying a new version of a remote means updating its URL in the manifest. Rolling back means pointing the manifest at the previous URL. No code change to the shell, no redeploy of the remote—just a metadata update.
+تجلب القشرة بيانًا (manifest) في وقت التشغيل يربط أسماء الوحدات البعيدة بروابط نقاط دخولها الحالية. فنشر إصدار جديد من وحدة بعيدة يعني تحديث رابطها في البيان. والتراجع يعني توجيه البيان إلى الرابط السابق. لا تغيير شيفرة في القشرة، ولا إعادة نشر للوحدة البعيدة—مجرد تحديث للبيانات الوصفية.
 
-This is the simplest and most reliable coordination mechanism. The manifest is the single source of truth for “which version of each remote is currently live,” and it’s small enough to cache with a short TTL so updates propagate quickly.
+هذه أبسط آلية تنسيق وأكثرها موثوقية. فالبيان هو المصدر الوحيد للحقيقة حول «أي إصدار من كل وحدة بعيدة حيّ حاليًا»، وهو صغير بما يكفي لتخزينه مؤقتًا بزمن صلاحية قصير حتى تنتشر التحديثات بسرعة.
 
-### Defensive Loading
+### التحميل الدفاعي
 
-The shell should assume that any remote can fail to load at any time. A CDN outage, a botched deploy, a DNS hiccup—the remote’s entry point becomes unreachable, and the shell needs to handle it gracefully instead of showing a white page.
+ينبغي أن تفترض القشرة أن أي وحدة بعيدة قد تفشل في التحميل في أي وقت. انقطاع CDN، أو نشر فاشل، أو تعثّر DNS—تصبح نقطة دخول الوحدة البعيدة غير قابلة للوصول، وتحتاج القشرة إلى التعامل مع ذلك بلطف بدل إظهار صفحة بيضاء.
 
-The [error boundaries and Module Federation lecture](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) covers the failure timeline in detail. The short version: wrap remote imports in error handling so a dead remote costs one empty panel, not a dead application. Use Module Federation’s `errorLoadRemote` hook for loader-level fallbacks, and React error boundaries for render-level recovery.
+يغطّي [درس حدود الأخطاء وModule Federation](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) الخط الزمني للفشل بالتفصيل. والنسخة المختصرة: غلّف عمليات الاستيراد البعيدة في معالجة الأخطاء بحيث تكلّف وحدة بعيدة ميتة لوحة فارغة واحدة، لا تطبيقًا ميتًا. استخدم خُطّاف `errorLoadRemote` في Module Federation للاحتياطات على مستوى المحمّل، وحدود أخطاء React للاستعادة على مستوى التصيير.
 
-### Per-Remote Performance Budgets
+### ميزانيات الأداء لكل وحدة بعيدة
 
-In a federated architecture, each team owns its remote’s bundle size. Without coordination, one team’s heavy remote becomes a performance liability for the entire platform. American Express reportedly enforced a strict budget of roughly 250 KB per microfrontend, using externals and dynamic imports to stay within it.
+في معمار موحّد، تملك كل بيئة عمل حجم حزمتها البعيدة. ودون تنسيق، يصبح حجم إحدى الفرق الثقيل عبئًا على أداء المنصة بأكملها. وقد فرضت American Express بحسب ما ذُكر ميزانية صارمة بنحو 250 كيلوبايت لكل واجهة أمامية دقيقة، باستخدام الخارجيات (externals) والاستيراد الديناميكي للبقاء ضمنها.
 
-The [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets) covers the mechanics of setting and enforcing budgets in CI. The organizational pattern is the same: define a per-remote weight budget, enforce it in the remote’s CI pipeline, and make the numbers visible to the platform team.
+يغطّي [درس ميزانيات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) آليات وضع الميزانيات وفرضها في CI. والنمط التنظيمي هو نفسه: حدّد ميزانية وزن لكل وحدة بعيدة، وافرضها في خط أنابيب CI الخاص بالوحدة، واجعل الأرقام مرئية لفريق المنصة.
 
-## Case Studies
+## دراسات حالة
 
 ### Uber
 
-With over 1,000 commits per day across multiple language-specific monorepos and 3,000 engineers, Uber’s deployment challenge is *blast radius control*. A single commit to a core library can affect thousands of microservices. Their [engineering blog](https://www.uber.com/blog/controlling-the-rollout-of-large-scale-monorepo-changes/) describes a tiered rollout system where services are grouped from Tier 0 (mission-critical) to Tier 5 (less critical). Changes deploy to Tier 5 first and soak there. Only after health signals remain positive does the orchestrator unblock the next tier. If a change triggers failures above a threshold in the early cohorts, all downstream deployments for that commit halt automatically.
+مع أكثر من 1000 إيداع يوميًا عبر مستودعات أحادية متعددة اللغات و3000 مهندس، يتمثّل تحدّي النشر لدى Uber في *التحكم في نطاق التأثير*. فإيداع واحد في مكتبة أساسية يمكن أن يؤثّر على آلاف الخدمات الدقيقة. ويصف [منشور مدوّنتهم الهندسية](https://www.uber.com/blog/controlling-the-rollout-of-large-scale-monorepo-changes/) نظام طرح متدرّجًا تُجمَّع فيه الخدمات من الفئة 0 (حرجة للمهمة) إلى الفئة 5 (أقل حرجًا). تُنشر التغييرات إلى الفئة 5 أولًا وتتشبّع هناك. ولا يفتح المنسّق الفئة التالية إلا بعد بقاء إشارات الصحة إيجابية. وإن أثار تغيير إخفاقات فوق حدّ معيّن في الفئات المبكّرة، تتوقف تلقائيًا كل عمليات النشر اللاحقة لذلك الإيداع.
 
-Uber also uses SubmitQueue to manage merge ordering in their monorepo—batch-testing changes before they land on main to prevent the “broken trunk” problem that high-velocity monorepos are prone to.
+وتستخدم Uber أيضًا SubmitQueue لإدارة ترتيب الدمج في مستودعها الأحادي—باختبار التغييرات على دفعات قبل وصولها إلى main لمنع مشكلة «الجذع المكسور» التي تُعاني منها المستودعات الأحادية عالية الوتيرة.
 
 ### Airbnb
 
-Airbnb migrated from a monolithic deployment tool to [Spinnaker](https://web.archive.org/web/2023/https://airbnb.tech/infrastructure/continuous-delivery-at-airbnb/) as they moved to a service-oriented architecture with over 1,000 services. Their “OneTouch” framework lets engineers manage application code and infrastructure configuration in a single commit within the same directory. Spinnaker provides templated pipelines with automated canary analysis out of the box, so new services get performance regression detection for free.
+انتقلت Airbnb من أداة نشر أحادية إلى [Spinnaker](https://web.archive.org/web/2023/https://airbnb.tech/infrastructure/continuous-delivery-at-airbnb/) عندما تحوّلت إلى معمار موجّه للخدمات بأكثر من 1000 خدمة. ويتيح إطار «OneTouch» الخاص بها للمهندسين إدارة شيفرة التطبيق وتهيئة البنية التحتية في إيداع واحد داخل الدليل نفسه. ويوفّر Spinnaker خطوط أنابيب قالبيّة مع تحليل كناري آلي جاهز، فتحصل الخدمات الجديدة على كشف الانحدار في الأداء مجانًا.
 
-The interesting part of Airbnb’s story is the migration itself. To move the last 15% of legacy services off the old tool, they added friction to the old path (banners, warnings, deprecation notices) and used an internal “Refactorator” tool to send automated pull requests that migrated service pipelines to the new standard. The combination of making the old way annoying and making the new way automatic is a pattern worth stealing.
+الجزء المثير في قصة Airbnb هو الانتقال نفسه. لنقل آخر 15% من الخدمات القديمة بعيدًا عن الأداة القديمة، أضافوا عوائق إلى المسار القديم (لافتات وتحذيرات وإشعارات إهمال) واستخدموا أداة داخلية اسمها «Refactorator» لإرسال طلبات سحب آلية تنقل خطوط أنابيب الخدمات إلى المعيار الجديد. والجمع بين جعل الطريقة القديمة مزعجة وجعل الطريقة الجديدة آلية نمط يستحق السرقة.
 
 ### Meta
 
-Meta uses trunk-based development with a massive monorepo. Their [engineering blog](https://engineering.fb.com/2017/08/31/web/rapid-release-at-massive-scale/) describes a push hierarchy: code lands in main, gets deployed to Meta employees first, and only propagates to the global user base once health signals remain positive. Their build system (Buck) runs thousands of concurrent tests, including static analysis with Infer for memory leaks and resource issues, before code ever reaches main.
+تستخدم Meta التطوير المعتمد على الجذع مع مستودع أحادي ضخم. ويصف [منشور مدوّنتهم الهندسية](https://engineering.fb.com/2017/08/31/web/rapid-release-at-massive-scale/) تسلسلًا هرميًا للدفع: تهبط الشيفرة في main، وتُنشر إلى موظفي Meta أولًا، ولا تنتشر إلى قاعدة المستخدمين العالمية إلا بعد بقاء إشارات الصحة إيجابية. ويشغّل نظام البناء لديهم (Buck) آلاف الاختبارات المتزامنة، بما فيها التحليل الساكن بـ Infer لكشف تسريبات الذاكرة ومشكلات الموارد، قبل أن تصل الشيفرة إلى main أصلًا.
 
-The key insight from Meta’s system is that the regular push cycle is fast enough that “hotfixes” are just regular releases. There’s no special emergency process because the normal process is already fast enough to deliver fixes. That’s the end state of continuous delivery—when the pipeline is fast and safe enough that the emergency path and the normal path are the same thing.
+الرؤية الجوهرية من نظام Meta هي أن دورة الدفع المنتظمة سريعة بما يكفي لتصبح «الإصلاحات السريعة» مجرد إطلاقات عادية. لا توجد عملية طوارئ خاصة لأن العملية العادية سريعة بما يكفي لتسليم الإصلاحات أصلًا. تلك هي الحالة النهائية للتسليم المستمر—حين يكون خط الأنابيب سريعًا وآمنًا بما يكفي ليتطابق مسار الطوارئ مع المسار العادي.
 
-## Pipeline Economics
+## اقتصاديات خط الأنابيب
 
-Build and deployment pipelines are one of the larger variable infrastructure costs for frontend teams. Understanding the cost drivers lets you make informed tradeoffs.
+خطوط أنابيب البناء والنشر من أكبر تكاليف البنية التحتية المتغيّرة لفرق الواجهة الأمامية. وفهم محركات التكلفة يتيح لك اتخاذ مقايضات مدروسة.
 
-**CI compute** is the dominant cost. In a monorepo with 200 packages, a “build everything” pipeline might consume 60 minutes of compute per pull request. With affected-target detection and remote caching, that drops to 5–10 minutes—a 6–12x reduction in spend. For teams running 500+ pull requests per week, the savings are substantial. The [Turborepo lecture](https://stevekinney.com/courses/enterprise-ui/turborepo) covers affected-target detection and remote caching in detail.
+**حوسبة CI** هي التكلفة المهيمنة. في مستودع أحادي بـ 200 حزمة، قد يستهلك خط أنابيب «ابنِ كل شيء» 60 دقيقة من الحوسبة لكل طلب سحب. ومع كشف الأهداف المتأثّرة والتخزين المؤقت البعيد، ينخفض ذلك إلى 5–10 دقائق—أي تقليص للنفقات بمقدار 6 إلى 12 ضعفًا. ولفرق تشغّل أكثر من 500 طلب سحب أسبوعيًا، تكون الوفورات كبيرة. ويغطّي [درس Turborepo](https://stevekinney.com/courses/enterprise-ui/turborepo) كشف الأهداف المتأثّرة والتخزين المؤقت البعيد بالتفصيل.
 
-**Feature flag platforms** are priced by seats and evaluation volume. At enterprise scale, evaluation volume dominates. Client-side caching and server-side evaluation are the standard mitigations. Self-hosted alternatives like Unleash and Flagsmith trade platform costs for operational overhead.
+**منصات أعلام الميزات** تُسعّر بعدد المقاعد وحجم التقييم. وعلى نطاق المؤسسات، يطغى حجم التقييم. والتخزين المؤقت على العميل والتقييم على الخادم هما التخفيفان المعياريان. وتقايض البدائل المستضافة ذاتيًا مثل Unleash وFlagsmith تكاليف المنصة بعبء تشغيلي.
 
-**Preview environments** scale linearly with open pull requests. Serverless targets (Vercel, Cloudflare Pages) where idle environments cost nothing are the most cost-effective approach for frontend-only previews. For full-stack previews, auto-teardown and hybrid dependencies (shared staging backend, isolated frontend) keep the cost manageable.
+**بيئات المعاينة** تتزايد خطيًا مع طلبات السحب المفتوحة. والأهداف بلا خادم (Vercel، Cloudflare Pages) حيث لا تكلّف البيئات الخاملة شيئًا هي النهج الأكثر فعالية من حيث التكلفة للمعاينات الأمامية فقط. أما للمعاينات كاملة الحزمة، فيُبقي الإنهاء التلقائي والاعتمادات الهجينة (خلفية اختبار مشتركة، وواجهة أمامية معزولة) التكلفة تحت السيطرة.
 
-The meta-pattern is that *speed optimizations* and *cost optimizations* are usually the same thing. Faster builds mean less compute time. Smarter caching means fewer redundant builds. Affected-target detection means less wasted work. The pipeline that’s cheapest to run is almost always the one that’s also fastest for developers, which is one of those rare cases where the interests of the finance team and the engineering team point in the same direction.
+النمط الفوقي هو أن *تحسينات السرعة* و*تحسينات التكلفة* عادةً شيء واحد. فعمليات البناء الأسرع تعني وقت حوسبة أقل. والتخزين المؤقت الأذكى يعني عمليات بناء مكرّرة أقل. وكشف الأهداف المتأثّرة يعني عملًا مهدورًا أقل. وخط الأنابيب الأرخص تشغيلًا هو دائمًا تقريبًا الأسرع للمطوّرين، وهذه إحدى الحالات النادرة التي تتّفق فيها مصالح الفريق المالي والفريق الهندسي في الاتجاه نفسه.
 
-## The Short Version
+## النسخة المختصرة
 
-Deploy code often. Release features deliberately. Use content-hashed immutable assets with aggressive caching and short-lived HTML. Control releases through feature flags, canary rollouts, or traffic splitting—not through deployment timing. Give every pull request a preview environment. Keep staging honest through infrastructure as code and automated configuration sync. Treat pipeline cost like any other infrastructure cost—measure it, optimize the big levers, and stop pretending “we’ll fix CI later” is a plan.
+انشر الشيفرة كثيرًا. أطلق الميزات بتأنٍّ. استخدم أصولًا غير قابلة للتغيير مجزّأة المحتوى مع تخزين مؤقت عدواني وHTML قصير الأجل. تحكّم في الإطلاقات عبر أعلام الميزات أو الطروحات الكنارية أو تقسيم المرور—لا عبر توقيت النشر. امنح كل طلب سحب بيئة معاينة. حافظ على مصداقية بيئة الاختبار عبر البنية التحتية كشيفرة والمزامنة الآلية للتهيئة. عامل تكلفة خط الأنابيب كأي تكلفة بنية تحتية أخرى—قِسها، وحسّن الروافع الكبرى، وتوقّف عن التظاهر بأن «سنصلح CI لاحقًا» خطة.
 
-The organizations that ship fast and break little aren’t the ones with the most sophisticated tooling. They’re the ones that separated the decision to deploy from the decision to release, and built the infrastructure to make both decisions cheap, reversible, and observable.
+المنظمات التي تشحن بسرعة وتكسر قليلًا ليست تلك التي لديها أدوات أكثر تعقيدًا. بل تلك التي فصلت قرار النشر عن قرار الإطلاق، وبنَت البنية التحتية التي تجعل القرارين رخيصين وقابلين للعكس وقابلين للملاحظة.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Separate Deployment from Release
+### افصل النشر عن الإطلاق
 
-> Deployment is putting code on servers. Release is exposing it to users.
+> النشر هو وضع الشيفرة على الخوادم. والإطلاق هو كشفها للمستخدمين.
 
-- **Immutable deployments** — every build produces a unique, content-hashed bundle. Never overwrite a deployed artifact.
-- **Feature flags** decouple when code ships from when users see it.
-- **Deploy daily. Release when ready.**
+- **عمليات النشر غير القابلة للتغيير** — يُنتج كل بناء حزمة فريدة مجزّأة المحتوى. لا تكتب فوق مخرَج منشور أبدًا.
+- **أعلام الميزات** تفصل وقت شحن الشيفرة عن وقت رؤية المستخدمين لها.
+- **انشر يوميًا. أطلق حين تكون جاهزًا.**
 
 ```
 Deploy v2.3.1 → 0% of users see it (feature flag off)
@@ -267,37 +267,37 @@ Deploy v2.3.1 → 0% of users see it (feature flag off)
 
 ---
 
-### Release Strategies
+### استراتيجيات الإطلاق
 
-> Graduated exposure to limit blast radius.
+> تعرّض متدرّج لتحديد نطاق التأثير.
 
-| Strategy | How it works | Best for |
+| الاستراتيجية | كيف تعمل | الأنسب لـ |
 | --- | --- | --- |
-| **Blue/Green** | Two environments, swap traffic | Zero-downtime deploys |
-| **Canary** | Route % of traffic to new version | Risk-sensitive changes |
-| **Feature flags** | Toggle features per user/segment | Decoupling deploy from release |
-| **A/B testing** | Route by experiment cohort | Measuring impact |
+| **الأزرق/الأخضر** | بيئتان، تبديل المرور | عمليات نشر بلا توقّف |
+| **الكناري** | توجيه نسبة % من المرور إلى الإصدار الجديد | التغييرات الحسّاسة للمخاطر |
+| **أعلام الميزات** | تبديل الميزات لكل مستخدم/شريحة | فصل النشر عن الإطلاق |
+| **اختبار A/B** | التوجيه حسب مجموعة التجربة | قياس الأثر |
 
-**Microfrontend-specific:**
+**خاص بالواجهات الأمامية الدقيقة:**
 
-- Each remote can deploy independently — but coordinate shared dependency upgrades.
-- Version manifest: a JSON file listing which version of each remote is “live.”
-- Rollback = point the manifest back to the previous version.
+- كل وحدة بعيدة يمكن أن تُنشر باستقلالية — لكن نسّق ترقيات الاعتمادات المشتركة.
+- بيان الإصدارات: ملف JSON يسرد أي إصدار من كل وحدة بعيدة «حيّ».
+- التراجع = توجيه البيان عائدًا إلى الإصدار السابق.
 
 ---
 
-### Preview Environments
+### بيئات المعاينة
 
-> Every PR gets its own deployed environment.
+> كل طلب سحب يحصل على بيئته المنشورة الخاصة.
 
-- Spin up ephemeral environments per pull request.
-- Run E2E tests against the actual deployed artifact, not just the CI build.
-- Kill the environment on merge.
+- جهّز بيئات عابرة لكل طلب سحب.
+- شغّل اختبارات E2E على مخرَج النشر الفعلي، لا على بناء CI وحده.
+- أنهِ البيئة عند الدمج.
 
-**Benefits:**
+**الفوائد:**
 
-- Designers and PMs review real deployments, not screenshots.
-- Integration issues surface before merge.
-- Reduces “works on my machine” to near-zero.
+- يراجع المصممون ومديرو المنتج عمليات نشر حقيقية، لا لقطات شاشة.
+- تظهر مشكلات التكامل قبل الدمج.
+- تقلّل «يعمل على جهازي» إلى ما يقارب الصفر.
 
-**Tools:** Vercel preview deploys, Netlify deploy previews, custom Kubernetes namespaces per PR.
+**الأدوات:** عمليات نشر معاينة Vercel، ومعاينات نشر Netlify، ومساحات أسماء Kubernetes مخصّصة لكل طلب سحب.

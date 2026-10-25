@@ -1,66 +1,66 @@
 ---
-title: "Setting Up a Dev Container"
-lang: en
+title: "إعداد حاوية تطوير (Dev Container)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/using-dev-containers-in-vscode"
 ---
 
-Now that we understand the “why,” let’s get practical and learn “how” to set up Dev Containers in Visual Studio Code.
+بعد أن فهمنا «لماذا»، لننتقل إلى الجانب العملي ونتعلّم «كيف» نُهيّئ حاويات التطوير (Dev Containers) في Visual Studio Code.
 
-## Installation and Prerequisites
+## التثبيت والمتطلّبات المسبقة
 
-Before embarking on your Dev Container journey, ensure you have the following prerequisites in place:
+قبل أن تبدأ رحلتك مع حاوية التطوير، تأكّد من توفّر المتطلّبات التالية:
 
 ### Docker
 
-- **Docker Desktop (Recommended):** For Windows and macOS, Docker Desktop is the easiest way to get Docker running. Download and install it from [https://www.docker.com/products/docker-desktop](https://www.google.com/url?sa=E&source=gmail&q=https://www.docker.com/products/docker-desktop&authuser=1).
-- **Docker Engine (Linux):** For Linux distributions, follow the installation instructions for your specific distribution from [https://docs.docker.com/engine/install/](https://www.google.com/url?sa=E&source=gmail&q=https://docs.docker.com/engine/install/&authuser=1).
-- **Verify Docker Installation:** After installation, open your terminal and run `docker --version` and `docker compose version`. You should see the installed versions printed. Ensure Docker is running in the background.
+- **Docker Desktop (موصى به):** على Windows و macOS، يُعدّ Docker Desktop أسهل طريقة لتشغيل Docker. نزّله وثبّته من [https://www.docker.com/products/docker-desktop](https://www.google.com/url?sa=E&source=gmail&q=https://www.docker.com/products/docker-desktop&authuser=1).
+- **Docker Engine (Linux):** لتوزيعات Linux، اتبع تعليمات التثبيت الخاصة بتوزيعتك من [https://docs.docker.com/engine/install/](https://www.google.com/url?sa=E&source=gmail&q=https://docs.docker.com/engine/install/&authuser=1).
+- **التحقّق من تثبيت Docker:** بعد التثبيت، افتح الطرفية ونفّذ `docker --version` و`docker compose version`. ينبغي أن ترى الإصدارات المثبَّتة مطبوعة. تأكّد من أن Docker يعمل في الخلفية.
 
-#### Configuration Notes for Docker
+#### ملاحظات حول إعداد Docker
 
-- **Resource Allocation (Docker Desktop):** Docker containers consume system resources. For optimal performance, especially with complex containers, consider increasing the resources allocated to Docker Desktop. You can adjust CPU, memory, and disk space in Docker Desktop’s settings.
-- **File Sharing (Docker Desktop on Windows):** Ensure that the drive containing your project folder is shared with Docker Desktop. This is usually done during Docker Desktop installation or through its settings. This allows containers to access your project files.
+- **تخصيص الموارد (Docker Desktop):** تستهلك حاويات Docker موارد النظام. للحصول على أفضل أداء، وخصوصًا مع الحاويات المعقّدة، فكّر في زيادة الموارد المخصّصة لـ Docker Desktop. يمكنك ضبط المعالج والذاكرة ومساحة القرص من إعدادات Docker Desktop.
+- **مشاركة الملفات (Docker Desktop على Windows):** تأكّد من مشاركة القرص الذي يحتوي على مجلّد مشروعك مع Docker Desktop. يحدث هذا عادةً أثناء تثبيت Docker Desktop أو عبر إعداداته. يتيح ذلك للحاويات الوصول إلى ملفات مشروعك.
 
-### Remote - Containers Extension
+### إضافة Remote - Containers
 
-- Open Visual Studio Code.
-- Go to the Extensions view (Ctrl+Shift+X or Cmd+Shift+X).
-- Search for “Remote - Containers” by Microsoft.
-- Click “Install” to install the extension.
+- افتح Visual Studio Code.
+- انتقل إلى عرض الإضافات (Ctrl+Shift+X أو Cmd+Shift+X).
+- ابحث عن «Remote - Containers» من Microsoft.
+- انقر «Install» لتثبيت الإضافة.
 
-## Creating a Dev Container
+## إنشاء حاوية تطوير
 
-With the prerequisites in place, let’s create our first Dev Container. The heart of Dev Containers is the `devcontainer.json` file. This file, placed in the `.devcontainer` folder at the root of your project, defines your containerized development environment.
+بعد توفير المتطلّبات المسبقة، لنُنشئ أول حاوية تطوير لدينا. قلب حاويات التطوير هو ملف `devcontainer.json`. هذا الملف، الموضوع في مجلّد `.devcontainer` في جذر مشروعك، يعرّف بيئة التطوير المعبّأة داخل حاوية.
 
-1. **Open your Project Folder in Visual Studio Code:** Open the root folder of your project in Visual Studio Code. If you don’t have a project yet, create an empty folder.
-2. **Open the Command Palette:** Press Ctrl+Shift+P (or Cmd+Shift+P on macOS) to open the Visual Studio Code Command Palette.
-3. **Search for “Dev Containers”:** Type “Dev Containers” and select “Dev Containers: Add Dev Container Configuration Files…“.
+1. **افتح مجلّد مشروعك في Visual Studio Code:** افتح المجلّد الجذري لمشروعك في Visual Studio Code. إن لم يكن لديك مشروع بعد، فأنشئ مجلّدًا فارغًا.
+2. **افتح لوحة الأوامر:** اضغط Ctrl+Shift+P (أو Cmd+Shift+P على macOS) لفتح لوحة أوامر Visual Studio Code.
+3. **ابحث عن «Dev Containers»:** اكتب «Dev Containers» واختر «Dev Containers: Add Dev Container Configuration Files…«.
 
-## Choose a Predefined Container Definition or Create from Scratch
+## اختر تعريف حاوية جاهزًا أو أنشئ من الصفر
 
-- **Predefined Definition (Recommended for Beginners):** Visual Studio Code offers a list of predefined Dev Container definitions for popular languages and frameworks (e.g., Node.js, Python, .NET, Go, Java). Choose one that closely matches your project’s technology stack.
-- **Create from ‘Empty Container’:** If no predefined definition suits your needs, choose “From ‘Empty Container’“. This will create a basic `devcontainer.json` that you can customize from scratch.
-- **Use ‘Dockerfile’:** If you already have a Dockerfile for your project or want complete control, choose “From Dockerfile”. This will generate a `devcontainer.json` that references your existing Dockerfile.
+- **تعريف جاهز (موصى به للمبتدئين):** يقدّم Visual Studio Code قائمة بتعريفات جاهزة لحاويات التطوير للغات والأطر الشائعة (مثل Node.js وPython و.NET وGo وJava). اختر تعريفًا يطابق حزمة تقنيات مشروعك عن قرب.
+- **الإنشاء من «حاوية فارغة»:** إن لم يناسبك أي تعريف جاهز، فاختر «From ‘Empty Container’«. سيُنشئ هذا ملف `devcontainer.json` أساسيًا يمكنك تخصيصه من الصفر.
+- **استخدام «Dockerfile»:** إن كان لديك بالفعل ملف Dockerfile لمشروعك أو أردت تحكّمًا كاملًا، فاختر «From Dockerfile». سيُنشئ هذا ملف `devcontainer.json` يشير إلى ملف Dockerfile الموجود لديك.
 
-1. **Customize `devcontainer.json` (If needed):** After selecting a definition, Visual Studio Code will create a `.devcontainer` folder and place `devcontainer.json` inside it. Open `devcontainer.json` to review and customize its properties.
+1. **خصّص `devcontainer.json` (عند الحاجة):** بعد اختيار تعريف، سيُنشئ Visual Studio Code مجلّد `.devcontainer` ويضع ملف `devcontainer.json` داخله. افتح `devcontainer.json` لمراجعة خصائصه وتخصيصها.
 
-### Key Properties of `devcontainer.json`
+### الخصائص الرئيسية في `devcontainer.json`
 
-The **`image`:** This property specifies the **Docker image** to use as the base for your Dev Container.
+خاصية **`image`:** تحدّد هذه الخاصية **صورة Docker** التي ستُستخدم أساسًا لحاوية التطوير الخاصة بك.
 
-- **Example:** `"image": "mcr.microsoft.com/devcontainers/javascript-node:18"` (Uses a pre-built Node.js 18 image from Microsoft’s Dev Containers registry).
-- **Usage:** You can use pre-built images from public registries (like Docker Hub, [mcr.microsoft.com](https://www.google.com/search?q=mcr.microsoft.com&authuser=1)), or your own custom images. Pre-built images are convenient for common environments, while custom images offer greater control and pre-configuration.
-- **`dockerFile`:** Instead of `image`, you can use `dockerFile` to specify the path to a **Dockerfile** within your project.
-- **Example:** `"dockerFile": "Dockerfile"` (Assumes a Dockerfile named `Dockerfile` in the same `.devcontainer` folder).
-- **Usage:** Use `dockerFile` when you need to extensively customize the container environment beyond what pre-built images offer. Dockerfiles allow you to define every aspect of the container image.
+- **مثال:** `"image": "mcr.microsoft.com/devcontainers/javascript-node:18"` (يستخدم صورة Node.js 18 مبنية مسبقًا من سجل Dev Containers التابع لـ Microsoft).
+- **الاستخدام:** يمكنك استخدام صور مبنية مسبقًا من سجلات عامة (مثل Docker Hub و[mcr.microsoft.com](https://www.google.com/search?q=mcr.microsoft.com&authuser=1))، أو صورك المخصّصة. الصور المبنية مسبقًا ملائمة للبيئات الشائعة، بينما توفّر الصور المخصّصة تحكّمًا أكبر وإعدادًا مسبقًا.
+- **`dockerFile`:** بدلًا من `image`، يمكنك استخدام `dockerFile` لتحديد مسار **Dockerfile** داخل مشروعك.
+- **مثال:** `"dockerFile": "Dockerfile"` (يفترض وجود ملف باسم `Dockerfile` في مجلّد `.devcontainer` نفسه).
+- **الاستخدام:** استخدم `dockerFile` عندما تحتاج إلى تخصيص بيئة الحاوية على نطاق واسع بما يتجاوز ما تقدّمه الصور المبنية مسبقًا. تتيح لك ملفات Dockerfile تعريف كل جانب من جوانب صورة الحاوية.
 
 #### `context`
 
-When using `dockerFile`, this optional property specifies the **build context** for the Docker build. By default, it’s the same folder as the `dockerFile`. You can change it if needed.
+عند استخدام `dockerFile`، تحدّد هذه الخاصية الاختيارية **سياق البناء** لعملية بناء Docker. تكون افتراضيًا في المجلّد نفسه الذي يضمّ `dockerFile`. يمكنك تغييرها عند الحاجة.
 
-#### Extensions
+#### الإضافات (extensions)
 
-The `extensions` property is an **array of Visual Studio Code extension IDs** that should be automatically installed *inside* the Dev Container when it starts.
+خاصية `extensions` هي **مصفوفة من معرّفات إضافات Visual Studio Code** التي ينبغي تثبيتها تلقائيًا *داخل* حاوية التطوير عند تشغيلها.
 
 ```json
 "extensions": [
@@ -69,11 +69,11 @@ The `extensions` property is an **array of Visual Studio Code extension IDs** th
 ]
 ```
 
-This ensures everyone using the Dev Container has the same set of extensions. Find extension IDs in the Visual Studio Code Marketplace URL or by right-clicking an extension in the Extensions view and selecting “Copy Extension ID”.
+يضمن هذا أن يحصل كل من يستخدم حاوية التطوير على المجموعة نفسها من الإضافات. تجد معرّفات الإضافات في رابط Visual Studio Code Marketplace، أو بالنقر بالزر الأيمن على إضافة في عرض الإضافات واختيار «Copy Extension ID».
 
-#### Settings
+#### الإعدادات (settings)
 
-This `settings` property is a **JSON object** that allows you to define Visual Studio Code settings that will be applied *inside* the Dev Container.
+خاصية `settings` هذه هي **كائن JSON** يتيح لك تعريف إعدادات Visual Studio Code التي ستُطبَّق *داخل* حاوية التطوير.
 
 ```json
 "settings": {
@@ -82,28 +82,28 @@ This `settings` property is a **JSON object** that allows you to define Visual S
 }
 ```
 
-#### Port Fowarding
+#### إعادة توجيه المنافذ (Port Fowarding)
 
-The `forwardPorts` property is an **array of ports** that you want to forward from the container to your host machine.
+خاصية `forwardPorts` هي **مصفوفة منافذ** تريد إعادة توجيهها من الحاوية إلى جهازك المضيف.
 
-For example, `"forwardPorts": [3000, 8080, 5432]` (Forwards ports 3000, 8080, and 5432 from the container to your host).
+على سبيل المثال، `"forwardPorts": [3000, 8080, 5432]` (يعيد توجيه المنافذ 3000 و8080 و5432 من الحاوية إلى مضيفك).
 
-If your web application runs on port 3000 inside the container, forwarding port 3000 allows you to access it at `http://localhost:3000` in your host browser.
+إن كان تطبيقك على الويب يعمل على المنفذ 3000 داخل الحاوية، فإن إعادة توجيه المنفذ 3000 تتيح لك الوصول إليه على `http://localhost:3000` في متصفّح جهازك المضيف.
 
-#### Other Random Settings
+#### إعدادات أخرى متنوّعة
 
-**`workspaceFolder`:** Specifies the path *inside the container* where your project folder will be mounted. Defaults to `/workspace`. You usually don’t need to change this.
+**`workspaceFolder`:** يحدّد المسار *داخل الحاوية* حيث سيُركَّب مجلّد مشروعك. القيمة الافتراضية هي `/workspace`. لا تحتاج عادةً إلى تغيير هذا.
 
-**`postCreateCommand`:** This property allows you to run shell commands **once after the container is created and started for the first time.**
+**`postCreateCommand`:** تتيح لك هذه الخاصية تنفيذ أوامر صدفة (shell) **مرة واحدة بعد إنشاء الحاوية وتشغيلها للمرة الأولى.**
 
-- **Example:** `"postCreateCommand": "npm install"` (Runs `npm install` after container creation to install project dependencies).
-- **Usage:** Use this to install project-specific dependencies, initialize databases, or perform other setup tasks that should run only once.
+- **مثال:** `"postCreateCommand": "npm install"` (ينفّذ `npm install` بعد إنشاء الحاوية لتثبيت اعتمادات المشروع).
+- **الاستخدام:** استخدم هذا لتثبيت اعتمادات خاصة بالمشروع، أو تهيئة قواعد البيانات، أو تنفيذ مهام إعداد أخرى ينبغي أن تعمل مرة واحدة فقط.
 
-**`postStartCommand`:** Similar to `postCreateCommand`, but this command runs **every time the Dev Container starts.** Use with caution as frequent execution might impact startup time. Often used for starting background services or daemons needed for the development environment.
+**`postStartCommand`:** يشبه `postCreateCommand`، لكن هذا الأمر يعمل **في كل مرة تبدأ فيها حاوية التطوير.** استخدمه بحذر لأن التنفيذ المتكرّر قد يؤثّر في زمن بدء التشغيل. يُستخدم غالبًا لتشغيل خدمات خلفية أو برامج خفية (daemons) تحتاجها بيئة التطوير.
 
-**`remoteUser`:** Specifies the user to connect to inside the container. Defaults to the user used when building the image or the Dockerfile’s `USER` instruction. You might need to change this if you require a specific user context.
+**`remoteUser`:** يحدّد المستخدم الذي تتصل به داخل الحاوية. القيمة الافتراضية هي المستخدم المستخدَم عند بناء الصورة أو تعليمة `USER` في ملف Dockerfile. قد تحتاج إلى تغييره إن كنت بحاجة إلى سياق مستخدم محدّد.
 
-## An Example
+## مثال
 
 ```json
 {

@@ -1,16 +1,16 @@
 ---
-title: "Polymorphic Components and as Prop"
-lang: en
+title: "المكوّنات متعددة الأشكال وخاصية as"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/polymorphic-components-and-as-prop"
 ---
 
-Ever wanted to build a `Button` component that could render as a `button`, an `a` tag, or even a custom React component—while still giving you proper TypeScript intellisense for whatever element it’s actually rendering? Welcome to polymorphic components, where we trade a bit of type complexity for a lot of reusability. By the end of this, you’ll understand how to build components that adapt their HTML output and TypeScript types based on an `as` prop, all without resorting to `any` or lying to the type checker.
+هل تمنيت يومًا أن تبني مكوّن `Button` يمكن أن يُصيَّر كعنصر `button` أو كوسم `a` أو حتى كمكوّن React مخصّص — ومع ذلك تحصل على إكمال تلقائي (intellisense) صحيح من TypeScript للعنصر الذي يُصيَّر فعلًا؟ أهلًا بك في المكوّنات متعددة الأشكال (polymorphic components)، حيث نبدل قدرًا من تعقيد الأنواع بقدر كبير من قابلية إعادة الاستخدام. وفي نهاية هذا الدرس ستفهم كيف تبني مكوّنات تتكيّف مخرجاتها من HTML وأنواعها في TypeScript بحسب خاصية `as`، كل ذلك دون أن تلجأ إلى `any` أو تخدع مدقّق الأنواع.
 
-The challenge is straightforward: you want one component that handles your styling and behavior logic, but you need it to render different HTML elements depending on the context. A button that’s sometimes a `<button>`, sometimes an `<a href="...">`, and sometimes a custom `Link` component from your router library.
+التحدّي بسيط: تريد مكوّنًا واحدًا يتولّى منطق التنسيق والسلوك، لكنك تحتاجه ليُصيّر عناصر HTML مختلفة حسب السياق. زرٌّ يكون أحيانًا `<button>` وأحيانًا `<a href="...">` وأحيانًا مكوّن `Link` المخصّص من مكتبة الموجّه لديك.
 
-## The Problem with Traditional Approaches
+## المشكلة مع الأساليب التقليدية
 
-Let’s start with what doesn’t work. You might be tempted to try something like this:
+لنبدأ بما لا يعمل. قد تغريك وتجربة شيء كالتالي:
 
 ```typescript
 // ❌ Don't do this
@@ -28,11 +28,11 @@ const BadButton = ({ as: Component = 'button', children, ...props }: BadButtonPr
 };
 ```
 
-This works at runtime, but TypeScript has no idea what’s going on. You lose all the benefits of type checking—no autocomplete for valid props, no warnings about invalid prop combinations, and no safety net when you refactor.
+هذا يعمل أثناء التشغيل، لكن TypeScript لا يدري ما يحدث. تفقد كل مزايا التحقق من الأنواع — لا إكمال تلقائي للخصائص الصحيحة، ولا تحذيرات من تركيبات الخصائص غير الصالحة، ولا شبكة أمان حين تعيد الهيكلة.
 
-## Building a Proper Polymorphic Component
+## بناء مكوّن متعدد الأشكال بشكل صحيح
 
-Here’s how we solve this properly. We’re going to build a `Button` component that can render as any HTML element or React component while preserving full type safety:
+إليك كيف نحلّ هذا بشكل صحيح. سنبني مكوّن `Button` يستطيع التصيير كأي عنصر HTML أو مكوّن React مع الحفاظ على أمان الأنواع كاملًا:
 
 ```typescript
 import { ComponentPropsWithoutRef, ElementType } from 'react';
@@ -85,16 +85,16 @@ const Button = <T extends ElementType = 'button'>({
 export default Button;
 ```
 
-Let’s break down what’s happening here:
+لنحلّل ما يحدث هنا:
 
-1. **`BaseButtonProps`**: These are the props that every Button should have, regardless of what element it renders as
-2. **`PolymorphicButtonProps<T>`**: This is where the magic happens—we merge our base props with the props of whatever element type `T` represents
-3. **`ComponentPropsWithoutRef<T>`**: This gives us all the standard props for element `T` (like `href` for anchors, `onClick` for buttons)
-4. **Generic constraint `<T extends ElementType>`**: This ensures `T` can only be something that React can actually render
+1. **`BaseButtonProps`**: هذه هي الخصائص التي ينبغي أن يملكها كل زر، بغضّ النظر عن العنصر الذي يُصيَّر
+2. **`PolymorphicButtonProps<T>`**: هنا يحدث السحر — ندمج خصائصنا الأساسية مع خصائص العنصر الذي يمثّله النوع `T`
+3. **`ComponentPropsWithoutRef<T>`**: هذا يعطينا كل الخصائص القياسية للعنصر `T` (مثل `href` للروابط و`onClick` للأزرار)
+4. **القيد العام `<T extends ElementType>`**: يضمن ألا يكون `T` إلا شيئًا يستطيع React تصييره فعلًا
 
-## Using Your Polymorphic Button
+## استخدام زرّك متعدد الأشكال
 
-Now you can use your Button component in all sorts of ways, and TypeScript will keep you honest:
+الآن يمكنك استخدام مكوّن الزر متعدد الأشكال بطرق لا حصر لها، وسيلزمك TypeScript أن تلتزم الصواب:
 
 ```typescript
 // ✅ Renders a <button> with onClick
@@ -125,15 +125,15 @@ import Link from 'next/link';
 <Button as="a">Missing href</Button>
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Notice how TypeScript automatically provides the right autocomplete suggestions based on the `as` prop. When you use `as="a"`, you get `href`, `target`, `download`, etc. When you use the default button, you get `onClick`, `disabled`, `type`, etc.
+> لاحظ كيف يوفّر TypeScript تلقائيًا اقتراحات الإكمال التلقائي المناسبة بحسب خاصية `as`. حين تستخدم `as="a"` تحصل على `href` و`target` و`download` وغيرها. وحين تستخدم الزر الافتراضي تحصل على `onClick` و`disabled` و`type` وغيرها.
 
-## Advanced Polymorphic Patterns
+## أنماط متقدمة متعددة الأشكال
 
-### Handling Ref Forwarding
+### التعامل مع تمرير الـ ref
 
-If you need ref forwarding (and you probably will), here’s how to add it without breaking the polymorphism:
+إن كنت بحاجة إلى تمرير الـ ref (وهو غالبًا ما ستحتاج إليه)، فإليك كيف تضيفه دون أن تكسر تعدّد الأشكال:
 
 ```typescript
 import { ComponentPropsWithoutRef, ElementType, forwardRef } from 'react';
@@ -168,13 +168,13 @@ const Button: ButtonComponent = forwardRef(
 Button.displayName = 'Button';
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> The ref typing gets a bit gnarly, but it’s worth it for the full polymorphic experience. Your refs will now be correctly typed based on what element you’re actually rendering.
+> يصبح ضبط أنواع الـ ref معقّدًا بعض الشيء، لكنه يستحق ذلك مقابل تجربة تعدّد الأشكال الكاملة. إذ ستصبح مراجعك (refs) مضبوطة بشكل صحيح بحسب العنصر الذي تُصيّره فعلًا.
 
-### Creating a Reusable Polymorphic Type
+### إنشاء نوع متعدد الأشكال قابل لإعادة الاستخدام
 
-If you’re building multiple polymorphic components (and you probably should), extract the pattern into a reusable type:
+إن كنت تبني عدة مكوّنات متعددة الأشكال (وهو ما ينبغي أن تفعله)، فاستخرج النمط في نوع قابل لإعادة الاستخدام:
 
 ```typescript
 type PolymorphicComponentProps<T extends ElementType, Props = {}> = Props & {
@@ -190,7 +190,7 @@ type PolymorphicComponent<DefaultElement extends ElementType, Props = {}> = <
 ) => React.ReactElement | null;
 ```
 
-Now you can build polymorphic components with less boilerplate:
+الآن يمكنك بناء مكوّنات متعددة الأشكال بمقدار أقل من الكود المتكرّر:
 
 ```typescript
 interface CardProps {
@@ -213,9 +213,9 @@ const Card: PolymorphicComponent<'div', CardProps> = forwardRef(
 );
 ```
 
-## “asChild” Pattern
+## نمط «asChild»
 
-Some design systems expose an `asChild` prop to render whatever child element you pass while preserving the component’s styling and behavior. This keeps DOM semantics under your control (use a `Link`, `button`, or any element) without sacrificing typing.
+تعرض بعض أنظمة التصميم خاصية `asChild` لتصيير أي عنصر فرعي تمرّره مع الحفاظ على تنسيق وسلوك المكوّن. وهذا يبقي دلالات DOM تحت سيطرتك (استخدم `Link` أو `button` أو أي عنصر) دون التضحية بكتابة الأنواع.
 
 ```typescript
 import { forwardRef, cloneElement, isValidElement } from 'react';
@@ -257,14 +257,14 @@ export const Button = forwardRef<HTMLElement, BaseButtonProps>(
 );
 ```
 
-- Use `asChild` when you need to control the rendered element (e.g., Next.js `Link`, Reach Router links) but want to keep Button’s styling and behavior.
-- The ref type becomes a bit more flexible (generic + element guards are possible); for most cases, forwarding as `HTMLElement` works well with DOM elements.
+- استخدم `asChild` حين تحتاج إلى التحكم في العنصر المُصيَّر (مثل `Link` في Next.js أو روابط Reach Router) مع الرغبة في الإبقاء على تنسيق وسلوك الزر.
+- يصبح نوع الـ ref أكثر مرونة قليلًا (يمكن استخدام الأنواع العامة مع حرّاس العناصر)؛ وفي معظم الحالات، يعمل التمرير بوصفه `HTMLElement` جيدًا مع عناصر DOM.
 
-## Real-World Use Cases™
+## حالات الاستخدام في العالم الحقيقي™
 
-### Design System Components
+### مكوّنات نظام التصميم
 
-Polymorphic components shine in design systems where you need consistent styling across different semantic elements:
+تتألق المكوّنات متعددة الأشكال في أنظمة التصميم حيث تحتاج إلى تنسيق متّسق عبر العناصر الدلالية المختلفة:
 
 ```typescript
 // Your design system's Text component
@@ -281,9 +281,9 @@ const Text: PolymorphicComponent<'span', TextProps> = /* ... */;
 <Text as="label" variant="caption" weight="medium">Form label</Text>
 ```
 
-### Router Integration
+### التكامل مع الموجّه
 
-Perfect for integrating with different routing libraries:
+مثالية للتكامل مع مكتبات الموجّه المختلفة:
 
 ```typescript
 // Works with React Router
@@ -302,9 +302,9 @@ Perfect for integrating with different routing libraries:
 </Button>
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Polymorphic components are essentially zero-cost abstractions at runtime—the generic types disappear after compilation, and you’re just passing props to regular React elements. The main performance consideration is the same as any React component: avoid recreating the component on every render if you’re passing it inline.
+المكوّنات متعددة الأشكال هي في جوهرها تجريدات بلا تكلفة وقت التشغيل — إذ تختفي الأنواع العامة بعد الترجمة (compilation)، وأنت لا تسلّم سوى خصائص إلى عناصر React اعتيادية. واعتبار الأداء الرئيسي هو نفسه لأي مكوّن React: تجنّب إعادة إنشاء المكوّن في كل تصيير إن كنت تمرّره مضمّنًا.
 
 ```typescript
 // ✅ Good - component reference is stable
@@ -317,20 +317,20 @@ const LinkComponent = Link;
 </Button>
 ```
 
-## Common Gotchas and How to Avoid Them
+## الأخطاء الشائعة وكيف تتجنّبها
 
-### The `displayName` Mystery
+### لغز `displayName`
 
-Always set `displayName` on your polymorphic components, especially when using `forwardRef`. React DevTools will thank you:
+اضبط `displayName` دائمًا على مكوّناتك متعددة الأشكال، ولا سيما عند استخدام `forwardRef`. وستشكلك أدوات مطوّري React على ذلك:
 
 ```typescript
 const Button: PolymorphicComponent<'button', ButtonProps> = forwardRef(/* ... */);
 Button.displayName = 'Button'; // ✅ Good
 ```
 
-### Prop Conflicts
+### تعارضات الخصائص
 
-Sometimes your base props might conflict with HTML attributes. Handle this explicitly:
+أحيانًا قد تتعارض خصائصك الأساسية مع سمات HTML. تعامل مع هذا الأمر صراحةً:
 
 ```typescript
 interface BaseProps {
@@ -344,18 +344,18 @@ const Component = ({ size, ...props }: PolymorphicComponentProps<T, BaseProps>) 
 };
 ```
 
-### TypeScript Performance
+### أداء TypeScript
 
-Very complex polymorphic types can slow down TypeScript’s compiler. If you notice slowdowns, consider simplifying your types or splitting complex components into smaller, focused ones.
+أنواع متعددة الأشكال شديدة التعقيد قد تُبطئ مُجمِّع TypeScript. فإن لاحظت تباطؤًا، فكّر في تبسيط أنواعك أو تقسيم المكوّنات المعقّدة إلى مكوّنات أصغر محدّدة الغرض.
 
-## Next Steps
+## الخطوات التالية
 
-Now you’ve got the tools to build truly reusable components that don’t sacrifice type safety for flexibility. Start with a simple Button or Text component, get comfortable with the patterns, then expand to more complex use cases.
+الآن بين يديك الأدوات لبناء مكوّنات قابلة لإعادة الاستخدام حقًا دون التضحية بأمان الأنواع مقابل المرونة. ابدأ بمكوّن زرّ أو نصّ بسيط، واطمئن إلى الأنماط، ثم وسّع إلى حالات استخدام أكثر تعقيدًا.
 
-Consider building polymorphic versions of common components like:
+فكّر في بناء نسخ متعددة الأشكال من المكوّنات الشائعة مثل:
 
-- `Box` (div by default, but can be any container)
-- `Heading` (h2 by default, but can be h1-h6)
-- `List` (ul by default, but can be ol or div)
+- `Box` (`div` افتراضيًا، لكنه قد يكون أي حاوية)
+- `Heading` (`h2` افتراضيًا، لكنه قد يكون من `h1` إلى `h6`)
+- `List` (`ul` افتراضيًا، لكنه قد يكون `ol` أو `div`)
 
-The `as` prop pattern has become increasingly popular in modern React libraries (Chakra UI, Mantine, Stitches) because it solves real problems without compromising developer experience. Once you start using polymorphic components, you’ll wonder how you ever built reusable UIs without them.
+لقد أصبح نمط خاصية `as` شائعًا أكثر فأكثر في مكتبات React الحديثة (Chakra UI وMantine وStitches) لأنه يحلّ مشكلات حقيقية دون المساس بتجربة المطوّر. وما إن تبدأ باستخدام المكوّنات متعددة الأشكال حتى تتساءل كيف كنت تبني واجهات قابلة لإعادة الاستخدام من دونها.

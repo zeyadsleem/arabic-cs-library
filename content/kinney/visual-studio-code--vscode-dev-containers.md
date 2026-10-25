@@ -1,53 +1,53 @@
 ---
-title: "Dev Containers"
-lang: en
+title: "حاويات التطوير (Dev Containers)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-dev-containers"
 ---
 
-Imagine having a perfectly tailored development environment for each project, encapsulated and isolated from your host machine. That’s precisely what Dev Containers offer. At their core, Dev Containers utilize **Docker containers** to define and provide a complete development environment.
+تخيّل أن تكون لديك بيئة تطوير مفصّلة على مقاس كل مشروع، ومعزولة عن جهازك المضيف. هذا بالضبط ما توفّره حاويات التطوير Dev Containers. فهي تستخدم في جوهرها **حاويات Docker** لتعريف بيئة تطوير كاملة وتوفيرها.
 
-Think of a Docker container as a lightweight, standalone, executable package that includes everything needed to run a piece of software, including code, runtime, system tools, libraries, and settings. Dev Containers extend this concept by integrating it seamlessly into Visual Studio Code.
+فكّر في حاوية Docker كحزمة خفيفة الوزن، قائمة بذاتها وقابلة للتنفيذ، تضمّ كل ما يلزم لتشغيل قطعة من البرمجيات، بما في ذلك الشيفرة، وبيئة التشغيل، وأدوات النظام، والمكتبات، والإعدادات. وتوسّع حاويات التطوير هذا المفهوم بدمجه بسلاسة في Visual Studio Code.
 
-**TL;DR**—A dev container is essentially the following:
+**باختصار** — حاوية التطوير هي في جوهرها ما يلي:
 
-- **A Docker Container:** It’s built upon Docker technology, inheriting all its benefits like isolation and portability.
-- **A Development Environment:** It’s specifically configured to be a complete development environment, pre-loaded with tools, runtimes, libraries, and extensions required for a particular project.
-- **Integrated with Visual Studio Code:** It’s not just a container running somewhere; it’s deeply integrated with Visual Studio Code. Visual Studio Code connects to this container and operates *inside* it, treating it as the development machine. Your code, terminal, debugger, extensions – everything runs inside the container.
-- **Defined by Configuration:** The environment is defined by a configuration file, typically `devcontainer.json`, which resides within your project. This file dictates how the container is built and configured.
+- **حاوية Docker:** مبنية على تقنية Docker، وترث كل مزاياه مثل العزل وقابلية النقل.
+- **بيئة تطوير:** مهيّأة تحديدًا لتكون بيئة تطوير كاملة، محمّلة مسبقًا بالأدوات وبيئات التشغيل والمكتبات والإضافات اللازمة لمشروع معيّن.
+- **مدمجة مع Visual Studio Code:** ليست مجرد حاوية تعمل في مكان ما، بل مدمجة بعمق مع Visual Studio Code. إذ يتّصل Visual Studio Code بهذه الحاوية ويعمل *داخلها*، معاملًا إياها كجهاز التطوير. فشيفرتك، والطرفية، والمُنقّح، والإضافات — كل شيء يعمل داخل الحاوية.
+- **معرّفة بإعدادات:** تُعرَّف البيئة بملف إعدادات، هو عادةً `devcontainer.json`، ويقيم داخل مشروعك. ويملي هذا الملف كيفية بناء الحاوية وضبطها.
 
-## Role of Dev Containers
+## دور حاويات التطوير
 
-Dev Containers bridge the gap between containerization and the daily workflow of developers. They empower you to:
+تسدّ حاويات التطوير الفجوة بين الحوسبة بالحاويات وسير العمل اليومي للمطوّرين. وهي تمكّنك من:
 
-- **Define your development environment as code:** Just like Infrastructure as Code, you can define your development environment in a declarative configuration file, ensuring it’s version-controlled and easily shared.
-- **Isolate projects:** Each project can have its own container, preventing dependency conflicts and ensuring clean, independent environments.
-- **Create reproducible environments:** By defining the container image and configuration, you guarantee that everyone working on the project, regardless of their operating system, has an identical development setup.
+- **تعريف بيئة تطويرك كشيفرة:** تمامًا كالبنية التحتية كشيفرة (Infrastructure as Code)، يمكنك تعريف بيئة تطويرك في ملف إعدادات تصريحي، بما يضمن إدارتها بالتحكّم في الإصدارات وسهولة مشاركتها.
+- **عزل المشاريع:** يمكن أن تكون لكل مشروع حاويته الخاصة، مما يمنع تعارض الاعتمادات ويضمن بيئات نظيفة ومستقلة.
+- **إنشاء بيئات قابلة لإعادة الإنتاج:** بتعريف صورة الحاوية وإعداداتها، تضمن أن يكون لكل من يعمل على المشروع، بصرف النظر عن نظام تشغيله، إعداد تطوير مطابق تمامًا.
 
-## Benefits of Dev Containers
+## فوائد حاويات التطوير
 
-The adoption of Dev Containers brings a wealth of advantages, significantly enhancing your development experience and team collaboration. Let’s explore the key benefits in detail:
+يجلب تبنّي حاويات التطوير ثروة من المزايا، فتعزّز تجربة تطويرك وتعاون فريقك تعزيزًا ملحوظًا. لنستعرض الفوائد الرئيسية بالتفصيل:
 
-### Consistency
+### الاتساق
 
-- **Problem:** “It works on my machine!” - the classic developer lament. Different operating systems, tool versions, and globally installed dependencies often lead to inconsistencies and headaches.
-- **Dev Container Solution:** Dev Containers eliminate this issue by providing a **standardized development environment**. Everyone working on a project uses the *same* container image and configurations, ensuring that the environment is identical across all machines – Windows, macOS, Linux, etc. This drastically reduces environment-related bugs and debugging time.
+- **المشكلة:** “إنه يعمل على جهازي!” — هذه شكوى المطوّرين الكلاسيكية. فاختلاف أنظمة التشغيل، وإصدارات الأدوات، والاعتمادات المثبّتة عامةً يؤدّي غالبًا إلى تباينات ومتاعب.
+- **حلّ حاويات التطوير:** تُزيل حاويات التطوير هذه المشكلة بتوفير **بيئة تطوير موحّدة**. فكل من يعمل على مشروع يستخدم *الصورة* نفسها والإعدادات نفسها، بما يضمن أن تكون البيئة مطابقة على جميع الأجهزة — Windows وmacOS وLinux وغيرها. وهذا يقلّل بشدة الأخطاء المرتبطة بالبيئة ووقت التنقيح.
 
-### Reproducibility
+### قابلية إعادة الإنتاج
 
-- **Problem:** Setting up a complex development environment can be time-consuming and error-prone. Recreating an environment after a system crash or for a new team member can be a significant hurdle.
-- **Dev Container Solution:** Dev Containers make environment recreation effortless. The `devcontainer.json` and related files (like Dockerfile) fully define the environment. Simply cloning the repository and opening it in Visual Studio Code (with the Dev Containers extension) will rebuild the *exact* same environment. This is invaluable for onboarding new developers and for quickly recovering from environment issues.
+- **المشكلة:** قد يكون إعداد بيئة تطوير معقّدة مستهلكًا للوقت وعُرضة للأخطاء. وقد تكون إعادة إنشاء بيئة بعد انهيار النظام أو لمطوّر جديد عقبة كبيرة.
+- **حلّ حاويات التطوير:** تجعل حاويات التطوير إعادة إنشاء البيئة أمرًا سهلًا. فملف `devcontainer.json` والملفات المرتبطة به (مثل Dockerfile) تعرّف البيئة تعريفًا كاملًا. ويكفي استنساخ المستودع وفتحه في Visual Studio Code (مع إضافة Dev Containers) لإعادة بناء البيئة *نفسها* بالضبط. وهذا ذو قيمة كبيرة لتهيئة المطوّرين الجدد وللتعافي السريع من مشكلات البيئة.
 
-### Isolation
+### العزل
 
-- **Problem:** Globally installed dependencies can create conflicts between projects. Upgrading a tool for one project might break another. Your host machine can become cluttered with project-specific software.
-- **Dev Container Solution:** Dev Containers provide **project isolation**. Each project lives in its own container, with its own set of dependencies and tools. Changes in one project’s container have *zero* impact on other projects or your host machine. This leads to cleaner systems, fewer conflicts, and improved project stability.
+- **المشكلة:** قد تخلق الاعتمادات المثبّتة عامةً تعارضات بين المشاريع. فقد يؤدّي ترقية أداة لمشروع ما إلى تعطيل مشروع آخر. وقد يمتلئ جهازك المضيف ببرمجيات خاصة بمشاريع محدّدة.
+- **حلّ حاويات التطوير:** توفّر حاويات التطوير **عزلًا للمشاريع**. فكل مشروع يقيم في حاويته الخاصة، بمجموعته الخاصة من الاعتمادات والأدوات. ولا يكون لتغييرات حاوية مشروع ما *أي* أثر على المشاريع الأخرى أو على جهازك المضيف. وهذا يؤدّي إلى أنظمة أنظف، وتعارضات أقل، واستقرار أفضل للمشاريع.
 
-### Onboarding
+### تهيئة المطوّرين الجدد
 
-- **Problem:** New developers often face a steep learning curve getting their development environment set up correctly. This can be frustrating and slow down their integration into the team.
-- **Dev Container Solution:** Dev Containers drastically simplify onboarding. New team members simply need to install Visual Studio Code, Docker, and the Remote - Containers extension. Opening the project repository in Visual Studio Code automatically prompts them to use the Dev Container. The environment is pre-configured and ready to go, allowing new developers to start contributing code quickly and efficiently.
+- **المشكلة:** يواجه المطوّرون الجدد غالبًا منحنى تعلّم حادًا لإعداد بيئة تطويرهم بشكل صحيح. وقد يكون ذلك محبِطًا ويُبطئ اندماجهم في الفريق.
+- **حلّ حاويات التطوير:** تبسّط حاويات التطوير تهيئة المطوّرين الجدد تبسيطًا كبيرًا. إذ يحتاج أعضاء الفريق الجدد ببساطة إلى تثبيت Visual Studio Code وDocker وإضافة Remote - Containers. وفتح مستودع المشروع في Visual Studio Code يطالبهم تلقائيًا باستخدام حاوية التطوير. وتكون البيئة مهيّأة مسبقًا وجاهزة للعمل، مما يتيح للمطوّرين الجدد البدء في المساهمة بالشيفرة بسرعة وكفاءة.
 
-### Flexibility
+### المرونة
 
-- **Problem:** Different projects require diverse technology stacks – different languages, frameworks, databases, and tools. Managing all these on a single host machine can be cumbersome.
-- **Dev Container Solution:** Dev Containers provide **unparalleled flexibility**. You can easily create containers tailored to any language, framework, or toolchain. Whether you’re working with Node.js, Python, Go, Java, Ruby, or any other technology, Dev Containers can accommodate your needs. You can even have different operating systems within your containers (e.g., develop on Linux even if your host is Windows or macOS).
+- **المشكلة:** تتطلّب المشاريع المختلفة منظومات تقنية متنوّعة — لغات وأطر وقواعد بيانات وأدوات مختلفة. وقد تكون إدارة كل ذلك على جهاز مضيف واحد أمرًا مُرهقًا.
+- **حلّ حاويات التطوير:** توفّر حاويات التطوير **مرونة لا تُضاهى**. فيمكنك بسهولة إنشاء حاويات مفصّلة على مقاس أي لغة أو إطار أو سلسلة أدوات. وسواء كنت تعمل بـ Node.js أو Python أو Go أو Java أو Ruby أو أي تقنية أخرى، تستطيع حاويات التطوير تلبية احتياجاتك. ويمكنك حتى أن تملك أنظمة تشغيل مختلفة داخل حاوياتك (مثل التطوير على Linux حتى لو كان مضيفك يعمل بـ Windows أو macOS).

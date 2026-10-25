@@ -1,53 +1,44 @@
 ---
-title: "Claude Code Commands and Skills"
-lang: en
+title: "أوامر Claude Code ومهاراته"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-commands"
 ---
 
-[Claude Code Skills](https://code.claude.com/docs/en/skills) are now the primary
-way to package reusable workflows. Custom commands in `.claude/commands/*.md` still work, but new substantial workflows should usually become skills.
+صارت [مهارات Claude Code](https://code.claude.com/docs/en/skills) هي الطريقة الأساسية لتغليف سير العمل القابل لإعادة الاستخدام. لا تزال الأوامر المخصّصة في `.claude/commands/*.md` تعمل، لكن سير العمل الجديد الجوهري ينبغي أن يصير مهارة في العادة.
 
-## What Changed
+## ما الذي تغيّر
 
-Older lessons often taught custom commands as the main extension point:
+غالبًا ما علّمت الدروس الأقدم الأوامر المخصّصة كنقطة التوسيع الرئيسية:
 
 ```
 .claude/commands/review.md
 ```
 
-That still creates a slash command. The modern shape is:
+لا يزال ذلك ينشئ أمر شرطة مائلة. أما الشكل الحديث فهو:
 
 ```
 .claude/skills/code-review/
   SKILL.md
 ```
 
-Skills can include frontmatter, instructions, scripts, references, assets,
-allowed tools, disallowed tools, model preferences, effort, hooks, and agent
-configuration. That makes them better for workflows that need more than one
-Markdown file.
+تستطيع المهارات أن تتضمن الترويسة (frontmatter) والتعليمات والسكربتات والمراجع والموجودات والأدوات المسموح بها والأدوات الممنوعة وتفضيلات النموذج والجهد والخطّافات وتهيئة الوكيل. وهذا يجعلها أفضل لسير العمل الذي يحتاج أكثر من ملف Markdown واحد.
 
-## When a Command Is Still Fine
+## متى يظل الأمر كافيًا
 
-Use `.claude/commands` for a tiny slash command that is mostly a prompt shortcut.
-If it grows steps, examples, or tool policy, move it to a skill.
+استخدم `.claude/commands` لأمر شرطة مائلة صغير هو في الأغلب اختصار لطلب. وإذا نما ليشمل خطوات أو أمثلة أو سياسة أدوات، فانقله إلى مهارة.
 
-## Built-In Skills
+## المهارات المدمجة
 
-Claude Code ships bundled skills such as code review, batching, debugging, loops,
-and [Claude API](https://docs.anthropic.com/en/api/overview) work. Use those
-before writing your own version. A custom skill is worth it when the repository
-has local conventions the bundled skill cannot know.
+يشحن Claude Code مهارات مرفقة مثل مراجعة الشيفرة والدفعات والتشخيص والحلقات والعمل بـ [Claude API](https://docs.anthropic.com/en/api/overview). استخدم تلك قبل كتابة نسختك الخاصة. وتستحق المهارة المخصّصة العناء عندما تكون للمستودع أعراف محلية لا يستطيع المهارة المرفقة معرفتها.
 
-## Migration Pattern
+## نمط الترحيل
 
-When migrating a command:
+عند ترحيل أمر:
 
-1. Create `.claude/skills/<name>/SKILL.md`.
-2. Move the command instructions into the skill.
-3. Add scripts or references instead of lengthening the entrypoint.
-4. Keep the slash command name only if users already rely on it.
-5. Delete stale command files once the skill covers the workflow.
+1. أنشئ `.claude/skills/<name>/SKILL.md`.
+2. انقل تعليمات الأمر إلى المهارة.
+3. أضف سكربتات أو مراجع بدلًا من إطالة نقطة الدخول.
+4. أبقِ اسم أمر الشرطة المائلة فقط إذا كان المستخدمون يعتمدون عليه بالفعل.
+5. احذف ملفات الأوامر البالية بمجرد أن تغطي المهارة سير العمل.
 
-Do not keep two copies of the same instruction. Duplicate agent instructions
-drift quickly.
+لا تُبقِ نسختين من التعليمات نفسها. فتعليمات الوكيل المكرّرة تنحرف سريعًا.

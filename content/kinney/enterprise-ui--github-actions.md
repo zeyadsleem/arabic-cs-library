@@ -1,24 +1,24 @@
 ---
-title: "GitHub Actions"
-lang: en
+title: "GitHub Actions: أتمتة المستودعات وخطوط CI/CD"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/github-actions"
 ---
 
-GitHub Actions is GitHub’s built-in automation system for CI, CD, release pipelines, repository housekeeping, security workflows, and the rest of the chores humans keep trying to do by hand. A [workflow](https://docs.github.com/actions/using-workflows/about-workflows) is a YAML file stored in `.github/workflows`, and it runs when a matching event happens in the repository, on a schedule, or when someone triggers it manually. A repository can have many workflows, each aimed at a different job.
+GitHub Actions هو نظام الأتمتة المدمج في GitHub للتكامل المستمر (CI)، والتسليم المستمر (CD)، وخطوط الإصدار، وتدبير شؤون المستودع، وسير عمل الأمان، وبقية الأعمال الشاقّة التي يظل البشر يحاولون إنجازها يدويًا. و[سير العمل](https://docs.github.com/actions/using-workflows/about-workflows) ملف YAML مخزّن في `.github/workflows`، ويعمل عند حدوث حدث مطابق في المستودع، أو وفق جدول زمني، أو حين يطلقه أحدهم يدويًا. ويمكن أن يكون للمستودع سير عمل كثيرة، كل منها موجّه إلى مهمة مختلفة.
 
-The part that confuses people is that GitHub Actions is not one thing. It’s a workflow engine, an execution platform, a packaging format for reusable actions, a runner fleet, a security surface, and a policy system. It looks like “some YAML and a couple of `uses:` lines,” right up until you have forks, deployments, self-hosted runners, cloud credentials, cache correctness, and one teammate who thinks `pull_request_target` is a fun way to meet incident response.
+والجزء الذي يربك الناس أن GitHub Actions ليس شيئًا واحدًا. فهو محرّك سير عمل، ومنصّة تنفيذ، وصيغة تغليف لإجراءات قابلة لإعادة الاستخدام، وأسطول مشغّلات، وسطح أمني، ونظام سياسات. ويبدو كـ«بعض YAML وسطرَي `uses:`» حتى تصير لديك تفرّعات، وعمليات نشر، ومشغّلات مستضافة ذاتيًا، وبيانات اعتماد سحابية، وصحّة ذاكرة مؤقتة، وزميل يرى في `pull_request_target` طريقة ممتعة للتعرّف على الاستجابة للحوادث.
 
-## The Mental Model
+## النموذج الذهني
 
-The [core model](https://docs.github.com/articles/getting-started-with-github-actions) is straightforward. A **workflow** contains one or more **jobs**. Jobs run on **runners**, and each job contains **steps**. A step is either a shell command with `run:` or an action invoked with `uses:`. Jobs can run in parallel or be forced into sequence with `needs`. Each job runs on its own runner VM or in its own container context, which is why passing state across jobs is explicit instead of magical.
+و[النموذج الأساسي](https://docs.github.com/articles/getting-started-with-github-actions) مباشر. **سير العمل** يحتوي **مهمة** واحدة أو أكثر. وتعمل **المهام** على **مشغّلات**، وكل مهمة تحتوي **خطوات**. والخطوة إما أمر صدفة بـ`run:` وإما إجراء يُستدعى بـ`uses:`. ويمكن أن تعمل المهام على التوازي أو تُفرض في تسلسل بـ`needs`. وتعمل كل مهمة على آلة مشغّل خاصة بها أو في سياق حاوية خاص بها، ولهذا يكون تمرير الحالة بين المهام صريحًا لا سحريًا.
 
-An [action](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/using-pre-written-building-blocks-in-your-workflow) is a reusable building block. You can use actions from the same repository, from public repositories, or from Docker Hub images. GitHub also supports writing your own JavaScript, Docker, and composite actions, each described by an `action.yml` or `action.yaml` metadata file. Composite actions bundle steps; reusable workflows bundle whole jobs and workflow structure. Those are related ideas, but they’re not the same thing, because apparently one reusable abstraction would have been too humane.
+و[الإجراء](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/using-pre-written-building-blocks-in-your-workflow) لبنة بناء قابلة لإعادة الاستخدام. ويمكنك استخدام إجراءات من المستودع نفسه، أو من مستودعات عامة، أو من صور Docker Hub. ويدعم GitHub أيضًا كتابة إجراءاتك الخاصة بلغة JavaScript أو Docker أو الإجراءات المركّبة، ويوصف كل منها بملف بيانات وصفية `action.yml` أو `action.yaml`. والإجراءات المركّبة تجمع خطوات؛ وسير العمل القابل لإعادة الاستخدام يجمع مهام كاملة وبنية سير العمل. وهاتان فكرتان متقاربتان، لكنهما ليستا الشيء نفسه، إذ يبدو أن تجريدًا واحدًا قابلًا لإعادة الاستخدام كان سيكون أكثر رحمة بالبشر.
 
-## The Anatomy of a Workflow
+## تشريح سير العمل
 
-At the top level, the keys you’ll care about most are `name`, `run-name`, `on`, `permissions`, `env`, `defaults`, `concurrency`, and `jobs`. The [workflow syntax reference](https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions) also defines job-level features like `if`, `strategy`, `container`, `services`, `outputs`, `uses`, `with`, and `secrets`, which is where most of the real work happens.
+في المستوى الأعلى، المفاتيح التي ستعنيك أكثر هي `name` و`run-name` و`on` و`permissions` و`env` و`defaults` و`concurrency` و`jobs`. ويُعرّف [مرجع صيغة سير العمل](https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions) أيضًا ميزات على مستوى المهمة مثل `if` و`strategy` و`container` و`services` و`outputs` و`uses` و`with` و`secrets`، وهي حيث يجري معظم العمل الحقيقي.
 
-A good baseline workflow:
+وهذا سير عمل أساسي جيد:
 
 ```yaml
 name: CI
@@ -80,23 +80,23 @@ jobs:
           retention-days: 7
 ```
 
-This example uses the features that matter in real repositories—event filters, least-privilege token permissions, concurrency control, a matrix, dependency caching, and artifacts. None of those are exotic. They’re the difference between a toy workflow and one that doesn’t waste money or set security traps for your future self.
+يستخدم هذا المثال الميزات التي تهمّ في المستودعات الحقيقية—مرشّحات الأحداث، وصلاحيات الرمز بأقل امتياز، والتحكم في التزامن، ومصفوفة، وتخزين الاعتمادات مؤقتًا، ومخرجات. ولا شيء من ذلك غريب. إنها الفرق بين سير عمل لعبة وآخر لا يهدر المال ولا ينصب فخاخًا أمنية لنسختك المستقبلية.
 
-## Triggers and Event Semantics
+## المُحفّزات ودلالات الأحداث
 
-The `on:` block decides when the workflow starts. GitHub Actions can trigger on [repository activity, schedules, manual dispatch, workflow calls, workflow completions, and external events](https://docs.github.com/actions/using-workflows/events-that-trigger-workflows). Common cases are `push`, `pull_request`, `workflow_dispatch`, `schedule`, `workflow_call`, and `workflow_run`. For repository events, you can narrow execution with activity `types`, branch filters, tag filters, and path filters. Manual workflows triggered with `workflow_dispatch` can be started from the Actions tab, GitHub CLI, or the REST API.
+كتلة `on:` هي التي تحدّد متى يبدأ سير العمل. ويستطيع GitHub Actions أن يُحفَّز بـ[نشاط المستودع، أو الجداول الزمنية، أو الإطلاق اليدوي، أو استدعاءات سير العمل، أو اكتمالات سير العمل، أو الأحداث الخارجية](https://docs.github.com/actions/using-workflows/events-that-trigger-workflows). والحالات الشائعة هي `push` و`pull_request` و`workflow_dispatch` و`schedule` و`workflow_call` و`workflow_run`. ولأحداث المستودع، يمكنك تضييق التنفيذ بأنواع النشاط `types`، ومرشّحات الفروع، ومرشّحات الوسوم، ومرشّحات المسارات. ويمكن بدء سير العمل اليدوي المُحفَّز بـ`workflow_dispatch` من تبويب Actions، أو من GitHub CLI، أو من واجهة REST.
 
-Path filters are worth using aggressively, especially in monorepos. If at least one changed path matches a `paths` rule, the workflow runs. This is the cheapest way to stop a docs edit from rebuilding your entire application stack, which is the kind of needless spectacle teams otherwise call “standard CI.”
+ومرشّحات المسارات جديرة بالاستخدام بقوة، خصوصًا في المستودعات الأحادية. فإذا طابق مسار متغيّر واحد على الأقل قاعدة `paths`، عمل سير العمل. وهذه أرخص طريقة لمنع تعديل في التوثيق من إعادة بناء كامل حزمة تطبيقاتك، وهو نوع الاستعراض غير الضروري الذي تسمّيه الفرق «CI القياسي».
 
-The `pull_request` family has gotchas people learn too late. A `pull_request` workflow [won’t run](https://docs.github.com/actions/using-workflows/events-that-trigger-workflows) if the pull request has merge conflicts, while `pull_request_target` will. On `pull_request`, `GITHUB_SHA` is the last merge commit of the PR merge branch, not necessarily the latest commit on the contributor’s head branch. If you need the contributor’s actual head SHA, use `github.event.pull_request.head.sha`.
+وفي عائلة `pull_request` مزالق يتعلّمها الناس متأخرين. فسير عمل `pull_request` [لن يعمل](https://docs.github.com/actions/using-workflows/events-that-trigger-workflows) إذا كان في طلب السحب تعارضات دمج، بينما يعمل `pull_request_target`. وفي `pull_request`، يكون `GITHUB_SHA` آخر إيداع دمج في فرع دمج طلب السحب، وليس بالضرورة أحدث إيداع في فرع رأس المساهم. وإن احتجت بصمة الرأس الفعلية للمساهم، فاستخدم `github.event.pull_request.head.sha`.
 
-`pull_request_target` and `workflow_run` are privileged triggers and need real caution. GitHub’s [security docs](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/security/secure-use) warn that using them with untrusted code checkout can lead to cache poisoning and unintended access to write privileges or secrets. The safe default is simple—don’t check out untrusted PR code under a privileged trigger unless you’re absolutely sure you know what you’re doing, which most people don’t.
+و`pull_request_target` و`workflow_run` مُحفّزان ذوا امتيازات ويحتاجان حذرًا حقيقيًا. وتحذّر [توثيقات الأمان](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/security/secure-use) في GitHub من أن استخدامهما مع سحب شيفرة غير موثوقة قد يؤدي إلى تسميم الذاكرة المؤقتة ووصول غير مقصود إلى امتيازات الكتابة أو الأسرار. والافتراضي الآمن بسيط—لا تسحب شيفرة طلبات سحب غير موثوقة تحت مُحفّز ذي امتيازات إلا إذا كنت متأكدًا تمامًا أنك تعرف ما تفعل، وأكثر الناس لا يعرفون.
 
-## Jobs, Steps, and Data Flow
+## المهام والخطوات وتدفّق البيانات
 
-Jobs are where orchestration happens. By default, independent jobs can run in parallel. Add `needs` to force sequencing, use `if:` to gate execution, and use job outputs when data has to cross job boundaries. Inside a job, steps execute in order, and each step can be either a command or an action.
+المهام هي حيث تحدث التنسيقية. وافتراضيًا، يمكن للمهام المستقلة أن تعمل على التوازي. أضف `needs` لفرض التسلسل، واستخدم `if:` لبوابة التنفيذ، واستخدم مخرجات المهام حين يجب أن تعبر البيانات حدود المهام. وداخل المهمة، تُنفَّذ الخطوات بالترتيب، ويمكن أن تكون كل خطوة أمرًا أو إجراءً.
 
-Passing data inside a job and across jobs uses different tools. Within a job, write environment variables to `GITHUB_ENV` so later steps can read them. To expose a step output, write to `GITHUB_OUTPUT`, then map step outputs to job outputs with `jobs.<job_id>.outputs`, and finally consume those values in downstream jobs through the [`needs` context](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/passing-information-between-jobs).
+وتمرير البيانات داخل المهمة وبين المهام يستخدم أدوات مختلفة. فداخل المهمة، اكتب متغيّرات البيئة في `GITHUB_ENV` لتقرأها الخطوات اللاحقة. ولإظهار مخرَج خطوة، اكتب في `GITHUB_OUTPUT`، ثم اربط مخرجات الخطوات بمخرجات المهمة عبر `jobs.<job_id>.outputs`، وأخيرًا استهلك تلك القيم في المهام اللاحقة عبر [سياق `needs`](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/passing-information-between-jobs).
 
 ```yaml
 jobs:
@@ -115,17 +115,17 @@ jobs:
       - run: echo "Deploying ${{ needs.build.outputs.image_tag }}"
 ```
 
-This step-output-to-job-output pattern is the normal way to move structured data through a workflow. It’s much cleaner than writing temp files everywhere and hoping the next job sees them, which it won’t, because jobs are isolated.
+ونمط تمرير مخرجات الخطوة إلى مخرجات المهمة هو الطريقة المعتادة لنقل بيانات منظّمة عبر سير العمل. وهو أنظف بكثير من كتابة ملفات مؤقتة في كل مكان والأمل أن تراها المهمة التالية، وهو ما لن يحدث لأن المهام معزولة.
 
-## Contexts, Expressions, and Variables
+## السياقات والتعبيرات والمتغيّرات
 
-[Contexts](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts) are GitHub Actions’ runtime objects. The important ones are `github`, `env`, `vars`, `job`, `steps`, `runner`, `matrix`, `needs`, `inputs`, and `secrets`. The `github` context contains workflow-run metadata, while `vars` exposes configuration variables defined at the organization, repository, or environment level.
+[السياقات](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts) هي كائنات وقت التشغيل في GitHub Actions. وأهمها `github` و`env` و`vars` و`job` و`steps` و`runner` و`matrix` و`needs` و`inputs` و`secrets`. ويحتوي سياق `github` على بيانات وصفية لتشغيل سير العمل، بينما يعرض `vars` متغيّرات التهيئة المعرّفة على مستوى المؤسسة أو المستودع أو البيئة.
 
-GitHub also sets a large set of [default environment variables](https://docs.github.com/en/actions/reference/workflows-and-actions/variables) on every run. Those variables are available to steps, but they’re not defined through the workflow’s `env` map, which is why you generally access their workflow-time values through contexts such as `${{ github.ref }}` rather than through `${{ env.GITHUB_REF }}`. GitHub’s docs also note that you can’t overwrite `GITHUB_*` or `RUNNER_*` default variables.
+كما يضبط GitHub مجموعة كبيرة من [متغيّرات البيئة الافتراضية](https://docs.github.com/en/actions/reference/workflows-and-actions/variables) في كل تشغيل. وهذه المتغيّرات متاحة للخطوات، لكنها غير معرّفة عبر خريطة `env` في سير العمل، ولهذا تصل عمومًا إلى قيمها وقت سير العمل عبر سياقات مثل `${{ github.ref }}` لا عبر `${{ env.GITHUB_REF }}`. وتشير توثيقات GitHub أيضًا إلى أنك لا تستطيع الكتابة فوق المتغيّرات الافتراضية `GITHUB_*` أو `RUNNER_*`.
 
-Variable precedence is easy to get wrong. For plain `env`, the most specific scope wins—step overrides job, and job overrides workflow. For configuration variables in `vars`, the lowest level wins—environment overrides repository, which overrides organization. There’s one nasty nuance: environment-level configuration variables only become available after the job starts executing, so they don’t overwrite values already resolved in the `env` and `vars` contexts during workflow processing.
+ومن السهل الخطأ في أسبقية المتغيّرات. ففي `env` العادي، يفوز النطاق الأكثر تحديدًا—فالخطوة تتجاوز المهمة، والمهمة تتجاوز سير العمل. وفي متغيّرات التهيئة ضمن `vars`، يفوز المستوى الأدنى—فالبيئة تتجاوز المستودع، والمستودع يتجاوز المؤسسة. وثمة فارق خبيث واحد: لا تصبح متغيّرات التهيئة على مستوى البيئة متاحة إلا بعد أن تبدأ المهمة التنفيذ، فلا تكتب فوق قيم حُسمت بالفعل في سياقَي `env` و`vars` أثناء معالجة سير العمل.
 
-[Expressions](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/workflows-and-actions/expressions) are the other half of the model. `fromJSON()` is useful for turning strings into booleans, integers, arrays, or full matrix objects. `toJSON()` is good for debugging contexts. `hashFiles()` is what you use for stable cache keys based on lockfiles or dependency manifests.
+أما [التعبيرات](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/workflows-and-actions/expressions) فهي النصف الآخر من النموذج. و`fromJSON()` مفيد لتحويل السلاسل النصية إلى قيم منطقية أو أعداد صحيحة أو مصفوفات أو كائنات مصفوفة كاملة. و`toJSON()` جيد لتنقيح السياقات. و`hashFiles()` هو ما تستخدمه لمفاتيح ذاكرة مؤقتة مستقرة مبنية على ملفات القفل أو بيانات الاعتماد الوصفية.
 
 ```yaml
 jobs:
@@ -146,21 +146,21 @@ jobs:
       - run: echo "Node version is ${{ matrix.node }}"
 ```
 
-That dynamic-matrix trick is one of the few advanced patterns that’s actually worth knowing. It lets one job discover work and another fan out over it, which is useful in monorepos, generated target lists, and multi-environment deploy pipelines.
+وحيلة المصفوفة الديناميكية تلك من الأنماط المتقدّمة القليلة التي تستحقّ المعرفة فعلًا. فهي تتيح لمهمة أن تكتشف العمل ولأخرى أن تتفرّع عليه، وهو مفيد في المستودعات الأحادية، وقوائم الأهداف المولَّدة، وخطوط النشر متعددة البيئات.
 
-## Runners
+## المشغّلات
 
-A [runner](https://docs.github.com/actions/using-github-hosted-runners/about-github-hosted-runners) is the machine that executes a job. GitHub-hosted runners are the default managed VMs. Larger runners are GitHub-hosted runners with more CPU, RAM, and disk. Self-hosted runners are your machines. Actions Runner Controller, or ARC, is the Kubernetes operator for orchestrating and autoscaling self-hosted runners as runner scale sets.
+[المشغّل](https://docs.github.com/actions/using-github-hosted-runners/about-github-hosted-runners) هو الآلة التي تنفّذ مهمة. والمشغّلات المستضافة من GitHub هي الآلات الافتراضية المُدارة. والمشغّلات الأكبر مشغّلات مستضافة من GitHub بمعالج وذاكرة وقرص أكبر. والمشغّلات المستضافة ذاتيًا هي آلاتك أنت. وActions Runner Controller، أو ARC، هو مشغّل Kubernetes لتنسيق المشغّلات المستضافة ذاتيًا وتوسيعها تلقائيًا كمجموعات مشغّلات.
 
-Targeting runners happens through [`runs-on`](https://docs.github.com/actions/using-jobs/choosing-the-runner-for-a-job). For self-hosted infrastructure, GitHub recommends using an array of labels beginning with `self-hosted`, then more specific labels like `linux` or `ARM64`. A job will only run on a runner matching all specified labels. You can also target runner groups. One wrinkle the docs call out explicitly is that Actions Runner Controller doesn’t support multiple labels and doesn’t support the `self-hosted` label in the same way repository or organization self-hosted runners do.
+واستهداف المشغّلات يجري عبر [`runs-on`](https://docs.github.com/actions/using-jobs/choosing-the-runner-for-a-job). وللبنية التحتية المستضافة ذاتيًا، توصي GitHub باستخدام مصفوفة من الوسوم تبدأ بـ`self-hosted`، ثم وسوم أكثر تحديدًا مثل `linux` أو `ARM64`. ولن تعمل المهمة إلا على مشغّل يطابق كل الوسوم المحدّدة. ويمكنك أيضًا استهداف مجموعات مشغّلات. ومن العقبات التي تذكرها التوثيقات صراحةً أن Actions Runner Controller لا يدعم وسومًا متعددة ولا يدعم وسم `self-hosted` بالطريقة نفسها التي تدعمه بها المشغّلات المستضافة ذاتيًا على مستوى المستودع أو المؤسسة.
 
-Self-hosted runners buy control, but they also buy risk. For [Docker container actions](https://docs.github.com/actions/sharing-automations/creating-actions/creating-a-docker-container-action) or service containers on self-hosted runners, you need Linux and Docker installed. GitHub’s enterprise policy docs also warn that self-hosted runners aren’t guaranteed to be clean, ephemeral machines, and that untrusted pull requests can compromise them if you expose them carelessly. That’s why the sane pattern is ephemeral runners for sensitive or semi-untrusted workloads, not one immortal snowflake VM that every branch in the company gets to scribble on.
+تشتري المشغّلات المستضافة ذاتيًا التحكّم، لكنها تشتري المخاطرة أيضًا. فلـ[إجراءات حاويات Docker](https://docs.github.com/actions/sharing-automations/creating-actions/creating-a-docker-container-action) أو حاويات الخدمة على المشغّلات المستضافة ذاتيًا، تحتاج إلى Linux وDocker مثبّتين. وتحذّر توثيقات سياسات المؤسسات في GitHub أيضًا من أن المشغّلات المستضافة ذاتيًا ليست مضمونة كآلات نظيفة قصيرة العمر، وأن طلبات السحب غير الموثوقة قد تخترقها إن عرضتها للإصابة بإهمال. ولهذا فالنمط العاقل هو مشغّلات قصيرة العمر للأحمال الحساسة أو نصف غير الموثوقة، لا آلة واحدة خالدة يتقاسم الكتابة عليها كل فرع في الشركة.
 
-## Jobs in Containers and Service Containers
+## المهام في الحاويات وحاويات الخدمة
 
-A job can run directly on the runner host, or you can wrap it in a [job container](https://docs.github.com/actions/using-jobs/running-jobs-in-a-container) with `jobs.<job_id>.container`. When you do that, ordinary `run:` steps execute inside that container, while any container actions run as sibling containers on the same network with the same volume mounts. One edge case many people miss—the default shell inside a job container is `sh`, not `bash`, unless you override it.
+يمكن أن تعمل المهمة مباشرةً على مضيف المشغّل، أو يمكنك تغليفها في [حاوية مهمة](https://docs.github.com/actions/using-jobs/running-jobs-in-a-container) بـ`jobs.<job_id>.container`. وحين تفعل ذلك، تُنفَّذ خطوات `run:` العادية داخل تلك الحاوية، بينما تعمل إجراءات الحاويات كحاويات شقيقة على الشبكة نفسها بتركيبات الوسائط نفسها. ومن الحالات الطرفية التي يفوّتها كثيرون أن الصدفة الافتراضية داخل حاوية المهمة هي `sh` لا `bash`، إلا إن تجاوزتها.
 
-[Service containers](https://docs.github.com/actions/tutorials/communicating-with-docker-service-containers) are the built-in answer for dependencies like PostgreSQL or Redis during tests. When the job itself runs in a container, GitHub puts the job container and the service containers on a user-defined bridge network, and you can reach a service by the label you gave it, which becomes its hostname. When the job runs directly on the runner host instead, you generally need to publish ports from the service container to the host.
+و[حاويات الخدمة](https://docs.github.com/actions/tutorials/communicating-with-docker-service-containers) هي الحل المدمج للاعتمادات مثل PostgreSQL أو Redis أثناء الاختبارات. وحين تعمل المهمة نفسها في حاوية، يضع GitHub حاوية المهمة وحاويات الخدمة على شبكة جسر يعرّفها المستخدم، ويمكنك الوصول إلى خدمة بالوسم الذي أعطيته لها، فيصبح اسم مضيفها. أما حين تعمل المهمة مباشرةً على مضيف المشغّل، فتحتاج عمومًا إلى نشر منافذ من حاوية الخدمة إلى المضيف.
 
 ```yaml
 jobs:
@@ -183,61 +183,60 @@ jobs:
           DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
 ```
 
-That setup is tidy because networking is simpler when both the job and the services live in containers. It also tends to be more reproducible than pretending the runner host’s ambient state is part of the test contract.
+وهذا الإعداد مرتّب لأن الشبكة أبسط حين تعيش المهمة والخدمات كلها في حاويات. كما يميل إلى أن يكون أكثر قابلية للتكرار من التظاهر بأن الحالة المحيطة بمضيف المشغّل جزء من عقد الاختبار.
 
-## Reusing Logic
+## إعادة استخدام المنطق
 
-| Reuse mechanism | Scope | Invoked with | Runner context | Secrets access | Best for |
+| آلية إعادة الاستخدام | النطاق | تُستدعى بـ | سياق المشغّل | الوصول إلى الأسرار | الأفضل لـ |
 | --- | --- | --- | --- | --- | --- |
-| Action (JS/Docker) | Single step | `uses:` in `steps` | Caller’s runner | Via `with:` inputs | Reusable single-step operations |
-| Composite action | Bundle of steps | `uses:` in `steps` | Caller’s runner | Via `with:` inputs | Multi-step recipes as one step |
-| Reusable workflow | Whole jobs | `uses:` at job level | Own runner per job | `secrets:` or `secrets: inherit` | Full job patterns (build + deploy) |
+| إجراء (JS/Docker) | خطوة واحدة | `uses:` في `steps` | مشغّل المستدعي | عبر مدخلات `with:` | عمليات قابلة لإعادة الاستخدام بخطوة واحدة |
+| إجراء مركّب | حزمة خطوات | `uses:` في `steps` | مشغّل المستدعي | عبر مدخلات `with:` | وصفات متعددة الخطوات كخطوة واحدة |
+| سير عمل قابل لإعادة الاستخدام | مهام كاملة | `uses:` على مستوى المهمة | مشغّل خاص بكل مهمة | `secrets:` أو `secrets: inherit` | أنماط مهام كاملة (بناء + نشر) |
 
-You can reuse logic at three levels. Use an action when you want a reusable step. Use a [composite action](https://docs.github.com/actions/creating-actions/creating-a-composite-action) when you want a bundle of steps that still behaves like one step. Use a reusable workflow when you want to reuse whole jobs, permissions, environments, matrices, or deployment structure. GitHub’s own docs put composite actions and reusable workflows side by side for exactly this reason.
+يمكنك إعادة استخدام المنطق على ثلاثة مستويات. استخدم إجراءً حين تريد خطوة قابلة لإعادة الاستخدام. واستخدم [إجراءً مركّبًا](https://docs.github.com/actions/creating-actions/creating-a-composite-action) حين تريد حزمة خطوات تظل تتصرف كخطوة واحدة. واستخدم سير عمل قابلًا لإعادة الاستخدام حين تريد إعادة استخدام مهام كاملة أو صلاحيات أو بيئات أو مصفوفات أو بنية نشر. ولهذا السبب بالتحديد تضع توثيقات GitHub نفسها الإجراءات المركّبة وسير العمل القابل لإعادة الاستخدام جنبًا إلى جنب.
 
-Actions themselves can live in the same repository, in a public repository, or in a Docker Hub image. GitHub doesn’t support redirects for actions or reusable workflows, so if an action or workflow is renamed or moved, old references fail. Local actions use a relative path from `github.workspace`, which is why you almost always need `actions/checkout` first before calling a local action.
+ويمكن أن تعيش الإجراءات نفسها في المستودع ذاته، أو في مستودع عام، أو في صورة Docker Hub. ولا يدعم GitHub إعادة التوجيه للإجراءات أو سير العمل القابل لإعادة الاستخدام، فإن أُعيدت تسمية إجراء أو سير عمل أو نُقل، فشلت المراجع القديمة. وتستخدم الإجراءات المحلية مسارًا نسبيًا من `github.workspace`، ولهذا تحتاج دائمًا تقريبًا إلى `actions/checkout` أولًا قبل استدعاء إجراء محلي.
 
-[Custom actions](https://docs.github.com/actions/creating-actions/about-custom-actions) come in three types. JavaScript actions are usually the fastest and simplest for ordinary logic. Docker actions package their own environment and are useful when you need very specific tooling, but GitHub notes they’re slower because the container has to be built or retrieved. Composite actions are ideal when all you really want is “these five steps together, every time.”
+وتأتي [الإجراءات المخصصة](https://docs.github.com/actions/creating-actions/about-custom-actions) بثلاثة أنواع. فإجراءات JavaScript هي عادةً الأسرع والأبسط للمنطق العادي. وإجراءات Docker تحزم بيئتها الخاصة وتفيد حين تحتاج أدوات محدّدة جدًا، لكن GitHub تلاحظ أنها أبطأ لأن الحاوية يجب أن تُبنى أو تُجلب. والإجراءات المركّبة مثالية حين لا تريد فعلًا سوى «هذه الخطوات الخمس معًا، في كل مرة».
 
-[Reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) are invoked at the job level with `uses:`—not inside `steps`. Inputs are passed with `with`, secrets with `secrets`, and the called workflow must declare `on: workflow_call`. Inputs in a called workflow are accessed through the `inputs` context, not injected as environment variables automatically. You can pass all available secrets with `secrets: inherit` when the caller and callee are in the same organization or enterprise.
+و[سير العمل القابل لإعادة الاستخدام](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows) يُستدعى على مستوى المهمة بـ`uses:`—لا داخل `steps`. وتُمرَّر المدخلات بـ`with`، والأسرار بـ`secrets`، ويجب أن يعلن سير العمل المستدعى `on: workflow_call`. ويُوصَل إلى المدخلات في سير العمل المستدعى عبر سياق `inputs`، ولا تُحقن تلقائيًا كمتغيّرات بيئة. ويمكنك تمرير كل الأسرار المتاحة بـ`secrets: inherit` حين يكون المستدعي والمستدعى في المؤسسة أو المنشأة نفسها.
 
-Reusable workflows also have some sharp edges. You can nest at most ten levels of workflows. Permissions can only be maintained or reduced through the chain—never elevated. Secrets only move one hop at a time, so if A calls B and B calls C, C only gets a secret from A if A passed it to B and B passed it onward to C. Workflow outputs must be mapped from step outputs to job outputs and then from job outputs to workflow outputs.
+ولسير العمل القابل لإعادة الاستخدام أيضًا حوافّ حادة. فأنت تستطيع تداخل عشرة مستويات من سير العمل على الأكثر. ولا يمكن إلا الحفاظ على الصلاحيات أو تقليلها عبر السلسلة—لا رفعها أبدًا. ولا تنتقل الأسرار إلا خطوة واحدة في كل مرة، فإن استدعى A سير العمل B واستدعى B سير العمل C، فلا يحصل C على سرّ من A إلا إذا مرّره A إلى B ومرّره B بدوره إلى C. ويجب ربط مخرجات سير العمل من مخرجات الخطوات إلى مخرجات المهام ثم من مخرجات المهام إلى مخرجات سير العمل.
 
-Organization-level [workflow templates](https://docs.github.com/actions/sharing-automations/creating-workflow-templates-for-your-organization) are a separate feature. If you put templates in an organization-owned `.github` repository under `workflow-templates/`, GitHub can offer them when people create new workflows. The template metadata lives in a matching `.properties.json` file. Useful for standardizing bootstrap workflows across many repositories without forcing everything through one giant reusable workflow file.
+و[قوالب سير العمل](https://docs.github.com/actions/sharing-automations/creating-workflow-templates-for-your-organization) على مستوى المؤسسة ميزة منفصلة. فإن وضعت القوالب في مستودع `.github` تملكه المؤسسة تحت `workflow-templates/`، استطاع GitHub عرضها حين ينشئ الناس سير عمل جديدة. وتعيش البيانات الوصفية للقالب في ملف مطابق `.properties.json`. وهي مفيدة لتوحيد سير عمل التمهيد عبر مستودعات كثيرة دون إجبار كل شيء على المرور عبر ملف سير عمل واحد عِملاق قابل لإعادة الاستخدام.
+## الذاكرات المؤقتة والمخرجات والملخصات
 
-## Caches, Artifacts, and Summaries
-
-| Aspect | Cache | Artifact |
+| الجانب | الذاكرة المؤقتة | المخرَج |
 | --- | --- | --- |
-| Purpose | Reuse dependencies across runs | Preserve or transfer build outputs |
-| Keyed by | Deterministic key (e.g., lockfile hash) | Name + run ID |
-| Lifetime | Evicted by key match or 7-day default | Configurable `retention-days` |
-| Cross-job use | Restored by key in any job | Downloaded by name in downstream jobs |
-| Typical content | `node_modules`, `.cache`, build deps | Coverage, binaries, screenshots, logs |
+| الغرض | إعادة استخدام الاعتمادات عبر التشغيلات | حفظ مخرجات البناء أو نقلها |
+| المفتاح | مفتاح حتمي (مثل بصمة ملف القفل) | الاسم + معرّف التشغيل |
+| العمر | يُطرد عند مطابقة مفتاح أو بعد 7 أيام افتراضيًا | `retention-days` قابل للتهيئة |
+| الاستخدام بين المهام | يُستعاد بالمفتاح في أي مهمة | يُنزَّل بالاسم في المهام اللاحقة |
+| المحتوى المعتاد | `node_modules` و`.cache` واعتمادات البناء | التغطية، والملفات الثنائية، ولقطات الشاشة، والسجلات |
 
-[Caches and artifacts](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching) solve different problems. A cache is for reusing dependencies or intermediate files across workflow runs, keyed by a deterministic cache key. An [artifact](https://docs.github.com/en/actions/tutorials/store-and-share-data) is a named file bundle produced by a workflow run—things like coverage reports, test results, binaries, screenshots, or build outputs you want to keep, inspect, or hand to a downstream job. Confusing the two is one of the classic GitHub Actions mistakes.
+تحلّ [الذاكرات المؤقتة والمخرجات](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching) مشكلتين مختلفتين. فالذاكرة المؤقتة لإعادة استخدام الاعتمادات أو الملفات الوسيطة عبر تشغيلات سير العمل، بمفتاح حتمي. و[المخرَج](https://docs.github.com/en/actions/tutorials/store-and-share-data) حزمة ملفات مُسمّاة ينتجها تشغيل سير عمل—أشياء مثل تقارير التغطية، ونتائج الاختبارات، والملفات الثنائية، ولقطات الشاشة، أو مخرجات البناء التي تريد حفظها أو فحصها أو تسليمها إلى مهمة لاحقة. والخلط بين الاثنين من أخطاء GitHub Actions الكلاسيكية.
 
-For caching, the important mechanic is the search order. `actions/cache` looks for an exact `key` first, then tries `restore-keys` from most specific to least specific, and on partial matches it uses the most recently created cache. That makes lockfile hashes the normal base for cache keys, with broader prefixes as fallbacks.
+وفي التخزين المؤقت، الآلية المهمة هي ترتيب البحث. فيبحث `actions/cache` عن `key` مطابق تمامًا أولًا، ثم يجرّب `restore-keys` من الأكثر تحديدًا إلى الأقل، وعند المطابقات الجزئية يستخدم أحدث ذاكرة مؤقتة أُنشئت. وهذا يجعل بصمات ملفات القفل الأساس المعتاد لمفاتيح الذاكرة المؤقتة، مع بادئات أوسع كبدائل.
 
-Artifacts are uploaded with `actions/upload-artifact` and downloaded with `actions/download-artifact`. You can name them, set `retention-days`, download all artifacts from a run or just one named artifact, and use artifacts to move files between jobs. If you want to download artifacts from a different run or workflow, you need a token and a run identifier.
+وتُرفع المخرجات بـ`actions/upload-artifact` وتُنزَّل بـ`actions/download-artifact`. ويمكنك تسميتها، وضبط `retention-days`، وتنزيل كل المخرجات من تشغيل أو مخرَج مُسمّى واحد فقط، واستخدام المخرجات لنقل الملفات بين المهام. وإن أردت تنزيل مخرجات من تشغيل آخر أو سير عمل آخر، فتحتاج رمز وصول ومعرّف تشغيل.
 
-GitHub Actions also supports [job summaries](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands) through `GITHUB_STEP_SUMMARY`. When a job finishes, GitHub groups step summaries into a single job summary on the workflow run page. Great for human-readable reports—test totals, coverage percentages, links, deployment notes—so people don’t have to spelunk through logs like mole people.
+ويدعم GitHub Actions أيضًا [ملخصات المهام](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands) عبر `GITHUB_STEP_SUMMARY`. وعند انتهاء المهمة، يجمع GitHub ملخصات الخطوات في ملخص مهمة واحد في صفحة تشغيل سير العمل. وهذا رائع للتقارير المقروءة بشريًا—إجماليات الاختبارات، ونسب التغطية، والروابط، وملاحظات النشر—كي لا يضطر الناس إلى التجوّل في السجلات كأنهم سكّان أنفاق.
 
-## Matrices, Parallelism, and Concurrency Control
+## المصفوفات والتوازي والتحكم في التزامن
 
-[Matrices](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow) are how you fan out one logical job over many combinations of variables like OS, runtime version, region, or target environment. You can refine them with `include` and `exclude`, and `include` is processed after `exclude`, which means you can deliberately add back special cases. You can also control behavior with `fail-fast` and `continue-on-error`. `fail-fast` defaults to `true`, so one hard failure can cancel queued or in-progress sibling matrix jobs.
+[المصفوفات](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/running-variations-of-jobs-in-a-workflow) هي كيفية توزيع مهمة منطقية واحدة على توليفات كثيرة من المتغيّرات مثل نظام التشغيل، أو إصدار وقت التشغيل، أو المنطقة، أو البيئة الهدف. ويمكنك تنقيحها بـ`include` و`exclude`، ويُعالَج `include` بعد `exclude`، ما يعني أنك تستطيع إعادة إضافة حالات خاصة عن قصد. ويمكنك أيضًا التحكم في السلوك بـ`fail-fast` و`continue-on-error`. وقيمة `fail-fast` الافتراضية `true`، فقد يلغي إخفاق صلب واحد مهام المصفوفة الشقيقة المنتظرة أو الجارية.
 
-You can also throttle a matrix with `max-parallel`, which is useful when your runners are scarce or the job hits an external rate limit. GitHub also documents a hard matrix limit of 256 jobs per workflow run, so the answer to “can I generate a 900-way matrix because it looks elegant” is, mercifully, no.
+ويمكنك أيضًا تقييد المصفوفة بـ`max-parallel`، وهو مفيد حين تكون مشغّلاتك شحيحة أو تصطدم المهمة بحدّ معدّل خارجي. وتوثّق GitHub أيضًا حدًّا صلبًا للمصفوفة عند 256 مهمة لكل تشغيل سير عمل، فالإجابة عن «هل أستطيع توليد مصفوفة بـ900 مسار لأنها تبدو أنيقة» هي، والحمد لله، لا.
 
-[`concurrency`](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs) is the other big control surface. A concurrency group ensures that only one workflow or job in that group runs at a time, and a new run with the same key can cancel the old one. This is especially useful for deployments, branch-based CI, or long-running workflows where only the latest run matters.
+و[`concurrency`](https://docs.github.com/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs) هو سطح التحكم الكبير الآخر. وتضمن مجموعة التزامن ألا يعمل في وقت واحد إلا سير عمل أو مهمة واحد في تلك المجموعة، ويمكن لتشغيل جديد بالمفتاح نفسه أن يلغي القديم. وهذا مفيد خصوصًا لعمليات النشر، أو CI القائم على الفروع، أو سير عمل طويلة الأمد لا يهمّ فيها إلا أحدث تشغيل.
 
-## Deployments and Environments
+## عمليات النشر والبيئات
 
-[Environments](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments) are GitHub Actions’ deployment guardrails. You can attach a job to an environment, store environment-specific secrets and variables, and enforce deployment protection rules like manual approvals, wait timers, branch restrictions, and even custom protection rules via GitHub Apps. A job that references an environment must satisfy those rules before it can run or access the environment’s secrets.
+[البيئات](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments) هي حواجز النشر في GitHub Actions. فيمكنك ربط مهمة ببيئة، وتخزين أسرار ومتغيّرات خاصة بالبيئة، وفرض قواعد حماية النشر مثل الموافقات اليدوية، ومؤقّتات الانتظار، وقيود الفروع، وحتى قواعد حماية مخصصة عبر تطبيقات GitHub. وعلى المهمة التي تشير إلى بيئة أن تستوفي تلك القواعد قبل أن تعمل أو تصل إلى أسرار البيئة.
 
-This is where GitHub Actions becomes an actual deployment platform instead of “CI with shell access.” You can separate `staging` from `production`, require reviewers for prod, and serialize environment usage with `concurrency`. GitHub’s [limits docs](https://docs.github.com/en/actions/reference/limits) also note that workflow runs can wait up to 30 days on environment approvals, which is either a useful enterprise feature or a monument to organizational indecision, depending on your office.
+هنا يصبح GitHub Actions منصّة نشر فعلية بدل «CI بوصول إلى الصدفة». فيمكنك فصل `staging` عن `production`، وطلب مراجعين للإنتاج، وتسلسل استخدام البيئة بـ`concurrency`. وتلاحظ [توثيقات الحدود](https://docs.github.com/en/actions/reference/limits) في GitHub أيضًا أن تشغيلات سير العمل قد تنتظر حتى 30 يومًا على موافقات البيئة، وهو إما ميزة مؤسسية مفيدة وإما نصب تذكاري لتردّد تنظيمي، حسب مكتبك.
 
-A typical deployment job:
+وهذه مهمة نشر نموذجية:
 
 ```yaml
 jobs:
@@ -262,115 +261,115 @@ jobs:
       - run: ./deploy.sh
 ```
 
-The important part isn’t the cloud action itself. It’s the shape—explicit environment, explicit concurrency, and explicit token permissions. That’s the grown-up version of deployment automation.
+والجزء المهم ليس إجراء السحابة نفسه. بل الشكل—بيئة صريحة، وتزامن صريح، وصلاحيات رمز صريحة. هذه هي النسخة الناضجة من أتمتة النشر.
 
-## Security
+## الأمان
 
-GitHub Actions security starts with the `GITHUB_TOKEN`. GitHub recommends granting it the minimum permissions required, and their [secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) explicitly says a good default is read-only access to repository contents, then raising permissions only for the jobs that truly need more. Another easy-to-miss rule—if you specify any permission explicitly, any permission you don’t specify becomes `none`.
+يبدأ أمان GitHub Actions من `GITHUB_TOKEN`. وتوصي GitHub بمنحه الحد الأدنى من الصلاحيات المطلوبة، ويقول [مرجع الاستخدام الآمن](https://docs.github.com/en/actions/reference/security/secure-use) صراحةً إن الافتراضي الجيد وصول للقراءة فقط إلى محتويات المستودع، ثم رفع الصلاحيات للمهام التي تحتاج أكثر فعلًا فقط. وهناك قاعدة أخرى يسهل تفويتها—إن حدّدت أي صلاحية صراحةً، أصبحت أي صلاحية لم تحدّدها `none`.
 
-Also, an action can access the `GITHUB_TOKEN` through `github.token` even if you didn’t explicitly pass `secrets.GITHUB_TOKEN` to it. That’s why job-level `permissions:` blocks matter so much. The token is there whether you remember it or not. GitHub also [downgrades](https://docs.github.com/actions/reference/authentication-in-a-workflow) forked-PR permissions to read-only in the common case, and Dependabot-triggered pull request workflows run as if they came from a fork—read-only `GITHUB_TOKEN`, no secrets.
+كما يستطيع أي إجراء الوصول إلى `GITHUB_TOKEN` عبر `github.token` حتى إن لم تمرّر له `secrets.GITHUB_TOKEN` صراحةً. ولهذا تكون كتل `permissions:` على مستوى المهمة بهذه الأهمية. فالرمز موجود سواء تذكّرته أم لا. كما [تخفض](https://docs.github.com/actions/reference/authentication-in-a-workflow) GitHub صلاحيات طلبات السحب الواردة من تفرّعات إلى القراءة فقط في الحالة الشائعة، وتعمل سير عمل طلبات السحب التي يُحفّزها Dependabot كما لو جاءت من تفرّع—`GITHUB_TOKEN` للقراءة فقط، وبلا أسرار.
 
-[Secrets](https://docs.github.com/en/actions/concepts/security/secrets) deserve slightly less trust than people give them. GitHub says secrets are variables stored at the organization, repository, or environment level, and workflows only get access when you explicitly include them. But GitHub also warns that automatic redaction isn’t guaranteed in all transformations, and their secure-use guidance notes that anyone with write access to the repository has read access to all repository secrets. For generated or non-secret values that still need masking, use `::add-mask::`.
+و[الأسرار](https://docs.github.com/en/actions/concepts/security/secrets) تستحق ثقة أقل قليلًا مما يمنحها الناس. فتقول GitHub إن الأسرار متغيّرات مخزّنة على مستوى المؤسسة أو المستودع أو البيئة، ولا تحصل سير عمل على الوصول إليها إلا حين تضمّنها صراحةً. لكن GitHub تحذّر أيضًا من أن الحجب التلقائي غير مضمون في كل التحويلات، وتشير إرشادات الاستخدام الآمن لديهم إلى أن كل من يملك وصول كتابة إلى المستودع يملك وصول قراءة إلى كل أسرار المستودع. وللقيم المولَّدة أو غير السرية التي ما زالت تحتاج إخفاءً، استخدم `::add-mask::`.
 
-[Script injection](https://docs.github.com/en/actions/concepts/security/script-injections) is the next big trap. GitHub’s security docs explicitly warn that attacker-controlled data can flow through contexts like `github.event.issue.title` or `github.event.pull_request.body`. If you interpolate those values directly into a shell script, GitHub evaluates the expression first and then the shell interprets the result, which is how command injection happens. The safer pattern is to pass untrusted values as action inputs or through environment variables and quote them correctly.
+و[حقن الشيفرة](https://docs.github.com/en/actions/concepts/security/script-injections) هو الفخ الكبير التالي. فتحذّر توثيقات الأمان في GitHub صراحةً من أن بيانات يتحكم بها المهاجم قد تتدفّق عبر سياقات مثل `github.event.issue.title` أو `github.event.pull_request.body`. وإن أدخلت تلك القيم مباشرةً في نص صدفة، قيّمت GitHub التعبير أولًا ثم فسّرت الصدفة النتيجة، وهكذا يحدث حقن الأوامر. والنمط الأكثر أمانًا هو تمرير القيم غير الموثوقة كمدخلات إجراء أو عبر متغيّرات بيئة وتنصيصها بشكل صحيح.
 
-Third-party actions and workflows are a supply-chain risk. GitHub’s secure use reference is blunt—one compromised third-party action can expose repository secrets and abuse the `GITHUB_TOKEN`. Their recommended mitigation is to pin actions to a full-length commit SHA, which they call the only immutable release form for an action. Tags are convenient, but movable. GitHub also lets organizations and repositories enforce policies limiting which actions and reusable workflows are allowed, and even require full-length SHA pinning.
+وإجراءات وسير عمل الأطراف الثالثة مخاطرة في سلسلة التوريد. ومرجع الاستخدام الآمن في GitHub صريح—فإجراء طرف ثالث واحد مخترق قد يكشف أسرار المستودع ويسيء استخدام `GITHUB_TOKEN`. والتخفيف الموصى به هو تثبيت الإجراءات على بصمة إيداع كاملة الطول، وهي ما تسمّيها الشكل الوحيد غير القابل للتغيير لإصدار إجراء. فالوسوم مريحة، لكنها قابلة للتحريك. وتتيح GitHub أيضًا للمؤسسات والمستودعات فرض سياسات تحدّ من الإجراءات وسير العمل القابل لإعادة الاستخدام المسموح بها، بل واشتراط تثبيت البصمات كاملة الطول.
 
-`CODEOWNERS` is worth using for `.github/workflows`. GitHub explicitly recommends it as a way to require review for workflow changes. One of the cheapest ways to keep “tiny YAML edits” from quietly changing your security model.
+ويستحق `CODEOWNERS` أن يُستخدم لـ`.github/workflows`. فـGitHub توصي به صراحةً كطريقة لطلب مراجعة تغييرات سير العمل. وهي من أرخص الطرق لمنع «تعديلات YAML الصغيرة» من تغيير نموذجك الأمني بهدوء.
 
-[OIDC](https://docs.github.com/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect) is the right default for cloud authentication now. GitHub’s docs say workflows can use OIDC tokens instead of long-lived cloud secrets, and the setup requires two broad changes—configure the cloud provider to trust GitHub as a federated identity, and update the workflow to request the ID token and exchange it through the provider’s action or equivalent logic. In practice that means `permissions: id-token: write` on the job that needs cloud access.
+و[OIDC](https://docs.github.com/actions/security-for-github-actions/security-hardening-your-deployments/about-security-hardening-with-openid-connect) هو الافتراضي الصحيح لمصادقة السحابة الآن. فتقول توثيقات GitHub إن سير العمل يمكنه استخدام رموز OIDC بدل أسرار سحابية طويلة العمر، ويتطلب الإعداد تغييرين كبيرين—ضبط مزوّد السحابة ليثق بـGitHub كهوية موحّدة، وتحديث سير العمل لطلب رمز الهوية وتبادله عبر إجراء المزوّد أو منطق مكافئ. وعمليًا يعني ذلك `permissions: id-token: write` في المهمة التي تحتاج وصولًا إلى السحابة.
 
-GitHub also supports [artifact attestations](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds) for build provenance. To generate them in Actions, GitHub requires the right permissions, including `id-token: write`, `contents: read`, and `attestations: write`, then a step using `actions/attest-build-provenance`. Useful when you want signed provenance for binaries, container images, or SBOMs rather than just vibes and a release note.
+ويدعم GitHub أيضًا [إثباتات المخرجات](https://docs.github.com/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-to-establish-provenance-for-builds) لإثبات منشأ البناء. ولتوليدها في Actions، تتطلب GitHub الصلاحيات الصحيحة، بما فيها `id-token: write` و`contents: read` و`attestations: write`، ثم خطوة تستخدم `actions/attest-build-provenance`. وهي مفيدة حين تريد إثبات منشأ موقّعًا للملفات الثنائية أو صور الحاويات أو قوائم SBOM لا مجرد انطباعات وملاحظة إصدار.
 
-## Limits That Matter in Practice
+## حدود تهمّ عمليًا
 
-GitHub Actions has real [platform limits](https://docs.github.com/en/actions/reference/limits), and pretending otherwise is how people end up discovering them in production. A workflow run can last up to 35 days total. Environment approval waits can last up to 30 days. A GitHub-hosted job can run for up to 6 hours, and a self-hosted job for up to 5 days. A matrix can generate at most 256 jobs. Cache operations also have rate limits, and `GITHUB_TOKEN` has its own API rate limit—1,000 requests per hour per repository, or 15,000 for resources belonging to a GitHub Enterprise Cloud account.
+لـGitHub Actions [حدود منصّة](https://docs.github.com/en/actions/reference/limits) حقيقية، والتظاهر بغير ذلك هو ما ينتهي به الناس إلى اكتشافها في الإنتاج. فقد يستمر تشغيل سير العمل حتى 35 يومًا في المجموع. وقد يمتد انتظار موافقة البيئة حتى 30 يومًا. وقد تعمل مهمة مستضافة من GitHub حتى 6 ساعات، ومهمة مستضافة ذاتيًا حتى 5 أيام. وقد تولّد المصفوفة 256 مهمة على الأكثر. ولعمليات الذاكرة المؤقتة حدود معدّل أيضًا، ولـ`GITHUB_TOKEN` حدّ معدّل خاص بواجهة برمجة التطبيقات—1,000 طلب في الساعة لكل مستودع، أو 15,000 للموارد التابعة لحساب GitHub Enterprise Cloud.
 
-Those limits should shape your design. Very large test matrices should be pruned or sharded. Deploy jobs should use concurrency groups. Long-running work shouldn’t live on standard GitHub-hosted runners unless it fits inside the time box. And if you have an action or script that hammers the GitHub API, rate limiting isn’t a theoretical concern—it’s a scheduling bug waiting to happen.
+وينبغي لهذه الحدود أن تشكّل تصميمك. فمصفوفات الاختبار الضخمة جدًا ينبغي تقليمها أو تقطيعها. ومهام النشر ينبغي أن تستخدم مجموعات تزامن. والعمل طويل الأمد لا ينبغي أن يعيش على مشغّلات GitHub المستضافة القياسية إلا إذا اتّسع داخل الصندوق الزمني. وإن كان لديك إجراء أو سكربت ينهال على واجهة GitHub، فحدّ المعدّل ليس هاجسًا نظريًا—إنه علّة جدولة تنتظر الحدوث.
 
-## Practical Patterns That Hold Up
+## أنماط عملية تصمد
 
-For ordinary CI, use separate workflows for separate concerns—one for CI, one for release, one for deployment, one for scheduled maintenance—instead of one giant do-everything file. GitHub’s event model, path filters, and reusable workflows are good enough that “single mega-workflow” is usually just a failure of restraint, not a platform requirement.
+في CI العادي، استخدم سير عمل منفصلة للهموم المنفصلة—واحد لـCI، وواحد للإصدار، وواحد للنشر، وواحد للصيانة المجدولة—بدل ملف واحد عِملاق يفعل كل شيء. فنموذج الأحداث ومرشّحات المسارات وسير العمل القابل لإعادة الاستخدام في GitHub جيدة بما يكفي لأن يكون «سير العمل الواحد الضخم» في العادة مجرد إخفاق في ضبط النفس، لا متطلبًا منصّيًا.
 
-For organization standards, prefer reusable workflows for full job patterns like “build and scan,” “deploy to environment,” or “publish package,” and use composite actions for small step bundles like “set up toolchain and authenticate package registry.” That division maps well to the way GitHub designed the features, and it keeps your reuse model from turning into abstract YAML sculpture.
+ولمعايير المؤسسة، فضّل سير العمل القابل لإعادة الاستخدام لأنماط المهام الكاملة مثل «البناء والفحص»، أو «النشر إلى بيئة»، أو «نشر حزمة»، واستخدم الإجراءات المركّبة لحزم الخطوات الصغيرة مثل «تهيئة سلسلة الأدوات والمصادقة مع سجل الحزم». وهذا التقسيم يتماشى جيدًا مع الطريقة التي صمّمت بها GitHub هذه الميزات، ويمنع نموذج إعادة الاستخدام لديك من التحوّل إلى منحوتة YAML تجريدية.
 
-For security, start with restricted `GITHUB_TOKEN` permissions, pin third-party actions to full SHAs, avoid privileged triggers with untrusted checkout, move cloud auth to OIDC, and put CODEOWNERS on `.github/workflows`. That’s not overkill. That’s the baseline for not handing write access and secrets to whatever random marketplace action looked popular at 2 a.m.
+وللأمان، ابدأ بصلاحيات `GITHUB_TOKEN` مقيّدة، وثبّت إجراءات الأطراف الثالثة على بصمات كاملة، وتجنّب المُحفّزات ذات الامتيازات مع سحب شيفرة غير موثوقة، وانقل مصادقة السحابة إلى OIDC، وضع CODEOWNERS على `.github/workflows`. هذا ليس مبالغة. بل هو الحد الأدنى لئلا تسلّم وصول الكتابة والأسرار لأي إجراء عشوائي من السوق بدا شائعًا في الثانية فجرًا.
 
-For performance, use path filters, matrices only where they buy real coverage, caches keyed by lockfiles, concurrency groups for branch and deploy workflows, and artifacts only for things you truly need to keep. Caches are for reuse across runs. Artifacts are for preservation and transfer. Mixing those mental models is how workflows get slower and harder to reason about at the same time. A remarkable human achievement.
+وللأداء، استخدم مرشّحات المسارات، والمصفوفات فقط حيث تشتري تغطية حقيقية، وذاكرات مؤقتة بمفاتيح من ملفات القفل، ومجموعات تزامن لسير عمل الفروع والنشر، ومخرجات فقط للأشياء التي تحتاج حفظها فعلًا. فالذاكرات المؤقتة لإعادة الاستخدام عبر التشغيلات. والمخرجات للحفظ والنقل. وخلط هذين النموذجين الذهنيين هو كيف تصبح سير عمل أبطأ وأصعب في الفهم في الوقت نفسه. إنجاز بشري مذهل.
 
-## Common Footguns
+## المزالق الشائعة
 
-**Assuming `pull_request` runs on the contributor’s exact head commit.** It usually doesn’t—`GITHUB_SHA` points at the merge commit for the PR merge branch. If you need the contributor’s head SHA, use `github.event.pull_request.head.sha`.
+**افتراض أن `pull_request` يعمل على إيداع رأس المساهم بالضبط.** وهو عادةً لا يفعل—فـ`GITHUB_SHA` يشير إلى إيداع الدمج في فرع دمج طلب السحب. وإن احتجت بصمة رأس المساهم، فاستخدم `github.event.pull_request.head.sha`.
 
-**Assuming everything in a called reusable workflow shows up as environment variables.** It doesn’t. `jobs.<job_id>.with` inputs passed to a reusable workflow are available through the `inputs` context in the called workflow, not as environment variables by default.
+**افتراض أن كل شيء في سير العمل المستدعى القابل لإعادة الاستخدام يظهر كمتغيّرات بيئة.** وهو لا يظهر. فمدخلات `jobs.<job_id>.with` التي تُمرَّر إلى سير عمل قابل لإعادة الاستخدام متاحة عبر سياق `inputs` في سير العمل المستدعى، لا كمتغيّرات بيئة افتراضيًا.
 
-**Assuming `env:` behaves like a scripting language.** It doesn’t. In the workflow syntax, variables in the same `env` map can’t be defined in terms of one another, and GitHub uses the most specific scope when names collide.
+**افتراض أن `env:` يتصرف كلغة برمجة نصية.** وهو لا يتصرف كذلك. ففي صيغة سير العمل، لا يمكن تعريف المتغيّرات في خريطة `env` نفسها بالاعتماد على بعضها بعضًا، ويستخدم GitHub النطاق الأكثر تحديدًا عند تعارض الأسماء.
 
-**Forgetting that local actions live under `github.workspace`.** If you want `uses: ./.github/actions/my-action`, you need the repository checked out first, and the path is relative to the checked-out workspace, not to your workflow file.
+**نسيان أن الإجراءات المحلية تعيش تحت `github.workspace`.** فإن أردت `uses: ./.github/actions/my-action`، فتحتاج المستودع مسحوبًا أولًا، والمسار نسبي إلى مساحة العمل المسحوبة لا إلى ملف سير العمل لديك.
 
-**Assuming action renames are harmless.** GitHub explicitly doesn’t support redirects for actions or reusable workflows, so if the owner or name changes, old workflow references fail. One more reason to pin dependencies deliberately and not treat marketplace references like permanent natural laws.
+**افتراض أن إعادة تسمية الإجراءات غير مؤذية.** فGitHub لا تدعم صراحةً إعادة التوجيه للإجراءات أو سير العمل القابل لإعادة الاستخدام، فإن تغيّر المالك أو الاسم، فشلت مراجع سير العمل القديمة. وسبب إضافي لتثبيت الاعتمادات عن قصد وعدم معاملة مراجع السوق كقوانين طبيعية دائمة.
 
-**Assuming secrets automatically flow through reusable workflow chains.** They don’t. Secrets pass only to directly called workflows unless explicitly forwarded along each hop.
+**افتراض أن الأسرار تتدفّق تلقائيًا عبر سلاسل سير العمل القابل لإعادة الاستخدام.** وهي لا تتدفّق. فالأسرار لا تنتقل إلا إلى سير العمل المستدعاة مباشرةً إلا إن مرّرت صراحةً في كل خطوة.
 
-**Assuming container jobs behave like normal Linux hosts.** In a container job, the default shell for `run:` is `sh`, not `bash`, which is a very efficient way to discover how much your scripts depended on Bashisms you swore were portable.
+**افتراض أن المهام داخل الحاويات تتصرف كخوادم Linux عادية.** ففي مهمة داخل حاوية، الصدفة الافتراضية لـ`run:` هي `sh` لا `bash`، وهذه طريقة فعّالة جدًا لاكتشاف مدى اعتماد سكربتاتك على خصائص Bash أقسمت أنها محمولة.
 
-## The Bottom Line
+## الخلاصة
 
-GitHub Actions is easy to begin and serious to operate. At small scale it’s a pleasant YAML-based automation tool. At larger scale it becomes workflow design, runner strategy, token scoping, supply-chain hygiene, cloud federation, and deployment policy—all disguised as a CI system. The teams that do well with it aren’t the ones that write the cleverest YAML. They’re the ones that treat Actions like production infrastructure, because it is.
-
----
-
-## TL;DR
-
-### The Mental Model
-
-> Workflows contain jobs. Jobs contain steps. Jobs run in isolation on separate runners.
-
-- **Workflow:** Triggered by an event. Lives in `.github/workflows/`.
-- **Job:** Runs on a fresh runner. Passes state to other jobs explicitly via `outputs` and `needs`.
-- **Step:** Runs sequentially inside a job. Shares the filesystem with other steps in the same job.
-- State flows *within* a job via `GITHUB_ENV` and `GITHUB_OUTPUT`. State flows *between* jobs via `needs.job_id.outputs`.
+GitHub Actions سهل في البداية وجدّي في التشغيل. وهو على نطاق صغير أداة أتمتة لطيفة قائمة على YAML. وعلى نطاق أكبر يصبح تصميم سير عمل، واستراتيجية مشغّلات، وتحديد نطاق الرمز، ونظافة سلسلة التوريد، واتحاد سحابي، وسياسة نشر—كلها متنكّرة في هيئة نظام CI. والفرق التي تنجح فيه ليست التي تكتب أذكى YAML. بل التي تعامل Actions كبنية تحتية إنتاجية، لأنها كذلك.
 
 ---
 
-### Trigger Semantics
+## الخلاصة السريعة (TL;DR)
 
-> Not all triggers are created equal.
+### النموذج الذهني
 
-| Trigger | Runs on | Has secrets? | Risk level |
+> سير العمل يحتوي مهام. والمهام تحتوي خطوات. وتعمل المهام بمعزل على مشغّلات منفصلة.
+
+- **سير العمل:** يُحفّزه حدث. ويعيش في `.github/workflows/`.
+- **المهمة:** تعمل على مشغّل جديد. وتمرّر الحالة إلى مهام أخرى صراحةً عبر `outputs` و`needs`.
+- **الخطوة:** تُنفَّذ تتابعيًا داخل المهمة. وتتشارك نظام الملفات مع بقية الخطوات في المهمة نفسها.
+- تتدفّق الحالة *داخل* المهمة عبر `GITHUB_ENV` و`GITHUB_OUTPUT`. وتتدفّق *بين* المهام عبر `needs.job_id.outputs`.
+
+---
+
+### دلالات المُحفّزات
+
+> ليست كل المُحفّزات متساوية.
+
+| المُحفّز | يعمل على | هل يملك أسرارًا؟ | مستوى الخطر |
 | --- | --- | --- | --- |
-| `push` | Pushed commit | Yes | Low |
-| `pull_request` | Merge commit SHA | Read-only | Low |
-| `pull_request_target` | Base branch | Full | High |
-| `workflow_dispatch` | Manual trigger | Yes | Low |
+| `push` | الإيداع المدفوع | نعم | منخفض |
+| `pull_request` | بصمة إيداع الدمج | للقراءة فقط | منخفض |
+| `pull_request_target` | الفرع الأساس | كاملة | مرتفع |
+| `workflow_dispatch` | محفّز يدوي | نعم | منخفض |
 
-- `pull_request` uses the *merge commit*, not the head commit. That’s why the SHA doesn’t match what you pushed.
-- `pull_request_target` runs with full secrets on the *base* branch—never checkout untrusted code here.
+- يستخدم `pull_request` *إيداع الدمج* لا إيداع الرأس. ولهذا لا تطابق البصمة ما دفعته.
+- يعمل `pull_request_target` بأسرار كاملة على الفرع *الأساس*—لا تسحب شيفرة غير موثوقة هنا أبدًا.
 
 ---
 
-### Reuse Mechanisms
+### آليات إعادة الاستخدام
 
-> Three levels of reuse, each with different tradeoffs.
+> ثلاثة مستويات لإعادة الاستخدام، لكل منها مقايضاته.
 
-| Mechanism | Scope | Secrets access | Defined in |
+| الآلية | النطاق | الوصول إلى الأسرار | معرّفة في |
 | --- | --- | --- | --- |
-| **Action** | Single step | Caller’s | `action.yml` |
-| **Composite action** | Multi-step | Caller’s | `action.yml` |
-| **Reusable workflow** | Full job(s) | Caller’s + own | `.github/workflows/` |
+| **الإجراء** | خطوة واحدة | المستدعي | `action.yml` |
+| **الإجراء المركّب** | متعددة الخطوات | المستدعي | `action.yml` |
+| **سير العمل القابل لإعادة الاستخدام** | مهام كاملة | المستدعي + الخاصة به | `.github/workflows/` |
 
-- Actions are the smallest unit—one step, one concern.
-- Composite actions bundle multiple steps but can’t define jobs or secrets.
-- Reusable workflows can define entire job graphs with their own `permissions` blocks.
+- الإجراءات أصغر وحدة—خطوة واحدة، وهمّ واحد.
+- الإجراءات المركّبة تحزم خطوات متعددة لكنها لا تستطيع تعريف مهام أو أسرار.
+- سير العمل القابل لإعادة الاستخدام يستطيع تعريف مخططات مهام كاملة بكتل `permissions` الخاصة بها.
 
 ---
 
-### Security Essentials
+### أساسيات الأمان
 
-> The defaults are permissive. Tighten them.
+> الإعدادات الافتراضية متسامحة. شدّدها.
 
-- Set `permissions` to `read-all` or narrower at the workflow level. Don’t rely on repo defaults.
-- Pin third-party actions to full commit SHAs, not tags. Tags are mutable.
-- Never run `pull_request_target` with `actions/checkout` pointed at `github.event.pull_request.head.ref`.
-- Use OIDC for cloud auth instead of long-lived credential secrets.
-- Treat `${{ github.event.*.title }}` and other user-controlled fields as injection vectors—always use intermediate environment variables.
+- اضبط `permissions` على `read-all` أو أضيق على مستوى سير العمل. لا تتّكل على إعدادات المستودع الافتراضية.
+- ثبّت إجراءات الأطراف الثالثة على بصمات إيداع كاملة لا وسوم. فالوسوم قابلة للتغيير.
+- لا تشغّل `pull_request_target` أبدًا و`actions/checkout` موجّه إلى `github.event.pull_request.head.ref`.
+- استخدم OIDC لمصادقة السحابة بدل أسرار اعتماد طويلة العمر.
+- عامل `${{ github.event.*.title }}` والحقول الأخرى التي يتحكم بها المستخدم كنواقل حقن—واستخدم دائمًا متغيّرات بيئة وسيطة.

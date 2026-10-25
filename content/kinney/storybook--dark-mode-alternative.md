@@ -1,9 +1,9 @@
 ---
-title: "An Alternative Approach to Dark Mode"
-lang: en
+title: "أسلوب بديل للوضع الداكن"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/dark-mode-alternative"
 ---
 
-We do something slightly different. We don’t even reference colors at all in our code. Instead, we have semantic colors for elements that reference CSS variables that are switched to different values when in dark mode.
+نحن نفعل شيئًا مختلفًا قليلًا. فلا نشير إلى الألوان إطلاقًا في شيفرتنا. بل لدينا ألوان دلالية للعناصر تشير إلى متغيّرات CSS تُبدَّل إلى قيم مختلفة في الوضع الداكن.
 
-Let’s take a look at [this file](https://github.com/temporalio/ui/blob/main/src/lib/theme/plugin.ts).
+لنلقِ نظرة على [هذا الملف](https://github.com/temporalio/ui/blob/main/src/lib/theme/plugin.ts).

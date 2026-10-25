@@ -1,28 +1,28 @@
 ---
-title: "Attaching an SSL Certificate"
-lang: en
+title: "إرفاق شهادة SSL"
+lang: ar
 source: "https://stevekinney.com/courses/aws/attaching-an-ssl-certificate"
 ---
 
-> **Note**
+> **ملاحظة**
 >
-> This lesson is part of the optional **Custom Domains, DNS, and Certificates** extension. If you’re working through the core course, your CloudFront distribution already serves content over HTTPS on its `*.cloudfront.net` domain. Come back here when you’re ready to attach a custom domain.
+> هذا الدرس جزء من ملحق **النطاقات المخصّصة وDNS والشهادات** الاختياري. فإن كنت تعمل في الدورة الأساسية، فتوزيع CloudFront لديك يقدّم المحتوى بالفعل عبر HTTPS على نطاقه `*.cloudfront.net`. عُد إلى هنا عندما تصبح مستعدًا لإرفاق نطاق مخصّص.
 
-Your CloudFront distribution works, but it’s still serving content on a `*.cloudfront.net` domain. That’s fine for testing, but you need your custom domain with HTTPS before this is production-ready. This lesson connects the ACM certificate you provisioned in the ACM section to your CloudFront distribution.
+توزيع CloudFront لديك يعمل، لكنه ما زال يقدّم المحتوى على نطاق `*.cloudfront.net`. هذا مقبول للاختبار، لكنك تحتاج إلى نطاقك المخصّص مع HTTPS قبل أن يصبح جاهزًا للإنتاج. يربط هذا الدرس شهادة ACM التي أنشأتها في قسم ACM بتوزيع CloudFront لديك.
 
-If you want AWS’s version of the alternate-domain-name rules while you work, the [CloudFront guide to custom URLs and CNAMEs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CNAMEs.html) is the official reference.
+إن أردت نسخة AWS من قواعد أسماء النطاقات البديلة أثناء عملك، فـ[دليل CloudFront للنطاقات المخصّصة وCNAMEs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CNAMEs.html) هو المرجع الرسمي.
 
-If you haven’t yet requested a certificate, go back to [Requesting a Certificate in ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm) and create one for your domain. You need a certificate in the `ISSUED` state before proceeding.
+إن لم تكن قد طلبت شهادة بعد، فعُد إلى [طلب شهادة في ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm) وأنشئ واحدة لنطاقك. تحتاج إلى شهادة في حالة `ISSUED` قبل المتابعة.
 
-## The us-east-1 Requirement (Again)
+## شرط us-east-1 (مجددًا)
 
-This is worth repeating because it trips people up every single time: your ACM certificate **must** be in `us-east-1`. CloudFront is a global service, and its control plane lives in `us-east-1`. It only sees certificates in that region.
+يستحق هذا التكرار لأنه يوقع الناس في كل مرة: شهادة ACM لديك **يجب** أن تكون في `us-east-1`. فـ CloudFront خدمة عالمية، ومستوى التحكم فيها يسكن في `us-east-1`. ولا يرى إلا الشهادات الموجودة في تلك المنطقة.
 
-If you provisioned your certificate in a different region, you need a new one in `us-east-1`. There’s no way to copy or move certificates between regions. This is covered in detail in [Certificate Renewal and the us-east-1 Requirement](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1).
+إن أنشأت شهادتك في منطقة أخرى، فأنت بحاجة إلى شهادة جديدة في `us-east-1`. ولا سبيل إلى نسخ الشهادات أو نقلها بين المناطق. وقد غطّينا هذا بالتفصيل في [تجديد الشهادة وشرط us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1).
 
-> **Warning**
+> **تحذير**
 >
-> CloudFront certificates **must** be in `us-east-1`. If you created your certificate in any other region, CloudFront can’t see it. Verify your certificate is in the right region before updating your distribution:
+> شهادات CloudFront **يجب** أن تكون في `us-east-1`. فإن أنشأت شهادتك في أي منطقة أخرى، فلن تراها CloudFront. تحقّق من أن شهادتك في المنطقة الصحيحة قبل تحديث توزيعك:
 >
 > ```bash
 > aws acm list-certificates \
@@ -31,11 +31,11 @@ If you provisioned your certificate in a different region, you need a new one in
 >   --query "CertificateSummaryList[*].{Domain:DomainName,ARN:CertificateArn,Status:Status}"
 > ```
 
-## Updating the Distribution Config
+## تحديث تهيئة التوزيع
 
-Attaching a certificate requires updating your distribution’s `ViewerCertificate` configuration and adding your custom domain to the `Aliases` list. This is a two-part change.
+يتطلب إرفاق شهادة تحديث تهيئة `ViewerCertificate` في توزيعك وإضافة نطاقك المخصّص إلى قائمة `Aliases`. وهذا تغيير من جزأين.
 
-First, fetch the current config:
+أولًا، اجلب التهيئة الحالية:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -44,11 +44,11 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config-current.json
 ```
 
-Note the `ETag` in the response—you need it for the update.
+دوّن `ETag` من الاستجابة—تحتاجه للتحديث.
 
-### Part 1: ViewerCertificate
+### الجزء الأول: ViewerCertificate
 
-Replace the `ViewerCertificate` section in the `DistributionConfig`. The current config uses the CloudFront default certificate:
+استبدل قسم `ViewerCertificate` في `DistributionConfig`. التهيئة الحالية تستخدم شهادة CloudFront الافتراضية:
 
 ```json
 {
@@ -58,15 +58,15 @@ Replace the `ViewerCertificate` section in the `DistributionConfig`. The current
 }
 ```
 
-In the console, the **Edit settings** page shows the **Custom SSL certificate** dropdown with no certificate selected (using the default `*.cloudfront.net` certificate).
+في وحدة التحكم، تعرض صفحة **Edit settings** القائمة المنسدلة **Custom SSL certificate** دون شهادة محددة (أي باستخدام شهادة `*.cloudfront.net` الافتراضية).
 
-The CloudFront Edit settings form showing the Custom SSL certificate field with an empty Choose certificate dropdown, indicating the default CloudFront certificate is in use.
+نموذج Edit settings في CloudFront يعرض حقل Custom SSL certificate مع قائمة Choose certificate فارغة، ما يدل على أن شهادة CloudFront الافتراضية هي المستخدمة.
 
-> **Default cert ignores `MinimumProtocolVersion`**
+> **الشهادة الافتراضية تتجاهل `MinimumProtocolVersion`**
 >
-> When `CloudFrontDefaultCertificate` is `true`, [CloudFront silently forces the security policy to `TLSv1`](https://docs.aws.amazon.com/AmazonCloudFront/latest/APIReference/API_ViewerCertificate.html) regardless of what you set in `MinimumProtocolVersion`. That’s why the default-cert block above doesn’t bother with a `MinimumProtocolVersion` field—it would just be a lie. Once you switch to your own ACM certificate (next), the field becomes meaningful.
+> عندما تكون `CloudFrontDefaultCertificate` مساوية لـ `true`، [تفرض CloudFront بصمت سياسة الأمان `TLSv1`](https://docs.aws.amazon.com/AmazonCloudFront/latest/APIReference/API_ViewerCertificate.html) بغضّ النظر عمّا تعيّنه في `MinimumProtocolVersion`. ولهذا لا يكلّفك مقطع الشهادة الافتراضية أعلاه عناء حقل `MinimumProtocolVersion`—فوجوده سيكون مجرد كذبة. وبمجرد أن تنتقل إلى شهادتك من ACM (التالي)، يصبح للحقل معنى.
 
-Replace it with your ACM certificate:
+استبدله بشهادتك من ACM:
 
 ```json
 {
@@ -78,19 +78,19 @@ Replace it with your ACM certificate:
 }
 ```
 
-Let’s break down each field:
+لنفصّل كل حقل:
 
-- **`ACMCertificateArn`**: The ARN of your ACM certificate. This replaces `CloudFrontDefaultCertificate`. You can’t have both—it’s either the default certificate or your ACM certificate.
-- **`SSLSupportMethod`**: `"sni-only"` means CloudFront uses **Server Name Indication** (SNI) to determine which certificate to present during the TLS handshake. This is the standard approach and is free. The alternative, `"vip"`, uses a dedicated IP address at each edge location—it costs $600/month and exists only for compatibility with ancient clients that don’t support SNI. Use `"sni-only"`.
-- **`MinimumProtocolVersion`**: `"TLSv1.2_2021"` is the most current security policy for `sni-only` distributions. It requires TLS 1.2 or higher and uses modern cipher suites. Don’t use older versions like `TLSv1` or `TLSv1_2016`—they allow weaker ciphers.
+- **`ACMCertificateArn`**: ARN شهادتك من ACM. يحلّ هذا الحقل محل `CloudFrontDefaultCertificate`. ولا يمكنك الجمع بينهما—فإما الشهادة الافتراضية وإما شهادتك من ACM.
+- **`SSLSupportMethod`**: تعني `"sni-only"` أن CloudFront يستخدم **Server Name Indication** (SNI) لتحديد الشهادة التي يقدّمها أثناء مصافحة TLS. هذا هو النهج القياسي وهو مجاني. أما البديل `"vip"` فيستخدم عنوان IP مخصّصًا في كل موقع حافة—ويكلّف 600 دولار شهريًا، ووُجد فقط للتوافق مع عملاء قديمين لا يدعمون SNI. استخدم `"sni-only"`.
+- **`MinimumProtocolVersion`**: `"TLSv1.2_2021"` هي سياسة الأمان الأحدث لتوزيعات `sni-only`. وهي تتطلب TLS 1.2 أو أعلى وتستخدم مجموعات تشفير حديثة. لا تستخدم إصدارات أقدم مثل `TLSv1` أو `TLSv1_2016`—فهي تسمح بتشفيرات أضعف.
 
-> **Tip**
+> **نصيحة**
 >
-> `"TLSv1.2_2021"` is the recommended minimum protocol version as of this writing. It supports TLS 1.2 and 1.3, with a modern set of ciphers. Virtually every browser released in the last decade supports TLS 1.2, so there’s no practical compatibility concern.
+> `"TLSv1.2_2021"` هي الحد الأدنى الموصى به لإصدار البروتوكول وقت كتابة هذا الدرس. تدعم TLS 1.2 و1.3، مع مجموعة حديثة من التشفيرات. وكل متصفح تقريبًا صدر في العقد الماضي يدعم TLS 1.2، فلا يوجد قلق عملي بشأن التوافق.
 
-### Part 2: Aliases
+### الجزء الثاني: Aliases
 
-CloudFront needs to know which custom domains should route to this distribution. Add your domain (and optionally the `www` subdomain) to the `Aliases` section:
+تحتاج CloudFront إلى معرفة النطاقات المخصّصة التي ينبغي توجيهها إلى هذا التوزيع. أضف نطاقك (واختياريًا النطاق الفرعي `www`) إلى قسم `Aliases`:
 
 ```json
 {
@@ -101,7 +101,7 @@ CloudFront needs to know which custom domains should route to this distribution.
 }
 ```
 
-If the current config has no aliases, it looks like this:
+إن لم تحتوِ التهيئة الحالية على أسماء بديلة، فستبدو هكذا:
 
 ```json
 {
@@ -111,11 +111,11 @@ If the current config has no aliases, it looks like this:
 }
 ```
 
-Replace it with your domain names. The domains listed here must match the domain names covered by your ACM certificate. If your certificate covers `example.com` and `*.example.com` (a wildcard), you can list any subdomain. If your certificate only covers `example.com`, you can only list `example.com`.
+استبدلها بأسماء نطاقاتك. يجب أن تطابق النطاقات المذكورة هنا أسماء النطاقات التي تغطيها شهادتك من ACM. فإن كانت شهادتك تغطي `example.com` و`*.example.com` (نطاق شامل)، فيمكنك سرد أي نطاق فرعي. وإن كانت تغطي `example.com` فقط، فلا يمكنك سرد سوى `example.com`.
 
-### Part 3: HTTPS Redirect
+### الجزء الثالث: إعادة توجيه HTTPS
 
-Make sure the `ViewerProtocolPolicy` in your `DefaultCacheBehavior` is set to `"redirect-to-https"`. This was already configured in [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution), but verify it’s still in place:
+تأكد من أن `ViewerProtocolPolicy` في `DefaultCacheBehavior` مضبوطة على `"redirect-to-https"`. كان هذا مضبوطًا بالفعل في [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)، لكن تحقّق من أنه ما زال في مكانه:
 
 ```json
 {
@@ -125,11 +125,11 @@ Make sure the `ViewerProtocolPolicy` in your `DefaultCacheBehavior` is set to `"
 }
 ```
 
-This ensures that any HTTP request to your distribution is automatically redirected to HTTPS. Users never see an insecure connection.
+يضمن هذا إعادة توجيه أي طلب HTTP إلى توزيعك تلقائيًا إلى HTTPS. فلا يرى المستخدمون اتصالًا غير آمن أبدًا.
 
-## Submitting the Update
+## إرسال التحديث
 
-Apply the changes:
+طبّق التغييرات:
 
 ```bash
 aws cloudfront update-distribution \
@@ -140,9 +140,9 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-Replace `E2QWRUHEXAMPLE` with the `ETag` from the `get-distribution-config` response.
+استبدل `E2QWRUHEXAMPLE` بقيمة `ETag` من استجابة `get-distribution-config`.
 
-Wait for the deployment:
+انتظر النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -150,7 +150,7 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-## With the SDK
+## مع SDK
 
 ```typescript
 import {
@@ -181,46 +181,46 @@ await cloudfront.send(
 );
 ```
 
-## DNS: The Missing Piece
+## DNS: القطعة المفقودة
 
-After the distribution is deployed with your certificate and aliases, you need to create DNS records that point your domain to the CloudFront distribution. That’s the job of the Route 53 custom-domain-routing section. Until then, your site is accessible at:
+بعد نشر التوزيع بشهادتك وأسمائك البديلة، تحتاج إلى إنشاء سجلات DNS تشير بنطاقك إلى توزيع CloudFront. وهذا عمل قسم توجيه النطاقات المخصّصة في Route 53. وإلى أن يحدث ذلك، موقعك متاح على:
 
-- **CloudFront domain**: `https://d1234abcdef.cloudfront.net` (still works, using the ACM certificate for `*.cloudfront.net` under the hood)
-- **Custom domain**: `https://example.com` (only works after you create the final Route 53 alias records)
+- **نطاق CloudFront**: `https://d1234abcdef.cloudfront.net` (ما زال يعمل، مستخدمًا شهادة ACM الخاصة بـ `*.cloudfront.net` في الخلفية)
+- **النطاق المخصّص**: `https://example.com` (لا يعمل إلا بعد إنشاء سجلات Alias النهائية في Route 53)
 
-## Verifying the Certificate
+## التحقق من الشهادة
 
-Once DNS is configured (or even before, using the CloudFront domain), you can verify the SSL certificate is attached correctly:
+بعد تهيئة DNS (أو حتى قبلها، باستخدام نطاق CloudFront)، يمكنك التحقق من أن شهادة SSL مرفقة بشكل صحيح:
 
 ```bash
 curl -vI https://d1234abcdef.cloudfront.net 2>&1 | grep -A 5 "SSL certificate"
 ```
 
-Or use `openssl` for more detail:
+أو استخدم `openssl` لمزيد من التفاصيل:
 
 ```bash
 openssl s_client -connect d1234abcdef.cloudfront.net:443 -servername d1234abcdef.cloudfront.net < /dev/null 2>/dev/null | openssl x509 -noout -subject -dates
 ```
 
-This shows the certificate’s subject (domain name) and validity dates.
+يعرض هذا موضوع الشهادة (اسم النطاق) وتواريخ صلاحيتها.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Certificate in the wrong region**: CloudFront returns an error like `InvalidViewerCertificate` if the certificate ARN points to a certificate that doesn’t exist in `us-east-1`. Double-check the region.
+**الشهادة في منطقة خاطئة**: تُرجع CloudFront خطأ مثل `InvalidViewerCertificate` إذا أشار ARN الشهادة إلى شهادة غير موجودة في `us-east-1`. تحقّق من المنطقة مرة أخرى.
 
-**Domain not in Aliases**: If your certificate covers `example.com` but you didn’t add `example.com` to the `Aliases` list, CloudFront won’t use the certificate for requests to that domain. The `Aliases` list tells CloudFront which domains this distribution answers for.
+**النطاق غير موجود في Aliases**: إن كانت شهادتك تغطي `example.com` لكنك لم تضف `example.com` إلى قائمة `Aliases`، فلن يستخدم CloudFront الشهادة لطلبات ذلك النطاق. فقائمة `Aliases` تخبر CloudFront عن النطاقات التي يجيب عنها هذا التوزيع.
 
-**Certificate not yet issued**: If your certificate is still in `PENDING_VALIDATION` status, CloudFront rejects it. Complete the validation process first (see [DNS Validation vs. Email Validation](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation)). (I’ve definitely made this mistake—submitted the update before DNS validation propagated and then wondered why CloudFront was yelling at me.)
+**الشهادة غير صادرة بعد**: إذا كانت شهادتك ما زالت في حالة `PENDING_VALIDATION`، فترفضها CloudFront. أكمل عملية التحقق أولًا (راجع [التحقق عبر DNS مقابل التحقق عبر البريد الإلكتروني](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation)). (لقد ارتكبت هذا الخطأ بالتأكيد—أرسلت التحديث قبل أن ينتشر التحقق عبر DNS ثم تساءلت لماذا تصرخ CloudFront في وجهي.)
 
-**Domain already in use**: If `example.com` is already listed as an alias on another CloudFront distribution (even in a different AWS account), CloudFront rejects the update. Each domain can only be associated with one distribution at a time. Remove it from the old distribution first.
+**النطاق مستخدم بالفعل**: إذا كان `example.com` مدرجًا بالفعل كاسم بديل على توزيع CloudFront آخر (حتى في حساب AWS مختلف)، فترفض CloudFront التحديث. لا يمكن ربط كل نطاق إلا بتوزيع واحد في وقت واحد. أزله من التوزيع القديم أولًا.
 
-> **Tip**
+> **نصيحة**
 >
-> If you get a `CNAMEAlreadyExists` error, it means the domain is already associated with another CloudFront distribution. This can happen if you’re migrating from an older setup. Use `aws cloudfront list-distributions` to find the other distribution and remove the alias from it first.
+> إن حصلت على خطأ `CNAMEAlreadyExists`، فهذا يعني أن النطاق مرتبط بالفعل بتوزيع CloudFront آخر. قد يحدث هذا إن كنت تنتقل من إعداد أقدم. استخدم `aws cloudfront list-distributions` للعثور على التوزيع الآخر وإزالة الاسم البديل منه أولًا.
 
-## The Full ViewerCertificate Object
+## كائن ViewerCertificate الكامل
 
-Here’s the complete updated distribution config with the certificate, aliases, and HTTPS redirect for reference:
+إليك تهيئة التوزيع المحدّثة الكاملة مع الشهادة والأسماء البديلة وإعادة توجيه HTTPS للرجوع إليها:
 
 ```json
 {
@@ -239,6 +239,6 @@ Here’s the complete updated distribution config with the certificate, aliases,
 }
 ```
 
-This gives you HTTPS on your custom domain, enforced via redirect, with TLS 1.2+ and modern ciphers. That’s the same level of TLS security you get from Vercel or Netlify by default—you’re just configuring it explicitly.
+يمنحك هذا HTTPS على نطاقك المخصّص، مفروضًا عبر إعادة التوجيه، مع TLS 1.2 أو أحدث وتشفيرات حديثة. وهذا هو مستوى أمان TLS نفسه الذي تحصل عليه من Vercel أو Netlify افتراضيًا—أنت فقط تهيّئه صراحةً.
 
-Your distribution has HTTPS, a custom domain (pending DNS), and SPA routing. The last piece of the CloudFront puzzle is response headers: CORS configuration, security headers like HSTS and X-Frame-Options, and cache-control directives. In the next lesson, you’ll configure a response headers policy that brings your distribution’s security posture up to modern standards.
+صار توزيعك يملك HTTPS، ونطاقًا مخصّصًا (بانتظار DNS)، وتوجيه SPA. وتبقى القطعة الأخيرة في أحجية CloudFront، وهي ترويسات الاستجابة: تهيئة CORS، وترويسات الأمان مثل HSTS وX-Frame-Options، وتوجيهات التحكم في الذاكرة. في الدرس التالي، ستهيّئ سياسة ترويسات استجابة ترفع وضع الأمان في توزيعك إلى المعايير الحديثة.

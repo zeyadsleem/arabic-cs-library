@@ -1,32 +1,32 @@
 ---
-title: "Placeholder Components"
-lang: en
+title: "مكوّنات حجز المكان"
+lang: ar
 source: "https://stevekinney.com/courses/figma/placeholder-components"
 ---
 
-Once of the things we learned with components is that we can’t have open slots. We can only do one-for-one replacements of components. One trick is to have an otherwise-useless, placeholder component.
+من الأمور التي تعلّمناها مع المكوّنات أننا لا نستطيع أن نمتلك فتحات مفتوحة. لا يمكننا إلا إجراء استبدال مكوّن بمكوّن واحد لواحد. ومن الحيّل أن يكون لديك مكوّن حجز مكان عديم الفائدة في غير هذا الغرض.
 
-I like to make two:
+أحبّ أن أصنع اثنين:
 
-- A very obvious placeholder component
-- And a variant with zero height.
+- مكوّن حجز مكان واضح جدًا
+- ونمط بديل بارتفاع صفري.
 
-Your placeholder components can look like anything, this is what one that I whipped up real quick looks like.
+يمكن أن يبدو مكوّن حجز المكان كما تشاء، وهذا شكل واحد أعددته بسرعة.
 
-A placeholder component And then I can create something like a generic card component where I want to be able to swap in a component.
+مكوّن حجز مكان، وبعد ذلك يمكنني إنشاء شيء مثل مكوّن بطاقة عام أريد أن أتمكّن فيه من تبديل مكوّن.
 
-Card component with a placeholder
+مكوّن بطاقة مع حجز مكان
 
-> **Make sure to set the placeholder to fill the container for both width and height.**
+> **تأكّد من ضبط العنصر النائب ليملأ الحاوية في العرض والارتفاع معًا.**
 
-## Setting Up an Instance Swap
+## إعداد تبديل نسخة
 
-With my component in place, I want to set up the ability to do an instance swap of the placeholder component
+بعد أن أصبح مكوّني جاهزًا، أريد إعداد القدرة على تبديل نسخة مكوّن حجز المكان
 
-Instance swap a placeholder component
+تبديل نسخة مكوّن حجز المكان
 
-And now, you can select any components that you want to as preferred components, but honestly, this is just a shorthand, you can pop in any component that you want.
+والآن، يمكنك تحديد أي مكوّنات تريدها كمكوّنات مفضّلة، لكن بصراحة، هذا مجرّد اختصار، إذ يمكنك إدراج أي مكوّن تريده.
 
-Swapping in a preferred component
+تبديل مكوّن مفضّل
 
-And now you can swap in some other component into this card. This is also a reasonable strategy for base component, but it *definitely* still feels like a hack—so, I’d probably use it sparingly.
+والآن يمكنك تبديل مكوّن آخر داخل هذه البطاقة. وهذه أيضًا استراتيجية معقولة للمكوّن الأساسي، لكنها *بالتأكيد* ما زالت تبدو حيلة — لذا من المحتمل أن أستخدمها باعتدال.

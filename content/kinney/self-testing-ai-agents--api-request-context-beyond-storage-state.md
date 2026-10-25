@@ -1,37 +1,37 @@
 ---
-title: "APIRequestContext: Beyond Storage State"
-lang: en
+title: "APIRequestContext: ما هو أبعد من حالة التخزين"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state"
 ---
 
-Storage state is a photograph of a logged-in browser. Photographs don’t refresh, they don’t log in as a second user mid-test, and they don’t get you an authenticated API request without spinning up a full Playwright context first. The [Storage State Authentication lesson](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) covered the 90% case. This lesson is about the 10% that trips agents every time.
+حالة التخزين صورة فوتوغرافية لمتصفح مسجَّل الدخول. والصور الفوتوغرافية لا تتحدّث، ولا تسجّل الدخول بمستخدم ثانٍ في منتصف الاختبار، ولا تمنحك طلب API موثّقًا دون تشغيل سياق Playwright كامل أولًا. غطّى [درس مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) الحالة التي تمثل 90%. وهذا الدرس عن الـ10% التي تُعثر الوكلاء في كل مرة.
 
-The thing I want you to leave this lesson understanding is that the `request` fixture you’ve been calling on the side of your tests is actually a full HTTP client. It’s called `APIRequestContext`, it has its own cookie jar, and you can build more than one of them in a single test.
+الشيء الذي أريدك أن تخرج من هذا الدرس وأنت تفهمه هو أن تجهيزة `request` التي كنت تستدعيها على هامش اختباراتك هي في الحقيقة عميل HTTP كامل. يُسمى `APIRequestContext`، وله جرّة ملفات تعريف ارتباط خاصة به، ويمكنك بناء أكثر من واحد منه في اختبار واحد.
 
-The [API testing docs](https://playwright.dev/docs/api-testing) make two other useful facts explicit:
+تذكر [وثائق اختبار API](https://playwright.dev/docs/api-testing) حقيقتين مفيدتين أخريين بوضوح:
 
-- the built-in `request` fixture already inherits config like `baseURL` and default headers
-- `browserContext.request` shares cookies with that browser context
+- تجهيزة `request` المدمجة ترث أصلًا إعدادات مثل `baseURL` والترويسات الافتراضية
+- `browserContext.request` يشارك ملفات تعريف الارتباط مع سياق المتصفح ذلك
 
-Those two details are why this is more than “slightly nicer `fetch`.”
+هاتان التفصيلتان هما سبب كون هذا أكثر من «`fetch` أجمل قليلًا».
 
-## What storage state actually is
+## ما هي حالة التخزين فعلًا
 
-Shelf’s setup project logs in once, writes `playwright/.authentication/user.json`, and every authenticated test inherits that file by way of the `storageState` project option. The file itself is a JSON blob — cookies and `localStorage` entries — that Playwright mounts into a new browser context before your test starts. That’s the whole mechanism.
+مشروع التهيئة في Shelf يسجّل الدخول مرة واحدة، ويكتب `playwright/.authentication/user.json`، وكل اختبار موثّق يرث ذلك الملف عبر خيار المشروع `storageState`. والملف نفسه كتلة JSON — ملفات تعريف ارتباط وإدخالات `localStorage` — يركّبها Playwright في سياق متصفح جديد قبل أن يبدأ اختبارك. هذه هي الآلية بأكملها.
 
-This is brilliant for the common case and completely useless in three others:
+هذا رائع للحالة الشائعة، وعديم الفائدة تمامًا في ثلاث حالات أخرى:
 
-1. You need to log in as a *second* user mid-test (admin + reader, two teams, a handoff flow).
-2. You want to hit an authenticated API endpoint without spinning up a browser at all — because you’re seeding state, or checking persistence, or just going faster than a UI can.
-3. The session expires during the test, and you need to refresh and retry.
+1. تحتاج إلى تسجيل الدخول بمستخدم *ثانٍ* في منتصف الاختبار (مدير + قارئ، فريقان، تدفّق تسليم).
+2. تريد الوصول إلى نقطة نهاية API موثّقة دون تشغيل متصفح على الإطلاق — لأنك تزرع حالة، أو تتحقق من الاستمرارية، أو تريد فقط أن تكون أسرع مما تستطيع واجهة المستخدم.
+3. تنتهي الجلسة أثناء الاختبار، وتحتاج إلى تحديثها وإعادة المحاولة.
 
-All three of these live outside what storage state can do for you. All three of them are `APIRequestContext` territory.
+هذه الحالات الثلاث كلها تقع خارج ما تستطيع حالة التخزين فعله لك. وكلها من اختصاص `APIRequestContext`.
 
-## The `request` fixture is a full HTTP client
+## تجهيزة `request` عميل HTTP كامل
 
-You’ve already seen this in the [API and UI Hybrid Tests lesson](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests). The rate-book test ends with a `request.get('/api/shelf')` call to verify persistence after the UI finished writing. That `request` is the per-test `APIRequestContext` fixture, and it’s already authenticated because the `authenticated` project mounted the reader’s storage state on the context.
+رأيت هذا بالفعل في [درس اختبارات API وواجهة المستخدم الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests). ينتهي اختبار تقييم الكتاب باستدعاء `request.get('/api/shelf')` للتحقق من الاستمرارية بعد أن تنتهي الواجهة من الكتابة. ذلك `request` هو تجهيزة `APIRequestContext` لكل اختبار، وهو موثّق أصلًا لأن مشروع `authenticated` ركّب حالة تخزين القارئ على السياق.
 
-Here’s the thing the lesson didn’t tell you: `request` is not a convenience wrapper. It’s a full HTTP client. It has its own cookie jar, it can set extra headers, and — *and this is the part agents get wrong constantly* — you can construct *more* than one of them in a single test:
+وهنا الشيء الذي لم يخبرك به الدرس: `request` ليس غلافًا للتسهيل. إنه عميل HTTP كامل. له جرّة ملفات تعريف ارتباط خاصة به، ويستطيع تعيين ترويسات إضافية، و— *وهذا هو الجزء الذي يخطئ فيه الوكلاء باستمرار* — يمكنك إنشاء *أكثر من واحد* منه في اختبار واحد:
 
 ```typescript
 import { request as playwrightRequest } from '@playwright/test';
@@ -46,15 +46,15 @@ test('two actors', async ({ page }) => {
 });
 ```
 
-Note the shape. `playwrightRequest.newContext(...)` — the top-level `request` export from `@playwright/test`, *not* the per-test `request` fixture’s method. Agents type `request.newContext(...)` in a test and get a type error, then they type `this.request.newContext(...)` and get a different error, then they give up and drive the second user through the UI. You don’t need any of that. You need the top-level import.
+لاحظ الشكل. `playwrightRequest.newContext(...)` — التصدير الأعلى مستوى `request` من `@playwright/test`، *وليس* طريقة تجهيزة `request` الخاصة بكل اختبار. يكتب الوكلاء `request.newContext(...)` في اختبار فيحصلون على خطأ نوعي، ثم يكتبون `this.request.newContext(...)` فيحصلون على خطأ مختلف، ثم يستسلمون ويدفعون المستخدم الثاني عبر الواجهة. لا تحتاج إلى أي من ذلك. تحتاج إلى الاستيراد الأعلى مستوى.
 
-If you do **not** need a second actor, do not create one. The built-in fixture is already carrying the project’s `baseURL`, headers, and auth state. A surprising amount of hand-built API client code in test suites is just a slower way to recreate what the fixture already knows.
+إن كنت **لا** تحتاج إلى فاعل ثانٍ، فلا تنشئ واحدًا. فالتجهيزة المدمجة تحمل أصلًا `baseURL` الخاص بالمشروع والترويسات وحالة المصادقة. قدر مدهش من شيفرة عميل API المكتوبة يدويًا في مجموعات الاختبارات ليس إلا طريقة أبطأ لإعادة إنشاء ما تعرفه التجهيزة أصلًا.
 
-## Pattern: authenticated setup without a browser
+## النمط: تهيئة موثّقة بدون متصفح
 
-You’ve already seen the rate-book hybrid test use `request.get('/api/shelf')` to verify persistence. Here’s the principled version of what you were already doing.
+رأيت بالفعل اختبار تقييم الكتاب الهجين يستخدم `request.get('/api/shelf')` للتحقق من الاستمرارية. وهذه هي النسخة المنهجية لما كنت تفعله أصلًا.
 
-Instead of calling the endpoint on the side of a UI test, you can *compose* a fixture that hands every test an `APIRequestContext` pre-configured with admin credentials. The fixture-composition example from the [fixtures lesson](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) is the shape; here it is with Shelf’s real paths:
+بدلًا من استدعاء نقطة النهاية على هامش اختبار واجهة مستخدم، يمكنك *تركيب* تجهيزة تمنح كل اختبار `APIRequestContext` مُهيأ مسبقًا ببيانات اعتماد المدير. مثال تركيب التجهيزات من [درس التجهيزات](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) هو الشكل؛ وهنا هو بمسارات Shelf الحقيقية:
 
 ```typescript
 export const test = base.extend<{ adminRequest: APIRequestContext }>({
@@ -68,7 +68,7 @@ export const test = base.extend<{ adminRequest: APIRequestContext }>({
 });
 ```
 
-Any test that asks for `adminRequest` now gets an HTTP client that’s carrying the admin session cookie. No browser. No login flow. The Shelf starter doesn’t ship the admin storage-state setup file, so you create it as part of this workflow and write `playwright/.authentication/admin.json` yourself. The setup will sign the seeded admin in through Shelf’s existing `/login` form (the `Display name` field only exists in create-account mode, so a plain sign-in uses just the email and password inputs):
+أي اختبار يطلب `adminRequest` الآن يحصل على عميل HTTP يحمل ملف تعريف ارتباط جلسة المدير. لا متصفح. لا تدفّق تسجيل دخول. مشروع Shelf الأولي لا يشحن ملف تهيئة حالة تخزين المدير، لذا تنشئه كجزء من سير العمل هذا وتكتب `playwright/.authentication/admin.json` بنفسك. ستسجّل التهيئة دخول المدير المزروع عبر نموذج `/login` الموجود في Shelf (حقل `Display name` موجود فقط في وضع إنشاء الحساب، لذا يستخدم تسجيل الدخول العادي حقلي البريد الإلكتروني وكلمة المرور فقط):
 
 ```typescript
 // tests/labs/admin.setup.ts
@@ -92,15 +92,15 @@ setup('authenticate the seeded admin', async ({ page }) => {
 });
 ```
 
-The Shelf starter doesn’t ship that file. You create it during the lab, then run it with the labs enabled:
+مشروع Shelf الأولي لا يشحن ذلك الملف. تنشئه أثناء المختبر، ثم تشغّله مع تمكين المختبرات:
 
 ```bash
 PLAYWRIGHT_INCLUDE_LABS=1 npx playwright test tests/labs/admin.setup.ts
 ```
 
-That one run writes `playwright/.authentication/admin.json`, and the `adminRequest` fixture can reuse it after that.
+ذلك التشغيل الواحد يكتب `playwright/.authentication/admin.json`، ويمكن لتجهيزة `adminRequest` إعادة استخدامه بعد ذلك.
 
-With the fixture in place, a test that needs to create a book as the admin and verify it as the reader can stay this small:
+وبوجود التجهيزة، يمكن لاختبار يحتاج إلى إنشاء كتاب كمدير والتحقق منه كقارئ أن يبقى بهذا الصغر:
 
 ```typescript
 test('admin curates, reader sees', async ({ page, adminRequest }) => {
@@ -113,11 +113,11 @@ test('admin curates, reader sees', async ({ page, adminRequest }) => {
 });
 ```
 
-Two actors, one test, no extra UI login. This is the part of the API fixture that makes tests ten times faster than the equivalent browser flow, because you’re skipping all the rendering.
+فاعلان، اختبار واحد، بلا تسجيل دخول إضافي عبر الواجهة. هذا هو الجزء من تجهيزة API الذي يجعل الاختبارات أسرع بعشر مرات من تدفّق المتصفح المكافئ، لأنك تتخطى كل الرسم.
 
-## Pattern: a second user mid-test
+## النمط: مستخدم ثانٍ في منتصف الاختبار
 
-When the thing you’re testing *is* the two-actor interaction — admin promotes a book, reader sees it show up — you need both clients side by side. The fixture handles the admin side; the test’s `page` handles the reader side:
+عندما يكون الشيء الذي تختبره *هو* التفاعل بين فاعلين — المدير يرقّي كتابًا، والقارئ يراه يظهر — فأنت تحتاج إلى العميلين جنبًا إلى جنب. التجهيزة تتعامل مع جانب المدير؛ و`page` في الاختبار يتعامل مع جانب القارئ:
 
 ```typescript
 test('promoted book appears on the reader home page', async ({ page, adminRequest }) => {
@@ -131,21 +131,21 @@ test('promoted book appears on the reader home page', async ({ page, adminReques
 });
 ```
 
-One test, two authenticated identities, zero shared state. This is the pattern where the `APIRequestContext` earns its keep.
+اختبار واحد، هويتان موثّقتان، صفر حالة مشتركة. هذا هو النمط الذي يستحق فيه `APIRequestContext` وجوده.
 
-> **One actor per test by default**
+> **فاعل واحد لكل اختبار افتراضيًا**
 >
-> Multi-actor tests are powerful and they will bite you. Default to one actor per test. Reach for two when the behavior under test *is* the handoff between them. Three actors in a single test is almost always a smell.
+> اختبارات تعدد الفاعلين قوية، وسوف تلسعك. اجعل الافتراضي فاعلًا واحدًا لكل اختبار. وامدّ يدك إلى اثنين عندما يكون السلوك قيد الاختبار *هو* التسليم بينهما. أما ثلاثة فاعلين في اختبار واحد فهي رائحة دائمًا تقريبًا.
 
-## Pattern: same actor, shared cookies
+## النمط: الفاعل نفسه، ملفات تعريف ارتباط مشتركة
 
-Sometimes you do not need a second actor at all. You need the browser and the API client to be the same actor with one shared session. That is [`browserContext.request`](https://playwright.dev/docs/api-testing).
+أحيانًا لا تحتاج إلى فاعل ثانٍ على الإطلاق. تحتاج إلى أن يكون المتصفح وعميل API الفاعل نفسه بجلسة واحدة مشتركة. وذلك هو [`browserContext.request`](https://playwright.dev/docs/api-testing).
 
-Log in through the page, call an endpoint through `browserContext.request`, and the cookie jar stays in sync. That is cleaner than copying `Cookie` headers around and more honest than pretending the API read and the browser are unrelated users.
+سجّل الدخول عبر الصفحة، واستدعِ نقطة نهاية عبر `browserContext.request`، فتبقى جرّة ملفات تعريف الارتباط متزامنة. هذا أنظف من نسخ ترويسات `Cookie` هنا وهناك، وأصدق من التظاهر بأن قراءة API والمتصفح مستخدمان غير مرتبطين.
 
-## Pattern: surviving a token refresh
+## النمط: النجاة من تحديث الرمز
 
-Shelf’s hand-rolled session (see `src/lib/server/session.ts`) is long-lived enough that you won’t see this in practice, but it’s a common agent trap, so it’s worth showing. If your app’s session expires mid-test (think: 15-minute tokens with refresh), the fixture-composition pattern gives you one clean place to handle re-auth:
+جلسة Shelf المكتوبة يدويًا (انظر `src/lib/server/session.ts`) طويلة العمر بما يكفي لأنك لن ترى هذا عمليًا، لكنه فخ شائع للوكلاء، لذا يستحق العرض. إن انتهت جلسة تطبيقك في منتصف الاختبار (فكّر: رموز مدتها 15 دقيقة مع تحديث)، فإن نمط تركيب التجهيزات يمنحك مكانًا واحدًا نظيفًا للتعامل مع إعادة المصادقة:
 
 ```typescript
 refreshableAdmin: async ({ playwright }, use) => {
@@ -176,24 +176,24 @@ refreshableAdmin: async ({ playwright }, use) => {
 };
 ```
 
-This is longer than you’d expect, and that’s the point. Session refresh is one of those things that looks like a one-liner and turns into a full afternoon when you get it wrong. Put it in a fixture, get it right once, and every test in the suite inherits the fix.
+هذا أطول مما تتوقع، وهذا هو المقصود. تحديث الجلسة من الأشياء التي تبدو سطرًا واحدًا ثم تتحول إلى أمسية كاملة عندما تخطئ فيها. ضعه في تجهيزة، وأحسنه مرة واحدة، فيرث كل اختبار في المجموعة الإصلاح.
 
-If you don’t need token refresh — and you probably don’t, today — don’t write this. But the shape is worth recognizing for when you do.
+إن كنت لا تحتاج إلى تحديث الرمز — وعلى الأرجح لا تحتاج اليوم — فلا تكتب هذا. لكن الشكل يستحق التعرّف عليه استعدادًا للحظة التي تحتاجه فيها.
 
-## When NOT to use `APIRequestContext`
+## متى لا تستخدم `APIRequestContext`
 
-The test I want you to write *is* a UI test. The thing you’re verifying *is* the UI. Don’t skip the UI because the API is faster — you’d be testing the wrong thing. `APIRequestContext` is for *setup* and *verification*, not for replacing the behavior you’re actually testing.
+الاختبار الذي أريدك أن تكتبه *هو* اختبار واجهة مستخدم. والشيء الذي تتحقق منه *هو* الواجهة. لا تتخطَّ الواجهة لأن API أسرع — فستكون تختبر الشيء الخطأ. `APIRequestContext` مخصص لـ *التهيئة* و*التحقق*، لا لاستبدال السلوك الذي تختبره فعلًا.
 
-Specifically:
+تحديدًا:
 
-- Verifying the login flow itself: use the browser. That’s what’s under test.
-- Verifying UI validation, error states, loading spinners, keyboard focus: use the browser.
-- Verifying that a server action actually persisted: use `request.get(...)` on the side. This is the hybrid pattern from the [API and UI Hybrid Tests lesson](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests).
-- Verifying that the API rejects bad input: write a pure API test. The browser is ceremony.
+- التحقق من تدفّق تسجيل الدخول نفسه: استخدم المتصفح. فهذا هو ما تحت الاختبار.
+- التحقق من تحقّق الواجهة من المدخلات وحالات الخطأ ودوّارات التحميل وتركيز لوحة المفاتيح: استخدم المتصفح.
+- التحقق من أن إجراء خادم قد حُفظ فعلًا: استخدم `request.get(...)` على الهامش. هذا هو النمط الهجين من [درس اختبارات API وواجهة المستخدم الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests).
+- التحقق من أن API يرفض المدخلات السيئة: اكتب اختبار API خالصًا. فالمتصفح هنا مجرد مراسم.
 
-The rule I apply: if my test has a `page.getByRole(...)` assertion that I could rewrite as a `request.get(...)` assertion *without losing anything*, then I’ve been UI-testing an API and I should split the test in two.
+القاعدة التي أطبّقها: إن كان في اختباري تأكيد `page.getByRole(...)` يمكنني إعادة كتابته كتأكيد `request.get(...)` *دون فقدان أي شيء*، فإني كنت أختبر API عبر الواجهة، وينبغي أن أقسم الاختبار إلى اثنين.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## APIRequestContext
@@ -207,12 +207,12 @@ The rule I apply: if my test has a `page.getByRole(...)` assertion that I could 
 - Dispose every `APIRequestContext` you construct yourself. The test's per-test `request` fixture disposes itself; hand-built ones don't.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-Storage state is a photograph. `APIRequestContext` is a camera. The photograph is perfect for the one person you log in as at setup time. The camera is what you reach for when the test needs a second person, a second session, or a second chance at authentication. Most tests are fine with the photograph. The ones that aren’t are the ones this lesson is about.
+حالة التخزين صورة فوتوغرافية. و`APIRequestContext` كاميرا. الصورة مثالية للشخص الواحد الذي تسجّل الدخول باسمه وقت التهيئة. والكاميرا هي ما تمدّ يدك إليه عندما يحتاج الاختبار إلى شخص ثانٍ، أو جلسة ثانية، أو فرصة ثانية للمصادقة. معظم الاختبارات تكتفي بالصورة. أما التي لا تكتفي، فهي موضوع هذا الدرس.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) — the prerequisite. This lesson assumes you already know how storage state gets written and mounted.
-- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests) — the lesson where the `request` fixture first showed up, and the source of the hybrid-verification pattern this lesson generalizes.
-- [Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — for the composition example that makes the second-actor pattern possible without copy-pasting a `newContext` call into every spec.
+- [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) — المتطلب السابق. يفترض هذا الدرس أنك تعرف أصلًا كيف تُكتب حالة التخزين وتُركَّب.
+- [اختبارات API وواجهة المستخدم الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests) — الدرس الذي ظهرت فيه تجهيزة `request` أول مرة، ومصدر نمط التحقق الهجين الذي يعمّمه هذا الدرس.
+- [التجهيزات: على نطاق العامل وعلى نطاق الاختبار والفخ بينهما](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) — من أجل مثال التركيب الذي يجعل نمط الفاعل الثاني ممكنًا دون لصق استدعاء `newContext` في كل ملف اختبار.

@@ -1,16 +1,16 @@
 ---
-title: "Safer createContext Helpers"
-lang: en
+title: "مساعدات createContext أكثر أمانًا"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/safer-createcontext-helpers"
 ---
 
-React Context is powerful, but the default `createContext` API leaves you with an uncomfortable truth: your context value might be `undefined` if someone forgets to wrap their component tree in a Provider. This leads to defensive programming, runtime checks, and the occasional late-night debugging session when you realize why your app is throwing errors in production.
+React Context قوي، لكن واجهة `createContext` الافتراضية تترك لك حقيقة غير مريحة: قد تكون قيمة السياق `undefined` إن نسي أحدهم تغليف شجرة مكوّناته بمزوّد (Provider). وهذا يقود إلى برمجة دفاعية، وفحوص وقت التشغيل، وجلسات تنقيح متأخرة حين تكتشف أخيرًا سبب رمي تطبيقك للأخطاء في الإنتاج.
 
-Let’s build some helper functions that give you bulletproof context with TypeScript—where the types guarantee your context is always available, and you never have to write another “context must be used within Provider” error again.
+لنبنِ بعض الدوال المساعدة التي تمنحك سياقًا متينًا مع TypeScript — حيث تضمن الأنواع أن سياقك متاح دائمًا، ولا تحتاج أبدًا إلى كتابة رسالة خطأ «يجب استخدام السياق داخل المزوّد» مرة أخرى.
 
-## The Problem with Default createContext
+## المشكلة مع createContext الافتراضي
 
-Here’s what most developers reach for when creating typed context:
+إليك ما يلجأ إليه أغلب المطوّرين عند إنشاء سياق مكتوب الأنواع:
 
 ```typescript
 import { createContext, useContext, ReactNode } from 'react';
@@ -45,11 +45,11 @@ export function useUser() {
 }
 ```
 
-This pattern works, but it’s brittle. Every custom hook needs that runtime check, TypeScript can’t help you catch missing Providers at compile time, and you’re always one forgotten Provider away from a runtime error.
+هذا النمط يعمل، لكنه هشّ. كل خُطّاف مخصّص يحتاج إلى ذلك الفحص وقت التشغيل، ولا يستطيع TypeScript مساعدتك على التقاط المزوّدات المفقودة وقت التجميع، وأنت دائمًا على بُعد مزوّد واحد منسي من خطأ وقت التشغيل.
 
-## A Safer createContext Helper
+## مساعد createContext أكثر أمانًا
 
-Let’s build a helper that eliminates these problems:
+لنبنِ مساعدًا يزيل هذه المشكلات:
 
 ```typescript
 import { createContext, useContext, Context, ReactNode } from 'react';
@@ -96,7 +96,7 @@ export function createSafeContext<T>(displayName: string) {
 }
 ```
 
-Now your context creation becomes clean and safe:
+الآن يصبح إنشاء سياقك نظيفًا وآمنًا:
 
 ```typescript
 interface UserContextType {
@@ -146,9 +146,9 @@ function UserProfile() {
 }
 ```
 
-## Advanced: Context with Actions Pattern
+## متقدّم: سياق بنمط الإجراءات
 
-For more complex state, you might want separate contexts for state and actions (this prevents unnecessary re-renders when components only need to dispatch actions):
+للحالة الأكثر تعقيدًا، قد ترغب في سياقات منفصلة للحالة والإجراءات (وهذا يمنع إعادة التصيير غير الضرورية حين تحتاج المكوّنات إلى إطلاق الإجراءات فقط):
 
 ```typescript
 /**
@@ -205,7 +205,7 @@ export function createStateActionContext<State, Actions>(displayName: string) {
 }
 ```
 
-Here’s how you’d use it with a todo list:
+إليك كيف تستخدمه مع قائمة مهام:
 
 ````typescript
 interface TodoState {
@@ -300,9 +300,9 @@ function TodoFilters() {
 }
 ```
 
-## Runtime Validation with Zod
+## التحقّق وقت التشغيل باستخدام Zod
 
-For extra safety, you can combine this pattern with runtime validation:
+لمزيد من الأمان، يمكنك الجمع بين هذا النمط والتحقّق وقت التشغيل:
 
 ```typescript
 import { z } from 'zod';
@@ -353,13 +353,13 @@ export function createValidatedContext<T>(displayName: string, schema: z.ZodSche
 const [useValidatedUser, ValidatedUserProvider] = createValidatedContext('User', UserContextSchema);
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Runtime validation adds overhead, so use it judiciously. It’s great during development and for contexts that receive data from external sources, but you might want to disable it in production builds.
+> التحقّق وقت التشغيل يضيف عبئًا، لذا استخدمه بحكمة. فهو ممتاز أثناء التطوير وللسياقات التي تستقبل بيانات من مصادر خارجية، لكن قد ترغب في تعطيله في بناءات الإنتاج.
 
-## Real World Use Cases™
+## حالات الاستخدام الواقعية™
 
-### Theme Context with System Preference Detection
+### سياق السمة مع كشف تفضيل النظام
 
 ```typescript
 interface ThemeContextType {
@@ -407,7 +407,7 @@ function ThemeToggle() {
 }
 ```
 
-### Shopping Cart with Optimistic Updates
+### سلة التسوّق مع تحديثات متفائلة
 
 ```typescript
 interface CartItem {
@@ -450,9 +450,9 @@ function AddToCartButton({ product }: { product: Product }) {
 }
 ```
 
-## Testing Your Safe Contexts
+## اختبار سياقاتك الآمنة
 
-Testing becomes much cleaner when you’re not dealing with undefined context values:
+يصبح الاختبار أنظف بكثير حين لا تتعامل مع قيم سياق غير معرّفة:
 
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -499,11 +499,11 @@ test('throws helpful error when used outside provider', () => {
 });
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-These helper functions add minimal overhead, but here are some tips for optimal performance:
+تضيف هذه الدوال المساعدة عبئًا ضئيلًا، لكن إليك بعض النصائح للحصول على أفضل أداء:
 
-### Provider Value Memoization
+### التخزين المؤقت لقيمة المزوّد
 
 ```typescript
 export function OptimizedUserProvider({ children }: { children: ReactNode }) {
@@ -529,7 +529,7 @@ export function OptimizedUserProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-### Callback Stability
+### ثبات دوال الاستدعاء
 
 ```typescript
 export function StableCallbackProvider({ children }: { children: ReactNode }) {
@@ -552,16 +552,16 @@ export function StableCallbackProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Safe context helpers eliminate a whole class of React bugs while providing better developer ergonomics. The key benefits:
+تساعد مساعدات السياق الآمنة على إزالة فئة كاملة من أخطاء React، مع توفير تجربة تطوير أفضل. وهذه هي الفوائد الأساسية:
 
-- **Type safety**: Context values are never undefined—TypeScript knows this
-- **Better error messages**: Clear, actionable error messages when Providers are missing
-- **Performance**: Separate state/actions contexts prevent unnecessary re-renders
-- **Developer experience**: Less boilerplate, more focus on your actual logic
-- **Runtime safety**: Optional validation ensures your context contracts hold
+- **أمان الأنواع**: قيم السياق لا تكون `undefined` أبدًا — وTypeScript يعرف ذلك
+- **رسائل خطأ أفضل**: رسائل خطأ واضحة وقابلة للتنفيذ عند غياب المزوّدات
+- **الأداء**: فصل سياقات الحالة والإجراءات يمنع إعادة التصيير غير الضرورية
+- **تجربة المطوّر**: شيفرة أقل، وتركيز أكبر على منطقك الفعلي
+- **أمان وقت التشغيل**: تحقّق اختياري يضمن ثبات عقود السياق لديك
 
-These patterns scale from simple theme toggles to complex application state management. They work especially well in design systems and component libraries where you want to provide foolproof APIs to other developers.
+تتقدّم هذه الأنماط من مبدّل سمات بسيط إلى إدارة حالة تطبيق معقّدة. وهي تعمل بشكل ممتاز خاصة في أنظمة التصميم ومكتبات المكوّنات حيث تريد تقديم واجهات برمجية خالية من الأخطاء للمطوّرين الآخرين.
 
-The investment in creating these helpers pays dividends as your application grows—you’ll spend less time debugging context-related issues and more time building features that matter to your users.
+الاستثمار في إنشاء هذه المساعدات يدفع أرباحه مع نمو تطبيقك — ستقضي وقتًا أقل في تنقيح المشكلات المتعلقة بالسياق ووقتًا أطول في بناء المزايا التي تهمّ مستخدميك.

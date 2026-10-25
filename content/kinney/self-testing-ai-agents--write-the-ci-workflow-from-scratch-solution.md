@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/write-the-ci-workflow-from-scratch-solution"
 ---
 
-This is another hybrid lab. The workflow files don’t ship in the Shelf starter, but the jobs still map to real local commands. The hosted parts—artifact uploads, cron triggers, required checks—need a GitHub remote with Actions enabled. I will keep those two truths separate so the solution does not pretend local YAML parsing is the same thing as a real CI run.
+هذا مختبر هجين آخر. ملفات سير العمل لا تأتي مع بادئة Shelf، لكن المهام ما زالت تقابل أوامر محلية حقيقية. الأجزاء المستضافة — رفع المخرجات، ومشغّلات cron، والفحوصات المطلوبة — تحتاج إلى مستودع GitHub بعيد مع تفعيل Actions. سأُبقي هذين الحقيقتين منفصلتين كي لا يدّعي الحل أن تحليل YAML محليًا هو الشيء نفسه تشغيل CI حقيقي.
 
-## What to add
+## ما يجب إضافته
 
-### `main.yml`: the three-job pipeline
+### `main.yml`: خط الأنابيب ثلاثي المهام
 
-Open `.github/workflows/main.yml`. The workflow runs on every `push` and `pull_request` and requests only `contents: read`. Good. Keep it boring.
+افتح `.github/workflows/main.yml`. يعمل سير العمل عند كل `push` و`pull_request` ويطلب فقط `contents: read`. جيد. أبقِه مملًا.
 
-#### The `static` job
+#### مهمة `static`
 
 ```yaml
 static:
@@ -48,11 +48,11 @@ static:
       run: gitleaks dir . --redact --config .gitleaks.toml
 ```
 
-This is the fuller post-static-layer version. If you have not built `knip` or gitleaks yet, drop those two steps for the first pass and add them back later. The point is not cargo-culting the exact YAML. The point is gating cheap failures before you spend browser minutes.
+هذه هي النسخة الأكمل بعد طبقة التحقق الساكن. إن لم تكن قد بنيت `knip` أو gitleaks بعد، فاحذف هاتين الخطوتين في الجولة الأولى وأعدهما لاحقًا. المقصود ليس تقليد YAML نفسه تقليدًا أعمى. المقصود هو إغلاق البوابة أمام الإخفاقات الرخيصة قبل أن تنفق دقائق المتصفح.
 
-These are steps, not separate jobs, because the setup overhead is shared. Splitting lint, typecheck, knip, and gitleaks into four jobs buys you more cold starts, not more insight.
+هذه خطوات، لا مهام منفصلة، لأن كلفة التهيئة مشتركة. تقسيم lint وtypecheck وknip وgitleaks إلى أربع مهام يشتري لك مزيدًا من عمليات البدء الباردة، لا مزيدًا من البصيرة.
 
-#### The `unit` job
+#### مهمة `unit`
 
 ```yaml
 unit:
@@ -77,9 +77,9 @@ unit:
       run: npm run test:unit
 ```
 
-`needs: static` is the first load-bearing decision in the file. If lint or typecheck already failed, there is no reason to burn another runner executing unit tests against broken code.
+`needs: static` هو أول قرار حامل في الملف. إذا كان lint أو typecheck قد فشل بالفعل، فلا سبب لحرق منفّذ آخر لتشغيل اختبارات الوحدة على شيفرة معطوبة.
 
-#### The `end-to-end` job
+#### مهمة `end-to-end`
 
 ```yaml
 end-to-end:
@@ -129,29 +129,29 @@ end-to-end:
         retention-days: 7
 ```
 
-Three details matter here.
+ثلاثة تفاصيل تهمّ هنا.
 
-First: `npm run test`, not `npm run test:e2e`. The current Shelf starter’s Playwright command surface is `test`, and the solution should not invent a second script just because an older version of the repo did.
+أولًا: `npm run test`، لا `npm run test:e2e`. سطح أوامر Playwright في بادئة Shelf الحالية هو `test`، ولا ينبغي للحل أن يخترع سكربتًا ثانيًا لمجرد أن نسخة أقدم من المستودع كانت تفعل ذلك.
 
-Second: `DATABASE_URL=file:./ci.db`. The current starter does not need `tmp/ci.db` or a pre-created `tmp/` directory to boot the preview server. Keep the CI env small and real.
+ثانيًا: `DATABASE_URL=file:./ci.db`. لا تحتاج البادئة الحالية إلى `tmp/ci.db` ولا إلى مجلد `tmp/` مُنشأ مسبقًا لتشغيل خادم المعاينة. أبقِ بيئة CI صغيرة وحقيقية.
 
-Third: the dossier upload is conditional and separate. The HTML report is large. The markdown dossier is small. An agent should be able to grab the small one first and only pull the full report if it needs the traces.
+ثالثًا: رفع ملف الحصيلة مشروط ومنفصل. تقرير HTML كبير. وحصيلة markdown صغيرة. ينبغي أن يستطيع الوكيل التقاط الصغيرة أولًا ولا يسحب التقرير الكامل إلا إذا احتاج إلى الآثار.
 
-If you have not completed the dossier lab yet, omit the dossier step and its artifact upload on the first pass. The Playwright report artifact still buys you most of the debugging value.
+إن لم تكن قد أكملت مختبر الحصيلة بعد، فاحذف خطوة الحصيلة ورفع مخرجها في الجولة الأولى. مخرج تقرير Playwright يشتري لك معظم قيمة التنقيح على أي حال.
 
-### `nightly.yml` lives in the appendix
+### `nightly.yml` يعيش في الملحق
 
-The nightly workflow is not part of this lab. It lands in the appendix labs ([Lab: Add Cross-Browser Coverage](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage) and [Lab: Add a Nightly Verification Workflow](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)) alongside the commands it actually runs. A standalone placeholder is worse than no file at all — it invites cargo-culted job names and silent schedule drift. Build `nightly.yml` when you build the things it gates.
+سير العمل الليلي ليس جزءًا من هذا المختبر. إنه يقع في مختبرات الملحق ([مختبر: إضافة تغطية عبر المتصفحات](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage) و[مختبر: إضافة سير عمل تحقّق ليلي](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)) إلى جانب الأوامر التي يشغّلها فعلًا. العنصر النائب المستقل أسوأ من عدم وجود ملف أصلًا — فهو يستدعي أسماء مهام منقولة تقليدًا وانحرافًا صامتًا في الجدولة. ابنِ `nightly.yml` عندما تبني الأشياء التي يحرسها.
 
-## What you still need to run
+## ما ما زلت بحاجة إلى تشغيله
 
-Locally, validate the YAML:
+محليًا، تحقّق من صحة YAML:
 
 ```bash
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/main.yml'))"
 ```
 
-Then run the commands the jobs map to:
+ثم شغّل الأوامر التي تقابلها المهام:
 
 ```bash
 npm run lint
@@ -161,33 +161,33 @@ npm run test:unit
 npm run test
 ```
 
-If you wired the dossier already, you can sanity-check the command too:
+إن كنت قد وصّلت الحصيلة بالفعل، فيمكنك التحقق السريع من الأمر أيضًا:
 
 ```bash
 npm run dossier 2>/dev/null || echo "dossier only becomes interesting after a failure"
 ```
 
-And if the gitleaks CLI is installed locally:
+وإن كان gitleaks CLI مثبتًا محليًا:
 
 ```bash
 gitleaks dir . --redact --config .gitleaks.toml
 ```
 
-## Local vs. hosted
+## المحلي مقابل المستضاف
 
-**Local:** you can prove the workflow files parse and that every named command behaves the way the jobs expect.
+**محليًا:** يمكنك إثبات أن ملفات سير العمل تُحلَّل وأن كل أمر مسمّى يتصرف كما تتوقع المهام.
 
-**Hosted:** actual workflow runs, artifact downloads, required checks, and the cron trigger still need a GitHub repository with Actions enabled. Do not claim the artifact loop works until you have actually downloaded an artifact from a real run.
+**مستضافًا:** تشغيلات سير العمل الفعلية، وتنزيل المخرجات، والفحوصات المطلوبة، ومشغّل cron ما زالت تحتاج إلى مستودع GitHub مع تفعيل Actions. لا تدّعِ أن حلقة المخرجات تعمل حتى تنزّل مخرجًا فعلًا من تشغيل حقيقي.
 
-## Patterns to take away
+## أنماط تستحق الاحتفاظ بها
 
-- One gate, then fan out. `static` blocks `unit` and `end-to-end`, which saves runner time and gets faster red builds.
-- Use the repository’s real command surface. If the starter says `npm run test`, the workflow says `npm run test`.
-- Keep CI env small and explicit. Add only the variables the app reads today.
-- Upload the dossier separately when you have it. Small artifacts make agent recovery faster.
-- Nightly exists to keep broad or slow checks out of the fast PR loop. Build the real nightly jobs when the appendix labs add the commands they depend on.
+- بوابة واحدة، ثم توزيع. `static` يحجب `unit` و`end-to-end`، وهذا يوفّر وقت المنفّذ ويحصل على عمليات بناء حمراء أسرع.
+- استخدم سطح الأوامر الحقيقي للمستودع. إن كانت البادئة تقول `npm run test`، فسير العمل يقول `npm run test`.
+- أبقِ بيئة CI صغيرة وصريحة. أضف فقط المتغيرات التي يقرأها التطبيق اليوم.
+- ارفع الحصيلة منفصلة عندما تكون لديك. المخرجات الصغيرة تجعل تعافي الوكيل أسرع.
+- الليلي موجود لإبقاء الفحوصات الواسعة أو البطيئة خارج حلقة طلبات السحب السريعة. ابنِ مهام الليل الحقيقية عندما تضيف مختبرات الملحق الأوامر التي تعتمد عليها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Write the CI Workflow from Scratch](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [مختبر: اكتب سير عمل CI من الصفر](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)

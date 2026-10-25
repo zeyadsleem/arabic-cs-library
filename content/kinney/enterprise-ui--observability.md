@@ -1,58 +1,58 @@
 ---
-title: "Observability"
-lang: en
+title: "الرصدية"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/observability"
 ---
 
-Observability is the ability to understand a system from the outside by asking useful questions about it without already knowing its internal state. The practical goal is not “more dashboards.” It is being able to explain *why* something is happening, especially when the failure mode is new and annoying and arrived at 2:13 a.m. without the courtesy of being reproducible locally. [OpenTelemetry’s observability primer](https://opentelemetry.io/docs/concepts/observability-primer/) puts it almost exactly that way: good observability lets you handle novel problems and “unknown unknowns,” but only if the system is properly instrumented.
+الرصدية (observability) هي القدرة على فهم نظام من الخارج بطرح أسئلة مفيدة عنه دون أن تعرف حالته الداخلية مسبقًا. والهدف العملي ليس «مزيدًا من لوحات المعلومات». بل أن تستطيع تفسير *لماذا* يحدث شيء ما، خصوصًا عندما يكون نمط الفشل جديدًا ومزعجًا، ويصل في الساعة 2:13 صباحًا دون أن يتفضّل بأن يكون قابلًا لإعادة الإنتاج محليًا. ويعبّر [تمهيد الرصدية من OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) عن ذلك بنفس الصيغة تقريبًا: الرصدية الجيدة تتيح لك التعامل مع مشكلات جديدة و«مجهولات المجهول»، لكن فقط إذا كان النظام مزوّدًا بأدوات الرصد على النحو الصحيح.
 
-That is why observability is not the same thing as monitoring. Monitoring tells you that something crossed a threshold. Observability helps you navigate from symptom to cause. Reliability then sits above both of them: is the service doing what users expect it to do, and are you measuring that with SLIs and enforcing it with SLOs and error budgets? [OpenTelemetry’s primer](https://opentelemetry.io/docs/concepts/observability-primer/) ties observability directly to telemetry and reliability, while the Google SRE material frames error budgets as the control mechanism for balancing feature velocity against reliability.
+ولهذا السبب ليست الرصدية الشيء نفسه كالمراقبة. فالمراقبة تخبرك أن شيئًا ما تجاوز عتبة معيّنة. أما الرصدية فتساعدك على الانتقال من العَرَض إلى السبب. ثم تأتي الموثوقية فوق كليهما: هل يؤدي الخدمة ما يتوقّع المستخدمون أن تؤديه، وهل تقيس ذلك بمؤشرات SLI وتفرضه بأهداف SLO وميزانيات الخطأ؟ [تمهيد OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) يربط الرصدية مباشرةً بالقياس عن بُعد والموثوقية، بينما تصوغ مواد Google SRE ميزانيات الخطأ كآلية التحكّم في الموازنة بين سرعة إطلاق الميزات والموثوقية.
 
-## What Observability Is For
+## ما الغرض من الرصدية
 
-In distributed systems, the hard part is usually not seeing that *something* is wrong. The hard part is understanding which request path, dependency, rollout, queue, region, or customer segment is involved, and whether the thing that is wrong is an infrastructure symptom or a user-facing failure. [Google’s SRE guidance](https://sre.google/sre-book/practical-alerting/) has been blunt about this for years: white-box monitoring gives you the internal state and bottlenecks, but by itself it does not tell you what users are actually experiencing.
+في الأنظمة الموزّعة، الجزء الصعب عادةً ليس رؤية أن *شيئًا* ما خطأ. الجزء الصعب هو فهم مسار الطلب أو الاعتماد أو الإطلاق أو الطابور أو المنطقة أو شريحة العملاء المعنية، وما إذا كان الخلل عَرَضًا في البنية التحتية أم فشلًا يراه المستخدم. وقد كان [توجيه Google في SRE](https://sre.google/sre-book/practical-alerting/) صريحًا في هذا لسنوات: المراقبة بالصندوق الأبيض (white-box) تعطيك الحالة الداخلية ونقاط الاختناق، لكنها بحدّ ذاتها لا تخبرك بما يعيشه المستخدمون فعلًا.
 
-That is why user-facing services should at minimum be legible through the four golden signals: latency, traffic, errors, and saturation. [Google’s SRE book](https://sre.google/sre-book/monitoring-distributed-systems/) still treats those as the best default lens when you do not know where to start, and the SRE workbook explicitly recommends instrumenting dependencies with latency, response codes, and request/response sizes, ideally once in shared client libraries rather than at every call site.
+لذلك ينبغي أن تكون الخدمات الموجّهة للمستخدمين، في الحد الأدنى، مقروءة عبر الإشارات الذهبية الأربع: زمن الاستجابة، والحركة، والأخطاء، والتشبّع. ولا يزال [كتاب Google في SRE](https://sre.google/sre-book/monitoring-distributed-systems/) يعامل هذه الإشارات كأفضل عدسة افتراضية عندما لا تعرف من أين تبدأ، ويوصي كتاب SRE العملي صراحةً بتزويد الاعتمادات بأدوات قياس الزمن وأكواد الاستجابة وأحجام الطلب/الاستجابة، ويُفضَّل أن يحدث ذلك مرة واحدة في مكتبات العميل المشتركة بدل كل موضع استدعاء.
 
-## The Signals
+## الإشارات
 
-The old “three pillars” framing is still useful, but only if you do not treat it like scripture. Modern observability is a correlated telemetry system, not three unrelated piles of data. [OpenTelemetry](https://opentelemetry.io/docs/) is a vendor-neutral framework for generating, collecting, and exporting traces, metrics, and logs, and its documentation now treats profiles as an emerging fourth essential signal.
+ما زال تأطير «الأركان الثلاثة» القديم مفيدًا، لكن فقط إن لم تتعامل معه كنصّ مقدّس. فالرصدية الحديثة نظام قياس عن بُعد مترابط، لا ثلاث أكوام بيانات غير مترابطة. و[OpenTelemetry](https://opentelemetry.io/docs/) إطار محايد تجاه البائعين لتوليد التتبّعات والمقاييس والسجلات وجمعها وتصديرها، وتعتبر وثائقه الآن الملفّات الشخصية (profiles) إشارة أساسية رابعة ناشئة.
 
-| Signal | What it captures | Cardinality | Best for | Key concern |
+| الإشارة | ما تلتقطه | التعدّدية | الأفضل لـ | الشاغل الرئيسي |
 | --- | --- | --- | --- | --- |
-| Metrics | Aggregated numbers over time | Low–medium | Rates, percentages, SLOs, alerting | Label cardinality drives cost |
-| Traces | Request paths across services | High (per request) | Distributed debugging, latency breakdown | Volume grows fast, needs sampling |
-| Logs | Timestamped event records | High | Context, errors, audit trails | Unstructured logs are noise |
-| Profiles | CPU/memory/allocation snapshots | Medium | Explaining *why* code is slow | Emerging signal, tooling maturing |
+| المقاييس | أعداد مُجمَّعة عبر الزمن | منخفضة إلى متوسطة | المعدّلات والنسب المئوية وأهداف SLO والتنبيه | تعدّدية الوسوم تقود الكلفة |
+| التتبّعات | مسارات الطلبات عبر الخدمات | عالية (لكل طلب) | التصحيح الموزّع، وتحليل زمن الاستجابة | الحجم ينمو سريعًا ويحتاج أخذ عينات |
+| السجلات | سجلات أحداث بطوابع زمنية | عالية | السياق والأخطاء ومسارات التدقيق | السجلات غير المنظّمة ضجيج |
+| الملفّات الشخصية | لقطات للمعالج والذاكرة والتخصيص | متوسطة | تفسير *لماذا* الشيفرة بطيئة | إشارة ناشئة وأدوات في طور النضج |
 
-Metrics are aggregated numeric measurements over time—the signal [OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) uses for rates, error percentages, saturation, queue depth, storage pressure, and latency distributions. Prometheus’ naming guidance still matters here: use labels instead of encoding dimensions in metric names, stick to base units like seconds and bytes, and do *not* use high-cardinality values such as user IDs or email addresses as labels unless you enjoy setting money on fire with your time-series database.
+المقاييس قياسات عددية مُجمَّعة عبر الزمن — وهي الإشارة التي يستخدمها [OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) للمعدّلات ونسب الأخطاء والتشبّع وعمق الطوابير وضغط التخزين وتوزيعات زمن الاستجابة. وما زال توجيه Prometheus في التسمية مهمًا هنا: استخدم الوسوم بدل ترميز الأبعاد في أسماء المقاييس، والتزم بالوحدات الأساسية مثل الثواني والبايتات، و*لا* تستخدم قيمًا عالية التعدّدية مثل معرّفات المستخدمين أو عناوين البريد الإلكتروني كوسوم، إلا إن كنت تستلذّ بإحراق المال بوقتك في قاعدة بيانات السلاسل الزمنية.
 
-For latency and SLO work, histograms are usually the right metric type.
+وللعمل على زمن الاستجابة وSLO، تكون المدرّجات التكرارية (histograms) عادةً نوع المقياس الصحيح.
 
-| Aspect | Histogram | Summary |
+| الجانب | المدرّج التكراري | الملخّص |
 | --- | --- | --- |
-| Aggregation | Aggregatable across instances | Not aggregatable |
-| Quantile flexibility | Any quantile at query time | Preconfigured quantiles only |
-| Server cost | Higher (bucket storage) | Lower (pre-computed) |
-| Use when | Fleet-wide percentiles, SLO alerting | Single-instance percentiles, low overhead |
+| التجميع | قابل للتجميع عبر النسخ | غير قابل للتجميع |
+| مرونة الكمّيات المئوية | أي كمّية مئوية وقت الاستعلام | كمّيات مئوية مُعدّة مسبقًا فقط |
+| كلفة الخادم | أعلى (تخزين الدلاء) | أقل (محسوبة مسبقًا) |
+| يُستخدم عندما | كمّيات مئوية على مستوى الأسطول، وتنبيه SLO | كمّيات مئوية لنسخة واحدة، وكلفة منخفضة |
 
-[Prometheus’ own guidance](https://prometheus.io/docs/practices/histograms/) is clear that histograms can be aggregated and can support direct expressions such as “95% of requests under 300 ms,” while summaries are generally not aggregatable across instances and lock you into preconfigured quantiles and windows. If you need fleet-wide latency percentiles and SLO alerting, histograms are the safer default.
+ويوضّح [توجيه Prometheus نفسه](https://prometheus.io/docs/practices/histograms/) أن المدرّجات التكرارية قابلة للتجميع وتدعم تعبيرات مباشرة مثل «95% من الطلبات تحت 300 ميلي ثانية»، بينما الملخّصات عمومًا غير قابلة للتجميع عبر النسخ وتحبسك في كمّيات مئوية ونوافذ مُعدّة مسبقًا. وإذا احتجت كمّيات مئوية لزمن الاستجابة على مستوى الأسطول وتنبيه SLO، فالمدرّجات التكرارية هي الافتراضي الأكثر أمانًا.
 
-Traces model the path of a single request through one or more services. A trace is made of spans, and spans carry names, timestamps, and attributes that describe individual units of work. [OpenTelemetry’s observability primer](https://opentelemetry.io/docs/concepts/observability-primer/) uses traces specifically as the tool that makes distributed request flow understandable, and OpenTelemetry’s propagation docs tie that to context propagation, where trace IDs and span IDs move across service boundaries so downstream spans join the same trace. W3C Trace Context is the standard header format that made this less of a vendor turf war than it used to be.
+تصوّر التتبّعات مسار طلب واحد عبر خدمة أو أكثر. ويتكوّن التتبّع من نطاقات (spans)، وتحمل النطاقات أسماء وطوابع زمنية وسمات تصف وحدات عمل فردية. ويستخدم [تمهيد الرصدية من OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) التتبّعات تحديدًا كأداة تجعل تدفّق الطلبات الموزّعة مفهومًا، وتَربط وثائق نشر السياق في OpenTelemetry ذلك بنشر السياق، حيث تنتقل معرّفات التتبّع ومعرّفات النطاقات عبر حدود الخدمات لتنضمّ النطاقات النهائية إلى التتبّع نفسه. وW3C Trace Context هو صيغة الترويسة القياسية التي جعلت هذا أقلّ شبيهًا بحرب نفوذ بين البائعين مما كان عليه سابقًا.
 
-Logs are timestamped records of events, and they are still useful, just not as a replacement for everything else. [OpenTelemetry’s log data model](https://opentelemetry.io/docs/specs/otel/logs/data-model/) is stable and explicitly includes fields like `TraceId`, `SpanId`, severity, body, resource, instrumentation scope, and attributes. That is the modern shape you want: structured logs that can be correlated to traces, not random prose blobs pretending grep is a debugging strategy.
+السجلات سجلات أحداث بطوابع زمنية، وما زالت مفيدة، لكن ليس كبديل عن كل شيء آخر. و[نموذج بيانات السجلات في OpenTelemetry](https://opentelemetry.io/docs/specs/otel/logs/data-model/) مستقر ويتضمّن صراحةً حقولًا مثل `TraceId` و`SpanId` والسويّة والجسم والمورد ونطاق الرصد والسمات. وهذا هو الشكل الحديث الذي تريده: سجلات منظّمة يمكن ربطها بالتتبّعات، لا كتل نثرية عشوائية تظنّ أن grep استراتيجية تصحيح.
 
-Profiles are increasingly the signal that closes the loop on “why is this slow?” [OpenTelemetry](https://opentelemetry.io/docs/specs/otel/profiles/) now describes profiles as the fourth essential signal alongside logs, metrics, and traces, because profiles expose where CPU, memory, and other resources are actually being consumed. In practice, traces show *where* time is spent in a request path, while profiles often reveal *why* that code path is expensive.
+والملفّات الشخصية صارت على نحو متزايد الإشارة التي تُغلق حلقة «لماذا هذا بطيء؟» ويصف [OpenTelemetry](https://opentelemetry.io/docs/specs/otel/profiles/) الآن الملفّات الشخصية كالإشارة الأساسية الرابعة إلى جانب السجلات والمقاييس والتتبّعات، لأن الملفّات الشخصية تكشف أين يُستهلك المعالج والذاكرة وسائر الموارد فعلًا. وعمليًا، تُظهر التتبّعات *أين* يُصرف الوقت في مسار الطلب، بينما تكشف الملفّات الشخصية غالبًا *لماذا* يكون مسار الشيفرة هذا مكلفًا.
 
-## The Modern Stack
+## المنظومة الحديثة
 
-The current default stack is OpenTelemetry instrumentation in the app, OpenTelemetry Collector in the pipeline, and one or more backends for storage, analysis, alerting, and visualization. [OpenTelemetry’s documentation](https://opentelemetry.io/docs/) positions OTel as the vendor-neutral instrumentation layer, while the Collector is the vendor-neutral component that receives, processes, and exports telemetry so services do not each have to manage their own retry, batching, and export logic.
+المنظومة الافتراضية الراهنة هي رصد OpenTelemetry في التطبيق، وجامع OpenTelemetry (Collector) في خط الأنابيب، وخلفية واحدة أو أكثر للتخزين والتحليل والتنبيه والعرض. و[وثائق OpenTelemetry](https://opentelemetry.io/docs/) تصف OTel كطبقة الرصد المحايدة تجاه البائعين، بينما الجامع هو المكوّن المحايد الذي يستقبل القياس عن بُعد ويعالجه ويصدّره، فلا تحتاج كل خدمة إلى إدارة منطق إعادة المحاولة والتجميع والتصدير الخاص بها.
 
-Resources and semantic conventions are the glue that stop the whole system from degenerating into unlabeled nonsense. [OpenTelemetry resources](https://opentelemetry.io/docs/concepts/resources/) describe the entity producing telemetry, semantic conventions standardize the names and meanings of attributes across traces, metrics, logs, profiles, and resources, and `service.name` is important enough that the SDK gives it a default of `unknown_service` if you fail to set it yourself. That is not a charming fallback. It is an accusation. Set it explicitly.
+الموارد والاصطلاحات الدلالية هي الصمغ الذي يمنع المنظومة كلها من التدهور إلى هراء بلا وسوم. فـ [موارد OpenTelemetry](https://opentelemetry.io/docs/concepts/resources/) تصف الكيان المنتِج للقياس عن بُعد، وتوحّد الاصطلاحات الدلالية أسماء السمات ومعانيها عبر التتبّعات والمقاييس والسجلات والملفّات الشخصية والموارد، و`service.name` مهمّ إلى حدّ أن حزمة SDK تعطيه قيمة افتراضية هي `unknown_service` إن فشلت في ضبطه بنفسك. وليس ذلك بديلًا ساحرًا. بل هو اتهام. فاضبطه صراحةً.
 
-There is also a clean boundary between instrumentation authors and application owners. [OpenTelemetry’s specification](https://opentelemetry.io/docs/reference/specification/overview/) says instrumentation libraries should depend on the API, not on SDK packages; the application wires in the SDK. The library-instrumentation guidance says the same thing in friendlier language: library instrumentation should follow semantic conventions and stay consistent, while applications provide the actual SDK configuration and exporting behavior.
+وهناك أيضًا حدّ واضح بين مؤلفي الرصد ومالكي التطبيقات. وتقول [مواصفة OpenTelemetry](https://opentelemetry.io/docs/reference/specification/overview/) إن مكتبات الرصد ينبغي أن تعتمد على API لا على حزم SDK؛ والتطبيق هو من يربط SDK. ويقول توجيه رصد المكتبات الشيء نفسه بلغة ألطف: ينبغي أن يتبع رصد المكتبات الاصطلاحات الدلالية ويبقى متسقًا، بينما توفّر التطبيقات تكوين SDK الفعلي وسلوك التصدير.
 
-A very ordinary Collector pipeline looks like this:
+وخط أنابيب جامع عادي جدًا يبدو هكذا:
 
 ```yaml
 receivers:
@@ -90,182 +90,182 @@ service:
       exporters: [otlp]
 ```
 
-That shape follows the Collector’s receiver → processor → exporter model. Processors are optional, but the docs are explicit that they only take effect when you add them to a pipeline, and their order matters. The [Collector docs](https://opentelemetry.io/docs/collector/configuration/) also recommend using a collector alongside your service in general, because it offloads retries, batching, encryption, and sensitive-data handling away from the app process.
+هذا الشكل يتبع نموذج الجامع: مستقبِل ← معالج ← مصدِّر. والمعالجات اختيارية، لكن الوثائق صريحة في أنها لا تسري إلا عند إضافتها إلى خط أنابيب، وأن ترتيبها مهم. كما توصي [وثائق الجامع](https://opentelemetry.io/docs/collector/configuration/) عمومًا باستخدام جامع إلى جانب خدمتك، لأنه ينقل إعادة المحاولات والتجميع والتشفير ومعالجة البيانات الحسّاسة بعيدًا عن عملية التطبيق.
 
-## How to Instrument Sanely
+## كيف تزوّد نظامك بأدوات الرصد بحكمة
 
-The sane approach is to combine zero-code instrumentation with code-based instrumentation. [OpenTelemetry’s instrumentation docs](https://opentelemetry.io/docs/concepts/instrumentation/) say exactly that: zero-code is great for getting started and for observing libraries and framework edges, while code-based instrumentation gives you the deeper, application-specific telemetry you need from your own business logic. If you stop at auto-instrumentation, you will get edges. You will not get intent.
+المقاربة الحكيمة هي الجمع بين رصد بلا شيفرة ورصد قائم على الشيفرة. وهذا ما تقوله [وثائق الرصد في OpenTelemetry](https://opentelemetry.io/docs/concepts/instrumentation/) بالضبط: الرصد بلا شيفرة رائع للبداية ولرصد المكتبات وأطراف الأطر، بينما يمنحك الرصد القائم على الشيفرة القياس عن بُعد الأعمق والخاص بتطبيقك والذي تحتاجه من منطق أعمالك. وإذا توقّفت عند الرصد التلقائي فستحصل على الأطراف. لكنك لن تحصل على النية.
 
-The highest-value places to instrument manually are request ingress, request egress, queue boundaries, database boundaries, cache boundaries, and critical business operations. [Google’s SRE workbook](https://sre.google/workbook/monitoring/) explicitly recommends instrumenting lower-level RPC client libraries once so you get dependency telemetry consistently and “monitor new dependencies for free.” That same principle applies more broadly: shared clients and frameworks are leverage. Sprinkling bespoke instrumentation at every call site is how teams produce six naming schemes for the same outbound HTTP request.
+وأعلى المواضع قيمةً للرصد اليدوي هي دخول الطلبات وخروجها وحدود الطوابير وحدود قواعد البيانات وحدود الذاكرة المؤقتة والعمليات التجارية الحرجة. ويوصي [كتاب Google في SRE](https://sre.google/workbook/monitoring/) صراحةً برصد مكتبات عملاء RPC منخفضة المستوى مرة واحدة لتحصل على قياس اعتمادات متسق و«تراقب الاعتمادات الجديدة مجانًا». والمبدأ نفسه ينطبق على نطاق أوسع: العملاء والأطر المشتركة رافعة. أما رشّ رصد مخصّص في كل موضع استدعاء فهو الطريقة التي تنتج بها الفرق ستّ مخططات تسمية لطلب HTTP خارجي واحد.
 
-Naming discipline matters almost embarrassingly much. [Prometheus](https://prometheus.io/docs/practices/naming/) warns against procedurally generated metric names and against high-cardinality labels. OpenTelemetry’s library guidance says the same thing for span names and attributes: follow semantic conventions, use meaningful names, and think about cardinality before you ship. If you put `user.id`, `email`, or arbitrary query strings into hot-path labels, you are not adding observability. You are creating a billing event.
+وانتظام التسمية مهمّ إلى حدّ محرج. فـ [Prometheus](https://prometheus.io/docs/practices/naming/) يحذّر من أسماء المقاييس المولّدة إجرائيًا ومن الوسوم عالية التعدّدية. ويقول توجيه مكتبات OpenTelemetry الشيء نفسه عن أسماء النطاقات وسماتها: اتبع الاصطلاحات الدلالية، واستخدم أسماء ذات معنى، وفكّر في التعدّدية قبل الإطلاق. وإذا وضعت `user.id` أو `email` أو سلاسل استعلام عشوائية في وسوم المسار الساخن، فأنت لا تضيف رصدية. بل تُنشئ حدث فاتورة.
 
-Logs should be structured, correlated, and used deliberately. [OpenTelemetry’s propagation and log-model docs](https://opentelemetry.io/docs/specs/otel/logs/data-model/) make the modern pattern clear: use context to inject trace and span identifiers into log records so logs can be viewed inside the request path they belong to. A log line without request context is often just a timestamped opinion. A log line with trace correlation is evidence.
+وينبغي أن تكون السجلات منظّمة ومترابطة ومستخدمة عن قصد. وتوضّح [وثائق نشر السياق ونموذج السجلات في OpenTelemetry](https://opentelemetry.io/docs/specs/otel/logs/data-model/) النمط الحديث: استخدم السياق لحقن معرّفات التتبّع والنطاق في سجلات الأحداث لتُعرض السجلات داخل مسار الطلب الذي تنتمي إليه. فسطر سجل بلا سياق طلب غالبًا مجرّد رأي بطابع زمني. أما سطر سجل بترابط تتبّع فهو دليل.
 
-Baggage is where good intentions become privacy incidents. [OpenTelemetry’s docs](https://opentelemetry.io/docs/specs/status/) explicitly say baggage is not an observability tool; it is a key-value propagation mechanism. The baggage docs also warn that baggage is commonly propagated in HTTP headers and can leak to downstream or third-party services, and that there are no built-in integrity guarantees proving baggage values are trustworthy. So, do not put secrets, PII, or anything delicate in baggage just because it is convenient. Convenient is how breaches market themselves.
+والحمولة (baggage) هي حيث تتحوّل النوايا الحسنة إلى حوادث خصوصية. وتقول [وثائق OpenTelemetry](https://opentelemetry.io/docs/specs/status/) صراحةً إن الحمولة ليست أداة رصدية؛ بل آلية نشر مفتاح-قيمة. كما تحذّر وثائق الحمولة من أن الحمولة تُنشر عادةً في ترويسات HTTP وقد تتسرّب إلى خدمات نهائية أو طرف ثالث، وأنه لا توجد ضمانات سلامة مدمجة تُثبت أن قيم الحمولة موثوقة. لذا لا تضع أسرارًا أو بيانات شخصية معرِّفة (PII) أو أي شيء حسّاس في الحمولة لمجرد أنها مريحة. فـ «مريح» هي الطريقة التي تسوّق بها الاختراقات نفسها.
 
-## Sampling, Cost, and Keeping the Bill from Becoming a Political Issue
+## أخذ العينات والكلفة وكيف تمنع الفاتورة من أن تصير قضية سياسية
 
-Tracing volume grows fast, so sampling is not optional forever. [OpenTelemetry’s sampling docs](https://opentelemetry.io/docs/languages/js/sampling/) describe sampling as one of the main ways to reduce telemetry costs while retaining representative data. Common head-sampling approaches include ratio-based samplers such as `TraceIDRatioBased`, while the Collector supports probabilistic and tail-sampling processors. Tail sampling is what you use when you want to keep traces based on what *actually happened*—errors, high latency, specific attributes—instead of making the decision at the first span and hoping the interesting requests were lucky.
+ينمو حجم التتبّع سريعًا، لذا فاختيار العينات ليس اختياريًا إلى الأبد. وتصف [وثائق أخذ العينات في OpenTelemetry](https://opentelemetry.io/docs/languages/js/sampling/) أخذ العينات كواحدة من الطرق الرئيسية لخفض كلفة القياس عن بُعد مع الاحتفاظ ببيانات ممثِّلة. وتشمل مقاربات أخذ العينات الرأسية الشائعة أخذ عينات بالنسب مثل `TraceIDRatioBased`، بينما يدعم الجامع معالجات أخذ عينات احتمالية وذيلية. وأخذ العينات الذيلية هو ما تستخدمه عندما تريد الاحتفاظ بالتتبّعات بناءً على ما *حدث فعلًا* — أخطاء، أو زمن استجابة مرتفع، أو سمات معيّنة — بدل اتخاذ القرار عند النطاق الأول والأمل أن الطلبات المثيرة كانت محظوظة.
 
-Metrics need cost control too, but the enemy there is usually cardinality, not raw event volume. [Prometheus’ docs](https://prometheus.io/docs/practices/naming/) keep repeating the same warning for a reason: every unique label combination is a new time series. The fastest way to break a metrics backend is to smuggle unbounded dimensions into labels and then act surprised when memory and query cost become interpretive dance. Histograms are usually still worth it for latency and SLO work; just choose bucket boundaries deliberately instead of spraying them around like confetti.
+وتحتاج المقاييس إلى ضبط الكلفة أيضًا، لكن العدو هناك عادةً هو التعدّدية، لا حجم الأحداث الخام. و[وثائق Prometheus](https://prometheus.io/docs/practices/naming/) تكرّر التحذير نفسه لسبب: كل تركيبة وسوم فريدة سلسلة زمنية جديدة. وأسرع طريقة لكسر خلفية مقاييس هي تهريب أبعاد غير محدودة إلى الوسوم ثم التظاهر بالدهشة حين تتحوّل كلفة الذاكرة والاستعلام إلى رقص تفسيري. ولا تزال المدرّجات التكرارية جديرة بالعناء لزمن الاستجابة وSLO؛ فقط اختر حدود الدلاء عن قصد بدل رشّها كالقصاصات الورقية.
 
-Exemplars are one of the few genuinely elegant observability features. [OpenTelemetry’s metrics data model](https://opentelemetry.io/docs/reference/specification/metrics/data-model/) defines exemplars as metric observations that can carry trace context, and explicitly calls out linking metrics to traces as a key use case. In practice that means you can click from an ugly latency spike on a chart to an actual representative trace instead of guessing which request might explain the spike. A rare case where the tooling really does save you from yourself.
+والأمثلة المرجعية (exemplars) واحدة من الميزات الرصدية الأنيقة حقًا. ويُعرّف [نموذج بيانات المقاييس في OpenTelemetry](https://opentelemetry.io/docs/reference/specification/metrics/data-model/) الأمثلة المرجعية كمشاهدات مقياسية يمكن أن تحمل سياق التتبّع، ويشير صراحةً إلى ربط المقاييس بالتتبّعات كحالة استخدام رئيسية. وعمليًا، هذا يعني أنك تستطيع النقر من ارتفاع مرفوض في زمن الاستجابة على مخطط إلى تتبّع ممثِّل فعلي بدل تخمين الطلب الذي قد يفسّر الارتفاع. وهذه حالة نادرة تُنجّيك فيها الأدوات فعلًا من نفسك.
 
-The Collector is also where you should do a lot of the ugly but necessary economics work: batching, memory limiting, attribute manipulation, filtering, and sensitive-data handling. The [Collector’s configuration docs](https://opentelemetry.io/docs/collector/configuration/) describe processors as the place to filter, drop, rename, and recalculate telemetry, while the security docs explicitly call out protecting telemetry that may contain PII, application-specific data, or network-traffic patterns. Observability pipelines are data pipelines. Treat them with the same suspicion you would apply to any other pipeline carrying potentially sensitive data.
+والجامع أيضًا هو مكانك لأداء كثير من العمل الاقتصادي القبيح لكن الضروري: التجميع، وتقييد الذاكرة، والتلاعب بالسمات، والتصفية، ومعالجة البيانات الحسّاسة. وتصف [وثائق تكوين الجامع](https://opentelemetry.io/docs/collector/configuration/) المعالجات كمكان تصفية القياس عن بُعد وإسقاطه وإعادة تسميته وإعادة حسابه، بينما تشير وثائق الأمان صراحةً إلى حماية القياس عن بُعد الذي قد يحتوي بيانات PII أو بيانات خاصة بالتطبيق أو أنماط حركة الشبكة. فخطوط أنابيب الرصدية خطوط أنابيب بيانات. عاملها بالريبة نفسها التي تطبّقها على أي خط أنابيب آخر يحمل بيانات قد تكون حسّاسة.
 
-## Alerting and SLOs
+## التنبيه وأهداف SLO
 
-Good observability does not page on everything it can see. [Google’s on-call guidance](https://sre.google/workbook/on-call/) is still the best corrective here: page only on alerts that are immediately actionable, keep the signal-to-noise ratio high, and avoid alert fatigue. Their practical alerting material also argues for alerting on high-level service objectives instead of noisy single-machine conditions whenever possible. If your on-call shift is mostly your monitoring system crying wolf, you do not have observability. You have a harassment engine.
+الرصدية الجيدة لا تُنبّه على كل ما تستطيع رؤيته. وما زال [توجيه Google للمناوبة](https://sre.google/workbook/on-call/) أفضل تصحيح هنا: نبّه فقط على تنبيهات قابلة للتنفيذ فورًا، وأبقِ نسبة الإشارة إلى الضجيج مرتفعة، وتجنّب إجهاد التنبيهات. كما تدعو مادة التنبيه العملية لديهم إلى التنبيه على أهداف الخدمة عالية المستوى بدل حالات آلة واحدة صاخبة كلما أمكن. وإذا كانت مناوبتك في الأغلب نظام مراقبتك يصرخ ذئبًا، فليست لديك رصدية. بل لديك محرّك تحرّش.
 
-That is why SLI and SLO definitions belong inside your observability program, not beside it. [OpenTelemetry’s primer](https://opentelemetry.io/docs/concepts/observability-primer/) defines an SLI as a measurement of service behavior from the user’s perspective and an SLO as the way reliability targets are communicated. Google’s SRE workbook then turns that into an operating model: an error budget is simply 1 minus the SLO, and release policy can be tightened or halted when the budget is exhausted. Observability without SLOs is often just expensive introspection.
+ولهذا تنتمي تعريفات SLI وSLO داخل برنامج الرصدية لا بجانبه. ويُعرّف [تمهيد OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) SLI كقياس لسلوك الخدمة من منظور المستخدم، وSLO كطريقة توصيل أهداف الموثوقية. ثم يحوّل كتاب Google في SRE ذلك إلى نموذج تشغيلي: ميزانية الخطأ ببساطة هي 1 ناقص SLO، ويمكن تشديد سياسة الإصدار أو إيقافها عند استنفاد الميزانية. والرصدية بلا أهداف SLO غالبًا مجرّد استبطان مكلف.
 
-Use both black-box and white-box signals. [Google’s SRE guidance](https://sre.google/sre-book/practical-alerting/) is explicit that white-box monitoring shows you internals, while black-box monitoring tells you what users actually see. A healthy alerting system usually pages on user-facing symptoms or fast error-budget burn, then uses white-box telemetry to diagnose and mitigate the problem. Reversing that order is how teams wake people up over a hot node that users never noticed.
+واستخدم إشارات الصندوق الأسود والصندوق الأبيض معًا. فـ [توجيه Google في SRE](https://sre.google/sre-book/practical-alerting/) واضح أن المراقبة بالصندوق الأبيض تُظهر لك الداخل، بينما تخبرك المراقبة بالصندوق الأسود بما يراه المستخدمون فعلًا. ونظام تنبيه صحي يُنبّه عادةً على أعراض يواجهها المستخدم أو على حرق سريع لميزانية الخطأ، ثم يستخدم القياس بالصندوق الأبيض لتشخيص المشكلة وتخفيفها. وعكس هذا الترتيب هو كيف تُوقظ الفرق الناس بسبب عقدة ساخنة لم يلاحظها المستخدمون قط.
 
-When alerts do fire, routing and deduplication matter. [Prometheus Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) is the canonical example here: it deduplicates, groups, routes, silences, and inhibits alerts so a larger outage does not explode into a hundred redundant notifications. The point is not merely niceness. It is preserving human attention so incident response still resembles engineering instead of whack-a-mole.
+وعندما تطلق التنبيهات فعلًا، يصير التوجيه وإزالة التكرار مهمّين. و[Prometheus Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/) هو المثال المعياري هنا: فهو يزيل التكرار ويجمّع ويوجّه ويكتم ويكفّ التنبيهات، فلا ينفجر عطل أكبر إلى مئة إشعار مكرّر. والمقصود ليس اللطف فحسب. بل الحفاظ على انتباه البشر كي تبقى معالجة الحوادث شبيهة بالهندسة لا بلعبة ضرب الخلد.
 
-## What Good Looks Like in Practice
+## كيف يبدو الشكل الجيد عمليًا
 
-A good observability setup lets you start from a user symptom and move downhill quickly. A latency spike on a service dashboard should break down by route, region, version, or dependency; an exemplar should take you to a representative trace; the trace should show the slow span; the slow span should identify the dependency or code path; correlated logs should tell you what happened there; and a profile should explain whether the problem was CPU, allocation, locking, syscalls, or something equally rude. [OpenTelemetry’s primer](https://opentelemetry.io/docs/concepts/observability-primer/), profiles guidance, log model, and exemplar model all point toward that same end state: correlated signals, not isolated tools.
+تتيح لك منظومة رصدية جيدة أن تبدأ من عَرَض يراه المستخدم وتنزل سريعًا. فارتفاع زمن الاستجابة على لوحة خدمة يجب أن يُفصَّل حسب المسار أو المنطقة أو الإصدار أو الاعتماد؛ ويجب أن يأخذك مثال مرجعي إلى تتبّع ممثِّل؛ ويجب أن يُظهر التتبّع النطاق البطيء؛ ويجب أن يحدّد النطاق البطيء الاعتماد أو مسار الشيفرة؛ ويجب أن تخبرك السجلات المترابطة بما حدث هناك؛ ويجب أن يفسّر ملف شخصي هل كانت المشكلة في المعالج أو التخصيص أو الأقفال أو نداءات النظام أو شيء بنفس الوقاحة. و[تمهيد OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) وتوجيه الملفّات الشخصية ونموذج السجلات ونموذج الأمثلة المرجعية كلها تشير إلى الحالة النهائية نفسها: إشارات مترابطة، لا أدوات معزولة.
 
-Resource metadata should make slicing and triage obvious. The `service.name`, service namespace, deployment environment, SDK metadata, and infrastructure attributes exist so you can answer questions like “which service version in which environment on which workload is responsible?” without inventing your own metadata religion every quarter. [OpenTelemetry’s resources docs](https://opentelemetry.io/docs/concepts/resources/) recommend explicit `service.name` and support detectors for host, process, container, Kubernetes, and cloud metadata for exactly this reason.
+وينبغي أن تجعل بيانات المورد الوصفية التقطيع والفرز واضحين. فـ `service.name` ونطاق اسم الخدمة وبيئة النشر وبيانات SDK الوصفية وسمات البنية التحتية موجودة لتجيب عن أسئلة مثل «أي إصدار خدمة في أي بيئة على أي حمل عمل هو المسؤول؟» دون اختراع دين بيانات وصفية خاص بك كل ربع سنة. وتوصي [وثائق موارد OpenTelemetry](https://opentelemetry.io/docs/concepts/resources/) بضبط `service.name` صراحةً وتدعم كواشف لبيانات المضيف والعملية والحاوية وKubernetes والسحابة لهذا السبب بالضبط.
 
-## The Anti-Patterns
+## الأنماط المضادّة
 
-The first anti-pattern is collecting everything and understanding nothing. High-cardinality metrics, random span names, unstructured logs, and missing `service.name` create a system that is technically full of telemetry and practically useless. [Prometheus](https://prometheus.io/docs/practices/naming/) warns about cardinality; OpenTelemetry warns to set `service.name` explicitly and follow semantic conventions. Ignore both and the backend will faithfully store your chaos for a premium price.
+النمط المضادّ الأول هو جمع كل شيء وفهم لا شيء. فالمقاييس عالية التعدّدية وأسماء النطاقات العشوائية والسجلات غير المنظّمة وغياب `service.name` تُنشئ نظامًا مليئًا بالقياس عن بُعد تقنيًا وعديم الجدوى عمليًا. فـ [Prometheus](https://prometheus.io/docs/practices/naming/) يحذّر من التعدّدية؛ وOpenTelemetry يحذّر من ضبط `service.name` صراحةً واتباع الاصطلاحات الدلالية. تجاهل كليهما وستخزّن الخلفية فوضاك بأمانة مقابل سعر فاخر.
 
-The second anti-pattern is relying on auto-instrumentation alone. [OpenTelemetry’s instrumentation guidance](https://opentelemetry.io/docs/concepts/instrumentation/zero-code/) says zero-code instrumentation mostly captures the edges—framework requests, database calls, queue operations, runtime behavior. It does not usually instrument your application’s own domain logic. So, yes, use it. Just do not confuse “I have spans” with “I have enough meaning to debug the business workflow that actually failed.”
+والنمط المضادّ الثاني هو الاعتماد على الرصد التلقائي وحده. وتقول [توجيهات الرصد في OpenTelemetry](https://opentelemetry.io/docs/concepts/instrumentation/zero-code/) إن الرصد بلا شيفرة يلتقط الأطراف في الأغلب — طلبات الأطر، ونداءات قواعد البيانات، وعمليات الطوابير، وسلوك وقت التشغيل. وهو لا يرصد عادةً منطق نطاق تطبيقك نفسه. إذن نعم، استخدمه. لكن لا تخلط بين «لديّ نطاقات» و«لديّ معنى كافٍ لتصحيح سير العمل التجاري الذي فشل فعلًا».
 
-The third anti-pattern is treating observability as an internal-only exercise. [Google’s SRE guidance](https://sre.google/sre-book/practical-alerting/) keeps coming back to user symptoms, service objectives, and the four golden signals for a reason. Dashboards that only track host-level internals while ignoring what users are seeing are better than blindness and worse than they look.
+والنمط المضادّ الثالث هو معاملة الرصدية كتمرين داخلي فقط. و[توجيه Google في SRE](https://sre.google/sre-book/practical-alerting/) يعود دائمًا إلى أعراض المستخدم وأهداف الخدمة والإشارات الذهبية الأربع لسبب. فلوحات المعلومات التي تتابع فقط داخليات على مستوى المضيف وتتجاهل ما يراه المستخدمون أفضل من العمى وأسوأ مما تبدو.
 
-The fourth anti-pattern is forgetting security. [OpenTelemetry’s docs](https://opentelemetry.io/docs/security/) warn about sensitive telemetry in collectors, baggage propagation to external services, and forged or untrusted incoming context. Telemetry is data. Data has privacy, trust, and tampering concerns. If your observability stack can ingest secrets, PII, and attacker-controlled headers, then congratulations—it has joined the list of systems that need threat modeling.
+والنمط المضادّ الرابع هو نسيان الأمان. وتحذّر [وثائق OpenTelemetry](https://opentelemetry.io/docs/security/) من القياس عن بُعد الحسّاس في الجامعات، ومن نشر الحمولة إلى خدمات خارجية، ومن السياق الوارد المزوّر أو غير الموثوق. فالقياس عن بُعد بيانات. وللبيانات اعتبارات خصوصية وثقة وتلاعب. وإذا كان باستطاعة منظومة رصدك ابتلاع الأسرار وبيانات PII والترويسات التي يتحكّم بها المهاجمون، فتهانينا — لقد انضمّت إلى قائمة الأنظمة التي تحتاج نمذجة تهديدات.
 
-## A Rollout Plan That Won’t Collapse Under Its Own Sincerity
+## خطة إطلاق لا تنهار تحت ثقل صدقها
 
-Start with the user journeys that matter most and define the smallest meaningful set of SLIs and SLOs around them. That usually means latency, success rate, and maybe freshness or correctness for a few critical paths, not a giant taxonomy workshop where everyone invents new names for “error rate.” The SRE workbook and [OpenTelemetry’s primer](https://opentelemetry.io/docs/concepts/observability-primer/) both push toward the same discipline: reliability targets should be explicit, user-centric, and tied to actual business value.
+ابدأ برحلات المستخدم الأكثر أهمية وحدّد أصغر مجموعة ذات معنى من مؤشرات SLI وأهداف SLO حولها. وهذا يعني عادةً زمن الاستجابة ومعدّل النجاح وربما الحداثة أو الصحة لمسارات حرجة قليلة، لا ورشة تصنيف عملاقة يخترع فيها الجميع أسماء جديدة لـ «معدّل الخطأ». وكتاب SRE العملي و[تمهيد OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/) كلاهما يدفع نحو الانضباط نفسه: ينبغي أن تكون أهداف الموثوقية صريحة ومتمحورة حول المستخدم ومرتبطة بقيمة تجارية فعلية.
 
-Then instrument the edges first with [zero-code instrumentation](https://opentelemetry.io/docs/concepts/instrumentation/zero-code/), because it is the fastest path to visibility, and enrich with manual instrumentation around important domain operations. Set `service.name`, deployment environment, and other core resource metadata immediately so you do not spend the first month debugging `unknown_service` and unlabeled spans.
+ثم زوّد الأطراف أولًا بـ [الرصد بلا شيفرة](https://opentelemetry.io/docs/concepts/instrumentation/zero-code/)، لأنه أسرع طريق إلى الرؤية، وأثرِه برصد يدوي حول العمليات المهمة في نطاقك. واضبط `service.name` وبيئة النشر وسائر بيانات المورد الوصفية الأساسية فورًا كي لا تمضي الشهر الأول في تصحيح `unknown_service` والنطاقات بلا وسوم.
 
-Put a Collector between services and your backend early unless the system is tiny. The [Collector docs](https://opentelemetry.io/docs/collector/) explicitly recommend it in general because it handles retries, batching, encryption, and filtering better than having every service speak directly to the backend. It also gives you one place to add processors for tail sampling, batching, attribute normalization, redaction, and routing. That is a much saner control plane than pushing all of that logic into each app team’s SDK config.
+وضع جامعًا بين الخدمات وخلفيتك مبكرًا إلا إن كان النظام صغيرًا جدًا. وتوصي [وثائق الجامع](https://opentelemetry.io/docs/collector/) به صراحةً عمومًا لأنه يتعامل مع إعادة المحاولات والتجميع والتشفير والتصفية أفضل من تحدّث كل خدمة مباشرةً إلى الخلفية. كما يمنحك مكانًا واحدًا لإضافة معالجات لأخذ العينات الذيلية والتجميع وتوحيد السمات والحجب والتوجيه. وهذا مستوى تحكّم أحكم بكثير من دفع كل ذلك المنطق إلى تكوين SDK عند كل فريق تطبيق.
 
-After that, fix alerting before you expand telemetry volume. Page on user-visible symptoms, SLO burn, or immediately actionable failures. Route and group alerts properly. Only once that is working should you add nicer things like exemplars, deeper profiling, and more specialized semantic coverage. If you do it in the reverse order, you will end up with exquisite trace waterfalls and an on-call rotation that still hates you, as [Google’s on-call guidance](https://sre.google/workbook/on-call/) has been saying for years.
+بعد ذلك، أصلح التنبيه قبل أن توسّع حجم القياس عن بُعد. نبّه على أعراض يراها المستخدم أو حرق SLO أو إخفاقات قابلة للتنفيذ فورًا. ووجّه التنبيهات وجمّعها على النحو الصحيح. وعندها فقط، بعد أن يعمل ذلك، أضف أشياء أجمل مثل الأمثلة المرجعية والتنميط الأعمق وتغطية دلالية أكثر تخصّصًا. وإذا فعلت ذلك بترتيب معكوس، فستنتهي بشلالات تتبّع بديعة ودورية مناوبة ما زالت تكرهك، كما يقول [توجيه Google للمناوبة](https://sre.google/workbook/on-call/) منذ سنوات.
 
-The whole point of observability is to let engineers ask new questions of production without redeploying instrumentation every time. If your system can tell you what is slow, what is broken, who is affected, where the request went, what changed, and why the code path is expensive—quickly and with tolerable cost—then you have observability. If it mostly gives you dashboards, log floods, and one more bill to justify, you have telemetry, which is [not the same thing](https://opentelemetry.io/docs/concepts/observability-primer/).
+والغاية كلها من الرصدية أن تتيح للمهندسين طرح أسئلة جديدة على الإنتاج دون إعادة نشر أدوات الرصد في كل مرة. فإذا كان نظامك يستطيع أن يخبرك ما البطيء وما المعطّل ومن المتأثّر وأين ذهب الطلب وما تغيّر ولماذا مسار الشيفرة مكلف — بسرعة وبكلفة محتملة — فلديك رصدية. وإذا كان يعطيك في الأغلب لوحات معلومات وسيولًا من السجلات وفاتورة أخرى لتبرّرها، فلديك قياس عن بُعد، وهو [ليس الشيء نفسه](https://opentelemetry.io/docs/concepts/observability-primer/).
 
-## The Frontend Observability Gap
+## فجوة الرصدية في الواجهة الأمامية
 
-Everything above mostly assumes your code runs on infrastructure you control—containers, VMs, data center interconnects, orchestration rules. That is the controlled world of backend observability, and it is a fine place to work.
+كل ما سبق يفترض في الأغلب أن شيفرتك تعمل على بنية تحتية تتحكّم بها — حاويات، وأجهزة افتراضية، ووصلات بين مراكز بيانات، وقواعد تنسيق. وهذا هو العالم المضبوط لرصدية الخلفية، وهو مكان جيد للعمل.
 
-The browser is not that place. The browser is a “wild” execution environment where your application runs on hardware you have never seen, over networks you do not control, driven by humans who do not interact with software the way your Playwright tests do. A single enterprise application might need to work across Chromium, WebKit, and Gecko, on Windows, macOS, Android, and iOS, on hardware ranging from a developer’s workstation to a four-year-old phone on a train going through a tunnel. Backend observability cannot capture any of that.
+أما المتصفح فليس ذلك المكان. فالمتصفح بيئة تنفيذ «جامحة» يعمل فيها تطبيقك على أجهزة لم ترها قط، عبر شبكات لا تتحكّم بها، ويقودها بشر لا يتفاعلون مع البرمجيات كما تفعل اختبارات Playwright لديك. وقد يحتاج تطبيق مؤسسي واحد إلى العمل عبر Chromium وWebKit وGecko، على Windows وmacOS وAndroid وiOS، على أجهزة تتراوح بين محطة عمل مطوّر وهاتف عمره أربع سنوات في قطار يعبر نفقًا. ولا تستطيع رصدية الخلفية التقاط أي من ذلك.
 
-Three things make frontend observability a distinct problem:
+ثلاثة أشياء تجعل رصدية الواجهة الأمامية مشكلة مستقلة:
 
-- **Client diversity**: Server-side code runs on a known Node.js or JVM version. Frontend code runs on thousands of unique combinations of browser engines, operating systems, and hardware capabilities. An application can pass every synthetic test and still fail on a specific mobile browser because of a subtle difference in DOM implementation or JavaScript engine behavior.
-- **Network unreliability**: The “last mile” between your CDN and the user’s device is entirely outside your control. Users encounter varying latency, packet loss, and bandwidth constraints that make the backend’s low-latency API gateway metrics a fiction. Your server responds in 40 milliseconds; the user waits ten seconds because of heavy asset downloads and slow DNS resolution.
-- **User behavior**: Humans rage-click. They navigate back and forth rapidly. They interact with elements before hydration completes, creating race conditions and state corruption that backend logs will never see. Automated tests follow linear paths; real users follow whatever path their impatience suggests.
+- **تنوّع العملاء**: شيفرة الخادم تعمل على إصدار معروف من Node.js أو JVM. أما شيفرة الواجهة الأمامية فتعمل على آلاف التركيبات الفريدة من محرّكات المتصفحات وأنظمة التشغيل وقدرات العتاد. وقد ينجح تطبيق في كل اختبار اصطناعي ويفشل مع ذلك على متصفح جوّال معيّن بسبب فرق دقيق في تنفيذ DOM أو سلوك محرّك JavaScript.
+- **عدم موثوقية الشبكة**: «الميل الأخير» بين شبكة توصيل المحتوى (CDN) وجهاز المستخدم خارج سيطرتك تمامًا. ويواجه المستخدمون زمن استجابة متغيّرًا وفقدان حزم وقيود نطاق ترددي تجعل مقاييس بوابة API منخفضة الزمن في الخلفية ضربًا من الخيال. فيردّ خادمك في 40 ميلي ثانية؛ وينتظر المستخدم عشر ثوانٍ بسبب تنزيلات وسائط ثقيلة وتحليل DNS بطيء.
+- **سلوك المستخدم**: البشر ينقرون بغضب. ويتنقّلون ذهابًا وإيابًا بسرعة. ويتفاعلون مع العناصر قبل اكتمال الترطيب (hydration)، فيخلقون حالات تسابق وإفسادًا في الحالة لن تراها سجلات الخلفية يومًا. الاختبارات الآلية تتبع مسارات خطية؛ أما المستخدمون الحقيقيون فيتبعون أي مسار يقترحه نفاد صبرهم.
 
-For years, frontend observability was under-invested because the browser was treated as a black box. Ship the bundle, hope for the best, assume that if the backend is healthy then the user experience is fine. Real User Monitoring has made that assumption untenable. A significant portion of failures occur entirely within the client, where no backend metric will ever see them.
+ولسنوات، كانت رصدية الواجهة الأمامية ضعيفة الاستثمار لأن المتصفح كان يُعامل كصندوق أسود. أطلق الحزمة، وتمنَّ الأفضل، وافترض أن تجربة المستخدم جيدة ما دامت الخلفية سليمة. وقد جعل الرصد الفعلي للمستخدمين (RUM) هذا الافتراض غير قابل للدفاع. فنسبة كبيرة من الإخفاقات تحدث داخل العميل بالكامل، حيث لا يراها أي مقياس خلفي أبدًا.
 
-| Aspect | Backend Observability | Frontend Observability |
+| الجانب | رصدية الخلفية | رصدية الواجهة الأمامية |
 | --- | --- | --- |
-| **Environment** | Controlled (cloud/on-prem) | Uncontrolled (user’s device) |
-| **Connectivity** | Stable, high-speed | Unreliable, variable (last-mile) |
-| **Visibility** | Complete (internal states) | Limited (sandboxed browser) |
-| **Primary goal** | System health and throughput | User experience and interactivity |
-| **Data sources** | Logs, metrics, traces | RUM, Core Web Vitals, session replay |
+| **البيئة** | مضبوطة (سحابة/محلي) | غير مضبوطة (جهاز المستخدم) |
+| **الاتصال** | مستقر وعالي السرعة | غير موثوق ومتغيّر (الميل الأخير) |
+| **الرؤية** | كاملة (الحالات الداخلية) | محدودة (متصفح معزول) |
+| **الهدف الأساسي** | صحة النظام والإنتاجية | تجربة المستخدم والتفاعلية |
+| **مصادر البيانات** | السجلات والمقاييس والتتبّعات | RUM ومقاييس الويب الأساسية وإعادة تشغيل الجلسات |
 
-## Error Management as Architecture
+## إدارة الأخطاء كمعمارية
 
-Error management in large-scale applications has moved well past `try/catch`. The architectural goal is **blast radius containment**—making sure that a broken data visualization widget or an unresponsive third-party integration does not take down the entire page.
+تجاوزت إدارة الأخطاء في التطبيقات واسعة النطاق بكثير `try/catch`. والهدف المعماري هو **احتواء نطاق الانفجار** — أي ضمان ألّا تُسقط أداة عرض بيانات معطوبة أو تكامل ثالث غير مستجيب الصفحة كلها.
 
-### Error boundaries as containment
+### حدود الأخطاء كأداة احتواء
 
-The most visible pattern for blast radius containment is the **error boundary**. While React 16 popularized the term, the principle applies to any component-based UI: wrap a subtree of your component hierarchy in a boundary that catches rendering errors and provides a fallback UI instead of a blank screen.
+أبرز نمط لاحتواء نطاق الانفجار هو **حدّ الأخطاء (error boundary)**. ورغم أن React 16 شاع المصطلح، ينطبق المبدأ على أي واجهة قائمة على المكوّنات: غلّف شجرة فرعية من هرم مكوّناتك بحدّ يلتقط أخطاء التصيير ويوفّر واجهة بديلة بدل شاشة فارغة.
 
-When a rendering error occurs, it bubbles up the component tree until it hits the nearest boundary. In React, the boundary uses `static getDerivedStateFromError(error)` to update state for the fallback and `componentDidCatch(error, info)` to log the error to an external tracking service. The rest of the application keeps running. The user does not lose whatever they were typing in a form three panels away.
+وعندما يحدث خطأ تصيير، يصعد في شجرة المكوّنات حتى يبلغ أقرب حدّ. وفي React، يستخدم الحدّ `static getDerivedStateFromError(error)` لتحديث الحالة من أجل الواجهة البديلة و`componentDidCatch(error, info)` لتسجيل الخطأ في خدمة تتبّع خارجية. ويستمر باقي التطبيق في العمل. ولا يفقد المستخدم ما كان يكتبه في نموذج على بعد ثلاث لوحات.
 
-But, error boundaries have real limitations. They are synchronous and tied to the rendering lifecycle, which means they *do not catch* errors in event handlers (an `onClick` that triggers an async call), asynchronous code (`setTimeout`, `fetch` callbacks), or server-side rendering. If you have been relying on error boundaries to catch everything, you have a safety net with significant holes in it.
+لكن لحدود الأخطاء قيودًا حقيقية. فهي متزامنة ومرتبطة بدورة حياة التصيير، ما يعني أنها *لا تلتقط* الأخطاء في معالجات الأحداث (مثل `onClick` الذي يشغّل نداءً غير متزامن)، ولا في الشيفرة غير المتزامنة (`setTimeout`، وردود `fetch`)، ولا في التصيير على الخادم. وإذا كنت تعتمد على حدود الأخطاء لالتقاط كل شيء، فلديك شبكة أمان فيها ثقوب كبيرة.
 
-> **Error boundaries and Module Federation**
+> **حدود الأخطاء وModule Federation**
 >
-> Module Federation introduces a particularly painful gap: the runtime negotiation phase happens *before* React mounts, so a dead remote produces a blank page instead of a fallback UI. The [Error Boundaries and Module Federation](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) section covers this timing problem and the strategies that actually work.
+> تُدخل Module Federation فجوة مزعجة بشكل خاص: فمرحلة التفاوض في وقت التشغيل تحدث *قبل* تركيب React، ما يجعل أي وحدة بعيدة ميتة تنتج صفحة فارغة بدل واجهة بديلة. ويغطّي قسم [حدود الأخطاء وModule Federation](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation) مشكلة التوقيت هذه والاستراتيجيات التي تعمل فعلًا.
 
-For the gaps that boundaries miss, [reactive primitives like signals](https://blog.logrocket.com/signals-fix-error-boundaries/) offer an interesting alternative. Signals treat error state as reactive data that exists outside the component tree. Any part of the application—synchronous or asynchronous—can update a global error signal, and any part of the UI can react to it. This provides consistent error handling across all execution layers without requiring you to wrap every component in a boundary.
+وللفجوات التي تفوتها الحدود، تقدّم [الأوليّات التفاعلية مثل الإشارات](https://blog.logrocket.com/signals-fix-error-boundaries/) بديلًا مثيرًا للاهتمام. فالإشارات تعامل حالة الخطأ كبيانات تفاعلية موجودة خارج شجرة المكوّنات. ويستطيع أي جزء من التطبيق — متزامنًا أو غير متزامن — تحديث إشارة خطأ عامة، ويستطيع أي جزء من الواجهة التفاعل معها. وهذا يوفّر معالجة أخطاء متسقة في كل طبقات التنفيذ دون أن تُلزم نفسك بتغليف كل مكوّن بحدّ.
 
-### Global error handlers
+### معالجات الأخطاء العامة
 
-Beyond component-level containment, enterprise applications need global safety nets. The `window.onerror` event captures runtime JavaScript errors with metadata like the file URL and line/column numbers. For Promise-based code, the `unhandledrejection` event catches any rejected Promise that lacks a `.catch()` handler.
+بالإضافة إلى الاحتواء على مستوى المكوّن، تحتاج التطبيقات المؤسسية إلى شبكات أمان عامة. فيلتقط حدث `window.onerror` أخطاء JavaScript في وقت التشغيل مع بيانات وصفية مثل عنوان URL للملف وأرقام الأسطر والأعمدة. وللشيفرة القائمة على Promise، يلتقط حدث `unhandledrejection` أي وعد مرفوض ينقصه معالج `.catch()`.
 
-In microfrontend architectures, these global handlers are typically centralized in the shell application, which acts as the host environment and enriches every captured error with context like the active user ID, session metadata, and the route that was active when things went wrong.
+وفي معماريات الواجهات الجزئية (microfrontends)، تُركَّز هذه المعالجات العامة عادةً في تطبيق الصدفة (shell)، الذي يعمل كبيئة مضيفة ويُثري كل خطأ ملتقط بسياق مثل معرّف المستخدم النشط وبيانات الجلسة والمسار الذي كان نشطًا عندما اختلّت الأمور.
 
-### Structured error classification
+### تصنيف الأخطاء المنظّم
 
-Not every error represents a bug. In an enterprise context, you need to classify errors so that alerts are actionable and developers are not drowning in noise from expected failures.
+ليس كل خطأ يمثّل عيبًا برمجيًا. وفي سياق مؤسسي، تحتاج إلى تصنيف الأخطاء بحيث تكون التنبيهات قابلة للتنفيذ ولا يغرق المطوّرون في ضجيج الإخفاقات المتوقعة.
 
-- **User errors (controlled failures)**: Invalid form input, authentication failures, or attempts to access restricted features. The system predicts these and manages them via standard UI feedback. These rarely page an engineer, but you monitor them for trends that might indicate a UX friction point.
-- **System errors (exceptional failures)**: Null references, failed state transitions, unhandled API responses. These indicate a regression or a bug and require immediate tracking and triage.
-- **Third-party errors**: Failures from external scripts or services—Stripe, Google Analytics, a CDN. You cannot fix these directly, but you need to monitor them so you can activate fallback logic or at least show the user an honest status message instead of a spinning loader that never resolves.
+- **أخطاء المستخدم (إخفاقات مضبوطة)**: مدخلات نموذج غير صالحة، أو إخفاقات مصادقة، أو محاولات وصول إلى ميزات مقيّدة. النظام يتوقّع هذه ويديرها عبر تغذية راجعة قياسية في الواجهة. ونادرًا ما تُنبّه مهندسًا، لكنك تراقبها بحثًا عن اتجاهات قد تدل على نقطة احتكاك في تجربة الاستخدام.
+- **أخطاء النظام (إخفاقات استثنائية)**: مراجع فارغة، وانتقالات حالة فاشلة، واستجابات API غير معالَجة. وهذه تدل على انحدار أو عيب برمجي وتستلزم تتبّعًا وفرزًا فوريًا.
+- **أخطاء الطرف الثالث**: إخفاقات من نصوص أو خدمات خارجية — Stripe، أو Google Analytics، أو شبكة توصيل محتوى. لا تستطيع إصلاحها مباشرةً، لكنك تحتاج إلى مراقبتها لتتمكّن من تفعيل منطق بديل أو على الأقل إظهار رسالة حالة صادقة للمستخدم بدل دوّار تحميل لا ينتهي أبدًا.
 
-| Classification | Source | Predictability | Engineering action |
+| التصنيف | المصدر | قابلية التوقّع | الإجراء الهندسي |
 | --- | --- | --- | --- |
-| **User/logic** | Human input | High | Improve UX/messaging |
-| **System/bug** | Internal code | Low | Urgent patching |
-| **Dependency** | Third-party | Medium | Fallback/status report |
-| **Infrastructure** | Network/CDN | Low | DevOps intervention |
+| **المستخدم/المنطق** | إدخال بشري | عالية | تحسين تجربة الاستخدام/الرسائل |
+| **النظام/العيب** | شيفرة داخلية | منخفضة | ترقيع عاجل |
+| **الاعتماد** | طرف ثالث | متوسطة | بديل/تقرير حالة |
+| **البنية التحتية** | الشبكة/CDN | منخفضة | تدخّل DevOps |
 
-## Source Maps in Production
+## خرائط المصدر في الإنتاج
 
-Enterprise applications ship minified and bundled code. That is not controversial. What *is* controversial is how you handle the source maps that make those minified stack traces readable again.
+تشحن التطبيقات المؤسسية شيفرة مُصغّرة ومحزومة. وهذا ليس محلّ خلاف. أما ما *هو* محلّ خلاف فهو كيف تتعامل مع خرائط المصدر التي تُعيد جعل تتبّعات المكدّس المصغّرة مقروءة.
 
-**Source maps** are JSON files that map obfuscated production code back to the original TypeScript, JSX, or whatever you actually wrote. Without them, a production error gives you something like `a.js:1:34291`, which is about as useful as a treasure map drawn by someone who has never been to the island.
+**خرائط المصدر** ملفات JSON تربط شيفرة الإنتاج المُعتَّمة بشيفرة TypeScript أو JSX الأصلية، أو أيا كان ما كتبته فعلًا. وبدونها، يعطيك خطأ في الإنتاج شيئًا مثل `a.js:1:34291`، وهو مفيد بقدر خريطة كنز رسمها شخص لم يزر الجزيرة قط.
 
-### The security problem
+### المشكلة الأمنية
 
-Publicly accessible source maps are effectively blueprints for your application. Anyone with browser DevTools (or a tool like `source-map-unpacker`) can reconstruct the original codebase and discover proprietary business logic, undocumented internal API endpoints, and—if someone was careless—hardcoded API keys or credentials that should never have been in client-side code in the first place.
+خرائط المصدر المتاحة للعموم هي بحكم الواقع مخططات تفصيلية لتطبيقك. فأي شخص يملك أدوات مطوّر المتصفح (أو أداة مثل `source-map-unpacker`) يستطيع إعادة بناء قاعدة الشيفرة الأصلية واكتشاف منطق أعمال محمي، ونقاط نهاية API داخلية غير موثّقة، و— إذا كان أحدهم مهملًا — مفاتيح API أو بيانات اعتماد مضمّنة في الشيفرة كان يجب ألّا تكون في شيفرة العميل أصلًا.
 
-This is not hypothetical. The GETTR security incident demonstrated what happens when exposed source maps let attackers discover an undocumented endpoint that permitted password changes without authentication. Source maps turned a “nobody will find this” assumption into a searchable directory.
+وهذا ليس افتراضيًا. فقد أظهر حادث GETTR الأمني ما يحدث عندما تتيح خرائط المصدر المكشوفة للمهاجمين اكتشاف نقطة نهاية غير موثّقة تسمح بتغيير كلمات المرور بلا مصادقة. فحوّلت خرائط المصدر افتراض «لن يجد أحد هذا» إلى دليل قابل للبحث.
 
-### Secure source map strategies
+### استراتيجيات آمنة لخرائط المصدر
 
-The practical question is how to get readable stack traces in your error tracking without exposing the maps to the public. There are three common approaches:
+السؤال العملي هو كيف تحصل على تتبّعات مكدّس مقروءة في تتبّع الأخطاء لديك دون كشف الخرائط للعموم. وهناك ثلاث مقاربات شائعة:
 
-- **Private upload to error tracking**: Generate source maps during the build, upload them to Sentry or Datadog via a secure API, then *delete them* from the build artifacts before deployment. The error tracking service uses the maps server-side to reconstruct readable stack traces. The maps never reach the public internet. This is the standard approach for a reason.
-- **Hidden source maps**: Generate the maps but strip the `//# sourceMappingURL=...` comment from the JavaScript bundle. Browsers will not load the source automatically, but developers who have access to the map file can load it manually into DevTools.
-- **IP-restricted hosting**: Host source maps on a separate server accessible only from the corporate network or from specific developer IP addresses. This is more common in environments with strict compliance requirements.
+- **الرفع الخاص إلى تتبّع الأخطاء**: ولّد خرائط المصدر أثناء البناء، وارفعها إلى Sentry أو Datadog عبر API آمن، ثم *احذفها* من مخرجات البناء قبل النشر. وتستخدم خدمة تتبّع الأخطاء الخرائط على الخادم لإعادة بناء تتبّعات مكدّس مقروءة. ولا تبلغ الخرائط الإنترنت العام أبدًا. وهذه هي المقاربة القياسية لسبب.
+- **خرائط مصدر مخفية**: ولّد الخرائط لكن انزع تعليق `//# sourceMappingURL=...` من حزمة JavaScript. فلن تُحمّل المتصفحات المصدر تلقائيًا، لكن المطوّرين الذين يملكون ملف الخريطة يستطيعون تحميله يدويًا في أدوات المطوّر.
+- **استضافة مقيّدة بعناوين IP**: استضف خرائط المصدر على خادم منفصل لا يُتاح إلا من الشبكة المؤسسية أو من عناوين IP محدّدة للمطوّرين. وهذا أكثر شيوعًا في البيئات ذات متطلبات الامتثال الصارمة.
 
-In CI/CD, the first approach integrates cleanly: a build step generates the maps, a subsequent step uploads them via the Sentry or Datadog CLI, and the deployment artifact is stripped of map files. The whole thing adds a few seconds to the pipeline and eliminates a class of security exposure that is otherwise difficult to discover until someone exploits it.
+وفي CI/CD، تتكامل المقاربة الأولى بسلاسة: خطوة بناء تولّد الخرائط، وخطوة تالية ترفعها عبر واجهة Sentry أو Datadog، ومخرَج النشر يُنزع منه ملفات الخرائط. ويضيف ذلك كله ثواني قليلة إلى خط الأنابيب ويُلغي صنفًا من التعرّض الأمني يصعب اكتشافه بغير ذلك حتى يستغلّه أحد.
 
-## Error Tracking and Aggregation
+## تتبّع الأخطاء وتجميعها
 
-In a high-traffic enterprise application, a single bug can generate thousands of error events per minute. If every event produces its own alert, you have an alert storm. If you cannot group related errors into a single “issue,” you have a wall of noise that looks the same as having no error tracking at all.
+في تطبيق مؤسسي عالي الحركة، يمكن أن يولّد عيب واحد آلاف أحداث الأخطاء في الدقيقة. وإذا أنتج كل حدث تنبيهه الخاص، فلديك عاصفة تنبيهات. وإذا لم تستطع تجميع الأخطاء المترابطة في «مسألة» واحدة، فلديك جدار ضجيج يشبه تمامًا عدم وجود تتبّع للأخطاء.
 
-### Fingerprinting
+### البصمة
 
-Error tracking platforms aggregate similar occurrences using a **fingerprint**—a unique string that identifies a specific error type. The default behavior for platforms like [Sentry](https://docs.sentry.io/concepts/data-management/event-grouping/) and Rollbar involves analyzing the stack trace, stripping variable data (timestamps, UUIDs, user-specific identifiers), and hashing the remaining filenames and method names into a grouping key.
+تجمّع منصات تتبّع الأخطاء التكرارات المتشابهة باستخدام **بصمة (fingerprint)** — سلسلة فريدة تحدّد نوع خطأ معيّنًا. ويتضمّن السلوك الافتراضي لمنصات مثل [Sentry](https://docs.sentry.io/concepts/data-management/event-grouping/) وRollbar تحليل تتبّع المكدّس، ونزع بيانات المتغيّرات (الطوابع الزمنية، وUUIDs، والمعرّفات الخاصة بالمستخدم)، وتجزئة أسماء الملفات وأسماء التوابع المتبقية في مفتاح تجميع.
 
-[Sentry’s grouping algorithm](https://docs.sentry.io/concepts/data-management/event-grouping/) normalizes stack traces by marking frames as “in-app” or “out-of-app” based on your project configuration. If the same error fires through different framework entry points, it still groups together. For more ambiguous cases, Sentry’s Seer system uses transformer-based text embedding to generate vector representations of stack traces, enabling semantic grouping where errors that are logically identical but technically distinct get merged automatically.
+وتوحّد [خوارزمية التجميع في Sentry](https://docs.sentry.io/concepts/data-management/event-grouping/) تتبّعات المكدّس بوسم الإطارات كـ «داخل التطبيق» أو «خارجه» بناءً على تكوين مشروعك. وإذا انطلق الخطأ نفسه عبر نقاط دخول أطر مختلفة، فسيُجمَّع معًا رغم ذلك. وفي الحالات الأكثر غموضًا، يستخدم نظام Seer في Sentry تضمينًا نصيًا قائمًا على المحوّلات لتوليد تمثيلات متجهية لتتبّعات المكدّس، ما يتيح تجميعًا دلاليًا تُدمج فيه تلقائيًا الأخطاء المتطابقة منطقيًا والمختلفة تقنيًا.
 
-[Datadog’s error tracking](https://docs.datadoghq.com/error_tracking/) takes a similar approach but lets you define custom fingerprints via the `error.fingerprint` attribute. This is useful when you want to group errors by a business-level event—say, all failures during the checkout flow—regardless of where they appear in the stack.
+و[تتبّع الأخطاء في Datadog](https://docs.datadoghq.com/error_tracking/) يتبع مقاربة مشابهة لكنه يتيح لك تعريف بصمات مخصّصة عبر السمة `error.fingerprint`. وهذا مفيد عندما تريد تجميع الأخطاء حسب حدث على مستوى الأعمال — مثلًا كل الإخفاقات أثناء تدفّق الدفع — بصرف النظر عن موضعها في المكدّس.
 
-### Platform landscape
+### مشهد المنصات
 
-The choice between error tracking platforms depends on where you need depth.
+يعتمد الاختيار بين منصات تتبّع الأخطاء على أين تحتاج العمق.
 
-| Platform | Focus | Strength | Best for |
+| المنصة | التركيز | القوة | الأفضل لـ |
 | --- | --- | --- | --- |
-| **Sentry** | Developer-first tracking | Intelligent grouping, deep SDK integration across 100+ platforms | Engineering teams focused on rapid triage |
-| **Datadog RUM** | Full-stack observability | Seamless correlation between frontend events and backend microservice traces | Enterprises that want one dashboard for everything |
-| **New Relic** | Infrastructure-linked RUM | Unified data ingestion with generous free tier | Teams already invested in the New Relic ecosystem |
-| **LogRocket** | Visual debugging | Full DOM state capture, Redux/Vuex state changes, console logs alongside replay | Support and UX teams reproducing user-reported bugs |
-| **FullStory** | Behavioral analytics | User journey visualization and heatmaps for conversion optimization | Product teams optimizing funnels and engagement |
+| **Sentry** | تتبّع موجّه للمطوّرين | تجميع ذكي، وتكامل عميق مع SDK عبر أكثر من 100 منصة | الفرق الهندسية الموجّهة للفرز السريع |
+| **Datadog RUM** | رصدية الويب الكامل | ترابط سلس بين أحداث الواجهة الأمامية وتتبّعات الخدمات المصغّرة في الخلفية | المؤسسات التي تريد لوحة واحدة لكل شيء |
+| **New Relic** | RUM مرتبط بالبنية التحتية | إدخال بيانات موحّد مع طبقة مجانية سخية | الفرق المستثمرة أصلًا في منظومة New Relic |
+| **LogRocket** | تصحيح بصري | التقاط كامل لحالة DOM، وتغيّرات حالة Redux/Vuex، وسجلات الطرفية إلى جانب إعادة التشغيل | فرق الدعم وتجربة الاستخدام التي تعيد إنتاج أخطاء يبلّغ عنها المستخدمون |
+| **FullStory** | تحليلات سلوكية | تصوير رحلة المستخدم وخرائط حرارية لتحسين التحويل | فرق المنتج التي تحسّن المسارات والتفاعل |
 
-Sentry excels at the granular level of stack traces and crash reports. Datadog’s strength is the “big picture” view—clicking on a frontend error and immediately seeing the corresponding trace through five backend services. For an enterprise with hundreds of microservices, that correlation between frontend symptoms and backend causes is often what reduces Mean Time to Resolution from hours to minutes.
+يتفوّق Sentry في المستوى الدقيق لتتبّعات المكدّس وتقارير الأعطال. أما قوة Datadog فهي «الصورة الكبيرة» — أن تنقر خطأ في الواجهة الأمامية فترى فورًا التتبّع المقابل عبر خمس خدمات خلفية. ولمؤسسة تملك مئات الخدمات المصغّرة، كثيرًا ما يكون هذا الترابط بين أعراض الواجهة الأمامية وأسبابها الخلفية هو ما يخفض متوسط زمن الحلّ (MTTR) من ساعات إلى دقائق.
 
-## Real User Monitoring
+## الرصد الفعلي للمستخدمين
 
-Real User Monitoring has moved beyond simple page-load timers to measure how users actually *perceive* performance. The industry baseline is Google’s [Core Web Vitals](https://web.dev/articles/vitals): LCP for loading, INP for responsiveness, CLS for visual stability. The [Performance Budgets](https://stevekinney.com/courses/enterprise-ui/performance-budgets) section covers CWV thresholds and enforcement in detail, so I will not rehash the numbers here.
+تجاوز الرصد الفعلي للمستخدمين مؤقّتات تحميل الصفحات البسيطة ليقيس كيف *يدرك* المستخدمون الأداء فعلًا. والمعيار الصناعي هو [مقاييس الويب الأساسية](https://web.dev/articles/vitals) من Google: LCP للتحميل، وINP للاستجابة، وCLS للاستقرار البصري. ويغطّي قسم [ميزانيات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) عتبات CWV وفرضها بالتفصيل، لذا لن أعيد سرد الأرقام هنا.
 
-What matters from an observability perspective is that CWV gives you the *what* but not always the *why*. Enterprise applications often need custom performance metrics to measure feature-specific interactivity. A complex dashboard might need to track time-to-interactive for a specific chart widget, not just the page as a whole. The [Performance Observer API and User Timing API](https://web.dev/articles/custom-metrics) make this straightforward:
+ما يهمّ من منظور الرصدية أن CWV يمنحك *ماذا* لكن ليس دائمًا *لماذا*. وكثيرًا ما تحتاج التطبيقات المؤسسية مقاييس أداء مخصّصة لقياس تفاعلية ميزة معيّنة. فقد تحتاج لوحة معقّدة إلى تتبّع زمن الوصول إلى التفاعل لأداة رسم بياني محدّدة، لا للصفحة كلها فقط. و[واجهة Performance Observer وواجهة User Timing](https://web.dev/articles/custom-metrics) تجعلان ذلك مباشرًا:
 
 ```typescript
 performance.mark('dashboard:chart-render-start');
@@ -278,87 +278,86 @@ performance.measure(
 );
 ```
 
-These custom measurements integrate with browser DevTools and with analytics providers, so you can track them in production alongside your standard CWV data.
+تتكامل هذه القياسات المخصّصة مع أدوات مطوّر المتصفح ومع مزوّدي التحليلات، فيمكنك تتبّعها في الإنتاج إلى جانب بيانات CWV القياسية لديك.
 
-### Connecting technical metrics to business outcomes
+### ربط المقاييس التقنية بالنتائج التجارية
 
-Observability in the enterprise eventually has to speak the language of money. This means instrumenting user journeys and conversion funnels—tracking the progression through workflows like “Product Viewed → Added to Cart → Checkout Started → Payment Confirmed”—and correlating technical metrics with those steps.
+على الرصدية في المؤسسة أن تتحدّث لغة المال في نهاية المطاف. وهذا يعني رصد رحلات المستخدم ومسارات التحويل — بتتبّع التقدّم عبر سير عمل مثل «عرض المنتج → الإضافة إلى السلة → بدء الدفع → تأكيد الدفع» — وربط المقاييس التقنية بتلك الخطوات.
 
-The questions you want to answer are things like: “What is the impact of a 500-millisecond LCP increase on checkout drop-off?” or “Are users abandoning the payment step because of a specific API failure or a UX problem?” Correlating performance data with funnel data is where observability stops being a cost center and starts being a revenue-protection tool. SRE teams can prioritize fixes based on actual business impact instead of arbitrary technical thresholds.
+والأسئلة التي تريد الإجابة عنها أشياء مثل: «ما أثر ارتفاع LCP بمقدار 500 ميلي ثانية على التخلّي عن الدفع؟» أو «هل يتخلّى المستخدمون عن خطوة الدفع بسبب إخفاق API محدّد أم مشكلة في تجربة الاستخدام؟» وربط بيانات الأداء ببيانات المسار هو حيث تتوقّف الرصدية عن كونها مركز كلفة وتبدأ كونها أداة لحماية الإيرادات. وتستطيع فرق SRE ترتيب أولويات الإصلاحات بناءً على الأثر التجاري الفعلي بدل عتبات تقنية اعتباطية.
 
-## Session Replay
+## إعادة تشغيل الجلسات
 
-Session replay provides a visual reconstruction of what a user actually experienced. It is often described as “CCTV for the web,” which is evocative and also slightly misleading about how it works.
+توفّر إعادة تشغيل الجلسات إعادة بناء بصرية لما اختبره المستخدم فعلًا. وكثيرًا ما تُوصف بأنها «كاميرات مراقبة للويب»، وهو وصف معبّر ومضلّل قليلًا عن كيفية عملها.
 
-### DOM mutation recording, not video
+### تسجيل تغيّرات DOM، لا فيديو
 
-Session replay tools do not record video. That would be prohibitively expensive in bandwidth and storage. Instead, they record the underlying structure of the page:
+أدوات إعادة تشغيل الجلسات لا تسجّل فيديو. فذلك سيكون باهظًا إلى حدّ مانع في النطاق الترددي والتخزين. بل تسجّل البنية الأساسية للصفحة:
 
-- **Initial snapshot**: The script captures the initial state of the DOM and CSS.
-- **Mutation monitoring**: Using the `MutationObserver` API, the script logs every change to the HTML structure alongside user events—mouse movements, scrolls, keypresses.
-- **Reconstruction**: During playback, the tool recreates the DOM on the fly and applies the recorded mutations in chronological order.
+- **اللقطة الأولية**: يلتقط النص البرمجي الحالة الأولية لـ DOM وCSS.
+- **مراقبة التغيّرات**: باستخدام واجهة `MutationObserver`، يسجّل النص البرمجي كل تغيير في بنية HTML إلى جانب أحداث المستخدم — حركات الفأرة، والتمرير، وضغطات المفاتيح.
+- **إعادة البناء**: أثناء التشغيل، تُعيد الأداة إنشاء DOM على الطائر وتطبّق التغيّرات المسجّلة بترتيبها الزمني.
 
-This reconstructive approach gives you high-fidelity playback with a lightweight footprint on the user’s device. The replay is not pixel-perfect (it is a reconstruction, not a recording), but it is close enough to see exactly what the user saw when things went wrong.
+تمنحك هذه المقاربة إعادة بناء عالية الدقة مع أثر خفيف على جهاز المستخدم. وإعادة التشغيل ليست مطابقة للبكسل (فهي إعادة بناء، لا تسجيل)، لكنها قريبة بما يكفي لترى بالضبط ما رآه المستخدم عندما اختلّت الأمور.
 
-### Privacy and compliance
+### الخصوصية والامتثال
 
-Session replay sits close to user behavior data, which means it has to be implemented with a **privacy-first** mindset—GDPR, CCPA, HIPAA, and whatever regulation your legal team is currently worried about.
+تقع إعادة تشغيل الجلسات قريبًا من بيانات سلوك المستخدم، ما يعني أنه يجب تنفيذها بعقلية **الخصوصية أولًا** — GDPR، وCCPA، وHIPAA، وأي لائحة يشغل بال فريقك القانوني حاليًا.
 
-Reputable tools automatically mask sensitive input fields so passwords, credit card numbers, and email addresses are never captured or transmitted. IP anonymization and fingerprinting-attribute removal keep sessions from being tied to specific individuals unless you explicitly need that link. And in enterprise environments, session capture should integrate with your Consent Management Platform so recording only starts after the user provides explicit consent.
+وتحجب الأدوات الموثوقة حقول الإدخال الحسّاسة تلقائيًا بحيث لا تُلتقط كلمات المرور وأرقام بطاقات الائتمان وعناوين البريد الإلكتروني أو تُنقل أبدًا. ويحافظ إخفاء هوية IP ونزع سمات البصمة على عدم ربط الجلسات بأفراد محدّدين إلا إن احتجت ذلك الربط صراحةً. وفي البيئات المؤسسية، ينبغي أن يتكامل التقاط الجلسات مع منصة إدارة الموافقة (Consent Management Platform) بحيث لا يبدأ التسجيل إلا بعد أن يمنح المستخدم موافقة صريحة.
 
-The real value of session replay shows up in the support-to-engineering pipeline. When a user reports a bug, an engineer can watch the exact session leading up to the failure—seeing console errors and network failures in real time—which eliminates the “it works on my machine” standoff that otherwise eats hours of back-and-forth.
+وتظهر القيمة الحقيقية لإعادة تشغيل الجلسات في خط الأنابيب من الدعم إلى الهندسة. فعندما يبلّغ مستخدم عن عيب، يستطيع مهندس أن يشاهد الجلسة الدقيقة المؤدية إلى الإخفاق — رائيًا أخطاء الطرفية وإخفاقات الشبكة في وقتها الحقيقي — ما يلغي مواجهة «يعمل على جهازي» التي تلتهم بغير ذلك ساعات من الأخذ والردّ.
+## الجسر بين الواجهة الأمامية والخلفية بالتتبّع الموزّع
 
-## Bridging Frontend and Backend with Distributed Tracing
+غُطّي التتبّع الموزّع سابقًا كمفهوم عام. وما يهمّ تحديدًا في رصدية الواجهة الأمامية هو الجسر: ربط نقرة زر في المتصفح بسلسلة نداءات الخدمات المصغّرة التي تشغّلها في الخلفية.
 
-Distributed tracing was covered earlier as a general concept. What matters specifically for frontend observability is the bridge: connecting a button click in the browser to the chain of microservice calls it triggers on the backend.
-
-[OpenTelemetry](https://opentelemetry.io/docs/concepts/context-propagation/) handles this through **context propagation**. When a user interacts with the UI, the frontend OTel SDK creates a root span and generates a unique Trace ID. When the frontend makes an API call, the SDK injects a `traceparent` header into the HTTP request:
+يتولّى [OpenTelemetry](https://opentelemetry.io/docs/concepts/context-propagation/) ذلك عبر **نشر السياق**. فعندما يتفاعل مستخدم مع الواجهة، تُنشئ حزمة OTel SDK في الواجهة الأمامية نطاقًا جذريًا وتولّد Trace ID فريدًا. وعندما تجري الواجهة الأمامية نداء API، تحقن SDK ترويسة `traceparent` في طلب HTTP:
 
 ```
 traceparent: 00-a0892f3577b34da6a3ce929d0e0e4736-f03067aa0ba902b7-01
 ```
 
-That header carries the trace ID, parent span ID, and trace flags in the [W3C Trace Context](https://www.w3.org/TR/trace-context/) format. The receiving backend service—whether it is Node.js, Python, Go, or anything else with an OTel SDK—extracts the header and creates a child span linked to the same trace.
+تحمل تلك الترويسة معرّف التتبّع ومعرّف النطاق الأب وأعلام التتبّع بصيغة [W3C Trace Context](https://www.w3.org/TR/trace-context/). وتستخرج خدمة الخلفية المستقبِلة — سواء أكانت Node.js أو Python أو Go أو أي شيء آخر يملك SDK من OTel — الترويسة وتنشئ نطاقًا ابنًا مرتبطًا بالتتبّع نفسه.
 
-The result is that you can visualize the entire request lifecycle across service boundaries. A frontend slowdown might trace back to a slow database query three services deep, or to a network bottleneck between regions. Without context propagation, you are stuck with two disconnected worlds: frontend metrics that say “the request was slow” and backend traces that say “everything looks fine from here.”
+والنتيجة أنك تستطيع تصوّر دورة حياة الطلب كاملة عبر حدود الخدمات. فقد يعود تباطؤ في الواجهة الأمامية إلى استعلام بطيء في قاعدة بيانات على عمق ثلاث خدمات، أو إلى عنق زجاجة في الشبكة بين منطقتين. وبدون نشر السياق، تبقى عالقًا بين عالمين منفصلين: مقاييس واجهة أمامية تقول «كان الطلب بطيئًا» وتتبّعات خلفية تقول «كل شيء يبدو جيدًا من هنا».
 
-## Synthetic Monitoring
+## المراقبة الاصطناعية
 
-Real User Monitoring tells you what *happened* to real users. Synthetic monitoring tells you what *will* happen before any user is involved.
+يخبرك الرصد الفعلي للمستخدمين بما *حدث* لمستخدمين حقيقيين. أما المراقبة الاصطناعية فتخبرك بما *سيحدث* قبل أن يشارك أي مستخدم.
 
-Synthetic monitoring uses automated scripts to simulate user behavior in controlled environments. Tools like Lighthouse CI let you set performance budgets in your CI/CD pipeline, blocking code changes that degrade Core Web Vitals. Playwright-based monitoring services (Checkly is a common one) run heartbeat tests every few minutes from global locations, verifying that critical flows like login and checkout are functional even when there is no real user traffic.
+تستخدم المراقبة الاصطناعية نصوصًا برمجية آلية لمحاكاة سلوك المستخدم في بيئات مضبوطة. وتتيح أدوات مثل Lighthouse CI ضبط ميزانيات أداء في خط CI/CD لديك، فتحجب تغييرات الشيفرة التي تدهور مقاييس الويب الأساسية. وتشغّل خدمات المراقبة القائمة على Playwright (وCheckly مثال شائع) اختبارات نبض كل بضع دقائق من مواقع عالمية، فتتحقّق من أن المسارات الحرجة مثل تسجيل الدخول والدفع تعمل حتى حين لا تكون هناك حركة مستخدمين حقيقية.
 
-Synthetics provide a noise-free baseline. RUM data is inherently noisy because real users have real devices and real networks, which means your p75 LCP will bounce around based on factors outside your control. Synthetic tests run on consistent hardware from consistent locations, giving you an isolated signal for regressions introduced by code changes rather than environmental variability.
+توفّر الأنظمة الاصطناعية خط أساس خاليًا من الضجيج. فبيانات RUM صاخبة بطبيعتها لأن للمستخدمين الحقيقيين أجهزة حقيقية وشبكات حقيقية، ما يعني أن LCP عند p75 سيتذبذب بناءً على عوامل خارج سيطرتك. أما الاختبارات الاصطناعية فتعمل على عتاد متسق من مواقع متسقة، فتمنحك إشارة معزولة عن الانحدارات التي تُدخلها تغييرات الشيفرة بدل تقلّب البيئة.
 
-The two complement each other. Synthetics are proactive and controlled. RUM is reactive and real. You need both. One without the other is either blind optimism or Monday-morning quarterbacking.
+ويكمل كل منهما الآخر. فالأنظمة الاصطناعية استباقية ومضبوطة. وRUM تفاعلي وواقعي. وتحتاج كليهما. وأحدهما بلا الآخر إما تفاؤل أعمى أو نقد بأثر رجعي بعد فوات الأوان.
 
-## Observability in Microfrontend Architectures
+## الرصدية في معماريات الواجهات الجزئية
 
-Microfrontend architectures make error attribution harder. When a page is composed of five independently deployed modules, each owned by a different team, figuring out *which* module caused the error is half the debugging problem.
+تجعل معماريات الواجهات الجزئية إسناد الأخطاء أصعب. فعندما تتكوّن صفحة من خمس وحدات منشورة بشكل مستقل، كل منها يملكها فريق مختلف، يصير تحديد *أي* وحدة سبّبت الخطأ نصف مشكلة التصحيح.
 
-### Error attribution and team ownership
+### إسناد الأخطاء وملكية الفريق
 
-The simplest approach is stack-trace-based attribution. Some platforms (like Coralogix) use build-time metadata plugins for webpack, Vite, or esbuild to generate a metadata file for each microfrontend. When an error occurs, the SDK analyzes the stack trace, matches it to the corresponding module and version, and automatically tags the error with the responsible team.
+أبسط مقاربة هي الإسناد القائم على تتبّع المكدّس. فبعض المنصات (مثل Coralogix) تستخدم إضافات بيانات وصفية وقت البناء لـ webpack أو Vite أو esbuild لتوليد ملف بيانات وصفية لكل واجهة جزئية. وعندما يحدث خطأ، تحلّل SDK تتبّع المكدّس، وتطابقه مع الوحدة والإصدار المقابلين، وتوسم الخطأ تلقائيًا بالفريق المسؤول.
 
-Even without specialized tooling, you can get most of the way there by using distinct Sentry DSN values or release tags for each microfrontend. This gives each team independent error tracking and alerting. Global issues that affect the entire application trigger cross-team alerts; issues scoped to a single module alert only the responsible team.
+وحتى بلا أدوات متخصّصة، يمكنك بلوغ معظم الطريق باستخدام قيم Sentry DSN مميزة أو وسوم إصدار لكل واجهة جزئية. وهذا يمنح كل فريق تتبّع أخطاء وتنبيهًا مستقلين. فالمشكلات العامة التي تصيب التطبيق كله تُطلق تنبيهات عابرة للفرق؛ أما المشكلات المحصورة في وحدة واحدة فلا تنبّه إلا الفريق المسؤول.
 
-### The shell-hub pattern
+### نمط الصدفة-المحور (shell-hub)
 
-Many enterprise teams centralize observability in the shell application. Instead of each microfrontend initializing its own SDK, microfrontends emit standard browser events (or call a shared API) that the shell captures and enriches with global context—shell version, user segment, active route—before forwarding to the observability provider.
+تركّز فرق مؤسسية كثيرة الرصدية في تطبيق الصدفة. فبدل أن تهيّئ كل واجهة جزئية حزمة SDK الخاصة بها، تُصدر الواجهات الجزئية أحداث متصفح قياسية (أو تستدعي API مشتركة) تلتقطها الصدفة وتُثريها بسياق عام — إصدار الصدفة، وشريحة المستخدم، والمسار النشط — قبل تمريرها إلى مزوّد الرصدية.
 
-This pattern keeps the microfrontends lightweight and decoupled from the specific observability vendor, while the shell acts as a single point of enrichment and routing.
+يُبقي هذا النمط الواجهات الجزئية خفيفة ومنفصلة عن بائع الرصدية المحدّد، بينما تعمل الصدفة كنقطة إثراء وتوجيه واحدة.
 
-### Singleton SDK management
+### إدارة SDK كنسخة وحيدة (singleton)
 
-[Honeycomb’s microfrontend guidance](https://docs.honeycomb.io/get-started/best-practices/micro-frontends/) calls out the most common pitfall: multiple SDK initializations. If every microfrontend tries to initialize its own OpenTelemetry or Sentry SDK, you get duplicated telemetry, conflicting configurations, and a bill that reflects your architecture’s redundancy. The fix is to initialize the observability SDK once in the shared bootstrap or shell layer. Module Federation can treat the SDK as a singleton dependency, ensuring all modules share the same telemetry channel.
+يشير [توجيه Honeycomb للواجهات الجزئية](https://docs.honeycomb.io/get-started/best-practices/micro-frontends/) إلى المزلق الأكثر شيوعًا: تهيئات متعددة لـ SDK. فإذا حاولت كل واجهة جزئية تهيئة SDK الخاصة بها من OpenTelemetry أو Sentry، فستحصل على قياس عن بُعد مكرّر، وتكوينات متعارضة، وفاتورة تعكس تكرار معماريتك. والحل هو تهيئة SDK الرصدية مرة واحدة في طبقة التمهيد أو الصدفة المشتركة. ويمكن لـ Module Federation أن يعامل SDK كاعتماد وحيد النسخة، فيضمن أن كل الوحدات تشترك في قناة القياس عن بُعد نفسها.
 
-## Resilience Patterns
+## أنماط المرونة
 
-Observability tells you *what broke*. Resilience determines *what happens next*. In enterprise applications where users maintain eight-hour sessions and depend on the tool to do their job, a crash that forces a full page reload can mean minutes of lost context, unsaved form data, or an interrupted workflow. The goal is graceful degradation: absorb failures, contain their blast radius, and recover without user intervention wherever possible.
+تخبرك الرصدية *ما الذي تعطّل*. أما المرونة فتحدّد *ما الذي يحدث تاليًا*. وفي التطبيقات المؤسسية حيث يحتفظ المستخدمون بجلسات تدوم ثماني ساعات ويعتمدون على الأداة لأداء عملهم، قد يعني عطل يفرض إعادة تحميل الصفحة كاملة دقائق من سياق ضائع، أو بيانات نموذج غير محفوظة، أو سير عمل منقطعًا. والهدف هو التدهور الرشيق: امتصاص الإخفاقات، واحتواء نطاق انفجارها، والتعافي بلا تدخّل المستخدم حيثما أمكن.
 
-### Retry strategies with backoff
+### استراتيجيات إعادة المحاولة مع التباطؤ التراجعي
 
-Network requests fail. In enterprise environments with VPN tunnels, corporate proxies, and mobile connectivity, transient failures are routine. A data-fetching layer should implement automatic retries with exponential backoff:
+طلبات الشبكة تفشل. وفي بيئات مؤسسية فيها أنفاق VPN ووكلاء مؤسسيون واتصالات جوّالة، تكون الإخفاقات العابرة روتينية. وينبغي لطبقة جلب البيانات أن تنفّذ إعادة محاولات تلقائية بتباطؤ تراجعي أُسّي:
 
 ```typescript
 const queryClient = new QueryClient({
@@ -371,11 +370,11 @@ const queryClient = new QueryClient({
 });
 ```
 
-The decisions that matter: which requests are safe to retry (idempotent GETs, yes; non-idempotent POSTs, only with an idempotency key), how many retries before surfacing an error to the user (typically two or three for interactive requests, more for background syncs), and what backoff curve to use (exponential with jitter prevents thundering-herd problems when a backend recovers from an outage and every client retries at the same instant).
+والقرارات المهمة هي: أي الطلبات آمنة لإعادة المحاولة (طلبات GET المتساوية الأثر (idempotent)، نعم؛ وطلبات POST غير المتساوية الأثر، فقط بمفتاح تساوٍ في الأثر)، وكم محاولة قبل إظهار خطأ للمستخدم (عادةً اثنتان أو ثلاث للطلبات التفاعلية، وأكثر لمزامنات الخلفية)، وأي منحنى تباطؤ تراجعي تستخدم (أُسّي مع اهتزاز يمنع مشكلات القطيع الهادر عندما تتعافى خلفية من عطل فتعيد كل العملاء المحاولة في اللحظة نفسها).
 
-### Circuit breakers in the frontend
+### قواطع الدائرة في الواجهة الأمامية
 
-When a backend service is fully down, retrying every request wastes bandwidth and delays the user’s awareness of the problem. A **circuit breaker** tracks failure rates per endpoint and “opens” the circuit after a threshold, immediately returning a fallback response without making the network call:
+عندما تكون خدمة خلفية معطّلة كليًا، تهدر إعادة محاولة كل طلب النطاق الترددي وتؤخّر إدراك المستخدم للمشكلة. ويتتبّع **قاطع الدائرة (circuit breaker)** معدّلات الإخفاق لكل نقطة نهاية و«يفتح» الدائرة بعد عتبة، فيعيد استجابة بديلة فورًا دون إجراء نداء الشبكة:
 
 ```typescript
 class CircuitBreaker {
@@ -420,33 +419,33 @@ class CircuitBreaker {
 }
 ```
 
-Circuit breakers are particularly valuable in microfrontend architectures where a single failing backend can degrade the entire composed page. The shell can use a circuit breaker per remote API to detect when a service is unhealthy and show a placeholder instead of a spinner that never resolves.
+قواطع الدائرة قيّمة بشكل خاص في معماريات الواجهات الجزئية حيث يمكن لخلفية واحدة فاشلة أن تدهور الصفحة المركّبة كلها. وتستطيع الصدفة استخدام قاطع دائرة لكل API بعيد لاكتشاف أن خدمة ما غير سليمة وعرض عنصر نائب بدل دوّار لا ينتهي أبدًا.
 
-### Graceful degradation strategies
+### استراتيجيات التدهور الرشيق
 
-Graceful degradation means the application continues to provide value even when parts of it fail. This extends beyond error boundaries to the full spectrum of failure modes:
+التدهور الرشيق يعني أن يواصل التطبيق تقديم قيمة حتى عندما تفشل أجزاء منه. وهذا يمتدّ إلى ما هو أبعد من حدود الأخطاء ليشمل طيف أنماط الفشل كله:
 
-| Failure mode | Degradation strategy |
+| نمط الفشل | استراتيجية التدهور |
 | --- | --- |
-| **Backend API down** | Show cached or stale data with a “last updated” timestamp; disable write operations |
-| **Microfrontend fails to load** | Render a placeholder with “This section is temporarily unavailable” and a retry button |
-| **Third-party script fails** | Analytics, chat widgets, and A/B scripts should never block the critical path; load async, catch silently |
-| **WebSocket disconnection** | Fall back to polling; show a “reconnecting” indicator; queue outbound messages for replay |
-| **CDN serving stale assets** | Service worker serves last-known-good version; background update on reconnection |
+| **توقّف API الخلفي** | اعرض بيانات مخزّنة مؤقتًا أو قديمة مع طابع زمني «آخر تحديث»؛ وعطّل عمليات الكتابة |
+| **فشل تحميل واجهة جزئية** | صيّر عنصرًا نائبًا بعبارة «هذا القسم غير متاح مؤقتًا» وزر إعادة محاولة |
+| **فشل نص برمجي لطرف ثالث** | لا ينبغي أن يحجب التحليلات أو أدوات المحادثة أو نصوص A/B المسار الحرج؛ حمّلها بشكل غير متزامن والتقط فشلها بصمت |
+| **انقطاع WebSocket** | تراجع إلى الاستقصاء الدوري؛ وأظهر مؤشّر «إعادة الاتصال»؛ واصطفّ الرسائل الصادرة لإعادة إرسالها |
+| **خدمة CDN تقدّم أصولًا قديمة** | يقدّم عامل الخدمة آخر إصدار معروف أنه سليم؛ ويُحدَّث في الخلفية عند إعادة الاتصال |
 
-The principle is that every external dependency should have a defined fallback behavior. During application bootstrapping, each integration point registers its fallback mode, and the error management layer activates fallbacks based on the failure classification.
+والمبدأ أن كل اعتماد خارجي ينبغي أن يكون له سلوك بديل محدّد. وأثناء تمهيد التطبيق، تسجّل كل نقطة تكامل نمطها البديل، وتفعّل طبقة إدارة الأخطاء البدائل بناءً على تصنيف الفشل.
 
-Progressive enhancement is also making a quiet return in enterprise contexts through frameworks like Remix and the server-first patterns of React Server Components. Forms submit via standard HTML actions, navigation works via standard links, and JavaScript adds optimistic updates and richer interactions on top. If the JavaScript bundle fails to load or hydration is delayed, the application still works. This matters more than you might think in environments with locked-down corporate browsers, high-latency global offices, and hardware that was bought during the previous administration.
+كما يعود التحسين التدريجي بهدوء إلى السياقات المؤسسية عبر أطر مثل Remix وأنماط الخادم أولًا في React Server Components. فالنماذج تُرسَل عبر إجراءات HTML القياسية، والتنقّل يعمل عبر روابط قياسية، ويضيف JavaScript فوق ذلك تحديثات متفائلة وتفاعلات أغنى. وإذا فشل تحميل حزمة JavaScript أو تأخّر الترطيب، فيبقى التطبيق يعمل. وهذا يهمّ أكثر مما قد تظن في بيئات فيها متصفحات مؤسسية مقيّدة، ومكاتب عالمية عالية زمن الاستجابة، وعتاد اشتُري في عهد الإدارة السابقة.
 
-## Product Instrumentation
+## رصد المنتج
 
-Engineering observability answers “is the system healthy?” Product instrumentation answers “are users succeeding?” Both are essential, and they often share infrastructure while serving different stakeholders.
+الرصدية الهندسية تجيب عن «هل النظام سليم؟». أما رصد المنتج فيجيب عن «هل ينجح المستخدمون؟». وكلاهما ضروري، وكثيرًا ما يتشاركان البنية التحتية بينما يخدمان أصحاب مصلحة مختلفين.
 
-### Feature adoption and usage tracking
+### تتبّع تبنّي الميزات واستخدامها
 
-Beyond page loads and errors, enterprise teams need to understand how features are actually used. Product instrumentation captures events like “user completed the onboarding wizard,” “user exported a report as PDF,” or “user abandoned the checkout flow at step 3.” These measure business outcomes, not system health.
+إلى جانب تحميل الصفحات والأخطاء، تحتاج الفرق المؤسسية إلى فهم كيف تُستخدم الميزات فعلًا. فالتقاط رصد المنتج يشمل أحداثًا مثل «أكمل المستخدم معالج التهيئة»، أو «صدّر المستخدم تقريرًا بصيغة PDF»، أو «تخلّى المستخدم عن مسار الدفع عند الخطوة 3». وهذه تقيس نتائج تجارية، لا صحة النظام.
 
-The architectural concern is where this instrumentation lives. A thin analytics abstraction decouples the application from the specific analytics provider:
+والشاغل المعماري هو أين يعيش هذا الرصد. فتجريد تحليلات رقيق يفصل التطبيق عن مزوّد التحليلات المحدّد:
 
 ```typescript
 interface AnalyticsEvent {
@@ -471,11 +470,11 @@ export function track(name: string, properties: Record<string, string | number |
 }
 ```
 
-This abstraction lets you switch from Amplitude to Mixpanel, or from a SaaS provider to a self-hosted solution, without modifying application code. It also provides a natural point for PII filtering, event batching, and consent gating.
+يتيح لك هذا التجريد الانتقال من Amplitude إلى Mixpanel، أو من مزوّد SaaS إلى حل مستضاف ذاتيًا، دون تعديل شيفرة التطبيق. كما يوفّر نقطة طبيعية لتصفية بيانات PII، وتجميع الأحداث، وإخضاعها للموافقة.
 
-### Funnel analysis and experiment attribution
+### تحليل المسارات وإسناد التجارب
 
-Enterprise applications often run A/B tests gated by feature flags. The frontend’s job is to make sure every product event includes the active experiment variants so the data team can attribute outcomes to specific treatments:
+كثيرًا ما تشغّل التطبيقات المؤسسية اختبارات A/B مقيّدة بأعلام ميزات. ومهمة الواجهة الأمامية أن تتأكّد من أن كل حدث منتج يتضمّن متغيّرات التجارب النشطة كي يستطيع فريق البيانات إسناد النتائج إلى معالجات محدّدة:
 
 ```typescript
 track('checkout.completed', {
@@ -485,34 +484,34 @@ track('checkout.completed', {
 });
 ```
 
-Funnel analysis—measuring drop-off between steps in a multi-step workflow—requires consistent event naming and sequencing. Enterprise teams should establish an **event taxonomy**: a shared document defining event names, required properties, and their semantics, enforced via TypeScript types and linting rules. Without this governance, analytics data devolves into an inconsistent mess where `checkout_complete`, `CheckoutComplete`, and `checkout.done` all refer to the same action.
+يتطلّب تحليل المسارات — قياس التخلّي بين خطوات سير عمل متعدد الخطوات — تسمية أحداث وتسلسلًا متسقين. وينبغي للفرق المؤسسية أن تُنشئ **تصنيف أحداث (event taxonomy)**: مستندًا مشتركًا يعرّف أسماء الأحداث وخصائصها المطلوبة ودلالاتها، ويُفرَض عبر أنواع TypeScript وقواعد التنسيق. وبدون هذه الحاكمية، تتدهور بيانات التحليلات إلى فوضى غير متسقة حيث تشير `checkout_complete` و`CheckoutComplete` و`checkout.done` كلها إلى الإجراء نفسه.
 
-### Where engineering and product observability converge
+### حيث تلتقي رصدية الهندسة والمنتج
 
-Performance metrics like “time from click to checkout confirmation” serve both audiences: engineering cares about the rendering pipeline, product cares about the conversion rate. The recommendation is to use a single event pipeline with different consumers—engineering dashboards consume the performance dimensions while product dashboards consume the business dimensions. This avoids the “two event systems” problem where engineering and product teams instrument the same flows independently with inconsistent data.
+مقاييس الأداء مثل «الزمن من النقر إلى تأكيد الدفع» تخاطب الجمهورين معًا: الهندسة تهتمّ بخط أنابيب التصيير، والمنتج يهتمّ بمعدّل التحويل. والتوصية هي استخدام خط أحداث واحد بمستهلكين مختلفين — لوحات الهندسة تستهلك أبعاد الأداء بينما تستهلك لوحات المنتج الأبعاد التجارية. وهذا يتجنّب مشكلة «نظامي الأحداث» حيث ترصد فرق الهندسة والمنتج التدفّقات نفسها بشكل مستقل ببيانات غير متسقة.
 
-## The Cost of Observability Infrastructure
+## كلفة البنية التحتية للرصدية
 
-Observability platforms represent a significant and growing cost center. Datadog, New Relic, and Sentry pricing is typically volume-based—more events, more sessions, more traces means higher bills. Architectural decisions directly impact these costs.
+تمثّل منصات الرصدية مركز كلفة كبيرًا ومتناميًا. وتسعير Datadog وNew Relic وSentry قائم على الحجم عادةً — أحداث أكثر، وجلسات أكثر، وتتبّعات أكثر تعني فواتير أعلى. والقرارات المعمارية تؤثر في هذه التكاليف مباشرةً.
 
-- **Event sampling**: Not every page view needs a full session replay. Sampling strategies (100% for errors, 10% for normal sessions, 100% for users on enterprise plans) reduce volume without sacrificing signal.
-- **Data retention tiers**: Hot storage for real-time dashboards is expensive. Cold storage for 30-plus-day analysis is cheap. Design the pipeline to tier data automatically.
-- **Self-hosted versus SaaS**: OpenTelemetry collectors with Grafana, Tempo, and Loki provide a self-hosted alternative. The tradeoff is operational burden versus licensing cost—most teams under 50 engineers find SaaS cheaper when accounting for the engineering time required to maintain self-hosted infrastructure.
-- **Per-microfrontend attribution**: In microfrontend architectures, attributing observability costs to the team that generates the telemetry enables cost-aware engineering. If the dashboard team’s verbose logging is driving 40% of the Datadog bill, that is a conversation worth having.
+- **أخذ عينات الأحداث**: لا تحتاج كل مشاهدة صفحة إلى إعادة تشغيل جلسة كاملة. واستراتيجيات أخذ العينات (100% للأخطاء، و10% للجلسات العادية، و100% للمستخدمين على خطط مؤسسية) تقلّل الحجم دون التضحية بالإشارة.
+- **طبقات الاحتفاظ بالبيانات**: التخزين الساخن للوحات الزمن الحقيقي مكلف. والتخزين البارد لتحليل يتجاوز 30 يومًا رخيص. وصمّم خط الأنابيب ليصنّف البيانات آليًا.
+- **الاستضافة الذاتية مقابل SaaS**: توفّر جامعات OpenTelemetry مع Grafana وTempo وLoki بديلًا مستضافًا ذاتيًا. والمقايضة هي العبء التشغيلي مقابل كلفة الترخيص — ومعظم الفرق دون 50 مهندسًا تجد SaaS أرخص عند حساب وقت الهندسة المطلوب لصيانة البنية التحتية المستضافة ذاتيًا.
+- **الإسناد لكل واجهة جزئية**: في معماريات الواجهات الجزئية، إسناد كلفة الرصدية إلى الفريق الذي يولّد القياس عن بُعد يتيح هندسة واعية بالكلفة. فإذا كانت سجلات فريق لوحة المعلومات المطوّلة تقود 40% من فاتورة Datadog، فذلك حديث يستحقّ أن يُجرى.
 
-The sampling and cost guidance from earlier in this section still applies. The frontend-specific addition is that session replay and RUM tend to be the fastest-growing cost drivers, because every user session generates data. Controlling that growth with intelligent sampling—capturing errors at full fidelity while sampling normal sessions—is usually the first lever to pull before the monthly invoice triggers a conversation nobody wants to have.
+وما زال توجيه أخذ العينات والكلفة من موضع سابق في هذا القسم ساريًا. أما الإضافة الخاصة بالواجهة الأمامية فهي أن إعادة تشغيل الجلسات وRUM يميلان إلى كونهما أسرع محرّكات الكلفة نموًا، لأن كل جلسة مستخدم تولّد بيانات. والتحكّم في هذا النمو بأخذ عينات ذكي — التقاط الأخطاء بدقة كاملة مع أخذ عينات من الجلسات العادية — هو عادةً أول رافعة تُسحب قبل أن تُشعل الفاتورة الشهرية حديثًا لا يريد أحد خوضه.
 
 ---
 
-## TL;DR
+## الملخّص السريع
 
-### Structured Logging
+### السجلات المنظّمة
 
-> Logs that machines can parse and humans can read.
+> سجلات تستطيع الآلات تحليلها ويستطيع البشر قراءتها.
 
-- **Correlation IDs** — a single ID that traces a request from browser → BFF → backend services.
-- Inject the correlation ID in the BFF, propagate it through all downstream calls.
-- **Structured format** (JSON) — not string concatenation.
+- **معرّفات الترابط (Correlation IDs)** — معرّف واحد يتتبّع طلبًا من المتصفح → BFF → خدمات الخلفية.
+- احقن معرّف الترابط في BFF، وانشره عبر كل النداءات النهائية.
+- **صيغة منظّمة** (JSON) — لا دمج سلاسل نصية.
 
 ```json
 {
@@ -526,4 +525,4 @@ The sampling and cost guidance from earlier in this section still applies. The f
 }
 ```
 
-- Route alerts to the team that owns the remote, not a generic on-call.
+- وجّه التنبيهات إلى الفريق الذي يملك الوحدة البعيدة، لا إلى مناوبة عامة.

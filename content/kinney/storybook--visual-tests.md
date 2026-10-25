@@ -1,66 +1,66 @@
 ---
-title: "Visual Tests"
-lang: en
+title: "الاختبارات البصرية"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/visual-tests"
 ---
 
-[Chromatic](https://www.chromatic.com/) is a cloud-based software tool created by the maintainers of Storybook that automates visual testing for UI components and web applications. Since it’s made by the maintainers of Storybook, you can imagine that It integrates seamlessly with Storybook and allows you to capture snapshots of every story and compare them across different commits to identify visual changes.
+[Chromatic](https://www.chromatic.com/) أداة برمجية قائمة على السحابة أنشأها مشرفو Storybook، وهي تُؤتمت الاختبار البصري لمكوّنات واجهة المستخدم وتطبيقات الويب. وبما أنها من صنع مشرفي Storybook، فيمكنك أن تتصوّر أنها تتكامل مع Storybook بسلاسة وتتيح لك التقاط لقطات لكل قصة ومقارنتها عبر إيداعات مختلفة لرصد التغييرات البصرية.
 
-Here is a run down of the key features:
+فيما يلي استعراض لأهمّ المزايا:
 
-- **UI Review and Collaboration**: Chromatic provides a place where developers, designers, and stakeholders can work together to review UI changes visually. It allows for comments and discussions directly on the visual snapshots, making it simple to collaborate and approve changes.
-- **Visual Regression Testing**: Chromatic helps by capturing images of your components in different states and comparing them over time to spot visual differences. This enables teams to identify and fix visual bugs before they impact the final product.
-- **Cloud Hosting for Storybook**: With Chromatic, you can effortlessly host and share your Storybook online. This feature allows teams and stakeholders to easily access and interact with the UI components without the need for a complex local development setup.
-- **Component Documentation and Exploration**: In addition to visual testing, Chromatic acts as a platform where teams can document, explore, and understand the UI components in their project. This boosts the discoverability and reusability of components, aiding in project success.
+- **مراجعة الواجهة والتعاون**: يوفّر Chromatic مكانًا يجتمع فيه المطوّرون والمصمّمون وأصحاب المصلحة لمراجعة تغييرات الواجهة بصريًّا. وهو يسمح بالتعليقات والنقاشات مباشرةً على اللقطات البصرية، ما يجعل التعاون واعتماد التغييرات أمرًا سهلًا.
+- **اختبار الانحدار البصري**: يساعد Chromatic في التقاط صور مكوّناتك في حالات مختلفة ومقارنتها عبر الوقت لرصد الفروق البصرية. وهذا يمكّن الفرق من رصد الأخطاء البصرية وإصلاحها قبل أن تؤثّر على المنتج النهائي.
+- **الاستضافة السحابية لـ Storybook**: مع Chromatic يمكنك استضافة Storybook ومشاركته عبر الإنترنت دون عناء. وتتيح هذه الميزة للفرق وأصحاب المصلحة الوصول إلى مكوّنات الواجهة والتفاعل معها بسهولة دون الحاجة إلى إعداد تطوير محليّ معقّد.
+- **توثيق المكوّنات واستكشافها**: إضافةً إلى الاختبار البصري، يعمل Chromatic كمنصّة يستطيع عليها أعضاء الفريق توثيق مكوّنات الواجهة في مشاريعهم واستكشافها وفهمها. وهذا يعزّز إمكانية اكتشاف المكوّنات وإعادة استخدامها، بما يخدم نجاح المشروع.
 
-## Setting Up Chromatic
+## إعداد Chromatic
 
-You’ll need to make an account if you don’t already have one. The good news is that this is easy enough since you can just use your [Github](https://github.com/) account to authenticate.
+ستحتاج إلى إنشاء حساب إن لم يكن لديك واحد بالفعل. والخبر الجيّد أن ذلك سهل بما يكفي إذ يمكنك ببساطة استخدام حساب [Github](https://github.com/) لديك للمصادقة.
 
-Once you’re in, you can either choose an existing project or create a new one.
+بمجرد دخولك، يمكنك اختيار مشروع قائم أو إنشاء مشروع جديد.
 
-Add an existing project or create a new one in Chromatic
+إضافة مشروع قائم أو إنشاء مشروع جديد في Chromatic
 
-In the even you’re creating a new project, you’ll be asked what kind of project you’re looking to integrate. In our case, this is going to be Storybook.
+في حال كنت تنشئ مشروعًا جديدًا، سيُسأل عن نوع المشروع الذي تريد دمجه. وفي حالتنا، سيكون هذا هو Storybook.
 
-You’ll then get a unique project key to use to associate your Storybook with this newly-created project in Chromatic.
+بعد ذلك ستحصل على مفتاح مشروع فريد تستخدمه لربط Storybook لديك بهذا المشروع الجديد في Chromatic.
 
-Configuring a project in Chromatic
+إعداد مشروع في Chromatic
 
-In your project, run the included command: `npx chromatic --project-token=` with your project token. The Chromatic CLI will take care of the rest and you’ll your component and stories in the summary.
+في مشروعك، شغّل الأمر المتضمَّن: `npx chromatic --project-token=` مع رمز المشروع (token) لديك. وتتولّى واجهة Chromatic الطرفية الباقي، وسترى مكوّنك وقصصك في الملخّص.
 
-Chromatic's success message upon publishing your first Storybook
+رسالة نجاح Chromatic عند نشر Storybook الأول لديك
 
-Now, of course, the real magic comes when we want to see what changed. In order to do this, you’ll need to make some kind of change. Any kind of change that has a visual impact on the component will do.
+والآن، بطبيعة الحال، يبدأ السحر الحقيقي حين نريد رؤية ما تغيّر. ولذلك ستحتاج إلى إجراء نوع من التغيير. وأيّ نوع من التغيير له أثر بصري على المكوّن يكفي.
 
-Once, you’ve made that change, push up your changes the same way you did earlier and Chromatic will run a set of visual regression tests to see what changed.
+بمجرد أن تُجري ذلك التغيير، ادفع تغييراتك بالطريقة نفسها التي استخدمتها سابقًا، وسيُشغّل Chromatic مجموعة من اختبارات الانحدار البصري ليرى ما تغيّر.
 
-Chromatic's summary of changes to your components
+ملخّص Chromatic لتغييرات مكوّناتك
 
-You can review the changes to determine if they were intentional or note.
+يمكنك مراجعة التغييرات لتحديد ما إذا كانت مقصودة أم لا.
 
-Chromatic's visual regression review interface
+واجهة مراجعة الانحدار البصري في Chromatic
 
-Chromatic is a great tool that can really help teams boost their UI development process, work together better, and maintain the look of their apps. It makes visual testing easier and offers a place for UI feedback and notes, so teams can create top-notch user interfaces with ease.
+Chromatic أداة رائعة تستطيع أن تساعد الفرق فعلًا على تطوير عملية بناء واجهاتهم، والعمل معًا بشكل أفضل، والمحافظة على مظهر تطبيقاتهم. وهي تجعل الاختبار البصري أسهل وتوفّر مكانًا لملاحظات الانتقادات على الواجهات، بحيث تستطيع الفرق إنشاء واجهات مستخدم متميّزة بسهولة.
 
-## Adding Chromatic to Storybook
+## إضافة Chromatic إلى Storybook
 
-You can also pull Chromatic intro Storybook using an addon. This typically comes pre-installed with new installs of Storybook, but I’ll include the command here for good measure.
+يمكنك أيضًا جلب Chromatic إلى Storybook باستخدام إضافة. وعادةً ما تكون مثبّتة مسبقًا مع التثبيتات الجديدة لـ Storybook، لكنني سأُدرج الأمر هنا احتياطًا.
 
 ```bash
 npx storybook@latest add @chromatic-com/storybook
 ```
 
-Once you’ve got installed (or, if you already had it installed), we’re ready to enable Chromatic’s visual regression tests from inside Storybook.
+بمجرد تثبيتها (أو، إن كانت مثبّتة بالفعل)، نكون مستعدّين لتفعيل اختبارات الانحدار البصري الخاصة بـ Chromatic من داخل Storybook.
 
-Enable visual tests in Storybook
+تفعيل الاختبارات البصرية في Storybook
 
-Once you walk through the steps, you’ll be able to see your component in Chromatic and it will show you if you’re component has any visual regressions form the previously approved version.
+بمجرد أن تتّبع الخطوات، ستتمكّن من رؤية مكوّنك في Chromatic، وسيُظهر لك ما إذا كان مكوّنك يعاني من أيّ انحدار بصري مقارنةً بالنسخة المعتمدة سابقًا.
 
-If there are no changes, you’ll see that reflected in Chromatic.
+إن لم يكن هناك تغييرات، سترى ذلك منعكسًا في Chromatic.
 
-Visual regression with no changes
+انحدار بصري دون تغييرات
 
-Similarly, if there *are* changes, you’ll be to not only see them in the story, but you’ll also be able to accept the changes if they *were* intentional.
+وبالمثل، إن وُجدت تغييرات، فلن ترى فحسب في القصة، بل ستتمكّن أيضًا من قبول التغييرات إن كانت *مقصودة*.
 
-A visual regression from Chromatic inside of storybook
+انحدار بصري من Chromatic داخل Storybook

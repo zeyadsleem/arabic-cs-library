@@ -1,28 +1,28 @@
 ---
-title: "Figma in Storybook"
-lang: en
+title: "Figma في Storybook"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/figma-in-storybook"
 ---
 
-A lot of times it’d be nice to see what we’re implementing in the same place where we’re reviewing our implementation. If you’re using Figma, then you can integrate into your stories to make your life just a little bit easier.
+في كثير من الأحيان يكون جميلًا أن نرى ما ننفّذه في المكان نفسه الذي نراجع فيه تنفيذنا. فإن كنت تستخدم Figma، فيمكنك التكامل مع قصصك لتجعل حياتك أسهل قليلًا.
 
-> **Storybook can integrate with more than just Figma**
+> **يستطيع Storybook التكامل مع أكثر من Figma**
 >
-> We’re using Figma, but the [Designs addon](https://storybook.js.org/addons/@storybook/addon-designs/) works with more than just Figma. You can read the full documentation [here](https://storybookjs.github.io/addon-designs/?path=/docs/docs-quick-start--docs).
+> نحن نستخدم Figma، لكن [ملحق Designs](https://storybook.js.org/addons/@storybook/addon-designs/) يعمل مع أكثر من Figma. ويمكنك قراءة التوثيق الكامل [هنا](https://storybookjs.github.io/addon-designs/?path=/docs/docs-quick-start--docs).
 
-First, we’ll need to install another addon into Storybook.
+أولًا، سنحتاج إلى تثبيت ملحق آخر في Storybook.
 
 ```bash
 npx storybook@latest add @storybook/addon-designs
 ```
 
-Running this script will install the dependency as well as add it to `.storybook/main.ts`.
+سيؤدي تشغيل هذا السكربت إلى تثبيت الاعتماد وإضافته إلى `.storybook/main.ts`.
 
-Head over into Figma and click on the **Share** button towards the right in the toolbar and then select **Copy Link**.
+انتقل إلى Figma وانقر على زر **Share** نحو اليمين في شريط الأدوات، ثم اختر **Copy Link**.
 
-Sharing a Figma file
+مشاركة ملف Figma
 
-Next, in your story, we’re going to add a parameter that creates the link between the story and the designs.
+بعد ذلك، في قصتك، سنضيف معاملًا ينشئ الرابط بين القصة والتصميمات.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -38,6 +38,6 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-And now, when you start up storybook, you’ll be able to see both side by side.
+والآن، عند تشغيل Storybook، ستستطيع أن ترى الاثنين جنبًا إلى جنب.
 
-Figma design alongside Storybook
+تصميم Figma إلى جانب Storybook

@@ -1,22 +1,22 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/lambda-function-solution"
 ---
 
-Here’s the complete solution for every step, including the handler code, the trust policy, all CLI commands, and the expected output at each stage.
+إليك الحل الكامل لكل خطوة، بما في ذلك كود المعالج، وسياسة الثقة، وكل أوامر CLI، والإخراج المتوقع في كل مرحلة.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- The execution role and trust policy solve different problems: one tells Lambda it may assume the role, and the other tells the role what the function may do after that.
-- Packaging `dist/handler.js` into the deployment zip gives Lambda exactly the artifact it expects at runtime instead of asking it to transpile TypeScript for you.
-- The CLI invocation and CloudWatch log checks prove both halves of the system work: the code path and the operational path.
+- دور التنفيذ وسياسة الثقة يحلّان مشكلتين مختلفتين: أحدهما يخبر Lambda أنها تستطيع افتراض الدور، والآخر يخبر الدور بما تستطيع الدالة فعله بعد ذلك.
+- حزم `dist/handler.js` في ملف zip للنشر يمنح Lambda بالضبط الملف التنفيذي الذي تتوقعه وقت التشغيل بدلًا من أن تطلب منها تحويل TypeScript نيابةً عنك.
+- استدعاء CLI وفحوص سجلات CloudWatch يثبتان كلا شقّي النظام: مسار الكود ومسار التشغيل.
 
-> **Tip**
+> **نصيحة**
 >
-> If the console or CLI output looks a little different when you do this, keep the [`aws lambda create-function` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html) and the [`aws lambda update-function-code` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html) open.
+> إذا بدا إخراج وحدة التحكم أو CLI مختلفًا قليلًا عند تنفيذك لذلك، فأبقِ [مرجع أمر `aws lambda create-function`](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html) و[مرجع أمر `aws lambda update-function-code`](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html) مفتوحين.
 
-## Project Setup
+## إعداد المشروع {#project-setup}
 
 ```bash
 mkdir -p lambda/src
@@ -49,7 +49,7 @@ npm install -D typescript @types/aws-lambda @types/node
 }
 ```
 
-### `lambda/package.json` (scripts section)
+### `lambda/package.json` (قسم scripts)
 
 ```json
 {
@@ -59,11 +59,11 @@ npm install -D typescript @types/aws-lambda @types/node
 }
 ```
 
-## The Handler
+## المعالج
 
-> **Tip**
+> **نصيحة**
 >
-> All Lambda handlers, the `tsconfig.json`, and test event JSON files from this course are available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/lambda).
+> جميع معالجات Lambda، وملفات `tsconfig.json`، وملفات JSON لأحداث الاختبار من هذه الدورة متوفرة في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/lambda).
 
 ### `lambda/src/handler.ts`
 
@@ -93,18 +93,18 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* The `?.` and `??` operators handle the case where `queryStringParameters` is `undefined`.
+*ملاحظة:* يتعامل العاملان `?.` و`??` مع الحالة التي تكون فيها `queryStringParameters` مساوية لـ `undefined`.
 
-### Build
+### البناء
 
 ```bash
 cd lambda
 npm run build
 ```
 
-Expected: `dist/handler.js`, `dist/handler.js.map`, `dist/handler.d.ts`, and `dist/handler.d.ts.map` are created with no errors.
+المتوقع: إنشاء `dist/handler.js`، و`dist/handler.js.map`، و`dist/handler.d.ts`، و`dist/handler.d.ts.map` من دون أخطاء.
 
-## The Execution Role
+## دور التنفيذ
 
 ### `trust-policy.json`
 
@@ -123,7 +123,7 @@ Expected: `dist/handler.js`, `dist/handler.js.map`, `dist/handler.d.ts`, and `di
 }
 ```
 
-### Create the role
+### إنشاء الدور
 
 ```bash
 aws iam create-role \
@@ -133,7 +133,7 @@ aws iam create-role \
   --output json
 ```
 
-Expected output:
+الإخراج المتوقع:
 
 ```json
 {
@@ -156,7 +156,7 @@ Expected output:
 }
 ```
 
-### Attach the basic execution policy
+### إرفاق سياسة التنفيذ الأساسية
 
 ```bash
 aws iam attach-role-policy \
@@ -166,7 +166,7 @@ aws iam attach-role-policy \
   --output json
 ```
 
-### Verify the role
+### التحقق من الدور
 
 ```bash
 aws iam list-attached-role-policies \
@@ -175,7 +175,7 @@ aws iam list-attached-role-policies \
   --output json
 ```
 
-Expected output:
+الإخراج المتوقع:
 
 ```json
 {
@@ -188,9 +188,9 @@ Expected output:
 }
 ```
 
-## Package and Deploy
+## التغليف والنشر
 
-### Create the deployment zip
+### إنشاء ملف zip للنشر
 
 ```bash
 cd lambda/dist
@@ -198,7 +198,7 @@ zip -r ../function.zip .
 cd ..
 ```
 
-### Create the function
+### إنشاء الدالة
 
 ```bash
 aws lambda create-function \
@@ -212,7 +212,7 @@ aws lambda create-function \
   --output json
 ```
 
-Expected output:
+الإخراج المتوقع:
 
 ```json
 {
@@ -230,11 +230,11 @@ Expected output:
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> If you get “The role defined for the function cannot be assumed by Lambda,” wait 10-15 seconds and try again. IAM role propagation is eventually consistent—the role exists, but Lambda’s endpoint might not have seen it yet.
+> إذا ظهرت لك رسالة «The role defined for the function cannot be assumed by Lambda»، فانتظر 10-15 ثانية وحاول مرة أخرى. انتشار دور IAM متسق نهائيًا—فالدور موجود، لكن نقطة نهاية Lambda ربما لم تره بعد.
 
-### Verify the function exists
+### التحقق من وجود الدالة
 
 ```bash
 aws lambda get-function \
@@ -243,11 +243,11 @@ aws lambda get-function \
   --output json
 ```
 
-## Invoke the Function
+## استدعاء الدالة
 
-### Test event with name parameter
+### حدث اختبار مع معامل name
 
-Save as `test-event.json`:
+احفظه باسم `test-event.json`:
 
 ```json
 {
@@ -263,7 +263,7 @@ Save as `test-event.json`:
 }
 ```
 
-Invoke:
+استدعِ الدالة:
 
 ```bash
 aws lambda invoke \
@@ -275,7 +275,7 @@ aws lambda invoke \
   response.json
 ```
 
-Expected terminal output:
+إخراج الطرفية المتوقع:
 
 ```json
 {
@@ -284,13 +284,13 @@ Expected terminal output:
 }
 ```
 
-Check the response:
+تحقق من الاستجابة:
 
 ```bash
 cat response.json
 ```
 
-Expected (formatted for readability):
+المتوقع (منسّق للقراءة):
 
 ```json
 {
@@ -302,7 +302,7 @@ Expected (formatted for readability):
 }
 ```
 
-The `body` is a stringified JSON object. If you parse it, you get:
+حقل `body` كائن JSON محوّل إلى سلسلة نصية. إذا حلّلته، فستحصل على:
 
 ```json
 {
@@ -311,13 +311,13 @@ The `body` is a stringified JSON object. If you parse it, you get:
 }
 ```
 
-In the console, the **Test** tab shows the same result with the execution status and response body expanded.
+في وحدة التحكم، تُظهر علامة التبويب **Test** النتيجة نفسها مع حالة التنفيذ وجسم الاستجابة موسّعين.
 
-The Lambda Test tab showing the execution result as Succeeded with the statusCode 200 and Hello from Lambda body visible in the Details section.
+علامة تبويب Lambda Test تُظهر نتيجة التنفيذ بحالة Succeeded، مع statusCode 200 وجسم Hello from Lambda ظاهرًا في قسم Details.
 
-### Test event without name parameter
+### حدث اختبار بدون معامل name
 
-Save as `test-event-no-name.json`:
+احفظه باسم `test-event-no-name.json`:
 
 ```json
 {
@@ -330,7 +330,7 @@ Save as `test-event-no-name.json`:
 }
 ```
 
-Invoke:
+استدعِ الدالة:
 
 ```bash
 aws lambda invoke \
@@ -344,7 +344,7 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected body:
+الجسم المتوقع:
 
 ```json
 {
@@ -353,11 +353,11 @@ Expected body:
 }
 ```
 
-The default value `"World"` is used when `queryStringParameters` is missing or doesn’t include `name`.
+تُستخدم القيمة الافتراضية `"World"` عندما تكون `queryStringParameters` مفقودة أو لا تتضمن `name`.
 
-## Read the Logs
+## قراءة السجلات
 
-### Verify the log group exists
+### التحقق من وجود مجموعة السجلات
 
 ```bash
 aws logs describe-log-groups \
@@ -366,7 +366,7 @@ aws logs describe-log-groups \
   --output json
 ```
 
-Expected output:
+الإخراج المتوقع:
 
 ```json
 {
@@ -380,7 +380,7 @@ Expected output:
 }
 ```
 
-### Read the latest log events
+### قراءة أحدث أحداث السجل
 
 ```bash
 aws logs describe-log-streams \
@@ -392,7 +392,7 @@ aws logs describe-log-streams \
   --output json
 ```
 
-Use the `logStreamName` from the response to fetch events:
+استخدم `logStreamName` من الاستجابة لجلب الأحداث:
 
 ```bash
 aws logs get-log-events \
@@ -402,18 +402,18 @@ aws logs get-log-events \
   --output json
 ```
 
-You should see log entries that include:
+ينبغي أن ترى مدخلات سجل تتضمن:
 
 - `START RequestId: ...`
-- Your `console.log` output: `Greeting request: { name: 'Lambda', timestamp: '...' }`
+- إخراج `console.log` الخاص بك: `Greeting request: { name: 'Lambda', timestamp: '...' }`
 - `END RequestId: ...`
 - `REPORT RequestId: ... Duration: X.XX ms Billed Duration: XX ms Memory Size: 128 MB Max Memory Used: XX MB Init Duration: XXX.XX ms`
 
-The `Init Duration` line appears only on cold start invocations. If you invoke the function a second time quickly, it won’t appear—the second invocation reused the warm execution environment.
+يظهر سطر `Init Duration` في استدعاءات البدء البارد فقط. إذا استدعيت الدالة مرة ثانية بسرعة، فلن يظهر—لأن الاستدعاء الثاني أعاد استخدام بيئة التنفيذ الدافئة.
 
-## Stretch Goal: Environment Variable
+## هدف إضافي: متغيّر بيئة
 
-### Set the environment variable
+### ضبط متغيّر البيئة
 
 ```bash
 aws lambda update-function-configuration \
@@ -423,7 +423,7 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-### Update the handler to use it
+### تحديث المعالج لاستخدامه
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -453,7 +453,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-### Rebuild and redeploy
+### إعادة البناء وإعادة النشر
 
 ```bash
 cd lambda
@@ -467,7 +467,7 @@ aws lambda update-function-code \
   --output json
 ```
 
-### Invoke and verify
+### الاستدعاء والتحقق
 
 ```bash
 aws lambda invoke \
@@ -481,7 +481,7 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected body:
+الجسم المتوقع:
 
 ```json
 {
@@ -490,11 +490,11 @@ Expected body:
 }
 ```
 
-The greeting prefix changed from `"Hello"` to `"Howdy"` without changing the code logic—only the environment variable.
+تغيّرت بادئة التحية من `"Hello"` إلى `"Howdy"` من دون تغيير منطق الكود—فقط متغيّر البيئة.
 
-## Stretch Goal: Cold Start Measurement
+## هدف إضافي: قياس البدء البارد
 
-Invoke with log tailing:
+استدعِ الدالة مع تتبّع السجل:
 
 ```bash
 aws lambda invoke \
@@ -507,7 +507,7 @@ aws lambda invoke \
   response.json
 ```
 
-The response includes a `LogResult` field containing base64-encoded log output. You can capture and decode it in a single invocation by swapping `--output json` for `--query 'LogResult' --output text` — that pipes the log string straight into `base64 --decode`:
+تتضمن الاستجابة حقل `LogResult` يحتوي إخراج سجل مشفّرًا بـ base64. يمكنك التقاطه وفكّ ترميزه في استدعاء واحد باستبدال `--output json` بـ `--query 'LogResult' --output text` — فهذا يوجّه سلسلة السجل مباشرة إلى `base64 --decode`:
 
 ```bash
 aws lambda invoke \
@@ -521,22 +521,22 @@ aws lambda invoke \
   response.json | base64 --decode
 ```
 
-`response.json` is still written (it’s the positional output-file argument), and the `LogResult` field lands on stdout for the pipe.
+يُكتب `response.json` رغم ذلك (فهو معامل ملف الإخراج الموضعي)، ويصل حقل `LogResult` إلى stdout من أجل الأنبوب.
 
-On a cold start, the output includes:
+في البدء البارد، يتضمن الإخراج:
 
 ```
 REPORT RequestId: abc-123 Duration: 12.34 ms Billed Duration: 13 ms
 Memory Size: 128 MB Max Memory Used: 67 MB Init Duration: 198.45 ms
 ```
 
-Invoke immediately again. The `Init Duration` field disappears—the second invocation was a warm start.
+استدعِ الدالة فورًا مرة أخرى. يختفي حقل `Init Duration`—لأن الاستدعاء الثاني كان بدءًا دافئًا.
 
-## Cleanup
+## التنظيف
 
-> **Note**
+> **ملاحظة**
 >
-> The `my-frontend-app-api` function and its CloudWatch log group are reused throughout the rest of this course—in the API Gateway, DynamoDB, Secrets Manager, and CloudWatch sections. Only clean up if you’re done with the course entirely.
+> تُعاد دالة `my-frontend-app-api` ومجموعة سجلات CloudWatch الخاصة بها استخدامًا في بقية هذه الدورة—في أقسام API Gateway وDynamoDB وSecrets Manager وCloudWatch. لا تنظّف إلا إذا انتهيت من الدورة بالكامل.
 
 ```bash
 aws lambda delete-function \

@@ -1,10 +1,10 @@
 ---
-title: "Subscriptions with tRPC"
-lang: en
+title: "الاشتراكات (Subscriptions) في tRPC"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/subscriptions-with-trpc"
 ---
 
-If you need real-time updates (like for chat or notifications), tRPC supports subscriptions (via SSE or WebSockets). You’ll set up a special link on the client and define `.subscription()` procedures on the server. Check tRPC docs for the exact approach (since it can differ between SSE and WS). Example snippet on the server:
+إذا كنت بحاجة إلى تحديثات فورية (مثل الدردشة أو الإشعارات)، فإن tRPC يدعم الاشتراكات (عبر SSE أو WebSockets). ستُعدّ رابطًا خاصًا على العميل وتُعرّف إجراءات `.subscription()` على الخادم. راجع توثيق tRPC للنهج الدقيق (بما أنّه قد يختلف بين SSE و WS). مثال مقتطف على الخادم:
 
 ```typescript
 onNewUser: publicProcedure.subscription(() => {
@@ -12,7 +12,7 @@ onNewUser: publicProcedure.subscription(() => {
 });
 ```
 
-Then on the client:
+ثم على العميل:
 
 ```typescript
 client.user.onNewUser.subscribe(undefined, {

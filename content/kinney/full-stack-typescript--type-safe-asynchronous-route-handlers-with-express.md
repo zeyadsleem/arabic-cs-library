@@ -1,10 +1,10 @@
 ---
-title: "Type Safe Asynchronous Route Handlers"
-lang: en
+title: "معالجات المسارات غير المتزامنة الآمنة الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-safe-asynchronous-route-handlers-with-express"
 ---
 
-Express doesn’t natively handle promises, which can lead to unhandled rejections. A type-safe wrapper helps:
+لا يتعامل Express أصلًا مع الوعود (promises)، ما قد يؤدي إلى رفضات غير معالَجة. ويساعد غلاف آمن الأنواع في ذلك:
 
 ```typescript
 // Define a wrapper for async route handlers
@@ -35,4 +35,4 @@ app.get(
 );
 ```
 
-This pattern ensures that any errors in async handlers are properly passed to Express’s error handling middleware.
+يضمن هذا النمط تمرير أي أخطاء في المعالجات غير المتزامنة تمريرًا سليمًا إلى وسيط معالجة الأخطاء في Express.

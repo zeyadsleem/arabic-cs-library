@@ -1,68 +1,68 @@
 ---
-title: "Differences In Tailwind 4"
-lang: en
+title: "الفروق في Tailwind 4"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-4"
 ---
 
-Tailwind 4 is a ground-up rewrite of the framework.
+Tailwind 4 إعادة كتابة كاملة للأُطر من الأساس.
 
-- **[Oxide Engine](https://stevekinney.com/courses/tailwind/tailwind-oxide):** Rust-powered engine with 5x faster full builds, 100x faster incremental builds
-- **CSS-First Configuration:** Configure in CSS with `@theme`, `@utility`, `@custom-variant`, `@plugin` (JavaScript config still supported via `@config`)
-- **Native CSS Variables:** `@theme` tokens automatically exposed as CSS custom properties
-- **Modern CSS:** Native `@layer`, [`@property`](https://stevekinney.com/courses/tailwind/at-property), [`color-mix()`](https://stevekinney.com/courses/tailwind/color-mix), [OKLCH colors](https://stevekinney.com/courses/tailwind/oklch-colors)
-- **[OKLCH Colors](https://stevekinney.com/courses/tailwind/oklch-colors):** Perceptually uniform, P3 wide gamut support
-- **Simplified Installation:** Single `@import "tailwindcss";` replaces three directives
-- **Automatic Content Detection:** No `content` array needed, respects `.gitignore`
-- **New Utilities:** [Container queries](https://stevekinney.com/courses/tailwind/container-queries), 3D transforms, gradients (radial/conic), text shadows, masks, [`not-*`](https://stevekinney.com/courses/tailwind/not-utility), [`starting:`](https://stevekinney.com/courses/tailwind/starting-style), `user-valid/invalid`, `pointer-*`, `inset-shadow/ring`, [`inert`](https://stevekinney.com/courses/tailwind/inert-utility)
-- **Composable Variants:** Chain [`group-*`](https://stevekinney.com/courses/tailwind/group-and-peer-modifiers), [`peer-*`](https://stevekinney.com/courses/tailwind/group-and-peer-modifiers), [`has-*`](https://stevekinney.com/courses/tailwind/has-utility), [`not-*`](https://stevekinney.com/courses/tailwind/not-utility)
-- **Breaking Changes:** Deprecated utilities removed, border defaults to `currentColor`, CSS variables use `(…)` not `[…]`, variants in `@layer components` changed
-- **Browser Support:** Safari 16.4+, Chrome 111+, Firefox 128+ (use v3.x for older browsers)
-- **Upgrade Tool:** `npx @tailwindcss/upgrade@next` automates v3 to Tailwind 4 migration
-- **Philosophy:** Utility-first with semantic CSS variables, feels like native CSS
+- **[محرك Oxide](https://stevekinney.com/courses/tailwind/tailwind-oxide):** محرك مبني بـ Rust مع بناءات كاملة أسرع 5 مرات، وبناءات تزايدية أسرع 100 مرة
+- **تهيئة أولًا بـ CSS:** هيّئ في CSS باستخدام `@theme` و`@utility` و`@custom-variant` و`@plugin` (تهيئة JavaScript ما زالت مدعومة عبر `@config`)
+- **متغيّرات CSS الأصلية:** رموز `@theme` تُعرض تلقائيًا كخصائص CSS مخصصة
+- **CSS الحديث:** `@layer` الأصلية، [`@property`](https://stevekinney.com/courses/tailwind/at-property)، [`color-mix()`](https://stevekinney.com/courses/tailwind/color-mix)، [ألوان OKLCH](https://stevekinney.com/courses/tailwind/oklch-colors)
+- **[ألوان OKLCH](https://stevekinney.com/courses/tailwind/oklch-colors):** موحّدة إدراكيًا، مع دعم النطاق اللوني الواسع P3
+- **تثبيت مبسّط:** الأمر الواحد `@import "tailwindcss";` يحل محل ثلاثة توجيهات
+- **كشف تلقائي للمحتوى:** لا حاجة إلى مصفوفة `content`، ويُحترم `.gitignore`
+- **أدوات جديدة:** [استعلامات الحاويات](https://stevekinney.com/courses/tailwind/container-queries)، وتحويلات ثلاثية الأبعاد، والتدرجات (الشعاعية/المخروطية)، وظلال النصوص، والأقنعة، و[`not-*`](https://stevekinney.com/courses/tailwind/not-utility)، و[`starting:`](https://stevekinney.com/courses/tailwind/starting-style)، و`user-valid/invalid`، و`pointer-*`، و`inset-shadow/ring`، و[`inert`](https://stevekinney.com/courses/tailwind/inert-utility)
+- **متغيّرات قابلة للتركيب:** سلسلة [`group-*`](https://stevekinney.com/courses/tailwind/group-and-peer-modifiers) و[`peer-*`](https://stevekinney.com/courses/tailwind/group-and-peer-modifiers) و[`has-*`](https://stevekinney.com/courses/tailwind/has-utility) و[`not-*`](https://stevekinney.com/courses/tailwind/not-utility)
+- **تغييرات كاسرة:** إزالة الأدوات المهجورة، والحد الافتراضي أصبح `currentColor`، ومتغيّرات CSS تستخدم `(…)` لا `[…]`، وتغيّر المتغيّرات في `@layer components`
+- **دعم المتصفحات:** Safari 16.4+، Chrome 111+، Firefox 128+ (استخدم v3.x للمتصفحات الأقدم)
+- **أداة الترقية:** `npx @tailwindcss/upgrade@next` تؤتمت الترحيل من v3 إلى Tailwind 4
+- **الفلسفة:** الأولوية للأدوات مع متغيّرات CSS دلالية، تبدو كـ CSS أصلي
 
-## Breaking Changes Checklist
+## قائمة تحقق التغييرات الكاسرة
 
-When migrating from Tailwind CSS v3 to Tailwind 4, use this checklist to ensure a smooth transition:
+عند الترحيل من Tailwind CSS v3 إلى Tailwind 4، استخدم قائمة التحقق هذه لضمان انتقال سلس:
 
-### Configuration Changes
+### تغييرات التهيئة
 
-- **Replace CSS imports:** Change `@tailwind base; @tailwind components; @tailwind utilities;` to `@import "tailwindcss";`
-- **Update config format:** Consider migrating from JavaScript config to CSS-first configuration using `@theme`, `@utility`, etc.
-- **Remove content array:** Automatic content detection means you can remove the `content` configuration (but JavaScript config is still supported)
-- **Update file extensions:** Ensure your build process recognizes the new CSS-first configuration syntax
+- **استبدل استيرادات CSS:** غيّر `@tailwind base; @tailwind components; @tailwind utilities;` إلى `@import "tailwindcss";`
+- **حدّث صيغة التهيئة:** فكّر في الترحيل من تهيئة JavaScript إلى التهيئة أولًا بـ CSS باستخدام `@theme` و`@utility` وغيرها.
+- **أزل مصفوفة المحتوى:** الكشف التلقائي للمحتوى يعني أنه يمكنك إزالة تهيئة `content` (لكن تهيئة JavaScript ما زالت مدعومة)
+- **حدّث امتدادات الملفات:** تأكد من أن عملية البناء لديك تتعرّف على صيغة التهيئة الجديدة أولًا بـ CSS
 
-### Removed/Deprecated Utilities
+### الأدوات المحذوفة/المهجورة
 
-- **Remove deprecated utilities:** Check for and replace any utilities that were deprecated in v3 and removed in Tailwind 4
-- **Update transform utilities:** Some transform utilities may have changed syntax or been consolidated
-- **Check filter utilities:** Verify backdrop-filter and filter utilities work as expected
+- **أزل الأدوات المهجورة:** افحص أي أدوات هُجرت في v3 وأُزيلت في Tailwind 4 واستبدلها
+- **حدّث أدوات التحويل:** بعض أدوات التحويل قد تتغير صيغتها أو تُدمج
+- **افحص أدوات التصفية:** تحقق من أن أدوات backdrop-filter وfilter تعمل كما هو متوقع
 
-### Border and Color Changes
+### تغييرات الحدود والألوان
 
-- **Border color defaults:** Borders now default to `currentColor` instead of gray - add explicit border colors where needed
-- **Update border utilities:** Check that border styles render as expected with the new defaults
-- **Verify color palette:** Ensure custom colors work with the new OKLCH color system
+- **ألوان الحدود الافتراضية:** أصبحت الحدود افتراضيًا `currentColor` بدلًا من الرمادي — أضف ألوان حدود صريحة عند الحاجة
+- **حدّث أدوات الحدود:** تحقق من أن أنماط الحدود تُصيَّر كما هو متوقع مع القيم الافتراضية الجديدة
+- **تحقق من لوحة الألوان:** تأكد من أن الألوان المخصصة تعمل مع نظام ألوان OKLCH الجديد
 
-### CSS Variable Syntax
+### صيغة متغيّرات CSS
 
-- **Update variable syntax:** Change CSS variables from square brackets `[…]` to parentheses `(…)`
-- **Example:** `var(--my-color-[500])` becomes `var(--my-color-(500))`
-- **Check custom properties:** Verify all custom CSS variables use the new syntax
+- **حدّث صيغة المتغيّرات:** غيّر متغيّرات CSS من الأقواس المربعة `[…]` إلى الأقواس `(…)`
+- **مثال:** `var(--my-color-[500])` تصبح `var(--my-color-(500))`
+- **افحص الخصائص المخصصة:** تحقق من أن جميع متغيّرات CSS المخصصة تستخدم الصيغة الجديدة
 
-### Component Layer Changes
+### تغييرات طبقة المكوّنات
 
-- **Review component styles:** Variants in `@layer components` have changed behavior
-- **Update component CSS:** Check that component-level styles work as expected
-- **Test specificity:** Ensure component styles have correct specificity with the new layer system
+- **راجع أنماط المكوّنات:** تغيّر سلوك المتغيّرات في `@layer components`
+- **حدّث CSS المكوّنات:** تحقق من أن أنماط مستوى المكوّن تعمل كما هو متوقع
+- **اختبر التخصيص:** تأكد من أن أنماط المكوّنات تمتلك التخصيص الصحيح مع نظام الطبقات الجديد
 
-## Automated Migration
+## الترحيل المؤتمت
 
-Consider using the official upgrade tool to automate many of these changes. Just make sure you do it on a clean git branch. I’ve never seen one of these tools be perfect.
+فكّر في استخدام أداة الترقية الرسمية لأتمتة كثير من هذه التغييرات. فقط تأكد من أنك تفعل ذلك على فرع git نظيف. لم أرَ واحدة من هذه الأدوات مثالية قط.
 
 ```bash
 npx @tailwindcss/upgrade@next
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Always backup your project before running automated migration tools and review all changes carefully before committing.
+> احتفظ دائمًا بنسخة احتياطية من مشروعك قبل تشغيل أدوات الترحيل المؤتمتة، وراجع جميع التغييرات بعناية قبل الإيداع.

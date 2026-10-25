@@ -1,20 +1,20 @@
 ---
-title: "Strictness Options for React"
-lang: en
+title: "خيارات الصرامة في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/strictness-options-for-react"
 ---
 
-TypeScript’s strict mode isn’t just about appeasing the type-checker gods—it’s about catching the subtle bugs that would otherwise ruin your Tuesday at 3 PM. When you’re building React applications, certain strictness options act like an early warning system for the kind of runtime errors that make users click away and engineers question their life choices.
+الوضع الصارم في TypeScript لا يقتصر على إرضاء آلهة فحص الأنواع — إنه عن التقاط الأخطاء الدقيقة التي كانت ستبيد يوم ثلاثاء في الساعة الثالثة بعد الظهر لولاها. وحين تبني تطبيقات React، تتصرّف بعض خيارات الصرامة كأنها نظام إنذار مبكر من نوع أخطاء وقت التشغيل التي تجعل المستخدمين ينقرون بعيدًا ويجعل المهندسين يتساءلون عن خياراتهم في الحياة.
 
-We’ll explore the specific TypeScript compiler options that provide the biggest bang for your buck in React codebases, understand why they matter for component reliability, and see practical examples of the bugs they prevent. By the end, you’ll know which options to enable first and how to gradually adopt stricter settings without your codebase turning into a sea of angry red squiggles.
+سنستكشف خيارات مُصرِّف TypeScript المحدّدة التي تمنحك أكبر عائد في مستودعات React، ونفهم لماذا تهمّ لثبات المكوّنات، ونرى أمثلة عملية على الأخطاء التي تمنعها. وفي النهاية، ستعرف أي الخيارات ينبغي تفعيلها أولًا وكيف تتبنّى إعدادات أكثر صرامة تدريجيًا من دون أن يتحوّل مستودعك إلى بحر من الخطوط المتعرّجة الحمراء الغاضبة.
 
-## The Sweet Spot: Essential Strict Options
+## النقطة المثلى: خيارات الصرامة الأساسية
 
-Not all TypeScript strict options are created equal. Some catch critical bugs; others feel like pedantic busywork. For React applications, these four options provide the most value:
+ليست جميع خيارات صرامة TypeScript متساوية. بعضها يلتقط أخطاء حرجة، وبعضها الآخر يبدو عملاً مملًا وإصرارًا على التفاصيل. وبالنسبة لتطبيقات React، تقدّم هذه الخيارات الأربعة أكبر قيمة:
 
-### `strict: true` - The Foundation
+### `strict: true` - الأساس
 
-The nuclear option that enables most strict checks at once. But here’s the thing—you probably want to enable individual options incrementally rather than flipping this switch on an existing codebase (unless you enjoy debugging 400 TypeScript errors).
+الخيار النووي الذي يفعّل معظم فحوص الصرامة دفعة واحدة. لكن إليك المسألة — من المرجّح أنك ترغب في تفعيل الخيارات الفردية تدريجيًا بدلًا من قلب هذا المفتاح في مستودع قائم (ما لم تكن تستمتع بتصحيح 400 خطأ في TypeScript).
 
 ```json
 // tsconfig.json
@@ -25,11 +25,11 @@ The nuclear option that enables most strict checks at once. But here’s the thi
 }
 ```
 
-This enables several sub-options we’ll discuss individually. For new projects, start here. For existing ones, read on.
+هذا يفعّل عدة خيارات فرعية سنناقشها كلًا على حدة. للمشاريع الجديدة، ابدأ من هنا. أما القائمة منها، فواصل القراءة.
 
-### `noImplicitAny: true` - Stop Guessing Types
+### `noImplicitAny: true` - توقّف عن تخمين الأنواع
 
-This prevents TypeScript from falling back to the dreaded `any` type when it can’t infer what you meant. In React land, this catches props that should be typed, event handlers without proper signatures, and those mysterious `useState()` calls.
+هذا يمنع TypeScript من الرجوع إلى نوع `any` المرعب عندما لا يستطيع استنتاج ما قصدته. في عالم React، يلتقط هذا الخصائص التي ينبغي كتابتها بأنواع، ومعالِج الأحداث بلا توقيعات سليمة، وتلك الاستدعاءات الغامضة لـ `useState()`.
 
 ```typescript
 // ❌ Without noImplicitAny - compiles but risky
@@ -49,11 +49,11 @@ function UserProfile({ user }: { user: User }) {
 }
 ```
 
-The payoff: You’ll catch typos in prop names, missing properties, and data structure mismatches before they hit production.
+العائد: ستلتقط الأخطاء الإملائية في أسماء الخصائص والخصائص الناقصة وتعارضات بنى البيانات قبل أن تصل إلى الإنتاج.
 
-### `strictNullChecks: true` - Embrace the Null
+### `strictNullChecks: true` - تبنَّ حالة الـ null
 
-This one’s a game-changer for React apps. It makes TypeScript distinguish between `T` and `T | null | undefined`, forcing you to handle the reality that data might not exist.
+هذا الخيار يغيّر قواعد اللعبة في تطبيقات React. فهو يجعل TypeScript يميّز بين `T` و`T | null | undefined`، ويجبرك على التعامل مع حقيقة أن البيانات قد لا توجد.
 
 ```typescript
 // ❌ Without strictNullChecks - runtime error waiting to happen
@@ -81,13 +81,13 @@ function UserProfile({ user }: Props) {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> This option catches more React bugs than any other. Optional props, API responses that might be null, and async state all become much safer.
+> يلتقط هذا الخيار أخطاء React أكثر من أي خيار آخر. فالخصائص الاختيارية واستجابات API التي قد تكون null والحالة غير المتزامنة — كلها تصبح أكثر أمانًا بكثير.
 
-### `noImplicitReturns: true` - Every Path Must Return
+### `noImplicitReturns: true` - كل مسار يجب أن يُعيد قيمة
 
-React components should always return JSX (or `null`). This option ensures every code path in your functions returns something, preventing those confusing “undefined is not valid JSX” errors.
+ينبغي لمكوّنات React أن تُعيد JSX (أو `null`) دائمًا. يضمن هذا الخيار أن كل مسار شيفري في دوالك يُعيد شيئًا ما، ما يمنع أخطاء «undefined is not valid JSX» المحيّرة.
 
 ```typescript
 // ❌ Without noImplicitReturns - missing return in some branches
@@ -107,9 +107,9 @@ function ConditionalComponent({ shouldShow, data }: Props) {
 }
 ```
 
-### `strictFunctionTypes: true` - Parameter Safety
+### `strictFunctionTypes: true` - أمان المعاملات
 
-This ensures function parameters are checked more rigorously. It’s particularly useful for event handlers and callback props in React.
+يضمن هذا أن معاملات الدوال تُفحص بصرامة أكبر. وهو مفيد خصوصًا لمعالِج الأحداث وخصائص الاستدعاء (callback props) في React.
 
 ```typescript
 interface Props {
@@ -135,13 +135,13 @@ function UserList({ onUserClick }: Props) {
 }
 ```
 
-## The Gradual Adoption Strategy
+## استراتيجية التبنّي التدريجي
 
-Enabling strict options on an existing React codebase doesn’t have to be painful. Here’s a battle-tested approach:
+لا يلزم أن يكون تفعيل خيارات الصرامة في مستودع React قائم بالأمر المؤلم. إليك نهجًا مجرَّبًا:
 
-### Step 1: Start with `noImplicitAny`
+### الخطوة 1: ابدأ بـ `noImplicitAny`
 
-This usually has the highest error-to-value ratio. Most errors are about adding explicit type annotations—tedious but straightforward.
+عادةً ما يكون لهذا الخيار أعلى نسبة أخطاء إلى قيمة. معظم الأخطاء تتعلق بإضافة تعليقات أنواع صريحة — مملّة لكن مباشرة.
 
 ```json
 // tsconfig.json
@@ -152,7 +152,7 @@ This usually has the highest error-to-value ratio. Most errors are about adding 
 }
 ```
 
-Fix the errors by adding proper prop interfaces, typing your `useState` calls, and annotating event handlers:
+أصلح الأخطاء بإضافة واجهات خصائص مناسبة، وكتابة أنواع استدعاءات `useState`، ووضع تعليقات على معالِج الأحداث:
 
 ```typescript
 // Before
@@ -162,9 +162,9 @@ const [user, setUser] = useState();
 const [user, setUser] = useState<User | null>(null);
 ```
 
-### Step 2: Add `strictNullChecks`
+### الخطوة 2: أضف `strictNullChecks`
 
-This one requires more thought but catches the most runtime bugs. Work through components one by one:
+هذا الخيار يتطلّب تفكيرًا أكثر لكنه يلتقط أكثر أخطاء وقت التشغيل. تعامل مع المكوّنات واحدًا تلو الآخر:
 
 ```typescript
 // Common pattern: optional props become explicit
@@ -178,15 +178,15 @@ function UserProfile({ user }: Props) {
 }
 ```
 
-### Step 3: Layer on the Rest
+### الخطوة 3: أضف الباقي طبقة فوق طبقة
 
-Once those two are solid, add `noImplicitReturns` and `strictFunctionTypes`. These typically generate fewer errors but catch subtle edge cases.
+بعد أن يتصفّن الخياران، أضف `noImplicitReturns` و`strictFunctionTypes`. فهما يُنتجان عادةً أخطاء أقل لكنهما يلتقطان حالات حدّية دقيقة.
 
-## Real-World Gotchas and Solutions
+## العقود والحلول في العالم الحقيقي
 
-### The Optional Prop Trap
+### فخّ الخاصية الاختيارية
 
-One of the most common strictNullChecks errors in React:
+أحد أكثر أخطاء `strictNullChecks` شيوعًا في React:
 
 ```typescript
 interface Props {
@@ -209,9 +209,9 @@ function Header({ title = 'Untitled' }: Props) {
 }
 ```
 
-### The Event Handler Signature Dance
+### رقصة توقيع معالِج الحدث
 
-Strict function types can be finicky with event handlers:
+قد تكون أنواع الدوال الصارمة عنيدة مع معالِج الأحداث:
 
 ```typescript
 interface Props {
@@ -238,9 +238,9 @@ function Input({ onChange }: Props) {
 }
 ```
 
-### Async Data Loading Patterns
+### أنماط تحميل البيانات غير المتزامنة
 
-`strictNullChecks` shines with async state:
+يتألق `strictNullChecks` مع الحالة غير المتزامنة:
 
 ```typescript
 interface User {
@@ -275,13 +275,13 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Beyond the Basics: Advanced Strict Options
+## ما وراء الأساسيات: خيارات الصرامة المتقدّمة
 
-Once you’re comfortable with the essentials, consider these power-user options:
+بعد أن ترتاح لإتقان الأساسيات، فكّر في خيارات المستخدم المتقدّم هذه:
 
 ### `exactOptionalPropertyTypes: true`
 
-Makes optional properties truly optional—you can’t explicitly set them to `undefined`:
+يجعل الخصائص الاختيارية اختيارية حقًا — فلا يمكنك تعيينها صراحةً إلى `undefined`:
 
 ```typescript
 interface Props {
@@ -298,7 +298,7 @@ const props: Props = {}; // Also OK
 
 ### `noUncheckedIndexedAccess: true`
 
-Makes array and object index access safer:
+يجعل الوصول إلى عناصر المصفوفات والكائنات بمفاتيح أأمن:
 
 ```typescript
 const items = ['a', 'b', 'c'];
@@ -314,33 +314,33 @@ if (item) {
 }
 ```
 
-## The Tradeoff Assessment
+## تقييم المقايضة
 
-**Pros of strict options:**
+**مزايا خيارات الصرامة:**
 
-- Catch runtime errors at compile time
-- Force explicit handling of edge cases
-- Better IDE support and refactoring safety
-- Self-documenting code (types reveal intent)
-- Easier debugging (fewer “undefined is not a function” errors)
+- التقاط أخطاء وقت التشغيل وقت التجميع
+- فرض التعامل الصريح مع الحالات الحدّية
+- دعم أفضل لمحرّرات الشيفرة وأمان إعادة الهيكلة
+- شيفرة توثّق نفسها (الأنواع تكشف النية)
+- تصحيح أسهل (أخطاء «undefined is not a function» أقلّ)
 
-**Cons to consider:**
+**العيوب التي ينبغي قارنها:**
 
-- Initial migration effort on existing codebases
-- More verbose code (sometimes)
-- Learning curve for team members new to strict TypeScript
-- Occasional false positives where you know better than the compiler
+- جهد أولي للترحيل في المستودعات القائمة
+- شيفرة أكثر إسهابًا (في بعض الأحيان)
+- منحنى تعلّم لأعضاء الفريق الجدد على TypeScript الصارم
+- إيجابيات كاذبة عرضية في مواضع تعرف فيها أكثر من المُصرِّف
 
-**Performance impact:** Minimal at runtime—most strictness is compile-time only. The main cost is development velocity during adoption.
+**الأثر على الأداء:** ضئيل وقت التشغيل — معظم الصرامة تخصّ وقت التجميع فقط. والتكلفة الأساسية هي سرعة التطوير أثناء التبنّي.
 
-## Making the Call
+## اتخاذ القرار
 
-Start with `noImplicitAny` and `strictNullChecks` on any React codebase. These two catch the most bugs with reasonable effort. Add the others gradually as your team gets comfortable.
+ابدأ بـ `noImplicitAny` و`strictNullChecks` في أي مستودع React. فهاتان الخياران يلتقطان أكبر عدد من الأخطاء بجهد معقول. أضف الباقي تدريجيًا مع راحة فريقك.
 
-For new projects, enable `strict: true` from day one. The development overhead pays for itself within weeks.
+للمشاريع الجديدة، فعّل `strict: true` من اليوم الأول. فعبء التطوير يسدّد نفسه خلال أسابيع.
 
-> **Tip**
+> **نصيحة**
 >
-> Use `// @ts-expect-error` comments for the rare cases where you legitimately know better than TypeScript, but add a comment explaining why.
+> استخدم تعليقات `// @ts-expect-error` في الحالات النادرة التي تعرف فيها أنت أكثر من TypeScript، لكن أضف تعليقًا يشرح السبب.
 
-The goal isn’t type purity for its own sake—it’s shipping React applications that don’t break when users interact with them in ways you didn’t anticipate. Strict TypeScript options are your first line of defense against the chaos of the runtime world.
+الهدف ليس صفاء الأنواع لذاته — بل هو تسليم تطبيقات React لا تنكسر عندما يتفاعل المستخدمون معها بطرق لم تتوقّعها. وخيارات TypeScript الصارمة هي خط دفاعك الأول أمام فوضى عالم وقت التشغيل.

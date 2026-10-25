@@ -1,22 +1,22 @@
 ---
-title: "React Server Components Types"
-lang: en
+title: "أنواع مكوّنات خادم React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/react-server-components-types"
 ---
 
-React Server Components fundamentally change how we think about the client-server boundary in React applications. Instead of rendering everything on the client and fetching data through APIs, some components run on the server, some on the client, and some can do both depending on where they’re imported. This flexibility is powerful, but it comes with a catch: you need to be deliberate about what data crosses the network and how you enforce these boundaries with TypeScript.
+تغيّر مكوّنات خادم React (React Server Components) جوهريًا الطريقة التي نفكّر بها في حدود العميل والخادم داخل تطبيقات React. بدلًا من تصيير كل شيء في جهة العميل وجلب البيانات عبر واجهات برمجية، تعمل بعض المكوّنات على الخادم، وبعضها في العميل، وبعضها يستطيع العمل في الاثنين حسب مكان استيرادها. هذه المرونة قوية، لكنها تأتي مع شرط: عليك أن تكون مقصودًا فيما يعبر الشبكة من بيانات، وكيف تفرض هذه الحدود باستخدام TypeScript.
 
-We’re going to explore how to create type-safe contracts between your server and client components, ensure data serialization works correctly, and catch boundary violations at compile time rather than runtime. By the end, you’ll have patterns for building React Server Components that are both performant and bulletproof.
+سنستكشف كيف تنشئ عقودًا آمنة النوع بين مكوّنات الخادم والعميل، وتضمن أن يعمل التسلسل (serialization) للبيانات بشكل صحيح، وتلتقط مخالفات الحدود في وقت التصريف (compile time) بدلًا من وقت التشغيل. وفي النهاية، ستملك أنماطًا لبناء مكوّنات خادم React تكون سريعة ومتينة في آن واحد.
 
-## Understanding the Component Boundary
+## فهم حدود المكوّنات
 
-React Server Components introduce three types of components:
+تقدّم مكوّنات خادم React ثلاثة أنواع من المكوّنات:
 
-- **Server Components**: Run only on the server during rendering
-- **Client Components**: Run in the browser (marked with `"use client"`)
-- **Shared Components**: Can run in either environment depending on where they’re imported
+- **مكوّنات الخادم**: تعمل على الخادم فقط أثناء التصيير
+- **مكوّنات العميل**: تعمل في المتصفح (تُوسَم بـ `"use client"`)
+- **المكوّنات المشتركة**: يمكن أن تعمل في أي من البيئتين حسب مكان استيرادها
 
-The tricky part is that data flowing between these environments must be serializable—no functions, class instances, or other non-JSON values. TypeScript can help enforce these rules, but you need to set up the right constraints.
+النقطة الصعبة أن البيانات المتدفقة بين هذه البيئات يجب أن تكون قابلة للتسلسل — لا دوال ولا نسخ أصناف ولا قيم أخرى غير قابلة لـ JSON. يمكن لـ TypeScript أن يساعد في فرض هذه القواعد، لكن عليك إعداد القيود المناسبة.
 
 ```typescript
 // ✅ Server Component - runs on server
@@ -39,11 +39,11 @@ export function AddToCartButton({ productId }: { productId: string }) {
 }
 ```
 
-The challenge comes when passing data between these boundaries. Let’s make it type-safe.
+يظهر التحدي عند تمرير البيانات بين هذه الحدود. لنجعل ذلك آمنًا النوع.
 
-## Creating Serializable Type Contracts
+## إنشاء عقود أنواع قابلة للتسلسل
 
-First, we need types that represent only serializable data. Here’s a utility type that strips out non-serializable values:
+أولًا، نحتاج إلى أنواع تمثّل البيانات القابلة للتسلسل فقط. إليك نوعًا مساعدًا يُزيل القيم غير القابلة للتسلسل:
 
 ```typescript
 // Utility type for serializable data
@@ -57,7 +57,7 @@ type SerializableArray = ReadonlyArray<Serializable>;
 type EnsureSerializable<T> = T extends Serializable ? T : never;
 ```
 
-Now let’s define our data contracts:
+الآن لنعرّف عقود بياناتنا:
 
 ```typescript
 // Raw database/API types (server-only)
@@ -82,11 +82,11 @@ export interface SerializableProduct {
 type ValidProduct = EnsureSerializable<SerializableProduct>; // ✅ Compiles
 ```
 
-This pattern catches serialization issues at compile time rather than runtime.
+هذا النمط يلتقط مشكلات التسلسل في وقت التصريف بدلًا من وقت التشغيل.
 
-## Server-Only and Client-Only Type Guards
+## حرّاس الأنواع الخاصة بالخادم والعميل
 
-We can create stronger boundaries using TypeScript’s module resolution and branded types:
+يمكننا إنشاء حدود أقوى باستخدام حلّ الوحدات (module resolution) في TypeScript والأنواع الموسومة (branded types):
 
 ```typescript
 // server-only-types.ts
@@ -118,7 +118,7 @@ export interface ClientSafeProduct {
 }
 ```
 
-Now create transformation functions with explicit type boundaries:
+الآن أنشئ دوال تحويل بحدود أنواع صريحة:
 
 ```typescript
 // server/transforms.ts
@@ -143,9 +143,9 @@ export async function getProductsForClient(): Promise<ClientSafeProduct[]> {
 }
 ```
 
-## Enforcing Component Boundaries with Props
+## فرض حدود المكوّنات عبر الخصائص (props)
 
-Let’s create wrapper types that enforce correct prop usage:
+لننشئ أنواع غلاف تفرض الاستخدام الصحيح للخصائص:
 
 ```typescript
 // Component boundary types
@@ -182,7 +182,7 @@ export function ProductClientCard(
 }
 ```
 
-This approach catches prop violations at compile time:
+يكشف هذا الأسلوب مخالفات الخصائص في وقت التصريف:
 
 ```typescript
 // ❌ TypeScript error - Date is not serializable
@@ -200,9 +200,9 @@ This approach catches prop violations at compile time:
 }} />
 ```
 
-## Runtime Validation with Zod
+## التحقق في وقت التشغيل باستخدام Zod
 
-For production applications, combine TypeScript with runtime validation using Zod:
+للتطبيقات الإنتاج، ادمج TypeScript مع التحقق في وقت التشغيل باستخدام Zod:
 
 ```typescript
 import { z } from 'zod';
@@ -245,13 +245,13 @@ export default async function ProductList() {
 }
 ```
 
-This gives you both compile-time and runtime safety for your component boundaries.
+يمنحك هذا أمانًا في وقت التصريف وفي وقت_runtime معًا لحدود المكوّنات لديك.
 
-## Handling Complex Serialization Patterns
+## التعامل مع أنماط التسلسل المعقّدة
 
-### Discriminated Unions
+### الاتحاديات المُميَّزة (Discriminated Unions)
 
-When passing complex state, use discriminated unions to maintain type safety:
+عند تمرير حالة معقّدة، استخدم الاتحاديات المُميَّزة للحفاظ على أمان النوع:
 
 ```typescript
 type ClientSafeState =
@@ -274,9 +274,9 @@ export function ProductDisplay({
 }
 ```
 
-### Nested Data Structures
+### هياكل البيانات المتداخلة
 
-For deeply nested objects, create recursive serialization utilities:
+للكائنات المتداخلة بعمق، أنشئ أدوات تسلسل تكرارية (recursive):
 
 ```typescript
 type DeepSerializable<T> = T extends (infer U)[]
@@ -305,9 +305,9 @@ type SafeComplexData = DeepSerializable<ComplexServerData>;
 // Result: { user: { profile: { createdAt: string; preferences: { theme: string; notifications: boolean } } } }
 ```
 
-## Common Pitfalls and Solutions
+## الأخطاء الشائعة وحلولها
 
-### Accidentally Passing Server Data
+### تمرير بيانات الخادم بالخطأ
 
 ```typescript
 // ❌ Common mistake - passing server objects directly
@@ -328,7 +328,7 @@ export default async function GoodExample() {
 }
 ```
 
-### Environment-Specific Imports
+### استيرادات خاصة ببيئة معيّنة
 
 ```typescript
 // server-utils.ts - mark as server-only
@@ -346,13 +346,13 @@ export function trackUserInteraction(event: string) {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Always install `server-only` and `client-only` packages to enforce environment boundaries at build time.
+> دائمًا ثبّت حزمتَي `server-only` و`client-only` لفرض حدود البيئة في وقت البناء.
 
-## Real-World Application Pattern
+## نمط تطبيق واقعي
 
-Here’s a complete pattern for a production app:
+إليك نمطًا كاملًا لتطبيق إنتاج:
 
 ```typescript
 // types/contracts.ts
@@ -412,21 +412,21 @@ export function UserProfileClient({
 }
 ```
 
-This pattern gives you:
+يمنحك هذا النمط:
 
-- ✅ Compile-time safety for data contracts
-- ✅ Clear separation of server and client concerns
-- ✅ Explicit serialization boundaries
-- ✅ Runtime validation when needed
-- ✅ Easy testing of individual components
+- ✅ أمانًا في وقت التصريف لعقود البيانات
+- ✅ فصلًا واضحًا بين شأني الخادم والعميل
+- ✅ حدود تسلسل صريحة
+- ✅ تحققًا في وقت التشغيل عند الحاجة
+- ✅ اختبارًا سهلًا لكل مكوّن على حدة
 
-## Next Steps
+## الخطوات التالية
 
-Now that you have type-safe boundaries between your server and client components, you can:
+الآن وقد كانت لديك حدود آمنة النوع بين مكوّنات الخادم والعميل، يمكنك:
 
-1. **Add runtime validation** with Zod schemas for production safety
-2. **Create reusable transformation utilities** for common serialization patterns
-3. **Set up ESLint rules** to catch boundary violations during development
-4. **Build testing utilities** that validate your serialization contracts
+1. **أضف تحققًا في وقت التشغيل** بمخططات Zod لأمان الإنتاج
+2. **أنشئ أدوات تحويل قابلة لإعادة الاستخدام** لأنماط التسلسل الشائعة
+3. **اضبط قواعد ESLint** لالتقاط مخالفات الحدود أثناء التطوير
+4. **ابنِ أدوات اختبار** تتحقّق من عقود التسلسل لديك
 
-The key is being explicit about your boundaries rather than hoping React’s serialization “just works.” With proper TypeScript contracts, you’ll catch issues at compile time and ship more reliable Server Components.
+المفتاح هو الوضوح الصريح بشأن حدودك بدلًا من الأمل بأن تسلسل React «يعمل كما ينبغي». مع عقود TypeScript صحيحة، ستلتقط المشكلات في وقت التصريف وتُنشر مكوّنات خادم أكثر موثوقية.

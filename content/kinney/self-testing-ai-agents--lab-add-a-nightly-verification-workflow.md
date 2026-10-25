@@ -1,110 +1,110 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow"
 ---
 
-This appendix lab turns the placeholder nightly story into a real workflow.
+يحوّل مختبر الملحق هذا قصة التشغيل الليلي النائبة إلى سير عمل حقيقي.
 
-The goal is not to make the nightly workflow huge. The goal is to make it useful.
+الهدف ليس أن يكون سير العمل الليلي ضخمًا. الهدف أن يكون مفيدًا.
 
-> **Prerequisite**
+> **المتطلب السابق**
 >
-> Complete [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) first. This lab also assumes the cross-browser smoke command and the core CI commands already exist.
+> أكمل [حلقات التحقق الليلي](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) أولًا. يفترض هذا المختبر أيضًا أن أمر الفحص السريع عبر المتصفحات وأوامر CI الأساسية موجودة بالفعل.
 
-## The task
+## المهمة
 
-Create a nightly GitHub Actions workflow that runs the slow or broad checks you deliberately kept out of the fast pull-request loop.
+أنشئ سير عمل ليليًا في GitHub Actions يشغّل الفحوصات البطيئة أو الواسعة التي أبعدتها عمدًا عن حلقة طلبات السحب السريعة.
 
-## Step 1: create the workflow file
+## الخطوة 1: إنشاء ملف سير العمل
 
-Create `.github/workflows/nightly.yml`.
+أنشئ `.github/workflows/nightly.yml`.
 
-Use both:
+استخدم كليهما:
 
 - `schedule`
 - `workflow_dispatch`
 
-I recommend scheduling it off the top of the hour. `17 8 * * *` is perfectly civilized.
+أوصي بجدولته بعيدًا عن رأس الساعة. التعبير `17 8 * * *` متحضر تمامًا.
 
-The lesson’s **The minimum nightly workflow** section in [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) shows the full YAML skeleton including the `schedule` + `workflow_dispatch` pair, a real `dependency-audit` job using `npm audit --audit-level=high`, and an explicit echo-based placeholder job that keeps the shape visible in the GitHub UI until the real automation lands. Use that as your starting point.
+يعرض قسم **الحد الأدنى لسير العمل الليلي** في درس [حلقات التحقق الليلي](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) هيكل YAML الكامل بما فيه زوج `schedule` + `workflow_dispatch`، ومهمة `dependency-audit` حقيقية تستخدم `npm audit --audit-level=high`، ومهمة نائبة صريحة قائمة على echo تُبقي الشكل مرئيًا في واجهة GitHub حتى تصل الأتمتة الحقيقية. استخدم ذلك كنقطة انطلاق.
 
-## Step 2: add the right jobs
+## الخطوة 2: إضافة المهام المناسبة
 
-Pick two or three jobs that actually belong in nightly. A strong starter set:
+اختر مهمتين أو ثلاثًا تنتمي فعلًا إلى التشغيل الليلي. مجموعة بداية قوية:
 
 - `cross-browser-smoke`
 - `dependency-audit`
-- `har-refresh-check` or another drift-sensitive upstream verification job
+- `har-refresh-check` أو مهمة تحقق أخرى في المنبع حساسة للانحراف
 
-If you already added performance budgets, a broader runtime or bundle check can live here too.
+إن كنت قد أضفت ميزانيات أداء بالفعل، فيمكن أن يعيش هنا أيضًا فحص أوسع لزمن التشغيل أو لحزمة البناء.
 
-## Step 3: keep the jobs readably separate
+## الخطوة 3: أبقِ المهام منفصلة بشكل مقروء
 
-Each job should:
+ينبغي لكل مهمة أن:
 
-- run one named command
-- upload artifacts on failure
-- use finite `retention-days`
-- write a short summary if the result needs explanation
+- تشغّل أمرًا واحدًا مسمّى
+- ترفع المخرجات عند الفشل
+- تستخدم `retention-days` محدودة
+- تكتب ملخصًا قصيرًا إن كانت النتيجة تحتاج إلى شرح
 
-Resist the urge to hide all of this behind one giant shell script. The workflow should stay legible in the GitHub UI.
+قاوم الرغبة في إخفاء كل هذا خلف سكربت صدفة واحد عملاق. ينبغي أن يبقى سير العمل مقروءًا في واجهة GitHub.
 
-## Step 4: define the failure handoff
+## الخطوة 4: تحديد تسليم الفشل
 
-Choose one of these follow-up paths and document it in the workflow comments or repository docs:
+اختر أحد مسارات المتابعة هذه ووثّقه في تعليقات سير العمل أو وثائق المستودع:
 
-- open an issue
-- open a pull request for machine-generated updates
-- upload artifacts and require an agent or human to inspect them the next day
+- فتح مشكلة
+- فتح طلب سحب للتحديثات المولّدة آليًا
+- رفع المخرجات وطلب أن يفحصها وكيل أو إنسان في اليوم التالي
 
-The important part is that you choose one. Nightly failures cannot just sit there being red in a tab nobody opens.
+الجزء المهم هو أن تختار واحدًا. فلا يمكن لأعطال التشغيل الليلي أن تبقى حمراء في تبويب لا يفتحه أحد.
 
-## Step 5: verify the unhappy path
+## الخطوة 5: التحقق من المسار غير السعيد
 
-Force one nightly job to fail on purpose:
+اجعل مهمة ليلية واحدة تفشل عمدًا:
 
-- temporarily tighten a performance budget
-- point the HAR refresh at a bad file
-- break a cross-browser smoke assertion
+- شدّد ميزانية أداء مؤقتًا
+- وجّه تحديث HAR إلى ملف سيئ
+- اكسر تأكيدًا في الفحص السريع عبر المتصفحات
 
-Then confirm the workflow gives you:
+ثم تأكد من أن سير العمل يمنحك:
 
-- a clear red job name
-- an artifact or summary
-- a specific next action
+- اسم مهمة أحمر واضحًا
+- مخرجًا أو ملخصًا
+- إجراءً تاليًا محددًا
 
-If the next action is “someone should probably look into this someday,” keep tightening the workflow.
+إن كان الإجراء التالي هو «ينبغي أن ينظر أحد في هذا يومًا ما»، فاستمر في تشديد سير العمل.
 
-## Acceptance criteria
+## معايير القبول
 
-- `.github/workflows/nightly.yml` exists
-- The workflow uses both `schedule` and `workflow_dispatch`
-- The schedule is not pinned to the top of the hour
-- The workflow runs at least two jobs that are intentionally excluded from the fast pull-request loop
-- Each nightly job maps to a named repository command
-- Failure artifacts or summaries are uploaded with finite retention
-- The repository documents how nightly failures turn back into normal work
-- A deliberate failure produces a legible nightly run
+- `.github/workflows/nightly.yml` موجود
+- يستخدم سير العمل كلاً من `schedule` و`workflow_dispatch`
+- الجدولة ليست مثبّتة على رأس الساعة
+- يشغّل سير العمل مهمتين على الأقل مستبعدتين عمدًا من حلقة طلبات السحب السريعة
+- كل مهمة ليلية تقابل أمرًا مسمّى في المستودع
+- تُرفع مخرجات الفشل أو ملخصاته بمدة احتفاظ محدودة
+- يوثّق المستودع كيف تعود الأعطال الليلية إلى عمل عادي
+- الفشل المتعمد ينتج تشغيلًا ليليًا مقروءًا
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-- If the nightly workflow looks like a second full CI pipeline, cut it down.
-- If a job belongs on every pull request, move it out of nightly. Do not hide required checks in a cron.
-- If the nightly failure output is thin, reuse the dossier and artifact patterns from the core loop instead of inventing a new reporting style.
+- إن كان سير العمل الليلي يبدو كخط أنابيب CI كامل ثانٍ، فقلّصه.
+- إن كانت مهمة تنتمي إلى كل طلب سحب، فأخرجها من التشغيل الليلي. لا تخفِ الفحوصات المطلوبة في جدولة cron.
+- إن كانت مخرجات الفشل الليلي هزيلة، فأعد استخدام أنماط ملفّ الفشل والمخرجات من الحلقة الأساسية بدلًا من اختراع أسلوب تقارير جديد.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add path filters or job conditions so especially expensive checks only run when the relevant parts of the repository changed recently.
-- Open an issue automatically for nightly failures that are not machine-fixable.
-- Add a weekly version of the workflow for the truly slow jobs and keep nightly for the moderate ones.
+- أضف مرشّحات مسارات أو شروط مهام بحيث لا تعمل الفحوصات المكلفة خصوصًا إلا عندما تتغير الأجزاء ذات الصلة من المستودع مؤخرًا.
+- افتح مشكلة تلقائيًا للأعطال الليلية غير القابلة للإصلاح آليًا.
+- أضف نسخة أسبوعية من سير العمل للمهام البطيئة حقًا، وأبقِ التشغيل الليلي للمهام المتوسطة.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Nightly work only earns its keep when it stays out of the fast loop *and* still comes back as actionable evidence when it fails.
+لا يستحق العمل الليلي تكلفته إلا عندما يبقى خارج الحلقة السريعة *و*يعود مع ذلك كدليل قابل للتنفيذ عندما يفشل.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/add-a-nightly-verification-workflow-solution)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/add-a-nightly-verification-workflow-solution)
+- [حلقات التحقق الليلي](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)

@@ -1,32 +1,32 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-generate-and-heal-with-playwright-agents"
 ---
 
-This lab puts the three Playwright test agents through a real workflow against Shelf. You’ll plan a test suite, generate it, verify it passes, break the UI on purpose, and then watch the healer close the loop. The goal is to see where the agents save you time and where you still need to apply judgment.
+يضعك هذا المختبر أمام سير عمل حقيقي لوكلاء اختبار Playwright الثلاثة على تطبيق Shelf. ستخطّط لمجموعة اختبارات، ثم تولّدها، وتتحقّق من نجاحها، وتكسر الواجهة عمدًا، ثم تشاهد المُصلِح يُغلق الحلقة. والهدف أن ترى أين يوفّر الوكلاء وقتك وأين تحتاج أنت إلى إعمال حكمك.
 
-> **Prerequisites**
+> **المتطلبات المسبقة**
 >
-> You need [Playwright](https://playwright.dev/) 1.56 or later and a working Shelf setup with storage-state authentication and an `authenticated` Playwright project already configured. Both of those are produced by the earlier storage-state lab, and the `resetShelfContent` helper you’ll use in the seed is produced by the fixtures-refactor lab. If you haven’t done those labs yet, go do them first — the planner needs a logged-in session to explore the app, and the seed helper needs to exist before the generated tests can rely on a stable shelf.
+> تحتاج إلى [Playwright](https://playwright.dev/) 1.56 أو أحدث، وإلى تهيئة Shelf عاملة مع مصادقة حالة التخزين ومشروع Playwright باسم `authenticated` معدّ سلفًا. وكلاهما ينتج من مختبر حالة التخزين السابق، والدالة المساعدة `resetShelfContent` التي ستستخدمها في الزرع تنتج من مختبر إعادة هيكلة الـ fixtures. وإن لم تكن قد أنجزت هذين المختبرين بعد، فاذهب وأنجزهما أولًا — فالمخطِّط يحتاج جلسة مسجّلة الدخول ليستكشف التطبيق، ودالة الزرع المساعدة يجب أن تكون موجودة قبل أن تستطيع الاختبارات المولّدة الاعتماد على رفّ مستقرّ.
 
-## Set up the agent definitions
+## إعداد تعريفات الوكلاء
 
-Start by generating the agent definitions for your coding tool. If you’re using [Claude Code](https://docs.claude.com/en/docs/claude-code/overview):
+ابدأ بتوليد تعريفات الوكلاء لأداة البرمجة التي تستخدمها. فإن كنت تستخدم [Claude Code](https://docs.claude.com/en/docs/claude-code/overview):
 
 ```bash
 npx playwright init-agents --loop=claude
 ```
 
-This creates agent definitions in `.claude/agents/` and an MCP server config in `.mcp.json`. Verify that `.claude/agents/` was created and contains the three agent files (planner, generator, healer) before moving on.
+ينشئ هذا تعريفات الوكلاء في `.claude/agents/` وتهيئة خادم MCP في `.mcp.json`. وتحقق من أن `.claude/agents/` قد أُنشئ ويحتوي ملفات الوكلاء الثلاثة (المخطِّط، والمولِّد، والمُصلِح) قبل أن تمضي قدمًا.
 
-> **`init-agents` replaces `.mcp.json`**
+> **`init-agents` يستبدل `.mcp.json`**
 >
-> If you already have a `.mcp.json` at the repo root, `init-agents` will replace it with a fresh one that only registers `playwright-test`. The current Shelf starter **does** already ship `.mcp.json` for the Svelte MCP, so back it up first and merge the `playwright-test` entry back in afterward instead of clobbering the existing config.
+> إن كان لديك بالفعل ملف `.mcp.json` في جذر المستودع، فسيستبدله `init-agents` بملف جديد لا يسجّل إلا `playwright-test`. والنسخة الانطلاقية الحالية من Shelf **تشحن** فعلًا ملف `.mcp.json` من أجل Svelte MCP، فخُذ نسخة احتياطية منه أولًا ثم أعد دمج مُدخل `playwright-test` فيه بعد ذلك، بدلًا من أن تدهس التهيئة الموجودة.
 
-## Write the seed test
+## اكتب اختبار الزرع
 
-The planner needs a seed test that bootstraps the app into a usable state. Create `tests/seed.spec.ts` that uses your authenticated project, calls the seed helper, and navigates to the shelf:
+يحتاج المخطِّط إلى اختبار زرع يهيّئ التطبيق إلى حالة قابلة للاستخدام. أنشئ `tests/seed.spec.ts` يستخدم مشروعك الموثّق بالمصادقة، ويستدعي دالة الزرع المساعدة، وينتقل إلى الرفّ:
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -39,131 +39,131 @@ test('seed', async ({ page }) => {
 });
 ```
 
-The seed test does two things: it runs through any global setup and project dependencies your `playwright.config.ts` defines (including storage state authentication), and it gives the planner a starting page to explore from. Run it once to make sure it passes:
+يفعل اختبار الزرع شيئين: يمرّ على أي تهيئة عامة واعتماديات مشروع يعرّفها `playwright.config.ts` لديك (ومنها مصادقة حالة التخزين)، ويمنح المخطِّط صفحة بداية يستكشف منها. شغّله مرة واحدة للتأكد من نجاحه:
 
 ```bash
 npx playwright test tests/seed.spec.ts --project=authenticated
 ```
 
-> **`authenticated` project prerequisite**
+> **شرط مشروع `authenticated`**
 >
-> The `--project=authenticated` flag assumes the Playwright projects block is already wired up by the [storage-state authentication lab](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication). In the shipped Shelf starter `playwright.config.ts` has no projects and no storage state plumbing, so this command only works after that earlier lab lands.
+> تفترض الراية `--project=authenticated` أن كتلة مشاريع Playwright معدّة بالفعل من [مختبر مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication). فالنسخة الانطلاقية المشحونة من Shelf لا تحتوي في `playwright.config.ts` على أي مشاريع ولا على أي بنية لمصادقة حالة التخزين، لذا لا يعمل هذا الأمر إلا بعد أن يُنجَز ذلك المختبر السابق.
 
-> **Tip**
+> **نصيحة**
 >
-> If the seed fails, check that storage state authentication is configured—Shelf’s `playwright.config.ts` starts the app via `webServer`, so you don’t need to start it manually. See [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) if you haven’t done that setup yet.
+> إن فشل اختبار الزرع، فتحقّق من أن مصادقة حالة التخزين معدّة — فملف `playwright.config.ts` في Shelf يشغّل التطبيق عبر `webServer`، فلا تحتاج إلى تشغيله يدويًا. راجع [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) إن لم تكن قد أنجزت ذلك الإعداد بعد.
 
-## Plan the shelf rating workflow
+## خطّط لسير عمل تقييم الكتاب على الرفّ
 
-Ask the planner to generate a test plan for Shelf’s core workflow: browsing the shelf, rating a book, and verifying the rating persists. Include the seed test in the prompt context so the planner knows where to start and what style to follow.
+اطلب من المخطِّط أن يولّد خطة اختبار لسير العمل الأساسي في Shelf: تصفّح الرفّ، وتقييم كتاب، والتحقق من أن التقييم يبقى محفوظًا. وأدرج اختبار الزرع في سياق الطلب حتى يعرف المخطِّط من أين يبدأ وأي أسلوب يتبع.
 
-> **Example prompt**
+> **طلب نموذجي**
 >
-> In Claude Code, try: “Use the playwright-test-planner agent to plan tests for the shelf rating workflow. The seed test is at `tests/seed.spec.ts`.”
+> في Claude Code، جرّب: «استخدم وكيل playwright-test-planner لتخطيط اختبارات سير عمل تقييم الكتب. اختبار الزرع في `tests/seed.spec.ts`.»
 
-The planner will launch a browser, navigate through the app, and produce a Markdown plan in `specs/`. Read the output carefully. Check that the steps match what the app actually does—the planner is exploring live, but it can still miss things or describe a flow incorrectly.
+سيشغّل المخطِّط متصفحًا، ويتنقّل في التطبيق، وينتج خطة Markdown في `specs/`. اقرأ المخرجات بعناية. وتحقق من أن الخطوات تطابق ما يفعله التطبيق فعلًا — فالمخطِّط يستكشف مباشرةً، لكنه قد يُفوّت أشياء أو يصف سيرًا بشكل خاطئ.
 
-Things to watch for in the plan:
+أمور يجب مراقبتها في الخطة:
 
-- Does it reference the correct page routes (`/shelf`, not `/books`)?
-- Do the expected results match Shelf’s actual UI copy? (“Added to your shelf” vs. “Book added” vs. whatever Shelf actually says.)
-- Does it account for the rating modal’s specific interaction pattern?
-- Are there scenarios you’d want that the planner missed?
+- هل يشير إلى مسارات الصفحات الصحيحة (`/shelf`، لا `/books`)؟
+- هل تطابق النتائج المتوقعة نصوص واجهة Shelf الفعلية؟ («أُضيف إلى رفّك» مقابل «أُضيف الكتاب» مقابل أيًّا كان ما تقوله Shelf فعلًا.)
+- هل تراعي نمط التفاعل الخاص بنافذة التقييم المنبثقة؟
+- هل هناك سيناريوهات تريدها وقد فوّتها المخطِّط؟
 
-If anything is wrong or missing, edit the Markdown plan directly before moving to the next step. The plan is a regular file—treat it like any other spec you’d review in a pull request.
+إن كان في الخطة خطأ أو نقص، فحرّر خطة Markdown مباشرةً قبل الانتقال إلى الخطوة التالية. فالخطة ملف عادي — عاملها كأي مواصفة تراجعها في طلب سحب.
 
-## Generate the tests
+## ولّد الاختبارات
 
-Hand the plan to the generator agent. Include the spec file from `specs/` in the prompt context. The generator will produce test files under `tests/` that implement each scenario from the plan.
+سلّم الخطة إلى وكيل التوليد. وأدرج ملف المواصفة من `specs/` في سياق الطلب. وسينتج المولِّد ملفات اختبار تحت `tests/` تنفّذ كل سيناريو من الخطة.
 
-> **Example prompt**
+> **طلب نموذجي**
 >
-> “Use the playwright-test-generator agent to generate tests from `specs/<your-plan>.md`.” Use the actual filename the planner created in the previous step.
+> «استخدم وكيل playwright-test-generator لتوليد الاختبارات من `specs/<your-plan>.md`.» استخدم اسم الملف الفعلي الذي أنشأه المخطِّط في الخطوة السابقة.
 
-Once the tests are generated, read them. Check for:
+بعد توليد الاختبارات، اقرأها. وتحقق من:
 
-- `getByRole` locators (not CSS selectors).
-- Auto-retrying `expect` assertions (not `textContent()` + manual comparison).
-- No `waitForTimeout` calls.
-- Comments that trace each test back to its spec and seed.
+- محدّدات `getByRole` (لا محدّدات CSS).
+- تأكيدات `expect` بإعادة محاولة تلقائية (لا `textContent()` مع مقارنة يدوية).
+- غياب أي استدعاءات `waitForTimeout`.
+- تعليقات تربط كل اختبار بمواصفته وباختبار الزرع.
 
-If the generated tests have issues that match anti-patterns from the earlier lessons—CSS selectors, magic timeouts, `.first()` without scoping—note them but don’t fix them by hand yet. Let the healer attempt the fix first so you can see what it does and judge its work. Run the suite first:
+إن كانت في الاختبارات المولّدة مشكلات تطابق الأنماط المضادة من الدروس السابقة — محدّدات CSS، ومهل سحرية، و`.first()` بلا تحديد نطاق — فسجّلها لكن لا تصلحها بيدك الآن. دع المُصلِح يحاول الإصلاح أولًا لتري ما يفعله وتحكم على عمله. وشغّل المجموعة أولًا:
 
 ```bash
 npx playwright test --project=authenticated
 ```
 
-If tests fail at this stage, that’s expected. The generator verifies selectors live but doesn’t always get assertions right on the first pass. This is where the healer earns its keep.
+إن فشلت الاختبارات في هذه المرحلة، فذلك متوقّع. فالمولِّد يتحقق من المحدّدات مباشرةً لكنه لا يصيب التأكيدات دائمًا من المحاولة الأولى. وهنا يكسب المُصلِح قيمته.
 
-## Heal any failures
+## أصلح أي إخفاقات
 
-For each failing test, invoke the healer agent with the test name (the healer’s reasoning and patches appear in your coding tool’s output—Claude Code shows each step as it replays, inspects, and patches). Pay attention to the *kind* of fix it applies.
+لكل اختبار فاشل، استدعِ وكيل الإصلاح باسم الاختبار (يظهر استدلال المُصلِح وتصحيحاتُه في مخرجات أداة البرمجة لديك — ويعرض Claude Code كل خطوة وهو يعيد التشغيل، ويفحص، ويصحّح). وانتبه إلى *نوع* الإصلاح الذي يطبّقه.
 
-> **Example prompt**
+> **طلب نموذجي**
 >
-> “Use the playwright-test-healer agent to fix the failing test in `tests/<failing-spec>.spec.ts`.”
+> «استخدم وكيل playwright-test-healer لإصلاح الاختبار الفاشل في `tests/<failing-spec>.spec.ts`.»
 
-Good healer fixes:
+إصلاحات جيدة من المُصلِح:
 
-- Updating a locator to match a changed label or role.
-- Adding a `waitForResponse` where the test was missing a network wait.
-- Adjusting an assertion to match the actual UI copy.
+- تحديث محدّد ليطابق تسمية أو دورًا تغيّر.
+- إضافة `waitForResponse` حيث كان الاختبار ينقصه انتظار شبكة.
+- تعديل تأكيد ليطابق نص الواجهة الفعلي.
 
-Suspicious healer fixes:
+إصلاحات مريبة من المُصلِح:
 
-- Adding `waitForTimeout` (this should never happen with current Playwright agents, but check).
-- Weakening an assertion to make it pass (changing `toHaveText('Thanks for rating!')` to `toBeVisible()`, for example).
-- Marking a test with `test.fixme()` without a clear explanation.
+- إضافة `waitForTimeout` (وهذا لا ينبغي أن يحدث أبدًا مع وكلاء Playwright الحاليين، لكن تحقّق).
+- إضعاف تأكيد ليجعله ينجح (بتغيير `toHaveText('Thanks for rating!')` إلى `toBeVisible()`، مثلًا).
+- وسم اختبار بـ `test.fixme()` دون تفسير واضح.
 
-If the healer marks a test with `test.fixme()`, investigate. Either the feature is broken in Shelf (possible—check the app manually) or the healer couldn’t figure out the right fix (also possible—fix it by hand using the patterns from the course).
+إن وسم المُصلِح اختبارًا بـ `test.fixme()`، فحقّق. إما أن الميزة معطوبة في Shelf (وهذا محتمل — راجع التطبيق يدويًا) أو أن المُصلِح لم يستطع إيجاد الإصلاح الصحيح (وهذا محتمل أيضًا — أصلحه بيدك مستعينًا بالأنماط من الدورة).
 
-Run the full suite again after healing. Everything should be green:
+شغّل المجموعة كاملة مرة أخرى بعد الإصلاح. وينبغي أن يكون كل شيء أخضر:
 
 ```bash
 npx playwright test --project=authenticated
 ```
 
-## Break the UI, then heal
+## اكسر الواجهة، ثم أصلحها
 
-Now the interesting part. Commit your current work (or create a branch) before making the next change, so you can revert cleanly without losing unrelated progress. Make a deliberate UI change in Shelf that will break the tests you just generated. Pick one of these:
+الآن يأتي الجزء الممتع. أودِع عملك الحالي (أو أنشئ فرعًا) قبل إجراء التغيير التالي، حتى تستطيع التراجع بنظافة دون فقدان تقدّم غير ذي صلة. وأجرِ في Shelf تغييرًا مقصودًا في الواجهة يكسر الاختبارات التي ولّدتها للتوّ. اختر واحدًا مما يلي:
 
-- Rename the “Add to shelf” button to “Save to library” in the component.
-- Change the rating modal’s confirmation text from “Thanks” to “Rating saved.”
-- Move the shelf heading from an `h1` to an `h2`.
+- غيّر اسم زر «أضف إلى الرفّ» إلى «احفظ في المكتبة» في المكوّن.
+- غيّر نص التأكيد في نافذة التقييم المنبثقة من «شكرًا» إلى «حُفظ التقييم».
+- انقل عنوان الرفّ من `h1` إلى `h2`.
 
-Run the tests. They should fail. Then invoke the healer on each failure and watch it adapt. The healer should update the locators or assertions to match the new UI without changing what the test *verifies*.
+شغّل الاختبارات. وينبغي أن تفشل. ثم استدعِ المُصلِح على كل إخفاق وشاهده يتكيّف. وينبغي أن يحدّث المُصلِح المحدّدات أو التأكيدات لتطابق الواجهة الجديدة دون تغيير ما *يتحقّق منه* الاختبار.
 
-After healing, check the diff. The healer’s patches should be minimal: a changed string here, an updated role there. If the healer rewrote the entire test or added workarounds, that’s a signal the original test was too tightly coupled to implementation details rather than behavior.
+بعد الإصلاح، افحص الفرق. وينبغي أن تكون تصحيحات المُصلِح ضئيلة: نص متغيّر هنا، ودور محدَّث هناك. وإن أعاد المُصلِح كتابة الاختبار كله أو أضاف حلولًا ملتوية، فذلك إشارة إلى أن الاختبار الأصلي كان مقترنًا اقترانًا شديدًا بتفاصيل التنفيذ بدلًا من السلوك.
 
-Revert your UI change when you’re done. The tests should fail again (they now match the *changed* UI), and healing again should restore them to the original form.
+وتراجع عن تغيير الواجهة حين تنتهي. وينبغي أن تفشل الاختبارات مرة أخرى (فهي الآن تطابق الواجهة *المتغيّرة*)، وأن يعيد الإصلاح مرة أخرى إلى شكلها الأصلي.
 
-## Acceptance criteria
+## معايير القبول
 
-- Agent definitions exist under `.claude/agents/` and `.mcp.json` exists, both generated by `npx playwright init-agents --loop=claude`.
-- A seed test at `tests/seed.spec.ts` passes and uses the authenticated project plus `resetShelfContent()`.
-- At least one Markdown plan exists in `specs/` covering the shelf rating workflow.
-- Generated test files exist under `tests/` with comments tracing back to their spec.
-- `rg "waitForTimeout" tests/` returns nothing in any agent-generated test.
-- No raw CSS selectors via `page.locator()` in agent-generated tests. Prefer semantic locators (`getByRole`, `getByLabel`, `getByText`), with `getByTestId` only as a last resort.
-- The generated authenticated slice passes: `npx playwright test --project=authenticated` exits zero.
-- You successfully broke a UI element, healed the tests, and verified the healer’s patch matches the “good healer fixes” criteria from the healing section above.
+- تعريفات الوكلاء موجودة تحت `.claude/agents/`، وملف `.mcp.json` موجود، وكلاهما مولّد بـ `npx playwright init-agents --loop=claude`.
+- اختبار زرع في `tests/seed.spec.ts` ينجح ويستخدم مشروع المصادقة مع `resetShelfContent()`.
+- خطة Markdown واحدة على الأقل في `specs/` تغطّي سير عمل تقييم الكتاب على الرفّ.
+- ملفات اختبار مولّدة موجودة تحت `tests/` مع تعليقات تربطها بمواصفاتها.
+- الأمر `rg "waitForTimeout" tests/` لا يعيد شيئًا في أي اختبار ولّده وكيل.
+- لا محدّدات CSS خام عبر `page.locator()` في الاختبارات المولّدة. فضّل المحدّدات الدلالية (`getByRole`، `getByLabel`، `getByText`)، ولا تستخدم `getByTestId` إلا كملاذ أخير.
+- الشريحة الموثّقة المولّدة تنجح: `npx playwright test --project=authenticated` يخرج بصفر.
+- تكون قد كسرت عنصر واجهة بنجاح، وأصلحت الاختبارات، وتحقّقت من أن تصحيح المُصلِح يطابق معايير «إصلاحات المُصلِح الجيدة» من قسم الإصلاح أعلاه.
 
-## Stretch goals
+## أهداف إضافية
 
-If you finish early:
+إن انتهيت مبكرًا:
 
-- Ask the planner to generate a plan for a second workflow—adding a new book to the shelf via the search page. Generate and heal the tests for it. See how much of the plan you need to edit versus how much the planner gets right on its own.
-- Run the full suite with `--repeat-each=10` and see if any of the agent-generated tests flake. If they do, diagnose the cause—is it a locator issue, a timing issue, or a missing seed? Fix it by hand and compare your fix to what the healer would have done.
-- Try the healer on one of the *manually written* tests from the earlier labs. Does it improve anything? Does it break anything?
+- اطلب من المخطِّط أن يولّد خطة لسير عمل ثانٍ — إضافة كتاب جديد إلى الرفّ عبر صفحة البحث. وولّد اختباراته وأصلحها. وراقب كم من الخطة تحتاج إلى تحرير مقابل كم يصيب فيه المخطِّط من تلقاء نفسه.
+- شغّل المجموعة كاملة مع `--repeat-each=10` وراقب هل يتذبذب أي من الاختبارات المولّدة بواسطة الوكيل. فإن تذبذب، شخّص السبب — أهو مشكلة محدّد، أم مشكلة توقيت، أم زرع مفقود؟ أصلحه بيدك وقارن إصلاحك بما كان المُصلِح سيفعله.
+- جرّب المُصلِح على أحد الاختبارات المكتوبة يدويًا من المختبرات السابقة. هل يحسّن شيئًا؟ هل يكسر شيئًا؟
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The test agents handle the mechanical work: exploring, generating locators, patching drifted selectors. The judgment—what to test, whether the plan makes sense, whether a healer skip means the test is wrong or the feature is broken—stays with you. Use the agents to go faster. Use your eyes to go correctly.
+يتولّى وكلاء الاختبار العمل الميكانيكي: الاستكشاف، وتوليد المحدّدات، وتصحيح المحدّدات المنزاحة. أما الحكم — ما الذي يجب اختباره، وهل الخطة منطقية، وهل تخطّي المُصلِح يعني أن الاختبار خاطئ أم أن الميزة معطوبة — فيبقى معك. استخدم الوكلاء لتُسرِع، واستخدم عينيك لتصيب.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/generate-and-heal-with-playwright-agents-solution)
-- [Playwright Test Agents](https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents)
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/generate-and-heal-with-playwright-agents-solution)
+- [وكلاء اختبار Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-test-agents)
+- [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)

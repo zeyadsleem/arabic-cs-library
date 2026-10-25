@@ -1,12 +1,12 @@
 ---
-title: "Building a Card List"
-lang: en
+title: "بناء قائمة بطاقات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-card-list"
 ---
 
-Let’s start with our basic HTML structure for a simple list of notification cards.
+لنبدأ ببنية HTML الأساسية لقائمة بسيطة من بطاقات الإشعارات.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/b1dcdfbd70432aab1331ff996ee71109ed0549d94a45249fa9f0879dc8415039.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b1dcdfbd70432aab1331ff996ee71109ed0549d94a45249fa9f0879dc8415039.html)*
 
 ```html
 <div>
@@ -28,13 +28,13 @@ Let’s start with our basic HTML structure for a simple list of notification ca
 </div>
 ```
 
-We have three notification cards stacked vertically, but they’re completely unstyled and blend together. Let’s transform this into a polished list where each item is visually separated from the others—except the first one.
+لدينا ثلاث بطاقات إشعارات مكدّسة رأسيًا، لكنها بلا أي تنسيق وتتداخل معًا. لنحوّلها إلى قائمة مصقولة يكون فيها كل عنصر منفصلًا بصريًا عن غيره — باستثناء العنصر الأول.
 
-## Adding Card Structure and Styling
+## إضافة بنية البطاقة وتنسيقها
 
-First, let’s apply professional card styling using patterns from our [card tutorial](https://stevekinney.com/courses/tailwind/building-a-card) to establish a proper foundation.
+أولًا، لنطبّق تنسيق بطاقة احترافيًا باستخدام الأنماط من [درس البطاقة](https://stevekinney.com/courses/tailwind/building-a-card) لإرساء أساس سليم.
 
-*Adding Card Structure and Styling — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/16d6bad07f8cd2cb100f02f363dc0ae1e8cd4919a4cf892732ba5799fab11f0b.html)*
+*إضافة بنية البطاقة وتنسيقها — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/16d6bad07f8cd2cb100f02f363dc0ae1e8cd4919a4cf892732ba5799fab11f0b.html)*
 
 ```html
 <div class="mx-auto max-w-md rounded-lg bg-white shadow-sm">
@@ -58,23 +58,23 @@ First, let’s apply professional card styling using patterns from our [card tut
 </div>
 ```
 
-Container and card improvements:
+تحسينات الحاوية والبطاقة:
 
-- `max-w-md mx-auto`: Constrains width to 448px and centers the container
-- `bg-white rounded-lg shadow-sm`: White background with soft corners and subtle shadow
-- `p-4`: 16px padding on each card for comfortable spacing
-- Typography hierarchy with `font-semibold`, `text-sm`, and `text-xs` for clear information architecture
-- `text-slate-600` and `text-slate-400`: Muted colors for secondary content
+- `max-w-md mx-auto`: يقصر العرض على 448px ويوسّط الحاوية
+- `bg-white rounded-lg shadow-sm`: خلفية بيضاء مع زوايا ناعمة وظل خفيف
+- `p-4`: حشوة 16px في كل بطاقة لتباعد مريح
+- تدرّج طباعي باستخدام `font-semibold` و`text-sm` و`text-xs` لبنية معلومات واضحة
+- `text-slate-600` و`text-slate-400`: ألوان هادئة للمحتوى الثانوي
 
-Now the cards look professional, but they still blend together—there’s no visual separation between individual notifications.
+الآن تبدو البطاقات احترافية، لكنها ما زالت تتداخل معًا — لا يوجد فصل بصري بين الإشعارات الفردية.
 
-## Why Space-Y Won’t Work Here
+## لماذا لن تنجح Space-Y هنا
 
-You might think to use `space-y-4` to add spacing between cards, and that would work for separated cards. But what if we want the cards to feel connected as a cohesive list while still being visually distinct? This is where border separators shine.
+قد تفكّر في استخدام `space-y-4` لإضافة تباعد بين البطاقات، وسينجح ذلك مع البطاقات المنفصلة. لكن ماذا لو أردنا أن تبدو البطاقات متصلة كقائمة متماسكة مع بقائها متمايزة بصريًا؟ هنا تتألق فواصل الحدود.
 
-Let’s try adding borders to every card and see the problem:
+لنجرّب إضافة حدود إلى كل بطاقة ونرَ المشكلة:
 
-*Why Space-Y Won't Work Here — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/89948dafa7a597f580491d6b341793b631d017b7a43cb48065329ddaa7d7e13e.html)*
+*لماذا لن تنجح Space-Y هنا — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/89948dafa7a597f580491d6b341793b631d017b7a43cb48065329ddaa7d7e13e.html)*
 
 ```html
 <div class="mx-auto max-w-md rounded-lg bg-white shadow-sm">
@@ -98,13 +98,13 @@ Let’s try adding borders to every card and see the problem:
 </div>
 ```
 
-There’s an issue: the first card has a border at the top of the container, creating an awkward visual gap between the container’s rounded corner and the content. We want borders as separators between items, not as a border around the entire container.
+ثمة مشكلة: البطاقة الأولى لها حد أعلى الحاوية، ما يخلق فراغًا بصريًا غير مستحسن بين زاوية الحاوية المستديرة والمحتوى. نريد الحدود فواصل بين العناصر، لا حدًا يحيط بالحاوية كلها.
 
-## Introducing the not-first Selector
+## تقديم محدِّد not-first
 
-This is exactly what Tailwind’s `not-first:*` utilities solve. Let’s remove the unwanted top border from the first item only.
+هذا بالضبط ما تحلّه أدوات `not-first:*` في Tailwind. لنزل الحد العلوي غير المرغوب من العنصر الأول فقط.
 
-*Introducing the not-first Selector — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/8d637d728fdc9d04119ebe8f5c1d2b620912d8d76a90d8ebb9b993fbc4ce7f21.html)*
+*تقديم محدِّد not-first — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/8d637d728fdc9d04119ebe8f5c1d2b620912d8d76a90d8ebb9b993fbc4ce7f21.html)*
 
 ```html
 <div class="mx-auto max-w-md rounded-lg bg-white shadow-sm">
@@ -128,18 +128,18 @@ This is exactly what Tailwind’s `not-first:*` utilities solve. Let’s remove 
 </div>
 ```
 
-The `not-first:*` magic:
+سحر `not-first:*`:
 
-- `not-first:border-t`: Adds a top border to every element that is NOT the first child
-- `not-first:border-slate-200`: Light gray border color for subtle separation
+- `not-first:border-t`: يضيف حدًا علويًا لكل عنصر ليس أول ابن
+- `not-first:border-slate-200`: لون حد رمادي فاتح لفصل خفيف
 
-Perfect! Now we have clean separators between items without an awkward border above the first item. This is equivalent to the CSS selector `:not(:first-child)` but much more readable and maintainable.
+ممتاز! الآن لدينا فواصل نظيفة بين العناصر دون حد غير مستحسن فوق العنصر الأول. وهذا يكافئ محدِّد CSS `:not(:first-child)` لكنه أوضح وأسهل صيانة بكثير.
 
-## Enhancing Visual Hierarchy
+## تعزيز التسلسل البصري
 
-Let’s add some polish to make the list feel more interactive and organized.
+لنضف بعض الصقل لتبدو القائمة أكثر تفاعلًا وتنظيمًا.
 
-*Enhancing Visual Hierarchy — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/020fc55eac8f0324005e4f496faca72a67809df6cfc07fb11638ebdff3ae8744.html)*
+*تعزيز التسلسل البصري — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/020fc55eac8f0324005e4f496faca72a67809df6cfc07fb11638ebdff3ae8744.html)*
 
 ```html
 <div class="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-sm">
@@ -169,19 +169,19 @@ Let’s add some polish to make the list feel more interactive and organized.
 </div>
 ```
 
-Interactive enhancements:
+تحسينات التفاعل:
 
-- `overflow-hidden` on container: Ensures hover backgrounds don’t extend beyond the rounded corners
-- `hover:bg-slate-50`: Subtle background change indicates the items are interactive
-- `transition-colors`: Smoothly animates the background color change for polished feel
+- `overflow-hidden` على الحاوية: يضمن ألا تمتد خلفيات التمرير خارج الزوايا المستديرة
+- `hover:bg-slate-50`: تغيّر خلفية خفيف يشير إلى أن العناصر تفاعلية
+- `transition-colors`: يحرّك تغيّر لون الخلفية بسلاسة لإحساس مصقول
 
-Now each item feels clickable and responsive while maintaining clear visual separation.
+الآن يبدو كل عنصر قابلًا للنقر ومتجاوبًا مع الحفاظ على فصل بصري واضح.
 
-## Adding Dark Mode Support
+## إضافة دعم الوضع الداكن
 
-Let’s add dark mode variants to make our list work in any theme.
+لنضف صيغ الوضع الداكن لتعمل قائمتنا في أي سمة.
 
-*Adding Dark Mode Support — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/c626461f5e6bc1763cb3268d4ea010f9effa279d497895c8db38b65af346b477.html)*
+*إضافة دعم الوضع الداكن — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c626461f5e6bc1763cb3268d4ea010f9effa279d497895c8db38b65af346b477.html)*
 
 ```html
 <div class="mx-auto max-w-md overflow-hidden rounded-lg bg-white shadow-sm dark:bg-slate-800">
@@ -215,36 +215,36 @@ Let’s add dark mode variants to make our list work in any theme.
 </div>
 ```
 
-Dark mode refinements:
+تحسينات الوضع الداكن:
 
-- `dark:bg-slate-800`: Dark background for the container
-- `not-first:dark:border-slate-700`: Lighter border color for dark backgrounds
-- `dark:text-slate-100`, `dark:text-slate-300`: Appropriate text contrast for dark themes
-- `dark:hover:bg-slate-700`: Dark hover state that feels natural
+- `dark:bg-slate-800`: خلفية داكنة للحاوية
+- `not-first:dark:border-slate-700`: لون حد أفتح للخلفيات الداكنة
+- `dark:text-slate-100` و`dark:text-slate-300`: تباين نص مناسب للسمات الداكنة
+- `dark:hover:bg-slate-700`: حالة تمرير داكنة تبدو طبيعية
 
-Notice how we can combine modifiers: `not-first:dark:border-slate-700` means “apply dark border color to elements that are not first children when in dark mode.”
+لاحظ كيف يمكننا دمج المعدِّلات: `not-first:dark:border-slate-700` يعني «طبّق لون الحد الداكن على العناصر التي ليست أول أبناء في الوضع الداكن».
 
-## Why not-first is Essential
+## لماذا not-first أساسي
 
-The `not-first:*` selector solves a common design pattern that `space-y` or `gap` can’t handle:
+يحل محدِّد `not-first:*` نمط تصميم شائعًا لا تستطيع `space-y` أو `gap` معالجته:
 
-**Use `space-y` when**: You want actual spacing between separate elements (cards floating apart)
+**استخدم `space-y` عندما**: تريد تباعدًا فعليًا بين عناصر منفصلة (بطاقات تطفو منفصلة)
 
-**Use `not-first:border` when**: You want connected elements with visual separators (list items, menu items, table rows)
+**استخدم `not-first:border` عندما**: تريد عناصر متصلة بفواصل بصرية (عناصر قائمة، عناصر قوائم، صفوف جداول)
 
-This pattern appears everywhere in modern interfaces:
+يظهر هذا النمط في كل مكان في الواجهات الحديثة:
 
-- Navigation menu items with separator lines
-- List items in sidebars
-- Table rows with border separators
-- Comment threads with dividing lines
-- Settings groups with section breaks
+- عناصر قائمة التنقل بخطوط فاصلة
+- عناصر القوائم في الأشرطة الجانبية
+- صفوف الجداول بفواصل حدود
+- سلاسل التعليقات بخطوط فاصلة
+- مجموعات الإعدادات بفواصل أقسام
 
-The key insight is that the first item in a list should never have a “separator” above it because there’s nothing to separate it from.
+الفكرة الأساسية أن العنصر الأول في القائمة يجب ألا يكون فوقه «فاصل» أبدًا لأنه لا يوجد شيء يفصله عنه.
 
-## Challenges
+## تحديات
 
-Try building these variations:
+جرّب بناء هذه التنويعات:
 
-1. **Status Indicators**: Add colored dots before each notification title that indicate priority (red, yellow, green) using `not-first:*` to ensure consistent alignment
-2. **Expandable Items**: Combine with the patterns from our [details disclosure tutorial](https://stevekinney.com/courses/tailwind/building-details-disclosure) to make each notification expandable with additional details
+1. **مؤشرات الحالة**: أضف نقاطًا ملوّنة قبل عنوان كل إشعار تدل على الأولوية (أحمر، أصفر، أخضر) باستخدام `not-first:*` لضمان محاذاة متسقة
+2. **عناصر قابلة للتوسّع**: ادمجها مع الأنماط من [درس كشف التفاصيل](https://stevekinney.com/courses/tailwind/building-details-disclosure) لجعل كل إشعار قابلًا للتوسّع بتفاصيل إضافية

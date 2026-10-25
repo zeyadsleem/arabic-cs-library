@@ -1,40 +1,40 @@
 ---
-title: "Decoders and Text Generation"
-lang: en
+title: "المفكّكات وتوليد النص"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/decoders"
 ---
 
-> **Key Takeaways**
+> **الخلاصات الأساسية**
 >
-> - Choose decoding per goal: greedy/beam for determinism, top-p/k+temperature for creativity
-> - Control repetition with penalties and no-repeat n-grams; set explicit stop conditions
-> - Prefer `max_new_tokens` for clarity with long prompts; always set EOS handling
-> - Enable KV cache for streaming; batch by length for throughput
-> - Use processors/warpers to shape logits before sampling
+> - اختر طريقة فك الترميز حسب الهدف: greedy/beam لأجل الحتمية، وtop-p/k مع الحرارة لأجل الإبداع
+> - اضبط التكرار بالعقوبات وno-repeat n-grams؛ وحدّد شروط إيقاف صريحة
+> - فضّل `max_new_tokens` للوضوح مع المطالبات الطويلة؛ واضبط دائمًا معالجة EOS
+> - فعّل KV cache للبثّ؛ ورتّب الدفعات حسب الطول لأجل الإنتاجية
+> - استخدم المعالجات والمحوّلات (processors/warpers) لتشكيل logits قبل أخذ العيّنات
 
-## Overview
+## نظرة عامة
 
-Decoder-only architectures generate text autoregressively, predicting the next token given previous context. Models like GPT masterfully generate new text by writing stories, answering questions, and completing sentences one token at a time. Understanding how these models work reveals the architecture and step-by-step process behind text generation.
+تولّد المعماريات المعتمدة على المفكّك فقط (decoder-only) النص توليدًا انحداريًا تلقائيًا، إذ تتنبأ بالرمز التالي بناءً على السياق السابق. وتُجيد نماذج مثل GPT توليد نص جديد بكتابة القصص والإجابة عن الأسئلة وإكمال الجمل، رمزًا تلو الآخر. وفهم كيفية عمل هذه النماذج يكشف المعمارية والخطوات المتتابعة التي تقف وراء توليد النص.
 
-## Notebook
+## الدفتر
 
-View the companion notebook: [Decoders](https://colab.research.google.com/drive/1ZUmRw8pTJaGum1gzJZ4H49X9aWkd9zfW?usp=sharing)
+اطّلع على الدفتر المرافق: [المفكّكات](https://colab.research.google.com/drive/1ZUmRw8pTJaGum1gzJZ4H49X9aWkd9zfW?usp=sharing)
 
-## Causal Attention: The One-Way Window
+## الانتباه السببي: النافذة أحادية الاتجاه
 
-Imagine reading a mystery novel one page at a time—you can see everything that already happened but can’t peek at future pages. A causal attention mask makes language models behave the same way. When generating the next word, the mask hides all future words, so the model can only attend to words it has already produced.
+تخيّل أنك تقرأ رواية بوليسية صفحة تلو الأخرى — ترى كل ما حدث سابقًا لكن لا يمكنك إلقاء نظرة على الصفحات القادمة. قناع الانتباه السببي يجعل نماذج اللغة تتصرف بالطريقة نفسها. فعند توليد الكلمة التالية، يُخفي القناع كل الكلمات المستقبلية، فلا يستطيع النموذج الانتباه إلا إلى الكلمات التي أنتجها بالفعل.
 
-The key difference between text-generation models (decoders) and text-understanding models (encoders) is how they see input:
+الفرق الجوهري بين نماذج توليد النص (المفكّكات) ونماذج فهم النص (المشفّرات) هو طريقة رؤيتها للمدخل:
 
-**Encoder (like BERT)** uses bidirectional attention. When analyzing “sat” in “the cat sat on the mat,” it sees both “the cat” (before) and “on the mat” (after). Perfect for understanding full context.
+**المشفّر (مثل BERT)** يستخدم انتباهًا ثنائي الاتجاه. فعند تحليل «sat» في «the cat sat on the mat»، يرى كلًا من «the cat» (قبلها) و«on the mat» (بعدها). مثالي لفهم السياق الكامل.
 
-**Decoder (like GPT)** uses causal attention. When generating “sat,” it only sees “the cat” that came before. It cannot see the future because those words don’t exist yet.
+**المفكّك (مثل GPT)** يستخدم الانتباه السببي. فعند توليد «sat»، لا يرى إلا «the cat» التي سبقتها. ولا يستطيع رؤية المستقبل لأن تلك الكلمات لم توجد بعد.
 
-This restriction is essential—when generating text, the model must predict the next word based only on what it has already written.
+هذا القيد جوهري — فعند توليد النص، على النموذج أن يتنبأ بالكلمة التالية بناءً على ما كتبه هو فقط.
 
-## Visualizing the Causal Mask
+## تصوير القناع السببي
 
-The causal mask explicitly prevents the model from attending to future tokens by setting their attention scores to negative infinity before the softmax:
+يمنع القناع السببي النموذج صراحةً من الانتباه إلى الرموز المستقبلية بوضع درجات انتباهها عند سالب ما لا نهاية قبل تطبيق softmax:
 
 ```python
 import torch
@@ -56,15 +56,15 @@ plt.ylabel("Query Token Index")
 plt.show()
 ```
 
-In the mask, `0` means “pay attention” and large negative numbers mean “ignore.” This ensures each position only influences itself and past positions, creating the left-to-right generation pattern.
+في القناع، تعني `0` «انتبه» وتشير الأرقام السالبة الكبيرة إلى «تجاهل». وهذا يضمن ألا يؤثر كل موضع إلا في نفسه والمواضع السابقة، مما ينشئ نمط التوليد من اليسار إلى اليمين.
 
-## Decoder Architecture
+## معمارية المفكّك
 
-A decoder-only model like GPT-2 is a stack of identical decoder blocks. Each block has two main components:
+نموذج معتمد على المفكّك فقط مثل GPT-2 هو كومة من كتل مفكّك متطابقة. ولكل كتلة مكوّنان رئيسيان:
 
-**Masked Multi-Head Self-Attention** applies the causal mask we discussed, allowing the model to weigh the importance of previous words. **Feed-Forward Neural Network** processes the attention output, adding computational depth to learn complex patterns.
+**الانتباه الذاتي متعدد الرؤوس المقنّع** يطبّق القناع السببي الذي ناقشناه، فيتيح للنموذج وزن أهمية الكلمات السابقة. و**الشبكة العصبية الأمامية** تعالج ناتج الانتباه، مضيفةً عمقًا حسابيًا لتعلّم أنماط معقّدة.
 
-This stack processes token embeddings, with the final block’s output feeding into a language modeling head—a linear layer projecting the final representation into a massive vector with one score for every word in the vocabulary:
+تعالج هذه الكومة تضمينات الرموز، ويغذّي ناتج الكتلة الأخيرة رأس نمذجة اللغة — طبقة خطية تُسقط التمثيل النهائي في متجه ضخم يحمل درجة واحدة لكل كلمة في المفردات:
 
 ```python
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -83,23 +83,23 @@ print(model.lm_head)
 print(f"Vocabulary size: {tokenizer.vocab_size}")
 ```
 
-## Autoregressive Generation
+## التوليد الانحداري التلقائي
 
-Autoregressive is a fancy term for a simple idea: the model’s next prediction depends on its own previous predictions. The generation process follows a step-by-step loop:
+التوليد الانحداري التلقائي مصطلح فخم لفكرة بسيطة: تنبؤ النموذج التالي يعتمد على تنبؤاته السابقة. وتتبع عملية التوليد حلقة خطوة بخطوة:
 
-1. Start with a prompt
-2. The model predicts probabilities for the next token
-3. A decoding strategy selects one token from the probability distribution
-4. The selected token is added to the input sequence
-5. Repeat from step 2 until a stop token is generated or maximum length is reached
+1. ابدأ بمطالبة (prompt)
+2. يتنبأ النموذج باحتمالات الرمز التالي
+3. تختار استراتيجية فك الترميز رمزًا واحدًا من التوزيع الاحتمالي
+4. يُضاف الرمز المختار إلى متتالية المدخل
+5. كرّر من الخطوة 2 حتى يُولَّد رمز إيقاف أو يُبلَغ الطول الأقصى
 
-The most interesting part is step 3: how do we choose the next token?
+والجزء الأكثر إثارة هو الخطوة 3: كيف نختار الرمز التالي؟
 
-## Decoding Strategies
+## استراتيجيات فك الترميز
 
-### Greedy Search
+### البحث الجشع (Greedy Search)
 
-Greedy search always picks the most likely next token. It’s fast and predictable but often produces boring, repetitive text:
+يختار البحث الجشع دائمًا الرمز التالي الأكثر احتمالًا. وهو سريع وقابل للتوقّع، لكنه غالبًا ينتج نصًا مملًا ومتكررًا:
 
 ```python
 prompt = "The future of artificial intelligence is"
@@ -117,9 +117,9 @@ print("Greedy Search Output:")
 print(tokenizer.decode(greedy_output[0], skip_special_tokens=True))
 ```
 
-### Sampling with Temperature
+### أخذ العيّنات مع الحرارة (Sampling with Temperature)
 
-Instead of always picking the top token, we can sample from the probability distribution. Temperature controls randomness:
+بدلًا من اختيار الرمز الأعلى دائمًا، يمكننا أخذ عيّنات من التوزيع الاحتمالي. والحرارة تتحكّم في العشوائية:
 
 ```python
 import torch.nn.functional as F
@@ -166,17 +166,17 @@ print("\nSampling with Temperature (0.7):")
 print(tokenizer.decode(sampling_output[0], skip_special_tokens=True))
 ```
 
-**Low temperature (0.2)** makes the distribution “peakier”—the model becomes confident and conservative, similar to greedy search. **High temperature (1.5)** flattens the distribution—the model takes risks, leading to creative or nonsensical text.
+**الحرارة المنخفضة (0.2)** تجعل التوزيع «أكثر حدّة» — فيصبح النموذج واثقًا ومحافظًا، على غرار البحث الجشع. و**الحرارة المرتفعة (1.5)** تُسطّح التوزيع — فيخاطر النموذج، ما يؤدي إلى نص إبداعي أو غير منطقي.
 
-Think of temperature like a creativity dial: turn it down for safety, turn it up for experimentation.
+فكّر في الحرارة كمِقبض للإبداع: اخفضه للأمان وارفعه للتجريب.
 
-### Top-K and Top-P (Nucleus) Sampling
+### أخذ العيّنات Top-K وTop-P (النواة)
 
-Sampling can produce weird words if it randomly picks low-probability tokens. We filter the distribution before sampling:
+قد يُنتج أخذ العيّنات كلمات غريبة إن اختار عشوائيًا رموزًا منخفضة الاحتمال. لذلك نرشّح التوزيع قبل أخذ العيّنات:
 
-**Top-K Sampling** only considers the k most likely tokens. With `top_k=50`, the model samples from only the 50 most probable words.
+**أخذ العيّنات Top-K** لا ينظر إلا إلى الرموز الـk الأكثر احتمالًا. فمع `top_k=50`، يأخذ النموذج عيّناته من 50 كلمة فقط هي الأكثر احتمالًا.
 
-**Top-P (Nucleus) Sampling** dynamically adapts. It considers the smallest set of tokens whose cumulative probability exceeds threshold p. If `p=0.9`, it samples from tokens making up 90% of probability mass.
+**أخذ العيّنات Top-P (النواة)** يتكيّف ديناميكيًا. فهو ينظر إلى أصغر مجموعة من الرموز يتجاوز مجموع احتمالاتها التراكمي العتبة p. فإذا كان `p=0.9`، أخذ عيّناته من الرموز التي تشكّل 90% من كتلة الاحتمال.
 
 ```python
 # Generate with Top-P (Nucleus) Sampling
@@ -191,13 +191,13 @@ nucleus_output = model.generate(
 print(tokenizer.decode(nucleus_output[0], skip_special_tokens=True))
 ```
 
-Top-P is generally recommended for high-quality text generation because it adapts to the situation—when the model is certain, it considers few words; when uncertain, it considers many.
+يُوصى عمومًا بـTop-P لتوليد نص عالي الجودة لأنه يتكيّف مع الحالة — فحين يكون النموذج واثقًا ينظر في كلمات قليلة، وحين يكون مترددًا ينظر في كلمات كثيرة.
 
-## Common Limitations
+## القيود الشائعة
 
-**Context Window**: Models have finite memory. GPT-2 has a 1024-token context window—it cannot remember anything beyond that window.
+**نافذة السياق**: للنماذج ذاكرة محدودة. ولـGPT-2 نافذة سياق من 1024 رمزًا — لا يستطيع تذكّر أي شيء يتجاوز تلك النافذة.
 
-**Repetition**: Models can get stuck in loops. Parameters like `repetition_penalty` help:
+**التكرار**: قد تعلق النماذج في حلقات. وتساعد معاملات مثل `repetition_penalty`:
 
 ```python
 output = model.generate(
@@ -212,13 +212,13 @@ output = model.generate(
 )
 ```
 
-**Hallucination**: Models can generate plausible-sounding but factually incorrect text. They’re pattern-matching machines without true understanding.
+**الهلوسة**: قد تولّد النماذج نصًا يبدو معقولًا لكنه غير صحيح وقائعيًا. إنها آلات مطابقة أنماط بلا فهم حقيقي.
 
-**Bias**: Models inherit societal biases from training data. Always be critical of output.
+**التحيّز**: ترث النماذج تحيّزات مجتمعية من بيانات التدريب. فكن دائمًا ناقدًا للمخرجات.
 
-## Stopping Mid-Sentence
+## التوقف في منتصف الجملة
 
-Models learn to end sentences naturally by predicting an end-of-sequence (EOS) token. During training, they observe sentence patterns and learn to associate thought completion with the EOS token. When the probability of EOS becomes highest, generation stops:
+تتعلّم النماذج إنهاء الجمل طبيعيًا بالتنبؤ برمز نهاية المتتالية (EOS). وأثناء التدريب تلاحظ أنماط الجمل وتتعلّم ربط اكتمال الفكرة برمز EOS. وعندما يصبح احتمال EOS هو الأعلى، يتوقف التوليد:
 
 ```python
 # Increase max_new_tokens to allow for a full sentence
@@ -235,21 +235,21 @@ natural_stop_output = model.generate(
 print(tokenizer.decode(natural_stop_output[0], skip_special_tokens=True))
 ```
 
-## Text Generation versus Question Answering
+## توليد النص مقابل الإجابة عن الأسئلة
 
-Models like ChatGPT and GPT are highly advanced text-generation systems at their core. They don’t switch between different modes—their single, powerful text-generation ability has been trained to recognize patterns so well that it produces the right kind of text for any task:
+نماذج مثل ChatGPT وGPT هي في جوهرها أنظمة توليد نص بالغة التقدّم. وهي لا تنتقل بين أنماط مختلفة — بل دُرِّبت قدرتها الوحيدة القوية على توليد النص على التعرّف على الأنماط بمهارة تجعلها تنتج نوع النص الصحيح لأي مهمة:
 
-When you ask a question, it generates text that is an answer. When you ask for a summary, it generates text that is a summary. When you ask it to translate, it generates text in the target language.
+حين تطرح سؤالًا، تولّد نصًا يكون إجابة. وحين تطلب ملخصًا، تولّد نصًا يكون ملخصًا. وحين تطلب الترجمة، تولّد نصًا في اللغة الهدف.
 
-### Extractive vs Generative QA
+### الإجابة الاستخراجية مقابل الإجابة التوليدية
 
-**Extractive QA** (like our hot dog example earlier) finds and pulls exact answers from provided context. It cannot use outside knowledge.
+**الإجابة الاستخراجية** (مثل مثال الهوت دوغ سابقًا) تجد الإجابات الدقيقة وتستخرجها من السياق المتاح. ولا تستطيع استخدام معرفة خارجية.
 
-**Generative QA** (ChatGPT, Claude, Gemini) generates answers from scratch based on vast knowledge learned during training. This is why they can answer questions on almost any topic without needing specific context.
+**الإجابة التوليدية** (ChatGPT وClaude وGemini) تولّد إجابات من الصفر بناءً على معرفة واسعة تعلّمتها أثناء التدريب. ولهذا تستطيع الإجابة عن أسئلة في أي موضوع تقريبًا دون الحاجة إلى سياق محدّد.
 
-### The Secret: Instruction Fine-Tuning
+### السر: الضبط الدقيق بالتعليمات
 
-Base models start as massive decoders trained to predict the next word on huge portions of the internet. After this, instruction fine-tuning trains them on high-quality `[instruction, response]` pairs written by humans. This teaches the model how to be a helpful assistant:
+تبدأ النماذج الأساسية مفكّكات ضخمة دُرِّبت على التنبؤ بالكلمة التالية من أجزاء واسعة من الإنترنت. وبعد ذلك، يدرّبها الضبط الدقيق بالتعليمات على أزواج `[instruction, response]` عالية الجودة يكتبها البشر. وهذا يعلّم النموذج كيف يكون مساعدًا مفيدًا:
 
 ```json
 {
@@ -258,11 +258,11 @@ Base models start as massive decoders trained to predict the next word on huge p
 }
 ```
 
-By training on millions of such examples, the model learns that when input text is a question, the statistically likeliest “next tokens” form a coherent answer. The model isn’t “deciding” to answer—its training has made answer text the most probable continuation of question text.
+وبالتدريب على ملايين الأمثلة من هذا القبيل، يتعلّم النموذج أن المدخل حين يكون سؤالًا، فإن «الرموز التالية» الأكثر احتمالًا إحصائيًا تشكّل إجابة متماسكة. والنموذج لا «يقرّر» الإجابة — بل جعل تدريبه نص الإجابة أكثر استكمال احتمالًا لنص السؤال.
 
-## From Logits to Tokens: Processors and Warpers
+## من الـLogits إلى الرموز: المعالجات والمحوّلات
 
-The generation loop computes logits at each step, then applies processors before sampling:
+تحسب حلقة التوليد logits في كل خطوة، ثم تطبّق المعالجات قبل أخذ العيّنات:
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -287,11 +287,11 @@ out = model.generate(
 print(tok.decode(out[0], skip_special_tokens=True))
 ```
 
-Typical processors include minimum/maximum length enforcement, repetition penalties, bad-words filtering, and forced tokens. Warpers reshape the distribution through top-k, top-p, and temperature adjustments.
+تشمل المعالجات النموذجية فرض الحد الأدنى/الأقصى للطول، وعقوبات التكرار، وتصفية الكلمات السيئة، والرموز المفروضة. أما المحوّلات (warpers) فتعيد تشكيل التوزيع عبر تعديلات top-k وtop-p والحرارة.
 
-## Beam Search Nuances
+## دقائق البحث الشُّعاعي (Beam Search)
 
-Beam search explores multiple hypotheses to maximize overall sequence likelihood:
+يستكشف البحث الشُّعاعي فرضيات متعددة لتعظيم احتمال المتتالية الكلي:
 
 ```python
 beam_output = model.generate(
@@ -302,15 +302,15 @@ beam_output = model.generate(
 )
 ```
 
-Beam search maintains k partial hypotheses, expands them, and applies length normalization to avoid preferring short sequences. It produces higher quality but more compute-intensive output.
+يحتفظ البحث الشُّعاعي بـk فرضيات جزئية، ويوسّعها، ويطبّق تطبيع الطول لتجنّب تفضيل المتتاليات القصيرة. وهو ينتج مخرجات أعلى جودة لكن أكثر استهلاكًا للحساب.
 
-## Performance Tips
+## نصائح الأداء
 
-**Caching**: Use KV-cache to avoid recomputing attention for past tokens in long generations. Enable with `model.config.use_cache = True`.
+**التخزين المؤقت**: استخدم KV-cache لتجنّب إعادة حساب الانتباه للرموز السابقة في التوليدات الطويلة. فعّله بـ`model.config.use_cache = True`.
 
-**Batching**: Group prompts of similar length to maximize throughput and minimize padding waste.
+**الدفعات**: جمّع المطالبات المتقاربة في الطول لتعظيم الإنتاجية وتقليل هدر الحشو.
 
-**Mixed precision**: Use fp16/bf16 for faster inference on modern GPUs:
+**الدقة المختلطة**: استخدم fp16/bf16 لاستدلال أسرع على وحدات GPU الحديثة:
 
 ```python
 model = model.half()  # Convert to fp16
@@ -318,9 +318,9 @@ model = model.half()  # Convert to fp16
 model = model.to(torch.bfloat16)
 ```
 
-## Determinism and Testing
+## الحتمية والاختبار
 
-Set random seeds and use greedy or low-temperature decoding when you need reproducible outputs:
+اضبط البذور العشوائية واستخدم فك الترميز الجشع أو منخفض الحرارة عندما تحتاج إلى مخرجات قابلة لإعادة الإنتاج:
 
 ```python
 torch.manual_seed(42)
@@ -331,21 +331,21 @@ output = model.generate(
 )
 ```
 
-Note that floating-point non-determinism on GPUs can still cause small variations; prefer beam or greedy for critical paths.
+لاحظ أن عدم حتمية الفاصلة العائمة على وحدات GPU قد يسبّب اختلافات صغيرة رغم ذلك؛ ففضّل beam أو greedy في المسارات الحرجة.
 
-## Streaming and Latency
+## البثّ وزمن الاستجابة
 
-For interactive applications, stream tokens as they are generated. Maintain a cache of key/value tensors to achieve token-level latencies. For batch serving, group prompts by length to minimize padding waste.
+في التطبيقات التفاعلية، ابثّ الرموز أثناء توليدها. واحتفظ بذاكرة مؤقتة من موترات المفتاح/القيمة لتحقيق زمن استجابة على مستوى الرمز. وفي الخدمة بالدفعات، جمّع المطالبات حسب الطول لتقليل هدر الحشو.
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Decoders generate text through a carefully orchestrated process: causal attention forces left-to-right generation, stacked transformer blocks build deep representations, the language modeling head produces vocabulary probabilities, and decoding strategies balance quality with creativity.
+تولّد المفكّكات النص عبر عملية منسّقة بعناية: يفرض الانتباه السببي التوليد من اليسار إلى اليمين، وتبني كتل المحوّلات المكدّسة تمثيلات عميقة، وينتج رأس نمذجة اللغة احتمالات المفردات، وتوازن استراتيجيات فك الترميز بين الجودة والإبداع.
 
-Understanding these mechanisms demystifies how models like GPT work. The “magic” of `pipeline("text-generation")` is now revealed as an elegant interplay of attention masks, probability distributions, and sampling strategies. Modern conversational AI builds on these foundations, adding instruction tuning and safety measures to create helpful, harmless assistants from powerful text generators.
+وفهم هذه الميكانيكيات يزيل الغموض عن كيفية عمل نماذج مثل GPT. فقد انكشف «سحر» `pipeline("text-generation")` الآن كتفاعل أنيق بين أقنعة الانتباه والتوزيعات الاحتمالية واستراتيجيات أخذ العيّنات. وتبني المحادثة الذكية الحديثة على هذه الأسس، مضيفةً ضبط التعليمات وتدابير الأمان لتصنع مساعدين مفيدين وغير ضارين من مولّدات نص قوية.
 
-## Further Reading
+## قراءات إضافية
 
-- Transformers — Text Generation: [https://huggingface.co/docs/transformers/main/en/generation_strategies](https://huggingface.co/docs/transformers/main/en/generation_strategies)
-- Logits Processors and Warpers: [https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.LogitsProcessor](https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.LogitsProcessor)
-- The Curious Case of Neural Text Degeneration (Holtzman et al., nucleus sampling): [https://arxiv.org/abs/1904.09751](https://arxiv.org/abs/1904.09751)
-- Beam Search Optimization: [https://arxiv.org/abs/1707.07862](https://arxiv.org/abs/1707.07862)
+- Transformers — توليد النص: [https://huggingface.co/docs/transformers/main/en/generation_strategies](https://huggingface.co/docs/transformers/main/en/generation_strategies)
+- معالجات Logits والمحوّلات (Warpers): [https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.LogitsProcessor](https://huggingface.co/docs/transformers/main/en/main_classes/text_generation#transformers.LogitsProcessor)
+- الحالة العجيبة لانحلال النص العصبي (Holtzman وآخرون، أخذ عيّنات النواة): [https://arxiv.org/abs/1904.09751](https://arxiv.org/abs/1904.09751)
+- تحسين البحث الشُّعاعي: [https://arxiv.org/abs/1707.07862](https://arxiv.org/abs/1707.07862)

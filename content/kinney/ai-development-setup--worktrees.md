@@ -1,60 +1,60 @@
 ---
-title: "Worktrees"
-lang: en
+title: "أشجار العمل (Worktrees)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/worktrees"
 ---
 
-Run two agents in the same checkout and they’ll step on each other’s edits within minutes. The usual fix is a [Git worktree](https://git-scm.com/docs/git-worktree): an extra checkout of the same repository in its own directory, with its own files and branch. Nobody overwrites anybody.
+شغّل وكيلين في نسخة العمل نفسها فتتخطّى تعديلات أحدهما الأخرى خلال دقائق. والإصلاح المعتاد هو [شجرة عمل Git](https://git-scm.com/docs/git-worktree): نسخة إضافية من المستودع نفسه في مجلدها الخاص، بملفاتها وفرعها. فلا يكتب أحد فوق أحد.
 
-That fix is narrower than it looks. Worktrees reduce file collisions. They do *not* isolate services, ports, databases, secrets, or decisions. That gap is, by a wide margin, my largest source of agent friction: in two months, my worktree guard—a [hook](https://stevekinney.com/courses/ai-development-setup/hooks) that blocks commands that would escape the agent’s worktree—refused 465 of them.
+ذلك الإصلاح أضيق مما يبدو. فأشجار العمل تقلّل تصادمات الملفات. لكنها *لا* تعزل الخدمات ولا المنافذ ولا قواعد البيانات ولا الأسرار ولا القرارات. وتلك الثغرة، بفارق كبير، أكبر مصدر لإرباك الوكلاء عندي: فقد رفض حارس أشجار العمل لديّ، وهو [خُطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) يمنع الأوامر التي قد تخرج من شجرة عمل الوكيل، 465 منها في شهرين.
 
-## What’s shared and what isn’t
+## ما هو مشترك وما ليس كذلك
 
-| Separate per worktree | Shared across all of them |
+| منفصل لكل شجرة عمل | مشترك بينها جميعًا |
 | --- | --- |
-| The working files | Commits, branches, and tags |
-| The index | Stashes, Git configuration, and Git hooks |
-| `HEAD` | Ports, databases, caches, credentials, and any `.env` files you copied |
-|  | Decisions |
+| ملفات العمل | الإيداعات والفروع والوسوم |
+| الفهرس | المخبأ (stash) وإعداد Git وخطافات Git |
+| `HEAD` |  |
+|  | القرارات |
 
-A few consequences:
+وبعض النتائج المترتبة:
 
-- **A branch belongs to one worktree**: Git refuses to check out the same branch twice. That’s an ownership signal, not an annoyance.
-- **`.git` is a file in a linked worktree**: Scripts should ask Git with `git rev-parse --show-toplevel` or `--git-common-dir` instead of assuming `.git` is a directory.
-- **The stash is shared**: Automation that pops `stash@{0}` might pop another worktree’s work.
-- **`git config --local` changes every worktree**: There’s one repository configuration file.
+- **الفرع ينتمي إلى شجرة عمل واحدة**: يرفض Git إخراج الفرع نفسه مرتين. وذلك إشارة ملكية، لا إزعاج.
+- **`.git` ملف في شجرة عمل مرتبطة**: ينبغي للسكربتات أن تسأل Git بـ `git rev-parse --show-toplevel` أو `--git-common-dir` بدلًا من افتراض أن `.git` مجلد.
+- **المخبأ مشترك**: الأتمتة التي تُفرِّغ `stash@{0}` قد تفرّغ عمل شجرة عمل أخرى.
+- **`git config --local` يغيّر كل شجرة عمل**: إذ ثمة ملف إعداد واحد للمستودع.
 
-Git handles exactly one boundary for you: who edits which files. Ports, databases, merging the changes back, and deciding when a worktree is safe to delete are your job.
+يتولّى Git حدًّا واحدًا فقط عنك: من يعدّل أيّ الملفات. أما المنافذ وقواعد البيانات ودمج التغييرات من جديد وتقرير متى تكون شجرة العمل آمنة للحذف، فهي مهمتك.
 
-## Things that will bite you
+## أمور ستؤذيك {#things-that-will-bite-you}
 
-- **The base isn’t what you think**: `isolation: worktree` (the setting that gives a subagent its own worktree) creates the worktree from your repository’s default branch, not from the commit your session is on. Uncommitted and unpushed work never travels. Commit the foundation *and* set `worktree.baseRef` to `"head"` in your Claude Code settings.
-- **Agent teams ignore `isolation`**: Don’t assume [teammates](https://stevekinney.com/courses/ai-development-setup/agent-teams) are isolated from each other.
-- **A fresh checkout isn’t a ready environment**: Ignored files don’t come along. Install dependencies per worktree, and list the ignored files you need copied (like `.env`) in `.worktreeinclude`, a Claude Code file at the repository root. Run the project’s own check before anyone edits anything.
-- **Passing against the wrong server**: [Playwright](https://playwright.dev/)’s `reuseExistingServer` will happily run your tests against a dev server from a *different* worktree. Fixed host ports in [Docker Compose](https://docs.docker.com/compose/) collide the same way, and a copied `.env` points every worktree at the same database.
-- **Give each task its own resources**: A port, a database, a Compose project name, and a browser context. Serialize expensive builds behind a lock. Share the download cache, but never symlink `node_modules`.
+- **القاعدة ليست ما تظن**: `isolation: worktree` (وهو الإعداد الذي يمنح وكيلًا فرعيًا شجرة عمل خاصة) ينشئ شجرة العمل من الفرع الافتراضي لمستودعك، لا من الإيداع الذي عليه جلستك. والعمل غير المُودَع وغير المدفوع لا ينتقل أبدًا. فأودِع الأساس *و*اضبط `worktree.baseRef` على `"head"` في إعدادات Claude Code.
+- **فرق الوكلاء تتجاهل `isolation`**: لا تفترض أن [الزملاء](https://stevekinney.com/courses/ai-development-setup/agent-teams) معزولون عن بعضهم.
+- **نسخة العمل الجديدة ليست بيئة جاهزة**: الملفات المتجاهَلة لا تأتي معها. فثبّت الاعتمادات لكل شجرة عمل، واسرد الملفات المتجاهَلة التي تحتاج نسخها (مثل `.env`) في `.worktreeinclude`، وهو ملف Claude Code في جذر المستودع. ونفّذ فحص المشروع الخاص قبل أن يعدّل أحد أي شيء.
+- **النجاح مقابل الخادم الخطأ**: سيشغّل `reuseExistingServer` في [Playwright](https://playwright.dev/) اختباراتك بسرور تطوير من شجرة عمل *مختلفة* عن طيب خاطر. ومنافذ المضيف الثابتة في [Docker Compose](https://docs.docker.com/compose/) تتصادم بالطريقة نفسها، وملف `.env` منسوخ يوجّه كل شجرة عمل إلى قاعدة البيانات نفسها.
+- **امنح كل مهمة مواردها الخاصة**: منفذًا، وقاعدة بيانات، واسم مشروع Compose، وسياق متصفح. وسلسل عمليات البناء المكلفة خلف قفل. وشارك ذاكرة التنزيل المؤقتة، لكن لا تُنشئ رابطًا رمزيًا لـ `node_modules` أبدًا.
 
-Write one negative isolation test: a marker created in worktree A must be invisible from worktree B.
+اكتب اختبار عزل سلبيًا واحدًا: علامة تُنشأ في شجرة العمل A يجب أن تكون غير مرئية من شجرة العمل B.
 
-## Worktrees and parallel agents
+## أشجار العمل والوكلاء المتوازون {#worktrees-and-parallel-agents}
 
-[Claude Code](https://code.claude.com/docs/en/overview), [Codex](https://developers.openai.com/codex), [Cursor](https://cursor.com/), and [GitHub Copilot](https://github.com/features/copilot) all have worktree modes. They differ on where worktrees live, what they’re based on, and how cleanup works, so check your tool’s defaults before you trust them.
+لكل من [Claude Code](https://code.claude.com/docs/en/overview) و[Codex](https://developers.openai.com/codex) و[Cursor](https://cursor.com/) و[GitHub Copilot](https://github.com/features/copilot) أوضاع أشجار عمل. وهي تختلف في أين تعيش أشجار العمل، وعمّا تستند إليه، وكيف يعمل التنظيف، فتفقّد الإعدادات الافتراضية لأداتك قبل أن تثق بها.
 
-Worktrees don’t make conflicts go away. They move them to merge time. [In one study](https://arxiv.org/abs/2607.04697), pull requests from *different* agents conflicted 41.7% of the time. So partition by ownership before you start any agents. If you can write down who owns what up front, the branches will probably merge cleanly. If you can’t, overlapping ownership at least shows up as a visible merge conflict instead of two agents silently overwriting each other.
+أشجار العمل لا تُذهب التعارضات. بل تنقلها إلى وقت الدمج. [وفي دراسة واحدة](https://arxiv.org/abs/2607.04697)، تعارضت طلبات السحب من وكلاء *مختلفين* بنسبة 41.7%. فقسّم بالملكية قبل أن تشغّل أي وكيل. وإن استطعت أن تكتب مسبقًا من يملك ماذا، فسيُدمج الفروع بسلاسة على الأرجح. وإن لم تستطع، فظهور الملكية المتداخلة على الأقل كتعارض دمج مرئي خير من أن يكتب وكيلان فوق بعضهما في صمت.
 
-Then integrate serially: merge one, re-run the full suite, merge the next. Branches that pass alone can fail together, and when a merge breaks a check, stop and report the branch and the check. If two workers produced competing solutions, pick one; don’t blend them. `git merge-tree --write-tree` predicts conflicts before you merge.
+ثم دمج تسلسليًا: ادمج واحدًا، وأعد تشغيل المجموعة الكاملة، وادمج التالي. فالفروع التي تنجح وحدها قد تفشل معًا، وحين يكسر دمجٌ فحصًا، توقّف وأبلغ عن الفرع والفحص. وإن أنتج عاملان حلّين متنافسين، فاختر أحدهما؛ ولا تخلطهما. ويتنبّأ `git merge-tree --write-tree` بالتعارضات قبل أن تدمج.
 
-Anthropic [suggests three to five parallel sessions](https://support.claude.com/en/articles/14554000-claude-code-power-user-tips). The real limit isn’t Git, though. It’s how much you can review, for reasons covered in [You are a load-sensitive component](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#you-are-a-load-sensitive-component).
+تقترح Anthropic [ثلاث إلى خمس جلسات متوازية](https://support.claude.com/en/articles/14554000-claude-code-power-user-tips). لكن الحد الحقيقي ليس Git. بل هو مقدار ما تستطيع مراجعته، للأسباب المشروحة في [أنت مكوّن حسّاس للحمل](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#you-are-a-load-sensitive-component).
 
-## Cleanup is an ownership decision
+## التنظيف قرار ملكية
 
-Deleting a worktree feels like housekeeping. It’s actually a judgment that nobody still needs what’s in there.
+حذف شجرة عمل يبدو كترتيب البيت. لكنه في الحقيقة حكم بأن لا أحد ما زال يحتاج ما فيها.
 
-- **Age is not evidence of abandonment**: `git rev-list --count HEAD --not --remotes` tells you whether a worktree has commits that exist nowhere else. Dirty or unpushed means don’t delete.
-- **A clean `git status` isn’t safe either**: `git worktree remove` deletes ignored files, like a local SQLite database, without asking.
-- **Squash merges lie**: `git merge-base --is-ancestor` says the work never landed, because the original commits never become ancestors of `main`.
-- **Let the model classify, and let a script delete**: The model is good at sorting worktrees into “obviously done” and “ask a human.” A dry-run-by-default script you’ve read should do the `rm`.
+- **القِدَم ليس دليل هجران**: يخبرك `git rev-list --count HEAD --not --remotes` ما إذا كانت لشجرة العمل إيداعات لا توجد في مكان آخر. فإن كانت متسخة أو غير مدفوعة فلا تحذفها.
+- **حالة `git status` نظيفة ليست آمنة أيضًا**: فـ `git worktree remove` يحذف الملفات المتجاهَلة، مثل قاعدة بيانات SQLite محلية، دون سؤال.
+- **عمليات دمج الضغط (squash) تكذب**: يقول `git merge-base --is-ancestor` إن العمل لم يصل قط، لأن الإيداعات الأصلية لا تصير أسلافًا لـ `main` أبدًا.
+- **دع النموذج يصنّف، ودع سكربتًا يحذف**: النموذج جيد في فرز أشجار العمل إلى «منتهية بوضوح» و«اسأل إنسانًا». وينبغي أن يتولّى `rm` سكربت يعمل افتراضيًا بوضع المحاكاة (dry-run) وقد قرأته.
 
-The safe order: stop the task’s processes and check status, including ignored files. Confirm the work landed, or preserve it with a push or [`git bundle`](https://git-scm.com/docs/git-bundle), and copy out any ignored files you need. Then run `git worktree remove` *without* `--force`, and `git branch -d` as a separate step. Never `rm -rf` a worktree or rename its folder by hand: use `git worktree move`, and `git worktree list --porcelain -z` when a script needs to read the list.
+الترتيب الآمن: أوقف عمليات المهمة وتفقّد الحالة، بما فيها الملفات المتجاهَلة. وتأكّد أن العمل وصل، أو احفظه برفع أو [`git bundle`](https://git-scm.com/docs/git-bundle)، وانسخ أي ملفات متجاهَلة تحتاجها. ثم نفّذ `git worktree remove` *بدون* `--force`، ونفّذ `git branch -d` كخطوة منفصلة. ولا تنفّذ `rm -rf` على شجرة عمل ولا تعِد تسمية مجلدها يدويًا أبدًا: استخدم `git worktree move`، و`git worktree list --porcelain -z` حين يحتاج سكربت إلى قراءة القائمة.
 
-A worktree is a folder with a branch, not a sandbox. Remove only the ones you made, and only when you can prove nothing is lost.
+شجرة العمل مجلد بفرع، لا صندوق رمل. فلا تحذف إلا ما أنشأته أنت، وإلا حين تستطيع إثبات أن لا شيء يُفقد.

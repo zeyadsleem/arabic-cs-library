@@ -1,36 +1,36 @@
 ---
-title: "Exercise 9: Strangler Fig & Codemods"
-lang: en
+title: "التمرين 9: شجرة الخنّاق التينيّ وأدوات التحويل البرمجي (Codemods)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise"
 ---
 
-## What You’re Doing
+## ما الذي ستفعله
 
-A legacy application has appeared in the monorepo at `apps/legacy/`. It has old-style components, flat file structure, and no package separation. You’re going to set up a routing-level strangler fig so both apps coexist, migrate one route from legacy to modern, and write a jscodeshift codemod that automates the import transformations needed to move the rest of the codebase.
+ظهر تطبيق قديم في المستودع الأحادي عند `apps/legacy/`. وفيه مكوّنات على الطراز القديم، وبنية ملفات مسطّحة، وبلا فصل بين الحزم. وستُنشئ شجرة خنّاق تينيّ على مستوى التوجيه بحيث يتعايش التطبيقان، وتهاجر مسارًا واحدًا من القديم إلى الحديث، وتكتب أداة تحويل برمجي بـjscodeshift تُؤتمت تحويلات الاستيراد اللازمة لنقل بقية قاعدة الشفرة.
 
-## Why It Matters
+## لماذا يهم هذا
 
-Nobody gets to start from scratch. In the real world, you inherit legacy code and migrate incrementally. The strangler fig pattern gives you a safe coexistence strategy: new routes go to the modern app, old routes stay in the legacy app, and you migrate one route at a time until the legacy app is empty. Codemods automate the mechanical parts of migration — renaming imports, updating API calls, transforming patterns — so developers spend their time on decisions, not find-and-replace. The combination of strangler fig + codemods is how large teams migrate without freezing feature development.
+لا أحد يبدأ من الصفر. ففي الواقع العملي ترث شفرة قديمة وتهاجر تدريجيًا. ويمنحك نمط شجرة الخنّاق التينيّ استراتيجية تعايش آمنة: المسارات الجديدة تذهب إلى التطبيق الحديث، والمسارات القديمة تبقى في التطبيق القديم، وتهاجر مسارًا واحدًا في كل مرة حتى يخلو التطبيق القديم. وتُؤتمت أدوات التحويل البرمجي الأجزاء الميكانيكية من الترحيل — إعادة تسمية الاستيرادات، وتحديث نداءات API، وتحويل الأنماط — فيقضي المطوّرون وقتهم في القرارات لا في البحث والاستبدال. والجمع بين شجرة الخنّاق التينيّ وأدوات التحويل البرمجي هو كيف تهاجر الفرق الكبيرة دون تجميد تطوير الميزات.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
 - Node.js 20+
 - pnpm 9+
 
-## Setup
+## التهيئة
 
-You should be continuing from where Exercise 9 (Testing Strategies) left off. If you need to catch up:
+ينبغي أن تكون مكملًا من حيث انتهى التمرين 9 (استراتيجيات الاختبار). وإذا احتجت إلى اللحاق:
 
 ```bash
 git checkout 09-migration-start
 pnpm install
 ```
 
-## Explore the Legacy Application
+## استكشف التطبيق القديم
 
-Start by understanding what you’re migrating from.
+ابدأ بفهم ما تهاجر منه.
 
-Open `apps/legacy/src/legacy-app.tsx`. Note the patterns that mark this as legacy code:
+افتح `apps/legacy/src/legacy-app.tsx`. ولاحظ الأنماط التي تدل على أن هذه شفرة قديمة:
 
 *apps/legacy/src/legacy-app.tsx*
 
@@ -53,11 +53,11 @@ export function LegacyApp() {
 }
 ```
 
-> **What makes this “legacy”**
+> **ما الذي يجعل هذا «قديمًا»**
 >
-> It’s not about the age of the code — it’s about the patterns. Inline styles instead of a design system. Local file imports instead of package imports. No TypeScript types from `@pulse/shared`. No separation between feature packages. Everything lives in a flat directory. This is the monolith before architecture.
+> الأمر ليس في عمر الشفرة — بل في الأنماط. أنماط مضمّنة بدل نظام تصميم. واستيرادات ملفات محلية بدل استيرادات حزم. وبلا أنواع TypeScript من `@pulse/shared`. وبلا فصل بين حزم الميزات. وكل شيء يعيش في مجلد مسطّح. هذا هو التطبيق الشامل قبل المعمارية.
 
-Open `apps/legacy/src/legacy-analytics.tsx`. This component does what `@pulse/analytics` does, but without package separation:
+افتح `apps/legacy/src/legacy-analytics.tsx`. يفعل هذا المكوّن ما يفعله `@pulse/analytics`، لكن بلا فصل بين الحزم:
 
 *apps/legacy/src/legacy-analytics.tsx*
 
@@ -71,19 +71,19 @@ export function LegacyAnalytics() {
 }
 ```
 
-Compare with `packages/analytics/src/analytics-dashboard.tsx`. Same product feature, completely different architecture. The modern version uses `@pulse/ui` components, `@pulse/shared` types, Suspense boundaries, and colocated data fetching. The legacy version has everything inlined.
+قارن مع `packages/analytics/src/analytics-dashboard.tsx`. الميزة نفسها في المنتج، ومعمارية مختلفة تمامًا. فالنسخة الحديثة تستخدم مكوّنات `@pulse/ui`، وأنواع `@pulse/shared`، وحدود Suspense، وجلب بيانات في المكان نفسه. أما النسخة القديمة فكل شيء فيها مضمَّن.
 
-### Checkpoint
+### نقطة تحقق
 
-You understand the structural differences between the legacy and modern apps. The legacy app has no package boundaries, no shared types, and no design system integration.
+لقد فهمت الفروق البنيوية بين التطبيق القديم والحديث. فالتطبيق القديم بلا حدود حزم، وبلا أنواع مشتركة، وبلا تكامل مع نظام التصميم.
 
-Legacy application with inline styles and flat structure
+تطبيق قديم بأنماط مضمّنة وبنية مسطّحة
 
-Modern application with package-based architecture
+تطبيق حديث بمعمارية قائمة على الحزم
 
-## Set Up the Routing Strangler Fig
+## تهيئة شجرة الخنّاق التينيّ للتوجيه
 
-The strangler fig pattern works by placing a routing layer in front of both apps. New paths go to the modern app, legacy paths go to the legacy app. Over time, you move paths from legacy to modern until the legacy app has no routes left.
+يعمل نمط شجرة الخنّاق التينيّ بوضع طبقة توجيه أمام التطبيقين. فالمسارات الجديدة تذهب إلى التطبيق الحديث، والمسارات القديمة تذهب إلى التطبيق القديم. وبمرور الوقت تنقل المسارات من القديم إلى الحديث حتى لا تبقى للتطبيق القديم أي مسارات.
 
 ```
 flowchart TD
@@ -97,11 +97,11 @@ flowchart TD
     Proxy -->|"everything else"| Modern
 ```
 
-> **The strangler fig pattern**
+> **نمط شجرة الخنّاق التينيّ**
 >
-> The strangler fig pattern is named after the strangler fig tree, which grows by wrapping itself around a host tree. In nature, a strangler fig seed germinates in the canopy of an existing tree, sends roots down to the ground, and gradually envelops the host trunk with its own root structure. Over years, the fig’s roots thicken and fuse until they form a self-supporting lattice, and the original host tree — no longer needed — decays away. Martin Fowler borrowed this metaphor for software migration: instead of rewriting a legacy system from scratch (a notoriously risky approach), you build the new system around the old one, routing traffic to the new system one endpoint or feature at a time. The old system continues to serve any routes that have not been migrated yet, and it shrinks incrementally until it handles no traffic at all and can be safely removed. The pattern is valuable precisely because it eliminates the “big bang” cutover — at every point during the migration, you have a working system, and each individual migration step is small enough to review, test, and revert independently.
+> سُمّي نمط شجرة الخنّاق التينيّ على اسم شجرة الخنّاق التينيّ، التي تنمو بالتفافها حول شجرة مضيفة. ففي الطبيعة تنبت بذرة الخنّاق التينيّ في ظلّة شجرة قائمة، وترسل جذورًا إلى الأرض، وتغلّف تدريجيًا جذع الشجرة المضيفة ببنيّتها الجذرية. وعلى مدى سنوات، تتكاثف جذور التين وتلتحم حتى تكوّن شبكة قائمة بذاتها، ثم تتحلّل الشجرة المضيفة الأصلية — وقد لم تعد لازمة — وتتلاشى. واستعار مارتن فاولر هذه الاستعارة لترحيل البرمجيات: فبدل إعادة كتابة نظام قديم من الصفر (وهو نهج شديد الخطر)، تبني النظام الجديد حول القديم، موجّهًا الحركة إلى النظام الجديد نقطة نهاية واحدة أو ميزة واحدة في كل مرة. ويستمر النظام القديم في خدمة أي مسارات لم تُهاجر بعد، ويتقلّص تدريجيًا حتى لا يخدم أي حركة على الإطلاق ويمكن إزالته بأمان. والنمط قيّم تحديدًا لأنه يلغي الانتقال «الانفجاري» — ففي كل مرحلة من الترحيل يكون لديك نظام يعمل، وكل خطوة ترحيل منفردة صغيرة بما يكفي لمراجعتها واختبارها والرجوع عنها باستقلال.
 
-Open `apps/dashboard/vite.config.ts` and add a proxy configuration that forwards legacy routes to the legacy app’s dev server:
+افتح `apps/dashboard/vite.config.ts` وأضف إعداد وسيط يمرّر المسارات القديمة إلى خادم التطوير في التطبيق القديم:
 
 *apps/dashboard/vite.config.ts*
 
@@ -124,7 +124,7 @@ export default defineConfig({
 });
 ```
 
-Next, add the base path to the legacy app’s dev server. Open `apps/legacy/vite.config.ts` and add `base: "/legacy/"`:
+بعد ذلك، أضف مسار الأساس إلى خادم التطوير في التطبيق القديم. افتح `apps/legacy/vite.config.ts` وأضف `base: "/legacy/"`:
 
 *apps/legacy/vite.config.ts*
 
@@ -141,41 +141,41 @@ export default defineConfig({
 });
 ```
 
-*Note:* Serves all assets under /legacy/ so the proxy routing works correctly.
+*ملاحظة:* يقدّم كل الموارد تحت /legacy/ حتى يعمل توجيه الوسيط بشكل صحيح.
 
-> **Note**
+> **ملاحظة**
 >
-> The `port: 5174` is already set in the starting configuration. The only change needed here is adding `base: "/legacy/"` so that the legacy app’s assets are served under the `/legacy/` path prefix, which is required for the proxy to route them correctly.
+> المنفذ `port: 5174` مضبوط بالفعل في الإعداد الابتدائي. والتغيير الوحيد المطلوب هنا هو إضافة `base: "/legacy/"` حتى تُقدَّم موارد التطبيق القديم تحت بادئة المسار `/legacy/`، وهو ما يلزم ليمرّرها الوسيط بشكل صحيح.
 
-Start both dev servers. Add a script to the root `package.json` or run them manually:
+شغّل خادمَي التطوير معًا. وأضف سكربتًا إلى `package.json` في الجذر أو شغّلهما يدويًا:
 
 ```bash
 pnpm --filter @pulse/dashboard dev &
 pnpm --filter @pulse/legacy dev &
 ```
 
-Test the routing:
+اختبر التوجيه:
 
-- Open [http://localhost:5173](http://localhost:5173/) — the modern dashboard loads
-- Open [http://localhost:5173/legacy/](http://localhost:5173/legacy/) — the legacy app loads, proxied through the modern app’s server
+- افتح [http://localhost:5173](http://localhost:5173/) — فتُحمَّل لوحة التحكم الحديثة
+- افتح [http://localhost:5173/legacy/](http://localhost:5173/legacy/) — فيُحمَّل التطبيق القديم، ممرَّرًا عبر خادم التطبيق الحديث
 
-> **The proxy is the strangler**
+> **الوسيط هو الخنّاق**
 >
-> The modern app’s dev server is the single entry point. It owns the routing decision: requests to `/legacy/*` are forwarded to the legacy server, everything else is handled by the modern app. To migrate a route, you stop forwarding it to legacy and add it to the modern app’s router instead. The user never knows which app served the page — the URL structure stays the same. In production, this proxy would be a reverse proxy (Nginx, CloudFront, or your CDN’s edge routing) rather than Vite’s dev proxy.
+> خادم التطوير في التطبيق الحديث هو نقطة الدخول الوحيدة. وهو يملك قرار التوجيه: الطلبات إلى `/legacy/*` تُمرَّر إلى الخادم القديم، وكل ما عداها يتولاه التطبيق الحديث. ولتهاجر مسارًا، تتوقف عن تمريره إلى القديم وتضيفه إلى موجّه التطبيق الحديث بدل ذلك. ولا يعرف المستخدم أبدًا أي تطبيق قدّم الصفحة — فبنية URL تبقى كما هي. وفي الإنتاج، سيكون هذا الوسيط وكيلًا عكسيًا (Nginx أو CloudFront أو التوجيه الطرفي في شبكة توصيل المحتوى لديك) لا وسيط Vite للتطوير.
 
-### Checkpoint
+### نقطة تحقق
 
-Both apps are accessible through a single entry point at `localhost:5173`. Modern routes render from the dashboard app. Legacy routes are proxied to the legacy app on port 5174.
+التطبيقان متاحان عبر نقطة دخول واحدة عند `localhost:5173`. والمسارات الحديثة تُصيَّر من تطبيق لوحة التحكم. والمسارات القديمة تُمرَّر عبر الوسيط إلى التطبيق القديم على المنفذ 5174.
 
-## Migrate One Route
+## هاجر مسارًا واحدًا
 
-Take the legacy analytics view and replace it with the modern `@pulse/analytics` package.
+خُذ عرض التحليلات القديم واستبدله بحزمة `@pulse/analytics` الحديثة.
 
-The legacy analytics route is at `/legacy/analytics`. You want to move it so that `/analytics` (or `/`) serves the modern version. This is already the case — the modern dashboard’s router handles `/` with the analytics route. The strangler fig means users who bookmarked `/legacy/analytics` should eventually be redirected to `/`.
+مسار التحليلات القديم عند `/legacy/analytics`. وتريد نقله بحيث يقدّم `/analytics` (أو `/`) النسخة الحديثة. وهذا هو الحال بالفعل — فتوجيه لوحة التحكم الحديثة يتولى `/` بمسار التحليلات. وتعني شجرة الخنّاق التينيّ أن المستخدمين الذين أضافوا `/legacy/analytics` إلى مفضلاتهم ينبغي في النهاية أن يُعاد توجيههم إلى `/`.
 
-Add a redirect in the legacy app for the migrated route. Replace the full `LegacyApp` component with a version that redirects migrated routes. The component used to render navigation and the `LegacyAnalytics` component—now it checks the URL path and redirects `/legacy/analytics` to the modern app at `/`.
+أضف إعادة توجيه في التطبيق القديم للمسار المهاجَر. واستبدل مكوّن `LegacyApp` كاملًا بنسخة تعيد توجيه المسارات المهاجَرة. فالمكوّن كان يصيّر التنقل ومكوّن `LegacyAnalytics` — أما الآن فيفحص مسار URL ويعيد توجيه `/legacy/analytics` إلى التطبيق الحديث عند `/`.
 
-Open `apps/legacy/src/legacy-app.tsx` and replace the component:
+افتح `apps/legacy/src/legacy-app.tsx` واستبدل المكوّن:
 
 *apps/legacy/src/legacy-app.tsx*
 
@@ -197,27 +197,27 @@ export function LegacyApp() {
 }
 ```
 
-*Note:* Redirects the migrated route to the modern app so old bookmarks still work.
+*ملاحظة:* يعيد توجيه المسار المهاجَر إلى التطبيق الحديث حتى تظل الروابط المحفوظة القديمة تعمل.
 
-Verify the migration:
+تحقق من الترحيل:
 
-- Navigate to [http://localhost:5173/legacy/analytics](http://localhost:5173/legacy/analytics) — it should redirect to `/` (the modern analytics dashboard)
-- Navigate to [http://localhost:5173/legacy/settings](http://localhost:5173/legacy/settings) — the legacy settings page still loads normally
-- Navigate to [http://localhost:5173/](http://localhost:5173/) — the modern analytics dashboard renders with all the architecture from Exercises 2-8
+- انتقل إلى [http://localhost:5173/legacy/analytics](http://localhost:5173/legacy/analytics) — ينبغي أن يعيد التوجيه إلى `/` (لوحة التحليلات الحديثة)
+- انتقل إلى [http://localhost:5173/legacy/settings](http://localhost:5173/legacy/settings) — فتُحمَّل صفحة الإعدادات القديمة عادةً
+- انتقل إلى [http://localhost:5173/](http://localhost:5173/) — فتُصيَّر لوحة التحليلات الحديثة بكل معمارية التمارين 2-8
 
-> **Migration is a one-route-at-a-time process**
+> **الترحيل عملية مسار واحد في كل مرة**
 >
-> In a real project, you’d migrate the simplest or highest-traffic route first — to validate the pattern and build confidence. Each migration is a separate pull request: update the proxy/routing, verify the modern version works, add the redirect from legacy. The legacy app shrinks with each PR. When every route has been migrated, you delete `apps/legacy/` entirely. The key discipline is: never migrate two routes in the same PR. Each migration should be independently revertable.
+> في مشروع حقيقي، ستهاجر أبسط مسار أو أكثره حركة أولًا — للتحقق من النمط وبناء الثقة. وكل ترحيل طلب سحب منفصل: حدّث الوسيط/التوجيه، وتحقّق من عمل النسخة الحديثة، وأضف إعادة التوجيه من القديم. ويتقلّص التطبيق القديم مع كل طلب سحب. وعندما تُهاجر كل المسارات، تحذف `apps/legacy/` بالكامل. والانتظام الجوهري هو: لا تهاجر مسارين في طلب السحب نفسه أبدًا. وينبغي أن يكون كل ترحيل قابلًا للرجوع عنه باستقلال.
 
-### Checkpoint
+### نقطة تحقق
 
-The analytics route is fully migrated. Legacy analytics redirects to the modern app. Other legacy routes still work through the proxy.
+مسار التحليلات مهاجَر بالكامل. والتحليلات القديمة تعيد التوجيه إلى التطبيق الحديث. وبقية المسارات القديمة ما زالت تعمل عبر الوسيط.
 
-## Write a jscodeshift Codemod
+## اكتب أداة تحويل برمجي بـjscodeshift
 
-The legacy app has import patterns that need to be transformed for the modern architecture. You’re going to write a codemod that automates this.
+في التطبيق القديم أنماط استيراد تحتاج إلى تحويل لأجل المعمارية الحديثة. وستكتب أداة تحويل برمجي تُؤتمت ذلك.
 
-A codemod parses source code into an Abstract Syntax Tree, finds nodes that match a pattern, replaces them with new nodes, and prints the modified tree back to source code.
+تُحلّل أداة التحويل البرمجي الشفرة المصدرية إلى شجرة صياغة مجرّدة، وتجد العُقد المطابقة لنمط ما، وتستبدلها بعُقد جديدة، وتطبع الشجرة المعدّلة مرة أخرى كشفرة مصدرية.
 
 ```
 flowchart LR
@@ -232,7 +232,7 @@ flowchart LR
     Source --> Parse --> AST --> Find --> Replace --> Print --> Output
 ```
 
-Open `codemods/src/migrate-legacy-import.ts`. It contains a stub:
+افتح `codemods/src/migrate-legacy-import.ts`. فهو يحتوي على بديل فارغ:
 
 *codemods/src/migrate-legacy-import.ts*
 
@@ -249,19 +249,19 @@ export default function transform(file: FileInfo, api: API) {
 }
 ```
 
-Implement the transform. The codemod should find imports like:
+نفّذ التحويل. ينبغي أن تجد الأداة استيرادات مثل:
 
 ```typescript
 import { LegacyChart } from './legacy-chart';
 ```
 
-And transform them to:
+وتحوّلها إلى:
 
 ```typescript
 import { Chart } from '@pulse/analytics';
 ```
 
-Replace the stub in `codemods/src/migrate-legacy-import.ts` with this implementation:
+استبدل البديل الفارغ في `codemods/src/migrate-legacy-import.ts` بهذا التنفيذ:
 
 *codemods/src/migrate-legacy-import.ts*
 
@@ -341,25 +341,25 @@ export default function transform(file: FileInfo, api: API) {
 }
 ```
 
-*Note:* Maps each legacy component to its modern package and name.
+*ملاحظة:* يربط كل مكوّن قديم بحزمته واسمه الحديثين.
 
-*Note:* Finds AST nodes for imports from ./legacy-* paths.
+*ملاحظة:* يجد عُقد شجرة الصياغة للاستيرادات من مسارات ./legacy-*.
 
-*Note:* Replaces the legacy import node with one or more modern package imports.
+*ملاحظة:* يستبدل عقدة الاستيراد القديمة باستيراد أو أكثر من استيرادات الحزم الحديثة.
 
-*Note:* Renames JSX elements like <LegacyChart> to <Chart> throughout the file.
+*ملاحظة:* يعيد تسمية عناصر JSX مثل &lt;LegacyChart&gt; إلى &lt;Chart&gt; في الملف كله.
 
-> **How jscodeshift works**
+> **كيف يعمل jscodeshift**
 >
-> jscodeshift parses JavaScript/TypeScript into an Abstract Syntax Tree (AST), lets you search and transform nodes in that tree, then prints the modified tree back to source code. Unlike regex-based find-and-replace, AST transforms understand the structure of the code — they can distinguish between a `LegacyChart` in an import statement and a `LegacyChart` in a JSX element. The `j.find()` method searches for AST nodes matching a pattern, and `j.replaceWith()` swaps them for new nodes. The transform function receives one file at a time and returns the modified source.
+> يُحلّل jscodeshift شفرة JavaScript/TypeScript إلى شجرة صياغة مجرّدة (AST)، ويتيح لك البحث في عُقد تلك الشجرة وتحويلها، ثم يطبع الشجرة المعدّلة مرة أخرى كشفرة مصدرية. وخلافًا للبحث والاستبدال بالتعبيرات النمطية، تفهم تحويلات شجرة الصياغة بنية الشفرة — فهي تستطيع التمييز بين `LegacyChart` في عبارة استيراد و`LegacyChart` في عنصر JSX. وتبحث الدالة `j.find()` عن عُقد شجرة الصياغة المطابقة لنمط ما، وتستبدلها الدالة `j.replaceWith()` بعُقد جديدة. وتتلقى دالة التحويل ملفًا واحدًا في المرة وتُرجع الشفرة المعدّلة.
 
-> **Abstract Syntax Trees**
+> **أشجار الصياغة المجرّدة**
 >
-> An Abstract Syntax Tree (AST) is a tree-shaped data structure that represents the grammatical structure of source code. When a parser reads `import { Chart } from "@pulse/analytics"`, it does not see a flat string of characters — it produces a tree where the top node is an `ImportDeclaration`, with child nodes for each imported specifier (`Chart`) and the source string (`"@pulse/analytics"`). Every construct in the language — variable declarations, function calls, JSX elements, binary expressions — becomes a node in this tree, with its sub-expressions as children. Tools like jscodeshift, ESLint, Babel, and Prettier all operate on ASTs rather than raw text because tree operations are structurally aware: you can find “all import declarations whose source starts with `./legacy-`” without worrying about whitespace, comments, or formatting variations that would trip up a regular expression. The “abstract” in AST means the tree omits syntactic details that do not affect meaning (like parentheses used only for grouping or semicolons) and focuses on the logical structure of the program.
+> شجرة الصياغة المجرّدة (AST) بنية بيانات على شكل شجرة تمثّل البنية النحوية للشفرة المصدرية. فحين يقرأ محلّل العبارة `import { Chart } from "@pulse/analytics"`، فإنه لا يرى سلسلة أحرف مسطّحة — بل ينتج شجرة تكون عقدتها العليا `ImportDeclaration`، ولها عُقد فرعية لكل محدِّد مستورَد (`Chart`) وللسلسلة المصدرية (`"@pulse/analytics"`). وكل تركيب في اللغة — تعريفات المتغيرات، ونداءات الدوال، وعناصر JSX، والتعبيرات الثنائية — يصبح عقدة في هذه الشجرة، وتعبيراته الفرعية أبناء لها. وتعتمد أدوات مثل jscodeshift وESLint وBabel وPrettier كلها على أشجار الصياغة لا على النص الخام، لأن عمليات الأشجار واعية بالبنية: فيمكنك أن تجد «كل عبارات الاستيراد التي يبدأ مصدرها بـ`./legacy-`» دون القلق بشأن المسافات أو التعليقات أو اختلافات التنسيق التي تُربك تعبيرًا نمطيًا. وكلمة «مجرّدة» في AST تعني أن الشجرة تحذف التفاصيل النحوية التي لا تؤثر في المعنى (مثل الأقواس المستخدمة للتجميع فقط أو الفواصل المنقوطة) وتركّز على البنية المنطقية للبرنامج.
 
-## Test the Codemod
+## اختبر أداة التحويل
 
-Run the codemod against the legacy app’s source files:
+شغّل أداة التحويل على ملفات مصدر التطبيق القديم:
 
 ```bash
 npx jscodeshift \
@@ -368,44 +368,44 @@ npx jscodeshift \
   apps/legacy/src/
 ```
 
-Check the diff to see what changed:
+افحص الفرق (diff) لترى ما تغيّر:
 
 ```bash
 git diff apps/legacy/src/
 ```
 
-You should see imports transformed from local legacy paths to modern package paths, and component names updated from `LegacyChart` to `Chart`, `LegacyButton` to `Button`, etc.
+ينبغي أن ترى الاستيرادات محوّلة من المسارات المحلية القديمة إلى مسارات الحزم الحديثة، وأسماء المكوّنات محدّثة من `LegacyChart` إلى `Chart`، ومن `LegacyButton` إلى `Button`، وهكذا.
 
-Verify the transforms are correct. Open the modified files and check:
+تحقق من صحة التحويلات. افتح الملفات المعدّلة وافحص:
 
-- Old: `import { LegacyChart } from "./legacy-chart"`
-- New: `import { Chart } from "@pulse/analytics"`
-- Old: `<LegacyChart data={data} />`
-- New: `<Chart data={data} />`
+- قديم: `import { LegacyChart } from "./legacy-chart"`
+- جديد: `import { Chart } from "@pulse/analytics"`
+- قديم: `<LegacyChart data={data} />`
+- جديد: `<Chart data={data} />`
 
-> **Always review codemod output**
+> **راجع مخرَج أداة التحويل دائمًا**
 >
-> Codemods are powerful but not infallible. Edge cases — aliased imports, re-exports, dynamic imports, template literal interpolation — can produce incorrect transforms. Run the codemod, review the diff, run the type checker and tests, then commit. Treat the codemod as a time-saver, not an autopilot.
+> أدوات التحويل قوية لكنها ليست معصومة. فالحالات الحدية — الاستيرادات المستعارة، وإعادة التصدير، والاستيرادات الديناميكية، والتضمين في سلاسل القوالب — قد تنتج تحويلات غير صحيحة. شغّل الأداة، وراجع الفرق، وشغّل فاحص الأنواع والاختبارات، ثم أودِع. وتعامل مع الأداة كموفّر للوقت، لا كطيّار آلي.
 
-Run the type checker on the modified files to catch any issues:
+شغّل فاحص الأنواع على الملفات المعدّلة لالتقاط أي مشكلات:
 
 ```bash
 pnpm turbo typecheck
 ```
 
-> **Typecheck will fail here**
+> **فحص الأنواع سيفشل هنا**
 >
-> The codemod transforms `import { LegacyChart } from "./legacy-chart"` to `import { Chart } from "@pulse/analytics"`, but the legacy app doesn’t have `@pulse/analytics` as a dependency. In a real migration, you would add the modern packages to the legacy app’s `package.json` before running the type checker. For this exercise, the type error confirms the codemod is producing the correct output — just revert the files with `git checkout apps/legacy/src/` and move on to writing tests.
+> تحوّل أداة التحويل `import { LegacyChart } from "./legacy-chart"` إلى `import { Chart } from "@pulse/analytics"`، لكن التطبيق القديم لا يملك `@pulse/analytics` كتبعية. وفي ترحيل حقيقي، ستضيف الحزم الحديثة إلى `package.json` في التطبيق القديم قبل تشغيل فاحص الأنواع. وفي هذا التمرين، يؤكد خطأ الأنواع أن الأداة تنتج المخرَج الصحيح — فقط أرجع الملفات بـ`git checkout apps/legacy/src/` وانتقل إلى كتابة الاختبارات.
 
-### Checkpoint
+### نقطة تحقق
 
-The codemod transforms legacy imports to modern package imports. The diff shows clean, expected changes.
+تحوّل أداة التحويل الاستيرادات القديمة إلى استيرادات الحزم الحديثة. ويعرض الفرق تغييرات نظيفة ومتوقعة.
 
-Git diff showing codemod import transformations
+فرق Git يُظهر تحويلات الاستيراد التي أجرتها أداة التحويل
 
-## Write Codemod Tests
+## اكتب اختبارات لأداة التحويل
 
-Open `codemods/src/__tests__/migrate-legacy-import.test.ts` and add test cases:
+افتح `codemods/src/__tests__/migrate-legacy-import.test.ts` وأضف حالات اختبار:
 
 *codemods/src/__tests__/migrate-legacy-import.test.ts*
 
@@ -459,39 +459,39 @@ describe('migrate-legacy-import', () => {
 });
 ```
 
-*Note:* Tests codemods as string-to-string transforms with no file system needed.
+*ملاحظة:* يختبر أدوات التحويل كتحويلات من نص إلى نص دون الحاجة إلى نظام ملفات.
 
-Run the tests:
+شغّل الاختبارات:
 
 ```bash
 pnpm --filter codemods test
 ```
 
-> **Testing codemods is testing string-to-string transforms**
+> **اختبار أدوات التحويل هو اختبار تحويلات من نص إلى نص**
 >
-> You provide an input source string, run the transform, and assert properties of the output string. The test doesn’t need a real file system or a running application. This makes codemod tests fast and easy to write — add a test case for every edge case you encounter. When a codemod produces incorrect output on a real file, copy that file’s problematic section into a test case, fix the transform, and verify the test passes.
+> تقدّم سلسلة نصية مصدرية، وتشغّل التحويل، وتتحقق من خصائص السلسلة الناتجة. ولا يحتاج الاختبار إلى نظام ملفات حقيقي ولا إلى تطبيق يعمل. وهذا يجعل اختبارات أدوات التحويل سريعة وسهلة الكتابة — أضف حالة اختبار لكل حالة حدية تصادفها. وعندما تنتج الأداة مخرَجًا غير صحيح على ملف حقيقي، انسخ القسم المشكِل من ذلك الملف إلى حالة اختبار، وأصلح التحويل، وتحقق من نجاح الاختبار.
 
-### Checkpoint
+### نقطة تحقق
 
-Codemod tests pass. Each test verifies a specific transformation scenario. Edge cases are covered.
+تنجح اختبارات أداة التحويل. وكل اختبار يتحقق من سيناريو تحويل محدد. والحالات الحدية مغطاة.
 
-Codemod test results showing all tests passing
+نتائج اختبارات أداة التحويل تُظهر نجاح كل الاختبارات
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `solution` branch:
+إذا احتجت إلى اللحاق، فالحالة المكتملة لهذا التمرين متاحة في الفرع `solution`:
 
 ```bash
 git checkout solution
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف موسّعة
 
-- **Handle aliased imports:** Extend the codemod to handle `import { LegacyChart as MyChart } from "./legacy-chart"` and preserve the alias: `import { Chart as MyChart } from "@pulse/analytics"`.
-- **Dry-run mode:** Run the codemod with `--dry` to see which files would be modified without actually changing them. Use this in CI to verify that no unmigrated legacy imports remain.
-- **Add a second codemod:** Write a codemod that transforms inline styles (`style={{ color: "#333" }}`) to Tailwind CSS classes (`className="text-gray-700"`). This is a harder transform because it requires a mapping from CSS properties to Tailwind classes.
+- **التعامل مع الاستيرادات المستعارة:** وسّع أداة التحويل لتتعامل مع `import { LegacyChart as MyChart } from "./legacy-chart"` وتحفظ الاسم المستعار: `import { Chart as MyChart } from "@pulse/analytics"`.
+- **وضع التجربة الجافة:** شغّل أداة التحويل مع `--dry` لترى الملفات التي ستُعدَّل دون تعديلها فعلًا. واستخدم هذا في CI للتحقق من عدم بقاء أي استيرادات قديمة غير مهاجَرة.
+- **أضف أداة تحويل ثانية:** اكتب أداة تحوّل الأنماط المضمّنة (`style={{ color: "#333" }}`) إلى أصناف Tailwind CSS (`className="text-gray-700"`). وهذا تحويل أصعب لأنه يتطلب خريطة من خصائص CSS إلى أصناف Tailwind.
 
-## What’s Next
+## ما التالي
 
-You’ve completed the full workshop arc. Over these exercises, you’ve built a monorepo architecture from the ground up: build-time composition, streaming SSR, Turborepo orchestration, TypeScript project references, architectural linting, CI/CD with performance budgets, E2E testing with Playwright, and incremental migration with the strangler fig pattern. Each exercise added a layer of infrastructure that makes the architecture more maintainable, more enforceable, and more scalable. The next step is to apply these patterns to your own codebase — start with the layer that would have the highest impact and work outward from there.
+لقد أكملت قوس الورشة كاملًا. عبر هذه التمارين، بنيت معمارية مستودع أحادي من الأساس: تركيب وقت البناء، والتصيير التدفقي SSR، وتنسيق Turborepo، ومراجع مشاريع TypeScript، والفحص المعماري، وCI/CD مع ميزانيات الأداء، واختبارات E2E بـPlaywright، والترحيل التدريجي بنمط شجرة الخنّاق التينيّ. وأضاف كل تمرين طبقة من البنية التحتية تجعل المعمارية أكثر قابلية للصيانة والفرض والتوسع. والخطوة التالية هي تطبيق هذه الأنماط على قاعدة شفرتك — ابدأ بالطبقة الأعلى أثرًا وتحرّك منها إلى الخارج.

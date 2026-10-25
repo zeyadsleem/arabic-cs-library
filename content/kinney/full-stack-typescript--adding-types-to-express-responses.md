@@ -1,10 +1,10 @@
 ---
-title: "Adding Types to Express Responses"
-lang: en
+title: "إضافة الأنواع إلى استجابات Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/adding-types-to-express-responses"
 ---
 
-Just as we type request inputs, we should type response outputs to ensure API consistency.
+تمامًا كما ننمّط مدخلات الطلب، ينبغي أن ننمّط مخرجات الاستجابة لضمان اتساق API.
 
 ```typescript
 interface UserResponse {
@@ -35,9 +35,9 @@ app.get(
 );
 ```
 
-## API Response Patterns
+## أنماط استجابة API
 
-For consistent API responses, consider defining standard patterns:
+من أجل استجابات API متسقة، فكّر في تعريف أنماط قياسية:
 
 ```typescript
 // Define a standard API response structure
@@ -95,16 +95,16 @@ app.get(
 );
 ```
 
-This pattern provides several benefits:
+يوفر هذا النمط فوائد عدة:
 
-1. Consistent API response format across all endpoints
-2. Type safety for both success and error responses
-3. Clear separation between success and error handling
-4. Reduced boilerplate through helper functions
+1. تنسيق استجابة API متسق في كل نقاط النهاية
+2. سلامة الأنواع لكل من استجابات النجاح والأخطاء
+3. فصل واضح بين معالجة النجاح ومعالجة الأخطاء
+4. شيفرة متكررة أقل بفضل دوال المساعدة
 
-## Response Streaming and Complex Types
+## بث الاستجابات والأنواع المعقّدة
 
-Express can send more than just JSON. For streaming responses or complex types, we need specialized handling:
+يستطيع Express إرسال أكثر من JSON فحسب. وبالنسبة إلى استجابات البث أو الأنواع المعقّدة، نحتاج إلى معالجة مخصّصة:
 
 ```typescript
 // Streaming file response
@@ -131,7 +131,7 @@ app.get('/page', (req: Request, res: Response<HtmlResponse>) => {
 });
 ```
 
-For these cases, the Response generic type has limitations. A better approach is to use union types based on the content type:
+في هذه الحالات، للنوع العام Response قيود. والنهج الأفضل هو استخدام أنواع اتحادية بحسب نوع المحتوى:
 
 ```typescript
 // Define response types for different content types
@@ -172,15 +172,15 @@ app.get('/page', handlers.html);
 app.get('/download', handlers.stream);
 ```
 
-This approach provides more clarity about the response type in your route handlers.
+يوفر هذا النهج وضوحًا أكبر بشأن نوع الاستجابة في معالجات مساراتك.
 
-## Advanced Typing Techniques: Power Tools
+## تقنيات تنميط متقدمة: أدوات قوية
 
-Now that we’ve covered the basics, let’s explore advanced typing techniques that make Express with TypeScript even more powerful.
+الآن وقد غطّينا الأساسيات، لنستكشف تقنيات تنميط متقدمة تجعل Express مع TypeScript أقوى.
 
-### Branded Types for Enhanced Safety
+### أنواع موسومة لمزيد من الأمان
 
-Sometimes basic types aren’t enough. For IDs, tokens, and other special strings, we can use branded types:
+أحيانًا لا تكفي الأنواع الأساسية. فبالنسبة إلى المعرّفات والرموز وسلاسل النصوص الخاصة الأخرى، يمكننا استخدام الأنواع الموسومة (branded types):
 
 ```typescript
 // Define branded types
@@ -243,11 +243,11 @@ app.post('/login', (req: Request, res: Response<AuthResponse>) => {
 });
 ```
 
-Branded types ensure that you don’t accidentally mix up different types of IDs or tokens, even though they’re all strings underneath.
+تضمن الأنواع الموسومة ألا تخلط خطأً بين أنواع مختلفة من المعرّفات أو الرموز، مع أنها كلها سلاسل نصية في الأصل.
 
-### Type-Safe Middleware Chains
+### سلاسل وسيط آمنة الأنواع
 
-Express middleware can be challenging to type correctly, especially when middleware adds properties to the request:
+قد يكون تنميط وسيط Express صعبًا على نحو صحيح، خصوصًا عندما يضيف الوسيط خصائص إلى الطلب:
 
 ```typescript
 // Define middleware that adds user to request
@@ -305,11 +305,11 @@ app.get(
 );
 ```
 
-This pattern guarantees that `req.user` exists and is properly typed in your route handler, with both compile-time and runtime checks.
+يضمن هذا النمط وجود `req.user` وتنميطه على النحو الصحيح في معالج المسار، بفحوص في وقت التصريف ووقت التشغيل معًا.
 
-### Handling Async Route Handlers
+### التعامل مع معالجات المسارات اللامتزامنة
 
-Express doesn’t natively handle promises, which can lead to unhandled rejections. A type-safe wrapper helps:
+لا يتعامل Express أصليًا مع الوعود، ما قد يؤدي إلى رفض غير معالَج. ويساعد غلاف آمن الأنواع في ذلك:
 
 ```typescript
 // Define a wrapper for async route handlers
@@ -340,15 +340,15 @@ app.get(
 );
 ```
 
-This pattern ensures that any errors in async handlers are properly passed to Express’s error handling middleware.
+يضمن هذا النمط تمرير أي أخطاء في المعالجات اللامتزامنة إلى وسيط معالجة الأخطاء في Express على النحو الصحيح.
 
-## Integrated Error Handling: The Safety Net
+## معالجة الأخطاء المتكاملة: شبكة الأمان
 
-Proper error handling is crucial for robust APIs. TypeScript helps ensure errors are handled consistently.
+معالجة الأخطاء السليمة حاسمة لـ APIs المتينة. ويساعد TypeScript على ضمان معالجة الأخطاء باتساق.
 
-### Typed Error Middleware
+### وسيط أخطاء متنمّط
 
-Express error middleware has a distinct signature:
+لوسيط أخطاء Express بصمة مميزة:
 
 ```typescript
 // Define structured error types
@@ -445,16 +445,16 @@ app.post(
 );
 ```
 
-This structured approach to error handling ensures that:
+تضمن هذه المقاربة المنظمة لمعالجة الأخطاء ما يلي:
 
-1. All errors are properly typed
-2. Error responses follow a consistent format
-3. Different error types result in appropriate HTTP status codes
-4. Error details are preserved when needed
+1. كل الأخطاء متنمّطة على النحو الصحيح
+2. استجابات الأخطاء تتبع تنسيقًا متسقًا
+3. أنواع الأخطاء المختلفة تؤدي إلى رموز حالة HTTP مناسبة
+4. تفاصيل الأخطاء محفوظة عند الحاجة
 
-### Global Error Types
+### أنواع الأخطاء الشاملة
 
-For a consistent approach across your application, define error types in a central location:
+لمقاربة متسقة في تطبيقك كله، عرّف أنواع الأخطاء في موضع مركزي:
 
 ```typescript
 // errors.ts
@@ -506,7 +506,7 @@ export class ValidationError extends AppError {
 // Additional error classes...
 ```
 
-Then use these types across your application:
+ثم استخدم هذه الأنواع في تطبيقك:
 
 ```typescript
 import { NotFoundError, ValidationError, ErrorResponse } from './errors';
@@ -519,13 +519,13 @@ app.get(
 );
 ```
 
-## System Integration: Making TypeScript Work with Your Stack
+## تكامل النظام: جعل TypeScript يعمل مع منظومتك
 
-Express applications rarely exist in isolation. They integrate with databases, external APIs, and frontend applications. TypeScript can help ensure these integrations are type-safe.
+نادرًا ما توجد تطبيقات Express بمعزل عن غيرها. فهي تتكامل مع قواعد البيانات وواجهات API الخارجية وتطبيقات الواجهة الأمامية. ويستطيع TypeScript المساعدة في ضمان أن هذه التكاملات آمنة الأنواع.
 
-### Database Integration
+### التكامل مع قواعد البيانات
 
-For database operations, consider using an ORM like TypeORM, Prisma, or Sequelize that provides TypeScript support:
+بالنسبة إلى عمليات قواعد البيانات، فكّر في استخدام ORM مثل TypeORM أو Prisma أو Sequelize يوفر دعم TypeScript:
 
 ```typescript
 // Using Prisma with TypeScript
@@ -555,9 +555,9 @@ app.get(
 );
 ```
 
-### External API Integration
+### التكامل مع واجهات API الخارجية
 
-When calling external APIs, define types for the expected responses:
+عند نداء واجهات API خارجية، عرّف أنواعًا للاستجابات المتوقعة:
 
 ```typescript
 // Define types for external API responses
@@ -607,9 +607,9 @@ app.get(
 );
 ```
 
-### Frontend Integration: API Contracts
+### التكامل مع الواجهة الأمامية: عقود API
 
-For frontend applications consuming your API, create shared type definitions:
+بالنسبة إلى تطبيقات الواجهة الأمامية التي تستهلك API الخاص بك، أنشئ تعريفات أنواع مشتركة:
 
 ```typescript
 // shared/api-types.ts (used by both frontend and backend)
@@ -671,7 +671,7 @@ export interface ApiEndpoints {
 }
 ```
 
-Then use these shared types in both your Express backend and frontend code:
+ثم استخدم هذه الأنواع المشتركة في كل من خادم Express لديك وشيفرة الواجهة الأمامية:
 
 ```typescript
 // Backend usage
@@ -697,40 +697,40 @@ async function getUser(id: string): Promise<User> {
 }
 ```
 
-This shared type approach ensures that your API contract is consistently enforced across both frontend and backend.
+تضمن مقاربة الأنواع المشتركة هذه فرض عقد API الخاص بك باتساق في الواجهة الأمامية والخلفية معًا.
 
-## Debugging and Troubleshooting: When Types Go Wrong
+## التنقيح واستكشاف الأخطاء: عندما تسوء الأنواع
 
-Even with TypeScript, you’ll occasionally encounter type-related issues. Here’s how to debug and solve them.
+حتى مع TypeScript، ستصادف أحيانًا مشكلات متعلقة بالأنواع. وإليك كيفية تنقيحها وحلها.
 
-### Common Type Errors and Solutions
+### أخطاء الأنواع الشائعة وحلولها
 
-#### Error: Property Does not Exist on Type
+#### خطأ: الخاصية غير موجودة على النوع
 
 ```typescript
 Property 'user' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>'.
 ```
 
-This often happens when you’re trying to access properties added by middleware. Solutions:
+يحدث هذا غالبًا عندما تحاول الوصول إلى خصائص أضافها وسيط. والحلول:
 
-1. Declare the property in the Express namespace
-2. Use a custom interface that extends Request
-3. Use type assertion (as a last resort)
+1. أعلن الخاصية في مساحة أسماء Express
+2. استخدم واجهة مخصّصة توسّع Request
+3. استخدم توكيد النوع (كملاذ أخير)
 
-#### Error: Type is not Assignable
+#### خطأ: النوع غير قابل للإسناد
 
 ```typescript
 Type '{ id: string; name: string; }' is not assignable to type 'User'.
   Property 'email' is missing in type '{ id: string; name: string; }' but required in type 'User'.
 ```
 
-This happens when your object doesn’t match the expected type. Solutions:
+يحدث هذا عندما لا يطابق كائنك النوع المتوقع. والحلول:
 
-1. Add the missing properties
-2. Make the property optional in the interface
-3. Use a partial type: `Partial<User>`
+1. أضف الخصائص الناقصة
+2. اجعل الخاصية اختيارية في الواجهة
+3. استخدم نوعًا جزئيًا: `Partial<User>`
 
-#### Error: No Overload Matches This Call
+#### خطأ: لا تحميل مطابق لهذا النداء
 
 ```typescript
 No overload matches this call.
@@ -738,17 +738,17 @@ No overload matches this call.
     Argument of type '(req: Request<{ id: string; }>, res: Response) => Promise<void>' is not assignable to parameter of type 'RequestHandler<...>'.
 ```
 
-This often happens with async handlers. Solutions:
+يحدث هذا غالبًا مع المعالجات اللامتزامنة. والحلول:
 
-1. Use an async handler wrapper
-2. Return the Promise explicitly
-3. Add proper error handling in the async function
+1. استخدم غلافًا للمعالج اللامتزامن
+2. أعد الوعد صراحةً
+3. أضف معالجة أخطاء سليمة في الدالة اللامتزامنة
 
-### Debugging Techniques
+### تقنيات التنقيح
 
-#### Type Inspection
+#### فحص الأنواع
 
-Use Visual Studio Code’s hover information to inspect types:
+استخدم معلومات التمرير في Visual Studio Code لفحص الأنواع:
 
 ```typescript
 // Hover over 'req' to see its inferred type
@@ -757,9 +757,9 @@ app.get('/users', (req, res) => {
 });
 ```
 
-#### The `typeof` Operator
+#### المعامل `typeof`
 
-Use `typeof` to check runtime types:
+استخدم `typeof` لفحص أنواع وقت التشغيل:
 
 ```typescript
 app.post('/data', (req: Request, res: Response) => {
@@ -771,9 +771,9 @@ app.post('/data', (req: Request, res: Response) => {
 });
 ```
 
-#### Type Guards
+#### حرّاس الأنواع
 
-Create custom type guards for runtime type checking:
+أنشئ حرّاس أنواع مخصّصين للتحقق من الأنواع في وقت التشغيل:
 
 ```typescript
 // Define a type guard for User objects
@@ -798,13 +798,13 @@ app.post('/users', (req: Request, res: Response) => {
 });
 ```
 
-## Performance Considerations: Types without Compromise
+## اعتبارات الأداء: أنواع بلا تنازلات
 
-TypeScript adds compile-time safety without runtime overhead, but there are still performance considerations.
+يضيف TypeScript أمانًا في وقت التصريف دون كلفة في وقت التشغيل، لكن لا تزال هناك اعتبارات أداء.
 
-### Bundle Size and Startup Time
+### حجم الحزمة وزمن البدء
 
-TypeScript is compiled away, but type checking code can add overhead:
+يُصرَّف TypeScript بعيدًا، لكن فحص الأنواع في الشيفرة قد يضيف كلفة:
 
 ```typescript
 // Runtime type checking can impact performance
@@ -834,11 +834,11 @@ function validateUser(data: unknown): User {
 }
 ```
 
-Schema validation libraries are optimized for performance, making them better than hand-rolled validation.
+مكتبات التحقق من المخططات محسّنة للأداء، ما يجعلها أفضل من التحقق المكتوب يدويًا.
 
-### Memory Management
+### إدارة الذاكرة
 
-TypeScript doesn’t change JavaScript’s memory management, but it can help prevent memory leaks through proper typing:
+لا يغيّر TypeScript إدارة الذاكرة في JavaScript، لكنه يساعد في منع تسريبات الذاكرة عبر التنميط السليم:
 
 ```typescript
 // Without proper typing, this could leak
@@ -906,9 +906,9 @@ app.get(
 );
 ```
 
-### Optimizing Validation Performance
+### تحسين أداء التحقق
 
-For high-throughput APIs, validation can become a bottleneck:
+بالنسبة إلى APIs ذات الإنتاجية العالية، قد يصبح التحقق عنق زجاجة:
 
 ```typescript
 // Optimize schema validation for performance
@@ -931,7 +931,7 @@ app.post('/users', (req: Request, res: Response) => {
 });
 ```
 
-For critical paths, consider selective validation:
+بالنسبة إلى المسارات الحرجة، فكّر في التحقق الانتقائي:
 
 ```typescript
 // Validate only what you use

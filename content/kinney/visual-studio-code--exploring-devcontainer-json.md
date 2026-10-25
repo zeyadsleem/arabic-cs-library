@@ -1,24 +1,24 @@
 ---
-title: "Exploring devcontainer.json"
-lang: en
+title: "استكشاف devcontainer.json"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/exploring-devcontainer-json"
 ---
 
-The **`image`:** This property specifies the **Docker image** to use as the base for your Dev Container.
+خاصية **`image`:** تحدّد هذه الخاصية **صورة Docker** التي تُستخدم أساسًا لحاوية التطوير.
 
-- **Example:** `"image": "mcr.microsoft.com/devcontainers/javascript-node:18"` (Uses a pre-built Node.js 18 image from Microsoft’s Dev Containers registry).
-- **Usage:** You can use pre-built images from public registries (like Docker Hub, [mcr.microsoft.com](https://www.google.com/search?q=mcr.microsoft.com&authuser=1)), or your own custom images. Pre-built images are convenient for common environments, while custom images offer greater control and pre-configuration.
-- **`dockerFile`:** Instead of `image`, you can use `dockerFile` to specify the path to a **Dockerfile** within your project.
-- **Example:** `"dockerFile": "Dockerfile"` (Assumes a Dockerfile named `Dockerfile` in the same `.devcontainer` folder).
-- **Usage:** Use `dockerFile` when you need to extensively customize the container environment beyond what pre-built images offer. Dockerfiles allow you to define every aspect of the container image.
+- **مثال:** `"image": "mcr.microsoft.com/devcontainers/javascript-node:18"` (يستخدم صورة Node.js 18 جاهزة من سجل Dev Containers الخاص بمايكروسوفت).
+- **الاستخدام:** يمكنك استخدام صور جاهزة من سجلات عامة (مثل Docker Hub و[mcr.microsoft.com](https://www.google.com/search?q=mcr.microsoft.com&authuser=1))، أو صورك المخصّصة الخاصة. والصور الجاهزة مناسبة للبيئات الشائعة، أما الصور المخصّصة فتوفّر تحكّمًا أكبر وإعدادًا مسبقًا أوسع.
+- **`dockerFile`:** بدلًا من `image`، يمكنك استخدام `dockerFile` لتحديد مسار **Dockerfile** داخل مشروعك.
+- **مثال:** `"dockerFile": "Dockerfile"` (يفترض وجود Dockerfile باسم `Dockerfile` في مجلد `.devcontainer` نفسه).
+- **الاستخدام:** استخدم `dockerFile` عندما تحتاج إلى تخصيص بيئة الحاوية تخصيصًا واسعًا يتجاوز ما توفّره الصور الجاهزة. فملفات Dockerfile تتيح لك تعريف كل جانب من جوانب صورة الحاوية.
 
 ## `context`
 
-When using `dockerFile`, this optional property specifies the **build context** for the Docker build. By default, it’s the same folder as the `dockerFile`. You can change it if needed.
+عند استخدام `dockerFile`، تحدّد هذه الخاصية الاختيارية **سياق البناء** (build context) لعملية بناء Docker. وهي افتراضيًا المجلد نفسه الذي يضمّ `dockerFile`. ويمكنك تغييرها عند الحاجة.
 
-## Extensions
+## الإضافات
 
-The `extensions` property is an **array of Visual Studio Code extension IDs** that should be automatically installed *inside* the Dev Container when it starts.
+خاصية `extensions` هي **مصفوفة من معرّفات إضافات Visual Studio Code** التي ينبغي تثبيتها تلقائيًا *داخل* حاوية التطوير عند بدء تشغيلها.
 
 ```json
 "extensions": [
@@ -27,11 +27,11 @@ The `extensions` property is an **array of Visual Studio Code extension IDs** th
 ]
 ```
 
-This ensures everyone using the Dev Container has the same set of extensions. Find extension IDs in the Visual Studio Code Marketplace URL or by right-clicking an extension in the Extensions view and selecting “Copy Extension ID”.
+ويضمن ذلك أن تكون المجموعة نفسها من الإضافات متاحة لكل من يستخدم حاوية التطوير. وتجد معرّفات الإضافات في عنوان URL الخاص بـ Visual Studio Code Marketplace، أو بالنقر بزر الفأرة الأيمن على إضافة في عرض Extensions واختيار “Copy Extension ID”.
 
-## Settings
+## الإعدادات
 
-This `settings` property is a **JSON object** that allows you to define Visual Studio Code settings that will be applied *inside* the Dev Container.
+خاصية `settings` هي **كائن JSON** يتيح لك تعريف إعدادات Visual Studio Code التي ستُطبَّق *داخل* حاوية التطوير.
 
 ```json
 "settings": {
@@ -40,28 +40,28 @@ This `settings` property is a **JSON object** that allows you to define Visual S
 }
 ```
 
-## Port Fowarding
+## تحويل المنافذ
 
-The `forwardPorts` property is an **array of ports** that you want to forward from the container to your host machine.
+خاصية `forwardPorts` هي **مصفوفة منافذ** تريد تحويلها من الحاوية إلى جهازك المضيف.
 
-For example, `"forwardPorts": [3000, 8080, 5432]` (Forwards ports 3000, 8080, and 5432 from the container to your host).
+فمثلًا، `"forwardPorts": [3000, 8080, 5432]` (يحوّل المنافذ 3000 و8080 و5432 من الحاوية إلى مضيفك).
 
-If your web application runs on port 3000 inside the container, forwarding port 3000 allows you to access it at `http://localhost:3000` in your host browser.
+وإذا كان تطبيق الويب لديك يعمل على المنفذ 3000 داخل الحاوية، فإن تحويل المنفذ 3000 يتيح لك الوصول إليه عبر `http://localhost:3000` في متصفح جهازك المضيف.
 
-## Other Random Settings
+## إعدادات أخرى متنوّعة
 
-**`workspaceFolder`:** Specifies the path *inside the container* where your project folder will be mounted. Defaults to `/workspace`. You usually don’t need to change this.
+**`workspaceFolder`:** يحدّد المسار *داخل الحاوية* الذي سيُثبَّت فيه مجلد مشروعك. وقيمته الافتراضية `/workspace`. ولا تحتاج عادةً إلى تغييرها.
 
-**`postCreateCommand`:** This property allows you to run shell commands **once after the container is created and started for the first time.**
+**`postCreateCommand`:** تتيح لك هذه الخاصية تشغيل أوامر الطرفية **مرة واحدة بعد إنشاء الحاوية وتشغيلها للمرة الأولى.**
 
-- **Example:** `"postCreateCommand": "npm install"` (Runs `npm install` after container creation to install project dependencies).
-- **Usage:** Use this to install project-specific dependencies, initialize databases, or perform other setup tasks that should run only once.
+- **مثال:** `"postCreateCommand": "npm install"` (يشغّل `npm install` بعد إنشاء الحاوية لتثبيت اعتمادات المشروع).
+- **الاستخدام:** استخدمه لتثبيت اعتمادات خاصة بالمشروع، أو تهيئة قواعد البيانات، أو تنفيذ مهام إعداد أخرى ينبغي أن تُنفَّذ مرة واحدة فقط.
 
-**`postStartCommand`:** Similar to `postCreateCommand`, but this command runs **every time the Dev Container starts.** Use with caution as frequent execution might impact startup time. Often used for starting background services or daemons needed for the development environment.
+**`postStartCommand`:** يشبه `postCreateCommand`، لكن هذا الأمر يُنفَّذ **في كل مرة تبدأ فيها حاوية التطوير.** فاستخدمه بحذر لأن التنفيذ المتكرّر قد يؤثّر في زمن بدء التشغيل. ويُستخدم غالبًا لتشغيل خدمات خلفية أو برامج خفية (daemons) تحتاجها بيئة التطوير.
 
-**`remoteUser`:** Specifies the user to connect to inside the container. Defaults to the user used when building the image or the Dockerfile’s `USER` instruction. You might need to change this if you require a specific user context.
+**`remoteUser`:** يحدّد المستخدم الذي تتّصل به داخل الحاوية. وقيمته الافتراضية هي المستخدم المستخدَم عند بناء الصورة أو المستخدَم في تعليمة `USER` في Dockerfile. وقد تحتاج إلى تغييره إذا احتجت إلى سياق مستخدم محدّد.
 
-## An Example
+## مثال
 
 ```json
 {

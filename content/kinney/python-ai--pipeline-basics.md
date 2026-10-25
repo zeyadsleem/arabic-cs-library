@@ -1,44 +1,44 @@
 ---
-title: "Pipeline Basics (Hugging Face)"
-lang: en
+title: "أساسيات خطوط الأنابيب (Hugging Face)"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/pipeline-basics"
 ---
 
-> **Key Takeaways**
+> **النقاط الرئيسية**
 >
-> - Pipelines standardize I/O by orchestrating tokenizer → model → post-processing
-> - Pin explicit model and revision; always pair the correct tokenizer
-> - Batch inputs, enable truncation/padding, and use the GPU with mixed precision
-> - Control decoding (temperature, top-p/k, beams) and set safe stop conditions
-> - Log model IDs, revisions, and parameters; apply guardrails to prompts/outputs
-> - Drop to `Auto*` APIs when you need custom preprocessing or logits control
+> - خطوط الأنابيب توحّد المدخلات والمخرجات بتنسيق عمل المُرمِّز ← النموذج ← المعالجة اللاحقة
+> - ثبّت النموذج والمراجعة صراحةً؛ واقرن دائمًا المُرمِّز الصحيح
+> - عالج المدخلات دفعيًا، وفعّل البتر والحشو، واستخدم GPU بدقة مختلطة
+> - تحكّم في فك الترميز (درجة الحرارة، top-p/k، الحزم) واضبط شروط توقّف آمنة
+> - سجّل معرّفات النماذج ومراجعاتها ومعاملاتها؛ وطبّق حواجز حماية على الموجّهات والمخرجات
+> - انزل إلى واجهات `Auto*` عندما تحتاج إلى معالجة مسبقة مخصّصة أو تحكّم في القيم اللوغاريتمية
 
-## Overview
+## نظرة عامة
 
-Pipelines provide a batteries-included wrapper around models, tokenizers, and post-processing for common tasks. Think of the `pipeline` as a magic wand that bundles together all the necessary steps to go from raw text to structured output: preprocessing (converting text into numbers a model understands), model inference (feeding numbers through the model for predictions), and post-processing (cleaning up output for human readability).
+توفّر خطوط الأنابيب غلافًا متكاملًا جاهزًا للعمل حول النماذج والمُرمِّزات (tokenizers) والمعالجة اللاحقة للمهام الشائعة. تخيّل `pipeline` كعصا سحرية تجمع كل الخطوات اللازمة للانتقال من النص الخام إلى مخرجات منظّمة: المعالجة المسبقة (تحويل النص إلى أرقام يفهمها النموذج)، واستدلال النموذج (تمرير الأرقام عبر النموذج للتنبؤ)، والمعالجة اللاحقة (تنقية المخرجات لتكون قابلة للقراءة البشرية).
 
-## Notebook
+## الدفتر
 
-View the companion notebook: [Pipeline Basics](https://colab.research.google.com/drive/1OnAQGIBrbkbJYC3h-Vf3mUwru9K3usSt?usp=sharing)
+اطّلع على الدفتر المرافق: [أساسيات خطوط الأنابيب](https://colab.research.google.com/drive/1OnAQGIBrbkbJYC3h-Vf3mUwru9K3usSt?usp=sharing)
 
-## Getting Started with Pipelines
+## البدء مع خطوط الأنابيب
 
-Pipelines handle eight major categories of tasks, each with specific inputs and outputs:
+تتعامل خطوط الأنابيب مع ثماني فئات رئيسية من المهام، ولكل منها مدخلات ومخرجات محدّدة:
 
-| Task | Input | Output | Example Use Case |
+| المهمة | المدخل | المخرج | مثال على حالة الاستخدام |
 | --- | --- | --- | --- |
-| **Sentiment Analysis** | Text | Sentiment label + score | Product reviews |
-| **Text Generation** | Prompt text | Generated continuation | Chatbots, story writing |
-| **Zero-shot Classification** | Text + Categories | Category probabilities | Email routing |
-| **Question Answering** | Question + Context | Extracted answer | FAQ systems |
-| **Fill-Mask** | Text with `<mask>` | Predicted words | Autocomplete |
-| **Summarization** | Long text | Short summary | News digests |
-| **Named Entity Recognition** | Text | Entity labels + positions | Privacy compliance |
-| **Translation** | Source text | Target language text | Multilingual support |
+| **تحليل المشاعر** | نص | تسمية المشاعر + درجة | مراجعات المنتجات |
+| **توليد النصوص** | نص الموجّه | تكملة مولّدة | روبوتات المحادثة، كتابة القصص |
+| **التصنيف بدون أمثلة** | نص + فئات | احتمالات الفئات | توجيه البريد الإلكتروني |
+| **الإجابة عن الأسئلة** | سؤال + سياق | إجابة مستخلصة | أنظمة الأسئلة الشائعة |
+| **ملء الفراغ** | نص يحتوي `<mask>` | كلمات متوقّعة | الإكمال التلقائي |
+| **التلخيص** | نص طويل | ملخّص قصير | موجزات الأخبار |
+| **التعرّف على الكيانات المسمّاة** | نص | تسميات الكيانات + مواضعها | الامتثال للخصوصية |
+| **الترجمة** | النص المصدر | نص اللغة الهدف | الدعم متعدّد اللغات |
 
-## Sentiment Analysis
+## تحليل المشاعر
 
-Sentiment analysis determines whether text expresses positive or negative emotions. It’s one of the most common NLP tasks with applications in customer review analysis, social media monitoring, and support ticket prioritization.
+يحدّد تحليل المشاعر ما إذا كان النص يعبّر عن مشاعر إيجابية أو سلبية. وهو من أكثر مهام معالجة اللغة الطبيعية شيوعًا، وله تطبيقات في تحليل مراجعات العملاء ومراقبة وسائل التواصل الاجتماعي وترتيب أولويات تذاكر الدعم.
 
 ```python
 from transformers import pipeline
@@ -62,15 +62,15 @@ for text in texts:
     print(f"Sentiment: {label} (Confidence: {confidence:.3f})\n")
 ```
 
-The confidence score indicates model certainty: 0.999 means 99.9% confident (very sure), 0.750 means 75% confident (pretty sure), and 0.500 means 50% confident (uncertain).
+تشير درجة الثقة إلى يقين النموذج: 0.999 تعني ثقة بنسبة 99.9% (متأكّد جدًا)، و0.750 تعني ثقة بنسبة 75% (متأكّد نوعًا ما)، و0.500 تعني ثقة بنسبة 50% (غير متأكّد).
 
-> **Binary Classification Limitation**
+> **قصور التصنيف الثنائي**
 >
-> The default sentiment model only outputs `POSITIVE` or `NEGATIVE`. It lacks a `NEUTRAL` category and may struggle with sarcasm or complex emotions.
+> لا يُخرج نموذج المشاعر الافتراضي سوى `POSITIVE` أو `NEGATIVE`. وهو يفتقر إلى فئة `NEUTRAL` وقد يواجه صعوبة مع السخرية أو المشاعر المعقّدة.
 
-## Text Generation
+## توليد النصوص
 
-Text generation creates new text from a starting prompt. Unlike sentiment analysis which interprets existing text, generation creates text that didn’t exist before.
+يولّد توليد النصوص نصًا جديدًا انطلاقًا من موجّه بداية. وخلافًا لتحليل المشاعر الذي يفسّر نصًا موجودًا، فإن التوليد ينشئ نصًا لم يكن موجودًا من قبل.
 
 ```python
 text_generator = pipeline("text-generation", model="gpt2")
@@ -94,15 +94,15 @@ for prompt in prompts:
     print("-" * 50)
 ```
 
-### Understanding Generation Parameters
+### فهم معاملات التوليد
 
-**`max_new_tokens`** controls the maximum number of tokens to generate after the prompt. **`temperature`** acts like a creativity dial: low values (0.1-0.5) produce conservative text, medium values (0.6-0.9) balance creativity, and high values (1.0+) create experimental output. **`do_sample=True`** enables probabilistic sampling for variety. **`top_p`** and `top_k` control the sampling pool size.
+يتحكّم **`max_new_tokens`** في الحد الأقصى لعدد الرموز التي تُولَّد بعد الموجّه. ويعمل **`temperature`** كقرص للتحكّم في الإبداع: القيم المنخفضة (0.1-0.5) تنتج نصًا محافظًا، والقيم المتوسطة (0.6-0.9) توازن بين الإبداع والالتزام، والقيم المرتفعة (1.0+) تنتج مخرجات تجريبية. ويفعّل **`do_sample=True`** أخذ العينات الاحتمالي لتنويع المخرجات. ويتحكّم **`top_p`** و`top_k` في حجم مجموعة العينات.
 
-Think of temperature like cooking: low heat gives predictable results, medium heat balances flavor and safety, and high heat creates bold but risky dishes.
+تخيّل درجة الحرارة كما في الطبخ: الحرارة المنخفضة تعطي نتائج متوقّعة، والمتوسطة توازن بين النكهة والأمان، والمرتفعة تنتج أطباقًا جسورة لكن محفوفة بالمخاطر.
 
-## Zero-Shot Classification
+## التصنيف بدون أمثلة
 
-Zero-shot classification categorizes text into labels you define without any training examples. The model uses its language understanding to match text to categories based on meaning alone.
+يصنّف التصنيف بدون أمثلة النص في تسميات تحدّدها أنت دون أي أمثلة تدريبية. ويستخدم النموذج فهمه للغة لمطابقة النص بالفئات اعتمادًا على المعنى وحده.
 
 ```python
 classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
@@ -124,11 +124,11 @@ for text in texts:
     print("-" * 50)
 ```
 
-The model converts classification into natural language inference. For each category, it creates a hypothesis (“This text is about [category]”), evaluates how well each hypothesis fits, and returns probability scores that sum to 1.0.
+يحوّل النموذج التصنيف إلى استدلال باللغة الطبيعية. فلكل فئة ينشئ فرضية («هذا النص يدور حول [الفئة]»)، ويقيّم مدى ملاءمة كل فرضية، ويعيد درجات احتمال مجموعها 1.0.
 
-### Multi-Label Classification
+### التصنيف متعدّد التسميات
 
-By default, the classifier assumes each text belongs to ONE category. Enable multi-label for texts that fit multiple categories:
+افتراضيًا، يفترض المصنّف أن كل نص ينتمي إلى فئة واحدة فقط. فعّل التصنيف متعدّد التسميات للنصوص التي تناسب فئات متعدّدة:
 
 ```python
 result = classifier(
@@ -138,9 +138,9 @@ result = classifier(
 )
 ```
 
-## Question Answering
+## الإجابة عن الأسئلة
 
-Question answering extracts exact text spans that answer questions from provided context. This is extractive QA - it finds answers within the text, never generating new information.
+تستخلص الإجابة عن الأسئلة نطاقات نصية دقيقة تجيب عن الأسئلة من سياق معطى. وهذا ما يُسمّى الإجابة الاستخلاصية عن الأسئلة - فهو يعثر على الإجابات داخل النص ولا يولّد معلومات جديدة أبدًا.
 
 ```python
 qa_pipeline = pipeline(
@@ -167,13 +167,13 @@ for question in questions:
     print(f"Confidence: {result['score']:.3f}\n")
 ```
 
-> **Answer Must Exist**
+> **يجب أن تكون الإجابة موجودة**
 >
-> The model will guess if the answer isn’t in the context, usually with low confidence. Always check confidence scores - below 0.5 typically means unreliable answers.
+> سيخمّن النموذج إن لم تكن الإجابة موجودة في السياق، وغالبًا بثقة منخفضة. افحص دائمًا درجات الثقة - فالقيم دون 0.5 تعني عادةً إجابات غير موثوقة.
 
-## Fill-Mask
+## ملء الفراغ
 
-Fill-mask predicts missing words based on context, revealing how models understand word relationships:
+يتوقّع ملء الفراغ الكلمات الناقصة بناءً على السياق، فيكشف كيف تفهم النماذج العلاقات بين الكلمات:
 
 ```python
 fill_mask = pipeline("fill-mask", model="distilroberta-base")
@@ -195,11 +195,11 @@ for sentence in sentences:
     print("-" * 50)
 ```
 
-Different models use different mask tokens: BERT uses `[MASK]` while RoBERTa uses `<mask>`. The pipeline handles this automatically.
+تستخدم النماذج المختلفة رموز قناع مختلفة: فيستخدم BERT الرمز `[MASK]` بينما يستخدم RoBERTa الرمز `<mask>`. ويتعامل خط الأنابيب مع ذلك تلقائيًا.
 
-## Summarization
+## التلخيص
 
-Summarization condenses long texts while preserving key information. Modern models use abstractive summarization - they rewrite content concisely rather than just extracting sentences.
+يكثّف التلخيص النصوص الطويلة مع الحفاظ على المعلومات الأساسية. وتستخدم النماذج الحديثة التلخيص التجريدي - فهي تعيد صياغة المحتوى بإيجاز بدلًا من مجرّد استخلاص الجمل.
 
 ```python
 summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
@@ -226,11 +226,11 @@ print("\nSummary:")
 print(summary[0]['summary_text'])
 ```
 
-Control summary length with `max_length` and `min_length`. Setting `do_sample=False` ensures deterministic, consistent summaries.
+تحكّم في طول الملخّص باستخدام `max_length` و`min_length`. ويضمن ضبط `do_sample=False` ملخّصات حتمية ومتّسقة.
 
-## Named Entity Recognition (NER)
+## التعرّف على الكيانات المسمّاة (NER)
 
-NER identifies and classifies named entities in text - people, organizations, locations, and more. It’s crucial for information extraction and privacy compliance.
+يحدّد التعرّف على الكيانات المسمّاة الكيانات المسمّاة في النص ويصنّفها - الأشخاص والمؤسسات والمواقع وغيرها. وهو بالغ الأهمية لاستخلاص المعلومات والامتثال للخصوصية.
 
 ```python
 ner_pipeline = pipeline(
@@ -258,11 +258,11 @@ for text in texts:
     print("-" * 50)
 ```
 
-Standard entity types include **PER** (Person), **ORG** (Organization), **LOC** (Location), and **MISC** (Miscellaneous). Always use `aggregation_strategy="simple"` to get complete words instead of subword tokens.
+تشمل أنواع الكيانات القياسية **PER** (شخص) و**ORG** (مؤسسة) و**LOC** (موقع) و**MISC** (متفرّقات). استخدم دائمًا `aggregation_strategy="simple"` للحصول على كلمات كاملة بدلًا من رموز الكلمات الفرعية.
 
-## Translation
+## الترجمة
 
-Translation converts text between languages using specialized models:
+تحوّل الترجمة النص بين اللغات باستخدام نماذج متخصّصة:
 
 ```python
 translator = pipeline("translation_en_to_de", model="Helsinki-NLP/opus-mt-en-de")
@@ -274,13 +274,13 @@ print(f"Original (English): {text}")
 print(f"Translated (German): {translation[0]['translation_text']}")
 ```
 
-Models are typically named with source and target languages (e.g., `en-to-de` for English to German).
+تُسمّى النماذج عادةً بلغتي المصدر والهدف (مثل `en-to-de` للإنجليزية إلى الألمانية).
 
-## Performance Optimization
+## تحسين الأداء
 
-### Device Selection
+### اختيار الجهاز
 
-Use GPU when available for faster inference:
+استخدم GPU عند توفّره للحصول على استدلال أسرع:
 
 ```python
 import torch
@@ -289,18 +289,18 @@ device = 0 if torch.cuda.is_available() else -1
 pipeline = pipeline("text-generation", model="gpt2", device=device)
 ```
 
-### Batching
+### المعالجة الدفعية
 
-Process multiple inputs together for better throughput:
+عالج مدخلات متعدّدة معًا للحصول على إنتاجية أفضل:
 
 ```python
 texts = ["Text 1", "Text 2", "Text 3"]
 results = sentiment_analyzer(texts, batch_size=8)
 ```
 
-### Mixed Precision
+### الدقة المختلطة
 
-Enable fp16/bf16 for faster inference and lower memory usage:
+فعّل fp16/bf16 للحصول على استدلال أسرع واستهلاك أقل للذاكرة:
 
 ```python
 pipeline = pipeline(
@@ -310,11 +310,11 @@ pipeline = pipeline(
 )
 ```
 
-## Advanced Configuration
+## الإعداد المتقدّم
 
-### Custom Models and Tokenizers
+### نماذج ومُرمِّزات مخصّصة
 
-Specify exact models and revisions for reproducibility:
+حدّد النماذج والمراجعات بدقة لضمان قابلية إعادة الإنتاج:
 
 ```python
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -334,9 +334,9 @@ classifier = pipeline(
 )
 ```
 
-### Truncation and Padding
+### البتر والحشو
 
-Handle variable-length inputs properly:
+تعامل مع المدخلات متغيّرة الطول على نحو صحيح:
 
 ```python
 results = pipeline(
@@ -347,29 +347,29 @@ results = pipeline(
 )
 ```
 
-## Common Pitfalls and Solutions
+## المزالق الشائعة وحلولها
 
-> **Context Length Limits**
+> **حدود طول السياق**
 >
-> Models have maximum context windows. GPT-2 handles 1024 tokens, BERT handles 512. Texts exceeding limits get truncated or cause errors.
+> للنماذج نوافذ سياق قصوى. فيتعامل GPT-2 مع 1024 رمزًا، ويتعامل BERT مع 512. والنصوص التي تتجاوز الحدود تُبتر أو تسبّب أخطاء.
 
-> **Handling Repetition in Generation**
+> **التعامل مع التكرار في التوليد**
 >
-> If generated text repeats, adjust `repetition_penalty` or use different decoding strategies like beam search.
+> إذا تكرّر النص المولّد، فعدّل `repetition_penalty` أو استخدم استراتيجيات فك ترميز مختلفة مثل بحث الحزمة (beam search).
 
-> **Inappropriate Content**
+> **محتوى غير لائق**
 >
-> Models trained on internet text may generate biased or inappropriate content. Always apply content filters for production use.
+> قد تولّد النماذج المدرَّبة على نصوص الإنترنت محتوى متحيّزًا أو غير لائق. فطبّق دائمًا مرشّحات المحتوى في الاستخدام الإنتاجي.
 
-## Production Considerations
+## اعتبارات الإنتاج
 
-### Safety and Monitoring
+### السلامة والمراقبة
 
-For production deployments, implement content filters for generated text, validate inputs to prevent prompt injection, log model predictions for debugging, and monitor latency and error rates. Set conservative defaults for generation parameters and implement timeout mechanisms for long-running inferences.
+في عمليات النشر الإنتاجية، طبّق مرشّحات محتوى للنص المولّد، وتحقق من صحة المدخلات لمنع حقن الموجّهات (prompt injection)، وسجّل تنبؤات النموذج لأغراض التنقيح، وراقب زمن الاستجابة ومعدّلات الأخطاء. واضبط إعدادات افتراضية محافظة لمعاملات التوليد وطبّق آليات مهلة للاستدلالات الطويلة.
 
-### Caching and Optimization
+### التخزين المؤقت والتحسين
 
-Cache models locally to avoid repeated downloads:
+خزّن النماذج مؤقتًا محليًا لتجنّب التنزيل المتكرّر:
 
 ```python
 from transformers import pipeline
@@ -382,9 +382,9 @@ os.environ["TRANSFORMERS_CACHE"] = "/path/to/cache"
 pipeline = pipeline("sentiment-analysis")
 ```
 
-### Error Handling
+### معالجة الأخطاء
 
-Wrap pipeline calls with proper error handling:
+غلّف استدعاءات خطوط الأنابيب بمعالجة أخطاء مناسبة:
 
 ```python
 def safe_inference(pipeline, text, max_retries=3):
@@ -397,9 +397,9 @@ def safe_inference(pipeline, text, max_retries=3):
             time.sleep(2 ** attempt)  # Exponential backoff
 ```
 
-## When to Move Beyond Pipelines
+## متى تتجاوز خطوط الأنابيب
 
-Use lower-level `AutoTokenizer` and `AutoModel` APIs when you need custom preprocessing, multi-task heads, control over logits processing, or tight integration with retrieval or reranking systems. Pipelines are ideal for quick prototypes and many production cases, but bespoke systems benefit from explicit control.
+استخدم واجهات `AutoTokenizer` و`AutoModel` الأدنى مستوى عندما تحتاج إلى معالجة مسبقة مخصّصة، أو رؤوس متعدّدة المهام، أو تحكّم في معالجة القيم اللوغاريتمية (logits)، أو تكامل محكم مع أنظمة الاسترجاع أو إعادة الترتيب. فخطوط الأنابيب مثالية للنماذج الأولية السريعة وكثير من حالات الإنتاج، لكن الأنظمة المخصّصة تستفيد من التحكّم الصريح.
 
 ```python
 # Example: Custom logits processing
@@ -415,14 +415,14 @@ logits = outputs.logits  # Direct access to raw scores
 # Custom processing here
 ```
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Hugging Face pipelines democratize access to state-of-the-art NLP models. They handle the complexity of tokenization, model inference, and post-processing, letting you focus on solving problems rather than implementation details. Start with pipelines for rapid prototyping, then customize as your needs grow. With thousands of models available on the Hugging Face Hub, you can find pre-trained solutions for almost any NLP task imaginable.
+تتيح خطوط أنابيب Hugging Face الوصول إلى أحدث نماذج معالجة اللغة الطبيعية للجميع. فهي تتولّى تعقيدات الترميز واستدلال النموذج والمعالجة اللاحقة، لتتيح لك التركيز على حلّ المشكلات بدلًا من تفاصيل التنفيذ. ابدأ بخطوط الأنابيب للنمذجة الأولية السريعة، ثم خصّصها كلما نمت احتياجاتك. فمع توفّر آلاف النماذج على Hugging Face Hub، يمكنك العثور على حلول مدرّبة مسبقًا لكل مهمة معالجة لغة طبيعية تكاد تُخطر ببالك.
 
-## Further Reading
+## قراءات إضافية
 
-- Transformers — Pipelines: [https://huggingface.co/docs/transformers/main/en/main_classes/pipelines](https://huggingface.co/docs/transformers/main/en/main_classes/pipelines)
-- Transformers — Task Summary: [https://huggingface.co/docs/transformers/main/en/task_summary](https://huggingface.co/docs/transformers/main/en/task_summary)
+- خطوط الأنابيب في Transformers: [https://huggingface.co/docs/transformers/main/en/main_classes/pipelines](https://huggingface.co/docs/transformers/main/en/main_classes/pipelines)
+- ملخّص المهام في Transformers: [https://huggingface.co/docs/transformers/main/en/task_summary](https://huggingface.co/docs/transformers/main/en/task_summary)
 - Accelerate: [https://huggingface.co/docs/accelerate/index](https://huggingface.co/docs/accelerate/index)
 - Optimum: [https://huggingface.co/docs/optimum/index](https://huggingface.co/docs/optimum/index)
-- bitsandbytes (8-bit/4-bit): [https://github.com/TimDettmers/bitsandbytes](https://github.com/TimDettmers/bitsandbytes)
+- bitsandbytes (8 بت/4 بت): [https://github.com/TimDettmers/bitsandbytes](https://github.com/TimDettmers/bitsandbytes)

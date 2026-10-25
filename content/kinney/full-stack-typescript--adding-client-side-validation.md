@@ -1,10 +1,10 @@
 ---
-title: "Adding Client-Side Validation"
-lang: en
+title: "إضافة التحقق من جهة العميل"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/adding-client-side-validation"
 ---
 
-Now that we have everything set up in our Express application, can we do something similar in our React application.
+الآن وقد أعددنا كل شيء في تطبيق Express لدينا، فهل يمكننا فعل شيء مشابه في تطبيق React لدينا؟
 
 ```typescript
 import {
@@ -20,9 +20,9 @@ import {
 const API_URL = 'http://localhost:4001';
 ```
 
-## Validating Our Tasks
+## التحقق من مهامنا
 
-Let’s make sure our response is what we think it is.
+لنتأكد من أن استجابتنا هي ما نعتقد أنها كذلك.
 
 ```typescript
 export const fetchTasks = async (showCompleted: boolean): Promise<Task[]> => {
@@ -42,9 +42,9 @@ export const fetchTasks = async (showCompleted: boolean): Promise<Task[]> => {
 };
 ```
 
-## Get Task
+## جلب مهمة
 
-We’ll validate an individual task.
+سنتحقق من مهمة واحدة.
 
 ```typescript
 export const getTask = async (id: string): Promise<Task> => {
@@ -59,9 +59,9 @@ export const getTask = async (id: string): Promise<Task> => {
 };
 ```
 
-## Create Task
+## إنشاء مهمة
 
-For our `POST` requests, we’re going to want to validate the body.
+بالنسبة إلى طلبات `POST`، سنرغب في التحقق من الجسم.
 
 ```typescript
 export const createTask = async (task: NewTask): Promise<void> => {
@@ -83,7 +83,7 @@ export const createTask = async (task: NewTask): Promise<void> => {
 };
 ```
 
-Let’s validate the body for updating the task as well.
+لنتحقق من الجسم الخاص بتحديث المهمة أيضًا.
 
 ```typescript
 export const updateTask = async (id: string, task: UpdateTask): Promise<void> => {
@@ -105,9 +105,9 @@ export const updateTask = async (id: string, task: UpdateTask): Promise<void> =>
 };
 ```
 
-## Delete Task
+## حذف مهمة
 
-There is actually nothing to do here.
+لا يوجد في الواقع شيء نفعله هنا.
 
 ```typescript
 export const deleteTask = async (id: string): Promise<void> => {
@@ -123,4 +123,4 @@ export const deleteTask = async (id: string): Promise<void> => {
 };
 ```
 
-**Next**: [Validating the Data Layer](https://stevekinney.com/courses/full-stack-typescript/validating-the-data-layer)
+**التالي**: [التحقق من طبقة البيانات](https://stevekinney.com/courses/full-stack-typescript/validating-the-data-layer)

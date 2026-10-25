@@ -1,38 +1,38 @@
 ---
-title: "Placeholders and Variables"
-lang: en
+title: "العناصر النائبة والمتغيّرات"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/placeholders-and-variables-in-vscode-snippets"
 ---
 
-## Placeholder Navigation
+## التنقّل في العناصر النائبة
 
-Once you insert a snippet with placeholders, Visual Studio Code makes it easy to navigate and fill in the placeholder values:
+بعد إدراج مقتطف فيه عناصر نائبة، يسهّل Visual Studio Code التنقّل بين قيم العناصر النائبة وملأها:
 
-- **Tab Key (`Tab`):** After snippet insertion, your cursor will automatically be positioned at the first placeholder (`$1`). Pressing the `Tab` key will jump the cursor to the next placeholder (`$2`), then `$3`, and so on, in numerical order.
-- **Shift+Tab Keys (`Shift+Tab`):** To move backward through placeholders, press `Shift+Tab`. This will move the cursor to the previous placeholder in reverse numerical order.
-- **Simultaneous Editing of Identical Placeholders:** If you use the same placeholder number multiple times in your snippet body (e.g., `${1:variableName}` used twice), editing the value of one instance will automatically update all other instances of the same placeholder number *within the current snippet insertion*. This is very useful for renaming variables or parameters consistently throughout a code block.
+- **مفتاح Tab (`Tab`):** بعد إدراج المقتطف، ينتقل المؤشر تلقائيًا إلى العنصر النائب الأول (`$1`). ويؤدي الضغط على مفتاح `Tab` إلى انتقال المؤشر إلى العنصر النائب التالي (`$2`) ثم `$3` وهكذا، بالترتيب الرقمي.
+- **مفتاحا Shift+Tab (`Shift+Tab`):** للتنقّل في العناصر النائبة إلى الخلف، اضغط `Shift+Tab`. وسينقل ذلك المؤشر إلى العنصر النائب السابق بالترتيب الرقمي العكسي.
+- **التحرير المتزامن للعناصر النائبة المتطابقة:** إذا استخدمت رقم العنصر النائب نفسه أكثر من مرة في جسم مقتطفك (مثل `${1:variableName}` المستخدم مرتين)، فسيؤدي تحرير قيمة إحدى الحالات إلى تحديث كل الحالات الأخرى للرقم نفسه *داخل إدراج المقتطف الحالي* تلقائيًا. وهذا مفيد جدًا لإعادة تسمية المتغيّرات أو المعاملات باتساق في كتلة شيفرة كاملة.
 
-## Variable Transformation
+## تحويل المتغيّرات
 
-Snippet variables become even more powerful when combined with transformations. Transformations allow you to modify the value of a variable before it’s inserted into the snippet. The syntax for transformations is:
+تصبح متغيّرات المقتطف أقوى بإدماجها مع التحويلات (transformations). وتتيح لك التحويلات تعديل قيمة متغيّر قبل إدراجه في المقتطف. وصياغة التحويلات هي:
 
 ```typescript
 ${variable_name/regular_expression/format_string/options}
 ```
 
-Let’s break down the transformation syntax:
+ولنفصّل صياغة التحويل:
 
-- **`variable_name`:** The name of the variable you want to transform (e.g., `TM_FILENAME_BASE`, `CURRENT_YEAR`).
-- **`/regular_expression/`:** A regular expression to match against the variable’s value.
-- **`format_string`:** The string to replace the matched text with. You can use special escape sequences within the `format_string`: `$0`: Inserts the whole matched text. `$1`, `$2`, … `$9`: Inserts the text captured by the corresponding capturing group in the regular expression.
-  - `$0`: Inserts the whole matched text.
-  - `$1`, `$2`, … `$9`: Inserts the text captured by the corresponding capturing group in the regular expression.
-- **`options` (Optional):** Flags to modify the regular expression matching behavior: `i`: Case-insensitive matching. `g`: Global matching (replace all occurrences). `m`: Multiline mode.
-  - `i`: Case-insensitive matching.
-  - `g`: Global matching (replace all occurrences).
-  - `m`: Multiline mode.
+- **`variable_name`:** اسم المتغيّر الذي تريد تحويله (مثل `TM_FILENAME_BASE` و `CURRENT_YEAR`).
+- **`/regular_expression/`:** تعبير نمطي للمطابقة مع قيمة المتغيّر.
+- **`format_string`:** النص الذي سيحلّ محلّ النص المطابق. ويمكنك استخدام تسلسلات إفلات خاصة داخل `format_string`: `$0`: يُدرج النص المطابق كاملًا. `$1` و `$2` و … `$9`: يُدرج النص الذي التقطته مجموعة الالتقاط المقابلة في التعبير النمطي.
+  - `$0`: يُدرج النص المطابق كاملًا.
+  - `$1` و `$2` و … `$9`: يُدرج النص الذي التقطته مجموعة الالتقاط المقابلة في التعبير النمطي.
+- **`options` (اختياري):** أعلام لتعديل سلوك مطابقة التعبير النمطي: `i`: مطابقة غير حساسة لحالة الأحرف. `g`: مطابقة شاملة (استبدال كل الحالات). `m`: وضع الأسطر المتعددة.
+  - `i`: مطابقة غير حساسة لحالة الأحرف.
+  - `g`: مطابقة شاملة (استبدال كل الحالات).
+  - `m`: وضع الأسطر المتعددة.
 
-### Convert Filename to Uppercase
+### تحويل اسم الملف إلى أحرف كبيرة
 
 ```json
 "Uppercase Filename": {
@@ -44,12 +44,12 @@ Let’s break down the transformation syntax:
 }
 ```
 
-- `TM_FILENAME_BASE`: Gets the filename without extension.
-- `/^(.*)$/`: Matches the entire filename (captured in group 1).
-- `/${1:/upcase}/`: Replaces the matched text with the uppercase version of capturing group 1 (`$1`).
-- `/upcase`: A predefined transformation function to convert to uppercase. Other predefined functions include `/downcase`, `/capitalize`.
+- `TM_FILENAME_BASE`: يجلب اسم الملف دون الامتداد.
+- `/^(.*)$/`: يطابق اسم الملف كاملًا (ملتقطًا في المجموعة 1).
+- `/${1:/upcase}/`: يستبدل النص المطابق بالنسخة المكتوبة بأحرف كبيرة من مجموعة الالتقاط 1 (`$1`).
+- `/upcase`: دالة تحويل معرّفة مسبقًا للتحويل إلى أحرف كبيرة. ومن الدوال الأخرى المعرّفة مسبقًا `/downcase` و `/capitalize`.
 
-### Extract Year from Full Date
+### استخراج السنة من التاريخ الكامل
 
 ```json
 "Year from Date": {
@@ -61,24 +61,24 @@ Let’s break down the transformation syntax:
 }
 ```
 
-- `CURRENT_DATE`: Gets the current date (e.g., `2025-03-07`).
-- `/^(\\d{4})-(\\d{2})-(\\d{2})$/`: Regular expression to match the YYYY-MM-DD format, capturing year, month, and day in groups 1, 2, and 3 respectively.
-- `/$1/`: Replaces the matched text with only capturing group 1 (the year).
+- `CURRENT_DATE`: يجلب التاريخ الحالي (مثل `2025-03-07`).
+- `/^(\\d{4})-(\\d{2})-(\\d{2})$/`: تعبير نمطي لمطابقة الصيغة YYYY-MM-DD، ويلتقط السنة والشهر واليوم في المجموعات 1 و 2 و 3 على الترتيب.
+- `/$1/`: يستبدل النص المطابق بمجموعة الالتقاط 1 وحدها (السنة).
 
-Variable transformations are incredibly powerful for dynamically adapting snippets to different contexts and formatting needs. Explore the [Visual Studio Code documentation on snippet syntax](https://www.google.com/search?q=https://code.visualstudio.com/docs/editor/userdefinedsnippets%23_snippet-syntax&authuser=1) for more advanced transformation examples and options.
+وتحويلات المتغيّرات قوية للغاية في تكييف المقتطفات ديناميكيًا مع سياقات مختلفة واحتياجات تنسيق مختلفة. واستكشف [توثيق Visual Studio Code لصياغة المقتطفات](https://www.google.com/search?q=https://code.visualstudio.com/docs/editor/userdefinedsnippets%23_snippet-syntax&authuser=1) لمزيد من أمثلة التحويل وخياراته المتقدّمة.
 
-## Placeholder Options
+## خيارات العناصر النائبة
 
-Placeholders can be further customized using options to control their behavior:
+يمكن تخصيص العناصر النائبة أكثر باستخدام خيارات للتحكّم في سلوكها:
 
-- **Default Values:** As seen in `${1:array}`, you can provide a default value that will be inserted initially. If you don’t want to change the default value, you can simply press `Tab` to move to the next placeholder.
-- **Choices (Quick Pick Menus):** `${1|option1,option2,option3|}` creates a dropdown list of options, as discussed earlier.
-- **Placeholder Transformations (within Placeholders):** You can even apply transformations *within* placeholders. For instance, you could combine a variable and a transformation within a placeholder: `${1:${TM_FILENAME_BASE/^(.*)$/${1:/capitalize}/}}`. This would capitalize the filename base and use it as a default value for the first placeholder.
-- **Placeholder as a Snippet Trigger:** You can nest snippets and use a placeholder as a trigger for another snippet. When you reach a placeholder, typing a snippet prefix within it can trigger another snippet insertion within that placeholder. This is a key concept for creating nested snippets (discussed in the next section).
+- **القيم الافتراضية:** كما رأيت في `${1:array}`، يمكنك توفير قيمة افتراضية تُدرج ابتداءً. وإن لم ترغب في تغيير القيمة الافتراضية، فاضغط ببساطة `Tab` للانتقال إلى العنصر النائب التالي.
+- **الخيارات (قوائم الانتقاء السريع):** تنشئ `${1|option1,option2,option3|}` قائمة منسدلة بالخيارات، كما نوقش سابقًا.
+- **تحويلات العناصر النائبة (داخل العناصر النائبة):** يمكنك حتى تطبيق التحويلات *داخل* العناصر النائبة. فمثلًا، يمكنك دمج متغيّر وتحويل داخل عنصر نائب: `${1:${TM_FILENAME_BASE/^(.*)$/${1:/capitalize}/}}`. وسيحوّل ذلك اسم الملف الأساسي إلى أحرف كبيرة في بداية الكلمات ويستخدمه قيمة افتراضية للعنصر النائب الأول.
+- **العنصر النائب كمُشغّل لمقتطف:** يمكنك تداخل المقتطفات واستخدام عنصر نائب كمُشغّل لمقتطف آخر. فعند وصولك إلى عنصر نائب، قد تؤدي كتابة بادئة مقتطف داخله إلى تشغيل إدراج مقتطف آخر داخل ذلك العنصر النائب. وهذا مفهوم أساسي في إنشاء المقتطفات المتداخلة (وسيُناقش في القسم التالي).
 
-## Surrounding Text with `TM_SELECTED_TEXT`
+## تغليف النص بـ `TM_SELECTED_TEXT`
 
-Imagine you’ve got some React code, and you want to quickly wrap your selected JSX with a custom component. Here’s a handy snippet for that:
+تخيّل أن لديك شيفرة React وتريد لفّ JSX المحدّد سريعًا بمكوّن مخصّص. وإليك مقتطفًا مفيدًا لذلك:
 
 ```json
 "Wrap with MyComponent": {
@@ -92,11 +92,11 @@ Imagine you’ve got some React code, and you want to quickly wrap your selected
 }
 ```
 
-If you select code and trigger this snippet (`wrapMyComp`), the selected text instantly becomes nested inside `<MyComponent>`. Easy, right?
+إذا حدّدت شيفرة وشغّلت هذا المقتطف (`wrapMyComp`)، صار النص المحدّد متداخلًا داخل `<MyComponent>` على الفور. سهل، أليس كذلك؟
 
-> **For this snippet to work, make sure you’ve selected some text before activating the snippet. Otherwise, the variable remains empty.**
+> **لكي يعمل هذا المقتطف، تأكّد من تحديد نص قبل تنشيط المقتطف. وإلا بقي المتغيّر فارغًا.**
 
-Another quick example—surrounding a selection with a TypeScript function call:
+ومثال سريع آخر، وهو تغليف تحديد باستدعاء دالة في TypeScript:
 
 ```json
 "Log selected expression": {
@@ -106,15 +106,15 @@ Another quick example—surrounding a selection with a TypeScript function call:
 }
 ```
 
-This snippet duplicates the selected text—first as a string (so you know what’s logged), then as the actual value.
+يكرّر هذا المقتطف النص المحدّد مرتين: مرة كنص (لتعرف ما سيُسجَّل)، ومرة كقيمة فعلية.
 
-## Advanced `TM_SELECTED_TEXT` with Transformations
+## استخدام `TM_SELECTED_TEXT` المتقدّم مع التحويلات
 
-The real power of `TM_SELECTED_TEXT` emerges when combined with Visual Studio Code’s transformation functions. These allow you to modify the selected text in various ways, opening up a world of possibilities.
+تظهر القوة الحقيقية لـ `TM_SELECTED_TEXT` عند دمجه مع دوال التحويل في Visual Studio Code. فهي تتيح لك تعديل النص المحدّد بطرق متنوّعة، وتفتح أمامك عالمًا من الاحتمالات.
 
-### Text Case Transformations
+### تحويلات حالة الأحرف
 
-You can instantly change text case with built-in transformations:
+يمكنك تغيير حالة أحرف النص فورًا بتحويلات مدمجة:
 
 ```json
 "Transform Selected Text": {
@@ -130,11 +130,11 @@ You can instantly change text case with built-in transformations:
 }
 ```
 
-Select any text, trigger the snippet, and see all the transformations at once.
+حدّد أي نص، وشغّل المقتطف، وسترى كل التحويلات دفعة واحدة.
 
-### Wrap Selected Text with HTML Tags and Attributes
+### لفّ النص المحدّد بوسوم HTML وخصائصها
 
-This snippet wraps selected text with customizable HTML tags:
+يلفّ هذا المقتطف النص المحدّد بوسوم HTML قابلة للتخصيص:
 
 ```json
 "Wrap with HTML Element": {
@@ -148,11 +148,11 @@ This snippet wraps selected text with customizable HTML tags:
 }
 ```
 
-The power here is combining selected text with tabstops for customization. Select some text, trigger the snippet, then customize the element type and attributes.
+وتكمن القوة هنا في دمج النص المحدّد مع مواضع التوقّف للتخصيص. فحدّد نصًا، وشغّل المقتطف، ثم خصّص نوع العنصر وخصائصه.
 
-### Generate Code from Selected Class Name
+### توليد شيفرة من اسم صنف محدّد
 
-This snippet takes a selected class name and generates a full React component with proper casing:
+يأخذ هذا المقتطف اسم صنف محدّدًا ويولّد مكوّن React كاملًا بحالة أحرف مناسبة:
 
 ```json
 "React Component from Selection": {
@@ -177,11 +177,11 @@ This snippet takes a selected class name and generates a full React component wi
 }
 ```
 
-Select a simple name like `user-profile`, trigger the snippet, and it transforms it into a properly cased component name (`UserProfile`) while using lowercase for the CSS class.
+حدّد اسمًا بسيطًا مثل `user-profile`، وشغّل المقتطف، فيحوّله إلى اسم مكوّن بحالة أحرف مناسبة (`UserProfile`) مع استخدام أحرف صغيرة لصنف CSS.
 
-### Route Generator from Selected Endpoint
+### مولّد مسارات من نقطة نهاية محدّدة
 
-For API development, this snippet generates an Express route handler from a selected endpoint path:
+في تطوير واجهات API، يولّد هذا المقتطف معالج مسار في Express من مسار نقطة نهاية محدّد:
 
 ```json
 "Express Route from Path": {
@@ -204,11 +204,11 @@ For API development, this snippet generates an Express route handler from a sele
 }
 ```
 
-Select a path like `/api/users/:id`, trigger the snippet, choose the HTTP method, and get a fully formed route handler.
+حدّد مسارًا مثل `/api/users/:id`، وشغّل المقتطف، واختر طريقة HTTP، فتحصل على معالج مسار مكتمل.
 
-## Using the `CLIPBOARD` Variable
+## استخدام المتغيّر `CLIPBOARD`
 
-The `CLIPBOARD` variable inserts the current clipboard content into your snippet. Say you’ve copied a class name from elsewhere and want to quickly create a React component file:
+يُدرج المتغيّر `CLIPBOARD` محتوى الحافظة الحالي في مقتطفك. افترض أنك نسخت اسم صنف من مكان آخر وتريد إنشاء ملف مكوّن React سريعًا:
 
 ```json
 "React component from Clipboard": {
@@ -232,13 +232,13 @@ The `CLIPBOARD` variable inserts the current clipboard content into your snippet
 }
 ```
 
-Copy the component name, trigger this snippet, and your component scaffold appears instantly, fully named and typed.
+انسخ اسم المكوّن، وشغّل هذا المقتطف، فيظهر هيكل مكوّنك فورًا، كامل الاسم والنوع.
 
-> **Make sure the clipboard actually contains what you expect. Otherwise, you’ll end up with components like `const BuyMilkReminder`—funny but probably unintended.**
+> **تأكّد من أن الحافظة تحتوي فعلًا ما تتوقّعه. وإلا انتهى بك الأمر إلى مكوّنات مثل `const BuyMilkReminder`، وهو طريف لكنه غير مقصود على الأرجح.**
 
-## Final Cursor Position
+## موضع المؤشر النهائي
 
-When your snippet has been fully expanded, the special tab stop `$0` determines where the cursor lands next. This lets you control exactly where to continue coding after filling in all placeholders. For example:
+عند اكتمال توسّع مقتطفك، يحدّد موضع التوقّف الخاص `$0` أين يستقرّ المؤشر بعد ذلك. وهذا يتيح لك التحكّم بدقة في مكان متابعة البرمجة بعد ملء كل العناصر النائبة. مثلًا:
 
 ```json
 "Complete Function": {
@@ -252,10 +252,10 @@ When your snippet has been fully expanded, the special tab stop `$0` determines 
 }
 ```
 
-In this snippet, once you’ve filled in the function name and parameters, pressing `Tab` moves the cursor directly to the `$0` location—ready for you to start writing the function body.
+في هذا المقتطف، بعد ملء اسم الدالة والمعاملات، يؤدي الضغط على `Tab` إلى نقل المؤشر مباشرةً إلى موضع `$0`، لتبدأ كتابة جسم الدالة.
 
-## Nested Snippets Trigger
+## تشغيل المقتطفات المتداخلة
 
-For more advanced workflows, you can trigger nested snippets within a placeholder. While editing a placeholder, if you type a snippet prefix and trigger its expansion, the new snippet will be inserted inside the current placeholder. This can be particularly useful for generating repeated or structured content dynamically. For example, if you’re writing a component and frequently need to insert a specific prop type structure, triggering a nested snippet can streamline that process.
+لسير عمل أكثر تقدمًا، يمكنك تشغيل مقتطفات متداخلة داخل عنصر نائب. فأثناء تحرير عنصر نائب، إذا كتبت بادئة مقتطف وشغّلت توسّعه، سيُدرج المقتطف الجديد داخل العنصر النائب الحالي. ويفيد ذلك بوجه خاص في توليد محتوى متكرّر أو منظّم ديناميكيًا. فمثلًا، إذا كنت تكتب مكوّنًا وتحتاج كثيرًا إلى إدراج بنية نوع خصائص محدّدة، فإن تشغيل مقتطف متداخل يبسّط تلك العملية.
 
-> **Experiment with nesting snippets to reduce repetitive typing and maintain a consistent structure, but be cautious—overly complex nested snippets can sometimes make navigation a bit tricky.**
+> **جرّب تداخل المقتطفات لتقليل الكتابة المتكرّرة والحفاظ على بنية متّسقة، لكن كن حذرًا، فقد تجعل المقتطفات المتداخلة المعقّدة أكثر من اللازم التنقّل صعبًا بعض الشيء.**

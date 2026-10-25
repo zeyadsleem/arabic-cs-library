@@ -1,75 +1,75 @@
 ---
-title: "Placing Grid Items (Spanning and Positioning)"
-lang: en
+title: "وضع عناصر Grid (التمدّد والموضع)"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/placing-grid-items-spanning-and-positioning"
 ---
 
-This guide covers placing items within a grid using Tailwind CSS, focusing on spanning and positioning.
+يغطّي هذا الدليل وضع العناصر داخل grid باستخدام Tailwind CSS، مع التركيز على التمدّد والموضع.
 
-## Placing Grid Items: Spanning
+## وضع عناصر Grid: التمدّد
 
-After defining grid columns and rows (e.g., `grid-cols-4`, `grid-rows-3`), place items by making them span multiple columns or rows.
+بعد تعريف أعمدة grid وصفوفه (مثل `grid-cols-4` و`grid-rows-3`)، ضع العناصر بجعلها تمتدّ عبر عدة أعمدة أو صفوف.
 
-### Spanning a Fixed Number of Columns
+### التمدّد عبر عدد ثابت من الأعمدة
 
-Use `col-span-<number>` to make an item span columns (e.g., `col-span-2` spans two columns). This applies `grid-column: span <number> / span <number>`.
+استخدم `col-span-<number>` لجعل العنصر يمتدّ عبر الأعمدة (مثل `col-span-2` يمتدّ عبر عمودين). وهذه تطبّق `grid-column: span <number> / span <number>`.
 
-Use `col-span-full` to span all columns (`grid-column: 1 / -1`).
+استخدم `col-span-full` للتمدّد عبر كل الأعمدة (`grid-column: 1 / -1`).
 
-### Spanning a Fixed Number of Rows
+### التمدّد عبر عدد ثابت من الصفوف
 
-Use `row-span-<number>` to make an item span rows (e.g., `row-span-2` spans two rows). This applies `grid-row: span <number> / span <number>`.
+استخدم `row-span-<number>` لجعل العنصر يمتدّ عبر الصفوف (مثل `row-span-2` يمتدّ عبر صفين). وهذه تطبّق `grid-row: span <number> / span <number>`.
 
-Use `row-span-full` to span all rows (`grid-row: 1 / -1`).
+استخدم `row-span-full` للتمدّد عبر كل الصفوف (`grid-row: 1 / -1`).
 
-### Spanning with Custom Values
+### التمدّد بقيم مخصّصة
 
-For custom spanning, use `col-span-[<value>]` and `row-span-[<value>]`. Reference CSS variables with `col-span-(<custom-property>)` or `row-span-(<custom-property>)`.
+للتمدّد المخصّص، استخدم `col-span-[<value>]` و`row-span-[<value>]`. وأشِر إلى متغيّرات CSS عبر `col-span-(<custom-property>)` أو `row-span-(<custom-property>)`.
 
-## Placing Grid Items: Positioning
+## وضع عناصر Grid: الموضع
 
-Position grid items by specifying their start or end grid lines.
+ضع عناصر grid بتحديد سطور البداية أو النهاية في الشبكة.
 
-### Starting and Ending Columns
+### أعمدة البداية والنهاية
 
-Use `col-start-<number>` to set the start column line (e.g., `col-start-3`). Use `col-end-<number>` for the end column line (e.g., `col-end-5`). These set `grid-column-start` and `grid-column-end`.
+استخدم `col-start-<number>` لتحديد سطر البداية في الأعمدة (مثل `col-start-3`). واستخدم `col-end-<number>` لتحديد سطر النهاية في الأعمدة (مثل `col-end-5`). وهذه تضبط `grid-column-start` و`grid-column-end`.
 
-Use `col-start-auto` and `col-end-auto` for auto-placement.
+استخدم `col-start-auto` و`col-end-auto` للوضع التلقائي.
 
-### Starting and Ending Rows
+### صفوف البداية والنهاية
 
-Use `row-start-<number>` for the start row line (e.g., `row-start-2`). Use `row-end-<number>` for the end row line (e.g., `row-end-4`). These set `grid-row-start` and `grid-row-end`.
+استخدم `row-start-<number>` لتحديد سطر البداية في الصفوف (مثل `row-start-2`). واستخدم `row-end-<number>` لتحديد سطر النهاية في الصفوف (مثل `row-end-4`). وهذه تضبط `grid-row-start` و`grid-row-end`.
 
-Use `row-start-auto` and `row-end-auto` for auto-placement.
+استخدم `row-start-auto` و`row-end-auto` للوضع التلقائي.
 
-### Using Negative Values for Positioning
+### استخدام القيم السالبة في الموضع
 
-Prefix positioning utilities with a dash for negative values (e.g., `-col-start-2`, `-row-end-3`). These translate to negative values for `grid-column-start` and `grid-row-end`.
+سبّق أدوات الموضع بشرطة للقيم السالبة (مثل `-col-start-2` و`-row-end-3`). وهذه تُترجَم إلى قيم سالبة لـ `grid-column-start` و`grid-row-end`.
 
-### Combining Spanning and Positioning
+### الجمع بين التمدّد والموضع
 
-Combine start/end utilities with span utilities (e.g., `col-start-2 col-span-3` starts at column line 2 and spans 3 columns).
+اجمع أدوات البداية/النهاية مع أدوات الامتداد (مثل `col-start-2 col-span-3` يبدأ عند سطر العمود 2 ويمتدّ عبر ثلاثة أعمدة).
 
-### Shorthand Positioning Utilities
+### أدوات الموضع المختصرة
 
-Use `col-<number>` and `row-<number>` as shorthand. These set `grid-column` and `grid-row` to the specified grid line (e.g., `col-3` starts at column line 3, ends at 4). Negative values are supported (e.g., `-col-2`).
+استخدم `col-<number>` و`row-<number>` كاختصارات. وهذه تضبط `grid-column` و`grid-row` على سطر grid المحدّد (مثل `col-3` يبدأ عند سطر العمود 3 وينتهي عند 4). وتُدعم القيم السالبة (مثل `-col-2`).
 
-### Positioning with Custom Values
+### الموضع بقيم مخصّصة
 
-Use arbitrary values: `col-start-[<value>]`, `col-end-[<value>]`, `row-start-[<value>]`, `row-end-[<value>]`, `col-[<value>]`, and `row-[<value>]`. Reference CSS variables with parentheses (e.g., `row-start-(<custom-property>)`).
+استخدم القيم التعسّفية: `col-start-[<value>]` و`col-end-[<value>]` و`row-start-[<value>]` و`row-end-[<value>]` و`col-[<value>]` و`row-[<value>]`. وأشِر إلى متغيّرات CSS بالأقواس (مثل `row-start-(<custom-property>)`).
 
-## Responsive Grid Item Placement
+## وضع عناصر Grid المتجاوب
 
-All grid placement utilities are responsive. Apply them conditionally at breakpoints (`md:`, `lg:`) or with container query variants (`@md:`).
+جميع أدوات وضع grid متجاوبة. طبّقها بشكل مشروط عند نقاط التوقّف (`md:` و`lg:`) أو مع متغيّرات استعلامات الحاوية (`@md:`).
 
-Example: `col-span-1 md:col-span-3`.
+مثال: `col-span-1 md:col-span-3`.
 
-Tailwind 4 allows container queries (`@md:`) for placement based on parent container size.
+يسمح Tailwind 4 باستعلامات الحاوية (`@md:`) للوضع بحسب حجم الحاوية الأم.
 
-## Customizing Grid Item Values
+## تخصيص قيم عناصر Grid
 
-In Tailwind 4, define custom grid placement values using CSS variables with `@theme`. Reference these variables in arbitrary value syntax (e.g., `col-span-(layout)` if `--grid-column-span-layout: 3` is defined).
+في Tailwind 4، عرّف قيم وضع grid مخصّصة باستخدام متغيّرات CSS مع `@theme`. وأشِر إلى هذه المتغيّرات في صيغة القيم التعسّفية (مثل `col-span-(layout)` إذا كان `--grid-column-span-layout: 3` معرَّفًا).
 
-## Interaction with Auto-Placement
+## التفاعل مع الوضع التلقائي
 
-Explicit placement overrides default auto-placement. Unplaced items or those creating implicit tracks follow auto-placement rules. Control implicit track sizes with `grid-auto-columns` and `grid-auto-rows`, and flow with `grid-auto-flow` (e.g., `grid-flow-row-dense`).
+يتجاوز الوضع الصريح الوضع التلقائي الافتراضي. أما العناصر غير الموضوعة أو التي تنشئ مسارات ضمنية فتتبع قواعد الوضع التلقائي. تحكّم في مقاسات المسارات الضمنية عبر `grid-auto-columns` و`grid-auto-rows`، وفي التدفّق عبر `grid-auto-flow` (مثل `grid-flow-row-dense`).

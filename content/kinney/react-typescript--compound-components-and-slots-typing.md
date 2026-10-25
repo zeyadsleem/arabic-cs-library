@@ -1,22 +1,22 @@
 ---
-title: "Compound Components and Slots Typing"
-lang: en
+title: "أنواع المكوّنات المركّبة والخانات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/compound-components-and-slots-typing"
 ---
 
-Compound components are one of React’s most elegant patterns—they let you compose UIs where multiple components work together seamlessly (think `<select>` and `<option>`, but you get to design the API). When you add TypeScript to the mix, you can create type-safe relationships between parent and child components that prevent runtime errors and provide excellent developer experience. Let’s explore how to build Menu, Tabs, and List components that are both flexible and bulletproof.
+المكوّنات المركّبة (compound components) من أنماط React وأنيقها — فهي تتيح لك تركيب واجهات تتعاون فيها مكوّنات متعدّدة بسلاسة (فكّر في `<select>` و`<option>`، لكن تصميم الواجهة البرمجية بيدك). وحين تضيف TypeScript إلى المعادلة، تستطيع إنشاء علاقات آمنة الأنواع بين المكوّنات الأصلية والفرعية تمنع أخطاء وقت التشغيل وتقدّم تجربة تطوير ممتازة. لنتعرّف كيف نبني مكوّنات Menu وTabs وList المرنة والمتينة في آنٍ واحد.
 
-The key insight with compound components is that the parent component manages shared state while child components handle their own rendering logic. TypeScript helps us ensure that these relationships are correctly modeled and that data flows between components in predictable ways.
+الفكرة المحورية في المكوّنات المركّبة أن المكوّن الأصل يدير الحالة المشتركة بينما تتولّى المكوّنات الفرعية منطق تصييرها الخاص. ويساعدنا TypeScript على التأكّد من نمذجة هذه العلاقات على نحو صحيح وأن تدفّق البيانات بين المكوّنات يسير بطرق يمكن التنبّؤ بها.
 
-## Understanding Compound Components
+## فهم المكوّنات المركّبة
 
-Before diving into the TypeScript specifics, let’s establish what makes a compound component. At its core, it’s a group of components designed to work together, where:
+قبل الغوص في تفاصيل TypeScript، لنثبّت ما الذي يجعل المكوّن مركّبًا. في جوهره، هو مجموعة مكوّنات مصمّمة للعمل معًا، حيث:
 
-- The parent component manages shared state and context
-- Child components receive props and context to render appropriately
-- The API feels intuitive and declarative to consumers
+- المكوّن الأصل يدير الحالة المشتركة والسياق
+- المكوّنات الفرعية تستقبل الخصائص والسياق لتعرض بشكل مناسب
+- تبدو الواجهة البرمجية بديهية وتعبيرية لمستهلكيها
 
-Here’s a simple compound component pattern without TypeScript:
+إليك نمط مكوّنات مركّبة بسيطًا من دون TypeScript:
 
 ```jsx
 // ❌ No type safety
@@ -48,11 +48,11 @@ function MenuItem({ id, children, selectedId, onSelect }) {
 }
 ```
 
-This works, but there’s no type safety. The parent could pass anything to children, children might not receive the props they expect, and we have no guarantees about the shape of our data. Let’s fix that.
+هذا يعمل، لكن من دون أمان أنواع. فالمكوّن الأصل يمكنه تمرير أي شيء إلى الأبناء، وقد لا يتلقّى الأبناء الخصائص التي يتوقّعونها، ولا تتوفّر لدينا أي ضمانات بشأن شكل بياناتنا. لنصلح ذلك.
 
-## Building a Type-Safe Menu Component
+## بناء مكوّن Menu آمن الأنواع
 
-Let’s start with a Menu component that demonstrates the core concepts. We want to ensure that MenuItem components receive the correct props and that the Menu can only contain valid children.
+لنبدأ بمكوّن Menu يوضّح المفاهيم الأساسية. نريد التأكّد من أن مكوّنات MenuItem تتلقّى الخصائص الصحيحة وأن Menu لا يمكن أن يحوي إلا أبناء صالحين.
 
 ```typescript
 import React, { useState, createContext, useContext } from 'react';
@@ -141,7 +141,7 @@ function MenuItem({ id, disabled = false, children }: MenuItemProps) {
 Menu.Item = MenuItem;
 ```
 
-Now we can use our type-safe Menu:
+الآن يمكننا استخدام Menu الآمن الأنواع:
 
 ```typescript
 function App() {
@@ -157,13 +157,13 @@ function App() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Using React Context eliminates the need for `React.cloneElement`, which can be problematic with TypeScript and doesn’t preserve ref forwarding.
+> استخدام React Context يُغني عن الحاجة إلى `React.cloneElement`، وهي قد تسبّب مشكلات مع TypeScript ولا تحافظ على توجيه المراجع (ref forwarding).
 
-## Advanced Menu with Slot Props
+## قائمة Menu متقدّمة مع خصائص الخانات
 
-Sometimes you want more control over rendering. Let’s extend our Menu to support render props (also known as “slot props” in some frameworks):
+أحيانًا تريد تحكّمًا أكبر في العرض. لنوسّع Menu لدينا ليدعم خصائص التصيير (render props) (المعروفة أيضًا بـ«خصائص الخانات» (slot props) في بعض الأطر):
 
 ```typescript
 // Extended MenuItem that supports custom rendering
@@ -196,7 +196,7 @@ function MenuItemSlot({ id, disabled = false, children }: MenuItemSlotProps) {
 Menu.ItemSlot = MenuItemSlot;
 ```
 
-Now you can use render props for complete control:
+الآن يمكنك استخدام خصائص التصيير للحصول على تحكّم كامل:
 
 ```typescript
 <Menu>
@@ -212,9 +212,9 @@ Now you can use render props for complete control:
 </Menu>
 ```
 
-## Building Type-Safe Tab Components
+## بناء مكوّنات Tab آمنة الأنواع
 
-Tabs are another excellent use case for compound components. Let’s build a flexible Tab system:
+تبقى Tab حالة استخدام ممتازة أخرى للمكوّنات المركّبة. لنبنِ نظام Tab مرنًا:
 
 ```typescript
 interface TabData {
@@ -338,7 +338,7 @@ TabContainer.List = TabList;
 TabContainer.Panel = TabPanel;
 ```
 
-Usage is clean and declarative:
+الاستخدام نظيف وتعبيري:
 
 ```typescript
 function App() {
@@ -362,13 +362,13 @@ function App() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Notice how TabPanel automatically registers itself with the container. This prevents the common issue of forgetting to add a tab to the tab list.
+> لاحظ كيف يسجّل TabPanel نفسه تلقائيًا لدى الحاوية. هذا يمنع المشكلة الشائعة بإضافة التبويب إلى قائمة التبويبات.
 
-## Generic List Components with Item Constraints
+## مكوّنات List عامة مع قيود على العناصر
 
-For our final example, let’s build a generic List component that can work with any type of data while maintaining type safety:
+في مثالنا الأخير، لنبنِ مكوّن List عامًا يمكنه العمل مع أي نوع من البيانات مع الحفاظ على أمان الأنواع:
 
 ```typescript
 // Generic interface for list items
@@ -473,7 +473,7 @@ function ListItem<T extends ListItem>({ item, children }: ListItemProps<T>) {
 List.Item = ListItem;
 ```
 
-Now you can create type-safe lists for any data:
+الآن يمكنك إنشاء قوائم آمنة الأنواع لأي بيانات:
 
 ```typescript
 interface User extends ListItem {
@@ -506,13 +506,13 @@ function UserList({ users }: { users: User[] }) {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with generic context. TypeScript can sometimes struggle with inference across component boundaries, so explicit type annotations might be needed.
+> كن حذرًا مع السياق العام (generic context). فقد يجد TypeScript صعوبة أحيانًا في الاستنتاج عبر حدود المكوّنات، لذا قد تحتاج إلى تعليقات نوع صريحة.
 
-## Common Pitfalls and Solutions
+## المَطبّات الشائعة وحلولها
 
-### Pitfall: Context Type Assertion Gone Wrong
+### المطبّة: تأكيد نوع السياق بشكل خاطئ
 
 ```typescript
 // ❌ Bad: Unsafe type assertion
@@ -528,7 +528,7 @@ function useSomeContext() {
 }
 ```
 
-### Pitfall: Generic Components with Poor Inference
+### المطبّة: مكوّنات عامة ذات استنتاج ضعيف
 
 ```typescript
 // ❌ Bad: TypeScript can't infer the type
@@ -542,7 +542,7 @@ function useSomeContext() {
 </List>
 ```
 
-### Pitfall: Forgetting readonly for Props
+### المطبّة: نسيان `readonly` في الخصائص
 
 ```typescript
 // ❌ Bad: Arrays are mutable
@@ -556,9 +556,9 @@ interface ListProps<T> {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Compound components can sometimes create unnecessary re-renders. Here are some optimization strategies:
+قد تُنشئ المكوّنات المركّبة أحيانًا إعادة تصيير غير ضرورية. إليك بعض استراتيجيات التحسين:
 
 ```typescript
 // ✅ Memoize context value to prevent unnecessary re-renders
@@ -587,23 +587,23 @@ const MenuItem = memo(({ id, disabled = false, children }: MenuItemProps) => {
 });
 ```
 
-## Real-World Use Cases™
+## حالات الاستخدام الواقعية™
 
-The patterns we’ve explored work particularly well for:
+الأنماط التي استكشفناها تعمل بشكل ممتاز بشكل خاص مع:
 
-1. **Design System Components**: Building libraries where components need to work together seamlessly
-2. **Form Builders**: Creating dynamic forms where field components share validation state
-3. **Data Tables**: Where header, body, and pagination components need to coordinate
-4. **Navigation Components**: Breadcrumbs, sidebars, and multi-level menus
-5. **Modal Systems**: Where trigger, content, and action components work together
+1. **مكوّنات أنظمة التصميم**: بناء مكتبات يجب أن تعمل مكوّناتها معًا بسلاسة
+2. **باني النماذج**: إنشاء نماذج ديناميكية تتشارك فيها مكوّنات الحقول حالة التحقّق
+3. **جداول البيانات**: حيث تحتاج مكوّنات الترويسة والجسم والترقيم إلى التنسيق فيما بينها
+4. **مكوّنات التنقّل**: مسارات التنقّل (breadcrumbs) والأشرطة الجانبية والقوائم متعدّدة المستويات
+5. **أنظمة النوافذ المنبثقة**: حيث تعمل مكوّنات الزر والمحتوى والإجراءات معًا
 
-## Next Steps
+## الخطوات التالية
 
-You now have the tools to build robust compound components with TypeScript. Some areas to explore further:
+أصبح لديك الآن الأدوات لبناء مكوّنات مركّبة متينة مع TypeScript. إليك بعض المجالات التي تستحق الاستكشاف أكثر:
 
-- **Ref forwarding** with compound components using `forwardRef` and `useImperativeHandle`
-- **Accessibility patterns** like managing focus and ARIA relationships
-- **Advanced generic constraints** using mapped types and conditional types
-- **Testing strategies** for compound components (hint: test behavior, not implementation)
+- **توجيه المراجع (ref forwarding)** مع المكوّنات المركّبة باستخدام `forwardRef` و`useImperativeHandle`
+- **أنماط الوصول (accessibility)** مثل إدارة التركيز وعلاقات ARIA
+- **قيود عامة متقدّمة** باستخدام الأنواع المُخطَّطة (mapped types) والأنواع الشرطية
+- **استراتيجيات الاختبار** للمكوّنات المركّبة (تلميح: اختبر السلوك لا التنفيذ)
 
-Compound components with TypeScript give you the best of both worlds: flexible, reusable APIs that prevent runtime errors and provide excellent developer experience. Start with these patterns and adapt them to your specific use cases—your future self (and your teammates) will thank you.
+تمنحك المكوّنات المركّبة مع TypeScript أفضل ما في العالمين: واجهات برمجية مرنة وقابلة لإعادة الاستخدام تمنع أخطاء وقت التشغيل وتقدّم تجربة تطوير ممتازة. ابدأ بهذه الأنماط وعدّلها لتناسب حالات الاستخدام لديك — وستشكرك نسختك المستقبلية من نفسك (وزملاؤك).

@@ -1,12 +1,12 @@
 ---
-title: "Building a Card Component"
-lang: en
+title: "بناء مكوّن بطاقة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-card"
 ---
 
-Let’s start with our basic HTML structure.
+لنبدأ ببنية HTML الأساسية لدينا.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/4237ee4e875d7a422bbf9ecbc5d4554ef04a4628db957194e930625b9ca8f3d0.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4237ee4e875d7a422bbf9ecbc5d4554ef04a4628db957194e930625b9ca8f3d0.html)*
 
 ```html
 <div>
@@ -19,13 +19,13 @@ Let’s start with our basic HTML structure.
 </div>
 ```
 
-It’s obviously not much to look at, but let’s start adding to it.
+من الواضح أنه ليس شيئًا يستحق النظر، لكن لنبدأ بإضافة المزيد إليه.
 
-## Applying What We’ve Learned
+## تطبيق ما تعلمناه
 
-We saw this before when we were [building a button](https://stevekinney.com/courses/tailwind/building-a-button), but it doesn’t hurt to get some more practice in. Let’s add the following classes to the container: `bg-white`, `rounded-lg`, and `shadow-md`.
+رأينا هذا سابقًا عندما كنا [نبني زرًا](https://stevekinney.com/courses/tailwind/building-a-button)، لكن لا ضرر من المزيد من التمرين. لنضف الأصناف التالية إلى الحاوية: `bg-white` و`rounded-lg` و`shadow-md`.
 
-*Applying What We've Learned — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/71f625ed22f27861d5734eb6fd3882a11737316b8fc9b7c69bf43f8e84e3c256.html)*
+*تطبيق ما تعلمناه — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/71f625ed22f27861d5734eb6fd3882a11737316b8fc9b7c69bf43f8e84e3c256.html)*
 
 ```html
 <div class="rounded-lg bg-white shadow-md">
@@ -38,13 +38,13 @@ We saw this before when we were [building a button](https://stevekinney.com/cour
 </div>
 ```
 
-It’s still not looking that good, but we’re making progress—I guess. We’re using `shadow-md` instead of `shadow-xs` (like we used for the button) because cards need more prominence as larger content containers. The shadow helps establish visual hierarchy—cards should feel more substantial than buttons.
+لا يزال لا يبدو بهذه الجودة، لكننا نتقدم — على ما أظن. نستخدم `shadow-md` بدلًا من `shadow-xs` (كما استخدمنا للزر) لأن البطاقات تحتاج إلى بروز أكبر بصفتها حاويات محتوى أكبر. يساعد الظل في تأسيس التسلسل البصري — ينبغي أن تبدو البطاقات أكثر ثقلًا من الأزرار.
 
-## Giving It Some Space
+## إعطاؤه بعض المساحة
 
-We also saw this with button, but we also adding padding super easily with the `p-6` class.
+رأينا هذا مع الزر أيضًا، لكننا نضيف الحشو بسهولة فائقة باستخدام الصنف `p-6`.
 
-*Giving It Some Space — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/7fa20b8b66e72e3bce57153b487fb654bf071aae2fef795200a587afdf4eb7d4.html)*
+*إعطاؤه بعض المساحة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7fa20b8b66e72e3bce57153b487fb654bf071aae2fef795200a587afdf4eb7d4.html)*
 
 ```html
 <div class="rounded-lg bg-white shadow-md">
@@ -57,11 +57,11 @@ We also saw this with button, but we also adding padding super easily with the `
 </div>
 ```
 
-The `p-6` utility class adds 24px of padding on all sides.
+يضيف الصنف المساعد `p-6` حشوًا بسماكة 24px من جميع الجهات.
 
-## Getting the Image to Behave
+## جعل الصورة تتصرف بشكل صحيح
 
-*Getting the Image to Behave — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/c1460915b080f5711eac1a0aaff9d067e8b8df6061fd5f903d7dab3ba1163d62.html)*
+*جعل الصورة تتصرف بشكل صحيح — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c1460915b080f5711eac1a0aaff9d067e8b8df6061fd5f903d7dab3ba1163d62.html)*
 
 ```html
 <div class="overflow-hidden rounded-lg bg-white shadow-md">
@@ -78,19 +78,19 @@ The `p-6` utility class adds 24px of padding on all sides.
 </div>
 ```
 
-Changes to the image:
+التغييرات على الصورة:
 
-- `w-full`: Makes the image fill the card’s width.
-- `h-48`: Sets a fixed height of 192px for consistent card proportions.
-- `object-cover`: Crops the image to fill the space while maintaining aspect ratio.
+- `w-full`: يجعل الصورة تملأ عرض البطاقة.
+- `h-48`: يضبط ارتفاعًا ثابتًا قدره 192px لتناسب أبعاد البطاقة بشكل متسق.
+- `object-cover`: يقص الصورة لملء المساحة مع الحفاظ على نسبة الأبعاد.
 
-Container changes:
+تغييرات الحاوية:
 
-`overflow-hidden`: Ensures the image respects the card’s rounded corners.
+`overflow-hidden`: يضمن أن تحترم الصورةُ الزوايا المستديرة للبطاقة.
 
-## Typography
+## الخطوط
 
-*Typography — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/9deb228b2331811db396274728cc725b62d750b1aae54f9ef3377fe7ed492bc6.html)*
+*الخطوط — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9deb228b2331811db396274728cc725b62d750b1aae54f9ef3377fe7ed492bc6.html)*
 
 ```html
 <div class="overflow-hidden rounded-lg bg-white shadow-md">
@@ -107,30 +107,30 @@ Container changes:
 </div>
 ```
 
-I made the following tweaks to the typography:
+أجريت التعديلات التالية على الخطوط:
 
-### Heading Styles
+### أنماط العنوان
 
-- `text-lg`: 18px font size for prominence without overwhelming
-- `font-semibold`: 600 weight for clear hierarchy
-- `text-slate-900`: Near-black for maximum readability
+- `text-lg`: حجم خط 18px للبروز دون إثقال
+- `font-semibold`: وزن 600 لتسلسل هرمي واضح
+- `text-slate-900`: شبه أسود لأقصى قدر من القراءة
 
-### Description Styles
+### أنماط الوصف
 
-- `text-slate-600`: Medium gray for secondary information
-- Default text size (`text-base`) provides good readability
+- `text-slate-600`: رمادي متوسط للمعلومات الثانوية
+- حجم النص الافتراضي (`text-base`) يوفر قراءة جيدة
 
-### Price Styles
+### أنماط السعر
 
-- `text-xl`: 20px size makes the price prominent—it’s often the key decision factor
-- `font-bold`: 700 weight emphasizes the price more than the product name
-- `text-slate-900`: High contrast for clarity
+- `text-xl`: حجم 20px يجعل السعر بارزًا — فهو غالبًا عامل القرار الأساسي
+- `font-bold`: وزن 700 يؤكد على السعر أكثر من اسم المنتج
+- `text-slate-900`: تباين عالٍ للوضوح
 
-## Spacing
+## التباعد
 
-We can add some spacing betweent the text by using `space-y-4` on the container surrounded the prose.
+يمكننا إضافة بعض التباعد بين النصوص باستخدام `space-y-4` على الحاوية المحيطة بالنص.
 
-*Spacing — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/51bdb56d0a9c5316a8d4eaff8720a9b8128c259dd460cb4c6aa1679371b01838.html)*
+*التباعد — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/51bdb56d0a9c5316a8d4eaff8720a9b8128c259dd460cb4c6aa1679371b01838.html)*
 
 ```html
 <div class="overflow-hidden rounded-lg bg-white shadow-md">
@@ -147,11 +147,11 @@ We can add some spacing betweent the text by using `space-y-4` on the container 
 </div>
 ```
 
-`space-y-4` adds `margin-top: 1rem (16px)` to all child elements *except* the first one. It’s a clean way to create consistent vertical spacing without manually adding margins to each element. This also makes it easier to adjust the spacing between all of the elements as opposed to trying to get fancy with margins and whatnot.
+يضيف `space-y-4` خاصية `margin-top: 1rem (16px)` إلى جميع العناصر التابعة *عدا* الأولى منها. إنه طريقة نظيفة لإنشاء تباعد رأسي متسق دون إضافة هوامش يدويًا إلى كل عنصر. هذا يسهّل أيضًا ضبط التباعد بين جميع العناصر بدلًا من محاولة التبجّح بالهوامش وما شابه.
 
-## Adding Hover Interactions
+## إضافة تفاعلات التحويم
 
-*Adding Hover Interactions — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/ad166de7bd7f38bfcf20be15f4312ae5c44eca17334afbd5ecb71667df96272f.html)*
+*إضافة تفاعلات التحويم — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ad166de7bd7f38bfcf20be15f4312ae5c44eca17334afbd5ecb71667df96272f.html)*
 
 ```html
 <div
@@ -170,17 +170,17 @@ We can add some spacing betweent the text by using `space-y-4` on the container 
 </div>
 ```
 
-We added the following classes to the container:
+أضفنا الأصناف التالية إلى الحاوية:
 
-- `hover:shadow-lg`: Increases shadow on hover, making the card feel elevated
-- `transition-shadow`: Animates shadow changes smoothly
-- `duration-200`: Sets a fast (200ms) transition for responsive feel
+- `hover:shadow-lg`: يزيد الظل عند التحويم، ما يجعل البطاقة تبدو مرتفعة
+- `transition-shadow`: يحرّك تغييرات الظل بسلاسة
+- `duration-200`: يضبط انتقالًا سريعًا (200ms) لإحساس سريع الاستجابة
 
-## Constraining the Width
+## تقييد العرض
 
-It’s still a little too wide for my tastes. Let’s set a maximum with for the card using `max-w-sm` on the container.
+لا يزال عريضًا قليلًا أكثر من ذوقي. لنضبط حدًّا أقصى لعرض البطاقة باستخدام `max-w-sm` على الحاوية.
 
-*Constraining the Width — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/599b22793a1c743b5b51904bdcc66b398daefc279053fdfddeeb68fd47867df6.html)*
+*تقييد العرض — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/599b22793a1c743b5b51904bdcc66b398daefc279053fdfddeeb68fd47867df6.html)*
 
 ```html
 <div

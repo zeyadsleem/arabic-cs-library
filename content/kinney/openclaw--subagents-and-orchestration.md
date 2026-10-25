@@ -1,33 +1,33 @@
 ---
-title: "Subagents and Orchestration"
-lang: en
+title: "الوكلاء الفرعيون والتنسيق"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/subagents-and-orchestration"
 ---
 
-A **subagent** is a background run that your agent starts to handle part of a job. It gets its own session, works with its own context, and reports back when it’s done. Your main conversation stays clean, several children can work at once, and each one can run on a cheaper model or with fewer tools than your main agent has.
+**الوكيل الفرعي (subagent)** تشغيل في الخلفية يبدأه وكيلك ليتولّى جزءًا من مهمة. يحصل على جلسته الخاصة، ويعمل بسياقه الخاص، ويبلّغ حين ينتهي. وتبقى محادثتك الرئيسية نظيفة، ويمكن لعدة أبناء أن يعملوا في وقت واحد، ويمكن لكل واحد أن يعمل على نموذج أرخص أو بأدوات أقل مما يملكه وكيلك الرئيسي.
 
-Every OpenClaw install can do this. There’s nothing to turn on. Ask your agent to “spawn a subagent” and it calls its `sessions_spawn` tool. In fact, OpenClaw nudges agents to delegate by default in their main session.
+كل تثبيت لـ OpenClaw يستطيع فعل هذا. لا شيء يحتاج إلى تفعيل. اطلب من وكيلك أن «يولّد وكيلًا فرعيًا» فيستدعي أداة `sessions_spawn` الخاصة به. بل إن OpenClaw يحثّ الوكلاء افتراضيًا على التفويض في جلستهم الرئيسية.
 
-> **Subagents aren’t ACP sessions**
+> **الوكلاء الفرعيون ليسوا جلسات ACP**
 >
-> [The ACPX lesson](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) covers handing work to an external coding harness like Claude Code or Codex. Those use the same spawn tool but are a different thing. This lesson is about native subagents, which run inside OpenClaw with OpenClaw’s own tools and policies.
+> يغطي [درس ACPX](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin) تسليم العمل إلى أداة برمجة خارجية مثل Claude Code أو Codex. فهي تستخدم أداة التوليد نفسها لكنها شيء مختلف. أما هذا الدرس فيتناول الوكلاء الفرعيين الأصليين، الذين يعملون داخل OpenClaw بأدوات OpenClaw وسياساته.
 
-## How a Spawn Works
+## كيف يعمل التوليد
 
-1. **Spawn.** Your agent calls `sessions_spawn` with a task. The call returns immediately with an ID; it doesn’t wait for the child to finish.
-2. **Run.** The child works in its own session, with a key like `agent:main:subagent:<uuid>`. It starts with a fresh context: the task, plus your `AGENTS.md`. It does **not** get `SOUL.md`, `USER.md`, `IDENTITY.md`, or `MEMORY.md`, so put anything the child needs to know in the task itself.
-3. **Announce.** When the child finishes, its final answer is sent back to the parent with a status (`ok`, `error`, or `timeout`) and a stats line with runtime, tokens, and an estimated cost if you’ve configured model pricing. The status comes from what actually happened to the run, not from what the child said about itself.
-4. **Archive.** The child’s session is archived 60 minutes later by default.
+1. **التوليد.** يستدعي وكيلك `sessions_spawn` بمهمة. ويعود النداء فورًا بمعرّف؛ فهو لا ينتظر انتهاء الابن.
+2. **التشغيل.** يعمل الابن في جلسته الخاصة، بمفتاح مثل `agent:main:subagent:<uuid>`. ويبدأ بسياق جديد: المهمة، إضافة إلى `AGENTS.md` الخاص بك. وهو **لا** يحصل على `SOUL.md` أو `USER.md` أو `IDENTITY.md` أو `MEMORY.md`، لذا ضع كل ما يحتاج الابن معرفته في المهمة نفسها.
+3. **الإبلاغ.** حين ينتهي الابن، تُرسَل إجابته النهائية إلى الأصل مع حالة (`ok` أو `error` أو `timeout`) وسطر إحصاءات يضم زمن التشغيل والرموز (tokens) وتكلفة مقدّرة إن كنت قد هيّأت تسعير النموذج. وتأتي الحالة من ما حدث للتشغيل فعلًا، لا من ما قاله الابن عن نفسه.
+4. **الأرشفة.** تُؤرشف جلسة الابن بعد 60 دقيقة افتراضيًا.
 
-While children run, the parent waits for their announcements instead of checking in on them over and over. A run ends, but its session sticks around until it’s archived, so you can still read what it did.
+بينما يعمل الأبناء، ينتظر الأصل إبلاغاتهم بدلًا من السؤال عنهم مرة بعد مرة. وينتهي التشغيل، لكن جلسته تبقى حتى تُؤرشف، فتستطيع أن تقرأ ما فعله.
 
-## Try It: Your First Subagent
+## جرّب: وكيلك الفرعي الأول
 
-Send your agent something like this:
+أرسل إلى وكيلك شيئًا مثل هذا:
 
-> Spawn a subagent to read `AGENTS.md` in your workspace and list every rule in it as a numbered list. Report back what it found.
+> ولّد وكيلًا فرعيًا ليقرأ `AGENTS.md` في مساحة عملك ويسرد كل قاعدة فيه كقائمة مرقّمة. وأبلغني بما وجده.
 
-Then look at what happened:
+ثم انظر ما حدث:
 
 ```
 /subagents list
@@ -35,74 +35,74 @@ Then look at what happened:
 /subagents log 1 tools
 ```
 
-`list` shows active and recent children. `info` shows a child’s status, timing, session ID, and transcript path. `log` shows its recent turns, and adding `tools` includes the tool calls it made. You can refer to a child by its number in the list or by its ID.
+يعرض `list` الأبناء النشطين والأخيرين. ويعرض `info` حالة الابن وتوقيته ومعرّف جلسته ومسار نصّه. ويعرض `log` أدواره الأخيرة، وإضافة `tools` تُدرج نداءات الأدوات التي أجراها. ويمكنك الإشارة إلى ابن برقمه في القائمة أو بمعرّفه.
 
-`/subagents` only lets you look. To stop work, send `/stop`, which stops the current run **and all of its children**. You can also click **Stop** in the Control UI. There’s no `/subagents kill`.
+لا يتيح لك `/subagents` سوى النظر. ولإيقاف العمل، أرسل `/stop`، الذي يوقف التشغيل الحالي **وكل أبنائه**. ويمكنك أيضًا النقر على **Stop** في واجهة التحكم. ولا يوجد `/subagents kill`.
 
-> **Children outlive their parents**
+> **الأبناء يعيشون أطول من آبائهم**
 >
-> A child isn’t cancelled when the parent finishes its turn. If you start something big and change your mind, use `/stop`, or the children will keep working and spending tokens.
+> لا يُلغى الابن عندما ينهي الأصل دوره. فإن بدأت أمرًا كبيرًا وغيّرت رأيك، فاستخدم `/stop`، وإلا استمرّ الأبناء في العمل وإنفاق الرموز (tokens).
 
-## What a Subagent Can’t Do
+## ما لا يستطيع الوكيل الفرعي فعله
 
-Every subagent, no matter how it’s configured, loses these tools:
+كل وكيل فرعي، أيًّا كانت تهيئته، يفقد هذه الأدوات:
 
-- `message`: it can’t message you or anyone else directly
-- `cron` (automations): it can’t schedule anything
-- `gateway`: it can’t change the Gateway’s configuration
-- `sessions_send`, `agents_list`, `session_status`, `progress_card`, and the `conversations_*` tools
+- `message`: لا يستطيع مراسلتك أو مراسلة أي شخص آخر مباشرةً
+- `cron` (الأتمتات): لا يستطيع جدولة أي شيء
+- `gateway`: لا يستطيع تغيير إعدادات البوابة
+- `sessions_send` و`agents_list` و`session_status` و`progress_card` وأدوات `conversations_*`
 
-You can’t add these back. So a subagent can’t text you at 3 a.m., leave a scheduled job behind, or reconfigure the Gateway.
+لا يمكنك إعادة هذه الأدوات. لذا لا يستطيع وكيل فرعي أن يراسلك في الثالثة فجرًا، ولا أن يترك مهمة مجدولة خلفه، ولا أن يعيد تهيئة البوابة.
 
-**Everything else is inherited.** A subagent of your main agent gets the main agent’s tool policy. If your main agent can run shell commands, so can its children, and nothing in the task text changes that. “Don’t use the shell” in a prompt is a request. Tool policy is a guarantee.
+**كل ما عدا ذلك موروث.** فالوكيل الفرعي التابع لوكيلك الرئيسي يحصل على سياسة أدوات الوكيل الرئيسي. وإن كان وكيلك الرئيسي يستطيع تشغيل أوامر سطر الأوامر، فكذلك أبناؤه، ولا شيء في نص المهمة يغيّر ذلك. فقول «لا تستخدم سطر الأوامر» في مطالبة طلب، أما سياسة الأدوات فضمان.
 
-## Limiting What Children Can Do
+## تحديد ما يستطيع الأبناء فعله
 
-You have two levers.
+لديك رافعتان.
 
-### Lever 1: A Rule for Every Subagent
+### الرافعة 1: قاعدة لكل وكيل فرعي
 
-`tools.subagents.tools` filters tools for **all** subagents:
+`tools.subagents.tools` يرشّح الأدوات **لكل** الوكلاء الفرعيين:
 
 ```bash
 openclaw config set tools.subagents.tools.deny '["exec"]'
 ```
 
-`deny` wins over everything. You can also set `allow`, which makes it an allow-only list. `allow` can only take tools away, though; it can’t give a child a tool that the profile already removed.
+تفوز `deny` على كل شيء. ويمكنك أيضًا ضبط `allow`، التي تجعلها قائمة سماح فقط. لكن `allow` لا تستطيع إلا أن تسلب الأدوات؛ فلا يمكنها منح ابن أداة أزالها الملف الشخصي بالفعل.
 
-This is blunt. It applies to every child, and any skill that shells out will stop working inside subagents. The failure tends to show up as a vague, worse answer rather than a clear permission error.
+هذا خشن. فهو ينطبق على كل ابن، وأي مهارة تستدعي سطر الأوامر ستتوقف عن العمل داخل الوكلاء الفرعيين. ويميل العطل إلى الظهور كإجابة غامضة أسوأ بدلًا من خطأ صلاحيات واضح.
 
-### Lever 2: A Dedicated Agent for Risky Work
+### الرافعة 2: وكيل مخصّص للعمل المحفوف بالمخاطر {#lever-2-a-dedicated-agent-for-risky-work}
 
-The better tool is a **separately configured agent** that your main agent is allowed to spawn. A child spawned as another agent gets that agent’s tool policy, workspace, model, and sandbox, not the parent’s. That’s the only way to give different children different powers.
+الأداة الأفضل هي **وكيل مهيّأ بشكل منفصل** يُسمح لوكيلك الرئيسي بتوليده. فالابن المولَّد كوكيل آخر يحصل على سياسة أدوات ذلك الوكيل ومساحة عمله ونموذجه وبيئته المعزولة، لا على ما للأصل. وهذه هي الطريقة الوحيدة لمنح أبناء مختلفين قوى مختلفة.
 
-Here’s a `researcher` that can read and search the web but can’t run commands, write files, or drive the browser.
+إليك `researcher` يستطيع القراءة والبحث في الويب لكنه لا يستطيع تشغيل الأوامر ولا كتابة الملفات ولا تشغيل المتصفّح.
 
-**Step 1: Create the agent.** The `researcher` role comes with operating instructions suited to the job:
+**الخطوة 1: أنشئ الوكيل.** يأتي دور `researcher` مع تعليمات تشغيل مناسبة للمهمة:
 
 ```bash
 openclaw agents add researcher --role researcher --non-interactive
 ```
 
-A role sets up the agent’s workspace files and identity. **It doesn’t restrict any tools.** That’s the next step.
+يهيّئ الدور ملفات مساحة عمل الوكيل وهويّته. **وهو لا يقيّد أي أدوات.** وتلك هي الخطوة التالية.
 
-**Step 2: Give it a narrow tool policy.**
+**الخطوة 2: امنحه سياسة أدوات ضيقة.**
 
 ```bash
 openclaw config set agents.entries.researcher.tools '{ profile: "minimal", alsoAllow: ["read", "web_search", "web_fetch"], deny: ["group:runtime", "write", "edit", "apply_patch", "browser"] }'
 openclaw config set agents.entries.researcher.subagents.allowAgents '[]'
 ```
 
-The empty `allowAgents` keeps the researcher from delegating to anyone else.
+`allowAgents` الفارغة تمنع researcher من التفويض إلى أي شخص آخر.
 
-**Step 3: Let your main agent spawn it.** By default an agent can only spawn copies of itself.
+**الخطوة 3: اسمح لوكيلك الرئيسي بتوليده.** فافتراضيًا لا يستطيع الوكيل توليد سوى نسخ من نفسه.
 
 ```bash
 openclaw config set agents.entries.main.subagents.allowAgents '["researcher"]'
 openclaw config validate
 ```
 
-The result looks like this in `openclaw.json`:
+تبدو النتيجة هكذا في `openclaw.json`:
 
 ```json5
 {
@@ -125,28 +125,28 @@ The result looks like this in `openclaw.json`:
 }
 ```
 
-**Step 4: Use it.** Name the agent in your request:
+**الخطوة 4: استخدمه.** سمِّ الوكيل في طلبك:
 
-> Use the researcher agent to find out when the next Node.js LTS release is scheduled. Return the date and a link to the source.
+> استخدم وكيل researcher لمعرفة موعد الإصدار التالي من Node.js LTS. وأعد التاريخ ورابطًا إلى المصدر.
 
-`/subagents list` should show a session key that starts with `agent:researcher:subagent:`. Web search only works if you’ve configured a search provider. Without one, the researcher can still read files.
+ينبغي أن يعرض `/subagents list` مفتاح جلسة يبدأ بـ `agent:researcher:subagent:`. ولا يعمل البحث في الويب إلا إن كنت قد هيّأت مزوّد بحث. وبدونه، ما زال researcher قادرًا على قراءة الملفات.
 
-This is the pattern the [security lesson](https://stevekinney.com/courses/openclaw/security-and-approvals#prompt-injection) recommends for untrusted content. The researcher reads the web pages and emails that might contain injected instructions, and it has no shell to follow them with. Your main agent only sees the summary.
+هذا هو النمط الذي يوصي به [درس الأمن](https://stevekinney.com/courses/openclaw/security-and-approvals#prompt-injection) للمحتوى غير الموثوق. فيقرأ researcher صفحات الويب والرسائل التي قد تحمل تعليمات محقونة، وليس لديه سطر أوامر ليتبعها به. ولا يرى وكيلك الرئيسي سوى الملخّص.
 
-## Caps and Budgets
+## الحدود القصوى والميزانيات
 
-These settings live under `agents.defaults.subagents`:
+تقع هذه الإعدادات تحت `agents.defaults.subagents`:
 
-| Setting | Default | What it limits |
+| الإعداد | الافتراضي | ما يحدّه |
 | --- | --- | --- |
-| `maxSpawnDepth` | `5` | How deep children can spawn their own children (1–5) |
-| `maxChildrenPerAgent` | `5` | Active children per session (1–20) |
-| `maxConcurrent` | `8` | Children running at once from one session |
-| `runTimeoutSeconds` | `0` | How long a child may run. **`0` means no limit** |
-| `archiveAfterMinutes` | `60` | When finished children are archived |
-| `model` | The parent’s | Which model children use |
+| `maxSpawnDepth` | `5` | إلى أي عمق يستطيع الأبناء توليد أبنائهم (1–5) |
+| `maxChildrenPerAgent` | `5` | الأبناء النشطون لكل جلسة (1–20) |
+| `maxConcurrent` | `8` | الأبناء الذين يعملون في وقت واحد من جلسة واحدة |
+| `runTimeoutSeconds` | `0` | المدة التي يجوز أن يعملها الابن. **`0` تعني بلا حد** |
+| `archiveAfterMinutes` | `60` | متى تُؤرشف الأبناء المنتهون |
+| `model` | نموذج الأصل | أي نموذج يستخدمه الأبناء |
 
-Two of these are worth changing:
+اثنان من هذه يستحقان التغيير:
 
 ```json5
 {
@@ -162,98 +162,98 @@ Two of these are worth changing:
 }
 ```
 
-- **A shallow depth** gives you workers that can’t recruit more workers. Children at the maximum depth lose the spawn tools entirely.
-- **A timeout** is a safety control as much as a cost control. There’s no time limit by default.
-- **A cheaper model** suits most delegated work, like reading, searching, and summarizing. Each child has its own context, so a fan-out of five children costs roughly five times as much as one.
+- **العمق الضحل** يمنحك عمّالًا لا يستطيعون تجنيد مزيد من العمّال. والأبناء عند العمق الأقصى يفقدون أدوات التوليد تمامًا.
+- **المهلة** ضابط أمان بقدر ما هي ضابط تكلفة. ولا يوجد حد زمني افتراضيًا.
+- **النموذج الأرخص** يناسب معظم العمل المفوَّض، مثل القراءة والبحث والتلخيص. ولكل ابن سياقه الخاص، لذا يكلّف تفريع خمسة أبناء نحو خمسة أضعاف تكلفة واحد.
 
-Most of these can only be set in `defaults`. Per agent, you can set `model`, `thinking`, `allowAgents`, `delegationMode`, and `requireAgentId`.
+معظم هذه لا يمكن ضبطها إلا في `defaults`. ولكل وكيل، يمكنك ضبط `model` و`thinking` و`allowAgents` و`delegationMode` و`requireAgentId`.
 
-## How Much Your Agent Delegates
+## مقدار ما يفوّضه وكيلك
 
-`delegationMode` controls how strongly the agent is encouraged to delegate. Main sessions default to `prefer`, and everything else defaults to `suggest`. This only changes the agent’s instructions. It doesn’t schedule or force anything. If your agent spawns children for tasks that don’t need them, turn it down:
+يتحكم `delegationMode` في مدى قوة حثّ الوكيل على التفويض. فالجلسات الرئيسية تفترض `prefer`، وكل ما عداها يفترض `suggest`. وهذا لا يغيّر سوى تعليمات الوكيل. وهو لا يجدول شيئًا ولا يفرضه. وإن كان وكيلك يولّد أبناء لمهام لا تحتاجهم، فأخفِضه:
 
 ```bash
 openclaw config set agents.entries.main.subagents.delegationMode suggest
 ```
 
-## Cross-Agent Access Is On by Default
+## الوصول بين الوكلاء مفعّل افتراضيًا
 
-Once you have more than one agent, two settings decide what they can see of each other:
+بمجرد أن يصبح لديك أكثر من وكيل واحد، يحدّد إعدادان ما يمكنهم رؤيته من بعضهم البعض:
 
-| Setting | Default | What it does |
+| الإعداد | الافتراضي | ما يفعله |
 | --- | --- | --- |
-| `tools.agentToAgent.enabled` | `true` | Agents can read and message each other’s sessions |
-| `tools.sessions.visibility` | `all` | Which sessions the session tools can see: `self`, `tree`, `agent`, or `all` |
+| `tools.agentToAgent.enabled` | `true` | تستطيع الوكلاء قراءة جلسات بعضها ومراسلتها |
+| `tools.sessions.visibility` | `all` | أي الجلسات تستطيع أدوات الجلسات رؤيتها: `self` أو `tree` أو `agent` أو `all` |
 
-It’s easy to assume these start closed. They start open, and they exist to *narrow* access. If you add an agent that handles untrusted content, consider tightening them. The hardened baseline in the OpenClaw docs uses `visibility: "agent"` and `agentToAgent.enabled: false`. Test that your delegation still works after you change them.
+من السهل أن تفترض أن هذين يبدآن مغلقين. لكنهما يبدآن مفتوحين، ووجودهما *لتضييق* الوصول. وإن أضفت وكيلًا يتعامل مع محتوى غير موثوق، ففكّر في تشديدهما. ويستخدم خط الأساس المشدَّد في وثائق OpenClaw الإعدادين `visibility: "agent"` و`agentToAgent.enabled: false`. واختبر أن تفويضك ما زال يعمل بعد تغييرهما.
 
-## Patterns Worth Stealing
+## أنماط تستحق الاقتباس
 
-### Parallel Research
+### البحث المتوازي
 
-Split the work by independent source, require the same output from each child, and merge only when they’re all done:
+قسّم العمل حسب المصدر المستقل، واطلب المخرج نفسه من كل ابن، وادمج فقط حين ينتهوا جميعًا:
 
-> I want a status update on project X. Spawn three subagents in parallel: one reads the repository’s last week of commits, one reads open issues, and one reads the deployment log. Each one returns the same format: a three-bullet summary, a list of blockers, and a “sources” list. If a child can’t reach its source, it must say “source unavailable” rather than guess. Wait for all three, then write one combined update.
+> أريد تحديثًا لحالة المشروع X. ولّد ثلاثة وكلاء فرعيين بالتوازي: واحد يقرأ إيداعات المستودع في الأسبوع الماضي، وواحد يقرأ المسائل المفتوحة، وواحد يقرأ سجل النشر. وليعد كل واحد التنسيق نفسه: ملخّص من ثلاث نقاط، وقائمة بالعوائق، وقائمة «مصادر». وإن لم يستطع ابن الوصول إلى مصدره، فعليه أن يقول «المصدر غير متاح» بدلًا من التخمين. وانتظر الثلاثة جميعًا، ثم اكتب تحديثًا واحدًا مدموجًا.
 
-Asking for “source unavailable” matters. Without it, a child that hits an error tends to fill the gap with something plausible.
+طلب «المصدر غير متاح» مهم. فبدونه، يميل الابن الذي يصطدم بخطأ إلى ملء الفراغ بشيء معقول.
 
-### The Quarantined Reader
+### القارئ المعزول
 
-Have the [researcher](#lever-2-a-dedicated-agent-for-risky-work) read anything untrusted, and act on its summary yourself:
+اجعل [researcher](#lever-2-a-dedicated-agent-for-risky-work) يقرأ أي شيء غير موثوق، وتصرّف أنت بناءً على ملخّصه:
 
-> Use the researcher agent to read the three newest emails from vendors and summarize what each one is asking for. Don’t take any action. I’ll decide what to do.
+> استخدم وكيل researcher ليقرأ أحدث ثلاث رسائل من المورّدين ويلخّص ما يطلبه كل واحد منها. لا تتخذ أي إجراء. سأقرّر أنا ما أفعل.
 
-### A Team With a Coordinator
+### فريق مع منسّق
 
-OpenClaw can create a ready-made team: a coordinator plus a researcher, a writer, and a reviewer.
+يستطيع OpenClaw إنشاء فريق جاهز: منسّق مع باحث وكاتب ومراجع.
 
 ```bash
 openclaw agents team create --prefix team --non-interactive
 openclaw agent --agent team-coordinator --message "Research the tradeoffs of SQLite vs. Postgres for a personal project and write a one-page recommendation."
 ```
 
-The `--prefix` gives the four agents names like `team-researcher`, so they don’t collide with the `researcher` you made above. If any of the names already exist, the command adds nothing.
+يمنح `--prefix` الوكلاء الأربعة أسماء مثل `team-researcher`، فلا تتصادم مع `researcher` الذي أنشأته أعلاه. وإن كان أي من الأسماء موجودًا بالفعل، فلا يضيف الأمر شيئًا.
 
-The coordinator is allowed to spawn the three specialists and is told to prefer delegating. The specialists can’t spawn anyone, so they can’t loop on each other. The team doesn’t change any tool policies, so give each specialist its own `tools` block as in [Lever 2](#lever-2-a-dedicated-agent-for-risky-work). Talk to the coordinator directly rather than spawning it, because it relies on tools that subagents don’t get.
+يُسمح للمنسّق بتوليد المتخصّصين الثلاثة، ويُطلب منه تفضيل التفويض. ولا يستطيع المتخصّصون توليد أي أحد، فلا يدورون في حلقة على بعضهم. ولا يغيّر الفريق أي سياسة أدوات، لذا امنح كل متخصّص كتلة `tools` الخاصة به كما في [الرافعة 2](#lever-2-a-dedicated-agent-for-risky-work). وتحدّث إلى المنسّق مباشرةً بدلًا من توليده، لأنه يعتمد على أدوات لا يحصل عليها الوكلاء الفرعيون.
 
-### Writer and Critic
+### الكاتب والناقد
 
-Have one child draft and another review against a checklist, with you or the parent deciding between rounds. Keep the loop bounded by saying how many rounds are allowed. Agents that can reply to each other will happily keep going.
+اجعل ابنًا يصوغ مسوّدة وآخر يراجع مقابل قائمة تحقّق، مع قرار منك أو من الأصل بين الجولات. وأبقِ الحلقة محدودة بأن تقول كم جولة مسموح بها. فالوكلاء الذين يستطيعون الرد على بعضهم سيستمرون بسرور.
 
-> **Two related features**
+> **ميزتان مرتبطتان**
 >
-> **Swarms** run many similar children from a small script and collect structured results. They’re meant for five or more near-identical tasks and get [their own lesson](https://stevekinney.com/courses/openclaw/swarms). **Thread-bound subagents** give a child its own chat thread that you can talk to directly. They work on Discord and Matrix, but not on Telegram.
+> **الأسراب (Swarms)** تشغّل أبناء متشابهين كثيرين من سكربت صغير وتجمع نتائج منظّمة. وهي مقصودة لخمس مهام متطابقة تقريبًا أو أكثر ولها [درسها الخاص](https://stevekinney.com/courses/openclaw/swarms). أما **الوكلاء الفرعيون المرتبطون بخيط محادثة** فيمنحون الابن خيط دردشة خاصًا به يمكنك التحدّث إليه مباشرةً. وهي تعمل على Discord وMatrix، لا على Telegram.
 
-## Things That Bite
+## أمور تُوجع
 
-- **No timeout by default.** Set `runTimeoutSeconds`.
-- **A restart doesn’t relaunch work.** If the Gateway restarts mid-run, interrupted children are finished off as interrupted, not restarted. Check `/subagents list` and decide what still needs doing before asking again, or you may do the work twice.
-- **Child output is evidence, not instructions.** A child that read a malicious page can return text that tries to steer the parent. Treat summaries with the same suspicion as the content they came from.
-- **Sandboxes don’t open up.** A sandboxed session can’t spawn an agent that would run unsandboxed.
-- **Stale agent names break spawns.** If you delete an agent that’s still listed in `allowAgents`, spawns fail. `openclaw doctor --fix` cleans the list up.
+- **لا مهلة افتراضيًا.** اضبط `runTimeoutSeconds`.
+- **إعادة التشغيل لا تعيد إطلاق العمل.** فإن أُعيد تشغيل البوابة في منتصف التشغيل، يُنهى الأبناء المتقطّعون بوصفهم متقطّعين، لا يُعاد تشغيلهم. افحص `/subagents list` وقرّر ما يزال يحتاج إلى عمل قبل أن تسأل مرة أخرى، وإلا فقد تؤدي العمل مرتين.
+- **مخرجات الابن دليل، لا تعليمات.** فالابن الذي قرأ صفحة خبيثة قد يعيد نصًا يحاول توجيه الأصل. عامل الملخّصات بارتياب مثل المحتوى الذي جاءت منه.
+- **البيئات المعزولة لا تُفتح.** فجلسة معزولة لا تستطيع توليد وكيل يعمل بغير عزل.
+- **أسماء الوكلاء القديمة تكسر التوليد.** فإن حذفت وكيلًا لا يزال مدرجًا في `allowAgents`، فشل التوليد. ويُنظّف `openclaw doctor --fix` القائمة.
 
-## Try It Out
+## جرّب بنفسك
 
-1. **Inspect a child.** Spawn the `AGENTS.md` reader from earlier and walk through `/subagents list`, `info`, and `log ... tools`.
-2. **Ask a child what it has.** Spawn a subagent and tell it to list its own tools and which of your workspace files it can see. Compare its tool list with `/tools` in your main session. `message`, `cron`, and `gateway` should be missing. A child’s description of its own tools isn’t proof, though. If it lists one of these, ask it to actually call it and confirm the call is refused.
-3. **Take the shell away.** Run `openclaw config set tools.subagents.tools.deny '["exec"]'`, then ask a subagent to run `uname -a`. It should report that it can’t. Undo it with `openclaw config unset tools.subagents.tools.deny`.
-4. **Prove the researcher is locked down.** Ask the researcher agent to run `ls ~`. It should fail, while a web search succeeds.
-5. **Hit the depth cap.** Set `agents.defaults.subagents.maxSpawnDepth` to `1`, then ask a subagent to spawn a subagent of its own. It shouldn’t be able to, because at the maximum depth children don’t get the spawn tool. Set it back to what you had before (the default is `5`).
-6. **Fan out.** Run the parallel research prompt against something real, and check that every child returned the same format.
-7. **Stop a tree.** Ask for a large fan-out, send `/stop` partway through, and confirm with `/subagents list` that the children stopped too.
+1. **افحص ابنًا.** ولّد قارئ `AGENTS.md` من السابق، وتنقّل عبر `/subagents list` و`info` و`log ... tools`.
+2. **اسأل ابنًا عمّا لديه.** ولّد وكيلًا فرعيًا واطلب منه سرد أدواته التي يملكها وأي ملفات مساحة عملك يستطيع رؤيتها. وقارن قائمة أدواته بـ `/tools` في جلستك الرئيسية. وينبغي أن تكون `message` و`cron` و`gateway` مفقودة. لكن وصف الابن لأدواته ليس دليلًا. فإن سرد واحدة من هذه، فاطلب منه أن يستدعيها فعلًا وتأكّد أن النداء مرفوض.
+3. **اسلب سطر الأوامر.** شغّل `openclaw config set tools.subagents.tools.deny '["exec"]'`، ثم اطلب من وكيل فرعي تشغيل `uname -a`. وينبغي أن يبلّغ أنه لا يستطيع. وأعد الأمر بـ `openclaw config unset tools.subagents.tools.deny`.
+4. **أثبت أن researcher مقفل.** اطلب من وكيل researcher تشغيل `ls ~`. وينبغي أن يفشل، بينما ينجح بحث في الويب.
+5. **اصطدم بحدّ العمق.** اضبط `agents.defaults.subagents.maxSpawnDepth` على `1`، ثم اطلب من وكيل فرعي توليد وكيل فرعي خاص به. وينبغي ألا يستطيع، لأن الأبناء عند العمق الأقصى لا يحصلون على أداة التوليد. ثم أعده إلى ما كان عليه سابقًا (الافتراضي `5`).
+6. **فرّع.** شغّل مطالبة البحث المتوازي على شيء حقيقي، وتأكّد أن كل ابن أعاد التنسيق نفسه.
+7. **أوقف شجرة.** اطلب تفريعًا كبيرًا، وأرسل `/stop` في منتصفه، وتأكّد بـ `/subagents list` أن الأبناء توقفوا أيضًا.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Symptom | Check |
+| العَرَض | ما تفحصه |
 | --- | --- |
-| Spawning another agent is rejected | `subagents.allowAgents` on the agent that’s doing the spawning |
-| A child used a tool you thought you’d blocked | Same-agent children inherit the parent’s policy. Use a dedicated agent or `tools.subagents.tools` |
-| Adding a tool to `tools.subagents.tools.allow` did nothing | `allow` only removes tools. Add it to the profile with `alsoAllow` instead |
-| A skill works in the main session but not in a child | `exec` may be denied to subagents, or the skill isn’t in the child agent’s allowlist |
-| The child is missing context you thought it had | Children only get `AGENTS.md` and the task. Put the rest in the task |
-| No announcement ever arrived | `/subagents list` for its status, and whether it timed out or was stopped |
-| Spawns fail after deleting an agent | `openclaw doctor --fix` to remove stale `allowAgents` entries |
+| يُرفض توليد وكيل آخر | `subagents.allowAgents` على الوكيل الذي يقوم بالتوليد |
+| استخدم ابن أداة ظننت أنك حظرتها | الأبناء من الوكيل نفسه يرثون سياسة الأصل. استخدم وكيلًا مخصّصًا أو `tools.subagents.tools` |
+| لم تفعل إضافة أداة إلى `tools.subagents.tools.allow` شيئًا | `allow` تزيل الأدوات فقط. أضفها إلى الملف الشخصي بـ `alsoAllow` بدلًا من ذلك |
+| تعمل مهارة في الجلسة الرئيسية لا في ابن | قد يكون `exec` ممنوعًا على الوكلاء الفرعيين، أو المهارة ليست في قائمة سماح الوكيل الابن |
+| يفقد الابن سياقًا ظننت أنه يملكه | لا يحصل الأبناء إلا على `AGENTS.md` والمهمة. ضع الباقي في المهمة |
+| لم يصل أي إبلاغ أبدًا | `/subagents list` لمعرفة حالته، وما إذا انتهت مهلته أو أُوقف |
+| يفشل التوليد بعد حذف وكيل | `openclaw doctor --fix` لإزالة إدخالات `allowAgents` القديمة |
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> يطابق هذا الدرس إصدار OpenClaw `2026.9.8`. وإن لم يتصرّف شيء كما هو موصوف، فشغّل الأمر مع `--help` وراجع [وثائق OpenClaw](https://docs.openclaw.ai/).

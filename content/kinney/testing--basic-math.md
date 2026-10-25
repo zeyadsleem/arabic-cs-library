@@ -1,47 +1,47 @@
 ---
-title: "Implementing Basic Tests"
-lang: en
+title: "تنفيذ الاختبارات الأساسية"
+lang: ar
 source: "https://stevekinney.com/courses/testing/basic-math"
 ---
 
-It turns out that there is a lot more to math than just adding numbers. Our product manager also wants us to be able to subtract, multiple, and divide numbers too, apparently. Talk about feature creep.
+اتّضح أن الرياضيات أكثر بكثير من مجرد جمع الأعداد. يريد منّا مدير المنتج أيضًا، على ما يبدو، أن نستطيع طرح الأعداد وضربها وقسمتها. حديث عن تضخّم الميزات.
 
-We’ll focus on writing pure functions for arithmetic operations and use Vitest to write and run our unit tests. There will be no user interface; the goal is to practice [test-driven development](https://stevekinney.com/courses/testing/test-driven-development) principles and unit testing.
+سنركّز على كتابة دوال خالصة لعمليات الحساب ونستخدم Vitest لكتابة اختبارات الوحدة وتشغيلها. لن تكون هناك واجهة مستخدم؛ فالهدف هو التدرّب على مبادئ [التطوير المدفوع بالاختبارات](https://stevekinney.com/courses/testing/test-driven-development) واختبار الوحدة.
 
-We’ll implement the following calculator functions:
+سننفّذ دوال الآلة الحاسبة التالية:
 
 - `add(a, b)`
 - `subtract(a, b)`
 - `multiply(a, b)`
 - `divide(a, b)`
 
-We’re going to be good citizens and start by writing the tests first and then take it from there. We already wrote the `add` function. So, we’ll pick up from the `subtract` function.
+سنكون مواطنين صالحين ونبدأ بكتابة الاختبارات أولًا ثم ننطلق من هناك. لقد كتبنا دالة `add` بالفعل. لذا سنبدأ من دالة `subtract`.
 
-There is some basic code ready for you in `examples/basic-math` in the [example repository](https://github.com/stevekinney/introduction-to-testing).
+هناك بعض الشيفرة الأساسية الجاهزة لك في `examples/basic-math` في [مستودع الأمثلة](https://github.com/stevekinney/introduction-to-testing).
 
-### The Bare Minumum Number of Words on Test-Driven Development
+### الحد الأدنى من الكلام عن التطوير المدفوع بالاختبارات
 
-I don’t insist that you do test-driven development. I certainly don’t do it a lot of the time. But, I kind of feel like it’s my responsibility to at least walk you through some basic examples that you feel comfortable if someone brings it up in a conversation (i.e. an interview).
+لا أُصرّ على أن تتبع التطوير المدفوع بالاختبارات. أنا شخصيًا لا أفعله كثيرًا من الوقت. لكنني أشعر نوعًا ما أن من مسؤوليتي أن أرشدك على الأقل عبر بعض الأمثلة الأساسية حتى تشعر بالراحة إن طُرح الموضوع في محادثة (أي في مقابلة عمل).
 
-The premise is simple:
+الفكرة بسيطة:
 
-1. Start with a failing test. Failing tests are typically **red**.
-2. Make the test pass. Passing tests are **green**.
-3. Optional: Refactor the function—ideally, keeping those tests green.
+1. ابدأ باختبار فاشل. الاختبارات الفاشلة تكون عادةً **حمراء**.
+2. اجعل الاختبار ينجح. الاختبارات الناجحة تكون **خضراء**.
+3. اختياريًا: أعد هيكلة الدالة—مع إبقاء تلك الاختبارات خضراء إن أمكن.
 
-That’s it. Simple, right? You might even be asking why something like this even needs to exist.
+هذا كل شيء. بسيط، أليس كذلك؟ ربما تتساءل حتى عن سبب الحاجة إلى وجود شيء كهذا أصلًا.
 
-Well, that’s mostly because of the much more common pattern:
+حسنًا، هذا في الغالب بسبب النمط الأكثر شيوعًا بكثير:
 
-1. Write code.
-2. Go to test it.
-3. Really that the code you wrote is kind of hard to test.
-4. Don’t test it.
-5. Deal with the consequences.
+1. اكتب الشيفرة.
+2. اذهب لاختبارها.
+3. أدرك حقًا أن الشيفرة التي كتبتها صعبة الاختبار نوعًا ما.
+4. لا تختبرها.
+5. تعامل مع العواقب.
 
-## Reapproaching the `add` Function
+## إعادة الاقتراب من دالة `add`
 
-So, I might start with a test like this:
+إذن، قد أبدأ باختبار كهذا:
 
 ```javascript
 describe('add', () => {
@@ -51,16 +51,16 @@ describe('add', () => {
 });
 ```
 
-Next, I’d run the test and watch it blow up.
+بعد ذلك، سأشغّل الاختبار وأشاهده ينفجر.
 
-Then, I’d pop over to `arithmetic.js` and add a mostly reasonable implementation:
+ثم أنتقل إلى `arithmetic.js` وأضيف تنفيذًا معقولًا في معظمه:
 
 ```javascript
 export const add = (a, b) => a + b;
 ```
 
-And then I’d watch it pass. Now, there isn’t a lot of refactoring here, but you get the idea.
+ثم أشاهده ينجح. الآن، لا توجد إعادة هيكلة كثيرة هنا، لكنك فهمت الفكرة.
 
-> **Exercise**
+> **تمرين**
 >
-> Okay, enough of listening to me talk. Can you implement the rest of the basic math functions in `examples/basic-math/src/arithmetic.test.js`? Ideally, you want to take some test-driven development for a spin. On one hand, this exercise is *super* easy. On the other hand, you really don’t have a great excuse not to do some test-driven development. If you need a helping hand, you can follow [this walkthrough](https://stevekinney.com/courses/testing/basic-math-exercise-walkthrough).
+> حسنًا، كفى استماعًا إلى حديثي. هل يمكنك تنفيذ بقية دوال الرياضيات الأساسية في `examples/basic-math/src/arithmetic.test.js`؟ من المثالي أن تجرّب التطوير المدفوع بالاختبارات قليلًا. من ناحية، هذا التمرين *سهل جدًا*. ومن ناحية أخرى، ليس لديك عذر حقيقي لعدم القيام ببعض التطوير المدفوع بالاختبارات. إن احتجت يد المساعدة، يمكنك متابعة [هذا الشرح التفصيلي](https://stevekinney.com/courses/testing/basic-math-exercise-walkthrough).

@@ -1,16 +1,16 @@
 ---
-title: "Prop Combinations and Unions"
-lang: en
+title: "تركيبات الخصائص والأنواع الاتحادية"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/prop-combinations-and-unions"
 ---
 
-Component APIs are contracts—they define what combinations of props make sense and which ones don’t. But too often, we design interfaces that allow nonsensical combinations to slip through, creating runtime confusion and maintenance headaches. TypeScript gives us the tools to encode these rules directly into our types, making invalid states literally impossible to represent.
+واجهات مكوّنات React عقود — فهي تحدّد أي تركيبات من الخصائص منطقية وأيها غير منطقي. لكننا كثيرًا ما نصمّم واجهات تسمح بمرور تركيبات بلا معنى، فتخلّق ارتباكًا وقت التشغيل وصعوبات في الصيانة. ويمنحنا TypeScript الأدوات لتشفير هذه القواعد مباشرةً في أنواعنا، بحيث تصبح الحالات غير الصالحة مستحيلةَ التمثيل حرفيًا.
 
-By the end of this guide, you’ll know how to design component APIs that permit valid combinations, limit problematic ones, and require essential groupings—all while providing excellent developer experience through IntelliSense and compile-time safety.
+وفي نهاية هذا الدليل ستصبح تعرف كيف تصمّم واجهات مكوّنات تسمح بالتركيبات الصالحة، وتقيّد المشكلة منها، وتشترط المجموعات الضرورية — كل ذلك مع توفير تجربة مطوّرين ممتازة عبر IntelliSense وأمان وقت الترجمة (compile-time).
 
-## The Problem with Permissive Props
+## المشكلة مع الخصائص المتساهلة
 
-Consider a common scenario: a `Dialog` component that can be controlled or uncontrolled, with different behaviors based on how it’s used:
+تأمّل سيناريو شائعًا: مكوّن `Dialog` يمكن التحكم به أو يمكن أن يكون غير محكوم، بسلوكات مختلفة حسب طريقة استخدامه:
 
 ```typescript
 // ❌ This allows confusing combinations
@@ -33,7 +33,7 @@ function Dialog({ open, defaultOpen, onOpenChange, children }: DialogProps) {
 }
 ```
 
-This interface is technically flexible, but it’s also confusing. Nothing prevents these problematic combinations:
+هذه الواجهة مرنة من الناحية التقنية، لكنها مربكة أيضًا. فليس هناك ما يمنع هذه التركيبات المشكِلة:
 
 ```typescript
 // All of these compile but create unclear behavior
@@ -42,9 +42,9 @@ This interface is technically flexible, but it’s also confusing. Nothing preve
 <Dialog onOpenChange={setOpen} /> {/* Handler but no way to control */}
 ```
 
-## Pattern 1: Permit Specific Combinations
+## النمط 1: السماح بتركيبات محدّدة
 
-The first pattern is about creating clear, mutually exclusive variants. Here’s how to design a component that permits only valid controlled/uncontrolled patterns:
+يتعلق النمط الأول بإنشاء صيغ واضحة ومتبادلة الحصرية. إليك كيف تصمّم مكوّنًا يسمح بأنماط التحكم وعدم التحكم الصالحة فقط:
 
 ```typescript
 type ControlledDialogProps = {
@@ -96,7 +96,7 @@ function Dialog(props: DialogProps) {
 }
 ```
 
-Usage becomes crystal clear:
+يصبح الاستخدام واضحًا تمامًا:
 
 ```typescript
 // ✅ Controlled - all required props present
@@ -117,13 +117,13 @@ Usage becomes crystal clear:
 <Dialog open={isOpen} /> {/* Missing onOpenChange */}
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Use the `never` type to explicitly forbid props in specific variants. This makes the mutual exclusivity obvious to both TypeScript and developers reading the code.
+> استخدم النوع `never` لمنع خصائص معيّنة صراحةً في صيغ بعينها. هذا يجعل التنافر المتبادل واضحًا لكل من TypeScript والمطوّرين القارئين للشيفرة.
 
-## Pattern 2: Limit Based on Conditions
+## النمط 2: التقييد بحسب الشروط
 
-Sometimes you want to limit certain prop combinations based on context. Here’s a `Button` component that adapts its available props based on its variant:
+أحيانًا تريد تقييد بعض تركيبات الخصائص بحسب السياق. إليك مكوّن `Button` يتكيّف خصائصه المتاحة بحسب صيغته:
 
 ```typescript
 type BaseButtonProps = {
@@ -185,7 +185,7 @@ function Button(props: ButtonProps) {
 }
 ```
 
-This design limits prop combinations based on the button’s intended behavior:
+يقيّد هذا التصميم تركيبات الخصائص بحسب السلوك المقصود للزر:
 
 ```typescript
 // ✅ Primary buttons require onClick
@@ -208,9 +208,9 @@ This design limits prop combinations based on the button’s intended behavior:
 <Button variant="link" onClick={handleClick} /> {/* onClick not allowed */}
 ```
 
-## Pattern 3: Require Dependent Props
+## النمط 3: اشتراط الخصائص المترابطة
 
-Some props only make sense when used together. Here’s a pattern for requiring dependent combinations using conditional types:
+بعض الخصائص لا معنى لها إلا إذا استُعملت مع بعضها. إليك نمطًا لاشتراط التركيبات المترابطة باستخدام الأنواع الشرطية:
 
 ```typescript
 type HasIcon<T> = T extends { icon: string }
@@ -250,7 +250,7 @@ function IconButton(props: IconButtonProps) {
 }
 ```
 
-Usage enforces accessibility requirements:
+يوفّر الاستخدام متطلبات إمكانية الوصول:
 
 ```typescript
 // ✅ Icon with required aria-label
@@ -273,9 +273,9 @@ Usage enforces accessibility requirements:
 <IconButton icon="search" onClick={handleSearch} /> {/* Missing aria-label */}
 ```
 
-## Real-World Example: Form Field Combinations
+## مثال من العالم الحقيقي: تركيبات حقول النماذج
 
-Let’s build a comprehensive form field component that demonstrates all three patterns:
+لنبنِ مكوّن حقول نموذج شاملًا يوضّح الأنماط الثلاثة جميعها:
 
 ```typescript
 type BaseFieldProps = {
@@ -408,7 +408,7 @@ function Field(props: FieldProps) {
 }
 ```
 
-This design creates a robust, type-safe field component:
+يخلق هذا التصميم مكوّن حقول متينًا وآمنًا من ناحية الأنواع:
 
 ```typescript
 // ✅ Text field with proper props
@@ -447,9 +447,9 @@ This design creates a robust, type-safe field component:
 <Field type="select" placeholder="Choose" /> {/* placeholder not allowed on select */}
 ```
 
-## Advanced Pattern: Function Overloads
+## النمط المتقدم: التحميلات الزائدة للدوال
 
-For even more precise control, you can use function overloads to define exact prop combinations:
+للتحكم الأدقّ من ذلك، يمكنك استخدام التحميلات الزائدة للدوال (overloads) لتعريف تركيبات الخصائص بدقّة:
 
 ```typescript
 // Define overloads for different use cases
@@ -503,9 +503,9 @@ function Toast(props: {
 }
 ```
 
-## Runtime Validation with Zod
+## التحقق وقت التشغيل باستخدام Zod
 
-For components that receive props from external sources, combine your TypeScript patterns with runtime validation:
+للمكوّنات التي تستقبل خصائصها من مصادر خارجية، اجمع أنماط TypeScript مع التحقق وقت التشغيل:
 
 ```typescript
 import { z } from 'zod';
@@ -543,39 +543,39 @@ function Dialog(props: DialogProps) {
 }
 ```
 
-## When to Use Each Pattern
+## متى تستخدم كل نمط
 
-**Permit patterns** work best when:
+**أنماط السماح** تعمل بشكل أفضل حين:
 
-- You have distinct modes of operation (controlled vs uncontrolled)
-- Props have fundamentally different meanings in different contexts
-- You want to prevent conceptual confusion
+- لديك أوضاع تشغيل متمايزة (محكوم مقابل غير محكوم)
+- لدى الخصائص معانٍ مختلفة جوهريًا في سياقات مختلفة
+- تريد منع الالتباس المفاهيمي
 
-**Limit patterns** are ideal for:
+**أنماط التقييد** مثالية لـ:
 
-- Components with multiple variants that need different props
-- Preventing props that don’t make sense together
-- Creating focused, single-purpose interfaces
+- المكوّنات ذات الصيغ المتعدّدة التي تحتاج خصائص مختلفة
+- منع الخصائص التي لا منطق في جمعها معًا
+- إنشاء واجهات مركّزة ذات غرض واحد
 
-**Require patterns** shine when:
+**أنماط الاشتراط** تتألّق حين:
 
-- Accessibility requirements must be enforced
-- Props have strong dependencies (e.g., validation rules)
-- You want to guide developers toward best practices
+- يجب فرض متطلبات إمكانية الوصول
+- للخصائص اعتماديات قويّة (مثل قواعد التحقق)
+- تريد توجيه المطوّرين نحو أفضل الممارسات
 
-## Performance and Maintainability
+## الأداء وقابلية الصيانة
 
-These patterns are compile-time constructs—they add zero runtime overhead. However, consider these tradeoffs:
+هذه الأنماط بنى وقت ترجمة (compile-time) — فهي تضيف عبئًا صفريًا وقت التشغيل. لكن راعِ هذه المفاضلات:
 
-- **Complex union types** can slow TypeScript compilation on large codebases
-- **Deeply nested conditionals** may create confusing error messages
-- **Over-engineering** simple components reduces readability
+- **الأنواع الاتحادية المعقّدة** قد تُبطئ ترجمة TypeScript في قواعد الشيفرة الكبيرة
+- **الشروط المتداخلة بعمق** قد تنتج رسائل خطأ مربكة
+- **الإفراط في هندسة** المكوّنات البسيطة يقلّل قابلية القراءة
 
-The goal is to use these patterns judiciously—when they prevent real bugs and improve the developer experience, not just because you can.
+الهدف هو استخدام هذه الأنماط بحكمة — حين تمنع أخطاءً حقيقية وتحسّن تجربة المطوّر، لا لمجرد أنك تستطيع.
 
-## Common Pitfalls
+## الأخطاء الشائعة
 
-### Over-constraining Simple Cases
+### تقييد الحالات البسيطة أكثر من اللازم
 
 ```typescript
 // ❌ Overkill for a simple optional prop
@@ -585,7 +585,7 @@ type OverEngineered = { showIcon: true; iconName: string } | { showIcon: false; 
 type Simple = { showIcon?: boolean; iconName?: string };
 ```
 
-### Forgetting About Partial Application
+### نسيان التطبيق الجزئي
 
 ```typescript
 // ❌ This breaks when props are spread or partially applied
@@ -595,7 +595,7 @@ type StrictProps = { a: string } & { b: string };
 type FlexibleProps = { a: string; b?: string } | { a?: string; b: string };
 ```
 
-### Making Maintenance Harder
+### جعل الصيانة أصعب
 
 ```typescript
 // ❌ Brittle - adding new variants requires touching everything
@@ -610,13 +610,13 @@ type ButtonProps = Variant extends 'primary'
 type ButtonProps = PrimaryProps | SecondaryProps | DangerProps;
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Now that you can design precise component APIs, consider exploring:
+الآن وقد أصبحت قادرًا على تصميم واجهات مكوّنات دقيقة، فكّر في استكشاف:
 
-- **Generic constraint patterns** for reusable prop combinations
-- **Template literal types** for dynamic prop validation
-- **Mapped types** for transforming existing interfaces
-- **Branded types** for even stronger guarantees
+- **أنماط القيود العامة** لتركيبات الخصائص القابلة لإعادة الاستخدام
+- **أنواع النصوص الحرفية (template literal types)** للتحقق الديناميكي من الخصائص
+- **الأنواع المُحوَّلة (mapped types)** لتحويل الواجهات القائمة
+- **الأنواع المُعلَّمة (branded types)** لضمانات أقوى
 
-Remember: the best component API is one that makes correct usage easy and incorrect usage impossible. These patterns help you build that kind of bulletproof interface—use them when they add value, not complexity.
+تذكّر: أفضل واجهة برمجية لمكوّن هي التي تجعل الاستخدام الصحيح سهلًا والاستخدام الخاطئ مستحيلًا. تساعدك هذه الأنماط على بناء واجهة من هذا النوع مصفولة — استخدمها حين تضيف قيمة، لا حين تضيف تعقيدًا.

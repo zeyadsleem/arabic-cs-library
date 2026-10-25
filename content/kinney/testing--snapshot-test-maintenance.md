@@ -1,65 +1,65 @@
 ---
-title: "Snapshot Test Maintenance"
-lang: en
+title: "صيانة اختبار اللقطات (Snapshot Test Maintenance)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/snapshot-test-maintenance"
 ---
 
-So here’s the deal with **snapshot testing**—it’s **quick** and **easy** to write, but like any magic trick, there’s some sleight of hand you should be aware of. A snapshot is basically a serialized version of the output that your component, function, or whatever you’re testing spits out. Vitest (and tools like it) compares this serialized version to the previously saved “snapshot” version on disk during each test.
+إذن هذه هي حقيقة **اختبار اللقطات** — إنه **سريع** و**سهل** في الكتابة، لكن مثل أي خدعة سحرية، ثمة بعض خفة اليد التي ينبغي أن تدركها. اللقطة هي في الأساس نسخة متسلسلة من المخرجات التي يخرجها مكوّنك أو دالتك أو أي شيء تختبره. يقارن Vitest (وأدوات مثلها) هذه النسخة المتسلسلة بنسخة «اللقطة» المحفوظة سابقًا على القرص خلال كل اختبار.
 
-If the outputs match, Vitest tells you all is good. If they don’t, it’s basically like Vitest coming back and saying, “Hey, something’s different. Did you mean to change this?” That’s when you get to decide: **Is this exactly what I expected?** or **Did I accidentally mess something up?**
+إذا تطابقت المخرجات، يخبرك Vitest أن كل شيء جيد. وإذا لم تتطابق، فكأن Vitest يعود ويقول: «مرحبًا، شيء ما مختلف. هل كنت تقصد تغيير هذا؟» حينها تقرر أنت: **هل هذا بالضبط ما توقعته؟** أو **هل أفسدت شيئًا عن غير قصد؟**
 
-Snapshot testing doesn’t just apply to components either. You can use it for **API responses**, logging outputs, whatever—just toss it into a `toMatchSnapshot()` and call it a day.
+لا ينطبق اختبار اللقطات على المكوّنات فقط. يمكنك استخدامه **لاستجابات واجهات برمجة التطبيقات**، ومخرجات السجلات، وأي شيء — فقط ضعه في `toMatchSnapshot()` وانتهِ من الأمر.
 
-## The Good, the Bad, and the Snapshot
+## الجيد والسيئ واللقطة
 
-### The Good
+### الجيد
 
-Snapshot tests can **save you time**. Write a test, capture the output, and any future changes will be auto-compared to that snapshot. It’s a handy tool when everything is working smoothly.
+يمكن لاختبارات اللقطات أن **توفر لك الوقت**. اكتب اختبارًا، والتقط المخرجات، وستُقارن أي تغييرات مستقبلية تلقائيًا بتلك اللقطة. إنها أداة مفيدة عندما يعمل كل شيء بسلاسة.
 
-### The Bad
+### السيئ
 
-But it’s not all pizza and sunshine. Over time, you’re gonna have to **inspect** these bad boys and make some decisions. Since snapshots are just serialized data, they don’t care about context. If your UI component’s JSX render changed because you renamed a button, does that mean your app is broken? Maybe not. Maybe everything’s cool. But you have to look at it and say, “Is this change legit or an unintentional bug?”
+لكن الأمر ليس بيتزا وشمسًا مشرقة كل الوقت. مع الوقت، ستحتاج إلى **فحص** هذه الأشياء واتخاذ بعض القرارات. بما أن اللقطات مجرد بيانات متسلسلة، فهي لا تهتم بالسياق. إذا تغيّر تصيير JSX لمكوّن واجهتك لأنك أعدت تسمية زر، فهل يعني ذلك أن تطبيقك معطل؟ ربما لا. ربما كل شيء على ما يرام. لكن عليك أن تنظر إليه وتقول: «هل هذا التغيير مشروع أم خطأ غير مقصود؟»
 
-### The Snapshot
+### اللقطة
 
-When a snapshot fails, Vitest will scream: “TEST FAIL.” The next step is either updating it (if the change is intentional) or fixing the bug (if it’s an error).
+عندما تفشل لقطة، سيصرخ Vitest: «فشل الاختبار». الخطوة التالية إما تحديثها (إذا كان التغيير مقصودًا) أو إصلاح الخطأ (إذا كان خطأً).
 
-## How to Maintain Your Snapshots
+## كيف تصون لقطاتك
 
-### Step 1: Identify the Difference
+### الخطوة الأولى: تحديد الاختلاف
 
-When Vitest tells you your snapshot test failed, your first step is to inspect the changes. You’ll see a nice diff displayed in your terminal (or a less nice but still helpful diff if you’re not using a proper terminal).
+عندما يخبرك Vitest أن اختبار اللقطة فشل، خطوتك الأولى هي فحص التغييرات. سترى فرقًا أنيقًا معروضًا في طرفيتك (أو فرقًا أقل أناقة لكنه مفيد إن لم تكن تستخدم طرفية مناسبة).
 
-Take a close look at that diff. Does it look like a developer (you) did this on purpose? Or is something fishy?
+ألقِ نظرة فاحصة على ذلك الفرق. هل يبدو كأن مطورًا (أنت) فعل هذا عن قصد؟ أم أن ثمة شيئًا مريبًا؟
 
-### Step 2: Update Intentionally, Not Blindly
+### الخطوة الثانية: حدّث بقصد، لا بعمى
 
-I know we’re all busy and deadlines are looming, but **don’t just automatically update the snapshot** without thinking. I mean, come on, that’s just asking for it. 😅
+أعلم أننا جميعًا مشغولون والمواعيد النهائية تقترب، لكن **لا تحدّث اللقطة تلقائيًا** دون تفكير. أعني، بحقك، هذا مجرد استدراج للمشاكل.
 
-If the changes are valid—such as a visual tweak or expected output changes—*then* you can confidently run:
+إذا كانت التغييرات صحيحة — مثل تعديل بصري أو تغييرات متوقعة في المخرجات — *فحينها* يمكنك تشغيل بثقة:
 
 ```bash
 npx vitest --update
 ```
 
-Basically gives Vitest the ol’: “I got this, update the snapshot.” Done.
+هذا يعطي Vitest ببساطة الرسالة القديمة: «أنا أتولى الأمر، حدّث اللقطة.» انتهى.
 
-### Step 3: Broken? Roll Back and Fix
+### الخطوة الثالثة: معطل؟ تراجع وأصلح
 
-If the snapshot test revealed an issue that you didn’t expect, then don’t bother updating it. **Fix your code first**. The snapshot is just the messenger here, telling you something’s off in your logic.
+إذا كشف اختبار اللقطة مشكلة لم تتوقعها، فلا تكلف نفسك تحديثه. **أصلح شيفرتك أولًا**. اللقطة مجرد رسول هنا، تخبرك أن شيئًا ما خاطئ في منطقك.
 
-## Tips for Controlling Snapshot Bloat
+## نصائح للتحكم في تضخم اللقطات
 
-### Use Selective Snapshot Testing
+### استخدم اختبار اللقطات الانتقائي
 
-You don’t need to snapshot everything in your codebase. Like, really, does every single line of boilerplate or tiny utility function need a golden record? Probably not. So use them **where they have meaningful value**—like specific UI components or bigger functions.
+لا تحتاج إلى أخذ لقطات لكل شيء في قاعدة شيفرتك. أعني، حقًا، هل يحتاج كل سطر من الشيفرة النمطية أو كل دالة أداة صغيرة إلى سجل ذهبي؟ على الأرجح لا. لذا استخدمها **حيث لها قيمة ذات معنى** — مثل مكوّنات واجهة محددة أو دوال أكبر.
 
-### Keep Your Snapshots Small and Focused
+### أبقِ لقطاتك صغيرة ومركّزة
 
-Snapshots should align with **meaningful outputs**, not **large chunks of data**. If your snapshot is several hundred lines long, you’re probably trying to cover too much ground with one test. Break it up.
+ينبغي أن تتوافق اللقطات مع **مخرجات ذات معنى**، لا **كتل بيانات كبيرة**. إذا كانت لقطتك مئات الأسطر، فأنت على الأرجح تحاول تغطية مساحة أكبر من اللازم باختبار واحد. قسّمها.
 
-## In Conclusion
+## في الختام
 
-Snapshot testing is a great way to add **quick regression checks** to your codebase—just make sure you’re **paying attention**. It’s so tempting to update snapshots without thinking twice when you’re in a rush. Resist the urge.
+اختبار اللقطات طريقة رائعة لإضافة **فحوص انحدار سريعة** إلى قاعدة شيفرتك — فقط تأكد من أنك **تدقق**. من المغري جدًا تحديث اللقطات دون تفكير مرتين عندما تكون في عجلة. قاوم الرغبة.
 
-Being mindful of your snapshots won’t just improve your tests. It’ll also save future-you from yelling at past-you for blindly approving a bunch of nonsense changes.
+الانتباه إلى لقطاتك لن يحسّن اختباراتك فقط. بل سيوفر أيضًا على نسختك المستقبلية الصراخ على نسختك الماضية لموافقتها العمياء على مجموعة تغييرات لا معنى لها.

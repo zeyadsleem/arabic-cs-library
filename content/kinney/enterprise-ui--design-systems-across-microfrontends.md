@@ -1,26 +1,26 @@
 ---
-title: "Design Systems Across Microfrontends"
-lang: en
+title: "أنظمة التصميم عبر الواجهات الأمامية الدقيقة"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/design-systems-across-microfrontends"
 ---
 
-The first thing to clean up is the framing. A monorepo is a source organization and package management choice. Microfrontends are a runtime and deployment choice. They’re not opposites. You can have a monorepo that deploys microfrontends. You can have a polyrepo that doesn’t. The most stable default is usually a monorepo for the design system *itself*, even when the products that consume it are deployed as independently built remotes.
+أول ما يجب تصفيته هو التأطير. فالمستودع الأحادي خيار تنظيم للمصدر وإدارة للحزم، والواجهات الأمامية الدقيقة خيار وقت تشغيل ونشر. وهما ليسا نقيضين. فيمكن أن يكون لديك مستودع أحادي ينشر واجهات أمامية دقيقة، ويمكن أن يكون لديك مستودع متعدد لا يفعل. وأكثر إعداد افتراضي استقرارًا هو عادةً مستودع أحادي لنظام التصميم *نفسه*، حتى عندما تُنشر المنتجات المستهلكة له كوحدات بعيدة تُبنى باستقلال.
 
-Microfrontends change how the system is *delivered*, not what the contract is. The contract is still tokens, components, themes, and accessibility behavior. What changes is that you now have to think about runtime version negotiation, shared dependency singletons, and theming across separately compiled bundles.
+فالواجهات الأمامية الدقيقة تغيّر كيف *يُسلَّم* النظام، لا ما هو العقد. فالعقد ما زال الرموز والمكوّنات والسمات وسلوك إمكانية الوصول. وما يتغيّر أن عليك الآن التفكير في تفاوض الإصدارات وقت التشغيل، والنسخ الوحيدة للاعتمادات المشتركة، والسمات عبر حزم مُصرَّفة منفصلة.
 
-## Versioned Packages First, Federation Second
+## حزم ذات إصدارات أولًا، والاتحاد ثانيًا
 
-With [Module Federation](https://webpack.js.org/concepts/module-federation/), each build can act as a container, remotes are loaded asynchronously, and pages or libraries can be deployed independently. Shared dependencies can be reused across containers, but version negotiation becomes a runtime concern. That’s where clean architecture can suddenly feel like hostage negotiation.
+مع [اتحاد الوحدات (Module Federation)](https://webpack.js.org/concepts/module-federation/)، يستطيع كل بناء أن يعمل كحاوية، وتُحمَّل الوحدات البعيدة بشكل غير متزامن، ويمكن نشر الصفحات أو المكتبات باستقلال. ويمكن إعادة استخدام الاعتمادات المشتركة عبر الحاويات، لكن تفاوض الإصدارات يصبح شأنًا من شؤون وقت التشغيل. وهنا قد تبدو المعمارية النظيفة فجأة كتفاوض رهائن.
 
-Because remotes are async and shared dependencies can warn or fall back when versions differ, the safest default is to publish tokens, foundations, and primitive components as **versioned packages** and let each microfrontend compile against explicit versions. Reserve runtime federation mostly for route-level features, larger vertical slices, or a small set of shell-owned components.
+ولأن الوحدات البعيدة غير متزامنة ويمكن للاعتمادات المشتركة أن تحذّر أو ترتدّ احتياطيًا عند اختلاف الإصدارات، فأكثر إعداد افتراضي أمانًا هو نشر الرموز والأسس والمكوّنات الأولية كـ**حزم ذات إصدارات** وترك كل واجهة أمامية دقيقة تُصرّف ضد إصدارات صريحة. واحفظ اتحاد وقت التشغيل في الأغلب لميزات على مستوى المسار، أو الشرائح الرأسية الأكبر، أو مجموعة صغيرة من المكوّنات المملوكة للهيكل.
 
-[Webpack warns](https://webpack.js.org/concepts/module-federation/) that eager shared modules are always downloaded and recommends providing them at a single point in the app—typically the shell. If you eagerly share everything, you’ve recreated a monolith with extra steps and worse caching.
+و[يحذّر Webpack](https://webpack.js.org/concepts/module-federation/) من أن الوحدات المشتركة المُبكِّرة تُنزَّل دائمًا، ويوصي بتوفيرها من نقطة واحدة في التطبيق—عادةً الهيكل. فإن شاركت كل شيء مبكرًا، فقد أعدت إنشاء تطبيق متجانس بخطوات إضافية وتخزين مؤقت أسوأ.
 
-## Shared Dependency Rules
+## قواعد الاعتمادات المشتركة
 
-If you do share UI at runtime, put strict rules around shared dependencies. Framework libraries like React and ReactDOM should be configured as shared singletons with required versions so host and remotes aren’t quietly drifting apart. [Module Federation’s shared configuration](https://module-federation.io/configure/shared) exists specifically for this kind of reuse and version coordination.
+إن شاركت واجهة المستخدم وقت التشغيل فعلًا، فأحِط الاعتمادات المشتركة بقواعد صارمة. فينبغي تهيئة مكتبات الأطر مثل React وReactDOM كنسخ وحيدة مشتركة بإصدارات مطلوبة كي لا ينحرف المضيف والوحدات البعيدة عن بعضهما بهدوء. و[إعداد `shared` في اتحاد الوحدات](https://module-federation.io/configure/shared) موجود تحديدًا لهذا النوع من إعادة الاستخدام وتنسيق الإصدارات.
 
-A reasonable baseline:
+وهذا حدّ أدنى معقول:
 
 ```typescript
 new ModuleFederationPlugin({
@@ -35,17 +35,17 @@ new ModuleFederationPlugin({
 });
 ```
 
-`singleton: true` means every remote uses the same instance of React—no duplicate React trees, no context mismatches, no hooks-rules-of-order explosions. `requiredVersion` makes version mismatches fail fast instead of producing mysterious runtime errors three layers deep.
+تعني `singleton: true` أن كل وحدة بعيدة تستخدم نسخة React نفسها—بلا أشجار React مكرّرة، وبلا تعارضات سياق، وبلا انفجارات في ترتيب الخُطّافات. وتجعل `requiredVersion` حالات اختلاف الإصدارات تفشل سريعًا بدل إنتاج أخطاء وقت تشغيل غامضة على عمق ثلاث طبقات.
 
-Keep the shared surface small and deliberate. Canary remote updates. Maintain a kill-switch path so you can disable a misbehaving remote without redeploying the shell.
+أبقِ السطح المشترك صغيرًا ومدروسًا. واختبر تحديثات الوحدات البعيدة تدريجيًا (canary). واحتفظ بمسار مفتاح إيقاف كي تستطيع تعطيل وحدة بعيدة سيئة السلوك دون إعادة نشر الهيكل.
 
-## Theming Across Boundaries
+## السمات عبر الحدود
 
-The shell should own theme selection, foundational CSS, and the first paint of token variables. Remotes consume the token contract—they don’t redefine brand colors locally because some team decided cerulean was a personality trait.
+ينبغي أن يملك الهيكل اختيار السمة، وCSS الأساسي، والرسم الأول لمتغيّرات الرموز. أما الوحدات البعيدة فتستهلك عقد الرموز—ولا تعيد تعريف ألوان العلامة محليًا لأن فريقًا قرّر أن اللون الأزرق السماوي سمة شخصية.
 
-If you support multiple themes, brands, modes, or sizes, model them as **token sets and resolver contexts** rather than app-level overrides scattered across products. The [DTCG glossary and resolver model](https://www.designtokens.org/glossary/) are built around combining sets and modifiers into context-specific outputs—light versus dark, mobile versus desktop, brand A versus brand B. That makes variation a first-class part of the system instead of a thousand one-off overrides hiding in product code.
+وإن كنت تدعم سمات متعددة، أو علامات، أو أنماطًا، أو أحجامًا، فصِغها كـ**مجموعات رموز وسياقات محلِّلة** لا كتجاوزات على مستوى التطبيق متناثرة عبر المنتجات. وقد بُني [معجم DTCG ونموذج المحلِّل (resolver)](https://www.designtokens.org/glossary/) حول دمج المجموعات والمعدِّلات في مخرجات خاصة بسياق ما—فاتح مقابل داكن، وجوال مقابل سطح مكتب، وعلامة A مقابل علامة B. وهذا يجعل التنوّع جزءًا من الدرجة الأولى في النظام بدل ألف تجاوز عابر يختبئ في شيفرة المنتج.
 
-CSS custom properties are the right delivery mechanism because they cross Shadow DOM boundaries and work in every framework. The shell sets them:
+وخصائص CSS المخصّصة هي آلية التسليم الصحيحة لأنها تعبر حدود Shadow DOM وتعمل في كل إطار. والهيكل يضبطها:
 
 ```css
 :root {
@@ -61,15 +61,15 @@ CSS custom properties are the right delivery mechanism because they cross Shadow
 }
 ```
 
-Remotes consume them. No imports, no build-time coupling, no runtime negotiation. If a remote needs to know the current theme *programmatically* (for conditional logic, not styling), pass it through the shell’s context—`customProps` in single-spa, or a shared context provider in Module Federation.
+والوحدات البعيدة تستهلكها. بلا استيرادات، وبلا اقتران وقت بناء، وبلا تفاوض وقت تشغيل. وإن احتاجت وحدة بعيدة إلى معرفة السمة الحالية *برمجيًا* (لمنطق شرطي، لا للتنسيق)، فمرّرها عبر سياق الهيكل—`customProps` في single-spa، أو مزوّد سياق مشترك في اتحاد الوحدات.
 
-## Documentation and Discovery
+## التوثيق والاكتشاف
 
-A design system needs one place where engineers and designers can see the truth. [Storybook Autodocs](https://storybook.js.org/docs/writing-docs/autodocs) turns stories into living documentation, and you can extend it with MDX and Doc Blocks for the judgment-heavy parts—when to use a component, when *not* to, how it behaves in error states, how it responds to keyboard interaction, and what changed in the last breaking release.
+يحتاج نظام التصميم إلى مكان واحد يرى فيه المهندسون والمصمّمون الحقيقة. فـ[التوثيق التلقائي في Storybook](https://storybook.js.org/docs/writing-docs/autodocs) يحوّل القصص إلى توثيق حيّ، ويمكنك توسيعه بـMDX وDoc Blocks للأجزاء التي تحتاج حكمًا—متى تستخدم مكوّنًا، ومتى *لا* تستخدمه، وكيف يتصرف في حالات الخطأ، وكيف يستجيب للتفاعل بلوحة المفاتيح، وما الذي تغيّر في آخر إصدار كاسر.
 
-If your monorepo contains multiple frameworks, don’t force one Storybook instance to pretend it can be all things. [Nx’s guidance](https://nx.dev/docs/technologies/test-tools/storybook/guides/one-storybook-with-composition) is explicit: Storybook’s builder can’t handle multiple frameworks simultaneously in one host. The practical pattern is one host per framework and then one composed Storybook for discovery.
+وإن كان مستودعك الأحادي يضم أطرًا متعددة، فلا تُجبر نسخة Storybook واحدة على التظاهر بأنها كل شيء. و[إرشاد Nx](https://nx.dev/docs/technologies/test-tools/storybook/guides/one-storybook-with-composition) صريح: بنّاء Storybook لا يستطيع التعامل مع أطر متعددة في مضيف واحد. والنمط العملي هو مضيف واحد لكل إطار، ثم Storybook مُركَّب واحد للاكتشاف.
 
-[Storybook composition](https://nx.dev/docs/technologies/test-tools/storybook/guides/one-storybook-with-composition) lets you show multiple Storybooks in one place:
+و[تركيب Storybook](https://nx.dev/docs/technologies/test-tools/storybook/guides/one-storybook-with-composition) يتيح لك عرض نسخ Storybook متعددة في مكان واحد:
 
 ```typescript
 // .storybook/main.ts
@@ -87,25 +87,25 @@ export default {
 };
 ```
 
-That said, don’t compose every app in the company into one gigantic portal. Nx’s own guide notes that composition becomes cumbersome if you pull in too many sources. Compose by domain, platform, or framework—not by every random experiment someone left running in a corner.
+ومع ذلك، لا تُركّب كل تطبيق في الشركة في بوابة عملاقة واحدة. فدليل Nx نفسه يلاحظ أن التركيب يصير مرهقًا إن جذبت مصادر كثيرة. ركّب حسب النطاق، أو المنصة، أو الإطار—لا حسب كل تجربة عشوائية تركها أحدهم تعمل في زاوية.
 
-### Beyond atomic stories
+### ما هو أبعد من القصص الذرّية
 
-Don’t stop at isolated component stories. [Storybook supports](https://storybook.js.org/docs/writing-stories/stories-for-multiple-components) stories that render multiple components together, which is exactly what you need for patterns like page headers, filter bars, forms, tables with actions, or card stacks. This is where real inconsistency shows up. Very few teams destroy a system with a single button. They destroy it with “just one special page layout.”
+لا تتوقف عند قصص المكوّنات المعزولة. فـ[Storybook يدعم](https://storybook.js.org/docs/writing-stories/stories-for-multiple-components) قصصًا تصيّر مكوّنات متعددة معًا، وهذا بالضبط ما تحتاجه لأنماط مثل ترويسات الصفحات، وأشرطة الترشيح، والنماذج، والجداول ذات الإجراءات، أو أكوام البطاقات. وهنا يظهر عدم الاتساق الحقيقي. فقلة قليلة من الفرق تدمّر نظامًا بزر واحد، بل يدمّرونه بـ«تخطيط صفحة خاصة واحدة فقط».
 
-## Testing Across Boundaries
+## الاختبار عبر الحدود
 
-Your test stack should mirror the layers of the system.
+ينبغي أن تحاكي مجموعة اختباراتك طبقات النظام.
 
-**Component-level**: [Storybook interaction tests](https://storybook.js.org/docs/writing-tests/interaction-testing) run in the browser, from the editor, through the CLI, and in CI. Use those for component state changes, keyboard flows, and simple composed interactions.
+**على مستوى المكوّن**: [اختبارات التفاعل في Storybook](https://storybook.js.org/docs/writing-tests/interaction-testing) تعمل في المتصفح، ومن المحرّر، وعبر واجهة سطر الأوامر، وفي CI. استخدمها لتغيّرات حالة المكوّنات، وتدفقات لوحة المفاتيح، والتفاعلات المُركَّبة البسيطة.
 
-**Accessibility**: [Storybook’s accessibility addon](https://storybook.js.org/docs/8/writing-tests/accessibility-testing) runs automated checks as part of the test addon and fails stories when violations appear. For behavior that automated checks can’t fully validate—keyboard interaction patterns, focus management, screen reader announcements—use the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) as the canonical reference.
+**إمكانية الوصول**: [إضافة إمكانية الوصول في Storybook](https://storybook.js.org/docs/8/writing-tests/accessibility-testing) تشغّل فحوصًا مؤتمتة ضمن إضافة الاختبار وتُسقط القصص عند ظهور مخالفات. وللسلوك الذي لا تستطيع الفحوص المؤتمتة التحقق منه كاملًا—أنماط التفاعل بلوحة المفاتيح، وإدارة التركيز، وإعلانات قارئ الشاشة—استخدم [دليل ممارسات تأليف ARIA](https://www.w3.org/WAI/ARIA/apg/) مرجعًا أساسيًا.
 
-Accessibility should be enforced in the system itself, not delegated to app teams one Jira ticket at a time.
+وينبغي فرض إمكانية الوصول في النظام نفسه، لا تفويضها إلى فرق التطبيقات تذكرة Jira تلو الأخرى.
 
-**Shell-plus-remote contract tests**: For microfrontends, add tests that prove the shell loads the right theme, shared framework singletons behave, and remote components still render correctly inside the host’s layout and navigation environment. The point isn’t to re-test every button in every app. The point is to verify the integration seams.
+**اختبارات عقد الهيكل مع الوحدات البعيدة**: أضف للواجهات الأمامية الدقيقة اختبارات تُثبت أن الهيكل يحمّل السمة الصحيحة، وأن النسخ الوحيدة المشتركة للأطر تتصرف كما يجب، وأن مكوّنات الوحدات البعيدة ما زالت تُصيّر صحيحًا داخل تخطيط المضيف وبيئة التنقل فيه. والهدف ليس إعادة اختبار كل زر في كل تطبيق، بل التحقق من مفاصل التكامل.
 
-[Playwright](https://playwright.dev/docs/test-components) is a good fit for these because it runs in a real browser with real layout:
+و[Playwright](https://playwright.dev/docs/test-components) مناسب لهذه الاختبارات لأنه يعمل في متصفح حقيقي بتخطيط حقيقي:
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -121,65 +121,65 @@ test('remote renders correctly inside shell theme', async ({ page }) => {
 });
 ```
 
-## Governance in a Federated World
+## الحوكمة في عالم اتحادي
 
-In a monorepo, you enforce boundaries with tags and dependency constraints. In a microfrontend fleet, the enforcement surface shifts. You need to define who owns:
+في المستودع الأحادي، تفرض الحدود بالوسوم وقيود الاعتمادات. أما في أسطول من الواجهات الأمامية الدقيقة فينتقل سطح الفرض. وتحتاج إلى تحديد من يملك:
 
-- **Shell contracts**: theme distribution, token variable injection, navigation chrome.
-- **Dependency sharing policy**: what’s shared at runtime, what’s compiled in, and what version constraints apply.
-- **Brand theming**: which teams can introduce new themes and how token sets are structured.
-- **Runtime dependency rules**: singleton guarantees, required versions, fallback behavior.
+- **عقود الهيكل**: توزيع السمة، وحقن متغيّرات الرموز، وإطار التنقل.
+- **سياسة مشاركة الاعتمادات**: ما يُشارك وقت التشغيل، وما يُصرَّف داخل الحزمة، وما قيود الإصدار المطبقة.
+- **سمات العلامة**: أي الفرق يمكنها إدخال سمات جديدة، وكيف تُبنى مجموعات الرموز.
+- **قواعد الاعتمادات وقت التشغيل**: ضمانات النسخة الوحيدة، والإصدارات المطلوبة، وسلوك الارتداد.
 
-For variation—multiple brands, themes, density modes—prefer structured token contexts over local overrides. The [DTCG resolver model](https://www.designtokens.org/glossary/) is explicitly about combining token sets with modifiers to produce context-specific outputs. That makes brand A versus brand B a first-class part of the system instead of a scattered collection of `if (brand === 'b')` checks in product code.
+وللتنوّع—علامات وسمات وأنماط كثافة متعددة—فضّل سياقات الرموز المُهيكلة على التجاوزات المحلية. فـ[نموذج محلِّل DTCG](https://www.designtokens.org/glossary/) يتعلق صراحةً بدمج مجموعات الرموز مع المعدِّلات لإنتاج مخرجات خاصة بسياق ما. وهذا يجعل علامة A مقابل علامة B جزءًا من الدرجة الأولى في النظام بدل مجموعة متناثرة من فحوص `if (brand === 'b')` في شيفرة المنتج.
 
-Governance sounds dull until you have five “temporary” forks of the same modal and nobody knows which one is the canonical version.
+تبدو الحوكمة مملة حتى تصير لديك خمس نسخ «مؤقتة» من النافذة المنبثقة نفسها ولا يعرف أحد أيها النسخة المرجعية.
 
-## The Setup I’d Recommend
+## الإعداد الذي أوصي به
 
-Keep the design system in a monorepo with real workspace packages, even if the consuming applications are deployed as microfrontends. Use the [DTCG 2025.10 token format](https://www.designtokens.org/TR/2025.10/format/) as the canonical source, transform with Style Dictionary into CSS and code artifacts, split framework-specific components into separate packages, and publish a composed Storybook as the single discovery surface.
+أبقِ نظام التصميم في مستودع أحادي بحزم مساحة عمل حقيقية، حتى لو كانت التطبيقات المستهلكة تُنشر كواجهات أمامية دقيقة. واستخدم [صيغة رموز DTCG 2025.10](https://www.designtokens.org/TR/2025.10/format/) مصدرًا مرجعيًا، وحوّل بـStyle Dictionary إلى CSS وأثر شيفرة، وافصل المكوّنات الخاصة بكل إطار في حزم مستقلة، وانشر Storybook مُركَّبًا كسطح الاكتشاف الوحيد.
 
-Ship the design system primarily as versioned packages. Reserve runtime federation for larger vertical slices or shell-owned integration points, with framework dependencies shared as explicit singletons. Test the integration seams with Playwright. Version everything with Changesets.
+واشحن نظام التصميم أساسًا كحزم ذات إصدارات. واحفظ اتحاد وقت التشغيل للشرائح الرأسية الأكبر أو نقاط التكامل المملوكة للهيكل، مع مشاركة اعتمادات الأطر كنسخ وحيدة صريحة. واختبر مفاصل التكامل بـPlaywright. وأصدر كل شيء بنُسخ عبر Changesets.
 
-That setup isn’t glamorous, which is precisely why it tends to survive contact with reality.
-
----
-
-## TL;DR
-
-### What Is a Design System?
-
-> More than a component library.
-
-- **Design tokens** — the atomic values: colors, spacing, typography, shadows.
-- **Primitives** — base components: Button, Input, Card, Modal.
-- **Composed components** — patterns built from primitives: DataTable, FormField, Navigation.
-- **Documentation** — usage guidelines, do/don’t examples, accessibility requirements.
-- **Tooling** — Storybook, visual regression tests, lint rules.
-
-**The goal:** Consistency across independently deployed applications, maintained by independent teams.
+وذلك الإعداد ليس مبهرًا، ولهذا بالضبط يميل إلى النجاة عند التلامس مع الواقع.
 
 ---
 
-### Distributing a Design System
+## الخلاصة السريعة (TL;DR)
 
-> How components get from the design system to the applications.
+### ما نظام التصميم؟
 
-| Strategy | Trade-off |
+> أكثر من مجرد مكتبة مكوّنات.
+
+- **رموز التصميم** — القيم الذرّية: الألوان، والمسافات، والطباعة، والظلال.
+- **العناصر الأولية** — المكوّنات الأساسية: Button وInput وCard وModal.
+- **المكوّنات المُركَّبة** — أنماط مبنية من العناصر الأولية: DataTable وFormField وNavigation.
+- **التوثيق** — إرشادات الاستخدام، وأمثلة الافعل/لا تفعل، ومتطلبات إمكانية الوصول.
+- **الأدوات** — Storybook، واختبارات الانحدار البصري، وقواعد lint.
+
+**الهدف:** الاتساق عبر تطبيقات تُنشر باستقلال، وتحافظ عليها فرق مستقلة.
+
+---
+
+### توزيع نظام التصميم
+
+> كيف تنتقل المكوّنات من نظام التصميم إلى التطبيقات.
+
+| الاستراتيجية | المقايضة |
 | --- | --- |
-| **npm packages** (versioned) | Explicit upgrades, version fragmentation risk |
-| **Module Federation** (shared) | Always latest, singleton version challenges |
-| **CDN (bundled)** | Simple consumption, hard to tree-shake |
-| **Web Components** | Framework-agnostic, Shadow DOM isolation |
+| **حزم npm** (مُصدَرة بنُسخ) | ترقيات صريحة، وخطر تشظّي الإصدارات |
+| **Module Federation** (مشتركة) | الأحدث دائمًا، وتحديات إصدار النسخة الوحيدة |
+| **CDN** (محزومة) | استهلاك بسيط، ويصعب تقليم الشجرة |
+| **Web Components** | محايدة تجاه الأطر، وعزل Shadow DOM |
 
-**Recommended starting point:** Versioned npm packages from a monorepo. Explicit dependency management. Teams upgrade on their own schedule.
+**نقطة البداية الموصى بها:** حزم npm ذات إصدارات من مستودع أحادي. إدارة اعتمادات صريحة. والفرق ترقّي وفق جدولها الخاص.
 
-Add Module Federation sharing later for components that *must* be in sync across remotes (e.g., global navigation).
+أضف مشاركة Module Federation لاحقًا للمكوّنات التي *يجب* أن تبقى متزامنة عبر الوحدات البعيدة (مثل التنقل العام).
 
 ---
 
-### Theming Across Boundaries
+### السمات عبر الحدود
 
-> CSS custom properties — the only theming mechanism that crosses Shadow DOM.
+> خصائص CSS المخصّصة — آلية السمات الوحيدة التي تعبر Shadow DOM.
 
 ```css
 /* Design system tokens — set by the host */
@@ -199,6 +199,6 @@ Add Module Federation sharing later for components that *must* be in sync across
 }
 ```
 
-- Tokens as CSS custom properties cascade into iframes and Shadow DOM.
-- Use semantic names (`--ds-color-primary`) not literal ones (`--ds-blue-500`).
-- The host sets the theme. Remotes consume it. No coupling.
+- الرموز كخصائص CSS مخصّصة تنساب إلى الإطارات المدمجة وShadow DOM.
+- استخدم أسماء دلالية (`--ds-color-primary`) لا حرفية (`--ds-blue-500`).
+- المضيف يضبط السمة. والوحدات البعيدة تستهلكها. بلا اقتران.

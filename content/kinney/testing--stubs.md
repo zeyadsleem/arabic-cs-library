@@ -1,29 +1,29 @@
 ---
-title: "Stubs"
-lang: en
+title: "البدائل (Stubs)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/stubs"
 ---
 
-A stub is a type of test double used to replace a real function with a simplified, controlled version for testing purposes. The primary purpose of a stub is to simulate the behavior of real code by providing predefined responses. Stubs do not track how often a function is called or with what arguments—it only replaces the real implementation to ensure that tests run in a predictable, isolated environment.
+البديل (stub) نوع من البدائل الاختبارية يُستخدم لاستبدال دالة حقيقية بنسخة مبسّطة ومحكومة لأغراض الاختبار. الغرض الأساسي من البديل هو محاكاة سلوك الشيفرة الحقيقية بتوفير استجابات محدّدة مسبقًا. ولا تتتبّع البدائل عدد مرات استدعاء الدالة أو الوسائط التي استُدعيت بها—بل تستبدل التنفيذ الحقيقي فقط لضمان أن الاختبارات تعمل في بيئة متوقّعة ومعزولة.
 
-Stubs are useful when you need to isolate a unit of code and control the behavior of its dependencies without worrying about external systems, such as APIs or databases.
+تكون البدائل مفيدة عندما تحتاج إلى عزل وحدة من الشيفرة والتحكّم في سلوك اعتمادياتها دون القلق بشأن أنظمة خارجية مثل واجهات API أو قواعد البيانات.
 
-## When to Use Stubs
+## متى تستخدم البدائل
 
-Use stubs when:
+استخدم البدائل عندما:
 
-- You want to replace a dependency to isolate the function under test.
-- The real dependency involves side effects, such as I/O operations, network calls, or database queries, which you do not want to run during testing.
-- You need to simulate different behaviors from the external systems (e.g., returning specific data or triggering an error) to cover various test cases.
-- You want to speed up tests by eliminating real-time-consuming operations, such as network requests or file I/O.
+- تريد استبدال اعتمادية لعزل الدالة قيد الاختبار.
+- تتضمّن الاعتمادية الحقيقية آثارًا جانبية، مثل عمليات الإدخال/الإخراج أو استدعاءات الشبكة أو استعلامات قاعدة البيانات، ولا تريد تشغيلها أثناء الاختبار.
+- تحتاج إلى محاكاة سلوكيات مختلفة من الأنظمة الخارجية (مثل إعادة بيانات محدّدة أو إطلاق خطأ) لتغطية حالات اختبار متنوّعة.
+- تريد تسريع الاختبارات بإزالة العمليات المستهلكة للوقت الحقيقي، مثل طلبات الشبكة أو إدخال/إخراج الملفات.
 
-Stubs are best suited for situations where you don’t need to verify how often or how a function is called but simply want to control what it returns.
+البدائل هي الأنسب للحالات التي لا تحتاج فيها إلى التحقّق من عدد مرات استدعاء دالة أو كيفية استدعائها، بل تريد ببساطة التحكّم فيما تُعيده.
 
-## Creating Stubs with Vitest
+## إنشاء البدائل مع Vitest
 
-In Vitest, you can easily create stubs using the `vi.fn()` method. This function allows you to replace the actual implementation of a dependency and return specific values when the stubbed function is called.
+في Vitest، يمكنك إنشاء البدائل بسهولة باستخدام التابع `vi.fn()`. يتيح لك هذا التابع استبدال التنفيذ الفعلي لاعتمادية وإعادة قيم محدّدة عند استدعاء الدالة البديلة.
 
-Here’s how you create a simple stub:
+إليك كيف تُنشئ بديلًا بسيطًا:
 
 ```javascript
 const fetchStub = vi.fn(() =>
@@ -31,13 +31,13 @@ const fetchStub = vi.fn(() =>
 );
 ```
 
-`fetchStub` will always return a resolved promise with predefined data, simulating an API response. This can be used to replace an actual network request in a test.
+سيُعيد `fetchStub` دائمًا وعدًا مُحلًّا ببيانات محدّدة مسبقًا، محاكيًا استجابة API. ويمكن استخدام هذا لاستبدال طلب شبكة فعلي في اختبار.
 
-## Example: Stubbing External Dependencies (e.g., API Calls, File System interactions)
+## مثال: استبدال الاعتماديات الخارجية (مثل استدعاءات API والتفاعل مع نظام الملفات)
 
-Let’s walk through a real-world example. Imagine you are testing a function that fetches concert details for a band by making an API call. You want to avoid making the actual API call in your test and instead control the behavior using a stub.
+لنمضِ عبر مثال من العالم الحقيقي. تخيّل أنك تختبر دالة تجلب تفاصيل حفلات موسيقية لفرقة عبر استدعاء API. وتريد تجنّب إجراء استدعاء API الفعلي في اختبارك، وأن تتحكّم في السلوك باستخدام بديل بدلًا من ذلك.
 
-Here’s the function to be tested:
+إليك الدالة قيد الاختبار:
 
 ```javascript
 async function getConcertDetails(band) {
@@ -47,7 +47,7 @@ async function getConcertDetails(band) {
 }
 ```
 
-Now, in the test, we can create a stub for the `fetch` function to simulate an API response without making a real network request:
+الآن، في الاختبار، يمكننا إنشاء بديل لدالة `fetch` لمحاكاة استجابة API دون إجراء طلب شبكة حقيقي:
 
 ```javascript
 import { describe, it, expect, vi } from 'vitest';
@@ -77,35 +77,35 @@ describe('getConcertDetails', () => {
 });
 ```
 
-In this test, we replace the real `fetch` function with a stub that simulates the API call, returning a predefined JSON response. This allows us to test the `getConcertDetails` function without making a real network request.
+في هذا الاختبار، نستبدل دالة `fetch` الحقيقية ببديل يحاكي استدعاء API ويُعيد استجابة JSON محدّدة مسبقًا. وهذا يتيح لنا اختبار دالة `getConcertDetails` دون إجراء طلب شبكة حقيقي.
 
-## Asserting the Behavior of Code with Stubs
+## التأكيد على سلوك الشيفرة باستخدام البدائل
 
-When using stubs, you typically want to assert that the function you’re testing behaves correctly given the predefined responses. In the example above, we verify that `getConcertDetails` returns the correct concert information when the `fetchStub` provides the simulated API data.
+عند استخدام البدائل، تريد عادةً أن تؤكّد على أن الدالة التي تختبرها تتصرّف بشكل صحيح في ضوء الاستجابات المحدّدة مسبقًا. في المثال أعلاه، نتحقّق من أن `getConcertDetails` تُعيد معلومات الحفل الصحيحة عندما يوفّر `fetchStub` بيانات API المحاكاة.
 
-Vitest also provides methods to check how many times a stub was called, although this is not the primary use of a stub. You can, however, assert that the stubbed function was called if needed:
+يوفّر Vitest أيضًا توابع للتحقّق من عدد مرات استدعاء البديل، رغم أن هذا ليس الاستخدام الأساسي للبديل. ومع ذلك، يمكنك التأكيد على أن الدالة البديلة استُدعيت إن احتجت:
 
 ```javascript
 expect(fetchStub).toHaveBeenCalledTimes(1);
 ```
 
-This ensures that `fetchStub` was called exactly once, which helps verify that the `getConcertDetails` function triggered the expected network request behavior.
+هذا يضمن أن `fetchStub` استُدعي مرة واحدة بالضبط، مما يساعد في التحقّق من أن دالة `getConcertDetails` أطلقت سلوك طلب الشبكة المتوقّع.
 
-Using stubs, you can simulate various responses (e.g., API errors, timeouts, or different data) and assert that your code reacts accordingly, all without relying on real external systems.
+باستخدام البدائل، يمكنك محاكاة استجابات متنوّعة (مثل أخطاء API أو المهل المنتهية أو بيانات مختلفة) والتأكيد على أن شيفرتك تتفاعل وفقًا لذلك، كل ذلك دون الاعتماد على أنظمة خارجية حقيقية.
 
-## Stubs
+## البدائل
 
-A *stub* is a test double that provides pre-determined responses to function calls, typically to replace a real dependency with controlled behavior. Stubs do not track how the function is called; they just serve as replacements that return fixed values.
+*البديل* هو بديل اختباري يوفّر استجابات محدّدة سلفًا لاستدعاءات الدوال، وعادةً لاستبدال اعتمادية حقيقية بسلوك محكوم. ولا تتتبّع البدائل كيفية استدعاء الدالة؛ بل تعمل ببساطة كبدائل تُعيد قيمًا ثابتة.
 
-### Key Features of Stubs
+### الخصائص الرئيسية للبدائل
 
-- **Predefined Behavior**: Stubs are used to define how a function behaves for a test. You can control what value is returned or what actions are taken when the stubbed function is called.
-- **Isolation**: Stubs help isolate the function under test from the actual implementation of its dependencies.
-- **Simplicity**: Stubs are simple replacements and do not track or record how many times they were called or with which arguments.
+- **السلوك المحدّد مسبقًا**: تُستخدم البدائل لتعريف كيفية تصرّف دالة في اختبار. يمكنك التحكّم في القيمة المُعادة أو الإجراءات المتّخذة عند استدعاء الدالة البديلة.
+- **العزل**: تساعد البدائل في عزل الدالة قيد الاختبار عن التنفيذ الفعلي لاعتمادياتها.
+- **البساطة**: البدائل استبدالات بسيطة ولا تتتبّع أو تسجّل عدد مرات استدعائها أو الوسائط التي استُدعيت بها.
 
-### An Example
+### مثال
 
-Imagine a function that fetches concert data from an API. You can create a stub to simulate the API returning data without making a real network call.
+تخيّل دالة تجلب بيانات حفل من API. يمكنك إنشاء بديل لمحاكاة إعادة API للبيانات دون إجراء استدعاء شبكة حقيقي.
 
 ```javascript
 // Stub the fetch function to always return fixed data
@@ -116,13 +116,13 @@ const fetchStub = vi.fn(() =>
 // Now use this stubbed version in your test instead of making a real API call.
 ```
 
-In this example, the `fetchStub` ensures the test runs with consistent data, even without making the actual network request.
+في هذا المثال، يضمن `fetchStub` أن الاختبار يعمل ببيانات متّسقة، حتى دون إجراء طلب الشبكة الفعلي.
 
-### Using Stubs in Vitest
+### استخدام البدائل في Vitest
 
-A **stub** is similar to a mock but focuses on providing predefined responses rather than tracking interactions.
+**البديل** شبيه بالبديل المُحاكى لكنه يركّز على توفير استجابات محدّدة مسبقًا بدلًا من تتبّع التفاعلات.
 
-**Example: Stubbing a Function**
+**مثال: استبدال دالة**
 
 ```javascript
 // notifier.js
@@ -131,7 +131,7 @@ export function notify(message) {
 }
 ```
 
-**Test:**
+**الاختبار:**
 
 ```javascript
 // notifier.test.js
@@ -153,7 +153,7 @@ test('sends a notification', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- The stub `notifyStub` replaces the real `notify` function.
-- The focus is on ensuring that `notify` is called with the correct arguments.
+- البديل `notifyStub` يستبدل دالة `notify` الحقيقية.
+- التركيز على ضمان استدعاء `notify` بالوسائط الصحيحة.

@@ -1,14 +1,14 @@
 ---
-title: "React.memo"
-lang: en
+title: "React.memo في عصر React 19 والمُصرّف"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/react-memo-react-19-and-compiler-era"
 ---
 
-React 19 brings the React Compiler to general availability, promising to automatically optimize your components for performance. But does that mean `React.memo` is obsolete? Not quite. While the compiler handles many scenarios that previously required manual memoization, understanding when and how to use `React.memo` effectively remains crucial for building performant React applications. Let’s explore where `React.memo` still shines, when modern React makes it redundant, and how to write proper equality comparisons when you need them.
+يأتي React 19 بمُصرّف React (React Compiler) متاحًا للعموم، واعدًا بتحسين مكوّناتك تلقائيًا من أجل الأداء. لكن هل يعني ذلك أن `React.memo` صار عتيقًا؟ ليس تمامًا. فمع أن المُصرّف يتولّى كثيرًا من الحالات التي كانت تتطلّب حفظ النتائج يدويًا، يبقى فهم متى وكيف تستخدم `React.memo` بفعالية جوهريًا لبناء تطبيقات React عالية الأداء. لنستكشف المواضع التي ما زال `React.memo` يتألّق فيها، ومتى تجعله React الحديثة زائدًا عن الحاجة، وكيف تكتب مقارنات تساوٍ سليمة عند الحاجة إليها.
 
-## What is `React.memo`?
+## ما هو `React.memo`؟
 
-`React.memo` is a higher-order component that prevents unnecessary re-renders by memoizing the result of a component. It compares the current props with the previous props using shallow equality and only re-renders if they’ve changed. Think of it as a performance optimization that says “Hey React, only re-render this component if the props actually changed.”
+`React.memo` مكوّن أعلى رتبة يمنع إعادات التصيير غير الضرورية عبر حفظ نتيجة المكوّن. فهو يقارن الخصائص الحالية بالخصائص السابقة بمقارنة سطحية، ولا يعيد التصيير إلا إن تغيّرت. فكّر فيه كتحسين للأداء يقول «يا React، لا تُعِد تصيير هذا المكوّن إلا إذا تغيّرت الخصائص فعلًا».
 
 ```typescript
 // Basic usage
@@ -24,11 +24,11 @@ const ExpensiveComponent = React.memo(({ data, onUpdate }) => {
 });
 ```
 
-When a parent re-renders, React will skip re-rendering `ExpensiveComponent` if its props haven’t changed. Simple enough, right?
+عندما يُعاد تصيير الأب، تتخطّى React إعادة تصيير `ExpensiveComponent` إن لم تتغيّر خصائصه. بسيط بما يكفي، أليس كذلك؟
 
-## The React 19 Compiler Changes Everything
+## مُصرّف React 19 يغيّر كل شيء
 
-The React Compiler (formerly known as React Forget) automatically identifies opportunities for memoization and applies them behind the scenes. It analyzes your component’s dependency graph and inserts the appropriate optimizations at build time.
+يحدّد مُصرّف React (المعروف سابقًا بـ React Forget) فرص حفظ النتائج تلقائيًا ويطبّقها خلف الكواليس. فهو يحلّل مخطط اعتماديات مكوّنك ويُدرج التحسينات المناسبة في وقت البناء.
 
 ```typescript
 // Before: You'd manually wrap this
@@ -53,23 +53,23 @@ const UserCard = ({ user, theme }) => {
 // Compiler output includes automatic memoization where beneficial
 ```
 
-The compiler is smart about when to apply these optimizations. It won’t memoize components that:
+المُصرّف ذكيّ في تحديد متى يطبّق هذه التحسينات. فلا يحفظ نتائج مكوّنات:
 
-- Are cheap to render
-- Have props that change frequently
-- Would benefit more from other optimizations
+- رخيصة التصيير
+- تتغيّر خصائصها بشكل متكرّر
+- تستفيد أكثر من تحسينات أخرى
 
-> **Note**
+> **ملاحظة**
 >
-> The React Compiler is opt-in for React 19. You’ll need to enable it in your build configuration to take advantage of automatic optimizations.
+> مُصرّف React اختياري في React 19. ستحتاج إلى تفعيله في إعدادات البناء للاستفادة من التحسينات التلقائية.
 
-## When `React.memo` Still Matters
+## متى يبقى `React.memo` مهمًّا
 
-Even with the compiler, there are scenarios where manual `React.memo` usage remains valuable:
+حتى مع المُصرّف، توجد حالات يبقى فيها الاستخدام اليدوي لـ `React.memo` ذا قيمة:
 
-### Complex Equality Comparisons
+### مقارنات تساوٍ معقّدة
 
-The compiler uses shallow equality by default, but sometimes you need custom comparison logic:
+يستخدم المُصرّف المقارنة السطحية افتراضيًا، لكنك تحتاج أحيانًا إلى منطق مقارنة مخصّص:
 
 ```typescript
 interface ProductCardProps {
@@ -108,13 +108,13 @@ const ProductCard = React.memo(
 );
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with `JSON.stringify` for deep equality—it’s expensive and doesn’t handle circular references. Consider using a proper deep equality library like Lodash’s `isEqual` for complex objects.
+> احذر استخدام `JSON.stringify` للمقارنة العميقة — فهو مكلف ولا يتعامل مع المراجع الدائرية. فكّر في استخدام مكتبة مقارنة عميقة مناسبة مثل `isEqual` من Lodash للكائنات المعقّدة.
 
-### Third-Party Libraries and Legacy Code
+### مكتبات الطرف الثالث والشيفرة القديمة
 
-If you’re working with components that haven’t been processed by the compiler (third-party libraries, legacy code), manual memoization can still provide significant benefits:
+إذا كنت تعمل مع مكوّنات لم يعالجها المُصرّف (مكتبات طرف ثالث، شيفرة قديمة)، فلا يزال حفظ النتائج يدويًا يوفّر فوائد كبيرة:
 
 ```typescript
 // Third-party component that isn't compiler-optimized
@@ -126,9 +126,9 @@ const OptimizedChart = React.memo(ExpensiveChart, (prevProps, nextProps) => {
 });
 ```
 
-### Fine-Grained Control
+### تحكّم دقيق
 
-Sometimes you know better than the compiler when a component should re-render. This is especially true for components with expensive side effects or complex rendering logic:
+أنت تعرف أحيانًا أفضل من المُصرّف متى ينبغي إعادة تصيير المكوّن. ويصدق هذا خاصة في المكوّنات ذات الآثار الجانبية المكلفة أو منطق التصيير المعقّد:
 
 ```typescript
 interface DataVisualizationProps {
@@ -157,13 +157,13 @@ const DataVisualization = React.memo(
 );
 ```
 
-## Writing Effective areEqual Functions
+## كتابة دوال areEqual فعّالة
 
-When you do need custom equality comparisons, follow these guidelines:
+عندما تحتاج فعلًا إلى مقارنات تساوٍ مخصّصة، اتبع هذه الإرشادات:
 
-### Keep It Simple and Fast
+### أبقِها بسيطة وسريعة
 
-The equality function runs on every potential re-render, so keep it lightweight:
+تعمل دالة التساوي في كل إعادة تصيير محتملة، فاجعلها خفيفة:
 
 ```typescript
 // ✅ Good: Fast property checks
@@ -181,9 +181,9 @@ const areEqual = (prevProps, nextProps) => {
 };
 ```
 
-### Focus on What Actually Matters
+### ركّز على ما يهمّ فعلًا
 
-Don’t check properties that don’t affect rendering:
+لا تفحص خصائص لا تؤثّر في التصيير:
 
 ```typescript
 interface TaskItemProps {
@@ -221,9 +221,9 @@ const TaskItem = React.memo(
 );
 ```
 
-### Handle Function Props Carefully
+### تعامل مع خصائص الدوال بحذر
 
-Function props are a common source of unnecessary re-renders. Make sure your equality check handles them appropriately:
+خصائص الدوال مصدر شائع لإعادات التصيير غير الضرورية. تأكّد من أن فحص التساوي لديك يتعامل معها على النحو المناسب:
 
 ```typescript
 // If you know the function is stable (wrapped in useCallback), reference equality works
@@ -254,11 +254,11 @@ const FlexibleComponent = React.memo(
 );
 ```
 
-## When NOT to Use `React.memo`
+## متى لا تستخدم `React.memo`
 
-### Components That Always Re-render
+### مكوّنات يُعاد تصييرها دائمًا
 
-If your component’s props change on every parent render, memoization adds overhead without benefit:
+إذا تغيّرت خصائص مكوّنك في كل تصيير للأب، فحفظ النتائج يضيف حملًا بلا فائدة:
 
 ```typescript
 // ❌ Bad: Timestamp changes every render
@@ -272,9 +272,9 @@ const Clock = () => {
 };
 ```
 
-### Cheap Components
+### مكوّنات رخيصة
 
-For simple components, the memoization overhead might outweigh the benefits:
+في المكوّنات البسيطة، قد يفوق حمل حفظ النتائج فوائده:
 
 ```typescript
 // ❌ Probably unnecessary
@@ -288,15 +288,15 @@ const SimpleLabel = ({ text, className }) => {
 };
 ```
 
-### When You Have Compiler Optimization
+### عندما تتوفّر لديك تحسينات المُصرّف
 
-If the React Compiler is handling your component, adding manual `React.memo` might interfere with its optimizations or create redundant work.
+إذا كان مُصرّف React يتولّى مكوّنك، فقد يتعارض إضافة `React.memo` يدويًا مع تحسيناته أو ينشئ عملًا زائدًا.
 
-## Debugging Memoization Issues
+## تصحيح مشكلات حفظ النتائج
 
-When things aren’t working as expected, React DevTools Profiler is your best friend. But here are some quick debugging techniques:
+عندما لا تسير الأمور كما هو متوقّع، فإن أداة Profiler في React DevTools هي صديقك المفضّل. لكن إليك بعض تقنيات التصحيح السريعة:
 
-### Log Props Changes
+### سجّل تغييرات الخصائص
 
 ```typescript
 const DebugMemo = React.memo(
@@ -319,17 +319,17 @@ const DebugMemo = React.memo(
 );
 ```
 
-### Use React DevTools Profiler
+### استخدم أداة Profiler في React DevTools
 
-Enable “Record why each component rendered” in React DevTools to see exactly why components are re-rendering, even with memoization.
+فعّل «Record why each component rendered» في React DevTools لترى بالضبط لماذا تُعاد المكوّنات للتصيير، حتى مع حفظ النتائج.
 
-> **Tip**
+> **نصيحة**
 >
-> Install the React DevTools browser extension and use the Profiler tab to identify performance bottlenecks. It’ll show you which components are re-rendering and why.
+> ثبّت إضافة المتصفّح React DevTools واستخدم تبويب Profiler لتحديد اختناقات الأداء. فسيُظهر لك أيّ المكوّنات يُعاد تصييرها ولماذا.
 
-## Real-World Patterns
+## أنماط من الواقع
 
-### List Components with Stable Keys
+### مكوّنات القوائم بمفاتيح مستقرة
 
 ```typescript
 interface TodoListProps {
@@ -359,7 +359,7 @@ const TodoList = React.memo(
 );
 ```
 
-### Configuration-Heavy Components
+### مكوّنات كثيفة الإعدادات
 
 ```typescript
 interface ChartProps {
@@ -384,22 +384,22 @@ const Chart = React.memo(
 );
 ```
 
-## The Future of Memoization
+## مستقبل حفظ النتائج
 
-As the React Compiler matures and becomes more widely adopted, manual memoization will become less necessary for most use cases. However, `React.memo` will remain valuable for:
+مع نضوج مُصرّف React وانتشاره على نطاق أوسع، سيصبح حفظ النتائج اليدوي أقل ضرورة في معظم حالات الاستخدام. ومع ذلك، سيبقى `React.memo` ذا قيمة في:
 
-- Complex components with specific optimization needs
-- Integration with non-React systems
-- Fine-grained performance tuning
-- Working with legacy code that can’t use the compiler
+- المكوّنات المعقّدة ذات احتياجات تحسين محدّدة
+- التكامل مع أنظمة غير React
+- الضبط الدقيق للأداء
+- العمل مع شيفرة قديمة لا يمكنها استخدام المُصرّف
 
-The key is understanding when the compiler has your back and when you need to step in with manual optimizations.
+المفتاح هو فهم متى يدعمك المُصرّف ومتى تحتاج إلى التدخّل بتحسينات يدوية.
 
-## Best Practices Summary
+## ملخّص أفضل الممارسات
 
-1. **Default to letting the compiler handle it** if you’re using React 19 with the compiler enabled
-2. **Use `React.memo` for custom equality logic** when shallow comparison isn’t sufficient
-3. **Keep `areEqual` functions fast and focused** on rendering-relevant properties
-4. **Profile before optimizing** to ensure you’re solving real performance problems
-5. **Don’t memoize everything**—cheap components often don’t benefit from memoization
-6. **Be careful with function props**—ensure they’re stable or handled appropriately in comparisons
+1. **اجعل الافتراضي أن يتولّى المُصرّف الأمر** إن كنت تستخدم React 19 مع تفعيل المُصرّف
+2. **استخدم `React.memo` لمنطق تساوٍ مخصّص** عندما لا تكفي المقارنة السطحية
+3. **أبقِ دوال `areEqual` سريعة ومركّزة** على الخصائص المتعلّقة بالتصيير
+4. **قِس الأداء قبل التحسين** لتضمن أنك تحلّ مشكلات أداء حقيقية
+5. **لا تحفظ نتائج كل شيء** — فالمكوّنات الرخيصة غالبًا لا تستفيد من حفظ النتائج
+6. **احذر خصائص الدوال** — تأكّد من استقرارها أو التعامل معها على النحو المناسب في المقارنات

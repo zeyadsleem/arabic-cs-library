@@ -1,85 +1,85 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-tag-and-step-annotate-the-shelf-suite"
 ---
 
-Two of Shelf’s specs — the starter’s `tests/smoke.spec.ts` and the `tests/rate-book.spec.ts` you built in the previous lab — work fine. They pass every time, they hit the right endpoints, and they verify the right outcomes. They also fail like they’re punishing you when they fail. No steps, no tags, no annotations, nothing that helps a dossier summarizer turn a red build into something an agent can fix.
+مواصفتان من مواصفات Shelf — `tests/smoke.spec.ts` في البادئ و`tests/rate-book.spec.ts` الذي بنيته في المختبر السابق — تعملان على ما يرام. تنجحان كل مرة، وتصلان إلى نقاط النهاية الصحيحة، وتتحقّقان من النتائج الصحيحة. لكنهما أيضًا تفشلان كأنهما تعاقبانك حين تفشلان. لا خطوات، ولا وسوم، ولا تعليقات توضيحية، ولا شيء يساعد مُلخِّص ملفّ الفشل على تحويل بناء أحمر إلى شيء يستطيع الوكيل إصلاحه.
 
-> **Prerequisite: the rate-book hardening lab**
+> **المتطلب السابق: مختبر تحصين اختبار تقييم الكتاب المتذبذب**
 >
-> `tests/rate-book.spec.ts` is produced by the [harden-the-flaky-rate-book-test lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test), not by the Shelf starter. Run this lab after completing the harden-the-flaky-rate-book-test lab; otherwise, scope the work to `tests/smoke.spec.ts` only and come back for the rate-book pieces once that file exists.
+> ملف `tests/rate-book.spec.ts` ينتجه [مختبر تحصين اختبار تقييم الكتاب المتذبذب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)، لا بادئ Shelf. شغّل هذا المختبر بعد إتمام مختبر تحصين اختبار تقييم الكتاب المتذبذب؛ وإلا فاحصر العمل في `tests/smoke.spec.ts` وحده، وعُد إلى قطع تقييم الكتاب حين يوجد ذلك الملف.
 
-Your job in this lab is to retrofit both specs with `test.step`, tag them correctly, add at least one annotation, and introduce one `expect.soft` assertion where it genuinely helps. Then prove the result by running `--grep @critical` and watching the subset you expect to show up.
+ومهمتك في هذا المختبر أن تزوّد المواصفتين بـ`test.step` بأثر رجعي، وتوسمهما وسمًا صحيحًا، وتضيف تعليقًا توضيحيًا واحدًا على الأقل، وتُدخل تحقّقًا واحدًا بـ`expect.soft` حيث يفيد فعلًا. ثم أثبت النتيجة بتشغيل `--grep @critical` ومشاهدة المجموعة الفرعية التي تتوقّع ظهورها.
 
-## The starting point
+## نقطة البداية
 
-Open `tests/smoke.spec.ts` and (assuming you’ve completed the rate-book hardening lab) `tests/rate-book.spec.ts`. Both files pass today. Neither file has any of the four things the lesson covered.
+افتح `tests/smoke.spec.ts` و(على افتراض أنك أكملت مختبر تحصين تقييم الكتاب) `tests/rate-book.spec.ts`. الملفان ينجحان اليوم. ولا واحد منهما فيه أي من الأشياء الأربعة التي غطّاها الدرس.
 
-Specifically:
+وتحديدًا:
 
-- No `test.step` wrappers anywhere. Every test is a flat sequence of `page.goto`, locator chains, and assertions.
-- No `tag` on any test signature.
-- No `test.info().annotations.push(...)` calls.
-- No `expect.soft` — every assertion bails on the first failure.
+- لا أغلفة `test.step` في أي مكان. فكل اختبار تسلسل مسطّح من `page.goto` وسلاسل محدِّدات وتحقّقات.
+- لا `tag` على أي توقيع اختبار.
+- لا استدعاءات `test.info().annotations.push(...)`.
+- لا `expect.soft` — فكل تحقّق يتوقّف عند أول فشل.
 
-Count what’s missing. I get four things per test. Your job is to put them back.
+عُدّ ما هو ناقص. أنا أعدّ أربعة أشياء لكل اختبار. ومهمتك أن تعيدها.
 
-> **Non-destructive**
+> **غير مُدمِّر**
 >
-> You’re editing production specs this time. Run the full `npm run test` after each pass to confirm the suite is still green. The whole point of this lab is to land in `main` without breaking anything.
+> أنت تعدّل مواصفات الإنتاج هذه المرة. شغّل `npm run test` كاملًا بعد كل جولة لتتأكّد من أن المجموعة ما زالت خضراء. وفكرة هذا المختبر كلها أن تستقرّ في `main` دون كسر شيء.
 
-## Your job
+## مهمتك
 
-1. Wrap every top-level user action in each test with a `test.step('...', async () => { ... })`. The label has to be readable as a line in a CI log — “open the shelf,” “submit 4 stars,” “verify the rating persists via API,” not “step 1” or “do the thing.”
-2. Tag every test with at least one of `@critical`, `@slow`, or `@flaky-quarantine`. The rate-book test (from the earlier rate-book hardening lab) is `@critical`. At least one of the smoke tests should be `@critical` too. Defend the rest.
-3. Add an annotation to the rate-book test linking to a fake GitHub issue URL for that test’s historical flake. Use `type: 'issue'`.
-4. Find one place where the assertion is checking *a list of things that should all be true* after an action, and rewrite that block to use `expect.soft`. The smoke test’s navigation-link assertions are the natural candidate.
-5. Run `npx playwright test --grep @critical` and confirm only the critical subset runs. Then run the full `npm run test` and confirm the suite is still green.
+1. غلّف كل فعل مستخدم في المستوى الأعلى في كل اختبار بـ`test.step('...', async () => { ... })`. ويجب أن تكون التسمية مقروءة كسطر في سجل CI — «افتح الرفّ»، «أرسل 4 نجوم»، «تحقّق من بقاء التقييم عبر API»، لا «الخطوة 1» ولا «افعل الشيء».
+2. وسّم كل اختبار بواحد على الأقل من `@critical` أو `@slow` أو `@flaky-quarantine`. واختبار تقييم الكتاب (من مختبر تحصين تقييم الكتاب السابق) هو `@critical`. ويجب أن يكون واحد من اختبارات الدخان `@critical` أيضًا. ودافع عن الباقي.
+3. أضف تعليقًا توضيحيًا إلى اختبار تقييم الكتاب يربط إلى عنوان URL مزيّف لمشكلة GitHub خاصة بالتذبذب التاريخي لذلك الاختبار. واستخدم `type: 'issue'`.
+4. اعثر على موضع واحد يكون فيه التحقّق يفحص *قائمة أشياء يجب أن تكون كلها صحيحة* بعد فعل، وأعد كتابة ذلك الجزء ليستخدم `expect.soft`. وتحقيقات روابط التنقّل في اختبار الدخان هي المرشّح الطبيعي.
+5. شغّل `npx playwright test --grep @critical` وتأكّد من أن المجموعة الفرعية الحرجة وحدها تعمل. ثم شغّل `npm run test` كاملًا وتأكّد من أن المجموعة ما زالت خضراء.
 
-## Acceptance criteria
+## معايير القبول
 
-From the Shelf repo root:
+من جذر مستودع Shelf:
 
 ```bash
 npm run test
 ```
 
-Must still pass, same as before. You’re not changing behavior, you’re changing the *story* each test tells.
+يجب أن ينجح كما كان. فأنت لا تغيّر السلوك، بل تغيّر *الحكاية* التي يرويها كل اختبار.
 
 ```bash
 npx playwright test --grep @critical
 ```
 
-Must run a strict subset of tests (at least the rate-book test and whichever smoke tests you marked critical). Zero tests filtered out of the set should have `@critical` in their tag array.
+يجب أن يشغّل مجموعة فرعية صارمة من الاختبارات (اختبار تقييم الكتاب على الأقل، وأي اختبارات دخان وسمتها حرجة). ولا يجب أن يكون في مصفوفة وسوم أي اختبار مُستبعَد من المجموعة `@critical`.
 
 ```bash
 rg "test\.step\(" tests/smoke.spec.ts tests/rate-book.spec.ts
 ```
 
-Must return at least two hits per test. (If you haven’t landed the rate-book hardening lab yet, scope these checks to `tests/smoke.spec.ts` only — `tests/rate-book.spec.ts` is produced by that earlier lab.)
+يجب أن يعيد نتيجتين على الأقل لكل اختبار. (إن لم تكن قد أنزلت مختبر تحصين تقييم الكتاب بعد، فاحصر هذه الفحوص في `tests/smoke.spec.ts` وحده — فملف `tests/rate-book.spec.ts` ينتجه ذلك المختبر السابق.)
 
 ```bash
 rg "annotations\.push" tests/rate-book.spec.ts
 ```
 
-Must return at least one hit. (Again, this assumes `tests/rate-book.spec.ts` exists from the earlier rate-book hardening lab.)
+يجب أن يعيد نتيجة واحدة على الأقل. (ومرة أخرى، هذا يفترض وجود `tests/rate-book.spec.ts` من مختبر تحصين تقييم الكتاب السابق.)
 
 ```bash
 rg "expect\.soft" tests/smoke.spec.ts
 ```
 
-Must return at least one hit.
+يجب أن يعيد نتيجة واحدة على الأقل.
 
-## Suggested order of attack
+## ترتيب الهجوم المقترح
 
-Start with the rate-book test because it’s simpler. One test, one flow, four natural steps: open the shelf, open the rate-book dialog, submit the rating, verify the persisted rating. Wrap each in `test.step`, run the suite, commit.
+ابدأ باختبار تقييم الكتاب لأنه أبسط. اختبار واحد، وتدفّق واحد، وأربع خطوات طبيعية: افتح الرفّ، وافتح نافذة تقييم الكتاب، وأرسل التقييم، وتحقّق من بقاء التقييم. غلّف كل واحدة بـ`test.step`، وشغّل المجموعة، وأودِع.
 
-Tag it `@critical` next. That’s one line on the test signature. Run `--grep @critical` and confirm it shows up. Commit.
+ثم وسّمه `@critical`. هذا سطر واحد على توقيع الاختبار. شغّل `--grep @critical` وتأكّد من ظهوره. أودِع.
 
-Move to the smoke spec. Tag the homepage smoke as `@critical` — it’s the public face of the starter. Tag the protected-route redirect smoke `@critical` too unless you can defend it as `@slow` for some reason. Add steps. The “verify the public navigation” block in the first test is a natural step boundary because it has a clear intent.
+انتقل إلى مواصفة الدخان. وسّم اختبار دخان الصفحة الرئيسية `@critical` — فهو الوجه العام للبادئ. ووسّم اختبار دخان إعادة التوجيه من المسار المحمي `@critical` أيضًا، إلّا إن استطعت أن تدافع عن كونه `@slow` لسبب ما. أضف الخطوات. وكتلة «تحقّق من التنقّل العام» في الاختبار الأول حدّ طبيعي للخطوة لأن لها نية واضحة.
 
-Now the annotation. Put it on the rate-book test and add:
+والآن التعليق التوضيحي. ضعه على اختبار تقييم الكتاب وأضف:
 
 ```typescript
 test.info().annotations.push({
@@ -88,13 +88,13 @@ test.info().annotations.push({
 });
 ```
 
-The URL can be fake. The shape has to be real.
+يمكن أن يكون العنوان مزيّفًا. أما الشكل فيجب أن يكون حقيقيًا.
 
-Finally, the soft assertion. The homepage smoke already checks several navigation links in a row. Rewrite that block to `expect.soft` so a failure reports every mismatched link instead of bailing on the first one. Run the suite. Commit.
+وأخيرًا التحقّق اللين. فاختبار دخان الصفحة الرئيسية يفحص بالفعل عدة روابط تنقّل على التوالي. أعد كتابة تلك الكتلة بـ`expect.soft` ليُبلِّغ الفشل عن كل رابط غير مطابق بدلًا من التوقّف عند الأول. شغّل المجموعة. أودِع.
 
-## Stretch
+## أهداف إضافية
 
-Write a tiny custom reporter snippet that prints only the `test.step` names for each failing test, suitable for pasting into the failure dossier. It’s ~30 lines of TypeScript:
+اكتب مقتطف مُبلِّغ مخصّصًا صغيرًا يطبع أسماء `test.step` للاختبارات الفاشلة وحدها، صالحًا للصق في ملفّ الفشل. إنه نحو 30 سطرًا من TypeScript:
 
 ```typescript
 // tests/reporters/step-reporter.ts
@@ -113,16 +113,16 @@ class StepReporter implements Reporter {
 export default StepReporter;
 ```
 
-Wire it into a temporary lab-only Playwright config, or add it to the main config while you experiment, and run the lab slice to see it in action.
+وصّله بتهيئة Playwright مؤقتة خاصة بالمختبر، أو أضفه إلى التهيئة الرئيسية أثناء تجربتك، وشغّل شريحة المختبر لتراه في العمل.
 
-## What success looks like
+## كيف يبدو النجاح
 
-You run the rate-book test, deliberately break one assertion (change `4` to `5` in the rating step), and the failure message now says which step blew up, which argument mismatched, and — via the annotation — which issue to link the incident to. The dossier summarizer picks up all of it for free. No extra plumbing.
+تشغّل اختبار تقييم الكتاب، وتكسر تحقّقًا واحدًا عمدًا (غيّر `4` إلى `5` في خطوة التقييم)، فتقول رسالة الفشل الآن أي خطوة انفجرت، وأي وسيط لم يطابق، و— عبر التعليق التوضيحي — بأي مشكلة تُربط الحادثة. ويلتقط مُلخِّص ملفّ الفشل ذلك كله مجانًا. بلا توصيلات إضافية.
 
-Then you un-break the test, run the full suite, and commit.
+ثم تُصلح الاختبار، وتشغّل المجموعة كاملة، وتودِع.
 
-## Additional Reading
+## قراءات إضافية
 
-- [test.step, Tags, and Annotations](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) — the lesson this lab exercises.
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — where the `test.step` output gets picked up for the dossier.
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — the trace viewer shows `test.step` blocks as foldable sections, which is the fastest way to see what the retrofitted test now looks like under the hood.
+- [test.step والوسوم والتعليقات التوضيحية](https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations) — الدرس الذي يطبّقه هذا المختبر.
+- [ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — حيث تُلتقط مخرجات `test.step` لملفّ الفشل.
+- [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — يعرض عارض التتبّع كتل `test.step` أقسامًا قابلة للطيّ، وهي أسرع طريقة لرؤية شكل الاختبار المؤهَّل من الداخل الآن.

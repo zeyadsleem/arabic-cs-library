@@ -1,31 +1,31 @@
 ---
-title: "Debugging Basics"
-lang: en
+title: "أساسيات التصحيح"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-debugging-basics"
 ---
 
-> **Example Repository**
+> **مستودع المثال**
 >
-> We’re going to be playing around with some of the examples in [this repository](https://github.com/stevekinney/vscode-examples).
+> سنعبث ببعض الأمثلة في [هذا المستودع](https://github.com/stevekinney/vscode-examples).
 
-Visual Studio Code offers a few ways for debugging your code.
+يوفّر Visual Studio Code بضع طرق لتصحيح شيفرتك.
 
-- You can set **breakpoints** on lines of code where you want execution to pause.
-- While paused, you can inspect **variables**, **call stacks**, and **evaluate expressions** to see what’s going on.
-- You can **step through code** line by line (**Step Over**, **Step Into** functions, **Step Out**) to follow the logic flow.
-- You can even change variables on the fly to test different scenarios.
+- يمكنك ضبط **نقاط التوقّف** على أسطر الشيفرة التي تريد أن يتوقّف التنفيذ عندها.
+- وأثناء التوقّف، يمكنك فحص **المتغيّرات** و**مكدّسات الاستدعاء** و**تقييم التعبيرات** لترى ما يجري.
+- ويمكنك **التنقّل في الشيفرة** سطرًا بسطر (**Step Over** و**Step Into** الدوال و**Step Out**) لتتابع مسار المنطق.
+- ويمكنك حتى تغيير المتغيّرات أثناء التشغيل لاختبار سيناريوهات مختلفة.
 
-There are a bunch of templates that Visual Studio Code provides to get up and running quickly.
+وهناك مجموعة من القوالب التي يوفّرها Visual Studio Code لتبدأ العمل سريعًا.
 
-Setting Up a Launch Configuration
+إعداد تهيئة التشغيل
 
-## Together
+## معًا
 
-We’re going to walk through the `maths` example in [this repository].
+سنتنقّل في مثال `maths` في [هذا المستودع].
 
-## Exercise: Debugging an Express Application
+## تمرين: تصحيح تطبيق Express
 
-Set up a `launch.json`. Here is a example of a *super simple* `launch.json`.
+أعدّ ملف `launch.json`. وإليك مثالًا لملف `launch.json` *بالغ البساطة*.
 
 ```json
 {

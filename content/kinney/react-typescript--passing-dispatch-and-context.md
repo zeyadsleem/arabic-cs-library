@@ -1,16 +1,16 @@
 ---
-title: "Passing Dispatch and Context"
-lang: en
+title: "تمرير dispatch واستخدام Context"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/passing-dispatch-and-context"
 ---
 
-You’ve built a reasonably sized React application with TypeScript, and somewhere along the way, you started passing dispatch functions down through multiple component layers. Maybe it started innocently enough—just passing `dispatch` from your `useReducer` down one level. But now you’re threading it through four components that don’t even need it, just so it can reach the component that actually does.
+بنيت تطبيق React بحجم معقول باستخدام TypeScript، وفي مرحلة ما بدأت تمرّر دوال dispatch عبر عدّة طبقات من المكوّنات. ربما بدأ الأمر بريئًا — تمرير `dispatch` من `useReducer` نزولًا مستوى واحد فقط. لكنك الآن تمرّرها عبر أربعة مكوّنات لا تحتاجها أصلًا، لمجرد أن تصل إلى المكوّن الذي يحتاجها فعلًا.
 
-We’re going to walk through the refactoring journey from prop-drilled dispatch functions to a clean, typed Context-based solution. You’ll learn how to migrate safely, maintain type safety throughout, and avoid the common pitfalls that make developers curse Context APIs.
+سنمرّ معًا على رحلة إعادة الهيكلة من دوال dispatch المنقولة عبر الخصائص (prop drilling) إلى حلٍّ نظيف ومكتوب الأنواع يعتمد على Context. ستتعلّم كيف تنتقل بأمان، وكيف تحافظ على أمان الأنواع طوال الطريق، وكيف تتجنّب الأخطاء الشائعة التي تجعل المطوّرين يلعنون واجهات Context.
 
-## The Problem: Dispatch Prop Drilling in Action
+## المشكلة: تمرير dispatch عبر الخصائص عمليًا
 
-Here’s a typical scenario that grows organically in React applications. You start with a `useReducer` in your main component and need to pass the dispatch function down to deeply nested components:
+إليك سيناريو نموذجي ينمو عضويًا في تطبيقات React. تبدأ باستخدام `useReducer` في المكوّن الرئيسي وتحتاج إلى تمرير دالة dispatch نزولًا إلى المكوّنات المتداخلة بعمق:
 
 ```typescript
 // Types for our todo application
@@ -77,15 +77,15 @@ function TodoItem({ todo, dispatch }: { todo: Todo; dispatch: Dispatch<TodoActio
 }
 ```
 
-Notice how `MainContent` and `TodoList` don’t actually *use* the dispatch function—they’re just passing it along like a hot potato. This is the classic prop drilling problem, and it gets worse as your component tree grows.
+لاحظ كيف لا يستخدم `MainContent` و`TodoList` دالة dispatch *فعليًا* — إنما يمرّرانها كأنها بطاطا ساخنة. هذه هي مشكلة تمرير الخصائص عبر الطبقات (prop drilling) الكلاسيكية، وهي تتفاقم كلما نمت شجرة مكوّناتك.
 
-> **Warning**
+> **تحذير**
 >
-> Prop drilling dispatch functions creates tight coupling between components and makes refactoring painful. Moving a component that needs dispatch becomes a major surgery involving every component in the tree.
+> تمرير دوال dispatch عبر الخصائص ينشئ اقترانًا محكمًا بين المكوّنات ويجعل إعادة الهيكلة مؤلمة. فنقل مكوّن يحتاج إلى dispatch يصبح عملية جراحية كبرى تمسّ كل مكوّن في الشجرة.
 
-## Step 1: Create Your Typed Context
+## الخطوة 1: أنشئ سياقك المكتوب الأنواع
 
-The first step in our migration is creating a properly typed Context. We’ll start by extracting our state and dispatch types, then creating the Context structure:
+الخطوة الأولى في ترحيلنا هي إنشاء سياق مكتوب الأنواع بشكل صحيح. سنبدأ باستخراج أنواع الحالة وdispatch، ثم إنشاء بنية السياق:
 
 ```typescript
 import { createContext, useContext, useReducer, ReactNode, Dispatch } from 'react';
@@ -116,15 +116,15 @@ export function useTodoContext(): TodoContextValue {
 }
 ```
 
-This gives us a typed context with runtime safety. The `undefined` default value forces us to provide a custom hook that checks if we’re actually inside a provider.
+يعطينا هذا سياقًا مكتوب الأنواع مع أمان وقت التشغيل. القيمة الافتراضية `undefined` تفرض علينا توفير خُطّاف مخصّص يفحص ما إذا كنا داخل مزوّد فعلًا.
 
-> **Tip**
+> **نصيحة**
 >
-> Always use `undefined` as your context default value and provide a custom hook. This prevents accidentally using the context outside a provider, which would silently fail with a default object.
+> استخدم `undefined` دائمًا كقيمة افتراضية لسياقك، وقدّم خُطّافًا مخصّصًا. هذا يمنع الاستخدام العرضي للسياق خارج المزوّد، وهو ما كان سيفشل بصمت مع كائن افتراضي.
 
-## Step 2: Implement the Provider
+## الخطوة 2: نفّذ المزوّد
 
-Now let’s create the Provider component that will replace our prop drilling. The key insight is that this Provider should encapsulate all the state management logic:
+لننشئ الآن مكوّن المزوّد (Provider) الذي سيحلّ محل تمرير الخصائص. المفتاح هنا هو أن هذا المزوّد يجب أن يغلّف كل منطق إدارة الحالة:
 
 ```typescript
 interface TodoProviderProps {
@@ -170,11 +170,11 @@ function todoReducer(state: Todo[], action: TodoAction): Todo[] {
 }
 ```
 
-Notice that we’re using `useMemo` for the context value. This is crucial—without it, every render would create a new object, causing all consuming components to re-render unnecessarily.
+لاحظ أننا نستخدم `useMemo` لقيمة السياق. هذا أمر حاسم — فمن دونه سيُنشئ كل تصيير كائنًا جديدًا، مما يُعيد تصيير جميع المكوّنات المستهلكة بلا داعٍ.
 
-## Step 3: Gradual Migration Strategy
+## الخطوة 3: استراتيجية الترحيل التدريجي
 
-Here’s the beauty of this approach: you can migrate component by component without breaking anything. Start from the deepest components and work your way up:
+إليك جمال هذا الأسلوب: يمكنك ترحيل المكوّن واحدًا تلو الآخر دون كسر أي شيء. ابدأ من أعمق المكوّنات وتدرّج إلى الأعلى:
 
 ```typescript
 // ✅ Step 3a: First, wrap your app with the provider
@@ -235,15 +235,15 @@ function MainContent() {
 }
 ```
 
-The migration is gradual and safe—you can deploy after each step without breaking existing functionality.
+الترحيل تدريجي وآمن — يمكنك النشر بعد كل خطوة دون كسر الوظائف القائمة.
 
-> **Note**
+> **ملاحظة**
 >
-> Start migrating from the leaf components (the ones that actually use dispatch) and work your way up. This ensures you always have a working application during the migration.
+> ابدأ الترحيل من المكوّنات الطرفية (التي تستخدم dispatch فعليًا) وتدرّج إلى الأعلى. هذا يضمن أن يبقى لديك تطبيق يعمل في كل أثناء الترحيل.
 
-## Step 4: Enhanced Patterns for Better Ergonomics
+## الخطوة 4: أنماط محسّنة لتجربة أفضل
 
-Once you have the basic context working, you can enhance it with more ergonomic patterns. One common improvement is separating your dispatch into semantic action creators:
+بعد أن يعمل السياق الأساسي، يمكنك تحسينه بأنماط أكثر ملاءمة. تحسين شائع هو فصل dispatch إلى منشئ إجراءات دلالية (semantic action creators):
 
 ```typescript
 // ✅ Create action creators for better developer experience
@@ -309,15 +309,15 @@ function AddTodoForm() {
 }
 ```
 
-This pattern gives you several benefits:
+يمنحك هذا النمط عدّة فوائد:
 
-- **Better autocomplete**: Your IDE can suggest `addTodo` instead of making you remember the exact action shape
-- **Type safety**: TypeScript ensures you’re passing the right parameters
-- **Easier refactoring**: Change the action shape in one place rather than throughout your components
+- **إكمال تلقائي أفضل**: يمكن لمحرّرك أن يقترح `addTodo` بدلًا من إجبارك على تذكّر شكل الإجراء بالضبط
+- **أمان الأنواع**: يضمن TypeScript أنك تمرّر المعاملات الصحيحة
+- **إعادة هيكلة أسهل**: غيّر شكل الإجراء في مكان واحد بدلًا من في كل مكوّناتك
 
-## Step 5: Advanced Type Safety with Action Builders
+## الخطوة 5: أمان أنواع متقدّم مع بُناة الإجراءات
 
-For even better type safety, you can create action builders that ensure your actions are always well-formed:
+لمنح أمان أنواع أفضل، يمكنك إنشاء بُناة إجراءات (action builders) تضمن أن تكون إجراءاتك مصوغة على نحو صحيح دائمًا:
 
 ```typescript
 // ✅ Action builders with full type safety
@@ -358,7 +358,7 @@ export function useTodoActions() {
 }
 ```
 
-This approach makes testing easier too—you can test your action builders independently from your components:
+يبسّط هذا الأسلوب الاختبار أيضًا — يمكنك اختبار بُناة الإجراءات بمعزل عن مكوّناتك:
 
 ```typescript
 // ✅ Easy to test action builders
@@ -383,9 +383,9 @@ describe('todoActions', () => {
 });
 ```
 
-## Real World Migration Example: Form State Management
+## مثال ترحيل واقعي: إدارة حالة النماذج
 
-Here’s a more complex example showing how to migrate form state management from prop drilling to context. This pattern is especially useful for multi-step forms or wizards:
+إليك مثالًا أكثر تعقيدًا يوضّح كيفية ترحيل إدارة حالة النماذج من تمرير الخصائص إلى السياق. هذا النمط مفيد بشكل خاص للنماذج متعدّدة الخطوات أو المعالجات المتدرجة:
 
 ```typescript
 // Before: Prop drilling form dispatch through multiple steps
@@ -467,11 +467,11 @@ function PersonalInfoStep() {
 }
 ```
 
-## Performance Considerations and Gotchas
+## اعتبارات الأداء والمَطبّات
 
-When migrating from prop drilling to context, be aware of these performance implications:
+عند الانتقال من تمرير الخصائص إلى السياق، انتبه إلى هذه الآثار على الأداء:
 
-### Context Value Memoization
+### التخزين المؤقت لقيمة السياق
 
 ```typescript
 // ❌ This causes all consumers to re-render on every provider render
@@ -494,9 +494,9 @@ function TodoProvider({ children }: { children: ReactNode }) {
 }
 ```
 
-### Selective Context Subscriptions
+### الاشتراكات الانتقائية في السياق
 
-For better performance with large state objects, consider splitting your context:
+لأداء أفضل مع كائنات حالة كبيرة، فكّر في فصل سياقك:
 
 ```typescript
 // ✅ Split state and actions for better performance
@@ -528,9 +528,9 @@ function AddTodoButton() {
 }
 ```
 
-## Testing Your Context Migration
+## اختبار ترحيل السياق
 
-Proper testing becomes more straightforward after the migration:
+يصبح الاختبار السليم أكثر وضوحًا بعد الترحيل:
 
 ```typescript
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -586,9 +586,9 @@ test('useTodoActions provides expected interface', () => {
 });
 ```
 
-## Common Migration Pitfalls and Solutions
+## مَطبّات الترحيل الشائعة وحلولها
 
-### Pitfall 1: Forgetting to Memoize Action Creators
+### المطبّة 1: نسيان التخزين المؤقت لمنشئي الإجراءات
 
 ```typescript
 // ❌ This causes infinite re-renders
@@ -619,7 +619,7 @@ function useTodoActions() {
 }
 ```
 
-### Pitfall 2: Context Provider Placement
+### المطبّة 2: موضع مزوّد السياق
 
 ```typescript
 // ❌ Provider too low in the tree
@@ -651,7 +651,7 @@ function App() {
 }
 ```
 
-### Pitfall 3: Over-using Context
+### المطبّة 3: الإفراط في استخدام السياق
 
 ```typescript
 // ❌ Don't put everything in global context
@@ -693,25 +693,25 @@ function TodoSection() {
 }
 ```
 
-## When NOT to Use This Pattern
+## متى لا تستخدم هذا النمط
 
-Context isn’t always the right solution. Stick with prop passing when:
+السياق ليس الحل الصحيح دائمًا. التزم بتمرير الخصائص عندما:
 
-- **The dispatch only needs to go down 1-2 levels**: Context adds complexity for simple cases
-- **The state is truly local**: Don’t make component-specific state global
-- **Performance is critical and you have frequent updates**: Context causes all consumers to re-render
-- **You’re building a reusable component library**: Props provide better flexibility for library consumers
+- **يحتاج dispatch إلى النزول مستوى أو مستويين فقط**: يضيف السياق تعقيدًا بلا داعٍ في الحالات البسيطة
+- **الحالة محلية فعلًا**: لا تجعل حالة خاصّة بمكوّن عامّة
+- **الأداء حاسم وهناك تحديثات متكرّرة**: يسبّب السياق إعادة تصيير جميع المستهلكين
+- **أنت تبني مكتبة مكوّنات قابلة لإعادة الاستخدام**: تقدّم الخصائص مرونة أفضل لمستهلكي المكتبة
 
-## Wrapping Up
+## الخلاصة
 
-Migrating from prop-drilled dispatch functions to a typed Context pattern gives you:
+الانتقال من دوال dispatch المنقولة عبر الخصائص إلى نمط Context مكتوب الأنواع يمنحك:
 
-- **Cleaner component interfaces**: No more passing through props that components don’t use
-- **Better developer experience**: Semantic action creators instead of remembering dispatch shapes
-- **Easier refactoring**: Move components without updating the entire prop chain
-- **Type safety throughout**: TypeScript ensures your actions and state stay in sync
-- **Testability**: Context hooks are easy to test in isolation
+- **واجهات مكوّنات أنظف**: لا مزيد من تمرير خصائص لا تستخدمها المكوّنات
+- **تجربة مطوّر أفضل**: منشئ إجراءات دلالية بدلًا من تذكّر أشكال dispatch
+- **إعادة هيكلة أسهل**: انقل المكوّنات دون تحديث سلسلة الخصائص بالكامل
+- **أمان أنواع في كل مكان**: يضمن TypeScript بقاء إجراءاتك وحالتك متزامنة
+- **قابلية الاختبار**: خُطّافات السياق سهلة الاختبار بمعزلها
 
-The migration can be done gradually, component by component, without breaking your existing functionality. Start with the components that actually use dispatch, work your way up the component tree, and remember to memoize your context values and action creators.
+يمكن تنفيذ الترحيل تدريجيًا، مكوّنًا تلو الآخر، دون كسر وظائفك القائمة. ابدأ بالمكوّنات التي تستخدم dispatch فعليًا، وتدرّج صعودًا في شجرة المكوّنات، ولا تنسَ تخزين قيم السياق ومنشئي الإجراءات مؤقتًا.
 
-This pattern works particularly well for form state, shopping carts, user authentication, and any other scenarios where you find yourself passing the same dispatch function through multiple component layers. Your components become more focused on their actual responsibilities instead of being courier services for dispatch functions they never use.
+يعمل هذا النمط بشكل ممتاز مع حالة النماذج، وسلات التسوّق، ومصادقة المستخدم، وأي سيناريو آخر تجد نفسك فيه تمرّر دالة dispatch نفسها عبر عدّة طبقات من المكوّنات. تصبح مكوّناتك أكثر تركيزًا على مسؤولياتها الفعلية بدلًا من أن تصبح خدمات توصيل لدوال dispatch لا تستخدمها.

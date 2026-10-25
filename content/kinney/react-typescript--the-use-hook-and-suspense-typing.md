@@ -1,16 +1,16 @@
 ---
-title: "The use Hook and Suspense Typing"
-lang: en
+title: "الخُطّاف use وحدود Suspense: تحديد الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/the-use-hook-and-suspense-typing"
 ---
 
-React’s `use()` hook is a game-changer for handling async data—it lets you consume promises and resources directly without the usual `useEffect` ceremony. Combined with Suspense boundaries, you can build components that handle loading and error states elegantly. The tricky part? Making sure TypeScript understands what’s happening when your components start throwing promises around (literally).
+الخُطّاف `use()` في React هو تغييرٌ جذري في التعامل مع البيانات غير المتزامنة — فهو يتيح لك استهلاك الوعود (promises) والمصادر مباشرةً من دون مراسم `useEffect` المعتادة. ومع حدود Suspense، يمكنك بناء مكوّنات تتعامل مع حالات التحميل والأخطاء بأناقة. والجزء الصعب؟ أن تتأكّد من أن TypeScript يفهم ما يجري حين تبدأ مكوّناتك في رمي الوعود حولها (حرفيًا).
 
-We’re going to explore how to type the `use()` hook properly, handle Suspense boundaries with confidence, and avoid the footguns that come with mixing async data and TypeScript. By the end, you’ll be writing components that feel magical to use but remain completely type-safe under the hood.
+سنستكشف كيفية تحديد أنواع الخُطّاف `use()` على نحو صحيح، والتعامل مع حدود Suspense بثقة، وتجنّب الفخاخ التي تنشأ عن مزج البيانات غير المتزامنة مع TypeScript. وفي نهايتك، ستكتب مكوّنات تبدو سحرية في الاستخدام لكنها تبقى آمنة الأنواع تمامًا في العمق.
 
-## The Fundamentals of use()
+## أساسيات use()
 
-The `use()` hook is React’s newest way to unwrap promises and context values. Unlike traditional hooks, it can be called conditionally and even inside loops—which makes it incredibly flexible for dynamic data fetching scenarios.
+الخُطّاف `use()` هو أحدث طريقة في React لفكّ تغليف الوعود وقيم السياق. وبخلاف الخُطّافات التقليدية، يمكن استدعاؤه بشكل شرطي بل وحتى داخل الحلقات — وهو ما يجعله مرنًا للغاية في سيناريوهات جلب البيانات الديناميكية.
 
 ```typescript
 import { use } from 'react';
@@ -22,13 +22,13 @@ function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
 }
 ```
 
-The magic happens when your component encounters an unresolved promise. React will suspend the component (throwing the promise), and the nearest Suspense boundary catches it, showing a fallback until the promise resolves. Once resolved, React re-renders the component with the actual data.
+وتحدث السحر عندما يصطدم مكوّنك بوعدٍ لم يُحلّ بعد. سيعلّق React المكوّن (برمي الوعد)، ويلتقط أقرب حدّ Suspense له، ويعرض بديلًا (fallback) إلى أن يُحلّ الوعد. وبعد الحلّ، يعيد React تصيير المكوّن بالبيانات الفعلية.
 
-Here’s where TypeScript gets interesting. The `use()` hook needs to understand what type your promise resolves to, and your component needs proper typing for both the suspended and resolved states.
+وهنا تصبح TypeScript مثيرة للاهتمام. يحتاج الخُطّاف `use()` إلى فهم النوع الذي يُحلّ إليه وعدك، ويحتاج مكوّنك إلى تحديد دقيق للحالتين: المعلَّقة والمحلولة.
 
-## Typing Promise-Based Data
+## تحديد أنواع البيانات المبنيّة على الوعود
 
-Let’s start with the most common scenario—fetching data from an API and consuming it with `use()`.
+لنبدأ بالسيناريو الأكثر شيوعًا — جلب البيانات من واجهة برمجية واستهلاكها عبر `use()`.
 
 ```typescript
 interface User {
@@ -54,9 +54,9 @@ function UserProfile({ userPromise }: UserProfileProps) {
 }
 ```
 
-The `use()` hook is smart enough to infer the resolved type from your promise. If you pass a `Promise<User>`, you get back a `User`. If you pass a `Promise<string[]>`, you get back a `string[]`. No additional type annotations needed.
+الخُطّاف `use()` ذكيّ بما يكفي لاستنتاج النوع المحلول من وعدك. فإن مرّرت `Promise<User>` ستحصل على `User` في المقابل. وإن مرّرت `Promise<string[]>` ستحصل على `string[]`. ولا حاجة إلى أي تعليقات نوعية إضافية.
 
-But what happens when your promise might reject? That’s where error boundaries come into play.
+لكن ماذا يحدث إذا كان وعدك قد يُرفض؟ هنا يأتي دور حدود الأخطاء (error boundaries).
 
 ```typescript
 import { ErrorBoundary } from 'react-error-boundary';
@@ -74,13 +74,13 @@ function App() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Error boundaries catch promise rejections from `use()`, while Suspense boundaries catch the promises themselves during the pending state.
+> تلتقط حدود الأخطاء رفض الوعود الصادرة عن `use()`، بينما تلتقط حدود Suspense الوعود نفسها أثناء حالة الانتظار.
 
-## Creating Typed Resource Factories
+## إنشاء مصانع موارد مُنمَّطة
 
-For more complex scenarios, you’ll often want to create resource factories that return well-typed promises. Here’s a pattern that works well with TypeScript:
+في السيناريوهات الأكثر تعقيدًا، ستحتاج غالبًا إلى إنشاء مصانع موارد تُعيد وعودًا مُحكمة الأنواع. وإليك نمطًا يعمل جيدًا مع TypeScript:
 
 ```typescript
 interface ApiResponse<T> {
@@ -106,7 +106,7 @@ function UserProfile() {
 }
 ```
 
-For even more sophisticated resource management, you might want to create a resource that handles caching and deduplication:
+ولإدارة موارد أكثر تطوّرًا، قد ترغب في إنشاء مورد يتعامل مع التخزين المؤقت ومنع التكرار:
 
 ```typescript
 interface ResourceState<T> {
@@ -140,9 +140,9 @@ function PostsList() {
 }
 ```
 
-## Conditional use() Calls and Type Safety
+## الاستدعاءات الشرطية لـ use() وأمان الأنواع
 
-One of the unique features of `use()` is that it can be called conditionally. This creates interesting typing scenarios:
+من المزايا الفريدة لـ `use()` أنّه يمكن استدعاؤه بشكل شرطي. وهذا يولّد سيناريوهات أنواع مثيرة للاهتمام:
 
 ```typescript
 interface ConditionalDataProps {
@@ -163,7 +163,7 @@ function ConditionalData({ shouldLoad, dataPromise }: ConditionalDataProps) {
 }
 ```
 
-For more complex conditional logic, you might need to help TypeScript understand the flow:
+ولمنطق شرطي أكثر تعقيدًا، قد تحتاج إلى مساعدة TypeScript على فهم مجرى التنفيذ:
 
 ```typescript
 interface MultiResourceProps {
@@ -187,9 +187,9 @@ function MultiResource({ userPromise, profilePromise, mode }: MultiResourceProps
 }
 ```
 
-## Typing `Suspense` Boundaries
+## تحديد أنواع حدود `Suspense`
 
-Suspense boundaries themselves don’t need special typing, but the components you wrap in them do. Here’s how to create a well-typed async component structure:
+حدود Suspense نفسها لا تحتاج إلى تحديد أنواع خاصّ، لكنّ المكوّنات التي تغلّفها تحتاج إلى ذلك. وإليك كيفية إنشاء بنية مكوّنات غير متزامنة مُحكمة الأنواع:
 
 ```typescript
 interface AsyncPageProps {
@@ -220,7 +220,7 @@ function UserPage(props: AsyncPageProps) {
 }
 ```
 
-For components that need to handle multiple async resources, you can compose them nicely:
+وللمكوّنات التي تحتاج إلى التعامل مع عدّة موارد غير متزامنة، يمكنك تركيبها بأناقة:
 
 ```typescript
 function ComplexAsyncPage({ userId }: { userId: string }) {
@@ -240,9 +240,9 @@ function ComplexAsyncPage({ userId }: { userId: string }) {
 }
 ```
 
-## Error Handling with Type Safety
+## معالجة الأخطاء بأمان الأنواع
 
-When promises reject, you need proper error boundaries. Here’s how to create type-safe error handling:
+حين تُرفض الوعود، تحتاج إلى حدود أخطاء ملائمة. وإليك كيفية إنشاء معالجة أخطاء آمنة الأنواع:
 
 ```typescript
 import { ErrorBoundary } from 'react-error-boundary';
@@ -279,11 +279,11 @@ function App() {
 }
 ```
 
-## Real World Use Cases™
+## حالات الاستخدام من العالم الحقيقي™
 
-Here are some patterns you’ll likely encounter in production applications:
+إليك بعض الأنماط التي من المرجّح أن تصادفها في تطبيقات الإنتاج:
 
-### Typed Search Results
+### نتائج بحث مُنمَّطة
 
 ```typescript
 interface SearchResult<T> {
@@ -311,7 +311,7 @@ const userSearchPromise = searchUsers('john'); // Returns Promise<SearchResult<U
 <SearchResults searchPromise={userSearchPromise} />;
 ```
 
-### Parallel Data Loading
+### التحميل المتوازي للبيانات
 
 ```typescript
 interface DashboardData {
@@ -342,9 +342,9 @@ function Dashboard({ userId }: { userId: string }) {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## المآخذ الشائعة وكيف تتجنّبها
 
-### Don’t Create Promises in Render
+### لا تنشئ وعودًا أثناء التصيير
 
 ```typescript
 // ❌ Bad: Creates new promise on every render
@@ -361,7 +361,7 @@ function GoodExample({ userId }: { userId: string }) {
 }
 ```
 
-### Handle Promise Resolution Timing
+### تعامل مع توقيت حلّ الوعد
 
 ```typescript
 // ✅ Good: Handle the case where data might not be available
@@ -375,7 +375,7 @@ function SafeComponent({ dataPromise }: { dataPromise: Promise<Data> | null }) {
 }
 ```
 
-### Type Your Promise Factories Properly
+### حدّد أنواع مصانع الوعود على نحو صحيح
 
 ```typescript
 // ❌ Bad: Loses type information
@@ -393,13 +393,13 @@ const createUserFetcher = async (id: string): Promise<User> => {
 };
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Always validate API responses at runtime. TypeScript types don’t exist at runtime, so external data needs validation.
+> تحقّق دائمًا من استجابات الواجهة البرمجية وقت التشغيل. أنواع TypeScript لا وجود لها وقت التشغيل، لذا فالبيانات الخارجية تحتاج إلى تحقّق.
 
-## Advanced Patterns
+## الأنماط المتقدّمة
 
-### Typed Resource Composition
+### تركيب موارد مُنمَّط
 
 ```typescript
 interface CompositeResource<T, U> {
@@ -435,7 +435,7 @@ function CompositeView({ userId }: { userId: string }) {
 }
 ```
 
-### Resource with Loading States
+### مورد مع حالات تحميل
 
 ```typescript
 interface ResourceWithMeta<T> {
@@ -453,16 +453,16 @@ function createResourceWithMeta<T>(promise: Promise<T>): Promise<ResourceWithMet
 }
 ```
 
-## Next Steps
+## الخطوات التالية
 
-The `use()` hook and Suspense create a powerful foundation for handling async data in React applications. With proper TypeScript integration, you can build components that are both performant and type-safe.
+يوفّر الخُطّاف `use()` مع Suspense أساسًا قويًا للتعامل مع البيانات غير المتزامنة في تطبيقات React. ومع التكامل السليم مع TypeScript، يمكنك بناء مكوّنات سريعة وآمنة الأنواع في آنٍ واحد.
 
-Key takeaways:
+أهم الخلاصات:
 
-- Always memoize promises to avoid unnecessary re-fetches
-- Use proper error boundaries alongside Suspense boundaries
-- Validate external data at runtime, not just at compile time
-- Create typed resource factories for reusable async patterns
-- Remember that `use()` can be called conditionally—embrace this flexibility
+- خزّن الوعود مؤقتًا دائمًا لتجنّب إعادة الجلب غير الضرورية
+- استخدم حدود أخطاء ملائمة إلى جانب حدود Suspense
+- تحقّق من البيانات الخارجية وقت التشغيل لا في وقت التجميع وحده
+- أنشئ مصانع موارد مُنمَّطة لأنماط غير متزامنة قابلة لإعادة الاستخدام
+- تذكّر أنّ `use()` يمكن استدعاؤه بشكل شرطي — فاحتضن هذه المرونة
 
-As you build more complex applications, consider exploring libraries like [TanStack Query](https://tanstack.com/query/latest) or [SWR](https://swr.vercel.app/) that provide additional features like caching, background updates, and more sophisticated error handling—all with excellent TypeScript support.
+أثناء بناء تطبيقات أكثر تعقيدًا، فكّر في استكشاف مكتبات مثل [TanStack Query](https://tanstack.com/query/latest) أو [SWR](https://swr.vercel.app/) التي تقدّم ميزات إضافية مثل التخزين المؤقت والتحديثات في الخلفية ومعالجة أخطاء أكثر تطوّرًا — كلّها بدعم ممتاز من TypeScript.

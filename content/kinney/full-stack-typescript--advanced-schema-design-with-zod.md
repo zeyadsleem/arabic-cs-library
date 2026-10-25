@@ -1,14 +1,14 @@
 ---
-title: "Advanced Schema Design with Zod"
-lang: en
+title: "تصميم مخططات متقدّمة مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/advanced-schema-design-with-zod"
 ---
 
-Zod offers advanced schema design patterns to handle complex validation scenarios effectively.
+يقدّم Zod أنماط تصميم متقدّمة للمخططات للتعامل مع سيناريوهات التحقق المعقّدة بفعالية.
 
-## Recursive Data Structures with `z.lazy()`
+## بنى البيانات التعاودية مع `z.lazy()`
 
-Handle schemas that reference themselves recursively (e.g., tree-like structures). `z.lazy()` allows you to define a schema that refers to itself without causing circular dependency issues during schema definition.
+تعامل مع المخططات التي تشير إلى نفسها تعاوديًا (مثل البنى الشجرية). ويتيح لك `z.lazy()` تعريف مخطط يشير إلى نفسه دون إحداث مشكلات اعتماد دائري أثناء تعريف المخطط.
 
 ```typescript
 interface Category {
@@ -41,9 +41,9 @@ const invalidCategory: any = {
 // categorySchema.parse(invalidCategory); // Throws ZodError: Expected object, received number at 'subcategories[0].name'
 ```
 
-## Preprocessing for Complex Validation with `z.preprocess()` and `z.superPreprocess()`
+## المعالجة المسبقة للتحقق المعقّد مع `z.preprocess()` و`z.superPreprocess()`
 
-Use preprocessing to handle complex data transformations or conditional validation logic before applying the main schema validation. This is particularly useful when dealing with data that requires significant preparation before it can be validated against a specific schema.
+استخدم المعالجة المسبقة للتعامل مع تحويلات بيانات معقّدة أو منطق تحقق شرطي قبل تطبيق التحقق الأساسي بالمخطط. وهذا مفيد بشكل خاص عند التعامل مع بيانات تحتاج إلى تهيئة كبيرة قبل أن يمكن التحقق منها وفق مخطط محدد.
 
 ```typescript
 const complexDataSchema = z.preprocess(
@@ -72,15 +72,15 @@ complexDataSchema.parse('prefix-string-value'); // Valid, validates string schem
 // complexDataSchema.parse("invalid json string"); // Throws ZodError for string schema validation failure
 ```
 
-By mastering schema construction, refinement, transformation, and error handling, you gain the power to define precise data expectations and enforce them rigorously at runtime with Zod.
+بإتقانك بناء المخططات وتحسينها وتحويلها ومعالجة أخطائها، تملك القدرة على تعريف توقعات بيانات دقيقة وفرضها بصرامة في وقت التشغيل باستخدام Zod.
 
-## Zod and TypeScript Synergy: A Powerful Partnership
+## التناغم بين Zod وTypeScript: شراكة قوية
 
-Zod is designed to work seamlessly with TypeScript, enhancing the developer experience and maximizing type safety throughout your applications.
+صُمّم Zod ليعمل بانسجام مع TypeScript، فيحسّن تجربة المطوّر ويعظّم سلامة الأنواع في كل أنحاء تطبيقاتك.
 
-### Type Inference: Bridging Runtime and Compile Time
+### استنتاج الأنواع: جسر بين وقت التشغيل ووقت التصريف
 
-Zod’s powerful type inference capabilities are a game-changer for TypeScript developers. The `z.infer<typeof schema>` utility allows you to automatically extract the TypeScript type from a Zod schema. This eliminates the need to manually define types that mirror your schemas, reducing redundancy and ensuring type consistency between your validation logic and your TypeScript code.
+تشكّل قدرات استنتاج الأنواع القوية في Zod تغييرًا جذريًا لمطوّري TypeScript. فتتيح لك أداة `z.infer<typeof schema>` استخراج نوع TypeScript تلقائيًا من مخطط Zod. وهذا يلغي الحاجة إلى تعريف أنواع يدويًا تحاكي مخططاتك، فيقلّل التكرار ويضمن اتساق الأنواع بين منطق التحقق لديك وشيفرة TypeScript.
 
 ```typescript
 const productSchema = z.object({
@@ -108,11 +108,11 @@ const parsedProduct = productSchema.parse(validProductData); // Runtime validati
 processProduct(parsedProduct); // Type-safe usage of validated data
 ```
 
-With `z.infer`, you establish a single source of truth for your data structure – the Zod schema. TypeScript automatically understands the shape of the validated data, providing compile-time type safety for data validated at runtime.
+باستخدام `z.infer`، تنشئ مصدرًا واحدًا للحقيقة لبنية بياناتك، وهو مخطط Zod. ويفهم TypeScript تلقائيًا شكل البيانات المتحقَّق منها، فيوفّر سلامة أنواع في وقت التصريف لبيانات متحقَّق منها في وقت التشغيل.
 
-### Function Signatures: Ensuring Type Safety at Function Boundaries
+### بصمات الدوال: ضمان سلامة الأنواع عند حدود الدوال
 
-Zod schemas can be used to define precise type signatures for function parameters and return values, extending type safety beyond object structures to function interfaces. This is particularly useful for ensuring type correctness when working with functions that handle external data or perform complex data transformations.
+يمكن استخدام مخططات Zod لتعريف بصمات أنواع دقيقة لمعاملات الدوال وقيمها المعادة، فتوسّع سلامة الأنواع إلى ما هو أبعد من بنى الكائنات لتشمل واجهات الدوال. وهذا مفيد بشكل خاص لضمان صحة الأنواع عند التعامل مع دوال تتعامل مع بيانات خارجية أو تجري تحويلات بيانات معقّدة.
 
 ```typescript
 const configSchema = z.object({
@@ -144,11 +144,11 @@ console.log('API URL:', appConfig.apiUrl);
 console.log('Timeout:', appConfig.timeout);
 ```
 
-By using Zod schemas to define function signatures, you create clear contracts for your functions, ensuring that they receive and return data in the expected format, validated at runtime.
+باستخدام مخططات Zod لتعريف بصمات الدوال، تنشئ عقودًا واضحة لدوالك، فتضمن أنها تستقبل وتعيد بيانات بالتنسيق المتوقع، متحقَّقًا منها في وقت التشغيل.
 
-### Asynchronous Validation: Handling External Data Sources
+### التحقق اللامتزامن: التعامل مع مصادر البيانات الخارجية
 
-Zod supports asynchronous validation with the `schema.parseAsync(data)` method. This is crucial for scenarios where validation logic needs to interact with external resources, such as databases or APIs, to perform checks.
+يدعم Zod التحقق اللامتزامن بالتابع `schema.parseAsync(data)`. وهذا حاسم في السيناريوهات التي يحتاج فيها منطق التحقق إلى التفاعل مع موارد خارجية، مثل قواعد البيانات أو واجهات API، لإجراء الفحوص.
 
 ```typescript
 import { z } from 'zod';
@@ -191,15 +191,15 @@ validateUsername('newUser123'); // Validates asynchronously, assuming "newUser12
 // validateUsername("takenUser"); // Validates asynchronously, throws ZodError: Username is already taken
 ```
 
-`parseAsync()` returns a Promise that resolves with the validated data if validation succeeds or rejects with a `ZodError` if validation fails. This enables you to seamlessly integrate asynchronous validation into your application’s data flow.
+يعيد `parseAsync()` وعدًا يُحلّ بالبيانات المتحقَّق منها إذا نجح التحقق، أو يُرفض بـ `ZodError` إذا فشل التحقق. وهذا يتيح لك دمج التحقق اللامتزامن بانسجام في تدفق بيانات تطبيقك.
 
-### Zod in the Wild: Real-World Applications
+### Zod في الميدان: تطبيقات واقعية
 
-Zod’s versatility makes it applicable across various contexts in TypeScript development. Here are some common real-world use cases:
+تجعل تعدّد استخدامات Zod قابلًا للتطبيق في سياقات متنوعة في تطوير TypeScript. وإليك بعض حالات الاستخدام الواقعية الشائعة:
 
-## API Request/Response Validation
+## التحقق من طلبات API واستجاباتها
 
-In server-side applications (e.g., Express, NestJS), use Zod to validate incoming API requests and outgoing API responses. This ensures data integrity at your API boundaries.
+في تطبيقات الخادم (مثل Express وNestJS)، استخدم Zod للتحقق من طلبات API الواردة واستجابات API الصادرة. وهذا يضمن سلامة البيانات عند حدود API لديك.
 
 ```typescript
 import express, { Request, Response } from 'express';
@@ -231,9 +231,9 @@ app.post('/users', async (req: Request, res: Response) => {
 app.listen(3000, () => console.log('Server listening on port 3000'));
 ```
 
-## Form Validation
+## التحقق من النماذج
 
-In web applications (e.g., React, Angular, Vue.js), use Zod to validate user inputs in forms. This provides robust client-side validation and improves user experience.
+في تطبيقات الويب (مثل React وAngular وVue.js)، استخدم Zod للتحقق من مدخلات المستخدم في النماذج. وهذا يوفّر تحققًا قويًا من جهة العميل ويحسّن تجربة المستخدم.
 
 ```typescript
 import React, { useState } from 'react';
@@ -300,9 +300,9 @@ function ContactForm() {
 }
 ```
 
-## Data Serialization/Deserialization
+## تسلسل البيانات وإلغاء تسلسلها
 
-Validate and transform data when serializing to or deserializing from formats like JSON or when interacting with storage systems.
+تحقق من البيانات وحوّلها عند التسلسل إلى صيغ مثل JSON أو إلغاء التسلسل منها، أو عند التعامل مع أنظمة تخزين.
 
 ```typescript
 import { z } from 'zod';
@@ -346,9 +346,9 @@ const deserialized = deserializeUserData(serialized);
 console.log('Deserialized user data:', deserialized);
 ```
 
-## Configuration Validation
+## التحقق من التهيئة
 
-Enforce type safety for application configuration files, ensuring that configuration values are valid and prevent runtime errors due to misconfigurations.
+افرض سلامة الأنواع على ملفات تهيئة التطبيق، بما يضمن صلاحية قيم التهيئة ويمنع أخطاء وقت التشغيل الناتجة عن تهيئة خاطئة.
 
 ```typescript
 import * as fs from 'fs';
@@ -392,13 +392,13 @@ console.log('Server Host:', config.server.host);
 console.log('Database URL:', config.database.url);
 ```
 
-These examples demonstrate the breadth of Zod’s applicability. By integrating Zod into your TypeScript projects, you can significantly enhance data validation and type safety across various application layers.
+توضح هذه الأمثلة اتساع قابلية تطبيق Zod. وبإدماج Zod في مشاريع TypeScript لديك، يمكنك تحسين التحقق من البيانات وسلامة الأنواع تحسينًا كبيرًا في طبقات التطبيق المختلفة.
 
-## Custom Error Maps
+## خرائط أخطاء مخصّصة
 
-Zod’s default error messages might be a bit robotic for your taste. Use a custom error map to globally or locally tweak them.
+قد تبدو رسائل الخطأ الافتراضية في Zod آلية بعض الشيء لذوقك. فاستخدم خريطة أخطاء مخصّصة لتعديلها عالميًا أو محليًا.
 
-### Setting a Global Error Map
+### تعيين خريطة أخطاء عالمية
 
 ```typescript
 import { z, ZodError, ZodIssueCode } from 'zod';
@@ -415,7 +415,7 @@ z.string().parse(123);
 // => "Invalid type: expected string, got number"
 ```
 
-### Schema-Level Error Map
+### خريطة أخطاء على مستوى المخطط
 
 ```typescript
 const mySchema = z.string().errorMap((issue, ctx) => {
@@ -425,19 +425,19 @@ const mySchema = z.string().errorMap((issue, ctx) => {
 
 > **Zod v4**
 >
-> In Zod v4, the schema-level `.errorMap()` method no longer exists. Use the `error` parameter directly on individual validators instead. The global `z.setErrorMap()` has also been replaced by `z.config()`.
+> في Zod v4، لم يعد التابع `.errorMap()` على مستوى المخطط موجودًا. استخدم المعامل `error` مباشرةً على المُحقِّقات الفردية بدلًا منه. كما استُبدل `z.setErrorMap()` العالمي بـ `z.config()`.
 
-### Why Use Error Maps?
+### لماذا تستخدم خرائط الأخطاء؟
 
-- Centralized, consistent error styling.
-- Local or global overrides.
-- Friendlier messages that are more domain-specific.
+- تنسيق مركزي ومتسق للأخطاء.
+- تجاوزات محلية أو عالمية.
+- رسائل أوْدّ وأكثر تخصصًا في النطاق.
 
-Coercion Schemas: Let Zod Do the Parsing
+مخططات التحويل القسري: دع Zod يقوم بالتحليل
 
-If you receive string inputs that represent numbers, booleans, or dates, try the new `z.coerce.*` APIs to automatically convert them.
+إذا وصلتك مدخلات نصية تمثل أرقامًا أو قيمًا منطقية أو تواريخ، فجرّب واجهات `z.coerce.*` الجديدة لتحويلها تلقائيًا.
 
-### Example: Coercing Strings to Numbers
+### مثال: تحويل السلاسل النصية إلى أرقام
 
 ```typescript
 import { z } from 'zod';
@@ -450,18 +450,18 @@ numberFromString.parse('15');
 // "8" -> 8 -> fails because it's < 10
 ```
 
-#### Other Coercions
+#### تحويلات قسرية أخرى
 
 - `z.coerce.boolean()`
 - `z.coerce.date()`
 
-This is simpler than writing manual `.preprocess()` or `.transform()` in many cases.
+وهذا أبسط من كتابة `.preprocess()` أو `.transform()` يدويًا في حالات كثيرة.
 
-## Schema Merging
+## دمج المخططات
 
-`objectSchemaA.merge(objectSchemaB)` merges two object schemas, combining (and overriding) properties.
+يدمج `objectSchemaA.merge(objectSchemaB)` مخططَي كائنات، جامعًا الخصائص (ومتجاوزًا بعضها).
 
-### Example
+### مثال
 
 ```typescript
 import { z } from 'zod';
@@ -486,9 +486,9 @@ const merged = schemaA.merge(schemaB);
 
 > **Zod v4**
 >
-> In Zod v4, `.merge()` is deprecated. Use `.extend()` instead: `schemaA.extend(schemaB.shape)`.
+> في Zod v4، أصبح `.merge()` مهجورًا. استخدم `.extend()` بدلًا منه: `schemaA.extend(schemaB.shape)`.
 
-### Difference vs. Intersection
+### الفرق عن التقاطع
 
-- `merge` only works on object schemas and merges properties (with the second schema overwriting clashing keys).
-- `intersection` can combine any schemas (not just objects) and requires both validations to pass.
+- يعمل `merge` على مخططات الكائنات فقط ويدمج الخصائص (مع تجاوز المخطط الثاني للمفاتيح المتعارضة).
+- يستطيع `intersection` جمع أي مخططات (لا الكائنات فقط) ويشترط نجاح التحققين معًا.

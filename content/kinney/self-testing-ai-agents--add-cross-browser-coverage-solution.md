@@ -1,16 +1,16 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/add-cross-browser-coverage-solution"
 ---
 
-The goal here is not “run everything everywhere.” The goal is “run the right tests on the right browsers without making the default loop miserable.” Shelf’s current starter is small enough that this stays simple if you keep the split honest.
+الهدف هنا ليس «شغّل كل شيء في كل مكان». الهدف هو «شغّل الاختبارات الصحيحة على المتصفحات الصحيحة دون أن تجعل الحلقة الافتراضية بائسة». بادئة Shelf الحالية صغيرة بما يكفي ليبقى هذا بسيطًا إن أبقيت الفصل صادقًا.
 
-## What to add
+## ما يجب إضافته
 
-### The project definitions in `playwright.config.ts`
+### تعريفات المشاريع في `playwright.config.ts`
 
-The minimal target shape is three projects:
+الشكل الأدنى المستهدف ثلاثة مشاريع:
 
 ```typescript
 import { defineConfig, devices } from '@playwright/test';
@@ -36,13 +36,13 @@ export default defineConfig({
 });
 ```
 
-Chromium is the default daily driver. Firefox and WebKit are opt-in smoke projects that only run tests tagged `@cross-browser`.
+Chromium هو المشغّل اليومي الافتراضي. Firefox وWebKit مشروعا دخان اختياريان يشغّلان فقط الاختبارات الموسومة `@cross-browser`.
 
-That project-level `grep` is the whole trick. It keeps the alternate browsers honest without turning every local test run into a three-browser event. If you later add `setup` or `authenticated` projects from the auth labs, keep those in the Chromium loop unless you have a specific reason to widen them.
+`grep` على مستوى المشروع هو الحيلة كلها. إنه يُبقي المتصفحات البديلة صادقة دون تحويل كل تشغيل اختبار محلي إلى حدث ثلاثي المتصفحات. إن أضفت لاحقًا مشاريع `setup` أو `authenticated` من مختبرات المصادقة، فأبقِها في حلقة Chromium ما لم يكن لديك سبب محدد لتوسيعها.
 
-### The smoke subset
+### مجموعة الدخان الفرعية
 
-Tag the small set of tests that earn cross-browser coverage. The starter `tests/smoke.spec.ts` is the obvious first target:
+وسّم المجموعة الصغيرة من الاختبارات التي تستحق تغطية عبر المتصفحات. ملف البادئة `tests/smoke.spec.ts` هو الهدف الأول البديهي:
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -58,11 +58,11 @@ test('login page renders', { tag: '@cross-browser' }, async ({ page }) => {
 });
 ```
 
-Keep this set small. A smoke subset is supposed to prove the app basically works in the alternate browsers, not replay the whole suite because someone got ambitious on a Friday.
+أبقِ هذه المجموعة صغيرة. المجموعة الفرعية للدخان مفترض أن تثبت أن التطبيق يعمل أساسًا في المتصفحات البديلة، لا أن تعيد تشغيل المجموعة كلها لأن أحدهم أصبح طموحًا يوم جمعة.
 
-### The `package.json` scripts
+### سكربتات `package.json`
 
-The split in scripts matters as much as the split in projects:
+الفصل في السكربتات يهم بقدر الفصل في المشاريع:
 
 ```json
 {
@@ -73,19 +73,19 @@ The split in scripts matters as much as the split in projects:
 }
 ```
 
-`npm run test` stays fast and boring. `npm run test:cross-browser` is the deliberate wider loop. Do not collapse these into one command unless you enjoy waiting around for Firefox and WebKit every time you change a button label.
+يبقى `npm run test` سريعًا ومملًا. و`npm run test:cross-browser` هو الحلقة الأوسع المتعمدة. لا تدمجهما في أمر واحد إن كنت لا تستمتع بالانتظار لـ Firefox وWebKit في كل مرة تغيّر فيها نص زر.
 
-Before you can run the wider loop locally, install the extra browsers:
+قبل أن تستطيع تشغيل الحلقة الأوسع محليًا، ثبّت المتصفحات الإضافية:
 
 ```bash
 npx playwright install --with-deps firefox webkit
 ```
 
-Playwright’s default install is Chromium. That is why the browser-install step is visible in CI too. What works on your laptop because you ran it once six months ago does not help a fresh runner.
+تثبيت Playwright الافتراضي هو Chromium. ولهذا تظهر خطوة تثبيت المتصفحات في CI أيضًا. ما يعمل على حاسوبك لأنك شغّلته مرة قبل ستة أشهر لا يساعد منفّذًا جديدًا.
 
-### The nightly workflow hook-up
+### توصيل سير العمل الليلي
 
-Once the command exists and the nightly workflow lab lands, the nightly job is small. Here is the shape to aim for:
+بمجرد وجود الأمر ونزول مختبر سير العمل الليلي، تصبح مهمة الليل صغيرة. إليك الشكل الذي تستهدفه:
 
 ```yaml
 cross-browser-smoke:
@@ -117,48 +117,48 @@ cross-browser-smoke:
         retention-days: 7
 ```
 
-Two details are load-bearing.
+تفصيلان حاملان.
 
-First: `DATABASE_URL=file:./ci.db` keeps the preview bootstrap to a single file inside the working directory — no extra directory ceremony just to boot the preview server.
+أولًا: `DATABASE_URL=file:./ci.db` يُبقي تهيئة المعاينة في ملف واحد داخل مجلد العمل — بلا مراسم مجلد إضافي لمجرد تشغيل خادم المعاينة.
 
-Second: the report artifact name is specific. When a nightly check fails, you want the failure to read like “cross-browser smoke failed,” not “some artifact exists somewhere, good luck.”
+ثانيًا: اسم مخرج التقرير محدد. عندما يفشل فحص ليلي، تريد أن يُقرأ الفشل كـ «فشل دخان المتصفحات المتعددة»، لا «هناك مخرج ما في مكان ما، حظًا سعيدًا».
 
-## What you still need to run
+## ما ما زلت بحاجة إلى تشغيله
 
-Install the extra browsers once:
+ثبّت المتصفحات الإضافية مرة واحدة:
 
 ```bash
 npx playwright install --with-deps firefox webkit
 ```
 
-Run the fast loop:
+شغّل الحلقة السريعة:
 
 ```bash
 npm run test
 ```
 
-Run the wider smoke loop:
+شغّل حلقة الدخان الأوسع:
 
 ```bash
 npm run test:cross-browser
 ```
 
-Then break something on purpose in one tagged smoke test and rerun `npm run test:cross-browser`. The output should clearly tell you which project failed: `chromium`, `firefox-smoke`, or `webkit-smoke`. If the failure is not browser-specific in the output, your project names or reporting are too vague.
+ثم اكسر شيئًا عمدًا في أحد اختبارات الدخان الموسومة وأعد تشغيل `npm run test:cross-browser`. ينبغي أن يخبرك المخرج بوضوح أي مشروع فشل: `chromium` أو `firefox-smoke` أو `webkit-smoke`. إن لم يكن الفشل خاصًا بمتصفح في المخرج، فأسماء مشاريعك أو تقاريرك غامضة أكثر من اللازم.
 
-## Local vs. hosted
+## المحلي مقابل المستضاف
 
-**Local:** the config, tags, and scripts are all fully verifiable now. You can prove Chromium stays fast and the wider smoke command fans out across three projects.
+**محليًا:** الإعداد والوسوم والسكربتات كلها قابلة للتحقق بالكامل الآن. يمكنك إثبات أن Chromium يبقى سريعًا وأن أمر الدخان الأوسع يتوزع على ثلاثة مشاريع.
 
-**Hosted:** the scheduled nightly run still needs GitHub Actions on a real repository. Until then, `workflow_dispatch` is the easiest way to prove the workflow shape without waiting for tomorrow morning.
+**مستضافًا:** التشغيل الليلي المجدول ما زال يحتاج GitHub Actions على مستودع حقيقي. حتى ذلك الحين، `workflow_dispatch` هو أسهل طريقة لإثبات شكل سير العمل دون انتظار صباح الغد.
 
-## Patterns to take away
+## أنماط تستحق الاحتفاظ بها
 
-- Explicit project names protect the fast loop. `chromium` for daily work, `firefox-smoke` and `webkit-smoke` for the wider check.
-- Tags beat path tricks here. The same smoke spec can stay in `tests/` and opt into wider coverage with `@cross-browser`.
-- Browser install is an explicit step. Chromium working locally does not mean Firefox and WebKit exist anywhere else.
-- Artifact and project names are part of the debugging UX. A red nightly job should already tell you which browser is unhappy.
+- أسماء المشاريع الصريحة تحمي الحلقة السريعة. `chromium` للعمل اليومي، و`firefox-smoke` و`webkit-smoke` للفحص الأوسع.
+- الوسوم تتفوق على حيل المسارات هنا. يمكن لمواصفة الدخان نفسها أن تبقى في `tests/` وتختار التغطية الأوسع بـ `@cross-browser`.
+- تثبيت المتصفح خطوة صريحة. عمل Chromium محليًا لا يعني أن Firefox وWebKit موجودان في أي مكان آخر.
+- أسماء المخرجات والمشاريع جزء من تجربة التنقيح. مهمة ليلية حمراء ينبغي أن تخبرك بالفعل أي متصفح غير راضٍ.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Add Cross-Browser Coverage](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage)
-- [Cross-Browser Validation Without Burning the Dev Loop](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)
+- [مختبر: إضافة تغطية عبر المتصفحات](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage)
+- [التحقّق عبر المتصفحات دون حرق حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop)

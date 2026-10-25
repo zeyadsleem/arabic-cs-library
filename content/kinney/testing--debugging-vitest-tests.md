@@ -1,18 +1,18 @@
 ---
-title: "Debugging Vitest Tests"
-lang: en
+title: "تنقيح أخطاء اختبارات Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/debugging-vitest-tests"
 ---
 
-You’ve just written the best code of your life, you hit `npm run test`, and oof—something’s broken. But now the real fun begins: *debugging*. That’s right, if debugging your code wasn’t enough, you get to debug your tests too.
+كتبت للتوّ أفضل شيفرة في حياتك، ثم تنفّذ `npm run test`، وإذا بشيء معطوب. لكن هنا تبدأ المتعة الحقيقية: *تنقيح الأخطاء*. أجل، إن لم يكن تنقيح شيفرتك كافيًا، فها أنت تُنقّح اختباراتك أيضًا.
 
-Like all debugging, it’s the mix of detective work and head-scratching that we all signed up for at some point shortly after choosing this career path. Don’t worry, though. We’re going to walk through the essential tools Vitest offers for debugging, and I promise, it’s not as scary as figuring out why your CSS grid isn’t lining up.
+وكما في كل تنقيح أخطاء، فهي مزيج من عمل المحقّق والحيرة التي وافقنا جميعًا على خوضها في لحظة ما بعد اختيار هذا المسار المهني مباشرة. لا تقلق، مع ذلك. سنستعرض الأدوات الأساسية التي يقدّمها Vitest لتنقيح الأخطاء، وأعدك بأنها ليست مخيفة كمعرفة سبب عدم اصطفاف شبكة CSS لديك.
 
-## Error Messages in Vitest: Your First Clue
+## رسائل الخطأ في Vitest: أول دليل لديك
 
-Before we dive into fancy debugging tools, let’s talk about reading Vitest’s error messages. That might seem basic, but it’s huge. You run the test, and it fails. Vitest is *really* good at telling you *what* went wrong, which line, and, often, why. So when you see the red “FAIL,” slow down and carefully read through the stack trace.
+قبل أن نغوص في أدوات التنقيح الفاخرة، لنتحدث عن قراءة رسائل الخطأ في Vitest. قد يبدو ذلك بديهيًا، لكنه مهم جدًا. تُشغّل الاختبار فيفشل. وVitest *بارع* حقًا في إخبارك *بما* حدث خطأ، وفي أي سطر، وغالبًا بالسبب أيضًا. لذا عندما ترى كلمة «FAIL» الحمراء، تمهّل واقرأ أثر المكدّس بعناية.
 
-Let’s say you have this failing test:
+لنفترض أن لديك هذا الاختبار الفاشل:
 
 ```javascript
 import { expect, test } from 'vitest';
@@ -23,7 +23,7 @@ test('adds two numbers', () => {
 });
 ```
 
-Vitest tells you exactly where it went sideways:
+يخبرك Vitest بالضبط بمكان الخطأ:
 
 ```typescript
 FAIL  src/addNumbers.test.js > adds two numbers
@@ -31,13 +31,13 @@ FAIL  src/addNumbers.test.js > adds two numbers
       Received: 4
 ```
 
-Great. The math went wrong. Sometimes, tests fail for simple reasons—a typo, wrong arguments, or a function behaving badly. Fix the implementation and move on.
+رائع. الحساب أخطأ. أحيانًا تفشل الاختبارات لأسباب بسيطة: خطأ مطبعي، أو وسائط خاطئة، أو دالة تتصرف بشكل سيئ. أصلح التنفيذ وامضِ قدمًا.
 
-But other times, you need to level up your debugging game.
+لكن في أحيان أخرى، تحتاج إلى رفع مستوى لعبة التنقيح لديك.
 
-## Running Only One Test
+## تشغيل اختبار واحد فقط
 
-When you’ve got a gnarly error and, say, 135 tests awaiting execution, there’s absolutely no reason to run everything. That’s pure chaos. Focus on **one** test at a time. Vitest to the rescue with `.only`.
+عندما تكون لديك مشكلة عويصة، ولنقل 135 اختبارًا في انتظار التنفيذ، فلا سبب على الإطلاق لتشغيل كل شيء. هذه فوضى محضة. ركّز على اختبار **واحد** في كل مرة. وVitest هنا لإنقاذك باستخدام `.only`.
 
 ```javascript
 test.only('adds two numbers', () => {
@@ -45,11 +45,11 @@ test.only('adds two numbers', () => {
 });
 ```
 
-Boom—Vitest just runs that single test. Now, *all* your attention is on the suspect. Narrow it down and debug faster.
+هذا كل شيء: يشغّل Vitest ذلك الاختبار الوحيد فقط. الآن ينصرف *كل* انتباهك إلى المشتبه به. ضيّق النطاق ونقّح الأخطاء أسرع.
 
-## Using `console.log`
+## استخدام `console.log`
 
-Okay, if we’re being real here, most debugging is just sprucing up the joint with `console.log`. Sometimes, the fastest way to figure out what’s going wrong is to pepper *a few `console.log`s into your code*. If you’re adding a million log statements to your actual test files—hey, no judgment—we all do it.
+حسنًا، إن أردنا الصدق، فمعظم تنقيح الأخطاء ليس إلا تزيينًا للمكان بـ `console.log`. أحيانًا تكون أسرع طريقة لمعرفة ما يجري هي رشّ *بضعة `console.log` في شيفرتك*. وإن كنت تضيف مليون عبارة تسجيل إلى ملفات اختبارك الفعلية، فلا حكم عليك، فكلنا نفعل ذلك.
 
 ```javascript
 test('adds two numbers', () => {
@@ -59,22 +59,22 @@ test('adds two numbers', () => {
 });
 ```
 
-This quick logging gives you an immediate sense of what’s going on inside your functions. Stack that up with **watch mode**, and you’ll be fixing bugs in no time.
+يمنحك هذا التسجيل السريع إحساسًا فوريًا بما يحدث داخل دوالك. أضف إلى ذلك **وضع المراقبة**، وستصلح الأخطاء في لمح البصر.
 
-## Using Vitest’s `inspect` Mode for Debugging in Chrome DevTools
+## استخدام وضع `inspect` في Vitest للتنقيح في Chrome DevTools
 
-Here’s the fancy trick everyone loves. Vitest has an **inspect mode** that allows you to debug with Chrome’s DevTools if `console.log` isn’t cutting it. You know, like you do when your frontend throws a giant tantrum in production. You can even add breakpoints and step through your tests.
+إليك الحيلة الفاخرة التي يحبها الجميع. لدى Vitest **وضع inspection** يتيح لك التنقيح باستخدام DevTools في Chrome إن لم يكن `console.log` كافيًا. تمامًا كما تفعل عندما تُحدث واجهتك الأمامية جلبة كبيرة في الإنتاج. يمكنك حتى إضافة نقاط توقف والتقدّم خطوة بخطوة عبر اختباراتك.
 
-To start in inspect mode:
+لبدء وضع inspection:
 
 ```bash
 npx vitest --inspect
 ```
 
-This will spit out a URL like:
+سيطبع هذا رابطًا مثل:
 
 ```typescript
 Debugger listening on ws://127.0.0.1:9229/xxxxx
 ```
 
-Paste that in Chrome, open DevTools (`Cmd+Opt+I` or F12), and now you can set breakpoints, stalk variables, and generally live the debug life in style. No more pretending you’re beyond `console.log`!
+الصق ذلك في Chrome، وافتح DevTools (`Cmd+Opt+I` أو F12)، والآن يمكنك تعيين نقاط التوقف، وتتبّع المتغيّرات، وعيش حياة التنقيح بأناقة بصفة عامة. لا مزيد من التظاهر بأنك تجاوزت `console.log`!

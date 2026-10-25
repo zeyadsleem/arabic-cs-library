@@ -1,16 +1,16 @@
 ---
-title: "Key Stability in Lists"
-lang: en
+title: "استقرار المفاتيح في القوائم"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/key-stability-in-lists"
 ---
 
-You’ve probably seen the warning: “Each child in a list should have a unique ‘key’ prop.” Maybe you’ve even thrown in some `Math.random()` keys to make it go away (we’ve all been there). But keys aren’t just about silencing warnings—they’re about keeping your UI stable, performant, and predictable when lists change. Get them wrong, and you’ll see mysterious component remounts, lost focus, broken animations, and performance issues that’ll make you question your life choices.
+لعلّك رأيت هذا التحذير: «Each child in a list should have a unique "key" prop». وربما أضفت بعض المفاتيح عبر `Math.random()` لإسكاته (وقد مرّ بها جميعًا). لكن المفاتيح ليست مجرد وسيلة لإسكات التحذيرات — بل وسيلة للحفاظ على واجهتك مستقرة وسريعة وقابلة للتنبؤ عند تغيّر القوائم. فإن أخطأت فيها، فسترى إعادات تركيب غامضة للمكوّنات، وفقدانًا للتركيز، ورسومًا متحركة معطوبة، ومشكلات أداء تجعلك تشكّ في خياراتك في الحياة.
 
-Keys tell React which list items are which across renders. When your list changes—items added, removed, reordered—React uses keys to efficiently update the DOM and preserve component state where it should be preserved. Think of keys as React’s way of saying “this TodoItem component represents the same todo as before, just update its props” instead of “tear down this component and create a brand new one.”
+تخبر المفاتيح React أي عناصر القائمة يقابل أيًّا منها عبر عمليات التصيير. وعندما تتغيّر قائمتك — بإضافة عناصر أو حذفها أو إعادة ترتيبها — يستخدم React المفاتيح لتحديث DOM بكفاءة والحفاظ على حالة المكوّن حيث ينبغي الحفاظ عليها. فكّر في المفاتيح كطريقة React في القول «مكوّن `TodoItem` هذا يمثّل المهمة ذاتها كما قبل، فحدّث خصائصه فقط» بدلًا من «أزِل هذا المكوّن وأنشئ مكوّنًا جديدًا تمامًا».
 
-## The Problem: Unstable Keys
+## المشكلة: مفاتيح غير مستقرة
 
-Let’s start with what **not** to do. Here’s a seemingly innocent todo list that’ll bite you:
+لنبدأ بما **لا** يجب فعله. إليك قائمة مهام بريئة الظاهر ستنقضّ عليك:
 
 ```typescript
 // ❌ Bad: Using array indices as keys
@@ -36,26 +36,26 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-What happens when you add an item to the beginning of this list? Let’s trace through it:
+ماذا يحدث عند إضافة عنصر إلى بداية هذه القائمة؟ لنتتبّع ذلك:
 
-**Before adding:**
+**قبل الإضافة:**
 
-- Item A has key `0`
-- Item B has key `1`
-- Item C has key `2`
+- العنصر A له المفتاح `0`
+- العنصر B له المفتاح `1`
+- العنصر C له المفتاح `2`
 
-**After adding Item D at the beginning:**
+**بعد إضافة العنصر D في البداية:**
 
-- Item D has key `0` (was Item A’s key!)
-- Item A has key `1` (was Item B’s key!)
-- Item B has key `2` (was Item C’s key!)
-- Item C has key `3` (new key)
+- العنصر D له المفتاح `0` (كان مفتاح العنصر A!)
+- العنصر A له المفتاح `1` (كان مفتاح العنصر B!)
+- العنصر B له المفتاح `2` (كان مفتاح العنصر C!)
+- العنصر C له المفتاح `3` (مفتاح جديد)
 
-React sees this and thinks “the item at position 0 changed from A to D, position 1 changed from B to A,” and so on. Instead of recognizing that we just inserted one new item, it thinks we changed three existing items and added one new item. The result? Unnecessary re-renders, lost component state, and poor performance.
+يرى React ذلك فيظن أن «العنصر في الموضع 0 تغيّر من A إلى D، والموضع 1 تغيّر من B إلى A»، وهكذا. فبدلًا من إدراك أننا أدرجنا عنصرًا جديدًا واحدًا فقط، يظن أننا غيّرنا ثلاثة عناصر موجودة وأضفنا عنصرًا جديدًا واحدًا. والنتيجة؟ إعادات تصيير غير ضرورية، وفقدان لحالة المكوّن، وأداء ضعيف.
 
-## Real-World Consequences
+## نتائج واقعية
 
-Here’s a concrete example of where unstable keys cause Real World Problems™:
+إليك مثالًا ملموسًا تُسبّب فيه المفاتيح غير المستقرة مشكلات واقعية فعلية:
 
 ```typescript
 function EditableTodoItem({ todo }: { todo: Todo }) {
@@ -79,20 +79,20 @@ function EditableTodoItem({ todo }: { todo: Todo }) {
 }
 ```
 
-With index-based keys:
+مع المفاتيح القائمة على الفهرس:
 
-1. User clicks on “Buy groceries” (index 2) to edit it
-2. Component state: `isEditing: true`, `editValue: "Buy groceries"`
-3. Another user adds “Walk the dog” at the beginning of the list
-4. “Buy groceries” now has index 3, but React thinks index 2 is a different item
-5. The editing state gets applied to the wrong todo item
-6. User loses their edit progress and is now editing a completely different item
+1. ينقر المستخدم على «شراء البقالة» (الفهرس 2) لتحريرها
+2. حالة المكوّن: `isEditing: true`, `editValue: "Buy groceries"`
+3. يضيف مستخدم آخر «التنزّه بالكلب» في بداية القائمة
+4. أصبحت «شراء البقالة» الآن في الفهرس 3، لكن React يظن أن الفهرس 2 عنصر مختلف
+5. فتُطبَّق حالة التحرير على مهمة خاطئة
+6. فيفقد المستخدم تقدّم تحريره ويصبح يحرّر عنصرًا مختلفًا تمامًا
 
-This isn’t theoretical—it’s the kind of bug that makes users think your app is broken.
+هذا ليس نظريًا — بل هو نوع الأخطاء الذي يجعل المستخدمين يظنون أن تطبيقك معطوب.
 
-## The Solution: Stable, Unique Keys
+## الحل: مفاتيح مستقرة وفريدة
 
-The fix is straightforward: use stable, unique identifiers as keys. If your data has IDs (and it should), use them:
+الإصلاح مباشر: استخدم معرّفات مستقرة وفريدة كمفاتيح. وإذا كانت بياناتك تحتوي على معرّفات (وهذا ما ينبغي)، فاستخدمها:
 
 ```typescript
 // ✅ Good: Using stable, unique IDs
@@ -107,17 +107,17 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-Now when you add, remove, or reorder items:
+والآن عند إضافة عناصر أو حذفها أو إعادة ترتيبها:
 
-- Each component keeps its identity
-- State is preserved where it should be
-- Focus remains on the correct element
-- Animations work smoothly
-- React can efficiently update only what actually changed
+- يحافظ كل مكوّن على هويته
+- تُحفظ الحالة حيث ينبغي
+- يبقى التركيز على العنصر الصحيح
+- تعمل الرسوم المتحركة بسلاسة
+- يستطيع React تحديث ما تغيّر فعلًا فقط بكفاءة
 
-### When You Don’t Have IDs
+### عندما لا تملك معرّفات
 
-Sometimes your data doesn’t come with unique IDs. Here are your options, ranked from best to worst:
+أحيانًا لا تأتي بياناتك بمعرّفات فريدة. وهذه خياراتك مرتّبة من الأفضل إلى الأسوأ:
 
 ```typescript
 // ✅ Generate stable IDs when creating items
@@ -155,9 +155,9 @@ function CommentList({ comments }: { comments: Comment[] }) {
 }
 ```
 
-## Keys and Component State Preservation
+## المفاتيح والحفاظ على حالة المكوّن
 
-Keys control when React preserves component state and when it creates fresh instances. This is crucial for components with internal state:
+تتحكّم المفاتيح في متى يحافظ React على حالة المكوّن ومتى ينشئ نُسخًا جديدة. وهذا حاسم للمكوّنات ذات الحالة الداخلية:
 
 ```typescript
 function TabPanel({ activeTab }: { activeTab: string }) {
@@ -189,17 +189,17 @@ function ProfileForm() {
 }
 ```
 
-Without stable keys, switching tabs would reset form state every time. With stable keys, React knows to reuse the same component instance.
+لولا المفاتيح المستقرة، لأعاد التبديل بين التبويبات تعيين حالة النموذج في كل مرة. ومع المفاتيح المستقرة، يعرف React أنه ينبغي إعادة استخدام نسخة المكوّن نفسها.
 
-## Keys and Performance
+## المفاتيح والأداء
 
-Stable keys aren’t just about correctness—they’re a performance optimization. React’s reconciliation algorithm uses keys to:
+لا تتعلق المفاتيح المستقرة بالصحة فقط — بل هي تحسين للأداء. فخوارزمية المطابقة (reconciliation) في React تستخدم المفاتيح من أجل:
 
-1. **Identify moved elements**: Instead of removing and recreating, React can move DOM nodes
-2. **Minimize DOM mutations**: Only changed elements get updated
-3. **Preserve expensive computations**: Component state and effects don’t reset unnecessarily
+1. **تحديد العناصر المنقولة**: فبدلًا من الحذف وإعادة الإنشاء، يستطيع React نقل عُقد DOM
+2. **تقليل تعديلات DOM**: فلا تُحدَّث إلا العناصر المتغيّرة
+3. **الحفاظ على الحسابات المكلفة**: فلا تُعاد حالات المكوّن وتأثيراته بلا داعٍ
 
-Here’s a performance comparison:
+إليك مقارنة أداء:
 
 ```typescript
 // ❌ Bad: Index keys cause unnecessary work
@@ -227,13 +227,13 @@ function ExpensiveItem({ item }: { item: Item }) {
 }
 ```
 
-With index keys, adding an item at the beginning causes every component to remount, re-running all the expensive computations. With stable keys, only the new item needs processing.
+مع مفاتيح الفهرس، تؤدي إضافة عنصر في البداية إلى إعادة تركيب كل المكوّنات، وإعادة تشغيل جميع الحسابات المكلفة. أما مع المفاتيح المستقرة، فلا يحتاج إلى المعالجة إلا العنصر الجديد.
 
-## Advanced Key Scenarios
+## سيناريوهات متقدّمة للمفاتيح
 
-### Nested Lists
+### القوائم المتداخلة
 
-When you have lists inside lists, each level needs its own stable keys:
+عندما تكون لديك قوائم داخل قوائم، يحتاج كل مستوى إلى مفاتيحه المستقرة الخاصة:
 
 ```typescript
 function CategoryList({ categories }: { categories: Category[] }) {
@@ -254,11 +254,11 @@ function CategoryList({ categories }: { categories: Category[] }) {
 }
 ```
 
-Keys only need to be unique among siblings, not globally. `item.id` can be the same across different categories.
+لا تحتاج المفاتيح إلى أن تكون فريدة عالميًا، بل بين العناصر الشقيقة فقط. فقد يكون `item.id` نفسه في فئات مختلفة.
 
-### Dynamic Content Types
+### أنواع المحتوى الديناميكية
 
-Sometimes your list contains different types of components:
+أحيانًا تحتوي قائمتك على أنواع مختلفة من المكوّنات:
 
 ```typescript
 function FeedList({ posts }: { posts: Post[] }) {
@@ -284,11 +284,11 @@ function FeedList({ posts }: { posts: Post[] }) {
 }
 ```
 
-Even though the components are different types, they can share keys because they represent the same logical item.
+فرغم أن المكوّنات من أنواع مختلفة، يمكنها مشاركة المفاتيح لأنها تمثّل العنصر المنطقي نفسه.
 
-### Conditional Rendering in Lists
+### التصيير الشرطي في القوائم
 
-Be careful with conditional rendering inside lists:
+احذر التصيير الشرطي داخل القوائم:
 
 ```typescript
 // ❌ Bad: Key disappears when item.isVisible is false
@@ -312,11 +312,11 @@ function ItemList({ items }: { items: Item[] }) {
 }
 ```
 
-When keys disappear and reappear, React treats them as new components, losing state and causing unnecessary remounts.
+عندما تختفي المفاتيح ثم تظهر من جديد، يعاملها React كمكوّنات جديدة، فيفقد الحالة ويسبّب إعادات تركيب غير ضرورية.
 
-## Common Pitfalls and Solutions
+## مزالق شائعة وحلولها
 
-### The “It Works on My Machine” Key
+### مفتاح «يعمل على جهازي»
 
 ```typescript
 // ❌ Dangerous: Works until you deploy to production
@@ -331,7 +331,7 @@ function MessageList({ messages }: { messages: Message[] }) {
 }
 ```
 
-This looks fine, but what happens when messages get paginated or filtered? The same message could end up with different keys in different renders.
+يبدو هذا جيدًا، لكن ماذا يحدث عندما تُقسَّم الرسائل إلى صفحات أو تُرشَّح؟ فقد تحصل الرسالة نفسها على مفاتيح مختلفة في عمليات تصيير مختلفة.
 
 ```typescript
 // ✅ Solution: Use data that uniquely identifies the item
@@ -349,7 +349,7 @@ function MessageList({ messages }: { messages: Message[] }) {
 }
 ```
 
-### The Premature Optimization Key
+### مفتاح التحسين قبل الأوان
 
 ```typescript
 // ❌ Don't get too clever with keys
@@ -367,11 +367,11 @@ function ProductList({ products }: { products: Product[] }) {
 }
 ```
 
-Just use the ID. Resist the urge to encode additional information into keys—that’s what props are for.
+استخدم المعرّف فقط. وقاوم الرغبة في ترميز معلومات إضافية داخل المفاتيح — فهذا ما وُجدت الخصائص من أجله.
 
-## Testing Key Stability
+## اختبار استقرار المفاتيح
 
-You can catch key-related bugs with some targeted testing:
+يمكنك اكتشاف الأخطاء المتعلقة بالمفاتيح ببعض الاختبارات الموجّهة:
 
 ```typescript
 // Test that demonstrates the importance of stable keys

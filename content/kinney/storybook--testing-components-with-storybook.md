@@ -1,12 +1,12 @@
 ---
-title: "Testing Components"
-lang: en
+title: "اختبار المكوّنات"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/testing-components-with-storybook"
 ---
 
-In almost every application that I have ever worked on there is a concept that a link can look like a button. There is a pattern in React, where we can use polymorphic components. We talk a lot about how to do this in the course on React and Typescript, but for now, let’s just be a little hand-wavvy.
+في كل تطبيق تقريبًا عملت عليه توجد فكرة أن الرابط قد يبدو كزرّ. وهناك نمط في React يمكننا فيه استخدام مكوّنات متعدّدة الأشكال (polymorphic). لقد تحدثنا كثيرًا عن كيفية فعل ذلك في دورة React وTypeScript، لكن دعنا الآن نتجاوز التفاصيل قليلًا.
 
-We’ll update the type as follows:
+سنحدّث النوع كما يلي:
 
 ```typescript
 type ButtonProps = ComponentPropsWithoutRef<'button'> &
@@ -22,7 +22,7 @@ type AnchorProps = ComponentPropsWithoutRef<'a'> &
 type ButtonOrLinkProps = ButtonProps | AnchorProps;
 ```
 
-And then we’ll make one small tweak to our `Button` component.
+ثم سنُجري تعديلًا صغيرًا واحدًا على مكوّن `Button` لدينا.
 
 ```typescript
 export const Button = ({ variant = 'primary', size = 'medium', ...props }: ButtonOrLinkProps) => {
@@ -36,14 +36,14 @@ export const Button = ({ variant = 'primary', size = 'medium', ...props }: Butto
 };
 ```
 
-One of the really cool things that you can do with Storybook and [Play functions](https://stevekinney.com/courses/storybook/play-functions) is that you can use them to test out your component for you. Let’s say that I had a button that could also be a link if we passed a `href` property to the button.
+من الأمور الرائعة حقًّا التي يمكنك فعلها مع Storybook و[دوال التشغيل (Play functions)](https://stevekinney.com/courses/storybook/play-functions) أنك تستطيع استخدامها لاختبار مكوّنك نيابةً عنك. لنفترض أن لديّ زرًّا يمكن أن يكون رابطًا أيضًا إذا مرّرنا خاصية `href` إلى الزرّ.
 
-I want to test for the following conditions:
+أريد الاختبار وفق الشروط التالية:
 
-- If I didn’t pass in a `href`, then the component should render as a `<button>`.
-- If I *did* pass in a `href`, then the component should render as a `<a>`.
+- إذا لم أمرّر `href`، فينبغي أن يُصيَّر المكوّن كـ `<button>`.
+- إذا *مرّرت* `href`، فينبغي أن يُصيَّر المكوّن كـ `<a>`.
 
-I could augment my stories with some quick assertions.
+يمكنني تعزيز قصصي ببعض عمليات التحقّق السريعة.
 
 ```typescript
 export const Primary: Story = {
@@ -59,7 +59,7 @@ export const Primary: Story = {
 };
 ```
 
-And, I can do something similar with the button that ought to render as a link as well.
+ويمكنني فعل شيء مشابه مع الزرّ الذي ينبغي أن يُصيَّر كرابط أيضًا.
 
 ```typescript
 export const ButtonAsLink: Story = {
@@ -77,4 +77,4 @@ export const ButtonAsLink: Story = {
 };
 ```
 
-Now, if I set up [Storybook’s Test Runner](https://stevekinney.com/courses/storybook/test-runner), I can even run these tests as part of my CI/CD set up or along with my other unit tests.
+الآن، إن أعددت [مشغّل اختبارات Storybook](https://stevekinney.com/courses/storybook/test-runner)، يمكنني حتى تشغيل هذه الاختبارات كجزء من إعداد CI/CD لديّ أو إلى جانب اختباراتي الوحدية الأخرى.

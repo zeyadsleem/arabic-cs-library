@@ -1,12 +1,12 @@
 ---
-title: "Building an Image Card with an Overlay"
-lang: en
+title: "بناء بطاقة صورة مع طبقة تغطية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-an-image-card-hover-overlay"
 ---
 
-Let’s start with our basic HTML structure for an image card with overlay content.
+لنبدأ ببنية HTML الأساسية لبطاقة صورة بمحتوى طبقة تغطية.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/04bd2fe17ddfe307e9b89e1c58da0a6455853f79ff18a4f4f7ab0247e227407b.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/04bd2fe17ddfe307e9b89e1c58da0a6455853f79ff18a4f4f7ab0247e227407b.html)*
 
 ```html
 <div
@@ -25,13 +25,13 @@ Let’s start with our basic HTML structure for an image card with overlay conte
 </div>
 ```
 
-We have a polished product card with professional styling and subtle hover effects, building on patterns from our [card tutorial](https://stevekinney.com/courses/tailwind/building-a-card). But what if we want the product information to appear as an overlay on the image instead? Let’s transform this into an engaging hover overlay effect.
+لدينا بطاقة منتج مصقولة بتنسيق احترافي وتأثيرات تمرير خفيفة، مبنية على أنماط من [درس البطاقة](https://stevekinney.com/courses/tailwind/building-a-card). لكن ماذا لو أردنا أن تظهر معلومات المنتج كطبقة تغطية على الصورة بدلًا من ذلك؟ لنحوّلها إلى تأثير طبقة تغطية جذاب عند التمرير.
 
-## Introducing the Group System
+## تقديم نظام group
 
-First, let’s introduce Tailwind’s `group` utility, which lets us coordinate hover effects across multiple child elements.
+أولًا، لنقدّم أداة `group` في Tailwind، التي تتيح لنا تنسيق تأثيرات التمرير عبر عدة عناصر ابنة.
 
-*Introducing the Group System — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/a5961ba194a61c309dcc4d8a3e22ac2e5121a9ece3c77b96cab8fe4ec94602e9.html)*
+*تقديم نظام group — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a5961ba194a61c309dcc4d8a3e22ac2e5121a9ece3c77b96cab8fe4ec94602e9.html)*
 
 ```html
 <div
@@ -50,13 +50,13 @@ First, let’s introduce Tailwind’s `group` utility, which lets us coordinate 
 </div>
 ```
 
-The `group` class marks this container as a “group parent.” Now any child element can use `group-hover:*` utilities to style themselves based on when the parent is hovered. This is perfect for our overlay effect where multiple elements need to respond to hovering the entire card.
+يعلّم صنف `group` هذه الحاوية كـ«أب مجموعة». الآن يستطيع أي عنصر ابن استخدام أدوات `group-hover:*` لتنسيق نفسه بناءً على تمرير المؤشر على الأب. وهذا مثالي لتأثير طبقة التغطية حيث تحتاج عدة عناصر إلى الاستجابة لتمرير المؤشر على البطاقة كلها.
 
-## Positioning the Overlay Content
+## وضع محتوى الطبقة
 
-Now let’s move our content to sit as an overlay on top of the image. We’ll need to add `relative` positioning to the container and `absolute` positioning to the content.
+لننقل الآن محتوانا ليستقر كطبقة تغطية فوق الصورة. سنحتاج إلى إضافة تحديد موضع `relative` إلى الحاوية وتحديد موضع `absolute` إلى المحتوى.
 
-*Positioning the Overlay Content — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/ec70a2347ddf22433ad89acaca888c3fce094d01f12a42702e05914631ffdfa3.html)*
+*وضع محتوى الطبقة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ec70a2347ddf22433ad89acaca888c3fce094d01f12a42702e05914631ffdfa3.html)*
 
 ```html
 <div
@@ -75,19 +75,19 @@ Now let’s move our content to sit as an overlay on top of the image. We’ll n
 </div>
 ```
 
-Overlay positioning changes:
+تغييرات موضع الطبقة:
 
-- `relative`: Added to the container to establish positioning context for the overlay
-- `absolute inset-0`: Positions the content to cover the entire image area (0px from all edges)
-- `text-white`: Changed all text to white for contrast against the image background
+- `relative`: أُضيف إلى الحاوية لإرساء سياق تحديد الموضع للطبقة
+- `absolute inset-0`: يضع المحتوى ليغطي منطقة الصورة كلها (0px من كل الحواف)
+- `text-white`: غيّر كل النص إلى الأبيض للتباين مع خلفية الصورة
 
-Now our text sits directly over the image, but it’s always visible and hard to read against the varying image colors.
+الآن يستقر نصنا مباشرة فوق الصورة، لكنه ظاهر دائمًا ويصعب قراءته على ألوان الصورة المتفاوتة.
 
-## Adding Background and Hover Visibility
+## إضافة الخلفية وظهور التمرير
 
-Let’s add a semi-transparent background and make the overlay appear only when the card is hovered.
+لنضف خلفية شبه شفافة ونجعل الطبقة تظهر فقط عند تمرير المؤشر على البطاقة.
 
-*Adding Background and Hover Visibility — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/77aa7e30cd27905b1761a6a5c101026eb169ed77342cda3c561327e8dfdd2ffd.html)*
+*إضافة الخلفية وظهور التمرير — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/77aa7e30cd27905b1761a6a5c101026eb169ed77342cda3c561327e8dfdd2ffd.html)*
 
 ```html
 <div
@@ -106,20 +106,20 @@ Let’s add a semi-transparent background and make the overlay appear only when 
 </div>
 ```
 
-Hover effect styling:
+تنسيق تأثير التمرير:
 
-- `bg-black/60`: Semi-transparent black background (60% opacity) creates readable contrast
-- `opacity-0`: Hides the overlay by default (completely transparent)
-- `group-hover:opacity-100`: Shows the overlay when the parent group is hovered
-- Removed `space-y-4` since we’ll position content manually
+- `bg-black/60`: خلفية سوداء شبه شفافة (عتامة 60%) تنشئ تباينًا مقروءًا
+- `opacity-0`: يخفي الطبقة افتراضيًا (شفافة تمامًا)
+- `group-hover:opacity-100`: يُظهر الطبقة عند تمرير المؤشر على مجموعة الأب
+- أُزيل `space-y-4` لأننا سنضع المحتوى يدويًا
 
-This is our first use of `group-hover:`—the overlay automatically appears when you hover anywhere on the card! The `/60` syntax is Tailwind’s opacity modifier, equivalent to `rgba(0, 0, 0, 0.6)`.
+هذا أول استخدام لنا لـ`group-hover:` — تظهر الطبقة تلقائيًا عند تمرير المؤشر في أي مكان على البطاقة! صيغة `/60` هي معدِّل العتامة في Tailwind، ويكافئ `rgba(0, 0, 0, 0.6)`.
 
-## Adding Content Positioning and Animation
+## إضافة موضع المحتوى والحركة
 
-Let’s improve the overlay layout by positioning content at the bottom and adding a smooth entrance animation.
+لنحسّن تخطيط الطبقة بوضع المحتوى في الأسفل وإضافة حركة دخول سلسة.
 
-*Adding Content Positioning and Animation — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/edbb4a2eeb1792b3dfc67734d6da1206dca3825ff61586e6214140b5033a133e.html)*
+*إضافة موضع المحتوى والحركة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/edbb4a2eeb1792b3dfc67734d6da1206dca3825ff61586e6214140b5033a133e.html)*
 
 ```html
 <div
@@ -142,20 +142,20 @@ Let’s improve the overlay layout by positioning content at the bottom and addi
 </div>
 ```
 
-Layout and animation improvements:
+تحسينات التخطيط والحركة:
 
-- `flex flex-col justify-end`: Aligns content to the bottom of the overlay using Flexbox
-- `space-y-2`: Restores vertical spacing between content elements
-- `translate-y-4`: Moves content 16px down by default (hidden state)
-- `group-hover:translate-y-0`: Slides content to normal position on hover
+- `flex flex-col justify-end`: يحاذي المحتوى إلى أسفل الطبقة باستخدام Flexbox
+- `space-y-2`: يعيد التباعد الرأسي بين عناصر المحتوى
+- `translate-y-4`: ينقل المحتوى 16px للأسفل افتراضيًا (حالة الإخفاء)
+- `group-hover:translate-y-0`: يُزلق المحتوى إلى موضعه الطبيعي عند التمرير
 
-This creates a subtle slide-up animation where the content starts slightly below its final position and slides up when the overlay appears.
+ينشئ هذا حركة انزلاق لأعلى خفيفة يبدأ فيها المحتوى أسفل موضعه النهائي قليلًا ثم ينزلق لأعلى عند ظهور الطبقة.
 
-## Adding Smooth Transitions
+## إضافة انتقالات سلسة
 
-Finally, let’s add smooth transitions to make the hover effects feel polished and professional.
+أخيرًا، لنضف انتقالات سلسة لتجعل تأثيرات التمرير تبدو مصقولة واحترافية.
 
-*Adding Smooth Transitions — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/d47c338841657780f15e80e76bd2e2e8dcc95b902e2dc1fc637a94c8d90dd9b3.html)*
+*إضافة انتقالات سلسة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d47c338841657780f15e80e76bd2e2e8dcc95b902e2dc1fc637a94c8d90dd9b3.html)*
 
 ```html
 <div
@@ -180,38 +180,38 @@ Finally, let’s add smooth transitions to make the hover effects feel polished 
 </div>
 ```
 
-Transition improvements:
+تحسينات الانتقال:
 
-- `transition-opacity duration-300` on overlay: Smoothly fades the background in/out over 300ms
-- `transition-transform duration-300` on content: Smoothly animates the slide-up motion
-- Both transitions use the same duration for cohesive timing
+- `transition-opacity duration-300` على الطبقة: يُتلاشى الخلفية دخولًا وخروجًا بسلاسة خلال 300ms
+- `transition-transform duration-300` على المحتوى: يحرّك حركة الانزلاق لأعلى بسلاسة
+- يستخدم الانتقالان المدة نفسها لتوقيت متماسك
 
-The 300ms duration creates a smooth, professional feel—fast enough to feel responsive but slow enough to be noticeable and elegant.
+تنشئ مدة 300ms إحساسًا سلسًا واحترافيًا — سريعة بما يكفي لتبدو متجاوبة، وبطيئة بما يكفي لتكون ملحوظة وأنيقة.
 
-## Why the Group System Works
+## لماذا ينجح نظام group
 
-The `group` system is perfect for complex hover effects because it coordinates multiple elements responding to a single interaction. Unlike the `peer` system that handles sibling relationships, `group` manages parent-child relationships where hovering the parent affects multiple children.
+نظام `group` مثالي لتأثيرات التمرير المعقدة لأنه ينسّق استجابة عدة عناصر لتفاعل واحد. وخلافًا لنظام `peer` الذي يتعامل مع علاقات الأشقاء، يدير `group` علاقات الأب والابن حيث يؤثر تمرير المؤشر على الأب في عدة أبناء.
 
-This approach provides:
+توفّر هذه المقاربة:
 
-- **Coordinated animations**: Multiple elements can respond to the same hover event with different effects
-- **Flexible targeting**: Any descendant can use `group-hover:*` utilities regardless of nesting depth
-- **Performance**: CSS-only hover effects with no JavaScript overhead
-- **Intuitive behavior**: The entire card is the hover target, making it easy for users to trigger
+- **حركات منسّقة**: يمكن لعدة عناصر الاستجابة إلى حدث التمرير نفسه بتأثيرات مختلفة
+- **استهداف مرن**: يمكن لأي عنصر سليل استخدام أدوات `group-hover:*` بصرف النظر عن عمق التعشيش
+- **الأداء**: تأثيرات تمرير بـCSS وحدها دون عبء JavaScript
+- **سلوك بديهي**: البطاقة كلها هدف التمرير، ما يسهّل على المستخدمين تفعيله
 
-## Common Group Patterns
+## أنماط group الشائعة
 
-The group system works great for:
+يعمل نظام group بامتياز مع:
 
-- Image overlays (as shown)
-- Navigation dropdowns where hovering a parent reveals child menus
-- Card hover effects with multiple animated elements
-- Button groups where hovering affects icons, text, and backgrounds differently
-- Product cards with expanding information panels
+- طبقات تغطية الصور (كما هو موضّح)
+- قوائم تنقل منسدلة حيث يكشف تمرير المؤشر على الأب قوائم الأبناء
+- تأثيرات تمرير البطاقات بعناصر متحركة متعددة
+- مجموعات أزرار حيث يؤثر التمرير في الأيقونات والنص والخلفيات بشكل مختلف
+- بطاقات منتجات بلوحات معلومات متوسّعة
 
-## Challenges
+## تحديات
 
-Try building these variations:
+جرّب بناء هذه التنويعات:
 
-1. **Bottom-aligned overlay**: Position the overlay content at the bottom with a gradient fade from transparent to black using `bg-gradient-to-t from-black/80 to-transparent`
-2. **Icon overlay**: Create a play button icon that appears in the center of the image on hover, using `group-hover:` with scale and opacity effects
+1. **طبقة تغطية محاذاة للأسفل**: ضع محتوى الطبقة في الأسفل بتلاشٍ متدرّج من الشفاف إلى الأسود باستخدام `bg-gradient-to-t from-black/80 to-transparent`
+2. **طبقة أيقونة**: أنشئ أيقونة زر تشغيل تظهر في وسط الصورة عند التمرير، باستخدام `group-hover:` مع تأثيرات القياس والعتامة

@@ -1,14 +1,14 @@
 ---
-title: "Multiple Cursors with Find and Replace"
-lang: en
+title: "المؤشرات المتعددة مع البحث والاستبدال"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/multiple-cursors-with-find-and-replace"
 ---
 
-> **This is it’s own section because I think it’s *super helpful* and I didn’t want to forget about it.**
+> **هذا قسم مستقل لأنه في رأيي *مفيد للغاية* ولم أرد أن أنساه.**
 
-Here’s the slick way to turn your search results into multiple cursors in Visual Studio Code:
+وإليك الطريقة الأنيقة لتحويل نتائج بحثك إلى مؤشرات متعددة في Visual Studio Code:
 
-1. **Open the Find box**: Press Ctrl+F (Windows/Linux) or Cmd+F (macOS).
-2. **Enter your search term**: Type whatever you’re looking for in the file.
-3. **Select all matches**: One common shortcut is **Alt+Enter** (Windows/Linux) or **Option+Enter** (macOS). This will create a cursor at each match found.
-4. **Edit simultaneously**: Each match now has its own cursor, so your edits or insertions will be applied everywhere at once.
+1. **افتح مربع البحث**: اضغط Ctrl+F (Windows/Linux) أو Cmd+F (macOS).
+2. **أدخل مصطلح البحث**: اكتب ما تبحث عنه في الملف.
+3. **حدّد كل المطابقات**: من الاختصارات الشائعة **Alt+Enter** (Windows/Linux) أو **Option+Enter** (macOS). وهذا ينشئ مؤشرًا عند كل مطابقة يُعثر عليها.
+4. **حرّر في وقت واحد**: لكل مطابقة الآن مؤشرها الخاص، فتُطبَّق تعديلاتك أو إدراجاتك في كل مكان دفعة واحدة.

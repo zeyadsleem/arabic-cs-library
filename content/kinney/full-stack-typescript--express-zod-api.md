@@ -1,24 +1,24 @@
 ---
-title: "Express Zod API"
-lang: en
+title: "بناء واجهة برمجية مع Express Zod API"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/express-zod-api"
 ---
 
-[`express-zod-api`](https://www.npmjs.com/package/express-zod-api) is a powerful library that combines the type safety of Zod with the flexibility of Express, allowing you to define and validate your API endpoints with ease. This guide will walk you through setting up and using `express-zod-api` to create robust and type-safe APIs.
+[`express-zod-api`](https://www.npmjs.com/package/express-zod-api) مكتبة قوية تجمع أمان الأنواع الذي يوفّره Zod مع مرونة Express، وتمكّنك من تعريف نقاط نهاية واجهتك البرمجية والتحقق منها بسهولة. وسيرشدك هذا الدليل خلال إعداد واستخدام `express-zod-api` لبناء واجهات برمجية متينة وآمنة الأنواع.
 
-## Installation
+## التثبيت
 
-Install `express-zod-api` and its peer dependencies:
+ثبّت `express-zod-api` واعتماداتها النظيرة:
 
 ```bash
 npm install express-zod-api zod express
 ```
 
-## Defining API Endpoints
+## تعريف نقاط نهاية الواجهة البرمجية
 
-`express-zod-api` revolves around defining API endpoints as objects that specify the path, method, input validation (using Zod), and output schema.
+يدور `express-zod-api` حول تعريف نقاط نهاية الواجهة البرمجية كائناتٍ تحدّد المسار والتابع (method) والتحقق من المدخلات (باستخدام Zod) ومخطط الخرج.
 
-### Example: Creating a User Endpoint
+### مثال: إنشاء نقطة نهاية لمستخدم
 
 ```typescript
 import express from 'express';
@@ -71,19 +71,19 @@ app.listen(3000, () => {
 });
 ```
 
-### Key Concepts
+### مفاهيم أساسية
 
-- **`method`:** The HTTP method (e.g., ‘get’, ‘post’, ‘put’, ‘delete’).
-- **`path`:** The API endpoint path.
-- **`request`:** Defines the input validation using Zod schemas for `body`, `query`, and `params`.
-- **`response`:** Defines the output schema using Zod.
-- **`handler`:** An asynchronous function that receives the validated `input` and `res` (Express response object).
+- **`method`:** تابع HTTP المُستخدم في الطلب (مثل ‘get’ و‘post’ و‘put’ و‘delete’).
+- **`path`:** مسار نقطة النهاية في واجهتك البرمجية.
+- **`request`:** يعرّف التحقق من المدخلات باستخدام مخططات Zod لكل من `body` و`query` و`params`.
+- **`response`:** يعرّف مخطط الخرج باستخدام Zod.
+- **`handler`:** دالة غير متزامنة تستقبل `input` و`res` بعد التحقق منهما (كائن استجابة Express).
 
-## Handling Query and Path Parameters
+## التعامل مع معاملات الاستعلام والمسار
 
-`express-zod-api` makes it easy to handle query and path parameters.
+يجعل `express-zod-api` التعامل مع معاملات الاستعلام والمسار أمرًا سهلًا.
 
-### Example: Get User by ID
+### مثال: جلب مستخدم بالمعرّف
 
 ```typescript
 const getUserEndpoint = {
@@ -112,7 +112,7 @@ const getUserEndpoint = {
 };
 ```
 
-### Example: Search Users with Query Parameters
+### مثال: البحث عن مستخدمين بمعاملات استعلام
 
 ```typescript
 const searchUsersEndpoint = {
@@ -147,11 +147,11 @@ const searchUsersEndpoint = {
 };
 ```
 
-## Error Handling
+## معالجة الأخطاء
 
-`express-zod-api` automatically handles Zod validation errors, returning a 400 status with error details. You can also handle custom errors within your handlers.
+يتعامل `express-zod-api` تلقائيًا مع أخطاء تحقّق Zod، فيعيد حالة 400 مع تفاصيل الخطأ. ويمكنك أيضًا معالجة أخطاء مخصّصة داخل معالجاتك.
 
-### Example: Custom Error Handling
+### مثال: معالجة أخطاء مخصّصة
 
 ```typescript
 const exampleEndpoint = {
@@ -171,11 +171,11 @@ const exampleEndpoint = {
 };
 ```
 
-## Benefits of `express-zod-api`
+## فوائد `express-zod-api`
 
-- **Type Safety:** Zod ensures that your API inputs and outputs are validated and typed.
-- **Simplified API Definition:** Define your API endpoints as objects, making them easy to read and maintain.
-- **Automatic Validation:** Zod validation is automatically applied to incoming requests.
-- **Reduced Boilerplate:** `express-zod-api` reduces the amount of code you need to write for validation and error handling.
-- **Clear Documentation:** Zod schemas serve as clear documentation for your API endpoints.
-- **Improved Developer Experience:** The library enhances the development experience by providing strong typing and validation.
+- **أمان الأنواع:** يضمن Zod التحقق من مدخلات واجهتك البرمجية ومخرجاتها وتحديد أنواعها.
+- **تعريف مبسّط للواجهة البرمجية:** عرّف نقاط نهاية واجهتك البرمجية كائنات، ما يجعلها سهلة القراءة والصيانة.
+- **تحقّق تلقائي:** يُطبَّق تحقّق Zod تلقائيًا على الطلبات الواردة.
+- **تقليل الشيفرة المتكرّرة:** يقلّل `express-zod-api` مقدار الشيفرة التي تحتاج إلى كتابتها للتحقق ومعالجة الأخطاء.
+- **توثيق واضح:** تعمل مخططات Zod كتوثيق واضح لنقاط نهاية واجهتك البرمجية.
+- **تجربة مطوّر محسّنة:** تعزّز المكتبة تجربة التطوير بتوفير أنواع قوية وتحقق سليم.

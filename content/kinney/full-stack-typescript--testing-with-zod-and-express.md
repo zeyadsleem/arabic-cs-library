@@ -1,31 +1,31 @@
 ---
-title: "Testing with Zod and Express"
-lang: en
+title: "الاختبار مع Zod وExpress"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/testing-with-zod-and-express"
 ---
 
-Testing your Express API is crucial for ensuring its reliability and correctness. This guide demonstrates how to use [`zod-fixture`](https://www.npmjs.com/package/zod-fixture) to generate realistic test data based on your Zod schemas, and [`superagent`](https://www.npmjs.com/package/superagent) to make HTTP requests to your API.
+يُعدّ اختبار API الخاص بـ Express أمرًا حاسمًا لضمان موثوقيته وصحته. ويوضح هذا الدليل كيفية استخدام [`zod-fixture`](https://www.npmjs.com/package/zod-fixture) لتوليد بيانات اختبار واقعية انطلاقًا من مخططات Zod لديك، و[`superagent`](https://www.npmjs.com/package/superagent) لتوجيه طلبات HTTP إلى API الخاص بك.
 
-## Install Dependencies
+## تثبيت الاعتمادات
 
-Install the necessary dependencies:
+ثبّت الاعتمادات اللازمة:
 
 ```bash
 npm install superagent zod zod-fixture --save-dev
 npm install @types/superagent --save-dev # if using TypeScript
 ```
 
-This installs:
+وهذا يثبّت:
 
-- [`superagent`](https://www.npmjs.com/package/superagent): HTTP client for testing your API
-- [`zod`](https://www.npmjs.com/package/zod): Schema validation library
-- [`zod-fixture`](https://www.npmjs.com/package/zod-fixture): Generates test data from Zod schemas
+- [`superagent`](https://www.npmjs.com/package/superagent): عميل HTTP لاختبار API الخاص بك
+- [`zod`](https://www.npmjs.com/package/zod): مكتبة التحقق من المخططات
+- [`zod-fixture`](https://www.npmjs.com/package/zod-fixture): يولّد بيانات اختبار من مخططات Zod
 
-## Define Your Zod Schemas
+## تعريف مخططات Zod
 
-Ensure that your Express API uses Zod schemas for request and response validation.
+تأكد من أن API الخاص بـ Express يستخدم مخططات Zod للتحقق من الطلبات والاستجابات.
 
-**Example:**
+**مثال:**
 
 ```typescript
 // schemas.ts
@@ -45,11 +45,11 @@ export const userResponseSchema = z.object({
 });
 ```
 
-## Create Zod Fixtures
+## إنشاء بيانات اختبار ثابتة من Zod
 
-Use `zod-fixture` to generate test data based on your Zod schemas.
+استخدم `zod-fixture` لتوليد بيانات اختبار انطلاقًا من مخططات Zod لديك.
 
-**Example:**
+**مثال:**
 
 ```typescript
 // fixtures.ts
@@ -60,11 +60,11 @@ export const createUserFixture = () => generateMock(createUserSchema);
 export const userResponseFixture = () => generateMock(userResponseSchema);
 ```
 
-## Write Test Cases
+## كتابة حالات الاختبار
 
-Use `superagent` to make HTTP requests to your Express API and `zod-fixture` to generate test data.
+استخدم `superagent` لتوجيه طلبات HTTP إلى API الخاص بـ Express، و`zod-fixture` لتوليد بيانات الاختبار.
 
-**Example (using Jest):**
+**مثال (باستخدام Jest):**
 
 ```typescript
 // app.test.ts
@@ -125,18 +125,18 @@ describe('User API', () => {
 });
 ```
 
-## Run Tests
+## تشغيل الاختبارات
 
-Run your tests using your chosen testing framework (e.g., Jest, Mocha).
+شغّل اختباراتك باستخدام إطار الاختبار الذي اخترته (مثل Jest أو Mocha).
 
 ```bash
 npx jest app.test.ts
 ```
 
-## Benefits
+## الفوائد
 
-- **Realistic Test Data:** `zod-fixture` generates realistic test data based on your Zod schemas, ensuring that your tests closely resemble real-world scenarios.
-- **Type Safety:** Zod schemas and fixtures provide type safety, reducing the risk of errors.
-- **Simplified Testing:** `superagent` simplifies the process of making HTTP requests, making your tests more readable and maintainable.
-- **Validation:** You can easily validate the response body against your zod schemas.
-- **Improved Reliability:** Comprehensive testing improves the reliability of your Express API.
+- **بيانات اختبار واقعية:** يولّد `zod-fixture` بيانات اختبار واقعية انطلاقًا من مخططات Zod لديك، ما يضمن أن اختباراتك تشبه السيناريوهات الواقعية عن قرب.
+- **سلامة الأنواع:** توفّر مخططات Zod وبياناتها الثابتة سلامة الأنواع، فتقلّل خطر الأخطاء.
+- **اختبار مبسّط:** يبسّط `superagent` عملية توجيه طلبات HTTP، فيجعل اختباراتك أكثر قابلية للقراءة والصيانة.
+- **التحقق:** يمكنك بسهولة التحقق من جسم الاستجابة مقابل مخططات zod لديك.
+- **موثوقية محسّنة:** يحسّن الاختبار الشامل موثوقية API الخاص بك المبني على Express.

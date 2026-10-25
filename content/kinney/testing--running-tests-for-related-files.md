@@ -1,32 +1,32 @@
 ---
-title: "Only Running Tests For Related Files"
-lang: en
+title: "تشغيل اختبارات الملفات ذات الصلة فقط"
+lang: ar
 source: "https://stevekinney.com/courses/testing/running-tests-for-related-files"
 ---
 
-Picture this: You’ve been cranking away on some code, making changes, darting between files like a superhero full of caffeine. Then comes the dreaded moment—time to rerun the tests. All. Of. Them.
+تخيّل هذا: كنت تعمل بجدّ على بعض الشيفرة، وتُجري تغييرات، وتتنقّل بين الملفات كبطل خارق مليء بالكافيين. ثم تأتي اللحظة المخيفة: وقت إعادة تشغيل الاختبارات. كلها. بلا استثناء.
 
-Eh, not so fast.
+مهلًا، ليس بهذه السرعة.
 
-Instead of running the whole test suite, you can ask Vitest to only run the tests that are related to the files you’ve been working on. In this way, you can save yourself some time dealing with a full build just to test one pesky little function. Let’s break it down into bite-sized steps.
+بدلًا من تشغيل مجموعة الاختبارات بأكملها، يمكنك أن تطلب من Vitest تشغيل الاختبارات المرتبطة فقط بالملفات التي كنت تعمل عليها. بهذه الطريقة توفّر على نفسك بعض الوقت الذي تضيّعه في بناء كامل لمجرد اختبار دالة صغيرة مزعجة. لنفكّك الأمر إلى خطوات بحجم اللقمة.
 
-## The Command: `vitest related`
+## الأمر: `vitest related`
 
-Vitest provides a super useful feature called `vitest related`. As the name suggests, it runs the tests that are **related to the recent changes you made**. So, if you’re knee-deep in a project and make some changes to a specific file, you can just run the tests tied to that specific file.
+يوفّر Vitest ميزة مفيدة جدًا تُسمّى `vitest related`. وكما يوحي الاسم، فهو يشغّل الاختبارات **المرتبطة بالتغييرات الأخيرة التي أجريتها**. لذا إن كنت غارقًا في مشروع وأجريت بعض التغييرات على ملف معيّن، يمكنك ببساطة تشغيل الاختبارات المرتبطة بذلك الملف تحديدًا.
 
-Here’s how you use it:
+إليك كيفية استخدامه:
 
 ```bash
 npx vitest related path/to/your/file.js
 ```
 
-Yeah—it’s that simple. You point `vitest related` at your changed files and Vitest does the rest. It automagically runs the tests that are impacted by the files you changed. No more waiting for a gazillion other tests that aren’t relevant to your current change.
+أجل، الأمر بهذه البساطة. تُوجّه `vitest related` إلى ملفاتك المتغيّرة، ويتولى Vitest الباقي. يشغّل تلقائيًا الاختبارات المتأثرة بالملفات التي غيّرتها. لا مزيد من الانتظار لعدد لا يُحصى من الاختبارات الأخرى غير المرتبطة بتغييرك الحالي.
 
-But let’s break down a couple of scenarios where this is mega handy.
+لكن لنفكّك سيناريوهين يكون فيهما هذا مفيدًا للغاية.
 
-## Example #1: You’ve Been Tweaking a Single Function in One File
+## المثال الأول: كنت تعدّل دالة واحدة في ملف واحد
 
-Let’s say we’ve got a simple function doing some manipulations in `mathUtils.js`. Here’s the code:
+لنفترض أن لدينا دالة بسيطة تُجري بعض التعديلات في `mathUtils.js`. إليك الشيفرة:
 
 ```javascript
 // mathUtils.js
@@ -35,7 +35,7 @@ export const addNumbers = (a, b) => a + b;
 export const subtractNumbers = (a, b) => a - b;
 ```
 
-And we’ve got some tests in `mathUtils.test.js`:
+ولدينا بعض الاختبارات في `mathUtils.test.js`:
 
 ```javascript
 // mathUtils.test.js
@@ -53,34 +53,34 @@ describe('mathUtils', () => {
 });
 ```
 
-You make some edits to `mathUtils.js`—let’s say you’re rethinking your whole “subtracting numbers” thing because subtraction is chaotic (just ask anyone trying to balance books…). You tweak the function logic.
+تُجري بعض التعديلات على `mathUtils.js`، ولنقل إنك تعيد التفكير في مسألة «طرح الأعداد» برمّتها لأن الطرح فوضوي (اسأل أي شخص يحاول موازنة الدفاتر…). تعدّل منطق الدالة.
 
-Instead of running **every single test** in your app—you just pass in the file you’ve been editing:
+بدلًا من تشغيل **كل اختبار على حدة** في تطبيقك، تمرّر فقط الملف الذي كنت تعدّله:
 
 ```bash
 npx vitest related src/utils/mathUtils.js
 ```
 
-Boom. Vitest looks at that file, figures out which tests correspond to it (`mathUtils.test.js`), and runs only those.
+هذا كل شيء. ينظر Vitest في ذلك الملف، ويكتشف الاختبارات المقابلة له (`mathUtils.test.js`)، ويشغّل تلك فقط.
 
-Nice, huh?
+جميل، أليس كذلك؟
 
-## Example #2: Multiple Files, Same Principle
+## المثال الثاني: ملفات متعددة، المبدأ نفسه
 
-Now, let’s swerve into a slightly more complex situation. Maybe you’re working on multiple files—helpers, components, and the whole shebang. You wanna make sure your changes are good without running everything.
+الآن لننعطف إلى موقف أعقد قليلًا. ربما تعمل على ملفات متعددة: مساعدات، ومكوّنات، وكل ما في الحزمة. وتريد التأكد من أن تغييراتك جيدة دون تشغيل كل شيء.
 
-Easy. Just feed it all the files you’ve messed with:
+سهل. فقط غذّه بكل الملفات التي عبثت بها:
 
 ```bash
 npx vitest related src/utils/mathUtils.js src/components/Button.js
 ```
 
-Vitest will search for any tests associated with the given files and run those suckers for you. No pointless waiting around, watching all the irrelevant tests pass.
+سيبحث Vitest عن أي اختبارات مرتبطة بالملفات المعطاة ويشغّل تلك نيابةً عنك. لا انتظار بلا داعٍ، ولا مشاهدة لكل الاختبارات غير ذات الصلة تنجح.
 
-## Pro Tip: Add it to Your Workflow
+## نصيحة احترافية: أضفه إلى سير عملك
 
-This is perfect for those “whoops” moments where you’re unsure if you just broke something, but you don’t wanna slog through all the tests. A nice addition to your pre-commit process or even wired into CI/CD stages, if you’re that fancy (I envy your coolness).
+هذا مثالي للحظات «عفوًا» التي لا تكون فيها متأكدًا إن كنت قد كسرت شيئًا للتوّ، لكنك لا تريد أن تخوض كل الاختبارات. إنه إضافة لطيفة إلى عملية ما قبل الإيداع، أو حتى موصولًا بمراحل CI/CD إن كنت بهذا الترف (أحسدك على روعتك).
 
-To wrap it all up, **`vitest related`** is your ticket to quick, efficient test runs based on what you’re currently touching in the code. It’s painless, saves a ton of time, and keeps you in the flow without smashing the brakes of the full test suite. Even better? It feels good. Like sipping a fresh coffee after realizing your tests do, in fact, pass.
+لنجمع كل شيء، **`vitest related`** هو تذكرتك لتشغيل اختبارات سريع وفعّال بناءً على ما تلمسه حاليًا في الشيفرة. إنه بلا ألم، ويوفّر وقتًا هائلًا، ويُبقيك في حالة تدفّق دون أن تكسر مكابح مجموعة الاختبارات الكاملة. والأفضل؟ إنه يمنحك شعورًا جيدًا. كارتشاف قهوة طازجة بعد إدراك أن اختباراتك تنجح فعلًا.
 
-Time to put this knowledge to work! Keep those tests focused and fast, and remember: Just because you *can* run the entire suite doesn’t always mean you *should*.
+حان وقت وضع هذه المعرفة موضع العمل! أبقِ اختباراتك مركّزة وسريعة، وتذكّر: مجرد أنك *تستطيع* تشغيل المجموعة بأكملها لا يعني دائمًا أنه *ينبغي* عليك ذلك.

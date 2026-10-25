@@ -1,16 +1,16 @@
 ---
-title: "Production Performance Monitoring"
-lang: en
+title: "مراقبة الأداء في الإنتاج"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/production-performance-monitoring"
 ---
 
-Your React app passes all performance tests in development, achieves perfect Lighthouse scores in CI, and feels blazing fast on your MacBook Pro. Then you deploy to production and discover the harsh reality: your users are on slow devices, unreliable networks, and older browsers. That 2-second page load becomes 8 seconds on a Moto G4 over 3G in India. Without production performance monitoring, you’re flying blind.
+تطبيق React لديك يجتاز كل اختبارات الأداء في التطوير، ويحصد درجات Lighthouse كاملة في CI، ويبدو فائق السرعة على حاسوبك المحمول. ثم تنشره إلى الإنتاج لتكتشف الواقع القاسي: مستخدموك على أجهزة بطيئة، وشبكات غير موثوقة، ومتصفحات قديمة. فتحميل الصفحة في ثانيتين يصير ثماني ثوانٍ على جهاز Moto G4 عبر شبكة 3G في الهند. ومن دون مراقبة أداء الإنتاج، فأنت تطير على غير هدى.
 
-Real User Monitoring (RUM) bridges the gap between synthetic testing and actual user experience. It captures performance data from real users with real devices, real networks, and real usage patterns. This data reveals performance issues that synthetic tests miss: the shopping cart that’s slow only when it has 50+ items, the search that degrades with concurrent users, or the iOS bug that only affects Safari 14.1.
+تسدّ المراقبة الحقيقية للمستخدمين (RUM) الفجوة بين الاختبارات الاصطناعية وتجربة المستخدم الفعلية. فهي تلتقط بيانات الأداء من مستخدمين حقيقيين عبر أجهزة حقيقية، وشبكات حقيقية، وأنماط استخدام حقيقية. وتكشف هذه البيانات مشكلات أداء تفوت الاختبارات الاصطناعية: عربة التسوّق البطيئة فقط حين تحتوي أكثر من 50 عنصرًا، أو البحث الذي يتدهور مع المستخدمين المتزامنين، أو علّة iOS التي لا تصيب إلا Safari 14.1.
 
-## Understanding Real User Monitoring (RUM)
+## فهم المراقبة الحقيقية للمستخدمين (RUM)
 
-RUM collects performance metrics from actual user sessions, providing insights into how your React app performs in the wild:
+تجمع المراقبة الحقيقية للمستخدمين مقاييس الأداء من جلسات مستخدمين فعلية، وتقدّم لك رؤى حول كيفية أداء تطبيق React لديك في العالم الحقيقي:
 
 ```typescript
 // Real User Monitoring architecture
@@ -55,11 +55,11 @@ interface RUMData {
 }
 ```
 
-Unlike synthetic monitoring that runs in controlled environments, RUM captures the chaos of real-world usage: users on slow networks, old devices, with browser extensions, antivirus software, and dozens of other tabs open.
+وبخلاف المراقبة الاصطناعية التي تعمل في بيئات مضبوطة، تلتقط المراقبة الحقيقية للمستخدمين فوضى الاستخدام في العالم الواقعي: مستخدمون على شبكات بطيئة، وأجهزة قديمة، مع إضافات للمتصفح، وبرامج مكافحة فيروسات، وعشرات من علامات التبويب الأخرى المفتوحة.
 
-## Implementing Core Web Vitals Monitoring
+## تنفيذ مراقبة مؤشرات الويب الأساسية
 
-### Web Vitals Library Integration
+### دمج مكتبة Web Vitals
 
 ```typescript
 // rum/web-vitals-collector.ts
@@ -251,7 +251,7 @@ const webVitalsCollector = new WebVitalsCollector({
 });
 ```
 
-### React-Specific Performance Monitoring
+### مراقبة الأداء الخاصة بـ React
 
 ```typescript
 // rum/react-performance-monitor.ts
@@ -454,7 +454,7 @@ function usePerformanceMonitoring(componentName: string) {
 }
 ```
 
-## Error and Performance Correlation
+## الربط بين الأخطاء والأداء
 
 ```typescript
 // rum/error-performance-correlator.ts
@@ -634,7 +634,7 @@ class PerformanceAwareErrorBoundary extends React.Component<
 }
 ```
 
-## Performance Alerting System
+## نظام التنبيهات على الأداء
 
 ```typescript
 // rum/performance-alerting.ts
@@ -828,7 +828,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-## Analytics Integration
+## الدمج مع التحليلات
 
 ```typescript
 // rum/analytics-integration.ts
@@ -989,7 +989,7 @@ const performanceAnalytics = new PerformanceAnalytics({
 });
 ```
 
-## Dashboard and Reporting
+## لوحة المعلومات والتقارير
 
 ```typescript
 // rum/performance-dashboard.ts

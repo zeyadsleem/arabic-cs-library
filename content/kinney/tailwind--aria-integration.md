@@ -1,12 +1,12 @@
 ---
-title: "ARIA Integration"
-lang: en
+title: "تكامل ARIA"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/aria-integration"
 ---
 
-You can conditionally style elements using the `aria-*` variant, which targets elements based on their ARIA attributes. For instance, you can change the background color of an element when the `aria-checked` attribute is set to `true` using a class like `aria-checked:bg-sky-700`. This variant applies styles only when the specified ARIA condition is met.
+يمكنك تنسيق العناصر شرطيًا باستخدام صيغة `aria-*`، وهي تستهدف العناصر بحسب خصائص ARIA التي تحملها. فمثلًا يمكنك تغيير لون خلفية عنصر عندما تكون الخاصية `aria-checked` مضبوطة على `true` باستخدام صنف مثل `aria-checked:bg-sky-700`. ولا تطبّق هذه الصيغة الأنماط إلا عندما يتحقق شرط ARIA المحدّد.
 
-Tailwind includes built-in variants for common boolean ARIA attributes. These are:
+تتضمّن Tailwind صيغًا مدمجة لخصائص ARIA المنطقية الشائعة. وهذه هي:
 
 - `aria-checked`
 - `aria-disabled`
@@ -18,52 +18,52 @@ Tailwind includes built-in variants for common boolean ARIA attributes. These ar
 - `aria-required`
 - `aria-selected`
 
-Using these utilities means the browser handles applying the right styles based on the element’s state, reducing the need for complex conditional logic in your templates.
+استخدام هذه الأدوات يعني أن يتولّى المتصفح تطبيق الأنماط المناسبة بحسب حالة العنصر، ما يقلّل الحاجة إلى منطق شرطيّ معقّد في قوالبك.
 
-### Arbitrary Values with `aria-*`
+### القيم العشوائية مع `aria-*`
 
-For ARIA attributes that aren’t simple boolean states or for attributes not included by default, you can use arbitrary values within the `aria-*` variant. This is particularly useful for attributes with specific values, like `aria-sort`. You can generate a property on the fly using any arbitrary value within square brackets.
+بالنسبة إلى خصائص ARIA التي ليست حالات منطقية بسيطة أو إلى الخصائص غير المضمّنة افتراضيًا، يمكنك استخدام قيم عشوائية داخل صيغة `aria-*`. ويكون هذا نافعًا خصوصًا مع الخصائص ذات القيم المحدّدة، مثل `aria-sort`. ويمكنك توليد خاصية مخصّصة (custom) باستخدام أي قيمة عشوائية بين قوسين مربعين.
 
-For example, to rotate an icon based on the value of the `aria-sort` attribute, you might use classes like `aria-[sort=ascending]:rotate-0` and `aria-[sort=descending]:rotate-180`.
+على سبيل المثال، لتدوير أيقونة بحسب قيمة الخاصية `aria-sort`، يمكنك استخدام أصناف مثل `aria-[sort=ascending]:rotate-0` و`aria-[sort=descending]:rotate-180`.
 
-## Styling Parent or Sibling Elements
+## تنسيق العناصر الأم أو الأشقاء
 
-Sometimes you need to style an element based on the ARIA state of a related element, such as a parent or a sibling. Tailwind provides `group-aria-*` and `peer-aria-*` variants for these scenarios.
+أحيانًا تحتاج إلى تنسيق عنصر بحسب حالة ARIA لعنصر مرتبط به، مثل عنصر أم أو شقيق. توفّر Tailwind صيغتي `group-aria-*` و`peer-aria-*` لهذين السيناريوهين.
 
-### The `group-aria-*` Variant
+### صيغة `group-aria-*`
 
-Similar to the `group-hover` variant, the `group-aria-*` variant allows you to style an element when a parent element (marked with the `group` class) has a specific ARIA attribute or value. For instance, if a table header (`<th>`) is marked as a `group` and has `aria-sort="ascending"`, you can style a child SVG icon using `group-aria-[sort=ascending]:rotate-0`.
+مثل صيغة `group-hover` بالضبط، تتيح لك صيغة `group-aria-*` تنسيق عنصر عندما يحمل عنصر أم (مُعلَّم بصنف `group`) خاصية ARIA أو قيمة معيّنة. فمثلًا، إذا كان عنوان جدول (`<th>`) مُعلَّمًا بـ`group` ويحمل `aria-sort="ascending"`، فيمكنك تنسيق أيقونة SVG ابنة باستخدام `group-aria-[sort=ascending]:rotate-0`.
 
-### The `peer-aria-*` Variant
+### صيغة `peer-aria-*`
 
-The `peer-aria-*` variant enables styling an element based on the ARIA state of a sibling element. You mark the sibling element with the `peer` class, and then use `peer-aria-*` variants on the target element. This is useful for patterns like styling an input’s label based on the input’s `aria-invalid` state, or styling a message based on an input’s `aria-disabled` state. An example might be `peer-aria-[disabled]:opacity-50` to make a hint text semi-transparent when its associated input peer is disabled.
+تتيح لك صيغة `peer-aria-*` تنسيق عنصر بحسب حالة ARIA لعنصر شقيق. تُعلِّم العنصر الشقيق بصنف `peer`، ثم تستخدم صيغ `peer-aria-*` على العنصر الهدف. وهذا مفيد لأنماط مثل تنسيق تسمية حقل إدخال بحسب حالة `aria-invalid` للحقل نفسه، أو تنسيق رسالة بحسب حالة `aria-disabled` لحقل الإدخال. ومن الأمثلة `peer-aria-[disabled]:opacity-50` لجعل نص تلميح شبه شفاف عندما يكون حقل الإدخال المرتبط معطّلًا.
 
-## Customizing ARIA Variants
+## تخصيص صيغ ARIA
 
-You can customize which `aria-*` variants are available or add new ones that map to specific ARIA attributes or values by creating a new variant. This can be done using the `@custom-variant` directive in your CSS.
+يمكنك تخصيص صيغ `aria-*` المتاحة أو إضافة صيغ جديدة تُطابِق خصائص ARIA أو قيمًا محدّدة، وذلك بإنشاء صيغة جديدة. ويمكن تنفيذ ذلك باستخدام التوجيه `@custom-variant` داخل CSS.
 
-## Enhancing Accessibility with Other Utilities
+## تحسين الوصولية بأدوات أخرى
 
-Beyond explicit ARIA variants, Tailwind provides several other utilities and features that contribute to the overall accessibility of your web interfaces.
+إلى جانب صيغ ARIA الصريحة، توفّر Tailwind عدة أدوات وميزات أخرى تسهم في الوصولية الشاملة لواجهات الويب لديك.
 
-## Visually Hiding Elements
+## إخفاء العناصر بصريًا
 
-For elements that need to be present in the DOM for screen readers but should be visually hidden, Tailwind offers the `sr-only` utility. This utility applies styles that position the element off-screen while keeping it accessible to assistive technologies. The `not-sr-only` utility reverses this, making the element visible again.
+للعناصر التي يلزم وجودها في DOM لقارئات الشاشة مع وجوب إخفائها بصريًا، توفّر Tailwind أداة `sr-only`. وتطبّق هذه الأداة أنماطًا تُزيح العنصر خارج الشاشة مع إبقائه في متناول التقنيات المساعدة. وتعكس أداة `not-sr-only` ذلك، فتعيد العنصر إلى الظهور.
 
-## Focus Indicators
+## مؤشرات التركيز
 
-Proper focus styling is essential for keyboard navigation and accessibility. While browsers provide default outlines on focused elements, you often need custom styling for design purposes.
+التنسيق السليم للتركيز ضروري للتنقل بلوحة المفاتيح وللوصولية. ورغم أن المتصفحات تقدّم محيطات افتراضية للعناصر التي تحوز على التركيز، فكثيرًا ما تحتاج إلى تنسيق مخصّص لأسباب التصميم.
 
-- **Using `outline-*` Utilities**: Tailwind provides utilities like `outline-2` and `outline-blue-500` to set the width and color of an element’s outline. You can apply these using the `focus:` variant.
-- **The `outline-hidden` Utility**: If you hide the default browser outline, it’s highly recommended to apply your own focus styling for accessibility. The `outline-hidden` utility is provided to hide the default outline while preserving it in forced colors mode for accessibility reasons. Previously, `outline-none` had this behavior, but in Tailwind 4, `outline-none` explicitly sets `outline-style: none`.
+- **استخدام أدوات `outline-*`**: توفّر Tailwind أدوات مثل `outline-2` و`outline-blue-500` لضبط عرض محيط العنصر ولونه. ويمكنك تطبيقها باستخدام صيغة `focus:`.
+- **أداة `outline-hidden`**: إذا أخفتَ محيط المتصفح الافتراضي، فإن تطبيق تنسيق تركيزك الخاص لأغراض الوصولية موصى به بشدة. وتُقدَّم أداة `outline-hidden` لإخفاء المحيط الافتراضي مع الحفاظ عليه في وضع الألوان القسرية لأسباب الوصولية. وكان `outline-none` يملك هذا السلوك سابقًا، أما في Tailwind 4 فيضبط `outline-none` صراحةً `outline-style: none`.
 
-## Reduced Motion and Forced Colors
+## الحركة المخفّضة والألوان القسرية
 
-Tailwind includes variants that respond to user preferences set in their operating system, contributing to a more inclusive experience.
+تتضمّن Tailwind صيغ تستجيب لتفضيلات المستخدم المضبوطة في نظام تشغيله، ما يسهم في تجربة أكثر شمولًا.
 
-- **Reduced Motion**: The `prefers-reduced-motion` media query indicates if the user wants minimal non-essential motion. You can use the `motion-reduce` variant to conditionally apply styles when this preference is active. Conversely, `motion-safe` applies styles only when the user has *not* requested reduced motion. These are useful for controlling animations and transitions.
-- **Forced Colors**: The `prefers-contrast` media query tells you if the user has requested more or less contrast. The `contrast-more` variant lets you add styles conditionally in this case. Tailwind also includes `forced-color-adjust-auto` and `forced-color-adjust-none` utilities for opting in and out of forced colors. The `inverted-colors` variant can be used when the user has enabled an inverted color scheme.
+- **الحركة المخفّضة**: يوضّح استعلام الوسائط `prefers-reduced-motion` ما إذا كان المستخدم يريد أقل قدر ممكن من الحركة غير الضرورية. ويمكنك استخدام صيغة `motion-reduce` لتطبيق الأنماط شرطيًا عندما يكون هذا التفضيل نشطًا. وعلى العكس، تطبّق `motion-safe` الأنماط فقط عندما *لم* يطلب المستخدم حركة مخفّضة. وهما مفيدتان في ضبط الحركات والانتقالات.
+- **الألوان القسرية**: يخبرك استعلام الوسائط `prefers-contrast` ما إذا كان المستخدم قد طلب تباينًا أكثر أو أقل. وتتيح لك صيغة `contrast-more` إضافة أنماط شرطيًا في هذه الحالة. وتتضمّن Tailwind كذلك أدوات `forced-color-adjust-auto` و`forced-color-adjust-none` للاختيار في الألوان القسرية أو الخروج منها. ويمكن استخدام صيغة `inverted-colors` عندما يكون المستخدم قد فعّل نظام ألوان معكوسًا.
 
-## Text Selection and Readability
+## تحديد النص وقابلية القراءة
 
-Utilities for controlling text selection (`user-select-none`, `select-text`, etc.) and text wrapping (`text-balance`, `text-pretty`) can also impact readability and user interaction, contributing to accessibility. Additionally, font smoothing utilities (`antialiased`, `subpixel-antialiased`) can affect text rendering.
+الأدوات التي تتحكم في تحديد النص (`user-select-none` و`select-text` وغيرها) وفي لفّ النص (`text-balance` و`text-pretty`) تؤثر أيضًا في قابلية القراءة وتفاعل المستخدم، ما يسهم في الوصولية. وإلى جانب ذلك، يمكن لأدوات تنعيم الخطوط (`antialiased` و`subpixel-antialiased`) أن تؤثر في تصيير النص.

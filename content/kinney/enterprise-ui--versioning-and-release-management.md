@@ -1,34 +1,34 @@
 ---
-title: "Versioning and Release Management"
-lang: en
+title: "إدارة الإصدارات والنشر"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/versioning-and-release-management"
 ---
 
-Before we talk about version numbers, we need to talk about what we’re versioning. A design system isn’t one package. It’s a graph of packages—tokens, themes, foundations, primitives, framework-specific components—that evolve at different speeds. If you try to version them all in lockstep, you end up with major bumps to the icon package because someone renamed a button prop. If you version them independently with no coordination, you end up with consumers pinned to six incompatible versions of things that are supposed to work together.
+قبل أن نتحدّث عن أرقام الإصدارات، علينا أن نتحدّث عمّا نُصدر له نسخًا. فنظام التصميم ليس حزمة واحدة، بل رسم بياني من الحزم—الرموز، والسمات، والأسس، والعناصر الأولية، والمكوّنات الخاصة بكل إطار—تنمو بسرعات مختلفة. وإن حاولت إصدارها كلها بالتناسق ذاته، انتهيت إلى قفزات كبرى في حزمة الأيقونات لأن أحدهم أعاد تسمية خاصية في زر. وإن أصدَرتها باستقلالية بلا تنسيق، انتهيت إلى مستهلكين مثبَّتين على ست نسخ غير متوافقة من أشياء يُفترض أنها تعمل معًا.
 
-The answer is somewhere in the middle, and it starts with having a clear contract.
+والجواب يقع في مكان ما بين الاثنين، ويبدأ بامتلاك عقد واضح.
 
-## Start with the Contract
+## ابدأ بالعقد
 
-Treat the design system like a product with a public API, because version numbers without a public API are just decorative numerals. [Semantic Versioning](https://semver.org/) explicitly requires a declared public API, ties minor versions to backward-compatible additions and deprecations, and reserves major versions for breaking changes.
+عامل نظام التصميم كمنتَج له واجهة برمجية عامة، لأن أرقام الإصدارات بلا واجهة برمجية عامة ليست إلا أرقامًا للزينة. فـ[الإصدار الدلالي (Semantic Versioning)](https://semver.org/) يشترط صراحةً واجهة برمجية عامة معلنة، ويربط الإصدارات الثانوية بالإضافةات وإعلانات التقادم المتوافقة مع ما قبلها، ويحفظ الإصدارات الرئيسية للتغييرات الكاسرة.
 
-For a design system, that API isn’t just component props. It includes:
+وبالنسبة إلى نظام تصميم، لا تقتصر تلك الواجهة البرمجية على خصائص المكوّنات، بل تشمل:
 
-- Token names and their semantic meaning.
-- Generated CSS custom properties.
-- Supported theme contexts.
-- Accessibility behavior.
-- Any documented DOM or styling hooks that consuming teams are told they can rely on.
+- أسماء الرموز (tokens) ومعانيها الدلالية.
+- خصائص CSS المخصّصة المولَّدة.
+- سياقات السمات المدعومة.
+- سلوك إمكانية الوصول.
+- أي خطّافات DOM أو تنسيق موثّقة يُقال للفرق المستهلكة إنها تستطيع الاعتماد عليها.
 
-If you rename a token, that’s a breaking change. If you change the keyboard interaction pattern on a component, that’s a breaking change. If you add a new color token, that’s a minor release. The versioning rules aren’t different from any other library—they just apply to a broader surface than most people think about.
+فإن أعدت تسمية رمز، فذلك تغيير كاسر. وإن غيّرت نمط التفاعل بلوحة المفاتيح في مكوّن، فذلك تغيير كاسر. وإن أضفت رمز لون جديدًا، فذلك إصدار ثانوي. وقواعد الإصدار ليست مختلفة عن أي مكتبة أخرى—لكنها تنطبق على سطح أوسع مما يفكّر فيه معظم الناس.
 
-## Design Tokens as the Root Contract
+## رموز التصميم بوصفها العقد الجذري
 
-Tokens should be the foundation of the contract. The [Design Tokens Community Group](https://www.w3.org/community/design-tokens/) shipped the stable DTCG 2025.10 format, which describes tokens as a platform-agnostic way to express design decisions, flow data between tools, and maintain a single source of truth across design and development.
+ينبغي أن تكون الرموز أساس العقد. فقد أصدرت [مجموعة مجتمع رموز التصميم (Design Tokens Community Group)](https://www.w3.org/community/design-tokens/) صيغة DTCG 2025.10 المستقرة، وهي تصف الرموز طريقة محايدة تجاه المنصات للتعبير عن قرارات التصميم، وتدفّق البيانات بين الأدوات، والحفاظ على مصدر حقيقة واحد عبر التصميم والتطوير.
 
-That’s the right mental model for a cross-app design system—not “a pile of SCSS with opinions,” which is how these things usually decay.
+وهذا هو النموذج الذهني الصحيح لنظام تصميم عابر للتطبيقات—لا «كومة SCSS بآراء»، وهو ما تنحدر إليه هذه الأمور عادةً.
 
-A minimal token source in the DTCG format:
+وهذا مصدر رموز أدنى بصيغة DTCG:
 
 ```json
 {
@@ -61,21 +61,21 @@ A minimal token source in the DTCG format:
 }
 ```
 
-The format gives you aliases (so `color.text.primary` resolves through `color.brand.primary`), typed values, and explicit deprecation metadata with an optional explanation—right in the token file itself, instead of hiding migrations in Slack archaeology.
+وتمنحك الصيغة أسماء بديلة (فيُحلّ `color.text.primary` عبر `color.brand.primary`)، وقيمًا مُنوّعة، وبيانات وصفية صريحة للتقادم مع شرح اختياري—في ملف الرموز نفسه، بدل إخفاء الترحيلات في تنقيب محادثات Slack.
 
-Use one canonical token source and generate platform outputs from it. [Style Dictionary](https://styledictionary.com/) is designed for exactly this: exporting tokens to multiple platforms (CSS, JS, iOS, Android) with per-platform transforms so the same source data produces all the outputs without forking the underlying definitions.
+استخدم مصدر رموز واحدًا مرجعيًا وولّد منه مخرجات المنصات. وقد صُمّم [Style Dictionary](https://styledictionary.com/) لهذا بالضبط: تصدير الرموز إلى منصات متعددة (CSS وJS وiOS وAndroid) مع تحويلات لكل منصة، فيُنتج المصدر نفسه كل المخرجات دون تفرّع التعريفات الأساسية.
 
-## Build a Layered Package Graph
+## ابنِ رسمًا بيانيًا طَبَقيًا للحزم
 
-A design system that has to survive multiple consuming applications needs a package graph with one-way dependencies. The simplest durable split:
+يحتاج نظام التصميم الذي عليه أن يصمد أمام تطبيقات مستهلكة متعددة إلى رسم بياني للحزم باعتمادات أحادية الاتجاه. وأبسط تقسيم مَعْمور:
 
 ```
 tokens → themes → foundations → framework adapters → composed components → app patterns
 ```
 
-Keep the graph acyclic. [pnpm explicitly warns](https://pnpm.io/workspaces) about cyclic workspace dependencies, and [TypeScript project references](https://www.typescriptlang.org/docs/handbook/project-references.html) exist to split large programs into smaller pieces with clearer separation and faster builds.
+أبقِ الرسم البياني بلا حلقات. فـ[pnpm يحذّر صراحةً](https://pnpm.io/workspaces) من الاعتمادات الدائرية في مساحة العمل، و[مراجع مشاريع TypeScript](https://www.typescriptlang.org/docs/handbook/project-references.html) موجودة لتقسيم البرامج الكبيرة إلى قطع أصغر بفصل أوضح وبناء أسرع.
 
-A healthy monorepo layout:
+وهذا تخطيط صحي لمستودع أحادي:
 
 ```
 repo/
@@ -97,11 +97,11 @@ repo/
     tsconfig/
 ```
 
-The important part isn’t the exact folder names. It’s the dependency direction. `react-components` can depend on `react-primitives`, `foundations-css`, and tokens. `design-tokens` must not depend on anything upstream. App packages should consume the public packages, not reach into private internals because someone got impatient and had repo write access. That’s how “shared infrastructure” becomes “shared damage.”
+والجزء المهم ليس أسماء المجلدات الدقيقة، بل اتجاه الاعتماد. فيمكن لـ`react-components` أن تعتمد على `react-primitives` و`foundations-css` والرموز. أما `design-tokens` فيجب ألا تعتمد على أي شيء في أعلى التدفّق. وينبغي أن تستهلك حزم التطبيقات الحزم العامة، لا أن تمتد إلى الدواخل الخاصة لأن أحدهم نفد صبره وكان لديه صلاحية كتابة في المستودع. فهكذا تتحوّل «البنية التحتية المشتركة» إلى «ضرر مشترك».
 
-## Workspace Mechanics
+## ميكانيكا مساحة العمل
 
-Every layer of the design system should be a real package. [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces/) manage multiple packages under one root and auto-symlink them into `node_modules`. [pnpm adds](https://pnpm.io/workspaces) a stricter `workspace:` protocol that refuses to resolve to the registry when you mean “local package only,” and it rewrites `workspace:` dependencies to normal semver ranges when you publish. That makes local development fast without corrupting published consumers.
+ينبغي أن تكون كل طبقة في نظام التصميم حزمة حقيقية. فـ[مساحات عمل npm](https://docs.npmjs.com/cli/v7/using-npm/workspaces/) تدير حزمًا متعددة تحت جذر واحد وتربطها تلقائيًا بروابط رمزية في `node_modules`. وتضيف [مساحات عمل pnpm](https://pnpm.io/workspaces) بروتوكول `workspace:` أكثر صرامة يرفض الحل من السجل عندما تعني «حزمة محلية فقط»، ويعيد كتابة اعتمادات `workspace:` إلى نطاقات semver عادية عند النشر. وهذا يجعل التطوير المحلي سريعًا دون إفساد المستهلكين المنشورين.
 
 ```json
 {
@@ -115,7 +115,7 @@ Every layer of the design system should be a real package. [npm workspaces](http
 }
 ```
 
-Map package boundaries to TypeScript project references so a token change doesn’t force every unrelated app to rebuild for sport:
+طابِق حدود الحزم مع مراجع مشاريع TypeScript كي لا يُجبر تغيير رمزٍ كل تطبيق غير ذي صلة على إعادة البناء بلا داعٍ:
 
 ```json
 {
@@ -128,26 +128,26 @@ Map package boundaries to TypeScript project references so a token change doesn�
 }
 ```
 
-If you’re using Nx, [module-boundary rules](https://nx.dev/docs/features/enforce-module-boundaries) with tags keep the graph honest. That’s much cheaper than discovering six months later that your token package imports a React hook because one team was “moving fast.”
+وإن كنت تستخدم Nx، فـ[قواعد حدود الوحدات](https://nx.dev/docs/features/enforce-module-boundaries) مع الوسوم تُبقي الرسم البياني صادقًا. وهذا أرخص بكثير من اكتشاف بعد ستة أشهر أن حزمة الرموز تستورد خُطّاف React لأن فريقًا كان «يتحرّك بسرعة».
 
-## Versioning with Changesets
+## الإصدار باستخدام Changesets
 
-Don’t invent your own versioning ritual. [pnpm’s own docs](https://pnpm.io/workspaces) say workspace versioning is complex and not built in, and they point people to [Changesets](https://changesets-docs.vercel.app/). It’s purpose-built for monorepos: each change records release intent, and the tool coordinates version bumps across dependent packages.
+لا تبتكر طقسك الخاص في الإصدار. فـ[وثائق pnpm نفسها](https://pnpm.io/workspaces) تقول إن إصدار مساحات العمل معقّد وغير مدمج، وتوجّه الناس إلى [Changesets](https://changesets-docs.vercel.app/). وهي مبنية لغرض المستودعات الأحادية تحديدًا: فكل تغيير يسجّل نيّة الإصدار، وتنسّق الأداة قفزات الإصدار عبر الحزم المعتمدة.
 
-The workflow:
+وسير العمل:
 
-1. A developer makes a change and runs `npx changeset` to describe it—patch, minor, or major, with a human-readable summary.
-2. The changeset file goes into the pull request alongside the code change.
-3. At release time, `npx changeset version` consumes all pending changesets, bumps versions, updates inter-package dependencies, and writes changelogs.
-4. `npx changeset publish` pushes to the registry.
+1. يُجري مطوّر تغييرًا ويشغّل `npx changeset` لوصفه—تصحيحي أو ثانوي أو رئيسي، مع ملخّص يقرأه الإنسان.
+2. ويُودَع ملف التغيير (changeset) في طلب السحب إلى جانب تغيير الشيفرة.
+3. وعند وقت الإصدار، يستهلك `npx changeset version` كل التغييرات المعلّقة، ويرفع الإصدارات، ويحدّث الاعتمادات بين الحزم، ويكتب سجلات التغييرات.
+4. ويدفع `npx changeset publish` إلى السجل.
 
-This works well because tokens, icons, foundations, and framework adapters rarely change in perfect lockstep. Independent versioning with coordinated dependency bumps is the sweet spot.
+وهذا ينجح جيدًا لأن الرموز والأيقونات والأسس ومهايئات الأطر نادرًا ما تتغيّر بتناسق تام. فالإصدار المستقل مع رفع اعتمادات منسّق هو النقطة المثلى.
 
-## Deprecation That Actually Works
+## تقادم ينجح فعلًا
 
-Make deprecations visible *before* removals. [SemVer says](https://semver.org/) deprecations should ship in a minor release and breaking removals require a major release. That means token renames, prop removals, CSS variable removals, and accessibility behavior changes all need deliberate versioning—not surprise merges on a Friday.
+اجعل التقادم مرئيًا *قبل* الإزالة. [يقول SemVer](https://semver.org/) إن إعلانات التقادم ينبغي أن تُشحن في إصدار ثانوي، وإن الإزالات الكاسرة تتطلب إصدارًا رئيسيًا. وهذا يعني أن إعادة تسمية الرموز، وإزالة الخصائص، وإزالة متغيرات CSS، وتغييرات سلوك إمكانية الوصول كلها تحتاج إلى إصدار مدروس—لا دمج مفاجئ في يوم جمعة.
 
-For tokens, use the `$deprecated` metadata in the [DTCG format](https://www.designtokens.org/TR/2025.10/format/) itself:
+وبالنسبة إلى الرموز، استخدم البيانات الوصفية `$deprecated` في [صيغة DTCG](https://www.designtokens.org/TR/2025.10/format/) نفسها:
 
 ```json
 {
@@ -161,21 +161,21 @@ For tokens, use the `$deprecated` metadata in the [DTCG format](https://www.desi
 }
 ```
 
-Combined with generated documentation, consuming teams see not just *that* something is deprecated, but what they should use instead. Ship codemods for the mechanical migrations and lint rules that flag deprecated tokens in CI. Automation beats policy documents every time.
+ومع التوثيق المولَّد، لا ترى الفرق المستهلكة *أن* شيئًا ما تقادم فحسب، بل أيضًا ما ينبغي استخدامه بدلًا منه. واشحن codemods للترحيلات الميكانيكية وقواعد lint التي ترصد الرموز المتقادمة في CI. فالأتمتة تتغلّب على مستندات السياسات في كل مرة.
 
-## Outside the Monorepo
+## خارج المستودع الأحادي
 
-If your consuming applications live in separate repositories, keep a simple compatibility policy: support the current major of the design system and one previous major during rollout windows. Publish migration guides and codemods for each major release. Track adoption metrics—which apps are on which version—so you know when it’s safe to drop the old major.
+إن كانت تطبيقاتك المستهلكة تعيش في مستودعات منفصلة، فأبقِ سياسة توافق بسيطة: ادعم الإصدار الرئيسي الحالي لنظام التصميم ورئيسيًا سابقًا واحدًا خلال نوافذ الطرح. وانشر أدلة الترحيل و codemods لكل إصدار رئيسي. وتتبّع مقاييس التبنّي—أي التطبيقات على أي إصدار—لتعرف متى يكون إسقاط الرئيسي القديم آمنًا.
 
-The compatibility window is the difference between “we deprecated this” and “we deprecated this and then helped you move.” One of those gets adoption. The other gets ignored.
+فنافذة التوافق هي الفرق بين «أعلنّا تقادم هذا» و«أعلنّا تقادم هذا ثم ساعدناك على الانتقال». واحدة منهما تنال التبنّي، والأخرى تُتجاهل.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
 ### Changesets
 
-> Human-readable release management for monorepos.
+> إدارة إصدارات يقرأها الإنسان للمستودعات الأحادية.
 
 ```
 Developer workflow:
@@ -185,6 +185,6 @@ Developer workflow:
 4. On merge, CI collects changesets → bumps versions → publishes → writes CHANGELOG
 ```
 
-- Each changeset declares: which packages changed, semver bump type, description.
-- Supports independent versioning (each package has its own version) or fixed (all packages share a version).
-- Automates the “what changed in this release?” question.
+- تعلن كل تغييرة: أي الحزم تغيّرت، ونوع قفزة semver، والوصف.
+- تدعم الإصدار المستقل (لكل حزمة إصدارها) أو الثابت (تشترك كل الحزم في إصدار واحد).
+- تُؤتمت سؤال «ما الذي تغيّر في هذا الإصدار؟».

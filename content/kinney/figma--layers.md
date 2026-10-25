@@ -1,61 +1,61 @@
 ---
-title: "Working with Layers"
-lang: en
+title: "العمل مع الطبقات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/layers"
 ---
 
-[Figma](https://figma.com/) features three key tools that appear similar at first glance: [**frames**](https://help.figma.com/hc/en-us/articles/360041539473-Frames-in-Figma), [**groups**](https://help.figma.com/hc/en-us/articles/360039832054-The-difference-between-frames-and-groups), and [**sections**](https://help.figma.com/hc/en-us/articles/9771500257687-Organize-your-canvas-with-sections). Each serves a unique purpose in organizing and designing within the platform. Let’s delve into these tools to understand their differences and best use cases.
+يتضمّن [Figma](https://figma.com/) ثلاث أدوات رئيسية تبدو متشابهة للوهلة الأولى: [**الإطارات**](https://help.figma.com/hc/en-us/articles/360041539473-Frames-in-Figma)، و[**المجموعات**](https://help.figma.com/hc/en-us/articles/360039832054-The-difference-between-frames-and-groups)، و[**الأقسام**](https://help.figma.com/hc/en-us/articles/9771500257687-Organize-your-canvas-with-sections). ولكل منها غرض فريد في التنظيم والتصميم داخل المنصّة. لنتعمّق في هذه الأدوات لفهم اختلافاتها وأفضل حالات استخدامها.
 
-- [**Groups**](#groups) are ideal for quick, temporary arrangements and applying uniform styling across multiple elements.
-- [**Frames**](#frames) serve as the fundamental structure for your design, accommodating everything from screen layouts to components.
-- [**Sections**](#sections) offer a new, top-level organizational layer, perfect for enhancing collaboration and streamlining navigation and presentation.
+- [**المجموعات**](#groups) مثالية للترتيبات السريعة المؤقتة ولتطبيق تنسيق موحّد على عناصر متعددة.
+- [**الإطارات**](#frames) هي البنية الأساسية لتصميمك، وتستوعب كل شيء من تخطيطات الشاشات إلى المكوّنات.
+- [**الأقسام**](#sections) توفّر طبقة تنظيمية جديدة على المستوى الأعلى، وهي مثالية لتعزيز التعاون وتبسيط التنقّل والعرض التقديمي.
 
-## Groups
+## المجموعات {#groups}
 
-**Groups** are collections of elements that you’ve bundled together. This functionality is particularly useful for managing multiple objects simultaneously, reducing the repetitive task of selecting each one individually.
+**المجموعات** هي تجمّعات لعناصر ضممتها معًا. وهذه الوظيفة مفيدة بوجه خاص لإدارة عدة كائنات في وقت واحد، ما يقلّل مهمة تحديد كل واحد منها على حدة المتكرّرة.
 
-- They are simple and lack features like constraints or relative positioning.
-- Ideal for temporary organization and simplifying the layers panel.
-- Useful for applying effects to multiple elements at once.
+- إنها بسيطة وتفتقر إلى ميزات مثل القيود (constraints) أو التموضع النسبي.
+- مثالية للتنظيم المؤقت ولتبسيط لوحة الطبقات.
+- مفيدة لتطبيق تأثيرات على عدة عناصر في وقت واحد.
 
-To make a group:
+لإنشاء مجموعة:
 
-- `Command/Control-G`: Makes a group out of the currently selected objects.
-- `Command-Shift-G` or `Control-Shift-G` *unmakes* either a group or a frame.
+- `Command/Control-G`: ينشئ مجموعة من الكائنات المحدّدة حاليًا.
+- `Command-Shift-G` أو `Control-Shift-G` *يفكّ* مجموعة أو إطارًا.
 
-## Frames
+## الإطارات {#frames}
 
-A **frame** is a high-level grouping of objects. At the risk of sounding hyperbolic, they’re the foundation of your designs in Figma. It’s an area where you’re going to create your design. You can set a frame’s size to be any number of popular device sizes as well a custom size. You can also nest frames inside of frames. You might know a frame by any of the names that something similar might go by in some of the other tools out there: canvas or art board come to mind.
+**الإطار** (frame) هو تجميع عالي المستوى للكائنات. وبخشية أن أبدو مبالغًا، فهو أساس تصاميمك في Figma. إنه مساحة ستنشئ فيها تصميمك. ويمكنك ضبط حجم الإطار على أي عدد من أحجام الأجهزة الشائعة وكذلك على حجم مخصّص. ويمكنك أيضًا تداخل إطارات داخل إطارات. وقد تعرف الإطار بأي من الأسماء التي قد يُعرف بها شيء مشابه في بعض الأدوات الأخرى: لوحة العمل (canvas) أو لوح الرسم (art board) يخطران على البال.
 
-Frames are *way more* powerful than groups, but with great power comes great responsibility, so sometimes it’s just easier to use a group.
+الإطارات *أقوى بكثير* من المجموعات، لكن مع القوة الكبيرة تأتي مسؤولية كبيرة، لذا يكون استخدام مجموعة أسهل أحيانًا.
 
-- Frames can contain other frames.
-- Frames can have their own height and width separate from then objects they contain.
-- Frames support things like [Layout Grids](https://stevekinney.com/courses/figma/layout-grids), [Auto Layout](https://stevekinney.com/courses/figma/auto-layout), and [Constraints](https://stevekinney.com/courses/figma/constraints).
-- Frames support [prototyping](https://stevekinney.com/courses/figma/prototyping).
+- يمكن للإطارات أن تحتوي إطارات أخرى.
+- يمكن للإطارات أن يكون لها ارتفاعها وعرضها الخاصّان بمعزل عن الكائنات التي تحتويها.
+- تدعم الإطارات أشياء مثل [شبكات التخطيط](https://stevekinney.com/courses/figma/layout-grids) و[Auto Layout](https://stevekinney.com/courses/figma/auto-layout) و[القيود](https://stevekinney.com/courses/figma/constraints).
+- تدعم الإطارات [النماذج الأوّلية](https://stevekinney.com/courses/figma/prototyping).
 
-When should you use frames?
+متى ينبغي أن تستخدم الإطارات؟
 
-- **Screen or Component Design:** Use frames to design the layout for different device screens, such as mobile phones, tablets, and desktops. They’re also useful as the container for all of the elements that make up a component that you’re designing in Figma.
-- **Component Creation:** Frames are ideal for creating reusable design elements like buttons, icons, and input fields. They can be nested within each other, allowing for complex component structures.
-- **Grids and Layouts:** Apply layout grids to frames to maintain consistent spacing and alignment throughout your design.
+- **تصميم الشاشات أو المكوّنات:** استخدم الإطارات لتصميم تخطيط شاشات الأجهزة المختلفة، مثل الهواتف المحمولة والأجهزة اللوحية وأجهزة سطح المكتب. وهي مفيدة أيضًا كحاوية لكل العناصر التي تتكوّن منها إحدى المكوّنات التي تصمّمها في Figma.
+- **إنشاء المكوّنات:** الإطارات مثالية لإنشاء عناصر تصميم قابلة لإعادة الاستخدام مثل الأزرار والأيقونات وحقول الإدخال. ويمكن تداخلها داخل بعضها، ما يتيح بنى مكوّنات معقّدة.
+- **الشبكات والتخطيطات:** طبّق شبكات التخطيط على الإطارات للحفاظ على مسافات ومحاذاة متّسقة في كل تصميمك.
 
-The frame tool
+أداة الإطار
 
-You can create a frame in any of the following ways:
+يمكنك إنشاء إطار بأي من الطرق التالية:
 
-- Use the **Frame tool**—by either selecting it from the toolbar or pressing the `F` key—and either pick a predetermined size from the right sidebar or click and drag to whatever size you’re looking for.
-- Select a bunch of layers and press `Command-Option-G` or `Control-Alt-G` to create a frame around those layers.
+- استخدم **أداة الإطار** — إما باختيارها من شريط الأدوات أو بالضغط على مفتاح `F` — ثم إما أن تختار حجمًا محدّدًا مسبقًا من الشريط الجانبي الأيمن أو أن تنقر وتَسحب إلى الحجم الذي تريده.
+- حدّد مجموعة من الطبقات واضغط `Command-Option-G` أو `Control-Alt-G` لإنشاء إطار حول تلك الطبقات.
 
-## Sections
+## الأقسام {#sections}
 
-Sections are relatively new feature to Figma. Before sections were introduced, we tended to use frames to create logical groups. Additionally, you’d use stuff like emoji or other clever ways to signify if something was ready for development or not. Sections fill in for these two purposes.
+الأقسام ميزة حديثة نسبيًا في Figma. وقبل إدخال الأقسام، كنّا نستخدم الإطارات لإنشاء تجمّعات منطقية. وإضافة إلى ذلك، كنت تستخدم أشياء مثل الرموز التعبيرية (emoji) أو طرقًا ذكية أخرى للإشارة إلى ما إذا كان شيء جاهزًا للتطوير أم لا. وتسدّ الأقسام الحاجة إلى هذين الغرضين.
 
-Sections are visually distinct from frames *and* they allow you to denote if something is ready for development or not.
+تختلف الأقسام بصريًا عن الإطارات، *كما* أنها تتيح لك الإشارة إلى ما إذا كان شيء جاهزًا للتطوير أم لا.
 
-Sections are also a good choice in the following scenarios:
+والأقسام خيار جيد أيضًا في الحالات التالية:
 
-- **Prototyping:** Organize and group prototypes effectively, linking different parts of the prototype for a cohesive flow.
-- **Presentations:** Improve user tests by ensuring Figma remembers the last viewed frame within a section, streamlining the presentation experience.
+- **النماذج الأوّلية:** نظّم النماذج الأوّلية وجمّعها بفعالية، واربط أجزاء النموذج المختلفة لتتدفّق بشكل متماسك.
+- **العروض التقديمية:** حسّن اختبارات المستخدمين بضمان أن Figma يتذكّر آخر إطار مُشاهد داخل قسم، ما يُبسّط تجربة العرض.
 
-To create a section, press `Shift-S` or select it from the toolbar.
+لإنشاء قسم، اضغط `Shift-S` أو اختره من شريط الأدوات.

@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/add-a-nightly-verification-workflow-solution"
 ---
 
-The nightly workflow is where the slow checks live. Everything in this file was deliberately excluded from the pull-request loop because it’s too slow, too broad, or too drift-prone to run on every push. That does not make it optional. It just means it belongs on a different cadence.
+سير العمل الليلي هو حيث تعيش الفحوص البطيئة. وكل ما في هذا الملف استُبعد عمدًا من حلقة طلبات السحب لأنه أبطأ أو أوسع أو أكثر عرضة للانحراف من أن يعمل عند كل دفعة. وهذا لا يجعله اختياريًا. إنه يعني فقط أنه ينتمي إلى إيقاع مختلف.
 
-## What to add
+## ما الذي تضيفه
 
 ### `.github/workflows/nightly.yml`
 
-Walk it from the top.
+امشِ فيه من الأعلى.
 
-**Triggers:**
+**المُشغِّلات:**
 
 ```yaml
 on:
@@ -21,20 +21,20 @@ on:
   workflow_dispatch:
 ```
 
-Two triggers. `schedule` runs the workflow every day at 04:17 UTC. `workflow_dispatch` lets you trigger it manually from the Actions tab, which is the sane way to test the workflow without waiting until tomorrow.
+مُشغِّلان. `schedule` يشغّل سير العمل كل يوم عند 04:17 بالتوقيت العالمي. و`workflow_dispatch` يتيح لك تشغيله يدويًا من تبويب Actions، وهي الطريقة العاقلة لاختبار سير العمل دون انتظار الغد.
 
-The `17` is not mystical. It is just not `0`. GitHub Actions gets crowded at the top of the hour because everyone copies `0 4 * * *` from a blog post and then wonders why their workflow sits in a queue. Move a few minutes off the hour and life gets better.
+والرقم `17` ليس سحريًا. إنه فقط ليس `0`. فـGitHub Actions يزدحم عند رأس الساعة لأن الجميع ينسخ `0 4 * * *` من تدوينة ثم يتساءل لماذا يجلس سير عمله في طابور. فحرّك التشغيل بضع دقائق بعيدًا عن الساعة تتحسّن الحياة.
 
-**Permissions:**
+**الأذونات:**
 
 ```yaml
 permissions:
   contents: read
 ```
 
-Least privilege. The nightly workflow reads the repo and runs checks. It does not need write access until you deliberately add something like an issue opener or an automated pull request step.
+أقلّ صلاحية. فسير العمل الليلي يقرأ المستودع ويشغّل الفحوص. وهو لا يحتاج صلاحية كتابة إلى أن تضيف عمدًا شيئًا مثل فاتح مشكلات أو خطوة طلب سحب آلية.
 
-### Job 1: HAR refresh placeholder
+### المهمة 1: عنصر نائب لتحديث HAR
 
 ```yaml
 har-refresh:
@@ -48,11 +48,11 @@ har-refresh:
         echo "  and open a pull request with the diff so a human can review upstream drift."
 ```
 
-This is an honest placeholder. It does not pretend to refresh HARs. It tells you, in the GitHub UI, what the real version should do once someone wires it. That is better than hiding the intent in a markdown TODO no one sees.
+هذا عنصر نائب صادق. وهو لا يتظاهر بتحديث ملفات HAR. بل يخبرك، في واجهة GitHub، بما يجب أن تفعله النسخة الحقيقية حين يوصّلها أحد. وذلك أفضل من إخفاء النية في TODO بصيغة ماركداون لا يراه أحد.
 
-The real automation would re-record the HARs, diff them, and open a reviewable pull request. Reviewable matters. Quietly accepting upstream API drift is a good way to commit weirdness you do not understand.
+والأتمتة الحقيقية ستعيد تسجيل ملفات HAR، وتُظهر فرقها، وتفتح طلب سحب قابلًا للمراجعة. و«قابلًا للمراجعة» مهمّ. فقبول انحراف واجهة API في المنبع بهدوء طريقة جيدة لإيداع غرابة لا تفهمها.
 
-### Job 2: dependency audit
+### المهمة 2: تدقيق الاعتماد
 
 ```yaml
 dependency-audit:
@@ -72,11 +72,11 @@ dependency-audit:
         echo "Placeholder: open an issue or create tracked work for new high-severity findings."
 ```
 
-`npm audit --audit-level=high` is the real check. The `|| true` is there because this version of the workflow is surfacing findings, not yet routing them into tracked work. A red nightly audit job that no one triages is performance art. A green placeholder that says “wire the follow-up next” is at least honest.
+`npm audit --audit-level=high` هو الفحص الحقيقي. وأما `|| true` فموجودة لأن هذه النسخة من سير العمل تُظهر النتائج، ولا توجّهها بعد إلى عمل متعقَّب. فمهمة تدقيق ليلية حمراء لا يفرزها أحد هي فنّ أدائي. وأما عنصر نائب أخضر يقول «وصّل المتابعة لاحقًا» فهو صادق على الأقل.
 
-Once you add an issue-opener or some other real handoff, remove the `|| true` and make the workflow do the louder thing.
+وحين تضيف فاتح مشكلات أو أي تسليم حقيقي آخر، فأزل `|| true` واجعل سير العمل يفعل الشيء الأعلى صوتًا.
 
-### Job 3: cross-browser smoke
+### المهمة 3: دخان عبر المتصفحات
 
 ```yaml
 cross-browser-smoke:
@@ -115,56 +115,56 @@ cross-browser-smoke:
         retention-days: 7
 ```
 
-This is the most complete job in the workflow because the lab before this one already had you build the underlying command.
+هذه أكمل مهمة في سير العمل لأن المختبر السابق لهذا واحد كان قد جعلك تبني الأمر الأساسي.
 
-The cache covers both npm packages and Playwright browsers. The browser-install step is explicit because Playwright only defaults to Chromium. The `.env` bootstrap is intentionally small: `DATABASE_URL=file:./ci.db` plus the Open Library base URL the app already expects. Keep this bootstrap focused on what the public smoke loop actually needs — resist the urge to preload auth secrets, extra databases, or origins the current starter does not use.
+والتخزين المؤقت يغطّي حزم npm ومتصفّحات Playwright معًا. وخطوة تثبيت المتصفّحات صريحة لأن Playwright لا يتضمّن افتراضيًا إلا Chromium. وتمهيد `.env` صغير عن قصد: `DATABASE_URL=file:./ci.db` إضافةً إلى عنوان Open Library الأساسي الذي يتوقّعه التطبيق أصلًا. وأبقِ هذا التمهيد مركّزًا على ما تحتاجه حلقة الدخان العامة فعلًا — وقاوم الرغبة في تحميل أسرار مصادقة أو قواعد بيانات إضافية أو أصول لا يستخدمها البادئ الحالي.
 
-And again, the artifact name matters. When a nightly run fails, you want the job and artifact names doing triage for you before you click anything.
+ومرة أخرى، اسم الأثر يهمّ. فحين يفشل تشغيل ليلي، تريد أن تقوم أسماء المهام والآثار بعملية الفرز لك قبل أن تنقر أي شيء.
 
-### How the jobs map to local commands
+### كيف ترتبط المهام بالأوامر المحلية
 
-Each nightly job should correspond to a real local command:
+يجب أن تقابل كل مهمة ليلية أمرًا محليًا حقيقيًا:
 
-| Nightly job | Local command |
+| المهمة الليلية | الأمر المحلي |
 | --- | --- |
-| `har-refresh` | placeholder only for now |
+| `har-refresh` | عنصر نائب فقط في الوقت الحالي |
 | `dependency-audit` | `npm audit --audit-level=high` |
 | `cross-browser-smoke` | `npm run test:cross-browser` |
 
-That parity is the design rule. If a nightly failure cannot be reproduced locally with the same command the job uses, the workflow is hiding too much logic.
+وهذا التطابق هو قاعدة التصميم. فإن كان فشل ليلي لا يمكن إعادة إنتاجه محليًا بالأمر نفسه الذي تستخدمه المهمة، فسير العمل يخفي منطقًا أكثر من اللازم.
 
-## What you still need to run
+## ما يبقى عليك تشغيله
 
-Validate the YAML parses:
+تحقّق من أن YAML يُحلَّل:
 
 ```bash
 yq eval '.jobs | keys' .github/workflows/nightly.yml
 ```
 
-Run the local equivalents of the real jobs:
+شغّل المكافئات المحلية للمهام الحقيقية:
 
 ```bash
 npm audit --audit-level=high
 npm run test:cross-browser
 ```
 
-Then force one failure on purpose. Break a tagged smoke assertion, or point the HAR placeholder at a nonsense filename once you replace the placeholder with real code. The workflow should give you a clear red job name and a concrete next action, not a vague feeling that something somewhere is unhappy.
+ثم افترض فشلًا واحدًا عمدًا. اكسر تحقّق دخان موسومًا، أو وجّه العنصر النائب لـHAR إلى اسم ملف بلا معنى حين تستبدل العنصر النائب بشيفرة حقيقية. ويجب أن يمنحك سير العمل اسم مهمة حمراء واضحًا وخطوة تالية ملموسة، لا شعورًا غامضًا بأن شيئًا في مكان ما غير سعيد.
 
-## Local vs. hosted
+## محلي مقابل مستضاف
 
-**Local:** you can validate the YAML and every real command right now.
+**محليًا:** تستطيع التحقّق من YAML ومن كل أمر حقيقي الآن.
 
-**Hosted:** the actual cron trigger, artifact retention, and Actions UI only exist once the workflow is on the default branch of a GitHub repository with Actions enabled. Use `workflow_dispatch` first. Waiting for the schedule is for people with too much free time.
+**مستضافًا:** لا يوجد مُشغِّل cron الفعلي، ولا الاحتفاظ بالآثار، ولا واجهة Actions، إلا حين يكون سير العمل على الفرع الافتراضي لمستودع GitHub مع تمكين Actions. استخدم `workflow_dispatch` أولًا. أما انتظار الجدولة فهو لمن عنده وقت فراغ كثير.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- Off-the-hour scheduling avoids the Actions traffic jam. Pick a minute that is not `0`.
-- Placeholder jobs are better than invisible intent. If the automation is not built yet, say so in the workflow itself.
-- Every nightly job maps to one named command. Nightly should not be a bag of shell trivia no developer can reproduce.
-- Artifacts need finite retention. Seven days is a good default for nightly evidence.
-- Nightly failures need a handoff path. A red cron run nobody reads is not coverage. It is decor.
+- الجدولة خارج رأس الساعة تتجنّب ازدحام Actions. اختر دقيقة ليست `0`.
+- المهام النائبة أفضل من نية غير مرئية. فإن لم تكن الأتمتة مبنية بعد، فقل ذلك في سير العمل نفسه.
+- كل مهمة ليلية تُقابل أمرًا مسمّى واحدًا. فلا يجب أن يكون الليلي كيسًا من تفاصيل الشِل التي لا يستطيع مطوّر إعادة إنتاجها.
+- الآثار تحتاج مدة احتفاظ محدودة. وسبعة أيام قيمة افتراضية جيدة لأدلة العمل الليلي.
+- الفشل الليلي يحتاج مسار تسليم. فتشغيل cron أحمر لا يقرأه أحد ليس تغطية. إنه زينة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Add a Nightly Verification Workflow](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [مختبر: إضافة سير عمل تحقّق ليلي](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-a-nightly-verification-workflow)
+- [حلقات التحقّق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)

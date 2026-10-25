@@ -1,18 +1,18 @@
 ---
-title: "Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them"
-lang: en
+title: "التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped"
 ---
 
-The first `test.extend` you write feels like magic. Five tests collapse into one clean `beforeEach`-free signature, the spec file gets shorter, and you feel like a wizard. The fifth one feels like a cage. Agents love fixtures because they collapse setup, and they *also* love them because a fixture is a great place to hide state. Hidden state is how test suites get slow, flaky, and impossible to reason about.
+أول `test.extend` تكتبه يبدو كالسحر. خمسة اختبارات تنطوي في توقيع واحد نظيف بلا `beforeEach`، ويقصر ملف المواصفات، وتشعر أنك ساحر. والخامس يبدو كقفص. الوكلاء يعشقون التجهيزات لأنها تطوي الإعداد، *ويعشقونها* أيضًا لأن التجهيزة مكان رائع لإخفاء الحالة. والحالة المخفية هي كيف تصبح مجموعات الاختبار بطيئة ومتذبذبة ويستحيل التفكير فيها.
 
-So, let’s talk about what fixtures actually are, when to reach for them, and the two specific mistakes that agents will make if you don’t put rails around this.
+فلنتحدّث إذن عمّا هي التجهيزات فعلًا، ومتى تلجأ إليها، والخطأين المحددين الذين سيرتكبهما الوكلاء إن لم تضع قضبانًا حول هذا.
 
-Shelf’s lab for this lesson is intentionally concrete: the starting point lives at `tests/labs/fixtures/fixtures.ts`, the reference folder is `tests/labs/fixtures/`, and the exercising spec is `fixtures-lab.spec.ts`. The Shelf starter doesn’t ship a dedicated lab config or script for this slice, so the lab asks you to isolate it yourself with a temporary config or an equivalent narrow command. In practice that usually means cloning the root `playwright.config.ts` into a throwaway `playwright.lab.local.config.ts` and removing only the `tests/labs/fixtures/**` ignore. Keep those file names in your head as you read the rest of the lesson, because the lab asks you to refactor the real thing instead of inventing a toy example.
+مختبر Shelf لهذا الدرس ملموس عن قصد: نقطة البداية في `tests/labs/fixtures/fixtures.ts`، والمجلد المرجعي `tests/labs/fixtures/`، وملف المواصفات الممارس هو `fixtures-lab.spec.ts`. ولا تشحن نسخة Shelf الانطلاقية إعدادًا أو سكربتًا مخصصًا للمختبر في هذه الشريحة، لذا يطلب منك المختبر عزله بنفسك بإعداد مؤقت أو أمر ضيق مكافئ. وعمليًا يعني ذلك عادةً نسخ `playwright.config.ts` الجذري إلى `playwright.lab.local.config.ts` مؤقت وحذف تجاهل `tests/labs/fixtures/**` وحده. أبقِ أسماء الملفات هذه في ذهنك وأنت تقرأ بقية الدرس، لأن المختبر يطلب منك إعادة هيكلة الشيء الحقيقي لا اختراع مثال لعبة.
 
-## What a fixture actually is
+## ما هي التجهيزة فعلًا
 
-Every Playwright test you’ve ever written already uses fixtures. `page`, `context`, `browser`, `request` — those aren’t globals the framework hands you. They’re *fixtures*. Playwright inspects the arguments your test function destructures, looks up the matching fixture definitions, runs them (in dependency order, with teardown), and hands the results to your test. `test.extend` is how you add your own fixtures to that system.
+كل اختبار Playwright كتبته يومًا يستخدم تجهيزات أصلًا. `page` و`context` و`browser` و`request` — ليست متغيرات عامة يمنحك إياها الإطار. إنها *تجهيزات*. تفحص Playwright الوسائط التي تفكّكها دالة اختبارك، وتبحث عن تعريفات التجهيزات المطابقة، وتشغّلها (بترتيب التبعيات، مع التفكيك)، وتسلّم النتائج لاختبارك. و`test.extend` هي طريقتك لإضافة تجهيزاتك إلى ذلك النظام.
 
 ```typescript
 import { test as base } from '@playwright/test';
@@ -24,15 +24,15 @@ export const test = base.extend<{ seededReader: { email: string } }>({
 });
 ```
 
-That’s the shape. The fixture function receives the *other* fixtures it depends on (this one depends on nothing, hence the empty destructure) and a `use` callback. Whatever you pass to `use` is what your test gets when it asks for `seededReader`. Anything after the `await use(...)` is teardown.
+هذا هو الشكل. تتلقى دالة التجهيزة *التجهيزات الأخرى* التي تعتمد عليها (وهذه لا تعتمد على شيء، ومن هنا التفكيك الفارغ) ونداء `use`. وأي شيء تمرّره إلى `use` هو ما يحصل عليه اختبارك حين يطلب `seededReader`. وكل ما بعد `await use(...)` هو تفكيك.
 
-> **The empty destructure**
+> **التفكيك الفارغ**
 >
-> ESLint’s `no-empty-pattern` rule will yell about `async ({}, use) =>`. Either disable it inline or structure the fixture to depend on at least `request` or `browser`. The empty-object shape is the idiomatic Playwright syntax — don’t invent a workaround that hides the fact that it’s a fixture.
+> ستصرخ قاعدة `no-empty-pattern` في ESLint بشأن `async ({}, use) =>`. إما أن تعطّلها سطريًا أو تبني التجهيزة لتعتمد على `request` أو `browser` على الأقل. فشكل الكائن الفارغ هو صيغة Playwright الاصطلاحية — لا تخترع حلًا بديلًا يخفي حقيقة أنها تجهيزة.
 
-## Teardown is the whole point
+## التفكيك هو كل الفكرة
 
-Here is where I watch agents get this consistently wrong. They see fixture setup, they skip fixture teardown, and they end up with state that leaks into the next test. The `use` call *is* the split between setup and teardown. Everything before `use` runs before the test. Everything after `use` runs after.
+هنا أرى الوكلاء يخطئون في هذا بانتظام. يرون إعداد التجهيزة، ويتركون تفكيكها، فينتهون بحالة تتسرّب إلى الاختبار التالي. فنداء `use` *هو* الفاصل بين الإعداد والتفكيك. وكل ما قبل `use` يعمل قبل الاختبار. وكل ما بعده يعمل بعده.
 
 ```typescript
 seededShelf: async ({ request }, use) => {
@@ -42,13 +42,13 @@ seededShelf: async ({ request }, use) => {
 };
 ```
 
-That second `resetShelfContent` is what the agent will forget. And here’s the failure mode that costs you a day: the next test inherits whatever state this test left behind. The symptom looks like flakiness. The cause is a missing teardown half. The fix is four characters: the word `await` on a line that didn’t exist.
+`resetShelfContent` الثاني هو ما سينساه الوكيل. وهذه هي طريقة الفشل التي تكلفك يومًا: الاختبار التالي يرث أي حالة تركها هذا الاختبار. فيبدو العرَض كتذبذب. والسبب نصف تفكيك ناقص. والإصلاح أربعة أحرف: كلمة `await` في سطر لم يكن موجودًا.
 
-The “missing await” version is even worse. If the teardown is there but unawaited, Playwright thinks the fixture is done and moves on. The teardown then races against the next test’s setup, and you get state corruption that only shows up under load. Always `await` your teardown. Always.
+ونسخة «الـ await المفقود» أسوأ. فإذا كان التفكيك موجودًا لكنه غير مُنتظَر، حسبت Playwright أن التجهيزة انتهت ومضت. فيتسابق التفكيك مع إعداد الاختبار التالي، فتحصل على فساد حالة لا يظهر إلا تحت الحمل. انتظر تفكيكك بـ `await` دائمًا. دائمًا.
 
-## Fixture composition is where the mental model clicks
+## تركيب التجهيزات هو حيث يترسّخ النموذج الذهني
 
-A fixture can depend on another fixture. That’s it. That’s the feature. It sounds small, and it’s the single most useful thing about the whole system:
+تستطيع تجهيزة أن تعتمد على تجهيزة أخرى. هذا كل شيء. هذه هي الميزة. يبدو صغيرًا، وهو أنفع شيء واحد في المنظومة كلها:
 
 ```typescript
 authenticatedRequest: async ({ playwright }, use) => {
@@ -60,15 +60,15 @@ authenticatedRequest: async ({ playwright }, use) => {
 };
 ```
 
-Now any test that asks for `authenticatedRequest` gets an `APIRequestContext` that’s already carrying the reader’s session cookie. You didn’t have to re-login. You didn’t have to read the storage state file yourself. You just composed one fixture on top of another, and the caller got something higher-level than what Playwright hands you out of the box.
+الآن أي اختبار يطلب `authenticatedRequest` يحصل على `APIRequestContext` يحمل أصلًا كوكي جلسة القارئ. لم تكن مضطرًا لتسجيل الدخول من جديد. ولم تكن مضطرًا لقراءة ملف حالة التخزين بنفسك. ركّبت تجهيزة على أخرى، فحصل المستدعي على شيء أعلى مستوى مما تمنحه Playwright جاهزًا.
 
-This is the moment the fixture mental model clicks: *your* fixtures and Playwright’s built-in fixtures are the same shape. You can build on top of them, and — as the next section shows — you can even replace them.
+هذه هي اللحظة التي يترسّخ فيها النموذج الذهني: تجهيزاتك وتجهيزات Playwright المدمجة لها الشكل نفسه. تستطيع البناء فوقها، و — كما يوضّح القسم التالي — تستطيع حتى استبدالها.
 
-## Overriding built-in fixtures
+## تجاوز التجهيزات المدمجة
 
-Playwright’s `page`, `context`, and `browser` are themselves fixtures defined in the base `test`. You can override them with `test.extend`, and suddenly everything that was true of your custom fixtures is true of the framework’s.
+`page` و`context` و`browser` في Playwright هي نفسها تجهيزات معرّفة في `test` الأساسي. تستطيع تجاوزها بـ `test.extend`، فيصبح فجأة كل ما كان صحيحًا في تجهيزاتك المخصصة صحيحًا في تجهيزات الإطار.
 
-The completed failure-dossier version of Shelf does exactly this. After the failure-dossier lab, your `tests/fixtures.ts` will override `page` to forward browser console errors and failed network requests to stderr, so they show up in the `list` reporter, the HTML report, and the failure dossier JSON:
+نسخة Shelf المكتملة بملفات تشخيص الفشل تفعل هذا بالضبط. فبعد مختبر ملفات التشخيص، سيتجاوز `tests/fixtures.ts` لديك `page` ليمرّر أخطاء وحدة تحكّم المتصفح وطلبات الشبكة الفاشلة إلى stderr، فتظهر في مبلّغ `list`، وتقرير HTML، وملف تشخيص JSON:
 
 ```typescript
 export const test = base.extend({
@@ -83,29 +83,29 @@ export const test = base.extend({
 });
 ```
 
-Notice the shape. `page: async ({ page }, use)` — the fixture is *named* `page` and *depends on* `page`. That second `page` is the built-in one. The fixture wraps the built-in and hands a decorated version to the test. Every spec that imports `test` from this file gets the console-error forwarding for free. No wrapper function. No `beforeEach`. No explanation in the PR description.
+لاحظ الشكل. `page: async ({ page }, use)` — التجهيزة *مسماة* `page` و*تعتمد على* `page`. ذلك الـ `page` الثاني هو المدمج. فالتجهيزة تغلّف المدمج وتسلّم نسخة مزخرفة للاختبار. وكل مواصفة تستورد `test` من هذا الملف تحصل على تمرير أخطاء وحدة التحكّم مجانًا. لا دالة غلاف. لا `beforeEach`. لا شرح في وصف الـ PR.
 
-The reframe I want you to internalize: when you find yourself writing a helper function that wraps `page`, stop. You don’t need a wrapper. You need an override.
+وإعادة التأطير التي أريدك أن تستوعبها: حين تجد نفسك تكتب دالة مساعدة تغلّف `page`، توقف. لا تحتاج إلى غلاف. تحتاج إلى تجاوز.
 
-## Report ergonomics are part of the fixture design
+## هندسة التقارير جزء من تصميم التجهيزة
 
-Fixtures do not just shape the test environment. They also shape the report the agent reads later.
+لا تشكّل التجهيزات بيئة الاختبار وحدها. بل تشكّل أيضًا التقرير الذي يقرأه الوكيل لاحقًا.
 
-The [fixtures docs](https://playwright.dev/docs/test-fixtures) give you a few knobs that are more useful than they look:
+تمنحك [وثائق التجهيزات](https://playwright.dev/docs/test-fixtures) بضع أدوات تحكّم أنفع مما تبدو:
 
-- `box: true` hides noisy helper fixtures from the report
-- `box: 'self'` hides the wrapper fixture while still showing its internal steps
-- `title` gives the fixture a useful human name in errors and reports
+- `box: true` يخفي تجهيزات المساعدة المزعجة من التقرير
+- `box: 'self'` يخفي تجهيزة الغلاف مع إبقاء خطواتها الداخلية ظاهرة
+- `title` يمنح التجهيزة اسمًا بشريًا مفيدًا في الأخطاء والتقارير
 
-That means a low-signal plumbing fixture can stay out of the way while a high-signal fixture can identify itself clearly instead of showing up as anonymous setup mush.
+وهذا يعني أن تجهيزة بنية تحتية قليلة الإشارة يمكن أن تبقى بعيدًا عن الطريق، بينما تجهيزة عالية الإشارة تعرّف نفسها بوضوح بدلًا من الظهور كعصيدة إعداد مجهولة.
 
-## Test-scoped versus worker-scoped
+## محدودة بالاختبار مقابل محدودة بالعامل
 
-> **One-liner rule**
+> **قاعدة من سطر واحد**
 >
-> Worker-scope a fixture only when the data is both *read-only* and *expensive*. Otherwise, test-scope.
+> اجعل التجهيزة محدودة بالعامل فقط حين تكون البيانات *للقراءة فقط* و*مكلفة* معًا. وإلا فمحدودة بالاختبار.
 
-Fixtures default to test scope: they run fresh for every test and tear down after it. Playwright also lets you worker-scope a fixture, which means it runs once per worker and is shared across every test that worker executes. The syntax is a tuple:
+التجهيزات محدودة بالاختبار افتراضيًا: تعمل جديدة لكل اختبار وتتفكك بعده. وتتيح لك Playwright أيضًا تحديد نطاق التجهيزة بالعامل، أي أنها تعمل مرة واحدة لكل عامل وتُشارك بين كل اختبار ينفّذه ذلك العامل. والصيغة هي مجموعة:
 
 ```typescript
 constantsFromEnv: [
@@ -117,17 +117,17 @@ constantsFromEnv: [
 ];
 ```
 
-The trap: anything mutable becomes a state leak when you promote it to worker scope. A “seeded shelf” fixture that modifies the database is the worst possible candidate because every test in that worker sees the same mutated state. The first test passes, the second test fails because the first one added a book, and you spend an hour trying to figure out why `test.describe.configure({ mode: 'serial' })` doesn’t fix it. (It won’t. The fixture scope is the problem.)
+الفخّ: أي شيء قابل للتغيير يصبح تسرّب حالة حين ترفعه إلى نطاق العامل. فتجهيزة «الرف المزروع» التي تعدّل قاعدة البيانات أسوأ مرشح ممكن، لأن كل اختبار في ذلك العامل يرى الحالة المعدّلة نفسها. فينجح الاختبار الأول، ويفشل الثاني لأن الأول أضاف كتابًا، وتقضي ساعة تحاول معرفة لماذا لا يصلح `test.describe.configure({ mode: 'serial' })` لذلك. (لن يصلح. فنطاق التجهيزة هو المشكلة.)
 
-Agents will reach for worker scope to make the suite faster. Don’t let them do it without a one-line justification: is the data read-only, and is it expensive enough to earn the shared scope? If either answer is no, it’s test-scoped.
+سيمدّ الوكلاء أيديهم إلى نطاق العامل لجعل المجموعة أسرع. لا تدعهم يفعلون ذلك دون تبرير من سطر واحد: هل البيانات للقراءة فقط، وهل هي مكلفة بما يكفي لتستحق النطاق المشترك؟ إذا كان أي الجوابين لا، فهي محدودة بالاختبار.
 
-## When NOT to fixturize
+## متى *لا* تجعل الشيء تجهيزة
 
-If a helper is only used in one test, it’s a helper function, not a fixture. Fixtures earn their complexity by being shared across tests and by owning teardown. A one-liner that constructs a constant is not a fixture. A function you import in one spec is not a fixture. The `test.extend` ceremony exists for the cases where *that* ceremony is cheaper than the alternative.
+إذا كانت مساعدة تُستخدم في اختبار واحد، فهي دالة مساعدة، لا تجهيزة. فالتجهيزات تستحق تعقيدها بأنها تُشارك بين الاختبارات وبأنها تملك التفكيك. والسطر الواحد الذي ينشئ ثابتًا ليس تجهيزة. والدالة التي تستوردها في مواصفة واحدة ليست تجهيزة. فاحتفال `test.extend` موجود للحالات التي يكون فيها *ذلك* الاحتفال أرخص من البديل.
 
-The specific anti-pattern I see most: an agent writes a “fixture” that just calls `page.goto('/shelf')` and asserts a heading. That’s not a fixture. That’s a line of code. Delete it, inline the navigation, and your fixture file shrinks by a third.
+والنمط المضاد المحدد الذي أراه أكثر من غيره: يكتب وكيل «تجهيزة» لا تفعل شيئًا سوى نداء `page.goto('/shelf')` وتأكيد عنوان. تلك ليست تجهيزة. ذلك سطر شيفرة. احذفه، وضع الملاحة مباشرة في الاختبار، فيتقلّص ملف تجهيزاتك بالثلث.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Playwright fixtures
@@ -142,12 +142,12 @@ The specific anti-pattern I see most: an agent writes a “fixture” that just 
   important fixtures a human `title`.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-A fixture is an object-with-teardown. The shape is easy; the discipline is hard. If you write one fixture and forget the teardown half, the cost is a flaky test six hours from now. If you write one fixture and leave it worker-scoped on mutable state, the cost is the entire next afternoon. The rails above exist because I’ve paid both of those bills.
+التجهيزة كائن مع تفكيك. الشكل سهل؛ والانضباط صعب. فإذا كتبت تجهيزة واحدة نسيت نصفها الثاني، فالثمن اختبار متذبذب بعد ست ساعات. وإذا كتبت تجهيزة واحدة وتركتها محدودة بالعامل على حالة قابلة للتغيير، فالثمن ظهيرة اليوم التالي بأكملها. والقضبان أعلاه موجودة لأنني دفعت الفاتورتين.
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — where this lesson’s teardown discipline pays off, because a seeded-then-reset fixture is the *correct* version of “wait for the app to be ready.”
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation) — the lesson that introduced `resetShelfContent` and `seedFreshDatabase`, which are the helpers most of these fixtures compose on top of.
-- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests) — the lesson where the `request` fixture first shows up as “a thing you can call in a test,” before this lesson asks you to compose it.
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story) — حيث يُثمر انضباط التفكيك في هذا الدرس، لأن تجهيزة «ازرع ثم أعد الضبط» هي النسخة *الصحيحة* من «انتظر حتى يصبح التطبيق جاهزًا».
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation) — الدرس الذي قدّم `resetShelfContent` و`seedFreshDatabase`، وهما المساعدتان التي تركّب عليهما معظم هذه التجهيزات.
+- [اختبارات API وUI الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests) — الدرس الذي تظهر فيه تجهيزة `request` أول مرة كـ«شيء تستطيع نداءه في اختبار»، قبل أن يطلب منك هذا الدرس تركيبها.

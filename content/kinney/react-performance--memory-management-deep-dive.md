@@ -1,18 +1,18 @@
 ---
-title: "Memory Management Deep Dive"
-lang: en
+title: "إدارة الذاكرة بعمق"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/memory-management-deep-dive"
 ---
 
-You’ve built a beautiful React app. Users love it. Then the support tickets start rolling in: “The app gets slower over time.” “My browser tab crashed.” “It’s using 2GB of RAM!” Sound familiar? Welcome to the world of JavaScript memory management, where even the best developers accidentally create memory leaks that slowly strangle their applications.
+بنيت تطبيق React جميلًا. أحبّه المستخدمون. ثم بدأت تذاكر الدعم تتوافد: «يصبح التطبيق أبطأ مع الوقت.» «انهار تبويب المتصفّح لديّ.» «إنه يستهلك 2 غيغابايت من الذاكرة العشوائية!» هل يبدو هذا مألوفًا؟ أهلًا بك في عالم إدارة ذاكرة JavaScript، حيث ينشئ حتى أفضل المطوّرين بالخطأ تسرّبات ذاكرة تخنق تطبيقاتهم ببطء.
 
-Here’s the thing: React’s declarative model makes it easy to forget about memory. Components mount, unmount, re-render… but what about all those event listeners, timers, subscriptions, and closures you created along the way? They’re still there, holding references, preventing garbage collection, and slowly consuming your users’ RAM.
+وإليك المشكلة: نموذج React التصريحي يجعل من السهل نسيان الذاكرة. تُركَّب المكوّنات، وتُفكَّك، وتُعاد تصييرها… لكن ماذا عن كل مستمعات الأحداث والمؤقّتات والاشتراكات والإغلاقات التي أنشأتها على الطريق؟ إنها ما زالت هناك، تحتفظ بالمراجع، وتمنع جمع المهملات، وتستهلك ذاكرة المستخدمين ببطء.
 
-Let’s dive deep into how memory works in JavaScript and React, how to identify and fix leaks, and how to build applications that run for days without degrading.
+لنغصّ في أعماق كيفية عمل الذاكرة في JavaScript وReact، وكيفية تحديد التسرّبات وإصلاحها، وكيفية بناء تطبيقات تعمل أيامًا دون تدهور.
 
-## Understanding JavaScript Memory Management
+## فهم إدارة الذاكرة في JavaScript
 
-Before we fix memory issues, we need to understand how JavaScript manages memory.
+قبل أن نصلح مشكلات الذاكرة، علينا أن نفهم كيف تدير JavaScript الذاكرة.
 
 ```typescript
 interface MemoryLifecycle {
@@ -31,9 +31,9 @@ let data = { large: 'dataset' };
 data = null; // Original object can now be garbage collected
 ```
 
-### The Garbage Collector
+### جامع المهملات
 
-JavaScript uses mark-and-sweep garbage collection:
+تستخدم JavaScript جمع المهملات بالتحديد والكنس (mark-and-sweep):
 
 ```typescript
 interface GarbageCollectionProcess {
@@ -57,11 +57,11 @@ function createLeak() {
 }
 ```
 
-## Memory Leak Sources in React Architecture
+## مصادر تسرّبات الذاكرة في معمارية React
 
-React’s component lifecycle and hooks create specific patterns where memory leaks commonly occur. For practical detection and debugging workflows, see [Memory Leak Detection](https://stevekinney.com/courses/react-performance/memory-leak-detection).
+تُنشئ دورة حياة مكوّنات React وخُطّافاتها أنماطًا محدّدة تحدث فيها تسرّبات الذاكرة عادةً. ولمعرفة سير عمل الكشف والتنقيح العملي، راجع [كشف تسرّبات الذاكرة](https://stevekinney.com/courses/react-performance/memory-leak-detection).
 
-### React-Specific Memory Considerations
+### اعتبارات ذاكرة خاصة بـ React
 
 ```typescript
 // React's reference management challenges
@@ -92,9 +92,9 @@ const MemoryPatterns: React.FC = () => {
 };
 ```
 
-### Closure Memory Patterns
+### أنماط ذاكرة الإغلاقات
 
-Understanding how closures interact with React’s render cycles:
+فهم كيفية تفاعل الإغلاقات مع دورات التصيير في React:
 
 ```typescript
 // Closure scope and memory implications
@@ -122,11 +122,11 @@ const ClosureMemoryExample: React.FC<{ data: LargeDataset }> = ({ data }) => {
 };
 ```
 
-## Advanced Memory Optimization Patterns
+## أنماط متقدّمة لتحسين الذاكرة
 
-### WeakMap for Component Metadata
+### WeakMap لبيانات المكوّن الوصفية
 
-Use WeakMap for metadata that should be garbage collected with components:
+استخدم WeakMap للبيانات الوصفية التي ينبغي أن تُجمع مع المكوّنات:
 
 ```typescript
 // Component metadata that doesn't prevent GC
@@ -150,9 +150,9 @@ const TrackedComponent: React.FC<Props> = (props) => {
 };
 ```
 
-### Object Pooling for Frequent Allocations
+### تجميع الكائنات للتخصيصات المتكرّرة
 
-Reuse objects instead of creating new ones:
+أعد استخدام الكائنات بدل إنشاء كائنات جديدة:
 
 ```typescript
 class ObjectPool<T> {
@@ -201,9 +201,9 @@ const ParticleSystem: React.FC = () => {
 };
 ```
 
-### Memory-Efficient State Management
+### إدارة حالة فعّالة في استهلاك الذاكرة
 
-Minimize state memory footprint:
+قلّل البصمة الذاكرية للحالة:
 
 ```typescript
 // ❌ Storing entire objects in state
@@ -226,9 +226,9 @@ const EfficientState: React.FC = () => {
 };
 ```
 
-## Memory Profiling and Detection
+## تنميط الذاكرة وكشفها
 
-### Using Chrome DevTools Memory Profiler
+### استخدام مُنمِّط ذاكرة Chrome DevTools
 
 ```typescript
 // Mark important operations for profiling
@@ -254,9 +254,9 @@ const ProfiledOperation: React.FC = () => {
 };
 ```
 
-### Automated Memory Leak Detection
+### الكشف الآلي عن تسرّبات الذاكرة
 
-Build memory monitoring into your app:
+ابنِ مراقبة الذاكرة في تطبيقك:
 
 ```typescript
 class MemoryMonitor {
@@ -322,9 +322,9 @@ const App: React.FC = () => {
 };
 ```
 
-### Memory Snapshots for Testing
+### لقطات الذاكرة للاختبار
 
-Integrate memory testing into your test suite:
+ادمج اختبار الذاكرة في مجموعة اختباراتك:
 
 ```typescript
 // memory.test.ts
@@ -369,11 +369,11 @@ test('should not leak memory on navigation', async ({ page }) => {
 });
 ```
 
-## Production Memory Management
+## إدارة الذاكرة في الإنتاج
 
-### Implementing Memory Pressure Handling
+### تنفيذ التعامل مع ضغط الذاكرة
 
-React to browser memory pressure:
+استجب لضغط الذاكرة في المتصفّح:
 
 ```typescript
 const useMemoryPressure = () => {
@@ -428,9 +428,9 @@ const AdaptiveComponent: React.FC = () => {
 };
 ```
 
-### Memory-Aware Caching
+### تخزين مؤقت واعٍ بالذاكرة
 
-Implement caches that respond to memory pressure:
+نفّذ ذاكرات مؤقتة تستجيب لضغط الذاكرة:
 
 ```typescript
 class MemoryAwareCache<K, V> {
@@ -496,46 +496,46 @@ class MemoryAwareCache<K, V> {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Always clean up in useEffect:**
+✅ **نظّف دائمًا في useEffect:**
 
-- Remove event listeners
-- Clear timers and intervals
-- Close connections
-- Cancel subscriptions
+- أزل مستمعات الأحداث
+- ألغِ المؤقّتات والفترات
+- أغلق الاتصالات
+- ألغِ الاشتراكات
 
-✅ **Minimize closure scope:**
+✅ **قلّل نطاق الإغلاق:**
 
-- Use refs for stable references
-- Extract static functions
-- Memoize callbacks appropriately
+- استخدم `refs` للحصول على مراجع مستقرة
+- استخرج الدوال الثابتة
+- احفظ دوال الاستدعاء في الذاكرة المؤقتة بحكمة
 
-✅ **Monitor memory in production:**
+✅ **راقب الذاكرة في الإنتاج:**
 
-- Track heap size metrics
-- Set up leak detection
-- Alert on memory pressure
+- تتبّع مقاييس حجم الكومة
+- أعدّ كشف التسرّبات
+- نبّه عند ضغط الذاكرة
 
-✅ **Optimize state management:**
+✅ **حسّن إدارة الحالة:**
 
-- Normalize data structures
-- Use IDs instead of duplicating objects
-- Implement virtual scrolling for large lists
+- وحّد بنى البيانات
+- استخدم المعرّفات بدل تكرار الكائنات
+- نفّذ التمرير الافتراضي للقوائم الكبيرة
 
-✅ **Profile regularly:**
+✅ **نمّط بانتظام:**
 
-- Take heap snapshots during development
-- Run memory leak tests
-- Monitor long-running sessions
+- خُذ لقطات للكومة أثناء التطوير
+- شغّل اختبارات تسرّبات الذاكرة
+- راقب الجلسات الطويلة
 
-## Summary
+## الخلاصة
 
-Memory management in React requires understanding both JavaScript’s garbage collection and React’s specific patterns:
+تتطلّب إدارة الذاكرة في React فهم جمع مهملات JavaScript وأنماط React الخاصة معًا:
 
-1. **Reference Management** - Control what objects stay in memory through careful reference handling
-2. **Closure Optimization** - Minimize scope capture in hooks and callbacks
-3. **Lifecycle Awareness** - Use React’s cleanup patterns consistently
-4. **Production Monitoring** - Track memory usage and detect leaks in real applications
+1. **إدارة المراجع** - تحكّم في أي الكائنات يبقى في الذاكرة عبر التعامل الدقيق مع المراجع
+2. **تحسين الإغلاقات** - قلّل احتجاز النطاق في الخُطّافات ودوال الاستدعاء
+3. **الوعي بدورة الحياة** - استخدم أنماط التنظيف في React باستمرار
+4. **المراقبة في الإنتاج** - تتبّع استهلاك الذاكرة واكشف التسرّبات في التطبيقات الحقيقية
 
-Master these fundamentals, and memory leaks become preventable rather than mysterious. The garbage collector handles the details—your job is managing what stays reachable.
+أتقن هذه الأساسيات، وستصبح تسرّبات الذاكرة قابلة للمنع بدل أن تكون غامضة. يتولّى جامع المهملات التفاصيل — ومهمتك أنت إدارة ما يبقى قابلًا للوصول.

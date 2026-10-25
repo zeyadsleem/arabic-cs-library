@@ -1,18 +1,18 @@
 ---
-title: "Creating Multi-Root Workspaces"
-lang: en
+title: "إنشاء مساحات عمل متعدّدة الجذور"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/creating-a-multi-root-workspace"
 ---
 
-1. **Open Visual Studio Code:** Launch Visual Studio Code.
-2. **Close any open folder or workspace:** If you have an existing folder or workspace open, close it by going to **File > Close Folder** or **File > Close Workspace**.
-3. **Create an empty workspace:** Go to **File > Save Workspace As…**. This will open a save dialog.
-4. **Choose a location and name:** Select a location on your file system where you want to save the workspace file. Give your workspace a descriptive name (e.g., `my-complex-project.code-workspace`). Visual Studio Code will save a file with the `.code-workspace` extension.
-5. **Add folders to the workspace:** Once the empty workspace is created, you’ll see an empty Explorer pane. To add folders, click on **File > Add Folder to Workspace…**.
-6. **Select folders:** In the file dialog, navigate to and select the folders you want to include in your multi-root workspace. You can select multiple folders from different locations. Click **Add**.
-7. **Save the workspace (if not already saved):** If you haven’t saved the workspace yet, or if you’ve made changes, go to **File > Save Workspace** to save the current workspace configuration.
+1. **افتح Visual Studio Code:** شغّل Visual Studio Code.
+2. **أغلق أي مجلد أو مساحة عمل مفتوحة:** إن كانت لديك مساحة عمل أو مجلد مفتوح، فأغلقه بالانتقال إلى **File > Close Folder** أو **File > Close Workspace**.
+3. **أنشئ مساحة عمل فارغة:** انتقل إلى **File > Save Workspace As…**. وسيفتح ذلك نافذة حفظ.
+4. **اختر الموضع والاسم:** اختر موضعًا في نظام ملفاتك تريد حفظ ملف مساحة العمل فيه. وأعطِ مساحة عملك اسمًا وصفيًا (مثل `my-complex-project.code-workspace`). وسيحفظ Visual Studio Code ملفًا بامتداد `.code-workspace`.
+5. **أضف مجلدات إلى مساحة العمل:** بعد إنشاء مساحة العمل الفارغة، سترى لوحة Explorer فارغة. ولإضافة مجلدات، انقر على **File > Add Folder to Workspace…**.
+6. **اختر المجلدات:** في نافذة الملفات، انتقل إلى المجلدات التي تريد ضمّها إلى مساحة العمل متعدّدة الجذور واخترها. ويمكنك اختيار عدّة مجلدات من مواضع مختلفة. وانقر **Add**.
+7. **احفظ مساحة العمل (إن لم تكن محفوظة بالفعل):** إن لم تكن قد حفظت مساحة العمل بعد، أو إن كنت قد أجريت تغييرات، فانتقل إلى **File > Save Workspace** لحفظ إعداد مساحة العمل الحالي.
 
-## Anatomy of a `.code-workspace`
+## تشريح ملف `.code-workspace`
 
 ```json
 {
@@ -39,4 +39,4 @@ source: "https://stevekinney.com/courses/visual-studio-code/creating-a-multi-roo
 }
 ```
 
-When we get into tasks and debugging, we’ll see that you can also define them in the `.code-workspace` as well.
+حين ننتقل إلى المهام والتنقيح، سنرى أنه يمكنك تعريفها أيضًا في ملف `.code-workspace`.

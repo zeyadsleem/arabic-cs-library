@@ -1,14 +1,12 @@
 ---
-title: "Test-Driven Development"
-lang: en
+title: "التطوير الموجَّه بالاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/test-driven-development-with-claude"
 ---
 
-[Claude Code](https://code.claude.com/docs/en/overview) is strongest when the
-definition of done is executable. Test-driven development gives the agent a
-tight loop: reproduce the bug, make the test pass, then refactor only if needed.
+يكون [Claude Code](https://code.claude.com/docs/en/overview) في أقوى حالاته عندما يكون تعريف الإنجاز قابلًا للتنفيذ. ويمنح التطوير الموجَّه بالاختبارات الوكيل حلقة محكمة: أعِد إنتاج العلّة، واجعل الاختبار ينجح، ثم أعد الهيكلة فقط عند الحاجة.
 
-## A Good TDD Prompt
+## طلب جيد للتطوير الموجَّه بالاختبارات
 
 ```
 Bug:
@@ -26,25 +24,21 @@ If either command fails for an unrelated reason, stop and report the failure
 instead of editing unrelated files.
 ```
 
-This prompt gives Claude a behavior to reproduce, a scope boundary, and a finish
-line.
+يمنح هذا الطلب Claude سلوكًا لإعادة إنتاجه، وحدًّا للنطاق، وخط نهاية.
 
-## Watch the First Test
+## راقب الاختبار الأول
 
-Do not let the agent write a test that already passes. Ask it to report the
-failing assertion before implementation:
+لا تدع الوكيل يكتب اختبارًا ينجح بالفعل. اطلب منه الإبلاغ عن التحقّق الفاشل قبل التنفيذ:
 
 ```
 After writing the regression test, run it and show the failing assertion before
 changing production code.
 ```
 
-That one sentence prevents a lot of fake coverage.
+تلك الجملة الواحدة تمنع كثيرًا من التغطية الزائفة.
 
-## Keep Refactors Separate
+## أبقِ إعادة الهيكلة منفصلة
 
-After the test passes, ask whether a refactor is necessary. Many fixes are better
-left small. If the implementation is clear and the tests pass, stop.
+بعد نجاح الاختبار، اسأل هل إعادة الهيكلة ضرورية. كثير من الإصلاحات أفضل أن تبقى صغيرة. وإذا كان التنفيذ واضحًا والاختبارات تنجح، فتوقّف.
 
-When a refactor is justified, run the same verification command afterward. A
-green test before a refactor does not prove the refactor is safe.
+وعندما تكون إعادة الهيكلة مبرَّرة، شغّل أمر التحقق نفسه بعدها. فالاختبار الأخضر قبل إعادة الهيكلة لا يثبت أن إعادة الهيكلة آمنة.

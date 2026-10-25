@@ -1,41 +1,41 @@
 ---
-title: "Spies"
-lang: en
+title: "الجواسيس (Spies)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/spies"
 ---
 
-A spy is a type of [test double](https://stevekinney.com/courses/testing/test-doubles) used to monitor and record information about function calls without modifying the function’s actual behavior by default. Spies are used to observe how functions are called during execution, allowing you to verify details like the number of times a function was invoked, the arguments passed to it, and its return values. Unlike stubs or mocks, spies do not replace the function with predefined behavior unless explicitly configured to do so.
+الجاسوس نوع من [البدائل الاختبارية](https://stevekinney.com/courses/testing/test-doubles) يُستخدم لمراقبة معلومات عن استدعاءات الدوال وتسجيلها دون تعديل سلوك الدالة الفعلي افتراضيًا. وتُستخدم الجواسيس لملاحظة كيفية استدعاء الدوال أثناء التنفيذ، بما يتيح لك التحقّق من تفاصيل مثل عدد مرات استدعاء الدالة، والوسائط الممرّرة إليها، وقيمها المُعادة. وخلافًا للبدائل أو البدائل المُحاكاة، لا تستبدل الجواسيس الدالة بسلوك محدّد مسبقًا إلا إذا ضُبطت صراحةً على ذلك.
 
-Spies are particularly useful when you want to check interactions within the system under test while allowing the real function to execute as usual.
+تكون الجواسيس مفيدة بشكل خاص عندما تريد فحص التفاعلات داخل النظام قيد الاختبار مع السماح للدالة الحقيقية بالتنفيذ كالمعتاد.
 
-## Key Features of Spies
+## الخصائص الرئيسية للجواسيس
 
-- **Tracking Behavior**: Spies can track whether a function was called, how many times it was called, and with what arguments.
-- **Verification**: You can use spies to verify that certain functions were triggered under the right conditions.
-- **Non-intrusive**: Spies do not modify the function’s original behavior unless explicitly configured to do so.
+- **تتبّع السلوك**: تستطيع الجواسيس تتبّع ما إذا استُدعيت دالة، وكم مرة استُدعيت، وبأي وسائط.
+- **التحقّق**: يمكنك استخدام الجواسيس للتحقّق من أن دوال معيّنة أُطلقت في الظروف المناسبة.
+- **غير تدخّلية**: لا تعدّل الجواسيس سلوك الدالة الأصلي إلا إذا ضُبطت صراحةً على ذلك.
 
-## When to Use Spies
+## متى تستخدم الجواسيس
 
-- You want to verify how many times a function is called and with what arguments.
-- The function you are testing interacts with external or internal functions, and you need to monitor those interactions.
-- You want to confirm whether a callback or handler was invoked during a specific operation.
-- You are testing functions that are not easily isolatable or modifiable, but you still need to observe their usage.
+- تريد التحقّق من عدد مرات استدعاء دالة وبأي وسائط.
+- الدالة التي تختبرها تتفاعل مع دوال خارجية أو داخلية، وتحتاج إلى مراقبة تلك التفاعلات.
+- تريد تأكيد ما إذا استُدعي رد نداء أو معالج أثناء عملية معيّنة.
+- تختبر دوالًا ليس من السهل عزلها أو تعديلها، لكنك ما زلت بحاجة إلى ملاحظة استخدامها.
 
-## Creating a Spy in Vitest
+## إنشاء جاسوس في Vitest
 
-In Vitest, you can create spies using the `vi.spyOn()` method, which monitors an existing function. It doesn’t change the actual behavior of the function unless you explicitly instruct it to do so.
+في Vitest، يمكنك إنشاء جواسيس باستخدام التابع `vi.spyOn()`، الذي يراقب دالة موجودة. وهو لا يغيّر السلوك الفعلي للدالة إلا إذا أمرته صراحةً بذلك.
 
-Here’s how you create a basic spy:
+إليك كيف تُنشئ جاسوسًا أساسيًا:
 
 ```javascript
 const spy = vi.spyOn(console, 'log');
 ```
 
-This spy will watch the `console.log` function and record how many times it was called, the arguments passed to it, and other call details.
+سيراقب هذا الجاسوس دالة `console.log` ويسجّل عدد مرات استدعائها، والوسائط الممرّرة إليها، وتفاصيل أخرى عن الاستدعاء.
 
-## Spying on Function Calls, Parameters, and Return Values
+## التجسّس على استدعاءات الدوال ووسائطها وقيمها المُعادة
 
-Let’s go through an example where we spy on a function and verify its behavior. Consider a function that logs an error message when a ticket sale fails:
+لنمضِ عبر مثال نتجسّس فيه على دالة ونتحقّق من سلوكها. تأمّل دالة تسجّل رسالة خطأ عندما تفشل عملية بيع تذكرة:
 
 ```javascript
 function handleTicketSaleError(errorMessage) {
@@ -43,7 +43,7 @@ function handleTicketSaleError(errorMessage) {
 }
 ```
 
-In our test, we can spy on `console.error` to ensure it was called with the correct argument:
+في اختبارنا، يمكننا التجسّس على `console.error` لضمان استدعائها بالوسيط الصحيح:
 
 ```javascript
 import { describe, it, expect, vi } from 'vitest';
@@ -65,18 +65,18 @@ describe('handleTicketSaleError', () => {
 });
 ```
 
-In this example, `errorSpy` watches `console.error` and verifies that the correct error message was logged when `handleTicketSaleError` was called.
+في هذا المثال، يراقب `errorSpy` دالة `console.error` ويتحقّق من تسجيل رسالة الخطأ الصحيحة عند استدعاء `handleTicketSaleError`.
 
-## Verifying the Number of Calls, Arguments Passed, and Context of Calls Using Spies
+## التحقّق من عدد الاستدعاءات والوسائط الممرّرة وسياق الاستدعاءات باستخدام الجواسيس
 
-One of the main advantages of spies is their ability to provide detailed information about how functions are called. You can verify:
+من أهم مزايا الجواسيس قدرتها على تقديم معلومات مفصّلة عن كيفية استدعاء الدوال. يمكنك التحقّق من:
 
-- **The number of times a function was called**.
-- **The arguments passed to the function**.
-- **The return value of the function**.
-- **The context (`this` value)** in which the function was called.
+- **عدد مرات استدعاء الدالة**.
+- **الوسائط الممرّرة إلى الدالة**.
+- **القيمة المُعادة من الدالة**.
+- **السياق (قيمة `this`)** الذي استُدعيت فيه الدالة.
 
-Here’s an example that demonstrates how to check these properties:
+إليك مثالًا يوضّح كيفية فحص هذه الخصائص:
 
 ```javascript
 function processOrder(orderId) {
@@ -103,27 +103,27 @@ describe('processOrder', () => {
 });
 ```
 
-In this test, we use `logSpy` to verify:
+في هذا الاختبار، نستخدم `logSpy` للتحقّق من:
 
-1. The function was called once (`toHaveBeenCalledTimes`).
-2. The function was called with the argument `'Processing order: 12345'` (`toHaveBeenCalledWith`).
+1. أن الدالة استُدعيت مرة واحدة (`toHaveBeenCalledTimes`).
+2. أن الدالة استُدعيت بالوسيط `'Processing order: 12345'` (`toHaveBeenCalledWith`).
 
-Spies give you powerful control over testing interactions, allowing you to validate that your code is making the correct calls and passing the correct arguments without altering the real behavior of the functions under test.
+تمنحك الجواسيس تحكّمًا قويًا في اختبار التفاعلات، فتتيح لك التحقّق من أن شيفرتك تُجري الاستدعاءات الصحيحة وتمرّر الوسائط الصحيحة دون تغيير السلوك الحقيقي للدوال قيد الاختبار.
 
-## Expect Methods
+## توابع Expect
 
-- `toHaveBeenCalled()`: Passes if the spy was ever called.
-- `toHaveBeenCalledTimes(times)`: Passes if the spy was called the correct number of times.
-- `toHaveBeenCalledWith(…args)`: Passes if the function has *ever* been called with the arguments that you specify.
-- `toHaveBeenLastCalledWith`: Passes if the function was most recently called with the arguments that you specify.
-- `toHaveBeenNthCalledWith(time, …args)`: Passes if the function was called whichever time you specified with the arguments you specified.
-- `toHaveReturned()`: Passes if the function returned (e.g., it didn’t throw an error).
-- `toHaveReturnedTimes(times)`: Passes if the function returned however many times you specify.
-- `toHaveReturnedWith(value)`: Passes if the function has ever successfully returned with the value you specify.
-- `toHaveLastReturnedWith(value)`: Passes if the function most recently returned with the value you specify.
-- `toHaveNthReturnedWith(time, value)`: Passes if the function returned whichever time you specified with the value you specified.
+- `toHaveBeenCalled()`: ينجح إذا استُدعي الجاسوس في أي وقت.
+- `toHaveBeenCalledTimes(times)`: ينجح إذا استُدعي الجاسوس العدد الصحيح من المرات.
+- `toHaveBeenCalledWith(…args)`: ينجح إذا استُدعيت الدالة *في أي وقت* بالوسائط التي تحدّدها.
+- `toHaveBeenLastCalledWith`: ينجح إذا استُدعيت الدالة في أحدث مرة بالوسائط التي تحدّدها.
+- `toHaveBeenNthCalledWith(time, …args)`: ينجح إذا استُدعيت الدالة في المرة التي تحدّدها بالوسائط التي تحدّدها.
+- `toHaveReturned()`: ينجح إذا أعادت الدالة (أي أنها لم ترمِ خطأً).
+- `toHaveReturnedTimes(times)`: ينجح إذا أعادت الدالة بعدد المرات الذي تحدّده.
+- `toHaveReturnedWith(value)`: ينجح إذا أعادت الدالة بنجاح في أي وقت القيمة التي تحدّدها.
+- `toHaveLastReturnedWith(value)`: ينجح إذا أعادت الدالة في أحدث مرة القيمة التي تحدّدها.
+- `toHaveNthReturnedWith(time, value)`: ينجح إذا أعادت الدالة في المرة التي تحدّدها القيمة التي تحدّدها.
 
-## Another Example: Basic Math
+## مثال آخر: الرياضيات الأساسية
 
 ```javascript
 // math.test.js
@@ -146,8 +146,8 @@ test('calls add with correct arguments', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- **`vi.spyOn(object, methodName)`**: Creates a spy on the specified method.
-- The spy allows us to verify that `add` was called with the correct arguments.
-- **Cleanup**: Restore the original method to avoid side effects.
+- **`vi.spyOn(object, methodName)`**: يُنشئ جاسوسًا على التابع المحدّد.
+- يتيح لنا الجاسوس التحقّق من استدعاء `add` بالوسائط الصحيحة.
+- **التنظيف**: أعِد التابع الأصلي لتجنّب الآثار الجانبية.

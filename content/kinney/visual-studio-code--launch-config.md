@@ -1,90 +1,90 @@
 ---
-title: "launch.json"
-lang: en
+title: "ملف launch.json"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/launch-config"
 ---
 
-> **Should I use `tasks.json` or `launch.json` for development?**
+> **هل أستخدم `tasks.json` أم `launch.json` أثناء التطوير؟**
 >
-> If your goal is to **start** your development server as part of your workflow without debugging, configure it in `tasks.json`. If you need to **debug** your development server, set up the necessary configurations in `launch.json`. For scenarios where you want to start the server and then attach a debugger, you can define a task in `tasks.json` to start the server and a corresponding configuration in `launch.json` to attach the debugger to the running server.
+> إن كان هدفك **تشغيل** خادم التطوير ضمن سير عملك دون تنقيح، فاضبطه في `tasks.json`. وإن كنت بحاجة إلى **تنقيح** خادم التطوير، فأعدّ الإعدادات اللازمة في `launch.json`. وفي الحالات التي تريد فيها تشغيل الخادم ثم إرفاق المُنقّح به، يمكنك تعريف مهمة في `tasks.json` لتشغيل الخادم وإعداد مقابل في `launch.json` لإرفاق المُنقّح بالخادم قيد التشغيل.
 
-Let’s walk through all of the settings that you can play around with in `launch.json`.
+لنستعرض معًا جميع الإعدادات التي يمكنك التجريب بها في `launch.json`.
 
-`launch.json` is a JSON file with two main top-level properties:
+`launch.json` ملف JSON فيه خاصيتان رئيسيتان في المستوى الأعلى:
 
-- **`version`:** Specifies the version of the `launch.json` schema. It’s usually `"0.2.0"`. You generally don’t need to modify this.
-- **`configurations`:** This is an *array* of configuration objects. Each object defines a specific way to launch or attach to your application. You can have multiple configurations for different scenarios (e.g., debugging a script, debugging a test, attaching to a remote process).
+- **`version`:** تحدّد إصدار مخطط `launch.json`. وهي عادةً `"0.2.0"`. ولا تحتاج عمومًا إلى تعديلها.
+- **`configurations`:** هذه *مصفوفة* من كائنات الإعدادات. يعرّف كل كائن طريقة محدّدة لتشغيل تطبيقك أو الإرفاق به. ويمكنك أن تملك إعدادات متعدّدة لسيناريوهات مختلفة (مثل تنقيح سكربت، أو تنقيح اختبار، أو الإرفاق بعملية بعيدة).
 
-Each configuration object within the `configurations` array contains a set of properties that control the debugging process. Here’s a detailed breakdown of the most important ones:
+يحتوي كل كائن إعداد داخل مصفوفة `configurations` على مجموعة خصائص تتحكّم في عملية التنقيح. وهذه تفصيلات لأهمّها:
 
-## `type` (Required)
+## `type` (مطلوب)
 
-Specifies the type of debugger to use. This is usually determined by the extension you have installed for your programming language.
+تحدّد نوع المُنقّح المستخدَم. ويتحدّد ذلك عادةً عبر الإضافة التي ثبّتها للغة البرمجة التي تعمل بها.
 
-- **Common Values:** `"node"`: For Node.js debugging. `"python"`: For Python debugging (requires the Python extension). `"go"`: For Go debugging (requires the Go extension). `"java"`: For Java debugging (requires a Java debugger extension). `"chrome"`: For debugging client-side JavaScript in Chrome. `"pwa-chrome"`: Newer version of the Chrome debugger (recommended). “pwa” stands for Progressive Web App. `"pwa-node"`: Newer debugger for Node.js `"cppdbg"`: For C/C++ debugging (requires a C/C++ debugger extension). `"lldb"`: Uses the LLDB debugger (often used with C/C++ and Rust). `"coreclr"`: For debugging .NET Core applications.
-  - `"node"`: For Node.js debugging.
-  - `"python"`: For Python debugging (requires the Python extension).
-  - `"go"`: For Go debugging (requires the Go extension).
-  - `"java"`: For Java debugging (requires a Java debugger extension).
-  - `"chrome"`: For debugging client-side JavaScript in Chrome.
-  - `"pwa-chrome"`: Newer version of the Chrome debugger (recommended). “pwa” stands for Progressive Web App.
-  - `"pwa-node"`: Newer debugger for Node.js
-  - `"cppdbg"`: For C/C++ debugging (requires a C/C++ debugger extension).
-  - `"lldb"`: Uses the LLDB debugger (often used with C/C++ and Rust).
-  - `"coreclr"`: For debugging .NET Core applications.
+- **القيم الشائعة:** `"node"`: لتنقيح Node.js. و`"python"`: لتنقيح Python (يتطلّب إضافة Python). و`"go"`: لتنقيح Go (يتطلّب إضافة Go). و`"java"`: لتنقيح Java (يتطلّب إضافة مُنقّح Java). و`"chrome"`: لتنقيح JavaScript على جهة العميل في Chrome. و`"pwa-chrome"`: إصدار أحدث من مُنقّح Chrome (مُوصى به)، و«pwa» اختصار لـ Progressive Web App. و`"pwa-node"`: مُنقّح أحدث لـ Node.js. و`"cppdbg"`: لتنقيح C/C++ (يتطلّب إضافة مُنقّح C/C++). و`"lldb"`: يستخدم مُنقّح LLDB (ويُستخدم غالبًا مع C/C++ وRust). و`"coreclr"`: لتنقيح تطبيقات .NET Core.
+  - `"node"`: لتنقيح Node.js.
+  - `"python"`: لتنقيح Python (يتطلّب إضافة Python).
+  - `"go"`: لتنقيح Go (يتطلّب إضافة Go).
+  - `"java"`: لتنقيح Java (يتطلّب إضافة مُنقّح Java).
+  - `"chrome"`: لتنقيح JavaScript على جهة العميل في Chrome.
+  - `"pwa-chrome"`: إصدار أحدث من مُنقّح Chrome (مُوصى به)، و«pwa» اختصار لـ Progressive Web App.
+  - `"pwa-node"`: مُنقّح أحدث لـ Node.js
+  - `"cppdbg"`: لتنقيح C/C++ (يتطلّب إضافة مُنقّح C/C++).
+  - `"lldb"`: يستخدم مُنقّح LLDB (ويُستخدم غالبًا مع C/C++ وRust).
+  - `"coreclr"`: لتنقيح تطبيقات .NET Core.
 
 ```json
 "type": "node"
 ```
 
-## `request` (Required)
+## `request` (مطلوب)
 
-Specifies whether Visual Studio Code should *launch* a new process or *attach* to an existing running process.
+تحدّد ما إذا كان Visual Studio Code سـ*يشغّل* عملية جديدة أم *سيرفق* بعملية قائمة قيد التشغيل.
 
-- `"launch"`: Visual Studio Code starts the application in debug mode. This is the most common setting.
-- `"attach"`: Visual Studio Code connects to an already running process. This is useful for debugging servers, long-running processes, or applications running in containers.
+- `"launch"`: يبدأ Visual Studio Code تشغيل التطبيق في وضع التنقيح. وهذا هو الإعداد الأكثر شيوعًا.
+- `"attach"`: يتّصل Visual Studio Code بعملية قيد التشغيل بالفعل. وهذا مفيد لتنقيح الخوادم، أو العمليات طويلة الأمد، أو التطبيقات التي تعمل داخل حاويات.
 
 ```json
 "request": "launch" // Or "attach"
 ```
 
-## `name` (Required)
+## `name` (مطلوب)
 
-A user-friendly name for this configuration. This name appears in the Debug view’s dropdown menu, allowing you to select which configuration to run. Choose descriptive names!
+اسم ودّي لهذا الإعداد. ويظهر هذا الاسم في القائمة المنسدلة في عرض Debug، ليتيح لك اختيار الإعداد الذي تريد تشغيله. فاختر أسماءً وصفية!
 
 ```json
 "name": "Run Main Script"
 ```
 
-## `program` (Often Required for `launch`)
+## `program` (مطلوب غالبًا مع `launch`)
 
-Specifies the *entry point* of your application – the file that Visual Studio Code should execute when you start debugging. This is usually a relative path from the workspace root.
+يحدّد *نقطة الدخول* لتطبيقك — أي الملف الذي ينبغي أن يشغّله Visual Studio Code عند بدء التنقيح. وهو عادةً مسار نسبي من جذر مساحة العمل.
 
 ```json
 "program": "${workspaceFolder}/src/index.js"
 ```
 
-**Note:** The `${workspaceFolder}` variable automatically resolves to the root directory of your project.
+**ملاحظة:** متغيّر `${workspaceFolder}` يُحلّ تلقائيًا إلى الدليل الجذر لمشروعك.
 
-## `args` (Optional)
+## `args` (اختياري)
 
-An array of string arguments to pass to your application when it’s launched. These are the same arguments you would provide on the command line.
+مصفوفة من الوسائط النصية التي تُمرَّر إلى تطبيقك عند تشغيله. وهي الوسائط نفسها التي كنت ستقدّمها على سطر الأوامر.
 
 ```json
 "args": ["--config", "config.json", "--verbose"]
 ```
 
-## `cwd` (Optional)
+## `cwd` (اختياري)
 
-Specifies the *current working directory* for your application when it’s launched. If not specified, it defaults to `${workspaceFolder}`. This is important if your application relies on relative paths to access files.
+يحدّد *دليل العمل الحالي* لتطبيقك عند تشغيله. وإن لم يُحدَّد، فالقيمة الافتراضية هي `${workspaceFolder}`. وهذا مهم إذا كان تطبيقك يعتمد على مسارات نسبية للوصول إلى الملفات.
 
 ```json
 "cwd": "${workspaceFolder}/data"
 ```
 
-## `env` (Optional)
+## `env` (اختياري)
 
-An object that defines *environment variables* to set for your application’s process. This is crucial for configuring your application’s behavior during debugging.
+كائن يعرّف *متغيّرات البيئة* التي تُضبط لعملية تطبيقك. وهذا بالغ الأهمية لضبط سلوك تطبيقك أثناء التنقيح.
 
 ```json
 "env": {
@@ -93,59 +93,59 @@ An object that defines *environment variables* to set for your application’s p
 }
 ```
 
-## `envFile` (Optional)
+## `envFile` (اختياري)
 
-Specifies a path to a `.env` file, to load environment variables from a file.
+يحدّد مسار ملف `.env` لتحميل متغيّرات البيئة من ملف.
 
 ```json
 "envFile": "${workspaceFolder}/.env"
 ```
 
-## `console` (Optional)
+## `console` (اختياري)
 
-Specifies where the output from your application (e.g., `console.log` statements) should be displayed.
+يحدّد أين يظهر مخرَج تطبيقك (مثل عبارات `console.log`).
 
-- **Values:** `"integratedTerminal"` (Recommended): Output appears in Visual Studio Code’s integrated terminal. This provides the best experience, including support for colors and interactive input. `"internalConsole"`: Output appears in Visual Studio Code’s Debug Console. This is less flexible than the integrated terminal. `"externalTerminal"`: Launches an external terminal window. Use this if your application requires a specific terminal or if you have issues with the integrated terminal.
-  - `"integratedTerminal"` (Recommended): Output appears in Visual Studio Code’s integrated terminal. This provides the best experience, including support for colors and interactive input.
-  - `"internalConsole"`: Output appears in Visual Studio Code’s Debug Console. This is less flexible than the integrated terminal.
-  - `"externalTerminal"`: Launches an external terminal window. Use this if your application requires a specific terminal or if you have issues with the integrated terminal.
+- **القيم:** `"integratedTerminal"` (مُوصى به): يظهر المخرَج في الطرفية المدمجة في Visual Studio Code، وهذا يمنح أفضل تجربة، بما في ذلك دعم الألوان والإدخال التفاعلي. و`"internalConsole"`: يظهر المخرَج في وحدة تحكّم التنقيح (Debug Console) في Visual Studio Code، وهي أقل مرونة من الطرفية المدمجة. و`"externalTerminal"`: يفتح نافذة طرفية خارجية. استخدم هذا الخيار إذا كان تطبيقك يتطلّب طرفية محدّدة أو إذا واجهت مشكلات مع الطرفية المدمجة.
+  - `"integratedTerminal"` (مُوصى به): يظهر المخرَج في الطرفية المدمجة في Visual Studio Code، وهذا يمنح أفضل تجربة، بما في ذلك دعم الألوان والإدخال التفاعلي.
+  - `"internalConsole"`: يظهر المخرَج في وحدة تحكّم التنقيح (Debug Console) في Visual Studio Code، وهي أقل مرونة من الطرفية المدمجة.
+  - `"externalTerminal"`: يفتح نافذة طرفية خارجية. استخدم هذا الخيار إذا كان تطبيقك يتطلّب طرفية محدّدة أو إذا واجهت مشكلات مع الطرفية المدمجة.
 
 ```json
 "console": "integratedTerminal"
 ```
 
-## `preLaunchTask` (Optional)
+## `preLaunchTask` (اختياري)
 
-Specifies the name of a Visual Studio Code task (defined in `tasks.json`) to run *before* the debugger starts. This is incredibly useful for automating build steps, compiling code, or starting dependent services.
+يحدّد اسم مهمة في Visual Studio Code (معرّفة في `tasks.json`) تُنفَّذ *قبل* بدء المُنقّح. وهذا مفيد جدًا لأتمتة خطوات البناء، أو ترجمة الشيفرة، أو تشغيل الخدمات التي يعتمد عليها التطبيق.
 
 ```json
 "preLaunchTask": "build" // Runs the "build" task from tasks.json
 ```
 
-- **Note:** You must have a corresponding task defined in your `.vscode/tasks.json` file.
+- **ملاحظة:** يجب أن تكون لديك مهمة مقابلة معرّفة في ملف `.vscode/tasks.json`.
 
-## `postDebugTask` (Optional)
+## `postDebugTask` (اختياري)
 
-Similar to `preLaunchTask`, but runs a task *after* the debugging session ends. This can be used for cleanup, stopping services, etc.
+يشبه `preLaunchTask`، لكنه ينفّذ مهمة *بعد* انتهاء جلسة التنقيح. ويمكن استخدامه للتنظيف، أو إيقاف الخدمات، وما إلى ذلك.
 
 ```json
 "postDebugTask": "stop-server"
 ```
 
-## `sourceMaps` (Optional, But *highly* Recommended for Many languages)
+## `sourceMaps` (اختياري، لكنه *مُوصى به بشدة* مع كثير من اللغات)
 
-Controls whether Visual Studio Code uses *source maps* to map between your source code and the code that’s actually being executed. Source maps are *essential* for debugging languages that are compiled or transpiled (like TypeScript, JavaScript with Babel, Sass, etc.). When you compile TypeScript to JavaScript, the compiler can generate a `.js.map` file (the source map) alongside the `.js` file. This map tells the debugger how to map lines of code in the compiled JavaScript back to the original TypeScript code.
+يتحكّم في ما إذا كان Visual Studio Code يستخدم *خرائط المصدر* (source maps) للربط بين شيفرتك المصدرية والشيفرة التي تُنفَّذ فعليًا. وخرائط المصدر *ضرورية* لتنقيح اللغات التي تُترجَم أو تُحوَّل (مثل TypeScript، وJavaScript مع Babel، وSass، وغيرها). فعند ترجمة TypeScript إلى JavaScript، يمكن للمترجم أن يُنشئ ملف `.js.map` (وهو خريطة المصدر) إلى جانب ملف `.js`. وتخبر هذه الخريطة المُنقّح كيف يربط أسطر الشيفرة في JavaScript المترجَمة بشيفرة TypeScript الأصلية.
 
-- `true`: Enable source map support (default for many configurations).
-- `false`: Disable source map support.
+- `true`: تمكين دعم خرائط المصدر (وهو الافتراضي في كثير من الإعدادات).
+- `false`: تعطيل دعم خرائط المصدر.
 
 ```json
 "sourceMaps": true
 ```
 
-## `skipFiles` (Optional)
+## `skipFiles` (اختياري)
 
-An array of glob patterns specifying files or folders that the debugger should *skip* when stepping through code. This is extremely useful for avoiding stepping into library code (like Node.js core modules or third-party libraries).
+مصفوفة من أنماط glob تحدّد الملفات أو المجلدات التي ينبغي أن *يتخطّاها* المُنقّح عند التقدّم سطرًا بسطر في الشيفرة. وهذا مفيد للغاية لتجنّب الدخول إلى شيفرة المكتبات (مثل وحدات Node.js الأساسية أو مكتبات الطرف الثالث).
 
 ```json
 "skipFiles": [
@@ -154,42 +154,42 @@ An array of glob patterns specifying files or folders that the debugger should *
 ]
 ```
 
-`"<node_internals>/**"` is a special pattern that matches Node.js internal files.
+النمط `"<node_internals>/**"` نمط خاص يطابق الملفات الداخلية في Node.js.
 
-## `outFiles` (Optional)
+## `outFiles` (اختياري)
 
-An array of glob patterns that tell the debugger where to find the *generated* files (e.g., compiled JavaScript files from TypeScript). This is often used in conjunction with `sourceMaps`.
+مصفوفة من أنماط glob تخبر المُنقّح بمكان الملفات *المُولَّدة* (مثل ملفات JavaScript المترجَمة من TypeScript). ويُستخدم هذا غالبًا مع `sourceMaps`.
 
 ```json
 "outFiles": ["${workspaceFolder}/dist/**/*.js"]
 ```
 
-**Note:** The `outFiles` property is often automatically configured by language extensions based on your project’s settings (e.g., `tsconfig.json` for TypeScript).
+**ملاحظة:** كثيرًا ما تضبط إضافات اللغات خاصية `outFiles` تلقائيًا استنادًا إلى إعدادات مشروعك (مثل `tsconfig.json` في TypeScript).
 
-## `runtimeExecutable` (Optional)
+## `runtimeExecutable` (اختياري)
 
-Specifies the absolute path to an executable that should be used. For example, if you need to use a specific version of Node.
+يحدّد المسار المطلق إلى ملف تنفيذي ينبغي استخدامه. فمثلًا، إذا احتجت إلى استخدام إصدار محدّد من Node.
 
 ```json
 "runtimeExecutable": "/Users/me/.nvm/versions/node/v16.14.0/bin/node"
 ```
 
-## `attach` Request Type (Specific Properties)**
+## نوع الطلب `attach` (خصائص خاصة)**
 
-When using `request: "attach"`, some properties are different or have different meanings:
+عند استخدام `request: "attach"`، تختلف بعض الخصائص أو يتغيّر معناها:
 
-- **`processId` (Optional):** The ID of the process to attach to. You can use `${command:pickProcess}` to have Visual Studio Code prompt you to select a running process.
-- **`port` (Often Required for `attach`):** The port number to connect to when attaching to a remote debugger.
-- **`address` (Optional):** The hostname or IP address of the remote machine (for remote debugging).
-- **`restart` (Optional):** If set to `true`, Visual Studio Code will automatically restart the debugging session if the attached process terminates.
-- **`localRoot` (Optional):** The local source root for remote debugging. This helps Visual Studio Code find the source files if the paths on the remote machine are different.
-- **`remoteRoot` (Optional):** The remote source root for remote debugging.
+- **`processId` (اختياري):** معرّف العملية التي تريد الإرفاق بها. ويمكنك استخدام `${command:pickProcess}` ليجعلك Visual Studio Code تختار من قائمة العمليات قيد التشغيل.
+- **`port` (مطلوب غالبًا مع `attach`):** رقم المنفذ الذي تتّصل به عند الإرفاق بمُنقّح بعيد.
+- **`address` (اختياري):** اسم المضيف أو عنوان IP للجهاز البعيد (للتنقيح عن بُعد).
+- **`restart` (اختياري):** إذا ضُبط على `true`، سيعيد Visual Studio Code تشغيل جلسة التنقيح تلقائيًا إذا انتهت العملية المرفوع إليها.
+- **`localRoot` (اختياري):** جذر المصدر المحلي للتنقيح عن بُعد. ويساعد هذا Visual Studio Code في العثور على ملفات المصدر إذا كانت المسارات على الجهاز البعيد مختلفة.
+- **`remoteRoot` (اختياري):** جذر المصدر البعيد للتنقيح عن بُعد.
 
-## Example Configurations
+## أمثلة على الإعدادات
 
-Here are some common `launch.json` configurations for different scenarios:
+فيما يلي بعض إعدادات `launch.json` الشائعة لسيناريوهات مختلفة:
 
-### Node.js (Launch)
+### Node.js (تشغيل)
 
 ```json
 {
@@ -208,7 +208,7 @@ Here are some common `launch.json` configurations for different scenarios:
 }
 ```
 
-### Node.js (Attach To Process)
+### Node.js (الإرفاق بعملية)
 
 ```json
 {
@@ -225,7 +225,7 @@ Here are some common `launch.json` configurations for different scenarios:
 }
 ```
 
-### Python (Launch)
+### Python (تشغيل)
 
 ```json
 {
@@ -242,7 +242,7 @@ Here are some common `launch.json` configurations for different scenarios:
 }
 ```
 
-## Chrome (Launch - Debugging Client-Side JavaScript)
+## Chrome (تشغيل — تنقيح JavaScript على جهة العميل)
 
 ```json
 {
@@ -259,9 +259,9 @@ Here are some common `launch.json` configurations for different scenarios:
 }
 ```
 
-## Compound Configurations
+## الإعدادات المركّبة
 
-Compound configurations allow you to launch multiple debugging configurations simultaneously. This is especially useful for complex scenarios like launching both a backend server and a frontend application at the same time. You define a compound configuration by adding a `compounds` array at the root of your `launch.json`. Each compound configuration specifies a name and an array of configurations to launch concurrently.
+تتيح لك الإعدادات المركّبة تشغيل عدّة إعدادات تنقيح في آنٍ واحد. وهذا مفيد بشكل خاص في السيناريوهات المعقّدة، مثل تشغيل خادم للجهة الخلفية وتطبيق للجهة الأمامية في الوقت نفسه. وتعريف الإعداد المركّب يكون بإضافة مصفوفة `compounds` في جذر ملف `launch.json`. ويحدّد كل إعداد مركّب اسمًا ومصفوفة من الإعدادات التي تُشغَّل معًا.
 
 ```json
 "compounds": [
@@ -272,21 +272,21 @@ Compound configurations allow you to launch multiple debugging configurations si
 ]
 ```
 
-> **Use compound configurations to streamline multi-process debugging workflows without having to manually start each configuration.**
+> **استخدم الإعدادات المركّبة لتبسيط سير عمل تنقيح العمليات المتعدّدة من دون الحاجة إلى تشغيل كل إعداد يدويًا.**
 
-## Using Debug Variables
+## استخدام متغيّرات التنقيح
 
-Visual Studio Code supports a range of predefined variables within `launch.json`, such as `${workspaceFolder}`, `${file}`, and `${env:VARIABLE_NAME}`. These variables allow you to write dynamic configurations that adapt to your environment. For instance, `${workspaceFolder}` always resolves to the root of your project, making your configuration portable across different machines.
+يدعم Visual Studio Code مجموعة من المتغيّرات المعرّفة مسبقًا داخل `launch.json`، مثل `${workspaceFolder}` و`${file}` و`${env:VARIABLE_NAME}`. وتتيح لك هذه المتغيّرات كتابة إعدادات ديناميكية تتلاءم مع بيئتك. فمثلًا، يُحلّ `${workspaceFolder}` دائمًا إلى جذر مشروعك، مما يجعل إعدادك قابلًا للنقل بين الأجهزة المختلفة.
 
 ```json
 "program": "${workspaceFolder}/src/index.js"
 ```
 
-> **Leverage these variables to create flexible launch configurations that automatically adjust to changes in your workspace structure.**
+> **استفد من هذه المتغيّرات لإنشاء إعدادات تشغيل مرنة تتكيّف تلقائيًا مع تغيّرات بنية مساحة عملك.**
 
-## Server Ready Action
+## إجراء جاهزية الخادم
 
-When debugging web applications, it’s often necessary to wait for your development server to be fully operational before attaching the debugger. The `serverReadyAction` property lets you specify a pattern to watch for in the output. Once the pattern is detected, VS Code can automatically open a URL or attach the debugger.
+عند تنقيح تطبيقات الويب، يلزمك غالبًا انتظار أن يصبح خادم التطوير جاهزًا للعمل بالكامل قبل إرفاق المُنقّح. وتتيح لك خاصية `serverReadyAction` تحديد نمط تراقبه في المخرَج. وما إن يُكتشف النمط حتى يمكن لـ VS Code أن يفتح عنوان URL تلقائيًا أو يرفق المُنقّح.
 
 ```json
 "serverReadyAction": {
@@ -296,4 +296,4 @@ When debugging web applications, it’s often necessary to wait for your develop
 }
 ```
 
-> **Use `serverReadyAction` to automate the process of waiting for your server to be ready, reducing manual steps and streamlining your debugging workflow.**
+> **استخدم `serverReadyAction` لأتمتة انتظار جاهزية خادمك، مما يقلّل الخطوات اليدوية ويبسّط سير عمل التنقيح لديك.**

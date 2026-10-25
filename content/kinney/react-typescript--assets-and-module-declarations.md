@@ -1,16 +1,16 @@
 ---
-title: "Assets and Module Declarations"
-lang: en
+title: "الأصول وإقرارات الوحدات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/assets-and-module-declarations"
 ---
 
-When you’re building a React application, you’re not just writing JavaScript and TypeScript. You’re importing CSS files, images, SVGs, fonts, and all sorts of other assets that help make your application actually look good and work properly. But here’s the thing: TypeScript doesn’t know what to do with these non-JavaScript files by default, and it’ll throw a fit every time you try to import them.
+حين تبني تطبيق React، فأنت لا تكتب JavaScript وTypeScript فحسب. أنت تستورد ملفات CSS وصورًا وملفات SVG وخطوطًا وكل أنواع الأصول الأخرى التي تجعل تطبيقك يبدو جيّدًا ويعمل على نحو صحيح. لكن هذه هي المسألة: لا يعرف TypeScript افتراضيًا ماذا يفعل بهذه الملفات غير المكتوبة بـ JavaScript، وسيُطلق نَفَسًا من الغضب في كلّ مرّة تحاول فيها استيرادها.
 
-Enter **module declarations**—TypeScript’s way of saying “hey, I know what this weird file extension is, and here’s how you should treat it.” By writing custom module declarations, you can make TypeScript understand your assets, get proper autocompletion, and avoid those annoying “Cannot find module” errors that plague every React project at some point.
+وهنا يأتي دور **إقرارات الوحدات (module declarations)**—طريقة TypeScript في القول: «أعرف ما هذا الامتداد الغريب للملف، وهذه هي الطريقة التي ينبغي أن تتعامل معه بها». فبكتابة إقرارات وحدات مخصّصة، يمكنك أن تجعل TypeScript يفهم أصولك، ويحصل على إكمال تلقائي صحيح، ويتخلّص من أخطاء «Cannot find module» المزعجة التي تلاحق كل مشروع React في وقت ما.
 
-## Why TypeScript Gets Confused
+## لماذا يلتبس TypeScript
 
-Let’s start with the problem. You’ve probably seen something like this in your React app:
+لنبدأ بالمشكلة. لقد رأيت على الأرجح شيئًا كهذا في تطبيق React لديك:
 
 ```typescript
 import './Button.css';
@@ -27,7 +27,7 @@ export function Button() {
 }
 ```
 
-Without proper module declarations, TypeScript will complain about every single import here:
+من دون إقرارات وحدات سليمة، سيشتكي TypeScript من كل استيراد هنا:
 
 ```
 ❌ Cannot find module './Button.css' or its corresponding type declarations.
@@ -35,13 +35,13 @@ Without proper module declarations, TypeScript will complain about every single 
 ❌ Cannot find module './icon.svg' or its corresponding type declarations.
 ```
 
-The reason is simple: TypeScript only understands JavaScript and TypeScript files by default. When it encounters a `.css`, `.png`, or `.svg` file, it has no idea what these things are supposed to be or how they should behave in your code.
+السبب بسيط: لا يفهم TypeScript افتراضيًا سوى ملفات JavaScript وTypeScript. وحين يصادف ملف `.css` أو `.png` أو `.svg` فلا فكرة لديه عمّا ينبغي أن تكون هذه الملفات أو كيف ينبغي أن تتصرّف في شيفرتك.
 
-## Creating Your First Module Declaration File
+## إنشاء ملف إقرارات الوحدات الأول
 
-Module declarations live in `.d.ts` files (the “d” stands for “declaration”). You can put them anywhere TypeScript can find them, but the conventional approach is to create a `types` directory or add them to your existing type definition files.
+تعيش إقرارات الوحدات في ملفات `.d.ts` (الحرف «d» اختصارًا لكلمة «declaration»). يمكنك وضعها في أي مكان يعثر عليه TypeScript، لكن الأسلوب المتّبع هو إنشاء مجلّد `types` أو إضافتها إلى ملفات تعريف الأنواع الموجودة لديك.
 
-Let’s start by creating a `src/types/assets.d.ts` file:
+لنبدأ بإنشاء ملف `src/types/assets.d.ts`:
 
 ```typescript
 // src/types/assets.d.ts
@@ -74,17 +74,17 @@ declare module '*.webp' {
 }
 ```
 
-This tells TypeScript: “When someone imports a `.css` file, treat it as an object with string keys and string values. When someone imports an image, treat it as a string (the URL to the image).”
+هذا يخبر TypeScript: «حين يستورد أحدهم ملف `.css`، تعامل معه ككائن له مفاتيح نصّية وقيم نصّية. وحين يستورد أحدهم صورة، تعامل معها كنصّ (رابط URL للصورة)».
 
-> **Tip**
+> **تلميح**
 >
-> Make sure your `tsconfig.json` includes your `types` directory or that these declaration files are somewhere TypeScript will find them automatically.
+> تأكّد من أنّ `tsconfig.json` يتضمّن مجلّد `types` أو من أنّ ملفات الإقرارات هذه في مكان يعثر عليه TypeScript تلقائيًا.
 
-## Handling Different Asset Types
+## التعامل مع أنواع الأصول المختلفة
 
-### CSS and Styling
+### CSS والتنسيق
 
-The CSS declaration above works for both regular CSS files and CSS Modules. If you’re using CSS Modules exclusively and want more precise typing, you can be more specific:
+إقرار CSS أعلاه يعمل مع ملفات CSS العادية ومع CSS Modules معًا. فإذا كنت تستخدم CSS Modules حصريًا وتريد تصنيفًا أدقّ، فيمكنك أن تكون أكثر تحديدًا:
 
 ```typescript
 // For CSS Modules specifically
@@ -100,7 +100,7 @@ declare module '*.css' {
 }
 ```
 
-With CSS Modules, you might also want to add a more restrictive type if you know your class names ahead of time:
+ومع CSS Modules، قد ترغب أيضًا في إضافة نوع أكثر تقييدًا إذا كنت تعرف أسماء أصنافك مسبقًا:
 
 ```typescript
 // For a specific CSS Module file
@@ -116,9 +116,9 @@ declare module './Button.module.css' {
 }
 ```
 
-### SVG Files: The Tricky Case
+### ملفات SVG: الحالة الصعبة
 
-SVGs are particularly interesting because bundlers often handle them in different ways. Some treat them as image URLs, others let you import them as React components. Here’s how to handle both:
+تُعدّ ملفات SVG مثيرة للاهتمام بصفة خاصة لأن حُزّام الملفات (bundlers) غالبًا ما تتعامل معها بطرق مختلفة. فبعضها يتعامل معها كروابط صور، وبعضها يتيح لك استيرادها كمكوّنات React. إليك كيفية التعامل مع الحالتين معًا:
 
 ```typescript
 // SVGs as URLs (like images)
@@ -135,7 +135,7 @@ declare module '*.svg' {
 }
 ```
 
-But wait—you can’t have two declarations for the same module pattern! If your bundler supports both (like Create React App or Vite with the right plugins), you’ll need to be more specific:
+لكن انتبه—لا يمكن أن يكون لديك إقراران لنمط الوحدة نفسه! فإذا كان حُزّامك يدعم الحالتين معًا (مثل Create React App أو Vite مع الإضافات المناسبة)، فسيُلزمك أن تكون أكثر تحديدًا:
 
 ```typescript
 // For SVGs imported as URLs
@@ -152,7 +152,7 @@ declare module '*.svg' {
 }
 ```
 
-Then in your code:
+ثم في شيفرتك:
 
 ```typescript
 import IconComponent from './icon.svg'; // React component
@@ -165,11 +165,11 @@ import iconUrl from './icon.svg?url'; // URL string
 <img src={iconUrl} alt="Icon" />
 ```
 
-## Advanced Asset Declarations
+## إقرارات الأصول المتقدّمة
 
-### Fonts and Other Files
+### الخطوط والملفات الأخرى
 
-Don’t forget about other assets your app might use:
+لا تنسَ الأصول الأخرى التي قد يستخدمها تطبيقك:
 
 ```typescript
 // Font files
@@ -201,9 +201,9 @@ declare module '*.txt' {
 }
 ```
 
-### Media Files
+### ملفات الوسائط
 
-For audio and video:
+بالنسبة إلى الصوت والفيديو:
 
 ```typescript
 declare module '*.mp4' {
@@ -227,9 +227,9 @@ declare module '*.wav' {
 }
 ```
 
-## Environment-Specific Declarations
+## الإقرارات الخاصة بكل بيئة
 
-Sometimes you need different declarations for different environments. You can use TypeScript’s module augmentation for this:
+أحيانًا تحتاج إلى إقرارات مختلفة لكل بيئة. يمكنك استخدام تحسين الوحدات (module augmentation) في TypeScript لهذا الغرض:
 
 ```typescript
 // In development, you might want more detailed image information
@@ -244,9 +244,9 @@ declare module '*.png' {
 import logoSrc, { width, height } from './logo.png';
 ```
 
-## Real-World Example: Complete Asset Setup
+## مثال واقعي: إعداد الأصول الكامل
 
-Here’s a comprehensive `src/types/assets.d.ts` file that covers most common use cases:
+إليك ملف `src/types/assets.d.ts` شاملًا يغطّي معظم حالات الاستخدام الشائعة:
 
 ```typescript
 // CSS and styling
@@ -368,9 +368,9 @@ declare module '*.txt' {
 }
 ```
 
-## Using Your Declarations
+## استخدام إقراراتك
 
-Once you have your module declarations in place, importing assets becomes a breeze:
+بعد أن تُنشئ إقرارات وحداتك، يصبح استيراد الأصول أمرًا يسيرًا:
 
 ```typescript
 // All of these now have proper TypeScript support
@@ -392,15 +392,15 @@ export function Hero() {
 }
 ```
 
-## Framework-Specific Considerations
+## اعتبارات خاصة بكل إطار عمل
 
-### Create React App
+### Create React App {#create-react-app}
 
-If you’re using Create React App, it comes with some asset declarations built-in, but you might want to extend them. CRA looks for declaration files in `src/`, so your `src/types/assets.d.ts` should work perfectly.
+إذا كنت تستخدم Create React App، فهو يأتي مع بعض إقرارات الأصول مدمجة، لكنك قد ترغب في توسيعها. يبحث CRA عن ملفات الإقرارات في `src/`، لذا ينبغي أن يعمل ملف `src/types/assets.d.ts` لديك على نحو مثالي.
 
 ### Vite
 
-Vite has excellent built-in support for assets and provides its own type definitions. You can extend them in your `vite-env.d.ts`:
+يقدّم Vite دعمًا مدمجًا ممتازًا للأصول ويوفّر تعريفات أنواع خاصة به. يمكنك توسيعها في ملف `vite-env.d.ts`:
 
 ```typescript
 /// <reference types="vite/client" />
@@ -415,7 +415,7 @@ declare module '*.svg?component' {
 
 ### Next.js
 
-Next.js handles many assets automatically, but you might need custom declarations for specialized assets:
+يتعامل Next.js مع أصول كثيرة تلقائيًا، لكنك قد تحتاج إلى إقرارات مخصّصة للأصول المتخصّصة:
 
 ```typescript
 // next-env.d.ts (or in your custom declaration file)
@@ -431,11 +431,11 @@ declare module '*.mdx' {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## الأخطاء الشائعة وكيف تتجنّبها
 
-### Missing Type Roots
+### جذور الأنواع المفقودة
 
-If your declarations aren’t being picked up, check your `tsconfig.json`:
+إذا لم تكن إقراراتك قد التُقطت، فافحص `tsconfig.json`:
 
 ```json
 {
@@ -446,11 +446,11 @@ If your declarations aren’t being picked up, check your `tsconfig.json`:
 }
 ```
 
-### Conflicting Declarations
+### إقرارات متعارضة
 
-If you have multiple declaration files defining the same module patterns, TypeScript will complain. Make sure each pattern is only declared once across all your `.d.ts` files.
+إذا كانت لديك عدّة ملفات إقرارات تعرّف أنماط الوحدات نفسها، فسيشتكي TypeScript. تأكّد من أنّ كل نمط معرَّف مرّة واحدة فقط عبر كل ملفات `.d.ts` لديك.
 
-### Too Generic vs. Too Specific
+### أكثر عمومية من اللازم أو أكثر تحديدًا من اللازم
 
 ```typescript
 // ❌ Too generic - loses type information
@@ -476,9 +476,9 @@ declare module './specific-file.css' {
 }
 ```
 
-## Testing Your Module Declarations
+## اختبار إقرارات وحداتك
 
-You can verify your declarations work by importing an asset and checking the inferred types:
+يمكنك التحقّق من عمل إقراراتك عبر استيراد أصل ومطابقة الأنواع المستنتجة:
 
 ```typescript
 import styles from './test.css';
@@ -493,18 +493,18 @@ const imageSrc = image; // string
 // const alsoInvalid: number = image; // Should error
 ```
 
-## When Module Declarations Aren’t Enough
+## حين لا تكفي إقرارات الوحدات
 
-Sometimes you need more than basic module declarations. For complex scenarios, consider:
+أحيانًا تحتاج إلى ما هو أكثر من إقرارات الوحدات الأساسية. في السيناريوهات المعقّدة، فكّر في:
 
-1. **Custom bundler plugins** that generate types automatically
-2. **Build-time type generation** for things like GraphQL or API schemas
-3. **Runtime validation** with libraries like Zod for dynamic imports
+1. **إضافات مخصّصة لحُزّام الملفات** تولّد الأنواع تلقائيًا
+2. **توليد الأنواع وقت البناء** لأشياء مثل GraphQL أو مخطّطات API
+3. **التحقّق وقت التشغيل (runtime validation)** بمكتبات مثل Zod للاستيرادات الديناميكية
 
-But for 90% of asset importing needs in React applications, the module declarations we’ve covered here will serve you well.
+لكن لِما يقارب 90% من احتياجات استيراد الأصول في تطبيقات React، ستفي إقرارات الوحدات التي غطّيناها هنا بالغرض على نحو جيّد.
 
 ---
 
-Module declarations might seem like boilerplate, but they’re the foundation that makes asset imports in TypeScript React apps actually pleasant to work with. Set them up once, and you’ll get proper autocompletion, error checking, and that warm fuzzy feeling of type safety every time you import an image, stylesheet, or any other asset.
+قد تبدو إقرارات الوحدات كأنها شيفرة روتينية (boilerplate)، لكنها هي الأساس الذي يجعل استيراد الأصول في تطبيقات React المكتوبة بـ TypeScript أمرًا ممتعًا في العمل عليه فعلًا. اضبطها مرّة واحدة، وستحصل على إكمال تلقائي صحيح، وفحص أخطاء، وذلك الإحساس الدافئ بالسلامة النمطية في كل مرّة تستورد فيها صورة أو ملف أنماط أو أي أصل آخر.
 
-The next time you see a “Cannot find module” error for an asset, you’ll know exactly what to do: write a declaration, teach TypeScript what that file should be, and get back to building great user experiences.
+وفي المرّة القادمة التي تصادف فيها خطأ «Cannot find module» لأصل ما، ستعرف تمامًا ما ينبغي فعله: اكتب إقرارًا، وعلّم TypeScript ما ينبغي أن يكون عليه ذلك الملف، ثم عُد إلى بناء تجارب مستخدم رائعة.

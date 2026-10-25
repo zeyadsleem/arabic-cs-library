@@ -1,12 +1,12 @@
 ---
-title: "Improving argTypes with Metadata"
-lang: en
+title: "تحسين argTypes بالبيانات الوصفية"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/arg-types"
 ---
 
-## Adding Metadata to `argTypes`
+## إضافة بيانات وصفية إلى `argTypes`
 
-Storybook tries it’s best to infer as much as it can, but the more data you add, the better table you’re going to get. Let’s walk through this example.
+تحاول Storybook أن تستنتج قدر ما تستطيع، لكن كلما أضفت بيانات أكثر، حصلت على جدول أفضل. لنمرّ على هذا المثال.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -43,13 +43,13 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-## Configuring the Controls Table
+## تهيئة جدول أدوات التحكم
 
-Each `argType` takes a set of parameters that isn’t necessarily about the argument or prop itself, but more about how you’d want Storybook to render the control in the table.
+يأخذ كل `argType` مجموعة من المعاملات لا تتعلق بالضرورة بالوسيط أو الخاصية نفسها، بل بكيفية رغبتك في أن تصيّر Storybook أداة التحكم في الجدول.
 
-### Hiding a Control
+### إخفاء أداة تحكم
 
-It’s not super helpful to have a control for the button label. We know how this works. So, we might want to hide it.
+ليس مفيدًا كثيرًا أن تكون لديك أداة تحكم لعنوان الزر. فنحن نعرف كيف يعمل هذا. لذا قد نرغب في إخفائها.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -67,9 +67,9 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-## Displaying a Default Value
+## عرض قيمة افتراضية
 
-Storybook tries it’s best to infer what a value is by default by analyzing your code, but you can also help it where it falls down. For example, we don’t ever really mentioned the `disabled` prop in our code, because we’re just using the built-in HTML attribute. We *could* add some extra information to the table.
+تحاول Storybook أن تستنتج القيمة الافتراضية بتحليل شيفرتك، لكن يمكنك أيضًا مساعدتها حيث تقصّر. فمثلًا، لا نذكر خاصية `disabled` أبدًا في شيفرتنا، لأننا نستخدم خاصية HTML المدمجة فقط. و*يمكننا* إضافة بعض المعلومات الإضافية إلى الجدول.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -89,7 +89,7 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-Additional, you can add even more detail, but you probably don’t need to.
+وإضافة إلى ذلك، يمكنك إضافة تفاصيل أكثر، لكنك على الأرجح لا تحتاج ذلك.
 
 ```typescript
 const meta: Meta<typeof Button> = {
@@ -110,11 +110,11 @@ const meta: Meta<typeof Button> = {
 };
 ```
 
-This will render a little tooltip with your additional detail.
+سيصيّر هذا تلميحًا صغيرًا يحمل تفصيلك الإضافي.
 
-Additional details are rendered in a small tooltip
+تُصيَّر التفاصيل الإضافية في تلميح صغير
 
-Here is a summary of our changes so far for those of you keeping track at home.
+وإليك ملخص تغييراتنا حتى الآن لمن يتابع منكم في المنزل.
 
 ```diff
 diff --git a/src/components/button/button.stories.tsx b/src/components/button/button.stories.tsx
@@ -163,8 +163,8 @@ index 4348e02..34ba94e 100644
  } satisfies Meta<typeof Button>;
 ```
 
-## Additional Controls
+## أدوات تحكم إضافية
 
-You can also use the `category` and `subcategory` properties on `table` to section. In order to further organize your controls. We don’t have a lot to organize *right now*, but I wanted to put it on your radar.
+يمكنك أيضًا استخدام الخاصيتين `category` و`subcategory` على `table` للتقسيم. لمزيد من التنظيم لأدوات تحكمك. ليس لدينا الكثير لتنظيمه *الآن*، لكني أردت أن أضعه على رادارك.
 
-Figma controls with categories and subcategories
+أدوات تحكم Figma مع الفئات والفئات الفرعية

@@ -1,43 +1,43 @@
 ---
-title: "Layout Grids"
-lang: en
+title: "شبكات التخطيط"
+lang: ar
 source: "https://stevekinney.com/courses/figma/layout-grids"
 ---
 
-Layout grids allow you to apply a fixed grid or a set of columns or rows to a frame. You can use these grids to align elements to a grid system. They pair nicely with constraints to assist you in putting together responsive layouts, which have been all the rage since a little pocket-sized computer out back in 2007.
+تتيح لك شبكات التخطيط تطبيق شبكة ثابتة أو مجموعة من الأعمدة أو الصفوف على إطار. ويمكنك استخدام هذه الشبكات لمحاذاة العناصر إلى نظام شبكي. وهي تتكامل بشكل جيد مع القيود لمساعدتك في تكوين تخطيطات متجاوبة، التي كانت في أوج شعبيتها منذ أن ظهر حاسوب صغير بحجم الجيب في 2007.
 
-> **Layout grids can only be applied to frames.**
+> **لا يمكن تطبيق شبكات التخطيط إلا على الإطارات.**
 
-You can apply a layout grid to any frame. You can even apply multiple grids to a single frame. You can also tweak how the grid looks (e.g. the color and opacity).
+يمكنك تطبيق شبكة تخطيط على أي إطار. بل يمكنك تطبيق عدة شبكات على إطار واحد. ويمكنك أيضًا تعديل مظهر الشبكة (مثل اللون والعتامة).
 
-Figma comes with some built-in grids.
+يأتي Figma ببعض الشبكات المدمجة.
 
-## Columns
+## الأعمدة
 
-Column grids are perfect for web pages and mobile interfaces, where vertical alignment is super important. In Figma, you can customize the number of columns, the gutter width between columns, and the margin on the sides of the canvas.
+شبكات الأعمدة مثالية لصفحات الويب وواجهات الهواتف المحمولة، حيث تكون المحاذاة الرأسية بالغة الأهمية. وفي Figma، يمكنك تخصيص عدد الأعمدة وعرض الفاصل (gutter) بينها والهامش على جانبي لوحة العمل.
 
-Columns in layout grids
+الأعمدة في شبكات التخطيط
 
-## Rows
+## الصفوف
 
-Row grids are used less frequently but are invaluable for designs that require horizontal alignment, such as timelines or charts. Similar to column grids, you can adjust the number of rows, the gutter height, and margins to fit your design specifications.
+تُستخدم شبكات الصفوف أقل تكرارًا، لكنها لا تُقدّر بثمن للتصاميم التي تحتاج إلى محاذاة أفقية، مثل الجداول الزمنية أو المخططات. وكما في شبكات الأعمدة، يمكنك ضبط عدد الصفوف وارتفاع الفاصل والهوامش لتطابق مواصفات تصميمك.
 
-Rows in layout grids
+الصفوف في شبكات التخطيط
 
-## Grids
+## الشبكات
 
-The grid option combines columns and rows, offering a versatile structure for aligning elements both horizontally and vertically. It’s particularly useful for complex projects needing a more detailed organizational framework, like dashboards or intricate layouts.
+يجمع خيار الشبكة بين الأعمدة والصفوف، فيوفّر بنية مرنة لمحاذاة العناصر أفقيًا ورأسيًا معًا. وهو مفيد بوجه خاص للمشاريع المعقّدة التي تحتاج إلى إطار تنظيمي أكثر تفصيلًا، مثل لوحات المعلومات أو التخطيطات المعقّدة.
 
-> **You can apply more than one layout grid to a frame.**
+> **يمكنك تطبيق أكثر من شبكة تخطيط واحدة على الإطار.**
 >
-> For example, you could choose to use both rows and columns. This can be an interesting alternative to a grid when when you’re working through some responsive design or developing for CSS grid.
+> فمثلًا، يمكنك اختيار استخدام الصفوف والأعمدة معًا. وقد يكون هذا بديلًا مثيرًا للاهتمام عن الشبكة عندما تعمل على تصميم متجاوب ما أو تطوير لشبكة CSS.
 
-## Using Layout Grids
+## استخدام شبكات التخطيط
 
-To apply a layout grid, select a frame or object, and in the right-side panel under the ‘Layout Grid’ section, click the ’+’ button. Here, you can choose the type of grid and customize its properties to suit your design.
+لتطبيق شبكة تخطيط، حدّد إطارًا أو كائنًا، وفي اللوحة اليمنى ضمن قسم ‘Layout Grid’ انقر زر ’+’. وهنا يمكنك اختيار نوع الشبكة وتخصيص خصائصها بما يناسب تصميمك.
 
-Figma also allows the overlay of multiple grid types on a single frame, providing a comprehensive guide for element placement. This layered approach can be particularly useful in responsive design, where you need to consider how elements will adjust across different screen sizes.
+يتيح لك Figma أيضًا تراكب عدة أنواع من الشبكات على إطار واحد، فيوفّر دليلًا شاملًا لموضع العناصر. وقد يكون هذا الأسلوب الطبقي مفيدًا بوجه خاص في التصميم المتجاوب، حيث تحتاج إلى مراعاة كيفية تكيّف العناصر عبر أحجام الشاشات المختلفة.
 
-## Adjusting and Toggling Grids
+## ضبط الشبكات وتشغيلها وإيقافها
 
-Once a grid is applied, you can adjust its settings at any time to reflect changes in your design requirements. Pro-tip: Toggling grids on and off is simple — use the shortcut `Ctrl/Cmd + G` or click the eye icon next to the grid name in the right-side panel. This feature is handy for quickly checking your design’s alignment with or without the grid’s visual guides.
+بعد تطبيق شبكة ما، يمكنك ضبط إعداداتها في أي وقت لتعكس التغييرات في متطلبات تصميمك. نصيحة احترافية: تشغيل الشبكات وإيقافها أمر بسيط — استخدم الاختصار `Ctrl/Cmd + G` أو انقر أيقونة العين بجوار اسم الشبكة في اللوحة اليمنى. وهذه الميزة مفيدة للتحقّق بسرعة من محاذاة تصميمك مع الأدلّة البصرية للشبكة أو بدونها.

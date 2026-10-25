@@ -1,8 +1,10 @@
 ---
-title: "Solution: Checking a Disabled Text Area"
-lang: en
+title: "الحل: التحقق من منطقة نص معطّلة"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/text-area-disabled-play-function-solution"
 ---
+
+<!-- ملاحظة مترجم: لا يحتوي هذا المقطع على نصّ ظاهر سوى الشيفرة أدناه؛ وعنوان الصفحة العربي مُدرج في ترويسة الملف. -->
 
 ```typescript
 export const Disabled: Story = {

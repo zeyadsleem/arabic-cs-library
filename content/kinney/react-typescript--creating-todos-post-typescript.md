@@ -1,29 +1,29 @@
 ---
-title: "Sending Data"
-lang: en
+title: "إرسال البيانات"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/creating-todos-post-typescript"
 ---
 
-Creating new todos is where your app starts to feel interactive. Users type, hit enter, and boom—their todo appears. But behind that simple interaction lies a complex dance of form handling, API calls, state updates, and error recovery. TypeScript helps us choreograph this dance perfectly, ensuring type safety from the input field all the way to the server response.
+إنشاء المهام الجديدة هو اللحظة التي يبدأ فيها تطبيقك بالشعور بالتفاعلية. يكتب المستخدم، فيضغط Enter، فتظهر مهمته فورًا. لكن خلف هذه التفاعلية البسيطة تكمن رقصة معقّدة من معالجة النماذج واستدعاءات الواجهة البرمجية وتحديثات الحالة واستعادة الأخطاء. يساعدنا TypeScript على ضبط هذه الرقصة بإتقان، ويضمن سلامة الأنواع من حقل الإدخال وحتى استجابة الخادم.
 
-In this tutorial, we’ll build robust todo creation with proper TypeScript types, optimistic updates for snappy UX, and graceful error handling.
+في هذا الدليل سنبني إنشاء مهام متينًا بأنواع TypeScript سليمة، مع تحديثات متفائلة لتجربة مستخدم سريعة، ومعالجة أخطاء متيمة.
 
-## The Todo Creation Flow
+## تدفّق إنشاء المهمة
 
-Here’s what happens when a user creates a todo:
+إليك ما يحدث عندما ينشئ المستخدم مهمة:
 
-1. User types in a form and submits
-2. We validate the input
-3. Send a POST request to the API
-4. Handle the response (success or failure)
-5. Update local state accordingly
-6. Provide feedback to the user
+1. يكتب المستخدم في نموذج ويُرسله
+2. نتحقق من صحة المدخلات
+3. نرسل طلب POST إلى الواجهة البرمجية (API)
+4. نتعامل مع الاستجابة (نجاح أو فشل)
+5. نحدّث الحالة المحلية تبعًا لذلك
+6. نقدّم تغذية راجعة للمستخدم
 
-Let’s build this step by step.
+لنبنِ ذلك خطوة بخطوة.
 
-## Basic POST Request Pattern
+## النمط الأساسي لطلب POST
 
-First, let’s define our types and basic creation flow:
+أولًا، لنعرّف أنواعنا وتدفّق الإنشاء الأساسي:
 
 ```typescript
 interface Todo {
@@ -116,9 +116,9 @@ function TodoCreator() {
 }
 ```
 
-## Optimistic Creation
+## الإنشاء المتفائل
 
-For better UX, show the todo immediately while the request is in flight:
+لتجربة مستخدم أفضل، اعرض المهمة فورًا أثناء تنفيذ الطلب:
 
 ```typescript
 interface OptimisticTodo extends Todo {
@@ -257,9 +257,9 @@ function OptimisticTodoCreator() {
 }
 ```
 
-## Form Validation with TypeScript
+## التحقق من النماذج باستخدام TypeScript
 
-Let’s add proper validation before sending to the server:
+لنضف تحققًا سليمًا قبل الإرسال إلى الخادم:
 
 ```typescript
 // Validation errors by field
@@ -437,9 +437,9 @@ function ValidatedTodoForm() {
 }
 ```
 
-## Batch Creation
+## الإنشاء الدفعي
 
-Sometimes you need to create multiple todos at once:
+أحيانًا تحتاج إلى إنشاء عدة مهام دفعة واحدة:
 
 ```typescript
 interface BatchCreateResult {
@@ -563,9 +563,9 @@ function BatchTodoCreator() {
 }
 ```
 
-## Custom Hook for Creation
+## خُطّاف مخصّص للإنشاء
 
-Let’s encapsulate the creation logic in a reusable hook:
+لنغلّف منطق الإنشاء في خُطّاف قابل لإعادة الاستخدام:
 
 ```typescript
 interface UseCreateTodoOptions {
@@ -680,9 +680,9 @@ function TodoFormWithHook() {
 }
 ```
 
-## Handling Server-Side Validation
+## التعامل مع التحقق من جانب الخادم
 
-Sometimes the server rejects our todo:
+أحيانًا يرفض الخادم مهمتك:
 
 ```typescript
 interface ServerError {
@@ -778,9 +778,9 @@ function TodoFormWithServerValidation() {
 }
 ```
 
-## Complete Example with All Features
+## مثال كامل بكل المزايا
 
-Here’s everything together in a production-ready component:
+إليك كل شيء مجتمعةً في مكوّن جاهز للإنتاج:
 
 ```typescript
 interface CreateTodoState {
@@ -941,24 +941,24 @@ function CompleteTodoCreator() {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Always validate before sending** - Don’t rely on server validation alone
-2. **Use optimistic updates** - But always handle rollback
-3. **Provide clear feedback** - Users should know what’s happening
-4. **Handle edge cases** - Network failures, server errors, validation errors
-5. **Keep forms accessible** - Use proper labels, ARIA attributes, and keyboard support
+1. **تحقّق دائمًا قبل الإرسال** — لا تعتمد على التحقق من الخادم وحده
+2. **استخدم التحديثات المتفائلة** — لكن عالج التراجع دائمًا
+3. **قدّم تغذية راجعة واضحة** — يجب أن يعرف المستخدمون ما يحدث
+4. **تعامل مع الحالات الحدّية** — أعطال الشبكة وأخطاء الخادم وأخطاء التحقق
+5. **أبقِ النماذج في متناول الجميع** — استخدم تسميات (labels) سليمة وخصائص ARIA ودعم لوحة المفاتيح
 
-## Summary
+## الخلاصة
 
-Creating todos with TypeScript involves:
+إنشاء المهام باستخدام TypeScript ينطوي على:
 
-- Type-safe form handling
-- Client-side validation
-- Optimistic updates for better UX
-- Proper error handling and recovery
-- Server response handling
+- معالجة نماذج آمنة من حيث الأنواع
+- تحقق من جانب العميل
+- تحديثات متفائلة لتجربة مستخدم أفضل
+- معالجة أخطاء سليمة واستعادة
+- التعامل مع استجابات الخادم
 
-## What’s Next?
+## ما التالي؟
 
-Now that we can create todos, let’s explore reading and displaying them with proper pagination, filtering, and search functionality.
+الآن وقد استطعنا إنشاء المهام، لنستكشف قراءتها وعرضها مع ترقيم صفحي سليم وتصفية وبحث.

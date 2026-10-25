@@ -1,10 +1,10 @@
 ---
-title: "Accident Counter: Solution"
-lang: en
+title: "عدّاد الحوادث: الحل"
+lang: ar
 source: "https://stevekinney.com/courses/testing/accident-counter-solution"
 ---
 
-Your code might look a bit different, but here is one possible solution.
+قد تبدو شيفرتك مختلفة قليلًا، لكن إليك أحد الحلول الممكنة.
 
 ```jsx
 import { render, screen } from '@testing-library/react';
@@ -106,4 +106,4 @@ describe('Counter ', () => {
 });
 ```
 
-We can also take a look at another approach using [using user event](https://stevekinney.com/courses/testing/accident-counter-with-user-event).
+يمكننا أيضًا إلقاء نظرة على مقاربة أخرى باستخدام [استخدام user event](https://stevekinney.com/courses/testing/accident-counter-with-user-event).

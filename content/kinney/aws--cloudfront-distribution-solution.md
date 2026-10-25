@@ -1,22 +1,22 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudfront-distribution-solution"
 ---
 
-This is the complete solution for the [CloudFront Distribution Exercise](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise). Every command is shown with its expected output.
+هذا هو الحل الكامل لـ[تمرين توزيع CloudFront](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise). وكل أمر معروض مع ناتجه المتوقع.
 
-## Why This Works
+## لماذا يعمل هذا
 
-- Origin Access Control keeps S3 private while still allowing CloudFront to read the files your users need.
-- Custom error responses make a single-page app behave like a frontend router instead of a pile of missing-object errors.
-- The distribution becomes the enforcement point for HTTPS, caching, and security headers, which is why it sits between your users and the bucket.
+- تُبقي Origin Access Control حاوية S3 خاصة مع السماح لـ CloudFront بقراءة الملفات التي يحتاجها مستخدموك.
+- تجعل استجابات الأخطاء المخصّصة تطبيق الصفحة الواحدة يتصرف كموجّه واجهة أمامية بدلًا من كومة أخطاء كائنات مفقودة.
+- يصبح التوزيع نقطة فرض HTTPS والتخزين المؤقت وترويسات الأمان، ولهذا يجلس بين مستخدميك والحاوية.
 
-> **Tip**
+> **نصيحة**
 >
-> If the console or CLI output shifts while you’re doing this, keep the [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) and the [OAC setup guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) open.
+> إن تغيّر ناتج وحدة التحكم أو CLI أثناء عملك، فأبقِ [دليل مطوّري CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) و[دليل إعداد OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) مفتوحين.
 
-## Create an Origin Access Control
+## إنشاء Origin Access Control
 
 ```bash
 aws cloudfront create-origin-access-control \
@@ -31,7 +31,7 @@ aws cloudfront create-origin-access-control \
   --output json
 ```
 
-Expected output:
+الناتج المتوقع:
 
 ```json
 {
@@ -50,11 +50,11 @@ Expected output:
 }
 ```
 
-Save the `Id` value (`E1OAC2EXAMPLE`).
+احفظ قيمة `Id` (`E1OAC2EXAMPLE`).
 
-## Create the Distribution
+## إنشاء التوزيع
 
-Save the following as `distribution-config.json` (also available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/blob/main/cloudfront/distribution-config.json)):
+احفظ ما يلي باسم `distribution-config.json` (وهو متاح أيضًا في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/blob/main/cloudfront/distribution-config.json)):
 
 ```json
 {
@@ -121,7 +121,7 @@ Save the following as `distribution-config.json` (also available in the [Scratch
 }
 ```
 
-Create the distribution:
+أنشئ التوزيع:
 
 ```bash
 aws cloudfront create-distribution \
@@ -130,7 +130,7 @@ aws cloudfront create-distribution \
   --output json
 ```
 
-Expected output (abridged to the fields you need):
+الناتج المتوقع (مختصرًا إلى الحقول التي تحتاجها):
 
 ```json
 {
@@ -205,9 +205,9 @@ Expected output (abridged to the fields you need):
 }
 ```
 
-Save the distribution ID (`E1A2B3C4D5E6F7`) and domain name (`d1234abcdef.cloudfront.net`).
+احفظ معرّف التوزيع (`E1A2B3C4D5E6F7`) واسم النطاق (`d1234abcdef.cloudfront.net`).
 
-Wait for the distribution to deploy:
+انتظر نشر التوزيع:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -215,11 +215,11 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-This command blocks until the status changes from `InProgress` to `Deployed`. No output means success.
+يحجب هذا الأمر التنفيذ حتى تتغير الحالة من `InProgress` إلى `Deployed`. وعدم وجود ناتج يعني النجاح.
 
-## Update the S3 Bucket Policy
+## تحديث سياسة حاوية S3
 
-Save the following as `bucket-policy-oac.json`:
+احفظ ما يلي باسم `bucket-policy-oac.json`:
 
 ```json
 {
@@ -243,7 +243,7 @@ Save the following as `bucket-policy-oac.json`:
 }
 ```
 
-Apply the policy:
+طبّق السياسة:
 
 ```bash
 aws s3api put-bucket-policy \
@@ -252,9 +252,9 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-No output on success.
+لا ناتج عند النجاح.
 
-Verify the policy:
+تحقّق من السياسة:
 
 ```bash
 aws s3api get-bucket-policy \
@@ -263,32 +263,32 @@ aws s3api get-bucket-policy \
   --output json
 ```
 
-Test CloudFront access:
+اختبر الوصول عبر CloudFront:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 200
 content-type: text/html
 ```
 
-Test that direct S3 access is blocked:
+اختبر أن الوصول المباشر إلى S3 محظور:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/1.1 403 Forbidden
 ```
 
-## Re-enable Block Public Access
+## إعادة تمكين حظر الوصول العام
 
 ```bash
 aws s3api put-public-access-block \
@@ -298,9 +298,9 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-No output on success.
+لا ناتج عند النجاح.
 
-Verify Block Public Access is enabled:
+تحقّق من تمكين حظر الوصول العام:
 
 ```bash
 aws s3api get-public-access-block \
@@ -309,7 +309,7 @@ aws s3api get-public-access-block \
   --output json
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -322,40 +322,40 @@ Expected:
 }
 ```
 
-Verify CloudFront still works:
+تحقّق من أن CloudFront ما زال يعمل:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-Still `200 OK`. The CloudFront service principal policy isn’t considered a “public” policy.
+ما زال `200 OK`. فسياسة الخدمة الأساسية لـ CloudFront لا تُعد سياسة «عامة».
 
-## Test SPA Routing
+## اختبار توجيه SPA
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/dashboard/settings
 ```
 
-Expected:
+المتوقع:
 
 ```
 HTTP/2 200
 content-type: text/html
 ```
 
-The custom error response intercepts the 403 from S3 (because `/dashboard/settings` doesn’t exist as an object) and returns `/index.html` with a 200 status code. Your client-side router handles the rest.
+تعترض استجابة الخطأ المخصّصة رمز 403 القادم من S3 (لأن `/dashboard/settings` غير موجود ككائن) وتعيد `/index.html` برمز حالة 200. أما موجّهك في جهة العميل فيتولى الباقي.
 
-Test another non-existent path:
+اختبر مسارًا آخر غير موجود:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/users/123/profile
 ```
 
-Same result: `200 OK` with `text/html`.
+النتيجة نفسها: `200 OK` مع `text/html`.
 
-## Attach the Security Headers Policy
+## إرفاق سياسة ترويسات الأمان
 
-Fetch the current distribution config:
+اجلب تهيئة التوزيع الحالية:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -364,9 +364,9 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config-current.json
 ```
 
-Note the `ETag` in the response (e.g., `E3ETAG3EXAMPLE`).
+دوّن `ETag` في الاستجابة (مثل `E3ETAG3EXAMPLE`).
 
-Edit the `DistributionConfig` to add `ResponseHeadersPolicyId` to the `DefaultCacheBehavior`. The updated behavior should look like this:
+عدّل `DistributionConfig` لتضيف `ResponseHeadersPolicyId` إلى `DefaultCacheBehavior`. وينبغي أن يبدو السلوك المحدّث هكذا:
 
 ```json
 {
@@ -388,7 +388,7 @@ Edit the `DistributionConfig` to add `ResponseHeadersPolicyId` to the `DefaultCa
 }
 ```
 
-Extract the `DistributionConfig` (without the `ETag` wrapper) into `distribution-config-updated.json` and submit:
+استخرج `DistributionConfig` (دون غلاف `ETag`) إلى `distribution-config-updated.json` وأرسله:
 
 ```bash
 aws cloudfront update-distribution \
@@ -399,7 +399,7 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-Wait for deployment:
+انتظر النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -407,13 +407,13 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-Verify the security headers:
+تحقّق من ترويسات الأمان:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-Expected (among other headers):
+المتوقع (من بين ترويسات أخرى):
 
 ```
 strict-transport-security: max-age=31536000
@@ -423,9 +423,9 @@ x-xss-protection: 1; mode=block
 referrer-policy: strict-origin-when-cross-origin
 ```
 
-## Final Verification
+## التحقق النهائي
 
-Run all checks:
+شغّل كل الفحوصات:
 
 ```bash
 # Distribution status
@@ -436,7 +436,7 @@ aws cloudfront get-distribution \
   --query "Distribution.{Id:Id,Domain:DomainName,Status:Status}"
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -457,38 +457,38 @@ curl -I https://d1234abcdef.cloudfront.net/any/spa/route
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-Expected results: CloudFront returns `200 OK` for both the root and the SPA route. Direct S3 access returns `403 Forbidden`.
+النتائج المتوقعة: تعيد CloudFront الرمز `200 OK` لكل من الجذر ومسار SPA. أما الوصول المباشر إلى S3 فيعيد `403 Forbidden`.
 
-Open the CloudFront domain in a browser to see the site live:
+افتح نطاق CloudFront في متصفح لترى الموقع مباشرًا:
 
-The static site served through CloudFront with HTTPS, showing Hello from S3 on a dark background with a page-load timestamp.
+الموقع الثابت المقدّم عبر CloudFront بـ HTTPS، ويعرض «Hello from S3» على خلفية داكنة مع طابع زمني لتحميل الصفحة.
 
-## Summary of Resources Created
+## ملخص الموارد المنشأة
 
-| Resource | Identifier |
+| المورد | المعرّف |
 | --- | --- |
 | Origin Access Control | `E1OAC2EXAMPLE` |
-| CloudFront Distribution | `E1A2B3C4D5E6F7` |
-| Distribution Domain | `d1234abcdef.cloudfront.net` |
-| S3 Bucket Policy | Updated to allow only CloudFront |
-| Response Headers Policy | `67f7725c-6f97-4210-82d7-5512b31e9d03` (managed SecurityHeadersPolicy) |
-| Cache Policy | `658327ea-f89d-4fab-a63d-7e88639e58f6` (managed CachingOptimized) |
+| توزيع CloudFront | `E1A2B3C4D5E6F7` |
+| نطاق التوزيع | `d1234abcdef.cloudfront.net` |
+| سياسة حاوية S3 | محدّثة لتسمح لـ CloudFront فقط |
+| سياسة ترويسات الاستجابة | `67f7725c-6f97-4210-82d7-5512b31e9d03` (SecurityHeadersPolicy مُدارة) |
+| سياسة الذاكرة المؤقتة | `658327ea-f89d-4fab-a63d-7e88639e58f6` (CachingOptimized مُدارة) |
 
-Your distribution is live and secured on its `*.cloudfront.net` domain. If you want to attach a custom domain later, see the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course.
+توزيعك الآن مباشر ومؤمّن على نطاقه `*.cloudfront.net`. وإن أردت إرفاق نطاق مخصّص لاحقًا، فراجع قسم [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) الاختياري في نهاية الدورة.
 
-## Cleanup
+## التنظيف
 
-When you’re done with this exercise, tear down the resources to avoid ongoing charges. The distribution must be *disabled* before CloudFront will let you delete it—and disabling is the slow part (15–30 minutes). The actual deletion is fast once the status reaches `Deployed`.
+عندما تنتهي من هذا التمرين، فكّك الموارد لتجنّب الرسوم المستمرة. يجب أن يكون التوزيع *معطّلًا* قبل أن تسمح لك CloudFront بحذفه—والتعطيل هو الجزء البطيء (15–30 دقيقة). أما الحذف الفعلي فسريع بمجرد أن تبلغ الحالة `Deployed`.
 
-> **Before you copy these commands**
+> **قبل أن تنسخ هذه الأوامر**
 >
-> The IDs below (`E1A2B3C4D5E6F7` for the distribution, `E1OAC2EXAMPLE` for the OAC) are placeholders—replace them with your actual IDs. Find yours with `aws cloudfront list-distributions --query 'DistributionList.Items[].{Id:Id,Domain:DomainName}' --output table` and `aws cloudfront list-origin-access-controls --output table`.
+> المعرّفات أدناه (`E1A2B3C4D5E6F7` للتوزيع، و`E1OAC2EXAMPLE` لـ OAC) هي عناصر نائبة—استبدلها بمعرّفاتك الفعلية. اعثر على معرّفاتك بالأمر `aws cloudfront list-distributions --query 'DistributionList.Items[].{Id:Id,Domain:DomainName}' --output table` و`aws cloudfront list-origin-access-controls --output table`.
 >
-> Run these commands in a single shell session so `$ETAG`, `$NEW_ETAG`, and `$OAC_ETAG` stay in scope. If you come back in a new terminal, re-fetch each ETag before running the command that uses it.
+> شغّل هذه الأوامر في جلسة shell واحدة كي تبقى `$ETAG` و`$NEW_ETAG` و`$OAC_ETAG` في النطاق. فإن عدت في طرفية جديدة، فأعد جلب كل ETag قبل تشغيل الأمر الذي يستخدمه.
 >
-> Double-check that `"Enabled": false` in `distribution-config.json` before submitting the update. Leaving it `true` is the single most common way this cleanup fails—`delete-distribution` rejects an enabled distribution with `DistributionNotDisabled`, and the `wait distribution-deployed` call that follows will look stuck.
+> تحقّق مرة أخرى من أن `"Enabled": false` في `distribution-config.json` قبل إرسال التحديث. فتركها `true` هو أكثر طريقة شائعة لفشل هذا التنظيف—إذ يرفض `delete-distribution` توزيعًا ممكّنًا بخطأ `DistributionNotDisabled`، ويبدو استدعاء `wait distribution-deployed` التالي عالقًا.
 
-Fetch the current config and ETag:
+اجلب التهيئة الحالية وETag:
 
 ```bash
 ETAG=$(aws cloudfront get-distribution-config \
@@ -501,7 +501,7 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config.json
 ```
 
-Edit `distribution-config.json` and set `"Enabled": false`, then submit the update:
+عدّل `distribution-config.json` واضبط `"Enabled": false`، ثم أرسل التحديث:
 
 ```bash
 aws cloudfront update-distribution \
@@ -510,13 +510,13 @@ aws cloudfront update-distribution \
   --if-match "$ETAG"
 ```
 
-Wait for `Status: Deployed` (this is the slow step—grab a coffee):
+انتظر `Status: Deployed` (هذه هي الخطوة البطيئة—اصنع فنجان قهوة):
 
 ```bash
 aws cloudfront wait distribution-deployed --id E1A2B3C4D5E6F7
 ```
 
-Fetch the new ETag (it changes on every update), then delete:
+اجلب ETag الجديد (فهو يتغير مع كل تحديث)، ثم احذف:
 
 ```bash
 NEW_ETAG=$(aws cloudfront get-distribution-config \
@@ -528,7 +528,7 @@ aws cloudfront delete-distribution \
   --if-match "$NEW_ETAG"
 ```
 
-Delete the OAC:
+احذف OAC:
 
 ```bash
 OAC_ETAG=$(aws cloudfront get-origin-access-control \

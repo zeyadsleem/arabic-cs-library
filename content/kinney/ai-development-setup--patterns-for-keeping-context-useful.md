@@ -1,32 +1,32 @@
 ---
-title: "Keeping Context Useful"
-lang: en
+title: "إبقاء السياق مفيدًا"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/patterns-for-keeping-context-useful"
 ---
 
-Every session starts from nothing. Whatever the agent learned yesterday—how the build works, which approach already failed, the convention you corrected it on twice—is gone unless something put it where today’s session will find it. These three patterns decide what gets written down, where it lives, and how the setup gets smarter instead of starting over.
+كل جلسة تبدأ من لا شيء. وكل ما تعلمه الوكيل أمس — كيف يعمل البناء، وأي نهج فشل بالفعل، والعرف الذي صحّحته عليه مرتين — يذهب إن لم يضعه شيء حيث تجده جلسة اليوم. وهذه الأنماط الثلاثة تقرر ما يُكتب، وأين يعيش، وكيف يصبح الإعداد أذكى بدلًا من أن يبدأ من جديد.
 
-They work at different timescales. The testing contract holds the handful of facts every session needs. The progress file carries one long task across sessions. Compound engineering carries lessons across tasks.
+وهي تعمل على مقاييس زمنية مختلفة. فعقد الاختبار يحمل القليل من الحقائق التي تحتاجها كل جلسة. وملف التقدّم ينقل مهمة طويلة واحدة عبر الجلسات. والهندسة التراكمية تنقل الدروس بين المهام.
 
-## Instructions as a testing contract
+## التعليمات بوصفها عقد اختبار
 
-**What it is:** Put the exact build and test commands, in order, with what passing looks like, into the instructions file the agent reads at the start of every session.
+**ما هو:** ضع أوامر البناء والاختبار الدقيقة، بالترتيب، ومعها شكل النجاح، في ملف التعليمات الذي يقرؤه الوكيل في بداية كل جلسة.
 
-**How it works:** This has the strongest evidence I’ve found for any of the fifteen patterns, with caveats I’ll get to. Stephen Toub’s report on [ten months of running GitHub’s coding agent against `dotnet/runtime`](https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/) measured pull request success at 38.1% before their setup changes and 69% after. The main change wasn’t a better model. It was writing down which commands to run, in what order, and what to expect. The engineers had assumed the agent would figure out the build. It didn’t. It guessed, and each wrong guess cost a full failed CI run.
+**كيف يعمل:** هذا النمط يملك أقوى دليل وجدته في أي من الأنماط الخمسة عشر، مع تحفّظات سأصل إليها. فقد قاس تقرير Stephen Toub عن [عشرة أشهر من تشغيل وكيل البرمجة من GitHub على `dotnet/runtime`](https://devblogs.microsoft.com/dotnet/ten-months-with-cca-in-dotnet-runtime/) نجاح طلبات السحب عند 38.1% قبل تغييرات إعدادهم و69% بعدها. ولم يكن التغيير الرئيسي نموذجًا أفضل، بل كتابة أي الأوامر تُشغَّل، وبأي ترتيب، وما يُتوقَّع. كان المهندسون يفترضون أن الوكيل سيكتشف البناء. لكنه لم يفعل. بل خمّن، وكل تخمين خاطئ كلّف تشغيلة CI فاشلة كاملة.
 
-That’s why these commands outrank everything else you might put in `CLAUDE.md` or `AGENTS.md`. A missed style preference costs you a review comment. A wrong build command costs a failed run, plus a recovery attempt that may guess wrong again.
+ولهذا تتفوق هذه الأوامر على كل ما قد تضعه في `CLAUDE.md` أو `AGENTS.md`. فتفضيل أسلوبي فائت يكلفك تعليق مراجعة. أما أمر بناء خاطئ فيكلفك تشغيلة فاشلة، زائد محاولة استعادة قد تخطئ من جديد.
 
-**When to use it:** On any repository whose build isn’t one obvious command, which is most real ones, and especially monorepos or anything whose fast inner-loop build differs from the full one. Start the moment you see the agent run the wrong thing twice. That repetition doesn’t fix itself.
+**متى تستخدمه:** في أي مستودع لا يكون بناؤه أمرًا واضحًا واحدًا، وهو معظم المستودعات الحقيقية، وخصوصًا المستودعات الأحادية (monorepos) أو أي شيء يختلف بناؤه السريع في الحلقة الداخلية عن البناء الكامل. وابدأ لحظة ترى الوكيل يشغّل الشيء الخاطئ مرتين. فذلك التكرار لا يُصلح نفسه.
 
-**When not to use it:** To document the whole build system. Instruction files have a budget, and a long one gets skimmed. Never write a command you haven’t verified: a wrong command is worse than none, because the agent trusts it and stops thinking. Keep fast-changing details out, since a stale command fails confidently. And if the commands belong in a script or task runner, put them there and point to it.
+**متى لا تستخدمه:** لتوثيق نظام البناء كله. فملفات التعليمات لها ميزانية، والملف الطويل يُتصفَّح سريعًا. ولا تكتب أبدًا أمرًا لم تتحقق منه: فأمر خاطئ أسوأ من لا شيء، لأن الوكيل يثق به ويتوقف عن التفكير. وأبقِ التفاصيل سريعة التغيّر خارجه، لأن الأمر القديم يفشل بثقة. وإن كانت الأوامر تنتمي إلى سكربت أو مشغّل مهام، فضعها هناك وأشِر إليه.
 
-Two caveats on the number. The team made two changes at once—the instructions file and network access to package feeds—and it’s one repository with an unusually complicated build. Even so, that’s a big effect from a cheap change. [User and Project Instructions](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions#write-operational-facts) covers what else belongs in the file. The [project initializer skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) writes these commands in the first place, while you watch.
+وتحفّظان على الرقم. فقد أجرى الفريق تغييرين معًا — ملف التعليمات والوصول الشبكي إلى مستودعات الحزم — وهو مستودع واحد ببناء معقّد على نحو غير معتاد. ومع ذلك، فأثر كبير من تغيير رخيص. ويغطي [تعليمات المستخدم والمشروع](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions#write-operational-facts) ما ينتمي أيضًا إلى الملف. و[مهارة تهيئة المشروع](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) تكتب هذه الأوامر من الأساس، وأنت تشاهد.
 
-## Progress file
+## ملف التقدّم {#progress-file}
 
-**What it is:** One append-only file that records what was done, what was tried and failed, and what comes next. Each session reads it first and updates it last.
+**ما هو:** ملف واحد للإضافة فقط يسجّل ما أُنجز، وما جُرّب وفشل، وما يأتي بعد ذلك. تقرؤه كل جلسة أولًا وتحدّثه أخيرًا.
 
-**How it works:** Anthropic’s [long-running agent harness](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) tells every session to start by reading the progress notes and the git log and running a basic test before touching anything. At the end, the session appends what it did.
+**كيف يعمل:** تأمر [منصة الوكلاء طويلة التشغيل](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) من Anthropic كل جلسة بأن تبدأ بقراءة ملاحظات التقدّم وسجل git وتشغيل اختبار أساسي قبل أن تمسّ أي شيء. وفي النهاية تضيف الجلسة ما فعلته.
 
 ```
 flowchart TD
@@ -38,19 +38,19 @@ flowchart TD
   F -. "next session" .-> A
 ```
 
-The failures are the most valuable part. A file that only lists completed work is a worse changelog than the one git already keeps. The useful version records the dead ends with the reason: “tried moving the query into the parent component; it broke the suspense boundary, reverted.” Without that, every fresh session rediscovers the same dead end, which is the most common way long runs waste money. Keep the file append-only, too. An agent allowed to rewrite it will eventually summarize the failures away, because keeping the successes is what a summary does.
+والأعطال هي الجزء الأكثر قيمة. فالملف الذي يسرد العمل المكتمل وحده سجلّ تغييرات أسوأ من الذي يحفظه git بالفعل. أما النسخة المفيدة فتسجّل الطرق المسدودة مع سببها: «جُرّب نقل الاستعلام إلى المكوّن الأب؛ كسر حدّ suspense، فتُراجع عنه». وبلا ذلك، تكتشف كل جلسة جديدة الطريق المسدود نفسه، وهي أكثر طريقة شائعة لإهدار المال في التشغيلات الطويلة. وأبقِ الملف للإضافة فقط أيضًا. فالوكيل المسموح له بإعادة كتابته سيلخّص الأعطال في النهاية بعيدًا، لأن الحفاظ على النجاحات هو ما يفعله الملخّص.
 
-**When to use it:** Whenever work outgrows one session’s context window: overnight runs, multi-day features, any [Ralph loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) where each pass starts blind. Also when several sessions or agents touch the same work, so there’s one story instead of a pile of transcripts.
+**متى تستخدمه:** كلما كبر العمل عن نافذة سياق جلسة واحدة: التشغيلات الليلية، والميزات التي تستغرق أيامًا، وأي [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) تبدأ فيها كل دورة عمياء. وأيضًا حين تلمس عدة جلسات أو وكلاء العمل نفسه، فتكون هناك قصة واحدة بدلًا من كومة نصوص كاملة.
 
-**When not to use it:** For a task that fits in one session, where it’s overhead that goes stale the moment you stop maintaining it. Don’t use it in place of commits; git already records what changed. Keep it separate from the plan, since a file that mixes intent with history leaves you guessing which lines are still true. And rotate it before it grows so large that reading it eats the context it was supposed to save.
+**متى لا تستخدمه:** لمهمة تسع في جلسة واحدة، حيث يصبح عبئًا يقدم لحظة تتوقف عن صيانته. ولا تستخدمه بدلًا من الإيداعات؛ فـ git يسجّل ما تغيّر بالفعل. وأبقِه منفصلًا عن الخطة، لأن ملفًا يخلط النية بالتاريخ يتركك تخمّن أي الأسطر صحيحة بعد. وبدّله قبل أن يكبر بحيث تأكل قراءته السياق الذي كان يُفترض أن يوفّره.
 
-[Where State Lives](https://stevekinney.com/courses/ai-development-setup/where-state-lives) covers which kind of state belongs in which file, and the [session handoff skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#session-handoff) writes the entry for you.
+ويغطي [أين تعيش الحالة](https://stevekinney.com/courses/ai-development-setup/where-state-lives) أي نوع من الحالة ينتمي إلى أي ملف، و[مهارة تسليم الجلسة](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#session-handoff) تكتب المدخل عنك.
 
-## Compound engineering
+## الهندسة التراكمية
 
-**What it is:** End every task by writing down what it taught you, in a place the next task will read. Plan, work, review, then *compound*.
+**ما هو:** أنهِ كل مهمة بكتابة ما علّمته لك، في مكان تقرؤه المهمة التالية. خطّط، واعمل، وراجع، ثم *راكم*.
 
-**How it works:** The first three steps are ordinary. The fourth is the point. After review, look at what made the change hard: the framework quirk, the convention you had to correct, the approach that failed. Write it up as a rule in `CLAUDE.md`, a note in the project docs, or an edit to a skill. The next task’s planning step reads those, so it starts out knowing what the last one had to learn. [Every](https://every.to/guides/compound-engineering), the team that named it, puts it as “each unit of engineering work should make subsequent units easier—not harder.”
+**كيف يعمل:** الخطوات الثلاث الأولى عادية. والرابعة هي المقصد. بعد المراجعة، انظر إلى ما جعل التغيير صعبًا: غرابة الإطار، أو العرف الذي اضطررت إلى تصحيحه، أو النهج الذي فشل. واكتبه كقاعدة في `CLAUDE.md`، أو ملاحظة في توثيق المشروع، أو تعديل لمهارة. وتقرؤها خطوة التخطيط في المهمة التالية، فتبدأ وهي تعرف ما اضطرت المهمة السابقة إلى تعلمه. و[Every](https://every.to/guides/compound-engineering)، الفريق الذي أطلق الاسم، تصوغه هكذا: «ينبغي أن تجعل كل وحدة من العمل الهندسي الوحدات التالية أسهل لا أصعب».
 
 ```
 flowchart LR
@@ -63,12 +63,12 @@ flowchart LR
   E & F & G -.-> A
 ```
 
-A good lesson is specific and findable. “Be careful with dates” helps nobody. “Our API returns timestamps in UTC without a `Z` suffix; parse with `parseUtc()` in `lib/time.ts`” saves the next session an hour.
+والدرس الجيد محدد ويمكن العثور عليه. فـ«كن حذرًا مع التواريخ» لا يفيد أحدًا. أما «واجهتنا تعيد الطوابع الزمنية بتوقيت UTC دون لاحقة `Z`؛ حلّلها بـ `parseUtc()` في `lib/time.ts`» فيوفر على الجلسة التالية ساعة.
 
-**When to use it:** On a long-lived codebase with the same small team, where the same kinds of mistake keep coming back. A written lesson pays off every time the mistake doesn’t recur, and it’s the most direct way to turn your repeated corrections into something durable.
+**متى تستخدمه:** على قاعدة شيفرة معمّرة مع الفريق الصغير نفسه، حيث تعود أنواع الخطأ نفسها. فالدرس المكتوب يثمر في كل مرة لا يتكرر فيها الخطأ، وهو أكثر الطرق مباشرةً لتحويل تصحيحاتك المتكررة إلى شيء دائم.
 
-**When not to use it:** On throwaway projects, where there’s nothing to compound. On very large codebases with many teams, lessons pile up faster than anyone prunes them, and an always-loaded `CLAUDE.md` full of them costs the context it was meant to save. There, put lessons where they load on demand—a skill, a docs folder the agent searches. And don’t let the agent decide on its own what gets written. Review lessons like code.
+**متى لا تستخدمه:** في المشاريع المؤقتة، حيث لا شيء يُراكم. وفي قواعد الشيفرة الضخمة ذات الفرق الكثيرة، تتراكم الدروس أسرع مما يقلّمها أحد، ويكلّف `CLAUDE.md` المحمّل دائمًا والمليء بها السياق الذي كان يُفترض أن يوفّره. وهناك، ضع الدروس حيث تُحمَّل عند الطلب — مهارة، أو مجلد توثيق يبحث فيه الوكيل. ولا تدع الوكيل يقرر وحده ما يُكتب. راجع الدروس كما تراجع الشيفرة.
 
-The [self-improvement junkie](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#self-improvement-junkie) drafts the lesson from the task’s evidence, and you decide what goes in. The last step of [Using a skill to codify your workflow](https://stevekinney.com/courses/ai-development-setup/subagents#using-a-skill-to-codify-your-workflow) is this pattern applied to a skill. When a lesson is big enough to be a whole procedure, the [skill builder](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#skill-builder) helps you write it as a skill and check that it actually helps.
+و[مهووس التحسين الذاتي](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#self-improvement-junkie) يصوغ الدرس من أدلة المهمة، وأنت تقرر ما يدخل. والخطوة الأخيرة في [استخدام مهارة لتقنين سير عملك](https://stevekinney.com/courses/ai-development-setup/subagents#using-a-skill-to-codify-your-workflow) هي هذا النمط مطبَّقًا على مهارة. وعندما يكبر الدرس ليصبح إجراءً كاملًا، يساعدك [باني المهارات](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#skill-builder) على كتابته كمهارة والتحقق من أنه يفيد فعلًا.
 
-The agent’s memory is whatever you wrote down. Write down less than you think, keep it accurate, and put it where the next session will actually look.
+ذاكرة الوكيل هي ما كتبته أنت، لا أكثر. اكتب أقل مما تظن، وأبقه دقيقًا، وضعه حيث ستنظر الجلسة التالية فعلًا.

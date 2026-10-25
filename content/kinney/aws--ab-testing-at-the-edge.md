@@ -1,22 +1,22 @@
 ---
-title: "A/B Testing at the Edge"
-lang: en
+title: "اختبار A/B على الحافة"
+lang: ar
 source: "https://stevekinney.com/courses/aws/ab-testing-at-the-edge"
 ---
 
-A/B testing on the frontend usually involves a client-side library like LaunchDarkly or Optimizely that swaps content after the page loads. The problem: there’s a flash of content, a layout shift, or a delay while the library initializes and decides which variant to show. Your Lighthouse score takes the hit.
+يتضمن اختبار A/B في الواجهة الأمامية عادةً مكتبة على جهة العميل مثل LaunchDarkly أو Optimizely تبدّل المحتوى بعد تحميل الصفحة. المشكلة: هناك وميض للمحتوى، أو إزاحة في التخطيط، أو تأخير أثناء تهيئة المكتبة وتحديد المتغيّر الذي تعرضه. وتتلقى درجة Lighthouse ضربة.
 
-If you want AWS’s version of the runtime behavior while you read, the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) is the official reference.
+إن أردت نسخة AWS من سلوك وقت التشغيل أثناء القراءة، فإن [دليل دوال CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) هو المرجع الرسمي.
 
-Edge functions eliminate this problem entirely. The routing decision happens **before** the response reaches the browser. The user gets one version of the page—no flicker, no client-side SDK, no additional JavaScript bundle. From the user’s perspective, there’s no A/B test happening at all.
+تزيل دوال الحافة هذه المشكلة تمامًا. يحدث قرار التوجيه **قبل** وصول الاستجابة إلى المتصفح. يحصل المستخدم على نسخة واحدة من الصفحة—بلا وميض، وبلا SDK على جهة العميل، وبلا حزمة JavaScript إضافية. من منظور المستخدم، لا يوجد اختبار A/B يحدث على الإطلاق.
 
-## How It Works
+## كيف يعمل
 
-The mechanism has three parts:
+تتكون الآلية من ثلاثة أجزاء:
 
-1. **Assign new visitors to a variant.** When a user makes their first request and has no experiment cookie, the edge function randomly assigns them to variant A or B and sets a cookie.
-2. **Route returning visitors by cookie.** On subsequent requests, the edge function reads the cookie and routes to the same variant—the user gets a consistent experience.
-3. **Modify the request based on variant.** The function either rewrites the URI (serving different static files) or sets a header that your origin uses to return different content.
+1. **تخصيص الزوار الجدد لمتغيّر.** عندما يرسل المستخدم طلبه الأول وليس لديه ملف تعريف ارتباط للتجربة، تخصصه دالة الحافة عشوائيًا للمتغيّر A أو B وتضبط ملف تعريف ارتباط.
+2. **توجيه الزوار العائدين حسب ملف تعريف الارتباط.** في الطلبات اللاحقة، تقرأ دالة الحافة ملف تعريف الارتباط وتوجّه إلى المتغيّر نفسه—فيحصل المستخدم على تجربة متسقة.
+3. **تعديل الطلب بناءً على المتغيّر.** تعيد الدالة كتابة URI (فتقدّم ملفات ثابتة مختلفة) أو تضبط رأسًا يستخدمه أصلك لإعادة محتوى مختلف.
 
 ```
 flowchart LR
@@ -29,11 +29,11 @@ flowchart LR
     Cache --> Response["Viewer response sets or refreshes cookie"]
 ```
 
-This approach works with both CloudFront Functions and Lambda@Edge. The example below uses a CloudFront Function because A/B testing at the viewer request level is typically simple enough to fit within its constraints. If your routing logic requires network calls or complex computations, use Lambda@Edge instead.
+يعمل هذا النهج مع دوال CloudFront وLambda@Edge معًا. يستخدم المثال أدناه دالة CloudFront لأن اختبار A/B على مستوى طلب المشاهد بسيط عادةً بما يكفي ليتسع ضمن قيودها. أما إذا كان منطق التوجيه لديك يتطلب استدعاءات شبكة أو حسابات معقدة، فاستخدم Lambda@Edge بدلًا منها.
 
-## The Complete CloudFront Function
+## دالة CloudFront الكاملة
 
-Here’s a full implementation that splits traffic 50/50 between two variants:
+إليك تنفيذًا كاملًا يقسم الزيارات مناصفةً 50/50 بين متغيّرين:
 
 ```javascript
 function handler(event) {
@@ -66,17 +66,17 @@ function handler(event) {
 }
 ```
 
-*Note:* Guard against tampered cookies by falling back to a known variant.
+*ملاحظة:* احترس من ملفات تعريف الارتباط المتلاعب بها بالرجوع إلى متغيّر معروف.
 
-This function does three things:
+تفعل هذه الدالة ثلاثة أشياء:
 
-1. Reads the `ab-variant` cookie from the request. If present, the user keeps their current assignment.
-2. If no cookie exists, assigns the user to variant `a` or `b` with equal probability.
-3. Rewrites the URI so `/` serves either `/a/index.html` or `/b/index.html`.
+1. تقرأ ملف تعريف الارتباط `ab-variant` من الطلب. إذا كان موجودًا، يحتفظ المستخدم بتخصيصه الحالي.
+2. إذا لم يوجد ملف تعريف ارتباط، تخصص الدالة المستخدم للمتغيّر `a` أو `b` باحتمال متساوٍ.
+3. تعيد كتابة URI بحيث يقدّم `/` إما `/a/index.html` أو `/b/index.html`.
 
-### Setting the Cookie on the Response
+### ضبط ملف تعريف الارتباط على الاستجابة
 
-The viewer request function above sets a custom header (`x-ab-variant`) but doesn’t set the cookie—viewer request functions can’t modify the response. You need a companion **viewer response** function to set the cookie:
+تضبط دالة طلب المشاهد أعلاه رأسًا مخصصًا (`x-ab-variant`) لكنها لا تضبط ملف تعريف الارتباط—فدوال طلب المشاهد لا تستطيع تعديل الاستجابة. تحتاج إلى دالة **استجابة المشاهد** مرافقة لضبط ملف تعريف الارتباط:
 
 ```javascript
 function handler(event) {
@@ -93,15 +93,15 @@ function handler(event) {
 }
 ```
 
-*Note:* `Max-Age=2592000` is 30 days. The user stays in the same variant for a month.
+*ملاحظة:* `Max-Age=2592000` يساوي 30 يومًا. يبقى المستخدم في المتغيّر نفسه لمدة شهر.
 
-> **Warning**
+> **تحذير**
 >
-> You need **two** CloudFront Functions for this pattern—one on `viewer-request` to route the request, and one on `viewer-response` to set the cookie. A single CloudFront Function can only handle one event type per behavior, but a behavior can have both a viewer request and a viewer response function attached.
+> تحتاج إلى **دالتَي** CloudFront لهذا النمط—واحدة على `viewer-request` لتوجيه الطلب، وواحدة على `viewer-response` لضبط ملف تعريف الارتباط. تستطيع دالة CloudFront الواحدة التعامل مع نوع حدث واحد فقط لكل سلوك، لكن يمكن أن يكون للسلوك الواحد دالة طلب مشاهد ودالة استجابة مشاهد مرتبطتان به معًا.
 
-## Setting Up the S3 Structure
+## إعداد بنية S3
 
-For this to work, your S3 bucket needs variant-specific content. The simplest approach: create parallel directory structures.
+لكي يعمل هذا، يحتاج دلو S3 الخاص بك إلى محتوى خاص بكل متغيّر. أبسط نهج: أنشئ بنيتين متوازيتين من المجلدات.
 
 ```
 my-frontend-app-assets/
@@ -113,7 +113,7 @@ my-frontend-app-assets/
 └── script.js           ← Shared assets
 ```
 
-Upload the variant content to your S3 bucket:
+ارفع محتوى المتغيّرات إلى دلو S3:
 
 ```bash
 aws s3 cp ./build/variant-a/index.html \
@@ -127,11 +127,11 @@ aws s3 cp ./build/variant-b/index.html \
   --output json
 ```
 
-Shared assets (CSS, JS, images) don’t need to be duplicated. Only the pages that differ between variants need separate versions.
+لا تحتاج الأصول المشتركة (CSS وJS والصور) إلى التكرار. الصفحات المختلفة بين المتغيرات وحدها تحتاج إلى نسخ منفصلة.
 
-## Lambda@Edge Alternative
+## بديل Lambda@Edge
 
-If your A/B test needs to route to **different origins** (for example, two different S3 buckets or two different API endpoints), you need Lambda@Edge with an **origin request** trigger. CloudFront Functions can’t change the origin.
+إذا كان اختبار A/B لديك يحتاج إلى التوجيه إلى **أصول مختلفة** (مثل دلوَي S3 مختلفين أو نقطتي نهاية API مختلفتين)، فأنت بحاجة إلى Lambda@Edge مع محفّز **طلب الأصل**. لا تستطيع دوال CloudFront تغيير الأصل.
 
 ```typescript
 import type { CloudFrontRequestHandler } from 'aws-lambda';
@@ -171,22 +171,22 @@ export const handler: CloudFrontRequestHandler = async (event) => {
 };
 ```
 
-This function modifies the **origin path** instead of the URI, which means you can organize your variants differently in S3 or even point to entirely separate buckets.
+تعدّل هذه الدالة **مسار الأصل** بدلًا من URI، ما يعني أنه يمكنك تنظيم متغيراتك بشكل مختلف في S3 أو حتى الإشارة إلى دلاء منفصلة تمامًا.
 
-> **Why `authMethod: 'none'`**
+> **لماذا `authMethod: 'none'`**
 >
-> The `authMethod` field only tracks OAI, not OAC—AWS documents that it [does not support OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html) at all. With OAC, authentication happens at the distribution layer and is invisible to the Lambda@Edge event, so `'none'` is correct. Use `'origin-access-identity'` only on the legacy OAI pattern.
+> يتتبع حقل `authMethod` OAI فقط، لا OAC—وتوثّق AWS أنها [لا تدعم OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-event-structure.html) على الإطلاق. مع OAC، تحدث المصادقة في طبقة التوزيع وتكون غير مرئية لحدث Lambda@Edge، لذا فإن `'none'` صحيحة. استخدم `'origin-access-identity'` فقط مع نمط OAI القديم.
 
-## Weighted Splits
+## تقسيمات مرجّحة
 
-50/50 is the simplest split, but you’ll often want to roll out changes to a smaller percentage of users first. Adjust the random assignment:
+50/50 هو أبسط تقسيم، لكنك سترغب غالبًا في طرح التغييرات على نسبة أصغر من المستخدمين أولًا. عدّل التخصيص العشوائي:
 
 ```javascript
 // 90/10 split: 90% variant A, 10% variant B
 variant = Math.random() < 0.9 ? 'a' : 'b';
 ```
 
-For more than two variants:
+لأكثر من متغيّرين:
 
 ```javascript
 var rand = Math.random();
@@ -199,27 +199,27 @@ if (rand < 0.33) {
 }
 ```
 
-## Caching Considerations
+## اعتبارات التخزين المؤقت
 
-This is the part that trips people up. (It definitely tripped me up the first time.) If CloudFront caches the response for `/` and serves it to everyone, your A/B test breaks—every user gets whatever variant was cached first.
+هذا هو الجزء الذي يربك الناس. (لقد أربكني أنا بالتأكيد في المرة الأولى.) إذا خزّن CloudFront استجابة `/` مؤقتًا وقدّمها للجميع، ينكسر اختبار A/B لديك—ويحصل كل مستخدم على المتغيّر الذي خُزّن مؤقتًا أولًا.
 
-You need to tell CloudFront to **cache separately by variant**. There are two approaches:
+تحتاج إلى إخبار CloudFront بأن **يخزّن مؤقتًا بشكل منفصل حسب المتغيّر**. هناك نهجان:
 
-**Approach 1: Cache by cookie.** Configure your cache behavior to include the `ab-variant` cookie in the cache key. Requests with `ab-variant=a` and `ab-variant=b` are cached separately. You set this up in the cache policy attached to the behavior (recall [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)).
+**النهج 1: التخزين المؤقت حسب ملف تعريف الارتباط.** هيّئ سلوك التخزين المؤقت لديك ليتضمن ملف تعريف الارتباط `ab-variant` في مفتاح التخزين المؤقت. تُخزَّن الطلبات التي تحمل `ab-variant=a` و`ab-variant=b` مؤقتًا بشكل منفصل. تضبط هذا في سياسة التخزين المؤقت المرتبطة بالسلوك (تذكّر [سلوكيات التخزين المؤقت والإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)).
 
-**Approach 2: Cache by rewritten URI.** If your viewer request function rewrites `/` to `/a/index.html` or `/b/index.html`, CloudFront naturally caches them as separate objects because the URI is different. This approach avoids cache policy changes.
+**النهج 2: التخزين المؤقت حسب URI المعاد كتابته.** إذا أعادت دالة طلب المشاهد كتابة `/` إلى `/a/index.html` أو `/b/index.html`، يخزّنها CloudFront مؤقتًا بشكل طبيعي ككائنات منفصلة لأن URI مختلف. يتجنب هذا النهج تغييرات سياسة التخزين المؤقت.
 
-The URI rewrite approach (Approach 2) is simpler and is what the CloudFront Function example above uses. The cache just works because `/a/index.html` and `/b/index.html` are different cache keys.
+نهج إعادة كتابة URI (النهج 2) أبسط، وهو ما يستخدمه مثال دالة CloudFront أعلاه. يعمل التخزين المؤقت ببساطة لأن `/a/index.html` و`/b/index.html` مفتاحان مختلفان للتخزين المؤقت.
 
-> **Tip**
+> **نصيحة**
 >
-> If you use the cookie-based cache key approach, be aware that it increases your cache miss rate. Every unique cookie combination creates a separate cached object. For A/B testing with two variants, this doubles your cache misses at most—which is acceptable. For experiments with many variants, the rewritten URI approach scales better.
+> إذا استخدمت نهج مفتاح التخزين المؤقت القائم على ملف تعريف الارتباط، فكن واعيًا بأنه يزيد معدل إخفاقات التخزين المؤقت لديك. كل تركيبة فريدة من ملفات تعريف الارتباط تنشئ كائنًا مخزّنًا مؤقتًا منفصلًا. بالنسبة لاختبار A/B بمتغيّرين، يضاعف هذا إخفاقات التخزين المؤقت لديك على الأكثر—وهو أمر مقبول. أما التجارب ذات المتغيرات الكثيرة، فنهج URI المعاد كتابته يتوسع بشكل أفضل.
 
-## Ending the Experiment
+## إنهاء التجربة
 
-When you have a winner, remove the edge functions and serve the winning variant directly. Update your deployment to copy the winning variant’s content to the root path, remove the `/a/` and `/b/` directories, and disassociate the CloudFront Functions from the behavior.
+عندما يكون لديك فائز، أزل دوال الحافة وقدّم المتغيّر الفائز مباشرة. حدّث عملية النشر لنسخ محتوى المتغيّر الفائز إلى المسار الجذري، وأزل مجلدَي `/a/` و`/b/`، وافصل دوال CloudFront عن السلوك.
 
-Don’t forget to handle users who still have the old cookie—it’ll expire on its own (Max-Age handles this), but if you want to clean it up immediately, a temporary viewer response function can clear it:
+لا تنسَ معالجة المستخدمين الذين لا يزالون يحملون ملف تعريف الارتباط القديم—سينتهي من تلقاء نفسه (يتولى Max-Age ذلك)، لكن إذا أردت تنظيفه فورًا، فيمكن لدالة استجابة مشاهد مؤقتة مسحه:
 
 ```javascript
 function handler(event) {
@@ -232,4 +232,4 @@ function handler(event) {
 }
 ```
 
-Setting `Max-Age=0` tells the browser to delete the cookie.
+ضبط `Max-Age=0` يخبر المتصفح بحذف ملف تعريف الارتباط.

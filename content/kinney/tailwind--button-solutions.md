@@ -1,12 +1,12 @@
 ---
-title: "Secondary and Dangerous Buttons"
-lang: en
+title: "الأزرار الثانوية والخطرة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/button-solutions"
 ---
 
-## Secondary Button
+## الزر الثانوي
 
-*Secondary Button — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/1f15bd0d93ebfd57ec416e38319e55a12f1f322c71b471bfea64dd3cc5f2c871.html)*
+*الزر الثانوي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1f15bd0d93ebfd57ec416e38319e55a12f1f322c71b471bfea64dd3cc5f2c871.html)*
 
 ```html
 <button
@@ -17,9 +17,9 @@ source: "https://stevekinney.com/courses/tailwind/button-solutions"
 </button>
 ```
 
-## Danger Button
+## زر الخطر
 
-*Danger Button — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/ae784fb3d67fdf9fecadecc6e6fb3e18034e577106147daaa2863452e6ffce2f.html)*
+*زر الخطر — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ae784fb3d67fdf9fecadecc6e6fb3e18034e577106147daaa2863452e6ffce2f.html)*
 
 ```html
 <button

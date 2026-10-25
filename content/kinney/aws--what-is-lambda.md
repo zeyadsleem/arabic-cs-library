@@ -1,22 +1,22 @@
 ---
-title: "What Lambda Is and Why Frontend Engineers Care"
-lang: en
+title: "ما هي Lambda ولماذا يهتمّ مهندسو الواجهة الأمامية"
+lang: ar
 source: "https://stevekinney.com/courses/aws/what-is-lambda"
 ---
 
-If you’ve ever deployed a serverless function on Vercel, you already know the core idea: you write a function, you deploy it, and the platform runs it when someone makes a request. You don’t provision servers, you don’t manage uptime, and you don’t pay when nothing is happening. **Lambda** is the AWS service that powers this model—and it’s literally what Vercel’s serverless functions are built on top of.
+إذا سبق أن نشرت دالة بلا خادم (serverless) على Vercel، فأنت تعرف الفكرة الجوهرية بالفعل: تكتب دالة، وتنشرها، فتشغّلها المنصة عندما يرسل أحدهم طلبًا. لا تجهّز خوادم، ولا تدير وقت التشغيل المتاح، ولا تدفع حين لا يحدث شيء. **Lambda** هي خدمة AWS التي تشغّل هذا النموذج — وهي حرفيًا ما بُنيت عليه دوال Vercel بلا خادم.
 
-If you want AWS’s canonical version of the execution model while you read, the [Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) and the [Lambda pricing page](https://aws.amazon.com/lambda/pricing/) are the official references.
+إذا أردت النسخة المرجعية من AWS لنموذج التنفيذ أثناء القراءة، فإن [دليل مطوّري Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) و[صفحة تسعير Lambda](https://aws.amazon.com/lambda/pricing/) هما المرجعان الرسميان.
 
-Up to this point in the course, everything you’ve deployed has been static. S3 holds files, CloudFront serves them to the world. But the moment your frontend needs to talk to a backend—an API endpoint, a form submission handler, a webhook receiver—you need compute. Lambda gives you compute without giving you servers.
+حتى هذه النقطة في الدورة، كان كل ما نشرته ثابتًا. فـ S3 يحتفظ بالملفات، وCloudFront يقدّمها للعالم. لكن في اللحظة التي تحتاج فيها واجهتك الأمامية إلى التحدّث مع خلفية — نقطة نهاية API، أو معالج إرسال نموذج، أو مستقبل webhook — تكون بحاجة إلى حوسبة. وLambda تمنحك الحوسبة دون أن تمنحك خوادم.
 
-## Why This Matters
+## لماذا هذا مهم
 
-This is the point where the course stops being “frontend hosting on AWS” and becomes “full-stack frontend architecture on AWS.” The Scratch Lab app has static pages already. Lambda is how it graduates to live note syncing, search, and API responses without introducing a server you now have to keep alive.
+هذه هي النقطة التي تتوقف فيها الدورة عن كونها «استضافة واجهات أمامية على AWS» لتصبح «معمارية واجهات أمامية متكاملة على AWS». فتطبيق Scratch Lab لديه صفحات ثابتة بالفعل. وLambda هي الطريقة التي يتخرّج بها إلى مزامنة ملاحظات حيّة، وبحث، واستجابات API دون إدخال خادم عليك الآن إبقاؤه حيًّا.
 
-## Builds On
+## يبني على
 
-This lesson builds on the earlier hosting sections. You already know how assets reach users. Now you are adding compute behind those assets so the frontend can ask questions and change data at runtime.
+يستند هذا الدرس إلى أقسام الاستضافة السابقة. أنت تعرف بالفعل كيف تصل الأصول إلى المستخدمين. والآن تضيف حوسبة خلف تلك الأصول كي تستطيع الواجهة الأمامية طرح الأسئلة وتغيير البيانات في وقت التشغيل.
 
 ```
 flowchart LR
@@ -30,106 +30,106 @@ flowchart LR
     More -- "No" --> Shutdown["Shutdown phase"]
 ```
 
-## The Execution Model
+## نموذج التنفيذ
 
-Traditional servers run continuously. You spin up a Node.js process, it listens on a port, and it sits there waiting for requests. You pay for every second it runs, whether it handles zero requests or ten thousand. If traffic spikes, you need to figure out scaling. If the process crashes at 3 AM, you need to figure out restarts.
+تعمل الخوادم التقليدية باستمرار. فتشغّل عملية Node.js، فتصغي على منفذ، وتبقى هناك تنتظر الطلبات. وتدفع مقابل كل ثانية تعمل فيها، سواء عالجت صفر طلب أو عشرة آلاف. وإذا ارتفعت حركة المرور، تحتاج إلى حلّ مشكلة التوسّع. وإذا تعطّلت العملية في الثالثة صباحًا، تحتاج إلى حلّ مشكلة إعادة التشغيل.
 
-Lambda inverts this model entirely. There’s no running process. There’s no port. There’s no server you manage. Instead:
+تقلب Lambda هذا النموذج رأسًا على عقب. لا عملية تعمل. لا منفذ. لا خادم تديره. وبدلًا من ذلك:
 
-1. Something triggers your function (an HTTP request via API Gateway, an S3 event, a schedule, a direct invocation).
-2. Lambda creates an **execution environment**—a lightweight container with your code and a Node.js runtime.
-3. Your function runs, returns a result, and the environment either stays warm for the next request or gets shut down.
+1. شيء ما يطلق دالتك (طلب HTTP عبر API Gateway، أو حدث S3، أو جدولة، أو استدعاء مباشر).
+2. تنشئ Lambda **بيئة تنفيذ** — حاوية خفيفة تحتوي شيفرتك ووقت تشغيل Node.js.
+3. تعمل دالتك، وتُرجع نتيجة، فتبقى البيئة دافئة للطلب التالي أو تُوقَف.
 
-You write a function. AWS handles everything else: provisioning, scaling, patching, monitoring. Lambda can run zero instances when nobody is calling your API and spin up thousands of instances if your site goes viral on Hacker News. You pay per **invocation** (each time your function runs) and per millisecond of compute time.
+أنت تكتب دالة. وAWS تتولّى كل شيء آخر: التوفير والتوسّع والترقيع والمراقبة. تستطيع Lambda تشغيل صفر نسخة عندما لا يستدعي أحد واجهة API لديك، وتشغيل آلاف النسخ إذا صار موقعك مشهورًا على Hacker News. وتدفع مقابل كل **استدعاء** (كل مرة تعمل فيها دالتك) ومقابل كل مللي ثانية من وقت الحوسبة.
 
-## The Runtime Lifecycle
+## دورة حياة وقت التشغيل
 
-Every Lambda execution environment goes through three phases. Understanding these phases matters because they directly affect your function’s performance—especially the cold start problem you’ll learn about later in this module.
+تمرّ كل بيئة تنفيذ في Lambda بثلاث مراحل. وفهم هذه المراحل مهم لأنها تؤثر مباشرةً في أداء دالتك — خصوصًا مشكلة البدء البارد التي ستتعلّمها لاحقًا في هذه الوحدة.
 
-### Init Phase
+### مرحلة التهيئة
 
-The first time Lambda needs to run your function (or when it scales up to handle more traffic), it creates a new execution environment. During the **init phase**, Lambda:
+في المرة الأولى التي تحتاج فيها Lambda إلى تشغيل دالتك (أو عندما تتوسّع للتعامل مع حركة مرور أكبر)، تنشئ بيئة تنفيذ جديدة. وأثناء **مرحلة التهيئة**، تقوم Lambda بما يلي:
 
-- Downloads your deployment package (your zipped code)
-- Starts the runtime (Node.js 22 in our case)
-- Runs your top-level module code—`import` statements, database client initialization, anything outside your handler function
+- تنزّل حزمة نشرك (شيفرتك المضغوطة)
+- تبدأ وقت التشغيل (Node.js 22 في حالتنا)
+- تشغّل شيفرة وحدة المستوى الأعلى لديك — عبارات `import`، وتهيئة عميل قاعدة البيانات، وأي شيء خارج دالة المعالج
 
-This phase happens once per execution environment, not once per request. Code you put at the top level of your module runs during init and persists across invocations on the same environment. I think of it as the “warm up the kitchen” step—you do it once, and then you’re ready to cook for as many customers as Lambda sends your way.
+تحدث هذه المرحلة مرة واحدة لكل بيئة تنفيذ، لا مرة لكل طلب. والشيفرة التي تضعها في المستوى الأعلى من وحدتك تعمل أثناء التهيئة وتبقى بين الاستدعاءات على البيئة نفسها. وأنا أفكّر فيها كخطوة «تسخين المطبخ» — تفعلها مرة واحدة، ثم تصبح جاهزًا للطهي لعملاء بعدد ما ترسله Lambda في طريقك.
 
-### Invoke Phase
+### مرحلة الاستدعاء
 
-This is when your handler function actually executes. Lambda passes in an **event** object (containing the request data) and a **context** object (containing metadata about the invocation), and your function does its work and returns a response. This phase happens on every single invocation.
+هنا تُنفّذ دالة المعالج لديك فعليًا. تمرّر Lambda كائن **event** (يحتوي بيانات الطلب) وكائن **context** (يحتوي بيانات وصفية عن الاستدعاء)، فتقوم دالتك بعملها وتُرجع استجابة. وتحدث هذه المرحلة في كل استدعاء منفرد.
 
-### Shutdown Phase
+### مرحلة الإيقاف
 
-When Lambda decides an execution environment is no longer needed—usually after several minutes of inactivity—it shuts it down. You don’t control when this happens, and you generally shouldn’t rely on shutdown behavior in your application logic.
+عندما تقرّر Lambda أن بيئة تنفيذ لم تعد مطلوبة — عادةً بعد عدة دقائق من الخمول — توقفها. ولا تتحكّم أنت في وقت حدوث ذلك، ولا ينبغي لك عمومًا الاعتماد على سلوك الإيقاف في منطق تطبيقك.
 
-The key insight: the init phase is expensive (relatively speaking), and the invoke phase is cheap. Lambda reuses execution environments across multiple invocations to amortize that init cost. A “warm” function skips init entirely and jumps straight to invoke. A “cold” function pays the init cost before it can handle its first request.
+الرؤية الجوهرية: مرحلة التهيئة مكلفة (نسبيًا)، ومرحلة الاستدعاء رخيصة. وتعيد Lambda استخدام بيئات التنفيذ عبر استدعاءات متعددة لتوزيع تكلفة التهيئة تلك. فالدالة «الدافئة» تتخطّى التهيئة كليًا وتقفز مباشرةً إلى الاستدعاء. والدالة «الباردة» تدفع تكلفة التهيئة قبل أن تستطيع معالجة طلبها الأول.
 
-## Runtimes
+## أوقات التشغيل
 
-Lambda supports multiple language runtimes. For this course, you’ll use **Node.js 22** (`nodejs22.x`). Lambda also supports Python, Java, .NET, Go, Ruby, and custom runtimes via container images.
+تدعم Lambda أوقات تشغيل لعدة لغات. وفي هذه الدورة ستستخدم **Node.js 22** ‏(`nodejs22.x`). كما تدعم Lambda ‏Python وJava و.NET وGo وRuby وأوقات تشغيل مخصّصة عبر صور حاويات.
 
-The runtime you choose affects cold start performance, available SDK versions, and how you structure your code. Node.js is a natural fit for frontend engineers: you already know the language, you can share types between your frontend and your Lambda functions, and the Node.js runtime has some of the fastest cold starts among Lambda’s managed runtimes.
+وقت التشغيل الذي تختاره يؤثر في أداء البدء البارد، وإصدارات SDK المتاحة، وكيفية بنائك لشيفرتك. وNode.js خيار طبيعي لمهندسي الواجهة الأمامية: فأنت تعرف اللغة بالفعل، ويمكنك مشاركة الأنواع بين واجهتك الأمامية ودوال Lambda لديك، ووقت تشغيل Node.js يملك بعض أسرع حالات البدء البارد بين أوقات التشغيل المُدارة في Lambda.
 
-> **Why `nodejs22.x` and not `nodejs24.x`?**
+> **لماذا `nodejs22.x` وليس `nodejs24.x`؟**
 >
-> AWS also supports `nodejs24.x`, which will be supported longer than `nodejs22.x`. This course pins to `nodejs22.x` because it has broader ecosystem adoption at the time of writing—most production codebases you’ll join still target Node 22 or below. Upgrading is a one-line change (`--runtime nodejs24.x`). The [AWS Lambda runtimes reference](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) lists every supported runtime along with its end-of-support date; check it before pinning a long-lived project. `nodejs20.x` reaches end of support in April 2026.
+> تدعم AWS أيضًا `nodejs24.x`، وسيُدعم لمدة أطول من `nodejs22.x`. وتثبّت هذه الدورة على `nodejs22.x` لأنه يحظى بتبنٍّ أوسع في المنظومة وقت الكتابة — فمعظم قواعد الشيفرة الإنتاجية التي ستنضم إليها ما زالت تستهدف Node 22 أو أقل. والترقية تغيير من سطر واحد (`--runtime nodejs24.x`). ويسرد [مرجع أوقات تشغيل AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html) كل وقت تشغيل مدعوم مع تاريخ انتهاء دعمه؛ فافحصه قبل أن تثبّت مشروعًا طويل العمر. وينتهي دعم `nodejs20.x` في أبريل 2026.
 
-## How Lambda Differs from What You Know
+## كيف تختلف Lambda عمّا تعرفه
 
-If you’ve used Vercel’s serverless functions, Lambda will feel familiar—but there are differences worth calling out:
+إذا سبق أن استخدمت دوال Vercel بلا خادم، فستبدو Lambda مألوفة — لكن ثمة فروقًا تستحق الإشارة إليها:
 
-|  | Vercel Serverless Functions | AWS Lambda |
+|  | دوال Vercel بلا خادم | AWS Lambda |
 | --- | --- | --- |
-| Deployment | Push to Git, Vercel handles it | You package and deploy (CLI, CI/CD) |
-| HTTP routing | File-based (`api/hello.ts`) | Separate service (API Gateway, covered in the API Gateway section) |
-| Environment variables | Dashboard UI | CLI or console, 4 KB total limit |
-| Logs | Vercel dashboard | CloudWatch Logs (covered in the CloudWatch section) |
-| Scaling | Automatic, opaque | Automatic, configurable concurrency limits |
-| Cold starts | Managed by Vercel | You manage (bundle size, runtime choice, provisioned concurrency) |
+| النشر | تدفع إلى Git، وVercel تتولّى الباقي | أنت تحزّم وتنشر (CLI، CI/CD) |
+| توجيه HTTP | قائم على الملفات (`api/hello.ts`) | خدمة منفصلة (API Gateway، مغطّاة في قسم API Gateway) |
+| متغيّرات البيئة | واجهة لوحة المعلومات | CLI أو وحدة التحكم، بحدّ إجمالي 4 KB |
+| السجلات | لوحة معلومات Vercel | CloudWatch Logs (مغطّاة في قسم CloudWatch) |
+| التوسّع | تلقائي وغير شفّاف | تلقائي، مع حدود تزامن قابلة للضبط |
+| البدء البارد | تديره Vercel | أنت تديره (حجم الحزمة، واختيار وقت التشغيل، والتزامن المخصّص) |
 
-The biggest conceptual shift: on Vercel, a serverless function and its HTTP route are a single thing. On AWS, the function (Lambda) and its HTTP layer (API Gateway) are separate services that you wire together. This feels like extra work at first, but it gives you control over routing, authentication, CORS, and rate limiting that Vercel abstracts away.
+أكبر تحوّل مفاهيمي: على Vercel، الدالة بلا خادم ومسار HTTP الخاص بها شيء واحد. أما على AWS، فالدالة (Lambda) وطبقتها HTTP (API Gateway) خدمتان منفصلتان تصل بينهما بنفسك. يبدو هذا عملًا إضافيًا في البداية، لكنه يمنحك تحكّمًا في التوجيه والمصادقة وCORS وتحديد المعدّل كانت Vercel تخفيها عنك.
 
-## Pricing
+## التسعير
 
-Lambda pricing has two components:
+لتسعير Lambda مكوّنان:
 
-- **Requests**: $0.20 per million invocations. The first one million invocations per month are free.
-- **Duration**: Billed per millisecond of compute time, based on the memory you allocate. At 128 MB (the default), the cost is roughly $0.0000000021 per millisecond.
+- **الطلبات**: 0.20 دولار لكل مليون استدعاء. وأول مليون استدعاء شهريًا مجاني.
+- **المدة**: تُفوتر لكل مللي ثانية من وقت الحوسبة، بناءً على الذاكرة التي تخصّصها. وعند 128 MB (الافتراضي)، تبلغ التكلفة نحو 0.0000000021 دولار لكل مللي ثانية.
 
-For most frontend API backends, you’ll stay within the free tier for a long time. A function that handles 100,000 requests per month with an average duration of 50 milliseconds costs essentially nothing. This is a meaningful advantage over running an always-on server—especially during development and for low-traffic projects.
+لمعظم خلفيات API الأمامية، ستبقى ضمن الطبقة المجانية مدة طويلة. فدالة تعالج 100,000 طلب شهريًا بمتوسط مدة 50 مللي ثانية تكلف عمليًا لا شيء. وهذه ميزة ذات معنى مقارنةً بتشغيل خادم يعمل باستمرار — خصوصًا أثناء التطوير وللمشاريع منخفضة الحركة.
 
-> **Warning**
+> **تحذير**
 >
-> Lambda bills for the **init phase** as well as the invoke phase. A function with a large deployment package that takes 500 milliseconds to initialize pays for that initialization time on every cold start. This is one of the reasons keeping your bundle size small matters—it’s not just about cold start latency, it’s about cost.
+> تفوتر Lambda **مرحلة التهيئة** إضافة إلى مرحلة الاستدعاء. فدالة بحزمة نشر كبيرة تستغرق 500 مللي ثانية للتهيئة تدفع مقابل وقت التهيئة ذلك في كل بدء بارد. وهذا أحد أسباب أهمية إبقاء حجم حزمتك صغيرًا — فالأمر ليس فقط زمن البدء البارد، بل التكلفة أيضًا.
 
-## What Lambda Is Not
+## ما ليست Lambda
 
-Lambda isn’t a general-purpose server. It has constraints you should know before writing code:
+Lambda ليست خادمًا للأغراض العامة. ولها قيود ينبغي أن تعرفها قبل كتابة الشيفرة:
 
-- **Execution timeout**: Maximum 15 minutes per invocation. For API responses, you’ll typically stay under 10 seconds.
-- **Memory**: 128 MB to 10,240 MB. CPU scales proportionally with memory.
-- **Deployment package**: 50 MB zipped, 250 MB unzipped. This is your code plus `node_modules`.
-- **Stateless**: Each invocation is independent. There’s no persistent filesystem, no in-memory state between requests (except within a single warm execution environment, which isn’t guaranteed).
-- **Ephemeral storage**: `/tmp` gives you up to 10 GB of scratch space, but it’s cleared when the environment is recycled.
+- **مهلة التنفيذ**: 15 دقيقة كحد أقصى لكل استدعاء. أما لاستجابات API، فستبقى عادةً تحت 10 ثوانٍ.
+- **الذاكرة**: من 128 MB إلى 10,240 MB. وتتوسّع وحدة المعالجة المركزية بالتناسب مع الذاكرة.
+- **حزمة النشر**: 50 MB مضغوطة، و250 MB غير مضغوطة. وهذه شيفرتك إضافة إلى `node_modules`.
+- **بلا حالة**: كل استدعاء مستقل. لا نظام ملفات دائم، ولا حالة في الذاكرة بين الطلبات (إلا داخل بيئة تنفيذ دافئة واحدة، وهذا غير مضمون).
+- **تخزين مؤقّت**: يمنحك `/tmp` حتى 10 GB من المساحة المؤقّتة، لكنها تُمسح عندما يُعاد تدوير البيئة.
 
-These constraints push you toward a specific architecture: small, focused functions that do one thing, respond quickly, and store state externally (in DynamoDB, S3, or another service). This is exactly the architecture you want for a frontend API backend.
+تدفعك هذه القيود نحو معمارية محدّدة: دوال صغيرة ومركّزة تفعل شيئًا واحدًا، وتستجيب بسرعة، وتخزّن الحالة خارجيًا (في DynamoDB أو S3 أو خدمة أخرى). وهذه بالضبط المعمارية التي تريدها لخلفية API أمامية.
 
-## Where Logs Go
+## أين تذهب السجلات
 
-When your Lambda function runs, anything you write to `console.log` (or `console.error`, `console.warn`) goes to **CloudWatch Logs**. Lambda automatically creates a log group named `/aws/lambda/<function-name>`—in your case, `/aws/lambda/my-frontend-app-api`. Each execution environment gets its own log stream within that group.
+عندما تعمل دالة Lambda لديك، فكل ما تكتبه إلى `console.log` (أو `console.error` أو `console.warn`) يذهب إلى **CloudWatch Logs**. وتنشئ Lambda تلقائيًا مجموعة سجلات باسم `/aws/lambda/<function-name>` — وفي حالتك `/aws/lambda/my-frontend-app-api`. وتحصل كل بيئة تنفيذ على تدفّق سجلات خاص بها داخل تلك المجموعة.
 
-## Verification
+## التحقق
 
-- You can explain the difference between an invocation, an execution environment, and a warm reuse of that environment.
-- You can look at a frontend feature like “create a new note in Scratch Lab” and describe it as an event that triggers a Lambda function.
-- You know where Lambda logs land before you ever open the CloudWatch console.
+- تستطيع أن تشرح الفرق بين استدعاء، وبيئة تنفيذ، وإعادة استخدام دافئة لتلك البيئة.
+- تستطيع أن تنظر إلى ميزة في الواجهة الأمامية مثل «إنشاء ملاحظة جديدة في Scratch Lab» وتصفها كحدث يطلق دالة Lambda.
+- تعرف أين تستقر سجلات Lambda قبل أن تفتح وحدة تحكم CloudWatch أصلًا.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Thinking Lambda is an always-on server with a different billing model:** It is event-driven compute with lifecycle constraints, not a tiny VPS.
-- **Ignoring package size and initialization cost:** Those become both latency and cost problems once cold starts enter the picture.
-- **Assuming local process state is durable:** Warm reuse exists, but Lambda is still fundamentally a stateless architecture.
+- **الظنّ أن Lambda خادم يعمل باستمرار بنموذج فوترة مختلف:** إنها حوسبة مدفوعة بالأحداث ذات قيود دورة حياة، لا خادم VPS صغير.
+- **تجاهل حجم الحزمة وتكلفة التهيئة:** يصبحان مشكلتي زمن استجابة وتكلفة بمجرد أن يدخل البدء البارد في الصورة.
+- **افتراض أن حالة العملية المحلية دائمة:** إعادة الاستخدام الدافئة موجودة، لكن Lambda تبقى في جوهرها معمارية بلا حالة.
 
-We’ll dig into CloudWatch properly in the CloudWatch section. For now, just know that your logs exist and where to find them: in the CloudWatch console under **Log groups**, or via the CLI with `aws logs` commands. Next up, you’ll write your first Lambda handler in TypeScript, a function that receives an event and returns a JSON response.
+سنغوص في CloudWatch كما ينبغي في قسم CloudWatch. أما الآن، فاعلم فقط أن سجلاتك موجودة وأين تجدها: في وحدة تحكم CloudWatch تحت **مجموعات السجلات**، أو عبر CLI بأوامر `aws logs`. وبعد ذلك، ستكتب أول معالج Lambda لك بـ TypeScript، وهو دالة تتلقّى حدثًا وتُرجع استجابة JSON.

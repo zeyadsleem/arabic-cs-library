@@ -1,106 +1,105 @@
 ---
-title: "NotebookLM"
-lang: en
+title: "NotebookLM: مساحة بحث وتدوين ملاحظات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/notebooklm"
 ---
 
 NotebookLM
 
-NotebookLM is Google’s AI-powered research and note-taking workspace. You create a notebook, attach sources (Google Docs, PDFs, URLs, Drive files), and then ask questions, generate summaries, outlines, glossaries, and study guides that are grounded in those sources with citations. It’s super useful for turning sprawling documentation into concise, reliable knowledge that you can share with a team.
+‏NotebookLM هو مساحة عمل Google للبحث وتدوين الملاحظات المدعومة بالذكاء الاصطناعي. تنشئ دفترًا، وترفق به مصادر (مستندات Google وملفات PDF وعناوين URL وملفات Drive)، ثم تطرح أسئلة، وتولّد ملخّصات ومخططات وقوائم مصطلحات وأدلة دراسة مستندة إلى تلك المصادر مع استشهادات. وهو مفيد جدًا في تحويل التوثيق المتناثر إلى معرفة موجزة وموثوقة يمكنك مشاركتها مع فريق.
 
-For engineering work, NotebookLM shines as a “source-of-truth synthesizer” for product specs, API docs, RFCs, onboarding guides, READMEs, and incident retros. It won’t write code or run tests, but it will help you and your collaborators understand complex systems faster and produce high-quality, source-cited docs you can hand to AI coding tools like Cursor or Claude Code.
+في العمل الهندسي، يتألّق NotebookLM كمُركِّب «لمصدر الحقيقة» (source-of-truth) لمواصفات المنتج، وتوثيق API، وطلبات التعليقات (RFCs)، وأدلة التهيئة، وملفات README، ومراجعات الحوادث (retros). وهو لن يكتب شيفرة أو يشغّل اختبارات، لكنه سيساعدك أنت ومتعاونيك على فهم الأنظمة المعقّدة أسرع، وإنتاج توثيق عالي الجودة موثّق بالمصادر يمكنك تسليمه لأدوات البرمجة بالذكاء الاصطناعي مثل Cursor أو Claude Code.
 
-## Why Developers Should Use It
+## لماذا ينبغي للمطوّرين استخدامه
 
-- **Source-grounded answers:** Ask questions across attached docs and get concise answers with inline citations to the exact passages.
-- **High-signal summaries:** Generate chapter overviews, study guides, and glossaries to quickly absorb a codebase, service, or library.
-- **Documentation accelerator:** Draft onboarding guides, API quickstarts, ADR summaries, or upgrade/migration checklists directly from official docs.
-- **Team knowledge hub:** Share notebooks, keep them updated with new sources, and export results to Google Docs for broader distribution.
-- **Prompt-ready outputs:** Convert summaries and key constraints into rules, notepads, or prompts for Cursor and Claude Code.
-- **Audio overview:** Auto-generate a narrated, shareable overview for stakeholders to absorb the essentials in minutes.
+- **إجابات مستندة إلى المصادر:** اطرح أسئلة عبر المستندات المرفقة واحصل على إجابات موجزة مع استشهادات مضمّنة بالمقاطع الدقيقة.
+- **ملخّصات عالية القيمة:** ولّد نظرات عامة للفصول وأدلة دراسة وقوائم مصطلحات لاستيعاب قاعدة شيفرة أو خدمة أو مكتبة بسرعة.
+- **مُسرِّع للتوثيق:** صِغ مسودّات أدلة التهيئة، وأدلة API السريعة، وملخّصات ADR، أو قوائم تحقق الترقية/الهجرة مباشرةً من التوثيق الرسمي.
+- **مركز معرفة للفريق:** شارك الدفاتر، وأبقِها محدّثة بمصادر جديدة، وصدّر النتائج إلى Google Docs لتوزيع أوسع.
+- **مخرجات جاهزة للطلبات:** حوّل الملخّصات والقيود الرئيسية إلى قواعد أو دفاتر ملاحظات (notepads) أو طلبات لـ Cursor وClaude Code.
+- **نظرة صوتية عامة:** ولّد تلقائيًا نظرة عامة مسرودة قابلة للمشاركة ليستوعب أصحاب المصلحة الأساسيات في دقائق.
 
-## Core Concepts
+## المفاهيم الأساسية
 
-- **Notebook:** A workspace that contains your sources, notes, and generated artifacts (summaries, excerpts, questions/answers).
-- **Sources:** Google Docs, PDFs, web pages, and Drive files. NotebookLM ingests and indexes these for retrieval with citations.
-- **Citations:** Every generated claim links back to specific source passages, encouraging verifiability and trust.
-- **Artifacts:** Study guide, outline, glossary, Q&A, and audio overview—each can be refined and exported.
+- **الدفتر (notebook):** مساحة عمل تحتوي على مصادرك وملاحظاتك والمخرجات المولَّدة (ملخّصات ومقتطفات وأسئلة/أجوبة).
+- **المصادر:** مستندات Google وملفات PDF وصفحات الويب وملفات Drive. يبتلعها NotebookLM ويفهرستها للاسترجاع مع استشهادات.
+- **الاستشهادات:** كل ادّعاء مولَّد يرتبط بمقاطع مصدر محدّدة، مما يشجّع على القابلية للتحقق والثقة.
+- **المخرجات (artifacts):** دليل الدراسة والمخطط وقائمة المصطلحات والأسئلة والأجوبة والنظرة الصوتية العامة — ويمكن تنقيح كل منها وتصديره.
 
-## Typical Developer Workflows
+## سير عمل المطوّر النموذجية
 
-### New Codebase or Service Ramp-up
+### التأهيل على قاعدة شيفرة أو خدمة جديدة
 
-1. Create a notebook named after the service or repo.
-2. Add sources: README, architecture doc, ADRs, API spec, runbooks, migration notes, past incident postmortems.
-3. Ask: “Give me a high-level architecture overview. Cite components and responsibilities.”
-4. Generate a glossary and study guide; pin key sections as notes.
-5. Export a concise “Engineering Brief” to Google Docs for teammates.
+1. أنشئ دفترًا مسمّى باسم الخدمة أو المستودع.
+2. أضف مصادر: README، ومستند البنية، وسجلات قرارات البنية (ADRs)، ومواصفة API، وأدلة التشغيل، وملاحظات الهجرة، وتحليلات الحوادث السابقة.
+3. اطلب: «أعطني نظرة عامة رفيعة المستوى على البنية. استشهد بالمكوّنات والمسؤوليات.»
+4. ولّد قائمة مصطلحات ودليل دراسة، وثبّت الأقسام الرئيسية كملاحظات.
+5. صدّر «موجزًا هندسيًا» موجزًا إلى Google Docs لأعضاء الفريق.
 
-### API Integration or SDK Upgrade
+### تكامل API أو ترقية SDK
 
-1. Add sources: official API docs, migration guide, changelog, example requests.
-2. Ask: “Summarize breaking changes from v2→v3 and provide a step-by-step migration checklist with citations.”
-3. Generate an outline for a PR description and release notes.
-4. Export or copy the checklist into your issue tracker.
+1. أضف مصادر: توثيق API الرسمي، ودليل الهجرة، وسجل التغييرات، وطلبات نموذجية.
+2. اطلب: «لخّص التغييرات الكاسرة من v2→v3 وقدّم قائمة تحقق للهجرة خطوة بخطوة مع استشهادات.»
+3. ولّد مخططًا لوصف طلب سحب (PR) وملاحظات الإصدار.
+4. صدّر قائمة التحقق أو انسخها إلى متتبّع القضايا لديك.
 
-### Onboarding and Runbooks
+### التهيئة وأدلة التشغيل
 
-1. Add onboarding docs, architecture overview, on-call runbooks, and incident retros.
-2. Ask: “Create a first-week onboarding plan with links to essential docs and example tasks.”
-3. Generate an audio overview for new hires; export the written plan to Docs.
+1. أضف مستندات التهيئة، ونظرة عامة على البنية، وأدلة تشغيل المناوبة (on-call)، ومراجعات الحوادث.
+2. اطلب: «أنشئ خطة تهيئة للأسبوع الأول مع روابط للمستندات الأساسية ومهام نموذجية.»
+3. ولّد نظرة صوتية عامة للموظفين الجدد، وصدّر الخطة المكتوبة إلى Docs.
 
-### Comparative Research (Frameworks/Libraries/Services)
+### البحث المقارن (الأطر/المكتبات/الخدمات)
 
-1. Add official docs and benchmarks for candidates (e.g., two ORMs or queue systems).
-2. Ask for a comparison table focusing on your constraints: performance, ecosystem, licensing, migration cost.
-3. Use citations to validate claims before making a choice.
+1. أضف التوثيق الرسمي ومقاييس الأداء للمرشّحين (مثل نظامَي ORM أو نظامَي طوابير).
+2. اطلب جدول مقارنة يركّز على قيودك: الأداء، والنظام البيئي، والترخيص، وكلفة الهجرة.
+3. استخدم الاستشهادات للتحقق من الادّعاءات قبل اتخاذ قرار.
 
-## Integrating with Cursor and Claude Code
+## التكامل مع Cursor وClaude Code
 
-- **Create a “brief” for agents:** Use NotebookLM to produce a concise system overview (constraints, conventions, key files) and paste it into `.cursor/rules` or `CLAUDE.md`.
-- **Rules and skills:** Turn NotebookLM’s checklists and procedures into Cursor Rules,
-Cursor Skills, or Claude Code Skills for repeatable workflows.
-- **Context handoff:** When asking an AI coding tool to implement changes, include the brief plus links back to exported NotebookLM docs to keep work grounded.
+- **أنشئ «موجزًا» للوكلاء:** استخدم NotebookLM لإنتاج نظرة عامة موجزة على النظام (القيود والأعراف والملفات الرئيسية) والصقها في `.cursor/rules` أو `CLAUDE.md`.
+- **القواعد والمهارات:** حوّل قوائم التحقق والإجراءات في NotebookLM إلى قواعد Cursor، أو مهارات Cursor، أو مهارات Claude Code لسير عمل قابل للتكرار.
+- **تسليم السياق:** عند مطالبة أداة برمجة بالذكاء الاصطناعي بتنفيذ تغييرات، أدرج الموجز مع روابط إلى مستندات NotebookLM المصدَّرة لإبقاء العمل مستندًا.
 
-> **Grounding improves reliability.**
+> **الاستناد يحسّن الموثوقية.**
 >
-> NotebookLM’s grounded outputs—with citations—make it easier to keep AI coding assistants aligned with your actual architecture and policies. Always spot-check citations before turning results into rules or prompts.
+> مخرجات NotebookLM المستندة إلى المصادر — مع الاستشهادات — تسهّل إبقاء مساعدات البرمجة بالذكاء الاصطناعي متوافقة مع بنيتك وسياساتك الفعلية. افحص الاستشهادات عشوائيًا دائمًا قبل تحويل النتائج إلى قواعد أو طلبات.
 
-## Quick Start
+## البدء السريع
 
-1. Create a new notebook; name it after the project or domain.
-2. Add 5–10 core sources (canonical docs first; keep noisy content out).
-3. Ask 3–5 high-leverage questions you’d ask a senior teammate.
-4. Generate a study guide and glossary; refine iteratively.
-5. Export a concise brief; copy key constraints into your AI tool rules.
+1. أنشئ دفترًا جديدًا وسمّه باسم المشروع أو المجال.
+2. أضف من 5 إلى 10 مصادر أساسية (التوثيق المرجعي أولًا، وأبقِ المحتوى المشوّش خارجًا).
+3. اطرح من 3 إلى 5 أسئلة عالية الأثر كنت ستطرحها على زميل خبير.
+4. ولّد دليل دراسة وقائمة مصطلحات، ونقّحهما بالتكرار.
+5. صدّر موجزًا مختصرًا، وانسخ القيود الرئيسية إلى قواعد أداتك للذكاء الاصطناعي.
 
-## Tips and Best Practices
+## نصائح وأفضل الممارسات
 
-- **Favor canonical docs:** Prioritize official documentation, ADRs, and READMEs; avoid duplicative or opinionated blog posts unless needed.
-- **Chunk large PDFs:** If parsing is inconsistent, split long PDFs by chapter or export them to Google Docs for cleaner text.
-- **Refresh regularly:** Re-upload or replace outdated sources when versions change; keep a “Changelog” note in the notebook.
-- **Track decisions:** Use notes to capture decisions, open questions, and links to issues/PRs.
-- **Export for sharing:** Publish to Google Docs for teammates without NotebookLM; link these docs in your repo.
-- **Security & privacy:** Don’t include sensitive credentials or proprietary materials you’re not permitted to upload.
+- **فضّل التوثيق المرجعي:** أعطِ الأولوية للتوثيق الرسمي وسجلات ADR وملفات README، وتجنّب مقالات المدوّنات المكرّرة أو المتحيّزة إلا عند الحاجة.
+- **قسّم ملفات PDF الكبيرة:** إذا كان التحليل غير متّسق، فقسّم ملفات PDF الطويلة حسب الفصول أو صدّرها إلى Google Docs للحصول على نص أنظف.
+- **حدّث بانتظام:** أعد رفع المصادر القديمة أو استبدلها عند تغيّر الإصدارات، وأبقِ ملاحظة «سجل التغييرات» في الدفتر.
+- **تتبّع القرارات:** استخدم الملاحظات لالتقاط القرارات والأسئلة المفتوحة وروابط القضايا/طلبات السحب.
+- **صدّر للمشاركة:** انشر إلى Google Docs لأعضاء الفريق الذين لا يستخدمون NotebookLM، واربط هذه المستندات في مستودعك.
+- **الأمان والخصوصية:** لا تُدرج بيانات اعتماد حساسة أو مواد مملوكة لا يُسمح لك برفعها.
 
-## Limitations
+## القيود {#limitations}
 
-- **No code execution:** NotebookLM won’t run code, tests, or commands; it’s for understanding and documentation.
-- **Scope-bound answers:** Best when questions are inside the attached sources; outside queries can degrade quality.
-- **Parsing variance:** Complex PDFs or generated docs may parse imperfectly; prefer clean Docs/HTML when possible.
-- **Size/quantity limits:** Very large or numerous sources may need trimming to the essentials.
+- **لا تنفيذ للشيفرة:** لن يشغّل NotebookLM شيفرة أو اختبارات أو أوامر؛ فهو للفهم والتوثيق.
+- **إجابات مقيّدة بالنطاق:** يكون أفضل عندما تكون الأسئلة داخل المصادر المرفقة؛ وقد تُضعف الاستعلامات الخارجية الجودة.
+- **تفاوت التحليل:** قد تُحلَّل ملفات PDF المعقّدة أو المستندات المولَّدة تحليلًا ناقصًا؛ فضّل مستندات Docs/HTML النظيفة عندما يمكن.
+- **حدود الحجم/العدد:** قد تحتاج المصادر الضخمة أو الكثيرة إلى تقليم للوصول إلى الأساسيات.
 
-## Prompts to Try
+## طلبات للتجربة
 
-- “Summarize the system architecture, list core services, and note cross-service dependencies. Include citations.”
-- “Extract all APIs with required/optional params and produce a quickstart for the three most common operations.”
-- “From the retros and runbooks, list the top 10 recurring failure modes and the fastest mitigation steps.”
-- “Create an onboarding study guide for a new engineer joining this team. 30-minute read.”
-- “Generate a migration checklist from framework v1→v2, highlighting breaking changes and testing strategy.”
+- «لخّص بنية النظام، واسرد الخدمات الأساسية، ولاحظ الاعتمادات بين الخدمات. أدرج استشهادات.»
+- «استخرج كل واجهات API مع الوسائط المطلوبة/الاختيارية، وأنتج دليل بدء سريع لأكثر ثلاث عمليات شيوعًا.»
+- «من مراجعات الحوادث وأدلة التشغيل، اسرد أكثر 10 أنماط فشل متكرّرة وأسرع خطوات التخفيف.»
+- «أنشئ دليل دراسة للتهيئة لمهندس جديد ينضم إلى هذا الفريق. قراءة 30 دقيقة.»
+- «ولّد قائمة تحقق للهجرة من الإطار v1→v2، مع إبراز التغييرات الكاسرة واستراتيجية الاختبار.»
 
-## Hand-off Pattern to Coding Assistants
+## نمط التسليم إلى مساعدات البرمجة
 
-1. Use NotebookLM to create a 1—2 page Engineering Brief with citations.
-2. Paste the brief into `.cursor/rules` or `CLAUDE.md` and link the exported Doc.
-3. In Cursor/Claude, start tasks with: “Follow the Engineering Brief. If unsure, ask and cite.”
-4. Keep the brief current by refreshing sources as the system evolves.
+1. استخدم NotebookLM لإنشاء موجز هندسي من صفحة إلى صفحتين مع استشهادات.
+2. الصق الموجز في `.cursor/rules` أو `CLAUDE.md` واربط المستند المصدَّر.
+3. في Cursor/Claude، ابدأ المهام بعبارة: «اتبع الموجز الهندسي. وإذا لم تكن متأكدًا، فاسأل واستشهد.»
+4. أبقِ الموجز محدّثًا بتحديث المصادر مع تطوّر النظام.

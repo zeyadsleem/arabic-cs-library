@@ -1,14 +1,14 @@
 ---
-title: "Mocking Fetch and Network Requests"
-lang: en
+title: "محاكاة fetch وطلبات الشبكة (Mocking Fetch and Network Requests)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-fetch-and-network-requests"
 ---
 
-Let’s talk about something near and dear to every developer’s heart — dealing with and testing **network requests**. If you’re working on an app that even *sniffs* at the internet, you’re going to have to call APIs, and eventually, you’re going to need to test that code. When that time comes, there’s no reason to actually hit the API every time you run your test suite — after all, let’s *maybe* not DDoS the API server, or worse: make your tests super slow. That’s where **mocking network requests** comes in, and thankfully, mocking `fetch` with Vitest is a breeze.
+لنتحدث عن شيء عزيز على قلب كل مطوّر — التعامل مع **طلبات الشبكة** واختبارها. إذا كنت تعمل على تطبيق حتى *يستنشق* الإنترنت، فستحتاج إلى نداء واجهات برمجة التطبيقات، وفي النهاية ستحتاج إلى اختبار تلك الشيفرة. وعندما يحين ذلك الوقت، لا سبب لضرب واجهة برمجة التطبيقات فعليًا في كل مرة تشغّل فيها مجموعة اختباراتك — ففي النهاية، لن *نُغرق* خادم الواجهة بهجوم حرمان من الخدمة، أو الأسوأ: نجعل اختباراتك بطيئة للغاية. هنا يأتي دور **محاكاة طلبات الشبكة**، ولحسن الحظ فإن محاكاة `fetch` مع Vitest سهلة للغاية.
 
-## Write a Function to Fetch Data
+## اكتب دالة لجلب البيانات
 
-Let’s create a basic function that will throw a fetch call out into the wild and return the data. We’re keeping things basic with a JSON placeholder API.
+لننشئ دالة أساسية تطلق نداء fetch في البرية وتعيد البيانات. سنبقي الأمور بسيطة باستخدام واجهة برمجة تطبيقات JSON placeholder.
 
 ```javascript
 async function getData() {
@@ -20,15 +20,15 @@ async function getData() {
 export { getData };
 ```
 
-Looks good. Now if you want to test this function, you really shouldn’t hit the actual API in your tests, because I promise you… unreliable network calls in your CI tests at 3 a.m.? *Not a vibe.* What we want is to mock it, baby!
+يبدو جيدًا. الآن إذا أردت اختبار هذه الدالة، فلا ينبغي لك فعليًا ضرب الواجهة الحقيقية في اختباراتك، لأنني أعدك… نداءات شبكة غير موثوقة في اختبارات CI عند الثالثة صباحًا؟ *ليست فكرة مستحبة.* ما نريده هو محاكاتها!
 
-## Mocking Fetch with Vitest
+## محاكاة fetch مع Vitest
 
-Vitest’s got your back when it comes to mocking. Here’s the deal: `fetch` is available on `window` in most environments. So, when mocking, we tell Vitest to replace `window.fetch` with our own version.
+Vitest يدعمك عندما يتعلق الأمر بالمحاكاة. إليك التفاصيل: `fetch` متاحة على `window` في معظم البيئات. لذا عند المحاكاة، نخبر Vitest باستبدال `window.fetch` بنسختنا.
 
-Let’s write a simple Vitest test that’s gonna mock `fetch`.
+لنكتب اختبار Vitest بسيطًا سيحاكي `fetch`.
 
-### Here’s Where the Magic Happens
+### هنا يحدث السحر
 
 ```javascript
 import { test, vi, expect } from 'vitest';
@@ -60,15 +60,15 @@ test('fetches data successfully from API', async () => {
 });
 ```
 
-Boom! That’s it. Let’s walk through this for a sec because you might think “What sorcery is this?”
+بوم! هذا كل شيء. لنمر على هذا سريعًا لأنك قد تفكر «أي سحر هذا؟»
 
-- `vi.fn()` is Vitest’s mock function. You’re mocking `fetch`, making it return exactly whatever we want — in this case, we’re resolving the promise with our `mockResponse`.
-- `global.fetch` is where we mock the fetch function because in Node, `fetch` isn’t automatically globally available like in the browser.
-- You’re verifying that `fetch` is called once and is called with the correct URL. You’ll sleep easy at night knowing your code is yelling into the void exactly how and when it should be.
+- `vi.fn()` هي دالة المحاكاة في Vitest. أنت تحاكي `fetch`، وتجعلها تعيد بالضبط ما نريد — في هذه الحالة، نحل الوعد بـ `mockResponse`.
+- `global.fetch` هو المكان الذي نحاكي فيه دالة fetch لأن `fetch` في Node ليست متاحة عالميًا تلقائيًا كما في المتصفح.
+- أنت تتحقق من أن `fetch` تُستدعى مرة واحدة وبعنوان URL الصحيح. ستنام هادئًا في الليل وأنت تعرف أن شيفرتك تصرخ في الفراغ بالضبط كما ينبغي ومتى ينبغي.
 
-## Step 4: Clean Up After Tests
+## الخطوة الرابعة: نظّف بعد الاختبارات
 
-Taking out the trash is an important step in testing. Mocks can get a bit “sticky” (the technical term!), so let’s make sure we reset `fetch` after each test.
+إخراج القمامة خطوة مهمة في الاختبار. قد تصبح البدائل المُحاكاة «لزجة» بعض الشيء (المصطلح التقني!)، لذا لنتأكد من إعادة تعيين `fetch` بعد كل اختبار.
 
 ```javascript
 import { afterEach } from 'vitest';
@@ -78,13 +78,13 @@ afterEach(() => {
 });
 ```
 
-Yeah, it’s just good test hygiene. Clean up after yourself, future-you will be grateful.
+نعم، إنها مجرد نظافة اختبار جيدة. نظّف بعد نفسك، وسيكون مستقبلك ممتنًا لك.
 
-## Real Talk: Testing The Error State
+## حديث صريح: اختبار حالة الخطأ
 
-Because, hey, what happens if the Internet explodes or the server just shrugs at your request? You’ve gotta test those too!
+لأنه، يا إلهي، ماذا يحدث إذا انفجر الإنترنت أو تجاهل الخادم طلبك ببساطة؟ عليك اختبار ذلك أيضًا!
 
-Let’s see how we’d test an error, like when fetch itself rejects:
+لنرَ كيف نختبر خطأً، مثل عندما ترفض fetch نفسها:
 
 ```javascript
 test('handles fetch failure', async () => {
@@ -95,8 +95,8 @@ test('handles fetch failure', async () => {
 });
 ```
 
-Here, `fetch` rejects with an error, and we test that our function properly rejects too. Easy peasy.
+هنا، ترفض `fetch` بخطأ، ونختبر أن دالتنا ترفض أيضًا بشكل صحيح. سهلة يسيرة.
 
-## Wrapping Up
+## خاتمة
 
-Just remember, the goal isn’t to test whether fetch works. (**Spoiler alert**: it does.) You’re focusing on ensuring that your code behaves properly in a variety of fetch-related scenarios.
+تذكّر فقط أن الهدف ليس اختبار ما إذا كانت fetch تعمل. (**تنبيه بالمفسد**: إنها تعمل.) أنت تركّز على ضمان أن شيفرتك تتصرف بشكل صحيح في مجموعة متنوعة من السيناريوهات المتعلقة بـ fetch.

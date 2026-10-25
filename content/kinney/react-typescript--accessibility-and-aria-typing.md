@@ -1,25 +1,25 @@
 ---
-title: "Accessibility and ARIA Typing"
-lang: en
+title: "الوصولية وتحديد أنواع ARIA"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/accessibility-and-aria-typing"
 ---
 
-TypeScript excels at catching errors at compile time, but accessibility often gets checked at runtime—if at all. What if we could make inaccessible component states literally impossible to compile? With proper TypeScript techniques, you can encode ARIA constraints directly into your types, ensuring screen readers and keyboard navigation work correctly before your code even runs.
+يتألّق TypeScript في التقاط الأخطاء وقت التصريف، لكنّ الوصولية (accessibility) غالبًا ما تُفحَص وقت التشغيل—إن مُيِّز لها فحص أصلًا. فماذا لو جعلنا حالات المكوّنات غير القابلة للوصول مستحيلة التصريف حرفيًا؟ بتقنيات TypeScript السليمة، يمكنك ترميز قيود ARIA (Accessible Rich Internet Applications) مباشرةً في أنواعك، بما يضمن أن تعمل قارئات الشاشة (screen readers) والتنقّل بلوحة المفاتيح بشكل صحيح قبل أن تُنفَّذ شيفرتك أصلًا.
 
-We’ll explore how to leverage TypeScript’s type system to enforce accessibility best practices, create type-safe ARIA prop interfaces, and build components that guide developers toward inclusive design patterns. By the end, you’ll be catching accessibility violations in your IDE instead of during testing (or worse, in production).
+سنتعرّف على كيفية الاستفادة من نظام أنواع TypeScript لفرض أفضل ممارسات الوصولية، وإنشاء واجهات الخصائص (props) الخاصة بـ ARIA آمنة الأنواع، وبناء مكوّنات (components) ترشد المطوّرين نحو أنماط التصميم الشموليّ. وفي النهاية، ستكتشف مخالفات الوصولية في بيئة التطوير لديك بدلًا من أثناء الاختبار (أو الأسوأ: في الإنتاج).
 
-## Why Type Accessibility Constraints?
+## لماذا نُرمِّز قيود الوصولية في الأنواع؟
 
-Before diving into implementation, let’s establish why encoding accessibility rules in TypeScript matters. Traditional approaches rely on runtime linting tools like `eslint-plugin-jsx-a11y` or manual testing—both valuable, but they catch issues after code is written.
+قبل التعمّق في التنفيذ، لنحدّد أولًا لماذا من المهمّ ترميز قواعد الوصولية في TypeScript. تعتمد المقاربات التقليدية على أدوات الفحص وقت التشغيل مثل `eslint-plugin-jsx-a11y` أو على الاختبار اليدوي—وكلاهما ذو قيمة، لكنهما يلتقطان المشكلات بعد كتابة الشيفرة.
 
-TypeScript accessibility constraints offer several advantages:
+وتقدّم قيود الوصولية في TypeScript عدّة مزايا:
 
-- **Compile-time safety**: Invalid ARIA combinations become TypeScript errors
-- **Developer experience**: IntelliSense guides proper ARIA usage
-- **Documentation**: Types serve as living documentation for accessibility requirements
-- **Refactoring safety**: Breaking accessibility contracts shows up during code changes
+- **الأمان وقت التصريف**: التركيبات غير الصالحة من خصائص ARIA تصبح أخطاء TypeScript
+- **تجربة المطوّر**: يرشدك IntelliSense إلى الاستخدام الصحيح لـ ARIA
+- **التوثيق**: تصلح الأنواع توثيقًا حيًّا لمتطلبات الوصولية
+- **أمان إعادة الهيكلة**: انكسار عقود الوصولية يتجلّى أثناء تعديل الشيفرة
 
-Consider this common accessibility violation:
+انظر هذه المخالفة الشائعة للوصولية:
 
 ```typescript
 // ❌ This compiles but creates accessibility issues
@@ -28,13 +28,13 @@ Consider this common accessibility violation:
 </button>
 ```
 
-A disabled button with `aria-pressed` creates confusion for screen readers—disabled elements shouldn’t have press states. With proper typing, this becomes a compile error instead of a runtime discovery.
+زرٌّ معطَّل وعليه `aria-pressed` يسبّب ارتباكًا لقارئات الشاشة—فالعناصر المعطَّلة لا ينبغي أن تملك حالات ضغط. وبتحديد أنواع سليم، يتحوّل هذا إلى خطأ تصريف بدلًا من اكتشافٍ متأخّر وقت التشغيل.
 
-## Understanding ARIA in React
+## فهم ARIA في React
 
-ARIA (Accessible Rich Internet Applications) attributes provide semantic information to assistive technologies. React supports all ARIA attributes, but TypeScript’s built-in types don’t enforce the complex relationships between them.
+تقدّم خصائص ARIA (Accessible Rich Internet Applications) معلومات دلالية إلى التقنيات المساعدة. يدعم React كل خصائص ARIA، لكنّ أنواع TypeScript المدمجة لا تفرض العلاقات المعقّدة بينها.
 
-Here’s what React’s default ARIA typing looks like:
+هكذا يبدو تحديد أنواع ARIA الافتراضي في React:
 
 ```typescript
 interface AriaAttributes {
@@ -46,11 +46,11 @@ interface AriaAttributes {
 }
 ```
 
-These types are permissive—they allow any combination of ARIA attributes without considering context or mutual exclusions. Real accessibility requires understanding relationships between attributes, element roles, and interaction states.
+هذه الأنواع متساهلة—فهي تسمح بأي تركيبة من خصائص ARIA دون اعتبار للسياق أو للاستثناءات المتبادلة. أما الوصولية الفعلية فتتطلّب فهم العلاقات بين الخصائص، وأدوار العناصر (roles)، وحالات التفاعل.
 
-## Basic ARIA Constraint Types
+## أنواع قيود ARIA الأساسية
 
-Let’s start with a simple example: ensuring buttons have proper labeling. A button needs either visible text content, an `aria-label`, or an `aria-labelledby` reference.
+لنبدأ بمثال بسيط: التأكد من أنّ الأزرار ذات وسمٍ سليم. فالزر يحتاج إما إلى محتوى نصّي ظاهر، وإما إلى `aria-label`، وإما إلى إشارة `aria-labelledby`.
 
 ```typescript
 type ButtonLabelProps = {
@@ -79,11 +79,11 @@ interface AccessibleButtonProps extends ButtonLabelProps {
 <AccessibleButton onClick={handleClick} />
 ```
 
-This union type ensures every button instance has some form of accessible labeling, catching unlabeled buttons at compile time.
+يضمن النوع الاتحادي (union type) هذا أنّ كل زرٍّ منشأ منها يملك شكلًا ما من الوسم القابل للقراءة ليست، فيلتقط الأزرار بلا وسم وقت التصريف.
 
-## Toggle Button State Constraints
+## قيود حالة أزرار التبديل
 
-Toggle buttons present interesting typing challenges. The `aria-pressed` attribute should only appear on buttons that actually toggle, and its value should reflect the current state.
+تطرح أزرار التبديل (toggle buttons) تحديات مثيرة في تحديد الأنواع. فخاصية `aria-pressed` ألا تظهر إلا على الأزرار التي تُبدّل حالتها فعلًا، وأن تعكس قيمتها الحالة الراهنة.
 
 ```typescript
 type ToggleButtonProps = {
@@ -139,11 +139,11 @@ const Button: React.FC<ButtonProps> = ({ children, disabled, ...props }) => {
 </Button>
 ```
 
-This discriminated union prevents mixing toggle and regular button patterns, ensuring `aria-pressed` only appears with appropriate state management.
+يمنع النوع الاتحادي المتمايز (discriminated union) هذا خلط نمط زر التبديل مع الزر العادي، ويضمن ظهور `aria-pressed` فقط مع إدارة الحالة المناسبة.
 
-## Form Control Associations
+## ترابط عناصر النماذج
 
-Form controls require proper labeling and often need error announcements. Let’s create types that enforce these associations:
+تحتاج عناصر التحكم في النماذج إلى وسمٍ سليم، وكثيرًا ما تحتاج إلى الإعلان عن الأخطاء. لننشئ أنواعًا تفرض هذه الارتباطات:
 
 ```typescript
 type FormControlLabel = {
@@ -215,9 +215,9 @@ const TextInput: React.FC<TextInputProps> = ({
 />
 ```
 
-## Advanced ARIA Role Constraints
+## قيود أدوار ARIA المتقدّمة
 
-Some elements have complex ARIA relationships. Modal dialogs, for instance, require specific attributes and focus management:
+بعض العناصر تحمل علاقات ARIA معقّدة. فنوافذ الحوار المنبثقة (modal dialogs) مثلًا تتطلّب خصائص محدّدة وإدارةً للتركيز:
 
 ```typescript
 interface ModalProps {
@@ -275,11 +275,11 @@ const Modal: React.FC<ModalProps> = ({
 </>;
 ```
 
-The type system ensures modals always have proper labeling, preventing the common mistake of unlabeled dialogs.
+يضمن نظام الأنواع أنّ النوافذ المنبثقة تحمل دومًا وسمًا سليمًا، ما يمنع الخطأ الشائع المتمثّل في نوافذ حوار بلا وسم.
 
-## Creating Accessible Component Libraries
+## إنشاء مكتبات مكوّنات قابلة للوصول
 
-When building component libraries, accessibility constraints become even more valuable. Let’s create a comprehensive button system:
+عند بناء مكتبات المكوّنات (component libraries)، تكتسب قيود الوصولية قيمة أكبر. لننشئ نظام أزرار شاملًا:
 
 ```typescript
 // Base button requirements
@@ -395,13 +395,13 @@ function AccessibleButton<R extends ButtonRole = 'button'>({
 </AccessibleButton>
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> When building component libraries, start with the most restrictive types possible. You can always relax constraints later, but adding restrictions to existing APIs creates breaking changes.
+> عند بناء مكتبات المكوّنات، ابدأ بأكثر الأنواع تقييدًا ممكنًا. فتخفيف القيود لاحقًا ممكن دائمًا، أما إضافة قيود إلى واجهات برمجية موجودة فيخلق تغييرات كاسِرة.
 
-## Runtime Validation with Zod
+## التحقّق وقت التشغيل باستخدام Zod
 
-For additional safety, combine TypeScript constraints with runtime validation using Zod. This catches accessibility violations from dynamic data:
+لمزيد من الأمان، اربط قيود TypeScript بالتحقّق وقت التشغيل باستخدام Zod. هذا يلتقط مخالفات الوصولية الآتية من بيانات ديناميكية:
 
 ```typescript
 import { z } from 'zod';
@@ -440,13 +440,13 @@ const SafeButton: React.FC<z.infer<typeof ButtonPropsSchema>> = (props) => {
 };
 ```
 
-This approach provides both compile-time and runtime safety, particularly valuable when props come from APIs or configuration files.
+يوفر هذا النهج أمانًا وقت التصريف ووقت التشغيل معًا، ويكون ذا قيمة خاصة عندما تأتي الخصائص من واجهات برمجية أو من ملفات إعداد.
 
-## Common Patterns and Gotchas
+## أنماط شائعة ومزالق
 
-### Conditional ARIA Attributes
+### خصائص ARIA الشرطية
 
-Sometimes ARIA attributes should only appear under certain conditions. Use mapped types to handle this:
+قد ينبغي أحيانًا أن تظهر خصائص ARIA تحت شروط معيّنة فقط. استخدم الأنواع المعيَّنة (mapped types) للتعامل مع ذلك:
 
 ```typescript
 type ConditionalAria<T extends boolean> = T extends true ? {
@@ -477,9 +477,9 @@ interface CollapsibleProps<T extends boolean = false> extends ConditionalAria<T>
 </Collapsible>
 ```
 
-### Invalid Combinations
+### التركيبات غير الصالحة
 
-Use `never` types to prevent invalid attribute combinations:
+استخدم النوع `never` لمنع تركيبات الخصائص غير الصالحة:
 
 ```typescript
 type LinkOrButton =
@@ -501,21 +501,21 @@ interface ActionElementProps extends LinkOrButton {
 }
 ```
 
-### Performance Considerations
+### اعتبارات الأداء
 
-TypeScript’s type checking happens at compile time, so complex accessibility constraints don’t impact runtime performance. However, be mindful of:
+يحدث التحقّق من الأنواع في TypeScript وقت التصريف، فلا تؤثر قيود الوصولية المعقّدة على أداء وقت التشغيل. لكن انتبه إلى ما يلي:
 
-- **Build time**: Extremely complex types can slow TypeScript compilation
-- **Bundle size**: Runtime validation with Zod adds to bundle size
-- **Developer experience**: Overly restrictive types can frustrate developers
+- **وقت البناء**: قد تُبطئ الأنواع المعقّدة للغاية عملية تصريف TypeScript
+- **حجم الحزمة**: التحقّق وقت التشغيل باستخدام Zod يزيد حجم الحزمة
+- **تجربة المطوّر**: قد تُحبط الأنواع المفرطة في التقييد المطوّرين
 
-> **Warning**
+> **تحذير**
 >
-> Don’t let perfect accessibility typing become the enemy of good accessibility practice. Start simple and iterate based on team needs.
+> لا تدع الكمال في تحديد أنواع الوصولية يغدو عدوًّا للممارسة الجيدة للوصولية. ابدأ بالبساطة، وكرّر التحسين وفق احتياجات فريقك.
 
-## Testing Type-Safe Accessibility
+## اختبار أنواع الوصولية
 
-Your accessibility constraints should be tested just like any other code. Here’s an approach using TypeScript’s utility types:
+ينبغي اختبار قيود الوصولية لديك كما تُختبر أي شيفرات أخرى. وهذا نهج يستخدم الأنواع المساعدة (utility types) في TypeScript:
 
 ```typescript
 import { expectType } from 'tsd';
@@ -541,11 +541,11 @@ expectType<AccessibleButtonProps>({
 */
 ```
 
-Consider using tools like `tsd` for formal type testing, ensuring your accessibility constraints work as expected.
+فكّر في استخدام أدوات مثل `tsd` لاختبار الأنواع الرسمي، بما يضمن أنّ قيود الوصولية لديك تعمل كما يُتوقَّع.
 
-## Integration with Design Systems
+## التكامل مع أنظمة التصميم
 
-When building design systems, accessibility types become documentation and enforcement mechanisms. Here’s a pattern for systematic accessibility:
+عند بناء أنظمة التصميم (design systems)، تتحوّل أنواع الوصولية إلى آلية توثيق وفرضٍ في آنٍ واحد. وهذا نمط لوصولية منهجية:
 
 ```typescript
 // Define accessibility levels
@@ -575,17 +575,17 @@ const AccessibleButton: React.FC<AccessibleButtonProps> & {
 AccessibleButton.a11y = ButtonA11y;
 ```
 
-This creates a systematic approach to accessibility that scales across large component libraries.
+بهذا تنشأ منهجية منظمة للوصولية تتوسّع عبر مكتبات المكوّنات الكبيرة.
 
-## Real-World Integration
+## التكامل في الواقع العملي
 
-Here’s how to integrate accessibility types into an existing React project:
+هكذا تُدمج أنواع الوصولية في مشروع React قائم:
 
-1. **Start small**: Begin with critical components (buttons, forms, modals)
-2. **Gradual adoption**: Use generic types initially, then add constraints over time
-3. **Team education**: Document patterns and provide examples
-4. **Tooling integration**: Configure ESLint and Prettier to work with your types
-5. **Testing strategy**: Include accessibility in your component testing approach
+1. **ابدأ صغيرًا**: انطلق من المكوّنات الحساسة (الأزرار، النماذج، النوافذ المنبثقة)
+2. **تبنٍّ تدريجي**: ابدأ بالأنواع العامة (generics) في البداية، ثم أضف القيود مع الوقت
+3. **تثقيف الفريق**: وثّق الأنماط وقدّم أمثلة
+4. **دمج الأدوات**: اضبط ESLint وPrettier ليعملا مع أنواعك
+5. **استراتيجية الاختبار**: أدرج الوصولية في نهجك لاختبار المكوّنات
 
 ```typescript
 // Example migration strategy
@@ -605,15 +605,15 @@ interface ModernButtonProps extends Omit<LegacyButtonProps, 'children'>, ButtonL
 type ButtonProps = LegacyButtonProps | ModernButtonProps;
 ```
 
-## Next Steps
+## الخطوات التالية
 
-With accessibility baked into your type system, you’ve created a foundation for inclusive development that scales with your codebase. Consider exploring:
+بما أنّك أدمجت الوصولية في نظام أنواعك، فقد ركعتَ أساسًا للتطوير الشموليّ الذي يتوسّع مع مستودع شيفرتك. فكّر في استكشاف:
 
-- **Custom ESLint rules** that enforce your accessibility types
-- **Storybook integration** that validates accessibility in your component documentation
-- **Build-time checks** that prevent deployment of inaccessible code
-- **Advanced patterns** like polymorphic components with accessibility constraints
+- **قواعد ESLint مخصّصة** تفرض أنواع الوصولية لديك
+- **تكامل مع Storybook** يتحقّق من الوصولية في توثيق مكوّناتك
+- **فحوص وقت البناء** تمنع نشر شيفرة غير قابلة للوصول
+- **أنماط متقدّمة** مثل المكوّنات متعدّدة الأشكال (polymorphic components) مع قيود وصولية
 
-The goal isn’t to catch every accessibility issue at compile time—that’s impossible and impractical. Instead, use TypeScript to encode the most critical patterns and relationships, creating guardrails that guide developers toward accessible solutions.
+الهدف ليس التقاط كل مشكلة وصولية وقت التصريف—فذلك مستحيل وغير عملي. بل استخدم TypeScript لترميز أحرج الأنماط والعلاقات، منشئًا حواجز أمان ترشد المطوّرين نحو الحلول القابلة للوصول.
 
-Remember: accessibility is ultimately about people, not just types. Use these techniques to support good practices, but always validate with real users and assistive technologies. TypeScript can prevent many accessibility bugs, but it can’t replace human testing and empathy.
+تذكّر: الوصولية تتعلّق في نهاية المطاف بالناس، لا بالأنواع وحدها. استخدم هذه التقنيات لدعم الممارسات الجيدة، لكن تحقّق دومًا مع مستخدمين حقيقيين وتقنيات مساعدة. يقدر TypeScript منع كثير من أخطاء الوصولية، لكنه لا يحلّ محل الاختبار البشري والتعاطف.

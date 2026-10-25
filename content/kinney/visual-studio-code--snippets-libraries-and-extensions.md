@@ -1,60 +1,60 @@
 ---
-title: "Snippets Libraries and Extensions"
-lang: en
+title: "مكتبات المقتطفات وإضافاتها"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/snippets-libraries-and-extensions"
 ---
 
-## Snippet Libraries and Extensions
+## مكتبات المقتطفات وإضافاتها
 
-### Built-in Snippets
+### المقتطفات المدمجة
 
-Visual Studio Code comes with a set of built-in snippets for many popular languages. These snippets provide basic code structures and are a good starting point for understanding snippet usage.
+يأتي Visual Studio Code بمجموعة من المقتطفات المدمجة لكثير من اللغات الشائعة. وتوفّر هذه المقتطفات بنى شيفرة أساسية، وهي نقطة بداية جيدة لفهم استخدام المقتطفات.
 
-- **Accessing Built-in Snippets:** To see built-in snippets for a language, open a file of that language type (e.g., `.js` for JavaScript, `.py` for Python). Type a common keyword or prefix (e.g., `for` in JavaScript, `def` in Python). Visual Studio Code’s IntelliSense will suggest built-in snippets alongside other code completions. Look for the snippet icon in the suggestion list.
-- **Exploring Built-in Snippets:** You can’t directly edit built-in snippets. However, you can often find their definitions within Visual Studio Code’s extension files if you want to understand their structure or create your own variations. The exact location of built-in snippets can vary depending on the language extension.
-- **Examples of Built-in Snippets:** **JavaScript:** `for`, `foreach`, `function`, `class`, `console.log`, `import`. **Python:** `def`, `class`, `if`, `for`, `while`, `try`. **HTML:** `!`, `html:5`, `link`, `script`. **CSS:** `anim`, `bgc`, `dis`, `pos`.
-  - **JavaScript:** `for`, `foreach`, `function`, `class`, `console.log`, `import`.
-  - **Python:** `def`, `class`, `if`, `for`, `while`, `try`.
-  - **HTML:** `!`, `html:5`, `link`, `script`.
-  - **CSS:** `anim`, `bgc`, `dis`, `pos`.
+- **الوصول إلى المقتطفات المدمجة:** لرؤية المقتطفات المدمجة للغة معيّنة، افتح ملفًا من نوع تلك اللغة (مثل `.js` لـ JavaScript و `.py` لـ Python). واكتب كلمة مفتاحية أو بادئة شائعة (مثل `for` في JavaScript و `def` في Python). وسيقترح IntelliSense في Visual Studio Code المقتطفات المدمجة إلى جانب إكمالات الشيفرة الأخرى. وابحث عن أيقونة المقتطف في قائمة الاقتراحات.
+- **استكشاف المقتطفات المدمجة:** لا يمكنك تحرير المقتطفات المدمجة مباشرةً. ومع ذلك، يمكنك غالبًا العثور على تعريفاتها داخل ملفات إضافات Visual Studio Code إن أردت فهم بنيتها أو إنشاء تنويعات خاصة بك. وقد يختلف الموضع الدقيق للمقتطفات المدمجة حسب إضافة اللغة.
+- **أمثلة على المقتطفات المدمجة:** **JavaScript:** `for`، `foreach`، `function`، `class`، `console.log`، `import`. **Python:** `def`، `class`، `if`، `for`، `while`، `try`. **HTML:** `!`، `html:5`، `link`، `script`. **CSS:** `anim`، `bgc`، `dis`، `pos`.
+  - **JavaScript:** `for`، `foreach`، `function`، `class`، `console.log`، `import`.
+  - **Python:** `def`، `class`، `if`، `for`، `while`، `try`.
+  - **HTML:** `!`، `html:5`، `link`، `script`.
+  - **CSS:** `anim`، `bgc`، `dis`، `pos`.
 
-Explore the built-in snippets for the languages you use regularly to discover quick shortcuts and understand common code patterns.
+استكشف المقتطفات المدمجة للغات التي تستخدمها بانتظام لتكتشف اختصارات سريعة وتفهم أنماط الشيفرة الشائعة.
 
-### Community Snippets: Extensions and Libraries
+### مقتطفات المجتمع: الإضافات والمكتبات
 
-The Visual Studio Code Marketplace is rich with snippet extensions and libraries created by the community. These extensions offer pre-built snippet collections for various languages, frameworks, and libraries, saving you the effort of creating everything from scratch.
+يعجّ سوق إضافات Visual Studio Code بإضافات ومكتبات مقتطفات أنشأها المجتمع. وتوفّر هذه الإضافات مجموعات مقتطفات جاهزة للغات وأطر ومكتبات متنوّعة، فتوفّر عليك عناء إنشاء كل شيء من الصفر.
 
-> **I don’t use any of these.**
+> **لا أستخدم أيًا من هذه.**
 >
-> People like them, but I am *way* too high-strung and prefer to build my own snippets. Your mileage may vary.
+> الناس يحبّونها، لكني شخص متوتّر *جدًا* وأفضّل بناء مقتطفاتي بنفسي. وقد تختلف تجربتك.
 
-### Go Hunting for a Snippets Extension
+### انطلق للبحث عن إضافة مقتطفات
 
-1. **Open Extensions View:** Click on the Extensions icon in the Activity Bar on the side of Visual Studio Code (or press `Ctrl+Shift+X` / `Cmd+Shift+X`).
-2. **Search for “snippets”:** In the Extensions Marketplace search bar, type “snippets” followed by the language or framework you’re interested in (e.g., “snippets javascript”, “snippets react”, “snippets python”).
-3. **Browse and Install:** Explore the search results. Look for extensions with good ratings, a large number of installs, and recent updates. Read the extension description and features to see if it meets your needs.
-4. **Install Extension:** Click the “Install” button to install the extension. Visual Studio Code will download and activate the extension.
+1. **افتح عرض الإضافات:** انقر أيقونة الإضافات في شريط النشاط على جانب Visual Studio Code (أو اضغط `Ctrl+Shift+X` / `Cmd+Shift+X`).
+2. **ابحث عن “snippets”:** في شريط البحث في سوق الإضافات، اكتب “snippets” ثم اللغة أو الإطار الذي يهمّك (مثل “snippets javascript” و “snippets react” و “snippets python”).
+3. **تصفّح وثبّت:** استكشف نتائج البحث. وابحث عن إضافات بتقييمات جيدة وعدد تثبيتات كبير وتحديثات حديثة. واقرأ وصف الإضافة وميزاتها لترى إن كانت تلبي احتياجاتك.
+4. **ثبّت الإضافة:** انقر زر “Install” لتثبيت الإضافة. وسينزّل Visual Studio Code الإضافة وينشّطها.
 
-### Some Popular Options
+### بعض الخيارات الشائعة
 
-- **ES7+ React/Redux/React-Native snippets:** For React development.
-- **Python Snippets:** For Python development.
-- **Angular Snippets (Version 15):** For Angular development.
-- **Vue 3 Snippets:** For Vue.js development.
-- **Go Snippets:** For Go development.
-- **PHP Snippets:** For PHP development.
-- **HTML Snippets:** Enhanced HTML snippets.
-- **CSS Peek:** While primarily for CSS peeking, it often includes CSS snippets.
+- **ES7+ React/Redux/React-Native snippets:** لتطوير React.
+- **Python Snippets:** لتطوير Python.
+- **Angular Snippets (Version 15):** لتطوير Angular.
+- **Vue 3 Snippets:** لتطوير Vue.js.
+- **Go Snippets:** لتطوير Go.
+- **PHP Snippets:** لتطوير PHP.
+- **HTML Snippets:** مقتطفات HTML محسّنة.
+- **CSS Peek:** وإن كان مخصّصًا أساسًا للنظر في CSS، فهو يتضمّن غالبًا مقتطفات CSS.
 
-### Creating Snippet Extensions
+### إنشاء إضافات المقتطفات
 
-> **We’ll talk more about extensions later.**
+> **سنتحدّث أكثر عن الإضافات لاحقًا.**
 >
-> But, I figure if you’ve read this far—then this content might be helpful or interesting to you.
+> لكني أظنّ أنك إن قرأت إلى هنا، فقد يكون هذا المحتوى مفيدًا لك أو مثيرًا لاهتمامك.
 
-If you have created a valuable collection of snippets that you want to share with the wider Visual Studio Code community, consider creating and publishing a snippet extension.
+إذا أنشأت مجموعة قيّمة من المقتطفات وتريد مشاركتها مع مجتمع Visual Studio Code الأوسع، ففكّر في إنشاء إضافة مقتطفات ونشرها.
 
-1. **Set up Extension Development Environment:** Follow the [Visual Studio Code Extension API documentation](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/api/get-started/your-first-extension&authuser=1) to set up your extension development environment and install the Yeoman Visual Studio Code Extension Generator (`yo code`).
-2. **Generate Snippet Extension:** Use the Yeoman generator to create a new snippet extension project: Bash <code><span class="line"><span style="color:#D6DEEB">yo code</span></span></code> Choose “New Snippets package” when prompted.
-3. **Define Snippets in Extension:** Within your extension project, you’ll find a `snippets` folder. Create `.code-snippets` files within this folder to define your snippets (e.g., `my-language-snippets.code-snippets`). Follow the standard snippet JSON format.
-4. **Package and Publish:** Use the `vsce` tool (Visual Studio Code Extension Manager) to package and publish your extension to the Visual Studio Code Marketplace. Refer to the [Visual Studio Code Extension Marketplace documentation](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/api/working-with-extensions/publishing-extension&authuser=1) for detailed publishing steps.
+1. **هيّئ بيئة تطوير الإضافات:** اتبع [توثيق واجهة برمجة إضافات Visual Studio Code](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/api/get-started/your-first-extension&authuser=1) لتهيئة بيئة تطوير إضافاتك وتثبيت مولّد إضافات Visual Studio Code من Yeoman (`yo code`).
+2. **ولّد إضافة المقتطفات:** استخدم مولّد Yeoman لإنشاء مشروع إضافة مقتطفات جديد بصيغة Bash <code><span class="line"><span style="color:#D6DEEB">yo code</span></span></code> واختر “New Snippets package” عند سؤالك.
+3. **عرّف المقتطفات في الإضافة:** داخل مشروع إضافتك، ستجد مجلد `snippets`. وأنشئ ملفات `.code-snippets` داخل هذا المجلد لتعريف مقتطفاتك (مثل `my-language-snippets.code-snippets`). واتبع صيغة JSON القياسية للمقتطفات.
+4. **حزّم وانشر:** استخدم أداة `vsce` (Visual Studio Code Extension Manager) لحزم إضافتك ونشرها في سوق إضافات Visual Studio Code. وراجع [توثيق سوق إضافات Visual Studio Code](https://www.google.com/url?sa=E&source=gmail&q=https://code.visualstudio.com/api/working-with-extensions/publishing-extension&authuser=1) لخطوات النشر المفصّلة.

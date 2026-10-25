@@ -1,61 +1,61 @@
 ---
-title: "Testing Authentication with Vitest"
-lang: en
+title: "اختبار المصادقة باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/authentication-example"
 ---
 
-## Building an Authentication System Using Test-Driven Development with Express and Vitest
+## بناء نظام مصادقة باستخدام التطوير الموجّه بالاختبارات مع Express وVitest
 
-**Table of Contents**
+**جدول المحتويات**
 
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Project Setup](#project-setup)
-4. [Understanding Test-Driven Development](#understanding-test-driven-development)
-5. [Designing the Authentication System](#designing-the-authentication-system)
-6. [Implementing the System with TDD](#implementing-the-system-with-tdd) [1. User Registration](#user-registration) [2. User Login](#user-login) [3. User Logout](#user-logout)
-  - [1. User Registration](#user-registration)
-  - [2. User Login](#user-login)
-  - [3. User Logout](#user-logout)
-7. [Testing Focus Areas](#testing-focus-areas) [Unit Tests: Form Validation and Encryption Methods](#unit-tests-form-validation-and-encryption-methods) [Integration Tests: API Endpoints for Authentication](#integration-tests-api-endpoints-for-authentication) [Security Tests: Handling Authentication Tokens](#security-tests-handling-authentication-tokens)
-  - [Unit Tests: Form Validation and Encryption Methods](#unit-tests-form-validation-and-encryption-methods)
-  - [Integration Tests: API Endpoints for Authentication](#integration-tests-api-endpoints-for-authentication)
-  - [Security Tests: Handling Authentication Tokens](#security-tests-handling-authentication-tokens)
-8. [Running the Tests](#running-the-tests)
-9. [Conclusion](#conclusion)
-10. [Additional Exercises](#additional-exercises)
+1. [المقدمة](#introduction)
+2. [المتطلبات المسبقة](#prerequisites)
+3. [إعداد المشروع](#project-setup)
+4. [فهم التطوير الموجّه بالاختبارات](#understanding-test-driven-development)
+5. [تصميم نظام المصادقة](#designing-the-authentication-system)
+6. [تنفيذ النظام باستخدام TDD](#implementing-the-system-with-tdd) [1. تسجيل المستخدم](#user-registration) [2. تسجيل دخول المستخدم](#user-login) [3. تسجيل خروج المستخدم](#user-logout)
+  - [1. تسجيل المستخدم](#user-registration)
+  - [2. تسجيل دخول المستخدم](#user-login)
+  - [3. تسجيل خروج المستخدم](#user-logout)
+7. [مجالات التركيز في الاختبار](#testing-focus-areas) [اختبارات الوحدات: التحقق من النماذج وطرق التشفير](#unit-tests-form-validation-and-encryption-methods) [اختبارات التكامل: نقاط نهاية API للمصادقة](#integration-tests-api-endpoints-for-authentication) [اختبارات الأمان: التعامل مع رموز المصادقة](#security-tests-handling-authentication-tokens)
+  - [اختبارات الوحدات: التحقق من النماذج وطرق التشفير](#unit-tests-form-validation-and-encryption-methods)
+  - [اختبارات التكامل: نقاط نهاية API للمصادقة](#integration-tests-api-endpoints-for-authentication)
+  - [اختبارات الأمان: التعامل مع رموز المصادقة](#security-tests-handling-authentication-tokens)
+8. [تشغيل الاختبارات](#running-the-tests)
+9. [الخلاصة](#conclusion)
+10. [تمارين إضافية](#additional-exercises)
 
-### Introduction
+### المقدمة {#introduction}
 
-Building a secure authentication system is a critical aspect of many web applications. In this guide, we’ll develop a simple authentication system using **Test-Driven Development (TDD)** with **Express** (a Node.js web application framework) and **Vitest**, a modern JavaScript testing framework.
+بناء نظام مصادقة آمن جانبًا بالغ الأهمية في كثير من تطبيقات الويب. في هذا الدليل، سنطوّر نظام مصادقة بسيطًا باستخدام **التطوير الموجّه بالاختبارات (TDD)** مع **Express** (إطار تطبيقات ويب لـ Node.js) و**Vitest**، إطار اختبارات JavaScript حديث.
 
-**Objectives:**
+**الأهداف:**
 
-- Learn how to apply TDD in building an authentication system.
-- Understand how to write unit, integration, and security tests with Vitest.
-- Implement user registration, login, and logout functionality.
-- Ensure proper handling of authentication tokens.
+- تعلّم كيفية تطبيق TDD في بناء نظام مصادقة.
+- فهم كيفية كتابة اختبارات الوحدات والتكامل والأمان باستخدام Vitest.
+- تنفيذ وظائف تسجيل المستخدم وتسجيل الدخول وتسجيل الخروج.
+- ضمان التعامل الصحيح مع رموز المصادقة.
 
-### Prerequisites
+### المتطلبات المسبقة {#prerequisites}
 
-- Basic knowledge of JavaScript (ES6+ syntax) and Node.js.
-- Familiarity with Express.js.
-- Understanding of unit testing and TDD concepts.
-- Node.js and npm installed on your machine.
+- معرفة أساسية بـ JavaScript (صياغة ES6+) وNode.js.
+- إلمام بـ Express.js.
+- فهم مفاهيم اختبار الوحدات وTDD.
+- تثبيت Node.js وnpm على جهازك.
 
-### Project Setup
+### إعداد المشروع {#project-setup}
 
-1. **Create a New Project Directory** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> auth-system-tdd</span></span>
+1. **أنشئ دليل مشروع جديدًا** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> auth-system-tdd</span></span>
 <span class="line"><span style="color:#C5E478;font-style:italic">cd</span><span style="color:#ECC48D"> auth-system-tdd</span></span></code>
-2. **Initialize npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
-3. **Install Dependencies** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#ECC48D"> express</span><span style="color:#ECC48D"> bcrypt</span><span style="color:#ECC48D"> jsonwebtoken</span></span></code> `express`: Web application framework. `bcrypt`: For password hashing. `jsonwebtoken`: For generating and verifying JWT tokens.
-  - `express`: Web application framework.
-  - `bcrypt`: For password hashing.
-  - `jsonwebtoken`: For generating and verifying JWT tokens.
-4. **Install Dev Dependencies** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span><span style="color:#ECC48D"> supertest</span></span></code> `vitest`: Testing framework. `supertest`: For testing HTTP endpoints.
-  - `vitest`: Testing framework.
-  - `supertest`: For testing HTTP endpoints.
-5. **Project Structure** <code><span class="line"><span style="color:#D6DEEB">auth</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">system</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
+2. **هيّئ npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
+3. **ثبّت الاعتمادات** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#ECC48D"> express</span><span style="color:#ECC48D"> bcrypt</span><span style="color:#ECC48D"> jsonwebtoken</span></span></code> `express`: إطار تطبيقات ويب. `bcrypt`: لتجزئة كلمات المرور. `jsonwebtoken`: لتوليد رموز JWT والتحقق منها.
+  - `express`: إطار تطبيقات ويب.
+  - `bcrypt`: لتجزئة كلمات المرور.
+  - `jsonwebtoken`: لتوليد رموز JWT والتحقق منها.
+4. **ثبّت اعتمادات التطوير** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span><span style="color:#ECC48D"> supertest</span></span></code> `vitest`: إطار اختبارات. `supertest`: لاختبار نقاط نهاية HTTP.
+  - `vitest`: إطار اختبارات.
+  - `supertest`: لاختبار نقاط نهاية HTTP.
+5. **بنية المشروع** <code><span class="line"><span style="color:#D6DEEB">auth</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">system</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── package</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">json</span></span>
 <span class="line"><span style="color:#D6DEEB">├── vitest</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">config</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB">├── src</span><span style="color:#C792EA">/</span></span>
@@ -70,43 +70,43 @@ Building a secure authentication system is a critical aspect of many web applica
 <span class="line"><span style="color:#D6DEEB"> ├── unit</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB"> │ └── auth</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB"> └── integration</span><span style="color:#C792EA">/</span></span>
-<span class="line"><span style="color:#D6DEEB"> └── auth</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">integration</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: Contains the application code. `tests/`: Contains the test files.
-  - `src/`: Contains the application code.
-  - `tests/`: Contains the test files.
+<span class="line"><span style="color:#D6DEEB"> └── auth</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">integration</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: يحتوي على شيفرة التطبيق. `tests/`: يحتوي على ملفات الاختبار.
+  - `src/`: يحتوي على شيفرة التطبيق.
+  - `tests/`: يحتوي على ملفات الاختبار.
 
-### Understanding Test-Driven Development
+### فهم التطوير الموجّه بالاختبارات {#understanding-test-driven-development}
 
-**Test-Driven Development (TDD)** is a software development approach where you:
+**التطوير الموجّه بالاختبارات (TDD)** أسلوب لتطوير البرمجيات يقوم فيه المطوّر بما يلي:
 
-1. **Write a Test**: Write a test for the next bit of functionality.
-2. **Run the Test and See It Fail**: Ensures the test detects the absence of functionality.
-3. **Write the Minimal Code to Pass the Test**: Implement just enough code to make the test pass.
-4. **Refactor**: Improve the code while keeping the tests passing.
-5. **Repeat**: Continue with the next functionality.
+1. **كتابة اختبار**: اكتب اختبارًا للجزء التالي من الوظيفة.
+2. **تشغيل الاختبار ورؤيته يفشل**: يضمن أن الاختبار يكتشف غياب الوظيفة.
+3. **كتابة أقل شيفرة تجعل الاختبار ينجح**: نفّذ ما يكفي فقط من الشيفرة لجعل الاختبار ينجح.
+4. **إعادة الهيكلة**: حسّن الشيفرة مع إبقاء الاختبارات ناجحة.
+5. **التكرار**: تابع مع الوظيفة التالية.
 
-This cycle is often referred to as **Red-Green-Refactor**.
+غالبًا ما تُسمّى هذه الدورة **أحمر-أخضر-إعادة هيكلة**.
 
-### Designing the Authentication System
+### تصميم نظام المصادقة {#designing-the-authentication-system}
 
-**Features:**
+**الميزات:**
 
-- **User Registration**: Allows users to create an account with a username and password.
-- **User Login**: Authenticates users and provides a JWT token.
-- **User Logout**: Invalidates the user’s session (for stateless JWT, this can be handled on the client-side).
+- **تسجيل المستخدم**: يتيح للمستخدمين إنشاء حساب باسم مستخدم وكلمة مرور.
+- **تسجيل دخول المستخدم**: يصادق على المستخدمين ويوفّر رمز JWT.
+- **تسجيل خروج المستخدم**: يُبطل جلسة المستخدم (بالنسبة لـ JWT عديم الحالة، يمكن التعامل مع ذلك في جهة العميل).
 
-**Components:**
+**المكوّنات:**
 
-- **Form Validation**: Ensuring user inputs meet criteria.
-- **Password Encryption**: Securely storing user passwords using hashing.
-- **JWT Token Handling**: Generating and verifying JSON Web Tokens for authentication.
+- **التحقق من النموذج**: ضمان أن مدخلات المستخدم تستوفي المعايير.
+- **تشفير كلمة المرور**: تخزين كلمات مرور المستخدمين بشكل آمن باستخدام التجزئة.
+- **التعامل مع رمز JWT**: توليد رموز JSON Web Tokens والتحقق منها لأغراض المصادقة.
 
-### Implementing the System with TDD
+### تنفيذ النظام باستخدام TDD {#implementing-the-system-with-tdd}
 
-#### User Registration
+#### تسجيل المستخدم {#user-registration}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Create `tests/unit/auth.test.js`:
+أنشئ `tests/unit/auth.test.js`:
 
 ```javascript
 // tests/unit/auth.test.js
@@ -143,24 +143,24 @@ describe('Auth Controller - Unit Tests', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test `validateRegistrationData` for valid and invalid inputs.
-- We test `hashPassword` to ensure it hashes the password correctly.
+- نختبر `validateRegistrationData` بمدخلات صالحة وأخرى غير صالحة.
+- نختبر `hashPassword` للتأكد من أنها تجزّئ كلمة المرور بشكل صحيح.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The tests fail because `validateRegistrationData` and `hashPassword` are not defined.
+تفشل الاختبارات لأن `validateRegistrationData` و`hashPassword` غير معرّفتين.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Create `src/controllers/authController.js`:
+أنشئ `src/controllers/authController.js`:
 
 ```javascript
 // src/controllers/authController.js
@@ -185,25 +185,25 @@ export async function hashPassword(password) {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The tests should pass.
+ينبغي أن تنجح الاختبارات.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-Ensure error messages are consistent and code is clean.
+تأكد من اتساق رسائل الخطأ ومن نظافة الشيفرة.
 
-#### User Login
+#### تسجيل دخول المستخدم {#user-login}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add to `tests/unit/auth.test.js`:
+أضف إلى `tests/unit/auth.test.js`:
 
 ```javascript
 import { verifyPassword, generateToken } from '../../src/controllers/authController';
@@ -234,24 +234,24 @@ describe('generateToken', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test `verifyPassword` for correct and incorrect passwords.
-- We test `generateToken` to ensure it creates a JWT token.
+- نختبر `verifyPassword` بكلمات مرور صحيحة وأخرى غير صحيحة.
+- نختبر `generateToken` للتأكد من أنها تُنشئ رمز JWT.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The tests fail because `verifyPassword` and `generateToken` are not defined.
+تفشل الاختبارات لأن `verifyPassword` و`generateToken` غير معرّفتين.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Update `src/controllers/authController.js`:
+حدّث `src/controllers/authController.js`:
 
 ```javascript
 import bcrypt from 'bcrypt';
@@ -270,40 +270,40 @@ export function generateToken(user) {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The tests should pass.
+ينبغي أن تنجح الاختبارات.
 
-##### Step 5: Refactor
+##### الخطوة 5: أعد الهيكلة
 
-Ensure the secret key is managed securely (e.g., using environment variables).
+تأكد من إدارة المفتاح السري بشكل آمن (مثلًا باستخدام متغيّرات البيئة).
 
-#### User Logout
+#### تسجيل خروج المستخدم {#user-logout}
 
-Since we’re using JWT tokens, logout can be handled on the client side by deleting the token. However, for server-side logout (e.g., blacklisting tokens), we’d need additional infrastructure. For simplicity, we’ll assume stateless JWT and focus on the client-side logout.
+بما أننا نستخدم رموز JWT، يمكن التعامل مع تسجيل الخروج في جهة العميل بحذف الرمز. لكن تسجيل الخروج في جهة الخادم (مثلًا بإدراج الرموز في قائمة سوداء) يتطلب بنية تحتية إضافية. للتبسيط، سنفترض أن JWT عديم الحالة ونركّز على تسجيل الخروج في جهة العميل.
 
-### Testing Focus Areas
+### مجالات التركيز في الاختبار {#testing-focus-areas}
 
-#### Unit Tests: Form Validation and Encryption Methods
+#### اختبارات الوحدات: التحقق من النماذج وطرق التشفير {#unit-tests-form-validation-and-encryption-methods}
 
-We’ve already written unit tests for:
+كتبنا بالفعل اختبارات وحدات لـ:
 
-- **Form Validation**: Ensuring that registration data meets the criteria.
-- **Encryption Methods**: Testing password hashing and verification.
+- **التحقق من النموذج**: ضمان أن بيانات التسجيل تستوفي المعايير.
+- **طرق التشفير**: اختبار تجزئة كلمة المرور والتحقق منها.
 
-#### Integration Tests: API Endpoints for Authentication
+#### اختبارات التكامل: نقاط نهاية API للمصادقة {#integration-tests-api-endpoints-for-authentication}
 
-We’ll write integration tests to test the API endpoints.
+سنكتب اختبارات تكامل لاختبار نقاط نهاية API.
 
-##### Step 1: Set Up the Express App
+##### الخطوة 1: أعدّ تطبيق Express
 
-Create `src/app.js`:
+أنشئ `src/app.js`:
 
 ```javascript
 // src/app.js
@@ -319,7 +319,7 @@ app.use('/api/auth', authRoutes);
 export default app;
 ```
 
-Create `src/routes/auth.js`:
+أنشئ `src/routes/auth.js`:
 
 ```javascript
 // src/routes/auth.js
@@ -334,7 +334,7 @@ router.post('/login', login);
 export default router;
 ```
 
-Update `src/controllers/authController.js`:
+حدّث `src/controllers/authController.js`:
 
 ```javascript
 // … previous imports and functions …
@@ -371,9 +371,9 @@ export async function login(req, res) {
 }
 ```
 
-##### Step 2: Write Integration Tests (Red)
+##### الخطوة 2: اكتب اختبارات التكامل (أحمر)
 
-Create `tests/integration/auth.integration.test.js`:
+أنشئ `tests/integration/auth.integration.test.js`:
 
 ```javascript
 // tests/integration/auth.integration.test.js
@@ -438,24 +438,24 @@ describe('Auth Routes - Integration Tests', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test the `/register` and `/login` endpoints.
-- We ensure that registration and login work as expected.
+- نختبر نقطتي النهاية `/register` و`/login`.
+- نضمن أن التسجيل وتسجيل الدخول يعملان كما هو متوقع.
 
-##### Step 3: Run the Test and See It Fail
+##### الخطوة 3: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The tests may fail due to `Username already exists` not being handled.
+قد تفشل الاختبارات لأن `Username already exists` غير معالَج.
 
-##### Step 4: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 4: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Update `register` function in `authController.js`:
+حدّث دالة `register` في `authController.js`:
 
 ```javascript
 export async function register(req, res) {
@@ -475,27 +475,27 @@ export async function register(req, res) {
 }
 ```
 
-##### Step 5: Run the Test Again
+##### الخطوة 5: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-All tests should pass.
+ينبغي أن تنجح كل الاختبارات.
 
-##### Step 6: Refactor
+##### الخطوة 6: أعد الهيكلة
 
-Consider moving the user store to a separate module or using a database.
+فكّر في نقل مخزن المستخدمين إلى وحدة منفصلة أو في استخدام قاعدة بيانات.
 
-#### Security Tests: Handling Authentication Tokens
+#### اختبارات الأمان: التعامل مع رموز المصادقة {#security-tests-handling-authentication-tokens}
 
-We need to ensure that tokens are handled securely.
+نحتاج إلى ضمان التعامل مع الرموز بشكل آمن.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add to `tests/integration/auth.integration.test.js`:
+أضف إلى `tests/integration/auth.integration.test.js`:
 
 ```javascript
 describe('Protected Routes', () => {
@@ -536,14 +536,14 @@ describe('Protected Routes', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test that a protected route can be accessed with a valid token.
-- We test that access is denied without a token or with an invalid token.
+- نختبر إمكانية الوصول إلى مسار محمي برمز صالح.
+- نختبر رفض الوصول دون رمز أو برمز غير صالح.
 
-##### Step 2: Implement Protected Route
+##### الخطوة 2: نفّذ المسار المحمي
 
-Update `src/app.js`:
+حدّث `src/app.js`:
 
 ```javascript
 // … previous code …
@@ -554,7 +554,7 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 });
 ```
 
-Create `src/middleware/authMiddleware.js`:
+أنشئ `src/middleware/authMiddleware.js`:
 
 ```javascript
 // src/middleware/authMiddleware.js
@@ -575,66 +575,66 @@ export function authenticateToken(req, res, next) {
 }
 ```
 
-##### Step 3: Run the Test Again
+##### الخطوة 3: شغّل الاختبار مرة أخرى
 
-Run the test:
-
-```bash
-npm run test
-```
-
-All tests should pass.
-
-##### Step 4: Refactor
-
-- Store the `SECRET_KEY` in environment variables.
-- Handle token expiration and refresh if necessary.
-
-### Running the Tests
-
-Run all tests using:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-Vitest will execute all tests in the `tests/` directory and report the results.
+ينبغي أن تنجح كل الاختبارات.
 
-### Conclusion
+##### الخطوة 4: أعد الهيكلة
 
-By following Test-Driven Development principles, we’ve built a basic authentication system with Express. We’ve written unit tests for form validation and encryption methods, integration tests for API endpoints, and security tests for handling authentication tokens. This approach ensures our application is reliable, secure, and behaves as expected.
+- خزّن `SECRET_KEY` في متغيّرات البيئة.
+- تعامل مع انتهاء صلاحية الرمز وتحديثه إن لزم.
 
-**Key Takeaways:**
+### تشغيل الاختبارات {#running-the-tests}
 
-- **TDD Workflow:** Writing tests first helps define expected behavior and leads to better-designed code.
-- **Vitest for Testing:** Vitest provides a fast and modern testing experience for JavaScript applications.
-- **Comprehensive Testing:** Combining unit, integration, and security tests ensures a robust application.
+شغّل كل الاختبارات باستخدام:
 
-### Additional Exercises
+```bash
+npm run test
+```
 
-To further enhance your authentication system and testing skills, consider implementing the following features:
+سينفّذ Vitest كل الاختبارات في دليل `tests/` ويبلّغ بالنتائج.
 
-1. **Password Reset Functionality** Implement password reset via email. Write tests to ensure the reset process is secure.
-  - Implement password reset via email.
-  - Write tests to ensure the reset process is secure.
-2. **Account Verification** Send a verification email upon registration. Write tests to verify that unverified accounts cannot log in.
-  - Send a verification email upon registration.
-  - Write tests to verify that unverified accounts cannot log in.
-3. **Role-Based Access Control** Implement roles (e.g., user, admin) and permissions. Write tests to ensure access control is enforced correctly.
-  - Implement roles (e.g., user, admin) and permissions.
-  - Write tests to ensure access control is enforced correctly.
-4. **Using a Database** Replace the in-memory user store with a database (e.g., MongoDB, PostgreSQL). Write tests that interact with the database, possibly using a test database.
-  - Replace the in-memory user store with a database (e.g., MongoDB, PostgreSQL).
-  - Write tests that interact with the database, possibly using a test database.
-5. **Session Management** Implement session management for token invalidation (e.g., blacklisting tokens). Write tests to ensure sessions are handled correctly.
-  - Implement session management for token invalidation (e.g., blacklisting tokens).
-  - Write tests to ensure sessions are handled correctly.
-6. **Input Sanitization** Ensure all inputs are sanitized to prevent injection attacks. Write tests to verify that the system is secure against such attacks.
-  - Ensure all inputs are sanitized to prevent injection attacks.
-  - Write tests to verify that the system is secure against such attacks.
-7. **Rate Limiting** Implement rate limiting to protect against brute-force attacks. Write tests to ensure rate limiting works as expected.
-  - Implement rate limiting to protect against brute-force attacks.
-  - Write tests to ensure rate limiting works as expected.
-8. **Security Auditing** Use tools to audit your code for security vulnerabilities. Address any issues found and write tests to prevent regressions.
-  - Use tools to audit your code for security vulnerabilities.
-  - Address any issues found and write tests to prevent regressions.
+### الخلاصة {#conclusion}
+
+باتّباع مبادئ التطوير الموجّه بالاختبارات، بنينا نظام مصادقة أساسيًا باستخدام Express. كتبنا اختبارات وحدات للتحقق من النماذج وطرق التشفير، واختبارات تكامل لنقاط نهاية API، واختبارات أمان للتعامل مع رموز المصادقة. يضمن هذا الأسلوب أن يكون تطبيقنا موثوقًا وآمنًا ويتصرّف كما هو متوقع.
+
+**الخلاصات الأساسية:**
+
+- **سير عمل TDD:** كتابة الاختبارات أولًا تساعد في تحديد السلوك المتوقع وتؤدي إلى شيفرة أفضل تصميمًا.
+- **Vitest للاختبار:** يوفّر Vitest تجربة اختبار سريعة وحديثة لتطبيقات JavaScript.
+- **اختبار شامل:** الجمع بين اختبارات الوحدات والتكامل والأمان يضمن تطبيقًا متينًا.
+
+### تمارين إضافية {#additional-exercises}
+
+لتعزيز نظام المصادقة ومهاراتك في الاختبار أكثر، فكّر في تنفيذ الميزات التالية:
+
+1. **وظيفة إعادة تعيين كلمة المرور** نفّذ إعادة تعيين كلمة المرور عبر البريد الإلكتروني. اكتب اختبارات لضمان أمان عملية إعادة التعيين.
+  - نفّذ إعادة تعيين كلمة المرور عبر البريد الإلكتروني.
+  - اكتب اختبارات لضمان أمان عملية إعادة التعيين.
+2. **التحقق من الحساب** أرسل بريدًا إلكترونيًا للتحقق عند التسجيل. اكتب اختبارات للتحقق من أن الحسابات غير المؤكدة لا تستطيع تسجيل الدخول.
+  - أرسل بريدًا إلكترونيًا للتحقق عند التسجيل.
+  - اكتب اختبارات للتحقق من أن الحسابات غير المؤكدة لا تستطيع تسجيل الدخول.
+3. **التحكم في الوصول القائم على الأدوار** نفّذ أدوارًا (مثل مستخدم، مدير) وأذونات. اكتب اختبارات لضمان فرض التحكم في الوصول بشكل صحيح.
+  - نفّذ أدوارًا (مثل مستخدم، مدير) وأذونات.
+  - اكتب اختبارات لضمان فرض التحكم في الوصول بشكل صحيح.
+4. **استخدام قاعدة بيانات** استبدل مخزن المستخدمين في الذاكرة بقاعدة بيانات (مثل MongoDB أو PostgreSQL). اكتب اختبارات تتفاعل مع قاعدة البيانات، ربما باستخدام قاعدة بيانات اختبار.
+  - استبدل مخزن المستخدمين في الذاكرة بقاعدة بيانات (مثل MongoDB أو PostgreSQL).
+  - اكتب اختبارات تتفاعل مع قاعدة البيانات، ربما باستخدام قاعدة بيانات اختبار.
+5. **إدارة الجلسات** نفّذ إدارة الجلسات لإبطال الرموز (مثل إدراجها في قائمة سوداء). اكتب اختبارات لضمان التعامل مع الجلسات بشكل صحيح.
+  - نفّذ إدارة الجلسات لإبطال الرموز (مثل إدراجها في قائمة سوداء).
+  - اكتب اختبارات لضمان التعامل مع الجلسات بشكل صحيح.
+6. **تعقيم المدخلات** تأكد من تعقيم كل المدخلات لمنع هجمات الحقن. اكتب اختبارات للتحقق من أن النظام آمن ضد مثل هذه الهجمات.
+  - تأكد من تعقيم كل المدخلات لمنع هجمات الحقن.
+  - اكتب اختبارات للتحقق من أن النظام آمن ضد مثل هذه الهجمات.
+7. **تحديد معدّل الطلبات** نفّذ تحديد معدّل الطلبات للحماية من هجمات القوة الغاشمة. اكتب اختبارات لضمان عمل تحديد معدّل الطلبات كما هو متوقع.
+  - نفّذ تحديد معدّل الطلبات للحماية من هجمات القوة الغاشمة.
+  - اكتب اختبارات لضمان عمل تحديد معدّل الطلبات كما هو متوقع.
+8. **تدقيق الأمان** استخدم أدوات لتدقيق شيفرتك بحثًا عن ثغرات أمنية. عالج أي مشكلات تجدها واكتب اختبارات لمنع التراجعات.
+  - استخدم أدوات لتدقيق شيفرتك بحثًا عن ثغرات أمنية.
+  - عالج أي مشكلات تجدها واكتب اختبارات لمنع التراجعات.

@@ -1,14 +1,14 @@
 ---
-title: "The Setup"
-lang: en
+title: "التهيئة"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-the-dom"
 ---
 
-Yes. Node runs JavaScript just like the browser. It’s also missing a bunch of stuff that you’ll normally find in your browser of choice—namely, the DOM.
+نعم. يشغّل Node JavaScript تمامًا كما يفعل المتصفح. لكنه يفتقد أيضًا مجموعة من الأشياء التي تجدها عادةً في متصفحك المفضّل—وهي DOM.
 
-## Using a DOM Library with Vitest
+## استخدام مكتبة DOM مع Vitest
 
-To use [JSDOM](https://www.npmjs.com/package/jsdom), you can set it as the environment for your tests.
+لاستخدام [JSDOM](https://www.npmjs.com/package/jsdom)، يمكنك ضبطها كبيئة لاختباراتك.
 
 ```javascript
 import { defineConfig } from 'vitest/config';
@@ -20,7 +20,7 @@ export default defineConfig({
 });
 ```
 
-Alternatively, you could choose to use [Happy DOM](https://www.npmjs.com/package/happy-dom).
+بدلًا من ذلك، يمكنك اختيار استخدام [Happy DOM](https://www.npmjs.com/package/happy-dom).
 
 ```javascript
 import { defineConfig } from 'vitest/config';
@@ -32,103 +32,103 @@ export default defineConfig({
 });
 ```
 
-You can also set the environment on a per-file basis at the top of your test file.
+يمكنك أيضًا ضبط البيئة لكل ملف على حدة في أعلى ملف اختبارك.
 
 ```javascript
 // @vitest-environment jsdom
 ```
 
-## What’s the Difference?
+## ما الفرق؟
 
-### TL;DR
+### باختصار
 
-- Choose **JSDOM** if you need **accuracy** and a more realistic browser environment for testing.
-- Choose **Happy DOM** if you need **speed** and don’t require full browser standards for your tests.
+- اختر **JSDOM** إذا كنت تحتاج إلى **الدقة** وبيئة متصفح أكثر واقعية للاختبار.
+- اختر **Happy DOM** إذا كنت تحتاج إلى **السرعة** ولا تتطلّب معايير متصفح كاملة لاختباراتك.
 
-| Feature | **JSDOM** | **Happy DOM** |
+| الميزة | **JSDOM** | **Happy DOM** |
 | --- | --- | --- |
-| **Focus** | Browser-like accuracy | Performance and speed |
-| **Performance** | Slower, more memory usage | Faster, low memory usage |
-| **API Coverage** | More comprehensive | Focuses on essential web APIs |
-| **Use Case** | Full browser simulation in tests | Lightweight testing with speed |
-| **Integration** | Popular in Jest, Mocha | Popular in Vitest, fast test environments |
-| **Best for** | Complex web apps, real-world browser behavior | Fast unit/integration tests, simple DOM |
+| **التركيز** | دقة تحاكي المتصفح | الأداء والسرعة |
+| **الأداء** | أبطأ، واستهلاك أكبر للذاكرة | أسرع، واستهلاك منخفض للذاكرة |
+| **تغطية API** | أشمل | تركّز على واجهات الويب الأساسية |
+| **حالة الاستخدام** | محاكاة متصفح كاملة في الاختبارات | اختبار خفيف مع السرعة |
+| **التكامل** | شائعة في Jest وMocha | شائعة في Vitest وبيئات الاختبار السريعة |
+| **الأنسب لـ** | تطبيقات ويب معقّدة، وسلوك متصفح واقعي | اختبارات وحدة/تكامل سريعة، وDOM بسيط |
 
-### Comparison Between **JSDOM** and **Happy DOM**
+### مقارنة بين **JSDOM** و**Happy DOM**
 
-Both **JSDOM** and **Happy DOM** are JavaScript libraries used to simulate the browser environment in a Node.js runtime, enabling server-side testing of web components and DOM interactions without a real browser. However, they have some key differences in terms of performance, feature set, and use cases.
+كل من **JSDOM** و**Happy DOM** مكتبتا JavaScript تُستخدمان لمحاكاة بيئة المتصفح في زمن تشغيل Node.js، بما يتيح اختبار مكوّنات الويب وتفاعلات DOM من جهة الخادم دون متصفح حقيقي. لكن بينهما بعض الفروق الجوهرية في الأداء ومجموعة الميزات وحالات الاستخدام.
 
-### Purpose & Usage
-
-#### JSDOM
-
-- A widely used tool that provides a complete, standards-compliant implementation of the DOM and web APIs in Node.js.
-- Focused on mimicking the browser environment as closely as possible.
-- Popular for testing libraries like **Jest** and **Vitest** when working with frameworks such as React, Vue, and Angular.
-- Best for tests that need a realistic browser-like environment.
-
-#### Happy DOM
-
-- A faster, lightweight alternative to JSDOM, designed for **speed**.
-- Primarily focused on performance, making it ideal for use in environments like **Vitest** where quick DOM manipulation and fast feedback loops are critical.
-- Good for simpler tests where speed is more important than strict adherence to web standards.
-- Optimized for minimal memory usage and rapid execution.
-
-### Performance
+### الغرض والاستخدام
 
 #### JSDOM
 
-- Known to be slower than Happy DOM due to its emphasis on accurately replicating the full browser environment.
-- Higher memory usage because of its detailed implementation of web APIs and the DOM.
-- May be slower for large test suites or performance-critical applications.
+- أداة واسعة الاستخدام توفّر تنفيذًا كاملًا متوافقًا مع المعايير لـDOM وواجهات الويب في Node.js.
+- تركّز على محاكاة بيئة المتصفح بأكبر قدر ممكن من الدقة.
+- شائعة في مكتبات الاختبار مثل **Jest** و**Vitest** عند العمل مع أطر مثل React وVue وAngular.
+- الأنسب للاختبارات التي تحتاج إلى بيئة واقعية تحاكي المتصفح.
 
 #### Happy DOM
 
-- Much **faster** than JSDOM due to its lightweight design and reduced complexity.
-- Optimized for **speed**, making it a better choice for large test suites or cases where performance is a priority.
-- Faster DOM manipulation and rendering, making it ideal for quick testing in a CI environment.
+- بديل أسرع وخفيف لـJSDOM، مصمّم من أجل **السرعة**.
+- تركّز في المقام الأول على الأداء، مما يجعلها مثالية للاستخدام في بيئات مثل **Vitest** حيث يكون التلاعب السريع بـDOM وحلقات التغذية الراجعة السريعة أمرين جوهريين.
+- جيدة للاختبارات الأبسط حيث تكون السرعة أهم من الالتزام الصارم بمعايير الويب.
+- مُحسَّنة لاستهلاك أقل قدر من الذاكرة وللتنفيذ السريع.
 
-### Browser API Support
+### الأداء
 
 #### JSDOM
 
-- Provides a more **comprehensive** implementation of web standards and browser APIs (e.g., DOM, CSSOM, Fetch API, etc.).
-- More accurate in emulating a browser-like experience, which is necessary when testing complex browser behaviors.
+- معروفة بأنها أبطأ من Happy DOM بسبب تركيزها على تكرار بيئة المتصفح الكاملة بدقة.
+- استهلاك أعلى للذاكرة بسبب تنفيذها المفصّل لواجهات الويب وDOM.
+- قد تكون أبطأ مع مجموعات الاختبارات الكبيرة أو التطبيقات الحسّاسة للأداء.
 
 #### Happy DOM
 
-- Focuses on a **subset** of essential browser APIs that are most commonly used in testing.
-- Less complete than JSDOM in terms of implementing the full browser API, but covers most common use cases.
-- For simpler web apps, Happy DOM may provide all the necessary features without the overhead of full standards compliance.
+- **أسرع** بكثير من JSDOM بسبب تصميمها الخفيف وتعقيدها المنخفض.
+- مُحسَّنة من أجل **السرعة**، مما يجعلها خيارًا أفضل لمجموعات الاختبارات الكبيرة أو الحالات التي يكون فيها الأداء أولوية.
+- تلاعب وتصيير أسرع لـDOM، مما يجعلها مثالية للاختبار السريع في بيئة CI.
 
-### Use Cases
+### دعم واجهات المتصفح
 
 #### JSDOM
 
-- **Best for projects** where you need a close approximation of the actual browser environment, especially when testing web applications or libraries that heavily rely on advanced browser features.
-- Ideal for comprehensive **end-to-end testing** that simulates real-world browser behavior.
+- توفّر تنفيذًا أكثر **شمولًا** لمعايير الويب وواجهات المتصفح (مثل DOM وCSSOM وFetch API وغيرها).
+- أكثر دقة في محاكاة تجربة تحاكي المتصفح، وهو أمر ضروري عند اختبار سلوكيات متصفح معقّدة.
 
 #### Happy DOM
 
-- **Best for fast testing** environments where performance is crucial (e.g., unit tests, simple DOM manipulations).
-- Often used in libraries like **Vitest** for **lightweight, speedy testing** in web projects.
+- تركّز على **مجموعة فرعية** من واجهات المتصفح الأساسية الأكثر استخدامًا في الاختبار.
+- أقل اكتمالًا من JSDOM من حيث تنفيذ واجهة المتصفح الكاملة، لكنها تغطي معظم حالات الاستخدام الشائعة.
+- بالنسبة لتطبيقات الويب الأبسط، قد توفّر Happy DOM كل الميزات اللازمة دون عبء الالتزام الكامل بالمعايير.
 
-### Community & Ecosystem
+### حالات الاستخدام
 
 #### JSDOM
 
-- A well-established tool with a large user base and strong integration into popular testing frameworks like **Jest** and **Mocha**.
-- Regularly updated to stay compatible with the latest web standards.
+- **الأنسب للمشاريع** التي تحتاج فيها إلى تقريب شديد من بيئة المتصفح الفعلية، خصوصًا عند اختبار تطبيقات أو مكتبات ويب تعتمد اعتمادًا كبيرًا على ميزات متصفح متقدمة.
+- مثالية لـ**اختبار شامل من طرف إلى طرف** يحاكي سلوك المتصفح في العالم الحقيقي.
 
 #### Happy DOM
 
-- Gaining popularity due to its integration with **Vitest** and its speed benefits.
-- Still developing its ecosystem but is growing in adoption, especially for performance-sensitive projects.
+- **الأنسب لبيئات الاختبار السريع** حيث يكون الأداء حاسمًا (مثل اختبارات الوحدة والتلاعب البسيط بـDOM).
+- تُستخدم غالبًا في مكتبات مثل **Vitest** من أجل **اختبار خفيف وسريع** في مشاريع الويب.
 
-## A Couple of Gotchas
+### المجتمع والمنظومة
 
-Real talk—nothing’s perfect. There are a few things to keep in mind when running tests in browser mode:
+#### JSDOM
 
-1. **It’s still not a real browser.** You’re not getting every subtlety of a specific Chrome or Firefox version. Remember, this is JSDOM-ified, meaning it’s designed to act like a browser rather than being one.
-2. **Performance.** Running tests with `jsdom` can be a bit slower than straight-up Node tests. It’s the cost of emulating browser stuff.
-3. **Browser-specific issues.** Just because something works in Vitest browser mode doesn’t mean it’ll work in *all* browsers. (I’m looking at you, Internet Explorer.)
+- أداة راسخة ذات قاعدة مستخدمين كبيرة وتكامل قوي مع أطر الاختبار الشائعة مثل **Jest** و**Mocha**.
+- تُحدَّث بانتظام لتبقى متوافقة مع أحدث معايير الويب.
+
+#### Happy DOM
+
+- تكتسب شعبية بفضل تكاملها مع **Vitest** ومزايا سرعتها.
+- لا تزال منظومتها تتطوّر لكن تبنّيها ينمو، خصوصًا في المشاريع الحسّاسة للأداء.
+
+## بعض المزالق
+
+بصراحة—لا شيء مثالي. هناك بضعة أمور يجب أن تضعها في حسبانك عند تشغيل الاختبارات في وضع المتصفح:
+
+1. **ما زال متصفحًا غير حقيقي.** أنت لا تحصل على كل تفصيلة دقيقة من إصدار Chrome أو Firefox معيّن. تذكّر أن هذا «مُحوَّل إلى JSDOM»، أي أنه مصمّم ليتصرّف كمتصفح بدلًا من أن يكون متصفحًا.
+2. **الأداء.** قد يكون تشغيل الاختبارات بـ`jsdom` أبطأ قليلًا من اختبارات Node المباشرة. إنها تكلفة محاكاة أمور المتصفح.
+3. **مشكلات خاصة بالمتصفحات.** مجرد أن شيئًا يعمل في وضع متصفح Vitest لا يعني أنه سيعمل في *كل* المتصفحات. (أحدّق إليك، Internet Explorer.)

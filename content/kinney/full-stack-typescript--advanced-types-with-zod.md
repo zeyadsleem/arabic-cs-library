@@ -1,10 +1,10 @@
 ---
-title: "Advanced Types with Zod"
-lang: en
+title: "أنواع متقدمة مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/advanced-types-with-zod"
 ---
 
-## Literals
+## القيم الحرفية (Literals)
 
 ```typescript
 const literalSchema = z.literal('hello');
@@ -13,11 +13,11 @@ literalSchema.parse('hello'); // Valid
 // literalSchema.parse("world"); // Throws ZodError: Expected literal 'hello', received 'world'
 ```
 
-## `z.enum()` for Fixed Sets
+## `z.enum()` للمجموعات الثابتة
 
-When you only allow a few valid string values, define them in an enum schema.
+عندما تسمح فقط بقيم نصية قليلة صالحة، عرّفها في مخطط تعداد.
 
-### Example
+### مثال
 
 ```typescript
 const colorEnum = z.enum(['RED', 'GREEN', 'BLUE']);
@@ -29,13 +29,13 @@ colorEnum.parse('RED');
 colorEnum.parse('PURPLE');
 ```
 
-### Why Not Use `.literal()` Union?
+### لماذا لا تستخدم اتحاد `.literal()`؟
 
-- `z.enum(["RED", "GREEN", "BLUE"])` is more direct for small sets of strings.
-- TS can also interpret it as a union of those string literals.
-- If you have a large set, union is equally valid, just more verbose.
+- `z.enum(["RED", "GREEN", "BLUE"])` أدنى مباشرةً للمجموعات الصغيرة من النصوص.
+- يستطيع TS أيضًا تفسيره كاتحاد لتلك القيم النصية الحرفية.
+- إن كانت لديك مجموعة كبيرة، فالانحاد صالح بالقدر نفسه، لكنه أكثر إسهابًا فقط.
 
-## Tuples
+## الصفوف (Tuples)
 
 ```typescript
 const tupleSchema = z.tuple([z.string(), z.number()]);
@@ -45,7 +45,7 @@ tupleSchema.parse(['hello', 123]); // Valid
 // tupleSchema.parse(["hello"]); // Throws ZodError: Expected tuple to have 2 elements, but got 1
 ```
 
-## Unions
+## الاتحادات (Unions)
 
 ```typescript
 const stringOrNumberSchema = z.union([z.string(), z.number()]);
@@ -55,7 +55,7 @@ stringOrNumberSchema.parse(123); // Valid
 // stringOrNumberSchema.parse(true);  // Throws ZodError: Expected string | number, received boolean
 ```
 
-## Intersections
+## التقاطعات (Intersections)
 
 ```typescript
 const stringSchema = z.object({ a: z.string() });
@@ -66,9 +66,9 @@ intersectionSchema.parse({ a: 'hello', b: 123 }); // Valid
 // intersectionSchema.parse({ a: "hello" }); // Throws ZodError: Required at 'b'
 ```
 
-### Reusable Schema Components with Unions
+### مكوّنات مخططات قابلة لإعادة الاستخدام مع الاتحادات
 
-Create reusable schema components by defining schemas as variables or functions. This promotes modularity and reduces code duplication.
+أنشئ مكوّنات مخططات قابلة لإعادة الاستخدام بتعريف المخططات كمتغيّرات أو دوال. وهذا يعزّز المعيارية ويقلّل تكرار الشيفرة.
 
 ```typescript
 const baseUserSchema = z.object({
@@ -89,11 +89,11 @@ const adminSchema = baseUserSchema.extend({
 const userSchema = z.union([customerSchema, adminSchema]); // Combine reusable schemas
 ```
 
-## Discriminated Unions
+## الاتحادات المُميَّزة (Discriminated Unions)
 
-When your data has a known “discriminator” field, `z.discriminatedUnion()` is more efficient (and more explicit) than normal unions.
+عندما تحتوي بياناتك على حقل «مُميِّز» معروف، يكون `z.discriminatedUnion()` أكفأ (وأوضح) من الاتحادات العادية.
 
-### Example: `type` or `kind` as the Discriminator
+### مثال: `type` أو `kind` كمُميِّز
 
 ```typescript
 import { z } from 'zod';
@@ -117,20 +117,20 @@ userSchema.parse({
 });
 ```
 
-### Benefits
+### الفوائد
 
-- **Performance**: Zod can skip checking every union branch once it sees the discriminator.
-- **Clarity**: If your input object’s `type` or `kind` is incorrect, you’ll get an immediate error.
+- **الأداء**: يستطيع Zod تجاوز فحص كل فرع من فروع الاتحاد بمجرد رؤية المُميِّز.
+- **الوضوح**: إذا كان `type` أو `kind` في كائن مدخلك غير صحيح، فستحصل على خطأ فوري.
 
-## `never`, `unknown`, and `any`
+## `never` و`unknown` و`any`
 
-Zod includes special schemas that mirror TypeScript’s built-in utility types:
+يضمّ Zod مخططات خاصة تحاكي الأنواع المساعدة المدمجة في TypeScript:
 
-- `z.never()` — always fails. If you see `z.never()`, that property can *never* validly exist.
-- `z.unknown()` — anything can pass, but the final type is `unknown`. Good for storing data you won’t interact with directly.
-- `z.any()` — anything can pass *and* the final type is `any`. Rarely recommended, but can be a last resort if you absolutely can’t type something.
+- `z.never()` — يفشل دائمًا. فإذا رأيت `z.never()`، فذلك الخاصية لا يمكن أن توجد بصورة صالحة *أبدًا*.
+- `z.unknown()` — يمكن لأي شيء أن يمرّ، لكن النوع النهائي هو `unknown`. جيد لتخزين بيانات لن تتفاعل معها مباشرةً.
+- `z.any()` — يمكن لأي شيء أن يمرّ *و* النوع النهائي هو `any`. نادرًا ما يُنصح به، لكنه قد يكون آخر ملاذ إن لم تستطع تنميط شيء ما إطلاقًا.
 
-### Example
+### مثال
 
 ```typescript
 const exoticSchema = z.object({
@@ -140,19 +140,19 @@ const exoticSchema = z.object({
 });
 ```
 
-**Pro Tip**: Lean on strong typing as much as possible. `z.unknown()` and `z.any()` can be necessary but generally reduce type safety.
+**نصيحة احترافية**: اعتمد على التنميط القوي قدر الإمكان. فقد يكون `z.unknown()` و`z.any()` ضروريين، لكنهما يقلّلان أمان الأنواع عمومًا.
 
-## Strict vs. Passthrough vs. Strip
+## الصرامة مقابل التمرير مقابل النزع
 
-When validating objects, Zod handles *extra/unknown keys* differently depending on the mode:
+عند التحقّق من الكائنات، يتعامل Zod مع *المفاتيح الإضافية/المجهولة* بطرق مختلفة حسب النمط:
 
-### Strip (default)
+### النزع (افتراضي)
 
-### Strict
+### الصرامة {#strict}
 
-### Passthrough
+### التمرير
 
-### Example
+### مثال
 
 ```typescript
 const baseObj = z.object({ name: z.string() });
@@ -174,6 +174,6 @@ baseObj.parse({ name: 'Zod', age: 99 });
 
 > **Zod v4**
 >
-> In Zod v4, `.strict()` and `.passthrough()` still work, but the preferred approach is to use the top-level constructors `z.strictObject({...})` and `z.looseObject({...})` when defining new schemas.
+> في Zod v4، ما زال `.strict()` و`.passthrough()` يعملان، لكن المقاربة المفضّلة هي استخدام البانيين على المستوى الأعلى `z.strictObject({...})` و`z.looseObject({...})` عند تعريف مخططات جديدة.
 
-Use the mode that best suits your data. Strict is good when you want to ensure no unexpected fields slip in; passthrough is handy if you want to keep them for logging or debugging.
+استخدم النمط الذي يناسب بياناتك أكثر. الصرامة جيدة عندما تريد ضمان عدم تسلّل حقول غير متوقعة؛ والتمرير مفيد إن أردت الاحتفاظ بها للّوغنة أو التصحيح.

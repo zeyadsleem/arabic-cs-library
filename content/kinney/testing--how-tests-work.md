@@ -1,22 +1,22 @@
 ---
-title: "How Tests Work"
-lang: en
+title: "كيف تعمل الاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/testing/how-tests-work"
 ---
 
-> **Steve’s First Rule of Testing**
+> **قاعدة ستيف الأولى في الاختبار**
 >
-> Your tests don’t pass because your code works. Your tests pass because code doesn’t *not* work.
+> لا تنجح اختباراتك لأن شيفرتك تعمل. بل تنجح اختباراتك لأن الشيفرة لا *تعمل بشكل خاطئ*.
 
-A test passes for one reason: **Because it didn’t fail**.
+ينجح الاختبار لسبب واحد: **لأنه لم يفشل**.
 
-These seems banal, but it’ll be important later, so I’m going to say it again and again: There is *no such thing* as a passing test. There are *only* tests that didn’t fail. It’s a subtle but important distinction.
+يبدو هذا تافهًا، لكنه سيكون مهمًا لاحقًا، لذا سأقولها مرارًا وتكرارًا: لا وجود لشيء اسمه اختبار ناجح. هناك *فقط* اختبارات لم تفشل. إنه تمييز دقيق لكنه مهم.
 
-This is one of the big reasons why people will try to tell you on [Test Driver Development](https://stevekinney.com/courses/testing/test-driven-development). The basic premise is that if can start out with a failing test and then make it pass then you can be *pretty confident* that you don’t have a false positive on your hands.
+هذا أحد الأسباب الكبيرة التي تجعل الناس يحاولون إقناعك بـ[التطوير المدفوع بالاختبارات](https://stevekinney.com/courses/testing/test-driven-development). الفكرة الأساسية هي أنه إذا استطعت البدء باختبار فاشل ثم جعلته ينجح، فيمكنك أن تكون *واثقًا جدًا* بأنك لا تواجه نتيجة إيجابية كاذبة.
 
-If we think about how a test suite works, it’s something that runs your code and keeps track of the times where an error was thrown. An `expect` that didn’t get what it expects throws an error, which fails your test. If your test passes, it’s not because there is something inherently correct about your code. There just isn’t anything inherently *wrong*.
+إذا فكّرنا في كيفية عمل مجموعة الاختبارات، فهي شيء يشغّل شيفرتك ويتتبّع المرات التي رُمي فيها خطأ. فالـ`expect` الذي لم يحصل على ما يتوقّعه يرمي خطأً، وهذا يُفشل اختبارك. وإذا نجح اختبارك، فليس ذلك لأن هناك شيئًا صحيحًا في جوهر شيفرتك. بل ببساطة لا يوجد فيها شيء *خاطئ* في جوهرها.
 
-This test will obviously fail.
+من الواضح أن هذا الاختبار سيفشل.
 
 ```javascript
 it('should fail', () => {
@@ -24,7 +24,7 @@ it('should fail', () => {
 });
 ```
 
-Interestingly, this test will *also* fail.
+ومن المثير للاهتمام أن هذا الاختبار سيفشل *أيضًا*.
 
 ```javascript
 it('should fail', () => {
@@ -32,7 +32,7 @@ it('should fail', () => {
 });
 ```
 
-At the same time, this test will pass.
+وفي الوقت نفسه، سينجح هذا الاختبار.
 
 ```javascript
 it('should pass', () => {
@@ -41,7 +41,7 @@ it('should pass', () => {
 });
 ```
 
-What we can summise—outside of the fact that I spelled it ou in that second test there is that a test fails when an error is thrown. This means that if we got *really* bored, we *could* write our own super naïve version of `expect` that is missing a lot of the niceities of the one provided by Vitest or Jest or whatever.
+ما يمكننا استنتاجه—بعيدًا عن أنني أخطأت في كتابة ذلك في الاختبار الثاني—هو أن الاختبار يفشل عندما يُرمى خطأ. وهذا يعني أنه لو أصابنا *ملل شديد*، *لأمكننا* كتابة نسخة ساذجة جدًا من `expect` تفتقد الكثير من مزايا النسخة التي يوفّرها Vitest أو Jest أو أيًا كان.
 
 ```javascript
 const expect = (a) => {
@@ -55,13 +55,13 @@ const expect = (a) => {
 };
 ```
 
-Luckily, we don’t need to do that. Almost every test runner under the sun comes with either an assertion or expectation libary. And the only one that I can think of, [Mocha](https://mochajs.org/), has a sibling, [Chai](https://www.chaijs.com/). Given their names, one is left to assume that they’re intended to be used together.
+لحسن الحظ، لسنا بحاجة إلى ذلك. فكل مُشغّل اختبارات تحت الشمس تقريبًا يأتي مع مكتبة تحقّق أو توقّع. والوحيد الذي يمكنني التفكير فيه، [Mocha](https://mochajs.org/)، له شقيق هو [Chai](https://www.chaijs.com/). ونظرًا لأسمائهما، يُفترض المرء أنهما مصمّمان للاستخدام معًا.
 
-In fact, Vitest’s assertion library *is* Chai as you can see [here](https://github.com/vitest-dev/vitest/blob/1800167e4608327f335bc136f41543403486cfef/packages/vitest/package.json#L160).
+في الواقع، مكتبة التحقّق في Vitest *هي* Chai كما ترى [هنا](https://github.com/vitest-dev/vitest/blob/1800167e4608327f335bc136f41543403486cfef/packages/vitest/package.json#L160).
 
-## Insist that a Test Fails
+## الإصرار على فشل الاختبار
 
-I don’t ever use this one, but I’m sure it’s there for a reason and maybe it’ll be useful for you. You can explicitly call out that you want a test to fail.
+لا أستخدم هذا أبدًا، لكنني متأكد من أن له سببًا للوجود، وربما يكون مفيدًا لك. يمكنك التصريح صراحةً بأنك تريد أن يفشل الاختبار.
 
 ```javascript
 test.fails('works with "test" as well', () => {
@@ -69,18 +69,18 @@ test.fails('works with "test" as well', () => {
 });
 ```
 
-If you want me to provide a rationale for why and when you’d use this, here’s the best that I have for you. Your tests will pass for **one reason**: *None of your assertions failed*. This is by design, so there is no use complaining about it.
+إن أردت أن أقدّم لك تبريرًا لسبب ومتى تستخدم هذا، فهذا أفضل ما لديّ. ستنجح اختباراتك **لسبب واحد**: *لم يفشل أي من تحقّقاتك*. هذا بالتصميم، فلا فائدة من الشكوى منه.
 
-There is a catch of course; did your test pass because:
+هناك مأزق بالطبع؛ هل نجح اختبارك لأن:
 
-- all of your assertions passed,
-- or because *none* of them failed?
+- كل تحقّقاتك نجحت،
+- أم لأن *أيًا* منها لم يفشل؟
 
-All a test runner *really* does is run your code and keep track of every time an error is thrown. A failing test throws an error. So, the logic stands that if no error was thrown, then the test passed.
+كل ما يفعله مُشغّل الاختبارات *فعليًا* هو تشغيل شيفرتك وتتبّع كل مرة يُرمى فيها خطأ. والاختبار الفاشل يرمي خطأً. إذن يستنتج المنطق أنه إن لم يُرمَ أي خطأ، فقد نجح الاختبار.
 
-## Some Additional Nuances
+## بعض الفروق الدقيقة الإضافية
 
-This seems pretty straight-forward until we remember the one thing—aside from the DOM—that makes *everything* in JavaScript hard: **asynchrony**. This is particularly insidious with asynchronous code.
+يبدو هذا واضحًا إلى أن نتذكّر الشيء الوحيد—إلى جانب DOM—الذي يجعل *كل شيء* في JavaScript صعبًا: **اللاتزامن**. وهذا خطير بشكل خاص مع الشيفرة غير المتزامنة.
 
 ```javascript
 it('it will pass, unfortunately', () => {
@@ -90,7 +90,7 @@ it('it will pass, unfortunately', () => {
 });
 ```
 
-It doesn’t fail because asynchronous code is hard. But, if we annotate with the specific expectation that it fails, we can *at least* get some feedback.
+إنه لا يفشل لأن الشيفرة غير المتزامنة صعبة. لكن إذا أضفنا تعليقًا يتضمّن التوقّع المحدّد بفشله، فيمكننا *على الأقل* الحصول على بعض التغذية الراجعة.
 
 ```javascript
 test.fails('works with "test" as well', () => {
@@ -100,7 +100,7 @@ test.fails('works with "test" as well', () => {
 });
 ```
 
-We’ll talk more about this in the section on [testing asynchronous code](https://stevekinney.com/courses/testing/testing-asynchronous-code), but if your code returns a promise, then Vitest will wait for that promise to resolve.
+سنتحدّث أكثر عن هذا في قسم [اختبار الشيفرة غير المتزامنة](https://stevekinney.com/courses/testing/testing-asynchronous-code)، لكن إذا أعادت شيفرتك وعدًا (promise)، فسينتظر Vitest حتى يُحلّ ذلك الوعد.
 
 ```typescript
 test('works with "test" as well', () => {
@@ -114,18 +114,18 @@ test('works with "test" as well', () => {
 });
 ```
 
-## Expect Expectation
+## توقّع التوقّع
 
-If you *really* want to make sure that your tests aren’t just passing because they’re not failing, you can expect that there should be one or more assertions in your test.
+إذا *أردت حقًا* التأكّد من أن اختباراتك لا تنجح لمجرد أنها لا تفشل، فيمكنك توقّع وجود تحقّق واحد أو أكثر في اختبارك.
 
 ```typescript
 expect.hasAssertions();
 ```
 
-Alternatively, you can expect a given number of assertions.
+بدلًا من ذلك، يمكنك توقّع عدد محدّد من التحقّقات.
 
 ```typescript
 expect.assertions(1);
 ```
 
-This will come in handy when we talk about [testing asynchronous code](https://stevekinney.com/courses/testing/testing-asynchronous-code), but first let’s dig a little bit deeper in [Beyond Strict Equality](https://stevekinney.com/courses/testing/beyond-strict-equality).
+سيأتي هذا مفيدًا عندما نتحدّث عن [اختبار الشيفرة غير المتزامنة](https://stevekinney.com/courses/testing/testing-asynchronous-code)، لكن أولًا لنعمّق قليلًا في [ما بعد المساواة الصارمة](https://stevekinney.com/courses/testing/beyond-strict-equality).

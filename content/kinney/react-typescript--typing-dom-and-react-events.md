@@ -1,16 +1,16 @@
 ---
-title: "Typing DOM and React Events"
-lang: en
+title: "نمطجة أحداث DOM وأحداث React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typing-dom-and-react-events"
 ---
 
-Event handling is where React meets the messiness of user interaction—clicks, keystrokes, form submissions, and all the chaos that makes web apps feel alive. TypeScript can help you tame this complexity with precise event handler typing, but only if you know which types to use when. Let’s explore how to type React events properly so your handlers work predictably and your IDE becomes your ally instead of your adversary.
+معالجة الأحداث هي المكان الذي تلتقي فيه React بفوضى تفاعل المستخدم — النقرات وضغطات المفاتيح وإرسال النماذج وكل الفوضى التي تجعل تطبيقات الويب تبدو حيّة. يمكن لـ TypeScript مساعدتك في ترويض هذا التعقيد عبر نمطجة دقيقة لمعالِج الأحداث، لكن ذلك فقط إن كنت تعرف أي الأنواع تستخدم ومتى. لنستكشف كيف تنمّط أحداث React بشكل صحيح فتعمل معالِجاتك على نحو يمكن التنبؤ به ويصبح محرّرك البرمجي حليفًا لك لا خصمًا.
 
-React wraps native DOM events in `SyntheticEvent` objects to provide cross-browser compatibility and additional functionality. While this abstraction is mostly invisible during development, it becomes very visible when you’re trying to satisfy TypeScript’s type checker. The good news? Once you learn the patterns, event typing becomes second nature.
+تلفّ React أحداث DOM الأصلية داخل كائنات `SyntheticEvent` لتوفّر التوافق بين المتصفحات ووظائف إضافية. ورغم أن هذا التجريد غير مرئي غالبًا أثناء التطوير، إلا أنه يظهر بوضوح تام حين تحاول إرضاء مدقّق أنواع TypeScript. والخبر الجيد؟ حين تتعلّم الأنماط، تصبح نمطجة الأحداث أمرًا بديهيًا.
 
-## The Foundation: Understanding SyntheticEvent
+## الأساس: فهم SyntheticEvent
 
-Every React event handler receives a `SyntheticEvent`—React’s wrapper around native DOM events. These synthetic events have the same interface as native events but with guaranteed cross-browser consistency.
+يستقبل كل معالِج أحداث في React كائن `SyntheticEvent` — وهو غلاف React لأحداث DOM الأصلية. لهذه الأحداث الاصطناعية الواجهة نفسها التي للأحداث الأصلية لكن باتّساق مضمون بين المتصفحات.
 
 ```typescript
 import { SyntheticEvent } from 'react';
@@ -28,11 +28,11 @@ function Button() {
 }
 ```
 
-While `SyntheticEvent` works for basic cases, you’ll usually want more specific types to access event-specific properties and get better IntelliSense.
+رغم أن `SyntheticEvent` يصلح للحالات الأساسية، فغالبًا ما ستحتاج إلى أنواع أدقّ للوصول إلى الخصائص الخاصة بالحدث والحصول على IntelliSense أفضل.
 
-## Mouse Events: Clicks, Hovers, and More
+## أحداث الفأرة: نقرات وتحوّمات والمزيد
 
-Mouse events are probably the most common events you’ll handle. React provides specific types for different mouse interactions:
+أحداث الفأرة على الأرجح أكثر الأحداث التي ستتعامل معها. توفّر React أنواعًا محدّدة للتفاعلات المختلفة مع الفأرة:
 
 ```typescript
 import { MouseEvent } from 'react';
@@ -68,13 +68,13 @@ function InteractiveButton() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Use `event.currentTarget` instead of `event.target` when you need the element that the event handler is attached to. `event.target` gives you the element that triggered the event (which might be a child element).
+> استخدم `event.currentTarget` بدلًا من `event.target` حين تحتاج إلى العنصر الذي مُرفق به معالِج الحدث. أما `event.target` فيعطيك العنصر الذي أطلق الحدث (قد يكون عنصرًا فرعيًا).
 
-## Keyboard Events: Beyond Just “Press Enter”
+## أحداث لوحة المفاتيح: ما هو أبعد من مجرد «اضغط Enter»
 
-Keyboard events are essential for accessibility and power-user workflows. TypeScript helps you handle them correctly:
+أحداث لوحة المفاتيح أساسية لإمكانية الوصول (accessibility) ولمسارات عمل المستخدمين المحترفين. يساعدك TypeScript على التعامل معها بشكل صحيح:
 
 ```typescript
 import { KeyboardEvent } from 'react';
@@ -118,13 +118,13 @@ function KeyboardInput() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> `onKeyPress` is deprecated in favor of `onKeyDown` for most use cases. Use `onKeyDown` for key detection and `onKeyUp` for actions that should happen when keys are released.
+> `onKeyPress` مهجور لصالح `onKeyDown` في معظم حالات الاستخدام. استخدم `onKeyDown` لكشف المفاتيح و`onKeyUp` للإجراءات التي ينبغي أن تحدث عند إفلات المفاتيح.
 
-## Form Events: The Bread and Butter
+## أحداث النماذج: الخبز والزبدة
 
-Form handling is where proper event typing really shines. You’ll work with form submissions, input changes, and focus events regularly:
+التعامل مع النماذج هو حيث تبرز نمطجة الأحداث الصحيحة. ستتعامل بانتظام مع إرسال النماذج وتغيّر حقول الإدخال وأحداث التركيز:
 
 ```typescript
 import { FormEvent, ChangeEvent, FocusEvent } from 'react';
@@ -200,9 +200,9 @@ function LoginForm() {
 }
 ```
 
-## Handling Different Form Elements
+## التعامل مع عناصر النماذج المختلفة
 
-Different form elements have different event types. Here’s how to handle the common ones correctly:
+لكل عنصر في النماذج أنواع أحداث مختلفة. إليك كيفية التعامل مع العناصر الشائعة بشكل صحيح:
 
 ```typescript
 import { ChangeEvent } from 'react';
@@ -243,9 +243,9 @@ function FormElementExamples() {
 }
 ```
 
-## Advanced: Generic Event Handlers
+## متقدّم: معالِج أحداث عامة
 
-Sometimes you want to write reusable event handlers that work with multiple element types. TypeScript generics make this possible:
+أحيانًا تريد كتابة معالِج أحداث قابل لإعادة الاستخدام يعمل مع عدة أنواع من العناصر. المعاملات العامة (generics) في TypeScript تجعل ذلك ممكنًا:
 
 ````typescript
 import { ChangeEvent } from 'react';
@@ -389,11 +389,11 @@ function EventDelegationExample() {
 }
 ````
 
-## Common Patterns and Best Practices
+## الأنماط الشائعة وأفضل الممارسات
 
-Here are some patterns you’ll use regularly when typing React events:
+إليك بعض الأنماط التي ستستخدمها بانتظام عند نمطجة أحداث React:
 
-### Extract Event Handlers for Reusability
+### استخراج معالِج الأحداث لإعادة الاستخدام
 
 ```typescript
 // ✅ Extract handlers into custom hooks or separate functions
@@ -426,7 +426,7 @@ function MyForm() {
 }
 ```
 
-### Type Event Handlers Inline When Simple
+### نمطج معالِج الأحداث داخل السطر عند البساطة
 
 ```typescript
 function SimpleComponent() {
@@ -446,7 +446,7 @@ function SimpleComponent() {
 }
 ```
 
-### Handle Async Operations Safely
+### التعامل الآمن مع العمليات غير المتزامنة
 
 ```typescript
 import { FormEvent } from 'react';
@@ -490,9 +490,9 @@ async function submitFormData(data: FormData): Promise<void> {
 }
 ```
 
-## Composition Events: Supporting International Input
+## أحداث التركيب (Composition): دعم الإدخال الدولي
 
-For applications that need to support international users, composition events are crucial for proper text input handling, especially for languages that use input method editors (IMEs):
+بالنسبة إلى التطبيقات التي تحتاج إلى دعم المستخدمين الدوليين، تكون أحداث التركيب (composition events) حيوية للتعامل الصحيح مع إدخال النص، ولا سيما للغات التي تستخدم محرّكات الإدخال المنهجي (IMEs):
 
 ```typescript
 import { CompositionEvent, ChangeEvent } from 'react';
@@ -540,13 +540,13 @@ function InternationalInput() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Always check the `isComposing` state before processing input changes in international applications to avoid interfering with IME input methods.
+> تحقّق دائمًا من حالة `isComposing` قبل معالجة تغيّرات الإدخال في التطبيقات الدولية تفاديًا للتداخل مع طرق إدخال IME.
 
-## Drag and Drop Events: File Uploads Made Simple
+## أحداث السحب والإفلات: رفع الملفات ببساطة
 
-Drag and drop events are perfect for creating intuitive file upload interfaces:
+أحداث السحب والإفلات مثالية لإنشاء واجهات رفع ملفات بديهية:
 
 ```typescript
 import { DragEvent } from 'react';
@@ -620,11 +620,11 @@ function FileDropZone() {
 }
 ```
 
-## Real World Use Cases™
+## حالات استخدام من العالم الحقيقي™
 
-Let’s look at some practical scenarios where proper event typing saves the day:
+لننظر إلى بعض السيناريوهات العملية التي تنقذ فيها نمطجة الأحداث الصحيحة الموقف:
 
-### Building a Search Component with Debounced Input
+### بناء مكوّن بحث بإدخال مؤجَّل
 
 ```typescript
 import { ChangeEvent, KeyboardEvent } from 'react';
@@ -678,7 +678,7 @@ function SearchInput({ onSearch, placeholder = 'Search...', debounceMs = 300 }: 
 }
 ```
 
-### Modal with Proper Escape Key Handling
+### نافذة منبثقة مع معالجة صحيحة لمفتاح Escape
 
 ```typescript
 import { KeyboardEvent, MouseEvent } from 'react';
@@ -744,24 +744,24 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 }
 ```
 
-## Event Type Reference
+## مرجع أنواع الأحداث
 
-Here’s a quick reference for the most common React event types:
+إليك مرجعًا سريعًا لأشهر أنواع أحداث React:
 
-| Event Type | Usage | Element Types |
+| نوع الحدث | الاستخدام | أنواع العناصر |
 | --- | --- | --- |
-| `MouseEvent<T>` | Clicks, mouse movement | `HTMLButtonElement`, `HTMLDivElement`, etc. |
-| `KeyboardEvent<T>` | Key presses | `HTMLInputElement`, `HTMLTextAreaElement` |
-| `ChangeEvent<T>` | Form input changes | `HTMLInputElement`, `HTMLSelectElement`, `HTMLTextAreaElement` |
-| `FormEvent<T>` | Form submission | `HTMLFormElement` |
-| `FocusEvent<T>` | Focus/blur events | Any focusable element |
-| `CompositionEvent<T>` | IME input composition | `HTMLInputElement`, `HTMLTextAreaElement` |
-| `DragEvent<T>` | Drag and drop operations | Any element |
-| `SyntheticEvent<T>` | Generic fallback | Any element |
+| `MouseEvent<T>` | النقرات وحركة الفأرة | `HTMLButtonElement` و`HTMLDivElement` وغيرها |
+| `KeyboardEvent<T>` | ضغطات المفاتيح | `HTMLInputElement` و`HTMLTextAreaElement` |
+| `ChangeEvent<T>` | تغيّرات حقول النماذج | `HTMLInputElement` و`HTMLSelectElement` و`HTMLTextAreaElement` |
+| `FormEvent<T>` | إرسال النموذج | `HTMLFormElement` |
+| `FocusEvent<T>` | أحداث التركيز وفقدان التركيز | أي عنصر يقبل التركيز |
+| `CompositionEvent<T>` | تركيب الإدخال عبر IME | `HTMLInputElement` و`HTMLTextAreaElement` |
+| `DragEvent<T>` | عمليات السحب والإفلات | أي عنصر |
+| `SyntheticEvent<T>` | بديل عام | أي عنصر |
 
-## Troubleshooting Common Issues
+## تشخيص المشكلات الشائعة
 
-### “Property does not exist on type ‘EventTarget’”
+### «الخاصية غير موجودة على النوع EventTarget»
 
 ```typescript
 // ❌ This will cause TypeScript errors
@@ -778,7 +778,7 @@ function goodHandler(event: MouseEvent<HTMLInputElement>) {
 }
 ```
 
-### Event Handler Type Mismatches
+### عدم تطابق أنواع معالِج الأحداث
 
 ```typescript
 // ❌ Wrong element type
@@ -797,13 +797,13 @@ const handleButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
 <button onClick={handleButtonClick}>Click</button>
 ```
 
-## Next Steps
+## الخطوات التالية
 
-With proper event typing in your toolkit, you can:
+مع نمطجة الأحداث الصحيحة ضمن عُدّة أدواتك، يمكنك:
 
-- Build forms with confidence that your handlers will receive the right data types
-- Create reusable event handling patterns across your application
-- Catch event-related bugs at compile time rather than runtime
-- Take advantage of your IDE’s autocomplete for event properties
+- تبني نماذج وأنت مطمئن إلى أن معالِجاتك ستتلقّى أنواع البيانات الصحيحة
+- تنشئ أنماطًا قابلة لإعادة الاستخدام للتعامل مع الأحداث في تطبيقك كله
+- تلتقط الأخطاء المتعلقة بالأحداث وقت التصريف بدلًا من وقت التشغيل
+- تستفيد من الإكمال التلقائي في محرّرك البرمجي لخصائص الأحداث
 
-Remember: React’s synthetic events are your friend, but TypeScript’s event typing is what makes them truly powerful. Start with specific event types (`MouseEvent`, `ChangeEvent`, etc.) rather than the generic `SyntheticEvent`, and let TypeScript guide you toward more robust event handling code.
+وتذكّر: أحداث React الاصطناعية في صفّك، لكن نمطجة الأحداث في TypeScript هي ما يجعلها قويّة حقًا. ابدأ بأنواع الأحداث المحدّدة (`MouseEvent` و`ChangeEvent` وغيرها) بدل `SyntheticEvent` العام، ودع TypeScript يوجّهك نحو شيفرة أكثر متانة في التعامل مع الأحداث.

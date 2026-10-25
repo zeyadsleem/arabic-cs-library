@@ -1,22 +1,22 @@
 ---
-title: "Registering and Transferring Domains"
-lang: en
+title: "تسجيل النطاقات ونقلها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/registering-and-transferring-domains"
 ---
 
-You need a domain name before ACM can prove you own anything. Maybe you already have one at GoDaddy or Namecheap or Cloudflare. Maybe you want to buy a fresh one through AWS and keep the whole thing in one place. Either path works, but they set up the rest of the static-hosting flow a little differently.
+تحتاج إلى اسم نطاق قبل أن يستطيع ACM إثبات أنك تملك أي شيء. ربما لديك نطاق بالفعل على GoDaddy أو Namecheap أو Cloudflare. وربما تريد شراء نطاق جديد عبر AWS والاحتفاظ بكل شيء في مكان واحد. كلا المسارين يعمل، لكنهما يهيّئان بقية مسار الاستضافة الثابتة بشكل مختلف قليلًا.
 
-If you want AWS’s exact version of the registrar workflow, the [Route 53 domain registration guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html) and the [Route 53 pricing page](https://aws.amazon.com/route53/pricing/) are the authoritative references.
+إذا أردت نسخة AWS الدقيقة من سير عمل المسجّل، فإن [دليل تسجيل النطاقات في Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html) و[صفحة تسعير Route 53](https://aws.amazon.com/route53/pricing/) هما المرجعان الموثوقان.
 
-Route 53 is two services in one: a domain registrar and a DNS hosting service. You can use Route 53 for one, both, or neither. The important thing right now is choosing how you’ll control the domain name, because the next lesson is about hosted zones and authoritative DNS—and that only makes sense once you know where the domain itself lives.
+Route 53 خدمتان في واحدة: مسجّل نطاقات وخدمة استضافة DNS. يمكنك استخدام Route 53 لإحداهما أو لكلتيهما، أو ألّا تستخدمها لأيّ منهما. المهم الآن هو اختيار الطريقة التي ستتحكم بها في اسم النطاق، لأن الدرس التالي يدور حول المناطق المستضافة وDNS الموثوق — وذلك لا يكون منطقيًا إلا بعد أن تعرف أين يعيش النطاق نفسه.
 
-## Registering a Domain Through Route 53
+## تسجيل نطاق عبر Route 53
 
-Route 53 supports registration for most common TLDs: `.com`, `.net`, `.org`, `.io`, `.dev`, `.link`, `.click`, and hundreds more. Pricing varies by TLD. As of AWS’s September 2025 Route 53 pricing list, a `.com` registration is $15/year and a `.click` registration is $3/year. That spread is the real lesson here: TLD pricing is all over the place, so check the current pricing list before you impulse-buy a clever domain.
+يدعم Route 53 تسجيل معظم امتدادات النطاقات الشائعة: `.com` و`.net` و`.org` و`.io` و`.dev` و`.link` و`.click` ومئات غيرها. يختلف السعر بحسب الامتداد. وفق قائمة تسعير Route 53 من سبتمبر 2025، يبلغ تسجيل `.com` نحو 15 دولارًا سنويًا، وتسجيل `.click` نحو 3 دولارات سنويًا. هذا التفاوت هو الدرس الحقيقي هنا: تسعير الامتدادات متفاوت جدًا، فتحقّق من قائمة الأسعار الحالية قبل أن تشتري نطاقًا ذكيًا بدافع اللحظة.
 
-You can register a domain through the console or the CLI. The console is simpler for a one-time operation. Navigate to the Route 53 console, select “Registered domains” from the sidebar, and click “Register domain.” Search for the domain you want, add it to your cart, fill in the contact details, and complete the purchase.
+يمكنك تسجيل نطاق عبر وحدة التحكم أو عبر CLI. وحدة التحكم أبسط لعملية تُجرى مرة واحدة. انتقل إلى وحدة تحكم Route 53، واختر «Registered domains» من الشريط الجانبي، وانقر «Register domain». ابحث عن النطاق الذي تريده، وأضفه إلى سلّتك، واملأ بيانات الاتصال، وأكمل الشراء.
 
-The CLI version uses the `route53domains` service (note: this is a separate service namespace from `route53`):
+أما نسخة CLI فتستخدم خدمة `route53domains` (لاحظ أن هذا نطاق خدمة منفصل عن `route53`):
 
 ```bash
 aws route53domains check-domain-availability \
@@ -31,48 +31,48 @@ aws route53domains check-domain-availability \
 }
 ```
 
-If the domain is available, you’ll see `"Availability": "AVAILABLE"`. Domain registration via the CLI requires the `register-domain` command with contact details, which is verbose. For a one-time registration, the console is the better choice.
+إذا كان النطاق متاحًا، فسترى `"Availability": "AVAILABLE"`. يتطلب تسجيل النطاق عبر CLI الأمر `register-domain` مع بيانات الاتصال، وهو أمر مطوّل. ولتسجيل يُجرى مرة واحدة، تكون وحدة التحكم الخيار الأفضل.
 
-> **Tip**
+> **نصيحة**
 >
-> Route 53 domain registration operations must use `us-east-1` as the region, regardless of where your other resources live. The `route53domains` API is only available in `us-east-1`.
+> يجب أن تستخدم عمليات تسجيل النطاقات في Route 53 المنطقة `us-east-1`، مهما كانت منطقة مواردك الأخرى. واجهة `route53domains` البرمجية متاحة في `us-east-1` فقط.
 
-### What Happens When You Register
+### ما الذي يحدث عند التسجيل
 
-When you register a domain through Route 53, AWS does two things automatically:
+عندما تسجّل نطاقًا عبر Route 53، تقوم AWS بأمرين تلقائيًا:
 
-1. **Creates a hosted zone** for the domain. This is the same hosted zone you would create manually with `create-hosted-zone`. It comes pre-populated with NS and SOA records.
-2. **Configures the domain’s nameservers** to point at the hosted zone’s nameservers. This is the delegation step that you would otherwise do manually at your registrar.
+1. **إنشاء منطقة مستضافة** للنطاق. هذه هي المنطقة المستضافة نفسها التي كنت ستنشئها يدويًا باستخدام `create-hosted-zone`. وتأتي مُعبّأة مسبقًا بسجلات NS وSOA.
+2. **تهيئة خوادم أسماء النطاق** لتشير إلى خوادم أسماء المنطقة المستضافة. هذه هي خطوة التفويض التي كنت ستنفّذها يدويًا لدى مسجّلك لولا ذلك.
 
-In other words, registration through Route 53 skips the manual nameserver configuration entirely. Your domain is ready for hosted-zone work immediately after registration completes.
+بعبارة أخرى، التسجيل عبر Route 53 يتخطى تهيئة خوادم الأسماء اليدوية تمامًا. نطاقك جاهز للعمل على المنطقة المستضافة فور اكتمال التسجيل.
 
-### Domain Privacy
+### خصوصية النطاق
 
-Route 53 enables **privacy protection** by default for supported TLDs. This replaces your personal contact information in the public WHOIS database with Route 53’s registrar contact details. For TLDs that don’t support privacy protection (some country-code TLDs), your contact information will be publicly visible.
+يفعّل Route 53 **حماية الخصوصية** افتراضيًا للامتدادات المدعومة. يستبدل ذلك بيانات اتصالك الشخصية في قاعدة WHOIS العامة ببيانات اتصال المسجّل لدى Route 53. أما الامتدادات التي لا تدعم حماية الخصوصية (بعض امتدادات رموز الدول)، فستبقى بيانات اتصالك ظاهرة للعموم.
 
-## Transferring a Domain to Route 53
+## نقل نطاق إلى Route 53
 
-If you already own a domain at another registrar and want to move everything to AWS, you can transfer the registration to Route 53. The transfer process follows ICANN rules, which means:
+إذا كنت تملك نطاقًا بالفعل لدى مسجّل آخر وتريد نقل كل شيء إلى AWS، فيمكنك نقل التسجيل إلى Route 53. تتبع عملية النقل قواعد ICANN، وهذا يعني:
 
-1. **Unlock the domain** at your current registrar. Most registrars lock domains by default to prevent unauthorized transfers.
-2. **Get the authorization code** (also called an EPP code or transfer key) from your current registrar. This proves you own the domain.
-3. **Initiate the transfer** in the Route 53 console: go to “Registered domains,” click “Transfer domain,” enter your domain name and the authorization code, and provide contact details.
-4. **Confirm the transfer.** Your current registrar will send a confirmation email. You (or the admin contact) must approve the transfer. Some registrars auto-approve after 5 days of no response.
-5. **Wait.** Domain transfers typically take 5-7 days to complete. During this time, your site continues working—the domain still resolves using its current DNS configuration.
+1. **إلغاء قفل النطاق** لدى مسجّلك الحالي. معظم المسجّلين يقفلون النطاقات افتراضيًا لمنع النقل غير المصرّح به.
+2. **الحصول على رمز التصريح** (ويُسمّى أيضًا رمز EPP أو مفتاح النقل) من مسجّلك الحالي. هذا يُثبت أنك تملك النطاق.
+3. **بدء النقل** في وحدة تحكم Route 53: اذهب إلى «Registered domains»، وانقر «Transfer domain»، وأدخل اسم نطاقك ورمز التصريح، وقدّم بيانات الاتصال.
+4. **تأكيد النقل.** سيرسل مسجّلك الحالي رسالة بريد إلكتروني للتأكيد. يجب عليك أنت (أو جهة اتصال المسؤول) الموافقة على النقل. بعض المسجّلين يوافقون تلقائيًا بعد 5 أيام بلا رد.
+5. **الانتظار.** يستغرق نقل النطاقات عادةً من 5 إلى 7 أيام ليكتمل. خلال هذه الفترة يظل موقعك يعمل — فالنطاق لا يزال يُحلّ باستخدام تهيئة DNS الحالية.
 
-After the transfer completes, Route 53 creates a hosted zone (if one doesn’t already exist) and updates the domain’s nameservers. Your DNS records carry over if you were already using Route 53 for DNS hosting. If you were using another DNS provider, you’ll need to recreate those records in Route 53.
+بعد اكتمال النقل، ينشئ Route 53 منطقة مستضافة (إن لم تكن موجودة) ويحدّث خوادم أسماء النطاق. وتنتقل سجلات DNS الخاصة بك معك إذا كنت تستخدم Route 53 لاستضافة DNS بالفعل. أما إذا كنت تستخدم مزوّد DNS آخر، فستحتاج إلى إعادة إنشاء تلك السجلات في Route 53.
 
-> **Warning**
+> **تحذير**
 >
-> You can’t transfer a domain within 60 days of registering it or within 60 days of a previous transfer. This is an ICANN rule, not an AWS limitation. Plan accordingly if you recently registered a domain elsewhere and want to move it to Route 53.
+> لا يمكنك نقل نطاق خلال 60 يومًا من تسجيله ولا خلال 60 يومًا من نقل سابق. هذه قاعدة ICANN وليست قيدًا من AWS. خطّط على هذا الأساس إذا سجّلت نطاقًا مؤخرًا لدى جهة أخرى وتريد نقله إلى Route 53.
 
-## Using Route 53 DNS with an External Registrar
+## استخدام DNS من Route 53 مع مسجّل خارجي
 
-You don’t have to transfer your domain registration to Route 53 to use Route 53 for DNS. This is the approach to take if you want to keep your domain at your current registrar (maybe it was cheaper, maybe you have multiple domains managed there) but use Route 53 for hosting your DNS records.
+لا يلزمك نقل تسجيل نطاقك إلى Route 53 كي تستخدم Route 53 لـ DNS. هذا هو النهج الذي تتبعه إذا أردت إبقاء نطاقك لدى مسجّلك الحالي (ربما لأنه كان أرخص، أو لأن لديك نطاقات متعددة تُدار هناك) مع استخدام Route 53 لاستضافة سجلات DNS.
 
-Here’s the process:
+إليك العملية:
 
-### Create a Hosted Zone in Route 53
+### إنشاء منطقة مستضافة في Route 53
 
 ```bash
 aws route53 create-hosted-zone \
@@ -82,7 +82,7 @@ aws route53 create-hosted-zone \
   --output json
 ```
 
-Note the four nameservers in the response:
+لاحظ خوادم الأسماء الأربعة في الاستجابة:
 
 ```json
 {
@@ -97,41 +97,41 @@ Note the four nameservers in the response:
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Route 53 is a global service, so `--region` is a no-op on Route 53 commands. The course still passes it explicitly for consistency.
+> Route 53 خدمة عالمية، لذا فإن `--region` بلا أثر على أوامر Route 53. ومع ذلك تمرّرها الدورة صراحةً من أجل الاتساق.
 
-### Update Nameservers at Your Registrar
+### تحديث خوادم الأسماء لدى مسجّلك
 
-Log into your registrar (GoDaddy, Namecheap, Cloudflare, etc.) and replace the default nameservers with the four Route 53 nameservers. The exact steps vary by registrar, but you’re looking for something like “Custom DNS,” “Custom nameservers,” or “Change nameservers” in the domain management interface.
+سجّل الدخول إلى مسجّلك (GoDaddy أو Namecheap أو Cloudflare وغيرها) واستبدل خوادم الأسماء الافتراضية بخوادم Route 53 الأربعة. تختلف الخطوات الدقيقة بحسب المسجّل، لكنك تبحث عن شيء مثل «Custom DNS» أو «Custom nameservers» أو «Change nameservers» في واجهة إدارة النطاق.
 
-Enter all four nameservers. Order doesn’t matter.
+أدخل خوادم الأسماء الأربعة جميعها. الترتيب لا يهم.
 
-### Wait for Propagation
+### انتظار انتشار التغيير
 
-After changing nameservers, DNS queries for your domain will gradually shift from the old nameservers to the Route 53 nameservers. This can take anywhere from a few minutes to 48 hours, depending on TTL values and caching behavior at various resolvers. In practice, most users see the change within a few hours.
+بعد تغيير خوادم الأسماء، ستنتقل استعلامات DNS لنطاقك تدريجيًا من خوادم الأسماء القديمة إلى خوادم Route 53. قد يستغرق ذلك من بضع دقائق إلى 48 ساعة، بحسب قيم TTL وسلوك التخزين المؤقت لدى مختلف المُحلّلات. عمليًا، يرى معظم المستخدمين التغيير في غضون ساعات قليلة.
 
-You can verify that Route 53 is answering queries by asking the nameservers directly:
+يمكنك التحقق من أن Route 53 يجيب على الاستعلامات بسؤال خوادم الأسماء مباشرة:
 
 ```bash
 dig example.com NS +short
 ```
 
-When the output shows the four Route 53 nameservers, delegation is complete.
+عندما تُظهر المخرجات خوادم أسماء Route 53 الأربعة، يكون التفويض قد اكتمل.
 
-### Create Your DNS Records
+### إنشاء سجلات DNS
 
-With delegation in place, Route 53 is now authoritative for your domain. That means the hosted zone you create next is the place where ACM validation records, alias records, and everything else will eventually live.
+مع وجود التفويض، أصبح Route 53 هو المصدر الموثوق لنطاقك. وهذا يعني أن المنطقة المستضافة التي تنشئها بعد ذلك هي المكان الذي ستعيش فيه في النهاية سجلات تحقّق ACM وسجلات الاسم المستعار وكل شيء آخر.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re migrating from another DNS provider that had existing records (MX records for email, TXT records for verification, etc.), recreate all of those records in Route 53 before changing nameservers. Otherwise, email delivery and other services that depend on DNS will break during the transition.
+> إذا كنت تهاجر من مزوّد DNS آخر كان لديه سجلات موجودة (سجلات MX للبريد، وسجلات TXT للتحقق، وغيرها)، فأعد إنشاء كل تلك السجلات في Route 53 قبل تغيير خوادم الأسماء. وإلا فإن تسليم البريد والخدمات الأخرى المعتمدة على DNS ستتعطّل أثناء الانتقال.
 
-## Hosted Zone Auto-Creation Behavior
+## سلوك الإنشاء التلقائي للمنطقة المستضافة
 
-There’s a subtle gotcha when mixing domain registration and hosted zones. If you register a domain through Route 53, AWS automatically creates a hosted zone. If you then delete that hosted zone and create a new one (maybe you wanted a fresh start), the new hosted zone will have different nameservers. But the domain registration still points to the old nameservers.
+هناك مأزق خفي عند خلط تسجيل النطاقات بالمناطق المستضافة. إذا سجّلت نطاقًا عبر Route 53، تنشئ AWS منطقة مستضافة تلقائيًا. وإذا حذفت تلك المنطقة المستضافة بعد ذلك وأنشأت منطقة جديدة (ربما أردت بداية نظيفة)، فستكون للمنطقة الجديدة خوادم أسماء مختلفة. لكن تسجيل النطاق لا يزال يشير إلى خوادم الأسماء القديمة.
 
-You need to update the domain’s nameservers to match the new hosted zone:
+تحتاج إلى تحديث خوادم أسماء النطاق لتطابق المنطقة المستضافة الجديدة:
 
 ```bash
 aws route53domains update-domain-nameservers \
@@ -145,7 +145,7 @@ aws route53domains update-domain-nameservers \
   --output json
 ```
 
-The reverse also matters: if you create a hosted zone first and then register the domain, Route 53 creates a second hosted zone automatically. You’ll end up with two hosted zones for the same domain, each with different nameservers. Delete the one you’re not using and make sure the domain’s nameservers match the one you’re keeping.
+والعكس مهم أيضًا: إذا أنشأت منطقة مستضافة أولًا ثم سجّلت النطاق، فستنشئ Route 53 منطقة مستضافة ثانية تلقائيًا. ستنتهي بمنطقتين مستضافتين للنطاق نفسه، لكل منهما خوادم أسماء مختلفة. احذف التي لا تستخدمها وتأكد من أن خوادم أسماء النطاق تطابق التي تُبقيها.
 
 ```bash
 aws route53 list-hosted-zones \
@@ -153,20 +153,20 @@ aws route53 list-hosted-zones \
   --query "HostedZones[?Name=='example.com.'].{Id:Id,RecordCount:ResourceRecordSetCount}"
 ```
 
-If you see two entries, one will have only 2 records (the auto-created default) and the other will have your actual DNS records. Delete the empty one.
+إذا رأيت مُدخلين، فسيكون لأحدهما سجلّان فقط (الافتراضي المُنشأ تلقائيًا)، والآخر سيحوي سجلات DNS الفعلية. احذف الفارغة.
 
-> **Warning**
+> **تحذير**
 >
-> Having two hosted zones for the same domain with different nameservers is a common source of confusion. DNS queries go to whichever hosted zone’s nameservers are configured on the domain registration. Records in the other hosted zone are effectively invisible. If your DNS records aren’t resolving, check whether you have duplicate hosted zones.
+> وجود منطقتين مستضافتين للنطاق نفسه بخوادم أسماء مختلفة مصدر شائع للارتباك. تذهب استعلامات DNS إلى خوادم أسماء المنطقة المستضافة المهيّأة في تسجيل النطاق. أما السجلات في المنطقة الأخرى فهي غير مرئية فعليًا. إذا لم تُحلّ سجلات DNS لديك، فتحقّق مما إذا كانت لديك مناطق مستضافة مكرّرة.
 
-## Which Approach Should You Use?
+## أي نهج ينبغي أن تستخدم؟
 
-**Register through Route 53** if you’re buying a new domain and want the simplest setup. No nameserver configuration, no delegation—it just works.
+**سجّل عبر Route 53** إذا كنت تشتري نطاقًا جديدًا وتريد أبسط إعداد. لا تهيئة لخوادم الأسماء، ولا تفويض — إنه يعمل ببساطة.
 
-**Keep your existing registrar and use Route 53 for DNS** if you already own a domain and don’t want to deal with the transfer process. This is perfectly fine for production use—the registrar’s only job is to hold the nameserver delegation, and once that’s configured, it doesn’t matter whether registration lives at GoDaddy or Route 53.
+**أبقِ مسجّلك الحالي واستخدم Route 53 لـ DNS** إذا كنت تملك نطاقًا بالفعل ولا تريد التعامل مع عملية النقل. هذا مقبول تمامًا في الإنتاج — فمهمة المسجّل الوحيدة هي الاحتفاظ بتفويض خوادم الأسماء، وبعد تهيئة ذلك لا يهم إن كان التسجيل مُقيمًا على GoDaddy أو Route 53.
 
-**Transfer to Route 53** if you want everything in one place and are willing to wait 5-7 days for the transfer. This simplifies management long-term but isn’t necessary.
+**انقل إلى Route 53** إذا أردت كل شيء في مكان واحد وكنت مستعدًا للانتظار من 5 إلى 7 أيام من أجل النقل. هذا يبسّط الإدارة على المدى الطويل لكنه ليس ضروريًا.
 
-For this course, any of the three approaches works. The important thing is that by the end of this lesson, you know who your registrar is, whether Route 53 will host your DNS, and whether you need to update nameservers manually.
+في هذه الدورة، أي من النهج الثلاثة يعمل. المهم أن تكون بنهاية هذا الدرس تعرف من هو مسجّلك، وما إذا كان Route 53 سيستضيف DNS الخاص بك، وما إذا كنت تحتاج إلى تحديث خوادم الأسماء يدويًا.
 
-Next, you’ll look at the Route 53 side directly: hosted zones, record types, and how AWS becomes the authoritative source for your domain’s DNS answers.
+بعد ذلك، ستنظر إلى جانب Route 53 مباشرةً: المناطق المستضافة وأنواع السجلات وكيف تصبح AWS المصدر الموثوق لأجوبة DNS الخاصة بنطاقك.

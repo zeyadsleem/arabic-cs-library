@@ -1,33 +1,33 @@
 ---
-title: "JSX Types: ReactNode, ReactElement"
-lang: en
+title: "أنواع JSX: ReactNode وReactElement"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/jsx-types-reactnode-reactelement"
 ---
 
-Children in React can be almost anything: strings, numbers, JSX elements, arrays of elements, fragments, or even `null`. But when you’re writing TypeScript, how do you type that `children` prop without breaking half your use cases or being overly permissive?
+قد تكون العناصر الفرعية (children) في React أي شيء تقريبًا: نصوصًا أو أرقامًا أو عناصر JSX أو مصفوفات عناصر أو أجزاءً (fragments) أو حتى `null`. لكن حين تكتب TypeScript، فكيف تكتب نوع خاصية `children` دون أن تكسر نصف حالات الاستخدام أو تكون متساهلًا أكثر من اللازم؟
 
-The secret lies in understanding three key types: `ReactNode`, `ReactElement`, and `JSX.Element`. They might look interchangeable, but choosing the wrong one will either break your component’s flexibility or give consumers confusing type errors. Once you understand their hierarchy and purpose, you’ll never second-guess children props again.
+المفتاح يكمن في فهم ثلاثة أنواع أساسية: `ReactNode` و`ReactElement` و`JSX.Element`. قد تبدو متشابهة، لكن اختيار الخطأ منها سيكسر مرونة مكوّنك أو يمنح مستهلكيه رسائل خطأ نوعية مربكة. وما إن تفهم تسلسلها الهرمي وغرضها حتى لا تشكّ في خصائص العناصر الفرعية مرة أخرى.
 
-## The Big Picture
+## الصورة الكبيرة
 
-Before diving into the specifics, here’s the mental model you need:
+قبل الغوص في التفاصيل، إليك النموذج الذهني الذي تحتاجه:
 
-- **`ReactNode`**: Anything React can render (most permissive)
-- **`ReactElement`**: The result of JSX expressions (middle ground)
-- **`JSX.Element`**: TypeScript’s specific representation of JSX (most restrictive)
+- **`ReactNode`**: أي شيء يستطيع React تصييره (الأوسع تسامحًا)
+- **`ReactElement`**: ناتج تعبيرات JSX (الخيار الوسط)
+- **`JSX.Element`**: تمثيل TypeScript الخاص بتعبيرات JSX (الأضيق)
 
-Most of the time, you’ll want `ReactNode` for children props and `ReactElement` or `JSX.Element` for component return types. But let’s see why.
+في أغلب الأوقات، ستستخدم `ReactNode` لخصائص العناصر الفرعية، و`ReactElement` أو `JSX.Element` لأنواع عائدات المكوّنات. لكن دعنا نرِ لماذا.
 
-## ReactNode: The Swiss Army Knife
+## ReactNode: السكين السويسري
 
-`ReactNode` is the most permissive type—it represents anything that React can render. This includes strings, numbers, elements, arrays, fragments, and even `null` or `undefined`.
+`ReactNode` هو أوسع الأنواع تسامحًا — إذ يمثّل أي شيء يستطيع React تصييره. ويشمل ذلك النصوص والأرقام والعناصر والمصفوفات والأجزاء، وحتى `null` أو `undefined`.
 
 ```typescript
 type ReactNode =
   ReactElement | string | number | Iterable<ReactNode> | ReactPortal | boolean | null | undefined;
 ```
 
-This makes it perfect for typing `children` props, since parents often need to accept a wide variety of content:
+هذا يجعله مثاليًا لكتابة نوع خصائص `children`، لأن الآباء غالبًا يحتاجون إلى قبول مجموعة واسعة من المحتويات:
 
 ```typescript
 // ✅ Good: ReactNode accepts anything renderable
@@ -47,7 +47,7 @@ function Card({ children }: CardProps) {
 <Card>{null}</Card>
 ```
 
-Compare this with the more restrictive alternatives:
+قارن هذا بالبدائل الأكثر تقييدًا:
 
 ```typescript
 // ❌ Too restrictive: only accepts JSX elements
@@ -65,17 +65,17 @@ function Card({ children }: CardProps) {
 <Card>{null}</Card>       // ❌ null not assignable to ReactElement
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> When in doubt about children props, use `ReactNode`. It gives component consumers maximum flexibility while still ensuring type safety.
+> عند الشك في خصائص العناصر الفرعية، استخدم `ReactNode`. فهو يمنح مستهلكي المكوّن أقصى قدر من المرونة مع ضمان أمان الأنواع في الوقت نفسه.
 
-## Children Patterns in the Wild
+## أنماط العناصر الفرعية في العالم الحقيقي
 
-Now that you understand `ReactNode`, let’s look at the most common children patterns you’ll encounter and how to type them properly.
+الآن بعد أن فهمت `ReactNode`، دعنا نطّلع على أكثر أنماط العناصر الفرعية شيوعًا التي ستصادفها، وكيف تُكتَب أنواعها بشكل صحيح.
 
-### The Basic Container
+### الحاوية الأساسية
 
-Most wrapper components need to accept any renderable content:
+تحتاج معظم مكوّنات التفاف إلى قبول أي محتوى قابل للتصيير:
 
 ```typescript
 interface CardProps {
@@ -98,9 +98,9 @@ function Card({ children, className }: CardProps) {
 <Card>{items.map(item => <Item key={item.id} item={item} />)}</Card>
 ```
 
-### Optional Children
+### العناصر الفرعية الاختيارية
 
-Sometimes children are optional, and you want to conditionally render wrapper elements:
+أحيانًا تكون العناصر الفرعية اختيارية، وتريد عندها تصيير عناصر التفاف شرطيًا:
 
 ```typescript
 interface SectionProps {
@@ -124,9 +124,9 @@ function Section({ title, children }: SectionProps) {
 </Section>
 ```
 
-### Multiple Children Slots
+### خانات متعدّدة للعناصر الفرعية
 
-Modern React patterns often use multiple “slots” for different types of content:
+تستخدم أنماط React الحديثة غالبًا «خانات» متعدّدة لأنواع مختلفة من المحتوى:
 
 ```typescript
 interface LayoutProps {
@@ -159,9 +159,9 @@ function Layout({ header, sidebar, children, footer }: LayoutProps) {
 </Layout>;
 ```
 
-### Render Props with Children
+### دوال التصيير مع العناصر الفرعية
 
-When you’re building components that use render props, `ReactNode` keeps things flexible:
+حين تبني مكوّنات تستخدم دوال التصيير (render props)، تُبقي `ReactNode` الأمور مرنة:
 
 ```typescript
 interface DataFetcherProps {
@@ -195,9 +195,9 @@ function DataFetcher({ url, children }: DataFetcherProps) {
 </DataFetcher>;
 ```
 
-### Conditional Children Rendering
+### التصيير الشرطي للعناصر الفرعية
 
-One of the most common patterns is conditionally rendering children based on state:
+من أكثر الأنماط شيوعًا هو تصيير العناصر الفرعية شرطًا استنادًا إلى الحالة:
 
 ```typescript
 interface CollapsibleProps {
@@ -228,13 +228,13 @@ function Collapsible({ title, children, defaultOpen = false }: CollapsibleProps)
 </Collapsible>;
 ```
 
-## Working with Children: React’s Helper Functions
+## التعامل مع العناصر الفرعية: دوال مساعدة من React
 
-When you need to manipulate or inspect children, React provides several utility functions. Here’s how to use them with proper TypeScript typing:
+حين تحتاج إلى معالجة العناصر الفرعية أو فحصها، يوفّر React عدة دوال مساعدة. إليك كيفية استخدامها مع كتابة أنواع TypeScript صحيحة:
 
 ### React.Children.map
 
-When you need to transform each child element:
+حين تحتاج إلى تحويل كل عنصر فرعي:
 
 ```typescript
 import { ReactNode, cloneElement, isValidElement } from 'react';
@@ -263,7 +263,7 @@ function AddClassToChildren({ children }: WrapperProps) {
 
 ### React.Children.count
 
-Count renderable children (ignores `null`, `undefined`, and booleans):
+يعدّ العناصر الفرعية القابلة للتصيير (يتجاهل `null` و`undefined` والقيم المنطقية):
 
 ```typescript
 interface ListProps {
@@ -287,7 +287,7 @@ function List({ children, showCount }: ListProps) {
 
 ### React.Children.only
 
-When you need exactly one child element:
+حين تحتاج إلى عنصر فرعي واحد بالضبط:
 
 ```typescript
 interface SingleChildProps {
@@ -319,9 +319,9 @@ function SingleChildWrapper({ children }: SingleChildProps) {
 </SingleChildWrapper>
 ```
 
-### Type Guards for Children
+### حرّاس الأنواع للعناصر الفرعية
 
-Sometimes you need to differentiate between different types of children:
+أحيانًا تحتاج إلى التمييز بين أنواع مختلفة من العناصر الفرعية:
 
 ```typescript
 function isReactElement(child: ReactNode): child is ReactElement {
@@ -368,13 +368,13 @@ function SmartList({ children }: SmartListProps) {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with `React.Children.only`—it throws an error if you don’t have exactly one child. Always use it when you specifically need that constraint, not as a general children handler.
+> كن حذرًا مع `React.Children.only` — فهو يرمي خطأً إن لم يكن لديك عنصر فرعي واحد بالضبط. استخدمه دائمًا حين تحتاج إلى هذا القيد تحديدًا، لا كمعالج عام للعناصر الفرعية.
 
-## ReactElement: The JSX Result
+## ReactElement: ناتج JSX
 
-`ReactElement` represents the objects that JSX expressions create—the virtual DOM nodes that React uses internally. It’s more specific than `ReactNode` but more flexible than `JSX.Element`.
+يمثّل `ReactElement` الكائنات التي تنشئها تعبيرات JSX — أي عقد DOM الافتراضية التي يستخدمها React داخليًا. وهو أكثر تحديدًا من `ReactNode` وأكثر مرونة من `JSX.Element`.
 
 ```typescript
 interface ReactElement<
@@ -387,7 +387,7 @@ interface ReactElement<
 }
 ```
 
-You’ll typically use `ReactElement` when you need to ensure you’re getting an actual element (not a string or number), but you want to accept any kind of element:
+ستستخدم `ReactElement` عادةً حين تحتاج إلى التأكد من أنك تحصل على عنصر حقيقي (وليس نصًا أو رقمًا)، مع رغبتك في قبول أي نوع من العناصر:
 
 ```typescript
 interface IconButtonProps {
@@ -412,7 +412,7 @@ function IconButton({ icon, label }: IconButtonProps) {
 <IconButton icon="🏠" label="Home" /> // Type error
 ```
 
-This is particularly useful for component slots or when you need to clone or manipulate elements:
+وهذا مفيد بشكل خاص مع خانات المكوّنات أو حين تحتاج إلى نسخ العناصر أو معالجتها:
 
 ```typescript
 interface ModalProps {
@@ -447,13 +447,13 @@ function Modal({ trigger, children }: ModalProps) {
 </Modal>;
 ```
 
-## ReactElement vs JSX.Element vs ReactNode: The Complete Picture
+## ReactElement مقابل JSX.Element مقابل ReactNode: الصورة الكاملة
 
-Now that you understand the basics, let’s dive deeper into when and why you’d choose each type. These three types form a hierarchy, and knowing their exact differences will make you a TypeScript React power user.
+الآن بعد أن فهمت الأساسيات، دعنا نتعمّق في متى ولماذا تختار كل نوع. هذه الأنواع الثلاثة تشكّل تسلسلًا هرميًا، ومعرفة فروقها الدقيقة ستجعلك مستخدمًا متقدمًا لـ TypeScript مع React.
 
-### JSX.Element: TypeScript’s Take
+### JSX.Element: موقف TypeScript
 
-`JSX.Element` is TypeScript’s specific type for JSX expressions. It’s essentially an alias for `ReactElement<any, any>`, but it’s what TypeScript infers when you write JSX:
+`JSX.Element` هو نوع TypeScript الخاص بتعبيرات JSX. وهو في الأساس اسم بديل (alias) لـ `ReactElement<any, any>`، لكنه ما يستنتجه TypeScript حين تكتب JSX:
 
 ```typescript
 // TypeScript infers JSX.Element for these expressions:
@@ -461,7 +461,7 @@ const element1 = <div>Hello</div>; // JSX.Element
 const element2 = <Button>Click</Button>; // JSX.Element
 ```
 
-The key insight: `JSX.Element` is TypeScript’s representation, while `ReactElement` is React’s. They’re nearly identical, but `JSX.Element` has a crucial limitation:
+الفكرة المفتاحية: `JSX.Element` هو تمثيل TypeScript، بينما `ReactElement` هو تمثيل React. الاثنان متطابقان تقريبًا، لكن `JSX.Element` له قيد جوهري:
 
 ```typescript
 // JSX.Element is always ReactElement<any, any>
@@ -477,9 +477,9 @@ function createJSXElement(): JSX.Element {
 }
 ```
 
-### ReactElement: The Middle Ground
+### ReactElement: الحل الوسط
 
-`ReactElement` represents the objects that JSX expressions create—the virtual DOM nodes that React uses internally. It’s more specific than `ReactNode` but more flexible than `JSX.Element`:
+يمثّل `ReactElement` الكائنات التي تنشئها تعبيرات JSX — أي عقد DOM الافتراضية التي يستخدمها React داخليًا. وهو أكثر تحديدًا من `ReactNode` وأكثر مرونة من `JSX.Element`:
 
 ```typescript
 interface ReactElement<
@@ -498,9 +498,9 @@ const typedElement: ReactElement<ButtonProps> = <Button variant="primary">Click<
 type ExtractedProps = typeof typedElement.props; // ButtonProps
 ```
 
-### The Type Hierarchy
+### التسلسل الهرمي للأنواع
 
-Here’s the critical relationship to understand:
+إليك العلاقة الجوهرية التي ينبغي فهمها:
 
 ```typescript
 // ReactNode is the superset of everything React can render
@@ -521,7 +521,7 @@ type JSXElement = ReactElement<any, any>;
 // ReactNode > ReactElement > JSX.Element
 ```
 
-### When to Use Each: A Decision Tree
+### متى تستخدم كل نوع: شجرة قرار
 
 ```typescript
 // Question 1: Are you typing children props?
@@ -567,9 +567,9 @@ function processElement(element: ReactElement<{ className?: string }>) {
 }
 ```
 
-### Real-World Example: Type-Safe Component Slots
+### مثال من العالم الحقيقي: خانات مكوّنات آمنة من ناحية الأنواع
 
-Here’s a pattern that shows the practical differences:
+إليك نمطًا يوضّح الفروق العملية:
 
 ````typescript
 interface LayoutProps {
@@ -636,13 +636,13 @@ const arrayChild: ReactChild = [1, 2, 3];  // ❌ Arrays not included
 const boolChild: ReactChild = true;        // ❌ Booleans not included
 ````
 
-> **Note**
+> **ملاحظة**
 >
-> `ReactChild` is deprecated in newer React types. You should use `ReactNode` or be more specific with `ReactElement | string | number` instead.
+> صار `ReactChild` مهملًا (deprecated) في أنواع React الأحدث. ينبغي أن تستخدم `ReactNode` أو أن تكون أكثر تحديدًا باستخدام `ReactElement | string | number` بدلًا منه.
 
-### ReactFragment: Arrays and Keyed Children
+### ReactFragment: المصفوفات والعناصر الفرعية ذات المفاتيح
 
-`ReactFragment` represents React’s ability to render multiple children without a wrapper element:
+يمثّل `ReactFragment` قدرة React على تصيير عدة عناصر فرعية دون عنصر التفاف:
 
 ```typescript
 // ReactFragment represents grouped children
@@ -685,7 +685,7 @@ function List({ items, header }: ListProps) {
 }
 ```
 
-The key difference: `ReactFragment` is specifically for collections, while `ReactNode` can be a single item or a collection:
+الفرق الأساسي: `ReactFragment` مخصّص للمجموعات، بينما `ReactNode` قد يكون عنصرًا مفردًا أو مجموعة:
 
 ```typescript
 // ReactNode: Single item OR array
@@ -697,9 +697,9 @@ const fragment1: ReactFragment = ['Array', 'of', 'items'];
 const fragment2: ReactFragment = new Set([1, 2, 3]); // Any iterable works
 ```
 
-### ReactPortal: Rendering Outside the Tree
+### ReactPortal: التصيير خارج الشجرة
 
-`ReactPortal` is the type returned by `ReactDOM.createPortal`, allowing you to render children into a different DOM subtree:
+`ReactPortal` هو النوع الذي تعيده `ReactDOM.createPortal`، ويتيح لك تصيير العناصر الفرعية داخل شجرة DOM مختلفة:
 
 ```typescript
 import { createPortal } from 'react-dom';
@@ -737,9 +737,9 @@ function PortalManager({ portals }: { portals: ReactPortal[] }) {
 }
 ```
 
-### Understanding the Complete ReactNode Union
+### فهم نوع ReactNode الاتحادي الكامل
 
-Now you can see how `ReactNode` is built from these pieces:
+الآن يمكنك أن ترى كيف يُبنى `ReactNode` من هذه القطع:
 
 ```typescript
 // The full ReactNode type decomposed
@@ -769,9 +769,9 @@ function FlexibleComponent({ content }: { content: ReactNode }) {
 <FlexibleComponent content={true && <div>Conditional</div>} />
 ```
 
-### When to Use These Specific Types
+### متى تستخدم هذه الأنواع المحددة
 
-While you’ll use `ReactNode` 95% of the time, knowing these specific types helps in certain scenarios:
+بينما ستستخدم `ReactNode` في 95% من الوقت، فإن معرفة هذه الأنواع المحددة تساعد في سيناريوهات بعينها:
 
 ```typescript
 // When you're building a table and need pairs
@@ -802,15 +802,15 @@ function TextDisplay({ content }: TextDisplayProps) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> In practice, stick with `ReactNode` unless you have a specific reason to be more restrictive. The specific types are mainly useful for library authors or when building highly specialized components.
+> عمليًا، التزم بـ `ReactNode` ما لم يكن لديك سبب محدد لتكون أكثر تقييدًا. فهذه الأنواع المحددة مفيدة أساسًا لمؤلفي المكتبات أو حين تبني مكوّنات شديدة التخصص.
 
-## Real-World Guidelines
+## إرشادات من العالم الحقيقي
 
-Here’s how to choose between these types in common scenarios:
+إليك كيفية الاختيار بين هذه الأنواع في السيناريوهات الشائعة:
 
-### Children Props: Almost Always ReactNode
+### خصائص العناصر الفرعية: ReactNode في أغلب الحالات
 
 ```typescript
 // ✅ Good: Flexible children prop
@@ -824,7 +824,7 @@ interface Props {
 }
 ```
 
-### Render Props: Usually ReactNode
+### دوال التصيير: ReactNode عادةً
 
 ```typescript
 interface Props {
@@ -849,7 +849,7 @@ function Layout({ renderHeader, renderFooter }: Props) {
 />;
 ```
 
-### Element Props: ReactElement When You Need Manipulation
+### خصائص العناصر: ReactElement حين تحتاج إلى المعالجة
 
 ```typescript
 interface Props {
@@ -874,7 +874,7 @@ function Dropdown({ trigger, icon }: Props) {
 }
 ```
 
-### Component Return Types: Let TypeScript Infer
+### أنواع عائدات المكوّنات: دع TypeScript يستنتج
 
 ```typescript
 // ✅ Let TypeScript infer JSX.Element
@@ -894,9 +894,9 @@ function ConditionalButton({ show }: { show: boolean }): ReactNode {
 }
 ```
 
-## Common Pitfalls and Solutions
+## الأخطاء الشائعة والحلول
 
-### Pitfall 1: Using ReactElement for Children
+### الخطأ 1: استخدام ReactElement للعناصر الفرعية
 
 ```typescript
 // ❌ This breaks with strings, numbers, arrays
@@ -910,7 +910,7 @@ interface Props {
 }
 ```
 
-### Pitfall 2: Forgetting About Conditional Rendering
+### الخطأ 2: نسيان التصيير الشرطي
 
 ```typescript
 // ❌ This can return null, but JSX.Element doesn't allow it
@@ -926,7 +926,7 @@ function ConditionalComponent({ show }: { show: boolean }): ReactNode {
 }
 ```
 
-### Pitfall 3: Over-Constraining Render Functions
+### الخطأ 3: تقييد دوال التصيير أكثر من اللازم
 
 ```typescript
 // ❌ Too restrictive—breaks with conditional rendering
@@ -940,11 +940,11 @@ interface Props {
 }
 ```
 
-## The Children Typing Decision Tree
+## شجرة قرار لكتابة أنواع العناصر الفرعية
 
-Here’s your go-to guide for typing children and related props:
+إليك دليلك المعتمد لكتابة أنواع العناصر الفرعية والخصائص المرتبطة بها:
 
-**For children props (95% of cases):**
+**لخصائص العناصر الفرعية (95% من الحالات):**
 
 ```typescript
 // ✅ Almost always correct
@@ -953,7 +953,7 @@ interface Props {
 }
 ```
 
-**When children are optional:**
+**حين تكون العناصر الفرعية اختيارية:**
 
 ```typescript
 // ✅ Use optional ReactNode
@@ -962,7 +962,7 @@ interface Props {
 }
 ```
 
-**When you need to manipulate children:**
+**حين تحتاج إلى معالجة العناصر الفرعية:**
 
 ```typescript
 // ✅ Use ReactNode, then type-guard with isValidElement
@@ -981,7 +981,7 @@ function MyComponent({ children }: Props) {
 }
 ```
 
-**For render prop functions:**
+**لدوال خاصية التصيير:**
 
 ```typescript
 // ✅ Return ReactNode for maximum flexibility
@@ -990,7 +990,7 @@ interface Props {
 }
 ```
 
-**For element-specific props (rare):**
+**لخصائص العناصر تحديدًا (نادرة):**
 
 ```typescript
 // ✅ Only when you specifically need an element
@@ -1000,14 +1000,14 @@ interface Props {
 }
 ```
 
-## The Bottom Line
+## الخلاصة النهائية
 
-When typing children, think in this order:
+حين تكتب أنواع العناصر الفرعية، فكّر بهذا الترتيب:
 
-1. **Start with `ReactNode`** — it handles 95% of use cases correctly
-2. **Consider `ReactElement`** only when you need to manipulate the element (clone, inspect props, etc.)
-3. **Avoid `JSX.Element`** for children — it’s too restrictive and doesn’t add value
+1. **ابدأ بـ `ReactNode`** — فهو يتعامل مع 95% من حالات الاستخدام بشكل صحيح
+2. **فكّر في `ReactElement`** فقط حين تحتاج إلى معالجة العنصر (نسخه، فحص خصائصه، إلخ)
+3. **تجنّب `JSX.Element`** للعناصر الفرعية — فهو مقيّد أكثر من اللازم ولا يقدّم أي إضافة
 
-The React ecosystem is built on flexibility and composition. Your typing should reflect that philosophy. When you use `ReactNode` for children, you’re allowing consumers to pass strings, elements, arrays, conditional content, or even `null`—exactly what React was designed to handle.
+بُني نظام React على المرونة والتركيب. وينبغي أن تعكس كتابتك لأنواعك هذه الفلسفة. حين تستخدم `ReactNode` للعناصر الفرعية، فأنت تتيح للمستهلكين تمرير نصوص أو عناصر أو مصفوفات أو محتوى شرطي أو حتى `null` — وهو بالضبط ما صُمم React للتعامل معه.
 
-Don’t overthink it: if it’s called `children` and goes between JSX tags, type it as `ReactNode`. Your future self (and your component’s users) will thank you for the flexibility.
+لا تبالغ في التفكير: إن كان الاسم `children` ويقع بين وسمَي JSX، فاكتب نوعه `ReactNode`. وسيشكرَك مستقبلك (ومستخدمو مكوّنك) على هذه المرونة.

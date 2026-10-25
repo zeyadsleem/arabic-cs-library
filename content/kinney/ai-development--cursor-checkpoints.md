@@ -1,32 +1,27 @@
 ---
-title: "Cursor Checkpoints"
-lang: en
+title: "نقاط استعادة Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-checkpoints"
 ---
 
-[Cursor](https://cursor.com/) creates checkpoints during agent work. A checkpoint
-is a recoverable snapshot of the workspace state around an agent turn. It gives
-you a practical escape hatch when an agent takes a wrong turn.
+ينشئ [Cursor](https://cursor.com/) نقاط استعادة أثناء عمل الوكيل. ونقطة الاستعادة لقطة قابلة للاسترجاع لحالة مساحة العمل حول دور وكيل. وهي تمنحك مخرجًا عمليًا عندما يسلك وكيل طريقًا خاطئًا.
 
-## What Checkpoints Are Good For
+## ما الذي تجيده نقاط الاستعادة
 
-Use checkpoints to:
+استخدم نقاط الاستعادة من أجل:
 
-- Compare the current result with an earlier step.
-- Restore a file or workspace state after a bad edit.
-- Understand which prompt caused a change.
-- Recover quickly from an agent loop.
+- مقارنة النتيجة الحالية بخطوة سابقة.
+- استرجاع حالة ملف أو مساحة عمل بعد تعديل سيّئ.
+- فهم أي طلب تسبّب في تغيير.
+- التعافي سريعًا من حلقة وكيل.
 
-They are especially useful during exploratory refactors because you can let the
-agent try a path without committing to it.
+وهي مفيدة خصوصًا في عمليات إعادة الهيكلة الاستكشافية لأنك تستطيع أن تدع الوكيل يجرّب مسارًا دون الالتزام به.
 
-## What Checkpoints Are Not
+## ما الذي ليست عليه نقاط الاستعادة
 
-A checkpoint is not a code review, a test run, or a version control strategy.
-Cursor can restore an earlier state, but it cannot tell you whether the earlier
-state was correct.
+نقطة الاستعادة ليست مراجعة شيفرة ولا تشغيل اختبارات ولا استراتيجية تحكم بالإصدارات. يستطيع Cursor استرجاع حالة سابقة، لكنه لا يستطيع أن يخبرك هل كانت الحالة السابقة صحيحة.
 
-Keep using [Git](https://git-scm.com/) for durable history:
+واصل استخدام [Git](https://git-scm.com/) لسجل دائم:
 
 ```bash
 git status --short
@@ -35,19 +30,17 @@ bun run lint
 bun run test:unit
 ```
 
-Checkpoints help you recover within an agent session. Commits help your team
-understand the project history.
+تساعدك نقاط الاستعادة على التعافي داخل جلسة وكيل. وتساعد الإيداعات فريقك على فهم تاريخ المشروع.
 
-## A Practical Pattern
+## نمط عملي
 
-Before a risky agent task:
+قبل مهمة وكيل محفوفة بالمخاطر:
 
-1. Start from a clean working tree when possible.
-2. Ask Cursor for a plan before edits.
-3. Let the agent implement one bounded unit.
-4. Inspect the diff.
-5. Run the verification command.
-6. Commit only after the result is understandable without the chat transcript.
+1. ابدأ من شجرة عمل نظيفة حيث أمكن.
+2. اطلب من Cursor خطة قبل التعديلات.
+3. دع الوكيل ينفّذ وحدة محدودة واحدة.
+4. افحص الفرق.
+5. شغّل أمر التحقق.
+6. أودع فقط بعد أن تصير النتيجة مفهومة دون نصّ المحادثة.
 
-If the agent makes a broad, hard-to-review change, roll back to the checkpoint
-and ask for a smaller unit of work.
+وإذا أجرى الوكيل تغييرًا واسعًا صعب المراجعة، فارجع إلى نقطة الاستعادة واطلب وحدة عمل أصغر.

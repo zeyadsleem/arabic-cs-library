@@ -1,15 +1,14 @@
 ---
-title: "Encouraging Thinking"
-lang: en
+title: "تشجيع التفكير"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-thinking"
 ---
 
-The goal is not to make [Claude Code](https://code.claude.com/docs/en/overview) “think harder” in the abstract. The goal is to make it expose the reasoning that
-affects the next action.
+الهدف ليس أن «يفكّر [Claude Code](https://code.claude.com/docs/en/overview) أعمق» بشكل مجرّد. الهدف أن يُظهر الاستدلال الذي يؤثر في الإجراء التالي.
 
-## Use Plan Mode for Real Decisions
+## استخدم وضع الخطة للقرارات الحقيقية
 
-When a task has multiple plausible designs, start in plan mode:
+عندما يكون للمهمة عدة تصاميم معقولة، ابدأ في وضع الخطة:
 
 ```
 Plan the smallest change that adds account-level rate limits.
@@ -17,43 +16,37 @@ Compare middleware and service-layer implementations. Name the files each path
 would touch. Do not edit files.
 ```
 
-That prompt forces the decision into the open before edits begin.
+يدفع هذا الطلب القرار إلى العلن قبل بدء التعديلات.
 
-## Use Effort Controls
+## استخدم ضوابط الجهد
 
-Claude Code supports effort controls such as `/effort`. Increase effort when the
-task has high reasoning cost: architecture, security, migration planning, or
-review. Lower effort for routine edits where latency matters more than deep
-analysis.
+يدعم Claude Code ضوابط الجهد مثل `/effort`. ارفع الجهد عندما تكون للمهمة كلفة استدلال عالية: المعمارية، أو الأمان، أو تخطيط الترحيل، أو المراجعة. واخفض الجهد للتعديلات الروتينية حيث تكون الكمون أهم من التحليل العميق.
 
-Effort is not a substitute for context. A high-effort model with the wrong files
-will still solve the wrong problem.
+الجهد ليس بديلًا عن السياق. فالنموذج عالي الجهد مع الملفات الخاطئة سيحلّ المشكلة الخاطئة رغم ذلك.
 
-## Use Opus Planning Deliberately
+## استخدم تخطيط Opus عن قصد
 
-The `opusplan` alias uses Opus for planning and Sonnet for implementation. It is
-a useful default for larger changes because it spends the expensive reasoning
-where it matters most.
+يستخدم الاسم المستعار `opusplan` نموذج Opus للتخطيط و Sonnet للتنفيذ. وهو إعداد افتراضي مفيد للتغييرات الأكبر لأنه يصرف الاستدلال المكلف حيث يهمّ أكثر.
 
-Review the plan before implementation:
+راجع الخطة قبل التنفيذ:
 
 ```
 Use opusplan. Produce the plan first and wait for approval before editing.
 ```
 
-## Ask Better Tradeoff Questions
+## اطرح أسئلة مقايضة أفضل
 
-Weak:
+ضعيف:
 
 ```
 Think carefully and make this better.
 ```
 
-Better:
+أفضل:
 
 ```
 List the two smallest implementation paths, the failure modes of each, and the
 verification command that would prove the chosen path works.
 ```
 
-The second prompt gives thinking a job.
+الطلب الثاني يمنح التفكير مهمة.

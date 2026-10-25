@@ -1,57 +1,57 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/port-the-review-loop-beyond-bugbot-solution"
 ---
 
-The review loop is the only loop in Shelf that’s purely about process. There’s no test file to run, no config to validate, no CI job to trigger. The deliverable is a written policy that makes the second-opinion review portable across tools. That’s harder than it sounds, because it means encoding decisions that most teams leave in someone’s head.
+حلقة المراجعة هي الحلقة الوحيدة في Shelf التي تتعلّق بالعملية وحدها. فلا يوجد ملف اختبار تشغّله، ولا تهيئة تتحقّق منها، ولا مهمة CI تُطلقها. المُخرَج هو سياسة مكتوبة تجعل مراجعة الرأي الثاني قابلة للنقل بين الأدوات. وهذا أصعب مما يبدو، لأنه يعني ترميز قرارات يتركها معظم الفرق في رأس أحدهم.
 
-## Expected experience walkthrough
+## جولة على التجربة المتوقّعة
 
-### Writing the playbook
+### كتابة دليل اللعب
 
-The `docs/review-loop-playbook.md` file you add in this lab breaks every possible review finding into three buckets. Here’s how to think about each one.
+ملف `docs/review-loop-playbook.md` الذي تضيفه في هذا المختبر يوزّع كل ملاحظة مراجعة ممكنة على ثلاث سلال. وإليك كيف تفكّر في كل واحدة منها.
 
-**Blocking** findings are patterns where the cost of merging the bad code is higher than the cost of stopping the PR. In Shelf, these are specific and concrete:
+الملاحظات **الحاجزة** أنماط يكون فيها ثمن دمج الشيفرة السيئة أعلى من ثمن إيقاف طلب السحب. وفي Shelf، هذه محدّدة وملموسة:
 
-- An API handler reads user identity from the request body instead of `locals.user`. This is a real security boundary—the request body is attacker-controlled, `locals.user` is server-validated.
-- An admin route doesn’t call `requireAdministrator`. Missing authorization on an admin route isn’t a style nit.
-- A Drizzle query on user-owned data doesn’t scope by the current user. This means one user can see or modify another user’s shelf entries.
-- A `catch` block swallows an error and returns 2xx. The caller thinks everything is fine. It isn’t.
-- A Playwright spec uses `page.waitForTimeout`, a raw CSS `page.locator`, or logs in manually instead of using storage state (once the auth-bootstrap lab lands). These are banned by `CLAUDE.md` (and, after the static-layer lab, by ESLint rules too). If a reviewer catches them, the static layer has a hole.
-- A change removes the dossier script, the JSON reporter, or the retained trace config (once added in the dossier and reporter labs). Those are the diagnostic lifeline for every future failure.
+- أن يقرأ معالج API هوية المستخدم من جسم الطلب بدلًا من `locals.user`. هذا حدّ أمني حقيقي — فجسم الطلب يتحكّم فيه المهاجم، و`locals.user` يتحقّق منه الخادم.
+- أن لا يستدعي مسار إداري `requireAdministrator`. فغياب التخويل على مسار إداري ليس هفوة أسلوب.
+- أن لا يحصر استعلام Drizzle على بيانات يملكها المستخدم بالمستخدم الحالي. وهذا يعني أن مستخدمًا يستطيع رؤية مدخلات رفّ مستخدم آخر أو تعديلها.
+- أن يبتلع صندوق `catch` خطأً ويعيد 2xx. فيظنّ المستدعي أن كل شيء على ما يرام. وهو ليس كذلك.
+- أن تستخدم مواصفة Playwright `page.waitForTimeout`، أو `page.locator` خامًّا بـCSS، أو تسجيل دخول يدويًا بدلًا من حالة التخزين (حين يستقرّ مختبر تمهيد المصادقة). وهذه محظورة في `CLAUDE.md` (وكذلك بقواعد ESLint بعد مختبر الطبقة الساكنة). فإن التقطها مراجع، فالطبقة الساكنة فيها ثقب.
+- أن يحذف تغييرٌ سكربت ملفّ الفشل، أو مُبلِّغ JSON، أو تهيئة التتبّع المحتفظ بها (حين تُضاف في مختبرَي ملفّ الفشل والمُبلِّغ). فهذه هي حبل النجاة التشخيصي لكل فشل قادم.
 
-Notice how none of these say “the code looks messy” or “this could be refactored.” Blocking findings are about *correctness*, not taste.
+لاحظ أن لا واحدة من هذه تقول «الشيفرة تبدو مهملة» أو «يمكن إعادة هيكلة هذا». فالملاحظات الحاجزة تتعلّق بالصحة (correctness)، لا بالذوق.
 
-**Judgment** findings are the reviewer saying “this smells off but I could be wrong.” Unclear naming, error messages that could be more specific, helpers that might deserve extraction. These are worth reading. They’re often worth fixing. But the author can push back with reasoning, and that’s fine. The playbook’s job is to make sure judgment findings don’t get treated as blocking *or* as noise.
+والملاحظات التي **تحتاج حكمًا** هي أن يقول المراجع «هذا يبدو مريبًا لكن قد أكون مخطئًا». تسمية غير واضحة، أو رسائل خطأ كان يمكن أن تكون أدقّ، أو دوال مساعدة قد تستحقّ الاستخراج. وهذه تستحقّ القراءة. وغالبًا تستحقّ الإصلاح. لكن المؤلف يستطيع أن يعترض بحجّة، ولا بأس بذلك. ومهمة دليل اللعب أن يضمن ألّا تُعامَل ملاحظات الحكم كحاجزة *أو* كضجيج.
 
-**Noise** findings are the stuff the reviewer should never have mentioned. In Shelf, this includes generated files under `playwright-report/`, snapshot PNGs, HAR fixtures, `sample-config.json`, and lockfiles. If a reviewer keeps flagging these, the problem isn’t the reviewer’s taste—it’s the reviewer’s instruction file. Update it.
+والملاحظات التي هي **ضجيج** هي ما كان يجب ألّا يذكره المراجع أصلًا. وفي Shelf، يشمل ذلك الملفات المولّدة تحت `playwright-report/`، وصور PNG للقطات، وتجهيزات HAR، و`sample-config.json`، وملفات القفل. فإن ظلّ المراجع يعلّم على هذه، فالمشكلة ليست في ذوقه — بل في ملف تعليماته. حدّثه.
 
-### The rule of three
+### قاعدة الثلاثة
 
-This is the escalation ramp. When the same kind of finding shows up on three different PRs:
+هذا هو سلّم التصعيد. فحين تظهر الملاحظة نفسها من النوع نفسه على ثلاثة طلبات سحب مختلفة:
 
-- First two times: fix the PR and move on. It might be a coincidence.
-- Third time: add a rule to `CLAUDE.md` encoding the pattern. Now every agent that reads the project instructions knows about it.
-- Still recurring after the rule: add a lint rule, a test assertion, or a CI gate. The finding has graduated from advisory to automated.
+- أول مرتين: أصلح طلب السحب وامضِ. فقد يكون الأمر مصادفة.
+- المرة الثالثة: أضف قاعدة إلى `CLAUDE.md` ترمّز النمط. فالآن كل وكيل يقرأ تعليمات المشروع يعرفها.
+- إن تكرّرت بعد القاعدة: أضف قاعدة فحص، أو تحقّقًا في الاختبار، أو بوابة CI. فالملاحظة تخرّجت من الاستشارة إلى الأتمتة.
 
-The rule of three is the feedback mechanism that turns review findings into upstream prevention. Without it, the reviewer is just a very expensive `grep` that runs on every PR forever.
+وقاعدة الثلاثة هي آلية التغذية الراجعة التي تحوّل ملاحظات المراجعة إلى منع مسبق في المنبع. وبدونها، ما المراجع إلا `grep` باهظ الثمن يعمل على كل طلب سحب إلى الأبد.
 
-### Choosing an alternate review surface
+### اختيار سطح مراجعة بديل
 
-The lab asks you to pick one surface besides Bugbot. The three natural choices for Shelf:
+يطلب منك المختبر أن تختار سطحًا واحدًا غير Bugbot. والخيارات الطبيعية الثلاثة في Shelf:
 
-- **GitHub Copilot review:** add `.github/copilot-instructions.md` with the same blocking rules from the playbook. Copilot reads this file automatically on review requests.
-- **Codex review:** add a repository prompt file that a Codex reviewer reads before reviewing the diff. Same rules, different format.
-- **Claude Code with the `quick-review` skill:** the agent already reads `CLAUDE.md`, which contains the blocking patterns. The instruction surface is the project instructions file itself.
+- **مراجعة GitHub Copilot:** أضف `.github/copilot-instructions.md` وفيه القواعد الحاجزة نفسها من دليل اللعب. وCopilot يقرأ هذا الملف تلقائيًا عند طلبات المراجعة.
+- **مراجعة Codex:** أضف ملف مُوجِّه في المستودع يقرأه مراجع Codex قبل مراجعة الفرق. القواعد نفسها بصيغة مختلفة.
+- **Claude Code مع مهارة `quick-review`:** الوكيل يقرأ `CLAUDE.md` أصلًا، وفيه الأنماط الحاجزة. فسطح التعليمات هو ملف تعليمات المشروع نفسه.
 
-You don’t need all three. You need *one* that works. The test is: if Bugbot disappeared tomorrow, could the alternate reviewer pick up the same job without someone explaining the rules in a Slack thread?
+لا تحتاج الثلاثة. تحتاج *واحدًا* يعمل. والاختبار هو: لو اختفى Bugbot غدًا، هل يستطيع المراجع البديل أن يتولّى المهمة نفسها دون أن يشرح أحد القواعد في خيط Slack؟
 
-### The instruction surface
+### سطح التعليمات
 
-Whatever tool you pick, it needs an instruction file in the repository. Not in a SaaS dashboard. Not in a team wiki. In the repo, checked in, versioned, reviewable. The whole point of this lab is that the review policy survives a tool change. If the policy lives in Bugbot’s settings page, it doesn’t survive anything.
+أي أداة تختار، تحتاج ملف تعليمات في المستودع. لا في لوحة SaaS. ولا في ويكي الفريق. بل في المستودع، مُودَعًا، ومُصدَّرًا بإصدارات، وقابلًا للمراجعة. وفكرة هذا المختبر كلها أن سياسة المراجعة تصمد أمام تغيير الأداة. فإن كانت السياسة تقيم في صفحة إعدادات Bugbot، فلا تصمد أمام شيء.
 
-One perfectly good minimal surface is a tiny reviewer prompt checked into the repo:
+وأحد الأسطح الدنيا الجيدة تمامًا هو مُوجِّه مراجع صغير مُودَع في المستودع:
 
 ```markdown
 # Secondary reviewer instructions
@@ -62,33 +62,33 @@ One perfectly good minimal surface is a tiny reviewer prompt checked into the re
   tell the author to promote it into `CLAUDE.md`, lint, or tests.
 ```
 
-The instruction file should tell the reviewer the same things the playbook tells a human:
+ويجب أن يقول ملف التعليمات للمراجع ما يقوله دليل اللعب للإنسان:
 
-- What correctness means in this codebase (auth patterns, data scoping, error handling).
-- What patterns are explicitly forbidden (the ESLint bans, the `CLAUDE.md` rules).
-- What categories of finding matter most (blocking over judgment, judgment over noise).
-- What to ignore entirely (generated files, fixtures, lockfiles).
+- ما معنى الصحة في قاعدة الشيفرة هذه (أنماط المصادقة، وحصر البيانات، ومعالجة الأخطاء).
+- ما الأنماط المحظورة صراحةً (محظورات ESLint، وقواعد `CLAUDE.md`).
+- أي فئات الملاحظات هي الأهم (الحاجزة قبل الحكم، والحكم قبل الضجيج).
+- ما يجب تجاهله تمامًا (الملفات المولّدة، والتجهيزات، وملفات القفل).
 
-### The re-review path
+### مسار إعادة المراجعة
 
-After a fix lands, the reviewer needs to rerun. The playbook documents this explicitly: push a new commit, the reviewer reruns automatically on the next push. On the second pass, the reviewer applies the same blocking rules. If it stays silent on a remaining blocking pattern, the instruction file has a gap—fix the instructions, not the test.
+بعد أن يستقرّ إصلاح، يحتاج المراجع إلى إعادة التشغيل. ويثبّت دليل اللعب ذلك صراحةً: ادفع إيداعًا جديدًا، فيُعيد المراجع التشغيل تلقائيًا عند الدفعة التالية. وفي الجولة الثانية، يطبّق المراجع القواعد الحاجزة نفسها. فإن ظلّ صامتًا عن نمط حاجز متبقٍّ، ففي ملف التعليمات فجوة — فأصلح التعليمات، لا الاختبار.
 
-This seems obvious until you’re under pressure and the reviewer just approved a PR that still has an unscoped Drizzle query. If the re-review path isn’t explicit, “just push again” turns into “I’ll fix it in the next PR,” which turns into “oh, that’s been in production for three months.”
+وهذا يبدو بديهيًا إلى أن تصبح تحت ضغط وقد وافق المراجع للتوّ على طلب سحب لا يزال فيه استعلام Drizzle بلا حصر. فإن لم يكن مسار إعادة المراجعة صريحًا، تحوّل «ادفع مرة أخرى فحسب» إلى «سأصلحه في طلب السحب التالي»، ثم إلى «آه، هذا في الإنتاج منذ ثلاثة أشهر».
 
-## Judgment criteria
+## معايير الحكم
 
-The playbook is working when:
+دليل اللعب يعمل حين:
 
-- A new team member can read `docs/review-loop-playbook.md` and know exactly which findings are stop-the-line serious.
-- The alternate reviewer can pick up a PR without any verbal context and produce findings in the right categories.
-- The rule of three has actually fired at least once—meaning a repeated finding has graduated from review comment to `CLAUDE.md` rule or lint rule.
-- Noise findings are rare, because the instruction surface tells the reviewer what to skip.
-- The re-review path after a fix is boring and predictable: push, rerun, done.
+- يستطيع عضو جديد في الفريق أن يقرأ `docs/review-loop-playbook.md` ويعرف بالضبط أي الملاحظات خطيرة إلى حدّ إيقاف كل شيء.
+- يستطيع المراجع البديل أن يتولّى طلب سحب دون أي سياق شفهي، وأنتج ملاحظات في السلال الصحيحة.
+- تكون قاعدة الثلاثة قد أطلقت فعلًا مرة واحدة على الأقل — أي أن ملاحظة متكرّرة تخرّجت من تعليق مراجعة إلى قاعدة في `CLAUDE.md` أو قاعدة فحص.
+- تكون ملاحظات الضجيج نادرة، لأن سطح التعليمات يخبر المراجع بما يتجاوزه.
+- يكون مسار إعادة المراجعة بعد الإصلاح مملًّا ومتوقَّعًا: ادفع، وأعد التشغيل، وانتهِ.
 
-If any of those aren’t true, the playbook needs tightening. The most common failure mode is blocking rules that are too vague—“security issues” instead of “reads user identity from the request body.” Specificity is what makes the rules automatable.
+وإن لم يكن أي من ذلك صحيحًا، فدليل اللعب يحتاج تشديدًا. وأشيع نمط فشل هو قواعد حاجزة غامضة أكثر من اللازم — «مشكلات أمنية» بدلًا من «يقرأ هوية المستخدم من جسم الطلب». فالتحديد هو ما يجعل القواعد قابلة للأتمتة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Port the Review Loop Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot)
-- [Review Portability Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot)
-- [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)
+- [مختبر: نقل حلقة المراجعة إلى ما هو أبعد من Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot)
+- [قابلية نقل المراجعة إلى ما هو أبعد من Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot)
+- [ضبط Bugbot ليناسب قاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)

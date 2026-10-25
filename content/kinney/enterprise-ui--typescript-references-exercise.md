@@ -1,66 +1,66 @@
 ---
-title: "Exercise 5: TypeScript References"
-lang: en
+title: "التمرين 5: مراجع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/typescript-references-exercise"
 ---
 
-## What You’re Doing
+## ما الذي تفعله
 
-TypeScript currently checks each package independently with no incremental checking across package boundaries. Changing a type in `@pulse/shared` forces a full recheck of every package that imports it. You’re going to add `composite: true` and `references` arrays to each package’s `tsconfig.json` so TypeScript can track cross-package dependencies and skip rechecking packages whose inputs haven’t changed.
+يفحص TypeScript حاليًا كل حزمة باستقلال دون فحص تزايدي عبر حدود الحزم. وتغيير نوع في `@pulse/shared` يفرض إعادة فحص كاملة لكل حزمة تستوردها. وأنت ستضيف `composite: true` ومصفوفات `references` إلى ملف `tsconfig.json` لكل حزمة كي يستطيع TypeScript تتبّع الاعتمادات العابرة للحزم وتخطي إعادة فحص الحزم التي لم تتغيّر مدخلاتها.
 
-## Why It Matters
+## لماذا يهمّ
 
-In a monorepo with 5 packages, a full typecheck takes a few seconds. In a monorepo with 50 packages, it takes minutes. TypeScript’s project references feature (the `composite` + `references` combination) enables incremental compilation: TypeScript generates `.tsbuildinfo` files that record what was checked and what the results were. On the next run, it only rechecks packages whose source files or upstream declaration files have changed. This is the difference between a typecheck that blocks your workflow and one you barely notice.
+في مستودع أحادي بخمس حزم، يستغرق فحص الأنواع الكامل ثوانٍ. وفي مستودع بخمسين حزمة يستغرق دقائق. وميزة مراجع المشاريع في TypeScript (تركيب `composite` مع `references`) تمكّن التصريف التزايدي: فيولّد TypeScript ملفات `.tsbuildinfo` تسجّل ما فُحص وما كانت النتائج. وفي التشغيل التالي، يعيد فحص الحزم التي تغيّرت ملفاتها المصدرية أو ملفات تعريفاتها الأعلى فقط. وهذا هو الفرق بين فحص أنواع يعطّل سير عملك وآخر تكاد لا تلاحظه.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
 - Node.js 20+
 - pnpm 9+
 
-## Setup
+## الإعداد
 
-You should be continuing from where Exercise 4 left off. If you need to catch up:
+ينبغي أن تكون مكملًا من حيث انتهى التمرين 4. وإن احتجت إلى اللحاق بالركب:
 
 ```bash
 git checkout 05-typescript-start
 pnpm install
 ```
 
-## Measure the Baseline
+## قِس خط الأساس
 
-Run the typecheck to see how long it takes without project references.
+شغّل فحص الأنواع لترى كم يستغرق دون مراجع المشاريع.
 
-Run the typecheck across all packages:
-
-```bash
-pnpm turbo typecheck
-```
-
-Note the total time. Every package runs `tsc --noEmit` independently. There is no incremental state — each run starts from scratch.
-
-> **`tsc --noEmit` and `tsc --build`**
->
-> `tsc --noEmit` runs the type checker against a single project and reports errors, but produces no output files — no `.js`, no `.d.ts`, no `.tsbuildinfo`. It is a one-shot validation pass that starts from scratch every time. `tsc --build` (or `tsc -b`) is project-aware and incremental: it reads the `references` array in `tsconfig.json`, builds projects in dependency order, generates declaration files and `.tsbuildinfo` metadata, and on subsequent runs skips any project whose inputs have not changed. The key difference is that `--build` understands the relationship between projects in a monorepo, while `--noEmit` treats each invocation as an isolated type check with no memory of previous runs. You will switch from `--noEmit` to `--build` later in this exercise to unlock incremental cross-package type checking.
-
-Run it again:
+شغّل فحص الأنواع عبر كل الحزم:
 
 ```bash
 pnpm turbo typecheck
 ```
 
-Turborepo caches the result, so the second run is fast. But this is Turborepo’s cache, not TypeScript’s. If you change a type in `@pulse/shared`, Turborepo invalidates the cache for every downstream package and TypeScript rechecks them all from scratch.
+لاحظ الزمن الكامل. فكل حزمة تشغّل `tsc --noEmit` باستقلال. ولا توجد حالة تزايدية — كل تشغيل يبدأ من الصفر.
 
-> **Turborepo caching vs. TypeScript incremental builds**
+> **`tsc --noEmit` و`tsc --build`**
 >
-> These are complementary, not redundant. Turborepo caches task-level results — if the inputs to `@pulse/analytics:typecheck` haven’t changed, it replays the result. But when inputs *do* change, Turborepo runs the full typecheck command from scratch. TypeScript’s incremental builds (via `.tsbuildinfo`) cache at a finer grain — individual file-level type information. Even when Turborepo decides a typecheck needs to re-run, TypeScript can skip files within that package that haven’t changed. Together, they minimize work at two different levels.
+> يشغّل `tsc --noEmit` فاحص الأنواع على مشروع واحد ويبلّغ بالأخطاء، لكنه لا يُنتج ملفات مخرجات — لا `.js`، ولا `.d.ts`، ولا `.tsbuildinfo`. إنه تمرير تحقق لمرة واحدة يبدأ من الصفر في كل مرة. أما `tsc --build` (أو `tsc -b`) فواعٍ بالمشاريع وتزايدي: يقرأ مصفوفة `references` في `tsconfig.json`، ويبني المشاريع بترتيب الاعتمادات، ويولّد ملفات التعريفات وبيانات `.tsbuildinfo` الوصفية، ويتخطى في التشغيلات التالية أي مشروع لم تتغيّر مدخلاته. والفرق الجوهري أن `--build` يفهم العلاقة بين المشاريع في المستودع الأحادي، بينما يعامل `--noEmit` كل استدعاء كفحص أنواع معزول بلا ذاكرة لتشغيلات سابقة. وستنتقل من `--noEmit` إلى `--build` لاحقًا في هذا التمرين لتُفعّل فحص الأنواع التزايدي عبر الحزم.
 
-### Checkpoint
+شغّله مجددًا:
 
-You’ve measured the baseline typecheck time. Every package checks independently with no incremental state.
+```bash
+pnpm turbo typecheck
+```
 
-## How Project References Work
+يخزّن Turborepo النتيجة مؤقتًا، فالتشغيلة الثانية سريعة. لكن هذا مخزن Turborepo المؤقت، لا مخزن TypeScript. فإن غيّرت نوعًا في `@pulse/shared`، يُبطل Turborepo المخزن المؤقت لكل حزمة أسفلها، ويعيد TypeScript فحصها كلها من الصفر.
 
-TypeScript project references create a build graph that mirrors your package dependencies. Each package generates `.d.ts` declaration files that downstream packages read instead of re-parsing source. When an upstream package’s declarations haven’t changed, downstream packages skip their recheck entirely.
+> **تخزين Turborepo المؤقت مقابل بناءات TypeScript التزايدية**
+>
+> هما متكاملان لا متكرران. يخزّن Turborepo النتائج على مستوى المهمة — فإن لم تتغيّر مدخلات `@pulse/analytics:typecheck`، يعيد تشغيل نتيجتها. لكن عندما *تتغيّر* المدخلات، يشغّل Turborepo أمر فحص الأنواع كاملًا من الصفر. أما بناءات TypeScript التزايدية (عبر `.tsbuildinfo`) فتخزّن على حبيبات أدقّ — معلومات أنواع على مستوى الملف الفردي. فحتى عندما يقرّر Turborepo أن فحصًا يحتاج إلى إعادة تشغيل، يستطيع TypeScript تخطي الملفات غير المتغيرة داخل تلك الحزمة. ومعًا، يقلّلان العمل على مستويين مختلفين.
+
+### نقطة تحقّق
+
+قِست زمن فحص الأنواع الأساسي. وكل حزمة تُفحص باستقلال بلا حالة تزايدية.
+
+## كيف تعمل مراجع المشاريع
+
+تنشئ مراجع مشاريع TypeScript رسمًا بيانيًا للبناء يحاكي اعتمادات حزمك. وكل حزمة تولّد ملفات تعريفات `.d.ts` تقرؤها الحزم الأسفل بدل إعادة تحليل المصدر. وعندما لا تتغيّر تعريفات حزمة أعلى، تتخطى الحزم الأسفل إعادة فحصها تمامًا.
 
 ```
 graph TD
@@ -81,11 +81,11 @@ graph TD
     UI --> Shared
 ```
 
-## Add `composite: true` to Each Package
+## أضف `composite: true` إلى كل حزمة
 
-The `composite` flag tells TypeScript that this project is part of a larger build and should generate the metadata needed for incremental compilation.
+يخبر علم `composite` TypeScript أن هذا المشروع جزء من بناء أكبر وأنه ينبغي أن يولّد البيانات الوصفية اللازمة للتصريف التزايدي.
 
-Open `packages/shared/tsconfig.json`. It should look something like:
+افتح `packages/shared/tsconfig.json`. ينبغي أن يبدو هكذا:
 
 *packages/shared/tsconfig.json*
 
@@ -100,7 +100,7 @@ Open `packages/shared/tsconfig.json`. It should look something like:
 }
 ```
 
-Add `"composite": true` and `"declaration": true` to `compilerOptions`:
+أضف `"composite": true` و`"declaration": true` إلى `compilerOptions`:
 
 *packages/shared/tsconfig.json*
 
@@ -117,34 +117,34 @@ Add `"composite": true` and `"declaration": true` to `compilerOptions`:
 }
 ```
 
-*Note:* These two fields enable incremental cross-package type checking.
+*ملاحظة:* يفعّل هذان الحقلان فحص الأنواع التزايدي عبر الحزم.
 
-> **`composite: true` requires `declaration: true`**
+> **`composite: true` تشترط `declaration: true`**
 >
-> When a package is composite, TypeScript generates `.d.ts` declaration files alongside its output. Downstream packages read these declarations instead of re-parsing the source files. This is what makes incremental cross-package checking possible — TypeScript compares the current declaration output against the previous run’s `.tsbuildinfo` and only rechecks if the declarations changed. Without `declaration: true`, TypeScript has no stable artifact to compare against.
+> عندما تكون الحزمة مركّبة (composite)، يولّد TypeScript ملفات تعريفات `.d.ts` إلى جانب مخرجاتها. وتقرأ الحزم الأسفل هذه التعريفات بدل إعادة تحليل ملفات المصدر. وهذا ما يجعل الفحص التزايدي عبر الحزم ممكنًا — يقارن TypeScript مخرَج التعريفات الحالي بـ`.tsbuildinfo` من التشغيل السابق ويعيد الفحص فقط إن تغيّرت التعريفات. وبلا `declaration: true`، لا يملك TypeScript أثرًا مستقرًا يقارن به.
 
-> **Declaration files**
+> **ملفات التعريفات**
 >
-> A `.d.ts` file contains the type signatures of every exported function, class, interface, and variable, but no implementation code — no function bodies, no expressions, no runtime logic. When TypeScript type-checks a file that imports from another package, it reads the declaration file instead of re-parsing and re-analyzing the full source code. This is dramatically faster because declaration files are smaller and already fully resolved — no type inference needed. In a monorepo with `composite: true`, TypeScript generates these declaration files automatically and uses them as the “contract” between projects: if a declaration file has not changed since the last build, downstream projects can skip rechecking entirely.
+> يحتوي ملف `.d.ts` على تواقيع الأنواع لكل دالة وصنف وواجهة ومتغيّر مُصدَّر، لكن بلا شيفرة تنفيذ — لا أجساد دوال، ولا تعبيرات، ولا منطق وقت تشغيل. وعندما يفحص TypeScript ملفًا يستورد من حزمة أخرى، يقرأ ملف التعريفات بدل إعادة تحليل الشيفرة المصدرية كاملة وتحليلها من جديد. وهذا أسرع كثيرًا لأن ملفات التعريفات أصغر ومحلولة بالكامل — بلا حاجة إلى استنتاج الأنواع. وفي مستودع أحادي بـ`composite: true`، يولّد TypeScript ملفات التعريفات هذه تلقائيًا ويستخدمها «عقدًا» بين المشاريع: فإن لم يتغيّر ملف تعريفات منذ آخر بناء، تستطيع المشاريع الأسفل تخطي إعادة الفحص تمامًا.
 
-The `"composite": true` and `"declaration": true` lines are the only changes—everything else in each `tsconfig.json` stays the same.
+سطرا `"composite": true` و`"declaration": true` هما التغييران الوحيدان—وكل ما عداهما في كل `tsconfig.json` يبقى كما هو.
 
-Repeat for every package. Add `"composite": true` and `"declaration": true` to:
+كرّر ذلك لكل حزمة. أضف `"composite": true` و`"declaration": true` إلى:
 
 - `packages/ui/tsconfig.json`
 - `packages/analytics/tsconfig.json`
 - `packages/users/tsconfig.json`
 - `apps/dashboard/tsconfig.json`
 
-> **`composite` also enforces stricter project hygiene**
+> **`composite` تفرض أيضًا نظافة مشاريع أصرم**
 >
-> When you enable it, TypeScript requires that every file matched by `include` is actually part of the compilation — no stray files. It also requires `rootDir` to be set so declaration file paths are predictable. If you see errors about files not being included in the compilation, check your `include` patterns. This strictness is intentional: it ensures each project has well-defined boundaries, which is exactly what you want in a monorepo.
+> عند تفعيلها، يشترط TypeScript أن يكون كل ملف تطابق `include` جزءًا فعليًا من التصريف — بلا ملفات شاردة. ويشترط أيضًا ضبط `rootDir` كي تكون مسارات ملفات التعريفات متوقّعة. وإن رأيت أخطاءً عن ملفات غير مشمولة في التصريف، فافحص أنماط `include` لديك. وهذه الصرامة مقصودة: فهي تضمن أن لكل مشروع حدودًا محدّدة جيدًا، وهذا بالضبط ما تريده في مستودع أحادي.
 
-## Add `references` Arrays
+## أضف مصفوفات `references`
 
-References tell TypeScript which other projects a package depends on. This mirrors the dependency graph in your `package.json` files.
+تخبر المراجع TypeScript أي المشاريع الأخرى تعتمد عليها الحزمة. وهذا يحاكي رسم الاعتمادات في ملفات `package.json` لديك.
 
-`packages/shared/tsconfig.json` needs no references. It’s a leaf package with no internal dependencies:
+لا يحتاج `packages/shared/tsconfig.json` إلى مراجع. فهي حزمة ورقية بلا اعتمادات داخلية:
 
 *packages/shared/tsconfig.json*
 
@@ -161,7 +161,7 @@ References tell TypeScript which other projects a package depends on. This mirro
 }
 ```
 
-`packages/ui/tsconfig.json` references `@pulse/shared`:
+ويشير `packages/ui/tsconfig.json` إلى `@pulse/shared`:
 
 *packages/ui/tsconfig.json*
 
@@ -179,9 +179,9 @@ References tell TypeScript which other projects a package depends on. This mirro
 }
 ```
 
-*Note:* Declares the TypeScript-level dependency on @pulse/shared.
+*ملاحظة:* يعلن الاعتماد على `@pulse/shared` على مستوى TypeScript.
 
-`packages/analytics/tsconfig.json` references `@pulse/ui` and `@pulse/shared`:
+ويشير `packages/analytics/tsconfig.json` إلى `@pulse/ui` و`@pulse/shared`:
 
 *packages/analytics/tsconfig.json*
 
@@ -202,9 +202,9 @@ References tell TypeScript which other projects a package depends on. This mirro
 }
 ```
 
-*Note:* Mirror the dependencies from package.json so tsc builds in the right order.
+*ملاحظة:* حاكِ الاعتمادات من `package.json` كي يبني tsc بالترتيب الصحيح.
 
-`packages/users/tsconfig.json` gets the same references as analytics:
+ويحصل `packages/users/tsconfig.json` على المراجع نفسها التي في analytics:
 
 *packages/users/tsconfig.json*
 
@@ -225,9 +225,9 @@ References tell TypeScript which other projects a package depends on. This mirro
 }
 ```
 
-*Note:* Same references as analytics — both feature packages depend on ui and shared.
+*ملاحظة:* المراجع نفسها التي في analytics — فكلا حزمتَي الميزة تعتمدان على ui وshared.
 
-`apps/dashboard/tsconfig.json` references all packages:
+ويشير `apps/dashboard/tsconfig.json` إلى كل الحزم:
 
 *apps/dashboard/tsconfig.json*
 
@@ -250,13 +250,13 @@ References tell TypeScript which other projects a package depends on. This mirro
 }
 ```
 
-> **References must match your actual dependency graph**
+> **يجب أن تطابق المراجع رسم اعتماداتك الفعلي**
 >
-> If `packages/analytics/package.json` lists `@pulse/ui` as a dependency, then `packages/analytics/tsconfig.json` must include `{ "path": "../ui" }` in its references. A mismatch means TypeScript either misses a dependency (leading to stale type information) or declares one that doesn’t exist (leading to unnecessary rechecks). The references array is the TypeScript-level mirror of your `package.json` dependencies.
+> إن كان `packages/analytics/package.json` يدرج `@pulse/ui` كاعتماد، فيجب أن يضم `packages/analytics/tsconfig.json` المدخل `{ "path": "../ui" }` في مراجعه. وأي عدم تطابق يعني أن TypeScript إما يفوّت اعتمادًا (ما يؤدي إلى معلومات أنواع قديمة) وإما يعلن اعتمادًا غير موجود (ما يؤدي إلى إعادة فحص غير ضرورية). ومصفوفة المراجع هي المرآة على مستوى TypeScript لاعتمادات `package.json` لديك.
 
-## Create a Root Build Configuration
+## أنشئ تهيئة بناء جذرية
 
-Create or update `tsconfig.json` at the repository root so `tsc --build` knows about all projects:
+أنشئ أو حدّث `tsconfig.json` في جذر المستودع كي يعرف `tsc --build` بكل المشاريع:
 
 *tsconfig.json*
 
@@ -273,23 +273,23 @@ Create or update `tsconfig.json` at the repository root so `tsc --build` knows a
 }
 ```
 
-*Note:* No files to compile here — this is just an entry point for tsc --build.
+*ملاحظة:* لا ملفات تُصرَّف هنا — إنها مجرد نقطة دخول لـ`tsc --build`.
 
-> **`"files": []` is intentional**
+> **`"files": []` مقصودة**
 >
-> The root `tsconfig.json` doesn’t compile any files itself — it only acts as an entry point that tells `tsc --build` which projects exist. The `files: []` prevents TypeScript from trying to compile anything in the root directory. Each project’s own `tsconfig.json` (with its `include` pattern) determines what gets compiled.
+> لا يصرّف `tsconfig.json` الجذري أي ملفات بنفسه — إنه يعمل كنقطة دخول فقط تخبر `tsc --build` أي المشاريع موجودة. و`files: []` يمنع TypeScript من محاولة تصريف أي شيء في المجلد الجذري. وملف `tsconfig.json` الخاص بكل مشروع (بنمط `include` فيه) هو ما يحدّد ما يُصرَّف.
 
-## Run `tsc --build`
+## شغّل `tsc --build`
 
-Run the TypeScript build from the root:
+شغّل بناء TypeScript من الجذر:
 
 ```bash
 npx tsc --build
 ```
 
-TypeScript processes each project in dependency order: `@pulse/shared` first (no dependencies), then `@pulse/ui`, then `@pulse/analytics` and `@pulse/users` (which can run in parallel since neither depends on the other), then `apps/dashboard` last.
+يعالج TypeScript كل مشروع بترتيب الاعتمادات: `@pulse/shared` أولًا (بلا اعتمادات)، ثم `@pulse/ui`، ثم `@pulse/analytics` و`@pulse/users` (ويمكن أن يعملا بالتوازي لأن إحداهما لا تعتمد على الأخرى)، ثم `apps/dashboard` أخيرًا.
 
-Check for `.tsbuildinfo` files:
+وتحقّق من ملفات `.tsbuildinfo`:
 
 ```bash
 ls packages/shared/*.tsbuildinfo
@@ -297,27 +297,27 @@ ls packages/ui/*.tsbuildinfo
 ls packages/analytics/*.tsbuildinfo
 ```
 
-Each package now has a `.tsbuildinfo` file that records the compilation state.
+صار لكل حزمة الآن ملف `.tsbuildinfo` يسجّل حالة التصريف.
 
-Run `tsc --build` again:
+شغّل `tsc --build` مجددًا:
 
 ```bash
 npx tsc --build
 ```
 
-The second run should be noticeably faster. TypeScript reads each `.tsbuildinfo` file, compares it against the current source, and skips projects where nothing has changed.
+وينبغي أن تكون التشغيلة الثانية أسرع بشكل ملحوظ. فيقرأ TypeScript كل ملف `.tsbuildinfo`، ويقارنه بالمصدر الحالي، ويتخطى المشاريع التي لم يتغيّر فيها شيء.
 
-### Checkpoint
+### نقطة تحقّق
 
-`tsc --build` completes successfully. Each package has a `.tsbuildinfo` file. The second run is faster because TypeScript uses incremental state.
+يكتمل `tsc --build` بنجاح. ولكل حزمة ملف `.tsbuildinfo`. والتشغيلة الثانية أسرع لأن TypeScript يستخدم حالة تزايدية.
 
-First tsc --build run processing all projects
+أول تشغيل لـ`tsc --build` يعالج كل المشاريع
 
-Subsequent tsc --build run with incremental checking
+تشغيلات لاحقة لـ`tsc --build` بفحص تزايدي
 
-## Test Incremental Rechecking
+## اختبر إعادة الفحص التزايدي
 
-When you change a type in `@pulse/shared`, the cascade flows through the reference graph. Only packages with a dependency path to the changed package get rechecked — everything else is skipped.
+عندما تغيّر نوعًا في `@pulse/shared`، تنتشر السلسلة عبر رسم المراجع. ولا يُعاد فحص إلا الحزم التي لها مسار اعتماد إلى الحزمة المتغيرة — وكل ما عداها يُتخطّى.
 
 ```
 flowchart TD
@@ -336,7 +336,7 @@ flowchart TD
     Analytics --> Dashboard
 ```
 
-Open `packages/shared/src/types.ts` and add a new field to the `User` interface:
+افتح `packages/shared/src/types.ts` وأضف حقلًا جديدًا إلى واجهة `User`:
 
 *packages/shared/src/types.ts*
 
@@ -352,55 +352,55 @@ export interface User {
 }
 ```
 
-*Note:* Adding a new exported field changes the .d.ts output and triggers downstream rechecks.
+*ملاحظة:* إضافة حقل مُصدَّر جديد تغيّر مخرَج .d.ts وتُطلق إعادة فحص للحزم الأسفل.
 
-Run `tsc --build` and watch the output:
+شغّل `tsc --build` وراقب المخرَج:
 
 ```bash
 npx tsc --build --verbose
 ```
 
-The `--verbose` flag shows which projects are being checked and which are being skipped. You should see:
+يعرض علم `--verbose` أي المشاريع تُفحص وأيها يُتخطّى. وينبغي أن ترى:
 
-- `@pulse/shared` — rechecked (source changed)
-- `@pulse/ui` — rechecked (depends on `@pulse/shared`, whose declarations changed)
-- `@pulse/analytics` — rechecked (same reason)
-- `@pulse/users` — rechecked (same reason)
-- `@pulse/dashboard` — rechecked (depends on everything)
+- `@pulse/shared` — أُعيد فحصها (تغيّر المصدر)
+- `@pulse/ui` — أُعيد فحصها (تعتمد على `@pulse/shared`، التي تغيّرت تعريفاتها)
+- `@pulse/analytics` — أُعيد فحصها (السبب نفسه)
+- `@pulse/users` — أُعيد فحصها (السبب نفسه)
+- `@pulse/dashboard` — أُعيد فحصها (تعتمد على كل شيء)
 
-> **Why everything rechecks when you change a shared type**
+> **لماذا يُعاد فحص كل شيء عندما تغيّر نوعًا مشتركًا**
 >
-> The `User` interface is exported from `@pulse/shared`, which means the generated `.d.ts` file changes. Every project that references `@pulse/shared` reads these declarations, so their input hash changes too. This is correct — a type change in shared code could introduce errors anywhere. But if you change a *non-exported* implementation detail in `@pulse/shared` (like a private helper function), the declarations don’t change, and downstream projects skip the recheck entirely.
+> واجهة `User` مُصدَّرة من `@pulse/shared`، ما يعني أن ملف `.d.ts` المولَّد يتغيّر. وكل مشروع يشير إلى `@pulse/shared` يقرأ هذه التعريفات، فتتغيّر تجزئة مدخلاته أيضًا. وهذا صحيح — فتغيير نوع في شيفرة مشتركة قد يُدخل أخطاءً في أي مكان. لكن إن غيّرت تفصيلًا تنفيذيًا *غير مُصدَّر* في `@pulse/shared` (مثل دالة مساعدة خاصة)، فلا تتغيّر التعريفات، وتتخطى المشاريع الأسفل إعادة الفحص تمامًا.
 
-Now make a change that doesn’t affect the public API. Open `packages/ui/src/button.tsx` and add a comment:
+والآن أجرِ تغييرًا لا يؤثر في الواجهة البرمجية العامة. افتح `packages/ui/src/button.tsx` وأضف تعليقًا:
 
 ```typescript
 // Internal styling update
 ```
 
-Run `tsc --build --verbose` again. This time, only `@pulse/ui` and its dependents should recheck. `@pulse/shared` is skipped because it didn’t change.
+شغّل `tsc --build --verbose` مجددًا. هذه المرة، ينبغي أن يُعاد فحص `@pulse/ui` والمعتمَدات عليها فقط. أما `@pulse/shared` فتُتخطّى لأنها لم تتغيّر.
 
-Revert both changes when you’re done.
+أعِد التغييرين عند الانتهاء.
 
-### Checkpoint
+### نقطة تحقّق
 
-Changing a type in `@pulse/shared` causes all downstream packages to recheck. Changing an internal file in `@pulse/ui` only rechecks `@pulse/ui` and its dependents, not `@pulse/shared`. Incremental checking works.
+تغيير نوع في `@pulse/shared` يدفع كل الحزم الأسفل إلى إعادة الفحص. وتغيير ملف داخلي في `@pulse/ui` يعيد فحص `@pulse/ui` والمعتمَدات عليها فقط، لا `@pulse/shared`. فالفحص التزايدي يعمل.
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `06-linting-start` branch:
+إن احتجت إلى اللحاق بالركب، فالحالة المكتملة لهذا التمرين متاحة في فرع `06-linting-start`:
 
 ```bash
 git checkout 06-linting-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Measure the speedup:** Add 10 more interfaces to `@pulse/shared/src/types.ts`, run `tsc --build` to populate the cache, then change one interface and run `tsc --build --verbose` again. With more projects and more types, the incremental speedup becomes more dramatic.
-- **`declarationMap`:** Add `"declarationMap": true` to `compilerOptions`. This generates `.d.ts.map` files that let your editor “Go to Definition” on a type from `@pulse/shared` and jump to the actual `.ts` source, not the `.d.ts` output.
-- **Path aliases:** Configure path aliases in `tsconfig.base.json` so `@pulse/shared` resolves cleanly without relative paths. Check that both `tsc --build` and Vite resolve the aliases correctly.
+- **قِس التسريع:** أضف 10 واجهات أخرى إلى `@pulse/shared/src/types.ts`، وشغّل `tsc --build` لملء المخزن المؤقت، ثم غيّر واجهة واحدة وشغّل `tsc --build --verbose` مجددًا. فمع مزيد من المشاريع والأنواع، يصير التسريع التزايدي أكثر وضوحًا.
+- **`declarationMap`:** أضف `"declarationMap": true` إلى `compilerOptions`. يولّد هذا ملفات `.d.ts.map` تتيح لمحرّرك «الانتقال إلى التعريف» على نوع من `@pulse/shared` والقفز إلى مصدر `.ts` الفعلي، لا إلى مخرَج `.d.ts`.
+- **أسماء المسارات البديلة:** هيّئ أسماء مسارات بديلة في `tsconfig.base.json` كي يُحلّ `@pulse/shared` بنظافة دون مسارات نسبية. وتحقّق من أن كلا الأمرين `tsc --build` وVite يحلّان الأسماء البديلة بشكل صحيح.
 
-## What’s Next
+## ما التالي
 
-TypeScript now checks incrementally across package boundaries. But nothing prevents code from violating those boundaries — you can still import internal files from another package, and there’s no enforcement of the dependency graph at the lint level. In the next exercise, you’ll configure `eslint-plugin-boundaries` to catch architectural violations before they reach code review.
+يفحص TypeScript الآن تزايديًا عبر حدود الحزم. لكن لا شيء يمنع الشيفرة من خرق تلك الحدود — فما زال بوسعك استيراد ملفات داخلية من حزمة أخرى، ولا يوجد فرض لرسم الاعتمادات على مستوى lint. وفي التمرين التالي، ستهيّئ `eslint-plugin-boundaries` لالتقاط المخالفات المعمارية قبل وصولها إلى مراجعة الشيفرة.

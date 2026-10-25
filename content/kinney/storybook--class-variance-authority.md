@@ -1,29 +1,29 @@
 ---
-title: "Class Variance Authority"
-lang: en
+title: "إنشاء المتغيّرات باستخدام Class Variance Authority"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/class-variance-authority"
 ---
 
-[Class Variance Authority](https://cva.style/) is a framework agnostic tool for creating variants of a component with different classes. It’s super simple and you probably *could* write it yourself if you had to—but, you don’t have to because it already exists.
+[Class Variance Authority](https://cva.style/) أداة مستقلة عن إطار العمل، تُنشئ بها متغيّرات لمكوّن بأصناف مختلفة. وهي بسيطة جدًا، وربما *تستطيع* كتابتها بنفسك لو اضطررت—لكنك لا تحتاج إلى ذلك لأنها موجودة بالفعل.
 
-CVA allows you to:
+تتيح لك CVA ما يلي:
 
-1. Define a set of base styles for the component.
-2. Define the styles unique to each variant.
-3. Allow you to define default variants when one isn’t explicitly specified.
-4. It allows you to create compound variants.
+1. تعريف مجموعة من الأنماط الأساسية للمكوّن.
+2. تعريف الأنماط الخاصة بكل متغيّر.
+3. تعريف متغيّرات افتراضية عندما لا يُحدَّد أحدها صراحةً.
+4. إنشاء متغيّرات مركّبة.
 
-It works *super well* with Tailwind, but you don’t need use Tailwind to use CVA. You can use any utility classes that you want or even just the classes from our CSS modules like we did earlier.
+وهي تعمل *بشكل ممتاز* مع Tailwind، لكنك لا تحتاج إلى استخدام Tailwind لاستخدام CVA. ويمكنك استخدام أي أصناف مساعدة تريدها، أو حتى أصناف وحدات CSS فقط كما فعلنا سابقًا.
 
-> **Using Tailwind’s IntelliSense with Class Variance Authority**
+> **استخدام IntelliSense الخاص بـ Tailwind مع مكتبة Class Variance Authority**
 >
-> If you’re using Tailwind and Visual Studio Code and CVA and the [Tailwind CSS IntelliSense extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss), then you might want to make [this](https://cva.style/docs/getting-started/installation#tailwind-css) tweak to the `settings.json` in your project.
+> إذا كنت تستخدم Tailwind وVisual Studio Code وCVA و[إضافة Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)، فقد ترغب في إجراء [هذا](https://cva.style/docs/getting-started/installation#tailwind-css) التعديل في `settings.json` في مشروعك.
 
-Let’s look at an example where we refactor our [button component](https://stevekinney.com/courses/storybook/adding-variants) from earlier to use CVA.
+لننظر في مثال نُعيد فيه تهيئة [مكوّن الزر](https://stevekinney.com/courses/storybook/adding-variants) من قبل لاستخدام CVA.
 
-## Refactoring the Variant Variant
+## إعادة تهيئة خاصية variant
 
-I regret some of my previous naming choices, but here we are. Let’s look at some code and talk through it.
+أنا نادم على بعض خياراتي السابقة في التسمية، لكننا هنا. لننظر في بعض الشيفرة ونتحدث عنها.
 
 ```typescript
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -79,19 +79,19 @@ export const variants = cva(
 );
 ```
 
-One of the things that you’ll notice is that this is just a JavaScript object. You can use it with Svelte just as easily as you could with React or anything else.
+من الأمور التي ستلاحظها أن هذا مجرّد كائن JavaScript. ويمكنك استخدامه مع Svelte بالسهولة نفسها التي تستخدمه بها مع React أو أي شيء آخر.
 
-## Generating Types Automatically
+## توليد الأنواع تلقائيًا
 
-We can also add the following:
+يمكننا أيضًا إضافة ما يلي:
 
 ```typescript
 type ButtonVariants = VariantProps<typeof variants>;
 ```
 
-`VariantProps` looks at the object returned from CVA and creates a type that you can use as a prop with almost any framework—as long as you’re using TypeScript, of course. This allows you the ability to share you component styling (e.g. your design language) across multiple projects—even if they’re using different frameworks.
+ينظر `VariantProps` في الكائن الذي تعيده CVA وينشئ نوعًا يمكنك استخدامه كخاصية مع أي إطار عمل تقريبًا—ما دمت تستخدم TypeScript بالطبع. وهذا يمنحك القدرة على مشاركة تصميم مكوّنك (أي لغتك التصميمية) عبر مشاريع متعددة—حتى لو كانت تستخدم أطر عمل مختلفة.
 
-Now, we can update the component to use a type based on the variants.
+الآن، يمكننا تحديث المكوّن لاستخدام نوع مبني على المتغيّرات.
 
 ```typescript
 type ButtonProps = ComponentProps<'button'> & {
@@ -100,6 +100,6 @@ type ButtonProps = ComponentProps<'button'> & {
 };
 ```
 
-> **Exercise**
+> **تمرين**
 >
-> Can you add an additional variant for the `size` property? We’ll checkout a solution [here](https://stevekinney.com/courses/storybook/adding-a-size-variant).
+> هل يمكنك إضافة متغيّر إضافي للخاصية `size`؟ سنطّلع على حل [هنا](https://stevekinney.com/courses/storybook/adding-a-size-variant).

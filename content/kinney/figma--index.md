@@ -1,33 +1,33 @@
 ---
-title: "Figma for Developers"
-lang: en
+title: "Figma للمطوّرين"
+lang: ar
 source: "https://stevekinney.com/courses/figma"
 ---
 
-The material in this course is intended to go along with the [Figma, v2](https://frontendmasters.com/courses/figma-v2/?utm_source=kinney&utm_medium=social&code=kinney) course with [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
+المواد في هذه الدورة مُعدّة لتُرافق دورة [Figma, v2](https://frontendmasters.com/courses/figma-v2/?utm_source=kinney&utm_medium=social&code=kinney) مع [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
 
-> **Figma Project File**
+> **ملف مشروع Figma**
 >
-> We’ll be working with [this Figma project file](https://www.figma.com/design/1v4uGneHKyq6SfxPWI7KJc/Figma-for-Developers-v2--Frontend-Masters). You can and should make a copy of it and follow along.
+> سنعمل على [ملف مشروع Figma هذا](https://www.figma.com/design/1v4uGneHKyq6SfxPWI7KJc/Figma-for-Developers-v2--Frontend-Masters). يمكنك أن تصنع نسخة منه، بل ينبغي لك ذلك، ثم تتابع معنا.
 
-I’m [Steve](https://stevekinney.com/), the head of frontend engineering at [Temporal](https://temporal.io/) I’m excited to guide you through [Figma](https://figma.com/) from a developer’s perspective. Our journey into Figma is not just about design; it’s about creating a bridge between design and development, making it easier for teams to collaborate and build amazing user interfaces.
+أنا [Steve](https://stevekinney.com/)، رئيس هندسة الواجهات الأمامية في [Temporal](https://temporal.io/)، ويسعدني أن أرشدك في رحلتك عبر [Figma](https://figma.com/) من منظور المطوّر. رحلتنا إلى Figma ليست عن التصميم فحسب، بل عن إنشاء جسر بين التصميم والتطوير يجعل تعاون الفرق وبناء واجهات مستخدم مذهلة أسهل.
 
-> **Some features required a paid account**
+> **بعض الميزات تتطلب حسابًا مدفوعًا**
 >
-> Most of what we’re going to talk about today is included for free with any [Figma account](https://help.figma.com/hc/en-us/articles/360039811114-Create-a-Figma-account). That said, there are a few features like [Dev Mode](https://www.figma.com/dev-mode/) and [Variable Modes](https://help.figma.com/hc/en-us/articles/15343816063383-Modes-for-variables) that **require a paid account**.
+> معظم ما سنتحدث عنه اليوم مُتاح مجانًا مع أي [حساب Figma](https://help.figma.com/hc/en-us/articles/360039811114-Create-a-Figma-account). ومع ذلك، هناك بعض الميزات مثل [Dev Mode](https://www.figma.com/dev-mode/) و[Variable Modes](https://help.figma.com/hc/en-us/articles/15343816063383-Modes-for-variables) التي **تتطلب حسابًا مدفوعًا**.
 >
-> There is **no expectation** that you have a paid account, but we will be exploring a few of these features during this course.
+> لا يوجد **أي توقّع** بأن يكون لديك حساب مدفوع، لكننا سنستكشف بعضًا من هذه الميزات خلال هذه الدورة.
 
-## Why Figma for Developers?
+## لماذا Figma للمطوّرين؟
 
-A lot of the content out there around using Figma is—naturally—written by and for designers. In this course, we’re going to to learn how to use Figma from the perspective of an frontend or full-stack software engineer. Yes, that means we can make jokes about prototypal inheritance and other peculiarities of the JavaScript programming language.
+الكثير من المحتوى المنتشر حول استخدام Figma مكتوب — بطبيعة الحال — بواسطة مصمّمين ولأجلهم. في هذه الدورة سنتعلّم كيف نستخدم Figma من منظور مهندس برمجيات للواجهات الأمامية أو للويب الكامل. نعم، هذا يعني أننا نستطيع إطلاق النكات عن الوراثة النموذجية (prototypal inheritance) وغيرها من خصوصيات لغة البرمجة JavaScript.
 
-Not only will you learn how to use Figma, but my goal is to empower you to be a better collaborator with the designers on your team when it comes developer handoff. In addition to learning *how* to use Figma, we’ll pick up a bunch of skills that will make it easier to implement designs created in Figma into our applications and software projects. You’ll also learn how to use Figma for those situations where *you* need to play the role of a designer.
+ولن تتعلّم فحسب كيف تستخدم Figma، بل هدفي أن أُمكّنك من أن تكون متعاونًا أفضل مع المصمّمين في فريقك عند تسليم التصاميم للمطوّرين. وإلى جانب تعلّم *كيفية* استخدام Figma، سنكتسب مجموعة من المهارات التي تسهّل تنفيذ التصاميم المُنشأة في Figma داخل تطبيقاتنا ومشاريعنا البرمجية. وستتعلّم أيضًا كيف تستخدم Figma في تلك الحالات التي تحتاج فيها *أنت* إلى أداء دور المصمّم.
 
-If you’re a designer, this course is *also* for you. You’ll learn how to structure your designs to make your friendly neighborhood developers’ lives easier.
+إن كنت مصمّمًا، فهذه الدورة *لك* أيضًا. ستتعلّم كيف تُنظّم تصاميمك لتجعل حياة المطوّرين المتعاونين معك أسهل.
 
-By the end of this course, you’ll not only be proficient in using Figma but also understand how to translate designs into code, contribute to a design system, and work effectively with designers. Whether converting from Photoshop or integrating with tools like Storybook, you’ll gain insights into making Figma a pivotal part of your development workflow.
+وبنهاية هذه الدورة، لن تكون متمكّنًا من استخدام Figma فحسب، بل ستفهم أيضًا كيف تترجم التصاميم إلى شيفرة، وكيف تُساهم في نظام تصميم، وكيف تعمل بفعالية مع المصمّمين. وسواء كنت تنتقل من Photoshop أو تدمج أدوات مثل Storybook، فستكتسب رؤى تجعل Figma جزءًا محوريًا من سير عمل التطوير لديك.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-All you need is [a Figma account](https://www.figma.com/login) and a web browser. Optionally, you might to install the [Figma desktop application](https://www.figma.com/downloads) as well as [Figma for Visual Studio Code](https://help.figma.com/hc/en-us/articles/15023121296151-Figma-for-VS-Code).
+كل ما تحتاجه هو [حساب Figma](https://www.figma.com/login) ومتصفّح ويب. واختياريًا، قد ترغب في تثبيت [تطبيق Figma لسطح المكتب](https://www.figma.com/downloads) وكذلك [Figma for Visual Studio Code](https://help.figma.com/hc/en-us/articles/15023121296151-Figma-for-VS-Code).

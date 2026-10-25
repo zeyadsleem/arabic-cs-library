@@ -1,18 +1,18 @@
 ---
-title: "CSS Grid: The Basics"
-lang: en
+title: "CSS Grid: الأساسيات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/css-grid-the-basics"
 ---
 
-CSS Grid with Tailwind offers precise control over two-dimensional layouts. Flexbox is powerful for one-dimensional alignment, but Grid excels in two dimensions. Tailwind 4, with its utility-first approach, makes building complex grid layouts intuitive and fast. Compose layouts directly in HTML with clear, semantic classes, reducing the need for custom CSS.
+يوفّر CSS Grid مع Tailwind تحكّمًا دقيقًا في التخطيطات ثنائية الأبعاد. وFlexbox قوي في المحاذاة أحادية البُعد، لكنّ Grid يتفوّق في البُعدين. أما Tailwind 4، بنهج «الأدوات أولًا»، فيجعل بناء تخطيطات Grid المعقّدة بديهيًا وسريعًا. يُركّب التخطيطات مباشرةً في HTML عبر أصناف واضحة ودلالية، فتقلّ الحاجة إلى CSS مخصّص.
 
-## Setting Up a Grid Container
+## تهيئة حاوية Grid
 
-To create a grid layout, first define a grid container. In standard CSS, this is `display: grid;`. Tailwind uses the `grid` utility class.
+لإنشاء تخطيط grid، عرّف أولًا حاوية grid. وفي CSS القياسية يكون ذلك `display: grid;`. ويستخدم Tailwind صنف الأداة `grid`.
 
-Applying `grid` to an element makes it a grid container, establishing a block-level grid formatting context for its contents. This container dictates how its direct children (grid items) are laid out.
+تطبيق `grid` على عنصر يجعله حاوية grid، فينشئ سياق تنسيق grid على مستوى الكتلة لمحتوياته. وتتحكّم هذه الحاوية في كيفية توزيع عناصرها المباشرة (عناصر grid).
 
-*Setting Up a Grid Container — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/94dd431e6b34104ec19e113bb405fd419ce2da9b5bf85a1a3aaaff279ab5c402.html)*
+*تهيئة حاوية Grid — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/94dd431e6b34104ec19e113bb405fd419ce2da9b5bf85a1a3aaaff279ab5c402.html)*
 
 ```html
 <div class="grid gap-4 rounded-lg bg-gray-100 p-4">
@@ -23,19 +23,19 @@ Applying `grid` to an element makes it a grid container, establishing a block-le
 </div>
 ```
 
-This class is the foundation for all grid layout capabilities.
+هذا الصنف هو أساس كل قدرات تخطيط grid.
 
-## Defining Explicit Grid Tracks
+## تعريف مسارات Grid الصريحة
 
-Once you have a grid container, define the grid by specifying columns and rows, known as explicit grid tracks.
+بعد أن تحصل على حاوية grid، عرّف الشبكة بتحديد الأعمدة والصفوف، وهي ما يُعرف بمسارات grid الصريحة.
 
-### Grid Columns
+### أعمدة Grid
 
-Define explicit grid columns using utilities that map to the `grid-template-columns` CSS property. The primary Tailwind utility is `grid-cols-<number>`.
+عرّف أعمدة grid صريحة باستخدام أدوات تقابل خاصية `grid-template-columns` في CSS. والأداة الأساسية في Tailwind هي `grid-cols-<number>`.
 
-`grid-cols-<number>` creates a grid with a specified number of equally sized columns. For example, `grid-cols-3` creates three columns, each taking an equal fraction of the available space, using `repeat(<number>, minmax(0, 1fr))` CSS. The `fr` unit represents a fraction of the available space in the grid container.
+تُنشئ `grid-cols-<number>` شبكة بعدد محدّد من الأعمدة المتساوية الحجم. فمثلًا، تُنشئ `grid-cols-3` ثلاثة أعمدة، يأخذ كل منها نسبة متساوية من المساحة المتاحة، باستخدام CSS بصيغة `repeat(<number>, minmax(0, 1fr))`. وتمثّل وحدة `fr` نسبة من المساحة المتاحة في حاوية grid.
 
-*Grid Columns — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/8ff16d7507bbdb36dc7042d55cdcd616a4e3dea839fd34c4f6a22f58a1d26fcc.html)*
+*أعمدة Grid — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/8ff16d7507bbdb36dc7042d55cdcd616a4e3dea839fd34c4f6a22f58a1d26fcc.html)*
 
 ```html
 <div class="grid grid-cols-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -48,13 +48,13 @@ Define explicit grid columns using utilities that map to the `grid-template-colu
 </div>
 ```
 
-This creates a 3-column grid where each column is one-third the container’s width (minus the gap).
+هذا ينشئ شبكة من ثلاثة أعمدة، عرض كل عمود فيها ثلث عرض الحاوية (ناقص الفجوة).
 
-Remove explicitly defined columns with `grid-cols-none` (`grid-template-columns: none;`).
+أزل الأعمدة المعرَّفة صراحةً باستخدام `grid-cols-none` (`grid-template-columns: none;`).
 
-For complex column definitions, use arbitrary values with `grid-cols-[<value>]`. This allows any valid CSS value for `grid-template-columns`, like specific widths, `repeat` with different units, or `fit-content`.
+ولتعريفات الأعمدة المعقّدة، استخدم القيم التعسّفية مع `grid-cols-[<value>]`. فهذا يسمح بأي قيمة CSS صالحة لـ `grid-template-columns`، مثل عروض محدّدة، أو `repeat` بوحدات مختلفة، أو `fit-content`.
 
-*Grid Columns — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/2fae09d065c0b1a5fd05639c9b637e9fbe7e05ab98ab3d143d0792493237859e.html)*
+*أعمدة Grid — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2fae09d065c0b1a5fd05639c9b637e9fbe7e05ab98ab3d143d0792493237859e.html)*
 
 ```html
 <div class="grid grid-cols-[200px_1fr_200px] gap-4 rounded-lg bg-gray-100 p-4">
@@ -64,15 +64,15 @@ For complex column definitions, use arbitrary values with `grid-cols-[<value>]`.
 </div>
 ```
 
-Reference CSS variables for column definitions with `grid-cols-(<custom-property>)`, like `grid-cols-(--my-column-layout)`.
+أشِر إلى متغيّرات CSS لتعريفات الأعمدة عبر `grid-cols-(<custom-property>)`، مثل `grid-cols-(--my-column-layout)`.
 
-### Grid Rows
+### صفوف Grid
 
-Similarly, define explicit grid rows using utilities that map to `grid-template-rows`. The primary utility is `grid-rows-<number>`.
+وبالمثل، عرّف صفوف grid صريحة باستخدام أدوات تقابل `grid-template-rows`. والأداة الأساسية هي `grid-rows-<number>`.
 
-`grid-rows-<number>` creates a grid with a specified number of equally sized rows, using `repeat(<number>, minmax(0, 1fr))` CSS.
+تُنشئ `grid-rows-<number>` شبكة بعدد محدّد من الصفوف المتساوية الحجم، باستخدام CSS بصيغة `repeat(<number>, minmax(0, 1fr))`.
 
-*Grid Rows — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/1466756b937632dcad1b7555ba663c20158a522e13aa44dbb80aa34730d1451d.html)*
+*صفوف Grid — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1466756b937632dcad1b7555ba663c20158a522e13aa44dbb80aa34730d1451d.html)*
 
 ```html
 <div class="grid grid-flow-col grid-rows-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -85,13 +85,13 @@ Similarly, define explicit grid rows using utilities that map to `grid-template-
 </div>
 ```
 
-This creates a grid with three rows. Items flow into columns (`grid-flow-col`) after filling rows. Each row takes an equal fraction of the available height.
+هذا ينشئ شبكة من ثلاثة صفوف. وتدفّق العناصر إلى الأعمدة (`grid-flow-col`) بعد ملء الصفوف. ويأخذ كل صف نسبة متساوية من الارتفاع المتاح.
 
-Remove explicitly defined rows with `grid-rows-none`.
+أزل الصفوف المعرَّفة صراحةً باستخدام `grid-rows-none`.
 
-For custom row definitions, `grid-rows-[<value>]` allows arbitrary values.
+ولتعريفات صفوف مخصّصة، تسمح `grid-rows-[<value>]` بالقيم التعسّفية.
 
-*Grid Rows — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/766455f4c457b5c83855968a2b0ec9ef16d8bc5960185c18326f6e7556ab5756.html)*
+*صفوف Grid — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/766455f4c457b5c83855968a2b0ec9ef16d8bc5960185c18326f6e7556ab5756.html)*
 
 ```html
 <div class="grid grid-rows-[100px_auto_100px] gap-4 rounded-lg bg-gray-100 p-4">
@@ -101,15 +101,15 @@ For custom row definitions, `grid-rows-[<value>]` allows arbitrary values.
 </div>
 ```
 
-CSS variables can also be used for row definitions with `grid-rows-(<custom-property>)`.
+ويمكن أيضًا استخدام متغيّرات CSS لتعريفات الصفوف عبر `grid-rows-(<custom-property>)`.
 
 ### Subgrid
 
-Tailwind supports `subgrid` for `grid-template-columns` and `grid-template-rows` via `grid-cols-subgrid` and `grid-rows-subgrid` utilities.
+يدعم Tailwind خاصية `subgrid` لكل من `grid-template-columns` و`grid-template-rows` عبر أدوات `grid-cols-subgrid` و`grid-rows-subgrid`.
 
-A subgrid allows a nested grid to align its tracks with its parent grid, inheriting the parent’s column or row sizing and positioning.
+تتيح الـ subgrid لشبكة متداخلة أن تحاذي مساراتها مع شبكة أبيها، فتورث مقاسات ومواضع أعمدة أبيها أو صفوفه.
 
-*Subgrid — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/5754075c0d4b71bf733ac5bdf0fdb216dbc2d836824e344c1e3eacfbeb5c8305.html)*
+*Subgrid — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5754075c0d4b71bf733ac5bdf0fdb216dbc2d836824e344c1e3eacfbeb5c8305.html)*
 
 ```html
 <div class="grid grid-cols-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -123,21 +123,21 @@ A subgrid allows a nested grid to align its tracks with its parent grid, inherit
 </div>
 ```
 
-This feature maintains complex grid alignments across nested elements.
+تحافظ هذه الميزة على محاذيات grid المعقّدة عبر العناصر المتداخلة.
 
-## Controlling Auto-Placement
+## التحكّم في الوضع التلقائي
 
-Grid items are automatically placed into defined grid cells. The `grid-auto-flow` property controls this auto-placement.
+تُوضَع عناصر grid تلقائيًا في خلايا grid المعرَّفة. وتتحكّم خاصية `grid-auto-flow` في هذا الوضع التلقائي.
 
-Tailwind utilities for auto-placement:
+أدوات Tailwind للوضع التلقائي:
 
-- `grid-flow-row`: Items fill each row, adding new rows as needed (default).
-- `grid-flow-col`: Items fill each column, adding new columns as needed.
-- `grid-flow-dense`: Uses a “dense” packing algorithm to fill holes earlier in the grid, potentially reordering items. Combine with `row` or `col`.
-- `grid-flow-row-dense`: Dense packing, flowing items by row.
-- `grid-flow-col-dense`: Dense packing, flowing items by column.
+- `grid-flow-row`: تملأ العناصر كل صف، وتضيف صفوفًا جديدة عند الحاجة (افتراضي).
+- `grid-flow-col`: تملأ العناصر كل عمود، وتضيف أعمدة جديدة عند الحاجة.
+- `grid-flow-dense`: تستخدم خوارزمية حشد «كثيفة» لملء الفجوات المبكرة في الشبكة، وقد يُعيد ذلك ترتيب العناصر. تُدمج مع `row` أو `col`.
+- `grid-flow-row-dense`: حشد كثيف مع تدفّق العناصر بالصف.
+- `grid-flow-col-dense`: حشد كثيف مع تدفّق العناصر بالعمود.
 
-*Controlling Auto-Placement — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/2eb2fa902b2e9501e486a4cc25386ef12893f13b71d97a5e65a036129272f169.html)*
+*التحكّم في الوضع التلقائي — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2eb2fa902b2e9501e486a4cc25386ef12893f13b71d97a5e65a036129272f169.html)*
 
 ```html
 <div class="grid grid-flow-col grid-cols-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -150,20 +150,20 @@ Tailwind utilities for auto-placement:
 </div>
 ```
 
-Here, `grid-flow-col` makes items 1, 2, and 3 fill the first column’s rows before moving to the second.
+هنا، تجعل `grid-flow-col` العناصر 1 و2 و3 تملأ صفوف العمود الأول قبل الانتقال إلى الثاني.
 
-## Sizing Implicit Grid Tracks
+## تحديد مقاسات المسارات الضمنية
 
-If there are more grid items than explicit cells, the grid creates *implicit* tracks (columns or rows). Their size is controlled by `grid-auto-columns` and `grid-auto-rows`.
+إذا كان عدد عناصر grid أكبر من عدد الخلايا الصريحة، فإنّ الشبكة تنشئ مسارات *ضمنية* (أعمدة أو صفوف). ويُتحكّم في مقاسها عبر `grid-auto-columns` و`grid-auto-rows`.
 
-Tailwind utilities for these properties:
+أدوات Tailwind لهاتين الخاصيتين:
 
-- `auto-cols-auto`, `auto-rows-auto`: Implicit tracks size automatically based on content.
-- `auto-cols-min`, `auto-rows-min`: Implicit tracks size to the minimum content size of items within them.
-- `auto-cols-max`, `auto-rows-max`: Implicit tracks size to the maximum content size of items within them.
-- `auto-cols-fr`, `auto-rows-fr`: Implicit tracks size as fractions of available space.
+- `auto-cols-auto` و`auto-rows-auto`: تتكيّف مقاسات المسارات الضمنية تلقائيًا بحسب المحتوى.
+- `auto-cols-min` و`auto-rows-min`: تأخذ المسارات الضمنية أصغر مقاس للمحتوى داخلها.
+- `auto-cols-max` و`auto-rows-max`: تأخذ المسارات الضمنية أكبر مقاس للمحتوى داخلها.
+- `auto-cols-fr` و`auto-rows-fr`: تأخذ المسارات الضمنية مقاسًا كنِسَب من المساحة المتاحة.
 
-*Sizing Implicit Grid Tracks — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/7ea5774ac1391ed3234454347bcd30ee0aec09dcfa853e74bd1c2fd583e6496a.html)*
+*تحديد مقاسات المسارات الضمنية — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7ea5774ac1391ed3234454347bcd30ee0aec09dcfa853e74bd1c2fd583e6496a.html)*
 
 ```html
 <div class="grid auto-cols-max grid-cols-2 gap-4 rounded-lg bg-gray-100 p-4">
@@ -174,21 +174,21 @@ Tailwind utilities for these properties:
 </div>
 ```
 
-This grid has 2 explicit columns. Items 3 and 4 go into an *implicit* third column. `auto-cols-max` ensures this column is wide enough for the widest item (Item 3).
+لهذه الشبكة عمودان صريحان. ويوضع العنصران 3 و4 في *عمود ضمني* ثالث. وتضمن `auto-cols-max` أن يكون هذا العمود عريضًا بما يكفي لأعرض عنصر (العنصر 3).
 
-Arbitrary values are supported for `auto-cols-[<value>]` and `auto-rows-[<value>]`.
+وتُدعم القيم التعسّفية لـ `auto-cols-[<value>]` و`auto-rows-[<value>]`.
 
-## Controlling Gaps
+## التحكّم في الفجوات
 
-Layouts often need space between grid items. Grid provides `gap`, `row-gap`, and `column-gap`.
+تحتاج التخطيطات غالبًا إلى مسافة بين عناصر grid. ويوفّر Grid `gap` و`row-gap` و`column-gap`.
 
-Tailwind uses its spacing scale and arbitrary values for gap utilities:
+يستخدم Tailwind سلّم المسافات الخاص به والقيم التعسّفية في أدوات الفجوات:
 
-- `gap-<number>`: Sets gap for rows and columns (e.g., `gap-4` for 1rem).
-- `gap-x-<number>`: Sets column gap.
-- `gap-y-<number>`: Sets row gap.
+- `gap-<number>`: يضبط الفجوة للصفوف والأعمدة (مثل `gap-4` أي 1rem).
+- `gap-x-<number>`: يضبط الفجوة الأفقية.
+- `gap-y-<number>`: يضبط الفجوة الرأسية.
 
-*Controlling Gaps — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/7fec7c5de16fdee6edc85221225ed68480a9039d6a3d4643c847831296316777.html)*
+*التحكّم في الفجوات — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7fec7c5de16fdee6edc85221225ed68480a9039d6a3d4643c847831296316777.html)*
 
 ```html
 <div class="grid grid-cols-4 gap-4 rounded-lg bg-gray-100 p-4">
@@ -208,20 +208,20 @@ Tailwind uses its spacing scale and arbitrary values for gap utilities:
 </div>
 ```
 
-These utilities apply consistent spacing. Arbitrary values like `gap-[10px]` or `gap-x-[5%]` are also usable.
+تطبّق هذه الأدوات مسافات متّسقة. ويمكن استخدام القيم التعسّفية مثل `gap-[10px]` أو `gap-x-[5%]` أيضًا.
 
-## Placing Grid Items
+## وضع عناصر Grid
 
-Grid allows precise placement of items, overriding auto-placement.
+يتيح Grid وضع العناصر بدقّة، متجاوزًا الوضع التلقائي.
 
-### Spanning Tracks
+### تمدّد العناصر عبر المسارات
 
-To make an item span multiple columns or rows, use `grid-column` or `grid-row` with `span`.
+لجعل عنصر يمتدّ عبر عدة أعمدة أو صفوف، استخدم `grid-column` أو `grid-row` مع `span`.
 
-- `col-span-<number>`: Item spans specified number of columns.
-- `row-span-<number>`: Item spans specified number of rows.
+- `col-span-<number>`: يمتدّ العنصر عبر عدد محدّد من الأعمدة.
+- `row-span-<number>`: يمتدّ العنصر عبر عدد محدّد من الصفوف.
 
-*Spanning Tracks — Example 10 — [Open example](https://stevekinney.com/generated/playgrounds/d3e0318a2fc5354baa19881b796d46886166afa59a9af5464a2e662494b67e24.html)*
+*تمدّد العناصر عبر المسارات — المثال 10 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d3e0318a2fc5354baa19881b796d46886166afa59a9af5464a2e662494b67e24.html)*
 
 ```html
 <div class="grid grid-cols-6 gap-4 rounded-lg bg-gray-100 p-4">
@@ -232,22 +232,22 @@ To make an item span multiple columns or rows, use `grid-column` or `grid-row` w
 </div>
 ```
 
-This 6-column grid has the first item spanning 4 columns and the second 2 columns on the first row. The third and fourth items do likewise on the second row.
+هذه الشبكة ذات ستة أعمدة يمتدّ فيها العنصر الأول عبر أربعة أعمدة والعنصر الثاني عبر عمودين في الصف الأول. ويفعل العنصران الثالث والرابع الشيء نفسه في الصف الثاني.
 
-`col-span-full` makes an item span all columns (`grid-column: 1 / -1;`). `row-span-full` does the same for rows.
+`col-span-full` تجعل العنصر يمتدّ عبر كل الأعمدة (`grid-column: 1 / -1;`). و`row-span-full` تفعل الشيء نفسه للصفوف.
 
-Arbitrary values are supported for `col-span-[<value>]` and `row-span-[<value>]`.
+وتُدعم القيم التعسّفية لـ `col-span-[<value>]` و`row-span-[<value>]`.
 
-### Starting and Ending at Specific Lines
+### البدء والانتهاء عند خطوط محدّدة
 
-Position an item by specifying its start and end grid lines using `grid-column-start`, `grid-column-end`, `grid-row-start`, and `grid-row-end`.
+ضع العنصر بتحديد سطري البداية والنهاية في grid عبر `grid-column-start` و`grid-column-end` و`grid-row-start` و`grid-row-end`.
 
-- `col-start-<number>`: Item starts at specified column line.
-- `col-end-<number>`: Item ends at specified column line.
-- `row-start-<number>`: Item starts at specified row line.
-- `row-end-<number>`: Item ends at specified row line.
+- `col-start-<number>`: يبدأ العنصر عند خط العمود المحدّد.
+- `col-end-<number>`: ينتهي العنصر عند خط العمود المحدّد.
+- `row-start-<number>`: يبدأ العنصر عند خط الصف المحدّد.
+- `row-end-<number>`: ينتهي العنصر عند خط الصف المحدّد.
 
-*Starting and Ending at Specific Lines — Example 11 — [Open example](https://stevekinney.com/generated/playgrounds/6406e8bbfe7cbd4a9cecd222306291a3525eb902058b4ccdf6e0619d65af2491.html)*
+*البدء والانتهاء عند خطوط محدّدة — المثال 11 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6406e8bbfe7cbd4a9cecd222306291a3525eb902058b4ccdf6e0619d65af2491.html)*
 
 ```html
 <div class="grid h-64 grid-cols-3 grid-rows-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -260,23 +260,23 @@ Position an item by specifying its start and end grid lines using `grid-column-s
 </div>
 ```
 
-The first item starts at column line 2, ends at column line 3, and spans rows 1 to 3. The second item is placed similarly.
+يبدأ العنصر الأول عند خط العمود 2، وينتهي عند خط العمود 3، ويمتدّ عبر الصفوف من 1 إلى 3. ويوضع العنصر الثاني على نحو مماثل.
 
-`col-auto`, `row-auto`, `col-start-auto`, `col-end-auto`, `row-start-auto`, `row-end-auto` utilities are available.
+وتتوفّر أدوات `col-auto` و`row-auto` و`col-start-auto` و`col-end-auto` و`row-start-auto` و`row-end-auto`.
 
-Arbitrary values and negative numbers (e.g., `col-start-[-1]`) are supported.
+وتُدعم القيم التعسّفية والأرقام السالبة (مثل `col-start-[-1]`).
 
-## Alignment and Justification
+## المحاذاة والتوزيع
 
-Grid offers control over item alignment within grid areas and track positioning within the container.
+يوفّر Grid تحكّمًا في محاذاة العناصر داخل مناطق grid وفي تموضع المسارات داخل الحاوية.
 
-### Aligning Content (`align-content`)
+### محاذاة المحتوى (`align-content`)
 
-`align-content` controls grid *track* alignment along the container’s *cross axis* (typically vertical) when there’s extra space. Applied to the grid container.
+تتحكّم `align-content` في محاذاة *مسارات* grid على طول *المحور العرضي* للحاوية (رأسيًا عادةً) عند وجود مساحة فائضة. وتُطبَّق على حاوية grid.
 
-Tailwind `content-*` utilities: `content-normal`, `content-center`, `content-start`, `content-end`, `content-between`, `content-around`, `content-evenly`, `content-baseline`, `content-stretch`.
+أدوات `content-*` في Tailwind: `content-normal` و`content-center` و`content-start` و`content-end` و`content-between` و`content-around` و`content-evenly` و`content-baseline` و`content-stretch`.
 
-*Aligning Content (align-content) — Example 12 — [Open example](https://stevekinney.com/generated/playgrounds/b7aec59f620dcb6d294bc95c820ec18fdb8adee016855f4252a0f75f8e64cda4.html)*
+*محاذاة المحتوى (align-content) — المثال 12 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b7aec59f620dcb6d294bc95c820ec18fdb8adee016855f4252a0f75f8e64cda4.html)*
 
 ```html
 <div class="grid h-48 grid-rows-3 content-center gap-4 rounded-lg bg-gray-100 p-4">
@@ -286,15 +286,15 @@ Tailwind `content-*` utilities: `content-normal`, `content-center`, `content-sta
 </div>
 ```
 
-Rows are centered vertically due to `content-center`.
+تُوسَّط الصفوف رأسيًا بفضل `content-center`.
 
-### Aligning Items (`align-items`)
+### محاذاة العناصر (`align-items`)
 
-`align-items` controls individual grid *item* alignment within their *cells* along the container’s *cross axis*. Applied to the grid container.
+تتحكّم `align-items` في محاذاة عناصر grid *المفردة* داخل *خلاياها* على طول *المحور العرضي* للحاوية. وتُطبَّق على حاوية grid.
 
-Tailwind `items-*` utilities: `items-start`, `items-end`, `items-center`, `items-baseline`, `items-stretch` (default).
+أدوات `items-*` في Tailwind: `items-start` و`items-end` و`items-center` و`items-baseline` و`items-stretch` (افتراضي).
 
-*Aligning Items (align-items) — Example 13 — [Open example](https://stevekinney.com/generated/playgrounds/3b56acf6e8bc61cc7ef27bb6d039491def90cba0d061bf5e3710dca8184edfb0.html)*
+*محاذاة العناصر (align-items) — المثال 13 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3b56acf6e8bc61cc7ef27bb6d039491def90cba0d061bf5e3710dca8184edfb0.html)*
 
 ```html
 <div class="grid h-32 grid-cols-2 items-center gap-4 rounded-lg bg-gray-100 p-4">
@@ -303,17 +303,17 @@ Tailwind `items-*` utilities: `items-start`, `items-end`, `items-center`, `items
 </div>
 ```
 
-Both items are centered vertically in their cells due to `items-center`.
+كلا العنصرين موسّط رأسيًا في خلاياهما بفضل `items-center`.
 
-`-safe` suffix utilities (e.g., `items-end-safe`) prevent items from moving outside their container.
+وتمنع أدوات اللاحقة `-safe` (مثل `items-end-safe`) العناصر من الخروج خارج حاويتها.
 
-### Aligning Self (`align-self`)
+### محاذاة العنصر نفسه (`align-self`)
 
-`align-self` overrides `align-items` for a *single* grid item. Applied to a grid item.
+تتجاوز `align-self` قيمة `align-items` بالنسبة إلى عنصر grid *واحد*. وتُطبَّق على عنصر grid.
 
-Tailwind `self-*` utilities: `self-auto` (uses `align-items`), `self-start`, `self-end`, `self-center`, `self-stretch`, `self-baseline`.
+أدوات `self-*` في Tailwind: `self-auto` (تستخدم `align-items`)، و`self-start`، و`self-end`، و`self-center`، و`self-stretch`، و`self-baseline`.
 
-*Aligning Self (align-self) — Example 14 — [Open example](https://stevekinney.com/generated/playgrounds/36baea3f7048f7736fe607f7b8aea8f6c4cb00b085d26714c931c28aeea82b72.html)*
+*محاذاة العنصر نفسه (align-self) — المثال 14 — [افتح المثال](https://stevekinney.com/generated/playgrounds/36baea3f7048f7736fe607f7b8aea8f6c4cb00b085d26714c931c28aeea82b72.html)*
 
 ```html
 <div class="grid h-32 grid-cols-2 items-start gap-4 rounded-lg bg-gray-100 p-4">
@@ -322,17 +322,17 @@ Tailwind `self-*` utilities: `self-auto` (uses `align-items`), `self-start`, `se
 </div>
 ```
 
-`items-start` aligns items to the top, but `self-center` overrides this for Item 2.
+تُحاذي `items-start` العناصر إلى الأعلى، لكنّ `self-center` تتجاوز ذلك بالنسبة إلى العنصر 2.
 
-`-safe` suffix utilities are available.
+وتتوفّر أدوات اللاحقة `-safe`.
 
-### Justifying Content (`justify-content`)
+### توزيع المحتوى (`justify-content`)
 
-`justify-content` controls grid *track* alignment along the container’s *main axis* (typically horizontal) when there’s extra space. Applied to the grid container.
+تتحكّم `justify-content` في محاذاة *مسارات* grid على طول *المحور الأساسي* للحاوية (أفقيًا عادةً) عند وجود مساحة فائضة. وتُطبَّق على حاوية grid.
 
-Tailwind `justify-*` utilities: `justify-start`, `justify-end`, `justify-center`, `justify-between`, `justify-around`, `justify-evenly`, `justify-stretch`, `justify-normal`.
+أدوات `justify-*` في Tailwind: `justify-start` و`justify-end` و`justify-center` و`justify-between` و`justify-around` و`justify-evenly` و`justify-stretch` و`justify-normal`.
 
-*Justifying Content (justify-content) — Example 15 — [Open example](https://stevekinney.com/generated/playgrounds/98187fc11a9cdeecc6dbdffcc831bb8f13435a7cd897912ea9190a10bc508ee8.html)*
+*توزيع المحتوى (justify-content) — المثال 15 — [افتح المثال](https://stevekinney.com/generated/playgrounds/98187fc11a9cdeecc6dbdffcc831bb8f13435a7cd897912ea9190a10bc508ee8.html)*
 
 ```html
 <div class="grid h-96 grid-cols-[4rem_4rem_4rem] justify-center gap-4 rounded-lg bg-green-100 p-4">
@@ -341,15 +341,15 @@ Tailwind `justify-*` utilities: `justify-start`, `justify-end`, `justify-center`
 </div>
 ```
 
-Implicit columns are centered within the container due to `justify-center`.
+تُوسَّط الأعمدة الضمنية داخل الحاوية بفضل `justify-center`.
 
-### Justifying Items (`justify-items`)
+### توزيع العناصر (`justify-items`)
 
-`justify-items` controls individual grid *item* alignment within their *cells* along the container’s *inline axis* (typically horizontal). Applied to the grid container.
+تتحكّم `justify-items` في محاذاة عناصر grid *المفردة* داخل *خلاياها* على طول *المحور السطري* للحاوية (أفقيًا عادةً). وتُطبَّق على حاوية grid.
 
-Tailwind `justify-items-*` utilities: `justify-items-start`, `justify-items-end`, `justify-items-center`, `justify-items-stretch` (default), `justify-items-normal`.
+أدوات `justify-items-*` في Tailwind: `justify-items-start` و`justify-items-end` و`justify-items-center` و`justify-items-stretch` (افتراضي)، و`justify-items-normal`.
 
-*Justifying Items (justify-items) — Example 16 — [Open example](https://stevekinney.com/generated/playgrounds/8de9c4ed54af705b78389549cc35350e4737c7d3beb4e2cb86902c7807f42814.html)*
+*توزيع العناصر (justify-items) — المثال 16 — [افتح المثال](https://stevekinney.com/generated/playgrounds/8de9c4ed54af705b78389549cc35350e4737c7d3beb4e2cb86902c7807f42814.html)*
 
 ```html
 <div class="grid h-96 grid-cols-3 justify-items-center gap-4 rounded-lg bg-green-100 p-4">
@@ -358,17 +358,17 @@ Tailwind `justify-items-*` utilities: `justify-items-start`, `justify-items-end`
 </div>
 ```
 
-Items are centered horizontally in their cells due to `justify-items-center`.
+تُوسَّط العناصر أفقيًا في خلاياها بفضل `justify-items-center`.
 
-`-safe` suffix utilities are available.
+وتتوفّر أدوات اللاحقة `-safe`.
 
-### Justifying Self (`justify-self`)
+### توزيع العنصر نفسه (`justify-self`)
 
-`justify-self` overrides `justify-items` for a *single* grid item. Applied to a grid item.
+تتجاوز `justify-self` قيمة `justify-items` بالنسبة إلى عنصر grid *واحد*. وتُطبَّق على عنصر grid.
 
-Tailwind `justify-self-*` utilities: `justify-self-auto` (uses `justify-items`), `justify-self-start`, `justify-self-end`, `justify-self-center`, `justify-self-stretch`.
+أدوات `justify-self-*` في Tailwind: `justify-self-auto` (تستخدم `justify-items`)، و`justify-self-start`، و`justify-self-end`، و`justify-self-center`، و`justify-self-stretch`.
 
-*Justifying Self (justify-self) — Example 17 — [Open example](https://stevekinney.com/generated/playgrounds/7f610afd0a3d42136154dbc764ed5a73996017ffda0558a68b21b1a5b392207a.html)*
+*توزيع العنصر نفسه (justify-self) — المثال 17 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7f610afd0a3d42136154dbc764ed5a73996017ffda0558a68b21b1a5b392207a.html)*
 
 ```html
 <div class="grid grid-cols-2 justify-items-start gap-4 rounded-lg bg-gray-100 p-4">
@@ -377,19 +377,19 @@ Tailwind `justify-self-*` utilities: `justify-self-auto` (uses `justify-items`),
 </div>
 ```
 
-`justify-items-start` aligns items left, but `self-center` overrides this for Item 2.
+تُحاذي `justify-items-start` العناصر إلى اليسار، لكنّ `self-center` تتجاوز ذلك بالنسبة إلى العنصر 2.
 
-`-safe` suffix utilities are available.
+وتتوفّر أدوات اللاحقة `-safe`.
 
-### Placing Content and Items (`place-content`, `place-items`, `place-self`)
+### وضع المحتوى والعناصر (`place-content` و`place-items` و`place-self`)
 
-Grid offers shorthands for setting alignment and justification simultaneously.
+يوفّر Grid اختصارات لضبط المحاذاة والتوزيع معًا.
 
-- `place-content-*`: Sets `align-content` and `justify-content`. Applied to container.
-- `place-items-*`: Sets `align-items` and `justify-items`. Applied to container.
-- `place-self-*`: Sets `align-self` and `justify-self`. Applied to item.
+- `place-content-*`: تضبط `align-content` و`justify-content`. تُطبَّق على الحاوية.
+- `place-items-*`: تضبط `align-items` و`justify-items`. تُطبَّق على الحاوية.
+- `place-self-*`: تضبط `align-self` و`justify-self`. تُطبَّق على العنصر.
 
-*Placing Content and Items (place-content, place-items, place-self) — Example 18 — [Open example](https://stevekinney.com/generated/playgrounds/5521e2ffc6f903df71c3d7ac624c342f7ac028ffb76bc825ef447c25ab4862f2.html)*
+*وضع المحتوى والعناصر (place-content وplace-items وplace-self) — المثال 18 — [افتح المثال](https://stevekinney.com/generated/playgrounds/5521e2ffc6f903df71c3d7ac624c342f7ac028ffb76bc825ef447c25ab4862f2.html)*
 
 ```html
 <div
@@ -402,17 +402,17 @@ Grid offers shorthands for setting alignment and justification simultaneously.
 </div>
 ```
 
-`place-items-center` centers all items horizontally and vertically in their cells.
+توسّط `place-items-center` جميع العناصر أفقيًا ورأسيًا في خلاياها.
 
-`place-content-center` centers the grid tracks within the container. `place-self-center` centers a single item in its cell.
+وتوسّط `place-content-center` مسارات grid داخل الحاوية. وتوسّط `place-self-center` عنصرًا مفردًا في خليته.
 
-`-safe` suffix utilities are available.
+وتتوفّر أدوات اللاحقة `-safe`.
 
-## Responsive Grid Layouts
+## تخطيطات Grid المتجاوبة
 
-Tailwind supports responsive design. Grid utilities can be applied conditionally at breakpoints (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`).
+يدعم Tailwind التصميم المتجاوب. ويمكن تطبيق أدوات Grid بشكل مشروط عند نقاط التوقّف (`sm:` و`md:` و`lg:` و`xl:` و`2xl:`).
 
-*Responsive Grid Layouts — Example 19 — [Open example](https://stevekinney.com/generated/playgrounds/3c750e723c88076f1176bfdedb1d45824bf514223227feebb086405d4627dc97.html)*
+*تخطيطات Grid المتجاوبة — المثال 19 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3c750e723c88076f1176bfdedb1d45824bf514223227feebb086405d4627dc97.html)*
 
 ```html
 <div class="grid grid-cols-1 gap-4 rounded-lg bg-gray-100 p-4 md:grid-cols-2 lg:grid-cols-3">
@@ -425,13 +425,13 @@ Tailwind supports responsive design. Grid utilities can be applied conditionally
 </div>
 ```
 
-This grid is 1-column on small screens, 2-column on medium (`md`), and 3-column on large (`lg`) screens.
+هذه الشبكة بعمود واحد على الشاشات الصغيرة، وبعمودين على المتوسطة (`md`)، وبثلاثة أعمدة على الكبيرة (`lg`).
 
-Tailwind is mobile-first: unprefixed styles apply to all sizes; prefixed styles override at their breakpoint and above.
+وTailwind يتبع منهج «الجوال أولًا»: فتُطبَّق الأنماط غير المسبوقة بالبادئة على جميع المقاسات، وتتجاوز الأنماط المسبوقة بالبادئة تلك عند نقطة توقّفها وما فوقها.
 
-Tailwind supports container queries. Mark an element with `@container`, then use variants like `@sm:` on its children to style them based on the container’s width.
+يدعم Tailwind أيضًا استعلامات الحاوية. ضع علامة `@container` على عنصر، ثم استخدم متغيّرات مثل `@sm:` على أبنائه لتنسيقهم بحسب عرض الحاوية.
 
-*Responsive Grid Layouts — Example 20 — [Open example](https://stevekinney.com/generated/playgrounds/1f3847b11ba384acbfa954fe9d1b6c4d0827387c7b3f275347504229cbb4609c.html)*
+*تخطيطات Grid المتجاوبة — المثال 20 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1f3847b11ba384acbfa954fe9d1b6c4d0827387c7b3f275347504229cbb4609c.html)*
 
 ```html
 <div class="@container">
@@ -444,13 +444,13 @@ Tailwind supports container queries. Mark an element with `@container`, then use
 </div>
 ```
 
-The child grid is 1-column by default, but 2-column when the `@container` element reaches medium size.
+شبكة الابن بعمود واحد افتراضيًا، لكنها بعمودين عندما يبلغ عنصر `@container` المقاس المتوسط.
 
-## Customizing Grid Settings
+## تخصيص إعدادات Grid
 
-Customize grid columns, rows, and gaps using the `@theme` directive in your main CSS.
+خصّص أعمدة grid وصفوفه وفجواته باستخدام التوجيه `@theme` في ملف CSS الرئيسي.
 
-Define custom grid templates with `--grid-template-columns-*` and `--grid-template-rows-*` theme variables.
+عرّف قوالب grid مخصّصة عبر متغيّرات السمة `--grid-template-columns-*` و`--grid-template-rows-*`.
 
 ```css
 @import 'tailwindcss';
@@ -463,9 +463,9 @@ Define custom grid templates with `--grid-template-columns-*` and `--grid-templa
 }
 ```
 
-Use these as utility classes:
+استخدم هذه القيم كأصناف أدوات:
 
-*Customizing Grid Settings — Example 21 — [Open example](https://stevekinney.com/generated/playgrounds/e5d877da7d925822d525195ee805d45cc19a075b52104edca7514495c2cc755f.html)*
+*تخصيص إعدادات Grid — المثال 21 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e5d877da7d925822d525195ee805d45cc19a075b52104edca7514495c2cc755f.html)*
 
 ```html
 <div
@@ -477,13 +477,13 @@ Use these as utility classes:
 </div>
 ```
 
-This integrates complex grid definitions into your design system. Customize gap spacing with `--spacing`.
+يدمج هذا تعاريف grid المعقّدة في نظام التصميم لديك. وخصّص مسافات الفجوات عبر `--spacing`.
 
-## Using Arbitrary Values with Grid Utilities
+## استخدام القيم التعسّفية مع أدوات Grid
 
-Many Tailwind grid utilities support arbitrary values via `[<value>]` syntax, allowing any valid CSS value.
+تدعم كثير من أدوات grid في Tailwind القيم التعسّفية عبر صيغة `[<value>]`، ما يسمح بأي قيمة CSS صالحة.
 
-*Using Arbitrary Values with Grid Utilities — Example 22 — [Open example](https://stevekinney.com/generated/playgrounds/49b7638cfb15df62580a5065567b9391e463ac5852b22fcfb3b03a26d759505a.html)*
+*استخدام القيم التعسّفية مع أدوات Grid — المثال 22 — [افتح المثال](https://stevekinney.com/generated/playgrounds/49b7638cfb15df62580a5065567b9391e463ac5852b22fcfb3b03a26d759505a.html)*
 
 ```html
 <div
@@ -496,4 +496,4 @@ Many Tailwind grid utilities support arbitrary values via `[<value>]` syntax, al
 </div>
 ```
 
-Arbitrary values create a responsive grid with auto-fitting columns and a custom gap. Use CSS variables within arbitrary values, like `w-[var(--sidebar-width)]`.
+تنشئ القيم التعسّفية شبكة متجاوبة بأعمدة تتكيّف تلقائيًا وفجوة مخصّصة. واستخدم متغيّرات CSS داخل القيم التعسّفية، مثل `w-[var(--sidebar-width)]`.

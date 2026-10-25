@@ -1,10 +1,10 @@
 ---
-title: "Type Safe Routes in Express"
-lang: en
+title: "المسارات الآمنة الأنواع في Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-safe-routes-in-express"
 ---
 
-One limitation of Express is that route paths are just strings, not checked against parameter types. We can build a type-safe router:
+من قيود Express أن مسارات الطرق ليست سوى نصوص، ولا تُفحص مقابل أنواع المعاملات. ويمكننا بناء موجّه آمن الأنواع:
 
 ```typescript
 function route<
@@ -36,4 +36,4 @@ userRoutes.forEach(({ path, handlers }) => {
 });
 ```
 
-While this doesn’t validate that `:id` in the path corresponds to the `id` in your params type, it does ensure that handlers receive correctly typed requests.
+ومع أن هذا لا يتحقق من أن `:id` في المسار يقابل `id` في نوع معاملاتك، فإنه يضمن أن تستقبل المعالجات طلبات محدّدة الأنواع تحديدًا سليمًا.

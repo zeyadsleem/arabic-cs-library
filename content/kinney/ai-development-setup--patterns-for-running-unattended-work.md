@@ -1,74 +1,74 @@
 ---
-title: "Running Unattended Work"
-lang: en
+title: "تشغيل العمل بلا إشراف"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/patterns-for-running-unattended-work"
 ---
 
-Everything gets riskier when you stop watching. Nobody notices the agent going in circles, catches the destructive command, or sees the bill climbing. These four patterns let you walk away anyway: a loop shape that survives long runs, a limit the agent can’t argue with, a short list of decisions that still need you, and a way to run several agents without them tripping over each other.
+يزداد كل شيء خطرًا حين تتوقف عن المراقبة. فلا أحد يلاحظ الوكيل يدور في حلقات، أو يلتقط الأمر المدمّر، أو يرى الفاتورة تتسلق. وهذه الأنماط الأربعة تتيح لك أن تنصرف رغم ذلك: شكل حلقة ينجو من التشغيلات الطويلة، وحدّ لا يستطيع الوكيل الجدال معه، وقائمة قصيرة من القرارات التي ما زالت تحتاجك، وطريقة لتشغيل عدة وكلاء دون أن يتعثروا ببعضهم.
 
-They assume the patterns in [Proving It Works](https://stevekinney.com/courses/ai-development-setup/patterns-for-proving-it-works) are in place. An unattended loop with a weak “done” check doesn’t save you time. It produces confident, wrong work faster.
+وهي تفترض أن أنماط [إثبات أنه ينجح](https://stevekinney.com/courses/ai-development-setup/patterns-for-proving-it-works) قائمة. فالحلقة بلا إشراف مع فحص «إنجاز» ضعيف لا توفر وقتك، بل تنتج عملًا خاطئًا واثقًا بسرعة أكبر.
 
-## Ralph loop
+## حلقة Ralph
 
-**What it is:** Start a fresh agent, give it one small task, keep all progress on disk, check the result, and repeat until an outside check says the work is finished or the budget runs out.
+**ما هو:** ابدأ وكيلًا جديدًا، وأعطه مهمة صغيرة واحدة، وأبقِ كل التقدّم على القرص، ثم افحص النتيجة، وكرّر حتى يقول فحص خارجي إن العمل انتهى أو تنفد الميزانية.
 
-**How it works:** Each pass is a brand-new agent that reads its state from files, does one item, and exits, so nothing rots across passes. The cost is that reasoning disappears unless someone writes it down, which is why it pairs with a [progress file](https://stevekinney.com/courses/ai-development-setup/patterns-for-keeping-context-useful#progress-file). [The Ralph Loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) covers why sessions rot and how to build one.
+**كيف يعمل:** كل دورة وكيل جديد تمامًا يقرأ حالته من ملفات، وينجز بندًا واحدًا، ثم يخرج، فلا يتعفّن شيء عبر الدورات. والكلفة أن التعقل يختفي إن لم يكتبه أحد، ولهذا يقترن بـ[ملف تقدّم](https://stevekinney.com/courses/ai-development-setup/patterns-for-keeping-context-useful#progress-file). ويغطي [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) سبب تعفّن الجلسات وكيف تبني واحدة.
 
-**When to use it:** For work with a machine-checkable finish line that splits into many small pieces: a migration from one test framework to another, a coverage push, porting, a backlog of well-specified features on a new codebase. It’s also the natural shape for overnight runs once you’ve tuned the prompt by watching a few passes yourself.
+**متى تستخدمه:** للعمل الذي له خط نهاية قابل للفحص آليًا ويتقسّم إلى قطع صغيرة كثيرة: الترحيل من إطار اختبار إلى آخر، ودفع التغطية، والنقل إلى منصة أخرى، ومتراكمة من ميزات محددة جيدًا على قاعدة شيفرة جديدة. وهو أيضًا الشكل الطبيعي للتشغيلات الليلية بعد أن تضبط الطلب بمشاهدة بضع دورات بنفسك.
 
-**When not to use it:** When no command can tell you it’s done. Judgment calls, unclear success criteria, and production debugging don’t belong in a loop. Be wary of mature codebases full of unwritten conventions, where fast generation mostly generates review work. And never point it at anything irreversible, like production infrastructure, deploys, or data. A loop runs your worst iteration as confidently as your best.
+**متى لا تستخدمه:** حين لا يستطيع أي أمر أن يقول لك إنه انتهى. فالأحكام التقديرية، ومعايير النجاح غير الواضحة، وتنقيح الإنتاج لا تنتمي إلى حلقة. وكن حذرًا من قواعد الشيفرة الناضجة المليئة بأعراف غير مكتوبة، حيث يولّد التوليد السريع عمل مراجعة في الأغلب. ولا توجّهه أبدًا إلى شيء غير قابل للعكس، مثل بنية الإنتاج أو عمليات النشر أو البيانات. فالحلقة تشغّل أسوأ تكرار لك بثقة أفضل تكرار لك.
 
-When the outside check needs judgment, a [referee](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee) can make the call at the end of each pass. The [project initializer skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) sets up the feature list and progress file each pass reads first, and the [session handoff skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#session-handoff) writes the entry each pass leaves behind.
+وعندما يحتاج الفحص الخارجي إلى حكم، يستطيع [حَكَم](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee) أن يقرر عند نهاية كل دورة. و[مهارة تهيئة المشروع](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#project-initializer) تهيّئ قائمة الميزات وملف التقدّم الذي تقرؤه كل دورة أولًا، و[مهارة تسليم الجلسة](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#session-handoff) تكتب المدخل الذي تتركه كل دورة.
 
-## Circuit breaker
+## قاطع الدائرة {#circuit-breaker}
 
-**What it is:** Bound every loop by something the agent doesn’t control: a number of iterations, a dollar amount, a time limit, or a lack of progress.
+**ما هو:** حُدّ كل حلقة بشيء لا يتحكم به الوكيل: عدد تكرارات، أو مبلغ بالدولار، أو حدّ زمني، أو انعدام تقدّم.
 
-**How it works:** There are four kinds, and they fail differently, so serious setups use more than one.
+**كيف يعمل:** هناك أربعة أنواع، وهي تفشل بطرق مختلفة، لذا تستخدم الإعدادات الجدّية أكثر من واحد.
 
-- **Count:** Stop after *n* iterations or turns. It’s the simplest and most important. Anthropic’s [Ralph plugin](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md) calls `--max-iterations` your primary safety mechanism, ahead of the completion check.
-- **Spend:** Stop at a dollar limit. Iterations vary wildly in cost, so a count limit doesn’t bound the bill. In Claude Code, `--max-budget-usd` caps a single print-mode run (`claude -p`, one non-interactive run).
-- **Time:** Stop at a wall-clock limit. It matters when the loop shares a machine or a deadline.
-- **Stall:** Stop when a progress measure, like failing tests remaining or features left, stops improving. It’s the least common and the most useful, because on an impossible task it fires long before the count limit does.
+- **العدّ**: توقف بعد *n* تكرار أو دور. وهو الأبسط والأهم. ويسمّي [إضافة Ralph](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md) من Anthropic العدّاد `--max-iterations` آلية أمانك الأساسية، قبل فحص الإنجاز.
+- **الإنفاق**: توقف عند حدّ دولاري. فتكلفة التكرارات تتفاوت تفاوتًا واسعًا، لذا لا يحدّ حدّ العدّ من الفاتورة. وفي Claude Code، يحدّ `--max-budget-usd` من تشغيلة واحدة في نمط الطباعة (`claude -p`، تشغيل واحد غير تفاعلي).
+- **الوقت**: توقف عند حدّ زمني فعلي. ويهم ذلك حين تتشارك الحلقة جهازًا أو موعدًا نهائيًا.
+- **التعثّر**: توقف عندما يتوقف مقياس تقدّم، مثل الاختبارات الفاشلة المتبقية أو الميزات المتبقية، عن التحسّن. وهو الأقل شيوعًا والأكثر فائدة، لأنه في مهمة مستحيلة يُطلق قبل حدّ العدّ بوقت طويل.
 
-Whichever one fires, the loop has to say which. “Finished,” “ran out of turns,” and “ran out of money” call for three different responses, and a bare exit code can’t tell them apart.
+وأيها أُطلق، فعلى الحلقة أن تقول أيها. فـ«انتهى» و«نفدت الأدوار» و«نفد المال» تستدعي ثلاث استجابات مختلفة، ورمز خروج مجرّد لا يستطيع التمييز بينها.
 
-**When to use it:** I can’t think of an unattended loop I’d run without one. Any loop can meet a task the model can’t solve, and you won’t know in advance which tasks those are. Add a spend limit whenever subagents are involved: a count on the parent says nothing about how many subagents it starts.
+**متى تستخدمه:** لا أستطيع التفكير في حلقة بلا إشراف أشغّلها دونه. فأي حلقة قد تصادف مهمة لا يستطيع النموذج حلها، ولن تعرف مسبقًا أي المهام تلك. وأضف حدّ إنفاق كلما دخلت الوكلاء الفرعيون: فعدّ على الأب لا يقول شيئًا عن عدد الوكلاء الفرعيين الذين يطلقهم.
 
-**When not to use it:** Leaving it out isn’t the risk. Setting it wrong is. A limit that’s too low turns a solvable task into a false failure, and it trains you to raise limits on reflex until they stop meaning anything. Raise a limit only after you’ve worked out why the run hit it. “It needed more iterations” isn’t a reason.
+**متى لا تستخدمه:** ترك الحدّ ليس هو الخطر، بل ضبطه خطأً. فحدّ منخفض جدًا يحوّل مهمة قابلة للحل إلى فشل زائف، ويدرّبك على رفع الحدود بحكم العادة حتى تتوقف عن معنى أي شيء. ولا ترفع حدًا إلا بعد أن تفهم لماذا بلغه التشغيل. فـ«احتجت تكرارات أكثر» ليس سببًا.
 
-[Limits are on you](https://stevekinney.com/courses/ai-development-setup/goals-and-loops#limits-are-on-you) covers which limits Claude Code enforces for you and which you have to build.
+ويغطي [الحدود عليك](https://stevekinney.com/courses/ai-development-setup/goals-and-loops#limits-are-on-you) أي الحدود تفرضها لك Claude Code وأيها عليك أن تبنيه.
 
-## Human-gated autonomy
+## استقلالية ببوابات بشرية {#human-gated-autonomy}
 
-**What it is:** Put people at the few decisions that are hard to undo, and let permissions and a sandbox handle everything else.
+**ما هو:** ضع البشر عند القرارات القليلة الصعبة التراجع، ودع الصلاحيات والعزل الرملي يتولّيان كل ما عداها.
 
-**How it works:** If every action asks for approval, you stop reading the prompts and start clicking “yes.” That’s worse than no gate, because it looks like oversight. Pick the gates deliberately instead. There are usually three:
+**كيف يعمل:** إن طلب كل إجراء موافقة، توقفت عن قراءة الطلبات وبدأت تنقر «نعم». وهذا أسوأ من عدم وجود بوابة، لأنه يبدو كإشراف. فاختر البوابات عن قصد بدلًا من ذلك. وهي عادةً ثلاث:
 
-1. **Intent:** What are we doing, and what’s out of scope? (This is where [interview to spec](https://stevekinney.com/courses/ai-development-setup/patterns-for-deciding-what-to-build#interview-to-spec) lives.)
-2. **Plan:** Is this the right approach? Plan mode blocks edits until you approve.
-3. **Irreversible action:** Merge, deploy, delete, send, pay. Anything that leaves your machine or can’t be taken back.
+1. **النية:** ما الذي نفعله، وما خارج النطاق؟ (هنا يعيش [المقابلة حتى المواصفة](https://stevekinney.com/courses/ai-development-setup/patterns-for-deciding-what-to-build#interview-to-spec).)
+2. **الخطة:** هل هذا هو النهج الصحيح؟ يمنع نمط التخطيط التحريرات حتى توافق.
+3. **الإجراء غير القابل للعكس:** الدمج، والنشر، والحذف، والإرسال، والدفع. أي شيء يغادر جهازك أو لا يمكن التراجع عنه.
 
-Between the gates, the agent works inside a boundary that machinery enforces: [permission rules](https://code.claude.com/docs/en/permissions), the [sandbox](https://code.claude.com/docs/en/sandboxing), and hooks. Put each gate where you can see the actual consequences. Approving a prepared migration with the SQL in front of you is a real decision. Approving “I’ll update the database” is a guess.
+وبين البوابات، يعمل الوكيل داخل حدّ تفرضه الآلية: [قواعد الصلاحيات](https://code.claude.com/docs/en/permissions)، و[العزل الرملي](https://code.claude.com/docs/en/sandboxing)، والخطّافات. وضع كل بوابة حيث ترى العواقب الفعلية. فالموافقة على ترحيل مُجهَّز و SQL أمامك قرار حقيقي. أما الموافقة على «سأحدّث قاعدة البيانات» فتخمين.
 
-**When to use it:** Whenever the agent will run long enough that you wouldn’t read every prompt anyway, which is most real work. It matters more with several agents, where per-action prompts multiply. The merge gate is mandatory for anything irreversible or external, however much you trust the run.
+**متى تستخدمه:** كلما سيعمل الوكيل مدة طويلة بحيث لن تقرأ كل طلب على أي حال، وهو معظم العمل الحقيقي. ويهم أكثر مع عدة وكلاء، حيث تتضاعف طلبات كل إجراء. وبوابة الدمج إلزامية لأي شيء غير قابل للعكس أو خارجي، مهما وثقت بالتشغيل.
 
-**When not to use it:** As a replacement for a sandbox on a machine with production credentials lying around. An approval policy trusts the agent’s own description of what it’s about to do, and a prompt injection (instructions hidden in a file or web page that the agent reads and follows) can make that description a lie. [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) covers that threat. Skip the plan gate for one-line changes. And watch for gates that have gone automatic: a gate you approve without reading is just a delay.
+**متى لا تستخدمه:** كبديل عن العزل الرملي على جهاز تتناثر فيه مُعرّفات دخول الإنتاج. فسياسة الموافقات تثق بوصف الوكيل نفسه لما هو على وشك فعله، ويمكن لحقن الطلبات (تعليمات مخفية في ملف أو صفحة ويب يقرؤها الوكيل ويتبعها) أن يجعل ذلك الوصف كذبًا. ويغطي [نطاق التأثير](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) ذلك التهديد. وتجاوز بوابة الخطة لتغييرات من سطر واحد. وراقب البوابات التي صارت آلية: فبوابة توافق عليها دون قراءة ليست إلا تأخيرًا.
 
-[The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) covers which boundary belongs in which mechanism. When the agent has to read something untrusted, like an issue or a web page, have a [bookworm](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#bookworm) with no tools that act pull out the facts first. At the plan gate, a [junior engineer](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#junior-engineer) tells you what the plan leaves the agent to guess. The [pull request shepherd skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#pull-request-shepherd) is a good example of a gate placed well: it handles CI, conflicts, and review comments on its own, and stops at “ready to merge.”
+ويغطي [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) أي حدّ ينتمي إلى أي آلية. وحين يضطر الوكيل إلى قراءة شيء غير موثوق، مثل مشكلة أو صفحة ويب، فاجعل [قارئًا نهِمًا](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#bookworm) بلا أدوات تتصرّف يستخلص الحقائق أولًا. وعند بوابة الخطة، يخبرك [مهندس مبتدئ](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#junior-engineer) بما تتركه الخطة للوكيل ليخمّنه. و[مهارة راعي طلب السحب](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#pull-request-shepherd) مثال جيد على بوابة موضوعة جيدًا: تتعامل مع CI والتعارضات وتعليقات المراجعة بنفسها، وتتوقف عند «جاهز للدمج».
 
-## Parallel worktree swarm
+## سرب worktrees متوازٍ {#parallel-worktree-swarm}
 
-**What it is:** Give each agent its own [worktree](https://stevekinney.com/courses/ai-development-setup/worktrees) and branch, so several can work at once without tangling their edits, then integrate the results one at a time.
+**ما هو:** أعطِ كل وكيل [worktree](https://stevekinney.com/courses/ai-development-setup/worktrees) وفرعًا خاصًا به، فيعمل عدة وكلاء في وقت واحد دون تشابك تحريراتهم، ثم ادمج النتائج واحدة تلو الأخرى.
 
-**How it works:** Split the work by ownership *before* starting any agents, give each piece its own checkout, and integrate the branches one at a time with the full checks after each merge. [Worktrees and parallel agents](https://stevekinney.com/courses/ai-development-setup/worktrees#worktrees-and-parallel-agents) covers the setup and why integration has to be serial.
+**كيف يعمل:** قسّم العمل حسب الملكية *قبل* إطلاق أي وكيل، وأعطِ كل قطعة نسخة عمل خاصة بها، ثم ادمج الفروع واحدًا في كل مرة مع الفحوص الكاملة بعد كل دمج. ويغطي [أساليب worktree والوكلاء المتوازون](https://stevekinney.com/courses/ai-development-setup/worktrees#worktrees-and-parallel-agents) الإعداد ولماذا يجب أن يكون الدمج متسلسلًا.
 
-The same setup runs best-of-N: several attempts at one hard problem, with the tests or a [judge](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#judge) picking the winner.
+والإعداد نفسه يشغّل أفضل من N (best-of-N): عدة محاولات لمشكلة صعبة واحدة، تختار الاختبارات أو [حَكَم](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#judge) الفائزة.
 
-**When to use it:** When the work splits along clean file boundaries: separate modules, separate layers, mechanical changes repeated across many files. The tell is whether you can write down who owns what before you start. If you can, the branches will probably merge cleanly.
+**متى تستخدمه:** حين ينقسم العمل على حدود ملفات نظيفة: وحدات منفصلة، وطبقات منفصلة، وتغييرات ميكانيكية متكررة في ملفات كثيرة. والعلامة هي هل تستطيع كتابة من يملك ماذا قبل أن تبدأ. فإن استطعت، سيندمج الفرعان على الأرجح بنظافة.
 
-**When not to use it:** For coupled work, where one piece needs something another piece creates. Do those in order. Worktrees only isolate files, so agents still share the database, the dev server’s port, and the caches, and one agent’s migration can break another’s tests. Don’t run more agents than you can review, because review is where the time goes. And mind the quota: parallel agents burn through a subscription in proportion to how many you run.
+**متى لا تستخدمه:** للعمل المترابط، حيث تحتاج قطعة شيءًا تُنشئه قطعة أخرى. افعل ذلك بالترتيب. فـ worktrees تعزل الملفات فقط، لذا ما زال الوكلاء يتشاركون قاعدة البيانات، ومنفذ خادم التطوير، والذٌّرَوات المؤقتة، ويمكن لترحيل وكيل أن يكسر اختبارات آخر. ولا تشغّل وكلاء أكثر مما تستطيع مراجعته، لأن المراجعة هي حيث يذهب الوقت. وانتبه للحصة: الوكلاء المتوازون يستهلكون الاشتراك بحسب عددهم.
 
-[Things that will bite you](https://stevekinney.com/courses/ai-development-setup/worktrees#things-that-will-bite-you) covers what goes wrong, and the [integrator skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#integrator) handles the merge step. Each worker is a [line cook](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#line-cook) with its own worktree, and a [scrumlord](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#scrumlord) can turn the plan into one ticket for each of them. To run the whole thing from one place, start an [orchestrator](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#orchestrator) with `--agent`, which hands off to the integrator when the line cooks are done.
+ويغطي [أشياء ستعضّك](https://stevekinney.com/courses/ai-development-setup/worktrees#things-that-will-bite-you) ما يحدث من أخطاء، وتتولى [مهارة المدمِج](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#integrator) خطوة الدمج. وكل عامل [طاهٍ في الخط](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#line-cook) بـ worktree خاص به، ويستطيع [مسؤول سكروم](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#scrumlord) تحويل الخطة إلى تذكرة لكل واحد منهم. ولتشغيل الأمر كله من مكان واحد، ابدأ [منسّقًا](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#orchestrator) بـ `--agent`، يسلّم إلى المدمِج عند انتهاء الطهاة في الخط.
 
-Unattended work is a trade: you give up watching in exchange for limits, gates, and evidence you can check later. When those three are in place, walking away is reasonable. When any one is missing, you’re not running unattended work. You’re just not looking.
+العمل بلا إشراف مقايضة: تتخلى عن المراقبة في مقابل حدود وبوابات وأدلة تستطيع فحصها لاحقًا. وعندما تكون هذه الثلاثة قائمة، يكون الانصراف معقولًا. وعندما يغيب أي منها، فأنت لا تشغّل عملًا بلا إشراف، بل فقط لا تنظر.

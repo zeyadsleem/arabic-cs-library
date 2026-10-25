@@ -1,75 +1,75 @@
 ---
-title: "The Integrated Terminal"
-lang: en
+title: "الطرفية المدمجة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-integrated-terminal"
 ---
 
-The built-in terminal is pretty straight-forward, but let’s look at some of the ways that we can take it the Next Level™, as they say.
+الطرفية المدمجة واضحة ومباشرة إلى حد كبير، لكن دعنا ننظر في بعض الطرق التي يمكننا بها الارتقاء بها إلى المستوى التالي، كما يقولون.
 
-> **The Quick Way**
+> **الطريقة السريعة**
 >
-> Hitting `Cmd+Backtick` or `Ctrl-Backtick` will open up the integrated terminal.
+> الضغط على `Cmd+Backtick` أو `Ctrl-Backtick` يفتح الطرفية المدمجة.
 
-## Creating and Managing Multiple Terminals
+## إنشاء طرفيات متعددة وإدارتها
 
-Running multiple terminals at once is often crucial for modern development. You may need one terminal for running a local server and another for linting or testing. In Visual Studio Code, opening new terminals is as simple as clicking the plus button (`+`) on the top-right corner of the terminal panel. Each new terminal runs in its own instance, visible in a dropdown that lets you switch between them effortlessly.
+غالبًا ما يكون تشغيل طرفيات متعددة في الوقت نفسه أمرًا حاسمًا في التطوير الحديث. فقد تحتاج طرفية واحدة لتشغيل خادم محلي وأخرى للفحص الساكن أو الاختبار. وفي Visual Studio Code، فتح طرفيات جديدة بسيط كالنقر على زر الزائد (`+`) في الزاوية العلوية اليمنى من لوحة الطرفية. وتعمل كل طرفية جديدة في نسخة خاصة بها، تظهر في قائمة منسدلة تتيح لك التبديل بينها بلا عناء.
 
-To close a terminal you no longer need, click the trash can icon or use the right-click context menu on the terminal tab. Switching between terminals is a matter of selecting the desired session from the dropdown, and you can rename them for clarity by double-clicking the terminal tab label. This quick access to multiple environments ensures you’re never stuck halting one process just to start another.
+وإغلاق طرفية لم تعد تحتاجها يتم بالنقر على أيقونة سلة المهملات أو باستخدام قائمة السياق بالنقر بزر الفأرة الأيمن على تبويب الطرفية. أما التبديل بين الطرفيات فهو مسألة اختيار الجلسة المطلوبة من القائمة المنسدلة، ويمكنك إعادة تسميتها للوضوح بالنقر المزدوج على عنوان تبويب الطرفية. ويضمن لك هذا الوصول السريع إلى بيئات متعددة ألّا تضطر إلى إيقاف عملية لتشغيل أخرى.
 
-> **Multiple Terminals Made Easy**
+> **طرفيات متعددة بسهولة**
 >
-> If you often need the same set of terminals (e.g., server, build watcher, test watcher), consider scripting a quick Terminal Task to launch them all in one go. It’s like calling your personal pit crew to get everything running at once.
+> إذا كنت تحتاج كثيرًا إلى المجموعة نفسها من الطرفيات (مثل خادم ومراقب بناء ومراقب اختبارات)، ففكّر في كتابة مهمة طرفية سريعة لتشغيلها كلها دفعة واحدة. إنه مثل استدعاء طاقم الصيانة الشخصي لديك لتشغيل كل شيء في وقت واحد.
 
-## Terminal Profiles
+## أنماط الطرفية
 
-You can switch between different shell profiles—bash, zsh, PowerShell, WSL, and more. To configure these profiles, open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) and search for `Terminal: Select Default Profile`. A list of detected shells appears, allowing you to choose your favorite.
+يمكنك التبديل بين أنماط أوامر الطرفية (shell profiles) مختلفة — bash وzsh وPowerShell وWSL وغيرها. ولإعداد هذه الأنماط، افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P` على macOS) وابحث عن `Terminal: Select Default Profile`. فتظهر قائمة بأوامر الطرفية المكتشفة تتيح لك اختيار المفضّلة لديك.
 
-For more control, head into your settings (click the gear icon in the bottom-left, then `Settings`) and search for `Terminal > Integrated > Profiles`. From there, you can define custom profiles with specific paths, environment variables, and command line arguments. Whether you’re doing cross-platform work or jumping between Node.js and Python projects, these profiles can be a lifesaver.
+ولمزيد من التحكم، اتجه إلى إعداداتك (انقر أيقونة الترس في أسفل اليسار، ثم `Settings`) وابحث عن `Terminal > Integrated > Profiles`. ومن هناك يمكنك تعريف أنماط مخصّصة بمسارات محدّدة ومتغيّرات بيئة ومعاملات سطر أوامر. وسواء كنت تعمل عبر أنظمة متعددة أو تتنقّل بين مشاريع Node.js و Python، فقد تكون هذه الأنماط منقذة.
 
-## Splitting Terminals
+## تقسيم الطرفية
 
-Sometimes, you want to keep multiple terminals in view simultaneously. Splitting your terminal lets you see two or more sessions side-by-side (or stacked) within the same panel. Here’s how to do it:
+أحيانًا تريد إبقاء طرفيات متعددة في المرأى في الوقت نفسه. ويتيح لك تقسيم الطرفية رؤية جلستين أو أكثر جنبًا إلى جنب (أو متراصّة) داخل اللوحة نفسها. وإليك كيف تفعل ذلك:
 
-- Click the split icon in the terminal panel’s toolbar to create a new split terminal.
-- Alternatively, right-click an existing terminal tab and select `Split` from the context menu.
-- You can choose to split either horizontally or vertically by toggling the layout icon near the top-right corner of the terminal window.
+- انقر أيقونة التقسيم في شريط أدوات لوحة الطرفية لإنشاء طرفية مقسّمة جديدة.
+- أو انقر بزر الفأرة الأيمن على تبويب طرفية موجود واختر `Split` من قائمة السياق.
+- يمكنك اختيار التقسيم أفقيًا أو رأسيًا بتبديل أيقونة التخطيط قرب الزاوية العلوية اليمنى من نافذة الطرفية.
 
-This capability is perfect for quickly comparing logs from a client and server, or running two parallel processes without shuffling between tabs.
+هذه القدرة مثالية للمقارنة السريعة بين سجلات العميل والخادم، أو لتشغيل عمليتين متوازيتين دون التنقل بين التبويبات.
 
-## Terminal Customization
+## تخصيص الطرفية
 
-Visual Studio Code provides plenty of ways to fine-tune the terminal’s appearance. Beyond merely adjusting the font face and size (in `Terminal > Integrated: Font Family` and `Font Size`), you can also tweak colors, cursor styles, and even the blinking behavior. For instance, you could set up a neon green cursor or a more subdued theme to match your editor.
+يوفّر Visual Studio Code طرقًا كثيرة لضبط مظهر الطرفية بدقة. فإلى جانب ضبط شكل الخط وحجمه فحسب (في `Terminal > Integrated: Font Family` و`Font Size`)، يمكنك أيضًا ضبط الألوان وأنماط المؤشر وحتى سلوك الوميض. فمثلًا، يمكنك إعداد مؤشر أخضر نيوني أو سمة أكثر هدوءًا لتتناسب مع محرّرك.
 
-In your settings JSON file (or through the GUI), look for `terminal.integrated.*` options. You’ll see properties like `terminal.integrated.cursorStyle`, `terminal.integrated.cursorBlinking`, and various color customizations under `workbench.colorCustomizations`. Feel free to experiment to achieve the style that makes you most productive—just don’t make the colors so flashy that you feel like you’re coding at a rave.
+وفي ملف JSON لإعداداتك (أو عبر الواجهة الرسومية)، ابحث عن خيارات `terminal.integrated.*`. وسترى خصائص مثل `terminal.integrated.cursorStyle` و`terminal.integrated.cursorBlinking` وتخصيصات ألوان متنوعة تحت `workbench.colorCustomizations`. وجرّب كما تشاء للوصول إلى النمط الذي يجعلك أكثر إنتاجية — فقط لا تجعل الألوان صارخة لدرجة تشعرك بأنك تبرمج في حفلة صاخبة.
 
-## Tasks and the Terminal
+## المهام والطرفية
 
-> **We’ll talk more about tasks in a little bit**
+> **سنتحدّث أكثر عن المهام بعد قليل**
 >
-> You can take a sneak peek [here](https://stevekinney.com/courses/visual-studio-code/vscode-tasks), if you’re so inclined.
+> يمكنك إلقاء نظرة سريعة [هنا](https://stevekinney.com/courses/visual-studio-code/vscode-tasks)، إن أردت.
 
-Visual Studio Code tasks often run directly in the integrated terminal by default. This includes build tasks, test tasks, lint tasks, and more. Tasks let you automate repetitive workflows, and the integrated terminal provides a convenient, visible way to see your scripts in action. If you’ve set up multiple terminals, you can even watch a task run in one while you continue manual commands in another.
+غالبًا ما تعمل مهام Visual Studio Code مباشرةً في الطرفية المدمجة افتراضيًا. وهذا يشمل مهام البناء ومهام الاختبار ومهام الفحص الساكن وغيرها. وتتيح لك المهام أتمتة سير العمل المتكرّر، وتوفّر الطرفية المدمجة طريقة ملائمة ومرئية لمشاهدة سكربتاتك أثناء العمل. وإذا أعددت طرفيات متعددة، فيمكنك حتى مشاهدة مهمة تعمل في إحداها بينما تواصل أوامر يدوية في أخرى.
 
-If you’re looking to orchestrate a set of tasks, define a `tasks.json` file in your project’s `.vscode` folder. You can specify commands, shell types, and environment variables, all of which execute in the integrated terminal. This combination simplifies your workflow—fewer alt-tabbing around, more coding.
+وإن كنت تسعى إلى تنسيق مجموعة من المهام، فعرّف ملف `tasks.json` في مجلد `.vscode` بمشروعك. ويمكنك تحديد أوامر وأنواع أوامر طرفية ومتغيّرات بيئة، وكلها تُنفَّذ في الطرفية المدمجة. وهذه التركيبة تبسّط سير عملك — تنقّل أقل بين النوافذ، وبرمجة أكثر.
 
-## Shell Integration
+## تكامل الطرفية
 
-The integrated terminal can auto-inject environment variables or track certain command events, depending on your shell and the extensions you’ve installed. For instance, Visual Studio Code’s Remote—WSL extension seamlessly detects your WSL distribution and mirrors your development environment from Windows into Linux. You might also use environment variable injection to pass credentials or configuration details without manually re-exporting them every time.
+يمكن للطرفية المدمجة أن تحقن متغيّرات بيئة تلقائيًا أو تتبّع أحداث أوامر معيّنة، حسب أمر الطرفية لديك والإضافات التي ثبّتها. فمثلًا، تكتشف إضافة Remote—WSL في Visual Studio Code توزيعة WSL لديك بسلاسة وتحاكي بيئة تطويرك من Windows إلى Linux. وقد تستخدم أيضًا حقن متغيّرات البيئة لتمرير بيانات اعتماد أو تفاصيل إعداد دون إعادة تصديرها يدويًا في كل مرة.
 
-> **Sharing isn’t always caring.**
+> **المشاركة ليست دائمًا اهتمامًا.**
 >
-> Be cautious when passing sensitive environment variables. While it’s convenient, always ensure you’re not inadvertently exposing secrets in public repos or recorded terminal sessions.
+> كن حذرًا عند تمرير متغيّرات بيئة حساسة. فرغم أنها مريحة، تأكد دائمًا من أنك لا تعرّض أسرارًا عن غير قصد في مستودعات عامة أو جلسات طرفية مسجّلة.
 
-## Searching Within the Terminal
+## البحث داخل الطرفية
 
-Long terminal sessions can accumulate a lot of output—logs, debugging info, and more. Searching within the terminal is straightforward:
+قد تتراكم في جلسات الطرفية الطويلة كمية كبيرة من المخرجات — سجلات ومعلومات تصحيح وغيرها. والبحث داخل الطرفية مباشر:
 
-- Click the magnifying glass icon (Find) in the terminal toolbar, or press `Ctrl+F` (on Windows/Linux) or `Cmd+F` (on macOS) while the terminal is focused.
-- Type your query to highlight matches in the terminal output.
+- انقر أيقونة العدسة المكبّرة (Find) في شريط أدوات الطرفية، أو اضغط `Ctrl+F` (على Windows/Linux) أو `Cmd+F` (على macOS) بينما الطرفية في التركيز.
+- اكتب استعلامك لإبراز المطابقات في مخرجات الطرفية.
 
-## Focusing the Active Terminal
+## تركيز الطرفية النشطة
 
-**Pro-Tip**: `Ctrl-Backtick` will open or close the integrated terminal. Theoretically `Cmd-Down` will focus it, but only if you have accessibility mode turned on. You can add a keybinding that will focus the terminal if it’s already created.
+**نصيحة احترافية**: `Ctrl-Backtick` يفتح الطرفية المدمجة أو يغلقها. ومن حيث المبدأ سيركّز عليها `Cmd-Down`، لكن فقط إذا كان وضع الوصولية مفعّلًا. ويمكنك إضافة اختصار يركّز على الطرفية إن كانت منشأة بالفعل.
 
 ```json
 [
@@ -81,12 +81,12 @@ Long terminal sessions can accumulate a lot of output—logs, debugging info, an
 ]
 ```
 
-Obviously, you can choose any keybinding that pleases you.
+ومن الواضح أنك تستطيع اختيار أي اختصار يرضيك.
 
-## Terminal Session Persistence
+## استمرارية جلسة الطرفية
 
-While the integrated terminal closes with VS Code, you can maintain long-running processes by using a terminal multiplexer such as tmux or screen within the terminal itself. Running a multiplexer ensures that your sessions continue in the background even if you restart VS Code, preserving your workflows and processes.
+بينما تُغلق الطرفية المدمجة مع VS Code، يمكنك الحفاظ على عمليات طويلة الأمد باستخدام مضاعِف طرفية (terminal multiplexer) مثل tmux أو screen داخل الطرفية نفسها. ويضمن تشغيل المضاعِف استمرار جلساتك في الخلفية حتى لو أعدت تشغيل VS Code، فيحفظ سير عملك وعملياتك.
 
-> **Keep Your Sessions Alive**
+> **أبقِ جلساتك حيّة**
 >
-> Use `tmux` or `screen` to persist terminal sessions and avoid disruptions in your long-running tasks.
+> استخدم `tmux` أو `screen` لإدامة جلسات الطرفية وتجنّب الانقطاعات في مهامك طويلة الأمد.

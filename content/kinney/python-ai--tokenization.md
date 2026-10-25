@@ -1,28 +1,28 @@
 ---
-title: "Tokenization — From Text to Tensors"
-lang: en
+title: "الترميز — من النص إلى الموتّرات"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/tokenization"
 ---
 
-> **Key Takeaways**
+> **النقاط الرئيسية**
 >
-> - Subword tokenization (BPE/WordPiece/SentencePiece) balances coverage and vocab size
-> - Special tokens, attention masks, and segment IDs must match model expectations
-> - Use truncation/padding wisely; sliding windows with stride preserve cross-chunk context
-> - Offsets map tokens back to text spans for tasks like NER and highlighting
-> - Prefer fast tokenizers; reuse a single instance and batch tokenization for speed
+> - ترميز الكلمات الفرعية (BPE/WordPiece/SentencePiece) يوازن بين التغطية وحجم المفردات
+> - يجب أن تطابق الرموز الخاصة وأقنعة الانتباه ومعرّفات المقاطع توقّعات النموذج
+> - استخدم البتر والحشو بحكمة؛ والنوافذ المنزلقة مع الخطوة تحافظ على السياق عبر المقاطع
+> - تربط الإزاحات الرموز بنطاقات النص لمهام مثل التعرّف على الكيانات المسمّاة والإبراز
+> - فضّل المُرمِّزات السريعة؛ وأعد استخدام نسخة واحدة ورمّز على دفعات للسرعة
 
-## Overview
+## نظرة عامة
 
-Tokenization transforms raw text into integer IDs that models can process. Since neural networks only understand numbers, tokenization bridges human text and AI models through four key steps: splitting text into smaller units (tokens), mapping tokens to unique IDs from a vocabulary, adding special tokens that give the model instructions, and creating attention masks to handle batches efficiently.
+يحوّل الترميز النص الخام إلى معرّفات عددية صحيحة يمكن للنماذج معالجتها. ولأن الشبكات العصبية لا تفهم سوى الأرقام، فإن الترميز يجسر الفجوة بين النص البشري ونماذج الذكاء الاصطناعي عبر أربع خطوات رئيسية: تقسيم النص إلى وحدات أصغر (رموز)، وربط الرموز بمعرّفات فريدة من مفردات معيّنة، وإضافة رموز خاصة تعطي النموذج تعليمات، وإنشاء أقنعة انتباه للتعامل مع الدفعات بكفاءة.
 
-## Notebook
+## الدفتر
 
-View the companion notebook: [Tokenization](https://colab.research.google.com/drive/15cChgqEWrWTtWApWRBSQBqFpmWDe2ZR7?usp=sharing)
+اطّلع على الدفتر المرافق: [الترميز](https://colab.research.google.com/drive/15cChgqEWrWTtWApWRBSQBqFpmWDe2ZR7?usp=sharing)
 
-## Setting Up Tokenizers
+## إعداد المُرمِّزات
 
-Different models use different tokenization strategies. Let’s explore the most common ones:
+تستخدم النماذج المختلفة استراتيجيات ترميز مختلفة. لنستكشف أكثرها شيوعًا:
 
 ```python
 from transformers import AutoTokenizer
@@ -40,11 +40,11 @@ for name, tokenizer in tokenizers.items():
     print(f"{name}: Vocabulary size = {tokenizer.vocab_size:,}")
 ```
 
-Each tokenizer has a fixed vocabulary. BERT knows about 30,000 unique tokens, while GPT-2 knows about 50,000. Any word not in this vocabulary gets broken down into smaller subwords or marked as unknown.
+لكل مُرمِّز مفردات ثابتة. فيعرف BERT نحو 30,000 رمز فريد، بينما يعرف GPT-2 نحو 50,000. وأي كلمة ليست في هذه المفردات تُقسَّم إلى كلمات فرعية أصغر أو تُوسَم بأنها غير معروفة.
 
-## Basic Tokenization
+## الترميز الأساسي
 
-The fundamental step splits text into tokens. Common words become single tokens, while rare words split into subwords:
+تقسّم الخطوة الأساسية النص إلى رموز. فالكلمات الشائعة تصبح رموزًا مفردة، بينما تنقسم الكلمات النادرة إلى كلمات فرعية:
 
 ```python
 text = "Hello, world! Tokenization is the process of converting text into tokens."
@@ -56,11 +56,11 @@ print(tokens)
 # Output: ['hello', ',', 'world', '!', 'token', '##ization', 'is', ...]
 ```
 
-The `##` prefix in BERT’s tokenizer signifies that the token continues the previous one. This subword approach lets models handle rare words by breaking them into familiar pieces.
+تشير البادئة `##` في مُرمِّز BERT إلى أن الرمز استمرار للرمز السابق. وهذا النهج القائم على الكلمات الفرعية يتيح للنماذج التعامل مع الكلمات النادرة بتقسيمها إلى أجزاء مألوفة.
 
-## From Tokens to IDs
+## من الرموز إلى المعرّفات
 
-Models need numbers, not text. Each token maps to a unique ID:
+تحتاج النماذج إلى أرقام لا إلى نص. ويرتبط كل رمز بمعرّف فريد:
 
 ```python
 text = "Hello, world!"
@@ -74,11 +74,11 @@ print(f"Token IDs: {token_ids}")
 # Output: Token IDs: [101, 7592, 1010, 2088, 999, 102]
 ```
 
-Each number represents a specific token: “hello” → 7592, “world” → 2088. The model processes these numbers, not the original text.
+يمثّل كل رقم رمزًا محدّدًا: «hello» → 7592، و«world» → 2088. ويعالج النموذج هذه الأرقام لا النص الأصلي.
 
-## Special Tokens
+## الرموز الخاصة
 
-Special tokens provide structure and instructions to the model:
+توفّر الرموز الخاصة بنية وتعليمات للنموذج:
 
 ```python
 # BERT adds special tokens automatically
@@ -87,17 +87,17 @@ print(f"Decoded: {decoded}")
 # Output: [CLS] hello , world ! [SEP]
 ```
 
-**`[CLS]`** (101) marks the start of a sequence, used for classification tasks. **`[SEP]`** (102) separates different segments or marks the end. **`[PAD]`** (0) fills shorter sequences to match batch length. **`[UNK]`** replaces unknown words not in vocabulary. **`[MASK]`** is used for masked language modeling during training.
+يحدّد **`[CLS]`** (101) بداية التسلسل، ويُستخدم في مهام التصنيف. ويفصل **`[SEP]`** (102) بين المقاطع المختلفة أو يحدّد النهاية. ويملأ **`[PAD]`** (0) التسلسلات الأقصر لتوافق طول الدفعة. ويستبدل **`[UNK]`** الكلمات غير المعروفة غير الموجودة في المفردات. ويُستخدم **`[MASK]`** في نمذجة اللغة المقنّعة أثناء التدريب.
 
-These tokens are crucial for model performance. Without them, the model wouldn’t understand where sequences begin and end or how to handle different segments.
+هذه الرموز بالغة الأهمية لأداء النموذج. فبدونها لن يفهم النموذج أين تبدأ التسلسلات وأين تنتهي أو كيف يتعامل مع المقاطع المختلفة.
 
-## Batch Processing and Attention Masks
+## المعالجة الدفعية وأقنعة الانتباه
 
-Models are most efficient processing multiple texts at once. However, batched texts have different lengths. Padding solves this, but how does the model know which tokens to ignore? Attention masks provide the answer.
+تكون النماذج أكثر كفاءة عند معالجة نصوص متعدّدة دفعةً واحدة. لكن النصوص المجمّعة في دفعة تتفاوت أطوالها. ويحلّ الحشو هذه المشكلة، لكن كيف يعرف النموذج أي الرموز يتجاهل؟ تجيب أقنعة الانتباه عن ذلك.
 
-### The Flashlight Analogy
+### تشبيه المصباح
 
-Think of an attention mask as a flashlight in a dark room. You want to illuminate only the real words, not the padding. The mask tells the model where to “shine its light” (pay attention):
+تخيّل قناع الانتباه كمصباح في غرفة مظلمة. فأنت تريد إضاءة الكلمات الحقيقية فقط دون الحشو. ويخبر القناع النموذج بمكان «تسليط ضوئه» (أي مكان الانتباه):
 
 ```python
 texts = [
@@ -114,7 +114,7 @@ print("\nAttention Mask:")
 print(inputs["attention_mask"])
 ```
 
-Output shows how padding works:
+يوضّح المخرج كيف يعمل الحشو:
 
 ```
 Token IDs:
@@ -126,11 +126,11 @@ Attention Mask:
  [1, 1, 1, 1, 1, 1, 0, 0, 0]]
 ```
 
-Each number in the attention mask is like a light switch: `1` means “Look at this word!” and `0` means “Skip this one, it’s just padding.”
+كل رقم في قناع الانتباه يشبه مفتاح إضاءة: `1` تعني «انظر إلى هذه الكلمة!» و`0` تعني «تجاهل هذه، فهي مجرّد حشو».
 
-## Comparing Tokenizers
+## مقارنة المُرمِّزات
 
-Different tokenizers handle the same text differently:
+تتعامل المُرمِّزات المختلفة مع النص نفسه بطرق مختلفة:
 
 ```python
 text = "Uncommon-tokenization: transformers' tokenizers are fast."
@@ -141,11 +141,11 @@ for name, tok in tokenizers.items():
     print(f"  Sample: {tokens[:5]}...")
 ```
 
-BERT might split “Uncommon” into `['un', '##common']` while GPT-2 keeps it whole. RoBERTa uses byte-level encoding, and T5 uses SentencePiece. Each approach has trade-offs between vocabulary size, handling of rare words, and multilingual support.
+قد يقسّم BERT كلمة «Uncommon» إلى `['un', '##common']` بينما يحتفظ بها GPT-2 كاملة. ويستخدم RoBERTa ترميزًا على مستوى البايت، ويستخدم T5 تقنية SentencePiece. ولكل نهج مقايضات بين حجم المفردات والتعامل مع الكلمات النادرة والدعم متعدّد اللغات.
 
-## Practical Tokenization Settings
+## إعدادات الترميز العملية
 
-Key parameters control tokenization behavior:
+تتحكّم معاملات رئيسية في سلوك الترميز:
 
 ```python
 # Full tokenization with all options
@@ -160,11 +160,11 @@ encoded = tokenizer(
 )
 ```
 
-**`padding`** options include `'longest'` for dynamic padding per batch, `'max_length'` for fixed shapes across batches, and `False` for no padding. **`truncation`** ensures sequences fit within model limits. **`return_tensors`** can be `"pt"` for PyTorch, `"tf"` for TensorFlow, or `None` for lists.
+تشمل خيارات **`padding`** القيمة `'longest'` للحشو الديناميكي لكل دفعة، والقيمة `'max_length'` للأشكال الثابتة عبر الدفعات، والقيمة `False` لعدم الحشو. ويضمن **`truncation`** أن تتناسب التسلسلات مع حدود النموذج. ويمكن أن يكون **`return_tensors`** القيمة `"pt"` لـ PyTorch، أو `"tf"` لـ TensorFlow، أو `None` للقوائم.
 
-## Handling Long Documents
+## التعامل مع المستندات الطويلة
 
-Long texts exceed model limits and must be chunked intelligently:
+تتجاوز النصوص الطويلة حدود النموذج، ولا بدّ من تقطيعها بذكاء:
 
 ```python
 long_text = "Very long document..." * 100
@@ -181,11 +181,11 @@ encoded = tokenizer(
 print(f"Number of chunks: {len(encoded['input_ids'])}")
 ```
 
-The `stride` parameter creates overlap between chunks, preserving context at boundaries. This improves coherence for tasks like question answering or summarization.
+ينشئ المعامل `stride` تداخلًا بين المقاطع، ما يحافظ على السياق عند الحدود. وهذا يحسّن التماسك في مهام مثل الإجابة عن الأسئلة أو التلخيص.
 
-## Decoding and Offset Mapping
+## فك الترميز وربط الإزاحات
 
-Convert IDs back to text and track character positions:
+حوّل المعرّفات مرة أخرى إلى نص وتتبّع مواضع الأحرف:
 
 ```python
 # Encode with offset mapping
@@ -205,19 +205,19 @@ for token_id, (start, end) in zip(enc["input_ids"], enc["offset_mapping"]):
         print(f"Token: '{token}' maps to characters {start}:{end} = '{original_span}'")
 ```
 
-Offset mapping enables precise alignment between model predictions and original text, essential for tasks like named entity recognition or highlighting specific spans.
+يتيح ربط الإزاحات محاذاة دقيقة بين تنبؤات النموذج والنص الأصلي، وهو أمر ضروري لمهام مثل التعرّف على الكيانات المسمّاة أو إبراز نطاقات محدّدة.
 
-## How Subword Tokenization Works
+## كيف يعمل ترميز الكلمات الفرعية
 
-Modern tokenizers use subword algorithms to balance vocabulary size with coverage:
+تستخدم المُرمِّزات الحديثة خوارزميات الكلمات الفرعية للموازنة بين حجم المفردات والتغطية:
 
-**Byte-Pair Encoding (BPE)** starts with characters and iteratively merges the most frequent pairs. **WordPiece** (used by BERT) uses a likelihood-based scoring for merges. **SentencePiece** treats text as raw bytes, enabling language-agnostic tokenization.
+يبدأ **ترميز أزواج البايتات (BPE)** بالأحرف ثم يدمج الأزواج الأكثر تكرارًا تكرارًا. ويستخدم **WordPiece** (الذي يعتمد عليه BERT) تقييمًا قائمًا على الأرجحية لعمليات الدمج. ويتعامل **SentencePiece** مع النص كبايتات خام، ما يتيح ترميزًا مستقلًا عن اللغة.
 
-The process normalizes text (lowercasing, unicode normalization), pre-tokenizes into rough chunks (whitespace, punctuation), applies learned merge rules to create subwords, and maps final tokens to vocabulary IDs.
+تُطبّع العملية النص (تحويله إلى أحرف صغيرة، وتطبيع unicode)، ثم تقسّمه مسبقًا إلى مقاطع أولية (المسافات وعلامات الترقيم)، ثم تطبّق قواعد الدمج المتعلّمة لإنشاء الكلمات الفرعية، ثم تربط الرموز النهائية بمعرّفات المفردات.
 
-## Performance Optimization
+## تحسين الأداء
 
-Fast tokenizers (Rust-backed) provide significant speedups:
+توفّر المُرمِّزات السريعة (المدعومة بـ Rust) تسريعًا ملحوظًا:
 
 ```python
 # Fast tokenizers have additional capabilities
@@ -228,25 +228,25 @@ texts = ["Text 1", "Text 2", "Text 3"] * 100
 %timeit fast_tokenizer(texts, padding=True, truncation=True)
 ```
 
-Optimization tips include reusing tokenizer instances to avoid reloading vocabularies, batch processing texts together rather than individually, using fast tokenizers for 10-100x speedups, and caching tokenized datasets to avoid repeated processing.
+تشمل نصائح التحسين إعادة استخدام نسخ المُرمِّز لتجنّب إعادة تحميل المفردات، ومعالجة النصوص دفعةً واحدة بدلًا من معالجتها فرادى، واستخدام المُرمِّزات السريعة للحصول على سرعة أكبر 10-100 مرة، وتخزين مجموعات البيانات المرمّزة مؤقتًا لتجنّب المعالجة المتكرّرة.
 
-## Common Pitfalls and Solutions
+## المزالق الشائعة وحلولها
 
-> **Mismatched Tokenizers**
+> **عدم توافق المُرمِّزات**
 >
-> Always pair the exact tokenizer with its model. Using BERT’s tokenizer with GPT-2’s model produces garbage output.
+> اقرن دائمًا المُرمِّز نفسه بنموذجه بدقة. فاستخدام مُرمِّز BERT مع نموذج GPT-2 ينتج مخرجات رديئة.
 
-> **Handling Special Characters**
+> **التعامل مع الأحرف الخاصة**
 >
-> Check how your tokenizer handles unicode, emojis, and special characters. Some normalize aggressively, others preserve everything.
+> تحقّق من كيفية تعامل مُرمِّزك مع unicode والرموز التعبيرية والأحرف الخاصة. فبعضها يطبّع بشكل مكثّف، وبعضها يحافظ على كل شيء.
 
-> **Wrong Max Length**
+> **طول أقصى خاطئ**
 >
-> Too small truncation loses critical context. Too large wastes memory. Profile your data to find optimal lengths.
+> البتر الصغير جدًا يفقد سياقًا بالغ الأهمية. والكبير جدًا يهدر الذاكرة. افحص بياناتك لتعرف الأطوال المثلى.
 
-## Token Type IDs and Segment Handling
+## معرّفات نوع الرمز والتعامل مع المقاطع
 
-Some models (like BERT) use token type IDs for paired inputs:
+تستخدم بعض النماذج (مثل BERT) معرّفات نوع الرمز للمدخلات المزدوجة:
 
 ```python
 # Question-answering or sentence pair classification
@@ -265,9 +265,9 @@ print(inputs["token_type_ids"])
 #  <-- question --> <---- context ----->
 ```
 
-## Advanced Tokenization Patterns
+## أنماط ترميز متقدّمة
 
-For production systems, consider these patterns:
+في الأنظمة الإنتاجية، ضع هذه الأنماط في الحسبان:
 
 ```python
 class SmartTokenizer:
@@ -297,9 +297,9 @@ class SmartTokenizer:
         return self.tokenizer.convert_tokens_to_ids(tokens)
 ```
 
-## Debugging Tokenization
+## تنقيح الترميز
 
-When things go wrong, inspect the tokenization process:
+عندما تسوء الأمور، افحص عملية الترميز:
 
 ```python
 def debug_tokenization(tokenizer, text):
@@ -321,14 +321,14 @@ def debug_tokenization(tokenizer, text):
                                        if id in tokenizer.all_special_ids]}")
 ```
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Tokenization is the foundation of all NLP tasks. Understanding how text becomes numbers, how padding and attention masks work, and how different tokenizers behave helps you debug issues, optimize performance, and build more sophisticated applications. Every string processed by a language model goes through this crucial transformation from human-readable text to model-ready tensors.
+الترميز هو أساس جميع مهام معالجة اللغة الطبيعية. وفهم كيف يتحوّل النص إلى أرقام، وكيف يعمل الحشو وأقنعة الانتباه، وكيف تتصرّف المُرمِّزات المختلفة يساعدك على تنقيح المشكلات وتحسين الأداء وبناء تطبيقات أكثر تطورًا. فكل سلسلة نصية يعالجها نموذج لغوي تمرّ بهذا التحوّل الحاسم من نص مقروء بشريًا إلى موتّرات (tensors) جاهزة للنموذج.
 
-## Further Reading
+## قراءات إضافية
 
-- Transformers — Tokenizer Summary: [https://huggingface.co/docs/transformers/main/en/tokenizer_summary](https://huggingface.co/docs/transformers/main/en/tokenizer_summary)
-- Tokenizers Library: [https://huggingface.co/docs/tokenizers/index](https://huggingface.co/docs/tokenizers/index)
-- Byte Pair Encoding (Sennrich et al., 2015): [https://arxiv.org/abs/1508.07909](https://arxiv.org/abs/1508.07909)
-- WordPiece (Schuster and Nakajima, 2012): [https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37842.pdf](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37842.pdf)
-- SentencePiece (Kudo and Richardson, 2018): [https://arxiv.org/abs/1808.06226](https://arxiv.org/abs/1808.06226)
+- ملخّص المُرمِّزات في Transformers: [https://huggingface.co/docs/transformers/main/en/tokenizer_summary](https://huggingface.co/docs/transformers/main/en/tokenizer_summary)
+- مكتبة Tokenizers: [https://huggingface.co/docs/tokenizers/index](https://huggingface.co/docs/tokenizers/index)
+- ترميز أزواج البايتات (Sennrich وآخرون، 2015): [https://arxiv.org/abs/1508.07909](https://arxiv.org/abs/1508.07909)
+- WordPiece (Schuster وNakajima، 2012): [https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37842.pdf](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/37842.pdf)
+- SentencePiece (Kudo وRichardson، 2018): [https://arxiv.org/abs/1808.06226](https://arxiv.org/abs/1808.06226)

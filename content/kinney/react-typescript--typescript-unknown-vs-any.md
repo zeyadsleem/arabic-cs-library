@@ -1,14 +1,14 @@
 ---
-title: "unknown vs any"
-lang: en
+title: "`unknown` مقابل `any`"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-unknown-vs-any"
 ---
 
-Let’s talk about TypeScript’s two ways of saying “I don’t know what type this is”—`any` and `unknown`. One of them is a dangerous escape hatch that defeats the purpose of TypeScript, while the other is a safe way to handle truly dynamic data. Let’s learn when and how to use each one (**Spoiler Alert**: you’ll almost always want `unknown`).
+لنتحدّث عن طريقتي TypeScript لقول «لا أعرف نوع هذا» — وهما `any` و`unknown`. إحداهما مخرجٌ خطر يُفقد TypeScript غرضه، والأخرى طريقة آمنة للتعامل مع البيانات الديناميكية حقًا. ولنتعلّم متى وكيف نستخدم كلًّا منهما (**تحذير مسبق**: ستريد `unknown` في أغلب الأحوال).
 
-## The Problem with `any`
+## المشكلة مع `any`
 
-When you use `any`, you’re essentially turning off TypeScript:
+حين تستخدم `any`، فأنت تعطّل TypeScript عمليًا:
 
 ```typescript
 let value: any = 42;
@@ -20,11 +20,11 @@ value(); // Runtime error!
 const result = value + 'hello'; // Works, but what's the result?
 ```
 
-It’s like telling TypeScript “trust me, I know what I’m doing” - except you might not, and TypeScript won’t help you when you’re wrong.
+فهو كأنك تقول لـ TypeScript «ثق بي، أنا أعرف ما أفعله» — إلا أنك قد لا تعرف، وTypeScript لن يساعدك حين تخطئ.
 
-## Enter `unknown`: The Safe Alternative
+## حان دور `unknown`: البديل الآمن
 
-`unknown` is like `any`’s responsible sibling. It can hold any value, but you must check what it is before using it:
+يشبه `unknown` أخًا مسؤولًا لـ `any`. فهو يستطيع حمل أي قيمة، لكن عليك أن تفحص ما هو قبل استخدامه:
 
 ```typescript
 let value: unknown = 42;
@@ -41,11 +41,11 @@ if (typeof value === 'string') {
 }
 ```
 
-## Real-World Scenarios
+## سيناريوهات من العالم الحقيقي
 
-### API Responses
+### استجابات API
 
-When dealing with external APIs, you often don’t know the exact shape of the data:
+عند التعامل مع واجهات API خارجية، غالبًا ما لا تعرف الشكل الدقيق للبيانات:
 
 ```typescript
 // ❌ Bad: Using any
@@ -86,9 +86,9 @@ if (isUser(data)) {
 }
 ```
 
-### Event Handlers
+### معالِجات الأحداث
 
-React event handlers often deal with unknown event types:
+غالبًا ما تتعامل معالِجات أحداث React مع أنواع أحداث غير معروفة:
 
 ```typescript
 // ❌ Bad: Using any
@@ -118,9 +118,9 @@ const handleSubmit = (e: React.FormEvent) => {
 };
 ```
 
-### JSON Parsing
+### تحليل JSON
 
-JSON.parse returns `any` by default, which is dangerous:
+تُعيد `JSON.parse` القيمة `any` افتراضيًا، وهذا أمر خطر:
 
 ```typescript
 // ❌ Dangerous default behavior
@@ -139,11 +139,11 @@ if (typeof data === 'object' && data !== null && 'name' in data) {
 }
 ```
 
-## Type Guards for Unknown
+## حرّاس الأنواع لـ `unknown`
 
-Here’s how to safely narrow `unknown` types:
+إليك كيف تضيّق أنواع `unknown` بأمان:
 
-### Basic Type Guards
+### حرّاس أنواع أساسيّة
 
 ```typescript
 function processValue(value: unknown) {
@@ -186,7 +186,7 @@ function processValue(value: unknown) {
 }
 ```
 
-### Custom Type Guards
+### حرّاس أنواع مخصّصة
 
 ```typescript
 interface Product {
@@ -223,9 +223,9 @@ function displayProduct(data: unknown) {
 }
 ```
 
-## Runtime Validation Libraries
+## مكتبات التحقّق وقت التشغيل
 
-For complex validation, use libraries like Zod:
+للتحقّق المعقّد، استخدم مكتبات مثل Zod:
 
 ```typescript
 import { z } from 'zod';
@@ -275,9 +275,9 @@ const UserProfile = ({ data }: { data: unknown }) => {
 };
 ```
 
-## Error Handling
+## معالجة الأخطاء
 
-Errors in JavaScript can be anything, so handle them safely:
+قد تكون الأخطاء في JavaScript أيّ شيء، فتعامل معها بأمان:
 
 ```typescript
 // ❌ Bad: Assuming error shape
@@ -332,9 +332,9 @@ try {
 }
 ```
 
-## Working with Third-Party Libraries
+## العمل مع مكتبات الطرف الثالث
 
-When libraries have poor or missing types:
+حين تكون أنواع المكتبات رديئة أو مفقودة:
 
 ```typescript
 // Some library without types
@@ -381,9 +381,9 @@ function myFunctionSafe(data: unknown): string {
 }
 ```
 
-## React Component Props
+## خصائص مكوّنات React
 
-Handling dynamic props safely:
+التعامل الآمن مع الخصائص الديناميكية:
 
 ```typescript
 // ❌ Bad: Any props
@@ -429,9 +429,9 @@ const DynamicComponent = (props: unknown) => {
 };
 ```
 
-## Local Storage and Session Storage
+## التخزين المحلي وتخزين الجلسة
 
-Browser storage returns strings that need parsing:
+يُعيد تخزين المتصفّح نصوصًا تحتاج إلى تحليل:
 
 ```typescript
 // ❌ Bad: Trusting localStorage
@@ -464,9 +464,9 @@ if (user) {
 }
 ```
 
-## Migration Strategy: From Any to Unknown
+## استراتيجية الترحيل: من `any` إلى `unknown`
 
-If you have existing code with `any`, here’s how to migrate:
+إن كان لديك شيفرة قائمة تستخدم `any`، فإليك كيف ترحّل:
 
 ```typescript
 // Step 1: Change any to unknown
@@ -515,11 +515,11 @@ function processData(data: unknown): number {
 }
 ```
 
-## When Is Any Acceptable?
+## متى يكون `any` مقبولًا؟
 
-There are rare cases where `any` might be acceptable:
+هناك حالات نادرة قد يكون فيها `any` مقبولًا:
 
-### Migration Code
+### شيفرة الترحيل
 
 ```typescript
 // Temporarily during migration
@@ -527,7 +527,7 @@ There are rare cases where `any` might be acceptable:
 const legacyData: any = getLegacyData();
 ```
 
-### Test Code
+### شيفرة الاختبار
 
 ```typescript
 // In tests where type safety is less critical
@@ -537,7 +537,7 @@ it('handles any input', () => {
 });
 ```
 
-### Console Logging
+### التسجيل في الطرفية
 
 ```typescript
 // For debugging only
@@ -546,11 +546,11 @@ function debugLog(label: string, value: any) {
 }
 ```
 
-But even in these cases, consider if `unknown` would work just as well!
+لكن حتى في هذه الحالات، اسأل نفسك: هل سيعمل `unknown` بالمثل؟
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Type checking has no runtime performance impact, but validation does:
+لفحص الأنواع لا أيّ أثر في أداء وقت التشغيل، لكنّ التحقّق له أثر:
 
 ```typescript
 // Lightweight check
@@ -582,9 +582,9 @@ function isCachedValid(value: unknown): boolean {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Default to Unknown
+### اجعل `unknown` هو الافتراضي
 
 ```typescript
 // ✅ Start with unknown
@@ -598,7 +598,7 @@ function processInput(input: any) {
 }
 ```
 
-### Create Reusable Type Guards
+### أنشئ حرّاس أنواع قابلة لإعادة الاستخدام
 
 ```typescript
 // Define once, use everywhere
@@ -615,7 +615,7 @@ const typeGuards = {
 };
 ```
 
-### Validate at Boundaries
+### تحقّق عند الحدود
 
 ```typescript
 // Validate data as it enters your application
@@ -632,7 +632,7 @@ async function fetchData(): Promise<ValidatedData> {
 }
 ```
 
-### Use Assertion Functions
+### استخدم دوال التأكيد
 
 ```typescript
 function assertString(value: unknown): asserts value is string {
@@ -648,24 +648,24 @@ function processName(name: unknown) {
 }
 ```
 
-## Summary
+## الخلاصة
 
-The difference between `any` and `unknown` is simple but crucial:
+الفرق بين `any` و`unknown` بسيط لكنه حاسم:
 
-- **`any`**: “I don’t care what type this is” (dangerous)
-- **`unknown`**: “I don’t know what type this is yet” (safe)
+- **`any`**: «لا يهمّني ما نوع هذا» (خطر)
+- **`unknown`**: «لا أعرف بعدُ ما نوع هذا» (آمن)
 
-Use `unknown` when:
+استخدم `unknown` حين:
 
-- Handling external data (APIs, user input, localStorage)
-- Dealing with errors in catch blocks
-- Working with untyped libraries
-- Parsing JSON or other dynamic data
+- تتعامل مع بيانات خارجية (واجهات API، ومدخلات المستخدم، والتخزين المحلي)
+- تتعامل مع الأخطاء في كتل catch
+- تعمل مع مكتبات بلا أنواع
+- تحلّل JSON أو غيره من البيانات الديناميكية
 
-Use `any` only when:
+استخدم `any` فقط حين:
 
-- Migrating JavaScript to TypeScript (temporarily)
-- In test code where type safety is less critical
-- You absolutely must and have a very good reason
+- ترحيل JavaScript إلى TypeScript (بشكل مؤقّت)
+- في شيفرة الاختبار حيث لا تقلّ أهمية أمان الأنواع
+- إذا كنت مضطرًا تمامًا ولديك سبب قويّ
 
-Remember: Every `any` in your codebase is a potential runtime error waiting to happen. Every `unknown` is a safety checkpoint that forces you to validate before use. Choose safety!
+تذكّر: كل `any` في قاعدتك البرمجية خطأ محتمل في وقت التشغيل بانتظار الحدوث. وكل `unknown` نقطة تحقّق تفرض عليك التحقّق قبل الاستخدام. اختَر الأمان!

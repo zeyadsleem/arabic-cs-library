@@ -1,18 +1,18 @@
 ---
-title: "Web Security"
-lang: en
+title: "أمن الويب"
+lang: ar
 source: "https://stevekinney.com/courses/web-security"
 ---
 
-The content below is supplimentary content for the [Web Security, v2](https://frontendmasters.com/courses/web-security-v2/?utm_source=kinney&utm_medium=social&code=kinney) course with **Frontend Masters**.
+المحتوى أدناه محتوى تكميلي لدورة [أمن الويب، v2](https://frontendmasters.com/courses/web-security-v2/?utm_source=kinney&utm_medium=social&code=kinney) مع **Frontend Masters**.
 
-This workshop is designed to provide frontend web developers and JavaScript engineers with a comprehensive understanding of web security. Covering topics from basic principles to advanced security techniques, participants will learn about common vulnerabilities, prevention strategies, and best practices to secure their web applications. The workshop includes practical exercises to apply the learned concepts in real-world scenarios.
+صُمِّمت هذه الورشة لتزويد مطوّري واجهات الويب ومهندسي JavaScript بفهم شامل لأمن الويب. وتغطي موضوعات تمتد من المبادئ الأساسية إلى التقنيات الأمنية المتقدّمة، وسيتعرّف المشاركون على الثغرات الشائعة واستراتيجيات الوقاية وأفضل الممارسات لتأمين تطبيقات الويب. وتشمل الورشة تمارين عملية لتطبيق المفاهيم التي تعلّموها في سيناريوهات واقعية.
 
-We’ll be using the following resources in this course.
+سنستخدم المصادر التالية في هذه الدورة.
 
-- [Repository](https://github.com/stevekinney/web-security)
-- [Slides](https://speakerdeck.com/stevekinney/web-security-frontend-masters)
+- [المستودع](https://github.com/stevekinney/web-security)
+- [الشرائح](https://speakerdeck.com/stevekinney/web-security-frontend-masters)
 
-## Other Tooling
+## أدوات أخرى
 
-Almost everything you need is included in the [repository](https://github.com/stevekinney/web-security) above, but I’ll be using [ngrok](https://ngrok.com/) briefly in one example if you want to take that for a spin as well.
+كل ما تحتاجه تقريبًا مُضمَّن في [المستودع](https://github.com/stevekinney/web-security) أعلاه، لكنني سأستخدم [ngrok](https://ngrok.com/) لفترة وجيزة في أحد الأمثلة إن أردت تجربته أيضًا.

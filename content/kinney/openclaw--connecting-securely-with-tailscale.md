@@ -1,94 +1,94 @@
 ---
-title: "Connecting to Your OpenClaw Securely with Tailscale"
-lang: en
+title: "الاتصال بـ OpenClaw بأمان عبر Tailscale"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale"
 ---
 
-Once your Gateway lives on another machine, you need a way to reach it. The obvious options are not great. Opening a port to the internet invites strangers to try your credentials, and an SSH tunnel means setting one up on every laptop, and it isn’t an option at all on a phone.
+حين تصبح البوابة (Gateway) مقيمة على جهاز آخر، تحتاج إلى طريقة للوصول إليها. والخيارات البديهية ليست جيدة. ففتح منفذ إلى الإنترنت يدعو الغرباء إلى تجربة بيانات اعتمادك، ونفق SSH يعني إعداده على كل حاسوب محمول، وهو ليس خيارًا على الإطلاق على الهاتف.
 
-[Tailscale](https://tailscale.com/) gives you a third option. It builds a private network (a **tailnet**) out of the devices you sign in, and OpenClaw can publish the Gateway to that network and nowhere else. The result is what’s often called a “zero open ports” setup:
+يمنحك [Tailscale](https://tailscale.com/) خيارًا ثالثًا. فهو يبني شبكة خاصة (**tailnet**) من الأجهزة التي تسجّل الدخول منها، ويستطيع OpenClaw أن ينشر البوابة على تلك الشبكة وحدها دون سواها. والنتيجة هي ما يُسمّى غالبًا إعداد «صفر منافذ مفتوحة»:
 
-- The Gateway only listens on loopback (`127.0.0.1`).
-- Nothing is bound to `0.0.0.0` and nothing is port-forwarded.
-- There is no inbound firewall rule to maintain.
-- You get one stable HTTPS address, `https://<host>.<tailnet>.ts.net`, that works from your Mac, your phone, and any [paired node](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
+- البوابة تستمع فقط على الواجهة المحلية (loopback) (`127.0.0.1`).
+- لا شيء مرتبط بـ `0.0.0.0` ولا شيء يُعاد توجيه منافذه.
+- لا توجد قاعدة جدار ناري للاتصالات الواردة تحتاج إلى صيانة.
+- تحصل على عنوان HTTPS واحد ثابت، `https://<host>.<tailnet>.ts.net`، يعمل من جهاز Mac لديك وهاتفك وأي [عقدة مقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
 
-The OpenClaw side of this (`gateway.tailscale.*`) is built into core, so there’s no plugin to install. The `tailscale` CLI and daemon are separate software that you install yourself.
+الجانب المتعلق بـ OpenClaw في هذا (`gateway.tailscale.*`) مبنيّ في النواة (core)، لذا لا توجد إضافة (plugin) تحتاج إلى تثبيت. أما أداة `tailscale` عبر سطر الأوامر (CLI) والخادم الخفي (daemon) فهما برنامجان منفصلان تثبّتهما بنفسك.
 
-> **Hosting on Railway?**
+> **هل تستضيف على Railway؟**
 >
-> [Railway](https://railway.com/?referralCode=kinney) can’t run Tailscale next to the Gateway, so it needs a different arrangement. See [Running OpenClaw on Railway with Tailscale](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale).
+> لا يستطيع [Railway](https://railway.com/?referralCode=kinney) تشغيل Tailscale إلى جانب البوابة، لذا يحتاج إلى ترتيب مختلف. راجع [تشغيل OpenClaw على Railway مع Tailscale](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale).
 
-## Serve vs. Funnel
+## Serve مقابل Funnel
 
-Tailscale has two ways to publish a service, and mixing them up is the most common mistake.
+يملك Tailscale طريقتين لنشر خدمة، والخلط بينهما هو الخطأ الأكثر شيوعًا.
 
 |  | Serve | Funnel |
 | --- | --- | --- |
-| Who can reach it | Only devices on your tailnet, subject to your policy | **Anyone on the public internet** |
-| Auth OpenClaw needs | Token, password, or trusted proxy | Password, enforced (it won’t start without) |
-| Right for this? | **Yes, this is the default** | Rarely, and only on purpose |
+| من يستطيع الوصول إليه | أجهزة شبكة tailnet الخاصة بك فقط، وفقًا لسياستك | **أي شخص على الإنترنت العام** |
+| المصادقة التي يحتاجها OpenClaw | رمز (token)، أو كلمة مرور، أو وسيط موثوق | كلمة مرور، مفروضة (فلن يبدأ بدونها) |
+| هل هو المناسب هنا؟ | **نعم، هذا هو الافتراضي** | نادرًا، وفقط عن قصد |
 
-> **Use Serve, not Funnel**
+> **استخدم Serve لا Funnel**
 >
-> Funnel puts your Gateway’s Control UI on the public internet behind one shared password. Whoever has that password gets full operator access. Everything in this lesson uses Serve.
+> يضع Funnel واجهة التحكم (Control UI) في بوابتك على الإنترنت العام خلف كلمة مرور مشتركة واحدة. ومن يملك تلك الكلمة يحصل على صلاحية مشغّل كاملة. وكل ما في هذا الدرس يستخدم Serve.
 
-## Before You Start
+## قبل أن تبدأ
 
-You’ll need:
+ستحتاج إلى:
 
-- A Gateway you can sign in to (a VPS, a home server, or another Mac).
-- A [Tailscale account](https://login.tailscale.com/).
-- Tailscale on **both** the Gateway host and every device you want to connect from.
+- بوابة تستطيع تسجيل الدخول إليها (خادم VPS، أو خادم منزلي، أو جهاز Mac آخر).
+- [حساب Tailscale](https://login.tailscale.com/).
+- Tailscale مثبّت على **كلٍّ** من مضيف البوابة وكل جهاز تريد الاتصال منه.
 
-## Step 1: Install Tailscale on the Gateway Host
+## الخطوة 1: ثبّت Tailscale على مضيف البوابة
 
-Tailscale has to be installed **and logged in** on the machine that runs the Gateway. On a Linux host:
+يجب تثبيت Tailscale **وتسجيل الدخول إليه** على الجهاز الذي تشغّل عليه البوابة. على مضيف Linux:
 
 ```bash
 curl -fsSL https://tailscale.com/install.sh | sudo sh
 sudo tailscale up
 ```
 
-`tailscale up` prints a login link. Open it in a browser and approve the machine.
+تطبع `tailscale up` رابط تسجيل دخول. افتحه في متصفح ووافق على الجهاز.
 
-If you want a predictable device name, and Tailscale’s own SSH so you can administer the box without exposing port 22, use this variant instead:
+إن أردت اسمًا متوقّعًا للجهاز، وSSH الخاص بـ Tailscale لتتمكن من إدارة الجهاز دون كشف المنفذ 22، فاستخدم هذا البديل بدلًا من ذلك:
 
 ```bash
 curl -fsSL https://tailscale.com/install.sh | sh
 sudo tailscale up --ssh --hostname=openclaw
 ```
 
-On a Mac, install the Tailscale app and sign in. OpenClaw finds the CLI inside the app bundle on its own, so you don’t need to add it to your `PATH`.
+على جهاز Mac، ثبّت تطبيق Tailscale وسجّل الدخول. يجد OpenClaw أداة سطر الأوامر داخل حزمة التطبيق (app bundle) بنفسه، فلا حاجة إلى إضافتها إلى `PATH` لديك.
 
-## Step 2: Turn On MagicDNS and HTTPS Certificates
+## الخطوة 2: فعّل MagicDNS وشهادات HTTPS
 
-In the [Tailscale admin console](https://login.tailscale.com/admin), make sure both of these are on:
+في [وحدة تحكم إدارة Tailscale](https://login.tailscale.com/admin)، تأكد من أن كليهما مفعّل:
 
-1. **MagicDNS**, so devices get names like `openclaw.your-tailnet.ts.net`.
-2. **HTTPS certificates**, under **DNS → HTTPS Certificates**. Tailscale uses these to give the Gateway a real certificate.
+1. **MagicDNS**، لتحصل الأجهزة على أسماء مثل `openclaw.your-tailnet.ts.net`.
+2. **شهادات HTTPS (HTTPS Certificates)**، تحت **DNS → شهادات HTTPS**. يستخدمها Tailscale لمنح البوابة شهادة حقيقية.
 
-## Step 3: Make Sure the Gateway Requires Authentication
+## الخطوة 3: تأكد من أن البوابة تتطلب المصادقة
 
-Serve can’t be combined with `gateway.auth.mode: "none"`. Check that you have a token (the default), password, or trusted-proxy auth configured. If you don’t have a token yet, generate one:
+لا يمكن الجمع بين Serve و`gateway.auth.mode: "none"`. تحقق من أن لديك رمزًا (وهو الافتراضي)، أو كلمة مرور، أو مصادقة عبر وسيط موثوق مضبوطة. وإن لم يكن لديك رمز بعد، فولّد واحدًا:
 
 ```bash
 openclaw doctor --generate-gateway-token
 ```
 
-Or do it yourself:
+أو افعلها بنفسك:
 
 ```bash
 openssl rand -hex 32
 ```
 
-Use a long random value. The security audit flags secrets shorter than 24 characters, and startup rejects blank tokens, the literal strings `undefined` and `null`, and example placeholders.
+استخدم قيمة عشوائية طويلة. فالتدقيق الأمني يبلّغ عن الأسرار الأقصر من 24 حرفًا، ويرفض بدء التشغيل الرموز الفارغة، والسلاسل الحرفية `undefined` و`null`، والعناصر النائبة في الأمثلة.
 
-Prefer the `OPENCLAW_GATEWAY_TOKEN` environment variable over writing the secret into your config file, so it never ends up in a repository.
+فضّل متغير البيئة `OPENCLAW_GATEWAY_TOKEN` على كتابة السر في ملف الإعدادات، حتى لا ينتهي به الأمر في مستودع أبدًا.
 
-## Step 4: Point the Gateway at Tailscale Serve
+## الخطوة 4: وجّه البوابة إلى Tailscale Serve
 
-On the Gateway host:
+على مضيف البوابة:
 
 ```bash
 openclaw config set gateway.bind loopback
@@ -96,7 +96,7 @@ openclaw config set gateway.tailscale.mode serve
 openclaw gateway restart
 ```
 
-That’s the whole configuration. If you prefer to edit `~/.openclaw/openclaw.json` directly, it looks like this:
+هذا هو الإعداد كله. وإن كنت تفضّل تعديل `~/.openclaw/openclaw.json` مباشرة، فهو يبدو هكذا:
 
 ```json5
 {
@@ -107,100 +107,100 @@ That’s the whole configuration. If you prefer to edit `~/.openclaw/openclaw.js
 }
 ```
 
-Behind the scenes, OpenClaw tells Tailscale to serve HTTPS on port `443` and proxy it to a private loopback listener that the Gateway owns. Tailscale terminates TLS; the Gateway never faces the network directly. The ordinary listener stays on `127.0.0.1:18789` for programs on the same machine.
+خلف الكواليس، يطلب OpenClaw من Tailscale تقديم HTTPS على المنفذ `443` وتمريره عبر وسيط (proxy) إلى مستمع محلي خاص تملكه البوابة. يُنهي Tailscale اتصال TLS؛ ولا تواجه البوابة الشبكة مباشرة أبدًا. ويبقى المستمع العادي على `127.0.0.1:18789` للبرامج على الجهاز نفسه.
 
-> **The first request can be slow**
+> **قد يكون الطلب الأول بطيئًا**
 >
-> The first HTTPS request after you enable Serve may take a while because the certificate is being issued. Let it finish and try again.
+> قد يستغرق أول طلب HTTPS بعد تفعيل Serve بعض الوقت لأن الشهادة قيد الإصدار. دعه يكتمل ثم حاول مجددًا.
 
-## Step 5: Allow Your Devices to Reach the Gateway
+## الخطوة 5: اسمح لأجهزتك بالوصول إلى البوابة
 
-Serve obeys your tailnet’s access policy. If your policy doesn’t allow it, the URL works on the Gateway host and **silently times out everywhere else**. This is the leading cause of “it doesn’t work.”
+يطيع Serve سياسة الوصول في شبكة tailnet لديك. وإن لم تسمح سياستك بذلك، يعمل العنوان على مضيف البوابة **بينما تنتهي المهلة بصمت في كل مكان آخر**. وهذا هو السبب الأول وراء عبارة «لا يعمل».
 
-In the admin console, open **Access Controls** and allow your devices to reach the Gateway host on TCP port `443`. With the modern grants format, add an entry to the existing `grants` array:
+في وحدة تحكم الإدارة، افتح **ضوابط الوصول (Access Controls)** واسمح لأجهزتك بالوصول إلى مضيف البوابة على منفذ TCP `443`. وبصيغة المنح (grants) الحديثة، أضف مدخلًا إلى مصفوفة `grants` الموجودة:
 
 ```json5
 // Tailscale policy files are HuJSON, so these // comments are valid
 { src: ['autogroup:member'], dst: ['<gateway-host-or-ip>'], ip: ['tcp:443'] }
 ```
 
-On an older ACL-style policy, add this to the `acls` array instead:
+وعلى سياسة أقدم بنمط ACL، أضف هذا إلى مصفوفة `acls` بدلًا من ذلك:
 
 ```json5
 { action: 'accept', src: ['autogroup:member'], dst: ['<gateway-host-or-ip>:443'] }
 ```
 
-`autogroup:member` means everyone on your tailnet. If other people share it, narrow `src` to a specific user, group, or tag that covers only the devices that should have access.
+يعني `autogroup:member` كل من على شبكة tailnet لديك. وإن شاركها آخرون، فضيِّق `src` إلى مستخدم أو مجموعة أو وسم محدّد يغطي فقط الأجهزة التي ينبغي أن تملك الوصول.
 
-## Step 6: Verify It Worked
+## الخطوة 6: تحقق من نجاح الأمر
 
-First, on the Gateway host, check that the route exists:
+أولًا، على مضيف البوابة، تحقق من وجود المسار:
 
 ```bash
 tailscale serve status
 ```
 
-You should see an HTTPS route for `https://<host>.<tailnet>.ts.net` that proxies to a private loopback port owned by the Gateway. That is the expected result. It does **not** point straight at port 18789.
+ينبغي أن ترى مسار HTTPS للعنوان `https://<host>.<tailnet>.ts.net` يمرّ عبر وسيط إلى منفذ محلي خاص تملكه البوابة. تلك هي النتيجة المتوقعة. وهو **لا** يشير مباشرة إلى المنفذ 18789.
 
-Next, from a **different** device on your tailnet:
+بعد ذلك، من جهاز **مختلف** على شبكة tailnet لديك:
 
 ```bash
 curl -sS -o /dev/null -w '%{http_code}\n' https://<host>.<tailnet>.ts.net/
 ```
 
-You should get `200`. If it times out from other devices but works on the Gateway host, go back to Step 5.
+ينبغي أن تحصل على `200`. وإن انتهت المهلة من أجهزة أخرى بينما يعمل على مضيف البوابة، فارجع إلى الخطوة 5.
 
-Finally, prove the Gateway didn’t open a port of its own:
+وأخيرًا، أثبت أن البوابة لم تفتح منفذًا خاصًا بها:
 
 ```bash
 lsof -nP -iTCP:18789 -sTCP:LISTEN
 ```
 
-The listener must be on `127.0.0.1:18789`. If you see `0.0.0.0`, a LAN address, or a tailnet address, the zero-open-ports property is already gone. On Linux you can also list everything that’s listening beyond loopback:
+يجب أن يكون المستمع على `127.0.0.1:18789`. وإن رأيت `0.0.0.0`، أو عنوان شبكة محلية (LAN)، أو عنوان tailnet، فقد ذهبت خاصية صفر المنافذ المفتوحة بالفعل. وعلى Linux يمكنك أيضًا سرد كل ما يستمع خارج الواجهة المحلية:
 
 ```bash
 sudo ss -tlnp | grep -v '127.0.0.1\|::1'
 ```
 
-## Step 7: Connect Your Devices
+## الخطوة 7: صِل أجهزتك
 
-Everything uses the same address. Open it in a browser to reach the Control UI:
+كل شيء يستخدم العنوان نفسه. افتحه في متصفح للوصول إلى واجهة التحكم (Control UI):
 
 ```
 https://<host>.<tailnet>.ts.net
 ```
 
-For clients that speak WebSocket, swap the scheme:
+وبالنسبة للعملاء الذين يتحدثون WebSocket، بدّل المخطّط (scheme):
 
 ```
 wss://<host>.<tailnet>.ts.net
 ```
 
-- **The macOS app:** go to **Settings → Connection → Remote (another host) → Direct (ws/wss)** and enter the `wss://` address.
-- **The iOS and Android apps:** point them at the same `wss://` address. They have no SSH tunnel option, which makes Serve the practical way to reach a remote Gateway from a phone.
-- **Paired nodes:** nodes use the same Gateway WebSocket endpoint, so this address is what you’ll enter in [Connecting to a Remote OpenClaw as a Paired Node](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
+- **تطبيق macOS:** اذهب إلى **الإعدادات (Settings) → الاتصال (Connection) → بعيد (Remote — مضيف آخر) → مباشر (Direct — ws/wss)** وأدخل عنوان `wss://`.
+- **تطبيقا iOS وAndroid:** وجّههما إلى عنوان `wss://` نفسه. فليس فيهما خيار نفق SSH، ما يجعل Serve الطريقة العملية للوصول إلى بوابة بعيدة من هاتف.
+- **العُقد المقترنة:** تستخدم العُقد نقطة نهاية WebSocket نفسها في البوابة، لذا هذا هو العنوان الذي ستدخله في [الاتصال بـ OpenClaw بعيد كعقدة مقترنة](https://stevekinney.com/courses/openclaw/connecting-a-remote-node).
 
-Each new device still needs its own identity and approval. A private network gets a device to the front door; it doesn’t skip the lock.
+ما زال كل جهاز جديد يحتاج إلى هويته الخاصة وإلى موافقة. فالشبكة الخاصة توصل الجهاز إلى الباب الأمامي، لكنها لا تتخطى القفل.
 
-## Optional: Sign In with Your Tailscale Identity
+## اختياري: سجّل الدخول بهوية Tailscale
 
-With Serve, OpenClaw can recognize who you are from Tailscale itself instead of asking for the shared token every time. It checks the request against the local Tailscale daemon (`tailscale whois`), so the identity can’t be faked by a client.
+مع Serve، يستطيع OpenClaw أن يتعرّف على هويتك من Tailscale نفسه بدل طلب الرمز المشترك في كل مرة. فهو يفحص الطلب مقابل الخادم الخفي المحلي لـ Tailscale (`tailscale whois`)، لذا لا يستطيع أي عميل تزوير الهوية.
 
-This is on by default when you use Serve with token auth, and it’s controlled by `gateway.auth.allowTailscale`. It’s narrower than it sounds:
+هذا مفعّل افتراضيًا عندما تستخدم Serve مع مصادقة الرمز، ويتحكم فيه `gateway.auth.allowTailscale`. وهو أضيق مما يبدو:
 
-- It only covers Control UI sign-in.
-- HTTP API endpoints (`/v1/*`, `/tools/invoke`, and `/api/channels/*`) **never** use it. They always follow your configured auth.
-- It doesn’t replace device identity. A browser that already has a device identity can skip the one-time pairing code, but clients without one are still rejected, and node connections still have to be paired.
+- يغطي تسجيل الدخول إلى واجهة التحكم فقط.
+- نقاط نهاية HTTP API (`/v1/*`، و`/tools/invoke`، و`/api/channels/*`) **لا** تستخدمه أبدًا. فهي تتبع دائمًا المصادقة المضبوطة لديك.
+- لا يحل محل هوية الجهاز. فالمتصفح الذي يملك هوية جهاز بالفعل يمكنه تخطي رمز الاقتران (pairing code) لمرة واحدة، لكن العملاء الذين لا يملكونها يُرفضون رغم ذلك، واتصالات العُقد (nodes) يجب أن تُقترن كذلك.
 
-It also assumes you trust the Gateway host. If untrusted code could run on that machine, turn it off and require the token or password:
+وهو يفترض أيضًا أنك تثق بمضيف البوابة. وإن كان يمكن لشيفرة غير موثوقة أن تعمل على ذلك الجهاز، فأوقفه واطلب الرمز أو كلمة المرور:
 
 ```bash
 openclaw config set gateway.auth.allowTailscale false
 ```
 
-## Audit Your Exposure
+## دقّق في مدى تعرّضك
 
-Run the built-in audit, then double-check from the Tailscale side:
+شغّل التدقيق المدمج، ثم تحقق مجددًا من جهة Tailscale:
 
 ```bash
 openclaw security audit
@@ -208,27 +208,27 @@ tailscale serve status --json
 lsof -nP -iTCP:18789 -sTCP:LISTEN
 ```
 
-`openclaw status` should report Tailscale exposure as `serve` (or `off`), and never `funnel`. A public Funnel or a LAN bind is a finding the audit asks you to fix right away.
+ينبغي أن يُبلّغ `openclaw status` عن تعرّض Tailscale بالقيمة `serve` (أو `off`)، وليس `funnel` أبدًا. ووجود Funnel عام أو ربط على شبكة محلية (LAN) نتيجة يطلب منك التدقيق إصلاحها فورًا.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Symptom | First thing to check |
+| العرَض | أول ما تفحصه |
 | --- | --- |
-| The URL works on the Gateway host but not elsewhere | The TCP `443` access policy from Step 5 |
-| The Gateway fails to start with Serve | Auth mode isn’t `none`, and the Tailscale daemon is running and logged in |
-| The first request hangs | Certificate issuance. Wait, then retry |
-| `tailscale serve` isn’t recognized | Update Tailscale. The Serve CLI changed in version 1.52 |
-| `proxy_attribution_required` | You’re running your own `tailscale serve` route. See the note below |
+| يعمل العنوان على مضيف البوابة وليس في مكان آخر | سياسة الوصول إلى TCP `443` من الخطوة 5 |
+| تفشل البوابة في البدء مع Serve | وضع المصادقة ليس `none`، والخادم الخفي لـ Tailscale يعمل ومسجَّل الدخول |
+| يتوقف الطلب الأول دون استجابة | إصدار الشهادة. انتظر ثم أعد المحاولة |
+| لا يُتعرَّف على `tailscale serve` | حدّث Tailscale. فقد تغيّرت أداة Serve في الإصدار 1.52 |
+| `proxy_attribution_required` | أنت تشغّل مسار `tailscale serve` خاصًا بك. راجع الملاحظة أدناه |
 
-> **Let OpenClaw manage Serve**
+> **دع OpenClaw يدير Serve**
 >
-> Setting `gateway.tailscale.mode` to `serve` lets OpenClaw configure Tailscale itself. If you instead point your *own* `tailscale serve` route at the ordinary Gateway listener, OpenClaw treats it as a generic trusted proxy: you’d need to configure `gateway.trustedProxies` narrowly, make sure the proxy overwrites `X-Forwarded-For`, and keep token or password auth. Tailscale identity sign-in doesn’t apply there. Unless you have a reason, let OpenClaw do it.
+> ضبط `gateway.tailscale.mode` على `serve` يتيح لـ OpenClaw إعداد Tailscale بنفسه. وإن وجّهت بدلًا من ذلك مسار `tailscale serve` *الخاص بك* إلى مستمع البوابة العادي، سيعامله OpenClaw كوسيط موثوق عام: ستحتاج إلى ضبط `gateway.trustedProxies` بضيق، والتأكد من أن الوسيط يكتب فوق `X-Forwarded-For`، والإبقاء على مصادقة الرمز أو كلمة المرور. ولا ينطبق هناك تسجيل الدخول بهوية Tailscale. وإن لم يكن لديك سبب، فدع OpenClaw يقوم بذلك.
 
-Two more things worth knowing:
+وهناك أمران آخران يستحقان المعرفة:
 
-- **`mode: "off"` doesn’t turn Tailscale off.** It only means OpenClaw isn’t managing Serve or Funnel. The daemon, and any route you created yourself, keep running. Check `tailscale serve status` rather than trusting the config.
-- **Boot order.** If the Gateway starts before the Tailscale daemon has connected, it waits up to 90 seconds before giving up.
+- **`mode: "off"` لا يوقف Tailscale.** فهو يعني فقط أن OpenClaw لا يدير Serve أو Funnel. ويستمر الخادم الخفي، وأي مسار أنشأته بنفسك، في العمل. افحص `tailscale serve status` بدل الوثوق بالإعدادات.
+- **ترتيب الإقلاع.** إذا بدأت البوابة قبل أن يتصل الخادم الخفي لـ Tailscale، فإنها تنتظر حتى 90 ثانية قبل أن تستسلم.
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغير**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/gateway/tailscale).
+> يطابق هذا الدرس OpenClaw `2026.9.8`. وإن لم يتصرف شيء كما هو موصوف، فشغّل الأمر مع `--help` واطّلع على [وثائق OpenClaw](https://docs.openclaw.ai/gateway/tailscale).

@@ -1,61 +1,63 @@
 ---
-title: "Gemini and Gems"
-lang: en
+title: "Gemini والجواهر (Gems)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/gemini-and-gems"
 ---
 
-Gems are like your own personalized AI chatbots within Gemini, customized versions of the model that retain specific characteristics and preferences you assign. They are designed to solve the “repetitive prompting” problem by allowing you to pre-save contextual information—such as programming language, framework, coding standards, or project goals—so you don’t have to repeat it in every prompt.
+الجواهر (Gems) تشبه روبوتات محادثة ذكاء اصطناعي مخصّصة لك داخل Gemini، وهي نسخ مخصّصة من النموذج تحتفظ بخصائص وتفضيلات محدّدة تُسنِدها إليها. وقد صُمّمت لحلّ مشكلة «تكرار الطلب» بأن تتيح لك حفظ معلومات سياقية مسبقًا—مثل لغة البرمجة، أو إطار العمل، أو معايير الترميز، أو أهداف المشروع—فلا تضطر إلى تكرارها في كل طلب.
 
-Gems streamline your workflow by providing a pre-configured, specialized assistant ready to tackle complex tasks immediately. This shifts your role from a “user” to an “AI manager” who directs a team of specialized AI agents.
+تبسّط الجواهر سير عملك بأن توفّر مساعدًا متخصصًا مهيّأً مسبقًا وجاهزًا للتعامل مع المهام المعقّدة فورًا. وهذا ينقل دورك من «مستخدم» إلى «مدير ذكاء اصطناعي» يوجّه فريقًا من وكلاء الذكاء الاصطناعي المتخصصين.
 
-## Setting Up Your Custom Coding Gem
+## إعداد جوهرتك المخصّصة للترميز
 
-- **Access Gems:** When you log into Gemini Advanced, you’ll see a “Gems” section in the left-hand menu.
-- **Explore Pre-set Gems:** Google provides handy pre-set Gems such as “Coding Helper” which serves as a foundational template for code generation and debugging. You can click on these to get a feel for how Gems work.
-- **Create a Custom Gem:** Click on **“Manage Gems”** from the left-hand menu, then select **“create Gem”**. **Name Your Gem:** Give your Gem a descriptive name (e.g., “Python Refactorer” or “React Component Generator”). **Provide Instructions (The Four Pillars):** The foundation of a well-defined Gem rests on four pillars: Persona, Task, Context, and Format: **Persona:** Define the Gem’s role, such as a “senior software developer specializing in Python and Django” or “Brick Bin’s friendly and helpful customer support assistant”. **Task:** Specify its primary function, like “generate, debug, and refactor code according to best practices” or “respond to email inquiries”. **Context:** Provide rules of engagement and background information. For example, “adhere strictly to the uploaded PEP 8 style guide and project-specific API documentation”. This is where you can also define your target audience or tone of voice. **Format:** Dictate the structure of the output, for instance, “all code examples must be in clean, copy-paste-friendly Python blocks with clear, inline explanations” or “draft it in the format of an email”. **Knowledge Grounding via File Uploads:** A critical capability for coding assistants is grounding their knowledge in external, project-specific documents. You can **upload files** (like PDFs, business information, FAQs, or codebases) directly from your device or reference Google Drive documents. This allows your Gem to become an expert on niche libraries or your team’s coding standards. **Test and Refine:** As you build your Gem, you can test it in a preview window to see how it responds to prompts. This facilitates rapid, real-time refinement. **Utilize Gemini Extensions:** You can integrate Gemini extensions (like Google Workspace apps such as Gmail, Drive, Docs, and Maps) into your Gem’s instructions, allowing it to pull information directly from these sources.
-  - Click on **“Manage Gems”** from the left-hand menu, then select **“create Gem”**.
-  - **Name Your Gem:** Give your Gem a descriptive name (e.g., “Python Refactorer” or “React Component Generator”).
-  - **Provide Instructions (The Four Pillars):** The foundation of a well-defined Gem rests on four pillars: Persona, Task, Context, and Format: **Persona:** Define the Gem’s role, such as a “senior software developer specializing in Python and Django” or “Brick Bin’s friendly and helpful customer support assistant”. **Task:** Specify its primary function, like “generate, debug, and refactor code according to best practices” or “respond to email inquiries”. **Context:** Provide rules of engagement and background information. For example, “adhere strictly to the uploaded PEP 8 style guide and project-specific API documentation”. This is where you can also define your target audience or tone of voice. **Format:** Dictate the structure of the output, for instance, “all code examples must be in clean, copy-paste-friendly Python blocks with clear, inline explanations” or “draft it in the format of an email”.
-    - **Persona:** Define the Gem’s role, such as a “senior software developer specializing in Python and Django” or “Brick Bin’s friendly and helpful customer support assistant”.
-    - **Task:** Specify its primary function, like “generate, debug, and refactor code according to best practices” or “respond to email inquiries”.
-    - **Context:** Provide rules of engagement and background information. For example, “adhere strictly to the uploaded PEP 8 style guide and project-specific API documentation”. This is where you can also define your target audience or tone of voice.
-    - **Format:** Dictate the structure of the output, for instance, “all code examples must be in clean, copy-paste-friendly Python blocks with clear, inline explanations” or “draft it in the format of an email”.
-  - **Knowledge Grounding via File Uploads:** A critical capability for coding assistants is grounding their knowledge in external, project-specific documents. You can **upload files** (like PDFs, business information, FAQs, or codebases) directly from your device or reference Google Drive documents. This allows your Gem to become an expert on niche libraries or your team’s coding standards.
-  - **Test and Refine:** As you build your Gem, you can test it in a preview window to see how it responds to prompts. This facilitates rapid, real-time refinement.
-  - **Utilize Gemini Extensions:** You can integrate Gemini extensions (like Google Workspace apps such as Gmail, Drive, Docs, and Maps) into your Gem’s instructions, allowing it to pull information directly from these sources.
-- **Saving and Using Your Gem:** Once you’re happy, click “create” or “save”. Your Gem will appear in the left-hand menu for easy access. When you select it, all the pre-saved instructions are loaded, and you can immediately provide your specific prompt.
+- **الوصول إلى الجواهر:** عندما تسجّل الدخول إلى Gemini Advanced، سترى قسم «Gems» في القائمة اليسرى.
+- **استكشاف الجواهر المعدّة مسبقًا:** يوفّر Google جواهر معدّة مسبقًا مفيدة مثل «Coding Helper» التي تعمل كقالب أساسي لتوليد الشيفرة وتشخيصها. يمكنك النقر عليها لتكوين فكرة عن كيفية عمل الجواهر.
+- **إنشاء جوهرة مخصّصة:**
 
-## Practical Applications Across the Development Lifecycle
+  - انقر على **«Manage Gems»** من القائمة اليسرى، ثم اختر **«create Gem»**.
+  - **سمّ جوهرتك:** أعطِ جوهرتك اسمًا وصفيًا (مثل «Python Refactorer» أو «React Component Generator»).
+  - **قدّم التعليمات (الأركان الأربعة):** يقوم أساس الجوهرة المحدّدة جيدًا على أربعة أركان: الشخصية، والمهمة، والسياق، والصيغة:
 
-Gems can assist throughout the software development lifecycle, from initial code generation to testing and documentation.
+    - **الشخصية:** حدّد دور الجوهرة، مثل «مطوّر برمجيات أول متخصص في Python و Django» أو «مساعد دعم العملاء الودود والمتعاون في Brick Bin».
+    - **المهمة:** حدّد وظيفتها الأساسية، مثل «توليد الشيفرة وتشخيصها وإعادة هيكلتها وفق أفضل الممارسات» أو «الردّ على استفسارات البريد الإلكتروني».
+    - **السياق:** قدّم قواعد التعامل ومعلومات خلفية. على سبيل المثال، «التزم تمامًا بدليل أسلوب PEP 8 المرفوع وتوثيق API الخاص بالمشروع». وهنا يمكنك أيضًا تحديد جمهورك المستهدف أو نبرة صوتك.
+    - **الصيغة:** افرض بنية المخرَج، على سبيل المثال، «يجب أن تكون كل أمثلة الشيفرة في كتل Python نظيفة سهلة النسخ واللصق مع شروح مضمّنة واضحة» أو «صُغه بصيغة بريد إلكتروني».
+  - **تأسيس المعرفة عبر رفع الملفات:** قدرة بالغة الأهمية للمساعدات البرمجية هي تأسيس معرفتها في مستندات خارجية خاصة بالمشروع. يمكنك **رفع ملفات** (مثل ملفات PDF أو معلومات الأعمال أو الأسئلة الشائعة أو قواعد الشيفرة) مباشرةً من جهازك أو الإشارة إلى مستندات Google Drive. وهذا يسمح لجوهرتك بأن تصير خبيرة في مكتبات متخصصة أو معايير الترميز لدى فريقك.
+  - **الاختبار والتحسين:** أثناء بناء جوهرتك، يمكنك اختبارها في نافذة معاينة لترى كيف تستجيب للطلبات. وهذا يسهّل تحسينًا سريعًا وفوريًا.
+  - **استخدام إضافات Gemini:** يمكنك دمج إضافات Gemini (مثل تطبيقات Google Workspace كـ Gmail و Drive و Docs و Maps) في تعليمات جوهرتك، ما يتيح لها سحب المعلومات مباشرةً من هذه المصادر.
+- **حفظ جوهرتك واستخدامها:** بمجرد أن ترضى، انقر «create» أو «save». وستظهر جوهرتك في القائمة اليسرى لسهولة الوصول. وعندما تختارها، تُحمَّل كل التعليمات المحفوظة مسبقًا، ويمكنك تقديم طلبك المحدّد فورًا.
 
-### Code Generation and Scaffolding
+## تطبيقات عملية عبر دورة حياة التطوير
 
-Use the pre-made “Coding Partner” Gem for general code generation.
+تستطيع الجواهر المساعدة على امتداد دورة حياة تطوير البرمجيات، من توليد الشيفرة الأولي إلى الاختبار والتوثيق.
 
-Create custom Gems to accelerate boilerplate code creation, such as Python classes, React components, Vue.js components, or Django models.
+### توليد الشيفرة والسقالات
 
-### Debugging and Code Analysis
+استخدم جوهرة «Coding Partner» المعدّة مسبقًا لتوليد الشيفرة العام.
 
-A custom Gem pre-configured with your project’s language and framework context can help correct syntax errors or logical flaws more accurately.
+أنشئ جواهر مخصّصة لتسريع إنشاء الشيفرة النمطية المتكررة، مثل أصناف Python أو مكوّنات React أو مكوّنات Vue.js أو نماذج Django.
 
-You can feed linearized lists of operations to a Gem for analysis of complex issues like race conditions.
+### التشخيص وتحليل الشيفرة
 
-### Code Refactoring and Modernization
+تستطيع جوهرة مخصّصة مهيّأة مسبقًا بسياق لغة مشروعك وإطار عمله أن تساعد على تصحيح أخطاء الصياغة أو العيوب المنطقية بدقة أكبر.
 
-Create a dedicated “Code Refactor & Reviewer” Gem. By uploading your team’s style guide (e.g., PEP 8 for Python), it can suggest improvements for efficiency, readability, and enforce architectural patterns.
+ويمكنك تغذية الجوهرة بقوائم خطّية من العمليات لتحليل مشكلات معقّدة مثل حالات التسابق.
 
-Gems can help modernize legacy codebases by generating comments, identifying code smells, and suggesting translations from older frameworks to modern equivalents. ForrestKnight successfully used Gemini 2.5 Pro to refactor Rust code by removing for loops and cleaning up if statements, noting the “clean code” it produced.
+### إعادة هيكلة الشيفرة وتحديثها
 
-### Automated Testing and Quality Assurance
+أنشئ جوهرة مخصّصة «Code Refactor & Reviewer». وبرفع دليل أسلوب فريقك (مثل PEP 8 لـ Python)، يمكنها اقتراح تحسينات للكفاءة والقراءة وفرض الأنماط المعمارية.
 
-Gems can generate unit test scenarios and complete, runnable test code for specific frameworks like pytest or Jest, including parameterized tests for wide coverage.
+وتستطيع الجواهر المساعدة على تحديث قواعد الشيفرة القديمة بتوليد التعليقات، وتحديد روائح الشيفرة، واقتراح نظيرات حديثة من الأطر الأقدم. وقد استخدم ForrestKnight بنجاح Gemini 2.5 Pro لإعادة هيكلة شيفرة Rust بإزالة حلقات for وتنظيف عبارات if، ملاحظًا «الشيفرة النظيفة» التي أنتجها.
 
-### Intelligent Code Documentation
+### الاختبار الآلي وضمان الجودة
 
-A Gem can be tasked with generating detailed documentation, such as JSDoc comments for JavaScript functions or comprehensive docstrings for Python classes. By using explicit format instructions (e.g., ”*Task: Re-write this code with inline JSDoc comments for every function. Do not provide a summary.*”) you can ensure the desired output.
+تستطيع الجواهر توليد سيناريوهات اختبارات الوحدة وشيفرة اختبار كاملة قابلة للتشغيل لأطر محدّدة مثل pytest أو Jest، بما في ذلك اختبارات معلَّمة لتغطية واسعة.
 
-## Advanced Workflows with Gems
+### التوثيق الذكي للشيفرة
 
-- **“Team of Agents” Approach:** For complex, multi-step tasks, you can chain multiple specialized Gems together. The output of one Gem serves as the input for another, creating a manual AI pipeline. For example, a “Prompt Assistant Gem” refines your goal into an optimized prompt, which is then passed to a “Coding Mentor Gem” to generate the code.
-- **Project-Specific Grounding:** For professional development, leverage the file upload feature to ground Gems in your project’s unique context, including documentation, style guides, API specifications, and source files. This ensures responses are grounded in official sources and minimizes “hallucinations”.
+يمكن تكليف الجوهرة بتوليد توثيق مفصّل، مثل تعليقات JSDoc لدوال JavaScript أو نصوص docstrings شاملة لأصناف Python. وباستخدام تعليمات صيغة صريحة (مثل «*المهمة: أعد كتابة هذه الشيفرة مع تعليقات JSDoc مضمّنة لكل دالة. لا تقدّم ملخّصًا.*») يمكنك ضمان المخرَج المطلوب.
+
+## سير عمل متقدّم مع الجواهر
+
+- **نهج «فريق الوكلاء»:** للمهام المعقّدة متعددة الخطوات، يمكنك ربط عدة جواهر متخصصة معًا. فمخرَج جوهرة يخدم كمدخل لأخرى، ما ينشئ خطّ أنابيب ذكاء اصطناعي يدويًا. على سبيل المثال، تصقل «جوهرة مساعد الطلب» هدفك إلى طلب محسّن، يُمرَّر بعدها إلى «جوهرة المرشد البرمجي» لتوليد الشيفرة.
+- **التأسيس الخاص بالمشروع:** للتطوير الاحترافي، استفد من ميزة رفع الملفات لتأسيس الجواهر في سياق مشروعك الفريد، بما في ذلك التوثيق وأدلة الأسلوب ومواصفات API وملفات الشيفرة. وهذا يضمن أن تكون الاستجابات مؤسّسة في مصادر رسمية ويقلّل «الهلوسات».

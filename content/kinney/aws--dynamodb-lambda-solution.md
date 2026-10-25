@@ -1,22 +1,22 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dynamodb-lambda-solution"
 ---
 
-Here’s the complete solution for every step, including the DynamoDB table creation, IAM policy, handler code, deployment commands, and expected output at each stage.
+هذا هو الحل الكامل لكل خطوة، بما في ذلك إنشاء جدول DynamoDB، وسياسة IAM، وكود المعالج، وأوامر النشر، والمخرجات المتوقعة في كل مرحلة.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- The table schema aligns with the access pattern in the handler: `userId` groups one user’s items together and `itemId` uniquely identifies each record within that partition.
-- The Lambda role is scoped to one table, so the API gets the exact data access it needs without turning into `dynamodb:*` on `*`.
-- The POST, GET, and DELETE tests prove the whole request lifecycle, not just whether DynamoDB accepted a table definition.
+- يتماشى مخطط الجدول مع نمط الوصول في المعالج: يجمّع `userId` عناصر مستخدم واحد معًا، ويحدّد `itemId` كل سجل بشكل فريد داخل ذلك القسم.
+- دور Lambda محدود بجدول واحد، فتحصل الواجهة البرمجية على وصول البيانات الذي تحتاجه بالضبط دون أن يتحوّل إلى `dynamodb:*` على `*`.
+- تُثبت اختبارات POST وGET وDELETE دورة حياة الطلب كاملة، وليس فقط ما إذا كان DynamoDB قد قبل تعريف الجدول.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the table and query behavior open while you work, keep the [`aws dynamodb create-table` command reference](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/create-table.html), the [DynamoDB Query guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html), and the [DynamoDB Scan guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) nearby.
+> إذا أردت إبقاء نسخة AWS من سلوك الجدول والاستعلام مفتوحة أثناء عملك، فأبقِ [مرجع الأمر `aws dynamodb create-table`](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/create-table.html) و[دليل DynamoDB Query](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html) و[دليل DynamoDB Scan](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html) في متناول يدك.
 
-## Create the DynamoDB Table
+## إنشاء جدول DynamoDB
 
 ```bash
 aws dynamodb create-table \
@@ -32,7 +32,7 @@ aws dynamodb create-table \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -57,7 +57,7 @@ Expected output:
 }
 ```
 
-Wait for the table to become active:
+انتظر حتى يصبح الجدول نشطًا:
 
 ```bash
 aws dynamodb wait table-exists \
@@ -65,7 +65,7 @@ aws dynamodb wait table-exists \
   --region us-east-1
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws dynamodb describe-table \
@@ -75,13 +75,13 @@ aws dynamodb describe-table \
   --query "Table.TableStatus"
 ```
 
-Expected output: `"ACTIVE"`
+المخرجات المتوقعة: `"ACTIVE"`
 
-## Add DynamoDB Permissions to the Lambda Role
+## إضافة أذونات DynamoDB إلى دور Lambda
 
 ### `lambda-dynamodb-policy.json`
 
-This policy is available as [`lambda-dynamodb.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/lambda-dynamodb.json) in the Scratch Lab repository.
+هذه السياسة متاحة بصيغة [`lambda-dynamodb.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/lambda-dynamodb.json) في مستودع Scratch Lab.
 
 ```json
 {
@@ -97,7 +97,7 @@ This policy is available as [`lambda-dynamodb.json`](https://github.com/stevekin
 }
 ```
 
-### Create and attach the policy
+### إنشاء السياسة وإرفاقها
 
 ```bash
 aws iam create-policy \
@@ -115,7 +115,7 @@ aws iam attach-role-policy \
   --output json
 ```
 
-### Verify
+### التحقق
 
 ```bash
 aws iam list-attached-role-policies \
@@ -124,7 +124,7 @@ aws iam list-attached-role-policies \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -141,7 +141,7 @@ Expected output:
 }
 ```
 
-## Install SDK and Update the Handler
+## تثبيت SDK وتحديث المعالج
 
 ```bash
 cd lambda
@@ -267,20 +267,20 @@ function respond(statusCode: number, body: Record<string, unknown>) {
 }
 ```
 
-*Note:* The client is created outside the handler so it persists across warm invocations.
+*ملاحظة:* يُنشأ العميل خارج المعالج كي يبقى عبر الاستدعاءات الدافئة.
 
-### Build
+### البناء
 
 ```bash
 cd lambda
 npm run build
 ```
 
-Expected: `dist/handler.js` is created with no TypeScript errors.
+المتوقع: يُنشأ `dist/handler.js` بلا أي أخطاء TypeScript.
 
-## Set Environment Variable and Deploy
+## تعيين متغيّر البيئة والنشر
 
-### Set the environment variable
+### تعيين متغيّر البيئة
 
 ```bash
 aws lambda update-function-configuration \
@@ -290,7 +290,7 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-### Package and deploy
+### الحزم والنشر
 
 ```bash
 cd lambda/dist
@@ -304,7 +304,7 @@ aws lambda update-function-code \
   --output json
 ```
 
-### Verify the environment variable
+### التحقق من متغيّر البيئة
 
 ```bash
 aws lambda get-function-configuration \
@@ -314,7 +314,7 @@ aws lambda get-function-configuration \
   --query "Environment"
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -324,9 +324,9 @@ Expected output:
 }
 ```
 
-## Test Creating an Item
+## اختبار إنشاء عنصر
 
-Save as `test-create.json`:
+احفظ الملف باسم `test-create.json`:
 
 ```json
 {
@@ -343,7 +343,7 @@ Save as `test-create.json`:
 }
 ```
 
-Invoke:
+استدعِ الدالة:
 
 ```bash
 aws lambda invoke \
@@ -357,7 +357,7 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected response (formatted):
+الاستجابة المتوقعة (منسّقة):
 
 ```json
 {
@@ -369,15 +369,15 @@ Expected response (formatted):
 }
 ```
 
-The `itemId` (a UUID) and `createdAt` values will differ based on when you run the command.
+ستختلف قيمتا `itemId` (وهي UUID) و`createdAt` بحسب وقت تشغيلك الأمر.
 
-In the console, the same invocation using the **Test** tab shows the execution result with the 201 status code and the item’s data.
+في وحدة التحكم، يُظهر الاستدعاء نفسه عبر تبويب **Test** نتيجة التنفيذ مع رمز الحالة 201 وبيانات العنصر.
 
-The Lambda Test tab showing the execution result as Succeeded with the response body showing a newly created DynamoDB item.
+يعرض تبويب Test في Lambda نتيجة التنفيذ بحالة Succeeded، مع إظهار جسم الاستجابة عنصر DynamoDB أُنشئ حديثًا.
 
-### Create a second item
+### إنشاء عنصر ثانٍ
 
-Save as `test-create-2.json`:
+احفظ الملف باسم `test-create-2.json`:
 
 ```json
 {
@@ -406,9 +406,9 @@ aws lambda invoke \
 cat response.json
 ```
 
-## Test Listing Items
+## اختبار سرد العناصر
 
-Save as `test-list.json`:
+احفظ الملف باسم `test-list.json`:
 
 ```json
 {
@@ -436,9 +436,9 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected: `statusCode: 200` with a body containing an `items` array with both items.
+المتوقع: `statusCode: 200` مع جسم يحتوي مصفوفة `items` تضمّ العنصرين معًا.
 
-When you parse the body:
+عند تحليل الجسم:
 
 ```json
 {
@@ -461,9 +461,9 @@ When you parse the body:
 }
 ```
 
-## Test Deleting an Item
+## اختبار حذف عنصر
 
-Use the `itemId` from the first created item. Save as `test-delete.json`:
+استخدم `itemId` من العنصر الأول الذي أنشأته. احفظ الملف باسم `test-delete.json`:
 
 ```json
 {
@@ -480,7 +480,7 @@ Use the `itemId` from the first created item. Save as `test-delete.json`:
 }
 ```
 
-Replace `a1b2c3d4-e5f6-7890-abcd-ef1234567890` with the actual `itemId` from your POST response.
+استبدل `a1b2c3d4-e5f6-7890-abcd-ef1234567890` بقيمة `itemId` الفعلية من استجابة POST.
 
 ```bash
 aws lambda invoke \
@@ -494,11 +494,11 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected: `statusCode: 200` with body `{"deleted":true}`.
+المتوقع: `statusCode: 200` مع الجسم `{"deleted":true}`.
 
-### Verify the item is gone
+### التحقق من اختفاء العنصر
 
-Re-run the list test:
+أعد تشغيل اختبار السرد:
 
 ```bash
 aws lambda invoke \
@@ -512,13 +512,13 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected: the `items` array now contains only one item—the “Deploy to production” item.
+المتوقع: تحتوي مصفوفة `items` الآن على عنصر واحد فقط — عنصر «Deploy to production».
 
-## Test Error Cases
+## اختبار حالات الخطأ
 
-### Missing userId
+### معامل userId المفقود
 
-Save as `test-no-user.json`:
+احفظ الملف باسم `test-no-user.json`:
 
 ```json
 {
@@ -544,11 +544,11 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected: `statusCode: 400` with body `{"error":"Missing userId parameter"}`.
+المتوقع: `statusCode: 400` مع الجسم `{"error":"Missing userId parameter"}`.
 
-### Unsupported method
+### طريقة غير مدعومة
 
-Save as `test-put.json`:
+احفظ الملف باسم `test-put.json`:
 
 ```json
 {
@@ -576,11 +576,11 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected: `statusCode: 405` with body `{"error":"Method not allowed"}`.
+المتوقع: `statusCode: 405` مع الجسم `{"error":"Method not allowed"}`.
 
-## Stretch Goal: Update Endpoint
+## هدف إضافي: نقطة نهاية التحديث
 
-To handle PATCH requests for updating the status, add this case to the switch statement:
+للتعامل مع طلبات PATCH الخاصة بتحديث الحالة، أضف هذه الحالة إلى عبارة switch:
 
 ```typescript
 case 'PATCH': {
@@ -615,9 +615,9 @@ case 'PATCH': {
 }
 ```
 
-You’ll also need to add `UpdateCommand` to your imports from `@aws-sdk/lib-dynamodb` and update your IAM policy to include `dynamodb:UpdateItem`.
+ستحتاج أيضًا إلى إضافة `UpdateCommand` إلى استيراداتك من `@aws-sdk/lib-dynamodb`، وتحديث سياسة IAM لتشمل `dynamodb:UpdateItem`.
 
-Save an updated policy document as `lambda-dynamodb-policy-v2.json`:
+احفظ مستند السياسة المحدّث باسم `lambda-dynamodb-policy-v2.json`:
 
 ```json
 {
@@ -639,7 +639,7 @@ Save an updated policy document as `lambda-dynamodb-policy-v2.json`:
 }
 ```
 
-Create a new policy version (IAM managed policies support up to 5 versions):
+أنشئ إصدارًا جديدًا من السياسة (تدعم سياسات IAM المُدارة حتى 5 إصدارات):
 
 ```bash
 aws iam create-policy-version \
@@ -650,7 +650,7 @@ aws iam create-policy-version \
   --output json
 ```
 
-If you used an inline policy (`aws iam put-role-policy`) instead of a managed policy, update it with the same command and new document:
+إذا استخدمت سياسة مضمّنة (`aws iam put-role-policy`) بدلًا من سياسة مُدارة، فحدّثها بالأمر نفسه والمستند الجديد:
 
 ```bash
 aws iam put-role-policy \
@@ -661,9 +661,9 @@ aws iam put-role-policy \
   --output json
 ```
 
-## Cleanup
+## التنظيف
 
-If you want to delete the table after testing:
+إذا أردت حذف الجدول بعد الاختبار:
 
 ```bash
 aws dynamodb delete-table \
@@ -672,6 +672,6 @@ aws dynamodb delete-table \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Deleting a DynamoDB table is permanent and deletes all data in the table. Only run this if you’re done with the exercise and don’t need the data.
+> حذف جدول DynamoDB إجراء دائم ويمسح كل البيانات الموجودة في الجدول. لا تشغّل هذا الأمر إلا إذا كنت قد انتهيت من التمرين ولم تعد بحاجة إلى البيانات.

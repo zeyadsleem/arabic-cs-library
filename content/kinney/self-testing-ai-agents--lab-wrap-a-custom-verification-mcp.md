@@ -1,28 +1,28 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp"
 ---
 
-The Shelf starter doesn’t ship the `verify_shelf_page` tool. By the end of this walkthrough, you’ll have built it yourself and be able to build an equivalent tool for a different verification target in your own project.
+النسخة الابتدائية من Shelf لا تأتي بأداة `verify_shelf_page`. وبنهاية هذا الشرح التفصيلي تكون قد بنيتها بنفسك، وتكون قادرًا على بناء أداة مكافئة لهدف تحقّق مختلف في مشروعك.
 
-> **Prerequisite**
+> **المتطلّبات المسبقة**
 >
-> Complete [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper) first. This lab assumes you’ve seen the MCP server shape and know what `McpServer` / `registerTool` / `StdioServerTransport` are for.
+> أكمل [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper) أولًا. يفترض هذا المختبر أنك رأيت شكل خادم MCP وتعرف ما الغرض من `McpServer` و`registerTool` و`StdioServerTransport`.
 
-> **In the current starter**
+> **في النسخة الابتدائية الحالية**
 >
-> The root `.mcp.json` ships only the `svelte` MCP entry by default. If you already completed the Playwright agents lab, you may also have a `playwright-test` entry by now. Either way, this lab is where you add `@modelcontextprotocol/sdk`, `zod`, the `tools/shelf-verification-server/server.ts` file, and the matching `.mcp.json` registration without clobbering the entries you already have.
+> ملف `.mcp.json` في الجذر لا يشحن افتراضيًا إلا مُدخل MCP الخاص بـ`svelte`. وإذا كنت قد أكملت مختبر وكلاء Playwright بالفعل، فقد يكون لديك الآن مُدخل `playwright-test` أيضًا. وعلى أي حال، فهذا المختبر هو المكان الذي تضيف فيه `@modelcontextprotocol/sdk` و`zod` وملف `tools/shelf-verification-server/server.ts` وتسجيله المطابق في `.mcp.json` دون أن تدهس المُدخلات الموجودة لديك.
 
-Before you start, install the server dependencies:
+قبل أن تبدأ، ثبّت اعتماديات الخادم:
 
 ```bash
 npm install -D @modelcontextprotocol/sdk zod
 ```
 
-## 1. The registration — `.mcp.json`
+## 1. التسجيل — `.mcp.json`
 
-Open `.mcp.json` at the repository root and add the `shelf-verification` entry:
+افتح `.mcp.json` في جذر المستودع وأضف مُدخل `shelf-verification`:
 
 ```json
 {
@@ -37,15 +37,15 @@ Open `.mcp.json` at the repository root and add the `shelf-verification` entry:
 }
 ```
 
-Notice it runs under `tsx` (TypeScript directly, no build step) and passes the base URL via environment, not as a command-line argument. That matters because the same server file can point at a local preview, a staging URL, or a live dev server without a code change.
+لاحظ أنه يعمل تحت `tsx` (TypeScript مباشرةً، بلا خطوة بناء) ويمرّر عنوان URL الأساسي عبر البيئة، لا كوسيط في سطر الأوامر. وهذا مهم لأن ملف الخادم نفسه يستطيع أن يشير إلى معاينة محلية أو عنوان URL لبيئة اختبار أو خادم تطوير حيّ، دون تغيير في الشيفرة.
 
-**Question:** why `stdio` instead of HTTP? (Answer: MCP’s stdio transport keeps the server scoped to one client and one conversation. No port management, no authentication, no exposed network surface. The MCP host spawns the server as a subprocess and talks to it over pipes — ideal for repo-local tools like this one.)
+**سؤال:** لماذا `stdio` بدلًا من HTTP؟ (الجواب: نقل stdio في MCP يُبقي الخادم محصورًا في عميل واحد ومحادثة واحدة. فلا إدارة منافذ، ولا مصادقة، ولا سطح شبكة مكشوف. ومضيف MCP يُفرّخ الخادم كعملية فرعية ويتحدّث معه عبر أنابيب — وهو مثالي لأدوات محلية في المستودع مثل هذه.)
 
-## 2. The server file — `tools/shelf-verification-server/server.ts`
+## 2. ملف الخادم — `tools/shelf-verification-server/server.ts`
 
-Create `tools/shelf-verification-server/server.ts`. It’s a short file — walk the four sections:
+أنشئ `tools/shelf-verification-server/server.ts`. إنه ملف قصير — امشِ على أقسامه الأربعة:
 
-### Imports, constants, server instance
+### الاستيرادات والثوابت ونسخة الخادم
 
 ```typescript
 import fs from 'node:fs';
@@ -61,9 +61,9 @@ const baseUrl = process.env.SHELF_BASE_URL ?? 'http://127.0.0.1:4173';
 const server = new McpServer({ name: 'shelf-verification', version: '0.1.0' });
 ```
 
-Two things to notice. First, `STORAGE_STATE_PATH` points at the same file Playwright’s storage-state setup writes — so the MCP tool shares an authenticated browser session with the rest of the test suite. Second, the server name (`shelf-verification`) matches the `.mcp.json` key. That’s not enforced by the SDK, but keeping them aligned is the difference between a readable debugger and an indecipherable one.
+ثمّة أمران يجدر ملاحظتهما. أولهما أن `STORAGE_STATE_PATH` يشير إلى الملف نفسه الذي تكتبه تهيئة حالة التخزين في Playwright — فتتشارك أداة MCP جلسة متصفح مُوثّقة مع بقية مجموعة الاختبارات. وثانيهما أن اسم الخادم (`shelf-verification`) يطابق مفتاح `.mcp.json`. وهذا ليس مفروضًا من الـSDK، لكن إبقاءهما متطابقين هو الفرق بين مُنقّح أخطاء مقروء ومُنقّح يستعصي على الفهم.
 
-### The tool contract
+### عقد الأداة
 
 ```typescript
 server.registerTool(
@@ -84,11 +84,11 @@ server.registerTool(
 );
 ```
 
-This is the whole contract: one input (`username`), four outputs (`ok`, `bookCount`, `consoleErrors`, `url`). The `.describe()` on the input is load-bearing — the agent reads it and uses it to decide what to pass. Without the description, a model could guess `username` means the full email address and the tool would fail to find the reader.
+هذا هو العقد كله: مُدخل واحد (`username`)، وأربعة مُخرجات (`ok`، و`bookCount`، و`consoleErrors`، و`url`). ودالة `.describe()` على المُدخل حاملة للحِمل — فالوكيل يقرأها ويستخدمها ليقرّر ما يمرّره. فبلا الوصف، قد يخمّن النموذج أن `username` تعني عنوان البريد الكامل، فتفشل الأداة في العثور على القارئ.
 
-**Question:** why return `url` as part of the output when the agent theoretically knows what URL it asked about? (Answer: the agent only knows the `username` it passed. The server is the one that constructs the real URL — base URL plus path plus encoding. Putting `url` in the structured output means the agent can quote the exact URL in its summary to the user, which is much more useful than “I called verify_shelf_page with username alice.“)
+**سؤال:** لماذا تُعيد `url` ضمن المُخرجات مع أن الوكيل يعرف نظريًا عنوان URL الذي سأل عنه؟ (الجواب: الوكيل لا يعرف إلا `username` التي مرّرها. والخادم هو من يبني عنوان URL الحقيقي — عنوان URL الأساسي زائد المسار زائد الترميز. ووضع `url` في المُخرجات المُهيكلة يعني أن الوكيل يستطيع أن يقتبس عنوان URL الدقيق في ملخّصه إلى المستخدم، وهو أنفع بكثير من «استدعيت verify_shelf_page بالاسم alice.»)
 
-### The handler
+### المعالج
 
 ```typescript
 async ({ username }) => {
@@ -130,65 +130,65 @@ async ({ username }) => {
 };
 ```
 
-The `finally` block is the most important line in the file. Without it, any throw above — a navigation timeout, a network error, a broken locator — leaks a Chromium process. The server stays up, the agent keeps calling the tool, and each failed call eats another 200 MB of RAM. `finally` is not optional.
+كتلة `finally` هي أهم سطر في الملف. فبلاها، أي طرح أعلى منها — مهلة تنقّل، أو خطأ شبكة، أو محدّد معطوب — يُسرّب عملية Chromium. فيبقى الخادم حيًّا، ويظلّ الوكيل يستدعي الأداة، وكل استدعاء فاشل يلتهم 200 ميغابايت أخرى من الذاكرة العشوائية. و`finally` ليست اختيارية.
 
-The `ok` predicate is deliberately loose (`bookCount >= 0`) because the public `/shelf/[username]` route is a real page even for an empty shelf — “no books yet” is a valid render. If your domain says otherwise, tighten to `bookCount > 0`.
+ومُسند `ok` فضفاض عن قصد (`bookCount >= 0`) لأن المسار العام `/shelf/[username]` صفحة حقيقية حتى لرفّ فارغ — فـ«لا كتب بعد» تصيير صحيح. وإن كان نطاق مسألتك يقول غير ذلك، فشدّده إلى `bookCount > 0`.
 
-The return shape uses both `content` (for MCP hosts that read the text channel) and `structuredContent` (for hosts that honor the structured output schema). Returning both means the tool works against either kind of host without branching.
+وشكل الإرجاع يستخدم كليهما: `content` (لمضيفي MCP الذين يقرأون قناة النص) و`structuredContent` (للمضيفين الذين يحترمون مخطّط المُخرجات المُهيكلة). والإرجاع لكليهما يعني أن الأداة تعمل مع أي من النوعين دون تفرّع.
 
-### The transport
+### النقل
 
 ```typescript
 const transport = new StdioServerTransport();
 await server.connect(transport);
 ```
 
-Wire the server to stdio. `server.connect()` is the call that starts listening for JSON-RPC messages on the process’s stdin and replying on stdout. Nothing else.
+وصل الخادم بـstdio. و`server.connect()` هو الاستدعاء الذي يبدأ الاستماع لرسائل JSON-RPC على المدخل القياسي للعملية والردّ على المخرج القياسي. ولا شيء آخر.
 
-**Question:** why isn’t this wrapped in a `try/catch` or a shutdown handler? (Answer: when the MCP host kills the subprocess, stdin closes and the transport unwinds cleanly on its own. Adding a `SIGTERM` handler to “close gracefully” is the kind of defensive code that sounds responsible but leaks complexity. If the subprocess dies hard, the host spawns a new one.)
+**سؤال:** لماذا لا يُغلَّف هذا بـ`try/catch` أو معالج إيقاف؟ (الجواب: عندما يقتل مضيف MCP العملية الفرعية، يُغلق المدخل القياسي فينسلّ النقل من تلقاء نفسه بنظافة. وإضافة معالج `SIGTERM` لـ«الإغلاق بلطف» من نوع الشيفرة الدفاعية التي تبدو مسؤولة لكنها تُسرّب التعقيد. وإن ماتت العملية الفرعية موتًا صعبًا، يُفرّخ المضيف واحدة جديدة.)
 
-## 3. Using it
+## 3. استخدامه
 
-Ask the agent to verify the shelf for alice. Example prompt:
+اطلب من الوكيل أن يتحقّق من رفّ alice. مثال على الطلب:
 
-> Run `verify_shelf_page` for username “alice” and report the result. If `ok` is false, diagnose why.
+> شغّل `verify_shelf_page` بالاسم «alice» وأبلغني بالنتيجة. وإن كانت `ok` خاطئة، فشخّص السبب.
 
-The agent calls the tool, gets back the structured output, and acts on it.
+يستدعي الوكيل الأداة، فيحصل على المُخرجات المُهيكلة، ويتصرّف بناءً عليها.
 
-The public shelf route targeted by `verify_shelf_page`
+المسار العام للرفّ الذي تستهدفه `verify_shelf_page`
 
-## Acceptance criteria
+## معايير القبول
 
-You can’t copy-paste your way through this one — the code is already there. You’re done when you can answer each of these without looking:
+لا يمكنك أن تشقّ طريقك في هذا بالنسخ واللصق — فالشيفرة موجودة سلفًا. تكون قد انتهيت حين تستطيع الإجابة عن كل سؤال من هذه دون أن تنظر:
 
-- Why does `.mcp.json` use `stdio` instead of HTTP transport?
-- Why does `STORAGE_STATE_PATH` point at the same file Playwright uses?
-- Why is the `describe()` on the `username` input load-bearing?
-- Why does the output include `url` when the agent already passed the username?
-- What happens if you remove the `finally` block and a `page.goto` throws?
-- Why is the `ok` predicate `bookCount >= 0` instead of `bookCount > 0`?
-- Why does the return shape include both `content` and `structuredContent`?
-- Why is there no explicit shutdown handler on the transport?
+- لماذا يستخدم `.mcp.json` نقل `stdio` بدلًا من HTTP؟
+- لماذا يشير `STORAGE_STATE_PATH` إلى الملف نفسه الذي تستخدمه Playwright؟
+- لماذا تكون `describe()` على مُدخل `username` حاملة للحِمل؟
+- لماذا تتضمّن المُخرجات `url` مع أن الوكيل مرّر الاسم بالفعل؟
+- ماذا يحدث إن أزلت كتلة `finally` وطرح `page.goto` استثناءً؟
+- لماذا مُسند `ok` هو `bookCount >= 0` بدلًا من `bookCount > 0`؟
+- لماذا يتضمّن شكل الإرجاع كليهما: `content` و`structuredContent`؟
+- لماذا لا يوجد معالج إيقاف صريح على النقل؟
 
-Plus one mechanical check:
+وفحص آلي واحد إضافةً إلى ذلك:
 
-- Restart your MCP host. Ask the agent to run `verify_shelf_page` for username `alice`. The result should include `ok: true`, a non-negative `bookCount`, an empty `consoleErrors` array, and the constructed `url`. Now add `console.error('oops')` to `src/routes/shelf/[username]/+page.svelte`, rerun the tool, and confirm `ok` flips to `false` and `consoleErrors` contains your string.
+- أعد تشغيل مضيف MCP لديك. اطلب من الوكيل تشغيل `verify_shelf_page` بالاسم `alice`. ينبغي أن تتضمّن النتيجة `ok: true`، و`bookCount` غير سالب، ومصفوفة `consoleErrors` فارغة، و`url` المبنيّ. أضف الآن `console.error('oops')` إلى `src/routes/shelf/[username]/+page.svelte`، وأعد تشغيل الأداة، وتأكّد أن `ok` تنقلب إلى `false` وأن `consoleErrors` تحتوي نصّك.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a second tool, `check_accessibility`, that runs [axe-core](https://github.com/dequelabs/axe-core) against a URL and returns the violations as structured JSON. The [axe-playwright-npm](https://github.com/abhinaba-ghosh/axe-playwright) package makes this a ~15-line implementation.
-- Add a third tool, `database_snapshot`, that calls the Shelf API to read the current state of the test database (books, shelves, users) and returns it as JSON. Useful for the agent to “look at” state without reading raw SQL.
-- Make your server log all tool calls to a file at `./mcp-log.txt` so you can tail the log while the agent works. Log to stderr, not stdout (stdout is the MCP protocol channel).
-- Test your server standalone with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) before wiring it into the agent.
+- أضف أداة ثانية، `check_accessibility`، تشغّل [axe-core](https://github.com/dequelabs/axe-core) على عنوان URL وتُعيد الانتهاكات بصيغة JSON مُهيكلة. حزمة [axe-playwright-npm](https://github.com/abhinaba-ghosh/axe-playwright) تجعل هذا تنفيذًا من نحو 15 سطرًا.
+- أضف أداة ثالثة، `database_snapshot`، تستدعي واجهة Shelf البرمجية لتقرأ الحالة الراهنة لقاعدة بيانات الاختبار (الكتب، والأرفف، والمستخدمون) وتُعيدها بصيغة JSON. وهذا نافع لي«ينظر» الوكيل إلى الحالة دون قراءة SQL خام.
+- اجعل خادمك يسجّل كل استدعاءات الأدوات في ملف عند `./mcp-log.txt` حتى تستطيع متابعة نهاية السجل بينما يعمل الوكيل. وسجّل إلى stderr، لا إلى stdout (فـstdout هي قناة بروتوكول MCP).
+- اختبر خادمك منفردًا بـ[MCP Inspector](https://github.com/modelcontextprotocol/inspector) قبل توصيله بالوكيل.
 
-## What you should be left with
+## ما ينبغي أن يتبقّى بيدك
 
-A working custom MCP, registered with Claude Code, that the agent can call to verify Shelf’s primary page. A rule in `CLAUDE.md` that tells the agent to prefer it. A small but measurable reduction in the agent’s need to compose Playwright primitives from scratch.
+MCP مخصّص عامل، مسجّل مع Claude Code، يستطيع الوكيل استدعاءه للتحقّق من صفحة Shelf الرئيسية. وقاعدة في `CLAUDE.md` تطلب من الوكيل تفضيله. وانخفاض صغير لكنه قابل للقياس في حاجة الوكيل إلى تركيب أوليّات Playwright من الصفر.
 
-This is the tightest verification loop we’re going to build today. The agent makes a change, calls `verify_shelf_page`, reads the result, and iterates. No human in the loop, no shell commands, no guessing. That’s the whole bet made real.
+هذه هي أحكم حلقة تحقّق سنبنيها اليوم. يُجري الوكيل تعديلًا، ويستدعي `verify_shelf_page`، ويقرأ النتيجة، ويكرّر. لا إنسان في الحلقة، ولا أوامر صدفة، ولا تخمين. وهذا هو الرهان كله وقد صار واقعًا.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/wrap-a-custom-verification-mcp-solution)
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [الحلّ](https://stevekinney.com/courses/self-testing-ai-agents/wrap-a-custom-verification-mcp-solution)
+- [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)

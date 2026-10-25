@@ -1,10 +1,10 @@
 ---
-title: "Guessing Game Solution"
-lang: en
+title: "حل لعبة التخمين"
+lang: ar
 source: "https://stevekinney.com/courses/testing/guessing-game-solution"
 ---
 
-For starters, we want to make sure we can hold the return value of `Math.random()` in place so that we can test against it.
+للبدء، نريد أن نتأكد من أننا نستطيع تثبيت القيمة المُعادة من `Math.random()` في مكانها كي نتمكن من الاختبار مقابلها.
 
 ```javascript
 beforeEach(() => {
@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 ```
 
-We also want to make sure we put everything back after every test. This is mostly precautionary. But, it’s good practice. So, let’s do it.
+نريد أيضًا أن نتأكد من أننا نعيد كل شيء بعد كل اختبار. هذا احترازي في معظمه. لكنه ممارسة جيدة. فلنفعل ذلك.
 
 ```javascript
 afterEach(() => {
@@ -20,7 +20,7 @@ afterEach(() => {
 });
 ```
 
-Now, I probably wouldn’t keep this test. But, for our purposes, it does illustrate that our function is being mocked correctly.
+الآن، على الأرجح لن أحتفظ بهذا الاختبار. لكنه، لأغراضنا، يوضّح أن دالتنا تُحاكى بشكل صحيح.
 
 ```javascript
 it('should have a secret number', () => {
@@ -30,7 +30,7 @@ it('should have a secret number', () => {
 });
 ```
 
-And now that we can consistently rely on the secret number holding steady, we can test the rest of our implementation.
+وبما أنه يمكننا الآن الاعتماد باطراد على بقاء الرقم السري ثابتًا، يمكننا اختبار بقية تنفيذنا.
 
 ```javascript
 it('should return the correct response if the number is too low', () => {
@@ -65,9 +65,9 @@ it('should return the correct number of guesses made', () => {
 });
 ```
 
-## Completed Example
+## مثال مكتمل
 
-This is the entire file if you want to see everything in one place.
+هذا هو الملف بأكمله إن أردت رؤية كل شيء في مكان واحد.
 
 ```javascript
 import { it, expect, describe, vi, beforeEach, afterEach } from 'vitest';

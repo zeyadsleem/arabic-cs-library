@@ -1,16 +1,16 @@
 ---
-title: "Micro-Frontend Performance"
-lang: en
+title: "أداء الواجهات الأمامية المصغّرة (Micro-Frontend)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/micro-frontend-performance"
 ---
 
-Micro-frontends promise team autonomy and independent deployments, but implement them carelessly and you’ll create a performance nightmare. Multiple React versions loading simultaneously, duplicate vendor bundles, runtime coordination overhead, and cascading failures across teams—the very architecture meant to solve organizational problems can create technical ones that tank your application’s performance.
+تعد الواجهات الأمامية المصغّرة (micro-frontends) بتحكّم الفرق ونشرًا مستقلًا، لكنك إن نفّذتها بإهمال فستصنع كابوسًا في الأداء. فعدة إصدارات من React تُحمَّل في الوقت نفسه، وحزم مورّدين مكرّرة، وكلفة تنسيق وقت التشغيل، وإخفاقات متتالية بين الفرق — المعمارية نفسها التي وُضعت لحلّ مشكلات تنظيمية قد تصنع مشكلات تقنية تُغرق أداء تطبيقك.
 
-But get micro-frontends right, and you unlock both organizational scale and technical performance. Teams can optimize their slices independently, shared dependencies reduce overall bundle size, and lazy loading becomes natural. The key is understanding the performance implications of different micro-frontend patterns and implementing the right optimizations from day one. This guide shows you how to build micro-frontends that are both independent and performant.
+لكن إن أحسنت تنفيذ الواجهات الأمامية المصغّرة، فستفتح نطاقًا تنظيميًا وأداءً تقنيًا معًا. تستطيع الفرق تحسين شرائحها باستقلال، وتقلّل الاعتمادات المشتركة حجم الحزمة الإجمالي، ويصبح التحميل المتأخّر طبيعيًا. والمفتاح هو فهم آثار كل نمط من أنماط الواجهات الأمامية المصغّرة على الأداء وتنفيذ التحسينات الصحيحة منذ اليوم الأول. يوضّح لك هذا الدليل كيف تبني واجهات أمامية مصغّرة تكون مستقلة وفعّالة في الأداء في الوقت نفسه.
 
-## Understanding Micro-Frontend Performance Challenges
+## فهم تحدّيات الأداء في الواجهات الأمامية المصغّرة
 
-The unique performance characteristics of micro-frontends:
+الخصائص الفريدة لأداء الواجهات الأمامية المصغّرة:
 
 ```typescript
 // Micro-frontend performance model
@@ -61,9 +61,9 @@ const architecturePatterns = {
 };
 ```
 
-## Module Federation Setup
+## إعداد اتحاد الوحدات (Module Federation)
 
-Webpack Module Federation for runtime integration:
+اتحاد وحدات Webpack للتكامل وقت التشغيل:
 
 ```javascript
 // webpack.config.js - Host application
@@ -130,9 +130,9 @@ module.exports = {
 };
 ```
 
-## Dynamic Remote Loading
+## التحميل الديناميكي للوحدات البعيدة
 
-Load micro-frontends dynamically for better performance:
+حمّل الواجهات الأمامية المصغّرة ديناميكيًا لأداء أفضل:
 
 ```typescript
 // Dynamic module federation loader
@@ -259,9 +259,9 @@ function DynamicRemote({
 }
 ```
 
-## Shared Dependencies Optimization
+## تحسين الاعتمادات المشتركة
 
-Optimize shared dependencies across micro-frontends:
+حسّن الاعتمادات المشتركة بين الواجهات الأمامية المصغّرة:
 
 ```typescript
 // Shared dependency manager
@@ -391,9 +391,9 @@ const sharedDependencies = {
 };
 ```
 
-## Cross-Micro-Frontend Communication
+## التواصل بين الواجهات الأمامية المصغّرة
 
-Efficient communication between micro-frontends:
+تواصل فعّال بين الواجهات الأمامية المصغّرة:
 
 ```typescript
 // Event bus for micro-frontend communication
@@ -545,9 +545,9 @@ export function useMicroFrontendState<T>(
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Monitor micro-frontend performance:
+راقب أداء الواجهات الأمامية المصغّرة:
 
 ```typescript
 // Micro-frontend performance tracker
@@ -701,9 +701,9 @@ function MicroFrontendTracker({ name, children }: { name: string; children: Reac
 }
 ```
 
-## Build-Time Optimization
+## التحسين وقت البناء
 
-Optimize micro-frontends at build time:
+حسّن الواجهات الأمامية المصغّرة وقت البناء:
 
 ```javascript
 // webpack.config.js - Optimization configuration
@@ -770,9 +770,9 @@ if (process.env.ANALYZE) {
 }
 ```
 
-## Deployment Strategies
+## استراتيجيات النشر
 
-Deploy micro-frontends for optimal performance:
+انشر الواجهات الأمامية المصغّرة لأداء أمثل:
 
 ```typescript
 // Deployment orchestrator
@@ -838,7 +838,7 @@ class MicroFrontendDeploymentOrchestrator {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface MicroFrontendBestPractices {

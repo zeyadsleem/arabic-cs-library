@@ -1,49 +1,49 @@
 ---
-title: "Supporting Dark Mode"
-lang: en
+title: "دعم الوضع الداكن"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/adding-dark-mode-to-our-components"
 ---
 
-There are a number of ways that we can add dark mode to our component, but let’s start by leveraging the path of least resistance using Tailwind since we already laid the groundwork [earlier](https://stevekinney.com/courses/storybook/setting-up-tailwind).
+هناك عدد من الطرق التي يمكننا بها إضافة الوضع الداكن إلى مكوّننا، لكن لنبدأ بسلوك المسار الأقل مقاومة باستخدام Tailwind، فقد أرسينا الأساس [سابقًا](https://stevekinney.com/courses/storybook/setting-up-tailwind).
 
-Tailwind supports a utility called `dark:` which only triggers the class when *whatever* we chose to trigger dark mode kicks into gear.
+يدعم Tailwind أداة مساعدة تُسمّى `dark:` لا تُفعّل الصنف إلا عندما يبدأ عمل *أي شيء* اخترناه لتفعيل الوضع الداكن.
 
-For example, this would apply the second class if-and-only-if we’re in dark mode.
+فمثلًا، سيطبّق هذا الصنف الثاني إذا وفقط إذا كنا في الوضع الداكن.
 
 ```html
 <button class="bg-primary-600 dark:bg-primary-500">Button</button>
 ```
 
-According to our design system, we’re using the following values for light and dark mode.
+وفقًا لنظام التصميم لدينا، نستخدم القيم التالية للوضعين الفاتح والداكن.
 
-| Name | Light | Dark |
+| الاسم | الفاتح | الداكن |
 | --- | --- | --- |
 | **Button / Primary** |  |  |
-| Default | Primary/600 | Primary/500 |
-| Hover | Primary/500 | Primary/400 |
-| Active | Primary/400 | Primary/300 |
-| Label | White | White |
-| Border | Transparent | Transparent |
+| الافتراضي | Primary/600 | Primary/500 |
+| التحويم | Primary/500 | Primary/400 |
+| النشط | Primary/400 | Primary/300 |
+| النص | White | White |
+| الحد | Transparent | Transparent |
 | **Button / Secondary** |  |  |
-| Default | White | Slate/900 |
-| Hover | Slate/50 | Slate/800 |
-| Active | Slate/100 | Slate/700 |
-| Label | Slate/900 | White |
-| Border | Slate/300 | Slate/900 |
+| الافتراضي | White | Slate/900 |
+| التحويم | Slate/50 | Slate/800 |
+| النشط | Slate/100 | Slate/700 |
+| النص | Slate/900 | White |
+| الحد | Slate/300 | Slate/900 |
 | **Button / Destructive** |  |  |
-| Default | Danger/600 | Danger/500 |
-| Hover | Danger/500 | Danger/400 |
-| Active | Danger/400 | Danger/300 |
-| Label | White | White |
-| Border | Transparent | Transparent |
+| الافتراضي | Danger/600 | Danger/500 |
+| التحويم | Danger/500 | Danger/400 |
+| النشط | Danger/400 | Danger/300 |
+| النص | White | White |
+| الحد | Transparent | Transparent |
 | **Button / Ghost** |  |  |
-| Default | Transparent | Transparent |
-| Hover | Slate/50 | Slate/700 |
-| Active | Slate/100 | Slate/700 |
-| Label | Slate/900 | White |
-| Border | Transparent | Transparent |
+| الافتراضي | Transparent | Transparent |
+| التحويم | Slate/50 | Slate/700 |
+| النشط | Slate/100 | Slate/700 |
+| النص | Slate/900 | White |
+| الحد | Transparent | Transparent |
 
-So, we could update our component as follows:
+لذا، يمكننا تحديث مكوّننا كما يلي:
 
 ```diff
 @@ -33,6 +33,9 @@ export const variants = cva(

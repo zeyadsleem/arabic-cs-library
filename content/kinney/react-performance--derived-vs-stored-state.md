@@ -1,16 +1,16 @@
 ---
-title: "Derived vs Stored State"
-lang: en
+title: "الحالة المشتقّة مقابل الحالة المخزّنة (Derived vs Stored State)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/derived-vs-stored-state"
 ---
 
-State management in React often feels like a balancing act between “store everything” and “compute everything.” But here’s the thing—most developers lean too heavily toward storing state when they should be deriving it. When you store redundant state that can be computed from other values, you’re signing up for synchronization bugs, extra memory usage, and unnecessary re-renders. Let’s explore when to store state versus when to derive it, and how making the right choice can dramatically improve your app’s performance and reliability.
+غالبًا ما تبدو إدارة الحالة في React كموازنة بين «خزّن كل شيء» و«احسب كل شيء». لكن إليك الحقيقة — يميل معظم المطوّرين أكثر مما ينبغي إلى تخزين الحالة حين ينبغي لهم اشتقاقها. فعندما تخزّن حالة زائدة يمكن حسابها من قيم أخرى، فأنت تسجّل نفسك في أخطاء المزامنة، واستهلاك ذاكرة إضافي، وإعادات تصيير غير ضرورية. لنستكشف متى تخزّن الحالة ومتى تشتقّها، وكيف يمكن للاختيار الصحيح أن يحسّن أداء تطبيقك وموثوقيته جذريًا.
 
-The golden rule? **Store the minimal amount of state needed, then derive everything else.** Think of it like a well-designed database schema—you normalize your data to eliminate redundancy, then use queries (or in React’s case, computations) to get the views you need.
+والقاعدة الذهبية؟ **خزّن الحد الأدنى من الحالة اللازمة، ثم اشتقّ كل ما عداها.** فكّر في الأمر كمخطط قاعدة بيانات محكم التصميم — تُطبّع بياناتك لإزالة التكرار، ثم تستخدم الاستعلامات (أو الحسابات في حالة React) للحصول على العروض التي تحتاجها.
 
-## The Problem with Over-Storing State
+## مشكلة الإفراط في تخزين الحالة
 
-Let’s start with a common anti-pattern. Imagine you’re building a shopping cart component that needs to display items, total price, and item count:
+لنبدأ بنمط مضاد شائع. تخيّل أنك تبني مكوّن سلة تسوّق يحتاج إلى عرض العناصر والسعر الإجمالي وعدد العناصر:
 
 ```typescript
 // ❌ Storing too much state
@@ -30,16 +30,16 @@ function ShoppingCart() {
 }
 ```
 
-This approach has several problems:
+لهذا النهج مشكلات عدة:
 
-1. **Synchronization bugs**: If you forget to update `total` or `itemCount` in any method, your UI becomes inconsistent
-2. **Extra re-renders**: Each `setState` call triggers a re-render, so adding one item causes three re-renders
-3. **Memory overhead**: You’re storing data that could be computed on demand
-4. **Brittle code**: Every time you add a new computed value, you need to remember to update it everywhere
+1. **أخطاء المزامنة**: إذا نسيت تحديث `total` أو `itemCount` في أي تابع، تصبح واجهتك غير متسقة
+2. **إعادات تصيير إضافية**: كل نداء `setState` يُطلق إعادة تصيير، فإضافة عنصر واحد تسبّب ثلاث إعادات تصيير
+3. **حمل ذاكرة إضافي**: تخزّن بيانات كان يمكن حسابها عند الطلب
+4. **شيفرة هشّة**: كلما أضفت قيمة محسوبة جديدة، تحتاج إلى تذكّر تحديثها في كل مكان
 
-## The Derived State Solution
+## الحل: الحالة المشتقّة
 
-Here’s the same component using derived state:
+إليك المكوّن نفسه باستخدام الحالة المشتقّة:
 
 ```typescript
 // ✅ Store minimal state, derive the rest
@@ -67,29 +67,29 @@ function ShoppingCart() {
 }
 ```
 
-Now you have a single source of truth (`items`), and everything else is computed from it. No synchronization bugs, fewer re-renders, and much simpler code to maintain.
+الآن لديك مصدر حقيقة واحد (`items`)، وكل ما عداه يُحسب منه. لا أخطاء مزامنة، وإعادات تصيير أقل، وشيفرة أبسط بكثير في الصيانة.
 
-## When to Store vs. When to Derive
+## متى تخزّن ومتى تشتقّ
 
-Here’s a practical framework for making the decision:
+إليك إطارًا عمليًا لاتخاذ القرار:
 
-### Store state when:
+### خزّن الحالة عندما:
 
-- **It’s user input**: Form fields, toggles, selections
-- **It’s fetched from external sources**: API responses, local storage data
-- **It represents a distinct piece of application state**: Current user, active tab, modal open/closed
-- **Computing it is expensive**: Complex calculations that would hurt performance if run on every render
+- **تكون مدخلًا من المستخدم**: حقول النموذج، والمفاتيح، والاختيارات
+- **تُجلب من مصادر خارجية**: استجابات API، وبيانات التخزين المحلي
+- **تمثّل قطعة مميزة من حالة التطبيق**: المستخدم الحالي، والتبويب النشط، وفتح النافذة المنبثقة أو إغلاقها
+- **يكون حسابها مكلفًا**: حسابات معقّدة تضرّ بالأداء لو نُفّذت في كل تصيير
 
-### Derive state when:
+### اشتقّ الحالة عندما:
 
-- **It can be computed from existing state**: Totals, counts, filtered lists
-- **It’s a transformation of existing data**: Formatted dates, uppercase text, validation results
-- **It’s a boolean condition**: “Is the form valid?”, “Are all items selected?”
-- **The computation is cheap**: Simple math, array operations, string manipulation
+- **يمكن حسابها من حالة موجودة**: المجاميع، والأعداد، والقوائم المفلترة
+- **تكون تحويلًا لبيانات موجودة**: تواريخ منسّقة، ونصوص بأحرف كبيرة، ونتائج تحقّق
+- **تكون شرطًا منطقيًا**: «هل النموذج صالح؟»، «هل كل العناصر محدّدة؟»
+- **يكون الحساب رخيصًا**: رياضيات بسيطة، وعمليات مصفوفات، ومعالجة نصوص
 
-## Real-World Example: User Management
+## مثال من الواقع: إدارة المستخدمين
 
-Let’s look at a more realistic example—a user management interface that displays users with filtering and sorting:
+لننظر إلى مثال أكثر واقعية — واجهة إدارة مستخدمين تعرض المستخدمين مع الفلترة والترتيب:
 
 ```typescript
 interface User {
@@ -151,18 +151,18 @@ function UserManagement() {
 }
 ```
 
-Notice how we only store the essential state:
+لاحظ أننا لا نخزّن إلا الحالة الجوهرية:
 
-- `users`: The source data
-- `searchQuery`: User input for filtering
-- `selectedRole`: User’s filter choice
-- `sortBy`: User’s sort preference
+- `users`: البيانات المصدر
+- `searchQuery`: مدخل المستخدم للفلترة
+- `selectedRole`: اختيار المستخدم للفلترة
+- `sortBy`: تفضيل المستخدم للترتيب
 
-Everything else is derived on each render. This keeps our component simple and eliminates synchronization issues.
+وكل ما عدا ذلك يُشتقّ في كل تصيير. وهذا يبقي مكوّننا بسيطًا ويزيل مشكلات المزامنة.
 
-## Performance Considerations with `useMemo`
+## اعتبارات الأداء مع `useMemo`
 
-Sometimes derived state computations can be expensive. That’s where `useMemo` comes in:
+قد تكون حسابات الحالة المشتقّة مكلفة أحيانًا. وهنا يأتي دور `useMemo`:
 
 ```typescript
 function UserManagement() {
@@ -196,13 +196,13 @@ function UserManagement() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Don’t reach for `useMemo` immediately. Profile first, then optimize. Most computations in typical React apps are fast enough to run on every render.
+> لا تسارع إلى `useMemo`. قِس الأداء أولًا ثم حسّن. فمعظم الحسابات في تطبيقات React النموذجية سريعة بما يكفي للتنفيذ في كل تصيير.
 
-## Common Patterns and Pitfalls
+## أنماط ومزالق شائعة
 
-### Pattern: Form Validation
+### نمط: التحقّق من النموذج
 
 ```typescript
 // ✅ Good: Derive validation state
@@ -242,7 +242,7 @@ function ContactForm() {
 }
 ```
 
-### Anti-Pattern: Storing Computed Values
+### نمط مضاد: تخزين القيم المحسوبة
 
 ```typescript
 // ❌ Bad: Storing what should be derived
@@ -265,7 +265,7 @@ function ProductList() {
 }
 ```
 
-### Pattern: Conditional Rendering
+### نمط: التصيير الشرطي
 
 ```typescript
 // ✅ Good: Derive UI state
@@ -296,9 +296,9 @@ function Dashboard({ user }: { user: User }) {
 }
 ```
 
-## Advanced: Custom Hooks for Derived State
+## متقدّم: خُطّافات مخصّصة للحالة المشتقّة
 
-For complex derived state logic, consider extracting it into custom hooks:
+لمنطق الحالة المشتقّة المعقّد، فكّر في استخراجه إلى خُطّافات مخصّصة:
 
 ```typescript
 function useFilteredAndSortedData<T>(data: T[], filterFn: (item: T) => boolean, sortKey: keyof T) {
@@ -333,42 +333,42 @@ function ProductCatalog() {
 }
 ```
 
-## The Performance Trade-offs
+## مقايضات الأداء
 
-### Deriving State (Pros and Cons)
+### اشتقاق الحالة (المزايا والعيوب)
 
-**Pros:**
+**المزايا:**
 
-- Single source of truth eliminates sync bugs
-- Fewer state updates mean fewer re-renders
-- Less memory usage
-- Simpler, more maintainable code
+- مصدر حقيقة واحد يزيل أخطاء المزامنة
+- تحديثات حالة أقل تعني إعادات تصيير أقل
+- استهلاك ذاكرة أقل
+- شيفرة أبسط وأكثر قابلية للصيانة
 
-**Cons:**
+**العيوب:**
 
-- Computation happens on every render
-- Can be expensive for complex calculations
-- No control over when computation happens
+- الحساب يحدث في كل تصيير
+- قد يكون مكلفًا في الحسابات المعقّدة
+- لا تحكّم في توقيت حدوث الحساب
 
-### Storing Computed State (Pros and Cons)
+### تخزين الحالة المحسوبة (المزايا والعيوب)
 
-**Pros:**
+**المزايا:**
 
-- Control over when expensive computations run
-- Can optimize with techniques like debouncing
-- Immediate access to computed values
+- تحكّم في توقيت تشغيل الحسابات المكلفة
+- يمكن تحسينه بتقنيات مثل تهدئة التكرار (debouncing)
+- وصول فوري إلى القيم المحسوبة
 
-**Cons:**
+**العيوب:**
 
-- Risk of synchronization bugs
-- More complex code to maintain
-- Higher memory usage
-- More re-renders from multiple state updates
+- خطر أخطاء المزامنة
+- شيفرة أكثر تعقيدًا في الصيانة
+- استهلاك ذاكرة أعلى
+- إعادات تصيير أكثر بسبب تحديثات حالة متعددة
 
-## Guidelines for Real-World Applications
+## إرشادات للتطبيقات الواقعية
 
-1. **Start with derived state by default**. Only move to stored state when you have a performance problem.
-2. **Profile before optimizing**. Most computations are fast enough to run on every render.
-3. **Use `useMemo` for expensive computations**, but don’t overuse it—it has its own overhead.
-4. **Consider the user experience**. A slight computation delay might be better than a sync bug that shows wrong data.
-5. **Test your state management**. Write tests that verify your computed values stay in sync with your stored state.
+1. **ابدأ بالحالة المشتقّة افتراضيًا**. ولا تنتقل إلى الحالة المخزّنة إلا عندما تواجه مشكلة أداء.
+2. **قِس الأداء قبل التحسين**. فمعظم الحسابات سريعة بما يكفي للتنفيذ في كل تصيير.
+3. **استخدم `useMemo` للحسابات المكلفة**، لكن لا تُكثر من استخدامه — فله حمل خاص به.
+4. **ضع تجربة المستخدم في الحسبان**. فقد يكون تأخّر حساب طفيف أفضل من خطأ مزامنة يعرض بيانات خاطئة.
+5. **اختبر إدارة حالتك**. اكتب اختبارات تتحقّق من بقاء قيمك المحسوبة متزامنة مع حالتك المخزّنة.

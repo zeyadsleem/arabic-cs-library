@@ -1,16 +1,16 @@
 ---
-title: "Higher Order Components Typing"
-lang: en
+title: "أنواع المكوّنات ذات الرتبة العليا"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/higher-order-components-typing"
 ---
 
-Higher-Order Components (HOCs) were React’s original answer to component reusability before hooks arrived on the scene. While hooks have largely replaced HOCs for most use cases, you’ll still encounter them in the wild—especially in older codebases or when integrating with libraries that haven’t migrated to hooks yet. The challenge? Getting TypeScript to understand what your HOC is doing without losing your mind (or your component’s prop types) in the process.
+كانت المكوّنات ذات الرتبة العليا (Higher-Order Components) هي الحلّ الذي قدّمه React في الأصل لإعادة استخدام المكوّنات قبل ظهور الخُطّافات. ورغم أنّ الخُطّافات حلّت محلّها في معظم حالات الاستخدام، فإنّك ما زالت ستصادفها في العالم الحقيقي — وخصوصًا في قواعد الشيفرة القديمة أو عند التكامل مع مكتبات لم تنتقل بعد إلى الخُطّافات. والتحدّي هو: كيف تجعل TypeScript يفهم ما يفعله المكوّن ذو الرتبة العليا من دون أن تفقد صوابك (أو أنواع خصائص مكوّنك) في أثناء ذلك.
 
-Here’s the thing: HOCs are just functions that take a component and return a new component with additional behavior. The tricky part is making sure TypeScript understands which props your wrapped component receives, which ones your HOC injects, and how to properly forward refs. Let’s walk through building well-typed HOCs that preserve the original component’s interface while adding our enhancements.
+وهنا جوهر الأمر: المكوّنات ذات الرتبة العليا ليست سوى دوالّ تأخذ مكوّنًا وتُعيد مكوّنًا جديدًا بسلوك إضافي. والجزء الصعب هو التأكّد من أن TypeScript يفهم أي الخصائص يتلقّاها المكوّن الملفوف، وأي الخصائص يحقنها المكوّن ذو الرتبة العليا، وكيف تُمرَّر المراجع (refs) على نحو صحيح. فلنمرّ خطوةً بخطوة على بناء مكوّنات ذات رتبة عليا مُحكمة الأنواع تحافظ على واجهة المكوّن الأصلي وتضيف تحسيناتنا.
 
-## The Basic HOC Pattern
+## النمط الأساسي للمكوّن ذي الرتبة العليا
 
-Before we dive into typing complexities, let’s establish what we’re working with. A basic HOC follows this pattern:
+قبل أن نغوص في تعقيدات الأنواع، لنثبّت أولًا ما نتعامل معه. يتبع المكوّن ذو الرتبة العليا الأساسي هذا النمط:
 
 ```typescript
 // ❌ Untyped version (don't do this)
@@ -24,11 +24,11 @@ const withLoading = (WrappedComponent) => {
 };
 ```
 
-This works at runtime, but TypeScript has no idea what’s happening. Let’s fix that step by step.
+وهذا يعمل وقت التشغيل، لكن TypeScript لا يعرف شيئًا عمّا يجري. لنُصلح ذلك خطوةً بخطوة.
 
-## Typing Your First HOC
+## تحديد أنواع أول مكوّن ذي رتبة عليا
 
-The key insight for typing HOCs is understanding that you’re working with **generics**—your HOC should work with any component type while preserving that component’s specific props. Here’s our first properly typed HOC:
+الفكرة المفتاحية في تحديد أنواع المكوّنات ذات الرتبة العليا هي فهم أنّك تعمل مع **الأنواع العامة** (generics) — ينبغي أن يعمل مكوّنك ذي الرتبة العليا مع أي نوع من المكوّنات مع الحفاظ على خصائص ذلك المكوّن تحديدًا. وهذا أول مكوّن ذي رتبة عليا مُحكم الأنواع عندنا:
 
 ```typescript
 import { ComponentType } from 'react';
@@ -55,16 +55,16 @@ function withLoading<T extends {}>(
 }
 ```
 
-Let’s break this down:
+لنُفكّك هذا:
 
-- **`T extends {}`**: Our generic constraint ensures `T` is an object (component props)
-- **`ComponentType<T>`**: TypeScript’s type for React components that accept props of type `T`
-- **`T & WithLoadingProps`**: The wrapped component gets both its original props AND our injected props
-- **Type assertion `as T`**: After destructuring, we assert the remaining props match the original component’s expectations
+- **`T extends {}`**: قيد النوع العام لدينا يضمن أنّ `T` كائن (خصائص المكوّن)
+- **`ComponentType<T>`**: نوع TypeScript لمكوّنات React التي تقبل خصائص من النوع `T`
+- **`T & WithLoadingProps`**: يتلقّى المكوّن الملفوف خصائصه الأصلية إضافةً إلى الخصائص التي نحقنها
+- **تأكيد النوع `as T`**: بعد التفكيك، نؤكّد أنّ الخصائص المتبقّية تطابق توقّعات المكوّن الأصلي
 
-## Real-World Example: Authentication HOC
+## مثال من العالم الحقيقي: مكوّن ذا رتبة عليا للمصادقة
 
-Here’s a more practical example—an HOC that handles authentication logic:
+إليك مثالًا أكثر عملية — مكوّنًا ذا رتبة عليا يتولّى منطق المصادقة:
 
 ```typescript
 import { ComponentType, useContext } from 'react';
@@ -130,11 +130,11 @@ const AuthenticatedDashboard = withAuth(Dashboard);
 <AuthenticatedDashboard title="My Dashboard" />
 ```
 
-Notice how the wrapped `Dashboard` component gets both its original `title` prop and the injected auth props (`user`, `logout`), while consumers of `AuthenticatedDashboard` only need to provide the original props plus any HOC-specific ones.
+لاحظ كيف يتلقّى المكوّن `Dashboard` الملفوف خاصية `title` الأصلية إضافةً إلى خصائص المصادقة المحقونة (`user` و`logout`)، بينما لا يحتاج مستهلكو `AuthenticatedDashboard` إلّا إلى تقديم الخصائص الأصلية مع أي خصائص خاصة بالمكوّن ذي الرتبة العليا.
 
-## Handling Props You Want to Exclude
+## التعامل مع الخصائص التي تريد استبعادها
 
-Sometimes your HOC consumes certain props and shouldn’t pass them down. Use TypeScript’s `Omit` utility type:
+أحيانًا يستهلك مكوّنك ذي الرتبة العليا بعض الخصائص ولا ينبغي أن يمرّرها إلى الأسفل. استخدم نوع `Omit` من أدوات TypeScript:
 
 ```typescript
 interface WithTimestampProps {
@@ -179,13 +179,13 @@ function withTimestampExplicit<T extends {}>(
 }
 ```
 
-> **Tip**
+> **تلميح**
 >
-> When your HOC consumes props that shouldn’t reach the wrapped component, the destructuring approach is usually cleaner than complex `Omit` types.
+> عندما يستهلك مكوّنك ذي الرتبة العليا خصائص لا ينبغي أن تصل إلى المكوّن الملفوف، فإنّ نهج التفكيك يكون عادةً أنظف من أنواع `Omit` المعقّدة.
 
-## Forwarding Refs Like a Pro
+## تمرير المراجع (refs) باحتراف
 
-Here’s where things get spicy. If your wrapped component uses `forwardRef`, your HOC needs to preserve that behavior:
+هنا تصبح الأمور أكثر تعقيدًا. إذا كان المكوّن الملفوف يستخدم `forwardRef`، فيحتاج مكوّنك ذي الرتبة العليا إلى الحفاظ على هذا السلوك:
 
 ```typescript
 import { ComponentType, forwardRef, ForwardedRef } from 'react';
@@ -212,11 +212,11 @@ const inputRef = useRef<HTMLInputElement>(null);
 <SafeInput ref={inputRef} placeholder="Type here..." />
 ```
 
-The key insight is using `forwardRef` in your HOC and ensuring the generic types line up correctly.
+الفكرة المفتاحية هي استخدام `forwardRef` داخل مكوّنك ذي الرتبة العليا والتأكّد من محاذاة الأنواع العامة بشكل صحيح.
 
-## `withErrorBoundary<P>` vs `useErrorBoundary()`
+## `withErrorBoundary<P>` مقابل `useErrorBoundary()`
 
-Wrap any component in a typed error boundary HOC, and compare DX with a hook-based approach.
+غلّف أي مكوّن بمكوّن حدّ أخطاء (error boundary) ذي رتبة عليا مُحكم الأنواع، وقارن تجربة المطوّر (DX) مع النهج القائم على الخُطّاف.
 
 ```typescript
 import React, { Component, ComponentType, ErrorInfo, ReactNode } from 'react';
@@ -286,11 +286,11 @@ function ProfileWithHook(props: ProfileProps) {
 }
 ```
 
-HOC works well for class or third‑party components; the hook is more ergonomic in new function components and keeps error handling closer to the failure site.
+المكوّن ذو الرتبة العليا يعمل جيدًا مع المكوّنات الصنفية أو مكوّنات الأطراف الثالثة؛ أمّا الخُطّاف فأكثر راحةً في المكوّنات الدالية الجديدة ويُبقي معالجة الأخطاء أقرب إلى موضع الفشل.
 
-## Advanced Pattern: Conditional Props
+## النمط المتقدّم: الخصائص الشرطية
 
-Sometimes you want your HOC to conditionally require certain props based on configuration:
+أحيانًا تريد لمكوّنك ذي الرتبة العليا أن يشترط بعض الخصائص بشكل شرطي بحسب الإعدادات:
 
 ```typescript
 interface BaseLoadingProps {
@@ -340,9 +340,9 @@ const CustomWrapped = withConditionalLoading(MyComponent, true);
 // Requires both isLoading AND loadingComponent props
 ```
 
-## Common Pitfalls and How to Avoid Them
+## المآخذ الشائعة وكيف تتجنّبها
 
-### The `any` Escape Hatch 👎
+### مخرج `any` 👎
 
 ```typescript
 // ❌ Tempting but defeats the purpose
@@ -360,7 +360,7 @@ function goodHOC<T extends {}>(
 }
 ```
 
-### Missing Generic Constraints
+### قيود الأنواع العامة المفقودة
 
 ```typescript
 // ❌ Too permissive - T could be anything
@@ -374,7 +374,7 @@ function betterHOC<T extends {}>(component: ComponentType<T>) {
 }
 ```
 
-### Incorrect Prop Spreading
+### النشر الخاطئ للخصائص
 
 ```typescript
 // ❌ Loses type safety
@@ -390,18 +390,18 @@ function safeHOC<T extends {}>(WrappedComponent: ComponentType<T>) {
 }
 ```
 
-## When to Use HOCs vs. Hooks
+## متى تستخدم المكوّنات ذات الرتبة العليا مقابل الخُطّافات
 
-> **Note**
+> **ملاحظة**
 >
-> Modern React heavily favors hooks over HOCs for most use cases. Consider HOCs when:
+> يقدّم React الحديث أولوية كبرى للخُطّافات على المكوّنات ذات الرتبة العليا في معظم حالات الاستخدام. فكّر في المكوّنات ذات الرتبة العليا عندما:
 >
-> - You need to wrap third-party components that don’t support hooks
-> - You’re working with class components that can’t use hooks
-> - You need to conditionally render entirely different components
-> - You’re building a library that needs to work with any component type
+> - تحتاج إلى تغليف مكوّنات من الأطراف الثالثة لا تدعم الخُطّافات
+> - تعمل مع مكوّنات صنفية لا يمكنها استخدام الخُطّافات
+> - تحتاج إلى تصيير مكوّنات مختلفة تمامًا بشكل شرطي
+> - تبني مكتبة يجب أن تعمل مع أي نوع من المكوّنات
 
-For new code, prefer custom hooks:
+في الشيفرة الجديدة، فضّل الخُطّافات المخصّصة:
 
 ```typescript
 // ✅ Modern approach with hooks
@@ -426,16 +426,16 @@ function Dashboard({ title }: { title: string }) {
 }
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Typing HOCs properly requires understanding generics, component types, and prop manipulation in TypeScript. The patterns we’ve covered will handle most Real World Use Cases™:
+يتطلّب تحديد أنواع المكوّنات ذات الرتبة العليا على نحو صحيح فهم الأنواع العامة وأنواع المكوّنات والتعامل مع الخصائص في TypeScript. وستغطّي الأنماط التي راجعناها معظم حالات الاستخدام من العالم الحقيقي™:
 
-- Use generics with object constraints (`T extends {}`)
-- Leverage `ComponentType<T>` for component typing
-- Use intersection types (`T & InjectedProps`) for prop combining
-- Don’t forget `forwardRef` for ref-forwarding components
-- Prefer hooks over HOCs in new code
+- استخدم الأنواع العامة مع قيد كائن (`T extends {}`)
+- استفدِ من `ComponentType<T>` في تحديد أنواع المكوّنات
+- استخدم أنواع التقاطع (`T & InjectedProps`) في دمج الخصائص
+- لا تنسَ `forwardRef` للمكوّنات التي تمرّر المراجع
+- فضّل الخُطّافات على المكوّنات ذات الرتبة العليا في الشيفرة الجديدة
 
-Remember, the goal is making your HOCs type-safe without sacrificing the flexibility that made them useful in the first place. When you get the types right, your HOCs become powerful, reusable tools that integrate seamlessly with the rest of your TypeScript React codebase.
+تذكّر أنّ الهدف هو جعل مكوّناتك ذات الرتبة العليا آمنة الأنواع من دون التضحية بالمرونة التي جعلتها مفيدة في المقام الأول. وحين تصحّ الأنواع، تصير مكوّناتك ذات الرتبة العليا أدوات قوية قابلة لإعادة الاستخدام تتكامل بسلاسة مع بقية قاعدة شيفرة React + TypeScript لديك.
 
-Next time you encounter an HOC (or need to build one), you’ll have the TypeScript knowledge to wrap it properly—no tears required.
+في المرة القادمة التي تصادف فيها مكوّنًا ذا رتبة عليا (أو تحتاج إلى بناء واحد)، ستكون قد تسلّحت بمعرفة TypeScript التي تتيح لك تغليفه على نحو صحيح — من دون دموع.

@@ -1,14 +1,14 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/wrap-a-custom-verification-mcp-solution"
 ---
 
-The whole premise of this lab is: what if your agent could *look at the running app* instead of just reading test output? Not in a hand-wavy “AI vision” sense, but concretely — launch a browser, navigate to a page, count the elements, collect errors, return structured JSON. The current Shelf starter does not ship this helper, so this solution is the code you add during the lab.
+مقدّمة هذا المخبر كلها هي: ماذا لو استطاع وكيلك *أن ينظر إلى التطبيق العامل* بدلًا من قراءة مخرجات الاختبارات فقط؟ لا بمعنى «الرؤية بالذكاء الاصطناعي» الغامض، بل ملموسًا — أطلق متصفحًا، وانتقل إلى صفحة، وعُدّ العناصر، واجمع الأخطاء، وأعد JSON مهيكلًا. المشروع الأولي Shelf الحالي لا يشحن هذه المساعدة، لذا هذا الحل هو الشيفرة التي تضيفها أثناء المخبر.
 
-## What to add
+## ما الذي تضيفه
 
-Install the missing packages first:
+ركّب الحزم الناقصة أولًا:
 
 ```bash
 npm install -D @modelcontextprotocol/sdk zod
@@ -16,9 +16,9 @@ npm install -D @modelcontextprotocol/sdk zod
 
 ### `tools/shelf-verification-server/server.ts`
 
-This is a self-contained MCP server. It registers one tool, `verify_shelf_page`, that takes a username and returns a structured report about the state of that user’s shelf page.
+هذا خادم MCP قائم بذاته. يسجّل أداة واحدة، `verify_shelf_page`، تأخذ اسم مستخدم وتعيد تقريرًا مهيكلًا عن حالة صفحة رفّ ذلك المستخدم.
 
-The server setup is minimal:
+تهيئة الخادم بسيطة:
 
 ```typescript
 import fs from 'node:fs';
@@ -37,9 +37,9 @@ const server = new McpServer({
 });
 ```
 
-`McpServer` from the SDK handles the JSON-RPC framing. `StdioServerTransport` means the server communicates over stdin/stdout — the agent process spawns it as a child and pipes messages back and forth. No HTTP, no ports, no CORS headaches.
+`McpServer` من حزمة SDK تتولى تأطير JSON-RPC. أما `StdioServerTransport` فتعني أن الخادم يتواصل عبر stdin/stdout — عملية الوكيل تُطلقه كطفل وتُمرّر الرسائل ذهابًا وإيابًا. لا HTTP، ولا منافذ، ولا صداع CORS.
 
-The tool registration is where the real work happens:
+تسجيل الأداة هو حيث يحدث العمل الحقيقي:
 
 ```typescript
 server.registerTool(
@@ -63,9 +63,9 @@ server.registerTool(
 );
 ```
 
-Both `inputSchema` and `outputSchema` use Zod. The SDK serializes them to JSON Schema for the agent’s tool listing, so the agent knows exactly what it’s getting back before it calls the tool. This is the structured contract that makes MCP tools composable — the agent doesn’t have to parse prose from a tool description to understand the response shape.
+يستخدم كلٌّ من `inputSchema` و`outputSchema` مكتبة Zod. وتُسلسلها SDK إلى JSON Schema لقائمة أدوات الوكيل، فيعرف الوكيل بالضبط ما سيعود إليه قبل أن يستدعي الأداة. هذا هو العقد المهيكل الذي يجعل أدوات MCP قابلة للتركيب — لا يضطر الوكيل إلى تحليل نثر من وصف أداة ليفهم شكل الاستجابة.
 
-Inside the handler, the tool launches Chromium, navigates, and collects data:
+داخل المعالج، تُطلق الأداة Chromium، وتنتقل، وتجمع البيانات:
 
 ```typescript
 const targetUrl = `${baseUrl}/shelf/${encodeURIComponent(username)}`;
@@ -105,12 +105,12 @@ try {
 }
 ```
 
-A few things worth noting:
+بضعة أمور تستحق الملاحظة:
 
-- **Storage state reuse.** If the Playwright authentication state file exists (from a previous test run), the tool reuses it. The `/shelf/[username]` route is public, so this isn’t strictly necessary — but it keeps the tool’s session consistent with the rest of the workshop tooling.
-- **Console error collection.** The `page.on('console')` listener captures every `console.error` call from the running app. This is the “did something blow up that the page didn’t visually show?” check. The tool reports `ok: false` when there are console errors, even if the page rendered correctly.
-- **`finally` closes the browser.** This is the zombie-process prevention. If the navigation throws, if the page times out, if the count fails — the browser still gets closed. Without this, you’d leak Chromium processes on every error.
-- **Structured return.** The MCP SDK supports both `content` (for agents that read text) and `structuredContent` (for agents that parse JSON). Returning both means the tool works with any MCP client.
+- **إعادة استخدام حالة التخزين.** إن وُجد ملف حالة مصادقة Playwright (من تشغيل اختبارات سابق)، تعيد الأداة استخدامه. مسار `/shelf/[username]` عام، لذا هذا ليس ضروريًا تمامًا — لكنه يُبقي جلسة الأداة متسقة مع بقية أدوات الورشة.
+- **جمع أخطاء الطرفية.** مستمع `page.on('console')` يلتقط كل استدعاء `console.error` من التطبيق العامل. هذا هو فحص «هل انفجر شيء لم تُظهره الصفحة بصريًا؟». وتُبلغ الأداة بـ `ok: false` عند وجود أخطاء طرفية، حتى لو صُيّرت الصفحة صحيحًا.
+- **`finally` يغلق المتصفح.** هذا هو منع العمليات الزومبي. إن رمى الانتقال استثناءً، أو انتهت مهلة الصفحة، أو فشل العدّ — يُغلق المتصفح على أي حال. بدونه كنت ستُسرّب عمليات Chromium مع كل خطأ.
+- **عائد مهيكل.** تدعم SDK الخاصة بـ MCP كلا الأمرين: `content` (لوكلاء يقرأون النص) و`structuredContent` (لوكلاء يحلّلون JSON). إعادة الاثنين تعني أن الأداة تعمل مع أي عميل MCP.
 
 ### `.mcp.json`
 
@@ -135,41 +135,41 @@ A few things worth noting:
 }
 ```
 
-The `.mcp.json` file lives at the repo root and tells Claude Code (or any MCP-aware agent) how to start the server. The `type: "stdio"` entry means the agent spawns `npx tsx ./tools/shelf-verification-server/server.ts` as a child process and communicates over pipes. `SHELF_BASE_URL` points at the preview server — the same one Playwright targets.
+يعيش ملف `.mcp.json` في جذر المستودع ويخبر Claude Code (أو أي وكيل يفهم MCP) كيف يبدأ الخادم. مدخل `type: "stdio"` يعني أن الوكيل يُطلق `npx tsx ./tools/shelf-verification-server/server.ts` كعملية طفل ويتواصل عبر الأنابيب. ويشير `SHELF_BASE_URL` إلى خادم المعاينة — الخادم نفسه الذي يستهدفه Playwright.
 
-The `svelte` entry was already there. The `shelf-verification` entry is what this lab adds.
+مدخل `svelte` كان موجودًا بالفعل. ومدخل `shelf-verification` هو ما يضيفه هذا المخبر.
 
-## What you still need to run
+## ما الذي ما زال عليك تشغيله
 
-### Start the preview server
+### ابدأ خادم المعاينة
 
-The verification tool needs a running app to hit. Build and preview:
+تحتاج أداة التحقق إلى تطبيق عامل تضربه. ابنِ ثم اعرض:
 
 ```bash
 npm run build && npm run preview -- --host 127.0.0.1 --port 4173
 ```
 
-Leave this running in a separate terminal.
+اتركه يعمل في طرفية منفصلة.
 
-### Verify the server starts
+### تحقّق من أن الخادم يبدأ
 
-In another terminal, confirm the MCP server boots without crashing:
+في طرفية أخرى، تأكّد من أن خادم MCP يُقلع دون أن ينهار:
 
 ```bash
 npx tsx ./tools/shelf-verification-server/server.ts
 ```
 
-You should see it hang waiting for stdin (that’s correct — it’s waiting for JSON-RPC messages from an MCP client). Kill it with Ctrl+C.
+ينبغي أن تراه يتوقّف منتظرًا stdin (هذا صحيح — إنه ينتظر رسائل JSON-RPC من عميل MCP). أنهِه بـ Ctrl+C.
 
-### Test it through the agent
+### اختبره عبر الوكيل
 
-Restart Claude Code in the Shelf repo directory. After restart, you should see `shelf-verification` listed in the available MCP servers. The `verify_shelf_page` tool should appear in the agent’s tool list.
+أعد تشغيل Claude Code في مجلد مستودع Shelf. بعد إعادة التشغيل، ينبغي أن ترى `shelf-verification` مدرجًا في خوادم MCP المتاحة. وينبغي أن تظهر أداة `verify_shelf_page` في قائمة أدوات الوكيل.
 
-Ask the agent:
+اطلب من الوكيل:
 
-> Verify the shelf page for the user “alice”.
+> تحقّق من صفحة الرفّ الخاصة بالمستخدم «alice».
 
-The agent should call `verify_shelf_page` with `username: "alice"` and return something like:
+ينبغي أن يستدعي الوكيل `verify_shelf_page` مع `username: "alice"` ويعيد شيئًا مثل:
 
 ```json
 {
@@ -180,9 +180,9 @@ The agent should call `verify_shelf_page` with `username: "alice"` and return so
 }
 ```
 
-### Test the failure path
+### اختبر مسار الفشل
 
-To confirm the tool catches errors, add a deliberate `console.error` to one of the Shelf routes. For example, in `src/routes/shelf/[username]/+page.svelte`, add:
+لتأكيد أن الأداة تلتقط الأخطاء، أضف `console.error` متعمدًا إلى أحد مسارات Shelf. مثلًا، في `src/routes/shelf/[username]/+page.svelte`، أضف:
 
 ```svelte
 <script>
@@ -190,29 +190,29 @@ To confirm the tool catches errors, add a deliberate `console.error` to one of t
 </script>
 ```
 
-Rebuild, restart preview, and ask the agent to verify again. This time the result should show `ok: false` with the error message in `consoleErrors`.
+أعد البناء، وأعد تشغيل المعاينة، واطلب من الوكيل التحقق مرة أخرى. هذه المرة ينبغي أن تُظهر النتيجة `ok: false` مع رسالة الخطأ في `consoleErrors`.
 
-Remove the deliberate error when you’re done.
+أزل الخطأ المتعمد حين تنتهي.
 
-### Check for zombie processes
+### تحقّق من عدم وجود عمليات زومبي
 
-After running the tool a few times, confirm no Chromium processes are hanging around:
+بعد تشغيل الأداة بضع مرات، تأكّد من عدم بقاء عمليات Chromium معلّقة:
 
 ```bash
 ps aux | grep -i chromium | grep -v grep
 ```
 
-The `finally` block in the handler should prevent leaks, but it’s worth confirming. If you see orphaned processes, something in the error path isn’t cleaning up.
+ينبغي أن تمنع كتلة `finally` في المعالج التسريبات، لكن التأكيد يستحق العناء. إن رأيت عمليات يتيمة، فشيء ما في مسار الخطأ لا ينظّف.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **Structured in, structured out.** The Zod schemas on both input and output mean the agent never has to guess at the response format. This is what separates an MCP tool from “run a script and parse the stdout.”
-- **Stdio is the simplest transport.** No server to configure, no ports to manage, no authentication to wire up. The agent spawns the process, sends JSON-RPC over pipes, and gets JSON-RPC back. For local dev tools, this is almost always the right choice.
-- **Browser automation inside a tool is powerful.** The tool doesn’t screenshot and OCR. It navigates with Playwright, counts DOM elements by role, and collects console errors. The agent gets precise, structured data about the actual running app.
-- **`finally` is load-bearing.** Browser cleanup in a `finally` block isn’t defensive programming — it’s the difference between a tool that works once and a tool that works reliably. Leaked Chromium processes will eat your machine’s memory and eventually cause mysterious failures.
-- **One tool, one question.** `verify_shelf_page` answers “does this user’s shelf page render correctly?” It doesn’t also check performance, or run accessibility audits, or validate the API layer. Keeping tools narrow makes them composable.
+- **مهيكل داخلًا، مهيكل خارجًا.** مخططات Zod على المدخل والمخرج معًا تعني أن الوكيل لا يضطر أبدًا إلى تخمين صيغة الاستجابة. هذا ما يفصل أداة MCP عن «شغّل سكربتًا وحلّل stdout».
+- **Stdio أبسط ناقل.** لا خادم تُهيّئه، ولا منافذ تديرها، ولا مصادقة توصّلها. الوكيل يُطلق العملية، ويرسل JSON-RPC عبر الأنابيب، ويستقبل JSON-RPC. لأدوات التطوير المحلية، هذا هو الخيار الصحيح دائمًا تقريبًا.
+- **أتمتة المتصفح داخل أداة أمر قوي.** الأداة لا تلتقط صورة شاشة ولا تشغّل OCR. إنها تنتقل بـ Playwright، وتعدّ عناصر DOM بحسب الدور، وتجمع أخطاء الطرفية. يحصل الوكيل على بيانات دقيقة ومهيكلة عن التطبيق العامل فعلًا.
+- **`finally` عنصر حامل.** تنظيف المتصفح في كتلة `finally` ليس برمجة دفاعية — إنه الفرق بين أداة تعمل مرة وأداة تعمل بموثوقية. عمليات Chromium المتسرّبة ستأكل ذاكرة جهازك وتسبب في النهاية إخفاقات غامضة.
+- **أداة واحدة، سؤال واحد.** تجيب `verify_shelf_page` عن «هل تُصيَّر صفحة رفّ هذا المستخدم صحيحًا؟». إنها لا تفحص الأداء أيضًا، ولا تشغّل تدقيقات إمكانية الوصول، ولا تتحقق من طبقة API. الإبقاء على الأدوات ضيقة يجعلها قابلة للتركيب.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Lab: Wrap a Custom Verification MCP](https://stevekinney.com/courses/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp)
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [مخبر: غلّف تحققًا مخصصًا في MCP](https://stevekinney.com/courses/self-testing-ai-agents/lab-wrap-a-custom-verification-mcp)
+- [كتابة غلاف MCP مخصص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)

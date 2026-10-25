@@ -1,51 +1,51 @@
 ---
-title: "Validating Zod Schema (Exercise)"
-lang: en
+title: "التحقّق من مخطط Zod (تمرين)"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-zod-schema-exercises"
 ---
 
-Below is a list of 10 hands-on challenges that will move you from Zod novice to Zod wizard. Start at the top, work your way down, and you’ll get a tour of Zod’s many features and peculiarities along the way.
+فيما يلي قائمة بعشرة تحدّيات عملية تنقلك من مبتدئ في Zod إلى ساحر في Zod. ابدأ من الأعلى، وتدرّج نزولًا، وستقوم بجولة في كثير من ميزات Zod وغرائبه على الطريق.
 
-## Exercises
+## التمارين
 
-### The “Hello, Zod!” Basic Validation
+### «مرحبًا، Zod!» التحقّق الأساسي
 
-**Concepts**: Simple schemas, `.parse()`, basic `string`/`number` validation
+**المفاهيم**: مخططات بسيطة، `.parse()`، تحقّق أساسي من `string`/`number`
 
-1. Create a Zod schema that validates an object containing:
+1. أنشئ مخطط Zod يتحقّق من كائن يحتوي:
 
-- A name property (string, required)
-- An age property (number, must be >= 0)
+- خاصية name (نص، مطلوبة)
+- خاصية age (عدد، يجب أن يكون >= 0)
 
-1. Write a small function that calls `.parse()` on some sample data:
+1. اكتب دالة صغيرة تستدعي `.parse()` على بعض البيانات النموذجية:
 
-- `{ name: "Ada", age: 36 }` should pass
-- `{ name: "Charles" }` should fail (missing age)
-- `{ name: "Bobby Tables", age: -1 }` should fail (negative age)
+- `{ name: "Ada", age: 36 }` يجب أن تمرّ
+- `{ name: "Charles" }` يجب أن تفشل (عمر مفقود)
+- `{ name: "Bobby Tables", age: -1 }` يجب أن تفشل (عمر سالب)
 
-1. Log the outcome (pass/fail/error messages).
+1. سجّل النتيجة (pass/fail/error messages).
 
-**Goal**: Get comfortable with the most basic usage of Zod. Even your goldfish could do it, but you’ll need these fundamentals everywhere.
+**الهدف**: أن تأنس بأبسط استخدام لـ Zod. حتى سمكتك الذهبية تستطيع فعل ذلك، لكنك ستحتاج هذه الأساسيات في كل مكان.
 
-### All About Options
+### كل شيء عن الخيارات
 
-**Concepts**: Optional vs. required fields, .optional(), default values
+**المفاهيم**: الحقول الاختيارية مقابل المطلوبة، .optional()، القيم الافتراضية
 
-1. Start with the object from Challenge 1, but now the user’s age is optional (maybe they don’t want to share it).
-2. If age isn’t provided, default it to 0 via a transform (or show an error if you prefer).
-3. Test with:
+1. ابدأ بالكائن من التحدّي 1، لكن الآن صار عمر المستخدم اختياريًا (فربما لا يريد مشاركته).
+2. إن لم يُقدَّم العمر، فاجعله افتراضيًا 0 عبر تحويل (أو أظهر خطأً إن كنت تفضّل ذلك).
+3. اختبر بـ:
 
-- `{ name: "Ada" }` (age auto-filled? or do you throw an error?)
+- `{ name: "Ada" }` (هل يُملأ العمر تلقائيًا؟ أم تُطلق خطأً؟)
 - `{ name: "Ada", age: 36 }`
-- Empty object or missing name.
+- كائن فارغ أو name مفقود.
 
-**Goal**: Learn how to handle optional fields. It’s basically the difference between “maybe we have it” and “definitely we have it.”
+**الهدف**: أن تتعلّم كيفية التعامل مع الحقول الاختيارية. فالأمر في جوهره الفرق بين «ربما لدينا القيمة» و«بالتأكيد لدينا القيمة».
 
-### On the Street Where You Live
+### في الشارع الذي تسكن فيه
 
-**Concepts**: Nested objects, arrays
+**المفاهيم**: الكائنات المتداخلة، المصفوفات
 
-1. Build a schema for a `UserProfile` that looks like this:
+1. ابنِ مخططًا لـ `UserProfile` يبدو هكذا:
 
 ```typescript
 {
@@ -58,103 +58,103 @@ Below is a list of 10 hands-on challenges that will move you from Zod novice to 
 }
 ```
 
-1. Users can have multiple addresses, so addresses is an array. At least one address is required.
-2. Validate an object with one address, multiple addresses, and no addresses (which should fail).
-3. Try introducing an optional second-level property like apartmentNumber.
+1. يمكن أن يكون للمستخدمين عناوين متعددة، لذا addresses مصفوفة. ويُطلب عنوان واحد على الأقل.
+2. تحقّق من كائن بعنوان واحد، وبعناوين متعددة، وبلا عناوين (وهذا يجب أن يفشل).
+3. جرّب إضافة خاصية ثانوية اختيارية مثل apartmentNumber.
 
-**Goal**: Learn how to nest schemas and handle arrays. Because data is often complicated, so are validations.
+**الهدف**: أن تتعلّم كيف تُداخل المخططات وتتعامل مع المصفوفات. لأن البيانات معقّدة في الغالب، وكذلك التحقّقات.
 
-### Now for Something Completely Different: Unions
+### الآن شيء مختلف تمامًا: الاتحادات
 
-**Concepts**: Union schemas, .parse(), discriminated unions (optional)
+**المفاهيم**: مخططات الاتحاد، .parse()، الاتحادات المُميَّزة (اختياري)
 
-1. Create a Zod schema that accepts either:
+1. أنشئ مخطط Zod يقبل أحد الأمرين:
 
-- A string that’s exactly `"anonymous"`
-- An object with two fields, `id: number` and `name: string`
+- نصًا يساوي `"anonymous"` بالضبط
+- كائنًا بحقلين، `id: number` و`name: string`
 
-1. This means you should be able to parse `"anonymous"` or `{ id: 1, name: "Alan" }`.
-2. Test with invalid data like `{ id: "wrong", name: "Marvin" }` to see how the union breaks.
+1. هذا يعني أنه يجب أن تستطيع تحليل `"anonymous"` أو `{ id: 1, name: "Alan" }`.
+2. اختبر ببيانات غير صالحة مثل `{ id: "wrong", name: "Marvin" }` لترى كيف ينكسر الاتحاد.
 
-**Goal**: Master the union concept, which is essential for handling multiple possible data formats. Sometimes data tries to be sneaky. Unions let you catch it in the act.
+**الهدف**: أن تتقن مفهوم الاتحاد، وهو ضروري للتعامل مع صيغ بيانات ممكنة متعددة. فبالبيانات تحاول التسلّل أحيانًا. والاتحادات تتيح لك ضبطها متلبّسة.
 
-### Refining Your Tastes
+### صقل أذواقك
 
-**Concepts**: `.refine()`, custom error messages
+**المفاهيم**: `.refine()`، رسائل أخطاء مخصّصة
 
-1. Take a numeric field—say, quantity.
-2. Add a `.refine()` check that ensures quantity is a prime number (e.g., 2, 3, 5, 7, etc.).
-3. If it fails, return a custom error message: “Quantity must be prime!”
+1. خذ حقلًا عدديًا — لنقل quantity.
+2. أضف فحص `.refine()` يضمن أن quantity عدد أولي (مثل 2 و3 و5 و7 وغيرها).
+3. إذا فشل، أعِد رسالة خطأ مخصّصة: «Quantity must be prime!»
 
-**Goal**: Understand how to attach custom validation logic to your schema. Keep calm and refine on.
+**الهدف**: أن تفهم كيف ترفق منطق تحقّق مخصّصًا بمخططك. ابقَ هادئًا وواصل الصقل.
 
-### Transform-ers: Validation in Disguise
+### المحوِّلون: تحقّق متنكّر
 
-**Concepts**: `.transform()`
+**المفاهيم**: `.transform()`
 
-1. Create a schema that accepts a string in `YYYY-MM-DD` format (e.g., “2025-03-20”).
-2. After validating the format, transform it into a JavaScript `Date` object.
-3. Confirm that your final .parse() result is indeed a `Date` type (and not a string).
+1. أنشئ مخططًا يقبل نصًا بصيغة `YYYY-MM-DD` (مثل «2025-03-20»).
+2. بعد التحقّق من الصيغة، حوّله إلى كائن `Date` في JavaScript.
+3. تأكّد أن ناتج .parse() النهائي فعلًا نوع `Date` (وليس نصًا).
 
-**Goal**: See how Zod can automatically morph one validated type into something else. Data in, transformed data out—like a magical pipeline.
+**الهدف**: أن ترى كيف يستطيع Zod تحويل نوع متحقَّق منه تلقائيًا إلى شيء آخر. بيانات تدخل، وبيانات محوّلة تخرج — كخط أنابيب سحري.
 
-### Adding a Little Brand to Your Life
+### إضافة قليل من الوسم إلى حياتك
 
-**Concepts**: Branded types, type-safety in TypeScript
+**المفاهيم**: الأنواع الموسومة، أمان الأنواع في TypeScript
 
-1. Create a branded type for a `UserId` that’s a string under the hood but carries a brand `UserId`.
-2. The string must be a valid UUID (use `z.string().uuid()`).
-3. Experiment by trying to pass a normal string into a function that expects UserId—TypeScript should complain.
+1. أنشئ نوعًا موسومًا لـ `UserId` يكون في جوهره نصًا لكنه يحمل الوسم `UserId`.
+2. يجب أن يكون النص UUID صالحًا (استخدم `z.string().uuid()`).
+3. جرّب تمرير نص عادي إلى دالة تتوقع UserId — ينبغي أن يشتكي TypeScript.
 
-**Goal**: Learn how branding can help differentiate between two string-based types in your code. No more mixing up user IDs with email addresses.
+**الهدف**: أن تتعلّم كيف يساعد الوسم على التمييز بين نوعين قائمين على النص في شيفرتك. لا مزيد من الخلط بين معرّفات المستخدمين وعناوين البريد الإلكتروني.
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().uuid()` is preferably written as the top-level `z.uuid()`.
+> في Zod v4، يُفضَّل كتابة `z.string().uuid()` بالصيغة `z.uuid()` على المستوى الأعلى.
 
-### Making “Partial,” “Pick,” or “Omit” Your Best Friends
+### اجعل «Partial» و«Pick» و«Omit» أفضل أصدقائك
 
-**Concepts**: Utility methods (`.partial()`, `.pick()`, `.omit()`)
+**المفاهيم**: الطرق المساعدة (`.partial()`، `.pick()`، `.omit()`)
 
-1. Start with a larger schema describing a user profile (name, email, addresses, phoneNumber, etc.).
-2. Create a second schema that’s a partial version—maybe for a “profile update” operation where only certain fields are allowed.
-3. Then create a “public profile” schema that omits fields like email or phoneNumber (stuff you don’t want publicly displayed).
-4. Validate an example with all your new schemas.
+1. ابدأ بمخطط أكبر يصف ملفًا شخصيًا لمستخدم (name وemail وaddresses وphoneNumber وغيرها).
+2. أنشئ مخططًا ثانيًا نسخة جزئية — ربما لعملية «تحديث الملف الشخصي» حيث تُسمح بحقول معيّنة فقط.
+3. ثم أنشئ مخطط «الملف العام» الذي يحذف حقولًا مثل email أو phoneNumber (الأشياء التي لا تريد عرضها علنًا).
+4. تحقّق من مثال بكل مخططاتك الجديدة.
 
-**Goal**: Show how to avoid rewriting the same schema multiple times for different use cases. Because DRY is life.
+**الهدف**: أن تُظهر كيف تتجنّب إعادة كتابة المخطط نفسه مرات عدة لاستخدامات مختلفة. لأن DRY حياة.
 
-### Custom Schemas
+### مخططات مخصّصة
 
-**Concepts**: `z.custom()`
+**المفاهيم**: `z.custom()`
 
-1. Write a custom schema for a “hex color string” (like `#FFFFFF` or `#000`):
+1. اكتب مخططًا مخصّصًا لـ «نص لون سداسي عشري» (مثل `#FFFFFF` أو `#000`):
 
-- Must be a string
-- Must start with `#`
-- Then have either 3 or 6 valid hex digits (0-9, A-F)
+- يجب أن يكون نصًا
+- يجب أن يبدأ بـ `#`
+- ثم أن يحتوي 3 أو 6 أرقام سداسية عشرية صالحة (0-9، A-F)
 
-1. If it fails, show an error: “Invalid hex color.”
-2. Test with valid/invalid strings (“#FFFFFF”, “#abc”, “#1234567”, “123456”).
+1. إذا فشل، أظهر خطأً: «Invalid hex color.»
+2. اختبر بنصوص صالحة/غير صالحة («#FFFFFF»، «#abc»، «#1234567»، «123456»).
 
-**Goal**: Understand how to do completely custom validation that doesn’t map nicely to existing Zod primitives. This is where you can code your weird, one-of-a-kind rules.
+**الهدف**: أن تفهم كيف تجري تحقّقًا مخصّصًا بالكامل ولا ينطبق بسهولة على أوليّات Zod الموجودة. هنا يمكنك برمجة قواعدك الغريبة الفريدة.
 
-### Put It All Together: Build a Form Validator
+### جمّع كل شيء: ابنِ محقّق نماذج
 
-**Concepts**: Composition, real-world usage, testing
+**المفاهيم**: التركيب، الاستخدام الواقعي، الاختبار
 
-1. Suppose you have a registration form requiring:
+1. لنقل إن لديك نموذج تسجيل يتطلب:
 
-- `username` (string, 4–16 chars)
-- `password` (string, at least 8 chars, must contain a digit)
-- `email` (string, must match an email pattern or refine it via external lib)
-- `birthDate` (optional; if present, must parse to a valid date via .transform())
+- `username` (نص، 4–16 حرفًا)
+- `password` (نص، 8 أحرف على الأقل، ويجب أن يحتوي رقمًا)
+- `email` (نص، يجب أن يطابق نمط بريد إلكتروني أو تحسّنه عبر مكتبة خارجية)
+- `birthDate` (اختياري؛ إن وُجد، يجب أن يُحلَّل إلى تاريخ صالح عبر .transform())
 
-1. Build a single schema or a set of smaller schemas that compose into a bigger one. Use `.refine()`, `.transform()`, arrays (if your form has multi-step data, for example), or anything else you need.
+1. ابنِ مخططًا واحدًا أو مجموعة مخططات أصغر تُركَّب في مخطط أكبر. واستخدم `.refine()` و`.transform()` والمصفوفات (إن كان لنموذجك بيانات متعددة الخطوات، مثلًا)، أو أي شيء آخر تحتاجه.
 
-### Bonus
+### إضافي
 
-**Goal**: Practice combining everything you’ve learned. Real forms are riddled with optional fields, specialized rules, and transforms, so this is a good representation of real life.
+**الهدف**: أن تتمرّن على جمع كل ما تعلّمته. فالنماذج الواقعية مفعمة بالحقول الاختيارية والقواعد المتخصّصة والتحويلات، وهذا تمثيل جيد للحياة الواقعية.
 
-> **Solutions**
+> **الحلول**
 >
-> You can find the solutions [here](https://stevekinney.com/courses/full-stack-typescript/validating-zod-schemas-solution).
+> تجد الحلول [هنا](https://stevekinney.com/courses/full-stack-typescript/validating-zod-schemas-solution).

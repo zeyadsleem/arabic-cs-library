@@ -1,94 +1,94 @@
 ---
-title: "Rspack, webpack, and Vite"
-lang: en
+title: "Rspack وwebpack وVite: مقارنة أدوات التجميع"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/rspack-webpack-and-vite"
 ---
 
-[Rspack](https://rspack.rs/guide/start/introduction) is a high-performance JavaScript bundler written in Rust, and its entire pitch is basically this: keep the webpack mental model, keep a lot of the webpack ecosystem, but make the thing meaningfully faster. That already tells you where it sits. Architecturally, Rspack is much closer to webpack than to Vite. [webpack](https://webpack.js.org/concepts/) is a static module bundler that builds a dependency graph and emits bundles; Vite’s dev story is different because it serves source over native ESM and only bundles for production.
+[Rspack](https://rspack.rs/guide/start/introduction) مُجمِّع JavaScript عالي الأداء مكتوب بـRust، وعرضه كله في الأساس هذا: أبقِ نموذج webpack الذهني، وأبقِ قدرًا كبيرًا من نظام webpack البيئي، لكن اجعل الأداة أسرع بدرجة معتبرة. وهذا يخبرك من الآن بأين تقع. فمعماريًا، Rspack أقرب إلى webpack كثيرًا من قربه إلى Vite. و[webpack](https://webpack.js.org/concepts/) مُجمِّع وحدات ساكن يبني رسم اعتمادات ويُصدر حزمًا؛ أما قصة التطوير في Vite فمختلفة لأنه يخدم الشيفرة المصدرية عبر ESM الأصلي ولا يحزم إلا للإنتاج.
 
-## The Shortest Useful Mental Model
+## أقصر نموذج ذهني مفيد
 
-webpack is the reference model here. It is a bundler with a deep compilation pipeline, `module.rules` loaders, a powerful plugin system, and a very mature ecosystem around that compiler model. Vite is a frontend build tool whose dev server serves source over native ESM, pre-bundles dependencies with esbuild, and then hands production bundling to Rollup. Rspack keeps the bundler-first worldview of webpack, but reimplements the engine in Rust and aims for strong webpack compatibility instead of adopting Vite’s “unbundled dev, bundled prod” split personality.
+webpack هو النموذج المرجعي هنا. فهو مُجمِّع بخط تصريف عميق، ومحمّلات `module.rules`، ونظام إضافات قوي، ونظام بيئي ناضج جدًا حول نموذج المُصرِّف ذلك. وVite أداة بناء أمامية يخدم خادم تطويرها الشيفرة المصدرية عبر ESM الأصلي، ويحزم الاعتمادات مبدئيًا بـesbuild، ثم يسلّم حزم الإنتاج إلى Rollup. أما Rspack فيحتفظ بنظرة webpack التي تُقدّم المُجمِّع، لكنه يعيد تنفيذ المحرّك بـRust ويسعى إلى توافق قوي مع webpack بدل تبنّي ازدواجية Vite: «تطوير بلا حزم، وإنتاج بحزم».
 
-That one distinction explains most of the tradeoffs. If you want webpack semantics—loaders, plugins, chunking, and compiler plugins—Rspack makes sense. If you want the native-ESM dev-server model and a Rollup/Vite plugin world, Vite makes sense. If you want the most established and most flexible version of the classic bundler model, webpack is still the baseline.
+وهذا الفرق وحده يفسّر معظم المقايضات. فإن أردت دلالات webpack—المحمّلات، والإضافات، والتقطيع، وإضافات المُصرِّف—فـRspack منطقي. وإن أردت نموذج خادم التطوير بـESM الأصلي وعالم إضافات Rollup وVite، فـVite منطقي. وإن أردت أكثر نسخ نموذج المُجمِّع الكلاسيكي رسوخًا ومرونة، فما زال webpack هو خط الأساس.
 
-## Rspack Compared with webpack
+## Rspack مقارنة بـwebpack
 
-Rspack was designed to make webpack users feel at home. Its [migration guide](https://rspack.rs/guide/migration/webpack) explicitly says its configuration is designed based on webpack and is primarily aimed at webpack 5 projects, because Rspack’s API and configuration align with webpack 5. Its loader and plugin APIs also explicitly target webpack ecosystem compatibility, and Rspack says it has replicated most webpack built-in plugins with the same names and configuration parameters as closely as possible.
+صُمّم Rspack ليجعل مستخدمي webpack يشعرون بأنهم في بيتهم. فـ[دليل الترحيل](https://rspack.rs/guide/migration/webpack) لديه يقول صراحةً إن تهيئته مصمّمة بناءً على webpack وتستهدف أساسًا مشاريع webpack 5، لأن واجهة Rspack وتهيئته تتوافقان مع webpack 5. كما تستهدف واجهتا المحمّلات والإضافات لديه صراحةً التوافق مع نظام webpack البيئي، ويقول Rspack إنه أعاد إنتاج معظم إضافات webpack المدمجة بالأسماء نفسها ومعاملات التهيئة نفسها بأقصى تقارب ممكن.
 
-That is the good news. The less magical news is that Rspack does *not* claim 100% webpack API compatibility. Its own [FAQ](https://rspack.rs/misc/faq) says that is not the goal, and that it prioritizes the APIs most projects actually use. So, the right way to think about Rspack is not “webpack, but guaranteed identical.” It is “webpack-shaped enough that migration is often practical, but not so identical that you should skip compatibility testing for weird plugins, loaders, or edge-case internals.”
+هذا هو الخبر السار. والخبر الأقل سحرًا أن Rspack *لا* يدّعي توافقًا بنسبة 100% مع واجهة webpack. فـ[أسئلته الشائعة](https://rspack.rs/misc/faq) تقول إن ذلك ليس الهدف، وإنه يعطي الأولوية للواجهات التي تستخدمها معظم المشاريع فعلًا. إذن الطريقة الصحيحة للتفكير في Rspack ليست «webpack، لكن مضمون التطابق»، بل «على شكل webpack بما يكفي ليكون الترحيل عمليًا غالبًا، لكن ليس متطابقًا لدرجة تدفعك إلى تخطي اختبار التوافق للإضافات أو المحمّلات الغريبة أو الدواخل الحافّية».
 
-webpack is still the most battle-tested compiler platform of the three. Its [plugin API](https://webpack.js.org/api/plugins/) gives plugins access to the compiler and compilation lifecycle, and its loader interface is a very general transformation model. That flexibility is why webpack can feel like an operating system for builds rather than a mere bundler. Rspack inherits a lot of that ergonomics by design, but webpack remains the reference ecosystem that Rspack is chasing, not the other way around.
+وما زال webpack أكثر منصات التصريف الثلاث راسخًا في المعارك. فـ[واجهة إضافاته](https://webpack.js.org/api/plugins/) تمنح الإضافات وصولًا إلى دورة حياة المُصرِّف والتصريف، وواجهة محمّلاته نموذج تحويل عام جدًا. ولهذه المرونة قد يبدو webpack كنظام تشغيل للبناء لا مجرد مُجمِّع. وقد ورث Rspack قدرًا كبيرًا من تلك الراحة بالتصميم، لكن webpack يبقى النظام البيئي المرجعي الذي يطارده Rspack، لا العكس.
 
-## Rspack Compared with Vite
+## Rspack مقارنة بـVite
 
-Rspack and Vite solve a similar human complaint—“why is frontend tooling so slow”—but they solve it from different directions. Vite speeds up development by serving source code over native ESM, pre-bundling dependencies with esbuild, and transforming source on demand. Its [docs](https://vite.dev/guide/why) are explicit that bundler-based dev setups have to eagerly crawl and build the app before serving it, while Vite avoids that by letting the browser do more of the work.
+يحلّ Rspack وVite شكوى بشرية متشابهة—«لماذا أدوات الواجهة الأمامية بهذا البطء»—لكنهما يحلّانها من اتجاهين مختلفين. فـVite يسرّع التطوير بخدمة الشيفرة المصدرية عبر ESM الأصلي، وحزم الاعتمادات مبدئيًا بـesbuild، وتحويل المصدر عند الطلب. و[وثائقه](https://vite.dev/guide/why) صريحة في أن إعدادات التطوير القائمة على المُجمِّع عليها أن تزحف إلى التطبيق وتبنيه مسبقًا قبل خدمته، بينما يتجنب Vite ذلك بترك المتصفح يقوم بمزيد من العمل.
 
-Rspack stays in the bundler camp. Its CLI ships with a [built-in dev server](https://rspack.rs/guide/features/dev-server) similar to `webpack-dev-server`, HMR is enabled by default in development, and it supports lazy compilation so modules can be compiled on demand instead of all up front. That makes Rspack meaningfully faster than the old “compile the world first” experience, but it is still conceptually a bundler-driven dev environment, not Vite’s native-ESM server model.
+أما Rspack فيبقى في معسكر المُجمِّعات. فـ[خادم تطوير مدمج](https://rspack.rs/guide/features/dev-server) يأتي مع واجهته البرمجية على غرار `webpack-dev-server`، والاستبدال الحار للوحدات (HMR) ممكَّن افتراضيًا في التطوير، ويدعم التصريف الكسول كي تُصرَّف الوحدات عند الطلب بدل تصريفها كلها مسبقًا. وهذا يجعل Rspack أسرع بدرجة معتبرة من تجربة «صرّف العالم أولًا» القديمة، لكنه ما زال مفهوميًا بيئة تطوير يقودها مُجمِّع، لا نموذج خادم ESM الأصلي عند Vite.
 
-That means Vite usually wins the cleanest “wow, this starts instantly” argument for conventional web apps, because that is the architecture it was built around. Rspack is more interesting when you want better performance *without leaving* webpack’s world of loaders, compiler plugins, chunking behavior, and bundler-centric features. Or, phrased more honestly, Vite is often the nicer answer when your app is normal; Rspack is often the nicer answer when your build is not.
+وهذا يعني أن Vite يفوز عادةً بأنظف حجة «واو، هذا يبدأ فورًا» لتطبيقات الويب التقليدية، لأن تلك هي المعمارية التي بُني حولها. أما Rspack فيصير أكثر إثارة للاهتمام عندما تريد أداءً أفضل *دون مغادرة* عالم webpack من المحمّلات، وإضافات المُصرِّف، وسلوك التقطيع، والميزات التي تتمحور حول المُجمِّع. أو بتعبير أكثر صدقًا: Vite غالبًا هو الجواب الألطف عندما يكون تطبيقك عاديًا؛ وRspack غالبًا هو الجواب الألطف عندما لا يكون بناؤك كذلك.
 
-## Plugin and Loader Ecosystems
+## أنظمة الإضافات والمحمّلات البيئية
 
-This is where the differences stop being philosophical and start being operational. webpack has a first-class loader model and a compiler/plugin model. A webpack [loader](https://webpack.js.org/api/loaders/) is just a module transformation function, and a webpack plugin hooks into compiler and compilation events. Rspack explicitly aims to be compatible with most webpack loader APIs and most webpack plugin APIs, and it can register webpack plugins directly in `plugins`.
+هنا يتوقف الفرق عن كونه فلسفيًا ويبدأ كونه تشغيليًا. فلwebpack نموذج محمّلات من الدرجة الأولى ونموذج مُصرِّف وإضافات. و[المحمّل](https://webpack.js.org/api/loaders/) في webpack ليس إلا دالة تحويل وحدة، وإضافة webpack تتشبّث بأحداث المُصرِّف والتصريف. ويهدف Rspack صراحةً إلى التوافق مع معظم واجهات محمّلات webpack ومعظم واجهات إضافاته، ويستطيع تسجيل إضافات webpack مباشرةً في `plugins`.
 
-Vite is a different ecosystem. Its [plugins](https://vite.dev/guide/using-plugins) are based on Rollup’s plugin interface with extra Vite-specific options. During development, Vite creates a plugin container that calls Rollup-like hooks such as `resolveId`, `load`, and `transform` per module request, but it does *not* run the full bundle/output hook lifecycle in dev, and not all Rollup plugins work there because some hooks make no sense in an unbundled dev server. That is why migrating a heavily customized webpack setup to Vite is not a drop-in swap. You are changing plugin models, not just implementations.
+أما Vite فنظام بيئي مختلف. فـ[إضافاته](https://vite.dev/guide/using-plugins) مبنية على واجهة إضافات Rollup مع خيارات إضافية خاصة بـVite. وأثناء التطوير، ينشئ Vite حاوية إضافات تنادي خُطّافات شبيهة بـRollup مثل `resolveId` و`load` و`transform` لكل طلب وحدة، لكنه *لا* يشغّل دورة حياة خُطّافات الحزم والمخرجات كاملة في التطوير، ولا تعمل كل إضافات Rollup هناك لأن بعض الخُطّافات لا معنى لها في خادم تطوير بلا حزم. ولهذا فإن ترحيل إعداد webpack مخصَّصًا بكثافة إلى Vite ليس تبديلًا جاهزًا. فأنت تغيّر نماذج الإضافات، لا التنفيذات فقط.
 
-Rspack also tries to reduce the amount of JavaScript tooling you need in the first place. It ships a [built-in SWC loader](https://rspack.rs/guide/features/builtin-swc-loader) implemented in Rust, and a built-in Lightning CSS loader that can replace `postcss-loader` plus `autoprefixer` for some CSS transformation work. webpack can absolutely do the same jobs, but typically through separate ecosystem packages. That difference matters in large builds because every trip back into JavaScript land is another place for time to evaporate.
+ويحاول Rspack أيضًا تقليل قدر أدوات JavaScript التي تحتاجها أصلًا. فهو يشحن [محمّل SWC مدمجًا](https://rspack.rs/guide/features/builtin-swc-loader) منفّذًا بـRust، ومحمّل Lightning CSS مدمجًا يستطيع أن يحلّ محلّ `postcss-loader` مع `autoprefixer` في بعض أعمال تحويل CSS. ويستطيع webpack قطعًا أداء المهام نفسها، لكن عادةً عبر حزم بيئية منفصلة. ويهمّ ذلك الفرق في البناءات الكبيرة لأن كل رحلة عائدة إلى أرض JavaScript موضع آخر يتبخّر فيه الوقت.
 
-## Dev Server and HMR
+## خادم التطوير والاستبدال الحار
 
-Vite’s HMR model is one of its biggest strengths. Its [docs](https://vite.dev/guide/features) say HMR happens over native ESM, and Vite only invalidates the chain between the edited module and the nearest HMR boundary, which keeps updates precise and fast even as the app grows. That is the signature Vite feeling people get addicted to. Very understandable. Humans like immediate feedback almost as much as they like pretending it doesn’t affect productivity.
+نموذج HMR في Vite من أقوى نقاطه. فـ[وثائقه](https://vite.dev/guide/features) تقول إن HMR يحدث عبر ESM الأصلي، وإن Vite يُبطل فقط السلسلة بين الوحدة المعدَّلة وأقرب حدّ HMR، ما يبقي التحديثات دقيقة وسريعة حتى مع نمو التطبيق. وهذا هو إحساس Vite المميّز الذي يدمنه الناس. مفهوم جدًا. فالبشر يحبون التغذية الراجعة الفورية بقدر ما يحبون التظاهر بأنها لا تؤثر في الإنتاجية.
 
-webpack and Rspack both support HMR, but they do it in the context of a bundler pipeline. webpack’s [HMR concept page](https://webpack.js.org/concepts/hot-module-replacement/) describes module replacement without a full reload, and Rspack’s dev server turns HMR on by default. The difference is that Vite’s dev server was architected around on-demand ESM from the beginning, while webpack and Rspack are fundamentally compilation-first systems trying to make that compilation very fast. Rspack’s lazy compilation is the clearest sign of that strategy.
+ويدعم webpack وRspack كلاهما HMR، لكنهما يفعلان ذلك في سياق خط أنابيب مُجمِّع. و[صفحة مفهوم HMR في webpack](https://webpack.js.org/concepts/hot-module-replacement/) تصف استبدال الوحدات دون إعادة تحميل كاملة، وخادم تطوير Rspack يفعّل HMR افتراضيًا. والفرق أن خادم تطوير Vite صُمّم من البداية حول ESM عند الطلب، بينما webpack وRspack نظامان تصريف أولًا في جوهرهما يحاولان جعل ذلك التصريف سريعًا جدًا. والتصريف الكسول في Rspack أوضح دليل على تلك الاستراتيجية.
 
-## Production Builds and Output Consistency
+## بناءات الإنتاج واتساق المخرجات
 
-webpack and Rspack use the same broad mental model in development and production: they are bundlers in both places. Vite explicitly does *not*. Its docs say native ESM in production is still inefficient because of nested-import round trips, so Vite bundles for production and exposes `build.rollupOptions` to customize the underlying Rollup bundle. That is a real strength and a real tradeoff—dev is extremely fast, but the dev and production pipelines are not literally the same kind of machine.
+يستخدم webpack وRspack النموذج الذهني الأوسع نفسه في التطوير والإنتاج: فهما مُجمِّعان في الحالين. أما Vite فـ*لا* يفعل ذلك صراحةً. فوثائقه تقول إن ESM الأصلي في الإنتاج ما زال غير فعّال بسبب رحلات الاستيراد المتداخلة ذهابًا وإيابًا، لذا يحزم Vite للإنتاج ويكشف `build.rollupOptions` لتخصيص حزمة Rollup الأساسية. وهذه قوة حقيقية ومقايضة حقيقية—فالتطوير سريع للغاية، لكن خطّي التطوير والإنتاج ليسا حرفيًا من نوع الآلة نفسه.
 
-That is one reason people with complex production optimization needs sometimes gravitate toward Rspack. You get one bundler-oriented mental model end to end, closer to webpack, but with a faster Rust core. If your main pain is “webpack is too slow, but I like what webpack can do,” Rspack is the obvious thing to evaluate before you rewrite your toolchain around Vite.
+ولهذا يميل أحيانًا أصحاب احتياجات التحسين الإنتاجي المعقّدة إلى Rspack. فتحصل على نموذج ذهني واحد موجّه نحو المُجمِّع من الطرف إلى الطرف، أقرب إلى webpack، لكن بنواة Rust أسرع. وإن كان ألمك الأساسي «webpack بطيء جدًا، لكني أحبّ ما يستطيع webpack فعله»، فـRspack هو الشيء البديهي الذي تقيّمه قبل أن تعيد كتابة سلسلة أدواتك حول Vite.
 
-## Microfrontends and Module Federation
+## الواجهات الأمامية الدقيقة واتحاد الوحدات
 
-If Module Federation is central to your architecture, Rspack is much closer to webpack than Vite in spirit and in tooling. webpack treats [Module Federation](https://webpack.js.org/concepts/) as a core concept. Rspack goes further and documents [built-in Module Federation v1.5 support](https://rspack.rs/guide/features/module-federation), plus enhanced v2 support for things like dynamic TypeScript type hints, preloading, runtime plugins, and DevTools integration.
+إن كان اتحاد الوحدات محوريًا في معماريتك، فـRspack أقرب إلى webpack كثيرًا من Vite روحًا وأدوات. فwebpack يعامل [اتحاد الوحدات](https://webpack.js.org/concepts/) كمفهوم جوهري. ويذهب Rspack أبعد فيوثّق [دعمًا مدمجًا لاتحاد الوحدات v1.5](https://rspack.rs/guide/features/module-federation)، مع دعم v2 معزّز لأشياء مثل تلميحات أنواع TypeScript الديناميكية، والتحميل المسبق، وإضافات وقت التشغيل، والتكامل مع DevTools.
 
-That does *not* mean “use Rspack for microfrontends, always.” It means that if your current architecture already leans on webpack-style federation, Rspack is the natural performance-minded continuation of that path. Vite is a different world, with a Rollup/Vite plugin model and a dev-server architecture that is not centered on webpack’s federation machinery.
+وهذا *لا* يعني «استخدم Rspack للواجهات الأمامية الدقيقة دائمًا». بل يعني أن معماريتك الحالية إن كانت تميل أصلًا إلى اتحاد على طراز webpack، فـRspack هو الاستمرار الطبيعي لذلك المسار بعقلية الأداء. أما Vite فعالم مختلف، بنموذج إضافات Rollup وVite، ومعمارية خادم تطوير لا تتمحور حول آلة الاتحاد في webpack.
 
-## The Subtle but Important Apples-to-Oranges Problem
+## مشكلة المقارنة غير المتكافئة الدقيقة لكن المهمة
 
-There is one comparison mistake people make constantly: comparing *raw Rspack* to *Vite* as if they sit at the exact same layer. They do not, at least not cleanly. Rspack is the bundler. [Rsbuild](https://rsbuild.rs/guide/start/) is the higher-level Rspack-powered build tool that provides the more out-of-the-box app experience. Rsbuild’s own docs say it is comparable to Vite, and they explicitly frame the difference as Rspack-in-dev-and-prod consistency versus Vite’s ESM-dev-plus-bundled-prod model.
+هناك خطأ مقارنة يرتكبه الناس باستمرار: مقارنة *Rspack الخام* بـ*Vite* كأنهما يقفان في الطبقة نفسها بالضبط. وهما لا يفعلان ذلك، على الأقل ليس بنظافة. فRspack هو المُجمِّع. أما [Rsbuild](https://rsbuild.rs/guide/start/) فهو أداة البناء الأعلى مستوى المدعومة بـRspack التي توفّر تجربة تطبيق أكثر جاهزية. ووثائق Rsbuild نفسها تقول إنه قابل للمقارنة بـVite، وهي تؤطّر الفرق صراحةً كاتساق Rspack في التطوير والإنتاج مقابل نموذج Vite: تطوير بـESM وإنتاج محزوم.
 
-So, if what you actually want is “Vite-like developer experience, but with Rspack underneath,” the more honest comparison is often *Rsbuild vs Vite*, not Rspack vs Vite. Comparing raw Rspack to Vite is a bit like comparing an engine to a car and then acting shocked that one has fewer cupholders.
+إذن، إن كنت تريد فعلًا «تجربة مطوّر شبيهة بـVite، لكن بـRspack في الأسفل»، فالمقارنة الأصدق غالبًا هي *Rsbuild مقابل Vite*، لا Rspack مقابل Vite. ومقارنة Rspack الخام بـVite أشبه بمقارنة محرّك بسيارة ثم التظاهر بالصدمة لأن أحدهما فيه حاملات أكواب أقل.
 
-## Migration Reality
+## واقع الترحيل
 
-Moving from webpack to Rspack is usually the least disruptive of the three major paths because the config shape, plugin model, and loader model are deliberately aligned, and the [migration guide](https://rspack.rs/guide/migration/webpack) is explicitly aimed at webpack 5 users. You still need to validate compatibility for the parts of your setup that are unusually custom, because Rspack says plainly that it is not 100% webpack-compatible. But, as migration stories go, this is the one with the fewest philosophical surprises.
+الانتقال من webpack إلى Rspack هو عادةً أقل المسارات الثلاثة الكبرى إرباكًا لأن شكل التهيئة، ونموذج الإضافات، ونموذج المحمّلات محاذاة عن قصد، و[دليل الترحيل](https://rspack.rs/guide/migration/webpack) موجّه صراحةً إلى مستخدمي webpack 5. وما زلت تحتاج إلى التحقق من التوافق للأجزاء المخصّصة بشكل غير معتاد في إعدادك، لأن Rspack يقول بيقين إنه ليس متوافقًا مع webpack بنسبة 100%. لكنه، بين حكايات الترحيل، الأقل مفاجآت فلسفية.
 
-Moving from webpack to Vite is a bigger conceptual change. You are leaving the webpack loader/plugin/compiler world for a native-ESM dev server and a Rollup/Vite [plugin model](https://vite.dev/guide/api-plugin). If your current setup depends heavily on webpack-only loaders, deep compiler plugins, or webpack-native federation patterns, that is less a migration and more a redesign of your build assumptions. Sometimes that redesign is worth it. Sometimes it is just expensive self-improvement.
+أما الانتقال من webpack إلى Vite فتغيير مفاهيمي أكبر. فأنت تغادر عالم محمّلات وإضافات ومُصرِّف webpack إلى خادم تطوير بـESM الأصلي و[نموذج إضافات](https://vite.dev/guide/api-plugin) Rollup وVite. وإن كان إعدادك الحالي يعتمد كثيرًا على محمّلات خاصة بـwebpack، أو إضافات مُصرِّف عميقة، أو أنماط اتحاد أصلية في webpack، فذلك أقل شبهاً بترحيل منه بإعادة تصميم افتراضات بنائك. وأحيانًا تستحق تلك إعادة التصميم كلفتها، وأحيانًا لا تكون إلا تحسينًا ذاتيًا مكلفًا.
 
-Moving from Vite to Rspack means the opposite shift. You are trading some of Vite’s dev-server simplicity for a webpack-like compilation model, usually because you need stronger webpack ecosystem compatibility, more bundler-centric features, or a more familiar path for large existing apps. If you take that route, evaluate Rsbuild too, because it is the layer meant to soften that transition into something closer to normal application development.
+والانتقال من Vite إلى Rspack يعني التحول المعاكس. فأنت تقايض بعض بساطة خادم التطوير في Vite بنموذج تصريف شبيه بـwebpack، عادةً لأنك تحتاج توافقًا أقوى مع نظام webpack البيئي، أو ميزات أكثر تمحورًا حول المُجمِّع، أو مسارًا أكثر ألفة لتطبيقات قائمة كبيرة. وإن سلكت ذلك الطريق، فقيّم Rsbuild أيضًا، لأنه الطبقة المصمّمة لتلطيف ذلك الانتقال إلى شيء أقرب إلى تطوير التطبيقات العادي.
 
-## Quick Reference
+## مرجع سريع
 
-| Dimension | webpack | Rspack | Vite |
+| البُعد | webpack | Rspack | Vite |
 | --- | --- | --- | --- |
-| Mental model | Bundler-first compiler | Webpack-compatible, Rust-powered bundler | Native ESM dev server + Rollup prod build |
-| Language | JavaScript | Rust (with JS interop) | JavaScript (esbuild + Rollup) |
-| Plugin model | Compiler/compilation lifecycle hooks | Webpack-compatible plugin API | Rollup plugin interface + Vite hooks |
-| Loader model | `module.rules` transformations | Webpack-compatible + built-in SWC | Rollup `transform` hook |
-| Dev server | webpack-dev-server (compilation-first) | Built-in (compilation-first, lazy compilation) | Native ESM (on-demand transforms) |
-| HMR | Bundle-based replacement | Bundle-based (default on) | Native ESM boundary invalidation |
-| Dev/prod consistency | Same bundler pipeline | Same bundler pipeline | Different pipelines (ESM dev, Rollup prod) |
-| Module Federation | Core concept (v1) | Built-in v1.5 + enhanced v2 | Not native (Rollup/Vite plugin world) |
-| Migration from webpack | N/A | Lowest friction (deliberate alignment) | Redesign (different plugin/loader model) |
-| Higher-level tool | Create React App (retired), Next.js | Rsbuild | Vite itself (or Nuxt, SvelteKit, etc.) |
+| النموذج الذهني | مُصرِّف يقدّم المُجمِّع | مُجمِّع متوافق مع webpack ومدعوم بـRust | خادم تطوير ESM الأصلي + بناء إنتاج بـRollup |
+| اللغة | JavaScript | Rust (مع تشغيل مشترك بـJS) | JavaScript (esbuild + Rollup) |
+| نموذج الإضافات | خُطّافات دورة حياة المُصرِّف والتصريف | واجهة إضافات متوافقة مع webpack | واجهة إضافات Rollup + خُطّافات Vite |
+| نموذج المحمّلات | تحويلات `module.rules` | متوافق مع webpack + SWC مدمج | خُطّاف `transform` في Rollup |
+| خادم التطوير | webpack-dev-server (تصريف أولًا) | مدمج (تصريف أولًا، تصريف كسول) | ESM الأصلي (تحويلات عند الطلب) |
+| HMR | استبدال قائم على الحزمة | قائم على الحزمة (ممكَّن افتراضيًا) | إبطال حدود ESM الأصلي |
+| اتساق التطوير والإنتاج | خط أنابيب المُجمِّع نفسه | خط أنابيب المُجمِّع نفسه | خطّا أنابيب مختلفان (تطوير ESM، وإنتاج Rollup) |
+| اتحاد الوحدات | مفهوم جوهري (v1) | مدمج v1.5 + v2 معزّز | ليس أصليًا (عالم إضافات Rollup وVite) |
+| الترحيل من webpack | لا ينطبق | أقل احتكاك (محاذاة مقصودة) | إعادة تصميم (نموذج إضافات ومحمّلات مختلف) |
+| أداة أعلى مستوى | Create React App (متقاعدة)، وNext.js | Rsbuild | Vite نفسه (أو Nuxt وSvelteKit وغيرهما) |
 
-## What I’d Actually Recommend
+## ما أوصي به فعلًا
 
-Use webpack if you need the deepest, most established compiler ecosystem and you already have a mature webpack setup that is not causing enough pain to justify moving. It is still the most flexible and most canonical version of the bundler-first model.
+استخدم webpack إن كنت تحتاج أعمق نظام تصريف بيئي وأكثرها رسوخًا، وكان لديك أصلًا إعداد webpack ناضج لا يسبب من الألم ما يبرّر الانتقال. فهو ما زال أكثر نسخ نموذج المُجمِّع أولًا مرونة وقانونية.
 
-Use Rspack if you like webpack’s model—loaders, plugins, chunking, dev server, federation, and overall compilation semantics—but you want better performance and a migration path that does not require rethinking the entire toolchain. It is the “keep the worldview, change the engine” option.
+واستخدم Rspack إن كنت تحب نموذج webpack—المحمّلات، والإضافات، والتقطيع، وخادم التطوير، والاتحاد، ودلالات التصريف عمومًا—لكنك تريد أداءً أفضل ومسار ترحيل لا يتطلب إعادة التفكير في سلسلة الأدوات بكاملها. فهو خيار «أبقِ النظرة إلى العالم، وغيّر المحرّك».
 
-Use Vite if your priority is the smoothest app-focused developer experience, very fast cold starts, very fast HMR, and a simpler plugin story built around Vite and Rollup rather than webpack compatibility. It is usually the best fit for greenfield apps and standard frontend stacks that do not need webpack-shaped power.
+واستخدم Vite إن كانت أولويتك أنعم تجربة تطوير موجّهة نحو التطبيق، وبدايات باردة سريعة جدًا، وHMR سريعًا جدًا، وقصة إضافات أبسط مبنية حول Vite وRollup بدل التوافق مع webpack. وهو عادةً الأنسب للتطبيقات الخضراء والحزم الأمامية القياسية التي لا تحتاج قوة على شكل webpack.
 
-And if you keep saying “Rspack” when what you really mean is “I want Vite-level ergonomics but I’m interested in the Rspack ecosystem,” start with Rsbuild. Life is short, and there is no prize for configuring the lower-level tool directly just to prove you can.
+وإن كنت تستمر في قول «Rspack» بينما تعني فعلًا «أريد راحة على مستوى Vite لكني مهتم بنظام Rspack البيئي»، فابدأ بـRsbuild. فالحياة قصيرة، ولا جائزة لمن يهيّئ الأداة الأدنى مستوى مباشرةً فقط ليثبت أنه قادر على ذلك.

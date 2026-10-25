@@ -1,28 +1,19 @@
 ---
-title: "Developing with AI Tools"
-lang: en
+title: "التطوير بأدوات الذكاء الاصطناعي"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development"
 ---
 
-When you give an agent the power to edit files, run commands, call [MCP](https://modelcontextprotocol.io/) servers, create branches, and review
-changes, the hard part is no longer getting it to act. The hard part is keeping
-it pointed at the right target. The current core tools are [Cursor](https://cursor.com/) and [Claude Code](https://code.claude.com/docs/en/overview).
+عندما تمنح وكيلًا القدرة على تعديل الملفات وتشغيل الأوامر واستدعاء خوادم [MCP](https://modelcontextprotocol.io/) وإنشاء الفروع ومراجعة التغييرات، لم يعد الجزء الصعب هو جعله يتصرّف. بل يصير الجزء الصعب هو إبقاءه موجّهًا إلى الهدف الصحيح. والأدوات الأساسية الحالية هي [Cursor](https://cursor.com/) و[Claude Code](https://code.claude.com/docs/en/overview).
 
-The course baseline was refreshed on June 23, 2026 against official Cursor and
-Claude Code documentation and changelogs. Exact model menus, pricing, and version
-numbers will continue to change, so model-specific claims are dated or phrased as
-volatile.
+حُدِّث خط الأساس لهذه الدورة في 23 يونيو 2026 مقابل التوثيق وسجلات التغيير الرسمية لـ Cursor و Claude Code. وستستمر قوائم النماذج الدقيقة والأسعار وأرقام الإصدارات في التغيّر، لذا فكل ادعاء يخصّ نموذجًا بعينه مؤرَّخ أو مصوغ على أنه متغيّر.
 
-The tools will change. The habits that keep you out of trouble are more durable:
+ستتغيّر الأدوات. أما العادات التي تُبقيك بعيدًا عن المتاعب فهي أكثر دوامًا:
 
-- Give the agent the files, rules, and verification commands that define
-correctness.
-- Use rules for always-on constraints and skills for repeatable workflows.
-- Keep permissions explicit, especially for shell commands, MCP tools, cloud
-agents, and automation.
-- Review diffs and run the quality gates yourself before shipping.
-- Persist durable knowledge in the repository, not in a chat transcript.
+- امنح الوكيل الملفات والقواعد وأوامر التحقّق التي تحدد الصحّة.
+- استخدم القواعد للقيود الدائمة والمهارات لسير العمل القابل للتكرار.
+- أبقِ الصلاحيات صريحة، خصوصًا لأوامر الصدفة وأدوات MCP والوكلاء السحابيين والأتمتة.
+- راجع الفروق وشغّل بوابات الجودة بنفسك قبل النشر.
+- احفظ المعرفة الدائمة في المستودع، لا في نص محادثة.
 
-You should finish this course with a working mental model for when to use inline
-edits, chat, local agents, cloud agents, subagents, hooks, automations, MCP, and
-continuous integration integrations.
+ينبغي أن تنهي هذه الدورة بنموذج ذهني عامل لموعد استخدام التعديلات المضمّنة، والمحادثة، والوكلاء المحليين، والوكلاء السحابيين، والوكلاء الفرعيين، والخطّافات، والأتمتة، و MCP، وتكاملات التكامل المستمر.

@@ -1,24 +1,24 @@
 ---
-title: "Memory Leak Detection in React Applications"
-lang: en
+title: "كشف تسرّبات الذاكرة في تطبيقات React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/memory-leak-detection"
 ---
 
-Memory leaks in React applications are silent killers. Your app launches smoothly, but after an hour of use, it consumes 500MB of RAM and feels sluggish. Users navigate between pages, components mount and unmount, but something holds onto memory that should have been freed. The garbage collector runs, but memory usage keeps climbing. Eventually, the tab crashes or the mobile browser kills your app.
+تسرّبات الذاكرة في تطبيقات React قتلة صامتة. يبدأ تطبيقك بسلاسة، لكنه بعد ساعة من الاستخدام يستهلك 500 ميغابايت من الذاكرة العشوائية ويصبح بطيئًا ثقيلًا. يتنقّل المستخدمون بين الصفحات، وتُركَّب المكوّنات وتُفكَّك، لكن شيئًا ما يتشبّث بذاكرة كان ينبغي تحريرها. يعمل جامع المهملات (garbage collector)، لكن استهلاك الذاكرة يواصل الارتفاع. وفي النهاية ينهار التبويب أو يقتل متصفّح الجوال تطبيقك.
 
-The insidious nature of memory leaks makes them particularly dangerous—they’re invisible during development but catastrophic in production. A single event listener that’s never removed, a closure that captures a large object, or a timer that never gets cleared can transform a snappy React app into a memory-hungry monster. The key is systematic detection, understanding common patterns, and building defensive coding practices.
+وتلك الطبيعة الخبيثة لتسرّبات الذاكرة تجعلها خطيرة بشكل خاص — فهي غير مرئية أثناء التطوير لكنها كارثية في الإنتاج. فمستمع حدث واحد لا يُزال أبدًا، أو إغلاق (closure) يحتفظ بكائن كبير، أو مؤقّت لا يُلغى قط، قد يحوّل تطبيق React خفيفًا إلى وحش نهم للذاكرة. والمفتاح هو الكشف المنهجي، وفهم الأنماط الشائعة، وبناء ممارسات برمجة دفاعية.
 
-## Understanding Memory Leaks in React
+## فهم تسرّبات الذاكرة في React
 
-Memory leaks occur when your JavaScript code holds references to objects that should be garbage collected. For a deep dive into how JavaScript memory management and garbage collection work, see [Memory Management Deep Dive](https://stevekinney.com/courses/react-performance/memory-management-deep-dive).
+تحدث تسرّبات الذاكرة عندما تحتفظ شيفرة JavaScript لديك بمراجع إلى كائنات كان ينبغي أن يجمعها جامع المهملات. ولمعرفة تفصيلية بكيفية عمل إدارة ذاكرة JavaScript وجمع المهملات، راجع [إدارة الذاكرة بعمق](https://stevekinney.com/courses/react-performance/memory-management-deep-dive).
 
-In React applications, memory leaks typically follow these patterns:
+وفي تطبيقات React، تتبع تسرّبات الذاكرة عادةً هذه الأنماط:
 
-- **Event listeners** that aren’t removed on component unmount
-- **Timers and intervals** that continue running after component cleanup
-- **Closures** that capture large objects unnecessarily
-- **Global references** to component callbacks or state
-- **Subscriptions** to external services without proper cleanup
+- **مستمعات الأحداث** التي لا تُزال عند فكّ تركيب المكوّن
+- **المؤقّتات والفترات** التي تستمر في العمل بعد تنظيف المكوّن
+- **الإغلاقات (closures)** التي تحتفظ بكائنات كبيرة بلا داعٍ
+- **المراجع العامة** إلى دوال استدعاء المكوّن أو حالته
+- **الاشتراكات** في خدمات خارجية بلا تنظيف سليم
 
 ```typescript
 // Quick examples of leak-prone patterns
@@ -49,13 +49,13 @@ function ProblematicComponent({ data }: { data: LargeData[] }) {
 }
 ```
 
-The key to prevention is systematic cleanup and understanding which patterns create persistent references.
+ومفتاح الوقاية هو التنظيف المنهجي وفهم أي الأنماط تُنشئ مراجع دائمة.
 
-## Chrome DevTools Memory Profiling
+## تنميط الذاكرة في Chrome DevTools
 
-Chrome DevTools provides powerful tools for detecting memory leaks:
+يوفّر Chrome DevTools أدوات قوية لكشف تسرّبات الذاكرة:
 
-### Taking Memory Snapshots
+### أخذ لقطات للذاكرة
 
 ```typescript
 // Memory profiling utility for development
@@ -166,7 +166,7 @@ function ProfiledComponent() {
 }
 ```
 
-### Automated Memory Leak Detection
+### الكشف الآلي عن تسرّبات الذاكرة
 
 ```typescript
 // Automated memory leak detector
@@ -320,13 +320,13 @@ function useMemoryLeakDetection(componentName: string) {
 }
 ```
 
-## Common Memory Leak Patterns and Detection
+## أنماط تسرّبات الذاكرة الشائعة وكشفها
 
-For detailed patterns and advanced optimization techniques, see [Memory Management Deep Dive](https://stevekinney.com/courses/react-performance/memory-management-deep-dive). Here are the key patterns to watch for:
+للاطلاع على أنماط مفصّلة وتقنيات تحسين متقدّمة، راجع [إدارة الذاكرة بعمق](https://stevekinney.com/courses/react-performance/memory-management-deep-dive). وهذه هي الأنماط الرئيسية التي ينبغي مراقبتها:
 
-### Event Listener Detection
+### كشف تسرّبات مستمعات الأحداث
 
-**Symptoms**: Memory growth during user interactions, especially scrolling or clicking **Detection**: Check for missing cleanup in `useEffect`
+**الأعراض**: نمو الذاكرة أثناء تفاعلات المستخدم، وخصوصًا التمرير أو النقر **الكشف**: افحص التنظيف المفقود في `useEffect`
 
 ```typescript
 // ❌ Missing cleanup - red flag during review
@@ -342,9 +342,9 @@ useEffect(() => {
 }, []);
 ```
 
-### Timer Leak Detection
+### كشف تسرّبات المؤقّتات
 
-**Symptoms**: Components updating after unmount, console errors **Detection**: Check all `setInterval` and `setTimeout` calls
+**الأعراض**: مكوّنات تُحدَّث بعد فكّ التركيب، وأخطاء في وحدة التحكّم **الكشف**: افحص كل نداءات `setInterval` و`setTimeout`
 
 ```typescript
 // Detection technique: Add component name to timers
@@ -358,9 +358,9 @@ useEffect(() => {
 }, []);
 ```
 
-### Closure Leak Detection
+### كشف تسرّبات الإغلاقات
 
-**Symptoms**: Memory growth proportional to data size, sluggish performance **Detection**: Check dependency arrays in `useCallback` and `useMemo`
+**الأعراض**: نمو الذاكرة بما يتناسب مع حجم البيانات، وأداء بطيء **الكشف**: افحص مصفوفات الاعتماد في `useCallback` و`useMemo`
 
 ```typescript
 // ❌ Red flag - large object in dependency array
@@ -381,9 +381,9 @@ const processData = useCallback(
 );
 ```
 
-### Subscription Leak Detection
+### كشف تسرّبات الاشتراكات
 
-**Symptoms**: Multiple event handlers firing, unexpected state updates **Detection**: Use browser dev tools to inspect global event listeners
+**الأعراض**: تشغيل عدة معالجات أحداث، وتحديثات حالة غير متوقّعة **الكشف**: استخدم أدوات تطوير المتصفّح لفحص مستمعات الأحداث العامة
 
 ```typescript
 // Detection helper for development
@@ -405,9 +405,9 @@ useEffect(() => {
 }, []);
 ```
 
-## Advanced Memory Leak Detection Tools
+## أدوات متقدّمة لكشف تسرّبات الذاكرة
 
-### Custom Memory Profiler Component
+### مكوّن تنميط ذاكرة مخصّص
 
 ```typescript
 // Production-safe memory monitoring
@@ -643,7 +643,7 @@ function MemoryProfilerPanel() {
 }
 ```
 
-## Testing for Memory Leaks
+## اختبار تسرّبات الذاكرة
 
 ```typescript
 // Automated memory leak testing
@@ -765,9 +765,9 @@ describe('Memory Leak Tests', () => {
 });
 ```
 
-## Prevention Strategies
+## استراتيجيات الوقاية
 
-### ESLint Rules for Memory Safety
+### قواعد ESLint لسلامة الذاكرة
 
 ```javascript
 // .eslintrc.js - Custom rules for memory leak prevention
@@ -816,7 +816,7 @@ const timerCleanupRule = {
 };
 ```
 
-### Memory-Safe Component Patterns
+### أنماط مكوّنات آمنة للذاكرة
 
 ```typescript
 // Template for memory-safe React components

@@ -1,171 +1,171 @@
 ---
-title: "API Contract Testing"
-lang: en
+title: "اختبار عقود الـ API (API Contract Testing)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/api-contract-testing"
 ---
 
-API contract testing is an umbrella term, not one specific technique with a catchy logo. In the integration sense, it means checking two applications in isolation to make sure the messages they send and receive conform to a shared understanding. In the single-application sense, it can also mean verifying that one implementation actually conforms to its documented contract—an OpenAPI document, say—without reference to any specific consumer. The two sides are usually called the **consumer** and the **provider**, and the contract can be provider-driven or consumer-driven.
+اختبار عقود الـ API مصطلح جامع، لا تقنية واحدة بعينها لها شعار جذّاب. بمعنى التكامل، يعني فحص تطبيقين في معزل للتأكد من أن الرسائل التي يرسلانها ويستقبلانها تتوافق مع فهم مشترك. وبمعنى التطبيق الواحد، قد يعني أيضًا التحقّق من أن تنفيذًا واحدًا يتوافق فعلًا مع عقده الموثّق — مستند OpenAPI مثلًا — دون الرجوع إلى أي مستهلك بعينه. ويُسمّى الطرفان عادةً **المستهلك (consumer)** و**المزوّد (provider)**، ويمكن أن يكون العقد مدفوعًا من المزوّد أو مدفوعًا من المستهلك.
 
-A contract is also not “just the JSON schema.” In practice it usually includes the method, path, parameters, headers, status codes, body shape, and sometimes message metadata or transport details. [Pact’s own model](https://docs.pact.io/getting_started/how_pact_works) makes that explicit: for HTTP, a contract captures an expected request and a minimal expected response; for messaging, it captures the minimal expected message the consumer actually uses. That’s why serious contract testing goes beyond pure schema validation and into allowed interactions.
+كما أن العقد ليس «مجرد مخطط JSON». فهو يشمل عمليًا عادةً التابع (method) والمسار (path) والمعاملات (parameters) والترويسات (headers) وأكواد الحالة (status codes) وشكل الجسم (body)، وأحيانًا بيانات وصفية للرسالة أو تفاصيل النقل. يوضّح [نموذج Pact نفسه](https://docs.pact.io/getting_started/how_pact_works) ذلك صراحةً: فبالنسبة إلى HTTP، يلتقط العقد طلبًا متوقّعًا واستجابة متوقّعة دنيا؛ وبالنسبة إلى المراسلة، يلتقط الرسالة الدنيا المتوقّعة التي يستخدمها المستهلك فعلًا. ولهذا يتجاوز اختبار العقود الجدّي التحقّق من المخطط المحض إلى التفاعلات المسموحة.
 
-## Why Teams Use It
+## لماذا تستخدمه الفرق
 
-Contract testing exists because full integrated end-to-end suites are expensive, slow, hard to debug, and miserable to scale across many services. [Spring Cloud Contract’s docs](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) spell out the usual failure mode plainly: deploying all services for one integration test takes time, locks shared environments, gives late feedback, and is extremely hard to debug. [PactFlow](https://pactflow.io/what-is-contract-testing-page/) describes the same pain from the testing-strategy side: end-to-end integrated tests are slow, flaky, difficult to maintain, and tend to find bugs too late in the pipeline.
+يوجد اختبار العقود لأن مجموعات الاختبار الشاملة المتكاملة من الطرف إلى الطرف مكلفة وبطيئة وصعبة التنقيح وبائسة في التوسّع عبر خدمات كثيرة. تشرح [وثائق Spring Cloud Contract](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) نمط الفشل المعتاد بوضوح: فنشر كل الخدمات لاختبار تكامل واحد يستغرق وقتًا، ويقفل البيئات المشتركة، ويعطي تغذية راجعة متأخرة، ويصعب تنقيحه للغاية. ويصف [PactFlow](https://pactflow.io/what-is-contract-testing-page/) الألم نفسه من جهة استراتيجية الاختبار: فالاختبارات المتكاملة من الطرف إلى الطرف بطيئة وهشّة وصعبة الصيانة وتنزع إلى اكتشاف العلل متأخرًا جدًا في خط الأنابيب.
 
-The appeal of contract tests is that they keep most of the integration confidence while letting each side test independently. [Pact Broker’s docs](https://docs.pact.io/pact_broker) describe contract testing as quicker to execute and more maintainable at scale than traditional integrated testing, and PactFlow places contract tests in the service-test layer of the broader test pyramid rather than at the GUI-heavy top. That’s the right mental model: contract tests reduce your dependency on sprawling end-to-end suites, but they don’t erase the need for provider-side functional tests or a small number of true end-to-end journeys. Humans keep trying to make one test type do every job. Reality keeps declining the offer.
+وجاذبية اختبارات العقود أنها تحفظ معظم ثقة التكامل مع تمكين كل طرف من الاختبار باستقلال. تصف [وثائق Pact Broker](https://docs.pact.io/pact_broker) اختبار العقود بأنه أسرع تنفيذًا وأسهل صيانة عند التوسّع من الاختبار المتكامل التقليدي، وتضع PactFlow اختبارات العقود في طبقة اختبار الخدمة من هرم الاختبار الأوسع، لا في قمّته المثقلة بواجهة الرسوم. وهذا هو النموذج الذهني الصحيح: تقلّل اختبارات العقود اعتمادك على مجموعات شاملة ممتدة من الطرف إلى الطرف، لكنها لا تمحو الحاجة إلى اختبارات وظيفية من جهة المزوّد أو إلى عدد صغير من رحلات حقيقية من الطرف إلى الطرف. ما يزال البشر يحاولون جعل نوع اختبار واحد يقوم بكل المهام. والواقع ما يزال يرفض العرض.
 
-## What Contract Tests Actually Verify
+## ما الذي تتحقق منه اختبارات العقود فعلًا
 
-At a high level, contract testing answers one question: “If this consumer talks to that provider in the ways it actually uses, will the integration still work?” For consumer-driven tools like Pact, that means the consumer defines an interaction, generates a contract artifact, and the provider later proves it can satisfy that interaction. For spec-driven workflows, it means the provider publishes the contract up front and proves the running implementation conforms to it.
+على مستوى عالٍ، تجيب اختبارات العقود عن سؤال واحد: «إن تحدّث هذا المستهلك إلى ذلك المزوّد بالطرق التي يستخدمها فعلًا، فهل سيبقى التكامل عاملًا؟» وبالنسبة إلى أدوات مدفوعة المستهلك مثل Pact، يعني ذلك أن المستهلك يعرّف تفاعلًا، ويولّد أثرًا للعقد، ثم يُثبت المزوّد لاحقًا أنه قادر على تلبية ذلك التفاعل. وبالنسبة إلى مسارات العمل المدفوعة بالمواصفة، يعني أن المزوّد ينشر العقد مقدّمًا ويُثبت أن التنفيذ العامل يتوافق معه.
 
-That distinction matters because “schema valid” is weaker than “compatible.” [PactFlow’s own explanation](https://pactflow.io/blog/what-is-contract-testing/) says contract testing goes beyond schema testing by checking the allowed set of interactions and allowing the contract to evolve over time. A schema tells you what shapes are legal; a contract test tells you whether the shapes and behaviors one side relies on are still honored. Teams mix these up constantly, then act surprised when a perfectly valid schema change still breaks production.
+ويفرق هذا لأنه «صالح وفق المخطط» أضعف من «متوافق». تقول [شرح PactFlow الخاص](https://pactflow.io/blog/what-is-contract-testing/) إن اختبار العقود يتجاوز اختبار المخطط بفحصه المجموعة المسموحة من التفاعلات وسماحه للعقد بالتطور عبر الزمن. يخبرك المخطط بأي الأشكال قانونية؛ ويخبرك اختبار العقد بما إذا كانت الأشكال والسلوكيات التي يعتمد عليها طرف ما ما زالت مُحترمة. تخلط الفرق بين هذين الأمرين باستمرار، ثم تتفاجأ حين يظل تغيير مخطط سليم تمامًا يكسر الإنتاج.
 
-## The Main Styles
+## الأنماط الرئيسية
 
-**Provider-driven (spec-driven) contract testing.** The provider publishes a formal contract artifact—usually [OpenAPI](https://spec.openapis.org/oas/v3.2.0.html) for HTTP, [AsyncAPI](https://www.asyncapi.com/docs/concepts/asyncapi-document) for event-driven interfaces, Protobuf for gRPC-style systems, or a GraphQL schema. Consumers, conformance tests, SDK generators, and diff tools all work from that artifact. OpenAPI’s current official spec is 3.2.0, and OpenAPI 3.1 added full compatibility with JSON Schema 2020-12, which is why spec-first workflows have gotten much nicer than the old “Swagger but with feelings” era.
+**اختبار العقود مدفوع المزوّد (مدفوع المواصفة).** ينشر المزوّد أثرًا رسميًا للعقد — عادةً [OpenAPI](https://spec.openapis.org/oas/v3.2.0.html) لـ HTTP، أو [AsyncAPI](https://www.asyncapi.com/docs/concepts/asyncapi-document) للواجهات المدفوعة بالأحداث، أو Protobuf للأنظمة على نمط gRPC، أو مخطط GraphQL. ويعمل المستهلكون واختبارات المطابقة ومولّدات SDK وأدوات الفروق كلها من ذلك الأثر. أحدث مواصفة رسمية لـ OpenAPI هي 3.2.0، وأضاف OpenAPI 3.1 توافقًا كاملًا مع JSON Schema 2020-12، ولهذا صارت مسارات العمل المدفوعة بالمواصفة أجمل بكثير من حقبة «Swagger لكن بمشاعر» القديمة.
 
-**Consumer-driven contract testing.** [Fowler’s original CDC pattern](https://martinfowler.com/articles/consumerDrivenContracts.html) was about making provider obligations visible by expressing consumer expectations directly, instead of forcing providers to guess which parts of a broad contract are actually being used. Pact implements that model by having the consumer test define the interaction and the provider verify it later. [Spring Cloud Contract](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) also supports consumer-driven workflows, alongside producer-driven ones, especially in JVM-heavy shops.
+**اختبار العقود مدفوع المستهلك.** كان [نمط CDC الأصلي عند Fowler](https://martinfowler.com/articles/consumerDrivenContracts.html) يدور حول جعل التزامات المزوّد مرئية بالتعبير عن توقعات المستهلك مباشرةً، بدل إجبار المزوّدين على تخمين أي أجزاء من عقد واسع تُستخدم فعلًا. ويطبّق Pact ذلك النموذج بأن يعرّف اختبار المستهلك التفاعل ويثبته المزوّد لاحقًا. ويدعم [Spring Cloud Contract](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) أيضًا مسارات العمل المدفوعة بالمستهلك إلى جانب المدفوعة بالمنتج، خاصةً في البيئات المثقلة بـ JVM.
 
-**Bi-directional contract testing.** In this model, the provider publishes a contract artifact such as OpenAPI, consumers publish their own expectation artifacts or test-derived contracts, and compatibility is checked without requiring direct code access to both sides. [PactFlow positions this](https://pactflow.io/difference-between-consumer-driven-contract-testing-and-bi-directional-contract-testing/) as a way to reuse existing tools and let more roles participate—including testers and QA engineers—which makes it useful in design-first or mixed-tooling organizations. It’s a real workflow pattern, but the specific label is largely vendor terminology rather than a universal standard.
+**اختبار العقود ثنائي الاتجاه.** في هذا النموذج، ينشر المزوّد أثرًا للعقد مثل OpenAPI، وينشر المستهلكون آثارًا لتوقعاتهم أو عقودًا مستمدّة من الاختبارات، ويُفحص التوافق دون الحاجة إلى وصول برمجي مباشر إلى الطرفين. ويطرح [PactFlow هذا](https://pactflow.io/difference-between-consumer-driven-contract-testing-and-bi-directional-contract-testing/) كطريقة لإعادة استخدام الأدوات الموجودة وإشراك أدوار أكثر — بمن فيهم المختبِرون ومهندسو ضمان الجودة — ما يجعله مفيدًا في المؤسسات المدفوعة بالتصميم أو ذات الأدوات المختلطة. إنه نمط سير عمل حقيقي، لكن التسمية المحدّدة إلى حد كبير مصطلحات مورّد لا معيار عالمي.
 
-| Style | Who writes the contract | Who verifies | Strengths | Tradeoffs |
+| النمط | من يكتب العقد | من يتحقق | نقاط القوة | المقايضات |
 | --- | --- | --- | --- | --- |
-| Provider-driven (spec) | Provider (OpenAPI, etc.) | Provider + consumers | Single source of truth, broad tooling, design-first | Consumers can’t express usage-specific expectations |
-| Consumer-driven (CDC) | Consumer (Pact, etc.) | Provider verifies consumer contracts | Catches real consumer breakages, minimal contracts | Requires broker/coordination, provider must run consumer contracts |
-| Bi-directional | Both independently | Compatibility check (e.g., PactFlow) | Reuses existing tools, no direct code access needed | Weaker guarantees than CDC, vendor-specific tooling |
+| مدفوع المزوّد (المواصفة) | المزوّد (OpenAPI، إلخ) | المزوّد + المستهلكون | مصدر حقيقة واحد، أدوات واسعة، تصميم أولًا | لا يستطيع المستهلكون التعبير عن توقعات خاصة بالاستخدام |
+| مدفوع المستهلك (CDC) | المستهلك (Pact، إلخ) | المزوّد يثبت عقود المستهلك | يلتقط أعطال المستهلك الحقيقية، عقود دنيا | يتطلب وسيطًا/تنسيقًا، على المزوّد تشغيل عقود المستهلك |
+| ثنائي الاتجاه | كلا الطرفين باستقلال | فحص توافق (مثل PactFlow) | يعيد استخدام الأدوات الموجودة، لا يحتاج وصولًا برمجيًا مباشرًا | ضمانات أضعف من CDC، أدوات خاصة بالمورّد |
 
-| Protocol | Contract artifact | Schema diffing | Interaction testing | Key tooling |
+| البروتوكول | أثر العقد | مقارنة المخططات | اختبار التفاعلات | الأدوات الرئيسية |
 | --- | --- | --- | --- | --- |
-| REST/HTTP | OpenAPI | oasdiff | Schemathesis, Dredd | OpenAPI Generator, Prism |
-| GraphQL | GraphQL schema | GraphQL Inspector | Document/fragment validation | Apollo, The Guild |
-| gRPC/Protobuf | `.proto` files | Buf breaking | Pact plugin (sync messages) | Buf, grpcurl |
-| Events/Async | AsyncAPI | AsyncAPI diff tools | Pact (message pacts) | AsyncAPI Generator |
+| REST/HTTP | OpenAPI | oasdiff | Schemathesis، Dredd | OpenAPI Generator، Prism |
+| GraphQL | مخطط GraphQL | GraphQL Inspector | تحقّق من المستندات/الأجزاء | Apollo، The Guild |
+| gRPC/Protobuf | ملفات `.proto` | Buf breaking | إضافة Pact (رسائل متزامنة) | Buf، grpcurl |
+| الأحداث/غير المتزامن | AsyncAPI | أدوات مقارنة AsyncAPI | Pact (عقود الرسائل) | AsyncAPI Generator |
 
-## HTTP and REST APIs
+## واجهات HTTP وREST
 
-For REST APIs, the clean baseline is provider-owned OpenAPI plus runtime conformance checks. The [OpenAPI Initiative](https://spec.openapis.org/oas/v3.2.0.html) describes OAS as a standard, language-agnostic interface description for HTTP APIs that lets humans and tools understand a service without source access. That makes OpenAPI the natural contract artifact for documentation, SDK generation, linting, schema validation, and compatibility diffing.
+بالنسبة إلى واجهات REST، الأساس النظيف هو OpenAPI المملوك للمزوّد مع فحوص المطابقة وقت التشغيل. تصف [مبادرة OpenAPI](https://spec.openapis.org/oas/v3.2.0.html) مواصفة OAS بأنها وصف واجهة معياري محايد اللغة لواجهات HTTP، يمكّن البشر والأدوات من فهم خدمة دون وصول إلى شيفرتها. وهذا يجعل OpenAPI أثر العقد الطبيعي للتوثيق وتوليد SDK والتدقيق والتحقّق من المخطط ومقارنة التوافق.
 
-Then you need to prove the implementation matches the contract, because a YAML file has never fixed a broken server no matter how beautifully indented it is. [Schemathesis](https://schemathesis.readthedocs.io/) automatically generates property-based tests from OpenAPI or GraphQL schemas and is specifically aimed at exercising edge cases. Dredd validates an API description document against the backend implementation and recommends that each operation be run in isolation with setup and teardown hooks. Together, those tools cover the classic provider-side question: “Does the running API actually behave like the contract says?”
+ثم تحتاج إلى إثبات أن التنفيذ يطابق العقد، لأن ملف YAML لم يُصلح خادمًا معطوبًا قط مهما كان تنسيقه جميلًا. تولّد [Schemathesis](https://schemathesis.readthedocs.io/) تلقائيًا اختبارات قائمة على الخصائص من مخططات OpenAPI أو GraphQL، وهي موجّهة تحديدًا لاستقصاء الحالات الحدّية. ويتحقق Dredd من مستند وصف API مقابل التنفيذ الخلفي ويوصي بتشغيل كل عملية في معزل مع خطّافات إعداد وتفكيك. ومعًا، تغطي هاتان الأداتان سؤال المزوّد الكلاسيكي: «هل تسلك الـ API العاملة فعلًا كما يقول العقد؟»
 
-Spec diffs belong in pull requests, not in postmortems. Tools like [oasdiff](https://github.com/oasdiff/oasdiff/blob/main/docs/BREAKING-CHANGES.md) compare two OpenAPI documents and surface breaking versus non-breaking changes before merge—exactly the sort of boring automation that saves teams from dramatic production learnings later. If your team is spec-first, this diff step is usually the cheapest high-value improvement you can make.
+تنتمي فروق المواصفة إلى طلبات السحب، لا إلى تحليلات ما بعد الحوادث. تقارن أدوات مثل [oasdiff](https://github.com/oasdiff/oasdiff/blob/main/docs/BREAKING-CHANGES.md) مستندَي OpenAPI وتُبرز التغييرات الكاسرة مقابل غير الكاسرة قبل الدمج — وهو بالضبط نوع الأتمتة المملّ الذي ينجّي الفرق من دروس إنتاج درامية لاحقًا. وإن كان فريقك مدفوعًا بالمواصفة، فخطوة الفرق هذه عادةً أرخص تحسين عالي القيمة يمكنك القيام به.
 
-## Consumer-Driven Contracts
+## العقود مدفوعة المستهلك
 
-Pact is the clearest example of the CDC flow. A **pact** is a collection of interactions. For HTTP, each interaction describes an expected request and the minimal expected response the consumer cares about. Consumer tests exercise the API client against a mock provider, and provider verification later replays those interactions against the real provider and checks that the provider returns at least the minimal expected response. That last phrase matters more than people realize: the contract should describe what the consumer actually needs, not every field the provider happens to send today.
+Pact أوضح مثال على مسار CDC. و**العقد (pact)** مجموعة من التفاعلات. وبالنسبة إلى HTTP، يصف كل تفاعل طلبًا متوقّعًا والاستجابة الدنيا المتوقّعة التي يهمّ المستهلك أمرها. تمارس اختبارات المستهلك عميل الـ API مقابل مزوّد بديل مُحاكى، ثم يعيد تحقّق المزوّد لاحقًا تشغيل تلك التفاعلات مقابل المزوّد الحقيقي ويفحص أن المزوّد يعيد على الأقل الاستجابة الدنيا المتوقّعة. وهذه العبارة الأخيرة أهم مما يدركه الناس: ينبغي أن يصف العقد ما يحتاجه المستهلك فعلًا، لا كل حقل يصادف أن يرسله المزوّد اليوم.
 
-The isolation rule is non-negotiable. [Pact says](https://docs.pact.io/getting_started/provider_states) each interaction should be independent, and **provider states** exist so you can set up whatever data or provider condition is needed for a single interaction. Those states are about the *provider’s* state—not the consumer’s state and not hidden workflow sequencing in the request. Dredd makes the same point in different language by recommending isolated context for each transaction. If your contract tests only pass when run in a special sequence, you’ve reinvented a fragile integration suite and called it sophistication.
+قاعدة العزل غير قابلة للتفاوض. تقول [Pact](https://docs.pact.io/getting_started/provider_states) إن كل تفاعل يجب أن يكون مستقلًا، وتوجد **حالات المزوّد (provider states)** لتتمكن من تهيئة أي بيانات أو شرط مزوّد يلزم لتفاعل واحد. وتتعلّق تلك الحالات بحالة *المزوّد* — لا بحالة المستهلك ولا بتسلسل سير عمل خفيّ في الطلب. ويقول Dredd الشيء نفسه بلغة مختلفة بتوصيته بسياق معزول لكل معاملة. فإن لم تنجح اختبارات عقودك إلا عند تشغيلها بتسلسل خاص، فأنت قد أعدت اختراع مجموعة تكامل هشّة وسمّيتها رقيًّا.
 
-The other big CDC rule is to stay close to the consumer’s API client layer. [Pact’s consumer docs](https://docs.pact.io/consumer) explicitly warn against using Pact for big integrated UI tests, because exact matching across many layers makes tests brittle and creates a cartesian explosion of interactions for the provider to verify. Pact also provides matching rules so you can assert types and patterns instead of pinning everything to exact values. That’s the difference between a contract and a screenshot of today’s implementation.
+القاعدة الأخرى الكبرى في CDC هي البقاء قريبًا من طبقة عميل الـ API لدى المستهلك. تحذّر [وثائق مستهلك Pact](https://docs.pact.io/consumer) صراحةً من استخدام Pact لاختبارات واجهة كبيرة متكاملة، لأن المطابقة الدقيقة عبر طبقات كثيرة تجعل الاختبارات هشّة وتخلق انفجارًا ديكارتيًا من التفاعلات على المزوّد أن يتحقق منها. ويوفّر Pact أيضًا قواعد مطابقة حتى تؤكد الأنواع والأنماط بدل تثبيت كل شيء على قيم دقيقة. وهذا هو الفرق بين عقد ولقطة شاشة لتنفيذ اليوم.
 
-A healthy CDC pipeline usually looks like this: consumer unit test generates contract, contract gets published, provider verification runs in CI with provider states, verification results are published, deployments are recorded, and release is gated on environment-aware compatibility checks. [Pact Broker](https://docs.pact.io/pact_broker) exists precisely because those artifacts and verification results become scattered across many builds otherwise. Its `can-i-deploy` flow depends on recording deployments and then checking whether the version you want to release is compatible with the versions already present in the target environment.
+يبدو خط CDC السليم عادةً هكذا: يولّد اختبار وحدة المستهلك العقد، فيُنشر العقد، ثم يعمل تحقّق المزوّد في CI مع حالات المزوّد، فتُنشر نتائج التحقّق، وتُسجَّل عمليات النشر، ويُبوَّب الإصدار على فحوص توافق واعية بالبيئة. يوجد [Pact Broker](https://docs.pact.io/pact_broker) تحديدًا لأن تلك الآثار ونتائج التحقّق تصير متفرقة عبر عمليات بناء كثيرة لولا ذلك. ويعتمد مساره `can-i-deploy` على تسجيل عمليات النشر ثم فحص ما إذا كانت النسخة التي تريد إصدارها متوافقة مع النسخ الموجودة فعلًا في البيئة الهدف.
 
 ## Spring Cloud Contract
 
-If your organization is deep in Spring, [Spring Cloud Contract](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) is the most opinionated mainstream alternative to Pact-style workflows. Its docs explicitly say it supports both consumer-driven and producer-driven contract testing, and the framework can generate tests and stubs from contracts. It also supports runtime stub generation, which is useful when consumers need stubs before the producer has fully finished implementation. That makes it attractive for teams that want producer-owned contracts, artifact-repository-based stub sharing, or a workflow that feels native in the Spring ecosystem.
+إن كانت مؤسستك غارقة في Spring، فـ [Spring Cloud Contract](https://docs.spring.io/spring-cloud-contract/docs/current/reference/htmlsingle/) هو البديل السائد الأكثر حسمًا في الرأي لمسارات عمل على نمط Pact. تقول وثائقه صراحةً إنه يدعم اختبار العقود مدفوع المستهلك ومدفوع المنتج معًا، ويمكن للإطار أن يولّد اختبارات وبدائل (stubs) من العقود. وهو يدعم أيضًا توليد البدائل وقت التشغيل، وهو مفيد حين يحتاج المستهلكون بدائل قبل أن يُكمل المنتج تنفيذه. وهذا يجعله جاذبًا للفرق التي تريد عقودًا مملوكة للمنتج، أو مشاركة بدائل عبر مستودع آثار، أو سير عمل يبدو أصيلًا في منظومة Spring.
 
-## Event-Driven Systems
+## الأنظمة مدفوعة الأحداث
 
-For asynchronous systems, the contract artifact usually isn’t OpenAPI—it’s [AsyncAPI](https://www.asyncapi.com/docs/concepts/asyncapi-document). AsyncAPI’s docs describe the AsyncAPI document as a communication contract between senders and receivers in an event-driven system, specifying the payload content a sender must provide and the properties a receiver can rely on. That’s exactly the right mental model for queues, topics, and event streams.
+بالنسبة إلى الأنظمة غير المتزامنة، لا يكون أثر العقد عادةً OpenAPI — بل [AsyncAPI](https://www.asyncapi.com/docs/concepts/asyncapi-document). تصف وثائق AsyncAPI مستند AsyncAPI بأنه عقد تواصل بين المرسِلين والمستقبِلين في نظام مدفوع بالأحداث، يحدّد محتوى الحمولة التي يجب أن يوفّرها المرسِل والخصائص التي يمكن للمستقبِل الاعتماد عليها. وهذا هو بالضبط النموذج الذهني الصحيح للطوابير (queues) والمواضيع (topics) وتدفقات الأحداث.
 
-[Pact also supports](https://docs.pact.io/university/message-pact-async/00_1_intro) message-based contract testing by abstracting away the specific broker technology and focusing on the messages themselves. Its current docs distinguish asynchronous messages from synchronous non-HTTP request/response interactions and explicitly note that synchronous messages can represent gRPC calls or WebSocket exchanges. So, for events, commands, or non-HTTP RPC, you’re not forced back into hand-rolled mocks just because the transport isn’t plain REST.
+[يدعم Pact أيضًا](https://docs.pact.io/university/message-pact-async/00_1_intro) اختبار العقود القائم على الرسائل بتجريده لتقنية الوسيط المحدّدة وتركيزه على الرسائل نفسها. وتميّز وثائقه الحالية بين الرسائل غير المتزامنة والتفاعلات المتزامنة غير HTTP من نوع طلب/استجابة، وتلاحظ صراحةً أن الرسائل المتزامنة يمكن أن تمثّل نداءات gRPC أو تبادلات WebSocket. لذا، بالنسبة إلى الأحداث أو الأوامر أو RPC غير HTTP، لن تُجبر على العودة إلى بدائل مكتوبة يدويًا لمجرد أن النقل ليس REST صِرفًا.
 
-The main design rule for event contracts is to contract on what consumers actually consume. That usually means payload shape, message metadata, routing information, and explicit error or retry semantics where relevant. Ordering guarantees, idempotency rules, dead-letter behavior, and replay expectations are often just as important as the payload itself, but many teams leave those in tribal knowledge and then wonder why the first consumer incident feels like anthropology. The payload contract alone is rarely the whole story.
+قاعدة التصميم الرئيسية لعقود الأحداث هي التعاقد على ما يستهلكه المستهلكون فعلًا. يعني ذلك عادةً شكل الحمولة، والبيانات الوصفية للرسالة، ومعلومات التوجيه، ودلالات صريحة للأخطاء أو إعادة المحاولة حيث يلزم. وغالبًا ما تكون ضمانات الترتيب، وقواعد التساوي (idempotency)، وسلوك الرسائل الميتة، وتوقعات الإعادة، بنفس أهمية الحمولة نفسها، لكن كثيرًا من الفرق يتركها في المعرفة القبلية ثم يتساءل لماذا تبدو أول حادثة لدى المستهلك مثل علم الإنسان. ونادرًا ما تكون حمولة العقد وحدها القصة كاملة.
 
 ## GraphQL
 
-GraphQL changes the shape of contract testing because the schema is already a type system. The [GraphQL spec](https://spec.graphql.org/October2021/) says every service defines an application-specific type system, that requests are validated within that system, and that the service can guarantee the shape and nature of the response. It also says GraphQL is introspective, which is why tooling around schemas and operations is so strong.
+يغيّر GraphQL شكل اختبار العقود لأن المخطط هو أصلًا نظام أنواع. تقول [مواصفة GraphQL](https://spec.graphql.org/October2021/) إن كل خدمة تعرّف نظام أنواع خاصًا بالتطبيق، وإن الطلبات تُتحقَّق ضمن ذلك النظام، وإن الخدمة يمكنها ضمان شكل الاستجابة وطبيعتها. وتقول أيضًا إن GraphQL استباقي (introspective)، ولهذا تكون الأدوات حول المخططات والعمليات قوية إلى هذا الحد.
 
-That makes GraphQL contract testing a two-layer job. First, diff the schema for breaking changes. [GraphQL Inspector](https://the-guild.dev/graphql/inspector/docs) compares two schemas and labels each change as breaking, non-breaking, or dangerous. Second, validate the real consumer documents and fragments against the schema, because GraphQL consumers request fields at field-level granularity. A schema diff without validating actual operations is only half a contract strategy. It catches capability changes, but not necessarily whether your real clients still request a valid and meaningful subset of that capability.
+وهذا يجعل اختبار عقود GraphQL مهمّة من طبقتين. أولًا، قارن المخطط بحثًا عن تغييرات كاسرة. يقارن [GraphQL Inspector](https://the-guild.dev/graphql/inspector/docs) مخططين ويصنّف كل تغيير بأنه كاسر أو غير كاسر أو خطير. ثانيًا، تحقّق من مستندات المستهلك وأجزائه الحقيقية مقابل المخطط، لأن مستهلكي GraphQL يطلبون الحقول بتفصيل مستوى الحقل. ومقارنة مخطط دون التحقّق من العمليات الفعلية ليست إلا نصف استراتيجية عقد. فهي تلتقط تغييرات القدرات، لكن ليس بالضرورة ما إذا كان عملاؤك الحقيقيون ما زالوا يطلبون مجموعة فرعية صالحة وذات معنى من تلك القدرات.
 
-## gRPC and Protobuf
+## gRPC وProtobuf
 
-For gRPC and Protobuf systems, the schema contract is the `.proto` file. [Protocol Buffers’ docs](https://protobuf.dev/overview/) emphasize that old code can usually read new messages safely if you evolve the schema carefully, because old code ignores newly added fields. But they also call out edge cases like `oneof`, where adding or removing fields can create compatibility problems that aren’t obvious on first glance. Protobuf evolution is forgiving right up until it suddenly isn’t.
+بالنسبة إلى أنظمة gRPC وProtobuf، يكون عقد المخطط هو ملف `.proto`. تشدّد [وثائق Protocol Buffers](https://protobuf.dev/overview/) على أن الشيفرة القديمة يمكنها عادةً قراءة الرسائل الجديدة بأمان إن طوّرت المخطط بعناية، لأن الشيفرة القديمة تتجاهل الحقول المُضافة حديثًا. لكنها تبرز أيضًا حالات حدّية مثل `oneof`، حيث قد تخلق إضافة الحقول أو حذفها مشكلات توافق غير واضحة من النظرة الأولى. تطور Protobuf متسامح حتى يتوقف عن ذلك فجأة.
 
-This is where [Buf](https://buf.build/docs/breaking/) earns its keep. Buf’s breaking-change detection compares the current Protobuf schema to a previous version, classifies changes under configurable rule categories, and is explicitly designed to mechanically identify breaking changes so humans don’t have to spot them by code-review vibes alone. If you publish Protobuf contracts and don’t run a schema compatibility check in CI, you’re basically doing archaeology as governance.
+وهنا يبرّر [Buf](https://buf.build/docs/breaking/) وجوده. يقارن اكتشاف التغييرات الكاسرة في Buf مخطط Protobuf الحالي بنسخة سابقة، ويصنّف التغييرات ضمن فئات قواعد قابلة للتهيئة، وهو مصمّم صراحةً لتحديد التغييرات الكاسرة آليًا حتى لا يضطر البشر إلى رصدها بحدس مراجعة الشيفرة وحده. فإن نشرت عقود Protobuf ولم تشغّل فحص توافق المخطط في CI، فأنت عمليًا تمارس علم الآثار كحوكمة.
 
-If you want interaction-level tests for gRPC rather than just schema compatibility, [Pact’s synchronous message support and plugin system](https://docs.pact.io/implementation_guides/javascript/docs/messages) are the bridge. Pact’s docs explicitly list gRPC and WebSocket as examples of synchronous non-HTTP interactions, and its plugin system extends Pact into transports like gRPC. So, the practical pattern for Protobuf systems is often schema diffing with Buf plus selected interaction-level contract tests where request/response behavior matters.
+وإن أردت اختبارات على مستوى التفاعل لـ gRPC لا مجرد توافق المخطط، فـ [دعم Pact للرسائل المتزامنة ونظامه الإضافي (plugin)](https://docs.pact.io/implementation_guides/javascript/docs/messages) هو الجسر. تُدرِج وثائق Pact صراحةً gRPC وWebSocket كمثالين على تفاعلات متزامنة غير HTTP، ويمدّ نظامه الإضافي Pact إلى وسائط نقل مثل gRPC. لذا فالنمط العملي لأنظمة Protobuf غالبًا هو مقارنة المخططات بـ Buf مع اختبارات عقود مختارة على مستوى التفاعل حيث يهمّ سلوك الطلب/الاستجابة.
 
-## A Practical Pipeline
+## خط أنابيب عملي
 
-A solid pipeline usually has four layers:
+يحتوي خط الأنابيب المتين عادةً على أربع طبقات:
 
-- **Version the contract artifact with the code**—OpenAPI, AsyncAPI, GraphQL schema, `.proto`, or CDC contract files.
-- **Run contract checks in pull requests**: OpenAPI diff, GraphQL schema diff, Protobuf breaking checks, or CDC verification against changed interactions.
-- **Run implementation conformance or provider verification in CI.**
-- **Gate release on environment-aware compatibility**, not just “tests passed on my branch.” Pact Broker’s [`can-i-deploy`](https://docs.pact.io/pact_broker/client_cli/readme) model is the clearest example of that last step, but the principle applies even if you use a different registry or contract store.
+- **أدرِج أثر العقد في الإصدارات مع الشيفرة** — OpenAPI أو AsyncAPI أو مخطط GraphQL أو `.proto` أو ملفات عقود CDC.
+- **شغّل فحوص العقود في طلبات السحب**: فرق OpenAPI، أو فرق مخطط GraphQL، أو فحوص Protobuf الكاسرة، أو تحقّق CDC مقابل التفاعلات المتغيرة.
+- **شغّل مطابقة التنفيذ أو تحقّق المزوّد في CI.**
+- **بوّب الإصدار على توافق واعٍ بالبيئة**، لا مجرد «نجحت الاختبارات على فرعي». نموذج [`can-i-deploy`](https://docs.pact.io/pact_broker/client_cli/readme) في Pact Broker أوضح مثال على تلك الخطوة الأخيرة، لكن المبدأ ينطبق حتى إن استخدمت سجلًا أو مخزن عقود مختلفًا.
 
-The default split I recommend is straightforward. Use provider-owned contracts as the baseline for every API. Add schema diffing on every pull request. Add runtime conformance tests so documentation and implementation can’t drift apart quietly. Then add consumer-driven contracts only where consumer-specific behavior matters enough that spec compliance alone is too weak—optional fields, error handling, consumer-specific subsets, legacy integrations, or places where one provider serves many consumers with different expectations. That gives you coverage without turning the whole organization into a shrine to one testing tool.
+التقسيم الافتراضي الذي أوصي به مباشر. استخدم العقود المملوكة للمزوّد كأساس لكل API. أضف مقارنة المخططات على كل طلب سحب. أضف اختبارات مطابقة وقت التشغيل حتى لا ينحرف التوثيق والتنفيذ عن بعضهما بصمت. ثم أضف عقودًا مدفوعة المستهلك فقط حيث يهمّ السلوك الخاص بالمستهلك بما يكفي ليكون الامتثال للمواصفة وحده أضعف من اللازم — الحقول الاختيارية، ومعالجة الأخطاء، والمجموعات الفرعية الخاصة بالمستهلك، والتكاملات القديمة، أو المواضع التي يخدم فيها مزوّد واحد مستهلكين كثرًا بتوقعات مختلفة. يمنحك ذلك تغطية دون تحويل المنظمة كلها إلى مزار يقدّس أداة اختبار واحدة.
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-**Keep contracts minimal and intention-revealing.** Pact’s model of a [minimal expected response](https://docs.pact.io/getting_started/how_pact_works) is the right instinct, and Fowler’s earlier CDC guidance about “just enough” validation points in the same direction. Assert only what the consumer actually needs or what the provider explicitly guarantees. The moment you start freezing incidental fields, you create noise, false breakages, and pointless churn.
+**أبقِ العقود دنيا وكاشفة للنيّة.** نموذج Pact للـ [استجابة الدنيا المتوقّعة](https://docs.pact.io/getting_started/how_pact_works) هو الحدس الصحيح، وتوجيه Fowler الأسبق في CDC حول التحقّق «بالقدر الكافي فقط» يشير في الاتجاه نفسه. أكّد فقط ما يحتاجه المستهلك فعلًا أو ما يضمنه المزوّد صراحةً. فبمجرد أن تبدأ بتجميد حقول عارضة، تخلق ضجيجًا وأعطالًا كاذبة وتغيّرًا بلا طائل.
 
-**Keep every interaction isolated.** [Pact provider states](https://docs.pact.io/getting_started/provider_states) exist for this reason. Dredd’s hook model says the same thing from the provider-conformance side. If a test needs “first create, then update, then fetch, then delete” in one chain just to prove the contract, that’s not a contract test anymore. That’s a workflow test wearing fake glasses.
+**أبقِ كل تفاعل معزولًا.** توجد [حالات مزوّد Pact](https://docs.pact.io/getting_started/provider_states) لهذا السبب. ويقول نموذج خطّافات Dredd الشيء نفسه من جهة مطابقة المزوّد. فإن احتاج اختبار إلى «أنشئ أولًا، ثم حدّث، ثم اجلب، ثم احذف» في سلسلة واحدة لمجرد إثبات العقد، فلم يعد ذلك اختبار عقد. بل اختبار سير عمل يرتدي نظارة مزيّفة.
 
-**Prefer matching rules over exact snapshots.** Pact’s own [consumer docs](https://docs.pact.io/consumer) warn that exact matching across large consumer tests creates brittle tests and interaction explosion. Use type matchers, pattern matchers, and “contains at least this” semantics where appropriate. Save exact values for things that are genuinely part of the public contract—enum literals, canonical error codes, or hard business invariants.
+**فضّل قواعد المطابقة على اللقطات الدقيقة.** تحذّر [وثائق مستهلك Pact](https://docs.pact.io/consumer) نفسها من أن المطابقة الدقيقة عبر اختبارات مستهلك كبيرة تخلق اختبارات هشّة وانفجارًا في التفاعلات. استخدم مطابِقات الأنواع ومطابِقات الأنماط ودلالات «يحتوي على الأقل هذا» حيث يلزم. واحتفظ بالقيم الدقيقة للأشياء التي هي فعلًا جزء من العقد العام — قيم التعداد الحرفية، وأكواد الأخطاء القانونية، أو الثوابت التجارية الصارمة.
 
-**Diff the contract artifact itself.** For OpenAPI, use [spec diffing](https://github.com/oasdiff/oasdiff/blob/main/docs/BREAKING-CHANGES.md). For GraphQL, diff schemas and validate documents. For Protobuf, run Buf breaking. These checks belong in pull requests because that’s where compatibility policy should become visible, reviewable, and boring. Boring is good here. Boring means fewer emergency meetings.
+**قارن أثر العقد نفسه.** بالنسبة إلى OpenAPI، استخدم [مقارنة المواصفة](https://github.com/oasdiff/oasdiff/blob/main/docs/BREAKING-CHANGES.md). وبالنسبة إلى GraphQL، قارن المخططات وتحقّق من المستندات. وبالنسبة إلى Protobuf، شغّل Buf breaking. تنتمي هذه الفحوص إلى طلبات السحب لأنها حيث ينبغي أن تصبح سياسة التوافق مرئية وقابلة للمراجعة ومملّة. والمملّ جيد هنا. المملّ يعني اجتماعات طوارئ أقل.
 
-**Put deployment awareness into the workflow.** A passing provider verification on `main` is useful, but it’s not the same as knowing whether version `X` is safe with what’s already in `uat` or production. Pact Broker’s [deployment recording and `can-i-deploy` flow](https://docs.pact.io/pact_broker/client_cli/readme) exists because compatibility is environment-specific once independently deployable services start moving at different speeds.
+**ضع الوعي بالنشر في سير العمل.** تحقّق مزوّد ناجح على `main` مفيد، لكنه ليس كمعرفة ما إذا كانت النسخة `X` آمنة مع ما هو موجود فعلًا في `uat` أو الإنتاج. يوجد [تسجيل عمليات النشر ومسار `can-i-deploy`](https://docs.pact.io/pact_broker/client_cli/readme) في Pact Broker لأن التوافق صار خاصًا بالبيئة بمجرد أن تبدأ الخدمات القابلة للنشر باستقلال بالتحرك بسرعات مختلفة.
 
-**Treat contract testing as compatibility testing, not total correctness testing.** Pact provider verification passes when the provider returns at least the [minimal expected response](https://docs.pact.io/getting_started/how_pact_works). That’s exactly what you want for compatibility, and exactly why provider-side functional tests still need to cover broader business logic, invariants, and edge cases outside what any given consumer depends on. Contract tests are sharp tools. They’re not universal solvents.
+**تعامل مع اختبار العقود كاختبار توافق، لا كاختبار صحة شامل.** ينجح تحقّق مزوّد Pact حين يعيد المزوّد على الأقل [الاستجابة الدنيا المتوقّعة](https://docs.pact.io/getting_started/how_pact_works). وهذا بالضبط ما تريده للتوافق، وبالضبط ما يجعل اختبارات المزوّد الوظيفية بحاجة إلى تغطية منطق أعمال أوسع وثوابت وحالات حدّية خارج ما يعتمد عليه أي مستهلك بعينه. اختبارات العقود أدوات حادة. لكنها ليست مذيبات شاملة.
 
-## Common Mistakes
+## الأخطاء الشائعة
 
-**Equating schema validation with full contract testing.** Schema conformance is important, but contract testing is broader because real compatibility includes actual interactions and sometimes consumer-specific usage. A valid schema and a compatible contract aren’t the same thing.
+**مساواة التحقّق من المخطط باختبار العقود الكامل.** مطابقة المخطط مهمة، لكن اختبار العقود أوسع لأن التوافق الحقيقي يشمل تفاعلات فعلية وأحيانًا استخدامًا خاصًا بالمستهلك. المخطط الصالح والعقد المتوافق ليسا الشيء نفسه.
 
-**Writing CDC tests at the UI layer.** [Pact explicitly warns](https://docs.pact.io/consumer) against this because it makes tests brittle and causes interaction explosion. Contract tests should wrap the consumer code that actually makes the remote call, not an entire frontend or mobile app stack.
+**كتابة اختبارات CDC في طبقة الواجهة.** [يحذّر Pact صراحةً](https://docs.pact.io/consumer) من هذا لأنه يجعل الاختبارات هشّة ويسبب انفجارًا في التفاعلات. ينبغي أن تُغلّف اختبارات العقود شيفرة المستهلك التي تجري النداء البعيد فعلًا، لا حزمة واجهة أمامية أو تطبيق جوال كاملة.
 
-**Stateful interactions.** Both [Pact provider states](https://docs.pact.io/getting_started/provider_states) and Dredd hooks exist so each interaction can be set up independently. Once you rely on test order, you’re rebuilding the same slow, fragile integration mess contract testing was supposed to shrink.
+**التفاعلات المعتمدة على الحالة.** توجد [حالات مزوّد Pact](https://docs.pact.io/getting_started/provider_states) وخطّافات Dredd كي يُهيّأ كل تفاعل باستقلال. وبمجرد أن تعتمد على ترتيب الاختبار، تكون قد أعدت بناء فوضى التكامل البطيئة الهشّة نفسها التي كان المفروض أن يقلّصها اختبار العقود.
 
-**Ignoring artifact evolution.** OpenAPI changes should be diffed, GraphQL schemas should be diffed and real documents validated, and Protobuf schemas should run through a breaking-change checker. If you only test runtime behavior and never diff the contract, you’re asking reviewers to spot compatibility breaks by intuition, which is adorable and ineffective.
+**تجاهل تطور الأثر.** ينبغي إجراء فروق على تغييرات OpenAPI، ومقارنة مخططات GraphQL والتحقّق من المستندات الحقيقية، وتمرير مخططات Protobuf عبر فاحص تغييرات كاسرة. فإن اختبرت السلوك وقت التشغيل فقط ولم تُجرِ فروقًا على العقد قط، فأنت تطلب من المراجعين رصد أعطال التوافق بالحدس، وهو أمر لطيف وغير فعّال.
 
-**Skipping environment-aware release gating.** If you publish contracts but never record deployments or ask whether a specific version is safe for a specific environment, you’re missing the part that turns contract testing from “interesting artifact” into release safety.
+**تخطّي بوّابة الإصدار الواعية بالبيئة.** إن نشرت العقود لكنك لم تسجّل عمليات النشر أو تسأل ما إذا كانت نسخة بعينها آمنة لبيئة بعينها، فأنت تفتقد الجزء الذي يحوّل اختبار العقود من «أثر مثير للاهتمام» إلى أمان إصدار.
 
-## A Good Default
+## افتراضي جيد
 
-If you’re starting from scratch, use provider-owned contracts everywhere and add consumer-driven contracts selectively. For REST, that means OpenAPI plus spec diffing and runtime conformance tests. For events, AsyncAPI plus message-focused tests. For GraphQL, schema diffing plus validation of real operations. For Protobuf and gRPC, Buf breaking checks plus targeted interaction-level tests where request/response behavior matters. For multi-team CDC flows, add Pact or Spring Cloud Contract and a broker-backed deploy gate. Keep only a small number of integrated end-to-end tests for journeys that truly require the whole stack assembled.
+إن كنت تبدأ من الصفر، استخدم عقودًا مملوكة للمزوّد في كل مكان وأضف عقودًا مدفوعة المستهلك بشكل انتقائي. وبالنسبة إلى REST، يعني ذلك OpenAPI مع مقارنة المواصفة واختبارات مطابقة وقت التشغيل. وبالنسبة إلى الأحداث، AsyncAPI مع اختبارات مركّزة على الرسائل. وبالنسبة إلى GraphQL، مقارنة المخططات مع التحقّق من العمليات الحقيقية. وبالنسبة إلى Protobuf وgRPC، فحوص Buf الكاسرة مع اختبارات موجّهة على مستوى التفاعل حيث يهمّ سلوك الطلب/الاستجابة. وبالنسبة إلى مسارات CDC متعددة الفرق، أضف Pact أو Spring Cloud Contract وبوّابة نشر مدعومة بوسيط. واحتفظ بعدد صغير فقط من اختبارات التكامل الشاملة من الطرف إلى الطرف للرحلات التي تتطلب فعلًا تجميع الحزمة كاملة.
 
-That combination gives you fast local feedback, review-time compatibility checks, and release-time confidence without worshipping any single testing philosophy like it’s a minor religion.
+يمنحك ذلك المزيج تغذية راجعة محلية سريعة، وفحوص توافق وقت المراجعة، وثقة وقت الإصدار دون تقديس أي فلسفة اختبار واحدة كأنها دين صغير.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Three Contract Styles
+### ثلاثة أنماط للعقود
 
-> Contract testing validates two applications in isolation—without assembling every service into one slow, flaky end-to-end suite.
+> يتحقق اختبار العقود من تطبيقين في معزل — دون تجميع كل خدمة في مجموعة واحدة بطيئة وهشّة من الطرف إلى الطرف.
 
-| Style | Who writes the contract | Who verifies | Strengths |
+| النمط | من يكتب العقد | من يتحقق | نقاط القوة |
 | --- | --- | --- | --- |
-| **Provider-driven** | Provider (spec-first) | Both sides | Single source of truth, early schema diffing |
-| **Consumer-driven** | Consumer (Pact-style) | Provider replays | Catches real usage patterns |
-| **Bi-directional** | Both independently | Compatibility check | Works without code access to the other side |
+| **مدفوع المزوّد** | المزوّد (المواصفة أولًا) | الطرفان | مصدر حقيقة واحد، مقارنة مخططات مبكرة |
+| **مدفوع المستهلك** | المستهلك (على نمط Pact) | المزوّد يعيد التشغيل | يلتقط أنماط الاستخدام الحقيقية |
+| **ثنائي الاتجاه** | كلا الطرفين باستقلال | فحص توافق | يعمل دون وصول برمجي إلى الطرف الآخر |
 
-- Provider-driven: write the OpenAPI/AsyncAPI/Protobuf spec first, generate clients and tests from it.
-- Consumer-driven: consumers record interactions, providers replay them. Catches “the field exists but nobody sends it” bugs.
-- Bi-directional: each side publishes their own artifact, a broker checks compatibility. Good for cross-organization boundaries.
+- مدفوع المزوّد: اكتب مواصفة OpenAPI/AsyncAPI/Protobuf أولًا، وولّد العملاء والاختبارات منها.
+- مدفوع المستهلك: يسجّل المستهلكون التفاعلات، ويعيد المزوّدون تشغيلها. يلتقط علل «الحقل موجود لكن لا أحد يرسله».
+- ثنائي الاتجاه: ينشر كل طرف أثره الخاص، ويتحقق وسيط من التوافق. جيد للحدود بين المؤسسات.
 
 ---
 
-### Protocol Matrix
+### مصفوفة البروتوكولات
 
-> Different protocols need different contract artifacts and tooling.
+> تحتاج البروتوكولات المختلفة آثار عقود وأدوات مختلفة.
 
-| Protocol | Contract artifact | Schema diffing | Interaction testing | Tooling |
+| البروتوكول | أثر العقد | مقارنة المخططات | اختبار التفاعلات | الأدوات |
 | --- | --- | --- | --- | --- |
-| **REST** | OpenAPI spec | oasdiff | Pact, Schemathesis | Pact Broker |
-| **GraphQL** | Schema + ops | GraphQL Inspector | Pact, client tests | Apollo Studio |
-| **gRPC** | Protobuf | Buf breaking | Generated stubs | Buf, protoc |
-| **Events** | AsyncAPI | AsyncAPI diff | Pact message pacts | Pact, AsyncAPI tools |
+| **REST** | مواصفة OpenAPI | oasdiff | Pact، Schemathesis | Pact Broker |
+| **GraphQL** | مخطط + عمليات | GraphQL Inspector | Pact، اختبارات العميل | Apollo Studio |
+| **gRPC** | Protobuf | Buf breaking | بدائل مولّدة | Buf، protoc |
+| **الأحداث** | AsyncAPI | فرق AsyncAPI | عقود رسائل Pact | Pact، أدوات AsyncAPI |
 
 ---
 
-### A Practical Pipeline
+### خط أنابيب عملي
 
-> Four layers, each catching a different class of problem.
+> أربع طبقات، تلتقط كل منها صنفًا مختلفًا من المشكلات.
 
-- **Contract versioning:** Publish contract artifacts alongside code. Tag with version and environment.
-- **Pull request checks:** Diff the contract against the deployed version. Flag breaking changes before merge.
-- **Conformance tests:** Provider replays consumer interactions (or consumer validates against provider spec) in CI.
-- **Release gating:** Check compatibility against the environment you’re deploying *into*, not just “latest.”
+- **إصدارات العقد:** انشر آثار العقود إلى جانب الشيفرة. ووسّمها بالنسخة والبيئة.
+- **فحوص طلبات السحب:** قارن العقد مقابل النسخة المنشورة. وأبرز التغييرات الكاسرة قبل الدمج.
+- **اختبارات المطابقة:** يعيد المزوّد تشغيل تفاعلات المستهلك (أو يتحقق المستهلك من مواصفة المزوّد) في CI.
+- **بوّابة الإصدار:** افحص التوافق مقابل البيئة التي تنشر *إليها*، لا مقابل «الأحدث» فقط.

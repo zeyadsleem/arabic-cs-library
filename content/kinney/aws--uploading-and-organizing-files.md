@@ -1,25 +1,25 @@
 ---
-title: "Uploading and Organizing Files"
-lang: en
+title: "رفع الملفات وتنظيمها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/uploading-and-organizing-files"
 ---
 
-You have a bucket. Now you need files in it. This is your `npm run build` output going to the cloud—the HTML, CSS, JavaScript, and images that make up your frontend application. The AWS CLI gives you two primary commands for getting files into S3: `aws s3 cp` for copying individual files and `aws s3 sync` for keeping a local directory and a bucket in sync. Both are essential, and knowing when to use each saves you time and bandwidth.
+لديك حاوية. والآن تحتاج إلى ملفات فيها. فهذه مخرجات `npm run build` الخاصة بك تذهب إلى السحابة—HTML وCSS وJavaScript والصور التي يتكوّن منها تطبيق الواجهة الأمامية. ويمنحك AWS CLI أمرين أساسيين لإدخال الملفات إلى S3: `aws s3 cp` لنسخ الملفات الفردية و`aws s3 sync` للحفاظ على تزامن دليل محلي وحاوية. كلاهما ضروري، ومعرفة متى تستخدم كلًّا منهما توفر عليك الوقت والنطاق الترددي.
 
-If you want the AWS version of the command surface nearby, keep the [Amazon S3 User Guide](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) and the [`aws s3 sync` command reference](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) open.
+إن أردت نسخة AWS من سطح الأوامر قريبة منك، فأبقِ [دليل مستخدم Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) و[مرجع الأمر `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) مفتوحين.
 
-## Copying Files with `aws s3 cp`
+## نسخ الملفات باستخدام `aws s3 cp`
 
-The `cp` command works the way you would expect—it copies a file from one place to another. You can copy from your local machine to S3, from S3 to your local machine, or from one S3 location to another.
+يعمل أمر `cp` كما تتوقع—ينسخ ملفًا من مكان إلى آخر. ويمكنك النسخ من جهازك المحلي إلى S3، أو من S3 إلى جهازك، أو من موقع S3 إلى آخر.
 
-Upload a single file:
+ارفع ملفًا واحدًا:
 
 ```bash
 aws s3 cp ./build/index.html s3://my-frontend-app-assets/index.html \
   --region us-east-1
 ```
 
-Upload an entire directory by adding the `--recursive` flag:
+ارفع دليلًا كاملًا بإضافة علم `--recursive`:
 
 ```bash
 aws s3 cp ./build/ s3://my-frontend-app-assets/ \
@@ -27,7 +27,7 @@ aws s3 cp ./build/ s3://my-frontend-app-assets/ \
   --region us-east-1
 ```
 
-This copies every file in your local `build/` directory to the root of your S3 bucket, preserving the directory structure. If your build output looks like this:
+هذا ينسخ كل ملف في دليل `build/` المحلي إلى جذر حاوية S3، مع الحفاظ على بنية الدليل. وإذا كانت مخرجات بنائك تبدو هكذا:
 
 ```
 build/
@@ -39,7 +39,7 @@ build/
 └── favicon.ico
 ```
 
-The resulting S3 objects will have these keys:
+ستحمل كائنات S3 الناتجة هذه المفاتيح:
 
 - `index.html`
 - `assets/main.js`
@@ -47,22 +47,22 @@ The resulting S3 objects will have these keys:
 - `assets/logo.png`
 - `favicon.ico`
 
-Remember: there’s no actual `assets/` folder in S3. The forward slash is part of the key string. But every tool—the CLI, the console, the SDK—treats it as a virtual folder, and for practical purposes that’s all you need to know.
+تذكّر: لا يوجد مجلد `assets/` حقيقي في S3. فالشرطة المائلة جزء من سلسلة المفتاح. لكن كل أداة—CLI ووحدة التحكم وSDK—تعامله كمجلد افتراضي، وفي الممارسة العملية هذا كل ما تحتاج معرفته.
 
-## Syncing with `aws s3 sync`
+## المزامنة باستخدام `aws s3 sync`
 
-The `sync` command is what you’ll use for deployments. Unlike `cp`, it only uploads files that have changed—it compares file sizes and timestamps between your local directory and the bucket, and only transfers the differences.
+أمر `sync` هو ما ستستخدمه للنشر. فعلى خلاف `cp`، لا يرفع إلا الملفات التي تغيّرت—يقارن أحجام الملفات وأختامها الزمنية بين دليلك المحلي والحاوية، ولا ينقل إلا الفروق.
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Run this after every build and only the files that changed will be uploaded. On a typical deployment where you changed a few components, this means uploading a handful of JavaScript chunks instead of the entire build directory.
+شغّله بعد كل بناء ولن تُرفع إلا الملفات التي تغيّرت. وفي نشر نمطي غيّرت فيه بضعة مكوّنات، يعني هذا رفع حفنة من حزم JavaScript بدلًا من دليل البناء كله.
 
-### The `--delete` Flag
+### علم `--delete`
 
-By default, `sync` doesn’t remove files from S3 that no longer exist locally. If you renamed a file or removed a page, the old version stays in the bucket. The `--delete` flag fixes this:
+افتراضيًا، لا يحذف `sync` من S3 الملفات التي لم تعد موجودة محليًا. فإذا أعدت تسمية ملف أو حذفت صفحة، تبقى النسخة القديمة في الحاوية. ويصلح علم `--delete` هذا:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -70,15 +70,15 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --delete
 ```
 
-This makes the S3 bucket an exact mirror of your local `build/` directory. Files that exist in the bucket but not locally are removed.
+هذا يجعل حاوية S3 مرآة دقيقة لدليل `build/` المحلي. فالملفات الموجودة في الحاوية وغير الموجودة محليًا تُحذف.
 
-> **Warning**
+> **تحذير**
 >
-> The `--delete` flag permanently removes objects from S3. If you don’t have versioning enabled (we’ll cover this in [S3 Versioning, Lifecycle, and Cost](https://stevekinney.com/courses/aws/s3-versioning-lifecycle-and-cost)), those files are gone. Always double-check that you’re syncing the right directory before using `--delete` in production.
+> يحذف علم `--delete` الكائنات من S3 نهائيًا. وإذا لم تكن النسخ المُصدَّرة مفعّلة (سنغطي هذا في [النسخ المُصدَّرة ودورة الحياة والتكلفة في S3](https://stevekinney.com/courses/aws/s3-versioning-lifecycle-and-cost))، فتلك الملفات قد ذهبت. تحقق دائمًا من أنك تزامن الدليل الصحيح قبل استخدام `--delete` في الإنتاج.
 
-### The `--exclude` and `--include` Flags
+### العلَمان `--exclude` و`--include`
 
-Sometimes you want to sync most of your build output but exclude certain files—maybe a `.DS_Store` that macOS leaves behind, or a `sourcemap` you don’t want publicly accessible:
+أحيانًا تريد مزامنة معظم مخرجات بنائك مع استثناء ملفات معينة—ربما ملف `.DS_Store` الذي يتركه macOS، أو `sourcemap` لا تريد أن يكون متاحًا للعامة:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -88,13 +88,13 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --exclude ".DS_Store"
 ```
 
-## Content Types Matter
+## أنواع المحتوى مهمة
 
-Here’s the gotcha that trips up every frontend engineer the first time they deploy to S3: **content types**. When you upload a file to S3, the CLI guesses the MIME type based on the file extension. It gets most of them right—`.html` becomes `text/html`, `.css` becomes `text/css`, `.js` becomes `text/javascript`. But it doesn’t always guess correctly, especially for newer file formats like `.woff2`, `.webp`, or `.mjs`.
+إليك المأزق الذي يعثر فيه كل مهندس واجهة أمامية في أول نشر له إلى S3: **أنواع المحتوى**. فعندما ترفع ملفًا إلى S3، يخمّن CLI نوع MIME بناءً على امتداد الملف. ويصيب في معظمها—`.html` تصبح `text/html`، و`.css` تصبح `text/css`، و`.js` تصبح `text/javascript`. لكنه لا يخمّن بشكل صحيح دائمًا، خصوصًا لصيغ ملفات أحدث مثل `.woff2` أو `.webp` أو `.mjs`.
 
-If S3 serves a JavaScript file with the wrong content type, the browser will refuse to execute it. You’ll see an error in the console like “Refused to execute script because its MIME type is not an executable MIME type.” I’ve spent more time than I’d like to admit debugging this exact issue.
+إذا قدّمت S3 ملف JavaScript بنوع محتوى خاطئ، فسيرفض المتصفح تنفيذه. وسترى خطأً في وحدة التحكم مثل `Refused to execute script because its MIME type is not an executable MIME type`. لقد أمضيت وقتًا أطول مما أرغب في الاعتراف به في تصحيح هذه المشكلة نفسها.
 
-You can set the content type explicitly when uploading:
+يمكنك تعيين نوع المحتوى صراحةً عند الرفع:
 
 ```bash
 aws s3 cp ./build/assets/main.js s3://my-frontend-app-assets/assets/main.js \
@@ -102,7 +102,7 @@ aws s3 cp ./build/assets/main.js s3://my-frontend-app-assets/assets/main.js \
   --region us-east-1
 ```
 
-For bulk uploads, you can combine `--exclude` and `--include` with `--content-type` to handle specific file types:
+وللرفع بالجملة، يمكنك الجمع بين `--exclude` و`--include` مع `--content-type` لمعالجة أنواع ملفات محددة:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
@@ -117,15 +117,15 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --content-type "application/javascript"
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> In practice, the CLI’s MIME type guessing works fine for the most common frontend file types. You typically only need to override content types for edge cases. But if your site loads and your JavaScript isn’t executing, check the content type first—it’s almost always the problem.
+> عمليًا، يعمل تخمين CLI لنوع MIME جيدًا مع أنواع ملفات الواجهة الأمامية الأكثر شيوعًا. وعادةً لا تحتاج إلى تجاوز أنواع المحتوى إلا في الحالات الحدية. لكن إذا حُمّل موقعك ولم يعمل JavaScript، فتحقق من نوع المحتوى أولًا—فغالبًا هو المشكلة.
 
-## Organizing Files with Key Prefixes
+## تنظيم الملفات ببادئات المفاتيح
 
-S3 doesn’t have real directories, but **key prefixes** give you a way to organize objects that works well enough. Most frontend build tools already output files into a sensible structure, and that structure translates directly to S3 keys.
+لا تملك S3 مجلدات حقيقية، لكن **بادئات المفاتيح** تمنحك طريقة لتنظيم الكائنات تعمل جيدًا بما يكفي. ومعظم أدوات بناء الواجهة الأمامية تخرج الملفات أصلًا في بنية معقولة، وهذه البنية تتحول مباشرة إلى مفاتيح S3.
 
-A common pattern for frontend deployments:
+نمط شائع لنشر الواجهة الأمامية:
 
 ```
 my-frontend-app-assets/
@@ -142,18 +142,18 @@ my-frontend-app-assets/
     └── mono.woff2
 ```
 
-The hashed filenames (`main.a1b2c3d4.js`) are important. Most frontend build tools (Vite, webpack, Next.js) add content hashes to filenames so that when you deploy a new version, the new files have different names and the old cached files don’t interfere. This is called **cache busting**, and it plays nicely with S3 and CloudFront’s caching behavior.
+أسماء الملفات المُجزّأة (`main.a1b2c3d4.js`) مهمة. فمعظم أدوات بناء الواجهة الأمامية (Vite وwebpack وNext.js) تضيف تجزئات محتوى إلى أسماء الملفات حتى تحمل الملفات الجديدة أسماء مختلفة عند نشر نسخة جديدة، فلا تتداخل الملفات القديمة المخزنة مؤقتًا. يُسمى هذا **إبطال التخزين المؤقت**، وهو يتناغم مع سلوك التخزين المؤقت في S3 وCloudFront.
 
-### Listing Objects by Prefix
+### سرد الكائنات حسب البادئة
 
-You can list all objects under a specific prefix:
+يمكنك سرد كل الكائنات تحت بادئة محددة:
 
 ```bash
 aws s3 ls s3://my-frontend-app-assets/assets/ \
   --region us-east-1
 ```
 
-Or get a detailed listing with the `s3api` command:
+أو الحصول على سرد مفصّل بأمر `s3api`:
 
 ```bash
 aws s3api list-objects-v2 \
@@ -182,9 +182,9 @@ aws s3api list-objects-v2 \
 }
 ```
 
-## The Same Upload with the SDK
+## الرفع نفسه باستخدام SDK
 
-Build scripts, serverless deploy tools, and apps that upload user content all reach for the SDK instead of shelling out. The SDK equivalents of the commands above:
+سكربتات البناء وأدوات نشر التطبيقات بلا خادم والتطبيقات التي ترفع محتوى المستخدمين كلها تلجأ إلى SDK بدلًا من تنفيذ أوامر shell. وإليك مكافئات SDK للأوامر أعلاه:
 
 ```typescript
 import { readFile } from 'node:fs/promises';
@@ -219,33 +219,33 @@ await new Upload({
 }).done();
 ```
 
-The SDK has no direct equivalent of `aws s3 sync`—`sync` is a CLI-level convenience that walks a directory, diffs it against the bucket, and issues per-file `PutObject`/`DeleteObject` calls. Reproducing it yourself is a `fs.readdir` walk plus `PutObjectCommand` per changed file. For deploy scripts, shelling out to `aws s3 sync` from Node is usually simpler than rebuilding the diff logic. The SDK wins when you’re uploading *application* content—user avatars, CSV exports, generated reports—one file at a time.
+لا يوجد في SDK مكافئ مباشر لـ `aws s3 sync`—فـ `sync` تسهيل على مستوى CLI يمشي عبر دليل، ويقارنه بالحاوية، ويصدر استدعاءات `PutObject`/`DeleteObject` لكل ملف. وإعادة إنتاجه بنفسك تعني جولة `fs.readdir` زائد `PutObjectCommand` لكل ملف تغيّر. وبالنسبة إلى سكربتات النشر، عادةً يكون تنفيذ `aws s3 sync` من Node أبسط من إعادة بناء منطق الفروق. ويفوز SDK عندما ترفع محتوى *التطبيق*—صور المستخدمين الرمزية، وتصديرات CSV، والتقارير المولّدة—ملفًا واحدًا في كل مرة.
 
-## Uploading from the Console
+## الرفع من وحدة التحكم
 
-The AWS console works fine for uploading a file or two during development. Navigate to S3, click your bucket, click “Upload,” and drag your files in. The console even lets you set metadata (including content type) per file.
+تعمل وحدة تحكم AWS جيدًا لرفع ملف أو ملفين أثناء التطوير. انتقل إلى S3، وانقر على حاويتك، وانقر «Upload»، واسحب ملفاتك إليها. بل تتيح لك وحدة التحكم تعيين البيانات الوصفية (بما في ذلك نوع المحتوى) لكل ملف.
 
-The S3 upload dialog showing the drag-and-drop area before any files are added.
+مربع حوار الرفع في S3 يعرض منطقة السحب والإفلات قبل إضافة أي ملفات.
 
-After dropping your files in, the upload dialog queues them for review before you click **Upload**.
+بعد إفلات ملفاتك، يضعها مربع حوار الرفع في قائمة للمراجعة قبل أن تنقر **Upload**.
 
-The S3 upload dialog with four files queued: index.html, error.html, styles.css, and app.js.
+مربع حوار الرفع في S3 مع أربعة ملفات في القائمة: index.html وerror.html وstyles.css وapp.js.
 
-Once the upload completes, the console shows a success summary and you can see all four files listed in the bucket’s **Objects** tab.
+بعد اكتمال الرفع، تعرض وحدة التحكم ملخص نجاح، ويمكنك رؤية الملفات الأربعة كلها مسرودة في علامة تبويب **Objects** الخاصة بالحاوية.
 
-The S3 upload success page confirming all four files were uploaded successfully.
+صفحة نجاح الرفع في S3 تؤكد رفع الملفات الأربعة بنجاح.
 
-The S3 bucket Objects tab listing index.html, error.html, styles.css, and app.js with their sizes and last-modified dates.
+علامة تبويب Objects في حاوية S3 تسرد index.html وerror.html وstyles.css وapp.js مع أحجامها وتواريخ آخر تعديل.
 
-You can also inspect an individual object to check its content type. Click any file in the Objects tab to open its detail page, then scroll to **Metadata**.
+يمكنك أيضًا فحص كائن فردي للتحقق من نوع محتواه. انقر على أي ملف في علامة تبويب Objects لفتح صفحة تفاصيله، ثم مرّر إلى **Metadata**.
 
-The S3 object detail page for index.html showing the Content-Type metadata field set to text/html.
+صفحة تفاصيل كائن S3 للملف index.html تُظهر حقل البيانات الوصفية Content-Type معيَّنًا إلى text/html.
 
-But don’t rely on the console for deployments. It’s slow, error-prone, and impossible to automate. The CLI is the right tool for anything you’ll do more than once—and later in this course, you’ll automate the entire deployment process with the CLI and GitHub Actions.
+لكن لا تعتمد على وحدة التحكم في النشر. فهي بطيئة وعرضة للخطأ ويستحيل أتمتتها. وCLI هي الأداة الصحيحة لأي شيء ستفعله أكثر من مرة—ولاحقًا في هذه الدورة، ستؤتمت عملية النشر كاملة باستخدام CLI وGitHub Actions.
 
-## A Deployment Script
+## سكربت نشر
 
-Here’s a practical deployment pattern that combines what you’ve learned. After running your build, sync the output to S3:
+إليك نمط نشر عملي يجمع ما تعلمته. بعد تشغيل بنائك، زامن المخرجات إلى S3:
 
 ```bash
 # Build the frontend
@@ -258,6 +258,6 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --exclude ".DS_Store"
 ```
 
-That’s a two-command deployment. Not quite as slick as `git push` to Vercel, but you have full control over what gets uploaded, where it goes, and how it’s served. And when you add CloudFront invalidation to this script in the CloudFront section, you’ll have a deployment pipeline that rivals anything Vercel or Netlify provides, except you own every piece of it.
+هذا نشر بأمرين. ليس أنيقًا تمامًا مثل `git push` إلى Vercel، لكن لديك تحكم كامل في ما يُرفع، وإلى أين يذهب، وكيف يُقدَّم. وعندما تضيف إبطال CloudFront إلى هذا السكربت في قسم CloudFront، ستحصل على خط أنابيب نشر يضاهي أي شيء تقدمه Vercel أو Netlify، إلا أنك تملك كل جزء منه.
 
-Your files are in the bucket, but nobody can see them yet. The bucket is locked down by default with Block Public Access enabled. Next, you’ll write a **bucket policy** that grants public read access to your static assets—and understand how bucket policies relate to the IAM policies you wrote in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).
+ملفاتك في الحاوية، لكن لا أحد يراها بعد. فالحاوية مقفلة افتراضيًا مع تفعيل حظر الوصول العام. بعد ذلك، ستكتب **سياسة حاوية** تمنح وصول قراءة عامًا إلى أصولك الثابتة—وتفهم كيف ترتبط سياسات الحاويات بسياسات IAM التي كتبتها في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).

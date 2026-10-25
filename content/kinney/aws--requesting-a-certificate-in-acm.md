@@ -1,42 +1,42 @@
 ---
-title: "Requesting a Certificate in ACM"
-lang: en
+title: "طلب شهادة في ACM"
+lang: ar
 source: "https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm"
 ---
 
-You know why HTTPS matters. Now you need a certificate. **AWS Certificate Manager (ACM)** is the service that provisions, manages, and renews SSL/TLS certificates for use with AWS services. Requesting a certificate is straightforward, but there are a few decisions you need to make upfront—and one critical constraint around region that’ll save you hours of debugging if you learn it now.
+تعرف لماذا يهمّ HTTPS. والآن تحتاج إلى شهادة. **AWS Certificate Manager (ACM)** هي الخدمة التي توفّر شهادات SSL/TLS وتديرها وتجدّدها للاستخدام مع خدمات AWS. طلب الشهادة مباشر، لكن ثمة قرارات قليلة عليك اتّخاذها مسبقًا — وقيد حرج واحد يتعلّق بالمنطقة سيوفّر عليك ساعات من التنقيح إن عرفته الآن.
 
-At this point in the course, you already have the missing prerequisite that trips most people up: domain control and a place to publish DNS records. That matters because ACM validation is not some abstract certificate ritual. It’s a DNS task.
+في هذه المرحلة من الدورة، لديك بالفعل المتطلّب المسبق الغائب الذي يتعثّر فيه معظم الناس: السيطرة على النطاق ومكان لنشر سجلات DNS. وهذا مهم لأن التحقّق في ACM ليس طقسًا مجرّدًا لشهادة. إنه مهمة DNS.
 
-## Before You Start: The Region Question
+## قبل أن تبدأ: مسألة المنطقة
 
-ACM certificates are regional resources. A certificate provisioned in `us-west-2` is only available to services running in `us-west-2`. This matters because CloudFront—the CDN you’ll use later in the static-hosting arc to serve your frontend—is a global service that requires its certificates to be in **`us-east-1`** (US East, N. Virginia).
+شهادات ACM موارد إقليمية. فالشهادة الموفَّرة في `us-west-2` متاحة فقط للخدمات العاملة في `us-west-2`. وهذا مهم لأن CloudFront — شبكة CDN التي ستستخدمها لاحقًا في مسار الاستضافة الثابتة لتقديم واجهتك الأمامية — خدمة عالمية تتطلّب أن تكون شهاداتها في **`us-east-1`** (الولايات المتحدة الشرقية، شمال فرجينيا).
 
-If you provision your certificate in any other region, CloudFront won’t see it. The console won’t show it in the dropdown. The CLI will return an error. There’s no way to move or copy a certificate between regions.
+إذا وفّرت شهادتك في أي منطقة أخرى، فلن تراها CloudFront. لن تظهر في القائمة المنسدلة بوحدة التحكّم. وسيُرجع CLI خطأ. ولا سبيل إلى نقل شهادة أو نسخها بين المناطق.
 
-> **Warning**
+> **تحذير**
 >
-> Always create certificates for CloudFront in `us-east-1`. This is the single most common mistake people make with ACM. If you remember nothing else from this module, remember this.
+> أنشئ دائمًا شهادات CloudFront في `us-east-1`. هذا هو الخطأ الواحد الأكثر شيوعًا لدى الناس مع ACM. وإن لم تتذكّر شيئًا آخر من هذه الوحدة، فتذكّر هذا.
 
-You set up the AWS CLI with named profiles in [Setting Up the AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli). Make sure your commands explicitly specify `--region us-east-1`.
+أعددت AWS CLI بملفات تعريف مسمّاة في [إعداد AWS CLI](https://stevekinney.com/courses/aws/setting-up-the-aws-cli). تأكّد من أن أوامرك تحدّد `--region us-east-1` صراحةً.
 
-## Requesting a Certificate in the Console
+## طلب شهادة من وحدة التحكّم
 
-The console workflow gives you a clear picture of what ACM is doing under the hood.
+يمنحك سير العمل في وحدة التحكّم صورة واضحة عمّا تفعله ACM تحت الغطاء.
 
-1. Open the [ACM console](https://console.aws.amazon.com/acm/home?region=us-east-1). Make sure the region dropdown in the top-right corner says **US East (N. Virginia)**. If it doesn’t, switch to it before proceeding.
-2. Click **Request a certificate**.
-3. Select **Request a public certificate** and click **Next**.
-4. Under **Domain names**, enter your domain: `example.com`. If you want both the apex domain and `www`, add `www.example.com` as an additional domain name. (We’ll cover wildcard certificates in a later lesson.)
-5. Under **Validation method**, select **DNS validation**. This is the default and the right choice for most cases. We’ll cover the difference between DNS and email validation in the next lesson.
-6. Under **Key algorithm**, leave the default: **RSA 2048**. This is compatible with everything.
-7. Click **Request**.
+1. افتح [وحدة تحكّم ACM](https://console.aws.amazon.com/acm/home?region=us-east-1). تأكّد من أن القائمة المنسدلة للمنطقة في الزاوية العلوية اليمنى تقول **US East (N. Virginia)**. وإن لم تقل ذلك، فبدّلها قبل المتابعة.
+2. انقر **Request a certificate**.
+3. اختر **Request a public certificate** ثم انقر **Next**.
+4. تحت **Domain names**، أدخل نطاقك: `example.com`. وإن أردت النطاق الجذري و`www` معًا، فأضف `www.example.com` اسم نطاق إضافيًا. (سنغطّي شهادات Wildcard في درس لاحق.)
+5. تحت **Validation method**، اختر **DNS validation**. هذا هو الافتراضي والخيار الصحيح في معظم الحالات. وسنغطّي الفرق بين التحقّق عبر DNS والتحقّق عبر البريد في الدرس التالي.
+6. تحت **Key algorithm**، اترك الافتراضي: **RSA 2048**. فهو متوافق مع كل شيء.
+7. انقر **Request**.
 
-ACM creates the certificate and sets its status to **Pending validation**. The certificate isn’t usable yet—you need to prove that you own the domain. That validation step is covered in the next lesson.
+تنشئ ACM الشهادة وتضبط حالتها على **Pending validation**. والشهادة غير قابلة للاستخدام بعد — إذ عليك إثبات أنك تملك النطاق. وتُغطّى خطوة التحقّق تلك في الدرس التالي.
 
-## Requesting a Certificate with the CLI
+## طلب شهادة باستخدام CLI
 
-The CLI is faster and scriptable. Here is the equivalent of what you just did in the console:
+CLI أسرع وقابل للبرمجة النصية. وهذا مكافئ لما فعلته للتوّ في وحدة التحكّم:
 
 ```bash
 aws acm request-certificate \
@@ -47,7 +47,7 @@ aws acm request-certificate \
   --output json
 ```
 
-ACM returns a JSON response with the certificate’s **ARN** (Amazon Resource Name):
+تُرجع ACM استجابة JSON تتضمّن **ARN** الشهادة (اسم مورد Amazon):
 
 ```json
 {
@@ -55,11 +55,11 @@ ACM returns a JSON response with the certificate’s **ARN** (Amazon Resource Na
 }
 ```
 
-Save that ARN. You’ll need it when you attach the certificate to CloudFront, when you check validation status, and when you debug anything related to this certificate. Every ACM operation references the certificate by its ARN.
+احفظ قيمة ARN هذه. ستحتاجه عندما ترفق الشهادة بـ CloudFront، وعندما تفحص حالة التحقّق، وعندما تنقّح أي شيء يتعلّق بهذه الشهادة. فكل عملية في ACM تشير إلى الشهادة عبر ARN الخاص بها.
 
-> **Tip**
+> **نصيحة**
 >
-> You can store the ARN in a shell variable for use in subsequent commands:
+> يمكنك تخزين ARN في متغيّر صدفة لاستخدامه في الأوامر اللاحقة:
 >
 > ```bash
 > CERT_ARN=$(aws acm request-certificate \
@@ -70,9 +70,9 @@ Save that ARN. You’ll need it when you attach the certificate to CloudFront, w
 >   --output text)
 > ```
 >
-> The `--output text` flag returns just the ARN string without JSON formatting, which is easier to capture in a variable.
+> يُرجع العلم `--output text` سلسلة ARN وحدها دون تنسيق JSON، وهو أسهل في الالتقاط داخل متغيّر.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -107,20 +107,20 @@ await waitUntilCertificateValidated(
 );
 ```
 
-The `waitUntilCertificateValidated` helper is the SDK equivalent of `aws acm wait certificate-validated`—the CLI waiter and the SDK helper are generated from the same AWS-published waiter specification, so their behavior is identical.
+الدالة المساعدة `waitUntilCertificateValidated` هي مكافئ SDK لـ`aws acm wait certificate-validated` — فأداة الانتظار في CLI والدالة المساعدة في SDK مولّدتان من مواصفة الانتظار نفسها التي تنشرها AWS، لذا سلوكهما متطابق.
 
-## The Certificate Lifecycle
+## دورة حياة الشهادة
 
-After you request a certificate, it moves through a series of states. I’d recommend scanning this list now so you know what to expect:
+بعد أن تطلب شهادة، تمرّ بسلسلة من الحالات. أنصحك بمسح هذه القائمة الآن لتعرف ما الذي ستتوقّعه:
 
-1. **Pending validation**: ACM has created the certificate but is waiting for you to prove you own the domain. Once you publish the DNS records, validation usually flips to **Issued** within a few minutes, though AWS gives itself up to 30 minutes. You don’t have to babysit it—the exercise lesson uses `aws acm wait certificate-validated` to block until the certificate is ready.
-2. **Issued**: Validation succeeded. The certificate is ready to attach to a CloudFront distribution, load balancer, or API Gateway endpoint.
-3. **Inactive**: Listed by the [ACM API](https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html) as a possible status, but rare in normal usage. You will not encounter it with the DNS-validated, `AMAZON_ISSUED` certificates this course creates.
-4. **Expired**: The certificate reached its expiration date without being renewed. ACM auto-renews certificates that are in use and have valid DNS validation records, so this typically only happens if something went wrong with renewal.
-5. **Revoked**: The certificate was explicitly revoked. This is rare.
-6. **Failed**: Validation failed—usually because the DNS or email validation wasn’t completed within 72 hours.
+1. **Pending validation**: أنشأت ACM الشهادة لكنها تنتظر منك إثبات ملكيتك للنطاق. وبمجرد نشر سجلات DNS، يتحوّل التحقّق عادةً إلى **Issued** في غضون دقائق، وإن كانت AWS تمنح نفسها حتى 30 دقيقة. ولست مضطرًا إلى مراقبتها — فدرس التمرين يستخدم `aws acm wait certificate-validated` للانتظار حتى تصبح الشهادة جاهزة.
+2. **Issued**: نجح التحقّق. والشهادة جاهزة للإرفاق بتوزيع CloudFront أو موازن حمل أو نقطة نهاية API Gateway.
+3. **Inactive**: تُدرجه [واجهة ACM البرمجية](https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html) حالةً محتملة، لكنه نادر في الاستخدام العادي. ولن تصادفه مع الشهادات `AMAZON_ISSUED` المتحقّقة عبر DNS التي تنشئها هذه الدورة.
+4. **Expired**: بلغت الشهادة تاريخ انتهائها دون تجديد. وتجدّد ACM تلقائيًا الشهادات المستخدمة التي لديها سجلات تحقّق DNS صالحة، لذا لا يحدث هذا عادةً إلا إذا حدث خطأ في التجديد.
+5. **Revoked**: أُبطلت الشهادة صراحةً. وهذا نادر.
+6. **Failed**: فشل التحقّق — عادةً لأن التحقّق عبر DNS أو البريد لم يكتمل خلال 72 ساعة.
 
-You can check the status of your certificate at any time:
+يمكنك فحص حالة شهادتك في أي وقت:
 
 ```bash
 aws acm describe-certificate \
@@ -129,7 +129,7 @@ aws acm describe-certificate \
   --output json
 ```
 
-The response includes everything about the certificate—its status, domain names, validation method, and the validation records you need to add to your DNS:
+تتضمّن الاستجابة كل شيء عن الشهادة — حالتها، وأسماء نطاقاتها، وطريقة التحقّق، وسجلات التحقّق التي تحتاج إلى إضافتها إلى DNS:
 
 ```json
 {
@@ -168,11 +168,11 @@ The response includes everything about the certificate—its status, domain name
 }
 ```
 
-The `DomainValidationOptions` array contains the DNS records you need to add. Each domain (or subdomain) in your certificate gets its own validation record. In the next lesson, we’ll walk through adding these records and completing validation.
+تحتوي مصفوفة `DomainValidationOptions` على سجلات DNS التي تحتاج إلى إضافتها. فكل نطاق (أو نطاق فرعي) في شهادتك يحصل على سجل تحقّق خاص به. وفي الدرس التالي، سنستعرض إضافة هذه السجلات وإكمال التحقّق.
 
-## IAM Permissions for ACM
+## أذونات IAM لـ ACM
 
-To request a certificate, your IAM user or role needs the `acm:RequestCertificate` permission. If you followed the account setup in [Creating and Securing an AWS Account](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) and are using an admin user, you already have this. For more restrictive setups, here is a minimal policy:
+لطلب شهادة، يحتاج مستخدم أو دور IAM لديك إلى الإذن `acm:RequestCertificate`. وإذا اتبعت إعداد الحساب في [إنشاء حساب AWS وتأمينه](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) وكنت تستخدم مستخدمًا إداريًا، فلديك هذا الإذن بالفعل. ولإعدادات أكثر تقييدًا، هذه سياسة دنيا:
 
 ```json
 {
@@ -187,10 +187,10 @@ To request a certificate, your IAM user or role needs the `acm:RequestCertificat
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> ACM doesn’t support resource-level permissions for `RequestCertificate`—the `Resource` must be `"*"`. You can restrict `DescribeCertificate` and other read operations to specific certificate ARNs after the certificate exists, but the initial request always requires a wildcard resource.
+> لا تدعم ACM أذونات على مستوى المورد لـ`RequestCertificate` — إذ يجب أن يكون `Resource` هو `"*"`. يمكنك تقييد `DescribeCertificate` وغيرها من عمليات القراءة إلى ARNs شهادات محدّدة بعد وجود الشهادة، لكن الطلب الأول يتطلّب دائمًا موردًا شموليًا.
 
-## What You Have So Far
+## ما لديك حتى الآن
 
-At this point, you have a certificate in ACM with a status of **Pending validation**. It exists, it has an ARN, but it isn’t usable yet. The next step is proving to ACM that you actually own the domain listed on the certificate—and for that, you need to understand the difference between DNS validation and email validation.
+في هذه المرحلة، لديك شهادة في ACM حالتها **Pending validation**. إنها موجودة، ولها ARN، لكنها غير قابلة للاستخدام بعد. والخطوة التالية هي إثبات لـ ACM أنك تملك النطاق المذكور في الشهادة فعلًا — ولهذا تحتاج إلى فهم الفرق بين التحقّق عبر DNS والتحقّق عبر البريد.

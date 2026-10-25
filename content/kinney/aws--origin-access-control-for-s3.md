@@ -1,14 +1,14 @@
 ---
-title: "Origin Access Control for S3"
-lang: en
+title: "التحكّم في الوصول إلى الأصل في S3"
+lang: ar
 source: "https://stevekinney.com/courses/aws/origin-access-control-for-s3"
 ---
 
-Right now, your CloudFront distribution works—it fetches files from your S3 bucket and serves them through edge locations. But your S3 bucket is also publicly accessible. Anyone who knows the bucket URL can bypass CloudFront entirely and access your files directly from S3. That means they skip your caching, skip your HTTPS configuration, skip your security headers, and potentially skip any access controls you put at the edge.
+الآن، توزيع CloudFront لديك يعمل — يجلب الملفات من حاوية S3 ويقدّمها عبر مواقع الحافة. لكن حاوية S3 لديك متاحة للعامة أيضًا. فأي شخص يعرف عنوان URL الحاوية يمكنه تجاوز CloudFront كليًا والوصول إلى ملفاتك مباشرة من S3. وهذا يعني أنه يتخطّى التخزين المؤقت، ويتخطّى تهيئة HTTPS، ويتخطّى ترويسات الأمان، وربما يتخطّى أي ضوابط وصول تضعها على الحافة.
 
-If you want AWS’s step-by-step version of the same setup, the [CloudFront guide to restricting access to an S3 origin](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) is the official reference.
+إن أردت نسخة AWS خطوة بخطوة من الإعداد نفسه، فإن [دليل CloudFront لتقييد الوصول إلى أصل S3](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) هو المرجع الرسمي.
 
-**Origin Access Control** (OAC) fixes this. It restricts your S3 bucket so that only CloudFront can read from it. Direct S3 URLs return “Access Denied.” All traffic flows through your distribution: cached, compressed, secured.
+**التحكّم في الوصول إلى الأصل** (OAC) يصلح هذا. فهو يقيّد حاوية S3 بحيث لا يقرأ منها إلا CloudFront. وعناوين URL المباشرة لـ S3 تُرجع «Access Denied». وكل حركة المرور تتدفق عبر توزيعك: مخزّنة مؤقتًا، ومضغوطة، ومؤمّنة.
 
 ```
 flowchart LR
@@ -22,32 +22,32 @@ flowchart LR
     Direct["Direct S3 URL"] --> Denied["403 Access Denied"]
 ```
 
-## Why OAC Matters
+## لماذا يهمّ OAC
 
-You might think: “Who cares if someone accesses my bucket directly? It’s a public website.” Here’s why you care:
+قد تفكّر: «من يهتم إن وصل أحد إلى حاويتي مباشرة؟ إنه موقع ويب عام.» إليك لماذا تهتم:
 
-1. **Cost**: S3 data transfer is more expensive than CloudFront data transfer in most cases. If users bypass CloudFront and hit S3 directly, you pay more.
-2. **Caching**: Direct S3 requests skip the CDN cache, which means every request hits S3. CloudFront absorbs traffic spikes; S3 doesn’t.
-3. **Security headers**: Any security headers you configure on your CloudFront distribution (HSTS, CSP, X-Frame-Options) aren’t applied to direct S3 responses. You’ll configure these in [CloudFront Headers, CORS, and Security](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security).
-4. **Access control**: If you later add authentication or geo-restrictions at the CloudFront level, direct S3 access bypasses all of it.
+1. **التكلفة**: نقل بيانات S3 أغلى من نقل بيانات CloudFront في معظم الحالات. فإن تجاوز المستخدمون CloudFront وضربوا S3 مباشرة، دفعت أكثر.
+2. **التخزين المؤقت**: طلبات S3 المباشرة تتخطّى ذاكرة CDN المؤقتة، ما يعني أن كل طلب يصل إلى S3. وCloudFront يمتصّ قمم حركة المرور؛ أما S3 فلا.
+3. **ترويسات الأمان**: أي ترويسات أمان تهيّئها على توزيع CloudFront (HSTS وCSP وX-Frame-Options) لا تُطبَّق على استجابات S3 المباشرة. وستعدّ هذه في [ترويسات CloudFront وCORS والأمان](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security).
+4. **ضبط الوصول**: إن أضفت لاحقًا مصادقة أو قيودًا جغرافية على مستوى CloudFront، فالوصول المباشر إلى S3 يتجاوزها كلها.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’ve been using Vercel or Netlify, OAC is the equivalent of those platforms ensuring your build output is only accessible through their CDN, not through the underlying object storage. You just never had to think about it because the platform handled it.
+> إن كنت تستخدم Vercel أو Netlify، فإن OAC هو مقابل ما تفعله تلك المنصّات لضمان أن مخرجات بنائك لا يمكن الوصول إليها إلا عبر شبكة CDN الخاصة بها، لا عبر تخزين الكائنات الأساسي. لكنك لم تضطر إلى التفكير في الأمر قط لأن المنصّة كانت تتولّاه.
 
-## OAC vs. OAI
+## OAC مقابل OAI
 
-You might see references to **Origin Access Identity** (OAI) in older tutorials and documentation. OAI is the predecessor to OAC and still works, but AWS recommends OAC for all new distributions. OAC supports additional features that OAI doesn’t:
+قد ترى إشارات إلى **هوية الوصول إلى الأصل** (OAI) في دروس ووثائق أقدم. وOAI هو سلف OAC، وما زال يعمل، لكن AWS توصي بـ OAC لكل التوزيعات الجديدة. وOAC يدعم ميزات إضافية لا يدعمها OAI:
 
-- Server-side encryption with AWS KMS (SSE-KMS)
-- Dynamic requests (PUT, POST, DELETE) to S3
-- S3 buckets in all AWS regions, including newer opt-in regions
+- التشفير من جانب الخادم باستخدام AWS KMS (SSE-KMS)
+- الطلبات الديناميكية (PUT وPOST وDELETE) إلى S3
+- حاويات S3 في كل مناطق AWS، بما في ذلك المناطق الاختيارية الأحدث
 
-For this course, you’ll use OAC exclusively. If you encounter OAI in the wild, the concepts are similar but the configuration is different.
+في هذه الدورة، ستستخدم OAC حصريًا. وإن صادفت OAI في الواقع، فالمفاهيم متشابهة لكن التهيئة مختلفة.
 
-## Create an Origin Access Control
+## إنشاء تحكّم بالوصول إلى الأصل
 
-First, create the OAC resource:
+أولًا، أنشئ مورد OAC:
 
 ```bash
 aws cloudfront create-origin-access-control \
@@ -62,7 +62,7 @@ aws cloudfront create-origin-access-control \
   --output json
 ```
 
-The response includes the OAC’s ID:
+تتضمن الاستجابة معرّف OAC:
 
 ```json
 {
@@ -79,19 +79,19 @@ The response includes the OAC’s ID:
 }
 ```
 
-A few things about the config:
+بضعة أمور عن التهيئة:
 
-- **`SigningProtocol`**: `sigv4` is AWS Signature Version 4, the standard signing mechanism for AWS API requests. This is the only supported option for S3 origins.
-- **`SigningBehavior`**: `always` means CloudFront signs every request to S3. The alternative, `no-override`, only signs requests that the origin doesn’t already have an `Authorization` header for—you won’t need that for a static site.
-- **`OriginAccessControlOriginType`**: `s3` tells CloudFront this OAC is for an S3 origin. CloudFront also supports OAC for other origin types (MediaStore, Lambda function URLs), but S3 is what you need here.
+- **`SigningProtocol`**: `sigv4` هو AWS Signature Version 4، آلية التوقيع المعيارية لطلبات واجهة AWS البرمجية. وهو الخيار الوحيد المدعوم لأصول S3.
+- **`SigningBehavior`**: `always` يعني أن CloudFront يوقّع كل طلب إلى S3. والبديل `no-override` يوقّع فقط الطلبات التي لا تحمل ترويسة `Authorization` أصلًا — ولن تحتاجه لموقع ثابت.
+- **`OriginAccessControlOriginType`**: `s3` يخبر CloudFront أن هذا OAC مخصّص لأصل S3. ويدعم CloudFront أيضًا OAC لأنواع أصول أخرى (MediaStore وعناوين URL لدوال Lambda)، لكن S3 هو ما تحتاجه هنا.
 
-Save the `Id` value—you need it in the next step.
+احفظ قيمة `Id` — ستحتاجها في الخطوة التالية.
 
-In the console, the **Create distribution** wizard handles this automatically: selecting “Allow private S3 bucket access to CloudFront” on the Specify origin step creates the OAC and attaches it in one operation.
+في لوحة التحكم، يتولّى معالج **Create distribution** هذا تلقائيًا: اختيار «Allow private S3 bucket access to CloudFront» في خطوة تحديد الأصل ينشئ OAC ويرفقه في عملية واحدة.
 
-The CloudFront wizard showing the Allow private S3 bucket access to CloudFront checkbox checked and the Use recommended origin settings option selected.
+معالج CloudFront يعرض خانة «Allow private S3 bucket access to CloudFront» محدّدة وخيار «Use recommended origin settings» مختارًا.
 
-### With the SDK
+### باستخدام SDK
 
 ```typescript
 import {
@@ -131,13 +131,13 @@ await cloudfront.send(
 );
 ```
 
-The SDK avoids the jq gymnastics — `GetDistributionConfigCommand` returns the config as a plain object you can mutate and hand back to `UpdateDistributionCommand` along with the returned `ETag`.
+يتجنّب SDK بهلوانيات jq — فـ `GetDistributionConfigCommand` يُرجع التهيئة ككائن عادي يمكنك تعديله وإعادته إلى `UpdateDistributionCommand` مع `ETag` المُرجَع.
 
-## Update the Distribution to Use OAC
+## تحديث التوزيع لاستخدام OAC
 
-Updating a CloudFront distribution is a three-step process: fetch the current config, modify it, and submit the update with the `ETag` from the fetch.
+تحديث توزيع CloudFront عملية من ثلاث خطوات: اجلب التهيئة الحالية، وعدّلها، وقدّم التحديث مع `ETag` من الجلب.
 
-Fetch the current config:
+اجلب التهيئة الحالية:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -146,14 +146,14 @@ aws cloudfront get-distribution-config \
   --output json > distribution-config-current.json
 ```
 
-The response has two top-level fields: `ETag` and `DistributionConfig`. You need both. The `ETag` is a version identifier—CloudFront uses it to prevent concurrent modifications (the same pattern as HTTP conditional requests).
+تحتوي الاستجابة حقلين في المستوى الأعلى: `ETag` و`DistributionConfig`. وتحتاج إلى كليهما. فـ `ETag` معرّف إصدار — يستخدمه CloudFront لمنع التعديلات المتزامنة (النمط نفسه الذي تتبعه طلبات HTTP الشرطية).
 
-Now edit the config. You need to make two changes to the origin inside `DistributionConfig.Origins.Items[0]`:
+الآن عدّل التهيئة. تحتاج إلى إجراء تغييرين على الأصل داخل `DistributionConfig.Origins.Items[0]`:
 
-1. Add `"OriginAccessControlId": "E1OAC2EXAMPLE"` to the origin.
-2. Ensure `S3OriginConfig.OriginAccessIdentity` is set to `""` (empty string—you’re not using the legacy OAI).
+1. أضف `"OriginAccessControlId": "E1OAC2EXAMPLE"` إلى الأصل.
+2. تأكّد من أن `S3OriginConfig.OriginAccessIdentity` مضبوط على `""` (سلسلة فارغة — فأنت لا تستخدم OAI القديم).
 
-The updated origin should look like this:
+ينبغي أن يبدو الأصل المحدّث هكذا:
 
 ```json
 {
@@ -166,7 +166,7 @@ The updated origin should look like this:
 }
 ```
 
-Extract just the `DistributionConfig` portion into a new file (removing the `ETag` wrapper). Don’t try to hand-edit this—the file is large and the `update-distribution` call rejects it if the schema doesn’t match exactly. Use `jq`:
+استخرج الجزء `DistributionConfig` وحده إلى ملف جديد (مع إزالة غلاف `ETag`). لا تحاول تعديل هذا يدويًا — فالملف كبير، وطلب `update-distribution` يرفضه إن لم يطابق المخطط مطابقة تامة. استخدم `jq`:
 
 ```bash
 jq '.DistributionConfig' distribution-config-current.json > distribution-config-updated.json
@@ -185,7 +185,7 @@ jq '.Origins.Items[0].OriginAccessControlId = "E1OAC2EXAMPLE"
 ETAG=$(jq -r '.ETag' distribution-config-current.json)
 ```
 
-Now submit the update:
+الآن قدّم التحديث:
 
 ```bash
 aws cloudfront update-distribution \
@@ -196,17 +196,17 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-If the `ETag` doesn’t match, CloudFront rejects the update—this prevents you from overwriting changes made by someone else (or by a concurrent process).
+إن لم يطابق `ETag`، رفض CloudFront التحديث — وهذا يمنعك من الكتابة فوق تغييرات أجراها شخص آخر (أو عملية متزامنة).
 
-In the console, the **Origins** tab of your distribution shows the OAC attached to the S3 origin in the **Origin access** column.
+في لوحة التحكم، يعرض تبويب **Origins** في توزيعك OAC مرفقًا بأصل S3 في عمود **Origin access**.
 
-The CloudFront distribution Origins tab showing the S3 origin with an OAC ID in the Origin access column.
+تبويب Origins في توزيع CloudFront يعرض أصل S3 مع معرّف OAC في عمود Origin access.
 
-## Update the S3 Bucket Policy
+## تحديث سياسة حاوية S3
 
-The OAC is attached to CloudFront, but S3 doesn’t know about it yet. You need to replace your bucket policy with one that allows CloudFront to read from the bucket and denies everyone else.
+OAC مرفق بـ CloudFront، لكن S3 لا يعرف عنه شيئًا بعد. تحتاج إلى استبدال سياسة حاويتك بسياسة تسمح لـ CloudFront بالقراءة من الحاوية وترفض كل من عداه.
 
-If you followed [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access), your bucket currently has a public read policy with `"Principal": "*"`. Replace it with this (also available as [`cloudfront-oac.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/bucket-policies/cloudfront-oac.json) in the Scratch Lab repository):
+إن كنت قد اتبعت [سياسات الحاويات والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access)، فحاويتك تحمل الآن سياسة قراءة عامة فيها `"Principal": "*"`. استبدلها بهذه (وهي متوفرة أيضًا باسم [`cloudfront-oac.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/bucket-policies/cloudfront-oac.json) في مستودع Scratch Lab):
 
 ```json
 {
@@ -230,12 +230,12 @@ If you followed [Bucket Policies and Public Access](https://stevekinney.com/cour
 }
 ```
 
-This policy does two things:
+تفعل هذه السياسة شيئين:
 
-- **Allows** the CloudFront service principal (`cloudfront.amazonaws.com`) to call `s3:GetObject` on your bucket.
-- **Restricts** that access to your specific distribution using a **Condition**. Only distribution `E1A2B3C4D5E6F7` in account `123456789012` can read from this bucket. Other CloudFront distributions—even ones in the same AWS account—are blocked.
+- **تسمح** للمبدأ الخدمي لـ CloudFront (`cloudfront.amazonaws.com`) باستدعاء `s3:GetObject` على حاويتك.
+- **تقيّد** ذلك الوصول بتوزيعك المحدّد باستخدام **شرط**. فلا يمكن إلا للتوزيع `E1A2B3C4D5E6F7` في الحساب `123456789012` أن يقرأ من هذه الحاوية. أما توزيعات CloudFront الأخرى — حتى تلك الموجودة في حساب AWS نفسه — فمحجوبة.
 
-Apply the policy:
+طبّق السياسة:
 
 ```bash
 aws s3api put-bucket-policy \
@@ -244,13 +244,13 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-In the console, the bucket’s **Permissions** tab shows the updated policy with the `cloudfront.amazonaws.com` service principal and the distribution ARN in the condition.
+في لوحة التحكم، يعرض تبويب **Permissions** في الحاوية السياسة المحدّثة مع المبدأ الخدمي `cloudfront.amazonaws.com` وARN التوزيع في الشرط.
 
-The S3 bucket Permissions tab showing the bucket policy with cloudfront.amazonaws.com as the service principal and a condition restricting access to a specific distribution ARN.
+تبويب Permissions في حاوية S3 يعرض سياسة الحاوية مع cloudfront.amazonaws.com كمبدأ خدمي وشرط يقيّد الوصول إلى ARN توزيع محدّد.
 
-## Re-enable Block Public Access
+## إعادة تفعيل حجب الوصول العام
 
-With OAC in place, your bucket no longer needs to be publicly accessible. Re-enable the Block Public Access settings you disabled in [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access):
+مع وجود OAC، لم تعد حاويتك بحاجة إلى أن تكون متاحة للعامة. أعد تفعيل إعدادات حجب الوصول العام التي عطّلتها في [سياسات الحاويات والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access):
 
 ```bash
 aws s3api put-public-access-block \
@@ -260,43 +260,43 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Wait—did you just re-enable Block Public Access while having a bucket policy that allows CloudFront? Yes. The CloudFront service principal policy isn’t a “public” policy in AWS’s definition. Block Public Access blocks policies with `"Principal": "*"` (everyone) or policies that grant access to any anonymous user. A policy scoped to the `cloudfront.amazonaws.com` service principal with a condition on a specific distribution ARN isn’t considered public. This is exactly how AWS intends it to work.
+> انتظر — هل أعدت للتو تفعيل حجب الوصول العام مع وجود سياسة حاوية تسمح لـ CloudFront؟ نعم. فسياسة المبدأ الخدمي لـ CloudFront ليست سياسة «عامة» في تعريف AWS. فحجب الوصول العام يحجب السياسات التي فيها `"Principal": "*"` (الجميع) أو السياسات التي تمنح الوصول لأي مستخدم مجهول. أما سياسة مقيّدة بالمبدأ الخدمي `cloudfront.amazonaws.com` مع شرط على ARN توزيع محدّد، فلا تُعدّ عامة. وهكذا تريد AWS بالضبط أن تعمل.
 
-## Verifying It Works
+## التحقّق من أنه يعمل
 
-Test that CloudFront still serves your content:
+اختبر أن CloudFront ما زال يقدّم محتواك:
 
 ```bash
 curl -I https://d1234abcdef.cloudfront.net/index.html
 ```
 
-You should get a `200 OK` response with CloudFront headers.
+ينبغي أن تحصل على استجابة `200 OK` مع ترويسات CloudFront.
 
-Now test that direct S3 access is blocked:
+الآن اختبر أن الوصول المباشر إلى S3 محجوب:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-You should get a `403 Forbidden` response. The bucket is no longer publicly accessible—only CloudFront can read from it.
+ينبغي أن تحصل على استجابة `403 Forbidden`. فالحاوية لم تعد متاحة للعامة — لا يقرأ منها إلا CloudFront.
 
-## The Complete Picture
+## الصورة الكاملة
 
-Here’s what the architecture looks like after configuring OAC:
+إليك ما تبدو عليه البنية بعد تهيئة OAC:
 
-1. User requests `https://d1234abcdef.cloudfront.net/index.html`.
-2. CloudFront checks its edge cache.
-3. On a cache miss, CloudFront sends a signed request to S3 using the OAC’s SigV4 credentials.
-4. S3 checks the bucket policy, sees the request is from `cloudfront.amazonaws.com` with the correct distribution ARN, and returns the object.
-5. CloudFront caches the object and returns it to the user.
-6. Any direct request to S3 (without CloudFront’s signature) is denied.
+1. يطلب المستخدم `https://d1234abcdef.cloudfront.net/index.html`.
+2. يفحص CloudFront ذاكرته المؤقتة على الحافة.
+3. عند غياب الكائن من الذاكرة المؤقتة، يرسل CloudFront طلبًا موقّعًا إلى S3 باستخدام بيانات اعتماد SigV4 الخاصة بـ OAC.
+4. تفحص S3 سياسة الحاوية، وترى أن الطلب من `cloudfront.amazonaws.com` مع ARN التوزيع الصحيح، فتُرجع الكائن.
+5. يخزّن CloudFront الكائن مؤقتًا ويعيده إلى المستخدم.
+6. أي طلب مباشر إلى S3 (دون توقيع CloudFront) يُرفض.
 
-This is the correct architecture for a static frontend on AWS. Honestly, it’s one of those things that feels like a lot of ceremony the first time you set it up, but once it’s in place you never think about it again. Your files live in a private S3 bucket, and the only way to access them is through your CloudFront distribution.
+هذه هي البنية الصحيحة لواجهة أمامية ثابتة على AWS. وبصراحة، هو أحد تلك الأمور التي تبدو ككثير من الطقوس أول مرة تعدّها، لكنك لا تفكّر فيه مجددًا بعد أن يستقرّ. فملفاتك تعيش في حاوية S3 خاصة، والسبيل الوحيد للوصول إليها هو توزيع CloudFront لديك.
 
-> **Tip**
+> **نصيحة**
 >
-> If you ever need to debug OAC issues, check three things: (1) the OAC ID on the distribution origin matches the OAC you created, (2) the bucket policy grants `s3:GetObject` to the `cloudfront.amazonaws.com` service principal with a condition on your distribution’s ARN, and (3) the `S3OriginConfig.OriginAccessIdentity` field is an empty string (not omitted—empty).
+> إن احتجت يومًا إلى تصحيح مشكلات OAC، فافحص ثلاثة أشياء: (1) أن معرّف OAC على أصل التوزيع يطابق OAC الذي أنشأته، (2) أن سياسة الحاوية تمنح `s3:GetObject` للمبدأ الخدمي `cloudfront.amazonaws.com` مع شرط على ARN توزيعك، (3) أن حقل `S3OriginConfig.OriginAccessIdentity` سلسلة فارغة (لا محذوف — فارغة).
 
-Your content is locked behind CloudFront and properly secured. In the next lesson, you’ll learn how CloudFront caches your content—how cache behaviors, TTLs, and invalidations work—so you can control what gets cached, for how long, and how to force a refresh after deployments.
+محتواك مقفل خلف CloudFront ومؤمّن بشكل صحيح. في الدرس التالي، ستتعلم كيف يخزّن CloudFront محتواك مؤقتًا — كيف تعمل سلوكيات التخزين المؤقت ومدد TTL وعمليات الإبطال — حتى تتحكّم فيما يُخزَّن مؤقتًا، وكم من الوقت، وكيف تفرض تحديثًا بعد عمليات النشر.

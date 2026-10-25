@@ -1,28 +1,28 @@
 ---
-title: "Authentication, Authorization, and Multi-Tenancy"
-lang: en
+title: "المصادقة والتخويل وتعدّد المستأجرين (Authentication, Authorization, and Multi-Tenancy)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/authentication-and-authorization"
 ---
 
-Authentication, authorization, and multi-tenancy are three problems that enterprise frontend teams tend to treat as “someone else’s job” right up until they are not. The identity provider handles auth, the backend enforces permissions, the platform team manages tenants—and the frontend just… calls an API and hopes for the best.
+المصادقة والتخويل وتعدّد المستأجرين ثلاث مشكلات تنزع فرق الواجهات الأمامية في المؤسسات إلى اعتبارها «عمل شخص آخر» حتى تصير عملها هي. يتولّى مزوّد الهوية أمر المصادقة، ويفرض الخادم الأذونات، ويدير فريق المنصة المستأجرين — والواجهة الأمامية فقط… تستدعي واجهة API وتأمل أن يكون كل شيء على ما يرام.
 
-That works until you need to render a UI that hides the “Delete Organization” button from non-admins, shows tenant-specific branding without a full redeploy, handles token refresh without interrupting a form the user has been filling out for twenty minutes, and does all of this across five independently deployed microfrontends that each have their own opinions about where to find the current user.
+وهذا ينجح حتى تحتاج إلى تصيير واجهة تُخفي زر «حذف المؤسسة» عن غير المديرين، وتُظهر هوية بصرية خاصة بمستأجر دون إعادة نشر كاملة، وتتعامل مع تحديث الرمز (token) دون مقاطعة نموذج يملؤه المستخدم منذ عشرين دقيقة، وتفعل كل هذا عبر خمس واجهات أمامية مصغّرة منشورة باستقلال لكل منها رأيها في أين يوجد المستخدم الحالي.
 
-This section covers the frontend-specific concerns: how identity protocols work at the browser boundary, where tokens should (and should not) live, how to model authorization in the UI without duplicating backend logic, and how multi-tenant routing and theming work in practice.
+يغطي هذا القسم الهموم الخاصة بالواجهة الأمامية: كيف تعمل بروتوكولات الهوية عند حدّ المتصفح، وأين ينبغي أن تعيش الرموز (وأين لا ينبغي)، وكيف تُنمذج التخويل في الواجهة دون تكرار منطق الخادم، وكيف يعمل التوجيه والسمات (theming) متعددو المستأجرين عمليًا.
 
-## Authentication Protocols in the Enterprise
+## بروتوكولات المصادقة في المؤسسات
 
-Enterprise authentication is not one protocol. It is a stack of protocols layered on top of each other, each solving a different problem, and the frontend’s job is to participate in the ceremony without becoming the security weak link.
+المصادقة المؤسسية ليست بروتوكولًا واحدًا. إنها كومة من البروتوكولات متراكبة بعضها فوق بعض، يحلّ كل منها مشكلة مختلفة، ومهمة الواجهة الأمامية أن تشارك في المراسم دون أن تصبح الحلقة الأمنية الأضعف.
 
-### SAML, OAuth 2.0, and OpenID Connect
+### بروتوكولات SAML وOAuth 2.0 وOpenID Connect
 
-Three protocols dominate enterprise identity, and they are not interchangeable.
+تهيمن ثلاثة بروتوكولات على الهوية المؤسسية، وهي غير قابلة للتبادل.
 
-**SAML 2.0** is the bedrock of traditional enterprise SSO. It uses XML-based assertions to convey authentication data between an identity provider (like Okta or Microsoft Entra ID) and a service provider (your application). The user is redirected to the IdP, authenticates there—often against Active Directory—and gets redirected back with a signed assertion. The application never sees the user’s password. SAML is verbose and XML-heavy, but it is deeply entrenched in workforce applications connected to corporate directories. [Microsoft’s identity platform documentation](https://learn.microsoft.com/en-us/entra/identity-platform/authentication-vs-authorization) describes the SAML flow in detail.
+**SAML 2.0** هو أساس الدخول الموحّد (SSO) المؤسسي التقليدي. يستخدم تأكيدات قائمة على XML لنقل بيانات المصادقة بين مزوّد هوية (مثل Okta أو Microsoft Entra ID) ومزوّد خدمة (تطبيقك). يُعاد توجيه المستخدم إلى مزوّد الهوية، ويُصادق هناك — غالبًا مقابل Active Directory — ثم يُعاد توجيهه راجعًا بتأكيد موقّع. لا يرى التطبيق كلمة مرور المستخدم قط. بروتوكول SAML مطوّل ومثقل بـ XML، لكنه راسخ بعمق في تطبيقات القوى العاملة المتصلة بأدلة الشركات. تصف [وثائق منصة الهوية من Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/authentication-vs-authorization) مسار SAML بالتفصيل.
 
-**OAuth 2.0** is an *authorization* framework. It answers “what is this client allowed to do on behalf of the user?” not “who is the user?” OAuth issues access tokens that grant scoped permissions to resources. It is the foundation for API authorization across the modern web.
+**OAuth 2.0** إطار *تخويل*. يجيب عن «ما المسموح لهذا العميل أن يفعله بالنيابة عن المستخدم؟» لا «من المستخدم؟». يصدر OAuth رموز وصول (access tokens) تمنح أذونات محدودة النطاق على الموارد. وهو أساس تخويل الـ API عبر الويب الحديث.
 
-**OpenID Connect** (OIDC) is an *identity* layer built on top of OAuth 2.0. It answers “who is the user?” by adding an ID token—a JWT containing claims about the authenticated user—to the OAuth flow. [OIDC’s own documentation](https://openid.net/developers/how-connect-works/) describes it as providing a verifiable answer to “what is the identity of the person currently using the browser?”
+**OpenID Connect** (OIDC) طبقة *هوية* مبنية فوق OAuth 2.0. يجيب عن «من المستخدم؟» بإضافة رمز هوية (ID token) — وهو JWT يحمل ادّعاءات عن المستخدم المُصادَق — إلى مسار OAuth. تصفه [وثائق OIDC نفسها](https://openid.net/developers/how-connect-works/) بأنه يقدّم إجابة قابلة للتحقّق عن «ما هوية الشخص الذي يستخدم المتصفح حاليًا؟»
 
 ```
 graph TD
@@ -39,19 +39,19 @@ graph TD
     OAuth -.- AccessToken["Access Token<br/>What can they do?"]
 ```
 
-The practical difference matters. In an enterprise context, SAML is frequently the choice for internal workforce applications connected to legacy directories, while OIDC is preferred for new customer-facing portals and mobile applications. Many organizations run both simultaneously—SAML for the employee-facing tools that predate the cloud migration, OIDC for everything built in the last five years.
+الفرق العملي مهم. في سياق مؤسسي، غالبًا ما يكون SAML الخيار لتطبيقات القوى العاملة الداخلية المتصلة بأدلة قديمة، بينما يُفضَّل OIDC للبوابات الجديدة المواجهة للعملاء وتطبيقات الجوال. وتشغّل مؤسسات كثيرة الاثنين معًا — SAML لأدوات الموظفين التي سبقت الانتقال إلى السحابة، وOIDC لكل ما بُني في السنوات الخمس الأخيرة.
 
-| Feature | SAML 2.0 | OpenID Connect | OAuth 2.0 |
+| الخصيصة | SAML 2.0 | OpenID Connect | OAuth 2.0 |
 | --- | --- | --- | --- |
-| **Primary goal** | Identity federation / SSO | Identity verification | Resource authorization |
-| **Data format** | XML | JSON / JWT | JSON / JWT |
-| **Transport** | Browser redirects | API-friendly / REST | API-friendly / REST |
-| **Typical IdP** | Active Directory, Okta | Google, Auth0, Entra ID | GitHub, Salesforce, Stripe |
-| **Best for** | Legacy workforce apps | Modern cloud/mobile apps | API access delegation |
+| **الهدف الأساسي** | اتحاد الهوية / الدخول الموحّد | التحقّق من الهوية | تخويل الموارد |
+| **صيغة البيانات** | XML | JSON / JWT | JSON / JWT |
+| **النقل** | إعادات توجيه المتصفح | ملائم لـ API / REST | ملائم لـ API / REST |
+| **مزوّد الهوية المعتاد** | Active Directory، Okta | Google، Auth0، Entra ID | GitHub، Salesforce، Stripe |
+| **الأفضل لـ** | تطبيقات القوى العاملة القديمة | تطبيقات السحابة/الجوال الحديثة | تفويض الوصول إلى API |
 
-### The Authorization Code Flow
+### مسار رمز التخويل (Authorization Code Flow)
 
-For browser-based applications, the standard OIDC flow is the **Authorization Code Flow with PKCE** (Proof Key for Code Exchange). PKCE was originally designed for mobile apps but is now the recommendation for all public clients, including SPAs.
+للتطبيقات القائمة في المتصفح، مسار OIDC المعياري هو **مسار رمز التخويل مع PKCE** (مفتاح إثبات لتبادل الرمز). صُمّم PKCE أصلًا لتطبيقات الجوال لكنه صار اليوم التوصية لكل العملاء العامّين، بمن فيهم تطبيقات الصفحة الواحدة (SPAs).
 
 ```
 sequenceDiagram
@@ -70,19 +70,19 @@ sequenceDiagram
     API-->>Browser: Protected resource
 ```
 
-The `code_verifier` is a random string generated by the client. The `code_challenge` is a SHA-256 hash of that string, sent with the initial authorization request. When the client exchanges the authorization code for tokens, it sends the original `code_verifier`. The authorization server hashes it and compares—if they match, the code was not intercepted and replayed by an attacker. PKCE closes the authorization code interception attack without requiring a client secret, which browser-based applications cannot securely store.
+الـ `code_verifier` سلسلة عشوائية يولّدها العميل. والـ `code_challenge` تجزئة SHA-256 لتلك السلسلة، تُرسَل مع طلب التخويل الأولي. وحين يستبدل العميل رمز التخويل بالرموز، يرسل الـ `code_verifier` الأصلي. فيُجزّئه خادم التخويل ويقارن — فإن تطابقا، لم يُعترض الرمز ويُعاد تشغيله من مهاجم. يُغلق PKCE هجوم اعتراض رمز التخويل دون الحاجة إلى سرّ عميل، وهو ما لا تستطيع التطبيقات القائمة في المتصفح تخزينه بأمان.
 
-## Token Management in Single Page Applications
+## إدارة الرموز في تطبيقات الصفحة الواحدة
 
-SPAs face a fundamental tension: they need tokens to call APIs, but they run entirely in the browser, where anything stored is theoretically accessible to malicious scripts.
+تواجه تطبيقات الصفحة الواحدة توتّرًا جوهريًا: فهي تحتاج الرموز لاستدعاء الـ APIs، لكنها تعمل بالكامل في المتصفح، حيث يكون أي شيء مخزّن متاحًا نظريًا للسكربتات الخبيثة.
 
-### Where tokens should not live
+### أين لا ينبغي أن تعيش الرموز
 
-The industry has moved decisively away from storing tokens in `localStorage` or `sessionStorage`. Both are accessible to any JavaScript running in the application’s origin, which means a single XSS vulnerability—one `<script>` tag injected via a compromised dependency, a reflected query parameter, or an unsanitized user input—can exfiltrate every token and send it to an attacker’s server. [FusionAuth’s BFF guide](https://fusionauth.io/blog/backend-for-frontend) describes this as the core risk: data in browser storage can be accessed by JavaScript and sent elsewhere to impersonate the user.
+انتقلت الصناعة بحسم بعيدًا عن تخزين الرموز في `localStorage` أو `sessionStorage`. فكلاهما متاح لأي JavaScript تعمل في أصل التطبيق، ما يعني أن ثغرة XSS واحدة — وسم `<script>` واحد يُحقن عبر اعتمادية مخترقة، أو معامل استعلام منعكس، أو إدخال مستخدم غير مُنقّى — يمكن أن يسرّب كل رمز ويرسله إلى خادم المهاجم. يصف [دليل BFF من FusionAuth](https://fusionauth.io/blog/backend-for-frontend) هذه المخاطرة الجوهرية: فالبيانات في تخزين المتصفح يمكن أن تصل إليها JavaScript وتُرسَل إلى مكان آخر لانتحال هوية المستخدم.
 
-### The Backend-for-Frontend pattern
+### نمط الواجهة الخلفية للواجهة الأمامية
 
-The modern answer is the **Backend-for-Frontend (BFF) pattern**, covered in detail in the [Backends for Frontends](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends) section. For authentication specifically, the BFF acts as a confidential OAuth client: it receives the authorization code, exchanges it for tokens, stores them server-side (typically in Redis or an encrypted session store), and issues a session cookie to the browser.
+الجواب الحديث هو **نمط الواجهة الخلفية للواجهة الأمامية (BFF)**، المشروح بالتفصيل في قسم [خوادم الواجهات](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends). وبالنسبة إلى المصادقة تحديدًا، يعمل الـ BFF كعميل OAuth سريّ: يستقبل رمز التخويل، ويستبدله بالرموز، ويخزّنها من جهة الخادم (عادةً في Redis أو مخزن جلسات مشفّر)، ويصدر ملف تعريف ارتباط جلسة للمتصفح.
 
 ```typescript
 // Simplified BFF token exchange
@@ -104,23 +104,23 @@ app.get('/auth/callback', async (request, response) => {
 });
 ```
 
-*Note:* The BFF is a *confidential* client—it has a client secret the browser never sees.
+*ملاحظة:* الـ BFF عميل *سريّ* — يملك سرّ عميل لا يراه المتصفح قط.
 
-The session cookie is marked `HttpOnly` (JavaScript cannot read it), `Secure` (only transmitted over HTTPS), and `SameSite=Strict` (not sent on cross-origin requests). Because the cookie is `HttpOnly`, a successful XSS attack can make requests *as* the user for the duration of the session, but it cannot steal the tokens and use them from a different machine. That is a meaningful reduction in blast radius.
+يُوسَم ملف تعريف ارتباط الجلسة بـ `HttpOnly` (لا تستطيع JavaScript قراءته)، و`Secure` (يُرسَل فقط عبر HTTPS)، و`SameSite=Strict` (لا يُرسَل في الطلبات عابرة الأصل). ولأن ملف تعريف الارتباط `HttpOnly`، يمكن لهجوم XSS ناجح أن يجري طلبات *بالنيابة عن* المستخدم خلال مدة الجلسة، لكنه لا يستطيع سرقة الرموز واستخدامها من جهاز آخر. وهذا تقليص ذو معنى لنطاق الضرر.
 
-| Storage pattern | Where tokens live | XSS risk | Token theft risk |
+| نمط التخزين | أين تعيش الرموز | خطر XSS | خطر سرقة الرموز |
 | --- | --- | --- | --- |
-| `localStorage` | Browser JS | Full access to tokens | High |
-| `sessionStorage` | Browser JS | Full access to tokens (tab-scoped) | High |
-| **BFF + cookie** | Server-side session | Session abuse only (no exfiltration) | Low |
+| `localStorage` | JavaScript في المتصفح | وصول كامل إلى الرموز | مرتفع |
+| `sessionStorage` | JavaScript في المتصفح | وصول كامل إلى الرموز (محدود بالتبويب) | مرتفع |
+| **BFF + ملف تعريف ارتباط** | جلسة من جهة الخادم | إساءة استخدام الجلسة فقط (لا تسريب) | منخفض |
 
-### Token lifecycle: refresh and renewal
+### دورة حياة الرمز: التحديث والتجديد
 
-Access tokens are intentionally short-lived—typically 15 minutes to an hour—so that a stolen token has a limited window of usefulness. Refresh tokens are long-lived and used to obtain new access tokens without forcing the user to re-authenticate.
+رموز الوصول قصيرة العمر عن قصد — عادةً من 15 دقيقة إلى ساعة — حتى تكون نافذة فائدة الرمز المسروق محدودة. أما رموز التحديث (refresh tokens) فطويلة العمر وتُستخدم للحصول على رموز وصول جديدة دون إجبار المستخدم على إعادة المصادقة.
 
-For public clients (SPAs without a BFF), the current recommendation is **refresh token rotation**: every time a refresh token is used, the authorization server invalidates it and issues a new one. If the old token shows up again, that is a clear signal of theft, and the server revokes the entire token chain. [Okta’s refresh token documentation](https://developer.okta.com/docs/guides/refresh-tokens/main/) describes this rotation mechanism in detail.
+بالنسبة إلى العملاء العامّين (تطبيقات الصفحة الواحدة بلا BFF)، التوصية الحالية هي **تدوير رمز التحديث**: في كل مرة يُستخدم فيها رمز تحديث، يُبطله خادم التخويل ويصدر واحدًا جديدًا. فإن ظهر الرمز القديم مرة أخرى، فهذه إشارة واضحة إلى سرقة، فيُبطِل الخادم سلسلة الرموز كاملة. تصف [وثائق Okta لرموز التحديث](https://developer.okta.com/docs/guides/refresh-tokens/main/) آلية التدوير هذه بالتفصيل.
 
-With a BFF, refresh is simpler. The BFF holds the refresh token server-side and silently obtains new access tokens when they expire. The browser never participates in the renewal—it just keeps sending its session cookie, and the BFF ensures the underlying access token is fresh.
+مع وجود BFF، يصبح التحديث أبسط. يحتفظ الـ BFF برمز التحديث من جهة الخادم ويحصل على رموز وصول جديدة بصمت عند انتهائها. ولا يشارك المتصفح في التجديد قط — بل يواصل إرسال ملف تعريف ارتباط جلسته فقط، ويضمن الـ BFF أن رمز الوصول الكامن حديث.
 
 ```
 sequenceDiagram
@@ -140,31 +140,31 @@ sequenceDiagram
     Note over Browser: User noticed nothing
 ```
 
-### Session management
+### إدارة الجلسات
 
-Enterprise applications need more than just “logged in” or “logged out.” Common session requirements include:
+تحتاج تطبيقات المؤسسات أكثر من مجرد «مسجّل الدخول» أو «مسجّل الخروج». تشمل متطلبات الجلسة الشائعة:
 
-- **Sliding sessions**: The expiration extends as long as the user remains active. A user working for eight hours should not be forced to re-authenticate mid-task.
-- **Absolute timeouts**: A hard limit after which re-authentication is required regardless of activity. This mitigates the risk of an abandoned terminal with an active session.
-- **Concurrent session limits**: Restricting a user to one or two active sessions prevents account sharing and limits the footprint of a compromised account. Salesforce, for instance, allows administrators to [configure concurrent session limits](https://help.salesforce.com/s/articleView?id=xcloud.security_login_flow_limit_concurrent_sessions.htm&language=en_US&type=5) through login flows.
+- **الجلسات المنزلقة**: يمتد الانتهاء ما دام المستخدم نشطًا. ولا ينبغي إجبار مستخدم يعمل ثماني ساعات على إعادة المصادقة في منتصف مهمة.
+- **المهلات المطلقة**: حدّ صارم تُشترط بعده إعادة المصادقة بصرف النظر عن النشاط. يخفّف هذا من خطر طرفية مهجورة بجلسة نشطة.
+- **حدود الجلسات المتزامنة**: تقييد المستخدم بجلسة أو جلستين نشطتين يمنع مشاركة الحسابات ويحدّ من بصمة حساب مخترق. فـ Salesforce، مثلًا، تتيح للمسؤولين [تهيئة حدود الجلسات المتزامنة](https://help.salesforce.com/s/articleView?id=xcloud.security_login_flow_limit_concurrent_sessions.htm&language=en_US&type=5) عبر مسارات تسجيل الدخول.
 
-### CSRF protection
+### الحماية من CSRF
 
-Even with `HttpOnly` cookies and a BFF, Cross-Site Request Forgery remains a threat. A malicious page cannot *read* the session cookie, but the browser will *send* it automatically on any request to the BFF’s origin.
+حتى مع ملفات تعريف ارتباط `HttpOnly` وBFF، يبقى تزوير الطلبات عابر المواقع (CSRF) تهديدًا. لا تستطيع صفحة خبيثة *قراءة* ملف تعريف ارتباط الجلسة، لكن المتصفح سيرسله تلقائيًا في أي طلب إلى أصل الـ BFF.
 
-The standard defenses:
+الدفاعات المعيارية:
 
-- **`SameSite=Strict`** on the session cookie prevents the browser from sending it on cross-origin requests. This is the strongest cookie-level defense but breaks legitimate cross-site navigation (like clicking a link from an email).
-- **`SameSite=Lax`** is a common compromise: the cookie is sent on top-level navigations (GET requests from external links) but not on POST requests or API calls from other origins.
-- **Custom header requirement**: Require a custom header like `X-Requested-With` on all API calls. Browsers enforce a CORS preflight for cross-origin requests with custom headers, and the BFF can reject any request that lacks the header.
+- **`SameSite=Strict`** على ملف تعريف ارتباط الجلسة يمنع المتصفح من إرساله في الطلبات عابرة الأصل. وهذا أقوى دفاع على مستوى ملف تعريف الارتباط لكنه يكسر التنقّل الشرعي عابر المواقع (مثل النقر على رابط من بريد إلكتروني).
+- **`SameSite=Lax`** حلّ وسط شائع: يُرسَل ملف تعريف الارتباط في التنقّلات العلوية (طلبات GET من روابط خارجية) لكن لا في طلبات POST أو نداءات API من أصول أخرى.
+- **شرط ترويسة مخصّصة**: اشترط ترويسة مخصّصة مثل `X-Requested-With` في كل نداءات API. يفرض المتصفح فحصًا مسبقًا لـ CORS على الطلبات عابرة الأصل ذات الترويسات المخصّصة، ويمكن للـ BFF أن يرفض أي طلب تنقصه الترويسة.
 
-## Authorization Models
+## نماذج التخويل
 
-Authentication tells you *who* the user is. Authorization tells you *what they can do*. These are fundamentally different concerns, and conflating them is how teams end up with permission logic scattered across a dozen middleware files, three frontend hooks, and a shared Google Sheet that nobody updates.
+تخبرك المصادقة *من* المستخدم. ويخبرك التخويل *بما يمكنه فعله*. هذان هَمّان مختلفان جوهريًا، وخلطهما هو السبيل الذي تنتهي به الفرق إلى منطق أذونات متفرّق عبر دستة ملفات وسيط وثلاثة خطّافات في الواجهة الأمامية وجدول Google مشترك لا يحدّثه أحد.
 
-### RBAC: roles and their limits
+### RBAC: الأدوار وحدودها
 
-**Role-Based Access Control** is the most common starting point. Users are assigned to roles (`Admin`, `Editor`, `Viewer`), roles map to permissions, and the application checks the role before allowing an action.
+**التحكّم في الوصول القائم على الأدوار** هو نقطة البداية الأكثر شيوعًا. يُسنَد المستخدمون إلى أدوار (`Admin`، `Editor`، `Viewer`)، وتُربَط الأدوار بأذونات، ويفحص التطبيق الدور قبل السماح بإجراء.
 
 ```typescript
 // Simple RBAC check
@@ -173,11 +173,11 @@ function canDeleteProject(user: User): boolean {
 }
 ```
 
-RBAC is easy to understand and easy to implement. It also has a well-documented failure mode: **role explosion**. As the organization grows and permissions become more granular, you end up creating roles like `billing-admin-east-coast-read-only` because the existing roles do not capture the exact combination of permissions someone needs. [Oso’s access control comparison](https://www.osohq.com/learn/rbac-vs-abac-vs-pbac) describes this proliferation as the central scalability problem of pure RBAC.
+إن RBAC سهل الفهم وسهل التنفيذ. وله أيضًا نمط فشل موثّق جيدًا: **انفجار الأدوار**. فمع نمو المؤسسة وصيرورة الأذونات أكثر تفصيلًا، ينتهي بك الأمر إلى إنشاء أدوار مثل `billing-admin-east-coast-read-only` لأن الأدوار الموجودة لا تلتقط التوليفة الدقيقة من الأذونات التي يحتاجها أحدهم. يصف [مقارنة التحكّم في الوصول من Oso](https://www.osohq.com/learn/rbac-vs-abac-vs-pbac) هذا التضخّم بأنه المشكلة الجوهرية في قابلية توسّع RBAC الصرف.
 
-### ABAC: attributes and context
+### ABAC: الخصائص والسياق
 
-**Attribute-Based Access Control** evaluates policies based on attributes of the user, the resource, and the environment. Instead of mapping users to static roles, ABAC evaluates dynamic rules:
+**التحكّم في الوصول القائم على الخصائص** يقيّم السياسات بناءً على خصائص المستخدم والمورد والبيئة. فبدل ربط المستخدمين بأدوار ثابتة، يقيّم ABAC قواعد ديناميكية:
 
 ```
 // Pseudocode: ABAC policy
@@ -187,13 +187,13 @@ allow if:
   AND request.time is within business_hours
 ```
 
-ABAC is powerful because it handles context-sensitive decisions without creating a new role for every combination of conditions. It is also harder to reason about, because the policy surface area grows with every new attribute you add.
+إن ABAC قوي لأنه يتعامل مع قرارات حساسة للسياق دون إنشاء دور جديد لكل توليفة من الشروط. وهو أيضًا أصعب في الاستيعاب، لأن مساحة سطح السياسة تنمو مع كل خصيصة جديدة تضيفها.
 
-### ReBAC: relationships as a graph
+### ReBAC: العلاقات كمخطط
 
-**Relationship-Based Access Control** models authorization as a graph of relationships between entities. It gained prominence after Google published the [Zanzibar paper][7], which described the authorization system backing Google Drive, YouTube, and other Google services.
+**التحكّم في الوصول القائم على العلاقات** ينمذج التخويل كمخطط من العلاقات بين الكيانات. وقد ذاع صيته بعد أن نشرت Google [ورقة Zanzibar][7]، التي وصفت نظام التخويل الذي يسند Google Drive وYouTube وخدمات Google الأخرى.
 
-ReBAC answers questions like “can this user edit this document?” by traversing a relationship graph: the user is a member of a team, the team owns a project, the project contains the document, and the document inherits the project’s permissions.
+يجيب ReBAC عن أسئلة مثل «هل يمكن لهذا المستخدم تعديل هذا المستند؟» باجتياز مخطط علاقات: المستخدم عضو في فريق، والفريق يملك مشروعًا، والمشروع يحتوي المستند، والمستند يرث أذونات المشروع.
 
 ```
 graph LR
@@ -208,11 +208,11 @@ graph LR
     Doc -.->|inherits permissions from| Proj
 ```
 
-Tools like [OpenFGA](https://openfga.dev/) and Ory Keto implement this relationship-first model. ReBAC is especially effective for collaborative applications with hierarchical structures—document sharing, project management, organizational hierarchies—where the question is not “what role does this user have?” but “what is this user’s relationship to this resource?”
+تطبّق أدوات مثل [OpenFGA](https://openfga.dev/) وOry Keto هذا النموذج الذي يضع العلاقة أولًا. وReBAC فعّال بشكل خاص مع التطبيقات التعاونية ذات البنى الهرمية — مشاركة المستندات، وإدارة المشاريع، والتسلسلات التنظيمية — حيث لا يكون السؤال «ما الدور الذي يملكه هذا المستخدم؟» بل «ما علاقة هذا المستخدم بهذا المورد؟»
 
-### PBAC: policies as code
+### PBAC: السياسات كشيفرة
 
-**Policy-Based Access Control** is less a model and more a deployment strategy. It externalizes authorization logic into a centralized policy engine—[Open Policy Agent](https://www.openpolicyagent.org/) (OPA) with Rego, or [Cedar](https://docs.cedarpolicy.com/) for AWS—where policies are written in a declarative language, version-controlled, and evaluated at runtime.
+**التحكّم في الوصول القائم على السياسات** أقلّ نموذجًا وأكثر استراتيجية نشر. فهو يُخرِج منطق التخويل إلى محرّك سياسات مركزي — مثل [Open Policy Agent](https://www.openpolicyagent.org/) (OPA) مع Rego، أو [Cedar](https://docs.cedarpolicy.com/) لـ AWS — حيث تُكتب السياسات بلغة تصريحية وتُدار بنظام الإصدارات وتُقيَّم وقت التشغيل.
 
 ```rego
 # OPA/Rego: allow project deletion only for org admins
@@ -227,24 +227,24 @@ allow if {
 }
 ```
 
-The advantage of PBAC is that it decouples policy from application code. Security teams can manage, audit, and update policies independently of the engineering release cycle. The policy engine becomes the single source of truth, and every service—frontend and backend—evaluates against the same rules.
+ميزة PBAC أنه يفصل السياسة عن شيفرة التطبيق. تستطيع فرق الأمن إدارة السياسات وتدقيقها وتحديثها باستقلال عن دورة إصدار الهندسة. ويصبح محرّك السياسات مصدر الحقيقة الوحيد، وتقيّم كل خدمة — واجهة أمامية وخلفية — مقابل القواعد نفسها.
 
-| Model | Core concept | Strength | Scaling challenge |
+| النموذج | المفهوم الجوهري | القوة | تحدّي التوسّع |
 | --- | --- | --- | --- |
-| **RBAC** | User → role → permission | Simplicity | Role explosion |
-| **ABAC** | Attributes + rules | Dynamic flexibility | Policy complexity |
-| **ReBAC** | Relationship graph | Hierarchical access | Graph query performance |
-| **PBAC** | Externalized policy engine | Decoupled, auditable | Operational overhead of engine |
+| **RBAC** | مستخدم → دور → صلاحية | البساطة | انفجار الأدوار |
+| **ABAC** | خصائص + قواعد | مرونة ديناميكية | تعقيد السياسات |
+| **ReBAC** | مخطط علاقات | وصول هرمي | أداء استعلام المخطط |
+| **PBAC** | محرّك سياسات خارجي | منفصل وقابل للتدقيق | عبء تشغيلي للمحرّك |
 
-In practice, most enterprise systems use a hybrid. RBAC provides the coarse-grained structure (admins, editors, viewers), ABAC or ReBAC handles the fine-grained context (department-scoped access, document-level sharing), and PBAC provides the deployment mechanism that keeps the whole thing consistent across services.
+عمليًا، تستخدم معظم الأنظمة المؤسسية مزيجًا هجينًا. يوفّر RBAC البنية الخشنة (مديرون، محرّرون، مشاهدون)، ويتولّى ABAC أو ReBAC السياق الدقيق (وصول محدود بالقسم، مشاركة على مستوى المستند)، ويوفّر PBAC آلية النشر التي تُبقي الأمر كله متسقًا عبر الخدمات.
 
-## Authorization in the Frontend
+## التخويل في الواجهة الأمامية
 
-Authorization in the frontend serves two purposes: improving the user experience by guiding users toward actions they are allowed to take, and providing a secondary defense layer before a request hits the backend. The critical rule is that **the frontend is never the final arbiter of access**. Every action must be re-validated server-side.
+يخدم التخويل في الواجهة الأمامية غرضين: تحسين تجربة المستخدم بتوجيهه نحو الإجراءات المسموح له بها، وتوفير طبقة دفاع ثانوية قبل أن يصل الطلب إلى الخادم. والقاعدة الحاسمة أن **الواجهة الأمامية ليست أبدًا الحكم النهائي على الوصول**. يجب إعادة التحقّق من كل إجراء من جهة الخادم.
 
-### Route-level guards
+### حرّاس على مستوى المسار
 
-The most basic frontend authorization pattern is preventing unauthorized users from reaching certain pages. In React, this typically looks like a wrapper component:
+أبسط نمط تخويل في الواجهة الأمامية هو منع المستخدمين غير المصرّح لهم من الوصول إلى صفحات معيّنة. وفي React، يبدو هذا عادةً كمكوّن مُغلِّف:
 
 ```typescript
 function ProtectedRoute({
@@ -275,11 +275,11 @@ function ProtectedRoute({
 />;
 ```
 
-*Note:* The backend still enforces this. The route guard is a UX optimization, not a security boundary.
+*ملاحظة:* ما زال الخادم يفرض هذا. فحارس المسار تحسين لتجربة المستخدم، لا حدّ أمني.
 
-### Component-level conditional rendering
+### التصيير الشرطي على مستوى المكوّن
 
-For finer-grained control, a permissions-aware component can show, hide, or disable UI elements based on the user’s entitlements:
+للتحكّم الأدقّ، يمكن لمكوّن واعٍ بالأذونات أن يُظهر عناصر الواجهة أو يخفيها أو يعطّلها بناءً على استحقاقات المستخدم:
 
 ```typescript
 function Can({
@@ -308,11 +308,11 @@ function Can({
 </Can>;
 ```
 
-*Note:* permissions comes from the backend's "UI profile"—a list of allowed actions computed at login.
+*ملاحظة:* تأتي `permissions` من «ملف تعريف الواجهة» في الخادم — وهو قائمة بالإجراءات المسموح بها تُحسَب عند تسجيل الدخول.
 
-### Synchronizing frontend and backend logic
+### مزامنة منطق الواجهة الأمامية والخادم
 
-The biggest maintenance headache is keeping authorization logic in sync between the frontend and backend without duplicating it. The most effective strategy is to have the backend compute a **UI profile**—a set of allowed actions—when the user authenticates, and include it in the session state or as a dedicated API response.
+أكبر صداع في الصيانة هو إبقاء منطق التخويل متزامنًا بين الواجهة الأمامية والخادم دون تكراره. وأكثر الاستراتيجيات فعّالية أن يحسب الخادم **ملف تعريف واجهة (UI profile)** — مجموعة الإجراءات المسموح بها — عند مصادقة المستخدم، ويضمّنه في حالة الجلسة أو كاستجابة API مخصّصة.
 
 ```typescript
 // Backend computes the UI profile
@@ -334,27 +334,27 @@ async function getUserProfile(userId: string, tenantId: string): Promise<UIProfi
 }
 ```
 
-*Note:* The frontend consumes this profile. The backend enforces the same policies on every API request.
+*ملاحظة:* تستهلك الواجهة الأمامية هذا الملف، ويفرض الخادم السياسات نفسها في كل طلب API.
 
-The frontend consumes this profile to render the UI. The backend continues to enforce the same policies on every API request. This “single source of truth” approach prevents the slow drift where the frontend thinks one thing is allowed while the backend disagrees.
+تستهلك الواجهة الأمامية هذا الملف لتصيير الواجهة. ويواصل الخادم فرض السياسات نفسها في كل طلب API. ويمنع هذا النهج «مصدر الحقيقة الواحد» الانحراف البطيء حيث تظنّ الواجهة الأمامية أن شيئًا ما مسموح بينما يخالفها الخادم.
 
-### Show, hide, or disable?
+### إظهار أم إخفاء أم تعطيل؟
 
-When a user lacks permission for an action, you have three choices:
+حين تنقص المستخدم صلاحية إجراء ما، أمامك ثلاثة خيارات:
 
-- **Hide the element entirely**: Clean UI, reduced cognitive load, but the user may not know the feature exists. Best when the feature is completely outside the user’s role.
-- **Disable the element with an explanation**: Signals that the feature exists but is not available. Best when the feature is available at a higher subscription tier or when a specific condition is not met. A tooltip or adjacent text explaining *why* it is disabled is essential—a grayed-out button with no explanation is just confusing.
-- **Show and block on interaction**: Allow the click, then show an error. This is almost always the wrong choice for authorization (it is appropriate for validation), because it wastes the user’s time and creates frustration.
+- **إخفاء العنصر كليًا**: واجهة نظيفة، وحمل معرفي أقل، لكن المستخدم قد لا يعلم بوجود الميزة. الأفضل حين تكون الميزة خارج دور المستخدم بالكامل.
+- **تعطيل العنصر مع شرح**: يشير إلى أن الميزة موجودة لكنها غير متاحة. الأفضل حين تكون الميزة متاحة في طبقة اشتراك أعلى أو حين لا يتحقق شرط معيّن. ولا غنى عن تلميح أو نص مجاور يشرح *سبب* التعطيل — فزر رمادي بلا شرح محيّر فقط.
+- **الإظهار والمنع عند التفاعل**: السماح بالنقر ثم عرض خطأ. هذا خيار خاطئ دائمًا تقريبًا للتخويل (وهو مناسب للتحقّق من الصحة)، لأنه يهدر وقت المستخدم ويخلق إحباطًا.
 
-From an accessibility perspective, disabled elements need care. Many screen readers skip `disabled` buttons entirely, so users relying on assistive technology may not know the feature exists at all. Pairing a disabled control with visible explanatory text or an `aria-describedby` reference ensures the context is available to everyone.
+من منظور إمكانية الوصول، تحتاج العناصر المعطّلة إلى عناية. فقارئات الشاشة كثيرة تتخطّى أزرار `disabled` كليًا، لذا قد لا يعلم مستخدمو التقنيات المساعدة بوجود الميزة إطلاقًا. وقرن عنصر تحكّم معطّل بنص توضيحي مرئي أو مرجع `aria-describedby` يضمن توفّر السياق للجميع.
 
-## Authentication in Microfrontend Architectures
+## المصادقة في معماريات الواجهات الأمامية المصغّرة
 
-When an application decomposes into independently deployed microfrontends, authentication becomes a shared responsibility between the application shell and remote modules. Getting this wrong means duplicated auth state, race conditions during token refresh, and logout flows that leave orphaned sessions in individual modules.
+حين يتفكّك تطبيق إلى واجهات أمامية مصغّرة منشورة باستقلال، تصبح المصادقة مسؤولية مشتركة بين غلاف التطبيق والوحدات البعيدة. والخطأ في هذا يعني حالة مصادقة مكرّرة، وحالات تسابق أثناء تحديث الرمز، ومسارات خروج تترك جلسات يتيمة في وحدات فردية.
 
-### The shell owns authentication
+### الغلاف يملك المصادقة
 
-The recommended pattern is **auth at the shell level**:
+النمط الموصى به هو **المصادقة على مستوى الغلاف**:
 
 ```
 graph TD
@@ -370,32 +370,32 @@ graph TD
     Shell -->|"Auth context<br/>(user, permissions)"| MFE3
 ```
 
-The shell handles all authentication flows: login, logout, and token refresh. It exposes the authenticated user’s identity and permissions to loaded microfrontends through a shared context mechanism. Individual microfrontends never initialize their own auth flows or store their own tokens.
+يتولّى الغلاف كل مسارات المصادقة: تسجيل الدخول، وتسجيل الخروج، وتحديث الرمز. ويكشف هوية المستخدم المُصادَق وأذوناته للواجهات المصغّرة المحمّلة عبر آلية سياق مشتركة. ولا تُهيّئ أي واجهة مصغّرة فردية مسارات مصادقتها الخاصة ولا تخزّن رموزها.
 
-This provides a single source of truth for authentication state, prevents token duplication across modules, centralizes token refresh logic (avoiding race conditions where multiple modules try to refresh simultaneously), and ensures logout invalidates everything at once.
+يوفّر هذا مصدر حقيقة واحد لحالة المصادقة، ويمنع تكرار الرموز عبر الوحدات، ويمركز منطق تحديث الرمز (فيتجنّب حالات التسابق حيث تحاول وحدات عدة التحديث في الوقت نفسه)، ويضمن أن يُبطل تسجيل الخروج كل شيء دفعة واحدة.
 
-### Distributing auth state to microfrontends
+### توزيع حالة المصادقة على الواجهات المصغّرة
 
-There are several mechanisms for sharing auth state across module boundaries:
+توجد آليات عدة لمشاركة حالة المصادقة عبر حدود الوحدات:
 
-- **React Context**: An `<AuthProvider>` in the shell wraps the entire application and provides a `useAuth()` hook that any microfrontend can call. This works well when all modules are React, but breaks down in a multi-framework environment.
-- **Event bus**: Microfrontends subscribe to auth change events (`user:authenticated`, `user:logout`, `permissions:updated`). Framework-agnostic and works across any composition model.
-- **Shell-injected global**: The shell sets a global object or uses Module Federation’s shared scope to provide auth state. Simple but requires discipline to avoid stale reads.
-- **Backend API**: Each module independently calls `/api/auth/me` to get the current user. The BFF caches the response to avoid redundant round trips. This is the most decoupled option but introduces latency.
+- **React Context**: `<AuthProvider>` في الغلاف يغلّف التطبيق كله ويوفّر خُطّاف `useAuth()` يمكن لأي واجهة مصغّرة استدعاؤه. يعمل هذا جيدًا حين تكون كل الوحدات React، لكنه ينهار في بيئة متعددة الأطر.
+- **ناقل أحداث (Event bus)**: تشترك الواجهات المصغّرة في أحداث تغيّر المصادقة (`user:authenticated`، `user:logout`، `permissions:updated`). محايد إطار العمل ويعمل عبر أي نموذج تركيب.
+- **عام يُحقنه الغلاف**: يضبط الغلاف كائنًا عامًّا أو يستخدم النطاق المشترك في Module Federation لتوفير حالة المصادقة. بسيط لكنه يتطلب انضباطًا لتجنّب القراءات القديمة.
+- **API خلفية**: تستدعي كل وحدة باستقلال `/api/auth/me` للحصول على المستخدم الحالي. ويخزّن الـ BFF الاستجابة مؤقتًا لتفادي رحلات ذهاب وإياب زائدة. هذا أكثر الخيارات فصلًا لكنه يُدخل كمونًا.
 
-### Authorization boundaries across modules
+### حدود التخويل عبر الوحدات
 
-Each microfrontend should check permissions before rendering protected UI, using the shared auth context from the shell. But—and this is the part teams forget—the backend APIs behind each module must *also* validate permissions. The frontend check is a UX optimization; the backend check is the security boundary.
+ينبغي لكل واجهة مصغّرة أن تفحص الأذونات قبل تصيير واجهة محمية، باستخدام سياق المصادقة المشترك من الغلاف. لكن — وهذا ما تنساه الفرق — يجب أن تتحقّق واجهات API الخلفية خلف كل وحدة من الأذونات *أيضًا*. ففحص الواجهة الأمامية تحسين لتجربة المستخدم؛ وفحص الخادم هو الحدّ الأمني.
 
-The shell typically aggregates all available permissions from the backend and shares them, letting each module make local visibility decisions. This keeps the permission-fetching logic in one place instead of having every module independently query the policy engine.
+يجمع الغلاف عادةً كل الأذونات المتاحة من الخادم ويشاركها، تاركًا لكل وحدة اتخاذ قرارات الظهور المحلية. يُبقي هذا منطق جلب الأذونات في مكان واحد بدل أن تستعلم كل وحدة عن محرّك السياسات باستقلال.
 
-## Multi-Tenancy in the Frontend
+## تعدّد المستأجرين في الواجهة الأمامية
 
-Multi-tenancy—serving multiple customers from a single application instance—is the architectural foundation of B2B SaaS. For the frontend, it introduces complexity in routing, branding, data isolation, and caching.
+تعدّد المستأجرين — خدمة عملاء متعددين من نسخة تطبيق واحدة — هو الأساس المعماري لبرمجيات B2B كخدمة. وبالنسبة إلى الواجهة الأمامية، فهو يُدخل تعقيدًا في التوجيه والهوية البصرية وعزل البيانات والتخزين المؤقت.
 
-### Tenant resolution
+### تحديد المستأجر
 
-The frontend needs to know which tenant context the current user is operating in. This resolution typically happens at the routing layer and follows one of three patterns:
+تحتاج الواجهة الأمامية إلى معرفة سياق المستأجر الذي يعمل فيه المستخدم الحالي. ويحدث هذا التحديد عادةً في طبقة التوجيه ويتبع أحد ثلاثة أنماط:
 
 ```
 graph TD
@@ -416,21 +416,21 @@ graph TD
     end
 ```
 
-**Subdomain-per-tenant** (`acme.app.com`) provides the strongest sense of tenant ownership and allows tenant-specific SSL certificates and CDN configurations. It also requires wildcard DNS management and complicates certificate rotation.
+**نطاق فرعي لكل مستأجر** (`acme.app.com`) يمنح أقوى إحساس بملكية المستأجر ويسمح بشهادات SSL وتهيئات CDN خاصة بالمستأجر. وهو يتطلب أيضًا إدارة DNS بنطاق شامل ويُعقّد تدوير الشهادات.
 
-**Path-per-tenant** (`app.com/t/acme`) is simpler to manage with a single SSL certificate but can lead to complex relative URL generation. If session cookies are not properly scoped, there is a risk of session leakage across paths.
+**مسار لكل مستأجر** (`app.com/t/acme`) أبسط في الإدارة بشهادة SSL واحدة لكنه قد يؤدي إلى توليد معقّد للعناوين النسبية. وإن لم تكن ملفات تعريف ارتباط الجلسة محدّدة النطاق بشكل سليم، يوجد خطر تسرّب الجلسة عبر المسارات.
 
-**Identity-first / single domain** (`app.com`) resolves the tenant from the user’s login credentials or an organization picker. This is common for applications like Slack where a user belongs to multiple workspaces. [WorkOS’s multi-tenant architecture guide][11] covers all three patterns and their tradeoffs.
+**الهوية أولًا / نطاق واحد** (`app.com`) يحدّد المستأجر من بيانات اعتماد تسجيل دخول المستخدم أو من مُنتقي مؤسسة. وهذا شائع في تطبيقات مثل Slack حيث ينتمي المستخدم إلى مساحات عمل متعددة. يغطّي [دليل WorkOS للمعمارية متعددة المستأجرين][11] الأنماط الثلاثة ومقايضاتها.
 
-| Pattern | Branding strength | Management complexity | Session isolation |
+| النمط | قوة الهوية البصرية | تعقيد الإدارة | عزل الجلسات |
 | --- | --- | --- | --- |
-| **Subdomain** | High | High (DNS, certs) | Strong (origin) |
-| **Path-based** | Low | Low | Requires care |
-| **Single-domain** | Medium | Low | Requires care |
+| **النطاق الفرعي** | مرتفعة | مرتفع (DNS، الشهادات) | قوي (الأصل) |
+| **قائم على المسار** | منخفضة | منخفض | يتطلب عناية |
+| **نطاق واحد** | متوسطة | منخفض | يتطلب عناية |
 
-### Tenant-aware theming
+### السمات الواعية بالمستأجر
 
-Enterprise customers expect the application to match their corporate branding. The most effective implementation uses CSS custom properties injected at runtime from a tenant configuration:
+يتوقّع عملاء المؤسسات أن يطابق التطبيق هويتهم البصرية للشركة. وأكثر التنفيذات فعّالية يستخدم خصائص CSS مخصّصة تُحقَن وقت التشغيل من تهيئة المستأجر:
 
 ```typescript
 async function applyTenantTheme(tenantId: string) {
@@ -445,7 +445,7 @@ async function applyTenantTheme(tenantId: string) {
 }
 ```
 
-*Note:* One codebase, many visual identities. No tenant-specific builds required.
+*ملاحظة:* قاعدة شيفرة واحدة، وهويات بصرية كثيرة. دون حاجة إلى عمليات بناء خاصة بالمستأجر.
 
 ```css
 .navbar {
@@ -458,17 +458,17 @@ async function applyTenantTheme(tenantId: string) {
 }
 ```
 
-This approach treats the theme as runtime state rather than build-time configuration. A single build artifact serves every tenant, and visual customization is just another API response.
+يتعامل هذا النهج مع السمة كحالة وقت تشغيل لا كتهيئة وقت بناء. فحزمة بناء واحدة تخدم كل مستأجر، والتخصيص البصري مجرد استجابة API أخرى.
 
-### Data isolation in the frontend
+### عزل البيانات في الواجهة الأمامية
 
-Data isolation is primarily enforced on the backend—through Row-Level Security, separate database schemas, or separate databases per tenant. The frontend’s job is to not accidentally undermine that isolation.
+يُفرض عزل البيانات أساسًا في الخادم — عبر أمن مستوى الصفوف (Row-Level Security)، أو مخططات قواعد بيانات منفصلة، أو قواعد بيانات منفصلة لكل مستأجر. ومهمة الواجهة الأمامية ألا تقوّض ذلك العزل عن غير قصد.
 
-The practical concerns:
+والهموم العملية:
 
-- **Every API request must include the tenant context**. This is typically a `tenant_id` claim in the JWT or a header derived from the session. If a request goes out without tenant context, the backend should reject it rather than guessing.
-- **Clear state on tenant switch**. When a user switches between organizations (in an identity-first model), the frontend must flush all cached data, clear any in-memory state management (Redux, Zustand, whatever), and re-fetch everything in the new tenant context. Stale data from a previous tenant leaking into the current view is a data isolation failure.
-- **Scope cache keys by tenant**. Any client-side caching (React Query, SWR, service worker) must include the tenant identifier in the cache key. A cache hit for `projects:list` that returns Tenant A’s projects when Tenant B is active is the kind of bug that gets a dedicated Slack channel.
+- **يجب أن يتضمّن كل طلب API سياق المستأجر**. وهذا عادةً ادّعاء `tenant_id` في JWT أو ترويسة مستمدّة من الجلسة. وإن خرج طلب دون سياق مستأجر، ينبغي أن يرفضه الخادم بدل التخمين.
+- **امسح الحالة عند تبديل المستأجر**. حين ينتقل مستخدم بين مؤسسات (في نموذج الهوية أولًا)، يجب أن تُفرِغ الواجهة الأمامية كل البيانات المخزّنة مؤقتًا، وتمسح أي إدارة حالة في الذاكرة (Redux، Zustand، أيًّا كان)، وتعيد جلب كل شيء في سياق المستأجر الجديد. وتسرّب بيانات قديمة من مستأجر سابق إلى العرض الحالي فشل في عزل البيانات.
+- **حدّد مفاتيح الذاكرة المؤقتة حسب المستأجر**. يجب أن يضمّ أي تخزين مؤقت من جهة العميل (React Query، SWR، عامل الخدمة) معرّف المستأجر في مفتاح الذاكرة المؤقتة. فإصابة ذاكرة مؤقتة لـ `projects:list` تعيد مشاريع المستأجر ألف حين يكون المستأجر باء نشطًا هي نوع العلة الذي يستحق قناة Slack مخصّصة.
 
 ```typescript
 // Tenant-scoped cache key pattern
@@ -481,36 +481,36 @@ function useTenantQuery<T>(key: string, fetcher: () => Promise<T>) {
 }
 ```
 
-*Note:* The tenant ID is part of the cache key. No cross-tenant cache hits.
+*ملاحظة:* معرّف المستأجر جزء من مفتاح الذاكرة المؤقتة. لا إصابات عابرة للمستأجرين.
 
-### Caching and CDN strategies
+### استراتيجيات التخزين المؤقت وCDN
 
-Caching in a multi-tenant environment requires balancing performance with isolation. The rules are straightforward once you categorize the assets:
+يتطلب التخزين المؤقت في بيئة متعددة المستأجرين موازنة الأداء بالعزل. والقواعد مباشرة بمجرد تصنيف الأصول:
 
-| Asset type | Caching strategy | TTL | Isolation |
+| نوع الأصل | استراتيجية التخزين المؤقت | TTL | العزل |
 | --- | --- | --- | --- |
-| **Application bundle** | Global cache (hashed) | Long (1 year) | Shared |
-| **Tenant config** | Tenant-scoped cache | Short (1–5 min) | Per-tenant |
-| **User data** | No cache (`private`) | N/A | Per-user |
-| **Public marketing** | Global cache | Medium (1 day) | Shared |
+| **حزمة التطبيق** | ذاكرة مؤقتة عامة (مُجزَّأة) | طويل (سنة واحدة) | مشترك |
+| **تهيئة المستأجر** | ذاكرة مؤقتة خاصة بالمستأجر | قصير (1–5 دقائق) | لكل مستأجر |
+| **بيانات المستخدم** | بلا تخزين مؤقت (`private`) | لا ينطبق | لكل مستخدم |
+| **التسويق العام** | ذاكرة مؤقتة عامة | متوسط (يوم واحد) | مشترك |
 
-Static assets like JavaScript bundles, CSS, and fonts are shared across all tenants and can be cached aggressively with content-hashed filenames. Tenant-specific assets (uploaded logos, custom stylesheets) should be isolated by path prefix (`cdn.app.com/assets/{tenant-id}/logo.png`) and cached independently. User data and authenticated API responses must use `Cache-Control: private, no-store`.
+الأصول الثابتة مثل حزم JavaScript وCSS والخطوط مشتركة عبر كل المستأجرين ويمكن تخزينها مؤقتًا بقوة بأسماء ملفات مُجزَّأة بالمحتوى. أما الأصول الخاصة بالمستأجر (الشعارات المرفوعة، الأنماط المخصّصة) فينبغي عزلها ببادئة مسار (`cdn.app.com/assets/{tenant-id}/logo.png`) وتخزينها مؤقتًا باستقلال. ويجب أن تستخدم بيانات المستخدم واستجابات API المُصادَقة `Cache-Control: private, no-store`.
 
-For subdomain-based routing, the hostname naturally segments the CDN cache. For path-based or single-domain routing, the CDN must be configured to include the tenant identifier in the cache key—otherwise Tenant A’s dashboard might be served from cache to Tenant B.
+بالنسبة إلى التوجيه القائم على النطاقات الفرعية، يجزّئ اسم المضيف ذاكرة CDN المؤقتة طبيعيًا. أما في التوجيه القائم على المسار أو نطاق واحد، فيجب تهيئة CDN لتضمين معرّف المستأجر في مفتاح الذاكرة المؤقتة — وإلا فقد تُقدَّم لوحة معلومات المستأجر ألف من الذاكرة المؤقتة إلى المستأجر باء.
 
-## Organizational Ownership
+## الملكية التنظيمية
 
-Who *owns* auth in a large organization? This is less a technical question and more an organizational one, but getting it wrong creates friction that no amount of good architecture can fix.
+من *يملك* المصادقة في مؤسسة كبيرة؟ هذا سؤال تنظيمي أكثر منه تقنيًا، لكن الخطأ فيه يخلق احتكاكًا لا يصلحه أي قدر من المعمار الجيد.
 
-In practice, three groups share the responsibility:
+عمليًا، تتقاسم ثلاث مجموعات المسؤولية:
 
-- **The identity team** owns the core IdP (Entra ID, Okta, Auth0), federation protocols, MFA policies, and credential lifecycle. Their concern is security and compliance.
-- **The platform team** owns the BFF layer, API gateway, multi-tenant routing, and CDN configuration. They provide the infrastructure that makes auth work at the application boundary.
-- **Frontend and product teams** own the manifestation of auth in the UI: route guards, conditional rendering, tenant theming, organization switchers. Their goal is to consume the auth state that the identity and platform teams provide, not to reinvent it.
+- **فريق الهوية** يملك مزوّد الهوية الأساسي (Entra ID، Okta، Auth0)، وبروتوكولات الاتحاد، وسياسات MFA، ودورة حياة بيانات الاعتماد. وهمّه الأمن والامتثال.
+- **فريق المنصة** يملك طبقة الـ BFF، وبوابة API، والتوجيه متعدد المستأجرين، وتهيئة CDN. ويوفّر البنية التحتية التي تجعل المصادقة تعمل عند حدّ التطبيق.
+- **فرق الواجهة الأمامية والمنتج** تملك تجلّي المصادقة في الواجهة: حرّاس المسارات، والتصيير الشرطي، وسمات المستأجر، ومبدّلات المؤسسات. وهدفها استهلاك حالة المصادقة التي يوفّرها فريقا الهوية والمنصة، لا إعادة اختراعها.
 
-The model that works is **decoupled enforcement**: the identity team provides the token, the platform team provides the enforcement point (BFF, gateway), and the frontend team consumes the resulting state. Authorization logic lives in a policy engine managed centrally but consumed by product teams through shared libraries. Developers onboard to auth through documented SDKs and APIs rather than implementing OAuth flows from scratch for every new service.
+النموذج الذي ينجح هو **الفرض المفصول**: يوفّر فريق الهوية الرمز، ويوفّر فريق المنصة نقطة الفرض (BFF، البوابة)، وتستهلك الواجهة الأمامية الحالة الناتجة. ويعيش منطق التخويل في محرّك سياسات يُدار مركزيًا لكن تستهلكه فرق المنتج عبر مكتبات مشتركة. ويلتحق المطوّرون بالمصادقة عبر حِزم SDK وواجهات API موثّقة بدل تنفيذ مسارات OAuth من الصفر لكل خدمة جديدة.
 
-The organizations that treat identity management as a platform service—rather than a per-team problem that each team solves independently and slightly differently—are the ones where auth actually works at scale.
+المؤسسات التي تتعامل مع إدارة الهوية كخدمة منصة — لا كمشكلة لكل فريق يحلّها باستقلال وبطريقة مختلفة قليلًا — هي التي تعمل فيها المصادقة فعلًا على نطاق واسع.
 
 [7]: [https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/](https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/) ‘Zanzibar: Google’s Consistent, Global Authorization System’
 
@@ -518,26 +518,26 @@ The organizations that treat identity management as a platform service—rather 
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Auth in Distributed Frontends
+### المصادقة في الواجهات الأمامية الموزّعة
 
-> The hardest cross-cutting concern.
+> أكثر هَمّ عابر للجوانب صعوبة.
 
-- Authentication: *who are you?* (OIDC, SAML, OAuth 2.0)
-- Authorization: *what can you do?* (RBAC, ABAC, ReBAC)
+- المصادقة: *من أنت؟* (OIDC، SAML، OAuth 2.0)
+- التخويل: *ماذا يمكنك أن تفعل؟* (RBAC، ABAC، ReBAC)
 
-**The microfrontend challenge:**
+**تحدّي الواجهات الأمامية المصغّرة:**
 
-- Multiple independently deployed apps need to share a session.
-- Each remote may need different permission checks.
-- Token refresh must be coordinated — if one remote refreshes, others shouldn’t trigger a second refresh.
+- تطبيقات متعددة منشورة باستقلال تحتاج مشاركة جلسة واحدة.
+- قد تحتاج كل وحدة بعيدة فحوص أذونات مختلفة.
+- يجب تنسيق تحديث الرمز — فإن حدّثت وحدة بعيدة، ينبغي ألا تُطلق الأخريات تحديثًا ثانيًا.
 
 ---
 
-### The BFF Token Pattern
+### نمط رموز BFF
 
-> Tokens stay server-side. The browser gets a session cookie.
+> تبقى الرموز من جهة الخادم. ويحصل المتصفح على ملف تعريف ارتباط جلسة.
 
 ```
 Browser ←→ BFF (session cookie, httpOnly)
@@ -546,42 +546,42 @@ Browser ←→ BFF (session cookie, httpOnly)
                 └→ Downstream Services (forwarded token)
 ```
 
-- **No tokens in the browser.** No `localStorage`, no `sessionStorage`, no JavaScript-accessible cookies.
-- The BFF holds the access token and refresh token server-side.
-- The browser gets an `httpOnly`, `Secure`, `SameSite=Strict` session cookie.
-- Every API call goes through the BFF, which attaches the token.
+- **لا رموز في المتصفح.** لا `localStorage`، ولا `sessionStorage`، ولا ملفات تعريف ارتباط يمكن لـ JavaScript الوصول إليها.
+- يحتفظ الـ BFF برمز الوصول ورمز التحديث من جهة الخادم.
+- يحصل المتصفح على ملف تعريف ارتباط جلسة `httpOnly` و`Secure` و`SameSite=Strict`.
+- يمرّ كل نداء API عبر الـ BFF، الذي يرفق الرمز.
 
-**Why:** XSS can’t steal what JavaScript can’t read.
+**السبب:** لا يمكن لـ XSS سرقة ما لا تستطيع JavaScript قراءته.
 
 ---
 
-### Authorization Models
+### نماذج التخويل
 
-> Pick the model that matches your complexity.
+> اختر النموذج الذي يناسب تعقيدك.
 
-| Model | How it works | Good for |
+| النموذج | كيف يعمل | جيد لـ |
 | --- | --- | --- |
-| **RBAC** | User → Role → Permissions | Simple apps, clear role hierarchies |
-| **ABAC** | Rules based on user/resource/environment attributes | Multi-tenant, context-dependent access |
-| **ReBAC** | Permissions based on relationships between entities | Document sharing, org hierarchies |
-| **PBAC** | Central policy engine (OPA, Cedar) evaluates rules | Complex, auditable policy requirements |
+| **RBAC** | مستخدم → دور → صلاحيات | تطبيقات بسيطة، تسلسلات أدوار واضحة |
+| **ABAC** | قواعد مبنية على خصائص المستخدم/المورد/البيئة | تعدد المستأجرين، وصول معتمد على السياق |
+| **ReBAC** | صلاحيات مبنية على علاقات بين الكيانات | مشاركة المستندات، تسلسلات المؤسسة |
+| **PBAC** | محرّك سياسات مركزي (OPA، Cedar) يقيّم القواعد | متطلبات سياسات معقّدة وقابلة للتدقيق |
 
-- RBAC is the starting point. Move to ABAC/ReBAC when roles aren’t granular enough.
-- **Frontend authorization is for UX, not security.** Hide buttons the user can’t use, but enforce on the server.
+- إن RBAC نقطة البداية. انتقل إلى ABAC/ReBAC حين لا تكون الأدوار دقيقة بما يكفي.
+- **التخويل في الواجهة الأمامية لأجل تجربة المستخدم، لا للأمن.** أخفِ الأزرار التي لا يستطيع المستخدم استخدامها، لكن افرض على الخادم.
 
 ---
 
-### Session Propagation Across Remotes
+### انتشار الجلسة عبر الوحدات البعيدة
 
-> All remotes share one session. Here’s how.
+> تشترك كل الوحدات البعيدة في جلسة واحدة. وإليك كيف.
 
-- **Single-origin deployment:** All remotes on the same domain → cookies work naturally.
-- **Multi-origin deployment:** Need a shared auth service or token relay.
+- **نشر بأصل واحد:** كل الوحدات البعيدة على النطاق نفسه ← تعمل ملفات تعريف الارتباط طبيعيًا.
+- **نشر بأصول متعددة:** يلزم خدمة مصادقة مشتركة أو مُرحّل رموز.
 
-**Patterns:**
+**الأنماط:**
 
-1. **Shared cookie** — same domain, BFF sets the cookie, all remotes inherit it.
-2. **Auth context provider** — host app authenticates, passes session to remotes via props or shared store.
-3. **PostMessage relay** — iframe-based remotes communicate auth state via `window.postMessage`.
+1. **ملف تعريف ارتباط مشترك** — النطاق نفسه، الـ BFF يضبط ملف تعريف الارتباط، وكل الوحدات البعيدة ترثه.
+2. **مزوّد سياق المصادقة** — يصادق التطبيق المضيف ويمرّر الجلسة إلى الوحدات البعيدة عبر الخصائص أو مخزن مشترك.
+3. **مُرحّل PostMessage** — وحدات بعيدة قائمة على iframe تتواصل بحالة المصادقة عبر `window.postMessage`.
 
-**Token refresh coordination:** Use a single refresh lock (e.g., BroadcastChannel) so multiple remotes don’t race to refresh the same token.
+**تنسيق تحديث الرموز:** استخدم قفل تحديث واحد (مثل BroadcastChannel) حتى لا تتسابق وحدات بعيدة عدة لتحديث الرمز نفسه.

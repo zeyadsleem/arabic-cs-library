@@ -1,45 +1,45 @@
 ---
-title: "React 19 Compiler"
-lang: en
+title: "مصرّف React 19 (React Compiler)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/react-19-compiler-guide"
 ---
 
-The React Compiler represents the biggest shift in React performance optimization since hooks. Instead of sprinkling `useMemo`, `useCallback`, and `React.memo` throughout your codebase like performance pixie dust, the compiler analyzes your code at build time and automatically applies optimizations where they actually matter. It’s not about making React faster—it’s about making React optimization automatic.
+يمثّل مصرّف React (React Compiler) أكبر تحوّل في تحسين أداء React منذ الخُطّافات. فبدلًا من رشّ `useMemo` و`useCallback` و`React.memo` في أنحاء مستودعك كأنها غبار الأداء السحري، يحلّل المصرّف شيفرتك وقت البناء ويطبّق التحسينات تلقائيًا في المواضع التي تهمّ فعلًا. فالأمر ليس جعل React أسرع — بل جعل تحسين React تلقائيًا.
 
-But here’s the thing: the compiler isn’t magic. It’s a sophisticated static analysis tool that understands React’s rules and patterns. It can’t optimize code that breaks those rules, and it won’t save you from fundamental architectural problems. This guide shows you exactly how the compiler works, how to prepare your codebase for it, what it can and can’t do, and how to measure whether it’s actually helping your specific application.
+لكن إليك الحقيقة: المصرّف ليس سحرًا. إنه أداة تحليل ساكن متطوّرة تفهم قواعد React وأنماطها. لا يستطيع تحسين شيفرة تنتهك تلك القواعد، ولن ينقذك من مشكلات معمارية جوهرية. يعرض عليك هذا الدليل بالتفصيل كيفية عمل المصرّف، وكيف تهيّئ مستودعك له، وما يستطيع فعله وما لا يستطيع، وكيف تقيس ما إذا كان يساعد تطبيقك تحديدًا فعلًا.
 
-> **The React Compiler is still in pre-release.**
+> **لا يزال مصرّف React في مرحلة ما قبل الإصدار.**
 >
-> As of this writing—October 1, 2025, The React Compiler moved from “beta” to Release Candidate (RC) in April 2025. The [React team says the release candidate is “stable and near-final” and safe to try in production](https://react.dev/blog/2025/04/21/react-compiler-rc), though it isn’t the final “stable” tag yet.
+> وقت كتابة هذه السطور — 1 أكتوبر 2025 — انتقل مصرّف React من «بيتا» إلى إصدار مرشّح (RC) في أبريل 2025. ويقول [فريق React إن الإصدار المرشّح «مستقر وقريب من النهائي» وآمن للتجربة في الإنتاج](https://react.dev/blog/2025/04/21/react-compiler-rc)، وإن لم يكن وسم «المستقر» النهائي بعد.
 >
-> So, we’re going to talk about it, but with the disclaimer that things *might* change slightly.
+> لذا سنتحدّث عنه، مع التحفّظ بأن الأمور *قد* تتغيّر قليلًا.
 
-**Nota bene**: the React Compiler is great, but not magic. It’s worth enabling for most teams writing idiomatic React—just treat it like a guardrail for memoization, not a universal fix.
+**ملاحظة جديرة بالانتباه**: مصرّف React رائع، لكنه ليس سحرًا. يستحق التفعيل لدى معظم الفرق التي تكتب React على النمط الاصطلاحي — تعامل معه فقط كسياج حماية لحفظ النتائج، لا كحلّ شامل.
 
-The compiler automates the boring parts of memoization—stabilizing values and functions so components skip unnecessary work—reducing the need for `useMemo`, `useCallback`, and many `React.memo` fences. This directly cuts prop-churn-driven re-renders without you sprinkling manual cache code everywhere.
+يُؤتمت المصرّف الأجزاء المملّة من حفظ النتائج — تثبيت القيم والدوال حتى تتخطّى المكوّنات العمل غير الضروري — فيقلّل الحاجة إلى `useMemo` و`useCallback` وكثير من أسوار `React.memo`. وهذا يخفض مباشرةً إعادات التصيير الناتجة عن تقلّب الخصائص دون أن ترشّ شيفرة تخزين يدوية في كل مكان.
 
-**Here is the thing**: You still have to write “correct” React. (I’m sorry.)
+**إليك الأمر**: ما زال عليك كتابة React «صحيحة». (آسف على ذلك.)
 
-- The compiler assumes [the Rules of React](https://react.dev/reference/rules). Components must be pure/idempotent, props/state treated as immutable, and side effects kept out of render. If your code violates these, the compiler either skips optimizing or you can see runtime *weirdness*.
-- Memoization-for-correctness is a footgun. If your app relies on referential equality (e.g., effects that only work because an object identity stays stable), [the compiler may memoize differently](https://react.dev/learn/react-compiler/debugging) and expose those bugs—think effects over-firing or loops. The fix is to remove the reliance, not to fight the compiler.
-- [Library compatibility varies](https://react.dev/reference/eslint-plugin-react-hooks/lints/incompatible-library). The official lints flag some patterns as “incompatible,” and the compiler will safely skip those regions; MobX-style observer patterns are a known pitfall you may need to opt out of.
-- Builds can get a bit slower. [Next.js](https://nextjs.org/docs/app/api-reference/config/next-config-js/reactCompiler) integrates the Babel plugin with an SWC optimization to keep impact small, but you may still notice overhead compared to SWC-only pipelines.
-- Scope matters. The compiler focuses on memoization. It *won’t* replace proper state architecture, virtualization, Suspense/streaming, or fixing network waterfalls—you still need those patterns.
+- يفترض المصرّف الالتزام [بقواعد React (the Rules of React)](https://react.dev/reference/rules). فيجب أن تكون المكوّنات نقية وعديمة الأثر التكراري، وأن تُعامَل الخصائص والحالة كغير قابلة للتغيير، وأن تُبقى التأثيرات الجانبية خارج التصيير. وإن انتهكت شيفرتك هذه القواعد، فإما أن يتخطّى المصرّف التحسين، وإما أن ترى *غرابة* وقت التشغيل.
+- حفظ النتائج من أجل صحّة السلوك سلاح قابل للانطلاق في القدم. إن كان تطبيقك يعتمد على تساوي المراجع (referential equality) — مثل تأثيرات لا تعمل إلا لأن هوية كائن ما تبقى مستقرة — فقد [يحفظ المصرّف النتائج بطريقة مختلفة](https://react.dev/learn/react-compiler/debugging) فيكشف تلك الأخطاء: تخيّل تأثيرات تُطلَق أكثر من اللازم أو حلقات لا تنتهي. والإصلاح هو إزالة الاعتماد، لا مصارعة المصرّف.
+- [توافق المكتبات متفاوت](https://react.dev/reference/eslint-plugin-react-hooks/lints/incompatible-library). تشير قواعد الفحص (lints) الرسمية إلى بعض الأنماط بأنها «غير متوافقة»، وسيتخطّى المصرّف تلك المناطق بأمان؛ وأنماط المراقب (observer) على طريقة MobX مزلق معروف قد تحتاج إلى الاستثناء منه.
+- قد تصبح عمليات البناء أبطأ قليلًا. يدمج [Next.js](https://nextjs.org/docs/app/api-reference/config/next-config-js/reactCompiler) إضافة Babel مع تحسين SWC لإبقاء الأثر صغيرًا، لكنك قد تلاحظ مع ذلك كلفة إضافية مقارنةً بخطوط أنابيب SWC وحدها.
+- النطاق مهم. يركّز المصرّف على حفظ النتائج. وهو *لن* يغني عن معمارية الحالة الصحيحة، أو المحاكاة الافتراضية (virtualization)، أو Suspense والبثّ، أو إصلاح شلالات الشبكة — فما زلت بحاجة إلى تلك الأنماط.
 
-> **TL;DR**
+> **باختصار**
 >
-> It automates memoization—great for prop churn and callback identity—but it doesn’t replace good state architecture, virtualization for giant lists, or solving network waterfalls and SSR strategy. You still design for those; the compiler just removes a big class of re-renders so your other work shines.
+> يُؤتمت حفظ النتائج — وهذا ممتاز لتقلّب الخصائص وهوية دوال الاستدعاء — لكنه لا يغني عن معمارية حالة جيدة، ولا عن المحاكاة الافتراضية للقوائم الضخمة، ولا عن حلّ شلالات الشبكة واستراتيجية SSR. ما زلت تصمّم من أجل ذلك؛ فالمصرّف يزيل فقط صنفًا كبيرًا من إعادات التصيير حتى تبرز بقية أعمالك.
 >
-> - **When it’s a clear win** You already follow the Rules of React and avoid side effects in render. Most “perf issues” come from prop identity churn, unstable callbacks, and derived data recomputation—the compiler neutralizes a lot of that automatically.
->   - You already follow the Rules of React and avoid side effects in render.
->   - Most “perf issues” come from prop identity churn, unstable callbacks, and derived data recomputation—the compiler neutralizes a lot of that automatically.
-> - **When to hold off or gate it** You depend on memoization for correctness (effect deps that must be referentially stable, conditional logic based on reference checks). Clean that up first or opt out problem files. You’re using libraries/patterns the lints call out as incompatible. Keep those paths uncompiled.
->   - You depend on memoization for correctness (effect deps that must be referentially stable, conditional logic based on reference checks). Clean that up first or opt out problem files.
->   - You’re using libraries/patterns the lints call out as incompatible. Keep those paths uncompiled.
+> - **متى يكون مكسبًا واضحًا** أنت تلتزم أصلًا بقواعد React وتتجنّب التأثيرات الجانبية أثناء التصيير. ومعظم «مشكلات الأداء» تأتي من تقلّب هوية الخصائص ودوال الاستدعاء غير المستقرة وإعادة حساب البيانات المشتقّة — والمصرّف يحيّد كثيرًا من ذلك تلقائيًا.
+>   - أنت تلتزم أصلًا بقواعد React وتتجنّب التأثيرات الجانبية أثناء التصيير.
+>   - ومعظم «مشكلات الأداء» تأتي من تقلّب هوية الخصائص ودوال الاستدعاء غير المستقرة وإعادة حساب البيانات المشتقّة — والمصرّف يحيّد كثيرًا من ذلك تلقائيًا.
+> - **متى تتراجع أو تقيّده** أنت تعتمد على حفظ النتائج لضمان صحّة السلوك (اعتمادات تأثيرات يجب أن تبقى مستقرة مرجعيًا، ومنطق شرطي مبني على فحوص المراجع). نظّف ذلك أولًا أو استثنِ الملفات المشكلة. أنت تستخدم مكتبات أو أنماطًا تصفها قواعد الفحص بأنها غير متوافقة. أبقِ تلك المسارات بلا تصريف.
+>   - أنت تعتمد على حفظ النتائج لضمان صحّة السلوك (اعتمادات تأثيرات يجب أن تبقى مستقرة مرجعيًا، ومنطق شرطي مبني على فحوص المراجع). نظّف ذلك أولًا أو استثنِ الملفات المشكلة.
+>   - أنت تستخدم مكتبات أو أنماطًا تصفها قواعد الفحص بأنها غير متوافقة. أبقِ تلك المسارات بلا تصريف.
 
-## How the React Compiler Actually Works
+## كيف يعمل مصرّف React فعليًا
 
-The compiler operates at build time, transforming your React code before it ever reaches the browser:
+يعمل المصرّف وقت البناء، فيحوّل شيفرة React لديك قبل أن تصل إلى المتصفح أصلًا:
 
 ```typescript
 // What you write (clean, simple React)
@@ -95,9 +95,9 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
 }
 ```
 
-### The Compiler’s Decision Tree
+### شجرة قرارات المصرّف
 
-The compiler uses sophisticated heuristics to decide what to optimize:
+يستخدم المصرّف استدلالات متطوّرة لتحديد ما ينبغي تحسينه:
 
 ```typescript
 // Compiler optimization decision flowchart
@@ -127,11 +127,11 @@ interface CompilerDecisionCriteria {
 }
 ```
 
-## Pre-Migration Preparation
+## التحضير قبل الترحيل
 
-Before enabling the compiler, your codebase needs to follow React’s rules strictly:
+قبل تفعيل المصرّف، يحتاج مستودعك إلى الالتزام الصارم بقواعد React:
 
-### Step 1: Enable Strict Mode Everywhere
+### الخطوة 1: فعّل الوضع الصارم في كل مكان
 
 ```typescript
 // The compiler requires Strict Mode for safety checks
@@ -152,7 +152,7 @@ function App() {
 // - Unsafe practices the compiler can't optimize
 ```
 
-### Step 2: Audit Your Current Optimizations
+### الخطوة 2: دقّق في تحسيناتك الحالية
 
 ```typescript
 // Script to analyze existing manual optimizations
@@ -279,7 +279,7 @@ walkDir(srcDir);
 auditor.generateReport();
 ```
 
-### Step 3: Fix Rules of React Violations
+### الخطوة 3: أصلح انتهاكات قواعد React
 
 ```typescript
 // Common violations that break compiler optimization
@@ -337,11 +337,11 @@ function ProperHooks({ isSpecial }: { isSpecial: boolean }) {
 }
 ```
 
-## Enabling the React Compiler
+## تفعيل مصرّف React
 
-Note: This guide focuses on Vite setup. Webpack and other bundlers are out of scope for now.
+ملاحظة: يركّز هذا الدليل على إعداد Vite. أما Webpack وغيره من المُجمِّعات فخارج النطاق حاليًا.
 
-### Installation and Configuration
+### التثبيت والإعداد
 
 ```bash
 # Install the compiler
@@ -372,9 +372,9 @@ export default defineConfig({
 });
 ```
 
-### Gradual Migration Strategy
+### استراتيجية الترحيل التدريجي
 
-Start with opt-in mode and gradually expand:
+ابدأ بالوضع الاختياري (opt-in) ثم توسّع تدريجيًا:
 
 ```typescript
 // Use directives to control compilation per file
@@ -412,9 +412,9 @@ export function Component3() {
 }
 ```
 
-## Measuring Compiler Impact
+## قياس أثر المصرّف
 
-### Before and After Metrics
+### المقاييس قبل التفعيل وبعده
 
 ```typescript
 // Create a performance baseline before enabling compiler
@@ -491,7 +491,7 @@ function MeasuredComponent() {
 }
 ```
 
-### Real User Metrics Comparison
+### مقارنة مقاييس المستخدمين الحقيقيين
 
 ```typescript
 // Track real user metrics before and after compiler
@@ -550,11 +550,11 @@ const metrics = new RealUserMetrics(process.env.REACT_APP_COMPILER_ENABLED === '
 metrics.trackCoreWebVitals();
 ```
 
-## When the Compiler Can’t Help
+## متى لا يستطيع المصرّف المساعدة
 
-Understanding the compiler’s limitations is crucial:
+فهم حدود المصرّف أمر بالغ الأهمية:
 
-### Dynamic Code Patterns
+### أنماط الشيفرة الديناميكية
 
 ```typescript
 // ❌ Compiler can't optimize dynamic property access
@@ -580,7 +580,7 @@ function ExplicitComponent({ data }: Props) {
 }
 ```
 
-### External Dependencies
+### الاعتمادات الخارجية
 
 ```typescript
 // ❌ Compiler can't optimize external library calls
@@ -610,7 +610,7 @@ function OptimizableComponent() {
 }
 ```
 
-### Complex State Logic
+### منطق الحالة المعقّد
 
 ```typescript
 // ❌ Compiler struggles with complex reducer logic
@@ -654,9 +654,9 @@ function SimplerStateComponent() {
 }
 ```
 
-## Migration Patterns and Best Practices
+## أنماط الترحيل وأفضل الممارسات
 
-### Pattern 1: Removing Redundant Memoization
+### النمط 1: إزالة حفظ النتائج الزائد
 
 ```typescript
 // Before compiler: Manually optimized
@@ -707,7 +707,7 @@ function AfterCompiler({ items, filter }: Props) {
 }
 ```
 
-### Pattern 2: Keeping Strategic Manual Optimizations
+### النمط 2: الإبقاء على التحسينات اليدوية الاستراتيجية
 
 ```typescript
 // Some optimizations should stay even with the compiler
@@ -740,7 +740,7 @@ function StrategicOptimization({ data }: { data: LargeDataset }) {
 }
 ```
 
-### Pattern 3: Compiler-Friendly Component Design
+### النمط 3: تصميم مكوّنات صديقة للمصرّف
 
 ```typescript
 // Design components to maximize compiler optimization
@@ -774,9 +774,9 @@ function CompilerHostile({ data }: Props) {
 }
 ```
 
-## Debugging Compiler Issues
+## تصحيح مشكلات المصرّف
 
-When things don’t work as expected:
+عندما لا تسير الأمور كما هو متوقّع:
 
 ```typescript
 // Enable compiler debug mode
@@ -811,9 +811,9 @@ function HintedComponent({ complexProp }: Props) {
 }
 ```
 
-## Performance Comparison Dashboard
+## لوحة مقارنة الأداء
 
-Build a dashboard to track compiler effectiveness:
+ابنِ لوحة معلومات لتتبّع فعالية المصرّف:
 
 ```typescript
 function CompilerDashboard() {
@@ -905,9 +905,9 @@ function CompilerDashboard() {
 }
 ```
 
-## Migration Checklist
+## قائمة تدقيق الترحيل
 
-Before declaring your migration complete:
+قبل إعلان اكتمال ترحيلك:
 
 ```typescript
 interface MigrationChecklist {
@@ -941,9 +941,9 @@ interface MigrationChecklist {
 }
 ```
 
-## Adoption Guidance That Won’t Bite You
+## إرشادات تبنّي لن تلدغك
 
-Start with the official “incremental adoption” playbook: enable the Babel plugin, gate to a directory or feature flag, and lean on directives. Prefer the default inference mode; explicitly opt out hot spots with a directive while you fix code smells. ([React](https://react.dev/learn/react-compiler/installation))
+ابدأ بدليل «التبنّي التدريجي» الرسمي: فعّل إضافة Babel، وقيّد التصريف بمجلد أو راية ميزة (feature flag)، واتّكئ على التوجيهات. فضّل وضع الاستنتاج الافتراضي؛ واستثنِ المواضع الساخنة صراحةً بتوجيه بينما تصلح روائح الشيفرة. ([React](https://react.dev/learn/react-compiler/installation))
 
 ```typescript
 function HotPathPanel() {
@@ -952,16 +952,16 @@ function HotPathPanel() {
 }
 ```
 
-The documentation recommend this as a temporary fence; there’s also [a `'use memo'` directive](https://react.dev/reference/react-compiler/directives/use-no-memo), but you rarely need it outside annotation mode.
+ويوصي التوثيق بهذا كسياج مؤقّت؛ وهناك أيضًا [توجيه `'use memo'`](https://react.dev/reference/react-compiler/directives/use-no-memo)، لكنك نادرًا ما تحتاجه خارج وضع التعليقات التوضيحية.
 
-Turn it on—deliberately. The compiler will erase a lot of memo boilerplate and prevent entire classes of accidental re-renders, but it won’t paper over architectural issues or effect misuse. Adopt incrementally, measure, and keep an easy escape hatch for the few places where it conflicts with your current patterns. Then let it do its thing.
+فعّله — عن قصد. سيمحو المصرّف كثيرًا من الشيفرة النموذجية الحشوية الخاصة بالحفظ، ويمنع أصنافًا كاملة من إعادات التصيير العارضة، لكنه لن يطمس مشكلات معمارية أو سوء استخدام للتأثيرات. تبنَّه تدريجيًا، وقِس، واحتفظ بمخرج طوارئ سهل في المواضع القليلة التي يتعارض فيها مع أنماطك الحالية. ثم دعه يفعل ما يفعل.
 
-I can generate a short “enable → gate → measure → expand” checklist tailored to your stack (Next + Vite + Tailwind + TS) whenever you’re ready.
+يمكنني توليد قائمة تدقيق قصيرة «فعّل ← قيّد ← قِس ← وسّع» مفصّلة على مقوّماتك التقنية (Next + Vite + Tailwind + TS) متى شئت.
 
-## Wrapping Up
+## الخلاصة
 
-The React Compiler is a powerful tool that can dramatically simplify your codebase while maintaining or improving performance. The key to successful adoption is understanding what it can and can’t do, preparing your codebase properly, and measuring the actual impact on your specific application.
+مصرّف React أداة قوية يمكنها تبسيط مستودعك تبسيطًا جذريًا مع الحفاظ على الأداء أو تحسينه. ومفتاح التبنّي الناجح هو فهم ما يستطيع فعله وما لا يستطيع، وتهيئة مستودعك تهيئة صحيحة، وقياس الأثر الفعلي في تطبيقك تحديدًا.
 
-Start with a gradual migration, measure everything, and don’t be afraid to keep some manual optimizations where they make sense. The compiler isn’t about replacing all manual optimization—it’s about automating the routine optimizations so you can focus on the architectural decisions that really matter.
+ابدأ بترحيل تدريجي، وقِس كل شيء، ولا تخشَ الإبقاء على بعض التحسينات اليدوية حيث تكون منطقية. فالمصرّف لا يهدف إلى استبدال كل التحسين اليدوي — بل إلى أتمتة التحسينات الروتينية لتتفرّغ للقرارات المعمارية التي تهمّ حقًّا.
 
-Remember: the best performance optimization is the one you don’t have to think about. The React Compiler gets us closer to that ideal, letting us write clean, simple React code while getting optimized performance automatically.
+تذكّر: أفضل تحسين للأداء هو الذي لا تحتاج إلى التفكير فيه. ويقرّبنا مصرّف React من تلك الغاية، إذ يتيح لنا كتابة شيفرة React نظيفة وبسيطة مع الحصول على أداء محسّن تلقائيًا.

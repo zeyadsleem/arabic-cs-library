@@ -1,14 +1,14 @@
 ---
-title: "CSS Variable Integration"
-lang: en
+title: "تكامل متغيّرات CSS"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/colors-and-css-variables"
 ---
 
-Tailwind moves configuration from JavaScript to CSS using the `@theme` directive and CSS variables.
+ينقل Tailwind الإعداد من JavaScript إلى CSS باستخدام توجيه `@theme` ومتغيّرات CSS.
 
-## Defining Custom Colors
+## تعريف ألوان مخصصة
 
-Add colors in your CSS file using `@theme`:
+أضف ألوانًا في ملف CSS باستخدام `@theme`:
 
 ```css
 @import 'tailwindcss';
@@ -20,11 +20,11 @@ Add colors in your CSS file using `@theme`:
 }
 ```
 
-This generates utilities like `bg-brand`, `text-neon-pink`, etc.
+يولّد هذا أدوات مثل `bg-brand` و`text-neon-pink` وما شابه.
 
-## Overriding Default Colors
+## تجاوز الألوان الافتراضية
 
-Replace specific colors:
+استبدل ألوانًا محددة:
 
 ```css
 @theme {
@@ -32,7 +32,7 @@ Replace specific colors:
 }
 ```
 
-Clear entire color groups:
+امسح مجموعات ألوان كاملة:
 
 ```css
 @theme {
@@ -43,7 +43,7 @@ Clear entire color groups:
 }
 ```
 
-Start from scratch:
+ابدأ من الصفر:
 
 ```css
 @import 'tailwindcss/preflight';
@@ -55,11 +55,11 @@ Start from scratch:
 }
 ```
 
-## Using Colors as CSS Variables
+## استخدام الألوان كمتغيّرات CSS
 
-Theme colors are exposed as CSS variables:
+تُعرَّض ألوان السمة كمتغيّرات CSS:
 
-### In Custom CSS
+### في CSS المخصص
 
 ```css
 .custom-element {
@@ -68,9 +68,9 @@ Theme colors are exposed as CSS variables:
 }
 ```
 
-### In Arbitrary Values
+### في القيم العشوائية
 
-*In Arbitrary Values — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/d5c13ff05aa9a0a53809fa2fd70f3d8548a7e37e8a84cff1345d2d296c587de9.html)[CSS](#playground-css-brand)*
+*في القيم العشوائية — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d5c13ff05aa9a0a53809fa2fd70f3d8548a7e37e8a84cff1345d2d296c587de9.html)[CSS](#playground-css-brand)*
 
 ```html
 <!-- Long form -->
@@ -80,11 +80,11 @@ Theme colors are exposed as CSS variables:
 <div class="text-(--color-brand)">...</div>
 ```
 
-## Opacity Modifiers
+## معدِّلات العتامة
 
-Works with all color definitions:
+تعمل مع كل تعريفات الألوان:
 
-*Opacity Modifiers — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/68bb03605d4c610f22189796c340538dbfd9cbe782c4ec90b0918c4a75ad39c7.html)[CSS](#playground-css-brand)*
+*معدِّلات العتامة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/68bb03605d4c610f22189796c340538dbfd9cbe782c4ec90b0918c4a75ad39c7.html)[CSS](#playground-css-brand)*
 
 ```html
 <div class="bg-brand/50">50% opacity</div>
@@ -92,11 +92,11 @@ Works with all color definitions:
 <div class="border-[var(--color-custom)]/20">20% opacity</div>
 ```
 
-## Important Tailwind 4 Changes
+## تغييرات مهمة في Tailwind 4
 
-### Border Color Default
+### افتراضي لون الحد
 
-*Border Color Default — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/490c65ef2eef35486a26c95676aef108baa6213f3cde7b19cf99e61108c459d7.html)*
+*افتراضي لون الحد — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/490c65ef2eef35486a26c95676aef108baa6213f3cde7b19cf99e61108c459d7.html)*
 
 ```html
 <!-- v3: defaulted to gray-200 -->
@@ -106,9 +106,9 @@ Works with all color definitions:
 <div class="border border-gray-200">Explicit color needed</div>
 ```
 
-### Ring Color Default
+### افتراضي لون الحلقة
 
-*Ring Color Default — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/26d74d233c1e5ef322cdc70c1bdb5a19b2d56a2afae372964d6f4064c1f06a04.html)*
+*افتراضي لون الحلقة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/26d74d233c1e5ef322cdc70c1bdb5a19b2d56a2afae372964d6f4064c1f06a04.html)*
 
 ```html
 <!-- v3: 3px blue ring -->
@@ -118,9 +118,9 @@ Works with all color definitions:
 <div class="ring-3 ring-blue-500">Explicit width and color</div>
 ```
 
-## Dynamic Theming
+## السمات الديناميكية
 
-CSS variables enable runtime theme switching:
+تتيح متغيّرات CSS تبديل السمة وقت التشغيل:
 
 ```css
 @theme {
@@ -149,7 +149,7 @@ CSS variables enable runtime theme switching:
 }
 ```
 
-*Dynamic Theming — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/6e0c04076282d461c8b93f19216dacf1d924b00bba8f656686e4a89524cbb60e.html)[CSS](#playground-css-brand)*
+*السمات الديناميكية — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6e0c04076282d461c8b93f19216dacf1d924b00bba8f656686e4a89524cbb60e.html)[CSS](#playground-css-brand)*
 
 ```html
 <body data-theme="dark">
@@ -157,10 +157,10 @@ CSS variables enable runtime theme switching:
 </body>
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Use semantic names** for brand colors: `--color-primary`, `--color-accent`
-2. **Group related colors**: `--color-gray-*`, `--color-brand-*`
-3. **Leverage OKLCH** for consistent palettes
-4. **Document your colors** with comments in `@theme`
-5. **Test opacity modifiers** with your custom colors
+1. **استخدم أسماء دلالية** لألوان العلامة: `--color-primary` و`--color-accent`
+2. **جمّع الألوان المترابطة**: `--color-gray-*` و`--color-brand-*`
+3. **استفد من OKLCH** للحصول على لوحات متسقة
+4. **وثّق ألوانك** بتعليقات في `@theme`
+5. **اختبر معدِّلات العتامة** مع ألوانك المخصصة

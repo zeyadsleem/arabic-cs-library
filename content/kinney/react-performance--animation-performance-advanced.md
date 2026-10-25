@@ -1,14 +1,14 @@
 ---
-title: "Advanced Animation Performance Techniques"
-lang: en
+title: "تقنيات متقدّمة في أداء الرسوم المتحركة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/animation-performance-advanced"
 ---
 
-Once you’ve mastered the fundamentals of React animation performance, these advanced techniques will help you create sophisticated, high-performance animations that scale to complex applications. These patterns are essential for applications with heavy animation requirements or performance-critical interactions.
+بعد أن تتقن أساسيات أداء الرسوم المتحركة في React، ستساعدك هذه التقنيات المتقدّمة على إنشاء رسوم متحركة بالغة الرقي وعالية الأداء تتوسّع مع التطبيقات المعقّدة. هذه الأنماط ضرورية للتطبيقات ذات المتطلبات الكثيفة من الرسوم المتحركة أو التفاعلات الحسّاسة للأداء.
 
-## Advanced Animation Techniques
+## تقنيات الرسوم المتحركة المتقدّمة
 
-### Intersection Observer for Performance
+### استخدام Intersection Observer لتحسين الأداء
 
 ```typescript
 // Performance-conscious animation with Intersection Observer
@@ -82,7 +82,7 @@ const lazyAnimationStyles = `
 `;
 ```
 
-### Web Animations API Integration
+### الدمج مع Web Animations API
 
 ```typescript
 // High-performance animations with Web Animations API
@@ -178,7 +178,7 @@ function WebAnimatedButton({
 }
 ```
 
-## Testing Animation Performance
+## اختبار أداء الرسوم المتحركة
 
 ```typescript
 // Animation performance testing utilities

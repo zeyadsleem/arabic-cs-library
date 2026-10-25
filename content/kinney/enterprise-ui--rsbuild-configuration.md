@@ -1,16 +1,16 @@
 ---
-title: "Configuring Rsbuild"
-lang: en
+title: "إعداد Rsbuild"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/rsbuild-configuration"
 ---
 
-The [Rspack, webpack, and Vite](https://stevekinney.com/courses/enterprise-ui/rspack-webpack-and-vite) lecture established that Rsbuild is the higher-level build tool sitting on top of Rspack—comparable to Vite in ergonomics, but using a bundler-first model in both development and production. This lecture walks through the actual `rsbuild.config.ts` files used in the [runtime composition exercise](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise), explaining what each piece of configuration does, why it’s there, and what happens when you change it.
+أرسى محاضرة [Rspack وwebpack وVite](https://stevekinney.com/courses/enterprise-ui/rspack-webpack-and-vite) أن Rsbuild هو أداة البناء الأعلى مستوى التي تجلس فوق Rspack — مقارنةً بـVite في سهولة الاستخدام، لكنها تعتمد نموذج «المجمّع أولًا» في التطوير والإنتاج معًا. وتستعرض هذه المحاضرة ملفات `rsbuild.config.ts` الفعلية المستخدمة في [تمرين التركيب وقت التشغيل](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise)، وتشرح ما يفعله كل جزء من الإعداد، ولماذا هو موجود، وما يحدث عند تغييره.
 
-If you’ve configured webpack before, Rsbuild will feel familiar but noticeably less verbose. If you’ve configured Vite before, it will feel familiar but with a different plugin model underneath. Either way, the configuration surface is small enough to fit in your head, which is the whole point of using a higher-level tool instead of raw Rspack.
+إذا سبق أن أعددت webpack، فسيبدو Rsbuild مألوفًا لكن أقل إسهابًا بملاحظة واضحة. وإذا سبق أن أعددت Vite، فسيبدو مألوفًا لكن بنموذج إضافات مختلف في الأساس. وفي كلتا الحالتين، سطح الإعداد صغير بما يكفي ليستقر في رأسك، وهذا هو الهدف كله من استخدام أداة أعلى مستوى بدل Rspack الخام.
 
-## The Full Picture
+## الصورة الكاملة
 
-Here’s the host application’s complete `rsbuild.config.ts` from the exercise. Every section below refers back to this file.
+هذا هو ملف `rsbuild.config.ts` الكامل لتطبيق المضيف من التمرين. ويشير كل قسم أدناه إلى هذا الملف.
 
 ```typescript
 import { defineConfig } from '@rsbuild/core';
@@ -39,7 +39,7 @@ export default defineConfig({
 });
 ```
 
-And the remote:
+وهذا ملف الريموت:
 
 ```typescript
 import { defineConfig } from '@rsbuild/core';
@@ -69,7 +69,7 @@ export default defineConfig({
 });
 ```
 
-Both files are short. That’s intentional—Rsbuild’s defaults handle most of the build configuration, and what remains is the stuff that’s genuinely specific to your application.
+الملفان قصيران. وهذا مقصود — فالإعدادات الافتراضية في Rsbuild تتولى معظم إعداد البناء، وما يتبقى هو ما يخصّ تطبيقك فعلًا.
 
 ## `defineConfig`
 
@@ -81,11 +81,11 @@ export default defineConfig({
 });
 ```
 
-`defineConfig` is an identity function. It does nothing at runtime—it exists purely so TypeScript and your editor can provide autocompletion and type checking on the configuration object. You could export a plain object and it would work identically, but you’d lose the type hints, which matters when you’re trying to remember whether the option is `server.port` or `devServer.port`.
+`defineConfig` دالة هوية. فهي لا تفعل شيئًا وقت التشغيل — بل توجد فقط لكي يقدّم TypeScript ومحررك الإكمال التلقائي وفحص الأنواع على كائن الإعداد. ويمكنك تصدير كائن عادي وسيعمل الأمر نفسه تمامًا، لكنك ستفقد تلميحات الأنواع، وهي مهمة عندما تحاول تذكّر ما إذا كان الخيار `server.port` أم `devServer.port`.
 
-Rsbuild [looks for config files](https://rsbuild.rs/guide/configuration/rsbuild) in a specific order: `rsbuild.config.mjs`, then `.ts`, then `.js`, then `.cjs`, `.mts`, and `.cts`. Using `.ts` is the standard choice for TypeScript projects, and it’s what the exercise uses.
+يبحث Rsbuild عن [ملفات الإعداد](https://rsbuild.rs/guide/configuration/rsbuild) بترتيب محدد: `rsbuild.config.mjs`، ثم `.ts`، ثم `.js`، ثم `.cjs` و`.mts` و`.cts`. واستخدام `.ts` هو الخيار المعياري لمشاريع TypeScript، وهو ما يستخدمه التمرين.
 
-`defineConfig` also accepts a function instead of an object. The function receives `env` (`'development'` or `'production'`) and `command` (`'dev'`, `'build'`, or `'preview'`), which lets you return different configuration based on the build context.
+ويقبل `defineConfig` أيضًا دالة بدل كائن. وتتلقى الدالة `env` (`'development'` أو `'production'`) و`command` (`'dev'` أو `'build'` أو `'preview'`)، ما يتيح لك إرجاع إعداد مختلف بحسب سياق البناء.
 
 ```typescript
 export default defineConfig(({ env, command }) => ({
@@ -95,7 +95,7 @@ export default defineConfig(({ env, command }) => ({
 }));
 ```
 
-The exercise doesn’t need that—both configs are static—but it’s useful to know the escape hatch exists when you need environment-specific behavior.
+لا يحتاج التمرين إلى ذلك — فالإعدادان ساكنان — لكن من المفيد معرفة أن هذا المخرج الطارئ موجود عندما تحتاج سلوكًا خاصًا ببيئة معينة.
 
 ## `server.port`
 
@@ -103,13 +103,13 @@ The exercise doesn’t need that—both configs are static—but it’s useful t
 server: { port: 3000 },
 ```
 
-This sets the port for Rsbuild’s development server. The default is `3000`, so the host config is technically redundant here, but making it explicit is a good habit when you’re running multiple dev servers simultaneously. The remote sets `port: 3001` to avoid a collision.
+هذا يضبط المنفذ لخادم التطوير في Rsbuild. والقيمة الافتراضية `3000`، لذا إعداد المضيف زائد تقنيًا هنا، لكن التصريح به عادة جيدة عندما تشغّل خوادم تطوير متعددة في الوقت نفسه. ويضبط الريموت `port: 3001` لتفادي التعارض.
 
-If a port is already occupied, Rsbuild silently increments to the next available port unless you set [`server.strictPort`](https://rsbuild.rs/config/server/strict-port) to `true`, which throws an error instead. In a federation setup, silent port changes are dangerous—the host’s `remotes` config hardcodes `localhost:3001`, so if the remote quietly starts on `3002`, the host fetches a manifest that doesn’t exist and the federation handshake fails. Explicit ports with `strictPort: true` would be the more defensive choice.
+إذا كان المنفذ مشغولًا بالفعل، ينتقل Rsbuild بصمت إلى المنفذ المتاح التالي إلا إذا ضبطت [`server.strictPort`](https://rsbuild.rs/config/server/strict-port) على `true`، وهو ما يُطلق خطأً بدل ذلك. وفي تهيئة اتحاد، تكون تغييرات المنافذ الصامتة خطيرة — فإعداد `remotes` في المضيف يثبّت `localhost:3001` فيه، لذا إذا بدأ الريموت بهدوء على `3002`، جلب المضيف ملف تعريف غير موجود وفشلت مصافحة الاتحاد. وستكون المنافذ الصريحة مع `strictPort: true` الخيار الأكثر حصانة.
 
-The `server` block also supports `host` (which interface to bind to), `open` (auto-open a URL in the browser on startup), and other options you’d expect from a dev server. The exercise only uses `port`.
+ويدعم كتلة `server` أيضًا `host` (أي واجهة يُربط بها)، و`open` (فتح عنوان URL في المتصفح تلقائيًا عند البدء)، وخيارات أخرى تتوقعها من خادم تطوير. ولا يستخدم التمرين إلا `port`.
 
-## The `plugins` Array
+## مصفوفة `plugins`
 
 ```typescript
 plugins: [
@@ -118,9 +118,9 @@ plugins: [
 ],
 ```
 
-Rsbuild’s [plugin system](https://rsbuild.rs/config/plugins) is its primary extension model. Plugins run in declaration order, and built-in Rsbuild plugins always run before user plugins. The array accepts `RsbuildPlugin` objects, falsy values (which are silently ignored), promises, and nested arrays.
+نظام [الإضافات](https://rsbuild.rs/config/plugins) في Rsbuild هو نموذج التوسعة الأساسي فيه. وتعمل الإضافات بترتيب التصريح عنها، وتعمل إضافات Rsbuild المدمجة دائمًا قبل إضافات المستخدم. وتقبل المصفوفة كائنات `RsbuildPlugin`، وقيمًا زائفة (تُتجاهل بصمت)، ووعودًا، ومصفوفات متداخلة.
 
-That falsy-value handling is useful for conditional plugins:
+وهذه المعالجة للقيم الزائفة مفيدة للإضافات الشرطية:
 
 ```typescript
 plugins: [
@@ -129,7 +129,7 @@ plugins: [
 ],
 ```
 
-One distinction worth internalizing: the `plugins` array is for *Rsbuild* plugins. If you need to use a raw Rspack or webpack plugin, those go in `tools.rspack.plugins` instead. The two plugin models are not interchangeable—Rsbuild plugins hook into Rsbuild’s lifecycle, while Rspack plugins hook into the underlying compiler. The exercise only uses Rsbuild plugins.
+هناك تمييز يستحق الاستيعاب: مصفوفة `plugins` مخصّصة لإضافات *Rsbuild*. وإذا احتجت إلى استخدام إضافة Rspack أو webpack خام، فمكانها `tools.rspack.plugins` بدل ذلك. ونموذجا الإضافات ليسا قابلين للتبادل — فإضافات Rsbuild تتعشّق في دورة حياة Rsbuild، بينما تتعشّق إضافات Rspack في المجمّع الأساسي. ولا يستخدم التمرين إلا إضافات Rsbuild.
 
 ## `pluginReact`
 
@@ -137,15 +137,15 @@ One distinction worth internalizing: the `plugins` array is for *Rsbuild* plugin
 import { pluginReact } from '@rsbuild/plugin-react';
 ```
 
-[`pluginReact`](https://rsbuild.rs/plugins/list/plugin-react) handles the React-specific build concerns that would otherwise require manual Rspack configuration: SWC-based JSX compilation, React Fast Refresh for HMR in development, and automatic code splitting for React and router packages. It’s the Rsbuild equivalent of `@vitejs/plugin-react` in the Vite world.
+[`pluginReact`](https://rsbuild.rs/plugins/list/plugin-react) يتولى شؤون البناء الخاصة بـReact التي كانت ستتطلب إعدادًا يدويًا لـRspack: تصريف JSX عبر SWC، وReact Fast Refresh لأجل HMR في التطوير، وتقسيم الشفرة تلقائيًا لحزم React وأدوات التوجيه. وهو مكافئ Rsbuild لـ`@vitejs/plugin-react` في عالم Vite.
 
-The exercise calls `pluginReact()` with no arguments, which gives you the defaults:
+ويستدعي التمرين `pluginReact()` بلا معاملات، وهو ما يمنحك الإعدادات الافتراضية:
 
-- **`runtime: 'automatic'`**: Uses React 17+‘s automatic JSX transform, so you don’t need `import React from 'react'` at the top of every file.
-- **`fastRefresh: true`**: Enables React Fast Refresh in development—component state is preserved across edits instead of doing a full page reload.
-- **`splitChunks: true`**: Automatically splits React and router packages into separate chunks for better caching.
+- **`runtime: 'automatic'`**: يستخدم تحويل JSX التلقائي في React 17+، فلا تحتاج إلى `import React from 'react'` في أعلى كل ملف.
+- **`fastRefresh: true`**: يفعّل React Fast Refresh في التطوير — فتُحفظ حالة المكوّن عبر التعديلات بدل إعادة تحميل الصفحة كاملة.
+- **`splitChunks: true`**: يقسّم حزم React وأدوات التوجيه تلقائيًا إلى أجزاء منفصلة لأجل تخزين مؤقت أفضل.
 
-If you’re using a CSS-in-JS library like Emotion that provides its own JSX runtime, you’d pass `swcReactOptions: { importSource: '@emotion/react' }`. If you need the React Profiler in production builds, `enableProfiler: true` turns it on. But for a standard React app with Module Federation, the defaults are the right answer.
+إذا كنت تستخدم مكتبة CSS-in-JS مثل Emotion توفّر وقت تشغيل JSX خاصًا بها، فستمرّر `swcReactOptions: { importSource: '@emotion/react' }`. وإذا احتجت إلى React Profiler في بناءات الإنتاج، فـ`enableProfiler: true` يفعّله. لكن لتطبيق React معياري مع اتحاد الوحدات، فإن الإعدادات الافتراضية هي الجواب الصحيح.
 
 ## `pluginModuleFederation`
 
@@ -153,11 +153,11 @@ If you’re using a CSS-in-JS library like Emotion that provides its own JSX run
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 ```
 
-This is the Module Federation 2.0 plugin for Rsbuild. It’s a separate package from Rsbuild itself, maintained by the [Module Federation](https://module-federation.io/guide/build-plugins/plugins-rsbuild) team. The [module-federation lecture](https://stevekinney.com/courses/enterprise-ui/module-federation) covers the federation model in depth—this section focuses specifically on the configuration surface as it appears in the exercise.
+هذه إضافة Module Federation 2.0 لـRsbuild. وهي حزمة منفصلة عن Rsbuild نفسه، يصونها فريق [Module Federation](https://module-federation.io/guide/build-plugins/plugins-rsbuild). وتغطي [محاضرة اتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/module-federation) نموذج الاتحاد بعمق — أما هذا القسم فيركّز تحديدًا على سطح الإعداد كما يظهر في التمرين.
 
-> **v1.5 versus v2.0**
+> **الإصدار 1.5 في مقابل الإصدار 2.0**
 >
-> Rsbuild also has a built-in Module Federation v1.5 path through the `moduleFederation.options` config key, which requires no extra package. The exercise uses the v2.0 plugin because it provides additional capabilities—Chrome DevTools integration, dynamic TypeScript type hints, runtime plugins, and manifest-based loading. If you don’t need those extras, the built-in v1.5 path works fine with a slightly different config shape.
+> لدى Rsbuild أيضًا مسار مدمج لـModule Federation v1.5 عبر مفتاح الإعداد `moduleFederation.options`، ولا يتطلب حزمة إضافية. ويستخدم التمرين إضافة v2.0 لأنها توفّر قدرات إضافية — تكامل مع Chrome DevTools، وتلميحات أنواع TypeScript ديناميكية، وإضافات وقت تشغيل، وتحميلًا قائمًا على ملف التعريف. وإذا لم تحتج إلى هذه الإضافات، فالمسار المدمج v1.5 يعمل جيدًا بشكل إعداد مختلف قليلًا.
 
 ### `name`
 
@@ -165,9 +165,9 @@ This is the Module Federation 2.0 plugin for Rsbuild. It’s a separate package 
 name: 'host',
 ```
 
-The container name. This is required and must be unique across all participants in the federation. The [MF 2.0 docs](https://module-federation.io/configure/name) say the name is used for runtime data retrieval and global chunk storage references—so if two containers share a name, they collide in ways that produce very confusing errors.
+اسم الحاوية. وهو مطلوب ويجب أن يكون فريدًا بين كل المشاركين في الاتحاد. وتقول [توثيقات MF 2.0](https://module-federation.io/configure/name) إن الاسم يُستخدم لاسترجاع البيانات وقت التشغيل ولمراجع تخزين الأجزاء العام — لذا إذا تشاركت حاويتان اسمًا واحدًا، تصطدمتا بطرق تنتج أخطاء مربكة جدًا.
 
-The host uses `'host'` and the remote uses `'remoteAnalytics'`. The names are strings, not symbols, and they live in a flat global namespace. In a system with many remotes, a naming convention matters—team name, domain, or package scope all work as prefixes.
+يستخدم المضيف `'host'` ويستخدم الريموت `'remoteAnalytics'`. والأسماء سلاسل نصية لا رموز، وتعيش في فضاء أسماء عام مسطّح. وفي نظام فيه ريموتات كثيرة، تصبح اصطلاحية التسمية مهمة — واسم الفريق أو النطاق أو نطاق الحزمة كلها تصلح كبادئات.
 
 ### `remotes`
 
@@ -178,11 +178,11 @@ remotes: {
 },
 ```
 
-This is consumer-side configuration. The key (`remoteAnalytics`) is the alias your application code imports from—`import('remoteAnalytics/analytics-dashboard')` in the host’s source. The value is a string in the format `containerName@entryUrl`.
+هذا إعداد على جانب المستهلك. والمفتاح (`remoteAnalytics`) هو الاسم المستعار الذي تستورد منه شفرة تطبيقك — `import('remoteAnalytics/analytics-dashboard')` في مصدر المضيف. والقيمة سلسلة نصية بصيغة `containerName@entryUrl`.
 
-The entry URL can point to either a `remoteEntry.js` file or an `mf-manifest.json` file. The exercise uses the manifest because it unlocks MF 2.0 features: dynamic type hints, resource preloading, and Chrome DevTools support. The [remotes configuration docs](https://module-federation.io/configure/remotes) explain the tradeoffs between the two formats.
+يمكن أن يشير عنوان URL للمدخل إلى ملف `remoteEntry.js` أو ملف `mf-manifest.json`. ويستخدم التمرين ملف التعريف لأنه يفتح ميزات MF 2.0: تلميحات الأنواع الديناميكية، والتحميل المسبق للموارد، ودعم Chrome DevTools. وتشرح [توثيقات إعداد remotes](https://module-federation.io/configure/remotes) المقايضات بين الصيغتين.
 
-The alias doesn’t have to match the remote’s `name`. You could write `remotes: { analytics: 'remoteAnalytics@...' }` and import from `analytics/analytics-dashboard` instead. In practice, keeping the alias and the container name aligned reduces confusion, but there’s no technical requirement.
+لا يلزم أن يطابق الاسم المستعار `name` الخاص بالريموت. فيمكنك كتابة `remotes: { analytics: 'remoteAnalytics@...' }` والاستيراد من `analytics/analytics-dashboard` بدل ذلك. وعمليًا، إبقاء الاسم المستعار واسم الحاوية متوافقين يقلّل الالتباس، لكن لا يوجد شرط تقني.
 
 ### `exposes`
 
@@ -192,11 +192,11 @@ exposes: {
 },
 ```
 
-This is producer-side configuration. It declares which modules the remote makes available to consumers. Only paths listed here are importable—everything else in the remote’s source stays private.
+هذا إعداد على جانب المنتج. وهو يعلن الوحدات التي يتيحها الريموت للمستهلكين. ولا يمكن استيراد إلا المسارات المذكورة هنا — وكل ما عداها في مصدر الريموت يبقى خاصًا.
 
-The key (`'./analytics-dashboard'`) becomes the import subpath consumers use. The `./` prefix is required—the [exposes docs](https://module-federation.io/configure/exposes) are explicit that bare names without `./` are not supported, and `.` by itself means the default export of the container. The value on the right is the path to the actual source file.
+ويصبح المفتاح (`'./analytics-dashboard'`) المسار الفرعي الذي يستخدمه المستهلكون في الاستيراد. وبادئة `./` مطلوبة — وتُصرّح [توثيقات exposes](https://module-federation.io/configure/exposes) بأن الأسماء المجرّدة بلا `./` غير مدعومة، وأن `.` وحدها تعني التصدير الافتراضي للحاوية. والقيمة على اليمين هي المسار إلى ملف المصدر الفعلي.
 
-Exposed modules are split into their own chunks during the build. That’s automatic—you don’t need to configure chunk splitting for them. The remote’s other code that isn’t exposed stays in the remote’s own bundle and is never fetchable by the host.
+تُقسَّم الوحدات المكشوفة إلى أجزاء خاصة بها أثناء البناء. وهذا تلقائي — فلست بحاجة إلى إعداد تقسيم الأجزاء لها. أما بقية شفرة الريموت غير المكشوفة فتبقى في حزمة الريموت نفسها ولا يمكن للمضيف جلبها أبدًا.
 
 ### `dts`
 
@@ -204,9 +204,9 @@ Exposed modules are split into their own chunks during the build. That’s autom
 dts: false,
 ```
 
-The remote sets `dts: false` to disable automatic TypeScript type generation. By default in MF 2.0, `dts` is `true`, which means the producer generates a compressed `@mf-types.zip` file during build, and consumers automatically download and extract the remote’s types into an `@mf-types` directory. That’s a genuinely nice developer experience—you get autocompletion and type checking for remote modules without maintaining ambient declaration files.
+يضبط الريموت `dts: false` لتعطيل توليد أنواع TypeScript التلقائي. وفي MF 2.0 تكون قيمة `dts` افتراضيًا `true`، ما يعني أن المنتج يولّد ملف `@mf-types.zip` مضغوطًا أثناء البناء، ويُنزّل المستهلكون أنواع الريموت ويستخرجونها تلقائيًا إلى مجلد `@mf-types`. وهذه تجربة مطوّر جيدة فعلًا — إذ تحصل على الإكمال التلقائي وفحص الأنواع لوحدات الريموت دون صيانة ملفات تعريف محيطة.
 
-The exercise disables it to keep the setup simple and avoid the type-download step during development. In a production system, you’d almost certainly want `dts: true` (or at least not explicitly `false`) so that consumers get build-time type safety for exposed module APIs.
+ويعطّله التمرين لإبقاء التهيئة بسيطة وتفادي خطوة تنزيل الأنواع أثناء التطوير. وفي نظام إنتاجي، ستريد على الأغلب `dts: true` (أو على الأقل لا `false` صراحةً) حتى يحصل المستهلكون على أمان أنواع وقت البناء لواجهات الوحدات المكشوفة.
 
 ### `shared`
 
@@ -220,9 +220,9 @@ shared: {
 },
 ```
 
-Shared dependencies are the most operationally important part of the federation config. They control which packages are deduplicated at runtime instead of bundled separately into each participant. The [module-federation lecture’s shared dependencies section](https://stevekinney.com/courses/enterprise-ui/module-federation#shared-dependencies-properly-understood) covers the full model—here’s how the exercise’s specific options work.
+الاعتمادات المشتركة هي الجزء الأهم تشغيليًا في إعداد الاتحاد. فهي تتحكم في الحزم التي تُوحَّد وقت التشغيل بدل تجميعها منفصلةً في كل مشارك. ويغطي [قسم الاعتمادات المشتركة في محاضرة اتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/module-federation#shared-dependencies-properly-understood) النموذج كاملًا — وهذا شرح لكيفية عمل الخيارات المحددة في التمرين.
 
-The `shared` block appears in *both* the host and the remote config. Both sides must declare the same packages with compatible options, or the runtime negotiation won’t produce the result you expect.
+تظهر كتلة `shared` في إعداد المضيف *والريموت* معًا. ويجب أن يعلن الجانبان الحزم نفسها بخيارات متوافقة، وإلا فلن تنتج مفاوضات وقت التشغيل النتيجة التي تتوقعها.
 
 #### `singleton`
 
@@ -230,11 +230,11 @@ The `shared` block appears in *both* the host and the remote config. Both sides 
 react: { singleton: true },
 ```
 
-**`singleton: true`** tells the Module Federation runtime that exactly one copy of this package should exist at runtime, regardless of how many participants declare it. The runtime picks the highest compatible semver version from all participants and uses that single copy everywhere.
+**`singleton: true`** يخبر وقت تشغيل اتحاد الوحدات بأن نسخة واحدة بالضبط من هذه الحزمة ينبغي أن توجد وقت التشغيل، بصرف النظر عن عدد المشاركين الذين يعلنونها. ويختار وقت التشغيل أعلى إصدار semver متوافق من كل المشاركين ويستخدم تلك النسخة الواحدة في كل مكان.
 
-For React and React DOM, singleton is non-negotiable. React hooks, context, and reconciliation all depend on a single module instance. Two copies of React in the same page means two separate hook registries, which means hooks called in one copy’s context are invisible to the other—and the error messages are not helpful.
+بالنسبة إلى React وReact DOM، فإن singleton غير قابل للتفاوض. فخُطّافات React والسياق والمطابقة (reconciliation) كلها تعتمد على نسخة وحدة واحدة. ووجود نسختين من React في الصفحة نفسها يعني سِجلي خُطّافات منفصلين، ما يعني أن الخُطّافات المُستدعاة في سياق إحدى النسختين لا تراها الأخرى — ورسائل الأخطاء ليست مفيدة.
 
-The exercise also marks `nanostores`, `@nanostores/react`, and `@pulse/shared` as singletons. That’s because the entire [nanostores cross-boundary state pattern](https://stevekinney.com/courses/enterprise-ui/nanostores#nanostores-in-a-federation-context) depends on the host and remote having a reference to the *same* atom object. If `@pulse/shared` isn’t a singleton, each side creates its own atom, and writes from the host are invisible to the remote. The `nanostores` library itself must also be a singleton so the subscription mechanism is shared. All three form a chain—break any link and state stops flowing.
+كما يضع التمرين `nanostores` و`@nanostores/react` و`@pulse/shared` كأفراد مفردة. وذلك لأن [نمط الحالة عبر الحدود في nanostores](https://stevekinney.com/courses/enterprise-ui/nanostores#nanostores-in-a-federation-context) بأكمله يعتمد على امتلاك المضيف والريموت مرجعًا إلى *الذرّة* (atom) نفسها. وإن لم يكن `@pulse/shared` فردًا مفردًا، فسيُنشئ كل جانب ذرّته الخاصة، وتصبح الكتابات من المضيف غير مرئية للريموت. ويجب أن تكون مكتبة `nanostores` نفسها فردًا مفردًا أيضًا حتى تُشارَك آلية الاشتراك. والثلاثة تشكّل سلسلة — فإن انقطع أي رابط توقفت الحالة عن التدفق.
 
 #### `eager`
 
@@ -242,15 +242,15 @@ The exercise also marks `nanostores`, `@nanostores/react`, and `@pulse/shared` a
 react: { singleton: true, eager: true },
 ```
 
-**`eager: true`** bundles the shared dependency directly into the participant’s output instead of loading it asynchronously during the federation negotiation phase.
+**`eager: true`** يضمّ الاعتماد المشترك مباشرةً إلى مخرَج المشارك بدل تحميله بصورة غير متزامنة في مرحلة مفاوضات الاتحاد.
 
-Without `eager`, a remote expects the host to provide shared modules like React at runtime. That works when the remote loads inside the host, but it means the remote can’t boot standalone—it has nowhere to get React from. The exercise sets `eager: true` on all shared dependencies so that both the host and the remote can run independently. The Module Federation runtime still deduplicates at runtime when both are present, so you don’t end up with two copies of React in production. `eager` just ensures standalone mode works.
+بلا `eager`، يتوقع الريموت أن يوفّر المضيف وحدات مشتركة مثل React وقت التشغيل. وهذا يعمل عندما يُحمَّل الريموت داخل المضيف، لكنه يعني أن الريموت لا يستطيع الإقلاع بمفرده — فليس لديه مصدر يجلب منه React. ويضبط التمرين `eager: true` على كل الاعتمادات المشتركة حتى يعمل المضيف والريموت باستقلال. ولا يزال وقت تشغيل اتحاد الوحدات يوحّد النسخ وقت التشغيل عند وجود الجانبين، فلن ينتهي بك الأمر بنسختين من React في الإنتاج. و`eager` يضمن فقط أن وضع الاستقلال يعمل.
 
-The tradeoff is bundle size. Eager sharing pulls the dependency into the initial chunk, which inflates the entry bundle. For a few shared packages that’s fine. For dozens, it starts to add up. The [MF 2.0 docs](https://module-federation.io/configure/shared) warn about this explicitly—use `eager` when you deliberately want synchronous availability, not as a default for everything.
+والمقايضة هي حجم الحزمة. فالمشاركة المتلهفة تسحب الاعتماد إلى الجزء الأولي، ما يضخّم حزمة المدخل. وهذا مقبول لبضع حزم مشتركة. أما مع العشرات، فيبدأ الأمر بالتراكم. و[توثيقات MF 2.0](https://module-federation.io/configure/shared) تحذّر من ذلك صراحةً — استخدم `eager` عندما تريد عمدًا توفرًا متزامنًا، لا كافتراضي لكل شيء.
 
-#### `requiredVersion` and `strictVersion`
+#### `requiredVersion` و`strictVersion`
 
-These don’t appear in the exercise’s committed config, but the exercise asks you to experiment with them:
+لا تظهر هذه في إعداد التمرين المُودَع، لكن التمرين يطلب منك تجربتها:
 
 ```typescript
 react: {
@@ -261,11 +261,11 @@ react: {
 },
 ```
 
-**`requiredVersion`** declares the semver range this participant needs. It defaults to the version in the participant’s own `package.json`. The runtime uses it during negotiation to decide whether the provided version is acceptable.
+**`requiredVersion`** يعلن نطاق semver الذي يحتاجه هذا المشارك. وقيمته الافتراضية الإصدار الموجود في `package.json` الخاص بالمشارك. ويستخدمه وقت التشغيل أثناء المفاوضات ليقرر ما إذا كان الإصدار المقدَّم مقبولًا.
 
-**`strictVersion: true`** turns a version mismatch from a warning into a hard error. Without it, the runtime uses the highest available version even if it doesn’t satisfy `requiredVersion`—the remote might silently get React 19 when it expected React 18. With `strictVersion`, that mismatch throws before any UI renders, which is at least honest about the problem.
+**`strictVersion: true`** يحوّل عدم تطابق الإصدار من تحذير إلى خطأ صارم. وبدونه، يستخدم وقت التشغيل أعلى إصدار متاح حتى لو لم يحقق `requiredVersion` — وقد يحصل الريموت صامتًا على React 19 بينما كان يتوقع React 18. ومع `strictVersion`، يُطلق عدم التطابق خطأً قبل تصيير أي واجهة، وهذا على الأقل صريح بشأن المشكلة.
 
-The exercise has you set `requiredVersion: '^19.0.0'` with `strictVersion: true` against a project that uses React 18, specifically to see the error. That’s the kind of guardrail you’d use in production to catch version drift between independently deployed remotes.
+ويطلب التمرين منك ضبط `requiredVersion: '^19.0.0'` مع `strictVersion: true` في مشروع يستخدم React 18، تحديدًا لترى الخطأ. وهذا نوع الحواجز الذي ستستخدمه في الإنتاج لالتقاط انحراف الإصدارات بين ريموتات منشورة باستقلال.
 
 ## `html.template`
 
@@ -273,49 +273,49 @@ The exercise has you set `requiredVersion: '^19.0.0'` with `strictVersion: true`
 html: { template: './src/index.html' },
 ```
 
-This points Rsbuild at a custom HTML template file instead of using the [built-in default](https://rsbuild.rs/config/html/template). Rsbuild’s default template is a minimal HTML file with a `<div id="root"></div>` mount point. The exercise uses a custom template because the host and remote need different HTML structures—the host has the full page shell, and the remote has a simpler standalone wrapper.
+هذا يوجّه Rsbuild إلى ملف قالب HTML مخصّص بدل استخدام [الافتراضي المدمج](https://rsbuild.rs/config/html/template). والقالب الافتراضي في Rsbuild ملف HTML صغير فيه نقطة تركيب `<div id="root"></div>`. ويستخدم التمرين قالبًا مخصّصًا لأن المضيف والريموت يحتاجان بنيتين مختلفتين لـHTML — فالمضيف لديه هيكل الصفحة الكامل، وللريموت غلاف مستقل أبسط.
 
-The path is relative to the project root (where `rsbuild.config.ts` lives). It can also be an absolute path, or a function that returns different templates per entry point for multi-page applications.
+والمسار نسبي إلى جذر المشروع (حيث يعيش `rsbuild.config.ts`). ويمكن أيضًا أن يكون مسارًا مطلقًا، أو دالة تُرجع قوالب مختلفة لكل نقطة دخول في التطبيقات متعددة الصفحات.
 
-## What’s Not in the Config
+## ما ليس في الإعداد
 
-Rsbuild handles a lot of configuration through defaults that the exercise doesn’t need to override. A few worth knowing about:
+يتولى Rsbuild كثيرًا من الإعداد عبر افتراضيات لا يحتاج التمرين إلى تجاوزها. ومنها بضعة يستحق أن تعرفها:
 
-- **`output.distPath`**: Where build output goes. Defaults to `dist`. The exercise uses the default.
-- **`source.entry`**: The application entry point. Defaults to `src/index.(ts|js|tsx|jsx|mjs|mts)`. The exercise uses `src/index.tsx`, which matches the default pattern.
-- **`dev.assetPrefix`**: When Module Federation is configured, Rsbuild automatically sets this to `true` so that asset URLs are absolute rather than relative. That’s important because the remote’s assets need to be fetchable from the host’s domain, and relative paths would resolve against the wrong origin.
-- **`output.uniqueName`**: Rsbuild automatically sets this to the federation `name` when Module Federation is configured. This prevents chunk naming collisions between participants. webpack users had to set this manually—Rsbuild handles it.
-- **Chunk splitting**: Rsbuild’s default `split-by-experience` strategy is automatically disabled when Module Federation is active, because federation has its own chunk-splitting behavior for exposed modules and shared dependencies.
+- **`output.distPath`**: مكان مخرجات البناء. والقيمة الافتراضية `dist`. ويستخدم التمرين الافتراضي.
+- **`source.entry`**: نقطة دخول التطبيق. والقيمة الافتراضية `src/index.(ts|js|tsx|jsx|mjs|mts)`. ويستخدم التمرين `src/index.tsx`، وهو مطابق للنمط الافتراضي.
+- **`dev.assetPrefix`**: عند إعداد اتحاد الوحدات، يضبطه Rsbuild تلقائيًا على `true` بحيث تكون عناوين URL للموارد مطلقة لا نسبية. وهذا مهم لأن موارد الريموت يجب أن تكون قابلة للجلب من نطاق المضيف، والمسارات النسبية كانت ستُحلّ مقابل الأصل الخطأ.
+- **`output.uniqueName`**: يضبطه Rsbuild تلقائيًا على `name` الخاص بالاتحاد عند إعداد اتحاد الوحدات. وهذا يمنع تصادم تسمية الأجزاء بين المشاركين. وقد كان على مستخدمي webpack ضبطه يدويًا — أما Rsbuild فيتولاه.
+- **تقسيم الأجزاء**: تُعطَّل استراتيجية `split-by-experience` الافتراضية في Rsbuild تلقائيًا عند تفعيل اتحاد الوحدات، لأن للاتحاد سلوكه الخاص في تقسيم الأجزاء للوحدات المكشوفة والاعتمادات المشتركة.
 
-Those automatic adjustments are one of the reasons to use Rsbuild’s Module Federation plugin rather than configuring raw Rspack. The plugin knows which Rsbuild defaults need to change for federation to work, and it changes them for you.
+هذه التعديلات التلقائية أحد أسباب استخدام إضافة اتحاد الوحدات في Rsbuild بدل إعداد Rspack الخام. فالإضافة تعرف أي افتراضيات Rsbuild يجب أن تتغير ليعمل الاتحاد، وتغيّرها نيابةً عنك.
 
-## Extending the Config
+## توسيع الإعداد
 
-The exercise configs are minimal because they’re teaching the federation model, not the full Rsbuild feature set. In a production setup, you’d likely add some of these:
+إعدادات التمرين دنيا لأنها تعلّم نموذج الاتحاد، لا مجموعة ميزات Rsbuild كاملة. وفي تهيئة إنتاجية، ستضيف على الأرجح بعضًا مما يلي:
 
-**Environment variables** via `source.define` or `.env` files. Rsbuild supports `.env`, `.env.local`, `.env.development`, and `.env.production` out of the box, and variables prefixed with `PUBLIC_` are available in client code.
+**متغيرات البيئة** عبر `source.define` أو ملفات `.env`. يدعم Rsbuild ملفات `.env` و`.env.local` و`.env.development` و`.env.production` جاهزةً، والمتغيرات ذات البادئة `PUBLIC_` متاحة في شفرة العميل.
 
-**Proxy configuration** via `server.proxy` for API requests during development. Same concept as Vite’s `server.proxy` or webpack-dev-server’s `proxy`—it forwards matching requests to a backend server so you don’t need CORS headers in development.
+**إعداد الوسيط (proxy)** عبر `server.proxy` لطلبات API أثناء التطوير. وهو المفهوم نفسه في `server.proxy` لدى Vite أو `proxy` في webpack-dev-server — إذ يمرّر الطلبات المطابقة إلى خادم خلفي فلا تحتاج إلى ترويسات CORS في التطوير.
 
-**TypeScript path aliases** via `source.alias`. If your project uses `paths` in `tsconfig.json`, you’d mirror them here so the bundler resolves them correctly.
+**أسماء مسارات TypeScript المستعارة** عبر `source.alias`. وإذا كان مشروعك يستخدم `paths` في `tsconfig.json`، فستكرّرها هنا حتى يحلّها المجمّع بشكل صحيح.
 
-**CSS configuration** via `tools.lightningcss` or `tools.postcss`. Rsbuild uses Lightning CSS by default for CSS processing, which replaces `postcss-loader` plus `autoprefixer` for most use cases.
+**إعداد CSS** عبر `tools.lightningcss` أو `tools.postcss`. ويستخدم Rsbuild معالجة CSS بـLightning CSS افتراضيًا، وهي تحل محل `postcss-loader` مع `autoprefixer` في معظم حالات الاستخدام.
 
-**Performance budgets** via Rspack’s performance hints in `tools.rspack`. The [performance budgets lecture](https://stevekinney.com/courses/enterprise-ui/performance-budgets) covers this in the webpack context—Rspack supports the same `performance.hints`, `maxAssetSize`, and `maxEntrypointSize` options.
+**ميزانيات الأداء** عبر تلميحات الأداء في Rspack داخل `tools.rspack`. وتغطي [محاضرة ميزانيات الأداء](https://stevekinney.com/courses/enterprise-ui/performance-budgets) ذلك في سياق webpack — ويدعم Rspack الخيارات نفسها `performance.hints` و`maxAssetSize` و`maxEntrypointSize`.
 
-But none of that is necessary to understand the federation configuration, which is the point of the exercise. Start with the minimal config that works, and add complexity only when you have a reason to.
+لكن لا شيء من ذلك ضروري لفهم إعداد الاتحاد، وهو مقصد التمرين. ابدأ بأدنى إعداد يعمل، ولا تُضف تعقيدًا إلا عندما يكون لديك سبب.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Rsbuild for Module Federation
+### Rsbuild لأجل اتحاد الوحدات
 
-> The modern alternative to webpack for federated apps.
+> البديل الحديث لـwebpack في التطبيقات الاتحادية.
 
-- Built on **Rspack** (Rust-based webpack alternative) — 5-10x faster builds.
-- First-class Module Federation plugin.
-- Compatible with webpack’s federation protocol — can interop with webpack hosts/remotes.
+- مبني على **Rspack** (بديل webpack قائم على Rust) — بناءات أسرع بـ5 إلى 10 أضعاف.
+- إضافة اتحاد وحدات من الدرجة الأولى.
+- متوافق مع بروتوكول الاتحاد في webpack — ويمكنه التبادل التشغيلي مع مضيفات/ريموتات webpack.
 
 ```typescript
 import { defineConfig } from '@rsbuild/core';

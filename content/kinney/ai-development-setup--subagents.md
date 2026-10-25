@@ -1,244 +1,245 @@
 ---
-title: "Subagents"
-lang: en
+title: "الوكلاء الفرعيون"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/subagents"
 ---
 
-Your main session is three hours deep. The agent has read forty files, tried two approaches, and is now being asked to review a diff. Its context is full of everything *except* a fresh set of eyes.
+جلسة عملك الرئيسية في عمق ثلاث ساعات. قرأ الوكيل أربعين ملفًا، وجرّب مقاربتين، ويُطلب منه الآن مراجعة فرق. وسياقه مملوء بكل شيء *عدا* زوج عينين جديدتين.
 
-That’s the problem a subagent solves. It also creates a few new ones.
+تلك هي المشكلة التي يحلّها الوكيل الفرعي. وهو يخلق أيضًا بضع مشكلات جديدة.
 
-## Knowledge versus worker
+## المعرفة مقابل العامل
 
-- A [skill](https://stevekinney.com/courses/ai-development-setup/skills) is **knowledge**.
-- A **subagent** is a **worker**.
+- [المهارة](https://stevekinney.com/courses/ai-development-setup/skills) هي **معرفة**.
+- **الوكيل الفرعي** هو **عامل**.
 
-A subagent is a helper that the main agent (the one you’re talking to) starts with a fresh context and a written brief. It returns only a final report. (A *context* is everything the model can see when it decides its next step.) Subagents are our first primitive for parallelization. Use one when you can delegate a *bounded outcome*, not merely split the task into more steps.
+الوكيل الفرعي مساعد يطلقه الوكيل الرئيسي (الذي تحدّثه) بسياق جديد وموجز مكتوب. ولا يعيد إلا تقريرًا نهائيًا. (و*السياق* هو كل ما يستطيع النموذج رؤيته حين يقرّر خطوته التالية.) والوكلاء الفرعيون هم وحدتنا الأولى للتوازي. استخدم واحدًا حين تستطيع تفويض *نتيجة محدودة النطاق*، لا مجرد تقسيم المهمة إلى خطوات أكثر.
 
-The cleanest way to keep the three straight: a **prompt** describes a task. A **skill** packages a reusable way of doing a task. A **subagent** creates a separate execution and context boundary in which a task is performed.
+أوضح طريقة للتمييز بين الثلاثة: **المطالبة** تصف مهمة. و**المهارة** تعبّئ طريقة قابلة لإعادة الاستخدام لإنجاز مهمة. و**الوكيل الفرعي** ينشئ حدًّا منفصلًا للتنفيذ والسياق تُؤدّى فيه المهمة.
 
-The basics:
+الأساسيات:
 
-- Subagents get their own context, separate from the main agent.
-- The main agent can spin up several in parallel.
-- They do their thing and report back.
-- You can tailor each one with its own skills and permissions.
+- يحصل الوكلاء الفرعيون على سياقهم الخاص، منفصلًا عن الوكيل الرئيسي.
+- يستطيع الوكيل الرئيسي إطلاق عدة منهم على التوازي.
+- يفعلون ما يفعلونه ثم يبلّغون.
+- تستطيع تخصيص كل واحد بمهاراته وأذوناته.
 
-It’s tempting to design a complete organization chart right out of a [Richard Scarry](https://en.wikipedia.org/wiki/Richard_Scarry) book. My advice is to start with a few narrowly scoped agents.
+من المغري تصميم هيكل تنظيمي كامل مباشرة من كتاب [Richard Scarry](https://en.wikipedia.org/wiki/Richard_Scarry). ونصيحتي أن تبدأ ببضعة وكلاء ضيقة النطاق.
 
-## What a subagent starts with, never gets, and reports
+## ما يبدأ به الوكيل الفرعي، وما لا يناله أبدًا، وما يبلّغ به
 
-A subagent isn’t a clone of the main agent. It knows exactly what it’s handed.
+الوكيل الفرعي ليس نسخة مستنسخة من الوكيل الرئيسي. إنه يعرف بالضبط ما يُسلَّم إليه.
 
-It *starts with*:
+إنه *يبدأ بـ*:
 
-- Its own system prompt and environment details.
-- The task message the main agent writes for it.
-- Your `CLAUDE.md` or `AGENTS.md` (the instruction files the harness loads each session), unless it’s an `Explore` or `Plan` agent (two built-in read-only subagents) or has `omitClaudeMd: true` (a setting that skips loading those files).
-- A git status snapshot, unless it’s `Explore` or `Plan`.
-- The full text of any preloaded skills, meaning the ones listed in its `skills:` field.
+- مطالبة نظامه الخاصة وتفاصيل بيئته.
+- رسالة المهمة التي يكتبها له الوكيل الرئيسي.
+- ملف `CLAUDE.md` أو `AGENTS.md` لديك (ملفّا التعليمات الذين تحمّلهما المنصة كل جلسة)، إلا إن كان وكيل `Explore` أو `Plan` (وكيلان فرعيان مدمجان للقراءة فقط) أو كان لديه `omitClaudeMd: true` (إعداد يتخطّى تحميل تلك الملفات).
+- لقطة حالة git، إلا إن كان `Explore` أو `Plan`.
+- النص الكامل لأي مهارات محمّلة مسبقًا، أي المذكورة في حقل `skills:` لديه.
 
-It *never gets*:
+إنه *لا ينال أبدًا*:
 
-- Your conversation with the main agent.
-- Skills you already invoked in the main conversation.
-- Files you and the main agent already read.
+- محادثتك مع الوكيل الرئيسي.
+- المهارات التي استدعيتها بالفعل في المحادثة الرئيسية.
+- الملفات التي قرأتها أنت والوكيل الرئيسي بالفعل.
 
-It *reports back with*:
+إنه *يبلّغ بـ*:
 
-- Only the final report. The main agent does *not* see the subagent’s conversation.
-- Whether it completed its mission. If it hit its `maxTurns` limit (a cap on agentic turns, each one a model request plus its tool calls), its work might be marked `partial`.
+- التقرير النهائي فقط. فالوكيل الرئيسي *لا* يرى محادثة الوكيل الفرعي.
+- ما إذا كان قد أتمّ مهمته. فإن بلغ حد `maxTurns` (سقف على الأدوار الوكيلية، كل دور منها طلب نموذج مع نداءات أدواته)، فقد يُوسَم عمله بـ `partial`.
 
-The final report is the subagent’s return value. While it runs, it can also exchange messages with the main agent through `SendMessage` (a tool that sends a message to another agent), and the main agent can resume a finished subagent the same way (except `Explore` and `Plan`, which are one-shot). By default, subagents report to the main agent and don’t talk to each other, though a worker given `SendMessage`, in a workflow for example, can message other agents. [Agent teams](https://stevekinney.com/courses/ai-development-setup/agent-teams) go further: teammates share a task list, claim work from it, and message each other directly.
+التقرير النهائي هو قيمة إرجاع الوكيل الفرعي. وبينما يعمل، يستطيع أيضًا تبادل الرسائل مع الوكيل الرئيسي عبر `SendMessage` (أداة ترسل رسالة إلى وكيل آخر)، ويستطيع الوكيل الرئيسي استئناف وكيل فرعي منتهٍ بالطريقة نفسها (عدا `Explore` و`Plan`، فهما لمرة واحدة). افتراضيًا، يبلّغ الوكلاء الفرعيون الوكيل الرئيسي ولا يتحدثون إلى بعضهم، وإن كان عامل مُنِح `SendMessage`، في سير عمل مثلًا، يستطيع مراسلة وكلاء آخرين. أما [فرق الوكلاء](https://stevekinney.com/courses/ai-development-setup/agent-teams) فتذهب أبعد: يتقاسم الزملاء قائمة مهام، ويطالبون بعمل منها، ويراسلون بعضهم مباشرة.
 
-Everything in “never gets” is why the brief matters. If the main agent forgets a constraint, the subagent never finds out. [Delegating well](#delegating-well) covers writing that brief.
+كل ما في «لا ينال أبدًا» هو سبب أهمية الموجز. فإن نسي الوكيل الرئيسي قيدًا، لم يعرف الوكيل الفرعي بذلك قط. و[التفويض الجيد](#delegating-well) يغطي كتابة ذلك الموجز.
 
-## How many subagents
+## كم عدد الوكلاء الفرعيين
 
-Aim for about 5–7 well-scoped agent definitions, meaning saved roles Claude can pick from. That’s how many you keep, not how many run at once; Claude Code caps concurrent runs separately. Here’s [Anthropic](https://claude.com/blog/subagents-in-claude-code) on why:
+استهدف نحو 5–7 تعريفات وكلاء محدودة النطاق جيدًا، أي أدوار محفوظة يستطيع Claude الاختيار منها. هذا عدد ما تحتفظ به، لا عدد ما يعمل في الوقت نفسه؛ فـ Claude Code يضع سقفًا للتشغيلات المتزامنة على حدة. وإليك [Anthropic](https://claude.com/blog/subagents-in-claude-code) عن السبب:
 
-> “Flooding Claude with options makes automatic delegation less reliable.”
+> «إغراق Claude بالخيارات يجعل التفويض التلقائي أقل موثوقية.»
 
-More agents means more descriptions to choose between, and the main agent starts picking wrong. [Configuring Subagents](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) has the per-agent settings and the concurrency cap, and [Exemplar Subagents](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) has ideas for which few to start with.
+المزيد من الوكلاء يعني مزيدًا من الأوصاف للاختيار بينها، فيبدأ الوكيل الرئيسي بالاختيار الخطأ. و[تهيئة الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) فيه إعدادات كل وكيل وسقف التزامن، و[الوكلاء الفرعيون النموذجيون](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) فيه أفكار عن أي قليل تبدأ به.
 
-## When to delegate
+## متى تفوّض
 
-[Anthropic’s rough signal](https://claude.com/blog/subagents-in-claude-code): ten or more files to explore, or three or more independent pieces of work. If you already know which file it is, do it yourself.
+[إشارة Anthropic التقريبية](https://claude.com/blog/subagents-in-claude-code): عشرة ملفات أو أكثر للاستكشاف، أو ثلاث قطع عمل مستقلة أو أكثر. فإن كنت تعرف الملف بالفعل، فافعله بنفسك.
 
-Two questions that don’t get asked enough:
+سؤالان لا يُطرحان بما يكفي:
 
-- Can its changes actually be isolated?
-- Will its result arrive in time to matter?
+- هل يمكن عزل تغييراته فعلًا؟
+- هل ستصل نتيجته في وقت يهمّ؟
 
-And remember that parallelism can’t remove serial work. If 40% of the job is serial, four workers finish about 1.8× faster than one, at best. ([Amdahl’s law](https://en.wikipedia.org/wiki/Amdahl%27s_law): still undefeated.)
+وتذكّر أن التوازي لا يستطيع إزالة العمل التسلسلي. فإن كان 40% من العمل تسلسليًا، أنهى أربعة عمال العمل أسرع بنحو 1.8× من واحد، في أفضل الأحوال. ([قانون Amdahl](https://en.wikipedia.org/wiki/Amdahl%27s_law): ما زال غير مهزوم.)
 
-Skip the subagent when:
+تجاوز الوكيل الفرعي حين:
 
-- The task is smaller than the handoff.
-- Every worker needs the same changing context.
-- The shared interface is unresolved.
-- Integration costs exceed the parallel savings.
-- No independent acceptance check exists.
+- تكون المهمة أصغر من التسليم.
+- يحتاج كل عامل السياق المتغيّر نفسه.
+- تكون الواجهة المشتركة غير محسومة.
+- تتجاوز تكاليف الدمج وفورات التوازي.
+- لا يوجد فحص قبول مستقل.
 
-If four subagents each read the same file, you’ve paid the same cost four times. And if you spin up one agent to decide which tests should be written at the same time as another agent is doing the implementation, how do you expect that to go? (Tests derived from the requirements, by someone who hasn’t seen the implementation, are a different and good idea. [Exemplar Subagents](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) has a few.)
+إن قرأ أربعة وكلاء فرعيين الملف نفسه، فقد دفعت التكلفة نفسها أربع مرات. وإن أطلقت وكيلًا ليقرّر أي الاختبارات ينبغي كتابتها في الوقت نفسه الذي ينفّذ فيه وكيل آخر التنفيذ، فكيف تتوقع أن يسير ذلك؟ (الاختبارات المستمدّة من المتطلبات، بواسطة شخص لم يرَ التنفيذ، فكرة مختلفة وجيدة. و[الوكلاء الفرعيون النموذجيون](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) فيه بعض منها.)
 
-If you can’t say how you’d check the result, don’t delegate the task. For code, that’s an acceptance command. For a research worker, it’s a report with file and line citations you can open and verify. Otherwise you can only hope.
+إن لم تستطع أن تقول كيف ستفحص النتيجة، فلا تفوّض المهمة. فبالنسبة للشيفرة، ذلك أمر قبول. وبالنسبة لعامل بحث، ذلك تقرير بإحالات ملفات وأسطر تستطيع فتحها والتحقق منها. وإلا فلا يسعك إلا الأمل.
 
-### Fork or fresh
+### نسخة متفرعة أم جديدة
 
-You have two ways to start a worker. A *fork* copies your current conversation, so the worker inherits everything you’ve discussed. A *fresh* subagent starts from only the brief.
+لديك طريقتان لإطلاق عامل. *النسخة المتفرعة* تنسخ محادثتك الحالية، فيرث العامل كل ما ناقشته. أما *الوكيل الفرعي الجديد* فيبدأ من الموجز وحده.
 
-Fork (the `/subtask` command) only when the task depends on decisions you can’t restate compactly. Otherwise, write a brief and send a fresh subagent. It can run on a cheaper model, and it doesn’t inherit your assumptions.
+استخدم التفريع (أمر `/subtask`) فقط حين تعتمد المهمة على قرارات لا تستطيع إعادة صياغتها بإيجاز. وإلا فاكتب موجزًا وأرسل وكيلًا فرعيًا جديدًا. فيمكنه العمل على نموذج أرخص، وهو لا يرث افتراضاتك.
 
-Each way of handing over context trades one thing for another:
+كل طريقة لتسليم السياق تقايض شيئًا بآخر:
 
-| Strategy | Gain | Cost |
+| الاستراتيجية | المكسب | التكلفة |
 | --- | --- | --- |
-| Fresh worker (starts from the brief alone) | Clean focus | Missing implicit facts |
-| Forked context (a copy of your conversation) | Inherits decisions | Repeated context and cost |
-| Durable brief (a saved assignment you send to a fresh worker) | Reusable, reviewable | Must be maintained |
+| عامل جديد (يبدأ من الموجز وحده) | تركيز نظيف | وقائع ضمنية غائبة |
+| سياق متفرع (نسخة من محادثتك) | يرث القرارات | تكرار السياق والتكلفة |
+| موجز دائم (إسناد محفوظ ترسله إلى عامل جديد) | قابل لإعادة الاستخدام والمراجعة | يجب صيانته |
 
-A durable brief pairs with a fresh worker instead of competing with it. All three [cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) something. Pick the cost you’d rather pay.
+الموجز الدائم يقترن بعامل جديد بدلًا من منافسته. والثلاثة جميعًا [تكلّف](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) شيئًا. فاختر التكلفة التي تفضّل دفعها.
 
-## Invoking a subagent
+## استدعاء وكيل فرعي
 
-There are four ways, from least to most explicit:
+هناك أربع طرق، من الأقل إلى الأكثر صراحة:
 
-- **Automatic**: The main agent happens to pick this particular subagent.
-- **By name** (for example, “Use the code reviewer agent”): A strong hint, but *not* a guarantee.
-- **@-mention**: You type `@` and the agent’s name. The agent is invoked, and the main agent writes the brief.
-- **`claude --agent`**: The main agent *is* this particular agent for the whole session.
+- **تلقائيًا**: يصادف أن يختار الوكيل الرئيسي هذا الوكيل الفرعي بعينه.
+- **بالاسم** (مثلًا، «استخدم وكيل مراجعة الشيفرة»): تلميح قوي، لكنه *ليس* ضمانًا.
+- **الإشارة بـ @**: تكتب `@` واسم الوكيل. فيُستدعى الوكيل، ويكتب الوكيل الرئيسي الموجز.
+- **`claude --agent`**: يصبح الوكيل الرئيسي *هو* هذا الوكيل بعينه طوال الجلسة.
 
-A subagent’s `description` is what automatic delegation reads, so write it well. But when delegation matters, use the by-name or @-mention rung. Automatic routing has failed outright in some releases. As in, agents that never got picked at all.
+ما يقرؤه التفويض التلقائي هو `description` الخاص بالوكيل الفرعي، فاكتبه جيدًا. لكن حين يهمّ التفويض، استخدم درجة الاسم أو الإشارة بـ @. فقد فشل التوجيه التلقائي فشلًا تامًا في بعض الإصدارات. أعني وكلاء لم يُختاروا قط.
 
-## Delegating well
+## التفويض الجيد {#delegating-well}
 
-Most subagent failures aren’t model failures. The brief was vague, nobody owned the result, or the report said “done” and nobody checked. The delegation was the problem, not the delegate.
+معظم إخفاقات الوكلاء الفرعيين ليست إخفاقات نموذج. كان الموجز غامضًا، أو لم يملك أحد النتيجة، أو قال التقرير «انتهى» ولم يفحصه أحد. كانت المشكلة في التفويض، لا في المفوَّض إليه.
 
-### Best practices
+### أفضل الممارسات {#best-practices}
 
-- **Add a non-use case when two agents would compete for the same task**: In each agent’s `description`, say what it’s *not* for. Otherwise the main agent has to guess between them.
-- **Never write “always use” everywhere**: Routing becomes a contest between instructions, and the loudest one wins.
-- **Keep changing facts in the assignment**: The assignment is the task message you hand a worker each time. Commits, branches, and paths go stale in a reusable definition.
-- **Fill in the worker contract**: A worker contract is the task contract (outcome, how far the agent may go, and what proves it) plus the delegation details. A blank field is unfinished planning: *Objective*: One deliverable, and why you need it. *Input revision*: The exact commit the worker starts from. *Inputs*: The files, decisions, and reproducible failure it needs. *Ownership*: Which paths it may write, and which belong to someone else. *Authority*: Whether it may edit, run commands, commit, or contact external systems. *Acceptance commands*: The exact commands whose results count as proof. *Output*: Where the findings go and what shape they take. *Bounds*: How many attempts, how much budget, and whether it may delegate further. *What to do when blocked*: Stop, keep the evidence, and report what’s missing.
-  - *Objective*: One deliverable, and why you need it.
-  - *Input revision*: The exact commit the worker starts from.
-  - *Inputs*: The files, decisions, and reproducible failure it needs.
-  - *Ownership*: Which paths it may write, and which belong to someone else.
-  - *Authority*: Whether it may edit, run commands, commit, or contact external systems.
-  - *Acceptance commands*: The exact commands whose results count as proof.
-  - *Output*: Where the findings go and what shape they take.
-  - *Bounds*: How many attempts, how much budget, and whether it may delegate further.
-  - *What to do when blocked*: Stop, keep the evidence, and report what’s missing.
-- **Allow three honest outcomes**: Supported findings, no supported findings, or insufficient evidence. Never set a quota of findings. That’s how you get findings.
-- **Add a role only after you’ve written the same brief by hand three times**: Until then, you don’t know what the role is.
-- **One owner accepts the results**: Workers return evidence. The coordinator (the main agent, or a script that hands out the work) collects it and proposes what to accept. Final acceptance of anything consequential is yours. Most multi-agent failures trace back to work nobody owns.
+- **أضف حالة عدم استخدام حين يتنافس وكيلان على المهمة نفسها**: في `description` كل وكيل، قل ما *لا* صالح له. وإلا اضطر الوكيل الرئيسي إلى التخمين بينهما.
+- **لا تكتب «استخدم دائمًا» في كل موضع**: يصير التوجيه مسابقة بين التعليمات، ويفوز أعلاها صوتًا.
+- **أبقِ الوقائع المتغيّرة في الإسناد**: الإسناد هو رسالة المهمة التي تسلّمها لعامل في كل مرة. فالالتزامات والفروع والمسارات تتقادم في تعريف قابل لإعادة الاستخدام.
+- **املأ عقد العامل**: عقد العامل هو عقد المهمة (النتيجة، ومدى ما يجوز للوكيل أن يمضي إليه، وما يثبتها) مضافًا إليه تفاصيل التفويض. وأي حقل فارغ هو تخطيط غير منتهٍ:
 
-### Getting reports you can trust
+  - *الهدف*: مُخرَج واحد، وسبب حاجتك إليه.
+  - *مراجعة الإدخال*: الالتزام الدقيق الذي يبدأ منه العامل.
+  - *المدخلات*: الملفات والقرارات والإخفاق القابل لإعادة الإنتاج الذي يحتاجه.
+  - *الملكية*: أي المسارات يجوز له الكتابة فيها، وأيها يخصّ غيره.
+  - *الصلاحية*: هل يجوز له التحرير أو تشغيل الأوامر أو الإيداع أو مخاطبة أنظمة خارجية.
+  - *أوامر القبول*: الأوامر الدقيقة التي تُحتسب نتائجها دليلًا.
+  - *المخرَج*: أين تذهب النتائج وأي شكل تتخذه.
+  - *الحدود*: كم محاولة، وكم ميزانية، وهل يجوز له تفويض المزيد.
+  - *ما يُفعل عند التعطّل*: توقّف، واحتفظ بالدليل، وأبلغ بما هو ناقص.
+- **اسمح بثلاث نتائج صادقة**: نتائج مدعومة، أو لا نتائج مدعومة، أو أدلة غير كافية. ولا تضبط حصة للنتائج أبدًا. فبهذا تحصل على نتائج.
+- **أضف دورًا فقط بعد أن تكتب الموجز نفسه يدويًا ثلاث مرات**: حتى ذلك الحين، لا تعرف ما هو الدور.
+- **مالك واحد يقبل النتائج**: يعيد العمال الأدلة. ويجمعها المنسّق (الوكيل الرئيسي، أو سكربت يوزّع العمل) ويقترح ما يُقبل. والقبول النهائي لأي أمر ذي أثر لك. ومعظم إخفاقات تعدد الوكلاء ترتدّ إلى عمل لا يملكه أحد.
 
-A worker’s report is a claim, not evidence. Subagents report success confidently, even when they’re wrong. The rule from [Verification and Evidence](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) applies: distrust any evidence whose author and judge are the same process. The worker wrote the report, and it’s also the one who’d be embarrassed if the report were bad.
+### الحصول على تقارير تثق بها {#getting-reports-you-can-trust}
 
-So make the claim checkable:
+تقرير العامل ادعاء، لا دليل. يبلّغ الوكلاء الفرعيون عن النجاح بثقة، حتى حين يخطئون. وتسري القاعدة من [التحقق والأدلة](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence): لا تثق بأي دليل كان كاتبه وحاكمه العملية نفسها. فالعامل كتب التقرير، وهو أيضًا من سيحرجه تقرير سيئ.
 
-- **Enforce the shape while the worker still has context**: Have the worker write its report to a file and validate that file with a script. Then add a `SubagentStop` [hook](https://stevekinney.com/courses/ai-development-setup/hooks), a script the harness runs when a subagent is about to finish. If validation fails, the hook blocks the stop and tells the worker why, so the *same* worker fixes its own report. For a script that coordinates workers, the `--json-schema` option of headless runs or the SDK’s structured outputs (the SDK is Claude’s library for running agents from your own code) make a whole run return schema-shaped data instead of prose.
-- **Verify at four levels**: Each worker’s output, the integrated result where the pieces meet, the delivery (what you shipped is what you claimed), and the workflow (nothing got skipped). Passing worker checks don’t mean the combination passes.
-- **Send a skeptic for the findings that drive decisions**: Another agent, with fresh context, whose job is to disprove the claim. [Agent reviewers](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) covers how to set up a reviewer who disagrees instead of agreeing.
+فاجعل الادعاء قابلًا للفحص:
 
-### Failure modes and anti-patterns
+- **افرض الشكل بينما لا يزال لدى العامل سياق**: اجعل العامل يكتب تقريره إلى ملف وتحقّق من ذلك الملف بسكربت. ثم أضف [خطاف](https://stevekinney.com/courses/ai-development-setup/hooks) `SubagentStop`، وهو سكربت تشغّله المنصة حين يكون وكيل فرعي على وشك الانتهاء. فإن فشل التحقق، حجب الخطاف التوقف وأخبر العامل بالسبب، فيصلح *العامل نفسه* تقريره. وبالنسبة لسكربت ينسّق العمال، فإن خيار `--json-schema` في التشغيلات بلا واجهة، أو المخرجات المهيكلة في SDK (و SDK مكتبة Claude لتشغيل الوكلاء من شيفرتك)، تجعل تشغيلًا كاملًا يعيد بيانات بشكل مخطط بدلًا من نثر.
+- **تحقّق على أربعة مستويات**: مخرَج كل عامل، والنتيجة المدمجة حيث تلتقي القطع، والتسليم (ما شحنته هو ما ادّعيته)، وسير العمل (لم يُتخطَّ شيء). ونجاح فحوص العمال لا يعني نجاح التركيب.
+- **أرسل متشكّكًا للنتائج التي تقود القرارات**: وكيل آخر، بسياق جديد، مهمته دحض الادعاء. و[مراجعو الوكلاء](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) يغطي كيفية إعداد مراجع يخالف بدلًا من أن يوافق.
 
-- **Hidden authority**: Telling an agent it shouldn’t edit files doesn’t make it a read-only agent. Permissions do. A worker can inherit shell access, network access, or credentials that it shouldn’t have.
-- **Vague delegation**: “Investigate everything” creates sprawling research and unclear results. Narrow the question. A vague “senior engineer” agent causes overlap and confusion for the same reason.
-- **Duplicate effort**: Two workers exploring the same path double the cost for nothing.
-- **Premature fan-out**: Your subagents are off implementing against an imagined interface, and then the main agent ends up rewriting everything. Resolve the shared decisions first.
-- **A long persona instead of a worker contract**: Great, now you’ve spent a bunch of time dictating its tone. Focus on purpose, method, authority, shape, and a stopping condition.
-- **The security expert with decades of experience**: The fictional résumé doesn’t do as much as you think. Name the trigger and the deliverable.
-- **Routing around a denial**: Spawning a new agent to get past something that was just denied. If the denial was right, you’ve bypassed it. If it was wrong, fix the rule.
+### أنماط الفشل والمضادات
 
-## Skill or subagent?
+- **الصلاحية الخفية**: إخبار وكيل بأنه لا ينبغي له تحرير الملفات لا يجعله وكيل قراءة فقط. الأذونات تفعل ذلك. فقد يرث عامل وصولًا إلى الصدفة أو الشبكة أو بيانات اعتماد ما كان ينبغي له امتلاكها.
+- **تفويض غامض**: «حقّق في كل شيء» يخلق بحثًا متشعّبًا ونتائج غير واضحة. ضيّق السؤال. ووكيل «مهندس أول» غامض يسبب تداخلًا وارتباكًا للسبب نفسه.
+- **جهد مكرر**: عاملان يستكشفان المسار نفسه يضاعفان التكلفة بلا طائل.
+- **تفريع سابق لأوانه**: ينطلق وكلاؤك الفرعيون للتنفيذ مقابل واجهة متخيَّلة، ثم ينتهي الوكيل الرئيسي إلى إعادة كتابة كل شيء. احسم القرارات المشتركة أولًا.
+- **شخصية مطوّلة بدلًا من عقد عامل**: رائع، لقد أنفقت وقتًا طويلًا في إملاء نبرته. ركّز على الغرض والمنهج والصلاحية والشكل وشرط التوقف.
+- **خبير الأمن صاحب عقود الخبرة**: السيرة المتخيَّلة لا تفعل ما تظن. سمِّ المُشغّل والمُخرَج.
+- **الالتفاف حول رفض**: إطلاق وكيل جديد لتجاوز شيء رُفض للتو. فإن كان الرفض صحيحًا، فقد تجاوزته. وإن كان خاطئًا، فأصلح القاعدة.
 
-You’ve got a recurring job. Maybe it’s a code review, or a migration, or an investigation you keep running by hand. Should it be a skill or a subagent?
+## مهارة أم وكيل فرعي؟ {#skill-or-subagent}
 
-It looks like a fork in the road. It mostly isn’t. The two stack, and the real work is deciding which layer carries what.
+لديك عمل متكرر. ربما مراجعة شيفرة، أو ترحيل، أو تحقيق تظل تشغّله يدويًا. أفيكفيه أن يكون مهارة أم وكيلًا فرعيًا؟
 
-### The deciding question
+يبدو مفترق طرق. لكنه ليس كذلك في الغالب. فالاثنان يتراكمان، والعمل الحقيقي هو تقرير أي طبقة تحمل ماذا.
 
-Ask: *do I need reusable instructions, or do I need another execution context?*
+### السؤال الفاصل
 
-A skill is knowledge: how to do the work. A subagent is a worker, with its own context, tools, and permissions. Here’s the table I use:
+اسأل: *هل أحتاج تعليمات قابلة لإعادة الاستخدام، أم أحتاج سياق تنفيذ آخر؟*
 
-| Need | Mechanism |
+المهارة معرفة: كيف تُنجز العمل. والوكيل الفرعي عامل، بسياقه وأدواته وأذوناته الخاصة. وإليك الجدول الذي أستخدمه:
+
+| الحاجة | الآلية |
 | --- | --- |
-| One-off instruction | **Prompt** |
-| Reusable knowledge | **Skill** |
-| Reusable procedure | **Skill** |
-| Project-wide conventions | **`CLAUDE.md` or `AGENTS.md`** |
-| Independent context | **Subagent** |
-| Parallel reasoning | **Subagents** |
-| Independent adversarial opinion | **Subagent** |
-| Huge investigation you want compressed | **Subagent** |
-| Different model, tools, or permissions | **Subagent** |
-| Deterministic repeated behavior | **[Hook](https://stevekinney.com/courses/ai-development-setup/hooks), script, or CI** |
-| External capability | **Tool or MCP server** |
+| تعليمة لمرة واحدة | **المطالبة** |
+| معرفة قابلة لإعادة الاستخدام | **المهارة** |
+| إجراء قابل لإعادة الاستخدام | **المهارة** |
+| أعراف المشروع كله | **`CLAUDE.md` أو `AGENTS.md`** |
+| سياق مستقل | **الوكيل الفرعي** |
+| استدلال متوازٍ | **الوكلاء الفرعيون** |
+| رأي خصمي مستقل | **الوكيل الفرعي** |
+| تحقيق ضخم تريد ضغطه | **الوكيل الفرعي** |
+| نموذج أو أدوات أو أذونات مختلفة | **الوكيل الفرعي** |
+| سلوك متكرر حتمي | **[خطاف](https://stevekinney.com/courses/ai-development-setup/hooks)، أو سكربت، أو CI** |
+| قدرة خارجية | **أداة أو خادم MCP** |
 
-An MCP server is a program that adds tools to the harness over the [Model Context Protocol](https://modelcontextprotocol.io/). [Skills versus tools](https://stevekinney.com/courses/ai-development-setup/skills#skills-versus-tools) covers that last row.
+خادم MCP برنامج يضيف أدوات إلى المنصة عبر [بروتوكول سياق النموذج](https://modelcontextprotocol.io/). و[المهارات مقابل الأدوات](https://stevekinney.com/courses/ai-development-setup/skills#skills-versus-tools) يغطي الصف الأخير.
 
-### Who owns what
+### من يملك ماذا
 
-Most designs end up using both. The method goes in the skill, and the limits on what a worker can do go in the agent definition.
+تنتهي معظم التصاميم إلى استخدام الاثنين. فالمنهج يوضع في المهارة، والحدود على ما يستطيع العامل فعله توضع في تعريف الوكيل.
 
-| Layer | Holds |
+| الطبقة | تحمل |
 | --- | --- |
-| Skill | The method, the evidence requirements, and the report format |
-| Agent definition | Tools, model, the `maxTurns` cap on agentic turns (each one a model request plus its tool calls), memory, and isolation |
-| Assignment | The current revision, the writable paths, the objective, and where the report goes |
+| المهارة | المنهج، ومتطلبات الأدلة، وصيغة التقرير |
+| تعريف الوكيل | الأدوات، والنموذج، وسقف `maxTurns` على الأدوار الوكيلية (كل دور طلب نموذج مع نداءات أدواته)، والذاكرة، والعزل |
+| الإسناد | المراجعة الحالية، والمسارات القابلة للكتابة، والهدف، وأين يذهب التقرير |
 
-Changing facts live in the assignment so the other two layers stay reusable. A note on “boundaries”: a skill can say what a worker must not touch, but that’s an instruction the model reads. The tools and permissions in an agent definition are enforced. [Configuring Subagents](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) covers the second row, and [Delegating well](#delegating-well) covers the third.
+الوقائع المتغيّرة تعيش في الإسناد لتبقى الطبقتان الأخريان قابلتين لإعادة الاستخدام. وملاحظة عن «الحدود»: تستطيع المهارة أن تقول ما يجب ألا يلمسه العامل، لكن تلك تعليمة يقرؤها النموذج. أما الأدوات والأذونات في تعريف الوكيل فمفروضة. و[تهيئة الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) يغطي الصف الثاني، و[التفويض الجيد](#delegating-well) يغطي الثالث.
 
-What about a forked skill, which is a skill whose body runs as a subagent’s task? ([Configuring Skills](https://stevekinney.com/courses/ai-development-setup/skill-configuration) explains how `context: fork` works.) With a forked skill, you write the task once. With a subagent, Claude writes a fresh brief for each situation. And only subagents can run several copies in parallel.
+وماذا عن مهارة متفرعة، وهي مهارة يعمل متنها كمهمة وكيل فرعي؟ ([تهيئة المهارات](https://stevekinney.com/courses/ai-development-setup/skill-configuration) يشرح كيف يعمل `context: fork`.) في المهارة المتفرعة، تكتب المهمة مرة واحدة. وفي الوكيل الفرعي، يكتب Claude موجزًا جديدًا لكل حالة. والوكلاء الفرعيون وحدهم يستطيعون تشغيل عدة نسخ على التوازي.
 
-### Using a skill to codify your workflow
+### استخدام مهارة لتقنين سير عملك {#using-a-skill-to-codify-your-workflow}
 
-Here’s where it gets fun. A skill can be the instructions the main agent uses to *coordinate* a workflow, with the harness handling background tasks. The pattern that tends to work:
+هنا يصبح الأمر ممتعًا. تستطيع المهارة أن تكون التعليمات التي يستخدمها الوكيل الرئيسي *لتنسيق* سير عمل، مع تكفّل المنصة بالمهام الخلفية. والنمط الذي ينفع عادةً:
 
-- **A non-forking orchestrator skill**: It coordinates the other workers. It sees your request, writes the briefs, and reconciles the reports. It doesn’t fork because it needs your conversation.
-- **Thin agent definitions**: Identity and tools. That’s it. The report format lives in the shared skill.
-- **One shared skill preloaded into every worker**: The common method lives in one place, so five agents don’t drift into five versions of it.
+- **مهارة منسّق غير متفرعة**: تنسّق العمال الآخرين. ترى طلبك، وتكتب الموجزات، وتوفّق بين التقارير. وهي لا تتفرّع لأنها تحتاج محادثتك.
+- **تعريفات وكلاء رفيعة**: الهوية والأدوات. لا أكثر. وصيغة التقرير تعيش في المهارة المشتركة.
+- **مهارة مشتركة واحدة محمّلة مسبقًا في كل عامل**: المنهج المشترك يعيش في مكان واحد، فلا ينزلق خمسة وكلاء إلى خمس نسخ منه.
 
-Build the orchestrator *last*. Get two or three workers earning their keep with hand-written briefs first.
+ابنِ المنسّق *أخيرًا*. اجعل عاملين أو ثلاثة يستحقون بقاءهم بموجزات مكتوبة يدويًا أولًا.
 
-Okay, imagine we’re migrating an app to React 19:
+حسنًا، تخيّل أننا نرحّل تطبيقًا إلى React 19:
 
-1. Migrate the shared foundation first, in one pass.
-2. Run one worker per feature slice, each in its own [worktree](https://stevekinney.com/courses/ai-development-setup/worktrees).
-3. Have every worker produce the same report format, checked by a script.
-4. Merge the slices one at a time, running the full suite after each.
-5. Fold each report’s list of patterns the skill *didn’t* cover back into the skill.
+1. رحّل الأساس المشترك أولًا، في مرور واحد.
+2. شغّل عاملًا لكل شريحة ميزة، كل في [شجرة عمله](https://stevekinney.com/courses/ai-development-setup/worktrees) الخاصة.
+3. اجعل كل عامل ينتج صيغة التقرير نفسها، مفحوصة بسكربت.
+4. ادمج الشرائح واحدة تلو الأخرى، مشغّلًا المجموعة الكاملة بعد كل واحدة.
+5. أعِد طيّ قائمة الأنماط التي *لم* تغطّها المهارة من كل تقرير إلى المهارة.
 
-That last step is the whole point. The skill gets better every time you run it.
+تلك الخطوة الأخيرة هي المقصد كله. تتحسّن المهارة في كل مرة تشغّلها.
 
-### Workflows with subagents
+### سير العمل مع الوكلاء الفرعيين
 
-These are the shapes I reach for. The arrows show how work flows between many workers and one coordinator.
+هذه هي الأشكال التي أعتمدها. والسهام تبيّن كيف يتدفّق العمل بين عمال كثيرين ومنسّق واحد.
 
-- **Parallel investigation** (`N readers → 1 writer`): Partition by question. The coordinator then implements in one pass, as a single agent holding the whole picture, so the code stays coherent. This is the best first pattern.
-- **Planner, implementer, verifier**: The verifier gets the requirements and the final diff in fresh context, and may return no findings.
-- **Independent review lenses** (`1 diff × N lenses`): Security, concurrency, coverage. Same revision, and no reviewer sees another’s conclusion first.
-- **Parallel implementation after contract freeze** (`freeze → fan out → merge`): Lock the interfaces between pieces before anyone builds against them. Then fan out with disjoint deliverables, and integrate in dependency order.
-- **Batch migration** (`1 proven → N units`): Prove one unit first. Group by testable package, not by file. Keep lockfiles central: only the coordinator updates them, after the merges, so parallel workers don’t conflict. Try a codemod, a script that rewrites code mechanically.
-- **Competing hypotheses** (`N hypotheses → 1 evaluator`): Each seeks disconfirming evidence. Pick with an evaluator you fixed before the run (a test, a script, or a reviewer agent), so nobody chooses after seeing the results. Don’t blend candidates.
+- **تحقيق متوازٍ** (`N readers → 1 writer`): قسّم حسب السؤال. ثم ينفّذ المنسّق في مرور واحد، كوكيل واحد يحمل الصورة كاملة، فتبقى الشيفرة متماسكة. وهذا أفضل نمط أول.
+- **مخطّط ومنفّذ ومتحقّق**: يحصل المتحقق على المتطلبات والفرق النهائي بسياق جديد، وقد يعيد بلا نتائج.
+- **عدسات مراجعة مستقلة** (`1 diff × N lenses`): الأمن، والتزامن، والتغطية. المراجعة نفسها، ولا يرى أي مراجع استنتاج آخر أولًا.
+- **تنفيذ متوازٍ بعد تجميد العقد** (`freeze → fan out → merge`): اقفل الواجهات بين القطع قبل أن يبني عليها أحد. ثم فرّع بمخرجات منفصلة، وادمج بترتيب الاعتماديات.
+- **ترحيل دفعي** (`1 proven → N units`): أثبت وحدة واحدة أولًا. جمّع حسب الحزمة القابلة للاختبار، لا حسب الملف. أبقِ ملفات القفل مركزية: لا يحدّثها إلا المنسّق، بعد عمليات الدمج، فلا يتعارض العمال المتوازون. وجرّب codemod، وهو سكربت يعيد كتابة الشيفرة آليًا.
+- **فرضيات متنافسة** (`N hypotheses → 1 evaluator`): كل واحدة تلتمس دليلًا داحضًا. اختر بمُقيِّم ثبّتّه قبل التشغيل (اختبار، أو سكربت، أو وكيل مراجع)، فلا يختار أحد بعد رؤية النتائج. ولا تخلط المرشّحات.
 
-When the fan-out is predictable enough to write down as code, [Dynamic Workflows](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows) covers scripts that orchestrate subagents for you. And when workers need to talk to each other mid-task, that’s [Agent Teams](https://stevekinney.com/courses/ai-development-setup/agent-teams).
+حين يكون التفريع متوقعًا بما يكفي لكتابته كشيفرة، يغطي [سير العمل الديناميكي](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows) السكربتات التي تنسّق الوكلاء الفرعيين بالنيابة عنك. وحين يحتاج العمال إلى التحدث إلى بعضهم أثناء المهمة، فتلك [فرق الوكلاء](https://stevekinney.com/courses/ai-development-setup/agent-teams).
 
-## The cost of context
+## كلفة السياق
 
-Subagents don’t inherit their parent’s noise, and they keep their own noise isolated. In a perfect world, the main agent hands over just what the subagent needs, and the subagent reports back just what the main agent needs.
+لا يرث الوكلاء الفرعيون ضجيج أصلهم، ويبقون ضجيجهم الخاص معزولًا. وفي عالم مثالي، يسلّم الوكيل الرئيسي ما يحتاجه الوكيل الفرعي فقط، ويبلّغ الوكيل الفرعي بما يحتاجه الوكيل الرئيسي فقط.
 
-But if each parallel subagent has to redo the same work, you’re multiplying the token cost. Think about how information moves through your workflow.
+لكن إن كان على كل وكيل فرعي متوازٍ أن يعيد العمل نفسه، فأنت تضاعف كلفة الرموز. فكّر في كيفية انتقال المعلومة عبر سير عملك.
 
-And spawning has a price of its own. A subagent costs somewhere around 7.5k–44k tokens before it does anything at all.
+والإطلاق له ثمنه الخاص. يكلّف الوكيل الفرعي نحو 7.5k–44k رمزًا قبل أن يفعل أي شيء على الإطلاق.
 
-### Context isolation is not environment isolation
+### عزل السياق ليس عزل البيئة
 
-A fresh conversation does *not* get its own files, databases, ports, credentials, or browser profiles. Two subagents editing the same working directory are still editing the same working directory. [Worktrees](https://stevekinney.com/courses/ai-development-setup/worktrees) (extra checkouts of the same Git repository, each in its own directory with its own files and branch) are how you fix that, and they’re a deep rabbit hole.
+المحادثة الجديدة *لا* تحصل على ملفاتها وقواعد بياناتها ومنافذها وبيانات اعتمادها وملفات تعريف متصفحها الخاصة. ووكيلان فرعيان يحرّران مجلد العمل نفسه ما زالا يحرّران مجلد العمل نفسه. و[أشجار العمل](https://stevekinney.com/courses/ai-development-setup/worktrees) (نسخ إضافية من مستودع Git نفسه، كل في مجلدها الخاص بملفاتها وفرعها) هي كيف تصلح ذلك، وهي جُحر أرنب عميق.
 
-A subagent buys you a clean head. It doesn’t buy you a clean desk. Put the method in a skill, the boundaries in a definition, and today’s facts in the assignment.
+الوكيل الفرعي يشتري لك رأسًا نظيفًا. لكنه لا يشتري لك مكتبًا نظيفًا. ضع المنهج في مهارة، والحدود في تعريف، ووقائع اليوم في الإسناد.

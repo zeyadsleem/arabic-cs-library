@@ -1,12 +1,12 @@
 ---
-title: "The Waiting Story"
-lang: en
+title: "حكاية الانتظار"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story"
 ---
 
-If locator discipline is the number-one thing an agent will get wrong in a Playwright suite, waiting is a very close second. And where locators are bad because they break across refactors, waiting is bad because it breaks *on the exact same code, intermittently, for reasons nobody can explain*. That’s worse. That’s the thing that makes your team stop trusting end-to-end tests.
+إن كان الانضباط في محدّدات الموقع هو أول ما سيخطئ فيه الوكيل في مجموعة اختبارات Playwright، فإن الانتظار يليه مباشرة بفارق ضئيل جدًا. وحيث تكون المحدّدات سيئة لأنها تنكسر مع كل إعادة هيكلة، يكون الانتظار سيئًا لأنه ينكسر *على الشيفرة نفسها بالضبط، على نحو متقطّع، لأسباب لا يستطيع أحد تفسيرها*. وهذا أسوأ. هذا هو الشيء الذي يجعل فريقك يكفّ عن الوثوق باختبارات طرف إلى طرف.
 
-## The sin
+## الخطيئة
 
 ```typescript
 await page.click('button.add-book');
@@ -14,9 +14,9 @@ await page.waitForTimeout(2000);
 await expect(page.getByText('Added to your shelf')).toBeVisible();
 ```
 
-Two seconds. Why two? Because one didn’t work on the agent’s first try and three felt wasteful. This is the most common pattern I see in agent-generated Playwright code, and it’s wrong in every possible way.
+ثانيتان. ولماذا ثانيتان؟ لأن واحدة لم تنجح في محاولة الوكيل الأولى، وثلاثًا بدت مضيعة للوقت. هذا هو النمط الأكثر شيوعًا الذي أراه في شيفرة Playwright التي يولّدها الوكيل، وهو خاطئ من كل وجه ممكن.
 
-It’s wrong when the machine is fast, because you’re sitting there for 1.9 seconds doing nothing. It’s wrong when the machine is slow, because 2 seconds wasn’t enough and the test flakes. It’s wrong in CI, because CI is slow on Tuesdays and fast on Wednesdays and nobody knows why, and your test is now a coin flip. And it’s especially wrong because the mechanism you *should* be using is not only more reliable, it’s also faster in the happy case.
+إنه خاطئ حين تكون الآلة سريعة، لأنك تجلس هناك 1.9 ثانية لا تفعل شيئًا. وهو خاطئ حين تكون الآلة بطيئة، لأن الثانيتين لم تكفيا فيتقلّب الاختبار. وهو خاطئ في CI، لأن CI بطيء أيام الثلاثاء وسريع أيام الأربعاء ولا أحد يعرف السبب، فصار اختبارك الآن رمية عملة. وهو خاطئ على وجه الخصوص لأن الآلية التي *ينبغي* أن تستخدمها ليست أكثر موثوقية فحسب، بل أسرع أيضًا في الحالة السعيدة.
 
 ```
 flowchart LR
@@ -36,45 +36,45 @@ flowchart LR
   style I fill:#ccffcc
 ```
 
-I have a simple rule about this: `page.waitForTimeout` is banned. Not discouraged. Banned. The instructions file bans it. The lint rule bans it. The only time it’s acceptable is in a throwaway `test.skip` debugging session, and even then you should feel bad about it.
+لديّ قاعدة بسيطة في هذا الشأن: `page.waitForTimeout` محظور. لا «غير مستحسَن». محظور. ملف الإرشادات يحظره. وقاعدة lint تحظره. الحالة الوحيدة التي يكون فيها مقبولًا هي جلسة تنقيح عابرة داخل `test.skip`، وحتى حينها ينبغي أن تشعر بالسوء تجاهه.
 
-## The better version, with no magic
+## النسخة الأفضل، بلا سحر
 
-[Playwright’s auto-retrying assertions](https://playwright.dev/docs/test-assertions) do almost everything you need them to do if you let them. Every assertion is retried for a configurable timeout (default five seconds) until it either passes or times out. That means you don’t have to wait yourself—the assertion *is* the wait.
+[تأكيدات Playwright ذاتية الإعادة](https://playwright.dev/docs/test-assertions) تفعل تقريبًا كل ما تحتاجه منها إن سمحت لها بذلك. يُعاد كل تأكيد لمدّة انتظار قابلة للضبط (خمس ثوانٍ افتراضيًا) حتى ينجح أو تنتهي المدة. وهذا يعني أنك لست مضطرًا للانتظار بنفسك—فالتأكيد *هو* الانتظار.
 
 ```typescript
 await page.getByRole('button', { name: 'Add book' }).click();
 await expect(page.getByText('Added to your shelf')).toBeVisible();
 ```
 
-That’s it. No `waitForTimeout`, no `waitForSelector`, no `sleep`. The `toBeVisible()` assertion waits until either the text appears or the timeout fires. On a fast machine it passes in ten milliseconds. On a slow machine it passes in two seconds. On a broken machine it fails with a useful error. All three outcomes are correct.
+هذا كل شيء. لا `waitForTimeout`، ولا `waitForSelector`، ولا `sleep`. ينتظر تأكيد `toBeVisible()` حتى يظهر النص أو تنتهي مدة الانتظار. على آلة سريعة ينجح في عشر مللي ثانية. وعلى آلة بطيئة ينجح في ثانيتين. وعلى آلة معطوبة يفشل بخطأ مفيد. والنتائج الثلاث كلها صحيحة.
 
-This works for more than visibility. The whole `expect(locator).*` family auto-retries:
+وهذا يعمل لأكثر من الظهور. فالعائلة كلها `expect(locator).*` تعيد المحاولة تلقائيًا:
 
-- `toBeVisible()`, `toBeHidden()`, `toBeEnabled()`, `toBeDisabled()`
-- `toHaveText(text)`, `toHaveValue(value)`, `toHaveAttribute(name, value)`
-- `toHaveCount(n)`—my personal favorite for “wait until the list of books has rendered all three entries”
+- `toBeVisible()`، و`toBeHidden()`، و`toBeEnabled()`، و`toBeDisabled()`
+- `toHaveText(text)`، و`toHaveValue(value)`، و`toHaveAttribute(name, value)`
+- `toHaveCount(n)`—وهو المفضّل عندي شخصيًا لـ«انتظر حتى تُرسَم المدخلات الثلاثة كلها في قائمة الكتب»
 - `toBeInViewport()`
 
-Anything you want to assert that’s eventually true, use an `expect` on a locator. That’s your wait.
+أي شيء تريد تأكيده ويكون صحيحًا في النهاية، استخدم عليه `expect` مربوطًا بمحدّد موقع. ذلك هو انتظارك.
 
-## Actions already wait for actionability
+## الأفعال تنتظر أصلًا قابلية التنفيذ
 
-This is the part a lot of teams fight instead of using. Playwright actions already auto-wait for actionability: visible, stable, receiving events, enabled, the whole thing. Most “pre-click readiness helpers” are just a slower, worse reimplementation of what Playwright is already doing.
+هذا هو الجزء الذي تقاومه فرق كثيرة بدلًا من استخدامه. أفعال Playwright تنتظر تلقائيًا قابلية التنفيذ: الظهور، والاستقرار، وتلقّي الأحداث، والتمكين، وكل ذلك. معظم «مساعدات الجاهزية قبل النقر» ليست إلا إعادة تنفيذ أبطأ وأسوأ لما يفعله Playwright أصلًا.
 
-If you want to ask “would this control be clickable yet?” without actually clicking it, many locator actions support [`trial: true`](https://playwright.dev/docs/actionability):
+وإن أردت أن تسأل «هل صار هذا العنصر قابلًا للنقر بعد؟» دون أن تنقر عليه فعلًا، فإن كثيرًا من أفعال محدّد الموقع تدعم [`trial: true`](https://playwright.dev/docs/actionability):
 
 ```typescript
 await page.getByRole('button', { name: 'Publish' }).click({ trial: true });
 ```
 
-That performs the actionability checks and skips the click. It is a neat replacement for bespoke “wait until button is ready” helpers, and it keeps the wait aligned with the real action instead of inventing a second definition of readiness.
+ينفّذ ذلك فحوص قابلية التنفيذ ويتخطّى النقر. وهو بديل أنيق للمساعدات المفصّلة على المقاس من نوع «انتظر حتى يجهز الزر»، ويُبقي الانتظار متوائمًا مع الفعل الحقيقي بدلًا من اختراع تعريف ثانٍ للجاهزية.
 
-## Boolean probes are not waits
+## المجسّات المنطقية ليست انتظارًا
 
-The [Locator API](https://playwright.dev/docs/api/class-locator) is explicit about this: methods like `isVisible()` return immediately. They answer “what is true *right now*,” not “wait until this becomes true.”
+[واجهة Locator](https://playwright.dev/docs/api/class-locator) صريحة في هذا: دوال مثل `isVisible()` تعود فورًا. فهي تجيب عن «ما الصحيح *الآن*»، لا عن «انتظر حتى يصير هذا صحيحًا».
 
-So this:
+إذن هذا:
 
 ```typescript
 if (await page.getByText('Saved').isVisible()) {
@@ -82,17 +82,17 @@ if (await page.getByText('Saved').isVisible()) {
 }
 ```
 
-is fine as a branch after the page is already stable. It is not a synchronization primitive. If the page updates asynchronously, use the retrying assertion:
+لا بأس به كفرع بعد أن تكون الصفحة مستقرّة أصلًا. لكنه ليس بدائية مزامنة. فإن كانت الصفحة تتحدّث لا تزامنيًا، فاستخدم التأكيد الذي يعيد المحاولة:
 
 ```typescript
 await expect(page.getByText('Saved')).toBeVisible();
 ```
 
-The anti-pattern I keep seeing is `expect(await locator.isVisible()).toBe(true)`. That bypasses the whole retry model and then acts surprised when CI gets there 200 milliseconds later than the laptop did.
+النمط المضاد الذي أراه باستمرار هو `expect(await locator.isVisible()).toBe(true)`. ذلك يتجاوز نموذج إعادة المحاولة كله، ثم يتظاهر بالدهشة حين يصل CI إلى هناك بعد حاسوبك المحمول بـ200 مللي ثانية.
 
-## Waiting for network, not for clocks
+## الانتظار على الشبكة، لا على الساعات
 
-Sometimes the thing you’re waiting on isn’t a DOM change—it’s a network response. The click fires off a POST, you need the POST to finish before you can interact with the next thing, and there’s no DOM state that cleanly tells you the POST finished. This is where [`page.waitForResponse`](https://playwright.dev/docs/api/class-page#page-wait-for-response) earns its place.
+أحيانًا لا يكون الشيء الذي تنتظره تغيّرًا في DOM، بل استجابة شبكة. النقرة تُطلق طلب POST، وتحتاج إلى أن ينتهي POST قبل أن تتفاعل مع الشيء التالي، ولا توجد حالة DOM تخبرك بوضوح أن POST قد انتهى. هنا يستحق [`page.waitForResponse`](https://playwright.dev/docs/api/class-page#page-wait-for-response) مكانه.
 
 ```typescript
 const responsePromise = page.waitForResponse(
@@ -102,32 +102,32 @@ await page.getByRole('button', { name: 'Add book' }).click();
 await responsePromise;
 ```
 
-Two things to notice. First, you set up the waiter *before* the action, because the response might land faster than the next line of code runs. Second, you match on URL and method, not on a string comparison of the whole URL—query params and IDs will mess you up otherwise.
+ثمة أمران يجب ملاحظتهما. أولًا، تنصب المنتظِر *قبل* الفعل، لأن الاستجابة قد تصل أسرع مما يعمل السطر التالي من الشيفرة. وثانيًا، تطابق على العنوان (URL) والطريقة، لا على مقارنة نصية للعنوان كله—وإلا أربكتك معاملات الاستعلام والمعرّفات.
 
-`page.waitForRequest` exists too, for the “I just want to prove the request went out” case. Both are precise, both beat a timeout every time.
+و`page.waitForRequest` موجود أيضًا، لحالة «أريد فقط أن أثبت أن الطلب قد خرج». وكلاهما دقيق، وكلاهما يتغلّب على مهلة الانتظار في كل مرة.
 
-> **Tip**
+> **نصيحة**
 >
-> If the UI already exposes the end state you care about, prefer a locator assertion over a network wait. `waitForResponse` is for the cases where the network event *is* the signal. If the page shows “Saved” or the new row appears in the table, assert on that instead.
+> إن كانت الواجهة تعرض أصلًا حالة النهاية التي تهمّك، ففضّل تأكيد محدّد موقع على انتظار شبكي. `waitForResponse` للحالات التي يكون فيها حدث الشبكة *هو* الإشارة. فإن كانت الصفحة تعرض «Saved» أو ظهر السطر الجديد في الجدول، فأكّد على ذلك بدلًا من الانتظار.
 
-## `fill()` first, `pressSequentially()` on purpose
+## `fill()` أولًا، و`pressSequentially()` عن قصد
 
-Most text entry should use `locator.fill()`. It sets the value directly and lets Playwright do the boring reliable thing.
+معظم إدخال النصوص ينبغي أن يستخدم `locator.fill()`. فهو يضبط القيمة مباشرة ويترك Playwright يفعل الشيء المملّ الموثوق.
 
-[`locator.pressSequentially()`](https://playwright.dev/docs/api/class-locator) exists for the genuinely special cases:
+و[`locator.pressSequentially()`](https://playwright.dev/docs/api/class-locator) موجود للحالات الخاصة حقًا:
 
-- the component reacts to each keystroke
-- autocomplete or mention logic depends on real key events
-- the input is masked or formatted while typing
-- the bug you are reproducing is specifically about keypress handling
+- أن يتفاعل المكوّن مع كل ضغطة مفتاح
+- أن يعتمد منطق الإكمال التلقائي أو الإشارات على أحداث مفاتيح حقيقية
+- أن يكون الحقل مقنّعًا أو منسّقًا أثناء الكتابة
+- أن يكون الخطأ الذي تعيد إنتاجه متعلقًا بمعالجة ضغطات المفاتيح تحديدًا
 
-If none of those are true, `fill()` is the right call. The “real typing is more realistic” instinct sounds nice and creates some of the dumbest CI-only input failures you will ever debug.
+إن لم يكن أي من ذلك صحيحًا، فـ`fill()` هو النداء الصحيح. فحدس «الكتابة الحقيقية أكثر واقعية» يبدو لطيفًا، ويخلق بعضًا من أغبى أعطال الإدخال التي لن تقع إلا في CI وستنقّحها في حياتك.
 
-## Clocks and animations and the Clock API
+## الساعات والحركات وواجهة Clock
 
-The ugly class of waits is when the UI has a `setTimeout` somewhere. A toast that auto-dismisses after three seconds. A “just now” timestamp that updates every minute. An animation that takes 250ms. Your test now depends on real wall-clock time, which is an abomination.
+الصنف القبيح من الانتظارات هو حين يكون في الواجهة `setTimeout` في مكان ما. إشعار يختفي تلقائيًا بعد ثلاث ثوانٍ. طابع زمني يقول «الآن» ويتحدّث كل دقيقة. حركة تستغرق 250 مللي ثانية. صار اختبارك الآن يعتمد على الوقت الحقيقي للجدار، وهذا أمر شنيع.
 
-Playwright ships a [Clock API](https://playwright.dev/docs/clock) that lets you install a fake clock before the page loads:
+يشحن Playwright [واجهة Clock](https://playwright.dev/docs/clock) تتيح لك تثبيت ساعة مزيفة قبل أن تُحمّل الصفحة:
 
 ```typescript
 await page.clock.install();
@@ -137,13 +137,13 @@ await page.clock.fastForward('03'); // advance three seconds
 await expect(page.getByText('Added to your shelf')).toBeHidden();
 ```
 
-This is how you test the toast that dismisses after three seconds without actually waiting three seconds. It’s how you test “X minutes ago” displays without editing the system clock. It is extremely underused and worth putting in the agent’s awareness. If the agent is writing a `waitForTimeout` because it’s waiting on a clock-driven UI, the correct answer is almost always `page.clock`.
+هكذا تختبر الإشعار الذي يختفي بعد ثلاث ثوانٍ دون أن تنتظر ثلاث ثوانٍ فعلًا. وهكذا تختبر عروض «قبل X دقيقة» دون تعديل ساعة النظام. وهي قليلة الاستخدام إلى حدّ بعيد وتستحق أن تُوضَع في وعي الوكيل. فإن كان الوكيل يكتب `waitForTimeout` لأنه ينتظر واجهة تقودها ساعة، فالجواب الصحيح دائمًا تقريبًا هو `page.clock`.
 
-## `expect.poll()` versus `toPass()`
+## `expect.poll()` مقابل `toPass()`
 
-For eventual consistency, you have two retry hammers. They are not the same hammer.
+من أجل الاتّساق النهائي، لديك مطرقتان لإعادة المحاولة. وهما ليستا المطرقة نفسها.
 
-[`expect.poll()`](https://playwright.dev/docs/test-assertions) retries a value-producing function:
+[`expect.poll()`](https://playwright.dev/docs/test-assertions) يعيد محاولة دالة تُنتج قيمة:
 
 ```typescript
 await expect
@@ -160,9 +160,9 @@ await expect
   .toBeTruthy();
 ```
 
-It defaults to a 5-second timeout, which is usually what people expect.
+مهلته الافتراضية خمس ثوانٍ، وهذا عادةً ما يتوقّعه الناس.
 
-`expect(async () => { ... }).toPass()` retries an entire assertion block:
+و`expect(async () => { ... }).toPass()` يعيد محاولة كتلة تأكيد كاملة:
 
 ```typescript
 await expect(async () => {
@@ -174,13 +174,13 @@ await expect(async () => {
 }).toPass({ timeout: 10_000 });
 ```
 
-That default timeout is `0` unless you pass one. This trips people constantly. If you reach for `toPass()`, set the timeout on purpose.
+مهلته الافتراضية `0` ما لم تمرّر واحدة. وهذا يُوقع الناس في الحيرة باستمرار. فإن لجأت إلى `toPass()`، فاضبط المهلة عن قصد.
 
-Use `poll()` when one value should eventually settle. Use `toPass()` when you genuinely want to rerun a full block of assertions.
+استخدم `poll()` حين تكون قيمة واحدة مرشّحة للاستقرار في النهاية. واستخدم `toPass()` حين تريد حقًا إعادة تشغيل كتلة تأكيدات كاملة.
 
-## Give `expect` different personalities
+## امنح `expect` أمزجة مختلفة
 
-[`expect.configure()`](https://playwright.dev/docs/test-assertions) is worth using once the suite is big enough that every assertion should not share the same temperament.
+[`expect.configure()`](https://playwright.dev/docs/test-assertions) يستحق الاستخدام متى صارت المجموعة كبيرة بما يكفي بحيث لا تتشارك كل التأكيدات المزاج نفسه.
 
 ```typescript
 const slowExpect = expect.configure({ timeout: 15_000 });
@@ -191,19 +191,19 @@ await softExpect(page.getByText('Summary')).toBeVisible();
 await softExpect(page.getByText('Details')).toBeVisible();
 ```
 
-That keeps the intent local. You do not have to rewrite the global assertion timeout because one eventually consistent screen is slower than the rest of the suite.
+هذا يُبقي النية محلية. فلا تضطر إلى إعادة كتابة مهلة التأكيد العامة لأن شاشة واحدة متّسقة نهائيًا أبطأ من بقية المجموعة.
 
-When you do use soft assertions, check `test.info().errors` before marching into the next dangerous phase of the test. Failing softly is useful. Failing softly and then pretending the precondition succeeded is just lying with extra steps.
+وحين تستخدم التأكيدات اللينة، فافحص `test.info().errors` قبل أن تنطلق إلى المرحلة الخطرة التالية من الاختبار. الفشل اللين مفيد. أما الفشل اللين ثم التظاهر بأن الشرط المسبق قد نجح فليس إلا كذبًا بخطوات إضافية.
 
-## Waiting for the page to “settle”
+## الانتظار حتى «تستقرّ» الصفحة
 
-A common agent mistake: `await page.waitForLoadState('networkidle')`. Don’t. Playwright’s own navigation docs mark `networkidle` as discouraged for testing. It means “no network activity for 500ms,” which is both slower than what you actually need (why wait for *all* requests?) and unreliable in pages with long-polling, analytics beacons, or any kind of heartbeat.
+خطأ شائع من الوكيل: `await page.waitForLoadState('networkidle')`. لا تفعل ذلك. فوثائق التنقّل في Playwright نفسها تصنّف `networkidle` غير مستحسَن للاختبار. وهو يعني «لا نشاط شبكي لمدة 500 مللي ثانية»، وهذا أبطأ مما تحتاجه فعلًا (ولماذا تنتظر *كل* الطلبات؟) وغير موثوق في الصفحات التي فيها استقصاء طويل أو منارات تحليلات أو أي نوع من نبضات الحياة.
 
-Instead, wait for the specific thing you actually care about. If you’re waiting for the shelf to render, wait for the shelf content, not for network idle. If you’re waiting for an API call to finish, wait for *that* call, not for all calls to stop. Be specific.
+بدلًا من ذلك، انتظر الشيء المحدّد الذي يهمّك فعلًا. فإن كنت تنتظر رسم الرفّ، فانتظر محتوى الرفّ، لا سكون الشبكة. وإن كنت تنتظر انتهاء نداء API، فانتظر *ذلك* النداء، لا توقّف كل النداءات. كن محدّدًا.
 
-## The agent rules
+## قواعد الوكيل
 
-Add these to the instructions file under Playwright:
+أضف هذه إلى ملف الإرشادات تحت Playwright:
 
 ```markdown
 ## Waiting in Playwright
@@ -230,21 +230,21 @@ Add these to the instructions file under Playwright:
   the real end state and assert on it.
 ```
 
-The last rule is the important one, and the hardest one for an agent to follow without a human pointing it out. Flakiness is never solved by waiting longer. It’s solved by asserting on the correct thing.
+القاعدة الأخيرة هي المهمة، وهي الأصعب على الوكيل أن يتبعها دون أن يشير إليها إنسان. التقلّب لا يُحلّ أبدًا بانتظار أطول. بل يُحلّ بالتأكيد على الشيء الصحيح.
 
-## A concrete example from Shelf
+## مثال ملموس من Shelf
 
-Shelf’s rate-book workflow is the canonical place this all shows up. The rough version of the test uses `waitForTimeout(1500)` after submitting a rating, because the agent that wrote it first was guessing. That version passes most of the time. It fails about one time in fifteen on my machine, and more often on CI under load—classic “flaky test that blocks releases every few days” territory.
+سير عمل تقييم الكتب في Shelf هو المكان النموذجي الذي يظهر فيه كل هذا. النسخة الخامّة من الاختبار تستخدم `waitForTimeout(1500)` بعد إرسال تقييم، لأن الوكيل الذي كتبها أولًا كان يخمّن. وتلك النسخة تنجح معظم الوقت. لكنها تفشل نحو مرة من كل خمس عشرة على حاسوبي، وأكثر من ذلك في CI تحت الحمل—وهذا إقليم «الاختبار المتقلّب الذي يعطّل الإصدارات كل بضعة أيام» الكلاسيكي.
 
-The next lab walks you through rewriting it. The fix has three parts: replace the locator with a `getByRole` chain, replace the `waitForTimeout` with a `waitForResponse` on the POST, and add an `expect(locator).toHaveText(/Thanks/)` assertion on the confirmation toast. That’s it. Three edits, zero magic, and the test stops flaking.
+المختبر التالي يمشي معك في إعادة كتابته. وللإصلاح ثلاثة أجزاء: استبدال محدّد الموقع بسلسلة `getByRole`، واستبدال `waitForTimeout` بـ`waitForResponse` على POST، وإضافة تأكيد `expect(locator).toHaveText(/Thanks/)` على إشعار التأكيد. هذا كل شيء. ثلاثة تعديلات، ولا سحر، ويتوقف الاختبار عن التقلّب.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Every wait in your test is a statement about what you expect to be true. If you can’t write that statement as an assertion, you don’t actually know what you’re waiting for, and the test is going to flake until you figure it out. `waitForTimeout` is the absence of a statement. Ban it.
+كل انتظار في اختبارك عبارة عن تصريح بما تتوقّع أن يكون صحيحًا. فإن لم تستطع كتابة ذلك التصريح كتأكيد، فأنت لا تعرف فعلًا ما الذي تنتظره، وسيتقلّب الاختبار حتى تكتشفه. `waitForTimeout` هو غياب التصريح. فاحظره.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [Assertions](https://playwright.dev/docs/test-assertions)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Lab: Harden the Flaky Rate-Book Test](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)
+- [المحددات وهرمية إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [التأكيدات](https://playwright.dev/docs/test-assertions)
+- [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [مختبر: تحصين اختبار Rate-Book المتقلّب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)

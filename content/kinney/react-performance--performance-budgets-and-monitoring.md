@@ -1,33 +1,33 @@
 ---
-title: "Performance Budgets and Monitoring"
-lang: en
+title: "ميزانيات الأداء والمراقبة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/performance-budgets-and-monitoring"
 ---
 
-Performance budgets and monitoring work hand-in-hand to keep your React application fast. Budgets set the constraints, monitoring ensures you stay within them.
+تعمل ميزانيات الأداء والمراقبة جنبًا إلى جنب على إبقاء تطبيق React لديك سريعًا. فالميزانيات تضع القيود، والمراقبة تضمن بقاءك ضمنها.
 
-## Performance Budgets
+## ميزانيات الأداء
 
-For comprehensive guidance on setting and enforcing performance budgets in your CI/CD pipeline, see **[Performance Budgets & Automation](https://stevekinney.com/courses/react-performance/performance-budgets-and-automation)**.
+للحصول على إرشادات شاملة حول وضع ميزانيات الأداء وفرضها في خط أنابيب CI/CD لديك، راجع **[ميزانيات الأداء والأتمتة](https://stevekinney.com/courses/react-performance/performance-budgets-and-automation)**.
 
-Key topics covered:
+أهم الموضوعات المغطّاة:
 
-- Setting realistic budget targets
-- Bundle size budgets
-- Core Web Vitals budgets
-- Automated enforcement in CI/CD
+- وضع أهداف ميزانية واقعية
+- ميزانيات حجم الحزمة
+- ميزانيات Core Web Vitals
+- الفرض الآلي في CI/CD
 
-## Production Monitoring
+## مراقبة الإنتاج
 
-For Real User Monitoring (RUM) and production performance tracking, see **[Production Performance Monitoring](https://stevekinney.com/courses/react-performance/production-performance-monitoring)**.
+لمراقبة المستخدمين الحقيقيين (RUM) وتتبّع الأداء في الإنتاج، راجع **[مراقبة أداء الإنتاج](https://stevekinney.com/courses/react-performance/production-performance-monitoring)**.
 
-Key topics covered:
+أهم الموضوعات المغطّاة:
 
-- Real User Monitoring setup
-- Core Web Vitals tracking
-- Performance alerting
-- Custom metrics and attribution
+- إعداد مراقبة المستخدمين الحقيقيين
+- تتبّع Core Web Vitals
+- التنبيه على الأداء
+- مقاييس مخصّصة وإسنادها
 
-## INP-Specific Monitoring
+## مراقبة INP على وجه التحديد
 
-For detailed Interaction to Next Paint monitoring strategies, see **[INP Production Monitoring](https://stevekinney.com/courses/react-performance/inp-production-monitoring)**.
+لاستراتيجيات مفصّلة لمراقبة Interaction to Next Paint، راجع **[مراقبة INP في الإنتاج](https://stevekinney.com/courses/react-performance/inp-production-monitoring)**.

@@ -1,55 +1,55 @@
 ---
-title: "Playwright Codegen"
-lang: en
+title: "مولّد الشيفرة في Playwright (Codegen)"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-codegen"
 ---
 
-Sometimes the fastest way to write a test is to just *do the thing* and let the tooling watch. Playwright’s [code generator](https://playwright.dev/docs/codegen-intro) records your clicks and keystrokes and turns them into test code. It’s not magic—the output needs editing—but it’s a legitimate starting point, and for unfamiliar apps it’s often faster than reading the DOM by hand.
+أحيانًا تكون أسرع طريقة لكتابة اختبار هي أن *تفعل الشيء* فقط وتدع الأدوات تراقب. فـ[مولّد الشيفرة](https://playwright.dev/docs/codegen-intro) في Playwright يسجّل نقراتك وضغطات مفاتيحك ويحوّلها إلى شيفرة اختبار. وهو ليس سحرًا — فالمخرجات تحتاج إلى تحرير — لكنه نقطة بداية مشروعة، وهو في التطبيقات غير المألوفة غالبًا أسرع من قراءة DOM يدويًا.
 
-Playwright Codegen
+مولّد الشيفرة في Playwright
 
-## Launching codegen
+## تشغيل مولّد الشيفرة
 
 ```bash
 npx playwright codegen http://localhost:5173
 ```
 
-Two windows open: a browser you interact with, and the Playwright Inspector showing the generated code in real time. The URL argument is optional—you can leave it off and navigate after launch. But if you already know where you’re headed, pass it in and save yourself the typing.
+تُفتح نافذتان: متصفح تتفاعل معه، وPlaywright Inspector يعرض الشيفرة المولَّدة في الوقت الحقيقي. ومعامل URL اختياري — يمكنك تركه والانتقال بعد التشغيل. لكن إن كنت تعرف وجهتك بالفعل، فمرّره ووفّر على نفسك الكتابة.
 
-## The recording workflow
+## سير عمل التسجيل
 
-Click around. Type into inputs. Navigate between pages. Every action you take appears as a line of test code in the inspector window.
+انقر هنا وهناك. اكتب في حقول الإدخال. انتقل بين الصفحات. كل إجراء تتخذه يظهر سطرًا من شيفرة الاختبار في نافذة المفتّش.
 
-The toolbar has three assertion buttons worth knowing: **assert visibility**, **assert text**, and **assert value**. Click one of those, then click an element in the browser, and codegen adds an assertion to the generated code. This is the part most people miss on their first run—they record a bunch of clicks and wonder why the generated test doesn’t *check* anything. It doesn’t check anything because you didn’t tell it to.
+وفي شريط الأدوات ثلاثة أزرار تحقّق تستحق أن تعرفها: **assert visibility**، و**assert text**، و**assert value**. انقر أحدها، ثم انقر عنصرًا في المتصفح، فيضيف مولّد الشيفرة تحقّقًا إلى الشيفرة المولَّدة. وهذا هو الجزء الذي يفوته معظم الناس في تشغيلهم الأول — يسجّلون مجموعة نقرات ثم يتساءلون لماذا لا *يفحص* الاختبار المولَّد أي شيء. لا يفحص شيئًا لأنك لم تطلب منه ذلك.
 
-## What codegen gets right
+## ما يصيبه مولّد الشيفرة صوابًا
 
-Codegen defaults to role-based locators. It follows the same hierarchy we covered in the locators lesson: role first, then text, then test ID. If multiple elements match, it refines the locator to uniquely identify the target—adding a `{ name: '...' }` filter or scoping to a parent.
+يفترض مولّد الشيفرة المحدِّدات القائمة على الدور افتراضيًا. وهو يتبع التدرّج نفسه الذي غطّيناه في درس المحدِّدات: الدور أولًا، ثم النص، ثم معرّف الاختبار. وإن طابق عدة عناصر، فإنه يصقل المحدِّد ليعرّف الهدف تعريفًا فريدًا — بإضافة مرشّح `{ name: '...' }` أو بتضييق النطاق إلى أب.
 
-This is genuinely better than what most people write by hand on their first try. I’ve seen plenty of hand-written tests that start with `page.locator('.btn-primary')` because someone inspected the DOM and grabbed the class. Codegen wouldn’t do that. It would give you `page.getByRole('button', { name: 'Submit' })`, which is the right call.
+هذا في الحقيقة أفضل مما يكتبه معظم الناس يدويًا في محاولتهم الأولى. فقد رأيت كثيرًا من الاختبارات المكتوبة يدويًا تبدأ بـ`page.locator('.btn-primary')` لأن أحدهم فحص DOM وأخذ الصنف. مولّد الشيفرة لا يفعل ذلك. بل يعطيك `page.getByRole('button', { name: 'Submit' })`، وهو الخيار الصحيح.
 
-## What codegen gets wrong
+## ما يخطئ فيه مولّد الشيفرة
 
-The list is predictable:
+القائمة متوقَّعة:
 
-- **Overly specific locators** when simpler ones would work. If only one button says “Submit” on the page, you don’t need the extra scoping codegen might add.
-- **Fragile `nth()` chains.** When the DOM has repeated structures, codegen sometimes falls back to `.nth(2)` instead of finding a meaningful differentiator. That breaks the moment someone reorders a list.
-- **Missing assertions.** Codegen records actions but doesn’t know what you’re *verifying*. Unless you explicitly click the assertion buttons, you get a test that navigates, clicks, and types—but never checks a result.
-- **No page object structure.** No reusable helpers. No extracted constants. The generated code is a literal transcript of your session, not a maintainable test.
+- **محدِّدات مفرطة في التحديد** حين تكفي أبسط منها. فإن كان زر واحد فقط في الصفحة يقول «Submit»، فلا تحتاج إلى تضييق إضافي قد يضيفه مولّد الشيفرة.
+- **سلاسل `nth()` الهشّة.** حين يحمل DOM بنى متكررة، يلجأ مولّد الشيفرة أحيانًا إلى `.nth(2)` بدلًا من إيجاد فارق ذي معنى. وذلك ينكسر لحظة أن يعيد أحدهم ترتيب قائمة.
+- **تحقّقات ناقصة.** يسجّل مولّد الشيفرة الإجراءات لكنه لا يعرف ما *تتحقق منه*. وما لم تنقر أزرار التحقّق صراحةً، تحصل على اختبار ينتقل وينقر ويكتب — لكنه لا يفحص أي نتيجة أبدًا.
+- **بلا بنية كائن صفحة.** لا أدوات مساعدة قابلة لإعادة الاستخدام. ولا ثوابت مستخرجة. فالشيفرة المولَّدة نصّ حرفي لجلسةك، لا اختبار قابل للصيانة.
 
-None of this is surprising. A recorder can only capture *what happened*, not *what mattered*. That distinction is yours to make.
+لا شيء من هذا مفاجئ. فالمسجّل لا يستطيع التقاط إلا *ما حدث*، لا *ما كان مهمًا*. وهذا التمييز من عملك أنت.
 
-## The recommended workflow
+## سير العمل الموصى به
 
-Generate the skeleton with codegen. Copy it into a real test file. Then edit: simplify locators that are more specific than they need to be, add meaningful assertions for the behavior you actually care about, extract repeated patterns into helpers, and name the test something a human would understand six months from now.
+ولّد الهيكل العظمي بمولّد الشيفرة. انسخه إلى ملف اختبار حقيقي. ثم حرّره: بسّط المحدِّدات التي هي أكثر تحديدًا مما تحتاج، وأضف تحقّقات ذات معنى للسلوك الذي يهمّك فعلًا، واستخرج الأنماط المتكررة إلى أدوات مساعدة، وسمِّ الاختبار باسم يفهمه إنسان بعد ستة أشهر.
 
-Codegen is the first draft, not the final draft. Treat it accordingly.
+مولّد الشيفرة هو المسودة الأولى، لا المسودة النهائية. فعامله على هذا الأساس.
 
-## Repair selectors before they fossilize
+## أصلح المحدِّدات قبل أن تتحجّر
 
-This is the part people skip. They generate a test, it passes once, and the generated locator gets committed exactly as recorded. Congratulations, you just promoted a first draft into a maintenance burden.
+هذا هو الجزء الذي يتخطاه الناس. يولّدون اختبارًا، فينجح مرة، ثم تُودَع الشيفرة المولَّدة كما سُجّلت تمامًا. مبروك، لقد رقّيت للتو مسودة أولى إلى عبء صيانة.
 
-The [Locator API](https://playwright.dev/docs/api/class-locator) has a nice cleanup move for this: `locator.normalize()` (requires Playwright 1.59+). Point it at a recorder-generated or legacy locator, and Playwright will try to rewrite it toward the same user-facing strategies you should have reached for in the first place.
+ولـ[واجهة المحدِّد (Locator API)](https://playwright.dev/docs/api/class-locator) حركة تنظيف لطيفة لهذا: `locator.normalize()` (تتطلب Playwright 1.59+). وجّهها إلى محدِّد مولَّد من المسجّل أو محدِّد قديم، سيحاول Playwright إعادة كتابته باتجاه الاستراتيجيات نفسها الموجّهة إلى المستخدم التي كان ينبغي أن تمدّ يدك إليها من البداية.
 
 ```typescript
 const repaired = page
@@ -61,71 +61,71 @@ await expect(repaired).toBeVisible();
 await repaired.click();
 ```
 
-> **`.describe()` only attaches a human-readable label used in trace viewer and reports. It does not change the matching logic — the locator still resolves the same way with or without it.**
+> **`.describe()` لا ترفق إلا تسمية مقروءة للبشر تُستخدم في عارض التتبّع والتقارير. وهي لا تغيّر منطق المطابقة — فالمحدِّد يُحلّ بالطريقة نفسها معها أو بدونها.**
 
-This is not a license to keep bad selectors around forever. It is a selector-repair tool. The workflow I want is:
+هذا ليس رخصة لإبقاء المحدِّدات السيئة إلى الأبد. إنها أداة إصلاح محدِّدات. وسير العمل الذي أريده هو:
 
-1. Generate or copy the rough locator.
-2. Normalize it.
-3. Read the result.
-4. If the result is still ugly, rewrite it by hand with `getByRole`, `filter`, `and`, or `or`.
+1. ولّد المحدِّد الخام أو انسخه.
+2. طبّع عليه بـ`normalize`.
+3. اقرأ النتيجة.
+4. إن كانت النتيجة ما زالت قبيحة، فأعد كتابتها يدويًا بـ`getByRole` أو `filter` أو `and` أو `or`.
 
-Codegen is fast. Cleanups are where the test becomes durable.
+مولّد الشيفرة سريع. والتنظيفات هي حيث يصبح الاختبار دائمًا.
 
-## Generating locators without recording
+## توليد المحدِّدات دون تسجيل
 
-Press the “Record” button in the inspector to stop recording. A “Pick Locator” button appears. Now you can hover and click elements to generate locators without generating full test code—useful when you already have a test file open and just need the right locator for one element.
+اضغط زر «Record» في المفتّش لإيقاف التسجيل. يظهر زر «Pick Locator». الآن يمكنك تمرير المؤشر على العناصر والنقر عليها لتوليد محدِّدات دون توليد شيفرة اختبار كاملة — وهذا مفيد حين يكون ملف اختبار مفتوحًا عندك بالفعل وتحتاج فقط إلى المحدِّد الصحيح لعنصر واحد.
 
-This is the same pick-locator flow you get in UI Mode, just available in the codegen context.
+هذا هو تدفّق اختيار المحدِّد نفسه الذي تحصل عليه في وضع واجهة المستخدم، لكنه متاح هنا في سياق مولّد الشيفرة.
 
-## Authenticated flows
+## التدفقات الموثَّقة
 
-If your app requires login, you don’t want to record the login sequence in every test. Codegen has a storage flag for this:
+إن كان تطبيقك يتطلب تسجيل الدخول، فلن تريد تسجيل تسلسل الدخول في كل اختبار. ولدى مولّد الشيفرة علم تخزين لهذا:
 
 ```bash
 npx playwright codegen --save-storage=auth.json http://localhost:5173
 ```
 
-Log in during the recording session, then close the browser. Codegen saves cookies and `localStorage` to `auth.json`. Next time:
+سجّل الدخول أثناء جلسة التسجيل، ثم أغلق المتصفح. يحفظ مولّد الشيفرة الكوكيز و`localStorage` في `auth.json`. وفي المرة التالية:
 
 ```bash
 npx playwright codegen --load-storage=auth.json http://localhost:5173
 ```
 
-The browser starts with your saved session state, so you can record against the authenticated app without logging in again.
+يبدأ المتصفح بحالة جلستك المحفوظة، فتستطيع التسجيل على التطبيق الموثَّق دون تسجيل الدخول مرة أخرى.
 
-> **`auth.json` contains real credentials**
+> **`auth.json` يحتوي بيانات اعتماد حقيقية**
 >
-> Cookies, tokens, whatever your app stores—it’s all in that file. Add it to `.gitignore` immediately. Do not commit it. Do not share it. This is not a hypothetical concern.
+> الكوكيز، والرموز، وأي شيء يخزّنه تطبيقك — كله في ذلك الملف. أضفه إلى `.gitignore` فورًا. لا تُودِعه. ولا تشاركه. وهذا ليس قلقًا افتراضيًا.
 
-## Emulation
+## المحاكاة
 
-Codegen can record against emulated devices:
+يستطيع مولّد الشيفرة التسجيل على أجهزة محاكاة:
 
 ```bash
 npx playwright codegen --device="iPhone 13" http://localhost:5173
 ```
 
-You can also set viewport and color scheme independently:
+ويمكنك أيضًا ضبط منفذ العرض ونظام الألوان كلًّا على حدة:
 
 ```bash
 npx playwright codegen --viewport-size="800,600" --color-scheme=dark http://localhost:5173
 ```
 
-This is useful for generating mobile-specific tests or verifying responsive behavior without pulling out an actual phone. The generated code includes the same locators regardless of device—what changes is the viewport context your actions happen in.
+هذا مفيد لتوليد اختبارات خاصة بالجوال أو للتحقق من السلوك المتجاوب دون إخراج هاتف حقيقي. والشيفرة المولَّدة تتضمن المحدِّدات نفسها بصرف النظر عن الجهاز — الذي يتغيّر هو سياق منفذ العرض الذي تجري فيه إجراءاتك.
 
-## When to use codegen vs. writing from scratch
+## متى تستخدم مولّد الشيفرة ومتى تكتب من الصفر
 
-Codegen shines when you’re new to an app and need to discover the DOM structure. You don’t know what roles exist, what labels are attached to what, or how the page transitions between states. Recording a flow and reading the generated locators teaches you the app’s accessibility surface faster than reading the source.
+يتألّق مولّد الشيفرة حين تكون جديدًا على تطبيق وتحتاج إلى استكشاف بنية DOM. فأنت لا تعرف أي أدوار موجودة، وأي تسميات مرتبطة بأي شيء، وكيف تنتقل الصفحة بين الحالات. وتسجيل تدفّق وقراءة المحدِّدات المولَّدة يعلّمك سطح إمكانية الوصول في التطبيق أسرع من قراءة المصدر.
 
-Write from scratch when you know the patterns and want clean, intention-revealing test code. After a few weeks on a project, you’ll reach for codegen less and less—not because it stopped being useful, but because you’ve internalized the locators and the patterns that codegen would have shown you.
+اكتب من الصفر حين تعرف الأنماط وتريد شيفرة اختبار نظيفة كاشفة للقصد. وبعد أسابيع قليلة على مشروع، ستمدّ يدك إلى مولّد الشيفرة أقل وأقل — لا لأنه كفّ عن النفع، بل لأنك استوعبت المحدِّدات والأنماط التي كان سيريها لك.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Codegen is a scaffolding tool, not a test-writing tool. It gives you the raw material. The assertions, the structure, the intent—that’s still your job.
+مولّد الشيفرة أداة سقالات، لا أداة كتابة اختبارات. يعطيك المادة الخام. أما التحقّقات والبنية والقصد — فذلك ما زال عملك.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [Configuring Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)
+- [وضع واجهة المستخدم في Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
+- [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [تهيئة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)

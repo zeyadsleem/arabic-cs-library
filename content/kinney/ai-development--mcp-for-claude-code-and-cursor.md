@@ -1,22 +1,21 @@
 ---
-title: "MCP in Claude Code and Cursor"
-lang: en
+title: "MCP في Claude Code وCursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/mcp-for-claude-code-and-cursor"
 ---
 
-[Cursor](https://cursor.com/docs/mcp) and [Claude Code](https://code.claude.com/docs/en/mcp) both support MCP, but their
-configuration and permission models are not identical.
+يدعم كلٌّ من [Cursor](https://cursor.com/docs/mcp) و[Claude Code](https://code.claude.com/docs/en/mcp) بروتوكول MCP، لكن نموذجَي إعدادهما وصلاحياتهما ليسا متطابقين.
 
-## Configuration Locations
+## مواضع الإعداد
 
-Cursor uses JSON configuration files:
+يستخدم Cursor ملفات إعداد JSON:
 
 ```
 .cursor/mcp.json
 ~/.cursor/mcp.json
 ```
 
-Claude Code can use the command line interface and project configuration:
+ويستطيع Claude Code استخدام واجهة سطر الأوامر وإعداد المشروع:
 
 ```bash
 claude mcp add
@@ -25,49 +24,38 @@ claude mcp get
 claude mcp remove
 ```
 
-Project-scoped Claude Code servers can also live in `.mcp.json`. Prefer
-project-scoped configuration when the server is part of how the repository is
-developed. Prefer user-scoped configuration for personal tools.
+ويمكن أن توجد خوادم Claude Code الخاصة بالمشروع أيضًا في `.mcp.json`. فضّل الإعداد على نطاق المشروع عندما يكون الخادم جزءًا من طريقة تطوير المستودع، وفضّل الإعداد على نطاق المستخدم للأدوات الشخصية.
 
-## Transports
+## وسائل النقل
 
-Both tools support local `stdio` servers and remote servers. For new remote
-servers, prefer HTTP where available. Claude Code still supports SSE, but its
-documentation treats SSE as deprecated. Do not design new teaching material
-around SSE unless you are explicitly covering migration.
+تدعم الأداتان خوادم `stdio` المحلية والخوادم البعيدة. وللخوادم البعيدة الجديدة، فضّل HTTP حيث يتوفّر. ولا يزال Claude Code يدعم SSE، لكن توثيقه يعامل SSE كأنها مهجورة. فلا تصمّم مواد تعليمية جديدة حول SSE إلا إذا كنت تتناول الهجرة صراحةً.
 
-## OAuth and Login
+## OAuth وتسجيل الدخول
 
-Cursor supports OAuth for remote MCP servers, including a Cursor callback flow.
-Claude Code supports OAuth flows from the `claude mcp` command line interface,
-including `claude mcp login` and `claude mcp logout`.
+يدعم Cursor بروتوكول OAuth لخوادم MCP البعيدة، بما في ذلك مسار استدعاء راجع (callback) خاص بـ Cursor. ويدعم Claude Code مسارات OAuth من واجهة سطر الأوامر `claude mcp`، بما في ذلك `claude mcp login` و`claude mcp logout`.
 
-OAuth makes the integration easier for humans and more serious for security. The
-server can now act with a user’s delegated access.
+يجعل OAuth التكامل أسهل للبشر وأكثر جدّية من ناحية الأمان، إذ يستطيع الخادم الآن أن يتصرّف بوصول مفوَّض من المستخدم.
 
-## Permissions
+## الصلاحيات
 
-Cursor generally asks before MCP tool calls unless a run mode or setting changes
-that behavior. Claude Code routes MCP calls through its permission system, where
-allow, ask, and deny rules can be scoped by tool.
+يسأل Cursor عمومًا قبل استدعاءات أدوات MCP ما لم يغيّر وضع تشغيل أو إعداد هذا السلوك. ويوجّه Claude Code استدعاءات MCP عبر نظام صلاحياته، حيث يمكن تحديد قواعد السماح والسؤال والمنع حسب الأداة.
 
-For both tools, the safest pattern is:
+ولكلتا الأداتين، النمط الأكثر أمانًا هو:
 
-- Use read-only tools by default.
-- Keep write tools narrow.
-- Name the server and tool in the prompt when the action is important.
-- Review generated pull requests or external changes before treating them as
-complete.
+- استخدم أدوات القراءة فقط افتراضيًا.
+- أبقِ أدوات الكتابة ضيقة.
+- سمِّ الخادم والأداة في الطلب عندما يكون الإجراء مهمًا.
+- راجع طلبات السحب المُولَّدة أو التغييرات الخارجية قبل اعتبارها منتهية.
 
-## Security Review Checklist
+## قائمة تحقق المراجعة الأمنية
 
-Before enabling an MCP server for a repository or team, answer these questions:
+قبل تمكين خادم MCP لمستودع أو فريق، أجب عن هذه الأسئلة:
 
-- Who maintains the server?
-- Which secrets does it receive?
-- Which external systems can it read or write?
-- Does it log prompts, tool arguments, or returned data?
-- Can the agent use it from cloud environments?
-- Can a pull request modify the configuration to add a more powerful server?
+- من يصون الخادم؟
+- ما الأسرار التي يتلقّاها؟
+- ما الأنظمة الخارجية التي يمكنه قراءتها أو الكتابة فيها؟
+- هل يسجّل الطلبات أو وسائط الأدوات أو البيانات المُعادة؟
+- هل يستطيع الوكيل استخدامه من بيئات سحابية؟
+- هل يستطيع طلب سحب تعديل الإعداد لإضافة خادم أقوى؟
 
-MCP is not just context. It is capability.
+MCP ليس مجرد سياق، بل هو قدرة.

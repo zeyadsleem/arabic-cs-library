@@ -1,18 +1,18 @@
 ---
-title: "Walkthrough: Basic Math Exercise"
-lang: en
+title: "جولة عملية: تمرين الرياضيات الأساسية"
+lang: ar
 source: "https://stevekinney.com/courses/testing/basic-math-exercise-walkthrough"
 ---
 
-Here is a walkthrough for the exercise at the end of the section on [implementing some basic tests](https://stevekinney.com/courses/testing/basic-math).
+إليك جولة عملية لتمرين نهاية القسم الخاص بـ [تنفيذ بعض الاختبارات الأساسية](https://stevekinney.com/courses/testing/basic-math).
 
-## Subtraction Function
+## دالة الطرح
 
-Ideally, I did `add` for you—so, let’s get started by implementing the opposite.
+من المثالي أنني نفّذت `add` نيابةً عنك، فلنبدأ بتنفيذ العكس.
 
-### Step 1: Write the Test (Red)
+### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add tests for the `subtract` function in `examples/basic-math/src/arithmetic.test.js`:
+أضف اختبارات للدالة `subtract` في `examples/basic-math/src/arithmetic.test.js`:
 
 ```javascript
 // examples/basic-math/src/arithmetic.test.js
@@ -33,21 +33,21 @@ describe('subtract', () => {
 });
 ```
 
-**Note:** Remember to import `subtract` from `arithmetic.js`.
+**ملاحظة:** تذكّر استيراد `subtract` من `arithmetic.js`.
 
-### Step 2: Run the Test and See It Fail
+### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-You’ll get an error: `subtract` is not defined.
+ستحصل على خطأ: `subtract` غير معرّفة.
 
-### Step 3: Write Minimal Code to Pass the Test (Green)
+### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Implement `subtract` in `arithmetic.js`:
+نفّذ `subtract` في `arithmetic.js`:
 
 ```javascript
 // example/basic-math/src/arithmetic.js
@@ -60,25 +60,25 @@ export const subtract = (a, b) => {
 };
 ```
 
-### Step 4: Run the Test Again
+### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All subtraction tests should pass.
+ينبغي أن تنجح كل اختبارات الطرح.
 
-### Step 5: Refactor
+### الخطوة 5: أعد الهيكلة
 
-Again, the code is simple and needs no refactoring.
+مجددًا، الشيفرة بسيطة ولا تحتاج إلى إعادة هيكلة.
 
-## Multiplication Function
+## دالة الضرب
 
-### Step 1: Write the Test (Red)
+### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add tests for `multiply` in `examples/basic-math/src/arithmetic.test.js`:
+أضف اختبارات للدالة `multiply` في `examples/basic-math/src/arithmetic.test.js`:
 
 ```javascript
 // examples/basic-math/src/arithmetic.test.js
@@ -103,19 +103,19 @@ describe('multiply', () => {
 });
 ```
 
-### Step 2: Run the Test and See It Fail
+### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Error: `multiply` is not defined.
+خطأ: `multiply` غير معرّفة.
 
-### Step 3: Write Minimal Code to Pass the Test (Green)
+### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Implement `multiply` in `arithmetic.js`:
+نفّذ `multiply` في `arithmetic.js`:
 
 ```javascript
 // example/basic-math/src/arithmetic.js
@@ -132,25 +132,25 @@ export const multiply = (a, b) => {
 };
 ```
 
-### Step 4: Run the Test Again
+### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All multiplication tests should pass.
+ينبغي أن تنجح كل اختبارات الضرب.
 
-### Step 5: Refactor
+### الخطوة 5: أعد الهيكلة
 
-No refactoring needed. Life is so simple right now.
+لا حاجة إلى إعادة هيكلة. الحياة بسيطة جدًا الآن.
 
-## Division Function
+## دالة القسمة
 
-### Step 1: Write the Test (Red)
+### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add tests for `divide` in `examples/basic-math/src/arithmetic.test.js`:
+أضف اختبارات للدالة `divide` في `examples/basic-math/src/arithmetic.test.js`:
 
 ```javascript
 // examples/basic-math/src/arithmetic.test.js
@@ -179,19 +179,19 @@ describe('divide', () => {
 });
 ```
 
-### Step 2: Run the Test and See It Fail
+### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Error: `divide` is not defined.
+خطأ: `divide` غير معرّفة.
 
-### Step 3: Write Minimal Code to Pass the Test (Green)
+### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Implement `divide` in `arithmetic.js`:
+نفّذ `divide` في `arithmetic.js`:
 
 ```javascript
 // example/basic-math/src/arithmetic.js
@@ -212,16 +212,16 @@ export const divide = (a, b) => {
 };
 ```
 
-### Step 4: Run the Test Again
+### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All division tests should pass.
+ينبغي أن تنجح كل اختبارات القسمة.
 
-### Step 5: Refactor
+### الخطوة 5: أعد الهيكلة
 
-Again. No refactoring needed. I’m just trying to make a point here.
+مجددًا. لا حاجة إلى إعادة هيكلة. أنا أحاول فقط إثبات نقطة هنا.

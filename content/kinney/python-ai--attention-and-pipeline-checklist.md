@@ -1,27 +1,27 @@
 ---
-title: "Quick Checklists — Pipelines, Attention, Generation"
-lang: en
+title: "قوائم تحقّق سريعة — خطوط المعالجة والانتباه والتوليد"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/attention-and-pipeline-checklist"
 ---
 
-## Pipeline Setup Checklist
+## قائمة تحقّق إعداد خط المعالجة
 
-- Pick task and model ID; pin a revision for reproducibility.
-- Move compute to GPU if available; consider 8-bit/4-bit for memory limits.
-- Batch inputs and enable fast tokenizers.
-- Configure truncation, padding, and max length to match task.
-- Log model name, revision, seeds, and decoding parameters for audits.
+- اختر المهمة ومعرّف النموذج؛ وثبّت إصدارًا (revision) لأجل قابلية إعادة الإنتاج.
+- انقل الحساب إلى GPU إن توفّر؛ وفكّر في 8-bit/4-bit عند حدود الذاكرة.
+- جمّع المدخلات في دفعات وفعّل المُرمِّزات السريعة (fast tokenizers).
+- اضبط الاقتصاص (truncation) والحشو (padding) والطول الأقصى بما يلائم المهمة.
+- سجّل اسم النموذج والإصدار والبذور (seeds) ومعاملات فك الترميز لأغراض التدقيق.
 
-## Attention Sanity Checks
+## فحوص سلامة الانتباه
 
-- Confirm correct masks (padding vs causal) for your use case.
-- Inspect sequence lengths; avoid quadratic blow-ups when unnecessary.
-- Prefer optimized attention kernels (e.g., FlashAttention where supported).
-- Verify positional settings for long-context workflows.
+- تأكد من صحة الأقنعة (الحشو مقابل السببي) لحالتك.
+- افحص أطوال المتتاليات؛ وتجنّب الانفجار التربيعي حين لا يكون ضروريًا.
+- فضّل نوى الانتباه المُحسَّنة (مثل FlashAttention حيث تدعمها).
+- تحقّق من إعدادات المواضع لسير العمل ذي السياق الطويل.
 
-## Text Generation Defaults
+## الإعدادات الافتراضية لتوليد النص
 
-- Deterministic baseline: greedy or low-temp beam (2–4 beams).
-- Balanced creativity: top-p 0.9–0.95, temperature 0.7–0.9.
-- Reduce loops: small repetition penalty or no-repeat n-gram 2–3.
-- Use stop sequences and max tokens appropriate to the task.
+- خط أساس حتمي: greedy أو beam منخفض الحرارة (2–4 شُعب).
+- إبداع متوازن: top-p من 0.9 إلى 0.95، وtemperature من 0.7 إلى 0.9.
+- تقليل الحلقات: عقوبة تكرار صغيرة أو no-repeat n-gram من 2 إلى 3.
+- استخدم متتاليات إيقاف وعدد رموز أقصى مناسبين للمهمة.

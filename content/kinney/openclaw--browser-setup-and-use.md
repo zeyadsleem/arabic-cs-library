@@ -1,70 +1,70 @@
 ---
-title: "Setting Up and Using the Browser"
-lang: en
+title: "إعداد المتصفح واستخدامه"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/browser-setup-and-use"
 ---
 
-Plenty of the web can’t be read by fetching a URL. Pages build themselves with JavaScript, hide content behind clicks, and put the useful part behind a form or a login. OpenClaw’s **browser** gives your agent an actual browser to drive: it can open pages, read what’s on them, click, type, take screenshots, and save PDFs.
+كثير من محتوى الويب لا يمكن قراءته بمجرد جلب عنوان URL. فالصفحات تبني نفسها بـ JavaScript، وتُخفي محتواها خلف النقرات، وتضع الجزء المفيد خلف نموذج أو تسجيل دخول. يمنح **المتصفح** في OpenClaw وكيلك متصفحًا فعليًا يقوده: يفتح الصفحات، ويقرأ ما عليها، وينقر، ويكتب، ويأخذ لقطات شاشة، ويحفظ ملفات PDF.
 
-This is different from a web search or a plain fetch, and it carries more authority. A browser can submit forms and use whatever sessions it has. The setup in this lesson keeps that authority small.
+وهذا يختلف عن البحث في الويب أو الجلب العادي، وهو يحمل صلاحية أكبر. فالمتصفح يستطيع إرسال النماذج واستخدام أي جلسات لديه. ويُبقي الإعداد في هذا الدرس تلك الصلاحية محدودة.
 
-## How It Works
+## كيف يعمل
 
-The agent has a single tool called `browser`, and it covers a handful of actions: checking status, starting and stopping, listing and opening tabs, taking snapshots and screenshots, navigating, and acting on the page.
+يمتلك الوكيل أداة واحدة اسمها `browser`، تغطي عددًا من الإجراءات: التحقق من الحالة، والتشغيل والإيقاف، وسرد الألسنة وفتحها، وأخذ اللقطات ولقطات الشاشة، والتنقل، والعمل على الصفحة.
 
-Two ideas make everything else easier to follow.
+وثمة فكرتان تجعلان متابعة كل ما تبقى أسهل.
 
-**The managed browser is separate from yours.** By default OpenClaw runs its own Chrome with its own data directory, controlled by a small service inside the Gateway that listens only on loopback. It has an orange-tinted interface so you can tell it apart from your own browser, and it never touches your personal browser profile. It starts with no logins, which is the point.
+**المتصفح المُدار منفصل عن متصفحك.** يشغّل OpenClaw افتراضيًا نسخة Chrome خاصة به بدليل بيانات خاص، وتتحكم فيها خدمة صغيرة داخل البوابة (Gateway) تستمع على واجهة loopback فقط. ولواجهتها لون برتقالي يميّزها عن متصفحك، وهي لا تلمس ملف التعريف الشخصي لمتصفحك أبدًا. وتبدأ بلا أي تسجيلات دخول، وهذا هو المقصود.
 
-**The agent works from snapshots.** Instead of guessing at pixels, it asks for a **snapshot**: a structured view of the page where each control gets a short reference like `e12`. To click a button, it says “click `e12`.” If the page changes and that control disappears, the reference fails, and the fix is to take a new snapshot.
+**يعمل الوكيل انطلاقًا من اللقطات.** فبدلًا من تخمين مواضع البكسلات، يطلب **لقطة**: عرضًا مُهيكلًا للصفحة يحصل فيه كل عنصر تحكم على مرجع قصير مثل `e12`. وللنقر على زر يقول: «انقر `e12`». وإذا تغيّرت الصفحة واختفى عنصر التحكم، يفشل المرجع، والحل هو أخذ لقطة جديدة.
 
-## Choose a Profile
+## اختر ملف التعريف
 
-A **profile** decides which browser the agent is talking to, and therefore whose cookies it has. There are three built in.
+يحدد **ملف التعريف** المتصفح الذي يخاطبه الوكيل، وبالتالي ملفات تعريف الارتباط التي يملكها. وهناك ثلاثة ملفات مدمجة.
 
-| Profile | What it is | Use it when |
+| ملف التعريف | ما هو | متى تستخدمه |
 | --- | --- | --- |
-| `openclaw` | A managed, isolated browser with no logins. The default. | Almost always. Public pages, testing, anything login-free. |
-| `user` | Attaches to your real, signed-in Chrome. Chrome asks “Allow remote debugging?” the first time. | You need a signed-in session and you’re at the computer. |
-| `chrome` | Your real, signed-in Chrome through the OpenClaw extension. No prompt, and it works when you’re away. | You need a signed-in session and nobody will be at the desk. |
+| `openclaw` | متصفح مُدار ومعزول بلا تسجيلات دخول. وهو الافتراضي. | في معظم الحالات تقريبًا: الصفحات العامة، والاختبار، وأي مهمة لا تحتاج تسجيل دخول. |
+| `user` | يرتبط بنسخة Chrome الحقيقية المسجّل الدخول إليها، ويسأل Chrome في المرة الأولى: «هل تسمح بالتصحيح عن بُعد؟» | عندما تحتاج جلسة مسجّلة الدخول وتكون أنت أمام الحاسوب. |
+| `chrome` | نسخة Chrome الحقيقية المسجّل الدخول إليها، عبر إضافة OpenClaw. بلا مطالبة، ويعمل عندما تكون بعيدًا. | عندما تحتاج جلسة مسجّلة الدخول ولا يكون أحد أمام المكتب. |
 
-Use `openclaw` unless a task truly can’t work without a login. Attaching your real browser hands the agent your cookies, your open tabs, and every account you’re signed in to, and a click can send a message or buy something.
+استخدم `openclaw` ما لم تكن المهمة لا تستطيع العمل فعلًا دون تسجيل دخول. فإرفاق متصفحك الحقيقي يمنح الوكيل ملفات تعريف الارتباط الخاصة بك، وألسنتك المفتوحة، وكل حساب مسجّل الدخول إليه، ونقرة واحدة قد ترسل رسالة أو تُجري عملية شراء.
 
-You pick a profile on the command line with `--browser-profile <name>`, or the agent picks one with a `profile` argument. If you set nothing, you get `openclaw`.
+تختار ملف التعريف من سطر الأوامر بـ `--browser-profile <name>`، أو يختاره الوكيل بمعامل `profile`. وإن لم تضبط شيئًا، فستحصل على `openclaw`.
 
-## Step 1: Make Sure the Browser Is Available
+## الخطوة 1: تأكّد من توفر المتصفح
 
-The browser is a bundled plugin, and it’s on by default. Check that it’s ready:
+المتصفح إضافة مُضمّنة ومفعّلة افتراضيًا. تحقّق من جاهزيتها:
 
 ```bash
 openclaw browser doctor
 openclaw browser status
 ```
 
-`doctor` checks readiness. `doctor --deep` goes further and runs a live snapshot check.
+يتحقق `doctor` من الجاهزية. ويذهب `doctor --deep` أبعد من ذلك فيجري فحص لقطة حيًا.
 
-If something’s missing, there are three switches to check. The browser needs all of them:
+إذا كان هناك شيء ناقص، فهناك ثلاثة مفاتيح يجب التحقق منها. ويحتاج المتصفح إليها جميعًا:
 
-1. **The plugin and the setting.** The browser plugin has to be enabled, and `browser.enabled` has to be `true`. If a change doesn’t seem to take effect, restart the Gateway.
-2. **The plugin allowlist.** If you’ve restricted plugins with `plugins.allow`, `browser` has to be on that list: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
+1. **الإضافة والإعداد.** يجب أن تكون إضافة المتصفح مفعّلة، وأن تكون قيمة `browser.enabled` هي `true`. وإذا بدا أن تغييرًا لا يسري مفعوله، فأعد تشغيل البوابة.
+2. **قائمة السماح للإضافات.** إذا كنت قد قيّدت الإضافات بـ `plugins.allow`، فيجب أن يكون `browser` في تلك القائمة: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
 <span class="line"><span style="color:#ECC48D"> plugins</span><span style="color:#D6DEEB">: {</span></span>
 <span class="line"><span style="color:#ECC48D"> allow</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">telegram</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">, </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">browser</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">],</span></span>
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> Then run `openclaw plugins enable browser`. A restart alone doesn’t fix a policy exclusion.
-3. **The tool policy.** The agent also has to be allowed to use the tool. If your tool profile doesn’t include it, add it: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
+<span class="line"><span style="color:#D6DEEB">}</span></span></code> ثم شغّل `openclaw plugins enable browser`. ولا تكفي إعادة التشغيل وحدها لإصلاح استبعاد تفرضه السياسة.
+3. **سياسة الأدوات.** يجب أيضًا أن يكون مسموحًا للوكيل باستخدام الأداة. وإذا لم يكن ملف أدواتك يشملها، فأضفها: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
 <span class="line"><span style="color:#ECC48D"> tools</span><span style="color:#D6DEEB">: {</span></span>
 <span class="line"><span style="color:#ECC48D"> profile</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">coding</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">,</span></span>
 <span class="line"><span style="color:#ECC48D"> alsoAllow</span><span style="color:#D6DEEB">: [</span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">browser</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">],</span></span>
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
-<span class="line"><span style="color:#D6DEEB">}</span></span></code> To allow it for a single agent, use `agents.entries.<id>.tools.alsoAllow` instead. Allowing it for [subagents](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) is a separate setting, and it isn’t enough on its own.
+<span class="line"><span style="color:#D6DEEB">}</span></span></code> وللسماح بها لوكيل واحد، استخدم `agents.entries.<id>.tools.alsoAllow` بدلًا من ذلك. والسماح بها لـ[الوكلاء الفرعيين](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) إعداد منفصل، ولا يكفي وحده.
 
-> **Some deployments turn it off**
+> **بعض عمليات النشر تعطّله**
 >
-> The [Railway](https://railway.com/?referralCode=kinney) template, for example, ships with browser control disabled and without Chromium in the image. That’s a deliberate security choice. If you’re on a setup like that, enabling the browser is a decision, not a default.
+> فمثلًا، يأتي قالب [Railway](https://railway.com/?referralCode=kinney) مع تعطيل التحكم بالمتصفح وغياب Chromium من الصورة. وهذا خيار أمني متعمّد. وإذا كنت تعمل على إعداد كهذا، فإن تفعيل المتصفح قرار تتخذه، وليس وضعًا افتراضيًا.
 
-## Step 2: Start It and Look Around
+## الخطوة 2: شغّله وألقِ نظرة
 
-Try the whole loop yourself, by hand, before you give it to an agent. It’s the same set of actions the agent uses:
+جرّب الدورة كاملة بنفسك ويدويًا قبل أن تسلّمها إلى الوكيل. فهي مجموعة الإجراءات نفسها التي يستخدمها الوكيل:
 
 ```bash
 openclaw browser start
@@ -73,9 +73,9 @@ openclaw browser tabs
 openclaw browser snapshot
 ```
 
-A managed Chrome window opens, tinted orange. `snapshot` prints the page as a tree, with a reference next to each control. That’s what the agent reads.
+تُفتح نافذة Chrome مُدارة بلون برتقالي. ويطبع `snapshot` الصفحة على شكل شجرة، مع مرجع بجوار كل عنصر تحكم. وهذا هو ما يقرأه الوكيل.
 
-A few options worth knowing:
+وفيما يلي بعض الخيارات التي يجدر معرفتها:
 
 ```bash
 openclaw browser start --headless      # No visible window, for this request
@@ -85,11 +85,11 @@ openclaw browser screenshot --labels   # The picture, with snapshot references d
 openclaw browser screenshot --full-page
 ```
 
-The labeled screenshot is the best way to build intuition. It overlays the references from the snapshot on the page itself, so you can see exactly which control is `e12`.
+لقطة الشاشة المُوسومة هي أفضل طريقة لبناء الحدس. فهي تضع مراجع اللقطة فوق الصفحة نفسها، بحيث ترى بالضبط أي عنصر تحكم هو `e12`.
 
-## Step 3: Act on the Page
+## الخطوة 3: العمل على الصفحة
 
-Now use those references. Take a snapshot, find the control you want, and act on it:
+الآن استخدم تلك المراجع. خذ لقطة، وابحث عن عنصر التحكم الذي تريده، ثم اعمل عليه:
 
 ```bash
 openclaw browser click e12
@@ -98,53 +98,53 @@ openclaw browser press Enter
 openclaw browser wait --text "Done"
 ```
 
-Other actions follow the same pattern: `hover`, `select`, `drag`, `fill`, `scrollintoview`, and so on. Run `openclaw browser --help` for the full list on your build.
+وتتبع الإجراءات الأخرى النمط نفسه: `hover` و`select` و`drag` و`fill` و`scrollintoview` وغيرها. شغّل `openclaw browser --help` للحصول على القائمة الكاملة في نسختك.
 
-Two habits will save you a lot of grief:
+وعادتان ستوفران عليك كثيرًا من العناء:
 
-- **Prefer references over coordinates.** There’s a `click-coords` command, but references survive layout changes in a way that pixel positions don’t.
-- **Re-snapshot when something fails.** If a click has no effect or a reference stops working, the page probably re-rendered. Take a fresh snapshot and use the new reference. Don’t repeat the same call.
+- **فضّل المراجع على الإحداثيات.** فهناك أمر `click-coords`، لكن المراجع تصمد أمام تغيّرات التخطيط بينما لا تصمد مواضع البكسلات.
+- **أعد أخذ اللقطة عند فشل أي شيء.** إذا لم يُحدث النقر أثرًا أو توقف مرجع عن العمل، فمن المرجح أن الصفحة أُعيد تصييرها. خذ لقطة جديدة واستخدم المرجع الجديد، ولا تكرر الاستدعاء نفسه.
 
-When you’re finished, shut it down:
+وعندما تنتهي، أغلقه:
 
 ```bash
 openclaw browser stop
 ```
 
-## Step 4: Let the Agent Drive
+## الخطوة 4: دع الوكيل يقود
 
-Everything you just did by hand, the agent can do in a chat. You don’t write commands. You describe the goal and set the ground rules.
+كل ما فعلته للتو بيدك يستطيع الوكيل فعله داخل محادثة. فأنت لا تكتب أوامر، بل تصف الهدف وتضع القواعد الأساسية.
 
-> Using the browser, open [https://news.ycombinator.com](https://news.ycombinator.com/), read the top ten stories, and give me a one-line summary of each. Use the browser, not web search. Tell me what you did, and stop if you hit a login page.
+> باستخدام المتصفح، افتح [https://news.ycombinator.com](https://news.ycombinator.com/)، واقرأ أهم عشر قصص، وأعطني ملخصًا من سطر واحد لكل قصة. استخدم المتصفح لا البحث في الويب. وأخبرني بما فعلت، وتوقف إذا واجهت صفحة تسجيل دخول.
 
-In the Control UI, the browser opens in a side panel next to the chat, labeled with the `openclaw` profile, so you can watch the page the agent is working on.
+في واجهة التحكم (Control UI)، يُفتح المتصفح في لوحة جانبية بجوار المحادثة، موسومة بملف التعريف `openclaw`، لتتمكن من مشاهدة الصفحة التي يعمل عليها الوكيل.
 
-The Control UI chat with a browser side panel showing example.com under the openclaw profile, beside the agent's summary of the page
+محادثة واجهة التحكم مع لوحة جانبية للمتصفح تعرض example.com تحت ملف التعريف openclaw، إلى جانب ملخص الوكيل للصفحة
 
-A good browser prompt does a few things:
+ومطالبة المتصفح الجيدة تفعل عدة أشياء:
 
-- **Names the profile** when it matters. “Using the `openclaw` profile” is a good default to be explicit about.
-- **Says to actually use the browser** instead of searching or guessing.
-- **Asks for narration,** so you can see the steps it took, and for screenshots of anything interesting.
-- **Says when to stop.** A login wall, a payment form, or a CAPTCHA should end the task, not become a puzzle to solve.
-- **Separates looking from acting.** “Read” and “summarize” are very different from “submit” and “buy.”
+- **تسمّي ملف التعريف** عندما يكون ذلك مهمًا. وعبارة «استخدم ملف التعريف `openclaw`» افتراض جيد ينبغي التصريح به.
+- **تنص على استخدام المتصفح فعليًا** بدلًا من البحث أو التخمين.
+- **تطلب السرد**، لتتمكن من رؤية الخطوات التي اتخذها، وتطلب لقطات شاشة لأي شيء مثير للاهتمام.
+- **تحدد متى يتوقف.** فجدار تسجيل الدخول أو نموذج الدفع أو اختبار CAPTCHA يجب أن يُنهي المهمة، لا أن يتحول إلى لغز يجب حله.
+- **تفصل النظر عن التصرف.** فـ«اقرأ» و«لخّص» مختلفتان تمامًا عن «أرسل» و«اشترِ».
 
-For ready-made prompts, including a GitHub Trending digest and a full exploratory QA pass, see [OpenClaw Browser Prompts](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts).
+وللحصول على مطالبات جاهزة، بما في ذلك ملخص لـ GitHub Trending وجولة QA استكشافية كاملة، راجع [مطالبات متصفح OpenClaw](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts).
 
-> **There’s a bundled skill, too**
+> **وهناك مهارة مُضمّنة أيضًا**
 >
-> When the browser plugin is enabled, a `browser-automation` skill comes with it. You don’t have to do anything to use it, but it’s worth knowing it’s there when you check `openclaw skills list`.
+> عند تفعيل إضافة المتصفح، تأتي معها مهارة `browser-automation`. ولا تحتاج إلى فعل أي شيء لاستخدامها، لكن من المفيد أن تعرف أنها موجودة عندما تفحص `openclaw skills list`.
 
-## Create Your Own Profiles
+## أنشئ ملفات تعريف خاصة بك
 
-The built-in profiles cover most needs, but you can make more. A named profile lets you keep a separate set of cookies for one purpose, or point at a different browser.
+تغطي ملفات التعريف المدمجة معظم الاحتياجات، لكن يمكنك إنشاء المزيد. فملف التعريف المسمّى يتيح لك الاحتفاظ بمجموعة منفصلة من ملفات تعريف الارتباط لغرض واحد، أو الإشارة إلى متصفح مختلف.
 
 ```bash
 openclaw browser create-profile --name work --color "#FF5A36"
 openclaw browser profiles
 ```
 
-A few variations:
+وفيما يلي بعض الصيغ المتنوعة:
 
 ```bash
 # Attach to a signed-in Chrome through Chrome DevTools
@@ -154,20 +154,20 @@ openclaw browser create-profile --name chrome-live --driver existing-session
 openclaw browser create-profile --name remote --cdp-url https://browser-host.example.com
 ```
 
-Delete a profile you no longer need with `openclaw browser delete-profile --name work`.
+واحذف ملف التعريف الذي لم تعد تحتاجه بـ `openclaw browser delete-profile --name work`.
 
-Creating a profile doesn’t make it the default. The agent keeps using `openclaw` unless you name the new profile in the prompt or set `browser.defaultProfile`. Leave the default alone unless you have a reason. If you set it to `user`, **every** browsing task starts in your real signed-in browser.
+إنشاء ملف تعريف لا يجعله الافتراضي. فسيواصل الوكيل استخدام `openclaw` ما لم تسمِّ ملف التعريف الجديد في المطالبة أو تضبط `browser.defaultProfile`. واترك الافتراضي كما هو ما لم يكن لديك سبب لتغييره. وإذا ضبطته على `user`، فستبدأ **كل** مهمة تصفح في متصفحك الحقيقي المسجّل الدخول إليه.
 
-## Getting a Login Into the Browser
+## إدخال تسجيل دخول إلى المتصفح
 
-The managed profile starts empty, so a task behind a login hits a wall. You have options, from safest to riskiest:
+يبدأ ملف التعريف المُدار فارغًا، لذا تصطدم أي مهمة خلف تسجيل دخول بحائط. ولديك خيارات، من الأكثر أمانًا إلى الأكثر خطورة:
 
-1. **Skip the login.** Point the task at public pages.
-2. **Sign in by hand to a throwaway account** inside the managed browser.
-3. **Copy specific cookies in.** On a Mac, `openclaw browser import-profile` copies cookies from a Chrome-family profile into a new managed one, once. Add `--domains` to limit it to the sites you need. This copies cookies only, not passwords. If the Gateway is on another machine, use [cookie sync](https://stevekinney.com/courses/openclaw/syncing-cookies-to-a-remote-gateway) instead.
-4. **Attach your real browser** with the `user` or `chrome` profiles.
+1. **تجاوز تسجيل الدخول.** وجّه المهمة إلى صفحات عامة.
+2. **سجّل الدخول يدويًا إلى حساب مؤقت** داخل المتصفح المُدار.
+3. **انسخ ملفات تعريف ارتباط محددة.** على Mac، ينسخ `openclaw browser import-profile` ملفات تعريف الارتباط من ملف تعريف من عائلة Chrome إلى ملف مُدار جديد، مرة واحدة. وأضف `--domains` لحصره في المواقع التي تحتاجها. وهذا ينسخ ملفات تعريف الارتباط فقط، لا كلمات المرور. وإذا كانت البوابة على جهاز آخر، فاستخدم [مزامنة ملفات تعريف الارتباط](https://stevekinney.com/courses/openclaw/syncing-cookies-to-a-remote-gateway) بدلًا من ذلك.
+4. **أرفق متصفحك الحقيقي** باستخدام ملفي التعريف `user` أو `chrome`.
 
-If you try the `user` profile, here’s a safe way to test it. Watch for `driver: existing-session`, `transport: chrome-mcp`, and `running: true` in the status:
+وإذا جرّبت ملف التعريف `user`، فإليك طريقة آمنة لاختباره. راقب ظهور `driver: existing-session` و`transport: chrome-mcp` و`running: true` في الحالة:
 
 ```bash
 openclaw browser --browser-profile user start
@@ -176,69 +176,69 @@ openclaw browser --browser-profile user tabs
 openclaw browser --browser-profile user snapshot --format ai
 ```
 
-Chrome shows a prompt the first time, which someone has to approve. That’s also why a scheduled job that reaches for `user` will stall at the prompt with no error until you come back to the computer. The `chrome` extension profile is the one that works while you’re away. To set it up, start with `openclaw browser extension setup --action inspect`, then `--action install` and `--action verify`, and check `openclaw browser extension --help` for the rest.
+يعرض Chrome مطالبة في المرة الأولى، ويجب أن يوافق عليها شخص ما. ولهذا أيضًا ستتوقف أي مهمة مجدولة تطلب `user` عند المطالبة دون أي خطأ حتى تعود إلى الحاسوب. أما ملف تعريف إضافة `chrome` فهو الذي يعمل أثناء غيابك. ولإعداده، ابدأ بـ `openclaw browser extension setup --action inspect`، ثم `--action install` و`--action verify`، وتحقّق من `openclaw browser extension --help` لمعرفة بقية الخيارات.
 
-## Configuration Worth Knowing
+## إعدادات يجدر معرفتها
 
-You rarely need to change these, but they’re good to know exist. Set them with `openclaw config set`:
+نادرًا ما تحتاج إلى تغيير هذه الإعدادات، لكن من الجيد معرفة أنها موجودة. اضبطها بـ `openclaw config set`:
 
-| Key | Default | What it does |
+| المفتاح | الافتراضي | ما يفعله |
 | --- | --- | --- |
-| `browser.enabled` | `true` | Turns browser control on or off. |
-| `browser.defaultProfile` | `"openclaw"` | The profile used when none is named. Set to `"user"` only on purpose. |
-| `browser.headless` | `false` (docs’ example) | Launch local managed browsers without a window. |
-| `browser.executablePath` | auto-detect | The Chromium-based browser to launch. Set it if auto-detection finds the wrong one. |
-| `browser.attachOnly` | `false` (docs’ example) | Never launch a browser. Attach only to one that’s already running. |
-| `browser.evaluateEnabled` | `true` | When `false`, the agent can’t run arbitrary JavaScript on a page. |
-| `browser.ssrfPolicy` | see below | Which addresses the browser is allowed to navigate to. |
-| `browser.tabCleanup.enabled` | `true` | Periodically closes idle tabs. |
+| `browser.enabled` | `true` | يفعّل التحكم بالمتصفح أو يعطّله. |
+| `browser.defaultProfile` | `"openclaw"` | ملف التعريف المستخدم عند عدم تسمية أي ملف. اضبطه على `"user"` عن قصد فقط. |
+| `browser.headless` | `false` (مثال الوثائق) | يشغّل المتصفحات المحلية المُدارة دون نافذة. |
+| `browser.executablePath` | كشف تلقائي | متصفح Chromium الذي سيُشغّل. اضبطه إذا كان الكشف التلقائي يختار المتصفح الخطأ. |
+| `browser.attachOnly` | `false` (مثال الوثائق) | لا يشغّل متصفحًا أبدًا، بل يرتبط فقط بمتصفح يعمل بالفعل. |
+| `browser.evaluateEnabled` | `true` | عند ضبطه على `false`، لا يستطيع الوكيل تشغيل JavaScript عشوائي على صفحة. |
+| `browser.ssrfPolicy` | انظر أدناه | العناوين التي يُسمح للمتصفح بالانتقال إليها. |
+| `browser.tabCleanup.enabled` | `true` | يغلق الألسنة الخاملة دوريًا. |
 
-For example, to point at a specific Chrome:
+فمثلًا، للإشارة إلى نسخة Chrome محددة:
 
 ```bash
 openclaw config set browser.executablePath "/usr/bin/google-chrome"
 ```
 
-The browser control service listens on loopback (port `18791` by default, derived from the Gateway port), and local managed profiles use ports in the `18800` to `18899` range. You usually don’t need to touch these, but it helps to recognize them in logs.
+تستمع خدمة التحكم بالمتصفح على واجهة loopback (المنفذ `18791` افتراضيًا، وهو مشتق من منفذ البوابة)، وتستخدم ملفات التعريف المحلية المُدارة منافذ في النطاق من `18800` إلى `18899`. ولا تحتاج عادةً إلى التعامل مع هذه المنافذ، لكن من المفيد التعرف عليها في السجلات.
 
-Many `browser.*` settings, including profiles, the default profile, and `browser.enabled` itself, apply without a Gateway restart. Some of them do it by replacing the browser control service, which cancels any pending operations. The Chrome extension relay and a few other settings do need a restart.
+تُطبَّق كثير من إعدادات `browser.*`، بما فيها ملفات التعريف وملف التعريف الافتراضي و`browser.enabled` نفسه، دون إعادة تشغيل البوابة. وبعضها يفعل ذلك باستبدال خدمة التحكم بالمتصفح، ما يلغي أي عمليات معلّقة. أما مرحّل إضافة Chrome وبعض الإعدادات الأخرى فتحتاج فعلًا إلى إعادة تشغيل.
 
-## Guardrails
+## ضوابط الأمان
 
-- **Treat page content as untrusted.** Page text and page errors are external content. A web page can contain instructions aimed at your agent, and a browser makes it easy for the agent to act on them.
-- **Disable JavaScript evaluation if you don’t need it.** `browser.evaluateEnabled: false` removes the one action that runs arbitrary code on a page.
-- **Mind the network policy.** The SSRF policy controls where the browser may navigate. Leave private-network access off unless a trusted setup requires it, and when you must open it up, prefer `allowedHostnames` with exact hosts over `dangerouslyAllowPrivateNetwork`.
-- **Browser and shell are separate routes.** A browser can reach a page the shell can’t, and a shell can send data out without ever using the browser. Review each one on its own.
-- **Be careful with downloads.** Files the browser downloads land in OpenClaw’s downloads directory (`/tmp/openclaw/downloads` by default). Treat every download as untrusted input.
-- **A signed-in profile can do whatever you can.** Use a fixture account where you can, scope the agent’s tools for jobs that use one, and confirm the tab and profile before anything destructive. Don’t use a skill’s wording as the thing that stops a purchase or a message. Remove the capability instead.
-- **Keep the Gateway private.** Browser control is loopback-only, and its authentication goes through the Gateway. Don’t expose the control service to the internet.
+- **تعامل مع محتوى الصفحة كمحتوى غير موثوق.** فنص الصفحة وأخطاؤها محتوى خارجي. ويمكن أن تحتوي صفحة ويب على تعليمات موجهة إلى وكيلك، ويسهّل المتصفح على الوكيل التصرف بناءً عليها.
+- **عطّل تنفيذ JavaScript إن لم تكن تحتاجه.** فإعداد `browser.evaluateEnabled: false` يزيل الإجراء الوحيد الذي يشغّل كودًا عشوائيًا على الصفحة.
+- **انتبه إلى سياسة الشبكة.** فسياسة SSRF تتحكم في الأماكن التي يجوز للمتصفح الانتقال إليها. اترك الوصول إلى الشبكة الخاصة معطّلًا ما لم يتطلبه إعداد موثوق، وعندما تضطر إلى فتحه، فضّل `allowedHostnames` مع أسماء مضيفين محددة على `dangerouslyAllowPrivateNetwork`.
+- **المتصفح والصدفة مساران منفصلان.** فالمتصفح يمكنه الوصول إلى صفحة لا تستطيع الصدفة الوصول إليها، والصدفة يمكنها إرسال بيانات إلى الخارج دون استخدام المتصفح إطلاقًا. راجع كلًا منهما على حدة.
+- **احترس من التنزيلات.** فالملفات التي ينزّلها المتصفح تُحفظ في دليل التنزيلات الخاص بـ OpenClaw (`/tmp/openclaw/downloads` افتراضيًا). وتعامل مع كل تنزيل كمدخل غير موثوق.
+- **ملف التعريف المسجّل الدخول يستطيع فعل كل ما تستطيعه أنت.** استخدم حسابًا مخصصًا للاختبار حيثما أمكن، وحدّد نطاق أدوات الوكيل للمهام التي تستخدمه، وتأكد من اللسان وملف التعريف قبل أي إجراء مدمّر. ولا تجعل صياغة مهارة هي ما يمنع عملية شراء أو إرسال رسالة، بل أزل القدرة نفسها.
+- **أبقِ البوابة خاصة.** فالتحكم بالمتصفح مقتصر على loopback، ومصادقته تمر عبر البوابة. لا تعرّض خدمة التحكم للإنترنت.
 
-## Try It Out
+## جرّبه بنفسك
 
-1. **By hand.** Run `doctor`, `start`, `open https://example.com`, `snapshot`, `screenshot --labels`, and `stop`. Match the labels in the picture to the references in the snapshot.
-2. **A public page.** Ask your agent to open a news page, read the top stories, and summarize them, using the browser and not web search. Check that it tells you what it did.
-3. **A login wall.** Ask it to open a page that requires signing in and report what it sees. It should stop and tell you. If it tries to sign in, tighten your prompt.
-4. **A stale reference.** Take a snapshot of a page that changes, trigger the change, and try the old reference. Then take a new snapshot and succeed. This is the most common thing you’ll debug.
-5. **The QA prompt.** Run the TodoMVC exploratory test from the [browser prompts lesson](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts) and read the report it produces.
+1. **يدويًا.** شغّل `doctor` و`start` و`open https://example.com` و`snapshot` و`screenshot --labels` و`stop`. وطابق الوسوم في الصورة مع المراجع في اللقطة.
+2. **صفحة عامة.** اطلب من وكيلك فتح صفحة أخبار، وقراءة أهم القصص، وتلخيصها، باستخدام المتصفح لا البحث في الويب. وتحقق من أنه يخبرك بما فعل.
+3. **جدار تسجيل دخول.** اطلب منه فتح صفحة تتطلب تسجيل الدخول والإبلاغ عما يراه. وينبغي أن يتوقف ويخبرك. وإذا حاول تسجيل الدخول، فشدد مطالبتك.
+4. **مرجع قديم.** خذ لقطة لصفحة متغيرة، وأحدث التغيير، وجرّب المرجع القديم. ثم خذ لقطة جديدة وستنجح. وهذا هو أكثر ما ستصطدم به عند تصحيح الأخطاء.
+5. **مطالبة ضمان الجودة.** شغّل اختبار TodoMVC الاستكشافي من [درس مطالبات المتصفح](https://stevekinney.com/courses/openclaw/openclaw-browser-prompts) واقرأ التقرير الذي ينتجه.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-Start with `openclaw browser doctor`. Then match the symptom:
+ابدأ بـ `openclaw browser doctor`. ثم طابق العَرَض:
 
-| Symptom | What to check |
+| العَرَض | ما يجب التحقق منه |
 | --- | --- |
-| “Browser disabled” | The plugin or `browser.enabled` is off. Check both, then restart the Gateway. |
-| The agent says it has no browser tool | `plugins.allow` doesn’t include `browser`, or the tool policy doesn’t allow it. See Step 1. |
-| “Browser unavailable” | Look at process status, which Chrome binary was selected, whether the profile is locked, and the CDP endpoint, before blaming the page. |
-| Chrome won’t launch on a server | There may be no Chromium-based browser installed. Install one and set `browser.executablePath`. |
-| “Navigation denied” | The URL was blocked by the outbound policy, possibly after a redirect. Check the SSRF policy before changing anything else. |
-| “No tab” | You’re on the wrong profile, or the session was never attached. |
-| “Click had no effect” | The page re-rendered. Take a new snapshot and use the new reference. |
-| A screenshot times out | Wait for the capture to finish. If it stays stuck, close and reopen the tab. |
-| A scheduled job using `user` just hangs | It’s waiting on Chrome’s attach prompt. Use `chrome` or a managed profile for unattended work. |
+| «المتصفح معطّل» | الإضافة أو `browser.enabled` معطّل. تحقق من كليهما، ثم أعد تشغيل البوابة. |
+| الوكيل يقول إنه لا يملك أداة متصفح | قائمة `plugins.allow` لا تتضمن `browser`، أو سياسة الأدوات لا تسمح بها. راجع الخطوة 1. |
+| «المتصفح غير متاح» | انظر إلى حالة العملية، وأي ملف Chrome التنفيذي تم اختياره، وما إذا كان ملف التعريف مقفلًا، ونقطة نهاية CDP، قبل أن تلوم الصفحة. |
+| Chrome لا يبدأ على خادم | قد لا يكون هناك متصفح قائم على Chromium مثبّت. ثبّت واحدًا واضبط `browser.executablePath`. |
+| «تم رفض التنقل» | حُجب عنوان URL بسياسة الخروج، وربما بعد إعادة توجيه. تحقق من سياسة SSRF قبل تغيير أي شيء آخر. |
+| «لا يوجد لسان» | أنت على ملف التعريف الخطأ، أو أن الجلسة لم تُرتبط قط. |
+| «لم يُحدث النقر أثرًا» | أُعيد تصيير الصفحة. خذ لقطة جديدة واستخدم المرجع الجديد. |
+| تنتهي مهلة لقطة الشاشة | انتظر انتهاء الالتقاط. وإذا ظل عالقًا، فأغلق اللسان وأعد فتحه. |
+| مهمة مجدولة تستخدم `user` تتوقف بلا سبب | إنها تنتظر مطالبة الارتباط في Chrome. استخدم `chrome` أو ملف تعريف مُدار للأعمال غير المراقبة. |
 
-A useful way to think about any failure is as a chain: the right profile was selected, the page it found was the right one, the action was allowed by policy, and the page afterward proves it worked. Find the first broken link.
+من المفيد التفكير في أي إخفاق على أنه سلسلة: اختير ملف التعريف الصحيح، والصفحة التي وجدها كانت الصحيحة، والإجراء كان مسموحًا به وفق السياسة، ثم تُثبت الصفحة بعد ذلك أنه نجح. فابحث عن أول حلقة مكسورة.
 
-> **Versions and updates**
+> **الإصدارات والتحديثات**
 >
-> This lesson follows OpenClaw’s `2026.9.x` documentation. The docs don’t show sample output for `doctor` or `status`, so the lesson doesn’t either. Run `openclaw browser --help` on your build to confirm the exact commands and flags.
+> يتبع هذا الدرس وثائق OpenClaw للإصدار `2026.9.x`. ولا تعرض الوثائق ناتجًا نموذجيًا لأمرَي `doctor` أو `status`، لذا لا يعرضه الدرس أيضًا. شغّل `openclaw browser --help` في نسختك للتأكد من الأوامر والرايات الدقيقة.

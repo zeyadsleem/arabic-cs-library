@@ -1,18 +1,18 @@
 ---
-title: "CDN Caching & Immutable Assets"
-lang: en
+title: "التخزين المؤقت في CDN والأصول غير القابلة للتغيير"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/cdn-caching-immutable-assets"
 ---
 
-Your React app’s bundle is perfect. Tree-shaken, code-split, minified to perfection. Then you deploy it, and users around the world wait 3 seconds for it to download from your single origin server in Virginia. Meanwhile, your CDN edge servers sit idle, serving stale content because you’re afraid of cache invalidation bugs.
+حزمة تطبيق React لديك مثالية: مهزوزة الأشجار (tree-shaken)، ومقسّمة الشيفرة (code-split)، ومصغّرة إلى حدّ الكمال. ثم تنشرها، فينتظر المستخدمون حول العالم 3 ثوانٍ لتنزيلها من خادم الأصل الوحيد لديك في فرجينيا. وفي هذه الأثناء، تظل خوادم حافة CDN عاطلة، تقدّم محتوى قديمًا لأنك تخشى أخطاء إبطال الذاكرة المؤقتة.
 
-Here’s the truth: most React apps use maybe 10% of their CDN’s capabilities. They treat it like a dumb file server instead of the intelligent, globally distributed caching layer it really is. They break caching with poor versioning strategies. They serve the same assets to everyone instead of optimizing for each user’s location and device.
+الحقيقة هي هذه: معظم تطبيقات React تستخدم ربما 10% فقط من قدرات CDN لديها. تتعامل معه كخادم ملفات بسيط بدلًا من طبقة التخزين المؤقت الذكية الموزّعة عالميًا التي هو عليها حقًا. تُفسد التخزين المؤقت باستراتيجيات إصدارات ضعيفة. وتقدّم الأصول نفسها للجميع بدلًا من التحسين حسب موقع كل مستخدم وجهازه.
 
-Let’s fix that. Let’s turn your CDN into a performance multiplier that serves immutable assets at light speed while keeping your deployments simple and your cache hit rates high.
+لنصلح ذلك. لنحوّل CDN لديك إلى مضاعف أداء يقدّم الأصول غير القابلة للتغيير بسرعة الضوء، مع إبقاء عمليات النشر بسيطة ومعدلات إصابة الذاكرة المؤقتة مرتفعة.
 
-## Understanding CDN Caching Fundamentals
+## فهم أساسيات التخزين المؤقت في CDN
 
-Before we optimize, let’s understand how CDNs cache your React app:
+قبل أن نحسّن، لنفهم كيف تخزّن CDN تطبيق React لديك مؤقتًا:
 
 ```typescript
 interface CDNCacheHierarchy {
@@ -44,9 +44,9 @@ interface CacheHeaders {
 }
 ```
 
-## Implementing Immutable Asset Strategy
+## تنفيذ استراتيجية الأصول غير القابلة للتغيير
 
-Immutable assets + content hashing = perfect caching:
+أصول غير قابلة للتغيير + تجزئة المحتوى = تخزين مؤقت مثالي:
 
 ```typescript
 // Webpack configuration for immutable assets
@@ -104,9 +104,9 @@ const serveImmutableAssets = (app: Express) => {
 };
 ```
 
-## Advanced Chunking Strategies
+## استراتيجيات تقسيم القطع المتقدمة
 
-Optimize chunk splitting for maximum cache efficiency:
+حسّن تقسيم القطع (chunks) لأقصى كفاءة في التخزين المؤقت:
 
 ```typescript
 // ❌ Poor chunking - everything changes together
@@ -172,9 +172,9 @@ const smartChunking = {
 };
 ```
 
-## CDN Configuration Patterns
+## أنماط تهيئة CDN
 
-### Multi-Tier Caching Strategy
+### استراتيجية التخزين المؤقت متعددة المستويات
 
 ```typescript
 class CDNCacheStrategy {
@@ -249,9 +249,9 @@ interface Headers {
 }
 ```
 
-### Edge Function Cache Management
+### إدارة ذاكرة التخزين المؤقت في دوال الحافة
 
-Use edge functions for intelligent caching:
+استخدم دوال الحافة (edge functions) لتخزين مؤقت ذكي:
 
 ```typescript
 // Cloudflare Worker example
@@ -319,9 +319,9 @@ const shouldCacheResponse = (path: string, contentType: string, status: number):
 };
 ```
 
-## Cache Invalidation Strategies
+## استراتيجيات إبطال الذاكرة المؤقتة
 
-### Smart Purging with Surrogate Keys
+### التنظيف الذكي بالمفاتيح البديلة (surrogate keys)
 
 ```typescript
 class SurrogateKeyManager {
@@ -394,9 +394,9 @@ app.get('/products/:id', (req, res) => {
 });
 ```
 
-### Progressive Cache Warming
+### التسخين التدريجي للذاكرة المؤقتة
 
-Warm cache after deployments:
+سخّن الذاكرة المؤقتة بعد عمليات النشر:
 
 ```typescript
 class CacheWarmer {
@@ -493,9 +493,9 @@ interface WarmResult {
 }
 ```
 
-## Monitoring CDN Performance
+## مراقبة أداء CDN
 
-Track cache performance and optimize:
+تتبّع أداء التخزين المؤقت وحسّنه:
 
 ```typescript
 class CDNMetricsCollector {
@@ -582,9 +582,9 @@ const useCDNMetrics = () => {
 };
 ```
 
-## Geographic Distribution Optimization
+## تحسين التوزيع الجغرافي
 
-Optimize asset delivery based on user location:
+حسّن توصيل الأصول بناءً على موقع المستخدم:
 
 ```typescript
 class GeoCDNOptimizer {
@@ -676,9 +676,9 @@ interface CacheStrategy {
 }
 ```
 
-## Version Migration Strategies
+## استراتيجيات ترحيل الإصدارات
 
-Handle version transitions smoothly:
+تعامل مع انتقالات الإصدارات بسلاسة:
 
 ```typescript
 class VersionMigrationManager {
@@ -747,34 +747,34 @@ class VersionMigrationManager {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Implement immutable assets:**
+✅ **نفّذ الأصول غير القابلة للتغيير:**
 
-- Use content hashing for all static files
-- Set immutable cache headers
-- Never update files in place
+- استخدم تجزئة المحتوى لكل الملفات الثابتة
+- اضبط ترويسات تخزين مؤقت غير قابلة للتغيير
+- لا تحدّث الملفات في مكانها أبدًا
 
-✅ **Optimize chunking:**
+✅ **حسّن تقسيم القطع:**
 
-- Separate vendor from app code
-- Create framework-specific chunks
-- Use deterministic module IDs
+- افصل شيفرة المكتبات (vendor) عن شيفرة التطبيق
+- أنشئ قطعًا خاصة بالإطار
+- استخدم معرّفات وحدات حتمية
 
-✅ **Configure CDN properly:**
+✅ **هيّئ CDN بشكل صحيح:**
 
-- Set appropriate cache headers
-- Use surrogate keys for invalidation
-- Implement stale-while-revalidate
+- اضبط ترويسات التخزين المؤقت المناسبة
+- استخدم المفاتيح البديلة للإبطال
+- نفّذ stale-while-revalidate
 
-✅ **Monitor performance:**
+✅ **راقب الأداء:**
 
-- Track cache hit rates
-- Measure origin offload
-- Monitor geographic distribution
+- تتبّع معدلات إصابة الذاكرة المؤقتة
+- قِس تخفيف الحمل عن خادم الأصل
+- راقب التوزيع الجغرافي
 
-✅ **Handle deployments gracefully:**
+✅ **تعامل مع عمليات النشر بلباقة:**
 
-- Warm cache before switching
-- Use gradual rollouts
-- Maintain old versions temporarily
+- سخّن الذاكرة المؤقتة قبل التبديل
+- استخدم عمليات إطلاق تدريجية
+- أبقِ الإصدارات القديمة مؤقتًا

@@ -1,46 +1,46 @@
 ---
-title: "Managing a Long Session"
-lang: en
+title: "إدارة جلسة طويلة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/managing-a-long-session"
 ---
 
-[Prompt caching](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) is about what context *costs*. The question you’ll face more often is what to do with that context once a session gets long, or starts going sideways.
+[التخزين المؤقت للطلبات](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) يتعلق بما *يكلّفه* السياق. أما السؤال الذي ستواجهه أكثر فهو ما تفعله بذلك السياق عندما تطول الجلسة أو تبدأ في الانحراف.
 
-A *session* is one conversation with the agent, and its *context* is everything the model can see in it. Both get heavier with every *turn*: one response to a message you send, however many files it reads or commands it runs.
+*الجلسة* محادثة واحدة مع الوكيل، و*سياقها* كل ما يستطيع النموذج رؤيته فيها. وكلاهما يثقل مع كل *دور*: استجابة واحدة لرسالة ترسلها، مهما كان عدد الملفات التي يقرؤها أو الأوامر التي يشغّلها.
 
-## Four moves
+## أربع حركات
 
-You’ve basically got four. All but the first are slash commands (commands you type that start with `/`):
+أمامك أربع حركات في الأساس. وكلها عدا الأولى أوامر مائلة (أوامر تكتبها تبدأ بـ `/`):
 
-- **Continue**: Do nothing. The harness summarizes the conversation for you when it needs to.
-- **`/compact`**: Summarize now, at a moment you choose.
-- **`/clear`**: Start over with an empty conversation.
-- **`/rewind`**: Truncate back to an earlier turn and, optionally, restore the files to match. The restore only covers edits the agent made with its file tools. [Recovering a Failing Session](https://stevekinney.com/courses/ai-development-setup/recovering-a-failing-session) covers what it misses, and how to salvage what you learned before a `/clear`.
+- **المتابعة (Continue)**: لا تفعل شيئًا. تلخّص لك المنصة المحادثة عندما تحتاج إلى ذلك.
+- **`/compact`**: لخّص الآن، في لحظة تختارها أنت.
+- **`/clear`**: ابدأ من جديد بمحادثة فارغة.
+- **`/rewind`**: اقتطع الرجوع إلى دور سابق، وأعِد الملفات اختياريًا لتطابقه. ولا يغطي الاسترجاع إلا التحريرات التي أجراها الوكيل بأدوات ملفاته. ويتناول [استعادة جلسة فاشلة](https://stevekinney.com/courses/ai-development-setup/recovering-a-failing-session) ما يفوّته، وكيف تنقذ ما تعلمته قبل `/clear`.
 
-The short version: *undo is for wrong; condense is for long.*
+الخلاصة: *التراجع للخطأ، والتكثيف للطول.*
 
-If something was *wrong*, undo it. If it’s merely *long*, shrink it without losing the thread. Mix those up and you compact a mistake into a summary where it looks like a decision.
+إن كان شيء ما *خاطئًا*، فتراجع عنه. وإن كان مجرد *طويل*، فقلّصه دون أن تفقد الخيط. اخلط بين الأمرين وستضغط خطأً في ملخّص يبدو كقرار.
 
-| Situation | Reach for |
+| الموقف | المطلوب |
 | --- | --- |
-| Work is continuous, going well, and context is filling up | Continue |
-| You’ve hit a natural phase boundary and the work continues | `/compact`, deliberately |
-| The next task is unrelated to this one | `/clear` |
-| The original attempt and two corrections have failed, and you’re patching patches | `/clear`, after you salvage what you learned |
-| One specific edit was wrong | `/rewind` |
-| You’re in the middle of verification | None of them. Finish the check first. |
+| العمل متواصل، ويسير جيدًا، والسياق يمتلئ | المتابعة |
+| وصلت إلى حدود مرحلة طبيعية والعمل مستمر | `/compact` عن قصد |
+| المهمة التالية لا علاقة لها بهذه | `/clear` |
+| فشلت المحاولة الأصلية وتصحيحان، وأنت ترقع الترقيعات | `/clear`، بعد أن تنقذ ما تعلمته |
+| تحرير واحد محدد كان خاطئًا | `/rewind` |
+| أنت في منتصف التحقّق | لا شيء منها. أنهِ الفحص أولًا. |
 
-That last row matters more than it looks. After a compaction, “the tests passed” is a sentence in a summary, not an observation. Check the result before you shrink the evidence away.
+هذا الصف الأخير أهم مما يبدو. فبعد الضغط، «نجحت الاختبارات» جملة في ملخّص، لا رصد واقعي. تحقّق من النتيجة قبل أن تصغّر الدليل لتتخلص منه.
 
-## Tasting notes
+## ملاحظات تذوّق
 
-- **Compaction is cheap while the cache is warm**: The summarization request carries your whole conversation, so it reads your main conversation’s prompt cache. That cache lasts an hour of inactivity on a Claude subscription (within your plan’s usage) and five minutes with an API key. Compact after it expires, and you pay to reprocess the entire history. (The five-minute rule for compaction in [Prompt Caching and Cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) covers the cache entries the summarization request itself writes, not the cache it reads.)
-- **`/rewind` is the cheapest move of the bunch**: It truncates back to a prefix that’s already cached, as long as that cache hasn’t expired.
-- **What reloads after `/clear` or `/compact`**: Your project-root `CLAUDE.md` (the instruction file the harness loads at the start of a session; `AGENTS.md` in Codex) is re-read from disk. Nested `CLAUDE.md` files and path-scoped rules don’t come back until the agent reads a matching file again. Claude Code’s documentation names only the project-root file as re-read, so put anything critical there.
-- **Editing `CLAUDE.md` mid-session does nothing yet**: The change takes effect at the next `/clear`, `/compact`, or restart.
-- **Summaries compound**: Compact three times, and you’re working from a summary of a summary of a summary.
-- **Rules can fall out of the summary**: [In one benchmark](https://arxiv.org/abs/2606.22528), an agent violated a constraint 0% of the time while the constraint survived compaction, and 38% of the time once it got summarized away.
+- **الضغط رخيص ما دامت الذاكرة المؤقتة دافئة**: يحمل طلب التلخيص محادثتك كاملة، لذا يقرأ الذاكرة المؤقتة لطلبات محادثتك الرئيسية. وتلك الذاكرة تدوم ساعة من الخمول على اشتراك Claude (ضمن استهلاك خطتك) وخمس دقائق مع مفتاح API. اضغط بعد انتهائها، وتدفع ثمن إعادة معالجة السجل كله. (قاعدة الخمس دقائق للضغط في [التخزين المؤقت للطلبات والتكلفة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) تتعلق بمدخلات الذاكرة المؤقتة التي يكتبها طلب التلخيص نفسه، لا بالذاكرة التي يقرؤها.)
+- **`/rewind` أرخص حركة في المجموعة**: فهو يقتطع الرجوع إلى بادئة مخزّنة مؤقتًا بالفعل، ما دامت تلك الذاكرة لم تنتهِ.
+- **ما يُعاد تحميله بعد `/clear` أو `/compact`**: ملف `CLAUDE.md` في جذر مشروعك (ملف التعليمات الذي تحمّله المنصة في بداية الجلسة؛ و`AGENTS.md` في Codex) يُقرأ من القرص من جديد. أما ملفات `CLAUDE.md` المتداخلة والقواعد المرتبطة بمسارات فلا تعود حتى يقرأ الوكيل ملفًا مطابقًا مرة أخرى. ولا يسمّي توثيق Claude Code سوى ملف جذر المشروع كملف يُعاد قراءته، لذا ضع فيه كل ما هو حرج.
+- **تحرير `CLAUDE.md` في منتصف الجلسة لا يفعل شيئًا بعد**: يسري التغيير عند `/clear` أو `/compact` التالي أو عند إعادة التشغيل.
+- **الملخصات تتراكم**: اضغط ثلاث مرات، وستعمل من ملخّص لملخّص لملخّص.
+- **قد تسقط القواعد من الملخّص**: [في أحد المعايير](https://arxiv.org/abs/2606.22528)، خالف وكيل قيدًا بنسبة 0% ما دام القيد ناجيًا من الضغط، وبنسبة 38% بعد أن اختُصر وضاع.
 
-That last one is the practical takeaway. A rule that has to survive belongs in a file that reloads or, better yet, in a permission rule (a setting that allows or denies specific tool calls) that doesn’t depend on the model remembering anything. [User and Project Instructions](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) covers where rules live, and [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) covers which ones need more than a sentence.
+هذا الأخير هو الخلاصة العملية. فالقاعدة التي يجب أن تصمد مكانها ملف يُعاد تحميله، أو الأفضل من ذلك قاعدة صلاحيات (إعداد يسمح بنداءات أدوات محددة أو يرفضها) لا تعتمد على تذكّر النموذج لأي شيء. ويغطي [تعليمات المستخدم والمشروع](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions) موضع القواعد، ويغطي [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) أيها يحتاج أكثر من جملة.
 
-The cheapest long session is the one where nothing important lives only in the conversation.
+أرخص جلسة طويلة هي التي لا يعيش فيها شيء مهم في المحادثة وحدها.

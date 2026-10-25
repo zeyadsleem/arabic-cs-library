@@ -1,12 +1,12 @@
 ---
-title: "Testing Asynchronous Errors"
-lang: en
+title: "اختبار الأخطاء غير المتزامنة"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-asynchronous-errors"
 ---
 
-When working with asynchronous functions that throw errors, you need to handle promises and rejected errors. In Vitest, you can test asynchronous error handling using `async/await` or the `.rejects` matcher for promises.
+عند العمل مع دوال غير متزامنة ترمي أخطاء، تحتاج إلى التعامل مع الوعود (promises) والأخطاء المرفوضة. في Vitest، يمكنك اختبار معالجة الأخطاء غير المتزامنة باستخدام `async/await` أو مطابق `.rejects` للوعود.
 
-## Using `async/await` to Test Rejected Errors
+## استخدام `async/await` لاختبار الأخطاء المرفوضة
 
 ```javascript
 // Asynchronous function to be tested
@@ -22,14 +22,14 @@ describe('fetchData', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- The `fetchData` function throws an error asynchronously (in a rejected promise).
-- The test uses `await expect(fetchData()).rejects.toThrow('Network error')` to verify that the error is correctly thrown and matches the expected message.
+- ترمي دالة `fetchData` خطأً بشكل غير متزامن (داخل وعد مرفوض).
+- يستخدم الاختبار `await expect(fetchData()).rejects.toThrow('Network error')` للتحقق من أن الخطأ يُرمى بشكل صحيح ويطابق الرسالة المتوقعة.
 
-## Using `.rejects` for Promise-Based Error Handling
+## استخدام `.rejects` لمعالجة الأخطاء القائمة على الوعود
 
-Vitest provides the `.rejects` matcher to test whether a promise is rejected with an error. This is a concise way to check asynchronous errors without needing `try/catch` blocks.
+يوفر Vitest مطابق `.rejects` لاختبار ما إذا كان وعد ما مرفوضًا بخطأ. هذه طريقة موجزة لفحص الأخطاء غير المتزامنة دون الحاجة إلى كتل `try/catch`.
 
 ```javascript
 // Asynchronous function to be tested
@@ -45,7 +45,7 @@ describe('fetchUserData', () => {
 });
 ```
 
-In this example:
+في هذا المثال:
 
-- `fetchUserData()` returns a rejected promise.
-- The test checks that the promise is rejected and the error message matches `'User not found'`.
+- تعيد `fetchUserData()` وعدًا مرفوضًا.
+- يتحقق الاختبار من أن الوعد مرفوض وأن رسالة الخطأ تطابق `'User not found'`.

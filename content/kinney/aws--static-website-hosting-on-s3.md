@@ -1,32 +1,32 @@
 ---
-title: "Static Website Hosting on S3"
-lang: en
+title: "استضافة موقع ثابت على S3"
+lang: ar
 source: "https://stevekinney.com/courses/aws/static-website-hosting-on-s3"
 ---
 
-You have an S3 bucket with files in it and a bucket policy that allows public reads. But if you navigate to `https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/` right now, you get an XML error page—S3 doesn’t know you want it to serve `index.html` when someone hits the root URL. That’s because S3’s default behavior is object storage, not web hosting. To turn your bucket into an actual website, you need to enable **static website hosting**.
+لديك دلو S3 يحتوي على ملفات، وسياسة دلو تسمح بالقراءة العامة. لكن إذا انتقلت الآن إلى `https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/`، فستحصل على صفحة خطأ XML — لأن S3 لا يعرف أنك تريده أن يقدّم `index.html` عندما يصل أحدهم إلى عنوان الجذر. السبب أن السلوك الافتراضي لـ S3 هو تخزين الكائنات، لا استضافة الويب. ولتحويل دلوك إلى موقع فعلي، عليك تفعيل **استضافة الموقع الثابت**.
 
-If you want AWS’s exact version of the website-hosting workflow, the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) is the official walkthrough.
+إذا أردت نسخة AWS الدقيقة من سير عمل استضافة الموقع، فإن [درس S3 لاستضافة المواقع الثابتة](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) هو الدليل الرسمي.
 
-> **Learning checkpoint, not production target**
+> **نقطة تعلّم، وليست هدف الإنتاج**
 >
-> This lesson is the “see the pieces” version of static hosting. It gives you a real website endpoint quickly, which is useful for understanding how S3 behaves as a web origin. It is not the final architecture you want to ship. Later, you’ll put CloudFront in front of a private bucket and keep direct S3 access out of the picture.
+> هذا الدرس هو النسخة التي تُظهر لك «القطع» في الاستضافة الثابتة. يمنحك نقطة نهاية موقع حقيقية بسرعة، وهو أمر مفيد لفهم كيف يتصرف S3 كأصل ويب. لكنه ليس المعمارية النهائية التي تريد شحنها. لاحقًا ستضع CloudFront أمام دلو خاص وتُخرج الوصول المباشر إلى S3 من الصورة.
 
-## What Static Website Hosting Adds
+## ما الذي تضيفه استضافة الموقع الثابت
 
-Without static website hosting, S3 is a key-value store. You request a specific key, you get a specific object. Request a key that doesn’t exist, you get an XML error. Request the root path, you get nothing useful.
+بدون استضافة الموقع الثابت، S3 مجرّد مخزن مفتاح-قيمة. تطلب مفتاحًا محددًا فتحصل على كائن محدد. تطلب مفتاحًا غير موجود فتحصل على خطأ XML. تطلب مسار الجذر فلا تحصل على شيء مفيد.
 
-Enabling static website hosting gives you three things:
+تفعيل استضافة الموقع الثابت يمنحك ثلاثة أشياء:
 
-1. **An index document**—S3 serves a default file (typically `index.html`) when someone requests a path that ends with `/`. This is the behavior you expect from any web server.
-2. **An error document**—S3 serves a custom error page instead of its default XML error when a requested key doesn’t exist.
-3. **A website endpoint**—S3 gives you a dedicated URL that serves your bucket as a website, with the index and error document behavior enabled.
+1. **مستند فهرس**—يقدّم S3 ملفًا افتراضيًا (عادةً `index.html`) عندما يطلب أحدهم مسارًا ينتهي بـ `/`. هذا هو السلوك الذي تتوقعه من أي خادم ويب.
+2. **مستند خطأ**—يقدّم S3 صفحة خطأ مخصّصة بدلًا من خطأ XML الافتراضي عندما لا يوجد المفتاح المطلوب.
+3. **نقطة نهاية موقع**—يمنحك S3 عنوانًا مخصّصًا يقدّم دلوك كموقع، مع تفعيل سلوك مستند الفهرس ومستند الخطأ.
 
-This is the difference between “I uploaded files to cloud storage” and “I have a website.”
+هذا هو الفرق بين «رفعت ملفات إلى تخزين سحابي» و«لديّ موقع ويب».
 
-## Enabling Static Website Hosting
+## تفعيل استضافة الموقع الثابت
 
-You can enable it with a single CLI command:
+يمكنك تفعيلها بأمر واحد في CLI:
 
 ```bash
 aws s3 website s3://my-frontend-app-assets/ \
@@ -34,9 +34,9 @@ aws s3 website s3://my-frontend-app-assets/ \
   --error-document error.html
 ```
 
-That’s it. Your bucket is now configured to serve `index.html` as the default document and `error.html` for any 404 errors.
+هذا كل شيء. أصبح دلوك الآن مهيّأ لتقديم `index.html` كمستند افتراضي، و`error.html` لأي أخطاء 404.
 
-If you want more control or need to script this in a pipeline, use the lower-level `s3api` command:
+إذا أردت تحكّمًا أكبر أو احتجت إلى أتمتة ذلك في خط أنابيب، فاستخدم أمر `s3api` الأدنى مستوى:
 
 ```bash
 aws s3api put-bucket-website \
@@ -48,7 +48,7 @@ aws s3api put-bucket-website \
   --region us-east-1
 ```
 
-You can verify the configuration:
+يمكنك التحقق من التهيئة:
 
 ```bash
 aws s3api get-bucket-website \
@@ -68,61 +68,61 @@ aws s3api get-bucket-website \
 }
 ```
 
-Before enabling, the **Properties** tab shows **Static website hosting** as **Disabled**.
+قبل التفعيل، يُظهر تبويب **Properties** أن **استضافة الموقع الثابت** في حالة **معطّلة**.
 
-The S3 bucket Properties tab showing Static website hosting as Disabled at the bottom of the page.
+يعرض تبويب Properties في دلو S3 استضافة الموقع الثابت معطّلة في أسفل الصفحة.
 
-In the console, the **Static website hosting** section on the **Properties** tab shows the configuration form where you enter the index and error document names.
+في وحدة التحكم، يعرض قسم **Static website hosting** في تبويب **Properties** نموذج التهيئة حيث تُدخل أسماء مستند الفهرس ومستند الخطأ.
 
-The S3 Edit Static Website Hosting form showing the feature enabled with index document set to index.html and error document set to error.html.
+يعرض نموذج تعديل استضافة الموقع الثابت في S3 الميزةَ مفعّلة، مع تعيين مستند الفهرس إلى index.html ومستند الخطأ إلى error.html.
 
-After saving, the section shows the **Bucket website endpoint** URL you can open in a browser.
+بعد الحفظ، يعرض القسم عنوان **Bucket website endpoint** الذي يمكنك فتحه في المتصفح.
 
-The S3 bucket Properties tab showing Static website hosting as Enabled with the website endpoint URL displayed.
+يعرض تبويب Properties في دلو S3 استضافة الموقع الثابت مفعّلة، مع إظهار عنوان نقطة نهاية الموقع.
 
-## The Website Endpoint URL
+## عنوان نقطة نهاية الموقع
 
-Once static website hosting is enabled, S3 gives you a dedicated website endpoint. The format depends on your region:
+بمجرد تفعيل استضافة الموقع الثابت، يمنحك S3 نقطة نهاية مخصّصة للموقع. يعتمد التنسيق على منطقتك:
 
 ```
 http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com
 ```
 
-Some regions use a slightly different format with a dot instead of a hyphen:
+تستخدم بعض المناطق تنسيقًا مختلفًا قليلًا بنقطة بدلًا من شرطة:
 
 ```
 http://my-frontend-app-assets.s3-website.us-east-1.amazonaws.com
 ```
 
-For `us-east-1`, the format is `s3-website-us-east-1` (with a hyphen before the region name).
+في `us-east-1`، التنسيق هو `s3-website-us-east-1` (بشرطة قبل اسم المنطقة).
 
-> **Warning**
+> **تحذير**
 >
-> S3 website endpoints only support HTTP, not HTTPS. If you load your site over the S3 website URL, the browser will show it as “Not Secure.” This is one of the main reasons the production path puts CloudFront in front of the bucket—CloudFront gives you HTTPS with an ACM certificate. For now, HTTP is fine for testing and development.
+> نقاط نهاية مواقع S3 تدعم HTTP فقط، لا HTTPS. إذا حمّلت موقعك عبر عنوان موقع S3، فسيعرضه المتصفح على أنه «غير آمن». هذا أحد الأسباب الرئيسية التي تجعل مسار الإنتاج يضع CloudFront أمام الدلو — لأن CloudFront يمنحك HTTPS بشهادة ACM. في الوقت الحالي، HTTP كافٍ للاختبار والتطوير.
 
-> **Website Endpoint vs. REST Endpoint**
+> **نقطة نهاية الموقع مقابل نقطة نهاية REST**
 >
-> S3 exposes two different endpoints per bucket. The **website endpoint** (`bucket.s3-website-us-east-1.amazonaws.com`) is what you’re using in this lesson—it supports index documents, error documents, and redirects, but no HTTPS and no `s3:GetObject`-style REST API calls. The **REST endpoint** (`bucket.s3.us-east-1.amazonaws.com`) is the full S3 API endpoint—it supports HTTPS and SDK calls but doesn’t honor the website-hosting configuration. When you wire up CloudFront in [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution), you’ll use the **REST endpoint** as the origin (not the website one), because CloudFront speaks the REST API. Using the wrong one here is a common footgun—CloudFront + website endpoint *appears* to work until you hit OAC or custom error responses, then silently fails.
+> يعرض S3 نقطتَي نهاية مختلفتين لكل دلو. **نقطة نهاية الموقع** (`bucket.s3-website-us-east-1.amazonaws.com`) هي ما تستخدمه في هذا الدرس — وهي تدعم مستندات الفهرس ومستندات الخطأ وإعادة التوجيه، لكن بلا HTTPS وبلا استدعاءات واجهة REST البرمجية من نوع `s3:GetObject`. أما **نقطة نهاية REST** (`bucket.s3.us-east-1.amazonaws.com`) فهي نقطة نهاية واجهة S3 الكاملة — تدعم HTTPS واستدعاءات SDK، لكنها لا تحترم تهيئة استضافة الموقع. عندما تربط CloudFront في [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)، ستستخدم **نقطة نهاية REST** كأصل (لا نقطة نهاية الموقع)، لأن CloudFront يتحدث واجهة REST. واستخدام النقطة الخاطئة هنا مصيدة شائعة — فمزيج CloudFront مع نقطة نهاية الموقع *يبدو* ناجحًا حتى تصل إلى OAC أو استجابات الخطأ المخصّصة، ثم يفشل بصمت.
 
-## How the Index Document Works
+## كيف يعمل مستند الفهرس
 
-With static website hosting enabled, S3 handles root and directory requests the way you expect from a web server:
+مع تفعيل استضافة الموقع الثابت، يتعامل S3 مع طلبات الجذر والمجلدات بالطريقة التي تتوقعها من خادم ويب:
 
-- **`/`** serves `index.html` from the bucket root
-- **`/about/`** serves `about/index.html` (if it exists)
-- **`/about`** (without trailing slash) does **not** automatically resolve to `about/index.html`—this catches people off guard
+- **`/`** يقدّم `index.html` من جذر الدلو
+- **`/about/`** يقدّم `about/index.html` (إن وُجد)
+- **`/about`** (بدون شرطة مائلة أخيرة) **لا** يُحلّ تلقائيًا إلى `about/index.html` — وهذا ما يفاجئ الناس
 
-That last point is important. If you have a file at the key `about/index.html` and someone navigates to `/about` (no trailing slash), S3 returns a 404. The trailing slash matters because S3 only looks for the index document suffix when the path ends with `/`. I mean, it makes sense once you remember that S3 isn’t really a web server—it’s object storage pretending to be one.
+النقطة الأخيرة مهمة. إذا كان لديك ملف بالمفتاح `about/index.html` وانتقل أحدهم إلى `/about` (بلا شرطة مائلة)، فسيعيد S3 رمز 404. الشرطة المائلة الأخيرة مهمة لأن S3 لا يبحث عن لاحقة مستند الفهرس إلا عندما ينتهي المسار بـ `/`. أعني، هذا منطقي بمجرد أن تتذكّر أن S3 ليس خادم ويب حقيقيًا — إنه تخزين كائنات يتظاهر بأنه كذلك.
 
-For a single-page application where all routing happens client-side, this is mostly irrelevant—you only have one `index.html` at the root, and every path that doesn’t match a real file should fall through to the error document (which you configure to also be `index.html`). More on that in a moment.
+في تطبيق صفحة واحدة حيث يحدث كل التوجيه في جهة العميل، هذا غير ذي صلة في الغالب — فلديك `index.html` واحد فقط في الجذر، وكل مسار لا يطابق ملفًا حقيقيًا يجب أن يسقط إلى مستند الخطأ (الذي تهيّئه ليكون `index.html` أيضًا). المزيد عن ذلك بعد قليل.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re deploying a multi-page static site (not a single-page app), make sure your build tool generates `index.html` files inside each directory. For example, an “about” page should live at `about/index.html`, not `about.html`. This ensures that both `/about/` and links to the directory work correctly.
+> إذا كنت تنشر موقعًا ثابتًا متعدد الصفحات (لا تطبيق صفحة واحدة)، فتأكد من أن أداة البناء لديك تولّد ملفات `index.html` داخل كل مجلد. مثلًا، صفحة «about» يجب أن تكون في `about/index.html`، لا `about.html`. هذا يضمن أن يعمل `/about/` والروابط إلى المجلد بشكل صحيح.
 
-## Configuring the Error Document for SPAs
+## تهيئة مستند الخطأ لتطبيقات الصفحة الواحدة
 
-If you’re deploying a single-page application (React Router, Vue Router, or similar), you need every unmatched route to serve your `index.html` so the client-side router can handle it. On Vercel or Netlify, you configure this with a `rewrites` rule. On S3, you set the error document to `index.html`:
+إذا كنت تنشر تطبيق صفحة واحدة (React Router أو Vue Router أو ما شابه)، فأنت تحتاج أن يقدّم كل مسار غير مطابق ملف `index.html` كي يتولّاه الموجّه في جهة العميل. على Vercel أو Netlify تهيّئ ذلك بقاعدة `rewrites`. على S3 تضبط مستند الخطأ على `index.html`:
 
 ```bash
 aws s3 website s3://my-frontend-app-assets/ \
@@ -130,13 +130,13 @@ aws s3 website s3://my-frontend-app-assets/ \
   --error-document index.html
 ```
 
-Now when someone navigates to `/dashboard/settings` and no object exists at that key, S3 serves `index.html` with a 404 status code. Your client-side router picks it up and renders the right page.
+الآن عندما ينتقل أحدهم إلى `/dashboard/settings` ولا يوجد كائن بهذا المفتاح، يقدّم S3 ملف `index.html` مع رمز حالة 404. يلتقطه الموجّه في جهة العميل ويعرض الصفحة الصحيحة.
 
-There’s a catch: S3 still returns a 404 HTTP status code, even though the user sees a valid page. Search engines and some tools interpret that 404 as a broken page. This is another reason CloudFront matters in the production architecture: CloudFront can return a 200 status code while still serving the SPA fallback.
+لكن هناك مشكلة: لا يزال S3 يعيد رمز حالة HTTP 404، رغم أن المستخدم يرى صفحة سليمة. تفسّر محرّكات البحث وبعض الأدوات ذلك الرمز 404 على أنه صفحة معطوبة. وهذا سبب آخر لأهمية CloudFront في معمارية الإنتاج: يستطيع CloudFront إعادة رمز 200 مع الاستمرار في تقديم بديل تطبيق الصفحة الواحدة.
 
-## Creating an Error Page
+## إنشاء صفحة خطأ
 
-If you’re not building a SPA, create a proper error page. A simple `error.html`:
+إذا لم تكن تبني تطبيق صفحة واحدة، فأنشئ صفحة خطأ مناسبة. صفحة `error.html` بسيطة:
 
 ```html
 <!doctype html>
@@ -182,7 +182,7 @@ If you’re not building a SPA, create a proper error page. A simple `error.html
 </html>
 ```
 
-Upload it to the bucket:
+ارفعها إلى الدلو:
 
 ```bash
 aws s3 cp ./error.html s3://my-frontend-app-assets/error.html \
@@ -190,9 +190,9 @@ aws s3 cp ./error.html s3://my-frontend-app-assets/error.html \
   --region us-east-1
 ```
 
-## Putting It All Together
+## جمع كل ذلك معًا
 
-Here’s the complete sequence to go from zero to a working S3-hosted website. If you’ve been following along, you’ve already done most of these steps:
+هذا هو التسلسل الكامل للانتقال من الصفر إلى موقع عامل مستضاف على S3. إذا كنت تتابع من البداية، فقد أنجزت معظم هذه الخطوات بالفعل:
 
 ```bash
 # 1. Create the bucket
@@ -234,17 +234,17 @@ aws s3 sync ./build s3://my-frontend-app-assets \
   --delete
 ```
 
-Open `http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com` in your browser. You should see your site.
+افتح `http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com` في متصفحك. يجب أن ترى موقعك.
 
-## What S3 Hosting Doesn’t Give You
+## ما الذي لا يمنحك إياه استضافة S3
 
-S3 static website hosting is a starting point, not a complete solution. Here’s what you’re missing:
+استضافة المواقع الثابتة على S3 نقطة انطلاق، لا حلًا كاملًا. إليك ما ينقصك:
 
-- **HTTPS**—S3 website endpoints are HTTP only. You need CloudFront and an ACM certificate for HTTPS.
-- **Global performance**—S3 serves files from a single region. Users on the other side of the world get higher latency. CloudFront caches files at edge locations worldwide.
-- **Custom domain**—The S3 website endpoint isn’t a pretty URL. You need Route 53 (or another DNS provider) to use your own domain.
-- **Cache control**—S3 serves files with default caching headers. CloudFront gives you fine-grained control over cache behavior and TTLs.
+- **HTTPS**—نقاط نهاية مواقع S3 تعمل بـ HTTP فقط. تحتاج إلى CloudFront وشهادة ACM من أجل HTTPS.
+- **الأداء العالمي**—يقدّم S3 الملفات من منطقة واحدة. المستخدمون على الجانب الآخر من العالم يحصلون على زمن استجابة أعلى. أما CloudFront فيخزّن الملفات مؤقتًا في مواقع حافة حول العالم.
+- **نطاق مخصّص**—نقطة نهاية موقع S3 ليست عنوانًا جميلًا. تحتاج إلى Route 53 (أو مزوّد DNS آخر) لاستخدام نطاقك الخاص.
+- **التحكم في التخزين المؤقت**—يقدّم S3 الملفات بترويسات تخزين مؤقت افتراضية. أما CloudFront فيمنحك تحكمًا دقيقًا في سلوك التخزين المؤقت ومدد TTL.
 
-All of these gaps are filled by the rest of the static-hosting arc. S3 is the foundation—the place your files live. Domain control, ACM, CloudFront, and Route 53 are the layers that turn it into a production-grade deployment.
+كل هذه الفجوات يسدّها بقية مسار الاستضافة الثابتة. S3 هو الأساس — المكان الذي تعيش فيه ملفاتك. أما التحكم في النطاق وACM وCloudFront وRoute 53 فهي الطبقات التي تحوّله إلى نشر بمستوى الإنتاج.
 
-Your site is live on S3, but what happens when you accidentally overwrite a file or delete something you shouldn’t have? Next, you’ll enable **versioning** to protect against accidental data loss, set up lifecycle rules to manage storage costs, and understand how S3 pricing works so there are no surprises on your bill.
+موقعك الآن حيّ على S3، لكن ماذا يحدث عندما تكتب فوق ملف بالخطأ أو تحذف شيئًا ما كان يجب حذفه؟ في الدرس التالي ستُفعّل **الإصدارات** للحماية من فقدان البيانات غير المقصود، وتُعدّ قواعد دورة الحياة لإدارة تكاليف التخزين، وتفهم كيف يعمل تسعير S3 حتى لا تكون هناك مفاجآت في فاتورتك.

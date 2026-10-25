@@ -1,82 +1,82 @@
 ---
-title: "Defining Grid Columns and Rows"
-lang: en
+title: "تعريف أعمدة Grid وصفوفه"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/defining-grid-columns-and-rows"
 ---
 
-Defining grid structure, including columns and rows, is essential for complex layouts. Tailwind CSS provides utilities to do this directly in your markup.
+تعريف بنية grid، بما فيها الأعمدة والصفوف، أمر أساسي في التخطيطات المعقّدة. ويوفّر Tailwind CSS أدوات تفعل ذلك مباشرةً في ترميزك.
 
-## Defining Grid Columns
+## تعريف أعمدة Grid
 
-Tailwind offers utilities for specifying grid columns, allowing for fixed numbers of equally sized columns or more complex structures.
+يوفّر Tailwind أدوات لتحديد أعمدة grid، ما يسمح بعدد ثابت من الأعمدة المتساوية الحجم أو ببِن أكثر تعقيدًا.
 
-### Specifying a Fixed Number of Columns
+### تحديد عدد ثابت من الأعمدة
 
-The `grid-cols-<number>` utility (e.g., `grid-cols-2`, `grid-cols-4`) creates a grid with the specified number of columns. These columns will equally share the available space using `minmax(0, 1fr)`.
+تُنشئ أداة `grid-cols-<number>` (مثل `grid-cols-2` و`grid-cols-4`) شبكة بعدد الأعمدة المحدّد. وتتشارك هذه الأعمدة المساحة المتاحة بالتساوي باستخدام `minmax(0, 1fr)`.
 
-### Removing Grid Columns
+### إزالة أعمدة Grid
 
-To remove grid columns, such as at a breakpoint for a stacked layout, use `grid-cols-none`. This sets `grid-template-columns` to `none`.
+لإزالة أعمدة grid، مثلًا عند نقطة توقّف للحصول على تخطيط مكدّس، استخدم `grid-cols-none`. وهذه تضبط `grid-template-columns` على `none`.
 
-### Implementing a Subgrid
+### تطبيق Subgrid
 
-The `grid-cols-subgrid` utility allows a grid item to adopt the column tracks of its parent grid. This is useful for aligning nested grid items with the parent structure.
+تتيح أداة `grid-cols-subgrid` لعنصر grid أن يتبنّى مسارات أعمدة شبكة أبيه. وهذا مفيد لمحاذاة عناصر grid المتداخلة مع البنية الأم.
 
-### Using Custom Column Values
+### استخدام قيم أعمدة مخصّصة
 
-For advanced column definitions not covered by default utilities, use arbitrary values with `grid-cols-[<value>]`. This sets `grid-template-columns` to any valid CSS value (e.g., `grid-cols-[200px_1fr_200px]`). You can also use CSS variables: `grid-cols-(<custom-property>)`, which sets the property to `var(<custom-property>)`. This is helpful for custom column tracks defined in your theme.
+لتعريفات أعمدة متقدّمة لا تغطيها الأدوات الافتراضية، استخدم القيم التعسّفية مع `grid-cols-[<value>]`. وهذه تضبط `grid-template-columns` على أي قيمة CSS صالحة (مثل `grid-cols-[200px_1fr_200px]`). ويمكنك أيضًا استخدام متغيّرات CSS: `grid-cols-(<custom-property>)`، وهي تضبط الخاصية على `var(<custom-property>)`. وهذا مفيد لمسارات الأعمدة المخصّصة المعرَّفة في سمتك.
 
-### Responsive Grid Columns
+### أعمدة Grid المتجاوبة
 
-Grid column utilities can be applied conditionally at different breakpoints (e.g., `md:grid-cols-3`) or using container query variants (e.g., `@md:grid-cols-3`) to change column numbers based on viewport or container size.
+يمكن تطبيق أدوات أعمدة grid بشكل مشروط عند نقاط توقّف مختلفة (مثل `md:grid-cols-3`) أو باستخدام متغيّرات استعلامات الحاوية (مثل `@md:grid-cols-3`) لتغيير عدد الأعمدة بحسب حجم نافذة العرض أو الحاوية.
 
-## Defining Grid Rows
+## تعريف صفوف Grid
 
-Similar to columns, Tailwind provides utilities for specifying grid rows.
+وكما في الأعمدة، يوفّر Tailwind أدوات لتحديد صفوف grid.
 
-### Specifying a Fixed Number of Rows
+### تحديد عدد ثابت من الصفوف
 
-Use `grid-rows-<number>` (e.g., `grid-rows-2`) to create a grid with a set number of rows. These rows will equally share available space using `minmax(0, 1fr)`.
+استخدم `grid-rows-<number>` (مثل `grid-rows-2`) لإنشاء شبكة بعدد محدّد من الصفوف. وتتشارك هذه الصفوف المساحة المتاحة بالتساوي باستخدام `minmax(0, 1fr)`.
 
-### Removing Grid Rows
+### إزالة صفوف Grid
 
-The `grid-rows-none` utility removes grid rows by setting `grid-template-rows` to `none`.
+تُزيل أداة `grid-rows-none` صفوف grid بضبط `grid-template-rows` على `none`.
 
-### Implementing a Subgrid
+### تطبيق Subgrid
 
-`grid-rows-subgrid` allows a grid item to adopt its parent grid’s row tracks, similar to `grid-cols-subgrid`.
+تتيح `grid-rows-subgrid` لعنصر grid أن يتبنّى مسارات صفوف شبكة أبيه، على نحو مشابه لـ `grid-cols-subgrid`.
 
-### Using Custom Row Values
+### استخدام قيم صفوف مخصّصة
 
-Use `grid-rows-[<value>]` for specific row definitions. CSS variables can be referenced with `grid-rows-(<custom-property>)`.
+استخدم `grid-rows-[<value>]` لتعريفات صفوف محدّدة. ويمكن الإشارة إلى متغيّرات CSS عبر `grid-rows-(<custom-property>)`.
 
-### Responsive Grid Rows
+### صفوف Grid المتجاوبة
 
-Grid row utilities are responsive and can be combined with breakpoint variants (e.g., `md:grid-rows-2`) and container query variants (e.g., `@md:grid-rows-2`).
+أدوات صفوف grid متجاوبة، ويمكن دمجها مع متغيّرات نقاط التوقّف (مثل `md:grid-rows-2`) ومتغيّرات استعلامات الحاوية (مثل `@md:grid-rows-2`).
 
-## Implicit Grid Tracks
+## المسارات الضمنية
 
-CSS Grid can automatically create columns or rows for items not explicitly placed. Tailwind provides utilities to control the size of these implicitly-created tracks.
+يمكن لـ CSS Grid أن ينشئ أعمدة أو صفوفًا تلقائيًا للعناصر التي لم تُوضَع صراحةً. ويوفّر Tailwind أدوات للتحكّم في مقاس هذه المسارات المنشأة ضمنيًا.
 
-### Controlling Implicit Columns
+### التحكّم في الأعمدة الضمنية
 
-Use `grid-auto-columns` utilities (`auto-cols-auto`, `auto-cols-min`, `auto-cols-max`, `auto-cols-fr`) to control the size of implicitly created columns. For example, `auto-cols-min` sets implicit column size to `min-content`. Arbitrary values `auto-cols-[<value>]` and CSS variables `auto-cols-(<custom-property>)` are also supported.
+استخدم أدوات `grid-auto-columns` (`auto-cols-auto` و`auto-cols-min` و`auto-cols-max` و`auto-cols-fr`) للتحكّم في مقاس الأعمدة المنشأة ضمنيًا. فمثلًا، تضبط `auto-cols-min` مقاس العمود الضمني على `min-content`. وتُدعم أيضًا القيم التعسّفية `auto-cols-[<value>]` ومتغيّرات CSS `auto-cols-(<custom-property>)`.
 
-### Controlling Implicit Rows
+### التحكّم في الصفوف الضمنية
 
-Similarly, `grid-auto-rows` utilities (`auto-rows-auto`, `auto-rows-min`, `auto-rows-max`, `auto-rows-fr`) control the size of implicitly created rows. `auto-rows-max` sets implicit row size to `max-content`. Custom values are supported via `auto-rows-[<value>]` and `auto-rows-(<custom-property>)`.
+وبالمثل، تتحكّم أدوات `grid-auto-rows` (`auto-rows-auto` و`auto-rows-min` و`auto-rows-max` و`auto-rows-fr`) في مقاس الصفوف المنشأة ضمنيًا. وتضبط `auto-rows-max` مقاس الصف الضمني على `max-content`. وتُدعم القيم المخصّصة عبر `auto-rows-[<value>]` و`auto-rows-(<custom-property>)`.
 
-## Grid Auto-Placement
+## الوضع التلقائي في Grid
 
-The `grid-auto-flow` property controls how items are automatically placed. Tailwind provides utilities for this.
+تتحكّم خاصية `grid-auto-flow` في كيفية وضع العناصر تلقائيًا. ويوفّر Tailwind أدوات لذلك.
 
-Use `grid-flow-row` (default) to fill rows, adding new rows as needed. Use `grid-flow-col` to fill columns, adding new columns as needed. `grid-flow-dense` attempts to fill earlier grid holes, potentially disrupting visual order but optimizing space. Combine with directional keywords using `grid-flow-row-dense` or `grid-flow-col-dense`.
+استخدم `grid-flow-row` (افتراضي) لملء الصفوف، مع إضافة صفوف جديدة عند الحاجة. واستخدم `grid-flow-col` لملء الأعمدة، مع إضافة أعمدة جديدة عند الحاجة. وتحاول `grid-flow-dense` ملء الفجوات المبكرة في الشبكة، وقد تُخلّ بالترتيب البصري لكنها تُحسّن استغلال المساحة. تُدمج مع الكلمات المفتاحية الاتجاهية باستخدام `grid-flow-row-dense` أو `grid-flow-col-dense`.
 
-## Customizing Grid Templates
+## تخصيص قوالب Grid
 
-In Tailwind, customize grid templates using CSS variables and the `@theme` directive in your main CSS file. Define `--grid-template-columns-*` and `--grid-template-rows-*` variables within an `@theme` block.
+في Tailwind، خصّص قوالب grid باستخدام متغيّرات CSS وتوجيه `@theme` في ملف CSS الرئيسي. عرّف متغيّرات `--grid-template-columns-*` و`--grid-template-rows-*` داخل كتلة `@theme`.
 
-Example:
+مثال:
 
 ```css
 @import 'tailwindcss';
@@ -87,8 +87,8 @@ Example:
 }
 ```
 
-These become utility classes like `grid-cols-layout` and `grid-rows-header`. Adding new variables is like `extend` in previous versions. To override defaults, clear the namespace (e.g., `--grid-template-columns-*: initial`) before defining custom values. To start without defaults, import `tailwindcss/preflight` and `tailwindcss/utilities` directly.
+وتتحوّل هذه إلى أصناف أدوات مثل `grid-cols-layout` و`grid-rows-header`. وإضافة متغيّرات جديدة تشبه `extend` في الإصدارات السابقة. ولتجاوز القيم الافتراضية، امسح مساحة الأسماء (مثل `--grid-template-columns-*: initial`) قبل تعريف قيمك المخصّصة. وللبدء دون قيم افتراضية، استورد `tailwindcss/preflight` و`tailwindcss/utilities` مباشرةً.
 
-Theme values, including grid templates, are available as native CSS variables, usable in arbitrary values with `var()` or custom CSS. When defining theme variables that reference others, use the `inline` option with `@theme`.
+قيم السمة، ومنها قوالب grid، متاحة كمتغيّرات CSS أصلية، يمكن استخدامها في القيم التعسّفية عبر `var()` أو في CSS مخصّص. وعند تعريف متغيّرات سمة تشير إلى متغيّرات أخرى، استخدم خيار `inline` مع `@theme`.
 
-This CSS-first approach offers a native way to define and use design tokens.
+يقدّم هذا النهج القائم على CSS طريقة أصلية لتعيين رموز التصميم واستخدامها.

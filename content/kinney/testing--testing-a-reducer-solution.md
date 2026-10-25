@@ -1,10 +1,10 @@
 ---
-title: "Solution: Testing a Reducer in Zod"
-lang: en
+title: "الحل: اختبار مخفّض (reducer) في Zod"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-a-reducer-solution"
 ---
 
-Here is a really simple—and also secretly flawed—solution:
+إليك حلًا بسيطًا جدًا — وفيه خلل خفي أيضًا:
 
 ```typescript
 import reducer, { add, remove, toggle, markAllAsUnpacked, update } from './items-slice';
@@ -116,11 +116,11 @@ it('supports marking all items as unpacked', () => {
 });
 ```
 
-We *could* go even father with the asymmetric matching, but I’m not going to just to prove a point: It’s all about the trade offs considering what provides the most value? *If* we found that this data structure was changing a lot and a little bit more more flexibility was helpful, then I might go for it. But, until then I’m adopting a [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) philosophy about this in a half-baked attempt to set an example for you.
+*يمكننا* المضي أبعد من ذلك في المطابقة غير المتماثلة، لكني لن أفعل لمجرد إثبات وجهة نظر: الأمر كله يتعلق بالمقايضات مع مراعاة ما يقدّم أكبر قيمة؟ *إذا* وجدنا أن بنية البيانات هذه تتغيّر كثيرًا وأن قليلًا إضافيًا من المرونة مفيد، فقد أختار ذلك. لكن حتى ذلك الحين، أتبنّى فلسفة [YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) في هذا بمحاولة نصف ناضجة لأكون قدوة لك.
 
-## Next Steps
+## الخطوات التالية
 
-There are the tests I write when I am developing the code and the tests that I write when I am maintaining the code.
+هناك الاختبارات التي أكتبها عندما أطوّر الشيفرة، والاختبارات التي أكتبها عندما أصون الشيفرة.
 
-- I might combine the first few tests into one test since if any part of that failed, I’d get a decent failure message.
-- If I ended up adding something like `dateCreated` or `lastModified`, you would definitely see me getting a little looser with those later tests.
+- قد أدمج الاختبارات القليلة الأولى في اختبار واحد، لأنه إن فشل أي جزء منها فسأحصل على رسالة فشل جيدة.
+- إن انتهى بي الأمر إلى إضافة شيء مثل `dateCreated` أو `lastModified`، فستجدني بالتأكيد أكثر تسامحًا مع تلك الاختبارات اللاحقة.

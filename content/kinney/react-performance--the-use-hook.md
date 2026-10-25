@@ -1,18 +1,18 @@
 ---
-title: "The use Hook"
-lang: en
+title: "خُطّاف use"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/the-use-hook"
 ---
 
-React 19’s `use()` hook fundamentally changes how you handle asynchronous data and context in your components. Instead of managing loading states, error boundaries, and promise resolution yourself, `use()` lets you “unwrap” promises and context values directly in your component body—while Suspense handles the coordination. It’s like having `await` for React components, but with better composition and cleaner error handling.
+يغيّر خُطّاف `use()` في React 19 جذريًا طريقة تعاملك مع البيانات غير المتزامنة والسياق في مكوّناتك. فبدلًا من إدارة حالات التحميل وحدود الأخطاء وحلّ الوعود بنفسك، يتيح لك `use()` أن «تفكّ» الوعود وقيم السياق مباشرة في متن مكوّنك — بينما يتولّى Suspense التنسيق. الأمر أشبه بامتلاك `await` لمكوّنات React، لكن بتركيب أفضل ومعالجة أخطاء أنظف.
 
-The `use()` hook works with two types of resources: **promises** (for async data) and **context** (for shared state). When you pass a promise to `use()`, React will suspend the component until the promise resolves, then render with the resolved value. When you pass context, it’s effectively a more flexible version of `useContext` that can be called conditionally.
+يعمل خُطّاف `use()` مع نوعين من الموارد: **الوعود** (promises) للبيانات غير المتزامنة، و**السياق** للحالة المشتركة. فعند تمرير وعد إلى `use()`، يُعلّق React المكوّن حتى يتحلّل الوعد، ثم يصيّر بالقيمة المتحلّلة. وعند تمرير سياق، فهو فعليًا نسخة أكثر مرونة من `useContext` يمكن نداؤها شرطيًا.
 
-Let’s explore how `use()` simplifies data fetching, improves performance, and creates more maintainable component architectures.
+لنستكشف كيف يبسّط `use()` جلب البيانات، ويحسّن الأداء، وينشئ معماريات مكوّنات أسهل صيانة.
 
-## Why use() Matters
+## لماذا يهم use()
 
-Before `use()`, handling async data meant juggling loading states, error boundaries, and promise resolution across multiple hooks. You’d typically see something like this:
+قبل `use()`، كان التعامل مع البيانات غير المتزامنة يعني التلاعب بحالات التحميل وحدود الأخطاء وحلّ الوعود عبر خُطّافات متعددة. وكنت ترى عادةً شيئًا كهذا:
 
 ```typescript
 // ❌ The old way: lots of ceremony
@@ -36,7 +36,7 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-With `use()` and Suspense, this becomes dramatically simpler:
+مع `use()` وSuspense، يصبح هذا أبسط بكثير:
 
 ```typescript
 // ✅ The new way: direct resource consumption
@@ -46,11 +46,11 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-The loading states and error handling are now handled by Suspense boundaries higher up in your component tree, leading to better separation of concerns and more declarative code.
+تُعالَج حالات التحميل ومعالجة الأخطاء الآن عبر حدود Suspense الأعلى في شجرة مكوّناتك، ما يفضي إلى فصل أفضل للمسؤوليات وشيفرة أكثر تصريحية.
 
-## Basic Promise Usage
+## الاستخدام الأساسي للوعود
 
-The most common use case for `use()` is consuming promises. Here’s how it works in practice:
+أكثر حالات استخدام `use()` شيوعًا هو استهلاك الوعود. وإليك كيف يعمل ذلك عمليًا:
 
 ```typescript
 import { use, Suspense } from 'react';
@@ -84,20 +84,20 @@ function App() {
 }
 ```
 
-When `UserCard` renders, `use(fetchUserData(userId))` will:
+عندما يُصيّر `UserCard`، فإن `use(fetchUserData(userId))` سيقوم بما يلي:
 
-1. Suspend the component on the first render while the promise is pending
-2. Show the Suspense fallback until the promise resolves
-3. Re-render with the resolved data once available
-4. Throw to the nearest error boundary if the promise rejects
+1. يُعلّق المكوّن في أول تصيير ما دام الوعد معلّقًا
+2. يعرض بديل Suspense حتى يتحلّل الوعد
+3. يُعيد التصيير بالبيانات المتحلّلة بمجرد توفّرها
+4. يرمي الخطأ إلى أقرب حد أخطاء إذا رُفض الوعد
 
-> **Note**
+> **ملاحظة**
 >
-> `use()` can only be called during render—not in event handlers, effects, or other non-render contexts. This is because it needs to integrate with React’s rendering cycle to coordinate suspension.
+> لا يمكن نداء `use()` إلا أثناء التصيير — لا في معالجات الأحداث ولا في التأثيرات ولا في سياقات أخرى خارج التصيير. والسبب أنه يحتاج إلى التكامل مع دورة تصيير React لتنسيق التعليق.
 
-## Working with Context
+## العمل مع السياق
 
-The `use()` hook also works with React context, providing a more flexible alternative to `useContext`:
+يعمل خُطّاف `use()` أيضًا مع سياق React، فيوفّر بديلًا أكثر مرونة من `useContext`:
 
 ```typescript
 import { use, createContext } from 'react';
@@ -112,7 +112,7 @@ function ThemedButton() {
 }
 ```
 
-The key difference is that `use()` can be called conditionally, whereas `useContext` must always be called at the top level:
+الفرق الجوهري أن `use()` يمكن نداؤه شرطيًا، بينما يجب نداء `useContext` دائمًا في المستوى الأعلى:
 
 ```typescript
 function ConditionalTheme({ showThemed }: { showThemed: boolean }) {
@@ -126,11 +126,11 @@ function ConditionalTheme({ showThemed }: { showThemed: boolean }) {
 }
 ```
 
-This flexibility is particularly useful for components that might not always need context values, or when building reusable components that work with optional context providers.
+هذه المرونة مفيدة خصوصًا للمكوّنات التي قد لا تحتاج دائمًا إلى قيم السياق، أو عند بناء مكوّنات قابلة لإعادة الاستخدام تعمل مع مزوّدي سياق اختياريين.
 
-## Caching and Performance
+## التخزين المؤقت والأداء
 
-One crucial aspect of `use()` is understanding how React handles promise caching. React doesn’t automatically cache promises—if you pass a new promise instance on each render, you’ll get into an infinite suspend/re-render loop:
+من الجوانب الحاسمة في `use()` فهم كيفية تعامل React مع تخزين الوعود مؤقتًا. لا يخزّن React الوعود تلقائيًا — فإذا مرّرت نسخة وعد جديدة في كل تصيير، دخلت في حلقة لا نهائية من التعليق وإعادة التصيير:
 
 ```typescript
 // ❌ Creates a new promise on every render - infinite loop!
@@ -140,9 +140,9 @@ function BadExample({ userId }: { userId: string }) {
 }
 ```
 
-Instead, you need to ensure promise stability. Here are several approaches:
+بدلًا من ذلك، عليك ضمان استقرار الوعد. وإليك عدة مقاربات:
 
-### Promise Memoization
+### تخزين الوعود مؤقتًا (memoization)
 
 ```typescript
 import { use, useMemo, Suspense } from 'react';
@@ -156,7 +156,7 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### External Promise Management
+### إدارة الوعود خارج المكوّن
 
 ```typescript
 // Create promises outside of components or in a cache
@@ -175,9 +175,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Using with Data Fetching Libraries
+### الاستخدام مع مكتبات جلب البيانات
 
-Libraries like SWR, React Query, or Relay already handle promise caching for you:
+مكتبات مثل SWR وReact Query وRelay تتولّى تخزين الوعود مؤقتًا نيابةً عنك بالفعل:
 
 ```typescript
 import { use } from 'react';
@@ -204,9 +204,9 @@ function UserProfileWithUse({ userId }: { userId: string }) {
 }
 ```
 
-## Error Handling
+## معالجة الأخطاء
 
-Error handling with `use()` follows React’s standard error boundary pattern. When a promise rejects, the error is thrown during render and caught by the nearest error boundary:
+تتبع معالجة الأخطاء مع `use()` نمط حدود الأخطاء القياسي في React. فعند رفض وعد، يُرمى الخطأ أثناء التصيير ويلتقطه أقرب حد أخطاء:
 
 ```typescript
 import { use, Suspense, ErrorBoundary } from 'react';
@@ -227,7 +227,7 @@ function App() {
 }
 ```
 
-For more granular error handling, you can catch errors in your data fetching functions:
+لمعالجة أخطاء أكثر تفصيلًا، يمكنك التقاط الأخطاء داخل دوال جلب البيانات:
 
 ```typescript
 async function fetchUserSafely(userId: string): Promise<User | null> {
@@ -250,11 +250,11 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Real-World Patterns
+## أنماط من الواقع العملي
 
-### Composing Multiple Async Resources
+### تركيب موارد غير متزامنة متعددة
 
-One of `use()`’s strengths is composing multiple async resources cleanly:
+من نقاط قوة `use()` تركيب موارد غير متزامنة متعددة بنظافة:
 
 ```typescript
 function UserDashboard({ userId }: { userId: string }) {
@@ -282,9 +282,9 @@ function App() {
 }
 ```
 
-### Waterfall vs Parallel Loading
+### التحميل المتتالي مقابل التحميل المتوازي
 
-Be mindful of how you structure your async calls. Sequential `use()` calls create waterfalls:
+انتبه إلى طريقة هيكلة نداءاتك غير المتزامنة. فنداءات `use()` المتتابعة تُنشئ شلالات تحميل:
 
 ```typescript
 // ❌ Waterfall: second request waits for first
@@ -307,9 +307,9 @@ function UserWithPosts({ userId }: { userId: string }) {
 }
 ```
 
-### Progressive Enhancement
+### التحسين التدريجي
 
-`use()` works great for progressive enhancement where you want to show partial data immediately:
+يعمل `use()` بامتياز في التحسين التدريجي حيث تريد عرض بيانات جزئية فورًا:
 
 ```typescript
 function ArticlePage({ articleId }: { articleId: string }) {
@@ -331,13 +331,13 @@ function ArticlePage({ articleId }: { articleId: string }) {
 }
 ```
 
-Each section can load independently, providing a better user experience than waiting for everything to load at once.
+يمكن لكل قسم أن يُحمَّل باستقلال، ما يوفّر تجربة مستخدم أفضل من انتظار تحميل كل شيء دفعة واحدة.
 
-## Migration Strategies
+## استراتيجيات الترحيل
 
-### From `useEffect` + `useState`
+### من `useEffect` + `useState`
 
-If you’re migrating from traditional `useEffect` + `useState` patterns:
+إذا كنت تُرحّل من أنماط `useEffect` + `useState` التقليدية:
 
 ```typescript
 // Before: manual state management
@@ -364,9 +364,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### From Data Fetching Libraries
+### من مكتبات جلب البيانات
 
-Many data fetching libraries already support Suspense mode, making migration straightforward:
+تدعم مكتبات جلب البيانات كثيرة بالفعل وضع Suspense، ما يجعل الترحيل مباشرًا:
 
 ```typescript
 // With React Query
@@ -393,26 +393,26 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### When to Use use() vs Traditional Hooks
+### متى تستخدم use() مقابل الخُطّافات التقليدية
 
-`use()` shines when you want:
+يبدع `use()` عندما تريد:
 
-- **Declarative async code**: No manual loading states
-- **Better composition**: Multiple async resources in one component
-- **Simplified error handling**: Let error boundaries handle failures
-- **Server-side rendering**: Works better with RSC and SSR
+- **شيفرة غير متزامنة تصريحية**: بلا حالات تحميل يدوية
+- **تركيبًا أفضل**: موارد غير متزامنة متعددة في مكوّن واحد
+- **معالجة أخطاء مبسّطة**: دع حدود الأخطاء تتولّى الإخفاقات
+- **التصيير على الخادم**: يعمل أفضل مع RSC وSSR
 
-Stick with traditional hooks when you need:
+والتزم بالخُطّافات التقليدية عندما تحتاج إلى:
 
-- **Imperative control**: Manual loading states or conditional fetching
-- **Legacy compatibility**: Working with older React versions
-- **Fine-grained loading UX**: Different loading states for different parts of your UI
+- **تحكم أمرّي**: حالات تحميل يدوية أو جلب شرطي
+- **توافق مع الشيفرة القديمة**: العمل مع إصدارات React الأقدم
+- **تجربة تحميل دقيقة التفصيل**: حالات تحميل مختلفة لأجزاء مختلفة من واجهتك
 
-### Bundle Size and Tree Shaking
+### حجم الحزمة واهتزاز الشجرة
 
-`use()` is part of React’s core bundle, so there’s no additional weight. However, be mindful of how you structure your data fetching to avoid including unnecessary code:
+`use()` جزء من حزمة React الأساسية، فلا وزن إضافي. لكن انتبه إلى كيفية هيكلة جلب بياناتك لتجنّب تضمين شيفرة غير ضرورية:
 
 ```typescript
 // ✅ Good: conditional imports
@@ -432,30 +432,30 @@ function UserProfile({ userId, includeAnalytics }: Props) {
 }
 ```
 
-## Looking Forward
+## نظرة إلى الأمام
 
-The `use()` hook represents React’s vision for simpler, more declarative async programming. Combined with React Server Components and the upcoming cache APIs, it enables patterns like:
+يجسّد خُطّاف `use()` رؤية React لبرمجة غير متزامنة أبسط وأكثر تصريحية. ومع مكوّنات خادم React وواجهات التخزين المؤقت القادمة، فهو يمكّن أنماطًا مثل:
 
-- **Automatic deduplication**: The same promise used across components resolves once
-- **Streaming SSR**: Server-rendered content can stream in progressively
-- **Better DevX**: Less boilerplate, clearer intent, easier debugging
+- **إزالة التكرار التلقائية**: الوعد نفسه المستخدم في مكوّنات متعددة يتحلّل مرة واحدة
+- **SSR متدفق**: يمكن للمحتوى المصيَّر على الخادم أن يتدفّق تدريجيًا
+- **تجربة تطوير أفضل**: كود متكرر أقل، ونية أوضح، وتنقيح أسهل
 
-As the ecosystem evolves, expect to see more libraries and frameworks embrace `use()` for cleaner async patterns. The key is understanding when and how to apply it effectively—which often means rethinking your data flow from imperative state management to declarative resource consumption.
+ومع تطوّر المنظومة، توقّع أن تتبنّى مكتبات وأطر أكثر `use()` لأنماط غير متزامنة أنظف. والمفتاح هو فهم متى وكيف تطبّقه بفعالية — وهو ما يعني غالبًا إعادة التفكير في تدفّق بياناتك من إدارة حالة أمرّية إلى استهلاك تصريحي للموارد.
 
-## Prerequisites
+## المتطلبات السابقة {#prerequisites}
 
-- Understanding of React Suspense and error boundaries
-- Experience with promises and async/await in JavaScript
-- Basic knowledge of React context
-- Familiarity with data fetching patterns
+- فهم React Suspense وحدود الأخطاء
+- خبرة بالوعود وasync/await في JavaScript
+- معرفة أساسية بسياق React
+- إلمام بأنماط جلب البيانات
 
-## Practical Examples
+## أمثلة عملية
 
-Real-world scenarios where use() excels:
+سيناريوهات من الواقع العملي يتألق فيها use():
 
-- **Dashboard applications** - Multiple data sources loading in parallel
-- **Content management systems** - Progressive content loading
-- **E-commerce sites** - Product details with related items
-- **Social media feeds** - Posts, comments, and user data composition
+- **تطبيقات لوحات المعلومات** - مصادر بيانات متعددة تُحمَّل بالتوازي
+- **أنظمة إدارة المحتوى** - تحميل تدريجي للمحتوى
+- **مواقع التجارة الإلكترونية** - تفاصيل المنتج مع العناصر المرتبطة
+- **أخبار وسائل التواصل الاجتماعي** - تركيب المنشورات والتعليقات وبيانات المستخدم
 
-Start small by migrating a few simple async components to `use()`, get comfortable with the Suspense boundary patterns, and gradually apply it to more complex data fetching scenarios. Your future self (and your teammates) will thank you for the cleaner, more maintainable code.
+ابدأ صغيرًا بترحيل بضعة مكوّنات غير متزامنة بسيطة إلى `use()`، وتآلف مع أنماط حدود Suspense، ثم طبّقها تدريجيًا على سيناريوهات جلب بيانات أكثر تعقيدًا. وسيشكرك مستقبلك (وزملاؤك) على الشيفرة الأنظف والأسهل صيانة.

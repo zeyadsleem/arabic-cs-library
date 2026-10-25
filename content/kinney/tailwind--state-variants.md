@@ -1,74 +1,74 @@
 ---
-title: "State Variants"
-lang: en
+title: "تنويعات الحالة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/state-variants"
 ---
 
-State variants apply utility classes conditionally based on element state or context. Prefix any utility with a variant name and colon: `hover:bg-blue-500`, `md:text-lg`.
+تطبّق تنويعات الحالة أصناف Tailwind المساعد شرطًا اعتمادًا على حالة العنصر أو سياقه. بادِئ أي صنف مساعد باسم التنويع متبوعًا بنقطتين: `hover:bg-blue-500`، `md:text-lg`.
 
-Key difference from CSS: Tailwind uses separate classes for each state rather than bundling multiple states in one class. The variant class only applies during that specific state.
+الفرق الأساسي عن CSS: يستخدم Tailwind أصنافًا منفصلة لكل حالة بدلًا من تجميع عدة حالات في صنف واحد. لا يُطبَّق صنف التنويع إلا أثناء تلك الحالة تحديدًا.
 
-## Types of State Variants
+## أنواع تنويعات الحالة
 
-### Pseudo-classes
+### الأصناف الزائفة
 
-**Interactive:** `hover`, `focus`, `active`, `visited`, `focus-within`, `focus-visible`
+**تفاعلية:** `hover`، `focus`، `active`، `visited`، `focus-within`، `focus-visible`
 
-**Structural:** `first`, `last`, `odd`, `even`, `only-child`, `first-of-type`, `last-of-type`, `only-of-type`, `nth-of-type()`
+**بنيوية:** `first`، `last`، `odd`، `even`، `only-child`، `first-of-type`، `last-of-type`، `only-of-type`، `nth-of-type()`
 
-**Form:** `required`, `disabled`, `invalid`, `read-only`, `indeterminate`, `checked`
+**النماذج:** `required`، `disabled`، `invalid`، `read-only`، `indeterminate`، `checked`
 
-**Special:** `target`, `placeholder-shown`, `details-content`, `autofill`
+**خاصة:** `target`، `placeholder-shown`، `details-content`، `autofill`
 
-### Pseudo-elements
+### العناصر الزائفة
 
-- `before` and `after`
-- `placeholder` (form inputs)
-- `file` (file input buttons)
-- `marker` (list items)
-- `selection` (selected text)
-- `first-line` and `first-letter`
-- `backdrop` (dialogs)
+- `before` و`after`
+- `placeholder` (حقول إدخال النماذج)
+- `file` (أزرار إدخال الملفات)
+- `marker` (عناصر القوائم)
+- `selection` (النص المحدّد)
+- `first-line` و`first-letter`
+- `backdrop` (الحوارات)
 
-### Media and Feature Queries
+### استعلامات الوسائط والميزات
 
-**Responsive:** `sm`, `md`, `lg`, `xl`, `2xl` (viewport widths)
+**متجاوبة:** `sm`، `md`، `lg`، `xl`، `2xl` (عروض إطار العرض)
 
-**Container Queries:** `@sm`, `@md`, `@max-sm`, `@max-md` (parent container size)
+**استعلامات الحاويات:** `@sm`، `@md`، `@max-sm`، `@max-md` (حجم حاوية الأصل)
 
-- Named containers: `@sm/{name}`
+- الحاويات المسمّاة: `@sm/{name}`
 
-**User Preferences:**
+**تفضيلات المستخدم:**
 
-- `dark` (dark mode)
-- `motion-reduce`, `motion-safe`
-- `contrast-more`, `contrast-less`
-- `forced-colors`, `not-forced-colors`
+- `dark` (الوضع الداكن)
+- `motion-reduce`، `motion-safe`
+- `contrast-more`، `contrast-less`
+- `forced-colors`، `not-forced-colors`
 - `inverted-colors`
-- `portrait`, `landscape`
+- `portrait`، `landscape`
 - `print`
 
-**Pointer:** `pointer-fine`, `pointer-coarse`, `pointer-none`
+**المؤشّر:** `pointer-fine`، `pointer-coarse`، `pointer-none`
 
-**Feature Detection:** `supports-[...]`, `not-supports-[...]`
+**كشف الميزات:** `supports-[...]`، `not-supports-[...]`
 
-### Attribute Selectors
+### محدّدات الخصائص
 
-- **ARIA:** `aria-*` (e.g., `aria-checked`)
-- **Data:** `data-*` (e.g., `data-active`)
-- **Direction:** `rtl`, `ltr`
-- **State:** `open` (details/dialog), `inert`
+- **ARIA:** `aria-*` (مثل `aria-checked`)
+- **البيانات:** `data-*` (مثل `data-active`)
+- **الاتجاه:** `rtl`، `ltr`
+- **الحالة:** `open` (details/dialog)، `inert`
 
-### Child Selectors
+### محدّدات الأبناء
 
-- `*` - Direct children only
-- `**` - All descendants
+- `*` - الأبناء المباشرون فقط
+- `**` - جميع الأبناء
 
-## Special Variant Patterns
+## أنماط التنويعات الخاصة
 
-**`group-*`** - Style based on parent state (parent needs `group` class)
+**`group-*`** - التنسيق حسب حالة الأصل (يحتاج الأصل إلى الصنف `group`)
 
-*Special Variant Patterns — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/638abe229a95cd6344e7fa25e60ea71ae27d7ec97c6526f18a9109927e41f077.html)*
+*أنماط التنويعات الخاصة — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/638abe229a95cd6344e7fa25e60ea71ae27d7ec97c6526f18a9109927e41f077.html)*
 
 ```html
 <div class="group">
@@ -76,38 +76,38 @@ Key difference from CSS: Tailwind uses separate classes for each state rather th
 </div>
 ```
 
-**`peer-*`** - Style based on previous sibling state (sibling needs `peer` class)
+**`peer-*`** - التنسيق حسب حالة الشقيق السابق (يحتاج الشقيق إلى الصنف `peer`)
 
-*Special Variant Patterns — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/7ac62de32231009240c8f6b744f36497f07bfb74e59fbd2a6f0a3000b42a9ba3.html)*
+*أنماط التنويعات الخاصة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7ac62de32231009240c8f6b744f36497f07bfb74e59fbd2a6f0a3000b42a9ba3.html)*
 
 ```html
 <input class="peer" /> <span class="peer-invalid:block">Error</span>
 ```
 
-**`has-*`** - Style based on descendant state
+**`has-*`** - التنسيق حسب حالة أحد الأبناء
 
-*Special Variant Patterns — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/67896f0a32fd3cd54eeb152ae0b7adc1d760b36518e829d789f2305e2d9ac148.html)*
+*أنماط التنويعات الخاصة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/67896f0a32fd3cd54eeb152ae0b7adc1d760b36518e829d789f2305e2d9ac148.html)*
 
 ```html
 <div class="has-[:focus]:ring">...</div>
 ```
 
-**`in-*`** - Style based on any parent state (no class needed)
+**`in-*`** - التنسيق حسب حالة أي من الأبناء (لا حاجة إلى صنف)
 
-## Stacking Variants
+## تراكم التنويعات
 
-Combine multiple conditions: `dark:md:hover:bg-blue-500`
+اجمع بين عدة شروط: `dark:md:hover:bg-blue-500`
 
-**v4 change:** Stacking order is now left-to-right (was right-to-left in v3)
+**تغيّر في v4:** أصبح ترتيب التراكم من اليسار إلى اليمين (كان من اليمين إلى اليسار في v3)
 
-## Custom Variants
+## تنويعات مخصّصة
 
-**Arbitrary:** `[&.is-dragging]:cursor-grabbing`
+**عشوائية:** `[&.is-dragging]:cursor-grabbing`
 
-**Reusable:** Define with `@custom-variant` in CSS
+**قابلة لإعادة الاستخدام:** تُعرَّف بـ `@custom-variant` في CSS
 
-##Tailwind 4 Changes
+##تغييرات Tailwind 4
 
-- `hover` only applies when device supports hover
-- `nth-*` variants accept any number by default
-- Boolean `data-*` attributes don’t need brackets
+- `hover` لا يُطبَّق إلا عندما يدعم الجهاز التمرير
+- تنويعات `nth-*` تقبل أي رقم افتراضيًا
+- خصائص `data-*` المنطقية لا تحتاج إلى أقواس مربّعة

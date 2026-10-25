@@ -1,31 +1,31 @@
 ---
-title: "React Server Components"
-lang: en
+title: "مكوّنات الخادم في React (React Server Components)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/react-server-components-rsc"
 ---
 
-React Server Components (RSC) fundamentally change how we think about React applications by moving computation to the server and streaming interactive pieces to the client. Instead of shipping massive JavaScript bundles and making every component client-side by default, RSC lets you render components on the server—keeping heavy data fetching, third-party libraries, and business logic away from your user’s device while hydrating only the pieces that need interactivity.
+تغيّر مكوّنات الخادم في React (React Server Components، وتُختصر RSC) جذريًا نظرتنا إلى تطبيقات React، إذ تنقل الحساب إلى الخادم وتبثّ الأجزاء التفاعلية إلى العميل. فبدلًا من إرسال حزم JavaScript ضخمة وجعل كل مكوّن على جهة العميل افتراضيًا، تتيح لك RSC تصيير المكوّنات على الخادم، فتبقي جلب البيانات الثقيل ومكتبات الطرف الثالث ومنطق العمل بعيدًا عن جهاز مستخدمك، ولا تُرطّب إلا الأجزاء التي تحتاج إلى تفاعل.
 
-If you’ve been wrestling with bundle sizes, slow initial loads, or the complexity of managing server state, RSC offers a compelling path forward. We’ll explore what Server Components are, how they differ from traditional approaches, and most importantly—when and how to use them effectively in your React 19 applications.
+إذا كنت تصارع أحجام الحزم، أو بطء التحميل الأولي، أو تعقيد إدارة حالة الخادم، فإن RSC تقدّم لك طريقًا واعدًا. سنستكشف ما هي مكوّنات الخادم، وكيف تختلف عن الأساليب التقليدية، والأهم من ذلك: متى وكيف تستخدمها بفعالية في تطبيقاتك على React 19.
 
-## What Are React Server Components?
+## ما مكوّنات الخادم في React؟
 
-React Server Components run exclusively on the server and never hydrate on the client. They can directly access your database, file system, or any server-only APIs without the security concerns or bundle bloat that comes with client-side code. When a Server Component renders, React serializes its output and streams it to the client as a special format that can be seamlessly integrated with your Client Components.
+تعمل مكوّنات الخادم في React على الخادم حصريًا ولا تُرطَّب على العميل أبدًا. وتستطيع الوصول مباشرةً إلى قاعدة بياناتك، أو نظام الملفات، أو أي واجهات API خاصة بالخادم، من دون المخاوف الأمنية أو تضخّم الحزمة الذي يأتي مع شيفرة جهة العميل. وعندما يُصيّر مكوّن الخادم، يُسلسل React خرجه ويبثّه إلى العميل بصيغة خاصة يمكن دمجها بسلاسة مع مكوّنات العميل لديك.
 
-Think of Server Components as a new rendering target—like how you might render React to a string with `renderToString()`, but instead of static HTML, you get a rich, interactive tree that can contain both server-rendered content and client-side components.
+فكّر في مكوّنات الخادم كهدف تصيير جديد، شبيه بتصيير React إلى نص باستخدام `renderToString()`، لكنك بدلًا من HTML ساكن تحصل على شجرة غنية وتفاعلية يمكن أن تجمع بين محتوى مصيّر على الخادم ومكوّنات على جهة العميل.
 
-Here’s what makes them different from traditional server-side rendering (SSR):
+وإليك ما يميّزها عن التصيير التقليدي على الخادم (SSR):
 
-- **Selective hydration**: Only Client Components hydrate on the client
-- **Streaming**: Server Components stream as they resolve, improving perceived performance
-- **Direct server access**: No API layer needed for server-only data
-- **Bundle elimination**: Server-only dependencies never reach the client
+- **ترطيب انتقائي**: لا تُرطَّب على العميل إلا مكوّنات العميل
+- **البثّ**: تُبثّ مكوّنات الخادم فور اكتمالها، ما يحسّن الأداء الملموس
+- **وصول مباشر إلى الخادم**: لا حاجة إلى طبقة API للبيانات الخاصة بالخادم
+- **إلغاء الحزمة**: الاعتمادات الخاصة بالخادم لا تصل إلى العميل أبدًا
 
-## Server vs Client Components in Practice
+## مكوّنات الخادم مقابل مكوّنات العميل عمليًا
 
-Let’s start with a practical example. Imagine you’re building a product page that needs to fetch data from your database and display an interactive shopping cart.
+لنبدأ بمثال عملي. تخيّل أنك تبني صفحة منتج تحتاج إلى جلب بيانات من قاعدة بياناتك وعرض سلة تسوّق تفاعلية.
 
-### Traditional Approach (Everything Client-Side)
+### الأسلوب التقليدي (كل شيء على جهة العميل)
 
 ```typescript
 // ❌ Everything runs on the client
@@ -54,14 +54,14 @@ export default function ProductPage({ productId }: { productId: string }) {
 }
 ```
 
-Problems with this approach:
+مشكلات هذا الأسلوب:
 
-- Loading states and error handling clutter your component
-- Network waterfall: HTML loads, then JS loads, then API call happens
-- Duplicate data structures between server and client
-- API endpoint needed just to bridge server data to client
+- حالات التحميل ومعالجة الأخطاء تُثقل مكوّنك
+- شلال الشبكة: يُحمَّل HTML، ثم تُحمَّل JavaScript، ثم يحدث نداء API
+- بنى بيانات مكررة بين الخادم والعميل
+- نقطة نهاية API تُحتاج فقط للجسر بين بيانات الخادم والعميل
 
-### Server Components Approach
+### أسلوب مكوّنات الخادم
 
 ```typescript
 // ✅ Server Component - runs only on the server
@@ -116,18 +116,18 @@ export function AddToCartButton({ productId }: { productId: string }) {
 }
 ```
 
-With Server Components:
+مع مكوّنات الخادم:
 
-- No loading states needed—data is available immediately
-- Direct database queries without API endpoints
-- Smaller client bundle—only `AddToCartButton` ships to the client
-- Better SEO and initial paint performance
+- لا حاجة إلى حالات تحميل، فالبيانات متاحة فورًا
+- استعلامات قاعدة بيانات مباشرة بلا نقاط نهاية API
+- حزمة عميل أصغر، فلا يُرسَل إلى العميل إلا `AddToCartButton`
+- تحسين محركات البحث وأداء الرسم الأولي
 
-## The “use client” Directive
+## توجيه «use client»
 
-The `'use client'` directive is your explicit opt-in to client-side rendering. By default, components are Server Components in RSC-enabled frameworks like Next.js App Router.
+توجيه `'use client'` هو اختيارك الصريح للتصيير على جهة العميل. فافتراضيًا تكون المكوّنات مكوّنات خادم في الأطر التي تدعم RSC مثل موجّه التطبيقات في Next.js (Next.js App Router).
 
-Here’s how to think about the boundary:
+وإليك كيف تفكّر في الحدّ الفاصل:
 
 ```typescript
 // Server Component (default)
@@ -176,15 +176,15 @@ export function InteractiveChart({ data }: { data: AnalyticsData }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Once you add `'use client'` to a component, all of its children become Client Components too. Design your component boundaries thoughtfully to minimize what needs to run on the client.
+> بمجرد إضافة `'use client'` إلى مكوّن، يصبح كل أبنائه مكوّنات عميل أيضًا. فصمّم حدود مكوّناتك بعناية لتقليل ما يحتاج إلى العمل على العميل.
 
-## Common Patterns and Best Practices
+## أنماط شائعة وأفضل الممارسات
 
-### Pattern 1: Server Component Wrapper with Client Islands
+### النمط 1: غلاف مكوّن خادم مع جزر عميل
 
-Keep your Server Components at the top level and sprinkle in Client Components only where needed:
+أبقِ مكوّنات الخادم في المستوى الأعلى، وأضف مكوّنات العميل فقط حيث تدعو الحاجة:
 
 ```typescript
 // Server Component - fetches data
@@ -206,9 +206,9 @@ export default async function PostPage({ slug }: { slug: string }) {
 }
 ```
 
-### Pattern 2: Streaming with `Suspense`
+### النمط 2: البثّ باستخدام `Suspense`
 
-Server Components work beautifully with React’s Suspense to stream content as it becomes available:
+تعمل مكوّنات الخادم بانسجام تام مع Suspense في React لبثّ المحتوى فور توفّره:
 
 ```typescript
 import { Suspense } from 'react';
@@ -240,9 +240,9 @@ async function AnalyticsChart() {
 }
 ```
 
-### Pattern 3: Progressive Enhancement
+### النمط 3: التحسين التدريجي
 
-Server Components excel at progressive enhancement—building experiences that work without JavaScript and enhance with it:
+تتفوّق مكوّنات الخادم في التحسين التدريجي، أي بناء تجارب تعمل بلا JavaScript ثم تتحسّن به:
 
 ```typescript
 // Server Component renders the initial state
@@ -277,40 +277,40 @@ export function FilterControls({ category }: { category: string }) {
 }
 ```
 
-## Performance Benefits and Tradeoffs
+## فوائد الأداء والمقايضات
 
-### The Good
+### الجانب الجيّد
 
-**Smaller JavaScript bundles**: Only interactive components ship to the client. In our product page example, instead of shipping React, your entire app code, and data fetching logic, you only ship the `AddToCartButton` component.
+**حزم JavaScript أصغر**: لا يُرسَل إلى العميل إلا المكوّنات التفاعلية. في مثال صفحة المنتج لدينا، بدلًا من إرسال React وكامل شيفرة تطبيقك ومنطق جلب البيانات، لا ترسل إلا مكوّن `AddToCartButton`.
 
-**Faster initial page loads**: Server Components render immediately on the server—no network requests needed for initial data.
+**تحميل أولي أسرع للصفحة**: تُصيّر مكوّنات الخادم فورًا على الخادم، فلا حاجة إلى طلبات شبكة للبيانات الأولية.
 
-**Better Core Web Vitals**: Less JavaScript means faster Time to Interactive (TTI) and better Cumulative Layout Shift (CLS) scores.
+**مؤشرات Core Web Vitals أفضل**: JavaScript أقل يعني زمنًا أقصر حتى التفاعل (TTI) ونتائج أفضل في إزاحة التخطيط التراكمية (CLS).
 
-**Direct server access**: No need to create API endpoints just to fetch data for initial rendering.
+**وصول مباشر إلى الخادم**: لا حاجة إلى إنشاء نقاط نهاية API لمجرد جلب البيانات للتصيير الأولي.
 
-### The Tradeoffs
+### المقايضات
 
-**Framework complexity**: RSC requires a framework like Next.js or Remix with proper build tooling. You can’t just drop Server Components into any React app.
+**تعقيد الإطار**: تتطلب RSC إطارًا مثل Next.js أو Remix مع أدوات بناء مناسبة. فلا تستطيع إسقاط مكوّنات الخادم في أي تطبيق React كما تشاء.
 
-**Mental model shift**: You need to think about server/client boundaries and understand the serialization limitations.
+**تغيّر في النموذج الذهني**: عليك التفكير في الحدود بين الخادم والعميل وفهم قيود التسلسل.
 
-**Debugging challenges**: Stack traces might span server and client, making debugging more complex.
+**تحديات في التنقيح**: قد تمتد آثار المكدّس بين الخادم والعميل، ما يجعل التنقيح أكثر تعقيدًا.
 
-**Limited ecosystem support**: Not all React libraries work with Server Components yet.
+**دعم محدود من المنظومة**: ليست كل مكتبات React تعمل مع مكوّنات الخادم بعد.
 
-## Real-World Migration Strategy
+## استراتيجية الانتقال في العالم الحقيقي
 
-If you’re considering RSC for an existing application, here’s a pragmatic approach:
+إذا كنت تفكّر في تبنّي RSC لتطبيق قائم، فإليك مقاربة عملية:
 
-### Phase 1: Identify Server Component Candidates
+### المرحلة 1: تحديد المرشّحين لمكوّنات الخادم
 
-Look for components that:
+ابحث عن المكوّنات التي:
 
-- Fetch data on mount with `useEffect`
-- Don’t need user interactions (clicks, form inputs, etc.)
-- Render the same content for all users (or can be personalized server-side)
-- Import heavy libraries that could live on the server
+- تجلب البيانات عند التثبيت باستخدام `useEffect`
+- لا تحتاج تفاعل المستخدم (نقرات، حقول نماذج، وما شابه)
+- تصيّر المحتوى نفسه لجميع المستخدمين (أو يمكن تخصيصها على الخادم)
+- تستورد مكتبات ثقيلة يمكن أن تبقى على الخادم
 
 ```typescript
 // ✅ Great Server Component candidate
@@ -332,9 +332,9 @@ function BlogPost({ slug }: { slug: string }) {
 }
 ```
 
-### Phase 2: Extract Client Islands
+### المرحلة 2: استخراج جزر العميل
 
-Identify the interactive pieces and separate them:
+حدّد الأجزاء التفاعلية وافصلها:
 
 ```typescript
 // Server Component
@@ -362,19 +362,19 @@ function LikeButton({ postId, initialLikes }: { postId: string; initialLikes: nu
 }
 ```
 
-### Phase 3: Gradually Expand Server Components
+### المرحلة 3: توسيع مكوّنات الخادم تدريجيًا
 
-Once you’re comfortable with the patterns, gradually move more components to the server:
+بعد أن تألف هذه الأنماط، انقل مزيدًا من المكوّنات إلى الخادم تدريجيًا:
 
-- Static content components (headers, footers, navigation)
-- Data-heavy components (dashboards, reports, product listings)
-- SEO-critical pages (landing pages, blog posts, product pages)
+- مكوّنات المحتوى الساكن (الترويسات، والتذييلات، والتنقّل)
+- المكوّنات كثيفة البيانات (لوحات المعلومات، والتقارير، وقوائم المنتجات)
+- الصفحات الحسّاسة لتحسين محركات البحث (صفحات الهبوط، ومنشورات المدوّنات، وصفحات المنتجات)
 
-## Common Pitfalls and How to Avoid Them
+## مزالق شائعة وكيف تتجنّبها
 
-### Pitfall 1: Prop Serialization Limits
+### المزلق 1: حدود تسلسل الخصائص
 
-Server Components can only pass serializable data to Client Components:
+لا تستطيع مكوّنات الخادم تمرير إلا بيانات قابلة للتسلسل إلى مكوّنات العميل:
 
 ```typescript
 // ❌ This won't work
@@ -390,9 +390,9 @@ function ClientComponent({ data }: { data: SerializableData }) {
 }
 ```
 
-### Pitfall 2: Over-Client Components
+### المزلق 2: الإفراط في مكوّنات العميل
 
-Don’t mark everything as `'use client'` just to be safe:
+لا تضع `'use client'` على كل شيء احتياطًا:
 
 ```typescript
 // ❌ Unnecessary client boundary
@@ -420,9 +420,9 @@ export default function Page() {
 }
 ```
 
-### Pitfall 3: Import Mixing
+### المزلق 3: خلط الاستيرادات
 
-Be careful about importing server-only code in Client Components:
+احترس من استيراد شيفرة خاصة بالخادم داخل مكوّنات العميل:
 
 ```typescript
 // ❌ This will cause build errors
@@ -445,17 +445,17 @@ function ClientComponent({ data }: { data: User }) {
 }
 ```
 
-## When to Use Server Components
+## متى تستخدم مكوّنات الخادم
 
-Server Components shine when:
+تتألّق مكوّنات الخادم حين:
 
-- **Data-heavy interfaces**: Dashboards, admin panels, reporting tools
-- **Content-heavy pages**: Blogs, documentation, marketing pages
-- **E-commerce product pages**: Where initial load speed is critical
-- **Progressive web apps**: Where you want fast initial loads with enhanced interactivity
+- **الواجهات كثيفة البيانات**: لوحات المعلومات، ولوحات الإدارة، وأدوات التقارير
+- **الصفحات كثيفة المحتوى**: المدوّنات، والتوثيق، والصفحات التسويقية
+- **صفحات منتجات التجارة الإلكترونية**: حيث تكون سرعة التحميل الأولي حرجة
+- **تطبيقات الويب التقدّمية**: حيث تريد تحميلًا أوليًا سريعًا مع تفاعلية معزّزة
 
-They’re less ideal for:
+وهي أقل ملاءمةً لـ:
 
-- **Highly interactive applications**: Real-time games, drawing apps, rich text editors
-- **Client-side routing heavy apps**: Where you need instant navigation
-- **Apps with lots of personalized, dynamic content**: That can’t be computed server-side
+- **التطبيقات شديدة التفاعلية**: الألعاب الزمنية الحقيقية، وتطبيقات الرسم، ومحرّرات النصوص الغنية
+- **التطبيقات كثيفة التوجيه على جهة العميل**: حيث تحتاج تنقّلًا فوريًا
+- **التطبيقات المليئة بالمحتوى الديناميكي المخصّص**: الذي لا يمكن حسابه على الخادم

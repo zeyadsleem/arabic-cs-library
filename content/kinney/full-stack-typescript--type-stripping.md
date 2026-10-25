@@ -1,24 +1,24 @@
 ---
-title: "Type Stripping"
-lang: en
+title: "نزع الأنواع"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-stripping"
 ---
 
-Type stripping is Node.js’s way of “magically” running TypeScript files without a separate build step—by literally erasing all the type syntax from your source code at runtime. In other words, Node takes your `.ts` file, removes things like type annotations, interfaces, and type-only imports (by replacing them with whitespace so that line numbers stay the same), and then executes the remaining JavaScript code as if you’d handwritten it. It’s like having a “do it live” button for TypeScript—but don’t forget, it doesn’t check your types at runtime!
+نزع الأنواع (type stripping) هو طريقة Node.js لتشغيل ملفات TypeScript «بشكل سحري» بلا خطوة بناء منفصلة — إذ يمحو فعليًا كل صياغة الأنواع من شيفرتك المصدرية في وقت التشغيل. بعبارة أخرى، يأخذ Node ملف `.ts` لديك، ويحذف منه أشياء مثل تعليقات الأنواع والواجهات والاستيرادات المخصّصة للأنواع فقط (باستبدالها بمسافات بيضاء كي تبقى أرقام الأسطر كما هي)، ثم ينفّذ شيفرة JavaScript المتبقية كما لو كنت قد كتبتها بيدك. إنه مثل وجود زر «نفّذها مباشرةً» لـ TypeScript — لكن لا تنسَ أنه لا يفحص أنواعك في وقت التشغيل!
 
-## How It Works
+## كيف يعمل
 
-- **No Type Checking at Runtime:** Node simply strips out the type annotations (using a minimal transformation via a customized version of swc) without performing any type checks. So if you accidentally pass a number where a string is expected, Node will happily run your code and likely blow up later.
-- **Source Map Preservation:** By replacing type code with whitespace instead of deleting it outright, Node preserves your original code’s line numbers. This means stack traces still point you to the correct location in your source—even though your types are gone.
-- **Experimental Feature:** Initially flagged with warnings (which you can disable using `--disable-warning=ExperimentalWarning` or via `NODE_OPTIONS`), type stripping is experimental and may evolve over time.
+- **لا فحص أنواع في وقت التشغيل:** يكتفي Node بنزع تعليقات الأنواع (باستخدام تحويل بالغ الصغر عبر نسخة مخصّصة من swc) دون إجراء أي فحوص أنواع. لذا إن مرّرت رقمًا بالخطأ حيث يُتوقع نص، سيشغّل Node شيفرتك بسرور، وغالبًا ما ستنفجر لاحقًا.
+- **الحفاظ على خريطة المصدر:** باستبدال شيفرة الأنواع بمسافات بيضاء بدل حذفها كليًا، يحافظ Node على أرقام أسطر شيفرتك الأصلية. وهذا يعني أن تتبّعات المكدّس لا تزال تشير إلى الموقع الصحيح في مصدرك — رغم اختفاء أنواعك.
+- **ميزة تجريبية:** كانت تُعلَن في البداية بتحذيرات (يمكنك تعطيلها باستخدام `--disable-warning=ExperimentalWarning` أو عبر `NODE_OPTIONS`)، ونزع الأنواع ميزة تجريبية قد تتطوّر بمرور الوقت.
 
-## Configuring TypeScript for Node’s Type Stripping
+## تهيئة TypeScript لنزع الأنواع في Node
 
-To get the best of both worlds—fast execution with Node’s built-in type stripping and robust static type checking during development—here’s what you should do:
+للجمع بين أفضل ما في العالمين — تنفيذ سريع بنزع الأنواع المدمج في Node وفحص أنواع ساكن متين أثناء التطوير — إليك ما ينبغي أن تفعله:
 
-## Set Up Your `tsconfig.json`
+## جهّز `tsconfig.json`
 
-Use a minimal configuration tailored for Node’s type stripping. For instance:
+استخدم تكوينًا بالغ الصغر مُفصّلًا لنزع الأنواع في Node. على سبيل المثال:
 
 ```json
 {
@@ -33,44 +33,44 @@ Use a minimal configuration tailored for Node’s type stripping. For instance:
 }
 ```
 
-This setup tells TypeScript to let Node.js know which parts are safe to strip.
+يخبر هذا الإعداد TypeScript أن يُعلم Node.js أي الأجزاء آمنة لنزعها.
 
-## Use Type-Only Imports
+## استخدم الاستيرادات الخاصة بالأنواع فقط
 
-Always import types using the `import type { … }` syntax. If you import types as runtime values (omitting `type`), Node’s type stripping won’t remove them, which can lead to runtime errors.
+استورد الأنواع دائمًا بصياغة `import type { … }`. فإذا استوردت الأنواع كقيم وقت تشغيل (بإغفال `type`)، فلن يزيلها نزع الأنواع في Node، وقد يؤدي ذلك إلى أخطاء وقت التشغيل.
 
-## Stick to Supported Syntax
+## التزم بالصياغة المدعومة
 
-Node’s current type stripping only supports a subset of TypeScript:
+نزع الأنواع الحالي في Node يدعم مجموعة فرعية من TypeScript فقط:
 
-- No enums, parameter properties, or namespaces.
-- JSX isn’t supported.
-- Use plain `.ts` (or `.mts`/`.cts` for module-specific behavior) files.
+- لا تعدادات (enums)، ولا خصائص وسائط، ولا نطاقات أسماء (namespaces).
+- JSX غير مدعوم.
+- استخدم ملفات `.ts` عادية (أو `.mts`/`.cts` لسلوك خاص بالوحدات).
 
-Essentially, write your TS code with the mindset that Node is just “cleaning up” your types, not transforming your code in any deep way.
+باختصار، اكتب شيفرة TS بعقلية أن Node «ينظّف» أنواعك فحسب، ولا يحوّل شيفرتك تحويلًا عميقًا.
 
-## Run Static Type Checking Separately
+## شغّل فحص الأنواع الساكن منفصلًا
 
-Since Node won’t check your types at runtime, make sure to run `tsc --noEmit` (or use your IDE’s language server) during development to catch type errors before you hit runtime.
+بما أن Node لن يفحص أنواعك في وقت التشغيل، فتأكّد من تشغيل `tsc --noEmit` (أو استخدام خادم اللغة في محرّرك) أثناء التطوير لالتقاط أخطاء الأنواع قبل وصولك إلى وقت التشغيل.
 
-## Best Practices & Key Takeaways
+## أفضل الممارسات والاستنتاجات الأساسية
 
-### Rapid Prototyping
+### النمذجة السريعة
 
-Type stripping is awesome for quickly iterating without a build step. But don’t get too comfortable—rely on your type checker to catch mistakes.
+نزع الأنواع رائع للتحرير السريع بلا خطوة بناء. لكن لا ترتخِ كثيرًا — اعتمد على فاحص الأنواع لالتقاط الأخطاء.
 
-### Debugging
+### التصحيح
 
-Thanks to whitespace replacement, debugging remains accurate. Your stack traces point exactly where you expect.
+بفضل استبدال المسافات البيضاء، يبقى التصحيح دقيقًا. فتتبّعات المكدّس تشير إلى حيث تتوقّع تمامًا.
 
-### Stay Within Limits
+### ابقَ داخل الحدود
 
-Since not all TypeScript features are supported, avoid “exotic” TS syntax that requires full transpilation (like enums or certain advanced generics).
+بما أن ميزات TypeScript كلها غير مدعومة، فتجنّب صياغة TS «الغرابة» التي تتطلب ترجمة كاملة (مثل التعدادات أو بعض الأنواع العامة المتقدمة).
 
-### Experimental Status
+### الحالة التجريبية
 
-Remember this feature is experimental. Use it in development for prototyping, but for production code, you might still prefer a full build step until the feature matures.
+تذكّر أن هذه الميزة تجريبية. استخدمها في التطوير للنمذجة، لكن في شيفرة الإنتاج قد تفضّل خطوة بناء كاملة حتى تنضج الميزة.
 
-In a nutshell, type stripping in Node.js is a nifty feature that lets you run TypeScript files as if they were JavaScript—stripping out the types on the fly. Just keep in mind that this is a “no type-check” runtime solution, so your safety net (the TypeScript compiler) has to be run separately during development.
+باختصار، نزع الأنواع في Node.js ميزة أنيقة تتيح لك تشغيل ملفات TypeScript كما لو كانت JavaScript — بنزع الأنواع على الطائر. فقط تذكّر أن هذا حلّ وقت تشغيل «بلا فحص أنواع»، لذا يجب تشغيل شبكة أمانك (مصرّف TypeScript) منفصلًا أثناء التطوير.
 
-Happy coding—and may your type errors be caught before runtime (or at least before your users notice)!
+برمجة سعيدة — ولتُلتقط أخطاء أنواعك قبل وقت التشغيل (أو على الأقل قبل أن يلاحظها مستخدموك)!

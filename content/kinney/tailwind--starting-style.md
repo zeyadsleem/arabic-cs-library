@@ -1,14 +1,14 @@
 ---
-title: "@starting-style"
-lang: en
+title: "بداية الأنماط (@starting-style)"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/starting-style"
 ---
 
-The `starting` variant (new in Tailwind 4) enables smooth animations when elements first appear or transition from `display: none`.
+يتيح مُبدّل `starting` (جديد في Tailwind 4) حركات سلسة عندما تظهر العناصر أول مرة أو تنتقل من `display: none`.
 
-## The Problem
+## المشكلة
 
-CSS transitions don’t work on initial render or when toggling from `display: none` because the browser needs two states to animate between.
+لا تعمل انتقالات CSS عند التصيير الأول أو عند التبديل من `display: none`، لأن المتصفح يحتاج حالتين ينتقل بينهما.
 
 ```css
 /* Won't animate on first appearance */
@@ -18,9 +18,9 @@ CSS transitions don’t work on initial render or when toggling from `display: n
 }
 ```
 
-## The Solution
+## الحل
 
-The `@starting-style` CSS rule defines initial styles for first render:
+تُعرّف قاعدة CSS `@starting-style` الأنماط الأولية للتصيير الأول:
 
 ```css
 .modal {
@@ -35,11 +35,11 @@ The `@starting-style` CSS rule defines initial styles for first render:
 }
 ```
 
-## Using the `starting` Variant
+## استخدام مُبدّل `starting`
 
-Tailwind wraps utilities in `@starting-style` automatically:
+يلفّ Tailwind الأصناف المساعِدة داخل `@starting-style` تلقائيًا:
 
-*Using the starting Variant — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/7a732a7546ca055b25a4cb861ddfa5fd502e6e531421a38cfc4407658980a7fc.html)*
+*استخدام مُبدّل starting — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7a732a7546ca055b25a4cb861ddfa5fd502e6e531421a38cfc4407658980a7fc.html)*
 
 ```html
 <!-- Fade in on appearance -->
@@ -53,11 +53,11 @@ Tailwind wraps utilities in `@starting-style` automatically:
 </div>
 ```
 
-## Common Patterns
+## الأنماط الشائعة
 
-**Modal dialogs:**
+**مربّعات الحوار (modals):**
 
-*Common Patterns — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/7fea11cce421fae0fd797cad5d7d3966ded8b14bc99203bb7df9296f06c5daa4.html)*
+*الأنماط الشائعة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7fea11cce421fae0fd797cad5d7d3966ded8b14bc99203bb7df9296f06c5daa4.html)*
 
 ```html
 <dialog
@@ -68,9 +68,9 @@ Tailwind wraps utilities in `@starting-style` automatically:
 </dialog>
 ```
 
-**Toast notifications:**
+**إشعارات التنبيه (toasts):**
 
-*Common Patterns — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/4420e2fff3d8f073d49279500119a9d65db1f9cb88ad70c4194c604d62432100.html)*
+*الأنماط الشائعة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4420e2fff3d8f073d49279500119a9d65db1f9cb88ad70c4194c604d62432100.html)*
 
 ```html
 <div class="translate-x-0 transition-transform duration-300 starting:translate-x-full">
@@ -78,9 +78,9 @@ Tailwind wraps utilities in `@starting-style` automatically:
 </div>
 ```
 
-**Dropdown menus:**
+**القوائم المنسدلة (dropdowns):**
 
-*Common Patterns — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/463f1809ec9bf780467b2e33c395fda67e1940f90c38f0634a1818324eba1d18.html)*
+*الأنماط الشائعة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/463f1809ec9bf780467b2e33c395fda67e1940f90c38f0634a1818324eba1d18.html)*
 
 ```html
 <ul
@@ -90,11 +90,11 @@ Tailwind wraps utilities in `@starting-style` automatically:
 </ul>
 ```
 
-## With Display Transitions
+## مع انتقالات العرض
 
-Enable transitions on `display` property changes:
+فعّل الانتقالات عند تغيّرات الخاصية `display`:
 
-*With Display Transitions — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/c045102f9c6b8f87860169d9b79b5927b94617b92ceb5f29dec7f1c335da1f3b.html)*
+*مع انتقالات العرض — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c045102f9c6b8f87860169d9b79b5927b94617b92ceb5f29dec7f1c335da1f3b.html)*
 
 ```html
 <details open class="transition-[display,opacity] duration-300 starting:opacity-0">
@@ -103,19 +103,19 @@ Enable transitions on `display` property changes:
 </details>
 ```
 
-**Note:** Requires `transition-behavior: allow-discrete` (included when you use `transition-[display]`).
+**ملاحظة:** يتطلّب `transition-behavior: allow-discrete` (وهو مُضمَّن عندما تستخدم `transition-[display]`).
 
-## Browser Support
+## دعم المتصفحات
 
 - Chrome/Edge 117+
 - Firefox 129+
 - Safari 17.5+
 
-Always provide non-animated fallbacks for unsupported browsers.
+دائمًا قدّم بدائل احتياطية غير متحرّكة للمتصفحات غير المدعومة.
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. Keep animations subtle and fast (150-300ms)
-2. Use with `motion-reduce:` variants for accessibility
-3. Test in browsers without support
-4. Combine with JavaScript for exit animations (not yet supported in CSS)
+1. اجعل الحركات خفيفة وسريعة (150-300ms)
+2. استخدمه مع مُبدّلات `motion-reduce:` لإتاحة الوصول
+3. اختبره في المتصفحات غير المدعومة
+4. اجمعه مع JavaScript للحصول على حركات الخروج (غير مدعومة في CSS حتى الآن)

@@ -1,10 +1,10 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/testing/asymmetric-matchers-solution"
 ---
 
-Here is one way to implement tests for our `Character` class in [the previous exercise](https://stevekinney.com/courses/testing/asymmetric-matchers-exercise) using [Asymmetric Matchers](https://stevekinney.com/courses/testing/asymmetric-matchers).
+إليك طريقة واحدة لتنفيذ اختبارات لصنف `Character` لدينا في [التمرين السابق](https://stevekinney.com/courses/testing/asymmetric-matchers-exercise) باستخدام [المطابقات غير المتماثلة](https://stevekinney.com/courses/testing/asymmetric-matchers).
 
 ```javascript
 import { describe, it, expect } from 'vitest';

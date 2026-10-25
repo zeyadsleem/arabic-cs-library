@@ -1,16 +1,16 @@
 ---
-title: "Bundle Analysis Deep Dive"
-lang: en
+title: "تحليل الحزم بعمق"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/bundle-analysis-deep-dive"
 ---
 
-Your React bundle is a black box until you crack it open. That 2MB JavaScript file could contain duplicate dependencies, unused code, or a single poorly chosen library that’s 10x larger than alternatives. Bundle analysis transforms guesswork into data-driven optimization—showing you exactly what’s shipped, why it’s there, and where you can cut the fat without breaking functionality.
+حزمتك من React صندوق مغلق حتى تفتحه. فملف JavaScript بحجم 2MB ذاك قد يحتوي اعتمادات مكرّرة، أو شيفرة غير مستخدمة، أو مكتبة واحدة سيئة الاختيار أكبر عشر مرات من بدائلها. يحوّل تحليل الحزمة التخمين إلى تحسين مبني على البيانات — فيُريك بالضبط ما يُرسَل، ولماذا هو هناك، وأين يمكنك تقليص الحجم الزائد دون كسر الوظائف.
 
-The difference between a fast React app and a slow one often comes down to what’s in the bundle. Every kilobyte counts, especially on mobile networks where 200KB might take 3 seconds to download. Master bundle analysis, and you’ll catch performance regressions before users do, identify optimization opportunities your gut would never find, and make informed decisions about every dependency you add.
+الفرق بين تطبيق React سريع وآخر بطيء يعود غالبًا إلى ما داخل الحزمة. فكل كيلوبايت مهم، خصوصًا على شبكات الهاتف حيث قد يستغرق 200KB ثلاث ثوانٍ للتنزيل. أتقن تحليل الحزمة، وستلتقط تراجع الأداء قبل المستخدمين، وتحدّد فرص تحسين لا يكشفها حدسك أبدًا، وتتخذ قرارات مدروسة بشأن كل اعتماد تضيفه.
 
-## Understanding Your Bundle Structure
+## فهم بنية حزمتك
 
-Modern React applications typically generate multiple bundle files through code splitting:
+تُنتج تطبيقات React الحديثة عادةً ملفات حزمة متعددة عبر تقسيم الشيفرة:
 
 ```javascript
 // Typical webpack output structure
@@ -38,13 +38,13 @@ const bundleBreakdown = {
 };
 ```
 
-Each bundle serves a different caching strategy—vendor bundles change rarely, main bundles change with app updates, and component bundles change when features are modified.
+تخدم كل حزمة استراتيجية تخزين مؤقت مختلفة — فحزم المورّدين نادرًا ما تتغيّر، وحزم التطبيق الأساسية تتغيّر مع تحديثات التطبيق، وحزم المكوّنات تتغيّر عند تعديل الميزات.
 
-## Webpack Bundle Analyzer: Your X-Ray Vision
+## Webpack Bundle Analyzer: رؤيتك بالأشعة السينية
 
-The webpack-bundle-analyzer is the gold standard for visualizing bundle contents:
+يُعدّ webpack-bundle-analyzer المعيار الذهبي لتصوّر محتوى الحزمة:
 
-### Setup and Configuration
+### الإعداد والتهيئة
 
 ```javascript
 // webpack.config.js
@@ -88,9 +88,9 @@ module.exports = {
 }
 ```
 
-### Reading the Analyzer Output
+### قراءة مخرجات المحلّل
 
-The bundle analyzer shows three key metrics for each module:
+يعرض محلّل الحزمة ثلاثة مقاييس رئيسية لكل وحدة:
 
 ```typescript
 interface ModuleAnalysis {
@@ -141,7 +141,7 @@ const analysisFindings = {
 };
 ```
 
-### Advanced Analysis Techniques
+### تقنيات تحليل متقدّمة
 
 ```javascript
 // Custom webpack plugin to analyze bundle composition
@@ -222,9 +222,9 @@ class BundleCompositionAnalyzer {
 }
 ```
 
-## Source Map Analysis
+## تحليل خرائط المصدر
 
-Source maps reveal the true composition of your minified bundles:
+تكشف خرائط المصدر التركيب الحقيقي لحزمك المصغَّرة:
 
 ```javascript
 // Analyze source maps to find unused code
@@ -308,9 +308,9 @@ async function analyzeSourceMaps() {
 }
 ```
 
-## Dependency Auditing
+## تدقيق الاعتمادات
 
-### Automated Dependency Analysis
+### تحليل الاعتمادات الآلي
 
 ```javascript
 // package.json analyzer
@@ -501,19 +501,19 @@ async function generateDependencyReport() {
 }
 ```
 
-## Bundle Optimization Strategies
+## استراتيجيات تحسين الحزمة
 
-### Tree Shaking Enhancement
+### تعزيز اهتزاز الشجرة
 
-Tree shaking removes unused code from your bundle. When analyzing bundles, look for:
+يزيل اهتزاز الشجرة الشيفرة غير المستخدمة من حزمتك. وعند تحليل الحزم، ابحث عن:
 
-- Modules importing entire libraries when only using a few functions
-- Large unused exports that weren’t eliminated
-- CommonJS modules that can’t be tree-shaken
+- الوحدات التي تستورد مكتبات كاملة وهي لا تستخدم إلا دوال قليلة
+- التصديرات الكبيرة غير المستخدمة التي لم تُحذف
+- وحدات CommonJS التي لا يمكن اهتزاز شجرتها
 
-For detailed tree-shaking configuration and optimization, see [Tree Shaking Optimization](https://stevekinney.com/courses/react-performance/tree-shaking-optimization).
+لتفاصيل تهيئة اهتزاز الشجرة وتحسينه، انظر [تحسين اهتزاز الشجرة](https://stevekinney.com/courses/react-performance/tree-shaking-optimization).
 
-### Code Splitting Optimization
+### تحسين تقسيم الشيفرة
 
 ```typescript
 // React component with optimized code splitting
@@ -579,7 +579,7 @@ function NavigationLink({ to, children }: { to: string; children: React.ReactNod
 }
 ```
 
-## Performance Testing Integration
+## دمج اختبارات الأداء
 
 ```javascript
 // Bundle size regression testing
@@ -712,7 +712,7 @@ async function runBundleTests() {
 }
 ```
 
-## Continuous Monitoring
+## المراقبة المستمرة
 
 ```typescript
 // Bundle monitoring dashboard data

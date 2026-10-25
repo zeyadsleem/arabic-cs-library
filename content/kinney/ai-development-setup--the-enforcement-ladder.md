@@ -1,89 +1,89 @@
 ---
-title: "The Enforcement Ladder"
-lang: en
+title: "سلّم الإنفاذ"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder"
 ---
 
-Every rule you give an agent has a strength. “Please don’t touch the generated files” and “the agent can’t write to that directory” are both rules, and they’re nowhere near the same thing.
+لكل قاعدة تعطيها وكيلًا قوة. فـ«من فضلك لا تلمس الملفات المولَّدة» و«الوكيل لا يستطيع الكتابة في ذلك المجلد» كلتاهما قاعدة، وهما أبعد ما تكونان عن أن تكونا الشيء نفسه.
 
-The mistake is putting an important rule on a weak rung and assuming it’s enforced. Here’s a way to tell which is which.
+الخطأ أن تضع قاعدة مهمة على درجة ضعيفة وتفترض أنها مُنفَّذة. وإليك طريقة لتمييز إحداهما من الأخرى.
 
-## The rungs
+## الدرجات
 
-The table runs from weakest at the top to strongest at the bottom. Each rung down refuses in more places and is harder for anyone—the model, you, or a teammate—to route around. So “move a rule down” means “make it stronger.”
+يمتد الجدول من الأضعف في الأعلى إلى الأقوى في الأسفل. وكل درجة إلى أسفل ترفض في مواضع أكثر، ويصعب على أي أحد — النموذج، أو أنت، أو زميل — أن يلتفّ حولها. فـ«حرّك قاعدة إلى أسفل» تعني «اجعلها أقوى».
 
-| Rung | What it can do |
+| الدرجة | ما تستطيع فعله |
 | --- | --- |
-| Something you said in the chat | Ask, until the next compaction, when it may vanish |
-| Auto memory | Ask, on your machine only |
-| `CLAUDE.md` (or `AGENTS.md` in Codex) | Ask, every session, assuming it actually loads |
-| A skill | Ask, if it activates |
-| A permission rule | Refuse at the tool boundary |
-| A hook | Refuse at one lifecycle event |
-| A required CI check | Refuse for everyone, at the integration boundary |
-| The OS, the sandbox, or the network | Refuse no matter what the model thinks |
+| شيء قلته في المحادثة | تطلب، حتى الضغط (compaction) التالي، حين قد تختفي |
+| الذاكرة التلقائية | تطلب، على جهازك وحده |
+| `CLAUDE.md` (أو `AGENTS.md` في Codex) | تطلب، في كل جلسة، بافتراض أنه يُحمَّل فعلًا |
+| مهارة | تطلب، إن تفعّلت |
+| قاعدة إذن | ترفض عند حدّ الأداة |
+| خُطّاف | يرفض عند حدث دورة حياة واحد |
+| فحص CI مطلوب | يرفض للجميع، عند حدّ التكامل |
+| نظام التشغيل، أو صندوق الرمل، أو الشبكة | ترفض مهما فكّر النموذج |
 
-The glossary for that table:
+وشرح مصطلحات ذلك الجدول:
 
-- **Compaction**: Replacing the conversation so far with a summary to free up context. Details can get lost. See [Managing a Long Session](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session).
-- **Auto memory**: Notes the harness saves for itself between sessions. They live on your machine, so teammates don’t get them.
-- **`CLAUDE.md` (or `AGENTS.md` in Codex)**: The instruction file the harness loads by directory scope. Claude Code discovers files in subdirectories on demand. See [User and Project Instructions](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions).
-- **A skill**: Packaged instructions the agent loads when a task matches. Loading is the agent’s call. See [Skills](https://stevekinney.com/courses/ai-development-setup/skills).
-- **A permission rule**: A setting that allows or denies a specific tool call. The harness enforces it whatever the model decides.
-- **A hook**: A script the harness runs at a set point. See [Hooks](https://stevekinney.com/courses/ai-development-setup/hooks).
-- **A required CI check**: A check continuous integration runs on every push that must pass before a merge.
-- **The OS, the sandbox, or the network**: Limits outside the harness entirely, like file permissions or a blocked network route. A sandbox is operating-system-level isolation that limits which files and network the agent’s shell commands can reach, no matter what the model decides.
+- **الضغط (Compaction)**: استبدال المحادثة حتى الآن بملخّص لتحرير السياق. وقد تُفقد التفاصيل. انظر [إدارة جلسة طويلة](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session).
+- **الذاكرة التلقائية**: ملاحظات تحفظها الأداة لنفسها بين الجلسات. وهي تعيش على جهازك، فلا يحصل عليها الزملاء.
+- **`CLAUDE.md` (أو `AGENTS.md` في Codex)**: ملف التعليمات الذي تُحمّله الأداة حسب نطاق المجلد. ويكتشف Claude Code الملفات في المجلدات الفرعية عند الطلب. انظر [تعليمات المستخدم والمشروع](https://stevekinney.com/courses/ai-development-setup/user-and-project-instructions).
+- **مهارة**: تعليمات مغلّفة يحمّلها الوكيل حين تطابق مهمة. والتحميل قرار الوكيل. انظر [المهارات](https://stevekinney.com/courses/ai-development-setup/skills).
+- **قاعدة إذن**: إعداد يسمح بنداء أداة محدّد أو يمنعه. وتنفّذه الأداة مهما قرّر النموذج.
+- **خُطّاف**: سكربت تشغّله الأداة عند نقطة محدّدة. انظر [الخطافات](https://stevekinney.com/courses/ai-development-setup/hooks).
+- **فحص CI مطلوب**: فحص يشغّله التكامل المستمر عند كل رفع ويجب أن ينجح قبل الدمج.
+- **نظام التشغيل، أو صندوق الرمل، أو الشبكة**: حدود خارج الأداة تمامًا، مثل أذونات الملفات أو مسار شبكة محجوب. وصندوق الرمل عزل على مستوى نظام التشغيل يحدّ من الملفات والشبكة التي تستطيع أوامر الوكيل الصدفية الوصول إليها، مهما قرّر النموذج.
 
-Everything above the permission rule is a request. Everything from the permission rule down is a refusal. That’s the line.
+كل ما فوق قاعدة الإذن طلب. وكل ما من قاعدة الإذن إلى أسفل رفض. وهذا هو الخط الفاصل.
 
-Permission rules and hooks are neighbors at the harness layer. A hook is more expressive: it can inspect content and state, which a pattern can’t. A permission deny is simpler and wins any tie, because a hook’s `allow` can’t override it. Use the deny when a plain yes or no is enough, and the hook when the decision depends on what’s inside the call.
+قواعد الإذن والخُطّافات جارتان في طبقة الأداة. والخُطّاف أكثر تعبيرًا: فيمكنه فحص المحتوى والحالة، وهو ما لا يستطيعه نمط. أما رفض الإذن فأبسط ويفوز عند أي تعادل، لأن `allow` في الخُطّاف لا يستطيع تجاوزه. فاستخدم الرفض حين تكفي إجابة نعم أو لا، والخُطّاف حين يعتمد القرار على ما داخل النداء.
 
-## Which rung does this one need?
+## أي درجة تحتاج هذه؟
 
-Put each rule on the weakest rung that reliably holds it.
+ضع كل قاعدة على أضعف درجة تمسكها بثبات.
 
-- **Formatting** goes to a formatter, run by a hook or plain code. That’s the hook rung.
-- **Forbidden imports** go to the linter, enforced as a required CI check. That’s the CI rung.
-- **“Don’t write to production”** goes to the credentials. The agent shouldn’t *have* them. That’s the OS-and-network rung.
-- **Judgment calls** are what prose is for.
+- **التنسيق** يذهب إلى منسّق، يشغّله خُطّاف أو شيفرة عادية. وهذه درجة الخُطّاف.
+- **الاستيرادات المحظورة** تذهب إلى المدقّق (linter)، مُنفَّذة كفحص CI مطلوب. وهذه درجة CI.
+- **«لا تكتب إلى الإنتاج»** يذهب إلى بيانات الاعتماد. فلا ينبغي أن *يملكها* الوكيل. وهذه درجة نظام التشغيل والشبكة.
+- **الأحكام التقديرية** هي ما يُكتب له النثر.
 
-To see how your own `CLAUDE.md` holds up, [paste it into this checker](https://stevekinney.com/experiments/mechanism-picker). It tags each line as one that can stay a request or one that needs a permission rule, a hook, or a required check.
+ولترى كيف يصمد `CLAUDE.md` الخاص بك، [الصقه في هذا الفاحص](https://stevekinney.com/experiments/mechanism-picker). فهو يوسم كل سطر بأنه سطر يمكن أن يبقى طلبًا أو سطرًا يحتاج قاعدة إذن أو خُطّافًا أو فحصًا مطلوبًا.
 
-If a mistake would be expensive and a sentence is your only defense, you have a rule on the wrong rung. Move it down the table, or take away the thing that makes the mistake possible.
+إن كان خطأ ما مكلفًا وجملة هي دفاعك الوحيد، فلديك قاعدة على الدرجة الخطأ. فحرّكها إلى أسفل الجدول، أو أزل الشيء الذي يجعل الخطأ ممكنًا.
 
-## A hook can fail open
+## يمكن لخُطّاف أن يُخفق مفتوحًا
 
-Hooks are strong, but they’re software, and software has bugs. Here’s one of mine.
+الخُطّافات قوية، لكنها برمجيات، وللبرمجيات عيوب. وإليك واحدًا من عيوبي.
 
-I keep my notes in a vault, a folder of Markdown files, and I wrote a guard hook, `vault-destructive-fs-guard.sh`, that blocks destructive file commands aimed at it. It had a test. It worked.
+أحفظ ملاحظاتي في خزنة، وهي مجلد من ملفات Markdown، وكتبت خُطّاف حماية، `vault-destructive-fs-guard.sh`، يمنع أوامر الملفات المدمِّرة الموجّهة إليها. وكان له اختبار. وكان يعمل.
 
-Then I had agents audit my sessions. The guard crashed whenever a line of a command began with something that looked like a flag. The classic case was a multi-line `gh pr create` (GitHub’s CLI for opening a pull request) with a line starting with `--title`. On macOS, a `basename` call inside the script rejected the option-shaped word and the script died.
+ثم جعلت وكلاء يدقّقون جلساتي. فكان الحارس ينهار كلما بدأ سطر من أمر بشيء يشبه العَلَم. والحالة الكلاسيكية أمر `gh pr create` متعدد الأسطر (واجهة سطر أوامر GitHub لفتح طلب سحب) بسطر يبدأ بـ `--title`. وعلى macOS، رفض نداء `basename` داخل السكربت الكلمة ذات الشكل الخياري فمات السكربت.
 
-Here’s the part that matters. A crash exits `1`, and both Claude Code and Codex treat that as a non-blocking error: the action proceeds. So the whole command went through unchecked, including a vault `rm` later in the same command. Among exit codes, only `2` blocks; the other way to block is a JSON decision printed to stdout, as the [hooks lesson](https://stevekinney.com/courses/ai-development-setup/hooks) explains.
+وإليك الجزء المهم. الانهيار يخرج بـ `1`، ويعتبر كل من Claude Code وCodex ذلك خطأً غير حاجب: فيمضي الإجراء. فمرّ الأمر كله دون فحص، بما فيه `rm` على الخزنة في وقت لاحق من الأمر نفسه. ومن بين رموز الخروج، لا يحجب إلا `2`؛ والطريقة الأخرى للحجب قرار JSON يُطبع إلى stdout، كما يشرح [درس الخطافات](https://stevekinney.com/courses/ai-development-setup/hooks).
 
-It crashed in 135 sessions since July. The test never caught it, because the test never fed the guard a multi-line command. Your tests are exactly as good as their inputs. I fixed it on 2026-09-23 and added regression tests for exactly that case.
+انهار في 135 جلسة منذ يوليو. ولم يلتقطه الاختبار قط، لأن الاختبار لم يغذِّ الحارس بأمر متعدد الأسطر. واختباراتك جيدة بقدر مدخلاتها بالضبط. وأصلحته في 2026-09-23 وأضفت اختبارات انحدار لتلك الحالة تحديدًا.
 
-The lesson isn’t “don’t use hooks.” It’s three smaller ones:
+والدرس ليس «لا تستخدم الخُطّافات». بل ثلاثة دروس أصغر:
 
-- **A hook that crashes doesn’t block**: If a guard has to hold, it has to fail *closed*: catch its own errors and exit `2` on purpose. [Writing Good Hooks](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) covers choosing failure behavior.
-- **A test only covers what you fed it**: Feed guards the ugly inputs: multi-line commands, odd filenames, empty strings.
-- **Check the logs**: Writing a rule down isn’t enforcing it. Make the rule executable, then go look at whether it stopped anything. Non-blocking hook errors show up as a notice in the session transcript, and Claude Code’s debug log records hook runs. The [hooks documentation](https://code.claude.com/docs/en/hooks) covers debugging. [Hooks in Practice](https://stevekinney.com/courses/ai-development-setup/hooks-in-practice) has more ways guards fail.
+- **الخُطّاف الذي ينهار لا يحجب**: إن كان على حارس أن يصمد، فعليه أن يُخفق *مغلقًا*: يلتقط أخطاءه بنفسه ويخرج بـ `2` عن قصد. ويتناول [كتابة خُطّافات جيدة](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) اختيار سلوك الفشل.
+- **الاختبار لا يغطّي إلا ما غذّيته به**: غذِّ الحرّاس بالمدخلات القبيحة: أوامر متعددة الأسطر، وأسماء ملفات غريبة، وسلاسل فارغة.
+- **تفقّد السجلات**: كتابة قاعدة ليس إنفاذًا لها. فاجعل القاعدة قابلة للتنفيذ، ثم اذهب وانظر هل أوقفت شيئًا. وتظهر أخطاء الخُطّافات غير الحاجبة كإشعار في نص الجلسة، ويسجّل سجل تصحيح Claude Code تشغيلات الخُطّافات. وتتناول [وثائق الخطافات](https://code.claude.com/docs/en/hooks) التصحيح. ولدى [الخطافات عمليًا](https://stevekinney.com/courses/ai-development-setup/hooks-in-practice) طرق أخرى لإخفاق الحرّاس.
 
-## Blast radius
+## نطاق الانفجار {#blast-radius}
 
-Every rung from the permission rule down is a wall the agent can’t talk, trick, or reason its way past. When something goes wrong, the walls limit the damage. That’s the blast radius.
+كل درجة من قاعدة الإذن إلى أسفل جدار لا يستطيع الوكيل أن يتجاوزه بالكلام أو الخداع أو الإقناع. وحين يسوء شيء، تحدّ الجدران الضرر. وهذا هو نطاق الانفجار.
 
-Simon Willison’s [lethal trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) says an agent is exploitable when it has all three of these at once: **untrusted content** (an issue, a web page, a dependency’s README, a tool result), **private data** (your code, secrets, or customers’ data), and **a way out** (network access, a `git push`, a public comment). The attack is **prompt injection**: someone hides instructions in content the agent reads, and the agent follows them.
+يقول [الثالوث القاتل (lethal trifecta)](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) لسايمون ويليسون إن الوكيل قابل للاستغلال حين تجتمع فيه الثلاثة كلها في وقت واحد: **محتوى غير موثوق** (قضية، أو صفحة ويب، أو README اعتماد، أو نتيجة أداة)، و**بيانات خاصة** (شيفرتك، أو أسرارك، أو بيانات عملائك)، و**مخرج** (وصول إلى الشبكة، أو `git push`، أو تعليق عام). والهجوم هو **حقن الموجّه (prompt injection)**: يخفي أحدهم تعليمات في محتوى يقرأه الوكيل، فيتبعها الوكيل.
 
-A coding agent has all three by default. Your only choice is which leg to cut, and you have to cut it structurally. Telling the agent to ignore untrusted instructions is a request made to the very faculty the payload is addressing. The same goes for auto mode: Anthropic calls its classifier “a convenience feature,” not a security guarantee.
+وكيل البرمجة يملك الثلاثة افتراضيًا. وخيارك الوحيد هو أي ضلع تقطع، وعليك أن تقطعه بنيويًا. فإخبار الوكيل بأن يتجاهل تعليمات غير موثوقة طلب موجَّه إلى الملكة نفسها التي تخاطبها الحمولة. والأمر نفسه في الوضع التلقائي: تسمّي Anthropic مصنّفها «ميزة راحة»، لا ضمانًا أمنيًا.
 
-- **Cut the way out**: Default-deny network egress. `Bash(curl *)` isn’t a network boundary, and an allowlisted domain that accepts uploads, like `gist.github.com`, is an exfiltration channel.
-- **Isolate the whole process**: A container or virtual machine, with host credentials outside it and no sensitive data in the workspace.
-- **Split readers from doers**: A read-only [subagent](https://stevekinney.com/courses/ai-development-setup/subagents) processes the untrusted content and hands back only closed values, like a fixed set of classifications. A free-text summary can still carry the payload.
-- **Watch for deferred execution**: Anything the agent writes that something *outside* the sandbox runs later is a way out. `core.fsmonitor` in a cloned repository’s `.git/config` is a command Git runs with no prompt.
+- **اقطع المخرج**: امنع خروج الشبكة افتراضيًا. فـ `Bash(curl *)` ليس حدًّا شبكيًا، ونطاق مدرَج في قائمة السماح يقبل الرفع، مثل `gist.github.com`، قناة تسريب.
+- **اعزل العملية كلها**: حاوية أو آلة افتراضية، مع بيانات اعتماد المضيف خارجها ولا بيانات حساسة في مساحة العمل.
+- **افصل القارئين عن الفاعلين**: يعالج [وكيل فرعي](https://stevekinney.com/courses/ai-development-setup/subagents) للقراءة فقط المحتوى غير الموثوق ويعيد قيمًا مقفلة فقط، مثل مجموعة تصنيفات ثابتة. أما ملخّص بنص حر فيمكنه أن يحمل الحمولة.
+- **احترس من التنفيذ المؤجَّل**: أي شيء يكتبه الوكيل ويشغّله شيء *خارج* صندوق الرمل لاحقًا هو مخرج. و`core.fsmonitor` في `.git/config` لمستودع مستنسخ أمر يشغّله Git دون مطالبة.
 
-### Secrets
+### الأسرار {#secrets}
 
-The only safe credential is one the agent can’t read. A sandbox still inherits your environment, so a token you exported before launching is one `echo` away, and a `Read(**/.env*)` deny rule is friction, not a boundary. Launch the agent with a clean environment. I don’t keep credentials in my shell at all: anything that needs a token goes through a wrapper that pulls it from the macOS Keychain for that one command. If something leaks, rotate first and investigate second.
+بيانات الاعتماد الآمنة الوحيدة هي التي لا يستطيع الوكيل قراءتها. فصندوق الرمل لا يزال يرث بيئتك، فرُمز صدّرته قبل الإطلاق لا يبعد سوى أمر `echo` واحد، وقاعدة رفض `Read(**/.env*)` احتكاك، لا حدّ. فأطلق الوكيل ببيئة نظيفة. وأنا لا أحفظ بيانات الاعتماد في صدفتي أصلًا: فكل ما يحتاج رمزًا يمرّ عبر غلاف يسحبه من سلسلة مفاتيح macOS لذلك الأمر الواحد. وإن تسرّب شيء، فبدّل أولًا وحقّق ثانيًا.
 
-Start sandboxed, raise autonomy per repository, and keep a prompt on the irreversible stuff, like `git push`, `gh pr merge`, and `npm publish`. Put each rule on the rung that matches the damage, then verify it fires.
+ابدأ داخل صندوق رمل، وارفع الاستقلالية لكل مستودع، وأبقِ مطالبة على الأمور غير القابلة للتراجع، مثل `git push` و`gh pr merge` و`npm publish`. وضع كل قاعدة على الدرجة التي تناسب الضرر، ثم تحقّق من أنها تُطلق.

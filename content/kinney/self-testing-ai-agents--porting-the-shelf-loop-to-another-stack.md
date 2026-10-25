@@ -1,111 +1,111 @@
 ---
-title: "Porting the Shelf Loop to Another Stack"
-lang: en
+title: "نقل حلقة Shelf إلى تقنية أخرى"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/porting-the-shelf-loop-to-another-stack"
 ---
 
-Shelf is a teaching app, not a religion.
+Shelf تطبيق تعليمي، لا دين.
 
-If the loop only works in a SvelteKit + TypeScript toy repository, then we taught a demo, not an engineering pattern. This appendix is the translation layer.
+فإذا كانت الحلقة لا تعمل إلا في مستودع لُعبَة بـ SvelteKit وTypeScript، فقد علّمنا عرضًا تجريبيًا لا نمطًا هندسيًا. هذا الملحق هو طبقة الترجمة.
 
-I’m going to keep it at the level that actually matters: auth bootstrap, deterministic data, runtime probes, failure evidence, review, CI, and post-deploy checks. The details vary. The loop structure does not.
+سأبقي الأمر عند المستوى الذي يهم فعلًا: تهيئة المصادقة، والبيانات الحتمية، وفحوص وقت التشغيل، وأدلة الإخفاق، والمراجعة، والتكامل المستمر، وفحوص ما بعد النشر. تختلف التفاصيل. أما بنية الحلقة فلا تختلف.
 
-> **Prerequisite**
+> **متطلب سابق**
 >
-> Finish the core course first. This appendix is easier once you’ve seen the full loop in Shelf and can tell which parts are structural versus incidental.
+> أنهِ الدورة الأساسية أولًا. هذا الملحق أسهل بعد أن تكون قد رأيت الحلقة كاملة في Shelf وأصبحت تميّز الأجزاء البنيوية من الأجزاء العارضة.
 
-## The translation rule
+## قاعدة الترجمة
 
-Do not port file names. Port responsibilities.
+لا تنقل أسماء الملفات. انقل المسؤوليات.
 
-That means:
+وهذا يعني:
 
-- the agent instructions become “where the agent learns the repository rules”
-- storage state becomes “how browser automation gets authenticated deterministically”
-- seed data becomes “how the repository resets to known state”
-- failure dossier becomes “the artifact bundle that makes a red run fixable”
+- تصبح تعليمات الوكيل «المكان الذي يتعلّم فيه الوكيل قواعد المستودع»
+- تصبح حالة التخزين «كيف تحصل أتمتة المتصفح على مصادقة حتمية»
+- تصبح بيانات التهيئة «كيف يعيد المستودع ضبط نفسه إلى حالة معروفة»
+- يصبح ملف الإخفاق «حزمة الوثائق التي تجعل التشغيل الأحمر قابلًا للإصلاح»
 
-Once you translate at that level, the stack mostly tells you where each piece wants to live.
+وبمجرد أن تترجم على ذلك المستوى، تخبرك التقنية في الغالب أين يريد كل جزء أن يسكن.
 
-## Next.js-style translation
+## ترجمة بنمط Next.js
 
-For a React or Next.js stack, the shape is pleasantly close.
+في تقنية React أو Next.js، يكون الشكل قريبًا بشكل مريح.
 
-The official [Next.js testing guidance](https://nextjs.org/docs/pages/guides/testing) already assumes Playwright and unit-test tooling are normal parts of the workflow.
+إن [إرشادات الاختبار في Next.js](https://nextjs.org/docs/pages/guides/testing) الرسمية تفترض بالفعل أن Playwright وأدوات اختبار الوحدات أجزاء طبيعية من سير العمل.
 
-The mapping is usually:
+والربط عادة:
 
-| Shelf loop | Next.js-style equivalent |
+| حلقة Shelf | المكافئ بنمط Next.js |
 | --- | --- |
-| Agent rules | `AGENTS.md`, `CLAUDE.md`, or repo instructions file |
-| storage state auth | Playwright storage state or seeded test login route |
-| deterministic data | seed script, test database reset, or fixture loader |
-| Playwright suite | Playwright end-to-end tests against the app router or pages router |
-| static layer | ESLint, TypeScript, dead-code checks, secret scan |
-| dossier | Playwright traces, screenshots, console logs, workflow artifacts |
+| قواعد الوكيل | `AGENTS.md` أو `CLAUDE.md` أو ملف تعليمات المستودع |
+| مصادقة حالة التخزين | حالة تخزين Playwright أو مسار دخول اختباري مهيأ مسبقًا |
+| البيانات الحتمية | سكربت تهيئة، أو إعادة ضبط قاعدة بيانات الاختبار، أو محمّل بيانات ثابتة |
+| مجموعة Playwright | اختبارات Playwright من الطرف إلى الطرف مقابل موجّه التطبيق أو موجّه الصفحات |
+| الطبقة الساكنة | ESLint وTypeScript وفحوص الشيفرة الميتة وفحص الأسرار |
+| ملف الإخفاق | آثار Playwright ولقطات الشاشة وسجلات الطرفية ووثائق سير العمل |
 
-That is mostly a one-to-one translation.
+هذه في معظمها ترجمة واحد لواحد.
 
-## Rails-style translation
+## ترجمة بنمط Rails
 
-Rails is different in texture, not in need.
+Rails مختلفة في الملمس، لا في الحاجة.
 
-The [Rails testing guide](https://guides.rubyonrails.org/testing.html) already gives you system tests, fixtures, and a test environment. Those are the raw materials for the same loop.
+إن [دليل الاختبار في Rails](https://guides.rubyonrails.org/testing.html) يمنحك بالفعل اختبارات النظام والبيانات الثابتة وبيئة اختبار. وهذه هي المواد الخام للحلقة نفسها.
 
-The mapping looks more like this:
+ويبدو الربط أقرب إلى هذا:
 
-| Shelf loop | Rails-style equivalent |
+| حلقة Shelf | المكافئ بنمط Rails |
 | --- | --- |
-| Agent rules | `AGENTS.md`, repo docs, or prompt file the agent reads first |
-| storage state auth | system-test login helper, seeded user, or browser bootstrap |
-| deterministic data | `test/fixtures`, factories, database reset tasks |
-| Playwright or browser loop | Rails system tests, Playwright, or both depending the team |
-| static layer | RuboCop, Brakeman, type tooling if used, secret scan |
-| dossier | screenshots, logs, failing system-test output, CI artifacts |
+| قواعد الوكيل | `AGENTS.md` أو وثائق المستودع أو ملف مطالبة يقرأه الوكيل أولًا |
+| مصادقة حالة التخزين | مساعد دخول في اختبارات النظام، أو مستخدم مهيأ مسبقًا، أو تهيئة المتصفح |
+| البيانات الحتمية | `test/fixtures` أو المصانع أو مهام إعادة ضبط قاعدة البيانات |
+| حلقة Playwright أو المتصفح | اختبارات نظام Rails أو Playwright أو كلتاهما حسب الفريق |
+| الطبقة الساكنة | RuboCop وBrakeman وأدوات الأنواع إن استُخدمت وفحص الأسرار |
+| ملف الإخفاق | لقطات الشاشة والسجلات ومخرجات اختبار النظام الفاشل ووثائق التكامل المستمر |
 
-Rails gives you good primitives out of the box. The loop still needs to be made explicit for the agent.
+تمنحك Rails أساسات جيدة جاهزة. لكن الحلقة لا تزال بحاجة إلى أن تُجعل صريحة للوكيل.
 
-## What not to port blindly
+## ما لا يجب نقله على العمياء
 
-Do not copy Shelf’s exact commands if your stack has better local primitives.
+لا تنسخ أوامر Shelf الحرفية إن كانت تقنيتك تملك أساسات محلية أفضل.
 
-Examples:
+أمثلة:
 
-- Rails system tests may be a better first browser loop than Playwright for some teams
-- a monorepo may need path-scoped CI and instruction files
-- a mobile-web hybrid app may need runtime probes against a preview build, not just localhost
+- قد تكون اختبارات نظام Rails حلقة متصفح أولى أفضل من Playwright لبعض الفرق
+- قد يحتاج المستودع الأحادي إلى تكامل مستمر وملفات تعليمات محددة بنطاق المسار
+- قد يحتاج تطبيق هجين بين الويب والهاتف إلى فحوص وقت تشغيل على بناء معاينة، لا على localhost وحده
 
-The rule is still the same: cheap loops early, strict loops later, and failure output that an agent can actually use.
+القاعدة لا تزال نفسها: حلقات رخيصة مبكرًا، وحلقات صارمة لاحقًا، ومخرجات إخفاق يستطيع الوكيل استخدامها فعلًا.
 
-## The checklist I use when translating
+## قائمة التحقق التي أستخدمها عند الترجمة
 
-For a new stack, I ask:
+لتقنية جديدة، أسأل:
 
-- Where do the agent rules live?
-- How does the browser get logged in deterministically?
-- How do I reset data to known state?
-- What is the cheapest browser-level proof of correctness?
-- What artifacts make a failure fixable?
-- Which static checks should fire before CI?
-- What is the post-deploy smoke path?
+- أين تعيش قواعد الوكيل؟
+- كيف يسجّل المتصفح الدخول بشكل حتمي؟
+- كيف أعيد ضبط البيانات إلى حالة معروفة؟
+- ما أرخص دليل على الصواب عند مستوى المتصفح؟
+- أي الوثائق تجعل الإخفاق قابلًا للإصلاح؟
+- أي الفحوص الساكنة ينبغي أن تعمل قبل التكامل المستمر؟
+- ما مسار الفحص السريع بعد النشر؟
 
-If I can answer those seven questions, I can usually port the loop cleanly.
+إن استطعت الإجابة عن هذه الأسئلة السبعة، فأنا قادر عادة على نقل الحلقة بنظافة.
 
-If your destination stack is a monorepo, the concrete homes might look like `apps/web/playwright.config.ts` for the browser loop and `test/fixtures/users.yml` for deterministic seeded users. Different filenames, same responsibilities. That is the level to port.
+إن كانت تقنيتك الهدف مستودعًا أحاديًا، فقد تبدو المواضع الملموسة مثل `apps/web/playwright.config.ts` لحلقة المتصفح و`test/fixtures/users.yml` للمستخدمين المهيأين حتميًا. أسماء ملفات مختلفة، والمسؤوليات نفسها. هذا هو المستوى الذي تنقل عنده.
 
-## How You Know the Translation Worked
+## كيف تعرف أن الترجمة نجحت
 
-You have successfully translated the loop when:
+تكون قد نجحت في ترجمة الحلقة عندما:
 
-- every core responsibility has a concrete home in the new stack
-- the verification commands are explicit
-- the failure artifacts are still legible enough for an agent to recover
+- لكل مسؤولية أساسية موضع ملموس في التقنية الجديدة
+- تكون أوامر التحقق صريحة
+- تبقى وثائق الإخفاق واضحة بما يكفي ليستعيد الوكيل توازنه
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The stack is not the pattern. The pattern is “teach the agent the rules, give it cheap ways to check its own work, and make failures rich enough to fix.” Port that, and the framework details stop being the interesting part.
+التقنية ليست هي النمط. النمط هو «علّم الوكيل القواعد، وأعطه طرقًا رخيصة للتحقق من عمله، واجعل الإخفاقات غنية بما يكفي للإصلاح». انقل ذلك، وتكف تفاصيل إطار العمل عن كونها الجزء المثير للاهتمام.
 
-## Additional Reading
+## قراءة إضافية
 
-- [The Whole Loop, End to End](https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end)
-- [Lab: Translate the Shelf Loop to Your Stack](https://stevekinney.com/courses/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack)
+- [الحلقة كاملة، من الطرف إلى الطرف](https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end)
+- [تمرين تطبيقي: انقل حلقة Shelf إلى تقنيتك](https://stevekinney.com/courses/self-testing-ai-agents/lab-translate-the-shelf-loop-to-your-stack)

@@ -1,16 +1,16 @@
 ---
-title: "Approaches to HAR Recording"
-lang: en
+title: "مقاربات تسجيل HAR"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording"
 ---
 
-You know you want a HAR file. The [previous lesson](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) made the case, and now you need to actually record one. Three ways to do it, each with a different sweet spot, and the choice comes down to one question: do you already have a test that exercises the network calls you need to capture?
+أنت تعرف أنك تريد ملف HAR. فقد عرض [الدرس السابق](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) الفكرة، والآن تحتاج فعلًا إلى تسجيل واحد. ثلاث طرق لفعل ذلك، لكل منها نقطة تلاؤم مختلفة، والاختيار يتلخّص في سؤال واحد: هل لديك أصلًا اختبار يمارس نداءات الشبكة التي تحتاج إلى التقاطها؟
 
-I use all three depending on the situation. Here’s when each one earns its keep.
+أستخدم الثلاث جميعًا حسب الموقف. وهذا هو الوقت الذي يستحق فيه كل منها مكانه.
 
-## Programmatic recording inside a test
+## التسجيل البرمجي داخل اختبار
 
-This is the approach the previous lesson showed—`page.routeFromHAR` with `update: true`. The examples below use `tests/fixtures/` as the HAR directory—a convention this course adopts rather than a directory that already exists in the Shelf starter. Create it the first time you record:
+هذا هو الأسلوب الذي عرضه الدرس السابق — `page.routeFromHAR` مع `update: true`. وتستخدم الأمثلة أدناه `tests/fixtures/` مجلدًا لملفات HAR — وهو اصطلاح تتبنّاه هذه الدورة لا مجلد موجود أصلًا في نسخة Shelf الانطلاقية. أنشئه أول مرة تسجّل فيها:
 
 ```typescript
 test('search for books', async ({ page }) => {
@@ -26,11 +26,11 @@ test('search for books', async ({ page }) => {
 });
 ```
 
-Run the test once with `update: true`, and Playwright records every matching request to disk. Flip `update` to `false` (or remove it), and you’re in replay mode. Beyond `url` and `update`, [`routeFromHAR`](https://playwright.dev/docs/api/class-page#page-route-from-har) also accepts `updateContent` (controls whether response bodies are saved inline or as separate files) and `updateMode` (`'minimal'` records only what replay needs—the default—while `'full'` preserves broader HAR metadata). The defaults are fine for most cases.
+شغّل الاختبار مرة واحدة مع `update: true`، فتسجّل Playwright كل طلب مطابق على القرص. واقلب `update` إلى `false` (أو احذفه)، فتكون في وضع إعادة التشغيل. وإلى جانب `url` و`update`، تقبل [`routeFromHAR`](https://playwright.dev/docs/api/class-page#page-route-from-har) أيضًا `updateContent` (يتحكم في حفظ أجسام الاستجابات مضمّنة أو في ملفات منفصلة) و`updateMode` (`'minimal'` يسجّل فقط ما تحتاجه إعادة التشغيل — وهو الافتراضي — بينما `'full'` يحفظ بيانات HAR وصفية أوسع). والقيم الافتراضية جيدة في معظم الحالات.
 
-### Toggling record mode with an environment variable
+### تبديل وضع التسجيل بمتغيّر بيئة
 
-Manually adding and removing `update: true` works, but it’s tedious—and it’s the kind of thing you forget to undo before committing. Playwright doesn’t have a built-in flag for this (the `--update-snapshots` flag only applies to visual comparison snapshots, not HARs), but an environment variable gets you there:
+إضافة `update: true` وحذفه يدويًا يعمل، لكنه مزعج — وهو من النوع الذي تنسى التراجع عنه قبل الإيداع. ولا تملك Playwright راية مدمجة لهذا (فراية `--update-snapshots` تنطبق فقط على لقطات المقارنة البصرية، لا على ملفات HAR)، لكن متغيّر بيئة يصلك إلى هناك:
 
 ```typescript
 test('search for books', async ({ page }) => {
@@ -46,7 +46,7 @@ test('search for books', async ({ page }) => {
 });
 ```
 
-Now the test replays by default and records when you ask it to:
+الآن يعيد الاختبار التشغيل افتراضيًا ويسجّل حين تطلب منه ذلك:
 
 ```bash
 # Record—hits the real API, writes the HAR
@@ -56,39 +56,39 @@ UPDATE_HARS=1 npx playwright test
 npx playwright test
 ```
 
-No more editing the test file to toggle modes. The `!!` coerces the env var to a boolean—if it’s set to anything, you’re recording. If it’s absent, you’re replaying.
+لا مزيد من تحرير ملف الاختبار لتبديل الأوضاع. فـ `!!` يحوّل متغيّر البيئة إلى قيمة منطقية — إذا كان مضبوطًا على أي قيمة، فأنت تسجّل. وإذا كان غائبًا، فأنت تعيد التشغيل.
 
-### What happens when you re-record
+### ما يحدث حين تعيد التسجيل
 
-When you run `UPDATE_HARS=1`, Playwright replaces the existing HAR file entirely—it does not merge new entries into the old file. The old recording is gone; the new one reflects whatever the test did this time. A HAR is a snapshot of a single session, not an accumulation of sessions. If you need entries from multiple scenarios, use separate HAR files.
+حين تشغّل `UPDATE_HARS=1`، تستبدل Playwright ملف الـ HAR الموجود كليًا — ولا تدمج مدخلات جديدة في الملف القديم. فالتسجيل القديم ذهب؛ والجديد يعكس ما فعله الاختبار هذه المرة. فالـ HAR لقطة لجلسة واحدة، لا تراكم لجلسات. وإذا احتجت مدخلات من سيناريوهات متعددة، فاستخدم ملفات HAR منفصلة.
 
-> **Note**
+> **ملاحظة**
 >
-> This `UPDATE_HARS` workflow is for *deliberate* re-recording—when the API changed or your test changed and you need a fresh snapshot. It is not for making a failing test pass by blindly re-recording. See the [recording lesson](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) for the distinction between approved refresh and ad-hoc re-recording.
+> سير عمل `UPDATE_HARS` هذا مخصّص لإعادة التسجيل *المتعمّدة* — حين تتغيّر الـ API أو يتغيّر اختبارك فتحتاج لقطة جديدة. وهو ليس لجعل اختبار فاشل ينجح بإعادة تسجيل أعمى. راجع [درس التسجيل](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation) للتمييز بين التحديث المعتمد وإعادة التسجيل العابرة.
 
-> **Tip**
+> **نصيحة**
 >
-> Playwright retries re-run the test from scratch. In replay mode, each retry sees the same HAR responses—deterministic by design. In record mode, each retry hits the real API again and overwrites the HAR, so the last retry’s recording wins.
+> إعادات المحاولة في Playwright تعيد تشغيل الاختبار من الصفر. وفي وضع إعادة التشغيل، ترى كل إعادة محاولة استجابات HAR نفسها — حتمية بالتصميم. أما في وضع التسجيل، فكل إعادة محاولة تصل إلى الـ API الحقيقي مرة أخرى وتكتب فوق الـ HAR، فتغلب تسجيل إعادة المحاولة الأخيرة.
 
-This is what I use for Shelf’s test suite, and it’s the tightest feedback loop of the three approaches. The recording captures *exactly* the requests the test makes, in the order the test makes them. There’s no extra noise—no extension traffic, no preflight requests from a different origin, no favicon fetches. The HAR matches the test because the test *produced* the HAR.
+هذا ما أستخدمه لمجموعة اختبارات Shelf، وهو أحكم حلقات التغذية الراجعة بين المقاربات الثلاث. فالتسجيل يلتقط *بالضبط* الطلبات التي يصدرها الاختبار، بالترتيب الذي يصدرها به. لا ضجيج إضافي — لا حركة إضافات، ولا طلبات preflight من أصل مختلف، ولا عمليات جلب favicon. فالـ HAR يطابق الاختبار لأن الاختبار هو من *أنتج* الـ HAR.
 
-The downside: you need a working test first. If you’re setting up HAR replay for a feature that doesn’t have tests yet, you’re writing the test *and* the recording infrastructure in the same sitting. Sometimes that’s fine. Sometimes you want the recording first so you can write the test against a stable mock.
+والجانب السلبي: تحتاج اختبارًا عاملًا أولًا. فإذا كنت تُعدّ إعادة تشغيل HAR لميزة لا اختبارات لها بعد، فأنت تكتب الاختبار *وبنية التسجيل* في الجلسة نفسها. أحيانًا يكون ذلك مقبولًا. وأحيانًا تريد التسجيل أولًا كي تكتب الاختبار مقابل محاكاة مستقرة.
 
-**When to reach for this:** You already have a passing test that hits the real API and you want to freeze the network traffic it produces. Write the test, record once, replay forever.
+**متى تلجأ إلى هذا:** لديك أصلًا اختبار ناجح يخاطب الـ API الحقيقي وتريد تجميد حركة الشبكة التي ينتجها. اكتب الاختبار، وسجّل مرة، وأعد التشغيل إلى الأبد.
 
-## The Playwright CLI
+## سطر أوامر Playwright
 
-Playwright ships `--save-har` as a flag on both the `open` and `codegen` commands. You don’t need a test at all—you get a browser, you interact with it, and when you close it, Playwright writes the HAR.
+تشحن Playwright الراية `--save-har` في الأمرين `open` و`codegen` معًا. فلا تحتاج إلى اختبار أصلًا — تحصل على متصفح، وتتفاعل معه، وحين تغلقه تكتب Playwright الـ HAR.
 
-The simplest version:
+أبسط نسخة:
 
 ```bash
 npx playwright open --save-har=tests/fixtures/session.har https://your-app.localhost:5173
 ```
 
-This launches a Chromium instance pointed at your app. Click around, search for a book, add it to your shelf. When you close the browser, Playwright writes every network request to `tests/fixtures/session.har`.
+هذا يطلق نسخة Chromium موجّهة إلى تطبيقك. انقر هنا وهناك، وابحث عن كتاب، وأضفه إلى رفك. وحين تغلق المتصفح، تكتب Playwright كل طلب شبكة إلى `tests/fixtures/session.har`.
 
-That’s *every* request, though—HTML, CSS, JavaScript, images, API calls. If you only care about the Open Library traffic, narrow it with `--save-har-glob`:
+لكن ذلك *كل* طلب — HTML، وCSS، وJavaScript، والصور، ونداءات الـ API. وإذا كان يهمّك فقط حركة Open Library، فضيّقها بـ `--save-har-glob`:
 
 ```bash
 npx playwright open \
@@ -97,9 +97,9 @@ npx playwright open \
 	https://your-app.localhost:5173
 ```
 
-Now the HAR only contains requests matching that glob. The syntax follows the same [glob rules](https://playwright.dev/docs/network#glob-url-patterns) as `routeFromHAR`: `*` matches anything except `/`, `**` matches anything including `/`, matched against the full request URL.
+الآن يحتوي الـ HAR على الطلبات المطابقة لذلك الـ glob فقط. وتتبع الصيغة [قواعد الـ glob](https://playwright.dev/docs/network#glob-url-patterns) نفسها المستخدمة في `routeFromHAR`: `*` يطابق أي شيء عدا `/`، و`**` يطابق أي شيء بما فيه `/`، والمطابقة تجري على URL الطلب الكامل.
 
-The `codegen` variant is the same thing, but Playwright *also* generates test code as you interact with the page:
+ونسخة `codegen` هي الشيء نفسه، لكن Playwright *تولّد* أيضًا شيفرة اختبار بينما تتفاعل مع الصفحة:
 
 ```bash
 npx playwright codegen \
@@ -108,73 +108,73 @@ npx playwright codegen \
 	https://your-app.localhost:5173
 ```
 
-You get a HAR file *and* a rough first draft of the test that would replay it. I’ve used this exactly once in anger—when onboarding onto someone else’s project and trying to understand what their app actually sends over the wire. It’s a decent exploration tool. I wouldn’t use the generated test code verbatim—it uses CSS selectors where you’d want `getByRole`, and it doesn’t know about your fixtures or page objects—but it saves time when the alternative is “stare at the app and guess which endpoints it calls.”
+فتحصل على ملف HAR، *و*كذلك مسوّدة أولى خشنة للاختبار الذي كان سيعيد تشغيله. وقد استخدمت هذا مرة واحدة بالضبط في الحاجة الحقيقية — عند الانضمام إلى مشروع شخص آخر ومحاولة فهم ما يرسله تطبيقهم فعلًا على السلك. إنه أداة استكشاف جيدة. ولن أستخدم شيفرة الاختبار المولّدة حرفيًا — فهي تستخدم محددات CSS حيث تريد `getByRole`، ولا تعرف شيئًا عن ثوابتك أو كائنات صفحاتك — لكنها توفّر وقتًا حين يكون البديل «التحديق في التطبيق والتخمين أي نقاط نهاية ينادي».
 
-**When to reach for this:** You don’t have a test yet, or you want to record a HAR for a workflow you haven’t automated. The decision tree is simple: have a test → programmatic recording. No test, want to explore → CLI. Debugging a live session → Chrome.
+**متى تلجأ إلى هذا:** حين لا يكون لديك اختبار بعد، أو تريد تسجيل HAR لسير عمل لم تؤتمته. وشجرة القرار بسيطة: لديك اختبار ← تسجيل برمجي. لا اختبار وتريد الاستكشاف ← سطر الأوامر. تنقيح جلسة حيّة ← Chrome.
 
 ## Chrome DevTools
 
-You don’t need Playwright at all for this one. Open DevTools (F12 or Cmd+Opt+I), select the Network tab, and make sure recording is active (the red circle). Interact with the page, then right-click anywhere in the request list and choose **Save all as HAR with content**. The “with content” part is important—without it, you get request/response metadata but no bodies, and Playwright can’t replay the responses.
+لا تحتاج إلى Playwright أصلًا في هذه الطريقة. افتح DevTools (F12 أو Cmd+Opt+I)، واختر تبويب Network، وتأكد من أن التسجيل نشط (الدائرة الحمراء). تفاعل مع الصفحة، ثم انقر بزر الفأرة الأيمن في أي مكان في قائمة الطلبات واختر **Save all as HAR with content**. وجزء «with content» مهم — فبدونه تحصل على بيانات وصفية للطلب/الاستجابة بلا أجسام، ولا تستطيع Playwright إعادة تشغيل الاستجابات.
 
-Chrome writes a standard [HAR file](http://www.softwareishard.com/blog/har-12-spec/)—same format, same JSON structure. [Playwright’s `page.routeFromHAR`](https://playwright.dev/docs/mock#mocking-with-har-files) can replay it, because HAR is a standardized format regardless of who recorded it.
+تكتب Chrome [ملف HAR](http://www.softwareishard.com/blog/har-12-spec/) قياسيًا — الصيغة نفسها، وبنية JSON نفسها. ويستطيع [`page.routeFromHAR` في Playwright](https://playwright.dev/docs/mock#mocking-with-har-files) إعادة تشغيله، لأن HAR صيغة معيارية بصرف النظر عمّن سجّلها.
 
-This is the approach I reach for when I’m debugging a production issue and want to capture the *exact* network session I’m looking at. I’m already in DevTools. The Network tab is already open. Right-click, save, done. No CLI flags, no test scaffolding.
+هذا هو الأسلوب الذي ألجأ إليه حين أنقّح مشكلة في الإنتاج وأريد التقاط جلسة الشبكة *بالضبط* التي أنظر إليها. فأنا أصلًا في DevTools. وتبويب Network مفتوح أصلًا. زر أيمن، حفظ، انتهينا. لا رايات سطر أوامر، ولا سقالات اختبار.
 
-But, there’s a meaningful gap between “Chrome recorded a HAR” and “Playwright can replay this HAR cleanly in a test.” A few things to watch for:
+لكن ثمّة فجوة ذات معنى بين «سجّلت Chrome ملف HAR» و«تستطيع Playwright إعادة تشغيل ملف HAR هذا بنظافة في اختبار». وفيما يلي أمور قليلة يجب الحذر منها:
 
-**Extra traffic.** Chrome records *everything*—extension requests, service worker fetches, preflight CORS `OPTIONS` requests, favicons, analytics pings. Playwright ignores HAR entries that no test request matches, so extra entries are harmless. The real problem is the *opposite* direction: your test makes a request that *isn’t* in the Chrome-recorded HAR (because the test environment sends different headers or serializes query params in a different order). That’s a missing entry, and the test fails with “request not found in HAR.”
+**الحركة الإضافية.** تسجّل Chrome *كل* شيء — طلبات الإضافات، وعمليات جلب Service Worker، وطلبات CORS `OPTIONS` الاستباقية، وأيقونات favicon، ونداءات التحليلات. وتتجاهل Playwright مدخلات HAR التي لا يطابقها أي طلب اختبار، فالمدخلات الإضافية غير ضارة. لكن المشكلة الحقيقية في الاتجاه *المعاكس*: أن يصدر اختبارك طلبًا *ليس* في الـ HAR الذي سجّلته Chrome (لأن بيئة الاختبار ترسل ترويسات مختلفة أو تسلسل معاملات الاستعلام بترتيب مختلف). تلك مدخلة ناقصة، ويفشل الاختبار بـ «request not found in HAR».
 
-**Headers and cookies.** A Chrome-recorded HAR includes your real session cookies, your real auth tokens, whatever headers your browser sent. If you commit the HAR to the repository without scrubbing it first, you’ve committed credentials to version control. The programmatic approach has this problem too, but it’s worse with Chrome because a manual browser session typically has *more* ambient state—browser extensions injecting headers, first-party analytics cookies, things you don’t even realize are being sent.
+**الترويسات والكوكيز.** يحتوي HAR مسجّل بـ Chrome على كوكيز جلستك الحقيقية، ورموز مصادقتك الحقيقية، وأي ترويسات أرسلها متصفحك. وإذا أودعت الـ HAR في المستودع دون تنقيته أولًا، فقد أودعت بيانات اعتماد في نظام التحكم بالإصدارات. والأسلوب البرمجي يعاني هذه المشكلة أيضًا، لكنها أسوأ مع Chrome لأن جلسة متصفح يدوية تحمل عادةً *حالة محيطة أكثر* — إضافات متصفح تحقن ترويسات، وكوكيز تحليلات طرف أول، وأشياء لا تدرك حتى أنها تُرسَل.
 
-**Request ordering.** Chrome records requests in the order they actually fired. If your app makes three concurrent API calls, Chrome might record them in a different order than Playwright replays them, depending on timing. [Playwright matches on URL and method](https://playwright.dev/docs/mock#mocking-with-har-files), not on sequence, so this usually isn’t a problem—but if your app makes the same request twice with different payloads, the ordering can matter.
+**ترتيب الطلبات.** تسجّل Chrome الطلبات بالترتيب الذي انطلقت به فعلًا. وإذا أطلق تطبيقك ثلاثة نداءات API متزامنة، فقد تسجّلها Chrome بترتيب مختلف عن ترتيب إعادة تشغيل Playwright لها، تبعًا للتوقيت. و[تطابق Playwright على الـ URL والطريقة](https://playwright.dev/docs/mock#mocking-with-har-files)، لا على التسلسل، فعادةً ليست مشكلة — لكن إذا أصدر تطبيقك الطلب نفسه مرتين بحمولتين مختلفتين، فقد يهمّ الترتيب.
 
-**When to reach for this:** You’re already in Chrome debugging something and want to capture the session as-is. Or you need a HAR from a production environment where you can’t run Playwright. Plan to review the file before committing—scrub credentials, and expect some cleanup if the test environment differs from Chrome’s.
+**متى تلجأ إلى هذا:** حين تكون أصلًا في Chrome تنقّح شيئًا وتريد التقاط الجلسة كما هي. أو حين تحتاج HAR من بيئة إنتاج لا تستطيع تشغيل Playwright فيها. وخطّط لمراجعة الملف قبل الإيداع — نقِّ بيانات الاعتماد، وتوقّع بعض التنظيف إذا اختلفت بيئة الاختبار عن Chrome.
 
-> **Warning**
+> **تحذير**
 >
-> A HAR recorded against one origin (e.g., `api.example.com`) won’t replay in a test environment that makes requests to a different origin (e.g., `localhost:5173`). The `url` glob only gates which requests are eligible for HAR handling—it doesn’t rewrite URLs or relax matching. Production-recorded HARs work for external APIs that the test hits at the same URL, but not for requests that go to a different host. For domain-mismatch scenarios, `page.route` with a custom handler is the right tool.
+> لن يعمل HAR مسجّل مقابل أصل واحد (مثلًا `api.example.com`) في بيئة اختبار تصدر طلبات إلى أصل مختلف (مثلًا `localhost:5173`). فـ glob الـ `url` لا يبوّب إلا الطلبات المؤهلة لمعالجة HAR — ولا يعيد كتابة الـ URLs ولا يخفّف المطابقة. وملفات HAR المسجّلة في الإنتاج تعمل مع واجهات API خارجية يخاطبها الاختبار بالـ URL نفسه، لا مع طلبات تذهب إلى مضيف مختلف. وفي سيناريوهات اختلاف النطاق، تكون `page.route` مع معالج مخصص هي الأداة الصحيحة.
 
-## A comparison
+## مقارنة
 
-|  | Programmatic (`routeFromHAR`) | Playwright CLI (`--save-har`) | Chrome DevTools |
+|  | برمجيًا (`routeFromHAR`) | سطر أوامر Playwright (`--save-har`) | Chrome DevTools |
 | --- | --- | --- | --- |
-| **Needs a test first** | Yes | No | No |
-| **Captures exactly what the test needs** | Yes | With `--save-har-glob` | No—captures everything |
-| **Credential risk** | Moderate | Moderate | High |
-| **Extra noise in the HAR** | Minimal | Depends on glob | High |
-| **Good for exploration** | No | Yes | Yes |
-| **Good for production debugging** | No | No | Yes |
+| **يحتاج اختبارًا أولًا** | نعم | لا | لا |
+| **يلتقط ما يحتاجه الاختبار بالضبط** | نعم | مع `--save-har-glob` | لا — يلتقط كل شيء |
+| **خطر بيانات الاعتماد** | متوسط | متوسط | مرتفع |
+| **ضجيج إضافي في الـ HAR** | أدنى | يعتمد على الـ glob | مرتفع |
+| **جيد للاستكشاف** | لا | نعم | نعم |
+| **جيد لتنقيح الإنتاج** | لا | لا | نعم |
 
-## Scrubbing credentials
+## تنقية بيانات الاعتماد
 
-Every recording approach captures credentials. Programmatic and CLI recordings capture whatever your test user sends. Chrome captures your *real* session. Before committing any HAR, search the JSON for `authorization`, `cookie`, `set-cookie`, `token`, `session`, `api-key`, and `secret`. Credentials hide in three places inside a HAR entry: request headers, response headers (`Set-Cookie`), and request or response bodies (OAuth token exchanges, API keys as query parameters).
+كل أسلوب تسجيل يلتقط بيانات اعتماد. فالتسجيل البرمجي وتسجيل سطر الأوامر يلتقطان ما يرسله مستخدم اختبارك. أما Chrome فيلتقط جلستك *الحقيقية*. وقبل إيداع أي HAR، ابحث في الـ JSON عن `authorization` و`cookie` و`set-cookie` و`token` و`session` و`api-key` و`secret`. وتختبئ بيانات الاعتماد في ثلاثة مواضع داخل مدخلة HAR: ترويسات الطلب، وترويسات الاستجابة (`Set-Cookie`)، وأجسام الطلب أو الاستجابة (تبادلات رموز OAuth، ومفاتيح API كمعاملات استعلام).
 
-The safest workflow is to use a dedicated test user with throwaway credentials—the same account your [storage state setup](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) creates (e.g., `alice@example.com`). If the HAR contains only that test user’s session, there’s nothing real to scrub.
+وأكثر سير عمل أمانًا هو استخدام مستخدم اختبار مخصص ببيانات اعتماد يمكن التخلّص منها — الحساب نفسه الذي ينشئه [إعداد حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) لديك (مثل `alice@example.com`). وإذا كان الـ HAR يحتوي جلسة ذلك المستخدم التجريبي فقط، فلا يوجد شيء حقيقي يحتاج إلى تنقية.
 
-When you do need to scrub, use a script that parses the HAR as JSON—not `sed` or regex, which are brittle against nested JSON. Walk `entries[].request.headers` and `entries[].response.headers`, replace sensitive values with `"REDACTED"`, and **always re-run the test in replay mode after scrubbing** to verify the HAR still works.
+وحين تحتاج فعلًا إلى التنقية، استخدم سكربتًا يحلّل الـ HAR كـ JSON — لا `sed` ولا تعبيرًا نمطيًا، فهما هشّان أمام JSON المتداخل. امشِ على `entries[].request.headers` و`entries[].response.headers`، واستبدل القيم الحساسة بـ `"REDACTED"`، و**أعد دائمًا تشغيل الاختبار في وضع إعادة التشغيل بعد التنقية** للتحقق من أن الـ HAR ما زال يعمل.
 
-> **Warning**
+> **تحذير**
 >
-> The [secret scanning lesson](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) excludes `tests/fixtures/` from gitleaks by default. That means the scanner will *not* catch credentials in committed HARs. Manual review before committing is the only gate.
+> يستثني [درس فحص الأسرار](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks) مجلد `tests/fixtures/` من gitleaks افتراضيًا. وهذا يعني أن الماسح *لن* يلتقط بيانات الاعتماد في ملفات HAR المودعة. فالمراجعة اليدوية قبل الإيداع هي البوابة الوحيدة.
 
-## My default workflow
+## سير عملي الافتراضي
 
-For Shelf’s test suite, I use programmatic recording for everything. The workflow is straightforward:
+لمجموعة اختبارات Shelf، أستخدم التسجيل البرمجي في كل شيء. وسير العمل مباشر:
 
-Write the test with the `UPDATE_HARS` env var check. Run it once with `UPDATE_HARS=1` against the real API. Commit the HAR. Run it again without the env var to verify replay works. That’s it.
+اكتب الاختبار مع فحص متغيّر البيئة `UPDATE_HARS`. شغّله مرة مع `UPDATE_HARS=1` مقابل الـ API الحقيقي. أودِع الـ HAR. شغّله مرة أخرى بلا متغيّر البيئة للتحقق من أن إعادة التشغيل تعمل. هذا كل شيء.
 
-I reach for the CLI approach when I’m writing tests for a new feature and I want to understand the request/response shape before I write the assertions. Record a manual session, open the HAR in my editor, see exactly what the API returns, *then* write the test.
+وألجأ إلى أسلوب سطر الأوامر حين أكتب اختبارات لميزة جديدة وأريد فهم شكل الطلب/الاستجابة قبل أن أكتب التأكيدات. سجّل جلسة يدوية، وافتح الـ HAR في محرّري، وانظر بالضبط ما تعيده الـ API، *ثم* اكتب الاختبار.
 
-And I reach for Chrome DevTools when I’m investigating a bug in production and I want to grab the network session while I can still reproduce it. That HAR isn’t going directly into the test suite—it’s evidence. I might use it as a reference to write a proper programmatic recording later, or I might just keep it as documentation of what the bug looked like.
+وألجأ إلى Chrome DevTools حين أحقّق في خطأ في الإنتاج وأريد أخذ جلسة الشبكة بينما ما زلت أستطيع إعادة إنتاجه. ذلك الـ HAR لن يدخل مجموعة الاختبارات مباشرة — إنه دليل. قد أستخدمه مرجعًا لكتابة تسجيل برمجي سليم لاحقًا، أو قد أحتفظ به فقط توثيقًا لشكل الخطأ.
 
-> **Tip**
+> **نصيحة**
 >
-> Whatever approach you use, review the HAR before committing. See the scrubbing section above for what to search for and where credentials hide.
+> أي أسلوب تستخدم، راجع الـ HAR قبل الإيداع. راجع قسم التنقية أعلاه لتعرف عمّا تبحث وأين تختبئ بيانات الاعتماد.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
-- [Route-Based Network Interception](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [تسجيل ملفات HAR لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
+- [اعتراض الشبكة القائم على المسارات](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [حلقات التحقق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)

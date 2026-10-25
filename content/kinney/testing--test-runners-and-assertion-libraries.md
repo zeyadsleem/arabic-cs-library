@@ -1,18 +1,18 @@
 ---
-title: "Which Testing Framework Should I Use?"
-lang: en
+title: "أي إطار اختبار ينبغي أن أستخدم؟"
+lang: ar
 source: "https://stevekinney.com/courses/testing/test-runners-and-assertion-libraries"
 ---
 
-You *could* separate testing libraries into two classes:
+*يمكنك* تقسيم مكتبات الاختبار إلى صنفين:
 
-- **An assertion library**: A library that makes sure that your code does what it expects (or throws an error if it doesn’t). Some examples include [Chai](https://www.chaijs.com/), [Should.js](https://shouldjs.github.io/), [Node’s built-in `assert` module](https://nodejs.org/api/assert.html).
-- **A test runner**: A process that runs through all of your tests and generates reports. [Mocha](https://mochajs.org/) is an example of this. A very basic test running might grep for all of the files that end in `*.test.js` and execute them using Node.
+- **مكتبة تحقّق (assertion library)**: مكتبة تضمن أن شيفرتك تفعل ما تتوقعه (أو ترمي خطأ إن لم تفعل). من الأمثلة عليها [Chai](https://www.chaijs.com/)، و[Should.js](https://shouldjs.github.io/)، و[وحدة `assert` المدمجة في Node](https://nodejs.org/api/assert.html).
+- **مشغّل اختبارات (test runner)**: عملية تمرّ على كل اختباراتك وتولّد تقارير. [Mocha](https://mochajs.org/) مثال على ذلك. المشغّل الأساسي جدًا قد يبحث عن كل الملفات التي تنتهي بـ `*.test.js` وينفّذها باستخدام Node.
 
-Some modern testing frameworks (namely: [Jasmine](https://jasmine.github.io/), [Jest](https://jestjs.io/), and [Vitest](https://vitest.dev/)) combine a test runner with an assertion library. So, this distinction probably isn’t terribly important these days, but I think it’s worth calling out. If there was an assertion library that you like *more* than whatever comes built-in with Jest, you *could* swap it out with another assertion library and everything should work as expected.
+بعض أطر الاختبار الحديثة (وهي: [Jasmine](https://jasmine.github.io/) و[Jest](https://jestjs.io/) و[Vitest](https://vitest.dev/)) تدمج مشغّل اختبارات مع مكتبة تحقّق. لذا فالأرجح أن هذا التمييز ليس مهمًا كثيرًا هذه الأيام، لكني أرى أنه يستحق التنبيه. إن وُجدت مكتبة تحقّق تعجبك *أكثر* من أي شيء يأتي مدمجًا مع Jest، *يمكنك* استبدالها بمكتبة تحقّق أخرى وسيعمل كل شيء كما هو متوقع.
 
-I’m not going to waste your time and make you eat your vegetables and build one from scratch just to prove a point.
+لن أضيّع وقتك وأجبرك على أكل خضرواتك وبناء واحدة من الصفر لمجرد إثبات وجهة نظر.
 
-## Adding Vitest to Visual Studio Code
+## إضافة Vitest إلى Visual Studio Code
 
-If you use Vitest and Visual Studio Code, there is [a helpful plugin for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer) that makes it easy to run your tests from inside your editor. There is also a [Visual Studio Code Plugin for Jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest).
+إن كنت تستخدم Vitest وVisual Studio Code، فهناك [إضافة مفيدة لـ Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer) تجعل تشغيل اختباراتك من داخل محرّرك أمرًا سهلًا. وهناك أيضًا [إضافة Visual Studio Code لـ Jest](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest).

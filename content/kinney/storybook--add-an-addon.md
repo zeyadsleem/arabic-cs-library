@@ -1,16 +1,16 @@
 ---
-title: "Add an Addon to Storybook"
-lang: en
+title: "إضافة ملحق إلى Storybook"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/add-an-addon"
 ---
 
-If you need to manually add an addon in Storybook, you can follow these steps to get going. First, we’ll need to install the addon in question.
+إذا احتجت إلى إضافة ملحق يدويًا في Storybook، فيمكنك اتباع هذه الخطوات للبدء. أولًا، سنحتاج إلى تثبيت الملحق المعني.
 
 ```bash
  npm i -D @storybook/addon-themes
 ```
 
-Next, we’ll pop over to `.storybook/main.ts` and add it to the array of addons.
+بعد ذلك، ننتقل إلى `.storybook/main.ts` ونضيفه إلى مصفوفة الملحقات.
 
 ```diff
 diff --git a/.storybook/main.ts b/.storybook/main.ts

@@ -72,6 +72,42 @@ export const withoutCodeFences = (markdown) => {
 export const ARABIC_LETTER = /[\u0621-\u064A]/;
 const LATIN_WORD = /^[A-Za-z][A-Za-z'’-]*$/;
 
+/** Prose words outside code and link destinations, in either script.
+ * Compared between a source and its translation to catch pages that were
+ * summarized, truncated, or replaced by a placeholder instead of translated.
+ * @param {string} markdown @returns {number}
+ */
+export const proseWordCount = (markdown) =>
+  (withoutDestinations(markdown).match(/[A-Za-z][A-Za-z'’-]*|[\u0621-\u064A]+/g) || []).length;
+
+/** Text a translator left behind that is not page content: a tool's output
+ * envelope, an absolute path, or a note about the translation itself. A page
+ * carrying any of these is broken even when its Arabic ratio looks healthy.
+ * @param {string} markdown @returns {string[]}
+ */
+export const leakedText = (markdown) => {
+  const found = [];
+  const text = withoutCodeFences(markdown);
+  const patterns = [
+    /^\s*filePath">/m,
+    /^\s*\/(?:home|Users)\/[\w./-]+\.md\s*$/m,
+    /<\|(?:end|start|message|channel|constrain)\|>/,
+    /<rfl:parameter/,
+    /تمت ترجمة هذا القسم/,
+    /ترجمة مختصرة/,
+    /راجع المصدر الإنجليزي/,
+    /صفحة مترجمة/,
+    /(?:Oops|Hmm),? (?:I|wait|let me)/i,
+    /let me (?:rewrite|fix)/i,
+    /need (?:fully )?Arabic/i
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) found.push(match[0]);
+  }
+  return found;
+};
+
 /** An inline link or image: the label is prose, the destination is not. */
 const INLINE_LINK = /(!?\[)([^\]]*)(\]\(\s*(?:<[^>\n]*>|[^()\s]*)(?:\s+"[^"\n]*")?\s*\))/g;
 /** A link reference definition carries a destination and no prose. */
@@ -180,6 +216,12 @@ export const unrenderedTags = (markdown) => {
 export const ARABIC_RATIO_MINIMUM = 0.5;
 /** Above this many Latin words in a row the page still carries English prose. */
 export const LATIN_RUN_MAXIMUM = 20;
+/** A source page shorter than this is too small for a useful word comparison. */
+const COMPLETENESS_SOURCE_MINIMUM_WORDS = 120;
+/** Below this share of the source's prose words the translation was summarized
+ * or truncated. Arabic is terser than English, so a faithful page stays well
+ * above half; a placeholder lands near zero. */
+export const SOURCE_COVERAGE_MINIMUM = 0.4;
 /** A line with at least this many Latin words, and this little Arabic, was left untranslated. */
 const UNTRANSLATED_MINIMUM_WORDS = 12;
 /** Headings are short, so they clear the prose threshold by accident: the English
@@ -264,6 +306,22 @@ export const validatePageTranslation = (key, source, translation) => {
   if (!translation.body.trim()) {
     problems.push(`${key}: empty body`);
     return problems;
+  }
+  const leaked = leakedText(translation.body);
+  if (leaked.length) {
+    problems.push(`${key}: leaked non-page text: ${JSON.stringify(leaked[0])}`);
+  }
+  const sourceWords = proseWordCount(source);
+  const translationWords = proseWordCount(translation.body);
+  if (
+    sourceWords >= COMPLETENESS_SOURCE_MINIMUM_WORDS &&
+    translationWords / sourceWords < SOURCE_COVERAGE_MINIMUM
+  ) {
+    problems.push(
+      `${key}: translation covers ${Math.round(
+        (translationWords / sourceWords) * 100
+      )}% of the source prose — the page was summarized or truncated`
+    );
   }
   const ratio = arabicLetterRatio(translation.body);
   if (ratio < ARABIC_RATIO_MINIMUM) {

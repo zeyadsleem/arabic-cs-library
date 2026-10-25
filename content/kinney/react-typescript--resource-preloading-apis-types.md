@@ -1,22 +1,22 @@
 ---
-title: "Resource Preloading APIs with TypeScript"
-lang: en
+title: "التحميل المسبق للمصادر بأنواع API"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/resource-preloading-apis-types"
 ---
 
-Web performance isn’t just about fast servers and optimized bundles—it’s about loading the right resources at the right time. React’s resource preloading APIs (`preload`, `preinit`, and `prefetch`) let you fine-tune when and how critical assets are fetched, but without proper TypeScript setup, you might end up loading the same stylesheet twice or preloading a script with the wrong priority. Let’s build type-safe helpers that make resource preloading both reliable and developer-friendly.
+أداء الويب لا يخص الخوادم السريعة والحزم المُحسَّنة وحده — بل تحميل المصادر الصحيحة في الوقت الصحيح. تتيح لك واجهات التحميل المسبق للمصادر في React (`preload` و`preinit` و`prefetch`) ضبطَ متى وكيف تُجلب الكتلة الحرجة من الموجودات، لكن من دون تهيئة TypeScript سليمة قد يجدك الأمر تحمّل ورقة الأنماط نفسها مرتين أو تحميلًا مسبقًا لسكربت بأولوية خاطئة. لنبنِ مساعدات آمنة الأنواع تجعل التحميلَ المسبق مصادرَ موثوقًا وأريحًا للمطوّر.
 
-Resource preloading is all about giving the browser hints: “Hey, I know you’re going to need this font in a few milliseconds, so start fetching it now” or “This JavaScript module will definitely be used on the next page, so grab it when you have a spare moment.” The challenge is coordinating these hints across your application without creating duplicate requests or conflicting priorities.
+التحميل المسبق للمصادر في جوهره إرشادات للنطاري (browser): «سأعرف أنك ستحتاج هذا الخط بعد مللي ثوانٍ قليلة، فابدأَ جلبَه الآن» أو «ستُستخدم وحدةُ JavaScript هذه على الصفحة التالية قطعًا، فالتطُتها في لحظة فراغ». والتحدي هو تنسيق هذه الإرشادات عبر تطبيقك دون خلق طلبات مكررة أو أولويات متعارضة.
 
-## Understanding the Preloading APIs
+## فهم واجهات التحميل المسبق
 
-React 19 introduced three complementary APIs for resource management:
+قدّم React 19 ثلاث واجهات متكاملة لإدارة المصادر:
 
-- **`preload`**: Fetch resources you’ll need soon (stylesheets, fonts, images)
-- **`preinit`**: Load and initialize resources immediately (critical scripts, stylesheets)
-- **`prefetch`**: Opportunistically cache resources for future navigation
+- **`preload`**: اجلب المصادر التي ستحتاجها قريبًا (أوراق الأنماط، والخطوط، والصور)
+- **`preinit`**: حمّل وابدأ المصادر فورًا (السكربتات الحرجة، أوراق الأنماط)
+- **`prefetch`**: خزّن المصادر مؤقتًا حين تيسر استعدادًا للتصفح القادم
 
-Each serves a different performance strategy, but they all share a common need for consistent resource identification and deduplication.
+لكل منها استراتيجية أداء مختلفة، لكنها كلها تشترك في حاجة إلى تمييز متّسق للمصادر وأن يُزال الازدواج عنها.
 
 ```typescript
 import { preload, preinit, prefetch } from 'react-dom';
@@ -31,11 +31,11 @@ preinit('/js/analytics.js', { as: 'script' });
 prefetch('/api/user/preferences');
 ```
 
-The tricky part isn’t the API calls—it’s managing them consistently across your app without conflicts or redundant requests.
+الجزء الشاق ليس نداءات الواجهات بحد ذاتها — بل إدارتها بانتظام عبر تطبيقك دون تعارض أو طلبات زائدة.
 
-## Creating Type-Safe Resource Definitions
+## إنشاء تعريفات مصادر آمنة الأنواع
 
-Let’s start by defining our resource types. We want compile-time safety for resource URLs, loading strategies, and priorities:
+لنبدأ بتعريف أنواع المصادر عندنا. نريد أمانًا عند وقت التصريف لعناوين URL للمصادر واستراتيجيات التحميل والأولويات:
 
 ```typescript
 // Resource types with specific constraints
@@ -80,11 +80,11 @@ const RESOURCES = {
 type ResourceKey = keyof typeof RESOURCES;
 ```
 
-This approach gives us several benefits: the resource catalog is the single source of truth, TypeScript prevents typos in resource keys, and we can enforce consistency in loading strategies.
+يجلب لنا هذا النهج مزايا عدّة: فمفهرس المصادر هو مصدر الحق الوحيد، ويمنع TypeScript الأخطاءَ المطبعية في مفاتيح المصادر، ويمكننا إلزام الاتساق في استراتيجيات التحميل.
 
-## Building a Deduplication Manager
+## بناء مدير مزالة الازدواج
 
-The biggest footgun with preloading APIs is loading the same resource multiple times. Let’s create a manager that tracks what’s been loaded:
+أكبر فخّ في واجهات التحميل المسبق هو تحميل المصدر نفسه مراتٍ عدّة. لنتكشف مديرًا يتتبّع ما حُمِّل:
 
 ```typescript
 class ResourceManager {
@@ -168,9 +168,9 @@ class ResourceManager {
 export const resourceManager = new ResourceManager();
 ```
 
-## Creating React Hooks for Resource Loading
+## إنشاء خُطّافات React لتحميل المصادر
 
-Now let’s wrap this in React hooks that feel natural to use in components:
+الآن لفها في خُطّافات React تبدو طبيعية الاستعمال في المكوّنات:
 
 ```typescript
 import { useEffect, useState } from 'react';
@@ -236,9 +236,9 @@ export function useConditionalResources(condition: boolean, resources: ResourceK
 }
 ```
 
-## Real World Usage Patterns
+## أنماط استعمال من الواقع
 
-Here’s how these hooks work in practice across different component scenarios:
+هكذا تعمل هذه الخُطّافات عمليًا عبر سيناريوهات مكوّنة مختلفة:
 
 ```typescript
 // Layout component that preloads critical resources
@@ -300,9 +300,9 @@ function Navigation() {
 }
 ```
 
-## Advanced Resource Loading Strategies
+## استراتيجيات متقدمة لتحميل المصادر
 
-Sometimes you need more sophisticated loading logic. Here are some patterns for handling complex scenarios:
+أحيانًا تحتاج منطق تحميل أكثر تعقيدًا. هذه بعض الأنماط للتعامل مع السيناريوهات المركّبة:
 
 ```typescript
 // Priority-based loading manager
@@ -368,9 +368,9 @@ function useConnectionAwareLoading(resources: ResourceKey[]) {
 }
 ```
 
-## Debugging and DevTools Integration
+## التصحيح والاندماج في أدوات المطوّر
 
-Resource preloading can be tricky to debug. Let’s add some developer experience improvements:
+قد يكون تصحيح التحميل المسبق للمصادر عسيرًا. لنضف بعض التحسينات لتجربة المطوّر:
 
 ```typescript
 // Development-only resource monitor
@@ -458,11 +458,11 @@ class MonitoredResourceManager extends ResourceManager {
 }
 ```
 
-## Performance Considerations and Best Practices
+## اعتبارات الأداء وأفضل الممارسات
 
-Resource preloading is powerful, but it comes with tradeoffs you should understand:
+التحميل المسبق للمصادر قوي، لكنه يأتي بمفاضلاتٍ ينبغي أن تفهمها:
 
-### Memory and Bandwidth Impact
+### أثر الذاكرة وعرض النطاق
 
 ```typescript
 // ❌ Aggressive preloading can hurt performance
@@ -502,7 +502,7 @@ function useSmartPreloading() {
 }
 ```
 
-### Critical Resource Prioritization
+### ترتيب أولوية المصادر الحرجة
 
 ```typescript
 // Resource loading phases
@@ -538,13 +538,13 @@ function usePhaseBasedLoading() {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Preloading too many resources can actually hurt performance by competing for bandwidth with critical resources. Always measure the impact on Core Web Vitals.
+> قد يضر تحميل موارد كثيرة مسبقًا بالأداء فعلًا، إذ تتنافس على عرض النطاق مع المصادر الحرجة. قِس التأثير في مؤشرات الويب الحيوية (Core Web Vitals) دائمًا.
 
-## Testing Resource Loading
+## اختبار تحميل المصادر
 
-Resource preloading logic needs testing, but mocking browser APIs can be tricky:
+منطق التحميل المسبق للمصادر يحتاج اختبارًا، لكن محاكاة واجهات النطاري قد تكون دقيقة:
 
 ```typescript
 // Test utilities for resource loading
@@ -595,6 +595,6 @@ describe('useResourceLoader', () => {
 });
 ```
 
-Resource preloading with TypeScript doesn’t have to be a source of bugs and performance surprises. By building type-safe abstractions around React’s preloading APIs, you get the performance benefits of smart resource loading with the confidence that comes from compile-time checking and runtime deduplication.
+لا يتعين أن يكون التحميل المسبق للمصادر مع TypeScript منبعًا للعلل ومفاجآت الأداء. فبتجريد آمن الأنواع حول واجهات التحميل المسبق في React تحصل على مزايا أداء التحميل الذكي للمصادر مع تلك الثقة التي يمنحها التحقق وقت التصريف ومزالة الازدواج وقت التشغيل.
 
-The key principles: define your resources in a central catalog, use TypeScript to prevent mistakes, deduplicate aggressively, and always measure the performance impact. Your users will thank you for the faster loading times, and your future self will thank you for the maintainable code.
+القواعد الأساسية: عرِّف مصادرك في مفهرس مركزي، واجعل TypeScript يمنع الأخطاء، وامحُ الازدواج بشدة، وقِس أثر الأداء دائمًا. وسيشكر مستخدموك على أزمنة التحميل الأسرع، وستشكرك نفسك المستقبلية على شيفرة يسيرة الصيانة.

@@ -1,68 +1,68 @@
 ---
-title: "Creating a CloudFront Distribution"
-lang: en
+title: "إنشاء توزيع CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution"
 ---
 
-You have an S3 bucket with your static site files. Now you need to put a CDN in front of it. That means creating a CloudFront **distribution**—the resource that defines how CloudFront serves your content to users around the world.
+لديك حاوية S3 تحتوي ملفات موقعك الثابت. الآن تحتاج إلى وضع شبكة توصيل محتوى (CDN) أمامها. وهذا يعني إنشاء **توزيع** (distribution) في CloudFront — المورد الذي يحدّد كيف تقدّم CloudFront محتواك للمستخدمين حول العالم.
 
-If you want AWS’s exact terminology next to this lesson, the [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) and the [cache behavior settings reference](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistValuesCacheBehavior.html) are the official sources.
+إذا أردت مصطلحات AWS الدقيقة إلى جانب هذا الدرس، فإن [دليل مطوّر CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) و[مرجع إعدادات سلوك التخزين المؤقت](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/DownloadDistValuesCacheBehavior.html) هما المصدران الرسميان.
 
-On Vercel, this happens automatically when you push to a Git branch. On AWS, you configure it explicitly. The upside: you control every detail. The downside: there are a lot of details.
+على Vercel، يحدث هذا تلقائيًا عندما تدفع إلى فرع Git. وعلى AWS، تضبطه صراحةً. والميزة: تتحكم في كل تفصيل. والعيب: هناك تفاصيل كثيرة.
 
-> **Note**
+> **ملاحظة**
 >
-> This lesson walks through the *minimum viable* distribution: no OAC, no ACM certificate, no custom domain. You’ll get an “Access Denied” in the browser at the end, and that’s the point—it sets up the next two lessons. The [Set Up a CloudFront Distribution exercise](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise) puts the pieces together into the final, production-shaped config once you’ve worked through OAC and ACM.
+> يستعرض هذا الدرس التوزيع *الأدنى القابل للتشغيل*: بلا OAC، ولا شهادة ACM، ولا نطاق مخصّص. وستحصل على «Access Denied» في المتصفح في النهاية، وهذا هو المقصود — فهو يمهّد للدرسين التاليين. ويجمع [تمرين إعداد توزيع CloudFront](https://stevekinney.com/courses/aws/cloudfront-distribution-exercise) القطع في الإعداد النهائي بمظهر الإنتاج بعد أن تكون قد عملت على OAC وACM.
 
-## Creating a Distribution in the Console
+## إنشاء توزيع في لوحة التحكم
 
-The CloudFront **Create distribution** wizard walks you through the process step by step. Navigate to **CloudFront → Distributions → Create distribution** to get started.
+يرشدك معالج **Create distribution** في CloudFront خلال العملية خطوة بخطوة. انتقل إلى **CloudFront → Distributions → Create distribution** للبدء.
 
-### Step 1: Get Started
+### الخطوة 1: البدء
 
-The first screen asks for a **distribution name** and **distribution type**. Enter a name like `my-frontend-app`—this is stored as a tag for easy identification. Leave the distribution type as **Single website or app** (the default). You can skip the Route 53 domain for now—you’ll add a custom domain later.
+تسأل الشاشة الأولى عن **اسم التوزيع** و**نوع التوزيع**. أدخل اسمًا مثل `my-frontend-app` — ويُخزَّن هذا كوسم لتسهيل التعرّف. واترك نوع التوزيع على **Single website or app** (الافتراضي). ويمكنك تخطّي نطاق Route 53 الآن — ستضيف نطاقًا مخصّصًا لاحقًا.
 
-The CloudFront Create Distribution wizard Step 1, showing the distribution name field filled with my-frontend-app and the Single website or app type selected.
+معالج CloudFront Create Distribution الخطوة 1، وهو يعرض حقل اسم التوزيع مملوءًا بـ my-frontend-app والنوع Single website or app مختارًا.
 
-### Step 2: Specify Origin
+### الخطوة 2: تحديد الأصل
 
-This is where you tell CloudFront where to fetch your content. Select **Amazon S3** as the origin type, then enter your S3 bucket’s regional domain name: `my-frontend-app-assets.s3.us-east-1.amazonaws.com`.
+هنا تخبر CloudFront من أين تجلب محتواك. اختر **Amazon S3** كنوع الأصل، ثم أدخل اسم النطاق الإقليمي لحاوية S3: `my-frontend-app-assets.s3.us-east-1.amazonaws.com`.
 
-The CloudFront Create Distribution wizard Step 2, showing Amazon S3 selected as the origin type with the S3 bucket URL filled in.
+معالج CloudFront Create Distribution الخطوة 2، وهو يعرض اختيار Amazon S3 كنوع الأصل مع ملء عنوان URL لحاوية S3.
 
-> **Warning**
+> **تحذير**
 >
-> Use the S3 REST endpoint (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`), not the S3 website endpoint (`my-frontend-app-assets.s3-website-us-east-1.amazonaws.com`). CloudFront talks to S3 via the REST API, and using the website endpoint breaks OAC authentication.
+> استخدم نقطة نهاية S3 REST (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`)، لا نقطة نهاية موقع S3 (`my-frontend-app-assets.s3-website-us-east-1.amazonaws.com`). فـ CloudFront يتحدث إلى S3 عبر REST API، واستخدام نقطة نهاية الموقع يكسر مصادقة OAC.
 
-Scroll down and you’ll see the **Settings** section. Leave **Allow private S3 bucket access to CloudFront** checked—this configures Origin Access Control (OAC) so only CloudFront can read from your bucket. The recommended origin and cache settings are fine for a static site.
+مرّر لأسفل وسترى قسم **Settings**. اترك **Allow private S3 bucket access to CloudFront** محدّدًا — فهذا يضبط التحكم في الوصول إلى الأصل (OAC) بحيث لا يقرأ من حاويتك إلا CloudFront. وإعدادات الأصل والتخزين المؤقت الموصى بها مناسبة لموقع ثابت.
 
-The CloudFront origin settings showing the OAC checkbox enabled, recommended origin settings selected, and recommended cache settings tailored to S3 content.
+إعدادات أصل CloudFront وهي تعرض مربّع اختيار OAC ممكّنًا، وإعدادات الأصل الموصى بها مختارة، وإعدادات التخزين المؤقت الموصى بها المصمّمة لمحتوى S3.
 
-### Step 3: Enable Security
+### الخطوة 3: تمكين الأمان
 
-The wizard asks whether to enable AWS WAF (Web Application Firewall). WAF adds cost ($14/month for 10 million requests) and isn’t necessary for a static site exercise. Select **Do not enable security protections**.
+يسأل المعالج إن كنت تريد تمكين AWS WAF (جدار حماية تطبيقات الويب). تضيف WAF تكلفة (14 دولارًا شهريًا لـ 10 ملايين طلب) وليست ضرورية لتمرين موقع ثابت. اختر **Do not enable security protections**.
 
-The CloudFront security step showing WAF options with Do not enable security protections selected.
+خطوة الأمان في CloudFront وهي تعرض خيارات WAF مع اختيار Do not enable security protections.
 
-### Step 4: Get TLS Certificate
+### الخطوة 4: الحصول على شهادة TLS
 
-The wizard asks whether you want to request an ACM certificate for a custom domain. Since we’re using CloudFront’s default `*.cloudfront.net` domain for now, skip this step by clicking **Next** without entering a domain. You’ll attach a custom certificate later in [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate) if you set up a custom domain.
+يسأل المعالج إن كنت تريد طلب شهادة ACM لنطاق مخصّص. وبما أننا نستخدم نطاق CloudFront الافتراضي `*.cloudfront.net` الآن، فتخطَّ هذه الخطوة بالنقر على **Next** دون إدخال نطاق. وسترفق شهادة مخصّصة لاحقًا في [إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate) إن أعددت نطاقًا مخصّصًا.
 
-### Step 5: Review and Create
+### الخطوة 5: المراجعة والإنشاء
 
-The final step shows a summary of everything you’ve configured—distribution name, S3 origin with CloudFront access granted, cache settings, and security configuration. Verify the details and click **Create distribution**.
+تعرض الخطوة الأخيرة ملخّصًا لكل ما أعددته — اسم التوزيع، وأصل S3 مع منح وصول CloudFront، وإعدادات التخزين المؤقت، وإعداد الأمان. تحقّق من التفاصيل وانقر **Create distribution**.
 
-The CloudFront review step showing the distribution name, S3 origin, OAC access granted, and cache settings before creation.
+خطوة المراجعة في CloudFront وهي تعرض اسم التوزيع وأصل S3 ووصول OAC الممنوح وإعدادات التخزين المؤقت قبل الإنشاء.
 
-After creation, CloudFront deploys your distribution to edge locations worldwide. This takes a few minutes—the console shows the deployment status.
+بعد الإنشاء، تنشر CloudFront توزيعك إلى مواقع الحافة حول العالم. ويستغرق هذا بضع دقائق — وتعرض لوحة التحكم حالة النشر.
 
-CloudFront distribution detail page showing the distribution as Deploying immediately after creation.
+صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.
 
-## The Distribution Config (CLI)
+## إعدادات التوزيع (CLI)
 
-You can also create a distribution through the CLI by passing a JSON configuration to `aws cloudfront create-distribution`. The config is verbose—CloudFront has many options and the CLI requires you to specify most of them, even when you want the defaults. Here’s the full config that produces the same distribution you just created in the console.
+يمكنك أيضًا إنشاء توزيع عبر CLI بتمرير إعدادات JSON إلى `aws cloudfront create-distribution`. والإعدادات مطوّلة — فلدى CloudFront خيارات كثيرة، وتتطلب منك CLI تحديد معظمها حتى عندما تريد الافتراضيات. وهذا هو الإعداد الكامل الذي ينتج التوزيع نفسه الذي أنشأته للتو في لوحة التحكم.
 
-Save this as `distribution-config.json`:
+احفظ هذا باسم `distribution-config.json`:
 
 ```json
 {
@@ -111,9 +111,9 @@ Save this as `distribution-config.json`:
 }
 ```
 
-That’s a lot of JSON. Let’s walk through it.
+هذا JSON كثير. لنستعرضه.
 
-## Breaking Down the Config
+## تفكيك الإعدادات
 
 ### CallerReference
 
@@ -121,7 +121,7 @@ That’s a lot of JSON. Let’s walk through it.
 "CallerReference": "my-frontend-app-2026-03-18"
 ```
 
-A unique string that prevents you from accidentally creating duplicate distributions. If you submit the same `CallerReference` twice, CloudFront returns the existing distribution instead of creating a new one. Use a timestamp or project name—anything unique to this distribution.
+سلسلة فريدة تمنعك من إنشاء توزيعات مكرّرة عن غير قصد. فإذا أرسلت `CallerReference` نفسها مرتين، تُرجع CloudFront التوزيع الموجود بدلًا من إنشاء واحد جديد. استخدم طابعًا زمنيًا أو اسم مشروع — أي شيء فريد لهذا التوزيع.
 
 ### DefaultRootObject
 
@@ -129,11 +129,11 @@ A unique string that prevents you from accidentally creating duplicate distribut
 "DefaultRootObject": "index.html"
 ```
 
-When someone requests the root URL of your distribution (`https://d1234abcdef.cloudfront.net/`), CloudFront serves this file. This is the CDN equivalent of S3’s index document setting. Without it, a request to `/` returns an error because CloudFront doesn’t know which object to serve.
+عندما يطلب أحدهم عنوان URL الجذري لتوزيعك (`https://d1234abcdef.cloudfront.net/`)، تقدّم CloudFront هذا الملف. وهذا مكافئ CDN لإعداد مستند الفهرس في S3. ومن دونه، يُرجع الطلب إلى `/` خطأً لأن CloudFront لا يعرف أي كائن يقدّم.
 
-> **Warning**
+> **تحذير**
 >
-> `DefaultRootObject` only applies to the root URL (`/`). It doesn’t apply to subdirectory paths like `/about/`. If you need `/about/` to serve `/about/index.html`, you’ll need a CloudFront Function or Lambda@Edge, which you’ll cover in the edge-compute section. For single-page applications, this is handled by custom error responses, which you’ll configure in [Custom Error Pages and SPA Routing](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
+> ينطبق `DefaultRootObject` على عنوان URL الجذري (`/`) فقط. ولا ينطبق على مسارات الأدلّة الفرعية مثل `/about/`. فإذا احتجت إلى أن يقدّم `/about/` الملف `/about/index.html`، فستحتاج إلى CloudFront Function أو Lambda@Edge، وهو ما ستغطّيه في قسم الحوسبة على الحافة. وللتطبيقات أحادية الصفحة، يتولّى هذا استجابات الأخطاء المخصّصة، التي ستضبطها في [صفحات الأخطاء المخصّصة وتوجيه SPA](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
 
 ### PriceClass
 
@@ -141,7 +141,7 @@ When someone requests the root URL of your distribution (`https://d1234abcdef.cl
 "PriceClass": "PriceClass_100"
 ```
 
-Controls which edge locations serve your content. `PriceClass_100` covers North America, Europe, and Israel—the cheapest option. You can change this to `PriceClass_200` (adds Asia, Africa, Middle East) or `PriceClass_All` (every edge location worldwide) at any time without creating a new distribution.
+يتحكم في مواقع الحافة التي تقدّم محتواك. و`PriceClass_100` يغطّي أمريكا الشمالية وأوروبا وإسرائيل — وهو الخيار الأرخص. ويمكنك تغييره إلى `PriceClass_200` (يضيف آسيا وأفريقيا والشرق الأوسط) أو `PriceClass_All` (كل موقع حافة حول العالم) في أي وقت دون إنشاء توزيع جديد.
 
 ### Origins
 
@@ -160,15 +160,15 @@ Controls which edge locations serve your content. `PriceClass_100` covers North 
 }
 ```
 
-The **origin** is where CloudFront fetches content when it doesn’t have a cached copy. For a static site, that’s your S3 bucket. A few things to note:
+**الأصل** هو المكان الذي تجلب منه CloudFront المحتوى عندما لا يكون لديها نسخة مخزّنة مؤقتًا. ولموقع ثابت، هذا هو حاوية S3 لديك. وبضعة أمور تستحق الملاحظة:
 
-- **`Id`**: A label for this origin. You reference it in cache behaviors to tell CloudFront which origin to use for which paths. The name is arbitrary.
-- **`DomainName`**: The S3 bucket’s regional domain name. Use the format `<bucket>.s3.<region>.amazonaws.com`, not the S3 website endpoint. CloudFront talks to S3 via the REST API, not the website endpoint. (This one bit me the first time I set this up—I used the website endpoint and spent way too long debugging.)
-- **`S3OriginConfig.OriginAccessIdentity`**: Set to an empty string for now. We’re not using the legacy Origin Access Identity (OAI). In the next lesson, you’ll configure the newer **Origin Access Control** (OAC), which is the recommended approach.
+- **`Id`**: تسمية لهذا الأصل. وتشير إليها في سلوكات التخزين المؤقت لتخبر CloudFront أي أصل يستخدم لأي مسارات. والاسم اعتباطي.
+- **`DomainName`**: اسم النطاق الإقليمي لحاوية S3. استخدم الصيغة `<bucket>.s3.<region>.amazonaws.com`، لا نقطة نهاية موقع S3. فـ CloudFront يتحدث إلى S3 عبر REST API، لا عبر نقطة نهاية الموقع. (هذه أزعجتني أول مرة أعددت فيها هذا — استخدمت نقطة نهاية الموقع وأمضيت وقتًا طويلًا في التصحيح.)
+- **`S3OriginConfig.OriginAccessIdentity`**: مضبوط على سلسلة فارغة الآن. فنحن لا نستخدم هوية الوصول إلى الأصل القديمة (OAI). وفي الدرس التالي، ستضبط **التحكم في الوصول إلى الأصل** (OAC) الأحدث، وهو النهج الموصى به.
 
-> **Warning**
+> **تحذير**
 >
-> Don’t use the S3 website endpoint URL (e.g., `my-frontend-app-assets.s3-website-us-east-1.amazonaws.com`) as the origin domain name. That endpoint is for direct browser access. CloudFront needs the REST API endpoint (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`) to properly authenticate requests, especially when you add Origin Access Control.
+> لا تستخدم عنوان URL لنقطة نهاية موقع S3 (مثل `my-frontend-app-assets.s3-website-us-east-1.amazonaws.com`) كاسم نطاق الأصل. فتلك النقطة مخصصة للوصول المباشر من المتصفح. ويحتاج CloudFront إلى نقطة نهاية REST API (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`) لمصادقة الطلبات بشكل صحيح، خاصة عندما تضيف التحكم في الوصول إلى الأصل.
 
 ### DefaultCacheBehavior
 
@@ -189,12 +189,12 @@ The **origin** is where CloudFront fetches content when it doesn’t have a cach
 }
 ```
 
-This is the default **behavior**—the rules that apply to every request that doesn’t match a more specific path pattern. The important fields:
+هذا هو **السلوك** الافتراضي — القواعد التي تنطبق على كل طلب لا يطابق نمط مسار أكثر تحديدًا. والحقول المهمة:
 
-- **`TargetOriginId`**: Must match the `Id` of one of your origins.
-- **`ViewerProtocolPolicy`**: `"redirect-to-https"` means any HTTP request gets a 301 redirect to HTTPS. This is what you want for any production site.
-- **`CachePolicyId`**: Instead of manually specifying TTLs and forwarded values, you reference a managed **cache policy**. The ID `658327ea-f89d-4fab-a63d-7e88639e58f6` is AWS’s **CachingOptimized** policy, which sets a default TTL of 86,400 seconds (24 hours), a maximum TTL of 31,536,000 seconds (365 days), and a minimum TTL of 1 second.
-- **`Compress`**: When `true`, CloudFront automatically compresses files using gzip or Brotli before sending them to the browser. CloudFront inspects the `Accept-Encoding` header and picks Brotli when the browser advertises it (every modern browser does), otherwise falls back to gzip. Brotli gets roughly 15-20% smaller payloads than gzip on text content. Free performance improvement either way.
+- **`TargetOriginId`**: يجب أن يطابق `Id` لأحد أصولك.
+- **`ViewerProtocolPolicy`**: تعني `"redirect-to-https"` أن أي طلب HTTP يحصل على إعادة توجيه 301 إلى HTTPS. وهذا ما تريده لأي موقع إنتاجي.
+- **`CachePolicyId`**: بدلًا من تحديد مدة الصلاحية والقيم الممرّرة يدويًا، تشير إلى **سياسة تخزين مؤقت** مُدارة. والمعرّف `658327ea-f89d-4fab-a63d-7e88639e58f6` هو سياسة **CachingOptimized** في AWS، التي تضبط مدة صلاحية افتراضية قدرها 86,400 ثانية (24 ساعة)، وحدًّا أقصى 31,536,000 ثانية (365 يومًا)، وحدًّا أدنى ثانية واحدة.
+- **`Compress`**: عندما تكون `true`، تضغط CloudFront الملفات تلقائيًا باستخدام gzip أو Brotli قبل إرسالها إلى المتصفح. وتفحص CloudFront ترويسة `Accept-Encoding` وتختار Brotli عندما يعلن المتصفح دعمه (وكل متصفح حديث يفعل)، وإلا فترجع إلى gzip. وتحصل Brotli على حمولات أصغر بنحو 15–20% من gzip في المحتوى النصي. تحسين أداء مجاني في الحالتين.
 
 ### ViewerCertificate
 
@@ -204,15 +204,15 @@ This is the default **behavior**—the rules that apply to every request that do
 }
 ```
 
-For now, we’re using CloudFront’s default certificate, which gives you HTTPS on the `*.cloudfront.net` domain. In [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate), you’ll swap this for your ACM certificate to use a custom domain.
+الآن، نستخدم شهادة CloudFront الافتراضية، التي تمنحك HTTPS على نطاق `*.cloudfront.net`. وفي [إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate)، ستستبدلها بشهادة ACM لاستخدام نطاق مخصّص.
 
-> **Note**
+> **ملاحظة**
 >
-> While you’re using the default `*.cloudfront.net` certificate, CloudFront forces the security policy to TLS 1.0 regardless of what you set here—`MinimumProtocolVersion` is silently ignored when `CloudFrontDefaultCertificate` is `true`. You’ll tighten this to `TLSv1.2_2021` in the [Attaching an SSL Certificate](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate) lesson once you bring your own ACM certificate.
+> ما دمت تستخدم شهادة `*.cloudfront.net` الافتراضية، تفرض CloudFront سياسة الأمان TLS 1.0 بغض النظر عما تضبطه هنا — فـ `MinimumProtocolVersion` يُتجاهل بصمت عندما تكون `CloudFrontDefaultCertificate` مساوية `true`. وستشدّد هذا إلى `TLSv1.2_2021` في درس [إرفاق شهادة SSL](https://stevekinney.com/courses/aws/attaching-an-ssl-certificate) بمجرد أن تجلب شهادة ACM الخاصة بك.
 
-## Creating the Distribution
+## إنشاء التوزيع
 
-With the config file saved, create the distribution:
+بعد حفظ ملف الإعدادات، أنشئ التوزيع:
 
 ```bash
 aws cloudfront create-distribution \
@@ -221,7 +221,7 @@ aws cloudfront create-distribution \
   --output json
 ```
 
-The response is large—CloudFront returns the complete distribution configuration plus its current status. The fields you care about right now:
+الاستجابة كبيرة — فـ CloudFront يُرجع إعدادات التوزيع الكاملة إضافة إلى حالته الحالية. والحقول التي تهمك الآن:
 
 ```json
 {
@@ -236,17 +236,17 @@ The response is large—CloudFront returns the complete distribution configurati
 }
 ```
 
-- **`Id`**: Your distribution’s unique identifier. You’ll use this for every subsequent operation—invalidations, updates, deletions.
-- **`DomainName`**: The CloudFront URL where your site is now accessible. This is a `*.cloudfront.net` domain that you can open in a browser.
-- **`Status`**: `"InProgress"` means CloudFront is deploying your distribution to edge locations worldwide. This takes a few minutes.
+- **`Id`**: المعرّف الفريد لتوزيعك. وستستخدمه في كل عملية لاحقة — الإبطال والتحديث والحذف.
+- **`DomainName`**: عنوان URL في CloudFront الذي أصبح موقعك متاحًا عليه. وهو نطاق `*.cloudfront.net` يمكنك فتحه في متصفح.
+- **`Status`**: تعني `"InProgress"` أن CloudFront ينشر توزيعك إلى مواقع الحافة حول العالم. ويستغرق هذا بضع دقائق.
 
-In the console, the distribution detail page shows the deployment progress. The **Last modified** column shows “Deploying” as CloudFront propagates to all edge locations.
+في لوحة التحكم، تعرض صفحة تفاصيل التوزيع تقدّم النشر. ويعرض عمود **Last modified** عبارة «Deploying» بينما تنتشر CloudFront إلى كل مواقع الحافة.
 
-CloudFront distribution detail page showing the distribution as Deploying immediately after creation.
+صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.
 
-## Waiting for Deployment
+## انتظار النشر
 
-CloudFront distributions take time to deploy—typically 5 to 15 minutes. You can check the status:
+تحتاج توزيعات CloudFront وقتًا للنشر — عادةً من 5 إلى 15 دقيقة. ويمكنك فحص الحالة:
 
 ```bash
 aws cloudfront get-distribution \
@@ -256,7 +256,7 @@ aws cloudfront get-distribution \
   --query "Distribution.Status"
 ```
 
-When the status changes from `"InProgress"` to `"Deployed"`, your distribution is live. You can also use the `wait` command to block until deployment completes:
+عندما تتغيّر الحالة من `"InProgress"` إلى `"Deployed"`، يصبح توزيعك حيًّا. ويمكنك أيضًا استخدام أمر `wait` للحجب حتى يكتمل النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -264,27 +264,27 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-This command exits silently when the distribution is fully deployed. No output means success.
+ينتهي هذا الأمر بصمت عندما يكون التوزيع منشورًا بالكامل. ولا مخرجات تعني النجاح.
 
-In the console, the distributions list shows the distribution with status **Enabled** and the `*.cloudfront.net` domain name once deployment completes.
+في لوحة التحكم، تعرض قائمة التوزيعات التوزيع بحالة **Enabled** واسم النطاق `*.cloudfront.net` بمجرد اكتمال النشر.
 
-The CloudFront distributions list showing the distribution with Enabled status and its cloudfront.net domain name.
+قائمة توزيعات CloudFront وهي تعرض التوزيع بحالة Enabled واسم نطاقه cloudfront.net.
 
-## Testing Your Distribution
+## اختبار توزيعك
 
-Once deployed, open the CloudFront domain name in your browser:
+بعد النشر، افتح اسم نطاق CloudFront في متصفحك:
 
 ```
 https://d1234abcdef.cloudfront.net
 ```
 
-You should see your site—the same files you uploaded to S3 in [Uploading and Organizing Files](https://stevekinney.com/courses/aws/uploading-and-organizing-files), now served through CloudFront with HTTPS. The URL isn’t pretty, but it proves the distribution works. You’ll attach a custom domain later.
+ينبغي أن ترى موقعك — الملفات نفسها التي رفعتها إلى S3 في [رفع الملفات وتنظيمها](https://stevekinney.com/courses/aws/uploading-and-organizing-files)، تُقدَّم الآن عبر CloudFront بـ HTTPS. عنوان URL ليس جميلًا، لكنه يثبت أن التوزيع يعمل. وسترفق نطاقًا مخصّصًا لاحقًا.
 
-> **Seeing “Access Denied”?**
+> **هل ترى «Access Denied»؟**
 >
-> If you get an “Access Denied” XML error in the browser, that’s expected at this point: CloudFront is reaching S3, but S3 isn’t letting it in yet. The fix is the next lesson—you’ll wire up **Origin Access Control** so CloudFront has its own identity that the bucket policy trusts. Don’t loosen the bucket policy or re-enable public access to make this go away. Move on to [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3), then come back and reload.
+> إذا حصلت على خطأ XML يقول «Access Denied» في المتصفح، فهذا متوقع في هذه المرحلة: CloudFront يصل إلى S3، لكن S3 لا يسمح له بالدخول بعد. والإصلاح هو الدرس التالي — ستوصل **التحكم في الوصول إلى الأصل** بحيث تحصل CloudFront على هويتها التي تثق بها سياسة الحاوية. لا تُرخِ سياسة الحاوية ولا تعِد تمكين الوصول العام لإزالة هذا. انتقل إلى [التحكم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3)، ثم عُد وأعد التحميل.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -342,11 +342,11 @@ await waitUntilDistributionDeployed(
 );
 ```
 
-Note the `waitUntilDistributionDeployed` helper—the SDK wraps the same polling logic as `aws cloudfront wait distribution-deployed` but returns a proper promise you can `await`, making it far easier to compose into a deploy script.
+لاحظ الدالة المساعدة `waitUntilDistributionDeployed` — فهي تغلّف منطق الاستعلام الدوري نفسه الذي يستخدمه `aws cloudfront wait distribution-deployed`، لكنها تُرجع وعدًا حقيقيًا يمكنك `await`ه، ما يجعل تركيبها في سكربت نشر أسهل بكثير.
 
-## Listing and Describing Distributions
+## سرد التوزيعات ووصفها
 
-To see all your distributions:
+لرؤية كل توزيعاتك:
 
 ```bash
 aws cloudfront list-distributions \
@@ -355,7 +355,7 @@ aws cloudfront list-distributions \
   --query "DistributionList.Items[*].{Id:Id,Domain:DomainName,Status:Status,Comment:Comment}"
 ```
 
-To get the full configuration of a specific distribution:
+للحصول على الإعدادات الكاملة لتوزيع محدّد:
 
 ```bash
 aws cloudfront get-distribution-config \
@@ -364,6 +364,6 @@ aws cloudfront get-distribution-config \
   --output json
 ```
 
-You’ll use `get-distribution-config` frequently—updating a distribution requires fetching the current config, modifying it, and submitting it back with the `ETag` from the response. More on that when you update the distribution in later lessons.
+ستستخدم `get-distribution-config` كثيرًا — فتحديث توزيع يتطلب جلب الإعدادات الحالية، وتعديلها، ثم إعادة إرسالها مع `ETag` من الاستجابة. والمزيد عن ذلك عندما تحدّث التوزيع في الدروس اللاحقة.
 
-Your distribution works, but right now anyone can bypass CloudFront and access your S3 bucket directly. That defeats the purpose of having a CDN—you want all traffic flowing through CloudFront so you get caching, HTTPS, and security headers. In the next lesson, you’ll configure **Origin Access Control** to lock down the S3 bucket so only CloudFront can read from it.
+توزيعك يعمل، لكن أي شخص يمكنه الآن تجاوز CloudFront والوصول إلى حاوية S3 مباشرة. وهذا يبطل الغرض من امتلاك CDN — فأنت تريد أن تتدفق كل حركة المرور عبر CloudFront لتحصل على التخزين المؤقت وHTTPS وترويسات الأمان. في الدرس التالي، ستضبط **التحكم في الوصول إلى الأصل** لتقييد حاوية S3 بحيث لا يقرأ منها إلا CloudFront.

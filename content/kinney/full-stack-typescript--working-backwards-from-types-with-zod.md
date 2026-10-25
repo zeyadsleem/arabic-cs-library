@@ -1,12 +1,12 @@
 ---
-title: "Working Backwards from Types with Zod"
-lang: en
+title: "العمل عكسيًا من الأنواع مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/working-backwards-from-types-with-zod"
 ---
 
-We know that we can create types out of Zod schemas using `z.infer()`, but sometimes, we find ourselves in the position where we *already* have the types and we want to create schemas and be 100% positive that those schemas match the types.
+نعلم أننا نستطيع إنشاء أنواع من مخططات Zod باستخدام `z.infer()`، لكن أحيانًا نجد أنفسنا في موقف تكون فيه الأنواع *جاهزة لدينا بالفعل* ونريد إنشاء مخططات والتأكّد بنسبة 100% من أن تلك المخططات تطابق الأنواع.
 
-Let’s say we have the following type:
+لنقل إن لدينا النوع التالي:
 
 ```typescript
 type Task = {
@@ -17,7 +17,7 @@ type Task = {
 };
 ```
 
-We can use `satisfies` to make sure that our schema matches.
+يمكننا استخدام `satisfies` للتأكّد من مطابقة مخططنا.
 
 ```typescript
 const taskSchema = z.object({
@@ -30,6 +30,6 @@ const taskSchema = z.object({
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().uuid()` is preferably `z.uuid()`. The `z.ZodType` generic changed from three parameters to two (the `Def` parameter was removed), but `satisfies z.ZodType<Task>` still works since it only uses the first parameter.
+> في Zod v4، يُفضَّل أن يكون `z.string().uuid()` بالصيغة `z.uuid()`. وقد تغيّر النوع العام `z.ZodType` من ثلاثة وسائط إلى اثنين (حُذف وسيط `Def`)، لكن `satisfies z.ZodType<Task>` ما زال يعمل لأنه يستخدم الوسيط الأول فقط.
 
-If our schema does *not* match the type that it’s supposed to satisfy, then TypeScript will be the one yelling at us.
+وإذا كان مخططنا *لا* يطابق النوع الذي يُفترض أن يرضيه، فسيكون TypeScript هو من يصيح في وجهنا.

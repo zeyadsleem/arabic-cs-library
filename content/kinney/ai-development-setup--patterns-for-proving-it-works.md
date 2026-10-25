@@ -1,18 +1,18 @@
 ---
-title: "Proving It Works"
-lang: en
+title: "إثبات أنه ينجح"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/patterns-for-proving-it-works"
 ---
 
-The most common way agent work goes wrong isn’t bad code. It’s an agent *saying* the work is done when it isn’t. A [study of 20,574 real coding-agent sessions](https://arxiv.org/abs/2605.29442) found that inaccurate self-reporting, where the agent turns a partial or unverified state into a completion claim, made up 22.58% of the episodes where something went wrong, and that share grew even as problems overall declined.
+أكثر طريقة شائعة يخطئ بها عمل الوكلاء ليست الشيفرة السيئة، بل أن *يقول* الوكيل إن العمل أُنجز وهو لم يُنجز. فقد وجدت [دراسة لـ 20,574 جلسة وكيل برمجة حقيقية](https://arxiv.org/abs/2605.29442) أن التقارير الذاتية غير الدقيقة، أي تحويل حالة جزئية أو غير متحقَّق منها إلى ادعاء إنجاز، شكّلت 22.58% من الحوادث التي حدث فيها خطأ، وأن تلك النسبة نمت حتى مع انخفاض المشكلات عمومًا.
 
-These five patterns move the decision about “done” out of the agent’s head and into something you can check. They stack: each one closes a gap the one before it leaves open.
+وهذه الأنماط الخمسة تنقل قرار «الإنجاز» من رأس الوكيل إلى شيء تستطيع فحصه. وهي تتراكم: كل نمط يسدّ ثغرة يتركها الذي قبله مفتوحة.
 
-## Verification loop
+## حلقة التحقّق
 
-**What it is:** Implement, run a check that produces pass or fail evidence, diagnose any failure, and go around again. The check decides when you’re done, not the model.
+**ما هو:** نفّذ، ثم شغّل فحصًا ينتج دليل نجاح أو فشل، ثم شخّص أي فشل، ثم أعد الكرّة. والفحص هو من يقرر متى انتهيت، لا النموذج.
 
-**How it works:** Order the checks from cheap and narrow to expensive and broad. Type checking and linting catch structural problems in seconds. Unit tests check local behavior. Integration and end-to-end checks ask whether the feature works the way a person would use it. A failure at any layer goes back to diagnosis, not straight to another edit.
+**كيف يعمل:** رتّب الفحوص من الرخيص الضيق إلى المكلف الواسع. ففحص الأنواع والتحليل الساكن (lint) يلتقطان المشكلات البنيوية في ثوانٍ. واختبارات الوحدة تفحص السلوك المحلي. وفحوص التكامل ومن الطرف إلى الطرف تسأل هل تعمل الميزة بالطريقة التي سيستخدمها بها إنسان. وفشل في أي طبقة يعود إلى التشخيص، لا مباشرةً إلى تحرير آخر.
 
 ```
 flowchart LR
@@ -24,47 +24,47 @@ flowchart LR
   C -- Pass --> E["Report the evidence"]
 ```
 
-The last step matters more than it looks. “Done” should come with the command that ran, its exit code, and the relevant output, so you can check the claim after the session is over. Anthropic’s [long-running agent harness](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) found that agents happily passed unit tests and `curl` checks while the feature was broken end to end. They got better when they were told to test in a real browser.
+والخطوة الأخيرة أهم مما يبدو. فيجب أن يأتي «الإنجاز» مع الأمر الذي شُغّل، ورمز خروجه، والمخرَج ذي الصلة، حتى تستطيع فحص الادعاء بعد انتهاء الجلسة. وقد وجدت [منصة الوكلاء طويلة التشغيل](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) من Anthropic أن الوكلاء كانوا ينجحون بسرور في اختبارات الوحدة وفحوص `curl` بينما الميزة معطّلة من الطرف إلى الطرف. وقد تحسّنوا حين قيل لهم أن يختبروا في متصفح حقيقي.
 
-**When to use it:** Any time you can express “correct” as a command. That covers debugging a failing test, upgrading a dependency the suite covers, or hitting a benchmark target. Every unattended run needs one. Without it, the agent’s sense that the work “looks done” is your only stop signal.
+**متى تستخدمه:** كلما استطعت التعبير عن «الصحيح» كأمر. ويشمل ذلك تنقيح اختبار فاشل، أو ترقية اعتماد تغطيه مجموعة الاختبارات، أو بلوغ هدف قياسي. وكل تشغيل بلا إشراف يحتاج إليه. وبلا ذلك، يصبح إحساس الوكيل بأن العمل «يبدو منتهيًا» إشارة توقفك الوحيدة.
 
-**When not to use it:** When there’s no mechanical oracle (the thing that decides pass or fail). “Make the dashboard look better” has no exit code, and a loop with no real signal either spins forever or declares victory on its own say-so. Don’t make a weak, agent-written suite the only gate. And for a one-line change, skip the ladder and run the one test that matters.
+**متى لا تستخدمه:** حين لا يوجد محك آلي (الشيء الذي يقرر النجاح أو الفشل). فـ«اجعل لوحة المعلومات تبدو أفضل» لا رمز خروج لها، والحلقة بلا إشارة حقيقية إما تدور إلى الأبد وإما تعلن النصر بقولها هي. ولا تجعل مجموعة اختبارات ضعيفة كتبها الوكيل البوابة الوحيدة. ولتغيير من سطر واحد، تجاوز السلّم وشغّل الاختبار الوحيد الذي يهم.
 
-[Verification and Evidence](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) covers matching each claim to the evidence that supports it. The [verification gate skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#verification-gate) packages it up. When the final check needs judgment rather than an exit code, hand the evidence to a [referee](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee), so the agent doing the work never gets to decide it’s finished.
+ويغطي [التحقّق والدليل](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) مطابقة كل ادعاء بالدليل الذي يدعمه. و[مهارة بوابة التحقّق](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#verification-gate) تحزم ذلك. وعندما يحتاج الفحص الأخير إلى حكم لا رمز خروج، سلّم الأدلة إلى [حَكَم](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#referee)، فلا يقرر الوكيل الذي أنجز العمل أبدًا أنه انتهى.
 
-## Test-driven agent loop
+## حلقة الوكيل المدفوعة بالاختبار
 
-**What it is:** Write a test for the behavior you want, watch it fail, and only then let the agent implement. The test stays frozen while the agent makes it pass.
+**ما هو:** اكتب اختبارًا للسلوك الذي تريده، وشاهده يفشل، وعندها فقط دع الوكيل ينفّذ. ويظل الاختبار مجمّدًا بينما يجعله الوكيل ينجح.
 
-**How it works:** This is classic red-green-refactor (write a failing test, make it pass, then clean up) with one rule added: the agent has to *see* the new test fail before it’s allowed to write the implementation. A test that passes before any code exists isn’t testing the new behavior. Once it’s red, the test is frozen. The agent changes production code until it goes green, then refactors while keeping it green. [Kent Beck’s experiments with agents](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes) work the same way: a short list of behaviors, one test at a time.
+**كيف يعمل:** هذا هو النمط الكلاسيكي أحمر-أخضر-إعادة هيكلة (اكتب اختبارًا فاشلًا، ثم اجعله ينجح، ثم نظّف) مع قاعدة مضافة: يجب أن *يرى* الوكيل الاختبار الجديد يفشل قبل أن يُسمح له بكتابة التنفيذ. فالاختبار الذي ينجح قبل وجود أي شيفرة لا يختبر السلوك الجديد. وبمجرد أن يصبح أحمر، يُجمَّد الاختبار. ويغيّر الوكيل شيفرة الإنتاج حتى يصبح أخضر، ثم يعيد الهيكلة مع إبقائه أخضر. و[تجارب Kent Beck مع الوكلاء](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes) تعمل بالطريقة نفسها: قائمة سلوكيات قصيرة، اختبار واحد في كل مرة.
 
-The payoff is that “done” now means something specific. Every behavior on the list was seen failing and now passes, and the test files still match what they were at the red step. A [hook](https://stevekinney.com/courses/ai-development-setup/hooks) can enforce the frozen part by denying edits to test files during the green phase.
+والمكسب أن «الإنجاز» أصبح يعني شيئًا محددًا. فكل سلوك في القائمة شوهد فاشلًا ثم صار ناجحًا، وملفات الاختبار ما زالت مطابقة لما كانت عليه في خطوة الأحمر. ويستطيع [خطّاف](https://stevekinney.com/courses/ai-development-setup/hooks) فرض الجزء المجمّد برفض التحريرات على ملفات الاختبار خلال مرحلة الأخضر.
 
-**When to use it:** When you can write the behavior down as inputs and expected outputs before you know how to implement it: parsers, validators, API contracts, algorithms. It’s also the best way to fix a bug: reproduce it in a failing test, fix it, and the test doubles as the regression guard.
+**متى تستخدمه:** حين تستطيع كتابة السلوك كمدخلات ومخرجات متوقعة قبل أن تعرف كيف تنفّذه: المحلّلات، والمدقّقات، وعقود API، والخوارزميات. وهو أيضًا أفضل طريقة لإصلاح علّة: أعد إنتاجها في اختبار فاشل، ثم أصلحها، فيعمل الاختبار أيضًا حارسًا ضد الارتداد.
 
-**When not to use it:** When the tests already exist and the agent’s job is to make them pass. A [study of agents on SWE-bench Verified](https://arxiv.org/abs/2602.07900), a benchmark built from real GitHub issues, found that pushing them to write more of their own tests didn’t change outcomes and cost tokens. It’s also a poor fit when the spec is too vague to encode (UI polish, exploratory prototypes), and when the agent can’t stand up the integration harness, because it’ll quietly swap in mocks so the tests pass.
+**متى لا تستخدمه:** حين تكون الاختبارات موجودة بالفعل ومهمة الوكيل أن يجعلها تنجح. فقد وجدت [دراسة لوكلاء على SWE-bench Verified](https://arxiv.org/abs/2602.07900)، وهو معيار مبني من مشكلات GitHub حقيقية، أن دفعهم لكتابة مزيد من اختباراتهم لم يغيّر النتائج وكلّف رموزًا. وهو أيضًا غير مناسب حين تكون المواصفة غامضة أكثر من أن تُرمَّز (تجميل الواجهة، والنماذج الأولية الاستكشافية)، وحين لا يستطيع الوكيل إقامة منصة التكامل، لأنه سيستبدل بهدوء بدائل مُحاكاة (mocks) حتى تنجح الاختبارات.
 
-The [test-first loop skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#test-first-loop) is one way to codify this, and the [test designer](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#test-designer) subagent writes the tests without seeing the implementation.
+و[مهارة حلقة الاختبار أولًا](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#test-first-loop) طريقة لتقنين ذلك، ويكتب الوكيل الفرعي [مصمّم الاختبارات](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#test-designer) الاختبارات دون أن يرى التنفيذ.
 
-## Test ratchet
+## سقّاطة الاختبارات {#test-ratchet}
 
-**What it is:** Quality measures move in one direction only. Tests can be added, never removed or weakened. Coverage can go up, never down.
+**ما هو:** مقاييس الجودة تتحرك في اتجاه واحد فقط. فالاختبارات تُضاف، ولا تُحذف أو تُضعَف أبدًا. والتغطية ترتفع، ولا تنخفض أبدًا.
 
-**How it works:** Anthropic’s harness states the rule flatly: it’s “unacceptable to remove or edit tests.” It backs that up with a feature list where each entry has a `passes` field, and the agent can change that field and nothing else. The definition of done is fixed. Only the claim that it’s been met is writable. Claude Code won’t enforce that by itself, though, and the sources I have don’t say what backs the rule beyond the prompt. To make it hold, add a [hook](https://stevekinney.com/courses/ai-development-setup/hooks) that rejects edits touching anything but `passes`, a script that validates the diff, or a script that’s the only thing allowed to flip `passes`.
+**كيف يعمل:** تذكر منصة Anthropic القاعدة بصراحة: «من غير المقبول حذف الاختبارات أو تحريرها». وتدعم ذلك بقائمة ميزات لكل مدخل فيها حقل `passes`، ويستطيع الوكيل تغيير ذلك الحقل ولا شيء غيره. فتعريف الإنجاز ثابت، ولا يُكتب إلا الادعاء بتحقيقه. لكن Claude Code لن يفرض ذلك من تلقاء نفسه، ولا تذكر المصادر التي بين يديّ ما يدعم القاعدة غير الطلب. ولتجعلها تصمد، أضف [خطّافًا](https://stevekinney.com/courses/ai-development-setup/hooks) يرفض التحريرات التي تمسّ أي شيء غير `passes`، أو سكربتًا يتحقق من الـ diff، أو سكربتًا يكون الشيء الوحيد المسموح له بقلب `passes`.
 
-The same idea extends to anything with a direction: coverage, lint rules, and suppression counts, each compared against the base branch rather than a fixed threshold. [Protecting the Oracle](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#protecting-the-oracle) lists which measures to ratchet.
+والفكرة نفسها تمتد إلى أي شيء له اتجاه: التغطية، وقواعد التحليل الساكن، وأعداد الكبت (suppressions)، وكلها تُقارَن بالفرع الأساسي بدلًا من عتبة ثابتة. ويسرد [حماية المحك](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#protecting-the-oracle) أي المقاييس ينبغي ربطها بسقّاطة.
 
-**When to use it:** On every project where an agent can edit the files that judge it, which is nearly all of them. Especially on unattended runs, where nobody notices a weakened check for days, and anywhere “the suite is green” is the signal to stop.
+**متى تستخدمه:** في كل مشروع يستطيع فيه وكيل تحرير الملفات التي تحكم عليه، وهي تقريبًا كلها. وخصوصًا في التشغيلات بلا إشراف، حيث لا يلاحظ أحد فحصًا مُضعَفًا لأيام، وأينما كانت «المجموعة خضراء» إشارة التوقف.
 
-**When not to use it:** When a test is genuinely wrong. That’s the real cost: a ratchet turns fixing a bad test into a separate, human-approved change instead of something the agent does mid-task. Don’t ratchet a measure with no meaningful direction: a ratchet on test count just rewards trivial tests. And don’t rely on an instruction alone. Block edits to `tests/`, and the agent’s next move is to lower a threshold in a config file.
+**متى لا تستخدمه:** حين يكون الاختبار خاطئًا فعلًا. وهذه هي الكلفة الحقيقية: فالسقّاطة تحوّل إصلاح اختبار سيئ إلى تغيير منفصل يوافق عليه إنسان بدلًا من شيء يفعله الوكيل في منتصف المهمة. ولا تسقّط مقياسًا بلا اتجاه ذي معنى: فالسقّاطة على عدد الاختبارات تكافئ الاختبارات التافهة فقط. ولا تعتمد على تعليمة وحدها. فاحجب التحريرات على `tests/`، وستكون خطوة الوكيل التالية خفض عتبة في ملف إعدادات.
 
-[The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) covers where to enforce each defense. To find the holes before an implementing agent does, point a [saboteur](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#saboteur) at your checks and tell it to cheat.
+ويغطي [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) أين تفرض كل دفاع. ولكشف الثغرات قبل أن يكتشفها وكيل منفّذ، وجّه [مخرّبًا](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#saboteur) إلى فحوصك وقل له أن يغش.
 
-## Mutation gate
+## بوابة الطفرات {#mutation-gate}
 
-**What it is:** Grade the agent’s tests, not just its code. Deliberately break the lines a change touched, and require the test suite to notice.
+**ما هو:** قيّم اختبارات الوكيل، لا شيفرته فقط. اكسر عمدًا الأسطر التي مسّها تغيير ما، واطلب من مجموعة الاختبارات أن تلاحظ ذلك.
 
-**How it works:** A mutation testing tool makes small, deliberate defects one at a time: `>` becomes `>=`, a `return x` becomes `return 0`, a function call disappears. Each broken version is a *mutant*. For each one, it runs the tests. If a test fails, the mutant is “killed,” and the tests have proved they can see that kind of breakage. If everything still passes, the mutant “survived,” and you have a concrete fact: this line can be wrong and nothing will tell you.
+**كيف يعمل:** تصنع أداة اختبار الطفرات (mutation testing) عيوبًا صغيرة متعمدة واحدًا في كل مرة: يتحول `>` إلى `>=`، أو يتحول `return x` إلى `return 0`، أو يختفي نداء دالة. وكل نسخة مكسورة هي *طفرة (mutant)*. ولكل واحدة يشغّل الاختبارات. فإن فشل اختبار، فقد «قُتلت» الطفرة، وأثبتت الاختبارات أنها ترى ذلك النوع من الكسر. وإن نجح كل شيء، فقد «نجت» الطفرة، وأصبحت بين يديك حقيقة ملموسة: هذا السطر يمكن أن يكون خاطئًا ولن يخبرك شيء.
 
 ```
 flowchart LR
@@ -76,24 +76,24 @@ flowchart LR
   D -- No --> F["Pass"]
 ```
 
-This matters because agent-written tests are often weak. A [study of 86,156 test files from agent-authored pull requests](https://arxiv.org/abs/2606.18168) found that 80.2% had weak or no explicit assertions. They ran the code without checking much about what it did. [Salesforce Engineering lists this gate](https://engineering.salesforce.com/maintaining-code-quality-at-agent-speed-7-patterns-for-agentic-engineering/) among its patterns for keeping quality up at agent speed.
+وهذا يهم لأن الاختبارات التي يكتبها الوكيل غالبًا ضعيفة. فقد وجدت [دراسة لـ 86,156 ملف اختبار من طلبات سحب كتبها وكلاء](https://arxiv.org/abs/2606.18168) أن 80.2% منها كانت تحقّقاتها ضعيفة أو غير موجودة صراحةً. كانوا يشغّلون الشيفرة دون فحص الكثير مما تفعله. و[تسرد هندسة Salesforce هذه البوابة](https://engineering.salesforce.com/maintaining-code-quality-at-agent-speed-7-patterns-for-agentic-engineering/) بين أنماطها للحفاظ على الجودة بسرعة الوكيل.
 
-Two things make it practical. Scope it to the diff, because mutating forty changed lines takes seconds while mutating a whole codebase takes hours. And report the survivors, not a score. “Changing `>=` to `>` on line 48 survived” tells the agent exactly which assertion is missing. Tools like [Stryker](https://stryker-mutator.io/), [PIT](https://pitest.org/), [mutmut](https://github.com/boxed/mutmut), and [cargo-mutants](https://mutants.rs/) do the mutating.
+وهناك أمران يجعلانه عمليًا. احصره في الـ diff، لأن تطوير أربعين سطرًا متغيّرًا يستغرق ثوانٍ بينما يستغرق تطوير قاعدة شيفرة كاملة ساعات. وبلّغ عن الناجيات، لا عن درجة. فـ«نجت طفرة تغيير `>=` إلى `>` في السطر 48» تقول للوكيل تحديدًا أي تحقّق ناقص. وأدوات مثل [Stryker](https://stryker-mutator.io/) و[PIT](https://pitest.org/) و[mutmut](https://github.com/boxed/mutmut) و[cargo-mutants](https://mutants.rs/) تقوم بالتطوير.
 
-**When to use it:** When an agent writes its own tests, and when a green suite is a loop’s stop signal, since a weak suite makes every loop stop early. It pays off most on logic-heavy code (pricing, permissions, parsing) where a surviving mutant is a bug waiting to happen.
+**متى تستخدمه:** حين يكتب الوكيل اختباراته، وحين تكون المجموعة الخضراء إشارة توقف حلقة، لأن المجموعة الضعيفة تجعل كل حلقة تتوقف مبكرًا. وأكثر ما يثمر على الشيفرة المثقلة بالمنطق (التسعير، والصلاحيات، والتحليل) حيث تكون الطفرة الناجية علّة تنتظر الحدوث.
 
-**When not to use it:** Across the whole repository on every change. It’s too slow, and it’ll be switched off within a week. Skip code with nothing meaningful to assert, like logging or generated code. And don’t chase a score. Some mutants don’t change behavior at all, so no test can kill them, and an agent told to hit 100% will write absurd tests trying.
+**متى لا تستخدمه:** على المستودع كله عند كل تغيير. فهو بطيء أكثر من اللازم، وسيُطفأ خلال أسبوع. وتجاوز الشيفرة التي لا شيء ذا معنى يُتحقَّق منه فيها، مثل التسجيل أو الشيفرة المولّدة. ولا تسعَ وراء درجة. فبعض الطفرات لا تغيّر السلوك أبدًا، فلا يستطيع أي اختبار قتلها، والوكيل المطالب ببلوغ 100% سيكتب اختبارات سخيفة محاولًا.
 
-## Fresh-context reviewer
+## مراجع بسياق جديد
 
-**What it is:** Hand the finished change to a reviewer that never saw the conversation that produced it.
+**ما هو:** سلّم التغيير المنتهي إلى مراجع لم يرَ قطّ المحادثة التي أنتجته.
 
-**How it works:** The reviewer gets the requirements, the diff, the test results, and read access to the code, but never the implementer’s reasoning, and it has to come back with findings it can demonstrate. [Agent reviewers](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) covers why, and what a usable finding looks like.
+**كيف يعمل:** يحصل المراجع على المتطلبات، والـ diff، ونتائج الاختبارات، وحق القراءة في الشيفرة، لكن لا يحصل أبدًا على تعقل المنفّذ، وعليه أن يعود بنتائج يستطيع إثباتها. ويغطي [مراجعة الوكلاء](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence#agent-reviewers) السبب، وشكل النتيجة الصالحة للاستخدام.
 
-**When to use it:** As a bounded extra check on changes that matter, especially when the implementation conversation was long or the tests leave important behavior unexamined. Give it a narrow question. “Does logout invalidate an in-flight token refresh?” gets you a better answer than “find anything wrong.”
+**متى تستخدمه:** كفحص إضافي محدود على التغييرات المهمة، وخصوصًا حين تكون محادثة التنفيذ طويلة أو تترك الاختبارات سلوكًا مهمًا دون فحص. وأعطه سؤالًا ضيقًا. فسؤال «هل يُبطل تسجيل الخروج تحديث رمز جارٍ؟» يمنحك جوابًا أفضل من «اعثر على أي خطأ».
 
-**When not to use it:** As a replacement for executable checks. I treat a reviewer’s verdict as an opinion. The tests are evidence. Set a round limit before you start, because an agent asked for suggestions will always find another one. Trivial changes don’t need a second session at all.
+**متى لا تستخدمه:** كبديل عن الفحوص القابلة للتنفيذ. فأنا أعامل حكم المراجع كرأي. أما الاختبارات فهي دليل. وضع حدًا للجولات قبل أن تبدأ، لأن وكيلًا يُطلب منه اقتراحات سيجد اقتراحًا آخر دائمًا. والتغييرات التافهة لا تحتاج جلسة ثانية أصلًا.
 
-The [antagonist](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#antagonist) is a ready-made brief for it. For a clause-by-clause check against the requirements, use the [stickler](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#stickler). To find out whether the change makes sense without its author around, use the [archaeologist](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#archaeologist). When the findings come back, the [taking review feedback skill](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#taking-review-feedback) keeps the main agent from accepting all of them on reflex.
+و[الخصم](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#antagonist) تكليف جاهز له. وللفحص بندًا بندًا مقابل المتطلبات، استخدم [المتشدّد](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#stickler). ولمعرفة هل يكون التغيير مفهومًا دون مؤلفه، استخدم [عالم الآثار](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents#archaeologist). وعندما تعود النتائج، تمنع [مهارة تلقّي تغذية المراجعة الراجعة](https://stevekinney.com/courses/ai-development-setup/exemplar-skills#taking-review-feedback) الوكيل الرئيسي من قبولها كلها بحكم العادة.
 
-If you only adopt one of these, make it the loop. The other four are what you add after the first time a green check lies to you.
+إن لم تتبنَّ إلا واحدًا منها، فليكن الحلقة. فالأنماط الأربعة الأخرى هي ما تضيفه بعد أول مرة يكذب عليك فيها فحص أخضر.

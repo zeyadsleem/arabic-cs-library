@@ -1,28 +1,28 @@
 ---
-title: "Text Styles and Font Families"
-lang: en
+title: "أنماط النص وعائلات الخطوط"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/text-styles-and-font-families"
 ---
 
-Alright, let’s get into how to work with text styles and font families in Tailwind CSS, diving into the capabilities available, particularly with the new features introduced in version 4.0. Tailwind’s utility-first approach makes styling typography a streamlined process, allowing you to compose styles directly in your markup using a predefined set of classes. However, the framework is also designed to be highly customizable, so you can easily align it with your project’s specific design system.
+حسنًا، لننتقل إلى كيفية العمل مع أنماط النص وعائلات الخطوط في Tailwind CSS، وسنغوص في الإمكانات المتاحة، ولا سيّما الميزات الجديدة المُقدَّمة في الإصدار 4.0. ويجعل منهج Tailwind المعتمد على الأصناف المساعِدة من تنسيق النص (typography) عمليةً انسيابية، فيتيح لك تركيب الأنماط مباشرةً داخل ترميزك باستخدام مجموعة أصناف مُعرَّفة مسبقًا. غير أنّ الإطار مصمَّم أيضًا ليكون قابلًا للتخصيص إلى درجة عالية، فيمكنك بسهولة محاذاته مع نظام التصميم الخاص بمشروعك.
 
-## Font Families
+## عائلات الخطوط
 
-Tailwind CSS provides utilities to control the font family of an element using the `font-<family-name>` syntax. Out of the box, Tailwind includes a default font theme with three curated font stacks: sans-serif, serif, and monospace.
+يوفّر Tailwind CSS أصنافًا مساعِدة للتحكّم في عائلة الخط (font family) لعنصر باستخدام صيغة `font-<family-name>`. ويأتي Tailwind افتراضيًا بسمة خطوط افتراضية تضمّ ثلاث مجموعات خطوط منسّقة: sans-serif، وserif، وmonospace.
 
-### Using Default Font Stacks
+### استخدام مجموعات الخطوط الافتراضية
 
-You can apply these default font stacks using the following utilities:
+يمكنك تطبيق مجموعات الخطوط الافتراضية هذه باستخدام الأصناف المساعِدة التالية:
 
-- `font-sans`: Applies a generic sans-serif font stack (`ui-sans-serif`, `system-ui`, etc.).
-- `font-serif`: Applies a generic serif font stack (`ui-serif`, `Georgia`, etc.).
-- `font-mono`: Applies a generic monospace font stack (`ui-monospace`, `SFMono-Regular`, etc.).
+- `font-sans`: يطبّق مجموعة خطوط sans-serif عامة (`ui-sans-serif`، `system-ui`، إلخ).
+- `font-serif`: يطبّق مجموعة خطوط serif عامة (`ui-serif`، `Georgia`، إلخ).
+- `font-mono`: يطبّق مجموعة خطوط monospace عامة (`ui-monospace`، `SFMono-Regular`، إلخ).
 
-### Customizing Font Families
+### تخصيص عائلات الخطوط
 
-In Tailwind, customizing your theme, including font families, is handled through the CSS-first configuration approach using the `@theme` directive. To add or override font families, you define theme variables within the `--font-*` namespace inside your `@theme` block.
+في Tailwind، يتم تخصيص سمتك، بما فيها عائلات الخطوط، عبر منهج الإعداد الذي يبدأ من CSS باستخدام التوجيه `@theme`. ولإضافة عائلات خطوط أو تجاوزها، عرّف متغيّرات السمة داخل فضاء الاسم `--font-*` ضمن كتل `@theme` لديك.
 
-For example, to add a custom `display` font family, you would define a variable like this in your main CSS file:
+فمثلًا، لإضافة عائلة خطوط `display` مخصّصة، تعرّف متغيّرًا كالتالي في ملف CSS الرئيسي:
 
 ```css
 @theme {
@@ -30,197 +30,197 @@ For example, to add a custom `display` font family, you would define a variable 
 }
 ```
 
-After defining this theme variable, a corresponding `font-display` utility class becomes available for you to use in your HTML:
+وبعد تعريف هذا متغيّر السمة، يصبح صنف `font-display` المقابل متاحًا لاستخدامه في HTML:
 
-*Customizing Font Families — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ae683b9d9b101902b15d5646222f3a312441395322cdecea195749bc189f9f91.html)*
+*تخصيص عائلات الخطوط — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ae683b9d9b101902b15d5646222f3a312441395322cdecea195749bc189f9f91.html)*
 
 ```html
 <h1 class="font-display text-4xl">Data to enrich your online business</h1>
 ```
 
-You can also provide default `font-feature-settings` and `font-variation-settings` values for a font family when defining it in `@theme`.
+ويمكنك أيضًا توفير قيم افتراضية لـ`font-feature-settings` و`font-variation-settings` لعائلة خطوط عند تعريفها في `@theme`.
 
-If you need to load custom fonts, you can use the CSS `@font-face` at-rule. If you’re importing a font from a service like Google Fonts, make sure to place the `@import` statement at the very top of your CSS file, above the `@import "tailwindcss";` statement. Browsers require `@import` statements for external resources to come before any other rules, including the Tailwind import which is inlined in the compiled CSS.
+وإن احتجت تحميل خطوط مخصّصة، يمكنك استخدام قاعدة CSS `@font-face`. فإن كنت تستورد خطًّا من خدمة مثل Google Fonts، فتأكّد من وضع عبارة `@import` في أعلى ملف CSS تمامًا، فوق عبارة `@import "tailwindcss";`. فالمتصفحات تتطلّب أن تأتي عبارات `@import` للموارد الخارجية قبل أي قاعدة أخرى، بما في ذلك استيراد Tailwind المُضمَّن في CSS المُجمَّع.
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-For one-off font family values or to use CSS variables directly, you can use the arbitrary value syntax `font-[<value>]` or the custom property syntax `font-(<custom-property>)`. For instance, `font-['"Times New Roman", serif']` or `font-(--my-custom-font)`.
+لقيم عائلات الخطوط أحادية الاستخدام، أو لاستخدام متغيّرات CSS مباشرةً، يمكنك استخدام صيغة القيمة التعسّفية `font-[<value>]` أو صيغة الخاصية المخصّصة `font-(<custom-property>)`. فمثلًا، `font-['"Times New Roman", serif']` أو `font-(--my-custom-font)`.
 
-### Responsive Font Families
+### عائلات خطوط استجابة
 
-Like most utilities in Tailwind CSS, font family utilities can be applied conditionally at different breakpoints using responsive variants (e.g., `md:font-serif`) to create adaptive designs.
+مثل معظم الأصناف في Tailwind CSS، يمكن تطبيق أصناف عائلة الخط بشكل شرطي عند نقاط توقّف مختلفة باستخدام مُبدّلات الاستجابة (مثل `md:font-serif`)، لإنشاء تصاميم متكيّفة.
 
-## Font Sizes
+## أحجام الخطوط
 
-Tailwind CSS provides a comprehensive scale of font size utilities, ranging from extra-small (`text-xs`) up to monumental (`text-9xl`). These utilities are named semantically and correspond to a predefined scale of values, which can be customized.
+يوفّر Tailwind CSS مقياسًا شاملًا لأحجام الخطوط، يمتدّ من الصغير جدًا (`text-xs`) إلى الضخم (`text-9xl`). وهذه الأصناف مسمّاة دلاليًا وتقابل مقياسًا مُعرَّفًا مسبقًا من القيم، ويمكن تخصيصه.
 
-### Using Default Font Size Utilities
+### استخدام أحجام الخطوط الافتراضية
 
-You can set the font size of an element using utilities like `text-sm` or `text-lg`. Each of these utilities also sets a default line height.
+يمكنك ضبط حجم خط عنصر باستخدام أصناف مثل `text-sm` أو `text-lg`. وكل واحد من هذه الأصناف يضبط أيضًا ارتفاع سطر افتراضيًا.
 
-### Setting Font Size and Line Height Together
+### ضبط حجم الخط وارتفاع السطر معًا
 
-Tailwind allows you to set both the font size and line height simultaneously using a combined syntax like `text-<size>/<number>`. For example, `text-sm/6` applies the small font size with a specific line height value based on your spacing scale. You can also use arbitrary values or custom properties for the line height in this syntax, such as `text-base/[1.5]` or `text-lg/(--custom-leading)`.
+يتيح لك Tailwind ضبط حجم الخط وارتفاع السطر في الوقت نفسه باستخدام صيغة مركّبة مثل `text-<size>/<number>`. فمثلًا، `text-sm/6` يطبّق حجم الخط الصغير مع قيمة ارتفاع سطر محدّدة استنادًا إلى مقياس المسافات لديك. ويمكنك أيضًا استخدام القيم التعسّفية أو الخصائص المخصّصة لارتفاع السطر في هذه الصيغة، مثل `text-base/[1.5]` أو `text-lg/(--custom-leading)`.
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-If you need a font size that isn’t part of the default scale, you can use the arbitrary value syntax `text-[<value>]`. This allows you to specify any valid CSS font size value, such as `text-[1.75rem]` or `text-[28px]`. You can also use a custom property with the syntax `text-(length:<custom-property>)` to set the font size using a CSS variable.
+إن احتجت حجم خط ليس جزءًا من المقياس الافتراضي، يمكنك استخدام صيغة القيمة التعسّفية `text-[<value>]`. وهذا يتيح لك تحديد أي قيمة صالحة لحجم الخط في CSS، مثل `text-[1.75rem]` أو `text-[28px]`. ويمكنك أيضًا استخدام خاصية مخصّصة بالصيغة `text-(length:<custom-property>)` لضبط حجم الخط باستخدام متغيّر CSS.
 
-### Customizing Font Sizes
+### تخصيص أحجام الخطوط
 
-You can customize the default font size scale and their associated default line heights, letter spacing, and font weights by defining theme variables in the `--text-*` namespace within your `@theme` block. This approach is particularly useful for establishing a consistent typography scale across your project.
+يمكنك تخصيص مقياس حجم الخط الافتراضي وارتفاعات أسطره الافتراضية وتباعد الأحرف وأوزان الخطوط المرتبطة به، بتعريف متغيّرات السمة في فضاء الاسم `--text-*` ضمن كتل `@theme` لديك. وهذا النهج مفيد خصوصًا لإرساء مقياس تنضيب متّسق عبر مشروعك.
 
-### Responsive Font Sizes
+### أحجام خطوط استجابة
 
-To make your text responsive, you can apply font size utilities conditionally at different breakpoints. For example, `text-base md:text-lg lg:text-xl` would set a base font size for small screens and larger sizes for medium and large screens respectively.
+لجعل نصك متجاوبًا، يمكنك تطبيق أحجام الخطوط بشكل شرطي عند نقاط توقّف مختلفة. فمثلًا، `text-base md:text-lg lg:text-xl` يضبط حجم خط أساسيًا للشاشات الصغيرة وأحجامًا أكبر للشاشات المتوسطة والكبيرة على التوالي.
 
-## Font Weights
+## أوزان الخطوط
 
-Controlling the thickness of text is handled by font weight utilities. Tailwind CSS includes utilities for a standard range of font weights, from thin to black.
+يتم التحكّم في سماكة النص عبر أصناف وزن الخط. ويتضمّن Tailwind CSS أصنافًا لنطاق قياسي من أوزان الخطوط، من الرفيع إلى الأسود.
 
-### Using Default Font Weight Utilities
+### استخدام أوزان الخطوط الافتراضية
 
-You can apply these font weights using utilities like `font-thin`, `font-bold`, or `font-black`. These correspond to numerical values like 100, 700, and 900 respectively.
+يمكنك تطبيق أوزان الخطوط هذه باستخدام أصناف مثل `font-thin` أو `font-bold` أو `font-black`. وتقابل هذه القيم الرقمية مثل 100 و700 و900 على التوالي.
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-For specific numerical font weights not included in the default scale, or to use a CSS variable, you can use the arbitrary value syntax `font-[<value>]` or the custom property syntax `font-(<custom-property>)`. For example, `font-` or `font-(--my-font-weight)`.
+لأوزان خطوط رقمية محدّدة غير مشمولة في المقياس الافتراضي، أو لاستخدام متغيّر CSS، يمكنك استخدام صيغة القيمة التعسّفية `font-[<value>]` أو صيغة الخاصية المخصّصة `font-(<custom-property>)`. فمثلًا، `font-` أو `font-(--my-font-weight)`.
 
-### Customizing Font Weights
+### تخصيص أوزان الخطوط
 
-Similar to font families and sizes, you can customize the default font weight scale by defining theme variables in the `--font-*` namespace within your `@theme` block.
+مثل عائلات الخطوط وأحجامها، يمكنك تخصيص مقياس وزن الخط الافتراضي بتعريف متغيّرات السمة في فضاء الاسم `--font-*` ضمن كتل `@theme` لديك.
 
-### Responsive Font Weights
+### أوزان خطوط استجابة
 
-Font weight utilities are responsive, allowing you to adjust the weight of text at different breakpoints (e.g., `md:font-semibold`).
+أصناف وزن الخط متجاوبة، فتسمح لك بتعديل وزن النص عند نقاط توقّف مختلفة (مثل `md:font-semibold`).
 
-## Font Styles (Italic)
+## أنماط الخط (المائل)
 
-Tailwind provides simple utilities for controlling whether text is italicized or displayed normally.
+يوفّر Tailwind أصنافًا بسيطة للتحكّم في ما إذا كان النص مائلًا أم معروضًا بشكل طبيعي.
 
-### Using Font Style Utilities
+### استخدام أصناف نمط الخط
 
-- `italic`: Applies `font-style: italic;` to make text italic.
-- `not-italic`: Applies `font-style: normal;` to ensure text is displayed normally, often used to override italicization inherited from a parent element or applied at a different breakpoint.
+- `italic`: يطبّق `font-style: italic;` لجعل النص مائلًا.
+- `not-italic`: يطبّق `font-style: normal;` لضمان عرض النص بشكل طبيعي، ويُستخدم غالبًا لتجاوز التمايل الموروث من عنصر أب أو المطبَّق عند نقطة توقّف مختلفة.
 
-### Responsive Font Styles
+### أنماط خط استجابة
 
-You can apply these utilities conditionally at breakpoints (e.g., `md:not-italic`) to change the font style responsively.
+يمكنك تطبيق هذه الأصناف بشكل شرطي عند نقاط التوقّف (مثل `md:not-italic`) لتغيير نمط الخط استجابةً.
 
-## Font Smoothing
+## تنعيم الخطوط
 
-Utilities for controlling font smoothing can help fine-tune the appearance of text, especially on different operating systems and screen types.
+يمكن لأصناف التحكّم في تنعيم الخط أن تساعد على ضبط مظهر النص بدقة، ولا سيّما على أنظمة التشغيل وأنواع الشاشات المختلفة.
 
-### Using Font Smoothing Utilities
+### استخدام أصناف تنعيم الخطوط
 
-- `antialiased`: Applies grayscale antialiasing (`-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`).
-- `subpixel-antialiased`: Applies subpixel antialiasing (`-webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto;`).
+- `antialiased`: يطبّق تنعيمًا أحادي اللون (`-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;`).
+- `subpixel-antialiased`: يطبّق تنعيمًا بعرض البكسل الفرعي (`-webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto;`).
 
-### Responsive Font Smoothing
+### تنعيم خطوط استجابة
 
-These utilities can be applied responsively (e.g., `md:subpixel-antialiased`).
+يمكن تطبيق هذه الأصناف استجابةً (مثل `md:subpixel-antialiased`).
 
-## Font Stretch
+## تمدّد الخط
 
-The `font-stretch` property controls the width of a font face, which is particularly relevant for variable fonts that offer different width variations.
+تتحكّم الخاصية `font-stretch` في عرض وجه الخط (font face)، وهو أمر ذو أهمية خاصة مع الخطوط المتغيّرة التي تقدّم تنويعات عرض مختلفة.
 
-### Using Font Stretch Utilities
+### استخدام أصناف تمدّد الخط
 
-Tailwind includes utilities for standard font stretch values like `font-stretch-condensed` and `font-stretch-expanded`, which correspond to percentage values like 75% and 125%. Applying these utilities affects fonts that support multiple width variations; otherwise, the browser selects the closest match.
+يتضمّن Tailwind أصنافًا لقيم تمدّد الخط القياسية مثل `font-stretch-condensed` و`font-stretch-expanded`، وتقابل قيمًا نسبة مئوية مثل 75% و125%. وتطبيق هذه الأصناف يؤثّر في الخطوط التي تدعم تنويعات عرض متعددة؛ وإلا فاختار المتصفح أقرب تطابق.
 
-You can also set the font stretch using percentage utilities like `font-stretch-50%` or `font-stretch-125%`.
+ويمكنك أيضًا ضبط تمدّد الخط باستخدام أصناف النسب المئوية مثل `font-stretch-50%` أو `font-stretch-125%`.
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-Custom font stretch values can be applied using the arbitrary value syntax `font-stretch-[<value>]` or the custom property syntax `font-stretch-(<custom-property>)`.
+يمكن تطبيق قيم تمدّد خط مخصّصة باستخدام صيغة القيمة التعسّفية `font-stretch-[<value>]` أو صيغة الخاصية المخصّصة `font-stretch-(<custom-property>)`.
 
-### Responsive Font Stretch
+### تمدّد خط استجابة
 
-Font stretch utilities can be applied responsively (e.g., `md:font-stretch-normal`).
+يمكن تطبيق أصناف تمدّد الخط استجابةً (مثل `md:font-stretch-normal`).
 
-## Font Variant Numeric
+## صيغ الأرقام (Font Variant Numeric)
 
-Utilities for controlling the variant of numbers allow you to apply specific typographical features for numbers in fonts that support them.
+تتيح لك أصناف التحكّم في صيغة الأرقام تطبيق سمات طباعية بعينها على الأرقام في الخطوط التي تدعمها.
 
-### Using Numeric Variant Utilities
+### استخدام أصناف الصيغ الرقمية
 
-Tailwind provides utilities for various numeric variants:
+يوفّر Tailwind أصنافًا لمختلف الصيغ الرقمية:
 
-- `ordinal`: Enables special glyphs for ordinal markers (e.g., 1st, 2nd).
-- `slashed-zero`: Forces a zero with a slash.
-- `lining-nums`: Uses numeric glyphs aligned by their baseline.
-- `oldstyle-nums`: Uses numeric glyphs where some numbers have descenders.
-- `proportional-nums`: Uses numeric glyphs with proportional widths.
-- `tabular-nums`: Uses numeric glyphs with uniform/tabular widths.
-- `diagonal-fractions`: Replaces numbers separated by a slash with common diagonal fractions.
-- `stacked-fractions`: Replaces numbers separated by a slash with common stacked fractions.
-- `normal-nums`: Resets numeric font variants to the default behavior.
+- `ordinal`: يفعّل صورًا رمزية خاصّة لعلامات الترتيب (مثل 1st و2nd).
+- `slashed-zero`: يفرض صفرًا بشرطة مائلة.
+- `lining-nums`: يستخدم صورًا رمزية رقمية محاذاةً على خط الأساس.
+- `oldstyle-nums`: يستخدم صورًا رمزية رقمية تكون فيها بعض الأرقام ذات نزول.
+- `proportional-nums`: يستخدم صورًا رمزية رقمية بعروض متناسبة.
+- `tabular-nums`: يستخدم صورًا رمزية رقمية بعروض متساوية/جدولية.
+- `diagonal-fractions`: تستبدل الأرقام المفصولة بشرطة بكسور قطرية شائعة.
+- `stacked-fractions`: تستبدل الأرقام المفصولة بشرطة بكسور مكدّسة شائعة.
+- `normal-nums`: تعيد صيغ الخطوط الرقمية إلى السلوك الافتراضي.
 
-These utilities are composable, allowing you to combine multiple variants.
+وهذه الأصناف قابلة للتجميع، فتسمح لك بدمج عدة صيغ معًا.
 
-### Responsive Numeric Variants
+### صيغ رقمية استجابة
 
-Numeric variant utilities can be applied responsively (e.g., `md:tabular-nums`).
+يمكن تطبيق أصناف الصيغ الرقمية استجابةً (مثل `md:tabular-nums`).
 
-## Text Color
+## لون النص
 
-Setting the color of text is fundamental to styling. Tailwind provides utilities based on its comprehensive color palette for this purpose.
+ضبط لون النص أمر أساسي في التنسيق. ويوفّر Tailwind لهذا الغرض أصنافًا مساعِدة مبنيّة على لوحة ألوانه الشاملة.
 
-### Using Text Color Utilities
+### استخدام أصناف لون النص
 
-You can set the text color using utilities like `text-blue-600` or `text-sky-400`. These colors are derived from your theme’s color palette, which includes a wide range of colors and shades.
+يمكنك ضبط لون النص باستخدام أصناف مثل `text-blue-600` أو `text-sky-400`. وهذه الألوان مشتقّة من لوحة ألوان سمتك، التي تضمّ مجموعة واسعة من الألوان والدرجات.
 
-### Adjusting Opacity
+### ضبط العتامة
 
-You can easily adjust the opacity of the text color using the color opacity modifier syntax, for example `text-black/75`, where `/75` sets the alpha channel to 75%. This syntax also supports arbitrary values and the CSS variable shorthand for opacity.
+يمكنك بسهولة ضبط عتامة لون النص باستخدام صيغة معدِّل عتامة اللون، مثل `text-black/75`، حيث يضبط `/75` قناة ألفا على 75%. وتدعم هذه الصيغة أيضًا القيم التعسّفية واختصار متغيّر CSS للعتامة.
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-To use a custom text color value not present in your theme, you can use the arbitrary value syntax `text-[<value>]`. This could be a hex code, RGB value, or any other valid color value. You can also use a custom property with the syntax `text-(<custom-property>)` to set the text color using a CSS variable.
+لاستخدام قيمة لون نص مخصّصة غير موجودة في سمتك، يمكنك استخدام صيغة القيمة التعسّفية `text-[<value>]`. وقد يكون ذلك رمزًا hex أو قيمة RGB أو أي قيمة لون صالحة أخرى. ويمكنك أيضًا استخدام خاصية مخصّصة بالصيغة `text-(<custom-property>)` لضبط لون النص باستخدام متغيّر CSS.
 
-### Customizing Text Colors
+### تخصيص ألوان النص
 
-Customizing your text colors is part of customizing your color palette, which is done by defining theme variables in the `--color-*` namespace within your `@theme` block. For example, you can add a new color `neon-pink` or override a default shade. You can also completely disable the default color palette and define your own.
+تخصيص ألوان النص جزء من تخصيص لوحة الألوان لديك، ويتمّ بتعريف متغيّرات السمة في فضاء الاسم `--color-*` ضمن كتل `@theme` لديك. فمثلًا، يمكنك إضافة لون جديد `neon-pink` أو تجاوز درجة افتراضية. ويمكنك أيضًا تعطيل لوحة الألوان الافتراضية تمامًا وتعريف لوحة خاصة بك.
 
-### Responsive Text Colors
+### ألوان نص استجابة
 
-Text color utilities are responsive, allowing you to change text color at different breakpoints (e.g., `md:text-green-500`).
+أصناف لون النص متجاوبة، فتسمح لك بتغيير لون النص عند نقاط توقّف مختلفة (مثل `md:text-green-500`).
 
-## Text Alignment
+## محاذاة النص
 
-Controlling the horizontal alignment of text within its container is done with text alignment utilities.
+يتم التحكّم في المحاذاة الأفقية للنص داخل حاويته عبر أصناف محاذاة النص.
 
-### Using Text Alignment Utilities
+### استخدام أصناف محاذاة النص
 
-- `text-left`: Aligns text to the left.
-- `text-center`: Centers text.
-- `text-right`: Aligns text to the right.
-- `text-justify`: Justifies text, distributing space between words so that lines are flush with both edges.
-- `text-start`: Aligns text to the start of the line, which is left in LTR contexts and right in RTL contexts.
-- `text-end`: Aligns text to the end of the line, which is right in LTR contexts and left in RTL contexts.
+- `text-left`: يحاذي النص إلى اليسار.
+- `text-center`: يوسّط النص.
+- `text-right`: يحاذي النص إلى اليمين.
+- `text-justify`: يوزّع النص بحيث تتساوى المسافات بين الكلمات فتُحاذى السطور مع الحافّتين.
+- `text-start`: يحاذي النص إلى بداية السطر، وهي اليسار في سياقات LTR واليمين في سياقات RTL.
+- `text-end`: يحاذي النص إلى نهاية السطر، وهي اليمين في سياقات LTR واليسار في سياقات RTL.
 
-### Responsive Text Alignment
+### محاذاة نص استجابة
 
-These utilities are responsive (e.g., `md:text-center`).
+هذه الأصناف متجاوبة (مثل `md:text-center`).
 
-## Text Decoration
+## زخرفة النص
 
-Tailwind provides utilities to control the line, style, thickness, and color of text decorations like underlines, overlines, and line-throughs.
+يوفّر Tailwind أصنافًا للتحكّم في خط زخرفة النص وشكله وسماكته ولونه، مثل التسطير والتسطير العلوي والتوسّط.
 
-### Text Decoration Line
+### خط زخرفة النص
 
-Utilities control the presence and type of text decoration lines:
+تتحكّم الأصناف في وجود خطوط زخرفة النص ونوعها:
 
-- `underline`: Adds a single underline.
-- `overline`: Adds a single overline.
-- `line-through`: Adds a line through the text.
-- `no-underline`: Removes any text decoration lines, often used to remove default browser underlines from links or to reset decoration at a breakpoint.
+- `underline`: يضيف تسطيرًا واحدًا.
+- `overline`: يضيف تسطيرًا علويًا واحدًا.
+- `line-through`: يضيف خطًّا عبر النص.
+- `no-underline`: يزيل أي خطوط زخرفة نص، ويُستخدم غالبًا لإزالة التسطير الافتراضي للمتصفح عن الروابط أو لإعادة ضبط الزخرفة عند نقطة توقّف.
 
-These utilities are responsive (e.g., `hover:underline md:no-underline`).
+وهذه الأصناف متجاوبة (مثل `hover:underline md:no-underline`).
 
-### Text Decoration Style
+### نمط زخرفة النص
 
-Utilities control the visual style of the text decoration line:
+تتحكّم الأصناف في النمط البصري لخط زخرفة النص:
 
 - `decoration-solid`
 - `decoration-double`
@@ -228,141 +228,141 @@ Utilities control the visual style of the text decoration line:
 - `decoration-dashed`
 - `decoration-wavy`
 
-These utilities are responsive (e.g., `md:decoration-dotted`).
+وهذه الأصناف متجاوبة (مثل `md:decoration-dotted`).
 
-### Text Decoration Thickness
+### سماكة زخرفة النص
 
-Utilities control the thickness of the text decoration line:
+تتحكّم الأصناف في سماكة خط زخرفة النص:
 
-- `decoration-<number>`: Sets the thickness in pixels (e.g., `decoration-2`, `decoration-4`).
-- `decoration-from-font`: Sets thickness based on the font.
-- `decoration-auto`: Allows the browser to determine the thickness.
+- `decoration-<number>`: تضبط السماكة بالبكسل (مثل `decoration-2`، `decoration-4`).
+- `decoration-from-font`: تضبط السماكة بحسب الخط.
+- `decoration-auto`: يتيح للمتصفح تحديد السماكة.
 
-You can use arbitrary values `decoration-[<value>]` or custom properties `decoration-(length:<custom-property>)` for thickness. These utilities are responsive (e.g., `md:decoration-4`).
+ويمكنك استخدام القيم التعسّفية `decoration-[<value>]` أو الخصائص المخصّصة `decoration-(length:<custom-property>)` للسماكة. وهذه الأصناف متجاوبة (مثل `md:decoration-4`).
 
-### Text Decoration Color
+### لون زخرفة النص
 
-Utilities control the color of the text decoration line:
+تتحكّم الأصناف في لون خط زخرفة النص:
 
-- `decoration-inherit`, `decoration-current`, `decoration-transparent`
-- `decoration-<color-name>`: Uses a color from your theme (e.g., `decoration-sky-500`, `decoration-pink-500`).
+- `decoration-inherit`، `decoration-current`، `decoration-transparent`
+- `decoration-<color-name>`: يستخدم لونًا من سمتك (مثل `decoration-sky-500`، `decoration-pink-500`).
 
-You can adjust the opacity using the color opacity modifier (e.g., `decoration-red-500/50`). Custom values `decoration-[<value>]` and custom properties `decoration-(<custom-property>)` are supported. These utilities are responsive (e.g., `hover:decoration-blue-400`). Customizing text decoration colors is part of customizing your color palette.
+ويمكنك ضبط العتامة باستخدام معدِّل عتامة اللون (مثل `decoration-red-500/50`). القيم المخصّصة `decoration-[<value>]` والخصائص المخصّصة `decoration-(<custom-property>)` مدعومة. وهذه الأصناف متجاوبة (مثل `hover:decoration-blue-400`). وتخصيص ألوان زخرفة النص جزء من تخصيص لوحة الألوان لديك.
 
-## Text Underline Offset
+## إزاحة التسطير
 
-Utilities control the distance between the text and the underline.
+تتحكّم الأصناف في المسافة بين النص وخط التسطير.
 
-### Using Underline Offset Utilities
+### استخدام أصناف إزاحة التسطير
 
-- `underline-offset-<number>`: Sets the offset in pixels (e.g., `underline-offset-2`, `underline-offset-4`).
-- `-underline-offset-<number>`: Sets a negative offset.
-- `underline-offset-auto`: Allows the browser to determine the offset.
+- `underline-offset-<number>`: تضبط الإزاحة بالبكسل (مثل `underline-offset-2`، `underline-offset-4`).
+- `-underline-offset-<number>`: تضبط إزاحة سالبة.
+- `underline-offset-auto`: يتيح للمتصفح تحديد الإزاحة.
 
-You can use arbitrary values `underline-offset-[<value>]` or custom properties `underline-offset-(<custom-property>)`. These utilities are responsive (e.g., `md:underline-offset-4`).
+ويمكنك استخدام القيم التعسّفية `underline-offset-[<value>]` أو الخصائص المخصّصة `underline-offset-(<custom-property>)`. وهذه الأصناف متجاوبة (مثل `md:underline-offset-4`).
 
-## Text Transform
+## تحويل النص
 
-Utilities control the capitalization of text.
+تتحكّم الأصناف في حالة الأحرف في النص.
 
-### Using Text Transform Utilities
+### استخدام أصناف تحويل النص
 
-- `uppercase`: Transforms text to uppercase.
-- `lowercase`: Transforms text to lowercase.
-- `capitalize`: Capitalizes the first letter of each word.
-- `normal-case`: Prevents any text transformation, useful for resetting casing at breakpoints.
+- `uppercase`: تحوّل النص إلى أحرف كبيرة.
+- `lowercase`: تحوّل النص إلى أحرف صغيرة.
+- `capitalize`: تكبّر الحرف الأول من كل كلمة.
+- `normal-case`: تمنع أي تحويل للنص، وهي مفيدة لإعادة ضبط حالة الأحرف عند نقاط التوقّف.
 
-These utilities are responsive (e.g., `md:normal-case`).
+وهذه الأصناف متجاوبة (مثل `md:normal-case`).
 
-## Text Indent
+## مسافة بادئة للنص
 
-Utilities control the amount of horizontal empty space before the first line of text in a block.
+تتحكّم الأصناف في مقدار الفراغ الأفقي قبل السطر الأول من النص داخل كتلة.
 
-### Using Text Indent Utilities
+### استخدام أصناف المسافة البادئة
 
-- `indent-<number>`: Sets the indentation based on the spacing scale (e.g., `indent-2`, `indent-8`).
-- `indent-px`: Sets a 1px indentation.
-- `-indent-<number>`: Sets a negative indentation.
-- `-indent-px`: Sets a -1px indentation.
+- `indent-<number>`: تضبط المسافة البادئة استنادًا إلى مقياس المسافات (مثل `indent-2`، `indent-8`).
+- `indent-px`: تضبط مسافة بادئة قدرها 1px.
+- `-indent-<number>`: تضبط مسافة بادئة سالبة.
+- `-indent-px`: تضبط مسافة بادئة قدرها -1px.
 
-You can use arbitrary values `indent-[<value>]` or custom properties `indent-(<custom-property>)`. These utilities are responsive (e.g., `md:indent-4`).
+ويمكنك استخدام القيم التعسّفية `indent-[<value>]` أو الخصائص المخصّصة `indent-(<custom-property>)`. وهذه الأصناف متجاوبة (مثل `md:indent-4`).
 
-## Text Overflow
+## فيض النص
 
-Utilities control how text that overflows its container is displayed, including truncation.
+تتحكّم الأصناف في طريقة عرض النص الذي يفيض عن حاويته، بما في ذلك الاقتطاع.
 
-### Using Text Overflow Utilities
+### استخدام أصناف فيض النص
 
-- `truncate`: A composite utility that prevents text from wrapping (`white-space: nowrap`), hides overflowing content (`overflow: hidden`), and displays an ellipsis (`text-overflow: ellipsis`) for truncated text.
-- `text-ellipsis`: Displays an ellipsis to represent clipped text. Requires `overflow: hidden` and `white-space: nowrap` to function correctly.
-- `text-clip`: Clips the text at the edge of the element’s content box (the default browser behavior).
+- `truncate`: صنف مساعد مركّب يمنع التفاف النص (`white-space: nowrap`)، ويخفي المحتوى الفائض (`overflow: hidden`)، ويعرض علامة حذف (`text-overflow: ellipsis`) للنص المقتطع.
+- `text-ellipsis`: يعرض علامة حذف لتمثيل النص المقطوع. ويتطلّب `overflow: hidden` و`white-space: nowrap` ليعمل على نحو صحيح.
+- `text-clip`: يقتطع النص عند حافّة صندوق محتوى العنصر (وهو السلوك الافتراضي للمتصفح).
 
-These utilities are responsive (e.g., `md:truncate`).
+وهذه الأصناف متجاوبة (مثل `md:truncate`).
 
-## Text Wrap
+## التفاف النص
 
-Utilities control how text wraps within an element.
+تتحكّم الأصناف في طريقة التفاف النص داخل العنصر.
 
-### Using Text Wrap Utilities
+### استخدام أصناف التفاف النص
 
-- `text-wrap`: Allows text to wrap onto multiple lines at logical points.
-- `text-nowrap`: Prevents text from wrapping, potentially causing overflow. This utility replaces the deprecated `whitespace-nowrap` utility from v3.
-- `text-balance`: Attempts to balance the text length across lines, distributing text evenly. Primarily suitable for headings due to browser performance limitations on longer text blocks.
-- `text-pretty`: Aims to improve readability by preventing orphans (single words on a line).
+- `text-wrap`: يتيح التفاف النص في عدّة أسطر عند النقاط المنطقية.
+- `text-nowrap`: يمنع التفاف النص، وقد يسبب فيضًا. وهذا الصنف يحلّ محلّ الصنف المهجور `whitespace-nowrap` في الإصدار v3.
+- `text-balance`: يحاول موازنة طول النص عبر الأسطر، فيوزّعه بالتساوي. وهو مناسب أساسًا للعناوين بسبب قيود أداء المتصفحات على الكتل النصية الأطول.
+- `text-pretty`: يسعى إلى تحسين القراءة بمنع الكلمات اليتيمة (كلمة واحدة في السطر).
 
-These utilities are responsive (e.g., `md:text-balance`).
+وهذه الأصناف متجاوبة (مثل `md:text-balance`).
 
-## Text Shadow
+## ظلّ النص
 
-Utilities apply shadows to text elements. These are different from `box-shadow` utilities (`shadow-*`) which apply shadows to the element’s box.
+تطبّق الأصناف ظلالًا على عناصر النص. وهذه تختلف عن أصناف `box-shadow` (`shadow-*`) التي تطبّق الظلال على صندوق العنصر.
 
-### Using Text Shadow Utilities
+### استخدام أصناف ظلّ النص
 
-Tailwind includes utilities for predefined text shadow sizes like `text-shadow-xs`, `text-shadow-sm`, and `text-shadow-lg`. It also includes `text-shadow-none` to remove a text shadow.
+يتضمّن Tailwind أصنافًا لأحجام ظلّ النص المُعرَّفة مسبقًا مثل `text-shadow-xs` و`text-shadow-sm` و`text-shadow-lg`. ويتضمّن أيضًا `text-shadow-none` لإزالة ظلّ النص.
 
-### Adjusting Opacity
+### ضبط العتامة
 
-You can adjust the opacity of the text shadow using the opacity modifier (e.g., `text-shadow-sm/50`).
+يمكنك ضبط عتامة ظلّ النص باستخدام معدِّل العتامة (مثل `text-shadow-sm/50`).
 
-### Setting Shadow Color
+### ضبط لون الظلّ
 
-You can change the color of the text shadow using color utilities like `text-shadow-indigo-500`. This can be combined with the color opacity modifier (e.g., `text-shadow-cyan-500/50`).
+يمكنك تغيير لون ظلّ النص باستخدام أصناف الألوان مثل `text-shadow-indigo-500`. ويمكن جمعه مع معدِّل عتامة اللون (مثل `text-shadow-cyan-500/50`).
 
-### Using Custom Values and Custom Properties
+### استخدام القيم المخصّصة والخصائص المخصّصة
 
-Custom text shadow values can be applied using the arbitrary value syntax `text-shadow-[<value>]` or custom properties `text-shadow-(<custom-property>)`. Custom shadow colors can be set using `text-shadow-(color:<custom-property>)` or `text-shadow-[<color>]`.
+يمكن تطبيق قيم ظلّ نص مخصّصة باستخدام صيغة القيمة التعسّفية `text-shadow-[<value>]` أو الخصائص المخصّصة `text-shadow-(<custom-property>)`. ويمكن ضبط ألوان الظلّ المخصّصة باستخدام `text-shadow-(color:<custom-property>)` أو `text-shadow-[<color>]`.
 
-### Customizing Text Shadows
+### تخصيص ظلال النص
 
-You can customize the default text shadow sizes and colors by defining theme variables in the `--text-shadow-*` and `--tw-text-shadow-color` namespaces within your `@theme` block.
+يمكنك تخصيص أحجام ظلّ النص الافتراضية وألوانها بتعريف متغيّرات السمة في فضاءي الاسم `--text-shadow-*` و`--tw-text-shadow-color` ضمن كتل `@theme` لديك.
 
-### Responsive Text Shadows
+### ظلال نص استجابة
 
-Text shadow utilities are responsive (e.g., `md:text-shadow-lg`).
+أصناف ظلّ النص متجاوبة (مثل `md:text-shadow-lg`).
 
-## White Space
+## المسافات البيضاء
 
-Utilities control how white space within an element is handled, affecting line breaks and spacing.
+تتحكّم الأصناف في كيفية التعامل مع المسافات البيضاء داخل العنصر، ما يؤثّر في فواصل الأسطر والمسافات.
 
-### Using White Space Utilities
+### استخدام أصناف المسافات البيضاء
 
-- `whitespace-normal`: Text wraps normally, spaces and newlines are collapsed.
-- `whitespace-nowrap`: Prevents text wrapping; spaces and newlines are collapsed. (Note: The `text-nowrap` utility is generally preferred for preventing wrapping).
-- `whitespace-pre`: Preserves spaces and newlines; text does not wrap.
-- `whitespace-pre-line`: Preserves newlines but collapses spaces; text wraps normally.
-- `whitespace-pre-wrap`: Preserves spaces and newlines; text wraps normally.
-- `whitespace-break-spaces`: Preserves spaces and newlines; text wraps normally, and spaces at the end of lines wrap to the next line.
+- `whitespace-normal`: يلفّ النص بشكل طبيعي، وتُدمج المسافات وفواصل الأسطر.
+- `whitespace-nowrap`: يمنع التفاف النص؛ وتُدمج المسافات وفواصل الأسطر. (ملاحظة: يُفضَّل عمومًا الصنف `text-nowrap` لمنع الالتفاف).
+- `whitespace-pre`: يحافظ على المسافات وفواصل الأسطر؛ ولا يلتفّ النص.
+- `whitespace-pre-line`: يحافظ على فواصل الأسطر لكنه يدمج المسافات؛ ويلتفّ النص بشكل طبيعي.
+- `whitespace-pre-wrap`: يحافظ على المسافات وفواصل الأسطر؛ ويلتفّ النص بشكل طبيعي.
+- `whitespace-break-spaces`: يحافظ على المسافات وفواصل الأسطر؛ ويلتفّ النص بشكل طبيعي، وتدور المسافات في نهاية الأسطر إلى السطر التالي.
 
-These utilities are responsive (e.g., `md:whitespace-pre-wrap`).
+وهذه الأصناف متجاوبة (مثل `md:whitespace-pre-wrap`).
 
-## Overflow Wrap
+## الالتفاف عند الفيض
 
-Utilities control whether the browser can break words to prevent overflow.
+تتحكّم الأصناف في ما إذا كان بإمكان المتصفح قطع الكلمات لمنع الفيض.
 
-### Using Overflow Wrap Utilities
+### استخدام أصناف الالتفاف عند الفيض
 
-- `wrap-break-word`: Allows line breaks between letters if necessary to prevent overflow.
-- `wrap-anywhere`: Similar to `wrap-break-word`, but the browser considers mid-word breaks when calculating intrinsic size, useful for flexible containers like flexbox where children might need to shrink below their content size without a `min-width: 0` explicit style.
-- `wrap-normal`: Only allows line breaks at natural breaking points (spaces, hyphens, punctuation).
+- `wrap-break-word`: يتيح فواصل الأسطر بين الحروف عند الضرورة لمنع الفيض.
+- `wrap-anywhere`: مشابه لـ`wrap-break-word`، لكن المتصفح يأخذ في الحسبان القطع في منتصف الكلمة عند حساب الحجم الضمني، وهو أمر مفيد للحاويات المرنة مثل flexbox حيث قد يحتاج العناصر الفرعية إلى التصغير دون حجم محتواها من دون نمط `min-width: 0` صريح.
+- `wrap-normal`: يسمح فقط بفواصل الأسطر عند نقاط الفحص الطبيعية (المسافات، والشرطات، وعلامات الترقيم).
 
-These utilities are responsive (e.g., `md:wrap-anywhere`).
+وهذه الأصناف متجاوبة (مثل `md:wrap-anywhere`).

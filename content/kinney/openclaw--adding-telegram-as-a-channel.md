@@ -1,37 +1,37 @@
 ---
-title: "Adding Telegram as a Channel"
-lang: en
+title: "إضافة Telegram بوصفها قناة"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel"
 ---
 
-First, we’re going to go find [BotFather](https://t.me/BotFather) on Telegram and then we’re going to use the `/newbot` command.
+في البداية، سنذهب للعثور على [BotFather](https://t.me/BotFather) على Telegram، ثم سنستعمل الأمر `/newbot`.
 
-Typing the /newbot command in a chat with BotFather
+كتابة أمر /newbot داخل محادثة مع BotFather
 
-You’ll be asked to give your bot a name and then—subsequently—a username. When that is all set up, you’ll get a token that you can use.
+سيُطلب منك أن تمنح روبوتك اسمًا، ثم — في مرحلة لاحقة — اسم مستخدم. وحين يكتمل ذلك كلّه، ستحصل على رمز (token) يمكنك استخدامه.
 
-BotFather's confirmation message with the new bot's HTTP API token redacted
+رسالة تأكيد BotFather مع إخفاء رمز واجهة HTTP البرمجية للروبوت الجديد
 
-> **Warning**
+> **تحذير**
 >
-> Anyone with that token can control your bot. Keep it secret and don’t paste it into public chats or commit it to a repository.
+> كل من يملك ذلك الرمز يستطيع التحكّم في روبوتك. أبقِه سرًّا، ولا تلصقه في محادثات عامة، ولا تودعه في مستودع (repository).
 
-From there, we’ll use that token to set it up in OpenClaw as a channel.
+ومن هناك، سنستعمل ذلك الرمز لإعداده داخل OpenClaw بوصفه قناة.
 
 ```bash
 openclaw channels add --channel telegram --token <YOUR_BOT_TOKEN>
 ```
 
-Once you message your bot for the first time, you’ll see that it’s still going to need to be paired.
+بمجرّد أن تراسل روبوتك لأول مرة، ستلاحظ أنه ما زال بحاجة إلى الإقران.
 
-The bot replying that access is not configured, with a pairing code and an approval command
+الروبوت يردّ بأن الوصول غير مُهيّأ، مع رمز إقران وأمر موافقة
 
-Run the approval command from the message on the machine hosting OpenClaw. Once we’ve done that, we should be good to go.
+نفّذ أمر الموافقة الوارد في الرسالة على الجهاز الذي يضيف OpenClaw. وحين ننجز ذلك، نكون جاهزين للانطلاق.
 
-You can confirm the connection in the Control UI. Open Settings and choose Channels, and Telegram shows up under Connected Channels with a Running status.
+يمكنك تأكيد الاتصال من واجهة التحكم (Control UI). افتح الإعدادات (Settings)، ثم اختر القنوات (Channels)، فيظهر Telegram تحت «القنوات المتصلة» (Connected Channels) بحالة «قيد التشغيل» (Running).
 
-The Channels page in the OpenClaw settings with Telegram listed as running under Connected Channels
+صفحة القنوات في إعدادات OpenClaw مع إدراج Telegram كقناة تعمل ضمن القنوات المتصلة
 
-If other people may communicate with the agent, configure `session.dmScope` to `"per-channel-peer"`.
+إن كان بإمكان أشخاصٍ آخرين التواصل مع الوكيل (agent)، فاضبط `session.dmScope` على `"per-channel-peer"`.
 
-Once you can talk to your bot, read [Choosing a DM Policy](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy) to decide who else should be able to.
+وبمجرّد أن تتمكن من التحدّث إلى روبوتك، اقرأ [اختيار سياسة الرسائل المباشرة](https://stevekinney.com/courses/openclaw/choosing-a-dm-policy) لتحديد من يجب أن يتمتّع بذلك أيضًا.

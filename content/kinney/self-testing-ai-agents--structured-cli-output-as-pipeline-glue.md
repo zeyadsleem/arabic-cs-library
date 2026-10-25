@@ -1,16 +1,16 @@
 ---
-title: "Structured CLI Output as Pipeline Glue"
-lang: en
+title: "مخرجات سطر الأوامر المُهيكلة كغراء للخطوط الأنابيب"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue"
 ---
 
-The MCP lesson taught one direction of the structured-contract idea: you wrap your verification logic in a tool, and the agent calls it. The agent gets a typed result it can reason about. That’s your code serving the agent.
+علّمك درس MCP اتجاهًا واحدًا من فكرة العقد المُهيكل: تُغلّف منطق التحقّق لديك في أداة، فيستدعيها الوكيل. ويحصل الوكيل على نتيجة مُنمّطة يستطيع الاستدلال عليها. تلك شيفرتك تخدم الوكيل.
 
-This lesson is the other direction. Your *scripts* call the agent and get typed JSON back. The agent’s judgment—“is this failure a flake or a real bug,” “does this diff introduce a security issue,” “which of these five errors is the root cause”—becomes a pipeline step you can `jq`, branch on, and feed into the next stage. Same thesis as the MCP lesson: structured contracts between code and LLMs. Different direction.
+هذا الدرس هو الاتجاه الآخر. *سكربتاتك* تستدعي الوكيل وتحصل على JSON مُنمّط في المقابل. فيصير حكم الوكيل — «هل هذا الفشل تقلّب عابر أم خلل حقيقي»، «هل يُدخل هذا الفرق مشكلة أمنية»، «أي هذه الأخطاء الخمسة هو السبب الجذري» — خطوة في خط أنابيب تستطيع أن تمرّرها على `jq`، وتتفرّع عليها، وتغذّي بها المرحلة التالية. الفرضية نفسها كدرس MCP: عقود مُهيكلة بين الشيفرة والنماذج اللغوية الكبيرة. لكن الاتجاه مختلف.
 
-## The mechanics
+## الميكانيكا
 
-The primary tool is [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) in print mode with a JSON schema constraint. The invocation is:
+الأداة الأساسية هي [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) في وضع الطباعة مع قيد مخطّط JSON. والاستدعاء هو:
 
 ```bash
 SCHEMA=$(jq -c . schema.json)
@@ -22,15 +22,15 @@ claude -p --bare \
   < playwright-report/dossier.md
 ```
 
-A few things to unpack.
+وثمّة أمور قليلة تحتاج إلى تفكيك.
 
-`--bare` makes the invocation hermetic. It skips `CLAUDE.md` discovery, local hooks, MCP servers, and auto-memory. When you’re running Claude as a pipeline step, you don’t want ambient state leaking into the result. The command should produce the same output on your laptop, in CI, and on a teammate’s machine.
+`--bare` يجعل الاستدعاء محكم الإغلاق (hermetic). فهو يتخطّى اكتشاف `CLAUDE.md`، والخطّافات المحلية، وخوادم MCP، والذاكرة التلقائية. فحين تشغّل Claude كخطوة في خط أنابيب، لا تريد حالة محيطة تتسرّب إلى النتيجة. وينبغي أن يُنتج الأمر المخرجات نفسها على حاسوبك، وفي CI، وعلى جهاز زميل.
 
-`--output-format json` tells Claude to return JSON instead of plain text. The outer envelope has metadata about the run, and your structured data lives in the top-level `structured_output` field.
+`--output-format json` يطلب من Claude أن يُعيد JSON بدلًا من نص عادي. ويحمل المغلّف الخارجي بيانات وصفية عن التشغيل، وبياناتك المُهيكلة تعيش في الحقل `structured_output` على المستوى الأعلى.
 
-`--json-schema "$SCHEMA"` constrains the response to match your schema. Claude can still use tools and reasoning to get there, but the final output is validated JSON conforming to the shape you defined.
+`--json-schema "$SCHEMA"` يقيّد الاستجابة لتطابق مخطّطك. ويظلّ Claude قادرًا على استخدام الأدوات والاستدلال للوصول إلى هناك، لكن المخرجات النهائية JSON مُتحقَّق منه ومطابق للشكل الذي عرّفته.
 
-To extract just your data:
+ولاستخراج بياناتك وحدها:
 
 ```bash
 claude -p --bare \
@@ -41,15 +41,15 @@ claude -p --bare \
   | jq '.structured_output'
 ```
 
-That’s the whole handshake. You define the shape, Claude fills it, your script reads it.
+هذه هي المصافحة كلها. أنت تعرّف الشكل، وClaude يملؤه، وسكربتك يقرأه.
 
-> **Portability**
+> **قابلية النقل**
 >
-> [Codex](https://openai.com/index/codex/)’s non-interactive mode uses a file path instead of an inline string: `codex exec --output-schema ./schema.json -o ./result.json "Classify these failures." < dossier.md`. The schema file is the same—one checked-in `schema.json`, two CLIs. Claude reads it via shell variable, Codex reads it via flag. If you’re working across model families, the schema is the portable contract.
+> يستخدم الوضع غير التفاعلي في [Codex](https://openai.com/index/codex/) مسار ملف بدلًا من نص مضمّن: `codex exec --output-schema ./schema.json -o ./result.json "Classify these failures." < dossier.md`. وملف المخطّط هو نفسه — `schema.json` واحد مُودَع، وأداتا سطر أوامر. يقرأه Claude عبر متغيّر صدفة، ويقرأه Codex عبر علم. وإن كنت تعمل عبر عائلات نماذج مختلفة، فالمخطّط هو العقد القابل للنقل.
 
-## The schema is the contract
+## المخطّط هو العقد
 
-Here’s what I mean by “contract.” A schema like this:
+هذا ما أعنيه بـ«العقد». مخطّط كهذا:
 
 ```json
 {
@@ -74,15 +74,15 @@ Here’s what I mean by “contract.” A schema like this:
 }
 ```
 
-That schema is doing the same job as the `outputSchema` in the MCP wrapper lesson’s `verify_shelf_page` tool. It cages the LLM’s flexibility inside a shape your script can consume. The LLM decides *what* the root cause is. The schema decides *how* the answer is shaped. Your downstream script never has to parse free-form text.
+هذا المخطّط يؤدي الوظيفة نفسها التي يؤديها `outputSchema` في أداة `verify_shelf_page` من درس غلاف MCP. فهو يحبس مرونة النموذج اللغوي الكبير داخل شكل يستطيع سكربتك استهلاكه. فالنموذج يقرّر *ما* السبب الجذري. والمخطّط يقرّر *كيف* يُشكَّل الجواب. وسكربتك اللاحق لا يضطرّ أبدًا إلى تحليل نص حرّ.
 
-Check the schema into the repo alongside the script that uses it. When someone asks “what does the triage step produce?”, the answer is `schema.json`.
+أودِع المخطّط في المستودع إلى جانب السكربت الذي يستخدمه. فحين يسأل أحدهم «ماذا تُنتج خطوة الفرز؟»، يكون الجواب `schema.json`.
 
-## Dossier triage
+## فرز ملفّات الفشل
 
-This is the pattern I reach for most. The [failure dossier lesson](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) taught you to generate `dossier.md`—a structured markdown summary of every failing test, with error messages, screenshot paths, and reproduction commands. That dossier is already good enough for the agent to read interactively.
+هذا هو النمط الذي أعود إليه أكثر من غيره. علّمك [درس ملفّات الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) أن تُولّد `dossier.md` — ملخّص ماركداون مُهيكل لكل اختبار فاشل، مع رسائل الأخطاء ومسارات لقطات الشاشة وأوامر إعادة الإنتاج. وذلك الملفّ جيّد بما يكفي ليقرأه الوكيل تفاعليًا.
 
-But sometimes you want a script to do the reading. Maybe you’re triaging ten failures at once and you want them sorted by confidence. Maybe you want to open GitHub issues for the low-confidence ones and hand the high-confidence ones to the agent in a separate, verified step. Maybe it’s 2 AM and the nightly run failed and you want a machine-readable summary waiting for you in the morning.
+لكنك تريد أحيانًا أن يقوم سكربت بالقراءة. ربما تُفرز عشرة إخفاقات دفعة واحدة وتريدها مرتّبة بحسب الثقة. وربما تريد فتح مسائل GitHub للإخفاقات منخفضة الثقة وتسليم مرتفعة الثقة إلى الوكيل في خطوة منفصلة ومُتحقَّق منها. وربما تكون الساعة الثانية صباحًا وقد فشل التشغيل الليلي وتريد ملخّصًا مقروءًا آليًا ينتظرك في الصباح.
 
 ```bash
 #!/usr/bin/env bash
@@ -102,13 +102,13 @@ claude -p --bare \
 echo "$(jq length needs-human-review.json) failures flagged for human review"
 ```
 
-Notice `--append-system-prompt-file`. Since `--bare` skips `CLAUDE.md`, the system prompt file is where your repository-specific context goes: what categories to use, what “confidence” means in your project, which test names are known flakes. It layers on top of Claude’s default system prompt rather than replacing it. The user prompt—the dossier itself—comes via stdin. Version-control both files. That’s the hermetic equivalent of `CLAUDE.md` for pipeline calls.
+لاحظ `--append-system-prompt-file`. فبما أن `--bare` يتخطّى `CLAUDE.md`، فملف طلب النظام هو المكان الذي يذهب إليه سياق مستودعك: أي فئات تستخدم، وما معنى «الثقة» في مشروعك، وأي أسماء اختبارات معروفة بالتقلّب. وهو يُضاف فوق طلب النظام الافتراضي في Claude بدلًا من أن يستبدله. أما طلب المستخدم — ملفّ الفشل نفسه — فيأتي عبر المدخل القياسي. أودِع الملفّين في التحكّم بالإصدارات. وهذا هو المكافئ المحكم لـ`CLAUDE.md` في استدعاءات خطوط الأنابيب.
 
-The script stops at classification. It does not auto-apply fixes. Model-reported confidence is useful for routing, not for unsupervised code changes. The lesson on [failure dossiers](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) gives the agent a reproduction command for each failure—*that’s* where the fix loop happens, one failure at a time, with tests gating each step.
+يتوقّف السكربت عند التصنيف. ولا يطبّق الإصلاحات تلقائيًا. فالثقة التي يبلّغ عنها النموذج نافعة للتوجيه، لا لتغييرات شيفرة بلا إشراف. ودرس [ملفّات الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) يمنح الوكيل أمر إعادة إنتاج لكل فشل — *هناك* تحدث حلقة الإصلاح، فشلًا واحدًا في كل مرة، والاختبارات تحرس كل خطوة.
 
-## CI annotation generation
+## توليد تعليقات CI
 
-Shorter pattern, big payoff. GitHub Actions supports `::error file=...,line=...::message` annotations that render inline on PR diffs. A structured output step can turn an LLM review into native annotations:
+نمط أقصر بعائد كبير. تدعم GitHub Actions تعليقات من نوع `::error file=...,line=...::message` تُعرض سطريًا على فروق طلبات السحب. وخطوة مخرجات مُهيكلة تستطيع أن تحوّل مراجعة نموذج لغوي إلى تعليقات أصلية:
 
 ```bash
 SCHEMA=$(jq -c . scripts/annotation-schema.json)
@@ -121,30 +121,30 @@ claude -p --bare \
   | jq -r '.structured_output.annotations[] | "::\(.level) file=\(.file),line=\(.line)::\(.message)"'
 ```
 
-Where `annotation-schema.json` enforces `{ annotations: [{ file, line, level, message }] }` with `level` constrained to `"error" | "warning" | "notice"`. The `jq` one-liner formats each finding as a GitHub annotation. Drop this in a CI step and the LLM’s review shows up as inline comments on the PR, same as any linter.
+حيث يفرض `annotation-schema.json` الشكل `{ annotations: [{ file, line, level, message }] }` مع `level` مقيّدًا بـ`"error" | "warning" | "notice"`. وسطر `jq` الواحد يُنسّق كل نتيجة كتعليق GitHub. أضِف هذا في خطوة CI فتظهر مراجعة النموذج اللغوي كتعليقات سطريّة على طلب السحب، كما يفعل أي أداة تدقيق.
 
-This pairs well with the [CI lesson](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). The structured schema is what makes the step composable with the rest of the workflow.
+وهذا يتناسب جيدًا مع [درس CI](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort). فالمخطّط المُهيكل هو ما يجعل الخطوة قابلة للتركيب مع بقية سير العمل.
 
-## Two more patterns, briefly
+## نمطان آخران، باختصار
 
-**Nightly health checks.** The [nightly verification lesson](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) teaches scheduled checks that run unattended. Structured output turns their results into machine-readable status reports: `{ status: "healthy" | "degraded" | "broken", checks: [...], action_required: boolean }`. A cron wrapper reads `action_required`, opens a GitHub issue if true, and goes back to sleep. Five lines of `jq`, not a bespoke parser.
+**فحوص الصحة الليلية.** يعلّم [درس التحقّق الليلي](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) فحوصًا مجدولة تعمل بلا إشراف. والمخرجات المُهيكلة تحوّل نتائجها إلى تقارير حالة مقروءة آليًا: `{ status: "healthy" | "degraded" | "broken", checks: [...], action_required: boolean }`. فيقرأ مغلّف cron قيمة `action_required`، ويفتح مسألة GitHub إن كانت صحيحة، ويعود إلى النوم. خمسة أسطر من `jq`، لا محلّل مخصّص.
 
-**Semantic review gate.** Same shape as the CI annotation pattern, but used as a pre-push hook or CI-only step—not pre-commit. The course’s [ten-second rule for pre-commit hooks](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) rules out networked LLM calls. Pre-push or CI is where the latency budget exists. The schema gives you `{ pass: boolean, issues: [...] }`, the script exits non-zero if `pass` is false, and you’ve built a semantic lint pass that catches things no AST rule can express.
+**بوابة مراجعة دلالية.** الشكل نفسه كنمط تعليقات CI، لكنها تُستخدم كخطّاف قبل الدفع أو كخطوة في CI فقط — لا قبل الإيداع. فـ[قاعدة العشر ثوانٍ لخطّافات ما قبل الإيداع](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) في الدورة تستبعد استدعاءات النماذج اللغوية عبر الشبكة. وقبل الدفع أو في CI توجد ميزانية زمن الاستجابة. والمخطّط يمنحك `{ pass: boolean, issues: [...] }`، ويخرج السكربت بقيمة غير صفرية إن كانت `pass` خاطئة، فتكون قد بنيت تمريرة تدقيق دلالي تلتقط أشياء لا تستطيع أي قاعدة AST التعبير عنها.
 
-## When structured output is the wrong tool
+## عندما تكون المخرجات المُهيكلة الأداة الخاطئة
 
-Same heuristic as the [MCP lesson](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)’s “What to wrap and what to leave alone.”
+الاستدلال الاستكشافي نفسه كالذي في درس [MCP](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper) تحت عنوان «ما الذي تُغلّفه وما الذي تتركه».
 
-**Wrong tool when:** the task is open-ended generation (not verification), the schema would be more complex than the parser it replaces, the LLM’s judgment isn’t reliable enough for the domain, or you need sub-second latency. Git hooks that run on every save, editor integrations that need instant feedback—those can’t wait for a network round-trip.
+**أداة خاطئة حين:** تكون المهمة توليدًا مفتوح النهاية (لا تحقّقًا)، أو يصير المخطّط أعقد من المحلّل الذي يستبدله، أو لا يكون حكم النموذج اللغوي موثوقًا بما يكفي في هذا النطاق، أو تحتاج زمن استجابة أقل من ثانية. فخطّافات git التي تعمل عند كل حفظ، وتكاملات المحرّرات التي تحتاج تغذية راجعة فورية — تلك لا تستطيع انتظار رحلة ذهاب وعودة عبر الشبكة.
 
-**Right tool when:** verification, triage, classification—anywhere you’d otherwise parse free-form text and can tolerate a few seconds of latency. The sweet spot is “I need the LLM’s judgment, but I also need the result in a shape my script can branch on.”
+**أداة صحيحة حين:** التحقّق، والفرز، والتصنيف — أي مكان كنت ستُحلّل فيه نصًّا حرًّا وتستطيع تحمّل بضع ثوانٍ من زمن الاستجابة. والنقطة المثلى هي «أحتاج حكم النموذج اللغوي، وأحتاج أيضًا النتيجة في شكل يستطيع سكربتي التفرّع عليه».
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-A JSON schema turns “ask an LLM” into a pipeline step. The schema is the contract: the LLM’s flexibility stays inside the shape, your script’s need for predictability is satisfied by the shape. Check in the schema, check in the prompt file, run with `--bare`, and the whole thing is hermetic, version-controlled, and composable with every other loop in the stack.
+مخطّط JSON يحوّل «اسأل نموذجًا لغويًا كبيرًا» إلى خطوة في خط أنابيب. فالمخطّط هو العقد: مرونة النموذج تبقى داخل الشكل، وحاجة سكربتك إلى القدرة على التنبّؤ يشبعها الشكل. أودِع المخطّط، وأودِع ملف الطلب، وشغّل بـ`--bare`، فيصير الأمر كله محكم الإغلاق، ومُتحكَّمًا بإصداراته، وقابلًا للتركيب مع كل حلقة أخرى في المكدّس.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [حلقات التحقّق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)

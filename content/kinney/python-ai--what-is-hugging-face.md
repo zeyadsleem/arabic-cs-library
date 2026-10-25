@@ -1,24 +1,24 @@
 ---
-title: "What is Hugging Face?"
-lang: en
+title: "ما هو Hugging Face؟"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/what-is-hugging-face"
 ---
 
-> **Our main interaction today will be with the libraries.**
+> **سيكون تعاملنا الأساسي اليوم مع المكتبات.**
 >
-> We’ll mostly be using Hugging Face’s `transformers` and `diffusers` libraries.
+> سنستخدم في الغالب مكتبتَي `transformers` و`diffusers` من Hugging Face.
 
-[Hugging Face](https://huggingface.co/) is a **AI company and an open-source community** that focuses on Natural Language Processing (NLP) and Artificial Intelligence. It initially began as a chatbot company before pivoting to develop cutting-edge open-source NLP technologies. Its primary goal is to **democratize AI technology**, making it accessible, open, and easy for everyone, which helps reduce computation costs and allows users to leverage state-of-the-art models without training them from scratch.
+[Hugging Face](https://huggingface.co/) هي **شركة ذكاء اصطناعي ومجتمع مفتوح المصدر** يركّز على معالجة اللغة الطبيعية (NLP) والذكاء الاصطناعي. بدأت في الأصل كشركة روبوتات محادثة قبل أن تتحوّل إلى تطوير تقنيات معالجة لغة طبيعية مفتوحة المصدر متقدّمة. وهدفها الأساسي هو **إتاحة تقنية الذكاء الاصطناعي للجميع وإرساؤها في متناول الجميع**، بجعلها متاحة ومفتوحة وسهلة للجميع، ما يساعد على خفض تكاليف الحوسبة ويمكّن المستخدمين من الاستفادة من أحدث النماذج دون تدريبها من الصفر.
 
-The Hugging Face website
+موقع Hugging Face
 
-The Hugging Face ecosystem is built around its **collaborative platform, the Hugging Face Hub**, which functions similarly to GitHub for machine learning assets. Key components of this ecosystem include:
+تقوم منظومة Hugging Face حول **منصّتها التعاونية، Hugging Face Hub**، التي تعمل على نحو مشابه لـ GitHub في ما يخص أصول تعلّم الآلة. وتشمل المكوّنات الأساسية لهذه المنظومة:
 
-- **Models (Model Hub)**: Hugging Face hosts a vast repository of **thousands to hundreds of thousands of pre-trained, open-source AI models**. These models are available for a wide range of tasks across various modalities, including text classification, text generation, translation, summarization, speech recognition, image classification, computer vision, audio processing, and multimodal learning. Both the community and Hugging Face contribute to this growing collection.
-- **Datasets Library**: Hugging Face provides a library with **thousands of datasets** (text, audio, image, and tabular data) that are useful for machine learning and integrate seamlessly with their other tools like Transformers and Tokenizers.
-- **Spaces**: This platform allows users to **build, deploy, and share interactive machine learning demos and applications** directly on the Hugging Face website. Spaces support various frameworks like Streamlit, Gradio (which Hugging Face acquired). Free and paid options are available.
-- **Transformers Library**: This is Hugging Face’s **flagship and core Python library**. It offers APIs and tools to easily download, manipulate, run, and fine-tune state-of-the-art pre-trained models that are based on the Transformer architecture. It simplifies complex NLP tasks by abstracting away the intricacies of training or deploying models in lower-level machine learning frameworks like PyTorch and TensorFlow.
-- **Tokenizers Library**: A separate, fast, and efficient library designed for **tokenizing text**, a crucial step in NLP. It breaks down text into smaller units (words or subwords) and converts them into integer token IDs, often used in conjunction with the Transformers library.
-- **Other Libraries**: The ecosystem also includes other libraries such as 🤗 Accelerate, 🤗 Evaluate, 🤗 Diffusers, and Sentence Transformers, which further support tasks like distributed training, model evaluation, image/video generation, and creating sentence embeddings.
-- **Paid Offerings**: Hugging Face also provides paid services for advanced users and enterprises, including Pro Accounts, the Enterprise Hub, and Inference Endpoints, which offer features like private model hosting, advanced collaboration tools, and dedicated support.
-- **Community and Collaboration**: Hugging Face fosters a **strong community** of developers and AI enthusiasts who contribute to and benefit from the shared resources and tools within its ecosystem.
+- **النماذج (Model Hub)**: يستضيف Hugging Face مستودعًا هائلًا يضم **آلافًا تصل إلى مئات الآلاف من نماذج الذكاء الاصطناعي المدرّبة مسبقًا ومفتوحة المصدر**. وتتوفّر هذه النماذج لمجموعة واسعة من المهام عبر وسائط متنوّعة، تشمل تصنيف النصوص وتوليدها والترجمة والتلخيص والتعرّف على الكلام وتصنيف الصور ورؤية الحاسوب ومعالجة الصوت والتعلّم متعدّد الوسائط. ويسهم كلٌّ من المجتمع وHugging Face في هذه المجموعة المتنامية.
+- **مكتبة Datasets**: توفّر Hugging Face مكتبة تضم **آلاف المجموعات (datasets)** (نصوص وصوت وصور وبيانات جدولية) تُفيد في تعلّم الآلة وتتكامل بسلاسة مع أدواتها الأخرى مثل Transformers وTokenizers.
+- **Spaces**: تتيح هذه المنصّة للمستخدمين **بناء عروض تفاعلية وتطبيقات لتعلّم الآلة ونشرها ومشاركتها** مباشرةً على موقع Hugging Face. وتدعم Spaces أطرًا متنوّعة مثل Streamlit وGradio (التي استحوذت عليها Hugging Face). وتتوفّر خيارات مجانية ومدفوعة.
+- **مكتبة Transformers**: هذه هي **المكتبة الأم والأساسية بلغة Python** لدى Hugging Face. وتقدّم واجهات برمجية وأدوات لتنزيل النماذج المدرّبة مسبقًا والقائمة على معمارية المحوّل (Transformer) ومعالجتها وتشغيلها وضبطها بدقة بسهولة. وهي تبسّط مهام معالجة اللغة الطبيعية المعقّدة بإخفاء تفاصيل تدريب النماذج أو نشرها في أطر تعلّم الآلة الأدنى مستوى مثل PyTorch وTensorFlow.
+- **مكتبة Tokenizers**: مكتبة منفصلة وسريعة وفعّالة مصمّمة **لترميز النص (tokenizing)**، وهي خطوة حاسمة في معالجة اللغة الطبيعية. وهي تقسّم النص إلى وحدات أصغر (كلمات أو كلمات فرعية) وتحوّلها إلى معرّفات رقمية للرموز (token IDs)، وتُستخدم غالبًا بالاقتران مع مكتبة Transformers.
+- **مكتبات أخرى**: تشمل المنظومة أيضًا مكتبات أخرى مثل 🤗 Accelerate و🤗 Evaluate و🤗 Diffusers وSentence Transformers، التي تدعم مزيدًا من المهام مثل التدريب الموزّع وتقييم النماذج وتوليد الصور/الفيديو وإنشاء تضمينات الجمل.
+- **العروض المدفوعة**: تقدّم Hugging Face أيضًا خدمات مدفوعة للمستخدمين المتقدّمين والمؤسسات، تشمل حسابات Pro وEnterprise Hub وInference Endpoints، التي توفّر ميزات مثل استضافة النماذج الخاصة وأدوات تعاون متقدّمة ودعمًا مخصّصًا.
+- **المجتمع والتعاون**: ترعى Hugging Face **مجتمعًا قويًا** من المطوّرين وعشّاق الذكاء الاصطناعي الذين يسهمون في الموارد والأدوات المشتركة داخل منظومتها ويستفيدون منها.

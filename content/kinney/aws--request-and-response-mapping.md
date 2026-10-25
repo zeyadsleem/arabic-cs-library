@@ -1,22 +1,22 @@
 ---
-title: "Request and Response Mapping"
-lang: en
+title: "ربط الطلبات والاستجابات"
+lang: ar
 source: "https://stevekinney.com/courses/aws/request-and-response-mapping"
 ---
 
-Say the Scratch Lab frontend sends `POST /notes` when someone creates a new note. The browser thinks in HTTP. Your Lambda function does not. API Gateway sits in the middle, turns that HTTP request into a JSON event object, hands it to Lambda, then turns Lambda’s return value back into an HTTP response on the way out. Understanding that translation layer is the difference between confidently building an API and guessing at field names until something works.
+لنفترض أن واجهة Scratch Lab الأمامية ترسل `POST /notes` عندما ينشئ أحدهم ملاحظة جديدة. المتصفح يفكّر بلغة HTTP، أما دالة Lambda لديك فلا. تقف API Gateway في المنتصف، فتحوّل طلب HTTP ذاك إلى كائن حدث JSON، وتسلّمه إلى Lambda، ثم تحوّل قيمة الإرجاع من Lambda مرة أخرى إلى استجابة HTTP في طريق الخروج. وفهم طبقة الترجمة هذه هو الفرق بين بناء واجهة برمجية بثقة وبين التخمين في أسماء الحقول حتى يعمل شيء ما.
 
-If you want AWS’s exact mapping syntax while you read, the [HTTP API parameter mapping guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html) is the official reference.
+وإن أردت صياغة الربط الدقيقة من AWS أثناء القراءة، فإن [دليل ربط معاملات HTTP API](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-parameter-mapping.html) هو المرجع الرسمي.
 
-## Why This Matters
+## لماذا يهم هذا
 
-This is where frontend intuition meets AWS plumbing. If you understand the shape of the event object and the shape of the response object, API Gateway stops feeling magical and starts feeling mechanical. That is exactly what you want. Mechanical systems are easier to debug.
+هنا تلتقي حدوس الواجهة الأمامية بسباكة AWS. فإذا فهمت شكل كائن الحدث وشكل كائن الاستجابة، تكفّ API Gateway عن أن تبدو سحرية وتبدأ تبدو ميكانيكية. وهذا بالضبط ما تريده. فالأنظمة الميكانيكية أسهل في التصحيح.
 
-## Builds On
+## يبني على
 
-- [What Lambda Is and Why Frontend Engineers Care](https://stevekinney.com/courses/aws/what-is-lambda)
-- [Creating an HTTP API](https://stevekinney.com/courses/aws/creating-an-http-api)
-- [Connecting API Gateway to Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)
+- [ما هي Lambda ولماذا يهتم بها مهندسو الواجهة الأمامية](https://stevekinney.com/courses/aws/what-is-lambda)
+- [إنشاء HTTP API](https://stevekinney.com/courses/aws/creating-an-http-api)
+- [ربط API Gateway بـ Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)
 
 ```
 sequenceDiagram
@@ -30,9 +30,9 @@ sequenceDiagram
     APIGateway-->>Browser: HTTP response
 ```
 
-## The Incoming Event: `APIGatewayProxyEventV2`
+## الحدث الوارد: `APIGatewayProxyEventV2`
 
-When you use an HTTP API with payload format version 2.0 (which you configured in [Connecting API Gateway to Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)), your handler receives an `APIGatewayProxyEventV2` object. Here’s what a real event looks like for a `POST /items?category=books` request:
+عندما تستخدم HTTP API بإصدار صيغة الحمولة 2.0 (وهو ما أعددته في [ربط API Gateway بـ Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda))، يتلقّى معالجك كائن `APIGatewayProxyEventV2`. وهذا شكل حدث حقيقي لطلب `POST /items?category=books`:
 
 ```json
 {
@@ -70,51 +70,51 @@ When you use an HTTP API with payload format version 2.0 (which you configured i
 }
 ```
 
-That’s a lot of fields. Here are the ones you’ll use in almost every handler.
+هذه حقول كثيرة. وإليك الحقول التي ستستخدمها في كل معالج تقريبًا.
 
-## The Fields That Matter
+## الحقول المهمة
 
-### HTTP Method and Path
+### طريقة HTTP والمسار
 
 ```typescript
 const method = event.requestContext.http.method;
 const path = event.requestContext.http.path;
 ```
 
-The method and path are nested under `requestContext.http`, not at the top level. This catches people who are used to Express or Next.js API routes where `req.method` is a top-level property.
+تقع الطريقة والمسار متداخلين تحت `requestContext.http`، لا في المستوى الأعلى. وهذا يوقع من اعتادوا على مسارات API في Express أو Next.js حيث يكون `req.method` خاصية في المستوى الأعلى.
 
-### Query String Parameters
+### معاملات سلسلة الاستعلام
 
 ```typescript
 const category = event.queryStringParameters?.category;
 ```
 
-`queryStringParameters` is an object mapping parameter names to values. If the request has no query string, the field is `undefined`—not an empty object. Always use optional chaining.
+`queryStringParameters` كائن يربط أسماء المعاملات بقيمها. وإذا لم يكن للطلب سلسلة استعلام، فالحقل `undefined` — لا كائنًا فارغًا. استخدم التابع الاختياري (optional chaining) دائمًا.
 
-For repeated query parameters (like `?tag=js&tag=ts`), API Gateway joins the values with a comma: `"js,ts"`. If you need individual values, split on the comma.
+أما معاملات الاستعلام المتكررة (مثل `?tag=js&tag=ts`)، فـ API Gateway يدمج القيم بفاصلة: `"js,ts"`. وإن كنت تحتاج القيم منفردة، فقسّم على الفاصلة.
 
-### Headers
+### الترويسات
 
 ```typescript
 const contentType = event.headers['content-type'];
 const authorization = event.headers['authorization'];
 ```
 
-All header names are lowercased. If the client sends `Content-Type`, you access it as `event.headers['content-type']`. This is consistent behavior from API Gateway—you don’t need to handle case variations.
+كل أسماء الترويسات بأحرف صغيرة. فإذا أرسل العميل `Content-Type`، تصل إليه بوصفه `event.headers['content-type']`. وهذا سلوك ثابت من API Gateway — لا تحتاج إلى معالجة اختلافات حالة الأحرف.
 
-### Request Body
+### جسم الطلب
 
 ```typescript
 const body = event.body ? JSON.parse(event.body) : null;
 ```
 
-*Note:* `event.body` is always a string. You must parse it yourself.
+*ملاحظة:* `event.body` دائمًا سلسلة نصية. وعليك تحليلها بنفسك.
 
-The `body` is always a string, even when the client sends `Content-Type: application/json`. API Gateway doesn’t parse it for you. If the request has no body (GET requests, for example), `event.body` is `undefined`.
+الجسم `body` دائمًا سلسلة نصية، حتى عندما يرسل العميل `Content-Type: application/json`. فـ API Gateway لا يحلّله نيابة عنك. وإذا لم يكن للطلب جسم (طلبات GET مثلًا)، فـ `event.body` يكون `undefined`.
 
-> **Warning**
+> **تحذير**
 >
-> Wrap `JSON.parse` in a try/catch. A client can send a malformed body that parses unsuccessfully, and an unhandled exception in your handler returns a 500 with no useful information to the caller.
+> لفّ `JSON.parse` داخل try/catch. فبإمكان العميل إرسال جسم مشوّه يفشل تحليله، والاستثناء غير المعالَج في معالجك يُرجع 500 بلا أي معلومات مفيدة للمستدعي.
 
 ```typescript
 let body: unknown = null;
@@ -129,27 +129,27 @@ try {
 }
 ```
 
-### Path Parameters
+### معاملات المسار
 
-If your route includes path parameters (like `GET /items/{id}`), the values are available in `event.pathParameters`:
+إذا كان مسارك يتضمّن معاملات مسار (مثل `GET /items/{id}`)، فالقيم متاحة في `event.pathParameters`:
 
 ```typescript
 const itemId = event.pathParameters?.id;
 ```
 
-Like `queryStringParameters`, the `pathParameters` field is `undefined` when no path parameters are defined on the route—not an empty object. (I wish it were an empty object, but here we are.)
+ومثل `queryStringParameters`، يكون الحقل `pathParameters` مساويًا `undefined` عندما لا تُعرَّف معاملات مسار على المسار — لا كائنًا فارغًا. (كنت أتمنى لو كان كائنًا فارغًا، لكن هذه هي الحال.)
 
-### The Stage
+### المرحلة
 
 ```typescript
 const stage = event.requestContext.stage;
 ```
 
-For the `$default` stage, this value is `"$default"`. If you create named stages (covered in [API Gateway Stages and Custom Domains](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains)), the stage name appears here. This can be useful for conditional behavior—different database tables per environment, different log levels, and so on.
+بالنسبة إلى المرحلة `$default`، تكون هذه القيمة `"$default"`. وإذا أنشأت مراحل مسمّاة (وهو ما يُغطّى في [مراحل API Gateway والنطاقات المخصّصة](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains))، يظهر اسم المرحلة هنا. وقد يفيد هذا في السلوك الشرطي — جداول قاعدة بيانات مختلفة لكل بيئة، ومستويات تسجيل مختلفة، وما إلى ذلك.
 
-## The Response Format
+## صيغة الاستجابة
 
-Your handler returns an object that API Gateway converts into an HTTP response. The format is straightforward:
+يُرجع معالجك كائنًا تحوّله API Gateway إلى استجابة HTTP. والصيغة مباشرة:
 
 ```typescript
 return {
@@ -161,16 +161,16 @@ return {
 };
 ```
 
-### Required Fields
+### الحقول المطلوبة
 
-- **`statusCode`**: An integer HTTP status code. API Gateway passes this through to the client.
-- **`body`**: A string. If you’re returning JSON, you must `JSON.stringify` it. If you forget, the client receives `[object Object]`.
+- **`statusCode`**: رمز حالة HTTP صحيح. تمرّره API Gateway إلى العميل كما هو.
+- **`body`**: سلسلة نصية. وإذا كنت تُرجع JSON، فعليك تمريره على `JSON.stringify`. وإن نسيت، يتلقّى العميل `[object Object]`.
 
-### Optional Fields
+### الحقول الاختيارية
 
-- **`headers`**: An object of response headers. You should always set `Content-Type`. You can also set caching headers, custom headers, or CORS headers (though CORS is better handled at the API Gateway level—covered in [API Gateway CORS Configuration](https://stevekinney.com/courses/aws/api-gateway-cors-configuration)).
-- **`isBase64Encoded`**: Set to `true` if the body is base64-encoded binary data (images, PDFs). Defaults to `false`.
-- **`cookies`**: An array of `Set-Cookie` header values. Using this field instead of setting cookies in the `headers` object ensures proper formatting when multiple cookies are set.
+- **`headers`**: كائن بترويسات الاستجابة. ينبغي أن تضبط `Content-Type` دائمًا. ويمكنك أيضًا ضبط ترويسات التخزين المؤقت أو الترويسات المخصّصة أو ترويسات CORS (وإن كان الأفضل معالجة CORS على مستوى API Gateway — وهو ما يُغطّى في [إعداد CORS في API Gateway](https://stevekinney.com/courses/aws/api-gateway-cors-configuration)).
+- **`isBase64Encoded`**: اضبطه على `true` إذا كان الجسم بيانات ثنائية مرمّزة بـ base64 (صور، ملفات PDF). والقيمة الافتراضية `false`.
+- **`cookies`**: مصفوفة بقيم ترويسة `Set-Cookie`. واستخدام هذا الحقل بدلًا من ضبط ملفات تعريف الارتباط في كائن `headers` يضمن تنسيقًا سليمًا عند ضبط عدة ملفات.
 
 ```typescript
 return {
@@ -184,9 +184,9 @@ return {
 };
 ```
 
-## A Complete Handler Pattern
+## نمط معالج كامل
 
-Here’s a pattern that handles the common cases—routing by method, parsing the body, reading path parameters, and returning proper error responses:
+هذا نمط يعالج الحالات الشائعة — التوجيه حسب الطريقة، وتحليل الجسم، وقراءة معاملات المسار، وإرجاع استجابات أخطاء مناسبة:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -254,40 +254,40 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Use `event.queryStringParameters` for filtering, sorting, and pagination.
+*ملاحظة:* استخدم `event.queryStringParameters` للتصفية والترتيب والتقسيم إلى صفحات.
 
-> **Tip**
+> **نصيحة**
 >
-> `crypto.randomUUID()` is available natively in Node.js 20. No need to install the `uuid` package for basic ID generation.
+> `crypto.randomUUID()` متاح أصلًا في Node.js 20. فلا حاجة إلى تثبيت حزمة `uuid` لتوليد معرّفات بسيطة.
 
-## Payload Format Version 1.0 vs. 2.0
+## إصدار صيغة الحمولة 1.0 مقابل 2.0
 
-If you’re reading tutorials or Stack Overflow answers, you might see event shapes that look different from what’s described here. That’s because API Gateway has two payload format versions:
+إذا كنت تقرأ دروسًا أو إجابات على Stack Overflow، فقد ترى أشكال أحداث تبدو مختلفة عمّا هو موصوف هنا. والسبب أن API Gateway لديه إصداران لصيغة الحمولة:
 
-| Feature | Version 1.0 | Version 2.0 |
+| الميزة | الإصدار 1.0 | الإصدار 2.0 |
 | --- | --- | --- |
-| Method location | `event.httpMethod` | `event.requestContext.http.method` |
-| Path location | `event.path` | `event.requestContext.http.path` |
-| Query params | `event.queryStringParameters` | `event.queryStringParameters` |
-| Multi-value query params | `event.multiValueQueryStringParameters` | Comma-separated in single field |
-| Multi-value headers | `event.multiValueHeaders` | Comma-separated in single field |
-| TypeScript type | `APIGatewayProxyEvent` | `APIGatewayProxyEventV2` |
+| موضع الطريقة | `event.httpMethod` | `event.requestContext.http.method` |
+| موضع المسار | `event.path` | `event.requestContext.http.path` |
+| معاملات الاستعلام | `event.queryStringParameters` | `event.queryStringParameters` |
+| معاملات استعلام متعددة القيم | `event.multiValueQueryStringParameters` | مفصولة بفواصل في حقل واحد |
+| ترويسات متعددة القيم | `event.multiValueHeaders` | مفصولة بفواصل في حقل واحد |
+| نوع TypeScript | `APIGatewayProxyEvent` | `APIGatewayProxyEventV2` |
 
-Version 2.0 is the default for HTTP APIs created with `--payload-format-version 2.0`. Version 1.0 is the format used by REST APIs. This course uses 2.0 exclusively.
+الإصدار 2.0 هو الافتراضي لـ HTTP APIs المنشأة بـ `--payload-format-version 2.0`. والإصدار 1.0 هو الصيغة التي تستخدمها REST APIs. وهذه الدورة تستخدم 2.0 حصريًا.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Accessing `event.httpMethod` instead of `event.requestContext.http.method`.** This is a version 1.0 field. In version 2.0, it doesn’t exist. If your code references `event.httpMethod`, you’re either using the wrong payload format or following a REST API tutorial.
+**الوصول إلى `event.httpMethod` بدلًا من `event.requestContext.http.method`.** هذا حقل من الإصدار 1.0. وفي الإصدار 2.0 لا وجود له. فإذا أشار كودك إلى `event.httpMethod`، فإمّا أنك تستخدم صيغة الحمولة الخاطئة أو تتبع درسًا عن REST API.
 
-**Returning an object as the body.** The body must be a string. Returning `{ items: [] }` instead of `JSON.stringify({ items: [] })` produces `[object Object]` in the response.
+**إرجاع كائن كجسم.** يجب أن يكون الجسم سلسلة نصية. فإرجاع `{ items: [] }` بدلًا من `JSON.stringify({ items: [] })` يُنتج `[object Object]` في الاستجابة.
 
-**Not handling undefined fields.** `queryStringParameters`, `pathParameters`, and `body` can all be `undefined`. TypeScript warns you about this if you’re using the correct types—pay attention to those warnings.
+**عدم معالجة الحقول غير المعرّفة.** يمكن أن تكون `queryStringParameters` و`pathParameters` و`body` جميعًا `undefined`. وTypeScript ينبّهك إلى ذلك إن كنت تستخدم الأنواع الصحيحة — فانتبه لتلك التنبيهات.
 
-Your API works, but try calling it from a React app running on `localhost:3000`. The browser blocks the request with a CORS error. You’ve seen this before—and now you’re on the server side of the problem. The next lesson covers configuring CORS on your HTTP API so your frontend can actually call it.
+واجهتك البرمجية تعمل، لكن جرّب استدعاءها من تطبيق React يعمل على `localhost:3000`. سيمنع المتصفح الطلب بخطأ CORS. لقد رأيت هذا من قبل — والآن أنت في الجانب الخادم من المشكلة. ويغطّي الدرس التالي ضبط CORS على HTTP API لديك حتى تتمكّن واجهتك الأمامية من استدعائها فعلًا.
 
-## Verification
+## التحقق
 
-Use one real request and one direct Lambda invocation to prove you understand the mapping:
+استخدم طلبًا حقيقيًا واحدًا واستدعاءً مباشرًا واحدًا لـ Lambda لإثبات أنك فهمت الربط:
 
 ```bash
 curl -i https://YOUR_API_ID.execute-api.us-east-1.amazonaws.com/items
@@ -300,16 +300,16 @@ aws lambda invoke \
   response.json
 ```
 
-You should be able to answer these without guessing:
+ينبغي أن تكون قادرًا على الإجابة عن هذه الأسئلة بلا تخمين:
 
-- Which field contains the HTTP method?
-- Which field contains the raw request body?
-- Which field contains the stage name?
-- Which part of your return value becomes the actual browser response body?
+- أي حقل يحتوي طريقة HTTP؟
+- أي حقل يحتوي جسم الطلب الخام؟
+- أي حقل يحتوي اسم المرحلة؟
+- أي جزء من قيمة إرجاعك يصبح جسم استجابة المتصفح الفعلي؟
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Forgetting to parse `event.body`:** API Gateway gives you a string, not an already-parsed object.
-- **Reading the wrong path field:** `requestContext.http.path` and `rawPath` are related, but not interchangeable in every debugging session.
-- **Returning a plain object as `body`:** if you skip `JSON.stringify`, the client gets garbage instead of JSON.
-- **Assuming Express conventions:** there is no `req`, no `res`, and no middleware stack quietly filling in missing pieces.
+- **نسيان تحليل `event.body`:** فـ API Gateway يعطيك سلسلة نصية، لا كائنًا محلَّلًا سلفًا.
+- **قراءة حقل المسار الخاطئ:** `requestContext.http.path` و`rawPath` مرتبطان، لكنهما ليسا متبادلين في كل جلسة تصحيح.
+- **إرجاع كائن عادي كـ `body`:** إذا تجاوزت `JSON.stringify`، يحصل العميل على بيانات تالفة بدلًا من JSON.
+- **افتراض اصطلاحات Express:** فلا وجود لـ `req` ولا `res` ولا حزمة برمجيات وسيطة تملأ الأجزاء الناقصة بهدوء.

@@ -1,36 +1,36 @@
 ---
-title: "CI/CD with GitHub Actions"
-lang: en
+title: "CI/CD باستخدام GitHub Actions"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cicd-with-github-actions"
 ---
 
-You’ve got a deploy script that works. You run it from your laptop, it uploads to S3, invalidates CloudFront, and the site is updated. The problem: you have to remember to run it. And “you” is a single point of failure. If you’re on vacation, nobody deploys. If you deploy from a dirty working tree, broken code goes live. If your laptop dies mid-deploy, the site is in a half-updated state.
+لديك سكربت نشر يعمل. تشغّله من حاسوبك المحمول، فيرفع إلى S3، ويبطل ذاكرة CloudFront المؤقتة، ويُحدَّث الموقع. المشكلة: عليك أن تتذكّر تشغيله. و«أنت» نقطة فشل واحدة. فإن كنت في إجازة، فلا أحد ينشر. وإن نشرت من شجرة عمل غير نظيفة، انتقلت شيفرة معطوبة إلى الإنتاج. وإن تعطّل حاسوبك في منتصف النشر، بقي الموقع في حالة نصف محدّثة.
 
-If you want the AWS side of this pipeline open in another tab, keep the [IAM guide for managing access keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html), the [`aws s3 sync` command reference](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html), and the [`aws cloudfront create-invalidation` command reference](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) handy.
+إن أردت الجانب الخاص بـ AWS من خط الأنابيب هذا مفتوحًا في تبويب آخر، فأبقِ [دليل IAM لإدارة مفاتيح الوصول](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html) و[مرجع الأمر `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) و[مرجع الأمر `aws cloudfront create-invalidation`](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html) في متناول يدك.
 
-CI/CD fixes this. Push to `main`, the pipeline runs, the site deploys. No human in the loop. This lesson sets up a GitHub Actions workflow that does exactly what your deploy script does—but triggered automatically on every push.
+CI/CD يصلح هذا. ادفع إلى `main`، فيعمل خط الأنابيب، وينتشر الموقع. بلا تدخّل بشري في الحلقة. يعدّ هذا الدرس سير عمل GitHub Actions يفعل بالضبط ما يفعله سكربت النشر لديك — لكن مُشغَّلًا تلقائيًا عند كل دفعة.
 
-## Authentication: OIDC vs. Access Keys
+## المصادقة: OIDC مقابل مفاتيح الوصول
 
-Before writing the workflow, you need to decide how GitHub Actions authenticates with AWS. There are two approaches:
+قبل كتابة سير العمل، تحتاج إلى تحديد كيفية مصادقة GitHub Actions مع AWS. وهناك مقاربتان:
 
-**Long-lived access keys**: Create an IAM user (like the `deploy-bot` from the [IAM Policy for a Deploy Bot exercise](https://stevekinney.com/courses/aws/iam-policy-exercise)), generate access keys, and store them as GitHub repository secrets. The workflow uses those credentials for every run.
+**مفاتيح وصول طويلة الأجل**: أنشئ مستخدم IAM (مثل `deploy-bot` من [تمرين سياسة IAM لروبوت النشر](https://stevekinney.com/courses/aws/iam-policy-exercise))، وولّد مفاتيح وصول، وخزّنها كأسرار في مستودع GitHub. ويستخدم سير العمل تلك البيانات في كل تشغيل.
 
-**OIDC (OpenID Connect)**: GitHub Actions requests a short-lived token from AWS using federated identity. No long-lived secrets stored anywhere. AWS trusts GitHub’s identity provider, verifies the token, and hands back temporary credentials that expire after the workflow finishes.
+**OIDC (OpenID Connect)**: تطلب GitHub Actions رمزًا قصير الأجل من AWS باستخدام هوية اتحادية. فلا تُخزَّن أسرار طويلة الأجل في أي مكان. وتثق AWS بموفّر هوية GitHub، وتتحقّق من الرمز، وتعيد بيانات اعتماد مؤقتة تنتهي بعد انتهاء سير العمل.
 
-OIDC is the better choice, and I’d go as far as saying it should be your default. Access keys are static secrets that can leak—if someone gains access to your repository secrets, they have persistent AWS credentials. OIDC tokens are scoped to a single workflow run and expire automatically. AWS and GitHub both recommend OIDC for this reason.
+OIDC هو الخيار الأفضل، وأذهب إلى حدّ القول إنه ينبغي أن يكون خيارك الافتراضي. فمفاتيح الوصول أسرار ثابتة يمكن أن تتسرّب — فإن وصل أحد إلى أسرار مستودعك، صارت لديه بيانات اعتماد AWS دائمة. أما رموز OIDC فنطاقها محدود بتشغيل واحد لسير العمل، وتنتهي تلقائيًا. ولهذا السبب توصي كل من AWS وGitHub بـ OIDC.
 
-## Setting Up OIDC: The AWS Side
+## إعداد OIDC: الجانب الخاص بـ AWS
 
-You need to do two things in AWS: create an identity provider and create an IAM role that GitHub Actions can assume.
+تحتاج إلى فعل شيئين في AWS: إنشاء موفّر هوية، وإنشاء دور IAM يمكن لـ GitHub Actions افتراضه.
 
-### Create the GitHub OIDC Identity Provider
+### إنشاء موفّر هوية OIDC الخاص بـ GitHub
 
-This tells AWS to trust tokens issued by GitHub’s OIDC endpoint.
+هذا يخبر AWS أن تثق بالرموز التي تصدرها نقطة نهاية OIDC الخاصة بـ GitHub.
 
-AWS [announced in 2023](https://github.blog/changelog/2023-06-27-github-actions-update-on-oidc-integration-with-aws/) that it no longer validates the thumbprint for GitHub’s OIDC provider, but the IAM API still requires a 40-character hex string. The field is syntactically required and operationally ignored for GitHub’s endpoint today. You have two options:
+أعلنت AWS [في 2023](https://github.blog/changelog/2023-06-27-github-actions-update-on-oidc-integration-with-aws/) أنها لم تعد تتحقّق من بصمة الإبهام لموفّر OIDC الخاص بـ GitHub، لكن واجهة IAM البرمجية ما زالت تتطلّب سلسلة سداسية عشرية من 40 حرفًا. فالحقل مطلوب نحويًا ومتجاهَل تشغيليًا لنقطة نهاية GitHub اليوم. ولديك خياران:
 
-**Option 1: Pin the current thumbprint dynamically.** Fetch it with `openssl` so you’re not copy-pasting a stale value:
+**الخيار 1: ثبّت بصمة الإبهام الحالية ديناميكيًا.** اجلبها بـ `openssl` حتى لا تلصق قيمة قديمة:
 
 ```bash
 THUMBPRINT=$(openssl s_client -servername token.actions.githubusercontent.com \
@@ -46,7 +46,7 @@ aws iam create-open-id-connect-provider \
   --output json
 ```
 
-**Option 2: Pass any syntactically valid hex string.** Since AWS ignores this value for GitHub’s endpoint, a placeholder works:
+**الخيار 2: مرّر أي سلسلة سداسية عشرية صحيحة نحويًا.** بما أن AWS تتجاهل هذه القيمة لنقطة نهاية GitHub، فإن قيمة بديلة تعمل:
 
 ```bash
 aws iam create-open-id-connect-provider \
@@ -57,17 +57,17 @@ aws iam create-open-id-connect-provider \
   --output json
 ```
 
-Use Option 1 in scripts you’ll run against multiple providers; Option 2 is fine for a one-off.
+استخدم الخيار 1 في السكربتات التي ستشغّلها على موفّري هوية متعددين؛ أما الخيار 2 فيكفي لمرة واحدة.
 
-> **Tip**
+> **نصيحة**
 >
-> You only need to create this identity provider once per AWS account. If you have multiple repositories deploying to the same account, they all share this provider. Each repository gets its own IAM role with scoped permissions.
+> لا تحتاج إلى إنشاء موفّر الهوية هذا إلا مرة واحدة لكل حساب AWS. فإن كان لديك مستودعات متعددة تنشر إلى الحساب نفسه، فكلها تتشارك هذا الموفّر. ويحصل كل مستودع على دور IAM خاص به بأذونات محدودة النطاق.
 
-### Create an IAM Role for GitHub Actions
+### إنشاء دور IAM من أجل GitHub Actions
 
-Create a trust policy that allows GitHub Actions to assume this role, scoped to your specific repository:
+أنشئ سياسة ثقة تسمح لـ GitHub Actions بافتراض هذا الدور، مقيّدة بمستودعك المحدّد:
 
-Save this as `github-actions-trust-policy.json` (also available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/github-actions-trust-policy.json)):
+احفظ هذا باسم `github-actions-trust-policy.json` (متوفر أيضًا في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/github-actions-trust-policy.json)):
 
 ```json
 {
@@ -90,17 +90,17 @@ Save this as `github-actions-trust-policy.json` (also available in the [Scratch 
 }
 ```
 
-The `Condition` block is critical. Without it, *any* GitHub repository could assume this role. The `sub` condition restricts it to pushes to the `main` branch of your specific repository. Replace `your-org/your-repo` with your actual GitHub organization and repository name. Both conditions sit in `StringEquals` because the `sub` value is an exact literal—use `StringLike` only when the pattern includes a wildcard (`*`).
+كتلة `Condition` حرجة. فبدونها، يمكن *أي* مستودع GitHub أن يفترض هذا الدور. وشرط `sub` يقيّده بالدفعات إلى فرع `main` في مستودعك المحدّد. واستبدل `your-org/your-repo` باسم مؤسستك ومستودعك الفعليين في GitHub. والشرطان كلاهما في `StringEquals` لأن قيمة `sub` نصّ حرفي تام — ولا تستخدم `StringLike` إلا حين يتضمّن النمط حرف بدل (`*`).
 
-> **Warning**
+> **تحذير**
 >
-> Don’t use `"StringLike": {"token.actions.githubusercontent.com:sub": "repo:your-org/your-repo:*"}` with a trailing wildcard. That allows any branch, any pull request, and any tag in your repository to assume the role. Scope it to `ref:refs/heads/main` if you only want production deploys from the main branch.
+> لا تستخدم `"StringLike": {"token.actions.githubusercontent.com:sub": "repo:your-org/your-repo:*"}` مع حرف بدل في النهاية. فذلك يسمح لأي فرع، وأي طلب سحب، وأي وسم في مستودعك بافتراض الدور. وقيّده بـ `ref:refs/heads/main` إن كنت تريد عمليات نشر الإنتاج من الفرع الرئيسي فقط.
 
-As an alternative to branch-scoped trust, you can scope trust to a GitHub Environment (like `production`) using `"repo:your-org/your-repo:environment:production"` as the `sub` pattern. GitHub Environments support required reviewers and wait timers, which means your AWS role can’t be assumed until a human approves the deploy in the GitHub UI. This is the pattern you want for workloads where accidental main-branch merges shouldn’t hit production.
+وكبديل للثقة المقيّدة بالفرع، يمكنك تقييد الثقة ببيئة GitHub (مثل `production`) باستخدام `"repo:your-org/your-repo:environment:production"` كنمط `sub`. وتدعم بيئات GitHub المراجعين المطلوبين ومؤقّتات الانتظار، ما يعني أن دور AWS لا يمكن افتراضه حتى يوافق إنسان على النشر في واجهة GitHub. وهذا هو النمط الذي تريده لأحمال العمل التي يجب ألا تصل فيها عمليات الدمج العارضة على الفرع الرئيسي إلى الإنتاج.
 
-Note: `pull_request` events from forks generate `sub` values containing `pull_request`, not `refs/heads/main`, so a branch-scoped trust policy won’t accidentally let a fork PR assume the role. But don’t generalize this behavior to other OIDC providers—AWS only treats GitHub specially.
+ملاحظة: أحداث `pull_request` من النسخ المتشعّبة تولّد قيم `sub` تحتوي `pull_request`، لا `refs/heads/main`، لذا لن تسمح سياسة ثقة مقيّدة بالفرع لطلب سحب من نسخة متشعّبة بافتراض الدور عن غير قصد. لكن لا تعمّم هذا السلوك على موفّري OIDC آخرين — فـ AWS تتعامل مع GitHub معاملة خاصة فقط.
 
-Create the role:
+أنشئ الدور:
 
 ```bash
 aws iam create-role \
@@ -110,9 +110,9 @@ aws iam create-role \
   --output json
 ```
 
-### Attach Permissions to the Role
+### إرفاق الأذونات بالدور
 
-The role needs the same permissions as the deploy bot: S3 sync and CloudFront invalidation. You already wrote this policy in the [IAM Policy for a Deploy Bot exercise](https://stevekinney.com/courses/aws/iam-policy-exercise). Attach it to the new role:
+يحتاج الدور إلى الأذونات نفسها التي يملكها روبوت النشر: مزامنة S3 وإبطال ذاكرة CloudFront. وقد كتبت هذه السياسة بالفعل في [تمرين سياسة IAM لروبوت النشر](https://stevekinney.com/courses/aws/iam-policy-exercise). أرفقها بالدور الجديد:
 
 ```bash
 aws iam attach-role-policy \
@@ -121,15 +121,15 @@ aws iam attach-role-policy \
   --region us-east-1
 ```
 
-You can reuse the exact same `DeployBotPolicy`—the permissions don’t change just because the principal is a role instead of a user. This is the principle of least privilege from [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege) applied to your CI/CD pipeline: the deploy role can sync files and invalidate caches, and nothing else.
+يمكنك إعادة استخدام `DeployBotPolicy` نفسها تمامًا — فالأذونات لا تتغيّر لمجرد أن المبدأ دور لا مستخدم. وهذا تطبيق لمبدأ الامتياز الأدنى الذي تعلمته في [مبدأ الامتياز الأدنى](https://stevekinney.com/courses/aws/principle-of-least-privilege) على خط أنابيب CI/CD لديك: دور النشر يمكنه مزامنة الملفات وإبطال الذاكرات المؤقتة، ولا شيء غير ذلك.
 
-## The GitHub Actions Workflow
+## سير عمل GitHub Actions
 
-> **Tip**
+> **نصيحة**
 >
-> This workflow file is available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/blob/main/.github/workflows/deploy.yml).
+> ملف سير العمل هذا متوفر في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/blob/main/.github/workflows/deploy.yml).
 
-Create the workflow file at `.github/workflows/deploy.yml`:
+أنشئ ملف سير العمل في `.github/workflows/deploy.yml`:
 
 ```yaml
 name: Deploy to AWS
@@ -199,11 +199,11 @@ jobs:
             --output json
 ```
 
-That’s the complete workflow. Push to `main` and it builds, deploys, and invalidates.
+هذا هو سير العمل كاملًا. ادفع إلى `main` فيبني وينشر ويبطل الذاكرة المؤقتة.
 
-## Breaking Down the Workflow
+## تفكيك سير العمل
 
-### Trigger
+### المُشغِّل
 
 ```yaml
 on:
@@ -212,9 +212,9 @@ on:
       - main
 ```
 
-The workflow runs on every push to `main`. Pull requests don’t trigger a deploy. Pushes to feature branches don’t trigger a deploy. Only merges to `main` result in a production deployment.
+يعمل سير العمل عند كل دفعة إلى `main`. وطلبات السحب لا تشغّل نشرًا. والدفعات إلى فروع الميزات لا تشغّل نشرًا. ولا تؤدي إلى نشر إنتاجي إلا عمليات الدمج إلى `main`.
 
-### Permissions
+### الأذونات
 
 ```yaml
 permissions:
@@ -222,9 +222,9 @@ permissions:
   contents: read
 ```
 
-The `id-token: write` permission is required for OIDC. It allows the workflow to request a JWT from GitHub’s OIDC endpoint. The `contents: read` permission lets the workflow check out the repository code. Without `id-token: write`, the `aws-actions/configure-aws-credentials` step fails with a credentials error.
+إذن `id-token: write` مطلوب لـ OIDC. فهو يسمح لسير العمل بطلب JWT من نقطة نهاية OIDC الخاصة بـ GitHub. وإذن `contents: read` يتيح لسير العمل سحب شيفرة المستودع. وبدون `id-token: write`، تفشل خطوة `aws-actions/configure-aws-credentials` بخطأ بيانات اعتماد.
 
-### AWS Credentials
+### بيانات اعتماد AWS
 
 ```yaml
 - name: Configure AWS credentials
@@ -234,20 +234,20 @@ The `id-token: write` permission is required for OIDC. It allows the workflow to
     aws-region: us-east-1
 ```
 
-This step uses the `aws-actions/configure-aws-credentials` action to exchange the GitHub OIDC token for temporary AWS credentials. The credentials are exported as environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`) that subsequent `aws` CLI commands pick up automatically. The credentials expire when the workflow finishes.
+تستخدم هذه الخطوة إجراء `aws-actions/configure-aws-credentials` لتبادل رمز OIDC الخاص بـ GitHub ببيانات اعتماد AWS مؤقتة. وتُصدَّر بيانات الاعتماد كمتغيّرات بيئة (`AWS_ACCESS_KEY_ID` و`AWS_SECRET_ACCESS_KEY` و`AWS_SESSION_TOKEN`) تلتقطها أوامر `aws` اللاحقة تلقائيًا. وتنتهي بيانات الاعتماد عند انتهاء سير العمل.
 
-### Deploy Steps
+### خطوات النشر
 
-The deploy steps are the same three-phase upload from the [deploy script in the previous lesson](https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli): hashed assets with long-lived cache headers, `index.html` with a short TTL, and everything else with defaults. The invalidation step clears the CloudFront cache.
+خطوات النشر هي عملية الرفع نفسها على ثلاث مراحل من [سكربت النشر في الدرس السابق](https://stevekinney.com/courses/aws/automating-deploys-with-aws-cli): أصول مجزّأة بترويسات تخزين مؤقت طويلة الأجل، و`index.html` بمدة TTL قصيرة، وكل ما عدا ذلك بالإعدادات الافتراضية. وخطوة الإبطال تمسح ذاكرة CloudFront المؤقتة.
 
-## Secrets Configuration (If Using Access Keys)
+## تهيئة الأسرار (إذا كنت تستخدم مفاتيح الوصول)
 
-If you can’t use OIDC (some organizations have restrictions on identity providers), the fallback is storing access keys as GitHub repository secrets. Go to your repository’s **Settings** > **Secrets and variables** > **Actions** and add:
+إن لم تستطع استخدام OIDC (فبعض المؤسسات تفرض قيودًا على موفّري الهوية)، فالبديل هو تخزين مفاتيح الوصول كأسرار في مستودع GitHub. اذهب إلى **Settings** > **Secrets and variables** > **Actions** في مستودعك وأضف:
 
-- `AWS_ACCESS_KEY_ID`: The access key ID from the deploy bot user.
-- `AWS_SECRET_ACCESS_KEY`: The secret access key from the deploy bot user.
+- `AWS_ACCESS_KEY_ID`: معرّف مفتاح الوصول من مستخدم روبوت النشر.
+- `AWS_SECRET_ACCESS_KEY`: مفتاح الوصول السرّي من مستخدم روبوت النشر.
 
-Then replace the credentials step in the workflow:
+ثم استبدل خطوة بيانات الاعتماد في سير العمل:
 
 ```yaml
 - name: Configure AWS credentials
@@ -258,35 +258,35 @@ Then replace the credentials step in the workflow:
     aws-region: us-east-1
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Access keys stored as repository secrets are long-lived credentials. If someone gains access to your repository settings, they have your AWS credentials. Rotate access keys regularly and scope the IAM user’s policy as tightly as possible—this is exactly what the [IAM Policy for a Deploy Bot exercise](https://stevekinney.com/courses/aws/iam-policy-exercise) was designed for. OIDC avoids this risk entirely.
+> مفاتيح الوصول المخزّنة كأسرار في المستودع بيانات اعتماد طويلة الأجل. فإن وصل أحد إلى إعدادات مستودعك، صارت لديه بيانات اعتماد AWS الخاصة بك. دوّر مفاتيح الوصول بانتظام وقيّد سياسة مستخدم IAM بأضيق نطاق ممكن — وهذا بالضبط ما صُمّم له [تمرين سياسة IAM لروبوت النشر](https://stevekinney.com/courses/aws/iam-policy-exercise). أما OIDC فيتجنّب هذا الخطر كليًا.
 
-## Verifying the Workflow
+## التحقّق من سير العمل
 
-After pushing the workflow file to `main`, go to the **Actions** tab in your GitHub repository. You should see the “Deploy to AWS” workflow running. Each step shows its output:
+بعد دفع ملف سير العمل إلى `main`، اذهب إلى تبويب **Actions** في مستودعك على GitHub. ينبغي أن ترى سير عمل «Deploy to AWS» قيد التشغيل. وكل خطوة تعرض مخرجاتها:
 
-- **Checkout**: pulls the code.
-- **Setup Node.js**: installs Node 22.
-- **Install dependencies**: runs `npm ci` (clean install, faster than `npm install` in CI).
-- **Build**: runs your build command.
-- **Configure AWS credentials**: exchanges the OIDC token for temporary credentials.
-- **Deploy to S3**: shows the `aws s3 sync` output including uploaded and deleted files.
-- **Invalidate CloudFront cache**: shows the invalidation ID.
+- **Checkout**: يسحب الشيفرة.
+- **Setup Node.js**: يثبّت Node 22.
+- **Install dependencies**: يشغّل `npm ci` (تثبيت نظيف، أسرع من `npm install` في CI).
+- **Build**: يشغّل أمر البناء لديك.
+- **Configure AWS credentials**: يبادل رمز OIDC ببيانات اعتماد مؤقتة.
+- **Deploy to S3**: يعرض مخرجات `aws s3 sync` بما فيها الملفات المرفوعة والمحذوفة.
+- **Invalidate CloudFront cache**: يعرض معرّف الإبطال.
 
-If any step fails, the workflow stops and subsequent steps don’t run. A failed build doesn’t result in a partial deploy.
+إن فشلت أي خطوة، يتوقّف سير العمل ولا تعمل الخطوات التالية. والبناء الفاشل لا يؤدي إلى نشر جزئي.
 
-## Common Issues
+## المشكلات الشائعة
 
-**“Credentials could not be loaded”**: The OIDC identity provider doesn’t exist in your AWS account, or the role’s trust policy doesn’t match your repository and branch. Double-check the `sub` condition in the trust policy.
+**«Credentials could not be loaded»**: موفّر هوية OIDC غير موجود في حساب AWS لديك، أو سياسة ثقة الدور لا تطابق مستودعك وفرعك. تحقّق مرتين من شرط `sub` في سياسة الثقة.
 
-**“AccessDenied” on S3 or CloudFront**: The role exists and credentials work, but the attached policy doesn’t grant the required permissions. Verify the policy allows `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket`, and `cloudfront:CreateInvalidation` on the correct resources.
+**«AccessDenied» على S3 أو CloudFront**: الدور موجود وبيانات الاعتماد تعمل، لكن السياسة المرفقة لا تمنح الأذونات المطلوبة. تحقّق من أن السياسة تسمح بـ `s3:PutObject` و`s3:DeleteObject` و`s3:ListBucket` و`cloudfront:CreateInvalidation` على الموارد الصحيحة.
 
-**Build succeeds but files aren’t updated**: The S3 sync completed, but you forgot the invalidation step. CloudFront is still serving cached copies. Add the `create-invalidation` step or wait for the cache TTL to expire.
+**البناء ينجح لكن الملفات لا تتحدّث**: اكتملت مزامنة S3، لكنك نسيت خطوة الإبطال. فـ CloudFront ما زال يقدّم نسخًا مخزّنة مؤقتًا. أضف خطوة `create-invalidation` أو انتظر انتهاء مدة TTL للذاكرة المؤقتة.
 
-> **Tip**
+> **نصيحة**
 >
-> You can add a final verification step to the workflow that checks the deployment:
+> يمكنك إضافة خطوة تحقّق أخيرة إلى سير العمل تفحص النشر:
 >
 > ```yaml
 > - name: Verify deployment
@@ -295,4 +295,4 @@ If any step fails, the workflow stops and subsequent steps don’t run. A failed
 >     echo "Site returned HTTP $HTTP_STATUS"
 > ```
 >
-> Replace `YOUR_CLOUDFRONT_DOMAIN` with your `*.cloudfront.net` URL (or your custom domain if you completed the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section). This doesn’t block the workflow on failure, but it gives you immediate feedback in the workflow logs.
+> استبدل `YOUR_CLOUDFRONT_DOMAIN` بعنوان URL الخاص بك `*.cloudfront.net` (أو بنطاقك المخصّص إن أكملت قسم [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) الاختياري). هذا لا يوقف سير العمل عند الفشل، لكنه يمنحك تغذية راجعة فورية في سجلات سير العمل.

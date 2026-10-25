@@ -1,64 +1,64 @@
 ---
-title: "Writing Good Hooks"
-lang: en
+title: "كتابة خُطّافات جيدة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/writing-good-hooks"
 ---
 
-A bad hook is worse than no hook. It fires at the wrong time, dumps a build log into the context, blocks something harmless, or silently lets the dangerous thing through. And because hooks run automatically, nobody notices until the damage is done.
+الخُطّاف السيئ أسوأ من عدم وجود خُطّاف. فهو يُطلق في الوقت الخطأ، أو يُلقي سجل بناء في السياق، أو يمنع شيئًا غير ضار، أو يمرّر الشيء الخطير في صمت. ولأن الخُطّافات تعمل تلقائيًا، لا يلاحظ أحد حتى يقع الضرر.
 
-This lesson builds on [Hooks](https://stevekinney.com/courses/ai-development-setup/hooks), which covers the mechanics, and [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder), which covers when to reach for one. Here’s how to write ones that hold up.
+يبني هذا الدرس على [الخطافات](https://stevekinney.com/courses/ai-development-setup/hooks)، التي تتناول آلياتها، و[سلّم الإنفاذ](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder)، الذي يتناول متى تلجأ إلى خُطّاف. وإليك كيف تكتب خُطّافات تصمد.
 
-## Rules for hooks
+## قواعد الخُطّافات
 
-- **Keep scope narrow and output actionable**: “Verification failed” is less useful than “The account-settings test failed; here is the command and the first relevant failure.” Avoid dumping an entire build log into every continuation.
-- **Separate feedback from enforcement**: A `PostToolUse` check can’t prevent side effects that *already* occurred. That’s not how time works. Likewise, an asynchronous check (one that runs in the background without holding the agent up) can’t gate an action that continues before the check finishes. Claude’s documentation *explicitly* notes that asynchronous hooks can’t block the behavior they would otherwise control.
-- **Make repeated executions safe**: Assume a hook may fire *more often* than you expect. Deduplicate notifications, make file changes idempotent (safe to run twice) so they converge rather than oscillate, and keep checks from competing over shared temporary files.
-- **Don’t assume several hooks form a sequential pipeline**: All the hooks that match one event run in parallel, in no guaranteed order. When order matters (format, then check, then report), put the sequence in one script so the dependencies are visible in code.
-- **Choose failure behavior deliberately**: A failed desktop notification should *not* stop the work. A failed security guard probably should. A guard fails *closed* when it catches its own errors and exits `2` (or returns a deny decision) on purpose, because an unhandled crash exits `1`, which lets the action proceed. Plan for timeouts, malformed output, missing executables, and unavailable services, not just the happy path.
-- **Treat hook code as executable software, not harmless configuration**: It’s a shell script running on your machine. You should probably make sure it’s not going to `rm -rf /` or anything like that.
-- **Don’t confuse “it runs” with “it guarantees”**: These are four separate properties: the hook gets invoked, its decision is deterministic (same input, same answer), its effect is safe to repeat, and its run is reproducible (replaying the recorded event gives the same result, which needs the policy version and inputs saved). Only claim the ones you’ve actually shown.
-- **Write the decision as a pure function**: Something like `policy(event, stateSnapshot, policyVersion)`, which gives the same answer for the same inputs. The clock, the network, a mutable branch, and environment variables are all hidden inputs. Record them or remove them.
+- **أبقِ النطاق ضيّقًا والمخرَج قابلًا للعمل**: «فشل التحقّق» أقل فائدة من «فشل اختبار إعدادات الحساب؛ وهذا هو الأمر وأول إخفاق ذي صلة». وتجنّب إلقاء سجل بناء كامل في كل متابعة.
+- **افصل التغذية الراجعة عن الإنفاذ**: لا يستطيع فحص `PostToolUse` منع آثار جانبية *حدثت بالفعل*. فليس هكذا يعمل الزمن. وبالمثل، لا يستطيع فحص غير متزامن (يعمل في الخلفية دون تعطيل الوكيل) أن يحجب إجراءً يستمر قبل انتهاء الفحص. وتذكر وثائق Claude *صراحةً* أن الخُطّافات غير المتزامنة لا تستطيع حجب السلوك الذي كانت ستتحكّم فيه لولا ذلك.
+- **اجعل التنفيذ المتكرّر آمنًا**: افترض أن الخُطّاف قد يُطلق *أكثر* مما تتوقّع. فأزل تكرار الإشعارات، واجعل تغييرات الملفات لا أثر لها عند التكرار (idempotent، أي آمنة للتشغيل مرتين) فتتقارب بدل أن تتأرجح، وامنع الفحوصات من التنافس على ملفات مؤقتة مشتركة.
+- **لا تفترض أن خُطّافات عدة تشكّل خطّ معالجة متسلسلًا**: فكل الخُطّافات المطابقة لحدث واحد تعمل بالتوازي، بلا ترتيب مضمون. وحين يهمّ الترتيب (تنسيق، ثم فحص، ثم تقرير)، فضع التسلسل في سكربت واحد لتكون الاعتمادات مرئية في الشيفرة.
+- **اختر سلوك الفشل عن قصد**: ينبغي أن *لا* يوقف إشعار سطح مكتب فاشل العمل. أما حارس أمني فاشل فالأرجح أن يوقفه. ويُخفق الحارس *مغلقًا* حين يلتقط أخطاءه بنفسه ويخرج بـ `2` (أو يعيد قرار رفض) عن قصد، لأن الانهيار غير المعالَج يخرج بـ `1`، وهو ما يمرّر الإجراء. وخطّط للمهلات والمخرَج المشوّه والملفات التنفيذية المفقودة والخدمات غير المتاحة، لا للمسار السعيد وحده.
+- **عامِل شيفرة الخُطّاف كبرمجيات قابلة للتنفيذ، لا كإعداد غير ضار**: فهي سكربت صدفي يعمل على جهازك. والأرجح أن عليك التأكد من أنها لن تنفّذ `rm -rf /` أو ما شابه.
+- **لا تخلط بين «يعمل» و«يضمن»**: فهذه أربع خصائص منفصلة: أن يُستدعى الخُطّاف، وأن يكون قراره حتميًا (المدخل نفسه، الإجابة نفسها)، وأن يكون أثره آمنًا للتكرار، وأن يكون تشغيله قابلًا للإعادة (إعادة تشغيل الحدث المسجّل تعطي النتيجة نفسها، وهذا يحتاج حفظ نسخة السياسة والمدخلات). ولا تدّعِ إلا ما أثبتّه فعلًا.
+- **اكتب القرار كدالة خالصة**: شيء مثل `policy(event, stateSnapshot, policyVersion)`، يعطي الإجابة نفسها للمدخلات نفسها. والساعة والشبكة والفرع القابل للتغيير ومتغيّرات البيئة كلها مدخلات مخفية. فسجّلها أو أزلها.
 
-## Example hooks
+## خُطّافات مثال
 
-These are the jobs hooks do well. Most fit one specific event, and none tries to manage work.
+هذه هي المهام التي تجيد الخُطّافات أداءها. ومعظمها يناسب حدثًا واحدًا محدّدًا، ولا يحاول أي منها إدارة العمل.
 
-- **Catching a missed verification step before handoff**: Sometimes the agent announces “implemented and ready” without running the required checks. A hook can look for a sentinel: a marker, such as a file on disk, whose presence proves the checks ran for this exact set of changes. [Sentinels](https://stevekinney.com/courses/ai-development-setup/sentinels) covers the idea.
-- **Steering an agent away from generated files**: If an agent keeps mucking around with your generated files, a hook can redirect it. A permission deny rule blocks the path more simply. Use a hook when you want to explain the proper source, or when the decision depends on what’s in the call.
-- **Loading small amounts of context into the current session**: Add details like the branch name or its ticket, based on what you’re doing and where, so the agent doesn’t have to think to run the command itself.
-- **Notifications and other lightweight operational logging**: Tell some external system, like a dashboard, what the agent is doing: started, waiting for you, finished.
+- **التقاط خطوة تحقّق فائتة قبل التسليم**: أحيانًا يعلن الوكيل «منفَّذ وجاهز» دون تشغيل الفحوصات المطلوبة. ويستطيع الخُطّاف البحث عن شاهد: علامة، مثل ملف على القرص، يثبت وجودها أن الفحوصات جرت لمجموعة التغييرات هذه تحديدًا. ويتناول [الشواهد](https://stevekinney.com/courses/ai-development-setup/sentinels) الفكرة.
+- **توجيه وكيل بعيدًا عن الملفات المولَّدة**: إن كان وكيل يظلّ يعبث بملفاتك المولَّدة، فيستطيع خُطّاف أن يعيد توجيهه. وقاعدة رفض إذن تحجب المسار ببساطة أكبر. واستخدم خُطّافًا حين تريد شرح المصدر الصحيح، أو حين يعتمد القرار على ما في النداء.
+- **تحميل قدر صغير من السياق في الجلسة الحالية**: أضف تفاصيل مثل اسم الفرع أو تذكرته، استنادًا إلى ما تفعله وأين، فلا يضطر الوكيل إلى التفكير ليشغّل الأمر بنفسه.
+- **الإشعارات وغيرها من السجلات التشغيلية الخفيفة**: أخبر نظامًا خارجيًا، مثل لوحة معلومات، بما يفعله الوكيل: بدأ، وينتظرك، وانتهى.
 
-Here’s a fuller catalog. The Trigger column names the lifecycle event, a set point in the agent’s work: `PreToolUse` runs before a tool, `PostToolUse` after one, and `Stop` when the agent ends a turn and waits for you. `SessionStart` and `SessionEnd` fire at the edges of a session. `PermissionRequest` fires when the agent is waiting on your approval. (A worktree, mentioned in one row, is an extra checkout of the same Git repository in its own directory.)
+وإليك فهرسًا أوفى. ويسمّي عمود المُشغِّل حدث دورة الحياة، أي نقطة محدّدة في عمل الوكيل: يعمل `PreToolUse` قبل أداة، و`PostToolUse` بعدها، و`Stop` حين ينهي الوكيل دورًا وينتظرك. ويُطلق `SessionStart` و`SessionEnd` عند حدود الجلسة. ويُطلق `PermissionRequest` حين ينتظر الوكيل موافقتك. (وشجرة العمل، المذكورة في صف واحد، نسخة إضافية من مستودع Git نفسه في مجلدها الخاص.)
 
-| Hook | Trigger | What it does |
+| الخُطّاف | المُشغِّل | ما يفعله |
 | --- | --- | --- |
-| **Smart formatter** | `PostToolUse` | Formats only files the agent just changed |
-| **Generated-file guard** | `PreToolUse` | Blocks direct edits to generated code and explains the proper source |
-| **Dangerous-command guard** | `PreToolUse` | Catches suspicious destructive commands before execution |
-| **Verification gate** | `Stop` | Checks changed code when the agent stops. `Stop` also fires when the agent just asks you a question, so the gate has to decide whether the agent is claiming it’s done |
-| **Context bootstrapper** | `SessionStart` | Injects branch, worktree, environment, issue, and local-service context |
-| **Attention notification** | `PermissionRequest` | Sends a macOS notification when the agent is waiting for you |
-| **Secret scanner** | `PostToolUse` | Detects credentials or `.env` leakage in newly written content, so the agent can remove it. To prevent the write, scan the content in a `PreToolUse` hook instead |
-| **Migration guard** | `PreToolUse` | Prevents modifications to already-applied migrations |
-| **Session cleanup** | `SessionEnd` | Cleans up temporary resources created specifically for the session |
-| **Telemetry hook** | Several, one hook per event | Records tool usage, durations, failures, and token and cost data |
+| **منسّق ذكي** | `PostToolUse` | ينسّق فقط الملفات التي غيّرها الوكيل للتو |
+| **حارس الملفات المولَّدة** | `PreToolUse` | يمنع التعديلات المباشرة على الشيفرة المولَّدة ويشرح المصدر الصحيح |
+| **حارس الأوامر الخطيرة** | `PreToolUse` | يلتقط أوامر التدمير المشبوهة قبل التنفيذ |
+| **بوابة التحقّق** | `Stop` | تفحص الشيفرة المتغيّرة حين يتوقف الوكيل. ويُطلق `Stop` أيضًا حين يسألك الوكيل سؤالًا فقط، فعلى البوابة أن تقرّر ما إذا كان الوكيل يدّعي الانتهاء |
+| **مهيّئ السياق** | `SessionStart` | يحقن سياق الفرع وشجرة العمل والبيئة والقضية والخدمة المحلية |
+| **إشعار الانتباه** | `PermissionRequest` | يرسل إشعار macOS حين ينتظرك الوكيل |
+| **ماسح الأسرار** | `PostToolUse` | يكشف تسرّب بيانات الاعتماد أو `.env` في المحتوى المكتوب حديثًا، فيزيله الوكيل. ولمنع الكتابة، افحص المحتوى في خُطّاف `PreToolUse` بدلًا من ذلك |
+| **حارس الترحيلات** | `PreToolUse` | يمنع تعديل الترحيلات المطبَّقة بالفعل |
+| **تنظيف الجلسة** | `SessionEnd` | ينظّف الموارد المؤقتة المُنشأة للجلسة تحديدًا |
+| **خُطّاف التليمترية** | عدة، خُطّاف لكل حدث | يسجّل استخدام الأدوات والمدد والإخفاقات وبيانات الرموز (tokens) والتكلفة |
 
-## Anti-patterns
+## أنماط مضادة {#anti-patterns}
 
-Every one of these sounds reasonable until you live with it:
+كل واحد من هذه يبدو معقولًا حتى تعيش معه:
 
-| Proposed hook | Why I’d avoid it | Better choice |
+| الخُطّاف المقترح | لماذا أتجنّبه | الخيار الأفضل |
 | --- | --- | --- |
-| **“On every `UserPromptSubmit`, inject our preferred prompt format as extra instructions.”** | It silently adds instructions you didn’t write and can distort intent. (`UserPromptSubmit` fires when you submit a prompt. A hook there can add context, not replace the prompt.) | Clear instructions, or an explicitly invoked planning skill. |
-| **“After every edit, ask another model whether the architecture is good.”** | The review happens at an arbitrary intermediate point and repeatedly evaluates unfinished work. | A review subagent after a coherent change. |
-| **“Whenever a command uses npm, secretly rewrite it to Bun.”** (A `PreToolUse` hook can change a tool’s input.) | It changes the requested operation rather than explaining the project convention. | Instructions first, then a targeted warning or rejection when there’s a concrete incompatibility. |
-| **“Every session start should install dependencies and recreate infrastructure.”** | Merely opening a session becomes an expensive, mutating operation. | An explicit, idempotent setup command, or environment provisioning. |
-| **“Run a dependency audit every Monday.”** | Monday is a scheduling event, not an agent lifecycle event. | A scheduler or a scheduled continuous-integration job. See [Routines and Schedules](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules), which covers prompts that run on a schedule or an event. |
-| **“When one subagent finishes, launch the next five and manage retries.”** | Dependencies, cancellation, state, and retry policy become hidden across callbacks. | An explicit coordinator script or workflow runner. See [Dynamic Workflows](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows), which covers scripts that orchestrate subagents. |
-| **“Ensure all contributors obey this check.”** | A local agent hook isn’t the shared integration boundary. | Required CI checks and repository protections. |
+| **«في كل `UserPromptSubmit`، احقن صيغة الموجّه المفضّلة لدينا كتعليمات إضافية.»** | يضيف في صمت تعليمات لم تكتبها وقد يشوّه القصد. (`UserPromptSubmit` يُطلق حين تُرسل موجّهًا. وخُطّاف هناك يمكنه إضافة سياق، لا استبدال الموجّه.) | تعليمات واضحة، أو مهارة تخطيط تُستدعى صراحةً. |
+| **«بعد كل تعديل، اسأل نموذجًا آخر إن كانت المعمارية جيدة.»** | تحدث المراجعة عند نقطة وسيطة اعتباطية وتقيّم عملًا غير منتهٍ مرارًا. | وكيل فرعي للمراجعة بعد تغيير متماسك. |
+| **«كلما استخدم أمر npm، أعد كتابته سرًّا إلى Bun.»** (يمكن لخُطّاف `PreToolUse` أن يغيّر مدخل أداة.) | يغيّر العملية المطلوبة بدلًا من شرح عُرف المشروع. | التعليمات أولًا، ثم تحذير أو رفض موجّه حين يوجد تعارض ملموس. |
+| **«كل بداية جلسة ينبغي أن تثبّت الاعتمادات وتعيد إنشاء البنية التحتية.»** | مجرّد فتح جلسة يصير عملية مكلفة ومغيّرة للحالة. | أمر إعداد صريح لا أثر له عند التكرار، أو تهيئة بيئة. |
+| **«شغّل تدقيق الاعتمادات كل يوم اثنين.»** | يوم الاثنين حدث جدولة، لا حدث دورة حياة للوكيل. | مجدول أو مهمة تكامل مستمر مجدولة. انظر [الروتينات والجداول](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules)، التي تتناول الموجّهات التي تعمل وفق جدولة أو حدث. |
+| **«حين ينتهي وكيل فرعي، أطلق الخمسة التالية وأدِر إعادات المحاولة.»** | تصير الاعتمادات والإلغاء والحالة وسياسة إعادة المحاولة مخفية عبر عمليات الاستدعاء المرتدة. | سكربت منسّق صريح أو مشغّل سيور. انظر [السيور الديناميكية](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows)، التي تتناول السكربتات التي تنسّق الوكلاء الفرعيين. |
+| **«تأكّد من التزام كل المساهمين بهذا الفحص.»** | خُطّاف وكيل محلي ليس حدّ التكامل المشترك. | فحوصات CI المطلوبة وحمايات المستودع. |
 
-The pattern across the table: a hook that rewrites, schedules, or coordinates is doing a job that belongs somewhere else.
+النمط عبر الجدول: الخُطّاف الذي يعيد الكتابة أو يجدول أو ينسّق يقوم بوظيفة تنتمي إلى مكان آخر.
 
-Next, [Hooks in Practice](https://stevekinney.com/courses/ai-development-setup/hooks-in-practice) covers testing, rolling out, and the ways guards fail.
+وبعد ذلك، تتناول [الخطافات عمليًا](https://stevekinney.com/courses/ai-development-setup/hooks-in-practice) الاختبار والطرح التدريجي وطرق إخفاق الحرّاس.
 
-A good hook does one small thing, fails the way you chose, and can be explained in a sentence.
+الخُطّاف الجيد يفعل شيئًا صغيرًا واحدًا، ويُخفق بالطريقة التي اخترتها، ويمكن شرحه في جملة.

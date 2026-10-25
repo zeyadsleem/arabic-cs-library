@@ -1,79 +1,79 @@
 ---
-title: "CI as the Loop of Last Resort"
-lang: en
+title: "CI كحلقة الملاذ الأخير"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort"
 ---
 
-We’re almost done. One lesson left, and it’s the one where everything we built today runs together, unattended, in a [GitHub Actions](https://docs.github.com/en/actions) workflow you own.
+اقتربنا من النهاية. بقي درس واحد، وهو الدرس الذي يعمل فيه كل ما بنيناه اليوم معًا، دون إشراف، داخل سير عمل [GitHub Actions](https://docs.github.com/en/actions) تملكه أنت.
 
-I want to frame this up front, because the standard CI framing is different from mine.
+أريد تأطير هذا مسبقًا، لأن تأطير CI المعتاد يختلف عن تأطيري.
 
-The standard framing: “CI is where tests run.” You set up CI *because* you need your tests to run somewhere, and the workflow is a list of steps that happen on every push. Your CI is your test suite, basically.
+التأطير المعتاد: «CI هو المكان الذي تعمل فيه الاختبارات.» تُعِدّ CI *لأنك* تحتاج إلى تشغيل اختباراتك في مكان ما، وسير العمل قائمة خطوات تحدث عند كل دفع. أي أن CI لديك هو مجموعة اختباراتك، ببساطة.
 
-My framing: **CI is the loop of last resort.** Everything we’ve built today is a loop that runs *earlier* than CI. Lint runs on save. Type-check runs on save. Tests run locally. Knip runs in pre-push. Bugbot reviews on PR open. The agent probes its own changes before declaring done. By the time code reaches CI, most of the mistakes should already have been caught, and CI’s job is to catch the rest—plus the class of mistakes you can’t catch locally because your laptop isn’t the production environment.
+تأطيري: **CI هو حلقة الملاذ الأخير.** كل ما بنيناه اليوم حلقة تعمل *قبل* CI. يعمل Lint عند الحفظ. ويعمل فحص الأنواع عند الحفظ. والاختبارات تعمل محليًا. ويعمل Knip عند الدفع. ويراجع Bugbot عند فتح طلب السحب. ويفحص الوكيل تغييراته بنفسه قبل أن يعلن الانتهاء. بحلول الوقت الذي يصل فيه الكود إلى CI، يكون معظم الأخطاء قد التُقط بالفعل، ومهمة CI أن تلتقط الباقي—إضافة إلى صنف الأخطاء الذي لا يمكنك التقاطه محليًا لأن حاسوبك ليس بيئة الإنتاج.
 
-That shift matters because it changes what you put *in* CI. If CI is where tests run, you stuff everything into CI and wait ten minutes on every push. If CI is the last resort, you put the *strict versions* of every check in CI—full Playwright matrix, full visual regression, full secret scan against history, full dependency audit—and you accept that CI is slow because you’re running it against the environment you actually care about.
+هذا التحوّل مهم لأنه يغيّر ما تضعه *داخل* CI. إن كان CI هو المكان الذي تعمل فيه الاختبارات، فستحشر كل شيء فيه وتنتظر عشر دقائق عند كل دفع. أما إن كان CI هو الملاذ الأخير، فتضع *النسخ الصارمة* من كل فحص في CI—مصفوفة Playwright الكاملة، والانحدار البصري الكامل، وفحص الأسرار الكامل مقابل السجل، وتدقيق الاعتماديات الكامل—وتقبل أن CI بطيء لأنك تشغّله مقابل البيئة التي تهمّك فعلًا.
 
-One scope note before we go further: green CI is still not the end of the story. [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) picks up on what happens after merge or deploy-preview. The appendix builds out the broader nightly and cross-browser loops in more detail.
+ملاحظة على النطاق قبل أن نمضي: CI الأخضر ليس نهاية القصة. يلتقط [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) ما يحدث بعد الدمج أو معاينة النشر. ويبني الملحق حلقات الليل والمتصفحات المتعددة الأوسع بمزيد من التفصيل.
 
-Shelf’s completed workflow uses `npm`, `actions/setup-node@v6`, and caches both `~/.npm` and `~/.cache/ms-playwright`. That’s the concrete reference point as you read the rest of this lesson.
+يستخدم سير عمل Shelf المكتمل `npm` و`actions/setup-node@v6`، ويخزّن مؤقتًا كلا المسارين `~/.npm` و`~/.cache/ms-playwright`. هذا هو المرجع الملموس بينما تقرأ بقية هذا الدرس.
 
-The concrete files matter here too. By the end of the CI lab, Shelf’s daily gate lives at `.github/workflows/main.yml` and the slow cadence lives at `.github/workflows/nightly.yml`. The end-to-end job writes `DATABASE_URL=file:./ci.db`, runs `npm run test`, and on failure can upload the output from `npm run dossier` if you’ve completed that lab. The starter’s static surface is `npm run lint`, `npm run typecheck`, and `npm run test`; later labs extend it with `npm run knip`, gitleaks, and dossier generation.
+الملفات الملموسة تهمّ هنا أيضًا. بنهاية مختبر CI، تكون البوابة اليومية لـ Shelf في `.github/workflows/main.yml` والإيقاع البطيء في `.github/workflows/nightly.yml`. مهمة الطرف إلى الطرف تكتب `DATABASE_URL=file:./ci.db`، وتشغّل `npm run test`، ويمكنها عند الفشل رفع ناتج `npm run dossier` إن كنت قد أكملت ذلك المختبر. السطح الثابت في النسخة الأولية هو `npm run lint` و`npm run typecheck` و`npm run test`؛ وتوسّعه المختبرات اللاحقة بـ `npm run knip` وgitleaks وتوليد الملف الجامع.
 
-## What CI uniquely catches
+## ما يلتقطه CI وحده
 
-A short list of things that *only* CI can reliably catch:
+قائمة قصيرة بأشياء يستطيع CI *وحده* التقاطها بثقة:
 
-- **Cross-platform differences.** Your laptop is macOS. Production is Linux. Playwright’s screenshot pixels differ between them. Your CI runs Linux and catches the drift.
-- **Cross-browser differences.** Locally you run Chromium for speed. CI runs the full matrix (Chromium, Firefox, WebKit) and catches the “works in Chrome, broken in Safari” class of bug.
-- **Clean-slate environment bugs.** The agent’s laptop has ten months of cached dependencies, environment variables, and custom shell aliases. CI starts fresh on every run. Anything that only works because of your laptop’s accumulated state is going to fail in CI.
-- **Concurrency at scale.** Once you widen the worker count, CI is where the higher-concurrency races show up. Shelf does not pin `workers`, but the moment authenticated specs start sharing one SQLite file, CI is where the isolation leaks show themselves first.
-- **Time-sensitive checks.** Nightly HAR regeneration, weekly dependency audits, monthly secret rotation verification—these don’t make sense locally. CI is where they live.
-- **Artifact enforcement.** Blocking merges, uploading reports, posting status checks on PRs. The workflow glue lives in CI because that’s where the API keys to do those things live.
+- **اختلافات المنصّات.** حاسوبك macOS. والإنتاج Linux. وتختلف بكسلات لقطات Playwright بينهما. يعمل CI لديك على Linux فيلتقط الانحراف.
+- **اختلافات المتصفحات.** محليًا تشغّل Chromium للسرعة. أما CI فيشغّل المصفوفة الكاملة (Chromium وFirefox وWebKit) ويلتقط صنف الخطأ «يعمل في Chrome، معطوب في Safari».
+- **أخطاء البيئة النظيفة.** على حاسوب الوكيل عشرة أشهر من الاعتماديات المخزّنة مؤقتًا، ومتغيّرات البيئة، والأسماء المستعارة المخصّصة للصدفة. أما CI فيبدأ نظيفًا في كل تشغيل. أي شيء يعمل فقط بفضل الحالة المتراكمة على حاسوبك سيفشل في CI.
+- **التزامن على نطاق واسع.** بمجرد أن تزيد عدد العمال، يظهر سباق التزامن الأعلى في CI. لا يثبّت Shelf قيمة `workers`، لكن في اللحظة التي تبدأ فيها المواصفات الموثّقة بمشاركة ملف SQLite واحد، يكون CI أول مكان تظهر فيه تسريبات العزل.
+- **الفحوص الحسّاسة للوقت.** إعادة توليد ملفات HAR ليلًا، وتدقيق الاعتماديات أسبوعيًا، والتحقّق من تدوير الأسرار شهريًا—لا معنى لها محليًا. CI هو مكانها.
+- **فرض الآثار.** حجب الدمج، ورفع التقارير، ونشر فحوص الحالة على طلبات السحب. يعيش غراء سير العمل في CI لأن مفاتيح API اللازمة لفعل ذلك تعيش هناك.
 
-If you don’t have any of those concerns, you don’t strictly *need* CI. You could run everything locally. Most teams need at least three of them, which is why CI exists.
+إن لم يكن لديك أي من هذه الهواجس، فأنت لا *تحتاج* CI بالمعنى الدقيق. يمكنك تشغيل كل شيء محليًا. معظم الفرق تحتاج ثلاثة منها على الأقل، ولهذا وُجد CI.
 
-## What CI should *not* be doing
+## ما *لا* ينبغي أن يفعله CI
 
-Equally important: things CI should not be catching, because something earlier should have caught them.
+بالمثل: أشياء لا ينبغي أن يلتقطها CI، لأن شيئًا أبكر كان يجب أن يلتقطها.
 
-- **Formatting errors.** If Prettier isn’t running in pre-commit, fix the pre-commit hook. Don’t let CI become the place you notice unformatted code.
-- **Type errors in files the developer touched.** Pre-push typecheck catches these. CI typecheck is a safety net, not the primary surface.
-- **Obvious lint violations.** Same logic. If CI is the first place you see `no-unused-vars`, your editor and hooks are misconfigured.
-- **“Did the agent forget to run the tests?”** The instructions file and the Claude hooks should be catching this. If you’re relying on CI to notice that the agent skipped local tests, you’ve missed a cheaper loop.
+- **أخطاء التنسيق.** إن لم يكن Prettier يعمل في pre-commit، فأصلح خطّاف pre-commit. لا تدع CI يصبح المكان الذي تلاحظ فيه الشيفرة غير المنسّقة.
+- **أخطاء الأنواع في الملفات التي لمسها المطوّر.** يلتقطها فحص الأنواع في pre-push. وفحص الأنواع في CI شبكة أمان، لا السطح الأساسي.
+- **مخالفات lint الواضحة.** المنطق نفسه. إن كان CI أول مكان ترى فيه `no-unused-vars`، فمحرّرك وخطّافاتك مهيّأة خطأً.
+- **«هل نسي الوكيل تشغيل الاختبارات؟»** يجب أن يلتقط هذا ملف التعليمات وخطّافات Claude. إن كنت تعتمد على CI لملاحظة أن الوكيل تخطّى الاختبارات المحلية، فقد فوّت حلقة أرخص.
 
-The rule: CI catches environment-specific and scale-specific problems. Everything else should have been caught earlier, and when CI *does* catch something earlier-able, treat it as a bug in your earlier loops, not as a CI feature.
+القاعدة: يلتقط CI المشكلات الخاصة بالبيئة والخاصة بالنطاق. وكل ما عدا ذلك كان يجب أن يُلتقط أبكر، وعندما يلتقط CI شيئًا كان يمكن التقاطه أبكر، فاعتبره عيبًا في حلقاتك الأبكر، لا ميزة في CI.
 
-## The Shelf CI workflow, at a high level
+## سير عمل Shelf في CI على مستوى عالٍ
 
-The next lesson walks through the actual YAML. Here’s the shape before we get there.
+يمرّ الدرس التالي على ملف YAML الفعلي. إليك الشكل قبل أن نصل إلى هناك.
 
-On every push to any branch and every PR into main:
+عند كل دفع إلى أي فرع وكل طلب سحب إلى main:
 
-1. **Checkout and install.** Clone the repo, restore caches, `npm ci --ignore-scripts`.
-2. **Static layer.** Run lint, typecheck, knip, and gitleaks. In the workshop Shelf repo these stay in one `static` job because the setup overhead is larger than the benefit of splitting four short checks across four runners. Use the official Gitleaks action or a direct CLI step depending what your plan and licensing allow.
-3. **Unit tests.** `npm run test:unit`. Fast.
-4. **End-to-end tests.** Playwright, full Chromium run. Upload trace artifacts, screenshots, and the failure dossier if anything fails.
+1. **الاستنساخ والتثبيت.** استنسخ المستودع، واستعد المخازن المؤقتة، ثم `npm ci --ignore-scripts`.
+2. **الطبقة الثابتة.** شغّل lint وtypecheck وknip وgitleaks. في مستودع Shelf الخاص بالورشة تبقى هذه في مهمة `static` واحدة لأن كلفة التهيئة أكبر من فائدة توزيع أربعة فحوص قصيرة على أربعة منفّذين. استخدم إجراء Gitleaks الرسمي أو خطوة CLI مباشرة بحسب ما تسمح به خطتك وترخيصك.
+3. **اختبارات الوحدة.** `npm run test:unit`. سريعة.
+4. **اختبارات الطرف إلى الطرف.** Playwright، تشغيل Chromium كامل. ارفع آثار التتبّع ولقطات الشاشة والملف الجامع للفشل إن فشل أي شيء.
 
-That is the entire `main.yml` the lab has you build: three jobs, not seven. Visual regression rides inside the Playwright suite, and the hosted-only extras (deploy previews, post-deploy smoke) stay out of the main workflow until there is a concrete reason to pay that cost.
+هذا هو `main.yml` كله الذي يطلب منك المختبر بناءه: ثلاث مهام، لا سبع. الانحدار البصري يركب داخل مجموعة Playwright، والإضافات الخاصة بالاستضافة فقط (معاينات النشر، وفحص الدخان بعد النشر) تبقى خارج سير العمل الرئيسي حتى يوجد سبب ملموس لدفع تلك الكلفة.
 
-On a nightly schedule:
+على جدول ليلي:
 
-1. **Refresh HAR files** by re-recording against the real Open Library API. Open a PR with the updated HARs if they changed. A human reviews.
-2. **Dependency audit.** Run `npm audit`, open an issue or PR if anything new turns up.
-3. **Full cross-browser Playwright run.** Chromium, Firefox, WebKit. Surface differences that the daily Chromium-only runs miss.
+1. **تحديث ملفات HAR** بإعادة التسجيل مقابل واجهة Open Library البرمجية الحقيقية. افتح طلب سحب بملفات HAR المحدّثة إن تغيّرت. ويراجعها إنسان.
+2. **تدقيق الاعتماديات.** شغّل `npm audit`، وافتح تذكرة أو طلب سحب إن ظهر أي جديد.
+3. **تشغيل Playwright كامل عبر المتصفحات.** Chromium وFirefox وWebKit. لإظهار اختلافات تفوتها تشغيلات Chromium اليومية وحدها.
 
-On a connected GitHub repository, you can add merge-to-main deployment and post-deploy smoke checks later. [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) covers that core loop. The appendix lessons turn the nightly and cross-browser placeholders into fuller patterns once the one-day workshop flow is done.
+في مستودع GitHub موصول، يمكنك لاحقًا إضافة النشر إلى main وفحوص الدخان بعد النشر. يغطّي [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation) تلك الحلقة الأساسية. تحوّل دروس الملحق عناصر الليل والمتصفحات المتعددة المؤقتة إلى أنماط أكمل بعد انتهاء تدفّق الورشة ذي اليوم الواحد.
 
-That’s the whole shape the lab has you build: three jobs in `.github/workflows/main.yml`, and no deploy or nightly workflow yet. Nightly lands in the appendix labs alongside the commands it gates. Each job is boring. The power is in the composition.
+هذا هو الشكل كله الذي يطلب منك المختبر بناءه: ثلاث مهام في `.github/workflows/main.yml`، ولا سير عمل للنشر أو الليل بعد. يهبط العمل الليلي في مختبرات الملحق إلى جانب الأوامر التي يحكمها. كل مهمة مملّة. والقوة في التركيب.
 
-## Parallelism and caching, the two knobs that matter
+## التوازي والتخزين المؤقت، المِقبضان المهمّان
 
-Two things you do once and benefit from on every run.
+أمران تفعلهما مرة واحدة وتستفيد منهما في كل تشغيل.
 
-**Parallelism.** GitHub Actions jobs run in parallel by default, but that does not mean every check deserves its own job. In Shelf, the static checks stay grouped because the setup overhead is bigger than the benefit of fanning out four short steps. The `unit` and `end-to-end` jobs then run in parallel after `static` passes. Once the suite gets bigger, you can split or shard more aggressively.
+**التوازي.** تعمل مهام GitHub Actions بالتوازي افتراضيًا، لكن هذا لا يعني أن كل فحص يستحق مهمة خاصة به. في Shelf تبقى الفحوص الثابتة مجمّعة لأن كلفة التهيئة أكبر من فائدة توزيع أربع خطوات قصيرة. ثم تعمل مهمتا `unit` و`end-to-end` بالتوازي بعد نجاح `static`. وبمجرد أن تكبر المجموعة، يمكنك التقسيم أو التشظية بقوة أكبر.
 
-Here’s the shape of a parallel Shelf workflow:
+إليك شكل سير عمل Shelf المتوازي:
 
 ```
 graph LR
@@ -88,11 +88,11 @@ graph LR
   E2E --> Merge
 ```
 
-Notice: the static job runs first, then the unit and end-to-end jobs run in parallel. Total time is limited by the slower of those two downstream jobs, not the sum of every individual check.
+لاحظ: تعمل المهمة الثابتة أولًا، ثم تعمل مهمتا الوحدة والطرف إلى الطرف بالتوازي. الزمن الكلي محدود بالأبطأ من المهمتين اللاحقتين، لا بمجموع كل فحص على حدة.
 
-**Caching.** Bun, npm, and yarn all produce lock-hash-stable caches. Shelf caches `~/.npm` and `~/.cache/ms-playwright` instead of committing to a `node_modules` cache strategy. That is enough to cut the expensive parts of the workflow without adding a more brittle cache layer.
+**التخزين المؤقت.** ينتج Bun وnpm وyarn جميعًا مخازن مؤقتة مستقرة بحسب تجزئة ملف القفل. يخزّن Shelf كلا المسارين `~/.npm` و`~/.cache/ms-playwright` بدلًا من الالتزام باستراتيجية تخزين لـ `node_modules`. وهذا يكفي لقطع الأجزاء المكلفة من سير العمل دون إضافة طبقة تخزين أكثر هشاشة.
 
-The actual GitHub Actions `cache` action in Shelf looks like:
+يبدو إجراء `cache` الفعلي في GitHub Actions عند Shelf هكذا:
 
 ```yaml
 - name: Cache dependencies
@@ -104,59 +104,59 @@ The actual GitHub Actions `cache` action in Shelf looks like:
     key: ${{ runner.os }}-deps-${{ hashFiles('package-lock.json') }}-playwright-${{ hashFiles('playwright.config.ts') }}
 ```
 
-That is the exact cache shape Shelf uses. Start there before you invent anything more clever.
+هذا هو شكل التخزين المؤقت نفسه الذي يستخدمه Shelf. ابدأ منه قبل أن تبتكر شيئًا أكثر ذكاءً.
 
-## Sharding and reports, once the suite earns them
+## التشظية والتقارير، بعد أن تستحقها المجموعة
 
-Once the end-to-end job gets large enough, the next knob is sharding. The important detail from the Playwright docs is that `fullyParallel: true` makes sharding more even because work gets balanced at the **test** level instead of the **file** level. If one file is a monster and the others are tiny, that difference matters.
+بمجرد أن تصبح مهمة الطرف إلى الطرف كبيرة بما يكفي، يصير المِقبض التالي هو التشظية. التفصيل المهم من وثائق Playwright هو أن `fullyParallel: true` يجعل التشظية أكثر عدلًا لأن العمل يتوازن على مستوى **الاختبار** بدلًا من مستوى **الملف**. إن كان أحد الملفات وحشًا وبقية الملفات ضئيلة، فهذا الفرق مهم.
 
-When you do shard, switch the reporter for CI fan-out to the [blob report format](https://playwright.dev/docs/test-sharding#merging-reports-from-multiple-shards). Blob reports include the tests plus their attachments, survive artifact upload/download cleanly, and can be merged later with:
+عندما تُشظّي فعلًا، فبدّل المُبلِّغ المستخدم في توزيع CI إلى [صيغة تقرير blob](https://playwright.dev/docs/test-sharding#merging-reports-from-multiple-shards). تتضمّن تقارير blob الاختبارات مع مرفقاتها، وتنجو من رفع وتنزيل الآثار بسلام، ويمكن دمجها لاحقًا بـ:
 
 ```bash
 npx playwright merge-reports --reporter html ./all-blob-reports
 ```
 
-If the run needs environment labeling, set per-project [`metadata`](https://playwright.dev/docs/api/class-testproject#test-project-metadata) on each lane (or tag individual tests with `@firefox-smoke` / `@APIv2` annotations) so merged reports can still tell you “this came from the Firefox smoke run” instead of dumping every shard into one anonymous bucket.
+إن احتاج التشغيل إلى وسم بيئي، فاضبط [`metadata`](https://playwright.dev/docs/api/class-testproject#test-project-metadata) لكل مشروع على كل مسار (أو وسِم الاختبارات الفردية بتعليقات `@firefox-smoke` / `@APIv2`) حتى تستطيع التقارير المدموجة أن تخبرك «هذا جاء من تشغيل الدخان على Firefox» بدلًا من إلقاء كل شظية في دلو واحد بلا هوية.
 
-And if you host attachments somewhere other than the checked-out artifact directory, [`attachmentsBaseURL`](https://playwright.dev/docs/test-reporters) is how the HTML report knows where to look. That is one of those settings you never need until the day your report links all point at nowhere.
+وإن استضفت المرفقات في مكان غير مجلد الآثار المستنسخ، فـ [`attachmentsBaseURL`](https://playwright.dev/docs/test-reporters) هو ما يجعل تقرير HTML يعرف أين ينظر. هذا أحد الإعدادات التي لا تحتاجها أبدًا حتى اليوم الذي تشير فيه كل روابط تقريرك إلى لا مكان.
 
-## Fail fast, but not too fast
+## الفشل السريع، لكن ليس بسرعة مفرطة
 
-A common mistake: `fail-fast: true` on every job, which causes any single red check to cancel the whole workflow. This feels efficient—why keep running if something already failed?—but it’s the wrong trade for a workshop-grade loop.
+خطأ شائع: `fail-fast: true` على كل مهمة، وهذا يجعل أي فحص أحمر واحد يلغي سير العمل كله. يبدو هذا فعّالًا—لماذا تستمر في التشغيل إن فشل شيء بالفعل؟—لكنه المقايضة الخطأ لحلقة بمستوى الورشة.
 
-The better default is `fail-fast: false`. Run everything to completion. The agent wants to see *all* the failures at once, not just the first one, because fixing them one at a time is slower than fixing them in a single pass. Running everything also means you get full artifacts (traces, screenshots, dossiers) for every failure, not just the one that fired first.
+الافتراضي الأفضل هو `fail-fast: false`. شغّل كل شيء حتى الاكتمال. يريد الوكيل أن يرى *كل* الإخفاقات دفعة واحدة، لا الأول فقط، لأن إصلاحها واحدًا واحدًا أبطأ من إصلاحها في مرور واحد. وتشغيل كل شيء يعني أيضًا حصولك على آثار كاملة (التتبّعات، ولقطات الشاشة، والملفات الجامعة) لكل فشل، لا للفشل الذي انطلق أولًا فقط.
 
-The exception: job dependencies. If your Playwright job depends on a successful build, don’t run Playwright when the build is red. Use `needs:` to express that, and let `fail-fast: false` handle the rest.
+الاستثناء: تبعيات المهام. إن كانت مهمة Playwright تعتمد على بناء ناجح، فلا تشغّل Playwright حين يكون البناء أحمر. استخدم `needs:` للتعبير عن ذلك، ودع `fail-fast: false` يتولّى الباقي.
 
-## Required checks and branch protection
+## الفحوص المطلوبة وحماية الفروع
 
-Once the workflow is reliable, turn on branch protection on `main`:
+بمجرد أن يصبح سير العمل موثوقًا، فعّل حماية الفروع على `main`:
 
-- Require status checks to pass before merging.
-- Require the specific checks you care about. In Shelf’s current workflow, that means at least `static` and `end-to-end`, and usually `unit` as well.
-- Optionally, require Bugbot (or your review bot of choice) to have completed and left a non-blocking comment.
-- Require a human reviewer for changes outside certain paths.
+- اشترط نجاح فحوص الحالة قبل الدمج.
+- اشترط الفحوص المحدّدة التي تهمّك. في سير عمل Shelf الحالي يعني ذلك `static` و`end-to-end` على الأقل، وعادةً `unit` أيضًا.
+- اختياريًا، اشترط أن يكون Bugbot (أو روبوت المراجعة الذي تختاره) قد أكمل وترك تعليقًا غير حاجب.
+- اشترط مراجعًا بشريًا للتغييرات خارج مسارات معيّنة.
 
-Branch protection is the hard gate. Everything before it is soft—the agent can ignore local checks if it’s determined. CI plus branch protection is the non-negotiable layer.
+حماية الفروع هي البوابة الصلبة. وكل ما قبلها ليّن—يستطيع الوكيل تجاهل الفحوص المحلية إن كان مصمّمًا. CI مع حماية الفروع هو الطبقة غير القابلة للتفاوض.
 
-## What the agent sees when CI fails
+## ما يراه الوكيل عندما يفشل CI
 
-This is the part I want you to optimize for.
+هذا هو الجزء الذي أريدك أن تحسّنه.
 
-When CI fails, the agent should be able to recover without a human pasting error messages. That means:
+عندما يفشل CI، يجب أن يتمكّن الوكيل من التعافي دون إنسان يلصق رسائل الخطأ. وهذا يعني:
 
-- The failure messages in the status check summary are specific, not “job failed.”
-- Artifacts (traces, screenshots, dossier, report JSON) are uploaded to the run.
-- The PR gets a comment with a link to the artifacts and a short summary.
-- The dossier script from [Failure Dossiers](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) runs in CI and the output is uploaded as an artifact.
+- أن تكون رسائل الفشل في ملخّص فحص الحالة محدّدة، لا «فشلت المهمة».
+- أن تُرفع الآثار (التتبّعات، ولقطات الشاشة، والملف الجامع، وتقرير JSON) إلى التشغيل.
+- أن يحصل طلب السحب على تعليق فيه رابط إلى الآثار وملخّص قصير.
+- أن يعمل سكربت الملف الجامع من [ملفات الفشل الجامعة](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) في CI ويُرفع ناتجه كأثر.
 
-With those in place, the agent can read the PR, read the status check, download the dossier artifact, and iterate. You don’t have to be the relay. The agent iterates until green or until it gets stuck in a way it can report back to you.
+مع توفّر ذلك، يستطيع الوكيل قراءة طلب السحب، وقراءة فحص الحالة، وتنزيل أثر الملف الجامع، ثم التكرار. لا يلزم أن تكون أنت المرحّل. يكرّر الوكيل حتى يصبح أخضر أو حتى يعلق بطريقة يستطيع أن يبلّغك بها.
 
-I have watched this work. An agent opens a PR, CI fails, the agent reads the dossier artifact, makes a fix, pushes a new commit, CI fails in a different way, the agent reads the new dossier, fixes it, pushes again, CI goes green, and I find out about the whole sequence when I look at the PR thirty minutes later. Entire bug fixes, self-driven, because the CI output is legible to the agent. That’s the loop.
+رأيت هذا يحدث. يفتح وكيل طلب سحب، فيفشل CI، فيقرأ الوكيل أثر الملف الجامع، ويجري إصلاحًا، ويدفع التزامًا جديدًا، فيفشل CI على نحو مختلف، فيقرأ الوكيل الملف الجامع الجديد، ويصلحه، ويدفع مرة أخرى، فيصبح CI أخضر، ثم أعرف بالقصة كلها عندما أنظر إلى طلب السحب بعد ثلاثين دقيقة. إصلاحات أخطاء كاملة، مدفوعة ذاتيًا، لأن ناتج CI مقروء للوكيل. تلك هي الحلقة.
 
-If your copy of Shelf does not have a hosted remote yet, you cannot close that loop end-to-end. What you *can* do is make the workflow legible in advance: valid YAML, real commands, explicit artifact paths, finite retention, and no hidden workflow-only scripts. Once the repository is connected to GitHub, the only missing piece is the hosted runner.
+إن لم تكن لنسختك من Shelf نهاية بعيدة مستضافة بعد، فلا يمكنك إغلاق تلك الحلقة من طرف إلى طرف. ما *تستطيعه* هو جعل سير العمل مقروءًا مسبقًا: YAML صالح، وأوامر حقيقية، ومسارات آثار صريحة، ومدة احتفاظ محدودة، ولا سكربتات خفية خاصة بسير العمل. بمجرد ربط المستودع بـ GitHub، يكون الجزء الناقص الوحيد هو المنفّذ المستضاف.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## CI
@@ -176,13 +176,13 @@ If your copy of Shelf does not have a hosted remote yet, you cannot close that l
   requires application code changes.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-CI is where the loops you built all day run together, one more time, in a clean environment, with the strict versions of every check. If it’s the *first* time any of those checks run, you’ve misallocated. If it’s the *last* time, with the tightest config, catching environment-specific mistakes your laptop can’t, you’re doing it right.
+CI هو حيث تجتمع الحلقات التي بنيتها طوال اليوم، مرة أخرى، في بيئة نظيفة، بالنسخ الصارمة من كل فحص. إن كانت هذه *أول* مرة تعمل فيها أي من تلك الفحوص، فقد أسأت التوزيع. وإن كانت *آخر* مرة، بأضيق إعداد، وتلتقط أخطاء خاصة بالبيئة لا يستطيع حاسوبك التقاطها، فأنت تفعلها كما ينبغي.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
-- [Nightly Verification Loops](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
-- [Lab: Write the CI Workflow from Scratch](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch)
+- [ملفات الفشل الجامعة: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [حلقات التحقّق الليلية](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops)
+- [مختبر: كتابة سير عمل CI من الصفر](https://stevekinney.com/courses/self-testing-ai-agents/lab-write-the-ci-workflow-from-scratch)

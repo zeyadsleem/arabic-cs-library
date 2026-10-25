@@ -1,31 +1,31 @@
 ---
-title: "Understanding Reconciliation in React 19"
-lang: en
+title: "فهم المطابقة (Reconciliation) في React 19"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/understanding-reconciliation-react-19"
 ---
 
-React’s reconciliation process is the magic behind how your components update efficiently—but it’s also where most performance problems hide. If you’ve ever wondered why your React app feels sluggish, or why changing one component causes unexpected re-renders elsewhere, you’re in the right place. Let’s demystify how React compares component trees, decides what needs updating, and schedules that work in React 19.
+عملية المطابقة (reconciliation) في React هي السحر الكامن وراء تحديث مكوّناتك بكفاءة — لكنها أيضًا الموضع الذي تختبئ فيه معظم مشكلات الأداء. إن تساءلت يومًا لماذا يبدو تطبيق React لديك بطيئًا، أو لماذا يؤدي تغيير مكوّن واحد إلى عمليات إعادة تصيير غير متوقّعة في مكان آخر، فأنت في المكان الصحيح. لنُزل الغموض عن كيفية مقارنة React لأشجار المكوّنات، وتحديد ما يحتاج إلى تحديث، وجدولة هذا العمل في React 19.
 
-By the end of this, you’ll understand the reconciliation algorithm well enough to write components that work *with* React instead of fighting against it (and debug performance issues like the seasoned engineer you’re becoming).
+بنهاية هذا الدرس، ستفهم خوارزمية المطابقة فهمًا يكفي لكتابة مكوّنات تعمل *مع* React بدل مصارعتها (وتنقّح مشكلات الأداء كما يفعل المهندس المتمرّس الذي تصير إليه).
 
-## What is Reconciliation?
+## ما هي المطابقة؟
 
-Reconciliation is React’s process for figuring out what changed between renders and updating the DOM accordingly. Think of it like a very smart diff algorithm—React compares the new component tree (what you want to render) against the previous tree (what’s currently on screen) and calculates the minimal set of changes needed.
+المطابقة هي عملية React لمعرفة ما تغيّر بين عمليات التصيير وتحديث DOM وفقًا لذلك. تخيّلها كخوارزمية فرق (diff) بالغة الذكاء — تقارن React شجرة المكوّنات الجديدة (ما تريد تصييره) بالشجرة السابقة (ما يظهر حاليًا على الشاشة) وتحسب أصغر مجموعة من التغييرات اللازمة.
 
-Here’s the key insight: **React never directly manipulates the DOM during render**. Instead, it builds a virtual representation of what the UI should look like, compares it to the previous version, and then applies only the necessary changes. This process happens in two phases:
+إليك الرؤية الجوهرية: **لا تتعامل React مع DOM مباشرة أبدًا أثناء التصيير**. بل تبني تمثيلًا افتراضيًا لما ينبغي أن تبدو عليه واجهة المستخدم، وتقارنه بالإصدار السابق، ثم تطبّق التغييرات الضرورية فقط. تحدث هذه العملية على مرحلتين:
 
-1. **Render Phase**: React calls your components and builds the new virtual tree
-2. **Commit Phase**: React applies the calculated changes to the actual DOM
+1. **مرحلة التصيير**: تستدعي React مكوّناتك وتبني الشجرة الافتراضية الجديدة
+2. **مرحلة الإيداع (commit)**: تطبّق React التغييرات المحسوبة على DOM الفعلي
 
-The reconciliation algorithm is what makes React fast—instead of re-creating the entire DOM on every state change, it surgically updates only what needs to change.
+خوارزمية المطابقة هي ما يجعل React سريعة — فبدل إعادة إنشاء DOM بالكامل عند كل تغيّر في الحالة، تحدّث بدقة جراحية ما يحتاج إلى تغيير فقط.
 
-## The Reconciliation Algorithm
+## خوارزمية المطابقة
 
-React’s reconciliation follows a set of predictable rules. Understanding these rules is crucial because they determine when your components re-render and how efficiently your app performs.
+تتبع مطابقة React مجموعة من القواعد المتوقّعة. فهم هذه القواعد جوهري لأنها تحدّد متى تُعاد مكوّناتك للتصيير ومدى كفاءة أداء تطبيقك.
 
-### Rule 1: Different Element Types = Complete Replacement
+### القاعدة 1: أنواع العناصر المختلفة = استبدال كامل
 
-When React encounters elements of different types in the same position, it tears down the entire subtree and builds a new one from scratch.
+عندما تصادف React عناصر من أنواع مختلفة في الموضع نفسه، فإنها تهدم الشجرة الفرعية بالكامل وتبني واحدة جديدة من الصفر.
 
 ```typescript
 // ❌ This will destroy and recreate the entire subtree
@@ -42,17 +42,17 @@ function Application({ isLoggedIn }: { isLoggedIn: boolean }) {
 }
 ```
 
-In the first example, switching between `div` and `span` causes React to:
+في المثال الأول، يؤدي التبديل بين `div` و`span` إلى أن تقوم React بما يلي:
 
-1. Unmount the old `div` and call cleanup effects
-2. Create a new `span` from scratch
-3. Run all initialization effects
+1. تُلغي تحميل `div` القديم وتستدعي تأثيرات التنظيف
+2. تُنشئ `span` جديدًا من الصفر
+3. تُشغّل جميع تأثيرات التهيئة
 
-This is expensive and loses component state. The second approach keeps the same `div` and only updates its text content.
+هذا مكلف ويفقد حالة المكوّن. أما النهج الثاني فيُبقي `div` نفسه ويحدّث محتواه النصي فقط.
 
-### Rule 2: Elements with Keys are Compared by Key
+### القاعدة 2: تُقارَن العناصر ذات المفاتيح بمفاتيحها
 
-Keys help React identify which items have changed, been added, or removed. Without keys, React uses position-based matching, which can cause performance issues and bugs.
+تساعد المفاتيح React على تحديد العناصر التي تغيّرت أو أُضيفت أو حُذفت. بدون مفاتيح، تستخدم React المطابقة القائمة على الموضع، وقد يُسبّب ذلك مشكلات في الأداء وأخطاء.
 
 ```typescript
 // ❌ Without keys, React matches by position
@@ -78,19 +78,19 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-Here’s what happens when you add an item to the beginning of the list:
+إليك ما يحدث عندما تضيف عنصرًا إلى بداية القائمة:
 
-**Without keys**: React thinks you modified every existing item and added one at the end. Every `<li>` re-renders unnecessarily.
+**بدون مفاتيح**: تظنّ React أنك عدّلت كل عنصر موجود وأضفت عنصرًا في النهاية. فتُعاد كل عناصر `<li>` للتصيير بلا داعٍ.
 
-**With keys**: React recognizes the existing items by their keys and only creates the new item. Much more efficient!
+**مع مفاتيح**: تتعرّف React على العناصر الموجودة من خلال مفاتيحها وتنشئ العنصر الجديد فقط. كفاءة أعلى بكثير!
 
-> **Warning**
+> **تحذير**
 >
-> Don’t use array indices as keys if your list can change order. When items shift positions, React will see different keys in different positions and think items have changed.
+> لا تستخدم فهارس المصفوفة مفاتيح إن كانت قائمتك قابلة لتغيّر الترتيب. عندما تتغيّر مواضع العناصر، سترى React مفاتيح مختلفة في مواضع مختلفة وتظنّ أن العناصر تغيّرت.
 
-### Rule 3: Same Component Type = Reconcile Props and State
+### القاعدة 3: نوع المكوّن نفسه = مطابقة الخصائص والحالة
 
-When React encounters the same component type in the same position, it keeps the component instance alive and updates only the changed props.
+عندما تصادف React نوع المكوّن نفسه في الموضع نفسه، تُبقي نسخة المكوّن حيّة وتحدّث الخصائص المتغيّرة فقط.
 
 ```typescript
 function UserProfile({ userId, theme }: { userId: string; theme: 'light' | 'dark' }) {
@@ -110,15 +110,15 @@ function UserProfile({ userId, theme }: { userId: string; theme: 'light' | 'dark
 // - useEffect doesn't re-run because userId didn't change
 ```
 
-This is why React components can maintain state across re-renders—as long as they stay in the same position with the same type, React preserves the component instance.
+لهذا السبب يمكن لمكوّنات React الحفاظ على الحالة عبر عمليات إعادة التصيير — فما دامت في الموضع نفسه وبالنوع نفسه، تحتفظ React بنسخة المكوّن.
 
-## React 19’s Reconciliation Improvements
+## تحسينات المطابقة في React 19
 
-React 19 introduces several enhancements that make reconciliation even more efficient and predictable.
+يقدّم React 19 عدة تحسينات تجعل المطابقة أكثر كفاءة وقابلية للتنبّؤ.
 
-### Automatic Batching Everywhere
+### التجميع التلقائي في كل مكان
 
-React 19 extends automatic batching to work consistently across all contexts—including setTimeout, promises, and native event handlers.
+يوسّع React 19 التجميع التلقائي ليعمل باطراد في جميع السياقات — بما في ذلك setTimeout والوعود (promises) ومعالجات الأحداث الأصلية.
 
 ```typescript
 // ✅ In React 19, these are automatically batched
@@ -137,11 +137,11 @@ setTimeout(() => {
 }, 1000);
 ```
 
-This means fewer unnecessary re-renders and better performance out of the box.
+يعني هذا عمليات إعادة تصيير غير ضرورية أقل وأداءً أفضل دون أي إعداد.
 
-### Improved Concurrent Features
+### ميزات التزامن المحسّنة
 
-React 19’s concurrent renderer can interrupt low-priority work to handle high-priority updates (like user input) immediately.
+يمكن لمُصيّر React 19 المتزامن مقاطعة العمل منخفض الأولوية لمعالجة التحديثات عالية الأولوية (مثل إدخال المستخدم) فورًا.
 
 ```typescript
 // High-priority update (user typing)
@@ -175,13 +175,13 @@ function SearchResults({ query }: { query: string }) {
 }
 ```
 
-React 19 ensures that typing in the search box stays responsive even while expensive search operations are running in the background.
+يضمن React 19 أن تظلّ الكتابة في مربّع البحث سريعة الاستجابة حتى أثناء تشغيل عمليات بحث مكلفة في الخلفية.
 
-## Common Reconciliation Performance Pitfalls
+## مزالق الأداء الشائعة في المطابقة
 
-Understanding reconciliation helps you avoid these common performance traps:
+يساعدك فهم المطابقة على تجنّب هذه الفخاخ الشائعة في الأداء:
 
-### Pitfall 1: Creating Objects in Render
+### المزلق 1: إنشاء كائنات أثناء التصيير
 
 ```typescript
 // ❌ Creates a new object every render
@@ -202,9 +202,9 @@ function UserCard({ user }: { user: User }) {
 }
 ```
 
-The first version creates a new `style` object on every render, causing `UserAvatar` to think its props have changed and re-render unnecessarily.
+يُنشئ الإصدار الأول كائن `style` جديدًا عند كل عملية تصيير، فيظنّ `UserAvatar` أن خصائصه تغيّرت ويُعاد تصييره بلا داعٍ.
 
-### Pitfall 2: Functions as Props
+### المزلق 2: دوال كخصائص
 
 ```typescript
 // ❌ New function every render
@@ -238,11 +238,11 @@ function TodoList({ todos }: { todos: Todo[] }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> In React 19, you might not need `useCallback` as much thanks to the React Compiler, which can automatically memoize functions when beneficial.
+> في React 19، قد لا تحتاج إلى `useCallback` بالقدر نفسه بفضل React Compiler، الذي يستطيع حفظ الدوال تلقائيًا في الذاكرة (memoize) عندما يكون ذلك مفيدًا.
 
-### Pitfall 3: Conditional Rendering Position Changes
+### المزلق 3: تغيّر الموضع عند التصيير الشرطي
 
 ```typescript
 // ❌ Component position changes based on condition
@@ -266,13 +266,13 @@ function Dashboard({ showSidebar }: { showSidebar: boolean }) {
 }
 ```
 
-In the first example, `MainContent`’s position in the tree changes when `showSidebar` toggles, potentially causing unnecessary re-renders. The second approach keeps positions stable.
+في المثال الأول، يتغيّر موضع `MainContent` في الشجرة عند تبديل `showSidebar`، وقد يُسبّب ذلك عمليات إعادة تصيير غير ضرورية. أما النهج الثاني فيُبقي المواضع ثابتة.
 
-## Optimizing for Reconciliation
+## التحسين من أجل المطابقة
 
-Here are some practical strategies for writing reconciliation-friendly components:
+إليك بعض الاستراتيجيات العملية لكتابة مكوّنات صديقة للمطابقة:
 
-### Use `React.memo()` Strategically
+### استخدم `React.memo()` بحكمة
 
 ```typescript
 // ✅ Memo prevents re-renders when props haven't changed
@@ -288,9 +288,9 @@ const ExpensiveComponent = React.memo(function ExpensiveComponent({
 });
 ```
 
-`React.memo()` does a shallow comparison of props and skips re-rendering if nothing changed. It’s particularly useful for components that receive stable props but have expensive rendering logic.
+يُجري `React.memo()` مقارنة سطحية للخصائص ويتخطّى إعادة التصيير إن لم يتغيّر شيء. وهو مفيد بوجه خاص للمكوّنات التي تتلقّى خصائص ثابتة لكن منطق تصييرها مكلف.
 
-### Lift State Down
+### أنزل الحالة إلى الأسفل
 
 ```typescript
 // ❌ High-level state causes unnecessary re-renders
@@ -326,9 +326,9 @@ function CounterSection() {
 }
 ```
 
-Moving state closer to where it’s used reduces the number of components that need to re-render when that state changes.
+نقل الحالة إلى موضع أقرب إلى استخدامها يقلّل عدد المكوّنات التي تحتاج إلى إعادة التصيير عند تغيّر تلك الحالة.
 
-### Separate Frequently-Changing State
+### افصل الحالة سريعة التغيّر
 
 ```typescript
 // ❌ Mouse position causes everything to re-render
@@ -366,28 +366,28 @@ function App() {
 }
 ```
 
-Isolating rapidly-changing state prevents it from triggering unnecessary re-renders in unrelated components.
+عزل الحالة سريعة التغيّر يمنعها من إحداث عمليات إعادة تصيير غير ضرورية في مكوّنات لا علاقة لها بها.
 
-## Debugging Reconciliation Issues
+## تنقيح مشكلات المطابقة
 
-React DevTools provides excellent insights into reconciliation performance:
+تقدّم React DevTools رؤى ممتازة في أداء المطابقة:
 
-### Profiler Tab
+### تبويب Profiler
 
-1. Open React DevTools
-2. Go to the “Profiler” tab
-3. Click “Record” and interact with your app
-4. Stop recording to see which components re-rendered and why
+1. افتح React DevTools
+2. انتقل إلى تبويب «Profiler»
+3. انقر «Record» وتفاعل مع تطبيقك
+4. أوقف التسجيل لترى أيّ المكوّنات أُعيد تصييرها ولماذا
 
-Look for:
+ابحث عن:
 
-- **Unexpected re-renders**: Components that shouldn’t have updated
-- **Expensive renders**: Components taking a long time to render
-- **Cascading updates**: One change triggering many others
+- **عمليات إعادة تصيير غير متوقّعة**: مكوّنات ما كان ينبغي أن تتحدّث
+- **عمليات تصيير مكلفة**: مكوّنات تستغرق وقتًا طويلًا في التصيير
+- **تحديثات متسلسلة**: تغيير واحد يُحدث تغييرات كثيرة أخرى
 
-### Why Did You Render
+### مكتبة Why Did You Render
 
-The [`@welldone-software/why-did-you-render`](https://www.npmjs.com/package/@welldone-software/why-did-you-render) library can automatically detect unnecessary re-renders:
+تستطيع مكتبة [`@welldone-software/why-did-you-render`](https://www.npmjs.com/package/@welldone-software/why-did-you-render) اكتشاف عمليات إعادة التصيير غير الضرورية تلقائيًا:
 
 ```typescript
 // In development only
@@ -400,13 +400,13 @@ if (process.env.NODE_ENV === 'development') {
 MyComponent.whyDidYouRender = true;
 ```
 
-This will log to the console whenever `MyComponent` re-renders with the same props, helping you identify reconciliation inefficiencies.
+سيسجّل هذا في الطرفية كلما أُعيد تصيير `MyComponent` بالخصائص نفسها، ما يساعدك على تحديد مواضع عدم الكفاءة في المطابقة.
 
-## Real-World Performance Patterns
+## أنماط أداء من الواقع العملي
 
-Here are some patterns I’ve found effective in production React applications:
+إليك بعض الأنماط التي وجدتها فعّالة في تطبيقات React الإنتاجية:
 
-### Virtual Scrolling for Large Lists
+### التمرير الافتراضي للقوائم الكبيرة
 
 ```typescript
 // ✅ Only render visible items
@@ -427,9 +427,9 @@ function VirtualizedList({ items }: { items: Item[] }) {
 }
 ```
 
-Virtual scrolling only renders the items currently visible, keeping reconciliation work constant regardless of list size.
+يصيّر التمرير الافتراضي العناصر الظاهرة حاليًا فقط، فيبقى عمل المطابقة ثابتًا مهما كان حجم القائمة.
 
-### Compound Components for Complex UIs
+### المكوّنات المركّبة لواجهات معقّدة
 
 ```typescript
 // ✅ Stable structure, flexible content
@@ -468,4 +468,4 @@ function UserTable({ users }: { users: User[] }) {
 }
 ```
 
-Compound components provide consistent tree structure while keeping the API flexible and reconciliation-friendly.
+توفّر المكوّنات المركّبة بنية شجرة متّسقة مع إبقاء الواجهة البرمجية مرنة وصديقة للمطابقة.

@@ -1,16 +1,16 @@
 ---
-title: "Tree Shaking Optimization"
-lang: en
+title: "تحسين اهتزاز الشجرة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/tree-shaking-optimization"
 ---
 
-Tree shaking is the process of eliminating dead code from your bundle—code that’s imported but never actually used. In theory, it sounds simple: if you import a function but never call it, don’t include it in the final bundle. In practice, JavaScript’s dynamic nature, CommonJS modules, and side effects make tree shaking a complex optimization that requires understanding how bundlers analyze your code dependencies.
+اهتزاز الشجرة (tree shaking) هو عملية إزالة الشيفرة الميتة من حزمتك — أي الشيفرة المستوردة لكن غير المستخدمة فعليًا. نظريًا، يبدو الأمر بسيطًا: إذا استوردت دالة ولم تنادها قط، فلا تضمّنها في الحزمة النهائية. أما عمليًا، فطبيعة JavaScript الديناميكية ووحدات CommonJS والآثار الجانبية (side effects) تجعل اهتزاز الشجرة تحسينًا معقدًا يتطلب فهم كيفية تحليل أدوات التجميع لاعتمادات شيفرتك.
 
-The stakes are high: a single poorly optimized library import can bloat your bundle by hundreds of kilobytes. Import the entire Lodash library when you only need `debounce`? That’s 70KB of unused code. Import all Material-UI icons when you only use five? That’s 500KB+ of waste. Master tree shaking, and you’ll ship only the code your users actually need.
+والمخاطر عالية: استيراد مكتبة واحدة سيئ التحسين قد يضخّم حزمتك بمئات الكيلوبايتات. أتستورد مكتبة Lodash كاملة وأنت لا تحتاج إلا `debounce`؟ ذاك 70KB من الشيفرة غير المستخدمة. أتستورد كل أيقونات Material-UI وأنت لا تستخدم إلا خمسًا؟ ذاك أكثر من 500KB من الهدر. أتقن اهتزاز الشجرة، ولن تُرسل إلا الشيفرة التي يحتاجها مستخدموك فعلًا.
 
-## How Tree Shaking Works
+## كيف يعمل اهتزاز الشجرة
 
-Tree shaking relies on static analysis of ES6 modules. Bundlers like Webpack, Rollup, and Vite analyze your import/export statements to build a dependency graph, then eliminate any exports that aren’t imported anywhere.
+يعتمد اهتزاز الشجرة على التحليل الساكن لوحدات ES6. فتحلّل أدوات التجميع مثل Webpack وRollup وVite عبارات الاستيراد والتصدير لديك لبناء رسم بياني للاعتمادات، ثم تحذف أي تصديرات لا تُستورد في أي موضع.
 
 ```typescript
 // utils.ts - Library with multiple exports
@@ -34,9 +34,9 @@ console.log(add(2, 3));
 // The heavy function and other math operations are eliminated
 ```
 
-Tree shaking works because ES6 modules have **static structure**—imports and exports can be determined at compile time without executing the code.
+يعمل اهتزاز الشجرة لأن وحدات ES6 ذات **بنية ساكنة** — إذ يمكن تحديد الاستيرادات والتصديرات وقت الترجمة دون تنفيذ الشيفرة.
 
-### The Static Analysis Process
+### عملية التحليل الساكن
 
 ```typescript
 // Bundler analysis process:
@@ -62,13 +62,13 @@ const eliminatedExports = [
 ];
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Tree shaking only works with ES6 modules (import/export). CommonJS modules (require/module.exports) cannot be statically analyzed, so they’re always included in full.
+> لا يعمل اهتزاز الشجرة إلا مع وحدات ES6 (import/export). أما وحدات CommonJS (require/module.exports) فلا يمكن تحليلها ساكنًا، فتُضمَّن دائمًا كاملة.
 
-## Common Tree Shaking Failures
+## إخفاقات شائعة في اهتزاز الشجرة
 
-### Problem 1: Side Effect Imports
+### المشكلة 1: استيرادات الآثار الجانبية
 
 ```typescript
 // ❌ This prevents tree shaking of the entire module
@@ -86,7 +86,7 @@ import 'some-library/styles.css'; // Specific side effect
 import { specificFunction } from 'some-library';
 ```
 
-### Problem 2: Default Exports and Barrel Files
+### المشكلة 2: التصديرات الافتراضية وملفات البرميل
 
 ```typescript
 // ❌ Barrel files can prevent tree shaking
@@ -110,7 +110,7 @@ export { Modal } from './Modal';
 export { DataTable } from './DataTable';
 ```
 
-### Problem 3: Class Instantiation
+### المشكلة 3: إنشاء نسخ الأصناف
 
 ```typescript
 // ❌ Class instantiation can pull in entire classes
@@ -124,9 +124,9 @@ import { utilityFunction } from 'big-library';
 const result = utilityFunction(); // Only the function included
 ```
 
-## Optimizing Third-Party Library Imports
+## تحسين استيرادات مكتبات الأطراف الثالثة
 
-### Lodash Optimization
+### تحسين Lodash
 
 ```typescript
 // ❌ Imports entire Lodash library (~70KB)
@@ -148,7 +148,7 @@ import { debounce, throttle } from 'lodash-es';
 import { debounce } from 'es-toolkit'; // Modern, smaller alternative
 ```
 
-### Material-UI / MUI Optimization
+### تحسين Material-UI / MUI
 
 ```typescript
 // ❌ Imports entire component library
@@ -184,7 +184,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import UserIcon from '@mui/icons-material/User';
 ```
 
-### React Icons Optimization
+### تحسين React Icons
 
 ```typescript
 // ❌ Bad: Imports all icon sets
@@ -220,9 +220,9 @@ export function Icon({ name, ...props }: { name: keyof typeof iconMap }) {
 }
 ```
 
-## Advanced Tree Shaking Configuration
+## تهيئة متقدّمة لاهتزاز الشجرة
 
-### Webpack Optimization
+### تحسين Webpack
 
 ```javascript
 // webpack.config.js
@@ -291,7 +291,7 @@ module.exports = {
 };
 ```
 
-### Package.json Side Effects Declaration
+### إعلان الآثار الجانبية في package.json
 
 ```json
 {
@@ -331,9 +331,9 @@ module.exports = {
 }
 ```
 
-## Testing Tree Shaking Effectiveness
+## اختبار فعالية اهتزاز الشجرة
 
-### Bundle Analysis for Tree Shaking
+### تحليل الحزمة لأجل اهتزاز الشجرة
 
 ```typescript
 // analyze-tree-shaking.js
@@ -457,7 +457,7 @@ async function analyzeTreeShaking() {
 }
 ```
 
-### Runtime Tree Shaking Validation
+### التحقق من اهتزاز الشجرة وقت التشغيل
 
 ```typescript
 // Development utility to detect unused imports
@@ -538,9 +538,9 @@ module.exports = function ({ types: t }) {
 };
 ```
 
-## Library-Specific Optimizations
+## تحسينات خاصة بكل مكتبة
 
-### Date Libraries
+### مكتبات التواريخ
 
 ```typescript
 // ❌ Moment.js - not tree-shakeable, includes all locales
@@ -556,7 +556,7 @@ import dayjs from 'dayjs';
 const formatted = dayjs().format('YYYY-MM-DD');
 ```
 
-### Icon Libraries
+### مكتبات الأيقونات
 
 ```typescript
 // Custom tree-shakeable icon solution
@@ -600,7 +600,7 @@ function App() {
 }
 ```
 
-### Utility Libraries
+### مكتبات الأدوات المساعدة
 
 ```typescript
 // Create your own tree-shakeable utility library
@@ -627,7 +627,7 @@ export function debounce<T extends (...args: any[]) => any>(
 import { debounce, formatCurrency } from './utils';
 ```
 
-## Monitoring Tree Shaking in CI/CD
+## مراقبة اهتزاز الشجرة في CI/CD
 
 ```javascript
 // ci/check-tree-shaking.js
@@ -765,19 +765,19 @@ const monitor = new TreeShakingMonitor({
 monitor.checkTreeShaking().catch(console.error);
 ```
 
-## Bundle Analysis Integration
+## الدمج مع تحليل الحزمة
 
-When using webpack-bundle-analyzer with tree-shaking, focus on:
+عند استخدام webpack-bundle-analyzer مع اهتزاز الشجرة، ركّز على:
 
-- **Unused exports**: Modules importing more than they use
-- **Side-effect files**: Files marked with sideEffects but not actually needed
-- **Large dependencies**: Libraries that don’t tree-shake well
+- **التصديرات غير المستخدمة**: وحدات تستورد أكثر مما تستخدم
+- **ملفات الآثار الجانبية**: ملفات موسومة بـ sideEffects لكنها غير مطلوبة فعليًا
+- **الاعتمادات الكبيرة**: مكتبات لا ينجح اهتزاز شجرتها جيدًا
 
-For detailed bundle analysis techniques, see [Bundle Analysis Deep Dive](https://stevekinney.com/courses/react-performance/bundle-analysis-deep-dive).
+لتقنيات تحليل الحزمة المفصّلة، انظر [تحليل الحزم بعمق](https://stevekinney.com/courses/react-performance/bundle-analysis-deep-dive).
 
-## Common Pitfalls and Solutions
+## مزالق شائعة وحلولها
 
-### Pitfall: Side Effects in Pure Functions
+### مَزلق: الآثار الجانبية في الدوال النقية
 
 ```typescript
 // ❌ This looks pure but has side effects
@@ -800,7 +800,7 @@ export function createCounter(initialValue = 0) {
 }
 ```
 
-### Pitfall: Dynamic Imports Breaking Static Analysis
+### مَزلق: الاستيرادات الديناميكية تكسر التحليل الساكن
 
 ```typescript
 // ❌ Dynamic require breaks tree shaking
@@ -813,7 +813,7 @@ import { add, subtract } from './utils';
 const result = someCondition ? add(a, b) : subtract(a, b);
 ```
 
-### Pitfall: Re-exports Without Tree Shaking
+### مَزلق: إعادة التصدير دون اهتزاز الشجرة
 
 ```typescript
 // ❌ This might export everything from lodash
@@ -829,6 +829,6 @@ import { throttle } from 'lodash/throttle';
 export { debounce, throttle };
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Effective tree shaking requires:
+يتطلّب اهتزاز الشجرة الفعّال ما يلي:

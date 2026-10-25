@@ -1,18 +1,18 @@
 ---
-title: "Structural Typing"
-lang: en
+title: "الأنواع البنيوية (Structural Typing)"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-structural-typing"
 ---
 
-TypeScript doesn’t care what you call your types—it only cares about their shape. This is structural typing, and it’s the most fundamental concept that sets TypeScript apart from nominally-typed languages like Java or C#. Once you truly understand structural typing, React props, component composition, and type compatibility all suddenly make sense.
+لا يهم TypeScript ما تسمّي به أنواعك — كل ما يهمه هو بنيتها. هذه هي الكتابة البنيوية (structural typing)، وهي المفهوم الأكثر أساسية الذي يميّز TypeScript عن اللغات ذات الكتابة الاسمية مثل Java أو C#. وما إن تفهم الكتابة البنيوية فهمًا حقيقيًا حتى تصير خصائص React وتركيب المكوّنات وتوافق الأنواع مفهومةً فجأة.
 
-Think of it this way: if I ask for a duck, I don’t care if you give me a mallard, a rubber duck, or even a person in a duck costume—as long as it can swim and quack, TypeScript is happy. This flexibility is what makes TypeScript so powerful for JavaScript, and especially for React.
+فكّر في الأمر هكذا: إن طلبت مني بطة، فلا يهمني إن أعطيتني بطةً حقيقية أو بطةً مطاطية أو حتى إنسانًا يرتدي زي البطة — ما دام يستطيع السباحة والصفير، فإن TypeScript يكون راضيًا. وهذه المرونة هي ما يجعل TypeScript قويًّا جدًا في عالم JavaScript، ولا سيما مع React.
 
-## The Mental Model: Shape Over Names
+## النموذج الذهني: البنية قبل الأسماء
 
-In TypeScript, two types are compatible if they have the same shape, regardless of their names or where they’re defined.
+في TypeScript، يتوافق نوعان إذا كان لهما البنية نفسها، بغضّ النظر عن اسميهما أو عن مكان تعريفهما.
 
-### Your First Structural Type
+### أول نوع بنيوي لك
 
 ```typescript
 // These two interfaces have different names
@@ -35,7 +35,7 @@ person = employee; // ✅ Also works!
 // TypeScript doesn't care about the names 'Person' or 'Employee'
 ```
 
-### Shape Compatibility in Practice
+### توافق البنية في التطبيق العملي
 
 ```typescript
 // TypeScript only requires the minimum shape
@@ -60,11 +60,11 @@ const user = {
 greet(user); // ✅ Has the required shape plus more
 ```
 
-## Why Structural Typing Matters for React
+## لماذا تهم الأنواع البنيوية مع React
 
-React components are all about passing props, and structural typing makes this incredibly flexible.
+كل ما في مكوّنات React هو تمرير الخصائص، والكتابة البنيوية تجعل ذلك شديد المرونة.
 
-### Props Are Just Shapes
+### الخصائص ليست سوى بنى
 
 ```typescript
 // A component asks for a certain shape
@@ -98,7 +98,7 @@ const enhancedProps = {
 <Button {...enhancedProps} /> // Still works!
 ```
 
-### Component Composition Through Shapes
+### تركيب المكوّنات عبر البنى
 
 ```typescript
 interface ClickableProps {
@@ -141,11 +141,11 @@ function Card(props: CardProps) {
 }
 ```
 
-## Excess Property Checking: The Exception
+## فحص الخصائص الزائدة: الاستثناء
 
-There’s one important exception to structural typing: excess property checking for object literals.
+هناك استثناء مهم واحد للكتابة البنيوية: فحص الخصائص الزائدة في الكائنات الحرفية (object literals).
 
-### Object Literals Are Strict
+### الكائنات الحرفية صارمة
 
 ```typescript
 interface Config {
@@ -169,7 +169,7 @@ const settings = {
 const config2: Config = settings; // No error - structural typing applies
 ```
 
-### Why This Matters in React
+### لماذا يهم هذا في React
 
 ```typescript
 interface ButtonProps {
@@ -200,7 +200,7 @@ const buttonProps: ButtonProps = {
 };
 ```
 
-### Working Around Excess Property Checking
+### التملّص من فحص الخصائص الزائدة
 
 ```typescript
 interface Options {
@@ -238,11 +238,11 @@ const options3: Options = {
 };
 ```
 
-## Classes and Structural Typing
+## الأصناف والأنواع البنيوية
 
-Even classes follow structural typing in TypeScript, unlike most OOP languages.
+حتى الأصناف تتبع الكتابة البنيوية في TypeScript، بخلاف معظم لغات البرمجة كائنية التوجه.
 
-### Classes Are Shapes Too
+### الأصناف بنى أيضًا
 
 ```typescript
 class Person {
@@ -281,7 +281,7 @@ let notAClass: Person = {
 }; // ✅ Works!
 ```
 
-### Private Members Break Compatibility
+### الأعضاء الخاصة تكسر التوافق
 
 ```typescript
 class Car {
@@ -324,11 +324,11 @@ class PublicMotorcycle {
 let publicVehicle: PublicCar = new PublicMotorcycle(); // Works!
 ```
 
-## Function Compatibility
+## توافق الدوال
 
-Functions have their own structural typing rules, which are crucial for React event handlers.
+للدوال قواعدها الخاصة في الكتابة البنيوية، وهي حاسمة في معالِجات أحداث React.
 
-### Parameter and Return Type Compatibility
+### توافق نوعَي المعامل والعائد
 
 ```typescript
 // Functions are compatible if parameters and returns are compatible
@@ -355,7 +355,7 @@ const noParamHandler: Handler = () => {
 }; // ✅ Works!
 ```
 
-### Why This Matters for React Events
+### لماذا يهم هذا في أحداث React
 
 ```typescript
 // React expects specific event handler signatures
@@ -386,11 +386,11 @@ const simpleUsage = (handler: typeof complexHandler) => {
 };
 ```
 
-## Subtype Relationships
+## علاقات النوع الفرعي
 
-Structural typing creates implicit subtype relationships based on shape.
+تنشئ الكتابة البنيوية علاقات نوع فرعي ضمنية استنادًا إلى البنية.
 
-### Width Subtyping
+### النمذجة الفرعية بالعرض
 
 ```typescript
 // A type with more properties is a subtype of one with fewer
@@ -425,7 +425,7 @@ processUser(detailed); // ✅ Works!
 processUser({ name: 'Bob', extra: 'data' }); // ✅ Works!
 ```
 
-### Depth Subtyping
+### النمذجة الفرعية بالعمق
 
 ```typescript
 // Nested structures follow the same rules
@@ -457,11 +457,11 @@ let detailed: DetailedConfig = {
 simple = detailed; // ✅ Works - detailed has all required properties
 ```
 
-## Structural Typing with Generics
+## الأنواع البنيوية مع الأنواع العامة
 
-Generics preserve structural relationships.
+تحافظ الأنواع العامة على العلاقات البنيوية.
 
-### Generic Structural Compatibility
+### التوافق البنيوي العام
 
 ```typescript
 interface Container<T> {
@@ -490,7 +490,7 @@ const result1 = processContainer(box); // ✅ Works!
 const result2 = processBox(container); // ✅ Works!
 ```
 
-### React Component Generics
+### الأنواع العامة في مكوّنات React
 
 ```typescript
 // Generic props follow structural typing
@@ -523,11 +523,11 @@ const props = {
 <Collection {...props} /> // ✅ Works!
 ```
 
-## Index Signatures and Structural Typing
+## تواقيع الفهرس والأنواع البنيوية
 
-Index signatures add flexibility to structural typing.
+تضيف تواقيع الفهرس مرونةً إلى الكتابة البنيوية.
 
-### Dynamic Property Names
+### أسماء الخصائص الديناميكية
 
 ```typescript
 interface StringDictionary {
@@ -552,7 +552,7 @@ generic = specific; // ✅ Works!
 // specific = generic; // ❌ Error - generic might not have name/email
 ```
 
-### React Props with Index Signatures
+### خصائص React مع تواقيع الفهرس
 
 ```typescript
 // Common pattern for accepting arbitrary HTML attributes
@@ -582,9 +582,9 @@ function FlexibleComponent(props: FlexibleProps) {
 />
 ```
 
-## Common Patterns and Use Cases
+## الأنماط الشائعة وحالات الاستخدام
 
-### Props Spreading Pattern
+### نمط نشر الخصائص
 
 ```typescript
 interface BaseProps {
@@ -623,7 +623,7 @@ const sharedProps: BaseProps = {
 <Link {...sharedProps} href="/home" label="Home" />
 ```
 
-### Higher-Order Component Patterns
+### أنماط المكوّنات ذات الرتبة العليا
 
 ```typescript
 // HOCs rely heavily on structural typing
@@ -660,7 +660,7 @@ const UserWithLoading = withLoading(User);
 <UserWithLoading name="Alice" age={30} loading={false} />
 ```
 
-### API Response Handling
+### التعامل مع استجابات API
 
 ```typescript
 // Structural typing for flexible API responses
@@ -694,9 +694,9 @@ const userResponse: UserResponse = {
 handleResponse(userResponse); // ✅ Works!
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Leverage Structural Typing for Flexibility
+### استثمر الأنواع البنيوية في المرونة
 
 ```typescript
 // ✅ Good: Accept minimal required shape
@@ -715,7 +715,7 @@ print([1, 2, 3]); // Arrays have toString
 print(new Date()); // Dates have toString
 ```
 
-### Use Nominal Typing When Needed
+### استخدم الكتابة الاسمية عند الحاجة
 
 ```typescript
 // Sometimes you want to prevent structural compatibility
@@ -742,7 +742,7 @@ getUserById(postId); // ❌ Error - different brands
 // even though both are structurally strings
 ```
 
-### Design Interfaces for Structural Compatibility
+### صمّم الواجهات لتوافق بنيوي
 
 ```typescript
 // ✅ Good: Small, focused interfaces
@@ -773,9 +773,9 @@ function getRecent<T extends Timestamped>(items: T[]): T[] {
 }
 ```
 
-## Common Gotchas and Solutions
+## الأخطاء الشائعة والحلول
 
-### Empty Types
+### الأنواع الفارغة
 
 ```typescript
 // Empty types are compatible with everything!
@@ -795,7 +795,7 @@ interface Props {
 }
 ```
 
-### Comparing Functions
+### مقارنة الدوال
 
 ```typescript
 // Functions with fewer parameters can be assigned to those with more
@@ -813,10 +813,10 @@ onClick={(e) => {}} // Can ignore event
 onClick={() => {}}  // Can ignore all params
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Structural typing is the foundation of TypeScript’s type system. It’s what makes TypeScript feel natural for JavaScript and perfect for React. By focusing on shape rather than names, TypeScript gives you incredible flexibility while maintaining type safety.
+الكتابة البنيوية هي أساس نظام أنواع TypeScript. إنها ما يجعل TypeScript يبدو طبيعيًّا في عالم JavaScript ومثاليًّا مع React. فبتركيزك على البنية بدل الأسماء، يمنحك TypeScript مرونةً هائلة مع الحفاظ على أمان الأنواع.
 
-Remember: TypeScript doesn’t care what you call your types or where they come from—it only cares that they have the right shape. This enables powerful patterns like props spreading, component composition, and higher-order components that would be impossible in nominally-typed languages.
+تذكّر: لا يهم TypeScript ما تسمّي به أنواعك ولا من أين أتت — كل ما يهمه أن تكون لها البنية الصحيحة. وهذا يتيح أنماطًا قوية مثل نشر الخصائص وتركيب المكوّنات والمكوّنات ذات الرتبة العليا، وهي أنماط مستحيلة في اللغات ذات الكتابة الاسمية.
 
-Master structural typing, and you’ll write TypeScript that works with the language rather than fighting against it. Your React components will be more flexible, your APIs more adaptable, and your code more maintainable—all because you understand that in TypeScript, shape is everything.
+أتقن الكتابة البنيوية، وستكتب TypeScript يعمل مع اللغة بدل أن يقاتلها. ستكون مكوّنات React لديك أكثر مرونة، وواجهاتك البرمجية (API) أكثر قابلية للتكيّف، وشيفرتك أكثر قابلية للصيانة — وكل ذلك لأنك فهمت أن البنية هي كل شيء في TypeScript.

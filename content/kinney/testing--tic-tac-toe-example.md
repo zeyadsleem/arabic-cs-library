@@ -1,56 +1,56 @@
 ---
-title: "Building Tic Tac Toe with Vitest"
-lang: en
+title: "بناء لعبة Tic Tac Toe باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/tic-tac-toe-example"
 ---
 
-## Building a Tic Tac Toe Game Using Test-Driven Development with Vitest
+## بناء لعبة Tic Tac Toe باستخدام التطوير المدفوع بالاختبارات مع Vitest
 
-**Table of Contents**
+**جدول المحتويات**
 
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Project Setup](#project-setup)
-4. [Understanding Test-Driven Development](#understanding-test-driven-development)
-5. [Setting Up Vitest](#setting-up-vitest)
-6. [Designing the Game Logic](#designing-the-game-logic)
-7. [Implementing the Game Logic with TDD](#implementing-the-game-logic-with-tdd) [1. Creating the Game Board](#creating-the-game-board) [2. Placing a Move](#placing-a-move) [3. Checking for a Winner](#checking-for-a-winner) [4. Checking for a Draw](#checking-for-a-draw)
-  - [1. Creating the Game Board](#creating-the-game-board)
-  - [2. Placing a Move](#placing-a-move)
-  - [3. Checking for a Winner](#checking-for-a-winner)
-  - [4. Checking for a Draw](#checking-for-a-draw)
-8. [Building the User Interface](#building-the-user-interface)
-9. [Testing the User Interface](#testing-the-user-interface)
-10. [Conclusion](#conclusion)
-11. [Additional Exercises](#additional-exercises)
+1. [المقدمة](#introduction)
+2. [المتطلبات المسبقة](#prerequisites)
+3. [تهيئة المشروع](#project-setup)
+4. [فهم التطوير المدفوع بالاختبارات](#understanding-test-driven-development)
+5. [تهيئة Vitest](#setting-up-vitest)
+6. [تصميم منطق اللعبة](#designing-the-game-logic)
+7. [تنفيذ منطق اللعبة بالتطوير المدفوع بالاختبارات](#implementing-the-game-logic-with-tdd) [1. إنشاء لوحة اللعبة](#creating-the-game-board) [2. وضع نقلة](#placing-a-move) [3. التحقق من فائز](#checking-for-a-winner) [4. التحقق من التعادل](#checking-for-a-draw)
+  - [1. إنشاء لوحة اللعبة](#creating-the-game-board)
+  - [2. وضع نقلة](#placing-a-move)
+  - [3. التحقق من فائز](#checking-for-a-winner)
+  - [4. التحقق من التعادل](#checking-for-a-draw)
+8. [بناء واجهة المستخدم](#building-the-user-interface)
+9. [اختبار واجهة المستخدم](#testing-the-user-interface)
+10. [الخلاصة](#conclusion)
+11. [تمارين إضافية](#additional-exercises)
 
 ---
 
-### Introduction
+### المقدمة {#introduction}
 
-In this guide, we’ll build the classic game of **Tic Tac Toe** using **Test-Driven Development (TDD)** with **Vitest**, a fast and modern JavaScript testing framework. We’ll start by developing the game logic through unit tests and then create a simple user interface using plain JavaScript, ensuring our UI is tested and functions correctly.
+في هذا الدليل سنبني لعبة **Tic Tac Toe** الكلاسيكية باستخدام **التطوير المدفوع بالاختبارات (TDD)** مع **Vitest**، إطار اختبار JavaScript سريع وحديث. سنبدأ بتطوير منطق اللعبة عبر اختبارات الوحدات ثم ننشئ واجهة مستخدم بسيطة باستخدام JavaScript العادية، بما يضمن اختبار واجهتنا وعملها بشكل صحيح.
 
-**Objectives:**
+**الأهداف:**
 
-- Learn how to apply TDD principles to build a game.
-- Understand how to write unit tests with Vitest.
-- Develop a Tic Tac Toe game logic and user interface.
-- Write tests for both the game logic and the UI interactions.
+- تعلّم كيفية تطبيق مبادئ التطوير المدفوع بالاختبارات لبناء لعبة.
+- فهم كيفية كتابة اختبارات الوحدات باستخدام Vitest.
+- تطوير منطق لعبة Tic Tac Toe وواجهة المستخدم.
+- كتابة اختبارات لمنطق اللعبة ولتفاعلات واجهة المستخدم معًا.
 
-### Prerequisites
+### المتطلبات المسبقة {#prerequisites}
 
-- Basic knowledge of JavaScript (ES6+ syntax).
-- Familiarity with Node.js and npm.
-- Understanding of unit testing concepts.
-- Node.js and npm installed on your machine.
+- معرفة أساسية بـ JavaScript (صيغة ES6+).
+- إلمام بـ Node.js وnpm.
+- فهم مفاهيم اختبار الوحدات.
+- Node.js وnpm مثبّتان على جهازك.
 
-### Project Setup
+### تهيئة المشروع {#project-setup}
 
-1. **Create a New Directory** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> tic-tac-toe-tdd</span></span>
+1. **أنشئ دليلًا جديدًا** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> tic-tac-toe-tdd</span></span>
 <span class="line"><span style="color:#C5E478;font-style:italic">cd</span><span style="color:#ECC48D"> tic-tac-toe-tdd</span></span></code>
-2. **Initialize npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
-3. **Install Vitest** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span></span></code>
-4. **Set Up the Project Structure** <code><span class="line"><span style="color:#D6DEEB">tic</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tac</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">toe</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
+2. **هيّئ npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
+3. **ثبّت Vitest** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span></span></code>
+4. **جهّز بنية المشروع** <code><span class="line"><span style="color:#D6DEEB">tic</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tac</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">toe</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── package</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">json</span></span>
 <span class="line"><span style="color:#D6DEEB">├── vitest</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">config</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB">├── src</span><span style="color:#C792EA">/</span></span>
@@ -59,25 +59,25 @@ In this guide, we’ll build the classic game of **Tic Tac Toe** using **Test-Dr
 <span class="line"><span style="color:#D6DEEB">│ └── index</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">html</span></span>
 <span class="line"><span style="color:#D6DEEB">└── tests</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB"> ├── game</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
-<span class="line"><span style="color:#D6DEEB"> └── ui</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: Contains the source code for the game logic and UI. `tests/`: Contains the test files.
-  - `src/`: Contains the source code for the game logic and UI.
-  - `tests/`: Contains the test files.
+<span class="line"><span style="color:#D6DEEB"> └── ui</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: يحتوي على الشيفرة المصدرية لمنطق اللعبة وواجهة المستخدم. `tests/`: يحتوي على ملفات الاختبار.
+  - `src/`: يحتوي على الشيفرة المصدرية لمنطق اللعبة وواجهة المستخدم.
+  - `tests/`: يحتوي على ملفات الاختبار.
 
-### Understanding Test-Driven Development
+### فهم التطوير المدفوع بالاختبارات {#understanding-test-driven-development}
 
-**Test-Driven Development (TDD)** is a software development approach where you:
+**التطوير المدفوع بالاختبارات (TDD)** مقاربة لتطوير البرمجيات تقوم فيها بما يلي:
 
-1. **Write a Test**: Write a test for the next bit of functionality.
-2. **Run the Test and See It Fail**: Ensures the test detects the absence of functionality.
-3. **Write the Minimal Code to Pass the Test**: Implement just enough code to make the test pass.
-4. **Refactor**: Improve the code while keeping the tests passing.
-5. **Repeat**: Continue with the next functionality.
+1. **اكتب اختبارًا**: اكتب اختبارًا للجزء التالي من الوظائف.
+2. **شغّل الاختبار وشاهده يفشل**: يضمن أن الاختبار يكتشف غياب الوظيفة.
+3. **اكتب أقل شيفرة تجعل الاختبار ينجح**: نفّذ شيفرة كافية فقط لجعل الاختبار ينجح.
+4. **أعد الهيكلة**: حسّن الشيفرة مع إبقاء الاختبارات ناجحة.
+5. **كرّر**: تابع مع الوظيفة التالية.
 
-This cycle is often referred to as **Red-Green-Refactor**.
+غالبًا ما تُسمّى هذه الدورة **الأحمر-الأخضر-إعادة الهيكلة** (Red-Green-Refactor).
 
-### Setting Up Vitest
+### تهيئة Vitest {#setting-up-vitest}
 
-Add a test script to your `package.json`:
+أضف سكربت اختبار إلى `package.json`:
 
 ```json
 {
@@ -87,7 +87,7 @@ Add a test script to your `package.json`:
 }
 ```
 
-Create a `vitest.config.js` file (optional for simple setups):
+أنشئ ملف `vitest.config.js` (اختياري للتهيئات البسيطة):
 
 ```javascript
 // vitest.config.js
@@ -100,23 +100,23 @@ export default defineConfig({
 });
 ```
 
-### Designing the Game Logic
+### تصميم منطق اللعبة {#designing-the-game-logic}
 
-Before we start coding, let’s outline the game logic:
+قبل أن نبدأ البرمجة، لنرسم منطق اللعبة:
 
-- The game board is a 3x3 grid.
-- Players take turns placing their mark (X or O) on the board.
-- The game checks for a winner after each move.
-- A player wins if they have three of their marks in a row, column, or diagonal.
-- The game ends in a draw if all spots are filled without a winner.
+- لوحة اللعبة شبكة 3x3.
+- يتناوب اللاعبون وضع علامتهم (X أو O) على اللوحة.
+- تتحقق اللعبة من وجود فائز بعد كل نقلة.
+- يفوز اللاعب إذا كانت لديه ثلاث من علاماته في صف أو عمود أو قطر.
+- تنتهي اللعبة بالتعادل إذا امتلأت كل الخانات دون فائز.
 
-### Implementing the Game Logic with TDD
+### تنفيذ منطق اللعبة بالتطوير المدفوع بالاختبارات {#implementing-the-game-logic-with-tdd}
 
-#### Creating the Game Board
+#### إنشاء لوحة اللعبة {#creating-the-game-board}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Create `tests/game.test.js`:
+أنشئ `tests/game.test.js`:
 
 ```javascript
 // tests/game.test.js
@@ -140,24 +140,24 @@ describe('Tic Tac Toe Game Logic', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test that `createGame` initializes an empty 3x3 board.
-- We test that the game starts with player ‘X’.
+- نختبر أن `createGame` تهيّئ لوحة 3x3 فارغة.
+- نختبر أن اللعبة تبدأ باللاعب «X».
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-You’ll get an error: `createGame` is not defined.
+ستحصل على خطأ: `createGame` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Implement `createGame` in `src/game.js`:
+نفّذ `createGame` في `src/game.js`:
 
 ```javascript
 // src/game.js
@@ -173,27 +173,27 @@ export function createGame() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Tests should now pass.
+ينبغي أن تنجح الاختبارات الآن.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-Our code is simple; no refactoring needed.
+شيفرتنا بسيطة؛ لا حاجة إلى إعادة هيكلة.
 
-#### Placing a Move
+#### وضع نقلة {#placing-a-move}
 
-We need to implement a function to place a move on the board.
+نحتاج إلى تنفيذ دالة تضع نقلة على اللوحة.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('placeMove', () => {
@@ -217,25 +217,25 @@ describe('placeMove', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test that the current player’s mark is placed on the board.
-- We test that the player switches after a move.
-- We test that placing a move on an occupied spot throws an error.
+- نختبر أن علامة اللاعب الحالي تُوضع على اللوحة.
+- نختبر أن اللاعب يتبدّل بعد النقلة.
+- نختبر أن وضع نقلة على خانة مشغولة يرمي خطأً.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Errors occur because `placeMove` is not defined.
+تحدث أخطاء لأن `placeMove` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/game.js`:
+حدّث `src/game.js`:
 
 ```javascript
 export function createGame() {
@@ -257,27 +257,27 @@ export function createGame() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All tests should pass.
+ينبغي أن تنجح كل الاختبارات.
 
-##### Step 5: Refactor
+##### الخطوة 5: أعد الهيكلة
 
-Consider separating player switching logic.
+فكّر في فصل منطق تبديل اللاعب.
 
-#### Checking for a Winner
+#### التحقق من فائز {#checking-for-a-winner}
 
-We need to implement a method to check for a winner.
+نحتاج إلى تنفيذ تابع للتحقق من وجود فائز.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('checkWinner', () => {
@@ -318,19 +318,19 @@ describe('checkWinner', () => {
 });
 ```
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Error: `checkWinner` is not defined.
+خطأ: `checkWinner` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/game.js`:
+حدّث `src/game.js`:
 
 ```javascript
 export function createGame() {
@@ -375,27 +375,27 @@ export function createGame() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All tests should pass.
+ينبغي أن تنجح كل الاختبارات.
 
-##### Step 5: Refactor
+##### الخطوة 5: أعد الهيكلة
 
-Consider moving the lines array outside the function if needed.
+فكّر في نقل مصفوفة `lines` خارج الدالة إن لزم.
 
-#### Checking for a Draw
+#### التحقق من التعادل {#checking-for-a-draw}
 
-We need to check if the game ends in a draw.
+نحتاج إلى التحقق من انتهاء اللعبة بالتعادل.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('isDraw', () => {
@@ -431,19 +431,19 @@ describe('isDraw', () => {
 });
 ```
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Error: `isDraw` is not defined.
+خطأ: `isDraw` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/game.js`:
+حدّث `src/game.js`:
 
 ```javascript
 export function createGame() {
@@ -464,29 +464,29 @@ export function createGame() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All tests should pass.
+ينبغي أن تنجح كل الاختبارات.
 
-##### Step 5: Refactor
+##### الخطوة 5: أعد الهيكلة
 
-No immediate refactoring needed.
+لا حاجة إلى إعادة هيكلة فورية.
 
 ---
 
-At this point, we’ve implemented the core game logic using TDD.
+في هذه المرحلة، نكون قد نفّذنا منطق اللعبة الأساسي باستخدام التطوير المدفوع بالاختبارات.
 
-### Building the User Interface
+### بناء واجهة المستخدم {#building-the-user-interface}
 
-Now we’ll create a simple UI using HTML and JavaScript.
+الآن سننشئ واجهة مستخدم بسيطة باستخدام HTML وJavaScript.
 
-#### Create `index.html`
+#### إنشاء `index.html`
 
 ```html
 <!-- src/index.html -->
@@ -530,23 +530,23 @@ Now we’ll create a simple UI using HTML and JavaScript.
 </html>
 ```
 
-#### Create `ui.js`
+#### إنشاء `ui.js`
 
-We’ll write the UI code as we write tests for it.
+سنكتب شيفرة واجهة المستخدم بينما نكتب اختباراتها.
 
-### Testing the User Interface
+### اختبار واجهة المستخدم {#testing-the-user-interface}
 
-We’ll use **Vitest** with **Testing Library** to test our UI.
+سنستخدم **Vitest** مع **Testing Library** لاختبار واجهتنا.
 
-#### Set Up Testing Library
+#### تهيئة Testing Library
 
-Install dependencies:
+ثبّت الاعتمادات:
 
 ```bash
 npm install --save-dev jsdom @testing-library/dom @testing-library/user-event @testing-library/jest-dom
 ```
 
-Update `vitest.config.js`:
+حدّث `vitest.config.js`:
 
 ```javascript
 // vitest.config.js
@@ -560,15 +560,15 @@ export default defineConfig({
 });
 ```
 
-Create `tests/setupTests.js`:
+أنشئ `tests/setupTests.js`:
 
 ```javascript
 import '@testing-library/jest-dom';
 ```
 
-#### Writing UI Tests
+#### كتابة اختبارات واجهة المستخدم
 
-Create `tests/ui.test.js`:
+أنشئ `tests/ui.test.js`:
 
 ```javascript
 // tests/ui.test.js
@@ -635,9 +635,9 @@ describe('Tic Tac Toe UI', () => {
 });
 ```
 
-#### Implementing UI Code to Pass Tests
+#### تنفيذ شيفرة واجهة المستخدم لنجاح الاختبارات
 
-Update `src/ui.js`:
+حدّث `src/ui.js`:
 
 ```javascript
 import { createGame } from './game.js';
@@ -720,53 +720,53 @@ cells.forEach((cell) => {
 resetButton.addEventListener('click', resetGame);
 ```
 
-#### Run the Tests
+#### تشغيل الاختبارات
 
-Run the tests:
+شغّل الاختبارات:
 
 ```bash
 npm test
 ```
 
-All tests should pass if the UI code correctly implements the game logic.
+ينبغي أن تنجح كل الاختبارات إن كانت شيفرة واجهة المستخدم تنفّذ منطق اللعبة بشكل صحيح.
 
 ---
 
-### Conclusion
+### الخلاصة {#conclusion}
 
-By following Test-Driven Development principles, we’ve built a functional Tic Tac Toe game with both game logic and user interface. We’ve written unit tests for the game logic and used Testing Library to test the UI interactions, ensuring our application is reliable and behaves as expected.
+باتباع مبادئ التطوير المدفوع بالاختبارات، بنينا لعبة Tic Tac Toe فعّالة بمنطق لعبة وواجهة مستخدم معًا. كتبنا اختبارات وحدات لمنطق اللعبة واستخدمنا Testing Library لاختبار تفاعلات واجهة المستخدم، بما يضمن أن تطبيقنا موثوق ويتصرف كما هو متوقع.
 
-**Key Takeaways:**
+**الخلاصات الرئيسية:**
 
-- **TDD Workflow:** Writing tests first helps define the expected behavior and leads to better-designed code.
-- **Vitest for Testing:** Vitest provides a fast and modern testing experience for JavaScript applications.
-- **Testing Library:** Using Testing Library allows us to write tests that resemble how users interact with our app.
+- **سير عمل TDD:** كتابة الاختبارات أولًا تساعد في تعريف السلوك المتوقع وتؤدي إلى شيفرة أفضل تصميمًا.
+- **Vitest للاختبار:** يوفر Vitest تجربة اختبار سريعة وحديثة لتطبيقات JavaScript.
+- **Testing Library:** يتيح لنا استخدام Testing Library كتابة اختبارات تشبه طريقة تفاعل المستخدمين مع تطبيقنا.
 
-### Additional Exercises
+### تمارين إضافية {#additional-exercises}
 
-To further enhance your Tic Tac Toe game and testing skills, consider implementing the following features:
+لتعزيز لعبتك Tic Tac Toe ومهاراتك في الاختبار أكثر، فكّر في تنفيذ المزايا التالية:
 
-1. **AI Opponent** Implement an AI player that makes moves against the human player. Write tests to ensure the AI makes valid moves.
-  - Implement an AI player that makes moves against the human player.
-  - Write tests to ensure the AI makes valid moves.
-2. **Score Tracking** Keep track of the number of wins for each player. Write tests to verify that the scores are updated correctly.
-  - Keep track of the number of wins for each player.
-  - Write tests to verify that the scores are updated correctly.
-3. **Improved UI** Enhance the UI with better styling and animations. Ensure accessibility by using proper ARIA roles and labels.
-  - Enhance the UI with better styling and animations.
-  - Ensure accessibility by using proper ARIA roles and labels.
-4. **Undo Functionality** Allow players to undo their last move. Write tests to ensure the game state is correctly reverted.
-  - Allow players to undo their last move.
-  - Write tests to ensure the game state is correctly reverted.
-5. **Online Multiplayer** Implement networked multiplayer functionality. Write integration tests to simulate multiple players.
-  - Implement networked multiplayer functionality.
-  - Write integration tests to simulate multiple players.
-6. **Responsive Design** Make the game responsive and playable on different devices. Test UI elements on various screen sizes.
-  - Make the game responsive and playable on different devices.
-  - Test UI elements on various screen sizes.
-7. **Leaderboard** Add a leaderboard to display top players’ scores. Write tests to ensure scores are correctly stored and retrieved.
-  - Add a leaderboard to display top players’ scores.
-  - Write tests to ensure scores are correctly stored and retrieved.
-8. **Test Coverage Analysis** Integrate code coverage reporting with Vitest. Analyze the coverage report to identify untested code paths.
-  - Integrate code coverage reporting with Vitest.
-  - Analyze the coverage report to identify untested code paths.
+1. **خصم ذكي** نفّذ لاعبًا آليًا يضع نقلات ضد اللاعب البشري. اكتب اختبارات لضمان أن الذكاء الاصطناعي يضع نقلات صحيحة.
+  - نفّذ لاعبًا آليًا يضع نقلات ضد اللاعب البشري.
+  - اكتب اختبارات لضمان أن الذكاء الاصطناعي يضع نقلات صحيحة.
+2. **تتبّع النقاط** احتفظ بعدد الانتصارات لكل لاعب. اكتب اختبارات للتحقق من تحديث النقاط بشكل صحيح.
+  - احتفظ بعدد الانتصارات لكل لاعب.
+  - اكتب اختبارات للتحقق من تحديث النقاط بشكل صحيح.
+3. **واجهة محسّنة** حسّن واجهة المستخدم بتنسيقات ورسوم متحركة أفضل. اضمن إمكانية الوصول باستخدام أدوار ARIA وتسميات مناسبة.
+  - حسّن واجهة المستخدم بتنسيقات ورسوم متحركة أفضل.
+  - اضمن إمكانية الوصول باستخدام أدوار ARIA وتسميات مناسبة.
+4. **وظيفة التراجع** اسمح للاعبين بالتراجع عن نقلتهم الأخيرة. اكتب اختبارات لضمان إعادة حالة اللعبة بشكل صحيح.
+  - اسمح للاعبين بالتراجع عن نقلتهم الأخيرة.
+  - اكتب اختبارات لضمان إعادة حالة اللعبة بشكل صحيح.
+5. **لعب جماعي عبر الإنترنت** نفّذ وظيفة لعب جماعي شبكية. اكتب اختبارات تكامل لمحاكاة عدة لاعبين.
+  - نفّذ وظيفة لعب جماعي شبكية.
+  - اكتب اختبارات تكامل لمحاكاة عدة لاعبين.
+6. **تصميم متجاوب** اجعل اللعبة متجاوبة وقابلة للعب على أجهزة مختلفة. اختبر عناصر واجهة المستخدم على أحجام شاشات متنوعة.
+  - اجعل اللعبة متجاوبة وقابلة للعب على أجهزة مختلفة.
+  - اختبر عناصر واجهة المستخدم على أحجام شاشات متنوعة.
+7. **لوحة المتصدرين** أضف لوحة متصدرين لعرض نقاط أفضل اللاعبين. اكتب اختبارات لضمان تخزين النقاط واسترجاعها بشكل صحيح.
+  - أضف لوحة متصدرين لعرض نقاط أفضل اللاعبين.
+  - اكتب اختبارات لضمان تخزين النقاط واسترجاعها بشكل صحيح.
+8. **تحليل تغطية الاختبارات** ادمج تقارير تغطية الشيفرة مع Vitest. حلّل تقرير التغطية لتحديد مسارات الشيفرة غير المختبَرة.
+  - ادمج تقارير تغطية الشيفرة مع Vitest.
+  - حلّل تقرير التغطية لتحديد مسارات الشيفرة غير المختبَرة.

@@ -1,39 +1,39 @@
 ---
-title: "Adding a Dark Mode"
-lang: en
+title: "إضافة الوضع الداكن"
+lang: ar
 source: "https://stevekinney.com/courses/figma/adding-a-dark-theme-to-the-button"
 ---
 
-Let’s say we want to add a dark mode theme to our button.
+لنفترض أننا نريد إضافة سمة الوضع الداكن إلى زرّنا.
 
-> **Variable modes require a being on a paid tier**
+> **أوضاع المتغيّرات تتطلّب أن تكون على خطة مدفوعة**
 >
-> Figma modes are not available on their free tier. You can have up to four modes per collection in their professional and organization plans and then up 40 on their enterprise plan.
+> أوضاع Figma غير متاحة في خطتها المجانية. يمكنك الحصول على ما يصل إلى أربعة أوضاع لكل مجموعة في خطّتي Professional وOrganization، ثم ما يصل إلى 40 في خطة Enterprise.
 
-Let’s take our button components from [the previous section](https://stevekinney.com/courses/figma/creating-a-button-component).
+لنأخذ مكوّنات الزرّ لدينا من [القسم السابق](https://stevekinney.com/courses/figma/creating-a-button-component).
 
-Figma button variants
+أنماط زرّ Figma البديلة
 
-I don’t want to make *even* more components for a dark theme, but I’d like to be able to change the colors a but when we’re in dark mode.
+لا أريد أن أصنع مكوّنات *إضافية* أكثر لوضع داكن، لكنني أرغب في أن أتمكّن من تغيير الألوان قليلًا عندما نكون في الوضع الداكن.
 
-To do this, I’ll add an extra mode for my variables.
+وللقيام بذلك، سأضيف وضعًا إضافيًا لمتغيّراتي.
 
-Figma variables for dark mode
+متغيّرات Figma للوضع الداكن
 
-## Inheriting a Mode
+## وراثة وضع
 
-The cool thing about modes in Figma is that you can inherit the mode from any parent layer. Once of the things I like to do is to make some containers and then see how the modes change as I move my components around.
+الأمر الرائع في الأوضاع في Figma أنك تستطيع وراثة الوضع من أي طبقة أب. ومن الأمور التي أحبّ فعلها أن أصنع بعض الحاويات ثم أرى كيف تتغيّر الأوضاع بينما أنقل مكوّناتي هنا وهناك.
 
-Let’s make some base variables for the overall theme of our design system.
+لنُنشئ بعض المتغيّرات الأساسية للسمة العامة لنظام التصميم لدينا.
 
-Variables for our base layer
+متغيّرات طبقتنا الأساسية
 
-Next, make a container that uses that color variable as a fill color.
+بعد ذلك، أنشئ حاوية تستخدم متغيّر اللون هذا كلون تعبئة.
 
-A container with a variable for the fill color
+حاوية بمتغيّر للون التعبئة
 
-For the second copy of the layer, change the mode.
+بالنسبة إلى النسخة الثانية من الطبقة، غيّر الوضع.
 
-A second copy of the container in a dark mode
+نسخة ثانية من الحاوية في الوضع الداكن
 
-And now, your button will inherit the mode of the container.
+والآن، سيرث زرّك وضع الحاوية.

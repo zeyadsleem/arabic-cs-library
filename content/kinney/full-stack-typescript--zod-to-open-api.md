@@ -1,14 +1,14 @@
 ---
-title: "Zod to OpenAPI"
-lang: en
+title: "من Zod إلى OpenAPI"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/zod-to-open-api"
 ---
 
-Let’s through the process of adding OpenAPI documentation to a TypeScript Express server using Zod for validation.
+لنمرّ عبر عملية إضافة توثيق OpenAPI إلى خادم Express مكتوب بـ TypeScript يستخدم Zod للتحقق.
 
-## Extend Zod Schemas with OpenAPI Metadata
+## توسيع مخططات Zod ببيانات OpenAPI الوصفية
 
-Create a new file `openapi.ts` that will convert your Zod schemas to OpenAPI format:
+أنشئ ملفًا جديدًا `openapi.ts` سيحوّل مخططات Zod لديك إلى صيغة OpenAPI:
 
 ```typescript
 import { extendZodWithOpenApi, generateSchema } from '@anatine/zod-openapi';
@@ -51,9 +51,9 @@ const UpdateTaskSchema = schemas.UpdateTaskSchema.openapi({
 });
 ```
 
-## Define the OpenAPI Document
+## تعريف مستند OpenAPI
 
-Add the full OpenAPI specification to your `openapi.ts` file:
+أضف مواصفة OpenAPI الكاملة إلى ملف `openapi.ts` لديك:
 
 ```typescript
 export const openApiDocument: OpenAPIObject = {
@@ -285,7 +285,7 @@ export const openApiDocument: OpenAPIObject = {
 };
 ```
 
-And then integrate with your Express server:
+ثم ادمجه مع خادم Express لديك:
 
 ```typescript
 // server.ts
@@ -311,9 +311,9 @@ export async function createServer() {
 }
 ```
 
-## Accessessing the Documentation
+## الوصول إلى التوثيق
 
-Once implemented, you can access:
+بعد التنفيذ، يمكنك الوصول إلى:
 
-- Interactive API documentation at: `/api-docs`
-- Raw OpenAPI JSON specification at: `/openapi.json`
+- توثيق API التفاعلي على: `/api-docs`
+- مواصفة OpenAPI JSON الخام على: `/openapi.json`

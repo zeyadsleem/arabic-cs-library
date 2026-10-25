@@ -1,33 +1,33 @@
 ---
-title: "Code Splitting and Lazy Loading"
-lang: en
+title: "تقسيم الشيفرة والتحميل الكسول"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/code-splitting-and-lazy-loading"
 ---
 
-Your JavaScript bundle is getting out of hand. What started as a modest React app has grown into a 2MB monolith that takes forever to load, especially on slower connections. Users are bouncing before they even see your beautiful loading spinner (which is probably over-engineered anyway). Enter code-splitting and lazy loading—the performance optimization techniques that let you serve only what users actually need, when they need it.
+حزمتك من JavaScript تخرج عن السيطرة. فما بدأ تطبيق React متواضعًا صار كتلة واحدة بحجم 2MB يستغرق زمنًا طويلًا للتحميل، خصوصًا على الاتصالات الأبطأ. والمستخدمون يغادرون قبل أن يروا حتى مؤشر التحميل الجميل الذي بنيته (وهو على الأرجح مفرط الهندسة على أي حال). وهنا يأتي تقسيم الشيفرة والتحميل الكسول — تقنيتا تحسين أداء تتيحان لك تقديم ما يحتاجه المستخدمون فعلًا فقط، حين يحتاجونه.
 
-Code-splitting breaks your bundle into smaller chunks that can be loaded on-demand, while lazy loading defers non-critical resources until they’re required. Together, they dramatically reduce your initial bundle size and improve Core Web Vitals—particularly **Largest Contentful Paint** (LCP) and **First Input Delay** (FID). More importantly, they keep your users happy and engaged.
+يقسّم تقسيم الشيفرة حزمتك إلى قطع أصغر يمكن تحميلها عند الطلب، بينما يؤجّل التحميل الكسول الموارد غير الحرجة حتى الحاجة إليها. ومعًا، يخفضان حجم حزمتك الأولي بدرجة هائلة ويحسّنان مؤشرات الويب الأساسية — لا سيما **أكبر رسم للمحتوى** (LCP) و**تأخّر أول إدخال** (FID). والأهم أنهما يُبقيان مستخدميك سعداء ومتفاعلين.
 
-## The Bundle Size Problem
+## مشكلة حجم الحزمة
 
-Before we dive into solutions, let’s understand what we’re solving. Modern React applications often suffer from “bundle bloat”—shipping massive JavaScript files that include everything from your authentication logic to that rarely-used admin dashboard to the entire lodash library (because someone imported `debounce` once).
+قبل أن نغوص في الحلول، لنفهم ما الذي نحلّه. فتطبيقات React الحديثة تعاني غالبًا من «تضخّم الحزمة» — إذ تُرسل ملفات JavaScript ضخمة تتضمن كل شيء من منطق المصادقة إلى لوحة الإدارة النادر استخدامها إلى مكتبة lodash كاملة (لأن أحدهم استورد `debounce` مرة واحدة).
 
-The typical progression looks like this:
+والتدرّج النموذجي يبدو هكذا:
 
-1. **MVP**: 200KB bundle, loads instantly
-2. **Adding features**: 500KB bundle, still acceptable
-3. **Third-party integrations**: 1.2MB bundle, getting slow
-4. **“Just one more library”**: 2.5MB bundle, users complaining
+1. **النسخة الأولى (MVP)**: حزمة بحجم 200KB تُحمَّل فورًا
+2. **إضافة الميزات**: حزمة بحجم 500KB ما زالت مقبولة
+3. **تكاملات الأطراف الثالثة**: حزمة بحجم 1.2MB تبدأ بالبطء
+4. **«مكتبة واحدة أخيرة فقط»**: حزمة بحجم 2.5MB والمستخدمون يتذمّرون
 
-By the time you notice the problem, you’re shipping way more JavaScript than any single page needs. Code-splitting fixes this by breaking your monolith into digestible chunks.
+وحين تلاحظ المشكلة، تكون تُرسل JavaScript أكثر بكثير مما تحتاجه أي صفحة واحدة. ويعالج تقسيم الشيفرة ذلك بتحويل كتلتك الواحدة إلى قطع سهل الاستيعاب.
 
-## Route-Based Code Splitting
+## تقسيم الشيفرة حسب المسارات
 
-The easiest win is splitting your app by routes. Most users don’t visit every page in a single session, so why make them download the entire admin dashboard when they just want to update their profile?
+أسهل مكسب هو تقسيم تطبيقك حسب المسارات. فمعظم المستخدمين لا يزورون كل صفحة في الجلسة نفسها، فلماذا تُجبرهم على تنزيل لوحة الإدارة كاملة وهم يريدون تحديث ملفهم الشخصي فقط؟
 
-### Basic Route Splitting with React Router
+### التقسيم الأساسي للمسارات مع React Router
 
-Here’s how to implement route-based splitting with React Router v6:
+وإليك كيفية تنفيذ التقسيم حسب المسارات مع React Router v6:
 
 ```typescript
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -55,13 +55,13 @@ function App() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Always wrap lazy-loaded components in `Suspense`. Without it, React will throw an error when trying to render a component that’s still loading.
+> غلّف دائمًا المكوّنات المحمّلة كسولًا بـ `Suspense`. فبدونه، سيرمي React خطأً عند محاولة تصيير مكوّن ما زال قيد التحميل.
 
-### Advanced Route Splitting
+### تقسيم متقدّم للمسارات
 
-For larger applications, you might want to create route modules that include not just the component, but also related utilities, hooks, and styles:
+في التطبيقات الأكبر، قد ترغب في إنشاء وحدات مسار لا تشمل المكوّن فحسب، بل أيضًا الأدوات المساعدة والخُطّافات والأنماط المرتبطة به:
 
 ```typescript
 // pages/Dashboard/index.ts
@@ -86,15 +86,15 @@ export default function Dashboard() {
 }
 ```
 
-This approach ensures that dashboard-specific code (including CSS and utilities) only loads when users visit the dashboard route.
+يضمن هذا الأسلوب ألا تُحمَّل الشيفرة الخاصة بلوحة المعلومات (بما فيها CSS والأدوات المساعدة) إلا عند زيارة المستخدمين مسار لوحة المعلومات.
 
-## Component-Based Code Splitting
+## تقسيم الشيفرة حسب المكوّنات
 
-Sometimes you need finer-grained control. Maybe you have a heavy component that’s only shown conditionally—like a rich text editor that appears when users click “Edit” or a data visualization that renders based on user preferences.
+تحتاج أحيانًا إلى تحكم أدق تفصيلًا. فربما لديك مكوّن ثقيل لا يظهر إلا شرطيًا — مثل محرّر نص منسّق يظهر عند نقر المستخدمين على «Edit» أو تصوّر بيانات يُصيّر بناءً على تفضيلات المستخدم.
 
-### Lazy Loading Modal Components
+### التحميل الكسول لمكوّنات النوافذ المنبثقة
 
-Modals are perfect candidates for lazy loading since they’re hidden by default:
+النوافذ المنبثقة (modals) مرشّح مثالي للتحميل الكسول لأنها مخفية افتراضيًا:
 
 ```typescript
 import { useState, Suspense, lazy } from 'react';
@@ -123,9 +123,9 @@ function PostActions({ postId }: { postId: string }) {
 }
 ```
 
-### Lazy Loading Based on User Permissions
+### التحميل الكسول بناءً على أذونات المستخدم
 
-You can also conditionally load components based on user roles or permissions:
+يمكنك أيضًا تحميل المكوّنات شرطيًا بناءً على أدوار المستخدمين أو أذوناتهم:
 
 ```typescript
 import { Suspense, lazy } from 'react';
@@ -146,13 +146,13 @@ function Dashboard() {
 }
 ```
 
-## Vendor Code Splitting
+## تقسيم شيفرة المكتبات الخارجية (vendor)
 
-Third-party libraries can be huge. Chart.js, moment.js, or even React itself can dominate your bundle size. Modern bundlers can automatically split vendor code, but you can optimize further with strategic imports.
+قد تكون مكتبات الأطراف الثالثة ضخمة. فـ Chart.js أو moment.js أو حتى React نفسه قد يسيطر على حجم حزمتك. وتستطيع أدوات التجميع الحديثة تقسيم شيفرة المورّدين تلقائيًا، لكن يمكنك تحسين الأمر أكثر باستيرادات مدروسة.
 
-### Splitting Heavy Libraries
+### تقسيم المكتبات الثقيلة
 
-Instead of importing entire libraries upfront, load them when needed:
+بدلًا من استيراد المكتبات كاملة مسبقًا، حمّلها عند الحاجة:
 
 ```typescript
 import { useState, useEffect } from 'react';
@@ -183,9 +183,9 @@ function DataVisualization({ data }: { data: ChartData }) {
 }
 ```
 
-### Bundle Analysis and Optimization
+### تحليل الحزمة وتحسينها
 
-Use webpack-bundle-analyzer or similar tools to identify optimization opportunities:
+استخدم webpack-bundle-analyzer أو أدوات مشابهة لتحديد فرص التحسين:
 
 ```bash
 # Install the analyzer
@@ -199,13 +199,13 @@ npm run build
 npx source-map-explorer 'dist/assets/*.js'
 ```
 
-This visualization shows exactly which libraries are eating up your bundle size, helping you decide what to split or replace.
+يُظهر هذا التمثيل البصري بالضبط أي المكتبات تستهلك حجم حزمتك، ما يساعدك على تقرير ما يجب تقسيمه أو استبداله.
 
-## Advanced Patterns and Best Practices
+## أنماط متقدّمة وأفضل الممارسات
 
-### Preloading Critical Routes
+### التحميل المسبق للمسارات الحرجة
 
-You can preload routes that users are likely to visit next:
+يمكنك تحميل المسارات التي يُرجَّح أن يزورها المستخدمون تاليًا مسبقًا:
 
 ```typescript
 import { useEffect } from 'react';
@@ -224,9 +224,9 @@ function HomePage() {
 }
 ```
 
-### Error Boundaries for Lazy Components
+### حدود الأخطاء للمكوّنات الكسولة
 
-Always wrap lazy components in error boundaries to handle loading failures gracefully:
+غلّف دائمًا المكوّنات الكسولة بحدود أخطاء لتتولّى إخفاقات التحميل بلطف:
 
 ```typescript
 import { Component, ReactNode } from 'react';
@@ -267,9 +267,9 @@ function App() {
 }
 ```
 
-### Smart Fallback Components
+### مكوّنات بديلة ذكية
 
-Instead of generic “Loading…” messages, create meaningful fallbacks that match your UI:
+بدلًا من رسائل «Loading…» العامة، أنشئ بدائل ذات معنى تناسب واجهتك:
 
 ```typescript
 import { Suspense } from 'react';
@@ -292,20 +292,20 @@ function DashboardSkeleton() {
 </Suspense>;
 ```
 
-## Measuring the Impact
+## قياس الأثر
 
-### Before and After Metrics
+### المقاييس قبل وبعد
 
-Track these key metrics to measure your code-splitting success:
+تابع هذه المقاييس الرئيسية لقياس نجاح تقسيم شيفرتك:
 
-- **Initial bundle size**: How much JavaScript loads on first visit
-- **Time to First Contentful Paint (FCP)**: When users see something useful
-- **Time to Interactive (TTI)**: When the page becomes fully interactive
-- **Route transition speed**: How quickly lazy routes load
+- **حجم الحزمة الأولي**: مقدار JavaScript المحمَّل في أول زيارة
+- **زمن أول رسم للمحتوى (FCP)**: متى يرى المستخدمون شيئًا مفيدًا
+- **زمن التفاعل (TTI)**: متى تصبح الصفحة تفاعلية بالكامل
+- **سرعة الانتقال بين المسارات**: مدى سرعة تحميل المسارات الكسولة
 
-### Using React DevTools Profiler
+### استخدام أداة Profiler في React DevTools
 
-The React DevTools Profiler can show you exactly how long components take to load and render:
+تستطيع أداة Profiler في React DevTools أن تُريك بالضبط المدة التي يستغرقها كل مكوّن للتحميل والتصيير:
 
 ```typescript
 import { Profiler } from 'react';
@@ -321,11 +321,11 @@ function onRenderCallback(id: string, phase: string, actualDuration: number) {
 </Profiler>;
 ```
 
-## Common Pitfalls and How to Avoid Them
+## مزالق شائعة وكيفية تجنّبها
 
-### Over-Splitting
+### الإفراط في التقسيم
 
-Don’t split everything. Very small components (< 10KB) might not be worth splitting due to the overhead of additional network requests.
+لا تقسّم كل شيء. فالمكوّنات الصغيرة جدًا (< 10KB) قد لا تستحق التقسيم بسبب الكلفة الزائدة لطلبات الشبكة الإضافية.
 
 ```typescript
 // ❌ Probably not worth splitting
@@ -335,9 +335,9 @@ const SmallIcon = lazy(() => import('./SmallIcon')); // 2KB component
 const RichTextEditor = lazy(() => import('./RichTextEditor')); // 200KB component
 ```
 
-### Forgetting to Handle Loading States
+### نسيان معالجة حالات التحميل
 
-Always provide meaningful loading states. Users shouldn’t see blank screens or broken layouts while components load.
+وفّر دائمًا حالات تحميل ذات معنى. فلا ينبغي للمستخدمين أن يروا شاشات فارغة أو تخطيطات مكسورة أثناء تحميل المكوّنات.
 
 ```typescript
 // ❌ Bad: No loading state
@@ -351,6 +351,6 @@ Always provide meaningful loading states. Users shouldn’t see blank screens or
 </Suspense>
 ```
 
-### Splitting Too Late
+### التقسيم في وقت متأخر جدًا
 
-Implement code-splitting early in development, not as an afterthought when performance becomes a problem. It’s much easier to architect for splitting from the start.
+طبّق تقسيم الشيفرة مبكرًا في التطوير، لا كفكرة لاحقة حين يصبح الأداء مشكلة. فبناء المعمارية للتقسيم من البداية أسهل بكثير.

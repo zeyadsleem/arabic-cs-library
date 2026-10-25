@@ -1,64 +1,64 @@
 ---
-title: "The Hypothesis"
-lang: en
+title: "الفرضية"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis"
 ---
 
-So, here’s the bet the rest of the day is built on.
+إذن، هذا هو الرهان الذي يقوم عليه بقيّة اليوم.
 
-Agents are *fast* at editing code. They are not particularly good at knowing whether the edit was any good. If every change they make requires *you* to read the diff, run the thing, click around the UI, eyeball the console, and then prompt the agent to fix what it missed—you haven’t automated much. You’ve traded one kind of typing for another, and some days it’s not even obvious which side of the trade you’re on.
+الوكلاء *سريعون* في تعديل الشيفرة. لكنهم ليسوا بارعين تحديدًا في معرفة ما إذا كان التعديل جيدًا. فإذا كان كل تغيير يقومون به يستلزم من *أنت* قراءة الفرق، وتشغيل التطبيق، والنقر في الواجهة، وفحص الطرفية بالعين، ثم مطالبة الوكيل بإصلاح ما فاته — فأنت لم تؤتمت الكثير. لقد استبدلت نوعًا من الكتابة بنوع آخر، وبعض الأيام لا يكون واضحًا حتى أي طرفي المقايضة أنت فيه.
 
-I’ve done the relay dance more times than I’d like to admit: The agent ships something confident-looking. I run it. It’s wrong in a way the agent would have caught immediately if it had bothered to actually *run* the code. I paste the error back. It fixes the error and introduces a new one. Repeat until lunch—or, I get rate limited.
+لقد أدّيت رقصة التناوب أكثر مما أحبّ الاعتراف به: يشحن الوكيل شيئًا يبدو واثقًا. أشغّله. فيكون خاطئًا بطريقة كان الوكيل سيلتقطها فورًا لو أنه كلّف نفسه *تشغيل* الشيفرة فعلًا. ألصق الخطأ عائدًا. فيُصلح الخطأ ويُدخل آخر. ونكرّر حتى الغداء — أو حتى تُحدّد معدّلات استخدامي.
 
-A joke prompt saying that it's very broken
+طلب ساخر يقول إن التطبيق مكسور جدًا
 
-The hypothesis for today is that the problem isn’t the agent’s intelligence—it’s that we keep making ourselves the feedback loop. If the agent could run lint, types, unit tests, an end-to-end probe, a visual diff, and a second-opinion review on its own, it would catch most of its own mistakes before we ever saw them. We’d stop reviewing every edit and start reviewing the ones that escape the loop.
+الفرضية اليوم أن المشكلة ليست ذكاء الوكيل — بل أننا نظلّ نجعل من أنفسنا حلقة التغذية الراجعة. فلو كان الوكيل يستطيع تشغيل التدقيق اللغوي والأنواع واختبارات الوحدة وفحصًا شاملًا من طرف إلى طرف وفرقًا بصريًا ومراجعة برأي ثانٍ بنفسه، لالتقط معظم أخطائه قبل أن نراها أصلًا. عندئذ نتوقّف عن مراجعة كل تعديل ونبدأ بمراجعة التعديلات التي تفلت من الحلقة.
 
-That’s the whole workshop in one sentence: **how do we make it cheap and automatic for an agent to check its own work?**
+هذه هي الورشة كلها في جملة واحدة: **كيف نجعل تحقّق الوكيل من عمله رخيصًا وتلقائيًا؟**
 
-> **About Shelf**
+> **عن Shelf**
 >
-> Every lab in this workshop runs against the same starter project: a small [SvelteKit](https://kit.svelte.dev/) + TypeScript book-rating app called [**Shelf**](https://github.com/stevekinney/shelf-life). It uses [Vitest](https://vitest.dev/) for unit tests and [Playwright](https://playwright.dev/) for end-to-end. You’ll harden it across the day—adding agent rules, a static layer, dossiers, visual regression, and CI—until it’s the codebase the rest of the workshop assumes. If a lab tells you to “open the Shelf starter repo,” that’s the one.
+> كل مختبر في هذه الورشة يعمل على المشروع الانطلاقي نفسه: تطبيق صغير لتقييم الكتب يُسمّى [**Shelf**](https://github.com/stevekinney/shelf-life) ومبنيّ بـ [SvelteKit](https://kit.svelte.dev/) وTypeScript. يستخدم [Vitest](https://vitest.dev/) لاختبارات الوحدة و[Playwright](https://playwright.dev/) للنهاية إلى النهاية. ستقوّيه على مدار اليوم — بإضافة قواعد للوكيل، وطبقة ثابتة، وملفات تشخيص، وانحدار بصري، وتكامل مستمر — حتى يصبح الشيفرة التي تفترضها بقية الورشة. وإذا قال لك مختبر «افتح مستودع Shelf الانطلاقي»، فهو ذاك.
 
-## Why loops beat prompting discipline
+## لماذا تتغلّب الحلقات على الانضباط في كتابة الطلبات
 
-You can get surprisingly far by writing a great prompt. I am not going to tell you to stop doing that. But, prompting discipline has a ceiling, and the ceiling is lower than people think.
+يمكنك أن تصل إلى مدى مدهش بكتابة طلب ممتاز. ولن أطلب منك التوقّف عن ذلك. لكن لانضباط كتابة الطلبات سقفًا، والسقف أدنى مما يظنّ الناس.
 
-Ralph Wiggum at a computer
+رالف ويغوم أمام حاسوب
 
-A prompt is a one-shot instruction. A loop is a process that keeps running until something is true. “Don’t use `waitForTimeout`” is a prompt. A lint rule that fails the build when `waitForTimeout` appears is a loop. The first one works until the agent forgets. The second one works until you delete the rule.
+الطلب تعليمة تُنفَّذ مرة واحدة. أما الحلقة فعملية تستمر حتى يصبح شيء ما صحيحًا. «لا تستخدم `waitForTimeout`» طلب. وقاعدة تدقيق تفشل البناء عند ظهور `waitForTimeout` حلقة. الأولى تعمل حتى ينسى الوكيل. والثانية تعمل حتى تحذف القاعدة.
 
-The interesting thing about loops is that they compound. Every layer you add catches a class of mistake the previous layer missed, and *also* makes the next layer cheaper to add. Once your tests run reliably, writing a visual regression gate is a config change. Once your visual regression gate exists, feeding the diff back to the agent is a few lines of glue. The work stacks.
+المثير في الحلقات أنها تتراكم. فكل طبقة تضيفها تلتقط صنفًا من الأخطاء فاتته الطبقة السابقة، *وتجعل* إضافة الطبقة التالية أرخص. فحين تعمل اختباراتك بموثوقية، تصبح كتابة بوابة انحدار بصري تغييرًا في الإعداد. وحين توجد بوابتك البصرية، يصبح إرجاع الفرق إلى الوكيل بضعة أسطر من الغراء. العمل يتراكم.
 
-A chart diagramming the Ralph Loop
+مخطّط يوضّح حلقة رالف
 
-## The three beats of the day
+## الحركات الثلاث لليوم
 
-The lessons are ordered to start where you probably came here to start—agent-driven verification of real UI work—and to save the broader scaffolding for the end, where it flows naturally into CI.
+الدروس مرتّبة لتبدأ من حيث جئت غالبًا لتبدأ — التحقّق من عمل واجهة حقيقية بقيادة الوكيل — وتؤجّل السقالات الأوسع إلى النهاية، حيث تنساب طبيعيًا إلى التكامل المستمر.
 
-Think of the arc in three beats.
+فكّر في المسار على ثلاث حركات.
 
-**Prove the UI behaves.** Most of the morning. We build the testing muscle the agent needs: the pyramid in context, a [Playwright](https://playwright.dev/) suite that survives a real codebase, visual regression as a live signal, runtime probes that let the agent click around, and failure dossiers that make every red run readable.
+**أثبت أن الواجهة تسلك كما ينبغي.** معظم الصباح. نبني العضلة الاختبارية التي يحتاجها الوكيل: الهرم في سياقه، ومجموعة [Playwright](https://playwright.dev/) تصمد أمام شيفرة حقيقية، والانحدار البصري إشارة حيّة، ومسابر وقت التشغيل التي تتيح للوكيل النقر هنا وهناك، وملفات تشخيص الفشل التي تجعل كل تشغيل أحمر مقروءًا.
 
-**Get a second opinion.** After lunch, we bring in a second agent to review what the first one shipped. Review bots catch the things tests didn’t, and when they flag the same mistake three times in a row they’re telling you what’s missing from your instructions.
+**احصل على رأي ثانٍ.** بعد الغداء، نستعين بوكيل ثانٍ ليراجع ما شحنه الأول. فروبوتات المراجعة تلتقط ما لم تلتقطه الاختبارات، وحين تُشير إلى الخطأ نفسه ثلاث مرات متتالية فإنها تخبرك بما ينقص تعليماتك.
 
-**Underlay the cheap stuff and ship it.** The back half of the day is the stuff that should be running underneath everything—lint, types, dead code detection, git hooks, secret scanning—and then wiring the whole stack into CI so it runs without a human in the room. This lives at the end on purpose. By the time we get there, you’ll know exactly what you want these checks to enforce, which makes the grab-bag feeling of “here’s a bunch of tools” land as answers instead of setup.
+**مهّد الأساسيات الرخيصة وأطلقها.** النصف الأخير من اليوم هو ما ينبغي أن يعمل تحت كل شيء — التدقيق اللغوي، والأنواع، وكشف الشيفرة الميتة، وخطّافات git، وفحص الأسرار — ثم ربط المنظومة كلها بالتكامل المستمر لتعمل دون إنسان في الغرفة. وهذا في النهاية عن قصد. فحين نصل إليه ستكون تعرف بالضبط ما تريد أن تفرضه هذه الفحوص، فيصل «إليك حزمة أدوات» كإجابات لا كإعداد.
 
-## What we’re *not* doing today
+## ما الذي *لا* نفعله اليوم
 
-A few things I want to flag up front so nobody is waiting for the shoe to drop.
+ثمّة أمور قليلة أريد التنبيه إليها منذ البداية كي لا يظلّ أحد ينتظر المفاجأة.
 
-We’re not doing a testing fundamentals course. The good news is that [we have one of those](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney). If you want the full pyramid from first principles, I have two other courses for that — more on those in [The Testing Pyramid as a Feedback Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy). Today assumes you can write a test and we’re focused on what changes when an agent is the one driving.
+لا نقدّم دورة في أساسيات الاختبار. والخبر الجيد أن [لدينا واحدة كذلك](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney). إن أردت الهرم كاملًا من مبادئه الأولى، فلديّ دورتان أخريان لذلك — والمزيد عنهما في [الهرم الاختباري كتسلسل هرمي للتغذية الراجعة](https://stevekinney.com/courses/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy). يفترض اليوم أنك تعرف كتابة اختبار، ونركّز على ما يتغيّر حين يكون الوكيل هو من يقود.
 
-We’re not doing a tour of *every* agent. I’ll call out Codex, Cursor, and Copilot where the patterns differ, but the default is [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) and the default stack is TypeScript, [SvelteKit](https://kit.svelte.dev/), [Vitest](https://vitest.dev/), and [Playwright](https://playwright.dev/). The patterns port; the keybindings don’t.
+لا نقدّم جولة في *كل* وكيل. سأذكر Codex وCursor وCopilot حيث تختلف الأنماط، لكن الافتراضي هو [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)، والمنظومة الافتراضية هي TypeScript و[SvelteKit](https://kit.svelte.dev/) و[Vitest](https://vitest.dev/) و[Playwright](https://playwright.dev/). الأنماط تُنقل؛ أما اختصارات لوحة المفاتيح فلا.
 
-We’re *not* doing a prompt engineering seminar. There’s exactly one upstream lever we care about—instructions that wire the agent into the loop—and that’s the next lesson. Everything else today is about the loop itself.
+لا نقدّم ندوة في هندسة الطلبات. هناك رافعة واحدة في المنبع تهمّنا — تعليمات تربط الوكيل بالحلقة — وهي الدرس التالي. وكل ما عداها اليوم عن الحلقة نفسها.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-If you forget everything else from this opening, remember this: **a feedback loop the agent can run on its own is worth more than a better prompt.** That’s the bet. The rest of the day is us cashing the check.
+إن نسيت كل شيء آخر من هذه الافتتاحية، فتذكّر هذا: **حلقة تغذية راجعة يستطيع الوكيل تشغيلها بنفسه أثمن من طلب أفضل.** هذا هو الرهان. وبقية اليوم هو نحن نصرف الشيك.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Instructions That Wire the Agent In](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)
-- [The Testing Pyramid as a Feedback Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy)
+- [تعليمات تربط الوكيل بالحلقة](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)
+- [الهرم الاختباري كتسلسل هرمي للتغذية الراجعة](https://stevekinney.com/courses/self-testing-ai-agents/the-testing-pyramid-as-a-feedback-hierarchy)

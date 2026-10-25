@@ -1,10 +1,10 @@
 ---
-title: "Storage State Authentication"
-lang: en
+title: "المصادقة بحالة التخزين"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication"
 ---
 
-Here’s a pattern I see in nearly every Playwright suite I inherit—and it is doing more damage than anyone on the team realizes.
+هذا نمط أراه في كل مجموعة Playwright أورثها تقريبًا — وهو يفعل ضررًا أكبر ممّا يدركه أي أحد في الفريق.
 
 ```typescript
 test.beforeEach(async ({ page }) => {
@@ -16,25 +16,25 @@ test.beforeEach(async ({ page }) => {
 });
 ```
 
-Every single test logs in through the UI. Every single test opens the login page, fills in the fields, clicks submit, and waits for the redirect. If your suite has a hundred tests and login takes 1.5 seconds, you’ve just spent 150 seconds of wall time doing the same thing over and over. In CI that’s real money. Locally, it’s the reason nobody runs the full suite.
+كل اختبار على حدة يسجّل الدخول عبر الواجهة. كل اختبار على حدة يفتح صفحة تسجيل الدخول، ويملأ الحقول، وينقر الإرسال، وينتظر إعادة التوجيه. فإن كانت مجموعتك مئة اختبار وكان تسجيل الدخول يستغرق 1.5 ثانية، فقد أنفقت للتوّ 150 ثانية من الزمن الفعلي في تكرار الشيء نفسه مرارًا. وهذا مال حقيقي في التكامل المستمر. وهو محليًا السبب في أن لا أحد يشغّل المجموعة كاملة.
 
-It gets worse. Every one of those logins is *also* a possible point of failure independent of whatever the test is actually testing. If someone changes the email field’s `name` attribute, fifty tests break at once, and none of them have anything to do with login. The test output is a wall of red with “element not found” errors, and an agent looking at that wall of red will happily go rewrite fifty tests when the actual fix is to update one selector in one `beforeEach`.
+بل يزداد الأمر سوءًا. فكل عملية تسجيل دخول من تلك العمليات هي *أيضًا* نقطة فشل محتملة مستقلة عن أي شيء يختبره الاختبار فعلًا. فإن غيّر أحدهم السمة `name` في حقل البريد الإلكتروني، انكسر خمسون اختبارًا دفعة واحدة، ولا علاقة لأي منها بتسجيل الدخول. وتكون مخرجات الاختبار جدارًا أحمر مليئًا بأخطاء «العنصر غير موجود»، والوكيل الذي ينظر إلى ذلك الجدار الأحمر سيمضي بسرور ليعيد كتابة خمسين اختبارًا بينما الإصلاح الفعلي هو تحديث محدّد واحد في `beforeEach` واحد.
 
-There’s a better way. It’s not new. It’s in the [Playwright docs](https://playwright.dev/docs/auth). It’s called [storage state](https://playwright.dev/docs/auth), and almost nobody uses it.
+هناك طريقة أفضل. وليست جديدة. إنها في [وثائق Playwright](https://playwright.dev/docs/auth). اسمها [حالة التخزين](https://playwright.dev/docs/auth)، ولا أحد تقريبًا يستخدمها.
 
-## The idea
+## الفكرة
 
-Log in once, at the start of the test run. Save the resulting browser state—cookies, `localStorage`, and, if you ask for it, `IndexedDB`—to JSON. Tell every test to start from that state instead of starting from a blank browser. Now every test opens already logged in, and you’ve paid the login cost exactly once.
+سجّل الدخول مرّة واحدة، في بداية تشغيل الاختبارات. واحفظ حالة المتصفّح الناتجة — ملفات تعريف الارتباط، و`localStorage`، و`IndexedDB` إن طلبتها — في JSON. وأخبر كل اختبار أن يبدأ من تلك الحالة بدلًا من متصفّح فارغ. الآن يبدأ كل اختبار وقد سُجّل الدخول إليه سلفًا، وقد دفعت كلفة تسجيل الدخول مرّة واحدة بالضبط.
 
-Playwright has first-class support for this. You don’t need plugins, you don’t need clever fixtures, you just need to know where the two knobs are.
+يملك Playwright دعمًا من الدرجة الأولى لهذا. لا تحتاج إلى إضافات، ولا تحتاج إلى تجهيزات بارعة، كل ما تحتاجه أن تعرف أين يوجد المقبضان.
 
-One naming note from the official [authentication docs](https://playwright.dev/docs/auth): the docs use `playwright/.auth/` as the conventional directory. Shelf reserves `playwright/.authentication/` in its `.gitignore` for the lab work in this lesson, which is fine. The convention matters less than the rule: keep the files out of git and make the location obvious.
+ملاحظة تسمية واحدة من [وثائق المصادقة](https://playwright.dev/docs/auth) الرسمية: تستخدم الوثائق `playwright/.auth/` كمجلد اصطلاحي. أما Shelf فيحجز `playwright/.authentication/` في ملف `.gitignore` لعمل المختبر في هذا الدرس، وهذا لا بأس به. الاصطلاح أقل أهمية من القاعدة: أبقِ الملفات خارج git واجعل الموقع واضحًا.
 
-## The setup
+## التهيئة
 
-Create a Playwright setup file—this lab adds `tests/authentication.setup.ts` to Shelf—that logs in and writes the state to a file. There are two ways to do the “log in” part, and both are worth knowing.
+أنشئ ملف تهيئة Playwright — يضيف هذا المختبر `tests/authentication.setup.ts` إلى Shelf — يسجّل الدخول ويكتب الحالة إلى ملف. وهناك طريقتان لأداء جزء «تسجيل الدخول»، وكلتاهما تستحقّ المعرفة.
 
-### Option A: Log in through the UI
+### الخيار أ: تسجيل الدخول عبر الواجهة
 
 ```typescript
 import { test as setup, expect } from '@playwright/test';
@@ -54,9 +54,9 @@ setup('authenticate', async ({ page }) => {
 });
 ```
 
-This is the conservative default and the one Shelf uses. It runs the real login flow—the same page, same form, same redirect—just once per Playwright invocation instead of once per test. The side effect is that it doubles as a smoke test: if someone breaks the login form, the setup fails before any other test runs, and the error is obvious.
+هذا هو الافتراضي المحافظ، وهو ما يستخدمه Shelf. إنه يشغّل تدفّق تسجيل الدخول الحقيقي — الصفحة نفسها، والنموذج نفسه، وإعادة التوجيه نفسها — مرّة واحدة لكل استدعاء Playwright بدلًا من مرّة لكل اختبار. والأثر الجانبي أنه يعمل أيضًا كاختبار دخان: فإن كسر أحدهم نموذج تسجيل الدخول، فشلت التهيئة قبل أن يعمل أي اختبار آخر، وكان الخطأ واضحًا.
 
-### Option B: Hit the auth endpoint directly
+### الخيار ب: ضرب نقطة نهاية المصادقة مباشرة
 
 ```typescript
 import { test as setup, expect } from '@playwright/test';
@@ -77,17 +77,17 @@ setup('authenticate', async ({ request }) => {
 });
 ```
 
-No page load, no DOM rendering, no dependency on the login form’s markup. This is faster and more resilient to UI changes. The tradeoff: if someone breaks the login form, the setup still passes, and you won’t find out until a user reports it—or until you have a separate test that exercises the login page directly.
+لا تحميل صفحة، ولا عرض DOM، ولا اعتماد على ترميز نموذج تسجيل الدخول. هذا أسرع وأكثر صمودًا أمام تغييرات الواجهة. والمقايضة: إن كسر أحدهم نموذج تسجيل الدخول، ظلّت التهيئة تنجح، ولن تعرف حتى يبلّغ مستخدم — أو حتى يكون لديك اختبار منفصل يمارس صفحة تسجيل الدخول مباشرة.
 
-If your app uses a plain JSON auth endpoint instead of a SvelteKit form action, replace the path and switch `form: { ... }` for `data: { ... }` so the body is sent as JSON.
+إن كان تطبيقك يستخدم نقطة نهاية مصادقة JSON عادية بدلًا من إجراء نموذج SvelteKit، فاستبدل المسار وحوّل `form: { ... }` إلى `data: { ... }` كي يُرسل الجسم بصيغة JSON.
 
-### Which one?
+### أيّهما تختار؟
 
-Use the UI approach when login is fast and you want the free smoke test. Use the API approach when login is slow (OAuth redirects, CAPTCHAs in staging, multi-step flows) or when you already have a dedicated login test and don’t need the setup to double as one.
+استخدم نهج الواجهة حين يكون تسجيل الدخول سريعًا وتريد اختبار الدخان المجاني. واستخدم نهج واجهة البرمجة حين يكون تسجيل الدخول بطيئًا (إعادات توجيه OAuth، واختبارات CAPTCHA في بيئة الاختبار، وتدفّقات متعدّدة الخطوات)، أو حين يكون لديك سلفًا اختبار تسجيل دخول مخصّص ولا تحتاج أن يعمل التهيئة كاختبار ثانٍ.
 
-### What the storage state file and object look like
+### كيف يبدو ملف حالة التخزين والكائن
 
-Either way, Playwright can write a JSON file to `playwright/.authentication/user.json` that looks roughly like this:
+في كلتا الحالتين، يستطيع Playwright كتابة ملف JSON في `playwright/.authentication/user.json` يبدو تقريبًا هكذا:
 
 ```json
 {
@@ -117,7 +117,7 @@ Either way, Playwright can write a JSON file to `playwright/.authentication/user
 }
 ```
 
-That file-on-disk shape is also the basic object shape you can pass directly to `storageState` in code. If you export with `indexedDB: true`, Playwright can add extra snapshot data for you, but the hand-authored inline form still starts with `cookies` and `origins`. You do *not* have to read from a file if the state is small enough that inlining it is clearer.
+هذا الشكل على القرص هو أيضًا شكل الكائن الأساسي الذي يمكنك تمريره مباشرة إلى `storageState` في الشيفرة. وإن صدّرت مع `indexedDB: true`، فيمكن لـPlaywright أن يضيف بيانات لقطة إضافية لك، لكن الصيغة المضمّنة المكتوبة يدويًا تبدأ دائمًا بـ`cookies` و`origins`. ولستَ *مضطرًا* إلى القراءة من ملف إن كانت الحالة صغيرة بما يكفي ليكون تضمينها أوضح.
 
 ```typescript
 import { test } from '@playwright/test';
@@ -159,7 +159,7 @@ test('opens already signed in from an inline object', async ({ page }) => {
 });
 ```
 
-That is useful when you want a tiny synthetic state for one spec file, when you want to force a known logged-out state, or when the filesystem dependency is more ceremony than value.
+يفيد ذلك حين تريد حالة اصطناعية صغيرة لملف مواصفة واحد، أو حين تريد فرض حالة مسجّلة الخروج معروفة، أو حين يكون الاعتماد على نظام الملفات مراسم أكثر من قيمته.
 
 ```typescript
 import { test } from '@playwright/test';
@@ -167,54 +167,54 @@ import { test } from '@playwright/test';
 test.use({ storageState: { cookies: [], origins: [] } });
 ```
 
-Every field in the inline object matters. In current Playwright docs and the installed Playwright `1.59.x` types in this repository, the object form accepts exactly two top-level keys: `cookies` and `origins`.
+كل حقل في الكائن المضمّن مهم. في وثائق Playwright الحالية وأنواع Playwright `1.59.x` المثبّتة في هذا المستودع، تقبل صيغة الكائن مفتاحين علويين بالضبط: `cookies` و`origins`.
 
 #### `cookies`
 
-This is an array of cookie objects to preload into the browser context.
+هذه مصفوفة من كائنات ملفات تعريف الارتباط تُحمَّل مسبقًا في سياق المتصفّح.
 
-- **`name`:** The cookie name.
-- **`value`:** The cookie value.
-- **`domain`:** Which host the cookie belongs to. Prefix with `.` if you want it to apply to subdomains too, such as `.example.com`.
-- **`path`:** Which URL path the cookie applies to. `'/'` means the whole site.
-- **`expires`:** Expiration time as a Unix timestamp in seconds.
-- **`httpOnly`:** Whether JavaScript in the page can read the cookie. `true` means `document.cookie` cannot see it.
-- **`secure`:** Whether the cookie should only be sent over HTTPS.
-- **`sameSite`:** Cross-site behavior. `'Strict'` is the most restrictive, `'Lax'` is the common default, and `'None'` allows cross-site usage.
+- **`name`:** اسم ملف تعريف الارتباط.
+- **`value`:** قيمة ملف تعريف الارتباط.
+- **`domain`:** المضيف الذي ينتمي إليه ملف تعريف الارتباط. أضف النقطة `.` في البداية إن أردت أن ينطبق على النطاقات الفرعية أيضًا، مثل `.example.com`.
+- **`path`:** مسار URL الذي ينطبق عليه ملف تعريف الارتباط. وتعني `'/'` الموقع كله.
+- **`expires`:** وقت الانتهاء كطابع زمني Unix بالثواني.
+- **`httpOnly`:** هل يستطيع JavaScript في الصفحة قراءة ملف تعريف الارتباط. وتعني `true` أن `document.cookie` لا يراه.
+- **`secure`:** هل ينبغي إرسال ملف تعريف الارتباط عبر HTTPS فقط.
+- **`sameSite`:** السلوك عبر المواقع. `'Strict'` هي الأكثر تقييدًا، و`'Lax'` هي الافتراضي الشائع، و`'None'` تسمح بالاستخدام عبر المواقع.
 
 #### `origins`
 
-This is an array of origin-scoped storage buckets. Each one maps to one exact browser origin.
+هذه مصفوفة من حزم تخزين محصورة بنطاق أصل. كل واحدة تقابل أصل متصفّح واحدًا بعينه.
 
-- **`origin`:** The exact scheme, host, and port, such as `http://localhost:5173`. If the page runs on a different origin, these entries do nothing.
-- **`localStorage`:** The `localStorage` entries to preload for that origin.
+- **`origin`:** المخطّط والمضيف والمنفذ بالضبط، مثل `http://localhost:5173`. فإن كانت الصفحة تعمل على أصل مختلف، فلا تفعل هذه المدخلات شيئًا.
+- **`localStorage`:** مدخلات `localStorage` التي تُحمَّل مسبقًا لذلك الأصل.
 
 #### `localStorage`
 
-Each `localStorage` entry is a name/value pair.
+كل مدخل `localStorage` زوج اسم/قيمة.
 
-- **`name`:** The key.
-- **`value`:** The stored string value. `localStorage` is string-only, so objects need `JSON.stringify(...)`.
+- **`name`:** المفتاح.
+- **`value`:** القيمة النصية المخزّنة. فـ`localStorage` لا يقبل إلا النصوص، لذا تحتاج الكائنات إلى `JSON.stringify(...)`.
 
-#### What is *not* in this object
+#### ما الذي *لا* يوجد في هذا الكائن
 
-This is the part people mix up.
+هذا هو الجزء الذي يخلط فيه الناس.
 
-- There is no top-level `path` key here. `path` belongs to [`browserContext.storageState({ path })`](https://playwright.dev/docs/api/class-browsercontext#browser-context-storage-state) when you are *exporting* state to disk.
-- There is no top-level `indexedDB` key here either. `indexedDB: true` is also an *export* option on `browserContext.storageState(...)`, not something you usually hand-author in the inline input object.
-- There is no `sessionStorage` key. [Playwright’s auth docs](https://playwright.dev/docs/auth#session-storage) are explicit that `sessionStorage` is not persisted by `storageState`; if your app stores auth there, you need an `addInitScript` recipe instead.
-- There is no cookie `url` shortcut in this shape. `url` exists on [`browserContext.addCookies()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-cookies), but `storageState` expects `domain` and `path`.
+- لا يوجد هنا مفتاح `path` في المستوى الأعلى. فـ`path` ينتمي إلى [`browserContext.storageState({ path })`](https://playwright.dev/docs/api/class-browsercontext#browser-context-storage-state) حين تكون *تصدّر* الحالة إلى القرص.
+- ولا يوجد هنا مفتاح `indexedDB` في المستوى الأعلى أيضًا. فـ`indexedDB: true` خيار *تصدير* أيضًا في `browserContext.storageState(...)`، لا شيء تكتبه يدويًا عادةً في كائن الإدخال المضمّن.
+- لا يوجد مفتاح `sessionStorage`. و[وثائق المصادقة في Playwright](https://playwright.dev/docs/auth#session-storage) صريحة في أن `storageState` لا يحفظ `sessionStorage`؛ فإن كان تطبيقك يخزّن المصادقة هناك، فأنت بحاجة إلى وصفة `addInitScript` بدلًا من ذلك.
+- لا يوجد اختصار `url` لملف تعريف الارتباط في هذا الشكل. فـ`url` موجود في [`browserContext.addCookies()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-cookies)، لكن `storageState` يتوقّع `domain` و`path`.
 
-So the mental model is:
+فالنموذج الذهني هو:
 
-- `browserContext.storageState({ path, indexedDB })`: export state
-- `test.use({ storageState })` or `browser.newContext({ storageState })`: consume a file path or an inline object with `cookies` and `origins`
+- `browserContext.storageState({ path, indexedDB })`: تصدير الحالة
+- `test.use({ storageState })` أو `browser.newContext({ storageState })`: استهلاك مسار ملف أو كائن مضمّن فيه `cookies` و`origins`
 
-## A few advanced auth-state edges
+## بعض الحالات الحدّية المتقدّمة في حالة المصادقة
 
-Three smaller APIs are worth knowing once the basic pattern is in place.
+ثلاث واجهات برمجية أصغر تستحقّ المعرفة بعد أن يستقرّ النمط الأساسي.
 
-First, if your auth data lives in browser-managed storage beyond cookies and `localStorage`, export with `indexedDB: true`:
+أولًا، إن كانت بيانات مصادقتك تعيش في تخزين يديره المتصفّح خارج ملفات تعريف الارتباط و`localStorage`، فصدّر مع `indexedDB: true`:
 
 ```typescript
 await page.context().storageState({
@@ -223,17 +223,17 @@ await page.context().storageState({
 });
 ```
 
-That matters for SDK-driven auth flows that stash tokens in IndexedDB instead of cookies.
+يهمّ ذلك في تدفّقات المصادقة التي تقودها حزم SDK وتخزّن الرموز في IndexedDB بدلًا من ملفات تعريف الارتباط.
 
-Second, newer Playwright versions add [`browserContext.setStorageState()`](https://playwright.dev/docs/api/class-browsercontext). That lets you clear the current cookies, `localStorage`, and IndexedDB and apply a fresh state to the same context. Most test suites are still better served by “new context per test,” but if you are writing a very deliberate role-switching or reset helper, this is cleaner than trying to mutate the old session piecemeal.
+ثانيًا، تضيف إصدارات Playwright الأحدث [`browserContext.setStorageState()`](https://playwright.dev/docs/api/class-browsercontext). وهو يتيح لك مسح ملفات تعريف الارتباط الحالية، و`localStorage`، وIndexedDB، وتطبيق حالة جديدة على السياق نفسه. وما زالت معظم مجموعات الاختبار تُخدَم على نحو أفضل بـ«سياق جديد لكل اختبار»، لكن إن كنت تكتب مساعدًا متعمّدًا لتبديل الأدوار أو إعادة الضبط، فهذا أنظف من محاولة تغيير الجلسة القديمة قطعةً قطعة.
 
-Third, if you test CHIPS or partitioned third-party cookies, cookie objects can carry a `partitionKey`. Shelf does not need this. It is worth knowing the shape exists before you spend an afternoon wondering why a modern third-party cookie test is missing part of the session model.
+ثالثًا، إن كنت تختبر CHIPS أو ملفات تعريف الارتباط الخارجية المقسّمة، فيمكن لكائنات ملفات تعريف الارتباط أن تحمل `partitionKey`. ولا يحتاج Shelf إلى هذا. لكن يستحقّ أن تعرف أن الشكل موجود قبل أن تنفق عصرًا تتساءل لماذا يفتقد اختبار حديث لملفات تعريف الارتباط الخارجية جزءًا من نموذج الجلسة.
 
-## Wiring it into the config
+## توصيله بالتهيئة
 
-This is where [Playwright projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) earn their keep. If you haven’t read that lesson yet, the short version: a project is a named block in `playwright.config.ts` with its own settings and dependencies. Playwright runs them in dependency order, like a mini build graph.
+هنا [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) تثبت قيمتها. وإن لم تكن قد قرأت ذلك الدرس بعد، فالنسخة القصيرة: المشروع كتلة مسمّاة في `playwright.config.ts` لها إعداداتها واعتمادياتها. ويشغّلها Playwright بترتيب الاعتماديات، كرسم بياني مصغّر للبناء.
 
-For authentication, you split the config into two projects—one that logs in, and one that runs the actual tests:
+وللمصادقة، تقسّم التهيئة إلى مشروعين — واحد يسجّل الدخول، وآخر يشغّل الاختبارات الفعلية:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
@@ -256,7 +256,7 @@ export default defineConfig({
 });
 ```
 
-The `setup` project matches only the authentication setup file. The `chromium` project depends on `setup`, so Playwright guarantees the login runs first. Every test in `chromium` starts with the saved session pre-loaded—no login code, no `beforeEach`, nothing.
+مشروع `setup` يطابق ملف تهيئة المصادقة فقط. ومشروع `chromium` يعتمد على `setup`، فيضمن Playwright أن تسجيل الدخول يعمل أولًا. وكل اختبار في `chromium` يبدأ والجلسة المحفوظة محمّلة مسبقًا — لا شيفرة تسجيل دخول، ولا `beforeEach`، ولا شيء.
 
 ```
 flowchart TD
@@ -271,7 +271,7 @@ flowchart TD
   style F fill:#c8e6c9
 ```
 
-Tests that used to begin with a login flow now begin at `/shelf` already authenticated:
+الاختبارات التي كانت تبدأ بتدفّق تسجيل دخول تبدأ الآن من `/shelf` وقد سُجّل الدخول إليها مسبقًا:
 
 ```typescript
 test('rate a book', async ({ page }) => {
@@ -285,11 +285,11 @@ test('rate a book', async ({ page }) => {
 });
 ```
 
-The login code is gone. The login *concern* is gone. If login breaks, exactly one test fails—the setup test—and the error tells you unambiguously that login itself is broken, not that “everything is flaky.”
+ذهبت شيفرة تسجيل الدخول. وذهب *همّ* تسجيل الدخول. فإن انكسر تسجيل الدخول، فشل اختبار واحد بالضبط — اختبار التهيئة — وأخبرك الخطأ بلا لبس أن تسجيل الدخول نفسه معطوب، لا أن «كل شيء متقلّب».
 
-## Multiple roles
+## أدوار متعدّدة
 
-Shelf has an admin surface for featuring books on the home page. So we need two authenticated contexts: a regular user and an admin. Easy:
+لدى Shelf واجهة إدارة لإبراز كتب في الصفحة الرئيسية. لذا نحتاج سياقين مصادَقين: مستخدمًا عاديًا ومشرفًا. سهل:
 
 ```typescript
 // authentication.setup.ts
@@ -304,7 +304,7 @@ setup('authenticate as admin', async ({ page }) => {
 });
 ```
 
-Then in the config, two test projects:
+ثم في التهيئة، مشروعا اختبار:
 
 ```typescript
 projects: [
@@ -324,39 +324,39 @@ projects: [
 ];
 ```
 
-Organize the tests by role under subdirectories. Every test inherits the right state automatically. No decorators, no fixtures-within-fixtures, no clever `beforeEach` logic.
+نظّم الاختبارات حسب الدور تحت مجلدات فرعية. فيرث كل اختبار الحالة الصحيحة تلقائيًا. لا مزخرفات، ولا تجهيزات داخل تجهيزات، ولا منطق `beforeEach` بارع.
 
-## Third-party providers still end in storage state
+## مزوّدو المصادقة الخارجيون ينتهون أيضًا إلى حالة التخزين
 
-If your app signs in through Google OAuth, Okta, Microsoft, Auth0, or some other external identity provider, the storage-state pattern still applies. What changes is not the destination but *how you obtain the authenticated state*.
+إن كان تطبيقك يسجّل الدخول عبر Google OAuth، أو Okta، أو Microsoft، أو Auth0، أو أي مزوّد هوية خارجي آخر، فنمط حالة التخزين ينطبق أيضًا. وما يتغيّر ليس الوجهة بل *كيف تحصل على الحالة المصادَقة*.
 
-The dedicated lesson, [Testing Third-Party Authentication](https://stevekinney.com/courses/self-testing-ai-agents/testing-third-party-authentication), covers the pattern in detail: keep one narrow smoke test for “the redirect starts,” bootstrap your application’s own session for the normal test suite, and reserve full real-provider flows for a separate smoke lane when you truly need them.
+يغطّي الدرس المخصّص، [اختبار المصادقة عبر طرف ثالث](https://stevekinney.com/courses/self-testing-ai-agents/testing-third-party-authentication)، النمط بالتفصيل: أبقِ اختبار دخان ضيّقًا واحدًا لـ«إعادة التوجيه تبدأ»، وهيِّئ جلسة تطبيقك الخاصة للمجموعة العادية، واحفظ تدفّقات المزوّد الحقيقي الكاملة لمسار دخان منفصل حين تحتاجها فعلًا.
 
-## The `.gitignore` you need
+## ملف `.gitignore` الذي تحتاجه
 
-The authentication state files contain real cookies. Do not commit them. Add this to `.gitignore`:
+تحتوي ملفات حالة المصادقة على ملفات تعريف ارتباط حقيقية. لا تلتزم بها. أضف هذا إلى `.gitignore`:
 
 ```
 playwright/.authentication/
 # or `playwright/.auth/` if you follow the Playwright docs convention
 ```
 
-And do not skip this step. I have seen session cookies committed to public repos twice. Both times it was an agent that did it. Put the ignore line in before the agent writes the setup file, not after.
+ولا تتخطَّ هذه الخطوة. رأيت ملفات تعريف ارتباط جلسة تُلتزم في مستودعات عامة مرّتين. وفي المرّتين كان الوكيل هو من فعلها. ضع سطر التجاهل قبل أن يكتب الوكيل ملف التهيئة، لا بعده.
 
-## When to re-authenticate
+## متى تعيد المصادقة
 
-Storage state files don’t expire on their own. If your session cookies are short-lived (which they should be), the state file will eventually be stale, and your tests will start failing with “redirected to /login” errors.
+ملفات حالة التخزين لا تنتهي من تلقاء نفسها. فإن كانت ملفات تعريف ارتباط جلستك قصيرة العمر (كما ينبغي أن تكون)، فسيصبح ملف الحالة قديمًا في نهاية المطاف، وستبدأ اختباراتك بالفشل بأخطاء «أُعيد التوجيه إلى /login».
 
-Two options exist:
+يوجد خياران:
 
-- Regenerate the state file on every Playwright run. The `setup` project approach above does this automatically—every `npx playwright test` runs the login again.
-- Cache the state file with a TTL. There are recipes in the Playwright docs if you want this. I usually don’t—regenerating on every run is cheap enough that I don’t bother with caching.
+- إعادة توليد ملف الحالة عند كل تشغيل Playwright. ونهج مشروع `setup` أعلاه يفعل ذلك تلقائيًا — فكل `npx playwright test` يشغّل تسجيل الدخول من جديد.
+- تخزين ملف الحالة مؤقتًا بمدة صلاحية. وتوجد وصفات في وثائق Playwright إن أردت ذلك. وأنا لا أفعلها عادةً — فإعادة التوليد عند كل تشغيل رخيصة بما يكفي لأنني لا أكلّف نفسي عناء التخزين المؤقت.
 
-> **Tip**
+> **نصيحة**
 >
-> The setup-project pattern is the safest default for workshop code because it gives you a fresh, browser-real authentication state on every run. Cache the file only when you have measured the setup as a bottleneck and you understand the failure modes around expired cookies.
+> نمط مشروع التهيئة هو الافتراضي الأكثر أمانًا لشيفرة الورشة لأنه يمنحك حالة مصادقة طازجة وحقيقية في المتصفّح عند كل تشغيل. لا تخزّن الملف مؤقتًا إلا حين تقيس التهيئة كعنق زجاجة وتفهم أنماط الفشل المتعلّقة بملفات تعريف الارتباط المنتهية.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Playwright authentication
@@ -374,15 +374,15 @@ Two options exist:
   Do not fix it by adding `page.goto('/login')` to the test.
 ```
 
-That last rule is specifically there to stop the agent from “fixing” the symptom when the setup is broken. I have watched an agent, given a redirect error, revert six months of storage-state work because it was easier to copy-paste a login block into the failing test. The rule makes that explicitly off-limits.
+القاعدة الأخيرة موجودة تحديدًا لمنع الوكيل من «إصلاح» العَرَض حين تكون التهيئة معطوبة. لقد شاهدت وكيلًا، حين أُعطي خطأ إعادة توجيه، يتراجع عن ستة أشهر من العمل على حالة التخزين لأن نسخ كتلة تسجيل دخول ولصقها في الاختبار الفاشل كان أسهل. القاعدة تجعل ذلك ممنوعًا صراحةً.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-You log in once per run, not once per test. The cost savings are real, the stability improvements are bigger than the cost savings, and the pattern is one of the few places where Playwright’s defaults are genuinely well-designed and almost nobody uses them. Put it in the instructions file. The agent will thank you by not writing a hundred login blocks.
+تسجّل الدخول مرّة لكل تشغيل، لا مرّة لكل اختبار. والوفورات في الكلفة حقيقية، وتحسينات الاستقرار أكبر من الوفورات، والنمط واحد من الأماكن القليلة التي تكون فيها إعدادات Playwright الافتراضية مصمّمة تصميمًا جيدًا فعلًا ولا يستخدمها أحد تقريبًا. ضعه في ملف التعليمات. وسيشكرك الوكيل بأن لا يكتب مئة كتلة تسجيل دخول.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
-- [Testing Third-Party Authentication](https://stevekinney.com/courses/self-testing-ai-agents/testing-third-party-authentication)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
+- [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
+- [اختبار المصادقة عبر طرف ثالث](https://stevekinney.com/courses/self-testing-ai-agents/testing-third-party-authentication)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [تسجيل ملفات HAR لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)

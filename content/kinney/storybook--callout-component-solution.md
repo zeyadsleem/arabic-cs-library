@@ -1,16 +1,16 @@
 ---
-title: "Implementing a Calllout Component"
-lang: en
+title: "تنفيذ مكوّن Callout"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/callout-component-solution"
 ---
 
-> **This is the solution for a previous exercise**
+> **هذا حل تمرين سابق**
 >
-> You can see the setup for this exercise [here](https://stevekinney.com/courses/storybook/callout-component-exercise)—or, you can just follow along.
+> يمكنك رؤية إعداد هذا التمرين [هنا](https://stevekinney.com/courses/storybook/callout-component-exercise)—أو يمكنك ببساطة المتابعة.
 
-## Getting the Variants Set Up
+## تهيئة المتغيّرات
 
-The first thing I’m going to do is fill out he variants since it’s pretty easy.
+أول شيء سأفعله هو ملء المتغيّرات، فهذا سهل جدًا.
 
 ```typescript
 const variants = cva(['p-4', 'rounded', 'border', 'shadow-md', 'space-y-4'], {
@@ -30,7 +30,7 @@ const variants = cva(['p-4', 'rounded', 'border', 'shadow-md', 'space-y-4'], {
 });
 ```
 
-I do need to pass that information to the component.
+أحتاج إلى تمرير تلك المعلومة إلى المكوّن.
 
 ```typescript
 export const Callout = ({ title, children, type }: CalloutProps) => (
@@ -41,9 +41,9 @@ export const Callout = ({ title, children, type }: CalloutProps) => (
 );
 ```
 
-## Adding Dark Mode Classes
+## إضافة أصناف الوضع الداكن
 
-This is arguably more of the same, but I wanted to do a sanity check with the first part before diving in too deep. This is really a game off adding more classes.
+يمكن القول إن هذا تكرار لِما سبق، لكني أردت إجراء فحص سريع على الجزء الأول قبل الغوص بعيدًا. فالأمر حقًا مجرّد لعبة إضافة أصناف أكثر.
 
 ```typescript
 const variants = cva(['p-4', 'rounded', 'border', 'shadow-md', 'space-y-4'], {
@@ -105,11 +105,11 @@ const variants = cva(['p-4', 'rounded', 'border', 'shadow-md', 'space-y-4'], {
 });
 ```
 
-I should now be supporting dark mode out of the box.
+يُفترض أنني الآن أدعم الوضع الداكن جاهزًا.
 
-## Adding More Stories
+## إضافة قصص أكثر
 
-I want a story for each of these.
+أريد قصة لكل واحد من هذه.
 
 ```typescript
 export const Default: Story = {};
@@ -145,9 +145,9 @@ export const Danger: Story = {
 };
 ```
 
-## Improving the Stories
+## تحسين القصص
 
-I can play around with the [`argTypes`](https://stevekinney.com/courses/storybook/arg-types) to create a nicer experience.
+يمكنني العبث بـ [`argTypes`](https://stevekinney.com/courses/storybook/arg-types) لإنشاء تجربة أجمل.
 
 ```typescript
 const meta = {
@@ -183,9 +183,9 @@ const meta = {
 } satisfies Meta<typeof Callout>;
 ```
 
-## Bonus Lap: Adding a Documentation Page
+## جولة إضافية: إضافة صفحة توثيق
 
-In `src/components/callout/callout.mdx`:
+في `src/components/callout/callout.mdx`:
 
 ```typescript
 import {Meta, Stories, Story, Controls} from '@storybook/blocks';

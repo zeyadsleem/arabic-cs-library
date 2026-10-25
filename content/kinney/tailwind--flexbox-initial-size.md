@@ -1,25 +1,25 @@
 ---
-title: "Initial Size"
-lang: en
+title: "الحجم الأولي"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-initial-size"
 ---
 
-Set the initial size of flex items before they grow or shrink using `basis-*` utilities.
+اضبط الحجم الأولي لعناصر flex قبل نموها أو انكماشها باستخدام أدوات `basis-*`.
 
-## Common Values
+## القيم الشائعة
 
-- `basis-auto` - Size based on content
-- `basis-0` - Start from zero width
-- `basis-full` - 100% of container
-- `basis-1/2` - 50% of container
-- `basis-1/3` - 33.333% of container
-- `basis-2/3` - 66.667% of container
-- `basis-1/4` - 25% of container
-- `basis-3/4` - 75% of container
+- `basis-auto` - الحجم بناءً على المحتوى
+- `basis-0` - البدء من عرض صفر
+- `basis-full` - 100% من الحاوية
+- `basis-1/2` - 50% من الحاوية
+- `basis-1/3` - 33.333% من الحاوية
+- `basis-2/3` - 66.667% من الحاوية
+- `basis-1/4` - 25% من الحاوية
+- `basis-3/4` - 75% من الحاوية
 
-## Spacing Scale
+## مقياس التباعد
 
-Use numeric values from the spacing scale:
+استخدم قيمًا رقمية من مقياس التباعد:
 
 - `basis-4` - 1rem
 - `basis-8` - 2rem
@@ -27,18 +27,18 @@ Use numeric values from the spacing scale:
 - `basis-32` - 8rem
 - `basis-64` - 16rem
 
-## Flex Shorthand
+## اختصار flex
 
-Combine grow, shrink, and basis with flex utilities:
+ادمج grow وshrink وbasis مع أدوات flex:
 
-- `flex-1` - `flex: 1 1 0%` (grow and shrink from 0)
-- `flex-auto` - `flex: 1 1 auto` (grow and shrink from content size)
-- `flex-initial` - `flex: 0 1 auto` (shrink only)
-- `flex-none` - `flex: 0 0 auto` (fixed size)
+- `flex-1` - `flex: 1 1 0%` (ينمو وينكمش من 0)
+- `flex-auto` - `flex: 1 1 auto` (ينمو وينكمش من حجم المحتوى)
+- `flex-initial` - `flex: 0 1 auto` (انكماش فقط)
+- `flex-none` - `flex: 0 0 auto` (حجم ثابت)
 
-## Common Patterns
+## أنماط شائعة
 
-*Common Patterns — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/85a4f7a8e89ee6cd9da297b8fbf6123f413ef4f3cd44b68b798a98da623db032.html)*
+*أنماط شائعة — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/85a4f7a8e89ee6cd9da297b8fbf6123f413ef4f3cd44b68b798a98da623db032.html)*
 
 ```html
 <!-- Three equal columns -->

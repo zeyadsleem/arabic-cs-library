@@ -1,146 +1,146 @@
 ---
-title: "Built-In Animations"
-lang: en
+title: "الحركات المدمجة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/built-in-animations"
 ---
 
-CSS transforms (rotate, scale, skew, translate) add visual impact to UIs. Tailwind CSS provides utility classes for these properties, allowing you to apply them directly in HTML.
+تضيف تحويلات CSS (الدوران، والتحجيم، والإمالة، والإزاحة) حضورًا بصريًا لواجهات المستخدم. ويوفّر Tailwind CSS أصنافًا مساعِدة لهذه الخصائص، فتسمح لك بتطبيقها مباشرةً داخل HTML.
 
-## Core Transform Properties
+## خصائص التحويل الأساسية
 
-Understanding these CSS properties is key to using transforms:
+فهم خصائص CSS هذه هو مفتاح استخدام التحويلات:
 
-### The `transform` Property
+### الخاصية `transform`
 
-This property applies transform functions (e.g., `rotate()`, `scale()`). Tailwind utilities set this, often using CSS variables to combine multiple effects.
+تطبّق هذه الخاصية دوال التحويل (مثل `rotate()`، `scale()`). وتضبطها أصناف Tailwind، وغالبًا باستخدام متغيّرات CSS لدمج عدة تأثيرات.
 
-### The `transform-origin` Property
+### الخاصية `transform-origin`
 
-Transforms originate from an element’s center by default. `transform-origin` changes this point. Tailwind offers utilities to control this.
+تنشأ التحويلات من مركز العنصر افتراضيًا. وتغيّر `transform-origin` هذه النقطة. ويوفّر Tailwind أصنافًا مساعِدة للتحكّم فيها.
 
-### The `transform-style` Property
+### الخاصية `transform-style`
 
-For 3D transforms, `transform-style` on a parent element determines if children are in 3D space (`preserve-3d`) or flattened (`flat`). Tailwind provides utilities for this.
+في التحويلات ثلاثية الأبعاد، تحدّد `transform-style` على عنصر أب ما إذا كانت العناصر الفرعية في فضاء ثلاثي الأبعاد (`preserve-3d`) أم مسطّحة (`flat`). ويوفّر Tailwind أصنافًا مساعِدة لذلك.
 
-### The `perspective` Property
+### الخاصية `perspective`
 
-For 3D effects, `perspective` on a parent sets a perspective view for children, influencing perceived depth. Tailwind has utilities for this.
+للتأثيرات ثلاثية الأبعاد، تضبط `perspective` على عنصر أب منظورًا لعناصره الفرعية، فتؤثّر في العمق المُدرَك. ويملك Tailwind أصنافًا مساعِدة لذلك.
 
-### The `perspective-origin` Property
+### الخاصية `perspective-origin`
 
-`perspective-origin` sets the vanishing point for the `perspective` effect, defaulting to center. Tailwind utilities adjust this.
+تضبط `perspective-origin` نقطة التلاشي لتأثير `perspective`، وتكون في الوسط افتراضيًا. وتضبطها أصناف Tailwind المساعِدة.
 
-## Tailwind’s Transform Utilities
+## أصناف Tailwind المساعِدة للتحويل
 
-Tailwind offers utility classes for various transformations, often combined using CSS variables.
+يوفّر Tailwind أصنافًا مساعِدة لمختلف عمليات التحويل، تُدمج كثيرًا باستخدام متغيّرات CSS.
 
-### Enabling Transforms
+### تفعيل التحويلات
 
-Applying any transform utility (e.g., `translate-x-*`, `rotate-*`) automatically sets the necessary CSS variables and the `transform` property.
+تطبيق أي صنف تحويل (مثل `translate-x-*`، `rotate-*`) يضبط تلقائيًا متغيّرات CSS الضرورية والخاصية `transform`.
 
-### Translating Elements
+### إزاحة العناصر
 
-Translation moves an element along an axis.
+الإزاحة تنقل عنصرًا على محور ما.
 
-#### 2D Translation
+#### الإزاحة ثنائية الأبعاد
 
-- `translate-x-<number>`: Horizontal movement.
-- `translate-y-<number>`: Vertical movement.
-- `translate-<number>`: Equal horizontal and vertical movement.
+- `translate-x-<number>`: حركة أفقية.
+- `translate-y-<number>`: حركة رأسية.
+- `translate-<number>`: حركة أفقية ورأسية متساوية.
 
-Use spacing scale values (e.g., `translate-4`), percentages (e.g., `translate-1/2`), negative values (e.g., `-translate-x-2`), or custom values (`translate-x-[10px]`).
+استخدم قيم مقياس المسافات (مثل `translate-4`)، أو نسبًا مئوية (مثل `translate-1/2`)، أو قيمًا سالبة (مثل `-translate-x-2`)، أو قيمًا مخصّصة (`translate-x-[10px]`).
 
-#### 3D Translation
+#### الإزاحة ثلاثية الأبعاد
 
-- `translate-z-<number>`: Moves along Z-axis. Usually needs `transform-3d` on the parent.
+- `translate-z-<number>`: تتحرّك على محور Z. وتحتاج عادةً إلى `transform-3d` على العنصر الأب.
 
-### Rotating Elements
+### تدوير العناصر
 
-Rotation spins an element.
+الدوران يُدير عنصرًا.
 
-#### 2D Rotation
+#### الدوران ثنائي الأبعاد
 
-- `rotate-<number>`: Rotates in 2D plane (degrees). Negative values rotate counterclockwise (e.g., `-rotate-45`). Custom values: `rotate-[10deg]`.
+- `rotate-<number>`: يدوّر في المستوى ثنائي الأبعاد (بالدرجات). والقيم السالبة تدوّر عكس عقارب الساعة (مثل `-rotate-45`). والقيم المخصّصة: `rotate-[10deg]`.
 
-#### 3D Rotation
+#### الدوران ثلاثي الأبعاد
 
-- `rotate-x-<number>`: Rotates around X-axis.
-- `rotate-y-<number>`: Rotates around Y-axis.
-- `rotate-z-<number>`: Rotates around Z-axis.
+- `rotate-x-<number>`: يدور حول محور X.
+- `rotate-y-<number>`: يدور حول محور Y.
+- `rotate-z-<number>`: يدور حول محور Z.
 
-Combine for complex 3D rotations. Custom values: `rotate-x-[20deg]`.
+اجمعها لدورات ثلاثية الأبعاد معقّدة. والقيم المخصّصة: `rotate-x-[20deg]`.
 
-### Scaling Elements
+### تحجيم العناصر
 
-Scaling changes element size.
+التحجيم يغيّر حجم العنصر.
 
-#### 2D Scaling
+#### التحجيم ثنائي الأبعاد
 
-- `scale-x-<number>`: Scales horizontally.
-- `scale-y-<number>`: Scales vertically.
-- `scale-<number>`: Scales uniformly.
+- `scale-x-<number>`: يحجّم أفقيًا.
+- `scale-y-<number>`: يحجّم رأسيًا.
+- `scale-<number>`: يحجّم بالتساوي.
 
-Values are percentages (e.g., `scale-75` for 75%). Negative values mirror (e.g., `-scale-x-100`). Custom values: `scale-[1.5]`.
+القيم نسب مئوية (مثل `scale-75` لـ 75%). والقيم السالبة تعكس (مثل `-scale-x-100`). والقيم المخصّصة: `scale-[1.5]`.
 
-#### 3D Scaling
+#### التحجيم ثلاثي الأبعاد
 
-- `scale-z-<number>`: Scales along Z-axis.
+- `scale-z-<number>`: يحجّم على محور Z.
 
-### Skewing Elements
+### إمال العناصر
 
-Skewing tilts an element.
+الإمالة تُميل عنصرًا.
 
-- `skew-x-<number>`: Skews horizontally.
-- `skew-y-<number>`: Skews vertically.
-- `skew-<number>`: Skews on both axes.
+- `skew-x-<number>`: يميل أفقيًا.
+- `skew-y-<number>`: يميل رأسيًا.
+- `skew-<number>`: يميل على المحورين.
 
-Values are degrees (e.g., `skew-6`). Negative values: `-skew-y-3`. Custom values: `skew-x-[10deg]`.
+القيم درجات (مثل `skew-6`). والقيم السالبة: `-skew-y-3`. والقيم المخصّصة: `skew-x-[10deg]`.
 
-## Setting the Transform Origin
+## ضبط نقطة أصل التحويل
 
-Change the default center origin with `origin-*` utilities:
+غيّر نقطة الأصل الافتراضية في الوسط باستخدام أصناف `origin-*`:
 
-- `origin-center`, `origin-top`, `origin-top-right`, `origin-right`, `origin-bottom-right`, `origin-bottom`, `origin-bottom-left`, `origin-left`, `origin-top-left`.
+- `origin-center`، `origin-top`، `origin-top-right`، `origin-right`، `origin-bottom-right`، `origin-bottom`، `origin-bottom-left`، `origin-left`، `origin-top-left`.
 
-Custom values: `origin-[25%_75%]`.
+القيم المخصّصة: `origin-[25%_75%]`.
 
-## Working with 3D Transforms
+## العمل مع التحويلات ثلاثية الأبعاد
 
-Tailwind supports 3D transforms with utilities for `transform-style`, `perspective`, and `perspective-origin`, plus 3D transform functions.
+يدعم Tailwind التحويلات ثلاثية الأبعاد عبر أصناف `transform-style` و`perspective` و`perspective-origin`، إضافةً إلى دوال التحويل ثلاثية الأبعاد.
 
-- `transform-3d`: Sets `transform-style: preserve-3d;` on parent for 3D children.
-- `transform-flat`: Sets `transform-style: flat;`.
-- `perspective-<value>`: Sets `perspective` on parent (e.g., `perspective-normal`, or custom).
-- `perspective-origin-<position>`: Sets `perspective-origin` (e.g., `perspective-origin-top`, or custom).
-- `translate-z-<number>`, `rotate-x-<number>`, `rotate-y-<number>`, `rotate-z-<number>`, `scale-z-<number>`: Specific 3D transformations.
+- `transform-3d`: يضبط `transform-style: preserve-3d;` على الأب من أجل العناصر الفرعية ثلاثية الأبعاد.
+- `transform-flat`: يضبط `transform-style: flat;`.
+- `perspective-<value>`: يضبط `perspective` على الأب (مثل `perspective-normal`، أو قيمة مخصّصة).
+- `perspective-origin-<position>`: يضبط `perspective-origin` (مثل `perspective-origin-top`، أو قيمة مخصّصة).
+- `translate-z-<number>`، `rotate-x-<number>`، `rotate-y-<number>`، `rotate-z-<number>`، `scale-z-<number>`: تحويلات ثلاثية الأبعاد بعينها.
 
-## Combining Transforms
+## دمج التحويلات
 
-Easily combine transform utilities (e.g., `translate-x-4 rotate-45 scale-110`). Tailwind uses CSS variables (`--tw-translate-x`, `--tw-rotate`) so multiple transforms apply simultaneously.
+اجمع أصناف التحويل بسهولة (مثل `translate-x-4 rotate-45 scale-110`). ويستخدم Tailwind متغيّرات CSS (`--tw-translate-x`، `--tw-rotate`) بحيث تُطبَّق عدة تحويلات في الوقت نفسه.
 
-## Conditional Transforms
+## التحويلات الشرطية
 
-Apply transforms conditionally with variants.
+طَبِّق التحويلات بشكل شرطي عبر المُبدّلات.
 
-### Responsive Variants
+### مُبدّلات الاستجابة
 
-Use responsive prefixes (`md:`, `lg:`) or container query variants (`@md:`) for breakpoint-specific transforms (e.g., `md:rotate-90`).
+استخدم بادئات الاستجابة (`md:`، `lg:`) أو مُبدّلات استعلامات الحاوية (`@md:`) للتحويلات الخاصة بنقاط توقّف بعينها (مثل `md:rotate-90`).
 
-### State Variants
+### مُبدّلات الحالة
 
-Use state variants (`hover:`, `focus:`, `group-hover:`) for interaction-based transforms (e.g., `hover:scale-110`).
+استخدم مُبدّلات الحالة (`hover:`، `focus:`، `group-hover:`) للتحويلات المبنية على التفاعل (مثل `hover:scale-110`).
 
-### Other Variants
+### مُبدّلات أخرى
 
-Apply transforms based on dark mode (`dark:`), motion preference (`motion-reduce:`), or data attributes (`data-[state=active]:`).
+طَبِّق التحويلات بحسب الوضع الداكن (`dark:`)، أو تفضيل الحركة (`motion-reduce:`)، أو سمات البيانات (`data-[state=active]:`).
 
-## Customizing Transforms
+## تخصيص التحويلات
 
-Customize transform utilities in Tailwind 4 using the `@theme` directive in CSS.
+خصّص أصناف التحويل في Tailwind 4 باستخدام التوجيه `@theme` داخل CSS.
 
-### Customizing Theme Values
+### تخصيص قيم السمة
 
-Define custom values for rotate, scale, etc., in `@theme`.
+عرّف قيمًا مخصّصة للدوران والتحجيم وغيرها في `@theme`.
 
 ```css
 @import 'tailwindcss';
@@ -151,16 +151,16 @@ Define custom values for rotate, scale, etc., in `@theme`.
 }
 ```
 
-This enables classes like `perspective-custom` and `origin-fancy`.
-Use `@theme inline` for values referencing other variables.
+يتيح هذا أصنافًا مثل `perspective-custom` و`origin-fancy`.
+استخدم `@theme inline` للقيم التي تشير إلى متغيّرات أخرى.
 
-### Using Arbitrary Values
+### استخدام القيم التعسّفية
 
-For one-off values, use square brackets: `rotate-[30deg]`, `scale-[1.7]`, `translate-y-[50px]`, `perspective-[100px]`, `origin-[25%_75%]`. In Tailwind 4, reference CSS variables like `w-(--sidebar-width)`.
+للقيم أحادية الاستخدام، استخدم الأقواس المربّعة: `rotate-[30deg]`، `scale-[1.7]`، `translate-y-[50px]`، `perspective-[100px]`، `origin-[25%_75%]`. وفي Tailwind 4، أشِر إلى متغيّرات CSS مثل `w-(--sidebar-width)`.
 
-### Using Theme Variables in Custom CSS
+### استخدام متغيّرات السمة في CSS المخصّص
 
-Customized theme values are available as CSS variables (e.g., `--perspective-custom`) for use in your own CSS.
+تُتاح قيم السمة المخصّصة كمتغيّرات CSS (مثل `--perspective-custom`) لاستخدامها في CSS الخاص بك.
 
 ```css
 .custom-element {
@@ -168,17 +168,17 @@ Customized theme values are available as CSS variables (e.g., `--perspective-cus
 }
 ```
 
-## Performance Optimization
+## تحسين الأداء
 
-CSS transforms are generally performant. For specific issues:
+أداء تحويلات CSS جيد عادةً. أمّا في المشكلات المحدّدة:
 
-- `transform-gpu`: May force hardware acceleration (`translateZ(0)`).
-- `transform-cpu`: Reverts to CPU rendering.
+- `transform-gpu`: قد يُجبر التسريع العتادي (`translateZ(0)`).
+- `transform-cpu`: يرجع إلى التصيير على المعالج.
 
-Use these sparingly. `will-change-transform` can hint to browsers about upcoming changes.
+استخدم هذه بحذر. ويمكن لـ`will-change-transform` أن يلتفت انتباه المتصفحات إلى التغييرات القادمة.
 
-## Removing Transforms
+## إزالة التحويلات
 
-Use `transform-none` to remove transforms, useful for responsive changes.
+استخدم `transform-none` لإزالة التحويلات، وهو أمر مفيد للتغييرات الاستجابة.
 
-Mastering Tailwind’s transform utilities allows for dynamic visual effects directly in HTML.
+وإتقانك لأصناف Tailwind المساعِدة للتحويل يتيح لك تأثيرات بصرية ديناميكية مباشرةً داخل HTML.

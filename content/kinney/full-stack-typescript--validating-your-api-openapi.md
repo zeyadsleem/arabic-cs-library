@@ -1,12 +1,12 @@
 ---
-title: "Validating Your API with OpenAPI"
-lang: en
+title: "التحقق من واجهتك (API) باستخدام OpenAPI"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-your-api-openapi"
 ---
 
-Again, we want to enforce that your server adheres to the specification. Luckily, we have some fancy middleware that will make sure our requests and responses match the specification. Let’s use [`express-openapi-validator`](https://www.npmjs.com/package/express-openapi-validator).
+مرة أخرى، نريد فرض التزام خادمك بالمواصفة. لحسن الحظ، لدينا وسيط (middleware) أنيق سيضمن تطابق طلباتنا واستجاباتنا مع المواصفة. لِنستخدم [`express-openapi-validator`](https://www.npmjs.com/package/express-openapi-validator).
 
-We can then use it as middleware to make sure that our responses are up-to-snuff.
+يمكننا استخدامه كوسطاء للتأكد من أن استجاباتنا مطابقة للمتطلبات.
 
 ```typescript
 import OpenApiValidator from 'express-openapi-validator';

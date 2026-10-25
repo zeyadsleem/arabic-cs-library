@@ -1,20 +1,20 @@
 ---
-title: "The Key Difference Between assert and expect"
-lang: en
+title: "الفرق الجوهري بين assert و expect"
+lang: ar
 source: "https://stevekinney.com/courses/testing/assert-versus-expect"
 ---
 
-> **We Won’t Be Covering This in the Course**
+> **لن نغطي هذا في الدورة**
 >
-> This *honestly* isn’t all that important. I’m including it here just in case you get curious.
+> هذا *بصراحة* ليس مهمًا كثيرًا. أدرجه هنا فقط في حال راودك الفضول.
 
-The key difference between `assert` and `expect` lies in their **usage patterns** and **API styles** in testing libraries. Both are used for writing assertions (i.e., verifying that certain conditions hold true in your tests), but they differ in syntax, style, and flexibility.
+يكمن الفرق الجوهري بين `assert` و`expect` في **أنماط الاستخدام** و**أنماط الواجهة** في مكتبات الاختبار. يُستخدم كلاهما لكتابة التحققات (أي التحقق من صحة شروط معينة في اختباراتك)، لكنهما يختلفان في الصياغة والأسلوب والمرونة.
 
-## `assert`: Assertion Style
+## `assert`: أسلوب التحقق
 
-- **`assert`** follows a **traditional assertion style**, where specific conditions are explicitly asserted in a statement.
-- It is used in **libraries like Node.js’ built-in `assert` module** or in test frameworks that use **assertion libraries** such as **Chai** (with `assert` mode).
-- **Less chaining**: The `assert` syntax does not lend itself to method chaining. Instead, it takes the condition as a parameter.
+- **`assert`** يتبع **أسلوب تحقق تقليديًا**، حيث تُؤكَّد شروط محددة صراحةً في عبارة.
+- يُستخدم في **مكتبات مثل وحدة `assert` المدمجة في Node.js** أو في أطر اختبار تستخدم **مكتبات تحقق** مثل **Chai** (بوضع `assert`).
+- **تسلسل أقل**: صياغة `assert` لا تناسب تسلسل التوابع. بل تأخذ الشرط كمعامل.
 
 ```javascript
 import assert from 'assert';
@@ -25,20 +25,20 @@ assert.ok(true); // Passes if the condition is truthy
 assert.deepEqual({ a: 1 }, { a: 1 }); // Deep comparison of objects
 ```
 
-- **Pros** Simple and minimal API. Node.js provides it out-of-the-box.
-  - Simple and minimal API.
-  - Node.js provides it out-of-the-box.
-- **Cons** Less expressive, can result in verbose or less readable test cases. Limited flexibility for customization (e.g., custom matchers or more specific assertion types).
-  - Less expressive, can result in verbose or less readable test cases.
-  - Limited flexibility for customization (e.g., custom matchers or more specific assertion types).
+- **المزايا** واجهة بسيطة ومصغّرة. توفرها Node.js خارج الصندوق.
+  - واجهة بسيطة ومصغّرة.
+  - توفرها Node.js خارج الصندوق.
+- **العيوب** أقل تعبيرية، وقد تنتج حالات اختبار مطوّلة أو أقل قابلية للقراءة. مرونة محدودة في التخصيص (مثل المطابقات المخصصة أو أنواع تحقق أكثر تحديدًا).
+  - أقل تعبيرية، وقد تنتج حالات اختبار مطوّلة أو أقل قابلية للقراءة.
+  - مرونة محدودة في التخصيص (مثل المطابقات المخصصة أو أنواع تحقق أكثر تحديدًا).
 
-## `expect`: Behavior-Driven Development Style
+## `expect`: أسلوب التطوير المدفوع بالسلوك
 
-- **`expect`** follows the **[Behavior-Driven Development](https://en.wikipedia.org/wiki/Behavior-driven_development) (BDD)** style and is typically used in testing libraries like Jest, Vitest, and Mocha/Chai.
-- It’s known for being **more expressive** and **chainable**, allowing developers to write more human-readable tests.
-- **Chaining**: You can chain different matchers (e.g., `.toBe()`, `.toEqual()`, `.toContain()`) with `expect` to create more flexible and powerful assertions.
+- **`expect`** يتبع أسلوب **[التطوير المدفوع بالسلوك](https://en.wikipedia.org/wiki/Behavior-driven_development) (BDD)** ويُستخدم عادةً في مكتبات اختبار مثل Jest وVitest وMocha/Chai.
+- يُعرف بأنه **أكثر تعبيرية** و**قابل للتسلسل**، ما يتيح للمطورين كتابة اختبارات أكثر قابلية للقراءة البشرية.
+- **التسلسل**: يمكنك تسلسل مطابقات مختلفة (مثل `.toBe()` و`.toEqual()` و`.toContain()`) مع `expect` لإنشاء تحققات أكثر مرونة وقوة.
 
-### Example Using `expect`
+### مثال باستخدام `expect`
 
 ```javascript
 import { expect } from 'vitest';
@@ -49,32 +49,32 @@ expect(true).toBeTruthy(); // Checks if value is truthy
 expect({ a: 1 }).toEqual({ a: 1 }); // Deep comparison of objects
 ```
 
-#### Pros
+#### المزايا
 
-- More expressive and readable due to chaining and flexible matchers.
-- Supports **custom matchers** and additional checks like `.toBeTruthy()`, `.toHaveLength()`, etc.
-- Easier to write tests in a BDD style (more natural language).
+- أكثر تعبيرية وقابلية للقراءة بفضل التسلسل والمطابقات المرنة.
+- يدعم **المطابقات المخصصة** وفحوصًا إضافية مثل `.toBeTruthy()` و`.toHaveLength()` وغيرها.
+- أسهل في كتابة الاختبارات بأسلوب BDD (لغة أكثر طبيعية).
 
-#### Cons
+#### العيوب
 
-- Slightly larger API compared to `assert` due to the additional matchers.
-- May require a testing library like Jest or Vitest for full functionality.
+- واجهة أكبر قليلًا مقارنة بـ `assert` بسبب المطابقات الإضافية.
+- قد يتطلب مكتبة اختبار مثل Jest أو Vitest للعمل الكامل.
 
-## Key Differences
+## الفروق الجوهرية
 
-| Feature | `assert` | `expect` |
+| الميزة | `assert` | `expect` |
 | --- | --- | --- |
-| **Style** | Traditional, imperative | BDD (Behavior-Driven Development) |
-| **Chaining** | No chaining | Supports chaining |
-| **Usage** | Used in Node.js `assert` module, Chai | Used in Jest, Vitest, Mocha (BDD mode) |
-| **Readability** | Less expressive, more verbose | More readable, expressive syntax |
-| **API** | Minimal, focused on strict assertions | Rich API with matchers like `.toBe()`, `.toEqual()`, `.toContain()` |
-| **Flexibility** | Limited flexibility and customization | Flexible with custom matchers and detailed assertions |
+| **الأسلوب** | تقليدي، أمري | BDD (التطوير المدفوع بالسلوك) |
+| **التسلسل** | لا تسلسل | يدعم التسلسل |
+| **الاستخدام** | يُستخدم في وحدة `assert` في Node.js، وChai | يُستخدم في Jest وVitest وMocha (وضع BDD) |
+| **قابلية القراءة** | أقل تعبيرية، أكثر إطالة | صياغة أكثر قابلية للقراءة والتعبير |
+| **الواجهة** | مصغّرة، تركز على تحققات صارمة | واجهة غنية بمطابقات مثل `.toBe()` و`.toEqual()` و`.toContain()` |
+| **المرونة** | مرونة وتخصيص محدودان | مرنة مع مطابقات مخصصة وتحققات مفصّلة |
 
-## When to Use `assert` or `expect`?
+## متى تستخدم `assert` أو `expect`؟
 
-- Use **`assert`** if you want a **minimal, straightforward assertion library** and do not need the expressiveness of BDD-style tests.
-- Use **`expect`** if you prefer a **more readable, BDD-style** test that allows for **chaining and flexible matchers**. It’s commonly found in modern test frameworks like Jest or Vitest and helps create more human-readable tests.
+- استخدم **`assert`** إن أردت **مكتبة تحقق مصغّرة ومباشرة** ولا تحتاج تعبيرية اختبارات أسلوب BDD.
+- استخدم **`expect`** إن كنت تفضل اختبارًا **أكثر قابلية للقراءة بأسلوب BDD** يتيح **التسلسل والمطابقات المرنة**. وهو شائع في أطر الاختبار الحديثة مثل Jest أو Vitest ويساعد في إنشاء اختبارات أكثر قابلية للقراءة البشرية.
 
 ```javascript
 // Using assert
@@ -84,6 +84,6 @@ assert.strictEqual(result, expected);
 expect(result).toBe(expected);
 ```
 
-In summary, both are used to write assertions, but `expect` is more flexible, expressive, and better suited for behavior-driven development, while `assert` is simpler and more direct.
+باختصار، يُستخدم كلاهما لكتابة التحققات، لكن `expect` أكثر مرونة وتعبيرية وأنسب للتطوير المدفوع بالسلوك، بينما `assert` أبسط وأكثر مباشرة.
 
-I’ve used both a various points in my career—and I really don’t have a preference. We’ll use `expect` in this course, because it *feels* like it’s more popular at this moment in time.
+لقد استخدمت كليهما في نقاط مختلفة من مسيرتي — وليس لدي تفضيل حقيقي. سنستخدم `expect` في هذه الدورة، لأنه *يبدو* أكثر شيوعًا في هذه اللحظة الزمنية.

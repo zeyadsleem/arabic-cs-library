@@ -1,17 +1,17 @@
 ---
-title: "Testing Time"
-lang: en
+title: "اختبار الوقت (Testing Time)"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-time"
 ---
 
-A lot of UIs tend to show stuff like time and dates. As we’ve discussed previously, we want our tests to be consistent. As [Steve Miller once wrote](https://www.youtube.com/watch?v=HlItAutxJzk&list=OLAK5uy_lRxgtVPfsBuzpgFdYdFi0Ej0J2mNwzz2A), (but let’s be honest, you ‘re thinking of [Seal’s version from the Space Jam soundtrack](https://www.youtube.com/watch?v=gxbBp9SH81U)):
+كثير من واجهات المستخدم تميل إلى عرض أشياء مثل الوقت والتواريخ. وكما ناقشنا سابقًا، نريد أن تكون اختباراتنا متسقة. كما [كتب ستيف ميلر ذات مرة](https://www.youtube.com/watch?v=HlItAutxJzk&list=OLAK5uy_lRxgtVPfsBuzpgFdYdFi0Ej0J2mNwzz2A)، (ولكن لنكن صادقين، أنت تفكر في [نسخة سيل من موسيقى فيلم Space Jam](https://www.youtube.com/watch?v=gxbBp9SH81U)):
 
-> Time keeps on slipping into the future.
-> Time keeps on slipping, slipping, slipping into the future.
+> الوقت يستمر في الانزلاق نحو المستقبل.
+> الوقت يستمر في الانزلاق، والانزلاق، والانزلاق نحو المستقبل.
 
-Under the hood, Vitest uses [`@sinonjs/fake-timers`](https://github.com/sinonjs/fake-timers).
+في العمق، يستخدم Vitest [`@sinonjs/fake-timers`](https://github.com/sinonjs/fake-timers).
 
-Typically, if you need to control time in your tests, you’d opt in to using Sinon’s fake timers before the test suite in question and then you’d be a good time traveler and try to put everything back the way you found it when you’re all done.
+عادةً، إذا كنت تحتاج إلى التحكم في الوقت في اختباراتك، فستختار استخدام مؤقتات Sinon المزيفة قبل مجموعة الاختبارات المعنية، ثم تكون مسافرًا عبر الزمن حسن السلوك وتحاول إعادة كل شيء إلى ما كان عليه عندما تنتهي.
 
 ```typescript
 beforeEach(() => {
@@ -25,57 +25,57 @@ afterEach(() => {
 });
 ```
 
-`useFakeTimers()` replaces the global `setTimeout`, `clearTimeout`, `setInterval`, `setImmediate`, `clearImmediate`, `process.hrtime`, `performance.now`, and `Date` with a custom implementation that you can control.
+تستبدل `useFakeTimers()` الدوال العالمية `setTimeout` و`clearTimeout` و`setInterval` و`setImmediate` و`clearImmediate` و`process.hrtime` و`performance.now` و`Date` بتنفيذ مخصص يمكنك التحكم فيه.
 
-It returns a `clock` object that starts at the Unix epoch (i.e. `0`). If you want to start time at some other point, you can pass it a different integer, but I’m going to argue that you’re better off using `setSystemTime`, as we’ll see below.
+تُعيد كائن `clock` يبدأ عند عصر يونكس (أي `0`). إذا أردت بدء الوقت من نقطة أخرى، يمكنك تمرير عدد صحيح مختلف، لكنني سأزعم أنك أفضل حالًا باستخدام `setSystemTime`، كما سنرى أدناه.
 
 ```typescript
 vi.useFakeTimers(1677952591024);
 ```
 
-Time is also effectively frozen unless you choose to advance it yourself. If you want time to move forward as it normally does, you can pass a option to `useFakeTimers()`.
+الوقت أيضًا مجمّد فعليًا ما لم تختر تقديمه بنفسك. إذا أردت أن يتقدم الوقت كما يفعل عادةً، يمكنك تمرير خيار إلى `useFakeTimers()`.
 
 ```typescript
 vi.useFakeTimers({ shouldAdvanceTime: true });
 ```
 
-## Manipulating time
+## التلاعب بالوقت
 
-### Setting the Time
+### تعيين الوقت
 
-Now in any test, you can manually set the time to whatever you need it to be.
+الآن في أي اختبار، يمكنك تعيين الوقت يدويًا إلى ما تحتاجه.
 
 ```typescript
 const date = new Date(2012, 1, 1, 13);
 vi.setSystemTime(date);
 ```
 
-- You can get access to the mocked time using `vi.getMockedSystemTime()`.
-- You can get access to the *real* time using `vi.getRealSystemTime()`. (I cannot even come up with a reason why you’d want to do this. I’m just mentioning it in the name of completeness).
+- يمكنك الوصول إلى الوقت المُحاكى باستخدام `vi.getMockedSystemTime()`.
+- يمكنك الوصول إلى الوقت *الحقيقي* باستخدام `vi.getRealSystemTime()`. (لا أستطيع حتى ابتكار سبب قد يدفعك لفعل ذلك. أذكره فقط اكتمالًا.)
 
-### Advancing Time Forward
+### تقديم الوقت إلى الأمام
 
-These are helpful when setting timers like `setInterval` and `setTimeout`.
+هذه مفيدة عند إعداد مؤقتات مثل `setInterval` و`setTimeout`.
 
-- `vi.advanceTimersByTime`, `vi.advanceTimersByTimeAsync`: Moves the current time forward by a specified number of milliseconds.
-- `vi.advanceTimersToNextTimer`, `vi.advanceTimersToNextTimerAsync`: Advances time until the next timer is fired.
-- `vi.getTimerCount`: Returns a count of the number of remaining timers.
-- `vi.runAllTimers`, `vi.runAllTimersAsync`: Run all of the timers. (This one will throw an an error at 10,000 tries if you have a `setInterval` that is never cleared.)
-- `vi.runAllTicks`: Call every microtask created by `process.nextTick`.
+- `vi.advanceTimersByTime`، `vi.advanceTimersByTimeAsync`: يقدّم الوقت الحالي بعدد محدد من المللي ثانية.
+- `vi.advanceTimersToNextTimer`، `vi.advanceTimersToNextTimerAsync`: يقدّم الوقت حتى يُطلق المؤقت التالي.
+- `vi.getTimerCount`: يعيد عدد المؤقتات المتبقية.
+- `vi.runAllTimers`، `vi.runAllTimersAsync`: يشغّل كل المؤقتات. (هذا الخيار سيرفع خطأ عند 10,000 محاولة إذا كان لديك `setInterval` لا يُمسح أبدًا.)
+- `vi.runAllTicks`: يستدعي كل مهمة صغيرة (microtask) أنشأها `process.nextTick`.
 
-## Cleaning Up
+## التنظيف
 
-- `vi.clearAllTimers`: Removes any timers that are scheduled to run.
-- `vi.restoreCurrentDate`: Put the original `Date` object back where it belongs.
-- `vi.useRealTimers`: When all of your timers have run out, this method will return all of your mocked timers back to their original implementations.
+- `vi.clearAllTimers`: يزيل أي مؤقتات مجدولة للتشغيل.
+- `vi.restoreCurrentDate`: يعيد كائن `Date` الأصلي إلى مكانه.
+- `vi.useRealTimers`: عندما تنتهي كل مؤقتاتك، يعيد هذا التابع كل مؤقتاتك المُحاكاة إلى تنفيذاتها الأصلية.
 
-## Mocking Timers, Dates, and other System Utilities
+## محاكاة المؤقتات والتواريخ وأدوات النظام الأخرى
 
-In some cases, your code may rely on system utilities like timers or dates, which can introduce unpredictability into your tests. Vitest provides built-in functionality to mock and control system utilities like `setTimeout`, `setInterval`, and `Date` to ensure your tests behave consistently.
+في بعض الحالات، قد تعتمد شيفرتك على أدوات نظام مثل المؤقتات أو التواريخ، وهو ما قد يدخل عدم قابلية التوقع إلى اختباراتك. يوفر Vitest وظائف مدمجة لمحاكاة أدوات النظام مثل `setTimeout` و`setInterval` و`Date` والتحكم فيها لضمان تصرف اختباراتك بشكل متسق.
 
-### Mocking Timers
+### محاكاة المؤقتات
 
-When dealing with timers, such as `setTimeout` or `setInterval`, you can mock them to control their behavior in tests using `vi.useFakeTimers()`.
+عند التعامل مع المؤقتات، مثل `setTimeout` أو `setInterval`، يمكنك محاكاتها للتحكم في سلوكها في الاختبارات باستخدام `vi.useFakeTimers()`.
 
 ```javascript
 // Mock the timers
@@ -104,11 +104,11 @@ describe('delay function', () => {
 });
 ```
 
-In this example, `vi.useFakeTimers()` allows us to take control of the timers and fast-forward time with `vi.advanceTimersByTime(1000)` to simulate the passing of time without waiting for real-world delays.
+في هذا المثال، يتيح لنا `vi.useFakeTimers()` التحكم في المؤقتات وتقديم الوقت بـ `vi.advanceTimersByTime(1000)` لمحاكاة مرور الوقت دون انتظار تأخيرات العالم الحقيقي.
 
-### Mocking Dates
+### محاكاة التواريخ
 
-Similarly, you can mock the `Date` constructor to return specific dates or times.
+وبالمثل، يمكنك محاكاة مُنشئ `Date` لإرجاع تواريخ أو أوقات محددة.
 
 ```javascript
 // Mock the current date to always return a specific date
@@ -123,11 +123,11 @@ describe('mocked Date', () => {
 });
 ```
 
-By using `vi.setSystemTime()`, you can ensure that `new Date()` always returns a consistent value, making tests that rely on dates predictable.
+باستخدام `vi.setSystemTime()`، يمكنك ضمان أن `new Date()` تعيد دائمًا قيمة متسقة، ما يجعل الاختبارات التي تعتمد على التواريخ قابلة للتوقع.
 
-## Mocking Modules and Resetting Mocks
+## محاكاة الوحدات وإعادة تعيين البدائل المُحاكاة
 
-In more complex systems, you may want to mock entire modules to isolate the code under test. Vitest allows you to mock specific modules with `vi.mock()`, which provides flexibility in controlling the behavior of dependencies.
+في الأنظمة الأكثر تعقيدًا، قد تريد محاكاة وحدات كاملة لعزل الشيفرة قيد الاختبار. يتيح لك Vitest محاكاة وحدات محددة بـ `vi.mock()`، وهو ما يوفر مرونة في التحكم في سلوك الاعتماديات.
 
 ```javascript
 // Mock the api module
@@ -138,11 +138,11 @@ vi.mock('./api', () => ({
 }));
 ```
 
-This allows you to mock all the functions inside the `api` module at once. When testing, this mocked version will replace the real module, ensuring you can simulate various scenarios.
+يتيح لك ذلك محاكاة كل الدوال داخل وحدة `api` دفعة واحدة. عند الاختبار، ستحل هذه النسخة المُحاكاة محل الوحدة الحقيقية، بما يضمن إمكانية محاكاة سيناريوهات متنوعة.
 
-### Resetting Mocks
+### إعادة تعيين البدائل المُحاكاة
 
-After running a test, it’s important to reset or restore the mocks to their original state to avoid cross-test interference. You can reset mocks using `vi.resetAllMocks()` or restore original implementations with `mockRestore()`.
+بعد تشغيل اختبار، من المهم إعادة تعيين البدائل المُحاكاة أو استعادتها إلى حالتها الأصلية لتجنب التداخل بين الاختبارات. يمكنك إعادة تعيين البدائل المُحاكاة باستخدام `vi.resetAllMocks()` أو استعادة التنفيذات الأصلية بـ `mockRestore()`.
 
 ```javascript
 // Reset all mocks after each test
@@ -151,11 +151,11 @@ afterEach(() => {
 });
 ```
 
-This ensures that each test starts with fresh mocks and eliminates unintended behavior caused by shared state between tests.
+يضمن ذلك أن يبدأ كل اختبار ببدائل مُحاكاة حديثة ويزيل السلوك غير المقصود الناتج عن الحالة المشتركة بين الاختبارات.
 
-## Combining Mocks with Spies and Stubs
+## دمج البدائل المُحاكاة مع الجواسيس والبدائل
 
-You can combine the functionality of mocks, spies, and stubs for more advanced test scenarios. For example, you can mock a function and also spy on its interactions or stub a method inside a mock.
+يمكنك دمج وظائف البدائل المُحاكاة والجواسيس والبدائل لسيناريوهات اختبار أكثر تقدمًا. على سبيل المثال، يمكنك محاكاة دالة والتجسس أيضًا على تفاعلاتها أو تثبيت تابع داخل بديل مُحاكى.
 
 ```javascript
 // Create a mock and spy on one of its methods
@@ -173,13 +173,13 @@ expect(spy).toHaveBeenCalledWith('argument');
 expect(spy).toHaveReturnedWith('Mocked result');
 ```
 
-This example combines a mock and a spy, allowing you to control the behavior of the method and also observe how it is used within the test.
+يجمع هذا المثال بين بديل مُحاكى وجاسوس، ما يتيح لك التحكم في سلوك التابع ومراقبة طريقة استخدامه داخل الاختبار.
 
-## Example: Mocking Timeouts or Asynchronous Functions like `setTimeout`
+## مثال: محاكاة المهلات أو الدوال غير المتزامنة مثل `setTimeout`
 
-Mocking asynchronous functions like `setTimeout` is another advanced use case. By mocking timers, you can simulate asynchronous behavior without actually waiting for the real delay.
+محاكاة الدوال غير المتزامنة مثل `setTimeout` حالة استخدام متقدمة أخرى. بمحاكاة المؤقتات، يمكنك محاكاة السلوك غير المتزامن دون الانتظار فعليًا للتأخير الحقيقي.
 
-Here’s an example where we mock `setTimeout` and use `vi.useFakeTimers()` to control the flow of time in an asynchronous function:
+إليك مثالًا نحاكي فيه `setTimeout` ونستخدم `vi.useFakeTimers()` للتحكم في تدفق الوقت في دالة غير متزامنة:
 
 ```javascript
 function delayedFunction(callback) {
@@ -207,4 +207,4 @@ describe('delayedFunction', () => {
 });
 ```
 
-In this test, the timer is controlled using `vi.useFakeTimers()` and `vi.advanceTimersByTime()`, which simulates the `setTimeout` without waiting for the actual delay. This allows you to test asynchronous code in a controlled and predictable way.
+في هذا الاختبار، يُتحكم في المؤقت باستخدام `vi.useFakeTimers()` و`vi.advanceTimersByTime()`، وهو ما يحاكي `setTimeout` دون انتظار التأخير الفعلي. يتيح لك ذلك اختبار شيفرة غير متزامنة بطريقة مُتحكَّم بها وقابلة للتوقع.

@@ -1,23 +1,21 @@
 ---
-title: "Git Worktrees"
-lang: en
+title: "أشجار عمل Git"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/git-worktrees"
 ---
 
-[Git worktrees](https://git-scm.com/docs/git-worktree) let one repository have
-multiple working directories checked out at different branches. They are useful
-with agents because agents produce file changes, and file changes need isolation.
+تتيح [أشجار عمل Git](https://git-scm.com/docs/git-worktree) لمستودع واحد أن يملك عدة أدلة عمل مُستخرَجة عند فروع مختلفة. وهي مفيدة مع الوكلاء لأن الوكلاء يُنتجون تغييرات في الملفات، وتغييرات الملفات تحتاج إلى عزل.
 
-## Why Worktrees Help
+## لماذا تساعد أشجار العمل
 
-Use worktrees when:
+استخدم أشجار العمل عندما:
 
-- You want to run two agent experiments in parallel.
-- A cloud or command line agent should not touch your main working tree.
-- You need a clean branch for review while local work continues elsewhere.
-- You want to compare two implementation paths without stashing.
+- تريد تشغيل تجربتين لوكيلين بالتوازي.
+- يجب ألّا يلمس وكيل سحابي أو وكيل سطر أوامر شجرة عملك الرئيسية.
+- تحتاج فرعًا نظيفًا للمراجعة بينما يستمر العمل المحلي في مكان آخر.
+- تريد مقارنة مسارَي تنفيذ دون استخدام stash.
 
-## Basic Commands
+## الأوامر الأساسية
 
 ```bash
 git worktree add ../project-feature feature/agent-experiment
@@ -25,23 +23,22 @@ git worktree list
 git worktree remove ../project-feature
 ```
 
-Run the agent from inside the worktree:
+شغّل الوكيل من داخل شجرة العمل:
 
 ```bash
 cd ../project-feature
 claude
 ```
 
-or:
+أو:
 
 ```bash
 agent
 ```
 
-## Review Discipline
+## انضباط المراجعة
 
-A worktree isolates files. It does not prove correctness. Before merging work
-from any agent-created branch:
+تعزل شجرة العمل الملفات. لكنها لا تُثبت الصحّة. قبل دمج العمل القادم من أي فرع أنشأه وكيل:
 
 ```bash
 git status --short
@@ -50,4 +47,4 @@ bun run lint
 bun run test:unit
 ```
 
-Use worktrees to make parallel work reviewable, not to avoid review.
+استخدم أشجار العمل لجعل العمل المتوازي قابلًا للمراجعة، لا لتجنّب المراجعة.

@@ -1,29 +1,29 @@
 ---
-title: "Publishing Libraries"
-lang: en
+title: "نشر المكتبات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/publishing-figma-libraries"
 ---
 
-You’ve done all of this work to create your tokens, variables, and components. Now, we want to publish those libraries for use across your organization. You can publish the library from the center of the toolbar.
+لقد أنجزت كل هذا العمل لإنشاء الرموز والمتغيّرات والمكوّنات لديك. والآن نريد نشر هذه المكتبات لاستخدامها في كل أنحاء مؤسستك. يمكنك نشر المكتبة من وسط شريط الأدوات.
 
-The menu to publish a library in Figma
+قائمة نشر مكتبة في Figma
 
-From there, you can select what components that you want to publish. For example, you might not want to publish your base components or primitive tokens. If there are any components that you *don’t* want to publish, you can select **Hide when publishing**.
+من هناك، يمكنك تحديد المكوّنات التي تريد نشرها. فمثلًا، قد لا ترغب في نشر مكوّناتك الأساسية أو رموزك الأولية. وإذا كانت هناك أي مكوّنات *لا* تريد نشرها، يمكنك اختيار **Hide when publishing**.
 
-Hide when publishing
+الإخفاء عند النشر
 
-Once you’re ready to publish, you can select which changes you want to publish.
+وبمجرد أن تصبح جاهزًا للنشر، يمكنك تحديد التغييرات التي تريد نشرها.
 
-Figma's publish library dialog
+نافذة نشر المكتبة في Figma
 
-## Using a Library
+## استخدام مكتبة
 
-Now, from within any project inside of Figma, you can easily add that library to your project.
+الآن، من داخل أي مشروع في Figma، يمكنك بسهولة إضافة تلك المكتبة إلى مشروعك.
 
-Add a library in another Figma project
+إضافة مكتبة في مشروع Figma آخر
 
-## Updating Libraries as a Consumer
+## تحديث المكتبات بصفتك مستهلكًا
 
-If a library that you rely on updates, you’ll see it in the toolbar. This will allow you to review the changes before they’re automatically applied.
+إذا حُدِّثت مكتبة تعتمد عليها، فسترى ذلك في شريط الأدوات. وسيتيح لك هذا مراجعة التغييرات قبل تطبيقها تلقائيًا.
 
-Updating a Figma library
+تحديث مكتبة في Figma

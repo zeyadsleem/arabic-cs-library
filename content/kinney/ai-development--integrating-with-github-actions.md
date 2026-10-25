@@ -1,30 +1,22 @@
 ---
-title: "Integrating with GitHub Actions"
-lang: en
+title: "التكامل مع GitHub Actions"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/integrating-with-github-actions"
 ---
 
-[Claude Code GitHub Actions](https://code.claude.com/docs/en/github-actions) and [Cursor](https://cursor.com/docs/integrations/github) can bring agents into [GitHub](https://github.com/) workflows. The common pattern is simple: an event
-or comment gives an agent a bounded task, and the agent reports back through a
-pull request or comment.
+يستطيع [Claude Code GitHub Actions](https://code.claude.com/docs/en/github-actions) و[Cursor](https://cursor.com/docs/integrations/github) إدخال الوكلاء في سير عمل [GitHub](https://github.com/). والنمط الشائع بسيط: يمنح حدث أو تعليق الوكيل مهمة محدودة النطاق، ثم يعود الوكيل بالتقرير عبر طلب سحب أو تعليق.
 
-## Claude Code GitHub Actions
+## إجراءات GitHub Actions في Claude Code
 
-Claude Code GitHub Actions are built on the [Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview). The
-current workflow uses [`@anthropics/claude-code-action@v1`](https://github.com/anthropics/claude-code-action),
-a `prompt`, and optional `claude_args`. Older beta `mode` patterns should not be
-copied into new lessons.
+تُبنى إجراءات GitHub Actions في Claude Code على [Claude Agent SDK](https://code.claude.com/docs/en/agent-sdk/overview). ويستخدم سير العمل الحالي [`@anthropics/claude-code-action@v1`](https://github.com/anthropics/claude-code-action)، و`prompt`، و`claude_args` الاختياري. ولا ينبغي نسخ أنماط `mode` التجريبية القديمة إلى دروس جديدة.
 
-Use `/install-github-app` for guided setup when possible. For manual setup, keep
-the Anthropic API key in GitHub Secrets and scope repository permissions tightly.
+استخدم `/install-github-app` للإعداد الموجّه عندما يكون ذلك ممكنًا. وفي الإعداد اليدوي، أبقِ مفتاح Anthropic API في GitHub Secrets وحدّد صلاحيات المستودع بضيق.
 
-## Cursor Review and Automation
+## مراجعة Cursor والأتمتة
 
-Cursor can participate in GitHub through Cloud Agents, automations, Bugbot, and
-Security Agents. GitHub triggers can include issue comments, pull request review
-comments, submitted reviews, review thread updates, and workflow run completion.
+يستطيع Cursor المشاركة في GitHub عبر الوكلاء السحابيين والأتمتات وBugbot ووكلاء الأمان. ويمكن أن تشمل محفّزات GitHub تعليقات القضايا، وتعليقات مراجعة طلبات السحب، والمراجعات المُرسَلة، وتحديثات خيوط المراجعة، واكتمال تشغيل سير العمل.
 
-Use these integrations for bounded work:
+استخدم هذه التكاملات للأعمال محدودة النطاق:
 
 ```
 When CI fails, inspect the failing job. Open a pull request only if the fix is
@@ -32,19 +24,16 @@ confined to test configuration. Otherwise, comment with the diagnosis and the
 failing command.
 ```
 
-## Security Boundaries
+## حدود الأمان
 
-Agent workflows in GitHub need special care:
+تحتاج سير عمل الوكلاء في GitHub إلى عناية خاصة:
 
-- Do not expose broad secrets to pull request workflows from forks.
-- Keep write permissions narrow.
-- Require human review for generated pull requests.
-- Treat MCP servers and external tools as part of the workflow’s trusted
-computing base.
-- Pin action versions according to the repository’s security policy.
+- لا تعرّض أسرارًا واسعة لسير عمل طلبات السحب القادمة من التفريعات (forks).
+- أبقِ صلاحيات الكتابة ضيقة.
+- اشترط مراجعة بشرية لطلبات السحب المُولَّدة.
+- عامل خوادم MCP والأدوات الخارجية كجزء من قاعدة الحوسبة الموثوقة لسير العمل.
+- ثبّت إصدارات الإجراءات (actions) وفقًا لسياسة الأمان في المستودع.
 
-## Completion Criteria
+## معايير الإكمال
 
-An agent-assisted pull request is not done when the bot posts a comment. It is
-done when the diff is reviewed, comments are resolved, continuous integration is
-green, and the branch still merges cleanly with the base branch.
+لا يُعدّ طلب السحب المدعوم بالوكيل منتهيًا عندما ينشر الروبوت تعليقًا، بل يكون منتهيًا عندما يُراجَع الفرق، وتُحلّ التعليقات، ويصبح التكامل المستمر أخضر، ويظل الفرع يُدمج بسلاسة مع الفرع الأساسي.

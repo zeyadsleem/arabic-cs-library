@@ -1,10 +1,10 @@
 ---
-title: "Snippets and Regular Expressions"
-lang: en
+title: "المقتطفات والتعبيرات النمطية"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/snippets-regex"
 ---
 
-Suppose you want to generate a TypeScript constant name based on the filename, converting `hello-world.ts` into `HELLO_WORLD`. Capture groups and regex replacements are your allies here:
+افترض أنك تريد توليد اسم ثابت في TypeScript بناءً على اسم الملف، بتحويل `hello-world.ts` إلى `HELLO_WORLD`. ومجموعات الالتقاط واستبدالات التعبيرات النمطية هما حليفاك هنا:
 
 ```json
 "Uppercase Constant from Filename": {
@@ -16,7 +16,7 @@ Suppose you want to generate a TypeScript constant name based on the filename, c
 }
 ```
 
-But hold on—this snippet currently only makes the whole filename uppercase without handling dashes. To tackle that, try this enhanced regex transformation:
+لكن انتظر، هذا المقتطف حاليًا يجعل اسم الملف كاملًا بأحرف كبيرة فقط دون التعامل مع الشرطات. ولمعالجة ذلك، جرّب تحويل التعبير النمطي المحسّن هذا:
 
 ```json
 "Snake Case Constant from Filename": {
@@ -28,17 +28,17 @@ But hold on—this snippet currently only makes the whole filename uppercase wit
 }
 ```
 
-Now, `hello-world.ts` magically becomes:
+الآن يتحوّل `hello-world.ts` كالسحر إلى:
 
 ```typescript
 const HELLO_WORLD = 'hello-world';
 ```
 
-The `+_` conditional (`${2:+_}`) adds underscores only if dashes or underscores are present between segments, ensuring you never end up with trailing underscores.
+ويضيف الشرط `+_` (`${2:+_}`) شُرَطًا سفلية فقط إذا كانت هناك شرطات أو شُرَط سفلية بين المقاطع، فيضمن ألا تنتهي أبدًا بشرطات سفلية زائدة.
 
-## Conditional Replacements with Regex
+## استبدالات شرطية بالتعبيرات النمطية
 
-Sometimes, you want conditionals in your snippets. For example, converting a selected string into singular or plural form:
+تحتاج أحيانًا إلى شروط في مقتطفاتك. فمثلًا، تحويل نص محدّد إلى صيغة المفرد أو الجمع:
 
 ```json
 "Pluralize selected word": {
@@ -48,16 +48,16 @@ Sometimes, you want conditionals in your snippets. For example, converting a sel
 }
 ```
 
-Here’s how it works:
+وإليك كيف يعمل:
 
-- If the selected text ends in `y` or `s`, it pluralizes correctly: `city` → `cities` `class` → `classes`
+- إذا انتهى النص المحدّد بـ `y` أو `s`، جمّعه جمعًا صحيحًا: `city` → `cities` `class` → `classes`
   - `city` → `cities`
   - `class` → `classes`
-- Otherwise, it simply adds an `s`: `dog` → `dogs`
+- وإلا، أضاف ببساطة `s`: `dog` → `dogs`
   - `dog` → `dogs`
 
-Regex captures (`(.*?)` and `(y|s)?`) and conditionals (`${2:?…:…}`) are the secret sauce that make this possible.
+والتقاطات التعبير النمطي (`(.*?)` و `(y|s)?`) والشروط (`${2:?…:…}`) هي السرّ الذي يجعل ذلك ممكنًا.
 
-> **This is the Standard Issue Warning for Regular Expressions**
+> **هذا هو التحذير المعتاد بشأن التعبيرات النمطية**
 >
-> Complex regex patterns are powerful but can quickly get hairy. Always test your snippets with varied input to ensure consistent behavior. Nobody likes regex-induced bugs at 2 AM.
+> أنماط التعبيرات النمطية المعقّدة قوية لكنها قد تتشعّب بسرعة. فاختبر مقتطفاتك دائمًا بمدخلات متنوّعة لتضمن سلوكًا متّسقًا. فلا أحد يحبّ أخطاء التعبيرات النمطية في الثانية صباحًا.

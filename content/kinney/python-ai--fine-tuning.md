@@ -1,36 +1,36 @@
 ---
-title: "Fine-Tuning Transformer Models"
-lang: en
+title: "الضبط الدقيق لنماذج المحوّلات (Transformer)"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/fine-tuning"
 ---
 
-> **Key Takeaways**
+> **أهم الاستنتاجات**
 >
-> - Clean, well-labeled data matters most; tokenize with the exact model tokenizer
-> - Choose full FT for capacity or LoRA/PEFT for efficiency and adapter reuse
-> - Configure Trainer: batch sizes, LR/warmup, weight decay, precision, eval strategy
-> - Use early stopping, checkpointing, and pinned revisions for reproducibility
-> - Productionize with safe decoding defaults, observability, and versioning
+> - البيانات النظيفة جيدة التوسيم هي الأهم؛ رمّز بمُرمِّز النموذج نفسه بالضبط
+> - اختر الضبط الكامل (full FT) للسعة أو LoRA/PEFT للكفاءة وإعادة استخدام المحوّلات (adapters)
+> - اضبط Trainer: أحجام الدفعات، ومعدل التعلّم/التسخين، واضمحلال الأوزان، والدقة، واستراتيجية التقييم
+> - استخدم الإيقاف المبكر ونقاط التحقق والمراجعات المثبَّتة لضمان قابلية إعادة الإنتاج
+> - جهّز للإنتاج بإعدادات فك ترميز آمنة افتراضيًا، وقابلية المراقبة، وإدارة الإصدارات
 
-## Overview
+## نظرة عامة
 
-Fine-tuning adapts a pre-trained model to your domain or task using labeled examples, improving accuracy and style adherence. You can update all weights (full fine-tuning) or apply parameter-efficient methods like LoRA/PEFT to reduce compute and VRAM requirements. This process is like teaching a knowledgeable student a specific skill—the pre-trained model already understands language patterns, and we’re teaching it to apply that knowledge to our specific task.
+يُكيّف الضبط الدقيق نموذجًا مُدرَّبًا مسبقًا مع مجالك أو مهمتك باستخدام أمثلة موسومة، ما يحسّن الدقة والالتزام بالأسلوب. يمكنك تحديث كل الأوزان (الضبط الكامل) أو تطبيق طرق فعّالة من حيث المعاملات مثل LoRA/PEFT لتقليل متطلبات الحوسبة وVRAM. تشبه هذه العملية تعليم طالب واسع المعرفة مهارة محدّدة—فالنموذج المُدرَّب مسبقًا يفهم أنماط اللغة بالفعل، ونحن نعلّمه تطبيق هذه المعرفة على مهمتنا المحدّدة.
 
-## Notebook
+## دفتر الملاحظات
 
-View the companion notebook: [Fine Tuning](https://colab.research.google.com/drive/1obIENeCQ1NqIe2CK7hgB-s4X0G29T-BV?usp=sharing)
+اطّلع على دفتر الملاحظات المرافق: [الضبط الدقيق](https://colab.research.google.com/drive/1obIENeCQ1NqIe2CK7hgB-s4X0G29T-BV?usp=sharing)
 
-## What is Fine-Tuning?
+## ما هو الضبط الدقيق؟
 
-Fine-tuning takes a model that has already learned general language understanding from massive datasets and specializes it for your specific needs. The base model has learned patterns, grammar, and knowledge from training on huge portions of the internet. Fine-tuning teaches it to apply this knowledge to your task.
+يأخذ الضبط الدقيق نموذجًا تعلّم بالفعل الفهم اللغوي العام من مجموعات بيانات ضخمة ويخصّصه لاحتياجاتك المحدّدة. فقد تعلّم النموذج الأساسي الأنماط والقواعد والمعرفة من التدريب على أجزاء ضخمة من الإنترنت. ويعلّمه الضبط الدقيق كيفية تطبيق هذه المعرفة على مهمتك.
 
-## Why Fine-Tune?
+## لماذا الضبط الدقيق؟
 
-**Task-specific performance**: Pre-trained models are general-purpose; fine-tuning makes them experts at your task. **Domain adaptation**: Adapt models to specific domains (medical, legal, technical). **Data efficiency**: Requires much less data than training from scratch. **Time efficiency**: Much faster than pre-training a model.
+**الأداء الخاص بالمهمة**: النماذج المُدرَّبة مسبقًا عامة الغرض؛ والضبط الدقيق يجعلها خبيرة في مهمتك. **التكيّف مع المجال**: كيّف النماذج مع مجالات محدّدة (طبي، قانوني، تقني). **كفاءة البيانات**: يتطلب بيانات أقل بكثير من التدريب من الصفر. **كفاءة الوقت**: أسرع بكثير من التدريب المسبق لنموذج.
 
-## Setting Up for Fine-Tuning
+## التهيئة للضبط الدقيق
 
-First, install the necessary libraries:
+أولًا، ثبّت المكتبات اللازمة:
 
 ```python
 !pip install transformers datasets accelerate bitsandbytes -q
@@ -55,9 +55,9 @@ logging.set_verbosity_error()
 print("🤘 The setup is complete.")
 ```
 
-## Data Preparation
+## تحضير البيانات
 
-The quality and format of your training data are the most important factors for successful fine-tuning. For our example, we’ll teach a model to generate quotes:
+جودة بياناتك التدريبية وتنسيقها هما أهم عاملين لنجاح الضبط الدقيق. وفي مثالنا، سنعلّم نموذجًا توليد الاقتباسات:
 
 ```python
 # Load the dataset
@@ -83,11 +83,11 @@ print(formatted_dataset[0]['text'])
 # Quote by Oscar Wilde: "Be yourself; everyone else is already taken." <|endoftext|>
 ```
 
-The `<|endoftext|>` token is crucial—it teaches the model when a quote is finished, so it learns to stop generating at the right time.
+رمز `<|endoftext|>` بالغ الأهمية—فهو يعلّم النموذج متى ينتهي الاقتباس، فيتعلّم التوقف عن التوليد في الوقت المناسب.
 
-## Loading the Pre-Trained Model
+## تحميل النموذج المُدرَّب مسبقًا
 
-We’ll use quantization to make the model memory-efficient. This allows us to fine-tune larger models on limited hardware:
+سنستخدم التكميم (quantization) لجعل النموذج موفّرًا للذاكرة. وهذا يتيح لنا ضبط نماذج أكبر دقيقًا على عتاد محدود:
 
 ```python
 model_name = "gpt2-medium"
@@ -113,15 +113,15 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 ```
 
-Think of quantization as creating a summary of a very long book. Instead of using rich, detailed vocabulary (32-bit floating point), we use a more limited, efficient set of words (4-bit integers) to capture the main ideas.
+فكّر في التكميم كما لو أنه إنشاء ملخّص لكتاب طويل جدًا. فبدلًا من استخدام مفردات غنية ومفصّلة (أعداد الفاصلة العائمة 32-بت)، نستخدم مجموعة محدودة وأكثر كفاءة من الكلمات (أعداد صحيحة 4-بت) لالتقاط الأفكار الرئيسية.
 
-## Parameter-Efficient Fine-Tuning (PEFT)
+## الضبط الدقيق الفعّال من حيث المعاملات (PEFT)
 
-PEFT is a family of techniques for customizing large models without touching all of their original weights. Instead of re-training hundreds of millions of parameters, PEFT methods freeze the base model and learn only a tiny add-on.
+PEFT عائلة من التقنيات لتخصيص النماذج الكبيرة دون المساس بكل أوزانها الأصلية. وبدلًا من إعادة تدريب مئات الملايين من المعاملات، تُجمّد طرق PEFT النموذج الأساسي وتتعلّم إضافة صغيرة جدًا فقط.
 
-### What is LoRA?
+### ما هو LoRA؟
 
-Low-Rank Adaptation (LoRA) freezes the original weights and learns two tiny matrices whose product has very low rank. During training, only these add-on matrices are updated, storing and multiplying far fewer parameters—often hundreds of times less than a full fine-tune.
+يُجمّد التكيّف منخفض الرتبة (LoRA) الأوزان الأصلية ويتعلّم مصفوفتين صغيرتين جدًا يكون حاصل ضربهما منخفض الرتبة للغاية. وأثناء التدريب، لا تُحدَّث سوى مصفوفات الإضافة هذه، فتخزّن وتضرب معاملات أقل بكثير—غالبًا أقل بمئات المرات من الضبط الكامل.
 
 ```python
 data_collator = DataCollatorForLanguageModeling(
@@ -145,11 +145,11 @@ model.print_trainable_parameters()
 # trainable params: 786,432 || all params: 355,609,600 || trainable%: 0.2212
 ```
 
-We’re training less than 1% of the model’s parameters! This is why LoRA is so efficient.
+نحن ندرّب أقل من 1% من معاملات النموذج! لهذا السبب يكون LoRA بهذه الكفاءة.
 
-## Tokenizing the Dataset
+## ترميز مجموعة البيانات
 
-Convert our formatted text into token IDs:
+حوّل نصّنا المنسّق إلى معرّفات رموز (token IDs):
 
 ```python
 def tokenize_function(examples):
@@ -166,9 +166,9 @@ tokenized_dataset = formatted_dataset.map(tokenize_function, batched=True)
 pprint.pp(tokenized_dataset[0], compact=True)
 ```
 
-## The Fine-Tuning Process
+## عملية الضبط الدقيق
 
-Use the Trainer API from Hugging Face to handle the entire training loop:
+استخدم واجهة Trainer من Hugging Face لإدارة حلقة التدريب بالكامل:
 
 ```python
 # Define training arguments
@@ -202,19 +202,19 @@ final_model_dir = "./gpt2-medium-quotes-final"
 trainer.save_model(final_model_dir)
 ```
 
-## Training Arguments Explained
+## شرح وسائط التدريب
 
-**`learning_rate`**: Think of this as how big of a step the student takes when correcting a mistake. Too big (>5e-5), and they might overshoot. Too small (<1e-6), and it takes forever to learn.
+**`learning_rate`**: فكّر في هذا كحجم الخطوة التي يخطوها الطالب عند تصحيح خطأ. فإن كانت كبيرة جدًا (&gt;5e-5)، فقد يتجاوز الحد. وإن كانت صغيرة جدًا (&lt;1e-6)، فسيستغرق التعلّم وقتًا طويلًا لا ينتهي.
 
-**`per_device_train_batch_size`**: How many examples to show before updating understanding. It’s more efficient than showing one example at a time.
+**`per_device_train_batch_size`**: عدد الأمثلة التي تُعرض قبل تحديث الفهم. وهو أكثر كفاءة من عرض مثال واحد في كل مرة.
 
-**`num_train_epochs`**: How many times to go through the entire dataset. More epochs can improve learning but risk overfitting.
+**`num_train_epochs`**: عدد المرات التي تمرّ فيها على مجموعة البيانات بالكامل. وقد تُحسّن الحقب (epochs) الأكثر التعلّم لكنها تخاطر بالإفراط في التخصيص.
 
-**`fp16`**: Use mixed precision for faster training and lower memory usage.
+**`fp16`**: استخدم الدقة المختلطة لتدريب أسرع واستهلاك ذاكرة أقل.
 
-## Testing the Fine-Tuned Model
+## اختبار النموذج المضبوط
 
-Compare the base model against our fine-tuned version:
+قارن النموذج الأساسي بنسختنا المضبوطة:
 
 ```python
 from peft import PeftModel
@@ -248,13 +248,13 @@ print("Fine-tuned model response:")
 print(result[0]['generated_text'])
 ```
 
-You should see a dramatic difference. The base model likely generates something generic or unrelated, while the fine-tuned model immediately generates a plausible quote following the structure it learned.
+ينبغي أن ترى فرقًا هائلًا. فالنموذج الأساسي غالبًا يولّد شيئًا عامًا أو غير ذي صلة، بينما يولّد النموذج المضبوط فورًا اقتباسًا معقولًا يتبع البنية التي تعلّمها.
 
-## Approaches to Fine-Tuning
+## مقاربات الضبط الدقيق
 
-### Full Fine-Tuning
+### الضبط الدقيق الكامل
 
-Updates all model weights. Provides highest capacity but is most expensive:
+يحدّث كل أوزان النموذج. ويوفّر أعلى سعة لكنه الأكثر تكلفة:
 
 ```python
 # Full fine-tuning (without LoRA)
@@ -264,7 +264,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name)
 
 ### LoRA/PEFT
 
-Injects low-rank adapters, training 10-100× fewer parameters:
+يحقن محوّلات منخفضة الرتبة، فيدرّب معاملات أقل بمقدار 10-100×:
 
 ```python
 lora_config = peft.LoraConfig(
@@ -275,9 +275,9 @@ lora_config = peft.LoraConfig(
 )
 ```
 
-### Layer Freezing
+### تجميد الطبقات
 
-Freeze lower layers to save compute:
+جمّد الطبقات الدنيا لتوفير الحوسبة:
 
 ```python
 # Freeze all but the last two transformer blocks
@@ -285,11 +285,11 @@ for param in model.transformer.h[:-2].parameters():
     param.requires_grad = False
 ```
 
-## Evaluation Metrics
+## مقاييس التقييم
 
-Monitor these metrics during training:
+راقب هذه المقاييس أثناء التدريب:
 
-**Classification**: Accuracy, F1 score, precision, recall. **Generation**: Perplexity, BLEU score, human evaluation. **Custom metrics**: Task-specific measurements.
+**التصنيف**: الدقة، ودرجة F1، والإحكام (precision)، والاستدعاء (recall). **التوليد**: الحيرة (perplexity)، ودرجة BLEU، والتقييم البشري. **مقاييس مخصّصة**: قياسات خاصة بالمهمة.
 
 ```python
 import evaluate
@@ -301,11 +301,11 @@ def compute_metrics(eval_pred):
     return metric.compute(predictions=predictions, references=labels)
 ```
 
-## Production Deployment
+## النشر في الإنتاج
 
-### Model Versioning
+### إدارة إصدارات النموذج
 
-Pin specific versions for reproducibility:
+ثبّت إصدارات محدّدة لضمان قابلية إعادة الإنتاج:
 
 ```python
 model = AutoModelForCausalLM.from_pretrained(
@@ -314,9 +314,9 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 ```
 
-### Safe Inference
+### الاستدلال الآمن
 
-Set deterministic defaults for production:
+اضبط إعدادات افتراضية حتمية للإنتاج:
 
 ```python
 def safe_generate(prompt, model, tokenizer):
@@ -334,9 +334,9 @@ def safe_generate(prompt, model, tokenizer):
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 ```
 
-## Hyperparameter Tuning
+## ضبط المعاملات الفائقة
 
-Start with validated defaults, then tune:
+ابدأ بإعدادات افتراضية مُتحقَّق منها، ثم اضبط:
 
 ```python
 # Sweep these hyperparameters
@@ -354,23 +354,23 @@ for lr in learning_rates:
         # Train and evaluate
 ```
 
-## Troubleshooting Common Issues
+## استكشاف المشكلات الشائعة وإصلاحها
 
-> **Overfitting**
+> **الإفراط في التخصيص**
 >
-> If the model memorizes training data, reduce epochs, increase dropout, add more diverse data, or use early stopping.
+> إذا حفظ النموذج بيانات التدريب عن ظهر قلب، فقلّل الحقب، أو زد الإسقاط (dropout)، أو أضف بيانات أكثر تنوّعًا، أو استخدم الإيقاف المبكر.
 
-> **Underfitting**
+> **القصور في التخصيص**
 >
-> If performance is poor, increase model capacity, raise learning rate carefully, improve data quality, or train for more epochs.
+> إذا كان الأداء ضعيفًا، فزد سعة النموذج، أو ارفع معدل التعلّم بحذر، أو حسّن جودة البيانات، أو درّب لحقب أكثر.
 
-> **Memory Issues**
+> **مشكلات الذاكرة**
 >
-> Enable gradient checkpointing, use smaller batch sizes, apply gradient accumulation, or switch to LoRA/PEFT.
+> فعّل نقاط تحقق التدرّج (gradient checkpointing)، أو استخدم أحجام دفعات أصغر، أو طبّق تراكم التدرّج (gradient accumulation)، أو انتقل إلى LoRA/PEFT.
 
-## Scaling Up Training
+## توسيع نطاق التدريب
 
-For larger models or datasets:
+للنماذج أو مجموعات البيانات الأكبر:
 
 ```python
 # Use accelerate for multi-GPU
@@ -388,15 +388,15 @@ training_args = TrainingArguments(
 )
 ```
 
-## Ethics and Safety
+## الأخلاقيات والسلامة
 
-**Licensing**: Respect base model and dataset licenses. **Privacy**: Avoid training on sensitive data without consent. **Bias**: Evaluate for harmful biases and implement safeguards. **Misuse**: Consider potential misuse and add appropriate warnings.
+**الترخيص**: احترم تراخيص النموذج الأساسي ومجموعة البيانات. **الخصوصية**: تجنّب التدريب على بيانات حسّاسة دون موافقة. **التحيّز**: قيّم التحيّزات الضارّة وطبّق ضمانات. **إساءة الاستخدام**: ضع في الحسبان إساءة الاستخدام المحتملة وأضف تحذيرات مناسبة.
 
-## Advanced Techniques
+## تقنيات متقدّمة {#advanced-techniques}
 
-### Instruction Fine-Tuning
+### الضبط الدقيق القائم على الأوامر
 
-Format data as instruction-response pairs:
+نسّق البيانات كأزواج من أمر-استجابة:
 
 ```python
 def format_instruction(example):
@@ -406,9 +406,9 @@ def format_instruction(example):
     }
 ```
 
-### Multi-Task Fine-Tuning
+### الضبط الدقيق متعدّد المهام
 
-Train on multiple tasks simultaneously:
+درّب على مهام متعدّدة في الوقت نفسه:
 
 ```python
 # Combine multiple datasets
@@ -419,9 +419,9 @@ combined_dataset = concatenate_datasets([
 ])
 ```
 
-### Continual Learning
+### التعلّم المستمر
 
-Fine-tune on new tasks without forgetting old ones:
+اضبط النموذج دقيقًا على مهام جديدة دون نسيان المهام القديمة:
 
 ```python
 # Use elastic weight consolidation or similar techniques
@@ -434,15 +434,15 @@ model = peft.get_peft_model(
 )
 ```
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-Fine-tuning transforms general-purpose models into specialized tools for your specific needs. Success depends on quality data, appropriate technique selection (full vs PEFT), and careful hyperparameter tuning. Start with LoRA for efficiency, use the Trainer API for simplicity, and always evaluate on held-out data. With proper fine-tuning, you can achieve state-of-the-art performance on your specific task while leveraging the knowledge encoded in pre-trained models.
+يحوّل الضبط الدقيق النماذج عامة الغرض إلى أدوات متخصّصة لاحتياجاتك المحدّدة. ويعتمد النجاح على بيانات عالية الجودة، واختيار التقنية المناسبة (الكامل مقابل PEFT)، وضبط المعاملات الفائقة بعناية. ابدأ بـ LoRA للكفاءة، واستخدم واجهة Trainer للبساطة، وقيّم دائمًا على بيانات محجوزة. وبضبط دقيق سليم، يمكنك تحقيق أداء متقدّم في مهمتك المحدّدة مع الاستفادة من المعرفة المُضمَّنة في النماذج المُدرَّبة مسبقًا.
 
-## Further Reading
+## قراءات إضافية
 
 - [Transformers — Trainer](https://huggingface.co/docs/transformers/main/en/main_classes/trainer)
-- [Hugging Face Course — Fine-tuning](https://huggingface.co/learn/nlp-course/chapter3/1?fw=pt)
-- [PEFT (Parameter-Efficient Fine-Tuning)](https://github.com/huggingface/peft)
+- [دورة Hugging Face — الضبط الدقيق](https://huggingface.co/learn/nlp-course/chapter3/1?fw=pt)
+- [PEFT (الضبط الدقيق الفعّال من حيث المعاملات)](https://github.com/huggingface/peft)
 - [Accelerate](https://huggingface.co/docs/accelerate/index)
 - [DeepSpeed](https://www.deepspeed.ai/)
-- [LoRA Paper (Hu et al., 2021)](https://arxiv.org/abs/2106.09685)
+- [ورقة LoRA (Hu وآخرون، 2021)](https://arxiv.org/abs/2106.09685)

@@ -1,16 +1,16 @@
 ---
-title: "Alignment and Justification"
-lang: en
+title: "المحاذاة والتوزيع"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-alignment-and-justification"
 ---
 
-Controlling alignment and justification of items within grid areas and content within the grid container is fundamental to CSS Grid. Tailwind CSS provides utility classes for managing these properties directly in HTML.
+التحكّم في محاذاة العناصر وتوزيعها داخل مناطق grid، وفي توزيع المحتوى داخل حاوية grid، أمر جوهري في CSS Grid. ويوفّر Tailwind CSS أصناف أدوات لإدارة هذه الخصائص مباشرةً في HTML.
 
-## Setting Up a Grid Container
+## تهيئة حاوية Grid
 
-First, define an element as a grid container using `grid` or `inline-grid` display utilities.
+أولًا، عرّف عنصرًا كحاوية grid باستخدام أدوات العرض `grid` أو `inline-grid`.
 
-*Setting Up a Grid Container — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/9baf9f08b2fa8e2f485e9becf143a4fa8de6342d7b85d38ccbec1c7ee4c64ebb.html)*
+*تهيئة حاوية Grid — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9baf9f08b2fa8e2f485e9becf143a4fa8de6342d7b85d38ccbec1c7ee4c64ebb.html)*
 
 ```html
 <div class="grid gap-4 rounded-lg bg-gray-100 p-4">
@@ -24,25 +24,25 @@ First, define an element as a grid container using `grid` or `inline-grid` displ
 </div>
 ```
 
-Direct children of a grid container become grid items. Define grid structure with `grid-cols-<number>` (columns) and `grid-rows-<number>` (rows), and spacing with `gap-<number>`. Alignment and justification utilities position these items and tracks.
+يصبح الأبناء المباشرون لحاوية grid عناصر grid. عرّف بنية grid عبر `grid-cols-<number>` (للأعمدة) و`grid-rows-<number>` (للصفوف)، والمسافات عبر `gap-<number>`. وأدوات المحاذاة والتوزيع يضع هذه العناصر والمسارات في مواضعها.
 
-## Aligning and Justifying Items Within Their Areas
+## محاذاة العناصر وتوزيعها داخل مناطقها
 
-These utilities apply to the grid container (affecting all direct children) or individual grid items (overriding container settings), controlling item placement within their assigned grid area.
+تُطبَّق هذه الأدوات على حاوية grid (فتؤثّر في جميع الأبناء المباشرين) أو على عناصر grid المفردة (فتتجاوز إعدادات الحاوية)، وتتحكّم في وضع العنصر داخل منطقة grid المخصّصة له.
 
-### Aligning Items on the Cross Axis
+### محاذاة العناصر على المحور العرضي
 
-The `align-items` property controls grid item alignment along the container’s cross axis (typically vertical in `grid-flow-row`). Apply to the grid container.
+تتحكّم خاصية `align-items` في محاذاة عناصر grid على طول المحور العرضي للحاوية (رأسيًا عادةً في `grid-flow-row`). تُطبَّق على حاوية grid.
 
-Utilities:
+الأدوات:
 
-- `items-start`: Aligns items to the cross axis start.
-- `items-end`: Aligns items to the cross axis end. (`items-end-safe` aligns to start if space is insufficient).
-- `items-center`: Aligns items to the cross axis center. (`items-center-safe` aligns to start if space is insufficient).
-- `items-stretch`: Stretches items to fill the cross axis.
-- `items-baseline`: Aligns items along their baselines. (`items-baseline-last` for last baseline).
+- `items-start`: تحاذي العناصر إلى بداية المحور العرضي.
+- `items-end`: تحاذي العناصر إلى نهاية المحور العرضي. (وتحاذي `items-end-safe` إلى البداية إذا لم تكفِ المساحة).
+- `items-center`: تحاذي العناصر إلى مركز المحور العرضي. (وتحاذي `items-center-safe` إلى البداية إذا لم تكفِ المساحة).
+- `items-stretch`: تمدّ العناصر لتملأ المحور العرضي.
+- `items-baseline`: تحاذي العناصر على خطوط أساسها. (و`items-baseline-last` لخط الأساس الأخير).
 
-*Aligning Items on the Cross Axis — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/0a97181c22e5c23591c7d3637e8c9bf4c3f5084a1879c24cf6e6651b35f7561a.html)*
+*محاذاة العناصر على المحور العرضي — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0a97181c22e5c23591c7d3637e8c9bf4c3f5084a1879c24cf6e6651b35f7561a.html)*
 
 ```html
 <div class="grid h-32 grid-cols-3 items-center gap-4 rounded-lg bg-gray-100 p-4">
@@ -52,19 +52,19 @@ Utilities:
 </div>
 ```
 
-### Justifying Items on the Inline Axis
+### توزيع العناصر على المحور السطري
 
-The `justify-items` property controls grid item alignment along their inline axis (typically horizontal in `grid-flow-row`). Apply to the grid container.
+تتحكّم خاصية `justify-items` في محاذاة عناصر grid على طول محورها السطري (أفقيًا عادةً في `grid-flow-row`). تُطبَّق على حاوية grid.
 
-Utilities:
+الأدوات:
 
-- `justify-items-start`: Justifies items against their inline axis start.
-- `justify-items-end`: Justifies items against their inline axis end. (`justify-items-end-safe` aligns to start if space is insufficient).
-- `justify-items-center`: Justifies items against their inline axis center. (`justify-items-center-safe` aligns to start if space is insufficient).
-- `justify-items-stretch`: Stretches items along their inline axis.
-- `justify-items-normal`: Default item packing.
+- `justify-items-start`: توزّع العناصر مقابل بداية محورها السطري.
+- `justify-items-end`: توزّع العناصر مقابل نهاية محورها السطري. (وتحاذي `justify-items-end-safe` إلى البداية إذا لم تكفِ المساحة).
+- `justify-items-center`: توزّع العناصر مقابل مركز محورها السطري. (وتحاذي `justify-items-center-safe` إلى البداية إذا لم تكفِ المساحة).
+- `justify-items-stretch`: تمدّ العناصر على طول محورها السطري.
+- `justify-items-normal`: الحشد الافتراضي للعناصر.
 
-*Justifying Items on the Inline Axis — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/e8eb1fd52abc6c7b3701349c2a1ae3ca2e0c7ad3a3b1e04fdc86ab4e3d1dfb3d.html)*
+*توزيع العناصر على المحور السطري — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e8eb1fd52abc6c7b3701349c2a1ae3ca2e0c7ad3a3b1e04fdc86ab4e3d1dfb3d.html)*
 
 ```html
 <div class="grid grid-cols-3 justify-items-center gap-4 rounded-lg bg-gray-100 p-4">
@@ -74,19 +74,19 @@ Utilities:
 </div>
 ```
 
-### Aligning and Justifying Items Simultaneously
+### المحاذاة والتوزيع معًا
 
-The `place-items` property is a shorthand for `align-items` and `justify-items`. Applied to the grid container. One value applies to both axes; two values apply to `align-items` (cross) then `justify-items` (inline).
+خاصية `place-items` اختصار لـ `align-items` و`justify-items`. تُطبَّق على حاوية grid. القيمة الواحدة تُطبَّق على المحورين، والقيمتان تُطبَّقان على `align-items` (العرضي) ثم `justify-items` (السطري).
 
-Utilities:
+الأدوات:
 
-- `place-items-start`: `align-items: start`, `justify-items: start`.
-- `place-items-end`: `align-items: end`, `justify-items: end`. (`place-items-end-safe` available).
-- `place-items-center`: `align-items: center`, `justify-items: center`. (`place-items-center-safe` available).
-- `place-items-baseline`: `align-items: baseline`, `justify-items: baseline`.
-- `place-items-stretch`: `align-items: stretch`, `justify-items: stretch`.
+- `place-items-start`: أي `align-items: start` و`justify-items: start`.
+- `place-items-end`: أي `align-items: end` و`justify-items: end`. (ويتوفّر `place-items-end-safe`).
+- `place-items-center`: أي `align-items: center` و`justify-items: center`. (ويتوفّر `place-items-center-safe`).
+- `place-items-baseline`: أي `align-items: baseline` و`justify-items: baseline`.
+- `place-items-stretch`: أي `align-items: stretch` و`justify-items: stretch`.
 
-*Aligning and Justifying Items Simultaneously — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/c1b54a36a2785b4e7303640ee8b1e397e182ee1b6928abba90fdf4027c727e76.html)*
+*المحاذاة والتوزيع معًا — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c1b54a36a2785b4e7303640ee8b1e397e182ee1b6928abba90fdf4027c727e76.html)*
 
 ```html
 <div class="grid h-32 grid-cols-3 place-items-center gap-4 rounded-lg bg-gray-100 p-4">
@@ -96,15 +96,15 @@ Utilities:
 </div>
 ```
 
-### Aligning and Justifying Individual Items
+### محاذاة العناصر وتوزيعها منفردة
 
-Override container-level settings for individual items using `align-self`, `justify-self`, and `place-self`. Apply directly to the grid item.
+تجاوز إعدادات مستوى الحاوية للعناصر المفردة باستخدام `align-self` و`justify-self` و`place-self`. تُطبَّق مباشرةً على عنصر grid.
 
-- `align-self`: Overrides `align-items` for an item. Utilities: `self-auto`, `self-start`, `self-end`, `self-center`, `self-stretch`, `self-baseline`, `self-baseline-last`.
-- `justify-self`: Overrides `justify-items` for an item. Utilities: `justify-self-auto`, `justify-self-start`, `justify-self-center`, `justify-self-end`, `justify-self-stretch`. (Safe variants available).
-- `place-self`: Shorthand for `align-self` and `justify-self`. Utilities: `place-self-auto`, `place-self-start`, `place-self-end`, `place-self-center`, `place-self-stretch`. (Safe variants available).
+- `align-self`: تتجاوز `align-items` بالنسبة إلى عنصر. الأدوات: `self-auto` و`self-start` و`self-end` و`self-center` و`self-stretch` و`self-baseline` و`self-baseline-last`.
+- `justify-self`: تتجاوز `justify-items` بالنسبة إلى عنصر. الأدوات: `justify-self-auto` و`justify-self-start` و`justify-self-center` و`justify-self-end` و`justify-self-stretch`. (ويتوفّر المتغيّرات الآمنة).
+- `place-self`: اختصار لـ `align-self` و`justify-self`. الأدوات: `place-self-auto` و`place-self-start` و`place-self-end` و`place-self-center` و`place-self-stretch`. (ويتوفّر المتغيّرات الآمنة).
 
-*Aligning and Justifying Individual Items — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/be7360eb06b4a6e00c6387eda0817060c7f6c00d5b259a62217dcce6fdefcf5b.html)*
+*محاذاة العناصر وتوزيعها منفردة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/be7360eb06b4a6e00c6387eda0817060c7f6c00d5b259a62217dcce6fdefcf5b.html)*
 
 ```html
 <div class="grid h-32 grid-cols-3 items-start justify-items-start gap-4 rounded-lg bg-gray-100 p-4">
@@ -114,24 +114,24 @@ Override container-level settings for individual items using `align-self`, `just
 </div>
 ```
 
-## Aligning and Justifying Content Within the Container
+## محاذاة المحتوى وتوزيعه داخل الحاوية
 
-These utilities distribute grid tracks (rows/columns) within the grid container, used when there’s extra space. Apply to the grid container.
+توزّع هذه الأدوات مسارات grid (الصفوف/الأعمدة) داخل حاوية grid، وتُستخدم عند وجود مساحة فائضة. تُطبَّق على حاوية grid.
 
-### Aligning Content on the Cross Axis
+### محاذاة المحتوى على المحور العرضي
 
-The `align-content` property positions rows along the cross axis when total row height is less than container height.
+تضع خاصية `align-content` الصفوف على المحور العرضي عندما يكون مجموع ارتفاع الصفوف أقل من ارتفاع الحاوية.
 
-Utilities:
+الأدوات:
 
-- `content-start`, `content-end`, `content-center`
-- `content-between`: Equal space between rows.
-- `content-around`: Equal space around rows.
-- `content-evenly`: Equal space around each row, including ends.
-- `content-stretch`: Rows fill available cross-axis space.
-- `content-baseline`, `content-normal`
+- `content-start` و`content-end` و`content-center`
+- `content-between`: مسافة متساوية بين الصفوف.
+- `content-around`: مسافة متساوية حول الصفوف.
+- `content-evenly`: مسافة متساوية حول كل صف، بما في ذلك الطرفين.
+- `content-stretch`: تملأ الصفوف المساحة المتاحة على المحور العرضي.
+- `content-baseline` و`content-normal`
 
-*Aligning Content on the Cross Axis — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/6caacc9b8c5c7aa2da88115e4649a5d74b44be57689c4403243cac34218eb21c.html)*
+*محاذاة المحتوى على المحور العرضي — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6caacc9b8c5c7aa2da88115e4649a5d74b44be57689c4403243cac34218eb21c.html)*
 
 ```html
 <div class="grid h-64 grid-rows-3 content-center gap-2 rounded-lg bg-gray-100 p-4">
@@ -141,21 +141,21 @@ Utilities:
 </div>
 ```
 
-### Justifying Content on the Main Axis
+### توزيع المحتوى على المحور الأساسي
 
-The `justify-content` property positions columns (or the grid) along the main axis when total column width is less than container width.
+تضع خاصية `justify-content` الأعمدة (أو الشبكة) على المحور الأساسي عندما يكون مجموع عرض الأعمدة أقل من عرض الحاوية.
 
-Utilities:
+الأدوات:
 
-- `justify-start`, `justify-end` (`justify-end-safe` available).
-- `justify-center` (`justify-center-safe` available).
-- `justify-between`: Equal space between tracks.
-- `justify-around`: Equal space around tracks.
-- `justify-evenly`: Equal space around each track, including ends.
-- `justify-stretch`: Tracks fill available main-axis space.
-- `justify-normal`, `justify-baseline`
+- `justify-start` و`justify-end` (ويتوفّر `justify-end-safe`).
+- `justify-center` (ويتوفّر `justify-center-safe`).
+- `justify-between`: مسافة متساوية بين المسارات.
+- `justify-around`: مسافة متساوية حول المسارات.
+- `justify-evenly`: مسافة متساوية حول كل مسار، بما في ذلك الطرفين.
+- `justify-stretch`: تملأ المسارات المساحة المتاحة على المحور الأساسي.
+- `justify-normal` و`justify-baseline`
 
-*Justifying Content on the Main Axis — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/cf0218c414186d05380d90507ef9092f1a36231ff9146a7dce7cd156b43d57de.html)*
+*توزيع المحتوى على المحور الأساسي — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/cf0218c414186d05380d90507ef9092f1a36231ff9146a7dce7cd156b43d57de.html)*
 
 ```html
 <div class="grid w-64 grid-cols-3 justify-center gap-2 rounded-lg bg-gray-100 p-4">
@@ -164,18 +164,18 @@ Utilities:
 </div>
 ```
 
-### Aligning and Justifying Content Simultaneously
+### المحاذاة والتوزيع معًا للمحتوى
 
-The `place-content` property is a shorthand for `align-content` and `justify-content`. Applied to the grid container. One value for both axes; two values for `align-content` (cross) then `justify-content` (main).
+خاصية `place-content` اختصار لـ `align-content` و`justify-content`. تُطبَّق على حاوية grid. قيمة واحدة للمحورين، وقيمتان لـ `align-content` (العرضي) ثم `justify-content` (الأساسي).
 
-Utilities:
+الأدوات:
 
-- `place-content-start`, `place-content-end` (`place-content-end-safe` available).
-- `place-content-center` (`place-content-center-safe` available).
-- `place-content-baseline`, `place-content-stretch`
-- `place-content-between`, `place-content-around`, `place-content-evenly`
+- `place-content-start` و`place-content-end` (ويتوفّر `place-content-end-safe`).
+- `place-content-center` (ويتوفّر `place-content-center-safe`).
+- `place-content-baseline` و`place-content-stretch`
+- `place-content-between` و`place-content-around` و`place-content-evenly`
 
-*Aligning and Justifying Content Simultaneously — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/e0523c9a604c1edca516e897ffa1414a2dfd12d6ee8def23172b7186bfded96f.html)*
+*المحاذاة والتوزيع معًا للمحتوى — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e0523c9a604c1edca516e897ffa1414a2dfd12d6ee8def23172b7186bfded96f.html)*
 
 ```html
 <div class="grid h-64 w-64 grid-cols-3 place-content-center gap-2 rounded-lg bg-gray-100 p-4">
@@ -184,13 +184,13 @@ Utilities:
 </div>
 ```
 
-## Examples and Usage Tips
+## أمثلة ونصائح الاستخدام
 
-### Responsive Design
+### التصميم المتجاوب
 
-All Grid alignment utilities support responsive variants (e.g., `md:justify-items-start`) for adaptive layouts. Unprefixed utilities apply to all screen sizes; prefixed utilities apply at the specified breakpoint and above.
+تدعم جميع أدوات محاذاة Grid متغيّرات متجاوبة (مثل `md:justify-items-start`) للتخطيطات المتكيّفة. وتُطبَّق الأدوات غير المسبوقة بالبادئة على جميع أحجام الشاشات، بينما تُطبَّق الأدوات المسبوقة بالبادئة عند نقطة التوقّف المحدَّدة وما فوقها.
 
-*Responsive Design — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/b3c3b1d8ca13ec06e0814e49881d374872c3b28c2376b9b148ad54ecad9aac4e.html)*
+*التصميم المتجاوب — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b3c3b1d8ca13ec06e0814e49881d374872c3b28c2376b9b148ad54ecad9aac4e.html)*
 
 ```html
 <div
@@ -205,12 +205,12 @@ All Grid alignment utilities support responsive variants (e.g., `md:justify-item
 </div>
 ```
 
-Items are centered by default, then `justify-items-start` on medium screens and up.
+تُوسَّط العناصر افتراضيًا، ثم تُحاذى إلى البداية بـ `justify-items-start` على الشاشات المتوسطة فما فوق.
 
-### Arbitrary Values
+### القيم التعسّفية
 
-Use arbitrary values `[]` for specific CSS values not in the default theme, though less common for alignment than for colors or spacing.
+استخدم القيم التعسّفية `[]` لقيم CSS محدّدة غير موجودة في السمة الافتراضية، وإن كان استخدامها في المحاذاة أقل شيوعًا منها في الألوان أو المسافات.
 
-### CSS-First Configuration in Tailwind 4
+### الإعداد القائم على CSS في Tailwind 4
 
-Tailwind 4 emphasizes CSS-first configuration via `@theme` in your CSS file. While alignment utilities are used in HTML, their underlying values (like spacing for `gap-<number>`) are defined by CSS variables customizable in `@theme`.
+يُبرز Tailwind 4 الإعداد القائم على CSS عبر `@theme` في ملف CSS لديك. فبينما تُستخدم أدوات المحاذاة في HTML، تبقى قيمها الأساسية (مثل المسافات في `gap-<number>`) معرَّفةً عبر متغيّرات CSS قابلة للتخصيص في `@theme`.

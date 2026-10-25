@@ -1,16 +1,16 @@
 ---
-title: "Animation Performance in React"
-lang: en
+title: "أداء الرسوم المتحركة في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/animation-performance"
 ---
 
-Smooth animations separate professional React apps from amateur ones. A janky fade-in, stuttering carousel, or laggy modal transition immediately signals poor performance to users. But creating 60fps animations in React requires understanding the browser’s rendering pipeline, choosing the right properties to animate, and avoiding common pitfalls that block the main thread.
+الرسوم المتحركة السلسة هي ما يميّز تطبيقات React الاحترافية عن غيرها. فتلاشٍ متقطّع عند الظهور، أو انتقال قائمة دوّارة متلعثم، أو انتقال نافذة منبثقة بطيء، كل ذلك يرسل إلى المستخدمين إشارة فورية إلى ضعف الأداء. لكن إنشاء رسوم متحركة بمعدّل 60 إطارًا في الثانية في React يتطلّب فهم خط تصيير المتصفح، واختيار الخصائص الصحيحة لتحريكها، وتجنّب المزالق الشائعة التي تحجب الخيط الرئيسي.
 
-The challenge isn’t just making things move—it’s making them move smoothly while maintaining React’s declarative paradigm. Every animation is a series of rapid state changes that can trigger expensive re-renders, layout recalculations, and style updates. Master animation performance, and you’ll create interfaces that feel fluid and responsive even on budget devices.
+التحدّي ليس مجرّد تحريك الأشياء، بل تحريكها بسلاسة مع الحفاظ على نموذج React التصريحي. فكل رسم متحرك سلسلة من تغييرات الحالة المتسارعة التي قد تحرّض عمليات إعادة تصيير مكلفة، وإعادات حساب للتخطيط، وتحديثات للأنماط. أتقن أداء الرسوم المتحركة، وستنشئ واجهات تبدو سلسة ومتجاوبة حتى على الأجهزة المتواضعة.
 
-## Understanding the Browser Rendering Pipeline
+## فهم خط تصيير المتصفح
 
-Before optimizing animations, understand what happens when the browser renders a frame:
+قبل تحسين الرسوم المتحركة، افهم ما يحدث عندما يصيّر المتصفح إطارًا واحدًا:
 
 ```typescript
 // Browser rendering pipeline for each frame (16.67ms for 60fps)
@@ -64,11 +64,11 @@ const animationCosts = {
 };
 ```
 
-The golden rule: animate properties that only trigger compositing. Transform and opacity changes happen on the GPU and bypass most of the rendering pipeline.
+القاعدة الذهبية: حرّك الخصائص التي تحرّض التركيب (compositing) وحده. فتغييرات transform وopacity تحدث على وحدة معالجة الرسوميات (GPU) وتتجاوز معظم خط التصيير.
 
-## CSS Transform-Based Animations
+## رسوم متحركة قائمة على transform في CSS
 
-### Hardware-Accelerated Transitions
+### انتقالات مسرَّعة بالعتاد
 
 ```typescript
 // Performant modal animation using transforms
@@ -156,7 +156,7 @@ const modalStyles = `
 `;
 ```
 
-### List Animation with Transforms
+### تحريك القوائم باستخدام transform
 
 ```typescript
 // Performant list animations avoiding layout thrashing
@@ -270,9 +270,9 @@ const listAnimationStyles = `
 `;
 ```
 
-## React Spring for Complex Animations
+## React Spring للرسوم المتحركة المعقّدة
 
-### Physics-Based Animations
+### رسوم متحركة قائمة على الفيزياء
 
 ```typescript
 // High-performance spring animations with react-spring
@@ -407,9 +407,9 @@ function DraggableCard({ onDismiss }: { onDismiss: () => void }) {
 }
 ```
 
-## Frame Rate Monitoring and Optimization
+## مراقبة معدّل الإطارات وتحسينه
 
-### Performance Monitoring for Animations
+### مراقبة أداء الرسوم المتحركة
 
 ```typescript
 // Animation performance monitor
@@ -579,7 +579,7 @@ function MonitoredAnimation({ children }: { children: React.ReactNode }) {
 }
 ```
 
-### Frame Budget Management
+### إدارة ميزانية الإطار
 
 ```typescript
 // Frame budget manager for complex animations
@@ -702,9 +702,9 @@ function ComplexAnimationComponent() {
 }
 ```
 
-## Common Animation Anti-Patterns
+## أنماط مضادّة شائعة في الرسوم المتحركة
 
-### Avoiding Layout Thrashing
+### تجنّب إرباك التخطيط
 
 ```typescript
 // ❌ Bad: Animating layout properties
@@ -819,7 +819,7 @@ function GoodAccordion({ isExpanded }: { isExpanded: boolean }) {
 }
 ```
 
-### Preventing Animation Blocking
+### منع حجب الرسوم المتحركة
 
 ```typescript
 // ❌ Bad: Synchronous state updates during animation
@@ -930,13 +930,13 @@ function CSSAnimatedCounter({ target }: { target: number }) {
 }
 ```
 
-## Advanced Techniques
+## تقنيات متقدّمة {#advanced-techniques}
 
-For more sophisticated animation patterns, including Intersection Observer optimization, Web Animations API integration, and comprehensive performance testing strategies, see [Advanced Animation Performance Techniques](https://stevekinney.com/courses/react-performance/animation-performance-advanced).
+لمزيد من أنماط الرسوم المتحركة المتطوّرة، بما في ذلك تحسين Intersection Observer، والدمج مع Web Animations API، واستراتيجيات اختبار الأداء الشاملة، راجع [تقنيات متقدّمة في أداء الرسوم المتحركة](https://stevekinney.com/courses/react-performance/animation-performance-advanced).
 
-Key advanced topics covered:
+أهم الموضوعات المتقدّمة التي يغطيها:
 
-- **Intersection Observer**: Trigger animations only when elements are visible for better performance
-- **Web Animations API**: Lower-level control for complex animation sequences
-- **Performance Testing**: Automated testing frameworks for animation performance validation
-- **Advanced Optimization**: GPU layer management and composite optimization
+- **Intersection Observer**: لا تُشغّل الرسوم المتحركة إلا عندما تكون العناصر مرئية لتحسين الأداء
+- **Web Animations API**: تحكّم أدنى مستوى في تسلسلات الرسوم المتحركة المعقّدة
+- **اختبار الأداء**: أطر اختبار آلية للتحقّق من أداء الرسوم المتحركة
+- **التحسين المتقدّم**: إدارة طبقات GPU وتحسين التركيب

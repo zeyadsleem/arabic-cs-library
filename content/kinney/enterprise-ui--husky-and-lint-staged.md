@@ -1,32 +1,32 @@
 ---
-title: "Husky and lint-staged"
-lang: en
+title: "Husky و lint-staged: خُطّافات Git والملفات المُجهَّزة"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/husky-and-lint-staged"
 ---
 
-Husky and lint-staged solve related but different problems. Git already has native hooks—`pre-commit`, `commit-msg`, `pre-push`—and those hooks are just executable programs in Git’s hooks directory, or in whatever directory [`core.hooksPath`](https://git-scm.com/docs/githooks) points to. Husky is the thin layer that manages those native hooks for a JavaScript project. lint-staged is the thing you usually run *inside* `pre-commit` to execute commands only on staged files instead of on the whole repo.
+يحل Husky و lint-staged مشكلتين متقاربتين لكن مختلفتين. فلدى Git أصلًا خُطّافات أصلية — `pre-commit` و`commit-msg` و`pre-push` — وهذه الخُطّافات مجرد برامج قابلة للتنفيذ في مجلد خُطّافات Git، أو في أي مجلد يشير إليه [`core.hooksPath`](https://git-scm.com/docs/githooks). وHusky هو الطبقة الرقيقة التي تدير تلك الخُطّافات الأصلية لمشروع JavaScript. أما lint-staged فهو ما تشغّله عادةً *داخل* `pre-commit` لتنفيذ الأوامر على الملفات المُجهَّزة فقط بدل المستودع بأكمله.
 
-That distinction matters. Husky is hook wiring. lint-staged is staged-file task orchestration. If you blur them together, you end up debugging the wrong layer, which is a very human pastime.
+هذا التمييز مهم. فـHusky هو توصيل الخُطّافات. وlint-staged هو تنسيق مهام الملفات المُجهَّزة. وإذا خلطت بينهما، انتهيت تصلح الطبقة الخطأ، وهي هواية إنسانية جدًا.
 
-## Git Hooks
+## خُطّافات Git
 
-Git hooks are just scripts. By default they live under `$GIT_DIR/hooks`, but Git can use another directory through `core.hooksPath`. Hooks without the executable bit are ignored. In a normal non-bare repo, Git runs hooks from the root of the working tree, not from whatever subfolder your package lives in.
+خُطّافات Git مجرد سكربتات. وهي تعيش افتراضيًا تحت `$GIT_DIR/hooks`، لكن Git يمكنه استخدام مجلد آخر عبر `core.hooksPath`. وتُتجاهل الخُطّافات التي لا تحمل بت التنفيذ. وفي مستودع عادي غير مجرّد، يشغّل Git الخُطّافات من جذر شجرة العمل، لا من أي مجلد فرعي تعيش فيه حزمتك.
 
-The three client-side hooks most teams actually care about are `pre-commit`, `commit-msg`, and `pre-push`. `pre-commit` runs before Git creates the commit and can be bypassed with `git commit --no-verify`. `commit-msg` runs on the proposed commit message file and can also be bypassed with `--no-verify`. `pre-push` runs during `git push` and can block the push. `prepare-commit-msg` is a special case: it edits the message before the editor opens, and it is *not* suppressed by `--no-verify`.
+الخُطّافات الثلاثة على جانب العميل التي تهم معظم الفرق فعلًا هي `pre-commit` و`commit-msg` و`pre-push`. يعمل `pre-commit` قبل أن ينشئ Git الإيداع ويمكن تجاوزه بـ`git commit --no-verify`. ويعمل `commit-msg` على ملف رسالة الإيداع المقترحة ويمكن تجاوزه أيضًا بـ`--no-verify`. ويعمل `pre-push` أثناء `git push` ويمكن أن يمنع الدفع. أما `prepare-commit-msg` فحالة خاصة: فهو يعدّل الرسالة قبل أن يفتح المحرر، و*لا* يُوقفه `--no-verify`.
 
-That already tells you the policy story. Hooks are a local speed-and-feedback tool, not a perfect enforcement boundary, because developers can bypass many of them. CI is still the final authority. Humans remain imaginative when deadlines and `--no-verify` meet.
+وهذا يخبرك بفلسفة السياسة أصلًا. فالخُطّافات أداة محلية للسرعة والتغذية الراجعة، لا حد فرض محكم، لأن المطوّرين يستطيعون تجاوز كثير منها. ويظل CI هو المرجع النهائي. ويبقى البشر مبدعين حين تلتقي المواعيد النهائية مع `--no-verify`.
 
-## What Husky Actually Does
+## ما الذي يفعله Husky فعلًا
 
-Husky is deliberately small. It uses `core.hooksPath`, supports all 13 client-side Git hooks, and works across macOS, Linux, Windows, Git GUIs, custom hook directories, nested projects, and monorepos. The important part is that it stays close to Git’s native hook model instead of inventing its own hook runtime.
+Husky صغير عن قصد. فهو يستخدم `core.hooksPath`، ويدعم خُطّافات Git الثلاثة عشر كلها على جانب العميل، ويعمل عبر macOS وLinux وWindows وواجهات Git الرسومية ومجلدات الخُطّافات المخصّصة والمشاريع المتداخلة والمستودعات الأحادية. والمهم أنه يظل قريبًا من نموذج الخُطّافات الأصلي في Git بدل اختراع وقت تشغيل خاص بالخُطّافات.
 
-So, Husky is not a task runner and not a linter. It creates and manages real hook files in `.husky/`, and those files are just shell scripts. “Using Husky” mostly means “letting Husky set `core.hooksPath` and storing your hook scripts in version control.”
+إذن، Husky ليس مشغّل مهام ولا أداة فحص. بل يُنشئ ملفات خُطّافات حقيقية في `.husky/` ويديرها، وتلك الملفات مجرد سكربتات صدفة. و«استخدام Husky» يعني في الأغلب «السماح لـHusky بضبط `core.hooksPath` وتخزين سكربتات خُطّافاتك في نظام إدارة الإصدارات».
 
-## The Modern Setup
+## التهيئة الحديثة
 
-The current recommended setup is very simple: install Husky as a dev dependency and run `husky init`. That creates a `pre-commit` script in `.husky/` and updates the `prepare` script in `package.json`. Husky explicitly aligns this with [npm best practices](https://docs.npmjs.com/cli/v11/using-npm/scripts/) around `prepare`.
+التهيئة الموصى بها حاليًا بسيطة جدًا: ثبّت Husky كتبعية تطوير وشغّل `husky init`. ينتج عن ذلك سكربت `pre-commit` في `.husky/` وتحديث سكربت `prepare` في `package.json`. ويوافق Husky هذا صراحةً مع [أفضل ممارسات npm](https://docs.npmjs.com/cli/v11/using-npm/scripts/) حول `prepare`.
 
-A clean baseline looks like this:
+ويبدو خط الأساس النظيف هكذا:
 
 ```bash
 npm install --save-dev husky lint-staged
@@ -46,11 +46,11 @@ npx husky init
 npx lint-staged
 ```
 
-Why `prepare`? Because npm defines it as a lifecycle script that runs on local `npm install` without package arguments, and in workspaces it can run concurrently across packages. That’s convenient for setting up hooks automatically, but it also means you should usually keep Husky’s `prepare` lightweight and define it at the repo root package, not spray it into every workspace unless you enjoy surprising install-time behavior.
+لماذا `prepare`؟ لأن npm يُعرّفه كسكربت دورة حياة يعمل عند تنفيذ `npm install` محليًا دون معاملات حزم، ويمكن في مساحات العمل أن يعمل تزامنيًا عبر الحزم. وهذا مريح لإعداد الخُطّافات تلقائيًا، لكنه يعني أيضًا أنه ينبغي غالبًا أن تُبقي سكربت `prepare` الخاص بـHusky خفيفًا وأن تعرّفه في حزمة جذر المستودع، لا أن ترشّه في كل مساحة عمل إلا إذا كنت تستمتع بسلوك مفاجئ وقت التثبيت.
 
-## Writing Hook Files
+## كتابة ملفات الخُطّافات
 
-Husky hook files are shell scripts. The [docs](https://typicode.github.io/husky/how-to.html) recommend POSIX-compliant shell for compatibility, especially because not every machine has Bash in the way you expect, and Windows users exist to remind everyone that assumptions are a disease. If you need Node, Python, or another runtime, the recommended pattern is to keep the hook as a tiny shell entrypoint and call your real script from there.
+ملفات خُطّافات Husky سكربتات صدفة. وتوصي [التوثيقات](https://typicode.github.io/husky/how-to.html) بصدفة متوافقة مع POSIX لأجل التوافق، خصوصًا لأن ليست كل الآلات لديها Bash بالشكل الذي تتوقعه، ولأن مستخدمي Windows موجودون ليذكّروا الجميع بأن الافتراضات مرض. وإذا احتجت إلى Node أو Python أو وقت تشغيل آخر، فالنمط الموصى به هو إبقاء الخُطّاف نقطة دخول صغيرة في الصدفة واستدعاء سكربتك الحقيقي منها.
 
 ```bash
 # .husky/pre-commit
@@ -64,20 +64,20 @@ import { execSync } from 'node:child_process';
 execSync('npx lint-staged', { stdio: 'inherit' });
 ```
 
-That approach keeps the hook portable and keeps complicated logic out of shell. Shell is wonderful right up until it isn’t, which is usually five minutes after you add conditionals.
+يُبقي هذا النهج الخُطّاف قابلًا للنقل ويُخرج المنطق المعقّد من الصدفة. فالصدفة رائعة إلى أن تتوقف عن ذلك، وهو ما يحدث عادةً بعد خمس دقائق من إضافة الشروط.
 
-## When to Use Which Hook
+## أي خُطّاف تستخدم ومتى
 
-| Hook | When it runs | Bypass with `--no-verify` | Best for | Speed requirement |
+| الخُطّاف | متى يعمل | التجاوز بـ`--no-verify` | الأفضل لـ | متطلب السرعة |
 | --- | --- | --- | --- | --- |
-| `pre-commit` | Before commit is created | Yes | Formatting, linting staged files | Fast (seconds) |
-| `commit-msg` | After message is written | Yes | Message validation, conventional commits | Fast |
-| `pre-push` | During `git push` | Yes | Full test runs, broader checks | Moderate (minutes OK) |
-| `prepare-commit-msg` | Before editor opens | No | Template insertion, ticket prefixing | Fast |
+| `pre-commit` | قبل إنشاء الإيداع | نعم | التنسيق وفحص الملفات المُجهَّزة | سريع (ثوانٍ) |
+| `commit-msg` | بعد كتابة الرسالة | نعم | التحقق من الرسالة، والإيداعات الاصطلاحية | سريع |
+| `pre-push` | أثناء `git push` | نعم | تشغيل الاختبارات كاملة، وفحوصات أوسع | متوسط (الدقائق مقبولة) |
+| `prepare-commit-msg` | قبل فتح المحرر | لا | إدراج قالب، وإضافة بادئة التذكرة | سريع |
 
-Use `pre-commit` for **fast, staged-file-only work**. That’s where lint-staged belongs. Use `commit-msg` for commit-message validation or normalization. Use `pre-push` for slower checks that are too expensive or too repo-wide for `pre-commit`, such as a fuller test run. Git’s [hook semantics](https://git-scm.com/docs/githooks) line up exactly with that division.
+استخدم `pre-commit` للعمل **السريع على الملفات المُجهَّزة فقط**. وهنا مكان lint-staged. واستخدم `commit-msg` للتحقق من رسالة الإيداع أو تسويتها. واستخدم `pre-push` للفحوصات الأبطأ التي تكون مكلفة أكثر من اللازم أو أوسع من نطاق `pre-commit`، مثل تشغيل اختبارات أكمل. وتتوافق [دلالات الخُطّافات](https://git-scm.com/docs/githooks) في Git مع هذا التقسيم تمامًا.
 
-A practical setup might look like this:
+وقد تبدو التهيئة العملية هكذا:
 
 ```bash
 # .husky/pre-commit
@@ -94,15 +94,15 @@ node scripts/validate-commit-message.mjs "$1"
 npm test
 ```
 
-The rule of thumb is simple. Keep `pre-commit` fast enough that people don’t hate it. If you stuff a whole-project test suite or a slow build into it, developers will use `--no-verify`, which Git and Husky both make trivial. That’s not a character flaw. That’s a predictable system response.
+القاعدة الإرشادية بسيطة. أبقِ `pre-commit` سريعًا بما يكفي ألا يكرهه الناس. وإذا حشوت فيه مجموعة اختبارات المشروع بأكمله أو بناءً بطيئًا، فسيستخدم المطوّرون `--no-verify`، وهو أمر يجعل Git وHusky استخدامه تافهًا. وهذا ليس عيبًا في الأخلاق. بل استجابة نظام متوقعة.
 
-## Skipping Hooks, CI, and Production Installs
+## تجاوز الخُطّافات وCI وتثبيتات الإنتاج
 
-Husky supports the normal Git skip path and its own environment-based skip path. For a single commit, `git commit -n` or `--no-verify` skips eligible hooks. More broadly, setting `HUSKY=0` disables Husky hooks, and [Husky documents this](https://typicode.github.io/husky/how-to.html) both for single commands and for longer periods like rebases. It’s also the recommended way to avoid installing or running hooks in CI servers and Docker.
+يدعم Husky مسار التجاوز المعتاد في Git ومسار التجاوز الخاص به القائم على متغيرات البيئة. فلإيداع واحد، يتجاوز `git commit -n` أو `--no-verify` الخُطّافات المؤهلة. وعلى نطاق أوسع، يؤدي ضبط `HUSKY=0` إلى تعطيل خُطّافات Husky، و[يوثّق Husky ذلك](https://typicode.github.io/husky/how-to.html) للأوامر المفردة ولفترات أطول مثل إعادة الأساس. وهو أيضًا الطريقة الموصى بها لتفادي تثبيت الخُطّافات أو تشغيلها في خوادم CI وDocker.
 
-That leads to an important install-time edge case. If you install only production dependencies, a plain `"prepare": "husky"` can fail because Husky is a dev dependency and therefore missing. Husky’s docs offer two fixes: make the script tolerant with `"prepare": "husky || true"`, or use a tiny install script that exits early in production or CI.
+ويقودنا هذا إلى حالة حدّية مهمة وقت التثبيت. إذا ثبّتت تبعيات الإنتاج فقط، فقد يفشل `"prepare": "husky"` المجرّد لأن Husky تبعية تطوير وغير موجودة. وتقدّم توثيقات Husky إصلاحين: اجعل السكربت متسامحًا عبر `"prepare": "husky || true"`، أو استخدم سكربت تثبيت صغيرًا يخرج مبكرًا في الإنتاج أو CI.
 
-A production-safe version:
+نسخة آمنة للإنتاج:
 
 ```javascript
 // .husky/install.mjs
@@ -122,11 +122,11 @@ console.log(husky());
 }
 ```
 
-That’s the grown-up pattern if your CI image or production install omits dev dependencies.
+هذا هو النمط الناضج إذا كانت صورة CI لديك أو تثبيت الإنتاج يستبعد تبعيات التطوير.
 
-## GUIs, Node Version Managers, and PATH
+## الواجهات الرسومية ومديرو إصدارات Node وPATH
 
-One of Husky’s most useful docs is the one about [Git GUIs and Node version managers](https://typicode.github.io/husky/how-to.html). If developers installed Node through `nvm`, `fnm`, `asdf`, `volta`, and friends, hook execution in a GUI can fail with `command not found` because GUIs often don’t initialize the shell startup files that set up the right `PATH`. Husky’s solution is `~/.config/husky/init.sh`, which Husky sources before each hook.
+من أنفع توثيقات Husky ما يتعلق بـ[واجهات Git الرسومية ومديري إصدارات Node](https://typicode.github.io/husky/how-to.html). فإذا ثبّت المطوّرون Node عبر `nvm` أو `fnm` أو `asdf` أو `volta` وما شابهها، فقد يفشل تنفيذ الخُطّاف في واجهة رسومية برسالة `command not found` لأن الواجهات الرسومية غالبًا لا تهيّئ ملفات بدء الصدفة التي تضبط `PATH` الصحيح. وحل Husky هو `~/.config/husky/init.sh`، الذي يقرأه Husky قبل كل خُطّاف.
 
 ```bash
 # ~/.config/husky/init.sh
@@ -134,11 +134,11 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 ```
 
-If your team uses GUIs and somebody says “it works in Terminal but not in SourceTree / Tower / VS Code / whatever,” this is the first place to look.
+إذا كان فريقك يستخدم واجهات رسومية وقال أحدهم «تعمل في الطرفية لكنها لا تعمل في SourceTree / Tower / VS Code / أيًا كان»، فهذا أول مكان تبحث فيه.
 
-## Nested Packages and Monorepo-Adjacent Setups
+## الحزم المتداخلة وتهيئات ما يقارب المستودع الأحادي
 
-Git runs hooks from the repo root, and Husky doesn’t install into parent directories for security reasons. If your `package.json` is inside a subdirectory but `.git/` is above it, Husky’s docs recommend changing directories in `prepare`—for example `cd .. && husky frontend/.husky`—and then changing back inside the hook before running your project command.
+يشغّل Git الخُطّافات من جذر المستودع، ولا يثبّت Husky في المجلدات الأصلية لأسباب أمنية. وإذا كان `package.json` لديك داخل مجلد فرعي بينما `.git/` فوقه، فتوصي توثيقات Husky بتغيير المجلد في `prepare` — مثلًا `cd .. && husky frontend/.husky` — ثم العودة داخل الخُطّاف قبل تشغيل أمر مشروعك.
 
 ```json
 {
@@ -154,19 +154,19 @@ cd frontend
 npm test
 ```
 
-This matters in split frontend/backend repos, nested apps, and monorepo corners where someone put the JavaScript app somewhere “logical,” which in practice means “inconvenient.”
+يهمّ هذا في المستودعات المقسمة إلى واجهة أمامية وخلفية، والتطبيقات المتداخلة، وزوايا المستودعات الأحادية حيث وضع أحدهم تطبيق JavaScript في مكان «منطقي»، وهو ما يعني عمليًا «غير مريح».
 
-## What lint-staged Actually Does
+## ما الذي يفعله lint-staged فعلًا
 
-lint-staged is much simpler than many teams make it. Its job is to take the set of [staged files](https://github.com/lint-staged/lint-staged), match them against glob patterns, and run commands only for the matching files. By default it’s meant to run from `pre-commit`, and the docs explicitly show `.husky/pre-commit` calling `npx lint-staged` with *no path arguments*, because lint-staged appends the matched staged files for you.
+lint-staged أبسط بكثير مما تجعله فرق كثيرة. فمهمته أن يأخذ مجموعة [الملفات المُجهَّزة](https://github.com/lint-staged/lint-staged)، ويطابقها مع أنماط glob، ويشغّل الأوامر للملفات المطابقة فقط. وهو مصمّم افتراضيًا ليعمل من `pre-commit`، وتُظهر التوثيقات صراحةً `.husky/pre-commit` وهو يستدعي `npx lint-staged` *بلا معاملات مسار*، لأن lint-staged يضيف الملفات المُجهَّزة المطابقة نيابةً عنك.
 
-Think of lint-staged as a **staged-file router**, not as a generic “pre-commit shell script manager.” It’s excellent for `eslint --fix`, `prettier --write`, `stylelint`, image optimization, and similar file-local tasks. It’s a bad wrapper for tools that fundamentally want to run on the whole project.
+فكّر في lint-staged كـ**موجّه للملفات المُجهَّزة**، لا كـ«مدير سكربتات صدفة عام لـpre-commit». فهو ممتاز لـ`eslint --fix` و`prettier --write` و`stylelint` وتحسين الصور ومهام محلية ملفيًا مشابهة. وهو غلاف سيئ لأدوات تريد في جوهرها أن تعمل على المشروع كله.
 
-## The Configuration Model
+## نموذج الإعداد
 
-lint-staged can be configured in `package.json`, `.lintstagedrc` files, or dedicated config files such as `lint-staged.config.js`, `.mjs`, `.cjs`, and even `.ts` when your Node environment supports it. The config is an object whose keys are glob patterns and whose values are commands to run. JavaScript config files can also export functions for advanced behavior.
+يمكن إعداد lint-staged في `package.json` أو ملفات `.lintstagedrc` أو ملفات إعداد مخصّصة مثل `lint-staged.config.js` و`.mjs` و`.cjs` وحتى `.ts` عندما تدعمها بيئة Node لديك. والإعداد كائن مفاتيحه أنماط glob وقيمه أوامر تُشغَّل. ويمكن لملفات إعداد JavaScript أيضًا أن تصدّر دوال لسلوك متقدم.
 
-A normal setup:
+إعداد عادي:
 
 ```json
 {
@@ -177,7 +177,7 @@ A normal setup:
 }
 ```
 
-Or, if you want a separate config file:
+أو إذا أردت ملف إعداد منفصلًا:
 
 ```javascript
 // lint-staged.config.mjs
@@ -187,33 +187,33 @@ export default {
 };
 ```
 
-By default lint-staged appends matched staged files to the command it runs. So, if your config says `"*.js": "eslint --fix"`, lint-staged will effectively run something like `eslint --fix file1.js file2.js`. Supported commands can be local or global executables, but lint-staged explicitly discourages globals because they’re not reproducible across machines.
+يضيف lint-staged افتراضيًا الملفات المُجهَّزة المطابقة إلى الأمر الذي يشغّله. لذا إذا قال إعدادك `"*.js": "eslint --fix"`، فسيشغّل lint-staged فعليًا شيئًا مثل `eslint --fix file1.js file2.js`. ويمكن أن تكون الأوامر المدعومة ملفات تنفيذية محلية أو عامة، لكن lint-staged يُثبّط صراحةً الملفات التنفيذية العامة لأنها غير قابلة لإعادة الإنتاج عبر الآلات.
 
-## File Matching and Paths
+## مطابقة الملفات والمسارات
 
-lint-staged uses [micromatch](https://github.com/lint-staged/lint-staged) for glob matching. If a glob has no slash, it matches basenames anywhere, so `"*.js"` matches both `test.js` and `foo/bar/test.js`. If it contains a slash, path matching applies, so `"foo/**/*.js"` only matches under `foo/`.
+يستخدم lint-staged [micromatch](https://github.com/lint-staged/lint-staged) لمطابقة glob. وإذا لم يحتوِ النمط على شرطة مائلة، فهو يطابق الأسماء الأساسية في أي مكان، لذا يطابق `"*.js"` كلا من `test.js` و`foo/bar/test.js`. وإذا احتوى على شرطة مائلة، تُطبَّق مطابقة المسار، لذا لا يطابق `"foo/**/*.js"` إلا تحت `foo/`.
 
-lint-staged automatically resolves the git root, selects staged files inside the project directory, filters them with the glob, and passes **absolute paths** to tasks by default. That absolute-path default is easy to miss and surprisingly useful—it avoids ambiguity when your `.git` directory and `package.json` aren’t in the same place. If your tool truly wants relative paths, use `--relative` or a function config that rewrites the filenames yourself.
+يحدّد lint-staged جذر git تلقائيًا، ويختار الملفات المُجهَّزة داخل مجلد المشروع، ويرشّحها بالنمط، ويمرّر **مسارات مطلقة** إلى المهام افتراضيًا. ومن السهل تفويت هذا الافتراضي الخاص بالمسارات المطلقة، وهو مفيد بشكل مفاجئ — إذ يجنّبك الغموض عندما لا يكون مجلد `.git` و`package.json` في المكان نفسه. وإذا كانت أداتك تريد مسارات نسبية فعلًا، فاستخدم `--relative` أو إعدادًا بدالة تعيد كتابة أسماء الملفات بنفسك.
 
-## Ignoring Files
+## تجاهل الملفات
 
-lint-staged’s own docs are clear about this: ignoring files should usually be handled by the underlying tool, not by lint-staged. If Prettier should ignore `vendor/`, put that in `.prettierignore`. lint-staged will still pass staged files in `vendor/`, but Prettier will ignore them according to its own rules.
+توثيقات lint-staged نفسها واضحة في هذا: ينبغي عادةً أن تتولى الأداة الأساسية عملية تجاهل الملفات، لا lint-staged. وإذا كان ينبغي أن يتجاهل Prettier مجلد `vendor/`، فضع ذلك في `.prettierignore`. وسيظل lint-staged يمرّر الملفات المُجهَّزة في `vendor/`، لكن Prettier سيتجاهلها وفق قواعده الخاصة.
 
-If you truly need lint-staged-level filtering, use a JavaScript config and filter the filenames yourself with `micromatch.not()` or your own logic. That’s the exception, not the default. Most of the time, if you’re fighting lint-staged to ignore something, the actual ignore config belongs in ESLint, Prettier, Stylelint, or whatever real tool is doing the work.
+وإذا احتجت فعلًا إلى ترشيح على مستوى lint-staged، فاستخدم إعدادًا بـJavaScript ورشّح أسماء الملفات بنفسك عبر `micromatch.not()` أو بمنطقك الخاص. وهذه استثناء لا الافتراضي. وفي معظم الأحيان، إذا كنت تصارع lint-staged لتجاهل شيء ما، فإعداد التجاهل الفعلي مكانه ESLint أو Prettier أو Stylelint أو أي أداة حقيقية تقوم بالعمل.
 
-## Auto-Staging, Stashing, and Partially Staged Files
+## التجهيز التلقائي والتخزين المؤقت والملفات المُجهَّزة جزئيًا
 
-By default, lint-staged is protective. It creates a backup stash before running tasks, and if tasks make modifications successfully, lint-staged automatically stages those modifications for the commit. That’s why you should *not* add `git add` manually in task commands anymore. lint-staged has handled that itself since v10 specifically to avoid race conditions when multiple tasks edit the same files.
+lint-staged احتياطي بطبعه افتراضيًا. فهو ينشئ تخزينًا مؤقتًا احتياطيًا قبل تشغيل المهام، وإذا أحدثت المهام تعديلات بنجاح، جهّز lint-staged تلك التعديلات تلقائيًا للإيداع. لهذا *لا* ينبغي أن تضيف `git add` يدويًا في أوامر المهام بعد الآن. فقد تكفّل lint-staged بذلك بنفسه منذ الإصدار 10 تحديدًا لتفادي حالات التسابق عندما تعدّل مهام متعددة الملفات نفسها.
 
-The partially staged file behavior is the part people almost never think about until it bites them. By default, lint-staged hides unstaged changes from partially staged files, runs the tasks, and then restores those unstaged changes. If you disable that with `--no-hide-partially-staged`, those unstaged changes can end up committed too.
+وسلوك الملفات المُجهَّزة جزئيًا هو الجزء الذي لا يفكر فيه الناس تقريبًا حتى يعضّهم. فـlint-staged يخفي افتراضيًا التغييرات غير المُجهَّزة في الملفات المُجهَّزة جزئيًا، ويشغّل المهام، ثم يعيد تلك التغييرات غير المُجهَّزة. وإذا عطّلت ذلك بـ`--no-hide-partially-staged`، فقد تنتهي تلك التغييرات مُودَعة أيضًا.
 
-There’s also `--fail-on-changes`, which flips the normal formatter workflow. Instead of auto-staging task edits and letting the commit continue, lint-staged exits with code 1 when tasks change files and leaves those edits in the working tree for manual restaging. That’s useful for teams that want formatting to be explicit rather than silently amended into the commit.
+ويوجد أيضًا `--fail-on-changes`، الذي يقلب سير عمل أدوات التنسيق المعتاد. فبدل تجهيز تعديلات المهام تلقائيًا وترك الإيداع يمضي، يخرج lint-staged بالرمز 1 عندما تغيّر المهام ملفات ويترك تلك التعديلات في شجرة العمل لإعادة تجهيزها يدويًا. وهذا مفيد للفرق التي تريد أن يكون التنسيق صريحًا لا مُعدَّلًا بصمت داخل الإيداع.
 
-## Concurrency and Race Conditions
+## التزامن وحالات التسابق
 
-lint-staged runs configured tasks concurrently by default. That’s fine when globs don’t overlap or when commands only read files. It becomes a mess when overlapping globs both *write* to the same file set. The docs call this out directly with the classic bad idea: `"*": "prettier --write"` plus `"*.ts": "eslint --fix"`. Now both commands may rewrite the same TypeScript files at the same time. Congratulations on your tiny race-condition generator.
+يشغّل lint-staged المهام المهيّأة تزامنيًا افتراضيًا. وهذا لا بأس به عندما لا تتداخل الأنماط أو عندما تقرأ الأوامر الملفات فقط. أما عندما تكتب أنماط متداخلة *بالكتابة* في المجموعة نفسها من الملفات فيصبح الأمر فوضى. وتنبّه التوثيقات إلى ذلك مباشرةً بالفكرة السيئة الكلاسيكية: `"*": "prettier --write"` مع `"*.ts": "eslint --fix"`. الآن قد يعيد الأمران كتابة ملفات TypeScript نفسها في الوقت نفسه. مبروك على مولّد حالات التسابق الصغير الذي بنيته.
 
-The fix is either to make the globs non-overlapping or to use array syntax inside one glob so commands run in order for that same file set:
+الإصلاح إما أن تجعل الأنماط غير متداخلة، أو أن تستخدم صيغة المصفوفة داخل نمط واحد بحيث تعمل الأوامر بالترتيب على المجموعة نفسها من الملفات:
 
 ```javascript
 export default {
@@ -222,11 +222,11 @@ export default {
 };
 ```
 
-If you need less parallelism globally, lint-staged supports `--concurrent <number>` or `--concurrent false`.
+وإذا احتجت تزامنًا أقل على المستوى العام، يدعم lint-staged `--concurrent <number>` أو `--concurrent false`.
 
-## Function Config as the Escape Hatch
+## إعداد الدوال كمخرج طارئ
 
-Function-based config is the real power tool. It lets you build commands dynamically, run custom Node logic, filter file lists yourself, and—most importantly—stop lint-staged from appending filenames when a tool should run once without file arguments. lint-staged’s docs show this explicitly for `tsc`, because appending filenames can make TypeScript ignore `tsconfig.json`. The fix is `() => 'tsc --noEmit'`, not `"tsc --noEmit"`.
+الإعداد القائم على الدوال هو الأداة القوية الحقيقية. فهو يتيح لك بناء الأوامر ديناميكيًا، وتشغيل منطق Node مخصّص، وترشيح قوائم الملفات بنفسك، والأهم أنه يمنع lint-staged من إضافة أسماء الملفات عندما ينبغي أن تعمل أداة مرة واحدة بلا معاملات ملفات. وتُظهر توثيقات lint-staged ذلك صراحةً في حالة `tsc`، لأن إضافة أسماء الملفات قد تجعل TypeScript يتجاهل `tsconfig.json`. والإصلاح هو `() => 'tsc --noEmit'`، لا `"tsc --noEmit"`.
 
 ```javascript
 // lint-staged.config.mjs
@@ -235,17 +235,17 @@ export default {
 };
 ```
 
-Function config is also how you handle custom path rewriting, build your own file grouping, or filter files before handing them to a tool. It’s the right escape hatch when plain glob-to-command mapping stops being enough.
+كما يُستخدم إعداد الدوال للتعامل مع إعادة كتابة المسارات المخصّصة، أو بناء تجميعك الخاص للملفات، أو ترشيح الملفات قبل تسليمها إلى أداة. وهو المخرج الطارئ الصحيح عندما يتوقف التخطيط البسيط من نمط إلى أمر عن الكفاية.
 
-One more easy-to-miss detail: task commands don’t expand environment variables the way your shell normally might. lint-staged’s docs specifically say to use something like `cross-env` if you need that behavior.
+وتفصيل آخر يسهل تفويته: لا توسّع أوامر المهام متغيرات البيئة كما تفعل صدفتك عادةً. وتذكر توثيقات lint-staged تحديدًا استخدام شيء مثل `cross-env` إذا احتجت ذلك السلوك.
 
-## Monorepos
+## المستودعات الأحادية
 
-The official lint-staged guidance for monorepos is very specific: install lint-staged at the repo root, then add separate configuration files in each package if different packages need different rules. lint-staged will always use the configuration file *closest* to the staged file. Those configs are treated as isolated. That means a root config does *not* automatically “fill in” missing globs for a closer package config.
+إرشادات lint-staged الرسمية للمستودعات الأحادية محددة جدًا: ثبّت lint-staged في جذر المستودع، ثم أضف ملفات إعداد منفصلة في كل حزمة إذا احتاجت حزم مختلفة إلى قواعد مختلفة. وسيستخدم lint-staged دائمًا ملف الإعداد *الأقرب* إلى الملف المُجهَّز. وتُعتبر تلك الإعدادات معزولة. وهذا يعني أن إعداد الجذر *لا* «يكمل» تلقائيًا الأنماط الناقصة في إعداد حزمة أقرب.
 
-That isolation surprises people all the time. If `packages/frontend/.lintstagedrc.json` exists and only matches `*.js`, then a staged `packages/frontend/README.md` will *not* fall back to a root `*.md` rule. The nearer config wins even if it has no matching glob for that file. The docs explicitly recommend using JS files to extend a base config if you want shared behavior plus package-specific additions.
+هذا العزل يفاجئ الناس دائمًا. فإذا وُجد `packages/frontend/.lintstagedrc.json` وكان يطابق `*.js` فقط، فلن يعود ملف `packages/frontend/README.md` المُجهَّز إلى قاعدة `*.md` في الجذر. فالإعداد الأقرب يفوز حتى لو لم يحتوِ على نمط مطابق لذلك الملف. وتوصي التوثيقات صراحةً باستخدام ملفات JS لتوسيع إعداد أساسي إذا أردت سلوكًا مشتركًا مع إضافات خاصة بالحزمة.
 
-A healthy monorepo setup:
+تهيئة صحية لمستودع أحادي:
 
 ```bash
 # .husky/pre-commit
@@ -269,48 +269,48 @@ export default {
 };
 ```
 
-If you truly want to run lint-staged only in one package, the official escape hatch is `--cwd`.
+وإذا أردت فعلًا تشغيل lint-staged في حزمة واحدة فقط، فالمخرج الطارئ الرسمي هو `--cwd`.
 
-## Running lint-staged in CI
+## تشغيل lint-staged في CI
 
-lint-staged is primarily a pre-commit tool, but it can run in CI if you tell it what diff to use. The `--diff` option replaces the normal `git diff --staged` source of files and implies `--no-stash`.
+lint-staged أداة pre-commit في المقام الأول، لكنه يمكن أن يعمل في CI إذا أخبرته أي فرق (diff) يستخدم. ويستبدل خيار `--diff` المصدر المعتاد للملفات `git diff --staged` ويستلزم `--no-stash`.
 
 ```bash
 npx lint-staged --diff="origin/main...HEAD"
 ```
 
-But, the architectural point is still the same: Husky hooks are developer ergonomics. CI is the enforcement boundary. In CI, disable Husky with `HUSKY=0` and run the actual commands you care about, optionally using lint-staged with `--diff` when that file-selection behavior is valuable.
+لكن النقطة المعمارية تبقى كما هي: خُطّافات Husky من أجل راحة المطوّر. أما CI فهو حد الفرض. وفي CI، عطّل Husky بـ`HUSKY=0` وشغّل الأوامر الفعلية التي تهمك، مع استخدام lint-staged اختياريًا مع `--diff` عندما يكون سلوك اختيار الملفات هذا ذا قيمة.
 
-## Troubleshooting
+## حل المشكلات
 
-If hooks aren’t running at all, [Husky’s troubleshooting guide](https://typicode.github.io/husky/troubleshoot.html) says to check three things first: the filename must be a real hook name like `pre-commit`, `core.hooksPath` should point to `.husky/_` or your chosen hooks directory, and Git should be newer than 2.9. It also notes that `precommit` and `pre-commit.sh` are invalid hook names. That kind of error is embarrassing, but also extremely common.
+إذا لم تعمل الخُطّافات إطلاقًا، فإن [دليل حل المشكلات في Husky](https://typicode.github.io/husky/troubleshoot.html) يقول افحص ثلاثة أمور أولًا: يجب أن يكون اسم الملف اسم خُطّاف حقيقيًا مثل `pre-commit`، وينبغي أن يشير `core.hooksPath` إلى `.husky/_` أو إلى مجلد الخُطّافات الذي اخترته، وأن يكون Git أحدث من 2.9. ويشير أيضًا إلى أن `precommit` و`pre-commit.sh` اسمان غير صالحين للخُطّافات. وهذا النوع من الأخطاء محرج، لكنه شائع للغاية أيضًا.
 
-If hook output looks strange, duplicated, or colorless, lint-staged documents a Git 2.36 hook-TTY regression that was fixed in Git 2.37. If hooks work in Terminal but fail in a GUI, fix `PATH` initialization with `~/.config/husky/init.sh`. If they fail only in CI or production installs, fix the `prepare` script and/or set `HUSKY=0`. If they fail in nested repos, remember Git runs hooks from repo root and Husky won’t install into parent directories.
+وإذا بدا مخرَج الخُطّاف غريبًا أو مكررًا أو بلا ألوان، فإن lint-staged يوثّق تراجعًا في TTY خُطّافات Git 2.36 جرى إصلاحه في Git 2.37. وإذا عملت الخُطّافات في الطرفية وفشلت في واجهة رسومية، فأصلح تهيئة `PATH` عبر `~/.config/husky/init.sh`. وإذا فشلت في CI أو في تثبيتات الإنتاج فقط، فأصلح سكربت `prepare` و/أو اضبط `HUSKY=0`. وإذا فشلت في المستودعات المتداخلة، فتذكّر أن Git يشغّل الخُطّافات من جذر المستودع وأن Husky لن يثبّت في المجلدات الأصلية.
 
-That’s most of the mystery right there, minus a few artisanal Windows problems.
+هذا معظم الغموض، ناقصًا بعض مشكلات Windows الحرفية.
 
-## What Not to Do
+## ما لا ينبغي فعله
 
-Don’t run full-project tools through lint-staged if those tools are designed to lint the whole project. lint-staged’s own docs explicitly call out `ng lint` as a bad fit for staged-file execution and recommend putting it directly in the hook instead. That general rule applies well beyond Angular.
+لا تشغّل أدوات المشروع الكاملة عبر lint-staged إذا كانت تلك الأدوات مصمّمة لفحص المشروع كله. فتوثيقات lint-staged نفسها تذكر `ng lint` صراحةً كأداة غير مناسبة للتنفيذ على الملفات المُجهَّزة وتوصي بوضعها في الخُطّاف مباشرةً بدل ذلك. وتسري هذه القاعدة العامة على ما هو أبعد من Angular.
 
-Don’t make overlapping mutating globs race each other. Don’t manually add `git add` in lint-staged tasks. Don’t rely on globally installed executables. Don’t make `pre-commit` so slow that everybody reaches for `--no-verify`. And don’t pretend local hooks replace CI, because Git and Husky both give people multiple ways around them.
+لا تجعل أنماطًا متداخلة مُعدِّلة تتسابق فيما بينها. ولا تضف `git add` يدويًا في مهام lint-staged. ولا تعتمد على ملفات تنفيذية مثبّتة عامة. ولا تجعل `pre-commit` بطيئًا إلى حد أن يمدّ الجميع أيديهم إلى `--no-verify`. ولا تتظاهر بأن الخُطّافات المحلية تحل محل CI، لأن Git وHusky يمنحان الناس طرقًا عدة للالتفاف حولها.
 
-## The Setup I’d Actually Recommend
+## التهيئة التي أوصي بها فعلًا
 
-Use Husky to manage native Git hooks through `.husky/`. Keep `prepare` at the repo root. Put lint-staged in `pre-commit`. Keep `pre-commit` limited to fast, file-local, staged-only tasks such as formatting, ESLint autofix, Stylelint, and maybe a lightweight type or test check when it truly runs quickly. Put message validation in `commit-msg`. Put slower repo-wide tests in `pre-push` or CI. In monorepos, run one root lint-staged process and use per-package configs only when packages really need different staged-file policies.
+استخدم Husky لإدارة خُطّافات Git الأصلية عبر `.husky/`. وأبقِ `prepare` في جذر المستودع. وضع lint-staged في `pre-commit`. وأبقِ `pre-commit` محدودًا بمهام سريعة محلية ملفيًا على المُجهَّز فقط مثل التنسيق والإصلاح التلقائي بـESLint وStylelint، وربما فحصًا خفيفًا للأنواع أو الاختبارات عندما يعمل بسرعة فعلًا. وضع التحقق من الرسالة في `commit-msg`. وضع الاختبارات الأبطأ على مستوى المستودع في `pre-push` أو CI. وفي المستودعات الأحادية، شغّل عملية lint-staged واحدة في الجذر واستخدم إعدادات لكل حزمة فقط عندما تحتاج الحزم فعلًا إلى سياسات مختلفة للملفات المُجهَّزة.
 
-The boring default wins here. Husky for native hook wiring. lint-staged for fast staged-file work. CI for final enforcement. That setup survives growth much better than the classic alternative, which is shoving your whole quality program into `pre-commit` and then acting surprised when everyone starts committing with the digital equivalent of “don’t tell mom.”
+الافتراضي الممل يفوز هنا. Husky لتوصيل الخُطّافات الأصلية. وlint-staged للعمل السريع على الملفات المُجهَّزة. وCI للفرض النهائي. وتصمد هذه التهيئة أمام النمو أفضل بكثير من البديل الكلاسيكي، الذي هو حشو برنامج الجودة كله داخل `pre-commit` ثم التظاهر بالدهشة عندما يبدأ الجميع بالإيداع بما يعادل «لا تخبر أمي» رقميًا.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Git Hooks as Guardrails
+### خُطّافات Git كحواجز أمان
 
-> Enforce standards before code reaches CI.
+> افرض المعايير قبل أن تصل الشفرة إلى CI.
 
-- **Husky** — manages Git hooks. `husky init` sets up `.husky/` directory.
-- **lint-staged** — runs tools *only on staged files*. Fast, even in large repos.
+- **Husky** — يدير خُطّافات Git. و`husky init` ينشئ مجلد `.husky/`.
+- **lint-staged** — يشغّل الأدوات *على الملفات المُجهَّزة فقط*. سريع، حتى في المستودعات الكبيرة.
 
 ```json
 // package.json
@@ -322,8 +322,8 @@ The boring default wins here. Husky for native hook wiring. lint-staged for fast
 }
 ```
 
-- Pre-commit: lint + format staged files.
-- Commit-msg: validate conventional commit format.
-- Pre-push: run type-check.
+- Pre-commit: فحص وتنسيق الملفات المُجهَّزة.
+- Commit-msg: التحقق من صيغة الإيداع الاصطلاحية.
+- Pre-push: تشغيل فحص الأنواع.
 
-**In a monorepo:** Per-package lint-staged configs. Each package defines its own rules.
+**في مستودع أحادي:** إعدادات lint-staged لكل حزمة. وكل حزمة تعرّف قواعدها.

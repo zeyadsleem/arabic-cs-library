@@ -1,53 +1,53 @@
 ---
-title: "Exercise: IAM Policy for a Deploy Bot"
-lang: en
+title: "تمرين: سياسة IAM لبوت النشر"
+lang: ar
 source: "https://stevekinney.com/courses/aws/iam-policy-exercise"
 ---
 
-You’re going to create a **deploy bot**—an IAM user whose sole purpose is to deploy your frontend. This user can sync files to a specific S3 bucket and invalidate a specific CloudFront distribution’s cache. It can’t do anything else. No reading DynamoDB tables, no creating Lambda functions, no changing IAM permissions.
+ستُنشئ **بوت نشر**—مستخدم IAM غرضه الوحيد نشر واجهتك الأمامية. يستطيع هذا المستخدم مزامنة الملفات إلى حاوية S3 محدّدة وإبطال ذاكرة توزيع CloudFront محدّد. ولا يستطيع فعل أي شيء آخر. لا قراءة جداول DynamoDB، ولا إنشاء دوال Lambda، ولا تعديل أذونات IAM.
 
-In production, this deploy identity would be an **OIDC-federated IAM role** rather than a user with static access keys—GitHub Actions can request short-lived credentials from AWS without storing any secrets. You’ll graduate `deploy-bot` (or its OIDC role equivalent) into the GitHub Actions deploy in the CI/CD lesson. For now, building it as an IAM user with scoped keys is the right learning path: it forces you to think explicitly about which permissions are needed and why.
+في الإنتاج، ستكون هوية النشر هذه **دور IAM اتحاديًا عبر OIDC** لا مستخدمًا بمفاتيح وصول ثابتة—فـ GitHub Actions تستطيع طلب بيانات اعتماد قصيرة العمر من AWS دون تخزين أي أسرار. وستُرقّي `deploy-bot` (أو مكافئه من دور OIDC) إلى النشر عبر GitHub Actions في درس CI/CD. أما الآن، فبناءه كمستخدم IAM بمفاتيح محدّدة النطاق هو المسار التعليمي الصحيح: فهو يفرض عليك التفكير صريحًا في الأذونات المطلوبة وسببها.
 
-> **Delete these keys after the CI/CD lesson**
+> **احذف هذه المفاتيح بعد درس CI/CD**
 >
-> The access keys you generate in this exercise are training wheels. Once you reach [CI/CD with GitHub Actions](https://stevekinney.com/courses/aws/cicd-with-github-actions) and wire up the OIDC-federated role, **delete the `deploy-bot` access keys** (`aws iam delete-access-key --user-name deploy-bot --access-key-id <id>`). Long-lived access keys sitting around after you no longer need them are the textbook way AWS accounts get compromised. The IAM role stays, the policy attached to it stays, but the keys go.
+> مفاتيح الوصول التي تولّدها في هذا التمرين هي عجلات تدريب. فبمجرد أن تصل إلى [CI/CD مع GitHub Actions](https://stevekinney.com/courses/aws/cicd-with-github-actions) وتربط الدور الاتحادي عبر OIDC، **احذف مفاتيح وصول `deploy-bot`** (`aws iam delete-access-key --user-name deploy-bot --access-key-id <id>`). إن مفاتيح الوصول طويلة العمر التي تبقى متروكة بعد أن تعود لا تحتاجها هي الطريقة المدرسية التي تُخترق بها حسابات AWS. يبقى دور IAM، وتبقى السياسة المرتبطة به، أما المفاتيح فتُحذف.
 
-This is the same deploy bot you’ll wire into a GitHub Actions pipeline later in the course. I want you to build it now so you understand exactly what permissions it has and why.
+هذا هو بوت النشر نفسه الذي ستربطه بخط أنابيب GitHub Actions لاحقًا في الدورة. أريدك أن تبنيه الآن كي تفهم بالضبط ما الأذونات التي يملكها ولماذا.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want the AWS version of the policy mechanics while you work, keep the [IAM JSON policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) and the [`aws iam create-policy` command reference](https://docs.aws.amazon.com/cli/latest/reference/iam/create-policy.html) open.
+> إن أردت نسخة AWS من ميكانيكا السياسات أثناء عملك، فأبقِ [مرجع سياسات IAM بصيغة JSON](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html) و[مرجع أمر `aws iam create-policy`](https://docs.aws.amazon.com/cli/latest/reference/iam/create-policy.html) مفتوحين.
 
-## Why It Matters
+## لماذا يهم هذا
 
-Every CI/CD pipeline needs credentials. On Vercel, the platform handles this for you—you never think about what permissions the deploy process has. On AWS, you control those permissions explicitly. And the permissions you choose determine the blast radius if those credentials leak.
+كل خط أنابيب CI/CD يحتاج بيانات اعتماد. على Vercel، تتولى المنصة ذلك عنك—فلا تفكر أبدًا في الأذونات التي تملكها عملية النشر. أما على AWS، فأنت تتحكم في تلك الأذونات صراحةً. والأذونات التي تختارها تحدّد نطاق الضرر إذا تسرّبت بيانات الاعتماد تلك.
 
-A deploy bot with `AdministratorAccess` can delete your database. A deploy bot with a scoped policy can, at worst, overwrite your static files. The difference is a bad day versus a catastrophic one.
+بوت نشر يملك `AdministratorAccess` يستطيع حذف قاعدة بياناتك. أما بوت نشر بسياسة محدّدة النطاق، فأسوأ ما يفعله أن يكتب فوق ملفاتك الثابتة. الفرق بين يوم سيئ ويوم كارثي.
 
-## Your Task
+## مهمتك
 
-Create an IAM user named `deploy-bot` with:
+أنشئ مستخدم IAM باسم `deploy-bot` يتضمن:
 
-- **No console access**—this user exists purely for CLI/API use.
-- **Access keys** for programmatic access.
-- **A custom IAM policy** that allows exactly these operations and nothing more: Sync files to the `my-frontend-app-assets` S3 bucket (upload, delete, and list) Create cache invalidations on the CloudFront distribution with ID `E1A2B3C4D5E6F7`
-  - Sync files to the `my-frontend-app-assets` S3 bucket (upload, delete, and list)
-  - Create cache invalidations on the CloudFront distribution with ID `E1A2B3C4D5E6F7`
+- **لا وصول إلى وحدة التحكم**—هذا المستخدم موجود لاستخدام CLI/API فقط.
+- **مفاتيح وصول** للوصول البرمجي.
+- **سياسة IAM مخصّصة** تسمح بهذه العمليات بالضبط ولا شيء غيرها: مزامنة الملفات إلى حاوية `my-frontend-app-assets` في S3 (الرفع والحذف والسرد) وإنشاء إبطالات ذاكرة على توزيع CloudFront ذي المعرّف `E1A2B3C4D5E6F7`
+  - مزامنة الملفات إلى حاوية `my-frontend-app-assets` في S3 (الرفع والحذف والسرد)
+  - إنشاء إبطالات ذاكرة على توزيع CloudFront ذي المعرّف `E1A2B3C4D5E6F7`
 
-Use the account ID `123456789012` and region `us-east-1` for all ARNs.
+استخدم معرّف الحساب `123456789012` والمنطقة `us-east-1` في جميع قيم ARN.
 
-## Step-by-Step
+## خطوة بخطوة
 
-### Create the IAM User
+### إنشاء مستخدم IAM
 
-In the AWS Console, navigate to **IAM** > **Users** > **Create user**.
+في وحدة تحكم AWS، انتقل إلى **IAM** > **Users** > **Create user**.
 
-- Set the username to `deploy-bot`.
-- **Do not** enable console access. This user will only authenticate via access keys.
-- Skip the permissions step for now—you’ll attach a policy after creating it.
-- Click through to create the user.
+- عيّن اسم المستخدم إلى `deploy-bot`.
+- **لا** تمكّن الوصول إلى وحدة التحكم. سيثبت هذا المستخدم هويته عبر مفاتيح الوصول فقط.
+- تخطَّ خطوة الأذونات الآن—سترفق سياسة بعد إنشائه.
+- تابع النقر حتى إنشاء المستخدم.
 
-Alternatively, use the CLI:
+بدلًا من ذلك، استخدم CLI:
 
 ```bash
 aws iam create-user \
@@ -56,11 +56,11 @@ aws iam create-user \
   --output json
 ```
 
-### Create Access Keys for the User
+### إنشاء مفاتيح وصول للمستخدم
 
-Navigate to the `deploy-bot` user’s **Security credentials** tab and create an access key. Choose **Other** as the use case.
+انتقل إلى تبويب **Security credentials** الخاص بمستخدم `deploy-bot` وأنشئ مفتاح وصول. اختر **Other** كحالة الاستخدام.
 
-Or via CLI:
+أو عبر CLI:
 
 ```bash
 aws iam create-access-key \
@@ -69,25 +69,25 @@ aws iam create-access-key \
   --output json
 ```
 
-Save the Access Key ID and Secret Access Key somewhere secure. You’ll need them later when configuring the deploy pipeline.
+احفظ معرّف مفتاح الوصول ومفتاح الوصول السري في مكان آمن. ستحتاجهما لاحقًا عند تهيئة خط أنابيب النشر.
 
-### Write the Policy
+### كتابة السياسة
 
-Create a file called `deploy-bot-policy.json` with a policy that:
+أنشئ ملفًا اسمه `deploy-bot-policy.json` يحتوي سياسة تقوم بما يلي:
 
-1. Allows `s3:PutObject` and `s3:DeleteObject` on objects in the `my-frontend-app-assets` bucket.
-2. Allows `s3:ListBucket` on the `my-frontend-app-assets` bucket itself.
-3. Allows `cloudfront:CreateInvalidation` on the distribution `E1A2B3C4D5E6F7`.
+1. تسمح بـ `s3:PutObject` و`s3:DeleteObject` على الكائنات في حاوية `my-frontend-app-assets`.
+2. تسمح بـ `s3:ListBucket` على حاوية `my-frontend-app-assets` نفسها.
+3. تسمح بـ `cloudfront:CreateInvalidation` على التوزيع `E1A2B3C4D5E6F7`.
 
-Remember:
+تذكّر:
 
-- `s3:PutObject` and `s3:DeleteObject` operate on **objects**, so the resource ARN needs `/*` at the end.
-- `s3:ListBucket` operates on the **bucket**, so the resource ARN doesn’t have `/*`.
-- CloudFront distribution ARNs have no region (use an empty region segment) and follow the pattern `arn:aws:cloudfront::<account-id>:distribution/<distribution-id>`.
-- Every statement needs `Effect`, `Action`, and `Resource`.
-- The policy needs `"Version": "2012-10-17"`.
+- `s3:PutObject` و`s3:DeleteObject` تعملان على **الكائنات**، لذا يحتاج ARN المورد إلى `/*` في نهايته.
+- `s3:ListBucket` تعمل على **الحاوية**، لذا لا يحتوي ARN المورد على `/*`.
+- أقواس ARN لتوزيعات CloudFront لا تحمل منطقة (استخدم مقطع منطقة فارغًا) وتتبع النمط `arn:aws:cloudfront::<account-id>:distribution/<distribution-id>`.
+- كل عبارة تحتاج `Effect` و`Action` و`Resource`.
+- تحتاج السياسة إلى `"Version": "2012-10-17"`.
 
-### Create the Policy in IAM
+### إنشاء السياسة في IAM
 
 ```bash
 aws iam create-policy \
@@ -97,9 +97,9 @@ aws iam create-policy \
   --output json
 ```
 
-Note the policy ARN from the output—you’ll need it for the next step.
+دوّن ARN السياسة من الناتج—ستحتاجه في الخطوة التالية.
 
-### Attach the Policy to the User
+### ربط السياسة بالمستخدم
 
 ```bash
 aws iam attach-user-policy \
@@ -109,17 +109,17 @@ aws iam attach-user-policy \
   --output json
 ```
 
-### Verify the Setup
+### التحقق من الإعداد
 
-Configure a named profile for the deploy bot:
+أعدّ ملف تعريف مسمّى لبوت النشر:
 
 ```bash
 aws configure --profile deploy-bot
 ```
 
-Enter the access key ID and secret access key you saved earlier, `us-east-1` as the region, and `json` as the output format.
+أدخل معرّف مفتاح الوصول ومفتاح الوصول السري الذي حفظته سابقًا، و`us-east-1` كمنطقة، و`json` كتنسيق إخراج.
 
-Verify the identity:
+تحقّق من الهوية:
 
 ```bash
 aws sts get-caller-identity \
@@ -128,11 +128,11 @@ aws sts get-caller-identity \
   --output json
 ```
 
-You should see the `deploy-bot` user’s ARN in the response.
+ينبغي أن ترى ARN الخاص بمستخدم `deploy-bot` في الاستجابة.
 
-## With the SDK
+## مع SDK
 
-The whole exercise in TypeScript, for comparison:
+التمرين كله بـ TypeScript، للمقارنة:
 
 ```typescript
 import {
@@ -186,36 +186,36 @@ await iam.send(
 );
 ```
 
-## Checkpoints
+## نقاط التحقق
 
-- `deploy-bot` IAM user exists with no console access
-- Access keys are created and stored securely
-- `DeployBotPolicy` is a customer-managed policy in your account
-- The policy allows exactly four actions: `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket`, and `cloudfront:CreateInvalidation`
-- The S3 actions are scoped to `my-frontend-app-assets` (bucket and objects, with correct ARN patterns)
-- The CloudFront action is scoped to distribution `E1A2B3C4D5E6F7`
-- The policy is attached to the `deploy-bot` user
-- `aws sts get-caller-identity --profile deploy-bot` returns the correct identity
+- مستخدم IAM باسم `deploy-bot` موجود دون وصول إلى وحدة التحكم
+- مفاتيح الوصول منشأة ومخزّنة بأمان
+- `DeployBotPolicy` سياسة يديرها العميل في حسابك
+- السياسة تسمح بأربعة إجراءات بالضبط: `s3:PutObject` و`s3:DeleteObject` و`s3:ListBucket` و`cloudfront:CreateInvalidation`
+- إجراءات S3 محدّدة النطاق عند `my-frontend-app-assets` (الحاوية والكائنات، بأنماط ARN الصحيحة)
+- إجراء CloudFront محدّد النطاق عند التوزيع `E1A2B3C4D5E6F7`
+- السياسة مرتبطة بالمستخدم `deploy-bot`
+- الأمر `aws sts get-caller-identity --profile deploy-bot` يعيد الهوية الصحيحة
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **`aws sts get-caller-identity` fails with `InvalidClientTokenId`:** The named profile is using the wrong access key pair, or the keys were copied incorrectly when you created them.
-- **Later deploy commands fail with `AccessDenied` on S3:** Double-check that object actions use `arn:aws:s3:::my-frontend-app-assets/*` while `s3:ListBucket` uses the bucket ARN without `/*`.
-- **CloudFront invalidation fails even though S3 sync works:** The distribution ARN is wrong. CloudFront ARNs omit the region segment and must point at `E1A2B3C4D5E6F7` in account `123456789012`.
+- **يفشل `aws sts get-caller-identity` بخطأ `InvalidClientTokenId`:** الملف الشخصي المسمّى يستخدم زوج مفاتيح وصول خاطئًا، أو نُسخت المفاتيح بشكل خاطئ عند إنشائها.
+- **تفشل أوامر النشر لاحقًا بخطأ `AccessDenied` على S3:** تحقّق مرة أخرى من أن إجراءات الكائنات تستخدم `arn:aws:s3:::my-frontend-app-assets/*` بينما يستخدم `s3:ListBucket` ARN الحاوية دون `/*`.
+- **يفشل إبطال CloudFront رغم أن مزامنة S3 تعمل:** ARN التوزيع خاطئ. فأقواس ARN الخاصة بـ CloudFront تحذف مقطع المنطقة ويجب أن تشير إلى `E1A2B3C4D5E6F7` في الحساب `123456789012`.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Test the boundaries.** Try running a command the deploy bot shouldn’t have access to—like `aws iam list-users --profile deploy-bot --region us-east-1 --output json`. Confirm that you get an `AccessDenied` error. This is the policy doing its job.
-- **Add a Deny statement.** Add an explicit Deny statement that prevents the deploy bot from deleting the bucket itself (`s3:DeleteBucket`). Technically the bot already can’t do this (the action isn’t in the Allow statements), but an explicit Deny acts as a guardrail even if someone later expands the Allow statements.
-- **Use Sids.** If you didn’t include `Sid` fields in your policy statements, add descriptive ones. When you revisit this policy in three months, `"Sid": "AllowS3DeploySync"` is worth more than staring at a list of actions trying to remember what they’re for.
+- **اختبر الحدود.** جرّب تشغيل أمر لا ينبغي أن يملك بوت النشر وصولًا إليه—مثل `aws iam list-users --profile deploy-bot --region us-east-1 --output json`. تأكد من حصولك على خطأ `AccessDenied`. هذه هي السياسة وهي تؤدي عملها.
+- **أضف عبارة Deny.** أضف عبارة Deny صريحة تمنع بوت النشر من حذف الحاوية نفسها (`s3:DeleteBucket`). تقنيًا، البوت لا يستطيع فعل ذلك أصلًا (فالإجراء ليس في عبارات Allow)، لكن Deny الصريح يعمل كحاجز أمان حتى لو وسّع شخص ما عبارات Allow لاحقًا.
+- **استخدم Sids.** إن لم تضمّن حقول `Sid` في عبارات سياستك، فأضف حقولًا وصفية. فعندما تعود إلى هذه السياسة بعد ثلاثة أشهر، ستكون `"Sid": "AllowS3DeploySync"` أنفع من التحديق في قائمة إجراءات محاولًا تذكر الغرض منها.
 
-When you’re ready, check your work against the [Solution: IAM Policy for a Deploy Bot](https://stevekinney.com/courses/aws/iam-policy-solution).
+عندما تجهز، قارن عملك بـ [الحل: سياسة IAM لبوت النشر](https://stevekinney.com/courses/aws/iam-policy-solution).
 
-## Cleanup
+## التنظيف
 
-Keep `deploy-bot` around—you’ll use it again in the CI/CD lesson. When you’re done with the entire course, run this sequence to tear the user down. IAM has strict ordering rules: deactivate the access key, detach the policy, delete the access key, then delete the user. Miss a step and the final `delete-user` call fails with `DeleteConflict`.
+أبقِ `deploy-bot` موجودًا—ستستخدمه مرة أخرى في درس CI/CD. وعندما تنتهي من الدورة بأكملها، شغّل هذا التسلسل لتفكيك المستخدم. لـ IAM قواعد ترتيب صارمة: عطّل مفتاح الوصول، ثم افصل السياسة، ثم احذف مفتاح الوصول، ثم احذف المستخدم. أخطئ خطوة واحدة ويفشل استدعاء `delete-user` الأخير بخطأ `DeleteConflict`.
 
-First, find the access key ID (the one you saved earlier works too, but this avoids digging through notes):
+أولًا، اعثر على معرّف مفتاح الوصول (الذي حفظته سابقًا يفي بالغرض أيضًا، لكن هذا يوفّر عليك التنقيب في ملاحظاتك):
 
 ```bash
 aws iam list-access-keys \
@@ -224,7 +224,7 @@ aws iam list-access-keys \
   --output json
 ```
 
-Then deactivate and remove the key:
+ثم عطّل المفتاح وأزله:
 
 ```bash
 aws iam update-access-key \
@@ -239,7 +239,7 @@ aws iam delete-access-key \
   --region us-east-1
 ```
 
-Detach the policy and delete it:
+افصل السياسة واحذفها:
 
 ```bash
 aws iam detach-user-policy \
@@ -252,7 +252,7 @@ aws iam delete-policy \
   --region us-east-1
 ```
 
-Finally, delete the user:
+أخيرًا، احذف المستخدم:
 
 ```bash
 aws iam delete-user \
@@ -260,4 +260,4 @@ aws iam delete-user \
   --region us-east-1
 ```
 
-Also remove the named profile from your local AWS config by opening `~/.aws/credentials` and `~/.aws/config` and deleting the `[deploy-bot]` sections.
+وأزل أيضًا الملف الشخصي المسمّى من تهيئة AWS المحلية بفتح `~/.aws/credentials` و`~/.aws/config` وحذف قسمَي `[deploy-bot]`.

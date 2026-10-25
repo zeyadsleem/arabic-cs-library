@@ -1,18 +1,18 @@
 ---
-title: "Island Architecture"
-lang: en
+title: "معمارية الجزر (Island Architecture)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/island-architecture"
 ---
 
-Most pages are not fully interactive applications. A product page, article, docs page, pricing page, or account overview usually contains a lot of static markup and only a handful of dynamic controls. Traditional full-page hydration still ships JavaScript and hydration work for the entire app tree, including regions that never needed client interactivity in the first place.
+معظم الصفحات ليست تطبيقات تفاعلية بالكامل. فصفحة منتج أو مقال أو صفحة توثيق أو صفحة أسعار أو نظرة عامة على حساب تحتوي عادةً على قدر كبير من الترميز الساكن وعلى عدد محدود من عناصر التحكم الديناميكية. ومع ذلك يظل الترطيب (hydration) التقليدي للصفحة كاملة يُرسل JavaScript وعمل ترطيب لشجرة التطبيق بأكملها، بما في ذلك مناطق لم تكن تحتاج أصلًا إلى تفاعلية في المتصفح.
 
-**Island Architecture** is an HTML-first rendering pattern where most of the page is rendered as static or server-rendered HTML, and only the small interactive regions get JavaScript and hydrate independently. The term traces back to Katie Sylor-Miller and was popularized by [Jason Miller’s write-up](https://jasonformat.com/islands-architecture/), which framed the page as a mostly static document with a few self-contained “islands” of interactivity. Astro later pushed the pattern into the mainstream, but the idea is broader than any one framework.
+**معمارية الجزر** نمط تصيير يعطي HTML الأولوية، إذ يُصيَّر معظم الصفحة كـ HTML ساكن أو مُصيَّر على الخادم، ولا تحصل إلا المناطق التفاعلية الصغيرة على JavaScript وتُترطَّب باستقلال. ويعود المصطلح إلى Katie Sylor-Miller وذاع صيته بفضل [مقال Jason Miller](https://jasonformat.com/islands-architecture/)، الذي صاغ الصفحة كمستند ساكن في معظمه مع بضع «جزر» مكتفية بذاتها من التفاعلية. ثم دفع Astro النمط إلى التيار العام، لكن الفكرة أوسع من أي إطار عمل واحد.
 
-Or, in less diplomatic terms: islands stop shipping a whole frontend cathedral so one carousel can rotate.
+أو بعبارة أقل لباقة: تُوقف الجزر إرسال كاتدرائية واجهة أمامية كاملة فقط لتدور دوّارة صور واحدة.
 
-## A Super Naïve Version
+## نسخة ساذجة للغاية
 
-This is more conceptual than practical. Bear with me.
+هذا تصوّري أكثر منه عملي. تحمّلني قليلًا.
 
 ```html
 <h1>Mostly HTML</h1>
@@ -30,9 +30,9 @@ This is more conceptual than practical. Bear with me.
 </script>
 ```
 
-### A Super Naïve Version—with React
+### نسخة ساذجة للغاية — مع React
 
-We could have an HTML page like this.
+يمكن أن تكون لدينا صفحة HTML كهذه.
 
 ```html
 <!doctype html>
@@ -62,7 +62,7 @@ We could have an HTML page like this.
 </html>
 ```
 
-And then our ridiculous JavaScript might look like this…
+وحينها قد تبدو شفرتنا السخيفة هكذا…
 
 ```typescript
 import React, { useState } from 'react';
@@ -88,11 +88,11 @@ mount('island-b', <Counter label="B clicks" />);
 mount('island-c', <Counter label="C clicks" />);
 ```
 
-None of this is *really* how it works. I’m just trying to make it simple.
+لا شيء من هذا هو *حقًا* كيف يعمل الأمر. أنا فقط أحاول تبسيطه.
 
-## How It Works
+## كيف يعمل
 
-The core mechanism is straightforward:
+الآلية الجوهرية واضحة:
 
 ```
 request
@@ -104,94 +104,94 @@ request
   → each island hydrates independently
 ```
 
-That independence is the real point. In a classic hydrated app, the page behaves like one large client-side program. In an islands system, the page is closer to a static document with a few embedded apps. [Deno’s Fresh docs](https://deno.com/blog/intro-to-islands) phrase it bluntly: normal JS frameworks hydrate a *page*, while island frameworks hydrate *components*.
+هذا الاستقلال هو النقطة الحقيقية. ففي تطبيق تقليدي مُرطَّب، تتصرف الصفحة كبرنامج واحد كبير في المتصفح. أما في نظام جزر، فالصفحة أقرب إلى مستند ساكن فيه بضعة تطبيقات مدمجة. وتصوغه [توثيقات Fresh من Deno](https://deno.com/blog/intro-to-islands) بصراحة: أطر JavaScript العادية تُرطّب *صفحة*، بينما أطر الجزر تُرطّب *مكوّنات*.
 
-Each island has its own hydration script and executes independently, so one slow component is less likely to drag the rest of the page down with it.
+لكل جزيرة سكربت الترطيب الخاص بها وتُنفَّذ باستقلال، لذا يقلّ احتمال أن يجرّ مكوّن بطيء واحد بقية الصفحة معه.
 
-## What Counts as an Island
+## ما الذي يُعدّ جزيرة
 
-In common usage, a **client island** is an interactive UI component that hydrates separately from the rest of the page. [Astro describes](https://docs.astro.build/en/concepts/islands/) an island as an enhanced UI component on an otherwise static page of HTML, and specifically distinguishes client islands from **server islands**: client islands are hydrated interactive widgets, while server islands are dynamic server-rendered fragments that render separately from the main page response.
+في الاستخدام الشائع، **جزيرة العميل** مكوّن واجهة تفاعلي يُرطَّب بمعزل عن بقية الصفحة. و[تصف Astro](https://docs.astro.build/en/concepts/islands/) الجزيرة بأنها مكوّن واجهة مُعزَّز على صفحة HTML ساكنة عدا ذلك، وتميّز تحديدًا جزر العميل من **جزر الخادم**: فجزر العميل عناصر تفاعلية مُرطَّبة، بينما جزر الخادم شذرات ديناميكية مُصيَّرة على الخادم تُصيَّر بمعزل عن استجابة الصفحة الرئيسية.
 
-That distinction matters. A page might have a static article body, a client island for a comments composer, and a server island for a personalized “Your account” box. Both are “islands” in the sense that they’re isolated from the main page render, but one isolates client hydration work and the other isolates server rendering work. Astro’s server islands move slow or personalized server logic out of the critical render path so the rest of the page can be cached more aggressively.
+هذا التمييز مهم. فقد تكون في الصفحة متون مقال ساكنة، وجزيرة عميل لمحرّر التعليقات، وجزيرة خادم لصندوق مخصّص بعنوان «حسابك». وكلتاهما «جزيرة» بمعنى أنها معزولة عن تصيير الصفحة الرئيسية، لكن إحداهما تعزل عمل الترطيب في المتصفح والأخرى تعزل عمل التصيير على الخادم. وتُخرج جزر الخادم في Astro منطق الخادم البطيء أو المخصّص من مسار التصيير الحرج حتى يمكن تخزين بقية الصفحة في ذاكرة مؤقتة بجرأة أكبر.
 
-## Why It Can Feel So Fast
+## لماذا تبدو سريعة إلى هذا الحد
 
-The obvious benefit is lower JavaScript volume. [Astro’s docs](https://docs.astro.build/en/concepts/islands/) are direct: most of the page becomes fast static HTML, and JavaScript is loaded only for the components that need it. Since JavaScript is expensive per byte, every byte you don’t ship matters.
+الفائدة الواضحة هي انخفاض حجم JavaScript. و[توثيقات Astro](https://docs.astro.build/en/concepts/islands/) صريحة: يتحول معظم الصفحة إلى HTML ساكن سريع، ولا تُحمَّل JavaScript إلا للمكوّنات التي تحتاجها. ولأن JavaScript مكلفة بالبايت، فكل بايت لا ترسله مهم.
 
-The second benefit is **scheduling**. In Astro, interactivity is configured per component, so different islands can hydrate at different priorities. A header search can load immediately, while an image carousel lower on the page can hydrate only when visible or when the browser is idle. Astro’s client directives include `client:load`, `client:idle`, `client:visible`, `client:media`, and `client:only`. A low-priority island doesn’t block a high-priority one, and if an island never enters the viewport, it never loads.
+الفائدة الثانية هي **الجدولة**. في Astro تُضبط التفاعلية لكل مكوّن، لذا يمكن أن تُرطَّب جزر مختلفة بأولويات مختلفة. فيمكن أن يُحمَّل بحث الترويسة فورًا، بينما تُرطَّب دوّارة صور أسفل الصفحة فقط عند ظهورها أو عند خمول المتصفح. وتشمل توجيهات العميل في Astro كلا من `client:load` و`client:idle` و`client:visible` و`client:media` و`client:only`. والجزيرة منخفضة الأولوية لا تعيق جزيرة عالية الأولوية، وإن لم تدخل جزيرة مجال الرؤية أبدًا فإنها لا تُحمَّل أبدًا.
 
-The third benefit is **blast radius**. [Patterns.dev notes](https://www.patterns.dev/vanilla/islands-architecture/) that progressive hydration is typically page-controlled and top-down, whereas islands execute asynchronously and independently. A slower island shouldn’t delay the rest of the page. This doesn’t make performance problems disappear—humans remain inventive—but it localizes them.
+الفائدة الثالثة هي **نطاق الأثر**. و[تلاحظ Patterns.dev](https://www.patterns.dev/vanilla/islands-architecture/) أن الترطيب التدريجي عادةً ما تتحكم فيه الصفحة ويكون تنازليًا من الأعلى، بينما تُنفَّذ الجزر بصورة غير متزامنة ومستقلة. فلا ينبغي أن تؤخّر جزيرة أبطأ بقية الصفحة. وهذا لا يجعل مشكلات الأداء تختفي — فالبشر يبقون مبدعين — لكنه يحصرها في نطاق محلي.
 
-## The Terms People Blur Together
+## المصطلحات التي يخلطها الناس
 
-People use “islands,” “partial hydration,” and “selective hydration” loosely, which is how frontend vocabulary turns into swamp gas.
+يستخدم الناس «الجزر» و«الترطيب الجزئي» و«الترطيب الانتقائي» بارتخاء، وهكذا يتحول مفردات الواجهة الأمامية إلى غاز مستنقعات.
 
-| Concept | What it reduces | Granularity | When JS ships | Framework examples |
+| المفهوم | ما الذي يقلّله | مستوى التفصيل | متى تُرسل JavaScript | أمثلة من الأطر |
 | --- | --- | --- | --- | --- |
-| Full hydration | Nothing (baseline) | Entire app | Always, for everything | React SPA, Vue SPA |
-| Partial hydration | Amount of hydration work | Varies | Only for interactive regions | Gatsby (Partial Hydration) |
-| Islands | Amount of hydration work | Per component/region | Per island, independently | Astro, Fresh, Bridgetown |
-| Streaming SSR | Time to first byte | Per Suspense boundary | Progressively as data resolves | React 18, Qwik |
-| React Server Components | Client bundle size | Per module boundary | Only for `'use client'` modules | Next.js App Router |
-| Resumability | Hydration replay cost | Sub-component | On interaction (lazy) | Qwik, Marko |
+| الترطيب الكامل | لا شيء (خط الأساس) | التطبيق بأكمله | دائمًا، لكل شيء | React SPA, Vue SPA |
+| الترطيب الجزئي | قدر عمل الترطيب | متغيّر | للمناطق التفاعلية فقط | Gatsby (Partial Hydration) |
+| الجزر | قدر عمل الترطيب | لكل مكوّن/منطقة | لكل جزيرة، باستقلال | Astro, Fresh, Bridgetown |
+| التصيير التدفقي SSR | زمن الوصول إلى البايت الأول | لكل حد Suspense | تدريجيًا مع حلول البيانات | React 18, Qwik |
+| مكوّنات الخادم في React | حجم حزمة المتصفح | لكل حد وحدة | لوحدات `'use client'` فقط | Next.js App Router |
+| قابلية الاستئناف | كلفة إعادة تشغيل الترطيب | ما دون المكوّن | عند التفاعل (بشكل كسول) | Qwik, Marko |
 
-Astro describes Islands Architecture as building on a technique also known as partial or selective hydration. [Gatsby](https://www.gatsbyjs.com/docs/conceptual/partial-hydration/), however, is explicit that its own Partial Hydration is not the same implementation as Astro’s islands, even if the results look similar.
+تصف Astro معمارية الجزر بأنها مبنية على تقنية تُعرف أيضًا بالترطيب الجزئي أو الانتقائي. غير أن [Gatsby](https://www.gatsbyjs.com/docs/conceptual/partial-hydration/) تبيّن صراحةً أن ترطيبها الجزئي ليس التنفيذ نفسه الذي تعتمده جزر Astro، حتى لو بدت النتائج متشابهة.
 
-The useful way to think about it: **partial hydration** names the broad family of techniques that avoid hydrating the whole page. **Islands** names one concrete architecture for doing that by isolating interactive regions as separate units.
+الطريقة المفيدة للتفكير في الأمر: **الترطيب الجزئي** اسم العائلة العريضة من التقنيات التي تتجنب ترطيب الصفحة كاملة. و**الجزر** اسم معمارية محددة لتحقيق ذلك عبر عزل المناطق التفاعلية كوحدات منفصلة.
 
-## How It Relates to SSR
+## علاقته بالتصيير على الخادم (SSR)
 
-SSR and islands are not the same thing. SSR only answers *where* the initial HTML comes from. A traditionally server-rendered React app can still hydrate the whole page on the client afterward. Islands keep the SSR benefits but change the hydration architecture so only selected regions become client programs.
+التصيير على الخادم والجزر ليسا الشيء نفسه. فالتصيير على الخادم يجيب فقط عن *من أين* يأتي HTML الأولي. ويمكن لتطبيق React مُصيَّر تقليديًا على الخادم أن يظل يُرطّب الصفحة كاملة في المتصفح بعد ذلك. أما الجزر فتحافظ على فوائد التصيير على الخادم لكنها تغيّر معمارية الترطيب بحيث لا تصبح في المتصفح برامج إلا مناطق مختارة.
 
-[Gatsby’s docs](https://www.gatsbyjs.com/docs/conceptual/partial-hydration/) spell this out: full hydration still sends JavaScript for static parts and rebuilds client-side state for the whole page, while partial hydration limits that work to the interactive regions.
+وتوضح [توثيقات Gatsby](https://www.gatsbyjs.com/docs/conceptual/partial-hydration/) ذلك صراحةً: فالترطيب الكامل يظل يرسل JavaScript للأجزاء الساكنة ويعيد بناء الحالة في المتصفح للصفحة كاملة، بينما يحدّ الترطيب الجزئي ذلك العمل بالمناطق التفاعلية.
 
-That’s why “SSR app” and “islands app” aren’t competing labels. An islands app is usually still server-rendered or statically generated. The argument is about what happens *after* the HTML arrives, not whether the HTML exists.
+لهذا ليس «تطبيق SSR» و«تطبيق الجزر» وصفين متنافسين. فتطبيق الجزر يظل عادة مُصيَّرًا على الخادم أو مولَّدًا بشكل ساكن. والجدال يدور حول ما يحدث *بعد* وصول HTML، لا عمّا إذا كان HTML موجودًا.
 
-## How It Relates to Streaming SSR
+## علاقته بالتصيير التدفقي SSR
 
-Streaming SSR is a different axis. Streaming changes *when* HTML is delivered. Islands change *what* hydrates. React’s [`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream) streams the shell first and later content as Suspense boundaries resolve. That’s a delivery strategy. Islands are a hydration and composition strategy. They can absolutely be combined—a page can stream its HTML shell and still hydrate only a handful of client islands.
+التصيير التدفقي SSR محور مختلف. فالتدفق يغيّر *متى* يُسلَّم HTML. والجزر تغيّر *ما الذي* يُرطَّب. وتدفّق دالة [`renderToPipeableStream`](https://react.dev/reference/react-dom/server/renderToPipeableStream) في React الهيكل أولًا ثم المحتوى اللاحق كلما حُلّت حدود Suspense. تلك استراتيجية تسليم. أما الجزر فاستراتيجية ترطيب وتركيب. ويمكن الجمع بينهما تمامًا — فقد تتدفق صفحة هيكلها بصيغة HTML وتظل تُرطّب بضع جزر عميل فقط.
 
-So, when someone treats streaming as “the same thing as islands,” they’re mixing transport with execution. One decides when bytes arrive. The other decides which parts of the page become JavaScript applications at all.
+فمن يتعامل مع التدفق على أنه «الشيء نفسه الذي تفعله الجزر» يخلط النقل بالتنفيذ. أحدهما يقرر متى تصل البايتات. والآخر يقرر أي أجزاء الصفحة تصبح تطبيقات JavaScript أصلًا.
 
-## How It Relates to React Server Components
+## علاقته بمكوّنات الخادم في React
 
-[React Server Components](https://react.dev/reference/rsc/server-components) are about where component code runs and where the server/client boundary sits in the module graph. Server Components render ahead of time in an environment separate from the client app or SSR server, and `'use client'` introduces a boundary in the module dependency tree.
+[مكوّنات الخادم في React](https://react.dev/reference/rsc/server-components) تدور حول مكان تشغيل شفرة المكوّنات ومكان حد الخادم/العميل في مخطط الوحدات. تُصيَّر مكوّنات الخادم مسبقًا في بيئة منفصلة عن تطبيق العميل أو عن خادم التصيير على الخادم، ويُنشئ `'use client'` حدًا في شجرة اعتماد الوحدات.
 
-That’s fundamentally different from the islands mental model, which starts from a mostly static HTML page and layers interactive component regions on top. RSC is a code-placement model inside a React architecture. Islands is a page architecture that can exist with or without React. You can have islands with Astro, Fresh, or even web-component-based systems. Different knobs, different pain.
+وهذا مختلف جوهريًا عن النموذج الذهني للجزر، الذي يبدأ من صفحة HTML ساكنة في معظمها ويضيف فوقها مناطق مكوّنات تفاعلية. فمكوّنات الخادم في React نموذج لتوزيع الشفرة داخل معمارية React. أما الجزر فمعمارية صفحة يمكن أن توجد مع React أو بدونه. ويمكن أن تكون لديك جزر مع Astro أو Fresh أو حتى أنظمة قائمة على مكوّنات الويب. مقابض مختلفة، وألم مختلف.
 
-## How It Relates to Resumability
+## علاقته بقابلية الاستئناف
 
-Islands reduce the *amount* of hydration. Resumability tries to avoid hydration replay altogether.
+تقلّل الجزر *قدر* الترطيب. أما قابلية الاستئناف فتحاول تجنّب إعادة تشغيل الترطيب كليًا.
 
-[Qwik’s docs](https://qwik.dev/docs/concepts/resumable/) define hydration as rebuilding listeners, the component tree, and application state on the client after SSR, and argue that this replay is expensive because the framework must download component code and execute templates again. Qwik’s answer is to serialize enough information into the HTML so the app *resumes* instead of hydrating.
+وتُعرّف [توثيقات Qwik](https://qwik.dev/docs/concepts/resumable/) الترطيب بأنه إعادة بناء المستمعات وشجرة المكوّنات وحالة التطبيق في المتصفح بعد التصيير على الخادم، وترى أن إعادة التشغيل هذه مكلفة لأن الإطار يجب أن ينزّل شفرة المكوّنات وينفّذ القوالب من جديد. وجواب Qwik هو تسلسل معلومات كافية داخل HTML بحيث *يستأنف* التطبيق بدل أن يُرطَّب.
 
-[Marko](https://markojs.com/docs/explanation/fine-grained-bundling) goes in a different direction—its compiler does analysis to bundle only the truly interactive JavaScript at the sub-template level, not at the component level.
+و[Marko](https://markojs.com/docs/explanation/fine-grained-bundling) يسير في اتجاه مختلف — إذ يُجري مترجمه تحليلًا لتجميع JavaScript التفاعلية فعلًا فقط على مستوى القوالب الفرعية، لا على مستوى المكوّن.
 
-A useful contrast: islands draw boundaries around *components*, resumability avoids replaying the *app*, and fine-grained bundling ships only the exact interactive *grains* rather than whole component islands.
+تقابل مفيد: الجزر ترسم حدودًا حول *المكوّنات*، وقابلية الاستئناف تتجنب إعادة تشغيل *التطبيق*، والتجميع دقيق الحبيبات يرسل *حبيبات* التفاعل الدقيقة فقط لا جزر المكوّنات كاملة.
 
-## How It Relates to Module Federation and Monorepo Composition
+## علاقته باتحاد الوحدات وتركيب المستودع الأحادي
 
-Module Federation and build-time composition (workspace monorepos) both answer the same question: how do you split a JavaScript application across independently-developed pieces? The page is assumed to be a full client-side application. The only debate is where the code comes from and when it gets resolved.
+يجيب اتحاد الوحدات والتركيب وقت البناء (المستودعات الأحادية بمساحات عمل) عن السؤال نفسه: كيف تقسّم تطبيق JavaScript إلى قطع تُطوَّر باستقلال؟ وتُفترض الصفحة هنا تطبيقًا كاملًا في المتصفح. والخلاف الوحيد هو من أين تأتي الشفرة ومتى تُحلّ.
 
-Island Architecture answers a different question: should the page be a JavaScript application at all?
+أما معمارية الجزر فتجيب عن سؤال مختلف: هل ينبغي أن تكون الصفحة تطبيق JavaScript أصلًا؟
 
-|  | Module Federation | Build-Time (Monorepo) | Islands |
+|  | اتحاد الوحدات | وقت البناء (مستودع أحادي) | الجزر |
 | --- | --- | --- | --- |
-| Unit of composition | Deployed remote app | Workspace package | Individual component |
-| Default rendering | Client JavaScript | Client JavaScript | Static HTML |
-| JavaScript budget | Full app per remote | Full app, one bundle | Only interactive regions |
-| Cross-boundary state | Needs nanostores | React Context works | Needs cross-island signals |
-| Primary goal | Independent deployments | Code organization | Minimize JavaScript |
+| وحدة التركيب | تطبيق ريموت منشور | حزمة مساحة عمل | مكوّن فردي |
+| التصيير الافتراضي | JavaScript في المتصفح | JavaScript في المتصفح | HTML ساكن |
+| ميزانية JavaScript | تطبيق كامل لكل ريموت | تطبيق كامل بحزمة واحدة | المناطق التفاعلية فقط |
+| الحالة عبر الحدود | تحتاج إلى nanostores | React Context يكفي | تحتاج إلى إشارات بين الجزر |
+| الهدف الأساسي | نشر مستقل | تنظيم الشفرة | تقليل JavaScript |
 
-The axes are orthogonal. Module Federation solves an organizational problem (teams that need independent deploy cadences). Build-time composition solves a developer experience problem (type safety, hot reload, single dev server). Islands solve a performance problem (most content pages shouldn’t be full JavaScript applications).
+المحاور متعامدة. فاتحاد الوحدات يحل مشكلة تنظيمية (فرق تحتاج إلى وتائر نشر مستقلة). ويحل التركيب وقت البناء مشكلة في تجربة المطوّر (أمان الأنواع، وإعادة التحميل السريع، وخادم تطوير واحد). وتحل الجزر مشكلة أداء (فمعظم صفحات المحتوى لا ينبغي أن تكون تطبيقات JavaScript كاملة).
 
-They can also compose. An Astro page could contain a client island that loads a Module Federation remote. A monorepo could produce both an SPA dashboard (build-time composition between packages) and a marketing site (islands). The patterns operate at different levels of the stack and don’t compete with each other.
+ويمكن أيضًا الجمع بينها. فقد تحتوي صفحة Astro على جزيرة عميل تحمّل ريموتًا من اتحاد الوحدات. وقد ينتج المستودع الأحادي لوحة تحكم SPA (تركيب وقت البناء بين الحزم) وموقع تسويق (جزر) معًا. تعمل الأنماط على مستويات مختلفة من المكدّس ولا تتنافس فيما بينها.
 
-The antipattern is reaching for the wrong one. Module Federation on a page that’s 90% static content is paying for deployment independence nobody asked for. Islands on a dense, stateful dashboard is fighting the architecture at every turn. If the page is mostly interactive, you’re in application-composition territory (federation or monorepo). If the page is mostly content with a few interactive controls, islands is the right frame.
+النمط المضاد هو التلهّف إلى الخيار الخطأ. فاتحاد الوحدات على صفحة محتواها ساكن بنسبة 90% يعني الدفع مقابل استقلالية نشر لم يطلبها أحد. والجزر على لوحة تحكم كثيفة وذات حالة تعني مصارعة المعمارية في كل منعطف. إذا كانت الصفحة تفاعلية في معظمها فأنت في نطاق تركيب التطبيقات (اتحاد أو مستودع أحادي). وإذا كانت الصفحة في معظمها محتوى مع بضعة عناصر تحكم تفاعلية، فالجزر هي الإطار الصحيح.
 
-## What Real Implementations Look Like
+## كيف تبدو التنفيذات الحقيقية
 
-**Astro** is the most visible mainstream implementation. Its `.astro` components render to static HTML with no client-side runtime. You opt specific framework components into client behavior with directives:
+**Astro** هو التنفيذ الأبرز في التيار العام. تُصيَّر مكوّنات `.astro` فيه إلى HTML ساكن دون أي وقت تشغيل في المتصفح. وتُدخل مكوّنات أطر محددة إلى سلوك المتصفح عبر توجيهات:
 
 ```astro
 ---
@@ -211,50 +211,50 @@ import GenericAvatar from '../components/GenericAvatar.astro';
 </Avatar>
 ```
 
-That one snippet shows most of the model. `ProductDetails` stays plain HTML. `SearchBox` hydrates immediately because it’s important. `Carousel` waits until visible, because shipping JS for something the user never reaches is a silly hobby. `Avatar` is a server island: the page renders now, the personalized fragment is fetched separately, and the fallback fills the gap until it arrives.
+هذه المقتطفة وحدها تُظهر معظم النموذج. فـ`ProductDetails` يبقى HTML عاديًا. و`SearchBox` يُرطَّب فورًا لأنه مهم. و`Carousel` ينتظر حتى يصبح مرئيًا، لأن إرسال JS لشيء لا يصل إليه المستخدم أبدًا هواية سخيفة. أما `Avatar` فجزيرة خادم: تُصيَّر الصفحة الآن، وتُجلب الشذرة المخصّصة على حدة، ويملأ البديل الفراغ حتى وصولها.
 
-Astro also lets you [mix frameworks](https://docs.astro.build/it/guides/framework-components/) on the same page, sending a framework runtime only once per framework used. Handy for incremental migrations or teams with mixed frontend stacks.
+كما يتيح Astro [خلط الأطر](https://docs.astro.build/it/guides/framework-components/) في الصفحة نفسها، مع إرسال وقت تشغيل كل إطار مرة واحدة فقط لكل إطار مستخدم. مفيد للترحيل التدريجي أو للفرق ذات المكدّسات الأمامية المختلطة.
 
-**[Fresh](https://fresh.deno.dev/docs/1.x/concepts/architecture)** takes a similar HTML-first stance from a different ecosystem. Applications ship pure HTML by default, and only specific widgets get re-hydrated. Islands live in an `islands/` folder, are rendered on both server and client, and can receive server-rendered JSX as props. Fresh documents several ways to share state between islands, including shared signals.
+**[Fresh](https://fresh.deno.dev/docs/1.x/concepts/architecture)** يتبنى موقفًا مشابهًا يعطي HTML الأولوية من نظام بيئي مختلف. فترسل التطبيقات HTML خالصًا افتراضيًا، ولا يُعاد ترطيب إلا عناصر واجهة محددة. وتعيش الجزر في مجلد `islands/`، وتُصيَّر على الخادم وفي المتصفح معًا، ويمكن أن تستقبل JSX مُصيَّرًا على الخادم كخصائص. ويوثّق Fresh عدة طرق لمشاركة الحالة بين الجزر، منها الإشارات المشتركة.
 
-**[Bridgetown](https://www.bridgetownrb.com/docs/islands)** shows that this pattern isn’t married to React-like component systems at all. Its islands support is built around independent component trees and the tiny `<is-land>` web component, which can lazy-load an island when it becomes visible or is interacted with. A good reminder that Island Architecture is an architectural pattern first and a framework feature second.
+**[Bridgetown](https://www.bridgetownrb.com/docs/islands)** يُظهر أن هذا النمط ليس مرتبطًا بأنظمة المكوّنات الشبيهة بـ React إطلاقًا. فدعمه للجزر مبني حول أشجار مكوّنات مستقلة ومكوّن الويب الصغير `<is-land>`، الذي يمكنه تحميل جزيرة بشكل كسول عند ظهورها أو عند التفاعل معها. تذكير جيد بأن معمارية الجزر نمط معماري أولًا وميزة إطار ثانيًا.
 
-## Client Islands and Server Islands
+## جزر العميل وجزر الخادم
 
-Most people hear “islands” and think only of client-side hydration islands. [Astro’s server islands](https://docs.astro.build/en/guides/server-islands/) extend the idea to slow or personalized server-rendered fragments by deferring them out of the main page render and fetching them independently, with fallback content shown in the meantime. Each deferred island becomes its own route behind the scenes, and the page can become visible before those slower fragments finish.
+يسمع معظم الناس كلمة «جزر» ولا يفكرون إلا في جزر الترطيب في المتصفح. و[جزر الخادم في Astro](https://docs.astro.build/en/guides/server-islands/) تمدّ الفكرة إلى الشذرات البطيئة أو المخصّصة المُصيَّرة على الخادم عبر تأجيلها خارج تصيير الصفحة الرئيسية وجلبها على حدة، مع عرض محتوى بديل في الأثناء. وتصبح كل جزيرة مؤجَّلة مسارًا خاصًا بها في الخفاء، ويمكن أن تصبح الصفحة مرئية قبل أن تنتهي تلك الشذرات الأبطأ.
 
-That’s a meaningful extension because it lets you separate two different kinds of cost. Client islands isolate browser work. Server islands isolate slow server work. In a real storefront, the product description and reviews shell might be static and heavily cached, the cart drawer might be a client island, and the personalized account avatar might be a server island. Same page, different isolation strategies.
+هذا امتداد ذو دلالة لأنه يتيح فصل نوعين مختلفين من الكلفة. فجزر العميل تعزل عمل المتصفح. وجزر الخادم تعزل عمل الخادم البطيء. وفي متجر حقيقي، قد يكون وصف المنتج وهيكل المراجعات ساكنين ومخزّنين في ذاكرة مؤقتة بكثافة، وقد يكون درج سلة الشراء جزيرة عميل، وقد تكون صورة الحساب المخصّصة جزيرة خادم. الصفحة نفسها، واستراتيجيات عزل مختلفة.
 
-## Operational Concerns
+## اعتبارات تشغيلية
 
-### State and composition
+### الحالة والتركيب
 
-Once you stop thinking of the page as one client app, shared state becomes an explicit architecture choice. [Astro recommends](https://docs.astro.build/en/recipes/sharing-state-islands/) lightweight, framework-agnostic stores like Nano Stores for cross-island communication. Fresh shows shared signals used across separate islands. If your UI depends on deep provider trees and app-wide context for everything, islands will feel less elegant and more like customs paperwork.
+حين تتوقف عن التفكير في الصفحة كتطبيق متصفح واحد، تصبح الحالة المشتركة خيارًا معماريًا صريحًا. و[توصي Astro](https://docs.astro.build/en/recipes/sharing-state-islands/) بمخازن خفيفة مستقلة عن إطار العمل مثل Nano Stores للتواصل بين الجزر. ويعرض Fresh إشارات مشتركة تُستخدم عبر جزر منفصلة. وإذا كانت واجهتك تعتمد على أشجار مزوّدات عميقة وسياق شامل للتطبيق في كل شيء، فستبدو الجزر أقل أناقة وأشبه بأوراق جمركية.
 
-### Hydration timing
+### توقيت الترطيب
 
-[Astro explicitly warns](https://docs.astro.build/it/guides/framework-components/) that accessibility-related JavaScript needs to load at the appropriate time. A menu button, dialog trigger, or keyboard-critical control should not be deferred so aggressively that the visible UI arrives long before its behavior. `client:visible` is great for below-the-fold extras. It’s a terrible choice for the only navigation control in the header.
+و[تحذّر Astro صراحةً](https://docs.astro.build/it/guides/framework-components/) من أن JavaScript المتعلقة بإمكانية الوصول يجب أن تُحمَّل في الوقت المناسب. فلا ينبغي تأجيل زر قائمة أو مُشغّل نافذة حوار أو عنصر تحكم حرج للوحة المفاتيح بحدّة تجعل الواجهة المرئية تصل قبل سلوكها بوقت طويل. فـ`client:visible` ممتازة للإضافات أسفل الجزء المرئي. وهي اختيار سيئ جدًا لعنصر التنقل الوحيد في الترويسة.
 
-### Caching and personalization
+### التخزين المؤقت والتخصيص
 
-Astro’s [server islands](https://docs.astro.build/en/guides/server-islands/) use `GET` requests and can be cached with normal `Cache-Control` directives, which makes them a nice fit for personalized fragments on otherwise cacheable pages. But server islands run in an isolated context outside the page request, so assumptions about page URL or request context need to be handled carefully—especially for prerendered pages.
+تستخدم [جزر الخادم](https://docs.astro.build/en/guides/server-islands/) في Astro طلبات `GET` ويمكن تخزينها مؤقتًا بتوجيهات `Cache-Control` العادية، ما يجعلها مناسبة تمامًا لشذرات مخصّصة في صفحات قابلة للتخزين المؤقت عدا ذلك. لكن جزر الخادم تعمل في سياق معزول خارج طلب الصفحة، لذا يجب التعامل بحذر مع الافتراضات المتعلقة بعنوان URL للصفحة أو بسياق الطلب — خصوصًا في الصفحات المُصيَّرة مسبقًا.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Using islands for a page that’s effectively an application shell.** If most of the surface is interactive and tightly coordinated, you’re fighting the grain of the architecture. The pattern was designed for pages with isolated pockets of interaction, not for pretending a trading terminal is secretly a blog post.
+**استخدام الجزر لصفحة هي في الواقع هيكل تطبيق.** إذا كان معظم السطح تفاعليًا ومتناسقًا بإحكام، فأنت تصارع نسيج المعمارية. فقد صُمّم النمط لصفحات فيها جيوب تفاعل معزولة، لا للتظاهر بأن محطة تداول هي في السر مقال مدونة.
 
-**Assuming islands eliminate JavaScript entirely.** They don’t. They eliminate *unnecessary* JavaScript for non-interactive regions and isolate the rest. Interactive islands still need code, still hydrate, and still impose bundle and execution cost.
+**افتراض أن الجزر تلغي JavaScript كليًا.** إنها لا تفعل ذلك. بل تلغي JavaScript *غير الضرورية* للمناطق غير التفاعلية وتعزل الباقي. فالجزر التفاعلية ما زالت تحتاج شفرة، وما زالت تُرطَّب، وما زالت تفرض كلفة حزمة وكلفة تنفيذ.
 
-**Letting every tiny affordance become its own island.** The architecture invites decomposition, which is good, but decomposition isn’t free. Each island adds decisions about load timing, shared state, fallbacks, and error handling. Islands are at their best when they map to meaningful interactive regions, not when every checkbox develops an independent political identity.
+**السماح لكل إشارة إتاحة صغيرة بأن تصبح جزيرة خاصة بها.** فالمعمارية تدعو إلى التفكيك، وهذا جيد، لكن التفكيك ليس مجانيًا. فكل جزيرة تضيف قرارات حول توقيت التحميل والحالة المشتركة والبدائل ومعالجة الأخطاء. وتكون الجزر في أفضل حالاتها عندما تتوافق مع مناطق تفاعلية ذات معنى، لا عندما ينشئ كل مربع اختيار هوية سياسية مستقلة.
 
-## When to Choose It
+## متى تختارها
 
-Choose islands when the page is mostly static or server-rendered content, the important interactions are localized, you care about initial load and HTML-first behavior, and you want explicit control over when client code wakes up. It’s especially strong for marketing sites, content sites, e-commerce pages, docs, and mixed pages with just enough interactivity to matter but not enough to justify a full always-hydrated app.
+اختر الجزر عندما تكون الصفحة في معظمها محتوى ساكنًا أو مُصيَّرًا على الخادم، وتكون التفاعلات المهمة محصورة محليًا، ويهمّك التحميل الأولي والسلوك الذي يعطي HTML الأولوية، وتريد تحكمًا صريحًا في توقيت استيقاظ شفرة المتصفح. وهي قوية بشكل خاص للمواقع التسويقية، ومواقع المحتوى، وصفحات التجارة الإلكترونية، والتوثيقات، والصفحات المختلطة التي فيها تفاعلية تكفي لتُهمّ لكنها لا تكفي لتبرير تطبيق كامل يُرطَّب دائمًا.
 
-Avoid reaching for it as a reflex when your product is really a dense, stateful application where most regions are live and deeply coordinated. In that world, the isolation that makes islands elegant on content-heavy pages can turn into friction. Use the architecture where it matches the UI shape, not because the phrase sounds modern and leafy.
+تجنّب اللجوء إليها كردّ فعل تلقائي عندما يكون منتجك في الحقيقة تطبيقًا كثيفًا ذا حالة تكون فيه معظم المناطق حيّة ومنسّقة بعمق. في هذا العالم، قد يتحول العزل الذي يجعل الجزر أنيقة في الصفحات الغنية بالمحتوى إلى احتكاك. استخدم المعمارية حيث تناسب شكل الواجهة، لا لأن العبارة تبدو حديثة ووارفة.
 
-## The Short Version
+## النسخة المختصرة
 
-Render the page as HTML first. Opt only the truly interactive regions into independent client hydration. Sometimes opt slow or personalized server fragments into separate deferred rendering as well. Pay for interactivity only where the user actually needs it.
+صيّر الصفحة كـ HTML أولًا. وأدخل المناطق التفاعلية فعلًا فقط في ترطيب مستقل في المتصفح. وأحيانًا أدخل الشذرات الخادمية البطيئة أو المخصّصة في تصيير مؤجَّل منفصل أيضًا. وادفع ثمن التفاعلية حيث يحتاجها المستخدم فعلًا فقط.
 
-That’s a much saner default than treating every page like a giant JavaScript app waiting for permission to become a document.
+هذا افتراضي أكثر رشدًا بكثير من معاملة كل صفحة كتطبيق JavaScript عملاق ينتظر الإذن ليتحول إلى مستند.

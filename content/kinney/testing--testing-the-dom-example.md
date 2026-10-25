@@ -1,10 +1,10 @@
 ---
-title: "A Basic Example"
-lang: en
+title: "مثال أساسي"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-the-dom-example"
 ---
 
-Imagine you have a button, and when you click it, something happens. Classic case, right? Let’s whip up a basic test for that interaction. Here’s a simple function, found in `examples/element-factory/src/button.js`, that creates our DOM structure and adds some behavior:
+تخيّل أن لديك زرًا، وعندما تنقر عليه يحدث شيء ما. حالة كلاسيكية، أليس كذلك؟ لنُعِدّ اختبارًا أساسيًا لذلك التفاعل. إليك دالة بسيطة، موجودة في `examples/element-factory/src/button.js`، تُنشئ بنية DOM لدينا وتضيف بعض السلوك:
 
 ```javascript
 // examples/element-factory/src/button.js
@@ -20,11 +20,11 @@ export function createButton() {
 }
 ```
 
-Nothing fancy—just a button that says “Click Me,” and when you click it, it changes to “Clicked!” It’s like a microwave tutorial level for DOM testing.
+لا شيء مبهر—مجرد زر يقول «Click Me»، وعندما تنقر عليه يتغيّر إلى «Clicked!». إنه أشبه بمستوى تعليمي في لعبة عن الميكروويف بالنسبة لاختبار DOM.
 
-## Writing the Test
+## كتابة الاختبار
 
-Now let’s test this sucker and make sure it’s not lying to us. We’ll add a new test case to ensure the button successfully changes text on click.
+الآن لنختبر هذا الشيء ونتأكّد من أنه لا يكذب علينا. سنضيف حالة اختبار جديدة لضمان أن الزر يغيّر النص بنجاح عند النقر.
 
 ```javascript
 import { it, expect, describe } from 'vitest';
@@ -49,4 +49,4 @@ describe('createButton', () => {
 });
 ```
 
-Whether you’re using `jsdom` or `happy-dom`, all of the DOM methods have been filled in for you. The code is still running in Node, technically—but it has access to all of the methods that you might otherwise only find in the browser.
+سواء كنت تستخدم `jsdom` أو `happy-dom`، فقد تمّت تعبئة كل توابع DOM نيابةً عنك. ما زالت الشيفرة تعمل في Node من الناحية التقنية—لكنها تستطيع الوصول إلى كل التوابع التي قد تجدها عادةً في المتصفح فقط.

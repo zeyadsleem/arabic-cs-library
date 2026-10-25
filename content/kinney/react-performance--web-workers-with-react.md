@@ -1,16 +1,16 @@
 ---
-title: "Web Workers with React"
-lang: en
+title: "عمّال الويب (Web Workers) مع React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/web-workers-with-react"
 ---
 
-Your React app is grinding to a halt. The culprit? A massive data transformation, complex calculation, or image processing task that’s blocking the main thread. While your JavaScript crunches numbers, your UI freezes, animations stutter, and users rage-click unresponsive buttons. The solution isn’t to optimize the algorithm (though you should do that too)—it’s to move it off the main thread entirely with Web Workers.
+يتعثّر تطبيق React لديك حتى يتوقف. ما السبب؟ تحويل ضخم للبيانات، أو حساب معقد، أو مهمة معالجة صور تحجب الخيط الرئيسي. وبينما تطحن شيفرة JavaScript الأرقام، تتجمد واجهتك، وتتلعثم الحركات، وينقر المستخدمون بغضب على أزرار لا تستجيب. الحل ليس تحسين الخوارزمية (وإن كان عليك فعل ذلك أيضًا) — بل نقلها خارج الخيط الرئيسي تمامًا باستخدام Web Workers.
 
-Web Workers let you run JavaScript in background threads, parallel to your main execution thread. This means your expensive computations can run without blocking user interactions, keeping your React app responsive even during heavy processing. But integrating Workers with React’s component model requires careful handling of state synchronization, lifecycle management, and TypeScript typing. This guide shows you exactly how to do it right.
+تتيح لك Web Workers تشغيل JavaScript في خيوط خلفية، بالتوازي مع خيط تنفيذك الرئيسي. يعني هذا أن حساباتك المكلفة يمكن أن تعمل دون حجب تفاعلات المستخدم، فتبقى تطبيقات React سريعة الاستجابة حتى أثناء المعالجة الثقيلة. لكن دمج العمّال مع نموذج مكوّنات React يتطلب تعاملًا دقيقًا مع مزامنة الحالة وإدارة دورة الحياة وكتابة أنواع TypeScript. يوضح لك هذا الدليل كيف تفعل ذلك على نحو صحيح تمامًا.
 
-## Understanding Web Workers in the Browser
+## فهم Web Workers في المتصفح
 
-Before diving into React integration, understand what Workers can and can’t do:
+قبل الغوص في تكامل React، افهم ما يستطيع العمّال فعله وما لا يستطيعون:
 
 ```typescript
 // Web Worker capabilities and limitations
@@ -44,11 +44,11 @@ interface WorkerCapabilities {
 }
 ```
 
-## Basic Web Worker Setup with React
+## إعداد Web Worker أساسي مع React
 
-Let’s start with a simple Worker integration:
+لنبدأ بتكامل بسيط مع Worker:
 
-### Creating a TypeScript Worker
+### إنشاء Worker بـ TypeScript
 
 ```typescript
 // worker/calculator.worker.ts
@@ -176,7 +176,7 @@ ctx.addEventListener('message', async (event: MessageEvent<WorkerMessage>) => {
 ctx.postMessage({ type: 'READY' });
 ```
 
-### React Hook for Worker Management
+### خُطّاف React لإدارة Worker
 
 ```typescript
 // hooks/useWebWorker.ts
@@ -306,7 +306,7 @@ export function useWebWorker<T = any>(workerPath: string, options: UseWebWorkerO
 }
 ```
 
-### Using the Worker in a Component
+### استخدام Worker في مكوّن
 
 ```typescript
 // components/PrimeCalculator.tsx
@@ -373,9 +373,9 @@ function PrimeCalculator() {
 }
 ```
 
-## Advanced Worker Patterns
+## أنماط متقدمة للعمّال
 
-### Worker Pool for Parallel Processing
+### مجموعة عمّال للمعالجة المتوازية
 
 ```typescript
 // utils/workerPool.ts
@@ -527,7 +527,7 @@ export function useWorkerPool<T = any>(workerPath: string, poolSize?: number) {
 }
 ```
 
-### Transferable Objects for Large Data
+### كائنات قابلة للنقل للبيانات الكبيرة
 
 ```typescript
 // utils/transferableWorker.ts
@@ -663,7 +663,7 @@ export function useTransferableWorker(workerPath: string) {
 }
 ```
 
-### SharedArrayBuffer for Real-Time Communication
+### SharedArrayBuffer للتواصل في الزمن الحقيقي
 
 ```typescript
 // utils/sharedWorker.ts
@@ -749,9 +749,9 @@ function processSharedData() {
 }
 ```
 
-## Real-World Use Cases
+## حالات استخدام واقعية
 
-### Case 1: Data Visualization Processing
+### الحالة 1: معالجة تصور البيانات
 
 ```typescript
 // components/DataVisualizer.tsx
@@ -804,7 +804,7 @@ function DataVisualizer({ rawData }: { rawData: number[][] }) {
 }
 ```
 
-### Case 2: Real-Time Search with Worker
+### الحالة 2: بحث في الزمن الحقيقي باستخدام Worker
 
 ```typescript
 // components/WorkerSearch.tsx
@@ -883,7 +883,7 @@ function WorkerSearch({ dataset }: { dataset: Item[] }) {
 }
 ```
 
-### Case 3: Background Sync and Caching
+### الحالة 3: مزامنة وتخزين مؤقت في الخلفية
 
 ```typescript
 // utils/syncWorker.ts
@@ -1029,7 +1029,7 @@ export function useBackgroundSync() {
 }
 ```
 
-## Performance Monitoring and Debugging
+## مراقبة الأداء والتنقيح
 
 ```typescript
 // utils/workerPerformance.ts
@@ -1135,7 +1135,7 @@ function WorkerDebugPanel() {
 }
 ```
 
-## Best Practices and Pitfalls
+## أفضل الممارسات والمزالق
 
 ```typescript
 // Common patterns and anti-patterns
@@ -1189,8 +1189,8 @@ useEffect(() => {
 }, []);
 ```
 
-## Wrapping Up
+## الختام
 
-Web Workers are your escape hatch from JavaScript’s single-threaded limitations. They let you run expensive computations without freezing your UI, process data in parallel on multi-core devices, and create truly responsive React applications even under heavy load.
+Web Workers هي مخرجك من قيود JavaScript أحادية الخيط. فهي تتيح لك تشغيل حسابات مكلفة دون تجميد واجهتك، ومعالجة البيانات على نحو متوازٍ على الأجهزة متعددة النوى، وبناء تطبيقات React سريعة الاستجابة حقًا حتى تحت الحمل الثقيل.
 
-The key is knowing when to use them (computations over 16ms, large data processing, background sync) and when not to (simple calculations, frequent small operations, DOM manipulation). With proper TypeScript typing, efficient data transfer using Transferable objects, and careful lifecycle management, Workers become a powerful tool in your React performance arsenal.
+المفتاح هو معرفة متى تستخدمها (حسابات تتجاوز 16ms، معالجة بيانات كبيرة، مزامنة في الخلفية) ومتى لا تستخدمها (حسابات بسيطة، عمليات صغيرة متكررة، التلاعب بـ DOM). مع كتابة أنواع TypeScript سليمة، ونقل بيانات فعّال باستخدام كائنات Transferable، وإدارة دقيقة لدورة الحياة، تصبح العمّال أداة قوية في ترسانة أداء React لديك.

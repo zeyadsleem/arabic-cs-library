@@ -1,68 +1,52 @@
 ---
-title: "Installation and Configuration"
-lang: en
+title: "التثبيت والإعداد"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/installing-cursor"
 ---
 
-[Cursor](https://cursor.com/) is still easiest to explain as a code editor with an
-agent built into the workflow. The important update is that the editor is no
-longer the whole product. Current Cursor also includes cloud agents, automations,
-subagents, hooks, skills, Bugbot, Security Agents, and a terminal interface.
+لا يزال أسهل شرح لـ [Cursor](https://cursor.com/) أنه محرّر شيفرة له وكيل مدمج في سير العمل. والتحديث المهم هو أن المحرّر لم يعد المنتج بأكمله. فـ Cursor الحالي يتضمّن أيضًا وكلاء سحابيين، وأتمتات، ووكلاء فرعيين، وخطّافات، ومهارات، وBugbot، ووكلاء أمن، وواجهة طرفية.
 
-Start with the desktop application because that is where the everyday feedback
-loop is strongest.
+ابدأ بتطبيق سطح المكتب لأن حلقة التغذية الراجعة اليومية تكون أقوى هناك.
 
-## Install the Desktop Application
+## ثبّت تطبيق سطح المكتب
 
-Download Cursor from [cursor.com](https://cursor.com/). During onboarding, Cursor can
-import extensions, settings, keybindings, and themes from [Visual Studio Code](https://code.visualstudio.com/). That migration is useful
-because Cursor is familiar enough that the editor should not be the new thing you
-are learning. The agent workflow should be.
+نزّل Cursor من [cursor.com](https://cursor.com/). وأثناء التهيئة الأولية، يستطيع Cursor استيراد الإضافات والإعدادات واختصارات لوحة المفاتيح والسمات من [Visual Studio Code](https://code.visualstudio.com/). وهذه الهجرة مفيدة لأن Cursor مألوف بما يكفي بحيث لا ينبغي أن يكون المحرّر هو الشيء الجديد الذي تتعلّمه، بل سير عمل الوكيل.
 
-After installation, check these settings before you hand it a real repository:
+بعد التثبيت، تحقّق من هذه الإعدادات قبل أن تسلّمه مستودعًا حقيقيًا:
 
-- Enable [**Privacy Mode**](https://cursor.com/help/security-and-privacy/privacy) if the
-repository contains proprietary code.
-- Decide whether model requests can use premium or [Max Mode](https://cursor.com/docs/models-and-pricing) models.
-- Add User Rules only for preferences that should follow you across every
-repository.
-- Keep repository-specific rules in `.cursor/rules/*.mdc`.
-- Configure trusted [MCP](https://modelcontextprotocol.io/) servers in `.cursor/mcp.json` or `~/.cursor/mcp.json`.
+- فعّل [**وضع الخصوصية**](https://cursor.com/help/security-and-privacy/privacy) إذا كان المستودع يحتوي على شيفرة مملوكة.
+- قرّر ما إذا كانت طلبات النموذج يمكنها استخدام نماذج مميّزة (premium) أو نماذج [Max Mode](https://cursor.com/docs/models-and-pricing).
+- أضف قواعد المستخدم (User Rules) فقط للتفضيلات التي ينبغي أن تلازمك عبر كل مستودع.
+- أبقِ القواعد الخاصة بالمستودع في `.cursor/rules/*.mdc`.
+- اضبط خوادم [MCP](https://modelcontextprotocol.io/) الموثوقة في `.cursor/mcp.json` أو `~/.cursor/mcp.json`.
 
-The rule of thumb is simple: personal defaults go in user settings, repository
-behavior goes in the repository, and external tools should be explicit enough
-that a teammate can audit them.
+القاعدة المبدئية بسيطة: الإعدادات الشخصية الافتراضية توضع في إعدادات المستخدم، وسلوك المستودع يوضع في المستودع، وينبغي أن تكون الأدوات الخارجية صريحة بما يكفي ليستطيع أحد أعضاء الفريق تدقيقها.
 
-## Install the Command Line Interface
+## ثبّت واجهة سطر الأوامر
 
-Cursor also ships a terminal agent. Install it with the official installer:
+يشحن Cursor أيضًا وكيلًا للطرفية. ثبّته بالمثبّت الرسمي:
 
 ```bash
 curl https://cursor.com/install -fsS | bash
 ```
 
-On Windows, use PowerShell:
+على Windows، استخدم PowerShell:
 
 ```powershell
 irm 'https://cursor.com/install?win32=true' | iex
 ```
 
-The command is `agent`, not `cursor`. Run `agent` inside a repository for an
-interactive session, or use print mode for automation:
+الأمر هو `agent` وليس `cursor`. شغّل `agent` داخل مستودع لجلسة تفاعلية، أو استخدم وضع الطباعة (print mode) للأتمتة:
 
 ```bash
 agent -p "Review the staged changes for correctness."
 ```
 
-File modification from [print mode](https://cursor.com/docs/cli/headless) requires an explicit flag such
-as `--force` or `--yolo`, which is a name that is at least honest about the life
-choice you are making. Treat that as a real permission decision, not a
-convenience switch.
+يتطلّب تعديل الملفات من [وضع الطباعة](https://cursor.com/docs/cli/headless) علامة صريحة مثل `--force` أو `--yolo`، وهو اسم صادق على الأقل بشأن القرار المصيري الذي تتّخذه. عامل ذلك كقرار صلاحيات حقيقي، لا كمفتاح راحة.
 
-## First Project Setup
+## إعداد المشروع الأول
 
-For a serious repository, create the project-level files before asking the agent
-to edit code:
+لمستودع جادّ، أنشئ الملفات على مستوى المشروع قبل أن تطلب من الوكيل تعديل الشيفرة:
 
 ```
 .cursor/
@@ -72,7 +56,7 @@ to edit code:
   mcp.json
 ```
 
-Add skills only when a workflow needs more structure than a rule can provide:
+أضف المهارات فقط عندما يحتاج سير عمل إلى بنية أكبر مما تستطيع قاعدة توفيره:
 
 ```
 .cursor/
@@ -81,18 +65,15 @@ Add skills only when a workflow needs more structure than a rule can provide:
       SKILL.md
 ```
 
-If the repository already has [`AGENTS.md`](https://agents.md/), Cursor will read
-it as an instruction source. I still prefer putting Cursor-specific behavior in
-Cursor files so the reader can tell which tool owns which instruction.
+إذا كان المستودع يحتوي بالفعل على [`AGENTS.md`](https://agents.md/)، فسيقرؤه Cursor كمصدر تعليمات. وما زلت أفضّل وضع السلوك الخاص بـ Cursor في ملفات Cursor ليعرف القارئ أي أداة تملك أي تعليمة.
 
-## Verification Checklist
+## قائمة التحقق
 
-Before you trust a new setup, ask Cursor to perform a read-only orientation:
+قبل أن تثق بإعداد جديد، اطلب من Cursor إجراء جولة تعريفية للقراءة فقط:
 
 ```
 Read this repository and summarize the build, test, lint, and release commands.
 Do not edit files. Cite the files you used.
 ```
 
-Then compare its answer to the repository scripts. If it invents commands, fix
-the rules or context before you use Agent mode for changes.
+ثم قارن إجابته بنصوص المستودع. وإذا اختلق أوامر، فأصلح القواعد أو السياق قبل أن تستخدم وضع الوكيل (Agent mode) لإجراء تغييرات.

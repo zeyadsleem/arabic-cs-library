@@ -1,63 +1,63 @@
 ---
-title: "Hooks in Practice"
-lang: en
+title: "الخطّافات عمليًا"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/hooks-in-practice"
 ---
 
-A hook that passes in your terminal can still fail where it matters: in a subagent, under a different permission mode, after a harness upgrade, or on the one input you didn’t try. This assumes you’ve read [Hooks](https://stevekinney.com/courses/ai-development-setup/hooks) and [Writing Good Hooks](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks).
+قد ينجح خطّاف في طرفيتك ومع ذلك يفشل حيث يهم الأمر: داخل وكيل فرعي، أو في نمط صلاحيات مختلف، أو بعد ترقية المنصة، أو على المدخل الوحيد الذي لم تجرّبه. يفترض هذا الدرس أنك قرأت [الخطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) و[كتابة خطّافات جيدة](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks).
 
-## Hooks and subagents
+## الخطّافات والوكلاء الفرعيون
 
-A *subagent* is a helper the main agent starts with its own fresh context. Here’s how hooks treat it:
+*الوكيل الفرعي* مساعد يطلقه الوكيل الرئيسي بسياقه الجديد الخاص. وإليك كيف تتعامل معه الخطّافات:
 
-- **Settings hooks fire inside subagents, too**: Only exit `2` or a JSON decision blocks there, same as in [Hooks](https://stevekinney.com/courses/ai-development-setup/hooks). An old report claiming they didn’t fire at all turned out to be a hook exiting `1`, which never blocks.
-- **Agent frontmatter hooks are scoped to the agent**: They live only while it runs, and its `Stop` becomes `SubagentStop`. Plugin agents drop them entirely.
-- **`SubagentStart` can’t block**: It’s configured in settings and matched on the agent’s name. It *can* inject `additionalContext`, extra text for the conversation, before the subagent’s first prompt.
-- **`SubagentStop` can block with a reason**: That keeps the *same* worker going, so it’s the cleanest way to enforce a report shape.
-- **`session_id` and `transcript_path` belong to the parent**: Use `agent_id` to detect a subagent.
+- **خطّافات الإعدادات تُطلَق داخل الوكلاء الفرعيين أيضًا**: ولا يحجب هناك إلا الخروج بـ `2` أو قرار JSON، تمامًا كما في [الخطّافات](https://stevekinney.com/courses/ai-development-setup/hooks). وتبيّن أن تقريرًا قديمًا زعم أنها لا تُطلَق أصلًا كان خطّافًا يخرج بـ `1`، وهو لا يحجب أبدًا.
+- **خطّافات ترويسة الوكيل مقصورة على الوكيل**: لا تعيش إلا ما دام يعمل، ويتحول `Stop` عنده إلى `SubagentStop`. أما وكلاء الإضافات فيهجرونها كليًا.
+- **`SubagentStart` لا يستطيع الحجب**: يُعدّ في الإعدادات ويُطابق على اسم الوكيل. لكنه *يستطيع* حقن `additionalContext`، نص إضافي للمحادثة، قبل أول طلب للوكيل الفرعي.
+- **`SubagentStop` يستطيع الحجب مع سبب**: وهذا يُبقي *العامل نفسه* مستمرًا، لذا فهو أنظف طريقة لفرض شكل تقرير.
+- **`session_id` و`transcript_path` يخصّان الأب**: استخدم `agent_id` لكشف الوكيل الفرعي.
 
-## Testing and rolling out hooks
+## اختبار الخطّافات وإطلاقها تدريجيًا
 
-- **Pick the earliest boundary with enough information**: Run cheap checks after each edit. Save expensive tests for the end of a task (the `Stop` event) or for when work is submitted, like a commit.
-- **Test in layers**: Pure policy, then the process boundary (stdin, stdout, exit code), then the real harness, then concurrency and injected failures.
-- **Prove a block harmlessly**: Point a disposable tool at a marker file and check that a denied call never creates it.
-- **Observe first**: Run new policies in observe-only mode, logging what the hook *would* have blocked. Read the log before turning blocking on.
-- **Keep a compatibility manifest**: Record the harness versions you’ve tested and a set of sample payloads (fixtures).
-- **Make your inner deadline shorter than the hook’s timeout**: If your script gives up first, it fails the way you chose, not the harness’s way.
+- **اختر أبكر حدّ فيه معلومات كافية**: شغّل الفحوص الرخيصة بعد كل تحرير. وادّخر الاختبارات المكلفة لنهاية المهمة (حدث `Stop`) أو لحظة تسليم العمل، مثل إيداع.
+- **اختبر على طبقات**: السياسة المجرّدة، ثم حدّ العملية (stdin وstdout ورمز الخروج)، ثم المنصة الحقيقية، ثم التزامن والأعطال المحقونة.
+- **أثبت الحجب بلا ضرر**: وجّه أداة قابلة للتخلص منها إلى ملف علامة وتحقق من أن النداء المرفوض لا ينشئه أبدًا.
+- **راقب أولًا**: شغّل السياسات الجديدة في نمط المراقبة فقط، مع تسجيل ما كان الخطّاف *سيحجبه*. واقرأ السجل قبل تشغيل الحجب.
+- **احتفظ ببيان توافق**: سجّل إصدارات المنصة التي اختبرتها ومجموعة من الحمولات النموذجية (fixtures).
+- **اجعل مهلكتك الداخلية أقصر من مهلة الخطّاف**: فإن استسلم سكربتك أولًا، فشل بالطريقة التي اخترتها أنت، لا بطريقة المنصة.
 
-### Re-run the fixtures after every upgrade
+### أعد تشغيل النماذج الثابتة بعد كل ترقية
 
-A release can change what your configuration *means* without touching a single file of yours. For a hook, that might be when it fires or what its payload holds.
+قد يغيّر إصدار جديد *معنى* تهيئتك دون أن يمسّ ملفًا واحدًا من ملفاتك. وبالنسبة للخطّاف، قد يكون ذلك وقت إطلاقه أو ما تحمله حِمْلته.
 
-Here’s one from subagent settings. Suppose a security-reviewer subagent sets `model: opus`, and a shell profile sets `CLAUDE_CODE_SUBAGENT_MODEL=haiku` to save money. Per the Claude Code changelog, before `2.1.251` that variable overrode everything, including the definition, so the reviewer quietly ran on Haiku. Version `2.1.251` made the variable the *default*, so the definition’s `model:` wins. With zero edits, the reviewer silently started running on Opus.
+وإليك مثالًا من إعدادات الوكلاء الفرعيين. افترض أن وكيلًا فرعيًا للمراجعة الأمنية يضبط `model: opus`، وأن ملف تعريف الصدفة يضبط `CLAUDE_CODE_SUBAGENT_MODEL=haiku` لتوفير المال. وبحسب سجل تغييرات Claude Code، كانت تلك المتغيّرة قبل `2.1.251` تتجاوز كل شيء، بما فيه التعريف، فيعمل المراجع بهدوء على Haiku. وجعل الإصدار `2.1.251` المتغيّرة *القيمة الافتراضية*، فيفوز `model:` في التعريف. وبلا أي تحرير، بدأ المراجع يعمل بصمت على Opus.
 
-Checking that your settings file still parses won’t catch that. Checking the *observed behavior* will. A fixture here spawns the reviewer on a fixed prompt and records which model served it. Run it before and after an upgrade, and the difference shows up. For a hook, replay recorded payloads and compare the block or allow you observe.
+والتحقق من أن ملف إعداداتك ما زال يُحلَّل لن يلتقط ذلك، أما التحقق من *السلوك المرصود* فيلتقطه. ونموذج ثابت هنا يُطلق المراجع على طلب ثابت ويسجّل أي نموذج خدمه. شغّله قبل الترقية وبعدها، وسيظهر الفرق. وبالنسبة للخطّاف، أعد تشغيل الحمولات المسجّلة وقارن الحجب أو السماح الذي ترصده.
 
-Worth it? For a security or spend control, yes. For a low-stakes personal setup, no. It only catches what you fixtured, so keep skimming the changelog for hooks, subagents, and permissions.
+أتستحق ذلك؟ لأمن أو ضبط للإنفاق، نعم. ولإعداد شخصي منخفض المخاطر، لا. فهي لا تلتقط إلا ما ثبّتّه كنموذج، فواصل تصفّح سجل التغييرات بحثًا عن الخطّافات والوكلاء الفرعيين والصلاحيات.
 
-## Ways guards fail
+## طرق فشل الحُرّاس
 
-- **A stop hook with only a success path**: If the checks keep failing, a hook that always blocks the stop traps the agent. Add a repair counter (blocked attempts, stored in a file you manage) and a terminal-failure path that lets the stop through and reports the failure.
-- **Interpolating filenames into shell source**: A filename containing `$(…)` is all it takes.
-- **Assuming the sandbox contains hooks**: The sandbox is operating-system-level isolation that limits which files and network the agent’s shell commands can reach. Hooks run on the host, outside it. Set `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` to remove recognized credentials from subprocess environments, hooks included. GitHub tokens, proxy credentials, and unrecognized secrets can remain, so launch with a clean environment and keep sensitive credentials outside the process. [Secrets](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#secrets) covers those exclusions.
-- **Confusing bypass mode with asynchronous hooks**: `--dangerously-skip-permissions` skips permission prompts, but hooks still run synchronously by default and a `PreToolUse` denial still blocks the call. A command hook configured with `"async": true` runs in the background and can’t block, in any permission mode. Keep enforcement hooks synchronous; the [background-hook reference](https://code.claude.com/docs/en/hooks#run-hooks-in-the-background) explains the distinction.
-- **Editing a Codex guard**: Codex trusts each hook by a hash of its definition, so an edited guard gets skipped until you trust it again. `--dangerously-bypass-hook-trust` runs enabled hooks without persisted source trust. Their blocking decisions still apply; what you lose is the integrity check on which hook code may execute. Trust the reviewed definition instead of letting changed or unreviewed hook code run unattended.
-- **Untrusted clones**: Hooks committed to a repository run without the folder-trust dialog in headless mode (`claude -p`, one non-interactive session that exits) and SDK mode (Claude run from your own code). Several 2026 Claude Code CVEs (published security vulnerabilities) targeted exactly this, including [CVE-2026-33068](https://advisories.gitlab.com/pkg/npm/@anthropic-ai/claude-code/CVE-2026-33068). [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) covers limiting what a compromised hook can reach.
+- **خطّاف إيقاف لا يمشي المسار إلا عند النجاح**: إن ظلّت الفحوص تفشل، حصر خطّافٌ يحجب الإيقاف دائمًا الوكيل. فأضف عدّادًا للإصلاح (المحاولات المحجوبة، محفوظة في ملف تديره أنت) ومسار فشل نهائي يسمح بمرور الإيقاف ويبلّغ بالفشل.
+- **إقحام أسماء ملفات في نص الصدفة**: يكفي اسم ملف يحتوي `$(…)`.
+- **افتراض أن العزل الرملي يحتوي الخطّافات**: العزل الرملي (sandbox) عزل على مستوى نظام التشغيل يحدّ من الملفات والشبكة التي تستطيع أوامر صدفة الوكيل الوصول إليها. أما الخطّافات فتعمل على المضيف، خارجه. واضبط `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` لإزالة مُعرّفات الدخول المعروفة من بيئات العمليات الفرعية، بما فيها الخطّافات. وقد تبقى رموز GitHub ومُعرّفات الوسيط والأسرار غير المعروفة، فأطلق ببيئة نظيفة وأبقِ مُعرّفات الدخول الحساسة خارج العملية. ويغطي [الأسرار](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#secrets) تلك الاستثناءات.
+- **الخلط بين نمط التجاوز والخطّافات غير المتزامنة**: يتخطى `--dangerously-skip-permissions` طلبات الصلاحيات، لكن الخطّافات ما زالت تعمل تزامنيًا افتراضيًا، وما زال رفض `PreToolUse` يحجب النداء. أما خطّاف أمر مضبوط بـ `"async": true` فيعمل في الخلفية ولا يستطيع الحجب، في أي نمط صلاحيات. فأبقِ خطّافات الفرض متزامنة؛ ويوضّح [مرجع الخطّافات الخلفية](https://code.claude.com/docs/en/hooks#run-hooks-in-the-background) الفرق.
+- **تحرير حارس Codex**: يثق Codex بكل خطّاف عبر بصمة (hash) لتعريفه، فيُتخطى الحارس المحرَّر حتى تثق به من جديد. ويشغّل `--dangerously-bypass-hook-trust` الخطّافات الممكّنة دون ثقة محفوظة بالمصدر. وتظل قراراتها الحاجبة سارية؛ وما تخسره هو فحص السلامة لأي شيفرة خطّاف يجوز تنفيذها. فثق بالتعريف المراجَع بدلًا من ترك شيفرة خطّاف متغيّرة أو غير مراجَعة تعمل بلا إشراف.
+- **النسخ المستنسخة غير الموثوقة**: تعمل الخطّافات المُودَعة في مستودع دون حوار الثقة بالمجلد في النمط بلا واجهة (`claude -p`، جلسة واحدة غير تفاعلية تنتهي) ونمط SDK (تشغيل Claude من شيفرتك). وقد استهدفت عدة ثغرات CVE في Claude Code خلال 2026 (ثغرات أمنية منشورة) هذا الأمر تحديدًا، منها [CVE-2026-33068](https://advisories.gitlab.com/pkg/npm/@anthropic-ai/claude-code/CVE-2026-33068). ويغطي [نطاق التأثير](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) الحدّ من متناول خطّاف مخترَق.
 
-## Advanced techniques
+## تقنيات متقدمة {#advanced-techniques}
 
-- **Bounded continuation**: Claude Code overrides a `Stop` hook after 8 blocks in a row (`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` changes that). Check `stop_hook_active`, which says you’re already in a continuation, and keep your own retry budget. Codex documents no cap.
-- **A stop-hook loop versus a fresh-context Ralph loop**: A Ralph loop starts a fresh agent for each task. A stop-hook loop stays in one session, piles up context, and eventually fails through compaction, which replaces the conversation with a summary. Use the hook as a gate and fresh context for long iteration. See [The Ralph Loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop).
-- **Concurrency**: Skip this unless your hooks touch shared state. Hooks for one event run in parallel, and sessions can share a resource. Lock the resource, not the session, atomically, and use idempotency keys so a retried operation is recognized and skipped. When work has to outlive the agent process, use an outbox (a queue a separate worker drains) with fencing tokens: increasing numbers that let you reject writes from a stale worker.
-- **Classify failures before you retry**: If a hook’s call to an outside service times out, ask the service whether it already did the work. Retry timeouts, not rejections.
-- **Across tools** (Codex, Gemini CLI, Cursor, Copilot): Keep one pure evaluator and a thin adapter per tool, because timeout units, failure behavior, and trust models differ. Codex’s `PreCompact` and `PostCompact` hooks, for example, can’t inject context, so use a `SessionStart` hook with the `compact` matcher, which fires only after a compaction.
+- **استمرار محدود**: يتجاوز Claude Code خطّاف `Stop` بعد 8 عمليات حجب متتالية (`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` يغيّر ذلك). وتحقّق من `stop_hook_active`، الذي يقول إنك في استمرار بالفعل، واحتفظ بميزانية إعادة محاولة خاصة بك. ولا يوثّق Codex أي حد.
+- **حلقة خطّاف الإيقاف مقابل حلقة Ralph بسياق جديد**: تبدأ حلقة Ralph وكيلًا جديدًا لكل مهمة. أما حلقة خطّاف الإيقاف فتبقى في جلسة واحدة، وتكدّس السياق، وتفشل في النهاية عبر الضغط الذي يستبدل المحادثة بملخّص. فاستخدم الخطّاف كبوابة والسياق الجديد للتكرار الطويل. انظر [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop).
+- **التزامن**: تجاوز هذا إلا إن لمست خطّافاتك حالة مشتركة. فخطّافات الحدث الواحد تعمل على التوازي، وقد تتشارك الجلسات موردًا. فاقفل المورد، لا الجلسة، قفلًا ذريًا، واستخدم مفاتيح عدم التكرار (idempotency) حتى يُعرَف العمل المُعاد ويُتخطى. وحين يجب أن يعيش العمل أطول من عملية الوكيل، استخدم صندوق صادر (outbox، وهو طابور يستنزفه عامل منفصل) مع رموز سياج (fencing tokens): أرقام متزايدة تتيح لك رفض الكتابات من عامل قديم.
+- **صنّف الأعطال قبل إعادة المحاولة**: إن انتهت مهلة نداء الخطّاف لخدمة خارجية، اسأل الخدمة هل أنجزت العمل بالفعل. وأعد محاولة المهلات، لا حالات الرفض.
+- **عبر الأدوات** (Codex و Gemini CLI و Cursor و Copilot): أبقِ مُقيّمًا مجرّدًا واحدًا ومحوّلًا رفيعًا لكل أداة، لأن وحدات المهلة وسلوك الفشل ونماذج الثقة تختلف. فخطّافا `PreCompact` و`PostCompact` في Codex، مثلًا، لا يستطيعان حقن سياق، لذا استخدم خطّاف `SessionStart` بمطابِق `compact`، الذي يُطلق فقط بعد ضغط.
 
-## Hooks in the wild
+## الخطّافات في الواقع
 
-- **Formatter on edit**: A `PostToolUse` hook, as in [Boris Cherny’s setup](https://x.com/bcherny/status/2007179832300581177).
-- **Protected paths and command classifiers**: Tools like [`nah`](https://nahguard.ai/) classify shell commands and guard protected paths. Block when work is submitted, like a commit or push, and only hint on edits.
-- **The stop-hook test gate**: The well-known bug here is a script that ends with `cat`. A shell script exits with its last command’s status, and `cat` succeeds, so the gate exited `0` whatever the check found and never blocked anything.
-- **iTerm2’s [`cc-status`](https://github.com/gnachman/iTerm2/blob/master/cc-status/Sources/cc-status/main.swift)**: A cosmetic status hook that knows about background tasks. It always exits `0` on purpose, because it must never block anything. That’s a virtue here and a bug in a gate.
-- **Also out there**: Re-injecting context after compaction, token savings with [Graft](https://github.com/NanoNets/Graft) (it rewrites `grep` calls to use fewer tokens), registering a session with a [channel](https://code.claude.com/docs/en/channels) broker that relays outside events like pull request activity, and reflection hooks that write the lesson from a mistake into `CLAUDE.md`.
+- **مُنسّق عند التحرير**: خطّاف `PostToolUse`، كما في [إعداد Boris Cherny](https://x.com/bcherny/status/2007179832300581177).
+- **المسارات المحمية ومصنّفات الأوامر**: أدوات مثل [`nah`](https://nahguard.ai/) تصنّف أوامر الصدفة وتحمي المسارات المحمية. فاحجب عند تسليم العمل، مثل إيداع أو push، واكتفِ بالتلميح عند التحريرات.
+- **بوابة اختبار خطّاف الإيقاف**: العلّة الشهيرة هنا سكربت ينتهي بـ `cat`. فسكربت الصدفة يخرج بحالة أمره الأخير، و`cat` ينجح، فكانت البوابة تخرج بـ `0` أيًا كان ما وجده الفحص ولم تحجب شيئًا أبدًا.
+- **[`cc-status`](https://github.com/gnachman/iTerm2/blob/master/cc-status/Sources/cc-status/main.swift) في iTerm2**: خطّاف حالة تجميلي يعرف المهام الخلفية. وهو يخرج دائمًا بـ `0` عن قصد، لأنه يجب ألا يحجب أي شيء أبدًا. وهذا فضيلة هنا وعلّة في بوابة.
+- **وهناك أيضًا**: إعادة حقن السياق بعد الضغط، وتوفير الرموز (tokens) مع [Graft](https://github.com/NanoNets/Graft) (يعيد كتابة نداءات `grep` لتستخدم رموزًا أقل)، وتسجيل جلسة لدى وسيط [قنوات](https://code.claude.com/docs/en/channels) يمرّر أحداثًا خارجية مثل نشاط طلب السحب، وخطّافات تأمّل تكتب الدرس المستفاد من خطأ في `CLAUDE.md`.
 
-The most useful hook is one you can explain in a sentence, test without invoking a model, and observe when it fails.
+أكثر خطّاف مفيد هو ما تستطيع شرحه بجملة واحدة، واختباره دون استدعاء نموذج، ورصده عند فشله.

@@ -1,77 +1,77 @@
 ---
-title: "Exercises"
-lang: en
+title: "تمارين"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises"
 ---
 
-We don’t have a ton of opportunities for hands-on practice in this course. So, let’s take the opportunity since we have one.
+ليست لدينا فرص كثيرة للتطبيق العملي في هذه الدورة، فلنغتنم الفرصة المتاحة لنا.
 
-## Guided Practice
+## تدريب موجّه
 
-Try these out. I’ll give you the answers for the first round.
+جرّب هذه التمارين. وسأعطيك الإجابات في الجولة الأولى.
 
-### Basic HTML5 Template
+### قالب HTML5 الأساسي
 
-Type `html:5` to generate a full HTML5 boilerplate.
+اكتب `html:5` لتوليد هيكل HTML5 كامل.
 
-No frills here—just the essentials. If you can’t nail this, you’re gonna be retyping the basics forever. Or, just copy and pasting it like the rest of us.
+لا زخرفة هنا، بل الأساسيات فقط. وإن لم تتقن هذا، فستظل تعيد كتابة الأساسيات إلى الأبد، أو تنسخها وتلصقها مثلنا جميعًا.
 
-### Simple Nesting
+### تداخل بسيط
 
-Create a header with a navigation list using: `header>nav>ul>li*3`
+أنشئ ترويسة فيها قائمة تنقّل باستخدام: `header>nav>ul>li*3`
 
-Time to nest like a pro. This challenge gently introduces you to hierarchies—think of it as building a mini HTML family tree.
+حان وقت التداخل باحتراف. يقدّم لك هذا التحدي التسلسلات الهرمية بلطف، فاعتبره بناء شجرة عائلة صغيرة بلغة HTML.
 
-### Sibling Multiplication with Dynamic Text
+### ضرب العناصر الشقيقة مع نص ديناميكي
 
-Generate an unordered list with numbered items by typing: `ul>li.item$*5{Item $}`
+ولّد قائمة غير مرتّبة بعناصر مرقّمة بكتابة: `ul>li.item$*5{Item $}`
 
-Here’s where that mysterious_ *$* _comes into play. It’s your ticket to automatically numbering things—because who has time to type “Item 1,” “Item 2,” and so on?
+هنا يظهر دور ذلك الرمز الغامض_ *$* _وهو تذكرتك للترقيم التلقائي للأشياء، فمن لديه وقت لكتابة «Item 1» و«Item 2» وهكذا؟
 
-### Grouping and Complex Structures
+### التجميع والبنى المعقّدة
 
-Build a layout with grouped siblings:
+ابنِ تخطيطًا بعناصر شقيقة مجمّعة:
 
 ```css
 div>(header>nav>ul>li*3)+(section>article*2)+footer
 ```
 
-Now you’re juggling multiple groups at once. It’s like HTML origami—fold, group, and expand, all without breaking a sweat.
+الآن أنت تتعامل مع مجموعات متعددة في وقت واحد. الأمر أشبه بالأوريغامي في HTML: تطوي وتجمّع وتتوسّع دون أي عناء.
 
-### Attributes and Customization
+### الخصائص والتخصيص
 
-Create multiple styled links with attributes:
+أنشئ روابط متعددة منسّقة بخصائص:
 
 ```css
 ul>li*3>a[href="https://example.com"][title="Visit Example"]{Link $}
 ```
 
-Time to add a dash of personality to your markup. This challenge blends attributes and dynamic content to ensure your HTML isn’t just functional—it’s got style.
+حان وقت إضافة لمسة شخصية إلى وسومك. يمزج هذا التحدي بين الخصائص والمحتوى الديناميكي ليضمن أن HTML لديك ليس وظيفيًا فحسب، بل أنيقًا أيضًا.
 
-## Challange Time
+## وقت التحدي
 
-Yes, these are a bit simpler, but you’re on your own this time.
+نعم، هذه أبسط قليلًا، لكنك تتدبّر أمرك بنفسك هذه المرة.
 
-### Basic Paragraph
+### فقرة أساسية
 
-Create an Emmet abbreviation that generates a `<p>` element with any placeholder text of your choice.
+أنشئ اختصار Emmet يولّد عنصر `<p>` بأي نص بديل تختاره.
 
-### Simple Unordered List
+### قائمة غير مرتّبة بسيطة
 
-Write an Emmet abbreviation to generate an unordered list (`<ul>`) with three list items (`<li>`) that each say “Item”.
+اكتب اختصار Emmet يولّد قائمة غير مرتّبة (`<ul>`) بثلاثة عناصر قائمة (`<li>`) يقول كل منها «Item».
 
-### Image Element with Attributes
+### عنصر صورة بخصائص
 
-Construct an Emmet abbreviation to produce an `<img>` tag with a src attribute set to “image.jpg” and an alt attribute of “Placeholder Image”.
+ابنِ اختصار Emmet ينتج وسم `<img>` بخاصية src مضبوطة على «image.jpg» وخاصية alt بقيمة «Placeholder Image».
 
-### Nested Div Structure
+### بنية div متداخلة
 
-Devise an Emmet abbreviation to create a parent `<div>` containing a child `<div>`.
+ابتكر اختصار Emmet ينشئ عنصر `<div>` أبًا يحتوي على `<div>` ابنًا.
 
-### Header with Navigation
+### ترويسة مع تنقّل
 
-Form an Emmet abbreviation to generate a `<header>` that contains a `<nav>` with an unordered list (`<ul>`) of two list items (`<li>`).
+صُغ اختصار Emmet يولّد `<header>` يحتوي على `<nav>` فيه قائمة غير مرتّبة (`<ul>`) بعنصرَي قائمة (`<li>`).
 
-## Solutions
+## الحلول
 
-You can find the solutions [here](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-solutions).
+تجد الحلول [هنا](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-solutions).

@@ -1,54 +1,44 @@
 ---
-title: "Cursor Environment Configuration"
-lang: en
+title: "تهيئة بيئة Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-environment-configuration"
 ---
 
-[Cursor Cloud Agents](https://cursor.com/docs/cloud-agent) need a reproducible
-environment. If the setup depends on your laptop, the cloud agent will fail or
-invent a workaround.
+تحتاج [وكلاء سحابة Cursor](https://cursor.com/docs/cloud-agent) إلى بيئة قابلة لإعادة الإنتاج. وإذا اعتمدت التهيئة على حاسوبك المحمول، فسيفشل وكيل السحابة أو يختلق حلًا ملتويًا.
 
-## What to Configure
+## ما الذي يجب تهيئته
 
-Use `.cursor/environment.json` for cloud-specific setup. Keep these concerns
-explicit:
+استخدم `.cursor/environment.json` للتهيئة الخاصة بالسحابة. أبقِ هذه الشواغل صريحة:
 
-- Dependency installation.
-- Build and test commands.
-- Required system packages.
-- Environment variables and secrets.
-- Startup commands for services.
-- Repository-specific notes that a cloud agent needs before work begins.
+- تثبيت الاعتماديات.
+- أوامر البناء والاختبار.
+- حزم النظام المطلوبة.
+- متغيّرات البيئة والأسرار.
+- أوامر تشغيل الخدمات.
+- ملاحظات خاصة بالمستودع يحتاجها وكيل السحابة قبل بدء العمل.
 
-Do not put secrets in the repository. Use Cursor’s secret management for values
-that should be available to the cloud environment.
+لا تضع الأسرار في المستودع. واستخدم إدارة الأسرار في Cursor للقيم التي ينبغي أن تتاح للبيئة السحابية.
 
-## Make Setup Verifiable
+## اجعل التهيئة قابلة للتحقق
 
-The best environment setup ends with a command that proves the repository is
-ready:
+أفضل تهيئة بيئة تنتهي بأمر يثبت أن المستودع جاهز:
 
 ```bash
 bun install
 bun run content:validate
 ```
 
-Use the same command in prompts:
+استخدم الأمر نفسه في الطلبات:
 
 ```
 Before editing, verify the cloud environment by running bun run content:validate.
 If setup fails, stop and report the failing command and output.
 ```
 
-That instruction prevents the agent from spending an hour debugging code in a
-broken environment.
+تمنع هذه التعليمة الوكيل من إهدار ساعة في تشخيص شيفرة داخل بيئة معطوبة.
 
-## Keep Local and Cloud Close
+## أبقِ المحلي والسحابي متقاربين
 
-Cloud setup should mirror the repository’s normal local setup. If local
-development uses [Bun](https://bun.sh/), configure Bun in the cloud environment.
-If tests require a database, use the same migration and seed path the team uses
-locally.
+ينبغي أن تحاكي التهيئة السحابية تهيئة المستودع المحلية المعتادة. فإذا استخدم التطوير المحلي [Bun](https://bun.sh/)، فهيّئ Bun في البيئة السحابية. وإذا احتاجت الاختبارات إلى قاعدة بيانات، فاستخدم مسار الترحيل والبذر نفسه الذي يستخدمه الفريق محليًا.
 
-When local and cloud setup diverge, agents learn the wrong lessons. They fix the
-environment they can see, not the one your team actually uses.
+وعندما تتباعد التهيئة المحلية والسحابية، يتعلم الوكلاء الدروس الخاطئة. فهم يصلحون البيئة التي يرونها، لا البيئة التي يستخدمها فريقك فعلًا.

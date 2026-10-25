@@ -1,12 +1,12 @@
 ---
-title: "Icon Gallery"
-lang: en
+title: "معرض الأيقونات"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/icon-gallery"
 ---
 
-There are lots of icons out there, but typically, you want to use as many icons as you need but as few as you can get away with in your application or design system. Storybook’s `IconGallery` block makes it easy to show off the icons that you intend to use in your application.
+هناك الكثير من الأيقونات في العالم، لكنك عمومًا تريد استخدام أكبر عدد تحتاج إليه من الأيقونات وأقل عدد يمكنك تدبّره في تطبيقك أو نظام تصميمك. وكتلة `IconGallery` في Storybook تسهّل عليك عرض الأيقونات التي تنوي استخدامها في تطبيقك.
 
-There is not a lot to making an icon gallery in Storybook.
+وما يلزم لصنع معرض أيقونات في Storybook ليس بالكثير.
 
 ```mdx
 import { Meta, Title, IconGallery, IconItem } from '@storybook/blocks';
@@ -27,8 +27,8 @@ These are the icons being used in our design system. They are available as React
 </IconGallery>
 ```
 
-An icon gallery in Storybook
+معرض أيقونات في Storybook
 
-> **The implementation of the `Icon` component**
+> **تنفيذ مكوّن `Icon`**
 >
-> You can check out my implementation of the `Icon` component [here](https://stevekinney.com/courses/storybook/creating-an-icon-component).
+> يمكنك الاطلاع على تنفيذي لمكوّن `Icon` [هنا](https://stevekinney.com/courses/storybook/creating-an-icon-component).

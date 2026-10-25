@@ -1,48 +1,48 @@
 ---
-title: "Performance Budgets"
-lang: en
+title: "موازنات الأداء"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/performance-budgets"
 ---
 
-Performance budgets are the point where “we care about speed” stops being a personality trait and becomes an engineering constraint. In the plainest terms, a **performance budget** is a set of limits on metrics that affect user-perceived performance, such as page weight, request counts, load timing, or specific user-centric metrics. [web.dev](https://web.dev/articles/performance-budgets-101) frames budgets as a reference point for decisions about design, technology, and new features, while [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) frames them as limits meant to prevent regressions.
+موازنات الأداء هي النقطة التي تتوقف فيها «نحن نهتم بالسرعة» عن كونها سمة شخصية وتصير قيدًا هندسيًا. وبأوضح العبارات، **موازنة الأداء** مجموعة حدود على مقاييس تؤثر في الأداء كما يدركه المستخدم، مثل وزن الصفحة، وعدد الطلبات، وزمن التحميل، أو مقاييس محددة تتمحور حول المستخدم. و[web.dev](https://web.dev/articles/performance-budgets-101) تؤطّر الموازنات كنقطة مرجعية لقرارات التصميم والتقنية والميزات الجديدة، بينما تؤطّرها [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) كحدود يراد بها منع التراجعات.
 
-That second part matters more than people admit. A performance budget is not primarily an optimization technique. It is a release policy. Its job is to stop the product from quietly getting slower while everyone is busy shipping “just one more script” or “just one more hero image.” [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) also recommends thinking in two levels, a warning threshold and an error threshold, so you can see trouble early without turning every tiny regression into a blocked deploy.
+وهذا الجزء الثاني يهمّ أكثر مما يعترف الناس. فموازنة الأداء ليست في المقام الأول تقنية تحسين، بل سياسة إصدار. ومهمتها منع المنتج من أن يصير أبطأ بهدوء بينما الجميع مشغول بشحن «سكربت واحد إضافي فقط» أو «صورة رئيسية واحدة إضافية فقط». وتوصي [MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) أيضًا بالتفكير على مستويين، عتبة تحذير وعتبة خطأ، كي ترى المتاعب مبكرًا دون تحويل كل تراجع صغير إلى نشر محجوب.
 
-## What a Budget Should Cover
+## ما الذي ينبغي أن تغطيه الموازنة
 
-| Budget layer | What it measures | When it runs | Key metrics | Enforcement tooling |
+| طبقة الموازنة | ما تقيسه | متى تعمل | المقاييس الرئيسية | أدوات الفرض |
 | --- | --- | --- | --- | --- |
-| Field budgets | Real user experience | Production (RUM) | LCP, INP, CLS, TTFB (p75) | `web-vitals`, CrUX, RUM platform |
-| Lab budgets | Controlled test environment | CI / pre-production | FCP, LCP, TBT, request counts | Lighthouse CI, `budget.json` |
-| Asset budgets | File sizes and request counts | Build time | JS bytes, CSS bytes, image bytes, third-party count | webpack `performance`, bundler plugins |
+| موازنات الميدان | تجربة المستخدم الحقيقي | الإنتاج (RUM) | LCP وINP وCLS وTTFB (p75) | `web-vitals` وCrUX ومنصة RUM |
+| موازنات المختبر | بيئة اختبار مضبوطة | CI / ما قبل الإنتاج | FCP وLCP وTBT وعدد الطلبات | Lighthouse CI و`budget.json` |
+| موازنات الأصول | أحجام الملفات وعدد الطلبات | وقت البناء | بايتات JS، وبايتات CSS، وبايتات الصور، وعدد أطراف ثالثة | `performance` في webpack، وإضافات المُجمِّعات |
 
-A serious budget usually has three layers. First, you need field budgets for the experience real users actually have. Second, you need lab budgets for pre-production testing and CI. Third, you need asset and request budgets so regressions can be caught closer to the code that caused them. [web.dev](https://web.dev/articles/performance-budgets-101) explicitly recommends combining quantity-based metrics with user-centric metrics rather than relying on only one class of signal.
+الموازنة الجدّية فيها عادةً ثلاث طبقات. أولًا، تحتاج موازنات ميدان للتجربة التي يعيشها المستخدمون فعلًا. وثانيًا، تحتاج موازنات مختبر لاختبار ما قبل الإنتاج وCI. وثالثًا، تحتاج موازنات أصول وطلبات كي تُلتقط التراجعات أقرب إلى الشيفرة التي تسببت بها. وتوصي [web.dev](https://web.dev/articles/performance-budgets-101) صراحةً بدمج المقاييس القائمة على الكمية مع المقاييس المتمحورة حول المستخدم بدل الاعتماد على فئة إشارة واحدة.
 
-For field budgets, the modern center of gravity is Core Web Vitals: LCP for loading, INP for responsiveness, and CLS for visual stability. Google’s current [Web Vitals guidance](https://web.dev/articles/vitals) is to treat a page as “good” only when the 75th percentile of page visits meets all three thresholds, segmented across mobile and desktop devices: LCP at or under 2.5 seconds, INP at or under 200 milliseconds, and CLS at or under 0.1. That 75th-percentile rule is important because averages hide pain, and your users are not comforted by the news that the median experience was lovely while the slow end was on fire.
+ولموازنات الميدان، يقع مركز الثقل الحديث في Core Web Vitals: LCP للتحميل، وINP للاستجابة، وCLS للاستقرار البصري. و[توجيه Web Vitals](https://web.dev/articles/vitals) الحالي من Google هو اعتبار الصفحة «جيدة» فقط عندما تبلغ المئين 75 من زيارات الصفحة كل العتبات الثلاث، مقسّمة بين الأجهزة الجوالة وسطح المكتب: LCP عند 2.5 ثانية أو أقل، وINP عند 200 مللي ثانية أو أقل، وCLS عند 0.1 أو أقل. وقاعدة المئين 75 مهمة لأن المتوسطات تخفي الألم، ولا يطمئن مستخدميك خبر أن التجربة الوسيطة كانت جميلة بينما الطرف البطيء كان مشتعلًا.
 
-I would usually add TTFB as a supporting field budget even though it is not a Core Web Vital. [web.dev](https://web.dev/articles/optimize-ttfb) describes 0.8 seconds or less as a rough good guide for TTFB, and notes that slow TTFB makes it much harder to hit good thresholds for metrics like LCP and FCP. In other words, if the server starts late, the rest of your budget is already being mugged in the parking lot.
+وسأضيف عادةً TTFB كموازنة ميدان مساندة رغم أنه ليس من Core Web Vitals. فـ[web.dev](https://web.dev/articles/optimize-ttfb) تصف 0.8 ثانية أو أقل كدليل جيد تقريبي لـTTFB، وتلاحظ أن بطء TTFB يجعل بلوغ عتبات جيدة لمقاييس مثل LCP وFCP أصعب بكثير. بعبارة أخرى، إن تأخّر الخادم في البداية، فبقية موازنتك يُسطى عليها بالفعل في موقف السيارات.
 
-For lab budgets, use metrics that are reliable in controlled environments and useful in CI. The key nuance is that lab and field are not interchangeable. [web.dev](https://web.dev/articles/vitals-measurement-getting-started) explicitly says lab data is essential for developer workflows and CI, but also warns that it can differ from field data for concrete reasons: LCP in the lab can diverge because of TTFB, redirects, latency, personalization, and caching differences; CLS can look artificially low because many lab runs do not interact with the page; and INP cannot be measured in lab environments because it requires real user interactions. web.dev therefore recommends Total Blocking Time as the lab proxy for INP.
+ولموازنات المختبر، استخدم مقاييس موثوقة في البيئات المضبوطة ومفيدة في CI. والفارق الدقيق أن المختبر والميدان غير قابلين للتبادل. فـ[web.dev](https://web.dev/articles/vitals-measurement-getting-started) تقول صراحةً إن بيانات المختبر أساسية لسير عمل المطوّرين وCI، لكنها تحذّر أيضًا من أنها قد تختلف عن بيانات الميدان لأسباب ملموسة: فـLCP في المختبر قد يتباعد بسبب TTFB وإعادة التوجيه وزمن الاستجابة والتخصيص وفروق التخزين المؤقت؛ وقد يبدو CLS منخفضًا اصطناعيًا لأن كثيرًا من تشغيلات المختبر لا تتفاعل مع الصفحة؛ ولا يمكن قياس INP في بيئات المختبر لأنه يتطلب تفاعلات مستخدم حقيقية. ولذلك توصي web.dev بزمن الحجب الكلي (TBT) كبديل مختبري عن INP.
 
-That means a modern lab budget should emphasize FCP, LCP, TBT, request counts, and transfer sizes, not old Lighthouse-era mythology. [web.dev’s FCP documentation](https://web.dev/articles/fcp) puts the current guidance at 1.8 seconds or less, and for TBT it is under 200 milliseconds on average mobile hardware. TBT is not a Core Web Vital, but web.dev explicitly calls it valuable for diagnosing and catching interactivity problems that can affect INP.
+وهذا يعني أن موازنة مختبرية حديثة ينبغي أن تشدّد على FCP وLCP وTBT وعدد الطلبات وأحجام النقل، لا على أساطير حقبة Lighthouse القديمة. و[توثيق FCP عند web.dev](https://web.dev/articles/fcp) يضع التوجيه الحالي عند 1.8 ثانية أو أقل، ولـTBT دون 200 مللي ثانية على أجهزة جوالة متوسطة. وTBT ليس من Core Web Vitals، لكن web.dev تسمّيه صراحةً قيّمًا لتشخيص مشكلات التفاعل والتقاطها لأنها قد تؤثر في INP.
 
-For asset and request budgets, the useful categories are things like total transferred bytes, script bytes, image bytes, stylesheet bytes, request counts, and third-party counts. [web.dev’s performance-budget guide](https://web.dev/articles/performance-budgets-101) calls out exactly these sorts of quantity-based metrics, including image size, script size, font count, and total external resources such as third-party scripts. Lighthouse’s `budget.json` format also supports resource budgets for `document`, `font`, `image`, `media`, `other`, `script`, `stylesheet`, `third-party`, and `total`.
+ولموازنات الأصول والطلبات، الفئات المفيدة أشياء مثل إجمالي البايتات المنقولة، وبايتات السكربتات، وبايتات الصور، وبايتات أوراق الأنماط، وعدد الطلبات، وعدد أطراف ثالثة. و[دليل موازنات الأداء عند web.dev](https://web.dev/articles/performance-budgets-101) يذكر بالضبط هذه الأنواع من المقاييس القائمة على الكمية، بما فيها حجم الصور، وحجم السكربتات، وعدد الخطوط، وإجمالي الموارد الخارجية مثل سكربتات الطرف الثالث. كما تدعم صيغة `budget.json` في Lighthouse موازنات موارد لـ`document` و`font` و`image` و`media` و`other` و`script` و`stylesheet` و`third-party` و`total`.
 
-## How to Set Sane Numbers
+## كيف تضع أرقامًا معقولة
 
-The first mistake is picking thresholds out of the air because they look impressive in a slide deck. [MDN’s guidance](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) is better: start with the devices and connection speeds your users actually have, and define budgets as reachable goals tied to user experience and business or product goals. It even suggests thinking in terms of low-end Android devices on slower connections, because that is where budgets stop being decorative.
+الخطأ الأول هو اختيار عتبات من الهواء لأنها تبدو مثيرة في شرائح العرض. و[إرشاد MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets) أفضل: ابدأ من الأجهزة وسرعات الاتصال التي يملكها مستخدموك فعلًا، وعرّف الموازنات كأهداف قابلة للبلوغ مرتبطة بتجربة المستخدم وبأهداف تجارية أو منتجية. بل يقترح التفكير من حيث أجهزة Android المنخفضة الفئة على اتصالات أبطأ، لأن هنا تتوقف الموازنات عن كونها للزينة.
 
-The second mistake is using one global budget for the entire site. That is too coarse for most products. A homepage, article page, dashboard, checkout, and authenticated app shell often have meaningfully different budgets. Lighthouse’s [`budget.json`](https://github.com/GoogleChrome/budget.json) supports path-based matching with a robots.txt-like path format, and the last matching rule wins, which is how you can set a broad default and then override it for specific sections. Lighthouse CI also supports `assertMatrix`, which lets you apply different assertions to different URL patterns.
+والخطأ الثاني هو استخدام موازنة عامة واحدة للموقع كامل. فذلك خشن أكثر من اللازم لمعظم المنتجات. فالصفحة الرئيسية، وصفحة المقال، ولوحة المعلومات، والدفع، وهيكل التطبيق الموثَّق كثيرًا ما تكون لها موازنات مختلفة بدرجة ذات معنى. وتدعم [`budget.json`](https://github.com/GoogleChrome/budget.json) في Lighthouse المطابقة القائمة على المسار بصيغة شبيهة بـrobots.txt، وتفوز آخر قاعدة مطابقة، وهكذا تستطيع وضع افتراضي عريض ثم تجاوزه لأقسام محددة. كما تدعم Lighthouse CI الأمر `assertMatrix` الذي يتيح تطبيق تأكيدات مختلفة على أنماط عناوين مختلفة.
 
-The third mistake is budgeting only a Lighthouse score. Rule-based metrics have their place, but [web.dev](https://web.dev/articles/performance-budgets-101) explicitly recommends combining quantity-based and user-centric metrics, not relying on one composite indicator. [Lighthouse’s scoring docs](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) say the performance score is a weighted average of underlying metric scores and that the weightings have changed over time. That makes the score useful as a secondary signal and a terrible sole budget. A composite score is fine for an executive dashboard. It is a weak release gate.
+والخطأ الثالث هو تخصيص موازنة لدرجة Lighthouse وحدها. فللمقاييس القائمة على القواعد مكانها، لكن [web.dev](https://web.dev/articles/performance-budgets-101) توصي صراحةً بدمج المقاييس القائمة على الكمية والمقاييس المتمحورة حول المستخدم، لا الاعتماد على مؤشر مركّب واحد. و[توثيق تسجيل Lighthouse](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) يقول إن درجة الأداء متوسط مرجَّح لدرجات المقاييس الأساسية، وإن الأوزان تغيّرت عبر الزمن. وهذا يجعل الدرجة مفيدة كإشارة ثانوية وموازنة وحيدة رهيبة. فدرجة مركّبة جيدة للوحة تنفيذية، وضعيفة كبوابة إصدار.
 
-A good budgeting model is therefore layered and asymmetric. Put hard release gates on a small number of truly important metrics. Put softer warnings on leading indicators that often foreshadow regressions. For example, a production budget might hard-fail when p75 LCP exceeds 2.5 seconds or p75 INP exceeds 200 milliseconds, while a CI budget might warn when third-party request count creeps upward or a route bundle grows by 10%. That “warning versus error” split is exactly the pattern [MDN recommends](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets).
+ولذلك نموذج الموازنة الجيد طَبَقي وغير متماثل. ضع بوابات إصدار صلبة على عدد قليل من المقاييس المهمة فعلًا. وضع تحذيرات أطرى على مؤشرات قائدة غالبًا ما تنبئ بالتراجعات. فمثلًا، قد تفشل موازنة إنتاج فشلًا صلبًا عندما يتجاوز p75 لـLCP 2.5 ثانية أو يتجاوز p75 لـINP 200 مللي ثانية، بينما قد تحذّر موازنة CI عندما يزحف عدد طلبات الطرف الثالث صعودًا أو تنمو حزمة مسار بنسبة 10%. وهذا التقسيم «تحذير مقابل خطأ» هو بالضبط النمط الذي [توصي به MDN](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Performance_budgets).
 
-## How to Enforce Budgets
+## كيف تفرض الموازنات
 
-There are three enforcement points that actually matter: during bundling, in CI, and in production telemetry.
+هناك ثلاث نقاط فرض تهمّ فعلًا: أثناء الحزم، وفي CI، وفي قياس الإنتاج.
 
-At build time, bundlers can enforce simple file-size budgets. webpack has built-in [performance hints](https://webpack.js.org/configuration/performance/) for this. Its `performance` config can warn or error when an emitted asset exceeds `maxAssetSize` or when an entrypoint exceeds `maxEntrypointSize`, and `assetFilter` lets you decide which files count. webpack explicitly recommends `hints: "error"` in production builds to help prevent oversized bundles from shipping. That is a useful first line of defense, not a full performance strategy. It catches bundle bloat early, which is more than most teams manage.
+في وقت البناء، تستطيع المُجمِّعات فرض موازنات بسيطة لحجم الملفات. ولwebpack [تلميحات أداء](https://webpack.js.org/configuration/performance/) مدمجة لهذا. فتهيئة `performance` فيه تستطيع التحذير أو الإفشال عندما يتجاوز أصل مُصدَّر `maxAssetSize` أو يتجاوز نقطة دخول `maxEntrypointSize`، ويتيح لك `assetFilter` تقرير أي الملفات تُحتسب. ويوصي webpack صراحةً بـ`hints: "error"` في بناءات الإنتاج للمساعدة في منع شحن حزم مفرطة الحجم. وذلك خط دفاع أول مفيد، لا استراتيجية أداء كاملة. فهو يلتقط تضخم الحزمة مبكرًا، وهو أكثر مما تدبّره معظم الفرق.
 
 ```javascript
 // webpack.config.js
@@ -59,11 +59,11 @@ module.exports = {
 };
 ```
 
-In CI, Lighthouse and Lighthouse CI are the obvious tools. Chrome’s [Lighthouse documentation](https://developer.chrome.com/docs/lighthouse/overview) describes Lighthouse as an automated auditing tool you can run in DevTools, from the command line, or as a Node module, and explicitly calls out Lighthouse CI as the way to prevent regressions continuously. Lighthouse CI supports both generic assertions and `budget.json`-style budgets. If you use a `budgetsFile`, that assert mode cannot be combined with other assert options, but you can also express resource budgets using Lighthouse CI’s own assertion format such as `resource-summary:third-party:count` and combine that with metric assertions and user timings.
+وفي CI، Lighthouse وLighthouse CI هما الأداة البديهية. و[توثيق Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) من Chrome يصف Lighthouse كأداة تدقيق مؤتمتة يمكن تشغيلها في DevTools، أو من سطر الأوامر، أو كوحدة Node، ويذكر صراحةً Lighthouse CI كطريقة منع التراجعات باستمرار. وتدعم Lighthouse CI كلا التأكيدات العامة وموازنات بنمط `budget.json`. وإن استخدمت `budgetsFile`، فلا يمكن دمج وضع التأكيد ذلك مع خيارات تأكيد أخرى، لكن يمكنك أيضًا التعبير عن موازنات الموارد بصيغة التأكيد الخاصة بـLighthouse CI مثل `resource-summary:third-party:count` ودمجها مع تأكيدات المقاييس وتوقيتات المستخدم.
 
-Two details here are annoyingly important. First, if you want the Budgets section to appear in the Lighthouse report itself, you set [`collect.settings.budgetPath`](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html), and then you can assert `"performance-budget": "error"` in LHCI. Second, `budget.json` uses kilobytes for resource-size budgets, while LHCI `maxNumericValue` for `resource-summary:*:size` assertions uses bytes. That unit mismatch is exactly the kind of tiny nonsense that eats an afternoon if you miss it.
+وهناك تفصيلان مهمان بشكل مزعج هنا. أولًا، إن أردت ظهور قسم الموازنات في تقرير Lighthouse نفسه، فتضبط [`collect.settings.budgetPath`](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html)، ثم تستطيع تأكيد `"performance-budget": "error"` في LHCI. وثانيًا، تستخدم `budget.json` الكيلوبايت لموازنات حجم الموارد، بينما يستخدم `maxNumericValue` في LHCI لتأكيدات `resource-summary:*:size` البايتات. وعدم تطابق الوحدات ذلك هو بالضبط نوع التفاهات الصغيرة التي تلتهم بعد ظهر كامل إن فوّتها.
 
-Here is a budget file that sets different limits for the site default and for checkout.
+وهذا ملف موازنات يضع حدودًا مختلفة للافتراضي في الموقع وللدفع:
 
 ```json
 // budgets.json
@@ -87,7 +87,7 @@ Here is a budget file that sets different limits for the site default and for ch
 ]
 ```
 
-The Lighthouse CI configuration then references that budget file and layers on metric and user-timing assertions.
+ثم تشير تهيئة Lighthouse CI إلى ملف الموازنات ذلك وتضيف فوقه تأكيدات المقاييس وتوقيتات المستخدم.
 
 ```json
 // lighthouserc.json
@@ -114,9 +114,9 @@ The Lighthouse CI configuration then references that budget file and layers on m
 }
 ```
 
-[Lighthouse CI](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html) also gives you useful control over variance. Its docs describe several aggregation methods for multiple runs: `median`, `optimistic`, `pessimistic`, and `median-run`, and its “complete experience” example uses `numberOfRuns: 5`. If your budgets are too sensitive to run-to-run noise, the problem is often not the budget itself but the way you are aggregating lab runs.
+كما يمنحك [Lighthouse CI](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html) تحكمًا مفيدًا في التباين. فوثائقه تصف عدة طرق تجميع لتشغيلات متعددة: `median` و`optimistic` و`pessimistic` و`median-run`، ومثاله «التجربة الكاملة» يستخدم `numberOfRuns: 5`. وإن كانت موازناتك حساسة أكثر من اللازم لضجيج التشغيلات، فالمشكلة غالبًا ليست الموازنة نفسها بل طريقة تجميعك لتشغيلات المختبر.
 
-In production, you need field data. [web.dev](https://web.dev/articles/vitals-measurement-getting-started) explicitly recommends supplementing CrUX-based tools with your own RUM because your own RUM is more detailed and more immediate, while CrUX-based sources are aggregated over longer windows such as 28 days in PSI and Search Console or calendar-month slices in CrUX datasets and dashboards. The easiest way to collect your own field data is the [`web-vitals`](https://github.com/GoogleChrome/web-vitals) library, which its docs describe as a tiny modular library for measuring Web Vitals on real users, and web.dev recommends it directly for teams building their own RUM.
+وفي الإنتاج، تحتاج بيانات الميدان. و[web.dev](https://web.dev/articles/vitals-measurement-getting-started) توصي صراحةً بتكميل أدوات CrUX بنظام RUM خاص بك لأنه أكثر تفصيلًا وأسرع، بينما مصادر CrUX تجمّع على نوافذ أطول مثل 28 يومًا في PSI وSearch Console أو شرائح شهر تقويمي في مجموعات بيانات CrUX ولوحاتها. وأسهل طريقة لجمع بيانات ميدانك الخاصة هي مكتبة [`web-vitals`](https://github.com/GoogleChrome/web-vitals)، التي تصفها وثائقها كمكتبة صغيرة معيارية لقياس Web Vitals على مستخدمين حقيقيين، وتوصي بها web.dev مباشرةً للفرق التي تبني RUM خاصًا بها.
 
 ```javascript
 import { onCLS, onINP, onLCP } from 'web-vitals';
@@ -130,73 +130,73 @@ onINP(sendToRum);
 onLCP(sendToRum);
 ```
 
-That library also uses buffered observers, so the [docs](https://github.com/GoogleChrome/web-vitals) note you do not need to load it extremely early to get accurate measurements. In practice, that makes field instrumentation easier to add than teams expect, which is irritating because it removes one more excuse.
+وتلك المكتبة تستخدم أيضًا مراقبات مخزّنة مؤقتًا، لذا تلاحظ [الوثائق](https://github.com/GoogleChrome/web-vitals) أنك لا تحتاج إلى تحميلها مبكرًا جدًا للحصول على قياسات دقيقة. وعمليًا، هذا يجعل قياس الميدان أسهل في الإضافة مما تتوقع الفرق، وهو أمر مذعج لأنه يزيل عذرًا آخر.
 
-For monitoring and investigation, the starting stack is pretty clear. web.dev’s [measurement guide](https://web.dev/articles/vitals-measurement-getting-started) recommends Chrome DevTools’ live metrics view as an easy way to compare local behavior to CrUX data, PSI for page-level and origin-level 28-day data plus suggestions, and Search Console for page-specific performance reporting with history. Those tools are great for visibility, but your actual enforcement should still come from CI and your own RUM, because that is where budgets become immediate enough to shape day-to-day engineering behavior.
+وللمراقبة والتحقيق، المكدّس المبدئي واضح تمامًا. فـ[دليل القياس](https://web.dev/articles/vitals-measurement-getting-started) في web.dev يوصي بعرض المقاييس الحيّة في Chrome DevTools طريقة سهلة لمقارنة السلوك المحلي ببيانات CrUX، وPSI لبيانات 28 يومًا على مستوى الصفحة والأصل مع اقتراحات، وSearch Console لتقارير أداء خاصة بالصفحة مع سجل تاريخي. وهذه الأدوات رائعة للرؤية، لكن الفرض الفعلي ينبغي أن يبقى من CI وRUM الخاص بك، لأن هنا تصير الموازنات فورية بما يكفي لتشكيل سلوك الهندسة اليومي.
 
-## SPAs and Route Transitions
+## تطبيقات الصفحة الواحدة وانتقالات المسارات
 
-This is where people get confused and invent bad dashboards. [web.dev’s SPA FAQ](https://web.dev/articles/vitals-spa-faq) is explicit that Core Web Vitals do not currently reset on SPA route changes because those metrics are measured relative to the current top-level navigation. If your app swaps content and updates the URL without a real browser navigation, the CWV APIs do not treat that as a new page load. That means CrUX and standard CWV reporting won’t give you a neat per-route-transition budget in a single-page app.
+هنا يضيع الناس ويخترعون لوحات سيئة. فـ[الأسئلة الشائعة عن SPA في web.dev](https://web.dev/articles/vitals-spa-faq) صريحة في أن Core Web Vitals لا تُعاد ضبطها حاليًا عند تغيير مسار في SPA لأن تلك المقاييس تُقاس نسبةً إلى التنقل الحالي في المستوى الأعلى. وإن كان تطبيقك يبدّل المحتوى ويحدّث العنوان دون تنقل متصفح حقيقي، فلا تعامل واجهات CWV ذلك كتحميل صفحة جديد. وهذا يعني أن CrUX والتقارير القياسية عن CWV لن تمنحك موازنة أنيقة لكل انتقال مسار في تطبيق صفحة واحدة.
 
-So, for SPAs, budget route transitions separately with your own custom RUM and your own route-level timings. Lighthouse CI supports assertions against custom user timings created with `performance.mark()` and `performance.measure()`, using the [`user-timings:<kebab-cased-name>` assertion format](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html). That is the clean way to budget things like “route-ready,” “above-the-fold-ready,” or “search-results-rendered” in both CI and field telemetry, rather than pretending CrUX will do something it currently does not.
+لذا، بالنسبة إلى تطبيقات الصفحة الواحدة، خصّص موازنة لانتقالات المسارات منفصلة بـRUM مخصّص وتوقيتات على مستوى المسار من عندك. وتدعم Lighthouse CI تأكيدات على توقيتات مستخدم مخصّصة تُنشأ بـ`performance.mark()` و`performance.measure()`، بصيغة التأكيد [`user-timings:<kebab-cased-name>`](https://googlechrome.github.io/lighthouse-ci/docs/configuration.html). وهذه هي الطريقة النظيفة لوضع موازنات لأشياء مثل «route-ready» أو«above-the-fold-ready» أو«search-results-rendered» في CI وقياس الميدان معًا، بدل التظاهر بأن CrUX سيفعل شيئًا لا يفعله حاليًا.
 
-## What Not to Do
+## ما لا ينبغي فعله
 
-Do not center a new budget program on deprecated Lighthouse metrics. Some older articles and examples still talk about First Meaningful Paint and Time to Interactive as if it were 2019 and everyone was still listening to productivity podcasts about `bundlephobia`. But, [Lighthouse’s current docs](https://developer.chrome.com/docs/lighthouse/performance/first-meaningful-paint) say FMP was removed as of Lighthouse 13 and should be replaced by LCP, and TTI was removed from Lighthouse 10 because it was overly sensitive and variable. For modern budgets, use Core Web Vitals in the field and use TBT as the lab proxy for interaction performance.
+لا تُقم برنامج موازنات جديد حول مقاييس Lighthouse المتقادمة. فبعض المقالات والأمثلة الأقدم ما زالت تتحدث عن First Meaningful Paint وTime to Interactive كأننا في 2019 والجميع ما زال يستمع إلى بودكاست الإنتاجية عن `bundlephobia`. لكن [وثائق Lighthouse الحالية](https://developer.chrome.com/docs/lighthouse/performance/first-meaningful-paint) تقول إن FMP أُزيل في Lighthouse 13 وينبغي استبداله بـLCP، وإن TTI أُزيل من Lighthouse 10 لأنه كان شديد الحساسية ومتغيّرًا. وللموازنات الحديثة، استخدم Core Web Vitals في الميدان واستخدم TBT كبديل مختبري عن أداء التفاعل.
 
-Do not trust lab data alone. [web.dev](https://web.dev/articles/use-lighthouse-for-performance-budgets) is very explicit that lab data is useful and necessary, but it also says you must compare it with field data because the two diverge for real reasons, including redirects, server latency, caching, personalization, non-load interactions, and the lifespan effects of metrics like CLS. A lab-only budget is better than nothing. It is not enough to tell you what your users actually experienced.
+لا تثق ببيانات المختبر وحدها. فـ[web.dev](https://web.dev/articles/use-lighthouse-for-performance-budgets) صريحة جدًا في أن بيانات المختبر مفيدة وضرورية، لكنها تقول أيضًا إن عليك مقارنتها ببيانات الميدان لأن الاثنين يتباعدان لأسباب حقيقية، منها إعادات التوجيه، وزمن استجابة الخادم، والتخزين المؤقت، والتخصيص، والتفاعلات غير المتعلقة بالتحميل، وآثار العمر الافتراضي لمقاييس مثل CLS. فموازنة مختبرية وحدها أفضل من لا شيء، لكنها لا تكفي لتخبرك بما عاشه مستخدموك فعلًا.
 
-Do not use one site-wide number for every route. The path-based structure in [`budget.json`](https://github.com/GoogleChrome/budget.json) and URL-based `assertMatrix` in Lighthouse CI both exist because different pages and journeys deserve different budgets. A login page, article page, dashboard, and checkout are not the same thing, and pretending they are only makes your budgets noisier and less respected.
+لا تستخدم رقمًا واحدًا على مستوى الموقع لكل مسار. فبنية المسارات في [`budget.json`](https://github.com/GoogleChrome/budget.json) و`assertMatrix` القائم على العناوين في Lighthouse CI موجودان لأن صفحات ورحلات مختلفة تستحق موازنات مختلفة. فصفحة تسجيل الدخول، وصفحة مقال، ولوحة معلومات، ودفع، ليست الشيء نفسه، والتظاهر بأنها كذلك لا يجعل موازناتك إلا أكثر ضجيجًا وأقل احترامًا.
 
-Do not use a Lighthouse performance score as the only gate. [Lighthouse’s scoring docs](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) say the score is a weighted average of underlying metric scores and that those weightings have changed over time. Use the score as a summary, not as your only contract. Budget the metrics that actually represent the experience you care about.
+لا تستخدم درجة أداء Lighthouse كبوابة وحيدة. فـ[توثيق تسجيل Lighthouse](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring) يقول إن الدرجة متوسط مرجَّح لدرجات المقاييس الأساسية وإن تلك الأوزان تغيّرت عبر الزمن. استخدم الدرجة كملخّص، لا كعقدك الوحيد. وضع موازنات للمقاييس التي تمثّل فعلًا التجربة التي تهمّك.
 
-## A Sane Starter Policy
+## سياسة بداية معقولة
 
-If I were setting this up from scratch today, I would use this shape. In production, I would hard-budget p75 LCP at 2.5 seconds, p75 INP at 200 milliseconds, p75 CLS at 0.1, and p75 TTFB at roughly 0.8 seconds, separately for mobile and desktop. In CI, I would budget FCP at 1.8 seconds or less, TBT under 200 milliseconds, and then add route-specific JS, total-byte, and third-party-count caps derived from the current fastest acceptable version of each page template. I would set warnings at roughly 85% to 90% of the hard ceiling and errors at the ceiling itself, because teams need early smoke alarms as much as hard stops. The thresholds come from current [Web Vitals](https://web.dev/articles/vitals) and supporting guidance; the exact byte budgets should come from your own routes, your own devices, and your own product tolerances.
+لو كنت أُعدّ هذا من الصفر اليوم، لاستخدمت هذا الشكل. في الإنتاج، سأضع موازنة صلبة لـp75 LCP عند 2.5 ثانية، وp75 INP عند 200 مللي ثانية، وp75 CLS عند 0.1، وp75 TTFB عند 0.8 ثانية تقريبًا، كلٌّ منها منفصل للجوال وسطح المكتب. وفي CI، سأضع موازنة لـFCP عند 1.8 ثانية أو أقل، وTBT دون 200 مللي ثانية، ثم أضيف حدودًا خاصة بكل مسار لبايتات JS وإجمالي البايتات وعدد أطراف ثالثة مستنبطة من أسرع نسخة مقبولة حاليًا لكل قالب صفحة. وسأضع التحذيرات عند نحو 85% إلى 90% من الحد الصلب والأخطاء عند الحد نفسه، لأن الفرق تحتاج إنذارات دخان مبكرة بقدر ما تحتاج توقفات صلبة. والعتبات مأخوذة من [Web Vitals](https://web.dev/articles/vitals) الحالية والتوجيه المساند؛ أما موازنات البايتات الدقيقة فينبغي أن تأتي من مساراتك أنت، وأجهزتك أنت، وحدود تحمّل منتجك أنت.
 
-That is the whole trick. Budget the user experience in the field, budget proxies and resources in CI, and budget bytes at build time. Then make the budgets part of release policy instead of dashboard wallpaper. That is when performance budgets stop being a nice idea and start doing their actual job.
-
----
-
-## TL;DR
-
-### Three Budget Layers
-
-> Budget the user experience in the field, proxies in CI, and bytes at build time.
-
-| Layer | What you measure | Where it runs | Tooling |
-| --- | --- | --- | --- |
-| **Field** | Real user metrics (RUM) | Production | web-vitals, Datadog, Sentry |
-| **Lab** | Synthetic audits | CI | Lighthouse CI, WebPageTest |
-| **Asset** | Bundle size, request count | Build time | webpack `performance`, bundlesize |
-
-- Field budgets catch what users actually experience.
-- Lab budgets catch regressions before deploy.
-- Asset budgets catch problems before the build ships.
+وهذه هي الحيلة كلها. ضع موازنة لتجربة المستخدم في الميدان، وموازنات للبدائل والموارد في CI، وموازنات للبايتات في وقت البناء. ثم اجعل الموازنات جزءًا من سياسة الإصدار بدل أن تكون ورق حائط في لوحة معلومات. هنا تتوقف موازنات الأداء عن كونها فكرة لطيفة وتبدأ في أداء مهمتها الفعلية.
 
 ---
 
-### Core Web Vitals Thresholds
+## الخلاصة السريعة (TL;DR)
 
-> These are the numbers that matter at p75.
+### طبقات الموازنة الثلاث
 
-| Metric | Good | Needs Improvement | Poor |
+> ضع موازنة لتجربة المستخدم في الميدان، وللبدائل في CI، وللبايتات في وقت البناء.
+
+| الطبقة | ما تقيسه | أين تعمل | الأدوات |
 | --- | --- | --- | --- |
-| **LCP** | ≤ 2.5 s | ≤ 4.0 s | > 4.0 s |
-| **INP** | ≤ 200 ms | ≤ 500 ms | > 500 ms |
+| **الميدان** | مقاييس المستخدم الحقيقي (RUM) | الإنتاج | web-vitals وDatadog وSentry |
+| **المختبر** | تدقيقات اصطناعية | CI | Lighthouse CI وWebPageTest |
+| **الأصول** | حجم الحزمة وعدد الطلبات | وقت البناء | `performance` في webpack، وbundlesize |
+
+- تلتقط موازنات الميدان ما يعيشه المستخدمون فعلًا.
+- تلتقط موازنات المختبر التراجعات قبل النشر.
+- تلتقط موازنات الأصول المشكلات قبل شحن البناء.
+
+---
+
+### عتبات Core Web Vitals
+
+> هذه هي الأرقام التي تهمّ عند p75.
+
+| المقياس | جيد | يحتاج تحسينًا | سيّئ |
+| --- | --- | --- | --- |
+| **LCP** | ≤ 2.5 ث | ≤ 4.0 ث | > 4.0 ث |
+| **INP** | ≤ 200 مللي ث | ≤ 500 مللي ث | > 500 مللي ث |
 | **CLS** | ≤ 0.1 | ≤ 0.25 | > 0.25 |
 
-- Budget separately for mobile and desktop—they’re different populations.
-- INP can’t be measured in lab. Use TBT as a CI proxy.
-- Lab LCP can differ from field LCP by 2x or more because of TTFB variance.
+- ضع موازنة منفصلة للجوال وسطح المكتب—فهما جماعتان مختلفتان.
+- لا يمكن قياس INP في المختبر. استخدم TBT كبديل في CI.
+- قد يختلف LCP المختبري عن LCP الميداني بضعفين أو أكثر بسبب تباين TTFB.
 
 ---
 
-### Enforcement Points
+### نقاط الفرض
 
-> A budget nobody enforces is dashboard wallpaper.
+> موازنة لا يفرضها أحد هي ورق حائط في لوحة معلومات.
 
-- **Build time:** webpack `performance.maxAssetSize` and `maxEntrypointSize` fail the build when bundles exceed limits.
-- **CI:** Lighthouse CI asserts against metric thresholds per route. Use `median` aggregation and path-based overrides.
-- **Production:** Collect field data with `web-vitals`, send to your analytics pipeline, alert when p75 regresses.
-- Set warnings at 85–90% of the hard ceiling. Teams need early smoke alarms, not just hard stops.
+- **وقت البناء:** يُفشل `performance.maxAssetSize` و`maxEntrypointSize` في webpack البناء عندما تتجاوز الحزم الحدود.
+- **CI:** تؤكد Lighthouse CI على عتبات المقاييس لكل مسار. استخدم تجميع `median` وتجاوزات قائمة على المسار.
+- **الإنتاج:** اجمع بيانات الميدان بـ`web-vitals`، وأرسلها إلى خط تحليلاتك، ونبّه عند تراجع p75.
+- ضع التحذيرات عند 85–90% من الحد الصلب. فالفرق تحتاج إنذارات دخان مبكرة، لا توقفات صلبة فقط.

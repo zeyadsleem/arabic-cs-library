@@ -1,18 +1,18 @@
 ---
-title: "Wildcard Certificates and Multiple Domains"
-lang: en
+title: "الشهادات الشاملة والنطاقات المتعددة"
+lang: ar
 source: "https://stevekinney.com/courses/aws/wildcard-certificates-and-multiple-domains"
 ---
 
-So far, we’ve requested a certificate covering a specific domain and its `www` subdomain. That works fine when you know exactly which hostnames you need. But what happens when your frontend grows? You might need `staging.example.com` for a staging environment, `api.example.com` for your backend, or `docs.example.com` for your documentation site. Requesting a new certificate for every subdomain gets tedious fast.
+حتى الآن، كنّا نطلب شهادة تغطّي نطاقًا محددًا ونطاقه الفرعي `www`. ينجح ذلك تمامًا عندما تعرف بالضبط أي أسماء المضيفين تحتاجها. لكن ماذا يحدث عندما تنمو واجهتك الأمامية؟ قد تحتاج إلى `staging.example.com` لبيئة اختبار، و`api.example.com` لواجهتك الخلفية، و`docs.example.com` لموقع التوثيق الخاص بك. وطلب شهادة جديدة لكل نطاق فرعي يصبح أمرًا مملًّا بسرعة.
 
-If you want AWS’s official framing for the certificate behavior in this lesson, the [AWS Certificate Manager User Guide](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) is the source of truth.
+إذا أردت الصياغة الرسمية من AWS لسلوك الشهادات في هذا الدرس، فإن [دليل مستخدم AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) هو المرجع الموثوق.
 
-ACM supports two strategies for covering multiple hostnames: **wildcard certificates** and **Subject Alternative Names (SANs)**. Each has tradeoffs, and knowing when to use which will save you from unnecessary certificate management overhead.
+تدعم ACM استراتيجيتين لتغطية عدة أسماء مضيفين: **الشهادات الشاملة (wildcard)** و**أسماء النطاقات البديلة (SANs)**. ولكل منهما مقايضاته، ومعرفة متى تستخدم أيًّا منهما ستوفّر عليك عبئًا لا داعي له في إدارة الشهادات.
 
-## Wildcard Certificates
+## الشهادات الشاملة
 
-A **wildcard certificate** covers a domain and all of its subdomains at one level. The syntax uses an asterisk: `*.example.com`.
+تغطّي **الشهادة الشاملة** نطاقًا واحدًا وكل نطاقاته الفرعية على مستوى واحد. وتستخدم الصياغة نجمة: `*.example.com`.
 
 ```bash
 aws acm request-certificate \
@@ -22,24 +22,24 @@ aws acm request-certificate \
   --output json
 ```
 
-This single certificate covers:
+هذه الشهادة الواحدة تغطّي:
 
 - `www.example.com`
 - `staging.example.com`
 - `api.example.com`
 - `docs.example.com`
-- Any other subdomain of `example.com`
+- أي نطاق فرعي آخر لـ `example.com`
 
-You can create new subdomains at any time and they are automatically covered by the existing certificate. No new certificate request, no new validation, no waiting.
+يمكنك إنشاء نطاقات فرعية جديدة في أي وقت، وستكون مغطاة تلقائيًا بالشهادة الموجودة. لا طلب شهادة جديد، ولا تحقق جديد، ولا انتظار.
 
-### What Wildcards Don’t Cover
+### ما لا تغطيه الشهادات الشاملة
 
-Wildcards match exactly one level of subdomain. `*.example.com` covers `www.example.com` but **not** these (and this catches people off guard):
+تطابق الشهادات الشاملة مستوى واحدًا فقط من النطاقات الفرعية. `*.example.com` تغطّي `www.example.com` لكنها **لا** تغطّي ما يلي (وهذا ما يفاجئ الناس):
 
-- `example.com` (the apex domain itself)
-- `beta.staging.example.com` (two levels deep)
+- `example.com` (النطاق الجذري نفسه)
+- `beta.staging.example.com` (على مستوى اثنين)
 
-If you want both the apex domain and all subdomains, you need to include both in the certificate request:
+إذا أردت النطاق الجذري وكل النطاقات الفرعية معًا، فستحتاج إلى تضمين كليهما في طلب الشهادة:
 
 ```bash
 aws acm request-certificate \
@@ -50,27 +50,27 @@ aws acm request-certificate \
   --output json
 ```
 
-This certificate covers `example.com` and every single-level subdomain. This is the most common pattern for frontend deployments—you want your site to work at both `example.com` and `www.example.com`, and you want room to add more subdomains later.
+تغطّي هذه الشهادة `example.com` وكل نطاق فرعي على مستوى واحد. وهذا هو النمط الأكثر شيوعًا لنشر الواجهات الأمامية—فأنت تريد أن يعمل موقعك على `example.com` وعلى `www.example.com` معًا، وتريد مساحة لإضافة المزيد من النطاقات الفرعية لاحقًا.
 
-> **Tip**
+> **نصيحة**
 >
-> The `--domain-name` value is the primary domain on the certificate. The `--subject-alternative-names` list adds additional domains. The primary domain is automatically included in the SANs, so you don’t need to list it twice.
+> قيمة `--domain-name` هي النطاق الأساسي على الشهادة. أما قائمة `--subject-alternative-names` فتضيف نطاقات إضافية. يُدرج النطاق الأساسي تلقائيًا في قائمة الأسماء البديلة (SANs)، لذا لا حاجة إلى ذكره مرتين.
 
-### Wildcard Validation
+### التحقق من الشهادات الشاملة
 
-DNS validation for a wildcard certificate works the same way as for a specific domain. ACM generates a CNAME record for the wildcard domain, and you add it to your DNS. The record looks like this:
+يعمل التحقق عبر DNS للشهادة الشاملة بالطريقة نفسها المتبعة مع نطاق محدد. تُنشئ ACM سجل CNAME للنطاق الشامل، وتضيفه أنت إلى نظام DNS لديك. ويبدو السجل هكذا:
 
-| Record Name | Record Type | Record Value |
+| اسم السجل | نوع السجل | قيمة السجل |
 | --- | --- | --- |
 | `_abc123.example.com` | CNAME | `_def456.acm-validations.aws` |
 
-Notice the validation record is for `example.com`, not `*.example.com`. ACM validates that you control the parent domain, which is sufficient to prove you control all subdomains under it.
+لاحظ أن سجل التحقق خاص بـ `example.com` وليس بـ `*.example.com`. تتحقق ACM من أنك تتحكم بالنطاق الأب، وهذا كافٍ لإثبات أنك تتحكم بكل النطاقات الفرعية تحته.
 
-When your certificate includes both `example.com` and `*.example.com`, ACM generates a single validation CNAME that covers both — you only add it once.
+عندما تتضمن شهادتك كلاً من `example.com` و`*.example.com`، تُنشئ ACM سجل CNAME واحدًا للتحقق يغطيهما معًا — وتضيفه مرة واحدة فقط.
 
-## Subject Alternative Names (SANs)
+## أسماء النطاقات البديلة (SANs)
 
-**Subject Alternative Names** let you list specific hostnames on a single certificate. Instead of a wildcard, you enumerate exactly which domains the certificate should cover:
+تتيح لك **أسماء النطاقات البديلة** إدراج أسماء مضيفين محددة على شهادة واحدة. فبدلًا من استخدام شهادة شاملة، تسرد بالضبط النطاقات التي ينبغي أن تغطّيها الشهادة:
 
 ```bash
 aws acm request-certificate \
@@ -81,33 +81,33 @@ aws acm request-certificate \
   --output json
 ```
 
-This certificate covers exactly four hostnames: `example.com`, `www.example.com`, `staging.example.com`, and `api.example.com`. Nothing else.
+تغطّي هذه الشهادة أربعة أسماء مضيفين بالضبط: `example.com` و`www.example.com` و`staging.example.com` و`api.example.com`. ولا شيء غيرها.
 
-Each SAN that belongs to a different domain requires its own DNS validation record. If all the SANs are subdomains of the same domain, you may get fewer validation records (ACM deduplicates when it can).
+كل اسم بديل (SAN) ينتمي إلى نطاق مختلف يتطلب سجل تحقق DNS خاصًا به. وإذا كانت كل الأسماء البديلة نطاقات فرعية للنطاق نفسه، فقد تحصل على عدد أقل من سجلات التحقق (فـ ACM يزيل التكرار عندما يستطيع ذلك).
 
-### ACM’s SAN Limits
+### حدود الأسماء البديلة في ACM
 
-ACM allows up to **10 domain names** per certificate by default (the primary domain name plus up to 9 additional SANs). You can request a limit increase through AWS Support if you need more, up to a maximum of 100.
+تسمح ACM بما يصل إلى **10 أسماء نطاقات** لكل شهادة افتراضيًا (اسم النطاق الأساسي زائد ما يصل إلى 9 أسماء بديلة إضافية). ويمكنك طلب زيادة الحد عبر دعم AWS إن احتجت إلى المزيد، بحد أقصى 100.
 
-For most frontend projects, 10 is more than enough. If you are hitting this limit, a wildcard certificate is probably the better approach.
+في معظم مشاريع الواجهة الأمامية، 10 أكثر من كافٍ. وإذا وصلت إلى هذا الحد، فالشهادة الشاملة على الأرجح هي الخيار الأفضل.
 
-## When to Use Each
+## متى تستخدم كلًّا منهما
 
-**Use a wildcard certificate when:**
+**استخدم شهادة شاملة عندما:**
 
-- You expect to add subdomains over time and don’t want to reissue the certificate
-- You are running multiple environments on subdomains (`staging.example.com`, `preview.example.com`)
-- You want a single certificate that covers any future subdomain without planning ahead
+- تتوقع إضافة نطاقات فرعية مع الوقت ولا تريد إعادة إصدار الشهادة
+- تشغّل عدة بيئات على نطاقات فرعية (`staging.example.com`، `preview.example.com`)
+- تريد شهادة واحدة تغطّي أي نطاق فرعي مستقبلي دون تخطيط مسبق
 
-**Use specific SANs when:**
+**استخدم أسماء بديلة محددة عندما:**
 
-- You need to cover domains that aren’t subdomains of the same parent (e.g., `example.com` and `example.org`)
-- Your security policy requires that certificates list only the exact hostnames in use
-- You want an audit trail of exactly which hostnames a certificate covers
+- تحتاج إلى تغطية نطاقات ليست نطاقات فرعية للأب نفسه (مثل `example.com` و`example.org`)
+- تتطلب سياسة الأمان لديك أن تُدرج الشهادات أسماء المضيفين المستخدمة فعلًا فقط
+- تريد سجلًا تدقيقيًا يوضح بالضبط أسماء المضيفين التي تغطّيها الشهادة
 
-**Use both together when:**
+**استخدم كليهما معًا عندما:**
 
-- You want the apex domain, all subdomains, and one or more unrelated domains on the same certificate
+- تريد النطاق الجذري وكل النطاقات الفرعية ونطاقًا أو أكثر غير مرتبط على الشهادة نفسها
 
 ```bash
 aws acm request-certificate \
@@ -118,11 +118,11 @@ aws acm request-certificate \
   --output json
 ```
 
-This covers `example.com`, every subdomain of `example.com`, and `docs.another-domain.com`. You’ll need DNS validation records in both `example.com` and `another-domain.com` DNS zones.
+تغطّي هذه `example.com` وكل نطاق فرعي لـ `example.com` و`docs.another-domain.com`. وستحتاج إلى سجلات تحقق DNS في منطقة DNS لكلٍّ من `example.com` و`another-domain.com`.
 
-## The Common Frontend Pattern
+## النمط الشائع في الواجهة الأمامية
 
-For a typical frontend deployment on AWS, here’s what I’d recommend:
+بالنسبة إلى نشر واجهة أمامية نموذجي على AWS، هذا ما أوصي به:
 
 ```bash
 aws acm request-certificate \
@@ -133,15 +133,15 @@ aws acm request-certificate \
   --output json
 ```
 
-This gives you one certificate that covers the apex domain and any subdomain. You can point `www.example.com` at your CloudFront distribution today, spin up `staging.example.com` next week, and add `api.example.com` next month—all without touching ACM again.
+يمنحك هذا شهادة واحدة تغطّي النطاق الجذري وأي نطاق فرعي. يمكنك توجيه `www.example.com` إلى توزيع CloudFront الخاص بك اليوم، وإنشاء `staging.example.com` الأسبوع القادم، وإضافة `api.example.com` الشهر المقبل—كل ذلك دون لمس ACM مرة أخرى.
 
-> **Warning**
+> **تحذير**
 >
-> Remember from [Requesting a Certificate in ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm): certificates for CloudFront **must** be in `us-east-1`. This applies to wildcard certificates and multi-SAN certificates equally. Always specify `--region us-east-1`.
+> تذكّر من [طلب شهادة في ACM](https://stevekinney.com/courses/aws/requesting-a-certificate-in-acm): شهادات CloudFront **يجب** أن تكون في `us-east-1`. وهذا ينطبق على الشهادات الشاملة والشهادات متعددة الأسماء البديلة بالتساوي. حدّد دائمًا `--region us-east-1`.
 
-## Verifying Your Certificate
+## التحقق من شهادتك
 
-After validation completes, verify that the certificate covers the domains you expect:
+بعد اكتمال التحقق، تأكد من أن الشهادة تغطّي النطاقات التي تتوقعها:
 
 ```bash
 aws acm describe-certificate \
@@ -155,4 +155,4 @@ aws acm describe-certificate \
 ["example.com", "*.example.com"]
 ```
 
-If a domain is missing, you can’t add it to an existing certificate. You’ll need to request a new certificate with the correct list of domains and replace the old one on your CloudFront distribution. This is another reason to start with a wildcard—it gives you room to grow without replacing certificates.
+إذا كان نطاق ما مفقودًا، فلا يمكنك إضافته إلى شهادة موجودة. ستحتاج إلى طلب شهادة جديدة بقائمة النطاقات الصحيحة واستبدال القديمة على توزيع CloudFront الخاص بك. وهذا سبب آخر للبدء بشهادة شاملة—فهي تمنحك مساحة للنمو دون استبدال الشهادات.

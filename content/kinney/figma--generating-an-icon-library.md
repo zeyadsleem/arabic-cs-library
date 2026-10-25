@@ -1,36 +1,36 @@
 ---
-title: "Generating an Icon Library"
-lang: en
+title: "توليد مكتبة أيقونات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/generating-an-icon-library"
 ---
 
-Icons
+أيقونات
 
-Any design system or application comes with a certain amount of iconography. This is always a tricky dance, you typically want **as many as you need and as few as you can get away with**. Again, I’ll leave the philosophy and theory to the experts and we’ll focus on the practical parts of how you can go about generating an icon library in Figma—and in [another course](https://stevekinney.com/courses/storybook/), we’ll look at how implement these in code.
+يأتي أي نظام تصميم أو تطبيق بقدر معيّن من الأيقونات. وهذه دائمًا رقصة صعبة، إذ تريد عادةً **الكثير بقدر ما تحتاج والقليل بقدر ما يمكنك الاستغناء عنه**. ومرة أخرى، سأترك الفلسفة والنظرية للخبراء، وسنركّز على الجوانب العملية لكيفية توليد مكتبة أيقونات في Figma — وسننظر في [دورة أخرى](https://stevekinney.com/courses/storybook/) في كيفية تنفيذها في الشيفرة.
 
-For starters, I like [Lucide](https://lucide.dev/) as a starting point for my icon library. At the time of this writing, it’s got 1,452 icons, which seems like more than enough for our purposes.
+كبداية، يعجبني [Lucide](https://lucide.dev/) كنقطة انطلاق لمكتبة أيقوناتي. وفي وقت كتابة هذا النص، يحتوي على 1,452 أيقونة، وهو ما يبدو أكثر من كافٍ لأغراضنا.
 
-Here is our plan of attack:
+وهذه خطة العمل:
 
-1. We’ll go through [Lucide](https://lucide.dev/) and select some icons that we want to use.
-2. We’ll create an **Icon** component in Figma.
-3. We’re make each icon a variant of that component.
+1. سنتصفّح [Lucide](https://lucide.dev/) ونختار بعض الأيقونات التي نريد استخدامها.
+2. سننشئ مكوّن **Icon** في Figma.
+3. سنجعل كل أيقونة نمطًا بديلًا من ذلك المكوّن.
 
-## Bring an Icon into Figma
+## إحضار أيقونة إلى Figma
 
-There are plugins for Figma, but honestly, it’s super easy to just grab an icon as an SVG and paste it into Figma.
+هناك إضافات لـ Figma، لكن بصراحة، من السهل جدًا مجرد أخذ أيقونة بصيغة SVG ولصقها في Figma.
 
-A Lucide icon that we're going to copy as an SVG
+أيقونة Lucide سننسخها بصيغة SVG
 
-I’m going to copy in the following icons:
+سأنسخ الأيقونات التالية:
 
-- [Triangle Alert](https://lucide.dev/icons/triangle-alert), which I will name **Warn**
+- [Triangle Alert](https://lucide.dev/icons/triangle-alert)، وسأسميها **Warn**
 - [Bug](https://lucide.dev/icons/bug)
 - [Check](https://lucide.dev/icons/check)
-- [Circle Check](https://lucide.dev/icons/circle-check), which I will name **Success**
+- [Circle Check](https://lucide.dev/icons/circle-check)، وسأسميها **Success**
 - [Clipboard List](https://lucide.dev/icons/clipboard-list)
 - [Flame](https://lucide.dev/icons/flame)
-- [Circle Help](https://lucide.dev/icons/circle-help), which I will name **Help**
+- [Circle Help](https://lucide.dev/icons/circle-help)، وسأسميها **Help**
 - [Info](https://lucive.dev/icons/info)
 - [List](https://lucive.dev/icons/list)
 - [Pencil](https://lucive.dev/icons/pencil)
@@ -38,24 +38,24 @@ I’m going to copy in the following icons:
 - [X](https://lucive.dev/icons/x)
 - [Zap](https://lucive.dev/icons/zap)
 - [Plus](https://lucive.dev/icons/plus)
-- [Trash 2](https://lucide.dev/icons/trash-2), which I will name **Trash**
+- [Trash 2](https://lucide.dev/icons/trash-2)، وسأسميها **Trash**
 - [Skull](https://lucive.dev/icons/skull)
 - [External Link](https://lucive.dev/icons/external-link)
 - [Link](https://lucive.dev/icons/link)
 - [Hash](https://lucide.dev/icons/hash)
 
-> **I did the tedious part for you**
+> **لقد أنجزت عنك الجزء الممل**
 >
-> You can—and should—just [steal my icons from here](https://www.figma.com/file/1v4uGneHKyq6SfxPWI7KJc/Figma-for-Developers-v2%2C-Frontend-Masters?type=design&node-id=6-1296&mode=design&t=xaxtUNN7AZ04byvE-4).
+> يمكنك — بل ينبغي لك — أن [تستعير أيقوناتي من هنا](https://www.figma.com/file/1v4uGneHKyq6SfxPWI7KJc/Figma-for-Developers-v2%2C-Frontend-Masters?type=design&node-id=6-1296&mode=design&t=xaxtUNN7AZ04byvE-4).
 
-## Creating the Components
+## إنشاء المكوّنات
 
-If you want to make your future life easier—go and rename all of the components and prefix them with **Type=**, you can do this easily with **Type=$&**.
+إذا كنت تريد أن تسهّل حياتك المستقبلية — اذهب وأعد تسمية كل المكوّنات وأضف إليها البادئة **Type=**، ويمكنك فعل ذلك بسهولة باستخدام **Type=$&**.
 
-Bulk rename the icons
+إعادة تسمية الأيقونات دفعة واحدة
 
-Next, we’ll select **Create component set**.
+بعد ذلك، سنختار **Create component set**.
 
-Create component set
+إنشاء طقم مكوّنات
 
-You will now have an component that you can rename to **Icon**. This give you a quick and easy list of approved icons for use in your design system.
+سيكون لديك الآن مكوّن يمكنك إعادة تسميته إلى **Icon**. وهذا يمنحك قائمة سريعة وسهلة بالأيقونات المعتمدة لاستخدامها في نظام تصميمك.

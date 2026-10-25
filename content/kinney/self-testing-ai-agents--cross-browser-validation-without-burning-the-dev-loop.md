@@ -1,48 +1,48 @@
 ---
-title: "Cross-Browser Validation Without Burning the Dev Loop"
-lang: en
+title: "التحقّق عبر المتصفّحات دون إحراق حلقة التطوير"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/cross-browser-validation-without-burning-the-dev-loop"
 ---
 
-Cross-browser testing is one of those ideas everyone agrees with in principle and quietly avoids in practice because it threatens to turn every pull request into a hostage situation.
+الاختبار عبر المتصفّحات من تلك الأفكار التي يوافق عليها الجميع من حيث المبدأ ويتجنّبها الجميع بهدوء في الممارسة، لأنها تهدّد بتحويل كل طلب سحب إلى حالة رهينة.
 
-That only happens if you use the wrong scope.
+وهذا لا يحدث إلا إذا استخدمت النطاق الخاطئ.
 
-The fix is not “skip other browsers.” The fix is “decide which checks belong in Chromium, which belong in a small multi-browser smoke set, and which belong in nightly coverage.” [Playwright projects](https://playwright.dev/docs/test-projects) make that split practical.
+والعلاج ليس «تجاهل المتصفّحات الأخرى». العلاج هو «أن تقرّر أي الفحوص تنتمي إلى Chromium، وأيّها ينتمي إلى مجموعة دخان صغيرة متعدّدة المتصفّحات، وأيّها ينتمي إلى تغطية ليلية». و[مشاريع Playwright](https://playwright.dev/docs/test-projects) تجعل هذا التقسيم عمليًا.
 
-> **Prerequisite**
+> **المتطلّبات المسبقة**
 >
-> This appendix assumes the core CI loop is already in place. Chromium remains the fast default in the mainline workshop flow. The extra browsers belong here because they are valuable and more expensive.
+> يفترض هذا الملحق أن حلقة CI الأساسية قائمة بالفعل. ويبقى Chromium المتصفّح الافتراضي السريع في المسار الرئيسي للورشة. والمتصفّحات الإضافية تنتمي إلى هنا لأنها قيّمة وأغلى كلفةً.
 
-## Why other browsers still matter
+## لماذا تظلّ المتصفّحات الأخرى مهمة
 
-Some bugs are gloriously browser-specific:
+بعض الأخطاء خاصّة بمتصفّح بعينه على نحو رائع:
 
-- focus handling differs
-- date inputs and form controls render differently
-- CSS layout or overflow behaves slightly differently
-- a feature works in Chromium and gets weird in Firefox
-- a WebKit run exposes the problem your Mac user was complaining about all along
+- اختلاف في معالجة التركيز
+- حقول التاريخ وعناصر التحكّم في النماذج تُصيَّر بشكل مختلف
+- تخطيط CSS أو التجاوز (overflow) يتصرّف بشكل مختلف قليلًا
+- ميزة تعمل في Chromium وتصير غريبة في Firefox
+- تشغيل WebKit يكشف المشكلة التي كان مستخدمك على Mac يشتكي منها طوال الوقت
 
-If your answer to all of that is “well, the Chromium test passed,” then your answer is not especially useful.
+وإن كان جوابك على كل ذلك هو «حسنًا، اختبار Chromium نجح»، فجوابك ليس نافعًا كثيرًا.
 
-## Why I do not want the full matrix on every edit
+## لماذا لا أريد المصفوفة الكاملة عند كل تعديل
 
-Because most edits do not deserve it.
+لأن معظم التعديلات لا تستحقّها.
 
-If the agent is changing a string copy fix or a small server-side refactor, waiting on Chromium plus Firefox plus WebKit is wasted time. The dev loop should stay cheap by default.
+فإن كان الوكيل يغيّر إصلاحًا لنصّ واجهة أو إعادة هيكلة صغيرة في الخادم، فانتظار Chromium وFirefox وWebKit معًا وقت مهدور. وينبغي أن تبقى حلقة التطوير رخيصة افتراضيًا.
 
-My default split:
+وتقسيمي الافتراضي:
 
-- **Local and fast pull request loop**: Chromium
-- **Small cross-browser smoke loop**: Firefox and WebKit on a narrow set of routes
-- **Nightly broader loop**: the fuller matrix, or at least the most failure-prone paths
+- **حلقة محلية سريعة لطلبات السحب**: Chromium
+- **حلقة دخان صغيرة متعدّدة المتصفّحات**: Firefox وWebKit على مجموعة ضيّقة من المسارات
+- **حلقة ليلية أوسع**: المصفوفة الأكمل، أو على الأقل أكثر المسارات عرضة للفشل
 
-That is the balance I have seen teams actually maintain.
+هذا هو التوازن الذي رأيت فرقًا تحافظ عليه فعلًا.
 
-## The Playwright projects that split the work
+## مشاريع Playwright التي تقسّم العمل
 
-Playwright projects are the mechanism that makes “Chromium on every edit, Firefox and WebKit on a smoke subset” actually work. Each project is a named configuration block inside `playwright.config.ts` that can point at a different browser, a different testMatch, and a different set of options. The destination shape — not what ships in the starter today, but what Shelf would look like after the auth, visual, performance, and cross-browser labs have all landed — looks roughly like this:
+مشاريع Playwright هي الآلية التي تجعل «Chromium عند كل تعديل، وFirefox وWebKit على مجموعة دخان فرعية» تعمل فعلًا. فكل مشروع كتلة تهيئة مسمّاة داخل `playwright.config.ts`، ويمكنها أن تشير إلى متصفّح مختلف، و`testMatch` مختلف، ومجموعة خيارات مختلفة. والشكل النهائي — لا ما يُشحن في النسخة الابتدائية اليوم، بل ما سيبدو عليه Shelf بعد أن تكون مختبرات المصادقة والتصوّر البصري والأداء والمتصفّحات قد استقرّت كلها — يبدو تقريبًا هكذا:
 
 ```typescript
 projects: [
@@ -83,7 +83,7 @@ projects: [
 ];
 ```
 
-Again: this is the destination, not a current Shelf file. The starter ships a much smaller `playwright.config.ts` and you build up to this across the middle of the course. The important split for this lesson is simpler: keep Chromium as the default fast loop, and make Firefox/WebKit opt-in smoke projects. The default `npm run test` script can then pin the fast project so Firefox and WebKit do not sneak into the everyday loop:
+مرة أخرى: هذا هو المقصد النهائي، لا ملف Shelf الحالي. فالنسخة الابتدائية تشحن `playwright.config.ts` أصغر بكثير، وأنت تبني نحو هذا في منتصف الدورة. والتقسيم المهم في هذا الدرس أبسط: أبقِ Chromium الحلقة السريعة الافتراضية، واجعل Firefox وWebKit مشروعي دخان اختياريين. وحينها يستطيع سكربت `npm run test` الافتراضي أن يثبّت المشروع السريع كي لا يتسرّب Firefox وWebKit إلى الحلقة اليومية:
 
 ```json
 {
@@ -94,33 +94,33 @@ Again: this is the destination, not a current Shelf file. The starter ships a mu
 }
 ```
 
-> **Install the extra browsers first**
+> **ثبّت المتصفّحات الإضافية أولًا**
 >
-> Playwright only installs Chromium when you set up the fast loop. Before running `npm run test:cross-browser` for the first time — locally or in a fresh CI runner — install the cross-browser binaries explicitly:
+> لا يثبّت Playwright إلا Chromium حين تُهيّئ الحلقة السريعة. وقبل تشغيل `npm run test:cross-browser` للمرة الأولى — محليًا أو في مشغّل CI جديد — ثبّت ثنائيات المتصفّحات المتعدّدة صريحًا:
 >
 > ```bash
 > npx playwright install --with-deps firefox webkit
 > ```
 >
-> Skip this and the alternate-browser projects will fail with a “browser not installed” error that has nothing to do with your test code. The nightly workflow you build in the next lab should run the same install line in its `cross-browser-smoke` job for the same reason.
+> تخطَّ هذا وستفشل مشاريع المتصفّحات البديلة بخطأ «browser not installed» لا علاقة له بشيفرة اختبارك. وسير العمل الليلي الذي تبنيه في المختبر التالي ينبغي أن يشغّل سطر التثبيت نفسه في مهمّته `cross-browser-smoke` للسبب نفسه.
 
-## Tag the right tests, not all the tests
+## وسم الاختبارات الصحيحة، لا كل الاختبارات
 
-The mistake people make is trying to run the whole suite everywhere.
+الخطأ الذي يقع فيه الناس هو محاولة تشغيل المجموعة كلها في كل مكان.
 
-Don’t.
+لا تفعل.
 
-Tag the tests that earn cross-browser coverage:
+وسم الاختبارات التي تستحقّ تغطية متعدّدة المتصفّحات:
 
-- login
-- navigation
-- dialogs and menus
-- a couple of high-value forms
-- the routes where layout bugs hurt most
+- تسجيل الدخول
+- التنقّل
+- الحوارات والقوائم
+- نموذجان أو ثلاثة عالية القيمة
+- المسارات التي تؤذي فيها أخطاء التخطيط أكثر من غيرها
 
-This gives you a stable, small “does the product basically work in these engines?” set. The rest can stay Chromium-first unless history tells you otherwise.
+هذا يمنحك مجموعة صغيرة مستقرة تجيب عن «هل يعمل المنتج أساسًا في هذه المحرّكات؟». أما البقية فتبقى Chromium أولًا إلى أن يخبرك التاريخ بغير ذلك.
 
-Projects are one way to filter. Playwright’s built-in test tags are the other, and the two are complementary. Tag a test with `@cross-browser` to mark it as part of the cross-browser smoke set, then run it explicitly via `--grep`:
+المشاريع طريقة واحدة للتصفية. وأوسمة الاختبار المدمجة في Playwright هي الأخرى، والاثنتان متكاملتان. وسِم اختبارًا بـ`@cross-browser` لتعلّمه جزءًا من مجموعة الدخان متعدّدة المتصفّحات، ثم شغّله صريحًا بـ`--grep`:
 
 ```typescript
 // tests/rate-book.spec.ts
@@ -134,32 +134,32 @@ test('user can rate Station Eleven', { tag: '@cross-browser' }, async ({ page })
 npx playwright test --project=firefox-smoke --project=webkit-smoke --grep @cross-browser
 ```
 
-Projects say “which browser + which file match pattern.” Tags say “which individual tests inside that match pattern.” Use projects when the split is by *file* (all the smoke specs go to Firefox, none of the rate-book specs do), and tags when the split is by *test within a file* (the rate-book file has ten tests but only two earn cross-browser coverage).
+المشاريع تقول «أي متصفّح + أي نمط مطابقة ملفات». والأوسمة تقول «أي اختبارات بعينها داخل ذلك النمط». استخدم المشاريع حين يكون التقسيم بحسب *الملف* (كل اختبارات الدخان تذهب إلى Firefox، ولا واحدة من اختبارات تقييم الكتب تفعل)، والأوسمة حين يكون التقسيم بحسب *اختبار داخل ملف* (فملف تقييم الكتب فيه عشرة اختبارات، لكن اثنين فقط يستحقّان تغطية متعدّدة المتصفّحات).
 
-If you are merging reports from multiple browser jobs later, attach per-project `metadata` — for example `metadata: { lane: 'firefox-smoke' }` on the Firefox project — so the merged report can still tell you “this came from the Firefox smoke job” instead of flattening everything into one unlabeled blob of evidence.
+وإن كنت تدمج تقارير من مهمّات متصفّحات متعدّدة لاحقًا، فأرفق `metadata` لكل مشروع — مثل `metadata: { lane: 'firefox-smoke' }` على مشروع Firefox — كي يستطيع التقرير المدمج أن يخبرك «هذا جاء من مهمّة دخان Firefox» بدلًا من تسطيح كل شيء في كتلة أدلّة واحدة بلا وسم.
 
-If the smoke set grows enough to need sharding, `fullyParallel: true` is the setting that keeps shards balanced at the test level instead of the file level. And if the merged HTML report is serving attachments from some external bucket instead of the checked-out artifact directory, [`attachmentsBaseURL`](https://playwright.dev/docs/test-reporters) is what keeps those trace and screenshot links from turning into dead air.
+وإن كبرت مجموعة الدخان بما يكفي لتحتاج تقسيمًا (sharding)، فـ`fullyParallel: true` هو الإعداد الذي يُبقي الأجزاء متوازنة على مستوى الاختبار لا على مستوى الملف. وإن كان تقرير HTML المدمج يخدم المرفقات من دلو خارجي بدلًا من مجلد المخرجات المستخرج، فـ[`attachmentsBaseURL`](https://playwright.dev/docs/test-reporters) هو ما يمنع روابط الآثار ولقطات الشاشة تلك من أن تصير صمتًا ميتًا.
 
-## WebKit is strong signal, not a legal guarantee
+## WebKit إشارة قوية، لا ضمانة قانونية
 
-Playwright gives you Chromium, Firefox, and WebKit. That is exactly what you want for automation coverage. It is also worth being honest about the nuance: WebKit is your best automated signal for Safari-family behavior, not a magical guarantee about every real-device Safari quirk in the wild.
+يمنحك Playwright Chromium وFirefox وWebKit. وهذا بالضبط ما تريده لتغطية الأتمتة. ويجدر أيضًا أن نكون صادقين في الفرق الدقيق: WebKit أفضل إشارة آلية لديك عن سلوك عائلة Safari، لا ضمانة سحرية عن كل خصوصية Safari على جهاز حقيقي في العالم.
 
-That is still extremely valuable. Just do not oversell it.
+وهذا مع ذلك قيّم للغاية. فقط لا تُبالغ في بيعه.
 
-## Keep the failure output legible
+## أبقِ مخرجات الفشل مقروءة
 
-Cross-browser failures get noisy fast if you do not separate them cleanly.
+تصير إخفاقات المتصفّحات المتعدّدة صاخبة سريعًا إن لم تفصلها بنظافة.
 
-I want:
+أنا أريد:
 
-- browser name in the job or artifact name
-- retained traces and screenshots per browser
-- blob reports per browser when the run is sharded or split across jobs
-- a small enough test set that the failing browser is obvious
+- اسم المتصفّح في اسم المهمّة أو الأثر
+- آثارًا ولقطات شاشة محفوظة لكل متصفّح
+- تقارير blob لكل متصفّح حين يكون التشغيل مقسّمًا أو موزّعًا على مهمّات
+- مجموعة اختبارات صغيرة بما يكفي ليكون المتصفّح الفاشل واضحًا
 
-When Firefox fails and Chromium passes, the agent should not need a detective novel. It should get a clean artifact and a clean reproduction command.
+فحين يفشل Firefox وينجح Chromium، لا ينبغي للوكيل أن يحتاج رواية بوليسية. ينبغي أن يحصل على أثر نظيف وأمر إعادة إنتاج نظيف.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Cross-browser checks
@@ -173,19 +173,19 @@ When Firefox fails and Chromium passes, the agent should not need a detective no
   unless you can point to a known infrastructure issue.
 ```
 
-## How You Know the Split Is Healthy
+## كيف تعرف أن التقسيم صحّي
 
-You have a useful cross-browser loop when:
+تكون لديك حلقة متعدّدة المتصفّحات نافعة حين:
 
-- Chromium stays the fast default
-- Firefox and WebKit run on a deliberately small smoke subset
-- artifacts make it obvious which browser failed and why
+- يبقى Chromium الافتراضي السريع
+- يعمل Firefox وWebKit على مجموعة دخان صغيرة عن قصد
+- تجعل الآثار واضحًا أي متصفّح فشل ولماذا
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Cross-browser validation is not about running everything everywhere. It is about running the *right* small set in the browsers most likely to disagree, without slowing every edit into a small tragedy.
+لا يتعلّق التحقّق عبر المتصفّحات بتشغيل كل شيء في كل مكان. بل بتشغيل المجموعة الصغيرة *الصحيحة* في المتصفّحات الأرجح أن تختلف، دون إبطاء كل تعديل حتى يصير مأساة صغيرة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Lab: Add Cross-Browser Coverage](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage)
+- [CI بوصفه حلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [مختبر: أضف تغطية عبر المتصفّحات](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-cross-browser-coverage)

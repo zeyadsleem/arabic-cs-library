@@ -1,125 +1,125 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-locator-challenges"
 ---
 
-The locator hierarchy is easy to understand and hard to internalize. You know `getByRole` comes first. You know `data-testid` is a last resort. But when you’re staring at a page and need to target the *second* “Delete” button, or an input with no label, or a list item three levels deep—knowing the hierarchy isn’t the same as having the muscle memory.
+تدرّج المحدِّدات سهل الفهم وصعب الاستيعاب. أنت تعرف أن `getByRole` تأتي أولًا. وتعرف أن `data-testid` هي الملاذ الأخير. لكن حين تحدّق في صفحة وتحتاج إلى استهداف زر «Delete» *الثاني*، أو حقل إدخال بلا تسمية، أو عنصر قائمة على عمق ثلاثة مستويات — فمعرفة التدرّج شيء، وأن يكون التدرّج في عضلاتك شيء آخر.
 
-This lab fixes that. Shelf ships a `/playground` page built specifically for this: eleven sections of UI patterns, each designed to exercise a different part of the locator toolkit. Your job is to write Playwright locators for each challenge, run them, and see them pass. The route itself lives at `src/routes/playground/+page.svelte` in the starter — you don’t need to edit it, just target it.
+هذا المختبر يعالج ذلك. يشحن Shelf صفحة `/playground` مبنية لهذا الغرض تحديدًا: أحد عشر قسمًا من أنماط واجهة المستخدم، كل واحد منها مصمَّم لتمرين جزء مختلف من عدّة المحدِّدات. مهمتك أن تكتب محدِّدات Playwright لكل تحدٍّ، وتشغّلها، وتراها تنجح. والمسار نفسه يعيش في `src/routes/playground/+page.svelte` في البادئ — لا تحتاج إلى تعديله، بل إلى استهدافه فقط.
 
-The eleven locator-practice sections on the shipped /playground page
+الأقسام الأحد عشر لتمرين المحدِّدات في صفحة /playground المشحونة
 
-> **Prerequisite**
+> **متطلب مسبق**
 >
-> Pull the latest Shelf starter, start it in your usual local mode, and navigate to `/playground` to see the page you’ll be targeting.
+> اسحب أحدث بادئ لـShelf، وشغّله بوضعك المحلي المعتاد، وانتقل إلى `/playground` لترى الصفحة التي ستستهدفها.
 
-> **The fallback targets are still intentional**
+> **أهداف الملاذ الأخير مقصودة أيضًا**
 >
-> The playground intentionally keeps a handful of accessibility anti-patterns — a `div` pretending to be a button, an icon-only button with no accessible name — so challenges 23 and 24 have a real target. The current Shelf starter suppresses the corresponding Svelte warnings on that page so `npm run typecheck` and `npm run build` still stay clean. The teaching point is unchanged: if you can only reach something with `getByTestId`, the markup is the smell.
+> يُبقي الملعب عمدًا حفنة من الأنماط المضادة في إمكانية الوصول — `div` يتظاهر بأنه زر، وزر أيقونة فقط بلا اسم متاح — حتى يكون للتحدّيين 23 و24 هدف حقيقي. ويكتم بادئ Shelf الحالي تحذيرات Svelte المقابلة في تلك الصفحة كي يبقى `npm run typecheck` و`npm run build` نظيفين. والدرس المستفاد لم يتغيّر: إن لم تستطع الوصول إلى شيء إلا عبر `getByTestId`، فالمشكلة في الترميز نفسه.
 
-## Setup
+## التهيئة
 
-Create a new test file at `tests/playground.spec.ts`. Each challenge is one `test()` block. You can run the file with:
+أنشئ ملف اختبار جديدًا في `tests/playground.spec.ts`. كل تحدٍّ كتلة `test()` واحدة. ويمكنك تشغيل الملف بالأمر:
 
 ```bash
 npx playwright test tests/playground.spec.ts
 ```
 
-## What you can verify locally
+## ما يمكنك التحقق منه محليًا
 
-This lab is fully local. With Shelf already running, target the shipped playground route at `src/routes/playground/+page.svelte`, write the exercises in `tests/playground.spec.ts`, and run `npx playwright test tests/playground.spec.ts` until the file is green. Finish with `npm run typecheck` and `npm run build` so you’ve confirmed the playground still stays clean even though sections 23 and 24 are intentionally bad markup.
+هذا المختبر محلي بالكامل. وبما أن Shelf يعمل بالفعل، استهدف مسار الملعب المشحون في `src/routes/playground/+page.svelte`، واكتب التمارين في `tests/playground.spec.ts`، وشغّل `npx playwright test tests/playground.spec.ts` حتى يخضرّ الملف. واختم بـ`npm run typecheck` و`npm run build` لتكون قد أكّدت أن الملعب ما زال نظيفًا رغم أن القسمين 23 و24 ترميز سيئ عمدًا.
 
-## What remains manual or external
+## ما يبقى يدويًا أو خارجيًا
 
-Nothing here depends on GitHub, a deploy preview, or a third-party service. The only judgment call is whether each solution really used the highest-priority locator available. If a test passes but you reached for `getByTestId` or a fallback too early, that still counts as a miss for the point of the lab.
+لا شيء هنا يعتمد على GitHub، ولا على معاينة نشر، ولا على خدمة طرف ثالث. والحكم الوحيد هو هل استخدم كل حل فعلًا المحدِّد الأعلى أولويةً المتاح له. فإن نجح اختبار لكنك مددت يدك إلى `getByTestId` أو إلى بديل مبكرًا، فذلك يُحتسب إخفاقًا لغرض المختبر.
 
-## Warm-up: role basics
+## تسخين: أساسيات الدور
 
-**Challenge 1.** Locate the “Add to shelf” button.
+**التحدّي 1.** حدّد زر «Add to shelf».
 
-**Challenge 2.** Locate the “Cancel” button.
+**التحدّي 2.** حدّد زر «Cancel».
 
-**Challenge 3.** Locate the disabled “Out of stock” button and assert that it is disabled.
+**التحدّي 3.** حدّد زر «Out of stock» المعطّل، وتحقق أنه معطّل.
 
-**Challenge 4.** Locate the search input by its label.
+**التحدّي 4.** حدّد حقل البحث عبر تسميته.
 
-## Intermediate: disambiguation and chaining
+## متوسط: رفع الالتباس والتسلسل
 
-**Challenge 5.** There are two “Delete” buttons on the page. Locate the *first* one. (Hint: `.first()` or `.nth(0)` on a locator.)
+**التحدّي 5.** يوجد زرّا «Delete» في الصفحة. حدّد *الأول*. (تلميح: `.first()` أو `.nth(0)` على محدِّد.)
 
-**Challenge 6.** Locate the “Remove” button inside the third item in the “Reading list.” You’ll need to chain: find the list, find the items, narrow to the third, then find the button inside it.
+**التحدّي 6.** حدّد زر «Remove» داخل العنصر الثالث في «Reading list». ستحتاج إلى التسلسل: اعثر على القائمة، ثم على العناصر، ثم ضيّق إلى الثالث، ثم اعثر على الزر داخله.
 
-**Challenge 7.** Inside the article labeled “Piranesi by Susanna Clarke,” locate the “Rate this book” button.
+**التحدّي 7.** داخل المقالة المسمّاة «Piranesi by Susanna Clarke»، حدّد زر «Rate this book».
 
-**Challenge 8.** Locate the “Author” input and assert that its hint text (“Last name, first name”) is visible.
+**التحدّي 8.** حدّد حقل «Author» وتحقق أن نص تلميحه («Last name, first name») مرئي.
 
-## Text and content
+## النص والمحتوى
 
-**Challenge 9.** Find the paragraph that mentions “42 days.”
+**التحدّي 9.** اعثر على الفقرة التي تذكر «42 days».
 
-**Challenge 10.** Find the text “3 of 12 books finished.”
+**التحدّي 10.** اعثر على النص «3 of 12 books finished».
 
-**Challenge 11.** Two paragraphs on the page contain the word “shelf.” Find the one that says “You have 4 books on your shelf right now”—without matching the other one. (Hint: `{ exact: true }` won’t help here since neither is an exact match for “shelf.” Use a regex or a longer string.)
+**التحدّي 11.** فقرتان في الصفحة تحتويان كلمة «shelf». اعثر على التي تقول «You have 4 books on your shelf right now» — دون مطابقة الأخرى. (تلميح: `{ exact: true }` لن يفيدك هنا لأن أيًّا منهما ليس مطابقة دقيقة لـ«shelf». استخدم تعبيرًا نمطيًا أو سلسلة أطول.)
 
-## Tables and lists
+## الجداول والقوائم
 
-**Challenge 12.** Count the data rows in the “Book ratings” table (not including the header row). Assert there are exactly 3.
+**التحدّي 12.** عُدّ صفوف البيانات في جدول «Book ratings» (دون صف الترويسة). تحقق أن عددها 3 بالضبط.
 
-**Challenge 13.** Locate the “Reading list” and assert it has exactly 4 items.
+**التحدّي 13.** حدّد «Reading list» وتحقق أن فيها 4 عناصر بالضبط.
 
-## Dynamic content
+## المحتوى الديناميكي
 
-**Challenge 14.** Click “Show details” and assert that the detail paragraph about Station Eleven appears.
+**التحدّي 14.** انقر «Show details» وتحقق من ظهور فقرة التفاصيل الخاصة بـStation Eleven.
 
-**Challenge 15.** Click “Load more” and wait for the two new list items to appear. Assert the list “Newly loaded books” has 2 items.
+**التحدّي 15.** انقر «Load more» وانتظر ظهور عنصري القائمة الجديدين. تحقق أن قائمة «Newly loaded books» فيها عنصران.
 
-**Challenge 16.** Assert that “Loading…” is visible, then wait for it to disappear and “Content loaded” to appear. (The page has a 1-second delay built in—your assertions need to handle it.)
+**التحدّي 16.** تحقق أن «Loading…» مرئي، ثم انتظر اختفاءه وظهور «Content loaded». (في الصفحة تأخير ثانية واحدة مدمج — وتحققاتك يجب أن تتعامل معه.)
 
-## Dialogs
+## النوافذ الحوارية
 
-**Challenge 17.** Click the “Rate this book” button in the Dialogs section and assert that a dialog appears.
+**التحدّي 17.** انقر زر «Rate this book» في قسم Dialogs وتحقق من ظهور نافذة حوارية.
 
-**Challenge 18.** Inside the dialog, select 4 stars and click “Save rating.”
+**التحدّي 18.** داخل النافذة الحوارية، اختر 4 نجوم وانقر «Save rating».
 
-**Challenge 19.** Open the dialog again and close it with the “Cancel” button. Assert the dialog is no longer visible.
+**التحدّي 19.** افتح النافذة الحوارية مرة أخرى وأغلقها بزر «Cancel». تحقق أن النافذة الحوارية لم تعد مرئية.
 
-## ARIA and roles
+## ARIA والأدوار
 
-**Challenge 20.** Locate the alert that says “Unsaved changes will be lost.”
+**التحدّي 20.** حدّد التنبيه الذي يقول «Unsaved changes will be lost».
 
-**Challenge 21.** Locate the progress bar and assert its `aria-valuenow` is `65`.
+**التحدّي 21.** حدّد شريط التقدّم وتحقق أن `aria-valuenow` قيمته `65`.
 
-**Challenge 22.** Locate the “Toggle panel” button. Assert that it has `aria-expanded` set to `false`. Click it. Assert that `aria-expanded` is now `true` and the panel content is visible.
+**التحدّي 22.** حدّد زر «Toggle panel». تحقق أن `aria-expanded` مضبوطة على `false`. انقرها. تحقق أن `aria-expanded` صارت الآن `true` وأن محتوى اللوحة مرئي.
 
-## Anti-patterns and fallbacks
+## الأنماط المضادة والبدائل
 
-**Challenge 23.** Try to locate the clickable `<div>` by role (`getByRole('button')`). It won’t work—the div has no role. Locate it by its `data-testid` instead (`fake-button`). This is the teaching moment: if you can’t find it by role, the markup is broken.
+**التحدّي 23.** جرّب تحديد `<div>` القابل للنقر بالدور (`getByRole('button')`). لن ينجح — فـ div بلا دور. حدّده عبر `data-testid` بدلًا من ذلك (`fake-button`). وهذه هي لحظة الدرس: إن لم تستطع العثور عليه بالدور، فالترميز مكسور.
 
-**Challenge 24.** Locate the icon-only button using `data-testid` (`icon-only-button`). This button has no accessible name—`getByRole('button', { name: ... })` can’t target it. A real codebase should fix the button. A test suite should use `getByTestId` until it’s fixed.
+**التحدّي 24.** حدّد زر الأيقونة الوحيدة عبر `data-testid` (`icon-only-button`). هذا الزر بلا اسم متاح — ولا يستطيع `getByRole('button', { name: ... })` استهدافه. والقاعدة الحقيقية يجب أن تصلح الزر. ومجموعة الاختبارات يجب أن تستخدم `getByTestId` حتى يُصلَح.
 
-## Acceptance criteria
+## معايير القبول
 
-- `tests/playground.spec.ts` exists and contains at least 20 passing tests.
-- Every test uses the highest-priority locator strategy available for its target.
-- No test uses `page.locator()` with a raw class-based CSS selector. An `id` selector referenced by `aria-controls` (see Challenge 22) is the one natural exception.
-- The dynamic content tests (14–16) do not use `page.waitForTimeout`.
-- Running `npx playwright test tests/playground.spec.ts` produces all green.
+- `tests/playground.spec.ts` موجود ويحتوي 20 اختبارًا ناجحًا على الأقل.
+- كل اختبار يستخدم استراتيجية المحدِّد الأعلى أولويةً المتاحة لهدفه.
+- لا اختبار يستخدم `page.locator()` بمحدِّد CSS خام قائم على الصنف. ومحدِّد `id` المشار إليه من `aria-controls` (انظر التحدّي 22) هو الاستثناء الطبيعي الوحيد.
+- اختبارات المحتوى الديناميكي (14–16) لا تستخدم `page.waitForTimeout`.
+- تشغيل `npx playwright test tests/playground.spec.ts` يُنتج كل شيء أخضر.
 
-## Stretch: locator repair and composition
+## إضافي: إصلاح المحدِّدات وتركيبها
 
-If you want the higher-yield reps, add these after the main 24:
+إن أردت التكرارات الأعلى عائدًا، فأضف هذه بعد الـ24 الأساسية:
 
-- **Challenge 25.** Start from a deliberately broad locator like `page.getByRole('article')`, then use `filter({ hasText: 'Piranesi' })` or `filter({ has: ... })` to narrow it to the one card you actually want. Click “Rate this book” inside that filtered card.
-- **Challenge 26.** Write one test that waits for either the “Compose” button *or* a security dialog to appear by using `locator.or(...).first()`. If the dialog wins, dismiss it and continue.
-- **Challenge 27.** Pick one repeated locator from the file, give it a `describe('...')` label, and inspect the trace or UI Mode output so you can see the named locator show up in the tooling.
+- **التحدّي 25.** ابدأ من محدِّد عريض عمدًا مثل `page.getByRole('article')`، ثم استخدم `filter({ hasText: 'Piranesi' })` أو `filter({ has: ... })` لتضييقه إلى البطاقة الوحيدة التي تريدها فعلًا. وانقر «Rate this book» داخل تلك البطاقة المفلترة.
+- **التحدّي 26.** اكتب اختبارًا واحدًا ينتظر ظهور زر «Compose» *أو* نافذة حوارية أمنية باستخدام `locator.or(...).first()`. وإن فازت النافذة الحوارية، فأغلقها وواصل.
+- **التحدّي 27.** اختر محدِّدًا متكررًا من الملف، وأعطه تسمية `describe('...')`، وافحص مخرجات التتبّع أو وضع واجهة المستخدم لترى المحدِّد المسمّى يظهر في الأدوات.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Locators are a muscle, not a fact. You can read about `getByRole` all day, but the moment you have to disambiguate two “Delete” buttons on a real page, the hierarchy either lives in your fingers or it doesn’t. This lab is the reps.
+المحدِّدات عضلة، لا حقيقة. يمكنك أن تقرأ عن `getByRole` طوال اليوم، لكن لحظة أن تضطر إلى رفع الالتباس بين زرّي «Delete» في صفحة حقيقية، إما أن يعيش التدرّج في أصابعك أو لا يعيش. هذا المختبر هو التكرارات.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Locators and the Accessibility Hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
-- [Locator Challenges: Solution](https://stevekinney.com/courses/self-testing-ai-agents/locator-challenges-solution)
-- [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
+- [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)
+- [تحدّيات المحدّدات: الحل](https://stevekinney.com/courses/self-testing-ai-agents/locator-challenges-solution)
+- [وضع واجهة المستخدم في Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)

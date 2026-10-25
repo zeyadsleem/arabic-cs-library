@@ -1,18 +1,18 @@
 ---
-title: "Install userEvent"
-lang: en
+title: "تثبيت userEvent"
+lang: ar
 source: "https://stevekinney.com/courses/testing/accident-counter-with-user-event"
 ---
 
-> **If You’re Not Using the Example Repository**
+> **إن كنت لا تستخدم مستودع المثال**
 >
-> I’ve already done this for you, but I’m going to include this for reference. If you haven’t installed `@testing-library/user-event`, you made need to do a `npm install --save-dev @testing-library/user-event`.
+> لقد فعلت هذا لك بالفعل، لكنني سأدرجه هنا للرجوع. إن لم تكن قد ثبّتت `@testing-library/user-event`، فقد تحتاج إلى تنفيذ `npm install --save-dev @testing-library/user-event`.
 
-## Refactor the Test File to Use `userEvent`
+## إعادة هيكلة ملف الاختبار لاستخدام `userEvent`
 
-Update the test cases to use `userEvent` instead of `fireEvent`.
+حدّث حالات الاختبار لتستخدم `userEvent` بدلًا من `fireEvent`.
 
-### Refactored Test Code
+### شيفرة الاختبار بعد إعادة الهيكلة
 
 ```jsx
 // src/counter.test.jsx
@@ -101,26 +101,26 @@ describe('Counter Component', () => {
 });
 ```
 
-## Explanation of Changes
+## شرح التغييرات
 
-### Replacing `fireEvent` with `userEvent`
+### استبدال `fireEvent` بـ `userEvent`
 
-`fireEvent` triggers events directly on DOM elements, but it does not simulate user behavior as realistically as `userEvent`.
+يطلق `fireEvent` الأحداث مباشرة على عناصر DOM، لكنه لا يحاكي سلوك المستخدم بواقعية `userEvent`.
 
-`userEvent.click()` simulates a user clicking on the button, which results in a more realistic simulation of what would happen in a browser.
+يحاكي `userEvent.click()` نقر المستخدم على الزر، ما ينتج محاكاة أكثر واقعية لما يحدث في المتصفح.
 
-### `await` For Asynchronous Behavior
+### `await` للسلوك غير المتزامن
 
-The `userEvent` API is more asynchronous than `fireEvent`, so we need to use `await` when clicking buttons to ensure the UI updates correctly before assertions.
+واجهة `userEvent` أكثر لا تزامنية من `fireEvent`، لذا نحتاج إلى استخدام `await` عند النقر على الأزرار لضمان تحديث الواجهة على نحو صحيح قبل التحققات.
 
-### Improved User Simulation
+### محاكاة محسّنة للمستخدم
 
-`userEvent` handles various user interactions (e.g., mouse events, key presses, typing) more closely to how a user would interact with the browser, making the tests more robust.
+يتعامل `userEvent` مع تفاعلات المستخدم المتنوعة (مثل أحداث الفأرة وضغطات المفاتيح والكتابة) على نحو أقرب إلى كيفية تفاعل المستخدم مع المتصفح، ما يجعل الاختبارات أكثر متانة.
 
-## Why Use `userEvent` Over `fireEvent`?
+## لماذا تستخدم `userEvent` بدلًا من `fireEvent`؟
 
-- **Realism**: `userEvent` better simulates actual user interaction, such as holding down a button, typing, or clicking. It accounts for browser behavior more accurately.
-- **Future-Proofing**: `userEvent` is recommended by Testing Library and has better support for future browser features.
-- **Async Handling**: Some actions that require browser delays (like typing or multiple clicks) are better handled with `userEvent`.
+- **الواقعية**: يحاكي `userEvent` تفاعل المستخدم الفعلي على نحو أفضل، مثل الاستمرار في الضغط على زر، أو الكتابة، أو النقر. وهو يراعي سلوك المتصفح بدقة أكبر.
+- **الاستعداد للمستقبل**: يوصي Testing Library بـ `userEvent` وله دعم أفضل لميزات المتصفح المستقبلية.
+- **التعامل غير المتزامن**: بعض الإجراءات التي تتطلب تأخيرات في المتصفح (مثل الكتابة أو النقرات المتعددة) تُعالج بشكل أفضل باستخدام `userEvent`.
 
-In this refactored test suite, we used `userEvent` to simulate real user interactions with the `Counter` component. This method is more reliable and representative of how users interact with your app, and it prepares your tests to handle more complex interactions in the future.
+في مجموعة الاختبارات المعاد هيكلتها هذه، استخدمنا `userEvent` لمحاكاة تفاعلات المستخدم الحقيقية مع مكوّن `Counter`. هذه الطريقة أكثر موثوقية وتمثيلًا لكيفية تفاعل المستخدمين مع تطبيقك، وهي تهيّئ اختباراتك للتعامل مع تفاعلات أكثر تعقيدًا في المستقبل.

@@ -1,97 +1,97 @@
 ---
-title: "The Static Layer as Underlayment"
-lang: en
+title: "الطبقة الساكنة كطبقة أساس"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment"
 ---
 
-We’re about six hours into the day. Here’s where I explain why the lesson you’d have expected to see first is showing up now.
+نحن في منتصف النهار تقريبًا، بعد نحو ست ساعات من العمل. وهنا أشرح لماذا يظهر الآن الدرس الذي كنت تتوقع رؤيته أولًا.
 
-When I sketched this workshop originally, the static layer—[ESLint](https://eslint.org/), [TypeScript](https://www.typescriptlang.org/), [Prettier](https://prettier.io/), [knip](https://knip.dev/), [Lefthook](https://github.com/evilmartians/lefthook), [Gitleaks](https://github.com/gitleaks/gitleaks)—sat right after the opening. The logic was that static checks are the cheapest feedback loop we have, and you want them in place before anything else, so the agent can lean on them from the start.
+عندما رسمت هذه الورشة في الأصل، كانت الطبقة الساكنة — [ESLint](https://eslint.org/) و[TypeScript](https://www.typescriptlang.org/) و[Prettier](https://prettier.io/) و[knip](https://knip.dev/) و[Lefthook](https://github.com/evilmartians/lefthook) و[Gitleaks](https://github.com/gitleaks/gitleaks) — تأتي مباشرة بعد الافتتاح. كان المنطق أن الفحوص الساكنة أرخص حلقة تغذية راجعة لدينا، وأنك تريدها في مكانها قبل أي شيء آخر، حتى يتّكئ عليها الوكيل من البداية.
 
-The logic is correct. The ordering was wrong.
+المنطق صحيح. الترتيب كان خاطئًا.
 
-If I’d put the static layer up front, I’d have spent an hour telling you to install a bunch of packages and write a bunch of config files, and you’d have spent the afternoon wondering why. Without the context of an actual Playwright suite, a visual regression workflow, a review bot, and a failure dossier, “install ESLint and add a rule banning `page.waitForTimeout`” is an abstract good idea that you’d probably skip on your own project.
+لو وضعت الطبقة الساكنة في المقدمة، لكنت أمضيت ساعة أطلب منك تثبيت حزمة من الحزم وكتابة حزمة من ملفات التهيئة، ولكنت أمضيت أنت بعد الظهر تتساءل عن السبب. بدون سياق حزمة Playwright حقيقية، وسير عمل انحدار بصري، وروبوت مراجعة، وملف تقرير فشل، فإن «ثبّت ESLint وأضف قاعدة تمنع `page.waitForTimeout`» فكرة جيدة مجرّدة كنت ستتخطاها على الأرجح في مشروعك.
 
-By now, the context exists. You know why you want that lint rule. You know because you spent an hour this morning explaining the ban to yourself, and now you want the computer to explain it next time. You know why you want a git hook that blocks the commit if the screenshot snapshots changed without an explanation. You know why you want dead code detection. Every static check I’m about to walk through is an answer to a question you’ve already asked today.
+الآن، السياق موجود. أنت تعرف لماذا تريد قاعدة الـ lint تلك. تعرف لأنك أمضيت ساعة هذا الصباح تشرح المنع لنفسك، والآن تريد من الحاسوب أن يشرحه في المرة القادمة. تعرف لماذا تريد خطّاف git يمنع الالتزام إذا تغيّرت لقطات الشاشة دون تفسير. تعرف لماذا تريد كشف الكود الميت. كل فحص ساكن سأمرّ عليه هو جواب عن سؤال طرحته أنت اليوم بالفعل.
 
-That’s why this lesson is here. Not as a grab bag, but as the *answers* to the grab bag.
+لهذا هذا الدرس هنا. لا كمجموعة أشياء متفرقة، بل كـ*أجوبة* على تلك المجموعة.
 
-## The mental model
+## النموذج الذهني
 
-Think of static checks as underlayment. You put them down once, they run under everything else, and they catch a specific class of mistake before any of the more expensive loops fire. Lint catches bad patterns at the moment of typing. Types catch shape mismatches at the moment of editing. Dead code detection catches orphans at the moment of imports. Hooks catch mistakes at the moment of commit. Secret scanning catches credentials at the moment of push.
+فكّر في الفحوص الساكنة كطبقة أساس تُفرش تحت كل شيء. تضعها مرة واحدة، فتعمل تحت كل ما عداها، وتلتقط فئة محدّدة من الأخطاء قبل أن تنطلق أي من الحلقات الأغلى. يلتقط الـ Lint الأنماط السيئة في لحظة الكتابة. تلتقط الأنواع عدم تطابق الأشكال في لحظة التحرير. يلتقط كشف الكود الميت الملفات اليتيمة في لحظة الاستيراد. تلتقط الخطّافات الأخطاء في لحظة الالتزام. ويلتقط فحص الأسرار بيانات الاعتماد في لحظة الدفع.
 
-Each of these runs in milliseconds to seconds. None of them require a browser. None of them require a database. They are the *cheapest* possible feedback loop, which is why they should be running continuously in the background and why the agent should be wired to trip them constantly.
+كل واحد منها يعمل في نطاق المللي ثانية إلى الثواني. لا شيء منها يحتاج متصفحًا. ولا شيء منها يحتاج قاعدة بيانات. إنها *أرخص* حلقة تغذية راجعة ممكنة، ولهذا ينبغي أن تعمل باستمرار في الخلفية، ولهذا ينبغي أن يكون الوكيل موصولًا بحيث يعثر عليها باستمرار.
 
-In Shelf, that layer is not abstract once you’ve completed the static-layer lab. `eslint.config.js` carries the custom `no-restricted-syntax` rules, `tsconfig.json` carries the strict TypeScript flags, `knip.json` tells dead-code detection what counts as reachable, `lefthook.yml` wires `pre-commit` and `pre-push`, `.gitleaks.toml` defines the allowlist, and `scripts/run-gitleaks-staged.ts` is the wrapper that turns the staged index into a real directory before Gitleaks scans it. The starter begins smaller with `npm run lint`, `npm run typecheck`, and `npm run test`; the static-layer lab extends that concrete surface with `npm run knip` and `npm run pre-push`. If you want the extra Claude-specific loop on top, the lightweight version is `npm run lint -- --quiet` after each edit.
+في Shelf، تلك الطبقة ليست مجرّدة بمجرد أن تكمل مختبر الطبقة الساكنة. يحمل `eslint.config.js` قواعد `no-restricted-syntax` المخصّصة، ويحمل `tsconfig.json` أعلام TypeScript الصارمة، ويخبر `knip.json` كشف الكود الميت بما يُعدّ قابلًا للوصول، ويصل `lefthook.yml` بين `pre-commit` و`pre-push`، ويعرّف `.gitleaks.toml` قائمة السماح، و`scripts/run-gitleaks-staged.ts` هو الغلاف الذي يحوّل الفهرس المرحّل إلى دليل حقيقي قبل أن يفحصه Gitleaks. يبدأ المشروع الأولي أصغر بـ `npm run lint` و`npm run typecheck` و`npm run test`؛ ثم يوسّع مختبر الطبقة الساكنة ذلك السطح الملموس بـ `npm run knip` و`npm run pre-push`. وإذا أردت الحلقة الإضافية الخاصة بـ Claude فوق ذلك، فنسختها الخفيفة هي `npm run lint -- --quiet` بعد كل تعديل.
 
-> **Note**
+> **ملاحظة**
 >
-> In the local Shelf repository for this workshop, `npm` is the source of truth for verification commands. Some lesson snippets use `bun` for package installation because that’s my default elsewhere. Match the repository you are actually in. The real requirement is that the repo exposes stable, named scripts and that the agent is told to run them.
+> في مستودع Shelf المحلي لهذه الورشة، `npm` هو مصدر الحقيقة لأوامر التحقق. بعض مقاطع الدروس تستخدم `bun` لتثبيت الحزم لأنه افتراضي في مكان آخر. طابق المستودع الذي أنت فيه فعلًا. الشرط الحقيقي هو أن يعرض المستودع سكربتات مستقرة ومسمّاة وأن يُقال للوكيل أن يشغّلها.
 
-The specific pieces we’re going to cover:
+الأجزاء المحدّدة التي سنغطيها:
 
-- **ESLint and TypeScript** as opinionated guardrails, including custom rules for the Playwright patterns from this morning.
-- **Dead code detection** with knip and dependency-cruiser. This is a big one for agent workflows—agents love to leave orphans behind.
-- **Git hooks** with lefthook, including the “Claude hooks” mention (they’re a more specific version of the same idea).
-- **Secret scanning** with gitleaks. Credentials in test fixtures are the canonical agent mistake.
-- A light-touch mention of **axe-core** as the accessibility layer that belongs in the static tier even though it technically runs in a browser.
+- **ESLint وTypeScript** كحواجز ذات رأي، بما في ذلك قواعد مخصّصة لأنماط Playwright من هذا الصباح.
+- **كشف الكود الميت** باستخدام knip وdependency-cruiser. هذا مهم جدًا لسير عمل الوكلاء — فالوكلاء يحبون ترك اليتامى خلفهم.
+- **خطّافات Git** باستخدام lefthook، بما في ذلك ذكر «خطّافات Claude» (وهي نسخة أكثر تخصيصًا من الفكرة نفسها).
+- **فحص الأسرار** باستخدام gitleaks. بيانات الاعتماد في fixtures الاختبار هي خطأ الوكيل الكلاسيكي.
+- ذكر خفيف لـ **axe-core** كطبقة إتاحة تنتمي إلى المستوى الساكن وإن كانت تقنيًا تعمل في متصفح.
 
-All of it runs on every save, every commit, every push, and finally in CI. The layers are the same; only the strictness changes.
+كل ذلك يعمل عند كل حفظ، وكل التزام، وكل دفعة، وأخيرًا في CI. الطبقات هي نفسها؛ ما يتغيّر هو الصرامة فقط.
 
-## Why the agent benefits more than you do
+## لماذا يستفيد الوكيل أكثر منك
 
-Static checks help human developers too. That’s not news. What *is* news is that static checks help agents disproportionately, and the reason is worth naming.
+الفحوص الساكنة تساعد المطوّرين البشر أيضًا. هذا ليس خبرًا. الخبر هو أن الفحوص الساكنة تساعد الوكلاء بشكل غير متناسب، والسبب يستحق التسمية.
 
-An agent is a text-in, text-out system. Every piece of feedback it gets is a future prompt. A test failure is a prompt. A lint error is a prompt. A type error is a prompt. A dead code warning is a prompt. And the *faster* the prompt arrives, the cheaper it is for the agent to act on it, because the agent is still looking at the code it just wrote.
+الوكيل نظام نصّ إلى نص: نصّ يدخل، ونصّ يخرج. كل قطعة تغذية راجعة يتلقاها هي طلب مستقبلي. فشل اختبار طلبٌ. وخطأ lint طلبٌ. وخطأ نوع طلبٌ. وتحذير كود ميت طلبٌ. وكلما وصل الطلب *أسرع*، كان أرخص على الوكيل أن يتصرف بناءً عليه، لأن الوكيل ما زال ينظر إلى الكود الذي كتبه للتو.
 
-A test failure five minutes after the edit is expensive—the agent has moved on, its context has shifted, it has to go back and re-understand what it was doing. A lint error thirty seconds after the edit is almost free—the context is still hot, the fix is immediate, and the loop closes inside a single turn. This is why the static layer has outsized value in an agent workflow: it shortens the feedback distance more than any other layer.
+فشل اختبار بعد خمس دقائق من التعديل مكلف — يكون الوكيل قد مضى، وتحوّل سياقه، وعليه أن يعود ويفهم من جديد ما كان يفعله. أما خطأ lint بعد ثلاثين ثانية من التعديل فمجاني تقريبًا — السياق ما زال ساخنًا، والإصلاح فوري، وتُغلق الحلقة داخل دور واحد. لهذا للطبقة الساكنة قيمة أكبر من حجمها في سير عمل الوكيل: إنها تقصّر مسافة التغذية الراجعة أكثر من أي طبقة أخرى.
 
-A practical consequence: an agent with a tight static layer looks smarter than an agent without one, even if the underlying model is identical. The smartness comes from the feedback loop, not the model.
+وثمة نتيجة عملية: الوكيل الذي يملك طبقة ساكنة محكمة يبدو أذكى من الوكيل الذي لا يملكها، حتى لو كان النموذج الأساسي نفسه. الذكاء يأتي من حلقة التغذية الراجعة، لا من النموذج.
 
-A concrete example from Shelf: a single `no-restricted-syntax` rule pays for itself the moment someone drops a `page.locator('body')` call into the authentication setup file. The red squiggle shows up before the commit even reaches the agent’s next turn. That’s the entire value proposition in one line of editor output.
+مثال ملموس من Shelf: قاعدة `no-restricted-syntax` واحدة تسدّد ثمنها في اللحظة التي يضع فيها أحدهم استدعاء `page.locator('body')` في ملف إعداد المصادقة. يظهر الخط المتعرّج الأحمر قبل أن يصل الالتزام إلى دور الوكيل التالي أصلًا. هذه هي مقترح القيمة كله في سطر واحد من مخرجات المحرّر.
 
-One implementation detail worth calling out because it is easy to cargo-cult the wrong way: Shelf’s staged secret scan does *not* shell out to `gitleaks git --staged`. Depending on the Gitleaks release you have installed, that flag may miss newly added files in pre-commit; if your release handles `gitleaks git --staged` cleanly, prefer it. The fallback in this repository copies the exact git index contents into a temporary directory and runs `gitleaks dir` there. Same intent, tighter loop, less ambiguity.
+وثمة تفصيل تنفيذي يستحق الذكر لأنه من السهل تقليده تقليدًا أعمى بالطريقة الخاطئة: فحص الأسرار المرحّلة في Shelf *لا* يستدعي `gitleaks git --staged` عبر shell. بحسب إصدار Gitleaks المثبّت لديك، قد يفوّت ذلك العلم الملفات المضافة حديثًا في مرحلة ما قبل الالتزام؛ وإذا كان إصدارك يتعامل مع `gitleaks git --staged` بنظافة، ففضّله. البديل في هذا المستودع ينسخ محتوى فهرس git بالضبط إلى دليل مؤقت ويشغّل `gitleaks dir` هناك. النية نفسها، وحلقة أحكم، والتباس أقل.
 
-## The pattern, independent of tools
+## النمط، بمعزل عن الأدوات
 
-Every static tool you install is going to follow roughly the same setup pattern:
+كل أداة ساكنة تثبّتها ستتبع تقريبًا نمط الإعداد نفسه:
 
-1. Install it.
-2. Configure it with defaults aggressive enough to be useful but not so aggressive that it flags your existing code everywhere.
-3. Wire it into `package.json` as a named script.
-4. Add the script to your agent rules under “what done means.”
-5. Run it on save (via editor integration), on commit (via a git hook), and in CI.
-6. Tune it over the next week based on what it catches and what it gets wrong.
+1. ثبّتها.
+2. هيّئها بافتراضيات شديدة بما يكفي لتكون مفيدة، لكن غير شديدة لدرجة تشير إلى كودك القائم في كل مكان.
+3. وصلها في `package.json` كسكربت مسمّى.
+4. أضف السكربت إلى قواعد الوكيل تحت «ماذا يعني منتهيًا».
+5. شغّلها عند الحفظ (عبر تكامل المحرّر)، وعند الالتزام (عبر خطّاف git)، وفي CI.
+6. اضبطها خلال الأسبوع التالي بناءً على ما تلتقطه وما تخطئ فيه.
 
-Steps 3 and 4 are the ones most projects skip. “We have ESLint configured” means nothing if it’s not on the agent’s list of commands to run. The static check that the agent doesn’t know about is a static check that doesn’t get run.
+الخطوتان 3 و4 هما ما تتخطاه معظم المشاريع. «لدينا ESLint مهيأ» لا يعني شيئًا إن لم يكن على قائمة الأوامر التي يشغّلها الوكيل. الفحص الساكن الذي لا يعرفه الوكيل فحص ساكن لا يُشغَّل.
 
-Similarly, step 6 is the one that separates a working static layer from a cargo-culted one. Every rule that flags something the agent shouldn’t have done is a rule you keep. Every rule that produces noise for a week is a rule you delete or tune. Tuning is the work.
+كذلك، الخطوة 6 هي التي تفصل طبقة ساكنة عاملة عن طبقة مُقلَّدة تقليدًا أعمى. كل قاعدة تشير إلى شيء ما كان ينبغي للوكيل ألا يفعله هي قاعدة تبقيها. وكل قاعدة تنتج ضجيجًا لأسبوع هي قاعدة تحذفها أو تضبطها. الضبط هو العمل.
 
-## A word on Claude hooks
+## كلمة عن خطّافات Claude
 
-A quick aside on Claude Code’s hook system, because it comes up in this area and it’s worth placing correctly.
+استطراد سريع عن نظام الخطّافات في Claude Code، لأنه يظهر في هذا المجال ويستحق وضعًا صحيحًا.
 
-Claude Code supports hooks—shell commands that fire on specific events such as `PostToolUse` and `Stop`. They’re powerful and agent-specific. You can, for example, set a `PostToolUse` hook that runs `bun lint` whenever the agent edits a file, and if the lint fails, the result gets fed back to the agent as context before the next turn.
+يدعم Claude Code الخطّافات — أوامر shell تنطلق عند أحداث محدّدة مثل `PostToolUse` و`Stop`. إنها قوية وخاصة بالوكيل. يمكنك، مثلًا، ضبط خطّاف `PostToolUse` يشغّل `bun lint` كلما عدّل الوكيل ملفًا، وإذا فشل الـ lint، تُغذّى النتيجة إلى الوكيل كسياق قبل الدور التالي.
 
-That’s a real, useful feedback loop. It’s also completely Claude Code-specific. Cursor has its own flavor (Rules + Agents), Codex has its own, Copilot has its own.
+هذه حلقة تغذية راجعة حقيقية ومفيدة. وهي أيضًا خاصة بـ Claude Code تمامًا. لـ Cursor نسخته (Rules + Agents)، ولـ Codex نسخته، ولـ Copilot نسخته.
 
-My take: hooks are *one* way to wire a static check into the agent’s loop, but they’re not the only way, and they’re not the most portable way. A git hook via lefthook runs on commit regardless of which agent edited the file. That’s my default. If you’re committed to Claude Code and want the tighter loop, add Claude hooks on top of the git hooks—they’re complementary, not alternatives. We’ll cover both in the [git hooks lesson](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook).
+رأيي: الخطّافات *إحدى* طرق وصل فحص ساكن بحلقة الوكيل، لكنها ليست الطريقة الوحيدة، وليست الطريقة الأكثر قابلية للنقل. خطّاف git عبر lefthook يعمل عند الالتزام بصرف النظر عن أي وكيل عدّل الملف. هذا افتراضي. وإذا كنت ملتزمًا بـ Claude Code وتريد الحلقة الأحكم، فأضف خطّافات Claude فوق خطّافات git — فهي متكاملة لا بديلة. سنغطي الاثنين في [درس خطّافات git](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook).
 
-## What’s in the rest of this section
+## ما الذي في بقية هذا القسم
 
-I’ll say what each of the next lessons covers in one line so you can decide whether to read them in order or pick the ones you care about.
+سأقول ما يغطيه كل درس من الدروس التالية في سطر واحد حتى تقرر إن كنت ستقرأها بالترتيب أو تختار ما يهمّك.
 
-- **Lint and Types as Guardrails**—why ESLint’s recommended config isn’t enough, and the specific rules I’d add for agent-driven codebases.
-- **Dead Code Detection**—knip and the one-line script that catches orphaned files before they rot.
-- **Git Hooks with Lefthook**—the right hooks, the wrong hooks, and how to not make everyone hate git commits.
-- **Secret Scanning with Gitleaks**—the agent has already committed a fake API key once on my watch. Do not let this be you.
-- **The Lab**—wire the whole stack into Shelf, verify each layer fires on the right mistake.
+- **Lint والأنواع كحواجز** — لماذا لا تكفي تهيئة ESLint الموصى بها، والقواعد المحدّدة التي سأضيفها لقواعد كود يقودها الوكيل.
+- **كشف الكود الميت** — knip والسكربت ذو السطر الواحد الذي يلتقط الملفات اليتيمة قبل أن تتعفّن.
+- **خطّافات Git باستخدام Lefthook** — الخطّافات الصحيحة، والخطّافات الخاطئة، وكيف لا تجعل الجميع يكرهون التزامات git.
+- **فحص الأسرار باستخدام Gitleaks** — الوكيل أودع مفتاح API مزيّفًا مرة على مرأى مني. لا تدع هذا يكون أنت.
+- **المختبر** — وصّل المكدّس كله بـ Shelf، وتحقق من أن كل طبقة تنطلق عند الخطأ الصحيح.
 
-Pick your own order. They don’t depend on each other.
+اختر ترتيبك بنفسك. لا تعتمد على بعضها.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The static layer is not a prerequisite for the rest of the day. It’s a *consequence* of the rest of the day—the pile of concrete “I keep seeing the agent do this” observations that each deserve a mechanical guardrail. Build it now, with all that context in your head, and every rule you add answers a specific question you asked this morning.
+الطبقة الساكنة ليست شرطًا مسبقًا لبقية اليوم. إنها *نتيجة* لبقية اليوم — كومة الملاحظات الملموسة «أرى الوكيل يفعل هذا باستمرار»، وكل واحدة منها تستحق حاجزًا آليًا. ابنِها الآن، وكل ذلك السياق في رأسك، وستكون كل قاعدة تضيفها جوابًا عن سؤال محدّد طرحته هذا الصباح.
 
 ```
 graph TB
@@ -112,9 +112,9 @@ graph TB
   F --> G
 ```
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lint and Types as Guardrails](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
-- [Dead Code Detection](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
-- [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
-- [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
+- [Lint والأنواع كحواجز](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
+- [كشف الكود الميت](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
+- [خطّافات Git باستخدام Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
+- [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)

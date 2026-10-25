@@ -1,14 +1,14 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/add-post-deploy-smoke-checks-to-shelf-solution"
 ---
 
-The smoke test is the smallest test in the repository. That’s the point. Everything else in the suite proves the application *works*. This one proves the application *shipped*. The Shelf starter doesn’t include it, so this solution is the code you add during the lab.
+اختبار الدخان هو أصغر اختبار في المستودع. وهذا هو المقصود. كل شيء آخر في المجموعة يثبت أن التطبيق *يعمل*. هذا الاختبار يثبت أن التطبيق *شُحن*. بادئة Shelf لا تتضمنه، لذا فالحل هو الشيفرة التي تضيفها أثناء المختبر.
 
-## What to add
+## ما يجب إضافته
 
-Three files land in Shelf. Let’s walk each one.
+ثلاثة ملفات تحلّ في Shelf. لنستعرض كلًا منها.
 
 ### `tests/smoke/post-deploy.spec.ts`
 
@@ -26,9 +26,9 @@ test('home page renders and exposes sign in', async ({ page }) => {
 });
 ```
 
-Two assertions. That’s the whole test. The heading proves the page rendered. The sign-in link proves the unauthenticated layout loaded—which means the server started, the route matched, and the template compiled. If any of those three things broke during deploy, this test catches it.
+تحقّقان. هذا هو الاختبار كله. العنوان يثبت أن الصفحة صُيّرت. ورابط تسجيل الدخول يثبت أن التخطيط غير المصادَق حُمّل — وهذا يعني أن الخادم بدأ، وأن المسار تطابق، وأن القالب تُرجم. إن انكسر أي من هذه الثلاثة أثناء النشر، فهذا الاختبار يلتقطه.
 
-The `SMOKE_BASE_URL` fallback to `127.0.0.1:4173` means you can run it locally against `npm run preview` without setting anything. In a deploy workflow, the workflow injects the real URL.
+رجوع `SMOKE_BASE_URL` إلى `127.0.0.1:4173` يعني أنك تستطيع تشغيله محليًا مقابل `npm run preview` دون ضبط أي شيء. في سير عمل النشر، يحقن سير العمل الرابط الحقيقي.
 
 ### `playwright.smoke.config.ts`
 
@@ -55,60 +55,60 @@ export default defineConfig({
 });
 ```
 
-This is a *dedicated* config, separate from the main `playwright.config.ts`. That matters. The main config spins up a web server with `npm run build && npm run preview`. The smoke config has no `webServer` block at all—it expects the target to already be running, because in the real workflow, the target is a deployed URL that Playwright didn’t start.
+هذا إعداد *مخصّص*، منفصل عن `playwright.config.ts` الرئيسي. وهذا مهم. الإعداد الرئيسي يشغّل خادم ويب عبر `npm run build && npm run preview`. إعداد الدخان لا يحتوي على كتلة `webServer` إطلاقًا — إنه يتوقع أن يكون الهدف قيد التشغيل بالفعل، لأن الهدف في سير العمل الحقيقي هو رابط منشور لم يبدأه Playwright.
 
-Trace on failure and screenshot on failure are the evidence trail. If the smoke test goes red after a deploy, the Playwright report tells you exactly what the page looked like when it failed. No guessing, no “can you reproduce it locally?”
+تسجيل الأثر عند الفشل ولقطة الشاشة عند الفشل هما مسار الأدلة. إن احمرّ اختبار الدخان بعد نشر، يخبرك تقرير Playwright بالضبط كيف بدت الصفحة عند فشلها. لا تخمين، ولا «هل يمكنك إعادة إنتاجه محليًا؟»
 
 ### `docs/post-deploy-playbook.md`
 
-The playbook covers five things:
+يغطي دليل التشغيل خمسة أمور:
 
-- **Target URL:** `SMOKE_BASE_URL` from the environment, defaulting to local preview.
-- **Named command:** `npm run test:smoke`, which runs `playwright test --config=playwright.smoke.config.ts`.
-- **What the test proves:** the page loads, the heading is visible, the sign-in link is present. That’s the tripwire. Deeper coverage is the end-to-end suite’s job.
-- **Stop-ship failures:** the smoke test fails, `/login` returns 5xx, runtime logs show uncaught exceptions, or the post-deploy error rate exceeds the pre-deploy baseline for more than five minutes.
-- **Who rolls back:** in the workshop, push a revert commit to `main`. In a real deploy, replace this with the specific CLI command or workflow that rolls back.
+- **رابط الهدف:** `SMOKE_BASE_URL` من البيئة، والافتراضي هو المعاينة المحلية.
+- **أمر مسمّى:** `npm run test:smoke`، الذي يشغّل `playwright test --config=playwright.smoke.config.ts`.
+- **ما يثبته الاختبار:** الصفحة تُحمّل، والعنوان مرئي، ورابط تسجيل الدخول موجود. هذا هو سلك التعطيل. أما التغطية الأعمق فهي مهمة مجموعة الاختبارات من طرف إلى طرف.
+- **إخفاقات توقف الشحن:** فشل اختبار الدخان، أو إعادة `/login` رمز 5xx، أو ظهور استثناءات غير ملتقطة في سجلات وقت التشغيل، أو تجاوز معدل الأخطاء بعد النشر خط الأساس قبل النشر لأكثر من خمس دقائق.
+- **من يقوم بالتراجع:** في الورشة، ادفع إيداع تراجع إلى `main`. في نشر حقيقي، استبدل هذا بأمر CLI المحدد أو سير العمل الذي يتراجع.
 
-The playbook also documents a five-minute health window after every deploy and explicitly calls out the hosted gap—Shelf doesn’t have a real deploy target yet, so the playbook says so instead of pretending.
+يوثّق الدليل أيضًا نافذة صحة مدتها خمس دقائق بعد كل نشر، ويشير صراحة إلى الفجوة المستضافة — ليس لدى Shelf هدف نشر حقيقي بعد، فيقول الدليل ذلك بدلًا من التظاهر.
 
-### `package.json` script
+### سكربت `package.json`
 
 ```json
 "test:smoke": "playwright test --config=playwright.smoke.config.ts"
 ```
 
-One line. Uses the dedicated config. No `webServer`, no build step. The workflow (or you, locally) is responsible for making sure something is running at the target URL first.
+سطر واحد. يستخدم الإعداد المخصّص. لا `webServer`، ولا خطوة بناء. سير العمل (أو أنت، محليًا) مسؤول عن التأكد من أن شيئًا يعمل على رابط الهدف أولًا.
 
-## What you still need to run
+## ما ما زلت بحاجة إلى تشغيله
 
-Locally, the proof-of-life loop is simple: make sure a preview server is already running at `http://127.0.0.1:4173`, then run `npm run test:smoke`. The test should pass. If it doesn’t, check that the preview server is actually reachable and that the home page renders an `<h1>` and a “Sign in” link inside the page banner (the header landmark).
+محليًا، حلقة إثبات الحياة بسيطة: تأكد من أن خادم معاينة يعمل بالفعل على `http://127.0.0.1:4173`، ثم شغّل `npm run test:smoke`. ينبغي أن ينجح الاختبار. إن لم ينجح، فتحقق من أن خادم المعاينة يمكن الوصول إليه فعلًا وأن الصفحة الرئيسية تصيّر `<h1>` ورابط «تسجيل الدخول» (Sign in) داخل لافتة الصفحة (معلم الرأس).
 
 ```bash
 SMOKE_BASE_URL=http://127.0.0.1:4173 npm run test:smoke
 ```
 
-For the deliberate failure check, temporarily change the assertion to look for a heading that doesn’t exist:
+لفحص الفشل المتعمد، غيّر التحقّق مؤقتًا ليبحث عن عنوان غير موجود:
 
 ```typescript
 await expect(page.getByRole('heading', { name: 'This heading does not exist' })).toBeVisible();
 ```
 
-Run the smoke test again. Confirm it fails, produces a screenshot and trace in `playwright-report/smoke-html/`, and gives you enough evidence to say “the deploy is broken” with confidence. Then revert.
+شغّل اختبار الدخان مرة أخرى. تأكد من أنه يفشل، وينتج لقطة شاشة وأثرًا في `playwright-report/smoke-html/`، ويمنحك أدلة كافية لتقول «النشر معطوب» بثقة. ثم تراجع.
 
-## Shipped vs. gap
+## ما شُحن مقابل الفجوة
 
-**Local:** everything works end-to-end. The smoke test runs against `npm run preview`, the playbook documents the rollback path, the named command exists. You can prove the full loop right now.
+**محليًا:** كل شيء يعمل من طرف إلى طرف. يعمل اختبار الدخان مقابل `npm run preview`، والدليل يوثّق مسار التراجع، والأمر المسمّى موجود. يمكنك إثبات الحلقة كاملة الآن.
 
-**Hosted:** the deploy workflow (`.github/workflows/deploy.yml`) needs a real deploy target. Without one, the workflow’s `deploy` job is a placeholder and the `smoke` job has no URL to hit. The playbook calls this out explicitly in its “Hosted gap” section. When a hosted target lands, you wire `SMOKE_BASE_URL` into the workflow as the deploy job’s output and delete the gap section from the playbook. Until then, the local preview version is honest about what it proves.
+**مستضافًا:** يحتاج سير عمل النشر (`.github/workflows/deploy.yml`) إلى هدف نشر حقيقي. بلا هدف، تصبح مهمة `deploy` في سير العمل عنصرًا نائبًا، ولا يجد عندها `smoke` رابطًا يطرقه. يشير الدليل إلى هذا صراحة في قسم «الفجوة المستضافة». عندما يصل هدف مستضاف، تُوصِّل `SMOKE_BASE_URL` في سير العمل كمخرج لمهمة النشر وتحذف قسم الفجوة من الدليل. حتى ذلك الحين، نسخة المعاينة المحلية صادقة بشأن ما تثبته.
 
-## Patterns to take away
+## أنماط تستحق الاحتفاظ بها
 
-- **Smoke tests are tripwires, not regression suites.** Two assertions is not lazy—it’s disciplined. The smoke test answers one question: “did the deploy break the most basic thing?” If you need more coverage, that’s what the full end-to-end suite is for.
-- **A dedicated config keeps the smoke test independent.** No `webServer` means no accidental coupling to the build step. The smoke test doesn’t care *how* the target got there—only that it’s running.
-- **The playbook makes the stop-ship decision explicit.** When the smoke test fails at 2 AM, the playbook tells the agent (or the human) exactly what to do. “Roll back” is a better answer than “investigate.”
-- **Document the gap instead of hiding it.** Writing “we don’t have a hosted target yet” in the playbook is more useful than pretending the local preview is a real deploy. Honest documentation is the precondition for honest automation.
+- **اختبارات الدخان أسلاك تعطيل، لا مجموعات انحدار.** التحقّقان ليسا كسلًا — بل انضباط. يجيب اختبار الدخان عن سؤال واحد: «هل كسر النشر أبسط شيء؟» إن احتجت تغطية أكثر، فمجموعة الاختبارات الكاملة من طرف إلى طرف هي لهذا الغرض.
+- **الإعداد المخصّص يُبقي اختبار الدخان مستقلًا.** لا `webServer` يعني لا اقترانًا عرضيًا بخطوة البناء. لا يهم اختبار الدخان *كيف* وصل الهدف — بل أنه يعمل.
+- **الدليل يجعل قرار إيقاف الشحن صريحًا.** عندما يفشل اختبار الدخان في الثانية صباحًا، يقول الدليل للوكيل (أو للإنسان) بالضبط ما يجب فعله. «تراجع» إجابة أفضل من «حقّق».
+- **وثّق الفجوة بدلًا من إخفائها.** كتابة «ليس لدينا هدف مستضاف بعد» في الدليل أنفع من التظاهر بأن المعاينة المحلية نشر حقيقي. التوثيق الصادق شرط مسبق للأتمتة الصادقة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Add Post-Deploy Smoke Checks to Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [مختبر: إضافة فحوصات دخان بعد النشر إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)
+- [التحقّق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)

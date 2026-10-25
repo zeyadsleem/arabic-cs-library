@@ -1,21 +1,21 @@
 ---
-title: "Organizing and Annotating Tests"
-lang: en
+title: "تنظيم الاختبارات والتعليق عليها"
+lang: ar
 source: "https://stevekinney.com/courses/testing/organizing-and-annotating-tests"
 ---
 
-There are two primary ways in which we can organize our tests:
+ثمّة طريقتان أساسيتان لتنظيم اختباراتنا:
 
-1. We can break them out into different files.
-2. We can use `describe` to create some kind of logical grouping.
+1. يمكننا توزيعها على ملفات مختلفة.
+2. يمكننا استخدام `describe` لإنشاء نوع من التجميع المنطقي.
 
-I respect you too much to explain how files work to you, so let’s focus our attention on the second item.
+أحترمك أكثر من أن أشرح لك كيف تعمل الملفات، فلنركّز انتباهنا على البند الثاني.
 
 ## `describe`
 
-You can group a set of tests into a suite using `describe`. If you don’t use `describe`, all of the tests in a given file as grouped in a suite automatically.
+يمكنك تجميع مجموعة من الاختبارات في مجموعة واحدة باستخدام `describe`. وإن لم تستخدم `describe`، فكل الاختبارات في ملف معيّن تُجمع تلقائيًا في مجموعة واحدة.
 
-The is primarily used for organizing your tests. It’s helpful because it allows you to skip or isolate a particular group of tests.
+يُستخدم هذا أساسًا لتنظيم اختباراتك. وهو مفيد لأنه يتيح لك تجاوز مجموعة اختبارات معيّنة أو عزلها.
 
 ```typescript
 ✓ arithmetic.ts (8)
@@ -33,45 +33,45 @@ The is primarily used for organizing your tests. It’s helpful because it allow
     ✓ should not multiply two numbers incorrectly
 ```
 
-### Benefits of Using `describe`
+### فوائد استخدام `describe`
 
-- **Improved Readability**: Logical grouping makes it easier to understand what is being tested.
-- **Shared Setup and Teardown**: Utilize hooks like `beforeEach` and `afterEach` within a `describe` block for shared setup.
-- **Selective Execution**: Run or skip entire groups of tests during development.
-- **Hierarchical Organization**: Reflect the structure of your application in your tests.
+- **قراءة أفضل**: التجميع المنطقي يسهّل فهم ما يُختبر.
+- **تهيئة وتنظيف مشتركان**: استخدم خُطّافات مثل `beforeEach` و`afterEach` داخل كتلة `describe` للتهيئة المشتركة.
+- **تنفيذ انتقائي**: شغّل مجموعات اختبارات كاملة أو تجاوزها أثناء التطوير.
+- **تنظيم هرمي**: اعكس بنية تطبيقك في اختباراتك.
 
-## Hooks
+## الخُطّافات
 
-Using `describe` allows you to pass a name to your suite, which is helpful when you’re debugging. It also gives you access to some helpful hooks:
+يتيح لك استخدام `describe` تمرير اسم إلى مجموعتك، وهذا مفيد عندما تُنقّح الأخطاء. كما يمنحك الوصول إلى بعض الخُطّافات المفيدة:
 
-- `beforeEach`: Runs before each and every test.
-- `afterEach`: Runs after each and every test.
-- `beforeAll`: Runs at the very beginning when the suite starts.
-- `afterAll`: Runs after all of the tests in the suite have completed.
+- `beforeEach`: يعمل قبل كل اختبار من الاختبارات.
+- `afterEach`: يعمل بعد كل اختبار من الاختبارات.
+- `beforeAll`: يعمل في البداية تمامًا عند بدء المجموعة.
+- `afterAll`: يعمل بعد اكتمال كل اختبارات المجموعة.
 
-We’ll cover this a bit more when we get to [setting up and tearing down with hooks](https://stevekinney.com/courses/testing/setting-up-and-tearing-down-with-hooks).
+سنتناول هذا أكثر قليلًا عندما نصل إلى [التهيئة والتنظيف باستخدام الخُطّافات](https://stevekinney.com/courses/testing/setting-up-and-tearing-down-with-hooks).
 
-## Annotations
+## التعليقات التوضيحية
 
-These are fairly similar to what we saw with our individual tests.
+هذه مشابهة تمامًا لما رأيناه مع اختباراتنا الفردية.
 
-`describe` also has some annotations that add some logic to if any when the suite should run:
+لدى `describe` أيضًا بعض التعليقات التوضيحية التي تضيف منطقًا حول متى ينبغي أن تعمل المجموعة:
 
-- `describe.skip`: Skip this suite.
-- `describe.skipIf`: Skip this suite if the provided value is truthy.
-- `describe.only`: Only run this suite (and any others that use `.only` as well, of course). You probably *don’t* want to accidentally commit this. Trust me. It’s embarassing.
-- `describe.todo`: Marks a suite as something you’re going to implement later. This is helpful when you know the kinds of tests that you’ll need and and want to keep track of how many you have less.
-- `describe.each`: Used for generating a multiple suites on based on a collection of data. This is covered more in [Parameterizing Tests](https://stevekinney.com/courses/testing/parameterizing-tests).
-- `describe.concurrent`: Run all of the tests in this suite concurrently. This is covered more in [Parallelizing Tests](https://stevekinney.com/courses/testing/parallelizing-tests).
-- `describe.shuffle`: Run these tests in a random order.
+- `describe.skip`: تجاوز هذه المجموعة.
+- `describe.skipIf`: تجاوز هذه المجموعة إن كانت القيمة المقدّمة صادقة.
+- `describe.only`: شغّل هذه المجموعة فقط (وأي مجموعات أخرى تستخدم `.only` أيضًا بالطبع). على الأرجح *لا* تريد إيداع هذا سهوًا. ثق بي. إنه محرج.
+- `describe.todo`: يضع علامة على مجموعة بأنها شيء ستنفّذه لاحقًا. هذا مفيد عندما تعرف أنواع الاختبارات التي ستحتاجها وتريد تتبّع كم بقي لديك.
+- `describe.each`: يُستخدم لتوليد مجموعات متعددة بناءً على مجموعة من البيانات. يُغطى هذا أكثر في [توليد الاختبارات](https://stevekinney.com/courses/testing/parameterizing-tests).
+- `describe.concurrent`: شغّل كل اختبارات هذه المجموعة بالتزامن. يُغطى هذا أكثر في [تشغيل الاختبارات بالتوازي](https://stevekinney.com/courses/testing/parallelizing-tests).
+- `describe.shuffle`: شغّل هذه الاختبارات بترتيب عشوائي.
 
-This is also covered a bit in [Filtering Tests](https://stevekinney.com/courses/testing/filtering-tests).
+يُغطى هذا أيضًا قليلًا في [ترشيح الاختبارات](https://stevekinney.com/courses/testing/filtering-tests).
 
-### Best Practices
+### أفضل الممارسات {#best-practices}
 
-#### Group Tests by Functionality
+#### جمّع الاختبارات حسب الوظيفة
 
-Organize tests around specific functionalities or features.
+نظّم الاختبارات حول وظائف أو ميزات محددة.
 
 ```javascript
 describe('Math Utilities', () => {
@@ -85,9 +85,9 @@ describe('Math Utilities', () => {
 });
 ```
 
-#### Use Nested `describe` Blocks for Complex Structures
+#### استخدم كتل `describe` المتداخلة للبنى المعقّدة
 
-For complex modules, nesting can mirror the application’s structure.
+بالنسبة للوحدات المعقّدة، يمكن للتداخل أن يعكس بنية التطبيق.
 
 ```javascript
 describe('User Module', () => {
@@ -109,9 +109,9 @@ describe('User Module', () => {
 });
 ```
 
-#### Write Clear and Descriptive Names
+#### اكتب أسماء واضحة ووصفية
 
-Names should clearly state what is being tested.
+ينبغي أن تنصّ الأسماء بوضوح على ما يُختبر.
 
 ```javascript
 describe('Array', () => {
@@ -123,9 +123,9 @@ describe('Array', () => {
 });
 ```
 
-#### Utilize Hooks Within `describe` Blocks
+#### استخدم الخُطّافات داخل كتل `describe`
 
-Use `beforeEach`, `afterEach`, `beforeAll`, and `afterAll` to manage setup and teardown specific to a test suite.
+استخدم `beforeEach` و`afterEach` و`beforeAll` و`afterAll` لإدارة التهيئة والتنظيف الخاصين بمجموعة اختبارات معيّنة.
 
 ```javascript
 describe('Database Tests', () => {
@@ -147,9 +147,9 @@ describe('Database Tests', () => {
 });
 ```
 
-#### Keep Tests Focused and Independent
+#### أبقِ الاختبارات مركّزة ومستقلة
 
-Each test should focus on a single aspect, and tests within a `describe` block should be related but independent.
+ينبغي أن يركّز كل اختبار على جانب واحد، وأن تكون الاختبارات داخل كتلة `describe` مترابطة لكن مستقلة.
 
 ```javascript
 describe('String Manipulation', () => {
@@ -163,9 +163,9 @@ describe('String Manipulation', () => {
 });
 ```
 
-#### Avoid Excessive Nesting
+#### تجنّب التداخل المفرط
 
-Too much nesting can make tests hard to read. Keep the structure as flat as possible while maintaining clarity. Don’t get carried away.
+التداخل المفرط قد يجعل الاختبارات صعبة القراءة. أبقِ البنية مسطّحة قدر الإمكان مع الحفاظ على الوضوح. لا تندفع بعيدًا.
 
 ```javascript
 // Instead of deeply nested describes
@@ -187,9 +187,9 @@ describe('Component B - Function C', () => {
 });
 ```
 
-#### Use `describe` for Shared Context
+#### استخدم `describe` للسياق المشترك
 
-Group tests that share the same setup or context.
+جمّع الاختبارات التي تشترك في التهيئة نفسها أو السياق نفسه.
 
 ```javascript
 describe('When user is authenticated', () => {
@@ -207,12 +207,12 @@ describe('When user is authenticated', () => {
 });
 ```
 
-#### Employ `describe.only` and `describe.skip` During Development
+#### استخدم `describe.only` و`describe.skip` أثناء التطوير
 
-Focus on specific test suites without running the entire test suite.
+ركّز على مجموعات اختبارات محددة دون تشغيل مجموعة الاختبارات بأكملها.
 
-- `describe.only`: Runs only the specified suite.
-- `describe.skip`: Skips the specified suite.
+- `describe.only`: يشغّل المجموعة المحددة فقط.
+- `describe.skip`: يتجاوز المجموعة المحددة.
 
 ```javascript
 describe.only('Critical Functionality Tests', () => {
@@ -224,11 +224,11 @@ describe.skip('Deprecated Functionality Tests', () => {
 });
 ```
 
-Remember to remove `.only` and `.skip` before finalizing your code to ensure all tests are executed.
+تذكّر إزالة `.only` و`.skip` قبل إنهاء شيفرتك لضمان تنفيذ كل الاختبارات.
 
-#### Document Complex Test Cases
+#### وثّق حالات الاختبار المعقّدة
 
-Add comments to explain non-obvious tests or setups within `describe` blocks.
+أضف تعليقات لشرح الاختبارات أو الإعدادات غير الواضحة داخل كتل `describe`.
 
 ```javascript
 describe('Edge Cases for Date Parsing', () => {
@@ -239,13 +239,13 @@ describe('Edge Cases for Date Parsing', () => {
 });
 ```
 
-### Key Takeaways
+### الخلاصات الأساسية
 
-- **Logical Grouping**: Use `describe` to group related tests, enhancing clarity.
-- **Shared Setup**: Utilize hooks within `describe` blocks for setup and teardown specific to a group.
-- **Descriptive Naming**: Clear names for `describe` and `test` improve readability.
-- **Test Isolation**: Keep tests independent to avoid unintended interactions.
-- **Avoid Over-Nesting**: Keep the structure simple to maintain readability.
-- **Reflect Project Structure**: Organize test files to mirror the source code layout.
-- **Focus During Development**: Use `.only` and `.skip` to streamline the testing process.
-- **Documentation**: Comment complex tests or setups for future reference.
+- **التجميع المنطقي**: استخدم `describe` لتجميع الاختبارات المترابطة، مما يعزّز الوضوح.
+- **تهيئة مشتركة**: استخدم الخُطّافات داخل كتل `describe` للتهيئة والتنظيف الخاصين بمجموعة معيّنة.
+- **تسمية وصفية**: الأسماء الواضحة لـ `describe` و`test` تحسّن القراءة.
+- **عزل الاختبارات**: أبقِ الاختبارات مستقلة لتجنّب التفاعلات غير المقصودة.
+- **تجنّب الإفراط في التداخل**: أبقِ البنية بسيطة للحفاظ على القراءة.
+- **اعكس بنية المشروع**: نظّم ملفات الاختبار لتطابق تخطيط الشيفرة المصدرية.
+- **التركيز أثناء التطوير**: استخدم `.only` و`.skip` لتبسيط عملية الاختبار.
+- **التوثيق**: علّق على الاختبارات أو الإعدادات المعقّدة للرجوع إليها مستقبلًا.

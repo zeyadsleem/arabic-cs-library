@@ -1,26 +1,26 @@
 ---
-title: "Tailwind"
-lang: en
+title: "Tailwind CSS: التنسيق بأدوات مساعدة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind"
 ---
 
-These are *all* of my notes for the [Tailwind 4 course for Frontend Masters](https://frontendmasters.com/workshops/tailwind-css-v2/?utm_source=kinney&utm_medium=social&code=kinney). It’s definitely a lot more that we could ever hope to cover in a day, so you can treat some of this material as further research. But, more importantly—most of the topics that I do *cover* in the course are also outlined here step-by-step for your reference.
+هذه هي *كل* ملاحظاتي لدورة [Tailwind 4 في Frontend Masters](https://frontendmasters.com/workshops/tailwind-css-v2/?utm_source=kinney&utm_medium=social&code=kinney). من المؤكد أنها أكثر بكثير مما يمكننا أن نأمل في تغطيته في يوم واحد، لذا يمكنك اعتبار بعض هذه المادة بحثًا إضافيًا. لكن الأهم من ذلك — أن معظم الموضوعات التي *أغطّيها* في الدورة موضّحة هنا أيضًا خطوة بخطوة لمرجعك.
 
-> **Course Materials**
+> **مواد الدورة**
 >
-> Please clone or download [Tailwind Skatepark](https://github.com/stevekinney/tailwind-skatepark) before we get started.
+> يُرجى استنساخ أو تنزيل [Tailwind Skatepark](https://github.com/stevekinney/tailwind-skatepark) قبل أن نبدأ.
 
-## Useful Resources
+## موارد مفيدة
 
-- [Tailwind Prettier Plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier)
+- [إضافة Tailwind لـ Prettier](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier)
 - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-- [UI Colors](https://uicolors.app/)
+- [ألوان واجهات المستخدم](https://uicolors.app/)
 - [designrift](https://designrift.vercel.app/)
 
-## Who is This Course For?
+## لمن هذه الدورة؟
 
-This course is designed for web developers who have a basic understanding of HTML and CSS. Familiarity with JavaScript and a component-based framework (like Svelte, React, or Vue) is helpful but not strictly required. We will focus on:
+هذه الدورة مصمّمة لمطوري الويب الذين لديهم فهم أساسي لـ HTML وCSS. الإلمام بـ JavaScript وإطار قائم على المكوّنات (مثل Svelte أو React أو Vue) مفيد لكنه ليس مطلوبًا بشكل صارم. سنركّز على:
 
-- Developers who want to build modern, responsive interfaces without writing custom CSS.
-- Designers who want to understand how to implement their vision using a systematic design framework.
-- Teams looking to build a consistent and maintainable design system.
+- المطورين الذين يريدون بناء واجهات حديثة ومتجاوبة دون كتابة CSS مخصصة.
+- المصممين الذين يريدون فهم كيفية تنفيذ رؤيتهم باستخدام إطار تصميم منهجي.
+- الفرق التي تسعى إلى بناء نظام تصميم متسق وقابل للصيانة.

@@ -1,28 +1,28 @@
 ---
-title: "Resource Preloading APIs"
-lang: en
+title: "واجهات التحميل المسبق للموارد"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/resource-preloading-apis"
 ---
 
-Waiting for resources to load is one of those things that makes web apps feel sluggish, even when they’re actually pretty fast. Users click a button, stare at a spinner, and wonder if they should refresh the page (spoiler: they probably will). Enter React 19’s resource preloading APIs—a set of functions that let you prime the browser’s cache with the resources users are *about* to need, before they actually need them.
+إن انتظار تحميل الموارد من الأمور التي تجعل تطبيقات الويب تبدو متثاقلة، حتى وهي سريعة فعلًا. ينقر المستخدم زرًا، ويحدّق في مؤشّر تحميل دوّار، ويتساءل إن كان عليه تحديث الصفحة (حرق الأحداث: سيفعل ذلك على الأرجح). وهنا تأتي واجهات التحميل المسبق للموارد (resource preloading APIs) في React 19 — مجموعة من الدوال تتيح لك تهيئة ذاكرة المتصفح المؤقتة بالموارد التي سيحتاجها المستخدمون بعد قليل، قبل أن يحتاجوها فعلًا.
 
-Think of it like having your coffee ready before you’re fully awake, or queuing up the next episode while you’re still watching the current one. By the time you actually need these resources, they’re already there, making your app feel snappier and more responsive.
+تخيّل الأمر كأن تكون قهوتك جاهزة قبل أن تستيقظ تمامًا، أو كأن تجهّز الحلقة التالية بينما لا تزال تشاهد الحالية. بحلول الوقت الذي تحتاج فيه هذه الموارد فعلًا، تكون هناك بالفعل، ما يجعل تطبيقك أسرع استجابةً وأكثر سلاسة.
 
-## The Resource Preloading Family
+## عائلة التحميل المسبق للموارد
 
-React 19 gives you three main functions for preloading resources: `preload`, `prefetchDNS`, and `preinit`. Each serves a different purpose, and knowing when to use which one can make the difference between a smooth user experience and one that feels clunky.
+يمنحك React 19 ثلاث دوال رئيسية للتحميل المسبق للموارد: `preload` و`prefetchDNS` و`preinit`. لكل منها غرض مختلف، ومعرفة متى تستخدم أيّها قد تصنع الفرق بين تجربة مستخدم سلسة وأخرى متعثّرة.
 
-### The Quick Rundown
+### نظرة سريعة
 
-- **`preload`**: Downloads a resource and caches it, but doesn’t execute it
-- **`prefetchDNS`**: Resolves DNS lookups ahead of time for external domains
-- **`preinit`**: Downloads, caches, and initializes resources (like stylesheets and scripts)
+- **`preload`**: ينزّل موردًا ويخزّنه مؤقتًا، لكنه لا ينفّذه
+- **`prefetchDNS`**: يحلّ استعلامات DNS مسبقًا للنطاقات الخارجية
+- **`preinit`**: ينزّل الموارد ويخزّنها مؤقتًا ويهيّئها (مثل أوراق الأنماط والسكربتات)
 
-All of these functions are designed to be safe—they won’t double-download resources if they’re called multiple times, and they won’t block your main thread or hurt your Core Web Vitals.
+صُمّمت كل هذه الدوال لتكون آمنة — فهي لا تنزّل الموارد مرتين إن نُوديت عدة مرات، ولا تعيق الخيط الرئيسي ولا تضرّ بمؤشرات الويب الأساسية (Core Web Vitals).
 
-## Understanding `preload`
+## فهم `preload`
 
-The `preload` function is your go-to for downloading resources that users will likely need soon, but that shouldn’t be executed immediately. This is perfect for things like images on the next page, fonts that might be needed, or API data that could be requested.
+دالة `preload` هي خيارك المفضّل لتنزيل الموارد التي سيحتاجها المستخدمون قريبًا على الأرجح، لكن لا يجب تنفيذها فورًا. هذا مثالي لأشياء مثل صور الصفحة التالية، أو الخطوط التي قد تُحتاج، أو بيانات API التي قد تُطلب.
 
 ```typescript
 import { preload } from 'react-dom';
@@ -52,17 +52,17 @@ function ProductList() {
 }
 ```
 
-The `as` parameter tells the browser what type of resource this is, which helps with caching and prioritization. Common values include:
+تخبر معلمة `as` المتصفح بنوع المورد، ما يساعد في التخزين المؤقت وتحديد الأولوية. من القيم الشائعة:
 
-- `'image'` - For images
-- `'font'` - For web fonts (add `crossOrigin: 'anonymous'` for cross-origin fonts)
-- `'script'` - For JavaScript files
-- `'style'` - For CSS files
-- `'fetch'` - For API calls or other fetch requests
+- `'image'` - للصور
+- `'font'` - لخطوط الويب (أضف `crossOrigin: 'anonymous'` للخطوط عبر النطاقات)
+- `'script'` - لملفات JavaScript
+- `'style'` - لملفات CSS
+- `'fetch'` - لاستدعاءات API أو طلبات fetch الأخرى
 
-### Preloading API Data
+### التحميل المسبق لبيانات API
 
-You can also preload API responses, which is particularly useful when you know users are likely to navigate somewhere that requires specific data:
+يمكنك أيضًا تحميل استجابات API مسبقًا، وهذا مفيد خاصةً عندما تعلم أن المستخدمين مرجّحون للانتقال إلى مكان يتطلب بيانات محدّدة:
 
 ```typescript
 import { preload } from 'react-dom';
@@ -86,15 +86,15 @@ function NavigationMenu() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Preloading on hover gives you a nice balance—users who are just scanning won’t trigger unnecessary requests, but users who are actually interested get a head start.
+> يمنحك التحميل المسبق عند المرور بالمؤشر توازنًا جميلًا — فالمستخدمون الذين يتصفحون فقط لن يطلقوا طلبات غير ضرورية، أما المهتمون فعلًا فيحصلون على شروع مبكر.
 
-## DNS Prefetching with `prefetchDNS`
+## التحميل المسبق لـ DNS باستخدام `prefetchDNS`
 
-Before your browser can download any resource from an external domain, it needs to resolve that domain to an IP address. This DNS lookup can add hundreds of milliseconds to your request time, especially for users on slower networks or those geographically far from DNS servers.
+قبل أن يستطيع متصفحك تنزيل أي مورد من نطاق خارجي، عليه أن يحلّ ذلك النطاق إلى عنوان IP. قد يضيف استعلام DNS هذا مئات الأجزاء من الثانية إلى زمن طلبك، خصوصًا للمستخدمين على شبكات أبطأ أو البعيدين جغرافيًا عن خوادم DNS.
 
-`prefetchDNS` tells the browser to resolve these lookups ahead of time:
+تخبر `prefetchDNS` المتصفح بحلّ هذه الاستعلامات مسبقًا:
 
 ```typescript
 import { prefetchDNS } from 'react-dom';
@@ -111,22 +111,22 @@ function App() {
 }
 ```
 
-This is particularly valuable when:
+يكون هذا ذا قيمة خاصة عندما:
 
-- You’re loading resources from CDNs
-- You’re making API calls to external services
-- You’re loading fonts from Google Fonts or similar services
-- You have analytics or tracking scripts from third-party domains
+- تحمّل موارد من شبكات CDN
+- تجري استدعاءات API إلى خدمات خارجية
+- تحمّل خطوطًا من Google Fonts أو خدمات مشابهة
+- لديك سكربتات تحليلات أو تتبّع من نطاقات طرف ثالث
 
-The beauty of `prefetchDNS` is that it’s essentially free—it doesn’t download any actual content, just resolves the domain name. Even if the user never ends up needing those resources, the cost was minimal.
+جمال `prefetchDNS` أنه مجاني تقريبًا — فهو لا ينزّل أي محتوى فعلي، بل يحلّ اسم النطاق فقط. حتى إن لم يحتج المستخدم تلك الموارد إطلاقًا، كانت التكلفة ضئيلة.
 
-## Preinitializing Resources with `preinit`
+## التهيئة المسبقة للموارد باستخدام `preinit`
 
-While `preload` downloads resources without executing them, `preinit` goes further by downloading *and* initializing them. This means the resource becomes available for immediate use.
+بينما تنزّل `preload` الموارد دون تنفيذها، تذهب `preinit` أبعد من ذلك بتنزيلها *وتهيئتها*. يعني هذا أن المورد يصبح متاحًا للاستخدام الفوري.
 
-### Preinitializing Stylesheets
+### التهيئة المسبقة لأوراق الأنماط
 
-This is particularly useful for stylesheets that you know you’ll need:
+هذا مفيد خاصةً لأوراق الأنماط التي تعلم أنك ستحتاجها:
 
 ```typescript
 import { preinit } from 'react-dom';
@@ -147,9 +147,9 @@ function SettingsPage() {
 }
 ```
 
-### Preinitializing Scripts
+### التهيئة المسبقة للسكربتات
 
-You can also preinit JavaScript files that contain code you’ll need soon:
+يمكنك أيضًا تهيئة ملفات JavaScript مسبقًا تحتوي على شيفرة ستحتاجها قريبًا:
 
 ```typescript
 import { preinit } from 'react-dom';
@@ -171,15 +171,15 @@ function PaymentForm() {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be cautious with `preinit` for scripts—they’ll execute immediately when downloaded. Only preinit scripts you’re confident you’ll need and that are safe to run early.
+> توخَّ الحذر مع `preinit` للسكربتات — فهي تُنفَّذ فورًا عند تنزيلها. لا تهيّئ مسبقًا إلا السكربتات التي تثق بأنك ستحتاجها والتي يكون تشغيلها مبكرًا آمنًا.
 
-## Real World Use Cases™
+## حالات استخدام من العالم الحقيقي™
 
-Let’s look at some practical scenarios where resource preloading can make a meaningful difference in user experience.
+لنلقِ نظرة على بعض السيناريوهات العملية التي يمكن أن يُحدث فيها التحميل المسبق للموارد فرقًا ملموسًا في تجربة المستخدم.
 
-### E-commerce Product Pages
+### صفحات منتجات التجارة الإلكترونية
 
 ```typescript
 import { preload, prefetchDNS } from 'react-dom';
@@ -204,7 +204,7 @@ function ProductCard({ product }: { product: Product }) {
 }
 ```
 
-### Multi-step Forms
+### النماذج متعددة الخطوات
 
 ```typescript
 import { preload, preinit } from 'react-dom';
@@ -236,7 +236,7 @@ function OnboardingFlow() {
 }
 ```
 
-### Dashboard Applications
+### تطبيقات لوحات المعلومات
 
 ```typescript
 import { preload, prefetchDNS } from 'react-dom';
@@ -263,13 +263,13 @@ function Dashboard() {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-While resource preloading can dramatically improve perceived performance, it’s important to use it thoughtfully. Here are the key things to keep in mind:
+قد يحسّن التحميل المسبق للموارد الأداء المدرَك تحسينًا جذريًا، لكن من المهم استخدامه بتفكير. إليك الأمور الرئيسية التي ينبغي وضعها في الاعتبار:
 
-### Don’t Preload Everything
+### لا تحمّل كل شيء مسبقًا
 
-The temptation is to preload all the things, but this can backfire:
+الإغراء هو تحميل كل الأشياء مسبقًا، لكن هذا قد ينعكس سلبًا:
 
 ```typescript
 // ❌ This will hurt more than it helps
@@ -289,9 +289,9 @@ const handleGalleryEnter = () => {
 };
 ```
 
-### Mobile Considerations
+### اعتبارات الهاتف المحمول
 
-Be especially careful on mobile networks where bandwidth is limited and data costs money:
+كن حذرًا بشكل خاص على شبكات الهاتف المحمول حيث النطاق الترددي محدود والبيانات مكلّفة:
 
 ```typescript
 import { preload } from 'react-dom';
@@ -328,9 +328,9 @@ function ProductGrid() {
 }
 ```
 
-### Avoiding Double-Loading
+### تجنّب التحميل المزدوج
 
-One of the great things about React’s preloading functions is that they’re smart about not double-loading resources:
+من الأمور الرائعة في دوال التحميل المسبق في React أنها ذكية في عدم تحميل الموارد مرتين:
 
 ```typescript
 function ComponentA() {
@@ -351,9 +351,9 @@ function ComponentB() {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## المزالق الشائعة وكيفية تجنّبها
 
-### Preloading Resources Too Early
+### تحميل الموارد مسبقًا في وقت مبكر جدًا
 
 ```typescript
 // ❌ This preloads immediately when the app starts, potentially wasting bandwidth
@@ -375,7 +375,7 @@ function PricingPage() {
 }
 ```
 
-### Forgetting CORS for Cross-Origin Resources
+### نسيان CORS للموارد عبر النطاقات
 
 ```typescript
 // ❌ This might fail for cross-origin requests
@@ -388,9 +388,9 @@ preload('https://api.external.com/data', {
 });
 ```
 
-### Not Considering Cache Headers
+### عدم مراعاة ترويسات التخزين المؤقت
 
-Make sure your server is setting appropriate cache headers for preloaded resources. If your API responses have `Cache-Control: no-cache`, preloading them won’t help much since they can’t be cached.
+تأكّد من أن خادمك يضبط ترويسات تخزين مؤقت مناسبة للموارد المحمّلة مسبقًا. إن كانت استجابات API لديك تحمل `Cache-Control: no-cache`، فلن يفيد تحميلها مسبقًا كثيرًا لأنها لا يمكن تخزينها مؤقتًا.
 
 ```typescript
 // Your API endpoint should include proper cache headers
@@ -400,16 +400,16 @@ app.get('/api/products/:id', (req, res) => {
 });
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-Here’s a quick checklist for using resource preloading effectively:
+إليك قائمة سريعة لاستخدام التحميل المسبق للموارد بفاعلية:
 
-- ✅ Preload resources based on user intent (hover, focus, scroll proximity)
-- ✅ Use `prefetchDNS` for external domains you’ll likely need
-- ✅ Consider network conditions and data saver preferences
-- ✅ Preload high-impact resources first (critical images, initial API calls)
-- ✅ Test on slow networks to ensure you’re actually improving performance
-- ✅ Monitor your loading metrics to verify preloading is helping
-- ❌ Don’t preload resources “just in case”—be strategic
-- ❌ Don’t forget CORS headers for cross-origin resources
-- ❌ Don’t preload large resources unless you’re confident they’ll be needed
+- ✅ حمّل الموارد مسبقًا بناءً على نية المستخدم (المرور، التركيز، القرب من التمرير)
+- ✅ استخدم `prefetchDNS` للنطاقات الخارجية التي ستحتاجها على الأرجح
+- ✅ راعِ ظروف الشبكة وتفضيلات موفّر البيانات
+- ✅ حمّل الموارد عالية الأثر أولًا (الصور الحرجة، استدعاءات API الأولية)
+- ✅ اختبر على شبكات بطيئة للتأكد من أنك تحسّن الأداء فعلًا
+- ✅ راقب مقاييس التحميل لديك للتحقق من أن التحميل المسبق يساعد
+- ❌ لا تحمّل الموارد مسبقًا «تحسّبًا» — كن استراتيجيًا
+- ❌ لا تنسَ ترويسات CORS للموارد عبر النطاقات
+- ❌ لا تحمّل الموارد الكبيرة مسبقًا إلا إذا كنت واثقًا من الحاجة إليها

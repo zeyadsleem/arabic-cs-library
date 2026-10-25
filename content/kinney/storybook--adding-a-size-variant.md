@@ -1,12 +1,12 @@
 ---
-title: "Adding a Size Variant with CVA"
-lang: en
+title: "إضافة متغيّر الحجم باستخدام CVA"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/adding-a-size-variant"
 ---
 
-In the [previous section](https://stevekinney.com/courses/storybook/class-variance-authority), we looked using [Class Variance Authority](https://cva.style/) to programmatically apply Tailwind’s utility classes based on the props passed in. Now, we want to do that for the style as well.
+في [القسم السابق](https://stevekinney.com/courses/storybook/class-variance-authority)، نظرنا في استخدام [Class Variance Authority](https://cva.style/) لتطبيق أصناف Tailwind المساعدة برمجيًا بناءً على الخصائص (props) المُمرَّرة. والآن نريد أن نفعل ذلك للنمط (style) أيضًا.
 
-The first step is to add another variant.
+الخطوة الأولى هي إضافة متغيّر آخر.
 
 ```diff
 @@ -52,9 +52,15 @@ export const variants = cva(
@@ -27,7 +27,7 @@ The first step is to add another variant.
  );
 ```
 
-Next, we use that in our component.
+بعد ذلك، نستخدمه في مكوّننا.
 
 ```diff
 @@ -68,5 +68,5 @@ export const variants = cva(
@@ -39,7 +39,7 @@ Next, we use that in our component.
  };
 ```
 
-Finally, we can make our type even cleaner.
+وأخيرًا، يمكننا أن نجعل نوعنا أنظف أكثر.
 
 ```diff
 @@ -4,10 +4,7 @@ import clsx from 'clsx';

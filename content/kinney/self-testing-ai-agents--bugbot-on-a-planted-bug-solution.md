@@ -1,38 +1,38 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/bugbot-on-a-planted-bug-solution"
 ---
 
-This is a hybrid lab. Part of it is local authoring in the repo, and the rest—Bugbot installation, PR creation, the actual review comment—requires a GitHub fork and a Cursor account. I will walk both halves and be explicit about where the boundary is.
+هذا مخبر هجين. جزء منه تأليف محلي داخل المستودع، والبقية — تركيب Bugbot، وإنشاء طلب السحب، وتعليق المراجعة نفسه — تتطلّب نسخة متشعّبة (fork) على GitHub وحسابًا على Cursor. سأمضي في النصفين وأكون صريحًا بشأن موضع الحدّ بينهما.
 
-## What to add
+## ما الذي تضيفه
 
-### The config file
+### ملف الإعداد
 
-Open `.cursor/BUGBOT.md`. It has three sections.
+افتح `.cursor/BUGBOT.md`. يحتوي ثلاثة أقسام.
 
-**Context** names the stack in one sentence: SvelteKit + TypeScript + Drizzle + SQLite. It names the test runners (Vitest, Playwright) and points at the authorization helpers in `src/lib/server/authorization.ts`. This is the same kind of grounding we did in `CLAUDE.md`—tell the reviewer what it is looking at so it does not have to guess.
+**السياق** يسمّي المكدّس في جملة واحدة: SvelteKit + TypeScript + Drizzle + SQLite. ويسمّي أدوات تشغيل الاختبارات (Vitest وPlaywright)، ويشير إلى مساعدات التخويل في `src/lib/server/authorization.ts`. هذا هو نوع التأصيل نفسه الذي قمنا به في `CLAUDE.md` — أخبر المراجع بما ينظر إليه حتى لا يضطر إلى التخمين.
 
-**What to flag** lists seven categories, each naming a specific pattern and a specific location:
+**ما الذي يُبلَّغ عنه** يسرد سبع فئات، كل واحدة تسمّي نمطًا محددًا وموضعًا محددًا:
 
-- API handlers that read identity from the request body instead of `locals.user`.
-- Admin routes that use a plain `locals.user` check instead of `requireAdministrator(locals.user)`.
-- Drizzle queries that do not scope by the current user on user-owned resources.
-- Error handling that catches and returns 200.
-- Unsafe rendering of user-generated content.
-- Banned Playwright patterns (`waitForTimeout`, raw `page.locator`, UI login).
-- Changes to the dossier loop that remove critical artifacts.
+- معالجات API التي تقرأ الهوية من جسم الطلب بدلًا من `locals.user`.
+- مسارات المشرفين التي تستخدم فحصًا مجرّدًا لـ `locals.user` بدلًا من `requireAdministrator(locals.user)`.
+- استعلامات Drizzle التي لا تقيّد النطاق بالمستخدم الحالي على الموارد المملوكة للمستخدم.
+- معالجة الأخطاء التي تلتقط الخطأ وتعيد 200.
+- التصيير غير الآمن للمحتوى الذي ينشئه المستخدم.
+- أنماط Playwright المحظورة (`waitForTimeout`، و`page.locator` الخام، وتسجيل الدخول عبر الواجهة).
+- التغييرات في حلقة الملف التعريفي التي تحذف مخرجات حرجة.
 
-Every item names the thing to look for *and* where to look for it. “Admin routes under `src/routes/api/admin/**`” is a grep. “Unscoped queries” is a judgment call, but the scope is narrowed to user-owned resources. The Playwright patterns mirror the ESLint rules we wired in the static layer—belt and suspenders again.
+كل بند يسمّي ما تبحث عنه *وأين* تبحث عنه. «مسارات المشرفين تحت `src/routes/api/admin/**`» بحثٌ بـ grep. أما «الاستعلامات غير المقيّدة» فحكمٌ تقديري، لكن النطاق يضيق إلى الموارد المملوكة للمستخدم. وأنماط Playwright تعكس قواعد ESLint التي وصّلناها في الطبقة الساكنة — حزام وحمّالة مرة أخرى.
 
-**What to leave alone** lists the generated artifacts, lockfiles, storage state, snapshots, HARs, and build output. Without this section, Bugbot will comment on diffs in files you never edit by hand. That is noise, and noise trains you to ignore the bot.
+**ما الذي تتركه** يسرد المخرجات المولّدة، وملفات القفل، وحالة التخزين، ولقطات الحالة، وملفات HAR، ومخرجات البناء. بدون هذا القسم سيتعليق Bugbot على فروق في ملفات لا تعدّلها يدويًا أبدًا. ذلك ضجيج، والضجيج يدرّبك على تجاهل الروبوت.
 
-**Tone** is three sentences. “Be direct. Name the line. Suggest a specific fix.” No “consider,” no summaries. This is the same voice principle from `CLAUDE.md`: if you would not say it to a colleague standing at your desk, do not let the bot say it in a review comment.
+**النبرة** ثلاث جمل. «كن مباشرًا. سمِّ السطر. اقترح إصلاحًا محددًا.» لا «فكّر في»، ولا ملخصات. هذا مبدأ الصوت نفسه من `CLAUDE.md`: إن لم تكن ستقولها لزميل واقف عند مكتبك، فلا تدع الروبوت يقولها في تعليق مراجعة.
 
-### The planted bug
+### العلّة المزروعة
 
-The `planted-bug/admin-feature` branch changes exactly one file: `src/routes/api/admin/featured-books/+server.ts`. Here is the diff:
+فرع `planted-bug/admin-feature` يغيّر ملفًا واحدًا بالضبط: `src/routes/api/admin/featured-books/+server.ts`. هذا هو الفرق:
 
 ```diff
 -import { requireAdministrator } from '$lib/server/authorization';
@@ -53,63 +53,63 @@ The `planted-bug/admin-feature` branch changes exactly one file: `src/routes/api
 +	}
 ```
 
-The import of `requireAdministrator` is gone, and `error` from `@sveltejs/kit` is imported in its place. The call is replaced with a plain authentication check: `if (!locals.user)`. The endpoint now lets *any* signed-in user feature or unfeature books. The JSDoc comment is quietly trimmed to remove the mention of administrator-only access.
+استيراد `requireAdministrator` اختفى، و`error` من `@sveltejs/kit` استُورد مكانه. والاستدعاء استُبدل بفحص مصادقة مجرّد: `if (!locals.user)`. صارت نقطة النهاية تسمح *لأي* مستخدم مسجّل الدخول بتمييز الكتب أو إلغاء تمييزها. وتعليق JSDoc قُلّم بهدوء لإزالة الإشارة إلى الوصول المخصّص للمشرفين.
 
-This is not a subtle bug. It is a permission downgrade on an admin endpoint, and it is exactly the second item in BUGBOT.md’s “what to flag” list. The branch passes `npm run typecheck`, `npm run lint`, and `npm run test` cleanly—because no test covers the case of a non-admin user hitting this endpoint. The happy path still works. That is the point: this is a bug that static analysis and existing tests *miss*, but a tuned reviewer *should* catch.
+هذه ليست علّة دقيقة. إنها تخفيض صلاحية على نقطة نهاية إدارية، وهي بالضبط البند الثاني في قائمة «ما الذي يُبلَّغ عنه» في BUGBOT.md. يمرّ الفرع في `npm run typecheck` و`npm run lint` و`npm run test` بنظافة — لأن لا اختبار يغطي حالة مستخدم غير مشرف يصل إلى نقطة النهاية. المسار السعيد ما زال يعمل. وذلك هو المقصود: هذه علّة *يفوتها* التحليل الساكن والاختبارات الموجودة، لكن مراجعًا مضبوطًا *ينبغي* أن يلتقطها.
 
-If you created the planted-bug branch by rebasing onto a pre-`/playground` commit, the diff will also remove the `/playground` route (it was added to main after that commit). That diff is cosmetic—it is not the planted bug, and Bugbot should not comment on it. If you started from current `main`, ignore this paragraph entirely.
+إن كنت قد أنشأت فرع العلّة المزروعة بإعادة الأساس (rebase) على إيداع سابق لـ `/playground`، فسيحذف الفرق أيضًا مسار `/playground` (أُضيف إلى main بعد ذلك الإيداع). ذلك الفرق تجميلي — ليس العلّة المزروعة، ولا ينبغي لـ Bugbot أن يعلّق عليه. وإن كنت قد بدأت من `main` الحالي، فتجاهل هذه الفقرة كلها.
 
-## What you still need to run
+## ما الذي ما زال عليك تشغيله
 
-Everything below requires a GitHub fork and a Cursor account. If you are working locally without a remote, document the gap and skip to “Patterns to take away.” The local artifacts—the config file and the branch—are the part you can verify now.
+كل ما يلي يتطلب نسخة متشعّبة على GitHub وحساب Cursor. إن كنت تعمل محليًا بلا مستودع بعيد، فوثّق الفجوة وانتقل إلى «أنماط تأخذها معك». المخرجات المحلية — ملف الإعداد والفرع — هي الجزء الذي يمكنك التحقق منه الآن.
 
-### Fork and install
+### التشعّب والتركيب
 
-Fork the Shelf repo to your own GitHub account. Install Bugbot from the Cursor dashboard and grant it access to your fork. Confirm it is active by checking the Cursor dashboard or opening any existing PR—Bugbot should show up as a reviewer within a minute or two.
+انشئ نسخة متشعّبة من مستودع Shelf في حسابك على GitHub. ركّب Bugbot من لوحة تحكم Cursor وامنحه الوصول إلى نسختك. تأكّد من أنه نشط بفحص لوحة التحكم أو بفتح أي طلب سحب قائم — ينبغي أن يظهر Bugbot كمراجع خلال دقيقة أو دقيقتين.
 
-### Push and open the PR
+### الدفع وفتح طلب السحب
 
-Push both `main` (with `.cursor/BUGBOT.md` committed) and the `planted-bug/admin-feature` branch to your fork. Open a PR from `planted-bug/admin-feature` into `main`.
+ادفع `main` (مع `.cursor/BUGBOT.md` مُودعًا) وفرع `planted-bug/admin-feature` إلى نسختك. افتح طلب سحب من `planted-bug/admin-feature` إلى `main`.
 
-### Observe
+### المراقبة
 
-Within a minute or two, Bugbot should post at least one inline comment on the diff. With the config file in place, the comment should land on the line where `requireAdministrator` was removed and explain that any signed-in user can now call the admin endpoint. If it does not find the bug on the first pass, update `.cursor/BUGBOT.md` and push again. That iteration *is* the tuning loop—it is not a failure, it is the exercise.
+خلال دقيقة أو دقيقتين ينبغي أن ينشر Bugbot تعليقًا مضمّنًا واحدًا على الأقل على الفرق. مع وجود ملف الإعداد، ينبغي أن يقع التعليق على السطر الذي حُذف منه `requireAdministrator` وأن يوضح أن أي مستخدم مسجّل الدخول يستطيع الآن استدعاء نقطة النهاية الإدارية. وإن لم يجد العلّة من المحاولة الأولى، فحدّث `.cursor/BUGBOT.md` وادفع مرة أخرى. ذلك التكرار *هو* حلقة الضبط — ليس فشلًا، بل هو التمرين.
 
-### Hand it to the agent
+### سلّمها إلى الوكيل
 
-Once Bugbot flags the bug, do not fix it yourself. Open Claude Code and say something like:
+حين يشير Bugbot إلى العلّة، لا تصلحها بنفسك. افتح Claude Code وقل شيئًا مثل:
 
-> Read the Bugbot comments on PR #1. Fix each finding. Push a new commit.
+> اقرأ تعليقات Bugbot على طلب السحب رقم 1. أصلح كل ما وجدته. ادفع إيداعًا جديدًا.
 
-The agent should read the comment via `gh pr view --comments`, identify the affected file and line, restore the `requireAdministrator` import and call, and push. Bugbot re-reviews on the new push. Either the thread resolves or a refined follow-up appears.
+ينبغي أن يقرأ الوكيل التعليق عبر `gh pr view --comments`، ويحدّد الملف والسطر المتأثرين، ويعيد استيراد `requireAdministrator` واستدعاءها، ثم يدفع. ويعيد Bugbot المراجعة على الدفعة الجديدة. فإما يُحلّ النقاش أو يظهر متابعة مصقولة.
 
-The key constraint: zero messages where *you* explain the bug. The bot found it, the agent fixed it, and you watched.
+القيد الأساسي: صفر رسائل تشرح فيها *أنت* العلّة. الروبوت وجدها، والوكيل أصلحها، وأنت راقبت.
 
-## Shipped vs. gap
+## المُسلَّم مقابل الفجوة
 
-**Local (shipped in the starter):**
+**محلي (مُسلَّم في المشروع الأولي):**
 
-- `.cursor/BUGBOT.md` exists with the three sections described above.
-- The `planted-bug/admin-feature` branch exists with exactly the permission downgrade diff.
-- The branch passes all local quality gates.
+- `.cursor/BUGBOT.md` موجود بالأقسام الثلاثة الموصوفة أعلاه.
+- فرع `planted-bug/admin-feature` موجود بفرق تخفيض الصلاحية نفسه بالضبط.
+- الفرع يمرّ في كل بوابات الجودة المحلية.
 
-**Hosted (requires your GitHub fork and Cursor account):**
+**مستضاف (يتطلب نسختك المتشعّبة على GitHub وحساب Cursor):**
 
-- Bugbot installation and activation.
-- PR creation and the actual review comment.
-- The agent-reads-comment-and-fixes loop.
-- Bugbot re-review on the fixed push.
+- تركيب Bugbot وتنشيطه.
+- إنشاء طلب السحب وتعليق المراجعة الفعلي.
+- حلقة قراءة الوكيل للتعليق وإصلاحه.
+- إعادة مراجعة Bugbot على الدفعة المُصلَحة.
 
-If you cannot complete the hosted half during the workshop, that is fine—the config file and the branch are the artifacts that matter for understanding. The hosted loop is the *proof* that the config works, not the config itself.
+إن لم تستطع إكمال النصف المستضاف أثناء الورشة، فلا بأس — ملف الإعداد والفرع هما المخرجان المهمان للفهم. الحلقة المستضافة هي *الدليل* على أن الإعداد يعمل، لا الإعداد نفسه.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **Tuning a reviewer is the same skill as writing `CLAUDE.md`.** Name specific patterns, name specific locations, name what to ignore. The structure is identical—only the audience changes from “agent writing code” to “agent reviewing code.”
-- **Plant the bug you want caught.** The fastest way to test a review config is to give it a known answer. If the reviewer misses a planted bug, the config has a gap. If it catches it, you have evidence the config works—not just faith.
-- **The bot-to-agent handoff is the real test.** Bugbot finding the bug is half the loop. The agent acting on the finding *without you translating* is the other half. If you had to explain the bug, the comment was not actionable enough—tune the tone section.
-- **“What to leave alone” prevents noise fatigue.** A reviewer that comments on lockfiles and generated schemas trains you to ignore it. The exclusion list is as important as the inclusion list.
+- **ضبط المراجع مهارة ككتابة `CLAUDE.md`.** سمِّ أنماطًا محددة، ومواضع محددة، وما يجب تجاهله. البنية متطابقة — لا يتغيّر إلا الجمهور من «وكيل يكتب الشيفرة» إلى «وكيل يراجع الشيفرة».
+- **ازرع العلّة التي تريد التقاطها.** أسرع طريقة لاختبار إعداد مراجعة أن تعطيه جوابًا معروفًا. إن فوّت المراجع علّة مزروعة، ففي الإعداد فجوة. وإن التقطها، فلديك دليل على أن الإعداد يعمل — لا إيمان فقط.
+- **التسليم من الروبوت إلى الوكيل هو الاختبار الحقيقي.** عثور Bugbot على العلّة نصف الحلقة. وتصرّف الوكيل بناءً على ما وجده *دون أن تترجم أنت* هو النصف الآخر. إن اضطررت إلى شرح العلّة، فالتعليق لم يكن قابلًا للتنفيذ بما يكفي — اضبط قسم النبرة.
+- **«ما الذي تتركه» يمنع إجهاد الضجيج.** مراجع يعلّق على ملفات القفل والمخططات المولّدة يدرّبك على تجاهله. قائمة الاستبعاد لا تقلّ أهمية عن قائمة الإدراج.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Lab: Bugbot on a Planted Bug](https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug)
-- [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)
+- [مخبر: Bugbot على علّة مزروعة](https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug)
+- [ضبط Bugbot لقاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)

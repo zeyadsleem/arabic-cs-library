@@ -1,32 +1,32 @@
 ---
-title: "Arbitrary Column Counts"
-lang: en
+title: "أعداد الأعمدة التعسّفية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-arbitrary-column-counts"
 ---
 
-CSS Grid in Tailwind CSS allows building complex, responsive layouts in HTML. Tailwind translates native CSS features like `grid-template-columns` into concise classes.
+يتيح CSS Grid في Tailwind CSS بناء تخطيطات متجاوبة ومعقّدة داخل HTML. ويترجم Tailwind ميزات CSS الأصلية مثل `grid-template-columns` إلى أصناف موجزة.
 
-## Defining Grid Columns
+## تعريف أعمدة Grid
 
-Tailwind provides utilities for grid column structure. Classes like `grid-cols-1` to `grid-cols-12` (and beyond via configuration) create grids with a fixed number of equal columns. `grid-cols-none` specifies no grid columns.
+يوفّر Tailwind أدوات لبنية أعمدة grid. والأصناف مثل `grid-cols-1` إلى `grid-cols-12` (وما فوقها عبر الإعداد) تنشئ شبكات بعدد ثابت من الأعمدة المتساوية. و`grid-cols-none` تحدّد عدم وجود أعمدة grid.
 
-Utilities like `grid-cols-4` generate CSS like `grid-template-columns: repeat(4, minmax(0, 1fr));`, creating flexible, equal-width columns.
+وتُنتج أدوات مثل `grid-cols-4` CSS من الشكل `grid-template-columns: repeat(4, minmax(0, 1fr));`، فتُنشئ أعمدة مرنة متساوية العرض.
 
-### Implementing a Subgrid for Columns
+### تطبيق شبكة فرعية للأعمدة
 
-For nested grid items needing alignment with parent column tracks, Tailwind supports CSS `subgrid`. The `grid-cols-subgrid` utility makes a grid item adopt its parent’s column tracks, ensuring alignment across nesting levels.
+للعناصر grid المتداخلة التي تحتاج إلى محاذاة مع مسارات أعمدة الأب، يدعم Tailwind خاصية CSS `subgrid`. وتجعل أداة `grid-cols-subgrid` عنصر grid يتبنّى مسارات أعمدة أبيه، مما يضمن المحاذاة عبر مستويات التداخل.
 
-### Using Arbitrary Column Definitions
+### استخدام تعريفات أعمدة تعسّفية
 
-For custom column definitions not covered by standard patterns, Tailwind’s arbitrary value support is useful. Use `grid-cols-[<value>]` to set `grid-template-columns` to any valid CSS value.
+لتعريفات أعمدة مخصّصة لا تغطيها الأنماط القياسية، يكون دعم Tailwind للقيم التعسّفية مفيدًا. استخدم `grid-cols-[<value>]` لضبط `grid-template-columns` على أي قيمة CSS صالحة.
 
-This syntax `[]` allows custom track sizes, repeat functions, or CSS variables, breaking from predefined theme constraints.
+وتتيح هذه الصيغة `[]` مقاسات مسارات مخصّصة أو دوال تكرار أو متغيّرات CSS، فتخرج عن قيود السمة المُعرَّفة مسبقًا.
 
-#### Defining Custom Track Lists
+#### تعريف قوائم مسارات مخصّصة
 
-Provide a custom track list string within square brackets.
+قدّم نص قائمة المسارات المخصّصة بين أقواس مربّعة.
 
-*Defining Custom Track Lists — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/eefc83480c16ddbf176d940c7dd559e79257ec1b6caba4a663d9c460c88e5210.html)*
+*تعريف قوائم المسارات المخصّصة — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/eefc83480c16ddbf176d940c7dd559e79257ec1b6caba4a663d9c460c88e5210.html)*
 
 ```html
 <div class="grid grid-cols-[200px_1fr_1fr] gap-4 rounded-lg bg-gray-100 p-4">
@@ -42,15 +42,15 @@ Provide a custom track list string within square brackets.
 </div>
 ```
 
-This gives granular control, allowing combined fixed, flexible, and content-based track sizes (`min-content`, `max-content`, `auto`).
+هذا يمنحك تحكّمًا دقيقًا، فيسمح بمقاسات مسارات تجمع بين الثابت والمرن والقائم على المحتوى (`min-content` و`max-content` و`auto`).
 
-#### Using `repeat()` with Arbitrary Values
+#### استخدام `repeat()` مع القيم التعسّفية
 
-Use the CSS `repeat()` function within arbitrary values for patterns, like a dynamic number of columns or repeating, non-equal width columns.
+استخدم دالة CSS `repeat()` داخل القيم التعسّفية لأنماط مثل عدد ديناميكي من الأعمدة أو أعمدة متكرّرة غير متساوية العرض.
 
-Example: Variable number of equal-width columns.
+مثال: عدد متغيّر من الأعمدة متساوية العرض.
 
-*Using repeat() with Arbitrary Values — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/e1bec70fd6ac6d616655a54a3fde490802b7fa4b15c00f7a878402ec3d067daa.html)*
+*استخدام repeat() مع القيم التعسّفية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/e1bec70fd6ac6d616655a54a3fde490802b7fa4b15c00f7a878402ec3d067daa.html)*
 
 ```html
 <div
@@ -64,12 +64,12 @@ Example: Variable number of equal-width columns.
 </div>
 ```
 
-`--col-count` can be controlled by CSS variables (potentially set by JavaScript or other CSS). For CSS variables as arbitrary values, Tailwind also supports `grid-cols-(--col-definition)`.
+يمكن التحكّم في `--col-count` عبر متغيّرات CSS (وقد تُضبط بواسطة JavaScript أو CSS أخرى). وبالنسبة إلى متغيّرات CSS كقيم تعسّفية، يدعم Tailwind أيضًا `grid-cols-(--col-definition)`.
 
-#### Dynamic Column Counts via Arbitrary Values
+#### أعداد أعمدة ديناميكية عبر القيم التعسّفية
 
-Combining arbitrary values with CSS variables enables dynamic column counts. Define a CSS variable (e.g., via `@theme` or standard CSS) holding the `grid-template-columns` value, then reference it with `grid-cols-(<custom-property>)`.
+يتيح دمج القيم التعسّفية مع متغيّرات CSS أعداد أعمدة ديناميكية. عرّف متغيّر CSS (مثلًا عبر `@theme` أو CSS قياسية) يحمل قيمة `grid-template-columns`، ثم أشِر إليه بـ `grid-cols-(<custom-property>)`.
 
-If `--dynamic-cols: repeat(3, auto) 1fr;`, use `class="grid grid-cols-(--dynamic-cols)"`. This allows flexible grid definitions responsive to CSS variable changes.
+فإذا كانت `--dynamic-cols: repeat(3, auto) 1fr;` استخدم `class="grid grid-cols-(--dynamic-cols)"`. وهذا يسمح بتعريفات grid مرنة تستجيب لتغيّرات متغيّرات CSS.
 
-`grid-cols-[<value>]` and `grid-cols-(<custom-property>)` provide ways to define any grid column structure with standard CSS syntax, enabling custom or dynamic grid layouts in Tailwind. This differs from `grid-cols-subgrid`, which inherits parent tracks.
+وتوفّر `grid-cols-[<value>]` و`grid-cols-(<custom-property>)` وسيلتين لتعريف أي بنية أعمدة grid بصيغة CSS قياسية، فتتيح تخطيطات grid مخصّصة أو ديناميكية في Tailwind. ويختلف ذلك عن `grid-cols-subgrid` التي ترث مسارات الأب.

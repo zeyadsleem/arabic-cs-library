@@ -1,14 +1,14 @@
 ---
-title: "Scaffolding an Extension"
-lang: en
+title: "تهيئة هيكل إضافة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-extension-scaffold"
 ---
 
-Laying down the boilerplate for an extension is relatively straight-forward using out good friend, [Yeoman](https://yeoman.io/).
+وضع الشيفرة القالبية (boilerplate) لإضافة أمر مباشر نسبيًا بمساعدة صديقنا القديم [Yeoman](https://yeoman.io/).
 
 ```bash
 npm install -g yo generator-code
 yo code
 ```
 
-Running the Yeoman generator for a Visual Studio Code extension
+تشغيل مُولِّد Yeoman لإضافة Visual Studio Code

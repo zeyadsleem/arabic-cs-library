@@ -1,18 +1,18 @@
 ---
-title: "GPU Acceleration Patterns"
-lang: en
+title: "أنماط تسريع GPU"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/gpu-acceleration-patterns"
 ---
 
-Your React app runs smoothly… until you add that particle system. Or that complex data visualization. Or those 60fps animations. Suddenly, your CPU is maxed out, fans are spinning, and your beautifully crafted UI is stuttering like a broken record. Meanwhile, your GPU—a parallel processing powerhouse—sits idle, waiting to help.
+يعمل تطبيق React لديك بسلاسة… إلى أن تضيف نظام الجسيمات ذلك. أو تصوّر البيانات المعقّد ذلك. أو حركات 60 إطارًا في الثانية تلك. فجأةً، يصل المعالج CPU إلى أقصى طاقته، وتدور المراوح بأقصى سرعتها، وتتلعثم واجهتك المتقنة كأسطوانة مشروخة. وفي هذه الأثناء، تظل وحدة معالجة الرسوميات GPU — قوة معالجة متوازية — عاطلة، تنتظر فرصة المساعدة.
 
-Here’s the reality: modern devices have incredible GPU power that most React apps never touch. Your users’ phones can render millions of triangles per second, apply complex shaders in real-time, and handle parallel computations that would crush a CPU. The trick is knowing how to tap into that power from React.
+وهذه هي الحقيقة: تملك الأجهزة الحديثة قدرة GPU مذهلة لا تلمسها معظم تطبيقات React أبدًا. تستطيع هواتف مستخدميك تصيير ملايين المثلثات في الثانية، وتطبيق تظليلات (shaders) معقّدة في الوقت الحقيقي، والتعامل مع حسابات متوازية تسحق أي CPU. والحيلة هي معرفة كيفية الاستفادة من هذه القوة انطلاقًا من React.
 
-Let’s explore how to offload work to the GPU, from simple CSS transforms to WebGL-powered visualizations, and turn your React app into a hardware-accelerated performance machine.
+لنستكشف كيفية تفريغ العمل إلى GPU، من تحويلات CSS البسيطة إلى التصوّرات المدعومة بـ WebGL، ونحوّل تطبيق React لديك إلى آلة أداء معجّلة عتاديًا.
 
-## Understanding GPU Acceleration
+## فهم تسريع GPU
 
-The GPU excels at parallel operations—doing the same thing to lots of data simultaneously:
+تتفوّق GPU في العمليات المتوازية — أي فعل الشيء نفسه على كميات كبيرة من البيانات في آن واحد:
 
 ```typescript
 interface GPUvsCP {
@@ -43,11 +43,11 @@ function gpuProcess(pixels: Pixel[]): void {
 }
 ```
 
-## CSS GPU Acceleration
+## تسريع GPU عبر CSS
 
-The easiest way to leverage GPU in React is through CSS transforms:
+أسهل طريقة للاستفادة من GPU في React هي عبر تحويلات CSS:
 
-### Hardware-Accelerated Properties
+### الخصائص المعجّلة عتاديًا
 
 ```typescript
 // ❌ Triggers layout and paint - runs on CPU
@@ -100,9 +100,9 @@ const GPUAnimation: React.FC = () => {
 };
 ```
 
-### Creating Layers for GPU
+### إنشاء طبقات لـ GPU
 
-Force elements onto separate GPU layers:
+أجبر العناصر على الانتقال إلى طبقات GPU منفصلة:
 
 ```typescript
 const useGPULayer = () => {
@@ -125,9 +125,9 @@ const ComplexComponent: React.FC = () => {
 };
 ```
 
-### Optimizing React Spring for GPU
+### تحسين React Spring لأجل GPU
 
-Configure React Spring animations for GPU acceleration:
+هيّئ حركات React Spring لتسريع GPU:
 
 ```typescript
 import { useSpring, animated, config } from '@react-spring/web';
@@ -161,11 +161,11 @@ const GoodSpring: React.FC = () => {
 };
 ```
 
-## WebGL Integration with React
+## التكامل مع WebGL في React
 
-For serious GPU computation, WebGL is your gateway:
+للحسابات الجدّية على GPU، يُعدّ WebGL بوابتك:
 
-### Basic Three.js Integration
+### التكامل الأساسي مع Three.js
 
 ```typescript
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -232,9 +232,9 @@ const GPUParticles: React.FC = () => {
 };
 ```
 
-### Custom Shaders for Computation
+### تظليلات مخصّصة للحساب
 
-Use GPU shaders for complex calculations:
+استخدم تظليلات (shaders) GPU للحسابات المعقّدة:
 
 ```typescript
 const computeShader = `
@@ -303,9 +303,9 @@ const GPUPhysics: React.FC = () => {
 };
 ```
 
-## WebGPU - The Future of GPU Computing
+## WebGPU — مستقبل الحوسبة على GPU
 
-WebGPU provides direct GPU compute access:
+توفّر WebGPU وصولًا مباشرًا إلى حوسبة GPU:
 
 ```typescript
 class WebGPUCompute {
@@ -417,9 +417,9 @@ const useWebGPUCompute = (shaderCode: string) => {
 };
 ```
 
-## GPU-Accelerated Data Visualization
+## تصوّر البيانات المعجّل بـ GPU
 
-Render massive datasets using GPU:
+صيّر مجموعات بيانات ضخمة باستخدام GPU:
 
 ```typescript
 import { useMemo } from 'react';
@@ -484,9 +484,9 @@ const GPUScatterPlot: React.FC<{ data: DataPoint[] }> = ({ data }) => {
 };
 ```
 
-## GPU Memory Management
+## إدارة ذاكرة GPU
 
-Managing GPU memory is crucial for performance:
+إدارة ذاكرة GPU أمر بالغ الأهمية للأداء:
 
 ```typescript
 class GPUResourceManager {
@@ -587,9 +587,9 @@ const useGPUResources = () => {
 };
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track GPU performance metrics:
+تتبّع مقاييس أداء GPU:
 
 ```typescript
 class GPUPerformanceMonitor {
@@ -677,9 +677,9 @@ const GPUStatsOverlay: React.FC<{ monitor: GPUPerformanceMonitor }> = ({ monitor
 };
 ```
 
-## Hybrid CPU/GPU Processing
+## المعالجة الهجينة بين CPU وGPU
 
-Balance work between CPU and GPU:
+وازن العمل بين CPU وGPU:
 
 ```typescript
 class HybridProcessor {
@@ -737,11 +737,11 @@ class HybridProcessor {
 }
 ```
 
-## Animation Performance Optimization
+## تحسين أداء الحركات
 
-### Will-Change Property Management
+### إدارة خاصية will-change
 
-The `will-change` CSS property hints to the browser which properties are likely to change, allowing it to optimize ahead of time:
+تشير خاصية `will-change` في CSS إلى المتصفح بالخصائص المرجّح أن تتغيّر، ما يتيح له التحسين مسبقًا:
 
 ```css
 /* Prepare for animation */
@@ -755,13 +755,13 @@ The `will-change` CSS property hints to the browser which properties are likely 
 }
 ```
 
-> **Performance Impact**
+> **أثر الأداء**
 >
-> Overusing `will-change` can hurt performance by creating too many GPU layers. Only apply it to elements about to animate and remove it when done.
+> قد يُضرّ الإفراط في استخدام `will-change` بالأداء عبر إنشاء عدد كبير جدًا من طبقات GPU. لا تطبّقه إلا على العناصر التي توشك على الحركة، وأزله عند الانتهاء.
 
-### Hardware Acceleration Triggers
+### محفّزات التسريع العتادي
 
-Force GPU acceleration for smoother animations:
+أجبر تسريع GPU للحصول على حركات أكثر سلاسة:
 
 ```css
 /* Method 1: Transform3D */
@@ -784,9 +784,9 @@ Force GPU acceleration for smoother animations:
 }
 ```
 
-### Compositing Layer Management
+### إدارة طبقات التركيب
 
-Understanding what creates new compositing layers:
+فهم ما ينشئ طبقات تركيب جديدة:
 
 ```typescript
 // Properties that create new layers
@@ -809,35 +809,35 @@ function checkLayerCount(): void {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Use CSS transforms for animations:**
+✅ **استخدم تحويلات CSS للحركات:**
 
-- Prefer transform over position properties
-- Add will-change hints strategically
-- Use translateZ(0) or translate3d() to force GPU layers
-- Remove will-change after animations complete
+- فضّل transform على خصائص الموضع
+- أضف تلميحات will-change بشكل مدروس
+- استخدم translateZ(0) أو translate3d() لإجبار طبقات GPU
+- أزل will-change بعد اكتمال الحركات
 
-✅ **Optimize WebGL usage:**
+✅ **حسّن استخدام WebGL:**
 
-- Batch draw calls
-- Use instanced rendering
-- Dispose of unused resources
+- اجمع استدعاءات الرسم في دفعات
+- استخدم التصيير بالنسخ (instanced rendering)
+- تخلّص من الموارد غير المستخدمة
 
-✅ **Monitor GPU metrics:**
+✅ **راقب مقاييس GPU:**
 
-- Track draw calls
-- Monitor texture memory
-- Check for GPU memory leaks
+- تتبّع استدعاءات الرسم
+- راقب ذاكرة الأنسجة (textures)
+- افحص تسريبات ذاكرة GPU
 
-✅ **Balance CPU/GPU work:**
+✅ **وازن العمل بين CPU وGPU:**
 
-- Use GPU for parallel operations
-- Keep complex logic on CPU
-- Profile to find optimal thresholds
+- استخدم GPU للعمليات المتوازية
+- أبقِ المنطق المعقّد على CPU
+- حلّل الأداء لإيجاد العتبات المثلى
 
-✅ **Handle fallbacks gracefully:**
+✅ **تعامل مع البدائل الاحتياطية بلباقة:**
 
-- Detect GPU availability
-- Provide CPU alternatives
-- Adapt to device capabilities
+- اكتشف توفّر GPU
+- وفّر بدائل على CPU
+- تكيّف مع قدرات الجهاز

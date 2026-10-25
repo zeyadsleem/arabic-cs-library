@@ -1,16 +1,16 @@
 ---
-title: "AI and LLM Integration Patterns"
-lang: en
+title: "أنماط تكامل الذكاء الاصطناعي والنماذج اللغوية (AI and LLM Integration Patterns)"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/ai-integration-patterns"
 ---
 
-Adding an LLM-powered feature to a frontend application isn’t like adding a new API integration. When you call a REST endpoint, you send a request, wait a predictable amount of time, and get back a deterministic response. When you call a language model, you send a prompt, wait *seconds* (not milliseconds), and get back a stream of tokens that will be different every time—even for the same input. The response might be brilliant. It might be wrong. It might get filtered by a safety system halfway through generation. And it’s going to cost you real money per token.
+إضافة ميزة مدعومة بنموذج لغوي كبير (LLM) إلى تطبيق واجهة أمامية ليست مثل إضافة تكامل API جديد. فحين تستدعي نقطة نهاية REST، ترسل طلبًا، وتنتظر مقدارًا متوقّعًا من الوقت، ثم تعود إليك استجابة حتمية. أما حين تستدعي نموذجًا لغويًا، فترسل توجيهًا (prompt)، وتنتظر *ثوانٍ* (لا أجزاء من الثانية)، ثم تعود إليك سلسلة من الرموز (tokens) تكون مختلفة في كل مرة — حتى مع الإدخال نفسه. قد تكون الاستجابة رائعة. وقد تكون خاطئة. وقد تُرشَّح من نظام أمان في منتصف التوليد. وستكلّفك مالًا حقيقيًا عن كل رمز.
 
-That combination—streaming delivery, non-deterministic output, high latency, and per-use cost—breaks assumptions baked into the request/response mental model that most frontend data fetching is built around. This isn’t a complaint. It’s an architectural reality that needs different patterns.
+وهذه التوليفة — التسليم بالبثّ، والمخرجات غير الحتمية، والكمون المرتفع، والتكلفة لكل استخدام — تكسر افتراضات مبنيّة في النموذج الذهني للطلب/الاستجابة الذي يقوم عليه معظم جلب البيانات في الواجهة الأمامية. وهذه ليست شكوى. بل واقع معماري يحتاج أنماطًا مختلفة.
 
-## Where Inference Lives
+## أين يعيش الاستدلال
 
-The first decision is where the AI processing happens relative to your frontend. This determines your latency profile, privacy guarantees, and cost model.
+القرار الأول هو أين تحدث معالجة الذكاء الاصطناعي بالنسبة إلى واجهتك الأمامية. وهذا يحدّد ملفّ الكمون لديك وضمانات الخصوصية ونموذج التكلفة.
 
 ```
 flowchart TB
@@ -42,15 +42,15 @@ flowchart TB
   style WebLLM fill:#2563eb,color:#fff
 ```
 
-| Approach | Latency | Data privacy | Cost model | Good for |
+| النهج | الكمون | خصوصية البيانات | نموذج التكلفة | جيد لـ |
 | --- | --- | --- | --- | --- |
-| **Cloud API direct** | High | Data leaves client | Per-token | Never do this—exposes API keys |
-| **BFF-proxied API** | High (+ one hop) | Server controls flow | Per-token + server | Most enterprise apps |
-| **Self-hosted model** | Medium | Full control | Infrastructure | Regulated industries, sensitive data |
-| **Edge inference** | Medium-Low | Provider-dependent | Per-request | Content moderation, embeddings |
-| **On-device (WebLLM)** | Low after model load | Complete | Zero marginal | Autocomplete, classification, offline |
+| **API سحابي مباشر** | مرتفع | البيانات تغادر العميل | لكل رمز (token) | لا تفعل هذا أبدًا — يكشف مفاتيح API |
+| **API عبر وسيط BFF** | مرتفع (+ قفزة واحدة) | الخادم يتحكّم بالتدفق | لكل رمز + الخادم | معظم تطبيقات المؤسسات |
+| **نموذج مستضاف ذاتيًا** | متوسط | تحكّم كامل | البنية التحتية | القطاعات المنظّمة، البيانات الحساسة |
+| **استدلال طرفي** | متوسط-منخفض | حسب المزوّد | لكل طلب | الإشراف على المحتوى، التضمينات (embeddings) |
+| **على الجهاز (WebLLM)** | منخفض بعد تحميل النموذج | كامل | صفر هامشي | الإكمال التلقائي، التصنيف، دون اتصال |
 
-For most enterprise applications, the **BFF-proxied pattern** is the right default. It extends the [Backends for Frontends](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends) architecture into the AI domain—a server-side layer that holds API keys, enforces rate limits, filters PII, logs usage for compliance, and streams responses back to the client. The frontend never sees the API key. The server controls what goes in and what comes out.
+بالنسبة إلى معظم تطبيقات المؤسسات، **النمط عبر وسيط BFF** هو الافتراضي الصحيح. فهو يمدّ معمارية [خوادم الواجهات](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends) إلى نطاق الذكاء الاصطناعي — طبقة من جهة الخادم تحمل مفاتيح API، وتفرض حدود المعدّل، وترشّح المعلومات الشخصية، وتسجّل الاستخدام لأغراض الامتثال، وتبثّ الاستجابات راجعة إلى العميل. لا ترى الواجهة الأمامية مفتاح الـ API قط. ويتحكّم الخادم بما يدخل وبما يخرج.
 
 ```typescript
 // Server-side BFF route — the frontend calls this, not the LLM API directly
@@ -74,23 +74,23 @@ export async function POST(request: Request) {
 }
 ```
 
-The BFF isn’t just a proxy. It’s where you enforce everything the client can’t be trusted with: authentication checks, per-user rate limits, cost budgets, audit logging, and the guardrails that keep someone from using your product’s AI feature to generate content you’d rather it didn’t.
+الـ BFF ليس مجرد وسيط. إنه حيث تفرض كل ما لا يمكن الوثوق بالعميل فيه: فحوص المصادقة، وحدود المعدّل لكل مستخدم، وميزانيات التكلفة، وتسجيل التدقيق، والضوابط التي تمنع أحدهم من استخدام ميزة الذكاء الاصطناعي في منتجك لتوليد محتوى تفضّل ألّا تولّده.
 
-### On-device inference
+### الاستدلال على الجهاز
 
-WebGPU and WebAssembly have made it feasible to run small language models directly in the browser. [WebLLM](https://webllm.mlc.ai/) uses machine learning compilers (MLC-LLM and Apache TVM) to run optimized inference kernels on the GPU, retaining [up to 80% of native performance](https://arxiv.org/abs/2412.15803) on the same hardware. With Firefox shipping WebGPU on Windows and Safari preparing support, 2025–2026 is the first window where you can target GPU compute across all major browsers.
+جعل WebGPU وWebAssembly تشغيل نماذج لغوية صغيرة مباشرةً في المتصفح أمرًا ممكنًا. يستخدم [WebLLM](https://webllm.mlc.ai/) مُصرِّفات تعلّم الآلة (MLC-LLM وApache TVM) لتشغيل أنوية استدلال محسّنة على وحدة معالجة الرسوم، محافظًا على [حتى 80% من أداء التشغيل الأصلي](https://arxiv.org/abs/2412.15803) على العتاد نفسه. ومع إطلاق Firefox لـ WebGPU على Windows واستعداد Safari لدعمه، تكون الفترة 2025–2026 أول نافذة يمكنك فيها استهداف حساب وحدة معالجة الرسوم عبر كل المتصفحات الرئيسية.
 
-The tradeoffs are real, though. Model download sizes range from hundreds of megabytes to several gigabytes. The quality gap between a 1B-parameter on-device model and Claude or GPT-4 is enormous. And WebGPU support is still uneven enough that you need a fallback path.
+لكن المقايضات حقيقية. فتراوح أحجام تنزيل النماذج بين مئات الميجابايتات وبضعة جيجابايتات. والفجوة في الجودة بين نموذج على الجهاز بمعامل مليار واحد وClaude أو GPT-4 هائلة. وما زال دعم WebGPU غير متساوٍ بما يكفي لتحتاج مسارًا بديلًا.
 
-On-device inference is a *complement* to cloud-based inference, not a replacement. Use it for latency-sensitive tasks where quality requirements are modest—autocomplete, local classification, or routing decisions that determine whether a query needs a full cloud LLM call.
+الاستدلال على الجهاز *مُكمّل* للاستدلال السحابي، لا بديل عنه. استخدمه للمهام الحساسة للكمون حيث متطلبات الجودة متواضعة — الإكمال التلقائي، أو التصنيف المحلي، أو قرارات التوجيه التي تحدّد ما إذا كان الاستعلام يحتاج نداء LLM سحابيًا كاملًا.
 
-## Streaming UI Patterns
+## أنماط بثّ الواجهة
 
-The most distinctive frontend challenge is handling streaming responses. Text arrives token by token over seconds. That doesn’t fit the “fetch data, render result” model that React Query, SWR, and every other data-fetching library assumes.
+أكثر تحدٍّ مميّز في الواجهة الأمامية هو التعامل مع الاستجابات المبثوثة. يصل النص رمزًا رمزًا على مدى ثوانٍ. وهذا لا يناسب نموذج «اجلب البيانات، صيّر النتيجة» الذي تفترضه React Query وSWR وكل مكتبة أخرى لجلب البيانات.
 
-### The transport layer
+### طبقة النقل
 
-The standard transport for LLM streaming is **Server-Sent Events** (SSE)—a unidirectional stream from server to client over HTTP. The server sends chunks as `data:` lines, and the client processes them incrementally:
+النقل المعياري لبثّ الـ LLM هو **أحداث مُرسَلة من الخادم** (SSE) — تدفق أحادي الاتجاه من الخادم إلى العميل عبر HTTP. يرسل الخادم أجزاءً كأسطر `data:`، ويعالجها العميل تدريجيًا:
 
 ```typescript
 async function streamCompletion(prompt: string, onToken: (token: string) => void) {
@@ -120,7 +120,7 @@ async function streamCompletion(prompt: string, onToken: (token: string) => void
 }
 ```
 
-You *can* write this yourself, but you probably shouldn’t. The [Vercel AI SDK](https://ai-sdk.dev/docs/introduction) has established a de facto standard for LLM streaming in React applications. Its `useChat` hook handles the SSE parsing, message state management, loading states, error handling, and cancellation:
+يمكنك *أن* تكتب هذا بنفسك، لكن يحتمل ألّا ينبغي لك ذلك. أنشأ [Vercel AI SDK](https://ai-sdk.dev/docs/introduction) معيارًا فعليًا لبثّ الـ LLM في تطبيقات React. ويتولّى خُطّاف `useChat` فيه تحليل SSE، وإدارة حالة الرسائل، وحالات التحميل، ومعالجة الأخطاء، والإلغاء:
 
 ```typescript
 import { useChat } from 'ai/react';
@@ -147,7 +147,7 @@ function ChatInterface() {
 }
 ```
 
-The AI SDK’s architecture follows a clean flow:
+يتبع معمار AI SDK مسارًا نظيفًا:
 
 ```
 sequenceDiagram
@@ -168,17 +168,17 @@ sequenceDiagram
   React-->>User: Final rendered message
 ```
 
-### State management for streaming
+### إدارة الحالة للبثّ
 
-Streaming introduces state management challenges that don’t exist in request/response systems:
+يُدخل البثّ تحديات في إدارة الحالة لا وجود لها في أنظمة الطلب/الاستجابة:
 
-- **Partial state.** The response is incomplete during streaming. Components must render partial content without layout shift or empty container flashes.
-- **Optimistic rendering.** The user’s message appears immediately. The AI response streams in. This is a variant of optimistic updates, but “confirmation” arrives one token at a time.
-- **Cancellation.** Users need to cancel generation mid-stream. That means aborting the fetch, cleaning up partial state, and signaling the backend to stop (so you stop paying for tokens nobody will read).
-- **Retry versus regeneration.** “Retry” with a deterministic API means “try again and get the same answer.” With an LLM, retry means regeneration—the response *will* be different. The UI should make this distinction clear.
-- **Conversation history.** Chat interfaces accumulate message history that may need to persist across navigations or sessions. That’s URL-driven state or server-side persistence, not ephemeral component state.
+- **حالة جزئية.** تكون الاستجابة غير مكتملة أثناء البثّ. ويجب أن تُصيّر المكوّنات محتوى جزئيًا دون إزاحة في التخطيط أو وميض حاويات فارغة.
+- **تصيير تفاؤلي.** تظهر رسالة المستخدم فورًا. وتُبثّ استجابة الذكاء الاصطناعي. وهذا نوع مختلف من التحديثات التفاؤلية، لكن «التأكيد» يصل رمزًا رمزًا.
+- **الإلغاء.** يحتاج المستخدمون إلى إلغاء التوليد في منتصف البثّ. وهذا يعني إحباط الطلب (fetch)، وتنظيف الحالة الجزئية، وإشعار الخادم بالتوقّف (حتى تتوقف عن الدفع مقابل رموز لن يقرأها أحد).
+- **إعادة المحاولة مقابل إعادة التوليد.** «إعادة المحاولة» مع API حتمي تعني «جرّب مرة أخرى وستحصل على الإجابة نفسها». ومع LLM، تعني إعادة المحاولة إعادة توليد — فالاستجابة *ستكون* مختلفة. وينبغي أن توضّح الواجهة هذا التمييز.
+- **سجل المحادثة.** تجمع واجهات المحادثة سجلًا للرسائل قد يحتاج إلى البقاء عبر التنقّلات أو الجلسات. وهذه حالة مدفوعة بالعنوان (URL) أو استمرارية من جهة الخادم، لا حالة مكوّن عابرة.
 
-A state machine captures these states cleanly:
+تلتقط آلة حالة هذه الحالات بوضوح:
 
 ```typescript
 type AIResponseState =
@@ -190,21 +190,21 @@ type AIResponseState =
   | { status: 'cancelled'; partialContent: string };
 ```
 
-### Rendering performance
+### أداء التصيير
 
-Updating the DOM on every token (~50ms intervals) can cause jank, especially with Markdown rendering. A few things to keep in mind:
+يمكن أن يؤدي تحديث DOM عند كل رمز (على فترات نحو 50 مللي ثانية) إلى تقطيع (jank)، خاصةً مع تصيير Markdown. وهذه أمور قليلة ينبغي تذكّرها:
 
-- **Batch updates.** Accumulate tokens and flush to the DOM on `requestAnimationFrame` boundaries instead of on every SSE event.
-- **Incremental Markdown.** Libraries like `react-markdown` re-parse the full content string on every update. For long responses, this gets expensive. Debounce the Markdown render or virtualize long responses.
-- **Layout stability.** Reserve space for the streaming response with `min-height` or a growing placeholder. The “streaming text pushes everything below it down the page” experience is miserable.
+- **تجميع التحديثات.** اجمع الرموز وافرغها إلى DOM عند حدود `requestAnimationFrame` بدل فعل ذلك عند كل حدث SSE.
+- **Markdown تدريجي.** تُعيد مكتبات مثل `react-markdown` تحليل سلسلة المحتوى كاملةً عند كل تحديث. ومع الاستجابات الطويلة يصبح هذا مكلفًا. أخّر تصيير Markdown (debounce) أو وهمّن (virtualize) الاستجابات الطويلة.
+- **استقرار التخطيط.** احجز مساحة للاستجابة المبثوثة بـ `min-height` أو بعنصر نائب متنامٍ. فتجرِبة «النص المبثوث يدفع كل شيء تحته إلى أسفل الصفحة» بائسة.
 
-## Prompt Management
+## إدارة التوجيهات (Prompts)
 
-In enterprise applications, prompts are not ad-hoc strings concatenated in a component. They’re versioned, tested, reviewed artifacts that directly affect product behavior—as much as any API contract or database schema.
+في تطبيقات المؤسسات، ليست التوجيهات سلاسل عشوائية تُدمَج في مكوّن. إنها آثار مُصدَّرة بنسخ ومُختبَرة ومُراجَعة تؤثر مباشرةً في سلوك المنتج — بقدر أي عقد API أو مخطط قاعدة بيانات.
 
-### Prompts as configuration
+### التوجيهات كتهيئة
 
-Treat prompts with the same rigor as application configuration. Separate the template from the application code. Version the templates. Test them against known inputs.
+تعامل مع التوجيهات بالصرامة نفسها التي تتعامل بها مع تهيئة التطبيق. افصل القالب عن شيفرة التطبيق. أصدِر القوالب بنسخ. واختبرها مقابل مُدخَلات معروفة.
 
 ```typescript
 interface PromptTemplate {
@@ -230,13 +230,13 @@ const summaryPrompt = await promptRegistry.get('document-summary', {
 });
 ```
 
-This separation buys you three things. You can **A/B test** prompt versions by routing users to different templates and measuring output quality. You can **roll back** a prompt change that degrades quality via feature flags, without a code deploy. And you can run **prompt CI**—automated evaluation suites that test a prompt against curated inputs whenever someone modifies it.
+يمنحك هذا الفصل ثلاثة أشياء. يمكنك **اختبار A/B** لنسخ التوجيه بتوجيه المستخدمين إلى قوالب مختلفة وقياس جودة المخرجات. ويمكنك **التراجع** عن تغيير توجيه يخفض الجودة عبر علامات الميزات (feature flags)، دون نشر شيفرة. ويمكنك تشغيل **CI للتوجيهات** — مجموعات تقييم آلية تختبر توجيهًا مقابل مُدخَلات مُنتقاة كلما عدّله أحدهم.
 
-Prompt CI isn’t traditional unit testing. The outputs are non-deterministic, so you evaluate them with LLM-as-judge scoring, structural assertions, or human evaluation—not exact string matching. More on testing below.
+CI التوجيهات ليس اختبار وحدات تقليديًا. فالمخرجات غير حتمية، لذا تقيّمها بتحكيم LLM كنموذج، أو بتحقّقات بنيوية، أو بتقييم بشري — لا بمطابقة السلاسل الدقيقة. والمزيد عن الاختبار أدناه.
 
-### Prompt injection
+### حقن التوجيهات (Prompt injection) {#prompt-injection}
 
-Prompt injection is the XSS of the AI era. User input manipulates the model’s behavior by overriding system instructions. The [OWASP Top 10 for LLM Applications](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) ranks it as the #1 vulnerability, and for good reason—it’s inherent to how language models process input. There is no complete defense, only layers of mitigation.
+حقن التوجيهات هو XSS عصر الذكاء الاصطناعي. يُوظِّف إدخال المستخدم سلوك النموذج بتجاوزه تعليمات النظام. وتصنّفه [أهم عشر مخاطر لتطبيقات LLM من OWASP](https://genai.owasp.org/llmrisk/llm01-prompt-injection/) كثغرة رقم 1، ولسبب وجيه — فهو متأصّل في طريقة معالجة النماذج اللغوية للإدخال. لا يوجد دفاع كامل، بل طبقات من التخفيف.
 
 ```
 flowchart LR
@@ -253,13 +253,13 @@ flowchart LR
   style Output fill:#fbbf24,color:#000
 ```
 
-The OWASP guidance distinguishes **direct injection** (the user types “ignore previous instructions”) from **indirect injection** (the model processes a document that contains hidden instructions). Both are real attack vectors.
+تفرّق إرشادات OWASP بين **الحقن المباشر** (حيث يكتب المستخدم «تجاهل التعليمات السابقة») و**الحقن غير المباشر** (حيث يعالج النموذج مستندًا يحوي تعليمات مخفية). وكلاهما ناقل هجوم حقيقي.
 
-Frontend defenses include input validation (flag common injection patterns), strict role separation in the message format (system, user, assistant), and output sanitization before rendering. But the critical enforcement layer is the BFF. The server should enforce guardrails regardless of what the client sends. Never trust client-side validation for security—that lesson is older than LLMs.
+تشمل دفاعات الواجهة الأمامية التحقّق من الإدخال (الإشارة إلى أنماط الحقن الشائعة)، والفصل الصارم بين الأدوار في صيغة الرسالة (نظام، مستخدم، مساعد)، وتنقية المخرجات قبل التصيير. لكن طبقة الفرض الحاسمة هي الـ BFF. ينبغي أن يفرض الخادم الضوابط بصرف النظر عمّا يرسله العميل. لا تثق أبدًا بتحقّق جهة العميل لأغراض الأمن — وهذا الدرس أقدم من النماذج اللغوية.
 
-## Tool Use and Agentic Patterns
+## استخدام الأدوات والأنماط الوكيلية
 
-Modern LLM APIs support **tool use** (sometimes called function calling), where the model can request that your application invoke predefined functions on its behalf. This is how you build interfaces where the AI doesn’t just *say* things—it *does* things.
+تدعم واجهات LLM الحديثة **استخدام الأدوات** (المسمّى أحيانًا استدعاء الدوال)، حيث يمكن للنموذج أن يطلب من تطبيقك استدعاء دوال معرّفة مسبقًا بالنيابة عنه. وهكذا تبني واجهات لا *يقول* فيها الذكاء الاصطناعي أشياء فحسب — بل *يفعل* أشياء.
 
 ```
 sequenceDiagram
@@ -280,7 +280,7 @@ sequenceDiagram
   UI-->>User: Render response with citations
 ```
 
-The critical pattern here is **human-in-the-loop confirmation**. When the model decides to use a tool that has side effects—creating a ticket, sending a message, modifying data—the frontend renders a confirmation card showing what action will be taken, with what parameters. The user approves, modifies, or rejects. Only on approval does the frontend execute the tool call.
+النمط الحاسم هنا هو **تأكيد بمشاركة الإنسان**. فحين يقرّر النموذج استخدام أداة لها آثار جانبية — إنشاء تذكرة، إرسال رسالة، تعديل بيانات — تصيّر الواجهة الأمامية بطاقة تأكيد تُظهر الإجراء الذي سيُتخذ وبأي معاملات. يوافق المستخدم أو يعدّل أو يرفض. ولا ينفّذ الإجراء إلا عند الموافقة.
 
 ```typescript
 const tools = [
@@ -318,11 +318,11 @@ const tools = [
 ];
 ```
 
-This isn’t optional for enterprise applications. Unreviewed AI actions in a billing system, a compliance workflow, or an HR tool create the kind of liability that makes legal teams lose sleep. The authorization model should extend to AI-initiated actions—the model should only be able to invoke tools that the *current user* is authorized to use.
+هذا ليس اختياريًا لتطبيقات المؤسسات. فالإجراءات غير المُراجَعة للذكاء الاصطناعي في نظام فواتير، أو سير عمل امتثال، أو أداة موارد بشرية، تخلق نوعًا من المسؤولية يمنع فرق الشؤون القانونية من النوم. وينبغي أن يمتد نموذج التخويل إلى الإجراءات التي يبدأها الذكاء الاصطناعي — فينبغي ألا يستطيع النموذج استدعاء إلا الأدوات المصرّح لـ *المستخدم الحالي* باستخدامها.
 
-### Multi-step agent workflows
+### مسارات عمل وكلاء متعددة الخطوات
 
-Complex agent workflows involve multiple sequential tool calls, where the output of one call informs the next. The frontend should render this as a transparent, auditable sequence:
+تشمل مسارات عمل الوكلاء المعقّدة نداءات أدوات متتابعة عدة، حيث تُعلِم مخرجات نداء ما النداء التالي. وينبغي أن تصيّر الواجهة الأمامية هذا كتسلسل شفّاف قابل للتدقيق:
 
 ```
 flowchart TB
@@ -340,15 +340,15 @@ flowchart TB
   style Auto2 fill:#4ade80,color:#000
 ```
 
-Read-only tools (search, summarize, analyze) can often be auto-approved. Write tools (create, update, delete, send) should always require confirmation. Show each step with its inputs and outputs so the user can audit the reasoning chain—that transparency is what makes the difference between “the AI did something” and “the AI did something I understand and can verify.”
+يمكن غالبًا الموافقة التلقائية على الأدوات للقراءة فقط (البحث، التلخيص، التحليل). أما أدوات الكتابة (الإنشاء، التحديث، الحذف، الإرسال) فينبغي أن تتطلب التأكيد دائمًا. اعرض كل خطوة بمُدخَلاتها ومخرجاتها حتى يستطيع المستخدم تدقيق سلسلة التفكير — وتلك الشفافية هي الفرق بين «فعل الذكاء الاصطناعي شيئًا» و«فعل الذكاء الاصطناعي شيئًا أفهمه وأستطيع التحقّق منه».
 
-## RAG in the Frontend
+## RAG في الواجهة الأمامية
 
-**Retrieval-Augmented Generation** grounds LLM responses in specific documents rather than the model’s general training data. The retrieval and generation happen server-side, but the frontend has significant responsibilities around how that grounded content gets presented.
+**التوليد المعزّز بالاسترجاع (Retrieval-Augmented Generation)** يُرسي استجابات الـ LLM في مستندات محدّدة بدل بيانات تدريب النموذج العامة. ويحدث الاسترجاع والتوليد من جهة الخادم، لكن على الواجهة الأمامية مسؤوليات كبيرة حول كيفية تقديم ذلك المحتوى المُرسى.
 
-### Citation and source attribution
+### الاستشهاد ونسبة المصدر
 
-Enterprise RAG must provide source attribution. In regulated industries—legal, healthcare, finance—this isn’t a UX nicety, it’s a compliance requirement. Users need to verify *where* the AI’s answer came from.
+يجب أن يوفّر RAG المؤسسي نسبة المصدر. وفي القطاعات المنظّمة — القانون والرعاية الصحية والمال — ليس هذا ترفًا في تجربة المستخدم، بل شرط امتثال. يحتاج المستخدمون إلى التحقّق من *أين* جاءت إجابة الذكاء الاصطناعي.
 
 ```typescript
 interface RAGResponse {
@@ -373,36 +373,36 @@ interface Citation {
 }
 ```
 
-Render citations inline—numbered references that link to a source panel where users can see the original passage. The source panel should show the relevant excerpt highlighted within its broader context, not just the extracted snippet. That context is what lets users judge whether the AI’s interpretation of the source is reasonable.
+صيّر الاستشهادات سطرًا بسطر — مراجع مرقّمة تربط إلى لوحة مصادر يرى فيها المستخدمون المقطع الأصلي. وينبغي أن تُظهر لوحة المصادر المقتطف ذا الصلة مُبرَزًا داخل سياقه الأوسع، لا مجرد الشذرة المستخرجة. فذلك السياق هو ما يمكّن المستخدمين من الحكم على معقولية تفسير الذكاء الاصطناعي للمصدر.
 
-### Context window management
+### إدارة نافذة السياق
 
-The LLM’s context window is a finite resource, and enterprise RAG systems can easily exceed it. The frontend should surface this constraint rather than hiding it:
+نافذة سياق الـ LLM مورد محدود، ويمكن لأنظمة RAG المؤسسية أن تتجاوزها بسهولة. وينبغي أن تُبرز الواجهة الأمامية هذا القيد بدل إخفائه:
 
-- **Context indicators.** Show what documents and conversation history are included in the model’s context. Users should know what the AI “knows” for a given query.
-- **Conversation pruning.** Long conversations will exceed context limits. When older messages get dropped or summarized, tell the user. Don’t silently lose context and produce a confusing response.
-- **User-controlled context.** Let users explicitly include or exclude documents from the AI’s working set for a given query.
+- **مؤشرات السياق.** اعرض المستندات وسجل المحادثة المشمولة في سياق النموذج. وينبغي أن يعرف المستخدمون ما «يعرفه» الذكاء الاصطناعي لاستعلام معيّن.
+- **تقليم المحادثة.** ستتجاوز المحادثات الطويلة حدود السياق. وحين تُسقَط الرسائل الأقدم أو تُلخَّص، أخبر المستخدم. لا تُفقِد السياق بصمت فتُنتج استجابة محيّرة.
+- **سياق يتحكّم به المستخدم.** دع المستخدمين يضمّنوا أو يستثنوا مستندات صراحةً من مجموعة عمل الذكاء الاصطناعي لاستعلام معيّن.
 
-## Observability for AI Features
+## المراقبة لميزات الذكاء الاصطناعي
 
-AI features need observability infrastructure that extends what we covered in [Observability](https://stevekinney.com/courses/enterprise-ui/observability), because the failure modes and cost dynamics are fundamentally different.
+تحتاج ميزات الذكاء الاصطناعي بنية تحتية للمراقبة تمدّ ما غطّيناه في [المراقبة](https://stevekinney.com/courses/enterprise-ui/observability)، لأن أنماط الفشل وديناميكيات التكلفة مختلفة جوهريًا.
 
-### AI-specific metrics
+### مقاييس خاصة بالذكاء الاصطناعي
 
-| Metric | What it tells you |
+| المقياس | ما يخبرك به |
 | --- | --- |
-| **Time to first token** | Perceived responsiveness—how long until the user sees *something* |
-| **Tokens per second** | Streaming throughput, affects reading experience |
-| **Total generation time** | Whether users are waiting too long |
-| **Token usage (input + output)** | Cost tracking and budget enforcement |
-| **Error rate by type** | Rate limits, timeouts, content filters, model errors |
-| **Regeneration rate** | How often users ask for a different answer (quality signal) |
-| **Citation accuracy** | Whether RAG citations map to real sources (RAG quality signal) |
-| **User feedback** | Thumbs up/down, flags, free-text (product quality signal) |
+| **الزمن حتى أول رمز** | الاستجابة المُدرَكة — كم ينتظر المستخدم حتى يرى *شيئًا* |
+| **الرموز في الثانية** | إنتاجية البثّ، تؤثر في تجربة القراءة |
+| **زمن التوليد الكلي** | ما إذا كان المستخدمون ينتظرون طويلًا جدًا |
+| **استخدام الرموز (إدخال + إخراج)** | تتبّع التكلفة وفرض الميزانية |
+| **معدّل الأخطاء حسب النوع** | حدود المعدّل، المهلات، مرشّحات المحتوى، أخطاء النموذج |
+| **معدّل إعادة التوليد** | كم مرة يطلب المستخدمون إجابة مختلفة (إشارة جودة) |
+| **دقة الاستشهاد** | ما إذا كانت استشهادات RAG تشير إلى مصادر حقيقية (إشارة جودة RAG) |
+| **تغذية راجعة من المستخدم** | إعجاب/عدم إعجاب، علامات، نص حر (إشارة جودة المنتج) |
 
-### Cost tracking
+### تتبّع التكلفة
 
-LLM API costs scale directly with usage. If you don’t track per-request costs, you’ll find out about your spending problem from the finance team, not from your dashboards.
+تتدرّج تكاليف واجهات LLM مباشرةً مع الاستخدام. فإن لم تتتبّع التكاليف لكل طلب، ستعلم بمشكلة إنفاقك من فريق المالية، لا من لوحات معلوماتك.
 
 ```typescript
 interface AIRequestMetrics {
@@ -419,13 +419,13 @@ interface AIRequestMetrics {
 }
 ```
 
-Track cost per user (for rate limiting), per feature (for budgeting), and per model (for optimization decisions). When you can see that one feature burns 60% of your AI budget, the “should we use a cheaper model for this?” conversation gets concrete fast.
+تتبّع التكلفة لكل مستخدم (لتحديد المعدّل)، ولكل ميزة (للميزانية)، ولكل نموذج (لقرارات التحسين). وحين ترى أن ميزة واحدة تستهلك 60% من ميزانية الذكاء الاصطناعي لديك، تصبح محادثة «هل نستخدم نموذجًا أرخص لهذا؟» محدّدة سريعًا.
 
-### Prompt caching
+### التخزين المؤقت للتوجيهات
 
-[Anthropic’s prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) reuses previously processed prompt prefixes to reduce both cost and latency. Cached reads cost 90% less than fresh input tokens, and latency can drop by up to 85% for long prompts—the Anthropic docs show a 100K-token prompt going from 11.5 seconds to 2.4 seconds with caching.
+يعيد [التخزين المؤقت للتوجيهات من Anthropic](https://platform.claude.com/docs/en/build-with-claude/prompt-caching) استخدام بادئات التوجيه المعالَجة سابقًا لتقليل التكلفة والكمون معًا. تكلّف القراءات المخزّنة مؤقتًا 90% أقل من رموز الإدخال الطازجة، ويمكن أن ينخفض الكمون حتى 85% للتوجيهات الطويلة — وتُظهر وثائق Anthropic توجيهًا بـ 100 ألف رمز يهبط من 11.5 ثانية إلى 2.4 ثانية مع التخزين المؤقت.
 
-The frontend implication: structure prompts to maximize cache hit rates. Place stable content (system prompt, instructions, reference documents) *before* variable content (user input, conversation turns). The cache matches from the beginning of the prompt, so anything stable that comes first gets reused.
+تبعات ذلك على الواجهة الأمامية: رتّب التوجيهات لتعظيم معدّلات إصابة الذاكرة المؤقتة. ضع المحتوى الثابت (توجيه النظام، والتعليمات، والمستندات المرجعية) *قبل* المحتوى المتغيّر (إدخال المستخدم، وأدوار المحادثة). فالتخزين المؤقت يطابق من بداية التوجيه، لذا يُعاد استخدام أي محتوى ثابت يأتي أولًا.
 
 ```
 flowchart LR
@@ -443,20 +443,20 @@ flowchart LR
   style variable fill:#fbbf24,color:#000
 ```
 
-## Error Handling for Non-Deterministic Systems
+## معالجة الأخطاء للأنظمة غير الحتمية
 
-Traditional error handling assumes determinism: same input, same output. An error means something is broken. AI systems violate this assumption, and the error taxonomy is different.
+تفترض معالجة الأخطاء التقليدية الحتمية: مُدخَل واحد، مُخرَج واحد. وخطأ يعني أن شيئًا معطوب. وتنتهك أنظمة الذكاء الاصطناعي هذا الافتراض، فتختلف تصنيفات الأخطاء.
 
-| Error type | What the user should see | Recovery strategy |
+| نوع الخطأ | ما ينبغي أن يراه المستخدم | استراتيجية التعافي |
 | --- | --- | --- |
-| **Rate limited** | “Please wait a moment” | Auto-retry with backoff, queue position indicator |
-| **Context too long** | “Conversation is getting long—starting fresh” | Auto-summarize, let user control pruning |
-| **Content filtered** | “I can’t help with that request” | Suggest rephrasing, offer alternative approaches |
-| **Model timeout** | “Response took too long” | Retry with shorter `max_tokens` or a faster model |
-| **Partial failure** | Show partial content + error indicator | Let user continue from partial result |
-| **Service unavailable** | Graceful degradation to non-AI fallback | Feature flags to disable AI features entirely |
+| **تجاوز حد المعدّل** | «يرجى الانتظار لحظة» | إعادة محاولة تلقائية مع تراجع تدريجي، ومؤشر موضع في الطابور |
+| **السياق طويل جدًا** | «المحادثة تطول — نبدأ من جديد» | تلخيص تلقائي، وترك التقليم للمستخدم |
+| **المحتوى مُرشَّح** | «لا أستطيع المساعدة في هذا الطلب» | اقتراح إعادة صياغة، وعرض مناهج بديلة |
+| **مهلة النموذج** | «استغرقت الاستجابة وقتًا طويلًا» | إعادة محاولة بـ `max_tokens` أقصر أو نموذج أسرع |
+| **فشل جزئي** | عرض المحتوى الجزئي + مؤشر خطأ | ترك المستخدم يواصل من النتيجة الجزئية |
+| **الخدمة غير متاحة** | تدهور رشيق إلى بديل غير ذكاء اصطناعي | علامات ميزة لتعطيل ميزات الذكاء الاصطناعي كليًا |
 
-That last row is the most important architectural principle: **every AI-powered feature should have a non-AI fallback.** If the LLM provider goes down, your search should fall back to keyword search. Your writing assistant should degrade to a plain text editor. Your smart form should still be a form.
+الصف الأخير هو أهم مبدأ معماري: **ينبغي أن يكون لكل ميزة مدعومة بالذكاء الاصطناعي بديل غير ذكاء اصطناعي.** فإن تعطّل مزوّد الـ LLM، ينبغي أن يعود بحثك إلى البحث بالكلمات المفتاحية. وينبغي أن يتدهور مساعد الكتابة لديك إلى محرّر نص عادي. وينبغي أن يبقى نموذجك الذكي نموذجًا.
 
 ```typescript
 function SearchBar() {
@@ -480,39 +480,39 @@ function AISemanticSearch({ fallback }: { fallback: React.ReactNode }) {
 }
 ```
 
-## AI-Specific UX Patterns
+## أنماط تجربة مستخدم خاصة بالذكاء الاصطناعي
 
-### Transparency and trust
+### الشفافية والثقة
 
-Enterprise users need to understand AI outputs before they act on them. This is the difference between a consumer chatbot and an enterprise tool—in a consumer product, a plausible-sounding answer might be fine. In an enterprise product, a plausible-sounding *wrong* answer can cause real damage.
+يحتاج مستخدمو المؤسسات إلى فهم مخرجات الذكاء الاصطناعي قبل التصرّف بناءً عليها. وهذا هو الفرق بين روبوت محادثة للمستهلك وأداة مؤسسية — ففي منتج للمستهلك، قد تكون إجابة معقولة الظاهر مقبولة. أما في منتج مؤسسي، فقد تتسبّب إجابة معقولة الظاهر لكنها *خاطئة* في ضرر حقيقي.
 
-- **Confidence indicators.** Visual cues—color, percentage, language—that communicate how confident the model is. Not all LLM providers expose calibrated confidence scores, but when they do, surface them.
-- **Reasoning visibility.** A “show your work” toggle that displays the model’s chain-of-thought or retrieved sources. This builds trust and helps users evaluate the output.
-- **Model attribution.** Label AI-generated content as AI-generated. Some jurisdictions require this. Even where they don’t, it sets the right expectations.
-- **Edit affordances.** Position AI output as a draft, not a verdict. Make it editable by default. The AI is a starting point, not a final answer.
+- **مؤشرات الثقة.** إشارات بصرية — لون، نسبة مئوية، لغة — تُبلِغ عن مدى ثقة النموذج. ولا تعرض كل مزوّدي الـ LLM درجات ثقة معايَرة، لكن حين يفعلون ذلك، أبرزها.
+- **ظهور التفكير.** مفتاح «أرِنا عملك» يعرض سلسلة تفكير النموذج أو مصادره المسترجَعة. يبني هذا الثقة ويساعد المستخدمين على تقييم المخرجات.
+- **نسبة النموذج.** وسم المحتوى المولَّد بالذكاء الاصطناعي بأنه كذلك. وتشترط بعض الجهات القضائية ذلك. وحتى حيث لا تشترطه، فإنه يضبط التوقعات الصحيحة.
+- **أدوات التحرير.** قدّم مخرجات الذكاء الاصطناعي كمسوّدة، لا كحكم نهائي. واجعلها قابلة للتحرير افتراضيًا. فالذكاء الاصطناعي نقطة بداية، لا إجابة نهائية.
 
-### Loading states
+### حالات التحميل
 
-AI latency is measured in seconds, not milliseconds. A generic spinner doesn’t cut it.
+يُقاس كمون الذكاء الاصطناعي بالثواني، لا بأجزاء الثانية. ولا يكفي مؤشر انتظار عام.
 
-- **Thinking indicators.** “Analyzing your documents…” or “Searching the knowledge base…” communicates *what* the model is doing, not just *that* it’s doing something.
-- **Streaming skeleton.** Before the first token arrives, show a skeleton or placeholder that indicates where content will appear.
-- **Progressive disclosure.** Render content as it streams. Never buffer the entire response and show it all at once—that wastes the streaming architecture and makes the user wait for no reason.
-- **Time estimation.** For known-slow operations (large document analysis, multi-step agent workflows), show estimated time remaining.
+- **مؤشرات التفكير.** «نحلّل مستنداتك…» أو «نبحث في قاعدة المعرفة…» يُبلِغ عن *ما* يفعله النموذج، لا مجرد *أنه* يفعل شيئًا.
+- **هيكل عظمي للبثّ.** قبل وصول أول رمز، اعرض هيكلًا عظميًا أو عنصرًا نائبًا يبيّن أين سيظهر المحتوى.
+- **الكشف التدريجي.** صيّر المحتوى أثناء بثّه. لا تخزّن الاستجابة كاملة ثم تعرضها دفعة واحدة — فذلك يهدر معمار البثّ ويجعل المستخدم ينتظر بلا سبب.
+- **تقدير الوقت.** بالنسبة إلى العمليات البطيئة المعروفة (تحليل مستند كبير، مسارات عمل وكلاء متعددة الخطوات)، اعرض الوقت المتبقي المقدّر.
 
-### Conversation context
+### سياق المحادثة
 
-For chat-style interfaces, the user needs to understand what the AI “knows”:
+في الواجهات على نمط المحادثة، يحتاج المستخدم إلى فهم ما «يعرفه» الذكاء الاصطناعي:
 
-- Show what documents or context the AI has access to for this conversation.
-- Make session boundaries clear—is this a fresh conversation or a continuation?
-- If AI is used across multiple features (chat, search, writing), clarify whether context is shared between them.
+- اعرض المستندات أو السياق الذي يستطيع الذكاء الاصطناعي الوصول إليه لهذه المحادثة.
+- اجعل حدود الجلسة واضحة — هل هذه محادثة جديدة أم استكمال؟
+- إن كان الذكاء الاصطناعي مستخدمًا عبر ميزات عدة (محادثة، بحث، كتابة)، وضّح ما إذا كان السياق مشتركًا بينها.
 
-## Testing AI Features
+## اختبار ميزات الذكاء الاصطناعي
 
-Non-deterministic outputs mean you can’t test AI features the way you test a form submission. The [testing strategy](https://stevekinney.com/courses/enterprise-ui/testing-at-scale) needs adaptation.
+تعني المخرجات غير الحتمية أنك لا تستطيع اختبار ميزات الذكاء الاصطناعي كما تختبر إرسال نموذج. تحتاج [استراتيجية الاختبار](https://stevekinney.com/courses/enterprise-ui/testing-at-scale) إلى تكييف.
 
-The practical approach is a layered stack:
+والمنهج العملي كومة من الطبقات:
 
 ```
 flowchart TB
@@ -549,7 +549,7 @@ flowchart TB
   style eval fill:#f87171,color:#000
 ```
 
-Test everything *around* the model output deterministically—prompt construction, response parsing, state machine transitions, error handling, UI rendering with known fixture data. Use [MSW](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) to mock the AI endpoints with recorded responses for integration tests. For the non-deterministic outputs themselves, use structural assertions:
+اختبر كل شيء *حول* مخرجات النموذج اختبارًا حتميًا — بناء التوجيه، وتحليل الاستجابة، وانتقالات آلة الحالة، ومعالجة الأخطاء، وتصيير الواجهة ببيانات تجريبية معروفة. استخدم [MSW](https://stevekinney.com/courses/enterprise-ui/mock-service-worker) لمحاكاة نقاط نهاية الذكاء الاصطناعي باستجابات مسجّلة لاختبارات التكامل. أما المخرجات غير الحتمية نفسها، فاستخدم معها تحقّقات بنيوية:
 
 ```typescript
 describe('AI Document Summary', () => {
@@ -569,93 +569,93 @@ describe('AI Document Summary', () => {
 });
 ```
 
-For prompt quality evaluation, run automated suites that score outputs using LLM-as-judge or human evaluation whenever a prompt template changes. This is closer to QA than traditional testing, and it belongs in the prompt CI pipeline, not in your unit test suite.
+لتقييم جودة التوجيه، شغّل مجموعات آلية تُقيّم المخرجات بتحكيم LLM أو بتقييم بشري كلما تغيّر قالب توجيه. وهذا أقرب إلى ضمان الجودة من الاختبار التقليدي، وينتمي إلى خط CI للتوجيهات، لا إلى مجموعة اختبارات الوحدات لديك.
 
-## Accessibility for AI Interfaces
+## إمكانية الوصول لواجهات الذكاء الاصطناعي
 
-AI-powered interfaces introduce specific accessibility concerns:
+تُدخل الواجهات المدعومة بالذكاء الاصطناعي همومًا محدّدة في إمكانية الوصول:
 
-- **Screen reader announcements for streaming content.** Use `aria-live="polite"` regions for streaming responses. `aria-live="assertive"` would interrupt the user on every token—which is roughly once per 50 milliseconds. That’s not assistive technology. That’s a denial-of-service attack on someone’s screen reader.
-- **Keyboard navigation.** Chat inputs, message history, action buttons, confirmation cards, and citation panels must be fully keyboard-navigable.
-- **Alternative modalities.** If the AI generates a visualization or diagram, it should also generate alt text. If it generates a code block, ensure it’s in a labeled, navigable region.
-- **Cognitive load.** AI responses can be long and dense. Provide mechanisms to collapse, summarize, or chunk responses. A 2,000-word AI response is not more useful than a 200-word one if the user can’t find the relevant part.
+- **إعلانات قارئ الشاشة للمحتوى المبثوث.** استخدم مناطق `aria-live="polite"` للاستجابات المبثوثة. أما `aria-live="assertive"` فسيقاطع المستخدم عند كل رمز — أي نحو مرة كل 50 مللي ثانية. هذه ليست تقنية مساعدة. بل هجوم حجب خدمة على قارئ شاشة أحدهم.
+- **التنقّل بلوحة المفاتيح.** يجب أن تكون مُدخَلات المحادثة، وسجل الرسائل، وأزرار الإجراءات، وبطاقات التأكيد، ولوحات الاستشهاد قابلة للتنقّل بلوحة المفاتيح بالكامل.
+- **وسائل بديلة.** إن ولّد الذكاء الاصطناعي تصوّرًا أو مخططًا، فينبغي أن يولّد نصًا بديلًا أيضًا. وإن ولّد كتلة شيفرة، فتأكد من أنها في منطقة مُسمّاة قابلة للتنقّل.
+- **الحمل المعرفي.** قد تكون استجابات الذكاء الاصطناعي طويلة وكثيفة. وفّر آليات لطيّ الاستجابات أو تلخيصها أو تجزئتها. فاستجابة من 2000 كلمة ليست أنفع من استجابة من 200 كلمة إن لم يستطع المستخدم العثور على الجزء ذي الصلة.
 
-## Data Privacy and Compliance
+## خصوصية البيانات والامتثال
 
-Enterprise applications need explicit policies for what user data flows through AI models.
+تحتاج تطبيقات المؤسسات سياسات صريحة حول أي بيانات مستخدم تمرّ عبر نماذج الذكاء الاصطناعي.
 
-- **PII detection and redaction.** Before sending user input to an LLM, detect and redact personally identifiable information unless processing PII is explicitly part of the feature. The BFF is the right place for this—not the client.
-- **Data residency.** Some providers process data in specific regions. Enterprise compliance may require data to stay within certain jurisdictions.
-- **Training data opt-out.** Most enterprise API agreements allow opting out of having your data used for model training. Verify this is configured. Then verify it’s actually configured, because “I think we opted out” is not a compliance posture.
-- **Audit logging.** Every AI interaction—prompt, response, user, timestamp, model version, cost—should be logged for compliance audit trails. The BFF captures this naturally as part of the request lifecycle.
+- **كشف المعلومات الشخصية وحجبها.** قبل إرسال إدخال المستخدم إلى LLM، اكشف المعلومات المُعرِّفة للشخصية واحجبها ما لم تكن معالجة تلك المعلومات جزءًا صريحًا من الميزة. والـ BFF هو المكان الصحيح لهذا — لا العميل.
+- **إقامة البيانات.** تعالج بعض المزوّدين البيانات في مناطق محدّدة. وقد يتطلب الامتثال المؤسسي بقاء البيانات ضمن ولايات قضائية معيّنة.
+- **الانسحاب من بيانات التدريب.** تتيح معظم اتفاقيات API المؤسسية الانسحاب من استخدام بياناتك لتدريب النماذج. تحقّق من أن هذا مُهيّأ. ثم تحقّق من أنه مُهيّأ فعلًا، لأن «أظن أننا انسحبنا» ليس موقفًا امتثاليًا.
+- **تسجيل التدقيق.** ينبغي تسجيل كل تفاعل مع الذكاء الاصطناعي — التوجيه، والاستجابة، والمستخدم، والطابع الزمني، ونسخة النموذج، والتكلفة — لمسارات تدقيق الامتثال. ويلتقط الـ BFF هذا طبيعيًا كجزء من دورة حياة الطلب.
 
-## The Architectural Summary
+## الملخّص المعماري
 
-AI integration touches almost every layer of a frontend architecture. The [BFF pattern](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends) becomes the AI gateway. State management needs to handle streaming and partial state. [Observability](https://stevekinney.com/courses/enterprise-ui/observability) needs AI-specific metrics and cost tracking. The [testing strategy](https://stevekinney.com/courses/enterprise-ui/testing-at-scale) needs non-deterministic evaluation. Security needs prompt injection defense. And the design system needs new components—chat bubbles, confidence indicators, citation cards, streaming containers, confirmation dialogs for tool use—that don’t exist in most component libraries yet.
+يمسّ تكامل الذكاء الاصطناعي كل طبقة تقريبًا من طبقات معمار الواجهة الأمامية. فيصير [نمط BFF](https://stevekinney.com/courses/enterprise-ui/backends-for-frontends) بوابة الذكاء الاصطناعي. وتحتاج إدارة الحالة إلى التعامل مع البثّ والحالة الجزئية. وتحتاج [المراقبة](https://stevekinney.com/courses/enterprise-ui/observability) إلى مقاييس خاصة بالذكاء الاصطناعي وتتبّع للتكلفة. وتحتاج [استراتيجية الاختبار](https://stevekinney.com/courses/enterprise-ui/testing-at-scale) إلى تقييم غير حتمي. ويحتاج الأمن إلى دفاع ضد حقن التوجيهات. ويحتاج نظام التصميم إلى مكوّنات جديدة — فقاعات المحادثة، ومؤشرات الثقة، وبطاقات الاستشهاد، وحاويات البثّ، ونوافذ تأكيد استخدام الأدوات — لا وجود لها في معظم مكتبات المكوّنات بعد.
 
-The guiding principles:
+والمبادئ الموجِّهة:
 
-- **Stream everything.** Never make users wait for full generation when you can show tokens as they arrive.
-- **Proxy through a BFF.** Keep API keys, guardrails, rate limits, and audit logs server-side.
-- **Degrade gracefully.** Every AI feature needs a non-AI fallback.
-- **Make AI transparent.** Users must understand what the AI knows, how confident it is, and where its answers come from.
-- **Treat prompts as versioned configuration.** Not as ad-hoc strings concatenated in application code.
+- **بِثّ كل شيء.** لا تجعل المستخدمين ينتظرون التوليد الكامل حين تستطيع عرض الرموز وهي تصل.
+- **مرّر عبر وسيط BFF.** أبقِ مفاتيح API، والضوابط، وحدود المعدّل، وسجلات التدقيق من جهة الخادم.
+- **تدهور برشاقة.** تحتاج كل ميزة ذكاء اصطناعي إلى بديل غير ذكاء اصطناعي.
+- **اجعل الذكاء الاصطناعي شفّافًا.** يجب أن يفهم المستخدمون ما يعرفه الذكاء الاصطناعي، ومدى ثقته، ومن أين تأتي إجاباته.
+- **تعامل مع التوجيهات كتهيئة مُصدَّرة بنسخ.** لا كسلاسل عشوائية مدموجة في شيفرة التطبيق.
 
 ---
 
-## TL;DR
+## الخلاصة السريعة (TL;DR)
 
-### Where Inference Lives
+### أين يعيش الاستدلال
 
-> The first decision: where does the AI processing happen?
+> القرار الأول: أين تحدث معالجة الذكاء الاصطناعي؟
 
-| Approach | Latency | Data privacy | Good for |
+| النهج | الكمون | خصوصية البيانات | جيد لـ |
 | --- | --- | --- | --- |
-| **Cloud API direct** | High | Key exposed ✗ | Never do this |
-| **BFF-proxied API** | High + 1 hop | Server controls ✓ | Most enterprise apps |
-| **Self-hosted model** | Medium | Full control | Regulated industries |
-| **Edge inference** | Medium-Low | Provider-dependent | Moderation, embeddings |
-| **On-device (WebLLM)** | Low after load | Complete | Autocomplete, classification |
+| **API سحابي مباشر** | مرتفع | المفتاح مكشوف ✗ | لا تفعل هذا أبدًا |
+| **API عبر وسيط BFF** | مرتفع + قفزة واحدة | الخادم يتحكّم ✓ | معظم تطبيقات المؤسسات |
+| **نموذج مستضاف ذاتيًا** | متوسط | تحكّم كامل | القطاعات المنظّمة |
+| **استدلال طرفي** | متوسط-منخفض | حسب المزوّد | الإشراف، التضمينات |
+| **على الجهاز (WebLLM)** | منخفض بعد التحميل | كامل | الإكمال التلقائي، التصنيف |
 
-**Default:** BFF-proxied. The BFF holds API keys, enforces rate limits, filters PII, logs for compliance, and streams responses to the client.
-
----
-
-### Streaming UI Patterns
-
-> LLM responses arrive token by token. That changes everything.
-
-- **Transport:** Server-Sent Events (SSE) — unidirectional stream over HTTP.
-- **State machine:** `idle → pending → streaming → complete | error | cancelled`
-- **Partial state:** The response is incomplete during streaming. Render it anyway.
-- **Cancellation:** Users need to stop generation mid-stream. Abort the fetch, clean up state, stop paying for tokens.
-
-**Use the Vercel AI SDK** (`useChat`, `useCompletion`) — it handles SSE parsing, message state, loading, errors, and cancellation.
+**الافتراضي:** عبر وسيط BFF. يحمل الـ BFF مفاتيح API، ويفرض حدود المعدّل، ويرشّح المعلومات الشخصية، ويسجّل للامتثال، ويبثّ الاستجابات إلى العميل.
 
 ---
 
-### Prompt Management
+### أنماط بثّ الواجهة
 
-> Prompts are versioned, tested, reviewed artifacts — not ad-hoc strings.
+> تصل استجابات الـ LLM رمزًا رمزًا. وهذا يغيّر كل شيء.
 
-- Separate prompt templates from application code.
-- Fetch from a prompt registry, not hardcoded in components.
-- **A/B test** prompt versions by routing users to different templates.
-- **Roll back** bad prompts via feature flags, without a code deploy.
-- **Prompt CI** — automated evaluation suites that test prompts against curated inputs.
+- **النقل:** أحداث مُرسَلة من الخادم (SSE) — تدفق أحادي الاتجاه عبر HTTP.
+- **آلة الحالة:** `idle → pending → streaming → complete | error | cancelled`
+- **الحالة الجزئية:** تكون الاستجابة غير مكتملة أثناء البثّ. صيّرها على أي حال.
+- **الإلغاء:** يحتاج المستخدمون إلى إيقاف التوليد في منتصف البثّ. أحبِط الطلب، ونظّف الحالة، وتوقّف عن الدفع مقابل الرموز.
 
-**Prompt injection is the XSS of the AI era.**
-
-- Input validation (flag injection patterns)
-- Role separation (system / user / assistant)
-- Output sanitization before rendering
-- BFF enforces guardrails regardless of client input
+**استخدم Vercel AI SDK** (`useChat`، `useCompletion`) — فهو يتولّى تحليل SSE، وحالة الرسائل، والتحميل، والأخطاء، والإلغاء.
 
 ---
 
-### Tool Use and Agentic Patterns
+### إدارة التوجيهات
 
-> The AI doesn’t just say things — it does things.
+> التوجيهات آثار مُصدَّرة بنسخ ومُختبَرة ومُراجَعة — لا سلاسل عشوائية.
+
+- افصل قوالب التوجيه عن شيفرة التطبيق.
+- اجلبها من سجل توجيهات، لا من مكوّنات مضمّنة.
+- **اختبر A/B** نسخ التوجيه بتوجيه المستخدمين إلى قوالب مختلفة.
+- **تراجع** عن التوجيهات السيئة عبر علامات الميزات، دون نشر شيفرة.
+- **CI للتوجيهات** — مجموعات تقييم آلية تختبر التوجيهات مقابل مُدخَلات مُنتقاة.
+
+**حقن التوجيهات هو XSS عصر الذكاء الاصطناعي.**
+
+- التحقّق من الإدخال (الإشارة إلى أنماط الحقن)
+- الفصل بين الأدوار (نظام / مستخدم / مساعد)
+- تنقية المخرجات قبل التصيير
+- الـ BFF يفرض الضوابط بصرف النظر عن إدخال العميل
+
+---
+
+### استخدام الأدوات والأنماط الوكيلية
+
+> الذكاء الاصطناعي لا يقول أشياء فحسب — بل يفعل أشياء.
 
 ```
 User → "Find docs about Q4 revenue"
@@ -666,59 +666,59 @@ App  → Executes search, returns results to LLM
 LLM  → "I found 3 documents..."
 ```
 
-- **Human-in-the-loop:** Write tools (create, update, delete) always require user confirmation.
-- **Read-only tools** (search, summarize) can be auto-approved.
-- **Authorization extends to AI actions** — the model can only invoke tools the current user is authorized to use.
-- Show each step with inputs and outputs — transparency builds trust.
+- **بمشاركة الإنسان:** أدوات الكتابة (الإنشاء، التحديث، الحذف) تتطلب دائمًا تأكيد المستخدم.
+- **الأدوات للقراءة فقط** (البحث، التلخيص) يمكن الموافقة التلقائية عليها.
+- **التخويل يمتد إلى إجراءات الذكاء الاصطناعي** — لا يستطيع النموذج استدعاء إلا الأدوات المصرّح للمستخدم الحالي باستخدامها.
+- اعرض كل خطوة بمُدخَلاتها ومخرجاتها — الشفافية تبني الثقة.
 
 ---
 
-### RAG and Citation UI
+### RAG وواجهة الاستشهاد
 
-> Retrieval-Augmented Generation grounds answers in your documents.
+> التوليد المعزّز بالاسترجاع يُرسي الإجابات في مستنداتك.
 
-- Render citations inline — numbered references linking to a source panel.
-- Source panel shows the relevant excerpt highlighted in broader context.
-- Enterprise RAG in regulated industries: citation is a compliance requirement, not a UX nicety.
+- صيّر الاستشهادات سطرًا بسطر — مراجع مرقّمة تربط إلى لوحة مصادر.
+- تُظهر لوحة المصادر المقتطف ذا الصلة مُبرَزًا في سياق أوسع.
+- RAG المؤسسي في القطاعات المنظّمة: الاستشهاد شرط امتثال، لا ترف في تجربة المستخدم.
 
-**Context window management:**
+**إدارة نافذة السياق:**
 
-- Show what documents the AI “knows” for this query.
-- When conversation history gets pruned, tell the user.
-- Let users include/exclude documents from the AI’s working set.
+- اعرض المستندات التي «يعرفها» الذكاء الاصطناعي لهذا الاستعلام.
+- حين يُقلَّم سجل المحادثة، أخبر المستخدم.
+- دع المستخدمين يضمّنون/يستثنون مستندات من مجموعة عمل الذكاء الاصطناعي.
 
 ---
 
-### Graceful Degradation for AI
+### التدهور الرشيق للذكاء الاصطناعي
 
-> Every AI feature needs a non-AI fallback.
+> تحتاج كل ميزة ذكاء اصطناعي إلى بديل غير ذكاء اصطناعي.
 
-| Error type | User sees | Recovery |
+| نوع الخطأ | يرى المستخدم | التعافي |
 | --- | --- | --- |
-| Rate limited | “Please wait” | Auto-retry with backoff |
-| Context too long | “Starting fresh” | Auto-summarize history |
-| Content filtered | “Can’t help with that” | Suggest rephrasing |
-| Service unavailable | Non-AI fallback | Feature flag to disable |
+| تجاوز حد المعدّل | «يرجى الانتظار» | إعادة محاولة تلقائية مع تراجع تدريجي |
+| السياق طويل جدًا | «نبدأ من جديد» | تلخيص السجل تلقائيًا |
+| المحتوى مُرشَّح | «لا أستطيع المساعدة في ذلك» | اقتراح إعادة صياغة |
+| الخدمة غير متاحة | بديل غير ذكاء اصطناعي | علامة ميزة للتعطيل |
 
-- AI search degrades to keyword search.
-- Writing assistant degrades to plain text editor.
-- Smart form is still a form.
-- **Feature flags** to disable AI features entirely when the provider is down.
+- بحث الذكاء الاصطناعي يتدهور إلى البحث بالكلمات المفتاحية.
+- مساعد الكتابة يتدهور إلى محرّر نص عادي.
+- النموذج الذكي يبقى نموذجًا.
+- **علامات الميزة** لتعطيل ميزات الذكاء الاصطناعي كليًا حين يكون المزوّد معطّلًا.
 
 ---
 
-### AI-Specific Observability
+### مراقبة خاصة بالذكاء الاصطناعي
 
-> Different failure modes, different metrics.
+> أنماط فشل مختلفة، مقاييس مختلفة.
 
-| Metric | Why it matters |
+| المقياس | لماذا يهم |
 | --- | --- |
-| Time to first token | Perceived responsiveness |
-| Tokens per second | Streaming throughput |
-| Token usage (in + out) | **Cost tracking** |
-| Regeneration rate | Quality signal |
-| Citation accuracy | RAG quality |
+| الزمن حتى أول رمز | الاستجابة المُدرَكة |
+| الرموز في الثانية | إنتاجية البثّ |
+| استخدام الرموز (إدخال + إخراج) | **تتبّع التكلفة** |
+| معدّل إعادة التوليد | إشارة الجودة |
+| دقة الاستشهاد | جودة RAG |
 
-- Track cost per user, per feature, per model.
-- **Prompt caching** (Anthropic): cached reads cost 90% less. Place stable content before variable content in prompts.
-- Audit log every AI interaction: prompt, response, user, model version, cost.
+- تتبّع التكلفة لكل مستخدم، ولكل ميزة، ولكل نموذج.
+- **التخزين المؤقت للتوجيهات** (Anthropic): تكلّف القراءات المخزّنة 90% أقل. ضع المحتوى الثابت قبل المحتوى المتغيّر في التوجيهات.
+- سجّل تدقيق كل تفاعل مع الذكاء الاصطناعي: التوجيه، والاستجابة، والمستخدم، ونسخة النموذج، والتكلفة.

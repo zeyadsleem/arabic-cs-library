@@ -1,18 +1,18 @@
 ---
-title: "Steve's Favorite and Other Popular Settings"
-lang: en
+title: "إعدادات Steve المفضّلة وإعدادات شائعة أخرى"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/favorite-vs-code-settings"
 ---
 
-## Steve’s Favorites
+## مفضّلات Steve
 
-I’m a relatively simple person, but here are some settings I feel strongly about—in descending order.
+أنا شخص بسيط نسبيًا، لكن هذه بعض الإعدادات التي أتشبّث برأيي فيها، بترتيب تنازلي.
 
 ### `workbench.editor.revealIfOpen`
 
-The `workbench.editor.revealIfOpen` setting is your Visual Studio Code version of, “Hey, I already have that file open!” Instead of cluttering your workspace with duplicate tabs, Visual Studio Code just brings the existing tab into focus. Here’s the breakdown:
+إعداد `workbench.editor.revealIfOpen` هو نسخة Visual Studio Code من عبارة: «مهلا، لديّ هذا الملف مفتوحًا بالفعل!». فبدلًا من إثقال مساحة عملك بتبويبات مكرّرة، يكتفي Visual Studio Code بإبراز التبويب الموجود. وإليك التفصيل:
 
-When you open a file that’s already open in another tab, Visual Studio Code simply reveals the existing tab rather than opening a new one. No more dueling duplicates.
+عند فتح ملف مفتوح بالفعل في تبويب آخر، يكشف Visual Studio Code التبويب الموجود بدلًا من فتح تبويب جديد. لا مزيد من التبويبات المكرّرة المتنافرة.
 
 ### `updateImportsOnFileMove`
 
@@ -21,39 +21,39 @@ When you open a file that’s already open in another tab, Visual Studio Code si
 "typescript.updateImportsOnFileMove.enabled": "always",
 ```
 
-Whenever you move (or rename) a file, Visual Studio Code scans your project and automatically updates all import paths that reference the moved file. No more broken links.
+كلما نقلت ملفًا (أو أعدت تسميته)، يفحص Visual Studio Code مشروعك ويحدّث تلقائيًا كل مسارات الاستيراد التي تشير إلى الملف المنقول. لا مزيد من الروابط المعطوبة.
 
-#### How It Works
+#### كيف يعمل
 
-- **Behind the Scenes:** When you move a file, the language service kicks in and looks for any import statements that refer to that file’s old location. It then rewrites them with the new path.
-- **“Always” Mode:** With the setting set to “always”, this process happens automatically—without prompting you. It’s like having a personal assistant who never forgets to update your contacts when you change your number.
+- **في الخلفية:** عند نقل ملف، تتدخّل خدمة اللغة وتبحث عن أي عبارات استيراد تشير إلى الموقع القديم للملف، ثم تعيد كتابتها بالمسار الجديد.
+- **وضع “always”:** مع ضبط الإعداد على “always”، تجري هذه العملية تلقائيًا دون أن يسألك. الأمر أشبه بمساعد شخصي لا ينسى تحديث جهات اتصالك عندما تغيّر رقمك.
 
-#### Why I Like It
+#### لماذا يعجبني
 
-- **Error Prevention:** No more mysterious “module not found” errors due to outdated paths.
-- **Effortless Refactoring:** You can rearrange your project structure without the fear of breaking your import statements.
-- **Team-Friendly:** Ensures consistency and saves your team from the headache of manually updating imports across multiple files.
+- **منع الأخطاء:** لا مزيد من أخطاء “module not found” الغامضة بسبب مسارات قديمة.
+- **إعادة هيكلة بلا عناء:** يمكنك إعادة ترتيب بنية مشروعك دون خوف من كسر عبارات الاستيراد.
+- **ملائم للفريق:** يضمن الاتساق ويخلّص فريقك من صداع تحديث الاستيرادات يدويًا في ملفات متعددة.
 
-Both settings ensure that whenever you move a file in your JavaScript or TypeScript project, Visual Studio Code automatically updates the corresponding import paths. This keeps your code clean, functional, and free from those pesky path errors—letting you focus on building features instead of debugging import statements.
+ويضمن الإعدادان معًا أن Visual Studio Code يحدّث تلقائيًا مسارات الاستيراد المقابلة كلما نقلت ملفًا في مشروع JavaScript أو TypeScript. وهذا يبقي شيفرتك نظيفة وعاملة وخالية من أخطاء المسارات المزعجة، ويتيح لك التركيز على بناء الميزات بدلًا من تصحيح أخطاء عبارات الاستيراد.
 
 ### `javascript.preferences.organizeImports`
 
-This setting is basically Visual Studio Code’s way of letting you keep your import statements as neat as a well-organized sock drawer. Here’s the lowdown:
+هذا الإعداد هو طريقة Visual Studio Code في الأساس لتُبقي عبارات الاستيراد مرتّبة كدرج جوارب منظّم بعناية. وإليك الخلاصة:
 
-#### What It Does
+#### ما يفعله
 
-- **Automatic Cleanup:** When enabled, Visual Studio Code’s JavaScript language service will tidy up your imports by removing unused ones, sorting them, and grouping them logically. It’s like having a digital Marie Kondo for your code.
-- **Manual or Auto:** You can trigger this manually via the “Organize Imports” command or automatically when you save your file if you’ve configured the appropriate code action.
+- **تنظيف تلقائي:** عند تمكينه، ترتّب خدمة JavaScript في Visual Studio Code استيراداتك بحذف غير المستخدم منها وترتيبها وتجميعها منطقيًا. الأمر أشبه بوجود Marie Kondo رقمية لشيفرتك.
+- **يدوي أو تلقائي:** يمكنك تشغيله يدويًا عبر أمر “Organize Imports”، أو تلقائيًا عند حفظ ملفك إن كنت قد ضبطت إجراء الشيفرة المناسب.
 
-#### How It Works
+#### كيف يعمل
 
-- **Integration with Code Actions:** The setting works in tandem with the code action “source.organizeImports”. When you save (and if you’ve set it up in editor.codeActionsOnSave), Visual Studio Code will run through your file and re-arrange your import statements.
-- **Keeps Your Code Lean:** By getting rid of unused imports and sorting the rest, it ensures that your code doesn’t accumulate unnecessary baggage—keeping it cleaner and easier to read.
+- **التكامل مع إجراءات الشيفرة:** يعمل الإعداد جنبًا إلى جنب مع إجراء الشيفرة “source.organizeImports”. وعند الحفظ (وإن كنت قد أعددته في editor.codeActionsOnSave)، يمر Visual Studio Code على ملفك ويعيد ترتيب عبارات الاستيراد.
+- **يبقي شيفرتك خفيفة:** بالتخلص من الاستيرادات غير المستخدمة وترتيب الباقي، يضمن ألا تتراكم في شيفرتك أعباء غير ضرورية، فتبقى أنظف وأسهل قراءة.
 
-#### How to Configure
+#### كيفية الضبط
 
-1. **Set the Preference:** Make sure you have “javascript.preferences.organizeImports”: true in your Visual Studio Code settings (if applicable).
-2. **Enable on Save (Optional):** Add this to your settings to have it auto-run on save:
+1. **اضبط التفضيل:** تأكّد من وجود “javascript.preferences.organizeImports”: true في إعدادات Visual Studio Code لديك (إن كان ذلك منطبقًا).
+2. **مكّنه عند الحفظ (اختياري):** أضف هذا إلى إعداداتك ليعمل تلقائيًا عند الحفظ:
 
 ```typescript
 "editor.codeActionsOnSave": {
@@ -61,56 +61,56 @@ This setting is basically Visual Studio Code’s way of letting you keep your im
 }
 ```
 
-**Enjoy the Cleanup:** Now every time you save, your imports get a tidy makeover—no more rogue, unused modules hanging around!
+**استمتع بالتنظيف:** الآن في كل مرة تحفظ فيها، تخضع استيراداتك لعملية تنسيق مرتّبة، ولا مزيد من الوحدات الشاردة غير المستخدمة!
 
-#### Why It’s Worth Using
+#### لماذا يستحقّ الاستخدام
 
-- **Consistency:** Ensures that all your files follow the same organized pattern.
-- **Reduced Clutter:** Eliminates dead code (unused imports) that might confuse or bloat your files.
-- **Better Collaboration:** Clean, organized imports make it easier for teammates (or future you) to understand your code quickly.
+- **الاتساق:** يضمن أن كل ملفاتك تتبع النمط المنظّم نفسه.
+- **فوضى أقل:** يزيل الشيفرة الميتة (الاستيرادات غير المستخدمة) التي قد تربك ملفاتك أو تضخّمها.
+- **تعاون أفضل:** الاستيرادات النظيفة المنظّمة تجعل فهم شيفرتك أسرع للزملاء (أو لك في المستقبل).
 
-In short, javascript.preferences.organizeImports is a small setting that delivers big-time benefits, keeping your codebase sharp without you having to lift a finger (or at least not for import cleanup). No more manual sorting—just pure, automated tidiness!
+باختصار، javascript.preferences.organizeImports إعداد صغير يحقّق فوائد كبيرة، ويبقي قاعدتك البرمجية متينة دون أن ترفع إصبعًا (أو على الأقل ليس لتنظيف الاستيرادات). لا مزيد من الترتيب اليدوي، بل نظافة تلقائية خالصة!
 
-## Other Popular Settings
+## إعدادات شائعة أخرى
 
-I don’t love all of these, but other people do and you might too. Here are a few popular Visual Studio Code tweaks that many developers swear by, along with why they might tickle your fancy:
+لا أحبّ كل هذه الإعدادات، لكن آخرين يحبّونها وقد تحبّها أنت أيضًا. وإليك بعض التعديلات الشائعة في Visual Studio Code التي يتفانى كثير من المطوّرين في الدفاع عنها، مع سبب إعجابك المحتمل بها:
 
 ### `files.autoSave`
 
-- Automatically saves your changes based on your chosen trigger (e.g., after a delay, when focus changes, or on window change).
-- It’s like having an overzealous backup buddy who never lets you lose your unsaved genius.
+- يحفظ تغييراتك تلقائيًا بناءً على المُشغّل الذي تختاره (مثلًا بعد مهلة زمنية، أو عند تغيّر التركيز، أو عند تغيّر النافذة).
+- الأمر أشبه بصديق نسخ احتياطي مفرط الحماس لا يدعك تفقد عبقرتك غير المحفوظة أبدًا.
 
 ### `editor.minimap.enabled`
 
-- Toggles the minimap—a little bird’s-eye view of your code—on or off.
-- For those who love a visual map of their code or want to reduce on-screen clutter if the minimap feels like extra baggage.
+- يشغّل الخريطة المصغّرة (minimap)، وهي نظرة من عُلٍّ على شيفرتك، أو يوقفها.
+- لمن يحبّون خريطة مرئية لشيفرتهم، أو لمن يريدون تقليل الفوضى على الشاشة إن كانت الخريطة المصغّرة عبئًا إضافيًا.
 
 ### `editor.wordWrap`
 
-- Wraps long lines of code so you don’t have to scroll sideways forever.
-- Keeps your code readable without feeling like you’re stuck in an endless horizontal tunnel.
+- يلفّ أسطر الشيفرة الطويلة حتى لا تضطر إلى التمرير جانبيًا إلى ما لا نهاية.
+- يبقي شيفرتك مقروءة دون أن تشعر بأنك عالق في نفق أفقي لا ينتهي.
 
 ### `editor.renderWhitespace`
 
-- Displays invisible characters like spaces, tabs, and line breaks.
-- Handy for catching sneaky formatting issues, so you always know exactly what’s going on behind the scenes.
+- يعرض الأحرف غير المرئية مثل المسافات ومحارف الجدولة وفواصل الأسطر.
+- وهو مفيد في اكتشاف مشكلات التنسيق الخفيّة، فتتيقّن دائمًا مما يجري في الخلفية.
 
 ### `editor.cursorSmoothCaretAnimation`
 
-- Gives your cursor movement a smooth, animated glide.
-- It may not affect functionality, but it sure makes navigating your code feel like a dance routine.
+- يمنح حركة المؤشر انزلاقًا سلسًا متحرّكًا.
+- قد لا يؤثّر في الوظائف، لكنه بالتأكيد يجعل التنقل في شيفرتك أشبه بفاصل راقص.
 
 ### `workbench.iconTheme`
 
-- Lets you choose a different set of file icons, so your file tree can look as stylish as your code.
-- A fresh icon theme can inject some personality into your workspace—think of it as a makeover for your file explorer.
+- يتيح لك اختيار مجموعة مختلفة من أيقونات الملفات، فيبدو شجرة ملفاتك أنيقًا مثل شيفرتك.
+- يمكن لسمة أيقونات جديدة أن تضيف شخصية إلى مساحة عملك، فاعتبره تحديثًا لمظهر مستكشف الملفات.
 
 ### `editor.codeLens`
 
-- Adds inline annotations for references, test statuses, and more.
-- It’s like having tiny, helpful post-it notes in your code, keeping track of important info right where you need it.
+- يضيف تعليقات مضمّنة للمراجع وحالات الاختبارات وغير ذلك.
+- الأمر أشبه بملاحظات لاصقة صغيرة مفيدة داخل شيفرتك، تتابع المعلومات المهمة في المكان الذي تحتاجها فيه بالضبط.
 
 ### `terminal.integrated.fontFamily`
 
-- Lets you set your favorite terminal font for a more personalized or visually appealing integrated terminal.
-- Because even your command line deserves to look cool and feel comfortable.
+- يتيح لك ضبط الخط المفضل لديك للطرفية المدمجة لتصبح أكثر تخصيصًا أو جمالًا.
+- لأن سطر الأوامر لديك يستحق أيضًا مظهرًا رائعًا وإحساسًا مريحًا.

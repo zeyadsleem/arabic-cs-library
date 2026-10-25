@@ -1,14 +1,14 @@
 ---
-title: "More on Multi-Root Namespaces"
-lang: en
+title: "المزيد عن النطاقات متعدّدة الجذور"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/more-on-multi-root-namespaces"
 ---
 
-Some additional notes that we *probably* won’t get to, but I’ll include here just in case.
+بعض الملاحظات الإضافية التي *لن نصل* إليها على الأرجح، لكنني أُدرجها هنا احتياطًا.
 
-## Workspace File Structure and Persistence
+## بنية ملف مساحة العمل واستمراريته
 
-Multi-root workspaces are defined by a `.code-workspace` file, which not only lists the folders included in the workspace but also allows you to store workspace-specific settings and configurations. This file can be saved, version controlled, and shared with your team, ensuring that everyone uses a consistent development environment. For example:
+تُعرَّف مساحات العمل متعدّدة الجذور بملف `.code-workspace`، وهو لا يسرد المجلدات المشمولة في مساحة العمل فحسب، بل يتيح لك أيضًا تخزين إعدادات وتكوينات خاصة بمساحة العمل. ويمكن حفظ هذا الملف وإدارته بالتحكّم في الإصدارات ومشاركته مع فريقك، بما يضمن أن يستخدم الجميع بيئة تطوير متّسقة. فمثلًا:
 
 ```json
 {
@@ -29,22 +29,22 @@ Multi-root workspaces are defined by a `.code-workspace` file, which not only li
 }
 ```
 
-> **Save your workspace as a `.code-workspace` file to easily reopen and share your multi-root configuration.**
+> **احفظ مساحة عملك في ملف `.code-workspace` لتتمكّن بسهولة من إعادة فتح إعدادك متعدّد الجذور ومشاركته.**
 
-## Advanced Workspace Management
+## إدارة متقدّمة لمساحة العمل
 
-Visual Studio Code provides commands to manage workspace folders dynamically. Use the Command Palette to run **“Workspaces: Add Folder to Workspace”** or **“Workspaces: Remove Folder from Workspace”** to quickly adjust your workspace. You can also reorder folders by dragging them in the Explorer, allowing you to prioritize certain projects.
+يوفّر Visual Studio Code أوامر لإدارة مجلدات مساحة العمل ديناميكيًا. استخدم لوحة الأوامر لتشغيل **“Workspaces: Add Folder to Workspace”** أو **“Workspaces: Remove Folder from Workspace”** لتعديل مساحة عملك بسرعة. ويمكنك أيضًا إعادة ترتيب المجلدات بسحبها في Explorer، مما يتيح لك إعطاء أولوية لمشاريع معيّنة.
 
-> **Reordering your workspace folders can help maintain focus by placing the most critical projects at the top of your Explorer view.**
+> **إعادة ترتيب مجلدات مساحة عملك تساعدك على الحفاظ على التركيز بوضع المشاريع الأكثر أهمية في أعلى عرض Explorer.**
 
-## Version Control Across Multiple Folders
+## التحكّم في الإصدارات عبر مجلدات متعدّدة
 
-Each folder in a multi-root workspace can have its own version control settings, enabling you to work with separate Git repositories simultaneously. This means you can stage, commit, and push changes independently for each project while still benefiting from a unified interface. Additionally, workspace-level settings can help standardize linting and formatting rules across all projects.
+يمكن أن يكون لكل مجلد في مساحة عمل متعدّدة الجذور إعداداته الخاصة للتحكّم في الإصدارات، مما يتيح لك العمل على مستودعات Git منفصلة في الوقت نفسه. ويعني ذلك أنك تستطيع تجهيز التغييرات وإيداعها ودفعها بشكل مستقل لكل مشروع مع الاستفادة في الوقت نفسه من واجهة موحّدة. وإضافة إلى ذلك، يمكن أن تساعد إعدادات مستوى مساحة العمل في توحيد قواعد الفحص والتنسيق (linting and formatting) بين جميع المشاريع.
 
-> **Leverage multi-root workspaces to keep repositories isolated but manage them in one window, reducing context switching between different VS Code instances.**
+> **استفد من مساحات العمل متعدّدة الجذور لإبقاء المستودعات معزولة مع إدارتها في نافذة واحدة، مما يقلّل التنقّل بين نُسخ VS Code المختلفة.**
 
-## Integrated Task and Debugging Configurations
+## إعدادات المهام والتنقيح المدمجة
 
-Multi-root workspaces allow you to define tasks and debugging configurations that span multiple folders. In your `.code-workspace` file, you can specify tasks that run commands in a particular folder or even trigger compound tasks across different projects. Similarly, workspace-level launch configurations can help you debug interactions between services, such as a front-end application connecting to a back-end API.
+تتيح لك مساحات العمل متعدّدة الجذور تعريف مهام وإعدادات تنقيح تمتدّ عبر مجلدات متعدّدة. وفي ملف `.code-workspace`، يمكنك تحديد مهام تشغّل أوامر في مجلد معيّن أو تُفعّل حتى مهام مركّبة عبر مشاريع مختلفة. وعلى نحو مماثل، يمكن أن تساعد إعدادات التشغيل على مستوى مساحة العمل في تنقيح التفاعلات بين الخدمات، مثل تطبيق للواجهة الأمامية يتّصل بواجهة برمجية للجهة الخلفية.
 
-> **Use compound configurations in your `launch.json` to start multiple services concurrently, ensuring a cohesive debugging experience across your entire project.**
+> **استخدم الإعدادات المركّبة في `launch.json` لبدء خدمات متعدّدة في آنٍ واحد، بما يضمن تجربة تنقيح متماسكة عبر مشروعك كاملًا.**

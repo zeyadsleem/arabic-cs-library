@@ -1,29 +1,29 @@
 ---
-title: "Visual Studio Code Tasks"
-lang: en
+title: "مهام Visual Studio Code"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-tasks"
 ---
 
-`tasks.json` is a configuration file in Visual Studio Code that defines automated tasks you can run from the editor. Instead of manually typing the same build or test commands in the terminal (ugh, repetitive strain, anyone?), you can click a button, press a shortcut, or let Visual Studio Code trigger these tasks automatically.
+`tasks.json` ملف تهيئة في Visual Studio Code يعرّف مهامًا مؤتمتة يمكنك تشغيلها من المحرّر. فبدلًا من كتابة أوامر البناء أو الاختبار نفسها يدويًا في الطرفية (أواه، من يريد إجهادًا متكرّرًا؟)، يمكنك النقر على زر، أو الضغط على اختصار، أو ترك Visual Studio Code يشغّل هذه المهام تلقائيًا.
 
-It lives inside the `.vscode` folder, typically at:
+ويقع داخل مجلد `.vscode`، عادةً في:
 
 ```bash
 .vscode/tasks.json
 ```
 
-In [Multi-Root Workspaces](https://stevekinney.com/courses/visual-studio-code/multi-root-workspaces), each folder can maintain its own `tasks.json`, or you can set a single overarching tasks file for your workspace.
+وفي [مساحات العمل متعددة الجذور](https://stevekinney.com/courses/visual-studio-code/multi-root-workspaces)، يمكن لكل مجلد أن يحتفظ بملف `tasks.json` الخاص به، أو يمكنك ضبط ملف مهام شامل واحد لمساحة عملك.
 
-## Why Use Tasks in Visual Studio Code?
+## لماذا تستخدم المهام في Visual Studio Code؟
 
-1. **Consistency**: Everyone on the team can share the same commands and parameters, so no one can say, “But it works on my machine…”
-2. **Speed**: With tasks, you just press a key combo (`Ctrl+Shift+B` on Windows/Linux or `Cmd+Shift+B` on macOS by default) or select a task from the Command Palette to run everything from build scripts to Docker commands.
-3. **Automation**: Chain tasks to build, test, lint, and deploy in one fell swoop.
-4. **Integration**: Tasks play nicely with Visual Studio Code’s debugging and problem matchers (integrated error detection in your code).
+1. **الاتساق**: يمكن لكل أعضاء الفريق مشاركة الأوامر والمعاملات نفسها، فلا يستطيع أحد أن يقول: «لكنها تعمل على جهازي…»
+2. **السرعة**: مع المهام، ما عليك إلا الضغط على مجموعة مفاتيح (`Ctrl+Shift+B` على Windows/Linux أو `Cmd+Shift+B` على macOS افتراضيًا) أو اختيار مهمة من لوحة الأوامر لتشغيل كل شيء من سكربتات البناء إلى أوامر Docker.
+3. **الأتمتة**: اربط المهام لتبني وتختبر وتفحص وتنشر دفعة واحدة.
+4. **التكامل**: تنسجم المهام جيدًا مع التصحيح ومطابِقات المشكلات في Visual Studio Code (كشف الأخطاء المدمج في شيفرتك).
 
-## Basic Structure
+## البنية الأساسية
 
-Here’s a minimal example of a `tasks.json` file:
+وإليك مثالًا مبسّطًا لملف `tasks.json`:
 
 ```json
 {
@@ -44,21 +44,21 @@ Here’s a minimal example of a `tasks.json` file:
 }
 ```
 
-### Tasting Notes
+### ملاحظات توضيحية
 
-- **version**: Must be `"2.0.0"` for all modern usage.
-- **tasks**: An array of objects, each describing a specific task.
-- **label**: Human-readable name shown when you run tasks in Visual Studio Code.
-- **type**: Commonly `shell` (executes in your OS shell) or `process` (spawns a subprocess).
-- **command**: The actual command to run (`npm run build`, `gulp`, `make`, etc.).
-- **problemMatcher**: Tells Visual Studio Code how to parse compiler, test, or linter errors and warnings. `$tsc` matches TypeScript compiler output, `$eslint-stylish` for ESLint, etc.
-- **group**: Tasks can be grouped under `"build"`, `"test"`, or custom groups.
+- **version**: يجب أن يكون `"2.0.0"` في كل الاستخدامات الحديثة.
+- **tasks**: مصفوفة من الكائنات، يصف كل منها مهمة محدّدة.
+- **label**: اسم مقروء يظهر عند تشغيل المهام في Visual Studio Code.
+- **type**: غالبًا `shell` (ينفّذ في صدفة نظام تشغيلك) أو `process` (يشغّل عملية فرعية).
+- **command**: الأمر الفعلي الذي سيُنفَّذ (`npm run build` و `gulp` و `make` وغيرها).
+- **problemMatcher**: يخبر Visual Studio Code كيف يحلّل أخطاء المصرّف أو الاختبارات أو أداة فحص الشيفرة وتحذيراتها. ويطابق `$tsc` مخرجات مصرّف TypeScript، و `$eslint-stylish` مخرجات ESLint، وهكذا.
+- **group**: يمكن تجميع المهام تحت `"build"` أو `"test"` أو مجموعات مخصّصة.
 
-## Common Task Types
+## أنواع المهام الشائعة
 
-### Shell Tasks
+### مهام الصدفة
 
-Most typical scenario: run a script or command in your shell. Great for quick builds and tests.
+السيناريو الأكثر شيوعًا: تشغيل سكربت أو أمر في صدفة نظامك. وهو ممتاز للبناءات والاختبارات السريعة.
 
 ```json
 {
@@ -68,9 +68,9 @@ Most typical scenario: run a script or command in your shell. Great for quick bu
 }
 ```
 
-### Process Tasks
+### مهام العمليات
 
-Runs the command as a subprocess without typical shell expansions. You might need to specify `command` and `args` more explicitly:
+يشغّل الأمر كعملية فرعية دون توسّعات الصدفة المعتادة. وقد تحتاج إلى تحديد `command` و `args` بشكل أكثر صراحةً:
 
 ```json
 {
@@ -81,10 +81,10 @@ Runs the command as a subprocess without typical shell expansions. You might nee
 }
 ```
 
-### Gulp, Grunt, MSBuild, and Make
+### مهام Gulp و Grunt و MSBuild و Make
 
-Visual Studio Code can detect certain tasks automatically from your gulp, grunt, or MSBuild project definitions. However, you can still define them manually in tasks.json if you want more control or a custom approach.
+يستطيع Visual Studio Code اكتشاف بعض المهام تلقائيًا من تعريفات مشروع gulp أو grunt أو MSBuild. ومع ذلك، يمكنك تعريفها يدويًا في tasks.json إن أردت تحكّمًا أكبر أو أسلوبًا مخصّصًا.
 
-> **I can’t answer any questions on Gulp, Grunt, MSBuild, or Make**
+> **لا أستطيع الإجابة عن أي أسئلة حول Gulp أو Grunt أو MSBuild أو Make**
 >
-> I don’t use any of these tools—these days, at least—and cannot speak to them.
+> لا أستخدم أيًا من هذه الأدوات، على الأقل في هذه الأيام، ولا أستطيع الحديث عنها.

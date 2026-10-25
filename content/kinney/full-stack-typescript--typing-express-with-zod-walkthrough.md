@@ -1,10 +1,10 @@
 ---
-title: "Adding Types to Express with Zod"
-lang: en
+title: "إضافة الأنواع إلى Express مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/typing-express-with-zod-walkthrough"
 ---
 
-Let’s add some schema validation to our Express application. We’ll start by sketching out our schemas.
+لنضف بعض التحقق من المخطط إلى تطبيق Express لدينا. وسنبدأ برسم مخططاتنا.
 
 ```typescript
 const TaskSchema = z.object({
@@ -18,9 +18,9 @@ const NewTaskSchema = TaskSchema.omit({ id: true, completed: true });
 const UpdateTaskSchema = TaskSchema.partial().omit({ id: true });
 ```
 
-## Validating Our Tasks from the Database
+## التحقق من المهام القادمة من قاعدة البيانات
 
-The first step is making sure what we’re getting back from the database is valid.
+الخطوة الأولى هي التأكد من أن ما نسترجعه من قاعدة البيانات صالح.
 
 ```typescript
 // Validate the task
@@ -29,7 +29,7 @@ const result = TaskSchema.parse(task);
 return res.json(result);
 ```
 
-It’ll technically blow up—but that’s because SQLite stores our `completed` boolean as either a `1` or a `0`. Luckily, we can coerce it into what we’re expecting.
+سينفجر الأمر تقنيًا، لكن السبب أن SQLite تخزّن قيمة `completed` المنطقية إما كـ `1` أو `0`. ولحسن الحظ، يمكننا تحويلها قسريًا إلى ما نتوقعه.
 
 ```typescript
 const TaskSchema = z.object({
@@ -40,21 +40,21 @@ const TaskSchema = z.object({
 });
 ```
 
-We could also choose to shorten everything like this:
+ويمكننا أيضًا اختيار اختصار كل شيء هكذا:
 
 ```typescript
 const task = TaskSchema.or(z.undefined()).parse(await getTask.get([id]));
 ```
 
-### Validating All the Tasks
+### التحقق من كل المهام
 
-We can do something similar to `/tasks`.
+يمكننا فعل شيء مشابه للمسار `/tasks`.
 
 ```typescript
 const TasksSchema = z.array(TaskSchema);
 ```
 
-It’ll now look like this:
+وسيصبح الآن بهذا الشكل:
 
 ```typescript
 app.get('/tasks', async (req: Request, res: Response) => {
@@ -70,9 +70,9 @@ app.get('/tasks', async (req: Request, res: Response) => {
 });
 ```
 
-## Adding Schema Validation to the Request Body
+## إضافة التحقق من المخطط إلى جسم الطلب
 
-We can use `NewTaskSchema` here.
+يمكننا استخدام `NewTaskSchema` هنا.
 
 ```typescript
 app.post('/tasks', async (req: Request, res: Response) => {
@@ -86,9 +86,9 @@ app.post('/tasks', async (req: Request, res: Response) => {
 });
 ```
 
-### Updating Tasks
+### تحديث المهام
 
-Again, there are no suprises here.
+ومرة أخرى، لا مفاجآت هنا.
 
 ```typescript
 app.put('/tasks/:id', async (req: Request, res: Response) => {
@@ -107,6 +107,6 @@ app.put('/tasks/:id', async (req: Request, res: Response) => {
 });
 ```
 
-## Next
+## التالي
 
-- [Validating Request Parameters](https://stevekinney.com/courses/full-stack-typescript/express-zod-params)
+- [التحقق من معاملات الطلب](https://stevekinney.com/courses/full-stack-typescript/express-zod-params)

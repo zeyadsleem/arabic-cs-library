@@ -1,36 +1,36 @@
 ---
-title: "Class Validator and Class Transformer"
-lang: en
+title: "التحقق بالأصناف وتحويل الكائنات"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/class-validator-class-transformer-express"
 ---
 
-While basic type checking and libraries like [Zod](https://www.npmjs.com/package/zod) provide robust validation, advanced scenarios may require more sophisticated techniques. This guide explores using [`class-validator`](https://www.npmjs.com/package/class-validator) and [`class-transformer`](https://www.npmjs.com/package/class-transformer) for object-oriented validation, as well as crafting custom type guards for complex logic.
+بينما يوفّر فحص الأنواع الأساسي ومكتبات مثل [Zod](https://www.npmjs.com/package/zod) تحققًا متينًا، قد تحتاج السيناريوهات المتقدّمة إلى تقنيات أكثر تطورًا. ويستعرض هذا الدليل استخدام [`class-validator`](https://www.npmjs.com/package/class-validator) و[`class-transformer`](https://www.npmjs.com/package/class-transformer) للتحقق الكائني، فضلًا عن صياغة حرّاس أنواع مخصّصين لمنطق معقّد.
 
-## Object-Oriented Validation with `class-validator` and `class-transformer`
+## التحقق الكائني باستخدام `class-validator` و`class-transformer`
 
-`class-validator` and `class-transformer` work synergistically to provide powerful object-oriented validation. `class-validator` uses decorators to define validation rules, while `class-transformer` handles object transformations.
+يعمل `class-validator` و`class-transformer` معًا بشكل تآزري لتوفير تحقق كائني قوي. ويستخدم `class-validator` المزيّنات (decorators) لتعريف قواعد التحقق، بينما يتولّى `class-transformer` تحويلات الكائنات.
 
-### Installation
+### التثبيت
 
 ```bash
 npm install class-validator class-transformer reflect-metadata
 ```
 
-This installs:
+يثبّت هذا:
 
-- [`class-validator`](https://www.npmjs.com/package/class-validator): For decorator-based validation
-- [`class-transformer`](https://www.npmjs.com/package/class-transformer): For object transformation
-- [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata): Required for decorator metadata
+- [`class-validator`](https://www.npmjs.com/package/class-validator): للتحقق القائم على المزيّنات
+- [`class-transformer`](https://www.npmjs.com/package/class-transformer): لتحويل الكائنات
+- [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata): مطلوب لبيانات المزيّنات الوصفية
 
-### Enable Decorator Metadata:
+### تفعيل بيانات المزيّنات الوصفية:
 
-Ensure `reflect-metadata` is imported at the top of your entry file (e.g., `index.ts`):
+تأكد من استيراد `reflect-metadata` في أعلى ملف الدخول لديك (مثل `index.ts`):
 
 ```typescript
 import 'reflect-metadata'; // Import reflect-metadata once in your app
 ```
 
-Also, ensure that your `tsconfig.json` has the following options enabled:
+كذلك تأكد من تفعيل الخيارات التالية في `tsconfig.json`:
 
 ```json
 {
@@ -42,9 +42,9 @@ Also, ensure that your `tsconfig.json` has the following options enabled:
 }
 ```
 
-### Define Validation Classes:
+### تعريف أصناف التحقق:
 
-Create classes that represent your request bodies, and use decorators from `class-validator` to define validation rules.
+أنشئ أصنافًا تمثّل أجسام طلباتك، واستخدم المزيّنات من `class-validator` لتعريف قواعد التحقق.
 
 ```typescript
 import { IsString, IsEmail, MinLength, IsOptional, IsInt, Min, Max } from 'class-validator';
@@ -69,9 +69,9 @@ export class CreateUserDto {
 }
 ```
 
-### Validation Middleware:
+### وسيط التحقق:
 
-Create middleware to validate incoming requests using `class-validator` and `class-transformer`.
+أنشئ وسيطًا للتحقق من الطلبات الواردة باستخدام `class-validator` و`class-transformer`.
 
 ```typescript
 import { Request, Response, NextFunction } from 'express';
@@ -91,9 +91,9 @@ export async function validateDto(req: Request, res: Response, next: NextFunctio
 }
 ```
 
-### Using Validation Middleware in Routes:
+### استخدام وسيط التحقق في المسارات:
 
-Apply the middleware to your routes.
+طبّق الوسيط على مساراتك.
 
 ```typescript
 import express, { Request, Response } from 'express';
@@ -111,11 +111,11 @@ app.post('/users', validateDto, (req: Request<{}, {}, CreateUserDto>, res: Respo
 });
 ```
 
-## Custom Type Guards for Complex Validation
+## حرّاس أنواع مخصّصون للتحقق المعقّد
 
-For validation logic that goes beyond simple decorators, custom type guards offer flexibility.
+لمنطق التحقق الذي يتجاوز المزيّنات البسيطة، يوفّر حرّاس الأنواع المخصّصون مرونة.
 
-### Example: Validating a Custom Date Format
+### مثال: التحقق من صيغة تاريخ مخصّصة
 
 ```typescript
 function isValidCustomDate(value: any): value is string {
@@ -147,9 +147,9 @@ app.post('/events', validateEventRequest, (req: Request<any, any, EventRequest>,
 });
 ```
 
-### Benefits
+### الفوائد
 
-- **Object-Oriented Validation:** `class-validator` and `class-transformer` provide a structured approach to validation.
-- **Reusability:** Validation classes and middleware can be reused across your application.
-- **Flexibility:** Custom type guards handle complex validation logic.
-- **Readability:** Decorators and type guards improve code readability.
+- **التحقق الكائني:** يوفّر `class-validator` و`class-transformer` مقاربة منظّمة للتحقق.
+- **قابلية إعادة الاستخدام:** يمكن إعادة استخدام أصناف التحقق والوسيط في أنحاء تطبيقك.
+- **المرونة:** يتعامل حرّاس الأنواع المخصّصون مع منطق تحقق معقّد.
+- **الوضوح:** تُحسّن المزيّنات وحرّاس الأنواع وضوح الشيفرة.

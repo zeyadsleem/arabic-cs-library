@@ -1,70 +1,70 @@
 ---
-title: "Hooks"
-lang: en
+title: "الخطّافات (Hooks)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/hooks"
 ---
 
-You wrote “always run the formatter” in `CLAUDE.md`. The agent did it nine times out of ten. The tenth time, it didn’t, and you found out in code review.
+كتبت «شغّل المُنسّق دائمًا» في `CLAUDE.md`. نفّذ الوكيل ذلك تسع مرات من عشر. وفي المرة العاشرة لم يفعل، فاكتشفت الأمر في مراجعة الشيفرة.
 
-A sentence in an instruction file is a request. A **hook** is code. It runs every time, whether the model remembers or not. Hooks exist in [Claude Code](https://code.claude.com/docs/en/hooks), and [Codex’s hooks](https://developers.openai.com/codex/hooks) were modeled on them: same basic contract, with differences in trust, caps, and some events.
+جملة في ملف تعليمات هي طلب. أما **الخطّاف (hook)** فهو شيفرة. يعمل في كل مرة، سواء تذكّر النموذج أم لم يتذكّر. توجد الخطّافات في [Claude Code](https://code.claude.com/docs/en/hooks)، وقد صُمّمت [خطّافات Codex](https://developers.openai.com/codex/hooks) على غرارها: العقد الأساسي نفسه، مع اختلافات في الثقة والحدود القصوى وبعض الأحداث.
 
-## What hooks are
+## ما هي الخطّافات
 
-A hook runs deterministic code at a *lifecycle event*: a set point in an agent’s work, like “a session just started” or “a tool is about to run.” It can return feedback at that event. It *cannot* enforce paths that never pass through it.
+يشغّل الخطّاف شيفرة حتمية عند *حدث دورة حياة*: نقطة محددة في عمل الوكيل، مثل «بدأت جلسة للتو» أو «أداة على وشك أن تعمل». ويستطيع إرجاع تغذية راجعة عند ذلك الحدث. لكنه *لا يستطيع* فرض مسارات لا تمرّ به أصلًا.
 
-Hooks are best for “whenever this event happens, do this specific thing.” They’re usually the wrong choice for “figure out what work needs doing and manage it.”
+الخطّافات أفضل ما تكون لـ «كلما وقع هذا الحدث، افعل هذا الشيء المحدد». وهي عادةً الخيار الخاطئ لـ «اكتشف العمل المطلوب وأدره».
 
-Good fits:
+الاستخدامات المناسبة:
 
-- Blocking writes to protected branches.
-- Validating tool inputs.
-- Formatting an edited file.
-- Recording a bounded handoff: a short, size-capped note, like a progress file, for the next session to pick up from.
-- Requiring fresh evidence before completion.
+- حجب الكتابة إلى الفروع المحمية.
+- التحقّق من مدخلات الأدوات.
+- تنسيق ملف بعد تحريره.
+- تسجيل تسليم محدود: ملاحظة قصيرة بسقف حجم، مثل ملف تقدّم، تلتقط منه الجلسة التالية.
+- طلب دليل حديث قبل الإعلان عن الإنجاز.
 
-A few of the events you’ll see throughout this course:
+وفيما يلي بعض الأحداث التي ستراها في أثناء هذه الدورة:
 
-- `SessionStart`: A session (one conversation, from launch until you exit) begins.
-- `PreToolUse`: A tool call, like reading a file or running a shell command, is about to run. The hook can block it.
-- `PostToolUse`: A tool just ran. Too late to block, but good for feedback and cleanup.
-- `UserPromptSubmit`: You just submitted a prompt. A hook can add context alongside it, but can’t replace it.
-- `PermissionRequest`: The agent is waiting for you to approve something.
-- `Stop`: The agent is about to finish a turn (one round of responding, possibly running several tools) and wait for you.
-- `SubagentStop`: A subagent (a helper agent with fresh context that returns only a final report) is about to finish.
+- `SessionStart`: تبدأ جلسة (محادثة واحدة، من الإطلاق حتى الخروج).
+- `PreToolUse`: نداء أداة، مثل قراءة ملف أو تشغيل أمر صدفة، على وشك التنفيذ. ويستطيع الخطّاف حجبه.
+- `PostToolUse`: أداة نُفّذت للتو. الوقت متأخر عن الحجب، لكنه مناسب للتغذية الراجعة والتنظيف.
+- `UserPromptSubmit`: أرسلت للتو طلبًا. ويستطيع الخطّاف إضافة سياق إلى جانبه، لكنه لا يستطيع استبداله.
+- `PermissionRequest`: الوكيل ينتظر موافقتك على شيء.
+- `Stop`: الوكيل على وشك إنهاء دور (جولة استجابة واحدة، قد تشمل تشغيل عدة أدوات) وانتظارك.
+- `SubagentStop`: وكيل فرعي (وكيل مساعد بسياق جديد لا يعيد إلا تقريرًا نهائيًا) على وشك الانتهاء.
 
-There are more, including `TaskCreated`, `TaskCompleted`, and `TeammateIdle` for [agent teams](https://stevekinney.com/courses/ai-development-setup/agent-teams), and `PreCompact` and `PostCompact` around compaction. The [hooks reference](https://code.claude.com/docs/en/hooks) lists them all.
+وهناك المزيد، منها `TaskCreated` و`TaskCompleted` و`TeammateIdle` الخاصة بـ [فرق الوكلاء](https://stevekinney.com/courses/ai-development-setup/agent-teams)، و`PreCompact` و`PostCompact` حول الضغط (compaction). ويسرد [مرجع الخطّافات](https://code.claude.com/docs/en/hooks) كلها.
 
-## A caveat from someone who’s used them
+## تحذير من شخص استخدمها
 
-Almost every time I’ve decided to use hooks, I’ve eventually ripped them out because they were more annoying than helpful.
+في كل مرة تقريبًا قررت فيها استخدام الخطّافات، انتهى بي الأمر إلى إزالتها لأنها كانت أكثر إزعاجًا من كونها مفيدة.
 
-The data disagrees with me a little. When I had agents audit my own sessions, the problems I fixed with a hook or a script *stayed* fixed, and the ones I fixed with a sentence in `CLAUDE.md` didn’t.
+والبيانات تخالفني قليلًا. عندما جعلت الوكلاء يدقّقون جلساتي الخاصة، بقيت المشكلات التي أصلحتها بخطّاف أو سكربت *مُصلَحة*، أما التي أصلحتها بجملة في `CLAUDE.md` فلم تبقَ.
 
-So here’s where I’ve landed: keep *enforcement* hooks for the handful of rules that have to hold every single time, and use [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) to decide which rules those are. Lightweight hooks, like a formatter, a notification, or a context loader, are fine too, because nothing depends on them holding.
+وإليك ما استقررت عليه: أبقِ خطّافات *الفرض* للقليل من القواعد التي يجب أن تصمد في كل مرة، واستخدم [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) لتقرير ما هي تلك القواعد. والخطّافات الخفيفة، مثل مُنسّق أو إشعار أو محمّل سياق، لا بأس بها أيضًا، لأن لا شيء يعتمد على صمودها.
 
-## How hooks work
+## كيف تعمل الخطّافات
 
-The contract is refreshingly boring. The harness sends event JSON to your script on stdin, and your exit code does the talking:
+العقد مملّ إلى حدّ منعش. ترسل المنصة حدث JSON إلى سكربتيك عبر stdin، ورمز الخروج هو من يتكلم:
 
-- **Exit `0`**: “No objection.” That’s *not* the same as approval. Permission rules still get the final say.
-- **Exit `2`**: Block, where the event supports blocking. Whatever you wrote to stderr goes to Claude, so tell it why.
-- **Anything else**: A non-blocking error. The action proceeds, so a hook that crashes with exit `1` doesn’t stop anything. [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) has a story about how that one goes.
+- **الخروج بـ `0`**: «لا اعتراض». وهذا *ليس* مثل الموافقة. فقواعد الصلاحيات تبقى صاحبة الكلمة الأخيرة.
+- **الخروج بـ `2`**: حجب، حيث يدعم الحدث الحجب. وكل ما كتبته إلى stderr يصل إلى Claude، فاشرح له السبب.
+- **أي شيء آخر**: خطأ غير حاجب. يمضي الإجراء قدمًا، فخطّاف ينهار بالخروج بـ `1` لا يوقف شيئًا. ولـ [سلّم الفرض](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) حكاية عن كيف ينتهي ذلك.
 
-The only other way to block is to print a JSON decision to stdout and exit `0`. Exit `2` is simpler for a quick block with a message. Use JSON when you want more control, like asking you instead of denying, or having a `PreToolUse` hook rewrite the tool’s input with an `updatedInput` field.
+والطريقة الأخرى الوحيدة للحجب هي طباعة قرار JSON إلى stdout والخروج بـ `0`. والخروج بـ `2` أبسط لحجب سريع مع رسالة. استخدم JSON حين تريد تحكمًا أكبر، مثل سؤالك بدلًا من الرفض، أو أن يعيد خطّاف `PreToolUse` كتابة مدخلات الأداة بحقل `updatedInput`.
 
-Some details that will save you an afternoon:
+بعض التفاصيل التي ستوفر عليك أمسية:
 
-- **Decision fields differ per event**: `PreToolUse` takes `{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "..."}}`. `Stop` and `SubagentStop` take `{"decision": "block", "reason": "..."}`. `PermissionRequest` uses `hookSpecificOutput.decision.behavior`. JSON shaped for the wrong event does nothing, silently.
-- **Not every event can block**: `PostToolUse` can’t, because the tool already ran. `SessionStart` can’t either. Exiting `2` there doesn’t stop the session.
-- **Matchers only see what they match**: A *matcher* is the pattern that decides which tool calls trigger a hook. An `Edit|Write` matcher misses writes made through Bash. The general filesystem backstop is a repository scan on `Stop`: it detects after the fact and can refuse to let the agent finish until the problem is fixed. `FileChanged` only reports explicitly watched files and can’t block changes. Its matcher registers literal filenames in the working directory, separated by `|`, so `*` registers a file literally named `*`, not every file. For dynamic paths, return absolute `watchPaths` from a supported hook and omit the `FileChanged` matcher to handle every watched file. The [FileChanged reference](https://code.claude.com/docs/en/hooks#filechanged) describes how to seed and update that watch list.
-- **Use `command` handlers for invariants**: A handler is what runs when the hook fires. A `command` handler runs a program you wrote. `prompt` (asks a model), `agent` (runs an agent), and `http` (calls a URL) handlers are fine for advice or a central policy, but they aren’t deterministic gates.
-- **Injected output is capped**: Hook output injected into the model’s context tops out at 10,000 characters.
+- **حقول القرار تختلف حسب الحدث**: يأخذ `PreToolUse` القيمة `{"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "deny", "permissionDecisionReason": "..."}}`. ويأخذ `Stop` و`SubagentStop` القيمة `{"decision": "block", "reason": "..."}`. ويستخدم `PermissionRequest` الحقل `hookSpecificOutput.decision.behavior`. و JSON المُشكَّل لحدث خاطئ لا يفعل شيئًا، بصمت.
+- **ليست كل الأحداث تستطيع الحجب**: لا يستطيع `PostToolUse` ذلك لأن الأداة نُفّذت بالفعل. ولا يستطيع `SessionStart` كذلك. فالخروج بـ `2` هناك لا يوقف الجلسة.
+- **المطابِقات لا ترى إلا ما تطابقه**: *المطابِق* هو النمط الذي يحدد أي نداءات الأدوات تُشغّل خطّافًا. فمطابِق `Edit|Write` يفوّت الكتابات المنفَّذة عبر Bash. والشبكة الخلفية العامة لنظام الملفات هي فحص للمستودع عند `Stop`: يكشف المشكلة بعد وقوعها ويستطيع رفض السماح للوكيل بالانتهاء حتى تُصلَح. أما `FileChanged` فلا يبلّغ إلا عن الملفات المراقبة صراحةً ولا يستطيع حجب التغييرات. ويسجّل مطابِقه أسماء ملفات حرفية في دليل العمل، مفصولة بـ `|`، لذا يسجّل `*` ملفًا اسمه حرفيًا `*`، لا كل ملف. أما المسارات الديناميكية، فأعد `watchPaths` مطلقة من خطّاف مدعوم واحذف مطابِق `FileChanged` للتعامل مع كل ملف مراقب. ويوضّح [مرجع FileChanged](https://code.claude.com/docs/en/hooks#filechanged) كيفية تهيئة قائمة المراقبة تلك وتحديثها.
+- **استخدم معالجات `command` لثوابت النظام**: المعالج هو ما يعمل عند إطلاق الخطّاف. ومعالج `command` يشغّل برنامجًا كتبته أنت. أما معالجات `prompt` (تسأل نموذجًا) و`agent` (تشغّل وكيلًا) و`http` (تنادي عنوان URL) فلا بأس بها للنصيحة أو سياسة مركزية، لكنها ليست بوابات حتمية.
+- **المخرَج المحقون محدود**: مخرَج الخطّاف المحقون في سياق النموذج لا يتجاوز 10,000 حرف.
 
-## Configuring hooks
+## تهيئة الخطّافات
 
-Each event holds matcher groups, and each group holds handlers. A handler has a `type`, a `command`, and a `timeout` in seconds. Most command hooks default to 600 seconds, but `UserPromptSubmit` and `PreModelSwitch` default to 30, and `SessionEnd` defaults to 1.5 with a shared execution budget. A timeout can cancel the hook before it returns its decision, so check the event in the [hooks reference](https://code.claude.com/docs/en/hooks) and set an explicit timeout that fits the work.
+يحمل كل حدث مجموعات مطابِقات، وتحمل كل مجموعة معالجات. وللمعالج `type` و`command` و`timeout` بالثواني. ومعظم خطّافات الأوامر مدتها الافتراضية 600 ثانية، أما `UserPromptSubmit` و`PreModelSwitch` فمدتهما الافتراضية 30، و`SessionEnd` مدته الافتراضية 1.5 مع ميزانية تنفيذ مشتركة. ويمكن للمهلة الزمنية أن تلغي الخطّاف قبل أن يعيد قراره، لذا راجع الحدث في [مرجع الخطّافات](https://code.claude.com/docs/en/hooks) واضبط مهلة صريحة تناسب العمل.
 
-Here’s a minimal one, under the `hooks` key of `.claude/settings.json`, that runs a script before every `Bash` call:
+وهذا مثال أدنى، تحت المفتاح `hooks` في `.claude/settings.json`، يشغّل سكربتًا قبل كل نداء `Bash`:
 
 ```json
 {
@@ -85,9 +85,9 @@ Here’s a minimal one, under the `hooks` key of `.claude/settings.json`, that r
 }
 ```
 
-The absolute `${CLAUDE_PROJECT_DIR}` path keeps the hook anchored to the launch project when Claude changes directories or enters a worktree. The JSON input’s `cwd` still says where the tool call will run.
+يبقي المسار المطلق `${CLAUDE_PROJECT_DIR}` الخطّاف مرتكزًا إلى مشروع الإطلاق عندما يغيّر Claude الأدلة أو يدخل worktree. أما الحقل `cwd` في مدخلات JSON فيظل يبيّن أين سيعمل نداء الأداة.
 
-Here’s a deliberately narrow script: it accepts only the exact command `bun run lint`. Everything else, including malformed event JSON or a missing `jq`, blocks with exit `2`.
+وهذا سكربت ضيّق عمدًا: لا يقبل إلا الأمر المطابق تمامًا `bun run lint`. وكل شيء آخر، بما في ذلك حدث JSON مشوّه أو `jq` غير موجود، يُحجب بالخروج بـ `2`.
 
 ```bash
 #!/bin/bash
@@ -103,27 +103,27 @@ fi
 exit 0
 ```
 
-This compares the whole command instead of parsing shell syntax, so `bun run lint && rm -rf x`, leading whitespace, and wrappers all fail. The lint script and the hook still have to be trusted: an exact command runs whatever that script contains. Before installing it, feed the hook valid and malformed events and verify both exits.
+يقارن هذا الأمر كاملًا بدلًا من تحليل صيغة الصدفة، لذا يفشل `bun run lint && rm -rf x`، والمسافات البادئة، والأغلفة، جميعها. ويبقى عليك الثقة في سكربت الفحص والخطّاف معًا: فالأمر المطابق يشغّل كل ما يحتويه ذلك السكربت. وقبل تثبيته، غذِّ الخطّاف بأحداث صحيحة وأخرى مشوّهة وتحقق من رمزَي الخروج.
 
-For ordinary command restrictions, use Claude Code’s documented [compound-command matching](https://code.claude.com/docs/en/permissions#compound-commands) instead of a homemade prefix test. A deny rule for `Bash(rm *)` catches `cd /tmp && rm -rf x`, but alternate invocations such as `/bin/rm` still need their own rules. Use sandbox filesystem controls when the boundary is what can be deleted, regardless of command spelling.
+أما لقيود الأوامر العادية، فاستخدم [مطابقة الأوامر المركّبة](https://code.claude.com/docs/en/permissions#compound-commands) الموثّقة في Claude Code بدلًا من اختبار بادئة مصنوع يدويًا. فقاعدة رفض بـ `Bash(rm *)` تلتقط `cd /tmp && rm -rf x`، لكن الاستدعاءات البديلة مثل `/bin/rm` تحتاج قواعدها الخاصة. واستخدم ضوابط نظام الملفات في العزل الرملي (sandbox) عندما يكون الحد الفاصل هو ما يمكن حذفه، بصرف النظر عن صيغة الأمر.
 
-Hooks can live in a bunch of places. They’re all merged, and every matching hook runs in parallel, with no guaranteed order:
+يمكن أن تسكن الخطّافات في جملة مواضع. وتُدمج كلها، ويعمل كل خطّاف مطابق على التوازي، بلا ترتيب مضمون:
 
-- Settings files: `~/.claude/settings.json` for you across projects, `.claude/settings.json` for the project (committed, so your team gets it), and `.claude/settings.local.json` for you in this project only. If the same setting conflicts across levels, precedence runs user, then project, then local, then command-line flag, then policy.
-- Managed policy (settings an organization pushes to every machine), where `allowManagedHooksOnly` ignores everything else.
-- Skill and agent frontmatter, the YAML block at the top of those files. (See [Configuring Skills](https://stevekinney.com/courses/ai-development-setup/skill-configuration) and [Configuring Subagents](https://stevekinney.com/courses/ai-development-setup/subagent-configuration).)
-- A plugin’s `hooks/hooks.json`. (A plugin is a bundle of skills, hooks, and agents you install together.)
+- ملفات الإعدادات: `~/.claude/settings.json` لك عبر المشاريع، و`.claude/settings.json` للمشروع (مُودَع، فيصل إلى فريقك)، و`.claude/settings.local.json` لك في هذا المشروع وحده. وإذا تعارض الإعداد نفسه بين المستويات، فالأسبقية تجري: المستخدم، ثم المشروع، ثم المحلي، ثم علامة سطر الأوامر، ثم السياسة.
+- السياسة المُدارة (إعدادات تدفعها مؤسسة إلى كل جهاز)، حيث يتجاهل `allowManagedHooksOnly` كل ما عداها.
+- ترويسة (frontmatter) المهارات والوكلاء، أي كتلة YAML في أعلى تلك الملفات. (انظر [تهيئة المهارات](https://stevekinney.com/courses/ai-development-setup/skill-configuration) و[تهيئة الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagent-configuration).)
+- ملف `hooks/hooks.json` الخاص بإضافة. (الإضافة حزمة من المهارات والخطّافات والوكلاء تثبّتها معًا.)
 
-A few fields worth knowing:
+وبعض الحقول الجديرة بالمعرفة:
 
-- `args`: Runs the command in exec form, with no shell in between, which is safer when inputs contain odd characters.
-- `if`: Filters using permission-rule syntax. It’s best-effort, so don’t rely on it for a hard allow or deny.
-- Anchor your matchers for MCP and plugin names, like `^mcp__x__y$`, or a short name can match more than you meant. (An MCP server is a program that adds tools to the harness over the [Model Context Protocol](https://modelcontextprotocol.io/).)
+- `args`: يشغّل الأمر بصيغة exec، بلا صدفة وسيطة، وهو أكثر أمانًا عندما تحتوي المدخلات على أحرف غريبة.
+- `if`: يرشّح باستخدام صيغة قواعد الصلاحيات. وهو بذل أفضل جهد، فلا تعتمد عليه لمنح أو رفض صارم.
+- ثبّت مطابِقاتك لأسماء MCP والإضافات، مثل `^mcp__x__y$`، وإلا فقد يطابق اسم قصير أكثر مما قصدت. (خادم MCP برنامج يضيف أدوات إلى المنصة عبر [بروتوكول سياق النموذج](https://modelcontextprotocol.io/).)
 
-## Hooks and permissions
+## الخطّافات والصلاحيات
 
-Each side gets the last word on something different. A hook has the last word on *blocking*: exit `2` (or a JSON deny) stops the call even if permission rules would allow it. Permission rules (settings that allow, ask about, or deny specific tool calls) have the last word on *allowing*.
+لكل جانب الكلمة الأخيرة في شيء مختلف. فللخطّاف الكلمة الأخيرة في *الحجب*: فالخروج بـ `2` (أو رفض JSON) يوقف النداء حتى لو كانت قواعد الصلاحيات تسمح به. ولقواعد الصلاحيات (إعدادات تسمح بنداءات أدوات محددة أو تسأل عنها أو ترفضها) الكلمة الأخيرة في *السماح*.
 
-So a hook can’t grant what a permission rule denies. Permission rules resolve deny first, then ask, then allow, and the first match wins. A deny at any level beats every other level, and a `PreToolUse` hook that returns `allow` doesn’t bypass a matching deny or ask rule. That makes “allow `Bash`, then block specific commands with a hook” a documented pattern. See the [permissions documentation](https://code.claude.com/docs/en/permissions) for the full rules.
+فلا يستطيع الخطّاف منح ما ترفضه قاعدة صلاحيات. وتحلّ قواعد الصلاحيات الرفض أولًا، ثم السؤال، ثم السماح، ويفوز أول تطابق. والرفض في أي مستوى يتغلب على كل المستويات الأخرى، وخطّاف `PreToolUse` الذي يعيد `allow` لا يتجاوز قاعدة رفض أو سؤال مطابقة. وهذا ما يجعل «اسمح بـ `Bash`، ثم احجب أوامر محددة بخطّاف» نمطًا موثّقًا. انظر [توثيق الصلاحيات](https://code.claude.com/docs/en/permissions) للقواعد الكاملة.
 
-Use a hook when “usually” isn’t good enough. Use a permission rule when it’s a hard yes or no.
+استخدم خطّافًا حين لا يكون «عادةً» كافيًا. واستخدم قاعدة صلاحيات حين يكون الجواب نعم أو لا صارمًا.

@@ -1,17 +1,17 @@
 ---
-title: "Refactoring Our Button Test"
-lang: en
+title: "إعادة هيكلة اختبار الزر"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-library-solution"
 ---
 
-Again, we’re likely going to want to bring in our libraries:
+مرة أخرى، سنحتاج على الأرجح إلى جلب مكتباتنا:
 
 ```javascript
 import { screen } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 ```
 
-Next we’ll use `user-event` to click the button instead of calling a method on the element.
+بعد ذلك سنستخدم `user-event` للنقر على الزر بدلًا من نداء تابع على العنصر.
 
 ```javascript
 it('should change the text to "Clicked!" when clicked', async () => {
@@ -23,11 +23,11 @@ it('should change the text to "Clicked!" when clicked', async () => {
 });
 ```
 
-> **Remember to make the test function asynchronous.**
+> **تذكّر أن تجعل دالة الاختبار غير متزامنة.**
 
-## Rendering the Button to the DOM
+## تصيير الزر إلى DOM
 
-We can also choose to render the button to the `document` and find it that way.
+يمكننا أيضًا اختيار تصيير الزر إلى `document` والعثور عليه بهذه الطريقة.
 
 ```javascript
 it('should change the text to "Clicked!" when clicked', async () => {
@@ -40,4 +40,4 @@ it('should change the text to "Clicked!" when clicked', async () => {
 });
 ```
 
-This is also nice because it makes that test where we make sure that the button has the correct label obsolete. Come to think of it, it also makes that first test where we look at the type of element obsolete as well.
+هذا لطيف أيضًا لأنه يجعل اختبارنا الذي نتأكد فيه من أن الزر يحمل التسمية الصحيحة عتيقًا. وبالتفكير في الأمر، فإنه يجعل اختبارنا الأول الذي ننظر فيه إلى نوع العنصر عتيقًا أيضًا.

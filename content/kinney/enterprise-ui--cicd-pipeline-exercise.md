@@ -1,36 +1,36 @@
 ---
-title: "Exercise 7: CI/CD Pipeline"
-lang: en
+title: "التمرين 7: خط أنابيب CI/CD"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/cicd-pipeline-exercise"
 ---
 
-## What You’re Doing
+## ما الذي تفعله
 
-You have a working monorepo with type checking, linting, tests, and build orchestration via Turborepo. But none of this runs automatically when code is pushed. You’re going to build a GitHub Actions workflow that runs the full quality gate on every push and pull request, uses Turborepo for caching, and adds Lighthouse CI performance budgets to catch regressions before they ship.
+لديك مستودع أحادي عامل مع فحص الأنواع والفحص الساكن والاختبارات وتنسيق البناء عبر Turborepo. لكن لا شيء من ذلك يعمل تلقائيًا عند دفع الشيفرة. ستقوم ببناء سير عمل GitHub Actions يشغّل بوابة الجودة الكاملة عند كل دفع وطلب سحب، ويستخدم Turborepo للتخزين المؤقت، ويضيف ميزانيات أداء Lighthouse CI لالتقاط التراجعات قبل شحنها.
 
-## Why It Matters
+## لماذا يهم هذا
 
-A CI pipeline is where architecture decisions become enforceable. The boundary rules you configured in Exercise 6 only matter if they run on every pull request. The TypeScript incremental builds from Exercise 5 only save time if CI caches the `.tsbuildinfo` files. The Turborepo caching from Exercise 4 only pays off if CI shares a remote cache across runs. Without CI, your architecture is a suggestion. With CI, it’s a gate.
+خط أنابيب CI هو حيث تصبح قرارات المعمار قابلة للفرض. فقواعد الحدود التي هيّأتها في التمرين 6 لا تهمّ إلا إذا عملت عند كل طلب سحب. وبناءات TypeScript التزايدية من التمرين 5 لا توفّر الوقت إلا إذا خزّن CI ملفات `.tsbuildinfo` في ذاكرة مؤقتة. والتخزين المؤقت في Turborepo من التمرين 4 لا يُثمر إلا إذا شارك CI ذاكرة مؤقتة بعيدة عبر التشغيلات. بدون CI، معمارك مجرد اقتراح. ومعه، يصبح بوابة.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
 - Node.js 20+
 - pnpm 9+
 
-## Setup
+## التهيئة
 
-You should be continuing from where Exercise 7 (Design System Governance) left off. If you need to catch up:
+ينبغي أن تكون مكملًا من حيث انتهى التمرين 7 (حوكمة نظام التصميم). وإن احتجت إلى اللحاق:
 
 ```bash
 git checkout 07-cicd-start
 pnpm install
 ```
 
-Open `.github/workflows/ci.yml` — it contains a placeholder with the trigger configuration and a TODO comment.
+افتح `.github/workflows/ci.yml` — فهو يحتوي على عنصر نائب فيه تهيئة المشغّلات وتعليق TODO.
 
-## Create the Basic Workflow
+## إنشاء سير العمل الأساسي
 
-Build the workflow file from scratch. Open `.github/workflows/ci.yml` and add the foundation:
+ابنِ ملف سير العمل من الصفر. افتح `.github/workflows/ci.yml` وأضف الأساس:
 
 *.github/workflows/ci.yml*
 
@@ -63,34 +63,34 @@ jobs:
       - run: pnpm install --frozen-lockfile
 ```
 
-*Note:* Minimal clone depth for Turborepo change detection without downloading full history.
+*ملاحظة:* أقل عمق استنساخ لاكتشاف التغييرات في Turborepo دون تنزيل السجل الكامل.
 
-*Note:* Caches ~/.pnpm-store across runs so only new packages are downloaded.
+*ملاحظة:* يخزّن ~/.pnpm-store مؤقتًا عبر التشغيلات فلا تُنزَّل سوى الحزم الجديدة.
 
-*Note:* Fails the build if the lockfile is out of date, preventing dependency drift.
+*ملاحظة:* يُفشل البناء إذا كان ملف القفل قديمًا، ما يمنع انحراف الاعتمادات.
 
-> **Lockfiles**
+> **ملفات القفل (lockfiles)**
 >
-> When you run `pnpm install`, pnpm resolves version ranges (like `^18.2.0`) to specific versions (like `18.2.0`), downloads them, and records the exact version, integrity hash, and resolution path in `pnpm-lock.yaml`. Subsequent installs read the lockfile and skip resolution entirely, installing exactly the same versions every time. The `--frozen-lockfile` flag goes further: it refuses to install if the lockfile does not match `package.json`, meaning someone added or changed a dependency without running `pnpm install` locally and committing the result. This matters in CI because without a lockfile, `pnpm install` would resolve version ranges against the registry at install time — and a new patch release published between your local test and the CI run could produce different dependency versions, creating the classic “works on my machine” failure.
+> عندما تشغّل `pnpm install` يحلّ pnpm نطاقات الإصدارات (مثل `^18.2.0`) إلى إصدارات محددة (مثل `18.2.0`) وينزّلها ويسجّل الإصدار الدقيق وتجزئة السلامة ومسار الحلّ في `pnpm-lock.yaml`. وتقرأ عمليات التثبيت اللاحقة ملف القفل وتتخطّى الحلّ كليًا، فتُثبِّت الإصدارات نفسها بالضبط في كل مرة. ويذهب علم `--frozen-lockfile` أبعد: فهو يرفض التثبيت إذا لم يطابق ملف القفل ملف `package.json`، أي أن أحدهم أضاف أو غيّر اعتمادًا دون تشغيل `pnpm install` محليًا وإيداع النتيجة. وهذا مهم في CI لأنه بدون ملف قفل، سيحلّ `pnpm install` نطاقات الإصدارات مقابل السجلّ وقت التثبيت — وقد يُنتج إصدار تصحيحي جديد نُشر بين اختبارك المحلي وتشغيل CI إصدارات اعتماد مختلفة، فيقع الإخفاق الكلاسيكي «يعمل على جهازي».
 
-### What Each Step Does
+### ما تفعله كل خطوة
 
-- **`actions/checkout@v4`**: Clones the repository. `fetch-depth: 2` fetches the current commit and its parent, which is enough for Turborepo’s change detection without downloading the entire git history.
-- **`pnpm/action-setup@v4`**: Installs pnpm globally on the runner. The `version: 9` matches the version used in development.
-- **`actions/setup-node@v4`**: Installs Node.js and caches the pnpm store. The `cache: "pnpm"` option tells the action to cache `~/.pnpm-store` between runs, so subsequent installs only download new or changed packages.
-- **`pnpm install --frozen-lockfile`**: Installs dependencies from the lockfile exactly as specified. The `--frozen-lockfile` flag fails the build if the lockfile is out of date — this catches cases where someone added a dependency but forgot to commit the updated lockfile.
+- **`actions/checkout@v4`**: يستنسخ المستودع. ويجلب `fetch-depth: 2` الإيداع الحالي وأصله، وهذا كافٍ لاكتشاف تغييرات Turborepo دون تنزيل كامل سجل git.
+- **`pnpm/action-setup@v4`**: يثبّت pnpm عالميًا على المشغّل. ويطابق `version: 9` الإصدار المستخدم في التطوير.
+- **`actions/setup-node@v4`**: يثبّت Node.js ويخزّن مخزن pnpm مؤقتًا. ويخبر خيار `cache: "pnpm"` الإجراء بأن يخزّن `~/.pnpm-store` بين التشغيلات، فلا تنزّل عمليات التثبيت اللاحقة سوى الحزم الجديدة أو المتغيّرة.
+- **`pnpm install --frozen-lockfile`**: يثبّت الاعتمادات من ملف القفل كما هي محددة بالضبط. ويُفشل علم `--frozen-lockfile` البناء إذا كان ملف القفل قديمًا — فيلتقط حالات أضاف فيها أحدهم اعتمادًا لكنه نسي إيداع ملف القفل المحدَّث.
 
-> **Why `fetch-depth: 2`**
+> **لماذا `fetch-depth: 2`**
 >
-> `fetch-depth: 0` downloads the entire git history, which is slow for large repositories. `fetch-depth: 1` (the default) downloads only the current commit with no parent, which prevents git-based change detection from working. `fetch-depth: 2` is the sweet spot — one parent commit is enough for Turborepo to determine what changed between this push and the previous state.
+> ينزّل `fetch-depth: 0` سجل git بالكامل، وهذا بطيء في المستودعات الكبيرة. وينزّل `fetch-depth: 1` (الافتراضي) الإيداع الحالي فقط دون أصل، ما يمنع اكتشاف التغييرات القائم على git من العمل. أما `fetch-depth: 2` فهو الموضع الأمثل — فإيداع أصل واحد يكفي ليحدّد Turborepo ما تغيّر بين هذا الدفع والحالة السابقة.
 
-### Checkpoint
+### نقطة تحقّق
 
-You have a workflow that installs dependencies. It doesn’t run any checks yet, but the foundation is correct.
+لديك سير عمل يثبّت الاعتمادات. وهو لا يشغّل أي فحوص بعد، لكن الأساس صحيح.
 
-## Add Turborepo-Powered Quality Checks
+## إضافة فحوص جودة مدعومة بـ Turborepo
 
-Add the typecheck, lint, test, and build steps to the `build` job in `.github/workflows/ci.yml`. Each one delegates to Turborepo so it benefits from caching and dependency-aware execution:
+أضف خطوات فحص الأنواع والفحص الساكن والاختبار والبناء إلى مهمة `build` في `.github/workflows/ci.yml`. وكل خطوة تفوّض الأمر إلى Turborepo فتستفيد من التخزين المؤقت والتنفيذ المدرك للاعتمادات:
 
 *.github/workflows/ci.yml*
 
@@ -108,17 +108,17 @@ Add the typecheck, lint, test, and build steps to the `build` job in `.github/wo
   run: pnpm turbo build
 ```
 
-These run sequentially in the `build` job. Each step uses Turborepo’s local cache, so if the typecheck already built `@pulse/shared`, the lint step’s cache for that package is warm.
+تعمل هذه بالتتابع في مهمة `build`. وتستخدم كل خطوة ذاكرة Turborepo المؤقتة المحلية، فإذا كان فحص الأنواع قد بنى `@pulse/shared` بالفعل، كانت ذاكرة خطوة الفحص الساكن لتلك الحزمة دافئة.
 
-> **Why these steps run sequentially**
+> **لماذا تعمل هذه الخطوات بالتتابع**
 >
-> Each step within a job runs on the same runner, sharing the filesystem. Turborepo handles parallelism *within* each step — `turbo typecheck` type-checks all independent packages in parallel. Making the four commands sequential means a lint failure stops the pipeline before wasting time on a full build. If you wanted true parallelism, you’d put each step in a separate job — but then they don’t share the local Turborepo cache.
+> تعمل كل خطوة داخل المهمة على المشغّل نفسه، متشاركةً نظام الملفات. ويتولّى Turborepo التوازي *داخل* كل خطوة — فـ `turbo typecheck` يفحص أنواع كل الحزم المستقلة على التوازي. وجعل الأوامر الأربعة متتابعة يعني أن فشل الفحص الساكن يوقف خط الأنابيب قبل إهدار الوقت على بناء كامل. ولو أردت توازيًا حقيقيًا، لوضعت كل خطوة في مهمة منفصلة — لكنها حينئذ لن تتشارك ذاكرة Turborepo المحلية المؤقتة.
 
-## Configure Remote Caching
+## تهيئة التخزين المؤقت البعيد
 
-Turborepo’s local cache lives on the runner’s filesystem and is discarded when the runner shuts down. Remote caching stores build artifacts in a shared cache that persists across CI runs.
+تعيش ذاكرة Turborepo المحلية المؤقتة على نظام ملفات المشغّل وتُهمَل عند إيقافه. أما التخزين المؤقت البعيد فيخزّن مخرجات البناء في ذاكرة مشتركة تبقى عبر تشغيلات CI.
 
-Add environment variables for remote caching. Update the `build` job in `.github/workflows/ci.yml`:
+أضف متغيّرات بيئة للتخزين المؤقت البعيد. وحدّث مهمة `build` في `.github/workflows/ci.yml`:
 
 *.github/workflows/ci.yml*
 
@@ -132,21 +132,21 @@ build:
     # ... existing steps
 ```
 
-*Note:* These environment variables enable Turborepo remote caching across CI runs.
+*ملاحظة:* تُمكّن متغيّرات البيئة هذه التخزين المؤقت البعيد في Turborepo عبر تشغيلات CI.
 
-> **Setting up remote caching**
+> **إعداد التخزين المؤقت البعيد**
 >
-> In a real project, you’d create a Vercel account (Turborepo’s default remote cache provider), link your repository with `npx turbo login` and `npx turbo link`, and add the resulting `TURBO_TOKEN` as a repository secret in GitHub. The `TURBO_TEAM` is your Vercel team slug. When Turborepo runs in CI with these environment variables set, it uploads build artifacts to the remote cache after each task and downloads them on subsequent runs. Two CI runs that build the same package with the same inputs will share the cached output — even if they run on different machines.
+> في مشروع حقيقي، ستنشئ حساب Vercel (مزوّد ذاكرة Turborepo المؤقتة البعيدة الافتراضي)، وتربط مستودعك بـ `npx turbo login` و`npx turbo link`، وتضيف `TURBO_TOKEN` الناتج كسرّ مستودع في GitHub. و`TURBO_TEAM` هو مُعرّف فريقك في Vercel. وعندما يعمل Turborepo في CI وقد ضُبطت متغيّرات البيئة هذه، يرفع مخرجات البناء إلى الذاكرة المؤقتة البعيدة بعد كل مهمة وينزّلها في التشغيلات اللاحقة. وتشترك تشغيلتا CI تبنيان الحزمة نفسها بالمدخلات نفسها في المخرَج المخزَّن — حتى إن عملتا على جهازين مختلفين.
 
-The behavior change is significant. Without remote caching, the first CI run after every push rebuilds everything. With remote caching, a CI run that builds `@pulse/shared` uploads the artifact. The next CI run (on a different pull request that didn’t change `@pulse/shared`) downloads the cached artifact instead of rebuilding. In a large monorepo, this can cut CI time by 50-80%.
+التغيّر في السلوك جوهري. فبدون التخزين المؤقت البعيد، يعيد أول تشغيل CI بعد كل دفع بناء كل شيء. ومع التخزين المؤقت البعيد، يرفع تشغيل CI الذي يبني `@pulse/shared` المخرَج. ثم ينزّل تشغيل CI التالي (على طلب سحب مختلف لم يغيّر `@pulse/shared`) المخرَج المخزَّن بدلًا من إعادة بنائه. وفي مستودع أحادي كبير، قد يقلّص هذا زمن CI بنسبة 50-80%.
 
-> **You don’t need Vercel for remote caching**
+> **لست بحاجة إلى Vercel للتخزين المؤقت البعيد**
 >
-> Turborepo supports custom remote cache backends. You can self-host using `turborepo-remote-cache` (an open-source Node server backed by S3, GCS, or local storage) or use other providers. The protocol is documented. For the workshop, the concept matters more than the specific provider.
+> يدعم Turborepo خلفيات ذاكرة مؤقتة بعيدة مخصّصة. فتستطيع استضافتها بنفسك باستخدام `turborepo-remote-cache` (خادم Node مفتوح المصدر مدعوم بـ S3 أو GCS أو تخزين محلي) أو استخدام مزوّدين آخرين. والبروتوكول موثّق. وفي هذه الورشة، يهمّ المفهوم أكثر من المزوّد المحدد.
 
-## Add Matrix Strategy for Parallel Testing
+## إضافة استراتيجية المصفوفة للاختبار المتوازي
 
-When test suites grow, running them sequentially becomes a bottleneck. Add a second job to `.github/workflows/ci.yml`—a matrix strategy that runs each package’s tests in its own parallel job:
+عندما تنمو مجموعات الاختبارات، يصبح تشغيلها بالتتابع عنق زجاجة. أضف مهمة ثانية إلى `.github/workflows/ci.yml`—استراتيجية مصفوفة تشغّل اختبارات كل حزمة في مهمة متوازية خاصة بها:
 
 *.github/workflows/ci.yml*
 
@@ -176,21 +176,21 @@ test:
       run: pnpm turbo test --filter=@pulse/${{ matrix.package }}
 ```
 
-*Note:* Matrix strategy spawns four parallel jobs, one per package.
+*ملاحظة:* تُنشئ استراتيجية المصفوفة أربع مهام متوازية، واحدة لكل حزمة.
 
-This creates four parallel jobs — one for each package in the matrix. Each job installs dependencies and runs tests for only its assigned package.
+يُنشئ هذا أربع مهام متوازية — واحدة لكل حزمة في المصفوفة. وتثبّت كل مهمة الاعتمادات وتشغّل الاختبارات لحزمتها المخصَّصة فقط.
 
-> **Parallelism vs. cache sharing**
+> **التوازي مقابل مشاركة الذاكرة المؤقتة**
 >
-> Matrix jobs run on separate runners, so they don’t share the local Turborepo cache. Each job installs dependencies independently. For four small packages, the overhead of four separate `pnpm install` runs might outweigh the parallelism benefit. Matrix strategies become worthwhile when individual test suites take minutes, not seconds. For this workshop, we include it to demonstrate the pattern — in production, measure before committing to it.
+> تعمل مهام المصفوفة على مشغّلات منفصلة، فلا تتشارك ذاكرة Turborepo المحلية المؤقتة. وتثبّت كل مهمة الاعتمادات باستقلالية. وبالنسبة إلى أربع حزم صغيرة، قد تفوق كلفة أربع عمليات `pnpm install` منفصلة فائدة التوازي. وتصبح استراتيجيات المصفوفة مجدية عندما تستغرق مجموعات الاختبار الفردية دقائق لا ثوانٍ. وفي هذه الورشة، نضمّنها لعرض النمط — وفي الإنتاج، قِس قبل الالتزام بها.
 
 > **Lighthouse**
 >
-> It loads your page in a controlled Chromium environment, measures real performance metrics (like Largest Contentful Paint and Cumulative Layout Shift), evaluates accessibility compliance against WCAG guidelines, checks for SEO best practices, and reports on progressive web app capabilities. Each category receives a score from 0 to 100. Lighthouse CI (`@lhci/cli`) wraps Lighthouse for use in continuous integration pipelines: it can start your application server, run multiple audit passes to reduce variance, assert that scores meet defined thresholds, and upload results for historical tracking. Running Lighthouse in CI rather than manually means every pull request is automatically checked against your performance budgets — a regression that adds 500KB of JavaScript or causes a layout shift will fail the pipeline before it reaches production.
+> يحمّل صفحتك في بيئة Chromium مضبوطة، ويقيس مقاييس أداء حقيقية (مثل Largest Contentful Paint وCumulative Layout Shift)، ويقيّم توافق إمكانية الوصول وفق إرشادات WCAG، ويفحص أفضل ممارسات SEO، ويقدّم تقريرًا عن قدرات تطبيقات الويب التقدمية. وتحصل كل فئة على درجة من 0 إلى 100. ويلفّ Lighthouse CI (`@lhci/cli`) أداة Lighthouse لاستخدامها في خطوط التكامل المستمر: فيستطيع تشغيل خادم تطبيقك، وإجراء دورات تدقيق متعددة لتقليل التباين، والتحقق من أن الدرجات تبلغ حدودًا محددة، ورفع النتائج للتتبع التاريخي. وتشغيل Lighthouse في CI بدلًا من يدويًا يعني فحص كل طلب سحب تلقائيًا مقابل ميزانيات أدائك — فأي تراجع يضيف 500KB من JavaScript أو يسبب انزياحًا في التخطيط سيُفشل خط الأنابيب قبل وصوله إلى الإنتاج.
 
-## Add Lighthouse CI Performance Budgets
+## إضافة ميزانيات أداء Lighthouse CI
 
-Performance budgets catch regressions before they ship. Add a third job to `.github/workflows/ci.yml`—a Lighthouse CI step that builds the dashboard and asserts performance metrics:
+تلتقط ميزانيات الأداء التراجعات قبل شحنها. أضف مهمة ثالثة إلى `.github/workflows/ci.yml`—خطوة Lighthouse CI تبني لوحة المعلومات وتتحقق من مقاييس الأداء:
 
 *.github/workflows/ci.yml*
 
@@ -223,13 +223,13 @@ lighthouse:
         lhci autorun
 ```
 
-*Note:* This job waits for the build job to succeed before running.
+*ملاحظة:* تنتظر هذه المهمة نجاح مهمة البناء قبل أن تعمل.
 
-Create a `lighthouserc.cjs` file at the root of the repository:
+أنشئ ملف `lighthouserc.cjs` في جذر المستودع:
 
-> **Note**
+> **ملاحظة**
 >
-> The `.cjs` extension is required because the root `package.json` sets `"type": "module"`, which treats `.js` files as ESM. The `module.exports` syntax is CommonJS, and the `.cjs` extension tells Node.js to use CommonJS regardless of `"type": "module"`.
+> امتداد `.cjs` مطلوب لأن ملف `package.json` الجذري يضبط `"type": "module"`، ما يعامل ملفات `.js` كـ ESM. وصيغة `module.exports` هي CommonJS، ويخبر امتداد `.cjs` بيئة Node.js باستخدام CommonJS بصرف النظر عن `"type": "module"`.
 
 *lighthouserc.cjs*
 
@@ -256,28 +256,28 @@ module.exports = {
 };
 ```
 
-*Note:* Three runs reduce variance in performance measurements.
+*ملاحظة:* تقلّل ثلاث دورات التباين في قياسات الأداء.
 
-*Note:* Each assertion defines a performance budget that fails the CI pipeline if exceeded.
+*ملاحظة:* يعرّف كل تحقّق ميزانية أداء تُفشل خط أنابيب CI إذا تجاوزتها.
 
-> **What each assertion means**
+> **ماذا يعني كل تحقّق**
 >
-> - `categories:performance >= 0.9` — The overall Lighthouse performance score must be at least 90/100.
-> - `largest-contentful-paint <= 2500ms` — The main content must be visible within 2.5 seconds. This is Google’s “good” threshold for LCP.
-> - `cumulative-layout-shift <= 0.1` — Layout shouldn’t shift more than 0.1 CLS units. Your Suspense boundary placement from Exercise 3 directly affects this metric.
-> - `total-byte-weight <= 200KB` — Total JavaScript shipped must be under 200KB. This catches accidental dependency bloat — like importing all of lodash instead of a single function.
+> - `categories:performance >= 0.9` — يجب أن تكون درجة أداء Lighthouse الإجمالية 90/100 على الأقل.
+> - `largest-contentful-paint <= 2500ms` — يجب أن يكون المحتوى الرئيسي مرئيًا خلال 2.5 ثانية. وهذا حدّ Google «الجيد» لـ LCP.
+> - `cumulative-layout-shift <= 0.1` — لا ينبغي أن ينزاح التخطيط أكثر من 0.1 وحدة CLS. ويؤثر موضع حدّ Suspense من التمرين 3 في هذا المقياس مباشرةً.
+> - `total-byte-weight <= 200KB` — يجب أن يكون إجمالي JavaScript المشحون أقل من 200KB. وهذا يلتقط تضخّم الاعتمادات العرَضي — مثل استيراد lodash كله بدلًا من دالة واحدة.
 
-> **Performance budgets make architecture decisions measurable**
+> **ميزانيات الأداء تجعل قرارات المعمار قابلة للقياس**
 >
-> The CLS budget is directly related to your Suspense boundary placement from Exercise 3 — too many independent boundaries cause layout shifts. The total byte weight budget catches dependency bloat that the architectural linting from Exercise 6 might miss (a package might be a valid dependency but still too large). These budgets close the feedback loop: architecture decisions have quantifiable performance consequences, and CI enforces the thresholds.
+> ترتبط ميزانية CLS ارتباطًا مباشرًا بموضع حدّ Suspense من التمرين 3 — فحدود كثيرة مستقلة تسبب انزياحات في التخطيط. وتلتقط ميزانية الوزن الكلي بالبايت تضخّم الاعتمادات الذي قد يفوت الفحص الساكن المعماري من التمرين 6 (فقد تكون الحزمة اعتمادًا صالحًا لكنها كبيرة أكثر من اللازم). وتُغلق هذه الميزانيات حلقة التغذية الراجعة: فلقرارات المعمار نتائج أداء قابلة للقياس، ويفرض CI الحدود.
 
-### Checkpoint
+### نقطة تحقّق
 
-The Lighthouse CI configuration is valid. The assertions define concrete performance budgets. The `lighthouse` job depends on the `build` job completing first (via `needs: build`).
+تهيئة Lighthouse CI صالحة. وتعرّف التحقّقات ميزانيات أداء ملموسة. وتعتمد مهمة `lighthouse` على اكتمال مهمة `build` أولًا (عبر `needs: build`).
 
-## Review the Complete Workflow
+## مراجعة سير العمل الكامل
 
-The three jobs form a dependency graph. The `build` job runs the sequential quality gate. The `test` job uses a matrix strategy to run each package’s tests in parallel. The `lighthouse` job depends on `build` completing first.
+تشكّل المهام الثلاث مخطط اعتماد. فمهمة `build` تشغّل بوابة الجودة المتتابعة. ومهمة `test` تستخدم استراتيجية مصفوفة لتشغيل اختبارات كل حزمة على التوازي. وتعتمد مهمة `lighthouse` على اكتمال `build` أولًا.
 
 ```
 flowchart TD
@@ -313,43 +313,43 @@ flowchart TD
     Build -->|"needs: build"| LH
 ```
 
-The final `.github/workflows/ci.yml` should have three jobs:
+ينبغي أن يحتوي ملف `.github/workflows/ci.yml` النهائي على ثلاث مهام:
 
-1. **`build`**: Installs dependencies, runs typecheck/lint/test/build with Turborepo
-2. **`test`**: Matrix strategy that runs each package’s tests in parallel
-3. **`lighthouse`**: Builds the dashboard and asserts performance budgets
+1. **`build`**: يثبّت الاعتمادات، ويشغّل فحص الأنواع والفحص الساكن والاختبار والبناء بـ Turborepo
+2. **`test`**: استراتيجية مصفوفة تشغّل اختبارات كل حزمة على التوازي
+3. **`lighthouse`**: يبني لوحة المعلومات ويتحقق من ميزانيات الأداء
 
-You can validate the YAML syntax locally:
+يمكنك التحقق من صحة صيغة YAML محليًا:
 
 ```bash
 npx yaml-lint .github/workflows/ci.yml
 ```
 
-Or paste it into GitHub’s workflow editor (Actions tab in the repository) to check for syntax errors.
+أو الصقه في محرّر سير العمل في GitHub (تبويب Actions في المستودع) لفحص أخطاء الصيغة.
 
-### Checkpoint
+### نقطة تحقّق
 
-The CI workflow YAML is valid. It covers type checking, linting, testing, building, and performance budgets. Turborepo handles caching within each job. Remote caching is configured for cross-run artifact sharing.
+صيغة YAML لسير عمل CI صالحة. وتغطّي فحص الأنواع والفحص الساكن والاختبار والبناء وميزانيات الأداء. ويتولّى Turborepo التخزين المؤقت داخل كل مهمة. والتخزين المؤقت البعيد مهيّأ لمشاركة المخرجات عبر التشغيلات.
 
-GitHub Actions CI workflow overview
+نظرة عامة على سير عمل CI في GitHub Actions
 
-Lighthouse CI configuration and performance budgets
+تهيئة Lighthouse CI وميزانيات الأداء
 
-## Solution
+## الحل
 
-If you need to catch up, the completed state for this exercise is available on the `08-testing-start` branch:
+إن احتجت إلى اللحاق، فالحالة المكتملة لهذا التمرين متاحة على فرع `08-testing-start`:
 
 ```bash
 git checkout 08-testing-start
 pnpm install
 ```
 
-## Stretch Goals
+## أهداف إضافية
 
-- **PR comment with Lighthouse scores:** Add a step that posts the Lighthouse report as a comment on the pull request using `marocchino/sticky-pull-request-comment@v2`. This gives reviewers performance data inline with the code review.
-- **Affected-only testing:** Replace the matrix strategy with `turbo test --filter=...[HEAD^1]` to only test packages affected by the current push. This is Turborepo’s change detection — it compares the current commit against the parent and only runs tasks for packages with changed files.
-- **Deployment step:** Add a conditional deployment step that only runs on pushes to `main` (not pull requests). Deploy the built dashboard to Vercel, Netlify, or a static hosting provider.
+- **تعليق على طلب السحب بدرجات Lighthouse:** أضف خطوة تنشر تقرير Lighthouse كتعليق على طلب السحب باستخدام `marocchino/sticky-pull-request-comment@v2`. وهذا يمنح المراجعين بيانات الأداء جنبًا إلى جنب مع مراجعة الشيفرة.
+- **الاختبار على المتأثر فقط:** استبدل استراتيجية المصفوفة بـ `turbo test --filter=...[HEAD^1]` لاختبار الحزم المتأثرة بالدفع الحالي فقط. وهذا هو اكتشاف تغييرات Turborepo — فهو يقارن الإيداع الحالي بأصله ويشغّل المهام فقط للحزم التي تغيّرت ملفاتها.
+- **خطوة النشر:** أضف خطوة نشر شرطية تعمل فقط عند الدفع إلى `main` (لا طلبات السحب). وانشر لوحة المعلومات المبنية إلى Vercel أو Netlify أو مزوّد استضافة ثابتة.
 
-## What’s Next
+## ما التالي
 
-You have a CI pipeline that enforces your architecture on every push. But you don’t have tests yet. In the next exercise, you’ll write Playwright E2E tests that exercise the composed application, mock APIs with MSW, and record HAR fixtures for deterministic test replay.
+لديك خط أنابيب CI يفرض معمارك عند كل دفع. لكن ليست لديك اختبارات بعد. وفي التمرين التالي ستكتب اختبارات Playwright من الطرف إلى الطرف تختبر التطبيق المُركَّب، وواجهات API بديلة مُحاكاة بـ MSW، وتسجّل بيانات HAR الثابتة لإعادة تشغيل الاختبارات بشكل حتمي.

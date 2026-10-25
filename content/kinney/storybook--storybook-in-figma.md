@@ -1,11 +1,11 @@
 ---
-title: "Storybook in Figma"
-lang: en
+title: "Storybook داخل Figma"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/storybook-in-figma"
 ---
 
-You’ll need to have your project published on [Chromatic](https://stevekinney.com/courses/storybook/visual-tests). But, once you have that in place, go to your project and copy the URL the particular component that you want to link up with Figma.
+ستحتاج إلى أن يكون مشروعك منشورًا على [Chromatic](https://stevekinney.com/courses/storybook/visual-tests). ولكن، بمجرد أن يتوفّر لديك ذلك، اذهب إلى مشروعك وانسخ رابط المكوّن المعيّن الذي تريد ربطه بـ Figma.
 
-In [Figma’s Dev Mode](https://stevekinney.com/courses/figma/dev-mode), go to the plugins pane and search for Storybook. You’ll need to connect Figma to Chromatic, but after that you’ll be able to paste in the link to your story and see them side by side.
+في [وضع المطوّر في Figma](https://stevekinney.com/courses/figma/dev-mode)، اذهب إلى لوحة الإضافات وابحث عن Storybook. ستحتاج إلى ربط Figma بـ Chromatic، لكن بعد ذلك ستتمكّن من لصق رابط قصتك ورؤيتهما جنبًا إلى جنب.
 
-Storybook integrated into Figma
+Storybook مدمجًا في Figma

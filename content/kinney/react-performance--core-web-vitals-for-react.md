@@ -1,22 +1,22 @@
 ---
-title: "Core Web Vitals for React"
-lang: en
+title: "مؤشرات الويب الأساسية (Core Web Vitals) لـ React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/core-web-vitals-for-react"
 ---
 
-Core Web Vitals aren’t just Google’s latest SEO ranking factor—they’re a measurement of real user frustration. That 4-second Largest Contentful Paint means users are staring at a blank screen. The 300ms First Input Delay means clicks feel broken. The 0.25 Cumulative Layout Shift means content is jumping around like a bouncy castle. For React developers, optimizing these metrics requires understanding how React’s rendering behavior affects user experience.
+ليست مؤشرات الويب الأساسية مجرّد عامل ترتيب SEO أحدث من Google، بل مقياس لإحباط المستخدمين الحقيقي. فزمن أكبر رسم محتوى (Largest Contentful Paint) البالغ 4 ثوانٍ يعني أن المستخدمين يحدّقون في شاشة فارغة. وتأخّر أول إدخال (First Input Delay) البالغ 300 مللي ثانية يعني أن النقرات تبدو معطّلة. والانزلاق التراكمي للتخطيط (Cumulative Layout Shift) البالغ 0.25 يعني أن المحتوى يتقافز كقلعة قافزة. وبالنسبة لمطوّري React، يتطلّب تحسين هذه المقاييس فهم كيف يؤثّر سلوك التصيير في React في تجربة المستخدم.
 
-Unlike synthetic performance metrics that vary wildly between testing environments, Core Web Vitals reflect what actual users experience on actual devices with actual network conditions. Master these three metrics—LCP, FID (now INP), and CLS—and you’ll have users who stay engaged and search engines that love your site.
+وبخلاف مقاييس الأداء الاصطناعية التي تتذبذب بشدّة بين بيئات الاختبار، تعكس مؤشرات الويب الأساسية ما يختبره المستخدمون الفعليون على أجهزة فعلية وظروف شبكة فعلية. أتقن هذه المقاييس الثلاثة — LCP وFID (الذي حلّ محلّه INP الآن) وCLS — وستحصل على مستخدمين يبقون متفاعلين ومحرّكات بحث تحبّ موقعك.
 
-## Understanding Core Web Vitals
+## فهم مؤشرات الويب الأساسية
 
-The three Core Web Vitals measure different aspects of user experience:
+تقيس مؤشرات الويب الأساسية الثلاثة جوانب مختلفة من تجربة المستخدم:
 
-- **Largest Contentful Paint (LCP)**: How quickly the largest element renders (loading performance)
-- **First Input Delay (FID)** / **Interaction to Next Paint (INP)**: How quickly the page responds to user interactions (interactivity)
-- **Cumulative Layout Shift (CLS)**: How much content shifts around during loading (visual stability)
+- **أكبر رسم محتوى (Largest Contentful Paint - LCP)**: مدى سرعة تصيير أكبر عنصر (أداء التحميل)
+- **تأخّر أول إدخال (First Input Delay - FID)** / **التفاعل إلى الرسم التالي (Interaction to Next Paint - INP)**: مدى سرعة استجابة الصفحة لتفاعلات المستخدم (التفاعلية)
+- **الانزلاق التراكمي للتخطيط (Cumulative Layout Shift - CLS)**: مقدار تقافز المحتوى أثناء التحميل (الاستقرار البصري)
 
-Here’s what good scores look like:
+إليك كيف تبدو النتائج الجيدة:
 
 ```typescript
 // Target scores for Core Web Vitals
@@ -61,15 +61,15 @@ function measureWebVitals() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Install the [web-vitals](https://github.com/GoogleChrome/web-vitals) library to measure these metrics accurately in production. Don’t rely on Lighthouse scores alone—real user data matters more.
+> ثبّت مكتبة [web-vitals](https://github.com/GoogleChrome/web-vitals) لقياس هذه المقاييس بدقة في الإنتاج. لا تعتمد على نتائج Lighthouse وحدها — فبيانات المستخدمين الحقيقيين أهم.
 
-## Optimizing Largest Contentful Paint (LCP)
+## تحسين أكبر رسم محتوى (LCP)
 
-LCP measures when the largest element in the viewport finishes rendering. In React apps, this is often a hero image, heading, or main content block.
+يقيس LCP متى ينتهي تصيير أكبر عنصر في إطار العرض. وفي تطبيقات React، يكون هذا غالبًا صورة رئيسية أو عنوانًا أو كتلة محتوى أساسية.
 
-### Identifying Your LCP Element
+### تحديد عنصر LCP لديك
 
 ```typescript
 // Hook to identify LCP element in development
@@ -105,9 +105,9 @@ function App() {
 }
 ```
 
-### LCP Optimization Strategies
+### استراتيجيات تحسين LCP
 
-#### Optimize Critical Path Resources
+#### تحسين موارد المسار الحرج
 
 ```typescript
 // Hero component optimized for LCP
@@ -171,7 +171,7 @@ function DocumentHead() {
 }
 ```
 
-#### Server-Side Rendering and Streaming
+#### التصيير من الخادم والبثّ
 
 ```typescript
 // Optimize initial HTML delivery
@@ -217,7 +217,7 @@ function CriticalCSS() {
 }
 ```
 
-#### Image Optimization Techniques
+#### تقنيات تحسين الصور
 
 ```typescript
 // Modern image optimization
@@ -267,11 +267,11 @@ function NextjsOptimizedHero() {
 }
 ```
 
-## Optimizing Interaction to Next Paint (INP)
+## تحسين التفاعل إلى الرسم التالي (INP)
 
-INP (which replaces FID) measures the latency of all user interactions throughout the page lifecycle. For React apps, this often means optimizing event handlers and state updates.
+يقيس INP (الذي حلّ محلّ FID) زمن استجابة جميع تفاعلات المستخدم على مدار دورة حياة الصفحة. وفي تطبيقات React، يعني هذا غالبًا تحسين معالجات الأحداث وتحديثات الحالة.
 
-### Common INP Problems in React
+### مشكلات INP الشائعة في React
 
 ```typescript
 // ❌ Bad: Blocking the main thread with expensive work
@@ -317,7 +317,7 @@ function ResponsiveButton({ items }: { items: Item[] }) {
 }
 ```
 
-### Advanced INP Optimization
+### تحسين INP المتقدّم
 
 ```typescript
 // Time slicing for large lists
@@ -432,7 +432,7 @@ self.onmessage = function(e) {
 */
 ```
 
-### Optimizing Event Handlers
+### تحسين معالجات الأحداث
 
 ```typescript
 // Debounce frequent events
@@ -484,11 +484,11 @@ function useThrottle<T extends (...args: any[]) => any>(callback: T, delay: numb
 }
 ```
 
-## Optimizing Cumulative Layout Shift (CLS)
+## تحسين الانزلاق التراكمي للتخطيط (CLS)
 
-CLS measures how much content shifts around during loading. React’s dynamic rendering can easily cause layout shifts if not handled carefully.
+يقيس CLS مقدار تقافز المحتوى أثناء التحميل. وقد يتسبّب التصيير الديناميكي في React بسهولة في انزلاقات التخطيط إن لم يُعالَج بحذر.
 
-### Common CLS Problems
+### مشكلات CLS الشائعة
 
 ```typescript
 // ❌ Bad: Images without dimensions cause layout shift
@@ -528,7 +528,7 @@ function GoodImageGallery({ images }: { images: Image[] }) {
 }
 ```
 
-### Skeleton Loading Patterns
+### أنماط التحميل الهيكلي
 
 ```typescript
 // Skeleton component that matches final content size
@@ -585,7 +585,7 @@ function UserCard({ user }: { user: User | null }) {
 }
 ```
 
-### Font Loading Optimization
+### تحسين تحميل الخطوط
 
 ```typescript
 // Prevent font swap layout shifts
@@ -662,7 +662,7 @@ function TextWithFallback({
 }
 ```
 
-### Dynamic Content and Layout Shifts
+### المحتوى الديناميكي وانزلاقات التخطيط
 
 ```typescript
 // Reserve space for dynamic content
@@ -713,7 +713,7 @@ function AnimatedContent({ show }: { show: boolean }) {
 }
 ```
 
-## Monitoring Core Web Vitals in Production
+## مراقبة مؤشرات الويب الأساسية في الإنتاج
 
 ```typescript
 // Comprehensive Web Vitals monitoring
@@ -795,7 +795,7 @@ class WebVitalsMonitor {
 const webVitalsMonitor = new WebVitalsMonitor();
 ```
 
-## Testing and Debugging
+## الاختبار والتصحيح
 
 ```typescript
 // Development tools for Web Vitals debugging
@@ -856,9 +856,9 @@ function WebVitalsDevTools() {
 }
 ```
 
-## Common Pitfalls and Solutions
+## مزالق شائعة وحلولها
 
-### Pitfall: Optimizing for Lab Data Only
+### المزلق: التحسين حسب بيانات المختبر فقط
 
 ```typescript
 // ❌ Bad: Only testing with fast connections
@@ -892,14 +892,14 @@ async function testRealWorldConditions() {
 }
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Core Web Vitals optimization is an ongoing process, not a one-time fix. Key takeaways:
+تحسين مؤشرات الويب الأساسية عملية مستمرة، وليس إصلاحًا لمرّة واحدة. أهم الاستنتاجات:
 
-1. **Measure in production** - Lab data doesn’t always reflect real user experience
-2. **Focus on the user journey** - Optimize the most important user flows first
-3. **Test on real devices** - Your MacBook Pro isn’t representative of your users
-4. **Monitor regressions** - Set up alerts for when metrics degrade
-5. **Balance optimization with development velocity** - Don’t sacrifice maintainability for marginal gains
+1. **قِس في الإنتاج** - لا تعكس بيانات المختبر دائمًا تجربة المستخدم الحقيقية
+2. **ركّز على رحلة المستخدم** - حسّن أهم مسارات المستخدم أولًا
+3. **اختبر على أجهزة حقيقية** - فجهاز MacBook Pro الخاص بك لا يمثّل مستخدميك
+4. **راقب الانتكاسات** - أعدّ تنبيهات لتراجع المقاييس
+5. **وازن بين التحسين وسرعة التطوير** - لا تضحِّ بقابلية الصيانة مقابل مكاسب هامشية
 
-The investment in Core Web Vitals pays dividends in user engagement, conversion rates, and search rankings. Start with the biggest wins (image optimization, font loading, skeleton screens), then systematically address more complex performance challenges.
+يُثمر الاستثمار في مؤشرات الويب الأساسية في تفاعل المستخدمين ومعدّلات التحويل وترتيب البحث. ابدأ بأكبر المكاسب (تحسين الصور، وتحميل الخطوط، وشاشات التحميل الهيكلي)، ثم عالج تحديات الأداء الأكثر تعقيدًا بمنهجية.

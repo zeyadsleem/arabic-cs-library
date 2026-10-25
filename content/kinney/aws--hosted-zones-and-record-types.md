@@ -1,18 +1,18 @@
 ---
-title: "Hosted Zones and Record Types"
-lang: en
+title: "المناطق المستضافة وأنواع السجلات"
+lang: ar
 source: "https://stevekinney.com/courses/aws/hosted-zones-and-record-types"
 ---
 
-A **hosted zone** is Route 53’s container for DNS records. If you think of DNS as a phone book, the hosted zone is the page for your domain—it holds every record that tells the internet how to reach your services. When you create a hosted zone for `example.com`, Route 53 becomes the authoritative nameserver for that domain, and every DNS query for `example.com` or its subdomains gets answered by the records you configure inside the zone.
+**المنطقة المستضافة** هي حاوية Route 53 لسجلات DNS. وإذا تصوّرت DNS كدفتر هاتف، فالمنطقة المستضافة هي الصفحة الخاصة بنطاقك—إذ تضم كل سجل يخبر الإنترنت بكيفية الوصول إلى خدماتك. وعندما تنشئ منطقة مستضافة لـ `example.com`، تصبح Route 53 خادم الأسماء الموثوق لذلك النطاق، ويُجاب عن كل استعلام DNS لـ `example.com` أو نطاقاته الفرعية بالسجلات التي تهيّئها داخل المنطقة.
 
-If you want AWS’s canonical explanation of hosted zones and delegation, keep the [Route 53 DNS configuration guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) and the [hosted zones guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-working-with.html) open.
+إن أردت شرح AWS المرجعي للمناطق المستضافة والتفويض، فأبقِ [دليل تهيئة DNS في Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) و[دليل المناطق المستضافة](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-working-with.html) مفتوحين.
 
-If you registered your domain through Route 53 in the previous lesson, you may already have a hosted zone. If your domain lives somewhere else, this is the step where Route 53 becomes authoritative for DNS.
+إذا كنت قد سجّلت نطاقك عبر Route 53 في الدرس السابق، فقد تكون لديك منطقة مستضافة بالفعل. أما إذا كان نطاقك موجودًا في مكان آخر، فهذه هي الخطوة التي تصبح فيها Route 53 موثوقة لـ DNS.
 
-## Creating a Hosted Zone
+## إنشاء منطقة مستضافة
 
-You can create a hosted zone in the console or the CLI. Here’s the CLI version:
+يمكنك إنشاء منطقة مستضافة في وحدة التحكم أو في CLI. وإليك نسخة CLI:
 
 ```bash
 aws route53 create-hosted-zone \
@@ -22,9 +22,9 @@ aws route53 create-hosted-zone \
   --output json
 ```
 
-The `--caller-reference` is a unique string that prevents duplicate hosted zones from being created if you accidentally run the command twice. A timestamp works fine for this.
+`--caller-reference` سلسلة فريدة تمنع إنشاء مناطق مستضافة مكرّرة إذا شغّلت الأمر مرتين عن غير قصد. والطابع الزمني يفي بالغرض هنا.
 
-The response includes the hosted zone ID and the four nameservers that Route 53 assigned:
+تتضمن الاستجابة معرّف المنطقة المستضافة وخوادم الأسماء الأربعة التي خصّصتها Route 53:
 
 ```json
 {
@@ -53,91 +53,91 @@ The response includes the hosted zone ID and the four nameservers that Route 53 
 }
 ```
 
-Notice that `ResourceRecordSetCount` starts at 2. Route 53 automatically creates two records for every new hosted zone: an **NS record** and an **SOA record**. These are the foundation of your zone, and you shouldn’t delete them.
+لاحظ أن `ResourceRecordSetCount` يبدأ من 2. فـRoute 53 تنشئ تلقائيًا سجلين لكل منطقة مستضافة جديدة: **سجل NS** و**سجل SOA**. وهذان أساس منطقتك، ولا ينبغي أن تحذفهما.
 
-## Public vs. Private Hosted Zones
+## المناطق المستضافة العامة مقابل الخاصة
 
-Route 53 supports two types of hosted zones:
+تدعم Route 53 نوعين من المناطق المستضافة:
 
-- **Public hosted zones** respond to DNS queries from the public internet. This is what you use for your frontend: users around the world query DNS for `example.com`, and your public hosted zone answers.
-- **Private hosted zones** respond to DNS queries from within one or more VPCs (Virtual Private Clouds). They’re used for internal service discovery—one microservice finding another inside your AWS network. Not something you need for frontend hosting.
+- **المناطق المستضافة العامة** تجيب عن استعلامات DNS القادمة من الإنترنت العام. وهذا ما تستخدمه لواجهتك الأمامية: يستعلم المستخدمون حول العالم عن DNS لـ `example.com`، فتجيب منطقتك المستضافة العامة.
+- **المناطق المستضافة الخاصة** تجيب عن استعلامات DNS من داخل شبكة VPC واحدة أو أكثر (سحابة خاصة افتراضية). وتُستخدم لاكتشاف الخدمات الداخلية—حيث تجد خدمة مصغّرة خدمة أخرى داخل شبكة AWS لديك. وهذا ليس ما تحتاجه لاستضافة الواجهة الأمامية.
 
-For this course, every hosted zone is public. If you see `"PrivateZone": false` in your output, you’re on the right track.
+في هذه الدورة، كل منطقة مستضافة عامة. وإذا رأيت `"PrivateZone": false` في مخرجاتك، فأنت على المسار الصحيح.
 
-## NS Records and Delegation
+## سجلات NS والتفويض
 
-The **NS (Name Server) records** in your hosted zone list the four nameservers that Route 53 assigned. These are the servers that will answer DNS queries for your domain. But there’s a catch: having NS records inside your hosted zone doesn’t do anything by itself. You also need to tell your domain registrar to use these nameservers.
+تسرد **سجلات NS (خادم الأسماء)** في منطقتك المستضافة خوادم الأسماء الأربعة التي خصّصتها Route 53. وهذه هي الخوادم التي ستجيب عن استعلامات DNS لنطاقك. لكن هناك عقبة: وجود سجلات NS داخل منطقتك المستضافة لا يفعل شيئًا بحد ذاته. تحتاج أيضًا إلى إخبار مسجّل نطاقك باستخدام خوادم الأسماء هذه.
 
-If you registered your domain through Route 53, this happens automatically—Route 53 creates the hosted zone and updates the registration’s nameservers in one step. If you registered your domain elsewhere (GoDaddy, Namecheap, Squarespace, Cloudflare), you need to log into your registrar and replace the default nameservers with the four Route 53 nameservers.
+إذا سجّلت نطاقك عبر Route 53، يحدث هذا تلقائيًا—إذ تنشئ Route 53 المنطقة المستضافة وتحدّث خوادم أسماء التسجيل في خطوة واحدة. أما إذا سجّلت نطاقك في مكان آخر (GoDaddy أو Namecheap أو Squarespace أو Cloudflare)، فعليك تسجيل الدخول إلى مسجّلك واستبدال خوادم الأسماء الافتراضية بخوادم Route 53 الأربعة.
 
-This is the moment of **delegation**: you’re telling the DNS hierarchy, “When someone asks for `example.com`, send them to Route 53.” Until you do this, your hosted zone exists but nobody knows to ask it anything.
+هذه هي لحظة **التفويض**: أنت تخبر التسلسل الهرمي لـ DNS: «عندما يسأل أحدهم عن `example.com`، أرسله إلى Route 53». وإلى أن تفعل ذلك، تكون منطقتك المستضافة موجودة لكن لا أحد يعرف أنه يجب سؤالها عن أي شيء.
 
-> **Warning**
+> **تحذير**
 >
-> When you change nameservers at your registrar, DNS resolution for your domain may be disrupted for a period of time. The old nameservers stop answering, and the new ones take over as the change propagates through DNS caches. Plan this for a low-traffic window, and lower your TTLs beforehand (as discussed in [DNS for Frontend Engineers](https://stevekinney.com/courses/aws/dns-for-frontend-engineers)).
+> عند تغيير خوادم الأسماء لدى مسجّلك، قد يتعطّل تحليل DNS لنطاقك لفترة من الوقت. فتتوقف خوادم الأسماء القديمة عن الإجابة، وتتولى الخوادم الجديدة العمل مع انتشار التغيير عبر ذاكرات DNS المؤقتة. خطّط لذلك في نافذة زيارات منخفضة، واخفض مدد TTL مسبقًا (كما نوقش في [DNS لمهندسي الواجهة الأمامية](https://stevekinney.com/courses/aws/dns-for-frontend-engineers)).
 
-## SOA Records
+## سجلات SOA
 
-The **SOA (Start of Authority) record** contains administrative information about the zone: the primary nameserver, the email of the domain administrator, the serial number (which increments on changes), and timing values for cache refresh intervals. Route 53 manages the SOA record for you. You don’t need to edit it, and you should leave it alone.
+يحتوي **سجل SOA (بداية التفويض)** على معلومات إدارية عن المنطقة: خادم الأسماء الأساسي، وبريد مدير النطاق، والرقم التسلسلي (الذي يزداد عند التغييرات)، وقيم التوقيت لفترات تحديث التخزين المؤقت. تدير Route 53 سجل SOA نيابة عنك. لا تحتاج إلى تحريره، والأفضل أن تتركه وشأنه.
 
-## Record Types
+## أنواع السجلات
 
-Here are the DNS record types you’ll work with in Route 53. Each one serves a different purpose, and knowing when to use each is the difference between a working deployment and a confusing debugging session.
+إليك أنواع سجلات DNS التي ستتعامل معها في Route 53. كل نوع يخدم غرضًا مختلفًا، ومعرفة متى تستخدم كلًا منها هي الفرق بين عملية نشر عاملة وجلسة تصحيح محيّرة.
 
-### A Records
+### سجلات A
 
-An **A record** maps a domain name to an IPv4 address. This is the most fundamental DNS record type—it answers the question “what IP address should I connect to?”
+يربط **سجل A** اسم نطاق بعنوان IPv4. وهذا هو النوع الأساسي من سجلات DNS—إذ يجيب عن السؤال «بأي عنوان IP ينبغي أن أتصل؟»
 
 ```
 example.com.    300    IN    A    192.0.2.1
 ```
 
-In Route 53, you’ll often use A records with the **alias** feature instead of pointing to a raw IP address. An alias A record points to an AWS resource (like a CloudFront distribution) and resolves to whatever IP addresses that resource is currently using. You’ll use that later when you point your domain at CloudFront.
+في Route 53، ستستخدم غالبًا سجلات A مع ميزة **الاسم البديل (alias)** بدلًا من الإشارة إلى عنوان IP خام. فسجل A البديل يشير إلى مورد AWS (مثل توزيع CloudFront) ويُحلّ إلى عناوين IP التي يستخدمها ذلك المورد حاليًا. وستستخدم ذلك لاحقًا عندما توجّه نطاقك إلى CloudFront.
 
-### AAAA Records
+### سجلات AAAA
 
-An **AAAA record** is identical to an A record, but for IPv6 addresses. IPv6 addresses are 128-bit (compared to IPv4’s 32-bit), so they look like `2001:0db8:85a3::8a2e:0370:7334`.
+**سجل AAAA** مطابق لسجل A، لكن لعناوين IPv6. عناوين IPv6 بطول 128 بت (مقارنة بـ 32 بت في IPv4)، لذا تبدو مثل `2001:0db8:85a3::8a2e:0370:7334`.
 
-CloudFront supports IPv6 by default. If you want your domain to resolve over both IPv4 and IPv6, you create both an A record and an AAAA record pointing to the same CloudFront distribution.
+يدعم CloudFront بروتوكول IPv6 افتراضيًا. وإذا أردت أن يُحلّ نطاقك عبر IPv4 وIPv6 معًا، فأنشئ سجل A وسجل AAAA يشيران إلى توزيع CloudFront نفسه.
 
-### CNAME Records
+### سجلات CNAME
 
-A **CNAME (Canonical Name) record** maps one domain name to another domain name. Instead of answering with an IP address, it says: “Go ask that other domain instead.”
+يربط **سجل CNAME (الاسم القانوني)** اسم نطاق باسم نطاق آخر. فبدلًا من الإجابة بعنوان IP، يقول: «اذهب واسأل ذلك النطاق الآخر بدلًا مني».
 
 ```
 www.example.com.    300    IN    CNAME    d111111abcdef8.cloudfront.net.
 ```
 
-When a resolver encounters a CNAME, it follows the chain: it looks up the target domain (`d111111abcdef8.cloudfront.net`) and returns whatever A or AAAA record it finds there.
+عندما يصادف مُحلِّل سجل CNAME، فإنه يتبع السلسلة: يبحث عن النطاق الهدف (`d111111abcdef8.cloudfront.net`) ويعيد أي سجل A أو AAAA يجده هناك.
 
-CNAME records have one critical limitation: **they can’t be used at the zone apex**. The zone apex is the bare domain—`example.com` without any subdomain prefix. This is a fundamental DNS protocol rule, not an AWS limitation. If you try to create a CNAME for `example.com`, it would conflict with the NS and SOA records that must exist at the apex. This is exactly why Route 53’s alias records exist—they solve this problem.
+لسجلات CNAME قيد جوهري واحد: **لا يمكن استخدامها عند قمة المنطقة**. فقمة المنطقة هي النطاق المجرّد—`example.com` دون أي بادئة نطاق فرعي. وهذا قاعدة أساسية في بروتوكول DNS، لا قيد من AWS. فإذا حاولت إنشاء سجل CNAME لـ `example.com`، فسيتعارض مع سجلي NS وSOA اللذين يجب أن يوجدَا عند القمة. ولهذا السبب تحديدًا توجد سجلات الاسم البديل في Route 53—فهي تحل هذه المشكلة.
 
-### MX Records
+### سجلات MX
 
-**MX (Mail Exchange) records** specify the mail servers responsible for receiving email for your domain. Each MX record includes a priority number (lower numbers are tried first) and the hostname of the mail server.
+تحدد **سجلات MX (تبادل البريد)** خوادم البريد المسؤولة عن استقبال البريد لنطاقك. ويتضمن كل سجل MX رقم أولوية (تُجرَّب الأرقام الأقل أولًا) واسم المضيف لخادم البريد.
 
 ```
 example.com.    300    IN    MX    10 mail.example.com.
 example.com.    300    IN    MX    20 mail-backup.example.com.
 ```
 
-You probably don’t need to create MX records for a frontend deployment. But if you’re managing the full domain in Route 53 and you use a third-party email provider (Google Workspace, Microsoft 365), you’ll add their MX records to your hosted zone.
+على الأرجح لا تحتاج إلى إنشاء سجلات MX لنشر واجهة أمامية. لكن إذا كنت تدير النطاق كاملًا في Route 53 وتستخدم مزوّد بريد خارجيًا (Google Workspace أو Microsoft 365)، فستضيف سجلات MX الخاصة به إلى منطقتك المستضافة.
 
-### TXT Records
+### سجلات TXT
 
-**TXT records** hold arbitrary text strings. They are the Swiss Army knife of DNS, used for:
+تحمل **سجلات TXT** سلاسل نصية اعتباطية. وهي سكين الجيش السويسري في DNS، وتُستخدم في:
 
-- **Domain verification**: Google Search Console, email providers, and certificate authorities use TXT records to prove you control a domain.
-- **Email authentication**: SPF, DKIM, and DMARC records are all TXT records that help prevent email spoofing.
-- **Certificate or service verification**: Some systems prove domain ownership with TXT records. ACM happens to use CNAME records for DNS validation, but the idea is the same.
+- **التحقق من النطاق**: تستخدم Google Search Console ومزوّدو البريد وسلطات الشهادات سجلات TXT لإثبات تحكّمك بنطاق.
+- **مصادقة البريد**: سجلات SPF وDKIM وDMARC كلها سجلات TXT تساعد في منع انتحال البريد.
+- **التحقق من الشهادات أو الخدمات**: تثبت بعض الأنظمة ملكية النطاق بسجلات TXT. ويصادف أن ACM يستخدم سجلات CNAME للتحقق عبر DNS، لكن الفكرة نفسها.
 
 ```
 example.com.    300    IN    TXT    "v=spf1 include:_spf.google.com ~all"
 ```
 
-## Creating Records via the CLI
+## إنشاء السجلات عبر CLI
 
-To create a DNS record in Route 53, you use the `change-resource-record-sets` command. Here’s an example that creates a standard A record:
+لإنشاء سجل DNS في Route 53، تستخدم الأمر `change-resource-record-sets`. وإليك مثالًا ينشئ سجل A قياسيًا:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -162,9 +162,9 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-The `UPSERT` action creates the record if it doesn’t exist, or updates it if it does. This is almost always what you want—it’s idempotent, so running the command twice doesn’t cause an error.
+إجراء `UPSERT` ينشئ السجل إن لم يكن موجودًا، أو يحدّثه إن كان موجودًا. وهذا هو ما تريده دائمًا تقريبًا—فهو عديم الأثر التكراري (idempotent)، لذا لا يسبب تشغيل الأمر مرتين أي خطأ.
 
-You can also list all records in a hosted zone:
+يمكنك أيضًا سرد كل السجلات في منطقة مستضافة:
 
 ```bash
 aws route53 list-resource-record-sets \
@@ -172,13 +172,13 @@ aws route53 list-resource-record-sets \
   --output json
 ```
 
-This returns every record in the zone, including the NS and SOA records that Route 53 created automatically.
+يعيد هذا كل سجل في المنطقة، بما في ذلك سجلا NS وSOA اللذان أنشأتهما Route 53 تلقائيًا.
 
-> **Tip**
+> **نصيحة**
 >
-> Use `UPSERT` instead of `CREATE` for record changes. `CREATE` fails if the record already exists, which makes it annoying for scripts and automation. `UPSERT` handles both cases.
+> استخدم `UPSERT` بدلًا من `CREATE` لتغييرات السجلات. فـ`CREATE` يفشل إذا كان السجل موجودًا بالفعل، ما يجعله مزعجًا في السكربتات والأتمتة. أما `UPSERT` فيتعامل مع الحالتين.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import {
@@ -221,23 +221,23 @@ const records = await r53.send(new ListResourceRecordSetsCommand({ HostedZoneId:
 console.log(records.ResourceRecordSets);
 ```
 
-## Hosted Zone Costs
+## تكاليف المنطقة المستضافة
 
-Route 53 charges **$0.50 per hosted zone per month** for the first 25 zones. If you create a hosted zone and delete it within 12 hours, you aren’t charged. DNS queries are billed separately at $0.40 per million queries for standard routing—for a typical frontend, this is pennies.
+تفرض Route 53 رسومًا قدرها **0.50 دولار لكل منطقة مستضافة شهريًا** لأول 25 منطقة. وإذا أنشأت منطقة مستضافة وحذفتها خلال 12 ساعة، فلا تُحصَّل منك رسوم. وتُحتسب استعلامات DNS بشكل منفصل بواقع 0.40 دولار لكل مليون استعلام في التوجيه القياسي—وبالنسبة إلى واجهة أمامية نموذجية، هذه بضعة سنتات.
 
-The hosted zone charge is the only ongoing cost you pay just for having DNS configured, regardless of traffic. For a single domain powering your frontend, you’re looking at $0.50/month plus negligible query costs.
+رسوم المنطقة المستضافة هي التكلفة المستمرة الوحيدة التي تدفعها لمجرد وجود DNS مهيّأ، بصرف النظر عن الزيارات. ولمجال واحد يشغّل واجهتك الأمامية، فأنت تنظر إلى 0.50 دولار شهريًا إضافة إلى تكاليف استعلامات لا تُذكر.
 
-## What You Built
+## ما الذي بنيته
 
-You now understand what a hosted zone is, how to create one, what record types are available, and when to use each one. Honestly, I find this to be one of those areas where the vocabulary is scarier than the actual concepts—once you’ve seen an NS record and an A record side by side, the whole system clicks into place.
+أنت تفهم الآن ما هي المنطقة المستضافة، وكيف تنشئ واحدة، وما أنواع السجلات المتاحة، ومتى تستخدم كلًا منها. وبصراحة، أجد هذا من المجالات التي تكون فيها المفردات أخطر من المفاهيم نفسها—فبمجرد أن ترى سجل NS وسجل A جنبًا إلى جنب، يترابط النظام كله في ذهنك.
 
-That matters immediately, because the next step is certificate validation. ACM is about to hand you DNS records and ask you to prove you control the domain. That request only makes sense once you know where those records live and who is authoritative for them.
+وهذا يهم فورًا، لأن الخطوة التالية هي التحقق من الشهادة. فـACM على وشك أن يسلمك سجلات DNS ويطلب منك إثبات تحكّمك بالنطاق. وهذا الطلب لا يكون منطقيًا إلا عندما تعرف أين تعيش تلك السجلات ومن هو الموثوق بها.
 
-## Cleanup
+## التنظيف
 
-Hosted zones cost **$0.50/month** for as long as they exist. If you created one for this exercise and no longer need it, delete it. The hosted zone must be empty—down to just the default NS and SOA records—before deletion. Any A, AAAA, or CNAME records you added must be removed first with `change-resource-record-sets` using `Action: DELETE`.
+تكلّف المناطق المستضافة **0.50 دولار شهريًا** طالما بقيت موجودة. وإذا أنشأت واحدة لهذا التمرين ولم تعد تحتاجها، فاحذفها. ويجب أن تكون المنطقة المستضافة فارغة—بحيث لا يبقى سوى سجلي NS وSOA الافتراضيين—قبل الحذف. وأي سجلات A أو AAAA أو CNAME أضفتها يجب إزالتها أولًا باستخدام `change-resource-record-sets` مع `Action: DELETE`.
 
-Once the zone is empty:
+وبمجرد أن تصبح المنطقة فارغة:
 
 ```bash
 aws route53 delete-hosted-zone \
@@ -246,4 +246,4 @@ aws route53 delete-hosted-zone \
   --output json
 ```
 
-Replace `Z1234567890ABC` with your actual hosted zone ID from the `list-hosted-zones` output.
+استبدل `Z1234567890ABC` بمعرّف منطقتك المستضافة الفعلي من مخرجات `list-hosted-zones`.

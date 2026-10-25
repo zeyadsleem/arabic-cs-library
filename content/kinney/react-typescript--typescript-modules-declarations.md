@@ -1,28 +1,28 @@
 ---
-title: "Modules and Declaration Files for React"
-lang: en
+title: "الوحدات وملفات التعريف في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-modules-declarations"
 ---
 
-Every React project eventually hits the “Cannot find module” error. Maybe it’s that CSS-in-JS library without types, an image import that TypeScript doesn’t understand, or a legacy JavaScript component you’re trying to integrate. Declaration files are your escape hatch—they tell TypeScript about code it can’t figure out on its own.
+كل مشروع React يصطدم في النهاية بخطأ «Cannot find module». قد تكون المشكلة تلك المكتبة من نوع CSS-in-JS التي تفتقر إلى الأنواع، أو استيراد صورة لا يفهمه TypeScript، أو مكوّن JavaScript قديم تحاول دمجه. إن ملفات التعريف هي منفذك للخروج من هذا المأزق: فهي تخبر TypeScript بشيفرة لا يستطيع استنتاجها بنفسه.
 
-In React development, you’ll encounter declaration files when:
+في تطوير React، ستصادف ملفات التعريف عندما:
 
-- Importing CSS modules, images, or SVG files as components
-- Using JavaScript libraries that don’t ship with TypeScript definitions
-- Extending global objects for analytics or feature flags
-- Adding custom properties to React’s built-in types
-- Creating type-safe environment variables
+- تستورد وحدات CSS أو الصور أو ملفات SVG بوصفها مكوّنات
+- تستخدم مكتبات JavaScript لا تأتي مرفقة بتعريفات TypeScript
+- توسّع الكائنات العامة لأغراض التحليلات أو أعلام الميزات
+- تضيف خصائص مخصّصة إلى الأنواع المدمجة في React
+- تنشئ متغيرات بيئة آمنة من حيث الأنواع
 
-Let’s explore how to handle these scenarios with confidence.
+لنتعرّف على كيفية التعامل مع هذه السيناريوهات بثقة.
 
-## Asset Imports in React
+## استيراد الأصول في React
 
-The most common declaration files you’ll write in React are for assets. TypeScript doesn’t know what to do when you `import logo from './logo.svg'`—you need to tell it.
+أكثر ملفات التعريف التي ستكتبها في React شيوعًا هي الخاصة بالأصول. لا يعرف TypeScript ما الذي ينبغي فعله عند `import logo from './logo.svg'`، وعليك أن تخبره.
 
-### CSS Modules
+### وحدات CSS
 
-When using CSS modules for scoped styling:
+عند استخدام وحدات CSS لتحقيق تنسيق محصور النطاق:
 
 ```typescript
 // types/css-modules.d.ts
@@ -48,11 +48,11 @@ function Button() {
 }
 ```
 
-**Real-world tip**: Some tools like `typed-css-modules` can generate specific types for your CSS modules, giving you autocomplete for actual class names.
+**نصيحة من الواقع العملي**: بعض الأدوات مثل `typed-css-modules` تستطيع توليد أنواع محدّدة لوحدات CSS لديك، فتمنحك إكمالًا تلقائيًا لأسماء الأصناف الفعلية.
 
-### SVG as React Components
+### ملفات SVG بوصفها مكوّنات React
 
-Many React apps import SVGs as components for better control:
+كثير من تطبيقات React تستورد ملفات SVG كمكوّنات لتحكم أفضل:
 
 ```typescript
 // types/assets.d.ts
@@ -78,9 +78,9 @@ function Header() {
 }
 ```
 
-### Image Imports
+### استيراد الصور
 
-For optimized image loading:
+لتحقيق تحميل محسّن للصور:
 
 ```typescript
 // types/images.d.ts
@@ -107,11 +107,11 @@ declare module '*.png' {
 }
 ```
 
-## Working with Untyped Libraries
+## العمل مع المكتبات غير المزوّدة بأنواع
 
-Not every library ships with TypeScript definitions. Here’s how to handle them:
+ليست كل مكتبة تأتي مع تعريفات TypeScript. وإليك كيفية التعامل معها:
 
-### Quick Fix: Basic Declaration
+### حل سريع: تعريف أساسي
 
 ```typescript
 // types/untyped-libs.d.ts
@@ -145,9 +145,9 @@ function ImageGallery() {
 }
 ```
 
-### Better: Detailed Types
+### الأفضل: أنواع مفصّلة
 
-For libraries you use extensively, invest in better types:
+بالنسبة إلى المكتبات التي تستخدمها بكثافة، استثمر في أنواع أفضل:
 
 ```typescript
 // types/analytics-lib.d.ts
@@ -187,9 +187,9 @@ declare module 'analytics-lib' {
 }
 ```
 
-## Global Objects in React Apps
+## الكائنات العامة في تطبيقات React
 
-Many React apps need to extend the global window object for analytics, feature flags, or third-party scripts:
+تحتاج كثير من تطبيقات React إلى توسيع كائن window العام من أجل التحليلات أو أعلام الميزات أو نصوص الطرف الثالث:
 
 ```typescript
 // types/global.d.ts
@@ -234,9 +234,9 @@ function PaymentButton() {
 }
 ```
 
-## React Component Type Declarations
+## تعريفات أنواع مكوّنات React
 
-When creating declaration files for React components (common when wrapping JavaScript components), you need to handle different component patterns:
+عند إنشاء ملفات تعريف لمكوّنات React، وهو أمر شائع عند تغليف مكوّنات JavaScript، تحتاج إلى التعامل مع أنماط مختلفة من المكوّنات:
 
 ```typescript
 // types/ui-library.d.ts
@@ -311,11 +311,11 @@ function App() {
 }
 ```
 
-## Extending React’s Built-in Types
+## توسيع الأنواع المدمجة في React
 
-Sometimes you need to extend React’s own types to support CSS custom properties, additional HTML attributes, or library-specific props:
+تحتاج أحيانًا إلى توسيع أنواع React نفسها لدعم خصائص CSS المخصّصة، أو سمات HTML الإضافية، أو الخصائص الخاصة بمكتبة معيّنة:
 
-### CSS Custom Properties
+### خصائص CSS المخصّصة
 
 ```typescript
 // types/css-properties.d.ts
@@ -350,9 +350,9 @@ function ThemedButton() {
 }
 ```
 
-### Custom HTML Attributes
+### سمات HTML المخصّصة
 
-For data attributes, ARIA extensions, or third-party integrations:
+من أجل سمات البيانات أو امتدادات ARIA أو تكاملات الطرف الثالث:
 
 ```typescript
 // types/html-attributes.d.ts
@@ -387,11 +387,11 @@ function TrackedButton() {
 }
 ```
 
-## Environment Variables and Build-Time Constants
+## متغيرات البيئة والثوابت وقت البناء
 
-React apps often use environment variables for configuration. Here’s how to type them:
+كثيرًا ما تستخدم تطبيقات React متغيرات البيئة لأغراض التهيئة. وإليك كيفية كتابة أنواعها:
 
-### Create React App / Standard Process.env
+### تطبيق Create React App أو `Process.env` القياسي
 
 ```typescript
 // types/env.d.ts
@@ -417,7 +417,7 @@ const isDev = process.env.NODE_ENV === 'development'; // boolean
 // process.env.REACT_APP_API_ULR // Error: Property doesn't exist
 ```
 
-### Vite Environment Variables
+### متغيرات البيئة في Vite
 
 ```typescript
 // types/vite-env.d.ts
@@ -440,7 +440,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const isProduction = import.meta.env.MODE === 'production';
 ```
 
-**Real-world tip**: Use a validation library like Zod to validate environment variables at runtime:
+**نصيحة من الواقع العملي**: استخدم مكتبة تحقق مثل Zod للتحقق من متغيرات البيئة أثناء التشغيل:
 
 ```typescript
 import { z } from 'zod';
@@ -454,11 +454,11 @@ const envSchema = z.object({
 export const env = envSchema.parse(import.meta.env);
 ```
 
-## Typing Popular React Libraries Without Types
+## كتابة أنواع لمكتبات React الشائعة التي تفتقر إلى الأنواع
 
-Here are real-world examples of typing libraries commonly used in React projects:
+إليك أمثلة واقعية على كتابة الأنواع لمكتبات شائعة الاستخدام في مشاريع React:
 
-### React Markdown Editor
+### محرّر Markdown لـ React
 
 ```typescript
 // types/markdown-editor.d.ts
@@ -518,7 +518,7 @@ function BlogEditor() {
 }
 ```
 
-### Chart Library
+### مكتبة الرسوم البيانية
 
 ```typescript
 // types/charts.d.ts
@@ -561,7 +561,7 @@ declare module 'react-simple-charts' {
 }
 ```
 
-### Form Validation Library
+### مكتبة التحقق من النماذج
 
 ```typescript
 // types/form-validator.d.ts
@@ -603,9 +603,9 @@ declare module 'react-form-validator' {
 }
 ```
 
-## Publishing React Component Libraries with Types
+## نشر مكتبات مكوّنات React مع الأنواع
 
-If you’re building a React component library, here’s how to configure types correctly:
+إذا كنت تبني مكتبة مكوّنات React، فإليك كيفية تهيئة الأنواع على النحو الصحيح:
 
 ```json
 {
@@ -635,11 +635,11 @@ If you’re building a React component library, here’s how to configure types 
 }
 ```
 
-**Pro tip**: Use `peerDependencies` for React to avoid version conflicts. Include types in `devDependencies` but not in regular dependencies.
+**نصيحة احترافية**: استخدم `peerDependencies` من أجل React لتجنّب تعارض الإصدارات. أدرج الأنواع في `devDependencies` وليس في الاعتماديات العادية.
 
-## Using @types Packages in React Projects
+## استخدام حزم @types في مشاريع React
 
-Most popular React libraries have community-maintained types:
+معظم مكتبات React الشائعة لديها أنواع يحافظ عليها المجتمع:
 
 ```bash
 # Essential types for React projects
@@ -656,16 +656,16 @@ npm install --save-dev \
   @types/testing-library__react
 ```
 
-**Finding types for a library**:
+**العثور على أنواع لمكتبة**:
 
-1. Try installing `@types/package-name`
-2. Check if the package includes its own types (look for “types” in package.json)
-3. Search on [TypeSearch](https://www.typescriptlang.org/dt/search)
-4. Create your own declaration file if needed
+1. جرّب تثبيت `@types/package-name`
+2. تحقّق مما إذا كانت الحزمة تتضمن أنواعها الخاصة (ابحث عن «types» في package.json)
+3. ابحث في [TypeSearch](https://www.typescriptlang.org/dt/search)
+4. أنشئ ملف تعريف خاصًا بك إذا لزم الأمر
 
-### When @types Packages Conflict
+### عندما تتعارض حزم @types
 
-Sometimes @types packages have version mismatches:
+تحدث أحيانًا اختلافات في الإصدارات بين حزم @types:
 
 ```typescript
 // types/overrides.d.ts
@@ -676,11 +676,11 @@ declare module 'react-router-dom' {
 }
 ```
 
-## Advanced Typing Patterns for React Libraries
+## أنماط متقدمة لكتابة الأنواع في مكتبات React
 
-### Polymorphic Component Types
+### أنواع المكوّنات متعددة الأشكال
 
-For component libraries that support the `as` prop:
+بالنسبة إلى مكتبات المكوّنات التي تدعم خاصية `as`:
 
 ```typescript
 // types/polymorphic-lib.d.ts
@@ -709,7 +709,7 @@ import { Box, Text } from 'polymorphic-ui';
 </Box>
 ```
 
-### Render Prop Libraries
+### مكتبات Render Prop
 
 ```typescript
 // types/render-prop-lib.d.ts
@@ -742,11 +742,11 @@ declare module 'react-intersection-observer' {
 }
 ```
 
-## Dynamic Imports and Code Splitting in React
+## الاستيراد الديناميكي وتقسيم الشيفرة في React
 
-TypeScript needs to understand your lazy-loaded components:
+يحتاج TypeScript إلى فهم مكوّناتك المحمّلة عند الطلب:
 
-### React.lazy with TypeScript
+### React.lazy مع TypeScript
 
 ```typescript
 // types/routes.d.ts
@@ -805,7 +805,7 @@ function App() {
 }
 ```
 
-### Dynamic Component Imports
+### استيراد المكوّنات ديناميكيًا
 
 ```typescript
 // For dynamically importing components based on strings
@@ -831,7 +831,7 @@ const iconLoaders: Record<IconName, () => Promise<any>> = {
 };
 ```
 
-## Platform-Specific Types (Web vs React Native)
+## أنواع خاصة بكل منصة (الويب مقابل React Native)
 
 ```typescript
 // index.d.ts
@@ -859,9 +859,9 @@ export interface ComponentProps {
 }
 ```
 
-## Testing Component Type Declarations
+## اختبار تعريفات أنواع المكوّنات
 
-When creating type declarations for React components, test them to ensure they work correctly:
+عند إنشاء تعريفات أنواع لمكوّنات React، اختبرها للتأكد من أنها تعمل على النحو الصحيح:
 
 ```typescript
 // types/__tests__/component-types.test.tsx
@@ -905,9 +905,9 @@ test('Button renders with correct props', () => {
 });
 ```
 
-## Best Practices for React Type Declarations
+## أفضل الممارسات في تعريفات أنواع React
 
-### Organize Your Type Files
+### نظّم ملفات الأنواع لديك
 
 ```
 src/
@@ -919,7 +919,7 @@ src/
     augmentations.d.ts // Extensions to existing types
 ```
 
-### Use Type-Only Imports for Better Performance
+### استخدم الاستيرادات الخاصة بالأنواع فقط للحصول على أداء أفضل
 
 ```typescript
 // ✅ Good: Type-only imports are removed in production
@@ -930,7 +930,7 @@ import { getUser, getPost } from './api';
 import { User, getUser } from './api';
 ```
 
-### Configure Path Aliases for Clean Imports
+### هيّئ أسماء مسارات مستعارة لاستيرادات نظيفة
 
 ```typescript
 // tsconfig.json
@@ -960,7 +960,7 @@ export default defineConfig({
 });
 ```
 
-### Type React Context Properly
+### اكتب أنواع React Context على النحو الصحيح
 
 ```typescript
 // types/auth-context.d.ts
@@ -984,7 +984,7 @@ declare module '@/contexts/auth' {
 }
 ```
 
-### Version Your Types with Your Components
+### اربط إصدارات أنواعك بإصدارات مكوّناتك
 
 ```typescript
 // When breaking changes occur, export versioned types
@@ -1003,9 +1003,9 @@ export interface ButtonProps {
 export type ButtonPropsCompat = ButtonPropsV1 | ButtonProps;
 ```
 
-## Common React TypeScript Issues and Solutions
+## مشكلات TypeScript الشائعة في React وحلولها
 
-### “Cannot find module” for CSS/Images
+### خطأ «Cannot find module» مع ملفات CSS والصور
 
 ```typescript
 // Quick fix: Create declarations
@@ -1021,7 +1021,7 @@ declare module '*.module.css' {
 }
 ```
 
-### React 18 Types Conflicts
+### تعارضات أنواع React 18
 
 ```typescript
 // If you see errors with React 18 types:
@@ -1039,7 +1039,7 @@ rm -rf node_modules package-lock.json
 npm install
 ```
 
-### JSX Element Type Errors
+### أخطاء نوع عنصر JSX
 
 ```typescript
 // Error: JSX element type 'Component' does not have any construct or call signatures
@@ -1057,7 +1057,7 @@ declare module 'my-lib' {
 }
 ```
 
-### Props Type Inference Issues
+### مشكلات استنتاج أنواع الخصائص
 
 ```typescript
 // When TypeScript can't infer prop types:
@@ -1076,9 +1076,9 @@ function MyComponent<T>(props: T) {
 }
 ```
 
-## Real-World React Declaration Examples
+## أمثلة واقعية على ملفات تعريف React
 
-### Typing a Headless UI Component
+### كتابة أنواع لمكوّن Headless UI
 
 ```typescript
 // types/headless-ui.d.ts
@@ -1118,7 +1118,7 @@ declare module '@company/headless-ui' {
 }
 ```
 
-### Typing a Form Library Integration
+### كتابة أنواع لتكامل مكتبة النماذج
 
 ```typescript
 // types/form-library.d.ts
@@ -1147,14 +1147,14 @@ declare module 'react-hook-form-helpers' {
 }
 ```
 
-## Summary
+## الخلاصة
 
-Declaration files are your bridge between the TypeScript world and the vast ecosystem of JavaScript libraries, assets, and global objects in React applications. You’ll use them to:
+إن ملفات التعريف هي جسرك بين عالم TypeScript والنظام البيئي الواسع من مكتبات JavaScript والأصول والكائنات العامة في تطبيقات React. ستستخدمها من أجل:
 
-1. **Import non-JavaScript assets** - CSS modules, images, SVGs as React components
-2. **Type JavaScript libraries** - Create types for libraries that don’t ship with TypeScript definitions
-3. **Extend React’s types** - Add CSS custom properties, data attributes, and library-specific augmentations
-4. **Handle environment variables** - Create type-safe access to build-time configuration
-5. **Support dynamic imports** - Type lazy-loaded components and code-split modules
+1. **استيراد أصول غير JavaScript** - وحدات CSS والصور وملفات SVG بوصفها مكوّنات React
+2. **كتابة أنواع مكتبات JavaScript** - إنشاء أنواع للمكتبات التي لا تأتي مرفقة بتعريفات TypeScript
+3. **توسيع أنواع React** - إضافة خصائص CSS المخصّصة وسمات البيانات والامتدادات الخاصة بالمكتبات
+4. **التعامل مع متغيرات البيئة** - إنشاء وصول آمن من حيث الأنواع إلى تهيئة وقت البناء
+5. **دعم الاستيراد الديناميكي** - كتابة أنواع المكوّنات المحمّلة عند الطلب والوحدات المقسمة حسب الشيفرة
 
-Most React projects need just a few declaration files in a `types/` folder. Start simple with basic declarations when you hit “Cannot find module” errors, then progressively enhance them as you learn more about the libraries you’re using. Remember: declaration files are about developer experience—good types make your IDE helpful instead of hostile.
+تحتاج معظم مشاريع React إلى عدد قليل فقط من ملفات التعريف في مجلد `types/`. ابدأ ببساطة بالتعريفات الأساسية عندما تصطدم بأخطاء «Cannot find module»، ثم حسّنها تدريجيًا كلما تعرّفت أكثر على المكتبات التي تستخدمها. وتذكّر: إن ملفات التعريف تتعلق بتجربة المطوّر، فالأنواع الجيدة تجعل محرّر الشيفرة عونًا لك بدلًا من أن يكون خصمًا.

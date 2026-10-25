@@ -1,28 +1,28 @@
 ---
-title: "The Playwright Trace Viewer"
-lang: en
+title: "عارض تتبّع Playwright"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-trace-viewer"
 ---
 
-The trace viewer is one of the best debugging tools in the entire front-end ecosystem, and a lot of teams still use it like a screenshot folder. They open `trace.zip`, click around until they feel vaguely smarter, and then go patch the test. That is not a workflow. That is a ritual.
+عارض التتبّع واحد من أفضل أدوات تصحيح الأخطاء في منظومة الواجهة الأمامية كلها، وكثير من الفرق ما زال يستخدمه كمجلد لقطات شاشة. يفتحون `trace.zip`، وينقرون هنا وهناك حتى يشعروا بأنهم صاروا أذكى قليلًا، ثم يذهبون لترقيع الاختبار. هذا ليس سير عمل. هذا طقس.
 
-The [Playwright trace viewer docs](https://playwright.dev/docs/trace-viewer) are solid, and the viewer really does give you almost everything you need: action timeline, DOM snapshots, filmstrip, source locations, logs, console output, network traffic, metadata, and attachments. The trick is learning what it is good at so you stop treating it like a video and start treating it like evidence.
+[وثائق عارض تتبّع Playwright](https://playwright.dev/docs/trace-viewer) متينة، والعارض فعلًا يمنحك كل ما تحتاجه تقريبًا: الخط الزمني للأفعال، ولقطات DOM، وشريط اللقطات، ومواقع الشيفرة، والسجلات، ومخرجات الطرفية، وحركة الشبكة، والبيانات الوصفية، والمرفقات. والحيلة أن تتعلّم ما هو جيد فيه فتتوقّف عن معاملته كفيديو وتبدأ معاملته كدليل.
 
-The next [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) lesson is about diagnosis. This lesson is about operating the tool itself: how to record traces sensibly, open them locally or from CI, and use the viewer features that save the most time.
+والدرس التالي [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) عن التشخيص. أما هذا الدرس فعن تشغيل الأداة نفسها: كيف تسجّل التتبّعات بتمييز، وتفتحها محليًا أو من CI، وتستخدم ميزات العارض التي توفّر أكثر وقت.
 
-## Record traces with intent
+## سجّل التتبّعات بقصد
 
-Most teams either record too little or way too much.
+معظم الفرق إما تسجّل قليلًا جدًا أو كثيرًا جدًا.
 
-The local-development version is simple:
+نسخة التطوير المحلي بسيطة:
 
 ```bash
 npx playwright test --trace on
 ```
 
-That records traces for every test in the run. It is great when you are actively debugging one thing. It is lousy as a permanent default because trace recording is not free.
+ذلك يسجّل تتبّعات لكل اختبار في التشغيل. وهو رائع حين تصحّح شيئًا واحدًا بنشاط. وهو سيئ كخيار افتراضي دائم لأن تسجيل التتبّع ليس مجانيًا.
 
-For CI, the official docs recommend something more surgical:
+وللـCI، توصي الوثائق الرسمية بشيء أدقّ:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
@@ -35,139 +35,139 @@ export default defineConfig({
 });
 ```
 
-That setup is smart for exactly the reason you think: passing tests stay cheap, and failing tests get a trace on retry when you actually need the artifact. If you do not use retries, `trace: 'retain-on-failure'` is the next-best default. It is heavier, but still sane.
+ذلك الإعداد ذكي للسبب الذي تظنّه بالضبط: الاختبارات الناجحة تبقى رخيصة، والاختبارات الفاشلة تحصل على تتبّع عند إعادة المحاولة حين تحتاج الأثر فعلًا. وإن كنت لا تستخدم إعادة المحاولات، فـ`trace: 'retain-on-failure'` هو الافتراضي التالي الأفضل. إنه أثقل، لكنه ما زال معقولًا.
 
-The options worth remembering:
+والخيارات الجديرة بالتذكّر:
 
-- `'on-first-retry'`: my default for CI
-- `'retain-on-failure'`: good when you want traces for every failure without enabling retries
-- `'retain-on-failure-and-retries'`: excellent when you are actively chasing a flake and want both the failing and the eventually-passing attempts to compare
-- `'on'`: useful during local debugging, not a great permanent default
-- `'off'`: the setting you forget about until the day you really needed the trace
+- `'on-first-retry'`: افتراضي في CI
+- `'retain-on-failure'`: جيد حين تريد تتبّعات لكل فشل دون تفعيل إعادة المحاولات
+- `'retain-on-failure-and-retries'`: ممتاز حين تطارد تذبذبًا بنشاط وتريد محاولات الفشل والمحاولات التي نجحت في النهاية كليهما للمقارنة
+- `'on'`: مفيد أثناء التصحيح المحلي، وليس افتراضيًا دائمًا جيدًا
+- `'off'`: الإعداد الذي تنساه حتى اليوم الذي تحتاج فيه التتبّع فعلًا
 
-The docs are also blunt about the tradeoff: tracing everything is performance-heavy. Treat `trace: 'on'` like a debugging mode, not like a moral virtue.
+والوثائق صريحة أيضًا بشأن المقايضة: تسجيل كل شيء ثقيل على الأداء. عامل `trace: 'on'` كوضع تصحيح أخطاء، لا كفضيلة أخلاقية.
 
-If you are using the [Playwright test runner](https://playwright.dev/docs/test-intro), prefer the config-level `trace` option. If you are using Playwright as a library, use [`browserContext.tracing`](https://playwright.dev/docs/api/class-tracing).
+وإن كنت تستخدم [مشغّل اختبارات Playwright](https://playwright.dev/docs/test-intro)، ففضّل خيار `trace` على مستوى التهيئة. وإن كنت تستخدم Playwright كمكتبة، فاستخدم [`browserContext.tracing`](https://playwright.dev/docs/api/class-tracing).
 
-## Open traces the fast way
+## افتح التتبّعات بالطريقة السريعة
 
-The local command is the one everybody knows:
+الأمر المحلي هو الذي يعرفه الجميع:
 
 ```bash
 npx playwright show-trace path/to/trace.zip
 ```
 
-The two workflows people forget about are the ones that matter most in teams.
+وسيرا العمل اللذان ينساهما الناس هما الأهمّ في الفرق.
 
-### Open from the HTML report
+### الفتح من تقرير HTML
 
-If you already have the Playwright report on disk, use:
+إن كان تقرير Playwright موجودًا عندك على القرص، فاستخدم:
 
 ```bash
 npx playwright show-report
 ```
 
-Every failed test in the HTML report has a link to its trace. This is usually the fastest local entry point because the report already groups the failure, the stack, the attachments, and the trace in one place.
+كل اختبار فاشل في تقرير HTML له رابط إلى تتبّعه. وهذا عادةً أسرع مدخل محلي لأن التقرير يجمع أصلًا الفشل، وتتبّع المكدّس، والمرفقات، والتتبّع في مكان واحد.
 
-### Open remote traces directly
+### فتح التتبّعات البعيدة مباشرةً
 
-The official docs call this out, and it is surprisingly useful:
+الوثائق الرسمية تنبّه إلى هذا، وهو نافع بشكل مفاجئ:
 
 ```bash
 npx playwright show-trace https://example.com/trace.zip
 ```
 
-If your CI uploads `trace.zip` artifacts to some accessible storage, you can jump straight from failure notification to trace viewer without manually downloading and unpacking anything first.
+فإن كان CI يرفع آثار `trace.zip` إلى مخزن متاح، تستطيع القفز مباشرةً من إشعار الفشل إلى عارض التتبّع دون تنزيل أي شيء وفكّه يدويًا أولًا.
 
-There is also [`trace.playwright.dev`](https://trace.playwright.dev/), the statically hosted viewer. You can drag and drop a trace file into it, or point it at a remote URL with a query parameter:
+وهناك أيضًا [`trace.playwright.dev`](https://trace.playwright.dev/)، العارض المستضاف بشكل ثابت. يمكنك سحب ملفّ تتبّع وإفلاته فيه، أو توجيهه إلى رابط بعيد بوسيط استعلام:
 
 ```
 https://trace.playwright.dev/?trace=https://example.com/trace.zip
 ```
 
-The docs note two important details:
+والوثائق تذكر تفصيلين مهمين:
 
-- the viewer loads the trace entirely in your browser
-- cross-origin rules still apply for remote URLs
+- يحمّل العارض التتبّع كله في متصفّحك
+- قواعد المصادر المتقاطعة ما زالت تنطبق على الروابط البعيدة
 
-That second point explains a lot of “works locally, remote trace won’t load” confusion. The viewer is fine. Your artifact host is blocking cross-origin access.
+وهذه النقطة الثانية تفسّر كثيرًا من الالتباس حول «يعمل محليًا، والتتبّع البعيد لا يُحمَّل». فالعارض سليم. ومضيف آثارك هو الذي يحجب الوصول عبر المصادر المتقاطعة.
 
-## Use the timeline like a filter, not decoration
+## استخدم الخط الزمني كمرشّح، لا كزينة
 
-The top filmstrip and timeline are not just there to look nice. They are the fastest way to narrow the problem space.
+شريط اللقطات العلوي والخط الزمني ليسا موجودين لينظرا جيدين فحسب. إنهما أسرع طريق لتضييق فضاء المشكلة.
 
-The workflow I use:
+سير العمل الذي أستخدمه:
 
-1. Find the long action.
-2. Double-click it.
-3. Let the viewer filter everything else to that time range.
+1. اعثر على الفعل الطويل.
+2. انقر عليه نقرًا مزدوجًا.
+3. دع العارض يرشّح كل شيء آخر إلى ذلك النطاق الزمني.
 
-When you double-click an action, the viewer narrows the visible logs, console output, and network requests to that action window. That is a huge deal. Without filtering, a noisy test looks like ten unrelated problems. With filtering, it usually looks like one.
+حين تنقر فعلًا نقرًا مزدوجًا، يضيّق العارض السجلات المرئية ومخرجات الطرفية وطلبات الشبكة إلى نافذة ذلك الفعل. وهذا أمر ضخم. فبدون الترشيح، يبدو اختبار مليء بالضجيج كعشر مشكلات غير مترابطة. ومع الترشيح، يبدو عادةً كمشكلة واحدة.
 
-The same applies to the timeline slider. Drag a range and the viewer filters console and network to only the selected actions. This is one of those features that turns a chaotic failure into something you can actually reason about.
+والأمر نفسه ينطبق على شريط تمرير الخط الزمني. اسحب نطاقًا فيرشّح العارض الطرفية والشبكة إلى الأفعال المحدّدة فقط. هذه واحدة من تلك الميزات التي تحوّل فشلًا فوضويًا إلى شيء تستطيع التفكير فيه فعلًا.
 
-## Know what each tab is good at
+## اعرف ما يجيده كل تبويب
 
-The trace viewer has more tabs than most people actively use. The useful mental model is not “memorize all the tabs.” It is “know which question each tab answers.”
+لعارض التتبّع تبويبات أكثر مما يستخدمه معظم الناس بنشاط. والنموذج الذهني المفيد ليس «احفظ كل التبويبات». إنه «اعرف أي سؤال يجيب عنه كل تبويب».
 
 ### Actions
 
-This is your table of contents. It tells you what Playwright tried to do, what locator it used, and how long it took. If the action list looks wrong, the test likely *is* wrong.
+هذا جدول محتوياتك. يخبرك بما حاول Playwright فعله، وبأي محدِّد استخدم، وكم استغرق. فإن بدت قائمة الأفعال خطأً، فالاختبار *خطأ* على الأرجح.
 
 ### Snapshots
 
-This is where you answer “what did the page look like before, during, and after the action?” The official docs call out three snapshot moments: Before, Action, and After. That Action snapshot is especially helpful when you are debugging a click target because it shows the exact node and click position.
+هنا تجيب عن «كيف بدت الصفحة قبل الفعل وأثناءه وبعده؟». والوثائق الرسمية تذكر ثلاث لحظات للقطة: Before وAction وAfter. ولقطة Action أنفع بشكل خاص حين تصحّح هدف نقرة، لأنها تُظهر العقدة بالضبط وموضع النقر.
 
-### Source and Call
+### Source وCall
 
-These tabs answer “where in the test did this happen?” and “what did Playwright think it was doing?” I use them together constantly. Source gives me the line. Call gives me the locator, strict-mode details, keys pressed, and timing.
+هذان التبويبان يجيبان عن «أين في الاختبار حدث هذا؟» و«ماذا ظنّ Playwright أنه يفعله؟». وأستخدمهما معًا باستمرار. فـSource يعطيني السطر. وCall يعطيني المحدِّد، وتفاصيل الوضع الصارم، والمفاتيح المضغوطة، والتوقيت.
 
 ### Log
 
-This is the “what was Playwright waiting on?” tab. If a click looked instant in your head and took four seconds in the trace, the log usually explains whether Playwright was waiting for visibility, stability, enabled state, or some scroll-into-view step first.
+هذا تبويب «على ماذا كان Playwright ينتظر؟». فإن بدت النقرة فورية في رأسك واستغرقت أربع ثوانٍ في التتبّع، فالسجل يوضّح عادةً هل كان Playwright ينتظر الظهور، أو الاستقرار، أو حالة التمكين، أو خطوة تمرير إلى الرؤية أولًا.
 
-### Console and Network
+### Console وNetwork
 
-These are the tabs that make the viewer more than a pretty replay. Browser console output, test-side console output, request timing, headers, request bodies, response bodies. Most real failures stop being mysterious once you line these two tabs up against the action timeline.
+هذان التبويبان هما ما يجعل العارض أكثر من إعادة عرض جميلة. مخرجات طرفية المتصفّح، ومخرجات طرفية جانب الاختبار، وتوقيت الطلبات، والترويسات، وأجسام الطلبات، وأجسام الاستجابات. ومعظم حالات الفشل الحقيقية تكفّ عن كونها غامضة بمجرد أن تصفّ هذين التبويبين أمام الخط الزمني للأفعال.
 
-### Metadata and Attachments
+### Metadata وAttachments
 
-Metadata is underrated. Browser, viewport, duration, and other run-level facts matter more than people admit, especially once projects or cross-browser runs enter the picture.
+البيانات الوصفية مُقلَّل من قدرها. فالمتصفّح، ومنفذ العرض، والمدة، وغيرها من حقائق مستوى التشغيل، تهمّ أكثر مما يعترف به الناس، خصوصًا حين تدخل المشاريع أو التشغيلات عبر المتصفّحات في الصورة.
 
-Attachments matter anytime the test produces extra artifacts. The official docs call out screenshot diffs here, and it is a good example: actual, expected, diff, all in one place.
+والمرفقات تهمّ في أي وقت ينتج فيه الاختبار آثارًا إضافية. والوثائق الرسمية تذكر فروق لقطات الشاشة هنا، وهو مثال جيد: actual وexpected وdiff، كلها في مكان واحد.
 
-## The good workflow for CI failures
+## سير العمل الجيد لفشل CI
 
-When a test fails in CI, this is the sequence I trust:
+حين يفشل اختبار في CI، هذا هو التسلسل الذي أثق به:
 
-1. Read the failure summary in the HTML report or dossier.
-2. Open the trace from that failure.
-3. Use the action list to find the slow or failing step.
-4. Filter the viewer to that action range.
-5. Compare snapshots, then inspect console and network.
-6. Only after that decide whether the fix belongs in the test, the app, the config, or the environment.
+1. اقرأ ملخّص الفشل في تقرير HTML أو في ملفّ الفشل.
+2. افتح التتبّع من ذلك الفشل.
+3. استخدم قائمة الأفعال للعثور على الخطوة البطيئة أو الفاشلة.
+4. رشّح العارض إلى نطاق ذلك الفعل.
+5. قارن اللقطات، ثم افحص الطرفية والشبكة.
+6. بعد ذلك فقط قرّر هل الإصلاح في الاختبار، أم في التطبيق، أم في التهيئة، أم في البيئة.
 
-That order matters because it keeps you from free-associating. The trace viewer is at its best when it is narrowing possibilities.
+وهذا الترتيب مهم لأنه يمنعك من الشرود الذهني. فعارض التتبّع يكون في أفضل حالاته حين يضيّق الاحتمالات.
 
-## The gotchas
+## المزالق
 
-### Recording everything forever
+### تسجيل كل شيء إلى الأبد
 
-`trace: 'on'` everywhere feels safe until artifact storage explodes and the suite slows down. Great for active debugging. Usually the wrong permanent CI default.
+`trace: 'on'` في كل مكان يبدو آمنًا حتى ينفجر مخزن الآثار ويتباطأ المجموعة. إنه رائع للتصحيح النشط. وهو عادةً الافتراضي الدائم الخطأ في CI.
 
-### Forgetting the trace starts with the traced context
+### نسيان أن التتبّع يبدأ مع السياق المتتبَّع
 
-If you are using the library API, tracing has to start before the interesting navigation. Starting it after the page already loaded is like beginning a screen recording after the bug already happened.
+إن كنت تستخدم واجهة المكتبة، فعلى التتبّع أن يبدأ قبل التنقّل المهم. فبدؤه بعد أن تكون الصفحة قد حُمّلت أصلًا كبدء تسجيل شاشة بعد أن يكون الخلل قد حدث أصلًا.
 
-### Confusing “server is noisy” with “trace is noisy”
+### الخلط بين «الخادم مليء بالضجيج» و«التتبّع مليء بالضجيج»
 
-A trace with twenty requests is not too much information. It is reality. Use action filtering first. The filtering tools are what turn volume into signal.
+تتبّع فيه عشرون طلبًا ليس معلومة كثيرة جدًا. إنه الواقع. استخدم ترشيح الأفعال أولًا. فأدوات الترشيح هي ما يحوّل الحجم إلى إشارة.
 
-### Treating the viewer as a substitute for classification
+### معاملة العارض كبديل عن التصنيف
 
-The viewer shows you evidence. It does not name the class of failure for you. That is the bridge to the next lesson: once you know where the evidence lives, you still need to classify the bug correctly.
+العارض يُظهر لك الدليل. ولا يسمّي لك فئة الفشل. وهذا هو الجسر إلى الدرس التالي: فحين تعرف أين يسكن الدليل، ما زلت تحتاج إلى تصنيف الخلل تصنيفًا صحيحًا.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Trace viewer
@@ -182,13 +182,13 @@ The viewer shows you evidence. It does not name the class of failure for you. Th
   before manually downloading artifacts.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-The trace viewer is not “nice to have” debugging garnish. It is the fastest way to turn a failed test into a bounded investigation. Record traces on purpose, open them from the failure report, filter aggressively, and let the viewer narrow the story before you touch code.
+عارض التتبّع ليس زينة تصحيح أخطاء «من الجيد وجودها». إنه أسرع طريق لتحويل اختبار فاشل إلى تحقيق محدود النطاق. سجّل التتبّعات عن قصد، وافتحها من تقرير الفشل، ورشّح بشراسة، ودع العارض يضيّق القصة قبل أن تمسّ الشيفرة.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace)
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
-- [Flaky-Test Triage: When Retries Are Lying to You](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage)
-- [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
+- [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace)
+- [ملفات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [فرز الاختبارات المتذبذبة: حين تخدعك إعادة المحاولات](https://stevekinney.com/courses/self-testing-ai-agents/flaky-test-triage)
+- [وضع واجهة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)

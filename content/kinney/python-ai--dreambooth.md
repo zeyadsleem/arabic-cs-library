@@ -1,35 +1,35 @@
 ---
-title: "DreamBooth — Personalizing Text-to-Image Models"
-lang: en
+title: "DreamBooth — تخصيص نماذج النص إلى صورة"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/dreambooth"
 ---
 
-> **Key Takeaways**
+> **أهم الاستنتاجات**
 >
-> - Prepare 3-10 diverse instance images and a unique identifier token
-> - Use prior preservation with class images to reduce overfitting
-> - Start with conservative learning rates/steps; monitor periodic samples
-> - Prefer LoRA for lightweight, composable adapters; full FT is heavier
-> - Define evaluation prompts across styles/poses and keep seeds fixed for fair comparisons
+> - جهّز من 3 إلى 10 صور متنوّعة للموضوع (instance) ورمز معرّف فريدًا
+> - استخدم الحفاظ على المقدّمات (prior preservation) بصور الصف (class) للحد من فرط التأقلم
+> - ابدأ بمعدّلات تعلّم وعدد خطوات متحفّظ، وراقب عيّنات دورية
+> - فضّل LoRA لمُوصِّلات خفيفة قابلة للتركيب؛ أمّا الضبط الكامل فيثقل
+> - عرّف أوامر التقييم عبر الأساليب والوضعيات، وأبقِ البذور ثابتة لضمان عدالة المقارنات
 
-## Overview
+## نظرة عامة
 
-DreamBooth is a personalization technique that fine-tunes a full text-to-image diffusion model using just a handful (typically 3-5) of reference images. By associating a unique identifier token with the subject’s class (for example, “a photo of [XYZ] dog”), the model learns to faithfully generate that specific subject in novel contexts, poses, and lighting conditions. This allows for high-fidelity, subject-driven image synthesis even with minimal training data.
+DreamBooth تقنية تخصيص تضبط نموذج انتشار كامل من النص إلى صورة (text-to-image) باستخدام قليل من صور المرجع فحسب، عادةً من 3 إلى 5 صور. فمن خلال ربط رمز معرّف فريد بصفّ الموضوع (class) — مثل «صورة لـ [XYZ] كلب» — يتعلّم النموذج توليد ذلك الموضوع بدقّة في سياقات ووضعيات وإضاءات جديدة. وهذا يتيح تركيب صور عالية الولاء يقودها الموضوع حتى مع بيانات تدريب محدودة جدًّا.
 
-## Notebook
+## دفتر الملاحظات
 
-View the companion notebook: [DreamBooth](https://colab.research.google.com/drive/1Swhhh_rQxRHgD1LGqJgvRigQ8eI5NvsA?usp=sharing)
+اطّلع على دفتر الملاحظات المرافق: [DreamBooth](https://colab.research.google.com/drive/1Swhhh_rQxRHgD1LGqJgvRigQ8eI5NvsA?usp=sharing)
 
-## What We’re Going to Do
+## ما الذي سنقوم به
 
-1. Install dependencies
-2. Upload your training images (3-10 high-quality images of your subject)
-3. Train a DreamBooth model on your subject
-4. Generate new images of your subject in different contexts
+1. تثبيت الاعتمادات
+2. رفع صور تدريبك (من 3 إلى 10 صور عالية الجودة لموضوعك)
+3. تدريب نموذج DreamBooth على موضوعك
+4. توليد صور جديدة لموضوعك في سياقات مختلفة
 
-## Setting Up Dependencies
+## تهيئة الاعتمادات
 
-We need to import all the essential Python libraries and modules required for DreamBooth training and image generation:
+نحتاج إلى استيراد كل مكتبات Python والوحدات الأساسية المطلوبة لتدريب DreamBooth وتوليد الصور:
 
 ```python
 %pip install -q git+https://github.com/huggingface/diffusers
@@ -68,11 +68,11 @@ from transformers import CLIPFeatureExtractor, CLIPTextModel, CLIPTokenizer
 print("👨‍🎤 Environment ready to rock.")
 ```
 
-## Data Preparation
+## تجهيز البيانات
 
-### Uploading Your Images
+### رفع صورك
 
-Choose 3-10 images of your subject to upload. These should be high-quality photos with varied backgrounds, angles, and lighting:
+اختر من 3 إلى 10 صور لموضوعك لرفعها. ينبغي أن تكون صورًا فوتوغرافية عالية الجودة بخلفيات وزوايا وإضاءات متنوّعة:
 
 ```python
 # Name your concept (e.g., your dog's name)
@@ -99,9 +99,9 @@ else:
 print("🩻 Images uploaded successfully.")
 ```
 
-### Creating the Dataset Classes
+### إنشاء أصناف مجموعة البيانات
 
-DreamBooth requires custom PyTorch Dataset classes to handle data preparation:
+يتطلّب DreamBooth أصناف Dataset مخصّصة في PyTorch للتعامل مع تجهيز البيانات:
 
 ```python
 class DreamBoothDataset(Dataset):
@@ -193,9 +193,9 @@ class PromptDataset(Dataset):
         return example
 ```
 
-## Prior Preservation and Class Images
+## الحفاظ على المقدّمات وصور الصف
 
-Prior preservation helps prevent overfitting and maintains the model’s ability to generate diverse examples from the broader class. If you don’t have enough class images, the model generates them automatically:
+يساعد الحفاظ على المقدّمات (prior preservation) على منع فرط التأقلم وعلى الحفاظ على قدرة النموذج في توليد أمثلة متنوّعة من الصف الأوسع. فإن لم يكن لديك من صور الصف ما يكفي، ولّدها النموذج تلقائيًا:
 
 ```python
 pretrained_model_name_or_path = "stabilityai/stable-diffusion-2"
@@ -242,13 +242,13 @@ if cur_class_images < num_class_images:
 print(f"Total number of class images: {len(list(class_images_dir.iterdir()))}")
 ```
 
-## Model Components
+## مكوّنات النموذج
 
-DreamBooth training relies on key pre-trained components of Stable Diffusion:
+يعتمد تدريب DreamBooth على مكوّنات أساسية مُدرَّبة مسبقًا في Stable Diffusion:
 
-### Text Encoder (CLIP)
+### مُرمِّز النص (CLIP)
 
-Processes and embeds text prompts:
+يعالج الأوامر النصية ويضمّها:
 
 ```python
 text_encoder = CLIPTextModel.from_pretrained(
@@ -257,9 +257,9 @@ text_encoder = CLIPTextModel.from_pretrained(
 )
 ```
 
-### VAE (Variational Autoencoder)
+### VAE (المُرمِّز التنوّعي)
 
-Maps images to and from a compact latent space for efficient training:
+يحوّل الصور إلى فضاء كامن مدمج ويعيدها منه من جديد من أجل تدريب فعّال:
 
 ```python
 vae = AutoencoderKL.from_pretrained(
@@ -268,9 +268,9 @@ vae = AutoencoderKL.from_pretrained(
 )
 ```
 
-### U-Net Model
+### نموذج U-Net
 
-The core denoising component that transforms noise into images:
+مكوّن إزالة التشويش الأساسي الذي يحوّل الضوضاء إلى صور:
 
 ```python
 unet = UNet2DConditionModel.from_pretrained(
@@ -279,11 +279,11 @@ unet = UNet2DConditionModel.from_pretrained(
 )
 ```
 
-The U-Net is called that because of its U-shaped architecture: it has a downsampling path (analyzes the noisy image at multiple scales), a bottleneck (understands global context), and an upsampling path (rebuilds the image, refining it step by step).
+سُمّيت U-Net بذلك لمعماريتها على هيئة حرف U: فهي تملك مسارًا للتصغير (يحلّل الصورة المشوّشة على مقاييس متعدّدة)، وضيقًا (يفهم السياق العام)، ومسارًا للتكبير (يعيد بناء الصورة ويصقلها خطوة بخطوة).
 
-### Tokenizer
+### المُقسِّم إلى رموز (Tokenizer)
 
-Converts text to token IDs:
+يحوّل النص إلى معرّفات الرموز:
 
 ```python
 tokenizer = CLIPTokenizer.from_pretrained(
@@ -292,9 +292,9 @@ tokenizer = CLIPTokenizer.from_pretrained(
 )
 ```
 
-## Training Configuration
+## إعداد التدريب
 
-Set up all training parameters:
+اضبط جميع معاملات التدريب:
 
 ```python
 from argparse import Namespace
@@ -328,9 +328,9 @@ args = Namespace(
 )
 ```
 
-## The Training Function
+## دالة التدريب
 
-The training function executes the full DreamBooth fine-tuning process:
+تُنفّذ دالة التدريب عملية الضبط الدقيق الكاملة لـ DreamBooth:
 
 ```python
 def training_function(text_encoder, vae, unet):
@@ -391,18 +391,18 @@ def training_function(text_encoder, vae, unet):
     # Training loop continues...
 ```
 
-The training loop repeatedly:
+يكرّر حلقة التدريب ما يلي:
 
-1. Encodes images into latents
-2. Adds noise
-3. Predicts the noise using the U-Net
-4. Calculates loss (including prior preservation)
-5. Backpropagates gradients
-6. Updates model weights
+1. ترميز الصور إلى التمثيلات الكامنة (latents)
+2. إضافة الضوضاء
+3. التنبّؤ بالضوضاء باستخدام U-Net
+4. حساب الفقد (loss) مع الحفاظ على المقدّمات
+5. انتشار التدرّجات عكسيًا (backpropagation)
+6. تحديث أوزان النموذج
 
-## Running Training
+## تشغيل التدريب
 
-Execute the training with proper class image generation:
+نفّذ التدريب مع توليد صور الصف بالشكل الصحيح:
 
 ```python
 import accelerate
@@ -437,9 +437,9 @@ for param in itertools.chain(unet.parameters(), text_encoder.parameters()):
 torch.cuda.empty_cache()
 ```
 
-## Using the Fine-Tuned Model
+## استخدام النموذج المضبط بدقة
 
-Load and use your personalized model:
+حمّل نموذجك المخصّص واستخدمه:
 
 ```python
 from diffusers import DiffusionPipeline
@@ -464,15 +464,15 @@ image = pipe(
 image
 ```
 
-## LoRA vs Full Fine-tuning
+## LoRA مقابل الضبط الدقيق الكامل
 
-### Full Fine-tuning
+### الضبط الدقيق الكامل
 
-Updates all model weights. Produces highest quality but requires significant memory and storage.
+يحدّث جميع أوزان النموذج، ويُنتج أعلى جودة لكنه يتطلّب ذاكرة وتخزينًا كبيرين.
 
-### LoRA (Low-Rank Adaptation)
+### LoRA (التكيّف من الرتبة المنخفضة)
 
-Adds small trainable matrices alongside frozen weights:
+يضيف مصفوفات صغيرة قابلة للتدريب إلى جانب الأوزان المجمّدة:
 
 ```python
 from peft import LoraConfig, get_peft_model
@@ -488,41 +488,41 @@ model = get_peft_model(unet, lora_config)
 # Now only LoRA parameters are trainable
 ```
 
-Benefits include 100× fewer parameters to train, multiple subjects as separate adapters, and easy sharing (megabytes vs gigabytes).
+ومن المزايا أن عدد المعاملات المطلوب تدريبها أقل بـ100×، مع تمثيل مواضيع متعدّدة كمُوصِّلات منفصلة، وسهولة المشاركة (ميجابايت مقابل جيجابايت).
 
-## Hyperparameters and Best Practices
+## المعاملات الفائقة وأفضل الممارسات
 
-### Learning Rate
+### معدّل التعلّم
 
-- **Too high (>1e-5)**: Overfitting, artifacts
-- **Too low (<1e-7)**: Slow convergence
-- **Sweet spot**: 2e-6 to 5e-6
+- **مرتفع جدًا (&gt;1e-5)**: فرط التأقلم وشوائب في المخرجات
+- **منخفض جدًا (&lt;1e-7)**: تقارب بطيء
+- **النقطة المثلى**: من 2e-6 إلى 5e-6
 
-### Training Steps
+### خطوات التدريب
 
-- **100-200**: Light adaptation
-- **300-500**: Balanced
-- **500+**: Risk of overfitting
+- **100-200**: تكيّف خفيف
+- **300-500**: توازن
+- **500 فما فوق**: خطر فرط التأقلم
 
-### Prior Preservation Weight
+### وزن الحفاظ على المقدّمات
 
-- **0.5**: Standard balance
-- **Higher**: More general, less specific
-- **Lower**: More specific, risk overfitting
+- **0.5**: توازن قياسي
+- **أعلى**: أكثر عمومية وأقلّ تحديدًا
+- **أدنى**: أدقّ تحديدًا مع خطر فرط التأقلم
 
-## Dataset Hygiene
+## نظافة مجموعة البيانات
 
-Ensure quality training data:
+اضمن جودة بيانات التدريب:
 
-- **Diverse angles**: Front, side, various expressions
-- **Consistent quality**: Sharp, well-lit photos
-- **Clean backgrounds**: Avoid busy/distracting elements
-- **No watermarks**: Can confuse the model
-- **Proper orientation**: Check EXIF data
+- **زوايا متنوعة**: أمامية، جانبية، وتعبيرات متعدّدة
+- **جودة متّسقة**: صور حادّة واضحة الإضاءة
+- **خلفيات نظيفة**: تجنّب العناصر المزدحمة أو المشتّتة
+- **بلا علامات مائية**: قد تربك النموذج
+- **اتجاه صحيح**: تحقّق من بيانات EXIF
 
-## Evaluation Protocol
+## بروتوكول التقييم
 
-Define test prompts to evaluate your model:
+عرّف أوامر الاختبار لتفحص أداء نموذجك:
 
 ```python
 test_prompts = [
@@ -537,34 +537,34 @@ for prompt in test_prompts:
     # Save or display image
 ```
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-> **Identity Drift**
+> **انزياح الهوية**
 >
-> If the subject doesn’t look like your original, increase prior preservation weight, add more diverse instance images, or reduce learning rate.
+> إن لم يبدُ الموضوع مطابقًا لصورتك الأصلية، زد وزن الحفاظ على المقدّمات، أو أضف صور موضوع أكثر تنوعًا، أو قلّل معدّل التعلّم.
 
-> **Overfitting Signs**
+> **مؤشرات فرط التأقلم**
 >
-> If backgrounds always look the same or poses are limited, reduce training steps, add more class images, or use earlier checkpoints.
+> إن كانت الخلفيات تبدو دائمًا واحدة أو أن الوضعيات محدودة، فقلّل خطوات التدريب، أو أضف صور صف أكثر، أو استخدم نقاط تفتيش (checkpoints) أسبق.
 
-> **Memory Issues**
+> **مشكلات الذاكرة**
 >
-> Enable gradient checkpointing, use LoRA instead of full fine-tuning, reduce batch size, or use 8-bit optimizers.
+> فعّل تفتيش التدرّجات (gradient checkpointing)، واستخدم LoRA بدل الضبط الدقيق الكامل، أو قلّل حجم الدفعة، أو استخدم مُحسِّنات بدقّة 8-bit.
 
-## Ethics and Safety
+## الأخلاقيات والسلامة
 
-- **Consent**: Always obtain permission when training on people’s likenesses
-- **Attribution**: Respect original model licenses
-- **Misuse**: Avoid creating deceptive or harmful content
-- **Bias**: Be aware of inherited biases from base models
+- **الموافقة**: احصل دائمًا على إذن عند التدريب على ملامح الأشخاص
+- **النسب**: احترم رخص النماذج الأصلية
+- **الإساءة**: تجنّب إنشاء محتوى مضلّل أو ضار
+- **التحيّز**: انتبه إلى التحيّزات الموروثة من النماذج الأساسية
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-DreamBooth enables powerful personalization of diffusion models with just a few images. Success depends on balancing training intensity with prior preservation, using quality diverse images, and carefully tuning hyperparameters. Start with conservative settings and iterate. Consider LoRA for efficient training and deployment. With proper setup, you can create models that faithfully reproduce subjects in novel contexts while maintaining the base model’s creative capabilities.
+يمكّن DreamBooth من تحقيق تخصيص قوي لنماذج الانتشار باستخدام عدد قليل من الصور. ويعتمد النجاح على موازنة شدّة التدريب بالحفاظ على المقدّمات، وعلى استخدام صور متنوّعة عالية الجودة، وعلى ضبط المعاملات الفائقة بعناية. ابدأ بإعدادات متحفّظة ثم كرّر المحاولة. وفكّر في LoRA لتدريب فعّال ونشر سهل. وبإعداد سليم، يمكنك إنشاء نماذج تعيد إنتاج المواضيع بدقّة في سياقات جديدة مع الحفاظ على القدرات الإبداعية للنموذج الأساسي.
 
-## Further Reading
+## قراءات إضافية
 
-- DreamBooth (Ruiz et al., 2022): [https://arxiv.org/abs/2208.12242](https://arxiv.org/abs/2208.12242)
-- Diffusers — DreamBooth Training: [https://huggingface.co/docs/diffusers/main/en/training/dreambooth](https://huggingface.co/docs/diffusers/main/en/training/dreambooth)
-- Classifier-Free Guidance: [https://arxiv.org/abs/2207.12598](https://arxiv.org/abs/2207.12598)
-- LoRA (Hu et al., 2021): [https://arxiv.org/abs/2106.09685](https://arxiv.org/abs/2106.09685)
+- DreamBooth (Ruiz وآخرون، 2022): [https://arxiv.org/abs/2208.12242](https://arxiv.org/abs/2208.12242)
+- Diffusers — تدريب DreamBooth: [https://huggingface.co/docs/diffusers/main/en/training/dreambooth](https://huggingface.co/docs/diffusers/main/en/training/dreambooth)
+- التوجيه بلا مصنّف (Classifier-Free Guidance): [https://arxiv.org/abs/2207.12598](https://arxiv.org/abs/2207.12598)
+- LoRA (Hu وآخرون، 2021): [https://arxiv.org/abs/2106.09685](https://arxiv.org/abs/2106.09685)

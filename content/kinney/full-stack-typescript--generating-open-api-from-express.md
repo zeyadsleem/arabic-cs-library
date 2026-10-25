@@ -1,26 +1,26 @@
 ---
-title: "Generating OpenAPI from Express"
-lang: en
+title: "توليد OpenAPI من Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/generating-open-api-from-express"
 ---
 
-Creating an OpenAPI contract from an existing Express API can be a valuable way to document your API, improve collaboration, and generate client SDKs. This guide outlines the steps to generate an OpenAPI specification from your existing Express routes.
+إنشاء عقد OpenAPI من واجهة Express (API) موجودة يمكن أن يكون طريقة قيمة لتوثيق واجهتك، وتحسين التعاون، وتوليد حزم تطوير برامج (SDK) للعملاء. يُوضّح هذا الدليل خطوات توليد مواصفة OpenAPI من مسارات Express الموجودة.
 
-## Inspect Your Existing Express Routes
+## فحص مسارات Express الموجودة
 
-Before generating an OpenAPI contract, carefully inspect your existing Express routes. Pay attention to:
+قبل توليد عقد OpenAPI، افحص بعناية مسارات Express الموجودة. انتبه إلى:
 
-- **Endpoints:** List all the API endpoints (e.g., `/users`, `/products/{id}`).
-- **HTTP Methods:** Identify the HTTP methods used for each endpoint (e.g., GET, POST, PUT, DELETE).
-- **Request Parameters:** Note any path parameters, query parameters, or request body structures.
-- **Response Structures:** Document the expected response structures for each endpoint.
-- **Headers and Cookies:** Identify any custom headers or cookies used in requests or responses.
+- **النقاط (Endpoints):** اسرد جميع نقاط API (مثلاً `/users`, `/products/{id}`).
+- **طرق HTTP:** حدّد طرق HTTP المستخدمة لكل نقطة (مثلاً GET, POST, PUT, DELETE).
+- **مُعامِلات الطلب:** لاحظ أي مُعامِلات مسار، أو مُعامِلات استعلام، أو هياكل جسم الطلب.
+- **هياكل الاستجابة:** وثّق هياكل الاستجابة المتوقعة لكل نقطة.
+- **الرؤوس والكوكيز:** حدّد أي رؤوس مخصّصة أو كوكيز مستخدمة في الطلبات أو الاستجابات.
 
-## Choose an OpenAPI Generation Tool
+## اختيار أداة توليد OpenAPI
 
-Several tools can help generate OpenAPI contracts from existing Express APIs. Popular options include:
+عدة أدوات يمكن أن تساعد في توليد عقود OpenAPI من واجهات Express (API) الموجودة. الخيارات الشائعة تشمل:
 
-- **[`swagger-jsdoc`](https://www.npmjs.com/package/swagger-jsdoc):** Generates OpenAPI specifications from JSDoc annotations in your code.
-- **[`express-openapi`](https://www.npmjs.com/package/express-openapi):** Allows you to define your API using a YAML or JSON file and maps it to your Express routes.
-- **[`ts-node-dev`](https://www.npmjs.com/package/ts-node-dev) and [`openapi-typescript`](https://www.npmjs.com/package/openapi-typescript):** When combined with properly typed code, you can generate an openapi spec from your typescript code.
-- **[`openapi-express`](https://www.npmjs.com/package/openapi-express):** Generates an openapi spec from the running express server.
+- **[`swagger-jsdoc`](https://www.npmjs.com/package/swagger-jsdoc):** يُولّد مواصفات OpenAPI من تعليقات JSDoc في شيفرتك.
+- **[`express-openapi`](https://www.npmjs.com/package/express-openapi):** يتيح لك تعريف واجهتك باستخدام ملف YAML أو JSON وربطه بمسارات Express.
+- **[`ts-node-dev`](https://www.npmjs.com/package/ts-node-dev) و [`openapi-typescript`](https://www.npmjs.com/package/openapi-typescript):** عند دمجهما مع شيفرة ذات أنواع صحيحة، يمكنك توليد مواصفة openapi من شيفرة TypeScript الخاصة بك.
+- **[`openapi-express`](https://www.npmjs.com/package/openapi-express):** يُولّد مواصفة openapi من خادم express قيد التشغيل.

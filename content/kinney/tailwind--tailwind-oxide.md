@@ -1,31 +1,31 @@
 ---
-title: "What Is Oxide?"
-lang: en
+title: "ما هو Oxide؟"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-oxide"
 ---
 
-[Oxide](https://medium.com/@bomber.marek/whats-tailwind-oxide-engine-the-next-evolution-of-tailwind-css-32e7ef8e19a1) is Tailwind 4’s high-performance engine—a ground-up rewrite initially planned for Tailwind 3.x.
+[Oxide](https://medium.com/@bomber.marek/whats-tailwind-oxide-engine-the-next-evolution-of-tailwind-css-32e7ef8e19a1) هو محرك Tailwind 4 عالي الأداء — إعادة كتابة كاملة كان مخططًا لها في الأصل لـ Tailwind 3.x.
 
-- **Built with Rust:** Performance-critical parts rewritten for speed
-- **Powered by Lightning CSS:** Fast Rust-based CSS parser/transformer (only dependency)
-- **Custom CSS Parser:** 2x faster than PostCSS
-- **Unified Toolchain:** Built-in `@import`, vendor prefixing, nesting, modern CSS transforms
-- **Zero-Configuration:** Automatically finds template files
-- **CSS-First Configuration:** Use `@theme` and CSS variables instead of JavaScript
-- **Composable Variants:** Combine `group-*`, `peer-*`, `has-*`, `not-*`
-- **Modern CSS:** Native cascade layers, `@property`, `color-mix()`, container queries
-- **Removed Deprecated Utilities:** Cleaned up from v3
-- **Changed Defaults:** `border` and `ring` now use `currentColor`
-- **Safelisting:** Use `@source inline()` in CSS (not JavaScript)
-- **Explicit Exclusion:** `@source not inline()`
+- **مبني بـ Rust:** الأجزاء الحرجة للأداء أُعيدت كتابتها من أجل السرعة
+- **مدعوم بـ Lightning CSS:** محلّل/محوّل CSS سريع مبني بـ Rust (الاعتماد الوحيد)
+- **محلّل CSS مخصص:** أسرع مرتين من PostCSS
+- **سلسلة أدوات موحّدة:** `@import` مدمج، وبادئات البائعين، والتداخل، وتحويلات CSS الحديثة
+- **بلا تهيئة:** يجد ملفات القوالب تلقائيًا
+- **تهيئة أولًا بـ CSS:** استخدم `@theme` ومتغيّرات CSS بدلًا من JavaScript
+- **متغيّرات قابلة للتركيب:** اجمع `group-*` و`peer-*` و`has-*` و`not-*`
+- **CSS الحديث:** طبقات تسلسل أصلية، و`@property`، و`color-mix()`، واستعلامات الحاويات
+- **إزالة الأدوات المهجورة:** نُظّفت من v3
+- **قيم افتراضية متغيرة:** يستخدم `border` و`ring` الآن `currentColor`
+- **القوائم الآمنة:** استخدم `@source inline()` في CSS (لا JavaScript)
+- **استبعاد صريح:** `@source not inline()`
 
-## As Compared to the Older Method
+## مقارنة بالطريقة الأقدم
 
-- **Performance:** 10x faster full builds (105ms vs 960ms), 100x faster incremental builds
-- **Developer Experience:** Zero-config detection, CSS-first configuration (no `tailwind.config.js`)
-- **Toolchain:** Built-in CSS processing (no need for `postcss-import`, `autoprefixer`); separate PostCSS/CLI packages
-- **Modern CSS:** Native `@layer`, `@property`, `color-mix()`, container queries (no plugin needed)
-- **Flexibility:** Composable variants for complex selectors
-- **Class Detection:** Same plain-text scanning, still requires static classes, but automatic
-- **Removed/Changed:** No `corePlugins`, `theme()` deprecated, `@apply` requires `@reference`, `@layer` → `@utility`, variant order left-to-right (was right-to-left)
-- **Browser Support:** Requires Safari 16.4+, Chrome 111+, Firefox 128+ (v3 had broader support)
+- **الأداء:** بناءات كاملة أسرع 10 مرات (105ms مقابل 960ms)، وبناءات تزايدية أسرع 100 مرة
+- **تجربة المطوّر:** كشف بلا تهيئة، وتهيئة أولًا بـ CSS (دون `tailwind.config.js`)
+- **سلسلة الأدوات:** معالجة CSS مدمجة (دون حاجة إلى `postcss-import` أو `autoprefixer`)؛ وحزم PostCSS/CLI منفصلة
+- **CSS الحديث:** `@layer` و`@property` و`color-mix()` واستعلامات الحاويات أصلية (دون حاجة إلى إضافة)
+- **المرونة:** متغيّرات قابلة للتركيب لمحدّدات مركّبة
+- **كشف الأصناف:** المسح النصي العادي نفسه، ولا يزال يتطلب أصنافًا ثابتة، لكنه تلقائي
+- **أُزيل/تغيّر:** لا `corePlugins`، و`theme()` مهجورة، و`@apply` تتطلب `@reference`، و`@layer` ← `@utility`، وترتيب المتغيّرات من اليسار إلى اليمين (كان من اليمين إلى اليسار)
+- **دعم المتصفحات:** يتطلب Safari 16.4+ وChrome 111+ وFirefox 128+ (كان لـ v3 دعم أوسع)

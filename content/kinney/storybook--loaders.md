@@ -1,16 +1,16 @@
 ---
-title: "Using Loaders to Fetch Data"
-lang: en
+title: "استخدام المحمّلات (Loaders) لجلب البيانات"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/loaders"
 ---
 
-Loaders in Storybook offer a way to asynchronously load data or perform actions *before* a story is rendered. This can be especially useful when you need to fetch mock data from an API, perform setup tasks, or dynamically manipulate props or globals based on external factors before the story is displayed. Similar to [parameters](https://stevekinney.com/courses/storybook/parameters) loaders can be applied globally to affect all stories or locally to affect specific stories.
+تقدّم المحمّلات (loaders) في Storybook طريقة لتحميل البيانات أو تنفيذ إجراءات *قبل* تصيير القصة بشكل غير متزامن. ويمكن أن يكون هذا مفيدًا بشكل خاص عندما تحتاج إلى جلب بيانات مُحاكاة من API، أو تنفيذ مهام تهيئة، أو التلاعب بالخصائص أو القيم العامة (globals) ديناميكيًا بناءً على عوامل خارجية قبل عرض القصة. وكما في [المعاملات](https://stevekinney.com/courses/storybook/parameters)، يمكن تطبيق المحمّلات عالميًا لتؤثر في كل القصص أو محليًا لتؤثر في قصص بعينها.
 
-## Global Loaders
+## المحمّلات العالمية
 
-Global loaders are defined in `.storybook/preview.ts` and are executed for every story in your Storybook. They are particularly useful for setting up application-wide contexts or fetching data that is relevant across all components.
+تُعرَّف المحمّلات العالمية في `.storybook/preview.ts` وتُنفَّذ لكل قصة في Storybook لديك. وهي مفيدة بشكل خاص لإعداد سياقات على مستوى التطبيق أو جلب بيانات ذات صلة بكل المكوّنات.
 
-Let’s say you want to fetch user data and make it available to all stories. We might add something like the following to `.storybook/preview.ts`:
+لنقل إنك تريد جلب بيانات المستخدم وإتاحتها لكل القصص. قد نضيف شيئًا كهذا إلى `.storybook/preview.ts`:
 
 ```typescript
 export const loaders = [
@@ -28,13 +28,13 @@ export const decorators = [
 ];
 ```
 
-This loader fetches user data asynchronously and provides it to all stories through a `UserContext.Provider`. The data fetched by the loader is accessed via `context.loaded` in decorators or story functions.
+يجلب هذا المحمّل بيانات المستخدم بشكل غير متزامن ويمنحها لكل القصص عبر `UserContext.Provider`. وتُوصَل البيانات التي يجلبها المحمّل عبر `context.loaded` في المزيّنات أو دوال القصة.
 
-## Local Loaders
+## المحمّلات المحلية
 
-Local loaders are defined within individual stories or story files. They’re used to load data or perform actions specific to a single story or a group of stories within the same file.
+تُعرَّف المحمّلات المحلية داخل القصص الفردية أو ملفات القصص. وتُستخدم لتحميل بيانات أو تنفيذ إجراءات خاصة بقصة واحدة أو بمجموعة قصص في الملف نفسه.
 
-Let’s say you have a `ProfileCard` component that requires user data:
+لنقل إن لديك مكوّن `ProfileCard` يحتاج إلى بيانات المستخدم:
 
 ```typescript
 export default {
@@ -54,13 +54,13 @@ export const DefaultProfileCardStory = (args, { loaded: { profileData } }) => (
 );
 ```
 
-This loader fetches profile data only for the `DefaultProfileCard` story, and the story function uses the loaded data to render the `ProfileCard` component with fetched data.
+يجلب هذا المحمّل بيانات الملف الشخصي لقصة `DefaultProfileCard` وحدها، وتستخدم دالة القصة البيانات المحمَّلة لتصيير مكوّن `ProfileCard` بالبيانات المجلوبة.
 
-## Using Loaders with Decorators
+## استخدام المحمّلات مع المزيّنات
 
-You can use loaders in combination with decorators to wrap stories with additional data or context that depends on asynchronous data loading.
+يمكنك استخدام المحمّلات بالاشتراك مع المزيّنات لتغليف القصص ببيانات أو سياق إضافي يعتمد على تحميل بيانات غير متزامن.
 
-### Example: Wrapping a Story with Loaded Data
+### مثال: تغليف قصة ببيانات محمَّلة
 
 ```typescript
 const meta = {

@@ -1,28 +1,28 @@
 ---
-title: "Dynamic Columns"
-lang: en
+title: "الأعمدة الديناميكية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-dynamic-columns"
 ---
 
-Tailwind CSS simplifies working with dynamic columns, especially with subgrids, using its grid utilities.
+يبسّط Tailwind CSS العمل مع الأعمدة الديناميكية، وخاصة مع الشبكات الفرعية، باستخدام أدواته الخاصة بـ grid.
 
-Modern CSS features like `subgrid` enable intricate, responsive designs in HTML. Tailwind’s utility-first approach makes complex CSS Grid concepts easy to use.
+تتيح ميزات CSS الحديثة مثل `subgrid` تصميمات متجاوبة ومعقّدة داخل HTML. ويجعل نهج Tailwind القائم على «الأدوات أولًا» مفاهيم CSS Grid المعقّدة سهلة الاستخدام.
 
-## Implementing Subgrids for Columns
+## تطبيق الشبكات الفرعية للأعمدة
 
-The `subgrid` value for `grid-template-columns` is key for aligned nested layouts. Tailwind exposes this via `grid-cols-subgrid`.
+تُعدّ قيمة `subgrid` الخاصة بـ `grid-template-columns` مفتاحًا للتخطيطات المتداخلة المحاذاة. ويوفّر Tailwind هذه القيمة عبر `grid-cols-subgrid`.
 
-Applying `grid-cols-subgrid` to a grid item (that is also a grid container) tells the child grid to adopt its parent’s column tracks instead of defining its own. This is vital for maintaining alignment across nested elements.
+تطبيق `grid-cols-subgrid` على عنصر grid (وهو أيضًا حاوية grid) تخبر الشبكة الابنة أن تتبنّى مسارات أعمدة أبيها بدلًا من تعريف مساراتها الخاصة. وهذا جوهري للحفاظ على المحاذاة عبر العناصر المتداخلة.
 
-### How `grid-cols-subgrid` Works
+### كيف يعمل `grid-cols-subgrid`
 
-Consider a main layout with a specific column grid. An element within a cell of this main grid needs its own columns to align precisely with the parent’s. Without `subgrid`, manually matching child grid columns to the parent is error-prone, especially with responsive designs.
+تخيّل تخطيطًا رئيسيًا بشبكة أعمدة محدّدة. فالعنصر الموجود داخل خلية من هذه الشبكة الرئيسية يحتاج إلى أعمدة خاصة به محاذاة تمامًا لأعمدة الأب. وبدون `subgrid`، فإن مطابقة أعمدة الشبكة الابنة مع الأب يدويًا عرضة للخطأ، خاصةً في التصاميم المتجاوبة.
 
-`grid-cols-subgrid` makes the child grid container inherit its parent’s column structure. Children of this subgrid container can then use the parent grid’s column lines for placement and spanning.
+تجعل `grid-cols-subgrid` حاوية الشبكة الابنة ترث بنية أعمدة أبيها. بعدها يمكن لأبناء حاوية الشبكة الفرعية هذه استخدام سطور أعمدة الشبكة الأم في الوضع والتمدّد.
 
-Example:
+مثال:
 
-*How grid-cols-subgrid Works — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/cb638477b94ae3320960712716e476b2f345cd6ad99789d8e1d6c711cfd9b6e7.html)*
+*كيف يعمل grid-cols-subgrid — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/cb638477b94ae3320960712716e476b2f345cd6ad99789d8e1d6c711cfd9b6e7.html)*
 
 ```html
 <div class="grid grid-cols-12 gap-4 rounded-lg bg-gray-100 p-4">
@@ -48,12 +48,12 @@ Example:
 </div>
 ```
 
-The `div` with `col-span-full grid grid-cols-subgrid gap-4` is a child of the main `grid grid-cols-12`. It spans all 12 parent columns. Because of `grid grid-cols-subgrid`, its internal layout uses the parent’s 12 column tracks and gap. Its children (`Item 1`, `Item 2`, `Item 3`) use `col-span-4` relative to the inherited 12-column structure, ensuring perfect alignment with the parent grid. This is useful for nested components needing visual alignment with the overall page grid.
+الـ `div` الحامل لـ `col-span-full grid grid-cols-subgrid gap-4` هو ابن لـ `grid grid-cols-12` الرئيسية. وهو يمتدّ عبر أعمدة الأب الاثني عشر جميعًا. وبفضل `grid grid-cols-subgrid`، يستخدم تخطيطه الداخلي مسارات الأعمدة الاثني عشر والفجوة نفسها التي لدى الأب. وتستخدم عناصره (`Item 1` و`Item 2` و`Item 3`) قيمة `col-span-4` نسبةً إلى البنية الموروثة ذات الأعمدة الاثني عشر، مما يضمن محاذاة مثالية مع شبكة الأب. وهذا مفيد للمكوّنات المتداخلة التي تحتاج إلى محاذاة بصرية مع شبكة الصفحة ككل.
 
-### Subgrids and Dynamic Content
+### الشبكات الفرعية والمحتوى الديناميكي
 
-The “dynamic” aspect often refers to the subgrid’s content, not its definition. If items within the subgrid are dynamic (e.g., from an API, conditionally rendered), `grid-cols-subgrid` ensures they align to the parent’s column tracks. The layout structure (column lines) remains stable and inherited, simplifying dynamic interface management.
+يشير جانب «الديناميكي» غالبًا إلى محتوى الشبكة الفرعية لا إلى تعريفها. فإذا كانت العناصر داخل الشبكة الفرعية ديناميكية (مثلًا قادمة من API أو معروضة بشكل شرطي)، فإن `grid-cols-subgrid` تضمن محاذاتها مع مسارات أعمدة الأب. وتبقى بنية التخطيط (سطور الأعمدة) ثابتة وموروثة، ما يُبسّط إدارة الواجهات الديناميكية.
 
-While `grid-cols-subgrid` inherits parent tracks, Tailwind also allows defining dynamic column tracks on a grid container using arbitrary values: `grid-cols-[<value>]` or `grid-cols-(<custom-property>)`. For example, `grid-cols-[200px_1fr_200px]` or `grid-cols-(--my-layout-cols)`. This offers flexibility for dynamic grid definitions when `subgrid` isn’t needed (i.e., not inheriting, but needing non-standard or dynamic track sizes). However, for strict nested alignment, `grid-cols-subgrid` is the choice.
+وبينما ترث `grid-cols-subgrid` مسارات الأب، يتيح Tailwind أيضًا تعريف مسارات أعمدة ديناميكية على حاوية grid باستخدام القيم التعسّفية: `grid-cols-[<value>]` أو `grid-cols-(<custom-property>)`. فمثلًا `grid-cols-[200px_1fr_200px]` أو `grid-cols-(--my-layout-cols)`. ويمنح هذا مرونة في تعريفات grid الديناميكية حين لا تكون `subgrid` مطلوبة (أي حين لا نحتاج إلى الوراثة بل إلى مقاسات مسارات غير قياسية أو ديناميكية). ومع ذلك، للمحاذاة المتداخلة الصارمة، تظل `grid-cols-subgrid` هي الخيار.
 
-In summary, `grid-cols-subgrid` is Tailwind’s utility for CSS `subgrid` on `grid-template-columns`, enabling nested grids to inherit parent column tracks for precise alignment. This is crucial for complex layouts with dynamic content while maintaining a consistent grid structure.
+وباختصار، `grid-cols-subgrid` هي أداة Tailwind لخاصية CSS `subgrid` على `grid-template-columns`، وتتيح للشبكات المتداخلة وراثة مسارات أعمدة الأب وتحقيق محاذاة دقيقة. وهذا حاسم في التخطيطات المعقّدة ذات المحتوى الديناميكي مع الحفاظ على بنية grid متّسقة.

@@ -1,16 +1,16 @@
 ---
-title: "Multiple Cursors"
-lang: en
+title: "المؤشرات المتعددة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-multiple-cursors"
 ---
 
-What to know the quickest way to become a 10x developer? **Ten cursors**.
+هل تريد أن تعرف أسرع طريق لتصبح مطوّرًا بعشرة أضعاف؟ **عشرة مؤشرات**.
 
-Multiple cursors let you edit code in several places at once. This feature is perfect for renaming repeated variables, inserting the same snippet in multiple lines, or applying quick fixes across multiple spots. Here’s how to unleash their power.
+تتيح لك المؤشرات المتعددة تعديل الشيفرة في عدة مواضع في وقت واحد. وهذه الميزة مثالية لإعادة تسمية متغيّرات متكرّرة، أو إدراج المقتطف نفسه في عدة أسطر، أو تطبيق إصلاحات سريعة في مواضع متعددة. وإليك كيف تُطلق قواها.
 
-When you hold `Alt` on Windows/Linux or `Option` on macOS and click in different locations, Visual Studio Code places separate cursors wherever you click. Anything you type then appears in all those positions simultaneously. You can also place cursors in a vertical column by holding `Shift + Alt` (Windows/Linux) or `Shift + Option` (macOS) while dragging the mouse vertically.
+عندما تضغط باستمرار على `Alt` في Windows/Linux أو `Option` على macOS وتنقر في مواضع مختلفة، يضع Visual Studio Code مؤشرات منفصلة حيثما تنقر. وأي شيء تكتبه بعد ذلك يظهر في كل تلك المواضع في الوقت نفسه. ويمكنك أيضًا وضع مؤشرات في عمود رأسي بالضغط باستمرار على `Shift + Alt` (Windows/Linux) أو `Shift + Option` (macOS) أثناء سحب الفأرة رأسيًا.
 
-If you want to select repeated text, highlight a word and press `Ctrl+D` (Windows/Linux) or `Cmd+D` (macOS) to add the next occurrence to your selection. Keep pressing the same shortcut to include each subsequent occurrence. Once all instances are selected, you can type over them in one go—great for quick renames or consistent formatting.
+وإن أردت تحديد نص متكرّر، فأبرز كلمة واضغط `Ctrl+D` (Windows/Linux) أو `Cmd+D` (macOS) لإضافة التكرار التالي إلى تحديدك. وواصل الضغط على الاختصار نفسه لتضمين كل تكرار تالٍ. وبعد تحديد كل الحالات، يمكنك الكتابة فوقها دفعة واحدة — وهذا رائع لإعادة التسمية السريعة أو التنسيق المتسق.
 
 ```typescript
 // Example: Quickly rename `foo` to `bar`
@@ -18,32 +18,32 @@ const foo = 1;
 console.log(foo, foo + 1);
 ```
 
-Highlight `foo` and press `Ctrl+D` or `Cmd+D` repeatedly until all instances are selected. Begin typing `bar`, and every highlighted word changes at once.
+أبرز `foo` واضغط `Ctrl+D` أو `Cmd+D` مرارًا حتى تُحدَّد كل الحالات. وابدأ بكتابة `bar`، وستتغيّر كل كلمة مبرزة في الوقت نفسه.
 
-> **Tip**
+> **نصيحة**
 >
-> If you accidentally select one occurrence too many, press `Ctrl+U` (Windows/Linux) or `Cmd+U` (macOS) to undo your last selection action. This lets you fine-tune which occurrences get changed.
+> إن حدّدت بالخطأ حالة إضافية، فاضغط `Ctrl+U` (Windows/Linux) أو `Cmd+U` (macOS) للتراجع عن آخر إجراء تحديد. وهذا يتيح لك ضبط الحالات التي تتغيّر بدقة.
 
-Multiple cursors also extend to other editing commands. For example, you can indent or uncomment multiple lines simultaneously, or use shortcuts like `Ctrl+Shift+K` (Windows/Linux) or `Cmd+Shift+K` (macOS) to delete all lines where cursors are placed. Once you get comfortable with these techniques, you’ll speed through tasks that used to be tedious one-by-one edits.
+وتمتد المؤشرات المتعددة أيضًا إلى أوامر تحرير أخرى. فمثلًا، يمكنك إزاحة عدة أسطر أو إلغاء تعليقها في وقت واحد، أو استخدام اختصارات مثل `Ctrl+Shift+K` (Windows/Linux) أو `Cmd+Shift+K` (macOS) لحذف كل الأسطر التي توجد فيها مؤشرات. وبمجرد أن تعتاد هذه التقنيات، ستنجز بسرعة مهام كانت تُعدّل يدويًا سطرًا سطرًا.
 
-## Column Selection
+## تحديد الأعمدة
 
-If you hold `Shift-Option` on macOS or `Shift-Alt`—so, basically the same thing—you can drag and select an entire region. I’ve never actually found a reason to do this. But, I imagine one day, I will need it and it will be helpful.
+إذا ضغطت باستمرار على `Shift-Option` على macOS أو `Shift-Alt` — أي الشيء نفسه تقريبًا — يمكنك السحب لتحديد منطقة كاملة. ولم أجد فعلًا سببًا لفعل ذلك. لكني أتخيّل أني سأحتاجه يومًا ما وسيكون مفيدًا.
 
-## Keyboard Shortcuts for Additional Cursors
+## اختصارات لوحة المفاتيح للمؤشرات الإضافية
 
-You can boost your multi-cursor workflow by using dedicated keyboard shortcuts to add cursors without reaching for the mouse. On Windows/Linux, press `Ctrl+Alt+Down` or `Ctrl+Alt+Up` to insert additional cursors on the line below or above your current one. For macOS users, try `Cmd+Option+Down` or `Cmd+Option+Up`. These shortcuts are especially useful when you need to edit adjacent lines quickly.
+يمكنك تعزيز سير عملك بالمؤشرات المتعددة باستخدام اختصارات مخصّصة لإضافة مؤشرات دون مدّ يدك إلى الفأرة. على Windows/Linux، اضغط `Ctrl+Alt+Down` أو `Ctrl+Alt+Up` لإدراج مؤشرات إضافية في السطر أسفل سطرك الحالي أو أعلى منه. ولمستخدمي macOS، جرّب `Cmd+Option+Down` أو `Cmd+Option+Up`. وهذه الاختصارات مفيدة خصوصًا عندما تحتاج إلى تعديل أسطر متجاورة سريعًا.
 
-## Select All Occurrences
+## تحديد كل الحالات
 
-Need to change every instance of a word in one go? Instead of repeatedly pressing `Ctrl+D` or `Cmd+D`, you can select all occurrences of the current word by using `Ctrl+F2` (Windows/Linux) or `Cmd+F2` (macOS). This instantly places a cursor on every match in the file, making global edits a breeze.
+هل تحتاج إلى تغيير كل حالة لكلمة دفعة واحدة؟ بدلًا من الضغط مرارًا على `Ctrl+D` أو `Cmd+D`، يمكنك تحديد كل حالات الكلمة الحالية باستخدام `Ctrl+F2` (Windows/Linux) أو `Cmd+F2` (macOS). وهذا يضع فورًا مؤشرًا على كل مطابقة في الملف، فيجعل التعديلات الشاملة سهلة.
 
-## Insert Cursor at End of Each Line
+## إدراج مؤشر في نهاية كل سطر
 
-When working with block selections, you might want to add a cursor at the end of every line within a multi-line selection. VS Code offers the command **“Insert Cursor at End of Each Line Selected”**. You can access it via the Command Palette or assign it a custom keybinding. This technique is perfect for appending text to multiple lines simultaneously.
+عند العمل بتحديدات كتلية، قد تريد إضافة مؤشر في نهاية كل سطر داخل تحديد متعدد الأسطر. ويوفّر VS Code الأمر **“Insert Cursor at End of Each Line Selected”**. ويمكنك الوصول إليه عبر لوحة الأوامر أو تعيين اختصار مخصّص له. وهذه التقنية مثالية لإلحاق نص بأسطر متعددة في وقت واحد.
 
-> **Combine these keyboard shortcuts with snippet insertion and standard editing commands for a powerful, fluid editing experience that turns repetitive tasks into lightning-fast operations.**
+> **اجمع هذه الاختصارات مع إدراج المقتطفات وأوامر التحرير القياسية لتجربة تحرير قوية وسلسة تحوّل المهام المتكرّرة إلى عمليات فائقة السرعة.**
 
-## Undoing a Cursor
+## التراجع عن مؤشر
 
-When you’re working with multiple cursors, it’s easy to accidentally add one extra that you don’t need. Fortunately, Visual Studio Code provides a simple way to remove the most recently added cursor. Just press `Ctrl+U` on Windows/Linux or `Cmd+U` on macOS, and the last cursor you placed will be undone. This lets you fine-tune your multi-cursor selection until only the desired occurrences are included. Use this shortcut as often as needed to ensure your editing remains precise and controlled.
+عند العمل بمؤشرات متعددة، يسهل إضافة مؤشر زائد لا تحتاجه. ولحسن الحظ، يوفّر Visual Studio Code طريقة بسيطة لإزالة المؤشر المضاف أخيرًا. ما عليك سوى الضغط على `Ctrl+U` في Windows/Linux أو `Cmd+U` على macOS، وسيُلغى آخر مؤشر وضعته. وهذا يتيح لك ضبط تحديدك المتعدد المؤشرات حتى تُضمَّن الحالات المطلوبة فقط. استخدم هذا الاختصار بقدر ما تحتاج لضمان بقاء تحريرك دقيقًا ومنضبطًا.

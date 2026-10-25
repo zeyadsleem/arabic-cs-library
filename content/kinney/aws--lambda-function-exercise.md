@@ -1,35 +1,35 @@
 ---
-title: "Exercise: Build and Deploy a Lambda Function"
-lang: en
+title: "تمرين: بناء دالة Lambda ونشرها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/lambda-function-exercise"
 ---
 
-You’re going to build and deploy a Lambda function from scratch—no console wizards, no frameworks, no abstractions. By the end of this exercise, you’ll have a TypeScript function running in AWS that you can invoke from the command line and whose logs you can read in CloudWatch.
+ستبني دالة Lambda وتنشرها من الصفر—بلا معالجات إعداد في وحدة التحكّم، وبلا أطر عمل، وبلا تجريدات. وبحلول نهاية هذا التمرين، سيكون لديك دالة TypeScript تعمل في AWS يمكنك استدعاؤها من سطر الأوامر وقراءة سجلاتها في CloudWatch.
 
-This is the same workflow you’ll use for every Lambda function you deploy throughout the rest of the course. Get comfortable with it now.
+هذا هو سير العمل نفسه الذي ستستخدمه لكل دالة Lambda تنشرها في بقية الدورة. فاعتد عليه الآن.
 
-> **Tip**
+> **نصيحة**
 >
-> If the console or CLI output looks a little different when you do this, keep the [`aws lambda create-function` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html) and the [`aws lambda update-function-code` command reference](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html) open.
+> إن بدت مخرجات وحدة التحكّم أو سطر الأوامر مختلفة قليلًا عند تنفيذك، فأبقِ [مرجع الأمر `aws lambda create-function`](https://docs.aws.amazon.com/cli/latest/reference/lambda/create-function.html) و[مرجع الأمر `aws lambda update-function-code`](https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-code.html) مفتوحين.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-On Vercel, deploying a serverless function means pushing code to Git and waiting for the platform to figure out the rest. On AWS, you own every step: writing the handler, creating the execution role, packaging the code, deploying it, and verifying it works. That sounds like more work—and it is—but it means you understand exactly what’s running, with what permissions, and where to look when something breaks.
+على Vercel، يعني نشر دالة بلا خادم دفع الشيفرة إلى Git وانتظار المنصّة لتتدبّر الباقي. أما على AWS، فأنت تملك كل خطوة: كتابة المعالج، وإنشاء دور التنفيذ، وتضمين الشيفرة، ونشرها، والتحقّق من أنها تعمل. يبدو هذا عملًا إضافيًا—وهو كذلك—لكنه يعني أنك تفهم بالضبط ما الذي يعمل، وبأي أذونات، وأين تنظر حين ينكسر شيء.
 
-## Your Task
+## مهمّتك
 
-Build and deploy a Lambda function named `my-frontend-app-api` that:
+ابنِ دالة Lambda باسم `my-frontend-app-api` وانشرها، بحيث:
 
-- Accepts a GET request with an optional `name` query parameter
-- Returns a JSON response with a greeting and a timestamp
-- Runs with a properly scoped execution role (logging permissions only)
-- Can be invoked from the CLI with a test event
+- تقبل طلب GET مع معامل استعلام اختياري `name`
+- تُرجع استجابة JSON تحتوي تحية وطابعًا زمنيًا
+- تعمل بدور تنفيذ محدّد النطاق بشكل صحيح (أذونات التسجيل فقط)
+- يمكن استدعاؤها من سطر الأوامر بحدث اختبار
 
-Use the account ID `123456789012`, region `us-east-1`, and the `nodejs22.x` runtime.
+استخدم معرّف الحساب `123456789012`، والمنطقة `us-east-1`، وبيئة التشغيل `nodejs22.x`.
 
-## Set Up the Project
+## إعداد المشروع
 
-Create the project structure:
+أنشئ بنية المشروع:
 
 ```bash
 mkdir -p lambda/src
@@ -38,63 +38,63 @@ npm init -y
 npm install -D typescript @types/aws-lambda @types/node
 ```
 
-Create `tsconfig.json` in the `lambda/` directory with a `commonjs` module target, `ES2022` target, strict mode enabled, and output going to `dist/`.
+أنشئ `tsconfig.json` في دليل `lambda/` بهدف وحدة `commonjs`، وهدف `ES2022`، والوضع الصارم مُفعّلًا، والمخرجات إلى `dist/`.
 
-### Checkpoint
+### نقطة تحقّق
 
-You’ve got a `lambda/` directory with `package.json`, `tsconfig.json`, `node_modules/`, and an empty `src/` directory.
+أصبح لديك دليل `lambda/` يحتوي `package.json` و`tsconfig.json` و`node_modules/` ودليل `src/` فارغ.
 
-## Write the Handler
+## كتابة المعالج
 
-Create `src/handler.ts` with a handler that:
+أنشئ `src/handler.ts` بمعالج يقوم بما يلي:
 
-1. Uses the `APIGatewayProxyHandlerV2` type from `@types/aws-lambda`
-2. Reads the `name` query parameter from the event, defaulting to `"World"`
-3. Returns a 200 response with `Content-Type: application/json`
-4. The response body should be a JSON object with `greeting` (a string like `"Hello, World!"`) and `timestamp` (an ISO 8601 date string)
+1. يستخدم النوع `APIGatewayProxyHandlerV2` من `@types/aws-lambda`
+2. يقرأ معامل الاستعلام `name` من الحدث، بقيمة افتراضية `"World"`
+3. يُرجع استجابة 200 مع `Content-Type: application/json`
+4. ينبغي أن يكون جسم الاستجابة كائن JSON يحتوي `greeting` (سلسلة مثل `"Hello, World!"`) و`timestamp` (سلسلة تاريخ بصيغة ISO 8601)
 
-Add a build script to `package.json` that runs `tsc`, then build the project.
+أضف سكربت بناء إلى `package.json` يشغّل `tsc`، ثم ابنِ المشروع.
 
-### Checkpoint
+### نقطة تحقّق
 
-Running `npm run build` produces `dist/handler.js` with no TypeScript errors.
+تشغيل `npm run build` يُنتج `dist/handler.js` بلا أخطاء TypeScript.
 
-## Create the Execution Role
+## إنشاء دور التنفيذ
 
-Create a trust policy file (`trust-policy.json`) that allows the Lambda service (`lambda.amazonaws.com`) to assume the role.
+أنشئ ملف سياسة ثقة (`trust-policy.json`) يسمح لخدمة Lambda (`lambda.amazonaws.com`) بافتراض الدور.
 
-Use the CLI to:
+استخدم سطر الأوامر من أجل:
 
-1. Create a role named `my-frontend-app-lambda-role` with that trust policy
-2. Attach the `AWSLambdaBasicExecutionRole` managed policy to the role
+1. إنشاء دور باسم `my-frontend-app-lambda-role` بسياسة الثقة تلك
+2. إرفاق السياسة المُدارة `AWSLambdaBasicExecutionRole` بالدور
 
-Remember:
+تذكّر:
 
-- The trust policy needs `sts:AssumeRole` as the action and `lambda.amazonaws.com` as the principal
-- The managed policy ARN is `arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole`
-- You covered the relationship between roles, trust policies, and permission policies in [The IAM Mental Model](https://stevekinney.com/courses/aws/iam-mental-model) and [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)
+- تحتاج سياسة الثقة إلى `sts:AssumeRole` كإجراء و`lambda.amazonaws.com` كأصل
+- ARN الخاص بالسياسة المُدارة هو `arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole`
+- لقد غطّيت العلاقة بين الأدوار وسياسات الثقة وسياسات الأذونات في [النموذج الذهني لـIAM](https://stevekinney.com/courses/aws/iam-mental-model) و[كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws iam get-role --role-name my-frontend-app-lambda-role` returns the role with the correct trust policy. `aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role` shows `AWSLambdaBasicExecutionRole`.
+يعيد `aws iam get-role --role-name my-frontend-app-lambda-role` الدور بسياسة الثقة الصحيحة. ويعرض `aws iam list-attached-role-policies --role-name my-frontend-app-lambda-role` السياسة `AWSLambdaBasicExecutionRole`.
 
-## Package and Deploy
+## التضمين والنشر
 
-Create the deployment zip from the compiled output:
+أنشئ ملف zip الخاص بالنشر من المخرجات المُصرّفة:
 
-1. Navigate into the `dist/` directory
-2. Zip the contents (not the directory itself)
-3. Use `aws lambda create-function` with the function name, runtime, role ARN, handler path, zip file, and `--architectures arm64`
+1. انتقل إلى دليل `dist/`
+2. اضغط المحتويات (لا الدليل نفسه)
+3. استخدم `aws lambda create-function` مع اسم الدالة وبيئة التشغيل وARN الدور ومسار المعالج وملف zip و`--architectures arm64`
 
-The handler path should be `handler.handler`—the first `handler` is the filename (without `.js`), the second is the exported function name.
+ينبغي أن يكون مسار المعالج `handler.handler`—فكلمة `handler` الأولى هي اسم الملف (بدون `.js`)، والثانية هي اسم الدالة المُصدَّرة.
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws lambda get-function --function-name my-frontend-app-api --region us-east-1` returns the function configuration showing `nodejs22.x` as the runtime and your execution role’s ARN.
+يعيد `aws lambda get-function --function-name my-frontend-app-api --region us-east-1` تهيئة الدالة عارضًا `nodejs22.x` كبيئة تشغيل وARN دور التنفيذ لديك.
 
-## Invoke the Function
+## استدعاء الدالة
 
-Create a test event file (`test-event.json`) that simulates a GET request with the query parameter `name=Lambda`:
+أنشئ ملف حدث اختبار (`test-event.json`) يحاكي طلب GET مع معامل الاستعلام `name=Lambda`:
 
 ```json
 {
@@ -110,23 +110,23 @@ Create a test event file (`test-event.json`) that simulates a GET request with t
 }
 ```
 
-Invoke the function using the CLI and read the response file.
+استدعِ الدالة باستخدام سطر الأوامر واقرأ ملف الاستجابة.
 
-### Checkpoint
+### نقطة تحقّق
 
-The response file contains a JSON object with `statusCode: 200` and a body that, when parsed, includes `greeting: "Hello, Lambda!"` and a valid `timestamp`.
+يحتوي ملف الاستجابة على كائن JSON فيه `statusCode: 200` وجسم يتضمّن، عند تحليله، `greeting: "Hello, Lambda!"` و`timestamp` صالحًا.
 
-## Invoke Without a Name Parameter
+## الاستدعاء دون معامل اسم
 
-Create a second test event with no `queryStringParameters` (or omit the field entirely) and invoke the function again.
+أنشئ حدث اختبار ثانيًا بلا `queryStringParameters` (أو احذف الحقل كليًا) واستدعِ الدالة مرة أخرى.
 
-### Checkpoint
+### نقطة تحقّق
 
-The response includes `greeting: "Hello, World!"`—your default value works correctly.
+تتضمّن الاستجابة `greeting: "Hello, World!"`—أي أن قيمتك الافتراضية تعمل بشكل صحيح.
 
-## Read the Logs
+## قراءة السجلات
 
-After invoking the function, check that logs are flowing to CloudWatch. Verify that the log group `/aws/lambda/my-frontend-app-api` exists:
+بعد استدعاء الدالة، تحقّق من أن السجلات تتدفق إلى CloudWatch. وتأكّد من وجود مجموعة السجلات `/aws/lambda/my-frontend-app-api`:
 
 ```bash
 aws logs describe-log-groups \
@@ -135,30 +135,30 @@ aws logs describe-log-groups \
   --output json
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-The log group exists and contains at least one log stream with events from your invocations.
+مجموعة السجلات موجودة وتحتوي على تدفّق سجلات واحد على الأقل مع أحداث من استدعاءاتك.
 
-## Checkpoints Summary
+## ملخّص نقاط التحقّق
 
-- `lambda/` project builds with `npm run build` and produces `dist/handler.js`
-- `my-frontend-app-lambda-role` IAM role exists with the correct trust policy
-- `AWSLambdaBasicExecutionRole` is attached to the role
-- `my-frontend-app-api` function is deployed with `nodejs22.x` runtime and `arm64` architecture
-- Invoking with `name=Lambda` returns `"Hello, Lambda!"`
-- Invoking without a name returns `"Hello, World!"`
-- CloudWatch log group `/aws/lambda/my-frontend-app-api` exists and has log events
+- مشروع `lambda/` يُبنى بـ`npm run build` ويُنتج `dist/handler.js`
+- دور IAM باسم `my-frontend-app-lambda-role` موجود بسياسة الثقة الصحيحة
+- السياسة `AWSLambdaBasicExecutionRole` مُرفقة بالدور
+- دالة `my-frontend-app-api` منشورة ببيئة تشغيل `nodejs22.x` ومعمارية `arm64`
+- الاستدعاء بـ`name=Lambda` يعيد `"Hello, Lambda!"`
+- الاستدعاء دون اسم يعيد `"Hello, World!"`
+- مجموعة سجلات CloudWatch `/aws/lambda/my-frontend-app-api` موجودة ولديها أحداث سجل
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **`create-function` fails because Lambda cannot assume the role:** The trust policy is wrong. The role must trust the `lambda.amazonaws.com` service principal.
-- **Invocation fails with `Runtime.ImportModuleError` or `Cannot find module`:** The zip file structure is wrong, the handler path does not match the deployed file, or `dist/handler.js` was never built before packaging.
-- **The function runs but no logs appear in CloudWatch:** The execution role is missing `AWSLambdaBasicExecutionRole`, or you checked the logs before the first successful invocation created the stream.
+- **يفشل `create-function` لأن Lambda لا تستطيع افتراض الدور:** سياسة الثقة خاطئة. يجب أن يثق الدور بأصل الخدمة `lambda.amazonaws.com`.
+- **يفشل الاستدعاء بخطأ `Runtime.ImportModuleError` أو `Cannot find module`:** بنية ملف zip خاطئة، أو مسار المعالج لا يطابق الملف المنشور، أو أن `dist/handler.js` لم يُبنَ قبل التضمين.
+- **تعمل الدالة لكن لا تظهر سجلات في CloudWatch:** دور التنفيذ يفتقد `AWSLambdaBasicExecutionRole`، أو أنك فحصت السجلات قبل أن يُنشئ أول استدعاء ناجح التدفّق.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add an environment variable.** Set a `GREETING_PREFIX` environment variable (e.g., `"Howdy"`) and use it in your handler instead of hardcoding `"Hello"`. Verify the change by invoking the function and checking the response.
-- **Check cold start duration.** Invoke the function with `--log-type Tail` and decode the base64 log output. Look for the `Init Duration` field. Invoke again and confirm the second invocation has no `Init Duration`—it was a warm start. This is one of those things that’s way more satisfying to see for yourself than to read about.
-- **Measure deployment package size.** Check the size of `function.zip`. Try adding a dependency (like `lodash`) to see how the zip size changes. Then remove it—you don’t need it, and keeping the bundle small matters for cold start performance.
+- **أضف متغيّر بيئة.** اضبط متغيّر بيئة `GREETING_PREFIX` (مثل `"Howdy"`) واستخدمه في معالجك بدلًا من تثبيت `"Hello"` في الشيفرة. تحقّق من التغيير باستدعاء الدالة وفحص الاستجابة.
+- **افحص مدة البدء البارد.** استدعِ الدالة مع `--log-type Tail` وفكّ ترميز مخرجات السجل بصيغة base64. وابحث عن حقل `Init Duration`. ثم استدعِها مرة أخرى وتأكّد من أن الاستدعاء الثاني لا يحتوي `Init Duration`—فهو بدء دافئ. هذا من الأمور التي تكون رؤيتها بنفسك أكثر إشباعًا بكثير من القراءة عنها.
+- **قِس حجم حزمة النشر.** افحص حجم `function.zip`. جرّب إضافة اعتمادية (مثل `lodash`) لترى كيف يتغيّر حجم ملف zip. ثم أزلها—فأنت لا تحتاجها، وإبقاء الحزمة صغيرة يهمّ لأداء البدء البارد.
 
-When you’re ready, check your work against the [Solution: Build and Deploy a Lambda Function](https://stevekinney.com/courses/aws/lambda-function-solution).
+حين تصبح جاهزًا، قارن عملك بـ[الحل: بناء دالة Lambda ونشرها](https://stevekinney.com/courses/aws/lambda-function-solution).

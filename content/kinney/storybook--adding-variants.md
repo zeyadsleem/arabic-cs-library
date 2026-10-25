@@ -1,25 +1,25 @@
 ---
-title: "Adding Variants to a Story"
-lang: en
+title: "إضافة متغيّرات إلى قصة"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/adding-variants"
 ---
 
-Let’s get a little philosophical. There are a *lot* of flavors of buttons in the world. For our purposes, we’re going to call these **variants**. One of the most common variants that we see out in the wild is the idea of having primary and secondary buttons. Additional examples include destructive buttons and disabled buttons, et cetera.
+لنصبح فلسفيين قليلًا. هناك *الكثير* من أنواع الأزرار في العالم. ولمقاصدنا، سنسمّي هذه **المتغيّرات (variants)**. ومن أكثر المتغيّرات شيوعًا التي نراها في الميدان فكرة وجود أزرار أساسية وأزرار ثانوية. ومن الأمثلة الإضافية الأزرار المدمِّرة والأزرار المعطّلة، وما إلى ذلك.
 
-## Using a Prop to Set the Variant
+## استخدام خاصية لتعيين المتغيّر
 
-If we review a selection of existing design system implementations, we’ll see that far and away the most common way to allow consumers of your component library to set a variant is to provide a prop. What exactly you choose to call that prop and what values you’re willing to accept is up to you. As you’ll see, `variant` is a fairly popular choice, but `appearance` and `kind` are also used.
+إذا راجعنا مجموعة مختارة من تطبيقات أنظمة التصميم القائمة، سنرى أن الطريقة الأكثر شيوعًا بفارق كبير للسماح لمستهلكي مكتبة مكوّناتك بتعيين متغيّر هي توفير خاصية (prop). أما ما تختار أن تسمّي به تلك الخاصية بالضبط وما القيم التي تقبلها فمتروك لك. وكما سترى، فإن `variant` خيار شائع إلى حد كبير، لكن `appearance` و`kind` تُستخدمان أيضًا.
 
-- [Microsoft’s Fluent design system](https://react.fluentui.dev/?path=/docs/components-button-button--default) uses an `appearance` prop that is one of the following variants: `primary`, `secondary`, `subtle`, `outline`, `transparent`.
-- [Atlassian’s design system](https://atlassian.design/components/button/examples#appearance) also uses an `appearance` prop that can be either `primary`, `subtle`, `link`, `subtle-link`, `warning`, or `danger`.
-- [IBM’s Carbon design system](https://react.carbondesignsystem.com/?path=/story/components-button--default) uses a `kind` property that can be set to `primary`, `secondary`, `danger`, `ghost`, `tertiary`, `danger--primary`, `danger--ghost`, or `danger--tertiary`.
-- [GitHub’s Primer design system](https://primer.style/components/button/react/alpha) uses a `variant` prop that can be either `default`, `primary`, `danger`, or `invisible`.
-- [Twilio’s Paste design system](https://paste.twilio.design/components/button) uses a `variant` prop as well with the following variants: `primary`, `primary_icon`, `secondary`, `secondary_icon`, `destructive`, `destructive_icon`, `destructive_link`, `destructive_secondary`, `link`, `inverse_link`, and `inverse`.
-- [Shopify’s Polaris design system](https://polaris.shopify.com/components/actions/button) uses a `variant` prop consisting of `plain`, `primary`, `secondary`, `tertiary`, and `monochromePlain`.
-- [GitLab’s Pajamas design system](https://design.gitlab.com/components/button/code) also uses a `variant` property that is one of the following: `default`, `confirm`, `info`, `success`, `danger`, `dashed`, `link`, or `reset`.
-- [Adobe’s Spectrum design system](https://react-spectrum.adobe.com/react-spectrum/Button.html) also uses a `variant` property that can be either `primary`, `secondary`, or `negative`. In their system, `negative` is similar to `destructive` or `danger` in some of the other systems. They *also* have two styles: `fill` and `outline`, which are more like `primary` and `secondary` in the other systems.
+- [نظام Fluent التصميمي من Microsoft](https://react.fluentui.dev/?path=/docs/components-button-button--default) يستخدم خاصية `appearance` تكون إحدى المتغيّرات التالية: `primary`، و`secondary`، و`subtle`، و`outline`، و`transparent`.
+- [نظام التصميم من Atlassian](https://atlassian.design/components/button/examples#appearance) يستخدم أيضًا خاصية `appearance` التي يمكن أن تكون `primary` أو `subtle` أو `link` أو `subtle-link` أو `warning` أو `danger`.
+- [نظام Carbon التصميمي من IBM](https://react.carbondesignsystem.com/?path=/story/components-button--default) يستخدم خاصية `kind` التي يمكن تعيينها إلى `primary` أو `secondary` أو `danger` أو `ghost` أو `tertiary` أو `danger--primary` أو `danger--ghost` أو `danger--tertiary`.
+- [نظام Primer التصميمي من GitHub](https://primer.style/components/button/react/alpha) يستخدم خاصية `variant` التي يمكن أن تكون `default` أو `primary` أو `danger` أو `invisible`.
+- [نظام Paste التصميمي من Twilio](https://paste.twilio.design/components/button) يستخدم خاصية `variant` أيضًا مع المتغيّرات التالية: `primary`، و`primary_icon`، و`secondary`، و`secondary_icon`، و`destructive`، و`destructive_icon`، و`destructive_link`، و`destructive_secondary`، و`link`، و`inverse_link`، و`inverse`.
+- [نظام Polaris التصميمي من Shopify](https://polaris.shopify.com/components/actions/button) يستخدم خاصية `variant` تتكوّن من `plain`، و`primary`، و`secondary`، و`tertiary`، و`monochromePlain`.
+- [نظام Pajamas التصميمي من GitLab](https://design.gitlab.com/components/button/code) يستخدم أيضًا خاصية `variant` تكون إحدى ما يلي: `default`، و`confirm`، و`info`، و`success`، و`danger`، و`dashed`، و`link`، و`reset`.
+- [نظام Spectrum التصميمي من Adobe](https://react-spectrum.adobe.com/react-spectrum/Button.html) يستخدم أيضًا خاصية `variant` التي يمكن أن تكون `primary` أو `secondary` أو `negative`. وفي نظامهم، `negative` مشابه لـ `destructive` أو `danger` في بعض الأنظمة الأخرى. ولديهم *أيضًا* نمطان: `fill` و`outline`، وهما أقرب إلى `primary` و`secondary` في الأنظمة الأخرى.
 
-The end result is something that looks like this:
+والنتيجة النهائية شيء يشبه هذا:
 
 ```typescript
 <Button variant="primary">Button</Button>
@@ -27,16 +27,16 @@ The end result is something that looks like this:
 <Button appearance="primary">Button</Button>
 ```
 
-## Using Boolean Props
+## استخدام الخصائص المنطقية (Boolean Props)
 
-[Mozilla’s Acorn design system](https://firefoxux.github.io/firefox-desktop-components/?path=/story/ui-widgets-button--regular-button) uses a `primary` prop as well as a `disabled` prop, each of which is a boolean. This approach will look something like this:
+[نظام Acorn التصميمي من Mozilla](https://firefoxux.github.io/firefox-desktop-components/?path=/story/ui-widgets-button--regular-button) يستخدم خاصية `primary` وخاصية `disabled`، وكلٌّ منهما قيمة منطقية. وسيبدو هذا الأسلوب شيئًا كهذا:
 
 ```typescript
 <Button primary>Button</Button>
 <Button secondary>Button</Button>
 ```
 
-This syntax is really nice, but you risk ending up with someone passing in a conflicting set of variants.
+هذه الصيغة جميلة فعلًا، لكنك تخاطر بأن ينتهي بك الأمر إلى شخص يمرّر مجموعة متغيّرات متعارضة.
 
 ```typescript
 <Button primary secondary>
@@ -44,17 +44,17 @@ This syntax is really nice, but you risk ending up with someone passing in a con
 </Button>
 ```
 
-We *can* protect against this behavior with both type-safety and run-time checks, but it’s certainly more complicated. Given that the first approach is more popular, let’s look at implementing that first.
+نستطيع *أن* نحتمي من هذا السلوك بأمان الأنواع وفحوص زمن التشغيل معًا، لكنه بالتأكيد أكثر تعقيدًا. وبما أن الأسلوب الأول أكثر شيوعًا، فلننظر في تنفيذه أولًا.
 
-## Implementing a Variant Prop
+## تنفيذ خاصية متغيّر
 
-Let’s use `variant` as our prop since that seems to be a tried-and-true approach and possibly the most common based on my very cursory research above. For starters, we’ll have the following variants:
+لنستخدم `variant` كخاصيتنا، فهذا يبدو أسلوبًا مجرَّبًا وموثوقًا، وربما الأكثر شيوعًا استنادًا إلى بحثي العابر جدًا أعلاه. وكبداية، ستكون لدينا المتغيّرات التالية:
 
 - `primary`
 - `secondary`
 - `destructive`
 
-We’ll start with our super-simple button component from [the previous chapter](https://stevekinney.com/courses/storybook/writing-stories).
+سنبدأ بمكوّن الزر البسيط جدًا من [الفصل السابق](https://stevekinney.com/courses/storybook/writing-stories).
 
 ```typescript
 import { ComponentProps } from 'react';
@@ -66,7 +66,7 @@ export const Button = (props: ButtonProps) => {
 };
 ```
 
-First, we’ll add our new prop and its accepted values to the `ButtonProps` type.
+أولًا، سنضيف خاصيتنا الجديدة وقيمها المقبولة إلى النوع `ButtonProps`.
 
 ```typescript
 type ButtonProps = ComponentProps<'button'> & {
@@ -74,13 +74,13 @@ type ButtonProps = ComponentProps<'button'> & {
 };
 ```
 
-### Styling the Button
+### تصميم الزر
 
-> **A Brief Word on Styling**
+> **كلمة مختصرة عن التصميم**
 >
-> We’re going to start by using vanilla CSS and CSS modules right now. Later on, we’ll use [Tailwind](https://tailwindcss.com/) in a effort to make our lives easier and focus on the specifics of Storybook rather than CSS. But, you’re welcome to use whatever styling tools make you happiest. Storybook doesn’t have a horse in this race.
+> سنبدأ الآن باستخدام CSS العادي ووحدات CSS. ولاحقًا، سنستخدم [Tailwind](https://tailwindcss.com/) في محاولة لتسهيل حياتنا والتركيز على تفاصيل Storybook نفسها بدلًا من CSS. لكن لك أن تستخدم أي أدوات تصميم تُسعدك أكثر. وليس لـ Storybook حصان في هذا السباق.
 
-Let’s start by styling the button. We haven’t implemented any of these variants yet, so we’ll work on styling the primary button first and then go from there. In `button.module.css`, I have the following styles waiting for you.
+لنبدأ بتصميم الزر. لم ننفّذ أي من هذه المتغيّرات بعد، لذا سنعمل على تصميم الزر الأساسي أولًا ثم نمضي من هناك. وفي `button.module.css`، لدي الأنماط التالية في انتظارك.
 
 ```css
 .button {
@@ -166,7 +166,7 @@ Let’s start by styling the button. We haven’t implemented any of these varia
 }
 ```
 
-We’ll add the style to our component and then bask in the fruits of our labor.
+سنضيف النمط إلى مكوّننا ثم نستمتع بثمار عملنا.
 
 ```typescript
 import styles from './button.module.css';
@@ -176,11 +176,11 @@ export const Button = (props: ButtonProps) => {
 };
 ```
 
-Our button now looks a little prettier.
+صار زرنا الآن أجمل قليلًا.
 
-Add variants to the button component
+إضافة متغيّرات إلى مكوّن الزر
 
-So far, we’ve made the follow changes to our code.
+حتى الآن، أجرينا التغييرات التالية على شيفرتنا.
 
 ```diff
 diff --git a/src/components/button/button.tsx b/src/components/button/button.tsx
@@ -202,9 +202,9 @@ index 578f1d2..a6632c5 100644
  };
 ```
 
-### Styling Our Variants
+### تصميم متغيّراتنا
 
-I already provided some classes for our variants, but we need to dynamically add them to our our component. One simple—but tedious—way to do this is to just append them to the `className` string. This might look something like this:
+لقد وفّرت بالفعل بعض الأصناف لمتغيّراتنا، لكننا نحتاج إلى إضافتها ديناميكيًا إلى مكوّننا. وإحدى الطرق البسيطة—والمُمِلّة—لفعل ذلك هي إلحاقها بسلسلة `className` فحسب. وقد يبدو هذا شيئًا كهذا:
 
 ```typescript
 export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
@@ -216,9 +216,9 @@ export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
 };
 ```
 
-#### Adding Stories for Our Variants
+#### إضافة قصص لمتغيّراتنا
 
-If we want to easily see each of these variants in Storybook, we’ll need to add additional stories for each variant.
+إذا أردنا أن نرى كلًّا من هذه المتغيّرات بسهولة في Storybook، فسنحتاج إلى إضافة قصص إضافية لكل متغيّر.
 
 ```typescript
 export const Primary: Story = {
@@ -243,17 +243,17 @@ export const Destructive: Story = {
 };
 ```
 
-We’ll now see each variant in our Storybook as well as an additional control for swapping between the variants.
+سنرى الآن كل متغيّر في Storybook لدينا، إضافة إلى أداة تحكم إضافية للتبديل بين المتغيّرات.
 
-Basic button with variants
+زر أساسي مع المتغيّرات
 
-### Using `clsx` to Compose Class Names
+### استخدام `clsx` لتركيب أسماء الأصناف
 
-> **Installing `clsx`**
+> **تثبيت `clsx`**
 >
-> You made need to install `clsx` as a dependency using `npm install clsx`. If you’re following along with the example repository, then I’ve already included it in the `package.json`.
+> قد تحتاج إلى تثبيت `clsx` كاعتماد باستخدام `npm install clsx`. وإذا كنت تتابع مع المستودع المثال، فقد أدرجته بالفعل في `package.json`.
 
-In our super simple example, appending to the string to compose the list of classes we want to apply to our button worked, but it’s going to get tedious as as the complexity of our button grows. We can use [`clsx`](https://www.npmjs.com/package/clsx), a handy utility for dynamically applying classes, to make our future lives a bit easier.
+في مثالنا البسيط جدًا، نجح إلحاق السلسلة لتركيب قائمة الأصناف التي نريد تطبيقها على زرنا، لكنه سيصبح مُمِلًّا مع نمو تعقيد زرنا. ويمكننا استخدام [`clsx`](https://www.npmjs.com/package/clsx)، وهي أداة مفيدة لتطبيق الأصناف ديناميكيًا، لجعل حياتنا المستقبلية أسهل قليلًا.
 
 ```typescript
 import { ComponentProps } from 'react';
@@ -279,7 +279,7 @@ export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
 };
 ```
 
-`clsx` also supports an object-notation that you can use if you prefer.
+يدعم `clsx` أيضًا صيغة الكائن التي يمكنك استخدامها إن فضّلت.
 
 ```typescript
 export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
@@ -295,6 +295,6 @@ export const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
 };
 ```
 
-`clsx` is somewhat helpful in this example, but it becomes *a lot* more useful when we have even slightly more complicated logic.
+`clsx` مفيد بعض الشيء في هذا المثال، لكنه يصبح *أكثر* فائدة بكثير عندما يكون لدينا منطق أكثر تعقيدًا ولو قليلًا.
 
-And with our initial variants in place, let’s play around with the [controls](https://stevekinney.com/courses/storybook/controls) a bit.
+وبعد أن صارت متغيّراتنا الأولية في مكانها، لنعبث قليلًا بـ [أدوات التحكم](https://stevekinney.com/courses/storybook/controls).

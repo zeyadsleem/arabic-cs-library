@@ -1,14 +1,14 @@
 ---
-title: "Debugging Web Applications"
-lang: en
+title: "تنقيح تطبيقات الويب"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/debugging-web-applications"
 ---
 
-You can also easily hook into your running web applications using Visual Studio Code.
+يمكنك أيضًا الإرفاق بتطبيقات الويب قيد التشغيل بسهولة عبر Visual Studio Code.
 
-## Add the Configuration
+## إضافة الإعداد
 
-**Add a debug launch configuration to `.vscode/launch.json`:** If the `.vscode` folder does not exist, create it, and then create the `launch.json` file.
+**أضف إعداد تشغيل للتنقيح إلى `.vscode/launch.json`:** إن لم يكن مجلد `.vscode` موجودًا فأنشئه، ثم أنشئ ملف `launch.json`.
 
 ```json
 {
@@ -25,37 +25,37 @@ You can also easily hook into your running web applications using Visual Studio 
 }
 ```
 
-## Run the application
+## تشغيل التطبيق
 
-- In the terminal, run `npm run dev`.
-- In the Visual Studio Code Debug view, select “Launch Chrome against localhost” (or “Launch Edge against localhost”) and press F5.
+- في الطرفية، شغّل `npm run dev`.
+- في عرض Debug في Visual Studio Code، اختر “Launch Chrome against localhost” (أو “Launch Edge against localhost”) واضغط F5.
 
-## Example Debugging Scenarios
+## أمثلة على سيناريوهات التنقيح
 
-### Debugging `addItem`
+### تنقيح `addItem`
 
-- Set a breakpoint inside the `addItem` function.
-- Add an item to the list.
-- Step through the code and inspect the `newItem`, `items`, and `setItems` variables.
+- ضع نقطة توقّف داخل دالة `addItem`.
+- أضف عنصرًا إلى القائمة.
+- تقدّم في الشيفرة سطرًا بسطر وافحص المتغيّرات `newItem` و`items` و`setItems`.
 
-### Debugging `calculateTotal`
+### تنقيح `calculateTotal`
 
-- Set a breakpoint inside the `calculateTotal` function.
-- Add or remove items to trigger a recalculation.
-- Inspect the `sum`, `items`, and `total` variables.
+- ضع نقطة توقّف داخل دالة `calculateTotal`.
+- أضف عناصر أو احذفها لتحفيز إعادة الحساب.
+- افحص المتغيّرات `sum` و`items` و`total`.
 
-### Debugging `removeItem`
+### تنقيح `removeItem`
 
-- Set a breakpoint inside of the removeItem function.
-- Remove an item from the list.
-- Verify the content of the `newItems` array.
+- ضع نقطة توقّف داخل دالة removeItem.
+- احذف عنصرًا من القائمة.
+- تحقّق من محتوى المصفوفة `newItems`.
 
-### Debugging the useEffect
+### تنقيح useEffect
 
-- Set a breakpoint inside of the useEffect’s callback function.
-- Add or remove items from the list, and verify that the useEffect is called.
-- Verify that the total is updated correctly.
+- ضع نقطة توقّف داخل دالة الاستدعاء الخاصة بـ useEffect.
+- أضف عناصر إلى القائمة أو احذفها، وتحقق من استدعاء useEffect.
+- تحقّق من تحديث المجموع بشكل صحيح.
 
-### Inspecting React component state
+### فحص حالة مكوّنات React
 
-- Use the React Developer Tools extension in Chrome or Edge to inspect the component’s state and props. This allows you to observe how the state changes over time.
+- استخدم إضافة React Developer Tools في Chrome أو Edge لفحص حالة المكوّن وخصائصه. وهذا يتيح لك ملاحظة كيف تتغيّر الحالة بمرور الوقت.

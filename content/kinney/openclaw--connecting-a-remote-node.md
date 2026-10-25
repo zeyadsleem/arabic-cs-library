@@ -1,41 +1,41 @@
 ---
-title: "Connecting to a Remote OpenClaw as a Paired Node"
-lang: en
+title: "الاتصال بـ OpenClaw البعيد بوصفه عقدة مقترنة"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/connecting-a-remote-node"
 ---
 
-So far, everything has run on a single machine. A common next step is to put the **Gateway** on an always-on server and keep your Mac as a **node**: a machine that connects *to* the Gateway and offers it capabilities that have to happen on the Mac, like running a command, driving a browser, or taking a screenshot.
+حتى الآن، كان كل شيء يعمل على جهاز واحد. والخطوة التالية الشائعة هي وضع **البوابة (Gateway)** على خادم يعمل دائمًا، وإبقاء جهاز Mac لديك **عقدة (node)**: جهاز يتصل *بالبوابة* ويقدّم لها قدرات يجب أن تحدث على جهاز Mac، مثل تشغيل أمر، أو قيادة متصفح، أو التقاط لقطة شاشة.
 
-The split looks like this:
+ويبدو هذا التقسيم هكذا:
 
-- **The Gateway is the coordinator.** It receives channel messages, runs the agent, talks to your model provider, and owns sessions, credentials, and state.
-- **The node is a capability provider.** It isn’t a second Gateway or an independent assistant. (And “node” here is an OpenClaw role—it has nothing to do with the Node.js runtime.)
+- **البوابة هي المنسّق.** فهي تستقبل رسائل القنوات، وتشغّل الوكيل، وتتحدث إلى مزوّد النموذج لديك، وتملك الجلسات وبيانات الاعتماد والحالة.
+- **العقدة هي مقدّم القدرات.** فهي ليست بوابة ثانية ولا مساعدًا مستقلًا. («العقدة» هنا دور في OpenClaw، ولا علاقة له ببيئة تشغيل Node.js.)
 
-The Mac opens an outbound WebSocket to the Gateway, and that one connection carries traffic in both directions. That means your laptop never has to expose a command server to the internet.
+يفتح جهاز Mac اتصال WebSocket صادرًا إلى البوابة، وهذا الاتصال الواحد يحمل الحركة في الاتجاهين معًا. وهذا يعني أن حاسوبك المحمول لا يحتاج أبدًا إلى كشف خادم أوامر على الإنترنت.
 
-> **Pairing extends the Gateway’s reach into your Mac**
+> **الاقتران يوسّع نطاق وصول البوابة إلى جهاز Mac**
 >
-> Once a node is approved, a compromised Gateway can ask it to do whatever you allowed. Putting the Gateway on a server improves availability; it doesn’t protect the Mac. Keep the approved capability set small.
+> بعد الموافقة على عقدة، تستطيع بوابة مخترقة أن تطلب منها فعل كل ما سمحت به. فوضع البوابة على خادم يحسّن التوفّر، لكنه لا يحمي جهاز Mac. أبقِ مجموعة القدرات الموافَق عليها صغيرة.
 
-## Before You Start
+## قبل أن تبدأ
 
-You’ll need:
+ستحتاج إلى:
 
-- A remote Gateway that is already running, with authentication turned on.
-- A private way to reach it. This lesson assumes Tailscale Serve, with your Mac signed in to the same tailnet. If you haven’t set that up, start with [Connecting to Your OpenClaw Securely with Tailscale](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale). An SSH tunnel works too, and there’s a note on it in step 3.
-- The Gateway credential (token or password) you set up when you deployed it.
+- بوابة بعيدة تعمل بالفعل، والمصادقة مفعّلة عليها.
+- طريقة خاصة للوصول إليها. يفترض هذا الدرس استخدام Tailscale Serve، مع تسجيل دخول جهاز Mac لديك إلى شبكة tailnet نفسها. وإن لم تكن قد أعددت ذلك، فابدأ بـ [الاتصال بـ OpenClaw بأمان عبر Tailscale](https://stevekinney.com/courses/openclaw/connecting-securely-with-tailscale). ونفق SSH يعمل أيضًا، وهناك ملاحظة عنه في الخطوة 3.
+- بيانات اعتماد البوابة (رمز أو كلمة مرور) التي أعددتها حين نشرتها.
 
-Keep three questions separate, because passing one doesn’t answer the others:
+افصل بين ثلاثة أسئلة، لأن النجاح في أحدها لا يجيب عن الآخرين:
 
-| Question | Layer |
+| السؤال | الطبقة |
 | --- | --- |
-| Can this Mac reach the Gateway? | Network access |
-| Is this device allowed to connect? | Authentication |
-| What may it actually do? | Tool and execution policy |
+| هل يستطيع جهاز Mac هذا الوصول إلى البوابة؟ | الوصول إلى الشبكة |
+| هل يُسمح لهذا الجهاز بالاتصال؟ | المصادقة |
+| ما الذي يُسمح له بفعله فعليًا؟ | سياسة الأدوات والتنفيذ |
 
-## Step 1: Confirm the Gateway Is Healthy and Private
+## الخطوة 1: تأكد من أن البوابة سليمة وخاصة
 
-On the machine running the Gateway, check that it’s up and listening only on loopback, with Tailscale Serve publishing it privately:
+على الجهاز الذي يشغّل البوابة، تحقق من أنها تعمل وتستمع على الواجهة المحلية (loopback) فقط، وأن Tailscale Serve ينشرها بشكل خاص:
 
 ```bash
 openclaw config set gateway.bind loopback
@@ -45,21 +45,21 @@ openclaw gateway status
 tailscale serve status
 ```
 
-The Gateway’s ordinary listener stays on `127.0.0.1:18789`, and Serve publishes HTTPS on port 443. Don’t open port 18789 to the public internet to make the Mac connect—keeping that listener private is the entire point.
+يبقى مستمع البوابة العادي على `127.0.0.1:18789`، وينشر Serve بروتوكول HTTPS على المنفذ 443. لا تفتح المنفذ 18789 على الإنترنت العام كي يتصل جهاز Mac؛ فإبقاء ذلك المستمع خاصًا هو جوهر الأمر.
 
-Use `serve`, not `funnel`. Funnel makes the endpoint public, which is the wrong choice here.
+استخدم `serve` لا `funnel`. فـ Funnel يجعل نقطة النهاية عامة، وهذا هو الخيار الخاطئ هنا.
 
-`tailscale serve status` should show a hostname that looks something like this. You’ll use it in a moment.
+ينبغي أن يعرض `tailscale serve status` اسم مضيف يشبه هذا. وستستخدمه بعد قليل.
 
 ```
 https://gateway-host.your-tailnet.ts.net
 ```
 
-## Step 2: Set an Execution Policy on the Mac First
+## الخطوة 2: اضبط سياسة تنفيذ على جهاز Mac أولًا
 
-**Do this before you pair.** Out of the box, a node’s local exec approvals default to `full` with `ask` turned off. A node that connects before its policy is written will run commands without asking.
+**افعل هذا قبل الاقتران.** فبشكل افتراضي، تكون موافقات التنفيذ المحلية للعقدة مضبوطة على `full` مع إيقاف `ask`. والعقدة التي تتصل قبل كتابة سياستها ستشغّل الأوامر دون سؤال.
 
-On the Mac, apply a conservative starting policy:
+على جهاز Mac، طبّق سياسة بداية متحفظة:
 
 ```bash
 openclaw approvals set --stdin <<'JSON'
@@ -76,29 +76,29 @@ openclaw approvals set --stdin <<'JSON'
 JSON
 ```
 
-Then read it back to make sure it took:
+ثم اقرأها مرة أخرى لتتأكد من أنها سُجّلت:
 
 ```bash
 openclaw approvals get
 ```
 
-A few things worth knowing:
+أمور قليلة يجدر معرفتها:
 
-- With no target flag, `approvals` reads and writes the **local** document, which is what you want on the Mac.
-- `set` **replaces** the whole document. On a machine that already has rules, run `openclaw approvals get` first and preserve what’s there.
-- An approval policy is not a filesystem sandbox. An approved command runs with whatever access your macOS account has.
-- For what `security`, `ask`, and `askFallback` mean, and how approvals reach you, see [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-3-exec-approvals).
+- من دون علم هدف، يقرأ `approvals` المستند **المحلي** ويكتب فيه، وهذا ما تريده على جهاز Mac.
+- `set` **يستبدل** المستند كله. فعلى جهاز لديه قواعد بالفعل، شغّل `openclaw approvals get` أولًا واحفظ ما هو موجود.
+- سياسة الموافقات ليست صندوقًا رمليًا لنظام الملفات. فالأمر الموافَق عليه يعمل بكل ما يملكه حساب macOS لديك من وصول.
+- لمعرفة معاني `security` و`ask` و`askFallback`، وكيف تصل إليك الموافقات، راجع [الأمان والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-3-exec-approvals).
 
-## Step 3: Choose How to Connect the Mac
+## الخطوة 3: اختر كيف توصل جهاز Mac
 
-Pick **one** of these. The desktop app already embeds the node runtime, so running a separate headless node next to it gives one machine two identities.
+اختر **واحدًا** من هذه. فتطبيق سطح المكتب يتضمّن بيئة تشغيل العقدة أصلًا، لذا فإن تشغيل عقدة منفصلة بلا واجهة إلى جانبه يمنح جهازًا واحدًا هويتين.
 
-- **The macOS app** is the better choice when you want native features like notifications, screen capture, or computer control alongside command execution.
-- **A headless node** is the better choice for a machine with no desktop session.
+- **تطبيق macOS** هو الخيار الأفضل حين تريد ميزات أصلية مثل الإشعارات أو التقاط الشاشة أو التحكم بالحاسوب إلى جانب تنفيذ الأوامر.
+- **عقدة بلا واجهة** هي الخيار الأفضل لجهاز ليس فيه جلسة سطح مكتب.
 
-> **Using an SSH tunnel instead of Tailscale**
+> **استخدام نفق SSH بدل Tailscale**
 >
-> If you’d rather tunnel to a loopback-bound Gateway, forward a local port on the Mac to it, then connect to that forwarded port instead of the Tailscale hostname:
+> إن كنت تفضّل إنشاء نفق إلى بوابة مرتبطة بالواجهة المحلية، فوجّه منفذًا محليًا على جهاز Mac إليها، ثم اتصل بذلك المنفذ الموجّه بدل اسم مضيف Tailscale:
 >
 > ```bash
 > ssh -N -o ExitOnForwardFailure=yes \
@@ -106,53 +106,53 @@ Pick **one** of these. The desktop app already embeds the node runtime, so runni
 >   openclaw@gateway-host
 > ```
 
-### Option A: The macOS App
+### الخيار أ: تطبيق macOS
 
-1. Open the OpenClaw app and go to **Settings → Connection**.
-2. Choose **Remote (another host)**.
-3. Select **Direct (ws/wss)**.
-4. Enter your Gateway address, using `wss://`: <code>wss://gateway-host.your-tailnet.ts.net</code>
-5. Enter the Gateway credential.
-6. Run the connection test.
+1. افتح تطبيق OpenClaw وانتقل إلى **الإعدادات → الاتصال**.
+2. اختر **بعيد (مضيف آخر)**.
+3. اختر **مباشر (ws/wss)**.
+4. أدخل عنوان البوابة لديك، مستخدمًا `wss://`: <code>wss://gateway-host.your-tailnet.ts.net</code>
+5. أدخل بيانات اعتماد البوابة.
+6. شغّل اختبار الاتصال.
 
-Use the **primary remote connection** for the node relationship. Adding a saved Gateway dashboard is a different thing—that just bookmarks the Control UI and doesn’t make your Mac a node.
+استخدم **الاتصال البعيد الأساسي** لعلاقة العقدة. أما إضافة لوحة تحكم محفوظة للبوابة فأمر مختلف؛ فهي تحفظ واجهة التحكم (Control UI) في المفضلة فقط ولا تجعل جهاز Mac عقدة.
 
-### Option B: A Headless Node
+### الخيار ب: عقدة بلا واجهة
 
-1. Install the CLI without running onboarding. You’re installing a node host, not a second Gateway: <code><span class="line"><span style="color:#82AAFF;font-style:italic">curl</span><span style="color:#82AAFF"> -fsSL</span><span style="color:#82AAFF"> -o</span><span style="color:#ECC48D"> openclaw-install.sh</span><span style="color:#ECC48D"> https://openclaw.ai/install.sh</span></span>
+1. ثبّت أداة سطر الأوامر (CLI) دون تشغيل التهيئة الأولية. فأنت تثبّت مضيف عقدة، لا بوابة ثانية: <code><span class="line"><span style="color:#82AAFF;font-style:italic">curl</span><span style="color:#82AAFF"> -fsSL</span><span style="color:#82AAFF"> -o</span><span style="color:#ECC48D"> openclaw-install.sh</span><span style="color:#ECC48D"> https://openclaw.ai/install.sh</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">less</span><span style="color:#ECC48D"> openclaw-install.sh</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">bash</span><span style="color:#ECC48D"> openclaw-install.sh</span><span style="color:#82AAFF"> --no-onboard</span></span></code>
-2. On the Gateway’s **Devices** page (**Settings → Devices** in the Control UI), create a setup link. It looks like `oc-pair://<setup-code>`. WarningTreat the setup link like a password. Don’t paste it into chat and don’t commit it.
-3. Run the node in the foreground using that link: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> run</span><span style="color:#82AAFF"> --pair</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">oc-pair://<setup-code></span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span></code>
-4. Once the foreground connection works, install it as a background service. Use the same hostname, port, and TLS settings so it matches the saved connection: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --host</span><span style="color:#ECC48D"> gateway-host.your-tailnet.ts.net</span><span style="color:#82AAFF"> --port</span><span style="color:#F78C6C"> 443</span><span style="color:#82AAFF"> --tls</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span>
+2. في صفحة **الأجهزة (Devices)** في البوابة (**الإعدادات → الأجهزة** في واجهة التحكم)، أنشئ رابط إعداد. يبدو مثل `oc-pair://<setup-code>`. تحذير: تعامل مع رابط الإعداد كأنه كلمة مرور. لا تلصقه في الدردشة ولا تُدرجه في أي commit.
+3. شغّل العقدة في الواجهة الأمامية باستخدام ذلك الرابط: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> run</span><span style="color:#82AAFF"> --pair</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">oc-pair://&lt;setup-code&gt;</span><span style="color:#D9F5DD">"</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span></code>
+4. بعد أن ينجح اتصال الواجهة الأمامية، ثبّتها كخدمة في الخلفية. استخدم اسم المضيف والمنفذ وإعدادات TLS نفسها لتطابق الاتصال المحفوظ: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --host</span><span style="color:#ECC48D"> gateway-host.your-tailnet.ts.net</span><span style="color:#82AAFF"> --port</span><span style="color:#F78C6C"> 443</span><span style="color:#82AAFF"> --tls</span><span style="color:#82AAFF"> --display-name</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">MacBook</span><span style="color:#D9F5DD">"</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> start</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> node</span><span style="color:#ECC48D"> status</span></span></code>
 
-Leave `--commands` off for now. It narrows the advertised command set, but it also disables skill publication, plugin tools, MCP servers, computer use, and worker hosting.
+اترك `--commands` معطّلًا في الوقت الحالي. فهو يضيّق مجموعة الأوامر المعلنة، لكنه يعطّل أيضًا نشر المهارات وأدوات الإضافات وخوادم MCP واستخدام الحاسوب واستضافة العمال.
 
-## Step 4: Approve the Node
+## الخطوة 4: وافق على العقدة
 
-Connecting isn’t the same as being trusted. There are two separate approvals:
+الاتصال ليس كالثقة. فهناك موافقتان منفصلتان:
 
-| Approval | What it decides |
+| الموافقة | ما تقرره |
 | --- | --- |
-| Device approval | Is this device identity allowed to connect at all? |
-| Command approval | Which advertised capabilities may it provide? |
+| موافقة الجهاز | هل يُسمح لهوية هذا الجهاز بالاتصال أصلًا؟ |
+| موافقة الأوامر | أي القدرات المعلنة يُسمح لها بتقديمها؟ |
 
-When the node asks for its capabilities, you’ll see a prompt like this.
+حين تطلب العقدة قدراتها، سترى مطالبة مثل هذه.
 
-The Allow this node's capabilities prompt listing the node's name, requested access, capabilities, and commands, with Not Now, Reject, and Approve Node buttons
+مطالبة «السماح بقدرات هذه العقدة» التي تسرد اسم العقدة والوصول المطلوب والقدرات والأوامر، مع أزرار «ليس الآن» و«رفض» و«الموافقة على العقدة»
 
-Read it before you click anything:
+اقرأها قبل أن تنقر أي شيء:
 
-- **The node’s name and platform** at the top should be the machine you meant to pair.
-- **Requested access** is the headline. “Can run system commands” is the big one, and it’s the reason Step 2 came first.
-- **The capability list** (canvas, screen capture, browser, file transfer, MCP, and so on) is what the node is *asking* to offer.
-- **The command list** at the bottom is the exact set of operations it advertises.
+- **اسم العقدة ونظامها** في الأعلى ينبغي أن يطابقا الجهاز الذي قصدت اقترانه.
+- **الوصول المطلوب** هو العنوان الأبرز. و«يستطيع تشغيل أوامر النظام» هو الأهم، وهو سبب مجيء الخطوة 2 أولًا.
+- **قائمة القدرات** (اللوحة، والتقاط الشاشة، والمتصفح، ونقل الملفات، وMCP، وما إلى ذلك) هي ما تطلبه العقدة *لتقديمه*.
+- **قائمة الأوامر** في الأسفل هي المجموعة الدقيقة من العمليات التي تعلنها.
 
-Those are claims, not grants. A capability only works at the intersection of what the node advertises, what you approve, the Gateway’s policy, your local execution policy, and what macOS permits. Choose **Approve Node** to proceed, **Reject** to refuse, or **Not Now** to decide later.
+هذه ادعاءات، لا منح. فالقدرة لا تعمل إلا عند تقاطع ما تعلنه العقدة، وما توافق عليه أنت، وسياسة البوابة، وسياسة التنفيذ المحلية لديك، وما يسمح به macOS. اختر **الموافقة على العقدة** للمتابعة، أو **رفض** إذا أردت الرفض، أو **ليس الآن** للبت لاحقًا.
 
-You can do the same thing from the Gateway’s command line. The two request IDs are different, so copy the right one each time:
+يمكنك فعل الشيء نفسه من سطر أوامر البوابة. فمعرّفا الطلب مختلفان، لذا انسخ المعرّف الصحيح في كل مرة:
 
 ```bash
 openclaw devices list
@@ -162,70 +162,70 @@ openclaw nodes pending
 openclaw nodes approve "<node-request-id>"
 ```
 
-Some enrollment paths approve both stages for you, so don’t be surprised if you only see one prompt. If the node later asks for more capabilities, expect to be asked again.
+بعض مسارات التسجيل توافق على المرحلتين نيابة عنك، فلا تتفاجأ إن رأيت مطالبة واحدة فقط. وإن طلبت العقدة لاحقًا قدرات إضافية، فتوقع أن يُطلب منك الموافقة مرة أخرى.
 
-## Step 5: Verify the Connection
+## الخطوة 5: تحقق من الاتصال
 
-On the Gateway, confirm the node is connected and look at what it was approved for:
+على البوابة، تأكد من أن العقدة متصلة، وانظر فيما وُوفق عليه:
 
 ```bash
 openclaw nodes status
 openclaw nodes describe --node "<node-id>"
 ```
 
-When you refer to a node in configuration, use its **node ID** rather than its display name.
+حين تشير إلى عقدة في الإعدادات، استخدم **معرّف العقدة (node ID)** لا اسمها المعروض.
 
-The Control UI shows the same picture under **Settings → Devices**: each paired device, whether it’s connected, and the capabilities a node offers. The **Pair device** button at the top of that page is where new pairings start.
+تعرض واجهة التحكم الصورة نفسها تحت **الإعدادات → الأجهزة**: كل جهاز مقترن، وما إذا كان متصلًا، والقدرات التي تقدّمها العقدة. وزر **اقتران جهاز** في أعلى تلك الصفحة هو نقطة بدء الاقترانات الجديدة.
 
-The top of the Devices page in the OpenClaw settings, with the Paired Devices count and the Pair device button
+أعلى صفحة الأجهزة في إعدادات OpenClaw، مع عدد الأجهزة المقترنة وزر اقتران جهاز
 
-Then check that the Mac has the tools you expect. This looks for executables without running them:
+ثم تحقق من أن جهاز Mac يملك الأدوات التي تتوقعها. فهذا يبحث عن الملفات التنفيذية دون تشغيلها:
 
 ```bash
 openclaw nodes invoke --node "<node-id>" --command system.which \
   --params '{"bins":["git","node","bun"]}'
 ```
 
-If you chose the app and want native features, macOS will also ask for its own permissions for features like screen capture. Grant only the ones you intend to use. A healthy connection says nothing about whether those are available.
+إن اخترت التطبيق وأردت ميزات أصلية، فسيطلب macOS أيضًا أذوناته الخاصة لميزات مثل التقاط الشاشة. امنح فقط ما تنوي استخدامه. فالاتصال السليم لا يقول شيئًا عن مدى توفّر تلك الميزات.
 
-## Step 6: Send Work to the Node on Purpose
+## الخطوة 6: أرسل العمل إلى العقدة عن قصد
 
-Connecting a node does **not** send commands to it. By default, `host=auto` won’t pick the node for you. To run something on the Mac, say so explicitly:
+اقتران عقدة **لا** يرسل الأوامر إليها. فبشكل افتراضي، لن يختار `host=auto` العقدة نيابة عنك. لتشغيل شيء على جهاز Mac، صرّح بذلك:
 
 ```
 /exec host=node security=allowlist node=<node-id>
 ```
 
-To make the node the default for a session, set `tools.exec.host=node`. If more than one node can run commands, choose a target per call or bind exec to one.
+لجعل العقدة الافتراضية لجلسة ما، اضبط `tools.exec.host=node`. وإن كان بإمكان أكثر من عقدة تشغيل الأوامر، فاختر هدفًا لكل نداء أو اربط التنفيذ بعقدة واحدة.
 
-An offline target is **rejected, not redirected**. If your Mac is asleep, the command fails instead of quietly running on the server. That’s what you want.
+الهدف غير المتصل **يُرفض ولا يُعاد توجيهه**. فإن كان جهاز Mac لديك نائمًا، يفشل الأمر بدلًا من أن يعمل بهدوء على الخادم. وهذا ما تريده.
 
-> **Want a coding agent on your Mac?**
+> **هل تريد وكيل برمجة على جهاز Mac لديك؟**
 >
-> A paired node doesn’t make ACP run on it. ACP harnesses run on the Gateway host. Native Codex can use a node, and [ACP and Mac Nodes](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin#acp-and-mac-nodes) covers what works and what doesn’t.
+> العقدة المقترنة لا تجعل ACP يعمل عليها. فأُطر ACP تعمل على مضيف البوابة. أما Codex الأصلي فيستطيع استخدام عقدة، ويغطي [ACP وعقد Mac](https://stevekinney.com/courses/openclaw/acpx-runtime-plugin#acp-and-mac-nodes) ما ينجح وما لا ينجح.
 
-## Step 7: Run an Acceptance Test
+## الخطوة 7: شغّل اختبار قبول
 
-A connectivity check isn’t enough. Prove the failure mode works too:
+فحص الاتصال لا يكفي. أثبت أن نمط الفشل يعمل أيضًا:
 
-1. Ask the agent for something that needs the Mac, like listing a folder on your laptop. It should succeed.
-2. Disconnect the Mac on purpose: quit the app, stop the node service, or turn off Tailscale.
-3. Ask for a task that only needs the Gateway. It should still work.
-4. Ask for the Mac task again. The agent should tell you the node is unavailable instead of falling back to another machine.
+1. اطلب من الوكيل شيئًا يحتاج إلى جهاز Mac، مثل سرد مجلد على حاسوبك المحمول. ينبغي أن ينجح.
+2. افصل جهاز Mac عن قصد: أغلق التطبيق، أو أوقف خدمة العقدة، أو أطفئ Tailscale.
+3. اطلب مهمة تحتاج إلى البوابة وحدها. ينبغي أن تعمل رغم ذلك.
+4. اطلب مهمة جهاز Mac مرة أخرى. ينبغي أن يخبرك الوكيل بأن العقدة غير متاحة بدلًا من الرجوع إلى جهاز آخر.
 
-A saved pairing record doesn’t mean the node is connected right now, so design your workflows to report a missing node rather than assume one.
+سجل اقتران محفوظ لا يعني أن العقدة متصلة الآن، لذا صمّم سير عملك ليبلّغ عن عقدة مفقودة بدلًا من افتراض وجودها.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Symptom | First thing to check |
+| العرَض | أول ما تتحقق منه |
 | --- | --- |
-| The Mac can’t connect | Gateway health, the endpoint, Tailscale, and authentication |
-| The Control UI works but Mac features don’t | Whether the node is connected and which commands you approved |
-| A command runs on the server | The `exec` host and node selection |
-| A command is denied | Gateway tool policy, local approvals, and session overrides |
-| Screen capture or computer control fails | macOS permissions |
+| تعذّر على جهاز Mac الاتصال | سلامة البوابة، ونقطة النهاية، وTailscale، والمصادقة |
+| تعمل واجهة التحكم لكن ميزات Mac لا تعمل | ما إذا كانت العقدة متصلة، وأي الأوامر وافقت عليها |
+| يُنفَّذ أمر على الخادم | مضيف `exec` واختيار العقدة |
+| يُرفض أمر ما | سياسة أدوات البوابة، والموافقات المحلية، وتجاوزات الجلسة |
+| يفشل التقاط الشاشة أو التحكم بالحاسوب | أذونات macOS |
 
-These commands cover most investigations:
+تغطي هذه الأوامر معظم التحقيقات:
 
 ```bash
 openclaw gateway status
@@ -234,16 +234,16 @@ openclaw nodes pending
 openclaw logs --follow
 ```
 
-## Removing a Node
+## إزالة عقدة
 
-To revoke a node, run this on the Gateway:
+لإبطال عقدة، شغّل هذا على البوابة:
 
 ```bash
 openclaw nodes remove --node "<node-id>"
 ```
 
-That revokes the device’s `node` role and disconnects its node-role sessions. If the same device holds other roles, those need to be revoked separately.
+هذا يبطل دور `node` للجهاز ويقطع جلسات دور العقدة الخاصة به. وإن كان الجهاز نفسه يحمل أدوارًا أخرى، فتلك تحتاج إلى إبطال منفصل.
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغير**
 >
-> The flags above match OpenClaw `2026.9.8`. If a command doesn’t behave the way it’s described here, run it with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> الأعلام أعلاه تطابق OpenClaw `2026.9.8`. وإن لم يتصرف أمر بالطريقة الموصوفة هنا، فشغّله مع `--help` وتحقق من [توثيق OpenClaw](https://docs.openclaw.ai/).

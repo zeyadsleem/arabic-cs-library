@@ -1,17 +1,17 @@
 ---
-title: "Unit, Integration, and End-To-End Tests Explained"
-lang: en
+title: "اختبارات الوحدات والتكامل ومن طرف إلى طرف"
+lang: ar
 source: "https://stevekinney.com/courses/testing/types-of-tests"
 ---
 
-These terms tend to be overloaded and have a lot of wiggle room, but let’s at least draw some lines in the sand.
+هذه المصطلحات عرضة للتحميل الزائد وفيها مساحة واسعة للتأويل، لكن لنرسم على الأقل بعض الخطوط الواضحة.
 
-- **Unit tests**: An isolated test that tests one thing. Typically, this is a set of tests that might pass particular arguments to a function and then make sure that the value that is return is what we were expecting.
-- **Integration tests**: This is where it goes a little squishy. These are tests that test one or more units working together. Sure, any test that exercises two or more units is technically an integration test. But, for our purposes, we’re going to say that browser tests (e.g. [Cypress](https://www.cypress.io/), [Playwright](https://playwright.dev/), [Selenium](https://www.selenium.dev/), [WebdriverIO](https://webdriver.io/)) are integration tests.
-- **End-to-End tests**: These test the *whole system*. In a perfect world, these are testing everything from the authentication flow to the APIs to the UI. Obviously, these are super valuable, but getting this infrastructure in place can be difficult to the point of seemingly impossible without a large investment of effort.
+- **اختبارات الوحدات (unit tests)**: اختبار معزول يختبر شيئًا واحدًا. عادةً تكون مجموعة اختبارات تمرّر وسائط معيّنة إلى دالة ثم تتأكد من أن القيمة المُعادة هي ما كنا نتوقعه.
+- **اختبارات التكامل (integration tests)**: هنا تبدأ الأمور بالتميّع قليلًا. هذه اختبارات تختبر وحدة واحدة أو أكثر تعمل معًا. صحيح أن أي اختبار يمارس وحدتين أو أكثر هو تقنيًا اختبار تكامل. لكن لأغراضنا، سنقول إن اختبارات المتصفح (مثل [Cypress](https://www.cypress.io/) و[Playwright](https://playwright.dev/) و[Selenium](https://www.selenium.dev/) و[WebdriverIO](https://webdriver.io/)) هي اختبارات تكامل.
+- **اختبارات من طرف إلى طرف (End-to-End tests)**: تختبر *النظام كله*. في عالم مثالي، تختبر كل شيء من تدفق المصادقة إلى واجهات برمجة التطبيقات إلى واجهة المستخدم. من الواضح أن هذه بالغة القيمة، لكن توفير هذه البنية التحتية قد يكون صعبًا إلى درجة تبدو معها مستحيلة دون استثمار كبير من الجهد.
 
-The moral of the story here is that all of your tests live on a spectrum: unit tests are easy to write and running hundreds or even thousands is pretty quick. A passing integration or end-to-end test provides a lot more confidence, but they’re also a lot harder to write and take longer to run.
+المغزى هنا أن كل اختباراتك تعيش على طيف: اختبارات الوحدات سهلة الكتابة وتشغيل المئات أو حتى الآلاف منها سريع جدًا. اختبار تكامل أو اختبار من طرف إلى طرف ناجح يوفر ثقة أكبر بكثير، لكنه أيضًا أصعب كتابةً ويستغرق وقتًا أطول في التشغيل.
 
-The trick here is finding the right balance. It’s all about confidence. We’re not looking to test for testing’s sake. What we *want* is to be able to change or refactor our code with confidence that we’re not accidentally breaking something important. Whatever kinds of tests get you there the fastest are the ones that you should write.
+الحيلة هنا هي إيجاد التوازن الصحيح. الأمر كله يتعلق بالثقة. نحن لا نسعى إلى الاختبار من أجل الاختبار. ما *نريده* هو أن نستطيع تغيير شيفرتنا أو إعادة هيكلتها بثقة أننا لا نكسر شيئًا مهمًا عن غير قصد. أي أنواع من الاختبارات توصلك إلى ذلك بأسرع وقت هي التي ينبغي أن تكتبها.
 
-Sure, integration tests are slower and somewhat harder to write, but sometimes a single integration test can provide a level of confidence that rivals 60 unit tests.
+صحيح أن اختبارات التكامل أبطأ وأصعب بعض الشيء في الكتابة، لكن أحيانًا يمكن لاختبار تكامل واحد أن يوفر مستوى ثقة ينافس 60 اختبار وحدة.

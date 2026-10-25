@@ -1,12 +1,12 @@
 ---
-title: "Best Practices"
-lang: en
+title: "أفضل الممارسات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-best-practices"
 ---
 
-As of Tailwind 4 and later, Tailwind fully embraces modern CSS—cascade layers, OKLCH colors, container queries, and native CSS variables. The framework stays out of your way if you keep a utility-first mindset and lean on configuration rather than custom CSS.
+اعتبارًا من Tailwind 4 وما بعده، تتبنّى Tailwind بالكامل CSS الحديث — طبقات التسلسل، وألوان OKLCH، واستعلامات الحاويات، ومتغيّرات CSS الأصلية. يبقى الإطار بعيدًا عن طريقك إن حافظت على عقلية الأولوية للأدوات واعتمدت على التهيئة بدلًا من CSS المخصص.
 
-## Lean on the Layer Stack
+## اعتمد على مكدّس الطبقات
 
 ```
 flowchart TD
@@ -20,49 +20,49 @@ flowchart TD
   style D fill:#fff3e0
 ```
 
-`@import "tailwindcss";` injects the four layers in that order. Write custom code where it belongs:
+يحقن `@import "tailwindcss";` الطبقات الأربع بهذا الترتيب. اكتب الشيفرة المخصصة حيث تنتمي:
 
-- `@layer theme` — Design token variables
-- `@layer base` — Element resets and typography
-- `@layer components` — Reusable overridable patterns
-- `@utility` — One-off helpers that behave like core utilities
+- `@layer theme` — متغيّرات رموز التصميم
+- `@layer base` — إعادة ضبط العناصر والخطوط
+- `@layer components` — أنماط قابلة لإعادة الاستخدام وقابلة للتجاوز
+- `@utility` — مساعدات لمرة واحدة تتصرف كالأدوات الأساسية
 
-> **It’s not that important.**
+> **الأمر ليس بهذه الأهمية.**
 >
-> Never use `!important` on utilities—reconsider the layer placement.
+> لا تستخدم `!important` على الأدوات أبدًا — أعد النظر في موضع الطبقة.
 
-## Configure in CSS, Not JavaScript
+## هيّئ في CSS، لا في JavaScript
 
-Declare design tokens in `@theme` blocks:
+صرّح برموز التصميم في كتل `@theme`:
 
-- Define tokens ( `--color-primary`, `--spacing-4`, `--font-brand` ) inside `@theme` using native CSS custom properties.
-- Reuse across all layers for single-source-of-truth styling
-- Keep documentation near consuming code; no JavaScript configuration needed.
+- عرّف الرموز (`--color-primary`، `--spacing-4`، `--font-brand`) داخل `@theme` باستخدام خصائص CSS المخصصة الأصلية.
+- أعد استخدامها عبر جميع الطبقات لتنسيق من مصدر واحد للحقيقة
+- أبقِ التوثيق قريبًا من الشيفرة المستهلِكة؛ لا حاجة إلى تهيئة JavaScript.
 
-## Responsive, State, and Container Variants
+## المتغيّرات المتجاوبة والحالية والحاويات
 
-- Mobile-first: default rule, then `md:`, `lg:` prefixes
-- Combine state and media: `md:hover:bg-primary-600`
+- الجوال أولًا: القاعدة الافتراضية، ثم بادئات `md:` و`lg:`
+- اجمع الحالة والوسائط: `md:hover:bg-primary-600`
 
-## Accessibility Defaults
+## افتراضات إمكانية الوصول
 
-- Use `focus-visible:outline-none` instead of `outline-none` for keyboard accessibility
-- Built-in helpers: `sr-only`, `not-sr-only`, `motion-safe:*`, `selection:*`
-- Prefer semantic HTML over ARIA gymnastics; Tailwind styles elements, it doesn’t fix semantics.
+- استخدم `focus-visible:outline-none` بدلًا من `outline-none` لإمكانية الوصول بلوحة المفاتيح
+- مساعدات مدمجة: `sr-only`، `not-sr-only`، `motion-safe:*`، `selection:*`
+- فضّل HTML الدلالي على بهلوانيات ARIA؛ فـ Tailwind ينسّق العناصر، ولا يصلح الدلالات.
 
-## Performance Hygiene
+## نظافة الأداء
 
-- List all template paths in `content` for tree-shaking
-- Use `safelist` for dynamic classes (user-generated colors)
-- Enable `future: { hoverOnlyWhenSupported: true }` for modern CSS
+- اسرد جميع مسارات القوالب في `content` لأجل tree-shaking
+- استخدم `safelist` للأصناف الديناميكية (ألوان يولّدها المستخدم)
+- فعّل `future: { hoverOnlyWhenSupported: true }` لـ CSS الحديث
 
-> **Legacy browsers**
+> **المتصفحات القديمة**
 >
-> Tailwind 4 depends on cascade layers. If you must support anything older than Safari 15.4, Chrome 99, or Firefox 97, stay on Tailwind v3.x.
+> تعتمد Tailwind 4 على طبقات التسلسل. إن كان عليك دعم أي شيء أقدم من Safari 15.4 أو Chrome 99 أو Firefox 97، فابقَ على Tailwind v3.x.
 
-## Keep an Eye on the Future
+## راقب المستقبل
 
-Experiment with new CSS behind feature queries:
+جرّب CSS الجديد خلف استعلامات الميزات:
 
 ```css
 @supports (background: color-mix(in oklab, red 30%, white)) {
@@ -72,5 +72,5 @@ Experiment with new CSS behind feature queries:
 }
 ```
 
-- Remove proprietary prefixes (grid, flexbox): modern build targets don’t need them.
-- Move stable features (OKLCH) to `@theme` block.
+- أزل البادئات الخاصة (grid، flexbox): أهداف البناء الحديثة لا تحتاج إليها.
+- انقل الميزات المستقرة (OKLCH) إلى كتلة `@theme`.

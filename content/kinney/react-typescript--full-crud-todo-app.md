@@ -1,16 +1,16 @@
 ---
-title: "Full CRUD Todo App - Putting It All Together"
-lang: en
+title: "تطبيق مهام كامل بعمليات CRUD — تجميع كل شيء"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/full-crud-todo-app"
 ---
 
-It’s time to bring everything together. We’ve learned how to create, read, update, and delete todos with TypeScript. Now let’s build a complete, production-ready todo application that combines all these operations with proper state management, error handling, and a great user experience.
+حان الوقت لتجميع كل ما تعلمناه معاً. لقد تعلمنا كيفية إنشاء المهام وقراءتها وتحديثها وحذفها باستخدام TypeScript. والآن دعونا نبني تطبيق مهام كاملاً جاهزاً للإنتاج يجمع بين كل هذه العمليات مع إدارة حالة سليمة ومعالجة للأخطاء وتجربة مستخدم رائعة.
 
-This is the culmination of everything we’ve learned—a real-world application with all the features users expect.
+هذه ذروة كل ما تعلمناه — تطبيق واقعي يضم كل الميزات التي يتوقعها المستخدمون.
 
-## Project Setup and Types
+## إعداد المشروع والأنواع
 
-First, let’s define our comprehensive type system:
+أولاً، دعونا نعرّف نظام الأنواع الشامل الخاص بنا:
 
 ```typescript
 // Core todo type matching JSONPlaceholder API
@@ -61,9 +61,9 @@ interface AppState {
 }
 ```
 
-## API Service Layer
+## طبقة خدمة الـ API
 
-Create a service layer for all API operations:
+أنشئ طبقة خدمة لجميع عمليات الـ API:
 
 ```typescript
 class TodoAPI {
@@ -106,9 +106,9 @@ class TodoAPI {
 const todoAPI = new TodoAPI();
 ```
 
-## Main Todo App Component
+## المكوّن الرئيسي لتطبيق المهام
 
-Now the main application with all CRUD operations:
+والآن التطبيق الرئيسي مع جميع عمليات CRUD:
 
 ```typescript
 function TodoApp() {
@@ -411,9 +411,9 @@ function TodoApp() {
 }
 ```
 
-## Key Components
+## المكوّنات الأساسية
 
-### Create Todo Form
+### نموذج إنشاء المهمة
 
 ```typescript
 interface CreateTodoFormProps {
@@ -461,7 +461,7 @@ function CreateTodoForm({ onSubmit }: CreateTodoFormProps) {
 }
 ```
 
-### Todo List Item
+### عنصر قائمة المهام
 
 ```typescript
 interface TodoListItemProps {
@@ -551,7 +551,7 @@ function TodoListItem({
 }
 ```
 
-### Filter Bar
+### شريط التصفية
 
 ```typescript
 interface FilterBarProps {
@@ -621,9 +621,9 @@ function FilterBar({ filters, onFilterChange, todoCount }: FilterBarProps) {
 }
 ```
 
-## Custom Hooks
+## الخُطّافات المخصّصة
 
-### useTodoState Hook
+### خُطّاف useTodoState
 
 ```typescript
 function useTodoState() {
@@ -654,7 +654,7 @@ function useTodoState() {
 }
 ```
 
-### useDebounce Hook
+### خُطّاف useDebounce
 
 ```typescript
 function useDebounce<T>(value: T, delay: number): T {
@@ -674,7 +674,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 ```
 
-## Styling (CSS Modules)
+## التنسيق (CSS Modules)
 
 ```css
 /* TodoApp.module.css */
@@ -745,7 +745,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 ```
 
-## Testing
+## الاختبارات
 
 ```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
@@ -795,7 +795,7 @@ describe('TodoApp', () => {
 });
 ```
 
-## Performance Optimizations
+## تحسينات الأداء
 
 ```typescript
 // Memoize expensive computations
@@ -830,51 +830,51 @@ function VirtualTodoList({ todos }: { todos: LocalTodo[] }) {
 }
 ```
 
-## Deployment Considerations
+## اعتبارات النشر
 
-1. **Environment Variables**: Use `.env` for API URLs
-2. **Error Tracking**: Integrate Sentry for production errors
-3. **Analytics**: Track user interactions
-4. **PWA**: Add service worker for offline support
-5. **SEO**: Add meta tags and structured data
+1. **متغيرات البيئة**: استخدم ملف `.env` لعناوين URL الخاصة بالـ API
+2. **تتبّع الأخطاء**: ادمج Sentry لالتقاط أخطاء بيئة الإنتاج
+3. **التحليلات**: تتبّع تفاعلات المستخدم
+4. **PWA**: أضف service worker للعمل دون اتصال
+5. **SEO**: أضف وسوم meta وبيانات منظّمة
 
-## Summary
+## الخلاصة
 
-We’ve built a complete, production-ready todo application with:
+لقد بنينا تطبيق مهام كاملاً جاهزاً للإنتاج يتضمن:
 
-- ✅ Full CRUD operations (Create, Read, Update, Delete)
-- ✅ Optimistic updates for instant feedback
-- ✅ Undo functionality for deletions
-- ✅ Batch operations for efficiency
-- ✅ Search, filter, and sort capabilities
-- ✅ Error handling and recovery
-- ✅ Loading states and user feedback
-- ✅ TypeScript throughout for type safety
-- ✅ Clean architecture with service layer
-- ✅ Reusable components and hooks
-- ✅ Performance optimizations
-- ✅ Comprehensive testing
+- ✅ عمليات CRUD كاملة (الإنشاء والقراءة والتحديث والحذف)
+- ✅ تحديثات متفائلة لاستجابة فورية
+- ✅ إمكانية التراجع عن عمليات الحذف
+- ✅ عمليات دفعية لتحسين الكفاءة
+- ✅ إمكانات البحث والتصفية والترتيب
+- ✅ معالجة الأخطاء والاسترداد منها
+- ✅ حالات تحميل وتغذية راجعة للمستخدم
+- ✅ TypeScript في كل مكان لضمان أمان الأنواع
+- ✅ بنية نظيفة مع طبقة خدمة
+- ✅ مكوّنات وخُطّافات قابلة لإعادة الاستخدام
+- ✅ تحسينات في الأداء
+- ✅ اختبارات شاملة
 
-This application demonstrates real-world React development with TypeScript, showing how to handle complex state management, async operations, and user interactions in a type-safe manner.
+يستعرض هذا التطبيق تطوير React الواقعي مع TypeScript، ويوضح كيفية التعامل مع إدارة الحالة المعقّدة والعمليات غير المتزامنة وتفاعلات المستخدم بطريقة آمنة من ناحية الأنواع.
 
-## What You’ve Learned
+## ما تعلمته
 
-Through this series, you’ve mastered:
+من خلال هذه السلسلة، أتقنت:
 
-1. **useState with TypeScript** - Type inference and explicit typing
-2. **Data Fetching** - Async operations with proper error handling
-3. **Loading States** - Discriminated unions for async state
-4. **CRUD Operations** - Create, Read, Update, Delete patterns
-5. **Optimistic Updates** - Instant UI feedback with rollback
-6. **State Management** - Complex state with TypeScript
-7. **Real-world Patterns** - Production-ready code architecture
+1. **useState مع TypeScript** - استنتاج الأنواع والتحديد الصريح لها
+2. **جلب البيانات** - العمليات غير المتزامنة مع معالجة سليمة للأخطاء
+3. **حالات التحميل** - الأنواع الاتحادية المتمايزة (discriminated unions) لحالة غير متزامنة
+4. **عمليات CRUD** - أنماط الإنشاء والقراءة والتحديث والحذف
+5. **التحديثات المتفائلة** - استجابة فورية للواجهة مع إمكانية التراجع
+6. **إدارة الحالة** - حالة معقّدة مع TypeScript
+7. **أنماط العالم الواقعي** - بنية برمجية جاهزة للإنتاج
 
-## Next Steps
+## الخطوات التالية
 
-- Add authentication and user-specific todos
-- Implement real-time updates with WebSockets
-- Add drag-and-drop reordering
-- Create a mobile app with React Native
-- Deploy to production with CI/CD
+- إضافة مصادقة ومهام خاصة بمستخدم معيّن
+- تنفيذ تحديثات فورية (real-time) باستخدام WebSockets
+- إضافة إعادة ترتيب بالسحب والإفلات
+- إنشاء تطبيق جوال باستخدام React Native
+- النشر إلى الإنتاج مع CI/CD
 
-Congratulations! You now have the knowledge to build production-ready React applications with TypeScript. The patterns you’ve learned here apply to any data-driven application, not just todos.
+تهانينا! أصبحت تملك الآن المعرفة اللازمة لبناء تطبيقات React جاهزة للإنتاج باستخدام TypeScript. الأنماط التي تعلمتها هنا تنطبق على أي تطبيق يعتمد على البيانات، وليس على المهام فقط.

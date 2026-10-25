@@ -1,29 +1,29 @@
 ---
-title: "Typed Forms, Actions, and useActionState"
-lang: en
+title: "النماذج المحدَّدة الأنواع، والإجرائات (Actions)، وuseActionState"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/forms-actions-and-useactionstate"
 ---
 
-React 19 introduces a powerful new pattern for handling form submissions and mutations: Actions and the `useActionState` hook. If you’ve ever found yourself wrestling with form validation, loading states, error handling, and the inevitable TypeScript gymnastics that come with it all, you’re in for a treat. Actions let you encapsulate the entire flow of a form submission—from validation to server communication to state updates—in a type-safe, declarative way that actually makes sense.
+يقدّم React 19 نمطًا جديدًا قويًّا لمعالجة إرسال النماذج والتحولات (mutations): الإجرائات (Actions) وخُطّاف (hook) `useActionState`. وإذا سبق أن وجدتَ نفسك تتصارع مع التحقّق من النماذج، وحالات التحميل، ومعالجة الأخطاء، وتعقيدات TypeScript المصاحبة، ففي انتظارك معاملة لذيذة. إذ تُغلّف الإجرائات مسار إرسال النموذج بالكامل — من التحقّق، إلى التواصل مع الخادم، إلى تحديثات الحالة — بأسلوبٍ آمن الأنواع، إعلانيّ ومعقول.
 
-In this deep dive, we’ll explore how to leverage TypeScript to make your form handling bulletproof, scalable, and surprisingly pleasant to work with. We’ll start with the basics of Actions, then progress through increasingly sophisticated patterns that you can actually ship in production.
+في هذا التعمّق (deep dive)، سنستكشف كيف نستثمر TypeScript لنجعل التعامل مع النماذج متينًا، وقدرًا على التوسّع، وممتعًا في التعامل. وسنبدأ بمبادئ الإجرائات، ثم نتقدّم عبر أنماطٍ يزيد تعقيدًا يمكنك نشرها في الإنتاج فعلًا.
 
-## What Are Actions and Why Should You Care?
+## ما الإجرائات ولماذا تهمّك؟
 
-Think of Actions as TypeScript-aware functions that handle the entire lifecycle of a form mutation. Unlike traditional form handling where you’re juggling `useState`, `useEffect`, and a handful of booleans to track loading states, Actions encapsulate everything in a single, predictable flow.
+فكّر في الإجرائات (Actions) على أنها دوالٌ مدركة TypeScript تتولى دورة حياة تحوّل (mutation) نموذجٍ بالكامل. فعلى خلاف معالجة النماذج التقليدية حيث توازي `useState` و`useEffect` وعدّة قيم منطقية لتتبّع حالات التحميل، تُغلّف الإجرائات كلّ شيء في تدفّقٍ واحد متوقَّع.
 
-Here’s the mental model: an Action is a function that takes form data, does something with it (validate, send to server, update local state), and returns a result that tells your UI what happened. The `useActionState` hook manages the execution and gives you back everything you need—current state, pending status, and the action dispatcher itself.
+إليك النموذج الذهني: الإجرائية دالةٌ تأخذ بيانات النموذج، وتُدبِّرها (تتحقّق منها، ترسلها إلى الخادم، تُحدّث الحالة المحلية)، وتُعيد نتيجةً تخبر واجهتك بما وقع. ويتولّى الخُطّاف `useActionState` التنفيذ ويعيد إليك كلّ ما تحتاجه — الحالة الراهنة، وحالة الانتظار (pending)، ومُطلق (dispatcher) الإجرائية نفسه.
 
-This pattern shines because it:
+يلمع هذا النمط لأنّه:
 
-- **Centralizes mutation logic**: No more scattered state updates across multiple components
-- **Provides automatic loading states**: `pending` is handled for you
-- **Enables progressive enhancement**: Forms work without JavaScript
-- **Plays nicely with TypeScript**: Full type inference from inputs to outputs
+- **مركزية منطق التحول**: لا مزيد من تحديثات الحالة المُبعثرة عبر مكوّنات متعددة
+- **توفير حالات التحميل آليًّا**: `pending` يتولَّاه عنك
+- **تمكين من التحسين التدريجي (progressive enhancement)**: تعمل النماذج بلا JavaScript
+- **تتعامل بلطفٍ مع TypeScript**: استنتاج كامل للأنواع من المدخلات إلى المخرجات
 
-## Basic Action Setup
+## إعداد الإجرائية الأساسي
 
-Let’s start with a simple contact form to see how the pieces fit together. For comprehensive runtime validation patterns with Zod, see [Data Fetching and Runtime Validation](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation).
+لنبدأ من نموذج تواصل بسيط لنرى كيف تلتحم القطع معًا. وبالنسبة إلى أنماط التحقّق وقت التشغيل الشاملة بالاستعانة بـ Zod، انظر [جلب البيانات والتحقّق وقت التشغيل](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation).
 
 ```typescript
 // Define the shape of our form data
@@ -41,7 +41,7 @@ type ContactFormResult = {
 };
 ```
 
-Now for the Action itself. Actions receive the previous state (from `useActionState`) and the form data:
+الآن الإجرائية نفسها. تستقبل الإجرائات الحالةَ السابقة (من `useActionState`) وبياناتَ النموذج:
 
 ```typescript
 import { useActionState } from 'react';
@@ -92,7 +92,7 @@ async function submitContactForm(
 }
 ```
 
-Finally, let’s wire it up in our component:
+وأخيرًا، لنشبّط هذا في المكوّن:
 
 ```typescript
 function ContactForm() {
@@ -156,19 +156,19 @@ function ContactForm() {
 }
 ```
 
-What’s happening here? The `useActionState` hook returns three things:
+ما الذي يجري هنا؟ يعيد الخُطّاف (hook) `useActionState` ثلاثة أشياء:
 
-1. **`state`**: The current result from your Action (initially your default value)
-2. **`action`**: A function you can pass to a `<form>` element’s `action` prop
-3. **`isPending`**: A boolean that’s `true` while the Action is running
+1. **`state`**: النتيجة الراهنة من الإجرائية (قيمتك الافتراضية في البداية)
+2. **`action`**: دالة يمكن أن تمرّرها إلى خاصية `action` في عنصر `<form>`
+3. **`isPending`**: قيمة منطقية تساوي `true` ما دامت الإجرائية تعمل
 
-> **Tip**
+> **نصيحة**
 >
-> Notice how we’re using HTML form attributes like `required` and proper `aria-invalid` values. This ensures your form works even if JavaScript fails to load—progressive enhancement at its finest.
+> لاحظ كيف نستخدم خصائص عناصر النماذج في HTML مثل `required` وقيم `aria-invalid` الصحيحة. هذا يضمن أن نموذجك يعمل حتى لو تعذّّر تحميل JavaScript — بذروة التحسين التدريجي (progressive enhancement).
 
-## Advanced Type Safety with Generic Actions
+## أمان الأنواع المتقدّم مع الإجرائات العامة
 
-The basic pattern works, but we can make it more reusable and type-safe. For runtime validation with Zod, see [Data Fetching and Runtime Validation](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation). Here’s a TypeScript-first approach using a generic Action creator:
+يعمل النمط الأساسي، لكن يمكن أن نجعله قابلًا لإعادة الاستخدام أكثر وأمان أنواع. وللتحقّق وقت التشغيل مع Zod، انظر [جلب البيانات والتحقّق وقت التشغيل](https://stevekinney.com/courses/react-typescript/data-fetching-and-runtime-validation). وهذا نهج يفضّل TypeScript أولًا عبر مُنشئ إجرائاتٍ عام:
 
 ```typescript
 type ActionResult<TData = unknown> = {
@@ -217,7 +217,7 @@ function createAction<TInput, TOutput = unknown>(
 }
 ```
 
-Now we can create type-safe Actions with much less boilerplate:
+يمكننا الآن صنع إجرائاتٍ آمنة الأنواع بشيفرة قالبية (boilerplate) أقل بكثير:
 
 ```typescript
 // Define our types and validators
@@ -309,16 +309,16 @@ const signupAction = createAction(validateSignup, async (userData) => {
 });
 ```
 
-This approach gives us several benefits:
+يمنحنا هذا النهج عدّة مزايا:
 
-- **Type inference**: TypeScript knows exactly what shape your form data will have
-- **Reusable validation**: The schema handles both client and server-side validation
-- **Consistent error handling**: All Actions follow the same error/success pattern
-- **Less repetition**: No more copying validation logic between components
+- **استنتاج الأنواع**: يعرف TypeScript تمامًا أيّ شكلٍ ستكون عليه بيانات نموذجك
+- **تحقّق قابل لإعادة الاستخدام**: يتولّى `schema` التحقّق جهة العميل وجهة الخادم معًا
+- **اتساق معالجة الأخطاء**: تتفرّع كل الإجرائات من النمط نفسه للخطأ/النجاح
+- **تكرار أقل**: لا مزيد من نسخ منطق التحقّق بين المكوّنات
 
-## Handling Complex Form States
+## التعامل مع حالات النماذج المعقّدة
 
-Real-world forms often need more sophisticated state management. Let’s look at a multi-step wizard with dependent fields and optimistic updates:
+النماذج الواقعية تحتاج غالبًا إلى إدارة حالة أكثر طموحًا. لننظر إلى معالج خطوات (wizard) متعدّد الخطوات بحقولٍ متداخلة وتحديثاتٍ متفائلة (optimistic updates):
 
 ```typescript
 type WizardStep = 'personal' | 'billing' | 'confirmation';
@@ -461,7 +461,7 @@ function createWizardAction() {
 }
 ```
 
-The wizard component can then use this Action to manage the entire flow:
+ويمكن لمكوّن المعالج بعدئذٍ أن يستخدم هذه الإجرائية لإدارة التدفّق بأكمله:
 
 ```typescript
 function OrderWizard() {
@@ -559,13 +559,13 @@ function OrderWizard() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Notice how we’re using hidden inputs and button values to pass step information to our Action. This ensures the form still works without JavaScript—the server can process the same FormData.
+> لاحظ كيف نستخدم حقول إدخال خفية وقيم أزرار لتمرير معلومات الخطوة إلى إجرائتنا. هذا يضمن بقاءَ النموذج عاملًا بلا JavaScript—فالخادم يستطيع معالجة نفس FormData.
 
-## Optimistic Updates and Real-Time Feedback
+## التحديثات المتفائلة (optimistic updates) والتفاعل الفوري
 
-Sometimes you want to show immediate feedback while an Action is running. Here’s how to implement optimistic updates with proper rollback:
+أحيانًا تريد إظهار ردّ فعلٍ فوريّ أثناء عمل الإجرائية. هكذا يُنفَّذ التحديثات المتفائلة مع إعادة تراجعٍ سليمة:
 
 ```typescript
 type TodoItem = {
@@ -687,7 +687,7 @@ function createTodoActions() {
 }
 ```
 
-The component can then provide immediate feedback:
+ويمكن للمكوّن بعدها أن يقدّم ردّ فعلٍ فوريًّا:
 
 ```typescript
 function TodoApp() {
@@ -746,9 +746,9 @@ function TodoApp() {
 }
 ```
 
-## Error Handling and Recovery Patterns
+## أنماط معالجة الأخطاء والاسترداد
 
-Production forms need robust error handling. Here’s a pattern for handling different types of errors with appropriate user feedback:
+تحتاج نماذج الإنتاج إلى معالجة أخطاء متينة. وهذا نمط لمعالجة أنواع مختلفة من الأخطاء مع تغذيةٍ راجعة مناسبة للمستخدم:
 
 ```typescript
 enum ErrorType {
@@ -888,7 +888,7 @@ function createRobustAction<TInput>(
 }
 ```
 
-And here’s how to use it in a component with proper error display and retry functionality:
+وهكذا تستخدمه في مكوّن مع عرضٍ سليم للأخطاء ووظيفة إعادة محاولة:
 
 ```typescript
 function RobustForm() {
@@ -978,17 +978,17 @@ function RobustForm() {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with automatic retries for mutations. You usually only want to retry safe operations like fetching data, not operations that might have side effects like creating records or processing payments.
+> انتبه من إعادة المحاولة آليًّا في التحولات (mutations). مطلبك عادةً إعادة المحاولة للعمليات الآمنة فقط مثل جلب البيانات، لا للعمليات التي قد تترك أثرًا جانبيًّا مثل إنشاء سجلات أو معالجة مدفوعات.
 
-## Performance Considerations and Best Practices
+## اعتبارات الأداء وأفضل الممارسات
 
-As your form handling gets more sophisticated, here are some patterns to keep your app performant:
+كلّما ازداد تطوّر معالجة النماذج لديك، إليك أنماطًا تُبقي تطبيقك عالي الأداء:
 
-### Debounced Validation
+### التحقّق المؤجَّل (debounced validation)
 
-For real-time validation without overwhelming the server:
+من أجل تحقّق لحظيٍّ لا يُثقل الخادم:
 
 ```typescript
 function useDebounced<T>(value: T, delay: number): T {
@@ -1088,9 +1088,9 @@ function createDebouncedValidation(
 }
 ```
 
-### Memoizing Action Results
+### حفظ نتائج الإجرائات في الذاكرة
 
-Prevent unnecessary re-renders when Action state hasn’t meaningfully changed:
+منع إعادة التصيير غير الضرورية حين لا تتغيّر حالة الإجرائية تغيّرًا ذا معنى:
 
 ```typescript
 function useStableActionState<TState>(
@@ -1118,9 +1118,9 @@ const [state, action, isPending] = useStableActionState(
 );
 ```
 
-### Code Splitting Actions
+### تقسيم شيفرة الإجرائات
 
-For large applications, consider lazy-loading Action implementations:
+للتطبيقات الكبيرة، فكّر في التحميل الكسول (lazy loading) لتنفيذات الإجرائات:
 
 ```typescript
 const LazyContactAction = lazy(() =>
@@ -1154,17 +1154,17 @@ function ContactForm() {
 }
 ```
 
-## Next Steps and Real-World Usage
+## الخطوات التالية والاستخدام في العالم الواقعي
 
-The patterns we’ve covered here scale from simple contact forms to complex multi-step wizards and everything in between. Here are some areas to explore further:
+الأنماط التي عُنيناها هنا تتوسّع من نماذج تواصل بسيطة إلى معالجات متعددة خطوات معقّدة، وما بينهما. وإليك جهات تستحق مزيدًا من الاستكشاف:
 
-1. **Server Actions**: If you’re using React Server Components, Actions can run directly on the server
-2. **Streaming Updates**: Combine Actions with Suspense for progressive loading
-3. **Form Libraries**: Libraries like React Hook Form now have Action adapters
-4. **Testing**: Actions are just functions, making them easy to unit test
+1. **إجرائات الخادم (Server Actions)**: إن كنت تستخدم مكوّنات React الخادمية (React Server Components)، يمكن للأجرائات أن تعمل على الخادم مباشرةً
+2. **بثّ التحديثات (streaming updates)**: اجمع الإجرائات مع Suspense للتحميل المتدرّج
+3. **مكتبات النماذج**: مكتبات مثل React Hook Form لديها الآن مهايئات (adapters) للإجرائات
+4. **الاختبار**: الإجرائات مجرّد دوال، ما يجعل اختبارها بالوحدات سهلًا
 
-The key insight is that Actions + `useActionState` give you a declarative way to model the entire lifecycle of form mutations. Combined with TypeScript’s type inference, you get both safety and developer experience that actually makes form handling enjoyable.
+النقطة المفتاحية أن الإجرائات مع `useActionState` تمنحك طريقةً إعلانية لنمذجة دورة حياة تحولات النماذج كاملةً. وبدمجها مع استنتاج الأنواع في TypeScript، تكسب أمانًا وتجربة مطوّر (developer experience) تجعلان التعامل مع النماذج ممتعًا فعلًا.
 
-Rather than fighting with scattered state and imperative event handlers, you’re describing what should happen when forms are submitted—and React handles the rest. Your forms become more predictable, your error handling becomes more consistent, and your users get better experiences with proper loading states and progressive enhancement.
+بدلًا من مشاحنة حالةٍ مُبعثرةٍ ومعالجات أحداثٍ أمْرِيّة، تَصِف ما ينبغي أن يقع عند إرسال النماذج—وReact يتولّى الباقي. فتصبح نماذجك أكثر قابلية للتنبّؤ، وتصير معالجة الأخطاء لديك أكثر اتساقًا، ويحصل مستخدموك على تجارب أفضل مع حالات تحميل سليمة وتحسينٍ تدريجيّ (progressive enhancement).
 
-The future of form handling in React is typed, declarative, and surprisingly pleasant to work with. Give these patterns a try in your next project—you might find yourself actually looking forward to implementing that next form.
+مستقبل معالجة النماذج في React مُحدَّدٌ بالأنواع، إعلانيّ، ومدهشٌ في مدى متعة العمل به. جرّب هذه الأنماط في مشروعك القادم—وقد تجد نفسك تتطلّع فعلًا إلى تنفيذ ذلك النموذج التالي.

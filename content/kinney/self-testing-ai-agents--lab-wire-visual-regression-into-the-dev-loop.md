@@ -1,27 +1,27 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-visual-regression-into-the-dev-loop"
 ---
 
-Short lab. Two halves. The first half wires the screenshot gate into Shelf. The second half deliberately breaks a component and watches the loop fire.
+مختبر قصير. شطران. يربط الشطر الأول بوابة لقطات الشاشة بـ Shelf. ويكسر الشطر الثاني مكوّنًا عمدًا ويراقب الحلقة تنطلق.
 
-> **Prerequisite**
+> **المتطلّبات المسبقة**
 >
-> Complete [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop) first. This lab assumes the masking, fixed-state, and screenshot-config guidance from that lesson.
+> أكمل [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop) أولًا. يفترض هذا المختبر إرشادات الحجب والحالة الثابتة وإعداد اللقطات من ذلك الدرس.
 
-## Setup
+## الإعداد
 
-Make sure you’re on the hardened Shelf from [Lab: Harden the Flaky Rate-Book Test](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test). You’ll need storage-state authentication and seeding in place. Visual regression without those is a nightmare.
+تأكّد أنك على نسخة Shelf المحصّنة من [مختبر: تحصين اختبار Rate-Book المتقلّب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test). ستحتاج إلى مصادقة حالة التخزين والزرع مهيّأين في مكانهما. والانحدار البصري بلا هذين كابوس.
 
-The Shelf starter doesn’t ship visual-regression specs or project wiring. This lab is where you add them. If your repo still has only the minimal public smoke config, start with the public screenshot first and then route the authenticated screenshot through the `authenticated` project you built in the rate-book lab.
+لا تشحن نسخة Shelf الأولية مواصفات انحدار بصري ولا ربط المشاريع. هذا المختبر هو حيث تضيفها. إن كان مستودعك ما يزال يحمل إعداد الدخان العام الأدنى فقط، فابدأ باللقطة العامة أولًا، ثم وجّه اللقطة الموثّقة عبر مشروع `authenticated` الذي بنيته في مختبر Rate-Book.
 
-## Part one: wire the screenshot gate
+## الجزء الأول: ربط بوابة اللقطات
 
-Split the visual checks across two files so each one runs in the Playwright project whose auth and seeding matches the page under test:
+وزّع الفحوص البصرية على ملفين كي يعمل كل منها في مشروع Playwright الذي تتطابق مصادقته وزرعه مع الصفحة تحت الاختبار:
 
-- `tests/visual.spec.ts` — public, no storage state, screenshots `/design-system` (the curated component gallery).
-- `tests/visual-authenticated.spec.ts` — runs under the `authenticated` project, reseeds shelf content before each test, and screenshots `/shelf`.
+- `tests/visual.spec.ts` — عام، بلا حالة تخزين، ويلتقط `/design-system` (معرض المكوّنات المنسّق).
+- `tests/visual-authenticated.spec.ts` — يعمل تحت مشروع `authenticated`، ويعيد زرع محتوى الرفّ قبل كل اختبار، ويلتقط `/shelf`.
 
 ```typescript
 // tests/visual.spec.ts
@@ -55,7 +55,7 @@ test('shelf page matches the seeded visual baseline', async ({ page }) => {
 });
 ```
 
-Route the new file through the `authenticated` project in `playwright.config.ts`:
+وجّه الملف الجديد عبر مشروع `authenticated` في `playwright.config.ts`:
 
 ```typescript
 {
@@ -69,7 +69,7 @@ Route the new file through the `authenticated` project in `playwright.config.ts`
 },
 ```
 
-And make sure `expect.toHaveScreenshot` is configured globally:
+وتأكّد أن `expect.toHaveScreenshot` مهيّأ عالميًا:
 
 ```typescript
 expect: {
@@ -82,32 +82,32 @@ expect: {
 },
 ```
 
-Generate the baselines:
+ولّد الأساسات:
 
 ```bash
 npm run test -- --update-snapshots
 ```
 
-Commit the baseline PNGs at `tests/visual.spec.ts-snapshots/` and `tests/visual-authenticated.spec.ts-snapshots/`. Yes, you commit PNGs to git. That’s the deal.
+أودِع ملفات PNG للأساسات في `tests/visual.spec.ts-snapshots/` و`tests/visual-authenticated.spec.ts-snapshots/`. نعم، تودع ملفات PNG في git. هذا هو الاتفاق.
 
-## Part one acceptance criteria
+## معايير قبول الجزء الأول
 
-- Both `visual.spec.ts` (public) and `visual-authenticated.spec.ts` (authenticated) exist and each contains at least one `toHaveScreenshot` assertion.
-- `playwright.config.ts` sets `animations: 'disabled'`, `caret: 'hide'`, `scale: 'css'`, and `maxDiffPixelRatio: 0.01` under `expect.toHaveScreenshot`.
-- `npm run test` passes on a clean run (no diffs) — including both visual tests.
-- Running the suite five times in a row produces zero false positives on either screenshot test: `for i in {1..5}; do npm run test || break; done` exits zero every iteration.
-- Both baseline snapshot files exist (`ls tests/visual.spec.ts-snapshots/ tests/visual-authenticated.spec.ts-snapshots/` prints the committed PNGs).
-- `.gitignore` does not ignore snapshot PNGs.
+- أن يوجد كل من `visual.spec.ts` (العام) و`visual-authenticated.spec.ts` (الموثّق)، ويحتوي كل منهما على تأكيد `toHaveScreenshot` واحد على الأقل.
+- أن يضبط `playwright.config.ts` القيم `animations: 'disabled'` و`caret: 'hide'` و`scale: 'css'` و`maxDiffPixelRatio: 0.01` تحت `expect.toHaveScreenshot`.
+- أن ينجح `npm run test` في تشغيل نظيف (بلا فروق) — بما في ذلك كلا الاختبارين البصريين.
+- أن ينتج تشغيل المجموعة خمس مرات متتالية صفر إيجابيات كاذبة في أي من اختبارَي اللقطات: `for i in {1..5}; do npm run test || break; done` يخرج بصفر في كل تكرار.
+- أن يوجد كلا ملفَي اللقطات الأساسية (`ls tests/visual.spec.ts-snapshots/ tests/visual-authenticated.spec.ts-snapshots/` يطبع ملفات PNG المودعة).
+- أن لا يتجاهل `.gitignore` ملفات PNG للقطات.
 
-## The snapshot target in Shelf
+## هدف اللقطة في Shelf
 
-Once the suite is wired correctly, the shelf-page baseline should look something like this:
+بمجرد أن تُربط المجموعة بشكل صحيح، ينبغي أن يبدو أساس صفحة Shelf شيئًا كهذا:
 
-The Shelf visual baseline rendered from the committed Playwright snapshot
+الأساس البصري لـ Shelf مرسومًا من لقطة Playwright المودعة
 
-## Part two: break something, and watch it fire
+## الجزء الثاني: اكسر شيئًا، وراقبها تنطلق
 
-Now we’re going to simulate the loop. Open `src/lib/components/button.svelte`. Find the `classes` derived expression and change the base padding:
+الآن سنحاكي الحلقة. افتح `src/lib/components/button.svelte`. اعثر على التعبير المشتق `classes` وغيّر الحشوة الأساسية:
 
 ```svelte
 <!-- before -->
@@ -116,53 +116,53 @@ Now we’re going to simulate the loop. Open `src/lib/components/button.svelte`.
 'inline-flex items-center justify-center rounded-(--radius-control) px-6 py-3 text-sm font-semibold ...',
 ```
 
-Re-run the visual specs:
+أعِد تشغيل المواصفات البصرية:
 
 ```bash
 npm run test -- --grep visual
 ```
 
-It fails. Open the HTML report:
+سيفشل. افتح تقرير HTML:
 
 ```bash
 npx playwright show-report playwright-report/html
 ```
 
-Find the failing test, look at the three-panel view (baseline, actual, diff). The diff image should clearly show the buttons in the screenshots have changed size.
+اعثر على الاختبار الفاشل، وانظر إلى العرض ثلاثي الألواح (الأساس، والفعلي، والفرق). ينبغي أن تُظهر صورة الفرق بوضوح أن حجم الأزرار في اللقطتين قد تغيّر.
 
-Now simulate the agent loop. You have two options depending on your setup:
+الآن حاكِ حلقة الوكيل. أمامك خياران بحسب إعدادك:
 
-**Option A—manual.** Copy the diff image path into your Claude Code conversation and ask: *“The visual regression test failed. Here’s the diff. What changed, and is the change intentional?”* Let the agent look at the image and describe what it sees.
+**الخيار أ—يدوي.** انسخ مسار صورة الفرق إلى محادثة Claude Code واسأل: *«فشل اختبار الانحدار البصري. هذا هو الفرق. ما الذي تغيّر، وهل التغيير مقصود؟»* ودع الوكيل ينظر إلى الصورة ويصف ما يراه.
 
-**Option B—hooked.** If you’re using Claude Code with a hook that auto-attaches test failures, just run the test and let the hook fire. (We’ll wire this kind of hook properly in [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook). For today, manual is fine.)
+**الخيار ب—بخطّاف.** إن كنت تستخدم Claude Code مع خطّاف يرفق إخفاقات الاختبارات تلقائيًا، فشغّل الاختبار فقط ودع الخطّاف ينطلق. (سنربط هذا النوع من الخطّافات بشكل صحيح في [خطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook). أما اليوم، فاليدوي كافٍ.)
 
-Either way, notice what the agent says. It should identify that the buttons got bigger, guess correctly whether the change cascaded to other layout (on Shelf, it probably pushed some cards wider), and propose either reverting the change or updating the baseline.
+في الحالتين، لاحظ ما يقوله الوكيل. ينبغي أن يحدّد أن الأزرار كبرت، ويخمّن بشكل صحيح إن كان التغيير قد تسلسل إلى تخطيط آخر (على Shelf، على الأرجح وسّع بعض البطاقات)، ويقترح إمّا التراجع عن التغيير أو تحديث الأساس.
 
-When the padding experiment lands correctly, the shelf-page diff should look like this kind of “everything got roomier” change:
+عندما تنجح تجربة الحشوة على النحو الصحيح، ينبغي أن يبدو فرق صفحة Shelf كتغيير من نوع «كل شيء صار أفسح»:
 
-The shelf-page visual diff after widening button padding
+الفرق البصري لصفحة Shelf بعد توسيع حشوة الزر
 
-## Part two acceptance criteria
+## معايير قبول الجزء الثاني
 
-- The button padding change produces a failing `toHaveScreenshot` assertion.
-- `playwright-report/` contains a diff image for the failing test.
-- You showed the diff to your agent and got a response that correctly identifies what visually changed.
-- You either: (a) reverted the button change and re-ran to green, or (b) ran `--update-snapshots` as an intentional baseline update and committed the new baselines as a separate commit.
-- Your git history shows the experiment as discrete commits so the sequence is legible later.
+- أن ينتج تغيير حشوة الزر تأكيد `toHaveScreenshot` فاشلًا.
+- أن يحتوي `playwright-report/` صورة فرق للاختبار الفاشل.
+- أن تكون قد عرضت الفرق على وكيلك وحصلت على رد يحدّد بدقة ما تغيّر بصريًا.
+- أن تكون إمّا (أ) تراجعت عن تغيير الزر وأعدت التشغيل حتى الأخضر، أو (ب) شغّلت `--update-snapshots` كتحديث أساس مقصود وأودعت الأساسات الجديدة في التزام منفصل.
+- أن يُظهر سجل git لديك التجربة كالتزامات منفصلة كي يبقى التسلسل مقروءًا لاحقًا.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a `design-system` route that exercises every component in every state, if Shelf doesn’t already have one. Add a single screenshot test for the whole route. Consider this your poor-person’s [Chromatic](https://www.chromatic.com/).
-- Set up a second Playwright project for a different viewport (e.g., `iPhone 13` from Playwright’s device presets) and regenerate baselines for it. Now your visual regression covers mobile too.
-- Try the same flow with [Chromatic](https://www.chromatic.com/) instead of built-in snapshots, just to see the difference in review UX. Don’t commit the Chromatic setup permanently unless the whole team is on board—the built-in is the long-term pattern for this workshop.
-- Intentionally introduce a subtle change (e.g., change a font weight from 500 to 600) and see if the `maxDiffPixelRatio: 0.01` tolerance catches it. Tune the tolerance if needed.
+- أضف مسار `design-system` يمرّن كل مكوّن في كل حالة، إن لم يكن لدى Shelf واحد بالفعل. وأضف اختبار لقطة واحدًا للمسار كله. اعتبر هذا [Chromatic](https://www.chromatic.com/) نسخة الفقراء.
+- أعدّ مشروع Playwright ثانيًا لحجم عرض مختلف (مثلًا `iPhone 13` من إعدادات أجهزة Playwright) وأعد توليد الأساسات له. الآن يغطّي انحدارك البصري الهاتف المحمول أيضًا.
+- جرّب التدفّق نفسه مع [Chromatic](https://www.chromatic.com/) بدلًا من اللقطات المدمجة، فقط لترى الفرق في تجربة المراجعة. لا تودع إعداد Chromatic بشكل دائم ما لم يكن الفريق كله موافقًا—فالمدمج هو النمط طويل الأمد لهذه الورشة.
+- أدخل تغييرًا دقيقًا عمدًا (مثلًا تغيير وزن خط من 500 إلى 600) وانظر إن كان هامش التفاوت `maxDiffPixelRatio: 0.01` يلتقطه. اضبط التفاوت إن لزم.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-A failed screenshot test is a conversation opener. The diff image is the message. Once the agent can read the diff, the loop closes itself.
+اختبار اللقطة الفاشل بادرة حوار. وصورة الفرق هي الرسالة. وبمجرد أن يستطيع الوكيل قراءة الفرق، تُغلق الحلقة نفسها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/wire-visual-regression-into-the-dev-loop-solution)
-- [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
-- [Runtime Probes in the Development Loop](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/wire-visual-regression-into-the-dev-loop-solution)
+- [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
+- [مسابر وقت التشغيل في حلقة التطوير](https://stevekinney.com/courses/self-testing-ai-agents/runtime-probes-in-the-development-loop)

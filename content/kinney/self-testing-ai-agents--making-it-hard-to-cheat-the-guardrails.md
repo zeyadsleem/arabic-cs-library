@@ -1,33 +1,33 @@
 ---
-title: "Making It Hard to Cheat the Guardrails"
-lang: en
+title: "جعل التلاعب بالقضبان صعبًا"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/making-it-hard-to-cheat-the-guardrails"
 ---
 
-If an agent can dodge the guardrail the first time it gets annoyed, that wasn’t a guardrail. That was a suggestion with nice typography.
+إن استطاع وكيل أن يتحايل على القضيب أول مرة يضيق بها، فذلك لم يكن قضيبًا. كان اقتراحًا بطباعة أنيقة.
 
-Local [Git](https://git-scm.com/) hooks are still worth having. I love a fast [`Lefthook`](https://github.com/evilmartians/lefthook) or [`Husky`](https://typicode.github.io/husky/) setup because it shortens the loop and keeps obvious mistakes on the laptop. But hooks are only one layer. Agents will absolutely discover `git commit --no-verify`, tool-specific skip environment variables, editable rules files, and “what if I just change the workflow?” if you leave those doors open.
+خُطّافات [Git](https://git-scm.com/) المحلية ما زالت تستحق الوجود. أحبّ تهيئة سريعة لـ [`Lefthook`](https://github.com/evilmartians/lefthook) أو [`Husky`](https://typicode.github.io/husky/) لأنها تقصّر الحلقة وتُبقي الأخطاء الواضحة على الحاسوب. لكن الخُطّافات طبقة واحدة فقط. سيكتشف الوكلاء بالتأكيد `git commit --no-verify`، ومتغيّرات البيئة الخاصة بتخطي الأدوات، وملفات القواعد القابلة للتحرير، و«ماذا لو غيّرت سير العمل فحسب؟» إن تركت تلك الأبواب مفتوحة.
 
-So, the real question is not “how do I tell the agent not to cheat?” The real question is: *how many layers have to agree before bad code reaches main?*
+إذن السؤال الحقيقي ليس «كيف أقول للوكيل ألا يتلاعب؟» السؤال الحقيقي هو: *كم طبقة يجب أن تتفق قبل أن تصل الشيفرة السيئة إلى main؟*
 
-## The common bypasses
+## التحايلات الشائعة
 
-Let’s name the obvious ones, because unnamed failure modes keep showing up in postmortems.
+لنسمِّ الواضحة منها، لأن أنماط الفشل غير المسماة تستمر في الظهور في تقارير ما بعد الحوادث.
 
 - `git commit --no-verify`
-- tool-specific skip switches like `HUSKY=0`, `LEFTHOOK=0`, or `LEFTHOOK_EXCLUDE=...`
-- editing `lefthook.yml`, `.husky/*`, `package.json` scripts, or rules files to weaken the checks
-- changing CI so the expensive or meaningful checks no longer run
-- pushing directly to a branch that is allowed to bypass review or required checks
-- force-pushing away inconvenient history after a bad local choice
+- مفاتيح التخطي الخاصة بكل أداة مثل `HUSKY=0` أو `LEFTHOOK=0` أو `LEFTHOOK_EXCLUDE=...`
+- تحرير `lefthook.yml` أو `.husky/*` أو سكربتات `package.json` أو ملفات القواعد لإضعاف الفحوص
+- تغيير CI بحيث لا تعمل الفحوص المكلفة أو ذات المعنى بعد الآن
+- الدفع مباشرة إلى فرع مسموح له بتجاوز المراجعة أو الفحوص المطلوبة
+- الدفع القسري لإبعاد تاريخ غير مريح بعد خيار محلي سيئ
 
-None of these are theoretical. They are exactly what a fast-moving agent will find if it is optimizing for “command succeeded” instead of “change is trustworthy.”
+لا شيء من هذا نظري. هذه بالضبط ما سيجده وكيل سريع الحركة إن كان يحسّن من أجل «نجح الأمر» بدلًا من «التغيير موثوق».
 
-## Start with a blunt rule in the instructions
+## ابدأ بقاعدة صريحة في التعليمات
 
-The first layer is still the simplest one: say the rule out loud in `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, or the equivalent policy file.
+الطبقة الأولى ما زالت الأبسط: قل القاعدة بصوت عالٍ في `AGENTS.md` أو `CLAUDE.md` أو `.cursor/rules` أو ملف السياسة المكافئ.
 
-You want explicit language, not vibes:
+تريد لغة صريحة، لا انطباعات:
 
 ```markdown
 ## Git and verification
@@ -40,16 +40,16 @@ You want explicit language, not vibes:
   require the same review standard as application code.
 ```
 
-Will the instruction be enough on its own? No. But it does two important things:
+هل تكفي التعليمات وحدها؟ لا. لكنها تفعل أمرين مهمين:
 
-- it makes the policy legible
-- it gives the next enforcement layer something precise to enforce
+- تجعل السياسة مقروءة
+- تعطي طبقة الإنفاذ التالية شيئًا محددًا تُنفّذه
 
-## Deny the bad command before it runs
+## امنع الأمر السيئ قبل تشغيله
 
-This is the cleanest technical control when your agent runtime supports it. If the tool can inspect shell commands *before* execution, deny the bypasses there.
+هذا أنظف تحكّم تقني حين تدعمه بيئة تشغيل وكيلك. إن كانت الأداة تستطيع فحص أوامر الصدفة *قبل* التنفيذ، فامنع التحايلات هناك.
 
-The pattern is broader than `--no-verify`. Treat skip flags and skip environment variables as the same class of escape hatch:
+النمط أوسع من `--no-verify`. تعامل مع مفاتيح التخطي ومتغيّرات بيئة التخطي كصنف واحد من منافذ الهروب:
 
 ```javascript
 import fs from 'node:fs';
@@ -77,76 +77,76 @@ process.stdout.write(
 process.exit(0);
 ```
 
-That script is the portable part. Wire it into whatever runtime you use:
+ذلك السكربت هو الجزء القابل للنقل. وصّله بأي بيئة تشغيل تستخدمها:
 
-- [Claude Code hooks](https://docs.claude.com/en/docs/claude-code/hooks) can deny a `Bash` command before it runs.
-- [Codex hooks](https://developers.openai.com/codex/hooks) can do the same for `Bash` tool use.
-- [Cursor CLI permissions](https://docs.cursor.com/cli/reference/permissions) are coarser, so you may need approval on all write-oriented `git` commands or a deny rule for `Shell(git)` if you want a truly hard boundary.
+- [خُطّافات Claude Code](https://docs.claude.com/en/docs/claude-code/hooks) تستطيع منع أمر `Bash` قبل تشغيله.
+- [خُطّافات Codex](https://developers.openai.com/codex/hooks) تستطيع فعل الشيء نفسه مع استخدام أداة `Bash`.
+- [أذونات Cursor CLI](https://docs.cursor.com/cli/reference/permissions) أخشن، لذا قد تحتاج إلى موافقة على كل أوامر `git` ذات الطابع الكتابي، أو قاعدة منع لـ `Shell(git)` إن أردت حدًّا صلبًا فعلًا.
 
-The previous [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) lesson walks through the tool-specific shape. The bigger idea here is that you should block the *class* of bypass, not just one flag.
+درس [خُطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) السابق يمشي في الشكل الخاص بكل أداة. الفكرة الأكبر هنا أنك ينبغي أن تحجب *صنف* التحايل، لا علمًا واحدًا فقط.
 
-## Mirror the local checks in CI
+## اعكس الفحوص المحلية في CI
 
-This is the layer that matters most.
+هذه هي الطبقة الأكثر أهمية.
 
-If the same lint, type, unit, end-to-end, accessibility, or dossier checks do not run in CI, then bypassing a local hook actually matters. If CI reruns the authoritative set, local bypass becomes an annoyance instead of a supply chain problem.
+إن لم تعمل فحوص التنسيق والنوع والوحدة ومن طرف إلى طرف وإمكانية الوصول والملف التعريفي نفسها في CI، فتجاوز خُطّاف محلي يصبح مهمًا فعلًا. أما إن أعاد CI تشغيل المجموعة المرجعية، فيصبح التجاوز المحلي إزعاجًا بدلًا من مشكلة في سلسلة التوريد.
 
-My default split looks like this:
+تقسيمي الافتراضي يبدو هكذا:
 
-- pre-commit: staged-file formatting, linting, secret scanning
-- pre-push: slower local checks that still fit in under a couple minutes
-- CI: the authoritative superset, running from a clean environment
+- قبل الإيداع: تنسيق الملفات المُجهَّزة، والفحص، ومسح الأسرار
+- قبل الدفع: فحوص محلية أبطأ لكنها تبقى في حدود دقيقتين
+- CI: المجموعة المرجعية الشاملة، تعمل من بيئة نظيفة
 
-That “clean environment” part matters. CI should not inherit your local caches, reused servers, or manually booted services. It should prove the branch from scratch.
+جزء «البيئة النظيفة» مهم. ينبغي ألا يرث CI ذاكراتك المؤقتة المحلية، ولا الخوادم المعاد استخدامها، ولا الخدمات المُقلعة يدويًا. ينبغي أن يثبت الفرع من الصفر.
 
-## Protect the protection layer
+## احمِ طبقة الحماية
 
-If an agent can change the rules that evaluate it, you have a governance problem.
+إن استطاع وكيل تغيير القواعد التي تقيّمه، فلديك مشكلة حوكمة.
 
-Put the protection files behind the same review pressure as production code:
+ضع ملفات الحماية تحت ضغط المراجعة نفسه الذي تخضع له شيفرة الإنتاج:
 
-- [`CODEOWNERS`](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) on `lefthook.yml`, `.husky/**`, `.github/workflows/**`, `.claude/**`, `.codex/**`, `.cursor/**`, and policy files
-- required reviews for those paths
-- alerts in review templates or pull request descriptions when infrastructure files changed
+- [`CODEOWNERS`](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) على `lefthook.yml` و`.husky/**` و`.github/workflows/**` و`.claude/**` و`.codex/**` و`.cursor/**` وملفات السياسة
+- مراجعات مطلوبة لتلك المسارات
+- تنبيهات في قوالب المراجعة أو أوصاف طلبات السحب حين تتغيّر ملفات البنية التحتية
 
-I also like making the CI check names stable and obvious. “typecheck”, “unit”, “end-to-end”, “secret-scan” is harder to game than one opaque job named “verify.”
+أحبّ أيضًا أن تكون أسماء فحوص CI مستقرة وواضحة. «typecheck» و«unit» و«end-to-end» و«secret-scan» أصعب في التلاعب من مهمة واحدة مبهمة تُسمّى «verify».
 
-## Make merge rules do the real enforcement
+## اجعل قواعد الدمج هي الإنفاذ الحقيقي
 
-On [GitHub](https://github.com/), the enforcement boundary you can count on is not the local hook. It is [branch protection](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) or, better, [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) plus required status checks.
+على [GitHub](https://github.com/)، حدّ الإنفاذ الذي يمكنك الاعتماد عليه ليس الخُطّاف المحلي. إنه [حماية الفروع](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) أو، أفضل من ذلك، [مجموعات القواعد](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) مع فحوص الحالة المطلوبة.
 
-The guardrail stack I trust looks like this:
+مكدّس القضبان الذي أثق به يبدو هكذا:
 
-- pull requests required for protected branches
-- required status checks for the same gates the hooks mirror
-- force-push restrictions on protected branches
-- dismissal rules or review requirements that stop the “change the workflow, then merge it yourself” path
+- طلبات السحب مطلوبة للفروع المحمية
+- فحوص الحالة المطلوبة للبوابات نفسها التي تعكسها الخُطّافات
+- قيود الدفع القسري على الفروع المحمية
+- قواعد إسقاط المراجعة أو متطلبات مراجعة توقف مسار «غيّر سير العمل ثم ادمجه بنفسك»
 
-If you run your own Git server, server-side pre-receive hooks are even stronger. But most teams live on hosted Git platforms, which means rulesets and required checks are the boundary that actually counts.
+إن كنت تشغّل خادم Git خاصًا بك، فخُطّافات pre-receive على جانب الخادم أقوى. لكن معظم الفرق تعيش على منصات Git المستضافة، ما يعني أن مجموعات القواعد والفحوص المطلوبة هي الحدّ الذي يُحتسب فعلًا.
 
-## Treat hook skips as incidents, not features
+## تعامل مع تخطي الخُطّاف كحوادث، لا كميزات
 
-Some tools document skip paths because humans occasionally need them. [`Husky`](https://typicode.github.io/husky/how-to.html) explicitly documents `HUSKY=0`. [`Lefthook`](https://lefthook.dev/usage/env.html) explicitly documents `LEFTHOOK=0` and `LEFTHOOK_EXCLUDE`. That documentation is not permission for agents to improvise around your standards. It is a reminder that local hooks are userland code and therefore bypassable.
+بعض الأدوات توثّق مسارات التخطي لأن البشر يحتاجونها أحيانًا. [`Husky`](https://typicode.github.io/husky/how-to.html) توثّق `HUSKY=0` صراحةً. و[`Lefthook`](https://lefthook.dev/usage/env.html) توثّق `LEFTHOOK=0` و`LEFTHOOK_EXCLUDE` صراحةً. تلك التوثيق ليس إذنًا للوكلاء بالارتجال حول معاييرك. إنه تذكير بأن الخُطّافات المحلية شيفرة في فضاء المستخدم، وبالتالي قابلة للتجاوز.
 
-That should push you toward two decisions:
+هذا ينبغي أن يدفعك إلى قرارين:
 
-- keep the hooks fast enough that people do not want to skip them
-- assume a skip is possible and build the next layer anyway
+- أبقِ الخُطّافات سريعة بما يكفي حتى لا يريد الناس تخطيها
+- افترض أن التخطي ممكن وابنِ الطبقة التالية على أي حال
 
-Fast hooks reduce temptation. CI and merge rules reduce blast radius.
+الخُطّافات السريعة تقلّل الإغراء. وCI وقواعد الدمج تقلّلان نطاق الضرر.
 
-## Watch for the more subtle bypass
+## راقب التحايل الأخفى
 
-The sneakiest version is not `--no-verify`. The sneakiest version is weakening the rule itself:
+النسخة الأكثر خبثًا ليست `--no-verify`. النسخة الأكثر خبثًا هي إضعاف القاعدة نفسها:
 
-- removing a job from the workflow
-- changing a required check name
-- narrowing a file glob so the hook stops seeing important files
-- moving a command from pre-push to “we’ll do it later”
+- حذف مهمة من سير العمل
+- تغيير اسم فحص مطلوب
+- تضييق نمط ملف (glob) حتى تتوقف الخُطّافة عن رؤية ملفات مهمة
+- نقل أمر من قبل الدفع إلى «سنفعله لاحقًا»
 
-That is why I like path protection on infrastructure files and why I call them out specifically in review. The problem is not only “agent skipped the hook.” The problem is also “agent made the hook meaningless and then technically obeyed it.”
+لهذا أحبّ حماية المسارات على ملفات البنية التحتية، ولهذا أذكرها بالاسم في المراجعة. المشكلة ليست فقط «الوكيل تخطّى الخُطّافة». المشكلة أيضًا «الوكيل جعل الخُطّافة بلا معنى ثم أطاعها تقنيًا».
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Guardrails
@@ -162,13 +162,13 @@ That is why I like path protection on infrastructure files and why I call them o
   explicit review.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-You do not prevent guardrail bypass by being stern in a markdown file. You prevent it by layering policy, pre-execution denial, protected configuration, CI mirrors, and merge rules so that no single shortcut is enough. Local hooks keep the loop fast. The rest of the stack keeps the loop honest.
+أنت لا تمنع تجاوز القضبان بالتشدد في ملف ماركداون. تمنعه بترصيف السياسة، والمنع قبل التنفيذ، والإعداد المحمي، ومرايا CI، وقواعد الدمج، بحيث لا يكفي أي اختصار منفرد. الخُطّافات المحلية تُبقي الحلقة سريعة. وبقية المكدّس تُبقي الحلقة أمينة.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
-- [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [خُطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
+- [مسح الأسرار مع Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [التحقق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)

@@ -1,70 +1,70 @@
 ---
-title: "Traditional approach - does everything"
-lang: en
+title: "خط بناء حديث: tsc و SWC"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/build-pipeline-tsc-swc"
 ---
 
-Modern TypeScript build tooling has evolved beyond the “just use `tsc` for everything” approach. Today’s fastest development setups separate type checking from transpilation, using specialized tools for each job. Let’s explore how to build a robust pipeline with TypeScript’s compiler (`tsc`), the ultra-fast SWC transpiler, and Vite’s development server—and understand when to use each tool.
+تطوّرت أدوات البناء الحديثة في TypeScript إلى ما هو أبعد من نهج «استخدم `tsc` لكل شيء». فأحدث إعدادات التطوير اليوم تفصل بين فحص الأنواع والترجمة (transpilation)، مستخدمةً أدوات متخصّصة لكل مهمة. لنتعرّف على كيفية بناء خط بناء متين باستخدام مُصرِّف TypeScript (`tsc`)، والمُترجِم فائق السرعة SWC، وخادم التطوير الخاص بـ Vite — ونفهم متى تستخدم كل أداة.
 
-You’re probably here because your builds are slow, your CI is timing out, or you’re wondering why everyone keeps talking about SWC and esbuild. The short answer: TypeScript’s official compiler is thorough but leisurely, while newer tools focus on speed by doing less work. The trick is knowing how to combine them effectively.
+على الأرجح أنت هنا لأن عمليات البناء لديك بطيئة، أو لأن التكامل المستمر (CI) ينتهي بمهلة زمنية، أو لأنك تتساءل لماذا يُصرّ الجميع على الحديث عن SWC و esbuild. والإجابة المختصرة: مُصرِّف TypeScript الرسمي شامل لكنه بطيء، بينما تركّز الأدوات الأحدث على السرعة عبر العمل أقل. والمفتاح هو معرفة كيف تدمجها بفاعلية.
 
-## The Modern Build Landscape
+## مشهد البناء الحديث
 
-In the early days of TypeScript, `tsc` was your only option for both type checking and transpilation. It worked fine for smaller projects, but as codebases grew, build times became painful. Modern tooling solves this by specializing:
+في الأيام الأولى لـ TypeScript، لم يكن أمامك خيار سوى `tsc` لفحص الأنواع والترجمة معًا. كان يعمل بشكل جيّد للمشاريع الأصغر، لكن مع نمو قواعد الشيفرة أصبحت أزمنة البناء مؤلمة. تحلّ الأدوات الحديثة هذا الأمر بالتخصّص:
 
-- **Type checkers** (like `tsc`) focus on correctness and emit `.d.ts` files
-- **Transpilers** (like SWC, esbuild, Babel) focus on speed and JavaScript output
-- **Bundlers** (like Vite, Webpack) orchestrate everything and handle development servers
+- **مدقّقو الأنواع** (مثل `tsc`) يركّزون على الصحة ويولّدون ملفات `.d.ts`
+- **المترجمون** (مثل SWC و esbuild و Babel) يركّزون على السرعة وإخراج JavaScript
+- **حازم الحزم** (مثل Vite و Webpack) ينسّقون كل شيء ويتولّون خوادم التطوير
 
-This separation lets you get fast feedback during development while maintaining type safety.
+يتيح لك هذا الفصل ملاحظات سريعة أثناء التطوير مع الحفاظ على أمان الأنواع.
 
-## Understanding the Players
+## فهم الأطراف المشاركة
 
-### TypeScript Compiler (tsc)
+### مُصرِّف TypeScript (tsc)
 
-The original and most comprehensive option. When you run `tsc`, it:
+الخيار الأصلي والأكثر شمولًا. حين تُشغّل `tsc` فإنّه:
 
-- **Type checks** your entire codebase
-- **Transpiles** TypeScript to JavaScript
-- **Generates** declaration files (`.d.ts`)
-- **Handles** complex TypeScript features like decorators and emit helpers
+- **يفحص أنواع** قاعدة شيفرتك بالكامل
+- **يترجم** TypeScript إلى JavaScript
+- **يولّد** ملفات التصريح (`.d.ts`)
+- **يتعامل** مع ميزات TypeScript المعقّدة مثل المزخرفات (decorators) ودوالّ الإخراج المساعدة
 
 ```bash
 # Traditional approach - does everything
 tsc --build
 ```
 
-**Pros**: Complete TypeScript support, generates declaration files, handles complex scenarios **Cons**: Slower for large codebases, single-threaded type checking
+**المزايا**: دعم كامل لـ TypeScript، ويولّد ملفات التصريح، ويتعامل مع السيناريوهات المعقّدة. **العيوب**: أبطأ مع القواعد الشيفرة الكبيرة، وفحص الأنواع أحادي الخيط.
 
 ### SWC (Speedy Web Compiler)
 
-Written in Rust, SWC focuses purely on fast transpilation:
+مكتوب بلغة Rust، يركّز SWC حصريًا على الترجمة السريعة:
 
 ```bash
 # Install SWC
 pnpm add -D @swc/cli @swc/core
 ```
 
-SWC transforms TypeScript to JavaScript without type checking—it simply strips types and transforms syntax. This makes it significantly faster than `tsc` for transpilation.
+يحوّل SWC نوع TypeScript إلى JavaScript دون فحص الأنواع — فهو ببساطة يزيل الأنواع ويحوّل الصياغة. وهذا يجعله أسرع بكثير من `tsc` في الترجمة.
 
-**Pros**: Extremely fast, good TypeScript support, handles JSX well **Cons**: No type checking, no declaration file generation, newer tool with evolving ecosystem
+**المزايا**: سريع للغاية، ودعمه لـ TypeScript جيّد، ويتعامل مع JSX جيّدًا. **العيوب**: لا يفحص الأنواع، ولا يولّد ملفات التصريح، وأداة أحدث ذات منظومة متطوّرة باستمرار.
 
 ### Vite
 
-A build tool that uses esbuild (similar philosophy to SWC) during development and Rollup for production builds:
+أداة بناء تستخدم esbuild (فلسفة مشابهة لـ SWC) أثناء التطوير و Rollup لعمليات بناء الإنتاج:
 
 ```bash
 # Vite with TypeScript support
 pnpm create vite my-app --template react-ts
 ```
 
-**Pros**: Fast dev server, excellent DX, handles most TypeScript scenarios **Cons**: Complex configurations can be tricky, esbuild has some TypeScript limitations
+**المزايا**: خادم تطوير سريع، وتجربة مطوّر ممتازة، ويتعامل مع معظم سيناريوهات TypeScript. **العيوب**: الإعدادات المعقّدة قد تكون محيِّرة، و esbuild له بعض القيود في TypeScript.
 
-## Setting Up a Hybrid Pipeline
+## إعداد خط بناء هجين
 
-The winning strategy combines these tools: use fast transpilers for development speed, and `tsc` for type checking and declaration generation. Here’s how to set it up:
+تتمثّل الاستراتيجية الفائزة في الجمع بين هذه الأدوات: استخدم المترجمين السريعين لسرعة التطوير، و `tsc` لفحص الأنواع وتوليد ملفات التصريح. إليك كيفية إعداد ذلك:
 
-### Project Structure
+### بنية المشروع
 
 ```
 my-app/
@@ -78,9 +78,9 @@ my-app/
 └── package.json
 ```
 
-### TypeScript Configuration
+### ضبط TypeScript
 
-First, create a base `tsconfig.json` for your IDE and type checking:
+أولًا، أنشئ ملف `tsconfig.json` أساسيًا لمحرّر IDE ولفحص الأنواع:
 
 ```json
 {
@@ -107,7 +107,7 @@ First, create a base `tsconfig.json` for your IDE and type checking:
 }
 ```
 
-For library builds that need declaration files, create `tsconfig.build.json`:
+أمّا المكتبات التي تحتاج إلى ملفات تصريح، فأنشئ لها `tsconfig.build.json`:
 
 ```json
 {
@@ -123,9 +123,9 @@ For library builds that need declaration files, create `tsconfig.build.json`:
 }
 ```
 
-### Vite Configuration
+### ضبط Vite
 
-Configure Vite for blazing-fast development:
+اضبط Vite من أجل تطوير فائق السرعة:
 
 ```typescript
 // vite.config.ts
@@ -148,9 +148,9 @@ export default defineConfig({
 });
 ```
 
-### SWC Configuration (Optional)
+### ضبط SWC (اختياري)
 
-If you want to use SWC directly for builds, create `.swcrc`:
+إن أردت استخدام SWC مباشرةً في البناء، فأنشئ ملف `.swcrc`:
 
 ```json
 {
@@ -174,9 +174,9 @@ If you want to use SWC directly for builds, create `.swcrc`:
 }
 ```
 
-### Package Scripts
+### سكربتات package.json
 
-Here’s where everything comes together:
+هنا تجتمع كل القطع معًا:
 
 ```json
 {
@@ -192,19 +192,19 @@ Here’s where everything comes together:
 }
 ```
 
-Let’s break down what each script does:
+لنشرح ما يفعله كل سكربت:
 
-- `dev`: Vite dev server with SWC transpilation (no type checking)
-- `build`: Type check first, then Vite production build
-- `build:lib`: For libraries—type check, SWC transpile, then generate declarations
-- `type-check`: Run TypeScript compiler in check-only mode
-- `type-check:watch`: Continuous type checking during development
+- `dev`: خادم تطوير Vite مع ترجمة SWC (دون فحص الأنواع)
+- `build`: يفحص الأنواع أولًا، ثم ينفّذ بناء Vite للإنتاج
+- `build:lib`: للمكتبات — يفحص الأنواع، ثم يترجم بـ SWC، ثم يولّد ملفات التصريح
+- `type-check`: يشغّل مُصرِّف TypeScript في وضع الفحص فقط
+- `type-check:watch`: فحص مستمر للأنواع أثناء التطوير
 
-## Development Workflow
+## سير عمل التطوير
 
-### Fast Development Loop
+### حلقة تطوير سريعة
 
-During active development, you want the fastest possible feedback:
+أثناء التطوير النشط، تريد أسرع ملاحظات ممكنة:
 
 ```bash
 # Terminal 1: Fast dev server (no type checking)
@@ -214,26 +214,26 @@ pnpm dev
 pnpm type-check:watch
 ```
 
-This setup gives you:
+يمنحك هذا الإعداد:
 
-- **Sub-second** hot module replacement
-- **Real-time** type errors in a separate terminal
-- **Instant** feedback on code changes
+- **استبدال الوحدات في أقل من ثانية**
+- **أخطاء أنواع فورية** في طرفية منفصلة
+- **ملاحظات فورية** على تغييرات الشيفرة
 
-### Pre-commit Checks
+### فحوص ما قبل الإيداع
 
-Before committing, run full validation:
+قبل الإيداع، شغّل التحقّق الكامل:
 
 ```bash
 # Quick pre-commit script
 pnpm type-check && pnpm lint && pnpm test
 ```
 
-Consider using [Husky](https://typicode.github.io/husky/) to automate this.
+فكّر في استخدام [Husky](https://typicode.github.io/husky/) لأتمتة ذلك.
 
-## CI/CD Pipeline
+## خط التكامل المستمر والنشر (CI/CD)
 
-Your continuous integration should be thorough but efficient:
+ينبغي أن يكون التكامل المستمر لديك شاملًا وفعّالًا في الوقت نفسه:
 
 ```yaml
 # .github/workflows/ci.yml
@@ -257,15 +257,15 @@ jobs:
       - run: pnpm build # Production build test
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Run type checking early in CI—it often catches issues faster than waiting for a full build.
+> شغّل فحص الأنواع مبكرًا في خط CI — فهو غالبًا يكشف المشكلات أسرع من انتظار بناءٍ كامل.
 
-## Real-World Patterns
+## أنماط من العالم الحقيقي
 
-### Library Development
+### تطوير المكتبات
 
-When building libraries, you need both fast development and proper output:
+حين تبني مكتبات، فأنت بحاجة إلى سرعة التطوير وإلى مخرجات سليمة في الوقت نفسه:
 
 ```json
 {
@@ -279,16 +279,16 @@ When building libraries, you need both fast development and proper output:
 }
 ```
 
-This pattern:
+هذا النمط:
 
-1. Uses SWC for fast JavaScript output
-2. Uses `tsc` only for declaration files
-3. Provides source maps for debugging
-4. Separates concerns cleanly
+1. يستخدم SWC لإخراج JavaScript سريع
+2. يستخدم `tsc` فقط لملفات التصريح
+3. يوفّر خرائط المصدر (source maps) لأغراض التصحيح
+4. يفصل المسؤوليات فصلًا نظيفًا
 
-### Monorepo Setup
+### إعداد المستودع الأحادي (Monorepo)
 
-In monorepos, the hybrid approach shines:
+في المستودعات الأحادية، يتألّق النهج الهجين:
 
 ```json
 {
@@ -303,7 +303,7 @@ In monorepos, the hybrid approach shines:
 }
 ```
 
-Use TypeScript’s project references for efficient cross-package type checking:
+استخدم مراجع مشاريع TypeScript (project references) من أجل فحص أنواع فعّال عبر الحزم:
 
 ```json
 // tsconfig.json (root)
@@ -316,23 +316,23 @@ Use TypeScript’s project references for efficient cross-package type checking:
 }
 ```
 
-## Performance Comparison
+## مقارنة الأداء
 
-Here’s what you can expect in a medium-sized React app (~100 components):
+إليك ما يمكنك توقّعه في تطبيق React متوسّط الحجم (~100 مكوّن):
 
-| Tool Combination | Dev Server | Type Check | Full Build |
+| تركيبة الأدوات | خادم التطوير | فحص الأنواع | البناء الكامل |
 | --- | --- | --- | --- |
-| tsc only | ~8s | ~12s | ~25s |
-| Vite + tsc check | ~1s | ~12s | ~8s |
-| SWC + tsc check | ~0.5s | ~12s | ~6s |
+| tsc فقط | ~8s | ~12s | ~25s |
+| Vite + فحص tsc | ~1s | ~12s | ~8s |
+| SWC + فحص tsc | ~0.5s | ~12s | ~6s |
 
-The key insight: separating concerns gives you the best of both worlds—fast iteration and thorough checking.
+الفكرة الأساسية: فصل المسؤوليات يمنحك أفضل ما في العالمين — تكرار سريع، وفحص شامل.
 
-## Troubleshooting Common Issues
+## استكشاف المشكلات الشائعة وإصلاحها
 
-### SWC/esbuild Limitations
+### قيود SWC و esbuild
 
-Some TypeScript features aren’t supported by fast transpilers:
+بعض ميزات TypeScript غير مدعومة في المترجمين السريعين:
 
 ```typescript
 // ❌ Not supported by esbuild/SWC
@@ -348,9 +348,9 @@ const Colors = {
 } as const;
 ```
 
-### Decorator Issues
+### مشكلات المزخرفات (Decorators)
 
-If using decorators (like with class-based React components or MobX):
+إن كنت تستخدم المزخرفات (مثلًا مع مكوّنات React الصنفية أو MobX):
 
 ```json
 // tsconfig.json
@@ -362,7 +362,7 @@ If using decorators (like with class-based React components or MobX):
 }
 ```
 
-And ensure your transpiler supports them:
+وتأكّد من أن مترجِمك يدعمها:
 
 ```json
 // .swcrc
@@ -375,9 +375,9 @@ And ensure your transpiler supports them:
 }
 ```
 
-### Import/Export Edge Cases
+### حالات حدّية في الاستيراد والتصدير
 
-Some complex import patterns might need adjustment:
+قد تحتاج بعض أنماط الاستيراد المعقّدة إلى تعديل:
 
 ```typescript
 // ❌ Might cause issues with some transpilers
@@ -387,43 +387,43 @@ export { default as Button } from './Button';
 export { Button as default } from './Button';
 ```
 
-## Choosing Your Setup
+## اختيار إعدادك
 
-Here’s a decision matrix for common scenarios:
+إليك مصفوفة قرار للسيناريوهات الشائعة:
 
-**Small Projects (< 50 files)**
+**المشاريع الصغيرة (أقل من 50 ملفًا)**
 
-- Stick with `tsc` for simplicity
-- Or use Vite if you want fast dev server
+- التزم بـ `tsc` من أجل البساطة
+- أو استخدم Vite إن أردت خادم تطوير سريعًا
 
-**Medium Projects (50-500 files)**
+**المشاريع المتوسطة (50-500 ملفًا)**
 
-- Vite + `tsc --noEmit` for type checking
-- Consider SWC if Vite’s esbuild has limitations
+- Vite مع `tsc --noEmit` لفحص الأنواع
+- فكّر في SWC إن كانت في esbuild الخاص بـ Vite قيود
 
-**Large Projects (500+ files)**
+**المشاريع الكبيرة (أكثر من 500 ملف)**
 
-- Definitely separate transpilation from type checking
-- Use SWC or esbuild for transpilation
-- Consider TypeScript project references
-- Invest in proper CI caching
+- افصل الترجمة عن فحص الأنواع حتمًا
+- استخدم SWC أو esbuild للترجمة
+- فكّر في مراجع مشاريع TypeScript
+- استثمر في تخزين مؤقت (caching) مناسب لخط CI
 
-**Libraries**
+**المكتبات**
 
-- Always use `tsc` for declaration file generation
-- Use fast transpilers for JavaScript output
-- Test with multiple TypeScript versions
+- استخدم `tsc` دائمًا لتوليد ملفات التصريح
+- استخدم المترجمين السريعين لإخراج JavaScript
+- اختبر مع عدّة إصدارات من TypeScript
 
-## Next Steps
+## الخطوات التالية
 
-Once you have a solid build pipeline:
+حين يتوفّر لديك خط بناء متين:
 
-1. **Add pre-commit hooks** with Husky for quality gates
-2. **Set up CI caching** to speed up builds
-3. **Monitor bundle size** with tools like [bundlemon](https://bundlemon.dev/)
-4. **Consider parallel type checking** with TypeScript project references
-5. **Experiment with newer tools** like Turbopack or rspack
+1. **أضف خطّافات ما قبل الإيداع** (pre-commit hooks) باستخدام Husky لتحديد بوابات الجودة
+2. **اضبط التخزين المؤقت في CI** لتسريع عمليات البناء
+3. **راقب حجم الحزمة** (bundle size) بأدوات مثل [bundlemon](https://bundlemon.dev/)
+4. **فكّر في الفحص المتوازي للأنواع** عبر مراجع مشاريع TypeScript
+5. **جرّب أدوات أحدث** مثل Turbopack أو rspack
 
-The build tooling landscape evolves quickly, but the principles remain: separate concerns, optimize for the common case (development), and don’t sacrifice correctness for speed in production.
+يتطوّر مشهد أدوات البناء بسرعة، لكنّ المبادئ تبقى: افصل المسؤوليات، وحسّن للحالة الشائعة (التطوير)، ولا تُضحّي بالصواب من أجل السرعة في الإنتاج.
 
-Your build pipeline should feel invisible during development and bulletproof in production. With the hybrid approach using specialized tools for specialized jobs, you can achieve both.
+ينبغي أن يبدو خط البناء لديك غير مرئي أثناء التطوير، ومنيعًا في الإنتاج. ومع النهج الهجين الذي يستخدم أدوات متخصّصة لمهام متخصّصة، تستطيع تحقيق الأمرين معًا.

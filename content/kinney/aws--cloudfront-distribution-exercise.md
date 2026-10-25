@@ -1,57 +1,57 @@
 ---
-title: "Exercise: Set Up a CloudFront Distribution"
-lang: en
+title: "تمرين: إعداد توزيع CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudfront-distribution-exercise"
 ---
 
-You have an S3 bucket with static site files. Your job is to put CloudFront in front of it: create a distribution, lock down the bucket with Origin Access Control, and configure SPA routing. By the end, you should have a globally distributed, HTTPS-secured frontend on a `*.cloudfront.net` domain that serves your SPA correctly on all routes.
+لديك حاوية S3 تحتوي ملفات موقع ثابت. ومهمّتك أن تضع CloudFront أمامها: أنشئ توزيعًا، وأحكِم إغلاق الحاوية بـ«التحكّم في الوصول إلى الأصل»، وهيئ توجيه SPA. وبحلول النهاية، ينبغي أن تكون لديك واجهة أمامية موزّعة عالميًا ومؤمّنة بـHTTPS على نطاق `*.cloudfront.net` تقدّم تطبيق SPA الخاص بك بشكل صحيح على كل المسارات.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-Without CloudFront, your site is a single-region S3 bucket with no HTTPS, no edge caching, and no security headers. With CloudFront, you have a globally distributed CDN that serves content from edge locations close to your users, enforces HTTPS, handles SPA routing, and adds security headers—the same infrastructure Vercel and Netlify give you out of the box. This exercise is the bridge from “files in a bucket” to “production deployment.”
+بلا CloudFront، موقعك حاوية S3 في منطقة واحدة بلا HTTPS، وبلا تخزين مؤقت على الحافة، وبلا ترويسات أمان. أما مع CloudFront، فلديك شبكة CDN موزّعة عالميًا تقدّم المحتوى من مواقع حافة قريبة من مستخدميك، وتفرض HTTPS، وتتعامل مع توجيه SPA، وتضيف ترويسات أمان—وهي البنية نفسها التي تمنحك إياها Vercel وNetlify جاهزة. هذا التمرين هو الجسر من «ملفات في حاوية» إلى «نشر إنتاجي».
 
-> **Tip**
+> **نصيحة**
 >
-> If the console or CLI output shifts while you’re doing this, keep the [CloudFront Developer Guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) and the [OAC setup guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) open.
+> إن تغيّرت مخرجات وحدة التحكّم أو سطر الأوامر أثناء تنفيذك، فأبقِ [دليل مطوّر CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html) و[دليل إعداد OAC](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) مفتوحين.
 
-## Prerequisites
+## المتطلّبات المسبقة {#prerequisites}
 
-Before you start, make sure you have:
+قبل أن تبدأ، تأكّد من أن لديك:
 
-- An S3 bucket (`my-frontend-app-assets`) with at least an `index.html` file uploaded. See [Uploading and Organizing Files](https://stevekinney.com/courses/aws/uploading-and-organizing-files) if you need to set this up.
-- The AWS CLI v2 configured with credentials that have CloudFront and S3 permissions.
+- حاوية S3 (`my-frontend-app-assets`) تحتوي على الأقل ملف `index.html` محمّلًا. راجع [تحميل الملفات وتنظيمها](https://stevekinney.com/courses/aws/uploading-and-organizing-files) إن كنت بحاجة إلى إعداد ذلك.
+- AWS CLI الإصدار 2 مهيّأ ببيانات اعتماد تملك أذونات CloudFront وS3.
 
-## Create an Origin Access Control
+## إنشاء تحكّم بالوصول إلى الأصل
 
-Create an OAC that CloudFront will use to authenticate requests to your S3 bucket.
+أنشئ OAC سيستخدمه CloudFront لمصادقة الطلبات إلى حاوية S3 لديك.
 
-- Use `aws cloudfront create-origin-access-control` with a JSON config.
-- Set `SigningProtocol` to `sigv4`, `SigningBehavior` to `always`, and `OriginAccessControlOriginType` to `s3`.
-- Save the OAC `Id` from the response—you need it for the distribution config.
+- استخدم `aws cloudfront create-origin-access-control` مع تهيئة JSON.
+- اضبط `SigningProtocol` على `sigv4`، و`SigningBehavior` على `always`، و`OriginAccessControlOriginType` على `s3`.
+- احفظ `Id` الخاص بـOAC من الاستجابة—فأنت تحتاجه لتهيئة التوزيع.
 
-### Checkpoint
+### نقطة تحقّق
 
-Run `aws cloudfront list-origin-access-controls --region us-east-1 --output json` and confirm your OAC appears in the list.
+شغّل `aws cloudfront list-origin-access-controls --region us-east-1 --output json` وتأكّد من ظهور OAC الخاص بك في القائمة.
 
-## Create the Distribution
+## إنشاء التوزيع
 
-Create a CloudFront distribution with these settings:
+أنشئ توزيع CloudFront بهذه الإعدادات:
 
-- **Origin**: Your S3 bucket (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`), with the OAC ID attached.
-- **Default root object**: `index.html`
-- **Price class**: `PriceClass_100`
-- **Cache policy**: Use the managed `CachingOptimized` policy (`658327ea-f89d-4fab-a63d-7e88639e58f6`).
-- **Viewer protocol policy**: `redirect-to-https`
-- **Compression**: Enabled
-- **HTTP version**: `http2and3`
-- **Viewer certificate**: Use the CloudFront default certificate (`CloudFrontDefaultCertificate: true`). This gives you HTTPS on the `*.cloudfront.net` domain automatically. If you want a custom domain later, see the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course.
-- **Custom error responses**: Map both `403` and `404` to `/index.html` with response code `200` and an error caching TTL of `10` seconds.
+- **الأصل**: حاوية S3 لديك (`my-frontend-app-assets.s3.us-east-1.amazonaws.com`)، مع إرفاق معرّف OAC.
+- **كائن الجذر الافتراضي**: `index.html`
+- **فئة السعر**: `PriceClass_100`
+- **سياسة التخزين المؤقت**: استخدم السياسة المُدارة `CachingOptimized` (`658327ea-f89d-4fab-a63d-7e88639e58f6`).
+- **سياسة بروتوكول المشاهد**: `redirect-to-https`
+- **الضغط**: مُفعّل
+- **إصدار HTTP**: `http2and3`
+- **شهادة المشاهد**: استخدم شهادة CloudFront الافتراضية (`CloudFrontDefaultCertificate: true`). فهذا يمنحك HTTPS على نطاق `*.cloudfront.net` تلقائيًا. وإن أردت نطاقًا مخصّصًا لاحقًا، فراجع القسم الاختياري [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) في نهاية الدورة.
+- **استجابات الأخطاء المخصّصة**: اربط كلاً من `403` و`404` بـ`/index.html` مع رمز استجابة `200` ومدة تخزين مؤقت للأخطاء `10` ثوانٍ.
 
-Write the full distribution config JSON and use `aws cloudfront create-distribution --distribution-config file://distribution-config.json`.
+اكتب تهيئة التوزيع الكاملة بصيغة JSON واستخدم `aws cloudfront create-distribution --distribution-config file://distribution-config.json`.
 
-### Checkpoint
+### نقطة تحقّق
 
-The `create-distribution` command returns a distribution `Id` and `DomainName`. Save both. The `Status` should be `"InProgress"`. Wait for deployment:
+يعيد أمر `create-distribution` معرّف توزيع `Id` و`DomainName`. احفظ كليهما. وينبغي أن تكون `Status` هي `"InProgress"`. انتظر النشر:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -59,36 +59,36 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-## Update the S3 Bucket Policy
+## تحديث سياسة حاوية S3
 
-Replace your bucket’s current policy with one that allows only CloudFront to read from it:
+استبدل سياسة حاويتك الحالية بأخرى تسمح لـCloudFront فقط بالقراءة منها:
 
-- **Principal**: `cloudfront.amazonaws.com` service principal.
-- **Action**: `s3:GetObject`.
-- **Resource**: `arn:aws:s3:::my-frontend-app-assets/*`.
-- **Condition**: `StringEquals` on `AWS:SourceArn` matching your distribution’s ARN (`arn:aws:cloudfront::123456789012:distribution/YOUR_DISTRIBUTION_ID`).
+- **الأصل**: أصل الخدمة `cloudfront.amazonaws.com`.
+- **الإجراء**: `s3:GetObject`.
+- **المورد**: `arn:aws:s3:::my-frontend-app-assets/*`.
+- **الشرط**: `StringEquals` على `AWS:SourceArn` مطابقًا لـARN توزيعك (`arn:aws:cloudfront::123456789012:distribution/YOUR_DISTRIBUTION_ID`).
 
-Apply the policy with `aws s3api put-bucket-policy`.
+طبّق السياسة عبر `aws s3api put-bucket-policy`.
 
-### Checkpoint
+### نقطة تحقّق
 
-Test that CloudFront serves your content:
+اختبر أن CloudFront يقدّم محتواك:
 
 ```bash
 curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 ```
 
-You should get `200 OK`. Now test that direct S3 access is blocked:
+ينبغي أن تحصل على `200 OK`. والآن اختبر أن الوصول المباشر إلى S3 محجوب:
 
 ```bash
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-You should get `403 Forbidden`.
+ينبغي أن تحصل على `403 Forbidden`.
 
-## Re-enable Block Public Access
+## إعادة تفعيل حجب الوصول العام
 
-Your bucket no longer needs to be publicly accessible. Re-enable all four Block Public Access settings:
+لم تعد حاويتك بحاجة إلى أن تكون متاحة للعامة. أعد تفعيل إعدادات حجب الوصول العام الأربعة كلها:
 
 ```bash
 aws s3api put-public-access-block \
@@ -98,47 +98,47 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Verify that CloudFront still works after re-enabling Block Public Access:
+تحقّق من أن CloudFront لا يزال يعمل بعد إعادة تفعيل حجب الوصول العام:
 
 ```bash
 curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 ```
 
-Still `200 OK`. The CloudFront service principal policy isn’t affected by Block Public Access.
+لا يزال `200 OK`. فسياسة أصل خدمة CloudFront لا تتأثّر بحجب الوصول العام.
 
-## Test SPA Routing
+## اختبار توجيه SPA
 
-Navigate to a path that doesn’t correspond to a real file in your S3 bucket:
+انتقل إلى مسار لا يقابل ملفًا حقيقيًا في حاوية S3 لديك:
 
 ```bash
 curl -I https://YOUR_DISTRIBUTION_DOMAIN/dashboard/settings
 ```
 
-You should get `200 OK` with `content-type: text/html`. This confirms that the custom error response is working—CloudFront is serving `index.html` for missing paths.
+ينبغي أن تحصل على `200 OK` مع `content-type: text/html`. وهذا يؤكّد أن استجابة الخطأ المخصّصة تعمل—فـCloudFront يقدّم `index.html` للمسارات المفقودة.
 
-### Checkpoint
+### نقطة تحقّق
 
-Open your distribution’s domain in a browser and navigate to a SPA route. The page should load correctly, and refreshing shouldn’t produce a 403 or 404 error.
+افتح نطاق توزيعك في متصفّح وانتقل إلى مسار SPA. ينبغي أن تُحمّل الصفحة بشكل صحيح، وألّا يُنتج التحديث خطأ 403 أو 404.
 
-## Attach a Response Headers Policy
+## إرفاق سياسة ترويسات الاستجابة
 
-Attach the managed `SecurityHeadersPolicy` (`67f7725c-6f97-4210-82d7-5512b31e9d03`) to your default cache behavior:
+أرفق السياسة المُدارة `SecurityHeadersPolicy` (`67f7725c-6f97-4210-82d7-5512b31e9d03`) بسلوك التخزين المؤقت الافتراضي:
 
-- Fetch the current distribution config with `aws cloudfront get-distribution-config`.
-- Add `ResponseHeadersPolicyId` to the `DefaultCacheBehavior`.
-- Update the distribution with `aws cloudfront update-distribution`, using the `ETag` from the fetch.
+- اجلب تهيئة التوزيع الحالية عبر `aws cloudfront get-distribution-config`.
+- أضف `ResponseHeadersPolicyId` إلى `DefaultCacheBehavior`.
+- حدّث التوزيع عبر `aws cloudfront update-distribution`، مستخدمًا `ETag` من الجلب.
 
-### Checkpoint
+### نقطة تحقّق
 
-After the distribution deploys, verify the security headers:
+بعد نشر التوزيع، تحقّق من ترويسات الأمان:
 
 ```bash
 curl -I https://YOUR_DISTRIBUTION_DOMAIN/index.html
 ```
 
-You should see:
+ينبغي أن ترى:
 
 ```
 strict-transport-security: max-age=31536000
@@ -146,17 +146,17 @@ x-content-type-options: nosniff
 x-frame-options: SAMEORIGIN
 ```
 
-## Final Verification
+## التحقّق النهائي
 
-At this point, your CloudFront distribution should have:
+في هذه المرحلة، ينبغي أن يكون توزيع CloudFront لديك:
 
-1. An S3 origin with Origin Access Control (no public bucket access).
-2. The `CachingOptimized` managed cache policy.
-3. HTTPS via the CloudFront default certificate with `redirect-to-https`.
-4. Custom error responses for SPA routing (403 and 404 to `/index.html` with 200).
-5. Security headers via a response headers policy.
+1. أصل S3 مع تحكّم في الوصول إلى الأصل (بلا وصول عام إلى الحاوية).
+2. سياسة التخزين المؤقت المُدارة `CachingOptimized`.
+3. HTTPS عبر شهادة CloudFront الافتراضية مع `redirect-to-https`.
+4. استجابات أخطاء مخصّصة لتوجيه SPA (403 و404 إلى `/index.html` مع 200).
+5. ترويسات أمان عبر سياسة ترويسات الاستجابة.
 
-Run a final check:
+شغّل فحصًا نهائيًا:
 
 ```bash
 # Distribution details
@@ -176,14 +176,14 @@ curl -I https://YOUR_DISTRIBUTION_DOMAIN/any/spa/route
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **CloudFront returns `403 Forbidden` for files that exist:** The S3 bucket policy does not trust your distribution’s Origin Access Control, or the origin is still configured to use the bucket incorrectly.
-- **`/dashboard/settings` returns a 403 or 404 instead of your app shell:** The custom error responses for SPA routing are missing or point at the wrong path.
-- **Direct S3 access still works after CloudFront is configured:** Re-enable Block Public Access and make sure the bucket policy grants read access only to CloudFront, not to `Principal: "*"` anymore.
+- **يعيد CloudFront الخطأ `403 Forbidden` لملفات موجودة:** سياسة حاوية S3 لا تثق بتحكّم الوصول إلى الأصل الخاص بتوزيعك، أو أن الأصل لا يزال مهيّأً لاستخدام الحاوية بشكل غير صحيح.
+- **يعيد `/dashboard/settings` رمز 403 أو 404 بدلًا من هيكل تطبيقك:** استجابات الأخطاء المخصّصة لتوجيه SPA مفقودة أو تشير إلى المسار الخطأ.
+- **لا يزال الوصول المباشر إلى S3 يعمل بعد تهيئة CloudFront:** أعد تفعيل حجب الوصول العام وتأكّد من أن سياسة الحاوية تمنح صلاحية القراءة لـCloudFront فقط، ولم تعد تمنحها لـ`Principal: "*"`.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Custom response headers policy**: Create a custom policy with HSTS `max-age` of 2 years, `includeSubDomains`, and `preload`. Add a `Permissions-Policy` header that disables camera, microphone, and geolocation.
-- **Cache-Control headers on S3 objects**: Re-upload your assets with differentiated `Cache-Control` headers: short TTL for `index.html`, long TTL with `immutable` for hashed assets.
-- **Targeted invalidation**: Deploy a change to `index.html`, then create an invalidation for only `/index.html` instead of `/*`. Verify that the old version is still cached for other paths.
+- **سياسة ترويسات استجابة مخصّصة**: أنشئ سياسة مخصّصة بـ`max-age` لـHSTS مدّته سنتان، مع `includeSubDomains` و`preload`. وأضف ترويسة `Permissions-Policy` تعطّل الكاميرا والميكروفون وتحديد الموقع الجغرافي.
+- **ترويسات Cache-Control على كائنات S3**: أعد تحميل أصولك بترويسات `Cache-Control` متباينة: مدة قصيرة لـ`index.html`، ومدة طويلة مع `immutable` للأصول المُجزَّأة.
+- **إبطال مستهدف**: انشر تغييرًا على `index.html`، ثم أنشئ إبطالًا لـ`/index.html` فقط بدلًا من `/*`. وتحقق من أن النسخة القديمة لا تزال مخزّنة مؤقتًا للمسارات الأخرى.

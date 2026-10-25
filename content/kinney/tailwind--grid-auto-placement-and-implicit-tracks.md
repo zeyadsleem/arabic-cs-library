@@ -1,16 +1,16 @@
 ---
-title: "Auto-Placement and Implicit Tracks"
-lang: en
+title: "الوضع التلقائي والمسارات الضمنية"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/grid-auto-placement-and-implicit-tracks"
 ---
 
-Tailwind CSS provides utilities to control how grid items are automatically placed and how implicit tracks are sized when the grid needs to create new rows or columns.
+يوفّر Tailwind CSS أدوات للتحكّم في كيفية وضع عناصر grid تلقائيًا وفي تحديد مقاسات المسارات الضمنية عندما تحتاج الشبكة إلى إنشاء صفوف أو أعمدة جديدة.
 
-## Auto-Placement Direction
+## اتجاه الوضع التلقائي
 
-Use `grid-flow-*` utilities to control how items are placed:
+استخدم أدوات `grid-flow-*` للتحكّم في كيفية وضع العناصر:
 
-*Auto-Placement Direction — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/7670fecd565408d849f7c935b0e6e7621f0dbb9ad8794d985fe4e831c42ad255.html)*
+*اتجاه الوضع التلقائي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7670fecd565408d849f7c935b0e6e7621f0dbb9ad8794d985fe4e831c42ad255.html)*
 
 ```html
 <!-- Default: fill rows first -->
@@ -31,19 +31,19 @@ Use `grid-flow-*` utilities to control how items are placed:
 </div>
 ```
 
-Available utilities:
+الأدوات المتاحة:
 
-- `grid-flow-row` - Fill rows first (default)
-- `grid-flow-col` - Fill columns first
-- `grid-flow-dense` - Fill gaps with smaller items
-- `grid-flow-row-dense` - Row flow with dense packing
-- `grid-flow-col-dense` - Column flow with dense packing
+- `grid-flow-row` - ملء الصفوف أولًا (افتراضي)
+- `grid-flow-col` - ملء الأعمدة أولًا
+- `grid-flow-dense` - ملء الفجوات بالعناصر الأصغر
+- `grid-flow-row-dense` - تدفّق بالصفوف مع حشد كثيف
+- `grid-flow-col-dense` - تدفّق بالأعمدة مع حشد كثيف
 
-## Implicit Row Sizing
+## تحديد مقاس الصفوف الضمنية
 
-Control the size of automatically created rows with `auto-rows-*`:
+تحكّم في مقاس الصفوف المنشأة تلقائيًا عبر `auto-rows-*`:
 
-*Implicit Row Sizing — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/aaeb274785ae4979e0d008039941fe0550484a0b30322bc0081d7c4bb59c5e10.html)*
+*تحديد مقاس الصفوف الضمنية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/aaeb274785ae4979e0d008039941fe0550484a0b30322bc0081d7c4bb59c5e10.html)*
 
 ```html
 <!-- New rows are 100px tall -->
@@ -62,19 +62,19 @@ Control the size of automatically created rows with `auto-rows-*`:
 </div>
 ```
 
-Options:
+الخيارات:
 
-- `auto-rows-auto` - Size based on content
-- `auto-rows-min` - Minimum content size
-- `auto-rows-max` - Maximum content size
-- `auto-rows-fr` - Equal fraction of space
-- `auto-rows-[200px]` - Custom size
+- `auto-rows-auto` - مقاس بحسب المحتوى
+- `auto-rows-min` - أصغر مقاس للمحتوى
+- `auto-rows-max` - أكبر مقاس للمحتوى
+- `auto-rows-fr` - نسبة متساوية من المساحة
+- `auto-rows-[200px]` - مقاس مخصّص
 
-## Implicit Column Sizing
+## تحديد مقاس الأعمدة الضمنية
 
-Control the size of automatically created columns with `auto-cols-*`:
+تحكّم في مقاس الأعمدة المنشأة تلقائيًا عبر `auto-cols-*`:
 
-*Implicit Column Sizing — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/4855ec3595226ab06349664773adc6a405fc04a7ce99f61a7449cd1aec3c197a.html)*
+*تحديد مقاس الأعمدة الضمنية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4855ec3595226ab06349664773adc6a405fc04a7ce99f61a7449cd1aec3c197a.html)*
 
 ```html
 <!-- New columns are 200px wide -->
@@ -86,17 +86,17 @@ Control the size of automatically created columns with `auto-cols-*`:
 </div>
 ```
 
-Options:
+الخيارات:
 
-- `auto-cols-auto` - Size based on content
-- `auto-cols-min` - Minimum content size
-- `auto-cols-max` - Maximum content size
-- `auto-cols-fr` - Equal fraction of space
-- `auto-cols-[minmax(200px,1fr)]` - Custom sizing
+- `auto-cols-auto` - مقاس بحسب المحتوى
+- `auto-cols-min` - أصغر مقاس للمحتوى
+- `auto-cols-max` - أكبر مقاس للمحتوى
+- `auto-cols-fr` - نسبة متساوية من المساحة
+- `auto-cols-[minmax(200px,1fr)]` - مقاس مخصّص
 
-## Dense Packing Example
+## مثال الحشد الكثيف
 
-*Dense Packing Example — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/442a4a84aa9ab6435fa2faa1297b1ebfee79e3877788e5cede6b8effad18cb6a.html)*
+*مثال الحشد الكثيف — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/442a4a84aa9ab6435fa2faa1297b1ebfee79e3877788e5cede6b8effad18cb6a.html)*
 
 ```html
 <div class="grid grid-flow-row-dense grid-cols-3 gap-4 rounded-lg bg-gray-100 p-4">
@@ -113,9 +113,9 @@ Options:
 </div>
 ```
 
-## Responsive Card Grid
+## شبكة بطاقات متجاوبة
 
-*Responsive Card Grid — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/c1d09ad1ab0eb6437825792e64e413a53251aee75dcbd8480ea05e953270804f.html)*
+*شبكة بطاقات متجاوبة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c1d09ad1ab0eb6437825792e64e413a53251aee75dcbd8480ea05e953270804f.html)*
 
 ```html
 <div
@@ -130,9 +130,9 @@ Options:
 </div>
 ```
 
-This creates a responsive layout where:
+ينشئ هذا تخطيطًا متجاوبًا يكون فيه:
 
-- Columns automatically adjust to screen size
-- New rows are at least 200px tall
-- Featured cards span 2 columns on large screens
-- All items are auto-placed efficiently
+- الأعمدة تتكيّف تلقائيًا مع حجم الشاشة
+- الصفوف الجديدة بارتفاع 200px على الأقل
+- البطاقات المميّزة تمتدّ عبر عمودين على الشاشات الكبيرة
+- جميع العناصر توضع تلقائيًا بكفاءة

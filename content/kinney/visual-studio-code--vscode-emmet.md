@@ -1,14 +1,14 @@
 ---
-title: "Emmet"
-lang: en
+title: "اختصارات Emmet"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-emmet"
 ---
 
-Emmet is a powerful shorthand system for HTML and CSS, built right into Visual Studio Code. It dramatically speeds up your front-end workflow by letting you write concise abbreviations that expand into full-fledged markup or style rules. Below are the core features and tips for making Emmet work for you, particularly when writing React in TSX or JSX.
+Emmet نظام اختصارات قوي لـ HTML و CSS، مدمج مباشرة في Visual Studio Code. وهو يسرّع سير عملك في الواجهات الأمامية سرعة كبيرة، إذ يتيح لك كتابة اختصارات موجزة تتوسّع إلى وسوم كاملة أو قواعد تنسيق كاملة. وفيما يلي الميزات الأساسية ونصائح لجعل Emmet يخدمك، خصوصًا عند كتابة React بصيغة TSX أو JSX.
 
-## Emmet Abbreviations
+## اختصارات Emmet
 
-Emmet turns short snippets of text into full HTML structures. For instance, if you type `div>ul>li*3` in an HTML file and press `Tab`, you get:
+يحوّل Emmet مقاطع نصية قصيرة إلى بنى HTML كاملة. فمثلًا، إذا كتبت `div>ul>li*3` في ملف HTML وضغطت `Tab`، حصلت على:
 
 ```html
 <div>
@@ -20,9 +20,9 @@ Emmet turns short snippets of text into full HTML structures. For instance, if y
 </div>
 ```
 
-Here’s a quick look at other common patterns:
+وإليك نظرة سريعة على أنماط شائعة أخرى:
 
-`header+main+footer` expands into three sibling elements:
+يتوسّع `header+main+footer` إلى ثلاثة عناصر شقيقة:
 
 ```html
 <header></header>
@@ -30,7 +30,7 @@ Here’s a quick look at other common patterns:
 <footer></footer>
 ```
 
-`ul>li.item*5` creates an unordered list with five list items, each having the class `item`:
+ينشئ `ul>li.item*5` قائمة غير مرتّبة تضم خمسة عناصر قائمة، لكل منها الصنف `item`:
 
 ```html
 <ul>
@@ -42,7 +42,7 @@ Here’s a quick look at other common patterns:
 </ul>
 ```
 
-`div.container>img.logo[src="logo.png"]+p` produces a `div` with two children, an image and a paragraph:
+وينتج `div.container>img.logo[src="logo.png"]+p` عنصر `div` له ابنان: صورة وفقرة:
 
 ```html
 <div class="container">
@@ -51,11 +51,11 @@ Here’s a quick look at other common patterns:
 </div>
 ```
 
-> **If you’re not sure which abbreviation to use, type part of the snippet and press `Ctrl+Space` (or `Cmd+Space` on macOS) to see Emmet suggestions.**
+> **إذا لم تكن متأكدًا من الاختصار الذي تستخدمه، فاكتب جزءًا من المقتطف واضغط `Ctrl+Space` (أو `Cmd+Space` على macOS) لترى اقتراحات Emmet.**
 
-## Emmet in JSX/TSX
+## Emmet في JSX/TSX
 
-Emmet can also boost your productivity in React files. To ensure it works correctly in `.jsx` or `.tsx` files, configure Visual Studio Code’s settings so Emmet treats these files as HTML. One common approach is adding the following setting in your `settings.json`:
+يستطيع Emmet أيضًا أن يرفع إنتاجيتك في ملفات React. ولتضمن عمله بشكل صحيح في ملفات `.jsx` أو `.tsx`، اضبط إعدادات Visual Studio Code ليُعامل Emmet هذه الملفات كملفات HTML. ومن الأساليب الشائعة إضافة الإعداد التالي في `settings.json`:
 
 ```json
 "emmet.includeLanguages": {
@@ -65,7 +65,7 @@ Emmet can also boost your productivity in React files. To ensure it works correc
 }
 ```
 
-Once that’s in place, you can use the same abbreviations you’d use in an HTML file. For example, in a `MyComponent.tsx`:
+وبعد إضافة ذلك، يمكنك استخدام الاختصارات نفسها التي تستخدمها في ملف HTML. فمثلًا، في `MyComponent.tsx`:
 
 ```typescript
 import React from 'react';
@@ -77,7 +77,7 @@ export function MyComponent() {
 }
 ```
 
-If you type `div.wrapper>div.title{Hello, Emmet!}^^p.subtitle{It even works in React!}` and press `Tab`, Emmet generates:
+وإذا كتبت `div.wrapper>div.title{Hello, Emmet!}^^p.subtitle{It even works in React!}` وضغطت `Tab`، ولّد Emmet ما يلي:
 
 ```typescript
 import React from 'react';
@@ -92,21 +92,21 @@ export function MyComponent() {
 }
 ```
 
-> **Emmet is Aware of JSX**
+> **Emmet يدرك JSX**
 >
-> In JSX, Emmet automatically translates any attributes like `class` into `className` where needed. Always check your expansions, though—some language server features might need an extra second to ensure everything lines up correctly.
+> في JSX، يحوّل Emmet تلقائيًا خصائص مثل `class` إلى `className` عند الحاجة. لكن راجع نتائج التوسّع دائمًا، إذ قد تحتاج بعض ميزات خادم اللغة ثانية إضافية لتضمن أن كل شيء مصطفّ بشكل صحيح.
 
-## Advanced Emmet Techniques
+## تقنيات Emmet المتقدّمة
 
-### Using Grouping with Parentheses `()`
+### استخدام التجميع بالأقواس `()`
 
-Parentheses let you create complex nested structures and apply multipliers to groups of elements. This is incredibly useful for creating repeated compound structures.
+تتيح لك الأقواس إنشاء بنى متداخلة معقّدة وتطبيق معاملات التكرار على مجموعات من العناصر. وهذا مفيد للغاية في إنشاء بنى مركّبة متكرّرة.
 
 ```css
 (header>h1)+(main>section*3)+(footer>p)
 ```
 
-Expands to:
+يتوسّع إلى:
 
 ```html
 <header>
@@ -122,13 +122,13 @@ Expands to:
 </footer>
 ```
 
-You can also use grouping to apply attributes or content to multiple elements:
+ويمكنك أيضًا استخدام التجميع لتطبيق خصائص أو محتوى على عناصر متعددة:
 
 ```css
 (div>h2+p).card*3
 ```
 
-Creates three card divs, each with an `h2` and `p` element:
+ينشئ ثلاثة عناصر `div` بالصنف card، لكل منها عنصر `h2` وعنصر `p`:
 
 ```html
 <div class="card">
@@ -145,19 +145,19 @@ Creates three card divs, each with an `h2` and `p` element:
 </div>
 ```
 
-### Using Emmet Filters
+### استخدام مرشّحات Emmet
 
-Filters modify how Emmet abbreviations expand. They’re added at the end of an abbreviation with the pipe (`|`) character.
+تعدّل المرشّحات طريقة توسّع اختصارات Emmet، وتُضاف في نهاية الاختصار بالمحرف الأنبوبي (`|`).
 
-#### Trim Whitespace Filter (`|t`)
+#### مرشّح قصّ المسافات البيضاء (`|t`)
 
-Removes insignificant whitespace from the output:
+يزيل المسافات البيضاء غير المؤثّرة من المخرَج:
 
 ```css
 ul>li*3|t
 ```
 
-Produces more compact output:
+فيُنتج مخرَجًا أكثر إحكامًا:
 
 ```html
 <ul>
@@ -167,15 +167,15 @@ Produces more compact output:
 </ul>
 ```
 
-#### Comment Filter (`|c`)
+#### مرشّح التعليقات (`|c`)
 
-Adds comments to help identify closing tags in large structures:
+يضيف تعليقات تساعد على تمييز وسوم الإغلاق في البنى الكبيرة:
 
 ```css
 div>header+main+footer|c
 ```
 
-Expands to:
+يتوسّع إلى:
 
 ```html
 <div>
@@ -186,15 +186,15 @@ Expands to:
 </div>
 ```
 
-#### BEM Filter (`|bem`)
+#### مرشّح BEM (`|bem`)
 
-Makes writing Block Element Modifier (BEM) notation easier:
+يسهّل كتابة ترميز Block Element Modifier (BEM):
 
 ```css
 form.search>input.field|bem
 ```
 
-Produces:
+فيُنتج:
 
 ```html
 <form class="search">
@@ -202,17 +202,17 @@ Produces:
 </form>
 ```
 
-### Implicit Tags
+### الوسوم الضمنية
 
-Emmet has a smart system that infers tag names based on parent-child relationships. This shortens your abbreviations even further.
+يملك Emmet نظامًا ذكيًا يستنتج أسماء الوسوم بناءً على علاقات الأب بالابن، وهذا يختصر اختصاراتك أكثر.
 
-For example, when creating a list, you can leave out the `li` tag name:
+فمثلًا، عند إنشاء قائمة يمكنك ترك اسم الوسم `li`:
 
 ```css
 ul>.item*3
 ```
 
-Emmet knows that `ul` elements typically contain `li` children, so it produces:
+يعرف Emmet أن عناصر `ul` تحتوي عادةً على أبناء من نوع `li`، لذا يُنتج:
 
 ```html
 <ul>
@@ -222,22 +222,22 @@ Emmet knows that `ul` elements typically contain `li` children, so it produces:
 </ul>
 ```
 
-Common implicit tags include:
+ومن الوسوم الضمنية الشائعة:
 
-- `li` inside `ul` and `ol`
-- `tr` inside `table`
-- `td` inside `tr`
-- `option` inside `select`
+- `li` داخل `ul` و `ol`
+- `tr` داخل `table`
+- `td` داخل `tr`
+- `option` داخل `select`
 
-### Lorem Ipsum Text Generation
+### توليد نص Lorem Ipsum
 
-Emmet includes a powerful lorem ipsum generator to quickly add placeholder text:
+يتضمّن Emmet مولّدًا قويًا لنص lorem ipsum لإضافة نص بديل سريعًا:
 
 ```css
 p>lorem
 ```
 
-Creates a paragraph with standard lorem ipsum text:
+فينشئ فقرة بنص lorem ipsum القياسي:
 
 ```html
 <p>
@@ -247,25 +247,25 @@ Creates a paragraph with standard lorem ipsum text:
 </p>
 ```
 
-You can specify the number of words:
+ويمكنك تحديد عدد الكلمات:
 
 ```css
 p>lorem10
 ```
 
-Generates exactly 10 words:
+فيولّد عشر كلمات بالضبط:
 
 ```html
 <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit, laboriosam.</p>
 ```
 
-Combine with multipliers for multiple paragraphs:
+واجمع ذلك مع معاملات التكرار للحصول على فقرات متعددة:
 
 ```css
 article>(h2>lorem5)+p*3>lorem20
 ```
 
-Creates an article with a heading and three paragraphs:
+فينشئ مقالًا بعنوان وثلاث فقرات:
 
 ```html
 <article>
@@ -285,25 +285,25 @@ Creates an article with a heading and three paragraphs:
 </article>
 ```
 
-### Real-World-ish, Complex-ish Example
+### مثال شبه واقعي وشبه معقّد
 
-Here’s a complete blog post card with structured content:
+إليك بطاقة مقال كاملة بمحتوى منظّم:
 
 ```css
 article.card>(header.card__header>h2.card__title{Post Title $}+p.card__meta>time+span.card__author{Author Name})+(div.card__content>p*2>lorem)+footer.card__footer>a.btn.btn--primary{Read More}
 ```
 
-This single abbreviation produces a fully structured blog post card with proper classes, dummy text, and styled buttons—demonstrating the true power of Emmet for rapid frontend development.
+ينتج هذا الاختصار الواحد بطاقة مقال كاملة البنية بأصناف مناسبة ونص صوري وأزرار منسّقة، وهو ما يبيّن القوة الحقيقية لـ Emmet في تطوير الواجهات الأمامية بسرعة.
 
-## Wrap with Abbreviation
+## اللفّ باختصار (Wrap with Abbreviation)
 
-Emmet isn’t just for generating new markup—it can also wrap existing code in a new structure. Highlight the code you want to wrap, then invoke the **Wrap with Abbreviation** command via the Command Palette. Type your abbreviation (for example, `section>div.wrapper`) and press `Tab`. Emmet will enclose your selection in the new markup, saving you the hassle of manual edits.
+لا يقتصر Emmet على توليد وسوم جديدة، بل يستطيع أيضًا لفّ الشيفرة الموجودة داخل بنية جديدة. حدّد الشيفرة التي تريد لفّها، ثم نفّذ أمر **Wrap with Abbreviation** من لوحة الأوامر. اكتب اختصارك (مثل `section>div.wrapper`) واضغط `Tab`، فيحيط Emmet تحديدك بالوسوم الجديدة، موفّرًا عليك عناء التحرير اليدوي.
 
-> **Use this feature to quickly refactor blocks of code, adding semantic wrappers or applying consistent styling without interrupting your flow.**
+> **استخدم هذه الميزة لإعادة هيكلة كتل الشيفرة سريعًا، بإضافة أغلفة دلالية أو تطبيق تنسيق متّسق دون مقاطعة سيرك.**
 
-## Custom Emmet Snippets
+## مقتطفات Emmet المخصّصة
 
-For repetitive patterns or project-specific markup, you can define custom Emmet snippets. Customize these by adding an `emmet.extensionsPath` entry in your settings to point to a folder containing your snippets. For example, create a file named `snippets.json` in your designated folder with content like:
+للأنماط المتكرّرة أو الوسوم الخاصة بمشروعك، يمكنك تعريف مقتطفات Emmet مخصّصة. خصّصها بإضافة مُدخل `emmet.extensionsPath` في إعداداتك ليشير إلى مجلد يحتوي مقتطفاتك. فمثلًا، أنشئ ملفًا باسم `snippets.json` في مجلدك المخصّص بمحتوى مثل:
 
 ```json
 {
@@ -315,7 +315,7 @@ For repetitive patterns or project-specific markup, you can define custom Emmet 
 }
 ```
 
-Then, set the path in your `settings.json`:
+ثم اضبط المسار في `settings.json`:
 
 ```json
 {
@@ -323,10 +323,10 @@ Then, set the path in your `settings.json`:
 }
 ```
 
-This way, typing `btn` and pressing `Tab` will quickly insert your custom button template.
+وبهذه الطريقة، سؤدي كتابة `btn` والضغط على `Tab` إلى إدراج قالب الزر المخصّص بسرعة.
 
-> **Custom snippets can be a game changer when working on projects with repetitive UI elements. Tailor them to your codebase to save time and reduce errors.**
+> **قد تُحدث المقتطفات المخصّصة فرقًا كبيرًا عند العمل على مشاريع بعناصر واجهة متكرّرة. فصّمها على مقاس شيفرتك لتوفّر الوقت وتقلّل الأخطاء.**
 
-These additional techniques and settings elevate Emmet from a simple abbreviation tool to a fully customizable assistant that adapts to your specific development needs.
+ترتقي هذه التقنيات والإعدادات الإضافية بـ Emmet من أداة اختصارات بسيطة إلى مساعد قابل للتخصيص بالكامل يتلاءم مع احتياجاتك التطويرية الخاصة.
 
-Now, let’s take a look at some [some exercises](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises).
+والآن، لنلقِ نظرة على [بعض التمارين](https://stevekinney.com/courses/visual-studio-code/vscode-emmet-exercises).

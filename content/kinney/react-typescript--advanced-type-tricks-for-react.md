@@ -1,18 +1,18 @@
 ---
-title: "Advanced Type Tricks for React"
-lang: en
+title: "حِيَل الأنواع المتقدّمة في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/advanced-type-tricks-for-react"
 ---
 
-There’s a line where TypeScript stops being helpful and starts feeling like you’re wrestling a compiler that’s smarter than you are. But once you level up beyond the basics, TypeScript can actually make your React components more expressive, safer, and genuinely pleasant to work with. We’re going to explore the advanced type tricks that turn TypeScript from “necessary evil” to “secret superpower” (and maybe help you look like a wizard in your next code review).
+هناك خطّ تتوقّف عنده مساعدة TypeScript ويبدأ عنده الشعور بأنك تصارع مُصرِّفًا أذكى منك. لكن ما إن تتجاوز الأساسيات حتى يصير TypeScript قادرًا فعليًا على جعل مكوّنات React أكثر تعبيرًا وأمانًا ومتعةً في العمل معها. سنستكشف في ما يلي حِيَل الأنواع المتقدّمة التي تحوّل TypeScript من «شرٍّ لا بدّ منه» إلى «قوة سرّية» (وربما تساعدك على الظهور كالساحر في مراجعة الشيفرة القادمة).
 
-By the end of this, you’ll understand how to use `satisfies` for type assertions that don’t give up type inference, const assertions to make your component APIs rock-solid, and conditional/mapped types that adapt to whatever data you throw at them.
+وفي نهاية هذا، ستفهم كيف تستخدم `satisfies` لتأكيدات أنواع لا تستسلم فيها للاستنتاج، وتأكيدات const لتثبيت واجهات مكوّناتك ثبات الصخر، والأنواع الشرطية والمُسقطة التي تتكيّف مع أي بيانات تُلقيها عليها.
 
-## The `satisfies` Operator: Type Safety Without the Handcuffs
+## معامل `satisfies`: أمان أنواع بلا قيود
 
-The `satisfies` operator (introduced in TypeScript 4.9) lets you verify that something matches a type without actually changing its inferred type. It’s like having a type guard that doesn’t steal your type information.
+معامل `satisfies` (المُقدَّم في TypeScript 4.9) يتيح لك التحقّق من أن شيئًا يطابق نوعًا ما دون تغيير نوعه المستنتج فعليًا. فهو كأن لديك حرّاس أنواع لا يسرق معلومات نوعك.
 
-Here’s the problem it solves. Let’s say you’re building a theme configuration for your app:
+وهنا المشكلة التي يحلّها. لنفرض أنك تبني إعدادات سِمة (theme) لتطبيقك:
 
 ```typescript
 // ❌ Bad: We lose specific type information
@@ -25,7 +25,7 @@ const theme: Record<string, string> = {
 // TypeScript now thinks theme.primary is just `string`, not the literal '#3b82f6'
 ```
 
-With `satisfies`, you get the best of both worlds:
+ومع `satisfies` تحصل على أفضل الخيارين:
 
 ```typescript
 // ✅ Good: We verify the shape AND keep the literal types
@@ -39,7 +39,7 @@ const theme = {
 type PrimaryColor = typeof theme.primary; // '#3b82f6'
 ```
 
-This becomes powerful when building component variants with strict typing:
+ويصبح هذا قويًا عند بناء تنويعات المكوّنات بأنواع صارمة:
 
 ```typescript
 interface ButtonVariants {
@@ -71,15 +71,15 @@ function Button({ variant, size }: ButtonVariants) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Use `satisfies` when you want to verify a type constraint without losing the specific inferred type. It’s particularly useful for configuration objects and lookup tables.
+> استخدم `satisfies` حين تريد التحقّق من قيد نوعي دون فقدان النوع المستنتج المحدّد. وهو مفيد بصفة خاصة لكائنات الإعداد وجداول البحث.
 
-## Const Assertions: Making Component APIs Bulletproof
+## تأكيدات const: واجهات مكوّنات لا تُخترق
 
-Const assertions (the `as const` suffix) turn mutable values into readonly, literal types. For React components, this makes your APIs much more predictable and your autocomplete much more helpful.
+تحوّل تأكيدات const (لاحقة `as const`) القيم القابلة للتغيير إلى أنواع للقراءة فقط وأنواع حرفية. وبالنسبة لمكوّنات React، يجعل هذا واجهاتك أكثر قابلية للتنبؤ ويجعل الإكمال التلقائي أكثر نفعًا بكثير.
 
-Without const assertions, TypeScript makes assumptions that might not match your intent:
+ودون تأكيدات const، يتّخذ TypeScript افتراضات قد لا تطابق نيّتك:
 
 ```typescript
 // ❌ Without const assertion
@@ -92,7 +92,7 @@ function Avatar({ size }: { size: (typeof sizes)[number] }) {
 }
 ```
 
-With const assertions, you get precise literal types:
+ومع تأكيدات const تحصل على أنواع حرفية دقيقة:
 
 ```typescript
 // ✅ With const assertion
@@ -105,7 +105,7 @@ function Avatar({ size }: { size: (typeof sizes)[number] }) {
 }
 ```
 
-This pattern shines when building reusable component libraries:
+ويتألّق هذا النمط عند بناء مكتبات مكوّنات قابلة لإعادة الاستخدام:
 
 ```typescript
 const iconSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
@@ -132,7 +132,7 @@ function Icon({ name, size = 'md', color = 'primary' }: IconProps) {
 <Icon name="heart" size="lg" color="danger" />;
 ```
 
-You can also use const assertions with object configurations:
+ويمكنك أيضًا استخدام تأكيدات const مع إعدادات الكائنات:
 
 ```typescript
 const statusConfig = {
@@ -150,13 +150,13 @@ function StatusBadge({ status }: { status: StatusType }) {
 }
 ```
 
-## Conditional Types: Components That Adapt to Your Data
+## الأنواع الشرطية: مكوّنات تتكيّف مع بياناتك
 
-Conditional types let you create components that change their behavior based on the types they receive. Think of them as type-level if statements.
+تتيح لك الأنواع الشرطية إنشاء مكوّنات تغيّر سلوكها بناءً على الأنواع التي تتلقّاها. فكّر فيها كأنها جمل if على مستوى الأنواع.
 
-The basic syntax is: `T extends U ? X : Y` — “If T is assignable to U, then X, otherwise Y.”
+الصيغة الأساسية هي: `T extends U ? X : Y` — «إذا كان T قابلًا للإسناد إلى U، فالنتيجة X، وإلّا فالنتيجة Y».
 
-Here’s a practical example. Let’s build a `DataTable` component that adapts based on whether you provide an array or a loading state:
+إليك مثالًا عمليًا. لنبنِ مكوّن `DataTable` يتكيّف بناءً على ما إن كنت تمرّر مصفوفةًا أم حالة تحميل:
 
 ```typescript
 type DataTableProps<T> = T extends readonly unknown[]
@@ -200,7 +200,7 @@ function DataTable<T extends readonly unknown[] | undefined>(props: DataTablePro
 />
 ```
 
-Conditional types also work great for building polymorphic components that change behavior based on props:
+وتعمل الأنواع الشرطية بشكل رائع أيضًا لبناء مكوّنات متعدّدة الأشكال (polymorphic) تغيّر سلوكها بناءً على الخصائص:
 
 ```typescript
 type ButtonProps<T extends 'button' | 'link'> = {
@@ -241,17 +241,17 @@ function Button<T extends 'button' | 'link'>(props: ButtonProps<T>) {
 <Button variant="button" onClick={() => alert('clicked')} />
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Conditional types can get complex quickly. Start simple and add complexity only when the type safety benefits justify the mental overhead.
+> يمكن أن تتعقّد الأنواع الشرطية بسرعة. ابدأ ببساطة، ولا تضف التعقيد إلا حين تبرّر فوائد أمان الأنواع كلفة التفكير الإضافي.
 
-## Mapped Types: Transforming Types Like a Pro
+## الأنواع المُسقطة: حوِّل الأنواع كالمحترفين
 
-Mapped types let you create new types by transforming the properties of existing types. They’re like `Array.map()` but for type definitions.
+تتيح لك الأنواع المُسقطة إنشاء أنواع جديدة عبر تحويل خصائص أنواع موجودة. فهي مثل `Array.map()` لكن لتعريفات الأنواع.
 
-The basic syntax is: `{ [K in keyof T]: SomeTransformation<T[K]> }`
+الصيغة الأساسية هي: `{ [K in keyof T]: SomeTransformation<T[K]> }`
 
-Here’s a common Real World Use Case™: building form components that handle validation states for every field:
+وهذا مثال شائع على الاستخدام في العالم الحقيقي™: بناء مكوّنات نماذج تتعامل مع حالات التحقّق لكل حقل:
 
 ```typescript
 type User = {
@@ -314,7 +314,7 @@ function UserForm() {
 }
 ```
 
-You can also create mapped types that make properties required or readonly:
+ويمكنك أيضًا إنشاء أنواع مُسقطة تجعل الخصائص مطلوبة أو للقراءة فقط:
 
 ```typescript
 // Make all properties required
@@ -336,7 +336,7 @@ type UserStrings = StringifyValues<User>;
 // Results in: { name: string; email: string; age: string; }
 ```
 
-Here’s a practical example for building type-safe event handlers:
+وهذا مثال عملي لبناء معالِجات أحداث آمنة من حيث الأنواع:
 
 ```typescript
 type EventMap = {
@@ -379,11 +379,11 @@ emitter.emit('user:login', {
 });
 ```
 
-## Utility Types That Make Everything Click
+## أنواع الأدوات (utility types) التي تجعل كل شيء ينضبط
 
-TypeScript comes with built-in utility types that work great with React patterns. Let’s see how to use them effectively:
+يأتي TypeScript بأنواع أدوات مدمجة تعمل بشكل رائع مع أنماط React. ولنتعرّف على كيفية استخدامها بفاعلية:
 
-### `Pick` and `Omit` for Component Composition
+### `Pick` و `Omit` لتكوين المكوّنات
 
 ```typescript
 interface User {
@@ -417,7 +417,7 @@ function UserProfile(props: Omit<User, 'isAdmin'>) {
 }
 ```
 
-### `Partial` for Flexible Update Functions
+### `Partial` لدوال التحديث المرنة
 
 ```typescript
 interface UserSettings {
@@ -453,9 +453,9 @@ function SettingsForm({
 }
 ```
 
-## Putting It All Together: A Type-Safe Data Fetching Hook
+## جمع كل ذلك معًا: خُطّاف آمن النوع لجلب البيانات
 
-Let’s combine all these techniques into a practical example—a data fetching hook that adapts to different API responses:
+لنجمع كل هذه التقنيات في مثال عملي — خُطّاف لجلب البيانات يتكيّف مع استجابات API المختلفة:
 
 ```typescript
 // Configuration for different API endpoints
@@ -553,11 +553,11 @@ function UserDetail({ userId }: { userId: string }) {
 }
 ```
 
-## Common Pitfalls and How to Avoid Them
+## الأخطاء الشائعة وكيف تتجنّبها
 
-### Don’t Overcomplicate Early
+### لا تُعقّد الأمور في البداية
 
-Start with simple types and add complexity only when you need it:
+ابدأ بأنواع بسيطة وأضف التعقيد فقط حين تحتاجه:
 
 ```typescript
 // ❌ Overengineered from the start
@@ -578,9 +578,9 @@ interface ButtonProps {
 }
 ```
 
-### Watch Out for Excessive Nesting
+### انتبه للتداخل المفرط
 
-Deeply nested conditional types become hard to debug:
+تصبح الأنواع الشرطية المتداخلة بعمق صعبة في التنقيح:
 
 ```typescript
 // ❌ Hard to understand and maintain
@@ -599,23 +599,23 @@ type ActionPrefix = 'user' | 'admin';
 type ActionType<T extends string> = T extends `${ActionPrefix}:${infer Action}` ? Action : never;
 ```
 
-### Performance Considerations
+### اعتبارات الأداء
 
-Complex types can slow down TypeScript compilation. If you notice slow type checking:
+يمكن للأنواع المعقّدة أن تُبطئ تصريف TypeScript. فإذا لاحظت بطئًا في فحص الأنواع:
 
-- Use simpler types in development and add complexity only when needed
-- Consider using `any` or `unknown` for deeply nested external APIs
-- Break complex types into smaller, reusable pieces
+- استخدم أنواعًا أبسط في التطوير، وأضف التعقيد فقط عند الحاجة
+- فكّر في استخدام `any` أو `unknown` لواجهات API الخارجية المتداخلة بعمق
+- قسّم الأنواع المعقّدة إلى أجزاء أصغر قابلة لإعادة الاستخدام
 
-## Where to Go From Here
+## إلى أين ننتقل من هنا
 
-These advanced type tricks unlock a lot of power, but they’re tools, not goals. Focus on using them to solve real problems:
+تفتح حِيَل الأنواع المتقدّمة هذه قدرات كثيرة، لكنها أدوات لا أهداف. فركّز على استخدامها لحلّ مشكلات حقيقية:
 
-1. **Start with `satisfies`** for configuration objects where you need both validation and specific types
-2. **Use const assertions** for component APIs with fixed sets of options
-3. **Try conditional types** when you need components that adapt based on their props
-4. **Experiment with mapped types** for forms and data transformation patterns
+1. **ابدأ بـ `satisfies`** لكائنات الإعداد التي تحتاج فيها إلى التحقّق والأنواع المحدّدة معًا
+2. **استخدم تأكيدات const** لواجهات المكوّنات ذات الخيارات المحدّدة
+3. **جرّب الأنواع الشرطية** حين تحتاج مكوّنات تتكيّف بناءً على خصائصها
+4. **جرّب الأنواع المُسقطة** في النماذج وأنماط تحويل البيانات
 
-The best TypeScript feels invisible when it’s working—it catches your mistakes without getting in your way. These techniques help you build that experience.
+أفضل ما في TypeScript هو أنّه يبدو غير مرئي وهو يعمل — فهو يلتقط أخطاءك دون أن يعترض طريقك. وتقنياتك هذه تساعدك على بناء تلك التجربة.
 
-For your next project, try picking one of these patterns and implementing it in a component you’re already working on. You’ll be surprised how much safer and more pleasant your React development becomes when TypeScript is working with you instead of against you.
+في مشروعك القادم، جرّب أن تختار أحد هذه الأنماط وتطبّقه في مكوّن تعمل عليه بالفعل. وستندهش كم يصير تطويرك بـ React أكثر أمانًا ومتعةً حين يعمل TypeScript معك لا ضدّك.

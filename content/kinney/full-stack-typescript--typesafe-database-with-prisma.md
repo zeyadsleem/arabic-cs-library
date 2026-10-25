@@ -1,20 +1,20 @@
 ---
-title: "Prisma"
-lang: en
+title: "قاعدة بيانات آمنة الأنواع مع Prisma"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/typesafe-database-with-prisma"
 ---
 
-Below is a step‑by‑step tutorial that not only shows you how to set up Prisma with Express and TypeScript for a simple todo app but also highlights the changes you made—replacing your custom TaskClient with Prisma for full type safety. Let’s jump in.
+في ما يلي درس تعليمي خطوة بخطوة لا يوضّح لك كيفية إعداد Prisma مع Express و TypeScript لتطبيق مهام بسيط فحسب، بل يسلّط الضوء أيضًا على التغييرات التي أجريتها — باستبدالك عميل `TaskClient` المخصّص لديك بـ Prisma للحصول على أمان كامل للأنواع. لِنبدأ.
 
-## Initialize Prisma
+## تهيئة Prisma
 
-Initialize Prisma by running:
+هيّئ Prisma بتشغيل:
 
 ```bash
 npx prisma init
 ```
 
-This creates a `prisma/` folder with a `schema.prisma` file. Edit the file to define your Task model:
+ينشئ هذا مجلد `prisma/` يحتوي على ملف `schema.prisma`. حرّر الملف لتعريف نموذج Task لديك:
 
 ```prisma
 datasource db {
@@ -34,16 +34,16 @@ model Task {
 }
 ```
 
-Then run a migration and generate the Prisma client:
+ثم شغّل ترحيلًا وولّد عميل Prisma:
 
 ```bash
 npx prisma migrate dev --name init
 npx prisma generate
 ```
 
-## Integrating Prisma in Your Express Server
+## دمج Prisma في خادم Express لديك
 
-Previously, you used a custom `TaskClient` (and a `Database` type from SQLite) to handle your database operations. Now we’re switching to Prisma to get true type safety. Here’s a look at your diff with changes:
+في السابق كنت تستخدم `TaskClient` مخصّصًا (ونوع `Database` من SQLite) للتعامل مع عمليات قاعدة البيانات لديك. والآن ننتقل إلى Prisma للحصول على أمان أنواع حقيقي. وإليك نظرة على الفرق مع التغييرات:
 
 ```diff
 diff --git a/server/src/server.ts b/server/src/server.ts
@@ -61,9 +61,9 @@ index bbdd593..53ee07a 100644
 +
 ```
 
-### Replacing CRUD Methods
+### استبدال توابع CRUD
 
-Instead of calling methods on your custom client, you now use Prisma’s methods:
+بدلًا من استدعاء توابع على عميلك المخصّص، تستخدم الآن توابع Prisma:
 
 ### `GET /tasks`
 
@@ -96,9 +96,9 @@ await prisma.task.update({ where: { id }, data });
 await prisma.task.delete({ where: { id } });
 ```
 
-## Full Updated `server.ts` Example
+## مثال `server.ts` المحدَّث بالكامل
 
-Here’s what your complete `server.ts` might look like after integrating Prisma:
+إليك كيف قد يبدو ملف `server.ts` الكامل لديك بعد دمج Prisma:
 
 ```typescript
 import cors from 'cors';
@@ -198,4 +198,4 @@ export async function createServer() {
 }
 ```
 
-*Note:* Make sure you handle type conversions if your route parameters (like `id`) need to be numbers. Depending on your Prisma schema, you might need to convert `id` from string to number (e.g., using `Number(id)`).
+*ملاحظة:* تأكد من التعامل مع تحويلات الأنواع إذا كانت معاملات مساراتك (مثل `id`) تحتاج إلى أن تكون أرقامًا. ووفقًا لمخطط Prisma لديك، قد تحتاج إلى تحويل `id` من نص إلى رقم (مثلًا باستخدام `Number(id)`).

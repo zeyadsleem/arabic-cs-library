@@ -1,12 +1,12 @@
 ---
-title: "Mocking DOM Methods"
-lang: en
+title: "محاكاة توابع DOM"
+lang: ar
 source: "https://stevekinney.com/courses/testing/mocking-dom-methods"
 ---
 
-Way back [in the beginning](https://stevekinney.com/courses/testing/the-basics), we got `add` working, but let’s up our game. Let’s assume we’ve got a button that increments a counter when clicked. We want to test that the user sees the count increase.
+في [البداية](https://stevekinney.com/courses/testing/the-basics) منذ زمن، جعلنا `add` يعمل، لكن لنرفع مستوى لعبتنا. لنفترض أن لدينا زرًا يزيد عدّادًا عند النقر عليه. نريد أن نختبر أن المستخدم يرى العدّاد يزداد.
 
-We’ll need to adjust our setup a bit for the DOM:
+سنحتاج إلى تعديل إعدادنا قليلًا من أجل DOM:
 
 ```html
 <!-- index.html -->
@@ -34,7 +34,7 @@ We’ll need to adjust our setup a bit for the DOM:
 </html>
 ```
 
-Here’s the test for that behavior:
+إليك اختبار ذلك السلوك:
 
 ```javascript
 import { describe, it, expect } from 'vitest';
@@ -66,11 +66,11 @@ describe('Counter app', () => {
 });
 ```
 
-Rather than testing the internal state directly, we’re checking **the thing we care about most**—what the user sees: that number goes up when the button is clicked. Now when some poor soul is maintaining your app in the future, they can *immediately tell* what’s going on—oh, button click equals counter change, cool. They don’t have to dig into how the inner state of `count` works.
+فبدلًا من اختبار الحالة الداخلية مباشرةً، نتحقق من **الشيء الذي يهمّنا أكثر**: ما يراه المستخدم، أي أن الرقم يزداد عند النقر على الزر. وهكذا عندما يعتني شخص مسكين بتطبيقك في المستقبل، يستطيع *أن يعرف فورًا* ما يجري: آه، النقر على الزر يعني تغيّر العدّاد، رائع. ليس عليه أن يحفر في كيفية عمل الحالة الداخلية لـ `count`.
 
-## Mocking DOM Methods
+## محاكاة توابع DOM
 
-Sometimes you need to mock up DOM methods or third-party services—stuff that gets a little trickier in tests. Let’s mock the `getElementById` function to see how easy it is in Vitest:
+أحيانًا تحتاج إلى محاكاة توابع DOM أو خدمات خارجية، وهي أمور تصبح أعقد قليلًا في الاختبارات. لنُحاكِ الدالة `getElementById` لنرى مدى سهولة ذلك في Vitest:
 
 ```javascript
 import { describe, it, vi } from 'vitest';
@@ -91,4 +91,4 @@ describe('DOM tests', () => {
 });
 ```
 
-You just mocked `getElementById` and verified it was called. Vitest comes with a mocking library built-in, so you don’t need to yank in extra dependencies just for the basics like spies, mocks, and stubs.
+لقد حاكيت للتوّ `getElementById` وتحقّقت من أنه نُودي عليه. يأتي Vitest بمكتبة محاكاة مدمجة، لذا لا تحتاج إلى جلب اعتمادات إضافية لمجرد الأساسيات مثل الجواسيس والبدائل المُحاكاة والبدائل.

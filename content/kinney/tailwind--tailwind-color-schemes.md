@@ -1,16 +1,16 @@
 ---
-title: "Color Schemes"
-lang: en
+title: "أنظمة الألوان"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/tailwind-color-schemes"
 ---
 
-Tailwind 4 uses CSS-first configuration with `@theme` for color management and the `color-scheme` property for native browser theming.
+يستخدم Tailwind 4 إعدادًا قائمًا على CSS أولًا مع `@theme` لإدارة الألوان وخاصية `color-scheme` لسمات المتصفح الأصلية.
 
-## The `color-scheme` Property
+## خاصية `color-scheme`
 
-Controls how browsers render native UI elements (form controls, scrollbars, system colors):
+تتحكم في كيفية تصيير المتصفحات لعناصر الواجهة الأصلية (عناصر النماذج وأشرطة التمرير وألوان النظام):
 
-*The color-scheme Property — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/3986b42760fe983571974aaa675ec496ec15bcfe29b214c3e8ce0b7a85f16566.html)*
+*خاصية color-scheme — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3986b42760fe983571974aaa675ec496ec15bcfe29b214c3e8ce0b7a85f16566.html)*
 
 ```html
 <!-- Apply to root for whole document -->
@@ -22,18 +22,18 @@ Controls how browsers render native UI elements (form controls, scrollbars, syst
 </html>
 ```
 
-### Available Utilities
+### الأدوات المتاحة
 
-- `scheme-normal` - Browser default
-- `scheme-light` - Light color scheme
-- `scheme-dark` - Dark color scheme
-- `scheme-light-dark` - Supports both (browser chooses)
-- `scheme-only-light` - Force light only
-- `scheme-only-dark` - Force dark only
+- `scheme-normal` - افتراضي المتصفح
+- `scheme-light` - نظام ألوان فاتح
+- `scheme-dark` - نظام ألوان داكن
+- `scheme-light-dark` - يدعم كليهما (المتصفح يختار)
+- `scheme-only-light` - يفرض الفاتح فقط
+- `scheme-only-dark` - يفرض الداكن فقط
 
-## Defining Color Palettes
+## تعريف لوحات الألوان
 
-Use `@theme` to define colors that generate utilities:
+استخدم `@theme` لتعريف ألوان تولّد أدوات:
 
 ```css
 @import 'tailwindcss';
@@ -50,18 +50,18 @@ Use `@theme` to define colors that generate utilities:
 }
 ```
 
-## Dark Mode Integration
+## تكامل الوضع الداكن
 
-### Default System Preference
+### تفضيل النظام الافتراضي
 
-*Default System Preference — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/22c30b0a6f5692e496716ee7f7f72ae3c0e1636b16e466bc4fe41574bba6de5b.html)*
+*تفضيل النظام الافتراضي — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/22c30b0a6f5692e496716ee7f7f72ae3c0e1636b16e466bc4fe41574bba6de5b.html)*
 
 ```html
 <!-- Automatic dark mode based on OS -->
 <div class="bg-white dark:bg-gray-900">Adapts to system preference</div>
 ```
 
-### Manual Theme Control
+### التحكم اليدوي في السمة
 
 ```css
 /* Override dark variant to use class */
@@ -78,7 +78,7 @@ Use `@theme` to define colors that generate utilities:
 }
 ```
 
-## Complete Color System Example
+## مثال نظام ألوان كامل
 
 ```css
 @import 'tailwindcss';
@@ -125,17 +125,17 @@ Use `@theme` to define colors that generate utilities:
 }
 ```
 
-## Using Theme Colors
+## استخدام ألوان السمة
 
-### In Utilities
+### في الأدوات
 
-*In Utilities — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/4628227dd3fb8306b7eb72ac11709a834d3e11d1478bdf8ec0577567df85269b.html)[CSS](#playground-css-semantic-colors)*
+*في الأدوات — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/4628227dd3fb8306b7eb72ac11709a834d3e11d1478bdf8ec0577567df85269b.html)[CSS](#playground-css-semantic-colors)*
 
 ```html
 <div class="bg-surface text-text border-surface-alt">Automatically themed content</div>
 ```
 
-### In Custom CSS
+### في CSS المخصص
 
 ```css
 .card {
@@ -145,9 +145,9 @@ Use `@theme` to define colors that generate utilities:
 }
 ```
 
-### In Arbitrary Values
+### في القيم العشوائية
 
-*In Arbitrary Values — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/ebb34efbc0bb013bc0991bc30b67de2b3ee9de0dd7e65b6bb7bd9da7a9eb3351.html)[CSS](#playground-css-semantic-colors)*
+*في القيم العشوائية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ebb34efbc0bb013bc0991bc30b67de2b3ee9de0dd7e65b6bb7bd9da7a9eb3351.html)[CSS](#playground-css-semantic-colors)*
 
 ```html
 <!-- Long form -->
@@ -157,10 +157,10 @@ Use `@theme` to define colors that generate utilities:
 <div class="bg-(--color-brand)/20">...</div>
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Use semantic color names** that describe purpose, not appearance
-2. **Set `color-scheme` on root** for consistent native UI
-3. **Test with forced colors** mode for accessibility
-4. **Provide theme toggle** that respects system preference
-5. **Use CSS variables** for runtime theme switching
+1. **استخدم أسماء ألوان دلالية** تصف الغرض لا المظهر
+2. **اضبط `color-scheme` على الجذر** لواجهة أصلية متسقة
+3. **اختبر مع** وضع الألوان المفروضة من أجل إمكانية الوصول
+4. **وفّر مبدّل سمة** يحترم تفضيل النظام
+5. **استخدم متغيّرات CSS** لتبديل السمة وقت التشغيل

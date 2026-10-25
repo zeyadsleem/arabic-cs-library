@@ -1,26 +1,26 @@
 ---
-title: "Creating a Button Component"
-lang: en
+title: "إنشاء مكوّن زرّ"
+lang: ar
 source: "https://stevekinney.com/courses/figma/creating-a-button-component"
 ---
 
-Let’s walk through the steps of creating a button component in Figma. One of the things that makes the button component particularly interesting to work on is the sheer numbers of flavors that it comes in.
+لنمضِ عبر خطوات إنشاء مكوّن زرّ في Figma. ومن الأمور التي تجعل العمل على مكوّن الزرّ مثيرًا للاهتمام بشكل خاص كثرة أنواعه المتاحة.
 
-We’re likely going to have a few major types of buttons in our design system.
+سنحظى على الأرجح ببضعة أنواع رئيسية من الأزرار في نظام التصميم لدينا.
 
 - Primary
 - Secondary
 - Destructive
 - Ghost
 
-Each of those buttons is going to have some different states that it can be in.
+سيكون لكل من هذه الأزرار بعض الحالات المختلفة التي يمكن أن يكون فيها.
 
 - Default
 - Hover
 - Active
 - Disabled
 
-That’s already 16 buttons and we haven’t even begun to consider that they can come in various sizes.
+هذا يعني 16 زرًا بالفعل، ولم نبدأ بعد في النظر في أنها قد تأتي بأحجام متنوّعة.
 
 - Extra Small
 - Small
@@ -28,71 +28,71 @@ That’s already 16 buttons and we haven’t even begun to consider that they ca
 - Large
 - Extra Large
 
-## Breaking Ground
+## البدء
 
-The first and easiest thing to do is start with some text for the label of the button.
+أول وأسهل شيء نفعله هو البدء ببعض النص لتسمية الزرّ.
 
-Just some text as the starting point for a button
+مجرد نص كنقطة بداية لزرّ
 
-Next, we’ll convert to an [auto-layout](https://stevekinney.com/courses/figma/auto-layout) layer by pressing **Shift-A**. Figma will do its best to set some padding, but we’ll need to do some adjustments.
+بعد ذلك، سنحوّله إلى طبقة [تخطيط تلقائي](https://stevekinney.com/courses/figma/auto-layout) بالضغط على **Shift-A**. ستبذل Figma قصارى جهدها لضبط بعض الحشو، لكننا سنحتاج إلى إجراء بعض التعديلات.
 
-We’ll give the following values:
+سنعطي القيم التالية:
 
-- Horizontal padding: `10px` or the `2.5` spacing token.
-- Vertical padding: `6px` or the `1.5` spacing token.
+- الحشو الأفقي: `10px` أو رمز التباعد `2.5`.
+- الحشو الرأسي: `6px` أو رمز التباعد `1.5`.
 
-This, of course, is only for the default button, which for our purposes, will be medium.
+هذا بالطبع للزرّ الافتراضي فقط، وهو في حالتنا سيكون الحجم medium.
 
-We’ll use the **primary** variant as our default as well. I can hear an argument that we should use the **secondary** variant as well. You’re welcome to go down that path if you’d like.
+سنستخدم النمط البديل **primary** كافتراضي أيضًا. أستطيع أن أتخيّل حجة بأننا ينبغي أن نستخدم النمط البديل **secondary** أيضًا. ولك مطلق الحرية في أن تسلك ذلك المسار إن أردت.
 
-> **Create specific variables for the component color**
+> **أنشئ متغيّرات خاصة بلون المكوّن**
 >
-> I can reference my color directly, but what I like to do here is create a new variable that references my color token. My thinking here is that I might have other kind of button that are not variations of this button *and* if I need to go to a different shade, then I don’t want to have to change all of them. For me, this also maps to how I might think of it in code.
+> يمكنني الإشارة إلى لوني مباشرة، لكن ما أحبّ فعله هنا هو إنشاء متغيّر جديد يشير إلى رمز اللون لديّ. وتفكيري هنا أنني قد أمتلك نوعًا آخر من الأزرار ليس تنويعة من هذا الزرّ *و* إذا احتجت إلى الانتقال إلى درجة لون مختلفة، فلا أريد أن أضطر إلى تغييرها كلها. وبالنسبة إليّ، يتوافق هذا أيضًا مع الطريقة التي قد أفكّر بها في الشيفرة.
 
-Component-specific button colors
+ألوان خاصة بمكوّن الزرّ
 
-> **Could I go as far as to extend this to my spacing and border radii?**
+> **هل يمكنني أن أذهب إلى حدّ توسيع هذا ليشمل التباعد وأنصاف أقطار الحدود؟**
 >
-> I probably could and maybe I should. The only thing stopping me is that I have a number of other sizes that I might have to deal with and I have some fears that things will get out of control.
+> يمكنني على الأرجح، وربما ينبغي لي ذلك. والشيء الوحيد الذي يمنعني هو أن لديّ عددًا من الأحجام الأخرى التي قد أضطر إلى التعامل معها، ويساورني بعض الخوف من أن الأمور ستخرج عن السيطرة.
 >
-> My general feeling is that I’d rather wait to see if I can can cull the larger list of tokens and just have a more limited set that I can rely on and change throughout my design.
+> إحساسي العام أنني أفضل أن أنتظر لأرى إن كان بإمكاني تقليص القائمة الأكبر من الرموز والاكتفاء بمجموعة أكثر تحديدًا يمكنني الاعتماد عليها وتغييرها في كل أنحاء تصميمي.
 
-Some other little tweaks:
+بعض التعديلات الصغيرة الأخرى:
 
-- I’ll use the `rounded` variable to give it some rounded edges.
-- I’ll use the `shadow-sm` to give it a slight shadow.
-- I’ll use a semibold font weight for the label.
+- سأستخدم المتغيّر `rounded` لإعطائه بعض الحواف المستديرة.
+- سأستخدم `shadow-sm` لإعطائه ظلًّا خفيفًا.
+- سأستخدم وزن خط semi-bold للتسمية.
 
-## Creating the Variants
+## إنشاء الأنماط البديلة
 
-I’ll create a component and then give it three variants for the state. I’ll name the layers as follows:
+سأنشئ مكوّنًا ثم أعطيه ثلاثة أنماط بديلة للحالة. وسأسمّي الطبقات كما يلي:
 
 - **Primary Button/State=Default**
 - **Primary Button/State=Hover**
 - **Primary Button/State=Active**
 - **Primary Button/State=Disabled**
 
-When I got to make the component set, it’ll automatically know the correct names and values for the attributes.
+وعندما أنشئ مجموعة المكوّنات، ستعرف تلقائيًا الأسماء والقيم الصحيحة للخصائص.
 
-## Setting Up the Interactions
+## إعداد التفاعلات
 
-Let’s get the interactions in place now so that like is easier when I begin to make copies of the component.
+لنُعِدّ التفاعلات الآن حتى يصبح الأمر أسهل عندما أبدأ في إنشاء نسخ من المكوّن.
 
-While hovering, we’ll transition to the hover state and when hovering, we’ll transition to the active state.
+أثناء التحويم، سننتقل إلى حالة التحويم، وأثناء التحويم، سننتقل إلى الحالة النشطة.
 
-Setting up transitions between button states
+إعداد الانتقالات بين حالات الزرّ
 
-## Creating the Other Buttons
+## إنشاء الأزرار الأخرى
 
-Creating a secondary button isn’t much different. I added a variable for the border as well. Arguably, I could/should do this for the primary button as well but with a transparent border. But, it’s probably not necessary—other than a bizarre need for consistency.
+إنشاء زرّ ثانوي ليس مختلفًا كثيرًا. أضفت متغيّرًا للحدّ أيضًا. ويمكن القول إنه كان بإمكاني/ينبغي لي فعل ذلك للزرّ الأساسي أيضًا لكن بحدّ شفاف. لكنه على الأرجح ليس ضروريًا — باستثناء حاجة غريبة إلى الاتساق.
 
-A secondary button
+زرّ ثانوي
 
-The same process should do the trick for the other variations as well. To do this, I’ll both duplicate the groups of variables and then also duplicate the components.
+ينبغي أن تؤدي العملية نفسها الغرض للتنويعات الأخرى أيضًا. وللقيام بذلك، سأكرّر مجموعات المتغيّرات ثم أكرّر المكوّنات أيضًا.
 
-## Next Steps
+## الخطوات التالية
 
-There are two next things we can do:
+هناك أمران تاليان يمكننا فعلهما:
 
-- [Supporting a dark theme with modes](https://stevekinney.com/courses/figma/adding-a-dark-theme-to-the-button)
-- [Generating an icon library](https://stevekinney.com/courses/figma/generating-an-icon-library)
+- [دعم سمة داكنة بالأوضاع](https://stevekinney.com/courses/figma/adding-a-dark-theme-to-the-button)
+- [توليد مكتبة أيقونات](https://stevekinney.com/courses/figma/generating-an-icon-library)

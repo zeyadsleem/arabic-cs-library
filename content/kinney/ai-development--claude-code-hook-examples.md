@@ -1,15 +1,14 @@
 ---
-title: "Hook Cookbook"
-lang: en
+title: "كتاب وصفات الخطّافات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-hook-examples"
 ---
 
-Hooks should be small enough that you can explain them in one sentence. The
-examples here are patterns, not copy-paste production policy.
+ينبغي أن تكون الخطّافات صغيرة بما يكفي لتشرحها في جملة واحدة. والأمثلة هنا أنماط، لا سياسة إنتاج جاهزة للنسخ واللصق.
 
-## Block Generated File Edits
+## احجب تعديلات الملفات المولَّدة
 
-Use a pre-tool hook to deny edits under a generated directory:
+استخدم خطّافًا قبل الأداة لرفض التعديلات تحت دليل مولَّد:
 
 ```json
 {
@@ -29,33 +28,29 @@ Use a pre-tool hook to deny edits under a generated directory:
 }
 ```
 
-The script should inspect the hook input and return a clear denial when the file
-is generated. Keep the path policy in the script so it can be tested.
+ينبغي أن يفحص السكربت مدخل الخطّاف ويعيد رفضًا واضحًا عندما يكون الملف مولَّدًا. أبقِ سياسة المسار في السكربت كي يمكن اختبارها.
 
-## Warn on Dangerous Bash Commands
+## حذّر من أوامر Bash الخطيرة
 
-Use a permission or pre-tool hook to require approval for commands that deploy,
-delete, force-push, or print secrets. The hook should block the command and tell
-the user exactly why.
+استخدم خطّاف صلاحيات أو خطّافًا قبل الأداة لاشتراط الموافقة على الأوامر التي تنشر أو تحذف أو تدفع بالقوة أو تطبع الأسرار. وينبغي أن يحجب الخطّاف الأمر ويخبر المستخدم بالسبب بدقة.
 
 ```
 Denied: command matches a production deployment pattern. Ask the user for
 explicit approval with the exact command.
 ```
 
-## Preserve Compaction State
+## حافظ على حالة الضغط
 
-A pre-compact hook can write a short status file:
+يستطيع خطّاف ما قبل الضغط أن يكتب ملف حالة قصيرًا:
 
 ```
 goal, changed files, completed checks, remaining checks, blockers
 ```
 
-Do not use this as the only state store. It is a safety net for long sessions.
+لا تستخدم هذا كمخزن الحالة الوحيد. فهو شبكة أمان للجلسات الطويلة.
 
-## Audit Background Subagents
+## دقّق الوكلاء الفرعيين العاملين في الخلفية
 
-A subagent stop hook can record the subagent name, tools used, and returned
-summary. That is useful when background work affects a main implementation.
+يستطيع خطّاف توقف الوكيل الفرعي أن يسجّل اسم الوكيل الفرعي والأدوات المستخدمة والملخّص المُعاد. وهذا مفيد عندما يؤثر عمل في الخلفية على تنفيذ رئيسي.
 
-Keep audit logs local unless the team has agreed on retention and privacy.
+أبقِ سجلات التدقيق محلية إلا إذا اتفق الفريق على الاحتفاظ والخصوصية.

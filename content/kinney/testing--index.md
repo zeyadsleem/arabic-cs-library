@@ -1,58 +1,58 @@
 ---
-title: "Introduction to Testing"
-lang: en
+title: "مقدمة إلى الاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/testing"
 ---
 
-The material in this course is intended to go along with the [Introduction to Testing](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney) course with [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
+المواد في هذه الدورة معدّة لتُرافق دورة [مقدمة إلى الاختبارات](https://frontendmasters.com/courses/testing/?utm_source=kinney&utm_medium=social&code=kinney) مع [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
 
-Testing increases your confidence that your applications will function as expected. This workshop will teach you the fundamentals of testing and give you the foundations to write more testable code in your applications. You’ll set up an efficient testing environment where a test runner is part of your development workflow. You’ll gain practical experience writing unit and integration tests while exploring common testing tools.
+الاختبار يزيد ثقتك بأن تطبيقاتك ستعمل كما هو متوقّع. ستعلّمك هذه الورشة أساسيات الاختبار وتمنحك الأسس لكتابة شيفرة أكثر قابلية للاختبار في تطبيقاتك. ستُهيّئ بيئة اختبار فعّالة يكون فيها مُشغّل الاختبارات جزءًا من سير عمل التطوير لديك. وستكتسب خبرة عملية في كتابة اختبارات الوحدة واختبارات التكامل أثناء استكشاف أدوات الاختبار الشائعة.
 
-## Prerequisites
+## المتطلبات السابقة {#prerequisites}
 
-- A fundamental understanding JavaScript
-- Familiarity with the command line (e.g just enough to navigate around directories and run a few commands)
-- Experience with Node, `npm`, `git`, and Github.
+- فهم أساسي لـ JavaScript
+- إلمام بسطر الأوامر (مثلًا بما يكفي للتنقل بين المجلدات وتشغيل بضعة أوامر)
+- خبرة بـ Node و`npm` و`git` وGithub.
 
-## The Basics
+## الأساسيات
 
-Here are some topics that we’ll cover while we’re doing some of the hands on activities, but I also wanted to include some content for you to reference later.
+إليك بعض الموضوعات التي سنغطيها أثناء القيام ببعض الأنشطة العملية، لكنني أردت أيضًا أن أضمّن بعض المحتوى لترجع إليه لاحقًا.
 
-- [Running Tests](https://stevekinney.com/courses/testing/running-tests)
-- [How Tests Work](https://stevekinney.com/courses/testing/how-tests-work)
-- [Filtering Tests](https://stevekinney.com/courses/testing/filtering-tests)
-- [Organizing and Annotating Tests](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
+- [تشغيل الاختبارات](https://stevekinney.com/courses/testing/running-tests)
+- [كيف تعمل الاختبارات](https://stevekinney.com/courses/testing/how-tests-work)
+- [تصفية الاختبارات](https://stevekinney.com/courses/testing/filtering-tests)
+- [تنظيم الاختبارات والتعليق عليها](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
 
-## Additional Reading
+## قراءات إضافية
 
-In this course, we’re going try to have a bias towards being hands-on and only delve into the philosophical bits when absolutely necessary. I’d prefer we spend our time writing tests rather than talking about writing tests. That said, I do have a bunch of materials on the thinking around best practices in terms of testing and you’re more than welcome to go through them at your leisure.
+سنحاول في هذه الدورة أن ننحاز إلى التطبيق العملي، وألّا نخوض في الجوانب النظرية إلا عند الضرورة القصوى. أفضّل أن نقضي وقتنا في كتابة الاختبارات بدلًا من الحديث عن كتابتها. ومع ذلك، لديّ مجموعة من المواد عن التفكير في أفضل الممارسات فيما يتعلّق بالاختبار، ويسعدني أن تطالعها في وقت فراغك.
 
-- [The Structure of a Unit Test](https://stevekinney.com/courses/testing/structure-of-a-unit-test)
-- [The Types of Tests: Unit, Integration, End-to-End](https://stevekinney.com/courses/testing/types-of-tests)
-- [Components of a Test: Test Runners and Assertion Libraries](https://stevekinney.com/courses/testing/test-runners-and-assertion-libraries)
-- [Assert Versus Expect](https://stevekinney.com/courses/testing/assert-versus-expect)
-- [Mocking: Best Practices and Common Pitfalls](https://stevekinney.com/courses/testing/mocking-best-practices)
-- [What is Test Driven Development?](https://stevekinney.com/courses/testing/test-driven-development)
-- [Organizing and Annotating Your Tests](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
-- [Strategies for Testing Conditional Logic](https://stevekinney.com/courses/testing/strategies-for-testing-conditional-logic)
+- [بنية اختبار الوحدة](https://stevekinney.com/courses/testing/structure-of-a-unit-test)
+- [أنواع الاختبارات: الوحدة والتكامل ومن طرف إلى طرف](https://stevekinney.com/courses/testing/types-of-tests)
+- [مكوّنات الاختبار: مُشغّلات الاختبارات ومكتبات التحقّق](https://stevekinney.com/courses/testing/test-runners-and-assertion-libraries)
+- [التحقّق مقابل التوقّع](https://stevekinney.com/courses/testing/assert-versus-expect)
+- [البدائل المُحاكاة: أفضل الممارسات والمزالق الشائعة](https://stevekinney.com/courses/testing/mocking-best-practices)
+- [ما هو التطوير المدفوع بالاختبارات؟](https://stevekinney.com/courses/testing/test-driven-development)
+- [تنظيم اختباراتك والتعليق عليها](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
+- [استراتيجيات اختبار المنطق الشرطي](https://stevekinney.com/courses/testing/strategies-for-testing-conditional-logic)
 
-## Libraries and Tools Used
+## المكتبات والأدوات المستخدمة
 
-Throughout this course, we’ll be leveraging the following libraries.
+على مدار هذه الدورة، سنستفيد من المكتبات التالية.
 
 - [Vitest](https://vitest.dev/)
 - [Testing Library](https://testing-library.com/)
 - [Playwright](https://playwright.dev/)
 
-Even if you use [Jest](https://jestjs.io/), *almost* all of the content in this course applies. If you’re curious, you can read more in [The Differences Between Jest and Vitest](https://stevekinney.com/courses/testing/differences-between-jest-and-vitest).
+حتى لو كنت تستخدم [Jest](https://jestjs.io/)، فإن *كل* محتوى هذه الدورة تقريبًا ينطبق عليك. وإذا كنت فضوليًا، يمكنك القراءة أكثر في [الفروق بين Jest وVitest](https://stevekinney.com/courses/testing/differences-between-jest-and-vitest).
 
-### Digging Deeper into Vitest
+### التعمّق أكثر في Vitest
 
-Additionally, I also have some further reading on some more advanced topics that are beyond the scope of this course.
+بالإضافة إلى ذلك، لديّ بعض القراءات الإضافية عن موضوعات أكثر تقدمًا تقع خارج نطاق هذه الدورة.
 
-- [Advanced Vitest Configuration](https://stevekinney.com/courses/testing/advanced-test-configuration)
-- [Advanced Debugging in Vitest](https://stevekinney.com/courses/testing/debugging-vitest-tests)
-- [Creating Custom Reporters in Vitest](https://stevekinney.com/courses/testing/vitest-reporters)
-- [Creating Custom Matchers in Vitest](https://stevekinney.com/courses/testing/custom-matchers)
-- [Test Contexts in Vitest](https://stevekinney.com/courses/testing/test-context)
-- [Running Tests for Related Files in Vitest](https://stevekinney.com/courses/testing/running-tests-for-related-files)
+- [تهيئة Vitest المتقدمة](https://stevekinney.com/courses/testing/advanced-test-configuration)
+- [التنقيح المتقدم في Vitest](https://stevekinney.com/courses/testing/debugging-vitest-tests)
+- [إنشاء مُبلّغين مخصّصين في Vitest](https://stevekinney.com/courses/testing/vitest-reporters)
+- [إنشاء مُطابِقات مخصّصة في Vitest](https://stevekinney.com/courses/testing/custom-matchers)
+- [سياقات الاختبار في Vitest](https://stevekinney.com/courses/testing/test-context)
+- [تشغيل اختبارات الملفات ذات الصلة في Vitest](https://stevekinney.com/courses/testing/running-tests-for-related-files)

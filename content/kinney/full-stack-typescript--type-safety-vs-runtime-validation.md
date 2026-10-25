@@ -1,33 +1,33 @@
 ---
-title: "Type Safety vs. Runtime Validation"
-lang: en
+title: "أمان الأنواع مقابل التحقّق في وقت التشغيل"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/type-safety-vs-runtime-validation"
 ---
 
-TypeScript’s strength lies in its static type system. During development, TypeScript meticulously analyzes your code, catching type errors before they ever reach runtime. This compile-time type checking is invaluable for preventing a vast array of potential issues, improving code maintainability, and fostering developer confidence.
+تكمن قوة TypeScript في نظام أنواعه الساكن. أثناء التطوير، يحلّل TypeScript شيفرتك بدقة، فيلتقط أخطاء الأنواع قبل أن تصل يومًا إلى وقت التشغيل. وفحص الأنواع هذا في وقت الترجمة لا يقدّر بثمن في منع طائفة واسعة من المشكلات المحتملة، وتحسين قابلية صيانة الشيفرة، وتعزيز ثقة المطوّر.
 
-However, TypeScript’s type system operates solely at *compile time*. Once your code is transpiled to JavaScript and executed, these type annotations are effectively erased. This means that while TypeScript can guarantee type safety *within* your codebase, it cannot inherently protect you from invalid data entering your application at runtime.
+لكن نظام أنواع TypeScript يعمل في *وقت الترجمة* وحده. فبمجرد أن تُحوَّل شيفرتك إلى JavaScript وتُنفَّذ، تُمحى تعليقات الأنواع هذه فعليًا. وهذا يعني أنه رغم قدرة TypeScript على ضمان أمان الأنواع *داخل* قاعدة شيفرتك، فهو لا يستطيع بطبيعته حمايتك من دخول بيانات غير صالحة إلى تطبيقك في وقت التشغيل.
 
-**Runtime validation** steps in to fill this critical gap. It ensures that data, especially data originating from external sources like user inputs, APIs, or configuration files, conforms to your expected types and structures *when your application is running*.
+يأتي **التحقّق في وقت التشغيل** لسدّ هذه الفجوة الحرجة. فهو يضمن أن البيانات — خصوصًا البيانات الآتية من مصادر خارجية مثل مدخلات المستخدم أو واجهات API أو ملفات التكوين — تطابق أنواعك وبنياتك المتوقعة *عندما يعمل تطبيقك*.
 
-[Zod](https://stevekinney.com/courses/full-stack-typescript/introduction-to-zod) excels at runtime validation, working in harmony with TypeScript’s compile-time checks. Think of it this way:
+يتفوّق [Zod](https://stevekinney.com/courses/full-stack-typescript/introduction-to-zod) في التحقّق في وقت التشغيل، ويعمل بتناغم مع فحوص TypeScript في وقت الترجمة. فكّر في الأمر هكذا:
 
-- **TypeScript:** Acts as your vigilant compile-time type enforcer, ensuring internal consistency and catching errors early in development.
-- **Zod:** Serves as your runtime gatekeeper, meticulously validating data at the boundaries of your application, preventing invalid data from corrupting your system.
+- **TypeScript:** يعمل كحارس أنواع يقظ في وقت الترجمة، فيضمن الاتساق الداخلي ويلتقط الأخطاء مبكرًا في التطوير.
+- **Zod:** يعمل كحارس بوابة في وقت التشغيل، فيتحقّق بدقة من البيانات عند حدود تطبيقك، ويمنع البيانات غير الصالحة من إفساد نظامك.
 
-## Where Should We Use Runtime Validation?
+## أين ينبغي أن نستخدم التحقّق في وقت التشغيل؟
 
-- **API Boundaries:** When your application interacts with external APIs, you have no control over the data they send back. Runtime validation ensures that API responses conform to your expected schema, preventing unexpected errors and data inconsistencies.
-- **User Input:** User-provided data is inherently untrustworthy. Forms, query parameters, and file uploads all require rigorous runtime validation to prevent malicious input, data corruption, and application crashes.
-- **Configuration Files:** Application configurations, often loaded from external files (JSON, YAML, etc.), must be validated at runtime to ensure they adhere to the expected structure and types, preventing misconfigurations and application malfunctions.
-- **Database Interactions:** While databases often enforce some level of data integrity, runtime validation at the application level provides an additional layer of security and ensures that data retrieved from the database is in the expected format.
+- **حدود API:** عندما يتفاعل تطبيقك مع واجهات API خارجية، فلا سلطان لك على البيانات التي تعيدها. يضمن التحقّق في وقت التشغيل أن استجابات API تطابق المخطط المتوقع، فيمنع أخطاء غير متوقعة وتناقضات في البيانات.
+- **مدخلات المستخدم:** البيانات التي يقدّمها المستخدم غير موثوقة بطبيعتها. فالنماذج ومعاملات الاستعلام ورفعات الملفات كلها تتطلب تحقّقًا صارمًا في وقت التشغيل لمنع المدخلات الخبيثة وإفساد البيانات وانهيار التطبيق.
+- **ملفات التكوين:** تكوينات التطبيق، التي تُحمَّل غالبًا من ملفات خارجية (JSON وYAML وغيرها)، يجب التحقّق منها في وقت التشغيل لتضمن التزامها بالبنية والأنواع المتوقعة، فتمنع سوء التكوين وأعطال التطبيق.
+- **التفاعلات مع قاعدة البيانات:** رغم أن قواعد البيانات كثيرًا ما تفرض مستوى من سلامة البيانات، فإن التحقّق في وقت التشغيل على مستوى التطبيق يوفّر طبقة أمان إضافية ويضمن أن البيانات المسترجَعة من قاعدة البيانات بالصيغة المتوقعة.
 
-### The Power of Schemas: Defining Data Expectations
+### قوة المخططات: تعريف توقعات البيانات
 
-At the heart of Zod lies are **schemas**. A Zod schema is a declarative blueprint that precisely defines the expected structure, type, and validation rules for your data. Schemas are the cornerstone of Zod’s power, offering several key advantages:
+في قلب Zod تقع **المخططات**. ومخطط Zod مخطط إعلاني يحدّد بدقة البنية المتوقعة للبيانات ونوعها وقواعد التحقّق منها. والمخططات هي حجر الزاوية في قوة Zod، وتقدّم عدة مزايا أساسية:
 
-- **Clarity and Readability:** Schemas provide a clear and concise way to document and understand the shape of your data. They serve as living documentation, making it easy for developers to grasp data structures and validation rules at a glance.
-- **Type Safety:** Zod schemas are deeply integrated with TypeScript. By defining a schema, you automatically gain TypeScript type inference for validated data, eliminating manual type annotations and ensuring seamless type safety throughout your application.
-- **Expressiveness:** Zod’s schema definition API is incredibly expressive, allowing you to define schemas for everything from simple primitives to complex nested objects, arrays, and custom data structures.
-- **Validation Logic Encapsulation:** Schemas encapsulate validation logic in a reusable and composable manner. You can create modular schemas for different parts of your application and easily combine or extend them as needed.
-- **Schema-First Approach:** Zod promotes a schema-first development approach, where you define your data schemas upfront. This proactive approach encourages thoughtful data modeling and validation from the outset, leading to more robust and maintainable applications.
+- **الوضوح والقابلية للقراءة:** توفّر المخططات طريقة واضحة وموجزة لتوثيق شكل بياناتك وفهمه. وهي تعمل كتوثيق حيّ، فيسهل على المطوّرين إدراك بنى البيانات وقواعد التحقّق بنظرة واحدة.
+- **أمان الأنواع:** مخططات Zod مدمجة بعمق مع TypeScript. فتحديد مخطط يمنحك تلقائيًا استنتاج أنواع TypeScript للبيانات المتحقَّق منها، فيُلغي تعليقات الأنواع اليدوية ويضمن أمان أنواع سلسًا في كل تطبيقك.
+- **التعبيرية:** واجهة تعريف المخططات في Zod شديدة التعبير، وتتيح لك تعريف مخططات لكل شيء من الأوليّات البسيطة إلى الكائنات المتداخلة المعقّدة والمصفوفات وبنى البيانات المخصّصة.
+- **تغليف منطق التحقّق:** تغلّف المخططات منطق التحقّق بطريقة قابلة لإعادة الاستخدام والتركيب. فيمكنك إنشاء مخططات معيارية لأجزاء مختلفة من تطبيقك ودمجها أو توسيعها بسهولة حسب الحاجة.
+- **مقاربة المخطط أولًا:** يشجّع Zod مقاربة تطوير تبدأ بالمخطط، حيث تعرّف مخططات بياناتك مسبقًا. وتشجّع هذه المقاربة الاستباقية على نمذجة بيانات متأنية وتحقّق من البداية، ما يقود إلى تطبيقات أكثر متانة وقابلية للصيانة.

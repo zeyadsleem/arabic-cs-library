@@ -1,26 +1,26 @@
 ---
-title: "Self-Testing AI Agents"
-lang: en
+title: "وكلاء الذكاء الاصطناعي الذين يختبرون أنفسهم"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents"
 ---
 
-Agents are fast at editing code. They are not particularly good at knowing whether the edit was any good. If every change they make requires you to read the diff, run the thing, click around the UI, eyeball the console, and then prompt the agent to fix what it missed, you haven’t automated much. You’ve traded one kind of typing for another.
+الوكلاء سريعون في تعديل الشيفرة. لكنهم ليسوا بارعين تحديدًا في معرفة ما إذا كان التعديل جيدًا. فإذا كان كل تغيير يقومون به يستلزم منك قراءة الفرق، وتشغيل التطبيق، والنقر في الواجهة، وفحص الطرفية بالعين، ثم مطالبة الوكيل بإصلاح ما فاته، فأنت لم تؤتمت الكثير. لقد استبدلت نوعًا من الكتابة بنوع آخر.
 
-A naïve cycle of AI-assisted development
+دورة ساذجة من التطوير بمساعدة الذكاء الاصطناعي
 
-And then this is what happens:
+ثم يحدث هذا:
 
-1. Ask the agent to do a thing.
-2. It comes back and says it did the thing.
-3. You check to see if it did the thing *right*.
-4. It didn’t.
-5. Tell it that it didn’t do it correctly.
-6. Lather, rinse, repeat.
+1. اطلب من الوكيل أن يفعل شيئًا.
+2. يعود ويقول إنه فعل الشيء.
+3. تتحقّق لترى هل فعله *على نحو صحيح*.
+4. لم يفعله.
+5. أخبره أنه لم يفعلها على نحو صحيح.
+6. أعد الكرّة، وكرّر.
 
-This workshop is built on a single bet: **the bottleneck isn’t the agent’s intelligence, it’s that we keep making ourselves the feedback loop.** If the agent could run lint, types, unit tests, an end-to-end probe, a visual diff, and a second-opinion review on its own, it would catch most of its own mistakes before we ever saw them. Our job is to make it cheap and automatic for the agent to check its own work.
+هذه الورشة مبنيّة على رهان واحد: **العقبة ليست ذكاء الوكيل، بل أننا نظلّ نجعل من أنفسنا حلقة التغذية الراجعة.** فلو كان الوكيل يستطيع تشغيل التدقيق اللغوي والأنواع واختبارات الوحدة وفحصًا شاملًا من طرف إلى طرف وفرقًا بصريًا ومراجعة برأي ثانٍ بنفسه، لالتقط معظم أخطائه قبل أن نراها أصلًا. مهمتنا أن نجعل تحقّق الوكيل من عمله رخيصًا وتلقائيًا.
 
-Every lab runs against the same starter project: [**Shelf**](https://github.com/stevekinney/shelf-life), a small [SvelteKit](https://kit.svelte.dev/) + TypeScript book-rating app with [Vitest](https://vitest.dev/) and [Playwright](https://playwright.dev/) already wired in. You’ll harden it across the day—adding agent rules, a static layer, dossiers, visual regression, and CI—until it’s the codebase the rest of the workshop assumes.
+كل مختبر يعمل على المشروع الانطلاقي نفسه: [**Shelf**](https://github.com/stevekinney/shelf-life)، تطبيق صغير لتقييم الكتب مبنيّ بـ [SvelteKit](https://kit.svelte.dev/) وTypeScript، مع [Vitest](https://vitest.dev/) و[Playwright](https://playwright.dev/) موصولين مسبقًا. ستقوّيه على مدار اليوم — بإضافة قواعد للوكيل، وطبقة ثابتة، وملفات تشخيص، وانحدار بصري، وتكامل مستمر — حتى يصبح الشيفرة التي تفترضها بقية الورشة.
 
-The day moves in three beats. First, **prove the UI behaves**: locators and the accessibility hierarchy, a real accessibility gate, the waiting story, storage state, HAR recording, deterministic state, hybrid API+UI tests, visual regression, and a small performance budget loop. Then, **get a second opinion**: review bots, tuning [Cursor’s Bugbot](https://cursor.com/bugbot) for your codebase, and what to do when the same flag shows up three times in a row. Finally, **underlay the cheap stuff and ship it**: lint and types as guardrails, dead code detection, git hooks, secret scanning, wiring the whole stack into CI, and validating the app again after merge or deploy-preview so “green CI” is not the last thing anybody checks.
+ينتقل اليوم في ثلاث حركات. أولًا، **أثبت أن الواجهة تسلك كما ينبغي**: المحدّدات والتسلسل الهرمي لإتاحة الوصول، وبوابة حقيقية لإتاحة الوصول، وحكاية الانتظار، وحالة التخزين، وتسجيل HAR، وحالة حتمية، واختبارات هجينة لواجهة البرمجة والواجهة الرسومية، والانحدار البصري، وحلقة صغيرة لميزانية الأداء. ثم **احصل على رأي ثانٍ**: روبوتات المراجعة، وضبط [Bugbot من Cursor](https://cursor.com/bugbot) ليناسب شيفرتك، وما تفعله حين تتكرّر الملاحظة نفسها ثلاث مرات متتالية. وأخيرًا، **مهّد الأساسيات الرخيصة وأطلقها**: التدقيق اللغوي والأنواع كحواجز، وكشف الشيفرة الميتة، وخطّافات git، وفحص الأسرار، وربط المنظومة كلها بالتكامل المستمر، والتحقّق من التطبيق مرة أخرى بعد الدمج أو معاينة النشر كي لا يكون «نجاح التكامل المستمر» آخر ما يفحصه أحد.
 
-There is also an **appendix** with some additional content that you *might* find helpful: how to make the review loop portable beyond [Bugbot](https://cursor.com/bugbot), where cross-browser and nightly checks belong without slowing every pull request to a crawl, and how to translate the Shelf loop into a different stack when your real app is not SvelteKit.
+وهناك أيضًا **ملحق** فيه محتوى إضافي قد *تجده* مفيدًا: كيف تجعل حلقة المراجعة قابلة للنقل خارج [Bugbot](https://cursor.com/bugbot)، وأين ينتمي التحقّق عبر المتصفحات والتحقّق الليلي دون إبطاء كل طلب سحب إبطاءً شديدًا، وكيف تترجم حلقة Shelf إلى منظومة مختلفة حين لا يكون تطبيقك الحقيقي مبنيًّا بـ SvelteKit.

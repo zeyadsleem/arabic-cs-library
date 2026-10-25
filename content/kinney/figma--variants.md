@@ -1,79 +1,79 @@
 ---
-title: "Variants"
-lang: en
+title: "الأنماط البديلة (Variants)"
+lang: ar
 source: "https://stevekinney.com/courses/figma/variants"
 ---
 
-Loki and his variants
+Loki وأنماطه البديلة
 
-We all know that there usually isn’t just *one* button. Buttons come in lots of shapes and sizes.
+نعلم جميعًا أنه لا يوجد عادةً زر *واحد* فقط. فالأزرار تأتي بأشكال وأحجام كثيرة.
 
-**TL;DR**: A variant is just a different version of a component. You can have a **component set** of made up of multiple variants.
+**باختصار**: النمط البديل (variant) ليس إلا نسخة مختلفة من مكوّن. ويمكن أن يكون لديك **طقم مكوّنات (component set)** يتكوّن من عدة أنماط بديلة.
 
-Figma’s variants are a super handy for handling different versions of components. It groups variations together, making it easier to pick the right one.
+الأنماط البديلة في Figma مفيدة جدًا للتعامل مع إصدارات مختلفة من المكوّنات. فهي تجمع الاختلافات معًا، ما يسهّل اختيار النمط الصحيح.
 
-They’re *particularly helpful* when it comes to [prototyping](https://stevekinney.com/courses/figma/prototyping). But, we’ll talk more about that in a bit.
+وهي *مفيدة بشكل خاص* عند [النمذجة الأولية (prototyping)](https://stevekinney.com/courses/figma/prototyping). لكننا سنتحدّث عن ذلك أكثر بعد قليل.
 
-> **Variants vs. Instance Swapping**
+> **الأنماط البديلة مقابل تبديل النسخ**
 >
-> Not only does Figma support variants, but it also supports this idea of making it easy to swap out a component with another—similar—component. When to use each approach can be a little nuanced. But, we’ll get into that in a bit.
+> لا يدعم Figma الأنماط البديلة فحسب، بل يدعم أيضًا فكرة تسهيل استبدال مكوّن بآخر — مشابه — له. وقد يكون تحديد متى تستخدم كل مقاربة دقيقًا بعض الشيء. لكننا سنتناول ذلك بعد قليل.
 
-## What Are Variants?
+## ما هي الأنماط البديلة؟
 
-You don’t want to have a million versions of the button component. You want one button (or so buttons) and the ability to toggle between their various—umm—variants.
+لا تريد أن يكون لديك مليون نسخة من مكوّن الزر. بل تريد زرًا واحدًا (أو نحو ذلك من الأزرار) والقدرة على التبديل بين أنماطه البديلة — أمم — المختلفة.
 
-Variants reduce clutter by housing related components together. They streamline the process of applying consistent changes and make it easier to experiment with different component states or styles.
+تقلّل الأنماط البديلة الفوضى بجمع المكوّنات المترابطة معًا. وهي تبسّط عملية تطبيق تغييرات متسقة وتسهّل التجربة بحالات أو أنماط المكوّنات المختلفة.
 
-1. **Simplified Organization:** By consolidating related components, variants reduce clutter in your Assets panel, facilitating easier and quicker access.
-2. **Efficient Iterations:** Variants allow for rapid testing of different component states or styles within your designs, promoting a more dynamic and fluid iteration process.
-3. **Consistency Across Designs:** Variants help maintain a cohesive design language across your project by ensuring consistent usage of different component versions.
-4. **Enhanced Collaboration:** For teams, variants offer clear, organized options for different component states or styles, improving the usability of design systems.
+1. **تنظيم أبسط:** بدمج المكوّنات المترابطة، تقلّل الأنماط البديلة الفوضى في لوحة Assets لديك، ما يسهّل الوصول إليها ويجعله أسرع.
+2. **تكرارات فعّالة:** تتيح الأنماط البديلة اختبار حالات أو أنماط المكوّنات المختلفة بسرعة داخل تصميماتك، ما يعزّز عملية تكرار أكثر ديناميكية وسلاسة.
+3. **اتساق عبر التصميمات:** تساعد الأنماط البديلة على الحفاظ على لغة تصميم متماسكة في مشروعك بضمان استخدام متسق لإصدارات المكوّنات المختلفة.
+4. **تعاون معزّز:** بالنسبة إلى الفرق، تقدّم الأنماط البديلة خيارات واضحة ومنظّمة لحالات أو أنماط المكوّنات المختلفة، ما يحسّن قابلية استخدام أنظمة التصميم.
 
-## Creating and Using Variants
+## إنشاء الأنماط البديلة واستخدامها
 
-### Adding a Variant to a Component
+### إضافة نمط بديل إلى مكوّن
 
-The easiest way to do this is similar to what we saw using [Component Properties](https://stevekinney.com/courses/figma/component-properties).
+أسهل طريقة لفعل ذلك مشابهة لما رأيناه عند استخدام [خصائص المكوّن](https://stevekinney.com/courses/figma/component-properties).
 
-A variant component property in Figma
+خاصية نمط بديل في مكوّن داخل Figma
 
-You’re variants are effectively key/value stores. They all need to have the same names for the given nature of the variant and then you can have a bunch of names for actual iterations.
+أنماطك البديلة هي في جوهرها مخازن مفتاح/قيمة (key/value). فكلها تحتاج إلى الأسماء نفسها بالنسبة إلى طبيعة النمط البديل المعنية، ثم يمكن أن يكون لديك مجموعة من الأسماء للتكرارات الفعلية.
 
-A default and small variant of the badge component
+نمط بديل افتراضي وآخر صغير لمكوّن الشارة
 
-I won’t bore you with the implementation details of each component. But, you can take a lucky guess. The “Small” variant has reduced padding and a slightly smaller font size.
+لن أُضجرك بتفاصيل تنفيذ كل مكوّن. لكن يمكنك أن تخمّن بسهولة. فالنمط البديل «Small» له حشو أقل وحجم خط أصغر قليلًا.
 
-### Creating Variants for Existing Components
+### إنشاء أنماط بديلة لمكوّنات موجودة
 
-Consider this collection of random icons. I want to create an **Icon** component with a bunch of different variants.
+تأمّل هذه المجموعة من الأيقونات العشوائية. أريد إنشاء مكوّن **Icon** بمجموعة من الأنماط البديلة المختلفة.
 
-Icons that we want to turn into variants
+أيقونات نريد تحويلها إلى أنماط بديلة
 
-I can do this as follows:
+أستطيع فعل ذلك كما يلي:
 
-1. Turn each item into a component.
-2. Select the components you wish to group as variants.
-3. Right-click and select “Combine as Variants”.
-4. Figma will place your components into a new frame, turning them into variants.
-5. Give your new property a name.
-6. Name the new composite component appropriately.
+1. حوّل كل عنصر إلى مكوّن.
+2. حدّد المكوّنات التي تريد تجميعها كأنماط بديلة.
+3. انقر بالزر الأيمن واختر «Combine as Variants».
+4. سيضع Figma مكوّناتك في إطار جديد، فيحوّلها إلى أنماط بديلة.
+5. أعطِ خاصيتك الجديدة اسمًا.
+6. سمِّ المكوّن المركّب الجديد تسمية مناسبة.
 
-#### Streamlining Variant Creation with Names
+#### تبسيط إنشاء الأنماط البديلة بالأسماء
 
-If you really want to show off, you can cut at least one tiny step out of this whole process by naming your variants as follows: `Property=Value`. This will give them all the correct variant property name instead of `Property 1` or whatever.
+إذا كنت تريد التباهي حقًا، فيمكنك حذف خطوة صغيرة واحدة على الأقل من هذه العملية كلها بتسمية أنماطك البديلة كما يلي: `Property=Value`. وسيمنحها ذلك اسم خاصية النمط البديل الصحيح بدلًا من `Property 1` أو ما شابه.
 
-## Swapping Variants with the Instance Swap Component Property
+## تبديل الأنماط البديلة بخاصية تبديل النسخة في المكوّن
 
-Figma button with an icon
+زر في Figma مع أيقونة
 
-Consider this button that has an icon. Let’s say that we wanted to allow the consumer of this button swap out the icon for another icon—but *only* another icon. How would we do this?
+تأمّل هذا الزر الذي يحتوي أيقونة. لنفترض أننا أردنا أن نتيح لمستخدم هذا الزر استبدال الأيقونة بأيقونة أخرى — لكن *بأيقونة أخرى فقط*. فكيف نفعل ذلك؟
 
-As long as the Icon is a component, we can use the “Expose properties from Nested Instances” option to surface the variants of the Icon up to the top.
+ما دامت Icon مكوّنًا، يمكننا استخدام خيار «Expose properties from Nested Instances» لإظهار الأنماط البديلة لـ Icon في الأعلى.
 
-Expose nested component instances
+إظهار نسخ المكوّنات المتداخلة
 
-Now, when we have an instance of the component, we can easily switch between variants of the underlying components.
+الآن، عندما تكون لدينا نسخة من المكوّن، يمكننا التبديل بسهولة بين الأنماط البديلة للمكوّنات الأساسية.
 
-### Conditional Nested Variants
+### الأنماط البديلة المتداخلة الشرطية
 
-For extra fun, you can combine the above technique with [component-properties](https://stevekinney.com/courses/figma/component-properties#boolean-properties) to conditionally show the nested variant.
+لمزيد من المتعة، يمكنك دمج التقنية أعلاه مع [خصائص المكوّن](https://stevekinney.com/courses/figma/component-properties#boolean-properties) لعرض النمط البديل المتداخل عرضًا شرطيًا.

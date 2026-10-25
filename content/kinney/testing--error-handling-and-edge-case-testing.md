@@ -1,24 +1,24 @@
 ---
-title: "Testing Edge Cases"
-lang: en
+title: "اختبار الحالات الحدّية"
+lang: ar
 source: "https://stevekinney.com/courses/testing/error-handling-and-edge-case-testing"
 ---
 
-Let’s talk about those error-prone, sneaky little troublemakers we like to call *edge cases*. You know—the weird stuff users (and co-workers) do that you didn’t see coming.
+لنتحدّث عن هؤلاء المشاغبين الخفيّين المعرّضين للأخطاء والذين نحب أن نسمّيهم *الحالات الحدّية*. كما تعرف—الأشياء الغريبة التي يفعلها المستخدمون (والزملاء) ولم تكن تتوقّعها.
 
-## Why Test Error Handling?
+## لماذا تختبر معالجة الأخطاء؟
 
-Errors happen. [Murphy’s Law](https://en.wikipedia.org/wiki/Murphy%27s_law) comes for all of us. The point is: Your code *will* break. That’s a given. Proper error-handling tests let you at least break in *style*. A well-placed `try/catch` will not only keep a production app from imploding but will also give you valuable feedback on what went wrong.
+تحدث الأخطاء. [قانون مورفي](https://en.wikipedia.org/wiki/Murphy%27s_law) يأتي للجميع. الفكرة هي: شيفرتك *ستتعطّل*. هذا أمر مسلّم به. اختبارات معالجة الأخطاء السليمة تتيح لك على الأقل أن تتعطّل *بأناقة*. فكتلة `try/catch` في المكان المناسب لا تمنع تطبيق الإنتاج من الانهيار فحسب، بل تمنحك أيضًا تغذية راجعة قيّمة عمّا حدث خطأ.
 
-- **Ensure Proper Error Handling**: Verifying that functions throw errors correctly helps ensure your application behaves as expected when things go wrong.
-- **Prevent Silent Failures**: Testing for thrown errors helps avoid situations where the code fails silently, making debugging difficult.
-- **Enforce Validation**: Testing functions that are expected to throw errors for invalid input or failed operations ensures your code properly validates and guards against incorrect behavior.
+- **ضمان معالجة الأخطاء السليمة**: التحقّق من أن الدوال ترمي الأخطاء بشكل صحيح يساعد في ضمان أن تطبيقك يتصرّف كما هو متوقّع عندما تسوء الأمور.
+- **منع الإخفاقات الصامتة**: الاختبار بحثًا عن الأخطاء المرمية يساعد في تجنّب حالات تفشل فيها الشيفرة بصمت، مما يجعل التنقيح صعبًا.
+- **فرض التحقّق**: اختبار الدوال التي يُتوقّع أن ترمي أخطاءً لمدخلات غير صالحة أو عمليات فاشلة يضمن أن شيفرتك تتحقّق بشكل سليم وتحمي من السلوك غير الصحيح.
 
-When you test error handling, you’re ensuring your app gracefully handles the worst-case scenarios. You know, like someone passing `undefined` into a method that expects a string. (Happens more than we’d like.)
+عندما تختبر معالجة الأخطاء، فإنك تضمن أن تطبيقك يتعامل بلطف مع أسوأ السيناريوهات. كما تعرف، مثل أن يمرّر أحدهم `undefined` إلى تابع يتوقّع سلسلة نصية. (يحدث هذا أكثر مما نرغب.)
 
-## A Real-World Example: Testing for Invalid Input
+## مثال من العالم الحقيقي: اختبار المدخلات غير الصالحة
 
-Let’s dive into an example. Imagine you’ve got a function that converts strings into numbers. You want to make sure it doesn’t explode when handed something it can’t handle, like `"two"` or `null`.
+لنغص في مثال. تخيّل أن لديك دالة تحوّل السلاسل النصية إلى أعداد. تريد أن تتأكّد من أنها لا تنفجر عندما تُعطى شيئًا لا تستطيع التعامل معه، مثل `"two"` أو `null`.
 
 ```javascript
 // examples/utility-belt/src/string-to-number.js
@@ -33,11 +33,11 @@ export const stringToNumber = (value) => {
 };
 ```
 
-We’ve got a simple function here that only wants to deal with *valid* string numbers. But what if a user types `"hello"` or passes `undefined` because… well, users? Errors abound! Let’s make sure our function throws those errors in a controlled way.
+لدينا هنا دالة بسيطة تريد التعامل فقط مع السلاسل النصية *الصالحة* التي تمثّل أعدادًا. لكن ماذا لو كتب المستخدم `"hello"` أو مرّر `undefined` لأن… حسنًا، المستخدمون؟ الأخطاء تتكاثر! لنتأكّد من أن دالتنا ترمي تلك الأخطاء بطريقة محكومة.
 
-## Writing Error Tests with Vitest
+## كتابة اختبارات الأخطاء مع Vitest
 
-Now, let’s write some Vitest tests to cover these special moments. When writing tests around error handling, your goal is to catch the exceptions. But, let’s start with the happy path.
+الآن، لنكتب بعض اختبارات Vitest لتغطية هذه اللحظات الخاصة. عند كتابة اختبارات حول معالجة الأخطاء، هدفك هو التقاط الاستثناءات. لكن لنبدأ بالمسار السعيد.
 
 ```javascript
 // examples/utility-belt/src/string-to-number.test.js
@@ -48,12 +48,12 @@ describe('stringToNumber', () => {
 });
 ```
 
-So far, so good. But, let’s begin to walk through some of the edge cases. We know the following things:
+حتى الآن، كل شيء جيد. لكن لنبدأ بالمرور على بعض الحالات الحدّية. نعرف الأمور التالية:
 
-1. Throwing an error in a test results in the test failing.
-2. We want to test a case where the function *should* throw an error.
+1. رمي خطأ داخل اختبار يؤدي إلى فشل الاختبار.
+2. نريد اختبار حالة *يجب* أن ترمي فيها الدالة خطأً.
 
-We might be tempted to write something like this:
+قد نُغرَى بكتابة شيء كهذا:
 
 ```javascript
 it.fails('throws an error if given a string that is not a number', () => {
@@ -61,12 +61,12 @@ it.fails('throws an error if given a string that is not a number', () => {
 });
 ```
 
-But that’s gross.
+لكن هذا مقزّز.
 
-1. Sure, it passes. But, maybe not for the reason we think?
-2. We haven’t asserted anything about the way it failed.
+1. صحيح أنه ينجح. لكن ربما ليس للسبب الذي نعتقده؟
+2. لم نُقرّ بأي شيء عن طريقة فشله.
 
-For example the following is a *real* mistake that I made while I was writing this.
+على سبيل المثال، ما يلي خطأ *حقيقي* ارتكبته أثناء كتابتي لهذا.
 
 ```javascript
 it.fails('throws an error if given a string that is not a number', () => {
@@ -74,11 +74,11 @@ it.fails('throws an error if given a string that is not a number', () => {
 });
 ```
 
-I forgot to even include the function that were testing—and yet the function still passed. That’s right—even someone as smart and charming as yours truly can get false positives if they’re not careful.
+نسيت حتى أن أضمّن الدالة التي كنا نختبرها—ومع ذلك نجح الاختبار. هذا صحيح—حتى شخص ذكي وجاذب مثلي يمكن أن يحصل على نتائج إيجابية كاذبة إن لم يكن حذرًا.
 
-## Testing That a Function Threw an Error
+## اختبار أن دالة رمت خطأً
 
-Let me update that first rule: **uncaught** errors will cause a test to fail. Let’s get back to a failing test case and work from there.
+دعني أُحدّث تلك القاعدة الأولى: الأخطاء **غير الملتقطة** ستؤدي إلى فشل الاختبار. لنعد إلى حالة اختبار فاشلة ونعمل من هناك.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -86,9 +86,9 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-Yup, it’s failing and the error message tells us why. But, we’re trying to test that bogus input causes and error and not just trying to set ourselves up for a world where our test suite fails for the rest of eternity.
+أجل، إنه يفشل ورسالة الخطأ تخبرنا بالسبب. لكننا نحاول اختبار أن مدخلًا زائفًا يسبّب خطأً، لا أن نُهيّئ أنفسنا لعالم تفشل فيه مجموعة اختباراتنا إلى أبد الآبدين.
 
-Let’s try calling the `toThrow()` method.
+لنجرّب استدعاء التابع `toThrow()`.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -96,7 +96,7 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-Hmm—it’s still broken. This is one little nuance. Calling `stringToNumber` with `'foo'` will throw but we’re not set up to catch it. Instead, we have to wrap it in a function. `expect` will call the function inside of a `try`/`catch` block for us and let us know what happened.
+همم—لا يزال معطّلًا. هذا فرق دقيق صغير. استدعاء `stringToNumber` بـ`'foo'` سيرمي خطأً، لكننا لسنا مُهيّئين لالتقاطه. بدلًا من ذلك، علينا تغليفه في دالة. سيستدعي `expect` الدالة داخل كتلة `try`/`catch` نيابةً عنا ويخبرنا بما حدث.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -104,9 +104,9 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-We can still do better. Yes. If I give it some string that can’t plausibly be converted to a number, then it will throw an error. But, there are plenty of other reasons why something may throw and error—trust me, I know first-hand.
+لا يزال بإمكاننا أن نحسّن. نعم. إذا أعطيته سلسلة نصية لا يمكن تحويلها بشكل معقول إلى عدد، فسيرمي خطأً. لكن هناك أسباب أخرى كثيرة لرمي شيء ما خطأً—ثق بي، أعرف ذلك من تجربة مباشرة.
 
-We can validate that it throws the error we’re expecting.
+يمكننا التحقّق من أنه يرمي الخطأ الذي نتوقّعه.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -114,7 +114,7 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-I might pull out the value since it’s being used twice.
+قد أستخرج القيمة لأنها تُستخدم مرتين.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -123,7 +123,7 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-You can also use part of the message or a regular expression if you only want to make sure one part matches.
+يمكنك أيضًا استخدام جزء من الرسالة أو تعبير نمطي إذا أردت فقط التأكّد من تطابق جزء واحد.
 
 ```javascript
 it('throws an error if given a string that is not a number', () => {
@@ -132,11 +132,11 @@ it('throws an error if given a string that is not a number', () => {
 });
 ```
 
-## Testing for Edge Cases
+## اختبار الحالات الحدّية
 
-Now that we’ve got error handling covered, let’s throw in some edge cases. Edge cases are those wacky scenarios that you would *never* expect, but you soon learn you must *always* expect. Part of this involves putting on your imagination caps. And this really relates to both the tests you write as well as the implementation.
+الآن بعد أن غطّينا معالجة الأخطاء، لنُضف بعض الحالات الحدّية. الحالات الحدّية هي تلك السيناريوهات العجيبة التي *لن* تتوقّعها أبدًا، لكنك ستتعلّم قريبًا أنه *يجب* أن تتوقّعها دائمًا. جزء من هذا يتضمّن أن تضع قبّعة الخيال. وهذا يتعلّق حقًا بالاختبارات التي تكتبها وبالتنفيذ معًا.
 
-Off the top of my head, here is all of the junk that I *could* pass in:
+من أعلى رأسي، إليك كل الأشياء التي *يمكن* أن أمرّرها:
 
 - `string`
 - `number`
@@ -144,27 +144,27 @@ Off the top of my head, here is all of the junk that I *could* pass in:
 - `undefined`
 - `null`
 - `NaN`
-- An object
-- An array
-- A function
-- A promise
+- كائن
+- مصفوفة
+- دالة
+- وعد (promise)
 
-For each of these, you have the same two choices:
+لكل واحد من هذه، لديك الخياران نفسهما:
 
-1. Gracefully handle them
-2. Throw an error
+1. التعامل معها بلطف
+2. رمي خطأ
 
-For example you could just decide that `true` and `false` are fine because they’ll get converted to `1` and `0` respectively. You could decide that a number is okay I guess since it’ll harmless pass through. In this case, you probably need to rename the function. Otherwise, we probably need another conditional and an error message because if your intention is that numbers and booleans are going to throw an error—well, they’re not going to.
+على سبيل المثال، يمكنك أن تقرّر ببساطة أن `true` و`false` مقبولان لأنهما سيُحوّلان إلى `1` و`0` على الترتيب. ويمكنك أن تقرّر أن العدد مقبول على ما أظن لأنه سيمرّ دون ضرر. في هذه الحالة، تحتاج على الأرجح إلى إعادة تسمية الدالة. وإلا، فسنحتاج على الأرجح إلى شرط آخر ورسالة خطأ، لأنه إن كانت نيتك أن الأعداد والقيم المنطقية سترمي خطأً—حسنًا، فإنها لن تفعل ذلك.
 
-If you *are* going to throw an error. Then you owe it your future self to have good error messages. The current error message doesn’t really describe the problem and in a large more complicated code base, `'[object Object]' cannot be parsed as a number` is decidedly unhelpful.
+إذا *كنت* سترمي خطأً، فأنت مدين لنفسك في المستقبل برسائل خطأ جيدة. رسالة الخطأ الحالية لا تصف المشكلة حقًا، وفي قاعدة شيفرة كبيرة أكثر تعقيدًا، فإن `'[object Object]' cannot be parsed as a number` غير مفيدة على الإطلاق.
 
-> **Exercise**
+> **تمرين**
 >
-> Can you add tests for some of these less desirable types? Start with the failing test before adding another check for the particular edge case.
+> هل يمكنك إضافة اختبارات لبعض هذه الأنواع الأقل رغبة؟ ابدأ بالاختبار الفاشل قبل إضافة تحقّق آخر للحالة الحدّية المعنية.
 
-### Taking It Even Further
+### المضي أبعد
 
-There is another class of arguments that we *could* try to throw errors for: A `string` that is totally valid, but might not be what we expect. For example, what happens if the string is an empty string? (**Spoiler**: It’s `0`.) Or, what about a string that’s, like, *all* spaces? Let’s throw those cases into the mix and see what happens:
+هناك فئة أخرى من الوسائط التي *يمكن* أن نحاول رمي أخطاء لها: سلسلة نصية صالحة تمامًا، لكنها قد لا تكون ما نتوقّعه. على سبيل المثال، ماذا يحدث إذا كانت السلسلة سلسلة فارغة؟ (**حرق المفاجأة**: إنها `0`.) أو ماذا عن سلسلة كلها مسافات تقريبًا؟ لنُدخل تلك الحالات في المزيج ونرَ ما يحدث:
 
 ```javascript
 it('should throw an error for empty strings', () => {
@@ -176,16 +176,16 @@ it('should throw an error for strings with only spaces', () => {
 });
 ```
 
-Here we introduce **empty strings** and **space-filled strings** into the test arena. Your function doesn’t care if there’s air or nothing behind part of the input. It’s still a red flag, and we want to make sure our tests call it out when those flags are raised.
+هنا نُدخل **السلاسل الفارغة** و**السلاسل المملوءة بالمسافات** إلى ساحة الاختبار. لا تهتم دالتك إن كان هناك هواء أو لا شيء خلف جزء من المدخل. يظل ذلك علامة تحذير، ونريد أن نتأكّد من أن اختباراتنا تلتقطها عند رفع تلك الأعلام.
 
-Now your error can say exactly what went wrong. Custom error messages: saving devs everywhere from needless head-scratching.
+الآن يمكن لخطئك أن يقول بالضبط ما حدث خطأ. رسائل خطأ مخصّصة: تُنقذ المطوّرين في كل مكان من حكّ رؤوس لا داعي له.
 
-## Takeaways on Testing Errors and Edge Cases
+## خلاصات حول اختبار الأخطاء والحالات الحدّية
 
-- Expect things to go wrong—and test for it.
-- Gracefully handle unreasonable inputs with custom error messages. Future you—and your users—will thank you.
-- Throw wild edge cases at your code during testing. If your tests pass, you’re cruising toward a production environment with a little more peace of mind.
+- توقّع أن تسوء الأمور—واختبر ذلك.
+- تعامل بلطف مع المدخلات غير المعقولة برسائل خطأ مخصّصة. سيشكرك مستقبلك—ومستخدموك.
+- ارمِ حالات حدّية جامحة على شيفرتك أثناء الاختبار. إن نجحت اختباراتك، فأنت تسير نحو بيئة إنتاج بقدر أكبر قليلًا من راحة البال.
 
-> **Exercise**
+> **تمرين**
 >
-> Surely our basic arithmetic is going to have an equally hard time with all of the ways that numbers can go sideways in JavaScript. Can you update our tests and implementation to account for this? You can see some potential—but certainly *not exhaustic—solutions [here](https://stevekinney.com/courses/testing/testing-for-errors-exercise).
+> من المؤكد أن حسابنا الأساسي سيواجه وقتًا عصيبًا مماثلًا مع كل الطرق التي يمكن أن تنحرف بها الأعداد في JavaScript. هل يمكنك تحديث اختباراتنا وتنفيذنا لمراعاة ذلك؟ يمكنك رؤية بعض الحلول المحتملة—لكنها *بالتأكيد غير شاملة*—[هنا](https://stevekinney.com/courses/testing/testing-for-errors-exercise).

@@ -1,32 +1,32 @@
 ---
-title: "Writing Our Own ESLint Rules"
-lang: en
+title: "كتابة قواعد ESLint الخاصة بنا"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/writing-eslint-rules"
 ---
 
-Writing custom ESLint rules is one of those things that sounds much more mystical than it is. Underneath the ceremony, a [rule](https://eslint.org/docs/latest/extend/custom-rules) is just code that walks an AST, decides whether something is wrong, and optionally reports a fix or suggestion. The trick isn’t *how* to write one. The trick is knowing when a custom rule is actually the right tool, how to write it in the current flat-config-era API, and how to avoid building a brittle little policy goblin that everybody resents.
+كتابة قواعد ESLint المخصصة من الأمور التي تبدو أكثر غموضًا مما هي عليه بكثير. فتحت قشرة الطقوس، ليست [القاعدة](https://eslint.org/docs/latest/extend/custom-rules) سوى شيفرة تمشي في شجرة نحو مجردة (AST)، وتقرر ما إذا كان هناك خطأ ما، وتبلغ اختياريًا عن إصلاح أو اقتراح. والحيلة ليست *كيفية* كتابتها، بل معرفة متى تكون القاعدة المخصصة هي الأداة الصحيحة فعلًا، وكيف تكتبها بواجهة البرمجة المعاصرة في عصر الإعداد المسطح (flat config)، وكيف تتجنب بناء عفريت سياسات هشّ صغير يكرهه الجميع.
 
-## Start With the Cheapest Enforcement That Works
+## ابدأ بأرخص وسيلة إنفاذ تفي بالغرض
 
-Don’t begin by writing a plugin because one engineer had a spiritual experience in `node_modules`. ESLint’s own [guidance](https://eslint.org/docs/latest/extend/custom-rule-tutorial) is to create a custom rule only when the built-in rules or community rules don’t cover your use case, and even the custom-rule tutorial tells you to search for an existing solution first. A surprising number of “we need a custom rule” ideas are really just configuration, or a selector-based restriction with `no-restricted-syntax`.
+لا تبدأ بكتابة إضافة لأن مهندسًا ما خاض تجربة روحية في `node_modules`. فـ[إرشاد](https://eslint.org/docs/latest/extend/custom-rule-tutorial) ESLint نفسه هو إنشاء قاعدة مخصصة فقط عندما لا تغطي القواعد المدمجة أو قواعد المجتمع حالتك، بل إن درس القواعد المخصصة يطلب منك البحث عن حل قائم أولًا. وعدد مفاجئ من أفكار «نحتاج قاعدة مخصصة» ليس في الحقيقة إلا إعدادًا، أو تقييدًا قائمًا على محددات عبر `no-restricted-syntax`.
 
-A lot of rules that are purely syntactic should be expressed with [selectors](https://eslint.org/docs/latest/extend/selectors) instead of code. ESLint supports CSS-like AST selectors such as `VariableDeclarator > Identifier`, attribute filters like `[name="foo"]`, sibling combinators, negation, `:matches()`, and `:exit`. Those selectors work inside custom rules, but they also work in configuration through `no-restricted-syntax`. If all you want is “ban this syntax shape,” reach for selectors first. Nobody needs a bespoke plugin just to outlaw one AST pattern.
+كثير من القواعد التركيبية بحتًا ينبغي التعبير عنها بـ[المحدِّدات](https://eslint.org/docs/latest/extend/selectors) بدلًا من الشيفرة. فـESLint يدعم محددات AST شبيهة بـCSS مثل `VariableDeclarator > Identifier`، ومرشحات الخصائص مثل `[name="foo"]`، ومحددات الأخوة، والنفي، و`:matches()`، و`:exit`. وتعمل هذه المحددات داخل القواعد المخصصة، لكنها تعمل أيضًا في الإعداد عبر `no-restricted-syntax`. وإذا لم تكن تريد سوى «حظر هذا الشكل التركيبي»، فاجعل المحددات خيارك الأول. فلا أحد بحاجة إلى إضافة مفصّلة على الطلب لمجرد تجريم نمط AST واحد.
 
-Custom rules become worth it when you need one of four things: project-specific policy, nontrivial context, safe autofix or suggestions, or TypeScript-aware semantic checks. That’s where selectors stop being enough and an actual rule module earns its keep.
+تصبح القواعد المخصصة جديرة بالجهد عندما تحتاج إلى أحد أربعة أشياء: سياسة خاصة بالمشروع، أو سياق غير تافه، أو إصلاح تلقائي آمن أو اقتراحات، أو فحوص دلالية واعية بأنواع TypeScript. وهناك تتوقف المحددات عن الكفاية ويستحق نموذج قاعدة حقيقي مكانه.
 
-## The Current ESLint Reality
+## واقع ESLint الراهن
 
-Writing rules *today* means writing for the flat-config era. Flat config became the default in ESLint v9, and modern configuration lives in `eslint.config.js` or one of its module-format variants. Old posts that assume `.eslintrc` defaults, string-based plugin loading, or legacy `RuleTester` behavior are now excellent examples of technical archaeology.
+كتابة القواعد *اليوم* تعني الكتابة لعصر الإعداد المسطح. فقد أصبح الإعداد المسطح الافتراضي في ESLint v9، وأصبح الإعداد الحديث يعيش في `eslint.config.js` أو أحد تنويعاته بصيغ الوحدات. والمنشورات القديمة التي تفترض افتراضات `.eslintrc` أو تحميل الإضافات بسلاسل نصية أو سلوك `RuleTester` القديم أصبحت أمثلة ممتازة على علم الآثار التقني.
 
-The big API change for rule authors happened in [v9](https://eslint.org/docs/latest/use/migrate-to-9.0.0). Function-style rules are no longer supported, so a rule must export an object with `meta` and `create()`. ESLint also moved many helpers off `context` and onto `SourceCode`, including scope and token helpers such as `getScope`, `getAncestors`, `getDeclaredVariables`, and `markVariableAsUsed`. If you see `TypeError: context.getScope is not a function`, that’s not the universe punishing you. It means the rule or plugin is still using the pre-v9 API.
+حدث أكبر تغيير في واجهة البرمجة لمؤلفي القواعد في [الإصدار 9](https://eslint.org/docs/latest/use/migrate-to-9.0.0). فلم تعد القواعد بأسلوب الدوال مدعومة، لذا يجب أن تصدّر القاعدة كائنًا فيه `meta` و`create()`. كما نقل ESLint كثيرًا من الأدوات المساعدة من `context` إلى `SourceCode`، بما فيها أدوات النطاق والرموز مثل `getScope` و`getAncestors` و`getDeclaredVariables` و`markVariableAsUsed`. وإذا رأيت `TypeError: context.getScope is not a function`، فالكون لا يعاقبك؛ بل يعني ذلك أن القاعدة أو الإضافة لا تزال تستخدم واجهة ما قبل الإصدار 9.
 
-That change affects tests too. In the flat-config world, `RuleTester` uses flat-config defaults, which means `ecmaVersion: "latest"` and `sourceType: "module"` unless you override them. Test case config also uses `languageOptions` instead of old `parserOptions` at the top level. ESLint v9 also tightened `RuleTester` so it now enforces things that used to slip through, such as requiring `message` or `messageId`, requiring explicit suggestion assertions, and treating `output: null` as the way to assert “no autofix.”
+ويؤثر هذا التغيير في الاختبارات أيضًا. ففي عالم الإعداد المسطح، يستخدم `RuleTester` افتراضات الإعداد المسطح، أي `ecmaVersion: "latest"` و`sourceType: "module"` ما لم تتجاوزهما. كما يستخدم إعداد حالات الاختبار `languageOptions` بدلًا من `parserOptions` القديمة على المستوى الأعلى. وشدّد ESLint v9 أيضًا قبضته على `RuleTester` بحيث بات يفرض أمورًا كانت تمر سابقًا، مثل اشتراط `message` أو `messageId`، واشتراط تأكيدات صريحة للاقتراحات، ومعاملة `output: null` كطريقة القول «لا إصلاح تلقائي».
 
-## The Shape of a Modern Rule
+## شكل القاعدة الحديثة
 
-A modern rule module exports an object with two top-level parts: `meta` and `create()`. `meta` describes the rule. `create(context)` returns the visitor map ESLint uses while traversing the AST. ESLint’s docs call out the main `meta` fields you’ll actually care about: `type`, `docs`, `messages`, `fixable`, `hasSuggestions`, `schema`, `defaultOptions`, and deprecation metadata. The `type` should be one of `"problem"`, `"suggestion"`, or `"layout"`, and ESLint uses that classification for things like `--fix-type`.
+يصدّر نموذج القاعدة الحديث كائنًا بجزأين على المستوى الأعلى: `meta` و`create()`. فـ`meta` يصف القاعدة، و`create(context)` يعيد خريطة الزوار التي يستخدمها ESLint أثناء اجتيازه شجرة AST. وتعدّد وثائق ESLint حقول `meta` الرئيسية التي ستعنيها فعلًا: `type` و`docs` و`messages` و`fixable` و`hasSuggestions` و`schema` و`defaultOptions` وبيانات الإهمال الوصفية. وينبغي أن تكون قيمة `type` واحدة من `"problem"` أو `"suggestion"` أو `"layout"`، ويستخدم ESLint هذا التصنيف في أشياء مثل `--fix-type`.
 
-A good baseline skeleton:
+هيكل أساسي جيد:
 
 ```javascript
 // rules/no-window-fetch.js
@@ -84,31 +84,31 @@ export default {
 };
 ```
 
-That one example already shows the core ideas that matter. The rule is object-style. It uses `meta.messages` and `messageId` instead of hard-coded strings. It declares `hasSuggestions: true` because it emits suggestions. It declares a schema because it accepts options. It uses a selector listener instead of a giant nested pile of `if` statements because the pattern is mostly syntactic. And it uses `defaultOptions` so the runtime logic can assume an option shape without hand-merging defaults every time. ESLint documents all of those pieces directly, including the requirement that suggestion-producing rules set `hasSuggestions`, and the recursive merge behavior of `meta.defaultOptions`.
+هذا المثال وحده يعرض الأفكار الجوهرية المهمة. فالقاعدة بأسلوب الكائنات. وتستخدم `meta.messages` و`messageId` بدلًا من سلاسل نصية مكتوبة يدويًا. وتعلن `hasSuggestions: true` لأنها تصدر اقتراحات. وتعلن مخططًا لأنها تقبل خيارات. وتستخدم مستمع محدِّد بدلًا من كومة متداخلة عملاقة من جمل `if` لأن النمط تركيبي في معظمه. وتستخدم `defaultOptions` بحيث يستطيع المنطق التنفيذي افتراض شكل خيار دون دمج الافتراضات يدويًا في كل مرة. وتوثّق ESLint كل هذه القطع مباشرة، بما فيها اشتراط ضبط القواعد المُصدِّرة للاقتراحات لـ`hasSuggestions`، وسلوك الدمج التعاودي في `meta.defaultOptions`.
 
-## Visitors, Selectors, and Code-Path Events
+## الزوار والمحدِّدات وأحداث مسار الشيفرة
 
-The object returned by `create()` is a **visitor map**. If a key is a node type, ESLint runs that callback when it enters that node. If the key ends in `:exit`, ESLint runs it on the way back up. If the key is a selector, ESLint applies the callback when a node matches that selector. And if the key is one of the code-path events, ESLint invokes it during code-path analysis. ESLint’s docs explicitly show all three styles, including `FunctionExpression:exit` and `onCodePathStart` / `onCodePathEnd`.
+الكائن الذي يعيده `create()` هو **خريطة زوار**. فإن كان المفتاح نوع عقدة، شغّل ESLint تلك الدالة المرجعية عند دخوله تلك العقدة. وإن انتهى المفتاح بـ`:exit`، شغّله في طريق العودة. وإن كان المفتاح محدِّدًا، طبّق ESLint الدالة المرجعية عندما تطابق عقدة ذلك المحدِّد. وإن كان المفتاح أحد أحداث مسار الشيفرة، استدعاه ESLint أثناء تحليل مسار الشيفرة. وتعرض وثائق ESLint الأنماط الثلاثة صراحةً، بما فيها `FunctionExpression:exit` و`onCodePathStart` / `onCodePathEnd`.
 
-[Selectors](https://eslint.org/docs/latest/extend/selectors) are the underused superpower here. ESLint supports node types, wildcards, attribute existence and comparison, nested attributes, fields, descendants, children, siblings, negation, and `:matches()` / `:is()`. In practice, selector listeners often make a rule smaller, more local, and easier to reason about than broad `Program()` scans. Use them when the pattern is structural. Use ordinary node listeners when the logic is easier to express in code. Use code-path events only when you actually need reachability or control-flow information.
+[المحدِّدات](https://eslint.org/docs/latest/extend/selectors) هي القوة الخارقة المُهمَلة هنا. فيدعم ESLint أنواع العقد، ومحارف البدل، ووجود الخصائص ومقارنتها، والخصائص المتداخلة، والحقول، والأحفاد، والأبناء، والأخوة، والنفي، و`:matches()` / `:is()`. وعمليًا، غالبًا ما تجعل مستمعات المحدِّدات القاعدة أصغر وأكثر محلية وأسهل في الاستدلال من مسحات `Program()` الواسعة. استخدمها عندما يكون النمط بنيويًا، واستخدم مستمعات العقد العادية عندما يسهل التعبير عن المنطق في الشيفرة، ولا تستخدم أحداث مسار الشيفرة إلا عندما تحتاج فعلًا إلى معلومات الوصول أو تدفق التحكم.
 
-When you’re not sure what the AST looks like, use ESLint Code Explorer. The docs point to it directly, and that’s the right move. Guessing node shapes from memory is how people end up writing rules against syntax they didn’t actually parse.
+وحين لا تكون متأكدًا من شكل شجرة AST، استخدم ESLint Code Explorer. فالوثائق تشير إليه مباشرة، وذلك هو التصرف الصحيح. فتخمين أشكال العقد من الذاكرة هو الطريق الذي ينتهي به الناس إلى كتابة قواعد ضد صياغة لم يحللوها فعليًا.
 
-## The `context` Object and `SourceCode`
+## كائن `context` و`SourceCode`
 
-`context` is the rule’s view of the current lint run. ESLint documents the most useful properties: `id`, `filename`, `physicalFilename`, `cwd`, `options`, `sourceCode`, `settings`, and `languageOptions`. `languageOptions` tells you the effective parse mode and parser configuration for the current file. `filename` and `physicalFilename` diverge in processor scenarios such as code blocks, which matters more than people expect once Markdown or other extracted content enters the picture.
+يمثل `context` رؤية القاعدة لتشغيل الفحص الحالي. وتوثّق ESLint أكثر الخصائص فائدة: `id` و`filename` و`physicalFilename` و`cwd` و`options` و`sourceCode` و`settings` و`languageOptions`. ويخبرك `languageOptions` بوضع التحليل الفعلي وإعداد المحلل للملف الحالي. ويتباعد `filename` و`physicalFilename` في سيناريوهات المعالجات مثل كتل الشيفرة، وهذا يهم أكثر مما يتوقعه الناس بمجرد أن يدخل Markdown أو محتوى مستخلص آخر في الصورة.
 
-`context.sourceCode` is now the main utility surface. That’s where you get source text, tokens, comments, scopes, ancestors, declared variables, and parser services. ESLint documents methods such as `getText()`, `getCommentsBefore()`, `getCommentsAfter()`, `getCommentsInside()`, `getAncestors()`, `getDeclaredVariables()`, `getScope()`, and `markVariableAsUsed()`. The default parser provides no parser services, but custom parsers can, and TypeScript rules rely on exactly that.
+أصبح `context.sourceCode` الآن السطح الرئيسي للأدوات المساعدة. فهناك تحصل على نص المصدر والرموز والتعليقات والنطاقات والأسلاف والمتغيرات المعلنة وخدمات المحلل. وتوثّق ESLint توابع مثل `getText()` و`getCommentsBefore()` و`getCommentsAfter()` و`getCommentsInside()` و`getAncestors()` و`getDeclaredVariables()` و`getScope()` و`markVariableAsUsed()`. ولا يوفر المحلل الافتراضي أي خدمات محلل، لكن المحللات المخصصة تستطيع ذلك، وقواعد TypeScript تعتمد على هذا بالضبط.
 
-There’s a practical pattern hidden in those APIs. Reach for AST data first. Reach for `SourceCode` text and token APIs when the AST doesn’t tell you enough, especially for layout-sensitive rules involving commas, semicolons, whitespace, or comment placement. ESLint’s docs explicitly recommend `sourceCode.getText()` for these cases, and they note that comment queries are calculated on demand, which is a good hint not to spray comment scans across every hot visitor unless you actually need them.
+وثمة نمط عملي مخفي في واجهات البرمجة تلك: فاجعل بيانات AST أولًا. ولا تلجأ إلى نصوص `SourceCode` وواجهات الرموز إلا عندما لا تخبرك شجرة AST بما يكفي، خصوصًا في القواعد الحساسة للتخطيط التي تتعلق بالفواصل أو الفواصل المنقوطة أو المسافات أو موضع التعليقات. وتوصي وثائق ESLint صراحةً بـ`sourceCode.getText()` في هذه الحالات، وتلاحظ أن استعلامات التعليقات تُحسب عند الطلب، وهو تلميح جيد إلى عدم رشّ مسحات التعليقات على كل زائر ساخن إلا إذا كنت تحتاجها فعلًا.
 
-Shared `settings` are also available to every rule through `context.settings`. Flat config supports a `settings` object specifically for information shared across rules, and ESLint’s example shows a plugin rule reading `context.settings.sharedData`. Use that when several rules need the same global plugin setting. Use rule options when a behavior is rule-specific. Mixing those up is how plugin configuration turns into folklore.
+كما تتاح `settings` المشتركة لكل قاعدة عبر `context.settings`. ويدعم الإعداد المسطح كائن `settings` تحديدًا للمعلومات المشتركة بين القواعد، ويعرض مثال ESLint قاعدة إضافة تقرأ `context.settings.sharedData`. استخدم ذلك عندما تحتاج قواعد عدة إلى إعداد الإضافة العام نفسه، واستخدم خيارات القاعدة عندما يكون سلوك ما خاصًا بقاعدة بعينها. والخلط بينهما هو كيف يتحول إعداد الإضافات إلى فلكلور.
 
-## Reporting Problems Properly
+## الإبلاغ عن المشكلات على نحو سليم
 
-The core act of a rule is `context.report()`. ESLint’s docs recommend `messageId` over inline `message` strings because it centralizes messages in `meta.messages`, reduces duplication in tests, and makes message changes less painful. A report needs at least a `node` or a `loc`, and it can include `data` for message placeholders. That’s the default, boring, correct pattern.
+الفعل الجوهري للقاعدة هو `context.report()`. وتوصي وثائق ESLint بـ`messageId` بدلًا من سلاسل `message` المضمنة لأنه يمركز الرسائل في `meta.messages`، ويقلل التكرار في الاختبارات، ويجعل تغيير الرسائل أقل إيلامًا. ويحتاج الإبلاغ إلى `node` أو `loc` على الأقل، ويمكن أن يتضمن `data` لعناصر استبدال الرسالة. هذا هو النمط الافتراضي الممل الصحيح.
 
-A clean example:
+مثال نظيف:
 
 ```javascript
 context.report({
@@ -120,25 +120,25 @@ context.report({
 });
 ```
 
-That structure also helps tests. Modern `RuleTester` wants explicit `message` or `messageId`, and it will now complain if placeholders were left unsubstituted. The tool has become stricter on purpose, which is good. Rules are easier to trust when the tests are less willing to shrug.
+وتساعد هذه البنية الاختبارات أيضًا. فـ`RuleTester` الحديث يريد `message` أو `messageId` صريحًا، وسيشتكي الآن إذا تُركت عناصر الاستبدال دون تعويض. وقد أصبحت الأداة أكثر تشددًا عن قصد، وهذا جيد. فالقواعد أسهل في الثقة عندما تكون الاختبارات أقل استعدادًا للتهاون.
 
-## Autofixes Versus Suggestions
+## الإصلاحات التلقائية مقابل الاقتراحات
 
-Autofixes and suggestions are not the same thing, and teams blur them constantly. An **autofix** is something ESLint may apply automatically with `--fix`. A **suggestion** is an editor-facing or user-invoked fix that appears as an optional helper. ESLint requires `meta.fixable` for autofixing rules and `meta.hasSuggestions` for rules that emit suggestions. If you omit those fields and still try to fix or suggest, ESLint throws.
+الإصلاحات التلقائية والاقتراحات ليسا الشيء نفسه، والفرق تخلط بينهما باستمرار. فـ**الإصلاح التلقائي** شيء قد يطبقه ESLint تلقائيًا عبر `--fix`. أما **الاقتراح** فهو إصلاح يظهر في المحرر أو يستدعيه المستخدم بوصفه مساعدًا اختياريًا. ويشترط ESLint ضبط `meta.fixable` للقواعد المُصلِحة تلقائيًا، و`meta.hasSuggestions` للقواعد التي تصدر اقتراحات. وإن حذفت هذين الحقلين وحاولت مع ذلك الإصلاح أو الاقتراح، رمى ESLint استثناءً.
 
-ESLint’s own best-practice guidance for fixes is strict for a reason. Avoid fixes that could change runtime behavior, make fixes as small as possible, and keep it to one conceptual fix per message. ESLint reruns rules after a fix pass, so a rule doesn’t need to style-polish its own fix to satisfy every other rule in one go. That’s also why suggestion fixes should be focused and shouldn’t try to conform to user style preferences. Suggestions are standalone changes, not miniature formatters.
+وإرشادات ESLint نفسها لأفضل ممارسات الإصلاح صارمة لسبب وجيه: تجنّب الإصلاحات التي قد تغيّر سلوك وقت التشغيل، واجعل الإصلاحات أصغر ما يمكن، واقصرها على إصلاح مفهومي واحد لكل رسالة. فـESLint يعيد تشغيل القواعد بعد دورة الإصلاح، لذا لا تحتاج القاعدة إلى تلميع إصلاحها لتلبية كل قاعدة أخرى دفعة واحدة. ولهذا أيضًا ينبغي أن تكون إصلاحات الاقتراحات مركزة وألّا تحاول مطابقة تفضيلات أسلوب المستخدم. فالاقتراحات تغييرات قائمة بذاتها، لا مُنسّقات مصغرة.
 
-That gives you a simple decision rule. If a change is obviously safe and mechanical, autofix it. If a change could alter behavior, depends on intent, or has multiple valid outcomes, make it a suggestion. ESLint’s suggestion docs call out exactly those cases: behavior-changing fixes and situations with multiple valid resolutions.
+وهذا يمنحك قاعدة قرار بسيطة: إذا كان التغيير آمنًا وميكانيكيًا بوضوح، فأصلحه تلقائيًا. وإذا كان التغيير قد يغيّر السلوك، أو يعتمد على القصد، أو له نتائج صحيحة متعددة، فاجعله اقتراحًا. وتذكر وثائق الاقتراحات في ESLint هذه الحالات بالضبط: الإصلاحات التي تغيّر السلوك، والحالات ذات الحلول الصحيحة المتعددة.
 
-## Options and Schemas
+## الخيارات والمخططات
 
-Rules with options need a real schema now. ESLint [v9](https://eslint.org/docs/latest/use/migrate-to-9.0.0) made this non-optional in practice: if users pass options to a rule without `meta.schema`, ESLint throws. The schema is JSON Schema, specifically Draft-04, and ESLint validates the *options array after severity*, not the severity itself. That means your schema never sees `"error"` or `"warn"` and can’t validate them.
+القواعد التي تقبل خيارات تحتاج الآن إلى مخطط حقيقي. فقد جعل ESLint [الإصدار 9](https://eslint.org/docs/latest/use/migrate-to-9.0.0) ذلك غير اختياري عمليًا: إذا مرّر المستخدمون خيارات إلى قاعدة بلا `meta.schema`، رمى ESLint استثناءً. والمخطط هو JSON Schema وتحديدًا Draft-04، ويتحقق ESLint من *مصفوفة الخيارات بعد درجة الخطورة*، لا من درجة الخطورة نفسها. وهذا يعني أن مخططك لا يرى `"error"` أو `"warn"` ولا يستطيع التحقق منهما.
 
-There are two schema styles. The shorthand array form validates `context.options` positionally. The full JSON Schema form validates the entire options array and is required if you want things like `$ref`, `oneOf`, or `anyOf` across the full option structure. ESLint also warns about an easy mistake: the top-level schema must still describe an array of options, not a bare object, or the rule becomes impossible to enable. That’s a special kind of own goal.
+وثمة نمطان للمخطط. فصيغة المصفوفة المختصرة تتحقق من `context.options` بحسب الموضع. أما صيغة JSON Schema الكاملة فتتحقق من مصفوفة الخيارات بأكملها وتلزم إذا أردت أشياء مثل `$ref` أو `oneOf` أو `anyOf` عبر بنية الخيارات كاملة. وتحذّر ESLint أيضًا من خطأ سهل: يجب أن يظل المخطط على المستوى الأعلى واصفًا مصفوفة خيارات لا كائنًا مجردًا، وإلا أصبحت القاعدة مستحيلة التمكين. وهذا نوع خاص من إحراز الهدف في مرماك الخاطئ.
 
-`meta.defaultOptions` is worth using for any rule with real configuration. ESLint recursively merges user-provided option elements on top of the defaults, validates the merged result against the schema, and then exposes that merged array on `context.options`. That lets your rule logic treat options as already normalized.
+يستحق `meta.defaultOptions` الاستخدام في أي قاعدة لها إعداد حقيقي. فـESLint يدمج تعاوديًا عناصر الخيارات التي قدمها المستخدم فوق الافتراضات، ويتحقق من النتيجة المدمجة مقابل المخطط، ثم يعرض تلك المصفوفة المدموجة على `context.options`. وهذا يتيح لمنطق قاعدتك معاملة الخيارات كأنها مُوحَّدة الوضع بالفعل.
 
-A sane pattern:
+نمط معقول:
 
 ```javascript
 meta: {
@@ -158,19 +158,19 @@ create(context) {
 }
 ```
 
-Option normalization belongs in metadata, not smeared through the visitor logic.
+تنتمي تسوية الخيارات إلى البيانات الوصفية، لا إلى تلطيخ منطق الزوار بها.
 
-## Scope, Variables, and “Used” Bookkeeping
+## النطاق والمتغيرات ومسك سجل «الاستخدام»
 
-If your rule needs to reason about identifiers semantically rather than syntactically, `SourceCode` scope APIs are the right tool. ESLint documents `sourceCode.getScope(node)` for scope lookup, `sourceCode.getDeclaredVariables(node)` for variable declarations, and `sourceCode.markVariableAsUsed(name, refNode)` for cases where your custom access pattern should satisfy `no-unused-vars`. That last API is particularly useful for frameworks or macros that reference variables indirectly.
+إذا كانت قاعدتك بحاجة إلى الاستدلال على المعرّفات دلاليًا لا تركيبيًا، فواجهات نطاق `SourceCode` هي الأداة الصحيحة. وتوثّق ESLint `sourceCode.getScope(node)` للبحث عن النطاق، و`sourceCode.getDeclaredVariables(node)` لإعلانات المتغيرات، و`sourceCode.markVariableAsUsed(name, refNode)` للحالات التي ينبغي فيها لنمط الوصول المخصص لديك أن يفي بـ`no-unused-vars`. وهذه الواجهة الأخيرة مفيدة بشكل خاص للأطر أو الماكروات التي تشير إلى المتغيرات بشكل غير مباشر.
 
-This is also the specific v9 migration trap that catches old rules. What used to be `context.getScope()` is now `sourceCode.getScope(node)`, and what used to be `context.markVariableAsUsed(name)` is now `sourceCode.markVariableAsUsed(name, node)`. If you’re updating internal rules, fix those first before you start swearing at the parser.
+وهذا أيضًا فخ الترحيل الخاص بالإصدار 9 الذي يوقع القواعد القديمة. فما كان `context.getScope()` أصبح `sourceCode.getScope(node)`، وما كان `context.markVariableAsUsed(name)` أصبح `sourceCode.markVariableAsUsed(name, node)`. وإن كنت تحدّث قواعد داخلية، فأصلح هذين أولًا قبل أن تبدأ في شتم المحلل.
 
-## Testing Rules With `RuleTester`
+## اختبار القواعد بـ`RuleTester`
 
-Every custom rule should have tests. Not because testing is virtuous. Because ESLint rules are tiny compilers with just enough surface area to be subtly wrong in irritating ways. ESLint provides `RuleTester`, and the custom-rules docs explicitly call it the standard way to test rules. In the flat-config era, `RuleTester` defaults to `ecmaVersion: "latest"` and `sourceType: "module"` unless you override them.
+يجب أن يكون لكل قاعدة مخصصة اختبارات. لا لأن الاختبار فضيلة، بل لأن قواعد ESLint مُصرِّفات صغيرة لها من السطح ما يكفي بالضبط لتكون خاطئة بطرق خفية ومزعجة. ويوفر ESLint أداة `RuleTester`، وتسميها وثائق القواعد المخصصة صراحةً الطريقة المعيارية لاختبار القواعد. وفي عصر الإعداد المسطح، تكون افتراضات `RuleTester` هي `ecmaVersion: "latest"` و`sourceType: "module"` ما لم تتجاوزها.
 
-A normal test file now looks like this:
+وملف اختبار عادي يبدو الآن هكذا:
 
 ```javascript
 import { RuleTester } from 'eslint';
@@ -213,13 +213,13 @@ ruleTester.run('no-window-fetch', rule, {
 });
 ```
 
-That `output: null` matters. In modern `RuleTester`, `output` means “this case expects an autofix.” If there’s no autofix, omit `output` or set it to `null`. ESLint v9 also now requires tests to be explicit about whether suggestions exist, and suggestion assertions need `output` and either `desc` or `messageId`. So, the old habit of writing vague invalid cases and hoping the rule does the right thing is no longer tolerated quite as much. A shame for chaos, really.
+هذه `output: null` تهم. ففي `RuleTester` الحديث، تعني `output` أن «هذه الحالة تتوقع إصلاحًا تلقائيًا». وإذا لم يكن هناك إصلاح تلقائي، فاحذف `output` أو اضبطها على `null`. ويشترط ESLint v9 الآن أيضًا أن تكون الاختبارات صريحة بشأن وجود اقتراحات، وتحتاج تأكيدات الاقتراحات إلى `output` وإلى `desc` أو `messageId`. لذا لم تعد العادة القديمة في كتابة حالات غير صالحة غامضة والأمل في أن تفعل القاعدة الصواب مقبولة بالقدر نفسه. خسارة للفوضى، حقًا.
 
-## TypeScript-Specific Rules
+## قواعد خاصة بـTypeScript
 
-If your codebase is TypeScript-heavy, plain ESLint rule authoring still works, but the recommended tooling changes. [typescript-eslint recommends](https://typescript-eslint.io/developers/custom-rules/) `@typescript-eslint/utils` for writing rules, `ESLintUtils.RuleCreator` for strongly typed rule modules, and `@typescript-eslint/rule-tester` for tests. The reason is simple: the plain `eslint` types are based on plain ESTree and don’t understand TypeScript-specific nodes and properties properly.
+إذا كانت قاعدة شيفرتك ثقيلة بـTypeScript، فلا تزال كتابة قواعد ESLint العادية ممكنة، لكن الأدوات الموصى بها تتغير. فـ[يوصي typescript-eslint](https://typescript-eslint.io/developers/custom-rules/) بـ`@typescript-eslint/utils` لكتابة القواعد، و`ESLintUtils.RuleCreator` لنماذج قواعد قوية الأنواع، و`@typescript-eslint/rule-tester` للاختبارات. والسبب بسيط: أنواع `eslint` العادية مبنية على ESTree العادي ولا تفهم العقد والخصائص الخاصة بـTypeScript فهمًا صحيحًا.
 
-A typed rule usually starts like this:
+وتبدأ القاعدة المكتوبة بالأنواع عادة هكذا:
 
 ```typescript
 import { ESLintUtils } from '@typescript-eslint/utils';
@@ -258,17 +258,17 @@ export default createRule({
 });
 ```
 
-That pattern is straight from the typescript-eslint model. `getParserServices(context)` gives you the bridge from ESLint nodes to TypeScript nodes and type information, including helpers like `getTypeAtLocation()` and `getSymbolAtLocation()`. If you need the raw compiler API, you can also use `services.program.getTypeChecker()`.
+هذا النمط مأخوذ مباشرة من نموذج typescript-eslint. فـ`getParserServices(context)` يمنحك الجسر من عقد ESLint إلى عقد TypeScript ومعلومات الأنواع، بما فيها أدوات مساعدة مثل `getTypeAtLocation()` و`getSymbolAtLocation()`. وإن احتجت إلى واجهة المصرّف الخام، فيمكنك أيضًا استخدام `services.program.getTypeChecker()`.
 
-The design warning from typescript-eslint is also worth following: don’t silently change rule behavior depending on whether type information happens to be available. They explicitly recommend against rules that do one thing with `services.program` and another thing without it. If a rule truly requires type information, document that, gate it behind an explicit option, or split it into a separate rule or config. Otherwise users get a weird Schrödinger lint rule that changes personality based on config accidents.
+ويستحق تحذير التصميم من typescript-eslint الاتباع أيضًا: لا تغيّر سلوك القاعدة صامتًا بناءً على ما إذا كانت معلومات الأنواع متاحة أم لا. فهم يوصون صراحةً بعدم كتابة قواعد تفعل شيئًا مع `services.program` وشيئًا آخر بدونه. وإذا كانت القاعدة تتطلب معلومات الأنواع حقًا، فوثّق ذلك، أو قيّدها بخيار صريح، أو قسّمها إلى قاعدة أو إعداد منفصل. وإلا حصل المستخدمون على قاعدة فحص شاذة على طريقة شرودنغر تغيّر شخصيتها حسب حوادث الإعداد.
 
-For testing typed rules, use `@typescript-eslint/rule-tester` and enable type-aware mode with `parserOptions.projectService`, usually with `allowDefaultProject` for test files and a `tsconfigRootDir`. That’s the current recommended path for type-aware tests. The typescript-eslint tester also supports some conveniences beyond ESLint core, such as array-form `output` for multi-pass fixes and dependency constraints for version-conditioned tests.
+ولاختبار القواعد المكتوبة بالأنواع، استخدم `@typescript-eslint/rule-tester` ومكّن الوضع الواعي بالأنواع عبر `parserOptions.projectService`، مع `allowDefaultProject` عادةً لملفات الاختبار و`tsconfigRootDir`. وهذا هو المسار الموصى به حاليًا للاختبارات الواعية بالأنواع. ويدعم مختبر typescript-eslint أيضًا بعض التيسيرات خارج نواة ESLint، مثل صيغة المصفوفة لـ`output` في الإصلاحات متعددة الدورات، وقيود الاعتماد للاختبارات المشروطة بالإصدار.
 
-## Packaging Rules Into a Plugin
+## تحزيم القواعد في إضافة
 
-A [plugin](https://eslint.org/docs/latest/extend/plugins) is just an object. ESLint’s plugin docs define the main surface as `meta`, `configs`, `rules`, and `processors`. For rule plugins, the essential part is the `rules` object mapping rule names to rule modules. The docs also recommend a root `meta` object with `name`, `version`, and `namespace` for easier debugging and more effective plugin caching, and they note that `meta.namespace` helps `defineConfig()` find your plugin even if a user assigns it a different namespace in config.
+[الإضافة](https://eslint.org/docs/latest/extend/plugins) ليست سوى كائن. وتعرّف وثائق الإضافات في ESLint السطح الرئيسي بأنه `meta` و`configs` و`rules` و`processors`. وفي إضافات القواعد، الجزء الجوهري هو كائن `rules` الذي يعيّن أسماء القواعد إلى نماذج القواعد. وتوصي الوثائق أيضًا بكائن `meta` جذري فيه `name` و`version` و`namespace` لتسهيل التنقيح وجعل تخزين الإضافة مؤقتًا أكثر فعالية، وتلاحظ أن `meta.namespace` يساعد `defineConfig()` في العثور على إضافتك حتى لو أسند المستخدم إليها نطاق أسماء مختلفًا في الإعداد.
 
-A clean plugin entrypoint:
+نقطة دخول نظيفة للإضافة:
 
 ```javascript
 import noWindowFetch from './rules/no-window-fetch.js';
@@ -301,15 +301,15 @@ Object.assign(plugin.configs, {
 export default plugin;
 ```
 
-That follows the current plugin guidance exactly: export a plugin object, then hang shared configs off `plugin.configs`. If you need to support both flat config and legacy config, ESLint recommends shipping both shapes from the `configs` object and using names like `legacy-recommended` or `flat/recommended` to make the distinction obvious.
+هذا يتبع إرشاد الإضافات الحالي تمامًا: صدّر كائن إضافة، ثم علّق الإعدادات المشتركة على `plugin.configs`. وإذا احتجت إلى دعم الإعداد المسطح والإعداد القديم معًا، فتوصي ESLint بشحن الشكلين من كائن `configs` واستخدام أسماء مثل `legacy-recommended` أو `flat/recommended` لجعل التمييز واضحًا.
 
-For TypeScript-aware plugins specifically, [typescript-eslint recommends](https://typescript-eslint.io/developers/eslint-plugins/) `@typescript-eslint/utils` as a runtime dependency, `@typescript-eslint/rule-tester` as a dev dependency, and peer dependencies on `eslint`, `typescript`, and `@typescript-eslint/parser` plus any other parser you expect consumers to use. They also recommend keeping all `@typescript-eslint` packages on the same semver line.
+وبالنسبة إلى الإضافات الواعية بـTypeScript تحديدًا، [يوصي typescript-eslint](https://typescript-eslint.io/developers/eslint-plugins/) بـ`@typescript-eslint/utils` كاعتماد وقت تشغيل، و`@typescript-eslint/rule-tester` كاعتماد تطوير، واعتمادات نظير على `eslint` و`typescript` و`@typescript-eslint/parser` وأي محلل آخر تتوقع أن يستخدمه المستهلكون. ويوصون أيضًا بإبقاء كل حزم `@typescript-eslint` على خط الدلالات الدقيقة (semver) نفسه.
 
-## Using Internal Rules Without Publishing Anything
+## استخدام القواعد الداخلية دون نشر أي شيء
 
-For company-only rules, flat config makes this much nicer than the old `--rulesdir` dance. ESLint supports loading a local plugin object from a file, or defining a [virtual plugin](https://eslint.org/docs/latest/use/configure/plugins) inline in `eslint.config.js`. That means you can keep repo-local rules close to the codebase and wire them in directly without inventing an npm package just to make one team stop using `window.fetch`.
+بالنسبة إلى القواعد الخاصة بالشركة وحدها، يجعل الإعداد المسطح ذلك أجمل بكثير من رقصة `--rulesdir` القديمة. فـESLint يدعم تحميل كائن إضافة محلي من ملف، أو تعريف [إضافة افتراضية](https://eslint.org/docs/latest/use/configure/plugins) مباشرة داخل `eslint.config.js`. وهذا يعني أنك تستطيع إبقاء القواعد المحلية في المستودع قريبة من قاعدة الشيفرة وربطها مباشرة دون اختراع حزمة npm فقط لإجبار فريق واحد على التوقف عن استخدام `window.fetch`.
 
-The lightest-weight setup is a virtual plugin:
+أخف إعداد هو الإضافة الافتراضية:
 
 ```javascript
 // eslint.config.js
@@ -332,58 +332,58 @@ export default defineConfig([
 ]);
 ```
 
-ESLint documents this directly as a virtual plugin pattern. It’s the best starting point for private rules because it keeps feedback fast and ceremony low. Publish later if the rules become broadly reusable. Not every internal convention deserves its own package registry lore.
+وتوثّق ESLint هذا مباشرة كنمط الإضافة الافتراضية. وهو أفضل نقطة انطلاق للقواعد الخاصة لأنه يبقي التغذية الراجعة سريعة والطقوس منخفضة. وانشر لاحقًا إن أصبحت القواعد قابلة لإعادة الاستخدام على نطاق واسع. فليست كل عادة داخلية تستحق أسطورتها الخاصة في سجل الحزم.
 
-## Performance and Debugging
+## الأداء والتنقيح
 
-Custom rules run a lot, so performance matters. ESLint has a built-in timing mode: set `TIMING=1` to see the ten slowest rules, `TIMING=all` for a longer list, and combine it with `--no-config-lookup --rule ...` when you want to isolate one rule. ESLint also points to the `--stats` option for more granular per-file, per-rule timing. That’s the official way to stop guessing which rule is slow.
+تعمل القواعد المخصصة كثيرًا، لذا يهم الأداء. ولدى ESLint وضع توقيت مدمج: اضبط `TIMING=1` لترى أبطأ عشر قواعد، و`TIMING=all` لقائمة أطول، واجمعهما مع `--no-config-lookup --rule ...` عندما تريد عزل قاعدة واحدة. ويشير ESLint أيضًا إلى خيار `--stats` لتوقيت أدق لكل ملف وكل قاعدة. هذه هي الطريقة الرسمية للتوقف عن التخمين بشأن القاعدة البطيئة.
 
-In practice, the biggest performance wins are boring. Use narrow visitors instead of broad whole-tree work. Prefer selector listeners when they let ESLint do the matching work precisely. Cache regexes and one-time setup outside hot node callbacks. Avoid repeated full-text or comment scans when a node-local query will do, especially since comment queries are calculated on demand. None of that is glamorous, but neither is waiting three extra seconds for every lint pass because one rule got ambitious.
+عمليًا، أكبر مكاسب الأداء مملة: استخدم زوارًا ضيقين بدلًا من عمل واسع على الشجرة كاملة. وفضّل مستمعات المحدِّدات عندما تتيح لـESLint إنجاز عمل المطابقة بدقة. وخزّن التعابير النمطية والإعداد لمرة واحدة خارج دوال العقد الساخنة. وتجنب مسحات النص الكامل أو التعليقات المتكررة عندما تكفي استعلامات محلية بالعقدة، خصوصًا وأن استعلامات التعليقات تُحسب عند الطلب. لا شيء من ذلك براق، لكن الانتظار ثلاث ثوانٍ إضافية في كل دورة فحص بسبب قاعدة تطمح أكثر من اللازم ليس براقًا أيضًا.
 
-## Naming, Docs, and Maintainability
+## التسمية والتوثيق وقابلية الصيانة
 
-ESLint’s core [naming conventions](https://eslint.org/docs/latest/contribute/core-rules) are still a good default even for private rules: use dashes, use `no-` for prohibitions, and use short imperative names for affirmative requirements. That makes a rule pack feel like ESLint instead of a random internal DSL. Also include `docs.url` whenever you can, because editors use it to surface helpful links on violations.
+لا تزال [اصطلاحات التسمية](https://eslint.org/docs/latest/contribute/core-rules) في نواة ESLint افتراضًا جيدًا حتى للقواعد الخاصة: استخدم الشرطات، واستخدم `no-` للنواهي، واستخدم أسماء أمرية قصيرة للمتطلبات الإيجابية. فهذا يجعل حزمة القواعد تبدو مثل ESLint لا مثل لغة داخلية مخصصة عشوائية. وأدرج `docs.url` كلما استطعت، لأن المحررات تستخدمه لإظهار روابط مفيدة عند المخالفات.
 
-Two maintainability rules matter more than the rest. First, don’t build on top of ESLint core rule implementations. ESLint explicitly warns that core rules aren’t public API and aren’t designed to be extended. If you need “the same rule but slightly different,” copy the file and own it. Second, don’t leave options untyped and undocumented. `meta.schema`, `meta.defaultOptions`, tests, and a real doc page aren’t busywork. They’re what turns a rule from a clever hack into infrastructure.
+وثمت قاعدتان لقابلية الصيانة تهمان أكثر من الباقي. الأولى: لا تبنِ فوق تنفيذات قواعد نواة ESLint. فـESLint يحذّر صراحةً من أن قواعد النواة ليست واجهة عامة وليست مصممة للتمديد. وإن احتجت إلى «القاعدة نفسها لكن باختلاف بسيط»، فانسخ الملف وتملّك نسختك. والثانية: لا تترك الخيارات بلا أنواع ولا توثيق. فـ`meta.schema` و`meta.defaultOptions` والاختبارات وصفحة توثيق حقيقية ليست عملًا شكليًا، بل هي ما يحوّل القاعدة من حيلة بارعة إلى بنية تحتية.
 
-For TypeScript-aware plugins, it’s also worth splitting configs clearly. typescript-eslint recommends either making `recommended` require type information or publishing a separate config such as `recommendedTypeChecked`, and they advise documenting that strategy explicitly. That prevents users from enabling your ruleset and then discovering half of it only works when a project service is configured correctly.
+وبالنسبة إلى الإضافات الواعية بـTypeScript، يستحق تقسيم الإعدادات بوضوح أيضًا. فيوصي typescript-eslint إما بجعل `recommended` يشترط معلومات الأنواع وإما بنشر إعداد منفصل مثل `recommendedTypeChecked`، وينصحون بتوثيق هذه الاستراتيجية صراحةً. فهذا يمنع المستخدمين من تمكين مجموعة قواعدك ثم اكتشاف أن نصفها لا يعمل إلا عندما تُعدّ خدمة المشروع تعديلًا صحيحًا.
 
-## When a Rule Is the Wrong Extension Point
+## متى تكون القاعدة نقطة تمديد خاطئة
 
-Not every lint need is a rule. [Plugins](https://eslint.org/docs/latest/use/configure/plugins) can also export processors and languages. Processors are what you want when JavaScript needs to be extracted from another file type, such as Markdown code blocks. Languages are the newer extension point for linting non-JavaScript languages through plugins. If your real problem is “lint code inside Markdown” or “lint JSON as a first-class language,” that’s not a custom-rule problem. That’s a processor or language problem.
+ليست كل حاجة إلى فحص قاعدة. فـ[الإضافات](https://eslint.org/docs/latest/use/configure/plugins) يمكنها أيضًا تصدير معالجات ولغات. والمعالجات هي ما تريده عندما يلزم استخلاص JavaScript من نوع ملف آخر، مثل كتل شيفرة Markdown. أما اللغات فهي نقطة التمديد الأحدث لفحص لغات غير JavaScript عبر الإضافات. وإذا كانت مشكلتك الحقيقية «افحص شيفرة داخل Markdown» أو «افحص JSON كلغة من الدرجة الأولى»، فليست هذه مشكلة قاعدة مخصصة، بل مشكلة معالج أو لغة.
 
-Similarly, if the syntax itself is nonstandard JavaScript, that’s usually a [parser concern](https://eslint.org/docs/latest/extend/custom-parsers) rather than a rule concern. Rules inspect the tree they’re given. They’re not in charge of inventing a tree for syntax the parser doesn’t understand.
+وبالمثل، إذا كانت الصياغة نفسها JavaScript غير معيارية، فذلك عادة [شأن محلل](https://eslint.org/docs/latest/extend/custom-parsers) لا شأن قاعدة. فالقواعد تفحص الشجرة التي تُعطاها، وليست مسؤولة عن اختراع شجرة لصياغة لا يفهمها المحلل.
 
-## The Default Approach I’d Use
+## النهج الافتراضي الذي سأستخدمه
 
-For an internal codebase, the sensible path is very boring. Start by seeing whether selectors and `no-restricted-syntax` are enough. If not, write a local rule as a virtual plugin in `eslint.config.js`. Use object-style rules only. Put all messages in `meta.messages`. Add a real `schema` and `defaultOptions` for anything configurable. Prefer suggestions over autofixes until a change is obviously safe. Test every rule with `RuleTester`, including “no autofix,” suggestions, and edge cases. Then, only when the ruleset becomes genuinely reusable across repos, promote it into a published plugin with named configs.
+بالنسبة إلى قاعدة شيفرة داخلية، المسار المعقول ممل جدًا. ابدأ بالتحقق مما إذا كانت المحدِّدات و`no-restricted-syntax` كافيتين. وإن لم تكونا، اكتب قاعدة محلية كإضافة افتراضية في `eslint.config.js`. واستخدم القواعد بأسلوب الكائنات فقط. وضع كل الرسائل في `meta.messages`. وأضف `schema` و`defaultOptions` حقيقيين لكل ما هو قابل للإعداد. وفضّل الاقتراحات على الإصلاحات التلقائية حتى يصبح التغيير آمنًا بوضوح. واختبر كل قاعدة بـ`RuleTester`، بما في ذلك «لا إصلاح تلقائي» والاقتراحات والحالات الحدّية. ثم لا ترقِّها إلى إضافة منشورة بإعدادات مسماة إلا عندما تصبح مجموعة القواعد قابلة لإعادة الاستخدام عبر المستودعات فعلًا.
 
-That’s the whole game. ESLint rule authoring isn’t hard. It’s just easy to do sloppily, and sloppy lint infrastructure has a special talent for annoying every engineer in the company at once.
-
----
-
-## TL;DR
-
-### When to Write a Custom Rule
-
-> The decision tree.
-
-- Can you solve it with an existing rule or plugin? → Use that.
-- Is it a convention specific to *your* codebase? → Write a custom rule.
-- Does it enforce an architectural boundary? → Definitely write a rule.
-
-**Examples of custom rules worth writing:**
-
-- No direct imports from another team’s internal packages
-- Enforce event naming conventions across microfrontends
-- Require error boundaries around federated remote imports
-- Ban specific API patterns that cause production issues
+هذه هي اللعبة كلها. فكتابة قواعد ESLint ليست صعبة، لكنها سهلة الإنجاز برخاوة، والبنية التحتية الرخوة للفحص تملك موهبة خاصة في إغاظة كل مهندسي الشركة دفعة واحدة.
 
 ---
 
-### Rule Anatomy
+## الخلاصة السريعة (TL;DR)
 
-> Every ESLint rule is an AST visitor.
+### متى تكتب قاعدة مخصصة
+
+> شجرة القرار.
+
+- هل تستطيع حلّها بقاعدة أو إضافة قائمة؟ → استخدمها.
+- هل هي عُرف خاص بـ*قاعدة شيفرتك* أنت؟ → اكتب قاعدة مخصصة.
+- هل تفرض حدًا معماريًا؟ → اكتب قاعدة بلا تردد.
+
+**أمثلة على قواعد مخصصة تستحق الكتابة:**
+
+- لا استيرادات مباشرة من الحزم الداخلية لفريق آخر
+- فرض اصطلاحات تسمية الأحداث عبر الواجهات المصغّرة
+- اشتراط حدود الأخطاء حول الاستيرادات البعيدة الموحدة
+- حظر أنماط API معينة تسبب مشكلات في الإنتاج
+
+---
+
+### تشريح القاعدة
+
+> كل قاعدة ESLint زائر لشجرة AST.
 
 ```javascript
 export default {
@@ -412,9 +412,9 @@ export default {
 
 ---
 
-### The AST Visitor Pattern
+### نمط زائر شجرة AST
 
-> You declare which node types you care about. ESLint walks the tree.
+> تعلن أنواع العقد التي تهمك، ويمشي ESLint في الشجرة.
 
 ```
 Program
@@ -427,15 +427,15 @@ Program
 └── ExportDefaultDeclaration   ← "export default ..."
 ```
 
-- Use [AST Explorer](https://astexplorer.net/) to see what nodes your code produces.
-- Visitor keys match node type names: `ImportDeclaration`, `CallExpression`, `MemberExpression`.
-- You can also use CSS-like selectors: `CallExpression[callee.name="require"]`.
+- استخدم [AST Explorer](https://astexplorer.net/) لترى العقد التي تنتجها شيفرتك.
+- تطابق مفاتيح الزوار أسماء أنواع العقد: `ImportDeclaration` و`CallExpression` و`MemberExpression`.
+- يمكنك أيضًا استخدام محددات شبيهة بـCSS: `CallExpression[callee.name="require"]`.
 
 ---
 
-### Testing Rules with RuleTester
+### اختبار القواعد بـRuleTester
 
-> Rules are pure functions. Test them like pure functions.
+> القواعد دوال نقية. فاختبرها كدوال نقية.
 
 ```javascript
 const { RuleTester } = require('eslint');
@@ -454,5 +454,5 @@ ruleTester.run('no-cross-team-imports', rule, {
 });
 ```
 
-- Every valid case must not report. Every invalid case must report exactly the expected errors.
-- Test edge cases: re-exports, dynamic imports, type-only imports.
+- يجب ألّا تبلغ كل حالة صالحة عن شيء. ويجب أن تبلغ كل حالة غير صالحة بالأخطاء المتوقعة بالضبط.
+- اختبر الحالات الحدّية: إعادات التصدير، والاستيرادات الديناميكية، والاستيرادات الخاصة بالأنواع فقط.

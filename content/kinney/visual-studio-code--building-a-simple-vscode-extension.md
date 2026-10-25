@@ -1,12 +1,12 @@
 ---
-title: "Building a Simple Extension"
-lang: en
+title: "بناء إضافة بسيطة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/building-a-simple-vscode-extension"
 ---
 
-Let’s build a simple extension that finds all of the `FIXME`s in a JavaScript file and then decorates them so that we can see them easily.
+لنبنِ إضافة بسيطة تعثر على جميع عبارات `FIXME` في ملف JavaScript ثم تُزيّنها بحيث يمكننا رؤيتها بسهولة.
 
-In `extension.js`, let’s add the following:
+في `extension.js`، لنجعل نضيف ما يلي:
 
 ```javascript
 const vscode = require('vscode');
@@ -57,16 +57,16 @@ module.exports = {
 };
 ```
 
-This code:
+هذه الشيفرة:
 
-- Creates a decoration style (red-ish background).
-- Looks for `FIXME` in the current document.
-- Calls `setDecorations` so every instance gets lit up like a holiday tree.
-- Subscribes to relevant events to keep decorations current.
+- تُنشئ نمط تزيين (خلفية ضاربة إلى الحمرة).
+- تبحث عن `FIXME` في المستند الحالي.
+- تستدعي `setDecorations` لتُضاء كل حالة كشجرة الأعياد.
+- تشترك في الأحداث ذات الصلة لإبقاء التزيينات محدَّثة.
 
-## Wire Up `package.json`
+## ربط ملف `package.json`
 
-Your `package.json` should have something like this in its `contributes` section or at least these fields to let VS Code know *when* to activate your extension:
+ينبغي أن يحتوي `package.json` على شيء مثل هذا في قسم `contributes` أو على هذه الحقول على الأقل، ليقرّر VS Code *متى* يُفعّل إضافتك:
 
 ```json
 {
@@ -91,14 +91,14 @@ Your `package.json` should have something like this in its `contributes` section
 }
 ```
 
-- `main` points to `extension.js`.
-- `activationEvents`: Tells Visual Studio Code to spin up your extension on certain triggers, like after startup or when the active editor changes.
+- يشير `main` إلى `extension.js`.
+- `activationEvents`: تخبر Visual Studio Code بتشغيل إضافتك عند محفّزات معيّنة، مثل ما بعد بدء التشغيل أو عند تغيّر المحرّر النشط.
 
-Want to highlight more words (like `BUG`, `TODO`, `WTF`, or “the code is on fire”)? Just add more regex checks or combine them into a single fancy regex. For example:
+أتريد تزيين كلمات أخرى (مثل `BUG` أو `TODO` أو `WTF` أو «الشيفرة مشتعلة»)؟ أضف فحوصات regex إضافية أو ادمجها في تعبير regex واحد أنيق. فمثلًا:
 
 ```javascript
 // Catch FIXME, BUG, or TODO
 const regex = /\b(FIXME|BUG|TODO)\b/g;
 ```
 
-Obviously, you can also add more decoration types for the different types of things you want to decorate.
+ومن الواضح أنك تستطيع أيضًا إضافة مزيد من أنماط التزيين لأنواع مختلفة من الأشياء التي تريد تزيينها.

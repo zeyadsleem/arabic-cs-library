@@ -1,18 +1,18 @@
 ---
-title: "INP Optimization & Long Tasks"
-lang: en
+title: "تحسين INP والمهام الطويلة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/inp-optimization-long-tasks"
 ---
 
-Your React app *looks* fast. The page loads quickly, the content appears instantly. Then a user clicks a button and… nothing. For 200 milliseconds, the UI is frozen. The click eventually processes, but that delay—that moment of uncertainty—just cost you a user’s trust. Welcome to the world of **INP** (Interaction to Next Paint), where every millisecond of delay is a broken promise.
+يبدو تطبيق React لديك *سريعًا*. تُحمَّل الصفحة بسرعة، ويظهر المحتوى في الحال. ثم ينقر المستخدم زرًّا و… لا شيء. تبقى الواجهة مجمّدة مدة 200 مللي ثانية. يُعالَج النقر في النهاية، لكن ذلك التأخير — تلك اللحظة من عدم اليقين — كلّفك للتوّ ثقة أحد المستخدمين. أهلًا بك في عالم **INP** (التفاعل إلى الرسم التالي - Interaction to Next Paint)، حيث كل مللي ثانية تأخير وعدٌ مكسور.
 
-INP measures how quickly your app responds to user interactions throughout its entire lifecycle. Not just the first click, but every click, tap, and keypress. And here’s the harsh reality: most React apps fail INP not because they’re slow, but because they’re doing too much work on the main thread at the wrong time.
+يقيس INP مدى سرعة استجابة تطبيقك لتفاعلات المستخدم طوال دورة حياته كاملة. ليس النقرة الأولى وحدها، بل كل نقرة ولمسة وضغطة مفتاح. وهذه هي الحقيقة القاسية: معظم تطبيقات React تفشل في INP لا لأنها بطيئة، بل لأنها تؤدي عملًا أكثر من اللازم على الخيط الرئيسي في الوقت الخطأ.
 
-Let’s fix that. Let’s break apart those long tasks, leverage modern scheduling APIs, and build React apps that respond instantly to every interaction.
+لنصلح ذلك. لنفكّك تلك المهام الطويلة، ونستفيد من واجهات الجدولة الحديثة، ونبنِ تطبيقات React تستجيب فورًا لكل تفاعل.
 
-## Understanding INP and Long Tasks
+## فهم INP والمهام الطويلة
 
-INP measures the latency of all interactions during a page visit:
+يقيس INP زمن الاستجابة لكل التفاعلات أثناء زيارة الصفحة:
 
 ```typescript
 interface INPBreakdown {
@@ -34,9 +34,9 @@ interface LongTask {
 }
 ```
 
-## Breaking Up Long Tasks
+## تفكيك المهام الطويلة
 
-### The Problem: Monolithic Event Handlers
+### المشكلة: معالجات أحداث مكتلة
 
 ```typescript
 // ❌ Long task - blocks the main thread
@@ -69,7 +69,7 @@ const BadSearchComponent: React.FC = () => {
 };
 ```
 
-### Solution 1: Yielding to the Main Thread
+### الحل الأول: إعادة التحكم إلى الخيط الرئيسي
 
 ```typescript
 // ✅ Yield control back to the browser
@@ -144,7 +144,7 @@ async function chunkSort<T>(
 }
 ```
 
-### Solution 2: Using `requestIdleCallback`
+### الحل الثاني: استخدام `requestIdleCallback`
 
 ```typescript
 const useIdleProcessor = <T, R>(
@@ -206,9 +206,9 @@ const DataProcessor: React.FC = () => {
 };
 ```
 
-## Using the Scheduler API
+## استخدام واجهة Scheduler API
 
-### PostTask API for Priority Scheduling
+### واجهة PostTask للجدولة حسب الأولوية
 
 ```typescript
 // Modern scheduler.postTask API
@@ -309,9 +309,9 @@ const InteractiveComponent: React.FC = () => {
 };
 ```
 
-## Optimizing React Rendering for INP
+## تحسين تصيير React من أجل INP
 
-### Concurrent Features for Better INP
+### الميزات المتزامنة لتحسين INP
 
 ```typescript
 // ✅ Use transitions for non-urgent updates
@@ -358,7 +358,7 @@ const ExpensiveList: React.FC<{ items: Item[] }> = ({ items }) => {
 };
 ```
 
-### Event Delegation for Better Performance
+### تفويض الأحداث لأداء أفضل
 
 ```typescript
 // ❌ Many event listeners
@@ -399,9 +399,9 @@ const GoodList: React.FC<{ items: Item[] }> = ({ items }) => {
 };
 ```
 
-## Avoiding Layout Thrashing
+## تجنّب إرباك التخطيط
 
-### Batch DOM Reads and Writes
+### جمع عمليات قراءة DOM وكتابته في دفعات
 
 ```typescript
 // ❌ Layout thrashing - forces multiple reflows
@@ -466,9 +466,9 @@ const AnimatedComponent: React.FC = () => {
 };
 ```
 
-## Input Responsiveness Optimization
+## تحسين استجابة الإدخال
 
-### Debouncing vs Throttling for Inputs
+### التهدئة مقابل التقييد في الإدخالات
 
 ```typescript
 // Custom hook for optimized input handling
@@ -535,7 +535,7 @@ const SearchInput: React.FC = () => {
 };
 ```
 
-### Optimizing Form Validation
+### تحسين التحقق من صحة النماذج
 
 ```typescript
 class ValidationScheduler {
@@ -605,7 +605,7 @@ interface ValidationRule {
 }
 ```
 
-## Monitoring INP in Production
+## مراقبة INP في الإنتاج
 
 ```typescript
 class INPMonitor {
@@ -708,34 +708,34 @@ const useINPMonitoring = () => {
 };
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-### Break up long tasks
+### فكّك المهام الطويلة
 
-- Yield to main thread every 50ms
-- Use requestIdleCallback for non-urgent work
-- Implement task scheduling with priorities
+- أعد التحكم إلى الخيط الرئيسي كل 50 مللي ثانية
+- استخدم requestIdleCallback للعمل غير العاجل
+- نفّذ جدولة المهام مع الأولويات
 
-### Optimize event handlers
+### حسّن معالجات الأحداث
 
-- Debounce expensive operations
-- Use event delegation
-- Process in chunks with yielding
+- هدّئ العمليات المكلفة
+- استخدم تفويض الأحداث
+- عالج البيانات في قطع مع إعادة التحكم
 
-### Avoid layout thrashing
+### تجنّب إرباك التخطيط
 
-- Batch DOM reads and writes
-- Use requestAnimationFrame for updates
-- Cache layout measurements
+- اجمع عمليات قراءة DOM وكتابته في دفعات
+- استخدم requestAnimationFrame للتحديثات
+- خزّن قياسات التخطيط مؤقتًا
 
-### Use React concurrent features
+### استخدم ميزات React المتزامنة
 
-- Mark non-urgent updates with transitions
-- Defer expensive renders
-- Use Suspense for data fetching
+- ضع علامة على التحديثات غير العاجلة بالانتقالات
+- أخّر التصييرات المكلفة
+- استخدم Suspense لجلب البيانات
 
-### Monitor INP
+### راقب INP
 
-- Track all user interactions
-- Identify slow interactions
-- Report metrics to analytics
+- تتبّع كل تفاعلات المستخدم
+- حدّد التفاعلات البطيئة
+- أبلغ عن المقاييس إلى التحليلات

@@ -1,12 +1,12 @@
 ---
-title: "OpenClaw Browser Prompts"
-lang: en
+title: "طلبات متصفح OpenClaw"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/openclaw-browser-prompts"
 ---
 
-These prompts assume the browser is already set up. If you haven’t turned it on yet, start with [Setting Up and Using the Browser](https://stevekinney.com/courses/openclaw/browser-setup-and-use).
+تفترض هذه الطلبات أن المتصفح مُهيّأ بالفعل. وإن لم تكن قد شغّلته بعد، فابدأ بـ[تهيئة المتصفح واستخدامه](https://stevekinney.com/courses/openclaw/browser-setup-and-use).
 
-Here is an example prompt that you might consider:
+وإليك طلبًا نموذجيًا قد تفكّر في استخدامه:
 
 ```markdown
 Open GitHub Trending at https://github.com/trending.
@@ -28,11 +28,11 @@ Produce a report containing a comparison table, links, and your top three recomm
 Use the browser to navigate the actual GitHub interface. Don't substitute web search. Explain what you're doing as you navigate, and take screenshots of three interesting discoveries.
 ```
 
-Here is what a run looks like. The browser panel on the right shows the agent on a repository’s releases page, while the chat on the left holds the comparison table and the top recommendation.
+وإليك كيف تبدو جولة تشغيل. فلوحة المتصفح على اليمين تُظهر الوكيل في صفحة إصدارات مستودع، بينما تحمل الدردشة على اليسار جدول المقارنة والتوصية الأولى.
 
-The Control UI chat with a comparison table of three trending repositories and a top recommendation, beside a browser side panel showing a GitHub releases page
+دردشة Control UI مع جدول مقارنة لثلاثة مستودعات رائجة وتوصية أولى، إلى جانب لوحة متصفح جانبية تعرض صفحة إصدارات على GitHub
 
-Or, here is an even more fun one:
+أو إليك واحدًا أكثر متعة:
 
 ```markdown
 You are a senior QA engineer evaluating a web application.

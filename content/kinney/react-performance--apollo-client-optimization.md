@@ -1,14 +1,14 @@
 ---
-title: "Apollo Client Performance Optimization"
-lang: en
+title: "تحسين أداء Apollo Client"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/apollo-client-optimization"
 ---
 
-Apollo Client provides powerful tools for GraphQL performance optimization, but they require careful configuration to achieve optimal results. This guide covers advanced Apollo Client techniques for caching, batching, optimistic updates, and subscription management that can dramatically improve your React application’s performance.
+يوفّر Apollo Client أدوات قوية لتحسين أداء GraphQL، لكنها تتطلّب تهيئة دقيقة للوصول إلى أفضل النتائج. يغطّي هذا الدليل تقنيات Apollo Client المتقدّمة في التخزين المؤقت، والتجميع في دفعات، والتحديثات المتفائلة، وإدارة الاشتراكات، وهي تقنيات يمكن أن تحسّن أداء تطبيق React لديك تحسّنًا هائلًا.
 
-## Optimizing Apollo Client Cache
+## تحسين الذاكرة المؤقتة في Apollo Client
 
-Apollo’s normalized cache is powerful but needs proper configuration:
+الذاكرة المؤقتة المعيارية في Apollo قوية، لكنها تحتاج إلى تهيئة صحيحة:
 
 ```typescript
 // Cache configuration for performance
@@ -127,9 +127,9 @@ async function setupCache() {
 }
 ```
 
-## Query Batching and Deduplication
+## تجميع الاستعلامات وإزالة تكرارها
 
-Reduce network requests with batching:
+قلّل طلبات الشبكة عبر التجميع في دفعات:
 
 ```typescript
 // Apollo Link setup for batching
@@ -223,9 +223,9 @@ class UserLoader {
 }
 ```
 
-## Optimistic Updates and Mutations
+## التحديثات المتفائلة والطفرات
 
-Make mutations feel instant with optimistic updates:
+اجعل الطفرات تبدو فورية عبر التحديثات المتفائلة:
 
 ```typescript
 // Optimistic mutation pattern
@@ -371,9 +371,9 @@ function useOptimisticFollow() {
 }
 ```
 
-## Subscription Performance
+## أداء الاشتراكات
 
-Implement efficient real-time updates:
+نفّذ تحديثات فورية فعّالة:
 
 ```typescript
 // WebSocket subscriptions with performance considerations

@@ -1,40 +1,40 @@
 ---
-title: "Test Doubles"
-lang: en
+title: "البدائل الاختبارية"
+lang: ar
 source: "https://stevekinney.com/courses/testing/test-doubles"
 ---
 
-When writing unit tests, the goal is to test a piece of code in isolation. However, the real-world code we write often depends on other pieces of code or external systems like databases, APIs, or third-party services. These dependencies can introduce variability, slowness, or complexity into our tests, making them harder to write, understand, and maintain.
+عند كتابة اختبارات الوحدة، الهدف هو اختبار قطعة من الشيفرة بمعزل عن غيرها. لكن الشيفرة التي نكتبها للعالم الحقيقي غالبًا ما تعتمد على قطع أخرى من الشيفرة أو أنظمة خارجية مثل قواعد البيانات وواجهات API والخدمات الخارجية. وهذه الاعتماديات قد تُدخل تباينًا أو بطئًا أو تعقيدًا في اختباراتنا، فتجعل كتابتها وفهمها وصيانتها أصعب.
 
-To overcome this, we use things called *test doubles*. A test double is a generic term for any kind of substitute for real objects in tests. They allow us to isolate the system under test and control the environment, ensuring we can predict behavior and verify the interactions.
+للتغلّب على ذلك، نستخدم أشياء تُسمّى *البدائل الاختبارية*. البديل الاختباري مصطلح عام لأي نوع من البدائل عن الكائنات الحقيقية في الاختبارات. وهي تتيح لنا عزل النظام قيد الاختبار والتحكّم في البيئة، بما يضمن قدرتنا على توقّع السلوك والتحقّق من التفاعلات.
 
-Before diving into implementation, it’s essential to understand what test doubles are and how they differ:
+قبل الغوص في التنفيذ، من الجوهري أن نفهم ما هي البدائل الاختبارية وكيف تختلف:
 
-- **Test Double**: A generic term for any case where you replace a production object with a test-specific version.
-- [**Mock**](https://stevekinney.com/courses/testing/mocks): An object that registers calls they receive. Mocks can verify that interactions with dependencies occur as expected.
-- [**Spy**](https://stevekinney.com/courses/testing/spies): A function that records information about its calls, such as arguments and return values, allowing you to assert on how it was used.
-- [**Stubs**](https://stevekinney.com/courses/testing/stubs): An object that provides predefined responses to method calls, usually not concerned with how they are called.
+- **البديل الاختباري (Test Double)**: مصطلح عام لأي حالة تستبدل فيها كائن إنتاج بنسخة خاصة بالاختبار.
+- [**البديل المُحاكى (Mock)**](https://stevekinney.com/courses/testing/mocks): كائن يسجّل الاستدعاءات التي يتلقّاها. ويمكن للبدائل المُحاكاة التحقّق من أن التفاعلات مع الاعتماديات تحدث كما هو متوقّع.
+- [**الجاسوس (Spy)**](https://stevekinney.com/courses/testing/spies): دالة تسجّل معلومات عن استدعاءاتها، مثل الوسائط والقيم المُعادة، بما يتيح لك التأكيد على طريقة استخدامها.
+- [**البديل (Stub)**](https://stevekinney.com/courses/testing/stubs): كائن يوفّر استجابات محدّدة مسبقًا لاستدعاءات التوابع، وعادةً لا يهتم بكيفية استدعائه.
 
-## Why Do We Use Test Doubles in Testing?
+## لماذا نستخدم البدائل الاختبارية في الاختبار؟
 
-We use test doubles to:
+نستخدم البدائل الاختبارية من أجل:
 
-1. **Isolate the code under test**: By replacing real dependencies, we remove the risk of side effects, external failures, and unpredictable behavior.
-2. **Control test scenarios**: With test doubles, we can simulate different responses, such as errors or specific data, without relying on the real implementation.
-3. **Improve test reliability**: Test doubles make our tests more predictable, removing uncertainty and making sure tests pass or fail based on the actual code we’re testing.
-4. **Speed up tests**: Real dependencies like databases or network calls can slow down tests. By using test doubles, we can run tests much faster.
-5. **Verify interactions**: Test doubles allow us to observe how our code interacts with its dependencies, helping us ensure that methods are being called as expected.
+1. **عزل الشيفرة قيد الاختبار**: باستبدال الاعتماديات الحقيقية، نُزيل خطر الآثار الجانبية والإخفاقات الخارجية والسلوك غير المتوقّع.
+2. **التحكّم في سيناريوهات الاختبار**: باستخدام البدائل الاختبارية، يمكننا محاكاة استجابات مختلفة، مثل الأخطاء أو بيانات محدّدة، دون الاعتماد على التنفيذ الحقيقي.
+3. **تحسين موثوقية الاختبارات**: تجعل البدائل الاختبارية اختباراتنا أكثر قابلية للتوقّع، فتُزيل عدم اليقين وتضمن أن الاختبارات تنجح أو تفشل بناءً على الشيفرة الفعلية التي نختبرها.
+4. **تسريع الاختبارات**: الاعتماديات الحقيقية مثل قواعد البيانات أو استدعاءات الشبكة قد تُبطئ الاختبارات. وباستخدام البدائل الاختبارية، يمكننا تشغيل الاختبارات أسرع بكثير.
+5. **التحقّق من التفاعلات**: تتيح لنا البدائل الاختبارية ملاحظة كيف تتفاعل شيفرتنا مع اعتمادياتها، مما يساعدنا في ضمان استدعاء التوابع كما هو متوقّع.
 
-## Differences Between Stubs, Spies, and Mocks
+## الفروق بين البدائل والجواسيس والبدائل المُحاكاة
 
-To clarify the differences between these three types of test doubles:
+لتوضيح الفروق بين هذه الأنواع الثلاثة من البدائل الاختبارية:
 
-| **Feature** | **Stubs** | **Spies** | **Mocks** |
+| **الميزة** | **البدائل (Stubs)** | **الجواسيس (Spies)** | **البدائل المُحاكاة (Mocks)** |
 | --- | --- | --- | --- |
-| **Primary Purpose** | Replace a function with predefined behavior | Record information about function calls | Combine behavior control with call tracking |
-| **Modifies Behavior** | Yes (returns predefined values or actions) | No (only observes by default) | Yes (can define behavior and observe) |
-| **Tracks Calls** | No | Yes | Yes |
-| **Tracks Arguments** | No | Yes | Yes |
-| **Usage Scenario** | Simulate simple behaviors, like network responses | Monitor interactions, like verifying if a callback was triggered | Simulate complex interactions, combining behavior control with call recording |
+| **الغرض الأساسي** | استبدال دالة بسلوك محدّد مسبقًا | تسجيل معلومات عن استدعاءات الدوال | الجمع بين التحكّم في السلوك وتتبّع الاستدعاءات |
+| **يعدّل السلوك** | نعم (يُعيد قيمًا أو إجراءات محدّدة مسبقًا) | لا (يلاحظ فقط افتراضيًا) | نعم (يمكنه تعريف السلوك والملاحظة) |
+| **يتتبّع الاستدعاءات** | لا | نعم | نعم |
+| **يتتبّع الوسائط** | لا | نعم | نعم |
+| **سيناريو الاستخدام** | محاكاة سلوكيات بسيطة، مثل استجابات الشبكة | مراقبة التفاعلات، مثل التحقّق من تشغيل رد نداء | محاكاة تفاعلات معقّدة، بالجمع بين التحكّم في السلوك وتسجيل الاستدعاءات |
 
-Stubs, spies, and mocks are essential tools for isolating dependencies, improving test reliability, and verifying code behavior. Understanding the differences and knowing when to use each type of test double will help you write more effective and maintainable tests. Whether you need to simulate a simple API response (stub), monitor how a function interacts with a dependency (spy), or simulate complex behaviors and record interactions (mock), these tools will help ensure your unit tests are robust and accurate.
+البدائل والجواسيس والبدائل المُحاكاة أدوات جوهرية لعزل الاعتماديات وتحسين موثوقية الاختبارات والتحقّق من سلوك الشيفرة. وفهم الفروق ومعرفة متى تستخدم كل نوع من البدائل الاختبارية سيساعدك في كتابة اختبارات أكثر فعالية وقابلية للصيانة. سواء احتجت إلى محاكاة استجابة API بسيطة (بديل)، أو مراقبة كيف تتفاعل دالة مع اعتمادية (جاسوس)، أو محاكاة سلوكيات معقّدة وتسجيل التفاعلات (بديل مُحاكى)، فإن هذه الأدوات ستساعد في ضمان أن اختبارات وحدتك متينة ودقيقة.

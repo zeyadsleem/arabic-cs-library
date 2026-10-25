@@ -1,12 +1,12 @@
 ---
-title: "Result/Either Patterns for React"
-lang: en
+title: "أنواع النتيجة ومعالجة الأخطاء في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/result-types-and-error-handling"
 ---
 
-Exceptions are hard to type and harder to test. Result/Either types make failures explicit and components simpler.
+يصعب الاستثناءات تمثيلها بالأنواع، والاختبار أصدَر منها. تجعل أنواع النتيجة/إما-أو (Result/Either) الإخفاقات صريحةً وتُبسّط المكوّنات (components).
 
-## neverthrow Basics
+## أساسيات neverthrow
 
 ```typescript
 import { ok, err, Result } from 'neverthrow';
@@ -25,7 +25,7 @@ async function getUser(id: string): Promise<Result<User, UserError>> {
 }
 ```
 
-## Component Ergonomics
+## أريحية الاستخدام في المكوّنات
 
 ```typescript
 function UserCard({ result }: { result: Result<User, UserError> }) {
@@ -36,9 +36,9 @@ function UserCard({ result }: { result: Result<User, UserError> }) {
 }
 ```
 
-## Action Error Unions
+## اتحادات أخطاء الإجراءات
 
-Model server action outcomes with discriminated unions to simplify UI branches and ensure exhaustiveness.
+استعمِل أنواعًا اتحادية قابلة للتمييز (discriminated unions) لنمذجة نتائج إجراء الخادم (server action) فيتبسّط فروع واجهة المستخدم ويضمن الشمولية (exhaustiveness).
 
 ```typescript
 type CreateUserResult =
@@ -87,7 +87,7 @@ function CreateUserForm() {
 }
 ```
 
-## Converting Exceptions to Results
+## تحويل الاستثناءات إلى نتائج
 
 ```typescript
 import { Result, err, ok } from 'neverthrow';
@@ -101,7 +101,7 @@ export async function wrap<T>(fn: () => Promise<T>): Promise<Result<T, Error>> {
 }
 ```
 
-## Mapping and Chaining
+## التحويل والتسلسل بالـ map
 
 ```typescript
 const res = await getUser('123')

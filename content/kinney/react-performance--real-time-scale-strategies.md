@@ -1,18 +1,18 @@
 ---
-title: "Real-Time at Scale Strategies"
-lang: en
+title: "استراتيجيات الزمن الحقيقي على نطاق واسع"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/real-time-scale-strategies"
 ---
 
-Your React app connects to a WebSocket. Data starts flowing. 10 updates per second—smooth. 100 updates per second—manageable. 1000 updates per second—the UI freezes, memory balloons, and Chrome shows the “Aw, Snap!” page. Welcome to the brutal reality of real-time data at scale, where good intentions meet the limits of browser performance.
+يتصل تطبيق React لديك بـ WebSocket. تبدأ البيانات بالتدفّق. 10 تحديثات في الثانية — سلس. 100 تحديث في الثانية — مقبول. 1000 تحديث في الثانية — تتجمّد الواجهة، وتتضخّم الذاكرة، ويعرض Chrome صفحة «Aw, Snap!». مرحبًا بك في الواقع القاسي للبيانات الزمنية الحقيقية على نطاق واسع، حيث تصطدم النوايا الحسنة بحدود أداء المتصفح.
 
-Here’s what nobody tells you about real-time React apps: the problem isn’t receiving the data—it’s rendering it. Every state update triggers a reconciliation. Every reconciliation evaluates components. Every evaluation creates objects. Do this 1000 times per second, and you’ve created a perfect storm of performance problems.
+وإليك ما لا يخبرك به أحد عن تطبيقات React الزمنية الحقيقية: المشكلة ليست في استقبال البيانات، بل في تصييرها. فكل تحديث حالة يُطلق عملية مطابقة. وكل مطابقة تُقيّم المكوّنات. وكل تقييم ينشئ كائنات. افعل ذلك 1000 مرة في الثانية، فتكون قد صنعت عاصفة كاملة من مشكلات الأداء.
 
-Let’s build real-time React apps that can handle torrential data streams without breaking a sweat, using backpressure strategies, intelligent batching, and reconciliation optimization.
+فلنبنِ تطبيقات React زمنية حقيقية قادرة على التعامل مع تدفقات بيانات هائلة من دون عناء، باستخدام استراتيجيات الضغط العكسي، والتجميع الذكي، وتحسين المطابقة.
 
-## Understanding Real-Time Scale Challenges
+## فهم تحديات الزمن الحقيقي على نطاق واسع
 
-The physics of real-time rendering in browsers:
+فيزياء التصيير في الزمن الحقيقي داخل المتصفحات:
 
 ```typescript
 interface RealTimeBottlenecks {
@@ -31,9 +31,9 @@ interface RealTimeBottlenecks {
 // Result: Frozen UI and memory explosion
 ```
 
-## Backpressure Management
+## إدارة الضغط العكسي
 
-### Implementing Flow Control
+### تنفيذ التحكّم في التدفّق
 
 ```typescript
 class BackpressureManager {
@@ -137,7 +137,7 @@ interface Message {
 }
 ```
 
-### React Hook for Backpressure
+### خُطّاف React للضغط العكسي
 
 ```typescript
 const useBackpressure = <T>(
@@ -220,9 +220,9 @@ const RealTimeDisplay: React.FC = () => {
 };
 ```
 
-## Intelligent Batching Strategies
+## استراتيجيات التجميع الذكي
 
-### Time-Window Batching
+### التجميع بنوافذ زمنية
 
 ```typescript
 class TimeBatcher<T> {
@@ -318,7 +318,7 @@ interface BatcherOptions {
 }
 ```
 
-### Smart Aggregation
+### التجميع الذكي للبيانات
 
 ```typescript
 class DataAggregator<T> {
@@ -458,9 +458,9 @@ interface Tick {
 }
 ```
 
-## Reconciliation Optimization
+## تحسين المطابقة
 
-### Snapshot Isolation
+### عزل اللقطات
 
 ```typescript
 class SnapshotIsolation<T> {
@@ -580,7 +580,7 @@ interface OrderBookState {
 }
 ```
 
-### Virtualized Updates
+### التحديثات الافتراضية
 
 ```typescript
 class VirtualizedUpdater<T> {
@@ -729,7 +729,7 @@ interface Item {
 }
 ```
 
-## Monitoring Real-Time Performance
+## مراقبة الأداء في الزمن الحقيقي
 
 ```typescript
 class RealTimeMetrics {
@@ -834,39 +834,39 @@ const useRealTimeMetrics = () => {
 };
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Implement backpressure:**
+✅ **نفّذ الضغط العكسي:**
 
-- Set queue size limits
-- Define drop strategies
-- Monitor drop rates
-- Provide feedback to users
+- حدّد سقفًا لحجم الطابور
+- عرّف استراتيجيات الإسقاط
+- راقب معدلات الإسقاط
+- وفّر تغذية راجعة للمستخدمين
 
-✅ **Batch intelligently:**
+✅ **جمّع بذكاء:**
 
-- Group updates by time windows
-- Aggregate when possible
-- Process in animation frames
-- Respect 60fps budget
+- جمّع التحديثات في نوافذ زمنية
+- اجمع البيانات عندما يتسنّى ذلك
+- عالج داخل إطارات الحركة
+- احترم ميزانية 60 إطارًا في الثانية
 
-✅ **Optimize reconciliation:**
+✅ **حسّن المطابقة:**
 
-- Use snapshot isolation
-- Implement virtualization
-- Minimize component updates
-- Batch React updates
+- استخدم عزل اللقطات
+- نفّذ المحاكاة الافتراضية
+- قلّل تحديثات المكوّنات
+- جمّع تحديثات React
 
-✅ **Handle bursts gracefully:**
+✅ **تعامل مع التدفّقات المفاجئة بلباقة:**
 
-- Use adaptive strategies
-- Provide visual feedback
-- Degrade quality if needed
-- Maintain responsiveness
+- استخدم استراتيجيات تكيّفية
+- وفّر تغذية راجعة بصرية
+- اخفض الجودة عند الحاجة
+- حافظ على سرعة الاستجابة
 
-✅ **Monitor continuously:**
+✅ **راقب باستمرار:**
 
-- Track latency metrics
-- Measure drop rates
-- Monitor memory usage
-- Alert on degradation
+- تتبّع مقاييس زمن الاستجابة
+- قِس معدلات الإسقاط
+- راقب استهلاك الذاكرة
+- نبّه عند التدهور

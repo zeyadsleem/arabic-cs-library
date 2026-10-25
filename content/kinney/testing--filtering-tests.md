@@ -1,47 +1,47 @@
 ---
-title: "Filtering Tests"
-lang: en
+title: "ترشيح الاختبارات"
+lang: ar
 source: "https://stevekinney.com/courses/testing/filtering-tests"
 ---
 
-Vitest gives you a bunch of interesting ways to only run *some* of your tests. Let’s walking some of the more popular ones.
+يمنحك Vitest مجموعة من الطرق المثيرة لتشغيل *بعض* اختباراتك فقط. لنتناول بعضًا من أكثرها شيوعًا.
 
-## Filtering by File Name
+## الترشيح حسب اسم الملف
 
-If you provide an argument to Vitest, then it’ll filter your tests and only try to match the ones with that name.
+إن مرّرت وسيطًا إلى Vitest، فسيُرشّح اختباراتك ولن يحاول مطابقة سوى التي تحمل ذلك الاسم.
 
 ```bash
 npx vitest arithmetic
 ```
 
-This will run `src/close-enough.test.js`, but none of the other ones.
+سيشغّل هذا `src/close-enough.test.js`، ولن يشغّل أي اختبار آخر.
 
-## Filtering by Test Name
+## الترشيح حسب اسم الاختبار
 
-You can also use the `--testNamePattern <pattern>` (or, `-t`, for short) option to filter tests by their name. This can be helpful when you want to filter by the name that you gave the test using either `it` or `test` within a file rather than the name of the file containing the test.
+يمكنك أيضًا استخدام الخيار `--testNamePattern <pattern>` (أو `-t` اختصارًا) لترشيح الاختبارات حسب اسمها. يكون هذا مفيدًا عندما تريد الترشيح حسب الاسم الذي أطلقته على الاختبار باستخدام `it` أو `test` داخل ملف، بدلًا من اسم الملف الذي يحتوي على الاختبار.
 
-## Filtering by Folder or Directory
+## الترشيح حسب المجلد أو الدليل
 
-The `--dir` flag in Vitest specifies the directory you want Vitest to go looking for tests.
+يحدّد العلم `--dir` في Vitest الدليل الذي تريد أن يبحث فيه Vitest عن الاختبارات.
 
 ```bash
 vitest --dir ./packages/api
 ```
 
-By providing a directory path as the argument to the `--dir` flag, Vitest will go ahead and recursively search for test files within that directory—and its subdirectories. This allows you to easily specify a specific directory to run tests from, instead of running tests from the entire project.
+فبتمرير مسار دليل كوسيط إلى العلم `--dir`، سيمضي Vitest في البحث عوديًا عن ملفات الاختبار داخل ذلك الدليل ودليله الفرعية. يتيح لك ذلك تحديد دليل معيّن لتشغيل الاختبارات منه بسهولة، بدلًا من تشغيل الاختبارات من المشروع بأكمله.
 
-## Filtering at the Individual Test Level
+## الترشيح على مستوى الاختبار الواحد
 
-Sometimes, we don’t want all of our tests to run. Some times we only want certain tests to run.
+أحيانًا لا نريد أن تُشغّل جميع اختباراتنا. وأحيانًا نريد أن تُشغّل اختبارات معيّنة فقط.
 
-- `test.skip`: Skip this test for now.
-- `test.only`: Only run this and any other test that uses `.only`.
-- `test.todo`: Note to self—I still need to write this test.
-- `test.fails`: Yea, I know this one fails. Don’t blow up the rest of the test run, please.
+- `test.skip`: تجاوز هذا الاختبار في الوقت الحالي.
+- `test.only`: شغّل هذا الاختبار فقط وأي اختبار آخر يستخدم `.only`.
+- `test.todo`: ملاحظة لنفسي—ما زلت بحاجة إلى كتابة هذا الاختبار.
+- `test.fails`: أجل، أعرف أن هذا الاختبار يفشل. لا تُفجّر بقية تشغيل الاختبارات، من فضلك.
 
-## Only Run Certain Tests
+## تشغيل اختبارات معيّنة فقط
 
-You can use `.only` if you want to run *only* a few of your tests.
+يمكنك استخدام `.only` إن أردت تشغيل *بعض* اختباراتك فقط.
 
 ```typescript
 it.only('should work', () => {
@@ -53,9 +53,9 @@ test('works with "test" as well', () => {
 });
 ```
 
-## Skip Certain Tests
+## تجاوز اختبارات معيّنة
 
-Alternatively, you can `skip` tests that you don’t want to run right now.
+بدلًا من ذلك، يمكنك `skip` الاختبارات التي لا تريد تشغيلها الآن.
 
 ```typescript
 import { it, expect, test } from 'vitest';
@@ -69,7 +69,7 @@ test.skip('works with "test" as well', () => {
 });
 ```
 
-Alternatively, you can use `todo` to signify that you want to skip this test for now, *but* it’s because you intend to write an implementation for it… eventually.
+بدلًا من ذلك، يمكنك استخدام `todo` للدلالة على أنك تريد تجاوز هذا الاختبار الآن، *لكن* السبب أنك تنوي كتابة تنفيذ له… في نهاية المطاف.
 
 ```typescript
 it('should work', () => {
@@ -81,16 +81,16 @@ test.todo('works with "test" as well', () => {
 });
 ```
 
-## Conditionally Run Tests
+## تشغيل الاختبارات شرطيًا
 
-You saw some of these (well, the first two) before, but I’ll call them out just in case you missed them:
+رأيت بعضًا من هذه سابقًا (أول اثنين فحسب)، لكنني سأشير إليها تحسّبًا لأن تكون فوّتها:
 
-- `test.skipIf`: Only skip this one if I give you a truthy value.
-- `test.runIf`: Only run this test if I give you a truthy value.
-- `test.concurrent`: Run this test in parallel with any other test using `.concurrent`. We’ll cover this in [parallelizing-tests](https://stevekinney.com/courses/testing/parallelizing-tests).
-- `test.each`: I want to generate a bunch of tests. We’ll cover this in [Parameterizing Tests](https://stevekinney.com/courses/testing/parameterizing-tests).
+- `test.skipIf`: تجاوز هذا الاختبار فقط إن أعطيتك قيمة صادقة.
+- `test.runIf`: شغّل هذا الاختبار فقط إن أعطيتك قيمة صادقة.
+- `test.concurrent`: شغّل هذا الاختبار بالتوازي مع أي اختبار آخر يستخدم `.concurrent`. سنتناول هذا في [تشغيل الاختبارات بالتوازي](https://stevekinney.com/courses/testing/parallelizing-tests).
+- `test.each`: أريد توليد مجموعة من الاختبارات. سنتناول هذا في [توليد الاختبارات](https://stevekinney.com/courses/testing/parameterizing-tests).
 
-## Examples
+## أمثلة
 
 ```typescript
 test.runIf(process.env.NODE_ENV === 'development')(
@@ -108,31 +108,31 @@ test.skipIf(process.env.NODE_ENV !== 'test')('it should run in test', () => {
 });
 ```
 
-## Dynamically Filter Tests
+## ترشيح الاختبارات ديناميكيًا
 
-When Vitest (or Jest, for that matter) are watching for changes, you can press the **h** key to open up some options:
+عندما يراقب Vitest (أو Jest، في هذا الشأن) التغييرات، يمكنك الضغط على المفتاح **h** لفتح بعض الخيارات:
 
-- press **a** to rerun all tests
-- press **f** to rerun only failed tests
-- press **u** to update snapshot
-- press **p** to filter by a filename
-- press **t** to filter by a test name regex pattern
-- press **q** to quit
+- اضغط **a** لإعادة تشغيل كل الاختبارات
+- اضغط **f** لإعادة تشغيل الاختبارات الفاشلة فقط
+- اضغط **u** لتحديث لقطة الحالة
+- اضغط **p** للترشيح حسب اسم ملف
+- اضغط **t** للترشيح حسب نمط تعبير نمطي لاسم اختبار
+- اضغط **q** للخروج
 
-Filtering by test name can be super useful if you’re like me and don’t trust yourself to remember to remove your `skip` and `only` annotations. (Although, we’ll talk more about this later.)
+قد يكون الترشيح حسب اسم الاختبار مفيدًا جدًا إن كنت مثلي ولا تثق بنفسك في تذكّر إزالة تعليقات `skip` و`only`. (رغم أننا سنتحدث أكثر عن هذا لاحقًا.)
 
-## Filter Tests By Filename When Starting Up
+## ترشيح الاختبارات حسب اسم الملف عند البدء
 
 ```typescript
 npm test foo
 ```
 
-This will run `foo.test.ts`, but *not* `bar.test.ts`.
+سيشغّل هذا `foo.test.ts`، و*ليس* `bar.test.ts`.
 
 ## `vitest related`
 
-This will run tests related to whatever file you provide. (So, this is like filter but adds a few more to the mix.)
+سيشغّل هذا الاختبارات المرتبطة بأي ملف تمرّره. (فهو أشبه بمرشّح لكنه يضيف بعضًا آخر إلى الخليط.)
 
 ## `vitest --changed`
 
-Runs tests related to files that changed. Out of the box, this will be against any uncommitted files. But, you can also do cool stuff like `--changed HEAD~1` or give it a branch name to compare to or a particular commit.
+يشغّل الاختبارات المرتبطة بالملفات التي تغيّرت. بشكل افتراضي، يكون هذا مقابل أي ملفات غير مُودعة. لكن يمكنك أيضًا فعل أشياء رائعة مثل `--changed HEAD~1` أو إعطائه اسم فرع للمقارنة به أو إيداع بعينه.

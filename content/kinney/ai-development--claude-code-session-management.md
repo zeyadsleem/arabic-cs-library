@@ -1,46 +1,35 @@
 ---
-title: "Session Management"
-lang: en
+title: "إدارة الجلسات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/claude-code-session-management"
 ---
 
-[Claude Code](https://code.claude.com/docs/en/overview) sessions are working
-memory plus tool state. Treat them as useful but temporary. Durable project
-knowledge belongs in files such as `CLAUDE.md`, `.claude/rules/*.md`, skills,
-tests, and scripts.
+جلسات [Claude Code](https://code.claude.com/docs/en/overview) هي ذاكرة عمل زائد حالة الأدوات. عاملها كمفيدة لكن مؤقتة. فالمعرفة الدائمة بالمشروع تنتمي إلى ملفات مثل `CLAUDE.md` و`.claude/rules/*.md` والمهارات والاختبارات والسكربتات.
 
-## Start with Orientation
+## ابدأ بالاستكشاف
 
-For a new repository, begin with a read-only request:
+لمستودع جديد، ابدأ بطلب للقراءة فقط:
 
 ```
 Read this repository and summarize the build, test, lint, and release commands.
 Do not edit files. Cite the files you used.
 ```
 
-That gives you a quick signal on whether Claude understands the project shape.
-If it invents commands, fix the context before asking it to change code.
+يمنحك ذلك إشارة سريعة إلى ما إذا كان Claude يفهم شكل المشروع. وإذا اختلق أوامر، فأصلح السياق قبل أن تطلب منه تغيير الشيفرة.
 
-## Keep Sessions Bounded
+## أبقِ الجلسات محدودة
 
-Long sessions accumulate assumptions. When the task changes, start a new session
-or compact deliberately. A good session has one goal, one verification path, and
-one final diff.
+تتراكم الافتراضات في الجلسات الطويلة. وعندما تتغيّر المهمة، ابدأ جلسة جديدة أو اضغطها عن قصد. فالجلسة الجيدة لها هدف واحد ومسار تحقق واحد وفرق نهائي واحد.
 
-Use continuation when you are still inside the same goal. Start fresh when you
-are changing goals, reviewing unrelated code, or switching repositories.
+استخدم المتابعة عندما تكون داخل الهدف نفسه. وابدأ من جديد عندما تغيّر الأهداف، أو تراجع شيفرة غير ذات صلة، أو تنتقل بين المستودعات.
 
-## Surfaces
+## الأسطح
 
-Claude Code is available in more places than the terminal: IDE integrations,
-desktop, web, remote control workflows, and automation surfaces. The same
-principle applies everywhere: the session can help you work, but the repository
-files must remain the source of truth.
+Claude Code متاح في أماكن أكثر من الطرفية: تكاملات بيئات التطوير، وسطح المكتب، والويب، وسير عمل التحكم عن بعد، وأسطح الأتمتة. والمبدأ نفسه ينطبق في كل مكان: قد تساعدك الجلسة في العمل، لكن ملفات المستودع يجب أن تبقى مصدر الحقيقة.
 
-## Session Handoff
+## تسليم الجلسة {#session-handoff}
 
-When you hand work between Claude Code and another tool, summarize the filesystem
-state, not the chat:
+عندما تسلّم عملًا بين Claude Code وأداة أخرى، لخّص حالة نظام الملفات لا المحادثة:
 
 ```bash
 git status --short
@@ -48,6 +37,4 @@ git diff --stat
 git diff
 ```
 
-The next tool should be able to continue from the branch, tests, and files. If it
-needs the chat transcript to understand correctness, the work is not packaged
-well enough yet.
+ينبغي أن تستطيع الأداة التالية المتابعة من الفرع والاختبارات والملفات. وإذا احتاجت إلى نصّ المحادثة لفهم الصحة، فالعمل غير مُحزَّم جيدًا بعد.

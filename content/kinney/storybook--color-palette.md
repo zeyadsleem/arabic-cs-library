@@ -1,10 +1,10 @@
 ---
-title: "Color Palette"
-lang: en
+title: "لوحة الألوان"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/color-palette"
 ---
 
-Storybook provides a Docs Block for rendering your design system’s color palette. For example, you can create a `.mdx` file that looks like this.
+توفّر Storybook كتلة توثيق لتصيير لوحة ألوان نظام تصميمك. فمثلًا، يمكنك إنشاء ملف `.mdx` يشبه هذا.
 
 ```jsx
 import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
@@ -23,13 +23,13 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
 </ColorPalette>
 ```
 
-Storybook will render this simple color palette.
+ستصيّر Storybook لوحة الألوان البسيطة هذه.
 
-Storybook rendering a color palette
+Storybook تصيّر لوحة ألوان
 
-What’s even better is that you can programmatically render the color palette since you have the full power of JSX at your disposal. This allows you to easily generate a color palette based on your theme.
+والأفضل من ذلك أنك تستطيع تصيير لوحة الألوان برمجيًا، لأن كامل قوة JSX تحت تصرفك. وهذا يتيح لك توليد لوحة ألوان بسهولة بناءً على سمتك.
 
-Let’s say we wanted to pull in all of the colors from Tailwind. We could do something like this.
+لنقل إننا أردنا جلب كل الألوان من Tailwind. يمكننا أن نفعل شيئًا كهذا.
 
 ```jsx
 import colors from 'tailwindcss/colors';
@@ -43,30 +43,30 @@ import colors from 'tailwindcss/colors';
 </ColorPalette>;
 ```
 
-Obviously, this will be a little different depending on the taxonomy of your theme, but you can expect something along the lines of this.
+من الواضح أن هذا سيختلف قليلًا حسب تصنيف سمتك، لكن يمكنك أن تتوقع شيئًا على هذه الشاكلة.
 
-A color palette based on Tailwind's default theme
+لوحة ألوان مبنية على سمة Tailwind الافتراضية
 
-## Creating a Theme of Semantic Colors
+## إنشاء سمة من الألوان الدلالية
 
-One of the things that we learned the hard way is that using color values directly can be come problematic. If you wanted to change the color of all cancelled workflows—a totally hypothetical example—you can’t just change the color in one place. You have to hunt down every time you use the color yellow and evaluate whether or not it refers to an cancelled workflow.
+من الأمور التي تعلمناها بالطريقة الصعبة أن استخدام قيم الألوان مباشرة قد يصبح مشكلة. فلو أردت تغيير لون كل مسارات العمل الملغاة—وهو مثال افتراضي تمامًا—فلا يمكنك تغيير اللون في مكان واحد فحسب. عليك أن تتعقّب كل موضع تستخدم فيه اللون الأصفر وتقيّم ما إذا كان يشير إلى مسار عمل ملغى أم لا.
 
-Your semantics will probably be unique to you, but I’ve found some common patterns in my travels. For example, you typically will have the following semantic values at the very least:
+ستكون دلالاتك فريدة لك على الأرجح، لكني وجدت بعض الأنماط الشائعة في ترحالي. فمثلًا، سيكون لديك عادةً القيم الدلالية التالية على الأقل:
 
-- The primary color for your brand
-- A color to signify a dangerous or destructive action
-- A slightly less intense color for displaying warnings
-- A color to signify sweet, sweet success
-- A general color for information that doesn’t relate to either danger or success
-- Some set of grays for various surfaces and headings in your application.
+- اللون الأساسي لعلامتك التجارية.
+- لون للدلالة على إجراء خطير أو مدمِّر.
+- لون أقل حدّة قليلًا لعرض التحذيرات.
+- لون للدلالة على النجاح الحلو الحلو.
+- لون عام للمعلومات التي لا تتعلق بالخطر ولا بالنجاح.
+- مجموعة من درجات الرمادي لأسطح وعناوين مختلفة في تطبيقك.
 
-We can set that up in our Tailwind theme and then use those values throughout our application. They can correlate to Tailwind’s built-in colors or we can create our own.
+يمكننا إعداد ذلك في سمة Tailwind لدينا ثم استخدام تلك القيم في كل أنحاء تطبيقنا. ويمكنها أن ترتبط بألوان Tailwind المدمجة أو أن ننشئ ألواننا الخاصة.
 
-> **Creating your own color palette**
+> **إنشاء لوحة ألوان خاصة بك**
 >
-> I really like [uicolors.app](https://uicolors.app/create) for generating color palettes that roughly translate to Tailwind’s semantics.
+> يعجبني حقًا [uicolors.app](https://uicolors.app/create) لتوليد لوحات ألوان تترجم تقريبًا إلى دلالات Tailwind.
 
-Whichever route that you choose, you’ll probably end up with something that looks at least kind of like this.
+أيًا كان المسار الذي تختاره، ستنتهي على الأرجح إلى شيء يشبه هذا على الأقل نوعًا ما.
 
 ```typescript
 import type { Config } from 'tailwindcss';
@@ -91,8 +91,8 @@ export default {
 } satisfies Config;
 ```
 
-## Exercise
+## تمرين
 
-Can you take the more limited set of colors from our theme and generate a color palette? If you get stuck [you can check out this potential solution](https://stevekinney.com/courses/storybook/color-palette-solution).
+هل يمكنك أن تأخذ المجموعة الأكثر تحديدًا من الألوان من سمتنا وتولّد لوحة ألوان؟ وإن واجهتك صعوبة [يمكنك الاطلاع على هذا الحل المحتمل](https://stevekinney.com/courses/storybook/color-palette-solution).
 
-A programmatically generated color palette displayed in Storybook
+لوحة ألوان مولَّدة برمجيًا معروضة في Storybook

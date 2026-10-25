@@ -1,28 +1,28 @@
 ---
-title: "Tuning Bugbot for Your Codebase"
-lang: en
+title: "ضبط Bugbot على شيفرة مشروعك"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase"
 ---
 
-A review bot that comments on every PR with low-quality findings is a review bot that gets muted. The second-most-common failure mode (after “finds nothing useful”) is “finds something on every PR regardless of whether there’s something to find.” Both failures kill the loop, because the signal stops being worth reading.
+روبوت المراجعة الذي يعلّق على كل طلب دمج بنتائج منخفضة الجودة هو روبوت مراجعة يُكتَم. ونمط الفشل الثاني الأكثر شيوعًا (بعد «لا يجد شيئًا نافعًا») هو «يجد شيئًا في كل طلب دمج بصرف النظر عن وجود شيء يُوجَد». والفشلان يقتلان الحلقة، لأن الإشارة تكفّ عن كونها جديرة بالقراءة.
 
-Bugbot—[Cursor’s](https://docs.cursor.com/en/bugbot) review bot—lets you dodge both failures with a few specific settings. This lesson is the short version of what I’d hand a teammate on their first day using it.
+Bugbot — روبوت المراجعة في [Cursor](https://docs.cursor.com/en/bugbot) — يتيح لك تفادي الفشلين بإعدادات محدّدة قليلة. وهذا الدرس هو النسخة القصيرة من ما كنت سأسلمه لزميل في يومه الأول معه.
 
-## Turning it on
+## تشغيله
 
-Bugbot runs as a GitHub integration. Install it from the Cursor dashboard, connect your repo, and it starts reviewing PRs automatically on open and on push. The default review posture is “comment on the diff where something looks wrong”—no summary, no rating, no blocking, just inline comments.
+يعمل Bugbot كتكامل مع GitHub. ثبّته من لوحة تحكّم Cursor، واربط مستودعك، فيبدأ مراجعة طلبات الدمج تلقائيًا عند فتحها وعند الدفع إليها. ووضع المراجعة الافتراضي هو «علّق على الفرق حيث يبدو شيء خطأً» — لا ملخّص، ولا تقييم، ولا منع، بل تعليقات مضمّنة فحسب.
 
-This is the posture I want. A summary review is a ritual. An inline comment is an action item.
+هذا هو الوضع الذي أريده. فمراجعة على شكل ملخّص طقس. أما التعليق المضمّن فبند عمل.
 
-## The repo-level config file
+## ملفّ التهيئة على مستوى المستودع
 
-Drop a `.cursor/BUGBOT.md` at the root of the repo. This is Bugbot’s instructions file—the same idea as your main agent instructions, but for the reviewer. The file tells the bot what the codebase cares about and what to leave alone.
+ألقِ `.cursor/BUGBOT.md` في جذر المستودع. هذا هو ملفّ تعليمات Bugbot — الفكرة نفسها التي في تعليمات وكيلك الأساسي، لكن للمراجع. ويخبر الملفّ الروبوت بما يهتم به المشروع وبما يتركه.
 
-> **Note**
+> **ملاحظة**
 >
-> As of April 9, 2026, Cursor’s docs use `.cursor/BUGBOT.md`. Older screenshots and repos may still show `.cursor/bugbot.md`. Follow the current Cursor docs for the account you’re actually using, but keep the filename consistent everywhere in the repository and in your lesson notes.
+> حتى 9 أبريل 2026، تستخدم وثائق Cursor المسار `.cursor/BUGBOT.md`. وقد تعرض لقطات شاشة ومستودعات أقدم `.cursor/bugbot.md`. اتبع وثائق Cursor الحالية للحساب الذي تستخدمه فعلًا، لكن أبقِ اسم الملف متّسقًا في كل مكان في المستودع وفي ملاحظات دروسك.
 
-Shelf commits the tuned `.cursor/BUGBOT.md` to the repository even before the hosted Bugbot review is wired up. The file is the authoring concern; pointing Bugbot at an actual GitHub PR is a deployment concern you handle separately.
+يُودِع Shelf ملفّ `.cursor/BUGBOT.md` المضبوط في المستودع حتى قبل توصيل مراجعة Bugbot المستضافة. فالملفّ شأن تأليف؛ وتوجيه Bugbot إلى طلب دمج حقيقي في GitHub شأن نشر تعالجه منفصلًا.
 
 ```markdown
 # Bugbot review rules for Shelf
@@ -69,70 +69,70 @@ Be direct. Name the line. Suggest a specific fix. Do not write
 If nothing is worth flagging, say nothing.
 ```
 
-That file is going to carry most of the weight. The “what to leave alone” section is the one that prevents the bot from commenting on seed data and fixture files that are *supposed* to be sketchy. The “tone” section is where you kill the reflexive niceties that make review bot comments feel like noise.
+هذا الملفّ سيحمل معظم الثقل. وقسم «ما يجب تركه» هو الذي يمنع الروبوت من التعليق على بيانات البذر وملفّات التجهيزات التي *يُفترض* أن تكون هشّة. وقسم «النبرة» هو حيث تقتل المجاملات المنعكسة التي تجعل تعليقات روبوتات المراجعة تبدو كضجيج.
 
-In Shelf, the local backstop for the planted-bug lab is still boring on purpose: `npm run typecheck`, `npm run lint`, and `npm run test` all stay green even when the permission bug is present. That is why the planted diff matters. The review loop is catching the class of bug the tests missed, whether the bad check was written as a hand-rolled `locals.user.isAdmin` branch or as a “close enough” replacement for `requireAdministrator(locals.user)`.
+وفي Shelf، تبقى الحماية المحلية لمختبر الخلل المزروع مملّة عن قصد: `npm run typecheck` و`npm run lint` و`npm run test` كلها تبقى خضراء حتى مع وجود خلل الصلاحيات. ولهذا يهمّ الفرق المزروع. فحلقة المراجعة تلتقط فئة الخلل التي فوّتتها الاختبارات، سواء كُتب التحقّق السيئ كفرع يدوي `locals.user.isAdmin` أو كبديل «قريب بما يكفي» عن `requireAdministrator(locals.user)`.
 
-## What the tone section buys you
+## ما يشتريه لك قسم النبرة
 
-I am serious about the tone rules. A review comment that starts with “consider refactoring this to…” is about 50% less likely to result in a fix than the same comment phrased as “this trusts the request body; use `locals.session.userId` instead.” The direct version has a clear action. The hedged version has a conversation.
+أنا جادّ بشأن قواعد النبرة. فتعليق مراجعة يبدأ بـ«فكّر في إعادة هيكلة هذا إلى…» احتمال أن يُنتج إصلاحًا أقلّ بنحو 50% من التعليق نفسه مصاغًا كـ«هذا يثق بجسم الطلب؛ استخدم `locals.session.userId` بدلًا من ذلك». فالنسخة المباشرة لها فعل واضح. والنسخة المتحفّظة لها محادثة.
 
-Your review bot is writing prompts for a follow-up agent (or a human developer). The more declarative the prompt, the more likely the next step is action instead of discussion. “Consider” is discussion. “Use X instead” is action.
+روبوت مراجعتك يكتب مطالبات لوكيل متابعة (أو لمطوّر بشري). وكلما زادت المطالبة إخباريةً، زاد احتمال أن تكون الخطوة التالية فعلًا لا نقاشًا. «فكّر في» نقاش. «استخدم X بدلًا من ذلك» فعل.
 
-Ask Bugbot—via its config file—to write like a senior engineer in a hurry. Then watch the follow-up fix rate go up.
+اطلب من Bugbot — عبر ملفّ تهيئته — أن يكتب كمهندس أول مستعجل. ثم راقب معدّل إصلاح المتابعة يرتفع.
 
-## Scoping: don’t review everything
+## تحديد النطاق: لا تراجع كل شيء
 
-Bugbot can be pointed at specific paths or told to ignore others. Use this aggressively.
+يمكن توجيه Bugbot إلى مسارات محدّدة أو إخباره بتجاهل غيرها. استخدم هذا بشراسة.
 
-Things I always exclude from review:
+أشياء أستبعدها دائمًا من المراجعة:
 
-- Documentation (`docs/`, `*.md`). Docs get their own review workflow; a code review bot commenting on grammar is not helpful.
-- Auto-generated files (types, OpenAPI clients, GraphQL codegen output). The bot has nothing useful to say about generated code.
-- Migrations (`drizzle/migrations/` or similar). Migrations are reviewed once and never again; Bugbot commenting on them retroactively is just noise.
-- Fixtures and seed data. Deliberately bad data lives here and every comment is a false positive.
-- Lockfiles (`bun.lockb`, `package-lock.json`). Obvious.
+- التوثيق (`docs/`، `*.md`). فالتوثيق له سير عمل مراجعة خاص؛ وروبوت مراجعة شيفرة يعلّق على النحو ليس مفيدًا.
+- الملفّات المولّدة تلقائيًا (الأنواع، وعملاء OpenAPI، وناتج توليد شيفرة GraphQL). فليس لدى الروبوت ما يقوله نافعًا عن شيفرة مولّدة.
+- الترحيلات (`drizzle/migrations/` أو ما يشبهها). فالترحيلات تُراجَع مرة واحدة ولا تُراجَع بعدها؛ وتعليق Bugbot عليها بأثر رجعي مجرّد ضجيج.
+- التجهيزات وبيانات البذر. فبيانات سيئة عن قصد تسكن هنا، وكل تعليق إيجابية كاذبة.
+- ملفّات الأقفال (`bun.lockb`، `package-lock.json`). بديهي.
 
-Things I always include:
+أشياء أضمّنها دائمًا:
 
-- Route handlers (`src/routes/**/+server.ts` and `+page.server.ts`). These are where security and correctness live.
-- Database helpers (`src/lib/server/*.ts`). Query bugs live here.
-- Shared components (`src/lib/components/*.svelte`). Render-level bugs live here.
-- Test helpers (`tests/helpers/*.ts`). These amplify mistakes across the suite; bugs here cost a lot.
+- معالجات المسارات (`src/routes/**/+server.ts` و`+page.server.ts`). فهنا تسكن الأمان والصحّة.
+- مساعدات قاعدة البيانات (`src/lib/server/*.ts`). فأخطاء الاستعلامات تسكن هنا.
+- المكوّنات المشتركة (`src/lib/components/*.svelte`). فأخطاء مستوى التصيير تسكن هنا.
+- مساعدات الاختبار (`tests/helpers/*.ts`). فهذه تضخّم الأخطاء عبر المجموعة؛ والأخطاء هنا مكلفة جدًا.
 
-The bot’s default is “review everything.” Override it.
+افتراضي الروبوت «راجع كل شيء». فتجاوزه.
 
-## What to do with a finding
+## ما تفعله بالنتيجة
 
-When Bugbot leaves a comment, the workflow is straightforward:
+حين يترك Bugbot تعليقًا، يكون سير العمل مباشرًا:
 
-1. **Read the finding.** Not every finding is correct. Plenty are nitpicks or misunderstandings.
-2. **If it’s right**, hand it to the agent. “Bugbot flagged this handler for trusting the request body. Fix it.” The agent reads the comment, makes the change, pushes. Bugbot re-reviews on push.
-3. **If it’s wrong**, say so on the PR and mark the thread resolved. Treat any bot-side “learning” as a nice-to-have, not a guarantee. The durable fix is updating `.cursor/BUGBOT.md` so the false positive is less likely to recur.
-4. **If it’s neither clearly right nor clearly wrong**, err on the side of fixing it. Review bot findings tend to be symptoms, and even when the diagnosis is off, addressing the symptom usually improves the code. (True of human reviewers too, incidentally.)
+1. **اقرأ النتيجة.** فليست كل نتيجة صحيحة. وكثير منها نقّ أو سوء فهم.
+2. **إن كانت صحيحة**، سلّمها إلى الوكيل. «أشار Bugbot إلى هذا المعالج لأنه يثق بجسم الطلب. أصلحه.» فيقرأ الوكيل التعليق، ويجري التغيير، ويدفع. ويعيد Bugbot المراجعة عند الدفع.
+3. **إن كانت خاطئة**، قل ذلك في طلب الدمج وعلّم الخيط محلولًا. وتعامل مع أي «تعلّم» من جانب الروبوت كتحسين مطلوب، لا كضمان. والإصلاح المتين هو تحديث `.cursor/BUGBOT.md` كي تقلّ احتمالية تكرار الإيجابية الكاذبة.
+4. **إن لم تكن صحيحة بوضوح ولا خاطئة بوضوح**، فمل إلى إصلاحها. فنتائج روبوتات المراجعة تميل إلى كونها أعراضًا، وحتى حين يكون التشخيص بعيدًا، فإن معالجة العَرَض تُحسّن الشيفرة عادةً. (وهذا صحيح في المراجعين البشر أيضًا، بالمناسبة.)
 
-## The escalation ladder (from the previous lesson)
+## سلّم التصعيد (من الدرس السابق)
 
-Remember the rule of three from the last lesson. When Bugbot flags the same kind of thing repeatedly:
+تذكّر قاعدة الثلاث من الدرس الماضي. حين يشير Bugbot إلى النوع نفسه من الأشياء مرارًا:
 
-- Once or twice: fix the PR. Move on.
-- Three times: add a rule to the agent instructions so the writing agent catches it upstream.
-- Still happening after the rule: add a lint rule or a test assertion to make the bad pattern a hard fail.
+- مرة أو مرتين: أصلح طلب الدمج. وامضِ.
+- ثلاث مرات: أضف قاعدة إلى تعليمات الوكيل كي يلتقطها وكيل الكتابة في المنبع.
+- ما زال يحدث بعد القاعدة: أضف قاعدة lint أو تحقّق اختبار يجعل النمط السيئ فشلًا صارمًا.
 
-The review bot isn’t the end of the loop—it’s the observer that tells you what to automate next. Every consistent Bugbot finding is a piece of information about where your upstream prevention is weak.
+روبوت المراجعة ليس نهاية الحلقة — إنه المراقب الذي يخبرك بما تؤتمته تاليًا. فكل نتيجة متّسقة من Bugbot معلومة عن أين يكون منعك في المنبع ضعيفًا.
 
-## What Bugbot isn’t for
+## ما ليس Bugbot له
 
-A quick honesty check.
+فحص صدق سريع.
 
-- Bugbot is not a replacement for your tests. If you’re relying on it to catch logic bugs, you’re going to be disappointed about 60% of the time.
-- Bugbot is not a performance audit. It doesn’t run your code. It can’t tell you that a hot loop is slow.
-- Bugbot is not a style guide enforcer. Use ESLint and Prettier for that. They’re cheaper, faster, and deterministic. The bot should not be commenting on formatting.
-- Bugbot is not a human reviewer. It’s a cheap, fast second pass. A real human reviewer—your teammate—is still going to see things Bugbot doesn’t, and you should still be having real code reviews when it matters.
+- Bugbot ليس بديلًا عن اختباراتك. فإن كنت تعتمد عليه لالتقاط أخطاء المنطق، فستُخاب نحو 60% من الوقت.
+- Bugbot ليس تدقيق أداء. فهو لا يشغّل شيفرتك. ولا يستطيع إخبارك أن حلقة ساخنة بطيئة.
+- Bugbot ليس مفروضًا لدليل الأسلوب. استخدم ESLint وPrettier لذلك. فهما أرخص وأسرع وحتميان. ولا ينبغي أن يعلّق الروبوت على التنسيق.
+- Bugbot ليس مراجعًا بشريًا. إنه جولة ثانية رخيصة سريعة. والمراجع البشري الحقيقي — زميلك — ما زال سيرى أشياء لا يراها Bugbot، وما زال ينبغي أن تجري مراجعات شيفرة حقيقية حين يهمّ الأمر.
 
-Treat the bot as the layer between “I finished writing the code” and “a human is going to look at this.” It catches the low-hanging fruit so the human review can focus on the interesting stuff.
+تعامل مع الروبوت كالطبقة بين «انتهيت من كتابة الشيفرة» و«سيأتي بشري لينظر إلى هذا». فهو يلتقط الثمار الدانية كي تركّز المراجعة البشرية على الأشياء المثيرة للاهتمام.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Review bot findings
@@ -147,11 +147,11 @@ Treat the bot as the layer between “I finished writing the code” and “a hu
   the false positive.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-A tuned review bot is a collaborator. An untuned review bot is noise. The tuning lives in one file with two sections—“what to flag” and “what to leave alone”—plus a tone directive. Thirty minutes of tuning saves you weeks of muted notifications.
+روبوت المراجعة المضبوط متعاون. وروبوت المراجعة غير المضبوط ضجيج. والضبط يقيم في ملفّ واحد بقسمين — «ما يجب الإشارة إليه» و«ما يجب تركه» — إضافةً إلى توجيه نبرة. ثلاثون دقيقة من الضبط توفّر عليك أسابيع من الإشعارات المكتومة.
 
-## Additional Reading
+## قراءة إضافية
 
-- [The Second Opinion](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
-- [Lab: Bugbot on a Planted Bug](https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug)
+- [الرأي الثاني](https://stevekinney.com/courses/self-testing-ai-agents/the-second-opinion)
+- [مختبر: Bugbot على خلل مزروع](https://stevekinney.com/courses/self-testing-ai-agents/lab-bugbot-on-a-planted-bug)

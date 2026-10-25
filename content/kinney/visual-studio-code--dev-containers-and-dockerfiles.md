@@ -1,13 +1,13 @@
 ---
-title: "Dev Containers and Dockerfiles"
-lang: en
+title: "حاويات التطوير وملفات Dockerfile"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/dev-containers-and-dockerfiles"
 ---
 
-Dev Containers offer a high degree of customization to perfectly match your project’s needs and your personal preferences. Let’s delve into advanced customization techniques. While using pre-built images with the `image` property in `devcontainer.json` is convenient, for more advanced customization, using a **Dockerfile** offers unparalleled control over your container image.
+توفّر حاويات التطوير درجة عالية من التخصيص لتلائم احتياجات مشروعك وتفضيلاتك الشخصية تمامًا. لنغص في تقنيات التخصيص المتقدّمة. فمع أن استخدام صور جاهزة عبر خاصية `image` في `devcontainer.json` مناسب، فإن استخدام **Dockerfile** للتخصيص الأكثر تقدمًا يوفّر تحكّمًا لا يُضاهى في صورة حاويتك.
 
-1. **Create a `Dockerfile`:** Create a file named `Dockerfile` within the `.devcontainer` folder of your project.
-2. **Modify `devcontainer.json`:** In `devcontainer.json`, replace the `image` property with `dockerFile` and specify the path to your Dockerfile.
+1. **أنشئ `Dockerfile`:** أنشئ ملفًا باسم `Dockerfile` داخل مجلد `.devcontainer` في مشروعك.
+2. **عدّل `devcontainer.json`:** في `devcontainer.json`، استبدل خاصية `image` بـ`dockerFile` وحدّد مسار Dockerfile الخاص بك.
 
 ```json
 {
@@ -15,13 +15,13 @@ Dev Containers offer a high degree of customization to perfectly match your proj
 }
 ```
 
-If your Dockerfile is in the same folder as `devcontainer.json`, simply use `"dockerFile": "Dockerfile"`. If it’s in a subdirectory, use a relative path like `"dockerFile": "./path/to/Dockerfile"`.
+إذا كان Dockerfile في المجلد نفسه الذي يضمّ `devcontainer.json`، فاستخدم `"dockerFile": "Dockerfile"` ببساطة. وإذا كان في مجلد فرعي، فاستخدم مسارًا نسبيًا مثل `"dockerFile": "./path/to/Dockerfile"`.
 
-## DockerFile Customization Examples
+## أمثلة على تخصيص Dockerfile
 
-### Installing Additional Software
+### تثبيت برمجيات إضافية
 
-Use `RUN` instructions in your Dockerfile to install any software packages, libraries, or tools needed in your environment.
+استخدم تعليمات `RUN` في Dockerfile لتثبيت أي حزم برمجية أو مكتبات أو أدوات يحتاجها بيئتك.
 
 ```dockerfile
 FROM mcr.microsoft.com/devcontainers/javascript-node:18
@@ -30,11 +30,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 graphicsmagick
 ```
 
-This example adds the `graphicsmagick` image processing library to a Node.js Dev Container.
+يضيف هذا المثال مكتبة معالجة الصور `graphicsmagick` إلى حاوية تطوير Node.js.
 
-### Configuring System Settings
+### ضبط إعدادات النظام
 
-Use `RUN` instructions to modify system configurations within the container.
+استخدم تعليمات `RUN` لتعديل إعدادات النظام داخل الحاوية.
 
 ```dockerfile
 FROM mcr.microsoft.com/devcontainers/python:3.10
@@ -47,11 +47,11 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ```
 
-This example sets the locale within a Python Dev Container to UTF-8.
+يضبط هذا المثال اللغة المحلية (locale) داخل حاوية تطوير Python على UTF-8.
 
-### Setting Up Services (Databases, Message Queues)
+### إعداد الخدمات (قواعد البيانات، ونواقل الرسائل)
 
-While Dockerfiles are primarily for image building, you can use `RUN` commands to set up simple services. However, for more complex multi-container setups with databases, message queues, etc., consider using **Docker Compose** (covered later).
+مع أن ملفات Dockerfile مخصّصة أساسًا لبناء الصور، يمكنك استخدام أوامر `RUN` لإعداد خدمات بسيطة. لكن بالنسبة إلى البنى الأكثر تعقيدًا متعدّدة الحاويات مع قواعد البيانات ونواقل الرسائل وغيرها، فكّر في استخدام **Docker Compose** (وسنتناوله لاحقًا).
 
 ```dockerfile
 FROM mcr.microsoft.com/devcontainers/go:1.20
@@ -60,15 +60,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 postgresql-client
 ```
 
-This example installs the PostgreSQL client tools in a Go Dev Container.
+يثبّت هذا المثال أدوات عميل PostgreSQL في حاوية تطوير Go.
 
-### Custom Base Images
+### صور أساسية مخصّصة
 
-You can use any Docker image as your base image in your Dockerfile, including custom images you create and host yourself or from private registries.
+يمكنك استخدام أي صورة Docker كصورة أساسية في Dockerfile، بما في ذلك صور مخصّصة تنشئها وتستضيفها بنفسك أو صور من سجلات خاصة.
 
-## Best Practices for Dockerfiles in Dev Containers
+## أفضل الممارسات لملفات Dockerfile في حاويات التطوير
 
-- **Start with a Well-Maintained Base Image:** Begin your `Dockerfile` `FROM` a reputable, well-maintained base image relevant to your technology stack (e.g., official language images, Microsoft Dev Container images).
-- **Layer Optimizations:** Use Dockerfile best practices for efficient layering and caching to speed up container builds (group related commands in single `RUN` instructions, order instructions strategically).
-- **Keep it Minimal (Initially):** Start with a Dockerfile that includes the essential software and configurations. Add customizations incrementally as needed. Overly complex Dockerfiles can increase build time and maintenance overhead.
-- **Version Pinning (Dependencies):** Consider pinning versions of software packages and dependencies in your Dockerfile to ensure reproducibility and avoid unexpected changes when base images are updated.
+- **ابدأ بصورة أساسية جيدة الصيانة:** ابدأ `Dockerfile` بـ`FROM` من صورة أساسية موثوقة وجيدة الصيانة وذات صلة بمنظومتك التقنية (مثل الصور الرسمية للغات، وصور Microsoft Dev Container).
+- **تحسين الطبقات:** اتبع أفضل ممارسات Dockerfile في الطبقات الفعّالة والتخزين المؤقت لتسريع عمليات بناء الحاويات (اجمع الأوامر المترابطة في تعليمة `RUN` واحدة، ورتّب التعليمات بذكاء).
+- **أبقِه بسيطًا (في البداية):** ابدأ بملف Dockerfile يضمّ البرمجيات والإعدادات الأساسية. وأضف التخصيصات تدريجيًا عند الحاجة. فملفات Dockerfile المعقّدة أكثر من اللازم قد تزيد زمن البناء وعبء الصيانة.
+- **تثبيت الإصدارات (الاعتمادات):** فكّر في تثبيت إصدارات حزم البرمجيات والاعتمادات في Dockerfile لضمان قابلية إعادة الإنتاج وتجنّب التغييرات غير المتوقّعة عند تحديث الصور الأساسية.

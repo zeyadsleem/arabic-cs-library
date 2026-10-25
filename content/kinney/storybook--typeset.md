@@ -1,10 +1,10 @@
 ---
-title: "Type Set"
-lang: en
+title: "عرض الخطوط باستخدام Typeset"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/typeset"
 ---
 
-Similar to the [color palettes](https://stevekinney.com/courses/storybook/color-palette) and [icon galleries](https://stevekinney.com/courses/storybook/icon-gallery), Storybook also provides a helpful set of components for rendering your design system’s typography.
+مثل [لوحات الألوان](https://stevekinney.com/courses/storybook/color-palette) و[معارض الأيقونات](https://stevekinney.com/courses/storybook/icon-gallery)، يوفّر Storybook أيضًا مجموعة مفيدة من المكوّنات لتصيير تنضيد نظام التصميم لديك.
 
 ```typescript
 import { Meta, Typeset } from '@storybook/blocks';
@@ -33,6 +33,6 @@ import { Meta, Typeset } from '@storybook/blocks';
 />
 ```
 
-You’ll see something along these lines.
+سترى شيئًا على هذا النحو.
 
-Storybooks Typeset component rendering a our design system's typography
+مكوّن Typeset في Storybook يصيّر تنضيد نظام التصميم لدينا

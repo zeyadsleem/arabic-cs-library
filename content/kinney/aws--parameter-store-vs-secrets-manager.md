@@ -1,12 +1,12 @@
 ---
-title: "Parameter Store vs. Secrets Manager"
-lang: en
+title: "Parameter Store مقابل Secrets Manager"
+lang: ar
 source: "https://stevekinney.com/courses/aws/parameter-store-vs-secrets-manager"
 ---
 
-You have two AWS services that can store secrets. That’s one too many for anyone who just wants to know where to put an API key. This lesson gives you a clear decision framework so you can stop deliberating and start building.
+لديك خدمتان في AWS يمكنهما تخزين الأسرار. هذه خدمة واحدة أكثر من اللازم لكل من يريد فقط معرفة أين يضع مفتاح API. يمنحك هذا الدرس إطار قرار واضحًا حتى تتوقّف عن التردّد وتبدأ البناء.
 
-If you want AWS’s official version of the service behavior while you read, the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) and the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) are the canonical references.
+إذا أردت النسخة الرسمية من AWS لسلوك الخدمتين أثناء قراءتك، فإن [نظرة عامة على AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) و[توثيق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) هما المرجعان المعتمدان.
 
 ```
 flowchart TD
@@ -17,47 +17,47 @@ flowchart TD
     Rotate -- "No" --> Secure["Parameter Store SecureString"]
 ```
 
-## The Comparison
+## المقارنة
 
-| Feature | Parameter Store (Standard) | Parameter Store (Advanced) | Secrets Manager |
+| الميزة | Parameter Store (القياسي) | Parameter Store (المتقدّم) | Secrets Manager |
 | --- | --- | --- | --- |
-| **Cost** | Free | $0.05/parameter/month | $0.40/secret/month + $0.05/10K API calls |
-| **Max value size** | 4 KB | 8 KB | 64 KB |
-| **Encryption** | SecureString (KMS) | SecureString (KMS) | Always encrypted (KMS) |
-| **Automatic rotation** | No | No | Yes |
-| **Versioning** | Yes | Yes | Yes (with staging labels) |
-| **Hierarchical paths** | Yes | Yes | Yes (by convention) |
-| **Cross-region replication** | No | No | Yes |
-| **Parameter policies (expiration)** | No | Yes | N/A (rotation handles lifecycle) |
-| **Max throughput** | 40 TPS (default), 1,000 TPS (higher) | 1,000 TPS (higher) | 5,000 TPS |
-| **Max parameters/secrets per region** | 10,000 | 100,000 | 500,000 |
-| **CloudTrail logging** | Yes | Yes | Yes |
+| **التكلفة** | مجاني | 0.05 دولار/معامل/شهر | 0.40 دولار/سر/شهر + 0.05 دولار لكل 10 آلاف استدعاء API |
+| **أقصى حجم للقيمة** | 4 KB | 8 KB | 64 KB |
+| **التشفير** | SecureString (KMS) | SecureString (KMS) | مشفّر دائمًا (KMS) |
+| **التدوير التلقائي** | لا | لا | نعم |
+| **إدارة الإصدارات** | نعم | نعم | نعم (مع تسميات المراحل) |
+| **المسارات الهرمية** | نعم | نعم | نعم (بحسب العرف) |
+| **النسخ المتماثل عبر المناطق** | لا | لا | نعم |
+| **سياسات المعاملات (انتهاء الصلاحية)** | لا | نعم | لا ينطبق (التدوير يتولّى دورة الحياة) |
+| **أقصى إنتاجية** | 40 TPS (افتراضي)، 1,000 TPS (أعلى) | 1,000 TPS (أعلى) | 5,000 TPS |
+| **أقصى عدد معاملات/أسرار لكل منطقة** | 10,000 | 100,000 | 500,000 |
+| **تسجيل CloudTrail** | نعم | نعم | نعم |
 
-The table tells a clear story: Parameter Store is a general-purpose configuration store with optional encryption. Secrets Manager is a credential vault with rotation as its defining feature.
+يحكي الجدول قصة واضحة: Parameter Store مخزن تهيئة عام الغرض مع تشفير اختياري. أما Secrets Manager فخزنة بيانات اعتماد يكون التدوير سِمتها المميّزة.
 
-## When to Use Parameter Store
+## متى تستخدم Parameter Store
 
-**Non-sensitive configuration.** Table names, API endpoint URLs, feature flag JSON, stage identifiers. These are plain `String` parameters. They’re free, versioned, and organized by path. This replaces the Lambda environment variables you’ve been using—same data, better organization and access control.
+**التهيئة غير الحسّاسة.** أسماء الجداول، وعناوين URL لنقاط نهاية API، وJSON لرايات الميزات، ومعرّفات المراحل. هذه معاملات `String` عادية. وهي مجانية، وذات إصدارات، ومنظّمة حسب المسار. وهذا يحلّ محل متغيرات بيئة Lambda التي كنت تستخدمها — البيانات نفسها، لكن بتنظيم وتحكّم في الوصول أفضل.
 
-**Sensitive values that don’t need rotation.** A third-party API key that you update once a year. A static signing secret for JWTs. An encryption key for client-side tokens. Store these as `SecureString` parameters. You get KMS encryption and IAM access control for free.
+**القيم الحسّاسة التي لا تحتاج إلى تدوير.** مفتاح API لطرف ثالث تحدّثه مرة في السنة. سر توقيع ثابت لرموز JWT. مفتاح تشفير لرموز جهة العميل. خزّن هذه كمعاملات `SecureString`. فتحصل على تشفير KMS وتحكّم في الوصول عبر IAM مجانًا.
 
-**Shared configuration across multiple functions.** If five Lambda functions all need the same API endpoint URL, storing it in Parameter Store means you update it in one place. With environment variables, you update it on five functions and hope you don’t miss one.
+**التهيئة المشتركة بين عدة دوال.** إذا احتاجت خمس دوال Lambda إلى عنوان URL نفسه لنقطة نهاية API، فإن تخزينه في Parameter Store يعني تحديثه في مكان واحد. أما مع متغيرات البيئة، فحدّثه في خمس دوال وتأمل ألا تنسى واحدة.
 
-**Projects where cost matters.** Personal projects, side projects, early-stage startups—anything where $0.40 per secret per month feels like an unnecessary expense. Standard Parameter Store is free.
+**المشاريع التي تكون فيها التكلفة مهمة.** المشاريع الشخصية، والمشاريع الجانبية، والشركات الناشئة في مراحلها المبكرة — أي شيء يكون فيه 0.40 دولار لكل سر شهريًا مصروفًا غير ضروري. Parameter Store القياسي مجاني.
 
-## When to Use Secrets Manager
+## متى تستخدم Secrets Manager
 
-**Database credentials.** If your Lambda functions connect to RDS, Aurora, or Redshift, Secrets Manager provides pre-built rotation Lambda functions. You enable rotation, set a schedule, and Secrets Manager handles the credential lifecycle—creating new passwords, testing them, and promoting them to active. Your application picks up the new password on the next fetch.
+**بيانات اعتماد قواعد البيانات.** إذا اتصلت دوال Lambda لديك بـ RDS أو Aurora أو Redshift، يوفّر Secrets Manager دوال Lambda جاهزة للتدوير. تفعّل التدوير، وتضبط جدولًا زمنيًا، ويتولّى Secrets Manager دورة حياة بيانات الاعتماد — بإنشاء كلمات مرور جديدة واختبارها وترقيتها إلى الحالة النشطة. ويلتقط تطبيقك كلمة المرور الجديدة عند الجلب التالي.
 
-**Credentials that must rotate on a schedule.** Security policies in larger organizations often require credential rotation every 30, 60, or 90 days. Manual rotation is error-prone. Secrets Manager automates it.
+**بيانات الاعتماد التي يجب أن تدوّر وفق جدول.** غالبًا ما تتطلّب سياسات الأمان في المؤسسات الكبيرة تدوير بيانات الاعتماد كل 30 أو 60 أو 90 يومًا. التدوير اليدوي عرضة للأخطاء. أما Secrets Manager فيؤتمته.
 
-**Cross-region disaster recovery.** If you need your secrets available in multiple regions for failover, Secrets Manager supports replication. Parameter Store doesn’t.
+**التعافي من الكوارث عبر المناطق.** إذا كنت تحتاج إلى أسرارك متاحة في عدة مناطق للتبديل عند الفشل، يدعم Secrets Manager النسخ المتماثل. أما Parameter Store فلا يدعمه.
 
-**Compliance requirements.** Secrets Manager’s version staging (`AWSCURRENT`, `AWSPENDING`, `AWSPREVIOUS`) and built-in rotation audit trail satisfy compliance requirements that Parameter Store’s simpler versioning doesn’t.
+**متطلبات الامتثال.** إن تدريج إصدارات Secrets Manager (`AWSCURRENT` و`AWSPENDING` و`AWSPREVIOUS`) ومسار تدقيق التدوير المدمج يلبّيان متطلبات الامتثال التي لا تلبيها إدارة الإصدارات الأبسط في Parameter Store.
 
-## The Hybrid Approach
+## النهج الهجين
 
-Most production applications use both services together. This isn’t a compromise—it’s the recommended pattern.
+تستخدم معظم تطبيقات الإنتاج الخدمتين معًا. هذا ليس حلًا وسطًا — إنه النمط الموصى به.
 
 ```
 Parameter Store (free)
@@ -72,7 +72,7 @@ Secrets Manager ($0.40/month per secret)
 └── /my-frontend-app/production/oauth-client-secret  → (auto-rotates every 90 days)
 ```
 
-Non-sensitive config and static secrets go in Parameter Store. Credentials with a rotation lifecycle go in Secrets Manager. Your Lambda function reads from both:
+التهيئة غير الحسّاسة والأسرار الثابتة تذهب إلى Parameter Store. وبيانات الاعتماد التي لها دورة حياة تدوير تذهب إلى Secrets Manager. وتقرأ دالة Lambda لديك من الاثنين:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -126,21 +126,21 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Fetch multiple parameters in parallel with `Promise.all` to reduce init time.
+*ملاحظة:* اجلب عدة معاملات على التوازي باستخدام `Promise.all` لتقليل زمن التهيئة.
 
-## The Decision Flowchart
+## مخطط قرار
 
-When you have a new configuration value to store, ask these questions in order:
+عندما تكون لديك قيمة تهيئة جديدة لتخزينها، اطرح هذه الأسئلة بالترتيب:
 
-1. **Is it sensitive?** No—use Parameter Store `String`. It’s free, versioned, and queryable by path.
-2. **Does it need to rotate automatically?** Yes—use Secrets Manager. The cost is justified by the automation.
-3. **Is it a sensitive value that doesn’t need rotation?** Use Parameter Store `SecureString`. You get KMS encryption and IAM access control without the Secrets Manager cost.
+1. **هل هي حسّاسة؟** لا — استخدم `String` في Parameter Store. فهي مجانية وذات إصدارات وقابلة للاستعلام حسب المسار.
+2. **هل تحتاج إلى تدوير تلقائي؟** نعم — استخدم Secrets Manager. فالتكلفة مبرَّرة بالأتمتة.
+3. **هل هي قيمة حسّاسة لا تحتاج إلى تدوير؟** استخدم `SecureString` في Parameter Store. فتحصل على تشفير KMS وتحكّم في الوصول عبر IAM دون تكلفة Secrets Manager.
 
-That’s it. Three questions, one answer each time.
+هذا كل شيء. ثلاثة أسئلة، وإجابة واحدة في كل مرة.
 
-## IAM Considerations
+## اعتبارات IAM
 
-When you use both services, your Lambda execution role needs permissions for both. Here is a combined policy:
+عندما تستخدم الخدمتين، يحتاج دور تنفيذ Lambda لديك إلى أذونات لكلتيهما. إليك سياسة مدمجة:
 
 ```json
 {
@@ -165,32 +165,32 @@ When you use both services, your Lambda execution role needs permissions for bot
 }
 ```
 
-Notice the scoping. The SSM statement grants access to parameters under `/my-frontend-app/production/*`. The Secrets Manager statement does the same for secrets. The third statement grants decryption for Parameter Store `SecureString` values encrypted with a **customer-managed** KMS key.
+لاحظ تحديد النطاق. يمنح بيان SSM وصولًا إلى المعاملات تحت `/my-frontend-app/production/*`. ويفعل بيان Secrets Manager الشيء نفسه للأسرار. أما البيان الثالث فيمنح إذن فك التشفير لقيم `SecureString` في Parameter Store المشفّرة بمفتاح KMS **يديره العميل**.
 
-> **Warning**
+> **تحذير**
 >
-> The `kms:Decrypt` statement shown here uses the KMS **key ARN**, not an alias ARN. IAM evaluates KMS resource conditions by key ARN, and some evaluators will silently refuse a policy that references `arn:aws:kms:…:alias/…` in the `Resource` field. Always write the key ARN here (or grant decrypt access through a KMS key policy, which is the better pattern for cross-account access).
+> يستخدم بيان `kms:Decrypt` الموضّح هنا **ARN المفتاح** في KMS، لا ARN للاسم المستعار. يقيّم IAM شروط موارد KMS حسب ARN المفتاح، وسترفض بعض أدوات التقييم بصمت سياسة تشير إلى `arn:aws:kms:…:alias/…` في حقل `Resource`. اكتب ARN المفتاح هنا دائمًا (أو امنح إذن فك التشفير عبر سياسة مفتاح KMS، وهي النمط الأفضل للوصول عبر الحسابات).
 >
-> You only need this statement at all if you’re using a **customer-managed** KMS key. Parameters encrypted with the AWS-managed `alias/aws/ssm` key are handled by SSM on the caller’s behalf—the execution role doesn’t need an explicit `kms:Decrypt` statement because SSM uses its own grants. If all your `SecureString` parameters use the default `alias/aws/ssm` key, delete this statement entirely. This follows the principle of least privilege you learned in [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege)—each function gets access to exactly what it needs.
+> لا تحتاج إلى هذا البيان أصلًا إلا إذا كنت تستخدم مفتاح KMS **يديره العميل**. فالمعاملات المشفّرة بمفتاح `alias/aws/ssm` الذي تديره AWS يتولّاها SSM نيابةً عن المستدعي — ولا يحتاج دور التنفيذ إلى بيان `kms:Decrypt` صريح لأن SSM يستخدم منحه الخاصة. وإذا كانت جميع معاملات `SecureString` لديك تستخدم المفتاح الافتراضي `alias/aws/ssm`، فاحذف هذا البيان تمامًا. وهذا يتبع مبدأ أقل الامتيازات الذي تعلّمته في [مبدأ أقل الامتيازات](https://stevekinney.com/courses/aws/principle-of-least-privilege) — تحصل كل دالة على وصول إلى ما تحتاجه بالضبط.
 
-The `*` wildcard in the Secrets Manager ARN isn’t laziness—it’s required. Secrets Manager appends a random 6-character suffix to secret ARNs (e.g., `secret:/my-frontend-app/production/stripe-key-AbCdEf`) to prevent name reuse within the deletion recovery window. You can’t predict that suffix at policy-writing time, so your IAM policy has to use `*` or include the full ARN with the suffix.
+إن حرف البدل `*` في ARN الخاص بـ Secrets Manager ليس كسلًا — إنه مطلوب. فـ Secrets Manager يضيف لاحقة عشوائية من 6 أحرف إلى عناوين ARN الخاصة بالأسرار (مثل `secret:/my-frontend-app/production/stripe-key-AbCdEf`) لمنع إعادة استخدام الاسم داخل فترة استرداد الحذف. لا يمكنك توقّع تلك اللاحقة وقت كتابة السياسة، لذا يجب أن تستخدم سياسة IAM لديك `*` أو تتضمّن ARN الكامل مع اللاحقة.
 
-> **Tip**
+> **نصيحة**
 >
-> If you have separate Lambda functions for different features (one for user management, one for payments), give each function access to only its own secrets. The payments function gets access to `/my-frontend-app/production/stripe-*`. The user management function gets access to `/my-frontend-app/production/auth-*`. Do not give every function access to every secret.
+> إذا كانت لديك دوال Lambda منفصلة لميزات مختلفة (واحدة لإدارة المستخدمين، وواحدة للمدفوعات)، فامنح كل دالة وصولًا إلى أسرارها فقط. فدالة المدفوعات تحصل على وصول إلى `/my-frontend-app/production/stripe-*`. ودالة إدارة المستخدمين تحصل على وصول إلى `/my-frontend-app/production/auth-*`. لا تمنح كل دالة وصولًا إلى كل سر.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Using Secrets Manager for non-sensitive configuration.** Storing a DynamoDB table name in Secrets Manager costs $0.40 per month for no reason. Use Parameter Store.
+**استخدام Secrets Manager للتهيئة غير الحسّاسة.** تخزين اسم جدول DynamoDB في Secrets Manager يكلّف 0.40 دولار شهريًا بلا سبب. استخدم Parameter Store.
 
-**Storing secrets in environment variables “just for now.”** “Just for now” has a half-life of approximately forever. I’ve made this mistake myself. Put the secret in the right place from the start.
+**تخزين الأسرار في متغيرات البيئة «مؤقتًا فقط».** إن «مؤقتًا فقط» لها نصف عمر يقارب الأبد. لقد ارتكبت هذا الخطأ بنفسي. ضع السر في المكان الصحيح من البداية.
 
-**Not caching secrets in Lambda.** Every SDK call to Parameter Store or Secrets Manager adds latency and API cost. Cache values in module-level variables and refresh them on a TTL or on cold start. We covered this pattern in [Accessing Secrets from Lambda](https://stevekinney.com/courses/aws/accessing-secrets-from-lambda).
+**عدم تخزين الأسرار مؤقتًا في Lambda.** كل استدعاء SDK إلى Parameter Store أو Secrets Manager يضيف زمن استجابة وتكلفة API. خزّن القيم في متغيرات على مستوى الوحدة وحدّثها وفق TTL أو عند بدء التشغيل البارد. غطّينا هذا النمط في [الوصول إلى الأسرار من Lambda](https://stevekinney.com/courses/aws/accessing-secrets-from-lambda).
 
-**Granting `ssm:GetParameter` on `*` resources.** This gives the function access to every parameter in your account. Scope the resource to the specific path your function needs.
+**منح `ssm:GetParameter` على موارد `*`.** يمنح هذا الدالة وصولًا إلى كل معامل في حسابك. احصر المورد في المسار المحدّد الذي تحتاجه دالتك.
 
-## What You Have Learned
+## ما الذي تعلّمته
 
-The secrets section gave you the tools to move sensitive configuration out of Lambda environment variables and into purpose-built secret storage. Parameter Store handles configuration and static secrets for free. Secrets Manager handles rotating credentials for $0.40 per secret per month. Your Lambda functions read from both at init time, cache the values, and use IAM policies to enforce access control.
+منحك قسم الأسرار الأدوات اللازمة لنقل التهيئة الحسّاسة من متغيرات بيئة Lambda إلى تخزين أسرار مخصّص لهذا الغرض. يتولّى Parameter Store التهيئة والأسرار الثابتة مجانًا. ويتولّى Secrets Manager بيانات الاعتماد المتدوّرة مقابل 0.40 دولار لكل سر شهريًا. تقرأ دوال Lambda لديك من الاثنين عند التهيئة، وتخزّن القيم مؤقتًا، وتستخدم سياسات IAM لفرض التحكّم في الوصول.
 
-The pattern is simple: environment variables for non-sensitive config that doesn’t change between deploys. Parameter Store for everything else that isn’t rotating. Secrets Manager for credentials that must rotate. Now go move that API key out of your environment variables.
+النمط بسيط: متغيرات البيئة للتهيئة غير الحسّاسة التي لا تتغيّر بين عمليات النشر. وParameter Store لكل ما عدا ذلك ولا يتدوّر. وSecrets Manager لبيانات الاعتماد التي يجب أن تدوّر. الآن انقل مفتاح API ذاك خارج متغيرات بيئتك.

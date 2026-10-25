@@ -1,22 +1,22 @@
 ---
-title: "RSC Server Actions"
-lang: en
+title: "مكوّنات الخادم وإجراءات الخادم"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/rsc-server-actions"
 ---
 
-React Server Components and Server Actions represent a fundamental shift in how we build React applications. Instead of the traditional pattern of fetching data on the client and managing complex state synchronization, Server Components run on the server during rendering, while Server Actions let you execute server-side logic directly from your components. The result? Less JavaScript shipped to the browser, faster initial page loads, and dramatically simplified data flows.
+تُمثّل مكوّنات الخادم (Server Components) وإجراءات الخادم (Server Actions) تحوّلًا جوهريًا في طريقة بنائنا تطبيقات React. فبدلًا من النمط التقليدي الذي يجلب البيانات على العميل ويدير مزامنة حالة معقدة، تعمل مكوّنات الخادم على الخادم أثناء التصيير، فيما تتيح لك إجراءات الخادم أن تنفّذ منطق جانب الخادم مباشرةً من مكوّناتك. والنتيجة؟ جافاسكربت أقل تُشحن إلى المتصفح، وأحمال أولية أسرع للصفحات، وتدفقات بيانات مبسّطة اختزالًا كبيرًا.
 
-But here’s the thing: with this power comes the responsibility to handle the server/client boundary correctly. Data must be serializable, async components need proper typing, and Actions require careful modeling to avoid runtime surprises. In this guide, we’ll explore how to leverage TypeScript to make these new patterns both safe and productive.
+لكن هنا الحكمة: أن مع هذه القوة مسؤولية التعامل الصحيح مع حدّ الخادم/العميل. فالبيانات يجب أن تكون قابلة للتسلسل، والمكوّنات الخاملة تحتاج تنويعًا سليمًا، وتتطلب الإجراءات نمذجةً عناية تجنّبًا لمفاجآت وقت التشغيل. في هذا المرشد سنتكشف كيف نستثمر TypeScript لجعل تلك الأنماط الجديدة آمنةً ومثمرة معًا.
 
-## Understanding Server Components and Server Actions
+## فهم مكوّنات الخادم وإجراءات الخادم
 
-Let’s start by clarifying what we’re working with:
+لنبدأ بتوضيح ما نتعامل معه:
 
-**Server Components** render on the server and can access server-only resources like databases, file systems, and environment variables. They’re async by default and their output is streamed to the client.
+**مكوّنات الخادم** تُصيَّر على الخادم وتستطيع النفاذ إلى مصادر خاصة بالخادم مثل قواعد البيانات وأنظمة الملفات ومتغيّرات البيئة. وهي خاملة افتراضيًا ويُبثّ مخرجها إلى العميل.
 
-**Server Actions** are functions that execute on the server but can be called from either Server Components or Client Components. Think of them as type-safe RPC calls with built-in form integration.
+**إجراءات الخادم** دوال تعمل على الخادم لكن يمكن استدعاؤها من مكوّنات خادم ومن مكوّنات عميل. اعتبرها نداءات RPC آمنة الأنواع مع اندماج جاهزٍ للنماذج.
 
-Here’s a simple example to illustrate the pattern:
+وهذا مثال بسيط يوضّح النمط:
 
 ```typescript
 // app/products/page.tsx - Server Component
@@ -73,11 +73,11 @@ export async function addToCart(productId: string, quantity: number) {
 }
 ```
 
-The magic here is that TypeScript knows `getProducts()` returns a Promise, `addToCart` is a Server Action that can be called from forms or event handlers, and all the data flowing between server and client is automatically serialized.
+والسحر هنا أن TypeScript يعلم أن `getProducts()` تُعيد وعدًا، وأن `addToCart` إجراء خادم يمكن استدعاؤه من النماذج أو معالجات الأحداث، وأن كل البيانات المتدفقة بين الخادم والعميل تُسلسَل تلقائيًا.
 
-## Typing Async Server Components
+## تنويع مكوّنات الخادم الخاملة
 
-Server Components are async by default, which means you need to handle Promise types correctly. Let’s look at the patterns:
+مكوّنات الخادم خاملة افتراضيًا، ما يعني حاجتك إلى معالجة أنواع Promise على الوجه الصحيح. لننظر إلى الأنماط:
 
 ```typescript
 // Basic async Server Component typing
@@ -101,7 +101,7 @@ type UserProfileComponent = typeof UserProfile;
 // Result: (props: { userId: string }) => Promise<JSX.Element>
 ```
 
-For more complex data fetching with proper error boundaries:
+من أجل جلب بيانات أكثر تعقيدًا مع حدود أخطاء سليمة:
 
 ```typescript
 import { z } from 'zod';
@@ -180,13 +180,13 @@ function UserProfile({ user }: { user: User }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Separate your data fetching logic from your rendering logic. This makes components easier to test and reason about.
+> افصل منطق جلب بياناتك عن منطق تصييرك. فهذا يجعل المكوّنات أيسر اختبارًا وفهمًا.
 
-## Server Action Type Safety
+## أمان الأنواع لإجراءات الخادم
 
-Server Actions need careful typing to ensure the data flow between server and client is safe. Here’s how to build bulletproof Actions:
+تطلب إجراءات الخادم تنويعًا متأنيًا ليضمن أن تدفّق البيانات بين الخادم والعميل آمن. وإليك كيف تبني إجراءات محصّنة:
 
 ```typescript
 // Define your input/output schemas first
@@ -249,7 +249,7 @@ function createAction<TInput, TOutput = unknown>(
 }
 ```
 
-Now we can create type-safe Server Actions:
+الآن نستطيع إنشاء إجراءات خادم آمنة الأنواع:
 
 ```typescript
 'use server';
@@ -313,9 +313,9 @@ export async function deletePost(postId: string): Promise<ActionResult> {
 }
 ```
 
-## Form Integration Patterns
+## أنماط الدمج مع النماذج
 
-Server Actions integrate beautifully with forms. Here’s how to handle different form patterns with proper typing:
+تتكامل إجراءات الخادم مع النماذج تكاملًا جميلًا. وإليك كيفية معالجة أنماط النماذج المختلفة بتنويع سليم:
 
 ```typescript
 // Client Component for interactive form
@@ -393,7 +393,7 @@ export function CreatePostForm() {
 }
 ```
 
-For simpler forms, you can call Server Actions directly:
+أما النماذج الأبسط فيمكنك استدعاء إجراءات الخادم مباشرةً:
 
 ```typescript
 // Server Component with inline form
@@ -411,13 +411,13 @@ export default function QuickPostForm() {
 }
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> When you call a Server Action directly from a form’s action prop, it automatically receives FormData as its argument. This is why our `createAction` helper handles unknown input types.
+> حين تستدعي إجراء خادم مباشرةً من خاصية action للنموذج، يحصل تلقائيًا على FormData كوسيط. ولهذا يعالج مساعد `createAction` عندنا أنواع الإدخال غير المعروفة.
 
-## Handling Complex Data Flows
+## التعامل مع تدفقات البيانات المركّبة
 
-For more sophisticated applications, you’ll need patterns that handle complex data relationships and state synchronization:
+في التطبيقات الأكثر تقدّمًا ستحتاج إلى أنماط تعالج علاقات البيانات المركّبة ومزامنة الحالة:
 
 ```typescript
 // Complex action with related data
@@ -499,9 +499,9 @@ export const bulkUpdatePosts = createAction(
 );
 ```
 
-## Optimistic Updates with Server Actions
+## تحديثات متفائلة بواسطة إجراءات الخادم
 
-Sometimes you want immediate UI feedback while your Server Action executes. Here’s how to implement optimistic updates safely:
+أحيانًا تريد تغذيةً راجعة فورية لواجهة المستخدم في أثناء تنفيذ إجراء الخادم. وإليك كيف تطبّق التحديثات المتفائلة بأمان:
 
 ```typescript
 'use client';
@@ -571,7 +571,7 @@ export function PostList({ initialPosts }: { initialPosts: Post[] }) {
 }
 ```
 
-The corresponding Server Action:
+وهو إجراء الخادم المقابل:
 
 ```typescript
 'use server';
@@ -600,13 +600,13 @@ export const togglePostPublished = createAction(z.string().uuid(), async (postId
 });
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful with optimistic updates for operations that might fail. Always have a rollback strategy and clear error messaging for users.
+> تمهّل مع التحديثات المتفائلة في العمليات التي قد تفشل. واطمئن أن لديك استراتيجية تراجع ورسائل أخطاء واضحة للمستخدمين.
 
-## Error Boundaries and Server Action Failures
+## حدود الأخطاء وإخفاقات إجراءات الخادم
 
-Server Actions can fail in various ways—network issues, validation errors, database constraints, or business logic violations. Here’s how to handle them gracefully:
+قد تفشل إجراءات الخادم في صور شتى — مشكلات الشبكة، وأخطاء التحقق، وقيود قاعدة البيانات، أو مخالفات منطق العمل. وإليك كيف تعالجها برفق:
 
 ```typescript
 // Error boundary specifically for Server Action errors
@@ -669,7 +669,7 @@ export class ServerActionErrorBoundary extends Component<
 }
 ```
 
-Use it to wrap components that call Server Actions:
+استخدمه لتغليف المكوّنات التي تستدعي إجراءات الخادم:
 
 ```typescript
 export default function PostManagement() {
@@ -691,13 +691,13 @@ export default function PostManagement() {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Server Components and Server Actions open up new optimization opportunities, but they also introduce new considerations:
+تفتح مكوّنات الخادم وإجراءاتُه فرصَ تحسينٍ جديدة، لكنها تُدخل اعتبارات جديدة كذلك:
 
-### Streaming and `Suspense`
+### التدفق و`Suspense`
 
-Combine Server Components with Suspense for better perceived performance:
+اجمع بين مكوّنات الخادم وSuspense لأداءٍ مدركٍ أفضل:
 
 ```typescript
 import { Suspense } from 'react';
@@ -739,9 +739,9 @@ export default async function PostPage({ params }: { params: { postId: string } 
 }
 ```
 
-### Caching Server Action Results
+### تخزين نتائج إجراءات الخادم مؤقتًا
 
-For expensive Server Actions, implement caching:
+من أجل إجراءات الخادم المكلفة، طبّق التخزين المؤقت:
 
 ```typescript
 import { unstable_cache as cache } from 'next/cache';
@@ -778,9 +778,9 @@ export const generateReport = createAction(
 );
 ```
 
-### Background Processing
+### المعالجة في الخلفية
 
-For long-running Server Actions, consider background processing:
+من أجل إجراءات الخادم طويلة التنفيذ، فكّر في المعالجة بالخلفية:
 
 ```typescript
 // Queue system integration
@@ -825,11 +825,11 @@ export const checkJobStatus = createAction(z.string(), async (jobId: string) => 
 });
 ```
 
-## Real-World Patterns and Best Practices
+## أنماط من الواقع وأفضل الممارسات
 
-Here are some production-ready patterns for common use cases:
+إليك بعض الأنماط الجاهزة للإنتاج في حالات الاستخدام الشائعة:
 
-### Multi-Step Forms with Server Actions
+### نماذج متعددة الخطوات مع إجراءات الخادم
 
 ```typescript
 // Multi-step form state management
@@ -886,7 +886,7 @@ export const processFormStep = createAction(
 );
 ```
 
-### Real-Time Updates
+### التحديثات في الزمن الحقيقي
 
 ```typescript
 'use client';
@@ -926,9 +926,9 @@ export function LiveDataComponent({ initialData }: { initialData: any[] }) {
 }
 ```
 
-## Testing Server Components and Actions
+## اختبار مكوّنات الخادم وإجراءاتها
 
-Testing these new patterns requires some specific approaches:
+اختبار هذه الأنماط الجديدة يستلزم بعض المقاربات الخاصة:
 
 ```typescript
 // Testing Server Components
@@ -1010,17 +1010,17 @@ describe('createPost Server Action', () => {
 });
 ```
 
-## Next Steps and Production Considerations
+## الخطوات التالية واعتبارات الإنتاج
 
-React Server Components and Server Actions represent a significant shift in React development. Here’s what to focus on as you adopt these patterns:
+تُمثّل مكوّنات خادم React وإجراءاتُ الخادم تحوّلًا هامًّا في تطوير React. وإليك ما ينبغي أن تركّز عليه أثناء تبنّي هذه الأنماط:
 
-1. **Start with Server Components**: Begin by moving data fetching logic from client to server components
-2. **Progressive enhancement**: Ensure your Server Actions work without JavaScript for better resilience
-3. **Monitoring and observability**: Set up proper logging and error tracking for server-side operations
-4. **Performance testing**: Measure the impact on both server resources and client bundle sizes
+1. **ابدأ بمكوّنات الخادم**: ابدأ بنقل منطق جلب البيانات من مكوّنات العميل إلى مكوّنات الخادم
+2. **التحسين التدريجي**: اضبط أن تعمل إجراءات الخادم لديك دون جافاسكربت لمرونة أكبر
+3. **المراقبة وقابلية الملاحظة**: هيّئ التسجيل المناسب وتتبع الأخطاء لعمليات جانب الخادم
+4. **اختبار الأداء**: قِس التأثير في موارد الخادم وفي أحجام حزم العميل معًا
 
-The patterns we’ve covered scale from simple forms to complex multi-step workflows. The key is maintaining strict boundaries between server and client code while leveraging TypeScript to catch serialization issues before they reach production.
+تتوسع الأنماط التي غطيناها من النماذج البسيطة إلى سير العمل متعدد الخطوات. والمفتاح هو الإبقاء على حدود صارمة بين شيفرة الخادم وشيفرة العميل مع الاستفادة من TypeScript لالتقاط مشكلات التسلسل قبل أن تصل إلى الإنتاج.
 
-By embracing async components, type-safe actions, and proper error boundaries, you’re building applications that are both more performant and more maintainable. The server/client boundary becomes a feature, not a limitation—giving you the best of both worlds with the safety net of TypeScript ensuring everything works correctly.
+بتقبّلك المكوّنات الخاملة، والإجراءات الآمنة الأنواع، وحدود الأخطاء المناسبة، ستبني تطبيقات أكثر أداءً وأيسر صيانة. ويصير حد الخادم/العميل ميزةً لا قيدًا — فتجمع خير الأمرين مع شبكة أمان TypeScript تضمن أن كل شيء يعمل على الوجه الصحيح.
 
-Server Components and Server Actions aren’t just about performance; they’re about building better architectures that are easier to reason about, test, and maintain. Welcome to the future of React development.
+مكوّنات الخادم وإجراءات الخادم لا تخص الأداء وحده؛ بل بناء معماريات أفضل هي أسهل تأمّلًا واختبارًا وصيانة. أهلًا بك في مستقبل تطوير React.

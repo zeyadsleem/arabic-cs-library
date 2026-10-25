@@ -1,45 +1,45 @@
 ---
-title: "Planning and Task Contracts"
-lang: en
+title: "التخطيط وعقود المهام"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/planning-and-task-contracts"
 ---
 
-Agents are *terrible* at noticing that a task is underspecified. They’ll happily pick an interpretation and sprint. The cheapest time to resolve ambiguity is before anyone, human or model, has written a line of code.
+الوكلاء *سيّئون* في ملاحظة أن مهمة ناقصة التحديد. فيلتقطون تفسيرًا وينطلقون مسرورين. وأرخص وقت لحلّ الغموض هو قبل أن يكتب أي أحد، إنسانًا كان أو نموذجًا، سطر شيفرة واحدًا.
 
-That doesn’t mean every task needs a spec. Most don’t. The skill is knowing how much planning a given task deserves.
+وهذا لا يعني أن كل مهمة تحتاج مواصفة. فمعظمها لا يحتاج. والمهارة هي معرفة قدر التخطيط الذي تستحقه مهمة ما.
 
-## How much planning does this need?
+## كم من التخطيط يحتاج هذا؟
 
-Work down this list and stop at the first match. It runs from the highest stakes and most uncertainty to the least, so the expensive cases get caught first.
+انزل في هذه القائمة وتوقف عند أول تطابق. وهي تجري من أعلى المخاطر وأكثر عدم يقين إلى أقلها، فتُلتقط الحالات المكلفة أولًا.
 
-| The task looks like… | Do this |
+| تبدو المهمة كـ… | افعل هذا |
 | --- | --- |
-| Requirements are known and getting it wrong is expensive | Spec, then tests derived from the spec, then code. The implementing session can’t edit either. If the code is unfamiliar, add a research phase first. |
-| You have no idea how to build it | Prototype first. No spec. |
-| You’re not sure what you want yet | Have the agent interview you, then write a spec |
-| Cross-cutting change in code you *don’t* know | Research, then plan, then implement, each phase in a fresh context |
-| Small or medium change in code you understand, more than a one-sentence diff | Plan. Iterate on the plan, then implement. |
-| You could describe the diff in one sentence | Nothing. Just ask. |
+| المتطلبات معروفة والخطأ فيها مكلف | مواصفة، ثم اختبارات مشتقة من المواصفة، ثم شيفرة. ولا تستطيع جلسة التنفيذ تحرير أي منهما. وإن كانت الشيفرة غير مألوفة، فأضف مرحلة بحث أولًا. |
+| ليست لديك فكرة عن كيفية بنائه | نموذج أولي أولًا. بلا مواصفة. |
+| لست متأكدًا مما تريده بعد | اجعل الوكيل يقابلّك، ثم اكتب مواصفة |
+| تغيير عابر للطبقات في شيفرة *لا* تعرفها | بحث، ثم تخطيط، ثم تنفيذ، كل مرحلة في سياق جديد |
+| تغيير صغير أو متوسط في شيفرة تفهمها، أكثر من diff في جملة | خطّط. كرّر على الخطة، ثم نفّذ. |
+| تستطيع وصف الـ diff في جملة واحدة | لا شيء. اسأل فقط. |
 
-A *context* is everything the model can see when it decides its next step: your messages, its instructions, and every file or command output so far. A *fresh* context starts with none of that history.
+*السياق* هو كل ما يستطيع النموذج رؤيته حين يقرر خطوته التالية: رسائلك، وتعليماته، وكل ملف أو مخرَج أمر حتى الآن. و*السياق الجديد* يبدأ بلا شيء من ذلك التاريخ.
 
-Three terms need pinning down, because people use them interchangeably:
+وهناك ثلاثة مصطلحات تحتاج إلى تثبيت، لأن الناس يستخدمونها بالتبادل:
 
-- A **task contract** is the minimum: the outcome you want, how far the agent may go, and what would prove it worked. ([Towards Systems Thinking](https://stevekinney.com/courses/ai-development-setup/why-systems) has an example.)
-- A **plan** is a task contract plus the exact files, the order of the changes, and a check for each step.
-- A **spec** is a bigger, more self-contained plan for work that’s ambiguous or expensive to get wrong. It adds the interfaces involved and an explicit out-of-scope list.
+- **عقد المهمة** هو الحد الأدنى: النتيجة التي تريدها، وإلى أي مدى يجوز للوكيل أن يمضي، وما الذي يثبت أنه نجح. (ولـ[نحو تفكير النُّظم](https://stevekinney.com/courses/ai-development-setup/why-systems) مثال.)
+- **الخطة** هي عقد مهمة زائد الملفات الدقيقة، وترتيب التغييرات، وفحص لكل خطوة.
+- **المواصفة** خطة أكبر وأكثر قيامًا بذاتها لعمل غامض أو مكلف الخطأ. وتضيف الواجهات المعنية وقائمة صريحة بما هو خارج النطاق.
 
-Each one contains the one before it, and you write the smallest one the task deserves. Even “Nothing. Just ask.” works better when your sentence names the outcome and how you’ll check it.
+وكل واحد يحتوي الذي قبله، وتكتب أصغرها مما تستحقه المهمة. حتى «لا شيء. اسأل فقط.» يعمل أفضل حين تسمّي جملتك النتيجة وكيف ستفحصها.
 
-The rule of thumb: if the spec is longer than the diff it describes, you used the wrong tool. You won’t have the diff yet, so compare against the change you expect. [One careful hands-on comparison](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) watched a small bug fix balloon into 16 acceptance criteria across four user stories. The author called it “a sledgehammer to crack a nut.”
+والقاعدة العامة: إن كانت المواصفة أطول من الـ diff الذي تصفه، فقد استخدمت الأداة الخطأ. ولن تكون الـ diff بين يديك بعد، فقارِن بالتغيير الذي تتوقعه. وقد شاهدت [مقارنة يدوية دقيقة واحدة](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) إصلاح علّة صغيرًا يتضخم إلى 16 معيار قبول عبر أربع قصص مستخدم. وسمّاه المؤلف «مطرقة ثقيلة لكسر حبة بندق».
 
-## Research, plan, implement
+## البحث، ثم التخطيط، ثم التنفيذ {#research-plan-implement}
 
-For anything cross-cutting, split the work into three phases. Each one ends in an artifact you actually read. [HumanLayer’s write-up](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/ace-fca.md) makes the case for this: a small misunderstanding in research turns into a large error in the code.
+وفي أي عمل عابر للطبقات، قسّم العمل إلى ثلاث مراحل. تنتهي كل واحدة بمخرَج تقرؤه فعلًا. و[مقال HumanLayer](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/ace-fca.md) يدافع عن ذلك: سوء فهم صغير في البحث يتحول إلى خطأ كبير في الشيفرة.
 
-- **Research**: Read-only. What exists, where it lives, how it connects, which tests already cover it, and what assumptions the agent made along the way. No opinions. No proposals.
-- **Plan**: Split into phases, each naming the exact files it touches, in order, and the command that proves the phase worked.
-- **Implement**: One phase at a time. If a phase’s checks fail, implement that phase again. Fold the verified status back into `plan.md` only once they pass.
+- **البحث**: للقراءة فقط. ما الموجود، وأين يعيش، وكيف يتصل، وأي اختبارات تغطيه بالفعل، وما الافتراضات التي بنى عليها الوكيل في الطريق. بلا آراء. بلا مقترحات.
+- **التخطيط**: قسّمه إلى مراحل، كل واحدة تسمّي الملفات الدقيقة التي تمسّها، بالترتيب، والأمر الذي يثبت نجاح المرحلة.
+- **التنفيذ**: مرحلة واحدة في كل مرة. وإن فشلت فحوص مرحلة، فأعد تنفيذ تلك المرحلة. ولا تطوِ الحالة المتحقَّق منها إلى `plan.md` إلا بعد أن تنجح.
 
 ```
 flowchart LR
@@ -51,41 +51,41 @@ flowchart LR
   U -- Next phase --> I
 ```
 
-The payoff is where your review goes. You read the research and the plan, which are short, instead of the diff, which is long. And because the plan records what’s done, it doubles as the resume point when a session runs out of room.
+والمكسب في أين تذهب مراجعتك. تقرأ البحث والخطة، وهما قصيران، بدلًا من الـ diff الطويل. ولأن الخطة تسجّل ما تم، تعمل أيضًا كنقطة استئناف حين تنفد سعة الجلسة.
 
-Start each phase with a fresh context and the previous phase’s artifact. The artifact is the handoff, not the conversation. Within the implement phase, you can keep one session going across phases, and clear it when it gets long. [Managing a Long Session](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session) covers that.
+ابدأ كل مرحلة بسياق جديد ومخرَج المرحلة السابقة. فالمخرَج هو التسليم، لا المحادثة. وداخل مرحلة التنفيذ، يمكنك إبقاء جلسة واحدة مستمرة عبر المراحل، ومسحها عندما تطول. ويغطي [إدارة جلسة طويلة](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session) ذلك.
 
-Be suspicious of the research phase in particular. A fluent summary of a codebase is not evidence. This is where I argue with the agent’s findings, and where my experience as an engineer matters most. It’s where taste comes in: I’ll read the research and notice that something feels off, or that I don’t agree with the trade-offs.
+وكن مرتابًا في مرحلة البحث على وجه الخصوص. فملخّص فصيح لقاعدة شيفرة ليس دليلًا. وهنا أجادل نتائج الوكيل، وهنا تهمّ خبرتي كمهندس أكثر من أي موضع. وهنا يأتي الذوق: سأقرأ البحث وألاحظ أن شيئًا ما مضطرب، أو أنني لا أوافق على المقايضات.
 
-So make the claims checkable. Ask for them as a numbered list with a file and line number for each one. Open the citations. Delete the ones that don’t hold up. ([Verification and Evidence](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) applies the same instinct to finished work.)
+فاجعل الادعاءات قابلة للفحص. اطلبها قائمة مرقّمة مع ملف ورقم سطر لكل واحد. وافتح الاستشهادات. واحذف ما لا يصمد منها. ([التحقّق والدليل](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) يطبّق الحدس نفسه على العمل المنتهي.)
 
-### A word on prompt engineering
+### كلمة عن هندسة الطلبات
 
-At the end of a research session, once I have a good sense of what’s going on and what I want to do, I’ll have the model restate the plan. Then I ask, “Turn this into a prompt that I can use,” and use that prompt to start the next phase in a fresh session.
+في نهاية جلسة بحث، بعد أن تتكوّن لدي صورة جيدة عما يجري وما أريد فعله، أجعل النموذج يعيد صياغة الخطة. ثم أسأل: «حوّل هذا إلى طلب أستطيع استخدامه»، وأستعمل ذلك الطلب لبدء المرحلة التالية في جلسة جديدة.
 
-It’s shockingly effective. The model writes the prompt from everything we just worked out, so I rarely hand-tune the wording. That’s why I’m not spending any of our time on the finer points of prompt engineering.
+وهو فعّال على نحو مدهش. يكتب النموذج الطلب من كل ما توصلنا إليه للتو، فلا أضبط الصياغة يدويًا إلا نادرًا. ولهذا لا أنفق أيًا من وقتنا على دقائق هندسة الطلبات.
 
-## Let the agent interview you
+## دع الوكيل يقابلّك {#let-the-agent-interview-you}
 
-In the research phase, the agent writes and I read. Just as often, I work the other way: I write out my plan or a feature specification first, then use the model as a [rubber duck](https://en.wikipedia.org/wiki/Rubber_duck_debugging). I ask questions like:
+في مرحلة البحث، يكتب الوكيل وأقرأ أنا. وكثيرًا ما أعمل بالاتجاه المعاكس: أكتب خطتي أو مواصفة ميزة أولًا، ثم أستخدم النموذج كـ[بطة مطاطية](https://en.wikipedia.org/wiki/Rubber_duck_debugging). وأطرح أسئلة مثل:
 
-- What haven’t I considered in this plan?
-- What assumptions have I made that aren’t true?
-- In what ways is my thinking *not* clear to someone reading this for the first time?
+- ما الذي لم أفكر فيه في هذه الخطة؟
+- ما الافتراضات التي بنيت عليها وهي غير صحيحة؟
+- بأي طرق يكون تفكيري *غير* واضح لمن يقرأ هذا لأول مرة؟
 
-Later in the course, [Exemplar Subagents](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) shows how I use subagents (helper agents with their own context) to make this part of my process repeatable.
+ولاحقًا في الدورة، يوضّح [الوكلاء الفرعيون النموذجيون](https://stevekinney.com/courses/ai-development-setup/exemplar-subagents) كيف أستخدم الوكلاء الفرعيين (وكلاء مساعدين بسياقهم الخاص) لجعل هذا الجزء من عمليتي قابلًا للتكرار.
 
-When you haven’t written anything yet because you don’t know what you want, flip it around once more. Have the agent ask *you* questions. The prompt I use comes from [Anthropic’s best practices guide](https://code.claude.com/docs/en/best-practices): describe the feature briefly, then ask the agent to interview you in detail. Two instructions in it do the heavy lifting. “Don’t ask obvious questions” keeps it from turning into a form. “Keep interviewing until we’ve covered everything” stops it from asking three questions and wandering off to write code.
+وحين لم تكتب شيئًا بعد لأنك لا تعرف ما تريد، اقلبها مرة أخرى. اجعل الوكيل يسأل *أنت*. والطلب الذي أستعمله يأتي من [دليل أفضل الممارسات من Anthropic](https://code.claude.com/docs/en/best-practices): صِف الميزة بإيجاز، ثم اطلب من الوكيل أن يقابلّك بالتفصيل. وتعليمتان فيه تقومان بالعمل الثقيل. «لا تسأل أسئلة بديهية» تمنعه من التحول إلى استمارة. و«واصل المقابلة حتى نغطي كل شيء» تمنعه من طرح ثلاثة أسئلة ثم الانصراف لكتابة الشيفرة.
 
-The output is a single, self-contained `SPEC.md` with the files and interfaces involved, an explicit out-of-scope list, and an end-to-end verification step. Then implement it in a fresh session. The interview transcript is long and full of ideas you rejected. The spec is the thing worth keeping.
+والمخرَج ملف `SPEC.md` واحد قائم بذاته، فيه الملفات والواجهات المعنية، وقائمة صريحة بما هو خارج النطاق، وخطوة تحقّق من الطرف إلى الطرف. ثم نفّذه في جلسة جديدة. فنص المقابلة الكامل طويل ومليء بالأفكار التي رفضتها. أما المواصفة فهي الشيء الجدير بالاحتفاظ.
 
-There are a few ways I like to do this:
+وهناك بضع طرق أحب فعل ذلك بها:
 
-- It’s one of the few times I’ll use voice mode, where I talk to the agent instead of typing. I’ll pace around my kitchen with the list of questions and dictate my answers.
-- I’ll push the agent to use the `AskUserQuestion` tool, which presents each question as a set of options you pick from. (Codex calls this the `request_user_input` tool.)
+- إنها إحدى المرات القليلة التي أستخدم فيها نمط الصوت، حيث أحدّث الوكيل بدلًا من الكتابة. فأتمشى في مطبخي وقائمة الأسئلة معي وأملي أجوبتي.
+- وأدفع الوكيل إلى استخدام أداة `AskUserQuestion`، التي تعرض كل سؤال كمجموعة خيارات تختار منها. (ويسمّيها Codex أداة `request_user_input`.)
 
-> **Don’t answer “you decide” to every question**
+> **لا تُجب بـ «قرّر أنت» على كل سؤال**
 >
-> It launders the agent’s guesses into a document that looks like your decisions. If you have no opinion on a particular question, say so and move on.
+> فهي تغسل تخمينات الوكيل في مستند يبدو كقراراتك. وإن لم يكن لك رأي في سؤال بعينه، فقل ذلك وامضِ.
 
-Plan as much as the task deserves. Past that point, you’re just writing a longer version of the diff.
+خطّط بقدر ما تستحق المهمة. وبعد ذلك الحد، أنت تكتب نسخة أطول من الـ diff فقط.

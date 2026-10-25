@@ -1,59 +1,59 @@
 ---
-title: "Choosing a DM Policy"
-lang: en
+title: "اختيار سياسة الرسائل المباشرة"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/choosing-a-dm-policy"
 ---
 
-When you [add a channel](https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel), you’re giving your agent a front door that anyone on that platform can knock on. Telegram bots are public by username. Slack apps can be messaged by anyone in the workspace. A phone number can receive a text from anybody.
+عندما [تضيف قناة](https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel)، فأنت تمنح وكيلك بابًا أماميًا يمكن لأي شخص على تلك المنصة أن يطرقه. روبوتات Telegram عامة بالاسم. تطبيقات Slack يمكن لمن في مساحة العمل مراسلتها. رقم هاتف يمكنه تلقي رسالة من أي شخص.
 
-Every channel therefore has a **DM policy** that decides what happens when someone you haven’t approved sends your agent a direct message. It’s set with `dmPolicy`, and it takes one of four values.
+لذلك تملك كل قناة **سياسة رسائل مباشرة (DM policy)** تقرر ما يحدث عندما يرسل شخص لم توافق عليه رسالة مباشرة إلى وكيلك. تُضبط بـ `dmPolicy`، وتقبل إحدى أربع قيم.
 
-> **Policy is about who gets in, not what they can do**
+> **السياسة تتعلق بمن يدخل، لا بما يمكنه فعله**
 >
-> A DM policy only decides whether a sender’s messages reach your agent. What that conversation is then allowed to *do* is controlled separately by [tool and approval policy](https://stevekinney.com/courses/openclaw/security-and-approvals). You need both.
+> سياسة الرسائل المباشرة تقرر فقط ما إذا كانت رسائل المرسل تصل إلى وكيلك. ما يُسمح لتلك المحادثة بفعله بعد ذلك يُتحكم به بشكل منفصل عبر [سياسة الأدوات والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals). أنت بحاجة إلى كليهما.
 
-## The Four Policies
+## السياسات الأربع
 
-| Policy | What happens to an unknown sender | Who it’s for |
+| السياسة | ما happens لمرسل غير معروف | لمن هي |
 | --- | --- | --- |
-| `pairing` | They get a pairing code, and you approve it | Getting started, or a small, changing group |
-| `allowlist` | Silently ignored unless they’re in `allowFrom` | Day-to-day use by a known set of people |
-| `open` | Anyone can talk to your agent | Almost never |
-| `disabled` | All DMs are ignored | Channels you don’t use, or an emergency rollback |
+| `pairing` | يحصل على رمز إقران، وأنت توافق عليه | البداية، أو مجموعة صغيرة متغيرة |
+| `allowlist` | يُتجاهل بصمت ما لم يكن في `allowFrom` | الاستخدام اليومي من مجموعة معروفة من الأشخاص |
+| `open` | أي شخص يمكنه التحدث إلى وكيلك | تقريبًا أبدًا |
+| `disabled` | جميع الرسائل المباشرة تُتجاهل | القنوات التي لا تستخدمها، أو تراجع طارئ |
 
-The policy lives under the channel it applies to, for example `channels.telegram.dmPolicy`. If an account inside a channel doesn’t set its own, it inherits the channel’s value. The default is `pairing`.
+تعيش السياسة تحت القناة التي تُطبق عليها، مثلًا `channels.telegram.dmPolicy`. إن لم تضبط حساب داخل قناة سياسة خاصة به، فإنه يرث قيمة القناة. القيمة الافتراضية هي `pairing`.
 
-You can also see and change it in the Control UI. Open *Channels* in Settings, click the channel, and look for the DM policy control. Here’s the Telegram channel on a gateway still using the default:
+يمكنك أيضًا رؤيتها وتغييرها في واجهة التحكم (Control UI). افتح *القنوات* (Channels) في الإعدادات، انقر على القناة، وابحث عن عنصر التحكم بسياسة الرسائل المباشرة. إليك قناة Telegram على بوابة (gateway) ما زالت تستخدم الافتراضي:
 
-The Telegram channel settings in the Control UI with the Telegram DM Policy control set to pairing, beside the Group Policy control
+إعدادات قناة Telegram في واجهة التحكم (Control UI) مع عنصر التحكم بسياسة Telegram DM Policy مضبوطًا على pairing، بجوار عنصر التحكم بسياسة المجموعة (Group Policy)
 
-The four values are a progression, not a menu of equals. Here’s what each one actually means.
+القيم الأربع تشكل تقدمًا، لا قائمة من المتساوين. إليك ما يعنيه كل منها فعلًا.
 
 ### `pairing`
 
-This is the default. When someone you haven’t approved sends a DM, they don’t reach the agent. Instead, OpenClaw replies with a short message containing their user ID, a **pairing code**, and the command you’d run to approve them. You saw this in the Telegram lesson:
+هذه هي الافتراضية. عندما يرسل شخص لم توافق عليه رسالة مباشرة، لا يصل إلى الوكيل. بدلًا من ذلك، يرد OpenClaw برسالة قصيرة تحتوي على معرّف المستخدم الخاص به، و**رمز إقران**، والأمر الذي تشغله للموافقة عليه. رأيت هذا في درس Telegram:
 
 ```
 openclaw pairing approve telegram <code>
 ```
 
-You run that command on the machine hosting the Gateway. Once approved, the sender’s messages go through.
+تشغّل هذا الأمر على الجهاز الذي يستضيف البوابة (Gateway). بمجرد الموافقة، تصل رسائل المرسل.
 
-It exists so that the first person can get in without anyone knowing their user ID in advance. You message the bot, it tells you your ID, and you approve yourself.
+توجد حتى يتمكن أول شخص من الدخول دون أن يعرف أحد معرّف مستخدمه مسبقًا. أرسلت رسالة إلى الروبوت، وأخبرك بمعرّفك، ثم وافقت على نفسك.
 
-A few things to know:
+بعض الأمور التي يجب معرفتها:
 
-- You can see waiting requests with `openclaw pairing list <channel>`.
-- Pairing codes expire after about an hour, so an old request can’t be redeemed later.
-- Approving through the CLI also makes the **first** approved person the command owner if there isn’t one yet. That’s the right outcome when the first person is you.
+- يمكنك رؤية طلبات الانتظار بـ `openclaw pairing list <channel>`.
+- تنتهي صلاحية رموز الإقران بعد نحو ساعة، لذا لا يمكن استرداد طلب قديم لاحقًا.
+- الموافقة عبر واجهة سطر الأوامر (CLI) تجعل **الأول** من الموافق عليهم مالك الأمر (command owner) إن لم يكن هناك مالك بعد. هذه هي النتيجة الصحيحة عندما يكون أول شخص أنت.
 
-> **Check who you’re approving**
+> **تحقق من whom توافق**
 >
-> A pairing code is only as trustworthy as your approval. Approve only the request you’re expecting, right after you sent the message yourself, and confirm the user ID in the reply matches your own. If a request shows up that you didn’t trigger, don’t approve it.
+> رمز الإقران موثوق بقدر موافقتك. وافق فقط على الطلب الذي تتوقعه، مباشرة بعد أن أرسلت الرسالة بنفسك، وتأكد من أن معرّف المستخدم في الرد يطابق معرّفك. إن ظهر طلب لم تُشغّله، لا توافق عليه.
 
 ### `allowlist`
 
-Only senders listed in `allowFrom` are admitted. There’s no challenge and no prompt. Anybody else is simply not let in.
+فقط المرسلون المدرّجون في `allowFrom` يُقبَلون. لا تحدٍّ ولا مطالبة. أي شخص آخر لا يُسمح له بالدخول.
 
 ```json5
 {
@@ -66,16 +66,16 @@ Only senders listed in `allowFrom` are admitted. There’s no challenge and no p
 }
 ```
 
-Each entry is the sender’s canonical ID on that platform, which is the user ID that the pairing message showed you.
+كل إدخال هو المعرّف المعياري (canonical ID) للمرسل على تلك المنصة، وهو معرّف المستخدم الذي أظهره لك رسالة الإقران.
 
-Two details matter:
+ هناك تفصيلان مهمان:
 
-- **An empty `allowFrom` blocks everyone.** On Telegram, config validation rejects that combination outright. On some other channels, like SMS, OpenClaw only logs a warning at startup, so it’s easy to lock yourself out and not notice.
-- **You can reuse one list across channels.** If several people need access, define a named access group once and reference it from each channel with `allowFrom: ['accessGroup:operators']`, instead of keeping three lists in sync by hand.
+- **`allowFrom` فارغ يمنع الجميع.** في Telegram، يرفض التحقق من الإعدادات (config validation) ذلك المزيج صراحة. في بعض القنوات الأخرى، مثل الرسائل النصية (SMS)، يسجل OpenClaw تحذيرًا فقط عند البدء، لذا من السهل أن تحبس نفسك خارجًا دون أن تلاحظ.
+- **يمكنك إعادة استخدام قائمة واحدة عبر القنوات.** إن احتاج عدة أشخاص إلى الوصول، عرّف مجموعة وصول مسماة (named access group) مرة واحدة وارجع إليها من كل قناة بـ `allowFrom: ['accessGroup:operators']`، بدلًا من إبقاء ثلاث قوائم متزامنة يدويًا.
 
 ### `open`
 
-This lets in anyone who finds the channel. It deliberately doesn’t work as a single switch: `open` also requires `allowFrom` to include `"*"`.
+هذا يسمح لأي شخص يجد القناة بالدخول. لا يعمل كمفتاح واحد عمدًا: `open` يتطلب أيضًا أن تتضمن `allowFrom` `"*"`.
 
 ```json5
 {
@@ -88,54 +88,54 @@ This lets in anyone who finds the channel. It deliberately doesn’t work as a s
 }
 ```
 
-If you set `open` and forget the wildcard, the channel fails closed instead of opening up. That makes “anyone may talk to my agent” a two-handed decision, which is the point.
+إن ضبطت `open` ونسيت حرف البدل (wildcard)، فتُغلق القناة (fail closed) بدلًا من أن تفتح. هذا يجعل «أي شخص قد يتحدث إلى وكيلي» قرارًا بيدَين (two-handed)، وهو المقصود.
 
-For a personal assistant, this is almost never what you want. Anyone who discovers your bot or number is talking to an agent that can read your files and use your accounts.
+لمساعد شخصي، هذا تقريبًا أبدًا ما تريده. أي شخص يكتشف روبوتك أو رقمك يتحدث إلى وكيل يمكنه قراءة ملفاتك واستخدام حساباتك.
 
 ### `disabled`
 
-All DMs are ignored. It’s the right setting for a channel you’ve connected but aren’t using, and it’s the fastest way to close a door if you think you’ve overexposed something.
+جميع الرسائل المباشرة تُتجاهل. هذا هو الإعداد المناسب لقناة اتصلت بها ولكنك لا تستخدمها، وأسرع طريقة لإغلاق باب إن اعتقدت أنك كشفت أكثر من اللازم.
 
-Note that it only affects *direct messages*. Group and channel traffic is governed separately by `groupPolicy`, so `disabled` doesn’t turn the channel itself off.
+لاحظ أنه يؤثر فقط على *الرسائل المباشرة*. حركة المجموعات والقنوات يُتحكم بها بشكل منفصل عبر `groupPolicy`، لذا `disabled` لا يعطل القناة نفسها.
 
-## Letting In an Admitted Sender Is Not Making Them an Owner
+## السماح لمرسل مقبول بالدخول ليس جعله مالكًا
 
-There are two different grants that are easy to confuse:
+هناك منحتان مختلفتان يسهل خلطهما:
 
-- **Chat access** decides whether someone’s messages reach the agent. That’s what `dmPolicy` and `allowFrom` control.
-- **Command ownership** decides who can *administer* the installation: run `/update`, restart the Gateway, change configuration, and approve commands.
+- **وصول المحادثة (Chat access)** يقرر ما إذا كانت رسائل شخص ما تصل إلى الوكيل. هذا ما يتحكم به `dmPolicy` و`allowFrom`.
+- **ملكية الأمر (Command ownership)** تقرر من يمكنه *إدارة* التثبيت: تشغيل `/update`، إعادة تشغيل البوابة، تغيير الإعدادات، والموافقة على الأوامر.
 
-Adding someone to `allowFrom` by hand gives them chat access and nothing more. They can talk to the agent but will be refused by owner-only commands. When that happens, the agent replies with the exact `openclaw config set commands.ownerAllowFrom` command to run.
+إضافة شخص إلى `allowFrom` يدويًا تمنحه وصول المحادثة ولا شيء أكثر. يمكنه التحدث إلى الوكيل لكن أوامر المالك فقط سترفضه. عندما يحدث ذلك، يرد الوكيل بالأمر الدقيق `openclaw config set commands.ownerAllowFrom` لتشغيله.
 
-Approving a pairing request through the CLI is the exception: if there’s no owner yet, it makes that first person the owner. Later approvals grant DM access only.
+الموافقة على طلب إقران عبر واجهة سطر الأوامر (CLI) هي الاستثناء: إن لم يكن هناك مالك بعد، تجعل ذلك الشخص الأول مالكًا. الموافقات اللاحقة تمنح وصول الرسائل المباشرة فقط.
 
-## A Different Dial: Session Scope
+## مُعدّل آخر: نطاق الجلسة (Session Scope)
 
-There’s one more setting with “DM” in its name that’s easy to mix up with the policy. `session.dmScope` doesn’t decide *who* gets in. It decides whether admitted senders **share a conversation**.
+هناك إعداد آخر bearing "DM" في اسمه يسهل خلطه بالسياسة. `session.dmScope` لا يقرر *من* يدخل. يقرر ما إذا كان المرسلون المقبولون **يشاركون محادثة**.
 
-| Value | What it does |
+| القيمة | ما يفعله |
 | --- | --- |
-| `main` (default) | Every DM, from everyone, lands in the agent’s one main session |
-| `per-peer` | Each sender gets their own session |
-| `per-channel-peer` | Each sender gets their own session on each channel |
-| `per-account-channel-peer` | The same, separated per account as well |
+| `main` (افتراضي) | كل رسالة مباشرة، من الجميع، تهبط في جلسة الوكيل الرئيسية الواحدة |
+| `per-peer` | كل مرسل يحصل على جلسته الخاصة |
+| `per-channel-peer` | كل مرسل يحصل على جلسته الخاصة على كل قناة |
+| `per-account-channel-peer` | نفسه، مفصول لكل حساب أيضًا |
 
-With the default, two people who are both allowed to DM the agent are sharing one conversation and one history. That’s fine when the only person is you, and a privacy leak when it isn’t.
+بالقيمة الافتراضية، شخصان كلاهما مسموح لهما بمراسلة الوكيل يشاركان محادثة واحدة وتاريخًا واحدًا. هذا مقبول عندما يكون الشخص الوحيد أنت، وتسريب خصوصية عندما لا يكون كذلك.
 
-One side effect to be aware of: the agent’s ability to recall things across your private conversations is on by default only while `dmScope` is unset or `main`. Turning on isolation turns that default off.
+أثر جانبي واحد يجب معرفته: قدرة الوكيل على تذكر الأشياء عبر محادثاتك الخاصة مفعلة افتراضيًا فقط ما دام `dmScope` غير مضبوط أو `main`. تفعيل العزل يعطل ذلك الافتراض.
 
-## Our Recommendation
+## توصيتنا
 
-**Use `pairing` to get in, then switch to `allowlist` and leave it there.**
+**استخدم `pairing` للدخول، ثم انتقل إلى `allowlist` واتركه هناك.**
 
-Pairing is a bootstrap step, not a permanent policy. If you leave it on after you’ve approved yourself, every stranger who messages the bot receives the same pairing prompt for as long as the bot exists. That’s an invitation to try to socially engineer your approval.
+الإقران خطوة تمهيد (bootstrap)، لا سياسة دائمة. إن تركته مفعّلًا بعد أن وافقت على نفسك، فكل غريب يراسل الروبوت يتلقى مطالبة الإقران نفسها طالما وُجد الروبوت. هذا دعوة لمحاولة الهندسة الاجتماعية (social engineer) لموافقتك.
 
-Here’s the sequence:
+إليك التسلسل:
 
-1. Leave the channel on its default, `pairing`.
-2. Message the bot yourself and note the user ID in the reply.
-3. Approve your own request: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> pairing</span><span style="color:#ECC48D"> approve</span><span style="color:#ECC48D"> telegram</span><span style="color:#7FDBCA"> <</span><span style="color:#ECC48D">cod</span><span style="color:#D6DEEB">e</span><span style="color:#7FDBCA">></span></span></code>
-4. Record your ID in `allowFrom` and switch to `allowlist`: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
+1. اترك القناة على افتراضها، `pairing`.
+2. راسل الروبوت بنفسك ودوّن معرّف المستخدم في الرد.
+3. وافق على طلبك: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> pairing</span><span style="color:#ECC48D"> approve</span><span style="color:#ECC48D"> telegram</span><span style="color:#7FDBCA"> <</span><span style="color:#ECC48D">cod</span><span style="color:#D6DEEB">e</span><span style="color:#7FDBCA">></span></span></code>
+4. سجّل معرّفك في `allowFrom` وانتقل إلى `allowlist`: <code><span class="line"><span style="color:#D6DEEB">{</span></span>
 <span class="line"><span style="color:#ECC48D"> channels</span><span style="color:#D6DEEB">: {</span></span>
 <span class="line"><span style="color:#ECC48D"> telegram</span><span style="color:#D6DEEB">: {</span></span>
 <span class="line"><span style="color:#ECC48D"> dmPolicy</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">allowlist</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">,</span></span>
@@ -143,24 +143,24 @@ Here’s the sequence:
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
 <span class="line"><span style="color:#D6DEEB">}</span></span></code>
-5. Check the file, then restart the Gateway: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> config</span><span style="color:#ECC48D"> validate</span></span>
+5. تحقق من الملف، ثم أعد تشغيل البوابة: <code><span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> config</span><span style="color:#ECC48D"> validate</span></span>
 <span class="line"><span style="color:#82AAFF;font-style:italic">openclaw</span><span style="color:#ECC48D"> gateway</span><span style="color:#ECC48D"> restart</span></span></code>
-6. **Test the negative case.** Message the bot from a second account that isn’t on the list and confirm it gets nowhere.
+6. **اختبر الحالة السالبة.** راسل الروبوت من حساب ثانٍ غير موجود في القائمة وتأكد من أنه لا يصل إلى أي مكان.
 
-Step 6 is the one people skip. `openclaw channels status --probe` only checks that the connection to the platform works. It says nothing about whether your policy is doing what you think, so test with a real allowed-versus-rejected pair of messages.
+الخطوة 6 هي التي يتجاوزها الناس. `openclaw channels status --probe` يتحقق فقط من أن الاتصال بالمنصة يعمل. لا يقول أي شيء عن ما إذا كانت سياستك تفعل ما تعتقد، لذا اختبر بزوج رسائل حقيقية: مقبولة مقابل مرفوضة.
 
-Then adjust for your situation:
+ثم عدّل لتلائم وضعك:
 
-| Your situation | DM policy | `session.dmScope` |
+| وضعك | سياسة الرسائل المباشرة | `session.dmScope` |
 | --- | --- | --- |
-| Just you | `allowlist` with your ID | Leave the default |
-| You and a few trusted people | `allowlist`, ideally an access group | `per-channel-peer` |
-| A channel you’ve connected but don’t use | `disabled` | Doesn’t matter |
-| You think something is overexposed | `disabled` everywhere, right now | Doesn’t matter |
-| A public bot for strangers | Don’t. Make a separate, locked-down agent. | `per-channel-peer` |
+| أنت فقط | `allowlist` بمعرّفك | اترك الافتراضي |
+| أنت وعدد قليل من الموثوقين | `allowlist`، مثاليًا مجموعة وصول | `per-channel-peer` |
+| قناة اتصلت بها ولكنك لا تستخدمها | `disabled` | لا يهم |
+| تعتقد أن شيئًا مفرط التعرض | `disabled` في كل مكان، الآن | لا يهم |
+| روبوت عام للغرباء | لا. أنشئ وكيلًا منفصلًا، مغلقًا. | `per-channel-peer` |
 
-And whichever you pick, keep the second layer in place. A tight DM policy plus an agent that asks before running commands is much safer than either one alone. If you haven’t already, set that up as described in [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals).
+وأيًّا اخترت، أبقِ الطبقة الثانية في مكانها. سياسة رسائل مباشرة ضيقة مع وكيل يسأل قبل تشغيل الأوامر أكثر أمانًا بكثير من أيّ منهما بمفرده. إن لم تكن قد فعلت ذلك بعد، فاضبطه كما هو موصوف في [الأمان والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals).
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغير**
 >
-> This lesson matches OpenClaw `2026.9.8`. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> هذا الدرس يطابق OpenClaw `2026.9.8`. إن لم يتصرف شيء كما هو موصوف، شغّل الأمر بـ `--help` وتحقق من [وثائق OpenClaw](https://docs.openclaw.ai/).

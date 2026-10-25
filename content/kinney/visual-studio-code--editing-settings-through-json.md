@@ -1,23 +1,23 @@
 ---
-title: "Editing Settings via JSON"
-lang: en
+title: "تحرير الإعدادات عبر JSON"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/editing-settings-through-json"
 ---
 
-The Settings Editor provides a convenient visual interface, directly editing the `settings.json` file offers more advanced control and is essential for certain customizations. `settings.json` files are plain text files formatted in JSON (JavaScript Object Notation).
+يوفّر محرّر الإعدادات واجهة مرئية مريحة، لكن تحرير ملف `settings.json` مباشرةً يمنحك تحكّمًا أكثر تقدمًا وهو ضروري لبعض التخصيصات. وملفات `settings.json` هي ملفات نصية عادية مصاغة بتنسيق JSON (JavaScript Object Notation).
 
-## Accessing `settings.json`
+## الوصول إلى `settings.json`
 
-- **Settings Editor:** In the Settings Editor, click the “Open Settings (JSON)” icon in the top-right corner. This will open the `settings.json` file for the currently selected scope (User or Workspace).
-- **Command Palette:** Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and run “Preferences: Open Settings (JSON)“. This opens the User `settings.json`. To open Workspace `settings.json`, run “Preferences: Open Workspace Settings (JSON)“.
+- **محرّر الإعدادات:** في محرّر الإعدادات، انقر أيقونة “Open Settings (JSON)” في الزاوية العلوية اليمنى. وسيفتح ذلك ملف `settings.json` للنطاق المحدّد حاليًا (User أو Workspace).
+- **لوحة الأوامر:** افتح لوحة الأوامر (`Ctrl+Shift+P` أو `Cmd+Shift+P`) ونفّذ “Preferences: Open Settings (JSON)“. يفتح ذلك ملف `settings.json` الخاص بـ User. ولفتح ملف `settings.json` الخاص بـ Workspace، نفّذ “Preferences: Open Workspace Settings (JSON)“.
 
-Depending on your platform, the user settings file is located here:
+وحسب نظامك الأساسي، يقع ملف إعدادات المستخدم هنا:
 
 - **Windows** `%APPDATA%\Code\User\settings.json`
 - **macOS** `$HOME/Library/Application\ Support/Code/User/settings.json`
 - **Linux** `$HOME/.config/Code/User/settings.json`
 
-### JSON Syntax and Schema
+### صياغة JSON ومخطّطه
 
 ```json
 {
@@ -46,11 +46,11 @@ Depending on your platform, the user settings file is located here:
 }
 ```
 
-## Advanced Configuration with `settings.json`
+## تهيئة متقدّمة باستخدام `settings.json`
 
-**Comments:** While JSON itself doesn’t support comments, Visual Studio Code `settings.json` allows single-line (`//`) and multi-line (`/* … */`) comments for documentation and notes.
+**التعليقات:** في حين أن JSON نفسه لا يدعم التعليقات، فإن ملف `settings.json` في Visual Studio Code يسمح بالتعليقات أحادية السطر (`//`) ومتعددة الأسطر (`/* … */`) للتوثيق والملاحظات.
 
-**Conditional Settings:** You can use language-specific settings within `settings.json` to apply configurations only to certain languages. For example:
+**إعدادات شرطية:** يمكنك استخدام إعدادات خاصة بلغة معيّنة داخل `settings.json` لتطبيق تهيئات على لغات محدّدة فقط. مثلًا:
 
 ```json
 {
@@ -66,8 +66,8 @@ Depending on your platform, the user settings file is located here:
 }
 ```
 
-This example sets `tabSize` to 4 and enables `pylint` for Python files, while setting `tabSize` to 2 for JavaScript files. The language identifier (e.g., `python`, `javascript`) is enclosed in square brackets `[]`. You can find language identifiers in the Language Mode selector in the bottom-right corner of Visual Studio Code.
+يضبط هذا المثال `tabSize` على 4 ويمكّن `pylint` لملفات Python، بينما يضبط `tabSize` على 2 لملفات JavaScript. ويُحاط معرّف اللغة (مثل `python` و `javascript`) بقوسين مربّعين `[]`. وتجد معرّفات اللغات في محدّد Language Mode في الزاوية السفلية اليمنى من Visual Studio Code.
 
-**Array and Object Settings:** Settings that are arrays or objects are often easier to configure directly in `settings.json`. For instance, the `files.exclude` setting, which is an object, is typically modified in `settings.json` to add or remove file patterns to exclude from the Explorer.
+**إعدادات المصفوفات والكائنات:** الإعدادات التي تكون مصفوفات أو كائنات يسهل غالبًا ضبطها مباشرةً في `settings.json`. فمثلًا، إعداد `files.exclude`، وهو كائن، يُعدّل عادةً في `settings.json` لإضافة أنماط الملفات التي تريد استثناءها من مستكشف الملفات أو إزالتها.
 
-**Scripting and Automation:** `settings.json` files can be programmatically generated or modified, enabling scripting and automation of Visual Studio Code configuration. This can be useful for setting up consistent development environments across teams or for dynamically adjusting settings based on scripts or environment variables.
+**البرمجة والأتمتة:** يمكن توليد ملفات `settings.json` أو تعديلها برمجيًا، ما يتيح برمجة تهيئة Visual Studio Code وأتمتتها. ويفيد ذلك في تهيئة بيئات تطوير متّسقة عبر الفرق، أو في ضبط الإعدادات ديناميكيًا بناءً على سكربتات أو متغيّرات بيئة.

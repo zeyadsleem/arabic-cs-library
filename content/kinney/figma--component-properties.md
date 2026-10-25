@@ -1,67 +1,67 @@
 ---
-title: "Component Properties"
-lang: en
+title: "خصائص المكوّن"
+lang: ar
 source: "https://stevekinney.com/courses/figma/component-properties"
 ---
 
-In Figma, there are four types of component properties:
+في Figma، هناك أربعة أنواع لخصائص المكوّن:
 
-- [Variants](https://stevekinney.com/courses/figma/variants)
-- [Boolean](#boolean-properties)
-- [Instance Swap](#simplifying-component-instances)
-- [Text](#text-properties)
+- [الأنماط البديلة (Variants)](https://stevekinney.com/courses/figma/variants)
+- [منطقية (Boolean)](#boolean-properties)
+- [تبديل النسخة (Instance Swap)](#simplifying-component-instances)
+- [نصية (Text)](#text-properties)
 
-> **Component Properties vs. Variables**
+> **خصائص المكوّن مقابل المتغيّرات**
 >
-> It’s easy to get confused between component properties and variables. For me, it’s helpful to think about component properties as the prop that you might pass into a component and use locally verses some globally stored variable.
+> من السهل الالتباس بين خصائص المكوّن والمتغيّرات. وبالنسبة إليّ، من المفيد أن أفكّر في خصائص المكوّن على أنها الخاصية التي قد تمرّرها إلى مكوّن وتستخدمها محليًا، مقابل متغيّر مخزّن عالميًا.
 
-## Boolean Properties
+## الخصائص المنطقية {#boolean-properties}
 
-Boolean properties to set `true` and `false` values. This allows us to toggle an attribute on or off. Let’s say we had a badge component and we wanted to add the ability to add a hash tag to the badge—and we wanted it to be something that we could toggle on and off.
+الخصائص المنطقية تضبط القيم `true` و`false`. وهذا يتيح لنا تشغيل خاصية أو إيقافها. لنفترض أن لدينا مكوّن شارة (badge) وأردنا إضافة القدرة على إضافة وسم (hash tag) إلى الشارة — وأردنا أن يكون شيئًا يمكننا تشغيله وإيقافه.
 
-An example badge and hash tag component
+مثال على مكوّن شارة ووسم
 
-We can start by creating a boolean component property from the **Properties** on the left panel.
+يمكننا البدء بإنشاء خاصية مكوّن منطقية من **Properties** في اللوحة اليسرى.
 
-And from there, we can give it a default value of—you guessed it—either `true` or `false` along with a convenient name for the property.
+ومن هناك يمكننا إعطاءها قيمة افتراضية — وقد خمّنتها — هي `true` أو `false`، مع اسم مناسب للخاصية.
 
-Properties when creating a new component in Figma
+الخصائص عند إنشاء مكوّن جديد في Figma
 
-Then we can navigate to the layer that want trigger with this property and link it it’s visibility to the component property.
+ثم يمكننا الانتقال إلى الطبقة التي نريد تفعيلها بهذه الخاصية وربط ظهورها بخاصية المكوّن.
 
-Now, when we use an instance of that component, we’ll see that we have the ability to toggle the component property on and off.
+الآن، عندما نستخدم نسخة من ذلك المكوّن، سنرى أن لدينا القدرة على تشغيل خاصية المكوّن وإيقافها.
 
-## Text Properties
+## الخصائص النصية {#text-properties}
 
-We can also create component properties that have a text value. There are two main reasons why you might consider using this:
+يمكننا أيضًا إنشاء خصائص مكوّن ذات قيمة نصية. وهناك سببان رئيسيان قد يدفعانك إلى التفكير في استخدامها:
 
-1. You want to easily change the text in a given component without needing to dive into the components layers.
-2. You want to use the same piece of text in multiple places.
+1. تريد تغيير النص في مكوّن معيّن بسهولة دون الحاجة إلى التعمّق في طبقات المكوّن.
+2. تريد استخدام النص نفسه في عدة مواضع.
 
-The first reason is probably the most common, but the second reason might become handy if you’re looking to get a little fancy with the given variants of your component and want to use the same label in more than one place.
+السبب الأول هو الأكثر شيوعًا على الأرجح، لكن السبب الثاني قد يكون مفيدًا إذا كنت تسعى إلى شيء أكثر براعة مع أنماط مكوّنك البديلة وتريد استخدام التسمية نفسها في أكثر من موضع.
 
-Text property for components
+خاصية نصية للمكوّنات
 
-We can then set the value of any text field to this property in the **Text** panel.
+يمكننا بعد ذلك ضبط قيمة أي حقل نصي على هذه الخاصية في لوحة **Text**.
 
-Now, you can easily change the value of the text property just by clicking the instance of the component.
+الآن يمكنك تغيير قيمة الخاصية النصية بسهولة بمجرد النقر على نسخة المكوّن.
 
-## Instance Swap
+## تبديل النسخة (Instance Swap) {#instance-swap}
 
-The **instance swap** property allows you to swap out a given component with another one. When you define this property, you set select a default instance value. You can also define some preferences for the other components that you’re interested in swapping between.
+تتيح لك خاصية **instance swap** استبدال مكوّن معيّن بآخر. وعند تعريف هذه الخاصية، تحدّد قيمة نسخة افتراضية. ويمكنك أيضًا تعريف بعض التفضيلات للمكوّنات الأخرى التي تهتم بالتبديل بينها.
 
-These **preferred values** allow you to create define a set of components that you want to swpa between. If this sounds kind of like [variants](https://stevekinney.com/courses/figma/variants), you’re not wrong. I typically use a combination of the two approaches when I am creating a components for a design.
+تتيح لك **preferred values** هذه تعريف مجموعة من المكوّنات التي تريد التبديل بينها. وإن كان هذا يبدو نوعًا ما مثل [الأنماط البديلة](https://stevekinney.com/courses/figma/variants)، فأنت محق. وعادةً أستخدم مزيجًا من المقاربتين عندما أنشئ مكوّنات لتصميم ما.
 
-> **Variants vs. Instance Swap**
+> **الأنماط البديلة مقابل تبديل النسخة**
 >
-> Your mileage may vary and you’re welcome to disagree with me, but I will typically make [variants](https://stevekinney.com/courses/figma/variants) for all of the different states of a button (e.g. hover, active, disabled. etc.). But, I’ll make different components for each type of button (e.g. primary, secondary, ghost, etc.). This allows me to swap between the states with [variants](https://stevekinney.com/courses/figma/variants) when [prototyping](https://stevekinney.com/courses/figma/prototyping) and but easily [instance swap](#instance-swap) between the types when designing. Shoving *everything* into variants tends to make organization a mess.
+> قد تختلف تجربتك، ولك مطلق الحرية في أن تخالفني، لكنني عادةً أصنع [الأنماط البديلة](https://stevekinney.com/courses/figma/variants) لكل حالات الزر المختلفة (مثل hover وactive وdisabled وما إلى ذلك). لكنني أصنع مكوّنات مختلفة لكل نوع من الأزرار (مثل primary وsecondary وghost وما إلى ذلك). وهذا يتيح لي التبديل بين الحالات بـ [الأنماط البديلة](https://stevekinney.com/courses/figma/variants) عند [النمذجة الأولية (prototyping)](https://stevekinney.com/courses/figma/prototyping)، و[تبديل النسخة](#instance-swap) بسهولة بين الأنواع عند التصميم. وحشر *كل شيء* في الأنماط البديلة يجعل التنظيم فوضى.
 
-## Simplifying Component Instances
+## تبسيط نسخ المكوّنات {#simplifying-component-instances}
 
-If you want to hide away most of the complexities of a component away from anyone using it, then you can go to the main component and select “Simplify all instances”. This will reduce the number of knobs that someone gets to (or, has to) fiddle and allows you to keep things *simple*.
+إذا كنت تريد إخفاء معظم تعقيدات المكوّن عن أي شخص يستخدمه، فيمكنك الذهاب إلى المكوّن الرئيسي واختيار «Simplify all instances». وهذا يقلّل عدد المقابض التي يستطيع أحدهم (أو يجب عليه) العبث بها، ويتيح لك إبقاء الأمور *بسيطة*.
 
-> **Simplifying Won’t Protect You**
+> **التبسيط لن يحميك**
 >
-> Simplifying an instance will hide layers, but **anyone with the ability to edit** the design file will still be able to edit those layers.
+> تبسيط نسخة سيخفي الطبقات، لكن **أي شخص لديه صلاحية التحرير** في ملف التصميم سيظل قادرًا على تحرير تلك الطبقات.
 
-Next let’s talk about [Variants](https://stevekinney.com/courses/figma/variants).
+لنتحدّث بعد ذلك عن [الأنماط البديلة](https://stevekinney.com/courses/figma/variants).

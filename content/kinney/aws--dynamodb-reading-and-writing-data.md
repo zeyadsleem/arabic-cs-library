@@ -1,25 +1,25 @@
 ---
-title: "Reading and Writing Data with the SDK"
-lang: en
+title: "قراءة البيانات وكتابتها باستخدام SDK"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dynamodb-reading-and-writing-data"
 ---
 
-You have a DynamoDB table. Now you need to put data in it and get data out. DynamoDB exposes four core operations for working with individual items: **PutItem** (create or replace), **GetItem** (read by key), **UpdateItem** (partial update), and **DeleteItem** (remove). These map directly to the CRUD operations you’ve built a hundred times in frontend applications.
+لديك جدول DynamoDB. الآن تحتاج إلى وضع البيانات فيه وإخراجها منه. تعرض DynamoDB أربع عمليات أساسية للعمل مع العناصر الفردية: **PutItem** (إنشاء أو استبدال)، و**GetItem** (قراءة بالمفتاح)، و**UpdateItem** (تحديث جزئي)، و**DeleteItem** (إزالة). وهذه تقابل مباشرةً عمليات CRUD التي بنيتها مئة مرة في تطبيقات الواجهة الأمامية.
 
-If you want AWS’s exact version of the data-access behavior while you read, the [DynamoDB Developer Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) is the canonical reference.
+إذا أردت نسخة AWS الدقيقة من سلوك الوصول إلى البيانات أثناء القراءة، فإن [دليل مطوّر DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) هو المرجع المعتمد.
 
-The AWS SDK v3 provides two ways to call these operations. The low-level `DynamoDBClient` requires you to describe your data using DynamoDB’s type descriptor format—wrapping every string in `{ S: "value" }` and every number in `{ N: "123" }`. The high-level `DynamoDBDocumentClient` handles that marshalling for you, so you work with plain JavaScript objects. Use the document client. Always.
+يوفّر AWS SDK v3 طريقتين لاستدعاء هذه العمليات. فـ `DynamoDBClient` منخفض المستوى يتطلب منك وصف بياناتك بصيغة واصفات الأنواع في DynamoDB—بتغليف كل نص في `{ S: "value" }` وكل رقم في `{ N: "123" }`. أما `DynamoDBDocumentClient` عالي المستوى فيتولى ذلك التسويق نيابةً عنك، فتعمل بكائنات JavaScript عادية. استخدم عميل المستندات. دائمًا.
 
-## Setting Up the Document Client
+## إعداد عميل المستندات
 
-Install the SDK packages in your Lambda project:
+ثبّت حزم SDK في مشروع Lambda لديك:
 
 ```bash
 cd lambda
 npm install @aws-sdk/client-dynamodb @aws-sdk/lib-dynamodb
 ```
 
-Create the client at the top level of your handler file. Code outside the handler function runs during the init phase and is reused across warm invocations—you don’t want to create a new client on every request.
+أنشئ العميل على المستوى الأعلى في ملف المعالج. فالشيفرة خارج دالة المعالج تُنفّذ أثناء مرحلة التهيئة وتُعاد استخدامها عبر الاستدعاءات الدافئة—وأنت لا تريد إنشاء عميل جديد مع كل طلب.
 
 ```typescript
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -28,13 +28,13 @@ import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 ```
 
-*Note:* Creating the client outside the handler means it persists across warm invocations.
+*ملاحظة:* إنشاء العميل خارج المعالج يعني أنه يبقى عبر الاستدعاءات الدافئة.
 
-The empty `{}` passed to `DynamoDBClient` means “use the default configuration”—the region from the Lambda execution environment and the credentials from the execution role. You don’t need to hardcode a region or pass access keys.
+الكائن الفارغ `{}` الذي يُمرّر إلى `DynamoDBClient` يعني «استخدم الإعداد الافتراضي»—المنطقة من بيئة تنفيذ Lambda، وبيانات الاعتماد من دور التنفيذ. لست بحاجة إلى كتابة منطقة بشكل صريح أو تمرير مفاتيح وصول.
 
-## PutItem: Create or Replace an Item
+## PutItem: إنشاء عنصر أو استبداله
 
-`PutCommand` writes an item to the table. If an item with the same primary key already exists, it’s replaced entirely.
+يكتب `PutCommand` عنصرًا إلى الجدول. وإذا كان هناك عنصر بالمفتاح الأساسي نفسه موجودًا بالفعل، فإنه يُستبدل كليًا.
 
 ```typescript
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
@@ -57,15 +57,15 @@ async function createItem(userId: string, itemId: string, title: string) {
 }
 ```
 
-Notice that you pass a plain JavaScript object as `Item`. The document client handles converting this to DynamoDB’s internal format. You don’t need `{ S: "user-123" }`—you just write `"user-123"`.
+لاحظ أنك تمرّر كائن JavaScript عاديًا كـ `Item`. فعميل المستندات يتولى تحويله إلى الصيغة الداخلية لـ DynamoDB. لست بحاجة إلى `{ S: "user-123" }`—بل تكتب `"user-123"` فقط.
 
-> **Warning**
+> **تحذير**
 >
-> `PutCommand` replaces the entire item if an item with the same key exists. If you only want to update specific attributes without touching others, use `UpdateCommand` instead. This is a common source of data loss—you fetch an item, modify one field, PutItem the whole thing, and accidentally overwrite changes another request made between your read and your write.
+> يستبدل `PutCommand` العنصر بأكمله إذا وُجد عنصر بالمفتاح نفسه. وإذا أردت تحديث سمات محدّدة دون المساس بغيرها، فاستخدم `UpdateCommand` بدلًا من ذلك. وهذا مصدر شائع لفقدان البيانات—فتجلب عنصرًا، وتعدّل حقلًا واحدًا، ثم تضع العنصر بأكمله، فتكتب فوق تغييرات أجراها طلب آخر بين قراءتك وكتابتك.
 
-## GetItem: Read by Key
+## GetItem: القراءة بالمفتاح
 
-`GetCommand` retrieves a single item by its complete primary key. For a composite key table, you must provide both the partition key and the sort key.
+يجلب `GetCommand` عنصرًا واحدًا بمفتاحه الأساسي الكامل. أما جدول المفتاح المركّب، فيجب أن تقدّم كلا مفتاحي التقسيم والفرز.
 
 ```typescript
 import { GetCommand } from '@aws-sdk/lib-dynamodb';
@@ -85,15 +85,15 @@ async function getItem(userId: string, itemId: string) {
 }
 ```
 
-*Note:* `result.Item` is `undefined` if no item matches the key—not an error, just `undefined`.
+*ملاحظة:* يكون `result.Item` مساويًا لـ `undefined` إذا لم يطابق أي عنصر المفتاح—وهذا ليس خطأً، بل `undefined` فقط.
 
-`GetItem` is fast and cheap—it reads a single item by its primary key with predictable latency regardless of table size. This is DynamoDB’s sweet spot, and honestly, it’s the operation I use most.
+`GetItem` سريع ورخيص—فهو يقرأ عنصرًا واحدًا بمفتاحه الأساسي بزمن استجابة متوقّع بغض النظر عن حجم الجدول. هذه هي نقطة قوة DynamoDB، وبصراحة، إنها العملية التي أستخدمها أكثر من غيرها.
 
-If the item doesn’t exist, `result.Item` is `undefined`. DynamoDB doesn’t throw an error for a missing item—you need to check for `undefined` yourself.
+إذا لم يكن العنصر موجودًا، فإن `result.Item` يساوي `undefined`. لا تُطلق DynamoDB خطأً عند غياب العنصر—بل عليك أن تتحقق من `undefined` بنفسك.
 
-## UpdateItem: Partial Updates
+## UpdateItem: التحديثات الجزئية
 
-`UpdateCommand` modifies specific attributes on an existing item without replacing the entire thing. It uses **update expressions**—a mini-language for describing the changes you want to make.
+يعدّل `UpdateCommand` سمات محدّدة في عنصر موجود دون استبداله بأكمله. وهو يستخدم **تعبيرات التحديث**—لغة مصغّرة لوصف التغييرات التي تريد إجراءها.
 
 ```typescript
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
@@ -122,22 +122,22 @@ async function updateItemStatus(userId: string, itemId: string, status: string) 
 }
 ```
 
-*Note:* `ReturnValues: 'ALL_NEW'` returns the full item after the update.
+*ملاحظة:* `ReturnValues: 'ALL_NEW'` يُرجع العنصر كاملًا بعد التحديث.
 
-This is more verbose than PutItem, but let’s walk through it:
+هذا أكثر إسهابًا من PutItem، لكن دعنا نمضي خلاله:
 
-- **`UpdateExpression`**: Describes what to change. `SET` assigns values. You can also use `REMOVE` to delete attributes, `ADD` to increment numbers, and `DELETE` to remove elements from sets.
-- **`ExpressionAttributeNames`**: Maps placeholder names (prefixed with `#`) to actual attribute names. You need this for `status` because it’s a reserved word in DynamoDB.
-- **`ExpressionAttributeValues`**: Maps placeholder values (prefixed with `:`) to the values you want to set.
-- **`ReturnValues`**: Controls what comes back. `ALL_NEW` returns the entire item after the update. Other options include `NONE` (the default), `ALL_OLD`, `UPDATED_OLD`, and `UPDATED_NEW`.
+- **`UpdateExpression`**: يصف ما يجب تغييره. و`SET` يعيّن القيم. ويمكنك أيضًا استخدام `REMOVE` لحذف السمات، و`ADD` لزيادة الأرقام، و`DELETE` لإزالة عناصر من المجموعات.
+- **`ExpressionAttributeNames`**: يربط أسماء العناصر النائبة (المسبوقة بـ `#`) بأسماء السمات الفعلية. وتحتاج إليه من أجل `status` لأنه كلمة محجوزة في DynamoDB.
+- **`ExpressionAttributeValues`**: يربط القيم النائبة (المسبوقة بـ `:`) بالقيم التي تريد تعيينها.
+- **`ReturnValues`**: يتحكم بما يُعاد. فـ `ALL_NEW` يُرجع العنصر بأكمله بعد التحديث. ومن الخيارات الأخرى `NONE` (الافتراضي)، و`ALL_OLD`، و`UPDATED_OLD`، و`UPDATED_NEW`.
 
-> **Tip**
+> **نصيحة**
 >
-> DynamoDB has over 500 reserved words—including common ones like `status`, `name`, `data`, `type`, and `count`. If you get a `ValidationException` about reserved words, wrap the attribute name in `ExpressionAttributeNames`. A safe habit: always use `#` placeholders for attribute names in expressions.
+> لدى DynamoDB أكثر من 500 كلمة محجوزة—منها كلمات شائعة مثل `status` و`name` و`data` و`type` و`count`. فإذا حصلت على `ValidationException` بشأن كلمات محجوزة، فغلّف اسم السمة في `ExpressionAttributeNames`. وعادة آمنة: استخدم دائمًا عناصر نائبة بـ `#` لأسماء السمات في التعبيرات.
 
-## Conditional Writes (Optimistic Locking)
+## الكتابات الشرطية (القفل المتفائل)
 
-Both `PutCommand` and `UpdateCommand` accept a `ConditionExpression` that fails the write if a condition on the item isn’t met. This is how you implement optimistic concurrency: read an item, remember its version number, and when you write back, require that the version still matches.
+يقبل كل من `PutCommand` و`UpdateCommand` تعبير `ConditionExpression` يفشل الكتابة إذا لم يتحقق شرط على العنصر. وهكذا تُنفّذ التزامن المتفائل: اقرأ عنصرًا، وتذكّر رقم إصداره، وعند الكتابة مرة أخرى، اشترط أن الإصدار ما زال مطابقًا.
 
 ```typescript
 // Two users editing the same list. Fetch current version:
@@ -166,13 +166,13 @@ await client.send(
 );
 ```
 
-If another writer updated the item between your read and your write, the `ConditionExpression` fails and DynamoDB returns a `ConditionalCheckFailedException`. Your handler can catch that, re-read, and retry—or surface a 409 to the client.
+إذا حدّث كاتب آخر العنصر بين قراءتك وكتابتك، يفشل `ConditionExpression` وتُرجع DynamoDB `ConditionalCheckFailedException`. ويمكن لمعالجك التقاط ذلك، وإعادة القراءة، والمحاولة مجددًا—أو عرض 409 للعميل.
 
-`ConditionExpression` also covers “only insert if this item doesn’t exist already” (`attribute_not_exists(userId)` on a `PutCommand`), which prevents two concurrent POSTs from both creating the same resource with the same ID.
+يغطي `ConditionExpression` أيضًا «أدرج فقط إذا لم يكن هذا العنصر موجودًا بالفعل» (`attribute_not_exists(userId)` على `PutCommand`)، ما يمنع طلبي POST متزامنين من إنشاء المورد نفسه بالمعرّف نفسه.
 
-## DeleteItem: Remove an Item
+## DeleteItem: إزالة عنصر
 
-`DeleteCommand` removes an item by its primary key.
+يزيل `DeleteCommand` عنصرًا بمفتاحه الأساسي.
 
 ```typescript
 import { DeleteCommand } from '@aws-sdk/lib-dynamodb';
@@ -190,15 +190,15 @@ async function deleteItem(userId: string, itemId: string) {
 }
 ```
 
-If the item doesn’t exist, `DeleteCommand` succeeds silently. No error, no exception. This is usually what you want—deleting something that’s already gone isn’t a problem.
+إذا لم يكن العنصر موجودًا، ينجح `DeleteCommand` بصمت. لا خطأ ولا استثناء. وهذا عادةً ما تريده—فحذف شيء اختفى بالفعل ليس مشكلة.
 
-## Putting It All Together in a Handler
+## تجميع كل ذلك في معالج
 
-> **Warning**
+> **تحذير**
 >
-> In a real application, never accept `userId` from query parameters—any caller can forge them. Read it from `event.requestContext.authorizer?.jwt?.claims?.sub` after the JWT authorizer (see [API Gateway Authentication](https://stevekinney.com/courses/aws/api-gateway-authentication)) has validated the token. We’re using query parameters here as a learning simplification only.
+> في تطبيق حقيقي، لا تقبل `userId` أبدًا من معاملات الاستعلام—فأي مستدعٍ يمكنه تزويرها. اقرأه من `event.requestContext.authorizer?.jwt?.claims?.sub` بعد أن يتحقق مُوثِّق JWT (راجع [مصادقة API Gateway](https://stevekinney.com/courses/aws/api-gateway-authentication)) من الرمز. ونحن نستخدم معاملات الاستعلام هنا كتبسيط تعليمي فقط.
 
-Here’s a complete handler that uses all four operations, routed by HTTP method:
+إليك معالجًا كاملًا يستخدم العمليات الأربع كلها، وموجّهًا حسب طريقة HTTP:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -326,13 +326,13 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-This handler pattern—parse the method, validate parameters, call DynamoDB, return a response—is the same pattern you’ll use for every Lambda-backed API endpoint.
+نمط المعالج هذا—تحليل الطريقة، والتحقق من المعاملات، واستدعاء DynamoDB، وإرجاع استجابة—هو النمط نفسه الذي ستستخدمه لكل نقطة نهاية API مدعومة بـ Lambda.
 
-## Performance Modifiers
+## معدّلات الأداء
 
-Two options on `GetCommand` and `QueryCommand` are worth knowing about. You don’t need either for the exercise, but they come up the first time you care about cost or correctness at scale.
+خياران في `GetCommand` و`QueryCommand` يستحقّان المعرفة. لا تحتاج أيًّا منهما في التمرين، لكنهما يظهران أول مرة تهتم فيها بالكلفة أو الصحة على نطاق واسع.
 
-**`ProjectionExpression`** tells DynamoDB which attributes to return. By default, every read ships the whole item back—including big attributes like long text, blobs, or nested JSON. A projection narrows the payload:
+**`ProjectionExpression`** يخبر DynamoDB بالسمات التي يجب إرجاعها. فافتراضيًا، كل قراءة تعيد العنصر بأكمله—بما في ذلك سمات كبيرة مثل النصوص الطويلة أو الكائنات الثنائية أو JSON المتداخل. والإسقاط يضيّق الحمولة:
 
 ```typescript
 const result = await client.send(
@@ -345,9 +345,9 @@ const result = await client.send(
 );
 ```
 
-The `#n` placeholder is necessary because `name` is a DynamoDB reserved word—the same placeholder rule applies to projections as to update expressions. One thing the docs don’t emphasize: `ProjectionExpression` does not reduce `GetItem` RCU charges (DynamoDB bills based on item size, not returned size) and doesn’t reduce `Query`/`Scan` RCUs either (billed by data scanned, not projected). What it *does* reduce is the bytes over the wire—useful for big items at scale, not for a learning exercise.
+العنصر النائب `#n` ضروري لأن `name` كلمة محجوزة في DynamoDB—وقاعدة العناصر النائبة نفسها تنطبق على الإسقاطات كما تنطبق على تعبيرات التحديث. وشيء لا تشدّد عليه الوثائق: `ProjectionExpression` لا يقلّل رسوم RCU في `GetItem` (فـ DynamoDB تُفوتر بناءً على حجم العنصر لا الحجم المُعاد) ولا يقلّل RCU في `Query`/`Scan` أيضًا (فهي تُفوتر بالبيانات الممسوحة لا المسقَطة). وما *يفعله* هو تقليل البايتات المنقولة—وهو مفيد للعناصر الكبيرة على نطاق واسع، لا لتمرين تعليمي.
 
-**`ConsistentRead: true`** forces a strongly consistent read that’s guaranteed to see the most recent committed write. By default, reads are eventually consistent: the write propagates across DynamoDB’s distributed storage in a fraction of a second, and a read during that window *might* return the previous value. Strong reads cost twice as many RCUs.
+**`ConsistentRead: true`** يفرض قراءة متسقة بقوة مضمونة لرؤية أحدث كتابة مُثبّتة. فافتراضيًا، تكون القراءات متسقة في النهاية: تنتشر الكتابة عبر التخزين الموزّع في DynamoDB في جزء من الثانية، وقد *تُرجع* قراءة خلال تلك النافذة القيمة السابقة. والقراءات القوية تكلف ضعف عدد وحدات RCU.
 
 ```typescript
 const result = await client.send(
@@ -359,14 +359,14 @@ const result = await client.send(
 );
 ```
 
-For a frontend API backend, the default (eventually consistent) is almost always what you want—the odds of a user reading their own data in the same millisecond they wrote it are low, and a 404-plus-retry is usually acceptable. Reach for `ConsistentRead: true` only when a single request both writes an item and reads it back, and the read *must* reflect the write.
+بالنسبة إلى واجهة API خلفية للواجهة الأمامية، الافتراضي (الاتساق في النهاية) هو ما تريده دائمًا تقريبًا—فاحتمال أن يقرأ المستخدم بياناته في المللي ثانية نفسها التي كتبها فيها منخفض، و404 مع إعادة المحاولة مقبول عادةً. ولا تلجأ إلى `ConsistentRead: true` إلا عندما يكتب طلب واحد عنصرًا ويقرأه في الوقت نفسه، ويجب أن تعكس القراءة الكتابة.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Forgetting the sort key in GetItem or DeleteItem.** If your table has a composite key, you must provide both the partition key and the sort key. Providing only the partition key returns a `ValidationException`, not a list of matching items. To get multiple items by partition key, use Query (covered in the next lesson).
+**نسيان مفتاح الفرز في GetItem أو DeleteItem.** إذا كان جدولك ذا مفتاح مركّب، فيجب تقديم مفتاحي التقسيم والفرز. وتقديم مفتاح التقسيم وحده يُرجع `ValidationException`، لا قائمة بالعناصر المطابقة. ولجلب عدة عناصر بمفتاح التقسيم، استخدم Query (وسنغطيه في الدرس التالي).
 
-**Not handling `undefined` from GetItem.** DynamoDB doesn’t throw when an item is missing—it returns `undefined`. If your frontend receives a 200 response with no data and you didn’t check for this, you’ll spend an hour debugging what looks like a serialization bug.
+**عدم معالجة `undefined` من GetItem.** لا تُطلق DynamoDB خطأً عند غياب العنصر—بل تُرجع `undefined`. فإذا تلقّت واجهتك الأمامية استجابة 200 بلا بيانات ولم تتحقق من ذلك، فستقضي ساعة في تصحيح ما يبدو خطأً في التسلسل.
 
-**SDK bundling.** The `nodejs22.x` runtime bundles the AWS SDK v3, so `@aws-sdk/client-dynamodb` and `@aws-sdk/lib-dynamodb` resolve at runtime without being in your zip. For learning, that’s fine. For production, bundle the SDK yourself—AWS pins a specific minor version in the runtime (not the latest), and it varies by region. Controlling the version in your own `package.json` means you’re never surprised by a runtime update.
+**حزم SDK.** وقت التشغيل `nodejs22.x` يحزم AWS SDK v3، لذا يُحلّ `@aws-sdk/client-dynamodb` و`@aws-sdk/lib-dynamodb` في وقت التشغيل دون أن يكونا في ملف zip لديك. وللتعلم، هذا جيد. أما للإنتاج، فاحزم SDK بنفسك—فـ AWS تثبّت إصدارًا فرعيًا محدّدًا في وقت التشغيل (لا الأحدث)، وهو يختلف حسب المنطقة. والتحكم في الإصدار في `package.json` الخاص بك يعني أنك لن تُفاجأ أبدًا بتحديث وقت التشغيل.
 
-Now that you can read and write individual items, the next step is retrieving multiple items at once using Query and Scan—and why you should almost always prefer Query.
+الآن بعد أن تستطيع قراءة العناصر الفردية وكتابتها، فإن الخطوة التالية هي جلب عدة عناصر دفعة واحدة باستخدام Query وScan—ولماذا يجب أن تفضّل Query دائمًا تقريبًا.

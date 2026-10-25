@@ -1,68 +1,68 @@
 ---
-title: "Variables"
-lang: en
+title: "المتغيّرات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/variables"
 ---
 
-Just like in JavaScript, variables in Figma act as placeholders that store specific—and reusable—values. These values can be anything from color codes, font sizes, spacing measurements, to text strings. Once defined, these variables can be applied to properties of different design elements within your Figma files.
+تمامًا كما في JavaScript، تعمل المتغيّرات (variables) في Figma كعناصر نائبة تخزّن قيمًا محدّدة وقابلة لإعادة الاستخدام. ويمكن أن تكون هذه القيم أي شيء من شيفرات الألوان وأحجام الخطوط وقياسات التباعد إلى سلاسل النص. وبمجرد تعريفها، يمكن تطبيق هذه المتغيّرات على خصائص عناصر تصميم مختلفة داخل ملفات Figma لديك.
 
-> **Release Status**
+> **حالة الإصدار**
 >
-> As of the time of this writing, Variables are still in beta. Variables aren’t available for everything—just yet. But the list of things that support variables is likely to increase over time.
+> حتى وقت كتابة هذا النص، ما تزال المتغيّرات في المرحلة التجريبية (beta). فالمتغيّرات ليست متاحة لكل شيء بعد. لكن قائمة الأشياء التي تدعم المتغيّرات مرشّحة للزيادة مع الوقت.
 >
-> There is also some overlap with [styles](https://stevekinney.com/courses/figma/styles), you can read more about the differences [here](https://stevekinney.com/courses/figma/styles-vs-variables).
+> وهناك أيضًا بعض التداخل مع [الأنماط](https://stevekinney.com/courses/figma/styles)، ويمكنك قراءة المزيد عن الفروق [هنا](https://stevekinney.com/courses/figma/styles-vs-variables).
 
-- Variables are local to the file that you’e currently working in.
-- You can publish your variables as a [library](https://stevekinney.com/courses/figma/libraries) like you would publish components.
-- You can have one or more collections of variables.
-- You can organize your variables into groups.
+- المتغيّرات محلية بالنسبة إلى الملف الذي تعمل فيه حاليًا.
+- يمكنك نشر متغيّراتك كـ [مكتبة](https://stevekinney.com/courses/figma/libraries) كما تنشر المكوّنات.
+- يمكن أن يكون لديك مجموعة واحدة أو أكثر من مجموعات المتغيّرات.
+- يمكنك تنظيم متغيّراتك في مجموعات.
 
-## Setting Up Variables
+## إعداد المتغيّرات
 
-Creating variables in Figma is straightforward. You define a variable and assign it a value, such as a HEX code for a color or a numerical value for spacing. These variables are then available to be applied to any relevant property in your design, such as fill color or padding.
+إنشاء المتغيّرات في Figma أمر مباشر. تُعرّف متغيّرًا وتُسنِد إليه قيمة، مثل شيفرة HEX للون أو قيمة رقمية للتباعد. ثم تصبح هذه المتغيّرات متاحة لتُطبَّق على أي خاصية ذات صلة في تصميمك، مثل لون التعبئة (fill color) أو الحشو (padding).
 
-You can create a variable and see a table of all of your local variables can be seen by clicking on the Canvas and the selecting **Local Variables** from the **Design** panel.
+يمكنك إنشاء متغيّر ورؤية جدول بكل متغيّراتك المحلية بالنقر على لوحة الرسم (Canvas) ثم اختيار **Local Variables** من لوحة **Design**.
 
-Create a new Variable
+إنشاء متغيّر جديد
 
-Your variables must be one of the following types of values:
+يجب أن تكون متغيّراتك من أحد الأنواع التالية من القيم:
 
-- Colors
-- Numbers
-- Strings
-- Boolean
+- الألوان
+- الأرقام
+- السلاسل النصية
+- القيم المنطقية (Boolean)
 
-> **More Variables Are Coming Soon**
+> **المزيد من أنواع المتغيّرات قادمة قريبًا**
 >
-> According to Figma support for gradients, images, and typography is [coming soon](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon).
+> وفقًا لـ Figma، فإن الدعم للتدرّجات (gradients) والصور والطباعة هو [قادم قريبًا](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon).
 
-Figma variable types
+أنواع متغيّرات Figma
 
-Once created, your variable will be available in a table for you to adjust as needed.
+بمجرد إنشائه، سيصبح متغيّرك متاحًا في جدول لتعدّله حسب الحاجة.
 
-Figma variable table
+جدول متغيّرات Figma
 
-Now, for values that accept whatever variable type that you’re using, you can opt to use your new variable instead of a hard-coded value.
+الآن، وبالنسبة إلى القيم التي تقبل نوع المتغيّر الذي تستخدمه، يمكنك أن تختار استخدام متغيّرك الجديد بدلًا من قيمة مكتوبة مباشرة (hard-coded).
 
-Using a Figma variable
+استخدام متغيّر Figma
 
-Now, when you adjust that variable, anything referencing that variable will update accordingly.
+الآن، عندما تعدّل ذلك المتغيّر، سيتحدّث كل شيء يشير إليه تبعًا لذلك.
 
-> **Duplicating variables**
+> **تكرار المتغيّرات**
 >
-> **Shift+Return** will create a new variable with the same properties.
+> ستُنشئ **Shift+Return** متغيّرًا جديدًا بالخصائص نفسها.
 
-### Scoping Your Variable to Particular Properties
+### حصر نطاق متغيّرك على خصائص معيّنة
 
-If you don’t only want your variable to be available to particular properties—or, you want a quick cheat sheet to see what properties your variables support, then you can check out the scoping of the variable.
+إذا لم تكن تريد أن يكون متغيّرك متاحًا لخصائص معيّنة فحسب — أو كنت تريد ورقة مرجعية سريعة لمعرفة الخصائص التي تدعمها متغيّراتك، فيمكنك الاطّلاع على حصر النطاق (scoping) للمتغيّر.
 
-Variable scoping
+حصر نطاق المتغيّر
 
-You can also adjust the name of the variable in [Dev Mode](https://stevekinney.com/courses/figma/dev-mode).
+يمكنك أيضًا تعديل اسم المتغيّر في [Dev Mode](https://stevekinney.com/courses/figma/dev-mode).
 
-Adjusting the name of a Figma variable
+تعديل اسم متغيّر Figma
 
-Let’s say you used something like the screenshot above, the output of the CSS in Dev Mode, would now look something like this.
+لنفترض أنك استخدمت شيئًا كاللقطة أعلاه، فسيبدو ناتج CSS في Dev Mode الآن على نحو ما يلي.
 
 ```css
 border-radius: var(--rounded);
@@ -70,7 +70,7 @@ border: 1px solid #000;
 background: #fff;
 ```
 
-What’s even better is now, you can use a plugin—like this [CSS Variables Generator](https://www.figma.com/community/plugin/1271829798610738782), for example, to generate a manifest of all of the CSS variables used in the design. The output of the plugin looks like this:
+والأفضل من ذلك أنك تستطيع الآن استخدام إضافة (plugin) — مثل [مولّد متغيّرات CSS](https://www.figma.com/community/plugin/1271829798610738782) هذا على سبيل المثال — لإنشاء قائمة بكل متغيّرات CSS المستخدمة في التصميم. ويبدو ناتج الإضافة هكذا:
 
 ```css
 :root {
@@ -79,70 +79,70 @@ What’s even better is now, you can use a plugin—like this [CSS Variables Gen
 }
 ```
 
-> **Bulk editing variables**
+> **تحرير المتغيّرات دفعة واحدة**
 >
-> You can change the properties of multiple variables by selecting them and right-clicking.
+> يمكنك تغيير خصائص عدة متغيّرات بتحديدها والنقر بالزر الأيمن.
 
-## Grouping Variables
+## تجميع المتغيّرات
 
-It *is* possible to put variables into groups. Simply select some of your variables and right-click on the selection.
+من الممكن *فعلًا* وضع المتغيّرات في مجموعات. ما عليك سوى تحديد بعض متغيّراتك والنقر بالزر الأيمن على التحديد.
 
-Right-click on your variables to create a new group
+انقر بالزر الأيمن على متغيّراتك لإنشاء مجموعة جديدة
 
-And now you’re variables will be a neat little group for you.
+والآن ستصبح متغيّراتك مجموعة صغيرة مرتّبة.
 
-Figma's variable groups
+مجموعات المتغيّرات في Figma
 
-> **Naming things is hard**
+> **تسمية الأشياء أمر صعب**
 >
-> On my team, we’ve struggled a lot with what to name our variables. This existence of light and dark modes certainly add a lot of extra complexity. For example, it’s hard to call a color variable, `red-light`, if it’s actually *darker* when in dark mode. I don’t hate the naming conventions that [Twilio uses for the design tokens in their Paste design system](https://paste.twilio.design/tokens/list).
+> في فريقي، عانينا كثيرًا في اختيار أسماء متغيّراتنا. ووجود الأنماط الفاتحة والداكنة يضيف بالتأكيد قدرًا كبيرًا من التعقيد الإضافي. فمثلًا، يصعب تسمية متغيّر لون بـ `red-light` إذا كان في الواقع *أغمق* عند الوضع الداكن. لا أكره اصطلاحات التسمية التي [يستخدمها Twilio لرموز التصميم في نظام تصميمهم Paste](https://paste.twilio.design/tokens/list).
 
-## What Are the Difference between Styles and Variables?
+## ما الفرق بين الأنماط والمتغيّرات؟
 
-In the past—e.g. before Variables were introduced—it has been common to use [styles](https://stevekinney.com/courses/figma/styles) in order to share colors—and other properties—between elements. So, how are a variables and styles different and which should you use when?
+في الماضي — أي قبل إدخال المتغيّرات — كان من الشائع استخدام [الأنماط](https://stevekinney.com/courses/figma/styles) لمشاركة الألوان — وخصائص أخرى — بين العناصر. فكيف تختلف المتغيّرات عن الأنماط، وأيّهما ينبغي أن تستخدم ومتى؟
 
-Think of variables are one single unit or a primitive, while styles can be a composite of multiple colors or even images. A style can be made up of multiple variables.
+فكّر في المتغيّرات كوحدة واحدة أو عنصر أولي (primitive)، بينما يمكن أن يكون النمط مركّبًا من ألوان متعددة أو حتى صور. ويمكن أن يتكوّن النمط من عدة متغيّرات.
 
-The most salient bit, is that variables make it easier to do theming. Let’s talk more about that below.
+وأبرز نقطة هي أن المتغيّرات تسهّل إنشاء السمات (theming). وسنتحدّث عن ذلك أكثر أدناه.
 
-## Modes and Theming
+## الأوضاع والسمات
 
-The values of a given variable can be split into one or more modes. The most common use case for this light and dark modes, but these modes could be used for any number of different themes. You could also create a “comfortable” and “compact” mode as seen in Gmail.
+يمكن تقسيم قيم متغيّر معيّن إلى وضع واحد أو أكثر. وأكثر حالات الاستخدام شيوعًا هي الوضعان الفاتح والداكن، لكن يمكن استخدام هذه الأوضاع لأي عدد من السمات المختلفة. ويمكنك أيضًا إنشاء وضع «مريح» ووضع «مضغوط» كما في Gmail.
 
-Spacing Themes as Seen in Gmail
+سمات التباعد كما تظهر في Gmail
 
-### Dark Mode
+### الوضع الداكن
 
-But, the most common case that we might find is adding the ability to theme a component—more specifically to set it up to support a light and a dark mode. You can do this by setting up two different modes for your color variables. Once this is set up, you can easily toggle between the two modes in the Layers pane in the right sidebar.
+لكن أكثر حالة شيوعًا قد نصادفها هي إضافة القدرة على سَمة مكوّن (theming) — وبشكل أدق تهيئته ليدعم وضعًا فاتحًا ووضعًا داكنًا. ويمكنك فعل ذلك بإعداد وضعين مختلفين لمتغيّرات الألوان لديك. وبمجرد إعداد ذلك، يمكنك التبديل بسهولة بين الوضعين في لوحة Layers في الشريط الجانبي الأيمن.
 
-What’s really cool about this is that all of the nested objects will inherit mode of the parent—unless you intentionally override it.
+والرائع حقًا في هذا أن كل الكائنات المتداخلة سترث وضع العنصر الأب — إلا إذا تجاوزته عن قصد.
 
-## Boolean Variables
+## المتغيّرات المنطقية (Boolean)
 
-Boolean variables are useful when you want to show or hide something. Lets’s start by making a boolean variable. We can then use the modes associated with this boolean variable based on what mode we’re in.
+المتغيّرات المنطقية مفيدة عندما تريد إظهار شيء أو إخفاءه. لنبدأ بإنشاء متغيّر منطقي. ثم يمكننا استخدام الأوضاع المرتبطة بهذا المتغيّر المنطقي بحسب الوضع الذي نحن فيه.
 
-## Variables, Modes, and Inheritance
+## المتغيّرات والأوضاع والوراثة
 
-Modes are inherited from their parent. Components that are set to `auto` will inherit from the mode that that parent layer is set to.
+تُورَث الأوضاع من العنصر الأب. أما المكوّنات المضبوطة على `auto` فترث الوضع الذي تكون عليه طبقة العنصر الأب.
 
-## Aliasing Variables
+## إنشاء مراجع بديلة للمتغيّرات (Aliasing)
 
-You can also have variables reference other variables. This is mostly useful for when you want to have a wide rang of primitive values and then a few semantic variables that are based off of those primitive values.
+يمكنك أيضًا جعل متغيّرات تشير إلى متغيّرات أخرى. وهذا مفيد في الغالب عندما تريد أن يكون لديك نطاق واسع من القيم الأولية (primitive) ثم بضعة متغيّرات دلالية (semantic) مبنية على تلك القيم الأولية.
 
-Setting up a variable alias
+إعداد اسم بديل لمتغيّر
 
-Once, you’ve set up the aliasing, you’ll see a clear visual indicator of the link in the UI. You can still tweak all of the settings as to where the variable can be used as well as the output as seen in Dev Mode.
+بمجرد إعداد الاستعارة، سترى مؤشرًا بصريًا واضحًا للرابط في الواجهة. وما زال بإمكانك ضبط كل الإعدادات المتعلقة بأماكن استخدام المتغيّر وكذلك المخرجات كما تظهر في Dev Mode.
 
-Figma variable aliasing
+الاستعارة في متغيّرات Figma
 
-## Some Limitations
+## بعض القيود
 
-Here are some limitations that I’ve noticed while using Variables in Figma. As I mentioned above, Variables are still in beta, so this list will *hopefully* be out of data at some point.
+إليك بعض القيود التي لاحظتها أثناء استخدام المتغيّرات في Figma. وكما ذكرت أعلاه، ما تزال المتغيّرات في المرحلة التجريبية، لذا ستتقادم هذه القائمة *على أمل* أن يصبح ذلك في وقت ما.
 
-- You can’t use mathematically expressions either with Variables or when defining variables. For example, you can type “300-32” as in the width box, and Figma will compute that down to 268, but you can’t put you couldn’t for example, put in a “300 - `spacing-4` * 2” or create a set of variables that take a base REM value and multiply it when defining a new variable. There is an [open thread](https://forum.figma.com/t/using-expression-as-a-variables-value/45743) or [two](https://forum.figma.com/t/using-expression-as-a-variables-value/45743) requesting this as a feature.
+- لا يمكنك استخدام التعابير الرياضية سواء مع المتغيّرات أو عند تعريفها. فمثلًا يمكنك كتابة «300-32» في مربع العرض، وسيحسبها Figma لتصل إلى 268، لكن لا يمكنك — على سبيل المثال — إدخال «300 - `spacing-4` * 2» أو إنشاء مجموعة متغيّرات تأخذ قيمة REM أساسية وتضربها عند تعريف متغيّر جديد. وهناك [نقاش مفتوح](https://forum.figma.com/t/using-expression-as-a-variables-value/45743) أو [اثنان](https://forum.figma.com/t/using-expression-as-a-variables-value/45743) يطالبان بهذه الميزة.
 
-## Importing and Exporting Variables
+## استيراد المتغيّرات وتصديرها
 
-Figma doesn’t support importing to exporting variables out of the box, but there is a plugin that you can use called [Export/Import Variables](https://www.figma.com/community/plugin/1256972111705530093/export-import-variables).
+لا يدعم Figma استيراد المتغيّرات أو تصديرها جاهزًا، لكن هناك إضافة يمكنك استخدامها تُسمّى [Export/Import Variables](https://www.figma.com/community/plugin/1256972111705530093/export-import-variables).
 
-> **You might choose to use this with [the author’s](https://www.figma.com/@honzatmn)’s [Tailwind CSS Variables](https://www.figma.com/community/file/1255212493834031845) design file.**
+> **قد تختار استخدام هذا مع [ملف المُؤلِّف](https://www.figma.com/@honzatmn) [Tailwind CSS Variables](https://www.figma.com/community/file/1255212493834031845) التصميمي.**

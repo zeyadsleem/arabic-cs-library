@@ -1,33 +1,33 @@
 ---
-title: "Where Fixtures Actually Help"
-lang: en
+title: "أين تساعد التجهيزات فعلًا"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/where-fixtures-actually-help"
 ---
 
-By the time most teams learn [`test.extend`](https://playwright.dev/docs/test-fixtures), they know *how* to write a fixture and still don’t know *where* to use one. That is how you end up with a fixture file full of glorified one-liners, mystery state, and three different helpers that all navigate to the same page. I’ve done this. It feels tidy right up until the suite starts lying to you.
+حين تتعلّم معظم الفرق [`test.extend`](https://playwright.dev/docs/test-fixtures)، تكون تعرف *كيف* تكتب تجهيزة، وما زالت لا تعرف *أين* تستخدمها. وهكذا ينتهي بك الأمر بملف تجهيزات مليء بأسطر مفردة مُمجَّدة، وحالة غامضة، وثلاث دوال مساعدة مختلفة كلها تنتقل إلى الصفحة نفسها. لقد فعلت هذا. يبدو مرتبًا تمامًا إلى أن تبدأ المجموعة بالكذب عليك.
 
-The earlier [fixtures lesson](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) was about scope and teardown. This one is about smell. Specifically: what kinds of problems a fixture solves well in a real app, what kinds of problems it solves badly, and how to recognize the difference before your fixtures file turns into a junk drawer.
+كان [درس التجهيزات](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) السابق عن النطاق والتفكيك. هذا الدرس عن الرائحة. تحديدًا: أي أنواع المشكلات تحلّها التجهيزة جيدًا في تطبيق حقيقي، وأي أنواع تحلّها بسوء، وكيف تتعرّف على الفرق قبل أن يتحوّل ملف تجهيزاتك إلى درج خردة.
 
-## The question a fixture should answer
+## السؤال الذي ينبغي أن تجيب عنه التجهيزة
 
-A good fixture answers one of four questions:
+التجهيزة الجيدة تجيب عن أحد أربعة أسئلة:
 
-- Who is this test acting as?
-- What state does the app start in?
-- What extra visibility does the test need?
-- What environment does the browser need to believe?
+- من يجسّده هذا الاختبار؟
+- بأي حالة يبدأ التطبيق؟
+- أي رؤية إضافية يحتاجها الاختبار؟
+- أي بيئة يحتاج المتصفح أن يصدّقها؟
 
-If your setup does not answer one of those questions, it is probably not a fixture. It is probably a helper function, a page-object method, a seed script, or just a line of code that should stay in the test.
+إن لم يجب إعدادك عن أحد تلك الأسئلة، فالأرجح أنه ليس تجهيزة. الأرجح أنه دالة مساعدة، أو طريقة كائن صفحة، أو سكربت زرع، أو مجرد سطر شيفرة ينبغي أن يبقى في الاختبار.
 
-> **A decent smell test**
+> **اختبار رائحة معقول**
 >
-> If the noun keeps showing up in test signatures across multiple files, that noun might deserve to become a fixture. If it only shows up once, keep it local.
+> إن ظل الاسم يظهر في توقيعات الاختبارات عبر ملفات متعددة، فقد يستحق ذلك الاسم أن يصبح تجهيزة. وإن ظهر مرة واحدة فقط، فأبقِه محليًا.
 
-## Actor fixtures
+## تجهيزات الفاعل
 
-This is the most obvious fixture category, and also the one that pays rent the fastest. Tests often need to act as a specific *kind* of user: an authenticated reader, an administrator API client, an anonymous browser context, a premium customer with feature flags turned on.
+هذه أوضح فئة تجهيزات، وهي أيضًا الأسرع في دفع الإيجار. فكثيرًا ما تحتاج الاختبارات إلى التصرّف كـ*نوع* محدد من المستخدمين: قارئ مُوثَّق، أو عميل API إداري، أو سياق متصفح مجهول، أو عميل مميز مع أعلام ميزات مفعّلة.
 
-That is fixture territory because the thing being shared is not “steps” but *identity*. This example assumes you have already followed the [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) lab and have a `user.json` file on disk — a fresh Shelf starter does not ship it:
+هذه أرض التجهيزات لأن الشيء المشترك ليس «الخطوات» بل *الهوية*. يفترض هذا المثال أنك اتبعت أصلًا مختبر [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) ولديك ملف `user.json` على القرص — ونسخة Shelf الانطلاقية الجديدة لا تشحنه:
 
 ```typescript
 import { test as base } from '@playwright/test';
@@ -49,17 +49,17 @@ export const test = base.extend<ReaderFixtures>({
 });
 ```
 
-The important part is not that the fixture opens a page. The important part is that the fixture gives the test a *reader-shaped browser*. Once that concept shows up in five or six specs, the fixture is cheaper than duplicating the context setup everywhere.
+الجزء المهم ليس أن التجهيزة تفتح صفحة. الجزء المهم أن التجهيزة تمنح الاختبار *متصفحًا على شكل قارئ*. وحين يظهر ذلك المفهوم في خمس أو ست مواصفات، تصبح التجهيزة أرخص من تكرار إعداد السياق في كل مكان.
 
-This is also where [`APIRequestContext`](https://playwright.dev/docs/api/class-apirequestcontext) fixtures shine. If your test needs an administrator actor on the side while the browser stays logged in as a reader, a fixture that hands you an authenticated API client is the cleanest version of the pattern. The [APIRequestContext lesson](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state) is basically this idea stretched into a full workflow.
+وهنا أيضًا تتألّق تجهيزات [`APIRequestContext`](https://playwright.dev/docs/api/class-apirequestcontext). فإن كان اختبارك يحتاج فاعلًا إداريًا على الجانب بينما يبقى المتصفح مسجّلًا كقارئ، فالتجهيزة التي تسلّمك عميل API مُوثَّقًا هي أنظف نسخة من النمط. و[درس APIRequestContext](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state) هو أساسًا هذه الفكرة ممطوطة إلى سير عمل كامل.
 
-## State fixtures
+## تجهيزات الحالة
 
-A state fixture exists to answer: *what world does this test start in?* Seeded shelf. Empty cart. Account with an expired subscription. Book already rated. Feature flag already enabled.
+توجد تجهيزة الحالة لتجيب: *في أي عالم يبدأ هذا الاختبار؟* رف مزروع. سلة فارغة. حساب باشتراك منتهٍ. كتاب مُقيَّم أصلًا. علم ميزة مفعّل أصلًا.
 
-This is where I see the most under-use. Teams reach for fixtures when they want an authenticated page, but not when they want deterministic state. That is backwards. Auth is a convenience. Deterministic state is survival.
+هنا أرى أكبر قلّة استخدام. فالفرق تمدّ يدها إلى التجهيزات حين تريد صفحة مُوثَّقة، لا حين تريد حالة حتمية. وهذا مقلوب. فالمصادقة رفاهية. والحالة الحتمية بقاء.
 
-The simplest full version looks like this:
+أبسط نسخة كاملة تبدو هكذا:
 
 ```typescript
 import { test as base } from '@playwright/test';
@@ -77,49 +77,49 @@ export const test = base.extend<StateFixtures>({
 });
 ```
 
-The test that consumes it doesn’t care *how* the shelf got seeded. It cares that the shelf starts from a known place and leaves the next test a clean room behind it. That is a perfect fixture contract.
+الاختبار الذي يستهلكها لا يهمّه *كيف* زُرع الرف. يهمّه أن يبدأ الرف من مكان معروف، ويترك للاختبار التالي غرفة نظيفة خلفه. وهذا عقد تجهيزة مثالي.
 
-Where this becomes especially useful in a real application:
+حيث تصبح هذه مفيدة بشكل خاص في تطبيق حقيقي:
 
-- Resetting the database before every test that mutates application state
-- Seeding a specific business case, like a reader with overdue books or a team with one failed invoice
-- Mounting feature flags or experiment assignments the app reads at boot
-- Installing a fixed clock or locale so relative dates stop drifting between runs
-- Preloading third-party test doubles, like a fake webhook endpoint or canned analytics handler
+- إعادة ضبط قاعدة البيانات قبل كل اختبار يغيّر حالة التطبيق
+- زرع حالة أعمال محددة، مثل قارئ كتبه متأخرة أو فريق له فاتورة فاشلة واحدة
+- تركيب أعلام ميزات أو إسنادات تجارب يقرأها التطبيق عند الإقلاع
+- تثبيت ساعة أو لغة ثابتة كي تتوقف التواريخ النسبية عن الانزياح بين التشغيلات
+- التحميل المسبق لبدائل اختبار لجهات خارجية، مثل نقطة نهاية webhook وهمية أو معالج تحليلات جاهز
 
-The common mistake is making the fixture too specific. `readerWithTwoUnreadBooksAndOneDraftReview` is not a reusable abstraction. `seededReader` and `seededShelf` probably are. Put the domain detail in the seed helper, not in a seven-word fixture name.
+الخطأ الشائع أن تجعل التجهيزة محددة أكثر من اللازم. فـ`readerWithTwoUnreadBooksAndOneDraftReview` ليس تجريدًا قابلًا لإعادة الاستخدام. أما `seededReader` و`seededShelf` فالأرجح أنهما كذلك. ضع تفصيل النطاق في دالة الزرع المساعدة، لا في اسم تجهيزة من سبع كلمات.
 
-## Instrumentation fixtures
+## تجهيزات القياس
 
-Some fixtures exist because the test needs more *visibility*, not more setup. [Shelf](https://github.com/stevekinney/shelf-life)’s overridden `page` fixture is the example I come back to because it is boring in exactly the right way: it forwards browser console errors and failed network requests so the runner, the HTML report, and the failure dossier all see them.
+بعض التجهيزات موجودة لأن الاختبار يحتاج *رؤية* أكثر، لا إعدادًا أكثر. وتجهيزة `page` المتجاوَزة في [Shelf](https://github.com/stevekinney/shelf-life) هي المثال الذي أعود إليه لأنها مملّة بالطريقة الصحيحة تمامًا: فهي تمرّر أخطاء وحدة تحكّم المتصفح وطلبات الشبكة الفاشلة كي يراها المشغّل وتقرير HTML وملف تشخيص الفشل جميعًا.
 
-That pattern scales better than people think.
+ذلك النمط يتوسّع أفضل مما يظن الناس.
 
-Useful instrumentation fixtures include:
+من تجهيزات القياس المفيدة:
 
-- A wrapped `page` that forwards `console.error` output to stderr
-- A wrapped `page` or `context` that records failed requests with method, URL, and error text
-- A request fixture that logs key API calls for failure dossiers
-- A page fixture that installs test-only observers for performance marks or client-side errors
-- A fixture that attaches extra artifacts to `testInfo`, such as serialized app state on failure
+- `page` مغلّفة تمرّر خرج `console.error` إلى stderr
+- `page` أو `context` مغلّفة تسجّل الطلبات الفاشلة مع الطريقة وURL ونص الخطأ
+- تجهيزة `request` تسجّل نداءات API الرئيسية من أجل ملفات تشخيص الفشل
+- تجهيزة صفحة تركّب مراقبات خاصة بالاختبار لعلامات الأداء أو أخطاء جانب العميل
+- تجهيزة ترفق عناصر إضافية بـ`testInfo`، مثل حالة التطبيق المسلسلة عند الفشل
 
-This is one of my favorite uses for fixtures because it moves diagnostics out of the test body. The spec keeps talking about behavior. The fixture quietly makes the artifacts better.
+هذا من استخداماتي المفضلة للتجهيزات لأنه ينقل التشخيص خارج جسم الاختبار. فتبقى المواصفة تتحدث عن السلوك. وتجعل التجهيزة العناصر أفضل بهدوء.
 
-The [TestInfo API](https://playwright.dev/docs/api/class-testinfo) is the reason this category is stronger than “log more stuff.”
+[واجهة TestInfo](https://playwright.dev/docs/api/class-testinfo) هي السبب في أن هذه الفئة أقوى من «سجّل أشياء أكثر».
 
-- `testInfo.outputPath()` gives you a per-test safe temp file location
-- `testInfo.snapshotPath()` resolves where a snapshot should live
-- `testInfo.attach()` copies files into a reporter-visible artifact
-- `testInfo.retry` tells you which attempt you are on
-- `testInfo.setTimeout()` lets the currently running test buy more time on purpose
+- `testInfo.outputPath()` يمنحك موقع ملف مؤقت آمنًا لكل اختبار
+- `testInfo.snapshotPath()` يحلّ المكان الذي ينبغي أن تعيش فيه لقطة
+- `testInfo.attach()` ينسخ الملفات إلى عنصر مرئي للمبلّغ
+- `testInfo.retry` يخبرك بأي محاولة أنت الآن
+- `testInfo.setTimeout()` يتيح للاختبار الجاري شراء وقت إضافي عن قصد
 
-This is exactly the kind of thing that belongs in fixtures rather than in the test body. If you only want the expensive extra logging on retry, `testInfo.retry` is the switch. If a setup helper needs more time because it is booting a local service, `testInfo.setTimeout()` is the honest place to say so. If you want a dumped app-state JSON file on failure, `outputPath()` plus `attach()` is the shape.
+هذا بالضبط نوع الأشياء التي تنتمي إلى التجهيزات لا إلى جسم الاختبار. إن أردت التسجيل الإضافي المكلف عند إعادة المحاولة فقط، فـ`testInfo.retry` هو المفتاح. وإن احتاجت دالة إعداد مساعدة وقتًا أطول لأنها تُقلع خدمة محلية، فـ`testInfo.setTimeout()` هو المكان الصادق لقول ذلك. وإن أردت ملف JSON لحالة التطبيق مُفرَّغًا عند الفشل، فـ`outputPath()` مع `attach()` هو الشكل.
 
-## Environment fixtures
+## تجهيزات البيئة
 
-Sometimes the test is not trying to change the app’s server-side state at all. It is trying to change what the *browser believes*. Different timezone. Different permissions. Clipboard support. Reduced motion. Online versus offline. Experimental APIs that the browser doesn’t support directly.
+أحيانًا لا يحاول الاختبار تغيير حالة التطبيق على الخادم إطلاقًا. بل يحاول تغيير ما *يصدّقه المتصفح*. منطقة زمنية مختلفة. أذونات مختلفة. دعم الحافظة. حركة مقلّلة. اتصال مقابل عدم اتصال. واجهات API تجريبية لا يدعمها المتصفح مباشرة.
 
-That setup also belongs in fixtures when it is shared and repeatable:
+ذلك الإعداد ينتمي أيضًا إلى التجهيزات حين يكون مشتركًا وقابلًا للتكرار:
 
 ```typescript
 mobileReaderContext: async ({ browser }, use) => {
@@ -135,56 +135,56 @@ mobileReaderContext: async ({ browser }, use) => {
 },
 ```
 
-The mental model here is simple: if the browser context needs to be shaped a certain way before the app boots, that shape is a good candidate for a fixture.
+النموذج الذهني هنا بسيط: إن كان سياق المتصفح يحتاج إلى تشكيل بطريقة معينة قبل إقلاع التطبيق، فذلك التشكيل مرشح جيد لتجهيزة.
 
-The new [Mocking Browser APIs](https://stevekinney.com/courses/self-testing-ai-agents/mocking-browser-apis) lesson goes deeper on the APIs Playwright doesn’t model directly. The short version is that fixtures are a good home for [`browserContext.addInitScript()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-init-script) and permission setup because both need to happen *before* navigation.
+يتعمّق درس [محاكاة واجهات API في المتصفح](https://stevekinney.com/courses/self-testing-ai-agents/mocking-browser-apis) الجديد في الواجهات التي لا يصمّمها Playwright مباشرة. والنسخة القصيرة أن التجهيزات بيت جيد لـ[`browserContext.addInitScript()`](https://playwright.dev/docs/api/class-browsercontext#browser-context-add-init-script) وإعداد الأذونات لأن كليهما يحتاج إلى الحدوث *قبل* الملاحة.
 
-## Boundary fixtures
+## تجهيزات الحدود
 
-This category sits right at the seam between your app and something outside it: an API, an auth provider, a background worker, a payment gateway, a search index. You don’t always want a fixture here. But when the same seam shows up in a lot of tests, a fixture can keep the suite from growing sideways.
+تجلس هذه الفئة تمامًا عند الدرز بين تطبيقك وشيء خارجه: API، أو مزوّد مصادقة، أو عامل خلفي، أو بوابة دفع، أو فهرس بحث. ولا تريد تجهيزة هنا دائمًا. لكن حين يظهر الدرز نفسه في كثير من الاختبارات، تستطيع تجهيزة أن تمنع المجموعة من التمدّد جانبيًا.
 
-Examples:
+أمثلة:
 
-- An authenticated admin API client that seeds state through HTTP instead of UI clicks
-- A route-mocking fixture that blocks analytics or image requests for every test in a file
-- A fixture that points the app at a local fake email server or webhook receiver
-- A fixture that bootstraps a browser context with a captured auth session
+- عميل API إداري مُوثَّق يزرع الحالة عبر HTTP بدلًا من نقرات الواجهة
+- تجهيزة محاكاة مسارات تحظر طلبات التحليلات أو الصور لكل اختبار في ملف
+- تجهيزة توجّه التطبيق إلى خادم بريد وهمي محلي أو مستقبل webhook
+- تجهيزة تُقلع سياق متصفح بجلسة مصادقة ملتقطة
 
-This is where composition starts to feel powerful. One fixture can give you the authenticated browser. Another can give you the seeded backend state. A third can add diagnostics. The test body just asks for the world it needs and then gets on with it.
+هنا يبدأ التركيب بالشعور بالقوة. تجهيزة تمنحك المتصفح المُوثَّق. وأخرى تمنحك حالة الواجهة الخلفية المزروعة. وثالثة تضيف التشخيص. وجسم الاختبار يطلب فقط العالم الذي يحتاجه ثم يمضي في شأنه.
 
-## Things that should stay out of fixtures
+## أشياء ينبغي أن تبقى خارج التجهيزات
 
-Now for the fun part: the stuff people keep trying to smuggle into `fixtures.ts`.
+والآن الجزء الممتع: الأشياء التي يظل الناس يحاولون تهريبها إلى `fixtures.ts`.
 
-Don’t make a fixture for:
+لا تصنع تجهيزة من أجل:
 
-- One-off navigation like `page.goto('/settings')`
-- Assertions like “open the page and verify the heading is visible”
-- Tiny constants used by one test file
-- Pure data builders that do not need Playwright lifecycle or teardown
-- Business logic helpers that could run perfectly well outside the test runner
-- Page-object methods wearing fake infrastructure costumes
+- ملاحة لمرة واحدة مثل `page.goto('/settings')`
+- تأكيدات مثل «افتح الصفحة وتحقق من ظهور العنوان»
+- ثوابت صغيرة يستخدمها ملف اختبار واحد
+- بواني بيانات خالصة لا تحتاج دورة حياة Playwright أو تفكيكًا
+- دوال منطق أعمال مساعدة تستطيع العمل تمامًا خارج مشغّل الاختبارات
+- طرق كائنات الصفحة متنكّرة في أزياء بنية تحتية مزيفة
 
-If the code is just steps, keep it as steps. Fixtures are not “shared code.” Fixtures are shared code that needs Playwright’s dependency graph and teardown lifecycle. That is a much smaller set.
+إن كانت الشيفرة مجرد خطوات، فأبقِها خطوات. فالتجهيزات ليست «شيفرة مشتركة». التجهيزات شيفرة مشتركة تحتاج رسم التبعيات ودورة حياة التفكيك في Playwright. وهذه مجموعة أصغر بكثير.
 
-## A practical decision tree
+## شجرة قرار عملية
 
-When I am on the fence, this is the sequence I use:
+حين أتردّد، هذا هو التسلسل الذي أستخدمه:
 
-1. Does this setup show up in multiple tests or files?
-2. Does it need to run before the test body starts?
-3. Does it need teardown after the test body finishes?
-4. Does it produce a thing the test will *ask for* by name?
+1. هل يظهر هذا الإعداد في اختبارات أو ملفات متعددة؟
+2. هل يحتاج إلى العمل قبل أن يبدأ جسم الاختبار؟
+3. هل يحتاج إلى تفكيك بعد انتهاء جسم الاختبار؟
+4. هل ينتج شيئًا سيطلبه الاختبار *بالاسم*؟
 
-If the answer is yes all the way down, I probably want a fixture.
+إن كان الجواب نعم على طول الطريق، فالأرجح أني أريد تجهيزة.
 
-If the answer breaks at step 1, it is local helper code.
+إن انكسر الجواب عند الخطوة 1، فهي شيفرة مساعدة محلية.
 
-If the answer breaks at step 3, it might still be a helper function or seed script rather than a fixture.
+إن انكسر الجواب عند الخطوة 3، فقد تبقى دالة مساعدة أو سكربت زرع بدلًا من تجهيزة.
 
-If the answer breaks at step 4, I am probably trying to hide behavior instead of expose a useful dependency.
+إن انكسر الجواب عند الخطوة 4، فالأرجح أني أحاول إخفاء سلوك بدلًا من كشف تبعية مفيدة.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Choosing fixtures
@@ -202,13 +202,13 @@ If the answer breaks at step 4, I am probably trying to hide behavior instead of
   are the tools, not ad-hoc temp-file math.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-Fixtures are not where shared code goes. Fixtures are where shared *test dependencies* go. Actor, state, environment, diagnostics. Those are the four buckets. Stay inside them and fixtures make the suite smaller, clearer, and more deterministic. Wander outside them and you get a helper graveyard with teardown bugs.
+التجهيزات ليست المكان الذي تذهب إليه الشيفرة المشتركة. التجهيزات هي المكان الذي تذهب إليه *تبعيات الاختبار* المشتركة. الفاعل، والحالة، والبيئة، والتشخيص. تلك هي الدلاء الأربع. ابقَ داخلها تجعل التجهيزات المجموعة أصغر وأوضح وأكثر حتمية. وتِه خارجها فتحصل على مقبرة دوال مساعدة بأخطاء تفكيك.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Fixtures: Worker-Scoped, Test-Scoped, and the Trap Between Them](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped)
-- [APIRequestContext: Beyond Storage State](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [Mocking Browser APIs](https://stevekinney.com/courses/self-testing-ai-agents/mocking-browser-apis)
+- [التجهيزات: على مستوى العامل، وعلى مستوى الاختبار، والفخّ بينهما](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped)
+- [APIRequestContext: ما بعد حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/api-request-context-beyond-storage-state)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [محاكاة واجهات API في المتصفح](https://stevekinney.com/courses/self-testing-ai-agents/mocking-browser-apis)

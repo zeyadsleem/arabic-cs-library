@@ -1,100 +1,100 @@
 ---
-title: "Utility-First CSS"
-lang: en
+title: "CSS القائم على الأدوات المساعدة (Utility-First)"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/utility-first"
 ---
 
-Behold, the `<button>`. After Tailwind strips most of the built-in browser styles as part of it’s [Preflight](https://tailwindcss.com/docs/preflight). In fact, it barely looks like a button.
+ها هو ذا `<button>`. بعد أن يزيل Tailwind معظم أنماط المتصفح المدمجة في إطار ما يسمّى [Preflight](https://tailwindcss.com/docs/preflight). في الواقع، بالكاد يبدو زرًا.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ddf18b193b8bb6a7a9e90a3fba5533194c257b114df6c5188e05a422685b17b7.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ddf18b193b8bb6a7a9e90a3fba5533194c257b114df6c5188e05a422685b17b7.html)*
 
 ```html
 <button>Button</button>
 ```
 
-We can begin to add a little more to it by using **utility classes**.
+يمكننا أن نبدأ بإضافة القليل إليه باستخدام **أصناف الأدوات المساعدة (utility classes)**.
 
-Utility-first CSS prioritizes small, single-purpose classes applied directly to HTML elements instead of semantic classes or IDs. Each utility class does one thing—sets margin, padding, text alignment, or color.
+يُقدّم CSS القائم على الأدوات المساعدة أصنافًا صغيرة أحادية الغرض تُطبَّق مباشرة على عناصر HTML بدلًا من الأصناف الدلالية أو المعرّفات. كل صنف مساعد يفعل شيئًا واحدًا: يضبط الهامش أو الحشو أو محاذاة النص أو اللون.
 
-*Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/1d0ea4109ba74d216cbf1c9cbc1db303c8587ebd9b657bd1fd5f9f6594982ac2.html)*
+*المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1d0ea4109ba74d216cbf1c9cbc1db303c8587ebd9b657bd1fd5f9f6594982ac2.html)*
 
 ```html
 <button class="bg-blue-600 px-3 py-2 text-white">Button</button>
 ```
 
-Tailwind pushes the utility-first philosophy further by embracing modern CSS features—cascade layers, OKLCH colors, container queries, and native custom properties—all without leaving HTML.
+يدفع Tailwind فلسفة الأدوات المساعدة خطوة أبعد بتبنّي ميزات CSS الحديثة — طبقات التتالي، وألوان OKLCH، واستعلامات الحاوية، والخصائص المخصّصة الأصلية — كل ذلك دون مغادرة HTML.
 
-## Advantages
+## المزايا
 
-1. **Rapid Prototyping**: Style elements directly in HTML without switching files.
-2. **Reduced Side Effects**: Classes scoped to individual elements prevent styling conflicts.
-3. **Reusability**: Single-purpose classes work across the entire application.
-4. **Maintainability**: Effects of adding/removing classes are predictable and visible in markup.
-5. **Easy to Extend**: Frameworks provide customization options for consistent design systems.
+1. **النمذجة السريعة**: صمّم العناصر مباشرة داخل HTML دون التنقّل بين الملفات.
+2. **تقليل الآثار الجانبية**: الأصناف المحصورة على عناصر منفردة تمنع تعارضات الأنماط.
+3. **قابلية إعادة الاستخدام**: الأصناف أحادية الغرض تعمل في التطبيق بأكمله.
+4. **قابلية الصيانة**: آثار إضافة الأصناف أو إزالتها متوقّعة ومرئية في الترميز.
+5. **سهولة التوسّع**: توفّر الأطر خيارات تخصيص لبناء أنظمة تصميم متّسقة.
 
-## Criticisms
+## الانتقادات
 
-1. **Verbose HTML**: Numerous class names can clutter markup.
-2. **Learning Curve**: Requires familiarity with utility class names.
-3. **Lack of Semantics**: Utility classes don’t convey element meaning (mitigated by combining with semantic classes).
+1. **HTML مطوّل**: كثرة أسماء الأصناف قد تُشوّش الترميز.
+2. **منحنى تعلّم**: يتطلّب الإلمام بأسماء الأصناف المساعدة.
+3. **غياب الدلالة**: الأصناف المساعدة لا تنقل معنى العنصر (يُخفَّف ذلك بالدمج مع الأصناف الدلالية).
 
-### Why It Works
+### لماذا ينجح
 
-- **Predictable cascade**: Utilities declared last in the cascade override component and base styles without `!important`.
-- **Design-token synergy**: Tokens in `@theme` (`--color-primary-500`) are available in every utility.
-- **Rapid iteration**: Oxide rebuilds styles in milliseconds.
+- **تتالٍ متوقّع**: الأدوات المعلنة أخيرًا في التتالي تتجاوز أنماط المكوّنات والأساس دون `!important`.
+- **تعاون رموز التصميم**: الرموز في `@theme` (`--color-primary-500`) متاحة في كل أداة.
+- **تكرار سريع**: يعيد Oxide بناء الأنماط في غضون مللي ثوانٍ.
 
-### Best Practices
+### أفضل الممارسات {#best-practices}
 
-- **Compose in HTML first**: Reach for custom CSS only when utilities can’t express the idea clearly.
-- **Extract repeating patterns**: Wrap utilities appearing 3+ times in components or `@apply`.
-- **Use `@apply` sparingly**: Selectors in `@layer components/base` don’t receive variants. For variant-aware helpers, use `@utility`.
-- **Declare tokens in `@theme`**: Use CSS variables for spacing, colors, fonts instead of arbitrary values (`p-[123px]`).
+- **اكتب داخل HTML أولًا**: لا تلجأ إلى CSS المخصّص إلا حين تعجز الأدوات عن التعبير عن الفكرة بوضوح.
+- **استخرج الأنماط المتكرّرة**: غلّف الأدوات التي تتكرّر ثلاث مرات أو أكثر في مكوّنات أو في `@apply`.
+- **استخدم `@apply` باعتدال**: المحدّدات في `@layer components/base` لا تتلقّى المتغيّرات. للمساعدات الواعية بالمتغيّرات، استخدم `@utility`.
+- **أعلن الرموز في `@theme`**: استخدم متغيّرات CSS للمسافات والألوان والخطوط بدلًا من القيم الاعتباطية (`p-[123px]`).
 
-### Managing Long Class Lists
+### إدارة قوائم الأصناف الطويلة
 
-Keep long class lists readable:
+أبقِ قوائم الأصناف الطويلة مقروءة:
 
-1. **Logical grouping**: Order by layout → spacing → typography → color → motion.
-2. **Automatic sorting**: Use official [Tailwind CSS IntelliSense extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) or the Prettier Tailwind plugin to enforce consistent ordering.
-3. **Component extraction**: Pull verbose patterns into reusable components to keep markup tidy.
+1. **التجميع المنطقي**: رتّب وفق التخطيط ← المسافات ← الطباعة ← الألوان ← الحركة.
+2. **الفرز التلقائي**: استخدم إضافة [Tailwind CSS IntelliSense extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) الرسمية أو إضافة Prettier لـ Tailwind لفرض ترتيب متّسق.
+3. **استخراج المكوّنات**: اسحب الأنماط المطوّلة إلى مكوّنات قابلة لإعادة الاستخدام لتبقى الترميز مرتبًا.
 
-### Advanced Variants & State
+### المتغيّرات المتقدّمة والحالة
 
-Tailwind 4 introduces powerful variant primitives:
+يقدّم Tailwind 4 عناصر أولية قوية للمتغيّرات:
 
-| Variant | Purpose | Example |
+| المتغيّر | الغرض | مثال |
 | --- | --- | --- |
-| `md:` | Media query ≥ 768px | `md:grid-cols-3` |
-| `hover:` | Interaction state | `hover:bg-primary-600` |
-| `cq:` | Container query | `cq:gap-6` |
-| `group-has-[.active]` | Style parent when it contains `.active` | `group-has-[.active]:bg-blue-50` |
+| `md:` | استعلام وسائط ≥ 768px | `md:grid-cols-3` |
+| `hover:` | حالة تفاعل | `hover:bg-primary-600` |
+| `cq:` | استعلام حاوية | `cq:gap-6` |
+| `group-has-[.active]` | يصمّم العنصر الأب عندما يحتوي على `.active` | `group-has-[.active]:bg-blue-50` |
 
-Combine them for expressive rules like `md:group-hover/cell:translate-y-1`.
+اجمع بينها لتحصل على قواعد معبّرة مثل `md:group-hover/cell:translate-y-1`.
 
-### Performance Considerations
+### اعتبارات الأداء
 
-- **Oxide build step**: Tailwind emits only referenced classes for minimal CSS bundles.
-- **Avoid runtime JIT in prod**: Compile-time is faster with no client-side overhead.
-- **Mind variant explosion**: Each variant combination adds bytes. Prune unused classes.
+- **خطوة بناء Oxide**: يُصدر Tailwind الأصناف المُشار إليها فقط لتحقيق حزم CSS بالحد الأدنى.
+- **تجنّب JIT وقت التشغيل في الإنتاج**: البناء وقت الترجمة أسرع ودون أي عبء على جهة العميل.
+- **انتبه لتضخّم المتغيّرات**: كل توليفة متغيّرات تضيف بايتات. قلّم الأصناف غير المستخدمة.
 
-### Knowing When to Write Custom CSS
+### متى تكتب CSS مخصّصًا
 
-Use custom CSS when:
+استخدم CSS المخصّص عندما:
 
-- Complex keyframe animations are needed
-- Algorithmic values required (e.g., trig‑based transforms).
-- Selector logic exceeds what utility variants offer.
+- تكون هناك حاجة إلى حركات keyframe معقّدة
+- تكون القيم الخوارزمية مطلوبة (مثل التحويلات المبنية على حساب المثلثات).
+- يتجاوز منطق المحدّدات ما توفّره متغيّرات الأدوات.
 
-Keep such rules small, place them in the correct cascade layer, and document why utilities weren’t sufficient.
+أبقِ هذه القواعد صغيرة، وضعها في طبقة التتالي الصحيحة، ووثّق سبب عدم كفاية الأدوات.
 
-## Further Reading
+## قراءات إضافية
 
-- [By The Numbers: A Year and Half with Atomic CSS](https://johnpolacek.medium.com/by-the-numbers-a-year-and-half-with-atomic-css-39d75b1263b4)
-- [No, Utility Classes Aren’t the Same As Inline Styles](https://frontstuff.io/no-utility-classes-arent-the-same-as-inline-styles)
+- [بالأرقام: عام ونصف مع Atomic CSS](https://johnpolacek.medium.com/by-the-numbers-a-year-and-half-with-atomic-css-39d75b1263b4)
+- [لا، أصناف الأدوات المساعدة ليست كالأنماط المضمّنة](https://frontstuff.io/no-utility-classes-arent-the-same-as-inline-styles)
 
-## Popular Utility-First Frameworks
+## أطر الأدوات المساعدة الشائعة
 
-1. [**Tailwind CSS**](https://tailwindcss.com/docs/utility-first): Most popular, extensive utilities for layouts to theming.
-2. [**Tachyons**](https://tachyons.io/): Fast-loading, readable, maintainable code.
-3. [**Basscss**:](https://basscss.com/) Lightweight, extensible base utilities.
+1. [**Tailwind CSS**](https://tailwindcss.com/docs/utility-first): الأكثر شعبية، وأدوات واسعة من التخطيطات إلى السمات.
+2. [**Tachyons**](https://tachyons.io/): شيفرة سريعة التحميل ومقروءة وقابلة للصيانة.
+3. [**Basscss**:](https://basscss.com/) أدوات أساسية خفيفة الوزن قابلة للتوسّع.

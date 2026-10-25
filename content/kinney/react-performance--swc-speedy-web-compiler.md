@@ -1,32 +1,32 @@
 ---
-title: "Speedy Web Compiler (SWC) for React Apps"
-lang: en
+title: "مُجمِّع الويب السريع (SWC) لتطبيقات React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/swc-speedy-web-compiler"
 ---
 
-If your React build times feel like they’re stuck in molasses, it might be time to meet SWC—the Rust-powered JavaScript compiler that’s making Babel look like it’s running on a potato. SWC (Speedy Web Compiler) transforms and bundles your JavaScript up to 20x faster than traditional tools, without sacrificing the transformations your modern React app needs. Whether you’re wrestling with sluggish development server startup times or production builds that take forever, SWC can help you get back to shipping features instead of waiting around.
+إن كانت أوقات بناء React لديك تبدو عالقة في الدبس، فقد حان الوقت للتعرف على SWC — مُجمِّع JavaScript المدفوع بـ Rust الذي يجعل Babel يبدو كأنه يعمل على حبة بطاطس. يحوّل SWC (Speedy Web Compiler) شيفرة JavaScript لديك ويحزمها بسرعة تصل إلى 20 ضعفًا مقارنة بالأدوات التقليدية، دون التضحية بالتحويلات التي يحتاجها تطبيق React الحديث. وسواء كنت تصارع بطء بدء خادم التطوير أو عمليات بناء الإنتاج التي تستغرق وقتًا طويلًا، يستطيع SWC إعادتك إلى إصدار الميزات بدلًا من الانتظار.
 
-## What Even is SWC?
+## ما هو SWC أصلًا؟
 
-SWC is a next-generation JavaScript/TypeScript compiler written in Rust. Think of it as Babel’s caffeinated younger sibling—it does all the same transformations (JSX → JavaScript, modern ES6+ → browser-compatible code, TypeScript → JavaScript) but with the speed advantage that comes from being implemented in a systems programming language.
+SWC مُجمِّع JavaScript/TypeScript من الجيل التالي مكتوب بـ Rust. اعتبره الشقيق الأصغر المليء بالكافيين لـ Babel — فهو يقوم بالتحويلات نفسها (JSX ← JavaScript، وES6+ الحديثة ← شيفرة متوافقة مع المتصفح، وTypeScript ← JavaScript) لكن بميزة السرعة الآتية من تنفيذه بلغة برمجة أنظمة.
 
-Unlike Babel, which is written in JavaScript and processes your code in a single-threaded manner, SWC leverages Rust’s performance characteristics and can utilize multiple CPU cores. The result? Compilation that’s not just faster, but dramatically faster—often 10-20x speed improvements for large codebases.
+وعلى خلاف Babel، المكتوب بـ JavaScript والذي يعالج شيفرتك بأسلوب أحادي الخيط، يستفيد SWC من خصائص أداء Rust ويستطيع استخدام نوى معالجة متعددة. والنتيجة؟ تجميع ليس أسرع فحسب، بل أسرع جذريًا — غالبًا تحسينات سرعة بمقدار 10-20 ضعفًا لقواعد شيفرة كبيرة.
 
-SWC excels at:
+يبرع SWC في:
 
-1. **JSX Transformation**: Converting your React JSX syntax into regular JavaScript function calls
-2. **TypeScript Compilation**: Stripping types and transpiling TS to JS without the overhead of `tsc`
-3. **Modern JavaScript**: Transforming ES6+ features for older browser compatibility
-4. **Minification**: Code compression that rivals or beats Terser in both speed and output size
-5. **Source Maps**: Fast, accurate source map generation for debugging
+1. **تحويل JSX**: تحويل صياغة JSX في React إلى استدعاءات دوال JavaScript عادية
+2. **تجميع TypeScript**: إزالة الأنواع وترجمة TS إلى JS دون عبء `tsc`
+3. **JavaScript الحديثة**: تحويل ميزات ES6+ لتوافق المتصفحات الأقدم
+4. **التصغير**: ضغط شيفرة يضاهي Terser أو يتفوق عليه في السرعة وحجم المخرجات
+5. **خرائط المصدر**: توليد سريع ودقيق لخرائط المصدر من أجل التنقيح
 
-## Setting Up SWC with React
+## إعداد SWC مع React
 
-Let’s start with the most common scenario: integrating SWC into an existing React project. If you’re using a tool like Vite, you might already be using SWC under the hood without knowing it (Vite uses SWC for dependency pre-bundling). But let’s see how to configure it explicitly.
+لنبدأ بالسيناريو الأكثر شيوعًا: دمج SWC في مشروع React قائم. إن كنت تستخدم أداة مثل Vite، فربما تستخدم SWC بالفعل تحت الغطاء دون أن تدري (فـ Vite يستخدم SWC لتجميع الاعتماديات مسبقًا). لكن لنرَ كيف نضبطه صراحةً.
 
-### Installing SWC
+### تثبيت SWC
 
-First, let’s install the necessary SWC packages:
+أولًا، لنثبّت حزم SWC اللازمة:
 
 ```bash
 # Core SWC packages
@@ -39,9 +39,9 @@ npm install -D swc-loader
 npm install -D @swc/plugin-transform-imports
 ```
 
-### Basic SWC Configuration
+### إعداد SWC الأساسي
 
-SWC uses a `.swcrc` configuration file (similar to Babel’s `.babelrc`). Here’s a basic setup for a React TypeScript project:
+يستخدم SWC ملف إعداد `.swcrc` (شبيه بـ `.babelrc` في Babel). إليك إعدادًا أساسيًا لمشروع React بـ TypeScript:
 
 ```json
 {
@@ -78,17 +78,17 @@ SWC uses a `.swcrc` configuration file (similar to Babel’s `.babelrc`). Here�
 }
 ```
 
-Let’s break down the key parts:
+لنفكّك الأجزاء الرئيسية:
 
-- `jsc.parser.syntax`: Tells SWC we’re processing TypeScript files
-- `jsc.parser.tsx`: Enables JSX parsing
-- `jsc.transform.react.runtime`: Uses React 17+‘s automatic JSX transform
-- `jsc.transform.react.refresh`: Enables React Fast Refresh for development
-- `jsc.target`: The JavaScript version to compile down to
+- `jsc.parser.syntax`: يخبر SWC أننا نعالج ملفات TypeScript
+- `jsc.parser.tsx`: يفعّل تحليل JSX
+- `jsc.transform.react.runtime`: يستخدم تحويل JSX التلقائي في React 17+
+- `jsc.transform.react.refresh`: يفعّل التحديث السريع في React أثناء التطوير
+- `jsc.target`: إصدار JavaScript الذي نجمّع إليه
 
-### Webpack Integration
+### التكامل مع Webpack
 
-If you’re using webpack (common in Create React App ejected projects or custom setups), you can replace `babel-loader` with `swc-loader`:
+إن كنت تستخدم webpack (شائع في مشاريع Create React App بعد إخراج الإعدادات أو في الإعدادات المخصصة)، فيمكنك استبدال `babel-loader` بـ `swc-loader`:
 
 ```javascript
 // webpack.config.js
@@ -126,11 +126,11 @@ module.exports = {
 };
 ```
 
-## React-Specific SWC Configuration
+## إعداد SWC الخاص بـ React
 
-### JSX Transform Options
+### خيارات تحويل JSX
 
-SWC gives you fine-grained control over JSX transformation. Here are the key options for React:
+يمنحك SWC تحكمًا دقيقًا في تحويل JSX. إليك الخيارات الرئيسية لـ React:
 
 ```json
 {
@@ -151,21 +151,21 @@ SWC gives you fine-grained control over JSX transformation. Here are the key opt
 }
 ```
 
-**Key settings explained:**
+**شرح الإعدادات الرئيسية:**
 
-- `runtime: "automatic"`: Uses React 17+‘s new JSX transform (no need to import React)
-- `runtime: "classic"`: Uses the old transform (requires React imports)
-- `importSource`: Custom JSX pragma source (useful for libraries like Emotion)
-- `development`: Enables development-time optimizations and better debugging
-- `refresh`: Enables React Fast Refresh for hot module replacement
+- `runtime: "automatic"`: يستخدم تحويل JSX الجديد في React 17+ (لا حاجة لاستيراد React)
+- `runtime: "classic"`: يستخدم التحويل القديم (يتطلب استيراد React)
+- `importSource`: مصدر pragma JSX مخصص (مفيد لمكتبات مثل Emotion)
+- `development`: يفعّل تحسينات وقت التطوير وتنقيحًا أفضل
+- `refresh`: يفعّل التحديث السريع في React لاستبدال الوحدات الساخن
 
-> **Tip**
+> **نصيحة**
 >
-> Use different configurations for development vs. production by creating separate config files and switching between them based on `NODE_ENV`.
+> استخدم إعدادات مختلفة للتطوير والإنتاج بإنشاء ملفات إعداد منفصلة والتبديل بينها حسب `NODE_ENV`.
 
-### Environment-Specific Configs
+### إعدادات خاصة بكل بيئة
 
-You can create separate SWC configs for different environments:
+يمكنك إنشاء إعدادات SWC منفصلة لبيئات مختلفة:
 
 ```json
 // .swcrc.development
@@ -202,7 +202,7 @@ You can create separate SWC configs for different environments:
 }
 ```
 
-Then switch between them in your build scripts:
+ثم بدّل بينها في سكربتات البناء لديك:
 
 ```json
 {
@@ -213,28 +213,28 @@ Then switch between them in your build scripts:
 }
 ```
 
-## SWC vs. Babel: Performance Comparison
+## SWC مقابل Babel: مقارنة الأداء
 
-Let’s look at some Real World Numbers™. In a medium-sized React TypeScript project (~500 components, ~50k lines of code), here’s what you might expect:
+لنلقِ نظرة على بعض الأرقام الواقعية™. في مشروع React متوسط الحجم بـ TypeScript (نحو 500 مكوّن، ونحو 50 ألف سطر شيفرة)، إليك ما قد تتوقعه:
 
-| Task | Babel | SWC | Speed Improvement |
+| المهمة | Babel | SWC | تحسين السرعة |
 | --- | --- | --- | --- |
-| Initial compilation | 45s | 3.2s | ~14x faster |
-| Hot reload (single file) | 800ms | 45ms | ~18x faster |
-| Production build | 2m 15s | 8.5s | ~16x faster |
-| TypeScript type-checking* | N/A | 12s | N/A |
+| التجميع الأولي | 45s | 3.2s | أسرع بنحو 14 ضعفًا |
+| إعادة التحميل الساخن (ملف واحد) | 800ms | 45ms | أسرع بنحو 18 ضعفًا |
+| بناء الإنتاج | 2m 15s | 8.5s | أسرع بنحو 16 ضعفًا |
+| فحص أنواع TypeScript* | لا ينطبق | 12s | لا ينطبق |
 
-*SWC can strip TypeScript types but doesn’t do type-checking. You’ll still need `tsc --noEmit` for that.
+*يستطيع SWC إزالة أنواع TypeScript لكنه لا يفحص الأنواع. ستظل بحاجة إلى `tsc --noEmit` لذلك.
 
-> **Note**
+> **ملاحظة**
 >
-> Your mileage will vary based on project size, complexity, and hardware. Larger projects tend to see even more dramatic improvements.
+> ستختلف النتائج لديك حسب حجم المشروع وتعقيده والعتاد. تميل المشاريع الأكبر إلى تحسينات أكثر جذرية.
 
-## Advanced SWC Features for React
+## ميزات SWC المتقدمة لـ React
 
-### Custom Import Transformations
+### تحويلات استيراد مخصصة
 
-One killer feature is SWC’s ability to transform imports, similar to `babel-plugin-import`. This is especially useful for tree-shaking large UI libraries:
+من الميزات القاتلة قدرة SWC على تحويل الاستيرادات، على غرار `babel-plugin-import`. هذا مفيد خاصةً لهزّ الأشجار (tree-shaking) لمكتبات واجهة كبيرة:
 
 ```json
 {
@@ -260,7 +260,7 @@ One killer feature is SWC’s ability to transform imports, similar to `babel-pl
 }
 ```
 
-This transforms:
+يحوّل هذا:
 
 ```typescript
 // ❌ This imports the entire library
@@ -271,9 +271,9 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 ```
 
-### Source Map Generation
+### توليد خرائط المصدر
 
-SWC generates source maps that are both fast and accurate. For development, you might want inline source maps:
+يولّد SWC خرائط مصدر سريعة ودقيقة معًا. للتطوير، قد ترغب في خرائط مصدر مضمّنة:
 
 ```json
 {
@@ -282,7 +282,7 @@ SWC generates source maps that are both fast and accurate. For development, you 
 }
 ```
 
-For production, external source maps are usually better:
+أما للإنتاج، فخرائط المصدر الخارجية أفضل عادةً:
 
 ```json
 {
@@ -292,9 +292,9 @@ For production, external source maps are usually better:
 }
 ```
 
-### Minification with SWC
+### التصغير باستخدام SWC
 
-SWC includes a built-in minifier that’s faster than Terser and produces similarly compact output:
+يتضمن SWC مُصغّرًا مدمجًا أسرع من Terser وينتج مخرجات مضغوطة بالمثل:
 
 ```json
 {
@@ -319,11 +319,11 @@ SWC includes a built-in minifier that’s faster than Terser and produces simila
 }
 ```
 
-## Real-World Integration Examples
+## أمثلة تكامل واقعية
 
-### Next.js with SWC
+### Next.js مع SWC
 
-Next.js 12+ uses SWC by default, but you can customize it:
+يستخدم Next.js 12+ SWC افتراضيًا، لكن يمكنك تخصيصه:
 
 ```javascript
 // next.config.js
@@ -350,9 +350,9 @@ module.exports = {
 };
 ```
 
-### Vite with SWC
+### Vite مع SWC
 
-Vite can use SWC instead of esbuild for transformations:
+يستطيع Vite استخدام SWC بدلًا من esbuild للتحويلات:
 
 ```javascript
 // vite.config.js
@@ -365,9 +365,9 @@ export default defineConfig({
 });
 ```
 
-### Custom Webpack + SWC Setup
+### إعداد Webpack + SWC مخصص
 
-For a from-scratch webpack setup optimized for React:
+لإعداد webpack من الصفر محسّن لـ React:
 
 ```javascript
 // webpack.config.js
@@ -421,11 +421,11 @@ module.exports = (env, argv) => {
 };
 ```
 
-## Common Gotchas and Tradeoffs
+## المزالق والمقايضات الشائعة
 
-### TypeScript Type Checking
+### فحص أنواع TypeScript
 
-SWC is blazingly fast at stripping TypeScript types, but it doesn’t actually check them. You’ll need to run `tsc --noEmit` separately:
+SWC سريع للغاية في إزالة أنواع TypeScript، لكنه لا يفحصها فعليًا. ستحتاج إلى تشغيل `tsc --noEmit` منفصلًا:
 
 ```json
 {
@@ -436,17 +436,17 @@ SWC is blazingly fast at stripping TypeScript types, but it doesn’t actually c
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Don’t skip type checking entirely—runtime errors from type issues are much harder to debug than compile-time ones.
+> لا تتخطَّ فحص الأنواع كليًا — فأخطاء وقت التشغيل الناتجة عن مشكلات الأنواع أصعب بكثير في التنقيح من أخطاء وقت التجميع.
 
-### Plugin Ecosystem
+### منظومة الإضافات
 
-Babel has a massive plugin ecosystem that SWC doesn’t fully match yet. Some specific transformations you rely on might not have SWC equivalents. However, the core transformations (JSX, TypeScript, ES6+) are solid.
+لدى Babel منظومة إضافات ضخمة لا يضاهيها SWC بالكامل بعد. قد لا تكون لبعض التحويلات المحددة التي تعتمد عليها مكافئات في SWC. ومع ذلك، فإن التحويلات الأساسية (JSX وTypeScript وES6+) متينة.
 
-### Bundle Analysis
+### تحليل الحزم
 
-Tools like `webpack-bundle-analyzer` work great with SWC-compiled code, but make sure source maps are enabled for accurate analysis:
+تعمل أدوات مثل `webpack-bundle-analyzer` بشكل رائع مع شيفرة مجمّعة بـ SWC، لكن تأكد من تفعيل خرائط المصدر لتحليل دقيق:
 
 ```bash
 npm install -D webpack-bundle-analyzer
@@ -466,9 +466,9 @@ module.exports = {
 };
 ```
 
-### Memory Usage
+### استخدام الذاكرة
 
-SWC generally uses less memory than Babel, but very large projects might still hit memory limits. You can tune the worker count:
+يستخدم SWC ذاكرة أقل من Babel عمومًا، لكن المشاريع الكبيرة جدًا قد تصل إلى حدود الذاكرة. يمكنك ضبط عدد العمّال:
 
 ```json
 {
@@ -480,20 +480,20 @@ SWC generally uses less memory than Babel, but very large projects might still h
 }
 ```
 
-## Migration Strategy
+## استراتيجية الانتقال
 
-### Gradual Migration from Babel
+### الانتقال التدريجي من Babel
 
-You don’t have to switch everything at once. Here’s a pragmatic approach:
+لا يلزمك تبديل كل شيء دفعة واحدة. إليك مقاربة عملية:
 
-1. **Start with development builds**: Use SWC for faster dev server startup
-2. **Test thoroughly**: Ensure your app works identically with SWC
-3. **Switch production builds**: Once you’re confident, use SWC for production
-4. **Monitor bundle sizes**: Verify that minification produces similar results
+1. **ابدأ ببنيات التطوير**: استخدم SWC لتسريع بدء خادم التطوير
+2. **اختبر بدقّة**: تأكد من عمل تطبيقك بالطريقة نفسها مع SWC
+3. **بدّل بنيات الإنتاج**: عندما تثق، استخدم SWC للإنتاج
+4. **راقب أحجام الحزم**: تحقق من أن التصغير ينتج نتائج مماثلة
 
-### Testing Your Migration
+### اختبار انتقالك
 
-Create a simple test to verify your SWC setup works:
+أنشئ اختبارًا بسيطًا للتحقق من عمل إعداد SWC لديك:
 
 ```typescript
 // test-swc.ts
@@ -516,20 +516,20 @@ const TestComponent: React.FC<Props> = ({ name, count = 0 }) => {
 export default TestComponent;
 ```
 
-Compile it with SWC:
+جمّعه باستخدام SWC:
 
 ```bash
 npx swc test-swc.ts -o test-swc.js
 ```
 
-The output should be clean, properly transformed JavaScript.
+يجب أن تكون المخرجات JavaScript نظيفة ومحوّلة على نحو سليم.
 
-## When NOT to Use SWC
+## متى لا تستخدم SWC
 
-While SWC is excellent for most React projects, there are some scenarios where sticking with Babel might make sense:
+رغم أن SWC ممتاز لمعظم مشاريع React، ثمة سيناريوهات قد يكون فيها البقاء على Babel منطقيًا:
 
-- **Heavy plugin dependencies**: If your build relies on specific Babel plugins that don’t have SWC equivalents
-- **Experimental JavaScript features**: Babel sometimes supports cutting-edge proposals before SWC
-- **Legacy project constraints**: If you’re in a complex monorepo setup where changing the build tool would require extensive coordination
+- **اعتماديات إضافات كثيفة**: إن كان بناؤك يعتمد على إضافات Babel محددة لا مكافئات لها في SWC
+- **ميزات JavaScript تجريبية**: يدعم Babel أحيانًا مقترحات متقدمة قبل SWC
+- **قيود مشاريع قديمة**: إن كنت في إعداد monorepo معقد يتطلب تغيير أداة البناء تنسيقًا واسعًا
 
-## Next Steps
+## الخطوات التالية

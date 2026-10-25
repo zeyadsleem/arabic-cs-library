@@ -1,32 +1,32 @@
 ---
-title: "Caret and Accent Color"
-lang: en
+title: "لون المؤشّر ولون التمييز"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/caret-and-accent-color"
 ---
 
-Tailwind 4.0 provides utilities to control `caret-color` (text input cursor) and `accent-color` (form controls like checkboxes, radio buttons) directly in your HTML.
+يوفّر Tailwind 4.0 أصنافًا مساعِدة للتحكّم في `caret-color` (مؤشّر الإدخال النصي) و`accent-color` (عناصر التحكم في النماذج مثل مربّعات الاختيار وأزرار الاختيار) مباشرةً داخل HTML لديك.
 
-## Caret Color
+## لون المؤشّر
 
-`caret-color` styles the blinking cursor in inputs and textareas. Tailwind utilities map to this CSS property, using your theme’s colors or custom values.
+تنسّق `caret-color` المؤشّر الوامض في حقول الإدخال ومناطق النص. وتقابل أصناف Tailwind هذه الخاصية في CSS، مستخدمةً ألوان سمةتك أو قيمًا مخصّصة.
 
-### Setting Caret Color with Utilities
+### ضبط لون المؤشّر بالأصناف المساعِدة
 
-Use `caret-*` utilities (e.g., `caret-blue-600`, `caret-sky-400`) to set the cursor color.
+استخدم أصناف `caret-*` (مثل `caret-blue-600`، `caret-sky-400`) لضبط لون المؤشّر.
 
-Example:
+مثال:
 
-*Setting Caret Color with Utilities — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ff00a2cc124d342cb26afc3391c6e27d4810a0cccf07baffe9f7e738185be8ac.html)*
+*ضبط لون المؤشّر بالأصناف المساعِدة — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ff00a2cc124d342cb26afc3391c6e27d4810a0cccf07baffe9f7e738185be8ac.html)*
 
 ```html
 <input type="text" class="border caret-rose-500" />
 ```
 
-This generates CSS like `caret-color: var(--color-rose-500);`. Utilities like `caret-inherit`, `caret-current`, and `caret-transparent` are also available.
+يولّد هذا CSS على نحو `caret-color: var(--color-rose-500);`. كما أنّ أصنافًا مثل `caret-inherit` و`caret-current` و`caret-transparent` متاحة أيضًا.
 
-### Using Custom Values
+### استخدام القيم المخصّصة
 
-For specific colors not in your theme, use arbitrary value syntax: `caret-[<value>]`.
+للألوان المحدّدة غير الموجودة في سمتك، استخدم صيغة القيمة التعسّفية: `caret-[<value>]`.
 
 ```css
 :root {
@@ -35,30 +35,30 @@ For specific colors not in your theme, use arbitrary value syntax: `caret-[<valu
 }
 ```
 
-Example:
+مثال:
 
-*Using Custom Values — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/2b8a51608e058a33fc019f2c9bcfa7432d9a7462bef80c3f84cc9d164b612194.html)[CSS](#playground-css-caret-vars)*
+*استخدام القيم المخصّصة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2b8a51608e058a33fc019f2c9bcfa7432d9a7462bef80c3f84cc9d164b612194.html)[CSS](#playground-css-caret-vars)*
 
 ```html
 <input type="text" class="border caret-[#123456]" />
 <input type="text" class="border caret-[var(--custom-cursor-color)]" />
 ```
 
-### Responsive Caret Color
+### لون مؤشّر استجابة
 
-Apply `caret-*` utilities conditionally at different breakpoints using responsive prefixes (e.g., `md:caret-lime-600`).
+طَبِّق أصناف `caret-*` بشكل شرطي عند نقاط توقّف مختلفة باستخدام بادئات الاستجابة (مثل `md:caret-lime-600`).
 
-Example:
+مثال:
 
-*Responsive Caret Color — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/d6665cfeaf8e0f4bdb3bcc0a702cd56b0fc84a419e2cb5a4324b7e20753693be.html)*
+*لون مؤشّر استجابة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d6665cfeaf8e0f4bdb3bcc0a702cd56b0fc84a419e2cb5a4324b7e20753693be.html)*
 
 ```html
 <input type="text" class="border caret-rose-500 md:caret-lime-600" />
 ```
 
-### Customizing the Caret Color Scale
+### تخصيص مقياس لون المؤشّر
 
-Extend or override the default color scale in your main CSS file using the `@theme` directive and `--color-*` namespace.
+وسّع مقياس الألوان الافتراضي أو تجاوزه في ملف CSS الرئيسي باستخدام التوجيه `@theme` وفضاء الاسم `--color-*`.
 
 ```css
 @import 'tailwindcss';
@@ -69,61 +69,61 @@ Extend or override the default color scale in your main CSS file using the `@the
 }
 ```
 
-This makes `caret-midnight` and `caret-tahiti` available. These become CSS variables (e.g., `--color-midnight: #1a1a2e;`).
-To replace the default scale, use `--color-*: initial;` before defining custom values.
+يجعل هذا `caret-midnight` و`caret-tahiti` متاحين. وهذان يصبحان متغيّرات CSS (مثل `--color-midnight: #1a1a2e;`).
+ولاستبدال المقياس الافتراضي، استخدم `--color-*: initial;` قبل تعريف القيم المخصّصة.
 
-## Accent Color
+## لون التمييز
 
-`accent-color` customizes the color of browser-generated form controls.
+يخصّص `accent-color` لون عناصر التحكم في النماذج التي يولّدها المتصفّح.
 
-### Setting Accent Color with Utilities
+### ضبط لون التمييز بالأصناف المساعِدة
 
-Use `accent-*` utilities (e.g., `accent-indigo-500`) derived from your theme’s color palette.
+استخدم أصناف `accent-*` (مثل `accent-indigo-500`) المشتقّة من لوحة ألوان سمةتك.
 
-Example:
+مثال:
 
-*Setting Accent Color with Utilities — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/0c931f71bfdfc4ba1ae08b7f4f8877f1a9054da952c791e651bbe3bd52f30348.html)*
+*ضبط لون التمييز بالأصناف المساعِدة — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0c931f71bfdfc4ba1ae08b7f4f8877f1a9054da952c791e651bbe3bd52f30348.html)*
 
 ```html
 <input type="checkbox" class="accent-rose-500" />
 ```
 
-This generates `accent-color: var(--color-rose-500);`. `accent-inherit`, `accent-current`, and `accent-transparent` are also available.
+يولّد هذا `accent-color: var(--color-rose-500);`. كما أنّ `accent-inherit` و`accent-current` و`accent-transparent` متاحة أيضًا.
 
-### Changing Opacity
+### تغيير العتامة
 
-Adjust accent color opacity with `/<number>` (e.g., `accent-blue-500/50`). Browser support for accent color opacity is limited (mainly Firefox).
+اضبط عتامة لون التمييز بـ`/<number>` (مثل `accent-blue-500/50`). ودعم المتصفحات لعتامة لون التمييز محدود (في Firefox بشكل أساسي).
 
-*Changing Opacity — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/2aa6856ca6e056663346258a8d5887b8beccdb9125b9e1eeff0f3cf42b63af8d.html)*
+*تغيير العتامة — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/2aa6856ca6e056663346258a8d5887b8beccdb9125b9e1eeff0f3cf42b63af8d.html)*
 
 ```html
 <input type="checkbox" class="accent-blue-500/50" />
 ```
 
-### Using Custom Values
+### استخدام القيم المخصّصة
 
-Use arbitrary value syntax `accent-[<value>]` for custom accent colors.
+استخدم صيغة القيمة التعسّفية `accent-[<value>]` لألوان تمييز مخصّصة.
 
-*Using Custom Values — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/a4bc8565d8676d670451894942469eb4e43316835a145efb71abb15d05507d84.html)[CSS](#playground-css-caret-vars)*
+*استخدام القيم المخصّصة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a4bc8565d8676d670451894942469eb4e43316835a145efb71abb15d05507d84.html)[CSS](#playground-css-caret-vars)*
 
 ```html
 <input type="checkbox" class="accent-[#abcdef]" />
 <input type="checkbox" class="accent-[var(--brand-color)]" />
 ```
 
-### Responsive Accent Color
+### لون تمييز استجابة
 
-Apply `accent-*` utilities conditionally at different breakpoints (e.g., `lg:accent-pink-500`).
+طَبِّق أصناف `accent-*` بشكل شرطي عند نقاط توقّف مختلفة (مثل `lg:accent-pink-500`).
 
-*Responsive Accent Color — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/f73f6a474403f6c58cc3c307aab422716ef44c7d4a125c8b712c99896875752c.html)*
+*لون تمييز استجابة — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f73f6a474403f6c58cc3c307aab422716ef44c7d4a125c8b712c99896875752c.html)*
 
 ```html
 <input type="checkbox" class="accent-blue-500 lg:accent-pink-500" />
 ```
 
-### Customizing the Accent Color Scale
+### تخصيص مقياس لون التمييز
 
-Customize your color scale for accent colors using `@theme` and the `--color-*` namespace in your CSS.
+خصّص مقياس ألوانك لألوان التمييز باستخدام `@theme` وفضاء الاسم `--color-*` في CSS لديك.
 
 ```css
 @import 'tailwindcss';
@@ -133,5 +133,5 @@ Customize your color scale for accent colors using `@theme` and the `--color-*` 
 }
 ```
 
-Defining `--color-primary-brand` makes `accent-primary-brand` available. The CSS variable `--color-primary-brand: oklch(70% 0.15 150);` is generated.
-Override defaults or clear the namespace (`--color-*: initial;`) as needed.
+تعريف `--color-primary-brand` يجعل `accent-primary-brand` متاحًا. ويُولَّد متغيّر CSS `--color-primary-brand: oklch(70% 0.15 150);`.
+وتجاوز القيم الافتراضية أو امسح فضاء الاسم (`--color-*: initial;`) حسب الحاجة.

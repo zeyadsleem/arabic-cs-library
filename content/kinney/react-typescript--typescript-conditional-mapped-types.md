@@ -1,14 +1,14 @@
 ---
-title: "Conditional and Mapped Types"
-lang: en
+title: "الأنواع الشرطية (Conditional) والمنسوخة (Mapped)"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-conditional-mapped-types"
 ---
 
-If TypeScript’s type system is a programming language, then conditional and mapped types are its control flow and loops. They let you transform types, create new types based on existing ones, and build incredibly sophisticated type-level logic. These are the tools that make libraries like React Hook Form and tRPC possible. Let’s master them.
+إذا كان نظام أنواع TypeScript لغة برمجة، فإن الأنواع الشرطية والمنسوخة هي تدفق التحكم (control flow) والحلقات (loops) فيها. تتيح لك تحويل الأنواع، وإنشاء أنواع جديدة بناءً على موجودة، وبناء منطق على مستوى الأنواع (type-level) متطور بشكل لا يصدق. هذه الأدوات التي تجعل مكتبات مثل React Hook Form وtRPC ممكنة. لنتقنها.
 
-## Conditional Types: `If-Then-Else` for Types
+## الأنواع الشرطية (Conditional Types): `If-Then-Else` للأنواع
 
-Conditional types follow the pattern `T extends U ? X : Y`:
+الأنواع الشرطية تتبع النمط `T extends U ? X : Y`:
 
 ```typescript
 type IsString<T> = T extends string ? true : false;
@@ -25,9 +25,9 @@ type Num = Flatten<number[]>; // number
 type Mixed = Flatten<(string | number)[]>; // string | number
 ```
 
-## The `infer` Keyword
+## الكلمة المفتاحية `infer`
 
-`infer` lets you extract types from other types:
+`infer` تتيح لك استخراج الأنواع من أنواع أخرى:
 
 ```typescript
 // Extract return type
@@ -52,7 +52,7 @@ type StringElement = ElementType<string[]>; // string
 type NumberElement = ElementType<number[]>; // number
 ```
 
-## React Component Props Extraction
+## استخراج خصائص مكوّن React
 
 ```typescript
 // Extract props type from a component
@@ -76,9 +76,9 @@ type DivProps = PropsOf<'div'>;  // React.HTMLAttributes<HTMLDivElement>
 type CustomProps = PropsOf<typeof Button>;  // Button's props
 ```
 
-## Mapped Types: Transforming Object Types
+## الأنواع المنسوخة (Mapped Types): تحويل أنواع الكائنات
 
-Mapped types let you create new types by transforming properties of existing types:
+الأنواع المنسوخة تتيح لك إنشاء أنواع جديدة بتحويل خصائص أنواع موجودة:
 
 ```typescript
 // Basic mapped type
@@ -108,7 +108,7 @@ type Required<T> = {
 };
 ```
 
-## Key Remapping with Template Literals
+## إعادة تسمية المفاتيح (Key Remapping) مع قوالب النصوص (Template Literals)
 
 ```typescript
 // Getters and setters
@@ -141,7 +141,7 @@ type StateSetters = Setters<State>;
 // }
 ```
 
-## Filtering Properties
+## تصفية الخصائص (Filtering Properties)
 
 ```typescript
 // Pick only string properties
@@ -176,7 +176,7 @@ type ServiceMethods = Methods<Service>;
 // { get(): Promise<any>; post(data: any): Promise<any>; }
 ```
 
-## Conditional Types with Mapped Types
+## الأنواع الشرطية مع الأنواع المنسوخة
 
 ```typescript
 // Make specific properties optional
@@ -220,7 +220,7 @@ type PartialConfig = DeepPartial<Config>;
 // Everything is optional, including nested properties
 ```
 
-## React Form Types
+## أنواع نماذج React (Forms)
 
 ```typescript
 // Form field state
@@ -261,7 +261,7 @@ type LoginHandlers = FormHandlers<LoginModel>;
 // }
 ```
 
-## Advanced Conditional Types
+## أنواع شرطية متقدمة (Advanced Conditional Types)
 
 ```typescript
 // Distribute over unions
@@ -293,7 +293,7 @@ type GreetParams = Parameters<typeof greet>;
 // [name: string] | [first: string, last: string]
 ```
 
-## Recursive Conditional Types
+## الأنواع الشرطية التكرارية (Recursive Conditional Types)
 
 ```typescript
 // Deeply nested promise unwrapping
@@ -332,7 +332,7 @@ type PersonPaths = Path<Person>;
 // "address.country" | "address.country.code" | "address.country.name"
 ```
 
-## Template for API Response Types
+## قالب (Template) لأنواع استجابة API
 
 ```typescript
 // API response wrapper
@@ -359,7 +359,7 @@ type AsyncUserService = AsyncApi<UserService>;
 // }
 ```
 
-## React Props Manipulation
+## معالجة خصائص مكوّن React
 
 ```typescript
 // Remove event handlers
@@ -388,7 +388,7 @@ type FlexibleButton = OptionalEvents<ButtonProps>;
 // { label: string; disabled: boolean; onClick?: () => void; onHover?: () => void; }
 ```
 
-## Type-Safe Object Path Access
+## الوصول الآمن (Type-Safe) إلى مسارات الكائنات
 
 ```typescript
 // Get type at path
@@ -428,7 +428,7 @@ function get<T, P extends Path<T>>(obj: T, path: P): GetPath<T, P> {
 }
 ```
 
-## Branded Types with Conditionals
+## الأنواع المُعلَّمة (Branded) مع الشرطية
 
 ```typescript
 // Create branded types
@@ -452,7 +452,7 @@ if (isValidEmail(email)) {
 }
 ```
 
-## React Component Type Transformations
+## تحويلات أنواع مكوّن React
 
 ```typescript
 // HOC type transformation
@@ -480,7 +480,7 @@ type ThemedComponent<C> =
   C extends React.ComponentType<infer P> ? React.ComponentType<InjectProps<P, ThemeProps>> : never;
 ```
 
-## Utility Type Combinations
+## تركيب أنواع الأدوات (Utility Type Combinations)
 
 ```typescript
 // Mutable (remove readonly)
@@ -520,7 +520,7 @@ const id2: Identifier = { id: 123 }; // ✅
 // const id3: Identifier = { name: 'Alice', id: 123 };  // ❌ Error
 ```
 
-## Real-World Example: Type-Safe API Client
+## مثال واقعي: عميل API آمن الأنواع
 
 ```typescript
 // API definition
@@ -560,9 +560,9 @@ type APIClient = {
 // client['/users/:id'].delete()
 ```
 
-## Performance Tips
+## نصائح الأداء (Performance)
 
-### Avoid Deep Recursion
+### تجنّب التكرار (Recursion) العميق
 
 ```typescript
 // ❌ Can hit recursion limit
@@ -578,7 +578,7 @@ type Keys<T, Depth extends number = 5> = [Depth] extends [0]
 type Prev = [never, 0, 1, 2, 3, 4];
 ```
 
-### Use Type Aliases for Complex Types
+### استخدم aliases للأنواع المعقدة
 
 ```typescript
 // ✅ Good: Break down complex types
@@ -593,9 +593,9 @@ type FunctionKeys<T> = {
 }[keyof T];
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Start Simple
+### ابدأ ببساطة
 
 ```typescript
 // Build up complexity gradually
@@ -604,7 +604,7 @@ type Medium<T> = T extends `${infer Prefix}_${infer Suffix}` ? [Prefix, Suffix] 
 type Complex<T> = T extends Record<infer K, infer V> ? /* ... */ : never;
 ```
 
-### Document Complex Types
+### وثّق الأنواع المعقدة
 
 ```typescript
 /**
@@ -618,7 +618,7 @@ type DeepPartial<T> = {
 };
 ```
 
-### Test Your Types
+### اختبر أنواعك
 
 ```typescript
 // Use type assertions to test
@@ -628,14 +628,14 @@ type Test1 = Assert<IsString<string> extends true ? true : false>; // ✅
 type Test2 = Assert<IsString<number> extends false ? true : false>; // ✅
 ```
 
-## Summary
+## الخلاصة
 
-Conditional and mapped types are TypeScript’s power tools:
+الأنواع الشرطية والمنسوخة هي أدوات Power في TypeScript:
 
-1. **Conditional Types** - Type-level if-then-else logic
-2. **Mapped Types** - Transform object types systematically
-3. **`infer` Keyword** - Extract types from complex structures
-4. **Key Remapping** - Create new property names with template literals
-5. **Recursive Types** - Handle deeply nested structures
+1. **الأنواع الشرطية (Conditional Types)** - منطق if-then-else على مستوى الأنواع
+2. **الأنواع المنسوخة (Mapped Types)** - تحويل أنواع الكائنات بشكل منهجي
+3. **الكلمة المفتاحية `infer`** - استخراج الأنواع من structures معقدة
+4. **إعادة تسمية المفاتيح (Key Remapping)** - إنشاء أسماء خصائص جديدة باستخدام template literals
+5. **الأنواع التكرارية (Recursive Types)** - معالجة structures متداخلة deeply
 
-Master these, and you’ll be able to create type-safe abstractions that seemed impossible before!
+أتقنها، وستتمكن من إنشاء تجريدات (abstractions) آمنة الأنواع (type-safe) بدت مستحيلة من قبل!

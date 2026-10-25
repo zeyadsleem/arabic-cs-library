@@ -1,107 +1,107 @@
 ---
-title: "Cost Monitoring and Budget Alarms"
-lang: en
+title: "مراقبة التكاليف وإنذارات الميزانية"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cost-monitoring-and-budget-alarms"
 ---
 
-The scariest thing about AWS isn’t IAM policies or CloudFormation templates—it’s the billing page. Unlike Vercel or Netlify, where you pick a plan and know what you’ll pay, AWS charges you for exactly what you use. That’s great for cost efficiency at scale. It’s terrifying when you’re learning, because a misconfigured service can run up charges before you notice.
+أكثر ما يخيف في AWS ليس سياسات IAM ولا قوالب CloudFormation — بل صفحة الفوترة. فعلى عكس Vercel أو Netlify، حيث تختار خطة وتعرف ما ستدفعه، تكلّفك AWS بالضبط مقابل ما تستخدمه. وهذا رائع لكفاءة التكلفة على نطاق واسع. لكنه مرعب أثناء التعلم، لأن خدمة مهيّأة بشكل خاطئ يمكن أن تتراكم عليها الرسوم قبل أن تلاحظ.
 
-If you want live numbers instead of lesson-time snapshots, the [AWS Pricing Calculator](https://calculator.aws/), the [AWS Budgets pricing page](https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/), and the current service pricing pages are the sources of truth.
+إذا أردت أرقامًا حيّة بدلًا من لقطات وقت الدرس، فإن [حاسبة أسعار AWS](https://calculator.aws/)، و[صفحة أسعار AWS Budgets](https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/)، وصفحات أسعار الخدمات الحالية هي مصادر الحقيقة.
 
-The good news: everything you built in this course fits comfortably within the AWS Free Tier or costs pennies per month. The better news: AWS gives you tools to set up alarms that fire before you spend a single unexpected dollar. Set them up now, before you forget.
+الخبر السار: كل ما بنيته في هذه الدورة يقع بارتياح ضمن الطبقة المجانية من AWS أو يكلّف قروشًا شهريًا. والخبر الأفضل: تمنحك AWS أدوات لإعداد إنذارات تنطلق قبل أن تنفق دولارًا واحدًا غير متوقع. أعدّها الآن، قبل أن تنساها.
 
-## Free Tier Boundaries for Every Service in This Course
+## حدود الطبقة المجانية لكل خدمة في هذه الدورة
 
-Before you set up budget alarms, you need to know what’s actually free. Here’s every service you’ve used, with its free tier limits:
+قبل إعداد إنذارات الميزانية، تحتاج إلى معرفة ما هو مجاني فعلًا. وهذه كل خدمة استخدمتها، مع حدود طبقتها المجانية:
 
 ### S3
 
-**Free for 12 months** after account creation:
+**مجاني لمدة 12 شهرًا** بعد إنشاء الحساب:
 
-- 5 GB of S3 Standard storage
-- 20,000 GET requests per month
-- 2,000 PUT requests per month
+- 5 GB من تخزين S3 Standard
+- 20,000 طلب GET شهريًا
+- 2,000 طلب PUT شهريًا
 
-A typical static frontend build is 5-50 MB. You’d need to store roughly 100 different versions of a large site to approach the 5 GB limit. The request limits are similarly generous—20,000 GETs per month is well beyond what you’ll generate during development.
+بناء واجهة أمامية ثابتة نموذجي حجمه 5–50 MB. وستحتاج إلى تخزين نحو 100 نسخة مختلفة من موقع كبير لتقترب من حد 5 GB. وحدود الطلبات سخية بالمثل — فـ 20,000 طلب GET شهريًا يتجاوز بكثير ما ستولّده أثناء التطوير.
 
 ### CloudFront
 
-**Always free** (no 12-month expiration):
+**مجاني دائمًا** (بلا انتهاء بعد 12 شهرًا):
 
-- 1 TB of data transfer out per month
-- 10,000,000 HTTP/HTTPS requests per month
-- 2,000,000 CloudFront Functions invocations per month
+- 1 TB من نقل البيانات الصادر شهريًا
+- 10,000,000 طلب HTTP/HTTPS شهريًا
+- 2,000,000 استدعاء لـ CloudFront Functions شهريًا
 
-This is extremely generous. A typical static site serving 100 KB pages would need 10 million page views per month to hit the 1 TB transfer limit. If your personal project is getting 10 million page views, you have much bigger things to think about than your AWS bill. (Congratulations, by the way.)
+هذا سخي للغاية. فموقع ثابت نموذجي يقدّم صفحات بحجم 100 KB سيحتاج إلى 10 ملايين مشاهدة صفحة شهريًا ليصل إلى حد نقل 1 TB. وإذا كان مشروعك الشخصي يحصل على 10 ملايين مشاهدة صفحة، فلديك أمور أكبر بكثير للتفكير فيها من فاتورة AWS. (تهانينا، بالمناسبة.)
 
 ### Lambda
 
-**Always free** (no 12-month expiration):
+**مجاني دائمًا** (بلا انتهاء بعد 12 شهرًا):
 
-- 1,000,000 invocations per month
-- 400,000 GB-seconds of compute per month
+- 1,000,000 استدعاء شهريًا
+- 400,000 GB-ثانية من الحوسبة شهريًا
 
-A GB-second is one second of execution with 1 GB of memory. If your function uses 128 MB of memory and runs for 200 ms per invocation, each invocation consumes 0.025 GB-seconds. At that rate, you get 16 million invocations per month before you exceed the compute limit. The request limit of 1 million will be your constraint first—and a million API calls per month is a real application, not a side project.
+GB-ثانية هي ثانية واحدة من التنفيذ بذاكرة 1 GB. فإذا كانت دالتك تستخدم 128 MB من الذاكرة وتعمل 200 ms لكل استدعاء، فكل استدعاء يستهلك 0.025 GB-ثانية. وبذلك المعدّل، تحصل على 16 مليون استدعاء شهريًا قبل أن تتجاوز حد الحوسبة. وسيكون حد الطلبات البالغ مليون هو قيدك أولًا — ومليون استدعاء API شهريًا تطبيق حقيقي، لا مشروع جانبي.
 
 ### API Gateway
 
-**Free for 12 months** after account creation:
+**مجاني لمدة 12 شهرًا** بعد إنشاء الحساب:
 
-- 1,000,000 HTTP API calls per month
-- 1,000,000 REST API calls per month
+- 1,000,000 استدعاء HTTP API شهريًا
+- 1,000,000 استدعاء REST API شهريًا
 
-After the 12-month period, HTTP APIs cost $1.00 per million requests. Even a moderately active application will cost single digits per month.
+بعد فترة الـ 12 شهرًا، تكلّف HTTP APIs دولارًا واحدًا لكل مليون طلب. وحتى تطبيق نشط باعتدال سيكلّف رقمًا أحادي الخانة شهريًا.
 
 ### DynamoDB
 
-**Always free** (no 12-month expiration):
+**مجاني دائمًا** (بلا انتهاء بعد 12 شهرًا):
 
-- 25 GB of storage
-- 25 read capacity units (RCUs)
-- 25 write capacity units (WCUs)
+- 25 GB من التخزين
+- 25 وحدة سعة قراءة (RCUs)
+- 25 وحدة سعة كتابة (WCUs)
 
-The 25 GB storage limit is enormous for most frontend-backed applications. The capacity units are enough for roughly 25 reads and 25 writes per second—sustained, continuously. For a side project or small production app, you’ll never hit these limits.
+حد التخزين 25 GB هائل لمعظم التطبيقات المدعومة بواجهة أمامية. ووحدات السعة تكفي لنحو 25 قراءة و25 كتابة في الثانية — بشكل مستمر ومتواصل. ولمشروع جانبي أو تطبيق إنتاجي صغير، لن تصل إلى هذه الحدود أبدًا.
 
-> **Tip**
+> **نصيحة**
 >
-> If you created your DynamoDB table with on-demand capacity mode (as recommended in this course), treat DynamoDB costs as request-based rather than provisioned-capacity math. The easiest way to stay accurate is to check the current DynamoDB pricing page or calculator instead of memorizing old free-tier numbers.
+> إذا أنشأت جدول DynamoDB بوضع السعة عند الطلب (كما هو موصى به في هذه الدورة)، فتعامل مع تكاليف DynamoDB على أنها قائمة على الطلبات لا على حسابات السعة المهيّأة. وأسهل طريقة للبقاء دقيقًا هي فحص صفحة أسعار DynamoDB الحالية أو الحاسبة بدلًا من حفظ أرقام الطبقة المجانية القديمة.
 
 ### Route 53
 
-**No free tier.** Route 53 charges $0.50 per hosted zone per month, plus $0.40 per million DNS queries for the first billion queries. For a single domain with normal traffic, expect to pay about $0.50–$1.00 per month. This is one of the few services in this course that costs money from day one.
+**لا طبقة مجانية.** تكلّف Route 53 دولارًا واحدًا لكل نطاق مستضاف شهريًا، إضافة إلى 0.40 دولار لكل مليون استعلام DNS لأول مليار استعلام. ولنطاق واحد بحركة مرور عادية، توقّع دفع نحو 0.50–1.00 دولار شهريًا. وهذه إحدى الخدمات القليلة في هذه الدورة التي تكلّف مالًا من اليوم الأول.
 
 ### CloudWatch
 
-**Always free** (no 12-month expiration):
+**مجاني دائمًا** (بلا انتهاء بعد 12 شهرًا):
 
-- 10 custom or detailed monitoring metrics
-- 10 standard alarm metrics
-- 1,000,000 API requests
-- 5 GB across log ingestion, archive storage, and Logs Insights scanning
-- 3 dashboards with up to 50 metrics each
+- 10 مقاييس مراقبة مخصّصة أو تفصيلية
+- 10 مقاييس إنذار قياسية
+- 1,000,000 طلب API
+- 5 GB إجمالًا عبر إدخال السجلات وتخزين الأرشيف وفحص Logs Insights
+- 3 لوحات معلومات حتى 50 مقياسًا لكل منها
 
-Lambda automatically sends logs to CloudWatch. The 5 GB shared log allowance is where you’re most likely to hit a boundary—if your Lambda functions log aggressively, you can exceed it quickly. Set log retention to 7 or 14 days on your log groups to keep storage costs down.
+ترسل Lambda السجلات إلى CloudWatch تلقائيًا. ومخصّص السجلات المشترك البالغ 5 GB هو أرجح مكان تصل فيه إلى حد — فإذا كانت دوال Lambda تسجّل بكثافة، فيمكنك تجاوزه بسرعة. اضبط احتفاظ السجلات على 7 أو 14 يومًا في مجموعات سجلاتك لإبقاء تكاليف التخزين منخفضة.
 
-## Setting Up a Budget Alarm
+## إعداد إنذار ميزانية
 
-AWS Budgets lets you define a spending threshold and get notified when you approach it. This takes five minutes and can save you from a surprise bill.
+تتيح لك AWS Budgets تعريف حد إنفاق وتلقي إشعار عند الاقتراب منه. ويستغرق هذا خمس دقائق ويمكن أن ينقذك من فاتورة مفاجئة.
 
-### Using the Console
+### استخدام لوحة التحكم
 
-The fastest way to set up your first budget:
+أسرع طريقة لإعداد ميزانيتك الأولى:
 
-1. Open the **AWS Billing and Cost Management** console.
-2. Click **Budgets** in the left sidebar.
-3. Click **Create budget**.
-4. Select **Customize (advanced)** and then **Cost budget**.
-5. Set the budget amount to something low—$5 or $10 per month is reasonable for a learning account.
-6. Add a notification threshold at 80% of your budget. Enter your email address as the notification target.
-7. Add a second notification at 100%.
-8. Click **Create budget**.
+1. افتح لوحة تحكم **AWS Billing and Cost Management**.
+2. انقر **Budgets** في الشريط الجانبي الأيسر.
+3. انقر **Create budget**.
+4. اختر **Customize (advanced)** ثم **Cost budget**.
+5. اضبط مبلغ الميزانية على قيمة منخفضة — 5 أو 10 دولارات شهريًا معقولة لحساب تعليمي.
+6. أضف حد إشعار عند 80% من ميزانيتك. وأدخل عنوان بريدك الإلكتروني كهدف الإشعار.
+7. أضف إشعارًا ثانيًا عند 100%.
+8. انقر **Create budget**.
 
-### Using the CLI
+### استخدام CLI
 
-You can also create a budget programmatically. First, create a JSON file with your budget definition:
+يمكنك أيضًا إنشاء ميزانية برمجيًا. أولًا، أنشئ ملف JSON بتعريف ميزانيتك:
 
 ```json
 {
@@ -115,7 +115,7 @@ You can also create a budget programmatically. First, create a JSON file with yo
 }
 ```
 
-Then create the notification configuration:
+ثم أنشئ إعداد الإشعار:
 
 ```json
 [
@@ -150,7 +150,7 @@ Then create the notification configuration:
 ]
 ```
 
-Then run:
+ثم شغّل:
 
 ```bash
 aws budgets create-budget \
@@ -161,57 +161,57 @@ aws budgets create-budget \
   --output json
 ```
 
-You’ll receive an email when your actual spending crosses 80% and 100% of your $10 monthly budget.
+ستتلقى بريدًا إلكترونيًا عندما يتجاوز إنفاقك الفعلي 80% و100% من ميزانيتك الشهرية البالغة 10 دولارات.
 
-> **Warning**
+> **تحذير**
 >
-> Budget alerts aren’t real-time. AWS evaluates budgets multiple times per day, but there can be a delay of several hours between when you incur a charge and when the alert fires. Don’t rely on budget alerts as a hard spending cap—they’re an early warning system, not a kill switch.
+> تنبيهات الميزانية ليست فورية. فتقيّم AWS الميزانيات عدة مرات يوميًا، لكن قد يكون هناك تأخير من عدة ساعات بين تكبّدك رسمًا وانطلاق التنبيه. لا تعتمد على تنبيهات الميزانية كسقف إنفاق صارم — فهي نظام إنذار مبكر، لا مفتاح إيقاف.
 
-## The Billing Dashboard and Cost Explorer
+## لوحة الفوترة وCost Explorer
 
-Two tools in the AWS console help you understand where your money is going:
+تساعدك أداتان في لوحة تحكم AWS على فهم أين يذهب مالك:
 
-### Billing Dashboard
+### لوحة الفوترة
 
-The **Billing and Cost Management Dashboard** shows your current month’s charges broken down by service. Open it from the console’s top navigation bar (click your account name, then “Billing and Cost Management”). This is the page you should check once a week while you’re learning AWS.
+تعرض **Billing and Cost Management Dashboard** رسوم شهرك الحالي مقسّمة حسب الخدمة. افتحها من شريط التنقل العلوي في لوحة التحكم (انقر اسم حسابك، ثم «Billing and Cost Management»). وهذه هي الصفحة التي ينبغي أن تفحصها مرة أسبوعيًا أثناء تعلم AWS.
 
-Billing and Cost Management home showing the cost summary, cost monitor, and recommended actions panels.
+الصفحة الرئيسية لـ Billing and Cost Management وهي تعرض ملخّص التكلفة ومراقب التكلفة ولوحات الإجراءات الموصى بها.
 
-The dashboard shows:
+تعرض لوحة المعلومات:
 
-- **Month-to-date charges** broken down by service
-- **Free tier usage** showing how much of each service’s free tier you have consumed
-- **Forecasted end-of-month charges** based on your current usage pattern
+- **رسوم الشهر حتى تاريخه** مقسّمة حسب الخدمة
+- **استخدام الطبقة المجانية** الذي يوضح مقدار ما استهلكته من الطبقة المجانية لكل خدمة
+- **الرسوم المتوقعة لنهاية الشهر** بناءً على نمط استخدامك الحالي
 
-If your `admin` user cannot open this page, you probably skipped **IAM user and role access to Billing information** during the initial account setup. Go back to [Creating and Securing an AWS Account](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) and enable it from the billing settings page as root.
+إذا تعذّر على مستخدم `admin` لديك فتح هذه الصفحة، فالأرجح أنك تجاوزت **وصول مستخدمي وأدوار IAM إلى معلومات الفوترة** أثناء إعداد الحساب الأولي. عُد إلى [إنشاء حساب AWS وتأمينه](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) ومكّنه من صفحة إعدادات الفوترة بوصفك المستخدم الجذر.
 
 ### Cost Explorer
 
-**Cost Explorer** is more powerful. It lets you visualize spending over time, filter by service, and identify trends. It’s particularly useful for answering questions like “why did my bill jump this month?”—you can drill into individual services and see day-by-day spending.
+**Cost Explorer** أقوى. فهو يتيح لك تصوّر الإنفاق بمرور الوقت، والتصفية حسب الخدمة، وتحديد الاتجاهات. وهو مفيد خاصة للإجابة عن أسئلة مثل «لماذا قفزت فاتورتي هذا الشهر؟» — فيمكنك التعمّق في خدمات فردية ورؤية الإنفاق يومًا بيوم.
 
-To enable Cost Explorer:
+لتمكين Cost Explorer:
 
-1. Open the Billing console.
-2. Click **Cost Explorer** in the left sidebar.
-3. Click **Launch Cost Explorer** if this is your first time.
+1. افتح لوحة تحكم الفوترة.
+2. انقر **Cost Explorer** في الشريط الجانبي الأيسر.
+3. انقر **Launch Cost Explorer** إن كانت هذه أول مرة لك.
 
-Cost Explorer itself is free for the basic functionality. The API version charges per request, but you don’t need the API for manual investigation.
+Cost Explorer نفسه مجاني للوظائف الأساسية. أما نسخة API فتكلّف لكل طلب، لكنك لا تحتاج إلى API للتحقيق اليدوي.
 
-> **Tip**
+> **نصيحة**
 >
-> Enable **Free Tier usage alerts** in the Billing preferences. Go to Billing, then Preferences, then Billing Preferences, and check “Receive Free Tier Usage Alerts.” AWS will email you when any service approaches 85% of its free tier limit—a separate, more granular alert than the budget alarm you set up above.
+> مكّن **Free Tier usage alerts** في تفضيلات الفوترة. انتقل إلى Billing، ثم Preferences، ثم Billing Preferences، وحدّد «Receive Free Tier Usage Alerts». وستراسلك AWS عندما تقترب أي خدمة من 85% من حد طبقته المجانية — وهو تنبيه منفصل وأكثر تفصيلًا من إنذار الميزانية الذي أعددته أعلاه.
 
-## The Services That Catch People Off Guard
+## الخدمات التي تفاجئ الناس
 
-Most of the services in this course are either always-free or comfortably within the 12-month free tier for development workloads. But a few have caught people off guard:
+معظم الخدمات في هذه الدورة إما مجانية دائمًا أو تقع بارتياح ضمن الطبقة المجانية لمدة 12 شهرًا لأحمال التطوير. لكن قليلًا منها فاجأ الناس:
 
-**Route 53 hosted zones** cost $0.50/month each. If you created multiple hosted zones while experimenting, each one costs $0.50/month whether you use it or not. Delete hosted zones you aren’t using.
+**النطاقات المستضافة في Route 53** تكلّف 0.50 دولار شهريًا لكل نطاق. فإذا أنشأت نطاقات مستضافة متعددة أثناء التجربة، فكل واحد يكلّف 0.50 دولار شهريًا سواء استخدمته أم لا. احذف النطاقات المستضافة التي لا تستخدمها.
 
-**CloudWatch Logs storage** charges $0.03 per GB per month after the free tier. If your Lambda functions log verbose output on every invocation and you never set a retention policy, the logs accumulate indefinitely. Set a retention period on every log group.
+**تخزين CloudWatch Logs** يكلّف 0.03 دولار لكل GB شهريًا بعد الطبقة المجانية. فإذا كانت دوال Lambda تسجّل مخرجات مطوّلة في كل استدعاء ولم تضبط سياسة احتفاظ قط، فستتراكم السجلات بلا نهاية. اضبط فترة احتفاظ على كل مجموعة سجلات.
 
-**Forgotten resources** are the real danger. I’ve been bitten by this more than once. A Lambda function that isn’t invoked costs nothing. A DynamoDB table with provisioned capacity that nobody reads from still costs money for the provisioned throughput. An Elastic IP address that’s allocated but not attached to a running instance costs $0.005 per hour. The pattern is always the same: you created something while experimenting, you forgot about it, and it accrues charges quietly.
+**الموارد المنسية** هي الخطر الحقيقي. وقد لُدغت من هذا أكثر من مرة. فدالة Lambda لا تُستدعى لا تكلّف شيئًا. أما جدول DynamoDB بسعة مهيّأة لا يقرأ منه أحد فلا يزال يكلّف مالًا مقابل معدّل النقل المهيّأ. وعنوان Elastic IP مخصّص لكنه غير مرتبط بمثيل عامل يكلّف 0.005 دولار في الساعة. والنمط دائمًا هو نفسه: أنشأت شيئًا أثناء التجربة، ونسيته، فتراكمت عليه الرسوم بهدوء.
 
-Run this periodically to check for resources you might have forgotten:
+شغّل هذا دوريًا لفحص الموارد التي ربما نسيتها:
 
 ```bash
 aws s3 ls --region us-east-1
@@ -225,21 +225,21 @@ aws dynamodb list-tables --region us-east-1 --output json
 aws lambda list-functions --region us-east-1 --output json
 ```
 
-If anything shows up that you don’t recognize or no longer need, delete it.
+إذا ظهر أي شيء لا تعرفه أو لم تعد تحتاجه، فاحذفه.
 
-## A Reasonable Budget for This Course
+## ميزانية معقولة لهذه الدورة
 
-If you’re working through this course with a single project, here’s what to expect:
+إذا كنت تعمل في هذه الدورة بمشروع واحد، فهذا ما تتوقعه:
 
-- **During the 12-month free tier period:** $0.50–$2.00 per month, almost entirely from Route 53 and minor CloudWatch overages.
-- **After the 12-month free tier expires:** $2.00–$5.00 per month for a low-traffic application, assuming Lambda and DynamoDB stay within their always-free limits.
-- **If something goes wrong:** The most common surprise bill is $10–$50 from a forgotten resource or an unexpectedly verbose logging configuration.
+- **خلال فترة الطبقة المجانية البالغة 12 شهرًا:** 0.50–2.00 دولار شهريًا، ومعظمها من Route 53 وتجاوزات CloudWatch الطفيفة.
+- **بعد انتهاء الطبقة المجانية البالغة 12 شهرًا:** 2.00–5.00 دولار شهريًا لتطبيق منخفض الحركة، بافتراض بقاء Lambda وDynamoDB ضمن حدودهما المجانية الدائمة.
+- **إذا ساء شيء:** أكثر فاتورة مفاجئة شيوعًا هي 10–50 دولارًا من مورد منسي أو إعداد تسجيل مطوّل أكثر من المتوقع.
 
-Setting up a $10 monthly budget alarm—which you just did—covers all of these scenarios. If you get that email, something is either misconfigured or getting more traffic than you expected. Either way, you’ll want to know about it.
+إعداد إنذار ميزانية شهري بقيمة 10 دولارات — وهو ما فعلته للتو — يغطّي كل هذه السيناريوهات. فإذا تلقيت ذلك البريد، فإما أن شيئًا مهيّأ بشكل خاطئ أو أنك تتلقى حركة مرور أكبر مما توقعت. وفي الحالتين، ستريد معرفة ذلك.
 
-## Cleanup
+## التنظيف
 
-When you’re done with the course, delete the budget to avoid stale notifications:
+حين تنتهي من الدورة، احذف الميزانية لتجنّب إشعارات قديمة:
 
 ```bash
 aws budgets delete-budget \
@@ -247,4 +247,4 @@ aws budgets delete-budget \
   --budget-name my-frontend-app-monthly
 ```
 
-Replace `123456789012` with your actual account ID. AWS Budgets charges $0.02 per budget per day after the first two budgets—for a single learning account, this stays within the free tier indefinitely, but deleting it keeps things tidy.
+استبدل `123456789012` بمعرّف حسابك الفعلي. تكلّف AWS Budgets 0.02 دولار لكل ميزانية يوميًا بعد أول ميزانيتين — ولحساب تعليمي واحد، يبقى هذا ضمن الطبقة المجانية إلى ما لا نهاية، لكن حذفها يبقي الأمور مرتبة.

@@ -1,16 +1,16 @@
 ---
-title: "Edge, SSR, and Hydration Payload Types"
-lang: en
+title: "الحوافّ، وSSR، وأنواع حمولات الترطيب"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/edge-ssr-hydration"
 ---
 
-React 19’s modern SSR and streaming capabilities are powerful, but they come with a hidden complexity: your data needs to survive a treacherous journey from server to client, often through multiple runtimes, serialization boundaries, and hydration phases. One small type mismatch—like a `Date` object that becomes a string, or an `undefined` that vanishes entirely—can turn your perfectly typed server code into a client-side hydration mismatch nightmare. Let’s explore how to build bulletproof hydration payload types that work seamlessly across edge functions, Node.js servers, and React’s hydration process.
+قدرات التصيير من جانب الخادم (SSR) والبثّ (streaming) الحديثة في React 19 قوية، لكنها تأتي بتعقيدٍ خفي: فعليَ بياناتك أن تنجو من رحلة خطِرة من الخادم إلى العميل، مرورًا ببيئات تنفيذ (runtimes) متعددة وحدود تسلسل (serialization) ومراحل ترطيب (hydration). وإنّ اختلالًا صغيرًا في الأنواع—مثل كائن `Date` يغدو سلسلة نصّية، أو `undefined` يختفي كليًّا—قد يحوّل شيفرتك جهة الخادم المحدَّدة الأنواع على نحوٍ مثالي إلى كابوس عدم تطابق الترطيب (hydration mismatch) في العميل. لنستكشف كيف نبني أنواع حمولات ترطيب متينةً تعمل بسلاسة عبر دوال الحوافّ (edge functions)، وخوادم Node.js، وعملية ترطيب React.
 
-## The Hydration Payload Problem
+## مشكلة حمولة الترطيب
 
-Hydration is React’s process of “bringing to life” server-rendered HTML by attaching event handlers and making it interactive. But there’s a critical step in between: your server data must be serialized (usually to JSON), embedded in the HTML, then deserialized and passed to your React components.
+الترطيب (hydration) هو عملية React في إحياء HTML المُصيَّر على الخادم بربطه مع معالجات الأحداث وجعله تفاعليًّا. لكن بينهما توجد خطوة حرجة: على بياناتك أن تُسلسَل (إلى JSON في الغالب)، وأن تُغرز في HTML، ثم يُفكّ تسلسلها وتمرَّر إلى مكوّنات (components) React.
 
-This seemingly simple process is where many type-safe applications break down:
+في هذه العملية البسيطة ظاهريًّا تنهار تطبيقات كثيرة آمنة الأنواع:
 
 ```typescript
 // ❌ Server code - looks perfectly typed
@@ -41,11 +41,11 @@ const actualClientData = {
 };
 ```
 
-The client-side component expects a `User` with a `Date` object, but receives a string. TypeScript can’t catch this because the serialization happens at runtime, creating a hydration mismatch.
+يتوقّع مكوّن (component) العميل `User` فيه كائن `Date`، لكنه يستقبل سلسلة نصّية. ولا يُمسكه TypeScript لأنّ التسلسل يقع وقت التشغيل، ما يخلق عدم تطابق ترطيب.
 
-## Building Serialization-Safe Types
+## بناء أنواع آمنة التسلسل
 
-The solution starts with designing types that explicitly account for the serialization boundary. Instead of hoping your rich types survive the journey, design payload types that are inherently JSON-safe:
+يبدأ الحل بتصميم أنواع تراعي بوضوح حدّ التسلسل. وبدلًا من الأمل في أن تنجو أنواعك الغنية في الرحلة، صمّم أنواع حمل (payload) آمنة JSON بطبيعتها:
 
 ```typescript
 import { z } from 'zod';
@@ -75,15 +75,15 @@ export interface ClientUser {
 }
 ```
 
-Notice the key differences in the hydration payload type:
+لاحظ الفروق الجوهرية في نوع حمولة الترطيب:
 
-- `Date` objects become ISO strings
-- Optional properties become explicit `null` (since `undefined` gets dropped by JSON)
-- We use Zod to validate the shape at runtime
+- الكائنات `Date` تغدو سلاسل ISO
+- الخصائص الاختيارية تغدو `null` صريحةً (لأن JSON يُسقِط `undefined`)
+- نستخدم Zod للتحقّق من البنية وقت التشغيل
 
-## The Hydration Contract Pattern
+## نمط عقد الترطيب
 
-Create explicit contracts between your server and client that handle the type transformations:
+أنشئ عقودًا صريحة بين الخادم والعميل تُدير تحويلات الأنواع:
 
 ```typescript
 // hydration-contract.ts
@@ -149,9 +149,9 @@ export function UserProfile({ userPayload }: UserProfileProps) {
 }
 ```
 
-## Edge Runtime Considerations
+## اعتبارات وقت التنفيذ في الحوافّ
 
-Edge functions add another layer of complexity. They run in a constrained environment with limited APIs, and your hydration payloads need to be especially lightweight. Here’s how to build edge-optimized hydration contracts:
+تضيف دوال الحوافّ (edge functions) طبقة تعقيد إضافية. فهي تعمل في بيئة مقيَّدة بواجهات محدودة، وتحتاج حمولات الترطيب لديك إلى أن تكون خفيفة الوزن بوجهٍ خاصة. هكذا تبني عقود ترطيب محسّنة للحوافّ:
 
 ```typescript
 // edge-safe-types.ts
@@ -202,9 +202,9 @@ export class EdgeHydrationContract {
 }
 ```
 
-## Handling Hydration Mismatches
+## التعامل مع عدم تطابق الترطيب
 
-Even with careful typing, hydration mismatches can still occur. React 19 provides better tools for handling these gracefully:
+حتى مع تحديد الأنواع بعناية، قد يقع عدم تطابق الترطيب. React 19 يوفّر أدوات أفضل للتعامل مع هذه الحالات بسلاسة:
 
 ```typescript
 import { useSyncExternalStore } from 'react';
@@ -287,13 +287,13 @@ export function UserProfile({ userPayload }: UserProfileProps) {
 }
 ```
 
-## Advanced Payload Optimization
+## تحسين الحمولات المتقدّم
 
-For complex applications, you might need more sophisticated payload handling:
+قد تحتاج في التطبيقات المعقّدة إلى معالجة حمولات أكثر تطوّرًا:
 
-### Chunked Payloads
+### الحمولات المجزَّأة
 
-Split large hydration payloads into chunks that can be loaded progressively:
+قسّم حمولات الترطيب الكبيرة إلى قطع تُحمَّل تدرّجيًّا:
 
 ```typescript
 // ✅ Chunked hydration for large datasets
@@ -339,9 +339,9 @@ export function useChunkedUser(chunks: Partial<z.infer<typeof UserPayloadChunkSc
 }
 ```
 
-### Compressed Payloads
+### الحمولات المضغوطة
 
-For edge functions with size constraints, implement payload compression:
+في دوال الحوافّ ذوات قيود الحجم، نفّذ ضغطًا للحمولات:
 
 ```typescript
 // ✅ Compressed payloads for edge functions
@@ -375,9 +375,9 @@ export class CompressedHydrationContract {
 }
 ```
 
-## Testing Hydration Payloads
+## اختبار حمولات الترطيب
 
-Don’t forget to test your hydration contracts thoroughly:
+لا تنسَ اختبار عقود الترطيب لديك اختبارًا شاملًا:
 
 ```typescript
 // hydration-contract.test.ts
@@ -430,9 +430,9 @@ describe('HydrationContract', () => {
 });
 ```
 
-## Real-World Implementation Example
+## مثال تنفيذ من الواقع
 
-Here’s a complete implementation showing all these patterns working together:
+هذا تنفيذ كامل يريك كل هذه الأنماط وهي تعمل معًا:
 
 ```typescript
 // user-hydration-system.ts
@@ -544,15 +544,15 @@ export async function GET(request: Request) {
 }
 ```
 
-## Key Takeaways
+## الخلاصات الأساسية
 
-Building reliable hydration payload types requires thinking beyond TypeScript’s compile-time guarantees:
+يتطلّب بناء أنواع موثوقة لحمولات الترطيب تفكيرًا فيما وراء ضمانات TypeScript وقت التصريف:
 
-1. **Design for serialization**—your types should be inherently JSON-safe
-2. **Validate at runtime**—use Zod to catch payload mismatches before they cause hydration errors
-3. **Handle undefined vs null**—JSON serialization drops undefined values, so use null explicitly
-4. **Consider your runtime**—edge functions have different constraints than Node.js servers
-5. **Test the full journey**—validate that your payloads survive server → JSON → client transformations
-6. **Plan for errors**—hydration mismatches will happen; handle them gracefully
+1. **صمّم مع التسلسل**—ينبغي أن تكون أنواعك آمنة JSON بطبيعتها
+2. **تحقّق وقت التشغيل**—استخدم Zod لالتقاط عدم مطابقة الحمولة قبل أن تُسبّب أخطاء ترطيب
+3. **عالج الفرق بين `undefined` و`null`**—تسلسل JSON يُسقِط قيم `undefined`، فاستعمل `null` صريحةً
+4. **راعِ بيئة تنفيذك**—قيود دوال الحوافّ مختلفة عن خوادم Node.js
+5. **اختبر الرحلة كاملةً**—تحقّق أنّ حمولاتك تجتاز تحولات الخادم ← JSON ← العميل
+6. **خطّط للأخطاء**—سوف تقع حالات عدم تطابق الترطيب؛ فتعامل معها بسلاسة
 
-The result is React applications with rock-solid type safety that works seamlessly across any deployment target—whether you’re running on traditional servers, serverless functions, or edge runtimes. Your users won’t see hydration mismatches, and your fellow developers will thank you for the predictable, well-typed data contracts.
+النتيجة تطبيقات React بأمان أنواعٍ صخريّ يعمل بسلاسة عبر أيّ هدف نشر (deployment)—سواء كنت تشغّل على خوادم تقليدية، أو دوال بلا خادم (serverless)، أو بيئات تنفيذ الحوافّ. لن يرى مستخدموك عدم تطابق ترطيب، وسيشكرك زملاؤك المطوّرون على عقود البيانات المتوقَّعة وسليمة الأنواع.

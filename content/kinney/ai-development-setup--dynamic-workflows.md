@@ -1,38 +1,38 @@
 ---
-title: "Dynamic Workflows"
-lang: en
+title: "سيَرات العمل الديناميكية (Dynamic Workflows)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/dynamic-workflows"
 ---
 
-The word “workflow” gets used for a lot of things. It can mean your team’s process, a [skill](https://stevekinney.com/courses/ai-development-setup/skills) that walks the agent through steps, or a CI pipeline. Here it means one specific thing, so let’s pin it down.
+كلمة «سير العمل» تُستخدم لأشياء كثيرة. فقد تعني عملية فريقك، أو [مهارة](https://stevekinney.com/courses/ai-development-setup/skills) تمشي بالوكيل خلال خطوات، أو خط أنابيب CI. وهنا تعني شيئًا واحدًا محدّدًا، فلنثبّته.
 
-A **dynamic workflow** is a JavaScript script that orchestrates many [subagents](https://stevekinney.com/courses/ai-development-setup/subagents)—helper agents that each start with a fresh context and a written brief and return only a final report. Claude writes the script for your task, and the workflow runtime built into Claude Code runs it in the background while your session stays responsive. Instead of representing the plan in words, you represent it in code.
+**سير العمل الديناميكي (dynamic workflow)** سكربت JavaScript ينسّق العديد من [الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagents)—وكلاء مساعدون يبدأ كل منهم بسياق جديد وموجز مكتوب ولا يعيد سوى تقرير نهائي. يكتب Claude السكربت لمهمتك، وتشغّله بيئة تشغيل سيَر العمل المدمجة في Claude Code في الخلفية بينما تبقى جلستك مستجيبة. فبدلًا من تمثيل الخطة بالكلمات، تمثّلها بالشيفرة.
 
-Claude still *writes* the plan. What moves into code is *running* it. The loops, branches, and intermediate results live in script variables, so Claude’s [context](https://stevekinney.com/courses/ai-development-setup/why-systems)—everything the model can see when it picks its next step—gets only the final answer, not every report along the way.
+ولا يزال Claude *يكتب* الخطة. فالذي ينتقل إلى الشيفرة هو *تشغيلها*. فالحلقات والتفرّعات والنتائج الوسيطة تعيش في متغيّرات السكربت، فلا يحصل [سياق](https://stevekinney.com/courses/ai-development-setup/why-systems) Claude—كل ما يراه النموذج حين يختار خطوته التالية—إلا على الإجابة النهائية، لا على كل تقرير في الطريق.
 
-The control flow is ordinary code, so step order is deterministic. The agents inside it aren’t: each is still a model, and its output can vary. OpenClaw’s [Code Mode](https://docs.openclaw.ai/tools/code-mode) is a similar idea under a different name.
+والتدفّق التحكّمي شيفرة عادية، فترتيب الخطوات حتمي. أما الوكلاء داخله فليسوا كذلك: فكل منهم لا يزال نموذجًا، ومخرجاته قد تتفاوت. و [Code Mode](https://docs.openclaw.ai/tools/code-mode) في OpenClaw فكرة مشابهة تحت اسم مختلف.
 
-The script breaks a large task into bounded units of work with definite interfaces between steps, then fans them out in parallel or runs them as a serial pipeline.
+يقسّم السكربت مهمة كبيرة إلى وحدات عمل محدودة بواجهات محدّدة بين الخطوات، ثم ينشرها بالتوازي أو يشغّلها كخط أنابيب تسلسلي.
 
-Workflows are ephemeral by default. You can save a script and re-run it exactly as written, which [Running Workflows](https://stevekinney.com/courses/ai-development-setup/running-workflows) covers. If you’d rather capture the *design* and let Claude write a fresh script for each task, put it in a skill instead.
+وسيَر العمل زائلة افتراضيًا. يمكنك حفظ سكربت وإعادة تشغيله كما هو مكتوب بالضبط، وهو ما يغطّيه [تشغيل سيَر العمل](https://stevekinney.com/courses/ai-development-setup/running-workflows). وإن كنت تفضّل التقاط *التصميم* وترك Claude يكتب سكربتًا جديدًا لكل مهمة، فضع ذلك في مهارة بدلًا من ذلك.
 
-## The vocabulary
+## المفردات
 
-These names come up constantly. They’re mostly self-explanatory, and together they’re the mental model.
+تظهر هذه الأسماء باستمرار. ومعظمها بيّن بنفسه، وهي معًا النموذج الذهني.
 
-- `meta`: A literal object that names and describes the workflow, and optionally lists its phases.
-- `agent(prompt, opts?)`: Runs one subagent. Pass a `schema` (a description of the shape of the object you want back) and you get a validated object instead of prose.
-- `pipeline(items, ...stages)`: Sends every item through every stage, each item moving at its own pace.
-- `parallel(thunks)`: Runs a list of functions at once and waits for all of them before returning.
-- `phase(title)`: Starts a named progress group in the `/workflows` view, so you can see where the run is.
-- `log(message)`: Records a progress message for the run.
-- `workflow(nameOrRef, args?)`: Runs another saved workflow, by name or reference, and passes it arguments.
-- `args`: The arguments the workflow was started with.
-- `budget`: An object shaped like `{ total, spent(), remaining() }` that tells the script how many tokens it has left, so it can size its fan-out to fit.
+- `meta`: كائن حرفي يسمّي سير العمل ويصفه، ويسرد مراحله اختياريًا.
+- `agent(prompt, opts?)`: يشغّل وكيلًا فرعيًا واحدًا. مرّر `schema` (وصفًا لشكل الكائن الذي تريده رجوعًا) فتحصل على كائن متحقَّق منه بدلًا من نثر.
+- `pipeline(items, ...stages)`: يرسل كل عنصر خلال كل مرحلة، ويتحرّك كل عنصر بوتيرته الخاصة.
+- `parallel(thunks)`: يشغّل قائمة دوال دفعة واحدة وينتظرها كلها قبل أن يعود.
+- `phase(title)`: يبدأ مجموعة تقدّم مسماة في عرض `/workflows`، فترى أين وصل التشغيل.
+- `log(message)`: يسجّل رسالة تقدّم للتشغيل.
+- `workflow(nameOrRef, args?)`: يشغّل سير عمل محفوظًا آخر، بالاسم أو بالمرجع، ويمرّر إليه وسائط.
+- `args`: الوسائط التي بدأ بها سير العمل.
+- `budget`: كائن بشكل `{ total, spent(), remaining() }` يخبر السكربت بكم رمز بقي له، فيحجم نشره ليلائم.
 
-## A tiny example
+## مثال صغير
 
-Here’s the smallest useful one. The first agent lists API routes, the pipeline sends each route to its own reviewer, and the script returns the findings. The uppercase names (`ROUTES`, `FINDING`) are schemas whose definitions I’ve left out to keep things short.
+إليك أصغر مثال مفيد. يسرد الوكيل الأول مسارات API، ويرسل خط الأنابيب كل مسار إلى مراجعه الخاص، ويعيد السكربت النتائج. والأسماء بالأحرف الكبيرة (`ROUTES`, `FINDING`) مخططات تركت تعريفاتها للإيجاز.
 
 ```javascript
 export const meta = { name: 'route-audit', description: 'Audit routes' };
@@ -47,13 +47,13 @@ log('Reviewed ' + findings.length + ' routes');
 return findings;
 ```
 
-Notice what *isn’t* here. There’s no instruction telling Claude to remember each finding or keep count. The script holds all of that, and the `return` is the only thing Claude sees.
+لاحظ ما *ليس* هنا. لا توجد تعليمة تطلب من Claude أن يتذكّر كل نتيجة أو يحصي. فالسكربت يحمل كل ذلك، و `return` هو الشيء الوحيد الذي يراه Claude.
 
-One gap: there’s no failure handling. `findings.length` counts failed items, so the log line can overstate how many routes were reviewed, and if the first call fails, the next line throws. The section on errors and null results below explains why.
+وثمّة ثغرة: لا معالجة للفشل. فـ `findings.length` يحصي العناصر الفاشلة، فيمكن لسطر السجل أن يبالغ في عدد المسارات التي روجعت، وإن فشل النداء الأول، يَطرح السطر التالي. ويشرح قسم الأخطاء والنتائج الفارغة أدناه السبب.
 
-## A bigger example
+## مثال أكبر
 
-This one has two phases. A scanning agent finds the flaky tests, and then one agent per test proposes a fix.
+هذا له مرحلتان. يجد وكيل مسح الاختبارات المتذبذبة، ثم يقترح وكيل لكل اختبار إصلاحًا.
 
 ```javascript
 export const meta = {
@@ -80,33 +80,33 @@ const fixes = await pipeline(flaky.tests, (t) =>
 return fixes;
 ```
 
-A few details are doing real work in that script:
+وثمّة تفاصيل تقوم بعمل حقيقي في ذلك السكربت:
 
-- `meta` is a pure literal. No variables, calls, spreads, or template interpolation. `name` and `description` are required.
-- Every `phase()` title matches a `meta.phases` entry exactly. If it doesn’t, it gets its own separate progress group.
+- `meta` حرفي خالص. لا متغيّرات، ولا نداءات، ولا نشر، ولا إدراج قوالب. و `name` و `description` مطلوبان.
+- كل عنوان `phase()` يطابق مدخلًا في `meta.phases` بالضبط. وإن لم يفعل، يحصل على مجموعة تقدّم منفصلة خاصة به.
 
-## Pipeline versus parallel
+## خط الأنابيب مقابل التوازي
 
-`pipeline()` lets each item advance through its stages independently, with no barrier between stages. That doesn’t mean every item gets a worker right away: agents beyond the concurrency limit queue for a slot. If the whole fan-out fits the available slots, the slowest item sets the runtime. Larger fan-outs also pay for queued waves of work. The [workflow limits](https://code.claude.com/docs/en/workflows#behavior-and-limits) default to at most 16 concurrent agents, sometimes fewer on CPU-limited systems.
+يتيح `pipeline()` لكل عنصر أن يتقدّم خلال مراحله باستقلال، بلا حاجز بين المراحل. ولا يعني ذلك أن كل عنصر يحصل على عامل فورًا: فالوكلاء بعد حدّ التزامن يصطفّون في انتظار مقعد. وإن لاءم النشر الكامل المقاعد المتاحة، فالبند الأبطأ هو من يحدّد مدة التشغيل. والنشرات الأكبر تدفع أيضًا مقابل موجات عمل مصطفّة. و [حدود سيَر العمل](https://code.claude.com/docs/en/workflows#behavior-and-limits) تقف افتراضيًا عند 16 وكيلًا متزامنًا على الأكثر، وأقل أحيانًا على أنظمة محدودة المعالج.
 
-`parallel()` is a barrier. It waits for every function in its list before it returns, so nothing after it starts until the slowest one finishes. Reach for it only when the next step needs every result at once, like deduplicating findings across all the reviewers.
+و `parallel()` حاجز. ينتظر كل دالة في قائمته قبل أن يعود، فلا يبدأ شيء بعده حتى ينتهي أبطؤها. ولا تمدّ يدك إليه إلا حين تحتاج الخطوة التالية إلى كل النتائج دفعة واحدة، مثل إزالة تكرار النتائج عبر المراجعين كلهم.
 
-The barrier’s cost is easy to underestimate. Take three items and two stages, with enough agents to run them all at once and durations in minutes:
+وكلفة الحاجز يسهل الاستهانة بها. خذ ثلاثة عناصر ومرحلتين، مع وكلاء كافين لتشغيلها كلها في وقت واحد ومدد بالدقائق:
 
-| Item | Stage 1 | Stage 2 | Its own path |
+| العنصر | المرحلة 1 | المرحلة 2 | مساره الخاص |
 | --- | --- | --- | --- |
 | A | 1 | 10 | 11 |
 | B | 1 | 1 | 2 |
 | C | 10 | 1 | 11 |
 
-With a barrier between the stages, stage 2 can’t start until C finishes stage 1, so the run takes 10 + 10 = 20 minutes. Pass each item along as soon as it’s ready and the run takes as long as the slowest single path: 11 minutes. Same work, almost half the time, and the more the item durations vary, the bigger the gap. Calling `parallel()` once per stage, or `Promise.all` per stage in your own code, puts the barrier back. The [delegation economics experiment](https://stevekinney.com/experiments/delegation-economics) lets you play with the numbers.
+مع حاجز بين المرحلتين، لا تستطيع المرحلة 2 أن تبدأ حتى ينهي C المرحلة 1، فيستغرق التشغيل 10 + 10 = 20 دقيقة. ومرّر كل عنصر بمجرد أن يجهز، فيستغرق التشغيل بقدر أبطأ مسار منفرد: 11 دقيقة. العمل نفسه، ووقت يقارب النصف، وكلما تفاوتت مدد العناصر كبرت الفجوة. واستدعاء `parallel()` مرة لكل مرحلة، أو `Promise.all` لكل مرحلة في شيفرتك، يعيد الحاجز. و [تجربة اقتصاديات التفويض](https://stevekinney.com/experiments/delegation-economics) تتيح لك اللعب بالأرقام.
 
-## Errors and null results
+## الأخطاء والنتائج الفارغة
 
-The [workflow documentation](https://code.claude.com/docs/en/workflows#what-the-saved-script-looks-like) distinguishes two failures. If structured output still fails schema validation after five attempts, `agent()` throws an error containing the last validation failure. Catch it and record a failed item, or let it stop the workflow—just don’t count that item as reviewed.
+تفرّق [وثائق سيَر العمل](https://code.claude.com/docs/en/workflows#what-the-saved-script-looks-like) بين فشلين. فإن ظلّ المخرج المهيكل يفشل في التحقق من المخطط بعد خمس محاولات، فإن `agent()` يَطرح خطأً يحوي آخر فشل تحقق. التقطه وسجّل عنصرًا فاشلًا، أو دعه يوقف سير العمل—فقط لا تحصُ ذلك العنصر كمُراجَع.
 
-If an agent is stopped mid-run or hits an unrecoverable API error, `agent()` resolves to `null` instead, and `pipeline()` keeps that entry in its results. Check for both exceptions and nulls before reporting success.
+وإن توقّف وكيل في منتصف التشغيل أو صادف خطأ API غير قابل للاسترداد، فإن `agent()` يُحسم إلى `null` بدلًا من ذلك، ويُبقي `pipeline()` ذلك المدخل في نتائجه. افحص الاستثناءات والقيم الفارغة معًا قبل الإبلاغ بالنجاح.
 
-Hold that thought. It’s the reason [Running Workflows](https://stevekinney.com/courses/ai-development-setup/running-workflows) spends a while on failure modes, and why a run that finished isn’t the same as a run that worked.
+أبقِ هذه الفكرة. فهي سبب قضاء [تشغيل سيَر العمل](https://stevekinney.com/courses/ai-development-setup/running-workflows) وقتًا في أنماط الفشل، وسبب أن تشغيلًا انتهى ليس مثل تشغيل نجح.
 
-A workflow is a good place to put a plan you trust. It’s a bad place to hide one you haven’t checked.
+سير العمل مكان جيد تضع فيه خطة تثق بها. ومكان سيئ تخفي فيه خطة لم تفحصها.

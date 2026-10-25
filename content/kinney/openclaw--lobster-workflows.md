@@ -1,62 +1,62 @@
 ---
-title: "Lobster Workflows"
-lang: en
+title: "سير عمل Lobster"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/lobster-workflows"
 ---
 
-When your agent does a multi-step job on its own, the model decides every step: call a tool, read the result, decide what’s next, call another tool. That’s flexible, but it’s slow, it costs tokens on every round trip, and it may do things in a slightly different order each time.
+حين يؤدّي وكيلك مهمة متعدّدة الخطوات من تلقاء نفسه، يقرّر النموذج كل خطوة: يستدعي أداة، ويقرأ النتيجة، ويقرّر ما التالي، ويستدعي أداة أخرى. هذا مرن، لكنه بطيء، ويكلّف رموزًا (tokens) في كل ذهاب وإياب، وقد يفعل الأشياء بترتيب مختلف قليلًا في كل مرة.
 
-**Lobster** is for jobs where you already know the steps. It runs a whole pipeline as **one tool call**, passes structured data from step to step, and **pauses for your approval** before any step that changes something. When you approve, it picks up where it stopped without re-running the earlier steps.
+**Lobster** مخصّص للمهام التي تعرف خطواتها مسبقًا. فهو يشغّل خط أنابيب كاملًا في **نداء أداة واحد**، ويمرّر بيانات منظّمة من خطوة إلى أخرى، و**يتوقّف لأخذ موافقتك** قبل أي خطوة تغيّر شيئًا. وحين توافق، يستأنف من حيث توقّف دون إعادة تشغيل الخطوات السابقة.
 
-It’s also where TaskFlow’s job went. The old TaskFlow documentation now redirects to Lobster. See [Choosing an Orchestration Tool](https://stevekinney.com/courses/openclaw/choosing-an-orchestration-tool) for the full story.
+وهو أيضًا حيث انتهت مهمة TaskFlow. فوثائق TaskFlow القديمة تُعيد التوجيه الآن إلى Lobster. راجع [اختيار أداة تنسيق](https://stevekinney.com/courses/openclaw/choosing-an-orchestration-tool) للقصة كاملة.
 
-## Install It
+## تثبيته
 
-Lobster is an official plugin, but it doesn’t ship with OpenClaw. Install it on the Gateway host:
+Lobster إضافة رسمية، لكنه لا يأتي مع OpenClaw. ثبّته على مضيف البوابة:
 
 ```bash
 openclaw plugins install @openclaw/lobster
 openclaw plugins inspect lobster --runtime --json
 ```
 
-A running Gateway picks up the plugin on its own. Plain `inspect` only checks the plugin’s manifest and config, while `--runtime` actually loads it and confirms it registered the `lobster` tool.
+تلتقط البوابة العاملة الإضافة من تلقاء نفسها. و`inspect` وحدها تفحص بيان الإضافة وتهيئتها فقط، أما `--runtime` فتحمّلها فعلًا وتؤكّد أنها سجّلت أداة `lobster`.
 
-Next, allow the tool. Lobster is an optional tool, so it isn’t included unless you add it. Check what you already allow first, because setting the list replaces it:
+بعد ذلك، اسمح بالأداة. فـ Lobster أداة اختيارية، ولا تُدرَج إلا إذا أضفتها. افحص أولًا ما تسمح به بالفعل، لأن تعيين القائمة يستبدله:
 
 ```bash
 openclaw config get tools.alsoAllow
 openclaw config set tools.alsoAllow '["lobster"]'
 ```
 
-If the first command printed entries (like `browser` from [the browser lesson](https://stevekinney.com/courses/openclaw/browser-setup-and-use)), include them in the new list. To allow Lobster for one agent only, set `agents.entries.<id>.tools.alsoAllow` instead.
+إذا طبعت الأوامر الأولى مُدخلات (مثل `browser` من [درس المتصفّح](https://stevekinney.com/courses/openclaw/browser-setup-and-use))، فأدرجها في القائمة الجديدة. وللسماح لـ Lobster لوكيل واحد فقط، عيّن `agents.entries.<id>.tools.alsoAllow` بدلًا من ذلك.
 
-> **Not available in sandboxed sessions**
+> **غير متاح في الجلسات المعزولة**
 >
-> The `lobster` tool is turned off entirely for sandboxed sessions. If you followed the sandboxing section of [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-4-sandboxing), use Lobster from your main, unsandboxed session.
+> تُعطَّل أداة `lobster` تمامًا في الجلسات المعزولة. وإن كنت قد اتّبعت قسم العزل في [الأمن والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-4-sandboxing)، فاستخدم Lobster من جلستك الرئيسية غير المعزولة.
 
-## Pipelines
+## خطوط الأنابيب
 
-The smallest Lobster program is a one-line pipeline. Steps are joined with `|`, and data flows between them as JSON, not text:
+أصغر برنامج Lobster هو خط أنابيب من سطر واحد. تُضمّ الخطوات بـ `|`، وتتدفّق البيانات بينها بصيغة JSON لا كنص:
 
 ```
 exec --json --shell 'echo [3,1,2]' | sort
 ```
 
-`exec --json` runs a shell command and parses its output as JSON. `sort` sorts it. The result is `[1, 2, 3]`.
+يشغّل `exec --json` أمر طرفية ويحلّل خرجه بصيغة JSON. و`sort` ترتّبه. والنتيجة هي `[1, 2, 3]`.
 
-Add `approve` and the pipeline pauses before going further:
+أضف `approve` فيتوقّف خط الأنابيب قبل المتابعة:
 
 ```
 exec --json --shell 'echo [3,1,2]' | sort | approve --preview-from-stdin --limit 5 --prompt 'Keep going?'
 ```
 
-Instead of finishing, the tool returns a status of `needs_approval`, the prompt, a preview of the data, and two ways to resume: a long `resumeToken` and a short `approvalId`.
+فبدلًا من أن ينتهي، تُعيد الأداة حالة `needs_approval`، والمطالبة، ومعاينة للبيانات، وطريقتين للاستئناف: `resumeToken` طويل و`approvalId` قصير.
 
-The Control UI chat showing a lobster result with a status of needs_approval, the Keep going prompt, a three-item preview, a resume token, and an approval ID
+تُظهر محادثة واجهة التحكم نتيجة lobster بحالة needs_approval، ومطالبة Keep going، ومعاينة من ثلاثة عناصر، ورمز استئناف، ومعرّف موافقة
 
-## Workflow Files
+## ملفات سير العمل
 
-Anything more than a few steps belongs in a workflow file. Here’s one that cleans up `.tmp` files in a folder, but only after you’ve seen the list:
+كل ما يزيد على بضع خطوات يستحق أن يوضع في ملف سير عمل. وهذا ملف ينظّف ملفات `.tmp` في مجلد، لكن فقط بعد أن ترى القائمة:
 
 ```yaml
 name: tidy-scratch
@@ -77,104 +77,104 @@ steps:
     condition: $preview.approved
 ```
 
-What each part does:
+ما الذي يفعله كل جزء:
 
-- **`args`** are the workflow’s inputs, with defaults. Each one is available to commands as an environment variable named `LOBSTER_ARG_<NAME>`, so `dir` becomes `LOBSTER_ARG_DIR`. All of them together are in `LOBSTER_ARGS_JSON`.
-- **`command`** is a shell command run on the Gateway host.
-- **`stdin: $find.stdout`** feeds one step’s output into another. Use `$step.json` instead when a step prints JSON, and `$step.json.<field>` to pick out a field.
-- **`condition`** decides whether a step runs. Here, `preview` is skipped when `find` found nothing, so you’re never asked to approve an empty list.
-- **`approval: required`** pauses the workflow after this step runs and shows its output as the preview.
-- **`$preview.approved`** is only true once you’ve approved, so `delete` runs only after you say yes.
+- **`args`** هي مدخلات سير العمل، مع قيمها الافتراضية. وكل واحد منها متاح للأوامر كمتغيّر بيئة باسم `LOBSTER_ARG_<NAME>`، فيصبح `dir` هو `LOBSTER_ARG_DIR`. وكلها مجتمعة في `LOBSTER_ARGS_JSON`.
+- **`command`** أمر طرفية يُشغَّل على مضيف البوابة.
+- **`stdin: $find.stdout`** يغذّي خطوةً بخرج خطوة أخرى. واستخدم `$step.json` بدلًا منه حين تطبع خطوة بصيغة JSON، و`$step.json.<field>` لانتقاء حقل بعينه.
+- **`condition`** يقرّر ما إذا كانت الخطوة ستُشغَّل. وهنا تُتخطّى `preview` حين لا يجد `find` شيئًا، فلا يُطلب منك أبدًا الموافقة على قائمة فارغة.
+- **`approval: required`** يوقف سير العمل بعد تشغيل هذه الخطوة ويعرض خرجها كمعاينة.
+- **`$preview.approved`** لا يكون صحيحًا إلا بعد أن توافق، فلا تُشغَّل `delete` إلا بعد أن تقول نعم.
 
-Workflow files use the `.lobster` extension (they’re YAML), and `.yaml`, `.yml`, and `.json` work too.
+تستخدم ملفات سير العمل الامتداد `.lobster` (وهي YAML)، وتعمل أيضًا `.yaml` و`.yml` و`.json`.
 
-> **The approval step itself runs before the pause**
+> **خطوة الموافقة نفسها تُشغَّل قبل التوقّف**
 >
-> `approval: required` means “pause *after* this step,” not “ask before running it.” The step’s own command runs first, so its output can be the preview. Make approval steps read-only, like the `echo` above, and put the real change in a later step gated on `$<step>.approved`. The example in OpenClaw’s own docs puts `inbox apply --approve` on the approval step, which would run before you’re asked.
+> تعني `approval: required` «توقّف *بعد* هذه الخطوة»، لا «اسأل قبل تشغيلها». فأمر الخطوة نفسه يُشغَّل أولًا، حتى يكون خرجه هو المعاينة. اجعل خطوات الموافقة للقراءة فقط، مثل `echo` أعلاه، وضع التغيير الحقيقي في خطوة لاحقة مشروطة بـ `$<step>.approved`. والمثال في وثائق OpenClaw نفسه يضع `inbox apply --approve` على خطوة الموافقة، وهذا يعني أنه سيُشغَّل قبل أن تُسأل.
 
-## Running Lobster From Your Agent
+## تشغيل Lobster من وكيلك
 
-You don’t call Lobster directly. Your agent does, using the `lobster` tool:
+أنت لا تستدعي Lobster مباشرةً. بل يفعل وكيلك ذلك باستخدام أداة `lobster`:
 
-| Parameter | Default | What it does |
+| المعامل | الافتراضي | ما الذي يفعله |
 | --- | --- | --- |
-| `action` | — | `run` or `resume` |
-| `pipeline` | — | An inline pipeline, or the path to a workflow file |
-| `argsJson` | — | Arguments for a workflow file, as a JSON string. Ignored for pipelines |
-| `cwd` | Gateway’s | A working directory, relative to the Gateway’s own |
-| `timeoutMs` | `20000` | How long the run may take |
-| `maxStdoutBytes` | `512000` | How much output a run may produce |
-| `token` or `approvalId` | — | Which paused run to resume |
-| `approve` | — | `true` to continue, `false` to cancel |
+| `action` | — | `run` أو `resume` |
+| `pipeline` | — | خط أنابيب مضمّن، أو مسار ملف سير عمل |
+| `argsJson` | — | وسائط لملف سير عمل، كسلسلة JSON. تُتجاهل بالنسبة لخطوط الأنابيب |
+| `cwd` | مجلد البوابة | مجلد عمل، نسبي إلى مجلد البوابة نفسه |
+| `timeoutMs` | `20000` | المدة التي قد يستغرقها التشغيل |
+| `maxStdoutBytes` | `512000` | مقدار الخرج الذي قد ينتجه التشغيل |
+| `token` أو `approvalId` | — | أي تشغيل متوقّف تستأنفه |
+| `approve` | — | `true` للمتابعة، و`false` للإلغاء |
 
-In practice, you ask in plain language: “Use the lobster tool to run `~/.openclaw/workspace/workflows/tidy-scratch.lobster`.”
+عمليًا، تطلب بلغة عادية: «استخدم أداة lobster لتشغيل `~/.openclaw/workspace/workflows/tidy-scratch.lobster`».
 
-### How Approval Works
+### كيف تعمل الموافقة
 
-When a run pauses, the agent gets back the prompt, the preview, and the resume IDs, and it relays them to you in the conversation. You answer, and the agent calls `lobster` again with `action: "resume"`:
+حين يتوقّف تشغيل، يستعيد الوكيل المطالبة والمعاينة ومعرّفات الاستئناف، وينقلها إليك في المحادثة. فتجيبه، فيستدعي الوكيل `lobster` مرة أخرى بـ `action: "resume"`:
 
-- **Approve**, and the run continues from the paused step. Earlier steps don’t run again.
-- **Deny**, and the run ends with a status of `cancelled`.
-- **Either way, the resume ID is used up.** Trying it again fails because the saved state is gone.
+- **وافق**، فيتابع التشغيل من الخطوة المتوقّفة. ولا تُشغَّل الخطوات السابقة مرة أخرى.
+- **ارفض**، فينتهي التشغيل بحالة `cancelled`.
+- **وفي الحالتين، يُستهلك معرّف الاستئناف.** فمحاولة استخدامه مرة أخرى تفشل لأن الحالة المحفوظة قد ذهبت.
 
-The paused state is saved as small files in `~/.lobster/state` on the Gateway host. The token is just a pointer to those files, so don’t clear that folder while something is waiting on you.
+تُحفظ الحالة المتوقّفة كملفات صغيرة في `~/.lobster/state` على مضيف البوابة. والرمز ليس إلا مؤشّرًا إلى تلك الملفات، فلا تُفرغ ذلك المجلد بينما شيء ما ينتظرك.
 
-This isn’t the same as an [exec approval](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-3-exec-approvals). A Lobster pause doesn’t produce an approval card in the Control UI or a push notification, and it doesn’t show up in `openclaw approvals pending`. It only exists as the agent’s message to you.
+وهذا ليس مثل [موافقة تنفيذ](https://stevekinney.com/courses/openclaw/security-and-approvals#layer-3-exec-approvals). فتوقّف Lobster لا ينتج بطاقة موافقة في واجهة التحكم ولا إشعارًا منبثقًا، ولا يظهر في `openclaw approvals pending`. وهو لا يوجد إلا كرسالة الوكيل إليك.
 
-## What to Watch Out For
+## ما ينبغي الحذر منه
 
-- **Steps run on the Gateway host with the Gateway’s environment.** That includes any API keys in it. The docs don’t say that Lobster’s shell steps go through exec approvals, so treat a workflow file like a script you’d run yourself: only run ones you’ve read.
-- **`openclaw.invoke` doesn’t work reliably inside the plugin.** Lobster has a command for calling OpenClaw tools from a pipeline, but the embedded plugin doesn’t pass along the Gateway’s address or credentials. Until that’s fixed, keep tool calls (including [LLM Task](https://stevekinney.com/courses/openclaw/llm-task)) outside your workflows and have the agent make them directly.
-- **No automatic retries.** If a step fails after doing something, Lobster won’t run it again, because it can’t tell whether the side effect already happened.
-- **Paths.** `cwd` must be a relative path inside the Gateway’s working directory. A workflow file path can be absolute, which is the simplest option. Use absolute paths inside commands too, since you may not know the Gateway’s working directory.
-- **Timeouts.** The default is 20 seconds per run. Raise `timeoutMs` for anything slow.
+- **الخطوات تُشغَّل على مضيف البوابة ببيئة البوابة.** وهذا يشمل أي مفاتيح API فيها. والوثائق لا تقول إن خطوات طرفية Lobster تمرّ عبر موافقات التنفيذ، فتعامل مع ملف سير العمل كسكربت قد تشغّله بنفسك: لا تشغّل إلا ما قرأته.
+- **`openclaw.invoke` لا يعمل بموثوقية داخل الإضافة.** فلـ Lobster أمر لاستدعاء أدوات OpenClaw من خط أنابيب، لكن الإضافة المضمّنة لا تمرّر عنوان البوابة ولا بيانات اعتمادها. وإلى أن يُصلَح ذلك، أبقِ نداءات الأدوات (ومنها [مهمة LLM](https://stevekinney.com/courses/openclaw/llm-task)) خارج سير عملك، ودع الوكيل يجريها مباشرةً.
+- **لا إعادة محاولات تلقائية.** فإن فشلت خطوة بعد أن فعلت شيئًا، لن يشغّلها Lobster مرة أخرى، لأنه لا يستطيع تحديد ما إذا كان الأثر الجانبي قد وقع بالفعل.
+- **المسارات.** يجب أن يكون `cwd` مسارًا نسبيًا داخل مجلد عمل البوابة. أما مسار ملف سير العمل فيمكن أن يكون مطلقًا، وهو الخيار الأبسط. واستخدم مسارات مطلقة داخل الأوامر أيضًا، لأنك قد لا تعرف مجلد عمل البوابة.
+- **المهلات الزمنية.** الافتراضي هو 20 ثانية لكل تشغيل. فارفع `timeoutMs` لأي شيء بطيء.
 
-## Try It Out
+## جرّبه
 
-Run these against your real Gateway. On the [Railway](https://railway.com/?referralCode=kinney) template, run the shell commands through `railway ssh --service openclaw -- ...`, and remember that `/tmp` there is inside the container.
+شغّل هذه على بوابتك الحقيقية. وفي قالب [Railway](https://railway.com/?referralCode=kinney)، شغّل أوامر الطرفية عبر `railway ssh --service openclaw -- ...`، وتذكّر أن `/tmp` هناك داخل الحاوية.
 
-### 1. Install and Smoke-Test
+### 1. التثبيت واختبار سريع
 
-Install the plugin, allow the tool, and confirm it loaded with `openclaw plugins inspect lobster --runtime --json`. Then ask your agent:
+ثبّت الإضافة، واسمح بالأداة، وأكّد أنها حُمّلت بـ `openclaw plugins inspect lobster --runtime --json`. ثم اطلب من وكيلك:
 
-> Use the lobster tool to run this pipeline and show me the raw result: `exec --json --shell 'echo [3,1,2]' | sort`
+> استخدم أداة lobster لتشغيل خط الأنابيب هذا وأرِني النتيجة الخام: `exec --json --shell 'echo [3,1,2]' | sort`
 
-You should see a status of `ok` and an output of `[1, 2, 3]`. If the agent says it doesn’t have a `lobster` tool, check `tools.alsoAllow` and send `/tools` to see what it can use.
+ينبغي أن ترى حالة `ok` وخرجًا هو `[1, 2, 3]`. وإن قال الوكيل إنه لا يملك أداة `lobster`، فافحص `tools.alsoAllow` وأرسل `/tools` لترى ما يستطيع استخدامه.
 
-The Control UI chat showing the lobster tool result with a status of ok and an output of 1, 2, 3
+تُظهر محادثة واجهة التحكم نتيجة أداة lobster بحالة ok وخرج هو 1, 2, 3
 
-### 2. Set Up a Lab
+### 2. إعداد مختبر
 
-On the Gateway host, create some files to clean up:
+على مضيف البوابة، أنشئ بعض الملفات لتنظيفها:
 
 ```bash
 mkdir -p /tmp/lobster-lab
 touch /tmp/lobster-lab/a.tmp /tmp/lobster-lab/b.tmp /tmp/lobster-lab/keep.txt
 ```
 
-Save the `tidy-scratch` workflow from above as `~/.openclaw/workspace/workflows/tidy-scratch.lobster`. You can also paste it to your agent and ask it to save the file there.
+احفظ سير عمل `tidy-scratch` من أعلاه باسم `~/.openclaw/workspace/workflows/tidy-scratch.lobster`. ويمكنك أيضًا لصقه إلى وكيلك وأن تطلب منه حفظ الملف هناك.
 
-### 3. Approve a Run
+### 3. الموافقة على تشغيل
 
-Ask your agent:
+اطلب من وكيلك:
 
-> Use the lobster tool to run the workflow at `~/.openclaw/workspace/workflows/tidy-scratch.lobster`. If it pauses for approval, show me the preview and wait for my answer.
+> استخدم أداة lobster لتشغيل سير العمل في `~/.openclaw/workspace/workflows/tidy-scratch.lobster`. وإن توقّف لأخذ الموافقة، فأرِني المعاينة وانتظر إجابتي.
 
-You should see a preview listing `a.tmp` and `b.tmp`, but not `keep.txt`. Reply that you approve. The agent resumes the run, and `ls /tmp/lobster-lab` should show only `keep.txt`.
+ينبغي أن ترى معاينة تسرد `a.tmp` و`b.tmp`، لكن ليس `keep.txt`. وأجب بأنك توافق. فيستأنف الوكيل التشغيل، وينبغي أن يُظهر `ls /tmp/lobster-lab` الملف `keep.txt` وحده.
 
-### 4. Deny One, Then Try to Reuse It
+### 4. ارفض واحدًا، ثم حاول إعادة استخدامه
 
-Recreate the `.tmp` files and run the workflow again. This time, deny it. The run should come back `cancelled`, and the files should still be there. Then ask the agent to resume the same run again with approval. It should fail, because a resume ID only works once.
+أعد إنشاء ملفات `.tmp` وشغّل سير العمل مرة أخرى. وهذه المرة، ارفضه. ينبغي أن يعود التشغيل بحالة `cancelled`، وأن تبقى الملفات في مكانها. ثم اطلب من الوكيل أن يستأنف التشغيل نفسه مرة أخرى بموافقة. ينبغي أن يفشل، لأن معرّف الاستئناف يعمل مرة واحدة فقط.
 
-### 5. Pass Arguments, and Find Nothing
+### 5. تمرير وسائط، وعدم العثور على شيء
 
-Create a second folder with one file, `/tmp/lobster-other/c.tmp`, and ask the agent to run the workflow with `argsJson` set to `{"dir":"/tmp/lobster-other"}`. The preview should list only `c.tmp`. Deny it.
+أنشئ مجلدًا ثانيًا فيه ملف واحد، `/tmp/lobster-other/c.tmp`، واطلب من الوكيل تشغيل سير العمل مع `argsJson` مضبوطًا على `{"dir":"/tmp/lobster-other"}`. ينبغي أن تسرد المعاينة `c.tmp` وحده. فارفضه.
 
-Then run the workflow against `/tmp/lobster-lab` after it’s been cleaned up. It should finish with `ok` and never ask you anything, because the `condition` skipped the preview step.
+ثم شغّل سير العمل على `/tmp/lobster-lab` بعد أن نُظّف. ينبغي أن ينتهي بـ `ok` وألا يسألك شيئًا أبدًا، لأن `condition` تخطّى خطوة المعاينة.
 
-### 6. Put It on a Schedule
+### 6. ضعه على جدول زمني
 
-Create an automation that runs the workflow every evening and announces the result to Telegram:
+أنشئ أتمتة تشغّل سير العمل كل مساء وتعلن النتيجة إلى Telegram:
 
 ```bash
 openclaw automations create "0 21 * * *" \
@@ -182,29 +182,29 @@ openclaw automations create "0 21 * * *" \
   --name "Tidy scratch" --tz "America/Denver" --session isolated --announce
 ```
 
-Use `openclaw automations run <job-id> --wait` to try it now instead of waiting. You should get a Telegram message with the preview and an approval ID. Reply in your main chat asking the agent to resume that approval ID. Then check whether the files are gone.
+استخدم `openclaw automations run <job-id> --wait` لتجربته الآن بدلًا من الانتظار. ينبغي أن تصلك رسالة Telegram فيها المعاينة ومعرّف موافقة. وأجب في محادثتك الرئيسية طالبًا من الوكيل استئناف معرّف الموافقة ذاك. ثم افحص هل ذهبت الملفات.
 
-This is worth testing rather than assuming. The run that found the files is finished by the time you answer, so the resume happens in a different conversation. The saved state lives on the Gateway host, not in the conversation, so this should work, but confirm it on your setup before relying on it.
+هذا جدير بالاختبار لا بالافتراض. فالتشغيل الذي وجد الملفات يكون قد انتهى بحلول وقت إجابتك، فيجري الاستئناف في محادثة مختلفة. والحالة المحفوظة تعيش على مضيف البوابة لا في المحادثة، فينبغي أن يعمل هذا، لكن أكّده في تهيئتك قبل الاعتماد عليه.
 
-### 7. Find Out How Lobster Meets Your Exec Policy
+### 7. اكتشف كيف يتعامل Lobster مع سياسة التنفيذ لديك
 
-If you set up `ask` mode in [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals), run the workflow and watch for exec approval cards. The docs don’t say whether Lobster’s shell steps go through exec approvals. Note what you see. If no cards appear, Lobster steps run without that safety net, which is one more reason to only run workflow files you’ve read.
+إن كنت قد أعددت وضع `ask` في [الأمن والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals)، فشغّل سير العمل وراقب ظهور بطاقات موافقة التنفيذ. والوثائق لا تقول هل تمرّ خطوات طرفية Lobster عبر موافقات التنفيذ. سجّل ما تراه. فإن لم تظهر أي بطاقات، فخطوات Lobster تعمل دون تلك الشبكة الأمنية، وهذا سبب آخر لتشغيل ملفات سير العمل التي قرأتها فقط.
 
-### Clean Up
+### التنظيف
 
-Delete `/tmp/lobster-lab` and `/tmp/lobster-other`, and disable the automation with `openclaw automations disable <job-id>` if you don’t want it.
+احذف `/tmp/lobster-lab` و`/tmp/lobster-other`، وعطّل الأتمتة بـ `openclaw automations disable <job-id>` إن كنت لا تريدها.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Error | What to do |
+| الخطأ | ما ينبغي فعله |
 | --- | --- |
-| The agent has no `lobster` tool | Add it to `tools.alsoAllow`. Check that the session isn’t sandboxed |
-| `lobster runtime timed out` | Raise `timeoutMs`, or split the work into smaller pipelines |
-| `lobster stdout exceeded maxStdoutBytes` | Raise `maxStdoutBytes`, or make the steps print less |
-| `run --args-json must be valid JSON` | Fix the quoting in `argsJson` |
-| A resume fails with “not found” | The run was already approved or denied, or its state was deleted |
-| `lobster runtime failed` | Check `openclaw logs` on the Gateway host |
+| الوكيل لا يملك أداة `lobster` | أضفها إلى `tools.alsoAllow`. وتأكّد أن الجلسة ليست معزولة |
+| `lobster runtime timed out` | ارفع `timeoutMs`، أو قسّم العمل إلى خطوط أنابيب أصغر |
+| `lobster stdout exceeded maxStdoutBytes` | ارفع `maxStdoutBytes`، أو اجعل الخطوات تطبع أقل |
+| `run --args-json must be valid JSON` | صوّب الاقتباس في `argsJson` |
+| فشل استئناف بـ «not found» | كان التشغيل قد وُوفق عليه أو رُفض، أو حُذفت حالته |
+| `lobster runtime failed` | افحص `openclaw logs` على مضيف البوابة |
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8` and the `@openclaw/lobster` plugin as of that release. If something doesn’t behave as described, run the command with `--help` and check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> يطابق هذا الدرس OpenClaw `2026.9.8` وإضافة `@openclaw/lobster` في تلك الإصدارة. فإن لم يتصرّف شيء كما هو موصوف، فشغّل الأمر مع `--help` وافحص [وثائق OpenClaw](https://docs.openclaw.ai/).

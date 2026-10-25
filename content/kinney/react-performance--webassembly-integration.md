@@ -1,16 +1,16 @@
 ---
-title: "WebAssembly Integration in React"
-lang: en
+title: "دمج WebAssembly في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/webassembly-integration"
 ---
 
-JavaScript is hitting a wall. Your React app needs to process 10,000 data points, apply complex image filters, or run cryptographic operations, and suddenly your UI freezes. You’ve tried Web Workers, optimized your algorithms, and still, the performance isn’t there. Enter WebAssembly—near-native performance in the browser. It’s not a silver bullet, but for CPU-intensive tasks, it’s the difference between a slideshow and a smooth 60fps experience.
+تصل JavaScript إلى حائط. يحتاج تطبيق React لديك إلى معالجة 10,000 نقطة بيانات، أو تطبيق مرشحات صور معقدة، أو تشغيل عمليات تشفير، وفجأة تتجمد واجهتك. جرّبت Web Workers، وحسّنت خوارزمياتك، ولا يزال الأداء غير كافٍ. هنا يأتي WebAssembly — أداء قريب من الأصلي في المتصفح. إنه ليس حلًا سحريًا، لكنه بالنسبة للمهام المكلفة معالجيًا الفرق بين عرض شرائح وتجربة سلسة بـ 60 إطارًا في الثانية.
 
-WebAssembly (WASM) lets you run compiled code from languages like Rust, C++, or Go directly in the browser at near-native speeds. But integrating WASM with React isn’t trivial—you need to handle asynchronous loading, memory management, type conversions, and the impedance mismatch between WASM’s low-level nature and React’s component model. This guide shows you exactly when WASM makes sense, how to integrate it properly, and how to avoid the pitfalls that can make WASM slower than JavaScript.
+يتيح لك WebAssembly (WASM) تشغيل شيفرة مجمّعة من لغات مثل Rust أو C++ أو Go مباشرة في المتصفح بسرعات قريبة من الأصلية. لكن دمج WASM مع React ليس تافهًا — تحتاج إلى التعامل مع التحميل غير المتزامن، وإدارة الذاكرة، وتحويلات الأنواع، وعدم التوافق بين طبيعة WASM منخفضة المستوى ونموذج مكوّنات React. يوضح لك هذا الدليل بالضبط متى يكون WASM منطقيًا، وكيف تدمجه على نحو سليم، وكيف تتجنب المزالق التي قد تجعل WASM أبطأ من JavaScript.
 
-## Understanding WebAssembly Performance
+## فهم أداء WebAssembly
 
-When WASM beats JavaScript and when it doesn’t:
+متى يتفوق WASM على JavaScript ومتى لا:
 
 ```typescript
 // WebAssembly performance characteristics
@@ -78,9 +78,9 @@ function shouldUseWASM(task: TaskProfile): boolean {
 }
 ```
 
-## Setting Up WebAssembly with React
+## إعداد WebAssembly مع React
 
-Basic WASM integration setup:
+إعداد تكامل WASM الأساسي:
 
 ```typescript
 // wasm-loader.ts
@@ -198,9 +198,9 @@ export function useWASM(wasmPath: string) {
 }
 ```
 
-## Image Processing with WebAssembly
+## معالجة الصور باستخدام WebAssembly
 
-High-performance image manipulation:
+التلاعب بالصور عالي الأداء:
 
 ```rust
 // image_processor.rs - Rust source for WASM
@@ -316,7 +316,7 @@ impl ImageProcessor {
 }
 ```
 
-React component using WASM image processor:
+مكوّن React يستخدم معالج صور WASM:
 
 ```typescript
 // ImageEditor.tsx
@@ -428,9 +428,9 @@ function ImageEditor() {
 }
 ```
 
-## Complex Calculations with WASM
+## حسابات معقدة باستخدام WASM
 
-Offload heavy computations:
+أفرِغ الحسابات الثقيلة:
 
 ```cpp
 // math_engine.cpp - C++ source for WASM
@@ -504,7 +504,7 @@ void prime_sieve(bool* is_prime, int limit) {
 }
 ```
 
-React hook for mathematical computations:
+خُطّاف React للحسابات الرياضية:
 
 ```typescript
 // useMathWASM.ts
@@ -586,9 +586,9 @@ export function useMathWASM() {
 }
 ```
 
-## WASM with Web Workers
+## WASM مع Web Workers
 
-Combine WASM with Workers for maximum performance:
+اجمع WASM مع العمّال لأقصى أداء:
 
 ```typescript
 // wasm-worker.ts
@@ -692,9 +692,9 @@ export function useWASMWorker() {
 }
 ```
 
-## Memory Management
+## إدارة الذاكرة
 
-Handle WASM memory efficiently:
+تعامل مع ذاكرة WASM بكفاءة:
 
 ```typescript
 // Memory management utilities
@@ -789,9 +789,9 @@ function WASMComponent() {
 }
 ```
 
-## Performance Monitoring
+## مراقبة الأداء
 
-Track WASM performance:
+تتبّع أداء WASM:
 
 ```typescript
 // WASM performance monitor
@@ -900,7 +900,7 @@ export class WASMPerformanceMonitor {
 }
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
 ```typescript
 interface WASMBestPractices {

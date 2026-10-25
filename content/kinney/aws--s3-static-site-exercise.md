@@ -1,28 +1,28 @@
 ---
-title: "Exercise: Deploy a Static Site to S3"
-lang: en
+title: "تمرين: نشر موقع ثابت على S3"
+lang: ar
 source: "https://stevekinney.com/courses/aws/s3-static-site-exercise"
 ---
 
-You’ve learned the individual pieces: creating a bucket, uploading files, writing a bucket policy, enabling static website hosting, and configuring versioning. Now put them all together. In this exercise, you’ll deploy a complete static site to S3 and access it in a browser.
+لقد تعلمت الأجزاء المنفردة: إنشاء دلو، ورفع الملفات، وكتابة سياسة دلو، وتمكين استضافة المواقع الثابتة، وتهيئة الإصدارات. الآن اجمعها كلها. في هذا التمرين، ستنشر موقعًا ثابتًا كاملًا على S3 وتصل إليه في المتصفح.
 
-> **Tip**
+> **نصيحة**
 >
-> If the console labels move while you’re doing this exercise, keep the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) and the [`aws s3 sync` command reference](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) open. AWS changes the UI more often than the core concepts.
+> إذا تحرّكت تسميات وحدة التحكم أثناء إنجازك هذا التمرين، فأبقِ [درس استضافة موقع ثابت على S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) و[مرجع الأمر `aws s3 sync`](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) مفتوحين. تغيّر AWS واجهة المستخدم أكثر مما تغيّر المفاهيم الأساسية.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-Every frontend deployment is fundamentally the same: take build output, put it somewhere accessible, and point a URL at it. Vercel and Netlify hide this process behind a `git push`. Doing it manually on S3 teaches you what actually happens under the hood—and gives you the foundation for the automated pipeline you’ll build later in this course.
+كل نشر للواجهة الأمامية هو في جوهره الشيء نفسه: خذ مخرجات البناء، وضعها في مكان يمكن الوصول إليه، ووجّه عنوان URL إليها. يخفي Vercel وNetlify هذه العملية خلف `git push`. وإنجازها يدويًا على S3 يعلّمك ما يحدث فعليًا تحت الغطاء—ويمنحك الأساس لخط الأنابيب الآلي الذي ستبنيه لاحقًا في هذه الدورة.
 
-## Set Up Your Static Site
+## جهّز موقعك الثابت
 
-Create a minimal static site on your local machine. You don’t need a framework—plain HTML, CSS, and JavaScript are enough.
+أنشئ موقعًا ثابتًا بسيطًا على جهازك المحلي. لا تحتاج إلى إطار عمل—HTML وCSS وJavaScript العادية تكفي.
 
-> **Tip**
+> **نصيحة**
 >
-> These files are also available in the [Scratch Lab repository](https://github.com/stevekinney/scratch-lab/tree/main/playground/build) if you’d prefer to clone them instead of creating them by hand.
+> هذه الملفات متاحة أيضًا في [مستودع Scratch Lab](https://github.com/stevekinney/scratch-lab/tree/main/playground/build) إذا كنت تفضّل استنساخها بدلًا من إنشائها يدويًا.
 
-Create a directory called `build/` with these three files:
+أنشئ مجلدًا باسم `build/` يحتوي هذه الملفات الثلاثة:
 
 **`build/index.html`**
 
@@ -131,22 +131,22 @@ document.getElementById('timestamp').textContent =
 </html>
 ```
 
-## Create the Bucket
+## أنشئ الدلو
 
-Create an S3 bucket. Remember that bucket names are globally unique—if `my-frontend-app-assets` is taken, add a unique suffix.
+أنشئ دلو S3. تذكّر أن أسماء الدلاء فريدة عالميًا—إذا كان `my-frontend-app-assets` محجوزًا، فأضف لاحقة فريدة.
 
 ```bash
 aws s3 mb s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Run `aws s3 ls --region us-east-1` and confirm your bucket appears in the list.
+شغّل `aws s3 ls --region us-east-1` وتأكد من ظهور دلوك في القائمة.
 
-## Disable Block Public Access
+## تعطيل حظر الوصول العام
 
-Since you’re hosting a public website, disable Block Public Access:
+بما أنك تستضيف موقعًا عامًا، فعطّل Block Public Access:
 
 ```bash
 aws s3api put-public-access-block \
@@ -156,9 +156,9 @@ aws s3api put-public-access-block \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Run the following and confirm all four settings are `false`:
+شغّل ما يلي وتأكد من أن الإعدادات الأربعة كلها `false`:
 
 ```bash
 aws s3api get-public-access-block \
@@ -167,9 +167,9 @@ aws s3api get-public-access-block \
   --output json
 ```
 
-## Apply a Bucket Policy
+## تطبيق سياسة دلو
 
-Apply a bucket policy that allows public read access:
+طبّق سياسة دلو تسمح بالقراءة العامة:
 
 ```bash
 aws s3api put-bucket-policy \
@@ -189,24 +189,24 @@ aws s3api put-bucket-policy \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Run `aws s3api get-bucket-policy --bucket my-frontend-app-assets --region us-east-1 --output json` and confirm the policy is in place.
+شغّل `aws s3api get-bucket-policy --bucket my-frontend-app-assets --region us-east-1 --output json` وتأكد من أن السياسة مطبقة.
 
-## Upload Your Files
+## ارفع ملفاتك
 
-Sync your local `build/` directory to the bucket:
+زامن مجلد `build/` المحلي مع الدلو:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Run `aws s3 ls s3://my-frontend-app-assets/ --region us-east-1` and confirm you see all four files: `index.html`, `styles.css`, `app.js`, and `error.html`.
+شغّل `aws s3 ls s3://my-frontend-app-assets/ --region us-east-1` وتأكد من رؤية الملفات الأربعة كلها: `index.html` و`styles.css` و`app.js` و`error.html`.
 
-Expected output:
+المخرجات المتوقعة:
 
 ```
 2026-03-18 12:00:00        456 app.js
@@ -215,9 +215,9 @@ Expected output:
 2026-03-18 12:00:00        423 styles.css
 ```
 
-## Enable Static Website Hosting
+## تمكين استضافة المواقع الثابتة
 
-Configure the bucket for static website hosting:
+هيّئ الدلو لاستضافة المواقع الثابتة:
 
 ```bash
 aws s3 website s3://my-frontend-app-assets/ \
@@ -225,9 +225,9 @@ aws s3 website s3://my-frontend-app-assets/ \
   --error-document error.html
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-Run the following and confirm the index and error documents are set:
+شغّل ما يلي وتأكد من ضبط مستندي الفهرس والخطأ:
 
 ```bash
 aws s3api get-bucket-website \
@@ -236,7 +236,7 @@ aws s3api get-bucket-website \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -249,26 +249,26 @@ Expected output:
 }
 ```
 
-## View Your Site
+## اعرض موقعك
 
-Open this URL in your browser (substitute your actual bucket name):
+افتح عنوان URL هذا في متصفحك (استبدل اسم دلوك الفعلي):
 
 ```
 http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com
 ```
 
-You should see the “Hello from S3” page with a timestamp showing the current time. The CSS should be applied (dark background, centered text) and the JavaScript should be running (timestamp updates on each page load).
+ينبغي أن ترى صفحة «مرحبًا من S3» مع طابع زمني يعرض الوقت الحالي. ينبغي أن يكون CSS مطبّقًا (خلفية داكنة ونص موسّط) وينبغي أن يعمل JavaScript (يتحدّث الطابع الزمني في كل تحميل للصفحة).
 
-### Checkpoint
+### نقطة تحقّق
 
-- The page loads and displays “Hello from S3”
-- The CSS is applied (dark background, light text)
-- The timestamp appears at the bottom
-- Navigating to a nonexistent path (like `/nonexistent`) shows your custom 404 page
+- تُحمَّل الصفحة وتعرض «مرحبًا من S3»
+- يُطبَّق CSS (خلفية داكنة ونص فاتح)
+- يظهر الطابع الزمني في الأسفل
+- الانتقال إلى مسار غير موجود (مثل `/nonexistent`) يعرض صفحة 404 المخصصة
 
-## Enable Versioning
+## تمكين الإصدارات
 
-Enable versioning so you’re protected against accidental overwrites:
+مكّن الإصدارات لتكون محميًا من الكتابة فوق الملفات بالخطأ:
 
 ```bash
 aws s3api put-bucket-versioning \
@@ -277,7 +277,7 @@ aws s3api put-bucket-versioning \
   --region us-east-1
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
 ```bash
 aws s3api get-bucket-versioning \
@@ -286,7 +286,7 @@ aws s3api get-bucket-versioning \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -294,16 +294,16 @@ Expected output:
 }
 ```
 
-## Deploy an Update
+## نشر تحديث
 
-Make a change to `build/index.html`—update the `<h1>` to say “Hello from S3 (v2)“. Then redeploy:
+أجرِ تغييرًا على `build/index.html`—حدّث `<h1>` ليقول «مرحبًا من S3 (v2)». ثم أعد النشر:
 
 ```bash
 aws s3 sync ./build s3://my-frontend-app-assets \
   --region us-east-1
 ```
 
-Refresh your browser. You should see the updated heading. Now list the versions of `index.html`:
+حدّث المتصفح. ينبغي أن ترى العنوان المحدّث. الآن اسرد إصدارات `index.html`:
 
 ```bash
 aws s3api list-object-versions \
@@ -313,26 +313,26 @@ aws s3api list-object-versions \
   --output json
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-You should see two versions of `index.html`—the original and the updated one. The `IsLatest` field on the newer version should be `true`.
+ينبغي أن ترى نسختين من `index.html`—الأصلية والمحدّثة. وينبغي أن يكون حقل `IsLatest` في النسخة الأحدث `true`.
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **The website endpoint returns `403 Forbidden`:** One of the three public-hosting pieces is missing. Check Block Public Access, the bucket policy, and the website hosting configuration in that order.
-- **Your browser loads HTML with broken styles or JavaScript:** The files either were not synced from `build/` or the object keys do not match the filenames referenced in `index.html`.
-- **You uploaded the update but still see the old page:** Hard-refresh the browser or open the site in a private window. With raw S3 website hosting, browser caching is usually the culprit.
+- **نقطة نهاية الموقع تعيد `403 Forbidden`:** أحد الأجزاء الثلاثة للاستضافة العامة مفقود. تحقق من Block Public Access، ثم سياسة الدلو، ثم تهيئة استضافة الموقع بهذا الترتيب.
+- **متصفحك يحمّل HTML بأنماط أو JavaScript معطوبة:** إما أن الملفات لم تُزامَن من `build/` أو أن مفاتيح الكائنات لا تطابق أسماء الملفات المشار إليها في `index.html`.
+- **رفعت التحديث لكنك ما زلت ترى الصفحة القديمة:** أعد تحميل المتصفح بقوة أو افتح الموقع في نافذة خاصة. مع استضافة المواقع المباشرة على S3، يكون التخزين المؤقت للمتصفح هو السبب عادةً.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add a lifecycle rule** that deletes noncurrent versions after 7 days. Verify it with `get-bucket-lifecycle-configuration`.
-- **Test a rollback.** Download the previous version of `index.html` using its version ID, then re-upload it with `aws s3 cp`. Confirm the site reverts to the original content.
-- **Add a subdirectory.** Create a `build/about/index.html` page and verify that navigating to `/about/` (with trailing slash) serves the page.
-- **Check content types.** Run `aws s3api head-object --bucket my-frontend-app-assets --key "styles.css" --region us-east-1 --output json` and verify the content type is `text/css`.
+- **أضف قاعدة دورة حياة** تحذف الإصدارات غير الحالية بعد 7 أيام. تحقق منها بـ `get-bucket-lifecycle-configuration`.
+- **اختبر التراجع.** نزّل النسخة السابقة من `index.html` باستخدام معرّف إصدارها، ثم أعد رفعها بـ `aws s3 cp`. تأكد من عودة الموقع إلى المحتوى الأصلي.
+- **أضف مجلدًا فرعيًا.** أنشئ صفحة `build/about/index.html` وتأكد من أن الانتقال إلى `/about/` (بشرطة مائلة نهائية) يقدّم الصفحة.
+- **تحقق من أنواع المحتوى.** شغّل `aws s3api head-object --bucket my-frontend-app-assets --key "styles.css" --region us-east-1 --output json` وتأكد من أن نوع المحتوى هو `text/css`.
 
-## Cleanup
+## التنظيف
 
-A versioned bucket cannot be deleted until every object version **and** every delete marker has been removed. Run these two passes—one for versions, one for delete markers—guarded so a fresh bucket with nothing in one list doesn’t fail. Then remove the bucket:
+لا يمكن حذف دلو ذي إصدارات حتى تُزال كل نسخة كائن **و**كل علامة حذف. شغّل هاتين المرحلتين—واحدة للإصدارات وواحدة لعلامات الحذف—مع حمايات حتى لا يفشل دلو جديد لا يحتوي على شيء في إحدى القائمتين. ثم أزل الدلو:
 
 ```bash
 # 1. Delete every non-current object version (skip if there are none)
@@ -365,6 +365,6 @@ fi
 aws s3 rb s3://my-frontend-app-assets --region us-east-1
 ```
 
-> **Why the shell guards**
+> **لماذا حمايات الصدفة**
 >
-> `list-object-versions` [returns `Versions` and `DeleteMarkers` as separate arrays](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) and omits either key entirely when it’s empty. A `--query` pulling the missing key back gives you `null`, and passing `{"Objects": null}` (or `{"Objects": []}`) to `delete-objects` fails parameter validation—it’s not a no-op. The shell guards skip the call when there’s nothing to delete. Skip either pass when there *are* entries and `aws s3 rb` will fail with `BucketNotEmpty`—delete markers count as objects. If you end up with more than 1,000 entries of either kind, you’ll also need to paginate: `list-object-versions` caps each response at 1,000.
+> يُرجع `list-object-versions` [المصفوفتين `Versions` و`DeleteMarkers` منفصلتين](https://docs.aws.amazon.com/AmazonS3/latest/API/API_DeleteObjects.html) ويحذف أيًا من المفتاحين تمامًا عندما يكون فارغًا. استعلام `--query` يسترجع المفتاح المفقود يعطيك `null`، وتمرير `{"Objects": null}` (أو `{"Objects": []}`) إلى `delete-objects` يفشل في التحقق من المعاملات—فهو ليس عملية بلا أثر. تتخطى حمايات الصدفة الاستدعاء عندما لا يكون هناك شيء للحذف. تخطَّ أي مرحلة عندما *توجد* مدخلات وسيفشل `aws s3 rb` بـ `BucketNotEmpty`—فعلامات الحذف تُحتسب كائنات. إذا انتهى بك الأمر بأكثر من 1,000 مدخل من أي نوع، فستحتاج أيضًا إلى الترقيم: يحدّ `list-object-versions` كل استجابة عند 1,000.

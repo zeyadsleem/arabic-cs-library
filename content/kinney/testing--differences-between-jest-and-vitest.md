@@ -1,63 +1,63 @@
 ---
-title: "Differences Between Jest and Vitest"
-lang: en
+title: "الفروق بين Jest وVitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/differences-between-jest-and-vitest"
 ---
 
-> **You Don’t Need to Read This**
+> **لست بحاجة إلى قراءة هذا**
 >
-> They’re barely different and it probably doesn’t matter which one you pick. I use Vitest because I work on projects that typically use [Vite](https://vite.dev/). It’s as simple as that.
+> الفرق بينهما ضئيل جدًا، والأرجح أنه لا يهم أيّهما تختار. أنا أستخدم Vitest لأنني أعمل على مشاريع تستخدم عادةً [Vite](https://vite.dev/). الأمر بهذه البساطة.
 
-## Which Testing Framework Should I Use?
+## أي إطار اختبارات ينبغي أن أستخدم؟
 
-Honestly, it doesn’t really matter. Jest is built on top of Jasmine and [Vitest is a drop-in replacement for Jest](https://vitest.dev/guide/comparisons.html) (mostly). We’re going to use Vitest during our time together, but everything we do should apply to Jest as well. If and when it doesn’t, I’ll make it a point to call it out.
+بصراحة، لا يهم حقًا. Jest مبني على Jasmine، و[Vitest بديل مباشر لـ Jest](https://vitest.dev/guide/comparisons.html) (في معظمه). سنستخدم Vitest خلال وقتنا معًا، لكن كل ما نفعله ينبغي أن ينطبق على Jest أيضًا. وإذا حدث ولم ينطبق، فسأحرص على الإشارة إلى ذلك.
 
-But, if you really wanted to know my heuristic, here it is:
+لكن إن كنت تريد حقًا معرفة القاعدة التي أستند إليها، فهي:
 
-- Jest is maintained by Facebook, who coincidentally maintain [React](https://reactjs.org/docs/testing-recipes.html#gatsby-focus-wrapper). And, it comes built-in with [Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app). So, I’ll usually just use Jest if it’s already there because I am *very* lazy.
-- [Vitest](https://vitest.dev/) is optimized to work with Vite (an alternative to Webpack). By default, Vue and Svelte applications use Vite. React applications can use Vite as well and there is even a boilerplate (e.g. `npm create vite@latest my-app --template react`, which works suspiciously similar to `create-react-app`. I chose it for this course it’s the most broadly applicable.
-- [Angular](https://angular.io/guide/testing) uses Jasmine by default. But, like I said, Jest is based on Jasmine and Vitest is a drop-in replacement for Jest.
+- Jest تدعمه Facebook، التي تدعم أيضًا بالمناسبة [React](https://reactjs.org/docs/testing-recipes.html#gatsby-focus-wrapper). وهو يأتي مدمجًا مع [Create React App](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app). لذا سأستخدم Jest عادةً إن كان موجودًا أصلًا لأنني *كسول جدًا*.
+- [Vitest](https://vitest.dev/) مُحسّن للعمل مع Vite (بديل لـ Webpack). وبشكل افتراضي، تستخدم تطبيقات Vue وSvelte أداة Vite. ويمكن لتطبيقات React استخدام Vite أيضًا، بل ثمّة قالب جاهز (مثل `npm create vite@latest my-app --template react`، الذي يعمل بشكل يثير الشك في تشابهه مع `create-react-app`). اخترته لهذه الدورة لأنه الأوسع قابلية للتطبيق.
+- [Angular](https://angular.io/guide/testing) يستخدم Jasmine افتراضيًا. لكن كما قلت، Jest مبني على Jasmine وVitest بديل مباشر لـ Jest.
 
-## Speed and Performance
+## السرعة والأداء
 
 ### Jest
 
-Jest has been around the block. Built by Facebook, it’s perfect for testing React apps (and others!) and has a reputation for giving you everything you need out of the box—mocking, snapshots, you name it. But here’s the thing. Jest can sometimes feel a little… *slow*. Not glacial slow, but slow enough that you’re going to start wondering if your code has some existential crisis every time the test suite runs. It uses the Node runtime exclusively, which is great for stability, but can limit its execution speed compared to other approaches.
+Jest موجود منذ زمن طويل. بنته Facebook، وهو مثالي لاختبار تطبيقات React (وغيرها!)، وله سمعة في أنه يمنحك كل ما تحتاجه جاهزًا: المحاكاة، ولقطات الحالة، وكل ما تسمّيه. لكن إليك المشكلة. قد يبدو Jest أحيانًا… *بطيئًا* قليلًا. ليس بطيئًا بطء الجليد، لكنه بطيء بما يكفي لتبدأ في التساؤل إن كانت شيفرتك تعاني أزمة وجودية في كل مرة تُشغّل فيها مجموعة الاختبارات. وهو يستخدم بيئة تشغيل Node حصريًا، وهذا رائع للاستقرار، لكنه قد يحدّ من سرعة تنفيذه مقارنةً بأساليب أخرى.
 
 ### Vitest
 
-Vitest? Built on **Vite**—yes, that lightning-fast bundler—and this speed advantage becomes one of its calling cards. Vitest leans into the Vite ecosystem and uses **ESM (EcmaScript Modules)**, which allows for crazy fast start times and lightning-fast testing, especially in *development mode*. The ability to run tests directly in a browser without additional setup brings a major boost in speed for frontend-heavy projects which, let’s be real, is 90% of what we’re doing these days, right?
+وVitest؟ مبني على **Vite**، أجل، ذلك المُجمّع فائق السرعة، وتصبح ميزة السرعة هذه إحدى بطاقاته التعريفية. يتكئ Vitest على منظومة Vite ويستخدم **ESM (وحدات EcmaScript)**، مما يتيح أوقات بدء سريعة جدًا واختبارًا فائق السرعة، خاصةً في *وضع التطوير*. والقدرة على تشغيل الاختبارات مباشرةً في متصفّح دون إعداد إضافي تمنح دفعة كبيرة في السرعة للمشاريع الكثيفة الواجهات الأمامية، وهي كما نعرف جميعًا 90% مما نفعله هذه الأيام، أليس كذلك؟
 
-## Setup and Learning Curve
+## الإعداد ومنحنى التعلّم
 
 ### Jest
 
-Setting up Jest isn’t the worst thing you’ll face as an engineer—ever try to configure Webpack from scratch in like 2018? It does come batteries included, so 90% of the time, you install it, and boom—you’ve got a functional test suite.
+إعداد Jest ليس أسوأ ما ستواجهه كمهندس؛ هل جرّبت يومًا تهيئة Webpack من الصفر في نحو 2018؟ إنه يأتي بكل ما تحتاجه مضمّنًا، لذا في 90% من الأوقات تثبّته، وانتهى الأمر: لديك مجموعة اختبارات عاملة.
 
-But—and it’s a big but—the Jest API array of features can sometimes tip over into the “whoa, okay, let me get back to you in a week” territory. If you’re tackling newer features like parallel testing or even type hints sometimes, suddenly you’re knee-deep in documentation.
+لكن، وهو «لكن» كبير، قد تتحول مجموعة ميزات واجهة Jest أحيانًا إلى منطقة «حسنًا، دعني أعود إليك بعد أسبوع». فإن كنت تتعامل مع ميزات أحدث مثل الاختبار المتوازي أو حتى تلميحات الأنواع أحيانًا، فستجد نفسك فجأة غارقًا في التوثيق.
 
 ### Vitest
 
-Vitest, by comparison, is a smoother onboarding if you’re *already* in the Vite ecosystem. The same way Jest “just works” for React, Vitest “just works” for Vite-powered projects. Configuration’s simple, the syntax is almost identical to Jest (so anyone making the switch won’t feel like they’ve been dropped into a foreign country), and it’s very lightweight in terms of setup.
+أما Vitest، فبالمقارنة، يقدّم بداية أكثر سلاسة إن كنت *بالفعل* داخل منظومة Vite. فبالطريقة نفسها التي «يعمل بها» Jest مع React، «يعمل بها» Vitest مع المشاريع المدعومة بـ Vite. التهيئة بسيطة، والصياغة تكاد تطابق Jest (فلا يشعر من ينتقل بأنه أُلقي في بلد أجنبي)، وهو خفيف جدًا من حيث الإعداد.
 
-Set up Vite already? Then you’re like 90% of the way there. It’s like Vitest sidled up to you at the coffee shop and quietly said: “Hey… no big deal, but… wanna test this?”
+هل أعددت Vite مسبقًا؟ إذن أنت تقريبًا على بعد 90% من الطريق. كأن Vitest اقترب منك في المقهى وقال بهدوء: «مرحبًا… لا شيء مهم، لكن… أتريد اختبار هذا؟»
 
-## Mocking and Stubbing
+## المحاكاة والبدائل
 
 ### Jest
 
-Now, if there’s one thing where Jest shines, it’s the built-in mocking. Some devs will live and die by Jest’s powerful ability to mock modules, functions, objects—you name it. Jest makes it dead simple, and you don’t usually need third-party libraries to handle the heavy lifting.
+الآن، إن كان ثمة جانب يتألّق فيه Jest، فهو المحاكاة المدمجة. بعض المطورين يعيشون ويموتون بقدرة Jest القوية على محاكاة الوحدات والدوال والكائنات، وكل ما تسمّيه. يجعلها Jest سهلة للغاية، ولا تحتاج عادةً إلى مكتبات خارجية للقيام بالعمل الشاق.
 
 ```javascript
 const myModule = require('./myModule');
 jest.mock('./myModule');
 ```
 
-And boom, you’ve got a mock. It’s a favorite feature for many since mocking often makes the difference between a 3-minute test run and an afternoon fighting with dependencies.
+وها قد حصلت على بديل مُحاكى. وهي ميزة مفضّلة لدى كثيرين لأن المحاكاة كثيرًا ما تصنع الفرق بين تشغيل اختبارات في ثلاث دقائق وقضاء أصيل في مصارعة الاعتمادات.
 
 ### Vitest
 
-Vitest can also mock, but it’s not quite at Jest’s level… yet. While it supports mocking modules, functions, and such, some of the more complex use cases, like auto-mocking, are still catching up. However, it does integrate with **Sinon.js** easily and can handle most commonly needed mocks without breaking a sweat.
+يستطيع Vitest المحاكاة أيضًا، لكنه ليس على مستوى Jest تمامًا… بعد. فرغم أنه يدعم محاكاة الوحدات والدوال وما شابه، فإن بعض الاستخدامات الأكثر تعقيدًا، مثل المحاكاة التلقائية، ما زالت تلحق بالركب. غير أنه يتكامل بسهولة مع **Sinon.js** ويستطيع التعامل مع معظم البدائل المُحاكاة الشائعة الحاجة دون عناء.
 
 ```javascript
 import { vi } from 'vitest';
@@ -65,37 +65,37 @@ import myModule from './myModule';
 vi.mock('./myModule');
 ```
 
-See? Syntactically similar to Jest, but a little different under the hood.
+أرأيت؟ متشابه نحويًا مع Jest، لكنه مختلف قليلًا تحت الغطاء.
 
-## TypeScript Support
+## دعم TypeScript
 
 ### Jest
 
-Jest does work with TypeScript, but setting it up requires some legwork. You’ll have to make sure your transpiler (usually **Babel** or **ts-jest**) is configured correctly with proper transformers which, frankly, is a bit of a pain in the neck, and often the primary source of “what fresh hell did I just walk into” moments.
+يعمل Jest مع TypeScript بالفعل، لكن إعداده يتطلّب بعض الجهد. سيكون عليك التأكد من أن مُحوّلك (عادةً **Babel** أو **ts-jest**) مُهيّأ بشكل صحيح مع المحوّلات المناسبة، وهذا بصراحة مصدر إزعاج، وغالبًا المصدر الأساسي للحظات «أي جحيم جديد دخلت فيه للتو».
 
 ### Vitest
 
-The story is different for Vitest. Since Vite inherently supports **ESM** and **TypeScript**, Vitest inherits that awesomeness. No need for **Babel** or special transformers—just point it at your TypeScript files and go. Seriously, it feels like cheating when you see how smooth it is. No translation layer shenanigans here!
+القصة مختلفة مع Vitest. فبما أن Vite يدعم **ESM** و**TypeScript** بطبيعته، يرث Vitest هذه الروعة. لا حاجة إلى **Babel** أو محوّلات خاصة؛ فقط وجّهه إلى ملفات TypeScript لديك وانطلق. بجد، يبدو الأمر كالغش عندما ترى مدى سلاسة ذلك. لا حيل طبقة ترجمة هنا!
 
-## Snapshot Testing
+## اختبار لقطات الحالة
 
 ### Jest
 
-Snapshot testing is another one of Jest’s killer features. You generate a snapshot of your UI functions or components, and Jest makes sure those snapshots don’t change unless you explicitly want them to. It’s a great fit for React or any UI you want to keep a close watch on.
+اختبار لقطات الحالة ميزة قاتلة أخرى من ميزات Jest. تُنشئ لقطة لدوال واجهتك أو مكوناتك، ويحرص Jest على ألا تتغير تلك اللقطات إلا إذا أردت ذلك صراحةً. وهو مناسب جدًا لـ React أو أي واجهة تريد مراقبتها عن كثب.
 
 ```javascript
 expect(component.toJSON()).toMatchSnapshot();
 ```
 
-Instant peace of mind.
+طمأنينة فورية.
 
 ### Vitest
 
-Vitest also supports snapshots. However, if you’ve built up a mountain of Jest snapshots, they aren’t *directly* transferable. That means switching might require a bit of work converting, and Vitest’s snapshot functionality doesn’t have the same level of maturity—for now. It gets the job done, but I wouldn’t print the victory cake about switching just for snapshots alone.
+يدعم Vitest لقطات الحالة أيضًا. لكن إن كنت قد بنيت جبلًا من لقطات Jest، فهي ليست قابلة للنقل *مباشرة*. هذا يعني أن الانتقال قد يتطلب بعض العمل في التحويل، وأن وظيفة لقطات الحالة في Vitest ليست بالمستوى نفسه من النضج، في الوقت الحالي على الأقل. إنها تؤدي الغرض، لكنني لن أعلن الاحتفال بالانتقال من أجل اللقطات وحدها.
 
-## Which One Is Right for You?
+## أيّهما يناسبك؟
 
-At the end of the day *both* are great for testing your JavaScript projects. But here’s the real-world takeaway:
+في نهاية اليوم، *كلاهما* رائع لاختبار مشاريع JavaScript لديك. لكن إليك الخلاصة العملية:
 
-- **Using Vite and a modern ecosystem?** You’re probably going to enjoy Vitest’s faster start times, seamless TypeScript integrations, and simplicity.
-- **Deeply reliant on Jest’s mocking, parallelization, or snapshot APIs?** Jest might still hold the crown for you, especially if it’s already baked into your tools and workflow.
+- **هل تستخدم Vite ومنظومة حديثة؟** ستنعم على الأرجح بأوقات بدء أسرع في Vitest، وتكاملات سلسة مع TypeScript، وبساطة.
+- **هل تعتمد اعتمادًا عميقًا على واجهات المحاكاة أو التوازي أو لقطات الحالة في Jest؟** قد يظل Jest متوّجًا بالنسبة إليك، خاصةً إن كان مدمجًا أصلًا في أدواتك وسير عملك.

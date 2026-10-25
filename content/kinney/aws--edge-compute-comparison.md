@@ -1,39 +1,39 @@
 ---
-title: "Edge Compute: Lambda@Edge vs. CloudFront Functions"
-lang: en
+title: "الحوسبة على الحافة: Lambda@Edge مقابل CloudFront Functions"
+lang: ar
 source: "https://stevekinney.com/courses/aws/edge-compute-comparison"
 ---
 
-Scratch Lab is live now, which means the weird requirements start showing up. Marketing wants an A/B test on the homepage hero. You want to redirect a retired campaign URL before it ever touches your origin. Security wants a header added everywhere. These are not “spin up a whole backend” problems. These are *edge* problems.
+صار Scratch Lab مباشرًا الآن، وهذا يعني أن المتطلبات الغريبة تبدأ بالظهور. يريد فريق التسويق اختبار A/B على القسم الرئيسي من الصفحة الرئيسية. وأنت تريد إعادة توجيه رابط حملة متقاعدة قبل أن يصل إلى أصلك إطلاقًا. ويريد فريق الأمن إضافة ترويسة في كل مكان. هذه ليست مشكلات من نوع «شغّل خلفية كاملة». هذه مشكلات *الحافة*.
 
-If you want AWS’s exact feature boundaries in front of you while you read, keep the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) and the [Lambda@Edge guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) open.
+إذا أردت أن تكون حدود ميزات AWS الدقيقة أمامك أثناء القراءة، فأبقِ [دليل CloudFront Functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) و[دليل Lambda@Edge](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) مفتوحين.
 
-You already know how to write Lambda functions and how CloudFront serves your content. Now you’re going to push compute into the CDN itself. AWS gives you two ways to run code at CloudFront’s edge locations: **Lambda@Edge** and **CloudFront Functions**. They solve overlapping problems, but they aren’t interchangeable—the runtimes, execution limits, and pricing are different enough that choosing the wrong one either wastes money or blocks you from doing what you need.
+أنت تعرف بالفعل كيف تكتب دوال Lambda وكيف يقدّم CloudFront محتواك. والآن ستدفع الحوسبة إلى شبكة توصيل المحتوى (CDN) نفسها. وتمنحك AWS طريقتين لتشغيل الشيفرة على مواقع حافة CloudFront: **Lambda@Edge** و**CloudFront Functions**. وهما تحلّان مشكلات متداخلة، لكنهما غير قابلتين للتبادل — فأوقات التشغيل وحدود التنفيذ والتسعير مختلفة بما يكفي لأن يجعل اختيار الخاطئ منهما يهدر المال أو يمنعك من فعل ما تحتاجه.
 
-Think of it like the difference between a Vercel Edge Function and a Vercel Serverless Function. One runs instantly at the edge with tight constraints. The other gives you a full runtime with more power and higher latency. AWS made the same tradeoff, just with different names.
+فكّر في الأمر كالفرق بين Vercel Edge Function وVercel Serverless Function. إحداهما تعمل فورًا على الحافة بقيود ضيقة. والأخرى تمنحك وقت تشغيل كاملًا بقدرة أكبر وزمن استجابة أطول. وقد أجرت AWS المقايضة نفسها، لكن بأسماء مختلفة.
 
-## Why This Matters
+## لماذا هذا مهم
 
-This decision shows up fast in real systems. If all you need is a redirect or header rewrite, Lambda@Edge is overkill and more expensive. If you need to call an origin, validate a token with a library, or touch the request body, CloudFront Functions hits a wall immediately. The lesson here is not “edge compute exists.” The lesson is “pick the smallest tool that can actually do the job.”
+يظهر هذا القرار سريعًا في الأنظمة الحقيقية. فإن كان كل ما تحتاجه إعادة توجيه أو إعادة كتابة ترويسة، فـ Lambda@Edge مبالغة وأكثر تكلفة. وإذا كنت تحتاج إلى استدعاء أصل، أو التحقق من رمز باستخدام مكتبة، أو لمس جسم الطلب، فإن CloudFront Functions تصطدم بحائط فورًا. والدرس هنا ليس «الحوسبة على الحافة موجودة». الدرس هو «اختر أصغر أداة تستطيع فعل المهمة فعلًا».
 
-## Builds On
+## يبني على
 
-- [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)
-- [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)
-- [What Lambda Is and Why Frontend Engineers Care](https://stevekinney.com/courses/aws/what-is-lambda)
+- [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)
+- [سلوكات التخزين المؤقت وعمليات الإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)
+- [ما هي Lambda ولماذا يهتمّ مهندسو الواجهة الأمامية](https://stevekinney.com/courses/aws/what-is-lambda)
 
-## Where They Run in the Request Lifecycle
+## أين تعمل في دورة حياة الطلب
 
-Both Lambda@Edge and CloudFront Functions hook into CloudFront’s request lifecycle, but at different points. CloudFront processes every request through four potential events:
+تتصل كل من Lambda@Edge وCloudFront Functions بدورة حياة الطلب في CloudFront، لكن في نقاط مختلفة. فـ CloudFront يعالج كل طلب عبر أربعة أحداث محتملة:
 
-1. **Viewer request**—CloudFront receives a request from the client, before checking the cache.
-2. **Origin request**—CloudFront forwards the request to the origin, after a cache miss.
-3. **Origin response**—CloudFront receives the response from the origin, before caching it.
-4. **Viewer response**—CloudFront returns the response to the client.
+1. **طلب المشاهد** — يستقبل CloudFront طلبًا من العميل، قبل فحص الذاكرة المؤقتة.
+2. **طلب الأصل** — يمرّر CloudFront الطلب إلى الأصل، بعد عدم إصابة الذاكرة المؤقتة (cache miss).
+3. **استجابة الأصل** — يستقبل CloudFront الاستجابة من الأصل، قبل تخزينها مؤقتًا.
+4. **استجابة المشاهد** — يعيد CloudFront الاستجابة إلى العميل.
 
-**CloudFront Functions** can only attach to **viewer request** and **viewer response** events. They intercept traffic before the cache layer, which means they run on every single request—cached or not.
+تستطيع **CloudFront Functions** الارتباط بحدثي **طلب المشاهد** و**استجابة المشاهد** فقط. فهي تعترض حركة المرور قبل طبقة الذاكرة المؤقتة، وهذا يعني أنها تعمل في كل طلب منفرد — سواء كان مخزّنًا مؤقتًا أم لا.
 
-**Lambda@Edge** can attach to **all four events**: viewer request, viewer response, origin request, and origin response. This makes Lambda@Edge the only option when you need to modify how CloudFront talks to your origin.
+وتستطيع **Lambda@Edge** الارتباط بـ**الأحداث الأربعة كلها**: طلب المشاهد، واستجابة المشاهد، وطلب الأصل، واستجابة الأصل. وهذا يجعل Lambda@Edge الخيار الوحيد عندما تحتاج إلى تعديل كيفية تحدّث CloudFront مع أصلك.
 
 ```
 flowchart LR
@@ -51,105 +51,105 @@ flowchart LR
     LambdaEdge -.-> ViewerResponse
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> If you need to transform the request before it hits your S3 bucket (for example, rewriting a URL path), you need an **origin request** trigger—and that means Lambda@Edge.
+> إذا كنت تحتاج إلى تحويل الطلب قبل أن يصل إلى حاوية S3 لديك (مثلًا إعادة كتابة مسار URL)، فأنت تحتاج إلى مُشغِّل **طلب الأصل** — وهذا يعني Lambda@Edge.
 
-## The Comparison Table
+## جدول المقارنة
 
-Here’s the side-by-side breakdown. Every time you’re deciding which to use, start here.
+إليك التفصيل جنبًا إلى جنب. وفي كل مرة تختار بينهما، ابدأ من هنا.
 
-| Dimension | CloudFront Functions | Lambda@Edge |
+| البُعد | CloudFront Functions | Lambda@Edge |
 | --- | --- | --- |
-| **Runtime** | JavaScript (ECMAScript 5.1 with select ES6–ES12 features) | Node.js or Python |
-| **Execution location** | CloudFront edge locations (200+) | Regional edge caches (13 locations) |
-| **Supported events** | Viewer request, viewer response | Viewer request, viewer response, origin request, origin response |
-| **Maximum execution time** | Sub-millisecond (measured as compute utilization, not wall clock) | 5 seconds (viewer events), 30 seconds (origin events) |
-| **Memory** | 2 MB | 128 MB (viewer events), up to 10,240 MB (origin events) |
-| **Maximum package size** | 10 KB | 1 MB (viewer events), 50 MB (origin events) |
-| **Network access** | No | Yes |
-| **File system access** | No | Yes (read-only `/tmp`, up to 512 MB) |
-| **Request body access** | No | Yes (origin events only) |
-| **Environment variables** | No | No user-defined environment variables |
-| **Pricing** | $0.10 per 1 million invocations | $0.60 per 1 million invocations + $0.00005001 per GB-second |
-| **Free tier** | 2 million invocations per month | No CloudFront free-tier allowance for Lambda@Edge |
-| **Deployment region** | Global (no region selection needed) | Must deploy in `us-east-1`; AWS replicates automatically |
-| **Scale** | 10,000,000+ requests per second | Thousands of concurrent executions per region |
+| **وقت التشغيل** | JavaScript ‏(ECMAScript 5.1 مع ميزات مختارة من ES6–ES12) | Node.js أو Python |
+| **موقع التنفيذ** | مواقع حافة CloudFront ‏(أكثر من 200) | ذاكرات الحافة الإقليمية (13 موقعًا) |
+| **الأحداث المدعومة** | طلب المشاهد، استجابة المشاهد | طلب المشاهد، استجابة المشاهد، طلب الأصل، استجابة الأصل |
+| **أقصى مدة تنفيذ** | أقل من مللي ثانية (تُقاس كاستهلاك حوسبة، لا بساعة جدارية) | 5 ثوانٍ (أحداث المشاهد)، 30 ثانية (أحداث الأصل) |
+| **الذاكرة** | 2 MB | 128 MB (أحداث المشاهد)، حتى 10,240 MB (أحداث الأصل) |
+| **أقصى حجم للحزمة** | 10 KB | 1 MB (أحداث المشاهد)، 50 MB (أحداث الأصل) |
+| **الوصول إلى الشبكة** | لا | نعم |
+| **الوصول إلى نظام الملفات** | لا | نعم (`/tmp` للقراءة فقط، حتى 512 MB) |
+| **الوصول إلى جسم الطلب** | لا | نعم (أحداث الأصل فقط) |
+| **متغيّرات البيئة** | لا | لا متغيّرات بيئة يحدّدها المستخدم |
+| **التسعير** | 0.10 دولار لكل مليون استدعاء | 0.60 دولار لكل مليون استدعاء + 0.00005001 دولار لكل GB-ثانية |
+| **الطبقة المجانية** | مليونان من الاستدعاءات شهريًا | لا يوجد مخصّص مجاني في طبقة CloudFront المجانية لـ Lambda@Edge |
+| **منطقة النشر** | عالمية (لا حاجة إلى اختيار منطقة) | يجب النشر في `us-east-1`؛ وAWS تنسخ تلقائيًا |
+| **السعة** | أكثر من 10,000,000 طلب في الثانية | آلاف التنفيذات المتزامنة لكل منطقة |
 
-## The Runtime Difference
+## الفرق في وقت التشغيل
 
-This is the biggest conceptual difference. CloudFront Functions do **not** run Node.js. They run a purpose-built JavaScript runtime that’s compliant with ECMAScript 5.1 and supports select features from ES6 through ES12. You can’t `require()` or `import` modules. You can’t use the AWS SDK. You can’t make HTTP requests. You get pure JavaScript string and object manipulation—and that’s it.
+هذا أكبر فرق مفاهيمي. فـ CloudFront Functions **لا** تشغّل Node.js. بل تشغّل وقت تشغيل JavaScript مبنيًا لغرض محدّد، متوافقًا مع ECMAScript 5.1 ويدعم ميزات مختارة من ES6 حتى ES12. لا تستطيع استخدام `require()` أو `import` لتحميل الوحدات. لا تستطيع استخدام AWS SDK. لا تستطيع إجراء طلبات HTTP. ما تحصل عليه هو معالجة نصوص وكائنات JavaScript خالصة — لا أكثر.
 
-Lambda@Edge runs a full Node.js or Python runtime. You can bundle npm packages, call external APIs, read from DynamoDB, validate JWTs with a library—anything a normal Lambda function can do, within the execution time limits.
+أما Lambda@Edge فتشغّل وقت تشغيل Node.js أو Python كاملًا. يمكنك تجميع حزم npm، واستدعاء واجهات API خارجية، والقراءة من DynamoDB، والتحقق من رموز JWT بمكتبة — أي شيء تستطيع دالة Lambda عادية فعله، ضمن حدود وقت التنفيذ.
 
-If you’ve written middleware in Express or Next.js, CloudFront Functions feel like a stripped-down middleware layer. Lambda@Edge feels like a full serverless function that happens to run closer to your users.
+إذا سبق أن كتبت برمجيات وسيطة (middleware) في Express أو Next.js، فستبدو CloudFront Functions كطبقة وسيطة مجرّدة. أما Lambda@Edge فتبدو كدالة بلا خادم كاملة تصادف أنها تعمل أقرب إلى مستخدميك.
 
-## The Pricing Difference
+## الفرق في التسعير
 
-CloudFront Functions are roughly **six times cheaper** per invocation than Lambda@Edge, and there’s no duration-based charge. You pay a flat $0.10 per million invocations regardless of how long each function takes (as long as it stays within the compute utilization limit).
+CloudFront Functions أقل تكلفة بستة أضعاف تقريبًا لكل استدعاء من Lambda@Edge، ولا يوجد رسم قائم على المدة. فتدفع 0.10 دولار ثابتة لكل مليون استدعاء بغض النظر عن المدة التي تستغرقها كل دالة (طالما بقيت ضمن حد استهلاك الحوسبة).
 
-Lambda@Edge charges $0.60 per million invocations **plus** a per-GB-second charge for the compute time your function uses. For a function using 128 MB that runs for 50 ms, that compute cost is small—but I’ve watched it add up faster than you’d expect at scale.
+وتتقاضى Lambda@Edge 0.60 دولار لكل مليون استدعاء **إضافة إلى** رسم لكل GB-ثانية مقابل وقت الحوسبة الذي تستخدمه دالتك. فلدالة تستخدم 128 MB وتعمل 50 مللي ثانية، تكون تكلفة الحوسبة تلك صغيرة — لكنني رأيتها تتراكم أسرع ممّا تتوقّع على نطاق واسع.
 
-CloudFront’s free usage tier covers **1 TB of data transfer out, 10 million HTTP/HTTPS requests, and 2 million CloudFront Functions invocations each month**. Lambda@Edge is explicitly excluded from that free-tier bucket, which is a polite AWS way of saying: if a trivial rewrite can be a CloudFront Function, make it a CloudFront Function.
+وتغطّي طبقة الاستخدام المجانية في CloudFront **1 TB من نقل البيانات الصادر، و10 ملايين طلب HTTP/HTTPS، ومليوني استدعاء لـ CloudFront Functions شهريًا**. وLambda@Edge مستثناة صراحةً من نطاق الطبقة المجانية ذلك، وهي طريقة مهذّبة من AWS لتقول: إذا كان بإمكان إعادة كتابة تافهة أن تكون CloudFront Function، فاجعلها CloudFront Function.
 
-For a site handling 100 million requests per month:
+لموقع يعالج 100 مليون طلب شهريًا:
 
-- **CloudFront Functions:** 100 million × $0.10 / 1M = **$10.00**
-- **Lambda@Edge (viewer events, 128 MB, 50 ms):** 100M × $0.60 / 1M + compute = roughly **32.00 = $92.00**
+- **CloudFront Functions:** 100 مليون × 0.10 دولار / 1M = **10.00 دولارات**
+- **Lambda@Edge (أحداث المشاهد، 128 MB، 50 ms):** 100M × 0.60 دولار / 1M + الحوسبة = نحو **32.00 = 92.00 دولارًا**
 
-> **Warning**
+> **تحذير**
 >
-> Lambda@Edge functions run at **regional edge caches**, not at every CloudFront edge location. This means they have higher latency than CloudFront Functions for viewer events. If your function is doing something simple like URL rewriting or header manipulation, CloudFront Functions are faster and cheaper.
+> تعمل دوال Lambda@Edge على **ذاكرات الحافة الإقليمية**، لا على كل موقع حافة في CloudFront. وهذا يعني أن زمن استجابتها أطول من CloudFront Functions لأحداث المشاهد. فإن كانت دالتك تفعل شيئًا بسيطًا مثل إعادة كتابة URL أو التلاعب بالترويسات، فـ CloudFront Functions أسرع وأرخص.
 
-## The Decision Matrix
+## مصفوفة القرار
 
-Use this when choosing:
+استخدم هذا عند الاختيار:
 
-**Choose CloudFront Functions when:**
+**اختر CloudFront Functions عندما:**
 
-- You need to manipulate headers, URLs, or cookies on viewer requests or responses
-- Your logic is simple string manipulation (redirects, rewrites, header injection)
-- You need sub-millisecond execution time
-- You’re operating at high scale and cost matters
-- You don’t need network access or external dependencies
+- تحتاج إلى التلاعب بالترويسات أو عناوين URL أو ملفات تعريف الارتباط في طلبات المشاهد أو استجاباته
+- يكون منطقك معالجة نصوص بسيطة (إعادات توجيه، وإعادات كتابة، وحقن ترويسات)
+- تحتاج إلى وقت تنفيذ أقل من مللي ثانية
+- تعمل على نطاق واسع والتكلفة تهمّ
+- لا تحتاج إلى وصول إلى الشبكة أو اعتماديات خارجية
 
-**Choose Lambda@Edge when:**
+**اختر Lambda@Edge عندما:**
 
-- You need to run code on origin request or origin response events
-- You need to make network calls (validate tokens against an external service, fetch configuration)
-- Your logic requires npm packages or the AWS SDK
-- You need access to the request body
-- You need more than 2 MB of memory or more than a few milliseconds of execution time
+- تحتاج إلى تشغيل شيفرة على حدثي طلب الأصل أو استجابة الأصل
+- تحتاج إلى إجراء اتصالات شبكة (التحقق من رموز مقابل خدمة خارجية، وجلب إعدادات)
+- يتطلّب منطقك حزم npm أو AWS SDK
+- تحتاج إلى الوصول إلى جسم الطلب
+- تحتاج إلى أكثر من 2 MB من الذاكرة أو أكثر من بضع مللي ثوانٍ من وقت التنفيذ
 
-**Choose neither when:**
+**لا تختر أيًّا منهما عندما:**
 
-- CloudFront’s built-in features handle it. Response headers policies (which you configured in [CloudFront Headers, CORS, and Security](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security)) can add security headers without any code. Cache policies can handle query string forwarding. Don’t write a function for something CloudFront already does natively.
+- تتولّى ميزات CloudFront المدمجة الأمر. فسياسات ترويسات الاستجابة (التي أعددتها في [الترويسات وCORS وسياسات الأمان](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security)) تستطيع إضافة ترويسات أمان بلا أي شيفرة. وسياسات التخزين المؤقت تستطيع التعامل مع تمرير سلاسل الاستعلام. لا تكتب دالة لشيء يفعله CloudFront أصلًا.
 
-## The Deployment Model
+## نموذج النشر
 
-CloudFront Functions deploy instantly. You write the function, publish it, associate it with a **behavior** on your distribution (recall behaviors from [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)), and it takes effect within seconds.
+تنتشر CloudFront Functions فورًا. تكتب الدالة، وتنشرها، وتربطها بـ**سلوك** على توزيعك (تذكّر السلوكات من [سلوكات التخزين المؤقت وعمليات الإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations))، فتصبح سارية في غضون ثوانٍ.
 
-Lambda@Edge functions must be deployed to `us-east-1`—the same region requirement you encountered with ACM certificates in [Certificate Renewal and us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1). Once deployed, you publish a numbered version (not `$LATEST`), and AWS replicates that version to regional edge caches worldwide. This replication takes a few minutes, and you can’t delete a Lambda@Edge function until CloudFront finishes removing all the replicas.
+أما دوال Lambda@Edge فيجب نشرها إلى `us-east-1` — وهو متطلّب المنطقة نفسه الذي صادفته مع شهادات ACM في [تجديد الشهادة ومتطلّب us-east-1](https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1). وبمجرد النشر، تنشر إصدارًا مرقّمًا (لا `$LATEST`)، فتنسخ AWS ذلك الإصدار إلى ذاكرات الحافة الإقليمية في أنحاء العالم. وهذا النسخ يستغرق بضع دقائق، ولا تستطيع حذف دالة Lambda@Edge حتى ينتهي CloudFront من إزالة كل النسخ المتماثلة.
 
-> **Warning**
+> **تحذير**
 >
-> You can’t use `$LATEST` with Lambda@Edge. You must publish a numbered version and reference that specific version ARN when associating the function with a CloudFront behavior. If you try to use `$LATEST`, CloudFront will reject the association.
+> لا تستطيع استخدام `$LATEST` مع Lambda@Edge. يجب أن تنشر إصدارًا مرقّمًا وتشير إلى ARN ذلك الإصدار تحديدًا عند ربط الدالة بسلوك CloudFront. وإن حاولت استخدام `$LATEST`، سيرفض CloudFront الارتباط.
 
-With the comparison in hand, you’ll write and deploy one of each in the next two lessons. [Writing a CloudFront Function](https://stevekinney.com/courses/aws/writing-a-cloudfront-function) covers a URL rewrite function using the lightweight JavaScript runtime. [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function) covers deploying a Lambda function to the edge with the full Node.js runtime. Both lessons assume you already have a working CloudFront distribution. If you don’t, go back and set one up first.
+وبالمقارنة في يدك، ستكتب وتنشر واحدة من كل نوع في الدرسين التاليين. يغطّي [كتابة دالة CloudFront](https://stevekinney.com/courses/aws/writing-a-cloudfront-function) دالة إعادة كتابة URL باستخدام وقت تشغيل JavaScript الخفيف. ويغطّي [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function) نشر دالة Lambda إلى الحافة بوقت تشغيل Node.js الكامل. ويفترض الدرسان أن لديك توزيع CloudFront يعمل بالفعل. وإن لم يكن لديك، فارجع وأعدّ واحدًا أولًا.
 
-## Verification
+## التحقق
 
-Before you choose, force yourself through this checklist:
+قبل أن تختار، أجبر نفسك على المرور بهذه القائمة:
 
-- Can the logic run entirely on viewer request or viewer response?
-- Does it need a package, network call, request body, or origin event?
-- Is this happening on every request at high scale, where per-invocation cost matters?
+- هل يستطيع المنطق أن يعمل كليًا في طلب المشاهد أو استجابة المشاهد؟
+- هل يحتاج إلى حزمة، أو اتصال شبكة، أو جسم طلب، أو حدث أصل؟
+- هل يحدث هذا في كل طلب على نطاق واسع، حيث تهمّ تكلفة كل استدعاء؟
 
-If the honest answers are “yes, no, yes,” CloudFront Functions is probably the right call.
+إذا كانت الإجابات الصادقة «نعم، لا، نعم»، فـ CloudFront Functions هي الخيار الصحيح على الأرجح.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Picking Lambda@Edge for a simple redirect:** you pay more, deploy more slowly, and gain nothing.
-- **Picking CloudFront Functions for anything needing network access or SDK calls:** the runtime cannot do it.
-- **Assuming Lambda@Edge supports normal Lambda conveniences:** user-defined environment variables are not available, and deployment rules are stricter.
-- **Forgetting event placement:** a viewer-request function cannot do origin-request work just because you wish it could.
+- **اختيار Lambda@Edge لإعادة توجيه بسيطة:** تدفع أكثر، وتنشر أبطأ، ولا تكسب شيئًا.
+- **اختيار CloudFront Functions لأي شيء يحتاج إلى وصول إلى الشبكة أو استدعاءات SDK:** فوقت التشغيل لا يستطيع فعل ذلك.
+- **افتراض أن Lambda@Edge تدعم وسائل الراحة المعتادة في Lambda:** فمتغيّرات البيئة التي يحدّدها المستخدم غير متاحة، وقواعد النشر أكثر صرامة.
+- **نسيان موضع الحدث:** فدالة طلب المشاهد لا تستطيع أداء عمل طلب الأصل لمجرد أنك تتمنّى لو تستطيع.

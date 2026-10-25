@@ -1,12 +1,12 @@
 ---
-title: "Even More Form State Styling Improvements"
-lang: en
+title: "المزيد من تحسينات تنسيق حالة النماذج"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/styling-form-state"
 ---
 
-You can form elements based on their state without conditional logic.
+يمكنك تنسيق عناصر النماذج بناءً على حالتها دون منطق شرطي.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/0f944cb323b9cbbdac875e608f147183c87e9e6bafe0b7e49b3fcc2417619c3f.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0f944cb323b9cbbdac875e608f147183c87e9e6bafe0b7e49b3fcc2417619c3f.html)*
 
 ```html
 <input
@@ -14,26 +14,26 @@ You can form elements based on their state without conditional logic.
 />
 ```
 
-### Available Variants
+### المتغيّرات المتاحة
 
 - `required:`
-- `invalid:` / `valid:`: Input validation state.
-- `user-invalid:` and `user-valid:`: Checks validity *after* the user has interacted with the input.
-- `in-range:` and `out-of-range:`: For use with number inputs
-- `disabled:` and `enabled:`
-- `read-only:`: Inputs that are… read only.
-- `checked:`: Checkboxes/radios
-- `indeterminate:`: Partial selection with checkboxes.
-- `optional:`: Non-required fields.
-- `placeholder-shown:`: Styles for when the placeholder is visible.
-- `autofill:`: Inputs that the browser has automattically filled.
-- `focus:` / `focus-visible:` / `focus-within:`: [Focus states](https://stevekinney.com/courses/tailwind/focus-states)
+- `invalid:` / `valid:`: حالة التحقق من الإدخال.
+- `user-invalid:` و`user-valid:`: يفحص الصحة *بعد* تفاعل المستخدم مع الحقل.
+- `in-range:` و`out-of-range:`: للاستخدام مع حقول الأرقام
+- `disabled:` و`enabled:`
+- `read-only:`: الحقول التي تكون… للقراءة فقط.
+- `checked:`: مربعات الاختيار/أزرار الاختيار
+- `indeterminate:`: اختيار جزئي مع مربعات الاختيار.
+- `optional:`: الحقول غير المطلوبة.
+- `placeholder-shown:`: أنماط عندما يكون النص النائب مرئيًا.
+- `autofill:`: الحقول التي ملأها المتصفح تلقائيًا.
+- `focus:` / `focus-visible:` / `focus-within:`: [حالات التركيز](https://stevekinney.com/courses/tailwind/focus-states)
 
-## Styling Form Elements
+## تنسيق عناصر النماذج
 
-### Placeholders
+### النص النائب
 
-*Placeholders — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/38798eaa0e52d336bc1fdca80c75f2c4b65c87b885055ccafc761cf4364a6ac7.html)*
+*النص النائب — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/38798eaa0e52d336bc1fdca80c75f2c4b65c87b885055ccafc761cf4364a6ac7.html)*
 
 ```html
 <input
@@ -42,9 +42,9 @@ You can form elements based on their state without conditional logic.
 />
 ```
 
-### File Inputs
+### حقول الملفات
 
-*File Inputs — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/8c004bb37631e0b89251744317062fb731a4997b0887625bf92fa40ba3e79967.html)*
+*حقول الملفات — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/8c004bb37631e0b89251744317062fb731a4997b0887625bf92fa40ba3e79967.html)*
 
 ```html
 <input
@@ -53,19 +53,19 @@ You can form elements based on their state without conditional logic.
 />
 ```
 
-### Text Cursor
+### مؤشر النص
 
-*Text Cursor — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/d570037265e2c7e6bcebd2268f2afe7aa6f76a1b3044cb7fdb25091acda902b3.html)*
+*مؤشر النص — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d570037265e2c7e6bcebd2268f2afe7aa6f76a1b3044cb7fdb25091acda902b3.html)*
 
 ```html
 <input class="rounded-md bg-white px-3 py-1.5 caret-pink-500 outline-2 outline-slate-400" />
 ```
 
-## Form Utilities
+## أدوات النماذج
 
-### Reset browser styles
+### إعادة ضبط أنماط المتصفح
 
-*Reset browser styles — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/bc42508d7caaf3b69c83459c077888ea695f91c7569beec063a390017853ac25.html)*
+*إعادة ضبط أنماط المتصفح — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/bc42508d7caaf3b69c83459c077888ea695f91c7569beec063a390017853ac25.html)*
 
 ```html
 <select
@@ -78,9 +78,9 @@ You can form elements based on their state without conditional logic.
 </select>
 ```
 
-### Control text selection
+### التحكم في تحديد النص
 
-*Control text selection — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/71fd9217266eb04012e39416eb54582070b292c24c443f4c1bbf95963e95f1b2.html)*
+*التحكم في تحديد النص — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/71fd9217266eb04012e39416eb54582070b292c24c443f4c1bbf95963e95f1b2.html)*
 
 ```html
 <div class="space-y-4">
@@ -102,9 +102,9 @@ You can form elements based on their state without conditional logic.
 </div>
 ```
 
-### Resize behavior
+### سلوك تغيير الحجم
 
-*Resize behavior — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/c6c6943f01ced5830d6b5cf4e54c8a607a347f0e17ce9180fdc2c4e8a007b0fc.html)*
+*سلوك تغيير الحجم — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c6c6943f01ced5830d6b5cf4e54c8a607a347f0e17ce9180fdc2c4e8a007b0fc.html)*
 
 ```html
 <div class="space-y-4">
@@ -127,9 +127,9 @@ You can form elements based on their state without conditional logic.
 </div>
 ```
 
-## Tailwind 4 Updates
+## تحديثات Tailwind 4
 
-- **Field sizing:** `field-sizing-content` (auto-grow) or `field-sizing-fixed`
-- **Placeholder color:** Now 50% opacity of text color (was gray-400)
-- **Button cursor:** Default is `cursor-default` (was pointer)
-- **Outline:** `outline-hidden` preserves outline in forced-colors mode
+- **تحجيم الحقول:** `field-sizing-content` (نمو تلقائي) أو `field-sizing-fixed`
+- **لون النص النائب:** الآن بعتامة 50% من لون النص (كان gray-400)
+- **مؤشر الأزرار:** الافتراضي `cursor-default` (كان pointer)
+- **المحيط:** `outline-hidden` يحافظ على المحيط في وضع الألوان الإجبارية

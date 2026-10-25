@@ -1,52 +1,52 @@
 ---
-title: "Implementing a Callout Component"
-lang: en
+title: "تنفيذ مكوّن Callout"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/callout-component-exercise"
 ---
 
-Okay, it’s your turn to try this out. Consider this [Callout component](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=2-2372&mode=design). Consider the following. You can choose to ignore the fact that they have different icons if you’d like.
+حسنًا، جاء دورك لتجربة هذا. تأمّل [مكوّن Callout](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=2-2372&mode=design). وتأمّل ما يلي. ويمكنك أن تختار تجاهل كونها بأيقونات مختلفة إن أردت.
 
-Callout component designs
+تصميمات مكوّن Callout
 
-## Colors
+## الألوان
 
-The callout makes use of the following colors from our theme.
+يستخدم مكوّن Callout الألوان التالية من سمتنا.
 
-| Name | Light | Dark |
+| الاسم | الفاتح | الداكن |
 | --- | --- | --- |
 | **Callout / Primary** |  |  |
-| Background | Primary/200 | Primary/800 |
-| Border | Primary/500 | Primary/900 |
-| Text | Primary/900 | Primary/50 |
+| الخلفية | Primary/200 | Primary/800 |
+| الحد | Primary/500 | Primary/900 |
+| النص | Primary/900 | Primary/50 |
 | **Callout / Information** |  |  |
-| Background | Information/200 | Information/800 |
-| Border | Information/500 | Information/500 |
-| Text | Information/900 | Information/50 |
+| الخلفية | Information/200 | Information/800 |
+| الحد | Information/500 | Information/500 |
+| النص | Information/900 | Information/50 |
 | **Callout / Success** |  |  |
-| Background | Success/200 | Success/800 |
-| Border | Success/500 | Success/900 |
-| Text | Success/900 | Success/50 |
+| الخلفية | Success/200 | Success/800 |
+| الحد | Success/500 | Success/900 |
+| النص | Success/900 | Success/50 |
 | **Callout / Warning** |  |  |
-| Background | Warning/200 | Warning/800 |
-| Border | Warning/500 | Warning/900 |
-| Text | Warning/900 | Warning/50 |
+| الخلفية | Warning/200 | Warning/800 |
+| الحد | Warning/500 | Warning/900 |
+| النص | Warning/900 | Warning/50 |
 | **Callout / Danger** |  |  |
-| Background | Danger/200 | Danger/800 |
-| Border | Danger/500 | Danger/900 |
-| Text | Danger/900 | Danger/50 |
+| الخلفية | Danger/200 | Danger/800 |
+| الحد | Danger/500 | Danger/900 |
+| النص | Danger/900 | Danger/50 |
 | **Callout / Default** |  |  |
-| Background | Slate/200 | Slate/800 |
-| Border | Slate/500 | Slate/900 |
-| Text | Slate/900 | Slate/50 |
+| الخلفية | Slate/200 | Slate/800 |
+| الحد | Slate/500 | Slate/900 |
+| النص | Slate/900 | Slate/50 |
 
-### Other Tasting Notes
+### ملاحظات تذوّق أخرى
 
-- The fonts are the base font, but the title of the callout is semibold.
-- The corners are rounded using Tailwind `rounded` class.
+- الخطوط هي الخط الأساسي، لكن عنوان مكوّن Callout بوزن شبه عريض.
+- الزوايا مستديرة باستخدام صنف `rounded` في Tailwind.
 
-## Some Starter Code
+## بعض الشيفرة الابتدائية
 
-Here is some code to get your started if that’s helpful. Let’s start with the component.
+إليك بعض الشيفرة لتبدأ إن كان ذلك مفيدًا. لنبدأ بالمكوّن.
 
 ```typescript
 import type { PropsWithChildren } from 'react';
@@ -64,7 +64,7 @@ export const Callout = ({ title, children }: CalloutProps) => (
 );
 ```
 
-And now for the story (ideally in `src/components/callout/callout.stores.tsx`):
+والآن للقصة (يُفضّل في `src/components/callout/callout.stores.tsx`):
 
 ```typescript
 import type { Meta, StoryObj } from '@storybook/react';
@@ -85,6 +85,6 @@ type Story = StoryObj<typeof Callout>;
 export const Default: Story = {};
 ```
 
-> **Solution**
+> **الحل**
 >
-> Once you’ve gotten a chance to implement this component and write a story, we’ll take a look at a possible solution [here](https://stevekinney.com/courses/storybook/callout-component-solution).
+> بعد أن تسنح لك الفرصة لتنفيذ هذا المكوّن وكتابة قصة، سننظر في حل ممكن [هنا](https://stevekinney.com/courses/storybook/callout-component-solution).

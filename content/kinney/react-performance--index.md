@@ -1,151 +1,151 @@
 ---
-title: "React Performance"
-lang: en
+title: "أداء React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance"
 ---
 
-These are my notes for [my React Performance workshop](https://frontendmasters.com/workshops/react-performance-v2/?utm_source=kinney&utm_medium=social&code=kinney) for [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
+هذه ملاحظاتي من [ورشة أداء React](https://frontendmasters.com/workshops/react-performance-v2/?utm_source=kinney&utm_medium=social&code=kinney) التي أقدّمها على [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney).
 
-## Important Things
+## أمور مهمة
 
-- [Practice Lab Repository](https://github.com/stevekinney/react-performance)
-- [React Developer Tools](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
+- [مستودع مختبر التطبيق](https://github.com/stevekinney/react-performance)
+- [أدوات مطوّر React](https://chromewebstore.google.com/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en)
 
-## High-Level Notes
+## ملاحظات عامة
 
-### Performance Monitoring
+### مراقبة الأداء
 
-**Rule #1**: Do *not* measure the development build of your application.
+**القاعدة رقم 1**: *لا* تقس أداء نسخة التطوير من تطبيقك.
 
-Alias the following in your production build:
+اعمل استعارات (alias) لما يلي في نسخة الإنتاج:
 
 - `react-dom$` → `react-dom/profiling`
 - `scheduler/tracing` → `scheduler/tracing-profiling`
 
-**Rule #2**: At least pretend you’re not using a very fast MacBook Pro on fiber internet.
+**القاعدة رقم 2**: تظاهر على الأقل بأنك لا تستخدم جهاز MacBook Pro سريعًا جدًا مع إنترنت فائق السرعة.
 
-### Web Vitals
+### مؤشّرات الويب الأساسية (Web Vitals)
 
-- **Largest Contentful Paint (LCP)**: This is a measure of loading performance. It marks the point when the largest image or text block visible within the viewport is rendered. Aim for 2.5 seconds fro, then the page starts loading.
-- **Interaction to Next Paint (INP)**: Measures the latency of all click, tap, and keyboard interactions on the page and reports a single value. Aim for less than 200 milliseconds.
-- **Cummulative Layout Shift (CLS)**: Measures the visual stability of the page. It attempts to quantify how much unexpected layout shift occurs during the entire lifespan of the page. A goodl CLS score is less than 0.1.
+- **أكبر رسم للمحتوى (LCP)**: مقياس لأداء التحميل. يحدّد اللحظة التي يُصيَّر فيها أكبر صورة أو كتلة نصية ظاهرة داخل إطار العرض. استهدف 2.5 ثانية من بدء تحميل الصفحة.
+- **مدة التفاعل حتى الرسم التالي (INP)**: يقيس زمن الاستجابة لجميع تفاعلات النقر واللمس ولوحة المفاتيح في الصفحة ويعرض قيمة واحدة. استهدف أقل من 200 مللي ثانية.
+- **الانزياح التراكمي للتخطيط (CLS)**: يقيس الاستقرار البصري للصفحة. وهو يحاول قياس مقدار انزياح التخطيط غير المتوقّع خلال عمر الصفحة كاملًا. درجة CLS الجيدة أقل من 0.1.
 
-#### Optimizing LCP
+#### تحسين LCP
 
-- LCP measures how long it takes the browser to render that big ball of JavaScript into a representation of you application on the DOM. So cheat: Render the markup on the server and it doesn’t count.
-- Optimize your assets. Maybe you don’t need a 16mb image? How about your try a modern image format? You can also use hints like `<link rel="preload">` to just try to do it before hand so that no one notices.
-- Split up your code: Do you *need* to send them *everything* all at once?
+- يقيس LCP المدة التي يستغرقها المتصفّح لتحويل كتلة JavaScript الكبيرة تلك إلى تمثيل لتطبيقك في DOM. لذا اغشّ: صيّر الهيكل على الخادم فلن يُحتسب ذلك.
+- حسّن أصولك. فلعلّك لا تحتاج إلى صورة بحجم 16 ميغابايت؟ ما رأيك بتجربة صيغة صور حديثة؟ يمكنك أيضًا استخدام تلميحات مثل `<link rel="preload">` لمحاولة القيام بذلك مسبقًا كي لا يلاحظ أحد.
+- قسّم شيفرتك: هل *تحتاج* إلى إرسال *كل شيء* إليهم دفعة واحدة؟
 
-#### Optimizing INP
+#### تحسين INP
 
-- Don’t be selfish. Break up long tasks and let everyone else have a chance to slide their work in.
-- Memoize stuff so that things don’t need to change don’t waste precious time trying to figure that out on their own.
-- Debounce and throttle. Wait until the user finishes their thought before you start doing a bunch of work. It turns out that fingers have latency.
-- Web Workers: Go do your expensive stuff somewhere else.
+- لا تكن أنانيًا. جزّئ المهام الطويلة ودع كل الآخرين يحصلون على فرصة لإدخال أعمالهم.
+- احفظ الأمور في الذاكرة كي لا تُهدر الأشياء التي لا تحتاج إلى تغيير وقتًا ثمينًا في محاولة اكتشاف ذلك بنفسها.
+- استخدم إزالة الاهتزاز (debounce) والخنق (throttle). انتظر حتى يُكمل المستخدم فكرته قبل أن تبدأ في تنفيذ مجموعة من الأعمال. فقد اتّضح أن للأصابع زمن استجابة.
+- عمّال الويب (Web Workers): اذهب ونفّذ أمورك المكلفة في مكان آخر.
 
-#### Optiming CLS
+#### تحسين CLS
 
-- Don’t wait for the image to load to figure out its size.
-- Choose fonts that are metrically as similar as possible to a web font. (I know. I too have worked with designers.)
-- Reserve space for API responses so that the content doesn’t push stuff around when it loads. Skeleton loaders are your friends.
+- لا تنتظر تحميل الصورة لتعرف أبعادها.
+- اختر خطوطًا مماثلة متريًا قدر الإمكان للخط النهائي على الويب. (أعرف. فقد عملت مع المصمّمين أنا أيضًا.)
+- احجز مساحة لاستجابات API كي لا يدفع المحتوى ما حوله عند تحميله. هياكل التحميل (skeleton loaders) أصدقاؤك.
 
-### Anatomy of a Re-Render
+### تشريح إعادة التصيير
 
-Components basically re-render for one of three reasons:
+تُعاد المكوّنات للتصيير أساسًا لأحد ثلاثة أسباب:
 
-1. Its state changed.
-2. Its parent rendered.
-3. The Context changed.
+1. تغيّرت حالته.
+2. صُيّر مكوّنه الأب.
+3. تغيّر السياق (Context).
 
-We’ll talk about memoization in a bit. In that case, we can swap out the second reason with “its props changed.” We’ll also talk about how the React Compiler helps out in this regard. But, let’s tackle one thing at a time.
+سنتحدّث عن الحفظ في الذاكرة بعد قليل. وفي تلك الحالة يمكننا استبدال السبب الثاني بـ «تغيّرت خصائصه». وسنتحدّث أيضًا عن كيفية مساعدة React Compiler في هذا الصدد. لكن لنعالج أمرًا واحدًا في كل مرة.
 
-Regadless of *why* a component re-rendered, we can definitely classify renders into one of two buckets: necessary and unnecessary. Unnecessary renders are tricky because usually any given render isn’t going to a problem, it’s the accumulation of them over time.
+أيًّا كان *سبب* إعادة تصيير المكوّن، يمكننا بالتأكيد تصنيف عمليات إعادة التصيير في فئتين: ضرورية وغير ضرورية. عمليات إعادة التصيير غير الضرورية مسألة دقيقة، لأن أي عملية تصيير واحدة ليست عادةً مشكلة بحدّ ذاتها، بل تراكمها عبر الوقت.
 
 ### React Fiber
 
-**Back in my day**: Rendering was entirely synchronous and uninterruptible. The previous version used the JavaScript call-stack to work its way down the component tree. In Fiber, React manages it’s own call-stack-like abstraction.
+**في زمننا**: كان التصيير متزامنًا تمامًا وغير قابل للمقاطعة. وكان الإصدار السابق يستخدم مكدّس استدعاءات JavaScript للنزول عبر شجرة المكوّنات. أما في Fiber، فتدير React تجريدها الخاص الشبيه بمكدّس الاستدعاءات.
 
-> In the pre-Fiber days (React 15 and earlier), the “virtual DOM” was essentially a tree of lightweight objects that mirrored the real DOM. Every render, React would build a fresh tree from your JSX, diff it against the previous one, and then compute a patch to apply to the actual DOM. That whole process was synchronous and uninterruptible: once React started walking the tree, it had to finish before the browser could do anything else.
+> في أيام ما قبل Fiber (React 15 وما قبله)، كان «الدوم الافتراضي» في جوهره شجرة من كائنات خفيفة تحاكي DOM الحقيقي. في كل تصيير، تبني React شجرة جديدة من JSX لديك، وتقارنها بالسابقة، ثم تحسب رقعة (patch) لتطبيقها على DOM الفعلي. وكانت هذه العملية كلها متزامنة وغير قابلة للمقاطعة: فبمجرد أن تبدأ React في السير عبر الشجرة، كان عليها أن تنتهي قبل أن يستطيع المتصفّح فعل أي شيء آخر.
 
-React Fiber is a cooperatively-scheduled rendering engine.
+React Fiber محرّك تصيير مُجدول تعاونيًا.
 
-Effectively, we’re not necessarily reducing the time it takes to render the UI, we’re just trying to be a bit smarter about it.
+عمليًا، نحن لا نقلّل بالضرورة الزمن اللازم لتصيير واجهة المستخدم، بل نحاول فقط أن نكون أذكى قليلًا في ذلك.
 
-The TL;DR here is that we’re basically introducing this idea of priority as opposed to simply, dealing with requests in the order that they were received.
+الخلاصة هنا أننا نقدّم فكرة الأولوية بدل مجرّد التعامل مع الطلبات بترتيب وصولها.
 
-It’s basically a bunch of plain functions, a linked-list tree, and a small scheduler in a trench coat.
+إنها في الأساس مجموعة من الدوال العادية، وشجرة قائمة مترابطة، ومُجدول صغير متنكّر في معطف.
 
-The key feature is that it can stop what it’s doing and throw away an in-progress render whenever it feels like it.
+الميزة الجوهرية أنها تستطيع إيقاف ما تفعله وطرح تصيير جارٍ متى شاءت.
 
-Basically, if something *more important* than what it’s currently doing comes along, it can turn it’s focus to the more important stuff and either put the less important stuff on pause or toss it out for now and start over later.
+ببساطة، إن وصل شيء *أكثر أهمية* مما تفعله الآن، تستطيع تحويل تركيزها إلى الأمور الأكثر أهمية، وأن تُجمّد الأمور الأقل أهمية أو تطرحها الآن وتبدأ من جديد لاحقًا.
 
-A **Fiber** is a lightweight node that describes the work that needs to be done for a component: its props, state, pending updates, and pointers to its parent, children, and siblings.
+**Fiber** عقدة خفيفة تصف العمل الذي يجب تنفيذه لمكوّن ما: خصائصه، وحالته، والتحديثات المعلّقة، ومؤشّرات إلى أبيه وأبنائه وأشقّائه.
 
-There are always two trees:
+توجد دائمًا شجرتان:
 
-1. The **Current** tree: What the DOM (or whatever) currently reflects.
-2. The **Work in Progress** tree: The draft that’s being prepared.
+1. شجرة **الحالة الحالية** (Current): ما يعكسه DOM (أو أي شيء آخر) حاليًا.
+2. شجرة **العمل الجاري** (Work in Progress): المسوّدة التي يجري إعدادها.
 
-React does it’s work on the WIP tree and if something more important comes along, it can just toss that tree—or parts of it—an starts a new pass with the higher-priority updates that come along.
+تنفّذ React عملها على شجرة العمل الجاري، وإن وصل شيء أكثر أهمية، تستطيع ببساطة طرح تلك الشجرة — أو أجزاء منها — وتبدأ جولة جديدة بالتحديثات الأعلى أولوية التي وصلت.
 
-Fiber didn’t eliminate the virtual DOM—it just re-architected it. Each node in the tree is now a Fiber object, which is more than a virtual DOM element description:
+لم تُلغِ Fiber الدوم الافتراضي — بل أعادت بناء معماريتّه فقط. كل عقدة في الشجرة هي الآن كائن Fiber، وهو أكثر من مجرّد وصف لعنصر في الدوم الافتراضي:
 
-- It holds the component type, props, and pending state.
-- It has pointers to its parent, child, and sibling, forming a linked list tree.
-- It carries bookkeeping info for scheduling (lanes/priority, expiration time).
-- It stores effects that need to be committed (DOM mutations, callbacks).
+- يحمل نوع المكوّن وخصائصه وحالته المعلّقة.
+- له مؤشّرات إلى أبيه وابنه وشقيقه، فتتشكّل شجرة قائمة مترابطة.
+- يحمل معلومات محاسبية للجدولة (المسارات/الأولوية، وزمن الانتهاء).
+- يخزّن التأثيرات التي يجب إيداعها (تحويرات DOM ودوال الاستدعاء المرتد).
 
-When people say “React doesn’t use the virtual DOM anymore,” they usually mean: React Fiber isn’t just the old naive “diff two trees of JSON” approach. But the underlying idea—a programmatic tree representation of the UI that React reconciles against the real DOM—absolutely still exists. Fiber just made that representation smart, persistent, and cooperative with the browser’s event loop.
+عندما يقول الناس «لم تعد React تستخدم الدوم الافتراضي»، فما يعنونه عادةً أن React Fiber ليست مجرّد النهج الساذج القديم القائم على «مقارنة شجرتين من JSON». لكن الفكرة الأساسية — تمثيل برمجي شجري لواجهة المستخدم تقارنه React بـ DOM الحقيقي — لا تزال قائمة تمامًا. وقد جعلت Fiber ذلك التمثيل ذكيًا ودائمًا ومتعاونًا مع حلقة أحداث المتصفّح.
 
-#### The Render Loop
+#### حلقة التصيير
 
-In the Render Phase™, we process one Fiber at a time.
+في مرحلة التصيير™، نعالج Fiber واحدًا في كل مرة.
 
-1. Take the next Fiber.
-2. Run `beginWork(fiber, renderLanes)`. Basically, call the component function, derive the children.
-3. If there are children, descend. If not, bubble up via `completeWork` to finalize the node, update the DOM, and collect any effects.
-4. But, along the way—ask “Should I yield?” If yes, pause for a moment and let the browser have the wheel back for a second.
-5. Pick up where you left off.
+1. خُذ الـ Fiber التالي.
+2. نفّذ `beginWork(fiber, renderLanes)`. ببساطة، استدعِ دالة المكوّن واستنتج الأبناء.
+3. إن وُجد أبناء، انزل إليهم. وإن لم يوجد، اصعد عبر `completeWork` لإنهاء العقدة، وتحديث DOM، وجمع أي تأثيرات.
+4. لكن في الطريق — اسأل «هل ينبغي أن أتنازل؟» إن كان الجواب نعم، توقّف لحظة ودَع المتصفّح يستعيد دفة القيادة لثانية.
+5. استأنف من حيث توقّفت.
 
-There a bunch of different lanes, but for our purposes, we’re going to break this up into two categories:
+هناك مجموعة من المسارات (lanes) المختلفة، لكننا سنقسمها لأغراضنا إلى فئتين:
 
-- **Urgent Updates**: User input and stuff like that.
-- **Transition Updates**: Stuff explicitly marked as non-urgent by *you*.
+- **التحديثات العاجلة**: إدخال المستخدم وما شابه.
+- **تحديثات الانتقال**: أمور تُعلنها *أنت* صراحةً بأنها غير عاجلة.
 
-There are also stuff that React deems as even less urgent, but there isn’t officially blessed way for you to tap into those things.
+وهناك أيضًا أمور يعدّها React أقل إلحاحًا، لكن لا توجد طريقة معتمدة رسميًا لتصل إليها.
 
-#### Commit
+#### الإيداع
 
-Once we’ve finished with our render, commit the changes to the DOM.
+بعد أن ننتهي من التصيير، نُودع التغييرات في DOM.
 
-1. Before mutation phase (a.k.a. snapshot phase) React calls any lifecycle methods or hooks that need to read the DOM before React mutates it. Example: getSnapshotBeforeUpdate. No DOM writes yet, just reads.
-  - React calls any lifecycle methods or hooks that need to read the DOM before React mutates it.
-  - Example: getSnapshotBeforeUpdate.
-  - No DOM writes yet, just reads.
-2. Mutation phase React applies all the changes it decided on during the render phase. Creates, updates, or deletes DOM nodes. Runs ref cleanup (ref = null) for removed nodes. Runs passive effect cleanups scheduled for this commit (from the previous render).
-  - React applies all the changes it decided on during the render phase.
-  - Creates, updates, or deletes DOM nodes.
-  - Runs ref cleanup (ref = null) for removed nodes.
-  - Runs passive effect cleanups scheduled for this commit (from the previous render).
-3. Layout phase (a.k.a. layout effects) Now React calls useLayoutEffect callbacks (and class componentDidMount / componentDidUpdate). These run after the DOM mutations but before the browser paints. Perfect for measuring DOM layout or adjusting scroll positions.
-  - Now React calls useLayoutEffect callbacks (and class componentDidMount / componentDidUpdate).
-  - These run after the DOM mutations but before the browser paints.
-  - Perfect for measuring DOM layout or adjusting scroll positions.
-4. Passive effect phase After the browser has painted, React schedules useEffect callbacks. These run asynchronously, so they don’t block the paint. Great for data fetching, subscriptions, logging, timers, etc.
-  - After the browser has painted, React schedules useEffect callbacks.
-  - These run asynchronously, so they don’t block the paint.
-  - Great for data fetching, subscriptions, logging, timers, etc.
+1. مرحلة ما قبل التحوير (وتُعرف بمرحلة اللقطة) تستدعي React أي توابع دورة حياة أو خُطّافات تحتاج إلى قراءة DOM قبل أن تُحوّله React. مثال: getSnapshotBeforeUpdate. لا كتابة على DOM بعد، قراءة فقط.
+   - تستدعي React أي توابع دورة حياة أو خُطّافات تحتاج إلى قراءة DOM قبل أن تُحوّله React.
+   - مثال: getSnapshotBeforeUpdate.
+   - لا كتابة على DOM بعد، قراءة فقط.
+2. مرحلة التحوير تطبّق React كل التغييرات التي قرّرتها أثناء مرحلة التصيير. تُنشئ عقد DOM أو تحدّثها أو تحذفها. تُنفّذ تنظيف ref (‏ref = null) للعقد المحذوفة. تُشغّل تنظيفات التأثيرات السلبية المجدولة لهذا الإيداع (من التصيير السابق).
+   - تطبّق React كل التغييرات التي قرّرتها أثناء مرحلة التصيير.
+   - تُنشئ عقد DOM أو تحدّثها أو تحذفها.
+   - تُنفّذ تنظيف ref (‏ref = null) للعقد المحذوفة.
+   - تُشغّل تنظيفات التأثيرات السلبية المجدولة لهذا الإيداع (من التصيير السابق).
+3. مرحلة التخطيط (وتُعرف بتأثيرات التخطيط) الآن تستدعي React دوال useLayoutEffect (وتوابع الصنف componentDidMount / componentDidUpdate). تعمل هذه بعد تحويرات DOM لكن قبل رسم المتصفّح. مثالية لقياس تخطيط DOM أو ضبط مواضع التمرير.
+   - الآن تستدعي React دوال useLayoutEffect (وتوابع الصنف componentDidMount / componentDidUpdate).
+   - تعمل هذه بعد تحويرات DOM لكن قبل رسم المتصفّح.
+   - مثالية لقياس تخطيط DOM أو ضبط مواضع التمرير.
+4. مرحلة التأثيرات السلبية بعد أن يرسم المتصفّح، تجدول React دوال useEffect. تعمل هذه بشكل غير متزامن، فلا تعيق الرسم. رائعة لجلب البيانات والاشتراكات والتسجيل والمؤقتات وما شابه.
+   - بعد أن يرسم المتصفّح، تجدول React دوال useEffect.
+   - تعمل هذه بشكل غير متزامن، فلا تعيق الرسم.
+   - رائعة لجلب البيانات والاشتراكات والتسجيل والمؤقتات وما شابه.
 
-#### Tasting Notes
+#### ملاحظات تذوّق
 
-#### Yielding Mechanics
+#### آليات التنازل
 
-Yielding is powered by the [`scheduler`](https://www.npmjs.com/package/scheduler) package.
+التنازل مدعوم بحزمة [`scheduler`](https://www.npmjs.com/package/scheduler).
 
-- Schedule work: `unstable_scheduleCallback(priority, cb)`
-- Decide whether or yield: `unstable_shouldYield()`
+- جدولة العمل: `unstable_scheduleCallback(priority, cb)`
+- تقرير ما إذا كان ينبغي التنازل: `unstable_shouldYield()`
 
-Here is overly simple version of how this could work:
+إليك نسخة مبسّطة للغاية عن كيفية عمل ذلك:
 
 ```typescript
 import {
@@ -180,46 +180,46 @@ function performUnitOfWork(fiber: Fiber): Fiber | null {
 }
 ```
 
-##### When should it yield?
+##### متى ينبغي أن يتنازل؟
 
-- Every so often. Approximately after 5ms.
-- Are there any higher priority tasks waiting?
+- من وقت لآخر. بعد نحو 5 مللي ثانية.
+- هل هناك مهام ذات أولوية أعلى تنتظر؟
 
-The scheduler will try to yield before the browser needs to paint. (60fps is about every 16.6ms). This means that React gets out of the way every time the UI needs to update for:
+سيحاول المُجدول التنازل قبل أن يحتاج المتصفّح إلى الرسم. (‏60 إطارًا في الثانية تعني نحو 16.6 مللي ثانية). يعني هذا أن React تفسح الطريق في كل مرة تحتاج فيها واجهة المستخدم إلى التحديث من أجل:
 
-- Paint and layout operations.
-- User input handling.
-- Other browser stuff.
+- عمليات الرسم والتخطيط.
+- معالجة إدخال المستخدم.
+- أمور متصفّح أخرى.
 
-#### Understanding Lanes
+#### فهم المسارات (Lanes)
 
-Okay, let’s imagine we have a search input and we type in “cat” as the beginning of our query.
+حسنًا، لنتخيّل أن لدينا حقل إدخال بحث ونكتب فيه «cat» بوصفه بداية استعلامنا.
 
-*Each* keypress would enqueue and urgent state update on discrete input lanes—and React would treat of of these as high-priority.
+كل *ضغطة مفتاح* ستُدرج تحديث حالة عاجلًا في مسارات الإدخال المنفصلة — وستتعامل React مع كل واحد منها بوصفه عالي الأولوية.
 
-By deferring the work, we can let the user finish typing without immediately taking every keystroke as the highest priority thing that they’ve ever done.
+بتأجيل العمل، نتيح للمستخدم إنهاء الكتابة دون أن نعدّ كل ضغطة مفتاح فورًا أهم شيء فعله في حياته.
 
-When it gets a chance, it will pick up the work. Along the way, if the search query changes in this low priority lane—then React can yield over to that update and toss out what it’s currently working on. New stuff has come to light.
+وعندما تسنح الفرصة، تستأنف العمل. وفي الطريق، إن تغيّر استعلام البحث في هذا المسار منخفض الأولوية — تستطيع React التنازل لذلك التحديث وطرح ما تعمل عليه حاليًا. فقد ظهرت أمور جديدة.
 
-Once all of the higher-priority lanes are clear. React finishes up the lower priority work and then gets ready to commit the changes to the DOM.
+وبمجرد أن تخلو جميع المسارات الأعلى أولوية، تُنهي React العمل منخفض الأولوية ثم تستعدّ لإيداع التغييرات في DOM.
 
-#### Cancellation and Restart
+#### الإلغاء وإعادة البدء
 
-The various things that React needs to do are put into **lanes**.
+توضع الأمور المختلفة التي تحتاج React إلى فعلها في **مسارات** (lanes).
 
-Basically, if something comes in at a higher priority lane, then React goes ahead and turns it attention to that instead of chugging along with whatever it was doing.
+ببساطة، إن وصل شيء في مسار أعلى أولوية، تتوجّه React إليه بدل المضي قدمًا فيما كانت تفعله.
 
-The higher priority stuff goes to the top of the list.
+تذهب الأمور الأعلى أولوية إلى أعلى القائمة.
 
-If that other stuff didn’t invalidate anything, then pick up where we left off.
+إن لم يُبطل ذلك الشيء الآخر أي شيء، نستأنف من حيث توقّفنا.
 
-If it *did* invalidate the current work—then start over from the top.
+وإن *أبطل* العمل الحالي — نبدأ من جديد من الأعلى.
 
-#### Lanes and Priorities
+#### المسارات والأولويات
 
-**Lanes** are React’s internal system for managing it’s priorities.
+**المسارات** هي نظام React الداخلي لإدارة أولوياتها.
 
-It uses bitmasks because binary stuff is fast. This means that React isn’t doing a bunch of expensive work trying to compare all of the priorities.
+وهي تستخدم أقنعة البتات (bitmasks) لأن العمليات الثنائية سريعة. يعني هذا أن React لا تبذل جهدًا مكلفًا في مقارنة جميع الأولويات.
 
 ```typescript
 const SyncLane = 0b0000000000000000000000000000001; // Bit 1
@@ -228,14 +228,14 @@ const DefaultLane = 0b0000000000000000000000000010000; // Bit 5
 const TransitionLane1 = 0b0000000000000000000000001000000; // Bit 7
 ```
 
-Here is a hand-wavy look at the priorities:
+إليك نظرة تقريبية على الأولويات:
 
-- `SyncLane`: Immediate, blocking updates with (e.g. `flushSync`)
-- User actions (`InputContinuousLane`): Clicks, keypresses, dragging, scrolling.
-- `DefaultLane`: The normal course of business.
-- `TransitionLanes`: Stuff explicitly put into a lower priority lane.
-- `RetryLanes`: Failed stuff that we’re waiting to retry.
-- `IdleLane`: The lowest priority work.
+- `SyncLane`: تحديثات فورية حاجبة (مثل `flushSync`)
+- إجراءات المستخدم (`InputContinuousLane`): النقر وضغط المفاتيح والسحب والتمرير.
+- `DefaultLane`: سير العمل الطبيعي.
+- `TransitionLanes`: أمور تُوضع صراحةً في مسار أقل أولوية.
+- `RetryLanes`: أمور فشلت وننتظر إعادة محاولتها.
+- `IdleLane`: العمل الأدنى أولوية.
 
 ```typescript
 // This gets assigned DefaultLane
@@ -247,231 +247,231 @@ startTransition(() => {
 });
 ```
 
-When a update is trigger, React:
+عند تحفيز تحديث، تقوم React بما يلي:
 
-- Assigns the update to the appropriate lane.
-- Groups updates in the same lanes together.
-- Processes the lanes from the highest priority to the lowest.
+- تُسند التحديث إلى المسار المناسب.
+- تجمع التحديثات في المسارات نفسها معًا.
+- تعالج المسارات من الأعلى أولوية إلى الأدنى.
 
-And then, if something comes in later on in a higher priority lane, we can go switch over and handle that before picking up where we left off.
+ثم إن وصل لاحقًا شيء في مسار أعلى أولوية، ننتقل للتعامل معه قبل استئناف ما توقّفنا عنده.
 
-##### Lane Groups
+##### مجموعات المسارات
 
-React actually uses *groups of lanes* for some priorities. For example there are *multiple* transition lanes that can run simultaneously without interfering with one another.
+تستخدم React في الواقع *مجموعات من المسارات* لبعض الأولويات. فمثلًا توجد *عدة* مسارات انتقال يمكن أن تعمل في الوقت نفسه دون أن يتداخل بعضها مع بعض.
 
-##### The Idle Lane
+##### مسار الخمول (Idle Lane)
 
-What kind of stuff happens in the `IdleLane`? Conceptually, it’s like `requestIdleCallback`.
+ما نوع الأمور التي تحدث في `IdleLane`؟ من حيث المفهوم، يشبه `requestIdleCallback`.
 
-Right now, it’s pretty much just for React’s internal/experimental APIs.
+حاليًا، هو مخصّص تقريبًا لواجهات React الداخلية والتجريبية فقط.
 
-The primary case is any kind of offscreen content that’s not current visibile.
+الحالة الأساسية هي أي محتوى خارج الشاشة غير مرئي حاليًا.
 
-Any kind of prefetching or pre-rendering. Stuff that might be needed in the future is obviously not as important as stuff happening *right now*.
+أي نوع من الجلب المسبق أو التصيير المسبق. فالأمور التي قد نحتاجها مستقبلًا ليست بالتأكيد بأهمية الأمور التي تحدث *الآن*.
 
-Background effects: Analytics, telemetry, cache cleanup, background data synchronization.
+التأثيرات الخلفية: التحليلات، والقياس عن بُعد (telemetry)، وتنظيف الذاكرة المؤقتة، ومزامنة البيانات في الخلفية.
 
-#### Committing Work
+#### إيداع العمل
 
-Commits are never interrupted. We have a full tree of what the DOM should look like. Let’s go make it look like that.
+لا تُقاطَع عمليات الإيداع أبدًا. لدينا شجرة كاملة لما ينبغي أن يبدو عليه DOM. لنمضِ ونجعله كذلك.
 
-That’s because we’re actively changing the DOM at this point and stopping in the middle could leave us in an inconsistent state.
+ذلك لأننا نغيّر DOM فعليًا في هذه المرحلة، والتوقّف في المنتصف قد يتركنا في حالة غير متّسقة.
 
-This means that we’ll never end up with a partially-rendered UI.
+يعني هذا أننا لن ننتهي أبدًا بواجهة مستخدم مصيّرة جزئيًا.
 
-### On Memoization
+### عن الحفظ في الذاكرة (Memoization)
 
-We have three main ways to memoize stuff in React:
+لدينا ثلاث طرق رئيسية لحفظ الأمور في الذاكرة في React:
 
-1. `React.memo()` is a higher-order components that precents a component from re-rendering if it’s problems have not changed.
-2. `useMemo()` is a hook that memoizes the *result* or an expensive calculation.
-3. `useCallback()` is a hook that memoizes a function definition, preventing child components that receiving it as a prop from re-rendering.
+1. `React.memo()` مكوّن أعلى رتبة يمنع المكوّن من إعادة التصيير إن لم تتغيّر خصائصه.
+2. `useMemo()` خُطّاف يحفظ في الذاكرة *ناتج* عملية حسابية مكلفة.
+3. `useCallback()` خُطّاف يحفظ تعريف دالة في الذاكرة، فيمنع المكوّنات الأبناء التي تتلقّاها كخاصية من إعادة التصيير.
 
 #### React.memo
 
-A higher-order component that wraps your component. This basically says, “I don’t care if you parent has changed, let me look at your props. If their the same, I’m going to skip calling you and just return whatever the result was the last time you were called with these props.
+مكوّن أعلى رتبة يلفّ مكوّنك. يقول هذا المكوّن ببساطة: «لا يهمّني إن تغيّر أبوك، دعني أنظر إلى خصائصك. إن كانت هي نفسها، سأتخطّى استدعاءك وأعيد فقط الناتج نفسه من آخر مرة استُدعيت فيها بهذه الخصائص.»
 
-1. React checks if the old and new props objects have the same number of keys.
-2. It then iterates over each key in the props object and compares the previous value with the current value using the `Object.is` comparison algorithm.
+1. تتحقّق React مما إذا كان كائنا الخصائص القديم والجديد يحملان العدد نفسه من المفاتيح.
+2. ثم تمرّ على كل مفتاح في كائن الخصائص وتقارن القيمة السابقة بالقيمة الحالية باستخدام خوارزمية المقارنة `Object.is`.
 
-- **Justification**: Use `React.memo` when the `React Profiler` shows that a component is re-rendering frequently, but the “Why did this render?” feature indicates the cause was its parent re-rendering, not a change in its own props or state. It is most effective on components that are expensive to render and are often rendered with the same props.
-- **Contraindication**: Do not wrap simple components that render quickly or components whose props are almost always different on every render. The cost of the prop comparison can outweigh the benefit of skipping the render.
+- **التبرير**: استخدم `React.memo` عندما يُظهر `React Profiler` أن مكوّنًا يُعاد تصييره بشكل متكرّر، لكن ميزة «Why did this render?» تشير إلى أن السبب كان إعادة تصيير المكوّن الأب لا تغيّرًا في خصائص المكوّن نفسه أو حالته. وهو أكثر فعالية مع المكوّنات المكلفة في التصيير والتي كثيرًا ما تُصيّر بالخصائص نفسها.
+- **موانع الاستخدام**: لا تلفّ مكوّنات بسيطة تُصيّر سريعًا أو مكوّنات تختلف خصائصها دائمًا تقريبًا في كل تصيير. فقد تفوق كلفة مقارنة الخصائص فائدة تخطّي التصيير.
 
 #### useMemo
 
-`useMemo()` is a React hook that is desgined to memoize the *return value* of the function. If *any* dependency has changed, then it will run that function again. Otherwise, it will just return the cached value.
+`useMemo()` خُطّاف في React مصمّم لحفظ *القيمة المُعادة* للدالة في الذاكرة. إن تغيّر *أي* اعتماد، فسيشغّل تلك الدالة مرة أخرى. وإلا، فسيُعيد القيمة المخزّنة في الذاكرة المؤقتة فقط.
 
-The primary use case is expensive calculations. But, it’s also used for referrential stability.
+حالة الاستخدام الأساسية هي الحسابات المكلفة. لكنه يُستخدم أيضًا لاستقرار المرجعية.
 
-- **Justification**: There are two primary, data-driven justifications for using `useMemo`: **Memoizing Expensive Computations**: When the Chrome Performance tab’s “Bottom-Up” view identifies a pure, computationally heavy function within a component that runs on every render, `useMemo` can be used to cache its result. This prevents the expensive calculation from being re-executed unless its inputs change. **Preserving Referential Equality**: Similar to useCallback, `useMemo` should be used to memoize non-primitive values (objects or arrays) that are created during render and passed as props to memoized child components. Without `useMemo`, a new object or array reference is created on every render, breaking the shallow prop comparison in the child.
-  - **Memoizing Expensive Computations**: When the Chrome Performance tab’s “Bottom-Up” view identifies a pure, computationally heavy function within a component that runs on every render, `useMemo` can be used to cache its result. This prevents the expensive calculation from being re-executed unless its inputs change.
-  - **Preserving Referential Equality**: Similar to useCallback, `useMemo` should be used to memoize non-primitive values (objects or arrays) that are created during render and passed as props to memoized child components. Without `useMemo`, a new object or array reference is created on every render, breaking the shallow prop comparison in the child.
-- **Contraindication**: Do not wrap simple calculations or object/array creations in `useMemo` unless they are being passed to a memoized component. The overhead is not justified.
+- **التبرير**: هناك تبريران أساسيان مدفوعان بالبيانات لاستخدام `useMemo`: **حفظ الحسابات المكلفة في الذاكرة**: عندما يحدّد عرض «Bottom-Up» في تبويب Chrome Performance دالة نقية كثيفة حسابيًا داخل مكوّن تعمل في كل تصيير، يمكن استخدام `useMemo` لتخزين ناتجها مؤقتًا. يمنع ذلك إعادة تنفيذ الحساب المكلف ما لم تتغيّر مدخلاته. **الحفاظ على المساواة المرجعية**: على غرار useCallback، ينبغي استخدام `useMemo` لحفظ القيم غير الأولية (الكائنات أو المصفوفات) في الذاكرة، وهي القيم التي تُنشأ أثناء التصيير وتُمرَّر كخصائص إلى مكوّنات أبناء محفوظة في الذاكرة. بدون `useMemo`، يُنشأ مرجع جديد للكائن أو المصفوفة في كل تصيير، ما يكسر المقارنة السطحية للخصائص في المكوّن الابن.
+  - **حفظ الحسابات المكلفة في الذاكرة**: عندما يحدّد عرض «Bottom-Up» في تبويب Chrome Performance دالة نقية كثيفة حسابيًا داخل مكوّن تعمل في كل تصيير، يمكن استخدام `useMemo` لتخزين ناتجها مؤقتًا. يمنع ذلك إعادة تنفيذ الحساب المكلف ما لم تتغيّر مدخلاته.
+  - **الحفاظ على المساواة المرجعية**: على غرار useCallback، ينبغي استخدام `useMemo` لحفظ القيم غير الأولية (الكائنات أو المصفوفات) في الذاكرة، وهي القيم التي تُنشأ أثناء التصيير وتُمرَّر كخصائص إلى مكوّنات أبناء محفوظة في الذاكرة. بدون `useMemo`، يُنشأ مرجع جديد للكائن أو المصفوفة في كل تصيير، ما يكسر المقارنة السطحية للخصائص في المكوّن الابن.
+- **موانع الاستخدام**: لا تلفّ حسابات بسيطة أو إنشاء كائنات/مصفوفات بـ `useMemo` إلا إذا كانت تُمرَّر إلى مكوّن محفوظ في الذاكرة. فالعبء الإضافي غير مبرَّر.
 
 #### useCallback
 
-`useCallback()` is a React Hook that is syntactically and conceptually very similar to useMemo, but with one crucial difference: it memoizes a function definition itself, *not* its return value.
+`useCallback()` خُطّاف في React يشبه useMemo نحويًا ومفاهيميًا إلى حدّ كبير، مع فرق جوهري واحد: فهو يحفظ تعريف الدالة نفسه في الذاكرة، *لا* قيمتها المُعادة.
 
-It’s *primary* use case is for referential stability in callbacks.
+حالة استخدامه *الأساسية* هي استقرار المرجعية في دوال الاستدعاء المرتد.
 
-- **Justification**: The primary use case for `useCallback` is to preserve referential equality for functions passed as props to memoized child components (i.e., components wrapped in `React.memo`). Without `useCallback`, a new function instance is created on every render of the parent component. This new reference will cause the shallow prop comparison in the memoized child to fail, defeating the purpose of `React.memo`.
-- **Contraindication**: Do not use `useCallback` for functions that are not passed as props to memoized children or are not used in a dependency array. It adds unnecessary complexity and memory overhead.
+- **التبرير**: حالة الاستخدام الأساسية لـ `useCallback` هي الحفاظ على المساواة المرجعية للدوال التي تُمرَّر كخصائص إلى مكوّنات أبناء محفوظة في الذاكرة (أي المكوّنات الملفوفة بـ `React.memo`). بدون `useCallback`، تُنشأ نسخة جديدة من الدالة في كل تصيير للمكوّن الأب. وهذا المرجع الجديد سيكسر المقارنة السطحية للخصائص في المكوّن الابن المحفوظ في الذاكرة، فيُبطل الغاية من `React.memo`.
+- **موانع الاستخدام**: لا تستخدم `useCallback` مع دوال لا تُمرَّر كخصائص إلى أبناء محفوظين في الذاكرة أو لا تُستخدم في مصفوفة اعتمادات. فهي تضيف تعقيدًا وعبئًا على الذاكرة بلا داعٍ.
 
 ### React Compiler
 
-React Compiler is a sophisticated Babel plugin that tries to apply most of the best practices on your behalf—so that you don’t need to worry about all of this craziness.
+React Compiler إضافة Babel متطوّرة تحاول تطبيق معظم أفضل الممارسات نيابةً عنك — حتى لا تحتاج إلى القلق من كل هذا الجنون.
 
-The compiler tries to drastically reduce the amount of work that the scheduler needs to consider in the first place. If everything that we said about memoization is allegedly a good thing, then having something that does it consistently is going to probably just get you better results.
+يحاول المُصرِّف تقليل مقدار العمل الذي يحتاج المُجدول إلى النظر فيه من الأساس تقليلًا جذريًا. وإن كان كل ما قلناه عن الحفظ في الذاكرة أمرًا جيدًا كما يُقال، فوجود شيء يفعله باطراد لن يزيد النتائج إلا تحسّنًا.
 
-**Important Tasting Note**: The React Compiler optimizes safety over everything else. If it thinks that optimizing something is risky—it *won’t*.
+**ملاحظة تذوّق مهمة**: يُفضّل React Compiler السلامة على كل شيء آخر. فإن رأى أن تحسين شيء ما محفوف بالمخاطر — *فلن يفعله*.
 
-#### In Relation to Memoization
+#### فيما يتعلّق بالحفظ في الذاكرة
 
-With the React Compiler in place—we can get rid of a lot of the manual work, but it doesn’t completely erase the need to for `React.memo`, `useMemo`, and `useCallback`. (Sorry.)
+مع وجود React Compiler — يمكننا التخلّص من كثير من العمل اليدوي، لكنه لا يُلغي تمامًا الحاجة إلى `React.memo` و`useMemo` و`useCallback`. (آسف.)
 
-##### When you still need React.memo
+##### متى لا تزال بحاجة إلى React.memo
 
-- **Impure components**: If your component has non-pure behavior (like reading from global state, using randomness, or depending on mutable objects outside props), the compiler can’t safely assume purity. `React.memo` is your explicit guarantee to React that it’s safe to skip re-rendering when props are shallow-equal.
-- **3rd-party interoperability**: For components from external libraries that weren’t compiled with the React compiler, `React.memo` is still a tool to control their render frequency.
-- **Boundary control**: Sometimes you want to force a render boundary—let’s say, you know a subtree should *only* update when a specific prop changes, not when the parent re-renders for unrelated reasons. `React.memo` lets you pin that contract in place.
+- **المكوّنات غير النقية**: إن كان لمكوّنك سلوك غير نقي (مثل القراءة من حالة عامة، أو استخدام العشوائية، أو الاعتماد على كائنات قابلة للتغيير خارج الخصائص)، فلا يستطيع المُصرِّف افتراض النقاء بأمان. و`React.memo` هو ضمانك الصريح لـ React بأنه يمكن تخطّي إعادة التصيير عند تساوي الخصائص تساويًا سطحيًا.
+- **التوافق مع أطراف ثالثة**: بالنسبة إلى المكوّنات القادمة من مكتبات خارجية لم تُصرَّف بـ React Compiler، يبقى `React.memo` أداة للتحكّم في معدّل تصييرها.
+- **التحكّم في الحدود**: تريد أحيانًا فرض حدّ للتصيير — لنقل إنك تعرف أن شجرة فرعية ينبغي أن تتحدّث *فقط* عند تغيّر خاصية معيّنة، لا عندما يُعيد المكوّن الأب تصييره لأسباب غير ذات صلة. يتيح لك `React.memo` تثبيت هذا العقد في مكانه.
 
-### When you still need useMemo
+### متى لا تزال بحاجة إلى useMemo
 
-- **Expensive computations**: The compiler doesn’t magically cache arbitrary heavy calculations—it only optimizes what it can prove to be safe at the render level. If you’re crunching a giant dataset, memoization around that computation is still your responsibility.
-- Referential stability for dependencies: When you need to pass a stable value into `useEffect`/`useCallback` dependencies, `useMemo` is still the way to lock it down. The compiler won’t rewrite your dependency arrays.
-- **Custom equality logic**: Sometimes you don’t want shallow equality—you want deep compare or specific heuristics. `useMemo` is still your hammer.
+- **الحسابات المكلفة**: لا يخزّن المُصرِّف أي حسابات ثقيلة عشوائية سحرًا — بل يحسّن فقط ما يستطيع إثبات أنه آمن على مستوى التصيير. وإن كنت تعالج مجموعة بيانات ضخمة، فإن حفظ ذلك الحساب في الذاكرة يبقى مسؤوليتك.
+- استقرار المرجعية للاعتمادات: عندما تحتاج إلى تمرير قيمة ثابتة إلى اعتمادات `useEffect`/`useCallback`، يبقى `useMemo` هو الطريقة لتثبيتها. فلن يعيد المُصرِّف كتابة مصفوفات الاعتمادات لديك.
+- **منطق مساواة مخصّص**: تحتاج أحيانًا إلى مساواة عميقة أو معايير محدّدة بدل المساواة السطحية. يبقى `useMemo` مطرقتك.
 
-#### When you still need useCallback
+#### متى لا تزال بحاجة إلى useCallback
 
-- **Stable callback identities**: If you’re passing callbacks down to deeply memoized children (compiler-compiled or not), you may still need `useCallback` to avoid churn. The compiler can inline and memoize a lot of simple closures, but it doesn’t cover every inter-component relationship.
-- **Dependency-driven closures**: A callback that captures changing values in tricky ways may need explicit `useCallback` to tell React when to regenerate it. The compiler won’t outsmart arbitrary closure semantics.
-- **Library APIs**: Some hooks or external APIs expect stable function identities (e.g., event registration, subscription management). `useCallback` remains essential in these contexts.
+- **هويات ثابتة لدوال الاستدعاء المرتد**: إن كنت تمرّر دوال استدعاء مرتد نزولًا إلى أبناء محفوظين في الذاكرة بعمق (مصرَّفين أو غير مصرَّفين)، فقد تظلّ بحاجة إلى `useCallback` لتجنّب التقلّب. يستطيع المُصرِّف تضمين كثير من الإغلاقات البسيطة وحفظها في الذاكرة، لكنه لا يغطّي كل علاقة بين مكوّن ومكوّن.
+- **الإغلاقات المدفوعة بالاعتمادات**: قد تحتاج دالة استدعاء مرتد تلتقط قيمًا متغيّرة بطرق دقيقة إلى `useCallback` صريح لإخبار React متى تعيد توليدها. ولن يتفوّق المُصرِّف على دلالات الإغلاق العشوائية.
+- **واجهات المكتبات**: تتوقّع بعض الخُطّافات أو الواجهات الخارجية هويات دوال ثابتة (مثل تسجيل الأحداث وإدارة الاشتراكات). ويبقى `useCallback` ضروريًا في هذه السياقات.
 
 ### Suspense
 
-Suspense adds a twist to React Fiber’s rendering process.
+يضيف Suspense منعطفًا إلى عملية التصيير في React Fiber.
 
-Suspense lets a render **throw a promise**.
+يتيح Suspense للتصيير أن **يرمي وعدًا** (promise).
 
-When this happens, React marks that fiber as *suspended* and continues along its way working on what it can.
+عندما يحدث ذلك، تُعلّم React ذلك الـ fiber بوصفه *معلّقًا* وتواصل طريقها عاملةً على ما تستطيع.
 
-When the promise resolves, React schedules a retry for affected lanes.
+وعندما يُحلّ الوعد، تجدول React إعادة محاولة للمسارات المتأثّرة.
 
-#### With Transitions
+#### مع الانتقالات (Transitions)
 
-When promise suspends a component tree, it inherits the same priority as whatever caused it. So, if that promise was create in a transition, picking up where it left off maintains the same priority.
+عندما يُعلّق وعد شجرة مكوّنات، فإنها ترث الأولوية نفسها للشيء الذي سبّبها. فإذا أُنشئ ذلك الوعد داخل انتقال، فإن استئناف ما توقّف عنده يحافظ على الأولوية نفسها.
 
 ### useTransition
 
-The `useTransition` hook is React’s primary way for letting it know that a particular start update can be treated as lower-priority and non-urgent.
+خُطّاف `useTransition` هو الطريقة الأساسية لإخبار React بأن تحديث حالة معيّنًا يمكن التعامل معه كأقل أولوية وغير عاجل.
 
-Without a transition, calling `setState` from a user input event puts it in a high-priority lane.
+بدون انتقال، فإن استدعاء `setState` من حدث إدخال مستخدم يضعه في مسار عالي الأولوية.
 
-This could be *Not a Good Thing™* if we’re about to do something expensive.
+وقد يكون هذا *شيئًا غير جيد™* إن كنا على وشك القيام بأمر مكلف.
 
-**Without `useTransition()`**: Each keystroke would immediately trigger an update and re-render the entire list. The more you type, the worse it *could* get.
+**بدون `useTransition()`**: ستُحفّز كل ضغطة مفتاح فورًا تحديثًا وتُعيد تصيير القائمة بالكامل. وكلما كتبت أكثر، *احتمل* أن يزداد الأمر سوءًا.
 
-**With `useTransition()`**: Updating the text in the search field is definitely urgent and we can immediately give the user that visual feedback that they crave. And then we buy us some time to do the expensive stuff. If we can also toss work that is no longer relevant.
+**مع `useTransition()`**: تحديث النص في حقل البحث عاجل بالتأكيد، ويمكننا أن نمنح المستخدم فورًا التغذية الراجعة البصرية التي يتوق إليها. ثم نكسب لأنفسنا بعض الوقت للقيام بالأمور المكلفة. وإن استطعنا أيضًا طرح العمل الذي لم يعد ذا صلة.
 
-`useTransition()` doesn’t *actually* make anything any faster, but it sure makes everything *feel* faster by making sure the stuff that is important to us happens first.
+لا تجعل `useTransition()` *فعليًا* أي شيء أسرع، لكنها بالتأكيد تجعل كل شيء *يبدو* أسرع بضمان حدوث الأمور المهمّة لنا أولًا.
 
 ### useDeferredValue
 
-`useDefferedValue()` is a hook that accepts a value and returns a new, *deferred* version ofn that value. This deferred version will lag behind the original value during urgent updates.
+`useDefferedValue()` خُطّاف يقبل قيمة ويعيد نسخة جديدة *مؤجّلة* منها. ستتأخّر هذه النسخة المؤجّلة عن القيمة الأصلية أثناء التحديثات العاجلة.
 
-When we use `useDeferredValue`, we’re basically saying:
+عندما نستخدم `useDeferredValue`، فإننا نقول ببساطة:
 
-> Hey, computing this value might take a while. So, don’t wait for us. Continue what you’re doing with the old value and then when the new one is ready, we can switch over to that.
+> انتبه، قد يستغرق حساب هذه القيمة بعض الوقت. فلا تنتظرنا. تابع ما تفعله بالقيمة القديمة، وعندما تصبح الجديدة جاهزة يمكننا التحوّل إليها.
 
-Conceptually, React stores both the current and the deferred version. React will continue to use the old value until the new value is ready.
+مفاهيميًا، تخزّن React النسختين الحالية والمؤجّلة. وتواصل استخدام القيمة القديمة حتى تصبح القيمة الجديدة جاهزة.
 
-This involves a two-step process:
+يتضمّن هذا عملية من خطوتين:
 
-1. When an urgent update occurs (e.g. the user types something), React immediately initiates a re-render. During this first render, the `deferredQuery` still holds its *previous* value.
-2. After the urgent render completes React schedules a second, interruptible re-render in the background. In this second render, deferredQuery is updated to the latest value.
+1. عند حدوث تحديث عاجل (مثل أن يكتب المستخدم شيئًا)، تبدأ React فورًا إعادة تصيير. خلال هذا التصيير الأول، لا يزال `deferredQuery` يحمل قيمته *السابقة*.
+2. بعد اكتمال التصيير العاجل، تجدول React إعادة تصيير ثانية قابلة للمقاطعة في الخلفية. وفي هذا التصيير الثاني، يُحدَّث deferredQuery إلى أحدث قيمة.
 
-### Comparing useTransition and useDeferredState
+### المقارنة بين useTransition و useDeferredState
 
-- `useTransition` wraps the *action* or *cause* of the update. You’re explicitly wrapping the state-setting function (e.g. `setState`) inside of `startTransition`. This gives you direct control over the scheduling of a specific update.
-- `useDeferredValue` wraps the *result* of an update. You hand it an existing value and it provides a deferred version of that value. This is useful when the state update itself is happening somewhere else (e.g. a parent component or a third-party library). It’s useful for deferring the effect of a value that you *don’t* control.
+- يلفّ `useTransition` *الفعل* أو *السبب* المؤدّي إلى التحديث. فأنت تلفّ دالة ضبط الحالة (مثل `setState`) داخل `startTransition` صراحةً. يمنحك هذا تحكّمًا مباشرًا في جدولة تحديث محدّد.
+- يلفّ `useDeferredValue` *نتيجة* التحديث. فأنت تمرّر إليه قيمة موجودة فيعيد نسخة مؤجّلة منها. يفيد هذا عندما يحدث تحديث الحالة نفسه في مكان آخر (مثل مكوّن أب أو مكتبة خارجية). وهو مفيد لتأجيل أثر قيمة *لا* تتحكّم بها.
 
-Another difference is how we can determine if we have a pending transition.
+ثمّة فرق آخر هو كيفية تحديد ما إذا كان لدينا انتقال معلّق.
 
-- `useTransition()` gives you an `isPending` boolean.
-- `useDeferredValue()` doesn’t but it *does* but you do have both the current value and the deferred value, so there is nothing stopping you from figuring this out yourself.
+- يمنحك `useTransition()` قيمة منطقية `isPending`.
+- لا يمنحك `useDeferredValue()` ذلك، لكنك تملك القيمة الحالية والقيمة المؤجّلة معًا، فلا شيء يمنعك من استنتاج ذلك بنفسك.
 
-**TL;DR**: `useTransition()` says, “Mark this action as low priorty.” `useDeferredValue()` says, “Let this value lag behind.”
+**باختصار**: يقول `useTransition()`: «اعتبر هذا الإجراء منخفض الأولوية». ويقول `useDeferredValue()`: «دع هذه القيمة تتأخّر».
 
-#### How to Choose
+#### كيف تختار
 
-- Prefer `useTransition()` when *you* control the state update. `useTransition()` wraps the function that updates the state.
-- Prefer `useDeferredValue` when you *do not* control the state update. `useDeferred()` wraps the value itself.
+- فضّل `useTransition()` عندما تتحكّم *أنت* في تحديث الحالة. فـ `useTransition()` يلفّ الدالة التي تحدّث الحالة.
+- فضّل `useDeferredValue` عندما *لا* تتحكّم في تحديث الحالة. فـ `useDeferred()` يلفّ القيمة نفسها.
 
 ### useOptimistic
 
-`useTransition` and `useDeferredValue` are actually dealing with our rendering performance. `useOptimistic`—on the other—deals with the fact that talking to servers over the internet can be slow. It allows us to optimisticly act like everything is gravy as we wait for the server to respond with the A-OK.
+يتعامل `useTransition` و`useDeferredValue` فعليًا مع أداء التصيير لدينا. أما `useOptimistic` — في المقابل — فيتعامل مع كون التواصل مع الخوادم عبر الإنترنت قد يكون بطيئًا. فهو يتيح لنا أن نتصرف بتفاؤل وكأن كل شيء على ما يرام بينما ننتظر استجابة الخادم بالموافقة.
 
-In the event that stuff didn’t go as well as expected, then `useOptimistic` will help us automatically rollback and deal with the reality of the situation.
+وإذا لم تسر الأمور كما هو متوقّع، سيساعدنا `useOptimistic` على التراجع تلقائيًا والتعامل مع واقع الموقف.
 
-- **On Success**: Our parent component will update and we’ll swap in the real value with our temporary, optimistic placeholder.
-- **On Failure**: We’ll revert back to the older state and let the UI handle the error and break the news to our user.
+- **عند النجاح**: سيُحدَّث المكوّن الأب لدينا، وسنستبدل البديل المتفائل المؤقّت بالقيمة الحقيقية.
+- **عند الفشل**: سنعود إلى الحالة السابقة، ونترك واجهة المستخدم تتعامل مع الخطأ وتنقل الخبر إلى مستخدمنا.
 
-Could you do all of this by hand? *Of course*. Do you want to. Absolutely not.
+هل تستطيع فعل كل هذا يدويًا؟ *بالطبع*. هل تريد ذلك؟ قطعًا لا.
 
 ### React Compiler
 
-So, manual memoization has some fundamental problems. The first and foremost being that you have to actually do it.
+إذن، الحفظ اليدوي في الذاكرة فيه بعض المشكلات الجوهرية. وأولها وأهمّها أن عليك فعله فعلًا.
 
-## Appendix
+## ملحق
 
-There is a whole bunch of interesting tidbits that we *probably* won’t get to today, but I have some notes in case you want to dive in as an extension. Some of it is just supplementary material or references in case one of y’all throws me a curveball question.
+هناك مجموعة كاملة من المعلومات الممتعة التي *على الأرجح* لن نصل إليها اليوم، لكن لديّ بعض الملاحظات في حال أردت التوسّع فيها. بعضها مجرد مواد تكميلية أو مراجع في حال ألقى أحدكم عليّ سؤالًا مفاجئًا.
 
-### Migration Guides
+### أدلّة الترحيل
 
-- [React Compiler Migration Guide](https://stevekinney.com/courses/react-performance/react-compiler-migration-guide)
+- [دليل ترحيل React Compiler](https://stevekinney.com/courses/react-performance/react-compiler-migration-guide)
 
-## Server-Side and Streaming
+## العرض من الخادم والبثّ (Server-Side and Streaming)
 
-- [Optimizing Server-Side Rendering](https://stevekinney.com/courses/react-performance/optimizing-server-side-rendering)
-- [Streaming SSR Optimization](https://stevekinney.com/courses/react-performance/streaming-ssr-optimization)
-- [React Server Components (RSC)](https://stevekinney.com/courses/react-performance/react-server-components-rsc)
-- [Selective Hydration in React 19](https://stevekinney.com/courses/react-performance/selective-hydration-react-19)
+- [تحسين العرض من الخادم](https://stevekinney.com/courses/react-performance/optimizing-server-side-rendering)
+- [تحسين البثّ في SSR](https://stevekinney.com/courses/react-performance/streaming-ssr-optimization)
+- [مكوّنات الخادم في React (RSC)](https://stevekinney.com/courses/react-performance/react-server-components-rsc)
+- [الترطيب الانتقائي في React 19](https://stevekinney.com/courses/react-performance/selective-hydration-react-19)
 
-### Common Performance Patterns
+### أنماط الأداء الشائعة
 
-- [Windowing and Virtualization](https://stevekinney.com/courses/react-performance/windowing-and-virtualization)
-- [Animation Performance](https://stevekinney.com/courses/react-performance/animation-performance)
-- [Skeleton Screens & Perceived Performance](https://stevekinney.com/courses/react-performance/skeleton-screens-perceived-performance)
+- [النوافذ والافتراضية](https://stevekinney.com/courses/react-performance/windowing-and-virtualization)
+- [أداء الحركات](https://stevekinney.com/courses/react-performance/animation-performance)
+- [شاشات الهياكل والأداء المُحسّ به](https://stevekinney.com/courses/react-performance/skeleton-screens-perceived-performance)
 
-### Advanced React Features
+### ميزات React المتقدّمة
 
-- [React Cache API](https://stevekinney.com/courses/react-performance/react-cache-api)
-- [`flushSync` in React DOM](https://stevekinney.com/courses/react-performance/flushsync-in-react-dom)
-- [`useLayoutEffect` Performance](https://stevekinney.com/courses/react-performance/uselayouteffect-performance)
+- [واجهة React Cache](https://stevekinney.com/courses/react-performance/react-cache-api)
+- [`flushSync` في React DOM](https://stevekinney.com/courses/react-performance/flushsync-in-react-dom)
+- [أداء `useLayoutEffect`](https://stevekinney.com/courses/react-performance/uselayouteffect-performance)
 
-### Advanced Loading Strategies
+### استراتيجيات تحميل متقدّمة
 
-- [Resource Preloading APIs](https://stevekinney.com/courses/react-performance/resource-preloading-apis)
-- [Priority Hints & Resource Loading](https://stevekinney.com/courses/react-performance/priority-hints-resource-loading)
-- [CDN Caching & Immutable Assets](https://stevekinney.com/courses/react-performance/cdn-caching-immutable-assets)
-- [Service Worker Strategies](https://stevekinney.com/courses/react-performance/service-worker-strategies)
-- [Speculation Rules & `bfcache`](https://stevekinney.com/courses/react-performance/speculation-rules-bfcache)
-- [Image & Asset Optimization](https://stevekinney.com/courses/react-performance/image-and-asset-optimization)
+- [واجهات الجلب المسبق للموارد](https://stevekinney.com/courses/react-performance/resource-preloading-apis)
+- [تلميحات الأولوية وتحميل الموارد](https://stevekinney.com/courses/react-performance/priority-hints-resource-loading)
+- [التخزين المؤقّت في CDN والأصول غير القابلة للتغيير](https://stevekinney.com/courses/react-performance/cdn-caching-immutable-assets)
+- [استراتيجيات عامل الخدمة](https://stevekinney.com/courses/react-performance/service-worker-strategies)
+- [قواعد التوقّع و`bfcache`](https://stevekinney.com/courses/react-performance/speculation-rules-bfcache)
+- [تحسين الصور والأصول](https://stevekinney.com/courses/react-performance/image-and-asset-optimization)
 
-### Advanced Graphics & Threading
+### رسومات وخيوط متقدّمة
 
-- [Web Workers with React](https://stevekinney.com/courses/react-performance/web-workers-with-react)
-- [View Transitions API](https://stevekinney.com/courses/react-performance/view-transitions-api)
+- [عمّال الويب مع React](https://stevekinney.com/courses/react-performance/web-workers-with-react)
+- [واجهة View Transitions](https://stevekinney.com/courses/react-performance/view-transitions-api)
 
-### Memory & Architecture
+### الذاكرة والمعمارية
 
-- [Memory Management](https://stevekinney.com/courses/react-performance/memory-management-deep-dive)
-- [Memory Leak Detection](https://stevekinney.com/courses/react-performance/memory-leak-detection)
-- [Micro-Frontend Performance](https://stevekinney.com/courses/react-performance/micro-frontend-performance)
-- [SWC (Speedy Web Compiler)](https://stevekinney.com/courses/react-performance/swc-speedy-web-compiler)
+- [إدارة الذاكرة](https://stevekinney.com/courses/react-performance/memory-management-deep-dive)
+- [الكشف عن تسريبات الذاكرة](https://stevekinney.com/courses/react-performance/memory-leak-detection)
+- [أداء الواجهات المصغّرة](https://stevekinney.com/courses/react-performance/micro-frontend-performance)
+- [SWC (مُصرّف الويب السريع)](https://stevekinney.com/courses/react-performance/swc-speedy-web-compiler)
 
-### Monitoring & Testing
+### المراقبة والاختبار
 
-- [INP Optimization & Long Tasks](https://stevekinney.com/courses/react-performance/inp-optimization-long-tasks)
-- [INP Production Monitoring](https://stevekinney.com/courses/react-performance/inp-production-monitoring)
-- [Performance Testing Strategy](https://stevekinney.com/courses/react-performance/performance-testing-strategy)
+- [تحسين INP والمهام الطويلة](https://stevekinney.com/courses/react-performance/inp-optimization-long-tasks)
+- [مراقبة INP في الإنتاج](https://stevekinney.com/courses/react-performance/inp-production-monitoring)
+- [استراتيجية اختبار الأداء](https://stevekinney.com/courses/react-performance/performance-testing-strategy)

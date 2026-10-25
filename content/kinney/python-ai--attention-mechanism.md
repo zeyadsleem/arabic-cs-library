@@ -1,52 +1,52 @@
 ---
-title: "The Attention Mechanism"
-lang: en
+title: "آلية الانتباه"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/attention-mechanism"
 ---
 
-> **Key Takeaways**
+> **الخلاصات الأساسية**
 >
-> - Self-attention builds context via Q/K/V projections and scaled dot-product softmax
-> - Multi-head attention captures diverse patterns; residuals and MLPs add depth
-> - Causal masks enable generation; bidirectional masks power understanding tasks
-> - Positional encodings (sinusoidal/learned/RoPE/ALiBi) inject order information
-> - Attention is O(T²); use optimized kernels and long-context strategies when needed
+> - يبني الانتباه الذاتي السياق عبر إسقاطات Q/K/V وsoftmax لمضروب النقاط المُقيس
+> - يلتقط الانتباه متعدد الرؤوس أنماطًا متنوعة؛ وتضيف الوصلات المتبقية والشبكات MLP عمقًا
+> - تتيح الأقنعة السببية التوليد؛ وتمكّن الأقنعة ثنائية الاتجاه مهام الفهم
+> - تحقن ترميزات المواضع (sinusoidal/learned/RoPE/ALiBi) معلومة الترتيب
+> - الانتباه من الرتبة O(T²)؛ استخدم نوى مُحسَّنة واستراتيجيات السياق الطويل عند الحاجة
 
-## Overview
+## نظرة عامة
 
-Attention lets models weigh relationships between tokens to build context-aware representations. When you read “The cat sat on the mat,” your brain instantly knows that “sat” is related to “cat” (the one doing the sitting) and “mat” (where it sat). The attention mechanism gives models this same ability to understand relationships between words, no matter how far apart they are.
+يتيح الانتباه للنماذج موازنة العلاقات بين الرموز لبناء تمثيلات واعية بالسياق. فحين تقرأ «The cat sat on the mat»، يعرف دماغك فورًا أن «sat» مرتبطة بـ«cat» (الفاعل الذي جلس) وبـ«mat» (المكان الذي جلس عليه). وتمنح آلية الانتباه النماذج القدرة نفسها على فهم العلاقات بين الكلمات، مهما تباعدت.
 
-## Notebook
+## الدفتر
 
-View the companion notebook: [Attention Mechanism](https://colab.research.google.com/drive/1m9LFBM2Ncl_k-wMHUYJ-7ltxyhLpM7Br?usp=sharing)
+اطّلع على الدفتر المرافق: [آلية الانتباه](https://colab.research.google.com/drive/1m9LFBM2Ncl_k-wMHUYJ-7ltxyhLpM7Br?usp=sharing)
 
-## From Word Embeddings to Contextual Understanding
+## من تضمينات الكلمات إلى الفهم السياقي
 
-Before attention, each token gets mapped to a dense vector embedding that represents the word’s meaning in multi-dimensional space. The problem is that initially, the embedding for “bank” is identical whether in “river bank” or “money bank.” Attention solves this by taking these context-free embeddings and enriching them with information from all other words in the sentence.
+قبل الانتباه، يُسقَط كل رمز إلى تضمين متجهي كثيف يمثّل معنى الكلمة في فضاء متعدد الأبعاد. والمشكلة أن تضمين «bank» يكون متطابقًا في البداية سواء ورد في «river bank» أو «money bank». ويحل الانتباه ذلك بأن يأخذ هذه التضمينات الخالية من السياق ويغنيها بمعلومات من كل الكلمات الأخرى في الجملة.
 
-The process starts with tokenization, where text becomes token IDs:
+تبدأ العملية بالترميز (tokenization)، حيث يتحوّل النص إلى معرّفات رموز:
 
 ```python
 "The cat sat" → [101, 1996, 4937, 3323, 102]
 ```
 
-These IDs map to embeddings, but without context, they lack the nuance needed for understanding. This is where attention transforms static embeddings into dynamic, context-aware representations.
+تُسقَط هذه المعرّفات إلى تضمينات، لكنها بلا سياق تفتقر إلى الدقة اللازمة للفهم. وهنا يحوّل الانتباه التضمينات الساكنة إلى تمثيلات ديناميكية واعية بالسياق.
 
-## Queries, Keys, and Values
+## الاستعلامات والمفاتيح والقيم
 
-The attention mechanism creates three special vectors for each word’s embedding:
+تنشئ آلية الانتباه ثلاثة متجهات خاصة لكل تضمين كلمة:
 
-**Query (Q)** represents what the current word is looking for. **Key (K)** represents what each word has to offer. **Value (V)** contains the actual information each word provides.
+**الاستعلام (Q)** يمثّل ما تبحث عنه الكلمة الحالية. و**المفتاح (K)** يمثّل ما تقدّمه كل كلمة. و**القيمة (V)** تحوي المعلومة الفعلية التي تسهم بها كل كلمة.
 
-### The Library Analogy
+### تشبيه المكتبة
 
-Imagine researching “artificial intelligence” in a library. Your Query is your research topic. You go to the card catalog where each book’s title serves as a Key. You compare your query to each key to find matches. A book titled “A History of AI” strongly matches, while “Gardening” weakly matches. The book contents are the Values. You pull out the best-matching books (highest attention scores) and blend their information for a rich, contextual understanding.
+تخيّل أنك تبحث عن «الذكاء الاصطناعي» في مكتبة. استعلامك هو موضوع بحثك. تذهب إلى فهرس البطاقات حيث يعمل عنوان كل كتاب كمفتاح. وتقارن استعلامك بكل مفتاح للعثور على تطابقات. فكتاب بعنوان «تاريخ الذكاء الاصطناعي» يتطابق بقوة، بينما «البستنة» تتطابق بضعف. ومحتويات الكتب هي القيم. فتنتقي أفضل الكتب تطابقًا (أعلى درجات الانتباه) وتمزج معلوماتها لفهم غني ومرتبط بالسياق.
 
-The attention mechanism performs this process for every single word in the input, allowing the model to learn which other words are most important for understanding each word’s meaning in that specific context.
+تنفّذ آلية الانتباه هذه العملية لكل كلمة في المدخل، ما يتيح للنموذج أن يتعلّم أي الكلمات الأخرى أهم لفهم معنى كل كلمة في ذلك السياق تحديدًا.
 
-## Visualizing Attention with Code
+## تصوير الانتباه بالشيفرة
 
-Let’s see attention in action using BERT and the bertviz library:
+لنرَ الانتباه أثناء عمله باستخدام BERT ومكتبة bertviz:
 
 ```python
 from transformers import AutoTokenizer, AutoModel
@@ -68,21 +68,21 @@ attention = outputs[-1]  # The attention scores
 head_view(attention, tokens=tokenizer.convert_ids_to_tokens(inputs['input_ids'][0]))
 ```
 
-The visualization reveals strong connections between related words: `cat` connects to `sat` and `mat`, while `dog` connects to `played` and `park`. The model learns to keep the two sentences separate thanks to the `[SEP]` token.
+يكشف التصوير روابط قوية بين الكلمات المترابطة: `cat` تتصل بـ`sat` و`mat`، بينما `dog` تتصل بـ`played` و`park`. ويتعلّم النموذج إبقاء الجملتين منفصلتين بفضل الرمز `[SEP]`.
 
-## Attention Mechanics
+## ميكانيكا الانتباه
 
-The core computation involves projecting inputs into Queries, Keys, and Values through learned linear transformations. The scaled dot-product attention formula is:
+يتضمّن الحساب الأساسي إسقاط المدخلات إلى استعلامات ومفاتيح وقيم عبر تحويلات خطية متعلَّمة. وصيغة الانتباه بمضروب النقاط المُقيس هي:
 
 ```
 Attention(Q, K, V) = softmax(QK^T / √d_k) V
 ```
 
-The scaling factor `√d_k` prevents the dot products from growing too large, which would cause the softmax to saturate. After attention, outputs pass through residual connections and feed-forward networks for additional depth and nonlinearity.
+يمنع عامل القياس `√d_k` مضاريب النقاط من النمو إلى حدّ كبير، وهو ما قد يجعل softmax يتشبّع. وبعد الانتباه، تمرّ المخرجات عبر وصلات متبقية وشبكات تغذية أمامية لمزيد من العمق واللاخطية.
 
-## Multi-Head Attention
+## الانتباه متعدد الرؤوس
 
-Instead of computing attention once, multi-head attention runs several attention operations in parallel, each with different learned projections. This allows the model to jointly attend to information from different representation subspaces:
+بدلًا من حساب الانتباه مرة واحدة، يُجري الانتباه متعدد الرؤوس عدة عمليات انتباه على التوازي، لكل منها إسقاطات متعلَّمة مختلفة. وهذا يتيح للنموذج أن ينتبه معًا إلى معلومات من فضاءات تمثيل مختلفة:
 
 ```python
 # Conceptually, for H heads:
@@ -95,15 +95,15 @@ for head in range(H):
 output = Concat(head_outputs) @ W_O
 ```
 
-Different heads learn different types of relationships. Some might focus on syntactic patterns, others on semantic relationships, and yet others on positional information.
+تتعلّم الرؤوس المختلفة أنواعًا مختلفة من العلاقات. فقد يركّز بعضها على الأنماط النحوية، وآخر على العلاقات الدلالية، وآخر على معلومات المواضع.
 
-## Masking Strategies
+## استراتيجيات الإخفاء (Masking)
 
-Masking controls which tokens can attend to which other tokens:
+يتحكّم الإخفاء في الرموز التي يمكن لكل رمز أن ينتبه إليها:
 
-**Padding mask** prevents attending to padded tokens in batched sequences. **Causal mask** ensures token t cannot see future tokens (t+1, t+2, …), essential for autoregressive decoders. **Bidirectional attention** allows tokens to attend freely in both directions, used in encoder models for understanding tasks.
+**قناع الحشو** يمنع الانتباه إلى الرموز المحشوّة في المتتاليات المجمّعة في دفعات. و**القناع السببي** يضمن ألا يرى الرمز t الرموز المستقبلية (t+1، t+2، …)، وهو أمر جوهري لفاكّات الترميز الانحدارية التلقائية. و**الانتباه ثنائي الاتجاه** يتيح للرموز الانتباه بحرية في الاتجاهين، ويُستخدم في نماذج المشفّرات لمهام الفهم.
 
-The causal mask is implemented by setting future positions to negative infinity before the softmax:
+يُنفَّذ القناع السببي بوضع المواضع المستقبلية عند سالب ما لا نهاية قبل تطبيق softmax:
 
 ```python
 # Create a causal mask
@@ -112,27 +112,27 @@ scores = (Q @ K.T) / sqrt(d_k) + mask
 attention_weights = softmax(scores)
 ```
 
-## Positional Information
+## معلومات المواضع
 
-Pure self-attention is permutation-invariant, meaning it treats sequences as sets without order. Positional encodings inject order information:
+الانتباه الذاتي المحض ثابت تحت التبديل، أي أنه يتعامل مع المتتاليات كمجموعات بلا ترتيب. وتحقن ترميزات المواضع معلومة الترتيب:
 
-**Sinusoidal encodings** use sine and cosine functions of different frequencies. **Learned embeddings** treat positions as learnable parameters. **Rotary Position Embeddings (RoPE)** rotate attention scores based on relative positions. **ALiBi** adds linear biases to attention scores based on distance.
+**الترميزات الجيبية** تستخدم دالتي الجيب والجيب التمام بترددات مختلفة. و**التضمينات المتعلَّمة** تتعامل مع المواضع كمعاملات قابلة للتعلّم. و**تضمينات المواضع الدورانية (RoPE)** تُدوّر درجات الانتباه بناءً على المواضع النسبية. و**ALiBi** تضيف تحيّزات خطية إلى درجات الانتباه بناءً على المسافة.
 
-For long sequences, strategies include sliding windows (attend only to nearby tokens), dilated patterns (skip tokens at regular intervals), and chunking with overlap for maintaining context.
+للمتتاليات الطويلة، تشمل الاستراتيجيات النوافذ المنزلقة (الانتباه فقط إلى الرموز القريبة)، والأنماط الموسّعة (تخطّي رموز على فواصل منتظمة)، والتقطيع مع التداخل للحفاظ على السياق.
 
-## Complexity and Performance
+## التعقيد والأداء
 
-Vanilla attention has O(n²) complexity in sequence length, causing memory and time to grow quadratically. This becomes prohibitive for long sequences.
+التعقيد في الانتباه الأساسي هو O(n²) بالنسبة لطول المتتالية، ما يجعل الذاكرة والزمن ينموان تربيعيًا. ويصبح هذا باهظًا للمتتاليات الطويلة.
 
-Optimizations include **FlashAttention**, which fuses operations and avoids materializing the full attention matrix. **Sparse attention** patterns reduce the number of token pairs considered. **Linear attention** approximations achieve O(n) complexity through kernel tricks.
+تشمل التحسينات **FlashAttention**، الذي يدمج العمليات ويتجنّب تجسيد مصفوفة الانتباه كاملة. و**الانتباه المتناثر** يقلّل عدد أزواج الرموز المدروسة. وتحقّق **تقريبات الانتباه الخطي** تعقيد O(n) عبر حيل النوى.
 
-When implementing, use mixed precision (fp16/bf16) and optimized kernels. Monitor peak memory usage and consider gradient checkpointing during training for longer sequences.
+عند التنفيذ، استخدم الدقة المختلطة (fp16/bf16) والنوى المُحسَّنة. وراقب ذروة استهلاك الذاكرة وفكّر في نقاط التفتيش التدرّجية (gradient checkpointing) أثناء التدريب للمتتاليات الأطول.
 
-## Shapes and Implementation
+## الأشكال والتنفيذ
 
-Given input sequence X of shape `[B, T, D]`, linear projections produce Q, K, V with the same dimensions. For multi-head attention with H heads, the dimension D is split: `[B, H, T, D_h]` where `D_h = D/H`.
+بإعطاء متتالية مدخل X بشكل `[B, T, D]`، تنتج الإسقاطات الخطية Q وK وV بالأبعاد نفسها. وفي الانتباه متعدد الرؤوس بعدد H من الرؤوس، يُقسَم البعد D: `[B, H, T, D_h]` حيث `D_h = D/H`.
 
-The attention computation preserves these shapes:
+يحافظ حساب الانتباه على هذه الأشكال:
 
 ```python
 # Shapes during attention computation
@@ -145,21 +145,21 @@ output: [B, H, T, D_h]  # After weights @ V
 final: [B, T, D]  # After concatenation and projection
 ```
 
-## Causal vs Bidirectional vs Cross-Attention
+## الانتباه السببي مقابل ثنائي الاتجاه مقابل المتقاطع
 
-**Causal attention** restricts each position to attend only to itself and past tokens, essential for decoder-only language models that generate text left-to-right.
+**الانتباه السببي** يقيّد كل موضع بالانتباه إلى نفسه والرموز السابقة فقط، وهو جوهري لنماذج اللغة المعتمدة على المفكّك فقط التي تولّد النص من اليسار إلى اليمين.
 
-**Bidirectional attention** allows each token to see the entire sequence, typical for encoder stacks in understanding tasks like BERT.
+**الانتباه ثنائي الاتجاه** يتيح لكل رمز رؤية المتتالية كاملة، وهو معتاد في مكدّسات المشفّرات في مهام الفهم مثل BERT.
 
-**Cross-attention** attends from one sequence (decoder) to another (encoder outputs), crucial in sequence-to-sequence models for translation or in multimodal models connecting text to images.
+**الانتباه المتقاطع** ينتبه من متتالية (المفكّك) إلى أخرى (مخرجات المشفّر)، وهو حاسم في نماذج متتالية-إلى-متتالية للترجمة أو في النماذج متعددة الوسائط التي تربط النص بالصور.
 
-## Inspecting and Debugging Attention
+## فحص الانتباه وتصحيحه
 
-While attention maps provide some interpretability, they don’t fully explain model reasoning. However, visualization can reveal learned patterns:
+مع أن خرائط الانتباه توفّر بعض قابلية التفسير، فإنها لا تفسّر تفكير النموذج تفسيرًا كاملًا. ومع ذلك، يمكن للتصوير أن يكشف الأنماط المتعلَّمة:
 
-**Induction heads** learn to copy or continue patterns. **Positional heads** focus on specific relative positions. **Syntactic heads** align with grammatical structures. **Semantic heads** connect related concepts.
+**رؤوس الاستقراء** تتعلّم نسخ الأنماط أو متابعتها. و**الرؤوس الموضعية** تركّز على مواضع نسبية محدّدة. و**الرؤوس النحوية** تتحاذى مع البنى النحوية. و**الرؤوس الدلالية** تربط المفاهيم المترابطة.
 
-Use attention visualization to debug issues with masking, positional encoding, or unexpected focus patterns. Tools like bertviz make this analysis accessible:
+استخدم تصوير الانتباه لتصحيح مشكلات الإخفاء أو ترميز المواضع أو أنماط التركيز غير المتوقعة. وأدوات مثل bertviz تجعل هذا التحليل سهلًا:
 
 ```python
 from bertviz import model_view
@@ -168,16 +168,16 @@ from bertviz import model_view
 model_view(attention, tokens, html_action='return')
 ```
 
-## Practical Considerations
+## اعتبارات عملية
 
-When working with attention, balance model size with available memory. Start with pre-trained models that already have learned attention patterns. For custom implementations, carefully validate masking and use established libraries when possible.
+عند العمل مع الانتباه، وازن حجم النموذج مع الذاكرة المتاحة. وابدأ بنماذج مُدرَّبة مسبقًا لديها بالفعل أنماط انتباه متعلَّمة. وفي التنفيذات المخصّصة، تحقّق بعناية من الإخفاء واستخدم المكتبات الراسخة حيث أمكن.
 
-The attention mechanism fundamentally changed how models process sequences, enabling them to capture long-range dependencies and complex relationships. Understanding attention is key to understanding modern transformer models and their remarkable capabilities in language understanding and generation.
+غيّرت آلية الانتباه جذريًا طريقة معالجة النماذج للمتتاليات، إذ مكّنتها من التقاط اعتماديات بعيدة المدى وعلاقات معقّدة. وفهم الانتباه مفتاح لفهم نماذج المحوّلات الحديثة وقدراتها اللافتة في فهم اللغة وتوليدها.
 
-## Further Reading
+## قراءات إضافية
 
-- Attention Is All You Need (Vaswani et al., 2017): [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
-- FlashAttention (Tri Dao et al.): [https://arxiv.org/abs/2205.14135](https://arxiv.org/abs/2205.14135)
-- Rotary Position Embedding (RoPE): [https://arxiv.org/abs/2104.09864](https://arxiv.org/abs/2104.09864)
-- ALiBi (Attention with Linear Biases): [https://arxiv.org/abs/2108.12409](https://arxiv.org/abs/2108.12409)
-- A Survey of Efficient Transformers: [https://arxiv.org/abs/2009.06732](https://arxiv.org/abs/2009.06732)
+- الانتباه هو كل ما تحتاجه (Vaswani وآخرون، 2017): [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
+- FlashAttention (Tri Dao وآخرون): [https://arxiv.org/abs/2205.14135](https://arxiv.org/abs/2205.14135)
+- تضمين المواضع الدوراني (RoPE): [https://arxiv.org/abs/2104.09864](https://arxiv.org/abs/2104.09864)
+- ALiBi (الانتباه بتحيّزات خطية): [https://arxiv.org/abs/2108.12409](https://arxiv.org/abs/2108.12409)
+- مسح للمحوّلات الفعّالة: [https://arxiv.org/abs/2009.06732](https://arxiv.org/abs/2009.06732)

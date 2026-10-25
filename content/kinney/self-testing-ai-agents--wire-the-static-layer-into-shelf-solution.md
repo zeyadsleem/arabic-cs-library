@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/wire-the-static-layer-into-shelf-solution"
 ---
 
-This is the longest lab and the longest solution. The current Shelf starter is intentionally smaller, so this solution is the copyable version of the static layer you add during the lab. I will walk through every part in order, show the file to create or extend, explain why, and give you the commands to prove it works.
+هذا أطول مختبر وأطول حل. مشروع Shelf الأولي الحالي أصغر عمدًا، لذا هذا الحل هو النسخة القابلة للنسخ من الطبقة الساكنة التي تضيفها أثناء المختبر. سأستعرض كل جزء بالترتيب، وأعرض الملف الذي يجب إنشاؤه أو توسيعه، وأشرح السبب، وأعطيك الأوامر التي تثبت أنه يعمل.
 
-## What to add
+## ما يجب إضافته
 
-### Part 1: ESLint custom rules
+### الجزء 1: قواعد ESLint المخصصة
 
-Open `eslint.config.js`. After the standard Svelte/TypeScript/Prettier config blocks, there are two `no-restricted-syntax` blocks.
+افتح `eslint.config.js`. بعد كتل إعداد Svelte/TypeScript/Prettier القياسية، توجد كتلتان من `no-restricted-syntax`.
 
-The first block applies globally—every file in the project:
+الكتلة الأولى تُطبَّق عالميًا — على كل ملف في المشروع:
 
 ```javascript
 {
@@ -34,9 +34,9 @@ The first block applies globally—every file in the project:
 }
 ```
 
-The `networkidle` rule uses the child combinator (`>`) to match a `Literal` node with value `'networkidle'` that is a direct argument to `waitForLoadState`. The `userId` rule uses a nested `MemberExpression` match—`body.userId`—because a simple property-name check on `userId` would fire on every object that happens to have a `userId` field. The nesting says “specifically `something.body.userId`,” which is the shape of reading from a parsed request body.
+تستخدم قاعدة `networkidle` المُركِّب الابني (`>`) لمطابقة عقدة `Literal` قيمتها `'networkidle'` وتكون وسيطًا مباشرًا لـ `waitForLoadState`. أما قاعدة `userId` فتستخدم مطابقة `MemberExpression` متداخلة — `body.userId` — لأن فحص اسم خاصية بسيط على `userId` سيُفعَّل مع كل كائن يصادف أن لديه حقل `userId`. التداخل يقول «تحديدًا `something.body.userId`»، وهذا هو شكل القراءة من جسم طلب مُحلَّل.
 
-The second block scopes to `tests/end-to-end/**/*.ts` only:
+الكتلة الثانية محصورة في `tests/end-to-end/**/*.ts` فقط:
 
 ```javascript
 {
@@ -62,11 +62,11 @@ The second block scopes to `tests/end-to-end/**/*.ts` only:
 }
 ```
 
-The `waitForTimeout` and raw `locator()` bans only apply to end-to-end test files. Banning `waitForTimeout` in application code would be overzealous—there are legitimate uses of `setTimeout` in app logic. But in test files, every `waitForTimeout` is a flake waiting to happen, and every raw `page.locator('.some-class')` is a brittle selector that should be `getByRole` or `getByLabel`.
+إن حظر `waitForTimeout` واستدعاء `locator()` الخام لا ينطبق إلا على ملفات اختبارات من طرف إلى طرف. فحظر `waitForTimeout` في شيفرة التطبيق سيكون مبالغة — فهناك استخدامات مشروعة لـ `setTimeout` في منطق التطبيق. لكن في ملفات الاختبار، كل `waitForTimeout` هو تقلّب ينتظر أن يحدث، وكل `page.locator('.some-class')` خام هو محدِّد هشّ ينبغي أن يكون `getByRole` أو `getByLabel`.
 
-The `networkidle` rule appears in *both* blocks. That is deliberate: the global one catches route handlers or utility code that might call `waitForLoadState`, and the scoped one ensures the test-specific rule block does not accidentally shadow the global one. ESLint’s `no-restricted-syntax` replaces the entire rule when a scoped config redefines it, so the test block must re-include patterns it wants to keep.
+تظهر قاعدة `networkidle` في *كلتا* الكتلتين. وهذا متعمد: فالكتلة العالمية تلتقط معالجات المسارات أو شيفرة الأدوات المساعدة التي قد تستدعي `waitForLoadState`، والكتلة المحصورة تضمن ألا تحجب كتلة القواعد الخاصة بالاختبارات الكتلة العالمية عن غير قصد. فقاعدة `no-restricted-syntax` في ESLint تستبدل القاعدة بأكملها عندما يعيد إعداد محصور تعريفها، لذا يجب أن تعيد كتلة الاختبار تضمين الأنماط التي تريد الاحتفاظ بها.
 
-**Verification:**
+**التحقق:**
 
 ```bash
 # Clean baseline
@@ -78,9 +78,9 @@ npm run lint 2>&1 | grep "waitForTimeout is banned"
 git checkout tests/smoke.spec.ts
 ```
 
-### Part 2: TypeScript strict mode
+### الجزء 2: الوضع الصارم في TypeScript
 
-Open `tsconfig.json`. The `compilerOptions` block:
+افتح `tsconfig.json`. كتلة `compilerOptions`:
 
 ```json
 {
@@ -94,21 +94,21 @@ Open `tsconfig.json`. The `compilerOptions` block:
 }
 ```
 
-`strict: true` is the umbrella—it enables `strictNullChecks`, `strictFunctionTypes`, `strictBindCallApply`, `strictPropertyInitialization`, `noImplicitAny`, `noImplicitThis`, `alwaysStrict`, `strictBuiltinIteratorReturn`, and `useUnknownInCatchVariables`. The six flags listed after it are *not* included in `strict` and must be enabled individually.
+`strict: true` هو المظلة — فهو يفعّل `strictNullChecks` و`strictFunctionTypes` و`strictBindCallApply` و`strictPropertyInitialization` و`noImplicitAny` و`noImplicitThis` و`alwaysStrict` و`strictBuiltinIteratorReturn` و`useUnknownInCatchVariables`. أما الأعلام الستة المذكورة بعده فليست *مشمولة* في `strict` ويجب تفعيلها فرادى.
 
-`noUncheckedIndexedAccess` is the one that changes your daily life the most. With it on, `items[0]` has type `T | undefined` instead of `T`. Every array index and object bracket access forces you to handle the missing case. It is annoying for the first hour and then it catches a real bug, and you never turn it off.
+`noUncheckedIndexedAccess` هو العلم الذي يغيّر حياتك اليومية أكثر من غيره. فبتفعيله، يصبح نوع `items[0]` هو `T | undefined` بدلًا من `T`. وكل وصول إلى فهرس مصفوفة أو قوس كائن يجبرك على التعامل مع الحالة المفقودة. إنه مزعج في الساعة الأولى ثم يلتقط خطأً حقيقيًا، ولن تعطّله بعدها أبدًا.
 
-`exactOptionalPropertyTypes` is stricter than most projects bother with. It means `{ x?: string }` allows `undefined` *only* when the key is absent—you cannot explicitly assign `x: undefined`. If the existing code compiles clean with this flag, leave it on. If your own project does not, it is the one flag on this list worth deferring.
+`exactOptionalPropertyTypes` أكثر صرامة مما تكلف به معظم المشاريع. فهو يعني أن `{ x?: string }` يسمح بـ `undefined` *فقط* عندما يكون المفتاح غائبًا — فلا يمكنك تعيين `x: undefined` صراحةً. إن كانت الشيفرة القائمة تُصرَّف بنظافة مع هذا العلم، فأبقه مفعّلًا. وإن لم يكن مشروعك كذلك، فهو العلم الوحيد في هذه القائمة الذي يستحق التأجيل.
 
-**Verification:**
+**التحقق:**
 
 ```bash
 npm run typecheck
 ```
 
-### Part 3: Dead code detection with knip
+### الجزء 3: كشف الشيفرة الميتة باستخدام knip
 
-Open `knip.json`:
+افتح `knip.json`:
 
 ```json
 {
@@ -125,19 +125,19 @@ Open `knip.json`:
 }
 ```
 
-The `entry` array tells knip where execution starts—SvelteKit route files (`+page.ts`, `+server.ts`, `+layout.ts`), test files, helper files, and scripts. Everything reachable from these entry points is “used.” Everything in the `project` globs that is *not* reachable is dead code. If you add later labs like authenticated setup or a custom MCP server, extend these globs at that point instead of shipping them in the starter.
+مصفوفة `entry` تخبر knip من أين يبدأ التنفيذ — ملفات مسارات SvelteKit (`+page.ts` و`+server.ts` و`+layout.ts`)، وملفات الاختبار، والملفات المساعدة، والسكربتات. وكل ما يمكن الوصول إليه من نقاط الدخول هذه يُعدّ «مستخدمًا». وكل ما هو في أنماط `project` و*لا* يمكن الوصول إليه هو شيفرة ميتة. إن أضفت مختبرات لاحقة مثل التهيئة الموثّقة أو خادم MCP مخصص، فوسّع هذه الأنماط حينها بدلًا من شحنها في المشروع الأولي.
 
-The `ignoreDependencies` array handles Tailwind. Tailwind v4 uses CSS `@import` directives to pull in its plugins, not JavaScript imports, so knip cannot trace the dependency chain. Without the ignore list, knip reports `tailwindcss`, `@tailwindcss/forms`, and `@tailwindcss/typography` as unused dependencies on every run.
+تتعامل مصفوفة `ignoreDependencies` مع Tailwind. فـ Tailwind v4 يستخدم توجيهات `@import` في CSS لجلب إضافاته، لا استيرادات JavaScript، لذا لا يستطيع knip تتبّع سلسلة الاعتماديات. وبدون قائمة التجاهل، يبلّغ knip عن `tailwindcss` و`@tailwindcss/forms` و`@tailwindcss/typography` كاعتماديات غير مستخدمة في كل تشغيل.
 
-**Verification:**
+**التحقق:**
 
 ```bash
 npm run knip
 ```
 
-### Part 4: Lefthook
+### الجزء 4: Lefthook
 
-One file. Open `lefthook.yml` at the repo root:
+ملف واحد. افتح `lefthook.yml` في جذر المستودع:
 
 ```yaml
 pre-commit:
@@ -160,13 +160,13 @@ pre-push:
       run: npm run pre-push
 ```
 
-The `pre-commit` block runs three commands in parallel. The `lint` command expands `{staged_files}` to the staged files matching the `glob` and hands them to ESLint with `--fix --max-warnings=0`—auto-fixable issues get corrected, and any remaining warning becomes an error. The `format` command does the same for Prettier, across a wider glob that also covers JSON, Markdown, YAML, and CSS. Both commands use `stage_fixed: true`, which restages whatever the auto-fixers changed. The `secrets` command runs the gitleaks wrapper we cover in Part 5—it is intentionally unscoped by `glob` because the wrapper re-lists the staged index itself and would be confused by a pre-filtered argument list.
+تشغّل كتلة `pre-commit` ثلاثة أوامر على التوازي. فأمر `lint` يوسّع `{staged_files}` إلى الملفات المرحّلة المطابقة لـ `glob` ويسلّمها إلى ESLint مع `--fix --max-warnings=0` — فتُصحَّح المشكلات القابلة للإصلاح التلقائي، ويتحول أي تحذير متبقٍّ إلى خطأ. وأمر `format` يفعل الشيء نفسه مع Prettier، عبر نمط أوسع يغطي أيضًا JSON وMarkdown وYAML وCSS. ويستخدم الأمران `stage_fixed: true`، الذي يعيد ترحيل كل ما غيّرته أدوات الإصلاح التلقائي. وأمر `secrets` يشغّل غلاف gitleaks الذي نتناوله في الجزء 5 — وهو غير محصور بـ `glob` عمدًا لأن الغلاف يعيد سرد الفهرس المرحّل بنفسه وسيُربك بقائمة وسائط مُصفّاة مسبقًا.
 
-The `pre-push` block shells out to `npm run pre-push`, which this lab adds for local verification: `npm run typecheck && npm run knip && npm run test:unit`. The ordering matters—typecheck is cheapest, knip is next, unit tests are last. If typecheck fails, knip and tests never run.
+كتلة `pre-push` تستدعي `npm run pre-push`، الذي يضيفه هذا المختبر للتحقق المحلي: `npm run typecheck && npm run knip && npm run test:unit`. والترتيب مهم — فحص الأنواع هو الأرخص، ثم knip، ثم اختبارات الوحدة أخيرًا. فإن فشل فحص الأنواع، فلن يعمل knip ولا الاختبارات أبدًا.
 
-The minimal starter does not wire `lefthook install` into `prepare`. After adding `lefthook.yml`, run `npx lefthook install` once locally, then decide whether you want to fold that install step into `prepare` for your own project.
+المشروع الأولي الأدنى لا يوصّل `lefthook install` بـ `prepare`. بعد إضافة `lefthook.yml`، شغّل `npx lefthook install` مرة واحدة محليًا، ثم قرّر إن كنت تريد طيّ خطوة التثبيت تلك في `prepare` لمشروعك.
 
-**Verification:**
+**التحقق:**
 
 ```bash
 # Prove pre-commit fires (from repo root, against whatever you have staged)
@@ -176,30 +176,30 @@ npx lefthook run pre-commit
 npx lefthook run pre-push
 ```
 
-### Part 5: Secret scanning with gitleaks
+### الجزء 5: فحص الأسرار باستخدام gitleaks
 
-Open `scripts/run-gitleaks-staged.ts`. Depending on the gitleaks release you have installed, `gitleaks git --staged` may miss newly added files; this wrapper script removes that ambiguity. It materializes the staged git index into a temporary directory, runs `gitleaks dir` against it, then cleans up.
+افتح `scripts/run-gitleaks-staged.ts`. بحسب إصدار gitleaks المثبّت لديك، قد يفوت `gitleaks git --staged` الملفات المضافة حديثًا؛ وهذا السكربت الغلافي يزيل ذلك الغموض. فهو يُجسّد فهرس git المرحّل في دليل مؤقت، ويشغّل `gitleaks dir` عليه، ثم ينظّف.
 
-The script does four things:
+يفعل السكربت أربعة أشياء:
 
-It lists staged files using `git diff --cached --name-only --diff-filter=ACM -z`. The `-z` flag uses null bytes as delimiters so filenames with spaces do not break the parse. The `--diff-filter=ACM` limits to added, copied, and modified files—deleted files are not interesting for secret scanning.
+يسرد الملفات المرحّلة باستخدام `git diff --cached --name-only --diff-filter=ACM -z`. ويستخدم علم `-z` بايتات فارغة كفواصل حتى لا تُفسد أسماء الملفات التي تحتوي مسافات التحليل. ويحدّ `--diff-filter=ACM` على الملفات المضافة والمنسوخة والمعدّلة — فالملفات المحذوفة لا تهمّ في فحص الأسرار.
 
-For each staged file, it extracts the exact staged content with `git show :<path>` and writes it to the temp directory. This is the staged version, not the working-tree version—if you staged a clean file but then dirtied it in your editor, the scan sees the clean version. That is correct behavior for a pre-commit hook.
+ولكل ملف مرحّل، يستخرج المحتوى المرحّل بالضبط بـ `git show :<path>` ويكتبه في الدليل المؤقت. هذه هي النسخة المرحّلة، لا نسخة شجرة العمل — فإن كنت قد رحّلت ملفًا نظيفًا ثم لوّثته في محررك، فإن الفحص يرى النسخة النظيفة. وهذا هو السلوك الصحيح لخطاف ما قبل الإيداع.
 
-It resolves the `gitleaks` binary with `which`. If gitleaks is not installed, it prints a warning and exits zero. This is a deliberate choice: a missing tool should not block development, but it should be loud about the gap. In CI, gitleaks is installed explicitly, so the warning path only fires on developer machines that have not run `brew install gitleaks`.
+ويحلّ مسار برنامج `gitleaks` بـ `which`. فإن لم يكن gitleaks مثبّتًا، طبع تحذيرًا وخرج بالرمز صفر. وهذا خيار متعمد: فالأداة المفقودة لا ينبغي أن تعيق التطوير، لكن ينبغي أن تكون صاخبة بشأن الفجوة. وفي CI، يُثبَّت gitleaks صراحةً، لذا لا يُفعَّل مسار التحذير إلا على أجهزة المطورين التي لم تشغّل `brew install gitleaks`.
 
-It runs `gitleaks dir <temp-dir> --redact` with the `.gitleaks.toml` config if one exists. The `--redact` flag ensures that if a secret is found, the error output does not echo the secret itself into the terminal.
+ويشغّل `gitleaks dir <temp-dir> --redact` مع إعداد `.gitleaks.toml` إن وُجد. ويضمن علم `--redact` أنه إن عُثر على سرّ، فإن مخرجات الخطأ لا تردّد السرّ نفسه في الطرفية.
 
-The `secrets` command in `lefthook.yml` shells out to this script as the final pre-commit gate:
+أمر `secrets` في `lefthook.yml` يستدعي هذا السكربت كبوابة ما قبل الإيداع الأخيرة:
 
 ```yaml
 secrets:
   run: npx tsx scripts/run-gitleaks-staged.ts
 ```
 
-Note the deliberate lack of a `glob` field. The wrapper script re-enumerates the staged index on its own, so handing it a pre-filtered `{staged_files}` list would double-filter. Let the script do its own listing.
+لاحظ الغياب المتعمد لحقل `glob`. فالسكربت الغلافي يعيد تعداد الفهرس المرحّل بنفسه، لذا فإن تسليمه قائمة `{staged_files}` مُصفّاة مسبقًا سيضاعف التصفية. دع السكربت يقوم بسرده الخاص.
 
-**Verification:**
+**التحقق:**
 
 ```bash
 # Gitleaks is installed
@@ -211,13 +211,13 @@ npx tsx scripts/run-gitleaks-staged.ts
 # A real secret is caught (stage a file with a secret-shaped string, run the script, unstage)
 ```
 
-### Part 6: the CLAUDE.md update
+### الجزء 6: تحديث CLAUDE.md
 
-Shelf’s starter `CLAUDE.md` only lists the smaller starter loop: `npm run typecheck`, `npm run lint`, and `npm run test`. This lab is where you extend it. Add the static-layer sections now: name `knip.json`, `lefthook.yml`, `.gitleaks.toml`, and `scripts/run-gitleaks-staged.ts` explicitly, add `npm run knip` / `npm run pre-push` to the “done” story, and keep the “Do not” section banning `@ts-expect-error`, `eslint-disable`, and `--no-verify`.
+ملف `CLAUDE.md` الأولي في Shelf يسرد فقط حلقة المشروع الأولي الأصغر: `npm run typecheck` و`npm run lint` و`npm run test`. وهذا المختبر هو حيث توسّعه. أضف أقسام الطبقة الساكنة الآن: سمِّ `knip.json` و`lefthook.yml` و`.gitleaks.toml` و`scripts/run-gitleaks-staged.ts` صراحةً، وأضف `npm run knip` / `npm run pre-push` إلى قصة «تم»، وأبقِ قسم «لا تفعل» يحظر `@ts-expect-error` و`eslint-disable` و`--no-verify`.
 
-## What you still need to run
+## ما لا يزال عليك تشغيله
 
-Every verification command, part by part:
+كل أمر تحقق، جزءًا بجزء:
 
 ```bash
 # Part 1: ESLint
@@ -243,28 +243,28 @@ grep -c 'typecheck\|lint\|knip' CLAUDE.md
 grep -c '@ts-expect-error\|eslint-disable\|no-verify' CLAUDE.md
 ```
 
-And the full-stack check that the lab’s final acceptance criteria require:
+والفحص الكامل للمنظومة الذي تتطلبه معايير القبول النهائية للمختبر:
 
 ```bash
 npm run typecheck && npm run lint && npm run knip && npm run test
 ```
 
-All four should exit zero once you’ve finished the static-layer pass.
+يجب أن تخرج الأربعة جميعًا بالرمز صفر بمجرد أن تنتهي من مرور الطبقة الساكنة.
 
-## Patterns to take away
+## أنماط تستحق الاحتفاظ بها
 
-- **Encode decisions as rules, not comments.** An ESLint selector that bans `waitForTimeout` fires on every save. A comment in `CLAUDE.md` that says “don’t use `waitForTimeout`” fires when the agent happens to read it. Both are useful. The lint rule is *reliable*.
-- **Scope your bans.** The `waitForTimeout` rule applies only to test files. The `networkidle` rule applies globally. The `userId` rule applies globally. Each ban is scoped to where the pattern is actually dangerous, not where it is theoretically possible.
-- **Strict mode is a ratchet.** Once `noUncheckedIndexedAccess` is on and the codebase compiles clean, every future contributor inherits that constraint without knowing it was a deliberate choice. The flag *is* the documentation.
-- **Dead code detection catches what the agent leaves behind.** Agents write code, realize they need a different approach, and leave the first attempt in place. Knip finds it. Without knip, abandoned utilities accumulate until someone notices the import graph is a mess.
-- **Hooks are cheap insurance.** Lefthook’s pre-commit block runs in under two seconds on a typical commit—ESLint, Prettier, and the secret scan all running in parallel against staged files. The pre-push hook adds maybe fifteen seconds for typecheck + knip + unit tests. The cost is negligible. The alternative—finding the lint error in CI ten minutes later—is not.
-- **The gitleaks script is a pragmatic workaround.** Materializing the staged index into a temp directory is more reliable than any of the staged-file flags gitleaks has offered across releases. When the upstream behavior stabilizes, you can simplify. Until then, the script works.
+- **رمّز القرارات كقواعد، لا كتعليقات.** محدِّد ESLint الذي يحظر `waitForTimeout` يُفعَّل عند كل حفظ. أما تعليق في `CLAUDE.md` يقول «لا تستخدم `waitForTimeout`» فيُفعَّل عندما يصادف أن يقرأه الوكيل. كلاهما مفيد. لكن قاعدة التحقق النصي *موثوقة*.
+- **حدّد نطاق الحظر.** قاعدة `waitForTimeout` تنطبق على ملفات الاختبار فقط. وقاعدة `networkidle` تنطبق عالميًا. وقاعدة `userId` تنطبق عالميًا. فكل حظر محصور حيث يكون النمط خطيرًا فعلًا، لا حيث يكون ممكنًا نظريًا.
+- **الوضع الصارم سقّاطة تمنع التراجع.** بمجرد تفعيل `noUncheckedIndexedAccess` وتصريف قاعدة الشيفرة بنظافة، يرث كل مساهم مستقبلي ذلك القيد دون أن يعرف أنه كان خيارًا متعمدًا. العلم *هو* التوثيق.
+- **كشف الشيفرة الميتة يلتقط ما يتركه الوكيل خلفه.** يكتب الوكلاء شيفرة، ثم يدركون أنهم يحتاجون إلى نهج مختلف، فيتركون المحاولة الأولى في مكانها. knip يجدها. وبدون knip، تتراكم الأدوات المهجورة حتى يلاحظ أحدهم أن رسم الاستيرادات فوضوي.
+- **الخطافات تأمين رخيص.** كتلة ما قبل الإيداع في Lefthook تعمل في أقل من ثانيتين في إيداع نموذجي — ESLint وPrettier وفحص الأسرار كلها تعمل على التوازي على الملفات المرحّلة. ويضيف خطاف ما قبل الدفع نحو خمس عشرة ثانية لفحص الأنواع وknip واختبارات الوحدة. والتكلفة ضئيلة. أما البديل — اكتشاف خطأ التحقق النصي في CI بعد عشر دقائق — فليس كذلك.
+- **سكربت gitleaks حل وسط عملي.** تجسيد الفهرس المرحّل في دليل مؤقت أكثر موثوقية من أي من أعلام الملفات المرحّلة التي قدّمها gitleaks عبر الإصدارات. وعندما يستقر سلوك المنبع، يمكنك التبسيط. وحتى ذلك الحين، السكربت يعمل.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Wire the Static Layer into Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf)
-- [The Static Layer as Underlayment](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
-- [Lint and Types as Guardrails](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
-- [Dead Code Detection](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
-- [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
-- [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
+- [مختبر: توصيل الطبقة الساكنة بـ Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf)
+- [الطبقة الساكنة كطبقة أساس](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
+- [التحقق النصي والأنواع كحواجز](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
+- [كشف الشيفرة الميتة](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
+- [خطافات Git باستخدام Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
+- [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)

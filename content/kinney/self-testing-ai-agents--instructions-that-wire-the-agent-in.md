@@ -1,60 +1,60 @@
 ---
-title: "Writing Good Instructions"
-lang: en
+title: "كتابة تعليمات جيدة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in"
 ---
 
-> **Let’s talk about what *not* to do.**
+> **لنتحدّث عمّا *لا* ينبغي فعله.**
 >
-> Writing a perfect set of instructions is an art in and of itself. Our focus today is what to do when your instructions *aren’t* delivering the results you expect and how to build a system to enforce our preference. That said, it does make sense for us to look at some patterns and anti-patterns so that we’re on the same page and we have a shared understanding for *why* we’re doing what we’re doing.
+> كتابة مجموعة تعليمات مثالية فنّ بحدّ ذاته. تركيزنا اليوم على ما تفعله حين لا تعطي تعليماتك *النتائج* التي تتوقّعها، وكيف تبني نظامًا يفرض تفضيلنا. ومع ذلك، من المنطقي أن ننظر في بعض الأنماط والأنماط المضادّة كي نكون على الصفحة نفسها، وكي نفهم *لماذا* نفعل ما نفعله.
 
-If you’ve used [Claude Code](https://docs.claude.com/en/docs/claude-code/overview), [Cursor](https://cursor.com/), or Codex for more than an afternoon, you’ve written some flavor of instruction file. [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory), `AGENTS.md`—they’re all the same idea with different filenames. A markdown file at the root of the repo that the agent reads before it does anything else.
+إن كنت قد استخدمت [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)، أو [Cursor](https://cursor.com/)، أو Codex أكثر من عصر واحد، فقد كتبت شكلًا من أشكال ملف التعليمات. [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory)، `AGENTS.md` — كلها الفكرة نفسها بأسماء ملفات مختلفة. ملف markdown في جذر المستودع يقرأه الوكيل قبل أن يفعل أي شيء آخر.
 
-I have written a lot of these, and most of mine were *bad*. Not bad in the “wrong information” sense—bad in the “the agent couldn’t actually do anything with what I wrote” sense.
+كتبت الكثير من هذه، ومعظمها كان *سيئًا*. لا سيئًا بمعنى «المعلومة الخاطئة»، بل سيئًا بمعنى «لم يستطع الوكيل أن يفعل شيئًا بما كتبته».
 
-This lesson is the one rule I want you to take home about instruction files. Other courses can teach you the full taxonomy of [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory) patterns. We’re going to focus on one thing: **how to use the instruction file to wire the agent into the feedback loop we’re going to spend the rest of the day building**.
+هذا الدرس هو القاعدة الوحيدة التي أريدك أن تأخذها معك عن ملفات التعليمات. يمكن لدورات أخرى أن تعلّمك التصنيف الكامل لأنماط [`CLAUDE.md`](https://docs.claude.com/en/docs/claude-code/memory). سنركّز على شيء واحد: **كيف تستخدم ملف التعليمات لربط الوكيل بحلقة التغذية الراجعة التي سنقضي بقيّة اليوم في بنائها**.
 
-## The rule
+## القاعدة
 
-> Anything the agent can’t mechanically act on doesn’t belong in the instructions file.
+> أي شيء لا يستطيع الوكيل التصرّف فيه آليًا لا مكان له في ملف التعليمات.
 
-That’s it. That’s the whole rule. If you can’t imagine the agent reading a line and doing something specific in the next thirty seconds because of it, the line is taking up space.
+هذه هي. هذه هي القاعدة كلها. إن لم تستطع تخيّل الوكيل يقرأ سطرًا ويفعل شيئًا محدّدًا في الثلاثين ثانية التالية بسببه، فالسطر يشغل مساحة.
 
-## What that excludes
+## ما الذي تستبعده
 
-Most of what people write in instruction files, honestly. It turns out that vague instructions don’t work for humans or AI agents pretending to be humans.
+معظم ما يكتبه الناس في ملفات التعليمات، بصراحة. فقد تبيّن أن التعليمات الغامضة لا تنفع البشر ولا وكلاء الذكاء الاصطناعي الذين يتظاهرون بأنهم بشر.
 
-- **“Write clean code.”** Clean by what measure? The agent has no rubric.
-- **“Follow best practices.”** Whose? Best practices for what stack, what era, what team?
-- **“Use good variable names.”** This is an aesthetic preference dressed up as a directive.
-- **“Be concise.”** The agent will be concise for one response and verbose for the next.
-- **“Think carefully before making changes.”** It’s an LLM. It doesn’t have a “think more carefully” lever you can pull from a markdown file.
+- **«اكتب شيفرة نظيفة».** نظيفة بمقياس مَن؟ لا يملك الوكيل أي معيار.
+- **«اتّبع أفضل الممارسات».** ممارسات مَن؟ أفضل الممارسات لأي منظومة، وأي عصر، وأي فريق؟
+- **«استخدم أسماء متغيّرات جيدة».** هذا تفضيل جمالي مُتنكّر في هيئة توجيه.
+- **«كن موجزًا».** سيكون الوكيل موجزًا في ردّ واحد ومطنبًا في التالي.
+- **«فكّر بعناية قبل إجراء التغييرات».** إنه نموذج لغوي كبير. ليس فيه رافعة «فكّر بعناية أكبر» يمكنك سحبها من ملف markdown.
 
-I’m not picking on these because they’re *wrong*—they’re not wrong, exactly. They’re just not actionable. The agent can’t tell whether it’s followed them. You can’t tell whether it’s followed them. They’re vibes, and vibes don’t survive the next session.
+لا أنقد هذه لأنها *خاطئة* — فهي ليست خاطئة تمامًا. إنها فقط غير قابلة للتنفيذ. لا يستطيع الوكيل أن يعرف هل اتّبعها. ولا تستطيع أنت أن تعرف هل اتّبعها. إنها انطباعات، والانطباعات لا تصمد إلى الجلسة التالية.
 
-The other tell is when you find yourself writing instructions that are really instructions to *yourself*—things you wish you’d remembered. Those belong in a checklist or a code review template, not in the agent’s prompt.
+العلامة الأخرى أن تجد نفسك تكتب تعليمات هي في الحقيقة تعليمات *لنفسك* — أشياء كنت تتمنّى أنك تذكّرتها. مكانها قائمة تحقّق أو قالب مراجعة شيفرة، لا طلب الوكيل.
 
-## What that includes
+## ما الذي يتضمّنه
 
-The good news is that the rule is generative, not just restrictive. Once you’re only writing things the agent can act on, a lot of useful stuff opens up.
+الخبر الجيد أن القاعدة مولّدة لا مقصورة على المنع. فحين تكتب فقط أشياء يستطيع الوكيل التصرّف فيها، ينفتح أمامك كثير من المفيد.
 
-Things the agent *can* act on, mechanically:
+أشياء *يستطيع* الوكيل التصرّف فيها آليًا:
 
-- “Run `npm run test` before declaring a task done. If anything fails, read the failure output and fix it before reporting back.”
-- “Write a failing test before you write the implementation. The first commit on a task should be the test.”
-- “When a Playwright test fails, read the trace file at `playwright-report/trace.zip` before guessing at a fix.”
-- “Never use `page.waitForTimeout`. If you’re tempted, use `page.waitForResponse` or a `getByRole` with `expect` instead.”
-- “The `green` state for this codebase means: `npm run typecheck`, `npm run lint`, and `npm run test` all exit zero. Don’t say a task is done until all three are green. If you’ve added the static layer later in the course, extend that list with `npm run knip` and `npm run pre-push`.”
+- «شغّل `npm run test` قبل أن تعلن انتهاء المهمة. وإن فشل شيء، فاقرأ مخرجات الفشل وأصلحه قبل أن تعود بالنتيجة.»
+- «اكتب اختبارًا فاشلًا قبل أن تكتب التنفيذ. أول التزام في المهمة ينبغي أن يكون الاختبار.»
+- «حين يفشل اختبار Playwright، اقرأ ملف التتبّع في `playwright-report/trace.zip` قبل أن تخمّن إصلاحًا.»
+- «لا تستخدم `page.waitForTimeout` أبدًا. إن أغراك ذلك، فاستخدم `page.waitForResponse` أو `getByRole` مع `expect` بدلًا منه.»
+- «حالة `green` في هذه الشيفرة تعني: أن تنتهي `npm run typecheck` و`npm run lint` و`npm run test` جميعًا بالرمز صفر. لا تقل إن مهمة انتهت حتى تخضرّ الثلاثة. وإن أضفت الطبقة الثابتة لاحقًا في الدورة، فمدّد القائمة بـ `npm run knip` و`npm run pre-push`.»
 
-Notice what these have in common. Every one of them references a specific command, a specific file path, or a specific API. There’s nothing to interpret. The agent reads the rule and either complies or doesn’t, and you can tell which from the diff.
+لاحظ القاسم المشترك. كل واحد منها يشير إلى أمر محدّد، أو مسار ملف محدّد، أو واجهة برمجية محدّدة. لا شيء يحتاج تفسيرًا. يقرأ الوكيل القاعدة فيمتثل أو لا يمتثل، ويمكنك أن تعرف أيّهما من الفرق.
 
-In Shelf, those concrete rules come straight from real files. The “green means green” commands live in `package.json`, and the stronger rules point at actual places in the tree like `src/lib/components` or `tests/` instead of hand-wavy ideas like “the components folder.” If a rule cannot name the command or path it depends on, it is probably still too vague.
+في Shelf، تأتي هذه القواعد الملموسة من ملفات حقيقية مباشرة. فأوامر «النجاح يعني النجاح» تعيش في `package.json`، والقواعد الأقوى تشير إلى مواضع فعلية في الشجرة مثل `src/lib/components` أو `tests/` بدلًا من أفكار مبهمة مثل «مجلد المكوّنات». وإن لم تستطع قاعدة أن تسمّي الأمر أو المسار الذي تعتمد عليه، فهي على الأرجح ما زالت غامضة أكثر من اللازم.
 
-## The “what does green mean” anchor
+## مرتكز «ما معنى النجاح»
 
-If you only put one thing in your agent rules after this workshop, make it this: **a definition of what ‘green’ means in this codebase, with the exact commands.**
+إن كنت ستضع شيئًا واحدًا فقط في قواعد وكيلك بعد هذه الورشة، فليكن هذا: **تعريف لما يعنيه «النجاح» في هذه الشيفرة، مع الأوامر الدقيقة.**
 
-A version that does the work:
+نسخة تقوم بالعمل:
 
 ```markdown
 # Shelf Starter Instructions
@@ -72,11 +72,11 @@ A task is not done until all three exit zero, in this order:
 Do not report a task complete with any of these failing. If you later add the static layer, extend this list with `npm run knip` and `npm run pre-push`. If a failure looks unrelated, say so explicitly and link the failing test name in your summary.
 ```
 
-That block alone catches more bad agent output than any number of “write clean code” directives. It’s mechanical. It’s checkable. It encodes the loop.
+هذا المقطع وحده يلتقط من مخرجات الوكيل السيئة أكثر من أي عدد من توجيهات «اكتب شيفرة نظيفة». إنه آلي. وقابل للفحص. ويُرمّز الحلقة.
 
-## A non-example, before and after
+## مثال غير ناجح، قبل وبعد
 
-Here’s a real `CLAUDE.md` I would have written two years ago. I’m not proud of it.
+هذا ملف `CLAUDE.md` حقيقي كنت سأكتبه قبل عامين. ولست فخورًا به.
 
 ```markdown
 # Project Guidelines
@@ -90,9 +90,9 @@ Here’s a real `CLAUDE.md` I would have written two years ago. I’m not proud 
 - Be mindful of performance
 ```
 
-Every one of those bullets is true. Every one of them is also useless to the agent. There is no command to run, no file to open, no rule that fails loudly when broken.
+كل واحدة من تلك النقاط صحيحة. وكل واحدة منها أيضًا عديمة النفع للوكيل. لا أمر يُشغَّل، ولا ملف يُفتح، ولا قاعدة تفشل بصوت عالٍ حين تُخترق.
 
-Here is the opening half of the current Shelf `CLAUDE.md`:
+وهذا هو النصف الافتتاحي من ملف `CLAUDE.md` الحالي في Shelf:
 
 ```markdown
 # Shelf Starter Instructions
@@ -131,42 +131,42 @@ Do not report a task complete with any of these failing. If you later add the st
 - When a Playwright test fails, open `playwright-report/index.html` and its trace before proposing a fix.
 ```
 
-The shipped starter continues with UI copy rules and a short “do not” list, and the course will grow the file across later labs with sections on authentication, seeding, HARs, accessibility, failure triage, static analysis, and hooks. The important thing for this lesson is the pattern: every section names specific commands, paths, APIs, or forbidden edits.
+يستمر الملف الانطلاقي المشحون بقواعد نصوص واجهة المستخدم وقائمة قصيرة «لا تفعل»، وستنمّي الدورة الملف عبر المختبرات اللاحقة بأقسام عن المصادقة، والتهيئة بالبيانات، وملفات HAR، وإتاحة الوصول، وفرز الأعطال، والتحليل الثابت، والخطّافات. المهم في هذا الدرس هو النمط: كل قسم يسمّي أوامر أو مسارات أو واجهات برمجية أو تعديلات محرّمة بعينها.
 
-Notice the last rule family in the real file. Instructions files have to keep the agent honest about more than just commands and lint rules — they also have to keep the agent from leaking the scaffolding into the product. An agent that helpfully writes “Loading seeded fixtures…” into a real shelf page is not being clever; it is bleeding the test layer into the product surface. One mechanically-checkable rule prevents that (“do not mention Playwright, seeded fixtures, test IDs, HARs, or course material in rendered page copy”) in a way that “keep the UI clean” cannot.
+لاحظ عائلة القواعد الأخيرة في الملف الحقيقي. فملفات التعليمات يجب أن تُبقي الوكيل صادقًا في أكثر من الأوامر وقواعد التدقيق — يجب أيضًا أن تمنعه من تسريب السقالات إلى المنتج. فالوكيل الذي يكتب بلطف «Loading seeded fixtures…» في صفحة رفّ حقيقية ليس بارعًا؛ إنه ينزف طبقة الاختبار إلى سطح المنتج. وقاعدة واحدة قابلة للفحص آليًا تمنع ذلك («لا تذكر Playwright أو البيانات المزروعة أو معرّفات الاختبار أو ملفات HAR أو مواد الدورة في نصوص الصفحات المعروضة») بطريقة لا تستطيع «أبقِ الواجهة نظيفة» أن تمنعها.
 
-This is the same shape as the other rules in the file. It names a specific class of strings the agent must not produce, and you can spot a violation by reading the diff. It is also exactly the kind of rule the lab in this section will ask you to add to your own agent instructions.
+هذا هو الشكل نفسه الذي عليه بقية القواعد في الملف. فهو يسمّي صنفًا محدّدًا من السلاسل النصية التي يجب ألّا ينتجها الوكيل، ويمكنك رصد المخالفة بقراءة الفرق. وهو أيضًا بالضبط نوع القاعدة التي سيطلب منك مختبر هذا القسم إضافتها إلى تعليمات وكيلك.
 
-Every line in the second version is something the agent can *do*. The first version is a vibe statement. The second version is a loop.
+كل سطر في النسخة الثانية شيء يستطيع الوكيل *فعله*. النسخة الأولى عبارة عن انطباع. والنسخة الثانية حلقة.
 
-## How this maps to other agents
+## كيف ينطبق هذا على الوكلاء الآخرين
 
-The same pattern works in [Cursor](https://cursor.com/) (`.cursor/rules/*.mdc`), Codex ([`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md) plus [`.rules`](https://developers.openai.com/codex/rules)), and Copilot (`.github/copilot-instructions.md`). The filenames change, the directory changes, and the scoping syntax changes. The rule does not. If your instructions file is full of adjectives, you’re going to have a bad time regardless of which agent is reading it.
+النمط نفسه يعمل في [Cursor](https://cursor.com/) (`.cursor/rules/*.mdc`)، وCodex ([`AGENTS.md`](https://developers.openai.com/codex/guides/agents-md) بالإضافة إلى [`.rules`](https://developers.openai.com/codex/rules))، وCopilot (`.github/copilot-instructions.md`). تتغيّر أسماء الملفات، ويتغيّر المجلد، ويتغيّر تركيب تحديد النطاق. أما القاعدة فلا تتغيّر. وإن كان ملف تعليماتك مليئًا بالصفات، فستعاني سوءًا أيًّا كان الوكيل الذي يقرأه.
 
-Codex is worth calling out because it splits the problem in two:
+يستحق Codex إشارة خاصة لأنه يقسّم المشكلة إلى قسمين:
 
-- `AGENTS.md` is where project instructions live
-- `.rules` files are where outside-sandbox command approval policy lives
+- `AGENTS.md` هو حيث تعيش تعليمات المشروع
+- ملفات `.rules` هي حيث تعيش سياسة الموافقة على الأوامر خارج العزل
 
-That is an important distinction. `AGENTS.md` tells Codex *how to behave inside the repo*. `.rules` tells Codex *which escalated commands it may run outside the sandbox*.
+هذا تمييز مهم. فـ `AGENTS.md` يخبر Codex *كيف يتصرّف داخل المستودع*. و`.rules` تخبر Codex *أي الأوامر المصعّدة يجوز له تشغيلها خارج العزل*.
 
-We’ll come back to instruction files in almost every lesson from here on. The [locator hierarchy](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) ends up as a rule in this file. The [lint config](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails) ends up as a rule in this file. The [canonical CI command](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort) ends up as the “what green means” in this file. The instruction file is where the rest of the workshop’s loop gets *named* to the agent.
+سنعود إلى ملفات التعليمات في كل درس تقريبًا من هنا فصاعدًا. فـ[تسلسل المحدّدات الهرمي](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy) ينتهي قاعدةً في هذا الملف. و[إعداد التدقيق](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails) ينتهي قاعدةً في هذا الملف. و[أمر التكامل المستمر المعتمد](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort) ينتهي «معنى النجاح» في هذا الملف. فملف التعليمات هو حيث *تُسمّى* للوكيل بقية حلقة الورشة.
 
-## Setting Permissions
+## ضبط الأذونات
 
-Permissions are where “please don’t touch this” stops being a polite request and becomes an actual boundary. If a file is genuinely off limits, do not hide that rule in prose. Put it in the agent’s access model so the read or edit fails before it turns into a diff.
+الأذونات هي النقطة التي يتوقّف عندها «من فضلك لا تلمس هذا» عن كونه طلبًا مؤدّبًا ليصبح حدًّا فعليًا. فإن كان ملف محظورًا حقًا، فلا تخفِ القاعدة في النثر. ضعها في نموذج وصول الوكيل كي تفشل القراءة أو التعديل قبل أن يصيرا فرقًا.
 
-Use permissions for static boundaries:
+استخدم الأذونات للحدود الثابتة:
 
-- secrets the agent should never read
-- configuration files the agent should treat as read-only
-- generated output the agent should not rewrite by accident
+- أسرار يجب ألّا يقرأها الوكيل أبدًا
+- ملفات إعداد ينبغي أن يتعامل معها الوكيل كقراءة فقط
+- مخرجات مولّدة يجب ألّا يعيد الوكيل كتابتها بالخطأ
 
 ### Claude
 
-Claude Code gives you direct path-scoped permission rules in `.claude/settings.json` or `.claude/settings.local.json`.
+يمنحك Claude Code قواعد أذونات محدّدة النطاق بالمسار في `.claude/settings.json` أو `.claude/settings.local.json`.
 
-If you want Claude to stay out of secrets entirely, deny the relevant `Read(...)` calls:
+إن أردت أن يبقى Claude بعيدًا عن الأسرار كليًا، فارفض استدعاءات `Read(...)` المعنية:
 
 ```json
 {
@@ -176,7 +176,7 @@ If you want Claude to stay out of secrets entirely, deny the relevant `Read(...)
 }
 ```
 
-If you want Claude to be able to *see* a file but never rewrite it, deny the write-side tools instead:
+وإن أردت أن *يرى* Claude ملفًا لكن لا يعيد كتابته أبدًا، فارفض أدوات جهة الكتابة بدلًا من ذلك:
 
 ```json
 {
@@ -191,26 +191,26 @@ If you want Claude to be able to *see* a file but never rewrite it, deny the wri
 }
 ```
 
-That second example is the common pattern: make the repo broadly readable, then carve out a few paths that are read-only or completely off limits.
+هذا المثال الثاني هو النمط الشائع: اجعل المستودع قابلًا للقراءة على نطاق واسع، ثم اقتطع بضعة مسارات للقراءة فقط أو محظورة كليًا.
 
-The nuance that matters: Claude’s `Read(...)`, `Edit(...)`, and `Write(...)` rules apply to Claude’s built-in tools. They do *not* stop a Bash subprocess from doing `cat .env` or `sed -i eslint.config.js`. If you need OS-level enforcement, pair the rules with sandboxing.
+الفارق الدقيق المهم: قواعد `Read(...)` و`Edit(...)` و`Write(...)` في Claude تنطبق على أدوات Claude المدمجة. وهي *لا* تمنع عملية Bash فرعية من تنفيذ `cat .env` أو `sed -i eslint.config.js`. إن احتجت فرضًا على مستوى نظام التشغيل، فاقرن القواعد بالعزل.
 
 ### Codex
 
-Codex splits permissions across two mechanisms:
+يقسّم Codex الأذونات بين آليتين:
 
-- the sandbox controls what the agent can write without escalation
-- `.rules` controls which commands Codex may run outside that sandbox
+- العزل يتحكّم فيما يستطيع الوكيل كتابته دون تصعيد
+- `.rules` تتحكّم في الأوامر التي يجوز لـ Codex تشغيلها خارج ذلك العزل
 
-For filesystem boundaries, the documented sandbox model is workspace-based, not the same per-file denylist grammar Claude exposes. In `workspace-write` mode, the current working directory is writable by default. `writable_roots` *adds* directories on top of that—it does not replace the workspace root.
+بالنسبة لحدود نظام الملفات، نموذج العزل الموثّق قائم على مساحة العمل، وليس بقواعد منع لكل ملف كما يعرضها Claude. في نمط `workspace-write`، يكون دليل العمل الحالي قابلًا للكتابة افتراضيًا. و`writable_roots` *تضيف* أدلّة فوق ذلك — ولا تستبدل جذر مساحة العمل.
 
-That means the tightest setup is: start Codex from the directory you want it to write in.
+هذا يعني أن أضيق إعداد هو: ابدأ Codex من الدليل الذي تريد أن يكتب فيه.
 
 ```bash
 codex --cd /Users/you/project/courses/self-testing-ai-agents
 ```
 
-Now the workspace root *is* the lesson directory. Everything outside it is visible but not writable. If you need to add a second writable location (say, a shared `tmp/` directory), use `writable_roots`:
+الآن جذر مساحة العمل *هو* دليل الدرس. وكل ما خارجه مرئي لكن غير قابل للكتابة. وإن احتجت إلى إضافة موضع ثانٍ قابل للكتابة (قل، دليل `tmp/` مشترك)، فاستخدم `writable_roots`:
 
 ```toml
 sandbox_mode = "workspace-write"
@@ -221,9 +221,9 @@ writable_roots = [
 ]
 ```
 
-That is the important distinction to understand: Claude lets you say “never read *this file*” directly. Codex’s filesystem controls are coarser—you shrink the workspace to shrink the blast radius.
+هذا هو التمييز المهم الذي يجب فهمه: يتيح لك Claude أن تقول «لا تقرأ *هذا الملف*» مباشرة. أما ضوابط نظام الملفات في Codex فأخشن — تُصغّر مساحة العمل لتصغّر نطاق الأثر.
 
-For outside-sandbox approvals, Codex uses `.rules` files written in `Starlark`. This is the right syntax for Codex rules. It is not JSON, TOML, or Markdown frontmatter.
+للموافقات خارج العزل، يستخدم Codex ملفات `.rules` مكتوبة بـ `Starlark`. هذا هو التركيب الصحيح لقواعد Codex. فهو ليس JSON ولا TOML ولا مقدّمة markdown.
 
 ```starlark
 # ~/.codex/rules/default.rules
@@ -242,12 +242,12 @@ prefix_rule(
 )
 ```
 
-Two details matter here:
+هناك تفصيلان مهمّان هنا:
 
-- `pattern` matches an exact argument prefix, not a substring
-- `match` and `not_match` are inline tests that Codex validates when it loads the file
+- `pattern` يطابق بادئة وسائط دقيقة، لا سلسلة فرعية
+- `match` و`not_match` اختبارات مضمّنة يتحقّق منها Codex عند تحميل الملف
 
-After you add or change a `.rules` file, restart Codex so it reloads the rule set. Then test the rule before trusting it:
+بعد أن تضيف ملف `.rules` أو تغيّره، أعد تشغيل Codex كي يعيد تحميل مجموعة القواعد. ثم اختبر القاعدة قبل أن تثق بها:
 
 ```bash
 codex execpolicy check --pretty \
@@ -255,41 +255,41 @@ codex execpolicy check --pretty \
   -- gh pr view 7888 --json title,body,comments
 ```
 
-So the mental model is:
+إذن النموذج الذهني هو:
 
-- `AGENTS.md`: project instructions
-- `sandbox_mode` plus `writable_roots`: writable filesystem boundary
-- `.rules`: outside-sandbox command policy
-- [Claude Code permissions](https://code.claude.com/docs/en/permissions)
-- [Codex AGENTS.md guide](https://developers.openai.com/codex/guides/agents-md)
-- [Codex rules](https://developers.openai.com/codex/rules)
-- [Codex config reference](https://developers.openai.com/codex/config-reference)
+- `AGENTS.md`: تعليمات المشروع
+- `sandbox_mode` مع `writable_roots`: حدود نظام الملفات القابل للكتابة
+- `.rules`: سياسة الأوامر خارج العزل
+- [أذونات Claude Code](https://code.claude.com/docs/en/permissions)
+- [دليل AGENTS.md في Codex](https://developers.openai.com/codex/guides/agents-md)
+- [قواعد Codex](https://developers.openai.com/codex/rules)
+- [مرجع إعداد Codex](https://developers.openai.com/codex/config-reference)
 
-## Using Hooks for Runtime Policy Checks
+## استخدام الخطّافات لفحوص السياسة وقت التشغيل
 
-Permissions answer **which paths are in bounds**. Rules answer **which outside-sandbox commands should be allowed at all**. Hooks answer **given this exact tool call or result, should we allow it right now**. That is the layer you use when the rule depends on file contents instead of just a pathname or command prefix.
+الأذونات تجيب عن **أي المسارات داخل الحدود**. والقواعد تجيب عن **أي الأوامر خارج العزل ينبغي السماح به أصلًا**. أما الخطّافات فتجيب عن **بالنظر إلى هذا الاستدعاء أو النتيجة بالضبط، هل نسمح به الآن**. تلك هي الطبقة التي تستخدمها حين تعتمد القاعدة على محتوى الملف لا على اسم مسار أو بادئة أمر فحسب.
 
-In this example we want two runtime checks:
+في هذا المثال نريد فحصين وقت التشغيل:
 
-1. never let the agent change lint configuration
-2. never let the agent edit a file whose contents include the word `autogenerated`
+1. ألّا ندع الوكيل يغيّر إعداد التدقيق أبدًا
+2. ألّا ندع الوكيل يعدّل ملفًا يحتوي محتواه على كلمة `autogenerated`
 
-### Hook mechanics you should know before the examples
+### ميكانيكا الخطّافات التي ينبغي أن تعرفها قبل الأمثلة
 
-Before diving into the policy examples, a few notes apply to every Claude Code hook you will write:
+قبل الغوص في أمثلة السياسة، ثمة ملاحظات تنطبق على كل خطّاف Claude Code ستكتبه:
 
-- **Hook types.** `PreToolUse` fires before a tool call executes and can deny it. `PostToolUse` fires after success. `PostToolUseFailure` fires when a tool call fails and is the right place to enrich the next agent turn with diagnostic context. Use `PreToolUse` for prevention, `PostToolUseFailure` for recovery.
-- **`$CLAUDE_PROJECT_DIR`.** Claude Code sets this environment variable to the repository root at runtime. Use it inside hook commands so the hook resolves correctly no matter which subdirectory Claude Code started in.
-- **Script language.** Hooks are just commands. The examples in this workshop show both `.mjs` run with `node` (maximally portable) and `.ts` run with `bun` (concise if your project already uses Bun). Pick one per repo and stay consistent — mixing runtimes inside `.claude/hooks/` is how “why is this failing?” debugging sessions start.
-- **Keep hooks fast.** Hooks run synchronously in the tool call path. Reading small config files is fine. Spawning subprocesses, hitting the network, or running a full lint pass will noticeably slow every tool call. If the check is slow, move it to CI or a `PostToolUseFailure` hook where latency is less expensive.
-- **Debugging.** If a hook is not firing as expected, validate `.claude/settings.json` as JSON, confirm the script is executable, and run it directly with a sample payload on stdin: <code><span class="line"><span style="color:#C5E478;font-style:italic">echo</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">{"tool_input":{"command":"git commit --no-verify"}}</span><span style="color:#D9F5DD">'</span><span style="color:#F78C6C"> \</span></span>
-<span class="line"><span style="color:#7FDBCA"> |</span><span style="color:#82AAFF;font-style:italic"> node</span><span style="color:#ECC48D"> .claude/hooks/block-no-verify.mjs</span></span></code> Exit code `0` with no stdout means “allow.” Exit code `0` with a JSON `permissionDecision: "deny"` payload on stdout means “block.” Any other exit code surfaces as a hook error.
+- **أنواع الخطّافات.** يُطلق `PreToolUse` قبل تنفيذ استدعاء الأداة ويستطيع رفضه. ويُطلق `PostToolUse` بعد النجاح. ويُطلق `PostToolUseFailure` حين يفشل استدعاء الأداة، وهو المكان الصحيح لإثراء دور الوكيل التالي بسياق تشخيصي. استخدم `PreToolUse` للمنع، و`PostToolUseFailure` للتعافي.
+- **`$CLAUDE_PROJECT_DIR`.** يضبط Claude Code هذا المتغيّر البيئي على جذر المستودع وقت التشغيل. استخدمه داخل أوامر الخطّاف كي يُحلّ الخطّاف على نحو صحيح أيًّا كان الدليل الفرعي الذي بدأ منه Claude Code.
+- **لغة السكربت.** الخطّافات مجرّد أوامر. تعرض أمثلة هذه الورشة كليهما: `.mjs` يُشغَّل بـ `node` (أقصى قابلية للنقل) و`.ts` يُشغَّل بـ `bun` (موجز إن كان مشروعك يستخدم Bun أصلًا). اختر واحدة لكل مستودع والتزم بها — فخلط بيئات التشغيل داخل `.claude/hooks/` هو كيف تبدأ جلسات تنقيح «لماذا يفشل هذا؟».
+- **أبقِ الخطّافات سريعة.** تعمل الخطّافات تزامنيًا في مسار استدعاء الأداة. قراءة ملفات إعداد صغيرة أمر مقبول. أما تشغيل عمليات فرعية، أو الاتصال بالشبكة، أو تشغيل تدقيق كامل، فسيُبطئ كل استدعاء أداة بشكل ملحوظ. إن كان الفحص بطيئًا، فانقله إلى التكامل المستمر أو إلى خطّاف `PostToolUseFailure` حيث يكون التأخير أقل كلفة.
+- **التنقيح.** إن لم يُطلق الخطّاف كما هو متوقّع، فتحقّق من صلاحية `.claude/settings.json` كـ JSON، وتأكّد أن السكربت قابل للتنفيذ، وشغّله مباشرةً بحمولة نموذجية على المدخل القياسي: <code><span class="line"><span style="color:#C5E478;font-style:italic">echo</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">{"tool_input":{"command":"git commit --no-verify"}}</span><span style="color:#D9F5DD">'</span><span style="color:#F78C6C"> \</span></span>
+<span class="line"><span style="color:#7FDBCA"> |</span><span style="color:#82AAFF;font-style:italic"> node</span><span style="color:#ECC48D"> .claude/hooks/block-no-verify.mjs</span></span></code> رمز الخروج `0` دون أي مخرجات قياسية يعني «اسمح». ورمز الخروج `0` مع حمولة JSON فيها `permissionDecision: "deny"` على المخرجات القياسية يعني «احجب». وأي رمز خروج آخر يظهر كخطأ في الخطّاف.
 
 ### Claude
 
-Claude can do this directly because `PreToolUse` hooks can intercept `Edit` and `Write` before they run.
+يستطيع Claude فعل ذلك مباشرة لأن خطّافات `PreToolUse` يمكنها اعتراض `Edit` و`Write` قبل تنفيذهما.
 
-Register the hook in `.claude/settings.json`:
+سجّل الخطّاف في `.claude/settings.json`:
 
 ```json
 {
@@ -309,7 +309,7 @@ Register the hook in `.claude/settings.json`:
 }
 ```
 
-Then implement the policy script:
+ثم نفّذ سكربت السياسة:
 
 ```typescript
 #!/usr/bin/env bun
@@ -365,26 +365,26 @@ if (existsSync(filePath)) {
 }
 ```
 
-If neither rule matches, the script exits `0` with no output and Claude continues. If either rule matches, the hook returns `permissionDecision: "deny"` and the edit never happens.
+إن لم تطابق أي من القاعدتين، يخرج السكربت بالرمز `0` دون مخرجات ويكمل Claude. وإن طابقت إحداهما، يعيد الخطّاف `permissionDecision: "deny"` ولا يحدث التعديل أبدًا.
 
-> **If you also allow Bash, remember that Bash is a separate path. A shell command can still rewrite files unless you block it with Bash permissions or sandboxing.**
+> **إن كنت تسمح بـ Bash أيضًا، فتذكّر أن Bash مسار منفصل. فالأمر الصدفي يمكنه إعادة كتابة الملفات ما لم تحجبه بأذونات Bash أو بالعزل.**
 
 ### Codex
 
-Codex hooks are still experimental, and they are not a substitute for sandboxing or `.rules`. Use the sandbox for filesystem boundaries, use `.rules` for simple outside-sandbox command policy, and use hooks when the decision depends on command contents or the resulting diff. As of this writing, you need to enable hooks explicitly in `.codex/config.toml` before anything in this section works (check the [Codex hooks docs](https://developers.openai.com/codex/hooks) for the current syntax):
+خطّافات Codex ما زالت تجريبية، وهي ليست بديلًا عن العزل أو `.rules`. استخدم العزل لحدود نظام الملفات، و`.rules` لسياسة الأوامر البسيطة خارج العزل، والخطّافات حين يعتمد القرار على محتوى الأمر أو الفرق الناتج. واعتبارًا من كتابة هذه السطور، تحتاج إلى تفعيل الخطّافات صراحةً في `.codex/config.toml` قبل أن يعمل أي شيء في هذا القسم (راجع [وثائق خطّافات Codex](https://developers.openai.com/codex/hooks) للتركيب الحالي):
 
 ```toml
 [features]
 codex_hooks = true
 ```
 
-Or pass the flag at launch: `codex --enable codex_hooks`.
+أو مرّر العلم عند الإطلاق: `codex --enable codex_hooks`.
 
-With hooks enabled, `PreToolUse` and `PostToolUse` only intercept `Bash` calls, not built-in `Write` or `Edit`. So the Codex version is a shell tripwire rather than a complete file-access model.
+مع تفعيل الخطّافات، يعترض `PreToolUse` و`PostToolUse` استدعاءات `Bash` فقط، لا `Write` أو `Edit` المدمجتين. لذا نسخة Codex سلك تعثّر صدفي لا نموذج وصول كامل للملفات.
 
-That means the hard boundary should still live in the sandbox and `.rules`. The hook is the second line of defense: scan what a Bash command changed and stop Codex from continuing if the command touched a protected file. For repo-local hooks, prefer resolving from the git root instead of using a relative path so the hook still works when Codex starts in a subdirectory.
+هذا يعني أن الحدّ الصارم ينبغي أن يبقى في العزل و`.rules`. فالخطّاف خطّ الدفاع الثاني: يفحص ما غيّره أمر Bash ويمنع Codex من المتابعة إن لمس الأمر ملفًا محميًا. وللخطّافات المحلّية في المستودع، فضّل الحلّ من جذر git بدلًا من مسار نسبي كي يعمل الخطّاف حتى حين يبدأ Codex في دليل فرعي.
 
-Register the hook in `.codex/hooks.json`:
+سجّل الخطّاف في `.codex/hooks.json`:
 
 ```json
 {
@@ -405,7 +405,7 @@ Register the hook in `.codex/hooks.json`:
 }
 ```
 
-Then inspect the changed files after each Bash command:
+ثم افحص الملفات المتغيّرة بعد كل أمر Bash:
 
 ```typescript
 #!/usr/bin/env bun
@@ -472,12 +472,12 @@ console.log(
 );
 ```
 
-This is not quite the same as Claude. The Bash command has already run by the time `PostToolUse` fires, so the hook cannot undo side effects. When the script outputs `"decision": "block"`, Codex replaces the tool result with your feedback and lets the agent respond to it—it does not roll back the command. What it *can* do is stop Codex from blithely continuing as if nothing happened. That is often enough to force a revert-and-try-again loop instead of letting the agent wander farther away from policy.
+هذا ليس تمامًا كما في Claude. فأمر Bash يكون قد نُفّذ بحلول إطلاق `PostToolUse`، لذا لا يستطيع الخطّاف التراجع عن الآثار الجانبية. وحين يُخرج السكربت `"decision": "block"`، يستبدل Codex نتيجة الأداة بملاحظاتك ويتيح للوكيل الردّ عليها — لكنه لا يتراجع عن الأمر. ما *يستطيعه* هو منع Codex من المضي قدمًا بلا اكتراث كأن شيئًا لم يحدث. وهذا غالبًا كافٍ لفرض حلقة تراجع وإعادة محاولة بدلًا من ترك الوكيل يهيم أبعد عن السياسة.
 
-- [Claude Code hooks](https://code.claude.com/docs/en/hooks)
-- [Codex hooks](https://developers.openai.com/codex/hooks)
+- [خطّافات Claude Code](https://code.claude.com/docs/en/hooks)
+- [خطّافات Codex](https://developers.openai.com/codex/hooks)
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Hypothesis](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
-- [Lab: Rewrite the Bad CLAUDE.md](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md)
+- [الفرضية](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)
+- [مختبر: أعد كتابة ملف CLAUDE.md السيئ](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md)

@@ -1,22 +1,22 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudwatch-alarms-solution"
 ---
 
-Here’s the complete solution for every step, including all CLI commands and the expected output at each stage.
+هذا هو الحل الكامل لكل خطوة، بما في ذلك كل أوامر CLI والمخرجات المتوقعة في كل مرحلة.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the alarm flow open while you work, keep the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) nearby. It is the fastest way to sanity-check console labels and alarm terminology when the UI drifts.
+> إذا أردت إبقاء نسخة AWS من تدفّق الإنذار مفتوحة أثناء عملك، فأبقِ [نظرة CloudWatch العامة](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) قريبة. فهي أسرع طريقة للتحقق من تسميات لوحة التحكم ومصطلحات الإنذار عندما تتغيّر الواجهة.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- SNS decouples notification delivery from the alarm definitions, so multiple alarms can fan into one alert path without duplicating configuration.
-- The alarm thresholds only matter if they observe the right metric, statistic, and dimensions, which is why the metric wiring gets as much attention as the threshold value.
-- Forcing an alarm state is the fastest way to verify the notification pipeline before you trust it with a real outage.
+- تفصل SNS تسليم الإشعارات عن تعريفات الإنذارات، فيمكن لعدة إنذارات أن تتفرّع إلى مسار تنبيه واحد دون تكرار الإعداد.
+- لا تهم حدود الإنذار إلا إذا كانت تراقب المقياس والإحصاءة والأبعاد الصحيحة، ولهذا يحظى ربط المقياس بالعناية نفسها التي تحظى بها قيمة الحد.
+- فرض حالة إنذار هو أسرع طريقة للتحقق من مسار الإشعارات قبل أن تثق به أثناء انقطاع حقيقي.
 
-## Create the SNS Topic
+## إنشاء موضوع SNS
 
 ```bash
 aws sns create-topic \
@@ -25,7 +25,7 @@ aws sns create-topic \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -33,7 +33,7 @@ Expected output:
 }
 ```
 
-### Verify
+### التحقق
 
 ```bash
 aws sns list-topics \
@@ -41,7 +41,7 @@ aws sns list-topics \
   --output json
 ```
 
-The output includes your topic in the `Topics` array:
+تتضمن المخرجات موضوعك في مصفوفة `Topics`:
 
 ```json
 {
@@ -53,7 +53,7 @@ The output includes your topic in the `Topics` array:
 }
 ```
 
-## Subscribe Your Email
+## الاشتراك ببريدك الإلكتروني
 
 ```bash
 aws sns subscribe \
@@ -64,7 +64,7 @@ aws sns subscribe \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -72,7 +72,7 @@ Expected output:
 }
 ```
 
-Check your email and click the confirmation link. Then verify:
+افحص بريدك الإلكتروني وانقر رابط التأكيد. ثم تحقّق:
 
 ```bash
 aws sns list-subscriptions-by-topic \
@@ -81,7 +81,7 @@ aws sns list-subscriptions-by-topic \
   --output json
 ```
 
-Expected output after confirmation:
+المخرجات المتوقعة بعد التأكيد:
 
 ```json
 {
@@ -97,13 +97,13 @@ Expected output after confirmation:
 }
 ```
 
-The `SubscriptionArn` is a real ARN now, not `pending confirmation`.
+أصبح `SubscriptionArn` ARN حقيقيًا الآن، وليس `pending confirmation`.
 
-> **Warning**
+> **تحذير**
 >
-> If the `SubscriptionArn` still shows `pending confirmation`, you haven’t clicked the confirmation link in the email. Check your spam folder. SNS won’t deliver alarm notifications until the subscription is confirmed.
+> إذا كان `SubscriptionArn` لا يزال يعرض `pending confirmation`، فأنت لم تنقر رابط التأكيد في البريد. افحص مجلد الرسائل غير المرغوب فيها. لن تسلّم SNS إشعارات الإنذار حتى يُؤكَّد الاشتراك.
 
-## Create the Error Count Alarm
+## إنشاء إنذار عدد الأخطاء
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -123,7 +123,7 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-This command produces no output on success. Verify with:
+لا ينتج هذا الأمر أي مخرجات عند النجاح. تحقّق باستخدام:
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -132,7 +132,7 @@ aws cloudwatch describe-alarms \
   --output json
 ```
 
-Expected output (relevant fields):
+المخرجات المتوقعة (الحقول ذات الصلة):
 
 ```json
 {
@@ -161,9 +161,9 @@ Expected output (relevant fields):
 }
 ```
 
-The `StateValue` of `INSUFFICIENT_DATA` is expected for a new alarm—CloudWatch hasn’t evaluated it yet.
+قيمة `StateValue` وهي `INSUFFICIENT_DATA` متوقعة لإنذار جديد — فـ CloudWatch لم تقيّمه بعد.
 
-## Create the Duration Alarm
+## إنشاء إنذار المدة
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -182,7 +182,7 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-Verify:
+تحقّق:
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -191,7 +191,7 @@ aws cloudwatch describe-alarms \
   --output json
 ```
 
-Expected output (relevant fields):
+المخرجات المتوقعة (الحقول ذات الصلة):
 
 ```json
 {
@@ -219,11 +219,11 @@ Expected output (relevant fields):
 }
 ```
 
-This alarm only has `AlarmActions` (no `OKActions`). Adding OK actions is one of the stretch goals.
+يحتوي هذا الإنذار على `AlarmActions` فقط (دون `OKActions`). وإضافة إجراءات OK هي أحد الأهداف الإضافية.
 
-## Test the Error Alarm
+## اختبار إنذار الأخطاء
 
-Force the alarm into the `ALARM` state:
+افرض على الإنذار الانتقال إلى الحالة `ALARM`:
 
 ```bash
 aws cloudwatch set-alarm-state \
@@ -234,24 +234,24 @@ aws cloudwatch set-alarm-state \
   --output json
 ```
 
-This command produces no output on success. Check your email—you should receive a notification from `AWS Notifications` with details about the alarm:
+لا ينتج هذا الأمر أي مخرجات عند النجاح. افحص بريدك الإلكتروني — ينبغي أن تتلقى إشعارًا من `AWS Notifications` يتضمن تفاصيل الإنذار:
 
-- **Alarm Name**: `my-frontend-app-api-error-count`
-- **New State**: `ALARM`
-- **Reason**: `Testing alarm notification pipeline`
-- **State Change Time**: The timestamp when you ran the command
+- **اسم الإنذار**: `my-frontend-app-api-error-count`
+- **الحالة الجديدة**: `ALARM`
+- **السبب**: `Testing alarm notification pipeline`
+- **وقت تغيّر الحالة**: الطابع الزمني الذي شغّلت فيه الأمر
 
-The alarm will return to its actual state (`INSUFFICIENT_DATA` or `OK`) on the next evaluation period (within 5 minutes).
+سيعود الإنذار إلى حالته الفعلية (`INSUFFICIENT_DATA` أو `OK`) في فترة التقييم التالية (خلال 5 دقائق).
 
-> **Tip**
+> **نصيحة**
 >
-> If you don’t receive the email, check three things: (1) your SNS subscription is confirmed, (2) the email isn’t in your spam folder, and (3) the `--alarm-actions` ARN matches your SNS topic ARN exactly.
+> إذا لم تتلقَّ البريد، فافحص ثلاثة أمور: (1) أن اشتراك SNS مؤكّد، (2) أن البريد ليس في مجلد الرسائل غير المرغوب فيها، (3) أن ARN في `--alarm-actions` يطابق ARN موضوع SNS لديك تمامًا.
 
-## Trigger a Real Alarm (Optional)
+## إطلاق إنذار حقيقي (اختياري)
 
-### Deploy a Failing Handler
+### نشر معالج فاشل
 
-Create a file called `failing-handler.ts`:
+أنشئ ملفًا باسم `failing-handler.ts`:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -261,7 +261,7 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
 };
 ```
 
-Replace the content of `src/handler.ts` with the failing handler code above, then build, package, and deploy:
+استبدل محتوى `src/handler.ts` بشيفرة المعالج الفاشل أعلاه، ثم ابنِ الحزمة وغلّفها وانشر:
 
 ```bash
 cd lambda
@@ -275,7 +275,7 @@ aws lambda update-function-code \
   --output json
 ```
 
-### Invoke Repeatedly to Generate Errors
+### الاستدعاء المتكرر لتوليد أخطاء
 
 ```bash
 for i in {1..5}; do
@@ -290,7 +290,7 @@ for i in {1..5}; do
 done
 ```
 
-Each invocation will return a `FunctionError` field:
+سيُرجع كل استدعاء حقل `FunctionError`:
 
 ```json
 {
@@ -300,11 +300,11 @@ Each invocation will return a `FunctionError` field:
 }
 ```
 
-The `FunctionError: "Unhandled"` indicates the function threw an unhandled exception. Lambda still returns `StatusCode: 200` at the invocation level—the 200 means Lambda successfully *invoked* the function, not that the function succeeded.
+تشير القيمة `FunctionError: "Unhandled"` إلى أن الدالة أطلقت استثناءً غير معالَج. ومع ذلك تُرجع Lambda `StatusCode: 200` على مستوى الاستدعاء — فقيمة 200 تعني أن Lambda *استدعت* الدالة بنجاح، لا أن الدالة نجحت.
 
-### Wait for the Alarm
+### انتظار الإنذار
 
-The alarm is configured with a 5-minute period and 2 evaluation periods, so you need to wait up to 10 minutes for the alarm to transition from `INSUFFICIENT_DATA` to `ALARM`. You can watch the state:
+الإنذار مهيّأ بفترة مدتها 5 دقائق وفترتَي تقييم، لذا تحتاج إلى انتظار حتى 10 دقائق حتى ينتقل الإنذار من `INSUFFICIENT_DATA` إلى `ALARM`. يمكنك مراقبة الحالة:
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -314,11 +314,11 @@ aws cloudwatch describe-alarms \
   --query 'MetricAlarms[0].{State:StateValue,Reason:StateReason}'
 ```
 
-Once the alarm fires, you receive an email notification.
+بمجرد انطلاق الإنذار، ستتلقى إشعار بريد إلكتروني.
 
-### Redeploy the Working Handler
+### إعادة نشر المعالج العامل
 
-Don’t leave the broken function deployed. Redeploy your original working handler:
+لا تترك الدالة المعطّلة منشورة. أعد نشر معالجك العامل الأصلي:
 
 ```bash
 cd lambda
@@ -332,9 +332,9 @@ aws lambda update-function-code \
   --output json
 ```
 
-After a few successful invocations (or a period with no errors), the alarm transitions back to `OK` and you receive another notification.
+بعد بضع استدعاءات ناجحة (أو فترة بلا أخطاء)، ينتقل الإنذار عائدًا إلى `OK` وتتلقى إشعارًا آخر.
 
-## List All Alarms
+## سرد كل الإنذارات
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -343,7 +343,7 @@ aws cloudwatch describe-alarms \
   --output json
 ```
 
-Expected output shows both alarms:
+تُظهر المخرجات المتوقعة كلا الإنذارين:
 
 ```json
 {
@@ -370,9 +370,9 @@ Expected output shows both alarms:
 }
 ```
 
-## Stretch Goal: API Gateway 5XX Alarm
+## هدف إضافي: إنذار 5XX في API Gateway
 
-Find your API Gateway API ID:
+اعثر على معرّف API الخاص بـ API Gateway:
 
 ```bash
 aws apigatewayv2 get-apis \
@@ -381,7 +381,7 @@ aws apigatewayv2 get-apis \
   --query 'Items[?Name==`my-frontend-app-api`].ApiId'
 ```
 
-Create the alarm:
+أنشئ الإنذار:
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -400,11 +400,11 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-This alarm uses a single evaluation period and a threshold of zero—any 5XX error triggers it immediately.
+يستخدم هذا الإنذار فترة تقييم واحدة وحدًّا صفريًا — أي خطأ 5XX يطلقه فورًا.
 
-## Stretch Goal: Add OK Actions to Duration Alarm
+## هدف إضافي: إضافة إجراءات OK إلى إنذار المدة
 
-Rerun `put-metric-alarm` with the same parameters plus `--ok-actions`:
+أعد تشغيل `put-metric-alarm` بالمعاملات نفسها مع `--ok-actions`:
 
 ```bash
 aws cloudwatch put-metric-alarm \
@@ -424,9 +424,9 @@ aws cloudwatch put-metric-alarm \
   --output json
 ```
 
-`put-metric-alarm` updates an existing alarm if one with the same name already exists—you don’t need to delete it first.
+يحدّث `put-metric-alarm` إنذارًا موجودًا إذا كان هناك إنذار بالاسم نفسه — فلست بحاجة إلى حذفه أولًا.
 
-## Stretch Goal: Alarm History
+## هدف إضافي: سجل الإنذار
 
 ```bash
 aws cloudwatch describe-alarm-history \
@@ -435,7 +435,7 @@ aws cloudwatch describe-alarm-history \
   --output json
 ```
 
-Expected output (if you tested the alarm):
+المخرجات المتوقعة (إذا كنت قد اختبرت الإنذار):
 
 ```json
 {
@@ -458,13 +458,13 @@ Expected output (if you tested the alarm):
 }
 ```
 
-This shows the complete timeline of state transitions—useful for understanding how frequently your alarm fires and whether it’s too sensitive or too quiet.
+يعرض هذا الجدول الزمني الكامل لانتقالات الحالة — وهو مفيد لفهم مدى تكرار انطلاق إنذارك وما إذا كان حساسًا أكثر من اللازم أو هادئًا أكثر من اللازم.
 
-## Cleanup
+## التنظيف
 
-If you’re done experimenting and don’t want stray alarms paging you (or a lingering email subscription you forgot about), tear it all down in the reverse of the order you built it.
+إذا انتهيت من التجربة ولا تريد إنذارات شاردة تزعجك (أو اشتراك بريد إلكتروني عالقًا نسيت أمره)، ففكّك كل شيء بالترتيب العكسي لما بنيته.
 
-Delete the alarms:
+احذف الإنذارات:
 
 ```bash
 aws cloudwatch delete-alarms \
@@ -472,7 +472,7 @@ aws cloudwatch delete-alarms \
   --region us-east-1
 ```
 
-Unsubscribe your email from the SNS topic. Grab the subscription ARN first:
+ألغِ اشتراك بريدك الإلكتروني في موضوع SNS. احصل على ARN الاشتراك أولًا:
 
 ```bash
 aws sns list-subscriptions-by-topic \
@@ -481,7 +481,7 @@ aws sns list-subscriptions-by-topic \
   --output json
 ```
 
-Then unsubscribe using the `SubscriptionArn` from the response:
+ثم ألغِ الاشتراك باستخدام `SubscriptionArn` من الاستجابة:
 
 ```bash
 aws sns unsubscribe \
@@ -489,7 +489,7 @@ aws sns unsubscribe \
   --region us-east-1
 ```
 
-Delete the topic itself:
+احذف الموضوع نفسه:
 
 ```bash
 aws sns delete-topic \

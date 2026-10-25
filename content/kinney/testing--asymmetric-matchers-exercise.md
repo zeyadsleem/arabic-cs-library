@@ -1,10 +1,10 @@
 ---
-title: "Exercise"
-lang: en
+title: "تمرين"
+lang: ar
 source: "https://stevekinney.com/courses/testing/asymmetric-matchers-exercise"
 ---
 
-Let’s head over to `examples/characters` and spend a moment reflecting on this `Character` class, which is a subset of the `Person` class we were just looking at.
+لننتقل إلى `examples/characters` ونقضي لحظة في التأمل في صنف `Character` هذا، وهو مجموعة فرعية من صنف `Person` الذي نظرنا إليه للتو.
 
 ```javascript
 import { Person } from './person.js';
@@ -35,12 +35,12 @@ export class Character extends Person {
 }
 ```
 
-You can take a look at `roll-dice.js`, but I’ll spoil the surpise: It’s *basically* a random number generator. It also has two dates—`createdAt` and `lastModified` that will be a bit hard to pin down as well. Can you write some tests that will test the parts we can pin down?
+يمكنك إلقاء نظرة على `roll-dice.js`، لكنني سأحرق المفاجأة: إنه *في الأساس* مولّد أرقام عشوائية. وله أيضًا تاريخان — `createdAt` و`lastModified` — سيكونان صعبَي التثبيت نوعًا ما. هل يمكنك كتابة بعض الاختبارات التي تختبر الأجزاء التي يمكننا تثبيتها؟
 
-- We know that the first and last name should be what we pass in.
-- Full name should likely be the first and last name combined.
-- We know that the role should be whatever was given to the contructor.
-- We know that the level of the character will always default to `1`.
-- **Bonus**: Could you figure out a clever way to see if the date was successfully modified?
+- نعلم أن الاسم الأول والأخير يجب أن يكونا ما نمرره.
+- الاسم الكامل يجب أن يكون على الأرجح الاسم الأول والأخير مجتمعين.
+- نعلم أن الدور يجب أن يكون ما أُعطي للمنشئ.
+- نعلم أن مستوى الشخصية سيكون دائمًا افتراضيًا `1`.
+- **إضافة**: هل يمكنك إيجاد طريقة ذكية لمعرفة ما إذا كان التاريخ قد عُدّل بنجاح؟
 
-You can peek at a [possible solution here](https://stevekinney.com/courses/testing/asymmetric-matchers-solution).
+يمكنك إلقاء نظرة على [حل محتمل هنا](https://stevekinney.com/courses/testing/asymmetric-matchers-solution).

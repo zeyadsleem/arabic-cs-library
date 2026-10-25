@@ -1,20 +1,20 @@
 ---
-title: "SPA Status Codes with Lambda@Edge"
-lang: en
+title: "رموز حالة تطبيقات SPA باستخدام Lambda@Edge"
+lang: ar
 source: "https://stevekinney.com/courses/aws/spa-status-codes-with-lambda-edge"
 ---
 
-Your CloudFront Function rewrites all non-file paths to `/index.html`, and your SPA handles the rest. Users can refresh on `/notes/abc123` and the app works. But every path—valid or not—returns a 200 status code. `/notes/abc123` returns 200. `/totally-fake-path` returns 200. `/admin/secret/please` returns 200. The SPA renders its “not found” component for unrecognized routes, but the HTTP response says everything is fine.
+دالة CloudFront Function الخاصة بك تعيد كتابة كل المسارات غير الملفية إلى `/index.html`، وSPA يتولى الباقي. ويمكن للمستخدمين تحديث الصفحة على `/notes/abc123` فيعمل التطبيق. لكن كل مسار—صالحًا كان أو غير صالح—يعيد رمز الحالة 200. فـ `/notes/abc123` يعيد 200، و`/totally-fake-path` يعيد 200، و`/admin/secret/please` يعيد 200. ويعرض SPA مكوّن «غير موجود» للمسارات غير المعروفة، لكن استجابة HTTP تقول إن كل شيء على ما يرام.
 
-If you want AWS’s version of the Lambda@Edge event model while you read, the [Lambda@Edge guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) is the official reference.
+إن أردت نسخة AWS من نموذج أحداث Lambda@Edge قريبة منك أثناء القراءة، فإن [دليل Lambda@Edge](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html) هو المرجع الرسمي.
 
-This matters in production. Search engine crawlers use the status code, not the visual content, to decide whether a page is real. A 200 on a junk path means Google might index it. Monitoring tools can’t distinguish real traffic from bots hitting random URLs. And if you ever need to debug a redirect chain or track down broken links from external sites, having every path return 200 makes the logs useless.
+هذا مهم في الإنتاج. فزاحفات محركات البحث تستخدم رمز الحالة، لا المحتوى المرئي، لتقرر ما إذا كانت الصفحة حقيقية. ورمز 200 على مسار نفايات يعني أن Google قد تفهرسه. ولا تستطيع أدوات المراقبة التمييز بين حركة حقيقية وروبوتات تضرب عناوين عشوائية. وإذا احتجت يومًا إلى تصحيح سلسلة إعادة توجيه أو تعقّب روابط معطوبة من مواقع خارجية، فإن إعادة كل مسار لرمز 200 تجعل السجلات عديمة الفائدة.
 
-The fix is a Lambda@Edge function that checks the original URL against your app’s known routes and returns a 404 for anything that doesn’t match—while still serving the HTML so the SPA can show its “not found” UI.
+الإصلاح هو دالة Lambda@Edge تتحقق من عنوان URL الأصلي مقابل مسارات تطبيقك المعروفة وتعيد 404 لأي شيء لا يطابقها—مع الاستمرار في تقديم HTML كي يعرض SPA واجهة «غير موجود».
 
-## The Architecture
+## البنية
 
-This requires two edge functions working together:
+يتطلب هذا دالتين على الحافة تعملان معًا:
 
 ```
 sequenceDiagram
@@ -36,16 +36,16 @@ sequenceDiagram
     Edge-->>Browser: 404 + HTML (SPA renders NotFound)
 ```
 
-1. **CloudFront Function (viewer-request):** Stashes the original URI in a custom header before rewriting to `/index.html`.
-2. **Lambda@Edge (viewer-response):** Reads the original URI from the header, checks it against known route patterns, and sets the status code to 404 if it doesn’t match.
+1. **CloudFront Function (viewer-request):** تخزّن URI الأصلي في ترويسة مخصصة قبل إعادة الكتابة إلى `/index.html`.
+2. **Lambda@Edge (viewer-response):** تقرأ URI الأصلي من الترويسة، وتتحقق منه مقابل أنماط المسارات المعروفة، وتضبط رمز الحالة على 404 إن لم يطابق.
 
-Why Lambda@Edge and not a CloudFront Function for the viewer-response? You could do simple pattern matching in a CloudFront Function. Lambda@Edge makes more sense when the route patterns are complex, when you might want to load them from a build manifest, or when you need the full Node.js runtime for the matching logic. It’s also a good opportunity to see Lambda@Edge in action on a real problem after learning the mechanics in [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function).
+لماذا Lambda@Edge وليس CloudFront Function لحدث viewer-response؟ يمكنك إجراء مطابقة أنماط بسيطة في CloudFront Function. لكن Lambda@Edge تصبح أكثر منطقية عندما تكون أنماط المسارات معقدة، أو عندما تريد تحميلها من بيان بناء، أو عندما تحتاج إلى وقت تشغيل Node.js الكامل لمنطق المطابقة. وهي أيضًا فرصة جيدة لرؤية Lambda@Edge في عملها على مشكلة حقيقية بعد تعلّم الآلية في [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function).
 
-## Step 1: Update the CloudFront Function
+## الخطوة 1: تحديث دالة CloudFront
 
-Your CloudFront Function needs to save the original URI before rewriting it. Without this, the Lambda@Edge function only sees `/index.html`—the rewritten URI—and has no way to know what the viewer actually requested.
+تحتاج دالة CloudFront Function الخاصة بك إلى حفظ URI الأصلي قبل إعادة كتابته. فبدون ذلك، لا ترى دالة Lambda@Edge إلا `/index.html`—الـ URI المُعاد كتابته—ولا سبيل لها إلى معرفة ما طلبه المشاهد فعلًا.
 
-Update your SPA rewrite function:
+حدّث دالة إعادة كتابة SPA:
 
 ```javascript
 function handler(event) {
@@ -64,9 +64,9 @@ function handler(event) {
 }
 ```
 
-The `x-original-uri` header travels with the request through CloudFront’s pipeline. The Lambda@Edge function reads it from the viewer-response event’s request object.
+تنتقل ترويسة `x-original-uri` مع الطلب عبر خط أنابيب CloudFront. وتقرأها دالة Lambda@Edge من كائن الطلب في حدث viewer-response.
 
-Update and republish the function using the workflow from [Writing a CloudFront Function](https://stevekinney.com/courses/aws/writing-a-cloudfront-function):
+حدّث الدالة وأعد نشرها باستخدام سير العمل من [كتابة CloudFront Function](https://stevekinney.com/courses/aws/writing-a-cloudfront-function):
 
 ```bash
 aws cloudfront update-function \
@@ -78,7 +78,7 @@ aws cloudfront update-function \
   --output json
 ```
 
-Then publish:
+ثم انشر:
 
 ```bash
 aws cloudfront publish-function \
@@ -88,9 +88,9 @@ aws cloudfront publish-function \
   --output json
 ```
 
-## Step 2: Write the Lambda@Edge Function
+## الخطوة 2: كتابة دالة Lambda@Edge
 
-Create a Lambda@Edge function that runs on **viewer-response** events. It reads the original URI from the custom header and checks it against the route patterns that Scratch Lab’s client-side router recognizes.
+أنشئ دالة Lambda@Edge تعمل على أحداث **viewer-response**. فهي تقرأ URI الأصلي من الترويسة المخصصة وتتحقق منه مقابل أنماط المسارات التي يتعرف عليها موجّه Scratch Lab من جهة العميل.
 
 ```typescript
 import type { CloudFrontResponseHandler } from 'aws-lambda';
@@ -125,26 +125,26 @@ export const handler: CloudFrontResponseHandler = async (event) => {
 };
 ```
 
-*Note:* Keep these in sync with your client-side router. If you add a route to the app, add a pattern here.
+*ملاحظة:* أبقِ هذه الأنماط متزامنة مع موجّهك من جهة العميل. فإذا أضفت مسارًا إلى التطبيق، فأضف نمطًا هنا.
 
-A few things to notice:
+بضعة أمور جديرة بالملاحظة:
 
-- **The response body doesn’t change.** The HTML is the same `index.html` regardless of status code. The SPA renders its `NotFound` component for unrecognized paths based on the URL, not the status code. The status code is for machines—crawlers, monitoring tools, your access logs.
-- **`response.status` is a string.** This is the Lambda@Edge quirk from [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function)—`'404'`, not `404`.
-- **Static file requests skip the check.** If the CloudFront Function didn’t set `x-original-uri`, the request was for a file with an extension (CSS, JS, images). Those should keep whatever status code S3 returned.
+- **لا يتغير جسم الاستجابة.** فالـ HTML هو `index.html` نفسه بغض النظر عن رمز الحالة. ويعرض SPA مكوّن `NotFound` للمسارات غير المعروفة بناءً على URL، لا على رمز الحالة. فرموز الحالة للآلات—الزاحفات وأدوات المراقبة وسجلات وصولك.
+- **`response.status` سلسلة نصية.** هذه غرابة Lambda@Edge من [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function)—`'404'` وليس `404`.
+- **طلبات الملفات الثابتة تتجاوز الفحص.** إذا لم تضبط CloudFront Function الترويسة `x-original-uri`، فالطلب كان لملف بامتداد (CSS أو JS أو صور). وينبغي أن تحتفظ تلك الملفات برمز الحالة الذي أعادته S3.
 
-## Step 3: Deploy the Lambda@Edge Function
+## الخطوة 3: نشر دالة Lambda@Edge
 
-Build and package the function the same way you did in [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function):
+ابنِ الدالة وحزمها بالطريقة نفسها التي فعلتها في [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function):
 
 ```bash
 npx tsc --outDir dist
 cd dist && zip -r ../function.zip . && cd ..
 ```
 
-### Create the execution role
+### إنشاء دور التنفيذ
 
-If you don’t already have one from the Lambda@Edge lesson, create a role that trusts both `lambda.amazonaws.com` and `edgelambda.amazonaws.com`:
+إن لم يكن لديك دور بالفعل من درس Lambda@Edge، فأنشئ دورًا يثق بـ `lambda.amazonaws.com` و`edgelambda.amazonaws.com`:
 
 ```json
 {
@@ -175,7 +175,7 @@ aws iam attach-role-policy \
   --output json
 ```
 
-### Deploy to us-east-1
+### النشر إلى us-east-1
 
 ```bash
 aws lambda create-function \
@@ -188,9 +188,9 @@ aws lambda create-function \
   --output json
 ```
 
-### Publish a numbered version
+### نشر نسخة مرقّمة
 
-Lambda@Edge requires a published version—you can’t use `$LATEST`:
+تتطلب Lambda@Edge نسخة منشورة—لا يمكنك استخدام `$LATEST`:
 
 ```bash
 aws lambda publish-version \
@@ -200,11 +200,11 @@ aws lambda publish-version \
   --output json
 ```
 
-Save the versioned ARN from the response (it ends with `:1`).
+احفظ ARN المنسوخ من الاستجابة (ينتهي بـ `:1`).
 
-## Step 4: Associate with Your Distribution
+## الخطوة 4: الربط بتوزيعك
 
-Retrieve your distribution config and add the Lambda@Edge function to the default behavior’s `LambdaFunctionAssociations`:
+استرجع إعداد توزيعك وأضف دالة Lambda@Edge إلى `LambdaFunctionAssociations` في السلوك الافتراضي:
 
 ```json
 {
@@ -230,11 +230,11 @@ aws cloudfront update-distribution \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> A behavior can only have one function per event type. If you have a CloudFront Function on `viewer-response` (like the security headers function from the [exercise](https://stevekinney.com/courses/aws/cloudfront-function-exercise)), you’ll need to either move that logic into this Lambda@Edge function or use a [managed response headers policy](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security) instead. You can have a CloudFront Function on `viewer-request` and a Lambda@Edge on `viewer-response` on the same behavior—they’re on different event types.
+> لا يمكن للسلوك أن يحمل إلا دالة واحدة لكل نوع حدث. فإذا كانت لديك CloudFront Function على `viewer-response` (مثل دالة ترويسات الأمان من [التمرين](https://stevekinney.com/courses/aws/cloudfront-function-exercise))، فستحتاج إما إلى نقل هذا المنطق إلى دالة Lambda@Edge هذه، أو إلى استخدام [سياسة ترويسات استجابة مُدارة](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security) بدلًا منها. ويمكنك أن تجمع CloudFront Function على `viewer-request` مع Lambda@Edge على `viewer-response` في السلوك نفسه—فهما على نوعي حدث مختلفين.
 
-Wait for the distribution to deploy:
+انتظر حتى يُنشر التوزيع:
 
 ```bash
 aws cloudfront wait distribution-deployed \
@@ -242,9 +242,9 @@ aws cloudfront wait distribution-deployed \
   --region us-east-1
 ```
 
-## Step 5: Test the Status Codes
+## الخطوة 5: اختبار رموز الحالة
 
-Once the distribution is deployed, verify the status codes:
+بعد نشر التوزيع، تحقق من رموز الحالة:
 
 ```bash
 # Valid route: home page
@@ -268,18 +268,18 @@ curl -s -o /dev/null -w "%{http_code}" https://YOUR_CLOUDFRONT_DOMAIN/favicon.sv
 # Expected: 200
 ```
 
-Open the CloudFront domain in a browser and navigate to `/totally-fake-path`. The SPA should show its “not found” UI—the same visual experience as before. But now the HTTP status code is 404, which is what search engines, monitoring tools, and your CloudWatch logs will see.
+افتح نطاق CloudFront في متصفح وانتقل إلى `/totally-fake-path`. ينبغي أن يعرض SPA واجهة «غير موجود»—التجربة البصرية نفسها كما كانت. لكن رمز حالة HTTP الآن 404، وهو ما ستراه محركات البحث وأدوات المراقبة وسجلات CloudWatch الخاصة بك.
 
-## Keeping Routes in Sync
+## إبقاء المسارات متزامنة
 
-The route patterns in your Lambda@Edge function must match your client-side router. If you add a new route to the Scratch Lab app (say, `/settings`), you need to add a pattern to the Lambda@Edge function and deploy a new version.
+يجب أن تطابق أنماط المسارات في دالة Lambda@Edge موجّهك من جهة العميل. فإذا أضفت مسارًا جديدًا إلى تطبيق Scratch Lab (مثلًا `/settings`)، فعليك إضافة نمط إلى دالة Lambda@Edge ونشر نسخة جديدة.
 
-For a small app like Scratch Lab, maintaining the list by hand is fine. For a larger app, you have a few options:
+ولتطبيق صغير مثل Scratch Lab، صيانة القائمة يدويًا أمر مقبول. أما لتطبيق أكبر، فلديك بضعة خيارات:
 
-- **Generate the pattern list at build time.** Extract route patterns from your router configuration and write them into the Lambda function’s source before packaging.
-- **Use CloudFront KeyValueStore.** Store the route patterns in a KVS instance that the function reads at runtime. Update the patterns without redeploying the function.
-- **Accept the tradeoff.** If an unknown route briefly returns 200 before you update the function, that’s usually acceptable. The main goal is preventing persistent 200s on junk paths.
+- **توليد قائمة الأنماط وقت البناء.** استخرج أنماط المسارات من إعداد الموجّه واكتبها في مصدر دالة Lambda قبل التحزيم.
+- **استخدام CloudFront KeyValueStore.** خزّن أنماط المسارات في نسخة KVS تقرأها الدالة وقت التشغيل، وحدّث الأنماط دون إعادة نشر الدالة.
+- **قبول المقايضة.** إذا أعاد مسار غير معروف رمز 200 لفترة وجيزة قبل تحديث الدالة، فذلك مقبول عادةً. فالهدف الأساسي هو منع رموز 200 الدائمة على مسارات النفايات.
 
-## Cleanup
+## التنظيف
 
-To remove the Lambda@Edge function, first disassociate it from the distribution, wait for the distribution to reach `Deployed` status, then delete the function. Lambda@Edge replicas take time to clean up—see [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function) for the full cleanup sequence.
+لإزالة دالة Lambda@Edge، افصلها أولًا عن التوزيع، وانتظر حتى يصل التوزيع إلى حالة `Deployed`، ثم احذف الدالة. وتستغرق نسخ Lambda@Edge وقتًا في التنظيف—راجع [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function) لتسلسل التنظيف الكامل.

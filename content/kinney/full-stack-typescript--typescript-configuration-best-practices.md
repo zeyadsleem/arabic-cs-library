@@ -1,10 +1,10 @@
 ---
-title: "TypeScript Configuration Best Practices"
-lang: en
+title: "أفضل ممارسات تكوين TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/typescript-configuration-best-practices"
 ---
 
-Let’s consider this `tsconfig.json` for a hot minute.
+لنتأمّل `tsconfig.json` هذا لدقيقة.
 
 ```json
 {
@@ -21,59 +21,59 @@ Let’s consider this `tsconfig.json` for a hot minute.
 }
 ```
 
-Even if some of these are enabled by default when `"strict": true` is set, having them explicitly declared can help with clarity—and ensures your settings remain in place if you ever toggle `"strict"` off or on in the future.
+حتى إن كان بعض هذه مُفعّلًا افتراضيًا عند ضبط `"strict": true`، فإن إعلانه صراحةً يساعد على الوضوح — ويضمن بقاء إعداداتك في مكانها إن فعّلت `"strict"` أو عطّلته في المستقبل.
 
 ## `strict: true`
 
-- **What it does:** Turns on TypeScript’s “strict mode,” which is actually a group of several related settings that tighten the compiler’s type-checking rules. Specifically, it enables: `noImplicitAny` `strictNullChecks` `strictBindCallApply` `strictFunctionTypes` `strictPropertyInitialization`
+- **ما الذي يفعله:** يفعّل «الوضع الصارم» في TypeScript، وهو في الحقيقة مجموعة من عدة إعدادات مترابطة تُحكم قواعد فحص الأنواع في المصرّف. وتحديدًا يفعّل: `noImplicitAny` `strictNullChecks` `strictBindCallApply` `strictFunctionTypes` `strictPropertyInitialization`
   - `noImplicitAny`
   - `strictNullChecks`
   - `strictBindCallApply`
   - `strictFunctionTypes`
   - `strictPropertyInitialization`
-- **Why it’s helpful:** You get the most robust type-checking TypeScript can offer, catching potential errors at compile time rather than during runtime. Strict mode often forces you to be more explicit with types, which leads to more maintainable code.
+- **لماذا هو مفيد:** تحصل على أقوى فحص أنواع يقدّمه TypeScript، فيلتقط الأخطاء المحتملة في وقت الترجمة لا في وقت التشغيل. وكثيرًا ما يدفعك الوضع الصارم إلى مزيد من الصراحة في الأنواع، وهذا يقود إلى شيفرة أسهل صيانة.
 
-> **Note:** You’re also specifying some of these strict-mode flags (`noImplicitAny`, `strictNullChecks`, `strictPropertyInitialization`) individually below, which can be redundant—but also makes your config super explicit.
+> **ملاحظة:** أنت أيضًا تحدد بعض أعلام الوضع الصارم هذه (`noImplicitAny` و`strictNullChecks` و`strictPropertyInitialization`) منفردةً أدناه، وقد يكون ذلك تكرارًا — لكنه يجعل تكوينك صريحًا للغاية.
 
 ## `noImplicitAny: true`
 
-- **What it does:** If you forget to specify (or let TS infer) the type of a variable or function parameter, TypeScript will not fallback to `any`. Instead, it’ll throw an error, making you either: Explicitly type the variable/parameter, or Let TypeScript infer a suitable type from usage.
-  1. Explicitly type the variable/parameter, or
-  2. Let TypeScript infer a suitable type from usage.
-- **Why it’s helpful:** Eliminates the surprise “black hole” type: `any`. This ensures you’re always aware of the types you’re working with and prevents hidden type mismatches that can emerge as runtime errors.
+- **ما الذي يفعله:** إذا نسيت تحديد نوع متغيّر أو وسيط دالة (أو لم تدع TS يستنتجه)، فلن يلجأ TypeScript إلى `any` كبديل. بدلًا من ذلك سيُطلق خطأً، ما يجبرك على أحد أمرين: أن تحدّد نوع المتغيّر/الوسيط صراحةً، أو أن تدع TypeScript يستنتج نوعًا مناسبًا من الاستخدام.
+  1. أن تحدّد نوع المتغيّر/الوسيط صراحةً، أو
+  2. أن تدع TypeScript يستنتج نوعًا مناسبًا من الاستخدام.
+- **لماذا هو مفيد:** يُلغي النوع المفاجئ «الثقب الأسود»: `any`. وهذا يضمن أنك على وعي دائم بالأنواع التي تعمل بها، ويمنع حالات عدم تطابق الأنواع الخفية التي قد تظهر لاحقًا كأخطاء وقت تشغيل.
 
 ---
 
 ## `strictNullChecks: true`
 
-- **What it does:** Makes `null` and `undefined` distinct types rather than letting them slip into every type. With `strictNullChecks` on, if a value can be `null` or `undefined`, you must explicitly include `| null` or `| undefined` in the type.
-- **Why it’s helpful:** One of the biggest sources of runtime errors in JavaScript is unhandled `null` or `undefined`. Enforcing strict null checks forces you to acknowledge the possibility—or impossibility—of nullish values in your code.
+- **ما الذي يفعله:** يجعل `null` و`undefined` نوعين مستقلين بدل أن يتسلّلا إلى كل نوع. فمع تفعيل `strictNullChecks`، إذا كان بإمكان قيمة أن تكون `null` أو `undefined`، وجب أن تُدرج `| null` أو `| undefined` صراحةً في النوع.
+- **لماذا هو مفيد:** من أكبر مصادر أخطاء وقت التشغيل في JavaScript هو التعامل غير المعالَج مع `null` أو `undefined`. وفرض فحوص فارغ الصرامة هذه يجبرك على الإقرار باحتمال القيم الفارغة في شيفرتك — أو باستحالتها.
 
 ---
 
 ## `strictPropertyInitialization: true`
 
-- **What it does:** Requires that class properties (other than those marked optional or with definite assignment using `!`) be *initialized* in the constructor (or declared with a default value) before you try to use them.
-- **Why it’s helpful:** Prevents the classic “property is undefined because the class never assigned it” bug. This ensures that every declared property has a safe and expected value at runtime.
+- **ما الذي يفعله:** يطلب أن تُهيَّأ خصائص الصنف (عدا تلك المعلَّمة اختيارية أو ذات إسناد مؤكَّد باستخدام `!`) *داخل الباني* (أو تُعلَن بقيمة افتراضية) قبل أن تحاول استخدامها.
+- **لماذا هو مفيد:** يمنع العلّة الكلاسيكية «الخاصية غير معرّفة لأن الصنف لم يُسندها قط». وهذا يضمن أن كل خاصية معلَنة لها قيمة آمنة ومتوقعة في وقت التشغيل.
 
 ## `noUnusedLocals: true`
 
-- **What it does:** Throws errors if you have a local variable (inside a function or a block scope) that is declared but never used.
-- **Why it’s helpful:** Helps you keep your codebase clean. Unused variables can clutter code and often indicate logic that either changed or was never completed.
+- **ما الذي يفعله:** يُطلق أخطاءً إذا كان لديك متغيّر محلي (داخل دالة أو نطاق كتلة) معلَن لكنه غير مستخدم قط.
+- **لماذا هو مفيد:** يساعدك على إبقاء قاعدة شيفرتك نظيفة. فالمتغيّرات غير المستخدمة تُشوّش الشيفرة، وغالبًا ما تدل على منطق تغيّر أو لم يكتمل يومًا.
 
 ## `noUnusedParameters: true`
 
-- **What it does:** Similar to `noUnusedLocals`, but for function parameters. If a parameter is never used within its function body, TypeScript will complain.
-- **Why it’s helpful:** Discourages having leftover or “dead” parameters—common when you refactor code. It also can prevent confusion for other developers trying to understand function signatures.
+- **ما الذي يفعله:** يشبه `noUnusedLocals`، لكنه لوسائط الدوال. فإذا لم يُستخدم وسيط داخل جسم دالته، فسيشتكي TypeScript.
+- **لماذا هو مفيد:** يثبّط وجود وسائط متروكة أو «ميتة» — وهو أمر شائع عند إعادة هيكلة الشيفرة. كما يمنع الالتباس لدى المطوّرين الآخرين الذين يحاولون فهم تواقيع الدوال.
 
 ## `exactOptionalPropertyTypes: true`
 
-- **What it does:** Makes the treatment of optional properties more precise. By default, TypeScript allows writing or overwriting an optional property with `undefined` even if it’s not explicitly `T | undefined`. With `exactOptionalPropertyTypes`, an optional property `foo?: T` behaves more strictly: the property may be omitted entirely, or if present, must match `T | undefined` exactly—no sneaky expansions.
-- **Why it’s helpful:** It reduces the guesswork around optional properties. You don’t accidentally assign `undefined` to a property that’s optional in a more liberal sense and then discover type mismatches. This keeps code involving optional properties more predictable and explicit.
+- **ما الذي يفعله:** يجعل معالجة الخصائص الاختيارية أدقّ. فافتراضيًا، يسمح TypeScript بكتابة خاصية اختيارية أو الكتابة فوقها بـ `undefined` حتى إن لم تكن `T | undefined` صراحةً. أما مع `exactOptionalPropertyTypes`، فتتصرّف خاصية اختيارية `foo?: T` بصرامة أكبر: يجوز حذف الخاصية كليًا، أو — إن وُجدت — أن تطابق `T | undefined` بدقة، بلا توسّعات خفية.
+- **لماذا هو مفيد:** يقلّل التخمين حول الخصائص الاختيارية. فلن تُسند `undefined` بالخطأ إلى خاصية اختيارية بمعنى أكثر تحرّرًا ثم تكتشف عدم تطابق الأنواع. وهذا يبقي الشيفرة المتعلقة بالخصائص الاختيارية أكثر قابلية للتنبؤ والوضوح.
 
 ## `forceConsistentCasingInFileNames: true`
 
-- **What it does:** Ensures that the case of your import paths matches the actual file name on disk. For instance, if your file is named `MyComponent.ts`, but you try to import it via `myComponent.ts`, you’ll get an error on case-sensitive file systems.
-- **Why it’s helpful:** Prevents the dreaded “works on my machine but not on the server” bug that can appear when you develop on Windows (case-insensitive) but deploy on Linux (case-sensitive). It enforces consistent casing for all imports, making your project more portable across different OSes.
+- **ما الذي يفعله:** يضمن أن حالة الأحرف في مسارات الاستيراد تطابق اسم الملف الفعلي على القرص. فمثلًا، إذا كان ملفك اسمه `MyComponent.ts` لكنك حاولت استيراده عبر `myComponent.ts`، فستحصل على خطأ في أنظمة الملفات الحسّاسة لحالة الأحرف.
+- **لماذا هو مفيد:** يمنع العلّة المخيفة «يعمل على جهازي لكن لا يعمل على الخادم» التي تظهر عندما تطوّر على Windows (غير حسّاس لحالة الأحرف) لكن تنشر على Linux (حسّاس لحالة الأحرف). فهو يفرض حالة أحرف متسقة على كل الاستيرادات، ما يجعل مشروعك أكثر قابلية للنقل بين أنظمة التشغيل المختلفة.
 
-All these options combine to enforce rigor in how you write and maintain your TypeScript code. Enabling `strict` mode plus these complementary flags helps eliminate a lot of subtle bugs, fosters cleaner code, and promotes consistent coding practices—making life easier when scaling or refactoring your codebase. If your goal is maximum correctness and minimal “mystery errors,” this is a great config to use.
+تتضافر كل هذه الخيارات لفرض الصرامة في طريقة كتابتك لشيفرة TypeScript وصيانتها. وتفعيل الوضع `strict` مع هذه الأعلام المكمّلة يساعد على إزالة كثير من الأخطاء الدقيقة، ويعزّز شيفرة أنظف، ويشجّع ممارسات برمجية متسقة — ما ييسّر الحياة عند توسيع قاعدة شيفرتك أو إعادة هيكلتها. وإذا كان هدفك أقصى صحة وأقلّ قدر من «الأخطاء الغامضة»، فهذا تكوين ممتاز لتستخدمه.

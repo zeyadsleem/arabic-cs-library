@@ -1,23 +1,23 @@
 ---
-title: "Edge SSR and Runtime Types"
-lang: en
+title: "التصيير على الحافة وأنواع بيئات التشغيل"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/edge-ssr-and-runtime-types"
 ---
 
-Modern React applications run in multiple JavaScript environments: browsers, Node.js servers, edge runtimes like Cloudflare Workers or Vercel Edge Functions, and everything in between. Each runtime has its own APIs, constraints, and type definitions—but your TypeScript code needs to work across all of them. Let’s explore how to navigate these differences, write runtime-aware code, and ensure your SSR data contracts stay bulletproof (even when your API decides to send you `null` instead of that nice user object you were expecting).
+تعمل تطبيقات React الحديثة في بيئات JavaScript متعددة: المتصفحات، وخوادم Node.js، وبيئات التشغيل الطرفية مثل Cloudflare Workers أو Vercel Edge Functions، وكل ما بينها. لكل بيئة تشغيل واجهاتها الخاصة وقودها الخاص وتعريفات أنواعها الخاصة — لكن شيفرة TypeScript لديك تحتاج إلى العمل عبرها جميعًا. لنستكشف كيف نتنقّل بين هذه الاختلافات، ونكتب شيفرة واعية ببيئة التشغيل، ونحرص على أن تبقى عقود بيانات التصيير من جهة الخادم (SSR) متينة (حتى حين تقرر واجهتك البرمجية أن ترسل لك `null` بدلًا من كائن المستخدم اللطيف الذي كنت تتوقعه).
 
-## The Runtime Multiverse Problem
+## مشكلة متعدد عوالم التشغيل
 
-When you write React components, you’re often targeting multiple JavaScript runtimes simultaneously:
+عندما تكتب مكوّنات React، فأنت غالبًا ما تستهدف بيئات JavaScript متعددة في الوقت نفسه:
 
-- **Browser**: Full DOM APIs, client-side rendering, user interactions
-- **Node.js**: Server-side rendering, file system access, full Node APIs
-- **Edge Runtime**: Lightweight V8 isolates with Web APIs but no Node.js APIs
-- **Build Time**: Static generation during your build process
+- **المتصفح**: واجهات DOM كاملة، وتصيير في جهة العميل، وتفاعلات المستخدم
+- **Node.js**: تصيير في جهة الخادم، والوصول إلى نظام الملفات، وواجهات Node كاملة
+- **بيئة التشغيل الطرفية**: معزولات V8 خفيفة تحتوي على واجهات الويب لكن بلا واجهات Node.js
+- **وقت البناء**: التوليد الساكن (static generation) أثناء عملية البناء
 
-Each runtime has different global objects, different APIs, and crucially—different TypeScript definitions. Your component might render perfectly in the browser but throw type errors when you try to SSR it, or work great on your Node.js server but fail mysteriously when deployed to an edge function.
+لكل بيئة تشغيل كائنات عامة مختلفة، وواجهات مختلفة، والأهم — تعريفات TypeScript مختلفة. قد يُصيَّر مكوّنك بإتقان في المتصفح لكن يرمي أخطاء أنواع عندما تحاول تصييره على الخادم، أو يعمل بشكل رائع على خادم Node.js لكن يفشل بشكل غامض عند نشره في دالة طرفية.
 
-Here’s a common example of this pain:
+إليك مثالًا شائعًا لهذا الألم:
 
 ```typescript
 // ❌ This works in browser but breaks in Node.js

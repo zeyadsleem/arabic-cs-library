@@ -1,40 +1,40 @@
 ---
-title: "Truncation and Wrapping"
-lang: en
+title: "الاقتطاع والالتفاف"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/truncation-and-wrapping"
 ---
 
-Text behavior within containers is fundamental for well-structured interfaces. Tailwind provides utilities for controlling text wrapping and truncation.
+سلوك النص داخل الحاويات أمر أساسي للواجهات المهيكلة جيدًا. ويوفّر Tailwind أصنافًا مساعِدة للتحكّم في التفاف النص واقتطاعه.
 
-## Controlling Text Wrapping
+## التحكّم في التفاف النص
 
-Tailwind offers utilities for controlling how text flows and breaks across lines.
+يوفّر Tailwind أصنافًا مساعِدة للتحكّم في كيفية تدفّق النص وانقطاعه عبر الأسطر.
 
-### Word Breaks (`word-break`)
+### قطع الكلمات (`word-break`)
 
-The `word-break` property controls how words break to prevent overflow.
+تتحكّم الخاصية `word-break` في كيفية قطع الكلمات لمنع الفيض.
 
-- **`break-normal`**: Default behavior, breaks only at normal word break points
-- **`break-all`**: Breaks anywhere necessary, even within words
-- **`break-keep`**: Prevents breaks in Chinese, Japanese, or Korean (CJK) text. For non-CJK text, behaves like `break-normal`
+- **`break-normal`**: السلوك الافتراضي، يقطع فقط عند نقاط قطع الكلمات الطبيعية
+- **`break-all`**: يقطع عند أي نقطة، حتى داخل الكلمات
+- **`break-keep`**: يمنع القطع في النصوص الصينية أو اليابانية أو الكورية (CJK). ومع النصوص غير الـCJK يتصرّف مثل `break-normal`
 
-Apply conditionally with breakpoints:
+طَبِّقه بشكل شرطي مع نقاط التوقّف:
 
-*Word Breaks (word-break) — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/f0ea3e97a6104d70c722a9f5f585b595afec3d23560fd55b7347999dae3ca39a.html)*
+*قطع الكلمات (word-break) — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/f0ea3e97a6104d70c722a9f5f585b595afec3d23560fd55b7347999dae3ca39a.html)*
 
 ```html
 <p class="break-all md:break-normal">Thisisasuperlongwordthatwillbreakanywherenecessary.</p>
 ```
 
-### Overflow Wrapping (`overflow-wrap`)
+### الالتفاف عند الفيض (`overflow-wrap`)
 
-The `overflow-wrap` property specifies whether browsers should break lines within words to prevent overflow.
+تحدّد الخاصية `overflow-wrap` ما إذا كان على المتصفحات قطع الأسطر داخل الكلمات لمنع الفيض.
 
-- **`wrap-normal`**: Default behavior, breaks only at natural wrapping points like spaces and hyphens
-- **`wrap-break-word`**: Allows line breaks between letters if needed to prevent overflow
-- **`wrap-anywhere`**: Similar to `wrap-break-word` but factors mid-word breaks when calculating intrinsic size. Useful for flex containers where you’d otherwise need `min-width: 0`
+- **`wrap-normal`**: السلوك الافتراضي، يقطع فقط عند نقاط الالتفاف الطبيعية مثل المسافات والشرطات
+- **`wrap-break-word`**: يتيح فواصل الأسطر بين الحروف عند الحاجة لمنع الفيض
+- **`wrap-anywhere`**: مشابه لـ`wrap-break-word` لكنه يأخذ في الحسبان القطع في منتصف الكلمة عند حساب الحجم الضمني. وهو مفيد لحاويات flex حيث ستحتاج إلى `min-width: 0` لولا ذلك
 
-*Overflow Wrapping (overflow-wrap) — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/a3204cf71a475c3d8d7420c79c4537be109f9e1b812dd6cb8dc1379ab3c5a79f.html)*
+*الالتفاف عند الفيض (overflow-wrap) — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a3204cf71a475c3d8d7420c79c4537be109f9e1b812dd6cb8dc1379ab3c5a79f.html)*
 
 ```html
 <div class="flex w-32">
@@ -42,18 +42,18 @@ The `overflow-wrap` property specifies whether browsers should break lines withi
 </div>
 ```
 
-### Whitespace Control (`white-space`)
+### التحكّم في المسافات البيضاء (`white-space`)
 
-The `white-space` property controls how whitespace and line breaks are handled.
+تتحكّم الخاصية `white-space` في كيفية التعامل مع المسافات البيضاء وفواصل الأسطر.
 
-- **`whitespace-normal`**: Text wraps normally, newlines and spaces are collapsed
-- **`whitespace-nowrap`**: Prevents wrapping, text overflows if necessary. Newlines and spaces are collapsed
-- **`whitespace-pre`**: Preserves newlines and spaces exactly as written. Text doesn’t wrap
-- **`whitespace-pre-line`**: Preserves newlines but collapses spaces. Text wraps normally
-- **`whitespace-pre-wrap`**: Preserves newlines and spaces. Text wraps normally
-- **`whitespace-break-spaces`**: Preserves newlines and spaces, including at line ends
+- **`whitespace-normal`**: يلفّ النص بشكل طبيعي، وتُدمج فواصل الأسطر والمسافات
+- **`whitespace-nowrap`**: يمنع الالتفاف، ويفيض النص عند الحاجة. وتُدمج فواصل الأسطر والمسافات
+- **`whitespace-pre`**: يحافظ على فواصل الأسطر والمسافات تمامًا كما كُتبت. ولا يلتفّ النص
+- **`whitespace-pre-line`**: يحافظ على فواصل الأسطر لكنه يدمج المسافات. ويلتفّ النص بشكل طبيعي
+- **`whitespace-pre-wrap`**: يحافظ على فواصل الأسطر والمسافات. ويلتفّ النص بشكل طبيعي
+- **`whitespace-break-spaces`**: يحافظ على فواصل الأسطر والمسافات، بما في ذلك في نهايات الأسطر
 
-*Whitespace Control (white-space) — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/302e64e93b8654d6025ae250a1742ce91dd3d95f6acbde245ebb4ca572c7bf38.html)*
+*التحكّم في المسافات البيضاء (white-space) — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/302e64e93b8654d6025ae250a1742ce91dd3d95f6acbde245ebb4ca572c7bf38.html)*
 
 ```html
 <p class="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -62,17 +62,17 @@ The `white-space` property controls how whitespace and line breaks are handled.
 <p class="whitespace-pre-wrap">This text preserves newlines and spaces, and wraps normally.</p>
 ```
 
-### Controlling Breaks in Columns and Pages
+### التحكّم في القطع داخل الأعمدة والصفحات
 
-Control where content breaks in multi-column layouts or print styles.
+تحكّم في مواضع قطع المحتوى في التخطيطات متعددة الأعمدة أو أنماط الطباعة.
 
-#### Break After (`break-after`)
+#### القطع بعد (`break-after`)
 
-Controls column or page breaks *after* an element.
+تتحكّم في قطع الأعمدة أو الصفحات *بعد* العنصر.
 
-Available utilities: `break-after-auto`, `break-after-avoid`, `break-after-all`, `break-after-avoid-page`, `break-after-page`, `break-after-left`, `break-after-right`, `break-after-column`.
+الأصناف المتاحة: `break-after-auto`، `break-after-avoid`، `break-after-all`، `break-after-avoid-page`، `break-after-page`، `break-after-left`، `break-after-right`، `break-after-column`.
 
-*Break After (break-after) — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/669d60e630354757117cff943623573462276c48cef8348005734437d92d9a1b.html)*
+*القطع بعد (break-after) — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/669d60e630354757117cff943623573462276c48cef8348005734437d92d9a1b.html)*
 
 ```html
 <div class="columns-2">
@@ -82,13 +82,13 @@ Available utilities: `break-after-auto`, `break-after-avoid`, `break-after-all`,
 </div>
 ```
 
-#### Break Before (`break-before`)
+#### القطع قبل (`break-before`)
 
-Controls column or page breaks *before* an element.
+تتحكّم في قطع الأعمدة أو الصفحات *قبل* العنصر.
 
-Available utilities: `break-before-auto`, `break-before-avoid`, `break-before-all`, `break-before-avoid-page`, `break-before-page`, `break-before-left`, `break-before-right`, `break-before-column`.
+الأصناف المتاحة: `break-before-auto`، `break-before-avoid`، `break-before-all`، `break-before-avoid-page`، `break-before-page`، `break-before-left`، `break-before-right`، `break-before-column`.
 
-*Break Before (break-before) — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/db7e8a9a2272b851ffb2f0243066c99c334e41588182091adc704180fb20494f.html)*
+*القطع قبل (break-before) — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/db7e8a9a2272b851ffb2f0243066c99c334e41588182091adc704180fb20494f.html)*
 
 ```html
 <div class="columns-2">
@@ -97,13 +97,13 @@ Available utilities: `break-before-auto`, `break-before-avoid`, `break-before-al
 </div>
 ```
 
-#### Break Inside (`break-inside`)
+#### القطع داخل (`break-inside`)
 
-Controls column or page breaks *within* an element.
+تتحكّم في قطع الأعمدة أو الصفحات *داخل* العنصر.
 
-Available utilities: `break-inside-auto`, `break-inside-avoid`, `break-inside-avoid-page`, `break-inside-avoid-column`.
+الأصناف المتاحة: `break-inside-auto`، `break-inside-avoid`، `break-inside-avoid-page`، `break-inside-avoid-column`.
 
-*Break Inside (break-inside) — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/15150c0bd072df4f599a172681e8f5bde3b46f7a99efc97a1165f13607a6593e.html)*
+*القطع داخل (break-inside) — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/15150c0bd072df4f599a172681e8f5bde3b46f7a99efc97a1165f13607a6593e.html)*
 
 ```html
 <div class="columns-2">
@@ -113,30 +113,30 @@ Available utilities: `break-inside-auto`, `break-inside-avoid`, `break-inside-av
 </div>
 ```
 
-### Hyphenation (`hyphens`)
+### الوصل بالخط (`hyphens`)
 
-The `hyphens` property controls whether words should be hyphenated when text wraps.
+تتحكّم الخاصية `hyphens` في ما إذا كان ينبغي وصل الكلمات بالشرطة عند التفاف النص.
 
-- **`hyphens-none`**: Prevents hyphenation, even with line break suggestions (`­`)
-- **`hyphens-manual`**: Only hyphenates at specified break points (`­`). Browser default
-- **`hyphens-auto`**: Allows browser to automatically choose hyphenation points based on language. Manual suggestions are preferred
+- **`hyphens-none`**: يمنع الوصل بالخط، حتى مع اقتراحات قطع السطر (`­`)
+- **`hyphens-manual`**: لا يصل إلا عند نقاط القطع المحدّدة (`­`). وهو الافتراضي في المتصفّح
+- **`hyphens-auto`**: يسمح للمتصفّح باختيار مواضع الوصل بالخط تلقائيًا بحسب اللغة. وتُفضَّل الاقتراحات اليدوية
 
-*Hyphenation (hyphens) — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/3c00da1c0dbd0fae4ef1b76cdefc0c670b8e50afce7e288ae646e0aac39a7955.html)*
+*الوصل بالخط (hyphens) — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/3c00da1c0dbd0fae4ef1b76cdefc0c670b8e50afce7e288ae646e0aac39a7955.html)*
 
 ```html
 <p class="hyphens-auto">This word-processing example demonstrates automatic hyphenation.</p>
 ```
 
-### General Text Wrapping (`text-wrap`)
+### الالتفاف العام للنص (`text-wrap`)
 
-The `text-wrap` property offers modern control over text wrapping.
+توفّر الخاصية `text-wrap` تحكّمًا حديثًا في التفاف النص.
 
-- **`text-wrap`**: Allows text to wrap normally at logical points
-- **`text-nowrap`**: Prevents text from wrapping
-- **`text-balance`**: Distributes text evenly across lines. Browsers often limit this to ~6 lines for performance, making it ideal for headings
-- **`text-pretty`**: Attempts to prevent orphans (single words on the last line)
+- **`text-wrap`**: يتيح التفاف النص بشكل طبيعي عند النقاط المنطقية
+- **`text-nowrap`**: يمنع التفاف النص
+- **`text-balance`**: يوزّع النص بالتساوي عبر الأسطر. وكثيرًا ما تحدّ المتصفحات من ذلك إلى ~6 أسطر لأداء، ما يجعله مثاليًا للعناوين
+- **`text-pretty`**: يحاول منع الكلمات اليتيمة (كلمة واحدة في السطر الأخير)
 
-*General Text Wrapping (text-wrap) — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/9441d042565f963a9e83c4a6986b5e3894bc858ff0ab7cecfb48d221fbe1f6ef.html)*
+*الالتفاف العام للنص (text-wrap) — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/9441d042565f963a9e83c4a6986b5e3894bc858ff0ab7cecfb48d221fbe1f6ef.html)*
 
 ```html
 <h1 class="text-balance">A title that looks good across multiple lines.</h1>
@@ -145,34 +145,34 @@ The `text-wrap` property offers modern control over text wrapping.
 </p>
 ```
 
-## Managing Text Truncation
+## إدارة اقتطاع النص
 
-Constrain text to specific spaces and indicate when content is cut off.
+قيّد النص في مساحات محدّدة وأَشِر إلى ما إذا كان المحتوى مقتطعًا.
 
-### Single-line Truncation (`text-overflow`)
+### الاقتطاع في سطر واحد (`text-overflow`)
 
-Prevent text from wrapping and indicate overflow.
+امنع التفاف النص وأَشِر إلى الفيض.
 
-- **`truncate`**: Composite utility that sets `overflow: hidden`, `text-overflow: ellipsis`, and `white-space: nowrap`. Prevents wrapping and truncates with ellipsis (…) Single-line Truncation (text-overflow) — Example 9[Open example](https://stevekinney.com/generated/playgrounds/767919740663dbe3f3edbca75d825b2a4eb016d083f100d4779d3783c6b88e38.html) <code><span class="line"><span style="color:#7FDBCA"><</span><span style="color:#CAECE6">p</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">"</span><span style="color:#ECC48D">w-32 truncate</span><span style="color:#D9F5DD">"</span><span style="color:#7FDBCA">></span><span style="color:#D6DEEB">This text is too long and will be truncated.</span><span style="color:#7FDBCA"></</span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">></span></span></code>
-- **`text-ellipsis`**: Sets `text-overflow: ellipsis`. Use with `overflow: hidden` and `white-space: nowrap` to add ellipsis (…) to overflowing text
-- **`text-clip`**: Sets `text-overflow: clip`. Truncates text at content area limit without indicator. Browser default
+- **`truncate`**: صنف مساعد مركّب يضبط `overflow: hidden` و`text-overflow: ellipsis` و`white-space: nowrap`. يمنع الالتفاف ويقتطع بعلامة حذف (…) الاقتطاع في سطر واحد (text-overflow) — المثال 9[افتح المثال](https://stevekinney.com/generated/playgrounds/767919740663dbe3f3edbca75d825b2a4eb016d083f100d4779d3783c6b88e38.html) <code><span class="line"><span style="color:#7FDBCA"><</span><span style="color:#CAECE6">p</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">"</span><span style="color:#ECC48D">w-32 truncate</span><span style="color:#D9F5DD">"</span><span style="color:#7FDBCA">></span><span style="color:#D6DEEB">هذا النص طويل جدًّا وسيُقتطع.</span><span style="color:#7FDBCA"></</span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">></span></span></code>
+- **`text-ellipsis`**: يضبط `text-overflow: ellipsis`. واستخدمه مع `overflow: hidden` و`white-space: nowrap` لإضافة علامة حذف (…) إلى النص الفائض
+- **`text-clip`**: يضبط `text-overflow: clip`. ويقتطع النص عند حدّ منطقة المحتوى من دون مؤشّر. وهو الافتراضي في المتصفّح
 
-### Multi-line Clamping (`line-clamp`)
+### التقييد متعدّد الأسطر (`line-clamp`)
 
-Truncate multi-line text after a specific number of lines.
+اقتطع النص متعدّد الأسطر بعد عدد محدّد من الأسطر.
 
-- **`line-clamp-<number>`**: Limits text to specified lines (`line-clamp-2`, `line-clamp-3`). Sets `overflow: hidden`, `display: -webkit-box`, `-webkit-box-orient: vertical`, and `-webkit-line-clamp: <number>` Multi-line Clamping (line-clamp) — Example 10[Open example](https://stevekinney.com/generated/playgrounds/77f4aa7c0638da3e1518d77f04480fc5b4ac3abfe4e59f669615a595df93fd02.html) <code><span class="line"><span style="color:#7FDBCA"><</span><span style="color:#CAECE6">div</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">"</span><span style="color:#ECC48D">w-48</span><span style="color:#D9F5DD">"</span><span style="color:#7FDBCA">></span></span>
+- **`line-clamp-<number>`**: يحدّ النص عند أسطر محدّدة (`line-clamp-2`، `line-clamp-3`). ويضبط `overflow: hidden` و`display: -webkit-box` و`-webkit-box-orient: vertical` و`-webkit-line-clamp: <number>` التقييد متعدّد الأسطر (line-clamp) — المثال 10[افتح المثال](https://stevekinney.com/generated/playgrounds/77f4aa7c0638da3e1518d77f04480fc5b4ac3abfe4e59f669615a595df93fd02.html) <code><span class="line"><span style="color:#7FDBCA"><</span><span style="color:#CAECE6">div</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">"</span><span style="color:#ECC48D">w-48</span><span style="color:#D9F5DD">"</span><span style="color:#7FDBCA">></span></span>
 <span class="line"><span style="color:#7FDBCA"> <</span><span style="color:#CAECE6">p</span><span style="color:#C5E478;font-style:italic"> class</span><span style="color:#7FDBCA">=</span><span style="color:#D9F5DD">"</span><span style="color:#ECC48D">line-clamp-3</span><span style="color:#D9F5DD">"</span><span style="color:#7FDBCA">></span></span>
-<span class="line"><span style="color:#D6DEEB"> This is a longer block of text that will be limited to a maximum of three lines before being</span></span>
-<span class="line"><span style="color:#D6DEEB"> truncated with an ellipsis.</span></span>
-<span class="line"><span style="color:#7FDBCA"> </</span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">></span></span>
+<span class="line"><span style="color:#D6DEEB"> هذه كتلة نص أطول ستُقيَّد بثلاثة أسطر كحدّ أقصى قبل أن</span></span>
+<span class="line"><span style="color:#D6DEEB"> تُقتطع بعلامة حذف.</span></span>
+<span class="line"><span style="color:#7FDBCA"> </span><span style="color:#CAECE6">p</span><span style="color:#7FDBCA">></span></span>
 <span class="line"><span style="color:#7FDBCA"></</span><span style="color:#CAECE6">div</span><span style="color:#7FDBCA">></span></span></code>
-- **`line-clamp-none`**: Removes previously applied line clamp
-- **Custom Values**: Use `line-clamp-[<value>]` for custom line counts
+- **`line-clamp-none`**: يزيل التقييد المطبَّق سابقًا
+- **قيم مخصّصة**: استخدم `line-clamp-[<value>]` لأعداد أسطر مخصّصة
 
-Apply responsively:
+طَبِّقه استجابةً:
 
-*Multi-line Clamping (line-clamp) — Example 11 — [Open example](https://stevekinney.com/generated/playgrounds/dc2e8ca349cb24d97c90cdaddc6ffcaec6f159d9eebb173140f44271868d7d77.html)*
+*التقييد متعدّد الأسطر (line-clamp) — المثال 11 — [افتح المثال](https://stevekinney.com/generated/playgrounds/dc2e8ca349cb24d97c90cdaddc6ffcaec6f159d9eebb173140f44271868d7d77.html)*
 
 ```html
 <p class="line-clamp-2 md:line-clamp-4">
@@ -181,4 +181,4 @@ Apply responsively:
 <p class="line-clamp-[5] lg:line-clamp-[8]">This text uses arbitrary line counts.</p>
 ```
 
-Tailwind’s text wrapping and truncation utilities provide comprehensive control over text flow directly in HTML, making it easy to manage complex layouts and handle overflow scenarios consistently.
+وتوفّر أصناف Tailwind المساعِدة للالتفاف والاقتطاع تحكّمًا شاملًا في تدفّق النص مباشرةً داخل HTML، فيصبح من السهل إدارة التخطيطات المعقّدة والتعامل مع حالات الفيض على نحو متّسق.

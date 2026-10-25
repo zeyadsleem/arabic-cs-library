@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/add-performance-budgets-to-shelf-solution"
 ---
 
-Performance budgets are one of those things that sound bureaucratic until the first time they save you. You ship a refactor, the bundle doubles, nobody notices for two weeks, and now it’s “just how big the app is.” The point of this lab is to make that scenario impossible by turning size and speed into numbers that a script can enforce.
+ميزانيات الأداء من تلك الأشياء التي تبدو بيروقراطية إلى أن تنقذك أول مرة. تُشحن إعادة هيكلة، فيتضاعف حجم الحزمة، ولا يلاحظ أحد ذلك أسبوعين، ثم يصبح الأمر «هذا هو حجم التطبيق فحسب». والهدف من هذا المختبر أن يجعل ذلك السيناريو مستحيلًا بتحويل الحجم والسرعة إلى أرقام يستطيع سكربت فرضها.
 
-The Shelf starter doesn’t ship this loop. Add the pieces below during the lab, then run the loop to prove it works. Start by installing the stats-build dependency:
+بادئ Shelf لا يتضمّن هذه الحلقة. أضف القطع أدناه أثناء المختبر، ثم شغّل الحلقة لتثبت أنها تعمل. ابدأ بتثبيت اعتماد بناء الإحصاءات:
 
 ```bash
 npm install -D rollup-plugin-visualizer
 ```
 
-## What to add
+## ما الذي تضيفه
 
 ### `performance-budgets.json`
 
@@ -28,13 +28,13 @@ npm install -D rollup-plugin-visualizer
 }
 ```
 
-This is the single source of truth for every threshold. Both the build script and the Playwright test read from this file. That’s deliberate — if you want to tighten or loosen a budget, you change one number in one place. The build thresholds are in gzipped kilobytes because that’s what actually travels over the wire. The runtime threshold is a `domContentLoaded` ceiling in milliseconds for the `/shelf` route.
+هذا هو المصدر الوحيد للحقيقة لكل عتبة. فسكربت البناء واختبار Playwright كلاهما يقرأ من هذا الملف. وذلك مقصود — إن أردت تشديد ميزانية أو تخفيفها، فتغيّر رقمًا واحدًا في مكان واحد. وعتبات البناء بالكيلوبايت بعد ضغط gzip لأن ذلك هو ما ينتقل فعلًا على الشبكة. وأما عتبة وقت التشغيل فهي سقف `domContentLoaded` بالمللي ثانية لمسار `/shelf`.
 
 ### `scripts/check-performance-budgets.mjs`
 
-This is the build-time half of the budget loop. It reads `build/stats.json` (emitted by `vite build` when you set `BUNDLE_STATS=1`) and `performance-budgets.json`, then walks the stats structure to compute client bundle sizes.
+هذا هو نصف حلقة الميزانيات الخاص بوقت البناء. يقرأ `build/stats.json` (الذي يُخرجه `vite build` حين تضبط `BUNDLE_STATS=1`) و`performance-budgets.json`، ثم يسير في بنية الإحصاءات ليحسب أحجام حزمة العميل.
 
-The interesting part is how it gets from the stats file to actual gzip numbers. Vite’s stats JSON organizes data across three related maps:
+والجزء المثير هو كيف ينتقل من ملف الإحصاءات إلى أرقام gzip الفعلية. فملف JSON الخاص بإحصاءات Vite ينظّم البيانات في ثلاث خرائط مترابطة:
 
 ```javascript
 const computeClientBundleSizes = (stats) => {
@@ -61,9 +61,9 @@ const computeClientBundleSizes = (stats) => {
 };
 ```
 
-`nodeMetas` maps each source module to its `moduleParts` — a dictionary from output bundle filename to a unique ID. That ID indexes into `nodeParts`, where the actual `gzipLength` lives. The script accumulates gzip bytes per bundle file, then filters to only the client-side chunks (anything under `_app/immutable`). Server bundles don’t matter for user-facing performance, so we skip them.
+`nodeMetas` يربط كل وحدة مصدرية بـ`moduleParts` الخاصة بها — قاموس من اسم ملف الحزمة الناتج إلى معرّف فريد. وذلك المعرّف يُفهرَس في `nodeParts`، حيث يقيم `gzipLength` الفعلي. ويجمع السكربت بايتات gzip لكل ملف حزمة، ثم يرشّح إلى قطع جهة العميل فقط (أي شيء تحت `_app/immutable`). وحزم الخادم لا تهمّ للأداء الذي يراه المستخدم، فنتجاوزها.
 
-After computing totals, the script compares against the budget file and exits non-zero if anything is over:
+وبعد حساب المجاميع، يقارن السكربت النتائج بملف الميزانيات ويخرج برمز غير صفري إن تجاوز شيء العتبة:
 
 ```javascript
 const failures = [];
@@ -74,11 +74,11 @@ if (typeof totalBudget === 'number' && totalGzipKilobytes > totalBudget) {
 }
 ```
 
-Exit code 1 means a budget was exceeded. Exit code 2 means the script itself errored (missing file, bad JSON). This distinction matters when you wire it into CI — a budget failure is a policy decision, not a crash.
+رمز الخروج 1 يعني أن ميزانية تجاوزت. ورمز الخروج 2 يعني أن السكربت نفسه أخطأ (ملف مفقود، أو JSON سيئ). وهذا التمييز يهمّ حين توصّله بـCI — فالفشل بسبب ميزانية قرار سياسي، لا انهيار.
 
 ### `tests/performance.spec.ts`
 
-The runtime half. This test loads budgets from the same JSON file, navigates to `/shelf`, and reads the actual browser timing:
+هذا هو النصف الخاص بوقت التشغيل. يحمّل هذا الاختبار الميزانيات من ملف JSON نفسه، وينتقل إلى `/shelf`، ثم يقرأ توقيت المتصفّح الفعلي:
 
 ```typescript
 const navigationTiming = await page.evaluate(() => {
@@ -92,45 +92,45 @@ const navigationTiming = await page.evaluate(() => {
 expect(navigationTiming.domContentLoaded).toBeLessThan(budgetMilliseconds);
 ```
 
-`page.evaluate` runs inside the actual Chromium instance, so you’re reading real `PerformanceNavigationTiming` data — not a mock, not a proxy. The `domContentLoadedEventEnd - startTime` delta gives you the time from navigation start to the point where the HTML is fully parsed and all synchronous scripts have executed. It doesn’t wait for images or lazy-loaded modules, which is exactly what you want for a “is this page interactive?” gate.
+`page.evaluate` يعمل داخل نسخة Chromium الفعلية، فأنت تقرأ بيانات `PerformanceNavigationTiming` حقيقية — لا بديلًا مُحاكى ولا وسيطًا. والفرق `domContentLoadedEventEnd - startTime` يمنحك الزمن من بداية الانتقال إلى اللحظة التي يكون فيها HTML قد حُلّل تحليلًا كاملًا ونُفِّذت فيه كل السكربتات المتزامنة. وهو لا ينتظر الصور ولا الوحدات المحمّلة بكسل، وهذا بالضبط ما تريده لبوابة من نوع «هل هذه الصفحة تفاعلية؟».
 
-The budget value comes from the same `performance-budgets.json`, so there’s no magic number hiding in the test file. If your current Shelf copy has already added the authenticated Playwright project from the storage-state lesson, run this spec there. If not, point the first version of the check at a public route and tighten it once the auth loop exists.
+وقيمة الميزانية تأتي من `performance-budgets.json` نفسه، فلا يوجد رقم سحري مخبّأ في ملف الاختبار. وإن كانت نسخة Shelf الحالية لديك قد أضافت مشروع Playwright الموثَّق من درس حالة التخزين، فشغّل هذه المواصفة هناك. وإن لم تكن، فوجّه النسخة الأولى من الفحص إلى مسار عام ثم شدّدها حين توجد حلقة المصادقة.
 
-## What you still need to run
+## ما يبقى عليك تشغيله
 
-### The build budget loop
+### حلقة ميزانية البناء
 
 ```bash
 npm run performance:build
 ```
 
-This runs `npm run build:stats` (which sets `BUNDLE_STATS=1` and runs `vite build` to emit `build/stats.json`) followed by the budget-check script. You should see output like:
+يشغّل هذا الأمر `npm run build:stats` (الذي يضبط `BUNDLE_STATS=1` ويشغّل `vite build` ليُخرج `build/stats.json`) ثم سكربت فحص الميزانيات. ويجب أن ترى مخرجات مثل:
 
 ```
 Performance budget check OK: total 78.3 kB / 110 kB, largest chunk 42.1 kB / 55 kB
 ```
 
-The exact numbers will vary with your build, but they should be under the thresholds.
+الأرقام الدقيقة ستتغيّر مع بناءك، لكن يجب أن تبقى تحت العتبات.
 
-### The runtime budget
+### ميزانية وقت التشغيل
 
 ```bash
 npm run performance:runtime
 ```
 
-This runs the Playwright performance spec against the preview server. If you already built the authenticated project in the earlier auth lab, this command should target that project. If you have not, the first version of the runtime check can point at a public route instead. Either way, the test reads `domContentLoaded` from the browser and compares it against the threshold in `performance-budgets.json`.
+يشغّل هذا الأمر مواصفة أداء Playwright على خادم المعاينة. وإن كنت قد بنيت المشروع الموثَّق في مختبر المصادقة السابق، فيجب أن يستهدف هذا الأمر ذلك المشروع. وإن لم تفعل، فالنسخة الأولى من فحص وقت التشغيل تستطيع أن تتوجّه إلى مسار عام بدلًا منه. وفي الحالتين، يقرأ الاختبار `domContentLoaded` من المتصفّح ويقارنه بالعتبة في `performance-budgets.json`.
 
-### The full loop
+### الحلقة الكاملة
 
 ```bash
 npm run performance:check
 ```
 
-This chains both: build budgets first, then runtime. If either fails, the command exits non-zero. This is the one you’d wire into CI.
+يسلسل هذا الأمر النصفين: ميزانيات البناء أولًا، ثم وقت التشغيل. وإن فشل أي منهما، خرج الأمر برمز غير صفري. وهذا هو الأمر الذي توصّله بـCI.
 
-### The deliberate-failure experiment
+### تجربة الفشل المتعمَّد
 
-This is the part that proves the budgets aren’t just decorative. Open `performance-budgets.json` and drop a threshold below what your build actually produces:
+هذا هو الجزء الذي يثبت أن الميزانيات ليست للزينة فحسب. افتح `performance-budgets.json` وأنزل عتبة واحدة تحت ما ينتجه بناءك فعلًا:
 
 ```json
 {
@@ -141,30 +141,30 @@ This is the part that proves the budgets aren’t just decorative. Open `perform
 }
 ```
 
-Now run:
+والآن شغّل:
 
 ```bash
 npm run performance:build
 ```
 
-You should see:
+ويجب أن ترى:
 
 ```
 Performance budget check FAILED:
   - Total client bundle size 78.3 kB gzip exceeds budget of 5 kB
 ```
 
-Exit code 1. The script caught it. Revert the change when you’re done — the point was to see the failure mode, not to live with an impossible budget.
+رمز الخروج 1. السكربت أمسكه. وأعد التغيير حين تنتهي — فالهدف كان رؤية نمط الفشل، لا العيش مع ميزانية مستحيلة.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **One file, one truth.** Both the build script and the Playwright test read from `performance-budgets.json`. When you tighten a budget, you edit one number. When an agent reads the budget, it finds one file.
-- **Build time and runtime are different questions.** Bundle size is a build-time property. Page load speed is a runtime property. Measuring both gives you coverage across the two most common ways performance regresses.
-- **Exit codes are an API.** The script distinguishes “budget exceeded” (exit 1) from “script crashed” (exit 2). CI pipelines and agents can act on that distinction.
-- **Real browser timing, not estimates.** The Playwright test uses `PerformanceNavigationTiming` from an actual Chromium instance. Synthetic benchmarks are better than no benchmarks, but real browser APIs are better than synthetic benchmarks.
-- **Named commands compose.** `performance:build`, `performance:runtime`, and `performance:check` are separately runnable. An agent can call the one it needs without running the full loop every time.
+- **ملف واحد، وحقيقة واحدة.** سكربت البناء واختبار Playwright كلاهما يقرأ من `performance-budgets.json`. فحين تشدّد ميزانية، تعدّل رقمًا واحدًا. وحين يقرأ وكيل الميزانية، يجد ملفًا واحدًا.
+- **وقت البناء ووقت التشغيل سؤالان مختلفان.** حجم الحزمة خاصية من خصائص وقت البناء. وسرعة تحميل الصفحة خاصية من خصائص وقت التشغيل. وقياسهما معًا يمنحك تغطية لأشيع طريقتين يتراجع بهما الأداء.
+- **رموز الخروج واجهة برمجية.** يميّز السكربت بين «تجاوز الميزانية» (الرمز 1) و«انهيار السكربت» (الرمز 2). وخطوط CI والوكلاء يستطيعون التصرّف بناءً على هذا التمييز.
+- **توقيت متصفّح حقيقي، لا تقديرات.** يستخدم اختبار Playwright واجهة `PerformanceNavigationTiming` من نسخة Chromium فعلية. والمعايير الاصطناعية أفضل من لا معايير، لكن واجهات المتصفّح الحقيقية أفضل من المعايير الاصطناعية.
+- **الأوامر المسمّاة تتركّب.** `performance:build` و`performance:runtime` و`performance:check` كلها قابلة للتشغيل منفصلة. فالوكيل يستطيع استدعاء ما يحتاجه دون تشغيل الحلقة كاملة كل مرة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Add Performance Budgets to Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf)
-- [Performance Budgets as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)
+- [مختبر: إضافة ميزانيات الأداء إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-performance-budgets-to-shelf)
+- [ميزانيات الأداء كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/performance-budgets-as-a-feedback-loop)

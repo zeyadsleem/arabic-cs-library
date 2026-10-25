@@ -1,12 +1,12 @@
 ---
-title: "Validating the Data Layer"
-lang: en
+title: "التحقق من طبقة البيانات"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/validating-the-data-layer"
 ---
 
-We’re still putting a lot of trust in our database layer as well. We should make sure that it’s also giving us back what we think it is.
+ما زلنا نضع ثقة كبيرة في طبقة قاعدة بياناتنا كذلك. وينبغي أن نتأكد من أنها تعيد إلينا ما نعتقد أنه هو.
 
-There are a number of ways to go about this, but we might start with a simple abstraction.
+هناك طرق عديدة لفعل ذلك، لكننا قد نبدأ بتجريد بسيط.
 
 ```typescript
 class TaskClient {
@@ -54,4 +54,4 @@ class TaskClient {
 }
 ```
 
-## Adding Our Task Model to Our API Layer
+## إضافة نموذج المهمة إلى طبقة API

@@ -1,30 +1,30 @@
 ---
-title: "Mock Service Worker"
-lang: en
+title: "Mock Service Worker: طبقة سلوك الشبكة"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/mock-service-worker"
 ---
 
-Mock Service Worker—usually just MSW—is best understood as a network-behavior layer. You don’t stub `fetch`, patch Axios, or teach React Query about a fake backend. You describe how the network should behave, and the application keeps making real requests. MSW intercepts them at the boundary where your app meets the network, not at the call site where one library happened to issue the request.
+Mock Service Worker — ويُختصر عادةً إلى MSW — أسهل ما يُفهم به أنه طبقة سلوك شبكي. فأنت لا تُبدّل `fetch`، ولا تعدّل Axios، ولا تعلّم React Query خادمًا خلفيًا مزيفًا. بل تصف كيف ينبغي أن تتصرّف الشبكة، ويواصل التطبيق إجراء طلبات حقيقية. ويعترضها MSW عند الحدّ الذي يلتقي فيه تطبيقك بالشبكة، لا عند موضع النداء الذي صادف أن أصدر مكتب ما الطلب منه.
 
-MSW works in the browser and in Node.js, supports HTTP, GraphQL, and WebSocket mocking, and the [current documentation](https://mswjs.io/docs/) is centered on the v2 API: `http`, `HttpResponse`, `setupWorker`, and `setupServer`. MSW 2.0 was the major API reset and requires Node 18 or newer.
+يعمل MSW في المتصفح وفي Node.js، ويدعم محاكاة HTTP وGraphQL وWebSocket، و[الوثائق الحالية](https://mswjs.io/docs/) تتمحور حول واجهة v2: `http` و`HttpResponse` و`setupWorker` و`setupServer`. وكان MSW 2.0 إعادة الضبط الكبرى للواجهة البرمجية ويشترط Node 18 أو أحدث.
 
-> **Warning**
+> **تحذير**
 >
-> A lot of older MSW content still floats around using `rest.get()` and `res(ctx.json())`. If you see that style, you’re reading [v1-era material](https://v1.mswjs.io/docs/api/rest). Current MSW uses `http.*` request handlers and `HttpResponse`. Stale tutorials breed faster than good maintenance habits.
+> ما زال قدر كبير من محتوى MSW القديم ينتشر باستخدام `rest.get()` و`res(ctx.json())`. وإن رأيت ذلك الأسلوب، فأنت تقرأ [مواد من حقبة v1](https://v1.mswjs.io/docs/api/rest). أما MSW الحالي فيستخدم معالجات طلبات `http.*` و`HttpResponse`. فالدروس القديمة تتوالد أسرع من عادات الصيانة الجيدة.
 
-## What MSW Is Actually Doing
+## ما الذي يفعله MSW فعلًا
 
-In the browser, MSW registers a real Service Worker and intercepts requests on the network level. Because it sits *below* your request client, the same mocks work whether the app uses native `fetch`, Axios, Apollo, React Query, or something else entirely. The [official docs](https://mswjs.io/docs/integrations/browser/) describe this as client-agnostic—you make zero changes to the application code just to mock the API.
+في المتصفح، يسجّل MSW عامل خدمة حقيقيًا ويعترض الطلبات على مستوى الشبكة. ولأنه يقف *أسفل* عميل طلباتك، تعمل المحاكاة نفسها سواء استخدم التطبيق `fetch` الأصلي أو Axios أو Apollo أو React Query أو شيئًا آخر تمامًا. و[الوثائق الرسمية](https://mswjs.io/docs/integrations/browser/) تصف ذلك بأنه محايد تجاه العميل—فأنت لا تغيّر شيئًا في شيفرة التطبيق لمجرد محاكاة الواجهة البرمجية.
 
-In Node.js, there’s no Service Worker, so MSW uses [`setupServer()`](https://mswjs.io/docs/api/setup-server/) from `msw/node` to intercept outgoing traffic inside the current process. Despite the name, it doesn’t create an HTTP server. The Node integration works by augmenting native request-issuing modules like `http` and `https`, and it exists so you can reuse the same handlers you wrote for the browser.
+وفي Node.js لا يوجد عامل خدمة، لذا يستخدم MSW [`setupServer()`](https://mswjs.io/docs/api/setup-server/) من `msw/node` لاعتراض الحركة الصادرة داخل العملية الحالية. ورغم الاسم، فهو لا ينشئ خادم HTTP. فتكامل Node يعمل بزيادة الوحدات الأصلية المُصدِرة للطلبات مثل `http` و`https`، ووُجد كي تعيد استخدام المعالجات نفسها التي كتبتها للمتصفح.
 
-That’s the core reason MSW feels better than request-client stubbing in larger codebases. The mock becomes a standalone source of truth for network behavior that can be reused in local development, debugging, integration tests, Storybook, and demos—instead of being reimplemented separately in each tool.
+وهذا هو السبب الجوهري في أن MSW يبدو أفضل من تبديل عميل الطلبات في قواعد الشيفرة الأكبر. فتصير المحاكاة مصدر حقيقة مستقلًا لسلوك الشبكة يمكن إعادة استخدامه في التطوير المحلي، والتنقيح، واختبارات التكامل، وStorybook، والعروض التوضيحية—بدل إعادة تنفيذه منفصلًا في كل أداة.
 
-## The Mental Model
+## النموذج الذهني
 
-Request handlers are your mock API contract. `setupWorker()` and `setupServer()` are environment adapters. Runtime overrides are per-test or per-session deviations from the default contract. MSW’s [own docs recommend](https://mswjs.io/docs/) thinking in terms of describing the network once and reusing that description everywhere.
+معالجات الطلبات هي عقد واجهتك البرمجية المُحاكاة. و`setupWorker()` و`setupServer()` مهايئات بيئة. والتجاوزات وقت التشغيل انحرافات لكل اختبار أو لكل جلسة عن العقد الافتراضي. و[وثائق MSW نفسها توصي](https://mswjs.io/docs/) بالتفكير من حيث وصف الشبكة مرة واحدة وإعادة استخدام ذلك الوصف في كل مكان.
 
-A handler has two parts. The **predicate** decides which requests match. The **resolver** decides what to do with a matched request. The [`http` namespace](https://mswjs.io/docs/api/http/) is the main entry point for REST-style work, and it mirrors HTTP methods—`get`, `post`, `put`, `delete`:
+وللمعالج جزءان. فـ**المُسند** (predicate) يقرّر أي الطلبات تطابق. و**المُحلِّل** (resolver) يقرّر ما يُفعل بالطلب المطابق. و[فضاء الأسماء `http`](https://mswjs.io/docs/api/http/) هو نقطة الدخول الرئيسية لعمل على نمط REST، وهو يحاكي توابع HTTP—`get` و`post` و`put` و`delete`:
 
 ```typescript
 // src/mocks/handlers.ts
@@ -51,20 +51,20 @@ export const handlers = [
 ];
 ```
 
-Handlers read like route definitions. Path parameters are available as `params`. The `request` argument is a regular Fetch `Request`, so you read JSON, text, form data, blobs, and streams the same way you would anywhere else on the web platform. If you plan to pass the request through or replay it, clone it before reading the body so you don’t consume the stream twice.
+تُقرأ المعالجات كتعريفات مسارات. ومعاملات المسار متاحة كـ`params`. ووسيط `request` هو `Request` عادي من Fetch، فتقرأ JSON والنص وبيانات النماذج والكائنات الثنائية والدفق بالطريقة نفسها التي تقرؤها بها في أي مكان آخر على منصة الويب. وإن كنت تنوي تمرير الطلب عبره أو إعادة تشغيله، فانسخه قبل قراءة جسمه كي لا تستهلك الدفق مرتين.
 
-For responses, MSW lets you return a plain Fetch `Response`, but the docs recommend [`HttpResponse`](https://mswjs.io/docs/api/http-response/) because it’s a drop-in replacement with better ergonomics and server-like features—response-cookie handling, for example—that plain `Response` doesn’t expose well in mocks.
+وللردود، يتيح لك MSW إعادة `Response` عادي من Fetch، لكن الوثائق توصي بـ[`HttpResponse`](https://mswjs.io/docs/api/http-response/) لأنه بديل جاهز بإمكانيات أفضل وميزات شبيهة بالخادم—معالجة كوكيز الاستجابة مثلًا—لا يعرضها `Response` العادي جيدًا في المحاكاة.
 
-## Browser Setup
+## إعداد المتصفح
 
-Browser setup has one extra moving part that people forget and then blame on the moon: the worker script itself. If your application uses MSW in the browser, it must host and serve `mockServiceWorker.js`. The [official CLI command](https://mswjs.io/docs/integrations/browser/) copies the worker into your public assets directory:
+لإعداد المتصفح جزء متحرك إضافي ينساه الناس ثم يلومون القمر: سكربت العامل نفسه. فإن كان تطبيقك يستخدم MSW في المتصفح، فعليه استضافة `mockServiceWorker.js` وخدمته. و[أمر الواجهة البرمجية الرسمي](https://mswjs.io/docs/integrations/browser/) ينسخ العامل إلى مجلد أصولك العام:
 
 ```bash
 npm i -D msw
 npx msw init public --save
 ```
 
-Then create a browser integration point with `setupWorker()` and start it during app bootstrap:
+ثم أنشئ نقطة تكامل متصفح بـ`setupWorker()` وابدأها أثناء إقلاع التطبيق:
 
 ```typescript
 // src/mocks/browser.ts
@@ -81,11 +81,11 @@ import { worker } from './mocks/browser';
 await worker.start();
 ```
 
-[`worker.start()`](https://mswjs.io/docs/api/setup-worker/start/) is asynchronous because the Service Worker has to be registered and activated. The docs are explicit: `await` it to avoid race conditions between app startup and request interception. By default, it looks for the worker script at `/mockServiceWorker.js`, and the registration path matters because a Service Worker can only control pages at its level and below—which is why registering at the root is usually the right move.
+و[`worker.start()`](https://mswjs.io/docs/api/setup-worker/start/) غير متزامن لأن عامل الخدمة يجب أن يُسجَّل ويُنشَّط. والوثائق صريحة: انتظره بـ`await` لتجنب حالات التسابق بين إقلاع التطبيق واعتراض الطلبات. وهو يبحث افتراضيًا عن سكربت العامل في `/mockServiceWorker.js`، ويهمّ مسار التسجيل لأن عامل الخدمة لا يستطيع التحكم إلا في الصفحات الواقعة في مستواه وأدناه—ولهذا يكون التسجيل في الجذر هو الخيار الصحيح عادةً.
 
-## Node Setup
+## إعداد Node
 
-Node setup is simpler because there’s no worker file. Define the same handlers, create a server integration with `setupServer()` from `msw/node`, and enable it in the Node process where your tests run. The [docs recommend](https://mswjs.io/docs/integrations/node/) doing that as early as possible so all outgoing requests are affected.
+إعداد Node أبسط لأنه لا يوجد ملف عامل. عرّف المعالجات نفسها، وأنشئ تكامل خادم بـ`setupServer()` من `msw/node`، وتمكينه في عملية Node التي تعمل فيها اختباراتك. و[الوثائق توصي](https://mswjs.io/docs/integrations/node/) بذلك في أبكر وقت ممكن كي تتأثر كل الطلبات الصادرة.
 
 ```typescript
 // src/mocks/node.ts
@@ -113,27 +113,27 @@ afterAll(() => {
 });
 ```
 
-That lifecycle isn’t arbitrary ceremony. The [Node integration docs](https://mswjs.io/docs/integrations/node/) call out the three critical steps: enable interception before tests, reset runtime overrides between tests, and restore native request behavior after the suite finishes. `server.listen()` is synchronous—unlike `worker.start()`—because there’s no browser worker to register.
+ودورة الحياة تلك ليست طقسًا اعتباطيًا. فـ[وثائق تكامل Node](https://mswjs.io/docs/integrations/node/) تذكر الخطوات الثلاث الحاسمة: تمكين الاعتراض قبل الاختبارات، وإعادة ضبط تجاوزات وقت التشغيل بين الاختبارات، واستعادة سلوك الطلبات الأصلي بعد انتهاء المجموعة. و`server.listen()` متزامن—بخلاف `worker.start()`—لأنه لا يوجد عامل متصفح يُسجَّل.
 
-The same handler list can be shared between browser and Node, but shared doesn’t mean magical. If a handler reaches for browser-only APIs like `location` or `localStorage`, those won’t exist in Node unless you polyfill them or choose a test environment that provides them. Keep handlers focused on request and response logic instead of environmental side quests.
+ويمكن مشاركة قائمة المعالجات نفسها بين المتصفح وNode، لكن المشاركة ليست سحرًا. فإن وصل معالج إلى واجهات خاصة بالمتصفح مثل `location` أو `localStorage`، فلن توجد في Node إلا إن وفرتها بدائل أو اخترت بيئة اختبار توفّرها. أبقِ المعالجات مركّزة على منطق الطلب والاستجابة بدل مهمات بيئية جانبية.
 
-## How Request Matching Works
+## كيف يعمل مطابقة الطلبات
 
-MSW’s [request matching](https://mswjs.io/docs/http/intercepting-requests/) is intentionally route-like. A predicate can be a relative URL, an absolute URL, a regular expression, or a custom predicate function. String predicates support wildcards and named path parameters like `:id`, and matching is powered by `path-to-regexp`—so it feels familiar if you’ve worked with Express or any other server router.
+إن [مطابقة الطلبات](https://mswjs.io/docs/http/intercepting-requests/) في MSW شبيهة بالمسارات عن قصد. فيمكن أن يكون المُسند عنوانًا نسبيًا، أو عنوانًا مطلقًا، أو تعبيرًا نمطيًا، أو دالة مُسند مخصّصة. وتدعم مُسندات النصوص الرموز البديلة ومعاملات المسارات المسماة مثل `:id`، والمطابقة تعمل بـ`path-to-regexp`—فتشعرها مألوفة إن عملت بـExpress أو أي موجّه خادم آخر.
 
-A few rules matter in practice:
+وتهمّ بعض القواعد عمليًا:
 
-- Relative URLs resolve against the current document in the browser, which is convenient there but tricky in Node because Node has no `location`.
-- Query parameters are *not* part of the route predicate. Don’t include them. They’re stripped for matching—read them from the request URL inside the resolver instead.
-- When you need something more custom, the predicate can be a function that returns a boolean.
+- تُحلّ العناوين النسبية مقابل المستند الحالي في المتصفح، وهو مناسب هناك لكنه دقيق في Node لأن Node لا يملك `location`.
+- معاملات الاستعلام *ليست* جزءًا من مُسند المسار. لا تُدرجها. فهي تُجرَّد للمطابقة—واقرأها من عنوان الطلب داخل المُحلِّل بدلًا من ذلك.
+- وعندما تحتاج شيئًا أكثر تخصيصًا، يمكن أن يكون المُسند دالة تعيد قيمة منطقية.
 
-That design nudges you toward modeling resources the way servers do, not the way tests often do. You don’t match “the fetch call from `users.ts`.” You match `GET /users/:id`. That’s a healthier contract, and it ages better than binding your mocks to whichever client abstraction the team got attached to that quarter.
+وذلك التصميم يدفعك إلى نمذجة الموارد كما تفعل الخوادم، لا كما تفعله الاختبارات غالبًا. فأنت لا تطابق «نداء الجلب من `users.ts`»، بل تطابق `GET /users/:id`. وذلك عقد أصح، ويعمّر أطول من ربط محاكاتك بأي تجريد عميل تعلّق به الفريق في ذلك الربع.
 
-## Handling Responses
+## معالجة الاستجابات
 
-The most common thing a resolver does is return a mocked response. MSW treats that response as a web-standard object, so your mocks use the same shapes and semantics as real network code. But mocked responses aren’t the only option—a request can be [passed through to the real network](https://mswjs.io/docs/api/passthrough/), or a resolver can combine live and mocked data when needed.
+أكثر ما يفعله المُحلِّل شيوعًا هو إعادة استجابة مُحاكاة. ويعامل MSW تلك الاستجابة ككائن معياري للويب، فتستخدم محاكاتك الأشكال والدلالات نفسها التي تستخدمها شيفرة الشبكة الحقيقية. لكن الاستجابات المُحاكاة ليست الخيار الوحيد—فيمكن [تمرير الطلب إلى الشبكة الحقيقية](https://mswjs.io/docs/api/passthrough/)، أو أن يجمع المُحلِّل بيانات حيّة وأخرى مُحاكاة عند الحاجة.
 
-`passthrough()` and `bypass()` are the two APIs people mix up. **`passthrough()`** says “let this intercepted request continue to the real network as-is”—it doesn’t create an extra request. **`bypass()`** performs an *additional* request outside MSW’s interception algorithm, which makes it useful for response patching when you want to fetch the real response and then modify it before returning a mock-enhanced result.
+`passthrough()` و`bypass()` هما الواجهتان التي يخلط الناس بينهما. فـ**`passthrough()`** تقول «دع هذا الطلب المعترَض يكمل إلى الشبكة الحقيقية كما هو»—وهي لا تنشئ طلبًا إضافيًا. أما **`bypass()`** فتُجري طلبًا *إضافيًا* خارج خوارزمية الاعتراض في MSW، ما يجعلها مفيدة لترقيع الاستجابات عندما تريد جلب الاستجابة الحقيقية ثم تعديلها قبل إعادة نتيجة معزّزة بالمحاكاة.
 
 ```typescript
 import { http, HttpResponse, passthrough, bypass } from 'msw';
@@ -158,13 +158,13 @@ export const handlers = [
 ];
 ```
 
-`passthrough()` is for conditional reality. `bypass()` is for “call reality from inside the mock and patch the answer.” Humans love giving two related APIs nearly identical names, so here we are.
+`passthrough()` للواقع الشرطي. و`bypass()` لـ«نادِ الواقع من داخل المحاكاة ورقّع الجواب». والبشر يحبون إعطاء واجهتين متصلتين أسماء شبه متطابقة، فها نحن هنا.
 
-## Runtime Overrides
+## تجاوزات وقت التشغيل
 
-The default handler list should describe the happy path. MSW’s [best-practices docs](https://mswjs.io/docs/best-practices/structuring-handlers/) recommend a single top-level `handlers` module for that base behavior, and then [runtime overrides](https://mswjs.io/docs/best-practices/network-behavior-overrides/) for special cases—401s, 500s, empty states, or one-off edge cases in individual tests.
+ينبغي أن تصف قائمة المعالجات الافتراضية المسار السعيد. و[وثائق أفضل الممارسات](https://mswjs.io/docs/best-practices/structuring-handlers/) في MSW توصي بوحدة `handlers` عليا واحدة لذلك السلوك الأساسي، ثم [تجاوزات وقت التشغيل](https://mswjs.io/docs/best-practices/network-behavior-overrides/) للحالات الخاصة—أخطاء 401، وأخطاء 500، والحالات الفارغة، أو حالات حدّية فردية في اختبارات بعينها.
 
-`.use()` prepends new handlers so they take precedence over the initial ones. That’s what makes per-test overrides work cleanly. You don’t replace the whole mock API—you temporarily shadow one route. MSW also supports one-time overrides via `{ once: true }`, which exhaust themselves after the first match:
+و`.use()` تُقدّم معالجات جديدة فتصبح لها الأولوية على المعالجات الأولية. وهذا ما يجعل تجاوزات كل اختبار تعمل بنظافة. فأنت لا تستبدل الواجهة البرمجية المُحاكاة كاملة—بل تحجب مسارًا واحدًا مؤقتًا. ويدعم MSW أيضًا تجاوزات لمرة واحدة عبر `{ once: true }`، وهي تستنفد نفسها بعد أول تطابق:
 
 ```typescript
 import { http, HttpResponse } from 'msw';
@@ -177,15 +177,15 @@ server.use(
 );
 ```
 
-[`resetHandlers()`](https://mswjs.io/docs/api/setup-server/reset-handlers/) removes runtime overrides and takes you back to the initial handler set. If you pass a new handler list into `resetHandlers()`, it replaces the initial set entirely. `restoreHandlers()` re-arms exhausted one-time handlers so they can match again. Those rules are worth remembering because they’re the difference between isolated tests and the usual slow-motion contamination disaster.
+و[`resetHandlers()`](https://mswjs.io/docs/api/setup-server/reset-handlers/) تزيل تجاوزات وقت التشغيل وتعيدك إلى مجموعة المعالجات الأولية. وإن مرّرت قائمة معالجات جديدة إلى `resetHandlers()`، فهي تستبدل المجموعة الأولية تمامًا. و`restoreHandlers()` تعيد تسليح معالجات لمرة واحدة مستنفدة كي تطابق مجددًا. وهذه القواعد تستحق التذكّر لأنها الفرق بين اختبارات معزولة وكارثة التلوث بطيئة الحركة المعتادة.
 
-## Testing Philosophy
+## فلسفة الاختبار
 
-MSW has a very opinionated testing philosophy, and it’s the right one. The [docs explicitly recommend](https://mswjs.io/docs/best-practices/avoid-request-assertions/) avoiding request assertions like “did we call this URL,” “did we send this body,” or “did handler X run.” Those are implementation-detail assertions. They test *how* your code happens to be written instead of *what* the user-visible behavior is.
+لMSW فلسفة اختبار صارمة جدًا، وهي الصحيحة. فـ[الوثائق توصي صراحةً](https://mswjs.io/docs/best-practices/avoid-request-assertions/) بتجنب تأكيدات الطلبات مثل «هل نادينا هذا العنوان»، أو «هل أرسلنا هذا الجسم»، أو «هل عمل المعالج X». فتلك تأكيدات على تفاصيل التنفيذ. إنها تختبر *كيف* كُتبت شيفرتك صدفةً بدل *ما* السلوك المرئي للمستخدم.
 
-The better pattern: validate request correctness inside the handler and let the application react to the resulting response. If a login request is missing an `email` field, the handler returns a 400. Your test asserts that the UI shows an error, disables submit, retries—whatever real behavior matters. That keeps the network contract realistic and makes broken requests fail the same way they’d fail against a real backend.
+والنمط الأفضل: تحقّق من صحة الطلب داخل المعالج ودع التطبيق يتفاعل مع الاستجابة الناتجة. فإن كان طلب تسجيل الدخول يفتقد حقل `email`، يعيد المعالج الخطأ 400. ويؤكّد اختبارك أن الواجهة تعرض خطأً، أو تعطّل الإرسال، أو تعيد المحاولة—أي السلوك الحقيقي المهم. وهذا يبقي عقد الشبكة واقعيًا ويجعل الطلبات المعطوبة تفشل بالطريقة نفسها التي ستفشل بها أمام خادم خلفي حقيقي.
 
-For unhandled traffic, set `onUnhandledRequest: 'error'` in tests so unknown requests fail loudly instead of quietly drifting to the real network. For edge cases where a request has no visible product effect—analytics, monitoring, fire-and-forget telemetry—use the [life-cycle events API](https://mswjs.io/docs/runbook/) to observe requests and responses directly:
+وللحركة غير المعالَجة، اضبط `onUnhandledRequest: 'error'` في الاختبارات كي تفشل الطلبات المجهولة بصوت عالٍ بدل أن تنزلق بهدوء إلى الشبكة الحقيقية. وللحالات الحدّية التي لا أثر مرئي للمنتج فيها—التحليلات، والمراقبة، والقياس عن بعد الذي لا ينتظر ردًا—استخدم [واجهة أحداث دورة الحياة](https://mswjs.io/docs/runbook/) لمراقبة الطلبات والاستجابات مباشرةً:
 
 ```typescript
 server.events.on('request:start', ({ request }) => {
@@ -193,25 +193,25 @@ server.events.on('request:start', ({ request }) => {
 });
 ```
 
-That event API is also the first thing the official [debugging runbook](https://mswjs.io/docs/runbook/) recommends when MSW appears not to be working. If `request:start` isn’t firing, the problem is setup. If it *is* firing but the wrong handler matches, the problem is your network description. That alone will save you a lot of pointless swearing.
+وواجهة الأحداث تلك هي أيضًا أول ما يوصي به [دليل التنقيح](https://mswjs.io/docs/runbook/) الرسمي عندما يبدو أن MSW لا يعمل. فإن لم يعمل `request:start`، فالمشكلة في الإعداد. وإن كان يعمل *لكن* يطابق المعالج الخطأ، فالمشكلة في وصف شبكتك. وهذا وحده سيوفر عليك كثيرًا من الشتم بلا طائل.
 
-## Beyond REST
+## ما هو أبعد من REST
 
-MSW isn’t just an HTTP route mocker. The current docs cover first-class [GraphQL support](https://mswjs.io/docs/api/graphql/) through the `graphql` namespace, which handles queries and mutations directly. (GraphQL subscriptions aren’t supported there yet.)
+MSW ليس مجرد محاكي مسارات HTTP. فوثائقه الحالية تغطّي [دعم GraphQL](https://mswjs.io/docs/api/graphql/) من الدرجة الأولى عبر فضاء الأسماء `graphql`، الذي يتعامل مع الاستعلامات والتغييرات مباشرةً. (اشتراكات GraphQL غير مدعومة هناك بعد.)
 
-MSW also has first-class [WebSocket support](https://mswjs.io/docs/websocket/) through the `ws` namespace. The WebSocket model is standards-first too—you work with connection and message events according to the WHATWG WebSocket model, and you can intercept both outgoing client events and incoming server events. That makes MSW useful for more than CRUD screens, which is refreshing in a world where every “full-stack guide” secretly means a todo app with branding.
+ولدى MSW أيضًا [دعم WebSocket](https://mswjs.io/docs/websocket/) من الدرجة الأولى عبر فضاء الأسماء `ws`. ونموذج WebSocket معياري المنحى أيضًا—فتعمل مع أحداث الاتصال والرسائل وفق نموذج WebSocket من WHATWG، وتستطيع اعتراض أحداث العميل الصادرة وأحداث الخادم الواردة معًا. وهذا يجعل MSW مفيدًا لأبعد من شاشات CRUD، وهو أمر منعش في عالم كل «دليل ويب كامل» فيه يعني سرًا تطبيق مهام مع هوية تجارية.
 
-## Where People Get Into Trouble
+## أين يقع الناس في المشكلات
 
-**Browser**: the most common problems are boring setup errors. The worker file is missing, served from the wrong place, or registered under a scope that doesn’t cover the page making requests. Not awaiting `worker.start()` creates race conditions where early requests escape before mocking is active.
+**المتصفح**: أكثر المشكلات شيوعًا أخطاء إعداد مملة. فملف العامل مفقود، أو يُخدم من موضع خاطئ، أو يُسجَّل في نطاق لا يغطّي الصفحة التي تجري الطلبات. وعدم انتظار `worker.start()` ينشئ حالات تسابق تهرب فيها الطلبات المبكرة قبل تفعيل المحاكاة.
 
-**Node**: shared handlers that rely on browser globals fail, relative URL assumptions don’t translate because Node has no document location, and the [limitations page](https://mswjs.io/docs/api/setup-server/) warns that requests made through direct `net.connect()` or `net.createConnection()` paths—including some Undici-based clients—aren’t visible to MSW. “Client-agnostic” is true in the normal case, but Node still has sharp edges where some lower-level clients slip past interception.
+**Node**: تفشل المعالجات المشتركة التي تعتمد على عموميات المتصفح، وافتراضات العناوين النسبية لا تنتقل لأن Node بلا موضع مستند، و[صفحة القيود](https://mswjs.io/docs/api/setup-server/) تحذّر من أن الطلبات المُجراة عبر مسارات `net.connect()` أو `net.createConnection()` المباشرة—بما فيها بعض عملاء Undici—غير مرئية لـMSW. فـ«محايد تجاه العميل» صحيح في الحالة العادية، لكن Node ما زال فيه حواف حادّة يفلت عبرها بعض العملاء الأدنى مستوى من الاعتراض.
 
-**Jest**: the [official FAQ](https://mswjs.io/docs/faq/) says that errors like `Request is not defined`, `Response is not defined`, or `TextEncoder is not defined` often come from `jest-environment-jsdom` replacing Node built-ins with polyfills that break compatibility. The docs recommend `jest-fixed-jsdom` instead.
+**Jest**: [الأسئلة الشائعة الرسمية](https://mswjs.io/docs/faq/) تقول إن أخطاءً مثل `Request is not defined` أو `Response is not defined` أو `TextEncoder is not defined` تأتي غالبًا من استبدال `jest-environment-jsdom` لوحدات Node المدمجة ببدائل تكسر التوافق. وتوصي الوثائق بـ`jest-fixed-jsdom` بدلًا منه.
 
-## Structuring an MSW Setup
+## هيكلة إعداد MSW
 
-Keep it boring on purpose:
+أبقِه مملًا عن قصد:
 
 ```
 src/
@@ -225,28 +225,28 @@ src/
     node.ts
 ```
 
-Handler files grouped by domain, with `index.ts` composing them into one `handlers` export. That matches MSW’s [guidance](https://mswjs.io/docs/best-practices/structuring-handlers/) to keep a base happy-path network description and group handlers by product area instead of dumping everything into one giant file. `browser.ts` and `node.ts` stay thin environment adapters. Tests use runtime overrides instead of forking the main handler set.
+ملفات معالجات مجمّعة حسب النطاق، مع `index.ts` يجمعها في تصدير `handlers` واحد. وهذا يطابق [إرشاد](https://mswjs.io/docs/best-practices/structuring-handlers/) MSW بالحفاظ على وصف شبكة أساسي للمسار السعيد وتجميع المعالجات حسب منطقة المنتج بدل إلقاء كل شيء في ملف عملاق واحد. ويبقى `browser.ts` و`node.ts` مهايئَي بيئة رقيقين. وتستخدم الاختبارات تجاوزات وقت التشغيل بدل تفرّع مجموعة المعالجات الرئيسية.
 
-Once it’s arranged that way, MSW stops feeling like test glue and starts feeling like infrastructure—the kind that’s actually pleasant to maintain, which is admittedly suspicious.
-
----
-
-## TL;DR
-
-### Network-Level Interception
-
-> MSW intercepts at the network boundary, not at the call site.
-
-- Works with `fetch`, Axios, Apollo, React Query—anything that makes HTTP requests.
-- **Browser:** Service Worker intercepts outgoing requests. Requires `mockServiceWorker.js` in your public assets.
-- **Node:** Native module interception. No worker file, no polyfills.
-- Same handlers work in both environments. Write once, use in tests, Storybook, and local development.
+وبمجرد أن يُرتّب على هذا النحو، يتوقف MSW عن الإحساس بأنه صمغ اختبارات ويبدأ في الإحساس بأنه بنية تحتية—من النوع الممتع فعلًا في صيانته، وهو أمر مريب بلا شك.
 
 ---
 
-### Handler Anatomy
+## الخلاصة السريعة (TL;DR)
 
-> Two parts: a predicate (which requests match) and a resolver (what to return).
+### الاعتراض على مستوى الشبكة
+
+> يعترض MSW عند حدّ الشبكة، لا عند موضع النداء.
+
+- يعمل مع `fetch` وAxios وApollo وReact Query—وكل ما يجري طلبات HTTP.
+- **المتصفح:** يعترض عامل الخدمة الطلبات الصادرة. ويتطلب `mockServiceWorker.js` في أصولك العامة.
+- **Node:** اعتراض لوحدات أصلية. بلا ملف عامل، وبلا بدائل.
+- المعالجات نفسها تعمل في البيئتين. اكتب مرة، واستخدم في الاختبارات وStorybook والتطوير المحلي.
+
+---
+
+### تشريح المعالج
+
+> جزءان: مُسند (أي الطلبات تطابق) ومُحلِّل (ما يُعاد).
 
 ```typescript
 import { http, HttpResponse } from 'msw';
@@ -263,14 +263,14 @@ export const handlers = [
 ];
 ```
 
-- Route-style matching with path params, regex, and wildcard support.
-- Resolvers receive the full `request` object—read headers, body, cookies.
+- مطابقة على نمط المسارات بمعاملات مسار ودعم التعبيرات النمطية والرموز البديلة.
+- يستقبل المُحلِّلون كائن `request` كاملًا—اقرأ الترويسات والجسم والكوكيز.
 
 ---
 
-### Runtime Overrides
+### تجاوزات وقت التشغيل
 
-> Base handlers define the happy path. Per-test overrides handle the exceptions.
+> المعالجات الأساسية تحدّد المسار السعيد. وتجاوزات كل اختبار تتولّى الاستثناءات.
 
 ```typescript
 it('shows an error when the API fails', async () => {
@@ -283,7 +283,7 @@ it('shows an error when the API fails', async () => {
 });
 ```
 
-- `server.use()` prepends handlers for the duration of the test.
-- `server.resetHandlers()` in `afterEach` restores the base handlers.
-- Add `{ once: true }` for one-shot overrides that auto-remove.
-- Avoid asserting *that* a request was made. Assert the *user-visible behavior* that results from it.
+- `server.use()` تقدّم معالجات لمدة الاختبار.
+- `server.resetHandlers()` في `afterEach` تعيد المعالجات الأساسية.
+- أضف `{ once: true }` لتجاوزات لمرة واحدة تُزال تلقائيًا.
+- تجنّب التأكيد *على أن* طلبًا جرى. أكّد *السلوك المرئي للمستخدم* الناتج عنه.

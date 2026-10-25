@@ -1,91 +1,91 @@
 ---
-title: "Goals and Loops in Practice"
-lang: en
+title: "الأهداف والحلقات عمليًا (Goals and Loops in Practice)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/goals-and-loops-in-practice"
 ---
 
-[Goals and Loops](https://stevekinney.com/courses/ai-development-setup/goals-and-loops) explained how the two commands work. This lesson is about using them without waking up to a surprise. Most of the damage comes from a handful of settings and prompt habits, so let’s start there.
+شرح [الأهداف والحلقات](https://stevekinney.com/courses/ai-development-setup/goals-and-loops) كيف يعمل الأمران. وهذا الدرس عن استخدامهما دون أن تستيقظ على مفاجأة. فمعظم الضرر يأتي من حفنة من الإعدادات وعادات الطلب، فلنبدأ من هناك.
 
-## Configuration
+## التهيئة
 
-- **`loop.md`**: A file that sets the default prompt for a bare `/loop`. Put it at `.claude/loop.md` for the project or `~/.claude/loop.md` for yourself. Edits take effect on the next run, so you can steer a loop that’s already going.
-- **`CLAUDE_CODE_DISABLE_CRON`**: An environment variable that turns off `/loop` and scheduling entirely. Handy for locked-down machines.
-- **`CLAUDE_CODE_GOAL_CHECKIN_MINUTES`**: Sets the first check-in interval for a goal that’s waiting on background work. `0` disables check-ins *and* automatic retries.
-- **`ANTHROPIC_DEFAULT_HAIKU_MODEL`**: Changes the evaluator model *and* the model for other background work. Know that before you point it at something expensive.
-- **`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP`**: How many times in a row a `Stop` hook can block the agent from stopping. The default is 8.
+- **`loop.md`**: ملف يضبط الطلب الافتراضي لـ `/loop` المجرّد. ضعه في `.claude/loop.md` للمشروع أو `~/.claude/loop.md` لنفسك. والتعديلات تسري على التشغيل التالي، فيمكنك توجيه حلقة تعمل بالفعل.
+- **`CLAUDE_CODE_DISABLE_CRON`**: متغيّر بيئة يوقف `/loop` والجدولة بالكامل. مفيد للآلات المقيّدة.
+- **`CLAUDE_CODE_GOAL_CHECKIN_MINUTES`**: يضبط أول فاصل تحقّق لهدف ينتظر عملًا في الخلفية. و `0` يعطّل التحقّقات *و* إعادات المحاولة الآلية.
+- **`ANTHROPIC_DEFAULT_HAIKU_MODEL`**: يغيّر نموذج المُقيّم *و* نموذج العمل الآخر في الخلفية. اعرف ذلك قبل أن توجّهه إلى شيء مكلف.
+- **`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP`**: كم مرة متتالية يستطيع خُطّاف `Stop` منع الوكيل من التوقّف. الافتراضي 8.
 
-Because the evaluator *is* a [hook](https://stevekinney.com/courses/ai-development-setup/hooks), two settings make `/goal` unavailable: `disableAllHooks`, which turns every hook off, and `allowManagedHooksOnly`, which limits hooks to the ones an administrator installed.
+ولأن المُقيّم *هو* [خُطّاف](https://stevekinney.com/courses/ai-development-setup/hooks)، فإن إعدادين يجعلان `/goal` غير متاح: `disableAllHooks`، الذي يوقف كل خُطّاف، و `allowManagedHooksOnly`، الذي يحصر الخُطّافات في ما ثبّته مسؤول.
 
-## Writing goal prompts
+## كتابة طلبات الأهداف
 
-- **Have Claude show its evidence**: The command, the exit code, and the commit, all from *after* the final edit. The evaluator can only judge what it can see.
-- **One goal per deliverable**: If one goal holds three deliverables, a blocker on any of them keeps the whole thing open.
-- **Use a command when a command will do**: If a single command settles “done,” a `Stop` hook that runs it is deterministic and can’t be talked into anything. If “done” takes several checks, fold them into one gate script and point `/goal` at it, as in the techniques below.
+- **اجعل Claude يعرض دليله**: الأمر، ورمز الخروج، والإيداع، كلها من *بعد* التحرير النهائي. فالمُقيّم لا يحكم إلا على ما يستطيع رؤيته.
+- **هدف واحد لكل مُخرَج**: إن حمل هدف واحد ثلاثة مخرجات، أبقى عائق على أي منها الأمر كله مفتوحًا.
+- **استخدم أمرًا حين يكفي أمر**: إن كان أمر واحد يحسم «الانتهاء»، فخُطّاف `Stop` يشغّله حتمي ولا يمكن استمالته إلى شيء. وإن كان «الانتهاء» يحتاج فحوصًا عدة، فاجمعها في سكربت بوّابة واحد ووجّه `/goal` إليه، كما في التقنيات أدناه.
 
-## Writing loop prompts
+## كتابة طلبات الحلقات
 
-- Say what a quiet run should do: “If nothing changed, say so in one line.”
-- Spell out what done, stuck, and idle look like.
-- Prefer events over polling. The Monitor tool watches for an event, and [Channels](https://stevekinney.com/courses/ai-development-setup/agent-communication) let an outside system push one into a session. Either saves you from asking over and over.
-- When idle, wait 20 to 30 minutes between runs.
-- Append one log line per run to a file. It’s the only record that survives `/clear`, which empties the conversation and ends any `/loop` tasks in the session.
+- قل ما ينبغي أن يفعله تشغيل هادئ: «إن لم يتغيّر شيء، فقل ذلك في سطر واحد.»
+- بيّن كيف يبدو الانتهاء، والتعطّل، والخمول.
+- فضّل الأحداث على الاستقصاء الدوري. فأداة Monitor تراقب حدثًا، و [القنوات](https://stevekinney.com/courses/ai-development-setup/agent-communication) تتيح لنظام خارجي أن يدفع حدثًا إلى جلسة. وكلاهما يعفيك من السؤال مرارًا وتكرارًا.
+- عند الخمول، انتظر 20 إلى 30 دقيقة بين التشغيلات.
+- ألحق سطر سجل واحدًا لكل تشغيل بملف. فهو السجل الوحيد الذي ينجو من `/clear`، الذي يفرّغ المحادثة وينهي أي مهام `/loop` في الجلسة.
 
-## Why `/loop` goes wrong
+## لماذا يخطئ `/loop`
 
-Pretty much every `/loop` anti-pattern is asking it for something it doesn’t have:
+كل نمط مضاد لـ `/loop` تقريبًا هو مطالبتك إياه بشيء لا يملكه:
 
-- Letting the model decide when it’s done needs an **oracle**: a check the model can’t talk its way past.
-- Polling something that already sends notifications needs an **event source**.
-- “Leave it running overnight” needs **durability**. A `/loop` task stops firing when its session stops. Fixed-interval tasks can return on resume while unexpired; self-paced loops must be restarted. If the work has to outlive the session, use a desktop scheduled task or cloud routine.
-- Looping on a shared branch needs **isolation**. See [Worktrees](https://stevekinney.com/courses/ai-development-setup/worktrees).
-- Judgment calls on every run need a **human**.
+- ترك النموذج يقرّر متى انتهى يحتاج **مُحكِّمًا**: فحصًا لا يستطيع النموذج تجاوزه بالكلام.
+- الاستقصاء الدوري لشيء يرسل الإشعارات بالفعل يحتاج **مصدر حدث**.
+- «اتركه يعمل طوال الليل» يحتاج **ديمومة**. فمهمة `/loop` تتوقّف عن الإطلاق حين تتوقّف جلستها. ويمكن للمهام ذات الفاصل الثابت أن تعود عند الاستئناف ما لم تنتهِ صلاحيتها؛ أما الحلقات ذات الوتيرة الذاتية فيجب إعادة تشغيلها. وإن كان على العمل أن يعيش أطول من الجلسة، فاستخدم مهمة سطح مكتب مجدولة أو روتينًا سحابيًا.
+- التكرار على فرع مشترك يحتاج **عزلًا**. انظر [worktrees](https://stevekinney.com/courses/ai-development-setup/worktrees).
+- الأحكام التقديرية في كل تشغيل تحتاج **إنسانًا**.
 
-If you recognize your plan in that list, you need a different mechanism. The table at the end of this lesson has one.
+إن عرفت خطتك في تلك القائمة، فأنت تحتاج آلية مختلفة. والجدول في نهاية هذا الدرس فيه واحدة.
 
-## Advanced techniques
+## تقنيات متقدّمة {#advanced-techniques}
 
-Anthropic [describes a ladder of checks](https://code.claude.com/docs/en/best-practices), from least to most setup. (This one measures how strongly you verify the work; [The Enforcement Ladder](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) measures how firmly you enforce a rule.)
+يصف Anthropic [سلّمًا من الفحوص](https://code.claude.com/docs/en/best-practices)، من الأقل إعدادًا إلى الأكثر. (هذا يقيس مدى قوة تحقّقك من العمل؛ و [سلّم الإلزام](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder) يقيس مدى إحكام فرضك لقاعدة.)
 
-1. A check in a single prompt.
-2. A `/goal` condition.
-3. A `Stop` hook that runs a script.
-4. A verification subagent that tries to refute the result.
+1. فحص في طلب واحد.
+2. شرط `/goal`.
+3. خُطّاف `Stop` يشغّل سكربتًا.
+4. وكيل فرعي للتحقّق يحاول دحض النتيجة.
 
-Some techniques worth stealing:
+وبعض التقنيات التي تستحقّ السرقة:
 
-- **Gate script plus goal**: Write one script that runs every check and prints a pass marker along with the commit. Then make the condition “this script prints PASS.” Now the evaluator has exactly one authoritative thing to read.
-- **Write your own evaluator**: A prompt-based `Stop` hook is what `/goal` uses under the hood. An agent-based hook (experimental) can actually run the tests and read files.
-- **Guard your `Stop` hooks**: Check `stop_hook_active`, which tells the hook its last block already forced a continuation, so it can let the agent stop this time. Respect the 8-block cap, and have the script exit `0` on its *own* errors: a bug in your script should let the agent stop, not trap it. [Writing Good Hooks](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) covers writing hooks that fail safely.
-- **Monitor plus heartbeat**: An event wakes the loop immediately. A scheduled wakeup, the heartbeat, keeps it running if the event never comes.
+- **سكربت بوّابة مع هدف**: اكتب سكربتًا واحدًا يجري كل فحص ويطبع علامة نجاح مع الإيداع. ثم اجعل الشرط «هذا السكربت يطبع PASS». الآن للمُقيّم شيء مرجعي واحد بالضبط ليقرأه.
+- **اكتب مُقيّمك الخاص**: خُطّاف `Stop` القائم على طلب هو ما يستخدمه `/goal` في الخفاء. وخُطّاف قائم على وكيل (تجريبي) يستطيع فعلًا تشغيل الاختبارات وقراءة الملفات.
+- **احرس خُطّافات `Stop` لديك**: افحص `stop_hook_active`، الذي يخبر الخُطّاف بأن منعه الأخير فرض استمرارًا بالفعل، فيمكنه أن يسمح للوكيل بالتوقّف هذه المرة. احترم سقف المنع البالغ 8، واجعل السكربت يخرج بالرمز `0` عند *أخطائه* الخاصة: فخطأ في سكربتك ينبغي أن يتيح للوكيل التوقّف، لا أن يحبسه. و [كتابة خُطّافات جيدة](https://stevekinney.com/courses/ai-development-setup/writing-good-hooks) يغطّي كتابة خُطّافات تفشل بأمان.
+- **Monitor مع نبضة قلب**: حدث يوقظ الحلقة فورًا. وإيقاظ مجدول، هو نبضة القلب، يبقيها تعمل إن لم يأتِ الحدث أبدًا.
 
-When a loop outgrows the session:
+حين تكبر الحلقة عن الجلسة:
 
-- To run without you, use a cloud routine or a desktop scheduled task. See [Routines and Schedules](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules).
-- For hard caps, wrap `claude -p` runs in your own script.
-- For an independent verdict, use `/goal`, a `Stop` hook, or a reviewing subagent.
+- لتشغيلها دونك، استخدم روتينًا سحابيًا أو مهمة سطح مكتب مجدولة. انظر [الروتينات والجداول](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules).
+- للحدود الصارمة، غلّف تشغيلات `claude -p` في سكربتك الخاص.
+- لحكم مستقل، استخدم `/goal`، أو خُطّاف `Stop`، أو وكيلًا فرعيًا مراجعًا.
 
-## More on Codex’s `/goal`
+## المزيد عن `/goal` في Codex
 
-Codex’s version only continues when the thread goes idle. Set a token budget and it asks the model to wrap up when the budget runs out, which means stop starting new work, summarize, and leave a next step. Set none and it’s unbounded, so only your account’s usage limits and you can stop it. It adds edit, pause, and resume commands. And it can only report “blocked” after the same blocker repeats for three turns. One catch: `/goal` doesn’t exist in `codex exec`, Codex’s non-interactive mode, so you can’t lean on it in CI.
+نسخة Codex تواصل فقط حين يخمل الخيط. اضبط ميزانية رموز، فتطلب من النموذج أن ينهي حين تنفد الميزانية، وهذا يعني توقّف عن بدء عمل جديد، ولخّص، واترك خطوة تالية. وإن لم تضبط شيئًا فهو بلا حدود، فلا يوقفه إلا حدود استخدام حسابك وأنت. ويضيف أوامر التحرير والإيقاف المؤقّت والاستئناف. ولا يستطيع الإبلاغ بـ«تعطّل» إلا بعد تكرار العائق نفسه ثلاث دورات. وثمّة مشكلة: `/goal` غير موجود في `codex exec`، الوضع غير التفاعلي في Codex، فلا يمكنك الاعتماد عليه في CI.
 
-The model declares completion with an `update_goal` tool call, after an audit the continuation prompt spells out. Those audit rules are worth borrowing for your own prompts. They tell the model to prove completion, not merely fail to find remaining work, and not to narrow the solution just so it passes the current tests.
+يعلن النموذج الإتمام بنداء أداة `update_goal`، بعد تدقيق يبيّنه طلب المتابعة. وقواعد التدقيق تلك تستحق الاستعارة لطلباتك. فهي تطلب من النموذج أن يثبت الإتمام، لا أن يفشل فقط في إيجاد عمل متبقٍّ، وألا يضيّق الحل فقط ليمرّ في الاختبارات الحالية.
 
-## Choosing a mechanism
+## اختيار آلية
 
-| Situation | Use |
+| الحالة | استخدم |
 | --- | --- |
-| One edit you’re watching | A plain prompt |
-| A checkable outcome that takes many turns | `/goal` |
-| One command decides it’s done | A `Stop` hook |
-| Watching for a change while the session is open | `/loop`, ideally with a Monitor |
-| Must run while you’re away | A cloud routine or desktop scheduled task |
-| Hard caps or fresh context for each attempt | An external [Ralph loop](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) runner |
+| تحرير واحد تراقبه | طلبًا عاديًا |
+| نتيجة قابلة للفحص تحتاج دورات كثيرة | `/goal` |
+| أمر واحد يقرّر الانتهاء | خُطّاف `Stop` |
+| مراقبة تغيير بينما الجلسة مفتوحة | `/loop`، مع Monitor إن أمكن |
+| يجب أن يعمل وأنت بعيد | روتينًا سحابيًا أو مهمة سطح مكتب مجدولة |
+| حدود صارمة أو سياق جديد لكل محاولة | مشغّل [حلقة Ralph](https://stevekinney.com/courses/ai-development-setup/the-ralph-loop) خارجيًا |
 
-## Before you walk away
+## قبل أن تنصرف
 
-- Is the check out of the worker’s reach, so it can’t edit its way to a pass?
-- Are side effects limited by permission mode, branch, or worktree?
-- Does it need to outlive the session, and will it?
-- How will you confirm it actually stopped?
+- هل الفحص خارج متناول العامل، فلا يستطيع التحرير حتى النجاح؟
+- هل الآثار الجانبية محدودة بوضع الإذن، أو الفرع، أو worktree؟
+- هل يحتاج أن يعيش أطول من الجلسة، وهل سيفعل؟
+- كيف ستتأكّد من أنه توقّف فعلًا؟
 
-If you can’t answer the last one, you aren’t ready to leave.
+إن لم تستطع الإجابة عن الأخيرة، فأنت لست مستعدًّا للانصراف.

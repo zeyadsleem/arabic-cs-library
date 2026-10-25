@@ -1,10 +1,10 @@
 ---
-title: "Adding Zod Schemas to Path Parameters"
-lang: en
+title: "إضافة مخططات Zod إلى معاملات المسار"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/express-zod-params"
 ---
 
-Search parameters and path parameters are technically strings. But, I know they should be numbers. It’s fine. Let’s just make sure that they coerce into numbers.
+معاملات البحث ومعاملات المسار سلاسل نصية من الناحية التقنية. لكنني أعلم أنها ينبغي أن تكون أرقامًا. لا بأس. لنتأكد فقط من أنها تُحوَّل قسريًا إلى أرقام.
 
 ```typescript
 const TaskSchema = z.object({
@@ -17,15 +17,15 @@ const TaskSchema = z.object({
 const TaskParamsSchema = TaskSchema.pick({ id: true });
 ```
 
-We can use it like this.
+يمكننا استخدامه هكذا.
 
 ```typescript
 const { id } = TaskParamsSchema.parse(req.params);
 ```
 
-## Search Parameters
+## معاملات البحث
 
-The same basic idea works for search parameters.
+تعمل الفكرة الأساسية نفسها مع معاملات البحث.
 
 ```typescript
 const TaskQuerySchema = z.object({
@@ -33,12 +33,12 @@ const TaskQuerySchema = z.object({
 });
 ```
 
-Or, I might do something like this:
+أو قد أفعل شيئًا مثل هذا:
 
 ```typescript
 const TaskQuerySchema = TaskSchema.pick({ completed: true }).partial();
 ```
 
-And now we can make sure our queries make sense.
+والآن يمكننا التأكد من أن استعلاماتنا منطقية.
 
-**Next**: [Using Middleware to Validate Schema](https://stevekinney.com/courses/full-stack-typescript/validating-schema-with-middleware)
+**التالي**: [استخدام وسيط للتحقق من المخطط](https://stevekinney.com/courses/full-stack-typescript/validating-schema-with-middleware)

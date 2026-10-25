@@ -1,12 +1,12 @@
 ---
-title: "Playwright Projects"
-lang: en
+title: "مشاريع Playwright"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects"
 ---
 
-Most Playwright setups start the same way: one config, one browser, run everything. That works until you need something to happen *before* your tests run—seeding a database, logging in, generating fixtures. At that point, you’re stuffing setup logic into `beforeAll` hooks and hoping the execution order works out. It usually does. Until it doesn’t.
+تبدأ معظم تهيئات Playwright بالطريقة نفسها: إعداد واحد، ومتصفّح واحد، وتشغيل كل شيء. ويظلّ ذلك مجديًا إلى أن تحتاج إلى شيء يحدث *قبل* تشغيل اختباراتك — تهيئة قاعدة بيانات ببيانات أولية، أو تسجيل الدخول، أو توليد تجهيزات اختبار. عند تلك النقطة تجد نفسك تحشو منطق التهيئة داخل خطّافات `beforeAll` وتأمل أن يخرج ترتيب التنفيذ سليمًا. وهو يخرج سليمًا عادةً. إلى أن لا يخرج.
 
-[Playwright projects](https://playwright.dev/docs/test-projects) are the mechanism that fixes this. A project is a named configuration block inside `playwright.config.ts`. Each one gets its own settings—which browser to use, which test files to match, which `storageState` to load—and, critically, which *other projects* it depends on.
+[مشاريع Playwright](https://playwright.dev/docs/test-projects) هي الآلية التي تعالج هذا. المشروع كتلة تهيئة مسمّاة داخل `playwright.config.ts`. ولكلّ منها إعداداته الخاصة — أي متصفّح يُستخدم، وأي ملفات اختبار تُطابَق، وأي `storageState` يُحمَّل — والأهم من ذلك: أي *مشاريع أخرى* يعتمد عليها.
 
 ```typescript
 import { defineConfig, devices } from '@playwright/test';
@@ -25,13 +25,13 @@ export default defineConfig({
 });
 ```
 
-When you run `npx playwright test`, Playwright runs every project in the config. In this case, the full suite runs twice—once in Chromium, once in Firefox. Each project is isolated: its own browser context, its own settings, its own results in the report.
+حين تشغّل `npx playwright test`، يشغّل Playwright كل مشروع في الإعداد. وفي هذه الحالة تُشغَّل المجموعة الكاملة مرّتين — مرّة في Chromium ومرّة في Firefox. وكل مشروع معزول: له سياق المتصفّح الخاص به، وإعداداته الخاصة، ونتائجه الخاصة في التقرير.
 
-That alone is useful, but the real power shows up when you add `dependencies`.
+هذا وحده مفيد، لكن القوة الحقيقية تظهر حين تضيف `dependencies`.
 
-## Dependencies and execution order
+## الاعتماديات وترتيب التنفيذ
 
-Projects can declare that they depend on other projects. Playwright builds a dependency graph and guarantees the order. If project B depends on project A, A finishes before B starts. If B and C both depend on A but not on each other, they run in parallel after A completes.
+يمكن للمشاريع أن تعلن اعتمادها على مشاريع أخرى. فيبني Playwright رسمًا بيانيًا للاعتماديات ويضمن الترتيب. فإذا كان المشروع B يعتمد على المشروع A، انتهى A قبل أن يبدأ B. وإذا كان B وC يعتمدان معًا على A لكن لا يعتمد أحدهما على الآخر، فإنهما يعملان بالتوازي بعد انتهاء A.
 
 ```typescript
 export default defineConfig({
@@ -64,40 +64,40 @@ flowchart TD
   style C fill:#c8e6c9
 ```
 
-The `setup` project runs first—always. Then `chromium` and `firefox` run in parallel. If `setup` fails, neither browser project starts. This is a directed acyclic graph, not a hook chain. You declare what depends on what, and Playwright figures out the rest.
+يعمل مشروع `setup` أولًا — دائمًا. ثم يعمل `chromium` و`firefox` بالتوازي. وإذا فشل `setup`، لم يبدأ أي من مشروعي المتصفّح. هذا رسم بياني موجّه غير دوري، لا سلسلة خطّافات. أنت تعلن ما يعتمد على ما، ويستنتج Playwright الباقي.
 
-## Why this matters more than it looks
+## لماذا يهمّ هذا أكثر ممّا يبدو
 
-The pattern you’re about to see in [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) relies on this entirely. The idea is: one project logs in and saves the browser session to a file, and every other project loads that file so its tests start already authenticated. Without project dependencies, there’s no guarantee the login runs first. With them, it’s structural—not a race condition waiting to happen.
+النمط الذي ستراه بعد قليل في [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) يعتمد على هذا اعتمادًا كاملًا. الفكرة هي: مشروع واحد يسجّل الدخول ويحفظ جلسة المتصفّح في ملف، وكل مشروع آخر يحمّل ذلك الملف فتبدأ اختباراته وقد سُجّل الدخول إليها مسبقًا. بدون اعتماديات المشاريع، لا ضمان أن يعمل تسجيل الدخول أولًا. ومعها، يصبح الأمر بنيويًا — لا حالة تسابق تنتظر أن تقع.
 
-But authentication is just the most common use case. Projects are also how you:
+لكن المصادقة ليست إلا حالة الاستخدام الأكثر شيوعًا. المشاريع أيضًا هي طريقتك إلى:
 
-- **Run different test suites with different settings.** A `smoke` project that runs a fast subset on every push, and a `full` project that runs everything nightly.
-- **Scope tests to user roles.** One project for regular users, one for admins, each loading a different `storageState` file.
-- **Filter by `testMatch`.** A project can match only files in a specific directory, or only files matching a regex. This is how you keep setup files from running as regular tests.
+- **تشغيل مجموعات اختبار مختلفة بإعدادات مختلفة.** مشروع `smoke` يشغّل مجموعة فرعية سريعة عند كل دفع، ومشروع `full` يشغّل كل شيء ليلًا.
+- **حصر الاختبارات في أدوار المستخدمين.** مشروع للمستخدمين العاديين وآخر للمشرفين، كلٌّ منهما يحمّل ملف `storageState` مختلفًا.
+- **الترشيح عبر `testMatch`.** يمكن للمشروع أن يطابق فقط الملفات في مجلد محدّد، أو فقط الملفات المطابقة لتعبير نمطي. وهكذا تمنع ملفات التهيئة من العمل كاختبارات عادية.
 
-## Good setup-project use cases
+## حالات الاستخدام الجيدة لمشاريع التهيئة
 
-Leaving database seeding aside for a moment, setup projects are a good fit any time one part of the suite needs a repeatable prerequisite that should happen inside the Playwright runner rather than in an ad hoc shell script or `beforeAll`.
+إذا تركنا تهيئة قاعدة البيانات جانبًا للحظة، فإن مشاريع التهيئة مناسبة كلّما احتاج جزء من المجموعة إلى شرط مسبق قابل للتكرار يجب أن يحدث داخل مشغّل Playwright بدلًا من سكربت shell ارتجالي أو `beforeAll`.
 
-- **Generate authenticated browser state.** Log in once, save `storageState`, and let dependent projects reuse it.
-- **Create different user-role sessions.** Build separate stored sessions for reader, admin, moderator, support, or other role-based suites.
-- **Verify a prerequisite flow before the rest of the suite starts.** If login, onboarding, or initial navigation is broken, fail fast and skip the dependent tests.
-- **Capture reusable browser artifacts.** Generate a HAR, save a file download, create a trace baseline, or record another browser-produced artifact that later tests consume.
-- **Provision temporary files or directories the suite depends on.** Create upload fixtures, temp workspaces, scratch exports, or runtime config files that tests expect to exist.
-- **Start or verify a supporting local service.** Bring up a lightweight mock server, webhook receiver, fake SMTP sink, or callback listener and confirm it is healthy before dependents run.
-- **Establish non-database app state that lives outside the browser context.** Create feature-flag files, seed a cache layer, warm a search index, or write config a test environment needs.
-- **Create external test resources that should be shared across many specs.** Upload a fixture to blob storage, register a fake tenant, mint a temporary API credential, or create a sandbox workspace once for a whole project.
-- **Prepare environment-specific expectations.** Build a mobile-only asset pack, a locale-specific snapshot set, or another artifact that a project variant depends on.
-- **Encode expensive one-time setup that would be wasteful in every file.** If the work is slow but deterministic, a setup project keeps it visible and reportable without repeating it in each spec.
+- **توليد حالة متصفّح مصادَقة.** سجّل الدخول مرّة واحدة، واحفظ `storageState`، ودع المشاريع المعتمدة تعيد استخدامه.
+- **إنشاء جلسات لأدوار مستخدمين مختلفة.** ابنِ جلسات مخزّنة منفصلة للقارئ، والمشرف، والمشرف العام، والدعم، أو أي مجموعات أخرى قائمة على الأدوار.
+- **التحقّق من تدفّق شرط مسبق قبل أن تبدأ بقية المجموعة.** إن كان تسجيل الدخول أو التهيئة الأولى أو التنقّل الأولي معطوبًا، فافشل سريعًا وتخطَّ الاختبارات المعتمدة.
+- **التقاط آثار متصفّح قابلة لإعادة الاستخدام.** ولّد ملف HAR، أو احفظ تنزيل ملف، أو أنشئ خط أساس للتتبّع، أو سجّل أي أثر آخر ينتجه المتصفّح وتستهلكه اختبارات لاحقة.
+- **تجهيز ملفات أو مجلدات مؤقتة تعتمد عليها المجموعة.** أنشئ تجهيزات الرفع، أو مساحات عمل مؤقتة، أو تصديرات مسوّدة، أو ملفات تهيئة وقت التشغيل التي تتوقّع الاختبارات وجودها.
+- **تشغيل خدمة محلية مساندة أو التحقّق منها.** أطلق خادمًا وهميًا خفيفًا، أو مستقبِل webhook، أو مصرف SMTP مزيفًا، أو مستمع استدعاءات راجعة، وتأكّد من سلامته قبل أن تعمل المشاريع المعتمدة.
+- **تثبيت حالة تطبيق غير متعلّقة بقاعدة البيانات تعيش خارج سياق المتصفّح.** أنشئ ملفات رايات الميزات، أو مهّد طبقة تخزين مؤقت، أو سخّن فهرس بحث، أو اكتب ملفات إعداد تحتاجها بيئة الاختبار.
+- **إنشاء موارد اختبار خارجية ينبغي مشاركتها بين مواصفات كثيرة.** ارفع تجهيزًا إلى تخزين الكائنات، أو سجّل مستأجرًا وهميًا، أو أصدر بيانات اعتماد مؤقتة لواجهة برمجة، أو أنشئ مساحة عمل معزولة مرّة واحدة لمشروع كامل.
+- **إعداد توقّعات خاصة ببيئة معيّنة.** ابنِ حزمة أصول للجوال فقط، أو مجموعة لقطات خاصة بلغة معيّنة، أو أي أثر آخر يعتمد عليه أحد تنويعات المشروع.
+- **تضمين تهيئة مكلفة تُنفَّذ مرّة واحدة وكان تكرارها في كل ملف هدرًا.** فإن كان العمل بطيئًا لكنه حتمي، يبقيه مشروع التهيئة ظاهرًا وقابلًا للتقرير دون تكراره في كل مواصفة.
 
-The common thread: a setup project is for prerequisites that are real, shared, and worth modeling explicitly as a node in the graph.
+الخيط المشترك: مشروع التهيئة مخصّص للشروط المسبقة الحقيقية والمشتركة والتي تستحق أن تُنمذَج صراحةً كعقدة في الرسم البياني.
 
-## `testMatch` and `testDir`
+## إعدادا `testMatch` و`testDir`
 
-Two settings control which tests a project runs.
+إعدادان يتحكّمان في الاختبارات التي يشغّلها المشروع.
 
-`testMatch` is a regex or glob that filters test files. If you only want a project to run your setup script, point it at that specific file:
+`testMatch` تعبير نمطي أو نمط glob يرشّح ملفات الاختبار. فإن أردت أن يشغّل المشروع سكربت التهيئة فقط، فوجّهه إلى ذلك الملف تحديدًا:
 
 ```typescript
 {
@@ -106,7 +106,7 @@ Two settings control which tests a project runs.
 }
 ```
 
-`testDir` scopes a project to a directory. If your authenticated tests live under `tests/authenticated/`, you can point a project at that directory and skip the regex:
+`testDir` يحصر المشروع في مجلد. فإن كانت اختباراتك المصادَقة تعيش تحت `tests/authenticated/`، فيمكنك توجيه المشروع إلى ذلك المجلد والاستغناء عن التعبير النمطي:
 
 ```typescript
 {
@@ -116,13 +116,13 @@ Two settings control which tests a project runs.
 }
 ```
 
-Both are optional. If you set neither, the project runs everything that Playwright’s top-level `testDir` and `testMatch` would find. In practice, setup projects almost always use `testMatch` to isolate their setup file, and browser projects either use the defaults or scope by directory.
+كلاهما اختياري. وإن لم تضبط أيًّا منهما، شغّل المشروع كل ما يعثر عليه `testDir` و`testMatch` في المستوى الأعلى من إعداد Playwright. عمليًا، تستخدم مشاريع التهيئة دائمًا تقريبًا `testMatch` لعزل ملف التهيئة، بينما تستخدم مشاريع المتصفّحات الإعدادات الافتراضية أو تحصر النطاق بالمجلد.
 
-## Teardown projects
+## مشاريع التفكيك
 
-Dependencies have a counterpart: `teardown`. If your setup project creates something that needs cleanup—a temporary database, a test user, a running service—you can point it at a teardown project that runs *after* all dependent projects finish.
+للاعتماديات نظير: `teardown`. فإن كان مشروع التهيئة ينشئ شيئًا يحتاج إلى تنظيف — قاعدة بيانات مؤقتة، أو مستخدم اختبار، أو خدمة قيد التشغيل — فيمكنك توجيهه إلى مشروع تفكيك يعمل *بعد* انتهاء كل المشاريع المعتمدة.
 
-The important detail the docs tend to glide past is that the teardown logic lives in an ordinary Playwright test file. It is not a special callback hidden somewhere else in the config. `testMatch: /global\.teardown\.ts/` means “run the file whose name matches that pattern as the teardown project.”
+التفصيل المهم الذي تتجاوزه الوثائق عادةً هو أن منطق التفكيك يعيش في ملف اختبار Playwright عادي. إنه ليس استدعاءً راجعًا خاصًا مخبَّأً في مكان آخر من الإعداد. فـ`testMatch: /global\.teardown\.ts/` تعني «شغّل الملف الذي يطابق اسمه هذا النمط كمشروع تفكيك».
 
 ```typescript
 export default defineConfig({
@@ -145,7 +145,7 @@ export default defineConfig({
 });
 ```
 
-In a real repo, that usually looks like this:
+في مستودع حقيقي، يبدو ذلك عادةً هكذا:
 
 ```
 tests/
@@ -155,7 +155,7 @@ tests/
   authenticated.spec.ts
 ```
 
-And the teardown file itself is just a tiny Playwright test that removes whatever the setup created:
+وملف التفكيك نفسه ليس إلا اختبار Playwright صغيرًا يزيل ما أنشأته التهيئة:
 
 ```typescript
 // tests/global.teardown.ts
@@ -167,12 +167,12 @@ teardown('remove temporary database', async () => {
 });
 ```
 
-That is the mental model:
+هذا هو النموذج الذهني:
 
-- `setup` points at `global.setup.ts`
-- `cleanup` points at `global.teardown.ts`
-- Playwright runs both because they are regular project-scoped test files
-- the `teardown: 'cleanup'` link is what tells Playwright when to run the cleanup file
+- يشير `setup` إلى `global.setup.ts`
+- يشير `cleanup` إلى `global.teardown.ts`
+- يشغّل Playwright كليهما لأنهما ملفا اختبار عاديان محصوران بنطاق المشروع
+- وصلة `teardown: 'cleanup'` هي ما يخبر Playwright متى يشغّل ملف التنظيف
 
 ```
 flowchart LR
@@ -184,28 +184,28 @@ flowchart LR
   style C fill:#ffe0b2
 ```
 
-The execution order: `setup` runs first, then `chromium`, then `cleanup`. If you don’t need cleanup—and for authentication you usually don’t, since the setup project overwrites the state file every time it runs—skip it. Teardown is there for the cases where leftover state would leak across runs.
+ترتيب التنفيذ: يعمل `setup` أولًا، ثم `chromium`، ثم `cleanup`. وإن لم تكن بحاجة إلى تنظيف — وفي المصادقة لا تحتاجه عادةً، لأن مشروع التهيئة يكتب فوق ملف الحالة في كل تشغيل — فتخطّه. التفكيك موجود للحالات التي تتسرّب فيها حالة متبقية بين التشغيلات.
 
-## Good teardown-project use cases
+## حالات الاستخدام الجيدة لمشاريع التفكيك
 
-Again, excluding database cleanup specifically, teardown projects make sense when the setup created something outside the normal per-test bubble and leaving it behind would pollute the next run or leak cost.
+مرّة أخرى، وباستثناء تنظيف قاعدة البيانات تحديدًا، تكون مشاريع التفكيك منطقية حين ينشئ التهيئة شيئًا خارج فقاعة كل اختبار المعتادة، ويؤدي تركه وراءه إلى تلويث التشغيل التالي أو تسريب كلفة.
 
-- **Delete temporary files or directories.** Remove upload fixtures, export bundles, scratch workspaces, or generated config written during setup.
-- **Shut down supporting local services.** Stop a mock API, webhook listener, SMTP sink, or other helper process started for the suite.
-- **Revoke temporary credentials or tokens.** Clean up short-lived API keys, auth grants, signed URLs, or sandbox access tokens created for testing.
-- **Remove external resources created for the run.** Delete blob uploads, message queues, mailboxes, tenants, test workspaces, or cloud objects that should not accumulate between runs.
-- **Undo feature-flag or environment toggles.** Reset flags, kill switches, or remote config changes that were flipped for a specialized test project.
-- **Clear caches or generated artifacts that would taint the next run.** Remove warmed indexes, compiled fixture bundles, snapshot staging directories, or downloaded browser artifacts.
-- **Tear down tunnels, listeners, or background processes.** Close ngrok tunnels, local callback servers, proxy layers, or long-lived child processes started in setup.
-- **Restore shared state in external systems.** Put a third-party sandbox back into a neutral state if setup had to create durable objects outside your app.
-- **Collect and archive final diagnostics before exit.** Bundle logs, traces, service output, or helper-process metadata that only exists after the dependent projects finish.
-- **Enforce cleanup as part of the dependency graph instead of tribal knowledge.** If the run is only correct when cleanup happens, model it structurally with `teardown` rather than hoping a shell script runs later.
+- **حذف الملفات أو المجلدات المؤقتة.** أزل تجهيزات الرفع، أو حزم التصدير، أو مساحات العمل المسوّدة، أو ملفات الإعداد المولّدة أثناء التهيئة.
+- **إيقاف الخدمات المحلية المساندة.** أوقف واجهة برمجة وهمية، أو مستمع webhook، أو مصرف SMTP، أو أي عملية مساعدة أخرى بدأت من أجل المجموعة.
+- **إبطال بيانات الاعتماد أو الرموز المؤقتة.** نظّف مفاتيح واجهة البرمجة قصيرة العمر، أو منحات المصادقة، أو الروابط الموقّعة، أو رموز الوصول إلى بيئة الاختبار المعزولة التي أُنشئت للاختبار.
+- **إزالة الموارد الخارجية المنشأة لهذا التشغيل.** احذف عمليات رفع الكائنات، أو قوائم انتظار الرسائل، أو صناديق البريد، أو المستأجرين، أو مساحات عمل الاختبار، أو كائنات السحابة التي لا ينبغي أن تتراكم بين التشغيلات.
+- **التراجع عن تبديلات رايات الميزات أو البيئة.** أعد ضبط الرايات، أو مفاتيح الإيقاف، أو تغييرات الإعداد البعيدة التي قُلبت من أجل مشروع اختبار متخصّص.
+- **مسح ذاكرات التخزين المؤقت أو الآثار المولّدة التي قد تلوّث التشغيل التالي.** أزل الفهارس المسخّنة، أو حزم التجهيزات المترجمة، أو مجلدات تجهيز اللقطات، أو آثار المتصفّح المنزّلة.
+- **تفكيك الأنفاق أو المستمعات أو العمليات الخلفية.** أغلق أنفاق ngrok، أو خوادم الاستدعاء الراجع المحلية، أو طبقات الوسيط، أو العمليات الفرعية طويلة العمر التي بدأت في التهيئة.
+- **استعادة الحالة المشتركة في الأنظمة الخارجية.** أعد بيئة اختبار معزولة لطرف ثالث إلى حالة محايدة إن كان التهيئة قد اضطر إلى إنشاء كائنات دائمة خارج تطبيقك.
+- **جمع التشخيصات النهائية وأرشفتها قبل الخروج.** اززم السجلات، أو ملفات التتبّع، أو مخرجات الخدمة، أو البيانات الوصفية للعمليات المساعدة التي لا توجد إلا بعد انتهاء المشاريع المعتمدة.
+- **فرض التنظيف كجزء من رسم الاعتماديات بدلًا من معرفة متوارثة.** فإن كان التشغيل لا يكون صحيحًا إلا إذا حدث التنظيف، فنمذجه بنيويًا بـ`teardown` بدلًا من الأمل في أن يعمل سكربت shell لاحقًا.
 
-The common thread: teardown is worth the ceremony when the suite created something durable, shared, or expensive enough that “just leave it there” will eventually become a bug.
+الخيط المشترك: يستحق التفكيك هذه المراسم حين تكون المجموعة قد أنشأت شيئًا دائمًا أو مشتركًا أو مكلفًا بما يكفي ليصبح «اتركه هناك فقط» علةً في نهاية المطاف.
 
-## Project-level overrides
+## تجاوزات مستوى المشروع
 
-Each project can override settings from the top-level `defineConfig`. This is useful when different suites need different tolerances:
+يمكن لكل مشروع أن يتجاوز الإعدادات المعرّفة في `defineConfig` الأعلى. يفيد ذلك حين تحتاج مجموعات مختلفة إلى درجات تسامح مختلفة:
 
 ```typescript
 export default defineConfig({
@@ -227,45 +227,45 @@ export default defineConfig({
 });
 ```
 
-The `smoke` project gets two retries and a shorter timeout because it runs on every push and you want it fast and forgiving. The `full` project gets no retries and a longer timeout because it runs nightly and you want to know about every failure. The top-level values are defaults—projects override them, they don’t merge.
+يحصل مشروع `smoke` على محاولتين إعادتين ومهلة أقصر لأنه يعمل عند كل دفع وتريده سريعًا ومتسامحًا. ويحصل مشروع `full` على صفر محاولات إعادة ومهلة أطول لأنه يعمل ليلًا وتريد أن تعرف بكل فشل. القيم في المستوى الأعلى افتراضية — تتجاوزها المشاريع، ولا تدمج معها.
 
-## Running a single project
+## تشغيل مشروع واحد
 
-During development, you don’t always want to run the full graph. The `--project` flag lets you target one:
+أثناء التطوير، لا تريد دائمًا تشغيل الرسم البياني كاملًا. ويتيح لك العلم `--project` استهداف مشروع واحد:
 
 ```bash
 npx playwright test --project=chromium
 ```
 
-Playwright still respects dependencies—if `chromium` depends on `setup`, both run. But it skips any project you didn’t name that isn’t a dependency of the one you did.
+لا يزال Playwright يحترم الاعتماديات — فإن كان `chromium` يعتمد على `setup`، عمل الاثنان. لكنه يتخطّى أي مشروع لم تسمّه ولم يكن اعتمادية للمشروع الذي سمّيته.
 
-If you want to skip dependencies entirely—say, the setup already ran and the state file is still fresh—pass `--no-deps`:
+وإن أردت تخطّي الاعتماديات بالكامل — مثلًا لأن التهيئة عملت سلفًا وملف الحالة ما زال طازجًا — فمرّر `--no-deps`:
 
 ```bash
 npx playwright test --project=chromium --no-deps
 ```
 
-Now only `chromium` runs. No setup, no teardown, no dependency resolution. This is a shortcut for local iteration, not something you’d use in CI.
+الآن يعمل `chromium` فقط. لا تهيئة، ولا تفكيك، ولا حلّ للاعتماديات. هذا اختصار للتكرار المحلي، لا شيء تستخدمه في التكامل المستمر.
 
-## Mini lab: Seed Shelf through a setup project
+## مختبر مصغّر: زرع بيانات Shelf الأولية عبر مشروع تهيئة
 
-This lesson lands better if the dependency graph does something real. In Shelf, the smallest believable version is this:
+يصل هذا الدرس أبلغ إذا فعل رسم الاعتماديات شيئًا حقيقيًا. وفي Shelf، أصغر نسخة قابلة للتصديق هي هذه:
 
-- a `setup` project seeds the database from `tests/data/*.json`
-- a dependent project opens the public shelf page for `alice`
-- the UI proves the seed worked
+- مشروع `setup` يزرع قاعدة البيانات من `tests/data/*.json`
+- مشروع معتمد يفتح صفحة الرفّ العامة لـ`alice`
+- تثبت الواجهة أن الزرع نجح
 
-That gives you a practical feel for:
+يمنحك ذلك إحساسًا عمليًا بـ:
 
-- how a setup project is just an ordinary Playwright test file
-- how `dependencies` guarantees execution order
-- how one project can prepare state that another project consumes
+- كيف أن مشروع التهيئة ليس إلا ملف اختبار Playwright عاديًا
+- كيف تضمن `dependencies` ترتيب التنفيذ
+- كيف يمكن لمشروع أن يهيّئ حالة يستهلكها مشروع آخر
 
-without forcing you into the full storage-state authentication flow yet.
+دون أن يدفعك بعد إلى تدفّق المصادقة الكامل بحالة التخزين.
 
-### Goal
+### الهدف
 
-Add a tiny setup file at `tests/database.setup.ts`:
+أضف ملف تهيئة صغيرًا في `tests/database.setup.ts`:
 
 ```typescript
 import { test as setup } from '@playwright/test';
@@ -309,7 +309,7 @@ setup('seed starter data', async () => {
 });
 ```
 
-Then add a tiny dependent spec at `tests/public-shelf.spec.ts`:
+ثم أضف مواصفة معتمدة صغيرة في `tests/public-shelf.spec.ts`:
 
 ```typescript
 import { expect, test } from '@playwright/test';
@@ -323,7 +323,7 @@ test('public shelf shows the seeded reader shelf', async ({ page }) => {
 });
 ```
 
-Then wire the projects in `playwright.config.ts`:
+ثم اربط المشاريع في `playwright.config.ts`:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
@@ -353,76 +353,76 @@ export default defineConfig({
 });
 ```
 
-This is intentionally smaller than the full deterministic seeding lesson. You are not building the final `tests/helpers/seed.ts` abstraction here. You are just proving the graph:
+هذا أصغر عمدًا من درس الزرع الحتمي الكامل. أنت لا تبني هنا تجريد `tests/helpers/seed.ts` النهائي. أنت تثبت الرسم البياني فقط:
 
-- one project prepares state
-- another project depends on it
-- the app reads that state through a real page
+- مشروع واحد يهيّئ الحالة
+- مشروع آخر يعتمد عليه
+- يقرأ التطبيق تلك الحالة عبر صفحة حقيقية
 
-### What to run
+### ما الذي تشغّله
 
-Start with discovery:
+ابدأ بالاستكشاف:
 
 ```bash
 npx playwright test --list
 ```
 
-You should see `database.setup.ts` under the `setup` project and the ordinary specs under `public-shelf`.
+ينبغي أن ترى `database.setup.ts` تحت مشروع `setup` والمواصفات العادية تحت `public-shelf`.
 
-Then run just the dependent project:
+ثم شغّل المشروع المعتمد وحده:
 
 ```bash
 npx playwright test --project=public-shelf
 ```
 
-Playwright should still run `setup` first because of the dependency edge.
+ينبغي أن يشغّل Playwright `setup` أولًا رغم ذلك بسبب حافة الاعتمادية.
 
-Then run the full graph:
+ثم شغّل الرسم البياني كاملًا:
 
 ```bash
 npx playwright test
 ```
 
-### What this should teach you
+### ما الذي ينبغي أن يعلّمك إياه هذا
 
-- Setup projects are ordinary test files, not special hidden callbacks.
-- `dependencies` is what gives you ordering, not lucky timing.
-- A project graph becomes much easier to trust when the effect is visible in the app itself.
+- مشاريع التهيئة ملفات اختبار عادية، لا استدعاءات راجعة خاصة مخفية.
+- `dependencies` هي ما يمنحك الترتيب، لا التوقيت المحظوظ.
+- يصبح الوثوق برسم المشاريع أسهل بكثير حين يكون الأثر ظاهرًا في التطبيق نفسه.
 
-### Acceptance criteria
+### معايير القبول
 
-- `npx playwright test --list` shows both `setup` and `public-shelf`
-- `setup` only matches `tests/database.setup.ts`
-- `public-shelf` depends on `setup`
-- `npx playwright test --project=public-shelf` passes
-- `tests/public-shelf.spec.ts` only passes because the seeded reader shelf exists
+- يُظهر `npx playwright test --list` كلا المشروعين `setup` و`public-shelf`
+- يطابق `setup` فقط `tests/database.setup.ts`
+- يعتمد `public-shelf` على `setup`
+- ينجح `npx playwright test --project=public-shelf`
+- لا تنجح `tests/public-shelf.spec.ts` إلا لأن رفّ القارئ المزروع موجود
 
-### Stretch
+### تمرين إضافي
 
-If you want one extra rep:
+إن أردت تكرارًا إضافيًا واحدًا:
 
-- expand `public-shelf.spec.ts` to assert the summary cards (`Books on shelf`, `Currently reading`)
-- add an `admin-setup` variant that seeds an admin user and then point a second project at admin-only tests later
-- refactor the inline seed logic into `tests/helpers/seed.ts` after you reach the deterministic state lesson
+- وسّع `public-shelf.spec.ts` لتؤكّد بطاقات الملخّص (`Books on shelf`، `Currently reading`)
+- أضف تنويعة `admin-setup` تزرع مستخدمًا مشرفًا، ثم وجّه مشروعًا ثانيًا إلى اختبارات المشرفين وحدها لاحقًا
+- أعد هيكلة منطق الزرع المضمّن إلى `tests/helpers/seed.ts` بعد أن تصل إلى درس الحالة الحتمية
 
-That last stretch is the bridge to the next layer of the course: today you are feeling the graph, later you make the seed reusable.
+ذلك التمرين الأخير هو الجسر إلى الطبقة التالية من الدورة: اليوم تلمس الرسم البياني، ولاحقًا تجعل الزرع قابلًا لإعادة الاستخدام.
 
-## What not to do
+## ما الذي يجب ألّا تفعله
 
-A few patterns that look reasonable but cause pain:
+بضعة أنماط تبدو معقولة لكنها تسبّب الألم:
 
-- **Don’t use `globalSetup` for authentication.** Playwright still supports `globalSetup`/`globalTeardown` as top-level config options, but they run outside the test runner. That means no fixtures, no `page` or `request` objects, no trace viewer integration, and no visibility in the HTML report. A setup *project* gives you all of those. The Playwright documentation has [moved entirely to the project-based pattern](https://playwright.dev/docs/auth) for authentication, and so should you.
-- **Remember what you lose with `globalSetup`.** No test steps. No trace attached to the setup itself. No fixture graph. No report entry a human can click. The setup project is boring in the best possible way because it stays inside the same runner model as the rest of the suite.
-- **Don’t create a project for every test file.** Projects are for *configuration boundaries*—different browsers, different roles, different environments. If two test files share the same browser and the same `storageState`, they belong in the same project. One project per file is just a complicated way to recreate `testMatch` filtering.
-- **Don’t forget that a failing dependency skips its dependents.** This is a feature, not a bug—if login fails, there’s no point running authenticated tests. But it also means a flaky setup project will silently skip your entire suite. If you see “0 tests ran” in CI, check the setup project first.
+- **لا تستخدم `globalSetup` للمصادقة.** ما زال Playwright يدعم `globalSetup`/`globalTeardown` كخيارات تهيئة في المستوى الأعلى، لكنها تعمل خارج مشغّل الاختبارات. وهذا يعني لا تجهيزات، ولا كائنات `page` أو `request`، ولا تكاملًا مع عارض التتبّع، ولا ظهورًا في تقرير HTML. أما *مشروع* التهيئة فيمنحك كل ذلك. وقد [انتقلت وثائق Playwright بالكامل إلى النمط القائم على المشاريع](https://playwright.dev/docs/auth) في المصادقة، وينبغي أن تنتقل أنت أيضًا.
+- **تذكّر ما تخسره مع `globalSetup`.** لا خطوات اختبار. ولا ملف تتبّع مرتبط بالتهيئة نفسها. ولا رسم بياني للتجهيزات. ولا مدخل تقرير يستطيع إنسان النقر عليه. مشروع التهيئة مملّ على أفضل وجه ممكن لأنه يبقى داخل نموذج المشغّل نفسه الذي تتبعه بقية المجموعة.
+- **لا تنشئ مشروعًا لكل ملف اختبار.** المشاريع مخصّصة *لحدود التهيئة* — متصفّحات مختلفة، وأدوار مختلفة، وبيئات مختلفة. فإن تقاسم ملفا اختبار المتصفّح نفسه و`storageState` نفسها، فهما ينتميان إلى المشروع نفسه. ومشروع لكل ملف ليس إلا طريقة معقّدة لإعادة صنع ترشيح `testMatch`.
+- **لا تنسَ أن الاعتمادية الفاشلة تتخطّى توابعها.** هذه ميزة لا علة — فإن فشل تسجيل الدخول، فلا فائدة من تشغيل الاختبارات المصادَقة. لكنها تعني أيضًا أن مشروع تهيئة متقلّبًا سيتخطّى مجموعتك كلها بصمت. فإن رأيت «لم يُشغَّل أي اختبار» في التكامل المستمر، فافحص مشروع التهيئة أولًا.
 
-## The mental model
+## النموذج الذهني
 
-Think of projects as a mini build graph. Each node has a name, a set of inputs (which tests, which browser, which `storageState`), and a set of edges (dependencies). Playwright resolves the graph, runs roots first, and parallelizes everything it can.
+فكّر في المشاريع كرسم بياني مصغّر للبناء. لكل عقدة اسم، ومجموعة مدخلات (أي اختبارات، وأي متصفّح، وأي `storageState`)، ومجموعة حواف (اعتماديات). يحلّ Playwright الرسم البياني، ويشغّل الجذور أولًا، ويوازي كل ما يمكن موازاته.
 
-If you’ve used task runners with dependency declarations—Make, Turborepo, Nx—this is the same idea applied to test execution. The difference is that Playwright’s version is small enough to fit in a single config file and focused enough that you rarely need more than three or four projects.
+إن كنت قد استخدمت مشغّلات مهام بإعلانات اعتماديات — Make وTurborepo وNx — فهذه الفكرة نفسها مطبّقة على تنفيذ الاختبارات. الفرق أن نسخة Playwright صغيرة بما يكفي لتسع في ملف تهيئة واحد، ومركّزة بما يكفي لأن تحتاج نادرًا إلى أكثر من ثلاثة أو أربعة مشاريع.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)

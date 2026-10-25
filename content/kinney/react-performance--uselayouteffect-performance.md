@@ -1,16 +1,16 @@
 ---
-title: "Performance Characteristics of useLayoutEffect"
-lang: en
+title: "خصائص الأداء في useLayoutEffect"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/uselayouteffect-performance"
 ---
 
-`useLayoutEffect` runs synchronously after all DOM mutations but before the browser paints. This timing makes it powerful for preventing visual glitches but potentially expensive for performance. Let’s explore when you need it, when you don’t, and how to measure its impact on your application’s responsiveness.
+يعمل `useLayoutEffect` تزامنيًا بعد كل تعديلات DOM لكن قبل رسم المتصفح. هذا التوقيت يجعله قويًا في منع العيوب البصرية، لكنه قد يكون مكلفًا للأداء. لنستكشف متى تحتاجه، ومتى لا تحتاجه، وكيف تقيس أثره على استجابة تطبيقك.
 
-The key insight: `useLayoutEffect` forces React to block the browser’s paint process until your effect completes. This can be exactly what you need—or exactly what’s killing your frame rate.
+الفكرة الجوهرية: يجبر `useLayoutEffect` React على حجب عملية رسم المتصفح حتى ينتهي تأثيرك. قد يكون هذا بالضبط ما تحتاجه — أو بالضبط ما يقتل معدل الإطارات لديك.
 
-## Understanding the Timing Difference
+## فهم فرق التوقيت
 
-React provides two hooks for side effects that run after render: `useEffect` and `useLayoutEffect`. The difference lies in their relationship to the browser’s rendering pipeline.
+يوفر React خُطّافين للتأثيرات الجانبية التي تعمل بعد التصيير: `useEffect` و`useLayoutEffect`. الفرق يكمن في علاقتهما بخط أنابيب التصيير في المتصفح.
 
 ```typescript
 function TimingDemo() {
@@ -30,23 +30,23 @@ function TimingDemo() {
 }
 ```
 
-Here’s what happens during a typical render cycle:
+إليك ما يحدث أثناء دورة تصيير نموذجية:
 
-1. React renders your component
-2. DOM mutations are applied
-3. **`useLayoutEffect` runs synchronously** ← Blocks here
-4. Browser paints the screen
-5. `useEffect` runs asynchronously
+1. يصيّر React مكوّنك
+2. تُطبَّق تعديلات DOM
+3. **يعمل `useLayoutEffect` تزامنيًا** ← يحجب هنا
+4. يرسم المتصفح الشاشة
+5. يعمل `useEffect` بشكل غير متزامن
 
-This synchronous execution is both `useLayoutEffect`’s superpower and its performance pitfall.
+هذا التنفيذ التزامني هو القوة الخارقة لـ `useLayoutEffect` ومزلق أدائه في الوقت نفسه.
 
-## When You Actually Need `useLayoutEffect`
+## متى تحتاج `useLayoutEffect` فعلًا
 
-Use `useLayoutEffect` when you need to read from or write to the DOM before the browser paints—typically to prevent visual flicker or measure elements.
+استخدم `useLayoutEffect` عندما تحتاج إلى القراءة من DOM أو الكتابة إليه قبل أن يرسم المتصفح — عادةً لمنع الوميض البصري أو قياس العناصر.
 
-### Measuring DOM Elements
+### قياس عناصر DOM
 
-The most common legitimate use case is measuring elements that depend on dynamic content:
+أكثر حالة استخدام مشروعة شيوعًا هي قياس عناصر تعتمد على محتوى ديناميكي:
 
 ```typescript
 function AutoResizingTextarea() {
@@ -77,9 +77,9 @@ function AutoResizingTextarea() {
 }
 ```
 
-### Preventing Layout Thrashing
+### منع اهتزاز التخطيط
 
-When you need to read and immediately write layout properties:
+عندما تحتاج إلى قراءة خصائص التخطيط وكتابتها فورًا:
 
 ```typescript
 function ScrollSyncedHeader() {
@@ -108,13 +108,13 @@ function ScrollSyncedHeader() {
 }
 ```
 
-## Performance Characteristics and Costs
+## خصائص الأداء والتكاليف
 
-`useLayoutEffect` has measurable performance implications because it blocks the main thread during the critical rendering path.
+لـ `useLayoutEffect` آثار أداء قابلة للقياس لأنه يحجب الخيط الرئيسي خلال مسار التصيير الحرج.
 
-### Blocking the Paint Process
+### حجب عملية الرسم
 
-Every millisecond spent in `useLayoutEffect` directly delays when users see your updates:
+كل جزء من الثانية يُنفق داخل `useLayoutEffect` يؤخّر مباشرة متى يرى المستخدمون تحديثاتك:
 
 ```typescript
 function ExpensiveLayoutEffect() {
@@ -142,9 +142,9 @@ function ExpensiveLayoutEffect() {
 }
 ```
 
-### Impact on Concurrent Features
+### الأثر على الميزات التزامنية
 
-`useLayoutEffect` runs synchronously even in React’s Concurrent Mode, which can interfere with features like time slicing:
+يعمل `useLayoutEffect` تزامنيًا حتى في الوضع التزامني (Concurrent Mode) في React، ما قد يتعارض مع ميزات مثل تقطيع الوقت:
 
 ```typescript
 function ConcurrentUnfriendly() {
@@ -164,9 +164,9 @@ function ConcurrentUnfriendly() {
 }
 ```
 
-## Measuring Performance Impact
+## قياس أثر الأداء
 
-Use the React DevTools Profiler and browser performance tools to measure the actual cost:
+استخدم React DevTools Profiler وأدوات أداء المتصفح لقياس التكلفة الفعلية:
 
 ```typescript
 function MeasuredLayoutEffect() {
@@ -189,15 +189,15 @@ function MeasuredLayoutEffect() {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Use `performance.mark()` and `performance.measure()` for more sophisticated profiling that integrates with browser DevTools.
+> استخدم `performance.mark()` و`performance.measure()` لتنميط أكثر تطورًا يتكامل مع أدوات مطوّري المتصفح.
 
-## Optimization Strategies
+## استراتيجيات التحسين
 
-### Batch DOM Operations
+### تجميع عمليات DOM
 
-When you must use `useLayoutEffect`, batch your DOM operations to minimize layout thrashing:
+عندما تضطر إلى استخدام `useLayoutEffect`، جمّع عمليات DOM لتقليل اهتزاز التخطيط:
 
 ```typescript
 function BatchedLayoutOperations() {
@@ -229,9 +229,9 @@ function BatchedLayoutOperations() {
 }
 ```
 
-### Use ResizeObserver When Appropriate
+### استخدم ResizeObserver عند الاقتضاء
 
-For measuring elements, consider `ResizeObserver` as an alternative to layout effects:
+لقياس العناصر، فكّر في `ResizeObserver` كبديل لتأثيرات التخطيط:
 
 ```typescript
 function ResizeObserverExample() {
@@ -260,9 +260,9 @@ function ResizeObserverExample() {
 }
 ```
 
-## Common Anti-Patterns to Avoid
+## أنماط مضادة شائعة يجب تجنّبها
 
-### Using `useLayoutEffect` for Non-DOM Side Effects
+### استخدام `useLayoutEffect` لتأثيرات جانبية غير متعلقة بـ DOM
 
 ```typescript
 // ❌ Bad - doesn't need to block paint
@@ -282,7 +282,7 @@ useEffect(() => {
 }, [userId]);
 ```
 
-### Overusing for “Feels Faster”
+### الإفراط في استخدامه بذريعة «يبدو أسرع»
 
 ```typescript
 function OverEngineeredComponent() {
@@ -301,9 +301,9 @@ function OverEngineeredComponent() {
 }
 ```
 
-## React 19 Considerations
+## اعتبارات React 19
 
-React 19’s Concurrent Features make `useLayoutEffect` even more important to use judiciously. The new rendering model makes blocking synchronous work more visible to users.
+تجعل الميزات التزامنية في React 19 استخدام `useLayoutEffect` أكثر أهمية بأن يكون بحكمة. فالنموذج الجديد للتصيير يجعل العمل التزامني الحاجب أكثر وضوحًا للمستخدمين.
 
 ```typescript
 function React19Aware() {
@@ -330,9 +330,9 @@ function React19Aware() {
 }
 ```
 
-## Testing Layout Effect Performance
+## اختبار أداء تأثير التخطيط
 
-Create performance benchmarks to validate your `useLayoutEffect` usage:
+أنشئ معايير أداء للتحقق من صحة استخدامك لـ `useLayoutEffect`:
 
 ```typescript
 function PerformanceTest() {

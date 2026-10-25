@@ -1,34 +1,34 @@
 ---
-title: "OKLCH Color Palette"
-lang: en
+title: "لوحة ألوان OKLCH"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/oklch-colors"
 ---
 
-Tailwind uses OKLCH colors for its default palette - a perceptually uniform color space that aligns with human vision.
+يستخدم Tailwind ألوان OKLCH للوحته الافتراضية — فضاء لوني متسق إدراكيًا يتوافق مع الرؤية البشرية.
 
-## OKLCH Components
+## مكوّنات OKLCH
 
-- **L (Lightness):** 0 (black) to 1 (white) - perceptually uniform
-- **C (Chroma):** 0 (gray) upwards - color intensity
-- **H (Hue):** 0-360 degrees - position on color wheel
-- **A (Alpha):** 0-1 or 0%-100% - opacity
+- **L (الإضاءة):** من 0 (أسود) إلى 1 (أبيض) — متسق إدراكيًا
+- **C (التشبّع اللوني):** من 0 (رمادي) فصاعدًا — شدة اللون
+- **H (درجة اللون):** 0-360 درجة — الموضع على عجلة الألوان
+- **A (ألفا):** من 0 إلى 1 أو من 0% إلى 100% — العتامة
 
-Syntax: `oklch(L C H)` or `oklch(L C H / alpha)`
+الصيغة: `oklch(L C H)` أو `oklch(L C H / alpha)`
 
-## Why OKLCH?
+## لماذا OKLCH؟
 
-1. **Perceptual uniformity** - Predictable lightness changes
-2. **P3 gamut support** - More vivid colors on modern displays
-3. **Better accessibility** - Reliable contrast calculations
-4. **Smoother gradients** - No muddy middle colors
+1. **الاتساق الإدراكي** - تغيّرات إضاءة يمكن التنبؤ بها
+2. **دعم نطاق P3** - ألوان أكثر حيوية على الشاشات الحديثة
+3. **إمكانية وصول أفضل** - حسابات تباين موثوقة
+4. **تدرّجات أكثر سلاسة** - بلا ألوان وسطية عكرة
 
-## Using OKLCH in Tailwind
+## استخدام OKLCH في Tailwind
 
-### Default Palette
+### اللوحة الافتراضية
 
-All default colors (red, blue, gray, etc.) use OKLCH internally:
+تستخدم كل الألوان الافتراضية (الأحمر والأزرق والرمادي وما شابه) OKLCH داخليًا:
 
-*Default Palette — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/1f6182d8384ee040ee6e8fd958f2f1248ac28a6fe5fcae24a9f0b769a7dd3e4d.html)*
+*اللوحة الافتراضية — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/1f6182d8384ee040ee6e8fd958f2f1248ac28a6fe5fcae24a9f0b769a7dd3e4d.html)*
 
 ```html
 <div class="bg-sky-500 text-neutral-900">
@@ -36,9 +36,9 @@ All default colors (red, blue, gray, etc.) use OKLCH internally:
 </div>
 ```
 
-### Custom Colors
+### ألوان مخصصة
 
-Define OKLCH colors in `@theme`:
+عرّف ألوان OKLCH في `@theme`:
 
 ```css
 @import 'tailwindcss';
@@ -54,19 +54,19 @@ Define OKLCH colors in `@theme`:
 }
 ```
 
-Use like any Tailwind color:
+استخدمها مثل أي لون في Tailwind:
 
-*Custom Colors — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/b8509c47b25281abd7e539248110d7f6b963ff321611b5be66013d6a89534a5c.html)*
+*ألوان مخصصة — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b8509c47b25281abd7e539248110d7f6b963ff321611b5be66013d6a89534a5c.html)*
 
 ```html
 <div class="bg-brand-500 text-midnight">...</div>
 ```
 
-## OKLCH and Gradients
+## OKLCH والتدرّجات
 
-Better interpolation with OKLCH:
+استيفاء أفضل باستخدام OKLCH:
 
-*OKLCH and Gradients — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/b4ed486bd1bfe2499af033c10882ab772da212b16785317e039de93040887482.html)*
+*OKLCH والتدرّجات — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b4ed486bd1bfe2499af033c10882ab772da212b16785317e039de93040887482.html)*
 
 ```html
 <!-- Standard gradient -->
@@ -76,9 +76,9 @@ Better interpolation with OKLCH:
 <div class="bg-linear-to-r/oklch from-indigo-500 to-teal-400">Vibrant color transitions</div>
 ```
 
-## Dark Mode with OKLCH
+## الوضع الداكن باستخدام OKLCH
 
-Predictable lightness makes dark mode easier:
+الإضاءة التي يمكن التنبؤ بها تسهّل الوضع الداكن:
 
 ```css
 @theme {
@@ -92,27 +92,27 @@ Predictable lightness makes dark mode easier:
 }
 ```
 
-## Accessibility Tips
+## نصائح إمكانية الوصول
 
-1. **Use L values for contrast** - Bigger L differences = better contrast
-2. **Always verify with tools** - L difference alone isn’t enough
-3. **Test both themes** - Dark and light modes need separate checks
+1. **استخدم قيم L للتباين** - فروق L أكبر = تباين أفضل
+2. **تحقّق دائمًا بالأدوات** - فرق L وحده لا يكفي
+3. **اختبر السمتين** - يحتاج الوضعان الداكن والفاتح إلى فحوص منفصلة
 
-## Browser Support
+## دعم المتصفحات
 
-OKLCH requires modern browsers:
+يتطلب OKLCH متصفحات حديثة:
 
 - Chrome 111+
 - Safari 15.4+
 - Firefox 113+
 
-> **Tailwind 4.1+ includes fallbacks for older browsers, but expect differences.**
+> **يتضمن Tailwind 4.1+ بدائل احتياطية للمتصفحات الأقدم، لكن توقّع اختلافات.**
 
-## Practical Examples
+## أمثلة عملية
 
-**High contrast button:**
+**زر عالي التباين:**
 
-*Practical Examples — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/baeec31cd36e93bfdbc23ba548c002c2b313c74f5dfc20c4f5b925928b4379fd.html)*
+*أمثلة عملية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/baeec31cd36e93bfdbc23ba548c002c2b313c74f5dfc20c4f5b925928b4379fd.html)*
 
 ```html
 <button class="bg-[oklch(0.2_0.1_250)] text-[oklch(0.95_0_0)]">
@@ -120,15 +120,15 @@ OKLCH requires modern browsers:
 </button>
 ```
 
-**Vibrant accent:**
+**لون تمييز حيوي:**
 
-*Practical Examples — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/ad491bd44845466c559f0f6d829991289c5d7ab9afc133fd780aa9f711225122.html)*
+*أمثلة عملية — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ad491bd44845466c559f0f6d829991289c5d7ab9afc133fd780aa9f711225122.html)*
 
 ```html
 <div class="bg-[oklch(0.7_0.25_160)]">High chroma for vivid color</div>
 ```
 
-**Accessible palette:**
+**لوحة ألوان متاحة:**
 
 ```css
 @theme {

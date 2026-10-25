@@ -1,12 +1,12 @@
 ---
-title: "Building a Form Input"
-lang: en
+title: "بناء حقل نموذج"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-form-input"
 ---
 
-Let’s start with our basic HTML structure.
+لنبدأ ببنية HTML الأساسية لدينا.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/ac25455cfbe3bfe687727ae48f19ae9088037eed1da233eefef4f85e3c0b8230.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/ac25455cfbe3bfe687727ae48f19ae9088037eed1da233eefef4f85e3c0b8230.html)*
 
 ```html
 <div>
@@ -15,13 +15,13 @@ Let’s start with our basic HTML structure.
 </div>
 ```
 
-It’s a basic form field, but it looks quite plain. Let’s transform it into something that belongs in a modern web application.
+إنه حقل نموذج أساسي، لكنه يبدو بسيطًا جدًا. لنحوّله إلى شيء يليق بتطبيق ويب حديث.
 
-## Adding Structure and Layout
+## إضافة البنية والتخطيط
 
-First, let’s establish proper visual hierarchy by styling the label and adding some basic spacing.
+أولًا، لنؤسس تسلسلًا بصريًا سليمًا عبر تنسيق التسمية وإضافة بعض التباعد الأساسي.
 
-*Adding Structure and Layout — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/d0177f83fc99bbf9ac128a1927951591a1a42f2ea483ad4e1a1d692b9f4861b3.html)*
+*إضافة البنية والتخطيط — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d0177f83fc99bbf9ac128a1927951591a1a42f2ea483ad4e1a1d692b9f4861b3.html)*
 
 ```html
 <div>
@@ -30,15 +30,15 @@ First, let’s establish proper visual hierarchy by styling the label and adding
 </div>
 ```
 
-- `block`: Makes the label take full width and sit above the input
-- `font-medium`: Adds medium font weight (500) for better hierarchy
-- `text-slate-900`: Near-black color for excellent readability
+- `block`: يجعل التسمية تشغل العرض الكامل وتجلس فوق الحقل
+- `font-medium`: يضيف وزن خط متوسطًا (500) لتسلسل هرمي أفضل
+- `text-slate-900`: لون شبه أسود لقراءة ممتازة
 
-## Creating Visual Separation
+## إنشاء فصل بصري
 
-Now let’s add some breathing room between the label and input field.
+الآن لنضف بعض المساحة المتنفسة بين التسمية وحقل الإدخال.
 
-*Creating Visual Separation — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/c06f4f73ffe2a453bbb9c5730a8ad85b7aa1b214cb3823fd404dc15288cdbf97.html)*
+*إنشاء فصل بصري — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c06f4f73ffe2a453bbb9c5730a8ad85b7aa1b214cb3823fd404dc15288cdbf97.html)*
 
 ```html
 <div class="space-y-2">
@@ -47,13 +47,13 @@ Now let’s add some breathing room between the label and input field.
 </div>
 ```
 
-You could add a margin to one or both elements, but you can also use the [spacing utilties](https://stevekinney.com/courses/tailwind/spacing-and-dividing-utilities) as well.
+يمكنك إضافة هامش إلى أحد العنصرين أو كليهما، لكن يمكنك أيضًا استخدام [أدوات التباعد](https://stevekinney.com/courses/tailwind/spacing-and-dividing-utilities).
 
-## Styling the Input Field
+## تنسيق حقل الإدخال
 
-Time to make the input field look professional with proper dimensions, colors, and borders.
+حان وقت جعل حقل الإدخال يبدو احترافيًا بأبعاد وألوان وحدود مناسبة.
 
-*Styling the Input Field — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/6338221d34a938aa47381d4b1741dd0beaf4f249d4b509c7f6b5863822968171.html)*
+*تنسيق حقل الإدخال — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6338221d34a938aa47381d4b1741dd0beaf4f249d4b509c7f6b5863822968171.html)*
 
 ```html
 <div class="space-y-2">
@@ -68,19 +68,19 @@ Time to make the input field look professional with proper dimensions, colors, a
 </div>
 ```
 
-- `block`: Makes the input a block element for full control
-- `w-full`: Input takes the full width of its container
-- `rounded-md`: Adds 6px border radius for modern, friendly appearance
-- `bg-white`: Explicit white background (important for consistency)
-- `px-3`: 12px horizontal padding for comfortable text spacing
-- `py-1.5`: 6px vertical padding for proper touch targets
-- `text-slate-900`: Dark text color for high contrast
+- `block`: يجعل حقل الإدخال عنصر كتلة لتحكم كامل
+- `w-full`: يشغل الحقل العرض الكامل لحاويته
+- `rounded-md`: يضيف استدارة حدود 6px لمظهر حديث وودود
+- `bg-white`: خلفية بيضاء صريحة (مهمة للاتساق)
+- `px-3`: حشو أفقي 12px لتباعد نصي مريح
+- `py-1.5`: حشو رأسي 6px لأهداف لمس مناسبة
+- `text-slate-900`: لون نص غامق لتباين عالٍ
 
-## Adding Borders and Outlines
+## إضافة الحدود والمحيطات
 
-Now let’s add a proper border and focus states using Tailwind’s outline utilities.
+الآن لنضف حدًا مناسبًا وحالات تركيز باستخدام أدوات المحيط في Tailwind.
 
-*Adding Borders and Outlines — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/18f0c15d6c1405e3ed91db6cbba08671655bf08619f29f8a47de732481f88ded.html)*
+*إضافة الحدود والمحيطات — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/18f0c15d6c1405e3ed91db6cbba08671655bf08619f29f8a47de732481f88ded.html)*
 
 ```html
 <div class="space-y-2">
@@ -95,17 +95,17 @@ Now let’s add a proper border and focus states using Tailwind’s outline util
 </div>
 ```
 
-- `outline-1`: 1px outline width (more reliable than borders for form fields)
-- `-outline-offset-1`: Negative offset puts the outline inside the element
-- `outline-slate-400`: Light-ish color for subtle, non-distracting border
+- `outline-1`: عرض محيط 1px (أكثر موثوقية من الحدود لحقول النماذج)
+- `-outline-offset-1`: الإزاحة السالبة تضع المحيط داخل العنصر
+- `outline-slate-400`: لون فاتح نسبيًا لحد خفيف غير مشتت
 
-Using `outline` instead of `border` prevents layout shifts and provides better consistency across browsers.
+استخدام `outline` بدلًا من `border` يمنع انزياح التخطيط ويوفر اتساقًا أفضل بين المتصفحات.
 
-## Adding Focus States
+## إضافة حالات التركيز
 
-Let’s add an interactive focus state that provides clear visual feedback.
+لنضف حالة تركيز تفاعلية توفّر تغذية بصرية واضحة.
 
-*Adding Focus States — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/6981638b50b9113b3df2454a2cf5429000298a4b1a4d99d7294948937c9bdb20.html)*
+*إضافة حالات التركيز — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/6981638b50b9113b3df2454a2cf5429000298a4b1a4d99d7294948937c9bdb20.html)*
 
 ```html
 <div class="space-y-2">
@@ -120,19 +120,19 @@ Let’s add an interactive focus state that provides clear visual feedback.
 </div>
 ```
 
-- `focus:outline-2`: Thicker 2px outline when focused
-- `focus:-outline-offset-2`: Negative offset creates an inset ring effect
-- `focus:outline-indigo-600`: Brand color (indigo) for focus state
+- `focus:outline-2`: محيط أثخن بسماكة 2px عند التركيز
+- `focus:-outline-offset-2`: الإزاحة السالبة تنشئ تأثير حلقة داخلية
+- `focus:outline-indigo-600`: لون العلامة (النيلي) لحالة التركيز
 
-The focus state uses a thicker outline with the same negative offset technique, creating a clear visual indicator without changing the input’s dimensions.
+تستخدم حالة التركيز محيطًا أثخن مع أسلوب الإزاحة السالبة نفسه، ما ينشئ مؤشرًا بصريًا واضحًا دون تغيير أبعاد حقل الإدخال.
 
-We’ll talk more about [focus states](https://stevekinney.com/courses/tailwind/focus-states) in a hot minute.
+سنتحدث أكثر عن [حالات التركيز](https://stevekinney.com/courses/tailwind/focus-states) بعد قليل.
 
-## Typography Refinements
+## تحسينات الخطوط
 
-Let’s improve the typography for both the label and input text, including placeholder styling.
+لنحسّن الخطوط لكل من التسمية ونص حقل الإدخال، بما يشمل تنسيق النص النائب.
 
-*Typography Refinements — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/dc7c2981968074add4ce824a79d5cacac6cb68c7ce23002c69ac9185246cb05e.html)*
+*تحسينات الخطوط — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/dc7c2981968074add4ce824a79d5cacac6cb68c7ce23002c69ac9185246cb05e.html)*
 
 ```html
 <div class="space-y-2">
@@ -147,6 +147,6 @@ Let’s improve the typography for both the label and input text, including plac
 </div>
 ```
 
-- `text-sm` on label: 14px font size, appropriate for form labels
-- `text-base` on input: 16px font size prevents zoom on mobile devices
-- `placeholder:text-slate-400`: Lighter slate for placeholder text, creating clear hierarchy
+- `text-sm` على التسمية: حجم خط 14px، مناسب لتسميات النماذج
+- `text-base` على الحقل: حجم خط 16px يمنع التكبير التلقائي على الأجهزة المحمولة
+- `placeholder:text-slate-400`: لون رمادي أفتح للنص النائب، ما ينشئ تسلسلًا هرميًا واضحًا

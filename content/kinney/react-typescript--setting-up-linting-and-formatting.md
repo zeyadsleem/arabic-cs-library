@@ -1,12 +1,12 @@
 ---
-title: "Setting Up Linting and Formatting"
-lang: en
+title: "ضبط الفحص الساكن والتنسيق"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/setting-up-linting-and-formatting"
 ---
 
-## Setting Up Linting and Formatting
+## ضبط الفحص الساكن والتنسيق
 
-No TypeScript setup is complete without proper linting. Here’s a solid ESLint configuration for React 19 + TypeScript:
+لا يكتمل أي إعداد لـ TypeScript دون فحص ساكن سليم. إليك إعدادًا متينًا لـ ESLint مع React 19 و TypeScript:
 
 ```bash
 npm install -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin
@@ -14,7 +14,7 @@ npm install -D eslint-plugin-react eslint-plugin-react-hooks
 npm install -D prettier eslint-config-prettier
 ```
 
-Create `.eslintrc.json`:
+أنشئ ملف `.eslintrc.json`:
 
 ```json
 {
@@ -42,7 +42,7 @@ Create `.eslintrc.json`:
 }
 ```
 
-And `.prettierrc.json`:
+وكذلك ملف `.prettierrc.json`:
 
 ```json
 {

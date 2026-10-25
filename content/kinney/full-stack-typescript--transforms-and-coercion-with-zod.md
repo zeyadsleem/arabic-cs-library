@@ -1,12 +1,12 @@
 ---
-title: "Transforms and Coercion with Zod"
-lang: en
+title: "التحويلات والإكراه مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/transforms-and-coercion-with-zod"
 ---
 
-## Leveraging Transform to Create Specialized Types
+## الاستفادة من التحويل لإنشاء أنواع متخصّصة
 
-Sometimes you want a transform: say you accept a `string` but store it as a `Date`. Zod’s `.transform()` method has your back. You still validate the input first, then morph it into whatever form you need:
+أحيانًا تريد تحويلًا (transform): لنقل إنك تقبل `string` لكن تخزّنه كـ `Date`. طريقة `.transform()` في Zod معك. ما زلت تتحقّق من المدخل أولًا، ثم تحوّله إلى الصيغة التي تحتاجها:
 
 ```typescript
 const dateSchema = z
@@ -20,13 +20,13 @@ const dateSchema = z
 const date: Date = dateSchema.parse('2025-03-20');
 ```
 
-This approach is great for bridging the gap between what your API or form input looks like versus what your code actually needs.
+هذه المقاربة رائعة لسدّ الفجوة بين ما تبدو عليه واجهة API أو مدخلات النموذج وما تحتاجه شيفرتك فعلًا.
 
-## Pipelining Transforms
+## تسلسل التحويلات في خط أنابيب
 
-Zod allows chaining transforms. You can do `.transform()` multiple times if each transform’s output type matches the next transform’s input type.
+يتيح Zod تسلسل التحويلات. فيمكنك استخدام `.transform()` عدة مرات، بشرط أن يطابق نوع مخرَج كل تحويل نوع مُدخَل التحويل التالي.
 
-### Example: Combining Validation + Chained Transforms
+### مثال: الجمع بين التحقّق وتحويلات متسلسلة
 
 ```typescript
 import { z } from 'zod';
@@ -41,4 +41,4 @@ const pipeline = z
 pipeline.parse('  hello  ');
 ```
 
-You can also do advanced checks between transforms. For multi-step transformations, consider if `.superRefine()` might be simpler if you need to add multiple error issues.
+يمكنك أيضًا إجراء فحوص متقدمة بين التحويلات. وللتحويلات متعددة الخطوات، فكّر هل قد يكون `.superRefine()` أبسط إن احتجت إلى إضافة عدة مشكلات خطأ.

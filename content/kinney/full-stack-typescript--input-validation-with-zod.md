@@ -1,10 +1,10 @@
 ---
-title: "Input Validation with Zod"
-lang: en
+title: "التحقق من المدخلات باستخدام Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/input-validation-with-zod"
 ---
 
-One popular approach is to use [React Hook Form](https://react-hook-form.com/) in combination with [Zod](https://zod.dev/). React Hook Form has official support for Zod via a resolver. The setup looks like this:
+أحد الأساليب الشائعة هو استخدام [React Hook Form](https://react-hook-form.com/) مع [Zod](https://zod.dev/). ويقدّم React Hook Form دعمًا رسميًا لـ Zod عبر محلّل (resolver). ويبدو الإعداد هكذا:
 
 ```typescript
 import { useForm } from 'react-hook-form';
@@ -39,10 +39,10 @@ function MyFormComponent() {
 }
 ```
 
-In this example, `zodResolver(FormSchema)` tells React Hook Form to use Zod to validate the form values against `FormSchema`. The `errors` object will contain any validation errors (with our custom messages, if provided in the schema). Each field’s error message is easily accessible (e.g. `errors.username.message`). This setup ensures that when the user submits the form (or as they blur fields, depending on configuration), the Zod schema runs and either allows the submission (with `data` being fully typed and validated) or returns errors that you can display.
+في هذا المثال، يخبر `zodResolver(FormSchema)` مكتبة React Hook Form بأن تستخدم Zod للتحقق من قيم النموذج وفق `FormSchema`. وسيحتوي كائن `errors` على أي أخطاء تحقق (مع رسائلنا المخصّصة، إن وُفّرت في المخطط). ورسالة خطأ كل حقل متاحة بسهولة (مثل `errors.username.message`). ويضمن هذا الإعداد أنه عندما يرسل المستخدم النموذج (أو عند مغادرته الحقول، حسب الإعداد)، يعمل مخطط Zod إمّا فيسمح بالإضافة (مع كون `data` محدّدة الأنواع ومتحقَّقًا منها بالكامل) أو يعيد أخطاء يمكنك عرضها.
 
-The benefit of this approach is a **single source of truth** for validation – the same schema could be used on the backend to validate incoming data. It also means less manual wiring of error messages; Zod’s messages and errors flow naturally into the form. Moreover, by validating on the client side, you improve UX by catching mistakes early (e.g., showing “Password must be at least 8 characters” as soon as the check fails) rather than waiting for a server round trip.
+وميزة هذا الأسلوب هي **مصدر حقيقة واحد** للتحقق — إذ يمكن استخدام المخطط نفسه على الواجهة الخلفية للتحقق من البيانات الواردة. ويعني ذلك أيضًا ربطًا يدويًا أقل لرسائل الخطأ؛ فتمرّ رسائل Zod وأخطاؤه طبيعيًا إلى النموذج. علاوة على ذلك، بالتحقق على جانب العميل تحسّن تجربة المستخدم بالتقاط الأخطاء مبكرًا (مثل إظهار «يجب أن تتكوّن كلمة المرور من 8 أحرف على الأقل» بمجرد فشل الفحص) بدلًا من انتظار رحلة ذهاب وإياب إلى الخادم.
 
-Even if you’re not using a form library, you can still use Zod in React by manually calling `schema.safeParse` on, say, form submit. For instance, you could use a React component’s state for form inputs and on submit do `const result = FormSchema.safeParse(formState)`. If `result.success` is false, set error messages accordingly; if true, proceed. But libraries like React Hook Form simplify this by tying into component state and re-renders for you.
+وحتى إن لم تكن تستخدم مكتبة نماذج، يمكنك مع ذلك استخدام Zod في React باستدعاء `schema.safeParse` يدويًا عند إرسال النموذج مثلًا. فمثلًا، يمكنك استخدام حالة مكوّن React لمدخلات النموذج، وعند الإرسال تنفّذ `const result = FormSchema.safeParse(formState)`. وإذا كان `result.success` مساويًا `false`، فاضبط رسائل الخطأ وفق ذلك؛ وإن كان `true`، فتابع. لكن مكتبات مثل React Hook Form تبسّط هذا بربطها بحالة المكوّن وإعادة تصييره نيابةً عنك.
 
-Zod on the frontend helps maintain **type safety and validation consistency**. You get to leverage the same robust validation rules in the browser, leading to more resilient applications. And thanks to integrations like React Hook Form’s resolver, setting it up is very convenient – you largely just plug in your schema and let the library handle the rest.
+يساعد Zod في الواجهة الأمامية على الحفاظ على **أمان الأنواع واتساق التحقق**. إذ تستفيد من قواعد التحقق القوية نفسها في المتصفح، ما يؤدي إلى تطبيقات أكثر مرونة. وبفضل تكاملات مثل محلّل React Hook Form، يصبح إعداده مريحًا جدًا — إذ تُوصِل مخططك فحسب وتترك المكتبة تتولّى الباقي.

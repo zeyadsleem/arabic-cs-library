@@ -1,12 +1,12 @@
 ---
-title: "Tasks: Tips and Tricks"
-lang: en
+title: "المهام: نصائح وحيل"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-tasks-tips-and-tricks"
 ---
 
-## Custom Problem Matchers
+## مطابِقات مشكلات مخصّصة
 
-You can define custom problem matchers to parse the output of any CLI tool. This is super handy if you have a bespoke compiler or custom linting solution. A custom matcher can highlight file paths and line numbers in errors, letting you click on them to jump straight to the code.
+يمكنك تعريف مطابِقات مشكلات مخصّصة لتحليل مخرجات أي أداة من أدوات سطر الأوامر. وهذا مفيد جدًا إن كان لديك مصرّف خاصّ أو حلّ مخصّص لفحص الشيفرة. ويستطيع مطابِق مخصّص إبراز مسارات الملفات وأرقام الأسطر في الأخطاء، لتتمكّن من النقر عليها والانتقال مباشرةً إلى الشيفرة.
 
 ```json
 {
@@ -28,9 +28,9 @@ You can define custom problem matchers to parse the output of any CLI tool. This
 }
 ```
 
-## Presentation Options
+## خيارات العرض
 
-You can control how the task output is shown:
+يمكنك التحكّم في طريقة عرض مخرجات المهمة:
 
 ```json
 {
@@ -47,13 +47,13 @@ You can control how the task output is shown:
 }
 ```
 
-- `reveal`: Show the panel automatically or only if there’s a problem (`silent`, `never`, etc.).
-- `panel`: Keep each task’s output in a separate panel, or reuse a single terminal panel.
-- `clear`: Clear the previous output before running the new task.
+- `reveal`: إظهار اللوحة تلقائيًا أو عند وجود مشكلة فقط (`silent` و `never` وغيرها).
+- `panel`: الاحتفاظ بمخرجات كل مهمة في لوحة منفصلة، أو إعادة استخدام لوحة طرفية واحدة.
+- `clear`: مسح المخرجات السابقة قبل تشغيل المهمة الجديدة.
 
-## Environment Variables
+## متغيّرات البيئة
 
-Need environment variables for a single task? Insert `env` in the task:
+هل تحتاج متغيّرات بيئة لمهمة واحدة؟ أدرج `env` في المهمة:
 
 ```json
 {
@@ -67,11 +67,11 @@ Need environment variables for a single task? Insert `env` in the task:
 }
 ```
 
-Securely handle secrets—avoid committing real secrets to version control! Use placeholders or retrieval from a secure store.
+تعامل مع الأسرار بأمان، وتجنّب إيداع أسرار حقيقية في التحكّم في الإصدارات! واستخدم قيمًا نائبة أو اجلبها من مخزن آمن.
 
-## Automatically Running Tasks on Folder Open
+## تشغيل المهام تلقائيًا عند فتح مجلد
 
-You can configure tasks to run automatically when you open a folder or workspace using the `runOn` property. This is especially useful for starting development servers, running initial build steps, or setting up your development environment.
+يمكنك ضبط المهام لتعمل تلقائيًا عند فتح مجلد أو مساحة عمل باستخدام خاصية `runOn`. وهذا مفيد بوجه خاص في تشغيل خوادم التطوير، أو تنفيذ خطوات البناء الأولية، أو تهيئة بيئة تطويرك.
 
 ```json
 {
@@ -100,20 +100,20 @@ You can configure tasks to run automatically when you open a folder or workspace
 }
 ```
 
-### Key Properties:
+### الخصائص الرئيسية:
 
-- **`runOptions.runOn`:** Specifies when to run the task. The value `"folderOpen"` means the task will automatically start when the folder is opened.
-- **`isBackground: true`:** Marks this as a long-running background task that doesn’t block Visual Studio Code.
-- **`problemMatcher`:** Configure patterns to detect when the task has started successfully.
+- **`runOptions.runOn`:** يحدّد متى تُشغَّل المهمة. وتعني القيمة `"folderOpen"` أن المهمة ستبدأ تلقائيًا عند فتح المجلد.
+- **`isBackground: true`:** يوسم المهمة كمهمة خلفية طويلة الأمد لا تعطّل Visual Studio Code.
+- **`problemMatcher`:** اضبط أنماطًا لكشف بدء المهمة بنجاح.
 
-### Additional `runOn` Options:
+### خيارات إضافية لـ `runOn`:
 
-- **`folderOpen`:** Run when the folder or workspace is opened
-- **`default`:** Only run when explicitly triggered
+- **`folderOpen`:** العمل عند فتح المجلد أو مساحة العمل
+- **`default`:** العمل عند التشغيل الصريح فقط
 
-### Tips for Auto-Starting Tasks:
+### نصائح للمهام التي تبدأ تلقائيًا:
 
-**Use `presentation` options** to control terminal visibility:
+**استخدم خيارات `presentation`** للتحكّم في ظهور الطرفية:
 
 ```json
 "presentation": {
@@ -123,7 +123,7 @@ You can configure tasks to run automatically when you open a folder or workspace
 }
 ```
 
-**Combine with task dependencies** to create complete startup workflows:
+**اجمعها مع اعتماديات المهام** لإنشاء مسارات عمل كاملة للإقلاع:
 
 ```json
 {
@@ -136,7 +136,7 @@ You can configure tasks to run automatically when you open a folder or workspace
 }
 ```
 
-**Use prompts for confirmation** if you don’t always want the task to run:
+**استخدم مطالبات للتأكيد** إن لم ترغب في تشغيل المهمة دائمًا:
 
 ```json
 "inputs": [

@@ -1,24 +1,24 @@
 ---
-title: "Recording HARs for Network Isolation"
-lang: en
+title: "تسجيل ملفات HAR لعزل الشبكة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation"
 ---
 
-Shelf talks to the [Open Library API](https://openlibrary.org/developers/api) to look up books. It’s a lovely free service—and also not something I want my end-to-end test suite to depend on.
+يتحدّث Shelf إلى [واجهة Open Library البرمجية](https://openlibrary.org/developers/api) للبحث عن الكتب. إنها خدمة مجانية رائعة — وهي أيضًا ليست شيئًا أريد أن تعتمد عليه مجموعة اختباراتي من طرف إلى طرف.
 
-Here’s the problem. Your CI runs a test that searches for “Station Eleven” against the real Open Library API. Most days it works. Some days they’re slow, or they change the response shape, or they rate-limit you. Your `main` branch turns red and your team spends twenty minutes figuring out that it’s not your code—it’s somebody else’s server.
+وها هي المشكلة. يشغّل خط CI اختبارًا يبحث عن «Station Eleven» عبر واجهة Open Library الحقيقية. في معظم الأيام ينجح. وفي بعض الأيام يكونون بطيئين، أو يغيّرون شكل الاستجابة، أو يحدّون من معدّل طلباتك. فيتحوّل فرع `main` إلى الأحمر ويقضي فريقك عشرين دقيقة ليكتشف أن العطل ليس في شيفرتك — بل في خادم شخص آخر.
 
-The solution is to stop hitting the real server in tests and replay a recording instead. Playwright has a built-in tool for this—HAR recording—and it is one of the most underused features in the whole framework.
+الحل هو التوقّف عن مخاطبة الخادم الحقيقي في الاختبارات وإعادة تشغيل تسجيل بدلًا من ذلك. لدى Playwright أداة مدمجة لهذا — تسجيل HAR — وهي واحدة من أكثر ميزات الإطار إهمالًا.
 
-## What a HAR file is
+## ما هو ملف HAR
 
-HAR stands for HTTP Archive. It’s a JSON format—standardized, though every tool adds its own flavor (Chrome embeds page timings, Playwright stores decoded response bodies)—that records an entire HTTP session. The core structure is the same everywhere: `log.entries[]`, where each entry holds one request/response pair with URL, method, headers, body, and timing. Chrome DevTools can export one. Playwright can both record and replay them.
+HAR اختصار HTTP Archive. وهو صيغة JSON — معيارية، وإن كان كل أداة يضيف نكهته الخاصة (يضمّن Chrome توقيتات الصفحة، وتخزّن Playwright أجسام الاستجابات مفكوكة الترميز) — تسجّل جلسة HTTP كاملة. والبنية الجوهرية واحدة في كل مكان: `log.entries[]`، حيث تحمل كل مدخلة زوج طلب/استجابة واحدًا مع الـ URL والطريقة والترويسات والجسم والتوقيت. يستطيع Chrome DevTools تصدير واحد. وتستطيع Playwright تسجيلها وإعادة تشغيلها معًا.
 
-A recorded HAR is a snapshot of what the network *actually did* during a single browser session. When you replay it, Playwright intercepts outgoing requests and serves the matching recorded response instead of letting the request hit the real network. The browser can’t tell the difference.
+الـ HAR المسجّل هو لقطة لما *فعلته* الشبكة فعلًا خلال جلسة متصفح واحدة. وحين تعيد تشغيله، تعترض Playwright الطلبات الصادرة وتقدّم الاستجابة المسجّلة المطابقة بدلًا من ترك الطلب يصل إلى الشبكة الحقيقية. ولا يستطيع المتصفح التمييز بين الاثنين.
 
-## Recording
+## التسجيل
 
-You record a HAR by running a test (or a script) in recording mode. Playwright’s preferred API is [`page.routeFromHAR`](https://playwright.dev/docs/mock#mocking-with-har-files) with `update: true`. The `tests/fixtures/` path below is the convention this course adopts for HAR fixtures; it’s not a directory the Shelf starter ships with, so you’ll create it the first time you record.
+تسجّل ملف HAR بتشغيل اختبار (أو سكربت) في وضع التسجيل. الواجهة المفضّلة في Playwright هي [`page.routeFromHAR`](https://playwright.dev/docs/mock#mocking-with-har-files) مع `update: true`. ومسار `tests/fixtures/` أدناه هو الاصطلاح الذي تتبنّاه هذه الدورة لملفات HAR الثابتة؛ وهو ليس مجلدًا يأتي مع نسخة Shelf الانطلاقية، لذا ستنشئه أول مرة تسجّل فيها.
 
 ```typescript
 test('search for books', async ({ page }) => {
@@ -34,13 +34,13 @@ test('search for books', async ({ page }) => {
 });
 ```
 
-The `url` option takes a [glob pattern](https://playwright.dev/docs/network#glob-url-patterns) (`*` matches anything except `/`, `**` matches anything including `/`, and the glob must match the full URL). Playwright also accepts a `RegExp` here. The `update` option is a boolean that defaults to `false` (replay mode).
+يأخذ خيار `url` [نمط glob](https://playwright.dev/docs/network#glob-url-patterns) (`*` يطابق أي شيء عدا `/`، و`**` يطابق أي شيء بما فيه `/`، ويجب أن يطابق الـ glob الـ URL الكامل). وتقبل Playwright أيضًا `RegExp` هنا. أما خيار `update` فهو قيمة منطقية افتراضها `false` (وضع إعادة التشغيل).
 
-Run this once, with `update: true`, pointed at the real API. Playwright records every matching request and writes a HAR file to `tests/fixtures/open-library-search.har`. Open it in your editor—it’s JSON, it’s enormous, and you should resist editing it by hand.
+شغّل هذا مرة واحدة، مع `update: true`، موجّهًا إلى الـ API الحقيقي. تسجّل Playwright كل طلب مطابق وتكتب ملف HAR إلى `tests/fixtures/open-library-search.har`. افتحه في محرّرك — إنه JSON، وهو ضخم، وعليك أن تقاوم تحريره يدويًا.
 
-One detail from the [Page API](https://playwright.dev/docs/api/class-page) docs matters here: when you are recording with `update: true`, Playwright writes the refreshed HAR when the page or browser context closes. If you kill the run early, you can end up wondering where the update went. The answer is usually “you never let the context shut down cleanly.”
+وثمّة تفصيل من توثيق [واجهة Page](https://playwright.dev/docs/api/class-page) يهمّ هنا: حين تسجّل مع `update: true`، تكتب Playwright الـ HAR المحدّث عند إغلاق الصفحة أو سياق المتصفح. وإذا قتلت التشغيل مبكرًا، فقد تجد نفسك تتساءل إلى أين ذهب التحديث. والجواب عادة «لم تدع السياق يُغلق بنظافة أبدًا».
 
-That matters even more when you create contexts manually. Close the context explicitly before you close the browser or declare the job finished.
+وهذا يهمّ أكثر حين تنشئ السياقات يدويًا. أغلق السياق صراحةً قبل أن تغلق المتصفح أو تعلن انتهاء المهمة.
 
 ```typescript
 const context = await browser.newContext();
@@ -58,21 +58,21 @@ await context.close();
 await browser.close();
 ```
 
-Use this rule when a HAR refresh “succeeds” but the file on disk never changes, or when a helper creates extra contexts for popups or alternate roles and then only closes the browser. Playwright flushes the HAR update on context teardown, not on vibes.
+استخدم هذه القاعدة حين «ينجح» تحديث HAR لكن الملف على القرص لا يتغيّر أبدًا، أو حين ينشئ مساعد إضافي سياقات إضافية للنوافذ المنبثقة أو الأدوار البديلة ثم يغلق المتصفح فقط. فـ Playwright تُفرغ تحديث الـ HAR عند تفكيك السياق، لا حسب المزاج.
 
-> **Warning**
+> **تحذير**
 >
-> HARs are machine-generated fixtures with nested request/response data and optional attached body files. Casual hand-edits are brittle—it’s easy to break a response body or invalidate a match without realizing. Automate changes with a script and always verify replay afterward.
+> ملفات HAR ثابتة يولّدها الآلة، ببيانات طلب/استجابة متداخلة وملفات أجسام مرفقة اختيارية. والتعديلات اليدوية العابرة هشّة — فمن السهل كسر جسم استجابة أو إبطال مطابقة دون أن تدرك. أتمت التغييرات بسكربت وتحقق دائمًا من إعادة التشغيل بعدها.
 
-Commit the HAR file to the repository. This is not optional—the whole point is that the next time this test runs, it reads the HAR from disk and doesn’t touch the real network.
+أودِع ملف HAR في المستودع. هذا ليس اختياريًا — فالفكرة كلها أن يقرأ الاختبار الـ HAR من القرص في التشغيل التالي ولا يمسّ الشبكة الحقيقية.
 
-> **Tip**
+> **نصيحة**
 >
-> HARs are test fixtures and belong in version control, but review them before committing. Credentials, session cookies, and PII can hide in response bodies and headers. See [Approaches to HAR Recording](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording) for scrubbing guidance, and use a dedicated test user (see [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)) to minimize what needs scrubbing.
+> ملفات HAR ثابتة اختبارية ومكانها نظام التحكّم بالإصدارات، لكن راجعها قبل الإيداع. فبيانات الاعتماد وكوكيز الجلسة والبيانات الشخصية يمكن أن تختبئ في أجسام الاستجابات والترويسات. راجع [مقاربات تسجيل HAR](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording) لإرشادات التنقية، واستخدم مستخدم اختبار مخصصًا (انظر [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)) لتقليل ما يحتاج إلى تنقية.
 
-## Replaying
+## إعادة التشغيل
 
-Now delete the `update: true` line (or set it to `false`):
+احذف الآن سطر `update: true` (أو اضبطه على `false`):
 
 ```typescript
 test('search for books', async ({ page }) => {
@@ -88,64 +88,64 @@ test('search for books', async ({ page }) => {
 });
 ```
 
-Run the test. It runs in milliseconds instead of seconds. It works on a plane. It works when Open Library is down. It works identically on every run, because the response is literally a file on disk.
+شغّل الاختبار. يعمل في أجزاء من الثانية بدلًا من ثوانٍ. يعمل على متن طائرة. يعمل حين تكون Open Library متوقفة. ويعمل بالطريقة نفسها في كل تشغيل، لأن الاستجابة حرفيًا ملف على القرص.
 
-This is determinism as a file—not determinism from mocking logic you maintain in code, but from a recorded artifact on disk. That’s the whole magic trick.
+هذه هي الحتمية كملف — لا حتمية مستمدّة من منطق محاكاة تصونه في الشيفرة، بل من أثر مسجّل على القرص. وهذه هي الخدعة السحرية بأكملها.
 
-## The matching rules, and why they bite
+## قواعد المطابقة، ولماذا تلدغ
 
-The part that trips people up is how Playwright decides which recorded response to serve. HAR replay matches on URL and HTTP method strictly. For `POST` requests it also matches the payload. If multiple entries match, Playwright picks the one with the most matching headers. This tiebreaker rarely matters for API calls—URL + method usually produce a single match—but it comes up for browser-initiated requests where entries share a URL but differ by `Accept` or `Referer`.
+الجزء الذي يُوقِع الناس في الخطأ هو كيف تقرّر Playwright أي استجابة مسجّلة تقدّم. فمطابقة إعادة تشغيل HAR تعتمد على الـ URL وطريقة HTTP اعتمادًا صارمًا. وللطلبات `POST` تطابق أيضًا الحمولة. وإذا طابقت مدخلات متعددة، تختار Playwright المدخلة ذات أكبر عدد من الترويسات المطابقة. ونادرًا ما يهمّ هذا الفاصل في نداءات API — فالـ URL مع الطريقة ينتجان عادة مطابقة واحدة — لكنه يظهر في الطلبات التي يبدأها المتصفح حيث تتشارك المدخلات URL واحدًا وتختلف بـ `Accept` أو `Referer`.
 
-If your test makes a request to `https://openlibrary.org/search.json?q=Station+Eleven` and the HAR only has `...q=Station%20Eleven&limit=10`, that is a different request as far as the replay layer is concerned. This isn’t Playwright-specific—HTTP treats `?a=1&b=2` and `?b=2&a=1` as different URLs.
+إذا أرسل اختبارك طلبًا إلى `https://openlibrary.org/search.json?q=Station+Eleven` وكان في الـ HAR فقط `...q=Station%20Eleven&limit=10`، فهذا طلب مختلف بقدر ما يخصّ طبقة إعادة التشغيل. وهذا ليس خاصًا بـ Playwright — فـ HTTP يعامل `?a=1&b=2` و`?b=2&a=1` كعنوانين مختلفين.
 
-This is both a feature and a footgun.
+وهذا ميزة وفخّ في آن واحد.
 
-- It’s a feature because the replay is exact—two tests recording different search queries produce HAR entries that never collide.
-- It’s a footgun because your application’s HTTP client might send requests that look superficially the same but differ in some header or query param, and the HAR doesn’t match.
+- إنه ميزة لأن إعادة التشغيل دقيقة — فاختباران يسجّلان استعلامي بحث مختلفين ينتجان مدخلات HAR لا تتصادم أبدًا.
+- وإنه فخّ لأن عميل HTTP في تطبيقك قد يرسل طلبات تشبه بعضها ظاهريًا لكنها تختلف في ترويسة أو معامل استعلام ما، فلا يطابقها الـ HAR.
 
-A few ways to make it less sharp:
+وفيما يلي بضع طرق لجعله أقل حدّة:
 
-**Make the request shape deterministic.** If your fetch wrapper serializes query params in a different order on different runs, your replay will miss. Fix the request generation first—the HAR is not the place to paper over nondeterministic callers.
+**اجعل شكل الطلب حتميًا.** إذا كان غلاف fetch لديك يسلسل معاملات الاستعلام بترتيب مختلف بين تشغيل وآخر، فستخطئ إعادة تشغيلك. أصلح توليد الطلب أولًا — فالـ HAR ليس المكان لتغطية مستدعين غير حتميين.
 
-**Keep `notFound: 'abort'` as the default.** `'abort'` (the default) kills unmatched requests immediately—the browser sees a network error, and your test fails loudly. `'fallback'` lets unmatched requests pass through to other route handlers and eventually to the real network. Use `'fallback'` only when you want *some* requests to be live while replaying only the API traffic.
+**أبقِ `notFound: 'abort'` هو الافتراضي.** الخيار `'abort'` (وهو الافتراضي) يقتل الطلبات غير المطابقة فورًا — فيرى المتصفح خطأ شبكة، ويفشل اختبارك بصوت عالٍ. أما `'fallback'` فيتيح للطلبات غير المطابقة المرور إلى معالجات مسارات أخرى ثم إلى الشبكة الحقيقية في النهاية. استخدم `'fallback'` فقط حين تريد أن تكون *بعض* الطلبات حيّة بينما تعيد تشغيل حركة الـ API وحدها.
 
-That `'fallback'` option is not hypothetical. It is the clean way to build a hybrid live-and-replay setup: replay the API you care about, let everything else continue through the normal route chain, and keep the test explicit about where the live boundary is.
+خيار `'fallback'` ذاك ليس افتراضيًا نظريًا. إنه الطريقة النظيفة لبناء إعداد هجين حيّ ومعاد التشغيل: أعد تشغيل الـ API الذي يهمّك، ودع كل شيء آخر يكمل عبر سلسلة المسارات العادية، وأبقِ الاختبار صريحًا بشأن موضع الحدّ الحيّ.
 
-**Record one scenario at a time.** One HAR per test file, scoped to one scenario, is easier to regenerate and debug when it breaks.
+**سجّل سيناريو واحدًا في المرة.** ملف HAR واحد لكل ملف اختبار، محصور في سيناريو واحد، أسهل في إعادة التوليد والتنقيح حين ينكسر.
 
-**When you see “request not found in HAR.”** Playwright throws this when a request matches the `url` glob but no HAR entry matches the full URL + method + payload. Common causes: a query parameter changed order, a new header appeared, or the request body is slightly different. **Inspect the diff first**—compare what the test is sending against what the HAR has. Run with `DEBUG=pw:api` to see the exact request Playwright tried to match. Only re-record after you understand *why* the request changed.
+**حين ترى «request not found in HAR».** ترمي Playwright هذا الخطأ حين يطابق طلب ما glob الـ `url` لكن لا تطابق أي مدخلة HAR الـ URL الكامل + الطريقة + الحمولة. والأسباب الشائعة: تغيّر ترتيب معامل استعلام، أو ظهرت ترويسة جديدة، أو جسم الطلب مختلف قليلًا. **افحص الفرق أولًا** — قارن ما يرسله الاختبار بما في الـ HAR. شغّل مع `DEBUG=pw:api` لترى الطلب المحدد الذي حاولت Playwright مطابقته. ولا تعد التسجيل إلا بعد أن تفهم *لماذا* تغيّر الطلب.
 
-When your app fires concurrent requests to the same endpoint (e.g., three parallel fetches to `/api/books/:id`), Playwright generally picks an unused entry when multiple HAR entries match the same URL and method, so each concurrent request gets a distinct response.
+حين يطلق تطبيقك طلبات متزامنة إلى نقطة النهاية نفسها (مثلًا ثلاثة عمليات fetch متوازية إلى `/api/books/:id`)، تختار Playwright عمومًا مدخلة غير مستخدمة حين تطابق عدة مدخلات HAR الـ URL والطريقة نفسيهما، فيحصل كل طلب متزامن على استجابة مميزة.
 
-> **Note**
+> **ملاحظة**
 >
-> If your app chains API calls—using a URL from response A to make request B—the second URL may differ between recordings. Signed URLs, nonce-bearing redirects, and pagination cursors won’t match on replay. For these cases, [`page.route`](https://playwright.dev/docs/mock) with a custom handler is a better tool than HAR replay.
+> إذا سلسل تطبيقك نداءات API — باستخدام URL من الاستجابة A لإصدار الطلب B — فقد يختلف الـ URL الثاني بين تسجيل وآخر. فالـ URLs الموقّعة، وإعادات التوجيه الحاملة لـ nonce، ومؤشرات ترقيم الصفحات لن تطابق عند إعادة التشغيل. في هذه الحالات، يكون [`page.route`](https://playwright.dev/docs/mock) مع معالج مخصص أداة أفضل من إعادة تشغيل HAR.
 
-> **Note**
+> **ملاحظة**
 >
-> HAR replay is stateless—each request gets the same recorded response regardless of what happened earlier in the test. If your test expects a response to *change* based on a prior action (add a book, then list books expecting the new one), the HAR won’t reflect that progression. For state-dependent flows, seed the expected state before the test and record the HAR against that known seed.
+> إعادة تشغيل HAR عديمة الحالة — كل طلب يحصل على الاستجابة المسجّلة نفسها بصرف النظر عمّا حدث سابقًا في الاختبار. وإذا كان اختبارك يتوقع أن *تتغيّر* استجابة بناءً على إجراء سابق (أضف كتابًا، ثم اسرد الكتب متوقعًا الكتاب الجديد)، فلن يعكس الـ HAR هذا التطور. وللتدفقات المعتمدة على الحالة، ازرع الحالة المتوقعة قبل الاختبار وسجّل الـ HAR مقابل تلك البذرة المعروفة.
 
-> **Warning**
+> **تحذير**
 >
-> Service Workers intercept network requests *before* Playwright’s route handler sees them. If your app registers a Service Worker (common in PWAs or when a library installs one for caching), those requests bypass `routeFromHAR` entirely—they’re served from the Service Worker’s cache, not from the HAR. Set `serviceWorkers: 'block'` in your Playwright config when you rely on HAR replay.
+> تعترض Service Workers طلبات الشبكة *قبل* أن يراها معالج المسار في Playwright. فإذا سجّل تطبيقك Service Worker (شائع في تطبيقات PWA أو حين تثبّت مكتبة واحدًا للتخزين المؤقت)، فإن تلك الطلبات تتجاوز `routeFromHAR` كليًا — إذ تُقدَّم من ذاكرة Service Worker المؤقتة، لا من الـ HAR. اضبط `serviceWorkers: 'block'` في إعداد Playwright حين تعتمد على إعادة تشغيل HAR.
 
-One more route-layer wrinkle: if your test opens a popup, a page-scoped handler (including `page.routeFromHAR()`) does not intercept the popup’s first request. That first navigation belongs to the browser context. If popup traffic is part of the flow, register the HAR replay at the `browserContext` layer instead of the page layer.
+وثمّة تجعيدة أخرى في طبقة المسارات: إذا فتح اختبارك نافذة منبثقة، فإن معالجًا محصورًا بالصفحة (بما فيه `page.routeFromHAR()`) لا يعترض أول طلب في النافذة المنبثقة. فتلك الملاحة الأولى تنتمي إلى سياق المتصفح. وإذا كانت حركة النوافذ المنبثقة جزءًا من التدفق، فسجّل إعادة تشغيل HAR على طبقة `browserContext` بدلًا من طبقة الصفحة.
 
-## Refreshing HARs
+## تحديث ملفات HAR
 
-HARs go stale. The Open Library team adds a field to the search response, or deprecates a field your app was reading, and your stale HAR doesn’t know. The test passes against the recording but the real app is broken.
+تشيخ ملفات HAR. يضيف فريق Open Library حقلًا إلى استجابة البحث، أو يلغي حقلًا كان تطبيقك يقرأه، ولا يعرف الـ HAR القديم بذلك. فينجح الاختبار مقابل التسجيل بينما التطبيق الحقيقي مكسور.
 
-My rule: **regenerate on a schedule, in CI, on a nightly job.** Not on every run—that defeats the determinism. The nightly job targets only HAR-backed tests, re-records with retries disabled and a dedicated test user, diffs the results, and opens a PR if anything changed. A human reviews the diff. The typical signal: a new or removed field in a response body.
+قاعدتي: **أعد التوليد وفق جدول، في CI، في مهمة ليلية.** لا في كل تشغيل — فذلك يهدم الحتمية. المهمة الليلية تستهدف اختبارات HAR وحدها، وتعيد التسجيل مع تعطيل إعادة المحاولات وبمستخدم اختبار مخصص، وتقارن النتائج، وتفتح PR إذا تغيّر أي شيء. ويراجع إنسان الفرق. والإشارة النمطية: حقل جديد أو محذوف في جسم استجابة.
 
-This is *scheduled* regeneration to catch upstream drift—not on-demand re-recording to silence a failing test. When a test fails because the HAR doesn’t match, the first question is *why* the request shape changed. If your code changed the request, fix the code or re-record deliberately. If the upstream API changed, that’s what the nightly job is for. Blind re-recording hides both bugs and drift.
+هذه إعادة توليد *مجدولة* لالتقاط انحراف المنبع — لا إعادة تسجيل عند الطلب لإسكات اختبار فاشل. وحين يفشل اختبار لأن الـ HAR لا يطابق، فالسؤال الأول هو *لماذا* تغيّر شكل الطلب. إذا كانت شيفرتك قد غيّرت الطلب، فأصلح الشيفرة أو أعد التسجيل عن قصد. وإذا تغيّرت واجهة API في المنبع، فالمهمة الليلية وُجدت لذلك. فإعادة التسجيل الأعمى تخفي الأخطاء والانحراف معًا.
 
-The [nightly verification lesson](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) shows the CI workflow for this, including the placeholder `har-refresh` job.
+يعرض [درس التحقّق الليلي](https://stevekinney.com/courses/self-testing-ai-agents/nightly-verification-loops) سير عمل CI لهذا، بما فيه مهمة `har-refresh` النائبة.
 
-## What the agent should and shouldn’t do
+## ما ينبغي للوكيل فعله وما لا ينبغي
 
-HAR recording is not a tool I want agents reaching for unprompted. Recording involves real network calls, and HARs can contain credentials in several places: `Authorization` and `Cookie` request headers, `Set-Cookie` response headers, and request or response bodies (OAuth exchanges, API key parameters). You have to scrub them.
+تسجيل HAR ليس أداة أريد أن يمدّ الوكلاء أيديهم إليها دون طلب. فالتسجيل يتضمن نداءات شبكة حقيقية، وقد تحتوي ملفات HAR على بيانات اعتماد في عدة مواضع: ترويسات الطلب `Authorization` و`Cookie`، وترويسات الاستجابة `Set-Cookie`، وأجسام الطلب أو الاستجابة (تبادلات OAuth، ومعاملات مفاتيح API). عليك تنقيتها.
 
-My instruction file rule for HARs:
+قاعدة ملف تعليماتي بشأن ملفات HAR:
 
 ```markdown
 ## HAR recording
@@ -170,29 +170,29 @@ My instruction file rule for HARs:
   HARs; an agent fixing a red test is not.
 ```
 
-That “do not re-record to fix a failing test” rule is the one you’ll thank me for. Agents love to make failing tests pass by re-recording. Usually it’s masking a real bug.
+قاعدة «لا تعد التسجيل لإصلاح اختبار فاشل» هي التي ستشكرني عليها. فالوكلاء يعشقون جعل الاختبارات الفاشلة تنجح بإعادة التسجيل. وغالبًا ما يكون ذلك تغطية على خطأ حقيقي.
 
-## When `page.route` is the better tool
+## حين تكون `page.route` هي الأداة الأفضل
 
-If you only need to mock one or two endpoints with hand-written responses, HAR replay is usually overkill. Reach for [`page.route`](https://playwright.dev/docs/mock) instead and keep the mock in code.
+إذا كنت تحتاج فقط إلى محاكاة نقطة نهاية أو نقطتين باستجابات مكتوبة يدويًا، فإعادة تشغيل HAR عادة مبالغة. استخدم [`page.route`](https://playwright.dev/docs/mock) بدلًا من ذلك وأبقِ المحاكاة في الشيفرة.
 
-The dedicated lesson, [Route-Based Network Interception](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception), covers when to use `route.fulfill`, `route.abort`, and `route.continue`; how route ordering works when `page.route` and `page.routeFromHAR` coexist; and when a small explicit mock is cleaner than a recorded HAR.
+يغطي الدرس المخصص، [اعتراض الشبكة القائم على المسارات](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)، متى تستخدم `route.fulfill` و`route.abort` و`route.continue`؛ وكيف يعمل ترتيب المسارات حين يتعايش `page.route` و`page.routeFromHAR`؛ ومتى تكون محاكاة صغيرة صريحة أنظف من HAR مسجّل.
 
-The short version is:
+والنسخة القصيرة هي:
 
-- Use HARs when you want to capture and replay a larger slice of real traffic.
-- Use routes when you want a small, explicit mock or a simulated failure.
-- Use [storage state](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) for authentication, not HAR replay.
+- استخدم ملفات HAR حين تريد التقاط شريحة أكبر من الحركة الحقيقية وإعادة تشغيلها.
+- استخدم المسارات حين تريد محاكاة صغيرة صريحة أو فشلًا محاكى.
+- استخدم [حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication) للمصادقة، لا إعادة تشغيل HAR.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Your end-to-end suite should not depend on any server you don’t control. HARs let you record reality once and replay it forever, which is how you get tests that pass on an airplane. The cost is a weekly refresh job and a rule that recording is not how you fix failing tests. Both are cheap.
+يجب ألّا تعتمد مجموعة اختباراتك من طرف إلى طرف على أي خادم لا تتحكم به. فملفات HAR تتيح لك تسجيل الواقع مرة واحدة وإعادة تشغيله إلى الأبد، وهكذا تحصل على اختبارات تنجح على متن طائرة. والثمن مهمة تحديث أسبوعية وقاعدة بأن التسجيل ليس طريقتك في إصلاح الاختبارات الفاشلة. وكلاهما رخيص.
 
-For organization, keep one HAR per test file in `tests/fixtures/`, named after the test file it serves. If a HAR grows past a few hundred KB, split the test file so each HAR covers a narrower scenario. Large HARs (images, paginated data) can grow to megabytes—they compress well in git, but that’s a sign to narrow the `url` glob.
+وللتنظيم، أبقِ ملف HAR واحدًا لكل ملف اختبار في `tests/fixtures/`، مسمّى باسم ملف الاختبار الذي يخدمه. وإذا تجاوز حجم الـ HAR بضع مئات من الكيلوبايتات، فقسّم ملف الاختبار كي يغطي كل HAR سيناريو أضيق. ويمكن أن تنمو ملفات HAR الكبيرة (الصور، والبيانات المرقّمة) إلى ميغابايتات — وهي تُضغط جيدًا في git، لكن ذلك إشارة إلى تضييق glob الـ `url`.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Approaches to HAR Recording](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording)
-- [Route-Based Network Interception](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [مقاربات تسجيل HAR](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording)
+- [اعتراض الشبكة القائم على المسارات](https://stevekinney.com/courses/self-testing-ai-agents/route-based-network-interception)
+- [مصادقة حالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)

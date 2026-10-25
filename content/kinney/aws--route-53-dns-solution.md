@@ -1,22 +1,22 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/route-53-dns-solution"
 ---
 
-This is the solution for the [Route 53 DNS Exercise](https://stevekinney.com/courses/aws/route-53-dns-exercise). Each step includes the exact commands, expected output, and troubleshooting guidance.
+هذا هو حل [تمرين DNS في Route 53](https://stevekinney.com/courses/aws/route-53-dns-exercise). وتتضمن كل خطوة الأوامر الدقيقة، والمخرجات المتوقعة، وإرشادات استكشاف الأخطاء.
 
-> **Tip**
+> **نصيحة**
 >
-> If the Route 53 console looks a little different when you do this, keep the [Route 53 DNS configuration guide](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) and the [`aws route53 change-resource-record-sets` command reference](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) open.
+> إذا بدت وحدة تحكم Route 53 مختلفة قليلًا عند تنفيذك، فأبقِ [دليل تهيئة DNS في Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) و[مرجع أمر `aws route53 change-resource-record-sets`](https://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html) مفتوحين.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- Alias records let the apex domain point at CloudFront without violating normal DNS rules around CNAMEs at the zone root.
-- Route 53 becomes authoritative only after the registrar delegates the domain to its nameservers, which is why nameserver changes matter as much as record creation.
-- Verifying with both `dig` and the browser proves the stack from DNS to TLS to CloudFront is actually working, not just configured on paper.
+- سجلات الاسم المستعار تتيح لنطاق الجذر أن يشير إلى CloudFront دون خرق قواعد DNS المعتادة بشأن سجلات CNAME عند جذر المنطقة.
+- لا يصبح Route 53 موثوقًا (authoritative) إلا بعد أن يفوّض المسجّل النطاق إلى خوادم أسمائه، ولهذا فإن تغييرات خوادم الأسماء تهمّ بقدر ما يهمّ إنشاء السجلات.
+- التحقّق بـ `dig` والمتصفح معًا يثبت أن المكدّس من DNS إلى TLS إلى CloudFront يعمل فعلًا، لا أنه مُعدّ على الورق فقط.
 
-## Confirm the Hosted Zone
+## تأكيد المنطقة المستضافة
 
 ```bash
 aws route53 list-hosted-zones-by-name \
@@ -24,7 +24,7 @@ aws route53 list-hosted-zones-by-name \
   --output json
 ```
 
-**Expected output:**
+**المخرجات المتوقعة:**
 
 ```json
 {
@@ -41,13 +41,13 @@ aws route53 list-hosted-zones-by-name \
 }
 ```
 
-Store the hosted zone ID for later use:
+احفظ معرّف المنطقة المستضافة لاستخدامه لاحقًا:
 
 ```bash
 HOSTED_ZONE_ID="Z1234567890ABC"
 ```
 
-Or extract it programmatically:
+أو استخرجه برمجيًا:
 
 ```bash
 HOSTED_ZONE_ID=$(aws route53 list-hosted-zones \
@@ -58,14 +58,14 @@ HOSTED_ZONE_ID=$(aws route53 list-hosted-zones \
 echo "$HOSTED_ZONE_ID"
 ```
 
-**If something went wrong:**
+**إذا حدث خطأ ما:**
 
-- The query returns an empty list: you do not actually have a hosted zone yet. Go back to [Hosted Zones and Record Types](https://stevekinney.com/courses/aws/hosted-zones-and-record-types), create one, and confirm the registrar points at its nameservers before continuing.
-- The hosted zone exists but public DNS still fails later: the registrar is still using the wrong nameservers.
+- يعيد الاستعلام قائمة فارغة: ليس لديك منطقة مستضافة فعلًا بعد. ارجع إلى [المناطق المستضافة وأنواع السجلات](https://stevekinney.com/courses/aws/hosted-zones-and-record-types)، وأنشئ واحدة، وتأكّد من أن المسجّل يشير إلى خوادم أسمائها قبل المتابعة.
+- المنطقة المستضافة موجودة لكن DNS العام يفشل لاحقًا: المسجّل ما زال يستخدم خوادم الأسماء الخطأ.
 
-### Confirming Nameservers (External Registrar Only)
+### تأكيد خوادم الأسماء (للمسجّل الخارجي فقط)
 
-If your domain is registered outside Route 53, confirm the registrar is already using the Route 53 nameservers:
+إذا كان نطاقك مسجّلًا خارج Route 53، فتأكّد من أن المسجّل يستخدم خوادم أسماء Route 53 بالفعل:
 
 ```
 ns-1234.awsdns-56.org
@@ -74,13 +74,13 @@ ns-890.awsdns-34.co.uk
 ns-123.awsdns-78.com
 ```
 
-Use your actual nameservers from the hosted zone, not these examples. After updating, verify that delegation is working:
+استخدم خوادم الأسماء الفعلية من منطقتك المستضافة، لا هذه الأمثلة. وبعد التحديث، تحقّق من أن التفويض يعمل:
 
 ```bash
 dig example.com NS +short
 ```
 
-**Expected output** (after propagation):
+**المخرجات المتوقعة** (بعد الانتشار):
 
 ```
 ns-1234.awsdns-56.org.
@@ -89,11 +89,11 @@ ns-890.awsdns-34.co.uk.
 ns-123.awsdns-78.com.
 ```
 
-If you still see the old nameservers, propagation isn’t complete. This can take up to 48 hours but usually finishes within a few hours.
+إذا كنت لا تزال ترى خوادم الأسماء القديمة، فالانتشار لم يكتمل. وقد يستغرق ذلك حتى 48 ساعة، لكنه ينتهي عادةً في غضون ساعات قليلة.
 
-## Create an A Alias Record for the Apex Domain
+## إنشاء سجل A مستعار لنطاق الجذر
 
-Get your CloudFront distribution’s domain name if you don’t have it saved:
+احصل على اسم نطاق توزيع CloudFront لديك إن لم تكن قد حفظته:
 
 ```bash
 aws cloudfront get-distribution \
@@ -106,7 +106,7 @@ aws cloudfront get-distribution \
 "d111111abcdef8.cloudfront.net"
 ```
 
-Create the A alias record:
+أنشئ سجل A المستعار:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -130,7 +130,7 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-**Expected output:**
+**المخرجات المتوقعة:**
 
 ```json
 {
@@ -142,13 +142,13 @@ aws route53 change-resource-record-sets \
 }
 ```
 
-**If something went wrong:**
+**إذا حدث خطأ ما:**
 
-- `InvalidChangeBatch: Alias target name does not lie within the target zone`: The `DNSName` in your alias target doesn’t match a valid CloudFront distribution. Double-check the distribution domain name.
-- `InvalidChangeBatch: RRSet with DNS name example.com. is not permitted in zone`: You’re likely trying to create the record in the wrong hosted zone. Verify that the hosted zone is for `example.com`.
-- `NoSuchHostedZone`: The hosted zone ID is wrong. Run `aws route53 list-hosted-zones --output json` to find the correct ID.
+- `InvalidChangeBatch: Alias target name does not lie within the target zone`: لا يطابق `DNSName` في هدف الاسم المستعار لديك توزيع CloudFront صالحًا. تحقّق مرتين من اسم نطاق التوزيع.
+- `InvalidChangeBatch: RRSet with DNS name example.com. is not permitted in zone`: الأرجح أنك تحاول إنشاء السجل في المنطقة المستضافة الخطأ. تحقّق من أن المنطقة المستضافة خاصة بـ `example.com`.
+- `NoSuchHostedZone`: معرّف المنطقة المستضافة خطأ. شغّل `aws route53 list-hosted-zones --output json` للعثور على المعرّف الصحيح.
 
-## Create an AAAA Alias Record for IPv6
+## إنشاء سجل AAAA مستعار لـ IPv6
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -172,7 +172,7 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-**Expected output:**
+**المخرجات المتوقعة:**
 
 ```json
 {
@@ -184,11 +184,11 @@ aws route53 change-resource-record-sets \
 }
 ```
 
-The output is identical in structure to the A record. The only difference is the `"Type": "AAAA"` in the request.
+المخرجات متطابقة في البنية مع سجل A. والفرق الوحيد هو `"Type": "AAAA"` في الطلب.
 
-## Create Records for www
+## إنشاء سجلات لـ www
 
-Create both A and AAAA alias records for `www.example.com` in a single call:
+أنشئ سجلي الاسم المستعار A وAAAA معًا لـ `www.example.com` في استدعاء واحد:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -224,7 +224,7 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-**Expected output:**
+**المخرجات المتوقعة:**
 
 ```json
 {
@@ -236,22 +236,22 @@ aws route53 change-resource-record-sets \
 }
 ```
 
-**If something went wrong:**
+**إذا حدث خطأ ما:**
 
-- `InvalidChangeBatch: Alias target name does not lie within the target zone`: Make sure `www.example.com` is listed as an alternate domain name (CNAME) on your CloudFront distribution. You can check with: <code><span class="line"><span style="color:#82AAFF;font-style:italic">aws</span><span style="color:#ECC48D"> cloudfront</span><span style="color:#ECC48D"> get-distribution-config</span><span style="color:#F78C6C"> \</span></span>
+- `InvalidChangeBatch: Alias target name does not lie within the target zone`: تأكّد من أن `www.example.com` مُدرج كاسم نطاق بديل (CNAME) على توزيع CloudFront لديك. يمكنك التحقّق بالأمر: <code><span class="line"><span style="color:#82AAFF;font-style:italic">aws</span><span style="color:#ECC48D"> cloudfront</span><span style="color:#ECC48D"> get-distribution-config</span><span style="color:#F78C6C"> \</span></span>
 <span class="line"><span style="color:#82AAFF"> --id</span><span style="color:#ECC48D"> E1A2B3C4D5E6F7</span><span style="color:#F78C6C"> \</span></span>
 <span class="line"><span style="color:#82AAFF"> --output</span><span style="color:#ECC48D"> json</span><span style="color:#F78C6C"> \</span></span>
-<span class="line"><span style="color:#82AAFF"> --query</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">DistributionConfig.Aliases</span><span style="color:#D9F5DD">"</span></span></code> The output should include both `example.com` and `www.example.com`. If `www.example.com` is missing, update the distribution to add it.
+<span class="line"><span style="color:#82AAFF"> --query</span><span style="color:#D9F5DD"> "</span><span style="color:#ECC48D">DistributionConfig.Aliases</span><span style="color:#D9F5DD">"</span></span></code> ينبغي أن تتضمن المخرجات كلا الاسمين `example.com` و`www.example.com`. وإذا كان `www.example.com` مفقودًا، فحدّث التوزيع لإضافته.
 
-## Verify DNS Resolution
+## التحقق من تحليل DNS
 
-Wait about 60 seconds, then verify:
+انتظر نحو 60 ثانية، ثم تحقّق:
 
 ```bash
 dig example.com A +short
 ```
 
-**Expected output** (IP addresses will vary):
+**المخرجات المتوقعة** (ستختلف عناوين IP):
 
 ```
 13.224.67.18
@@ -264,7 +264,7 @@ dig example.com A +short
 dig example.com AAAA +short
 ```
 
-**Expected output** (IPv6 addresses will vary):
+**المخرجات المتوقعة** (ستختلف عناوين IPv6):
 
 ```
 2600:9000:2252:7800:1a:b6c1:4a40:93a1
@@ -273,33 +273,33 @@ dig example.com AAAA +short
 2600:9000:2252:a400:1a:b6c1:4a40:93a1
 ```
 
-If you don’t see results, query a Route 53 nameserver directly:
+إذا لم تر نتائج، فاستعلم من خادم أسماء Route 53 مباشرةً:
 
 ```bash
 dig example.com A @ns-1234.awsdns-56.org +short
 ```
 
-If the direct query returns results but the general query doesn’t, DNS propagation from your registrar’s nameserver change is still in progress.
+إذا أعاد الاستعلام المباشر نتائج بينما لا يعيدها الاستعلام العام، فانتشار DNS الناتج عن تغيير خوادم الأسماء لدى المسجّل لا يزال جاريًا.
 
-For the www subdomain:
+أما النطاق الفرعي www:
 
 ```bash
 dig www.example.com A +short
 ```
 
-You should see the same pattern of CloudFront IP addresses.
+ينبغي أن ترى النمط نفسه من عناوين IP الخاصة بـ CloudFront.
 
-### Browser Verification
+### التحقق في المتصفح
 
-Open `https://example.com` in a browser. You should see:
+افتح `https://example.com` في متصفح. ينبغي أن ترى:
 
-- Your frontend content loaded from S3 via CloudFront
-- A valid SSL certificate (click the lock icon to verify it was issued by Amazon)
-- The URL showing `https://example.com` (not the CloudFront domain)
+- محتوى واجهتك الأمامية محمّلًا من S3 عبر CloudFront
+- شهادة SSL صالحة (انقر أيقونة القفل للتحقّق من أنها صادرة عن Amazon)
+- عنوان URL يعرض `https://example.com` (لا نطاق CloudFront)
 
-If you created www records, `https://www.example.com` should show the same content.
+وإذا أنشأت سجلات www، فينبغي أن يعرض `https://www.example.com` المحتوى نفسه.
 
-## List All Records
+## سرد كل السجلات
 
 ```bash
 aws route53 list-resource-record-sets \
@@ -307,7 +307,7 @@ aws route53 list-resource-record-sets \
   --output json
 ```
 
-**Expected output:**
+**المخرجات المتوقعة:**
 
 ```json
 {
@@ -371,16 +371,16 @@ aws route53 list-resource-record-sets \
 }
 ```
 
-The key things to confirm:
+الأمور الأساسية التي يجب تأكيدها:
 
-- **NS and SOA records** exist for `example.com` (auto-created, don’t delete).
-- **A and AAAA alias records** exist for `example.com`, both pointing to your CloudFront distribution.
-- **A and AAAA alias records** exist for `www.example.com` (if you created them for the www subdomain).
-- All alias records show `"HostedZoneId": "Z2FDTNDATAQYW2"` and your CloudFront distribution domain name.
+- سجلات **NS وSOA** موجودة لـ `example.com` (أُنشئت تلقائيًا، فلا تحذفها).
+- سجلات **A وAAAA المستعارة** موجودة لـ `example.com`، وكلاهما يشير إلى توزيع CloudFront لديك.
+- سجلات **A وAAAA المستعارة** موجودة لـ `www.example.com` (إن أنشأتها للنطاق الفرعي www).
+- كل سجلات الاسم المستعار تعرض `"HostedZoneId": "Z2FDTNDATAQYW2"` واسم نطاق توزيع CloudFront لديك.
 
-## Summary
+## الملخّص
 
-The complete flow, condensed:
+التدفق الكامل، مكثّفًا:
 
 ```bash
 # Store your values
@@ -457,4 +457,4 @@ dig example.com AAAA +short
 dig www.example.com A +short
 ```
 
-You now have DNS fully configured. Your site is reachable at `https://example.com` and `https://www.example.com`, served through CloudFront, secured by ACM, with content stored in S3.
+أصبح لديك الآن DNS مُعدًّا بالكامل. وموقعك متاح على `https://example.com` و`https://www.example.com`، ويُقدَّم عبر CloudFront، ومؤمَّن بـ ACM، ومحتواه مخزّن في S3.

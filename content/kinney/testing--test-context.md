@@ -1,25 +1,25 @@
 ---
-title: "Understanding Test Context"
-lang: en
+title: "فهم سياق الاختبار"
+lang: ar
 source: "https://stevekinney.com/courses/testing/test-context"
 ---
 
-Allow me to paint a picture: Imagine you’re working on a project (yours or the team’s chaotic Frankenstein) where every test depends on some shared state, configuration, or custom data per test. You want to pass information along with your tests in a way that doesn’t feel like duct-taping random values onto global variables. What do? Enter **test context** in Vitest.
+اسمح لي أن أرسم لك صورة: تخيّل أنك تعمل على مشروع (مشروعك، أو مشروع الفريق المركّب الفوضوي) حيث يعتمد كل اختبار على حالة مشتركة أو إعدادات أو بيانات مخصصة لكل اختبار. تريد تمرير معلومات مع اختباراتك بطريقة لا تبدو كلصق قيم عشوائية على متغيّرات عامة بشريط لاصق. ماذا تفعل؟ هنا يأتي **سياق الاختبار** (test context) في Vitest.
 
-Test context is your handy sidekick when you’ve got some config or data that’s different for each test but still needs to be easily accessible throughout your test body. Instead of manually juggling variables in each test case, **Vitest** lets you bind any contextual values you need to the test instance itself. Let’s take a look at how you get that sweet context going.
+سياق الاختبار هو رفيقك المفيد عندما تكون لديك إعدادات أو بيانات تختلف من اختبار إلى آخر لكنها تحتاج إلى أن تكون متاحة بسهولة في متن الاختبار. بدلًا من التلاعب اليدوي بالمتغيّرات في كل حالة اختبار، يتيح لك **Vitest** أن تربط أي قيم سياقية تحتاجها بنسخة الاختبار نفسها. لنلقِ نظرة على كيفية تشغيل هذا السياق اللطيف.
 
-Vitest’s [test contexts](https://vitest.dev/guide/test-context.html) are inspired by [Playwright’s fixtures](https://playwright.dev/docs/test-fixtures).
+[سياقات الاختبار](https://vitest.dev/guide/test-context.html) في Vitest مستوحاة من [تركيبات Playwright](https://playwright.dev/docs/test-fixtures) (fixtures).
 
-`it` and `test` take a function as a second argument. This function receives the test context as a argument. The test context has two main properties:
+تأخذ `it` و`test` دالة كوسيط ثانٍ. تتلقى هذه الدالة سياق الاختبار كوسيط. لسياق الاختبار خاصيتان رئيسيتان:
 
-- `meta`: Some metadata about the test itself.
-- `expect`: A copy of the Expect API bound to the current test.
+- `meta`: بعض البيانات الوصفية عن الاختبار نفسه.
+- `expect`: نسخة من واجهة Expect مرتبطة بالاختبار الحالي.
 
-## Setting Context with `test.context`
+## ضبط السياق باستخدام `test.context`
 
-Vitest gives you this magical `test.context` object that you can throw stuff into inside each test. Basically, think of `test.context` as that utility belt where Batman (you) can keep all your gadgets and not let things get messy. Each test gets its own context, so they don’t bleed values into each other—thankfully saving you from one of those *“Why does everything break when I run all my tests together?”* moments.
+يمنحك Vitest هذا الكائن السحري `test.context` الذي يمكنك رمي الأشياء فيه داخل كل اختبار. فكّر في `test.context` أساسًا كحزام الأدوات ذاك الذي يحفظ فيه باتمان (أنت) كل أجهزته دون أن تتحول الأمور إلى فوضى. يحصل كل اختبار على سياقه الخاص، فلا تتسرّب القيم بينها — ولحسن الحظ هذا ينجيك من لحظات *«لماذا ينكسر كل شيء عندما أشغّل كل اختباراتي معًا؟»*.
 
-Let’s write a simple test that stores something in the context:
+لنكتب اختبارًا بسيطًا يخزّن شيئًا في السياق:
 
 ```javascript
 import { test, expect } from 'vitest';
@@ -32,15 +32,15 @@ test('it should store a value in the context', (ctx) => {
 });
 ```
 
-Let’s slow down here: The `ctx` object that you see there? That’s the context. You can store whatever floats your boat into it, and it’s local to **that particular test**. In this case, we’re shoving a `'bar'` value into the `ctx.foo` slot and then asserting that it’s there. Straightforward and to the point, right?
+لنتمهّل هنا: الكائن `ctx` الذي تراه؟ هذا هو السياق. يمكنك تخزين ما تشاء فيه، وهو محلي **لذلك الاختبار بعينه**. في هذه الحالة، ندفع قيمة `'bar'` في خانة `ctx.foo` ثم نتحقق من وجودها. مباشر وفي صلب الموضوع، أليس كذلك؟
 
-## Accessing Context in Hooks
+## الوصول إلى السياق في الخُطّافات
 
-Hold on—you’re probably thinking, *What if I want to set the context before the test runs? Like in some `beforeEach` hook?*
+انتظر — أنت على الأرجح تفكّر: *ماذا لو أردت ضبط السياق قبل تشغيل الاختبار؟ كأن يكون داخل خُطّاف `beforeEach` ما؟*
 
-That’s exactly where contexts are even more powerful. You can modify test contexts *inside* `beforeEach()` or even `afterEach()` hooks, which makes them ridiculously useful when you need to do some setup for each test without cluttering the test itself.
+هنا بالضبط تكون السياقات أقوى. يمكنك تعديل سياقات الاختبار *داخل* خُطّافات `beforeEach()` أو حتى `afterEach()`، ما يجعلها مفيدة بشكل مذهل عندما تحتاج إلى بعض التجهيز لكل اختبار دون إرباك الاختبار نفسه.
 
-Check this out:
+انظر إلى هذا:
 
 ```javascript
 import { beforeEach, test, expect } from 'vitest';
@@ -63,19 +63,19 @@ test('it should have a different context for each test', (ctx) => {
 });
 ```
 
-Here, we’re stuffing a `user` object into the context in the `beforeEach` hook. Now, every test has access to this juicy context without repeating yourself, which is super important when you’re trying to keep tests DRY and not copy-paste the same setup all over the place.
+هنا نحشو كائن `user` في السياق داخل خُطّاف `beforeEach`. الآن صار كل اختبار يملك وصولًا إلى هذا السياق الشهي دون تكرار نفسك، وهذا بالغ الأهمية عندما تحاول إبقاء اختباراتك جافة (DRY) وألا تنسخ وتلصق التجهيز نفسه في كل مكان.
 
-And notice: Each test gets its **own** isolated context. So changes in one test are **not** going to mess with another.
+ولاحظ: يحصل كل اختبار على سياقه **الخاص** المعزول. لذا فإن التغييرات في اختبار واحد **لن** تعبث باختبار آخر.
 
-## Context Between Tests Is Isolated
+## السياق بين الاختبارات معزول
 
-Now, you might be wondering: *So what happens with context across multiple tests?* The cool thing is that each test has **its own context instance**, meaning that you can safely modify the context within a test, and it won’t affect other tests.
+الآن قد تتساءل: *إذن ماذا يحدث للسياق عبر اختبارات متعددة؟* الشيء الرائع هو أن لكل اختبار **نسخة سياق خاصة به**، أي أنك تستطيع تعديل السياق داخل اختبار بأمان، ولن يؤثر ذلك في الاختبارات الأخرى.
 
-Earlier, when we updated `ctx.user.role = 'editor'` in the second test, it didn’t affect the `user.role` in the first test. That’s the context doing its job to keep things isolated and sane. You don’t want to be in a world where tests are secretly sharing information behind your back. Trust me, it’s a dark place.
+سابقًا، عندما حدّثنا `ctx.user.role = 'editor'` في الاختبار الثاني، لم يؤثر ذلك في `user.role` في الاختبار الأول. هذا هو السياق يؤدي عمله في إبقاء الأمور معزولة وسليمة. لا تريد أن تعيش في عالم تتشارك فيه الاختبارات المعلومات سرًّا من وراء ظهرك. ثق بي، إنه مكان مظلم.
 
-## Practical Example: Mocking an API in Context
+## مثال عملي: محاكاة واجهة برمجة تطبيقات في السياق
 
-A real-world-ish example: let’s say you need to mock an API result, and each test needs different data. You could slap this onto the context using the hooks. Watch this:
+مثال شبه واقعي: لنفترض أنك تحتاج إلى محاكاة نتيجة واجهة برمجة تطبيقات، ويحتاج كل اختبار إلى بيانات مختلفة. يمكنك لصق ذلك على السياق باستخدام الخُطّافات. شاهد:
 
 ```javascript
 import { beforeEach, test, expect } from 'vitest';
@@ -97,14 +97,14 @@ test('api returns different data for another test', (ctx) => {
 });
 ```
 
-What did we do here? We initialized a default API response in `beforeEach`, letting every test have its own clean slate. If one test needs the response to be different, it can override the context for that specific run without bothering any other test.
+ماذا فعلنا هنا؟ هيّأنا استجابة واجهة برمجة تطبيقات افتراضية في `beforeEach`، فصار لكل اختبار صفحته البيضاء النظيفة. وإن احتاج اختبار ما إلى استجابة مختلفة، يمكنه تجاوز السياق لتلك التشغيلة تحديدًا دون إزعاج أي اختبار آخر.
 
-## When Context Could Be Too Much
+## متى قد يكون السياق أكثر من اللازم
 
-So context is neat and all, but just because you *can* doesn’t always mean you *should*. It’s tempting to start treating `ctx` like a storage locker, cramming everything in there. Do you really need twenty variables in your test’s context? Probably not. Sometimes, it’s better to keep your tests straightforward and only use context sparingly, for setup values or shared instances that genuinely make sense.
+السياق أنيق وكل ذلك، لكن مجرد أنك *تستطيع* لا يعني دائمًا أنك *ينبغي*. من المُغري أن تبدأ معاملة `ctx` كخزانة تخزين وتحشو فيها كل شيء. هل تحتاج حقًا إلى عشرين متغيّرًا في سياق اختبارك؟ على الأرجح لا. أحيانًا يكون من الأفضل إبقاء اختباراتك مباشرة واستخدام السياق باعتدال فقط، لقيم التجهيز أو النسخ المشتركة التي تكون منطقية فعلًا.
 
-Context is awesome for reducing shared setup boilerplate, but don’t let it grow into this abstract mess of values you have to keep track of later. The goal is to make tests readable and maintainable, right? If `test.context` helps with that, great! If not, maybe step back and think about whether you’re trying to solve a problem that doesn’t really exist (we’ve all been there).
+السياق رائع لتقليل النمط المتكرر في التجهيز المشترك، لكن لا تدعه ينمو إلى تلك الفوضى المجرّدة من القيم التي عليك تتبّعها لاحقًا. الهدف هو جعل الاختبارات قابلة للقراءة والصيانة، أليس كذلك؟ إن كان `test.context` يساعد في ذلك، فرائع! وإن لم يكن، فربما تراجع خطوة وتفكّر إن كنت تحاول حلّ مشكلة غير موجودة أصلًا (جميعنا مررنا بذلك).
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Vitest’s test context is like that sneaky-but-helpful tool you didn’t know you needed. It keeps your tests clean, lets you pass around data smoothly, and helps avoid the weird pitfalls of global state between tests. Just remember: moderation is key. The context is there to help, but don’t turn it into a dumping ground!
+سياق الاختبار في Vitest كالأداة الخفيّة لكن المفيدة التي لم تكن تعرف أنك تحتاجها. يبقي اختباراتك نظيفة، ويتيح لك تمرير البيانات بسلاسة، ويساعد في تجنّب المزالق الغريبة للحالة العامة بين الاختبارات. تذكّر فقط: الاعتدال هو المفتاح. السياق موجود ليساعد، لكن لا تحوّله إلى مكبّ نفايات!

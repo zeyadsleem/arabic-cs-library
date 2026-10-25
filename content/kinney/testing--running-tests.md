@@ -1,15 +1,15 @@
 ---
-title: "Running Tests with Vitest"
-lang: en
+title: "تشغيل الاختبارات باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/running-tests"
 ---
 
-From inside of [companion repository](https://github.com/stevekinney/introduction-to-testing), we’re going to navigate to `examples/basic-math`. You’ll see that we have two files in `src`:
+من داخل [المستودع المرافق](https://github.com/stevekinney/introduction-to-testing)، سننتقل إلى `examples/basic-math`. ستجد أن لدينا ملفين في `src`:
 
 - `calculator.js`
 - `calculator.test.js`
 
-You can use `vitest` to run your tests.
+يمكنك استخدام `vitest` لتشغيل اختباراتك.
 
 ```bash
 npx vitest
@@ -18,7 +18,7 @@ npx vitest
 npx vitest --ui
 ```
 
-For our use cases, we have it defined in our `package.json`. For example, you might have the following script in your `package.json`.
+في حالتنا هذه، لدينا الأمر معرّفًا في `package.json`. على سبيل المثال، قد يكون لديك السكربت التالي في `package.json`.
 
 ```json
 {
@@ -30,14 +30,14 @@ For our use cases, we have it defined in our `package.json`. For example, you mi
 }
 ```
 
-As you’ve might have noticed, I’ve already done this for you.
+وكما لاحظت على الأرجح، فقد فعلت هذا نيابةً عنك مسبقًا.
 
-This means that you can do run `npm test` to run our tests. If you wanted to run it with the UI, you could run `npm test -- --ui` to forward the flag to the `npm` script.
+هذا يعني أنه يمكنك تنفيذ `npm test` لتشغيل اختباراتنا. وإن أردت تشغيلها مع الواجهة، يمكنك تنفيذ `npm test -- --ui` لتمرير العلم إلى سكربت `npm`.
 
-Out of the box, most test runners will run *every* test that matches whatever file naming conventions that they’re configured for. But you can have some control over this in the way you [provide a filter for which tests you want to run](https://stevekinney.com/courses/testing/filtering-tests).
+بشكل افتراضي، يشغّل معظم مشغّلات الاختبارات *كل* اختبار يوافق أي اصطلاح لتسمية الملفات صُمّمت عليه. لكن يمكنك التحكّم في ذلك بعض الشيء عبر [تزويد مرشّح للاختبارات التي تريد تشغيلها](https://stevekinney.com/courses/testing/filtering-tests).
 
-## Additional Reading
+## قراءات إضافية
 
-- [Filtering Tests](https://stevekinney.com/courses/testing/filtering-tests)
-- [Organizing and Annotating Tests](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
-- [Running Tests for Related Files](https://stevekinney.com/courses/testing/running-tests-for-related-files)
+- [ترشيح الاختبارات](https://stevekinney.com/courses/testing/filtering-tests)
+- [تنظيم الاختبارات والتعليق عليها](https://stevekinney.com/courses/testing/organizing-and-annotating-tests)
+- [تشغيل اختبارات الملفات ذات الصلة](https://stevekinney.com/courses/testing/running-tests-for-related-files)

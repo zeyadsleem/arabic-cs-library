@@ -1,50 +1,50 @@
 ---
-title: "Navigation"
-lang: en
+title: "التنقل في Visual Studio Code"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/navigating-vscode"
 ---
 
-Navigating large codebases can feel like exploring a maze. I have a long rant about how one of the best skills you can learn is how to drop into a large codebase and quickly get your bearings. Visual Studio Code offers a range of tools to help you zip around files and symbols—quickly tracking down definitions, references, and more. Let’s take a closer look at these essential navigation features.
+قد يبدو التنقل في قواعد شيفرة كبيرة كاستكشاف متاهة. ولديّ شكوى مطوّلة عن أن من أفضل المهارات التي يمكنك تعلّمها هي كيفية الدخول إلى قاعدة شيفرة كبيرة والإلمام بها سريعًا. ويوفّر Visual Studio Code مجموعة من الأدوات التي تساعدك على التنقل بسرعة بين الملفات والرموز — فتتعقّب التعريفات والمراجع وغيرها سريعًا. ولنلقِ نظرة أقرب على ميزات التنقل الأساسية هذه.
 
-## An Aside: A Free Trick for macOS Users
+## استطراد: حيلة مجانية لمستخدمي macOS
 
-Visual Studio Code makes a lot of use of the function keys. The problem is—so does macOS. You *could* hold down the `fn` key on your keyboard. Alternatively, you can switch it so that your functions keys are `F1`, `F2`, etc. and only change your screen brightness when you press the `fn` key. This is one of the first things that I do when I set up a new Mac.
+يستخدم Visual Studio Code مفاتيح الوظائف كثيرًا. والمشكلة أن macOS يفعل ذلك أيضًا. و*يمكنك* الضغط باستمرار على مفتاح `fn` في لوحة مفاتيحك. وبدلًا من ذلك، يمكنك التبديل بحيث تصبح مفاتيح الوظائف `F1` و`F2` وما إلى ذلك، ولا تتغيّر إضاءة الشاشة إلا عند ضغطك على مفتاح `fn`. وهذا من أول الأشياء التي أفعلها عند إعداد جهاز Mac جديد.
 
-Use Function Keys as Standard Function Keys
+استخدام مفاتيح الوظائف كمفاتيح وظائف قياسية
 
-## Go to Definition, Declaration, Implementation, and Type Definition
+## الانتقال إلى التعريف والإعلان والتنفيذ وتعريف النوع
 
-Pressing `F12` to go to a symbol’s definition is a well-known Visual Studio Code trick, but it doesn’t stop there. For many languages, especially TypeScript and other popular languages, you can also jump to a symbol’s declaration, implementation, or type definition. Right-click a function, class, or variable name to see commands like `Go to Definition`, `Go to Declaration`, `Go to Type Definition`, or `Go to Implementation`. This lets you quickly investigate where a piece of code originates or how it’s structured, without manually hunting through files.
+الضغط على `F12` للانتقال إلى تعريف رمز حيلة معروفة في Visual Studio Code، لكن الأمر لا يتوقف عند هذا. ففي كثير من اللغات، وخصوصًا TypeScript وغيرها من اللغات الشائعة، يمكنك أيضًا الانتقال إلى إعلان الرمز أو تنفيذه أو تعريف نوعه. انقر بزر الفأرة الأيمن على اسم دالة أو صنف أو متغيّر لترى أوامر مثل `Go to Definition` و`Go to Declaration` و`Go to Type Definition` أو `Go to Implementation`. وهذا يتيح لك أن تتحرّى بسرعة من أين يأتي جزء من الشيفرة أو كيف بُني، دون تنقيب يدوي في الملفات.
 
-> **In many projects, the difference between “definition” and “declaration” can be subtle. If one option doesn’t reveal what you need, try the other. You might discover a hidden interface or an abstract class behind the scenes.**
+> **في كثير من المشاريع، قد يكون الفرق بين “التعريف” و“الإعلان” دقيقًا. فإن لم يُظهر أحد الخيارين ما تحتاج إليه، فجرّب الآخر. قد تكتشف واجهة مخفية أو صنفًا مجرّدًا خلف الكواليس.**
 
-## Find All References
+## البحث عن كل المراجع
 
-Sometimes, you want to see every nook and cranny where a particular function, method, or variable is used. By pressing `Shift+F12` (or selecting `Find All References` from the right-click menu), Visual Studio Code collates a list of every location in your codebase referencing the selected symbol. This is extremely handy when refactoring or analyzing the impact of changes before you break something by accident.
+أحيانًا تريد رؤية كل زاوية وركن يُستخدم فيها تابع أو دالة أو متغيّر معيّن. بالضغط على `Shift+F12` (أو اختيار `Find All References` من قائمة النقر بزر الفأرة الأيمن)، يجمع Visual Studio Code قائمة بكل موضع في قاعدة شيفرتك يشير إلى الرمز المحدّد. وهذا مفيد جدًا عند إعادة الهيكلة أو تحليل أثر التغييرات قبل أن تكسر شيئًا بالخطأ.
 
-## Peek Definition
+## نظرة خاطفة على التعريف
 
-If you love context switching as much as you love your dentist visits—which is to say, not at all—try `Alt+F12` (`Option+F12` on macOS). This opens a small inline window showing the symbol’s definition without leaving your current file. It’s perfect for quick checks: you can confirm a function’s parameters or a class’s properties, then close the peek view to continue coding uninterrupted.
+إن كنت تحب تبديل السياق قدر حبك لزيارات طبيب الأسنان — أي لا تحبه أبدًا — فجرّب `Alt+F12` (`Option+F12` على macOS). يفتح هذا نافذة صغيرة تضمينية تعرض تعريف الرمز دون مغادرة ملفك الحالي. وهو مثالي للفحوص السريعة: يمكنك تأكيد معاملات دالة أو خصائص صنف، ثم إغلاق عرض النظرة الخاطفة لمواصلة البرمجة بلا انقطاع.
 
-## Breadcrumbs
+## مسارات التنقّل
 
-Breadcrumbs appear at the top of your editor and show the nesting structure of your code. They let you navigate through symbols like classes, functions, and methods within the current file. If you’re working on a hefty TypeScript file, simply click a breadcrumb element to jump straight to that part of your code. You can enable or disable them in `Settings` by looking up `breadcrumbs.enabled`.
+تظهر مسارات التنقّل (Breadcrumbs) في أعلى محرّرك وتعرض بنية التداخل في شيفرتك. وهي تتيح لك التنقل عبر رموز مثل الأصناف والدوال والتوابع داخل الملف الحالي. وإن كنت تعمل على ملف TypeScript ضخم، فانقر عنصرًا من مسار التنقّل للانتقال مباشرةً إلى ذلك الجزء من شيفرتك. ويمكنك تفعيلها أو تعطيلها في `Settings` بالبحث عن `breadcrumbs.enabled`.
 
-> **If you don’t see breadcrumbs, press `View -> Appearance -> Show Breadcrumbs` or search for `breadcrumbs` in the Command Palette. They’re a quiet but powerful way to move around complex files.**
+> **إن لم ترَ مسارات التنقّل، فاضغط `View -> Appearance -> Show Breadcrumbs` أو ابحث عن `breadcrumbs` في لوحة الأوامر. إنها طريقة هادئة لكنها قوية للتنقل في ملفات معقّدة.**
 
-## Outline View
+## عرض المخطط التفصيلي
 
-The Outline view (accessible from the Explorer sidebar or via `View -> Outline`) offers a structured outline of all symbols in the current file—functions, classes, constants, and more. This is especially useful when you have a monstrous file or want a quick overview of everything defined. Clicking a symbol in the Outline jumps straight to its location in the editor. It’s like a table of contents for your code, minus the dog-eared pages.
+يقدّم عرض المخطط التفصيلي (Outline) — المتاح من الشريط الجانبي للمستكشف أو عبر `View -> Outline` — مخططًا منظّمًا لكل الرموز في الملف الحالي: الدوال والأصناف والثوابت وغيرها. وهذا مفيد خصوصًا عندما يكون لديك ملف هائل أو تريد نظرة عامة سريعة على كل ما هو معرّف. والنقر على رمز في المخطط التفصيلي ينقلك مباشرةً إلى موضعه في المحرّر. إنه مثل فهرس محتويات لشيفرتك، لكن بلا صفحات مطوية الزوايا.
 
-## Go to Symbol
+## الانتقال إلى رمز
 
-In-file symbol navigation is speedy with `Ctrl+Shift+O` (`Cmd+Shift+O` on macOS). Start typing the symbol’s name, and Visual Studio Code will filter the list in real-time. Select the symbol you want, press Enter, and land exactly where you need to be.
+التنقّل بين الرموز داخل الملف سريع باستخدام `Ctrl+Shift+O` (`Cmd+Shift+O` على macOS). ابدأ بكتابة اسم الرمز، وسيقوم Visual Studio Code بتصفية القائمة في الوقت الحقيقي. اختر الرمز الذي تريد، واضغط Enter، وستصل إلى ما تحتاج إليه بالضبط.
 
-For a broader, workspace-wide search, press `Ctrl+T` (or `Cmd+T`). This scours every file in your workspace for a matching symbol, which is particularly helpful in large projects. Quickly jump into that function declared 42 files away—no rummaging through folder structures needed.
+ولبحث أوسع على مستوى مساحة العمل كلها، اضغط `Ctrl+T` (أو `Cmd+T`). وهذا يبحث في كل ملف في مساحة عملك عن رمز مطابق، وهو مفيد خصوصًا في المشاريع الكبيرة. اقفز سريعًا إلى تلك الدالة المُعلَنة على بُعد 42 ملفًا — بلا حاجة إلى التنقيب في هياكل المجلدات.
 
-## Minimap Navigation
+## التنقل بالمخطط المصغّر
 
-For a bird’s-eye view of your code, take advantage of the minimap. This feature displays a miniature version of your file along the right side of the editor, allowing you to quickly scroll and click to navigate to specific sections. You can fine-tune its behavior in your settings by adjusting properties such as `editor.minimap.enabled`, `editor.minimap.renderCharacters`, and `editor.minimap.maxColumn`:
+لنظرة شاملة على شيفرتك من منظور علوي، استفد من المخطط المصغّر (minimap). وتعرض هذه الميزة نسخة مصغّرة من ملفك على الجانب الأيمن من المحرّر، ما يتيح لك التمرير والنقر سريعًا للتنقل إلى أقسام محدّدة. ويمكنك ضبط سلوكه بدقة في إعداداتك بتعديل خصائص مثل `editor.minimap.enabled` و`editor.minimap.renderCharacters` و`editor.minimap.maxColumn`:
 
 ```json
 {
@@ -54,16 +54,16 @@ For a bird’s-eye view of your code, take advantage of the minimap. This featur
 }
 ```
 
-> **Use the minimap as your visual guide to quickly jump to different parts of your code and gain an overall sense of structure.**
+> **استخدم المخطط المصغّر كدليل بصري للقفز سريعًا بين أجزاء شيفرتك وتكوين إحساس عام بالبنية.**
 
-## Code Folding
+## طي الشيفرة
 
-When working with large files, code folding can be a lifesaver. It allows you to collapse functions, classes, or custom-defined regions so that you can focus on the code that matters most at any given moment. The folding icons in the gutter provide an intuitive way to hide or reveal code blocks, and you can use keyboard shortcuts—such as `Ctrl+Shift+[` and `Ctrl+Shift+]` on Windows/Linux or `Cmd+Option+[` and `Cmd+Option+]` on macOS—to quickly fold or unfold sections.
+عند العمل مع ملفات كبيرة، قد تكون ميزة طي الشيفرة منقذة. فهي تتيح لك طي الدوال والأصناف أو المناطق المخصّصة المعرّفة لتركّز على الشيفرة الأهم في أي لحظة. وتوفّر أيقونات الطي في الهامش طريقة بديهية لإخفاء كتل الشيفرة أو إظهارها، ويمكنك استخدام اختصارات مثل `Ctrl+Shift+[` و`Ctrl+Shift+]` على Windows/Linux أو `Cmd+Option+[` و`Cmd+Option+]` على macOS لطي الأقسام أو فتحها سريعًا.
 
-> **Streamline your workspace by folding away less relevant sections. This not only reduces visual clutter but also helps you concentrate on the active areas of your code.**
+> **بسّط مساحة عملك بطيّ الأقسام الأقل صلة. فهذا لا يقلّل الفوضى البصرية فحسب، بل يساعدك أيضًا على التركيز على المناطق النشطة من شيفرتك.**
 
-## Quick Open: Fast File Navigation
+## الفتح السريع: تنقل سريع بين الملفات
 
-Quick Open is a powerful tool for navigating between files in a large codebase. Press `Ctrl+P` (or `Cmd+P` on macOS) to open the **Quick Open** panel, and start typing the file name you need. Visual Studio Code uses fuzzy matching to instantly narrow down your options, letting you switch files without ever leaving the keyboard.
+الفتح السريع أداة قوية للتنقل بين الملفات في قاعدة شيفرة كبيرة. اضغط `Ctrl+P` (أو `Cmd+P` على macOS) لفتح لوحة **الفتح السريع**، وابدأ بكتابة اسم الملف الذي تحتاجه. ويستخدم Visual Studio Code مطابقة ضبابية لتضييق خياراتك فورًا، ما يتيح لك تبديل الملفات دون مغادرة لوحة المفاتيح.
 
-> **Beyond just files, Quick Open can also navigate to symbols within a file by typing `@` or jump to specific lines by adding a colon and the line number, making it a versatile tool for rapid navigation throughout your project.**
+> **بعيدًا عن الملفات فحسب، يمكن للفتح السريع أيضًا التنقل إلى رموز داخل ملف بكتابة `@` أو القفز إلى أسطر محدّدة بإضافة نقطتين ورقم السطر، ما يجعله أداة متعددة الاستخدامات للتنقل السريع في أنحاء مشروعك.**

@@ -1,58 +1,58 @@
 ---
-title: "The Problem with Hardcoded Secrets"
-lang: en
+title: "مشكلة الأسرار المضمّنة في الشيفرة"
+lang: ar
 source: "https://stevekinney.com/courses/aws/the-problem-with-hardcoded-secrets"
 ---
 
-In Vercel, you set environment variables in the dashboard. Your API keys, database URLs, and third-party tokens live there, and the platform handles the rest. In Lambda, you can do the same thing—you set environment variables on the function and read them from `process.env`. You did exactly this in [Lambda Environment Variables](https://stevekinney.com/courses/aws/lambda-environment-variables).
+في Vercel، تضبط متغيّرات البيئة في لوحة التحكم. مفاتيح API وعناوين قواعد البيانات ورموز الأطراف الثالثة تعيش هناك، وتتولى المنصة الباقي. وفي Lambda، يمكنك فعل الشيء نفسه—تضبط متغيّرات البيئة على الدالة وتقرأها من `process.env`. وقد فعلت هذا بالضبط في [متغيّرات بيئة Lambda](https://stevekinney.com/courses/aws/lambda-environment-variables).
 
-If you want AWS’s official version of the services behind this lesson, keep the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) and the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) open.
+إن أردت النسخة الرسمية من AWS للخدمات التي تقف خلف هذا الدرس، فأبقِ [توثيق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) و[نظرة عامة على AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) مفتوحين.
 
-That approach works. It’s also a security problem waiting to happen.
+هذا النهج يعمل. وهو أيضًا مشكلة أمنية في انتظار أن تحدث.
 
-## Why This Matters
+## لماذا يهم هذا
 
-By the time Scratch Lab has a live notes API, a third-party search key, and webhook signing secrets, “just put it in an environment variable” stops being a convenience and starts being a liability. This module is where the course shifts from “it works” to “it works without leaking credentials.”
+بحلول الوقت الذي يملك فيه Scratch Lab واجهة ملاحظات حيّة، ومفتاح بحث لطرف ثالث، وأسرار توقيع webhooks، يتوقف «ضعها في متغيّر بيئة فحسب» عن كونه تسهيلًا ويصبح عبئًا. هذه هي الوحدة التي تنتقل فيها الدورة من «إنه يعمل» إلى «إنه يعمل دون تسريب بيانات اعتماد».
 
-## Builds On
+## ما يُبنى عليه
 
-This lesson builds on the Lambda configuration work and the IAM foundation section. You already know how functions read configuration and how policies control access. Now you are applying those same mechanisms to secrets instead of harmless values like table names or stage labels.
+يُبنى هذا الدرس على عمل تهيئة Lambda وعلى قسم أساسيات IAM. أنت تعرف بالفعل كيف تقرأ الدوال التهيئة وكيف تتحكم السياسات في الوصول. والآن تطبّق الآليات نفسها على الأسرار بدلًا من قيم غير ضارة مثل أسماء الجداول أو تسميات المراحل.
 
-## What “Hardcoded” Actually Means
+## ما يعنيه «المضمّن في الشيفرة» فعليًا
 
-When people say “hardcoded secrets,” they usually mean one of three things:
+عندما يقول الناس «أسرار مضمّنة في الشيفرة»، فهم يعنيون عادةً أحد ثلاثة أمور:
 
-1. **Secrets committed to source code.** An API key sitting in a `.ts` file, checked into Git, visible to everyone with repo access. This is the most obvious mistake, and most frontend engineers know to avoid it. (I’d hope.)
-2. **Secrets in deployment configuration.** An API key in a GitHub Actions workflow file, a Terraform variable, or a CDK construct. Better than source code, but still stored in plain text in version control.
-3. **Secrets in Lambda environment variables.** This is the one that catches people. You set the value in the AWS console or the CLI, your code reads it from `process.env`, and everything seems fine. But those environment variables are stored in plain text in the Lambda configuration. Anyone with `lambda:GetFunctionConfiguration` permission can read them.
+1. **أسرار مُودَعة في الشيفرة المصدرية.** مفتاح API جالس في ملف `.ts`، مُودَع في Git، مرئي لكل من لديه وصول إلى المستودع. هذا أوضح خطأ، ومعظم مهندسي الواجهة الأمامية يعرفون تجنّبه. (آمل ذلك.)
+2. **أسرار في تهيئة النشر.** مفتاح API في ملف سير عمل GitHub Actions، أو متغيّر Terraform، أو بنية CDK. أفضل من الشيفرة المصدرية، لكنه ما زال مخزّنًا نصًّا صريحًا في التحكم في الإصدارات.
+3. **أسرار في متغيّرات بيئة Lambda.** هذا هو الأمر الذي يوقع الناس. تضبط القيمة في وحدة تحكم AWS أو في CLI، وتقرأها شيفرتك من `process.env`، ويبدو كل شيء على ما يرام. لكن متغيّرات البيئة تلك مخزّنة نصًّا صريحًا في تهيئة Lambda. وأي شخص يملك إذن `lambda:GetFunctionConfiguration` يستطيع قراءتها.
 
-That third one is the trap. It feels like the right approach—it’s how Vercel and Netlify work, after all—but AWS gives you tools that are specifically designed for sensitive values. Environment variables aren’t one of those tools.
+الثالث هو الفخ. يبدو النهج الصحيح—فهكذا تعمل Vercel وNetlify، في النهاية—لكن AWS تمنحك أدوات مصمّمة خصيصًا للقيم الحساسة. ومتغيّرات البيئة ليست واحدة من تلك الأدوات.
 
-## The Risks of Environment Variable Secrets
+## مخاطر الأسرار في متغيّرات البيئة
 
-Here’s what goes wrong when you store secrets as Lambda environment variables:
+إليك ما يسوء عندما تخزّن الأسرار كمتغيّرات بيئة في Lambda:
 
-**They’re visible in the console.** Open the Lambda function in the AWS console, click the Configuration tab, and every environment variable is right there. No extra authentication, no audit trail for who viewed them. Anyone with console access to the Lambda service can see your database password.
+**إنها مرئية في وحدة التحكم.** افتح دالة Lambda في وحدة تحكم AWS، وانقر تبويب Configuration، فتجِد كل متغيّر بيئة أمامك. لا مصادقة إضافية، ولا سجل تدقيق لمن اطّلع عليها. وأي شخص لديه وصول إلى وحدة تحكم خدمة Lambda يستطيع رؤية كلمة مرور قاعدة بياناتك.
 
-The Lambda Edit environment variables form showing API_KEY with its secret value visible in plain text in the Value field.
+نموذج Edit environment variables في Lambda يعرض API_KEY وقيمته السرية ظاهرة نصًّا صريحًا في حقل Value.
 
-**They appear in CLI output.** Run `aws lambda get-function-configuration` and the response includes every environment variable in plain text. If your CI/CD pipeline logs that output—and many do—your secrets are in your build logs.
+**إنها تظهر في ناتج CLI.** شغّل `aws lambda get-function-configuration` فتضمّ الاستجابة كل متغيّر بيئة نصًّا صريحًا. وإن كانت خط أنابيب CI/CD لديك تسجّل ذلك الناتج—وكثير منها يفعل—فأسرارك في سجلات البناء.
 
-**They travel with the function configuration.** When you export a Lambda function’s configuration (for backup, migration, or Infrastructure as Code), the environment variables come along. Secrets end up in CloudFormation templates, CDK snapshots, and Terraform state files.
+**إنها ترحل مع تهيئة الدالة.** عندما تصدّر تهيئة دالة Lambda (للنسخ الاحتياطي أو الترحيل أو البنية كشيفرة)، تأتي متغيّرات البيئة معها. فتنتقل الأسرار إلى قوالب CloudFormation ولقطات CDK وملفات حالة Terraform.
 
-**There’s no rotation.** When you need to rotate an API key—because it was compromised, because the third-party provider requires it, because your security policy mandates it—you have to manually update the environment variable on every function that uses it. If you have five functions sharing the same key, you update it five times. Miss one and it breaks.
+**لا يوجد تدوير.** عندما تحتاج إلى تدوير مفتاح API—لأنه اختُرِق، أو لأن مزوّد الطرف الثالث يشترط ذلك، أو لأن سياسة أمانك تفرضه—عليك تحديث متغيّر البيئة يدويًا في كل دالة تستخدمه. فإن كانت لديك خمس دوال تتشارك المفتاح نفسه، فستحدّثه خمس مرات. وأخطئ واحدة فينكسر.
 
-**There’s no access audit.** AWS doesn’t log who viewed a Lambda environment variable. With Secrets Manager, every access is logged in CloudTrail. With environment variables, you have no idea who looked at your database password last Tuesday.
+**لا يوجد تدقيق للوصول.** لا تسجّل AWS من اطّلع على متغيّر بيئة في Lambda. أما مع Secrets Manager، فكل وصول مسجّل في CloudTrail. وأما مع متغيّرات البيئة، فلا فكرة لديك عمّن نظر إلى كلمة مرور قاعدة بياناتك الثلاثاء الماضي.
 
-> **Warning**
+> **تحذير**
 >
-> Lambda environment variables are encrypted at rest by default using an AWS-managed KMS key. This protects them from someone who somehow accesses the underlying storage, but it does **not** protect them from anyone who has IAM permission to call `GetFunctionConfiguration`. Encryption at rest isn’t the same as access control.
+> تُشفَّر متغيّرات بيئة Lambda عند السكون افتراضيًا بمفتاح KMS تديره AWS. وهذا يحميها من شخص يصل بطريقة ما إلى التخزين الأساسي، لكنه **لا** يحميها من أي شخص يملك إذن IAM لاستدعاء `GetFunctionConfiguration`. فالتشفير عند السكون ليس هو التحكم في الوصول.
 
-## A Concrete Example
+## مثال ملموس
 
-You built a Lambda function earlier in the course and connected it to a DynamoDB table in [Connecting DynamoDB to Lambda](https://stevekinney.com/courses/aws/connecting-dynamodb-to-lambda). The table name went into an environment variable, and that was fine. A table name isn’t a secret.
+بنيت دالة Lambda سابقًا في الدورة وربطتها بجدول DynamoDB في [ربط DynamoDB بـ Lambda](https://stevekinney.com/courses/aws/connecting-dynamodb-to-lambda). ذهب اسم الجدول إلى متغيّر بيئة، وكان ذلك حسنًا. فاسم الجدول ليس سرًّا.
 
-Now imagine your function also needs to call a third-party API—Stripe for payments, SendGrid for email, or a headless CMS for content. You need an API key. The temptation is to do this:
+تخيّل الآن أن دالتك تحتاج أيضًا إلى استدعاء API طرف ثالث—Stripe للمدفوعات، أو SendGrid للبريد، أو CMS بلا واجهة للمحتوى. تحتاج إلى مفتاح API. والإغراء أن تفعل هذا:
 
 ```bash
 aws lambda update-function-configuration \
@@ -62,43 +62,43 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-That `STRIPE_API_KEY` is now visible to anyone who can describe the function. It’s in your deployment scripts. It’ll end up in your CI logs. And when Stripe rotates your key, you have to redeploy the function.
+صار `STRIPE_API_KEY` ذلك مرئيًا لأي شخص يستطيع وصف الدالة. وهو في سكربتات النشر لديك. وسينتهي به المطاف في سجلات CI. وعندما تدوّر Stripe مفتاحك، عليك إعادة نشر الدالة.
 
-## What AWS Offers Instead
+## ما تقدّمه AWS بدلًا من ذلك
 
-AWS provides two services specifically designed for this problem:
+تقدّم AWS خدمتين مصمّمتين خصيصًا لهذه المشكلة:
 
-**Parameter Store** is part of AWS Systems Manager. It stores configuration values in a hierarchical key-value structure. You can store plain text parameters (like table names and feature flags) and **SecureString** parameters (like API keys) that are encrypted with KMS. Standard parameters are free. You organize them with paths like `/my-frontend-app/production/api-key`, and you can grant IAM access to entire subtrees.
+**Parameter Store** جزء من AWS Systems Manager. يخزّن قيم التهيئة في بنية مفتاح-قيمة هرمية. يمكنك تخزين معاملات نصية عادية (مثل أسماء الجداول وأعلام الميزات) ومعاملات **SecureString** (مثل مفاتيح API) مشفّرة بـ KMS. المعاملات القياسية مجانية. وتنظّمها بمسارات مثل `/my-frontend-app/production/api-key`، ويمكنك منح وصول IAM إلى أشجار فرعية كاملة.
 
-**Secrets Manager** is a standalone service built for credentials that need to rotate. It encrypts secrets with KMS, supports automatic rotation on a schedule, and integrates with services like RDS and Redshift for zero-downtime credential rotation. It costs $0.40 per secret per month plus $0.05 per 10,000 API calls.
+**Secrets Manager** خدمة مستقلة بُنيت لبيانات الاعتماد التي تحتاج إلى تدوير. تشفّر الأسرار بـ KMS، وتدعم التدوير التلقائي وفق جدول، وتتكامل مع خدمات مثل RDS وRedshift لتدوير بيانات الاعتماد دون توقف. وتكلّف 0.40 دولار لكل سر شهريًا، إضافة إلى 0.05 دولار لكل 10,000 استدعاء API.
 
-Both services solve the same core problem: your Lambda function needs a secret at runtime, and that secret shouldn’t live in the function’s environment variables. The difference between them—and when to use each—is the subject of the rest of this module.
+تحلّ الخدمتان المشكلة الجوهرية نفسها: دالة Lambda لديك تحتاج إلى سرّ في وقت التشغيل، ولا ينبغي أن يعيش ذلك السرّ في متغيّرات بيئة الدالة. والفرق بينهما—ومتى تستخدم كلًّا منهما—هو موضوع بقية هذه الوحدة.
 
-## The Pattern You’ll Learn
+## النمط الذي ستتعلّمه
 
-By the end of the secrets section, your Lambda functions will follow this pattern:
+بحلول نهاية قسم الأسرار، ستتبع دوال Lambda لديك هذا النمط:
 
-1. **Non-sensitive configuration** (table names, stage identifiers, feature flags) stays in environment variables. This is still the right tool for values that aren’t secret.
-2. **Sensitive configuration** (API keys, tokens, connection strings) goes into Parameter Store as SecureString parameters or into Secrets Manager.
-3. **Your Lambda function** reads secrets at initialization time using the AWS SDK, caches them in a module-level variable, and reuses them across invocations—the same init-time pattern you learned in [Lambda Environment Variables](https://stevekinney.com/courses/aws/lambda-environment-variables), but with a call to Parameter Store or Secrets Manager instead of `process.env`.
-4. **IAM policies** on the function’s execution role control which secrets the function can access. The policies you wrote in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy) and [Lambda Execution Roles and Permissions](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions) are the same mechanism—you’re just granting access to a different resource type.
+1. **التهيئة غير الحساسة** (أسماء الجداول، ومعرّفات المراحل، وأعلام الميزات) تبقى في متغيّرات البيئة. فهذه ما زالت الأداة الصحيحة للقيم غير السرية.
+2. **التهيئة الحساسة** (مفاتيح API، والرموز، وسلاسل الاتصال) تذهب إلى Parameter Store كمعاملات SecureString أو إلى Secrets Manager.
+3. **دالة Lambda لديك** تقرأ الأسرار عند التهيئة باستخدام AWS SDK، وتخزّنها مؤقتًا في متغيّر على مستوى الوحدة، وتعيد استخدامها بين الاستدعاءات—وهو نمط التهيئة نفسه الذي تعلّمته في [متغيّرات بيئة Lambda](https://stevekinney.com/courses/aws/lambda-environment-variables)، لكن باستدعاء Parameter Store أو Secrets Manager بدلًا من `process.env`.
+4. **سياسات IAM** على دور تنفيذ الدالة تتحكم في الأسرار التي تستطيع الدالة الوصول إليها. والسياسات التي كتبتها في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy) و[أدوار تنفيذ Lambda وأذوناتها](https://stevekinney.com/courses/aws/lambda-execution-roles-and-permissions) هي الآلية نفسها—أنت فقط تمنح الوصول إلى نوع مورد مختلف.
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re coming from Vercel, think of Parameter Store as environment variables with encryption, access control, and organization built in. Think of Secrets Manager as the same thing but with automatic rotation added on top. Neither one is complicated—they just solve a problem that Vercel handles behind the scenes for you.
+> إن كنت قادمًا من Vercel، ففكّر في Parameter Store كمتغيّرات بيئة مع تشفير وتحكم في الوصول وتنظيم مدمجة. وفكّر في Secrets Manager كالشيء نفسه مع تدوير تلقائي مضاف فوقه. لا أحدهما معقّد—كلاهما فقط يحلّ مشكلة تتولاها Vercel خلف الكواليس عنك.
 
-## Verification
+## التحقق
 
-- You can name the three common places secrets end up by mistake: source code, deployment configuration, and Lambda environment variables.
-- You can explain why encrypting environment variables at rest is not the same thing as controlling who can read them.
-- You can describe when Parameter Store is enough and when Secrets Manager earns its monthly cost.
+- تستطيع تسمية الأماكن الثلاثة الشائعة التي تصل إليها الأسرار بالخطأ: الشيفرة المصدرية، وتهيئة النشر، ومتغيّرات بيئة Lambda.
+- تستطيع شرح لماذا لا يكون تشفير متغيّرات البيئة عند السكون هو الشيء نفسه كالتحكم في من يستطيع قراءتها.
+- تستطيع وصف متى يكفي Parameter Store ومتى يستحق Secrets Manager كلفته الشهرية.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **Treating “not in Git” as secure enough:** A secret can still leak through Lambda configuration, CI output, or overly broad IAM access.
-- **Using environment variables because rotation feels like a future problem:** Rotation always becomes a current problem on the worst possible day.
-- **Picking Secrets Manager for every value automatically:** Some values are configuration, not secrets, and Parameter Store is the simpler tool.
+- **اعتبار «ليس في Git» أمانًا كافيًا:** فالسرّ قد يتسرّب رغم ذلك عبر تهيئة Lambda، أو ناتج CI، أو وصول IAM أوسع من اللازم.
+- **استخدام متغيّرات البيئة لأن التدوير يبدو مشكلة مستقبلية:** فالتدوير يصبح دائمًا مشكلة حالية في أسوأ يوم ممكن.
+- **اختيار Secrets Manager لكل قيمة تلقائيًا:** فبعض القيم تهيئة لا أسرار، وParameter Store هو الأداة الأبسط.
 
-## Use the Right Tool for the Job
+## استخدم الأداة المناسبة للمهمة
 
-This module isn’t about making your life harder. It’s about using the right tool for the job. Lambda environment variables are designed for non-sensitive configuration. Parameter Store and Secrets Manager are designed for sensitive values. When you put secrets in the right place, you get encryption, access control, audit logging, and rotation—all the things you’d expect a cloud platform to provide. I’ve seen teams burn entire afternoons tracking down a leaked key that lived in an environment variable for months. The next lesson walks through Parameter Store: how to create parameters, organize them hierarchically, and retrieve them in your code.
+هذه الوحدة ليست عن جعل حياتك أصعب. إنها عن استخدام الأداة المناسبة للمهمة. متغيّرات بيئة Lambda مصمّمة للتهيئة غير الحساسة. أما Parameter Store وSecrets Manager فمصمّمتان للقيم الحساسة. وعندما تضع الأسرار في المكان الصحيح، تحصل على التشفير والتحكم في الوصول وتسجيل التدقيق والتدوير—كل ما تتوقع أن تقدّمه منصة سحابية. رأيت فرقًا يحرقون بعد ظهر كامل في تعقّب مفتاح مسرّب عاش في متغيّر بيئة أشهرًا. والدرس التالي يمشي عبر Parameter Store: كيف تنشئ المعاملات، وتنظّمها هرميًا، وتستردها في شيفرتك.

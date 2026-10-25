@@ -1,18 +1,18 @@
 ---
-title: "TypeScript Generics Deep Dive"
-lang: en
+title: "غوص عميق في الأنواع العامة (Generics) في TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-generics-deep-dive"
 ---
 
-Generics are TypeScript’s superpower for writing reusable, type-safe code. They’re like function parameters, but for types. Once you truly understand generics, you’ll write less code that does more, and it’ll be safer than ever. But generics can feel intimidating with all those angle brackets and abstract type parameters. Let’s demystify them completely.
+الأنواع العامة (Generics) هي القوة الخارقة في TypeScript لكتابة شيفرة قابلة لإعادة الاستخدام وآمنة نوعيًا. إنها تشبه معاملات الدوال، لكنها للأنواع. وحين تفهم الأنواع العامة فهمًا حقيقيًا، ستكتب شيفرة أقل تفعل أكثر، وستكون أكثر أمانًا من أي وقت مضى. لكن الأنواع العامة قد تبدو مخيفة بكل تلك الأقواس الزاوية ومعاملات الأنواع المجردة. دعنا نزيل الغموض عنها تمامًا.
 
-Think of generics as templates or blueprints. Just like a cookie cutter can make cookies of any dough type while maintaining the same shape, generics let you write code patterns that work with any type while maintaining type safety.
+فكّر في الأنواع العامة كقوالب أو مخططات. فكما يمكن لقالب البسكويت أن يصنع بسكويتًا من أي نوع من العجين مع الحفاظ على الشكل نفسه، تتيح لك الأنواع العامة كتابة أنماط شيفرة تعمل مع أي نوع مع الحفاظ على أمان الأنواع.
 
-## Understanding Generics: The Mental Model
+## فهم الأنواع العامة: النموذج الذهني
 
-Before diving into syntax, let’s build the right mental model for thinking about generics.
+قبل الغوص في الصياغة، دعنا نبني النموذج الذهني الصحيح للتفكير في الأنواع العامة.
 
-### The Problem Generics Solve
+### المشكلة التي تحلها الأنواع العامة
 
 ```typescript
 // Without generics, we duplicate code for different types
@@ -44,7 +44,7 @@ const firstString = getFirst(['a', 'b', 'c']); // string | undefined
 const firstUser = getFirst([{ name: 'Alice' }]); // { name: string } | undefined
 ```
 
-### Type Parameters Are Like Function Parameters
+### معاملات النوع تشبه معاملات الدالة
 
 ```typescript
 // Regular function with value parameters
@@ -72,11 +72,11 @@ const numbers = createArray(3, 42); // number[]
 const defaultStrings = createArray(3, 'hello'); // string[] (uses default)
 ```
 
-## Generic Functions
+## الدوال العامة
 
-Let’s explore different patterns for generic functions.
+دعنا نستكشف أنماطًا مختلفة للدوال العامة.
 
-### Basic Generic Functions
+### الدوال العامة الأساسية
 
 ```typescript
 // Simple generic function
@@ -103,7 +103,7 @@ const processList: <T>(items: T[]) => T[] = (items) => {
 };
 ```
 
-### Type Parameter Constraints
+### قيود معاملات النوع
 
 ```typescript
 // Unconstrained generics accept any type
@@ -147,7 +147,7 @@ const age = getProperty(person, 'age'); // number
 const invalid = getProperty(person, 'height'); // ❌ Error: 'height' doesn't exist
 ```
 
-### Generic Type Inference
+### استنتاج الأنواع العامة
 
 ```typescript
 // TypeScript infers type parameters when possible
@@ -179,11 +179,11 @@ function partialInfer<T, U = string>(t: T, u: U): [T, U] {
 }
 ```
 
-## Generic Interfaces and Types
+## الواجهات والأنواع العامة
 
-Generics work with interfaces and type aliases too.
+تعمل الأنواع العامة مع الواجهات والأسماء المستعارة للأنواع أيضًا.
 
-### Generic Interfaces
+### الواجهات العامة
 
 ```typescript
 // Generic interface
@@ -229,7 +229,7 @@ interface SortedList<T extends Comparable<T>> {
 }
 ```
 
-### Generic Type Aliases
+### الأسماء المستعارة للأنواع العامة
 
 ```typescript
 // Generic type alias
@@ -260,11 +260,11 @@ type Mapper<T, U> = (value: T) => U;
 type Reducer<T, U> = (acc: U, value: T) => U;
 ```
 
-## Generic Classes
+## الأصناف العامة
 
-Classes can be generic too, providing type-safe containers and data structures.
+يمكن أن تكون الأصناف عامة أيضًا، فتوفّر حاويات وهياكل بيانات آمنة نوعيًا.
 
-### Basic Generic Classes
+### الأصناف العامة الأساسية
 
 ```typescript
 // Generic class
@@ -304,7 +304,7 @@ const pair = new Pair('hello', 42);
 const swapped = pair.swap(); // Pair<number, string>
 ```
 
-### Generic Class Inheritance
+### وراثة الأصناف العامة
 
 ```typescript
 // Base generic class
@@ -341,7 +341,7 @@ class SearchableCollection<T> extends Collection<T> {
 }
 ```
 
-### Static Members in Generic Classes
+### الأعضاء الساكنة في الأصناف العامة
 
 ```typescript
 class GenericClass<T> {
@@ -377,11 +377,11 @@ class Factory<T> {
 const factory = Factory.create('hello'); // Factory<string>
 ```
 
-## Advanced Generic Patterns
+## أنماط الأنواع العامة المتقدمة
 
-Let’s explore more sophisticated generic patterns.
+دعنا نستكشف أنماطًا أكثر تطورًا للأنواع العامة.
 
-### Conditional Types with Generics
+### الأنواع الشرطية مع الأنواع العامة
 
 ```typescript
 // Basic conditional type
@@ -415,7 +415,7 @@ type T2 = TypeName<() => void>; // "function"
 type T3 = TypeName<string[]>; // "object"
 ```
 
-### Mapped Types with Generics
+### الأنواع المعيَّنة مع الأنواع العامة
 
 ```typescript
 // Make all properties optional
@@ -460,7 +460,7 @@ type DeepReadonly<T> = {
 };
 ```
 
-### Generic Constraints with Conditional Types
+### قيود الأنواع العامة مع الأنواع الشرطية
 
 ```typescript
 // Constrain based on type structure
@@ -488,11 +488,11 @@ type DeepUnwrapPromise<T> = T extends Promise<infer U> ? DeepUnwrapPromise<U> : 
 type Nested = DeepUnwrapPromise<Promise<Promise<string>>>; // string
 ```
 
-## Variance in Generics
+## التباين في الأنواع العامة
 
-Understanding variance is crucial for advanced generic usage.
+فهم التباين أمر بالغ الأهمية للاستخدام المتقدم للأنواع العامة.
 
-### Covariance and Contravariance
+### التباين المشترك والتباين المضاد
 
 ```typescript
 // Covariance (outputs) - preserves subtype relationship
@@ -540,7 +540,7 @@ const animalProcessor: Processor<Animal> = {
 const dogProcessor: Processor<Dog> = animalProcessor; // ❌ Error
 ```
 
-### Bivariance in Method Parameters
+### التباين الثنائي في معاملات الدوال
 
 ```typescript
 // TypeScript is bivariant with method parameters by default
@@ -568,9 +568,9 @@ const reverseHandler: EventHandler<MouseEvent> = clickHandler; // Also OK
 // Use strictFunctionTypes for safer variance
 ```
 
-## Generic Best Practices
+## أفضل ممارسات الأنواع العامة
 
-### Use Descriptive Type Parameter Names
+### استخدم أسماء وصفية لمعاملات النوع
 
 ```typescript
 // ❌ Poor naming
@@ -591,7 +591,7 @@ function convert<TInput, TOutput>(input: TInput, converter: (value: TInput) => T
 // P - Property
 ```
 
-### Start Simple, Add Constraints as Needed
+### ابدأ ببساطة، وأضف القيود عند الحاجة
 
 ```typescript
 // Start with unconstrained generic
@@ -621,7 +621,7 @@ function processRecord<T extends Identifiable & Timestamped>(record: T): T {
 }
 ```
 
-### Avoid Over-Genericization
+### تجنّب الإفراط في التعميم
 
 ```typescript
 // ❌ Too generic - hard to understand
@@ -641,9 +641,9 @@ function addNumbers(a: number, b: number): number {
 }
 ```
 
-## Real-World Generic Patterns
+## أنماط الأنواع العامة في العالم الحقيقي
 
-### Repository Pattern
+### نمط المستودع
 
 ```typescript
 interface Entity {
@@ -693,7 +693,7 @@ class UserRepository extends Repository<User> {
 }
 ```
 
-### Event Emitter Pattern
+### نمط باثّ الأحداث
 
 ```typescript
 type EventMap = Record<string, any>;
@@ -744,7 +744,7 @@ emitter.on('login', (data) => {
 emitter.emit('login', { user: 'Alice', timestamp: Date.now() });
 ```
 
-### Builder Pattern
+### نمط الباني
 
 ```typescript
 class Builder<T> {
@@ -776,9 +776,9 @@ const config = new Builder<Config>()
   .build();
 ```
 
-## Generic Type Utilities
+## أدوات الأنواع العامة
 
-### Creating Your Own Type Utilities
+### إنشاء أدوات الأنواع الخاصة بك
 
 ```typescript
 // DeepPartial - make all properties optional recursively
@@ -820,9 +820,9 @@ type FunctionKeys<T> = {
 }[keyof T];
 ```
 
-## Common Pitfalls and Solutions
+## المزالق الشائعة والحلول
 
-### Type Parameter Defaults
+### القيم الافتراضية لمعاملات النوع
 
 ```typescript
 // ❌ Problem: Forgetting to specify generic type
@@ -845,7 +845,7 @@ class StringContainer<T = string> {
 }
 ```
 
-### Generic Type Guards
+### حراس الأنواع العامة
 
 ```typescript
 // ❌ Problem: Type guards don't work with generics directly
@@ -866,13 +866,13 @@ function isArrayOf(value: unknown): boolean {
 }
 ```
 
-## Generics in React Components
+## الأنواع العامة في مكونات React
 
-React components benefit immensely from generics. Let’s explore the essential patterns.
+تستفيد مكونات React استفادة هائلة من الأنواع العامة. دعنا نستكشف الأنماط الأساسية.
 
-### Generic Component Props
+### خصائص المكوّن العام
 
-The anatomy of a generic React component follows a simple pattern:
+يتبع تشريح مكوّن React العام نمطًا بسيطًا:
 
 ```typescript
 interface ListProps<T> {
@@ -901,9 +901,9 @@ function List<T>({ items, renderItem, getKey }: ListProps<T>) {
 />
 ```
 
-### Generic Form Components
+### مكونات النماذج العامة
 
-Build flexible form components that work with any data structure:
+ابنِ مكونات نماذج مرنة تعمل مع أي بنية بيانات:
 
 ```typescript
 interface FormFieldProps<T, K extends keyof T> {
@@ -945,9 +945,9 @@ interface User {
 />
 ```
 
-### Generic Dropdown Component
+### مكوّن القائمة المنسدلة العام
 
-A reusable dropdown that works with any data type:
+قائمة منسدلة قابلة لإعادة الاستخدام تعمل مع أي نوع بيانات:
 
 ```typescript
 interface DropdownProps<T> {
@@ -998,9 +998,9 @@ function Dropdown<T>({
 />
 ```
 
-### Generic Custom Hooks
+### الخطافات المخصصة العامة
 
-Custom hooks benefit greatly from generics for reusable data fetching:
+تستفيد الخطافات المخصصة استفادة كبيرة من الأنواع العامة لجلب البيانات القابل لإعادة الاستخدام:
 
 ```typescript
 function useFetch<T>(url: string): {
@@ -1037,9 +1037,9 @@ function useFetch<T>(url: string): {
 const { data: users, loading, error } = useFetch<User[]>('/api/users');
 ```
 
-### Generic Context Pattern
+### نمط السياق العام
 
-Create reusable context providers with generics:
+أنشئ مزوّدات سياق قابلة لإعادة الاستخدام باستخدام الأنواع العامة:
 
 ```typescript
 function createGenericContext<T>() {
@@ -1066,9 +1066,9 @@ interface AuthContextType {
 const [AuthProvider, useAuth] = createGenericContext<AuthContextType>();
 ```
 
-### Generic Modal Component
+### مكوّن النافذة المنبثقة العام
 
-A flexible modal that works with any data type:
+نافذة منبثقة مرنة تعمل مع أي نوع بيانات:
 
 ```typescript
 interface ModalProps<T> {
@@ -1117,22 +1117,22 @@ function Modal<T>({
 />
 ```
 
-## When to Use Generics
+## متى تستخدم الأنواع العامة
 
-**Use generics when you have:**
+**استخدم الأنواع العامة عندما لديك:**
 
-- Repeated patterns across different data types (forms, lists, modals)
-- Type relationships that need to be preserved (input type should match output type)
-- Reusable utilities that work with multiple types (API hooks, validation, storage)
+- أنماط متكررة عبر أنواع بيانات مختلفة (النماذج، والقوائم، والنوافذ المنبثقة)
+- علاقات بين الأنواع تحتاج إلى الحفاظ عليها (يجب أن يطابق نوع الإدخال نوع الإخراج)
+- أدوات مساعدة قابلة لإعادة الاستخدام تعمل مع أنواع متعددة (خطافات واجهات البرمجة، والتحقق، والتخزين)
 
-**Avoid generics when:**
+**تجنّب الأنواع العامة عندما:**
 
-- The component is too simple (a basic button doesn’t need generics)
-- You only use it in one place (generics add complexity without benefit)
-- The types are unrelated (don’t force generics where they don’t belong)
+- يكون المكوّن بسيطًا جدًا (الزر الأساسي لا يحتاج إلى أنواع عامة)
+- تستخدمه في مكان واحد فقط (تضيف الأنواع العامة تعقيدًا بلا فائدة)
+- تكون الأنواع غير مترابطة (لا تفرض الأنواع العامة حيث لا تنتمي)
 
-## Wrapping Up
+## خاتمة
 
-Generics are the key to writing truly reusable TypeScript code. They let you create flexible abstractions while maintaining complete type safety. From simple type parameters to complex conditional and mapped types, generics give you the power to express sophisticated type relationships.
+الأنواع العامة هي مفتاح كتابة شيفرة TypeScript قابلة لإعادة الاستخدام حقًا. فهي تتيح لك إنشاء تجريدات مرنة مع الحفاظ على أمان كامل للأنواع. من معاملات النوع البسيطة إلى الأنواع الشرطية والمعيَّنة المعقدة، تمنحك الأنواع العامة القدرة على التعبير عن علاقات نوعية متطورة.
 
-The key to mastering generics is to start simple and gradually add complexity as needed. Use descriptive names, add constraints when they make sense, and remember that the goal is to make your code both reusable and safe. With the patterns and techniques in this guide, you’re ready to leverage generics to their full potential in your React and TypeScript applications.
+مفتاح إتقان الأنواع العامة هو البدء ببساطة وإضافة التعقيد تدريجيًا حسب الحاجة. استخدم أسماء وصفية، وأضف القيود عندما تكون منطقية، وتذكّر أن الهدف هو جعل شيفرتك قابلة لإعادة الاستخدام وآمنة في آن واحد. بفضل الأنماط والتقنيات الواردة في هذا الدليل، أنت جاهز للاستفادة من الأنواع العامة إلى أقصى إمكاناتها في تطبيقات React وTypeScript.

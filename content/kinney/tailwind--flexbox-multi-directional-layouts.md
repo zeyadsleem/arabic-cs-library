@@ -1,33 +1,33 @@
 ---
-title: "Multi-Directional Layouts"
-lang: en
+title: "التخطيطات متعددة الاتجاهات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-multi-directional-layouts"
 ---
 
-Adapting layouts for multiple text directions (LTR and RTL) is crucial for global web applications. Traditional CSS, using physical properties like `left` and `right`, makes this complex. Tailwind 4 uses modern CSS logical properties and directional variants for more intuitive multi-directional layouts. While Flexbox arranges items, Tailwind’s directionality handling relies on these logical properties and variants, applicable within any layout, including Flexbox.
+تكييف التخطيطات مع اتجاهات نصّ متعدّدة (LTR وRTL) أمر بالغ الأهمية لتطبيقات الويب العالمية. وCSS التقليدية، بخصائصها المادية مثل `left` و`right`، تجعل هذا معقّدًا. أما Tailwind 4 فيستخدم خصائص CSS المنطقية الحديثة والمتغيّرات الاتجاهية لتخطيطات متعددة الاتجاهات أكثر بديهية. وبينما يرتّب Flexbox العناصر، يعتمد Tailwind في معالجة الاتجاهية على هذه الخصائص المنطقية والمتغيّرات، وهي قابلة للتطبيق داخل أي تخطيط، بما في ذلك Flexbox.
 
-## The Challenge of Directionality
+## تحدّي الاتجاهية
 
-Traditional CSS properties like `margin-left` are physical. For LTR, `margin-left` adds space. For RTL, you’d need `margin-right` and reset `margin-left`, leading to duplicated and complex code.
+خصائص CSS التقليدية مثل `margin-left` خصائص مادية. في LTR تضيف `margin-left` مسافة. أما في RTL فتحتاج إلى `margin-right` مع إعادة ضبط `margin-left`، مما يقود إلى شيفرة مكرّرة ومعقّدة.
 
-## Embracing Logical Properties
+## تبنّي الخصائص المنطقية
 
-Modern CSS logical properties adapt to writing mode and text direction. Instead of `margin-left` and `margin-right`, use `margin-inline-start` and `margin-inline-end`. `margin-inline-start` is where inline content begins (left in LTR, right in RTL), and `margin-inline-end` is where it ends. Similar logical properties include `padding-inline-start`, `border-inline-end`, `float: inline-start`, and `clear: inline-end`.
+تتكيّف خصائص CSS المنطقية الحديثة مع نمط الكتابة واتجاه النص. فبدلًا من `margin-left` و`margin-right`، استخدم `margin-inline-start` و`margin-inline-end`. و`margin-inline-start` هي حيث يبدأ المحتوى السطري (اليسار في LTR، واليمين في RTL)، و`margin-inline-end` هي حيث ينتهي. ومن الخصائص المنطقية المشابهة `padding-inline-start` و`border-inline-end` و`float: inline-start` و`clear: inline-end`.
 
-Tailwind CSS uses these logical properties for utilities that automatically adapt to text direction.
+يستخدم Tailwind CSS هذه الخصائص المنطقية في الأدوات التي تتكيّف تلقائيًا مع اتجاه النص.
 
-## Tailwind’s Directional Utilities and Variants
+## أدوات Tailwind الاتجاهية ومتغيّراتها
 
-Tailwind manages directionality via:
+يدير Tailwind الاتجاهية عبر:
 
-1. Specific variants (`ltr:`, `rtl:`) for conditional styling.
-2. Utilities mapping to logical properties.
+1. متغيّرات محدّدة (`ltr:` و`rtl:`) للتنسيق الشرطي.
+2. أدوات تقابل الخصائص المنطقية.
 
-### Directional Variants: `ltr:` and `rtl:`
+### المتغيّرات الاتجاهية: `ltr:` و`rtl:`
 
-Apply any utility conditionally based on text direction using `ltr:` and `rtl:` variants, similar to responsive (`md:`) or state (`hover:`) variants.
+طبّق أي أداة بشكل مشروط بحسب اتجاه النص باستخدام متغيّري `ltr:` و`rtl:`، على نحو مشابه للمتغيّرات المتجاوبة (`md:`) أو متغيّرات الحالة (`hover:`).
 
-*Directional Variants: ltr: and rtl: — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/13ef50714bfcb92fa53b3665639210879e18b4651cfefcecf5eac148afc3b109.html)*
+*المتغيّرات الاتجاهية: ltr: و rtl: — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/13ef50714bfcb92fa53b3665639210879e18b4651cfefcecf5eac148afc3b109.html)*
 
 ```html
 <div dir="ltr" class="mb-4 rounded-lg bg-gray-100 p-6">
@@ -39,43 +39,43 @@ Apply any utility conditionally based on text direction using `ltr:` and `rtl:` 
 </div>
 ```
 
-`text-left` applies by default. If `dir="rtl"`, `rtl:text-right` overrides it.
+تُطبَّق `text-left` افتراضيًا. وإذا كانت `dir="rtl"` فإن `rtl:text-right` تتجاوزها.
 
-### Logical Property Utilities
+### أدوات الخصائص المنطقية
 
-Tailwind utilities corresponding to CSS logical properties automatically render the correct physical property based on text direction (often from the `dir` attribute).
+أدوات Tailwind المقابلة لخصائص CSS المنطقية تُنتج تلقائيًا الخاصية المادية الصحيحة بحسب اتجاه النص (غالبًا من خاصية `dir`).
 
-Common mappings:
+الإقرانات الشائعة:
 
-- **Inline Margin:** `ms-*` (`margin-inline-start`), `me-*` (`margin-inline-end`). `mx-*` maps to `margin-inline` (both sides). `ms-4`: `margin-left` in LTR, `margin-right` in RTL. `me-4`: `margin-right` in LTR, `margin-left` in RTL.
-  - `ms-4`: `margin-left` in LTR, `margin-right` in RTL.
-  - `me-4`: `margin-right` in LTR, `margin-left` in RTL.
-- **Space Between Children:** `space-x-*` utilities use `margin-inline-start` and `margin-inline-end` for horizontal spacing, adapting to direction. `space-x-reverse` reverses this.
-- **Inline Padding:** `ps-*` (`padding-inline-start`), `pe-*` (`padding-inline-end`). `px-*` maps to `padding-inline`. `ps-4`: `padding-left` in LTR, `padding-right` in RTL. `pe-4`: `padding-right` in LTR, `padding-left` in RTL.
-  - `ps-4`: `padding-left` in LTR, `padding-right` in RTL.
-  - `pe-4`: `padding-right` in LTR, `padding-left` in RTL.
-- **Float:** `float-start` (`float: inline-start`), `float-end` (`float: inline-end`).
-- **Clear:** `clear-start` (`clear: inline-start`), `clear-end` (`clear: inline-end`).
-- **Text Alignment:** `text-start` (`text-align: start`), `text-end` (`text-align: end`).
-- **Border Radius:** `rounded-s-*`, `rounded-e-*`, etc., use logical properties.
-- **Border Width/Color/Style:** `border-s-*`, `border-e-*`, `divide-s-*`, `divide-e-*` use logical properties for inline borders. `divide-x-*` also uses logical properties. `divide-x-reverse` reverses horizontal dividers.
-- **Inset (Positioning):** `start-*` (`inset-inline-start`), `end-*` (`inset-inline-end`) for positioned elements. `start-0`: Positions at the start edge (left in LTR, right in RTL). `end-0`: Positions at the end edge (right in LTR, left in RTL).
-  - `start-0`: Positions at the start edge (left in LTR, right in RTL).
-  - `end-0`: Positions at the end edge (right in LTR, left in RTL).
+- **هامش سطري:** `ms-*` (`margin-inline-start`)، و`me-*` (`margin-inline-end`). وتُقابل `mx-*` قيمة `margin-inline` (كلا الجانبين). و`ms-4` تعني `margin-left` في LTR و`margin-right` في RTL. و`me-4` تعني `margin-right` في LTR و`margin-left` في RTL.
+  - `ms-4`: `margin-left` في LTR، و`margin-right` في RTL.
+  - `me-4`: `margin-right` في LTR، و`margin-left` في RTL.
+- **المسافة بين الأبناء:** تستخدم أدوات `space-x-*` قِيَم `margin-inline-start` و`margin-inline-end` للمسافات الأفقية، فتتكيّف مع الاتجاه. و`space-x-reverse` تعكس ذلك.
+- **حشو سطري:** `ps-*` (`padding-inline-start`)، و`pe-*` (`padding-inline-end`). وتُقابل `px-*` قيمة `padding-inline`. و`ps-4` تعني `padding-left` في LTR و`padding-right` في RTL. و`pe-4` تعني `padding-right` في LTR و`padding-left` في RTL.
+  - `ps-4`: `padding-left` في LTR، و`padding-right` في RTL.
+  - `pe-4`: `padding-right` في LTR، و`padding-left` في RTL.
+- **التمرير (float):** `float-start` (`float: inline-start`)، و`float-end` (`float: inline-end`).
+- **التنظيف (clear):** `clear-start` (`clear: inline-start`)، و`clear-end` (`clear: inline-end`).
+- **محاذاة النص:** `text-start` (`text-align: start`)، و`text-end` (`text-align: end`).
+- **انحناء الحواف:** `rounded-s-*` و`rounded-e-*` وغيرها تستخدم الخصائص المنطقية.
+- **عرض ولون ونمط الحدّ:** تستخدم `border-s-*` و`border-e-*` و`divide-s-*` و`divide-e-*` الخصائص المنطقية للحدود السطرية. وتستخدم `divide-x-*` أيضًا الخصائص المنطقية. و`divide-x-reverse` تعكس الفواصل الأفقية.
+- **الإزاحة (التموضع):** `start-*` (`inset-inline-start`)، و`end-*` (`inset-inline-end`) للعناصر الموضوعة. و`start-0` يضع العنصر عند حافة البداية (اليسار في LTR، واليمين في RTL). و`end-0` يضعه عند حافة النهاية (اليمين في LTR، واليسار في RTL).
+  - `start-0`: يضع العنصر عند حافة البداية (اليسار في LTR، واليمين في RTL).
+  - `end-0`: يضع العنصر عند حافة النهاية (اليمين في LTR، واليسار في RTL).
 
-(Block margin/padding utilities like `my-*` and `py-*` map to `margin-block` and `padding-block` respectively, which are not typically affected by LTR/RTL text direction but by vertical writing modes.)
+(أدوات الهامش والحشو الكتلية مثل `my-*` و`py-*` تقابل `margin-block` و`padding-block` على التوالي، وهي لا تتأثر عادةً باتجاه النص LTR/RTL بل بنمطي الكتابة العموديين.)
 
-### Combining with Flexbox
+### الدمج مع Flexbox
 
-Flexbox’s main and cross axes adapt to `flex-direction` and text direction. For `flex-direction: row` (`flex-row`), the main axis is left-to-right in LTR, and right-to-left in RTL. `justify-content: flex-start` aligns items to the main axis start (left in LTR `flex-row`, right in RTL `flex-row`).
+يتكيّف المحوران الأساسي والعرضي في Flexbox مع `flex-direction` واتجاه النص. فعند `flex-direction: row` (`flex-row`)، يكون المحور الأساسي من اليسار إلى اليمين في LTR، ومن اليمين إلى اليسار في RTL. و`justify-content: flex-start` تحاذي العناصر إلى بداية المحور الأساسي (اليسار في `flex-row` مع LTR، واليمين في `flex-row` مع RTL).
 
-Tailwind’s core Flexbox utilities (`flex`, `flex-row`, `justify-start`, etc.) work within this adaptive model.
+تعمل أدوات Flexbox الأساسية في Tailwind (`flex` و`flex-row` و`justify-start` وغيرها) ضمن هذا النموذج المتكيّف.
 
-For specific directional overrides within Flexbox not handled by axis logic, use `rtl:`/`ltr:` variants or logical property utilities.
+وللتجاوزات الاتجاهية المحدّدة داخل Flexbox التي لا تتناولها منطقية المحاور، استخدم متغيّرات `rtl:`/`ltr:` أو أدوات الخصائص المنطقية.
 
-Example: Overriding default alignment in RTL.
+مثال: تجاوز المحاذاة الافتراضية في RTL.
 
-*Combining with Flexbox — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/90bcad8b5d2ccf9c3ea03d0a87f06c9d844c4a8213516467e14478d501e7d3f5.html)*
+*الدمج مع Flexbox — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/90bcad8b5d2ccf9c3ea03d0a87f06c9d844c4a8213516467e14478d501e7d3f5.html)*
 
 ```html
 <div class="flex justify-start gap-4 rounded-lg bg-gray-100 p-6 rtl:justify-end">
@@ -84,11 +84,11 @@ Example: Overriding default alignment in RTL.
 </div>
 ```
 
-Items align `start` by default. In RTL, `rtl:justify-end` aligns them to `end`.
+تُحاذى العناصر إلى `start` افتراضيًا. وفي RTL، تحاذيها `rtl:justify-end` إلى `end`.
 
-Example: Individual item alignment.
+مثال: محاذاة عنصر مفرد.
 
-*Combining with Flexbox — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/989f928757cc2f3c44a837144609724bd3a7f44609f50b95613d87d3becfee37.html)*
+*الدمج مع Flexbox — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/989f928757cc2f3c44a837144609724bd3a7f44609f50b95613d87d3becfee37.html)*
 
 ```html
 <div class="flex min-h-[200px] items-center gap-4 rounded-lg bg-gray-100 p-6">
@@ -98,11 +98,11 @@ Example: Individual item alignment.
 </div>
 ```
 
-Item 1 is `self-start` (RTL: `self-end`). Item 3 is `self-end` (RTL: `self-start`). Item 2 is `self-center`.
+العنصر 1 هو `self-start` (وفي RTL: `self-end`). والعنصر 3 هو `self-end` (وفي RTL: `self-start`). والعنصر 2 هو `self-center`.
 
-Logical property utilities like `ms-*` and `ps-*` are useful for direction-dependent spacing:
+أدوات الخصائص المنطقية مثل `ms-*` و`ps-*` مفيدة للمسافات المعتمدة على الاتجاه:
 
-*Combining with Flexbox — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/70a8de37c3cc878ac74898e0947be5be7ebbbb0c37dc6d9a8a2fd7cea1c1449e.html)*
+*الدمج مع Flexbox — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/70a8de37c3cc878ac74898e0947be5be7ebbbb0c37dc6d9a8a2fd7cea1c1449e.html)*
 
 ```html
 <div class="flex items-center gap-2 rounded-lg bg-gray-100 p-4">
@@ -113,13 +113,13 @@ Logical property utilities like `ms-*` and `ps-*` are useful for direction-depen
 </div>
 ```
 
-`me-2` adds margin to the icon’s “end” side (right in LTR, left in RTL), creating space between icon and text. (The `rtl:ms-2` in the original example might be for specific overrides if `me-2` isn’t sufficient, but `me-*` often handles this.)
+تضيف `me-2` هامشًا إلى جانب «النهاية» في الأيقونة (اليمين في LTR، واليسار في RTL)، فتُنشئ مسافة بين الأيقونة والنص. (أما `rtl:ms-2` في المثال الأصلي فقد كان للتجاوزات المحدّدة إن لم تكفِ `me-2`، لكن `me-*` غالبًا تكفي.)
 
-## Responsive and Container-Aware Directionality
+## الاتجاهية المتجاوبة والمكيفة بالحاوية
 
-`rtl:`/`ltr:` variants and logical property utilities combine with responsive (`sm:`, `md:`) and container query (`@md:`) variants.
+تنسجم متغيّرات `rtl:`/`ltr:` وأدوات الخصائص المنطقية مع المتغيّرات المتجاوبة (`sm:` و`md:`) ومتغيّرات استعلامات الحاوية (`@md:`).
 
-*Responsive and Container-Aware Directionality — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/eef75105c67deb56989369c3ec51a6cbbece6fb9b42ac12c701e9a65e0407374.html)*
+*الاتجاهية المتجاوبة والمكيفة بالحاوية — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/eef75105c67deb56989369c3ec51a6cbbece6fb9b42ac12c701e9a65e0407374.html)*
 
 ```html
 <div
@@ -138,8 +138,8 @@ Logical property utilities like `ms-*` and `ps-*` are useful for direction-depen
 </div>
 ```
 
-This layout stacks columns by default. At `@md` container size, it becomes a row (`@md:flex-row`). In RTL at `@md` or larger, the row reverses (`rtl:@md:flex-row-reverse`). Padding adjusts using logical properties and directional variants.
+يكدّس هذا التخطيط الأعمدة افتراضيًا. وعند حجم الحاوية `@md` يتحوّل إلى صف (`@md:flex-row`). وفي RTL عند `@md` أو أكبر، ينعكس الصف (`rtl:@md:flex-row-reverse`). ويُعدَّل الحشو باستخدام الخصائص المنطقية والمتغيّرات الاتجاهية.
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-For multi-directional Flexbox layouts, Tailwind relies on CSS logical properties (`ms-*`, `pe-*`, etc.) and `rtl:`/`ltr:` variants. These create layouts that adapt to text direction, simplifying internationalization. Combined with responsive design, this enables truly adaptive UIs.
+في تخطيطات Flexbox متعددة الاتجاهات، يعتمد Tailwind على خصائص CSS المنطقية (`ms-*` و`pe-*` وغيرها) ومتغيّرات `rtl:`/`ltr:`. وهذه تخلق تخطيطات تتكيّف مع اتجاه النص، فتُبسّط التدويل. ومع دمجها بالتصميم المتجاوب، تتيح واجهات مستخدم متكيّفة حقًا.

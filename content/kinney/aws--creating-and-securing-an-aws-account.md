@@ -1,256 +1,256 @@
 ---
-title: "Creating and Securing an AWS Account"
-lang: en
+title: "إنشاء حساب AWS وتأمينه"
+lang: ar
 source: "https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account"
 ---
 
-You’ve been deploying to Vercel or Cloudflare, a lot of the infrastructure has been abstracted away for you. That’s kind of the value proposition of some of these tools. (Yes, Cloudflare has their own infrastructure and Vercel is an abstraction on top of multiple vendors—but, you get my point.) You click a button, connect a repo, and your site is live. AWS gives you actual infrastructure, which means actual security responsibility. The account you’re about to create controls real resources that cost real money, and if someone compromises it, they can spin up crypto miners on your credit card. So we’re going to do the Right Way™ from the start.
+كنت تنشر على Vercel أو Cloudflare، وقد جُرّد كثير من البنية التحتية نيابة عنك. وهذا جزء من القيمة التي تقدّمها بعض هذه الأدوات. (نعم، لدى Cloudflare بنيتها التحتية الخاصة، وVercel تجريد فوق عدة مورّدين — لكنك تفهم مقصدي.) تنقر زرًا، وتربط مستودعًا، فيصبح موقعك حيًّا. أما AWS فتمنحك بنية تحتية حقيقية، ما يعني مسؤولية أمنية حقيقية. والحساب الذي أنت على وشك إنشائه يتحكم في موارد حقيقية تكلّف مالًا حقيقيًا، وإن اختُرِق، فيمكن لشخص أن يشغّل معدّنات عملات رقمية على بطاقتك الائتمانية. لذا سنفعلها «الطريقة الصحيحة™» من البداية.
 
-> **Note**
+> **ملاحظة**
 >
-> We’re going to use a *lot* of screenshots in this very first section. This is because I’d rather not doxx myself on the live stream. Sorry—but, I’m not sorry. 🤓
+> سنستخدم *الكثير* من لقطات الشاشة في هذا القسم الأول. لأنني أفضّل ألا أكشف هويتي في البث المباشر. آسف — لكنني لست آسفًا.
 
-## Why This Matters
+## لماذا يهم هذا
 
-Your AWS account is *not* just another dashboard login. It is the trust boundary around everything else in this course: IAM users, S3 buckets, CloudFront distributions, Lambda functions, billing, and production data. If you get the first hour wrong, every later lesson inherits that mistake.
+حساب AWS لديك *ليس* مجرّد تسجيل دخول آخر إلى لوحة تحكم. إنه حدود الثقة حول كل شيء آخر في هذه الدورة: مستخدمو IAM، وحاويات S3، وتوزيعات CloudFront، ودوال Lambda، والفوترة، وبيانات الإنتاج. وإن أخطأت في الساعة الأولى، فكل درس لاحق يرث ذلك الخطأ.
 
-## Create the Account
+## إنشاء الحساب
 
-Start on the AWS homepage. Depending on which part of the page AWS is currently promoting, you’ll usually see either **Create account** in the header or a larger call-to-action like **Start free with AWS**.
+ابدأ من الصفحة الرئيسية لـ AWS. وبناءً على ما تروّج له AWS في الصفحة حاليًا، سترى عادةً إما **Create account** في الترويسة أو دعوة أكبر إلى الإجراء مثل **Start free with AWS**.
 
-AWS homepage showing both the Create account button in the header and the Start free with AWS call-to-action in the hero.
+الصفحة الرئيسية لـ AWS وهي تعرض زر Create account في الترويسة ودعوة Start free with AWS إلى الإجراء في الواجهة الرئيسية.
 
-After you click into the signup flow, AWS asks for the email address that will own the account and an account name.
+بعد أن تنقر للدخول إلى مسار التسجيل، تطلب AWS عنوان البريد الإلكتروني الذي سيملك الحساب واسم الحساب.
 
-AWS signup screen asking for the root user email address and AWS account name.
+شاشة تسجيل AWS وهي تطلب عنوان بريد المستخدم الجذر واسم حساب AWS.
 
-A few decisions here matter more than they look:
+ثمة قرارات هنا تهم أكثر مما تبدو:
 
-- **Use a dedicated email address.** A plus-addressed Gmail or a team alias is fine. The important part is that this email remains recoverable for years.
-- **Pick an account name you won’t hate later.** It does not need to match a project name exactly, but it should be recognizable when you see it in the console header.
-- **Treat this as root from the first click.** This email becomes the login for the **root user**, which is the highest-privilege identity in the account.
+- **استخدم عنوان بريد إلكتروني مخصّصًا.** عنوان Gmail بإضافة plus أو اسم فريق بريدي مقبول. والمهم أن يظل هذا البريد قابلًا للاستعادة لسنوات.
+- **اختر اسم حساب لن تكرهه لاحقًا.** لا يلزم أن يطابق اسم مشروع تمامًا، لكن ينبغي أن يكون معروفًا عندما تراه في ترويسة لوحة التحكم.
+- **تعامل مع هذا كحساب جذر من النقرة الأولى.** يصبح هذا البريد تسجيل الدخول لـ **المستخدم الجذر**، وهو أعلى هوية امتيازًا في الحساب.
 
-Once AWS verifies your email address, the next screen is where you set the root password.
+بمجرد أن تتحقق AWS من عنوان بريدك الإلكتروني، تكون الشاشة التالية حيث تضبط كلمة مرور الجذر.
 
-Root password screen shown immediately after email verification in the AWS signup flow.
+شاشة كلمة مرور الجذر المعروضة فور التحقق من البريد الإلكتروني في مسار تسجيل AWS.
 
-Use a strong password and store it in a password manager immediately. This is not a password you should memorize or reuse anywhere else.
+استخدم كلمة مرور قوية وخزّنها في مدير كلمات مرور فورًا. وهذه ليست كلمة مرور ينبغي أن تحفظها أو تعيد استخدامها في مكان آخر.
 
-AWS then asks you to choose an account plan. In the current flow shown here, AWS offers a free option and a **Paid** option. AWS’s Free Tier options include an introductory period (the duration varies — check the current offer) and a set of always-free allowances.
+ثم تطلب AWS اختيار خطة حساب. وفي المسار الحالي المعروض هنا، تقدّم AWS خيارًا مجانيًا وخيارًا **مدفوعًا**. وتشمل خيارات الطبقة المجانية في AWS فترة تمهيدية (تختلف مدتها — راجع العرض الحالي) ومجموعة من المخصصات المجانية الدائمة.
 
-Account plan selection screen offering the Free and Paid account plans during signup.
+شاشة اختيار خطة الحساب وهي تعرض الخطتين Free وPaid أثناء التسجيل.
 
-For a personal learning account, choose the free plan if AWS offers it to you. The goal for this course is to learn the platform without accidentally turning your first week into a billing postmortem.
+لحساب تعليمي شخصي، اختر الخطة المجانية إن عرضتها AWS عليك. فالهدف من هذه الدورة هو تعلّم المنصة دون أن تحوّل أسبوعك الأول عن غير قصد إلى تشريح للفاتورة.
 
-Next comes your contact information.
+ثم تأتي معلومات الاتصال.
 
-Contact information form during AWS account creation asking for name, phone number, address, and country.
+نموذج معلومات الاتصال أثناء إنشاء حساب AWS وهو يطلب الاسم ورقم الهاتف والعنوان والبلد.
 
-Fill this out accurately. AWS uses it for account ownership, billing, and recovery. This is not the place for fake data.
+املأ هذا بدقة. فـ AWS تستخدمه لملكية الحساب والفوترة والاستعادة. وليس هذا مكان البيانات المزيفة.
 
-After that, AWS asks for billing information.
+بعد ذلك، تطلب AWS معلومات الفوترة.
 
-Billing information form during AWS signup asking for card details and billing address.
+نموذج معلومات الفوترة أثناء تسجيل AWS وهو يطلب تفاصيل البطاقة وعنوان الفوترة.
 
-Yes, AWS requires a payment method even for a learning account. No, that does not mean you are guaranteed to be charged right away. It means AWS has a way to bill you if you create something outside the free tier or leave paid resources running indefinitely.
+نعم، تشترط AWS وسيلة دفع حتى للحساب التعليمي. ولا، هذا لا يعني أنك مضمون للدفع فورًا. بل يعني أن لدى AWS طريقة لفوترتك إن أنشأت شيئًا خارج الطبقة المجانية أو تركت موارد مدفوعة تعمل بلا نهاية.
 
-You may also see one or more additional steps after billing, such as phone verification or a short account activation wait. Finish those before moving on. The exact screens vary a little, but the principle does not: complete the signup flow, land in the console, and then secure the account before you build anything.
+قد ترى أيضًا خطوة إضافية أو أكثر بعد الفوترة، مثل التحقق بالهاتف أو انتظار قصير لتفعيل الحساب. أكملها قبل المتابعة. تختلف الشاشات الدقيقة قليلًا، لكن المبدأ لا يتغيّر: أكمل مسار التسجيل، وادخل إلى لوحة التحكم، ثم أمّن الحساب قبل أن تبني أي شيء.
 
-## Lock Down the Root User Immediately
+## تأمين المستخدم الجذر فورًا
 
-The credentials you just created are the **root user** credentials. The root user is the god-mode account for your entire AWS environment. It can do literally anything: create and delete resources, change billing information, close the account entirely. There is no permission boundary that applies to root.
+بيانات الاعتماد التي أنشأتها للتو هي بيانات اعتماد **المستخدم الجذر**. والمستخدم الجذر حساب بوضع الإله لبيئة AWS بأكملها. ويمكنه فعل أي شيء حرفيًا: إنشاء الموارد وحذفها، وتغيير معلومات الفوترة، وإغلاق الحساب بالكامل. ولا توجد حدود أذونات تنطبق على الجذر.
 
-Think of it this way: if your AWS account were an apartment building, the root user holds the master key to every unit, the mailroom, the electrical panel, and the demolition switch. You do not carry that key to get your morning coffee.
+فكّر في الأمر هكذا: لو كان حساب AWS لديك بناية سكنية، فالمستخدم الجذر يحمل المفتاح الرئيسي لكل وحدة، وغرفة البريد، ولوحة الكهرباء، ومفتاح الهدم. وأنت لا تحمل ذلك المفتاح لجلب قهوة الصباح.
 
-Here is the rule: use the root user to finish the initial account setup, enable MFA, create an everyday admin IAM user, and then stop using it.
+إليك القاعدة: استخدم المستخدم الجذر لإكمال إعداد الحساب الأولي، وتمكين MFA، وإنشاء مستخدم IAM إداري يومي، ثم توقّف عن استخدامه.
 
-### Open Security Credentials
+### فتح بيانات اعتماد الأمان
 
-From the console home page, click your account menu in the top-right corner and choose **Security credentials**.
+من الصفحة الرئيسية للوحة التحكم، انقر قائمة حسابك في الزاوية العلوية اليمنى واختر **Security credentials**.
 
-Account menu in the AWS console with Security credentials highlighted.
+قائمة الحساب في لوحة تحكم AWS مع إبراز Security credentials.
 
-That takes you to the root user’s security page.
+ينقلك هذا إلى صفحة أمان المستخدم الجذر.
 
-Root security credentials page showing the warning that MFA is not assigned yet.
+صفحة بيانات اعتماد أمان الجذر وهي تعرض تحذيرًا بأن MFA غير مُسنَد بعد.
 
-If you see a warning banner telling you MFA is not assigned, good. That means you are in exactly the right place.
+إذا رأيت شريط تحذير يخبرك بأن MFA غير مُسنَد، فهذا جيد. يعني أنك في المكان الصحيح تمامًا.
 
-> **Warning**
+> **تحذير**
 >
-> Never create access keys for the root user. If root access keys leak, an attacker has unrestricted access to your entire AWS account. There is no IAM policy that can save you from that mistake.
+> لا تنشئ مفاتيح وصول للمستخدم الجذر أبدًا. فإذا تسرّبت مفاتيح وصول الجذر، حصل المهاجم على وصول غير مقيّد إلى حساب AWS بأكمله. ولا توجد سياسة IAM يمكنها إنقاذك من ذلك الخطأ.
 
-### Enable MFA
+### تمكين MFA
 
-Click **Assign MFA** and AWS will walk you through choosing a device type. The screenshots here use a passkey because it is phishing-resistant and tied to a device you already control.
+انقر **Assign MFA** وسترشدك AWS خلال اختيار نوع الجهاز. تستخدم لقطات الشاشة هنا مفتاح مرور (passkey) لأنه مقاوم للتصيّد ومرتبط بجهاز تتحكم فيه بالفعل.
 
-Assign MFA device screen with Passkey or security key selected as the MFA device type.
+شاشة Assign MFA device مع اختيار Passkey or security key كنوع جهاز MFA.
 
-Other choices are still valid:
+الخيارات الأخرى صالحة أيضًا:
 
-- **Passkey or security key**: The best option if your devices support it.
-- **Authenticator app**: The most common fallback and completely reasonable for a personal learning account.
-- **Hardware TOTP token**: Useful if your security model already depends on dedicated hardware.
+- **Passkey or security key**: الخيار الأفضل إن كانت أجهزتك تدعمه.
+- **Authenticator app**: البديل الأكثر شيوعًا والمعقول تمامًا لحساب تعليمي شخصي.
+- **Hardware TOTP token**: مفيد إن كان نموذجك الأمني يعتمد بالفعل على عتاد مخصّص.
 
-I chose a passkey, but you’re free to use whatever makes you happiest. Once the flow completes, AWS shows a confirmation banner on the root security page.
+اخترت مفتاح مرور، لكنك حرّ في استخدام ما يريحك. وبمجرد اكتمال المسار، تعرض AWS شريط تأكيد في صفحة أمان الجذر.
 
-Root security credentials page showing the Passkey MFA device assigned confirmation banner.
+صفحة بيانات اعتماد أمان الجذر وهي تعرض شريط تأكيد إسناد جهاز Passkey MFA.
 
-At that point, every future root login requires both the password and the second factor. That is exactly what you want.
+عندئذ، يتطلب كل تسجيل دخول جذري مستقبلي كلمة المرور والعامل الثاني معًا. وهذا بالضبط ما تريده.
 
-## Add the Safety Rails You Will Want Later
+## أضف حواجز الأمان التي ستريدها لاحقًا
 
-Before you retire the root user, there are three small pieces of account hygiene worth handling now.
+قبل أن تتقاعد عن المستخدم الجذر، ثمة ثلاثة أمور صغيرة من نظافة الحساب تستحق المعالجة الآن.
 
-### Set Alternate Contacts
+### ضبط جهات الاتصال البديلة
 
-AWS lets you define separate contacts for billing, operations, and security notifications.
+تتيح لك AWS تعريف جهات اتصال منفصلة للفوترة والعمليات وإشعارات الأمان.
 
-Alternate contacts section showing separate billing, operations, and security contacts.
+قسم جهات الاتصال البديلة وهو يعرض جهات اتصال منفصلة للفوترة والعمليات والأمان.
 
-If this is just your personal learning account, you can leave these empty for now. If you have a shared inbox for billing or a teammate who should receive security notices, set them now while you still remember. It is much easier to do this on day one than during an incident.
+إذا كان هذا مجرّد حسابك التعليمي الشخصي، فيمكنك تركها فارغة الآن. وإن كان لديك صندوق بريد مشترك للفوترة أو زميل ينبغي أن يتلقى إشعارات الأمان، فاضبطها الآن بينما تتذكر. فمن الأسهل بكثير فعل ذلك في اليوم الأول منه أثناء حادث.
 
-### Turn On CloudTrail
+### تشغيل CloudTrail
 
-Every new AWS account already has a 90-day **event history** for management actions enabled by default. That’s enough for basic “who did what?” questions, but 90 days is short and it doesn’t cover data-plane events (S3 object reads, for example). Enable an organization-wide **CloudTrail trail** writing to an S3 bucket now, while the account is tiny and the footprint is trivial. You can’t retroactively reconstruct actions that weren’t logged. The [CloudTrail getting-started guide](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html) walks through the console flow.
+كل حساب AWS جديد لديه بالفعل **سجل أحداث** لمدة 90 يومًا لإجراءات الإدارة، ممكّن افتراضيًا. وهذا يكفي لأسئلة «من فعل ماذا؟» الأساسية، لكن 90 يومًا فترة قصيرة ولا يغطّي أحداث مستوى البيانات (مثل قراءات كائنات S3). مكّن **مسار CloudTrail** على مستوى المؤسسة يكتب إلى حاوية S3 الآن، بينما الحساب صغير والأثر ضئيل. ولا يمكنك إعادة بناء إجراءات لم تُسجَّل بأثر رجعي. ويرشدك [دليل بدء CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html) خلال مسار لوحة التحكم.
 
-### Enable IAM Access to Billing
+### تمكين وصول IAM إلى الفوترة
 
-By default, new IAM users often cannot see billing information. That becomes a problem later when you try to set up budgets or inspect charges without logging back in as root.
+افتراضيًا، لا يستطيع مستخدمو IAM الجدد غالبًا رؤية معلومات الفوترة. ويصبح ذلك مشكلة لاحقًا عندما تحاول إعداد الميزانيات أو فحص الرسوم دون تسجيل الدخول مجددًا كجذر.
 
-Billing settings section showing IAM user and role access to Billing information deactivated.
+قسم إعدادات الفوترة وهو يعرض وصول مستخدمي وأدوار IAM إلى معلومات الفوترة معطّلًا.
 
-Click **Edit** and enable **IAM user and role access to Billing information** before you move on. Your future `admin` user needs this.
+انقر **Edit** ومكّن **IAM user and role access to Billing information** قبل أن تتابع. فمستخدم `admin` المستقبلي يحتاج هذا.
 
-### Acknowledge IAM Identity Center, Then Skip It for Now
+### إقرار IAM Identity Center ثم تخطّيه الآن
 
-AWS now surfaces [**IAM Identity Center**](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) prominently because it is the preferred long-term answer for workforce access and single sign-on.
+تعرض AWS الآن [**IAM Identity Center**](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) بشكل بارز لأنه الحل المفضّل طويل الأمد لوصول القوى العاملة وتسجيل الدخول الموحّد.
 
-IAM Identity Center landing page inviting you to enable an IAM Identity Center instance.
+صفحة IAM Identity Center الرئيسية وهي تدعوك إلى تمكين مثيل IAM Identity Center.
 
-That is a good direction for a team. It is also one more system to understand on the same day you are still learning what an IAM user even is. For this course, we are intentionally keeping the starting point simpler:
+وهذا اتجاه جيد لفريق. وهو أيضًا نظام إضافي تفهمه في اليوم نفسه الذي ما زلت تتعلم فيه ما هو مستخدم IAM أصلًا. وفي هذه الدورة، نبقي نقطة البداية أبسط عن قصد:
 
-- Create one everyday IAM user for yourself.
-- Use that user for console access and CLI setup.
-- Learn IAM concepts before layering on organization-wide identity tooling.
+- أنشئ مستخدم IAM يوميًا واحدًا لنفسك.
+- استخدم ذلك المستخدم للوصول إلى لوحة التحكم وإعداد CLI.
+- تعلّم مفاهيم IAM قبل إضافة أدوات الهوية على مستوى المؤسسة.
 
-> **2026 Recommendation**
+> **توصية 2026**
 >
-> The course teaches IAM users because they’re the shortest path to understanding the permission model. In a real production account, the 2026 recommendation is to enable **IAM Identity Center** and use `aws configure sso` to log in through a short-lived SSO session instead of creating IAM users with long-lived access keys. Same IAM concepts apply underneath—the difference is where the credentials come from. Once you’ve finished the course, the [AWS IAM Identity Center user guide](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) is the natural next read.
+> تعلّم الدورة مستخدمي IAM لأنهم أقصر طريق لفهم نموذج الأذونات. أما في حساب إنتاجي حقيقي، فتوصية 2026 هي تمكين **IAM Identity Center** واستخدام `aws configure sso` لتسجيل الدخول عبر جلسة SSO قصيرة الأجل بدلًا من إنشاء مستخدمي IAM بمفاتيح وصول طويلة الأجل. ومفاهيم IAM نفسها تنطبق في الأساس — والفرق هو مصدر بيانات الاعتماد. وبمجرد أن تنهي الدورة، يكون [دليل مستخدم AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) القراءة التالية الطبيعية.
 
-We will talk about better long-term patterns later. Right now, the shortest path to understanding AWS is still the best one.
+سنتحدث عن أنماط طويلة الأمد أفضل لاحقًا. أما الآن، فأقصر طريق لفهم AWS لا يزال هو الأفضل.
 
-## Create an Everyday Admin User Through a Group
+## إنشاء مستخدم إداري يومي عبر مجموعة
 
-The root user should now be retired from daily use. You need a separate **IAM user** with admin permissions for everyday work.
+ينبغي أن يكون المستخدم الجذر قد تقاعد الآن عن الاستخدام اليومي. وتحتاج إلى **مستخدم IAM** منفصل بأذونات إدارية للعمل اليومي.
 
-One quick note before you follow the screenshots below: the screenshots show the account and username I used while writing this lesson. For the course, stick with the conventions we use everywhere else:
+ملاحظة سريعة قبل أن تتبع لقطات الشاشة أدناه: تعرض اللقطات الحساب واسم المستخدم الذي استخدمته أثناء كتابة هذا الدرس. وللدورة، التزم بالاصطلاحات التي نستخدمها في كل مكان آخر:
 
-- Create an everyday IAM user named `admin`.
-- Use your own account ID in the IAM sign-in URL.
+- أنشئ مستخدم IAM يوميًا باسم `admin`.
+- استخدم معرّف حسابك في عنوان URL لتسجيل الدخول إلى IAM.
 
-### Go to IAM
+### الانتقال إلى IAM
 
-Search for **IAM** from the AWS console header and open the service.
+ابحث عن **IAM** من ترويسة لوحة تحكم AWS وافتح الخدمة.
 
-AWS global search showing IAM as the primary service result.
+بحث AWS العام وهو يعرض IAM كنتيجة الخدمة الأساسية.
 
-### Create an Administrators Group
+### إنشاء مجموعة Administrators
 
-Before you create the user, create a group named `Administrators` and attach the AWS-managed `AdministratorAccess` policy to that group.
+قبل أن تنشئ المستخدم، أنشئ مجموعة باسم `Administrators` وارفق سياسة `AdministratorAccess` المُدارة من AWS بتلك المجموعة.
 
-Create user group flow in IAM with AdministratorAccess selected in the permissions list.
+مسار إنشاء مجموعة مستخدمين في IAM مع اختيار AdministratorAccess في قائمة الأذونات.
 
-This is a better starting shape than attaching the policy directly to the user. Even in a tiny account, it nudges you toward cleaner IAM habits:
+هذا شكل بداية أفضل من إرفاق السياسة بالمستخدم مباشرة. فحتى في حساب صغير، يدفعك نحو عادات IAM أنظف:
 
-- permissions live on groups
-- users join groups
-- you can reason about access without hunting through per-user policy attachments
+- تعيش الأذونات على المجموعات
+- ينضم المستخدمون إلى المجموعات
+- يمكنك تحليل الوصول دون التنقيب في مرفقات السياسات لكل مستخدم
 
-### Start the User Creation Flow
+### بدء مسار إنشاء المستخدم
 
-After the group exists, go to **Users** and click **Create user**.
+بعد أن توجد المجموعة، انتقل إلى **Users** وانقر **Create user**.
 
-IAM users page after creating the Administrators group, with the Create user button visible.
+صفحة مستخدمي IAM بعد إنشاء مجموعة Administrators، مع ظهور زر Create user.
 
-On the user details screen, enter `admin` as the username, enable console access, and set the password options you want.
+في شاشة تفاصيل المستخدم، أدخل `admin` كاسم مستخدم، ومكّن وصول لوحة التحكم، واضبط خيارات كلمة المرور التي تريدها.
 
-Specify user details screen in IAM showing console access enabled and a custom password being set.
+شاشة Specify user details في IAM وهي تعرض تمكين وصول لوحة التحكم وضبط كلمة مرور مخصّصة.
 
-For your own learning account, a custom password is fine. If you were creating this user for someone else, you would usually require a password reset on first sign-in.
+لحسابك التعليمي الشخصي، كلمة مرور مخصّصة مقبولة. ولو كنت تنشئ هذا المستخدم لشخص آخر، فستطلب عادةً إعادة تعيين كلمة المرور عند أول تسجيل دخول.
 
-### Add the User to the Group
+### إضافة المستخدم إلى المجموعة
 
-On the permissions screen, choose **Add user to group** and select the `Administrators` group.
+في شاشة الأذونات، اختر **Add user to group** وحدّد مجموعة `Administrators`.
 
-Set permissions screen with the Administrators group selected under the Add user to group option.
+شاشة Set permissions مع تحديد مجموعة Administrators ضمن خيار Add user to group.
 
-This is the point where the screenshots and the course conventions intentionally diverge. The screenshot shows a real username from my account. You should still create `admin` and add that user to the `Administrators` group.
+هنا تتباعد لقطات الشاشة واصطلاحات الدورة عن قصد. فتعرض اللقطة اسم مستخدم حقيقيًا من حسابي. وينبغي أن تنشئ أنت `admin` وتضيف ذلك المستخدم إلى مجموعة `Administrators`.
 
-### Review and Create
+### المراجعة والإنشاء
 
-AWS then gives you a review screen so you can confirm the username, console password configuration, and group assignment.
+تعرض لك AWS بعد ذلك شاشة مراجعة لتؤكد اسم المستخدم وإعداد كلمة مرور لوحة التحكم وإسناد المجموعة.
 
-Review and create screen in IAM showing the selected username and Administrators group assignment.
+شاشة Review and create في IAM وهي تعرض اسم المستخدم المحدّد وإسناد مجموعة Administrators.
 
-If the group assignment looks wrong, fix it here. This is much better than creating the user and then cleaning up a bad permission model afterwards.
+إذا بدا إسناد المجموعة خاطئًا، فأصلحه هنا. فهذا أفضل بكثير من إنشاء المستخدم ثم تنظيف نموذج أذونات سيئ بعد ذلك.
 
-### Save the Sign-In URL
+### حفظ عنوان URL لتسجيل الدخول
 
-After the user is created, AWS shows the IAM console sign-in details.
+بعد إنشاء المستخدم، تعرض AWS تفاصيل تسجيل الدخول إلى لوحة تحكم IAM.
 
-User creation completion screen showing the IAM console sign-in URL, username, and initial password details.
+شاشة اكتمال إنشاء المستخدم وهي تعرض عنوان URL لتسجيل الدخول إلى لوحة تحكم IAM واسم المستخدم وتفاصيل كلمة المرور الأولية.
 
-Bookmark that IAM sign-in URL. It has this shape:
+أضف عنوان URL لتسجيل الدخول إلى IAM إلى الإشارات المرجعية. وهو بهذا الشكل:
 
 ```
 https://123456789012.signin.aws.amazon.com/console
 ```
 
-Obviously `123456789012` will be *something* else.
+من الواضح أن `123456789012` سيكون *شيئًا* آخر.
 
-You will use your own account ID, not the one shown in the screenshot.
+ستستخدم معرّف حسابك، لا المعرّف المعروض في لقطة الشاشة.
 
-## Sign In as `admin` and Repeat MFA
+## تسجيل الدخول باسم `admin` وتكرار MFA
 
-Sign out of the root user. Then sign back in using:
+سجّل الخروج من المستخدم الجذر. ثم سجّل الدخول مجددًا باستخدام:
 
-- your account ID or account alias
-- the IAM username `admin`
-- the password you just set
+- معرّف حسابك أو اسمك المستعار للحساب
+- اسم مستخدم IAM وهو `admin`
+- كلمة المرور التي ضبطتها للتو
 
-As soon as you are in, repeat the same MFA flow you used for root. Open the user’s **Security credentials** tab in IAM, assign MFA, and verify that everyday logins now require the second factor too.
+بمجرد دخولك، كرّر مسار MFA نفسه الذي استخدمته للجذر. افتح تبويب **Security credentials** للمستخدم في IAM، وأسند MFA، وتحقّق من أن تسجيلات الدخول اليومية تتطلب العامل الثاني أيضًا.
 
-At this point, the root user should move into break-glass status:
+في هذه المرحلة، ينبغي أن ينتقل المستخدم الجذر إلى وضع «الزجاج المكسور» للطوارئ:
 
-- keep the password in a password manager
-- keep MFA registered
-- do not use it for daily console work
-- do not use it for CLI access
+- احفظ كلمة المرور في مدير كلمات مرور
+- أبقِ MFA مسجّلًا
+- لا تستخدمه لعمل لوحة التحكم اليومي
+- لا تستخدمه للوصول عبر CLI
 
-## Verification
+## التحقق
 
-If all of this worked, your account should now look like this:
+إذا نجح كل هذا، فينبغي أن يبدو حسابك الآن هكذا:
 
-- AWS account created with a dedicated email address
-- Root user password stored in a password manager
-- MFA enabled on the root user
-- Alternate contacts reviewed or configured
-- IAM user and role access to Billing and Cost Management enabled
-- `Administrators` group created with `AdministratorAccess`
-- IAM `admin` user created and added to `Administrators`
-- MFA enabled on the `admin` user
-- IAM sign-in URL bookmarked
-- Signed in successfully as `admin`
+- حساب AWS منشأ بعنوان بريد إلكتروني مخصّص
+- كلمة مرور المستخدم الجذر مخزّنة في مدير كلمات مرور
+- MFA ممكّن على المستخدم الجذر
+- جهات الاتصال البديلة مُراجعة أو مهيّأة
+- وصول مستخدمي وأدوار IAM إلى Billing and Cost Management ممكّن
+- مجموعة `Administrators` منشأة بـ `AdministratorAccess`
+- مستخدم IAM `admin` منشأ ومضاف إلى `Administrators`
+- MFA ممكّن على مستخدم `admin`
+- عنوان URL لتسجيل الدخول إلى IAM محفوظ في الإشارات المرجعية
+- تسجيل الدخول بنجاح باسم `admin`
 
-> **Tip**
+> **نصيحة**
 >
-> Set up a billing alarm before you do anything else. Navigate to **Billing and Cost Management** and create a small budget. We cover the full flow in [Cost Monitoring and Budget Alarms](https://stevekinney.com/courses/aws/cost-monitoring-and-budget-alarms), but the short version is simple: spend five minutes on budgets now so you do not spend five hours explaining a surprise bill later.
+> أعدّ إنذار فوترة قبل أن تفعل أي شيء آخر. انتقل إلى **Billing and Cost Management** وأنشئ ميزانية صغيرة. نغطّي المسار الكامل في [مراقبة التكاليف وإنذارات الميزانية](https://stevekinney.com/courses/aws/cost-monitoring-and-budget-alarms)، لكن النسخة المختصرة بسيطة: اقضِ خمس دقائق على الميزانيات الآن كي لا تقضي خمس ساعات تشرح فاتورة مفاجئة لاحقًا.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **You keep using the root user because it already works:** Stop. Root is for break-glass account administration, not daily CLI or console work.
-- **You skip MFA because this is “just a sandbox account”:** Sandbox accounts still create bills and still become production surprisingly often.
-- **You create the account with a personal email you do not control long-term:** That turns basic recovery and billing work into a future incident.
+- **تستمر في استخدام المستخدم الجذر لأنه يعمل أصلًا:** توقّف. الجذر لإدارة الحساب في حالات الطوارئ، لا لعمل CLI أو لوحة التحكم اليومي.
+- **تتخطّى MFA لأن هذا «مجرد حساب تجريبي»:** الحسابات التجريبية لا تزال تولّد فواتير، ولا تزال تصبح إنتاجية بشكل مفاجئ أكثر مما تتوقع.
+- **تنشئ الحساب ببريد شخصي لا تتحكم فيه على المدى الطويل:** يحوّل ذلك أعمال الاستعادة والفوترة الأساسية إلى حادث مستقبلي.
 
-You now have a properly secured AWS account. The root user is locked down with MFA and gathering dust. Your `admin` user is ready for daily use. Next, we will build a mental model of IAM so you understand what you just configured and why it matters.
+أصبح لديك الآن حساب AWS مؤمّنًا بشكل صحيح. المستخدم الجذر مقفل بـ MFA ويجمع الغبار. ومستخدم `admin` لديك جاهز للاستخدام اليومي. بعد ذلك، سنبني نموذجًا ذهنيًا لـ IAM لتفهم ما أعددته للتو ولماذا يهم.

@@ -1,16 +1,14 @@
 ---
-title: "Cursor Skills"
-lang: en
+title: "مهارات Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-skills"
 ---
 
-[Cursor Skills](https://cursor.com/docs/skills) package reusable agent behavior.
-Use a skill when a workflow needs more than a short rule: steps, examples,
-scripts, references, or assets.
+تُغلّف [مهارات Cursor](https://cursor.com/docs/skills) سلوك الوكيل القابل لإعادة الاستخدام. استخدم مهارة عندما يحتاج سير عمل إلى أكثر من قاعدة قصيرة: خطوات، وأمثلة، وسكربتات، ومراجع، وموجودات.
 
-## Folder Shape
+## شكل الدليل
 
-A project skill can live under `.cursor/skills`:
+يمكن لمهارة مشروع أن تسكن تحت `.cursor/skills`:
 
 ```
 .cursor/
@@ -22,10 +20,9 @@ A project skill can live under `.cursor/skills`:
       assets/
 ```
 
-Cursor also understands skills in `.agents/skills`, `.claude/skills`, and `.codex/skills`. That compatibility matters when a repository uses more than one
-agent.
+يفهم Cursor أيضًا المهارات في `.agents/skills` و`.claude/skills` و`.codex/skills`. وهذه التوافقية مهمة عندما يستخدم مستودع أكثر من وكيل.
 
-## Minimal Skill
+## مهارة دنيا
 
 ```markdown
 ---
@@ -38,35 +35,32 @@ Run the documented verification commands. Stop and report the exact blocker if a
 command fails.
 ```
 
-Keep the entrypoint short. Put long examples in `references/`, reusable commands
-in `scripts/`, and visual or binary inputs in `assets/`.
+أبقِ نقطة الدخول قصيرة. ضع الأمثلة الطويلة في `references/`، والأوامر القابلة لإعادة الاستخدام في `scripts/`، والمدخلات المرئية أو الثنائية في `assets/`.
 
-## Rules Versus Skills
+## القواعد مقابل المهارات
 
-Use Rules for constraints:
+استخدم القواعد للقيود:
 
 ```
 Always add regression tests for bug fixes.
 ```
 
-Use Skills for procedures:
+استخدم المهارات للإجراءات:
 
 ```
 Run the release readiness process and produce the shipping checklist.
 ```
 
-If the instruction has phases, files to inspect, and a completion signal, it is
-probably a skill.
+إذا كانت التعليمة لها مراحل وملفات لفحصها وإشارة إتمام، فالأرجح أنها مهارة.
 
-## Skill Hygiene
+## نظافة المهارات
 
-Skills are executable context. Treat them like source code:
+المهارات سياق قابل للتنفيذ. عاملها كشيفرة مصدر:
 
-- Keep them versioned.
-- Keep them small enough to review.
-- Remove stale commands when the repository changes.
-- Make verification commands explicit.
-- Avoid copying vendor documentation that will drift.
+- أبقِها مُصدَّرة بإصدارات.
+- أبقِها صغيرة بما يكفي للمراجعة.
+- احذف الأوامر البائدة عندما يتغيّر المستودع.
+- اجعل أوامر التحقق صريحة.
+- تجنّب نسخ توثيق المورّد الذي سينحرف.
 
-The agent should be able to run the workflow from the filesystem, not from a
-memory of a past chat.
+ينبغي أن يستطيع الوكيل تشغيل سير العمل من نظام الملفات، لا من ذاكرة محادثة سابقة.

@@ -1,18 +1,18 @@
 ---
-title: "Environment Variables and Configuration"
-lang: en
+title: "متغيرات البيئة والإعدادات"
+lang: ar
 source: "https://stevekinney.com/courses/aws/lambda-environment-variables"
 ---
 
-Environment variables work the same way in Lambda as they do in Vercel or Netlify: you set key-value pairs on the function, and your code reads them from `process.env`. The API endpoint for a third-party service, the name of a DynamoDB table, a feature flag—anything that changes between environments or shouldn’t be hardcoded goes into an environment variable.
+تعمل متغيرات البيئة في Lambda بالطريقة نفسها التي تعمل بها في Vercel أو Netlify: تضبط أزواج المفتاح والقيمة على الدالة، ويقرأها كودك من `process.env`. عنوان نقطة نهاية API لخدمة خارجية، أو اسم جدول DynamoDB، أو راية ميزة—أي قيمة تتغيّر بين البيئات أو لا ينبغي تثبيتها في الكود تذهب إلى متغيّر بيئة.
 
-If you want AWS’s exact rules and limits in front of you while you read, the [Lambda environment variables guide](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) is the official reference.
+إن أردت أن تكون قواعد AWS وحدودها الدقيقة أمامك أثناء القراءة، فإن [دليل متغيرات البيئة في Lambda](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) هو المرجع الرسمي.
 
-If you’ve ever set `NEXT_PUBLIC_API_URL` in a `.env.local` file or configured environment variables in the Vercel dashboard, you already understand the concept. The only difference is how you set them.
+إن سبق لك ضبط `NEXT_PUBLIC_API_URL` في ملف `.env.local` أو تهيئة متغيرات البيئة في لوحة تحكم Vercel، فأنت تفهم الفكرة بالفعل. الفرق الوحيد هو طريقة ضبطها.
 
-## Setting Environment Variables via CLI
+## تعيين متغيرات البيئة عبر سطر الأوامر
 
-You can set environment variables when you create the function or update them on an existing function. Here’s how to add them during creation:
+يمكنك ضبط متغيرات البيئة عند إنشاء الدالة أو تحديثها على دالة موجودة. إليك كيفية إضافتها أثناء الإنشاء:
 
 ```bash
 aws lambda create-function \
@@ -26,7 +26,7 @@ aws lambda create-function \
   --output json
 ```
 
-To update environment variables on an existing function, use `update-function-configuration`:
+لتحديث متغيرات البيئة على دالة موجودة، استخدم `update-function-configuration`:
 
 ```bash
 aws lambda update-function-configuration \
@@ -36,17 +36,17 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-In the console, the **Configuration → Environment variables** section shows all variables in plain text with an **Edit** button that lets you add, modify, or remove them.
+في وحدة التحكم، يعرض قسم **Configuration → Environment variables** جميع المتغيرات بنص صريح مع زر **Edit** يتيح لك إضافتها أو تعديلها أو حذفها.
 
-The Lambda function Configuration tab showing the Environment variables section with TABLE_NAME set to frontend-items.
+يعرض تبويب Configuration في دالة Lambda قسم Environment variables مع ضبط TABLE_NAME على frontend-items.
 
-> **Warning**
+> **تحذير**
 >
-> The `--environment` flag replaces **all** environment variables on the function, not just the ones you specify. If your function has three existing variables and you run `update-function-configuration` with only two, the third variable is deleted. Always include every variable you want the function to have.
+> تستبدل راية `--environment` **جميع** متغيرات البيئة على الدالة، لا المتغيرات التي تحددها وحدها. إذا كانت لدالتك ثلاثة متغيرات موجودة وشغّلت `update-function-configuration` بمتغيرين فقط، فسيُحذف المتغير الثالث. أدرج دائمًا كل متغير تريد أن تحتفظ به الدالة.
 
-## Accessing Environment Variables in Your Handler
+## الوصول إلى متغيرات البيئة داخل المعالج
 
-In your TypeScript handler, environment variables are available through `process.env`, exactly like they are in any Node.js application:
+في معالج TypeScript لديك، تتاح متغيرات البيئة عبر `process.env`، تمامًا كما هي في أي تطبيق Node.js:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -75,53 +75,53 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Reading `process.env` at the top level runs once during init, not on every invocation.
+*ملاحظة:* قراءة `process.env` في المستوى الأعلى تُنفَّذ مرة واحدة أثناء التهيئة، لا في كل استدعاء.
 
-There are two patterns worth noting here. First, reading environment variables at the top level (outside the handler function) means the value is read once during the init phase and reused across invocations. This is more efficient than reading `process.env` on every request. Second, always validate that required environment variables exist—`process.env.TABLE_NAME` is `string | undefined` in TypeScript, and your function should fail clearly if a variable is missing rather than silently breaking.
+هناك نمطان يستحقان الانتباه هنا. أولًا، قراءة متغيرات البيئة في المستوى الأعلى (خارج دالة المعالج) تعني أن القيمة تُقرأ مرة واحدة أثناء مرحلة التهيئة وتُعاد استخدامها عبر الاستدعاءات. هذا أكفأ من قراءة `process.env` في كل طلب. ثانيًا، تحقّق دائمًا من وجود متغيرات البيئة المطلوبة—فـ `process.env.TABLE_NAME` نوعه `string | undefined` في TypeScript، وينبغي أن تفشل دالتك بوضوح عند غياب متغيّر بدلًا من أن تنكسر بصمت.
 
-## Lambda’s Built-In Environment Variables
+## متغيرات البيئة المدمجة في Lambda
 
-Lambda also sets several environment variables automatically. You don’t configure these—they’re always present:
+تضبط Lambda أيضًا عدة متغيرات بيئة تلقائيًا. أنت لا تهيّئ هذه المتغيرات—فهي موجودة دائمًا:
 
-| Variable | Value |
+| المتغيّر | القيمة |
 | --- | --- |
-| `AWS_REGION` | The function’s region (e.g., `us-east-1`) |
-| `AWS_LAMBDA_FUNCTION_NAME` | The function name |
-| `AWS_LAMBDA_FUNCTION_MEMORY_SIZE` | Allocated memory in MB |
-| `AWS_LAMBDA_FUNCTION_VERSION` | The version of the function being executed |
-| `AWS_EXECUTION_ENV` | The runtime identifier (e.g., `AWS_Lambda_nodejs22.x`) |
-| `_HANDLER` | The handler setting (e.g., `handler.handler`) |
+| `AWS_REGION` | منطقة الدالة (مثل `us-east-1`) |
+| `AWS_LAMBDA_FUNCTION_NAME` | اسم الدالة |
+| `AWS_LAMBDA_FUNCTION_MEMORY_SIZE` | الذاكرة المخصصة بالميغابايت |
+| `AWS_LAMBDA_FUNCTION_VERSION` | إصدار الدالة الذي يُنفَّذ |
+| `AWS_EXECUTION_ENV` | معرّف بيئة التشغيل (مثل `AWS_Lambda_nodejs22.x`) |
+| `_HANDLER` | إعداد المعالج (مثل `handler.handler`) |
 
-These are useful for logging and debugging. For example, you might include `AWS_REGION` in log output to confirm your function is running where you expect. I like to log the function name and region on every cold start—it saves time when you’re debugging across multiple environments.
+هذه مفيدة للتسجيل وتصحيح الأخطاء. على سبيل المثال، قد تدرج `AWS_REGION` في مخرجات السجل لتتأكد من أن دالتك تعمل في المكان الذي تتوقعه. أحبّ تسجيل اسم الدالة والمنطقة في كل بداية باردة—فهذا يوفر الوقت عند تصحيح الأخطاء عبر بيئات متعددة.
 
-## The 4 KB Limit
+## حدّ 4 كيلوبايت
 
-Lambda imposes a total limit of **4 KB** on all environment variables combined—keys, values, and formatting included. This sounds small, and it *is*. A handful of short configuration values fit easily; a JSON blob containing your entire application configuration doesn’t.
+تفرض Lambda حدًا إجماليًا قدره **4 KB** على جميع متغيرات البيئة مجتمعة—بما في ذلك المفاتيح والقيم والتنسيق. يبدو هذا صغيرًا، وهو *بالفعل* كذلك. حفنة من قيم الإعداد القصيرة تتسع بسهولة؛ أما كتلة JSON تحتوي إعدادات تطبيقك بالكامل فلا.
 
-If you’re hitting the 4 KB limit, that’s a signal that your configuration has outgrown environment variables. At that point, you should move configuration to **Parameter Store**, which you’ll cover in the secrets section. It supports values up to 8 KB per parameter (or 64 KB for advanced parameters) with no total limit on the number of parameters.
+إذا وصلت إلى حدّ 4 KB، فهذه إشارة إلى أن إعداداتك تجاوزت متغيرات البيئة. عند تلك النقطة، ينبغي أن تنقل الإعدادات إلى **Parameter Store**، الذي ستغطيه في قسم الأسرار. يدعم قيمًا تصل إلى 8 KB لكل معامل (أو 64 KB للمعاملات المتقدمة) دون حد إجمالي لعدد المعاملات.
 
-> **Tip**
+> **نصيحة**
 >
-> A practical rule of thumb: use environment variables for simple, non-sensitive values that your function needs at startup—table names, stage identifiers, feature flags, API endpoint URLs. Use Parameter Store or Secrets Manager for anything that’s sensitive, large, or needs to be shared across multiple functions.
+> قاعدة عملية تقريبية: استخدم متغيرات البيئة للقيم البسيطة غير الحساسة التي تحتاجها دالتك عند بدء التشغيل—أسماء الجداول، ومعرّفات المراحل، ورايات الميزات، وعناوين URL لنقاط نهاية API. واستخدم Parameter Store أو Secrets Manager لكل ما هو حساس أو كبير أو يحتاج إلى مشاركة بين دوال متعددة.
 
-## When Not to Use Environment Variables
+## متى لا تستخدم متغيرات البيئة
 
-Environment variables are the right tool for configuration that:
+متغيرات البيئة هي الأداة الصحيحة للإعدادات التي:
 
-- Changes between environments (dev, staging, production)
-- Isn’t sensitive enough to warrant encryption at rest
-- Is small (a table name, a URL, a stage identifier)
-- Needs to be available immediately at function startup
+- تتغيّر بين البيئات (dev وstaging وproduction)
+- ليست حساسة بما يكفي لتستوجب التشفير عند التخزين
+- صغيرة (اسم جدول، أو URL، أو معرّف مرحلة)
+- تحتاج إلى أن تكون متاحة فورًا عند بدء تشغيل الدالة
 
-They’re the **wrong** tool for:
+وهي الأداة **الخاطئة** لـ:
 
-- **API keys, database passwords, and tokens.** These should go in Secrets Manager or Parameter Store’s `SecureString` type. Environment variables are visible to anyone with `lambda:GetFunctionConfiguration` permission, and they appear in the Lambda console in plain text. The secrets section covers secure configuration in detail.
-- **Large configuration objects.** If your config is approaching the 4 KB limit, move it to Parameter Store.
-- **Configuration that changes frequently.** Updating an environment variable requires `update-function-configuration`, which triggers a brief function update. For configuration you want to change without redeploying, Parameter Store lets you update the value and have your function pick it up on the next invocation (with appropriate caching).
+- **مفاتيح API وكلمات مرور قواعد البيانات والرموز.** ينبغي أن تذهب هذه إلى Secrets Manager أو إلى نوع `SecureString` في Parameter Store. متغيرات البيئة مرئية لأي شخص يملك إذن `lambda:GetFunctionConfiguration`، وتظهر في وحدة تحكم Lambda بنص صريح. يغطي قسم الأسرار الإعداد الآمن بالتفصيل.
+- **كائنات الإعداد الكبيرة.** إذا كان إعدادك يقترب من حدّ 4 KB، فانقله إلى Parameter Store.
+- **الإعدادات التي تتغيّر كثيرًا.** يتطلب تحديث متغيّر بيئة تشغيل `update-function-configuration`، وهذا يطلق تحديثًا قصيرًا للدالة. أما الإعدادات التي تريد تغييرها دون إعادة نشر، فيتيح لك Parameter Store تحديث القيمة والتقاطها من دالتك في الاستدعاء التالي (مع التخزين المؤقت المناسب).
 
-## With the SDK
+## باستخدام SDK
 
-The read-modify-write pattern below is cleaner with the SDK because you get proper object merging instead of shell `jq` gymnastics:
+نمط القراءة-التعديل-الكتابة أدناه أنظف مع SDK لأنك تحصل على دمج صحيح للكائنات بدلًا من بهلوانيات `jq` في الصدفة:
 
 ```typescript
 import {
@@ -149,11 +149,11 @@ await lambda.send(
 );
 ```
 
-Same caveat as the CLI: `Environment.Variables` is *replaced*, not merged, by the API. The spread above is doing the merge client-side before the call.
+التحذير نفسه كما في CLI: يُستبدل `Environment.Variables` عبر API ولا يُدمج. النشر (spread) أعلاه يقوم بالدمج على جهة العميل قبل الاستدعاء.
 
-## Updating a Single Variable
+## تحديث متغيّر واحد
 
-Since the `--environment` flag replaces all variables, updating a single variable requires you to re-specify everything. This is annoying but manageable. One approach is to use `get-function-configuration` to read the current variables, modify the JSON, and pass it back:
+بما أن راية `--environment` تستبدل جميع المتغيرات، يتطلب تحديث متغيّر واحد إعادة تحديد كل شيء. هذا مزعج لكنه قابل للإدارة. أحد الأساليب هو استخدام `get-function-configuration` لقراءة المتغيرات الحالية، ثم تعديل JSON، ثم إعادة تمريره:
 
 ```bash
 # Get current environment variables
@@ -164,7 +164,7 @@ aws lambda get-function-configuration \
   --output json
 ```
 
-This returns:
+يعيد هذا:
 
 ```json
 {
@@ -174,7 +174,7 @@ This returns:
 }
 ```
 
-Then update with the modified set:
+ثم حدّث بالمجموعة المعدّلة:
 
 ```bash
 aws lambda update-function-configuration \
@@ -184,13 +184,13 @@ aws lambda update-function-configuration \
   --output json
 ```
 
-> **What happens to warm containers?**
+> **ماذا يحدث للحاويات الدافئة؟**
 >
-> Updating environment variables tells Lambda to swap in a fresh execution environment on the next invocation—the new value is picked up immediately, not gradually. Any warm containers running with the old values are retired in the background. You don’t need to redeploy code to push a config change, and you don’t need to wait for a rollout: the next request gets the new config.
+> إخبار Lambda بتحديث متغيرات البيئة يعني استبدال بيئة تنفيذ جديدة في الاستدعاء التالي—تُلتقط القيمة الجديدة فورًا، لا تدريجيًا. أي حاويات دافئة تعمل بالقيم القديمة تُسحب في الخلفية. لا تحتاج إلى إعادة نشر الكود لدفع تغيير إعداد، ولا تحتاج إلى انتظار طرح تدريجي: الطلب التالي يحصل على الإعداد الجديد.
 
-## Environment Variables and Cold Starts
+## متغيرات البيئة والبدايات الباردة
 
-Environment variables are available during the init phase, which means you can safely read them in top-level module code. This is actually the recommended pattern: read configuration once during init and reuse it across invocations. Don’t read `process.env` inside your handler on every request—it works, but it wastes time doing something that only needs to happen once.
+تكون متغيرات البيئة متاحة أثناء مرحلة التهيئة، ما يعني أنه يمكنك قراءتها بأمان في كود الوحدة النمطية في المستوى الأعلى. هذا هو النمط الموصى به فعليًا: اقرأ الإعدادات مرة واحدة أثناء التهيئة وأعد استخدامها عبر الاستدعاءات. لا تقرأ `process.env` داخل معالجك في كل طلب—فهو يعمل، لكنه يهدر الوقت في شيء يحتاج إلى الحدوث مرة واحدة فقط.
 
 ```typescript
 // Good: read once during init
@@ -209,6 +209,6 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-The performance difference is negligible for a single variable, but the pattern matters: top-level initialization is a Lambda best practice that pays off when you’re initializing database clients, parsing complex config, or loading cached data.
+فرق الأداء ضئيل لمتغيّر واحد، لكن النمط مهم: التهيئة في المستوى الأعلى ممارسة Lambda فضلى تؤتي ثمارها عندما تهيّئ عملاء قواعد البيانات أو تحلل إعدادات معقدة أو تحمّل بيانات مخزّنة مؤقتًا.
 
-Your function is deployed, configured, and invocable. The last topic before you connect it to the internet via API Gateway is one that affects every API you build with Lambda: cold starts. In the next lesson, you’ll learn what causes them, how they affect latency, and what you can do about it.
+دالتك منشورة ومهيّأة وقابلة للاستدعاء. الموضوع الأخير قبل ربطها بالإنترنت عبر API Gateway هو موضوع يؤثر في كل API تبنيه بـ Lambda: البدايات الباردة. في الدرس التالي، ستتعلم ما يسببها، وكيف تؤثر في زمن الاستجابة، وما يمكنك فعله حيالها.

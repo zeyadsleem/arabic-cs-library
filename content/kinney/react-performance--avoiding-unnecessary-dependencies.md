@@ -1,36 +1,36 @@
 ---
-title: "Avoiding Unnecessary Dependencies"
-lang: en
+title: "تجنّب الاعتمادات غير الضرورية"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/avoiding-unnecessary-dependencies"
 ---
 
-Every dependency you add to your React project is a bet—a bet that the value it provides outweighs its cost in bundle size, maintenance overhead, and potential security vulnerabilities. Too often, we reach for popular libraries without considering whether we actually need them or if there’s a lighter alternative. Let’s explore how to audit your dependencies, identify unnecessary bloat, and make informed choices that keep your React applications lean and fast.
+كل اعتماد تضيفه إلى مشروع React هو رهان — رهان على أن القيمة التي يقدّمها تفوق تكلفته من حيث حجم الحزمة، وعبء الصيانة، وثغرات الأمان المحتملة. وكثيرًا ما نلجأ إلى مكتبات شائعة دون أن نفكّر فيما إذا كنا نحتاجها فعلًا أو إذا كان هناك بديل أخف. لنستكشف كيفية تدقيق اعتماداتك، وتحديد التضخّم غير الضروري، واتخاذ خيارات مدروسة تُبقي تطبيقات React خفيفة وسريعة.
 
-## The Hidden Cost of Dependencies
+## التكلفة الخفية للاعتمادات
 
-Before we dive into solutions, let’s talk about what you’re actually paying when you `npm install` something new. It’s not just the kilobytes (though those matter plenty):
+قبل أن نغوص في الحلول، لنتحدّث عمّا تدفعه فعلًا عند تنفيذ `npm install` لشيء جديد. فليست المسألة كيلوبايتات فقط (رغم أن لها أهمية كبيرة):
 
-- **Bundle size**: Every library increases your JavaScript payload, slowing down initial page loads
-- **Parse time**: More code means more time for the JavaScript engine to parse and compile
-- **Maintenance burden**: Dependencies break, get deprecated, or introduce security vulnerabilities
-- **Version conflicts**: Dependencies can conflict with each other or force you into version hell
-- **Tree-shaking limitations**: Not all libraries are optimized for dead code elimination
+- **حجم الحزمة**: كل مكتبة تزيد حمولة JavaScript لديك، فتُبطئ تحميل الصفحة الأولى
+- **زمن التحليل**: شيفرة أكثر تعني وقتًا أطول لمحرّك JavaScript لتحليلها وترجمتها
+- **عبء الصيانة**: الاعتمادات تتعطّل أو تُهمَل أو تُدخل ثغرات أمنية
+- **تعارضات الإصدارات**: قد تتعارض الاعتمادات بعضها مع بعض أو توقعك في جحيم الإصدارات
+- **قيود إزالة الشيفرة الميتة**: ليست كل المكتبات مُحسّنة لإزالة الشيفرة غير المستخدمة (dead code elimination)
 
-Consider this: adding Lodash for just one utility function can add 70KB to your bundle if it’s not tree-shaken properly. That’s a hefty price for convenience.
+تأمّل هذا: إضافة Lodash من أجل دالة أدوات واحدة فقط قد تضيف 70KB إلى حزمتك إذا لم تُحسَّن إزالة الشيفرة غير المستخدمة كما ينبغي. وهذا ثمن باهظ مقابل الراحة.
 
-## Auditing Your Current Dependencies
+## تدقيق اعتماداتك الحالية
 
-Before you can trim the fat, you need to know where it is. Here’s how to audit your dependencies effectively:
+قبل أن تقلّم الزوائد، عليك معرفة موضعها. وإليك كيفية تدقيق اعتماداتك بفعالية:
 
-### Bundle Analysis
+### تحليل الحزمة
 
-Start by analyzing your current bundle with a tool like `webpack-bundle-analyzer`:
+ابدأ بتحليل حزمتك الحالية بأداة مثل `webpack-bundle-analyzer`:
 
 ```bash
 npm install --save-dev webpack-bundle-analyzer
 ```
 
-Add this script to your `package.json`:
+أضف هذا السكربت إلى `package.json`:
 
 ```json
 {
@@ -40,15 +40,15 @@ Add this script to your `package.json`:
 }
 ```
 
-This visual breakdown shows you exactly which libraries are consuming the most space. Look for:
+يُظهر لك هذا التفصيل البصري بدقة أي المكتبات تستهلك أكبر قدر من المساحة. وابحث عن:
 
-- Large libraries used for small features
-- Multiple libraries that do similar things
-- Libraries with poor tree-shaking support
+- مكتبات كبيرة تُستخدم لميزات صغيرة
+- مكتبات متعددة تفعل أشياء متشابهة
+- مكتبات ضعيفة الدعم لإزالة الشيفرة غير المستخدمة
 
-### Dependency Tree Exploration
+### استكشاف شجرة الاعتمادات
 
-Use tools like `npm ls` or `yarn why` to understand your dependency tree:
+استخدم أدوات مثل `npm ls` أو `yarn why` لفهم شجرة اعتماداتك:
 
 ```bash
 # See why a package is installed
@@ -58,15 +58,15 @@ npm ls package-name
 yarn why package-name
 ```
 
-Sometimes you’ll discover that a dependency you thought you removed is still being pulled in by another package.
+أحيانًا تكتشف أن اعتمادًا ظننت أنك أزلته لا يزال تجرّه حزمة أخرى.
 
-## Common Bloat Culprits and Their Alternatives
+## المتّهمون الشائعون بالتضخّم وبدائلهم
 
-Let’s look at some frequent offenders and their leaner alternatives:
+لنستعرض بعض المتّهمين المتكرّرين وبدائلهم الأخف:
 
-### Date Manipulation: Moment.js → Native APIs or date-fns
+### معالجة التواريخ: من Moment.js إلى الواجهات الأصلية أو date-fns
 
-Moment.js was once the go-to date library, but it’s heavy (67KB minified) and no longer maintained. For many use cases, native JavaScript is sufficient:
+كان Moment.js يومًا ما مكتبة التواريخ المفضّلة، لكنه ثقيل (67KB بعد التصغير) ولم يعد يُصان. وفي حالات استخدام كثيرة، تكفي JavaScript الأصلية:
 
 ```typescript
 // ❌ Heavy: Using Moment.js for simple operations
@@ -90,7 +90,7 @@ const isToday = (date: Date) => {
 };
 ```
 
-If you need more complex date operations, consider [date-fns](https://date-fns.org/), which is modular and tree-shakable:
+وإذا احتجت إلى عمليات تاريخ أكثر تعقيدًا، ففكّر في [date-fns](https://date-fns.org/)، فهي معيارية وقابلة لإزالة الشيفرة غير المستخدمة:
 
 ```typescript
 // Only import what you need
@@ -99,9 +99,9 @@ import { format, isToday } from 'date-fns';
 const formatDate = (date: Date) => format(date, 'MM/dd/yyyy');
 ```
 
-### Utility Libraries: Lodash → Native Methods or Targeted Imports
+### مكتبات الأدوات: من Lodash إلى التوابع الأصلية أو الاستيرادات الموجّهة
 
-Lodash is incredibly useful, but importing the entire library for a few utilities is wasteful:
+Lodash مفيدة للغاية، لكن استيراد المكتبة كاملة من أجل بضع أدوات إسراف:
 
 ```typescript
 // ❌ Bad: Importing entire Lodash (70KB)
@@ -133,9 +133,9 @@ const grouped = users.reduce(
 );
 ```
 
-### HTTP Requests: Axios → Fetch API
+### طلبات HTTP: من Axios إلى Fetch API
 
-The Fetch API is now widely supported and handles most HTTP needs:
+أصبح Fetch API مدعومًا على نطاق واسع ويتولّى معظم احتياجات HTTP:
 
 ```typescript
 // ❌ Heavy: Axios for simple requests
@@ -156,7 +156,7 @@ const fetchUser = async (id: string) => {
 };
 ```
 
-For more complex scenarios, you might create a lightweight wrapper:
+وفي سيناريوهات أكثر تعقيدًا، قد تُنشئ غلافًا خفيفًا:
 
 ```typescript
 // Custom fetch wrapper with error handling
@@ -183,9 +183,9 @@ const api = {
 };
 ```
 
-## Maximizing Tree-Shaking
+## تحقيق أقصى استفادة من إزالة الشيفرة الميتة
 
-Tree-shaking eliminates dead code from your bundle, but it only works when libraries are built with ES modules and your imports are specific:
+تُزيل تقنية tree-shaking الشيفرة الميتة من حزمتك، لكنها لا تعمل إلا عندما تُبنى المكتبات بوحدات ES modules وتكون استيراداتك محدّدة:
 
 ```typescript
 // ❌ Bad: Entire library gets bundled
@@ -201,9 +201,9 @@ import debounce from 'lodash/debounce';
 import { useState, useEffect } from 'react';
 ```
 
-### Webpack Configuration for Better Tree-Shaking
+### تهيئة Webpack لتحسين إزالة الشيفرة الميتة
 
-Ensure your webpack configuration supports tree-shaking:
+تأكّد من أن تهيئة webpack لديك تدعم إزالة الشيفرة غير المستخدمة:
 
 ```javascript
 // webpack.config.js
@@ -219,9 +219,9 @@ module.exports = {
 };
 ```
 
-## Building Your Own Utilities
+## بناء أدواتك الخاصة
 
-Sometimes the best dependency is no dependency. For simple utilities, consider rolling your own:
+أحيانًا أفضل اعتماد هو ألّا يكون هناك اعتماد. وللأدوات البسيطة، فكّر في كتابتها بنفسك:
 
 ```typescript
 // Custom debounce function (instead of importing Lodash)
@@ -268,39 +268,39 @@ export function deepClone<T>(obj: T): T {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Before writing custom utilities, check if the native JavaScript API has added support for your use case. The language is evolving rapidly, and many previously library-dependent features now have native support.
+> قبل كتابة أدوات مخصّصة، تحقّق مما إذا كانت JavaScript الأصلية قد أضافت دعمًا لحالتك. فاللغة تتطوّر بسرعة، وكثير من الميزات التي كانت تعتمد على مكتبات أصبحت الآن مدعومة أصليًا.
 
-## Making Informed Decisions
+## اتخاذ قرارات مدروسة
 
-When evaluating whether to add a new dependency, ask yourself:
+عند تقييم ما إذا كنت ستضيف اعتمادًا جديدًا، اسأل نفسك:
 
-### The Value vs. Cost Analysis
+### تحليل القيمة مقابل التكلفة
 
-- **How much value does this library provide?** Does it solve a complex problem or just save a few lines of code?
-- **What’s the bundle cost?** Check the library size on [Bundlephobia](https://bundlephobia.com/)
-- **Is it tree-shakable?** Look for ESM builds and specific import support
-- **How often will you use it?** A 50KB library might be worth it if you use it extensively
-- **What’s the maintenance burden?** Check the library’s update frequency, issue count, and maintainer responsiveness
+- **كم من القيمة تقدّم هذه المكتبة؟** هل تحلّ مشكلة معقّدة أم توفّر بضعة أسطر من الشيفرة فقط؟
+- **ما تكلفة الحزمة؟** تحقّق من حجم المكتبة على [Bundlephobia](https://bundlephobia.com/)
+- **هل هي قابلة لإزالة الشيفرة غير المستخدمة؟** ابحث عن نُسخ ESM ودعم الاستيراد المحدّد
+- **كم مرة ستستخدمها؟** قد تستحقّ مكتبة بحجم 50KB العناء إذا استخدمتها بكثافة
+- **ما عبء الصيانة؟** تحقّق من وتيرة تحديث المكتبة، وعدد المشكلات، واستجابة القائمين عليها
 
-### The Decision Framework
+### إطار القرار
 
-Here’s a simple decision tree:
+إليك شجرة قرار بسيطة:
 
-1. **Can I solve this with native JavaScript?** → Use native
-2. **Is this a complex problem that would take significant time to solve correctly?** → Consider a library
-3. **Will I use multiple features from this library?** → Library might be worth it
-4. **Is the library well-maintained and tree-shakable?** → Good candidate
-5. **Does the value justify the bundle cost?** → Make the call based on your performance budget
+1. **هل أستطيع حلّ هذا بـ JavaScript الأصلية؟** → استخدم الأصلية
+2. **هل هذه مشكلة معقّدة تستغرق وقتًا كبيرًا لحلّها بشكل صحيح؟** → فكّر في مكتبة
+3. **هل سأستخدم ميزات متعددة من هذه المكتبة؟** → قد تستحقّ المكتبة العناء
+4. **هل المكتبة مصانة جيدًا وقابلة لإزالة الشيفرة غير المستخدمة؟** → مرشّح جيد
+5. **هل تبرّر القيمة تكلفة الحزمة؟** → اتخذ القرار بناءً على ميزانية أدائك
 
-## Monitoring and Maintenance
+## المراقبة والصيانة
 
-Dependency hygiene isn’t a one-time task—it requires ongoing attention:
+نظافة الاعتمادات ليست مهمة لمرة واحدة — بل تتطلّب انتباهًا مستمرًا:
 
-### Regular Audits
+### تدقيقات منتظمة
 
-Set up automated checks in your CI pipeline:
+أعدّ فحوصات آلية في خط CI لديك:
 
 ```bash
 # Check for outdated packages
@@ -313,9 +313,9 @@ npm audit
 npm run analyze
 ```
 
-### Bundle Size Budgets
+### ميزانيات حجم الحزمة
 
-Configure webpack to warn when your bundle exceeds size thresholds:
+هيّئ webpack لتحذيرك عندما تتجاوز حزمتك حدود الحجم:
 
 ```javascript
 // webpack.config.js
@@ -328,53 +328,53 @@ module.exports = {
 };
 ```
 
-### Dependency Update Strategy
+### استراتيجية تحديث الاعتمادات
 
-Not all updates are worth taking immediately. Consider:
+ليست كل التحديثات تستحقّ التبنّي فورًا. ضع في اعتبارك:
 
-- **Security patches**: Take immediately
-- **Bug fixes**: Take when convenient
-- **New features**: Evaluate if you need them
-- **Breaking changes**: Carefully assess the migration effort
+- **ترقعات الأمان**: تبنَّها فورًا
+- **إصلاحات الأخطاء**: تبنَّها عند ملاءمة الوقت
+- **الميزات الجديدة**: قيّم ما إذا كنت تحتاجها
+- **التغييرات الجذرية**: قيّم جهد الترحيل بعناية
 
-## Real-World Case Study
+## دراسة حالة واقعية
 
-Let me share a recent example from a project I worked on. We had a React dashboard that was loading slowly, with a JavaScript bundle exceeding 2MB. Here’s what we found and fixed:
+دعني أشاركك مثالًا حديثًا من مشروع عملت عليه. كان لدينا لوحة تحكّم React تُحمَّل ببطء، بحزمة JavaScript تتجاوز 2MB. وهذا ما وجدناه وأصلحناه:
 
-**Before optimization:**
+**قبل التحسين:**
 
-- Bundle size: 2.1MB
-- Initial load time: 4.2s on slow 3G
-- Dependencies: 47 packages
+- حجم الحزمة: 2.1MB
+- زمن التحميل الأولي: 4.2s على شبكة 3G بطيئة
+- الاعتمادات: 47 حزمة
 
-**Issues identified:**
+**المشكلات المُحدَّدة:**
 
-- Importing entire Lodash library for 3 utility functions
-- Using Moment.js for simple date formatting
-- Including Chart.js when we only needed basic charts
-- Importing Material-UI icons individually but inefficiently
+- استيراد مكتبة Lodash كاملة من أجل 3 دوال أدوات
+- استخدام Moment.js لتنسيق تواريخ بسيط
+- تضمين Chart.js مع أننا لم نكن نحتاج إلا رسومًا بيانية أساسية
+- استيراد أيقونات Material-UI فرادى لكن بغير كفاءة
 
-**After optimization:**
+**بعد التحسين:**
 
-- Bundle size: 780KB (63% reduction)
-- Initial load time: 1.8s on slow 3G
-- Dependencies: 31 packages
+- حجم الحزمة: 780KB (خفض بنسبة 63%)
+- زمن التحميل الأولي: 1.8s على شبكة 3G بطيئة
+- الاعتمادات: 31 حزمة
 
-**Changes made:**
+**التغييرات المُجراة:**
 
-- Replaced Lodash with native methods and specific imports
-- Switched from Moment.js to native `Intl.DateTimeFormat`
-- Built custom chart components using SVG and CSS
-- Implemented proper icon tree-shaking
+- استبدال Lodash بتوابع أصلية واستيرادات محدّدة
+- الانتقال من Moment.js إلى `Intl.DateTimeFormat` الأصلية
+- بناء مكوّنات رسوم بيانية مخصّصة باستخدام SVG وCSS
+- تطبيق إزالة مناسبة للشيفرة غير المستخدمة في الأيقونات
 
-The result? A significantly faster application with fewer maintenance headaches and security surface area.
+والنتيجة؟ تطبيق أسرع كثيرًا، بأعباء صيانة أقل ومساحة سطح أمني أصغر.
 
-## Next Steps
+## الخطوات التالية
 
-Dependency management is an ongoing process, not a destination. Start by:
+إدارة الاعتمادات عملية مستمرة، لا وجهة نهائية. ابدأ بـ:
 
-1. **Audit your current bundle** with webpack-bundle-analyzer
-2. **Identify the heaviest dependencies** that provide the least value
-3. **Replace one dependency at a time** to minimize risk
-4. **Set up monitoring** to catch future bundle bloat
-5. **Establish a decision framework** for evaluating new dependencies
+1. **تدقيق حزمتك الحالية** باستخدام webpack-bundle-analyzer
+2. **تحديد أثقل الاعتمادات** التي تقدّم أقل قيمة
+3. **استبدال اعتماد واحد في كل مرة** لتقليل المخاطر
+4. **إعداد المراقبة** لاكتشاف تضخّم الحزمة مستقبلًا
+5. **إنشاء إطار قرار** لتقييم الاعتمادات الجديدة

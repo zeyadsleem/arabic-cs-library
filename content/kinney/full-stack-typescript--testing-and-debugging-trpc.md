@@ -1,12 +1,12 @@
 ---
-title: "Testing and Debugging with tRPC"
-lang: en
+title: "الاختبار وتصحيح الأخطاء في tRPC"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/testing-and-debugging-trpc"
 ---
 
-## Server-Side Unit Tests
+## اختبارات الوحدة على جانب الخادم
 
-tRPC offers a handy `createCaller()` to directly call your procedures without spinning up an Express server. Combine this with a test DB or mocking:
+يوفّر tRPC تابعًا مفيدًا هو `createCaller()` لاستدعاء إجراءاتك مباشرةً دون تشغيل خادم Express. اجمع ذلك مع قاعدة بيانات اختبارية أو مع بديل مُحاكى:
 
 ```typescript
 // server/test/userRouter.test.ts
@@ -29,11 +29,11 @@ test('getUser finds existing user', async () => {
 });
 ```
 
-No messing with HTTP calls, so it’s fast. If you want integration or end-to-end tests, you can spin up your server and query it normally. For big apps, you might also do front-end integration tests using Cypress or Playwright.
+بلا تلاعب باستدعاءات HTTP، لذا فهو سريع. وإن أردت اختبارات تكامل أو اختبارات من طرف إلى طرف، فيمكنك تشغيل خادمك واستعلامه بشكل معتاد. وفي التطبيقات الكبيرة قد تُجري أيضًا اختبارات تكامل للواجهة الأمامية باستخدام Cypress أو Playwright.
 
-## Debugging
+## تصحيح الأخطاء
 
-- **Check logs**: Add an `onError` to the tRPC middleware or use a logging middleware.
-- **React Query DevTools**: If using React, the dev tools can reveal query states, caching, and more.
-- **Console logs**: When in doubt, sprinkle them around (and remove them once you’re done!).
-- **CORS**: Make sure you enable it if your client is served from a different origin.
+- **افحص السجلات**: أضف `onError` إلى وسيط tRPC أو استخدم وسيطًا للتسجيل.
+- **أدوات تطوير React Query**: إذا كنت تستخدم React، فيمكن لأدوات التطوير أن تكشف حالات الاستعلام والتخزين المؤقت وغير ذلك.
+- **سجلات الطرفية**: عند الشك، انثرها هنا وهناك (وأزلها بعد أن تنتهي!).
+- **CORS**: تأكد من تفعيله إذا كانت واجهتك العميلة تُقدَّم من أصل مختلف.

@@ -1,55 +1,55 @@
 ---
-title: "The IAM Mental Model"
-lang: en
+title: "نموذج IAM الذهني"
+lang: ar
 source: "https://stevekinney.com/courses/aws/iam-mental-model"
 ---
 
-Think of IAM like role-based access control, but for infrastructure. If you’ve ever configured permissions in a CMS or set up team roles in GitHub, you already have the intuition. The difference is that IAM controls who can create servers, read files, invoke functions, and rack up charges on your credit card. I mean, the stakes are a *little* higher than “who can merge to main.”
+فكّر في IAM كأنه تحكّم بالوصول قائم على الأدوار، لكن للبنية التحتية. فإن كنت قد أعددت صلاحيات في نظام إدارة محتوى أو ضبطت أدوار فريق في GitHub، فلديك الحدس اللازم بالفعل. الفرق أن IAM يتحكّم في مَن يستطيع إنشاء خوادم وقراءة ملفات واستدعاء دوال وتكديس رسوم على بطاقتك الائتمانية. أعني أن المخاطر *أعلى قليلًا* من «مَن يستطيع الدمج إلى main».
 
-If you want AWS’s canonical version of the same model while you read, the [IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) and the [IAM best practices guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) are worth keeping open.
+وإن أردت النسخة المعتمدة من النموذج نفسه من AWS أثناء القراءة، فمن المفيد إبقاء [دليل مستخدم IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) و[دليل أفضل ممارسات IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html) مفتوحين.
 
-> **Note**
+> **ملاحظة**
 >
-> **IAM (Identity and Access Management)** is AWS’s system for answering two questions on every single API call: *who are you?* and *are you allowed to do that?* Every request to every AWS service—whether it comes from the console, the CLI, or an SDK running in a Lambda function—goes through IAM evaluation. No exceptions.
+> **IAM (إدارة الهوية والوصول)** هو نظام AWS للإجابة عن سؤالين في كل استدعاء API على حدة: *مَن أنت؟* و*هل يُسمح لك بذلك؟* فكل طلب إلى أي خدمة AWS — سواء جاء من لوحة التحكم أو من CLI أو من SDK يعمل داخل دالة Lambda — يمرّ عبر تقييم IAM. بلا استثناءات.
 
-## The Four Building Blocks
+## الكتل الأربع الأساسية
 
-IAM has four concepts you need to internalize. Everything else is built on top of these.
+لدى IAM أربعة مفاهيم تحتاج إلى استيعابها. وكل ما عداها مبني فوقها.
 
-### Users
+### المستخدمون
 
-An **IAM user** represents a single person or application that needs to interact with AWS. Each user gets their own credentials—a password for console access, or access keys for programmatic access. You created one in [Creating and Securing an AWS Account](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) when you set up your `admin` user.
+يمثّل **مستخدم IAM** شخصًا واحدًا أو تطبيقًا واحدًا يحتاج إلى التفاعل مع AWS. ويحصل كل مستخدم على بيانات اعتماده الخاصة — كلمة مرور للوصول إلى لوحة التحكم، أو مفاتيح وصول للوصول البرمجي. وقد أنشأت واحدًا في [إنشاء حساب AWS وتأمينه](https://stevekinney.com/courses/aws/creating-and-securing-an-aws-account) عندما أعددت مستخدم `admin`.
 
-Users exist within your AWS account. They’re not shared across accounts. If you have three developers who need AWS access, you create three IAM users. (Or you use IAM Identity Center for single sign-on, but that’s more complexity than we need right now.)
+المستخدمون موجودون داخل حساب AWS الخاص بك، ولا يُشاركون بين الحسابات. فإن كان لديك ثلاثة مطوّرين يحتاجون إلى الوصول إلى AWS، فأنشئ ثلاثة مستخدمي IAM. (أو استخدم IAM Identity Center لتسجيل الدخول الموحّد، لكن ذلك تعقيد أكثر مما نحتاجه الآن.)
 
 > **IAM Identity Center**
 >
-> In production you *almost* never create IAM users for humans anymore. The modern pattern is **IAM Identity Center** federating from your identity provider (Google, Okta, Entra, GitHub), handing humans short-lived SSO sessions instead of long-lived passwords or access keys. The IAM *concepts* below—policies, roles, allow/deny evaluation—are identical under either model; Identity Center just replaces the “IAM user” entry point. The course sticks with IAM users because they’re the cleanest way to teach this stuff.
+> في الإنتاج، لم تعد *تكاد* تنشئ مستخدمي IAM للبشر إطلاقًا. النمط الحديث هو **IAM Identity Center** الذي يوحّد الهوية من مزوّد الهوية لديك (Google أو Okta أو Entra أو GitHub)، فيمنح البشر جلسات SSO قصيرة الأجل بدلًا من كلمات مرور أو مفاتيح وصول طويلة الأجل. ومفاهيم IAM الواردة أدناه — السياسات والأدوار وتقييم السماح/المنع — متطابقة في النموذجين؛ فـ Identity Center يستبدل نقطة الدخول «مستخدم IAM» فقط. وتلتزم الدورة بمستخدمي IAM لأنهم أنظف طريقة لتعليم هذه الأمور.
 
-### Groups
+### المجموعات {#groups}
 
-An **IAM group** is a collection of users. Groups exist purely for convenience: instead of attaching the same five policies to every developer individually, you create a “developers” group, attach the policies to the group, and add each developer to it.
+**مجموعة IAM** هي مجموعة من المستخدمين. والمجموعات موجودة للراحة فقط: فبدلًا من إرفاق السياسات الخمس نفسها بكل مطوّر على حدة، تنشئ مجموعة «developers»، وتُرفق السياسات بالمجموعة، وتضيف كل مطوّر إليها.
 
-Groups don’t have their own credentials. You can’t sign in as a group. They’re just a container for organizing permission assignments.
+لا تملك المجموعات بيانات اعتماد خاصة بها. ولا يمكنك تسجيل الدخول بوصفك مجموعة. فهي مجرّد حاوية لتنظيم إسنادات الصلاحيات.
 
-A user can belong to multiple groups. If you’re in both the “developers” group and the “deployers” group, you inherit the permissions from both. It works exactly the way you’d expect.
+ويمكن للمستخدم أن ينتمي إلى عدة مجموعات. فإن كنت في مجموعة «developers» ومجموعة «deployers» معًا، فأنت ترث الصلاحيات من كلتيهما. ويعمل هذا بالضبط كما تتوقّع.
 
-### Roles
+### الأدوار
 
-An **IAM role** is like a user, but without permanent credentials. Instead of logging in as a role, you **assume** it temporarily. The role hands back short-lived credentials that expire after a set duration.
+**دور IAM** يشبه المستخدم، لكن بلا بيانات اعتماد دائمة. فبدلًا من تسجيل الدخول بوصفك دورًا، **تتبنّى** الدور مؤقتًا. ويعيد الدور بيانات اعتماد قصيرة الأجل تنتهي بعد مدة محدّدة.
 
-Roles are critical for two scenarios:
+الأدوار حاسمة في سيناريوهين:
 
-- **AWS services that need permissions.** When a Lambda function needs to read from S3 or write to DynamoDB, it assumes a role. The function doesn’t have its own access keys—it borrows permissions from the role every time it runs.
-- **Cross-account access.** A role in Account A can be assumed by a user in Account B. This is how organizations manage access across multiple AWS accounts without sharing credentials.
+- **خدمات AWS التي تحتاج إلى صلاحيات.** عندما تحتاج دالة Lambda إلى القراءة من S3 أو الكتابة إلى DynamoDB، فإنها تتبنّى دورًا. فالدالة لا تملك مفاتيح وصول خاصة بها — بل تستعير الصلاحيات من الدور في كل مرة تعمل فيها.
+- **الوصول بين الحسابات.** يمكن لمستخدم في الحساب B أن يتبنّى دورًا في الحساب A. وهكذا تدير المؤسسات الوصول عبر حسابات AWS متعددة دون مشاركة بيانات الاعتماد.
 
-If users are employee badges, roles are **visitor passes**: they identify what you’re allowed to do, but they expire and you have to get a new one each time.
+إذا كان المستخدمون شارات موظفين، فالأدوار **تصاريح زائر**: تحدّد ما يُسمح لك بفعله، لكنها تنتهي وعليك الحصول على تصريح جديد في كل مرة.
 
-### Policies
+### السياسات
 
-An **IAM policy** is a JSON document that defines what actions are allowed or denied on which resources. Policies are the actual permission rules. Users, groups, and roles don’t inherently have any permissions—they get them from attached policies.
+**سياسة IAM** مستند JSON يحدّد الإجراءات المسموح بها أو الممنوعة على الموارد المعنية. فالسياسات هي قواعد الصلاحيات الفعلية. والمستخدمون والمجموعات والأدوار لا تملك أي صلاحيات أصيلة — بل تحصل عليها من السياسات المُرفقة.
 
-Here’s the simplest possible policy:
+وهذه أبسط سياسة ممكنة:
 
 ```json
 {
@@ -64,25 +64,25 @@ Here’s the simplest possible policy:
 }
 ```
 
-This says: allow the `GetObject` action on every object inside the `my-frontend-app-assets` bucket. We’ll break down every field in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).
+تقول هذه السياسة: اسمح بإجراء `GetObject` على كل كائن داخل حاوية `my-frontend-app-assets`. وسنفكّك كل حقل في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).
 
-There are two kinds of policies:
+هناك نوعان من السياسات:
 
-- **Identity-based policies** attach to users, groups, or roles. They define what that identity can do.
-- **Resource-based policies** attach to a resource (like an S3 bucket). They define who can access that resource.
+- **السياسات القائمة على الهوية** تُرفق بالمستخدمين أو المجموعات أو الأدوار. وهي تحدّد ما يمكن لتلك الهوية فعله.
+- **السياسات القائمة على المورد** تُرفق بمورد (مثل حاوية S3). وهي تحدّد مَن يمكنه الوصول إلى ذلك المورد.
 
-You’ll encounter both types throughout this course. For now, we’re focused on identity-based policies.
+ستصادف النوعين معًا في هذه الدورة. أما الآن، فتركيزنا على السياسات القائمة على الهوية.
 
-## How AWS Evaluates Permissions
+## كيف تقيّم AWS الصلاحيات
 
-Every time you make a request to AWS—clicking a button in the console, running a CLI command, making an SDK call from code—IAM runs an evaluation. The logic is simple but absolute:
+في كل مرة ترسل فيها طلبًا إلى AWS — بالنقر على زر في لوحة التحكم، أو تشغيل أمر CLI، أو إجراء استدعاء SDK من الكود — يجري IAM تقييمًا. والمنطق بسيط لكنه قاطع:
 
-1. **Start with a default deny.** Every request is denied unless something explicitly allows it. A brand-new IAM user with no policies attached can’t do anything.
-2. **Check for explicit denies.** AWS looks at every policy that applies to this request. If any policy has a `"Effect": "Deny"` statement that matches the action and resource, the request is **denied immediately**. No allow can override an explicit deny.
-3. **Check for explicit allows.** If no explicit deny was found, AWS checks for a `"Effect": "Allow"` statement that matches. If one exists, the request is allowed.
-4. **If nothing allows it, deny.** Back to the default: no explicit allow means implicit deny.
+1. **ابدأ بالمنع الافتراضي.** فكل طلب ممنوع ما لم يسمح به شيء صراحةً. ومستخدم IAM جديد تمامًا بلا سياسات مُرفقة لا يستطيع فعل أي شيء.
+2. **افحص حالات المنع الصريحة.** ينظر AWS في كل سياسة تنطبق على هذا الطلب. فإن كان في أي سياسة عبارة `"Effect": "Deny"` تطابق الإجراء والمورد، فالطلب **ممنوع فورًا**. ولا يمكن لأي سماح أن يتجاوز منعًا صريحًا.
+3. **افحص حالات السماح الصريحة.** فإن لم يوجد منع صريح، يبحث AWS عن عبارة `"Effect": "Allow"` مطابقة. فإن وُجدت، يُسمح بالطلب.
+4. **إن لم يسمح به شيء، فارفضه.** عودة إلى الافتراضي: لا سماح صريح يعني منعًا ضمنيًا.
 
-The critical takeaway: **explicit deny always wins**. If one policy says “allow everything on S3” and another says “deny access to this specific bucket,” the deny wins. Always. This is how you create guardrails that can’t be accidentally overridden.
+الخلاصة الحاسمة: **المنع الصريح يفوز دائمًا**. فإذا قالت سياسة «اسمح بكل شيء على S3» وقالت أخرى «امنع الوصول إلى هذه الحاوية تحديدًا»، فالمنع يفوز. دائمًا. وهكذا تنشئ حواجز حماية لا يمكن تجاوزها عن غير قصد.
 
 ```
 Request comes in
@@ -91,28 +91,28 @@ Request comes in
     → Neither? → Request DENIED (implicit deny)
 ```
 
-This flow covers identity-based policies. Resource-based policies (like S3 bucket policies) interact with this evaluation differently — cross-account access in particular requires allows in both the identity-based and the resource-based policy.
+يغطّي هذا التدفق السياسات القائمة على الهوية. أما السياسات القائمة على المورد (مثل سياسات حاوية S3) فتتفاعل مع هذا التقييم بطريقة مختلفة — ولا سيما الوصول بين الحسابات الذي يتطلّب سماحًا في كل من السياسة القائمة على الهوية والسياسة القائمة على المورد.
 
-> **Tip**
+> **نصيحة**
 >
-> A common mistake is thinking that adding an Allow policy fixes access. If there’s an explicit Deny somewhere—maybe on the user’s group, or an organization-wide policy—no amount of Allow will override it. When debugging access issues, always check for Deny statements first.
+> من الأخطاء الشائعة الاعتقاد بأن إضافة سياسة Allow تُصلح الوصول. فإذا وُجد منع صريح في مكان ما — ربما في مجموعة المستخدم أو في سياسة على مستوى المؤسسة — فلن يتجاوزه أي قدر من السماح. وعند تصحيح مشكلات الوصول، افحص عبارات المنع أولًا دائمًا.
 
-## How the Pieces Fit Together
+## كيف تتركّب القطع معًا
 
-In production, CI/CD pipelines use an **OIDC-federated IAM role** rather than a long-lived IAM user with access keys. GitHub Actions, for instance, can request a short-lived credential from AWS by presenting a cryptographically signed identity token — no static secrets stored anywhere. The CI/CD lesson covers this in detail. For now, you’ll build the equivalent using an IAM user and access keys, which is the right starting point for understanding what permissions are actually needed and why.
+في الإنتاج، تستخدم خطوط أنابيب CI/CD **دور IAM موحّدًا عبر OIDC** بدلًا من مستخدم IAM طويل الأجل بمفاتيح وصول. فـ GitHub Actions، على سبيل المثال، يمكنه طلب بيانات اعتماد قصيرة الأجل من AWS بتقديم رمز هوية موقّع تشفيريًا — بلا أي أسرار ثابتة مخزّنة في أي مكان. ويغطّي درس CI/CD هذا بالتفصيل. أما الآن، فستبني المكافئ باستخدام مستخدم IAM ومفاتيح وصول، وهي نقطة البداية الصحيحة لفهم الصلاحيات المطلوبة فعلًا ولماذا.
 
-Here’s what the IAM setup looks like in that learning-path form:
+وهذا شكل إعداد IAM في صورة مسار التعلّم ذاك:
 
-1. **Create an IAM user** called `deploy-bot`. This represents the CI pipeline. No console access needed—just programmatic access keys.
-2. **Write a policy** that allows `s3:PutObject` and `s3:DeleteObject` on your specific bucket, plus `cloudfront:CreateInvalidation` on your specific distribution.
-3. **Create a group** called `deployers` and attach the policy to the group.
-4. **Add the `deploy-bot` user** to that group.
+1. **أنشئ مستخدم IAM** باسم `deploy-bot`. ويمثّل هذا خط أنابيب CI. ولا حاجة إلى وصول إلى لوحة التحكم — فقط مفاتيح وصول برمجية.
+2. **اكتب سياسة** تسمح بـ `s3:PutObject` و`s3:DeleteObject` على حاويتك المحدّدة، إضافة إلى `cloudfront:CreateInvalidation` على توزيعك المحدّد.
+3. **أنشئ مجموعة** باسم `deployers` وأرفق السياسة بالمجموعة.
+4. **أضف المستخدم `deploy-bot`** إلى تلك المجموعة.
 
-Now the deploy bot can push files and invalidate caches—and nothing else. It can’t read your DynamoDB tables. It can’t create new users. It can’t change billing settings. The policy constrains it to exactly what it needs.
+الآن يستطيع روبوت النشر رفع الملفات وإبطال ذاكرات التخزين المؤقت — ولا شيء غير ذلك. فلا يمكنه قراءة جداول DynamoDB لديك. ولا إنشاء مستخدمين جدد. ولا تغيير إعدادات الفوترة. فالسياسة تقيّده بما يحتاجه بالضبط.
 
-If you used roles instead (which is the more modern approach), you’d create a role with the same policy and configure GitHub Actions to assume that role using OpenID Connect. No long-lived access keys required.
+ولو استخدمت الأدوار بدلًا من ذلك (وهو النهج الأحدث)، لأنشأت دورًا بالسياسة نفسها وأعددت GitHub Actions ليتبنّى ذلك الدور باستخدام OpenID Connect. بلا حاجة إلى مفاتيح وصول طويلة الأجل.
 
-## The IAM Hierarchy, Visualized
+## هرم IAM بصريًا
 
 ```
 AWS Account
@@ -135,25 +135,25 @@ AWS Account
     └── DeployPolicy (customer managed)
 ```
 
-**AWS managed policies** are policies that AWS maintains for common use cases. They have names like `AdministratorAccess`, `AmazonS3ReadOnlyAccess`, and `AWSLambdaBasicExecutionRole`. They’re convenient for getting started, but they’re often broader than you want in production.
+**السياسات المُدارة من AWS** سياسات تصونها AWS لحالات استخدام شائعة. وأسماؤها مثل `AdministratorAccess` و`AmazonS3ReadOnlyAccess` و`AWSLambdaBasicExecutionRole`. وهي مريحة للبدء، لكنها غالبًا أوسع مما تريده في الإنتاج.
 
-**Customer managed policies** are policies you write and maintain yourself. They let you be precise about exactly which actions on exactly which resources a user or role needs.
+**السياسات المُدارة من العميل** سياسات تكتبها وتصونها بنفسك. وهي تتيح لك الدقة في تحديد الإجراءات والموارد التي يحتاجها مستخدم أو دور بالضبط.
 
-> **Warning**
+> **تحذير**
 >
-> Avoid using the `AdministratorAccess` managed policy for anything other than your own admin user. Attaching it to a Lambda role or a CI/CD bot means any bug or compromise gives an attacker full control of your AWS account. We cover this in [Principle of Least Privilege](https://stevekinney.com/courses/aws/principle-of-least-privilege).
+> تجنّب استخدام السياسة المُدارة `AdministratorAccess` في أي شيء عدا مستخدم المسؤول الخاص بك. فإرفاقها بدور Lambda أو بروبوت CI/CD يعني أن أي خطأ برمجي أو اختراق يمنح المهاجم تحكّمًا كاملًا في حساب AWS لديك. ونغطّي هذا في [مبدأ الامتياز الأقل](https://stevekinney.com/courses/aws/principle-of-least-privilege).
 
-## A Quick Analogy for Frontend Engineers
+## تشبيه سريع لمهندسي الواجهة الأمامية
 
-If you’ve worked with RBAC in a frontend app, the mapping is straightforward:
+إن كنت قد عملت مع RBAC في تطبيق واجهة أمامية، فالربط مباشر:
 
-| Frontend RBAC | AWS IAM |
+| RBAC في الواجهة الأمامية | AWS IAM |
 | --- | --- |
-| User account | IAM user |
-| Role (admin, editor, viewer) | IAM group or role |
-| Permission (can_edit_posts) | IAM policy statement |
-| Check at request time | IAM evaluation on every API call |
+| حساب مستخدم | مستخدم IAM |
+| دور (مسؤول، محرّر، مشاهد) | مجموعة IAM أو دور IAM |
+| صلاحية (can_edit_posts) | عبارة سياسة IAM |
+| فحص وقت الطلب | تقييم IAM في كل استدعاء API |
 
-The main difference: in a frontend application, a misconfigured permission might let someone edit a blog post they shouldn’t. In AWS, a misconfigured permission can let someone spin up expensive compute resources, exfiltrate data from a database, or delete your entire deployment. The evaluation model is the same—the blast radius is different. Very bad stuff.
+الفرق الأساسي: في تطبيق واجهة أمامية، قد تسمح صلاحية سيئة الإعداد لشخص بتحرير تدوينة لا ينبغي له تحريرها. أما في AWS، فبإمكان صلاحية سيئة الإعداد أن تسمح لشخص بتشغيل موارد حوسبة مكلفة، أو تسريب بيانات من قاعدة بيانات، أو حذف نشرك بالكامل. نموذج التقييم نفسه — لكن نطاق الأثر مختلف. أمور سيئة جدًا.
 
-Now that you have the mental model, let’s write an actual policy from scratch in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).
+والآن بعد أن صار لديك النموذج الذهني، لنكتب سياسة فعلية من الصفر في [كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy).

@@ -1,158 +1,158 @@
 ---
-title: "The Whole Loop, End to End"
-lang: en
+title: "الحلقة كاملة، من طرف إلى طرف"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/capstone-the-whole-loop-end-to-end"
 ---
 
-We’ve built a lot today. The capstone is where we take it out for a drive.
+لقد بنينا الكثير اليوم. والدرس الختامي هو حيث نأخذه في جولة.
 
-The goal is simple: give the agent a feature to build, step away from the keyboard, and see how many of the loops you built fire on their own. You are not allowed to paste error messages. You are not allowed to explain bugs. You are allowed to sit there, drink coffee, and read git log afterward. If the loops work, the agent finishes the task, opens a PR, recovers from its own mistakes, and lands it in CI without your help.
+الهدف بسيط: أعطِ الوكيل ميزة يبنيها، وابتعد عن لوحة المفاتيح، وراقب كم حلقة من الحلقات التي بنيتها تشتعل من تلقاء نفسها. لا يُسمح لك بلصق رسائل الأخطاء. ولا يُسمح لك بشرح الأخطاء. يُسمح لك بالجلوس هناك، وشرب القهوة، وقراءة `git log` بعد ذلك. فإذا عملت الحلقات، أنهى الوكيل المهمة، وفتح pull request، وتعافى من أخطائه، وأدخلها إلى CI دون مساعدتك.
 
-Take notes on what fires. Take notes on what doesn’t. The notes are the workshop.
+دوّن ملاحظات عمّا يشتعل. ودوّن ملاحظات عمّا لا يشتعل. فالملاحظات هي الورشة.
 
-> **Note**
+> **ملاحظة**
 >
-> The core loop now includes accessibility checks, performance budgets, and post-deploy smoke validation. If your Shelf clone is still local-only, mark the hosted post-deploy items as `N/A` instead of pretending they ran. The appendix-only topics—cross-browser expansion, nightly drift checks, and review portability—are follow-ons, not required capstone outcomes.
+> تضمّ الحلقة الأساسية الآن فحوص إتاحة، وميزانيات أداء، وتحققًا دخانيًا بعد النشر. وإذا كانت نسخة Shelf لديك ما زالت محلية فقط، فضع العلامة `N/A` على بنود ما بعد النشر المستضافة بدلًا من التظاهر بأنها جرت. أما الموضوعات المخصّصة للملحق — التوسّع عبر المتصفحات، وفحوص الانحراف الليلية، وقابلية نقل المراجعة — فهي متابعات، لا نتائج مطلوبة للدرس الختامي.
 
-## The task
+## المهمة
 
-Build a new feature on Shelf: **reading goals.**
+ابنِ ميزة جديدة في Shelf: **أهداف القراءة.**
 
-- A user can set an annual reading goal (number of books per year) from a new `/goals` page.
-- The shelf page shows progress toward the goal: “You’ve read 12 of 30 books this year.”
-- If the goal is met, the progress bar turns green and a “You did it!” badge appears.
-- There’s an admin view at `/admin/goals` that shows aggregate stats across all users.
+- يستطيع المستخدم ضبط هدف قراءة سنوي (عدد الكتب في السنة) من صفحة `/goals` جديدة.
+- تعرض صفحة الرف التقدّم نحو الهدف: «لقد قرأت 12 من 30 كتابًا هذا العام.»
+- وإذا تحقق الهدف، يتحوّل شريط التقدّم إلى الأخضر وتظهر شارة «لقد فعلتها!».
+- وثمّة عرض إداري في `/admin/goals` يعرض إحصاءات مجمّعة عبر كل المستخدمين.
 
-That’s the user story. Concrete enough to build, vague enough to require real decisions.
+هذه هي قصة المستخدم. محددة بما يكفي للبناء، وغامضة بما يكفي لتستلزم قرارات حقيقية.
 
-## The finished shape
+## الشكل النهائي
 
-These are the three capstone surfaces the final Shelf repo should expose when the feature lands:
+هذه هي أسطح الدرس الختامي الثلاثة التي ينبغي أن يعرضها مستودع Shelf النهائي حين تُنزل الميزة:
 
-The shelf page after the reading-goals capstone, including the current-year progress bar and completed badge
+صفحة الرف بعد درس أهداف القراءة الختامي، بما فيها شريط تقدّم العام الحالي وشارة الإنجاز
 
-The dedicated goals page used to set the annual target and confirm the current-year progress
+صفحة الأهداف المخصصة المستخدمة لضبط الهدف السنوي وتأكيد تقدّم العام الحالي
 
-The administrator goals dashboard showing aggregate current-year progress across readers
+لوحة أهداف المسؤول الإداري التي تعرض تقدّم العام الحالي المجمّع عبر القرّاء
 
-## The prompt
+## الطلب
 
-First, save the user story so the agent can read it. Create `CAPSTONE.md` at the **root of the Shelf repo** (alongside the repo’s agent instructions and `package.json`) with the four bullet points from “The task” section above as its body. No frontmatter, no preamble—just the bullets under a single `# Reading Goals` heading. The agent will read this file by name in the next step.
+أولًا، احفظ قصة المستخدم كي يستطيع الوكيل قراءتها. أنشئ `CAPSTONE.md` في **جذر مستودع Shelf** (إلى جانب تعليمات الوكيل الخاصة بالمستودع و`package.json`) واجعل جسمه النقاط الأربع من قسم «المهمة» أعلاه. بلا frontmatter، وبلا مقدمة — فقط النقاط تحت عنوان واحد `# Reading Goals`. سيقرأ الوكيل هذا الملف بالاسم في الخطوة التالية.
 
-If your Shelf repository has a Git remote and a real hosted CI pipeline, open Claude Code in the Shelf repo and paste *exactly* this prompt:
+إذا كان مستودع Shelf لديك يملك remote على Git وخط أنابيب CI مستضافًا حقيقيًا، فافتح Claude Code في مستودع Shelf وألصق هذا الطلب *حرفيًا*:
 
-> Implement the reading goals feature as described in `CAPSTONE.md`. Follow every project agent rule. Keep all user-facing copy product-facing: do not mention Playwright, MCPs, seeded data, route filenames, or workshop notes in the UI. When you believe the task is complete, open a pull request and wait for CI to either pass or fail. If CI fails, read the failure dossier, diagnose the issue, fix it, and push a new commit. Repeat until CI is green. Do not ask me for clarification on anything—use the existing Shelf code as ground truth for patterns.
+> نفّذ ميزة أهداف القراءة كما هي موصوفة في `CAPSTONE.md`. اتبع كل قاعدة من قواعد الوكيل في المشروع. أبقِ كل نص موجّه للمستخدم موجّهًا للمنتج: لا تذكر Playwright، ولا MCPs، ولا بيانات مزروعة، ولا أسماء ملفات مسارات، ولا ملاحظات الورشة في الواجهة. وحين تعتقد أن المهمة مكتملة، افتح pull request وانتظر حتى ينجح CI أو يفشل. وإذا فشل CI، فاقرأ ملف الفشل التشخيصي، وشخّص المشكلة، وأصلحها، وادفع التزامًا جديدًا. وكرّر حتى يصبح CI أخضر. لا تسألني عن توضيح في أي شيء — استخدم شيفرة Shelf القائمة كحقيقة أرضية للأنماط.
 
-If your Shelf repository is still local-only and does **not** have a Git remote yet, paste this version instead:
+إذا كان مستودع Shelf لديك ما زال محليًا فقط و**لا** يملك remote على Git بعد، فألصق هذه النسخة بدلًا منها:
 
-> Implement the reading goals feature as described in `CAPSTONE.md`. Follow every project agent rule. Keep all user-facing copy product-facing: do not mention Playwright, MCPs, seeded data, route filenames, or workshop notes in the UI. When you believe the task is complete, run `npm run lint`, `npm run typecheck`, and `npm run test`. If any check fails, use the failure dossier and local artifacts to diagnose the issue, fix it, and rerun the commands until they pass. Record any hosted pull-request, CI, or review-bot gaps in `ROADMAP.md`. Do not ask me for clarification on anything—use the existing Shelf code as ground truth for patterns.
+> نفّذ ميزة أهداف القراءة كما هي موصوفة في `CAPSTONE.md`. اتبع كل قاعدة من قواعد الوكيل في المشروع. أبقِ كل نص موجّه للمستخدم موجّهًا للمنتج: لا تذكر Playwright، ولا MCPs، ولا بيانات مزروعة، ولا أسماء ملفات مسارات، ولا ملاحظات الورشة في الواجهة. وحين تعتقد أن المهمة مكتملة، شغّل `npm run lint` و`npm run typecheck` و`npm run test`. وإذا فشل أي فحص، فاستخدم ملف الفشل التشخيصي والأثر المحلي لتشخيص المشكلة، وأصلحها، وأعد تشغيل الأوامر حتى تنجح. وسجّل أي ثغرات في pull request المستضاف أو CI أو روبوت المراجعة في `ROADMAP.md`. لا تسألني عن توضيح في أي شيء — استخدم شيفرة Shelf القائمة كحقيقة أرضية للأنماط.
 
-The agent now has everything it needs:
+صار لدى الوكيل الآن كل ما يحتاجه:
 
-- The task description (in `CAPSTONE.md`, which you just created).
-- The rules (the project agent rules you’ve been building all day).
-- The code (the hardened Shelf starter).
-- The verification loops (Playwright, visual regression, custom MCPs, static checks, CI).
-- The feedback mechanism (dossiers, Bugbot, CI artifacts).
+- وصف المهمة (في `CAPSTONE.md`، الذي أنشأته للتو).
+- القواعد (قواعد الوكيل في المشروع التي كنت تبنيها طوال اليوم).
+- الشيفرة (نسخة Shelf الانطلاقية المحصّنة).
+- حلقات التحقق (Playwright، والانحدار البصري، وMCPs المخصصة، والفحوص الساكنة، وCI).
+- آلية التغذية الراجعة (ملفات التشخيص، وBugbot، وأثر CI).
 
-Your job from this point is to *not intervene*.
+ومهمتك من هذه اللحظة هي أن *لا تتدخل*.
 
-> **Note**
+> **ملاحظة**
 >
-> If your copy of Shelf is still missing a Git remote, do not pretend the hosted pull-request or CI steps happened. Finish the local loop, note the hosted gap in `ROADMAP.md`, and continue later once the repository is connected.
+> إذا كانت نسخة Shelf لديك ما زالت تفتقد remote على Git، فلا تتظاهر بأن خطوات pull request المستضافة أو CI قد حدثت. أكمل الحلقة المحلية، وسجّل الثغرة المستضافة في `ROADMAP.md`، وتابع لاحقًا حين يتصل المستودع.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-- If route-level changes do not appear in Playwright after a large refactor, check whether a stale preview server is still listening on port `4173`. Shelf’s `webServer` block does not explicitly opt out of reuse, so a running preview can get picked up by Playwright for repeat runs and accidentally serve an older build until you stop that process.
-- If Playwright MCP fails with `ENOENT: no such file or directory, mkdir '/.playwright-mcp'`, that is an environment limitation, not a Shelf bug. Capture the screenshots with local Playwright instead and record the MCP limitation honestly in `ROADMAP.md` or the lesson notes.
-- If the goals routes are present on disk but your browser still shows the old home page or a 404 for `/goals`, kill the preview process and rerun the tests against a fresh build before changing application code.
+- إذا لم تظهر تغييرات مستوى المسار في Playwright بعد إعادة هيكلة كبيرة، فتحقّق مما إذا كان خادم معاينة قديم ما زال يصغي على المنفذ `4173`. فكتلة `webServer` في Shelf لا تختار صراحةً عدم إعادة الاستخدام، لذا قد يلتقط Playwright خادم معاينة قيد التشغيل في التشغيلات المتكررة ويقدّم بناءً أقدم بالخطأ حتى توقف تلك العملية.
+- إذا فشلت Playwright MCP بالخطأ `ENOENT: no such file or directory, mkdir '/.playwright-mcp'`، فهذا قيد بيئي، لا خلل في Shelf. التقط لقطات الشاشة بـ Playwright المحلية بدلًا من ذلك، وسجّل قيد الـ MCP بأمانة في `ROADMAP.md` أو ملاحظات الدرس.
+- إذا كانت مسارات الأهداف موجودة على القرص لكن متصفحك ما زال يعرض الصفحة الرئيسية القديمة أو 404 لـ `/goals`، فاقتل عملية المعاينة وأعد تشغيل الاختبارات مقابل بناء جديد قبل تغيير شيفرة التطبيق.
 
-## Observation checklist
+## قائمة الملاحظة
 
-Sit with a notebook or a text file open. As the agent works, note each time one of these happens:
+اجلس ودفتر أو ملف نصي مفتوح أمامك. وبينما يعمل الوكيل، دوّن في كل مرة يحدث فيها أحد هذه الأمور:
 
-- The agent reads the project agent rules before writing code.
-- The agent writes a failing test before writing the implementation (TDD default).
-- The agent uses `getByRole` locators in new Playwright tests (no raw CSS, no `waitForTimeout`).
-- The resulting UI reads like a book-tracking product rather than a workshop handout.
-- The agent runs `npm run lint` after edits, either via hooks or explicitly.
-- The agent runs `npm run typecheck` after edits.
-- The agent runs `npm run test:unit` for the new unit tests.
-- The agent runs `npm run test` for the new end-to-end tests.
-- The agent calls a custom MCP tool (e.g., `verify_shelf_page`) at least once.
-- The agent notices a screenshot diff on the shelf or goals page and either updates the baseline or reverts the change.
-- The agent runs or reads the automated accessibility check for the new UI instead of assuming semantic locators were enough. *(If you skipped the accessibility lab, mark this item N/A.)*
-- The agent treats any new accessibility violation as blocking, or documents a narrowly-scoped suppression with a reason.
-- The agent runs the performance budget check after the UI change and notices if the route or interaction got slower or heavier. *(If you skipped the performance-budget lab, mark this item N/A.)*
-- The agent catches its own mistake via lint (seeing a red squiggle and fixing it before committing).
-- The agent catches its own mistake via typecheck.
-- The agent catches its own mistake via a failing Playwright test.
-- The agent catches its own mistake via a runtime probe.
-- If the repository has a Git remote, the agent opens a pull request without prompting.
-- If CI is available, it fires and runs all jobs.
-- If CI fails, the agent downloads or recreates the dossier artifact without prompting.
-- If CI fails, the agent fixes the issue and pushes a new commit.
-- If Bugbot (or your review bot of choice) is available, it leaves a comment on the pull request.
-- If Bugbot leaves a comment, the agent addresses it.
-- If CI is available, the final run is green.
-- If the repository has a Git remote, the final pull request is mergeable.
-- If a deploy preview or staging target exists, the post-deploy smoke check runs against it after the branch is otherwise ready.
-- If the post-deploy smoke check fails, the agent reports a stop-ship or rollback recommendation instead of waving the deploy through.
-- You did not paste any error messages, diagnose any bugs, or explain anything during the conversation.
+- يقرأ الوكيل قواعد الوكيل في المشروع قبل كتابة الشيفرة.
+- يكتب الوكيل اختبارًا فاشلًا قبل كتابة التنفيذ (الأصل في TDD).
+- يستخدم الوكيل محددات `getByRole` في اختبارات Playwright الجديدة (لا CSS خام، ولا `waitForTimeout`).
+- تبدو الواجهة الناتجة كمنتج لتتبّع الكتب لا كنشرة ورشة.
+- يشغّل الوكيل `npm run lint` بعد التعديلات، إما عبر الخطّافات أو صراحةً.
+- يشغّل الوكيل `npm run typecheck` بعد التعديلات.
+- يشغّل الوكيل `npm run test:unit` لاختبارات الوحدة الجديدة.
+- يشغّل الوكيل `npm run test` لاختبارات النهاية إلى النهاية الجديدة.
+- ينادي الوكيل أداة MCP مخصصة (مثل `verify_shelf_page`) مرة واحدة على الأقل.
+- يلاحظ الوكيل فرقًا في لقطة الشاشة على صفحة الرف أو الأهداف، فيحدّث الأساس أو يتراجع عن التغيير.
+- يشغّل الوكيل فحص الإتاحة الآلي للواجهة الجديدة أو يقرأه، بدلًا من افتراض أن المحددات الدلالية كانت كافية. *(إذا تخطيت مختبر الإتاحة، فضع `N/A` على هذا البند.)*
+- يعامل الوكيل أي انتهاك إتاحة جديد بوصفه مانعًا، أو يوثّق تعطيلًا ضيق النطاق مع سبب.
+- يشغّل الوكيل فحص ميزانية الأداء بعد تغيير الواجهة ويلاحظ إن أصبح المسار أو التفاعل أبطأ أو أثقل. *(إذا تخطيت مختبر ميزانية الأداء، فضع `N/A` على هذا البند.)*
+- يلتقط الوكيل خطأه بنفسه عبر lint (يرى خطًا أحمر متعرّجًا فيصلحه قبل الإيداع).
+- يلتقط الوكيل خطأه بنفسه عبر typecheck.
+- يلتقط الوكيل خطأه بنفسه عبر اختبار Playwright فاشل.
+- يلتقط الوكيل خطأه بنفسه عبر مسبار وقت تشغيل.
+- إذا كان للمستودع remote على Git، يفتح الوكيل pull request دون تنبيه منك.
+- إذا كان CI متاحًا، فإنه يشتعل ويشغّل كل المهام.
+- إذا فشل CI، ينزّل الوكيل أثر ملف التشخيص أو يعيد إنشاءه دون تنبيه منك.
+- إذا فشل CI، يصلح الوكيل المشكلة ويدفع التزامًا جديدًا.
+- إذا كان Bugbot (أو روبوت المراجعة الذي تختاره) متاحًا، يترك تعليقًا على pull request.
+- إذا ترك Bugbot تعليقًا، عالجه الوكيل.
+- إذا كان CI متاحًا، فالتشغيل الأخير أخضر.
+- إذا كان للمستودع remote على Git، فـ pull request النهائي قابل للدمج.
+- إذا وُجد هدف معاينة نشر أو بيئة staging، يجري فحص الدخان بعد النشر عليها بعد أن يكون الفرع جاهزًا من كل وجه آخر.
+- إذا فشل فحص الدخان بعد النشر، قدّم الوكيل توصية بإيقاف الشحن أو بالتراجع بدلًا من تمرير النشر.
+- لم تلصق أي رسالة خطأ، ولم تشخّص أي خطأ، ولم تشرح أي شيء خلال المحادثة.
 
-The last checkbox is the one that matters. Everything else is diagnostic: if the agent finished the task but you had to paste three error messages along the way, the loop is incomplete. Which three loops failed to catch those errors? Those are your tuning targets.
+مربع الاختيار الأخير هو المهم. فكل ما سواه تشخيصي: إذا أنهى الوكيل المهمة لكن كان عليك لصق ثلاث رسائل خطأ في الطريق، فالحلقة ناقصة. أي ثلاث حلقات فشلت في التقاط تلك الأخطاء؟ تلك هي أهداف الضبط.
 
-## When the agent gets stuck
+## حين يتعثّر الوكيل
 
-It will, at some point. That’s expected. When it does, resist the urge to unstick it. Instead:
+سيتعثّر في مرحلة ما. وهذا متوقع. وحين يحدث، قاوم الرغبة في تحريره. بدلًا من ذلك:
 
-1. **Note what it got stuck on.** Write down the specific failure mode. “Agent looped on the same lint error for four iterations without figuring it out.” “Agent didn’t know to look at the dossier after CI failed.” “Agent kept trying to mock the Open Library API instead of using the HAR.”
-2. **Wait thirty more seconds.** Sometimes it recovers on its own.
-3. **If it’s still stuck, intervene minimally.** A single short message is allowed, but only to unblock—not to solve. “Have you read the dossier artifact from the failed CI run?” is acceptable. “The bug is in the `calculateProgress` function, change line 47” is not.
-4. **Record the intervention.** Every intervention is data. It means one of your loops isn’t tight enough, and the tuning is a thing you do after the capstone, not during it.
+1. **دوّن ما تعثّر عليه.** اكتب نمط الفشل المحدد. «كرّر الوكيل الخطأ نفسه في lint أربع مرات دون أن يكتشفه.» «لم يعرف الوكيل أنه يجب أن ينظر إلى ملف التشخيص بعد فشل CI.» «ظلّ الوكيل يحاول محاكاة واجهة Open Library بدلًا من استخدام الـ HAR.»
+2. **انتظر ثلاثين ثانية أخرى.** أحيانًا يتعافى من تلقاء نفسه.
+3. **إذا كان ما زال متعثرًا، فتدخّل بأقل قدر.** رسالة واحدة قصيرة مسموحة، لكن لفكّ العقدة فقط — لا للحل. «هل قرأت أثر ملف التشخيص من تشغيل CI الفاشل؟» مقبول. «الخطأ في دالة `calculateProgress`، غيّر السطر 47» غير مقبول.
+4. **سجّل التدخّل.** فكل تدخّل بيانات. وهو يعني أن إحدى حلقاتك ليست محكمة بما يكفي، وأن الضبط شيء تفعله بعد الدرس الختامي، لا خلاله.
 
-## After the agent is done
+## بعد أن ينتهي الوكيل
 
-When the agent reports the task is complete (or when you’ve given up on a particular intervention point), stop and take stock.
+حين يبلّغ الوكيل بأن المهمة مكتملة (أو حين تستسلم عند نقطة تدخّل معينة)، توقّف وخُذ حصرًا لما جرى.
 
-### Grading
+### التقييم
 
-Score each category out of the possible checkmarks above. Calculate a percentage. You are not trying to get 100%—you are trying to see *which* loops are tight and which aren’t. A 70% capstone is a great capstone because it means you have three or four specific things to tune.
+قيّم كل فئة من علامات الاختيار الممكنة أعلاه. احسب نسبة مئوية. أنت لا تحاول الوصول إلى 100% — بل تحاول أن ترى *أي* الحلقات محكمة وأيها ليس كذلك. فدرس ختامي بنسبة 70% درس عظيم، لأنه يعني أن لديك ثلاثة أو أربعة أشياء محددة تحتاج إلى ضبط.
 
-If some of the hosted-only checks were not applicable because the repository had no Git remote, mark them `N/A` instead of `failed`. The point is to grade the loop you actually had, not the one you wish you had.
+وإذا كانت بعض الفحوص المستضافة فقط غير منطبقة لأن المستودع لم يكن له remote على Git، فضع عليها `N/A` بدلًا من `failed`. فالفكرة أن تقيّم الحلقة التي كانت لديك فعلًا، لا الحلقة التي تتمنى لو كانت لديك.
 
-### The retrospective
+### الاستعراض الاستعادي
 
-Answer these questions in a markdown file, `CAPSTONE-retrospective.md`:
+أجب عن هذه الأسئلة في ملف markdown اسمه `CAPSTONE-retrospective.md`:
 
-1. Which loops fired on their own, catching mistakes without my help?
-2. Which loops failed to fire, allowing mistakes to propagate?
-3. Which interventions did I make, and what was the minimal fix that would have prevented me from needing to intervene?
-4. If I were running this workshop tomorrow with a new agent, what would I change in the agent rules based on what I saw today?
-5. What was the *biggest* mistake the agent made that none of the loops caught? Why did they miss it? What loop would catch it next time?
-6. Which of the new core loops—accessibility, performance, or post-deploy validation—saved me the most time, and which still felt too weak to trust?
+1. أي الحلقات اشتعلت من تلقاء نفسها، فالتقطت الأخطاء دون مساعدتي؟
+2. أي الحلقات فشلت في الاشتغال، فسمحت للأخطاء بالانتشار؟
+3. أي تدخّلات قمت بها، وما الإصلاح الأدنى الذي كان سيمنعني من الحاجة إلى التدخل؟
+4. لو كنت أشغّل هذه الورشة غدًا بوكيل جديد، فماذا كنت سأغيّر في قواعد الوكيل بناءً على ما رأيته اليوم؟
+5. ما *أكبر* خطأ ارتكبه الوكيل ولم تلتقطه أي من الحلقات؟ ولماذا فاتتها؟ وأي حلقة كانت ستلتقطه في المرة القادمة؟
+6. أي الحلقات الأساسية الجديدة — الإتاحة، أو الأداء، أو التحقق بعد النشر — وفّرت عليّ أكبر وقت، وأيها ما زال يبدو ضعيفًا أكثر من أن أثق به؟
 
-These questions are the real deliverable of this workshop. The hardened Shelf repo is a nice artifact. The tuned agent rules are a nicer artifact. The retrospective—a list of specific, observed gaps in your agent feedback loop that you can go fix on Monday—is the thing you actually came here for.
+هذه الأسئلة هي التسليم الحقيقي لهذه الورشة. فمستودع Shelf المحصّن أثر جميل. وقواعد الوكيل المضبوطة أثر أجمل. أما الاستعراض الاستعادي — قائمة ثغرات محددة ومرصودة في حلقة التغذية الراجعة لوكيلك يمكنك الذهاب لإصلاحها يوم الاثنين — فهو الشيء الذي جئت من أجله فعلًا.
 
-## Take-home: tuning
+## للعمل المنزلي: الضبط
 
-You don’t have to fix all the gaps during the workshop. The retrospective is the punch list for the next iteration. For each gap:
+لا يلزمك إصلاح كل الثغرات خلال الورشة. فالاستعراض الاستعادي قائمة مهام للدورة القادمة. ولكل ثغرة:
 
-- Add a rule to the agent instructions if the agent needed a clearer operating constraint.
-- Add a lint rule, custom MCP, or pre-commit check if the gap should be caught mechanically before the agent gets far enough to make a mess.
-- Add a test, dossier field, or CI step if the failure belongs in a later or stricter loop.
+- أضف قاعدة إلى تعليمات الوكيل إذا كان الوكيل بحاجة إلى قيد تشغيلي أوضح.
+- أضف قاعدة lint، أو MCP مخصصة، أو فحصًا قبل الإيداع إذا كان ينبغي التقاط الثغرة آليًا قبل أن يصل الوكيل إلى حد إحداث فوضى.
+- أضف اختبارًا، أو حقلًا في ملف التشخيص، أو خطوة CI إذا كان الفشل ينتمي إلى حلقة لاحقة أو أكثر صرامة.
 
-Most gaps are short-term fixable. Most fixes are one or two lines. The loop gets tighter every week you tune it, and the agent gets more autonomous as a direct consequence.
+معظم الثغرات قابلة للإصلاح على المدى القصير. ومعظم الإصلاحات سطر أو سطران. وتزداد الحلقة إحكامًا كل أسبوع تضبطها فيه، ويصبح الوكيل أكثر استقلالية نتيجة مباشرة لذلك.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The workshop was never about Playwright. It wasn’t even about any of the individual tools. It was about *whether you can step away from the keyboard and trust the feedback loop to do its job*. The capstone is the only honest test of that. Every gap you find is a thing to fix. Every loop that fires is a small piece of your life that used to require your attention and now doesn’t.
+لم تكن الورشة يومًا عن Playwright. ولم تكن حتى عن أي من الأدوات الفردية. كانت عن *ما إذا كنت تستطيع الابتعاد عن لوحة المفاتيح والثقة بأن حلقة التغذية الراجعة ستؤدي عملها*. والدرس الختامي هو الاختبار الصادق الوحيد لذلك. فكل ثغرة تجدها شيء يجب إصلاحه. وكل حلقة تشتعل قطعة صغيرة من حياتك كانت تتطلب انتباهك ولم تعد كذلك.
 
-Go build the loop. Then go use it.
+اذهب وابنِ الحلقة. ثم اذهب واستخدمها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [The Hypothesis](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis)—the bet we made at the start of the day, for comparison after you’ve built the loop
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Post-Merge and Post-Deploy Validation](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)
+- [الفرضية](https://stevekinney.com/courses/self-testing-ai-agents/the-hypothesis) — الرهان الذي عقدناه في بداية اليوم، للمقارنة بعد أن تكون قد بنيت الحلقة
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [التحقق بعد الدمج وبعد النشر](https://stevekinney.com/courses/self-testing-ai-agents/post-merge-and-post-deploy-validation)
+- [ملفات فشل التشخيص: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build)

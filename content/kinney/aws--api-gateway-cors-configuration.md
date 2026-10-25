@@ -1,12 +1,12 @@
 ---
-title: "CORS Configuration"
-lang: en
+title: "تهيئة CORS"
+lang: ar
 source: "https://stevekinney.com/courses/aws/api-gateway-cors-configuration"
 ---
 
-You’ve fought CORS errors before. Every frontend engineer has stared at `Access-Control-Allow-Origin` errors in the browser console, scrambled to add headers somewhere, and eventually gotten it working through a combination of Stack Overflow answers and blind luck. The difference now: you own the API. You’re not waiting for a backend team to fix their headers. You configure CORS yourself, on your own HTTP API, and understand exactly what each setting does.
+لقد واجهت أخطاء CORS من قبل. كل مهندس واجهة أمامية حدّق يومًا في أخطاء `Access-Control-Allow-Origin` في وحدة تحكم المتصفح، وتخبّط لإضافة ترويسات في مكان ما، ثم نجح في النهاية عبر مزيج من إجابات Stack Overflow والحظ الأعمى. الفرق الآن: أنت تملك واجهة API. لم تعد تنتظر فريق خلفية ليصلح ترويساته. أنت تهيّئ CORS بنفسك، على HTTP API خاصتك، وتفهم بالضبط ما يفعله كل إعداد.
 
-If you want AWS’s exact CORS behavior next to this lesson, the [HTTP API CORS guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) is the official reference.
+إذا أردت سلوك CORS الدقيق كما تصفه AWS بجوار هذا الدرس، فإن [دليل CORS في HTTP API](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) هو المرجع الرسمي.
 
 ```
 sequenceDiagram
@@ -19,33 +19,33 @@ sequenceDiagram
     API-->>Browser: API response + Access-Control-Allow-Origin
 ```
 
-## Why CORS Exists
+## لماذا يوجد CORS
 
-Your React app runs on `http://localhost:3000` during development. Your API Gateway endpoint is at `https://abc123def4.execute-api.us-east-1.amazonaws.com`. Different origins. The browser’s **same-origin policy** blocks requests between different origins unless the server explicitly allows them with CORS headers.
+يعمل تطبيق React لديك على `http://localhost:3000` أثناء التطوير. ونقطة نهاية API Gateway لديك على `https://abc123def4.execute-api.us-east-1.amazonaws.com`. أصلان مختلفان. تحجب **سياسة الأصل نفسه** في المتصفح الطلبات بين أصول مختلفة ما لم يسمح بها الخادم صراحةً عبر ترويسات CORS.
 
-CORS isn’t an API Gateway concept—it’s a browser security mechanism. You first encountered it when you configured CORS headers on S3 in [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access), and again when setting up CloudFront response headers in [CloudFront Headers, CORS, and Security](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security). The mechanics are the same here: the server must return headers that tell the browser “yes, this origin is allowed to call me.”
+CORS ليس مفهومًا خاصًا بـ API Gateway — إنه آلية أمان في المتصفح. صادفته أول مرة عندما هيّأت ترويسات CORS على S3 في [سياسات الدلاء والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access)، ثم مرة أخرى عند إعداد ترويسات استجابة CloudFront في [ترويسات CloudFront وCORS والأمان](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security). الآلية نفسها هنا: يجب أن يعيد الخادم ترويسات تخبر المتصفح «نعم، هذا الأصل مسموح له باستدعائي».
 
-## How Preflight Requests Work
+## كيف تعمل طلبات الاستباق
 
-Not every cross-origin request triggers a preflight. Simple GET requests with standard headers go through directly—the browser sends the request and checks the CORS headers on the response. But POST requests with `Content-Type: application/json`, or any request with custom headers like `Authorization`, triggers a **preflight request**: the browser sends an `OPTIONS` request to the same URL first, asking “is this allowed?”
+لا يطلق كل طلب عبر الأصول طلب استباق. طلبات GET البسيطة ذات الترويسات القياسية تمرّ مباشرة — يرسل المتصفح الطلب ويفحص ترويسات CORS في الاستجابة. لكن طلبات POST ذات `Content-Type: application/json`، أو أي طلب بترويسات مخصّصة مثل `Authorization`، يطلق **طلب استباق**: يرسل المتصفح طلب `OPTIONS` إلى عنوان URL نفسه أولًا، سائلًا «هل هذا مسموح؟»
 
-The preflight flow:
+تسلسل الطلب الاستباقي:
 
-1. Your React app calls `fetch('https://your-api.example.com/items', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '...' })`
-2. The browser sends an `OPTIONS /items` request with `Origin`, `Access-Control-Request-Method`, and `Access-Control-Request-Headers` headers
-3. API Gateway responds with `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, and `Access-Control-Allow-Headers`
-4. If the response headers permit the request, the browser sends the actual `POST /items` request
-5. If the response headers don’t permit the request, the browser blocks it and you see the CORS error
+1. يستدعي تطبيق React لديك `fetch('https://your-api.example.com/items', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '...' })`
+2. يرسل المتصفح طلب `OPTIONS /items` مع ترويسات `Origin` و`Access-Control-Request-Method` و`Access-Control-Request-Headers`
+3. يعيد API Gateway ترويسات `Access-Control-Allow-Origin` و`Access-Control-Allow-Methods` و`Access-Control-Allow-Headers`
+4. إذا سمحت ترويسات الاستجابة بالطلب، يرسل المتصفح طلب `POST /items` الفعلي
+5. إذا لم تسمح ترويسات الاستجابة بالطلب، يحجبه المتصفح وترى خطأ CORS
 
-HTTP APIs handle preflight requests automatically when you configure CORS on the API. You don’t need to create an OPTIONS route or write Lambda code to respond to preflight requests. This is one of the advantages of HTTP APIs over REST APIs, where CORS setup requires configuring OPTIONS methods on every resource.
+تتعامل HTTP APIs مع طلبات الاستباق تلقائيًا عندما تهيّئ CORS على واجهة API. لا تحتاج إلى إنشاء مسار OPTIONS أو كتابة شيفرة Lambda للرد على طلبات الاستباق. هذه إحدى ميزات HTTP APIs على REST APIs، حيث تتطلّب تهيئة CORS ضبط أساليب OPTIONS على كل مورد.
 
-## Configuring CORS on Your HTTP API
+## تهيئة CORS على HTTP API
 
-By default, your HTTP API has no CORS configuration. In the console, navigating to **CORS** in the left sidebar shows all fields empty—no origins, no methods, no headers allowed.
+افتراضيًا، لا تحتوي HTTP API لديك على أي تهيئة CORS. في وحدة التحكم، الانتقال إلى **CORS** في الشريط الجانبي الأيسر يعرض جميع الحقول فارغة — لا أصول مسموحة، ولا أساليب، ولا ترويسات.
 
-The API Gateway CORS page showing the default unconfigured state with no origins, methods, or headers allowed.
+تعرض صفحة CORS في API Gateway الحالة الافتراضية غير المهيّأة مع عدم السماح بأي أصول أو أساليب أو ترويسات.
 
-CORS configuration is a property of the API itself—which is honestly one of my favorite things about HTTP APIs. Use `aws apigatewayv2 update-api` to set it:
+تهيئة CORS خاصية على واجهة API نفسها — وهذا بصراحة أحد الأمور المفضّلة لدي في HTTP APIs. استخدم `aws apigatewayv2 update-api` لضبطها:
 
 ```bash
 aws apigatewayv2 update-api \
@@ -55,7 +55,7 @@ aws apigatewayv2 update-api \
   --output json
 ```
 
-The response includes the CORS configuration:
+تتضمّن الاستجابة تهيئة CORS:
 
 ```json
 {
@@ -72,25 +72,25 @@ The response includes the CORS configuration:
 }
 ```
 
-In the console, the **CORS** section in the left nav shows all six CORS fields with a **Configure** button that opens the settings panel.
+في وحدة التحكم، يعرض قسم **CORS** في التنقّل الأيسر حقول CORS الستة جميعها مع زر **Configure** يفتح لوحة الإعدادات.
 
-The API Gateway CORS configuration page showing the Access-Control-Allow-Origin, Access-Control-Allow-Methods, and other CORS fields with their current values.
+تعرض صفحة تهيئة CORS في API Gateway الحقول Access-Control-Allow-Origin وAccess-Control-Allow-Methods وغيرها من حقول CORS مع قيمها الحالية.
 
-### What Each Field Does
+### ما الذي يفعله كل حقل
 
-**`AllowOrigins`**—The origins that are permitted to call your API. Each value must include the scheme (`http://` or `https://`), hostname, and port (if non-standard). During development, you typically include `http://localhost:3000` (or whatever port your dev server uses). In production, this is your domain: `https://example.com`.
+**`AllowOrigins`** — الأصول المسموح لها باستدعاء واجهة API. يجب أن تتضمّن كل قيمة المخطّط (`http://` أو `https://`) واسم المضيف والمنفذ (إن كان غير قياسي). أثناء التطوير، تُدرج عادةً `http://localhost:3000` (أو أي منفذ يستخدمه خادم التطوير لديك). في الإنتاج، هذا هو نطاقك: `https://example.com`.
 
-You can use `*` to allow any origin, but don’t do this if your API uses authentication. A wildcard origin combined with credentials means any site on the internet can make authenticated requests to your API using your users’ tokens.
+يمكنك استخدام `*` للسماح بأي أصل، لكن لا تفعل ذلك إذا كانت واجهة API تستخدم المصادقة. فالأصل الشامل المقترن ببيانات الاعتماد يعني أن أي موقع على الإنترنت يمكنه إرسال طلبات موثّقة إلى واجهة API باستخدام رموز مستخدميك.
 
-**`AllowMethods`**—The HTTP methods the browser is allowed to use. List only the methods your API actually supports. If your API only has `GET` and `POST` routes, there’s no reason to allow `DELETE`.
+**`AllowMethods`** — أساليب HTTP المسموح للمتصفح باستخدامها. اذكر فقط الأساليب التي تدعمها واجهة API فعليًا. إذا كانت واجهة API تحتوي فقط على مسارات `GET` و`POST`، فلا سبب للسماح بـ `DELETE`.
 
-**`AllowHeaders`**—The request headers the browser is allowed to send. `Content-Type` and `Authorization` are the two you almost always need. If you use custom headers, add them here.
+**`AllowHeaders`** — ترويسات الطلب المسموح للمتصفح بإرسالها. `Content-Type` و`Authorization` هما الترويستان اللتان تحتاجهما دائمًا تقريبًا. وإذا استخدمت ترويسات مخصّصة، فأضفها هنا.
 
-**`MaxAge`**—How long (in seconds) the browser should cache the preflight response. Setting this to `86400` (24 hours) means the browser only sends one preflight request per endpoint per day, rather than one before every request. This reduces latency and network traffic.
+**`MaxAge`** — المدة (بالثواني) التي يجب أن يخزّن فيها المتصفح استجابة الاستباق مؤقتًا. ضبطه على `86400` (24 ساعة) يعني أن المتصفح يرسل طلب استباق واحدًا فقط لكل نقطة نهاية يوميًا، بدلًا من واحد قبل كل طلب. وهذا يقلّل زمن الاستجابة وحركة الشبكة.
 
-**`ExposeHeaders`**—Response headers that the browser is allowed to read. By default, the browser only exposes a limited set of “safe” response headers to JavaScript. If your API returns custom headers that your frontend needs to read, list them here.
+**`ExposeHeaders`** — ترويسات الاستجابة المسموح للمتصفح بقراءتها. افتراضيًا، يعرّض المتصفح مجموعة محدودة فقط من ترويسات الاستجابة «الآمنة» لجافاسكريبت. إذا أعادت واجهة API ترويسات مخصّصة تحتاج واجهتك الأمامية إلى قراءتها، فاذكرها هنا.
 
-**`AllowCredentials`**—Set to `true` if your API uses cookies or the `Authorization` header with credentials. When this is `true`, `AllowOrigins` can’t be `*`—you must list specific origins.
+**`AllowCredentials`** — اضبطه على `true` إذا كانت واجهة API تستخدم ملفات تعريف الارتباط أو الترويسة `Authorization` مع بيانات الاعتماد. وعندما يكون `true`، لا يمكن أن يكون `AllowOrigins` هو `*` — بل يجب أن تذكر أصولًا محدّدة.
 
 ```bash
 aws apigatewayv2 update-api \
@@ -100,11 +100,11 @@ aws apigatewayv2 update-api \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Setting `AllowCredentials=true` with `AllowOrigins="*"` is rejected by browsers. If you need credentials, you must specify exact origins. This is a browser-enforced rule, not an API Gateway limitation.
+> يرفض المتصفح ضبط `AllowCredentials=true` مع `AllowOrigins="*"`. إذا كنت تحتاج إلى بيانات الاعتماد، فيجب أن تحدّد أصولًا دقيقة. هذه قاعدة يفرضها المتصفح، وليست قيدًا من API Gateway.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import { ApiGatewayV2Client, UpdateApiCommand } from '@aws-sdk/client-apigatewayv2';
@@ -126,9 +126,9 @@ await apigw.send(
 );
 ```
 
-## Testing CORS
+## اختبار CORS
 
-After configuring CORS, test with `curl` to see the headers API Gateway returns:
+بعد تهيئة CORS، اختبر باستخدام `curl` لرؤية الترويسات التي يعيدها API Gateway:
 
 ```bash
 curl -i -X OPTIONS \
@@ -138,7 +138,7 @@ curl -i -X OPTIONS \
   -H "Access-Control-Request-Headers: Content-Type"
 ```
 
-The response should include the CORS headers:
+يجب أن تتضمّن الاستجابة ترويسات CORS:
 
 ```
 HTTP/2 204
@@ -148,11 +148,11 @@ access-control-allow-origin: http://localhost:3000
 access-control-max-age: 86400
 ```
 
-A 204 status with the correct headers means CORS is configured properly. If you see a 403 or missing headers, double-check your `AllowOrigins`—the origin in the request must exactly match one of the allowed origins (including the scheme and port).
+حالة 204 مع الترويسات الصحيحة تعني أن CORS مهيّأ بشكل سليم. إذا رأيت 403 أو ترويسات مفقودة، فتحقّق جيدًا من `AllowOrigins` — يجب أن يطابق الأصل في الطلب أحد الأصول المسموحة مطابقة تامة (بما في ذلك المخطّط والمنفذ).
 
-## CORS in Your Frontend Code
+## CORS في شيفرة واجهتك الأمامية
 
-With CORS configured on the API side, your frontend `fetch` calls work without any special configuration:
+مع تهيئة CORS على جانب API، تعمل استدعاءات `fetch` في واجهتك الأمامية دون أي تهيئة خاصة:
 
 ```typescript
 const response = await fetch('https://abc123def4.execute-api.us-east-1.amazonaws.com/items', {
@@ -164,34 +164,34 @@ const response = await fetch('https://abc123def4.execute-api.us-east-1.amazonaws
 const data = await response.json();
 ```
 
-No `mode: 'cors'` needed—`fetch` uses CORS mode by default for cross-origin requests. No proxy needed. No `no-cors` workaround (which swallows the response body). The CORS headers from API Gateway tell the browser to allow the request.
+لا حاجة إلى `mode: 'cors'` — فـ `fetch` يستخدم وضع CORS افتراضيًا للطلبات عبر الأصول. ولا حاجة إلى وسيط. ولا حاجة إلى حل `no-cors` البديل (الذي يبتلع جسم الاستجابة). ترويسات CORS من API Gateway تخبر المتصفح بالسماح بالطلب.
 
-> **Tip**
+> **نصيحة**
 >
-> During local development, you might prefer to use a proxy in your Vite or Next.js dev server to avoid CORS entirely. This works fine for development but masks CORS configuration issues that will surface in production. Test against the real API Gateway endpoint at least once before deploying.
+> أثناء التطوير المحلي، قد تفضّل استخدام وسيط في خادم التطوير Vite أو Next.js لتجنّب CORS تمامًا. هذا يعمل بشكل جيد للتطوير لكنه يخفي مشكلات تهيئة CORS التي ستظهر في الإنتاج. اختبر مقابل نقطة نهاية API Gateway الحقيقية مرة واحدة على الأقل قبل النشر.
 
-## Development vs. Production Origins
+## أصول التطوير مقابل أصول الإنتاج
 
-A common pattern is to include both your local development origin and your production domain. Inside the JSON `--cors-configuration` blob, that looks like:
+من الأنماط الشائعة تضمين أصل التطوير المحلي ونطاق الإنتاج معًا. داخل كتلة JSON الخاصة بـ `--cors-configuration`، يبدو ذلك هكذا:
 
 ```json
 "AllowOrigins": ["http://localhost:3000", "http://localhost:5173", "https://example.com"]
 ```
 
-Port `3000` is the typical React dev server port. Port `5173` is the default Vite port. Include whichever ports your development tools use.
+المنفذ `3000` هو منفذ خادم التطوير المعتاد في React. والمنفذ `5173` هو منفذ Vite الافتراضي. أدرج أي منافذ تستخدمها أدوات التطوير لديك.
 
-In a more sophisticated setup, you would use API Gateway stages (covered in [API Gateway Stages and Custom Domains](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains)) to separate development and production configurations, with different CORS origins per stage. But for getting started, listing all your origins on a single API works fine.
+في إعداد أكثر تطورًا، ستستخدم مراحل API Gateway (المغطاة في [مراحل API Gateway والنطاقات المخصّصة](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains)) لفصل تهيئة التطوير والإنتاج، مع أصول CORS مختلفة لكل مرحلة. لكن للبدء، فإن إدراج جميع أصولك على واجهة API واحدة يعمل بشكل جيد.
 
-## Common Mistakes
+## أخطاء شائعة
 
-**Including a trailing slash in the origin.** `https://example.com/` isn’t the same as `https://example.com`. The origin must match exactly, and browsers send origins without a trailing slash.
+**إدراج شرطة مائلة نهائية في الأصل.** `https://example.com/` ليس هو `https://example.com`. يجب أن يطابق الأصل مطابقة تامة، ويرسل المتصفح الأصول دون شرطة مائلة نهائية.
 
-**Forgetting to include the port for localhost.** `http://localhost` and `http://localhost:3000` are different origins. If your dev server runs on port 3000, the origin must include `:3000`.
+**نسيان إدراج المنفذ في localhost.** `http://localhost` و`http://localhost:3000` أصلان مختلفان. إذا كان خادم التطوير لديك يعمل على المنفذ 3000، فيجب أن يتضمّن الأصل `:3000`.
 
-**Setting CORS headers in your Lambda function instead of the API configuration.** For HTTP APIs (which this course uses throughout), this is fragile—you have to handle OPTIONS requests in your handler and remember to include CORS headers in every response. Let API Gateway handle it. That’s what the built-in CORS configuration is for.
+**ضبط ترويسات CORS في دالة Lambda بدلًا من تهيئة API.** بالنسبة إلى HTTP APIs (التي تستخدمها هذه الدورة في كل مكان)، هذا هشّ — إذ يجب عليك التعامل مع طلبات OPTIONS في معالجك وتذكّر إدراج ترويسات CORS في كل استجابة. دع API Gateway يتولّى ذلك. فهذا هو الغرض من تهيئة CORS المدمجة.
 
-> **REST APIs are different**
+> **واجهات REST API مختلفة**
 >
-> If you later find yourself on a REST API (the older API Gateway flavor) or a non-proxy integration, CORS is configured differently: there’s no `--cors-configuration` flag, and you’ll need to configure an OPTIONS method per resource and either enable the CORS helpers in the console or set headers in the method response mapping. The rule “don’t put CORS in the handler” still holds, but the place to put it moves.
+> إذا وجدت نفسك لاحقًا على REST API (النسخة الأقدم من API Gateway) أو تكامل غير وكيل، فإن CORS يُهيَّأ بشكل مختلف: لا يوجد علم `--cors-configuration`، وستحتاج إلى تهيئة أسلوب OPTIONS لكل مورد، وإما تفعيل مساعدات CORS في وحدة التحكم أو ضبط الترويسات في تعيين استجابة الأسلوب. لا تزال قاعدة «لا تضع CORS في المعالج» سارية، لكن المكان الذي تضعها فيه يتغيّر.
 
-Your API is callable from your frontend. But right now it has a single URL: the auto-generated `execute-api` endpoint. You probably want a custom domain like `api.example.com`, and you might want separate environments for development and production. The next lesson covers stages, deployments, and custom domain names.
+واجهة API لديك قابلة للاستدعاء من واجهتك الأمامية. لكن لديها الآن عنوان URL واحد: نقطة النهاية `execute-api` المولّدة تلقائيًا. من المحتمل أنك تريد نطاقًا مخصّصًا مثل `api.example.com`، وربما تريد بيئات منفصلة للتطوير والإنتاج. يغطي الدرس التالي المراحل وعمليات النشر وأسماء النطاقات المخصّصة.

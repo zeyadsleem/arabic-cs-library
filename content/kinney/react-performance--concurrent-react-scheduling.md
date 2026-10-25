@@ -1,20 +1,20 @@
 ---
-title: "Concurrent React Scheduling"
-lang: en
+title: "جدولة React المتزامنة (Concurrent Scheduling)"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/concurrent-react-scheduling"
 ---
 
-React 18 introduced concurrent features that fundamentally change how React processes updates. Instead of blocking the main thread until every component renders, React can now pause and resume work—keeping your app responsive even during expensive operations. This isn’t just about making things faster; it’s about making the *right things* fast and ensuring user interactions never feel sluggish.
+قدّم React 18 ميزات متزامنة تغيّر جذريًا طريقة معالجة React للتحديثات. فبدلًا من حجب الخيط الرئيسي حتى يُصيّر كل مكوّن، يستطيع React الآن إيقاف العمل مؤقتًا واستئنافه — فيبقى تطبيقك مستجيبًا حتى أثناء العمليات المكلفة. والأمر لا يتعلق فقط بجعل الأمور أسرع؛ بل بجعل *الأمور الصحيحة* سريعة وبضمان ألا تبدو تفاعلات المستخدم بطيئة أبدًا.
 
-Understanding React’s scheduler helps you write components that cooperate with the system rather than fight against it. You’ll learn to distinguish between urgent and non-urgent work, leverage built-in prioritization, and design interfaces that feel smooth regardless of the complexity happening underneath.
+يساعدك فهم مُجدوِل React (scheduler) على كتابة مكوّنات تتعاون مع النظام بدل مصارعته. وستتعلّم التمييز بين العمل العاجل وغير العاجل، والاستفادة من ترتيب الأولويات المدمج، وتصميم واجهات تبدو سلسة مهما كان التعقيد الجاري تحتها.
 
-## How React’s Scheduler Works
+## كيف يعمل مُجدوِل React
 
-Before concurrent features, React’s rendering was like a single-lane highway—once React started rendering, it couldn’t stop until the entire component tree was complete. If you had a heavy component that took 200ms to render, your entire UI would freeze for that duration.
+قبل الميزات المتزامنة، كان تصيير React أشبه بطريق بمسار واحد — فبمجرد أن يبدأ React التصيير، لا يستطيع التوقّف حتى تكتمل شجرة المكوّنات بأكملها. وإن كان لديك مكوّن ثقيل يستغرق تصييره 200 مللي ثانية، تجمّدت واجهتك بأكملها طوال هذه المدة.
 
-React’s concurrent scheduler introduces **time-slicing** and **priority-based scheduling**. Think of it as upgrading from a single-lane highway to a smart traffic system with multiple lanes, priority rules, and the ability to pause lower-priority traffic when emergency vehicles need to pass.
+يقدّم مُجدوِل React المتزامن **تقسيم الزمن** (time-slicing) و**الجدولة القائمة على الأولوية**. تخيّل الأمر كترقية من طريق بمسار واحد إلى نظام مرور ذكي متعدد المسارات، له قواعد أولوية، وقدرة على إيقاف حركة الأولوية الأدنى عند حاجة مركبات الطوارئ إلى المرور.
 
-Here’s the key insight: not all updates are created equal. A user clicking a button expects immediate feedback, while updating a data visualization can wait a few milliseconds. The scheduler uses this priority hierarchy:
+وإليك الرؤية الجوهرية: ليست كل التحديثات سواء. فالمستخدم الذي ينقر زرًّا يتوقّع استجابة فورية، بينما يمكن أن ينتظر تحديث تصوّر بياني بضع مللي ثانية. ويستخدم المُجدوِل هذا التراتب من الأولويات:
 
 ```typescript
 // From React's internal priority levels (simplified)
@@ -27,11 +27,11 @@ enum Priority {
 }
 ```
 
-The scheduler can interrupt lower-priority work when higher-priority work arrives, ensuring your app stays responsive to user interactions.
+يستطيع المُجدوِل مقاطعة العمل ذي الأولوية الأدنى عند وصول عمل ذي أولوية أعلى، فيبقى تطبيقك مستجيبًا لتفاعلات المستخدم.
 
-## Understanding Transitions
+## فهم الانتقالات (Transitions)
 
-The most practical way to leverage React’s scheduler is through **transitions**. A transition marks an update as non-urgent, allowing React to interrupt it for more important work.
+الطريقة العملية الأكثر نفعًا للاستفادة من مُجدوِل React هي **الانتقالات**. فالانتقال يعلّم تحديثًا بأنه غير عاجل، ما يتيح لـ React مقاطعته لأجل عمل أهم.
 
 ```typescript
 import { useTransition, useState } from 'react';
@@ -65,11 +65,11 @@ function SearchResults() {
 }
 ```
 
-This pattern keeps the input responsive—users see their typing immediately—while the expensive search operation happens in the background and can be interrupted if they keep typing.
+يبقي هذا النمط حقل الإدخال مستجيبًا — فيرى المستخدمون ما يكتبونه فورًا — بينما تجري عملية البحث المكلفة في الخلفية، ويمكن مقاطعتها إن واصلوا الكتابة.
 
-## Deferred Values for Expensive Computations
+## القيم المؤجَّلة للحسابات المكلفة
 
-Sometimes you don’t control the state update (maybe it’s coming from a parent component), but you still want to defer expensive work. `useDeferredValue` lets you create a “delayed” version of a value that lags behind during rapid updates.
+أحيانًا لا تتحكّم في تحديث الحالة (فلعله يأتي من مكوّن أب)، لكنك ما زلت تريد تأجيل العمل المكلف. يتيح لك `useDeferredValue` إنشاء نسخة «متأخّرة» من قيمة تتخلّف عن الركب أثناء التحديثات السريعة.
 
 ```typescript
 import { useDeferredValue, useMemo } from 'react';
@@ -96,13 +96,13 @@ function ExpensiveChart({ data }: { data: number[] }) {
 }
 ```
 
-When `data` changes rapidly, `deferredData` will lag behind, preventing expensive chart recalculations on every keystroke. React will batch the updates and process them when it has spare time.
+عندما تتغيّر `data` بسرعة، يتخلّف `deferredData` عنها، فلا تُعاد حسابات الرسم البياني المكلفة مع كل ضغطة مفتاح. ويجمع React التحديثات في دفعة واحدة ويعالجها عندما يتوفّر لديه وقت فائض.
 
-## Avoiding Common Scheduling Pitfalls
+## تجنّب مزالق الجدولة الشائعة
 
-### Don’t Wrap Everything in Transitions
+### لا تُغلّف كل شيء بالانتقالات
 
-Transitions are for non-urgent updates that can be interrupted. Don’t wrap urgent interactions like button clicks or form submissions:
+الانتقالات مخصّصة للتحديثات غير العاجلة التي يمكن مقاطعتها. لا تُغلّف تفاعلات عاجلة مثل نقرات الأزرار أو إرسال النماذج:
 
 ```typescript
 // ❌ Bad: Makes button feel unresponsive
@@ -128,9 +128,9 @@ function Button({ onClick }: { onClick: () => void }) {
 }
 ```
 
-### Be Mindful of Transition Boundaries
+### انتبه لحدود الانتقال
 
-Transitions only affect the updates inside the `startTransition` callback. Updates outside remain urgent:
+لا تؤثر الانتقالات إلا في التحديثات الواقعة داخل دالة الاستدعاء الممرّرة إلى `startTransition`. أما التحديثات خارجها فتبقى عاجلة:
 
 ```typescript
 // ❌ This won't work as expected
@@ -150,7 +150,7 @@ function SearchComponent() {
 }
 ```
 
-If you want both updates to be part of the transition, include them both:
+إن أردت أن يكون التحديثان معًا جزءًا من الانتقال، فأدرجهما كليهما:
 
 ```typescript
 // ✅ Both updates are now non-urgent
@@ -163,11 +163,11 @@ const handleSearch = (newQuery: string) => {
 };
 ```
 
-## Real-World Scheduling Patterns
+## أنماط جدولة واقعية
 
-### Progressive Enhancement Pattern
+### نمط التحسين التدريجي
 
-Show immediate feedback for urgent updates while deferring expensive secondary work:
+أظهر استجابة فورية للتحديثات العاجلة مع تأجيل العمل الثانوي المكلف:
 
 ```typescript
 function UserProfile({ userId }: { userId: string }) {
@@ -201,9 +201,9 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Optimistic Updates with Fallback
+### التحديثات التفاؤلية مع بديل مؤقّت
 
-Combine transitions with optimistic updates for smooth interactions:
+اجمع الانتقالات مع التحديثات التفاؤلية للحصول على تفاعلات سلسة:
 
 ```typescript
 function TodoItem({ todo, onToggle }: { todo: Todo; onToggle: (id: string) => void }) {
@@ -231,9 +231,9 @@ function TodoItem({ todo, onToggle }: { todo: Todo; onToggle: (id: string) => vo
 }
 ```
 
-## Working with External Libraries
+## التعامل مع المكتبات الخارجية
 
-Not all libraries are concurrent-ready. Some perform synchronous operations that can’t be interrupted:
+ليست كل المكتبات مهيّأة للتزامن. فبعضها ينفّذ عمليات تزامنية لا يمكن مقاطعتها:
 
 ```typescript
 // ❌ Problematic: Heavy synchronous work
@@ -274,9 +274,9 @@ async function processDataInChunks(data: any[], setResult: (data: any[]) => void
 }
 ```
 
-## Performance Monitoring and Debugging
+## مراقبة الأداء والتنقيح
 
-React DevTools Profiler helps you understand how your transitions behave:
+يساعدك مُنمّق React DevTools على فهم سلوك انتقالاتك:
 
 ```typescript
 // Add labels to make transitions easier to identify in DevTools
@@ -295,7 +295,7 @@ function SearchResults() {
 }
 ```
 
-You can also measure transition performance in production:
+ويمكنك أيضًا قياس أداء الانتقالات في الإنتاج:
 
 ```typescript
 import { unstable_trace } from 'react';
@@ -313,13 +313,13 @@ function trackTransitionPerformance(name: string, fn: () => void) {
 }
 ```
 
-## When Not to Use Concurrent Features
+## متى لا تستخدم الميزات المتزامنة
 
-Concurrent features aren’t always the answer. Avoid them when:
+ليست الميزات المتزامنة هي الجواب دائمًا. تجنّبها عندما:
 
-- **Critical business logic**: Don’t defer validation or security checks
-- **Simple, fast updates**: The overhead isn’t worth it for trivial operations
-- **External timing requirements**: Some operations need precise timing control
+- **منطق عمل حرج**: لا تؤجّل التحقق من الصحة أو الفحوص الأمنية
+- **تحديثات بسيطة وسريعة**: لا تستحق الكلفة الإضافية عمليات تافهة
+- **متطلبات توقيت خارجية**: بعض العمليات تحتاج تحكّمًا دقيقًا في التوقيت
 
 ```typescript
 // ❌ Don't defer critical validation
@@ -353,8 +353,8 @@ function PaymentForm() {
 }
 ```
 
-## Next Steps
+## الخطوات التالية
 
-React’s concurrent features give you fine-grained control over when work happens, but they’re tools that require thoughtful application. Start by identifying the expensive operations in your app—data processing, complex renders, or heavy computations—and experiment with wrapping them in transitions.
+تمنحك ميزات React المتزامنة تحكّمًا دقيقًا في توقيت تنفيذ العمل، لكنها أدوات تتطلّب تطبيقًا مدروسًا. ابدأ بتحديد العمليات المكلفة في تطبيقك — معالجة البيانات، أو عمليات التصيير المعقّدة، أو الحسابات الثقيلة — وجرّب تغليفها بالانتقالات.
 
-The goal isn’t to make everything concurrent, but to ensure user interactions always feel responsive while non-critical work happens in the background. Your users will notice the difference, even if they can’t quite put their finger on why your app feels more polished than the competition.
+الهدف ليس جعل كل شيء متزامنًا، بل ضمان أن تبدو تفاعلات المستخدم مستجيبة دائمًا بينما يجري العمل غير الحرج في الخلفية. وسيلاحظ مستخدموك الفرق، حتى إن لم يستطيعوا تحديد السبب الذي يجعل تطبيقك يبدو أكثر صقلًا من المنافسين.

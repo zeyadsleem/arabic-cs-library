@@ -1,18 +1,18 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/rewrite-the-bad-claude-md-solution"
 ---
 
-The current `CLAUDE.md` in Shelf is the one I actually use when I point Claude Code at the repo. It is not a reference answer to memorize—it is a working artifact that evolved through exactly the kind of tightening this lab asks you to do. Your version will differ, and that is fine. What matters is that every line passes two tests: can the agent act on it mechanically, and would you notice if it didn’t?
+ملف `CLAUDE.md` الحالي في Shelf هو الذي أستخدمه فعلًا حين أوجّه Claude Code إلى المستودع. إنه ليس إجابة مرجعية تُحفظ — بل أثر عمل تطوّر عبر ذلك الإحكام نفسه الذي يطلبه هذا المختبر. ستختلف نسختك، وذلك حسن. المهم أن كل سطر ينجح في اختبارين: هل يستطيع الوكيل التصرّف فيه آليًا، وهل كنت ستلاحظ لو لم يفعل؟
 
-Let me walk through what the shipped file does and why.
+دعني أستعرض ما يفعله الملف المشحون ولماذا.
 
-## What the current repo shows
+## ما يعرضه المستودع الحالي
 
-The file lives at the repository root as `CLAUDE.md`. Open it and follow along.
+يعيش الملف في جذر المستودع باسم `CLAUDE.md`. افتحه وتابع.
 
-### The opener
+### الافتتاحية
 
 ```markdown
 # Shelf Starter Instructions
@@ -21,9 +21,9 @@ Shelf is the starter repository for the **Self-Testing AI Agents** course.
 It is a real SvelteKit + TypeScript book application, not a generated scaffold.
 ```
 
-Two sentences. The agent now knows this is a real app, not a throwaway template. That one word—“not a generated scaffold”—prevents the agent from treating the codebase as disposable. It is a framing rule disguised as a description.
+جملتان. صار الوكيل يعرف أن هذا تطبيق حقيقي، لا قالبًا مؤقّتًا. وتلك الكلمة الواحدة — «ليس سقالة مولّدة» — تمنع الوكيل من التعامل مع الشيفرة كشيء يُرمى. إنها قاعدة تأطير متنكّرة في هيئة وصف.
 
-### “What done means”
+### «ما معنى الانتهاء»
 
 ```markdown
 1. `npm run typecheck`
@@ -31,9 +31,9 @@ Two sentences. The agent now knows this is a real app, not a throwaway template.
 3. `npm run test`
 ```
 
-Three named commands, ordered. The rule says “not done until all three exit zero, in this order.” No wiggle room, no “you should probably run.” The ordering matters: typecheck catches the cheapest errors first, then lint, then the full test suite. The agent runs them top to bottom and stops at the first failure. Later in the course, the static-layer lab will add a dead-code detection step (`npm run knip`) between lint and test.
+ثلاثة أوامر مسمّاة، مرتّبة. تقول القاعدة «لا ينتهي حتى تخرج الثلاثة بالرمز صفر، بهذا الترتيب». لا مجال للمراوغة، ولا «ينبغي أن تشغّل على الأرجح». والترتيب مهم: فحص الأنواع يلتقط أرخص الأخطاء أولًا، ثم التدقيق، ثم مجموعة الاختبارات كاملة. يشغّلها الوكيل من أعلى إلى أسفل ويتوقّف عند أول فشل. ولاحقًا في الدورة، سيضيف مختبر الطبقة الثابتة خطوة لكشف الشيفرة الميتة (`npm run knip`) بين التدقيق والاختبار.
 
-Every one of those commands exists in `package.json`. You can verify that yourself:
+كل واحد من تلك الأوامر موجود في `package.json`. ويمكنك التحقّق بنفسك:
 
 ```bash
 for cmd in typecheck lint test; do
@@ -41,13 +41,13 @@ for cmd in typecheck lint test; do
 done
 ```
 
-### Routes
+### المسارات
 
-The file names exact paths—`/`, `/login`, `/design-system`, `/search`, `/shelf`—and says which ones are public and which are protected. It also says *how* protection works: “gate server-side on `locals.user`, never with client guards.” That is a specific implementation constraint, not a vague “secure your routes” instruction.
+يسمّي الملف مسارات دقيقة — `/`، `/login`، `/design-system`، `/search`، `/shelf` — ويقول أيها عام وأيها محمي. ويقول أيضًا *كيف* تعمل الحماية: «احجب من جهة الخادم على `locals.user`، لا بحواجز العميل أبدًا». هذا قيد تنفيذ محدّد، لا تعليمة غامضة مثل «أمّن مساراتك».
 
-The line “Do not reintroduce `src/routes/demo/`” is the kind of rule that sounds petty until the agent generates a demo page at 2 AM and you spend twenty minutes figuring out where it came from.
+سطر «لا تُعِد إدخال `src/routes/demo/`» هو نوع القواعد التي تبدو تافهة حتى يولّد الوكيل صفحة تجريبية في الثانية صباحًا فتقضي عشرين دقيقة في معرفة من أين جاءت.
 
-### How tests get written
+### كيف تُكتب الاختبارات
 
 ```markdown
 - Write a failing test before the implementation. Commit the test first.
@@ -55,47 +55,47 @@ The line “Do not reintroduce `src/routes/demo/`” is the kind of rule that so
 - End-to-end tests live in `tests/end-to-end/` and run with Playwright.
 ```
 
-Three rules, each naming a specific file pattern or directory. The agent knows where to put tests without asking, and it knows the TDD order without you reminding it mid-task.
+ثلاث قواعد، كل واحدة تسمّي نمط ملف أو دليلًا محدّدًا. يعرف الوكيل أين يضع الاختبارات دون سؤال، ويعرف ترتيب TDD دون أن تذكّره في منتصف المهمة.
 
-### Playwright locator rules
+### قواعد محدّدات Playwright
 
 ```markdown
 - `getByRole` first. `getByLabel` or `getByText` second.
   `data-testid` only when semantics genuinely don't exist.
 ```
 
-This names three specific Playwright APIs in priority order. It is not “use accessible locators”—it is “use `getByRole`, then `getByLabel`, then `data-testid`.” The agent can pattern-match against its own output and self-correct.
+هذا يسمّي ثلاث واجهات برمجية محدّدة في Playwright بترتيب أولوية. إنه ليس «استخدم محدّدات متاحة للوصول» — بل «استخدم `getByRole`، ثم `getByLabel`، ثم `data-testid`». يستطيع الوكيل أن يطابق مخرجاته على النمط ويصحّح نفسه.
 
-The ban on `page.waitForTimeout` and `waitForLoadState('networkidle')` is reinforced here *and* in the ESLint config. Belt and suspenders. The agent hits the lint rule even if it skips reading `CLAUDE.md`.
+حظر `page.waitForTimeout` و`waitForLoadState('networkidle')` معزّز هنا *وأيضًا* في إعداد ESLint. حزام وحمّالة. فيصطدم الوكيل بقاعدة التدقيق حتى لو تخطّى قراءة `CLAUDE.md`.
 
-### Playwright authentication (added later)
+### مصادقة Playwright (أُضيفت لاحقًا)
 
-After the storage-state lab, the file will name the auth setup file the lab produces (something like `tests/authentication.setup.ts`). The rule “never log in from inside a regular test” prevents the most common Playwright anti-pattern—and gives the agent a concrete diagnostic: “if a test redirects to `/login`, the setup file is broken.” The day-one starter has no auth setup file and no section for it.
+بعد مختبر حالة التخزين، سيسمّي الملف ملف إعداد المصادقة الذي ينتجه المختبر (شيء مثل `tests/authentication.setup.ts`). وقاعدة «لا تسجّل الدخول أبدًا من داخل اختبار عادي» تمنع أشيع نمط مضادّ في Playwright — وتمنح الوكيل تشخيصًا ملموسًا: «إن أعاد اختبار التوجيه إلى `/login`، فملف الإعداد مكسور». بذرة اليوم الأول لا تحتوي ملف إعداد مصادقة ولا قسمًا له.
 
-### Database seeding and isolation (added later)
+### تهيئة قاعدة البيانات والعزل (أُضيفا لاحقًا)
 
-After the deterministic-state lab, the file will name `tests/helpers/seed.ts`, `tests/data/users.json`, `src/lib/server/users.ts`, `resetShelfContent`, and `seedFreshDatabase`. Every noun in this section is a file or a config value the agent can verify. The rule about not resetting users inside individual specs is the kind of thing that takes an hour to debug the first time you hit it—and zero seconds to prevent with a single sentence. The seed helpers exist in the repo today, but the `CLAUDE.md` section about them is earned by the lab.
+بعد مختبر الحالة الحتمية، سيسمّي الملف `tests/helpers/seed.ts` و`tests/data/users.json` و`src/lib/server/users.ts` و`resetShelfContent` و`seedFreshDatabase`. كل اسم في هذا القسم ملف أو قيمة إعداد يستطيع الوكيل التحقّق منها. وقاعدة عدم إعادة تعيين المستخدمين داخل المواصفات الفردية من نوع ما يستغرق ساعة لتنقيحه أول مرة تصادفه — وصفر ثانية لمنعه بجملة واحدة. مساعدات البذر موجودة في المستودع اليوم، لكن قسم `CLAUDE.md` عنها يستحقّه المختبر.
 
-### HAR recording (added later)
+### تسجيل HAR (أُضيف لاحقًا)
 
-After the HAR-recording lab, the file will carry a rule that looks roughly like this:
+بعد مختبر تسجيل HAR، سيحمل الملف قاعدة تبدو تقريبًا هكذا:
 
 ```markdown
 - HARs live in `tests/fixtures/` and replay through `page.routeFromHAR`
   with `notFound: 'abort'`.
 ```
 
-Specific directory, specific API, specific option. The “never commit a new HAR without a human reviewing it” rule is the kind of guardrail that only matters once—and when it matters, it *really* matters, because HARs can contain session cookies. `tests/fixtures/` does not exist in the day-one starter; the HAR lab is what introduces it.
+دليل محدّد، وواجهة برمجية محدّدة، وخيار محدّد. وقاعدة «لا تلتزم ملف HAR جديدًا دون مراجعة بشرية» من نوع الحواجز التي لا تهمّ إلا مرة — وحين تهمّ، تهمّ *حقًا*، لأن ملفات HAR قد تحتوي كوكيز جلسات. و`tests/fixtures/` غير موجود في بذرة اليوم الأول؛ مختبر HAR هو ما يُدخله.
 
-### Accessibility (added later)
+### إتاحة الوصول (أُضيفت لاحقًا)
 
-After the accessibility lab, the file will name `tests/accessibility.spec.ts` and the smoke-checklist doc the lab produces. Two files, clear responsibilities: the spec catches what automation can prove, the checklist documents what it cannot. Neither file exists in the day-one starter.
+بعد مختبر إتاحة الوصول، سيسمّي الملف `tests/accessibility.spec.ts` ووثيقة قائمة التحقّق السريعة التي ينتجها المختبر. ملفان بمسؤوليات واضحة: المواصفة تلتقط ما تستطيع الأتمتة إثباته، والقائمة توثّق ما لا تستطيع. ولا وجود لأي من الملفين في بذرة اليوم الأول.
 
-### When a test fails (added later)
+### حين يفشل اختبار (أُضيف لاحقًا)
 
-After the failure-dossier lab, Shelf will have a five-step diagnostic procedure section. Step one will name a specific command (`npm run dossier`, added by that lab); step five will name a specific tool (`npx playwright show-trace <path>`). The rule “do not fix a failing test by changing the assertion” prevents the single most common agent failure mode I have seen in the wild. The starter `CLAUDE.md` already carries the narrower form of that rule (“do not fix a failing Playwright test by changing the assertion to match broken UI”); the full diagnostic procedure is added once the dossier lab is done.
+بعد مختبر ملف التشخيص، سيكون في Shelf قسم إجراء تشخيصي من خمس خطوات. ستسمّي الخطوة الأولى أمرًا محدّدًا (`npm run dossier`، يضيفه ذلك المختبر)؛ وستسمّي الخطوة الخامسة أداة محدّدة (`npx playwright show-trace <path>`). وقاعدة «لا تصلح اختبارًا فاشلًا بتغيير التوقّع» تمنع أشيع نمط فشل للوكيل رأيته في الواقع. ملف `CLAUDE.md` الانطلاقي يحمل أصلًا الصيغة الأضيق من تلك القاعدة («لا تصلح اختبار Playwright فاشلًا بتغيير التوقّع ليطابق واجهة مكسورة»)؛ أما الإجراء التشخيصي الكامل فيُضاف بعد إنجاز مختبر ملف التشخيص.
 
-### UI copy
+### نصوص الواجهة
 
 ```markdown
 - User-facing copy stays about books, shelves, and reading.
@@ -103,23 +103,23 @@ After the failure-dossier lab, Shelf will have a five-step diagnostic procedure 
   or course material in rendered page copy.
 ```
 
-This is the “keep the product product-shaped” rule. Without it, the agent will happily render “Seeded test book #3” on a page that is supposed to look like a real reading tracker.
+هذه قاعدة «أبقِ المنتج على شكل منتج». فبدونها سيعرض الوكيل بسرور «Seeded test book #3» على صفحة يُفترض أن تبدو متتبّع قراءة حقيقيًا.
 
-### Static layer (added later)
+### الطبقة الثابتة (أُضيفت لاحقًا)
 
-After the static-layer lab, the file will name concrete config files by path: `eslint.config.js` and `tsconfig.json` live at the repo root today, and the lab will add `knip.json`. The section lists the exact TypeScript compiler flags that are enabled and says “do not bypass with `@ts-expect-error`.” The agent then knows the strictness level without reading `tsconfig.json` itself—though it should still check. None of this section is present in the starter.
+بعد مختبر الطبقة الثابتة، سيسمّي الملف ملفات إعداد ملموسة بالمسار: `eslint.config.js` و`tsconfig.json` موجودان في جذر المستودع اليوم، وسيضيف المختبر `knip.json`. ويسرد القسم أعلام مترجم TypeScript الدقيقة المفعّلة ويقول «لا تتجاوزها بـ `@ts-expect-error`». فيعرف الوكيل مستوى الصرامة دون قراءة `tsconfig.json` نفسه — وإن كان ينبغي أن يتحقّق مع ذلك. لا شيء من هذا القسم موجود في البذرة.
 
-### Git hooks and secrets (added later)
+### خطّافات git والأسرار (أُضيفت لاحقًا)
 
-Once the static-layer and hooks labs are complete, Shelf will carry a section that names `lefthook` and `gitleaks` by name, points at the hook config file (`lefthook.yml`), and references the staged-snapshot wrapper the lab produces. The rule about intentional “bait” fixtures prevents the agent from “fixing” a planted test fixture. None of this is in the day-one `CLAUDE.md`—the section is earned by the lessons that introduce those tools.
+بمجرد اكتمال مختبرَي الطبقة الثابتة والخطّافات، سيحمل Shelf قسمًا يسمّي `lefthook` و`gitleaks` بالاسم، ويشير إلى ملف إعداد الخطّافات (`lefthook.yml`)، ويذكر غلاف اللقطة المرحلية الذي ينتجه المختبر. وقاعدة «الطُعم» المتعمّد في الـ fixtures تمنع الوكيل من «إصلاح» تركيبة اختبار مزروعة. لا شيء من هذا في ملف `CLAUDE.md` لليوم الأول — فالقسم تستحقّه الدروس التي تُدخل تلك الأدوات.
 
-### “Do not”
+### «لا تفعل»
 
-Four specific bans in the shipped file: no `any` or `@ts-expect-error`, no `eslint-disable`, no unflagged dependency additions, and no hand-editing generated artifacts. Each one names the exact thing not to do. No ambiguity, no interpretation required. Later in the course, the hook lab will add a `--no-verify` ban to this list—at that point the file will carry five bans.
+أربعة محظورات محدّدة في الملف المشحون: لا `any` ولا `@ts-expect-error`، ولا `eslint-disable`، ولا إضافات تبعيات دون علم، ولا تحرير يدوي للمخرجات المولّدة. كل واحد يسمّي الشيء الدقيق الذي لا ينبغي فعله. لا غموض، ولا تفسير مطلوب. ولاحقًا في الدورة، سيضيف مختبر الخطّافات حظر `--no-verify` إلى هذه القائمة — وعندها سيحمل الملف خمسة محظورات.
 
-## What you still need to run
+## ما زال عليك تشغيله
 
-The lab’s acceptance criteria are all mechanically checkable. Here is every verification command:
+معايير القبول في المختبر كلها قابلة للفحص آليًا. وهذا كل أمر تحقّق:
 
 ```bash
 # Line count (must be 60 or fewer)
@@ -146,28 +146,28 @@ npm run lint
 npm run test
 ```
 
-And the commit:
+والالتزام:
 
 ```bash
 git add CLAUDE.md
 git commit -m 'lab(rewrite-the-bad-claude-md): tighten instructions for mechanical enforcement'
 ```
 
-## A note about the 60-line constraint
+## ملاحظة عن قيد الستين سطرًا
 
-The lab asks you to keep the file under 60 lines. The shipped `CLAUDE.md` is roughly 46 lines today, and it stays tight on purpose. Later labs—accessibility, HAR recording, database seeding, the static layer—each earn their own section when you reach them, so the file will grow as rules prove their value. The file you write *today* should be under 60 lines. The file you end the course with will be longer, because more rules have earned their place.
+يطلب المختبر أن تُبقي الملف تحت ستين سطرًا. وملف `CLAUDE.md` المشحون نحو 46 سطرًا اليوم، ويبقى مشدودًا عن قصد. المختبرات اللاحقة — إتاحة الوصول، وتسجيل HAR، وتهيئة قاعدة البيانات، والطبقة الثابتة — يستحقّ كل منها قسمه حين تصل إليه، فينمو الملف كلما أثبتت القواعد قيمتها. والملف الذي تكتبه *اليوم* ينبغي أن يكون تحت ستين سطرًا. والملف الذي تنتهي به الدورة سيكون أطول، لأن قواعد أكثر استحقّت مكانها.
 
-If you are doing this lab in isolation, trim to 60. If you are reading this after completing several later lessons, your file will have accumulated additions beyond the shipped starter. Both are correct for their moment.
+إن كنت تنفّذ هذا المختبر بمعزل، فاقتطع إلى 60. وإن كنت تقرأ هذا بعد إنجاز عدة دروس لاحقة، فسيكون ملفك قد تراكمت فيه إضافات تتجاوز البذرة المشحونة. وكلاهما صحيح في لحظته.
 
-## Patterns to take away
+## أنماط تأخذها معك
 
-- **Name the command, not the concept.** ”`npm run typecheck`” is enforceable. “Make sure types are correct” is not.
-- **Name the file, not the principle.** “Put Playwright specs in `tests/`” survives copy-paste into a task. “Follow the testing conventions” does not.
-- **Ban the specific thing.** “Do not use `@ts-expect-error`” is a grep away from verification. “Maintain type safety” is a judgment call the agent will make differently than you would.
-- **Shorter is louder.** Every line you delete makes the remaining lines more likely to be read. A 200-line `CLAUDE.md` is a suggestion. A 60-line one is an order.
-- **The file is a living document.** You will add to it as the codebase grows. The discipline is not “write it once perfectly”—it is “earn every line.”
+- **سمِّ الأمر، لا المفهوم.** «`npm run typecheck`» قابل للفرض. و«تأكّد من صحة الأنواع» ليس كذلك.
+- **سمِّ الملف، لا المبدأ.** «ضع مواصفات Playwright في `tests/`» يصمد عند النسخ واللصق في مهمة. و«اتّبع اصطلاحات الاختبار» لا يصمد.
+- **احظر الشيء المحدّد.** «لا تستخدم `@ts-expect-error`» يبعد عن التحقّق خطوة grep واحدة. و«حافظ على سلامة الأنواع» حكم تقديري سيتّخذه الوكيل على نحو مختلف عنك.
+- **الأقصر أعلى صوتًا.** كل سطر تحذفه يجعل قراءة الأسطر الباقية أرجح. ملف `CLAUDE.md` من 200 سطر اقتراح. وملف من 60 سطرًا أمر.
+- **الملف وثيقة حيّة.** ستضيف إليه كلما نما المستودع. والانضباط ليس «اكتبه مرة واحدة بإتقان» — بل «استحقّ كل سطر».
 
-## Additional Reading
+## قراءات إضافية
 
-- [Lab: Rewrite the Bad CLAUDE.md](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md)
-- [Instructions That Wire the Agent In](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)
+- [مختبر: أعد كتابة ملف CLAUDE.md السيئ](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md)
+- [تعليمات تربط الوكيل بالحلقة](https://stevekinney.com/courses/self-testing-ai-agents/instructions-that-wire-the-agent-in)

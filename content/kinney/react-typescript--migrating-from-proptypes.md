@@ -1,25 +1,25 @@
 ---
-title: "Migrating from PropTypes to TypeScript"
-lang: en
+title: "الانتقال من PropTypes إلى TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/migrating-from-proptypes"
 ---
 
-React’s `PropTypes` were great for their time—they gave us runtime prop validation when JavaScript didn’t have much in the way of static analysis. But now that TypeScript has become the de facto standard for React development, you can get better type safety, earlier error detection, and superior developer experience by migrating from `PropTypes` to TypeScript interfaces and types.
+كانت `PropTypes` في React رائعة في زمنها — فقد وفّرت لنا التحقق من الخصائص في وقت التشغيل حين لم يكن لدى JavaScript الكثير مما يُذكر من التحليل الساكن. لكن الآن، بعد أن أصبح TypeScript المعيار الفعلي لتطوير React، يمكنك الحصول على أمان أنواع أفضل وكشف مبكر للأخطاء وتجربة مطور متفوقة بالانتقال من `PropTypes` إلى واجهات وأنواع TypeScript.
 
-This migration isn’t just about removing a dependency (though that’s nice). It’s about moving validation from runtime to compile-time, where you can catch issues before they reach your users. Your editor gets smarter, your builds get faster, and your props become self-documenting.
+هذا الترحيل ليس مجرد مسألة إزالة اعتمادية (وإن كان ذلك جميلاً). إنه نقل التحقق من وقت التشغيل إلى وقت التجميع، حيث يمكنك اكتشاف المشكلات قبل وصولها إلى المستخدمين. فيتحسن محررك، ويصبح بناؤك أسرع، وتصبح خصائصك ذاتية التوثيق.
 
-## Why Make the Switch?
+## لماذا تجري هذا التحويل؟
 
-Before we dive into the mechanics, let’s quickly review why this migration is worth your time:
+قبل أن نتعمق في التفاصيل، دعونا نستعرض سريعاً لماذا يستحق هذا الترحيل وقتك:
 
-- **Compile-time vs Runtime Validation**: `PropTypes` only catch errors when your component actually renders with invalid props. TypeScript catches these issues during development, in your editor, before you even run your code.
-- **Better Developer Experience**: Your editor can autocomplete props, show you what’s expected, and underline issues in real-time. No more hunting through console warnings.
-- **Performance Benefits**: `PropTypes` add runtime overhead, especially in development mode where they’re most active. TypeScript validation happens at compile time and produces zero runtime cost.
-- **Self-Documenting Code**: TypeScript interfaces serve as both validation and documentation, making your component APIs clearer to other developers (including future you).
+- **التحقق في وقت التجميع مقابل وقت التشغيل**: لا تكتشف `PropTypes` الأخطاء إلا عندما يُصيَّر مكوّنك فعلياً بخصائص غير صالحة. أما TypeScript فيكشف هذه المشكلات أثناء التطوير، داخل محررك، قبل أن تشغّل شفرتك أصلاً.
+- **تجربة مطور أفضل**: يستطيع محررك إكمال الخصائص تلقائياً، وإخبارك بما هو متوقع، وتسطير المشكلات في الوقت الفعلي. لا مزيد من البحث في تحذيرات وحدة التحكم.
+- **فوائد الأداء**: تضيف `PropTypes` عبئاً في وقت التشغيل، خاصة في وضع التطوير حيث تكون أكثر نشاطاً. أما التحقق بـ TypeScript فيحدث في وقت التجميع بلا أي تكلفة على وقت التشغيل.
+- **شيفرة ذاتية التوثيق**: تعمل واجهات TypeScript بوصفها تحققاً وتوثيقاً معاً، مما يجعل واجهات مكوّناتك أوضح للمطورين الآخرين (بما فيهم أنت في المستقبل).
 
-## The Basic Translation
+## التحويل الأساسي
 
-Let’s start with a simple example. Here’s a component using PropTypes:
+لنبدأ بمثال بسيط. إليك مكوّن يستخدم PropTypes:
 
 ```typescript
 // ❌ Old `PropTypes` approach
@@ -49,7 +49,7 @@ UserCard.defaultProps = {
 };
 ```
 
-Here’s the TypeScript equivalent:
+وإليك النسخة المكافئة في TypeScript:
 
 ```typescript
 // ✅ TypeScript approach
@@ -73,11 +73,11 @@ const UserCard = ({ name, email, age = 0, isActive = false }: UserCardProps) => 
 };
 ```
 
-Notice how much cleaner this is? We’ve eliminated the separate `PropTypes` definition and moved default values directly into the parameter destructuring. The `?` syntax indicates optional props, making the interface more readable than `PropTypes` ever was.
+لاحظ كم أصبح هذا أنظف؟ لقد أزلنا تعريف `PropTypes` المنفصل ونقلنا القيم الافتراضية مباشرة إلى تفكيك المعاملات (parameter destructuring). وتشير صيغة `?` إلى خصائص اختيارية، مما يجعل الواجهة أوضح للقراءة مما كانت عليه `PropTypes` يوماً.
 
-## Handling Complex Types
+## التعامل مع الأنواع المعقّدة
 
-PropTypes had some limitations when it came to complex data structures. TypeScript shines here:
+كانت لدى PropTypes بعض القيود عندما يتعلق الأمر ببنى البيانات المعقّدة. وهنا يتألق TypeScript:
 
 ```typescript
 // ❌ `PropTypes` approach - limited expressiveness
@@ -126,11 +126,11 @@ const ProductList = ({ products, onProductClick, filters = {} }: ProductListProp
 };
 ```
 
-Look at that `onProductClick` type! With PropTypes, we could only verify it was a function. TypeScript tells us exactly what parameters it expects and what it returns. Your IDE can now autocomplete the `product` parameter when you’re implementing the click handler.
+انظر إلى نوع `onProductClick` هذا! مع PropTypes، كنا نتحقق فقط من كونه دالة. أما TypeScript فيخبرنا بدقة بالمعاملات التي يتوقعها وما يعيده. ويمكن لمحررك الآن إكمال المعامل `product` تلقائياً أثناء تنفيذك لمعالج النقر.
 
-## Migrating Union Types and Enums
+## ترحيل الأنواع الاتحادية والتعدادات
 
-PropTypes had `PropTypes.oneOf()` for limited value sets. TypeScript’s union types are more powerful:
+كان لدى PropTypes التابع `PropTypes.oneOf()` لمجموعات القيم المقيَّدة. أما الأنواع الاتحادية (union types) في TypeScript فهي أكثر قوة:
 
 ```typescript
 // ❌ `PropTypes` approach
@@ -171,11 +171,11 @@ const Button = ({
 };
 ```
 
-Pro tip: Define your union types separately so you can reuse them across components. If you have multiple button-like components, they can all share the same `ButtonVariant` type.
+نصيحة المحترفين: عرّف أنواعك الاتحادية بشكل منفصل حتى تتمكن من إعادة استخدامها عبر المكوّنات. فإذا كان لديك عدة مكوّنات شبيهة بالأزرار، يمكنها جميعاً مشاركة النوع `ButtonVariant` نفسه.
 
-## Dealing with Polymorphic Components
+## التعامل مع المكوّنات متعددة الأشكال
 
-One area where `PropTypes` really struggled was with polymorphic components—components that can render as different HTML elements. TypeScript handles this elegantly:
+من المجالات التي عانت فيها `PropTypes` فعلاً المكوّنات متعددة الأشكال — أي المكوّنات التي يمكن أن تُصيَّر بوصفها عناصر HTML مختلفة. ويتعامل TypeScript مع هذا بأناقة:
 
 ```typescript
 // ✅ Polymorphic component with TypeScript
@@ -202,15 +202,15 @@ const Heading = <T extends React.ElementType = 'h1'>({
 </Heading>;
 ```
 
-This might look complex, but it gives you incredible type safety. When you use `as="div"`, TypeScript knows you can use `onClick`, `className`, and other div-specific props. With PropTypes, this kind of conditional typing was impossible.
+قد يبدو هذا معقّداً، لكنه يمنحك أمان أنواع مذهلاً. فعندما تستخدم `as="div"`، يعرف TypeScript أنك تستطيع استخدام `onClick` و`className` وغيرها من الخصائص الخاصة بـ div. أما مع PropTypes، فكان هذا النوع من التعريف بالأنواع بشكل شرطي مستحيلاً.
 
-## Migration Strategy
+## استراتيجية الترحيل
 
-Don’t try to migrate everything at once. Here’s a practical approach:
+لا تحاول ترحيل كل شيء دفعة واحدة. إليك نهجاً عملياً:
 
-### Step 1: Start with Leaf Components
+### الخطوة 1: ابدأ بالمكوّنات الورقية
 
-Begin with components that don’t have children components. These are typically easier to migrate and let you build confidence:
+ابدأ بالمكوّنات التي ليس لديها مكوّنات أبناء. وهي عادةً أسهل في الترحيل وتساعدك على بناء الثقة:
 
 ```typescript
 // Start here - simple, no dependencies on other components
@@ -219,9 +219,9 @@ const LoadingSpinner = ({ size = 'medium' }: { size?: 'small' | 'medium' | 'larg
 };
 ```
 
-### Step 2: Create Shared Types
+### الخطوة 2: أنشئ أنواعاً مشتركة
 
-As you migrate, you’ll start to notice patterns. Extract common types:
+مع تقدّمك في الترحيل، ستلاحظ أنماطاً متكررة. استخرج الأنواع المشتركة:
 
 ```typescript
 // types/common.ts
@@ -241,13 +241,13 @@ export interface ApiError {
 export type LoadingState = 'idle' | 'loading' | 'success' | 'error';
 ```
 
-### Step 3: Migrate Parent Components
+### الخطوة 3: رحّل المكوّنات الآباء
 
-Once your leaf components are typed, work your way up the component tree. The TypeScript compiler will help you find any mismatches.
+بمجرد أن تصبح مكوّناتك الورقية معرّفة بالأنواع، اصعد في شجرة المكوّنات. وسيساعدك مترجم TypeScript على اكتشاف أي تناقضات.
 
-### Step 4: Remove `PropTypes`
+### الخطوة 4: أزل `PropTypes`
 
-Only after you’ve fully migrated a component should you remove its PropTypes. This lets you verify the TypeScript types are working correctly before losing the runtime validation safety net.
+احذف PropTypes الخاص بمكوّن بعد اكتمال ترحيله بالكامل فقط. هكذا تتأكد من أن أنواع TypeScript تعمل بشكل صحيح قبل أن تفقد شبكة الأمان التي يوفرها التحقق في وقت التشغيل.
 
 ```bash
 # Remove `PropTypes` dependency when you're done
@@ -256,11 +256,11 @@ npm uninstall prop-types
 yarn remove prop-types
 ```
 
-## Common Gotchas and Solutions
+## فخاخ شائعة وحلولها
 
-### Children Props
+### خصائص الأبناء
 
-PropTypes used `PropTypes.node` for anything renderable. TypeScript is more specific:
+استخدمت PropTypes التابع `PropTypes.node` لأي شيء يمكن تصييره. أما TypeScript فهو أكثر تحديداً:
 
 ```typescript
 // ❌ Too restrictive
@@ -279,9 +279,9 @@ interface Props {
 }
 ```
 
-### Ref Forwarding
+### تمرير المراجع
 
-If you’re using `React.forwardRef`, the typing is slightly different:
+إذا كنت تستخدم `React.forwardRef`، فالتعريف بالأنواع مختلف قليلاً:
 
 ```typescript
 // ✅ Proper ref forwarding with TypeScript
@@ -299,9 +299,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input';
 ```
 
-### Event Handlers
+### معالجات الأحداث
 
-PropTypes couldn’t tell you much about event handlers. TypeScript can be very specific:
+لم تكن PropTypes قادرة على إخبارك الكثير عن معالجات الأحداث. أما TypeScript فيمكنه أن يكون محدداً جداً:
 
 ```typescript
 interface FormProps {
@@ -311,13 +311,13 @@ interface FormProps {
 }
 ```
 
-Your IDE will now autocomplete `event.target`, `event.preventDefault()`, and show you exactly what properties are available.
+سيتكفل محررك الآن بإكمال `event.target` و`event.preventDefault()` تلقائياً، وإخبارك بدقة بالخصائص المتاحة.
 
-## Validating Props at Runtime
+## التحقق من الخصائص في وقت التشغيل
 
-“But wait,” you might ask, “what about runtime validation? What if my API returns malformed data?”
+قد تسأل: «لكن، ماذا عن التحقق في وقت التشغيل؟ ماذا لو عادت واجهة الـ API بالبيانات تالفة؟»
 
-Great question! TypeScript handles compile-time validation, but you still need runtime validation for external data. This is where libraries like [Zod](https://github.com/colinhacks/zod) come in handy:
+سؤال ممتاز! يتولى TypeScript التحقق في وقت التجميع، لكنك ما زلت بحاجة إلى التحقق في وقت التشغيل للبيانات الخارجية. وهنا تفيدك مكتبات مثل [Zod](https://github.com/colinhacks/zod):
 
 ```typescript
 import { z } from 'zod';
@@ -341,13 +341,13 @@ const fetchUser = async (id: string): Promise<User> => {
 };
 ```
 
-This gives you the best of both worlds: compile-time safety from TypeScript and runtime validation where you actually need it (at the boundaries of your application).
+هذا يمنحك أفضل ما في العالمين: أمان وقت التجميع من TypeScript، والتحقق في وقت التشغيل حيث تحتاجه فعلاً (عند حدود تطبيقك).
 
-## Performance Considerations
+## اعتبارات الأداء
 
-One immediate benefit you’ll notice after removing `PropTypes` is faster development builds and smaller bundle sizes. `PropTypes` validation code gets stripped out in production builds, but it still needs to be processed during development.
+من أولى الفوائد التي ستلاحظها بعد إزالة `PropTypes` هي بناء أسرع في وضع التطوير وأحجام حِزم أصغر. فشيفرة التحقق في `PropTypes` تُستبعد من بناء الإنتاج، لكنها ما زالت بحاجة إلى معالجة أثناء التطوير.
 
-Here’s what you’re eliminating:
+إليك ما سنتخلص منه:
 
 ```typescript
 // This entire block disappears
@@ -359,22 +359,22 @@ UserCard.propTypes = {
 };
 ```
 
-For large applications with many components, this can add up to meaningful bundle size reduction and faster hot module replacement during development.
+وفي التطبيقات الكبيرة ذات المكوّنات العديدة، يمكن أن يترجم هذا إلى انخفاض معتبر في حجم الحزمة (bundle) واستبدال أسرع للوحدات (hot module replacement) أثناء التطوير.
 
-## When You Might Keep `PropTypes`
+## متى قد تحتفظ بـ `PropTypes`
 
-There are a few scenarios where you *might* want to keep `PropTypes` around temporarily:
+هناك بضعة سيناريوهات قد ترغب فيها مؤقتاً بالاحتفاظ بـ `PropTypes`:
 
-- **Third-party Integration**: If you’re building components that will be consumed by JavaScript (non-TypeScript) projects, `PropTypes` can provide runtime safety for those consumers.
-- **Gradual Migration**: During a large migration, having both TypeScript types and `PropTypes` can provide redundant safety while you’re building confidence in your new types.
-- **Runtime Configuration**: If your components receive props from configuration files or external systems at runtime, `PropTypes` can catch misconfigurations that TypeScript can’t see.
+- **التكامل مع جهات خارجية**: إذا كنت تبني مكوّنات سيستهلكها مشاريع JavaScript (غير TypeScript)، يمكن لـ `PropTypes` توفير أمان في وقت التشغيل لهؤلاء المستهلكين.
+- **الترحيل التدريجي**: خلال ترحيل كبير، يمكن للوجود المتزامن لأنواع TypeScript و`PropTypes` أن يوفر أماناً مكرراً أثناء بناء ثقتك بأنواعك الجديدة.
+- **التهيئة في وقت التشغيل**: إذا كانت مكوّناتك تستقبل خصائصها من ملفات تهيئة أو أنظمة خارجية في وقت التشغيل، يمكن لـ `PropTypes` اكتشاف سوء التهيئة الذي لا يراه TypeScript.
 
-But for most React applications, these scenarios are rare, and the benefits of pure TypeScript far outweigh keeping `PropTypes` around.
+لكن تندر تواجد هذه السيناريوهات في معظم تطبيقات React، وتفوق فوائد TypeScript الخالص كثيراً فائدة الاحتفاظ بـ `PropTypes`.
 
-## Wrapping Up
+## الخلاصة
 
-Migrating from `PropTypes` to TypeScript isn’t just about following trends—it’s about fundamentally improving how you build React applications. You get earlier error detection, better tooling support, self-documenting code, and improved performance.
+الترحيل من `PropTypes` إلى TypeScript ليس مجرد اتباع للاتجاهات — إنه تحسين جوهري لطريقة بنائك لتطبيقات React. ستحصل على كشف مبكر للأخطاء، ودعم أفضل من أدوات التطوير، وشيفرة ذاتية التوثيق، وأداء متحسّن.
 
-The migration might feel like extra work upfront, but every component you convert becomes more robust, easier to maintain, and more pleasant to work with. Your future self (and your teammates) will thank you for making the investment.
+قد يبدو الترحيل عملاً إضافياً في البداية، لكن كل مكوّن تحوّله يصبح أكثر متانة وأسهل صيانة وأكثر سروراً بالعمل. وسيشكرك نسختك المستقبلية (وزملاؤك في الفريق) على هذا الاستثمار.
 
-Start small, migrate component by component, and before you know it, you’ll have a fully typed React application that’s more reliable and easier to develop than ever before.
+ابدأ صغيراً، ورحّل مكوّناً بعد مكوّن، وقبل أن تنتبه ستكون لديك تطبيقات React معرفة بالأنواع بالكامل، أكثر موثوقية وأسهل في التطوير من أي وقت مضى.

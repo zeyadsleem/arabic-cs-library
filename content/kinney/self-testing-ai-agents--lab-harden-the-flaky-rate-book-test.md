@@ -1,20 +1,20 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر: تحصين اختبار تقييم الكتاب المتذبذب"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test"
 ---
 
-Time to cash the checks from the last handful of lessons. The Shelf starter doesn’t ship `tests/rate-book.spec.ts`. Your job in this lab is to *build* that file by hand from the intentionally rough version below, wiring in auth, seed data, locators, and waiting patterns as you go, so every Playwright-armor pattern lands in your fingers instead of just your eyes.
+حان وقت صرف الشيكات من الدروس القليلة الماضية. فنسخة Shelf الانطلاقية لا تشحن `tests/rate-book.spec.ts`. ومهمتك في هذا المختبر أن *تبني* ذلك الملف بيدك من النسخة الخشنة عمدًا أدناه، وتربط فيه المصادقة وبيانات الزرع والمحددات وأنماط الانتظار أثناء تقدّمك، كي يستقرّ كل نمط من أنماط درع Playwright في أصابعك لا في عينيك فقط.
 
-The rough version works. Sort of. It passes until the machine gets slower, the selectors drift, or the database state stops matching your assumptions. It bundles every Playwright anti-pattern into one short file, which makes it a great place to harden the whole loop.
+النسخة الخشنة تعمل. نوعًا ما. إنها تنجح إلى أن تصبح الآلة أبطأ، أو تنزاح المحددات، أو تتوقف حالة قاعدة البيانات عن مطابقة افتراضاتك. وهي تجمع كل نمط مضاد في Playwright في ملف قصير واحد، ما يجعلها مكانًا رائعًا لتحصين الحلقة كلها.
 
-> **What the minimal starter does and does not give you**
+> **ما تمنحك إياه النسخة الانطلاقية الدنيا وما لا تمنحك إياه**
 >
-> The current starter gives you one small `playwright.config.ts`, the public smoke loop in `tests/smoke.spec.ts`, the seed data files under `tests/data/`, and the low-level create/delete helpers under `src/lib/server/`. It does **not** ship storage-state auth, an authenticated Playwright project, or a finished `tests/helpers/seed.ts`. This lab is where those pieces become real.
+> تمنحك النسخة الانطلاقية الحالية ملف `playwright.config.ts` صغيرًا واحدًا، وحلقة الدخان العامة في `tests/smoke.spec.ts`، وملفات بيانات الزرع تحت `tests/data/`، والدوال المساعدة المنخفضة المستوى للإنشاء والحذف تحت `src/lib/server/`. وهي **لا** تشحن مصادقة حالة التخزين، ولا مشروع Playwright مُوثَّقًا، ولا ملف `tests/helpers/seed.ts` مكتملًا. هذا المختبر هو حيث تصبح تلك القطع حقيقية.
 
-Your job is to fix it. Every pattern we learned in the Playwright lessons applies here.
+مهمتك إصلاحه. وكل نمط تعلّمناه في دروس Playwright ينطبق هنا.
 
-## The starting point
+## نقطة البداية
 
 ```typescript
 import { test, expect } from '@playwright/test';
@@ -39,83 +39,83 @@ test('user can rate a book', async ({ page }) => {
 });
 ```
 
-Count the problems. I get eight. See if you can find more.
+عُدّ المشكلات. أنا أعدّ ثمانيًا. انظر إن كان بوسعك إيجاد المزيد.
 
-- UI login at the top of every test.
-- Three `waitForTimeout` calls with three different magic numbers.
-- CSS selectors everywhere.
-- Chained `.locator(...)` with compound selectors that are going to break when anyone touches the class names.
-- `.first()` to handle the fact that there’s more than one `.book-card`, instead of scoping to a specific book.
-- `textContent()` read into a variable and asserted with `.toContain`, bypassing Playwright’s auto-retry.
-- No seeding, so the test depends on whatever the database happens to have in it.
-- No network mocking, so the rating POST hits a real API endpoint and sometimes the response is slow.
+- تسجيل دخول عبر الواجهة في أعلى كل اختبار.
+- ثلاثة نداءات `waitForTimeout` بثلاثة أرقام سحرية مختلفة.
+- محددات CSS في كل مكان.
+- `.locator(...)` متسلسلة بمحددات مركّبة ستنكسر حين يمسّ أي أحد أسماء الفئات.
+- `.first()` للتعامل مع وجود أكثر من `.book-card`، بدلًا من تحديد نطاق كتاب معين.
+- `textContent()` تُقرأ في متغيّر وتُؤكَّد بـ`.toContain`، متجاوزة إعادة المحاولة التلقائية في Playwright.
+- لا زرع، فيعتمد الاختبار على ما تصادف أن تحتويه قاعدة البيانات.
+- لا محاكاة شبكة، فيصيب طلب POST للتقييم نقطة نهاية API حقيقية وتكون الاستجابة بطيئة أحيانًا.
 
-## The task
+## المهمة
 
-Rewrite the test so it passes every run on both a fast laptop and a slow CI machine. You should end up applying, at minimum:
+أعد كتابة الاختبار بحيث ينجح في كل تشغيل على حاسوب محمول سريع وآلة CI بطيئة معًا. وينبغي أن تنتهي بتطبيق ما يلي كحدّ أدنى:
 
-1. Storage state authentication (no UI login).
-2. Seeding (the book exists in the database before the test runs).
-3. `getByRole` locators with scoped chaining.
-4. Auto-retrying `expect` assertions instead of `textContent` + `toContain`.
-5. `page.waitForResponse` for the rating POST, not a timeout.
-6. Zero `waitForTimeout` calls anywhere in the file.
+1. المصادقة بحالة التخزين (بلا تسجيل دخول عبر الواجهة).
+2. الزرع (الكتاب موجود في قاعدة البيانات قبل تشغيل الاختبار).
+3. محددات `getByRole` مع تسلسل محدّد النطاق.
+4. تأكيدات `expect` بإعادة محاولة تلقائية بدلًا من `textContent` + `toContain`.
+5. `page.waitForResponse` لطلب POST الخاص بالتقييم، لا مهلة.
+6. صفر نداءات `waitForTimeout` في أي مكان في الملف.
 
-You may also want to use the `request` fixture to verify the rating actually landed in the database, as a second assertion on top of the UI check.
+قد تريد أيضًا استخدام تجهيزة `request` للتحقّق من أن التقييم وصل فعلًا إلى قاعدة البيانات، كتأكيد ثانٍ فوق فحص الواجهة.
 
-## Suggested order of attack
+## الترتيب المقترح للهجوم
 
-Work top-down. Fix one pattern, run the test, move on.
+اعمل من الأعلى إلى الأسفل. أصلح نمطًا واحدًا، شغّل الاختبار، ثم امضِ.
 
-Start by creating `tests/authentication.setup.ts` and wiring `playwright.config.ts` to use it through a `setup` project plus an `authenticated` project. Delete the login block from the test. In the current Shelf starter, the stable setup is a browser-driven login in the setup project: navigate to `/login`, fill the form through the page, and save state with `page.context().storageState(...)`. Run the setup once to make sure authentication works. Commit. (See the Storage State Authentication lesson for the full pattern.)
+ابدأ بإنشاء `tests/authentication.setup.ts` وربط `playwright.config.ts` ليستخدمه عبر مشروع `setup` زائد مشروع `authenticated`. واحذف كتلة تسجيل الدخول من الاختبار. في نسخة Shelf الانطلاقية الحالية، الإعداد المستقر تسجيل دخول يقوده المتصفح في مشروع setup: انتقل إلى `/login`، واملأ النموذج عبر الصفحة، واحفظ الحالة بـ`page.context().storageState(...)`. شغّل الإعداد مرة واحدة لتتأكد من أن المصادقة تعمل. ثم التزم. (راجع درس المصادقة بحالة التخزين للنمط الكامل.)
 
-Next, implement `tests/helpers/seed.ts` so the book you’re going to rate is in the database before the test runs. Build it from `tests/data/*.json` plus the small `src/lib/server` create/delete helpers the starter ships. Delete any reliance on “whatever is on the shelf already.” Commit.
+بعد ذلك، نفّذ `tests/helpers/seed.ts` كي يكون الكتاب الذي ستقيّمه في قاعدة البيانات قبل تشغيل الاختبار. ابنِه من `tests/data/*.json` زائد دوال الإنشاء والحذف الصغيرة في `src/lib/server` التي تشحنها النسخة الانطلاقية. واحذف أي اعتماد على «ما هو موجود على الرف أصلًا». ثم التزم.
 
-Then create `tests/rate-book.spec.ts` from the rough version below, but run it under the new `authenticated` project instead of logging in inside the test. Once the file exists, swap the CSS selectors for `getByRole` chains. Scope by book title, then by button name inside the book. Run the test locally a few times. Commit.
+ثم أنشئ `tests/rate-book.spec.ts` من النسخة الخشنة أدناه، لكن شغّله تحت مشروع `authenticated` الجديد بدلًا من تسجيل الدخول داخل الاختبار. وحين يوجد الملف، استبدل محددات CSS بسلاسل `getByRole`. حدّد النطاق بعنوان الكتاب، ثم باسم الزر داخل الكتاب. شغّل الاختبار محليًا بضع مرات. ثم التزم.
 
-Next, replace every `waitForTimeout` with either an `expect(locator).toBeVisible()` assertion or a `page.waitForResponse` on the rating POST. Delete the `textContent` + `toContain` pattern and use `expect(toast).toHaveText(/Thanks/)` instead. Commit.
+بعد ذلك، استبدل كل `waitForTimeout` إما بتأكيد `expect(locator).toBeVisible()` أو بـ`page.waitForResponse` على طلب POST للتقييم. احذف نمط `textContent` + `toContain` واستخدم `expect(toast).toHaveText(/Thanks/)` بدلًا منه. ثم التزم.
 
-Finally, add a second assertion using `request.get('/api/shelf/...')` to verify the rating is actually persisted. This isn’t strictly required, but it’s the kind of hybrid check that catches “UI says success but database disagrees” bugs. Commit.
+أخيرًا، أضف تأكيدًا ثانيًا باستخدام `request.get('/api/shelf/...')` للتحقّق من أن التقييم محفوظ فعلًا. هذا ليس مطلوبًا بصرامة، لكنه نوع الفحص الهجين الذي يلتقط أخطاء «الواجهة تقول نجاح لكن قاعدة البيانات تعترض». ثم التزم.
 
-## Acceptance criteria
+## معايير القبول
 
-- `rg "waitForTimeout" tests/rate-book.spec.ts` returns nothing.
-- `rg "page.locator\(" tests/rate-book.spec.ts` returns nothing.
-- `rg "page.goto\('/login'\)" tests/rate-book.spec.ts` returns nothing.
-- `rg "page.fill\(\[name=" tests/rate-book.spec.ts` returns nothing.
-- The test passes ten times in a row: `for i in {1..10}; do npx playwright test tests/rate-book.spec.ts --project=authenticated || break; done` and no iteration exits non-zero.
-- The test passes with the Playwright project graph you built in this lab: setup creates storage state, authenticated specs reuse it, and the test no longer depends on a UI login.
-- Suite wall time for `rate-book.spec.ts` dropped compared to the baseline. Measure with `time npx playwright test tests/rate-book.spec.ts --project=authenticated` before and after. Record both numbers in your commit message.
-- `npx playwright test tests/rate-book.spec.ts --project=authenticated --grep="can rate"` completes in under 5 seconds on your machine when Playwright is reusing an already running local server.
-- The commit history shows the work broken into at least four commits, each one addressing one pattern (auth, seed, locators, waits).
+- `rg "waitForTimeout" tests/rate-book.spec.ts` لا يعيد شيئًا.
+- `rg "page.locator\(" tests/rate-book.spec.ts` لا يعيد شيئًا.
+- `rg "page.goto\('/login'\)" tests/rate-book.spec.ts` لا يعيد شيئًا.
+- `rg "page.fill\(\[name=" tests/rate-book.spec.ts` لا يعيد شيئًا.
+- ينجح الاختبار عشر مرات متتالية: `for i in {1..10}; do npx playwright test tests/rate-book.spec.ts --project=authenticated || break; done` ولا تخرج أي تكرار بقيمة غير صفرية.
+- ينجح الاختبار مع رسم مشاريع Playwright الذي بنيته في هذا المختبر: setup ينشئ حالة التخزين، ومواصفات authenticated تعيد استخدامها، ولم يعد الاختبار يعتمد على تسجيل دخول عبر الواجهة.
+- انخفض الزمن الجداري للمجموعة لـ`rate-book.spec.ts` مقارنة بالأساس. قِس بـ`time npx playwright test tests/rate-book.spec.ts --project=authenticated` قبل وبعد. وسجّل الرقمين في رسالة الالتزام.
+- `npx playwright test tests/rate-book.spec.ts --project=authenticated --grep="can rate"` يكتمل في أقل من 5 ثوانٍ على آلتك حين تعيد Playwright استخدام خادم محلي قيد التشغيل أصلًا.
+- يُظهر سجل الالتزامات تقسيم العمل إلى أربعة التزامات على الأقل، يعالج كل واحد منها نمطًا واحدًا (المصادقة، الزرع، المحددات، الانتظارات).
 
-## Stretch goals
+## أهداف إضافية
 
-If you finish early, pick one or more:
+إن انتهيت مبكرًا، اختر واحدًا أو أكثر:
 
-- Add a second test in the same file that verifies a user *can’t* rate a book they haven’t added to their shelf yet. Use the `request` fixture or your server helpers to set up the scenario (book exists, user has not added it) and assert the rating button is disabled.
-- Replace the final persistence check with `expect.poll()` so the test reads as “wait until the backend agrees,” not “fire one request and hope the write already landed.” Then rewrite the same check once with `expect(async () => { ... }).toPass({ timeout: ... })` so you can feel the difference between retrying one value and retrying a whole assertion block.
-- As a short experiment, try swapping the browser-driven login in `authentication.setup.ts` for a direct server-side shortcut if your auth stack exposes one. Confirm the tests still pass. Then consider the tradeoff: the shortcut is faster, but you lose the implicit smoke test on the login form.
-- Run the test under `--repeat-each=50` and see if anything flakes under load.
-- Turn off `fullyParallel` and see if the test still passes. (It should. If it doesn’t, you have a seeding leak—fix it.)
-- Add a route-middleware experiment before the rating click: one broad route that calls `route.fallback()` for everything except `POST`s and stamps those with an `x-test-mode: 1` header, then a narrower `**/api/**` route that uses `route.fetch({ maxRetries: 2 })` and fulfills a patched JSON response. Confirm the chain order does what you think it does.
-- Add one more spec that exercises an Open Library-backed search flow, then record a HAR for it using the `UPDATE_HARS` environment variable pattern from the [Approaches to HAR Recording](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording) lesson. Commit the HAR and verify the test passes in replay mode on airplane Wi-Fi—or at least with your network cable unplugged.
+- أضف اختبارًا ثانيًا في الملف نفسه يتحقّق من أن المستخدم *لا يستطيع* تقييم كتاب لم يضفه إلى رفه بعد. استخدم تجهيزة `request` أو دوالك المساعدة على الخادم لإعداد السيناريو (الكتاب موجود، والمستخدم لم يضفه) وأكّد أن زر التقييم معطّل.
+- استبدل فحص الحفظ الأخير بـ`expect.poll()` كي يُقرأ الاختبار كـ«انتظر حتى توافق الواجهة الخلفية»، لا «أطلق طلبًا واحدًا وارجُ أن الكتابة وصلت أصلًا». ثم أعد كتابة الفحص نفسه مرة بـ`expect(async () => { ... }).toPass({ timeout: ... })` كي تشعر بالفرق بين إعادة محاولة قيمة واحدة وإعادة محاولة كتلة تأكيد كاملة.
+- كتجربة قصيرة، جرّب استبدال تسجيل الدخول الذي يقوده المتصفح في `authentication.setup.ts` باختصار مباشر من جانب الخادم إن كانت كومة المصادقة لديك تكشف واحدًا. تأكّد من أن الاختبارات ما زالت تنجح. ثم فكّر في المقايضة: الاختصار أسرع، لكنك تخسر اختبار الدخان الضمني على نموذج تسجيل الدخول.
+- شغّل الاختبار بـ`--repeat-each=50` وانظر إن كان شيء يتذبذب تحت الحمل.
+- أطفئ `fullyParallel` وانظر إن كان الاختبار ما زال ينجح. (ينبغي أن ينجح. وإن لم يفعل، فلديك تسرّب زرع — أصلحه.)
+- أضف تجربة برمجية وسيطة للمسارات قبل النقر على التقييم: مسار عريض واحد ينادي `route.fallback()` لكل شيء عدا طلبات `POST` ويختم تلك بترويسة `x-test-mode: 1`، ثم مسار أضيق `**/api/**` يستخدم `route.fetch({ maxRetries: 2 })` ويستوفي استجابة JSON مرقّعة. تأكّد من أن ترتيب السلسلة يفعل ما تظنه.
+- أضف مواصفة أخرى تمارس سير بحث مدعومًا بـOpen Library، ثم سجّل لها HAR باستخدام نمط متغيّر البيئة `UPDATE_HARS` من درس [مقاربات تسجيل HAR](https://stevekinney.com/courses/self-testing-ai-agents/approaches-to-har-recording). التزم بـHAR وتحقّق من أن الاختبار ينجح في وضع الإعادة على واي فاي الطائرة — أو على الأقل مع فصل كبل الشبكة.
 
-## A successful end state
+## حالة نهاية ناجحة
 
-The hardened Shelf starter ends up with an explicit toast and persisted rating after the test clicks through the modal. Your exact styling may differ, but the success state should look like this:
+تنتهي نسخة Shelf الانطلاقية المحصّنة بإشعار toast صريح وتقييم محفوظ بعد أن ينقر الاختبار عبر النافذة المنبثقة. قد يختلف تنسيقك الدقيق، لكن حالة النجاح ينبغي أن تبدو هكذا:
 
-The hardened rate-book flow showing the persisted success toast and updated shelf summary
+تدفّق تقييم الكتاب المحصّن يعرض إشعار النجاح المحفوظ وملخّص الرف المحدّث
 
-## What this looks like against a real agent
+## كيف يبدو هذا أمام وكيل حقيقي
 
-The interesting question isn’t whether you can harden this test — you just did. The interesting question is whether an agent can do it given the right context. Here’s what that looks like with the rules-laden `CLAUDE.md` from [Lab: Rewrite the Bad CLAUDE.md](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md) in place.
+السؤال المثير ليس إن كنت تستطيع تحصين هذا الاختبار — فقد فعلته للتو. السؤال المثير هو إن كان وكيل يستطيع فعل ذلك مع السياق الصحيح. وإليك كيف يبدو ذلك مع `CLAUDE.md` المحمّل بالقواعد من [مختبر: أعد كتابة CLAUDE.md السيئ](https://stevekinney.com/courses/self-testing-ai-agents/lab-rewrite-the-bad-claude-md) في مكانه.
 
-Restore the broken version of `tests/rate-book.spec.ts` — the one with UI login, `waitForTimeout`, and CSS selectors. Give Claude Code this prompt:
+أعِد النسخة المكسورة من `tests/rate-book.spec.ts` — تلك التي فيها تسجيل دخول عبر الواجهة و`waitForTimeout` ومحددات CSS. وأعطِ Claude Code هذه المطالبة:
 
-> `tests/rate-book.spec.ts` is flaky. Harden it following the rules in CLAUDE.md.
+> `tests/rate-book.spec.ts` متذبذب. حصّنه باتباع القواعد في CLAUDE.md.
 
-A typical session:
+جلسة نموذجية:
 
 ```
 Reading CLAUDE.md...
@@ -163,18 +163,18 @@ Running npm run test --grep "rate a book"...
 Hardened. Every acceptance criterion from the lab hits zero.
 ```
 
-Compare this to what the *same* agent does with an empty `CLAUDE.md`: it still fixes the flakiness, but it fixes the symptoms one at a time — wraps the `waitForTimeout` in a retry, adds a `.first()` to disambiguate selectors — without ever consulting a rule set. The result is a test that passes most of the time and flakes occasionally, which is strictly worse than the version you started with because now the flakiness is hidden.
+قارن هذا بما يفعله *الوكيل نفسه* بـ`CLAUDE.md` فارغ: ما زال يصلح التذبذب، لكنه يصلح الأعراض واحدًا واحدًا — يلفّ `waitForTimeout` في إعادة محاولة، ويضيف `.first()` لفضّ التباس المحددات — دون أن يراجع أي مجموعة قواعد قط. والنتيجة اختبار ينجح معظم الوقت ويتذبذب أحيانًا، وهذا أسوأ بصرامة من النسخة التي بدأت بها لأن التذبذب صار مخفيًا.
 
-The difference between the two sessions is the difference between “follow a playbook” and “improvise from the error messages.” The playbook is `CLAUDE.md`. If you can read the transcript above and recognize every decision the agent made, you’re done — the rules are in your fingers.
+الفرق بين الجلستين هو الفرق بين «اتبع دليل لعب» و«ارتجل من رسائل الخطأ». ودليل اللعب هو `CLAUDE.md`. إن استطعت قراءة النص أعلاه والتعرّف على كل قرار اتخذه الوكيل، فقد انتهيت — القواعد صارت في أصابعك.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Every anti-pattern in the starting file is individually fixable in under five minutes with the right pattern. What made the original test bad wasn’t any one mistake—it was the absence of a framework for thinking about tests. The Playwright lessons were that framework. This lab is where it becomes muscle memory.
+كل نمط مضاد في ملف البداية قابل للإصلاح منفردًا في أقل من خمس دقائق بالنمط الصحيح. وما جعل الاختبار الأصلي سيئًا لم يكن خطأ واحدًا — بل غياب إطار للتفكير في الاختبارات. وكانت دروس Playwright ذلك الإطار. وهذا المختبر هو حيث يصبح ذاكرة عضلية.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/harden-the-flaky-rate-book-test-solution)
-- [The Waiting Story](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [API and UI Hybrid Tests](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/harden-the-flaky-rate-book-test-solution)
+- [حكاية الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [الحالة الحتمية وعزل الاختبار](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [اختبارات API وUI الهجينة](https://stevekinney.com/courses/self-testing-ai-agents/api-and-ui-hybrid-tests)

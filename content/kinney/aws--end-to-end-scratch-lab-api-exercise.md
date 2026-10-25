@@ -1,92 +1,92 @@
 ---
-title: "Capstone: End-to-End Scratch Lab API"
-lang: en
+title: "المشروع الختامي: واجهة برمجية متكاملة من الطرف إلى الطرف لتطبيق Scratch Lab"
+lang: ar
 source: "https://stevekinney.com/courses/aws/end-to-end-scratch-lab-api-exercise"
 ---
 
-You’ve built all the pieces. Now build the backend they add up to.
+لقد بنيت كل الأجزاء. حان الآن لبناء الواجهة الخلفية التي تتجمّع منها هذه الأجزاء.
 
-This is the Part 2 capstone—the mirror of [Exercise: End-to-End Static Site Deployment](https://stevekinney.com/courses/aws/static-site-deployment-exercise) that closed out Part 1. By the end, the [Scratch Lab](https://github.com/stevekinney/scratch-lab) notepad app should be able to `fetch()` a real API on your own domain, that hits a real Lambda, that reads and writes a real DynamoDB table, using credentials fetched from Parameter Store (or Secrets Manager). Every layer you’ve learned about, stacked.
+هذا هو المشروع الختامي للجزء الثاني—النظير المقابل لـ[تمرين: نشر موقع ثابت من الطرف إلى الطرف](https://stevekinney.com/courses/aws/static-site-deployment-exercise) الذي ختم الجزء الأول. بنهاية هذا التمرين، يجب أن يستطيع تطبيق المفكّرة [Scratch Lab](https://github.com/stevekinney/scratch-lab) أن ينفّذ `fetch()` على واجهة برمجية حقيقية على نطاقك أنت، تصل إلى دالة Lambda حقيقية، تقرأ من جدول DynamoDB حقيقي وتكتب فيه، باستخدام بيانات اعتماد تُجلب من Parameter Store (أو Secrets Manager). كل طبقة تعرّفت عليها، مكدّسة فوق بعضها.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-Each service on its own is a toy. Wired together they’re a backend. The reason the course teaches Lambda, API Gateway, DynamoDB, and Secrets Manager separately is that the moving pieces are easier to reason about in isolation—but shipping software means putting them together and living with the rough edges at the seams. That’s the skill this capstone builds.
+كل خدمة بمفردها لعبة. أما حين تُوصَل ببعضها فإنها تصبح واجهة خلفية. السبب في أن الدورة تعلّم Lambda وAPI Gateway وDynamoDB وSecrets Manager كلًا على حدة هو أن الأجزاء المتحركة أسهل في التفكير فيها بمعزل عن غيرها—لكن شحن البرمجيات يعني جمعها معًا والتعايش مع الحواف الخشنة عند نقاط الالتحام. تلك هي المهارة التي يبنيها هذا المشروع الختامي.
 
-## Your Task
+## مهمتك
 
-Build a notes backend for [Scratch Lab](https://github.com/stevekinney/scratch-lab) that:
+ابنِ واجهة خلفية للملاحظات من أجل [Scratch Lab](https://github.com/stevekinney/scratch-lab) تقوم بما يلي:
 
-- Exposes five routes through API Gateway HTTP API: `GET /notes` → return every note for the authenticated user. `POST /notes` → create a new note and return it. `GET /notes/{noteId}` → return a single note. `PUT /notes/{noteId}` → update a note and return it. `DELETE /notes/{noteId}` → delete a note.
-  - `GET /notes` → return every note for the authenticated user.
-  - `POST /notes` → create a new note and return it.
-  - `GET /notes/{noteId}` → return a single note.
-  - `PUT /notes/{noteId}` → update a note and return it.
-  - `DELETE /notes/{noteId}` → delete a note.
-- Runs one Lambda function (`scratch-lab-api`) behind API Gateway, which handles all five routes by inspecting `event.requestContext.http`.
-- Persists notes in a DynamoDB table (`scratch-lab-notes`) with a `userId` partition key and `noteId` sort key.
-- Reads a third-party `SEARCH_API_KEY` from Parameter Store or Secrets Manager at Lambda cold-start and caches it in module scope.
-- Returns CORS-correct responses so the Scratch Lab frontend (served from your CloudFront distribution in Part 1) can call the API from the browser.
+- تكشف خمسة مسارات عبر API Gateway HTTP API: `GET /notes` → إعادة كل الملاحظات الخاصة بالمستخدم المُوثَّق. `POST /notes` → إنشاء ملاحظة جديدة وإعادتها. `GET /notes/{noteId}` → إعادة ملاحظة واحدة. `PUT /notes/{noteId}` → تحديث ملاحظة وإعادتها. `DELETE /notes/{noteId}` → حذف ملاحظة.
+  - `GET /notes` → إعادة كل الملاحظات الخاصة بالمستخدم المُوثَّق.
+  - `POST /notes` → إنشاء ملاحظة جديدة وإعادتها.
+  - `GET /notes/{noteId}` → إعادة ملاحظة واحدة.
+  - `PUT /notes/{noteId}` → تحديث ملاحظة وإعادتها.
+  - `DELETE /notes/{noteId}` → حذف ملاحظة.
+- تشغّل دالة Lambda واحدة (`scratch-lab-api`) خلف API Gateway، وتتعامل مع المسارات الخمسة كلها عبر فحص `event.requestContext.http`.
+- تحفظ الملاحظات في جدول DynamoDB (`scratch-lab-notes`) بمفتاح تقسيم `userId` ومفتاح ترتيب `noteId`.
+- تقرأ مفتاح `SEARCH_API_KEY` العائد لطرف ثالث من Parameter Store أو Secrets Manager عند البدء البارد لدالة Lambda وتخزّنه مؤقتًا في نطاق الوحدة (module scope).
+- تعيد استجابات صحيحة من حيث CORS حتى تستطيع واجهة Scratch Lab الأمامية (المقدَّمة من توزيع CloudFront الذي أنشأته في الجزء الأول) أن تنادي الواجهة البرمجية من المتصفح.
 
-Scratch Lab already has an API storage layer built in. Clone the repo, set the `VITE_API_URL` environment variable to your API Gateway endpoint, and the app will call your backend automatically. The frontend sends an `x-notepad-user-id` header on every request to identify the user.
+يملك Scratch Lab بالفعل طبقة تخزين عبر واجهة برمجية مدمجة فيه. استنسخ المستودع، واضبط متغيّر البيئة `VITE_API_URL` على نقطة نهاية API Gateway الخاصة بك، وسينادي التطبيق واجهتك الخلفية تلقائيًا. ترسل الواجهة الأمامية ترويسة `x-notepad-user-id` مع كل طلب لتحديد هوية المستخدم.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-You’ve completed Part 1 (static site on CloudFront) and all of the Part 2 lessons up to this point. You should already have:
+يجب أن تكون قد أكملت الجزء الأول (الموقع الثابت على CloudFront) وكل دروس الجزء الثاني حتى هذه النقطة. ينبغي أن يكون لديك بالفعل:
 
-- An S3 + CloudFront deployment from [Exercise: End-to-End Static Site Deployment](https://stevekinney.com/courses/aws/static-site-deployment-exercise).
-- A working Lambda project from [Exercise: Build and Deploy a Lambda Function](https://stevekinney.com/courses/aws/lambda-function-exercise).
-- An HTTP API from [Exercise: Build an API with API Gateway and Lambda](https://stevekinney.com/courses/aws/api-gateway-lambda-exercise).
-- A DynamoDB table pattern from [Exercise: Build a Data API with DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-exercise).
-- A secret stored and readable from [Exercise: Store and Retrieve a Secret in Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-exercise).
+- نشر S3 + CloudFront من [تمرين: نشر موقع ثابت من الطرف إلى الطرف](https://stevekinney.com/courses/aws/static-site-deployment-exercise).
+- مشروع Lambda عامل من [تمرين: بناء دالة Lambda ونشرها](https://stevekinney.com/courses/aws/lambda-function-exercise).
+- HTTP API من [تمرين: بناء واجهة برمجية باستخدام API Gateway وLambda](https://stevekinney.com/courses/aws/api-gateway-lambda-exercise).
+- نمط جدول DynamoDB من [تمرين: بناء واجهة برمجية للبيانات باستخدام DynamoDB](https://stevekinney.com/courses/aws/dynamodb-lambda-exercise).
+- سرّ مخزَّن وقابل للقراءة من [تمرين: تخزين سرّ واسترجاعه في Lambda](https://stevekinney.com/courses/aws/secrets-in-lambda-exercise).
 
-Nothing in this exercise introduces a service you haven’t already used. The point is wiring, not discovery.
+لا شيء في هذا التمرين يقدّم خدمة لم تستخدمها من قبل. الهدف هو التوصيل، لا الاكتشاف.
 
-## Step-by-Step
+## الخطوات التفصيلية
 
-### 1. Create the DynamoDB Table
+### 1. إنشاء جدول DynamoDB
 
-Create `scratch-lab-notes` with:
+أنشئ `scratch-lab-notes` بما يلي:
 
-- Partition key: `userId` (String)
-- Sort key: `noteId` (String)
-- Billing mode: on-demand
+- مفتاح التقسيم: `userId` (String)
+- مفتاح الترتيب: `noteId` (String)
+- وضع الفوترة: عند الطلب (on-demand)
 
-Revisit [Tables, Partition Keys, and Sort Keys](https://stevekinney.com/courses/aws/dynamodb-tables-and-keys) if the `aws dynamodb create-table` flag shape is foggy.
+عُد إلى [الجداول ومفاتيح التقسيم ومفاتيح الترتيب](https://stevekinney.com/courses/aws/dynamodb-tables-and-keys) إن كانت صيغة أعلام `aws dynamodb create-table` غامضة عليك.
 
-### 2. Store the Search API Key
+### 2. تخزين مفتاح واجهة البحث البرمجية
 
-Pick one of the two services you learned:
+اختر واحدة من الخدمتين اللتين تعلمتهما:
 
-- **Parameter Store** as a `SecureString` at `/scratch-lab/production/search-api-key`, or
-- **Secrets Manager** at `/scratch-lab/production/search-api-key`.
+- **Parameter Store** على هيئة `SecureString` في المسار `/scratch-lab/production/search-api-key`، أو
+- **Secrets Manager** في المسار `/scratch-lab/production/search-api-key`.
 
-Use whichever you’re more comfortable with. The lesson in [Parameter Store vs. Secrets Manager](https://stevekinney.com/courses/aws/parameter-store-vs-secrets-manager) is the decision tree.
+استخدم ما تشعر معه براحة أكبر. درس [Parameter Store مقابل Secrets Manager](https://stevekinney.com/courses/aws/parameter-store-vs-secrets-manager) هو شجرة القرار.
 
-### 3. Update the Lambda Execution Role
+### 3. تحديث دور تنفيذ Lambda
 
-Your execution role needs:
+يحتاج دور التنفيذ الخاص بك إلى:
 
-- `dynamodb:GetItem`, `PutItem`, `DeleteItem`, `Query` on `scratch-lab-notes`.
-- `ssm:GetParameter` (+ `kms:Decrypt` if you used `SecureString` with a customer-managed key) or `secretsmanager:GetSecretValue`, depending on which store you picked.
-- `logs:CreateLogGroup`, `logs:CreateLogStream`, `logs:PutLogEvents` (usually already present from the Lambda execution role basics).
+- `dynamodb:GetItem` و`PutItem` و`DeleteItem` و`Query` على `scratch-lab-notes`.
+- `ssm:GetParameter` (و`kms:Decrypt` إن استخدمت `SecureString` مع مفتاح يديره العميل) أو `secretsmanager:GetSecretValue`، بحسب المخزن الذي اخترته.
+- `logs:CreateLogGroup` و`logs:CreateLogStream` و`logs:PutLogEvents` (وهي موجودة عادةً بالفعل من أساسيات دور تنفيذ Lambda).
 
-Scope every resource ARN to the specific table, parameter, or secret. No `*`.
+اجعل نطاق كل ARN لمورد محددًا للجدول أو المُعامل أو السرّ المعني. لا تستخدم `*`.
 
-### 4. Write the Lambda Handler
+### 4. كتابة معالج Lambda
 
-Your handler must:
+على المعالج أن:
 
-- Route based on `event.requestContext.http.method` and `event.requestContext.http.path`. A small `switch` over `${method} ${routeKey}` is plenty—you don’t need a router framework.
-- Parse the user’s ID from the `x-notepad-user-id` header. Scratch Lab generates this automatically and sends it on every request.
-- Use the DynamoDB Document Client (`@aws-sdk/lib-dynamodb`) so you don’t have to marshal types by hand.
-- Load the search API key once per cold start and cache it in a module-level variable. Do not re-fetch it on every invocation.
-- Return CORS headers on every response (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`).
+- يوجّه الطلبات بناءً على `event.requestContext.http.method` و`event.requestContext.http.path`. عبارة `switch` صغيرة على `${method} ${routeKey}` تكفي تمامًا—لست بحاجة إلى إطار عمل للتوجيه.
+- يستخرج معرّف المستخدم من ترويسة `x-notepad-user-id`. يولّد Scratch Lab هذا المعرّف تلقائيًا ويرسله مع كل طلب.
+- يستخدم DynamoDB Document Client (`@aws-sdk/lib-dynamodb`) حتى لا تضطر إلى تحويل الأنواع يدويًا.
+- يحمّل مفتاح واجهة البحث البرمجية مرة واحدة لكل بدء بارد ويخزّنه في متغيّر على مستوى الوحدة. لا تعِد جلبه مع كل استدعاء.
+- يعيد ترويسات CORS مع كل استجابة (`Access-Control-Allow-Origin` و`Access-Control-Allow-Methods` و`Access-Control-Allow-Headers`).
 
-One detail worth getting right: `GET /notes` must return a flat `Note[]` array, not an object wrapper like `{ notes: [...] }`. The Scratch Lab frontend calls `response.json()` and expects the array directly.
+ثمة تفصيل يستحق أن تُحسنه: يجب أن يعيد `GET /notes` مصفوفة `Note[]` مسطّحة، لا كائنًا يغلّفها مثل `{ notes: [...] }`. تنادي واجهة Scratch Lab الأمامية `response.json()` وتتوقع المصفوفة مباشرة.
 
-### 5. Wire API Gateway Routes
+### 5. توصيل مسارات API Gateway
 
-Create five routes on your existing HTTP API, each with `scratch-lab-api` as the Lambda integration target:
+أنشئ خمسة مسارات على HTTP API الموجود لديك، ويكون `scratch-lab-api` هدف التكامل مع Lambda في كل منها:
 
 ```
 GET    /notes
@@ -96,44 +96,44 @@ PUT    /notes/{noteId}
 DELETE /notes/{noteId}
 ```
 
-Enable CORS on the API with your CloudFront domain as the allowed origin. Make sure the allowed methods include `PUT` and the allowed headers include `x-notepad-user-id`. Deploy to your stage.
+فعّل CORS على الواجهة البرمجية مع نطاق CloudFront الخاص بك كأصل مسموح. تأكد من أن الطرق المسموحة تتضمن `PUT` وأن الترويسات المسموحة تتضمن `x-notepad-user-id`. ثم انشر إلى مرحلتك.
 
-### 6. Add a Custom Domain (Optional but Realistic)
+### 6. إضافة نطاق مخصص (اختياري لكنه واقعي)
 
-Point `api.example.com` at the API Gateway stage using the pattern from [Stages, Deployments, and Custom Domains](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains). This lets your frontend call `fetch('https://api.example.com/notes')` instead of an `*.execute-api.amazonaws.com` URL.
+وجّه `api.example.com` إلى مرحلة API Gateway باستخدام النمط الوارد في [المراحل والنشر والنطاقات المخصصة](https://stevekinney.com/courses/aws/api-gateway-stages-and-custom-domains). يتيح لك ذلك أن تنادي الواجهة الأمامية `fetch('https://api.example.com/notes')` بدلًا من عنوان `*.execute-api.amazonaws.com`.
 
-### 7. Call It From the Frontend
+### 7. النداء من الواجهة الأمامية
 
-Clone [Scratch Lab](https://github.com/stevekinney/scratch-lab) and set the `VITE_API_URL` environment variable to your API Gateway endpoint:
+استنسخ [Scratch Lab](https://github.com/stevekinney/scratch-lab) واضبط متغيّر البيئة `VITE_API_URL` على نقطة نهاية API Gateway الخاصة بك:
 
 ```bash
 VITE_API_URL=https://api.example.com npm run dev
 ```
 
-The app switches from localStorage to the API backend automatically when `VITE_API_URL` is set. Create a note, edit it, and verify the round trip works end-to-end: browser → Route 53 → API Gateway → Lambda → DynamoDB → response → browser.
+يتحوّل التطبيق من localStorage إلى الواجهة الخلفية البرمجية تلقائيًا عند ضبط `VITE_API_URL`. أنشئ ملاحظة، وحرّرها، وتحقق من أن الرحلة الكاملة تعمل من الطرف إلى الطرف: المتصفح → Route 53 → API Gateway → Lambda → DynamoDB → الاستجابة → المتصفح.
 
-## Checkpoints
+## نقاط التحقق
 
-- `POST /notes` with a JSON body persists a new item you can see in the DynamoDB console.
-- `GET /notes` returns every note for the `x-notepad-user-id` header value as a flat JSON array.
-- `GET /notes/{noteId}` returns a single note or a 404.
-- `PUT /notes/{noteId}` updates the note’s `title`, `body`, and `updatedAt`, and a follow-up GET returns the new values.
-- `DELETE /notes/{noteId}` removes the item and a follow-up GET returns 404.
-- The Lambda logs a single “loaded search api key” message on cold start and none on warm invocations. (Prove the caching works.)
-- The browser can call the API from your CloudFront origin without a CORS preflight error.
-- Every IAM resource ARN on the execution role points at a specific table / parameter / secret, not `*`.
+- طلب `POST /notes` بجسم JSON يحفظ عنصرًا جديدًا يمكنك رؤيته في وحدة تحكم DynamoDB.
+- يعيد `GET /notes` كل الملاحظات الخاصة بقيمة ترويسة `x-notepad-user-id` على هيئة مصفوفة JSON مسطّحة.
+- يعيد `GET /notes/{noteId}` ملاحظة واحدة أو استجابة 404.
+- يحدّث `PUT /notes/{noteId}` الحقول `title` و`body` و`updatedAt` في الملاحظة، ويعيد طلب GET لاحق القيم الجديدة.
+- يحذف `DELETE /notes/{noteId}` العنصر، ويعيد طلب GET لاحق استجابة 404.
+- تسجّل Lambda رسالة واحدة «loaded search api key» عند البدء البارد ولا تسجّل شيئًا في الاستدعاءات الدافئة. (أثبت أن التخزين المؤقت يعمل.)
+- يستطيع المتصفح نداء الواجهة البرمجية من أصل CloudFront الخاص بك دون خطأ CORS في طلب الفحص المسبق.
+- كل ARN لمورد في IAM على دور التنفيذ يشير إلى جدول أو مُعامل أو سرّ محدد، لا إلى `*`.
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **`AccessDeniedException: User is not authorized to perform: dynamodb:...`** — the execution role is missing the DynamoDB permission or the resource ARN doesn’t match the actual table ARN. Run `aws dynamodb describe-table --table-name scratch-lab-notes --query 'Table.TableArn'` and compare.
-- **CORS error in the browser, Lambda never logs a hit** — the preflight `OPTIONS` request is failing at API Gateway, not at your Lambda. Fix CORS at the API level (route `OPTIONS` or enable CORS on the API), not in the handler.
-- **Cold start takes 3+ seconds** — you’re fetching the secret and connecting to DynamoDB inside the handler instead of at module scope. Move both into module-level `const`s.
-- **`ValidationException` on DynamoDB writes** — you’re passing native JS types to the low-level DynamoDB client instead of the Document Client. Switch to `@aws-sdk/lib-dynamodb`.
+- **`AccessDeniedException: User is not authorized to perform: dynamodb:...`** — دور التنفيذ تفتقده صلاحية DynamoDB أو أن ARN المورد لا يطابق ARN الجدول الفعلي. نفّذ `aws dynamodb describe-table --table-name scratch-lab-notes --query 'Table.TableArn'` وقارن.
+- **خطأ CORS في المتصفح، وLambda لا يسجّل أي وصول** — طلب الفحص المسبق `OPTIONS` يفشل عند API Gateway، لا عند دالة Lambda. أصلح CORS على مستوى الواجهة البرمجية (وجّه `OPTIONS` أو فعّل CORS على الواجهة)، لا داخل المعالج.
+- **البدء البارد يستغرق 3 ثوانٍ أو أكثر** — أنت تجلب السرّ وتتصل بـ DynamoDB داخل المعالج بدلًا من نطاق الوحدة. انقل الاثنين إلى `const` على مستوى الوحدة.
+- **`ValidationException` عند الكتابة إلى DynamoDB** — أنت تمرّر أنواع JavaScript الأصلية إلى عميل DynamoDB منخفض المستوى بدلًا من Document Client. انتقل إلى `@aws-sdk/lib-dynamodb`.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Real auth.** Swap the `x-notepad-user-id` header for a JWT authorizer on API Gateway, using a token source you pre-mint. The [Authentication with API Gateway](https://stevekinney.com/courses/aws/api-gateway-authentication) lesson covers the shape.
-- **Observability.** Add structured logs from [Log Groups, Log Streams, and Structured Logging](https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structured-logging) with the `awsRequestId` on every log line, then an alarm from [Alarms and Notifications with SNS](https://stevekinney.com/courses/aws/cloudwatch-alarms-and-sns) on 5xx rate.
-- **Server-side search.** Scratch Lab’s frontend already sends a `?search=` query parameter on `GET /notes`. Implement it in the Lambda handler by using a DynamoDB `Scan` with a `FilterExpression` that checks `contains(title, :q) OR contains(body, :q)`. This is fine at small scale—if it bothers you, that’s exactly when you’d reach for OpenSearch.
+- **مصادقة حقيقية.** استبدل ترويسة `x-notepad-user-id` بمُوثِّق JWT على API Gateway، باستخدام مصدر رموز تُصدره مسبقًا. يغطي درس [المصادقة باستخدام API Gateway](https://stevekinney.com/courses/aws/api-gateway-authentication) شكل ذلك.
+- **القابلية للملاحظة.** أضف سجلات منظّمة من [مجموعات السجلات وتدفقاتها والتسجيل المنظّم](https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structured-logging) مع `awsRequestId` في كل سطر سجل، ثم إنذارًا من [الإنذارات والإشعارات باستخدام SNS](https://stevekinney.com/courses/aws/cloudwatch-alarms-and-sns) على معدل استجابات 5xx.
+- **البحث من جهة الخادم.** ترسل واجهة Scratch Lab الأمامية بالفعل مُعامل الاستعلام `?search=` مع `GET /notes`. نفّذه في معالج Lambda باستخدام `Scan` من DynamoDB مع `FilterExpression` يفحص `contains(title, :q) OR contains(body, :q)`. هذا مقبول في النطاقات الصغيرة—وإن أزعجك، فذلك بالضبط هو الوقت الذي تلجأ فيه إلى OpenSearch.
 
-When everything works, you have a real production-shaped backend on AWS—every service from Part 2 wired into one request path. That’s the whole point of the course.
+حين يعمل كل شيء، تكون قد حصلت على واجهة خلفية حقيقية على AWS بمقاس الإنتاج—كل خدمة من الجزء الثاني موصولة في مسار طلب واحد. وهذا هو مغزى الدورة بأكملها.

@@ -1,18 +1,18 @@
 ---
-title: "Secrets Manager: Rotation and Encryption"
-lang: en
+title: "Secrets Manager: التدوير والتشفير"
+lang: ar
 source: "https://stevekinney.com/courses/aws/secrets-manager-rotation-and-encryption"
 ---
 
-**Secrets Manager** is a standalone AWS service built for one thing: storing and rotating sensitive credentials. While Parameter Store can hold encrypted values (SecureString), Secrets Manager goes further with built-in rotation, cross-service integration, and a purpose-built API for credential lifecycle management.
+**Secrets Manager** خدمة AWS مستقلة بُنيت لغرض واحد: تخزين بيانات الاعتماد الحساسة وتدويرها. صحيح أن Parameter Store يستطيع الاحتفاظ بقيم مشفّرة (SecureString)، لكن Secrets Manager يذهب أبعد من ذلك بتدوير مدمج، وتكامل بين الخدمات، وواجهة برمجية مصمّمة خصيصًا لإدارة دورة حياة بيانات الاعتماد.
 
-If you want AWS’s official version of the service behavior while you read, the [AWS Secrets Manager overview](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) and the [Parameter Store documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) are the canonical references.
+إذا أردت النسخة الرسمية من AWS لسلوك الخدمة أثناء القراءة، فإن [نظرة عامة على AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) و[توثيق Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) هما المرجعان المعتمدان.
 
-Think of it this way: Parameter Store is a configuration store that happens to support encryption. Secrets Manager is a credential vault with rotation as a first-class feature.
+فكّر في الأمر هكذا: Parameter Store مخزن إعدادات يدعم التشفير فحسب. أما Secrets Manager فخزنة بيانات اعتماد يكون التدوير فيها ميزة أساسية من الدرجة الأولى.
 
-## Creating a Secret
+## إنشاء سر
 
-You can create a secret from the CLI with a JSON string:
+يمكنك إنشاء سر من CLI بسلسلة JSON:
 
 ```bash
 aws secretsmanager create-secret \
@@ -22,7 +22,7 @@ aws secretsmanager create-secret \
   --output json
 ```
 
-The response includes the secret’s ARN and name:
+تتضمن الاستجابة ARN الخاص بالسر واسمه:
 
 ```json
 {
@@ -32,13 +32,13 @@ The response includes the secret’s ARN and name:
 }
 ```
 
-Notice the random suffix on the ARN (`-AbCdEf`). Secrets Manager appends this automatically to ensure uniqueness. When you reference the secret in IAM policies, you can use the name or the full ARN.
+لاحظ اللاحقة العشوائية في ARN (`-AbCdEf`). يضيفها Secrets Manager تلقائيًا لضمان التفرّد. وعند الإشارة إلى السر في سياسات IAM، يمكنك استخدام الاسم أو ARN الكامل.
 
-In the console, the **Secrets** list shows all secrets in your account with their names, descriptions, and last rotation dates.
+في وحدة التحكم، تعرض قائمة **Secrets** كل الأسرار في حسابك مع أسمائها وأوصافها وتواريخ آخر تدوير لها.
 
-The AWS Secrets Manager Secrets list page showing the list of secrets with columns for name, description, last retrieved, and last changed.
+صفحة قائمة Secrets في AWS Secrets Manager تعرض قائمة الأسرار مع أعمدة للاسم والوصف وآخر استرجاع وآخر تغيير.
 
-You can also store a plain string instead of JSON:
+يمكنك أيضًا تخزين سلسلة نصية عادية بدلًا من JSON:
 
 ```bash
 aws secretsmanager create-secret \
@@ -48,9 +48,9 @@ aws secretsmanager create-secret \
   --output json
 ```
 
-But JSON is the better default. I almost always reach for it. Most credentials have multiple related values—an API key and a secret, a username and password, a client ID and client secret. Storing them together as a JSON object keeps them in sync.
+لكن JSON هو الافتراضي الأفضل. ألجأ إليه دائمًا تقريبًا. فمعظم بيانات الاعتماد لها قيم مترابطة متعددة—مفتاح API وسر، أو اسم مستخدم وكلمة مرور، أو معرّف عميل وسر عميل. وتخزينها معًا ككائن JSON يُبقيها متزامنة.
 
-## With the SDK
+## مع SDK
 
 ```typescript
 import {
@@ -88,7 +88,7 @@ await secrets.send(
 );
 ```
 
-## Retrieving a Secret
+## استرجاع سر
 
 ```bash
 aws secretsmanager get-secret-value \
@@ -97,7 +97,7 @@ aws secretsmanager get-secret-value \
   --output json
 ```
 
-The response includes the decrypted value:
+تتضمن الاستجابة القيمة المفكوكة التشفير:
 
 ```json
 {
@@ -110,11 +110,11 @@ The response includes the decrypted value:
 }
 ```
 
-The `SecretString` field contains your decrypted value. If you stored JSON, you parse it in your application code.
+يحتوي حقل `SecretString` على قيمتك المفكوكة التشفير. وإذا خزّنت JSON، فأنت تحلّله في كود تطبيقك.
 
-## Encryption with KMS
+## التشفير باستخدام KMS
 
-Every secret in Secrets Manager is encrypted with a KMS key. By default, Secrets Manager uses an AWS-managed key (`aws/secretsmanager`). You can also specify a customer-managed KMS key when creating the secret:
+كل سر في Secrets Manager مشفّر بمفتاح KMS. يستخدم Secrets Manager افتراضيًا مفتاحًا مُدارًا من AWS (`aws/secretsmanager`). يمكنك أيضًا تحديد مفتاح KMS مُدار من العميل عند إنشاء السر:
 
 ```bash
 aws secretsmanager create-secret \
@@ -125,22 +125,22 @@ aws secretsmanager create-secret \
   --output json
 ```
 
-Why would you use a customer-managed key? Two reasons. First, it lets you control who can decrypt the secret independently of who can access Secrets Manager. Second, it lets you track KMS key usage in CloudTrail, giving you a separate audit trail for decryption operations.
+لماذا قد تستخدم مفتاحًا مُدارًا من العميل؟ لسببين. أولًا، يتيح لك التحكم فيمن يمكنه فكّ تشفير السر بشكل مستقل عن من يمكنه الوصول إلى Secrets Manager. ثانيًا، يتيح لك تتبّع استخدام مفتاح KMS في CloudTrail، ما يمنحك مسار تدقيق منفصلًا لعمليات فكّ التشفير.
 
-For most frontend applications, the default AWS-managed key is fine. You’d use a customer-managed key when your organization’s security policy requires it, or when you need to share secrets across AWS accounts (cross-account access requires a customer-managed key).
+بالنسبة إلى معظم التطبيقات الأمامية، المفتاح الافتراضي المُدار من AWS كافٍ. ستستخدم مفتاحًا مُدارًا من العميل عندما تتطلب سياسة الأمان في مؤسستك ذلك، أو عندما تحتاج إلى مشاركة الأسرار بين حسابات AWS (الوصول بين الحسابات يتطلب مفتاحًا مُدارًا من العميل).
 
-## Automatic Rotation
+## التدوير التلقائي
 
-This is the feature that separates Secrets Manager from everything else. You can configure a secret to rotate automatically on a schedule—every 30 days, every 7 days, whatever your security policy requires.
+هذه هي الميزة التي تفصل Secrets Manager عن كل شيء آخر. يمكنك تهيئة سر ليدور تلقائيًا وفق جدول—كل 30 يومًا، أو كل 7 أيام، أو أي شيء تتطلبه سياسة الأمان لديك.
 
-Rotation works through a Lambda function. When the rotation schedule triggers, Secrets Manager invokes a rotation Lambda that:
+يعمل التدوير عبر دالة Lambda. عندما يُطلق جدول التدوير، يستدعي Secrets Manager دالة Lambda للتدوير تقوم بما يلي:
 
-1. Creates a new credential with the external service (e.g., generates a new database password)
-2. Stores the new credential in Secrets Manager as a pending version
-3. Tests the new credential to make sure it works
-4. Promotes the new credential to the current version
+1. إنشاء بيانات اعتماد جديدة لدى الخدمة الخارجية (مثلًا، توليد كلمة مرور قاعدة بيانات جديدة)
+2. تخزين بيانات الاعتماد الجديدة في Secrets Manager كنسخة معلّقة
+3. اختبار بيانات الاعتماد الجديدة للتأكد من أنها تعمل
+4. ترقية بيانات الاعتماد الجديدة إلى النسخة الحالية
 
-For AWS-native services like RDS, Redshift, and DocumentDB, AWS provides pre-built rotation Lambda functions. You enable rotation with a single CLI command:
+بالنسبة إلى الخدمات الأصلية في AWS مثل RDS وRedshift وDocumentDB، توفّر AWS دوال Lambda جاهزة للتدوير. تُفعّل التدوير بأمر CLI واحد:
 
 ```bash
 aws secretsmanager rotate-secret \
@@ -151,60 +151,60 @@ aws secretsmanager rotate-secret \
   --output json
 ```
 
-For third-party services (Stripe, SendGrid, Twilio), you write your own rotation Lambda that calls the third-party API to generate a new key.
+أما خدمات الطرف الثالث (Stripe وSendGrid وTwilio)، فأنت تكتب دالة Lambda للتدوير خاصة بك تستدعي واجهة الخدمة البرمجية لتوليد مفتاح جديد.
 
-> **Warning**
+> **تحذير**
 >
-> If your RDS or Aurora database sits inside a private VPC (the default for anything production-shaped), the rotation Lambda must also run inside the same VPC, *and* that VPC must have a **VPC endpoint for Secrets Manager** (`com.amazonaws.us-east-1.secretsmanager`). Without the endpoint, the rotation Lambda can’t reach the Secrets Manager API to confirm success, and rotation fails silently with opaque timeout errors. This is the single most common reason RDS rotation breaks after initial setup.
+> إذا كانت قاعدة بيانات RDS أو Aurora لديك داخل VPC خاصة (وهو الافتراضي لأي شيء بمستوى الإنتاج)، فيجب أن تعمل دالة Lambda للتدوير داخل VPC نفسها أيضًا، *ويجب* أن تكون لتلك VPC **نقطة نهاية VPC لـ Secrets Manager** (`com.amazonaws.us-east-1.secretsmanager`). فمن دون نقطة النهاية، لا تستطيع دالة Lambda للتدوير الوصول إلى واجهة Secrets Manager البرمجية لتأكيد النجاح، ويفشل التدوير بصمت مع أخطاء مهلة غامضة. هذا هو السبب الأكثر شيوعًا لتعطّل تدوير RDS بعد الإعداد الأولي.
 
-> **Warning**
+> **تحذير**
 >
-> Automatic rotation means your application must handle credential changes gracefully. If your Lambda function caches a secret at init time and never refreshes it, a rotated credential will cause failures until the next cold start. The solution is to cache with a TTL and re-fetch when the cache expires. The next lesson covers caching strategies in detail.
+> التدوير التلقائي يعني أن تطبيقك يجب أن يتعامل مع تغيّر بيانات الاعتماد بلطف. إذا خزّنت دالة Lambda سرًا مؤقتًا وقت التهيئة ولم تحدّثه أبدًا، فستسبب بيانات الاعتماد المدوّرة أعطالًا حتى البدء البارد التالي. الحل هو التخزين المؤقت مع TTL وإعادة الجلب عند انتهاء صلاحية الذاكرة المؤقتة. يغطي الدرس التالي استراتيجيات التخزين المؤقت بالتفصيل.
 
-## Version Stages
+## مراحل النسخ
 
-Secrets Manager uses **version stages** to manage rotation without downtime. The two important stages are:
+يستخدم Secrets Manager **مراحل النسخ** لإدارة التدوير دون توقف. المرحلتان المهمتان هما:
 
-- **`AWSCURRENT`**—the active version. This is what your application gets by default when it retrieves the secret.
-- **`AWSPENDING`**—the version being tested during rotation. Once validated, it becomes `AWSCURRENT`.
+- **`AWSCURRENT`**—النسخة النشطة. وهي ما يحصل عليه تطبيقك افتراضيًا عند استرجاع السر.
+- **`AWSPENDING`**—النسخة التي تُختبر أثناء التدوير. وبمجرد التحقق منها، تصبح `AWSCURRENT`.
 
-There’s also **`AWSPREVIOUS`**—the old version, retained so applications that cached the previous value can still authenticate during the rotation window. This is how zero-downtime rotation works: the old credential remains valid until the rotation Lambda explicitly revokes it.
+ثمة أيضًا **`AWSPREVIOUS`**—النسخة القديمة، محفوظة كي تستطيع التطبيقات التي خزّنت القيمة السابقة مؤقتًا أن تصادق خلال نافذة التدوير. هكذا يعمل التدوير دون توقف: تظل بيانات الاعتماد القديمة صالحة حتى تُلغيها دالة Lambda للتدوير صراحةً.
 
-## Pricing
+## التسعير
 
-Secrets Manager isn’t free. Here’s the cost breakdown:
+Secrets Manager ليس مجانيًا. إليك تفصيل التكلفة:
 
-| Component | Cost |
+| المكوّن | التكلفة |
 | --- | --- |
-| Storage | $0.40 per secret per month |
-| API calls | $0.05 per 10,000 API calls |
+| التخزين | 0.40 دولار لكل سر شهريًا |
+| استدعاءات API | 0.05 دولار لكل 10,000 استدعاء API |
 
-Ten secrets cost $4.00 per month. A hundred secrets cost $40.00 per month. The API call cost is negligible for most applications—a Lambda function that retrieves a secret once per cold start generates very few API calls.
+عشرة أسرار تكلف 4.00 دولارات شهريًا. ومئة سر تكلف 40.00 دولارًا شهريًا. تكلفة استدعاءات API ضئيلة لمعظم التطبيقات—فدالة Lambda تسترجع سرًا مرة واحدة لكل بدء بارد تولّد استدعاءات API قليلة جدًا.
 
-Compare this to Parameter Store’s standard tier, which is free. For a frontend application with a handful of secrets that don’t need automatic rotation, the $0.40 per secret per month is hard to justify. For database credentials that must rotate every 30 days with zero downtime, it’s worth every penny.
+قارن هذا بالطبقة القياسية من Parameter Store، وهي مجانية. لتطبيق أمامي ببضعة أسرار لا تحتاج إلى تدوير تلقائي، يصعب تبرير 0.40 دولار لكل سر شهريًا. أما بيانات اعتماد قاعدة بيانات يجب أن تدور كل 30 يومًا دون توقف، فهي تستحق كل قرش.
 
-## When Secrets Manager Is Worth It
+## متى يستحق Secrets Manager
 
-Use Secrets Manager when:
+استخدم Secrets Manager عندما:
 
-- **You need automatic rotation.** This is the primary differentiator. If a credential needs to rotate on a schedule—database passwords, service account keys—Secrets Manager is the tool.
-- **You’re using RDS, Redshift, or DocumentDB.** AWS provides pre-built rotation functions for these services. Rotation is nearly turnkey.
-- **Your organization requires credential lifecycle management.** Secrets Manager tracks creation dates, rotation dates, and version history. Compliance teams like this.
-- **You need cross-region replication.** Secrets Manager can replicate secrets to multiple regions for disaster recovery.
+- **تحتاج إلى تدوير تلقائي.** هذا هو الفارق الأساسي. إذا كانت بيانات اعتماد تحتاج إلى التدوير وفق جدول—كلمات مرور قواعد البيانات، ومفاتيح حسابات الخدمات—فإن Secrets Manager هو الأداة.
+- **تستخدم RDS أو Redshift أو DocumentDB.** توفّر AWS دوال تدوير جاهزة لهذه الخدمات. التدوير شبه جاهز بالكامل.
+- **تتطلب مؤسستك إدارة دورة حياة بيانات الاعتماد.** يتتبّع Secrets Manager تواريخ الإنشاء والتدوير وسجل النسخ. وفرق الامتثال تحب ذلك.
+- **تحتاج إلى تكرار بين المناطق.** يستطيع Secrets Manager تكرار الأسرار إلى مناطق متعددة لاستعادة الكوارث.
 
-Use Parameter Store SecureString when:
+استخدم Parameter Store SecureString عندما:
 
-- **The credential doesn’t need to rotate automatically.** A third-party API key that you update manually once a year doesn’t need Secrets Manager.
-- **Cost matters.** Parameter Store’s standard tier is free. For a personal project or an early-stage startup, free is hard to beat.
-- **You want to store configuration and secrets in the same place.** Parameter Store handles both with its hierarchical path structure.
+- **لا تحتاج بيانات الاعتماد إلى تدوير تلقائي.** مفتاح API لطرف ثالث تحدّثه يدويًا مرة في السنة لا يحتاج إلى Secrets Manager.
+- **التكلفة مهمة.** الطبقة القياسية من Parameter Store مجانية. لمشروع شخصي أو شركة ناشئة في مرحلة مبكرة، يصعب التغلّب على المجاني.
+- **تريد تخزين الإعدادات والأسرار في المكان نفسه.** يتعامل Parameter Store مع كليهما ببنية مسارات هرمية.
 
-> **Tip**
+> **نصيحة**
 >
-> A common pattern is to use both: Parameter Store for non-sensitive configuration and secrets that don’t rotate, Secrets Manager for database credentials and other secrets that need automatic rotation. They aren’t competing services—they complement each other.
+> من الأنماط الشائعة استخدام كليهما: Parameter Store للإعدادات غير الحساسة والأسرار التي لا تدور، وSecrets Manager لبيانات اعتماد قواعد البيانات وغيرها من الأسرار التي تحتاج إلى تدوير تلقائي. إنهما ليسا خدمتين متنافستين—بل يكمّل إحداهما الآخر.
 
-## Updating a Secret
+## تحديث سر
 
-To update a secret’s value:
+لتحديث قيمة سر:
 
 ```bash
 aws secretsmanager put-secret-value \
@@ -214,11 +214,11 @@ aws secretsmanager put-secret-value \
   --output json
 ```
 
-This creates a new version of the secret. The previous version moves to the `AWSPREVIOUS` stage.
+هذا ينشئ نسخة جديدة من السر. وتنتقل النسخة السابقة إلى مرحلة `AWSPREVIOUS`.
 
-## Deleting a Secret
+## حذف سر
 
-Secrets Manager doesn’t delete secrets immediately. Instead, it schedules deletion with a recovery window:
+لا يحذف Secrets Manager الأسرار فورًا. بل يجدول الحذف بنافذة استرداد:
 
 ```bash
 aws secretsmanager delete-secret \
@@ -228,6 +228,6 @@ aws secretsmanager delete-secret \
   --output json
 ```
 
-During the recovery window (minimum 7 days, default 30 days), you can restore the secret. This protects against accidental deletion. If you’re absolutely sure and want to skip the recovery window, add `--force-delete-without-recovery`, but think twice before using it.
+خلال نافذة الاسترداد (7 أيام كحد أدنى، و30 يومًا افتراضيًا)، يمكنك استعادة السر. وهذا يحمي من الحذف غير المقصود. وإذا كنت متأكدًا تمامًا وتريد تخطي نافذة الاسترداد، فأضف `--force-delete-without-recovery`، لكن فكّر مرتين قبل استخدامه.
 
-You know where to store secrets. The next question is: how does your Lambda function actually read them at runtime? The next lesson covers SDK calls, IAM permissions, and the caching strategies that make secret retrieval efficient.
+أنت تعرف الآن أين تخزّن الأسرار. السؤال التالي: كيف تقرأها دالة Lambda الخاصة بك فعليًا وقت التشغيل؟ يغطي الدرس التالي استدعاءات SDK، وأذونات IAM، واستراتيجيات التخزين المؤقت التي تجعل استرجاع الأسرار فعّالًا.

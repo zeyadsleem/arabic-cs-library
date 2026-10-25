@@ -1,35 +1,35 @@
 ---
-title: "Installing Hugging Face"
-lang: en
+title: "تثبيت Hugging Face"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/installing-hugging-face"
 ---
 
-> **You most likely won’t have to do this.**
+> **على الأرجح لن تحتاج إلى القيام بذلك.**
 >
-> But, just in case—here are some instructions.
+> لكن، تحسّبًا لذلك—إليك بعض التعليمات.
 
-To install the Hugging Face Command Line Interface (CLI), you will primarily need to **install the `huggingface_hub` library**. You should install the `huggingface_hub` library using `pip`, the Python package manager.
+لتثبيت واجهة سطر الأوامر (CLI) الخاصة بـ Hugging Face، ستحتاج أساسًا إلى **تثبيت مكتبة `huggingface_hub`**. وينبغي أن تثبّت مكتبة `huggingface_hub` باستخدام `pip`، مدير حزم Python.
 
-This is considered the “first and foremost thing” to do.
+ويُعدّ هذا «أول الأمور وأهمّها» التي ينبغي القيام بها.
 
 ```bash
 pip install huggingface_hub
 ```
 
-Alternatively, you can use the `-U` flag to ensure you get an up-to-date or the latest version of the package:
+بدلًا من ذلك، يمكنك استخدام العلم `-U` لضمان الحصول على نسخة محدّثة أو أحدث إصدار من الحزمة:
 
 ```bash
 pip install -U huggingface_hub
 ```
 
-Once `huggingface_hub` is installed, you can use CLI commands like `hugging face CLI login` to interact with the Hugging Face Hub from your terminal.
+بمجرد تثبيت `huggingface_hub`، يمكنك استخدام أوامر واجهة سطر الأوامر مثل `hugging face CLI login` للتفاعل مع Hugging Face Hub من الطرفية.
 
-## Logging In
+## تسجيل الدخول
 
-Once you have the CLI installed, you’ll need a [Access Token](https://huggingface.co/settings/tokens). Then you can run the CLI to log in.
+بعد تثبيت واجهة سطر الأوامر، ستحتاج إلى [رمز وصول](https://huggingface.co/settings/tokens). ثم يمكنك تشغيل واجهة سطر الأوامر لتسجيل الدخول.
 
 ```bash
 huggingface-cli login
 ```
 
-Paste in you Access Token and you should be good to.
+الصق رمز الوصول الخاص بك وستكون جاهزًا.

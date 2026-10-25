@@ -1,18 +1,18 @@
 ---
-title: "View Transitions API for React"
-lang: en
+title: "واجهة انتقالات العرض (View Transitions API) في React"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/view-transitions-api"
 ---
 
-Your React app navigates instantly thanks to client-side routing. But instant isn’t always better. When a page changes abruptly, users lose context. They don’t see how the old page relates to the new one. They experience what designers call “cognitive load”—that jarring moment where their brain has to reorient itself.
+يتنقل تطبيق React لديك فورًا بفضل التوجيه من جانب العميل. لكن الفورية ليست أفضل دائمًا. عندما تتغير الصفحة فجأة، يفقد المستخدمون السياق. فهم لا يرون كيف ترتبط الصفحة القديمة بالجديدة. ويختبرون ما يسميه المصممون «الحمل المعرفي» — تلك اللحظة المربكة التي يحتاج فيها دماغهم إلى إعادة التوجيه.
 
-Native mobile apps solved this years ago with smooth transitions that guide the eye from one state to the next. Now, the View Transitions API brings that same power to the web. Imagine product images that smoothly grow into detailed views. Navigation that slides naturally between pages. State changes that feel intentional, not jarring.
+حلّت تطبيقات الهاتف الأصلية هذا منذ سنوات بانتقالات سلسة ترشد العين من حالة إلى أخرى. والآن، تجلب واجهة انتقالات العرض (View Transitions API) القوة نفسها إلى الويب. تخيّل صور منتجات تكبر بسلاسة إلى عروض تفصيلية. وتنقلًا ينزلق طبيعيًا بين الصفحات. وتغيرات حالة تبدو مقصودة لا مربكة.
 
-Let’s transform your React app’s navigation from functional to delightful, using the View Transitions API to create transitions that aren’t just smooth—they’re meaningful.
+لنحوّل تنقل تطبيق React لديك من وظيفي إلى ممتع، باستخدام واجهة انتقالات العرض لإنشاء انتقالات ليست سلسة فحسب — بل ذات معنى.
 
-## Understanding View Transitions API
+## فهم واجهة انتقالات العرض
 
-The View Transitions API captures snapshots and animates between them:
+تلتقط واجهة انتقالات العرض لقطات وتحرّك الانتقال بينها:
 
 ```typescript
 interface ViewTransition {
@@ -34,9 +34,9 @@ if (document.startViewTransition) {
 }
 ```
 
-## React Integration Patterns
+## أنماط التكامل مع React
 
-### Basic React Router Integration
+### التكامل الأساسي مع React Router
 
 ```typescript
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -75,7 +75,7 @@ const NavigationLink: React.FC<{ to: string; children: React.ReactNode }> = ({
 };
 ```
 
-### Advanced Transition Manager
+### مدير انتقالات متقدم
 
 ```typescript
 class ViewTransitionManager {
@@ -160,9 +160,9 @@ const useTransitionManager = () => {
 };
 ```
 
-## Named View Transitions
+## انتقالات العرض المسماة
 
-### Implementing Shared Element Transitions
+### تنفيذ انتقالات العناصر المشتركة
 
 ```typescript
 // Mark elements for shared transitions
@@ -223,7 +223,7 @@ const ProductDetail: React.FC<{ id: string }> = ({ id }) => {
 };
 ```
 
-### Dynamic View Transition Names
+### أسماء انتقالات عرض ديناميكية
 
 ```typescript
 const useDynamicTransitionName = (baseName: string, isActive: boolean) => {
@@ -263,9 +263,9 @@ const MorphingCard: React.FC<{ id: string; expanded: boolean }> = ({
 };
 ```
 
-## Custom CSS Animations
+## حركات CSS المخصصة
 
-### Defining Transition Animations
+### تعريف حركات الانتقال
 
 ```css
 /* Default cross-fade animation */
@@ -326,7 +326,7 @@ const MorphingCard: React.FC<{ id: string; expanded: boolean }> = ({
 }
 ```
 
-### Programmatic Animation Control
+### تحكم برمجي في الحركة
 
 ```typescript
 const useAnimatedTransition = () => {
@@ -414,9 +414,9 @@ const CustomTransition: React.FC = () => {
 };
 ```
 
-## Performance Optimization
+## تحسين الأداء
 
-### Reducing Paint Complexity
+### تقليل تعقيد الرسم
 
 ```typescript
 const OptimizedTransition: React.FC = () => {
@@ -465,7 +465,7 @@ const OptimizedTransition: React.FC = () => {
 };
 ```
 
-### Conditional Transitions Based on Device
+### انتقالات شرطية حسب الجهاز
 
 ```typescript
 const useAdaptiveTransitions = () => {
@@ -525,9 +525,9 @@ const useAdaptiveTransitions = () => {
 };
 ```
 
-## Fallback Strategies
+## استراتيجيات التبديل الاحتياطي
 
-### Progressive Enhancement
+### التحسين التدريجي
 
 ```typescript
 class TransitionFallback {
@@ -630,9 +630,9 @@ class TransitionFallback {
 }
 ```
 
-## Integration with State Management
+## التكامل مع إدارة الحالة
 
-### Redux Integration
+### التكامل مع Redux
 
 ```typescript
 const useReduxTransition = () => {
@@ -684,34 +684,34 @@ const TodoList: React.FC = () => {
 };
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Design meaningful transitions:**
+✅ **صمّم انتقالات ذات معنى:**
 
-- Use shared elements for continuity
-- Match transition direction to user intent
-- Keep durations under 400ms
+- استخدم عناصر مشتركة للاستمرارية
+- طابق اتجاه الانتقال مع نية المستخدم
+- أبقِ المدد أقل من 400ms
 
-✅ **Optimize for performance:**
+✅ **حسّن الأداء:**
 
-- Reduce paint complexity during transitions
-- Use will-change sparingly
-- Disable on low-end devices
+- قلّل تعقيد الرسم أثناء الانتقالات
+- استخدم will-change باعتدال
+- عطّل على الأجهزة الضعيفة
 
-✅ **Provide fallbacks:**
+✅ **وفّر بدائل احتياطية:**
 
-- Feature detect View Transitions API
-- Implement CSS/JS fallbacks
-- Respect prefers-reduced-motion
+- اكتشف دعم واجهة انتقالات العرض
+- نفّذ بدائل CSS/JS
+- احترم prefers-reduced-motion
 
-✅ **Test thoroughly:**
+✅ **اختبر بدقّة:**
 
-- Test on various devices
-- Monitor transition performance
-- Ensure accessibility
+- اختبر على أجهزة متنوعة
+- راقب أداء الانتقالات
+- اضمن إمكانية الوصول
 
-✅ **Use transitions purposefully:**
+✅ **استخدم الانتقالات لغرض:**
 
-- Guide user attention
-- Maintain spatial context
-- Communicate state changes
+- وجّه انتباه المستخدم
+- حافظ على السياق المكاني
+- أوصل تغيرات الحالة

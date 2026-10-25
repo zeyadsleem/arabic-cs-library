@@ -1,19 +1,19 @@
 ---
-title: "Styles Versus Variables"
-lang: en
+title: "الأنماط مقابل المتغيّرات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/styles-vs-variables"
 ---
 
-If you’re thinking to yourself that there might be some overlap between variables and [styles](https://stevekinney.com/courses/figma/styles) in Figma, you’re definitely in good company.
+إذا كنت تفكّر بينك وبين نفسك في احتمال وجود بعض التداخل بين المتغيّرات و[الأنماط](https://stevekinney.com/courses/figma/styles) في Figma، فأنت بالتأكيد في صحبة جيدة.
 
-- Variables allow you to define the CSS output in Dev Mode.
-- Variables—particularly the number variables—can be used for defining reusable properties like border widths.
-- Variables support modes. Styles do not.
-- Variables can only store one value, while styles can store sets of values.
-- As of this writing, you can’t store things like gradients or image values in variables—you have to use styles. **Note**: support for gradients and images are [coming soon](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon).
-- As of this writing, you can’t do much with [typography](https://stevekinney.com/courses/figma/typography) when it comes to variables. For that you’ll need to use styles. Typography is also [coming soon](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon).
-- Variables can scoped. Styles can’t.
+- تتيح لك المتغيّرات تعريف مخرجات CSS في وضع المطوّر.
+- يمكن استخدام المتغيّرات — وخصوصًا متغيّرات الأرقام — لتعريف خصائص قابلة لإعادة الاستخدام مثل عروض الحدود.
+- تدعم المتغيّرات الأوضاع. أما الأنماط فلا.
+- لا يمكن للمتغيّرات تخزين سوى قيمة واحدة، بينما يمكن للأنماط تخزين مجموعات من القيم.
+- حتى وقت كتابة هذا النص، لا يمكنك تخزين أشياء مثل التدرّجات أو قيم الصور في المتغيّرات — بل عليك استخدام الأنماط. **ملاحظة**: دعم التدرّجات والصور [قادم قريبًا](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon).
+- حتى وقت كتابة هذا النص، لا يمكنك فعل الكثير بـ[الخطوط](https://stevekinney.com/courses/figma/typography) فيما يتعلق بالمتغيّرات. ولهذا ستحتاج إلى استخدام الأنماط. كما أن [دعم الخطوط قادم قريبًا](https://help.figma.com/hc/en-us/articles/4406787442711-Figma-beta-features#Coming_soon) أيضًا.
+- يمكن تحديد نطاق المتغيّرات. أما الأنماط فلا.
 
-I tend to prefer variables over styles, but I will admit that I occasionally have my doubts and consider whether or not styles might be a better idea.
+أميل إلى تفضيل المتغيّرات على الأنماط، لكنني أعترف أنني أشكّ أحيانًا وأتساءل إن كانت الأنماط فكرة أفضل.
 
-**Styles can be built on top of variables, but variables can’t be built on top of styles.** For stuff like colors, you can compose styles out of variables. So, the two approaches are not necessarily mutually exclusive.
+**يمكن بناء الأنماط فوق المتغيّرات، لكن لا يمكن بناء المتغيّرات فوق الأنماط.** وفي أشياء مثل الألوان، يمكنك تركيب الأنماط من المتغيّرات. لذا، ليس بالضرورة أن يكون النهجان متعارضين.

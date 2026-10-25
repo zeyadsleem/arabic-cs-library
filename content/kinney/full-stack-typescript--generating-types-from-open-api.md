@@ -1,32 +1,32 @@
 ---
-title: "Generating Types from an OpenAPI Specification"
-lang: en
+title: "توليد الأنواع من مواصفة OpenAPI"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/generating-types-from-open-api"
 ---
 
-Once you have an OpenAPI specification, you can use [`openapi-typescript`](https://npm.im/openapi-typescript) to generate types.
+بعد أن تصبح لديك مواصفة OpenAPI، يمكنك استخدام [`openapi-typescript`](https://npm.im/openapi-typescript) لتوليد الأنواع.
 
 ```bash
 npx openapi-typescript ./openapi.json -o src/api.types.ts
 ```
 
-The results are big and gnarly. You can take a look at the output [here](https://gist.github.com/stevekinney/a43731e45e8822bc0b7b7d814938ab27).
+النتائج كبيرة ومتشابكة. ويمكنك إلقاء نظرة على المخرجات [هنا](https://gist.github.com/stevekinney/a43731e45e8822bc0b7b7d814938ab27).
 
-## Generating a Client from OpenAPI Types
+## توليد عميل من أنواع OpenAPI
 
-Now that we have the types, we can generate a client automatically. We don’t even need Zod anymore!
+الآن وقد صارت لدينا الأنواع، يمكننا توليد عميل تلقائيًا. بل لم نعد نحتاج إلى Zod!
 
-Let’s start by generating type definitions from your OpenAPI specification:
+لنبدأ بتوليد تعريفات الأنواع من مواصفة OpenAPI لديك:
 
 ```bash
 npx openapi-typescript openapi.json -o src/api.types.ts
 ```
 
-This creates a TypeScript file with type definitions that match your API’s structure.
+وهذا ينشئ ملف TypeScript بتعريفات أنواع تطابق بنية API لديك.
 
-### Create a Type-Safe API Client
+### إنشاء عميل API آمن الأنواع
 
-Now let’s implement the API client using the generated types:
+لنُنفّذ الآن عميل API باستخدام الأنواع المولَّدة:
 
 ```typescript
 // src/api.ts
@@ -42,11 +42,11 @@ const API_URL = 'http://localhost:4001';
 const { GET, POST, PUT, DELETE } = createClient<paths>({ baseUrl: API_URL });
 ```
 
-## Implement Type-Safe API Methods
+## تنفيذ دوال API آمنة الأنواع
 
-Let’s replace traditional fetch calls with typed API methods:
+لنستبدل نداءات fetch التقليدية بدوال API متنمّطة:
 
-### Fetching a Collection (GET)
+### جلب مجموعة (GET)
 
 ```typescript
 export const fetchTasks = async (showCompleted: boolean) => {
@@ -62,7 +62,7 @@ export const fetchTasks = async (showCompleted: boolean) => {
 };
 ```
 
-### Fetching a Single Resource (GET with path param)
+### جلب مورد واحد (GET مع معامل مسار)
 
 ```typescript
 export const getTask = async (id: string) => {
@@ -78,7 +78,7 @@ export const getTask = async (id: string) => {
 };
 ```
 
-### Creating a Resource (POST)
+### إنشاء مورد (POST)
 
 ```typescript
 export const createTask = async (task: { title: string; description?: string }) => {
@@ -90,7 +90,7 @@ export const createTask = async (task: { title: string; description?: string }) 
 };
 ```
 
-### Updating a Resource (PUT)
+### تحديث مورد (PUT)
 
 ```typescript
 export const updateTask = async (
@@ -110,7 +110,7 @@ export const updateTask = async (
 };
 ```
 
-### Deleting a Resource (DELETE)
+### حذف مورد (DELETE)
 
 ```typescript
 export const deleteTask = async (id: string) => {
@@ -124,16 +124,16 @@ export const deleteTask = async (id: string) => {
 };
 ```
 
-## Benefits of This Approach
+## فوائد هذا النهج
 
-1. **Type Safety**: Catch errors at compile time rather than runtime
-2. **Developer Experience**:
+1. **سلامة الأنواع**: التقاط الأخطاء في وقت التصريف بدلًا من وقت التشغيل
+2. **تجربة المطوّر**:
 
-- Autocomplete for API endpoints
-- Type hints for required and optional parameters
-- Proper typing of request and response bodies
+- إكمال تلقائي لنقاط نهاية API
+- تلميحات أنواع للمعاملات المطلوبة والاختيارية
+- تنميط سليم لأجسام الطلبات والاستجابات
 
-1. **Error Handling**: Consistent error handling pattern
-2. **Maintainability**: When the API changes, update the OpenAPI spec and regenerate types
+1. **معالجة الأخطاء**: نمط متسق لمعالجة الأخطاء
+2. **قابلية الصيانة**: عندما يتغيّر API، حدّث مواصفة OpenAPI وأعد توليد الأنواع
 
-Using `openapi-fetch` with generated TypeScript types creates a super easy, type-safe API client that improves developer productivity and reduces runtime errors. As your API evolves, simply update your OpenAPI specification and regenerate the types to keep your client in sync.
+إن استخدام `openapi-fetch` مع أنواع TypeScript المولَّدة ينشئ عميل API سهلًا للغاية وآمن الأنواع، يحسّن إنتاجية المطوّر ويقلل أخطاء وقت التشغيل. ومع تطوّر API لديك، ما عليك سوى تحديث مواصفة OpenAPI وإعادة توليد الأنواع لإبقاء عميلك متزامنًا.

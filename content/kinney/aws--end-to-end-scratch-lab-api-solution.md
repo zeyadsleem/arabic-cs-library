@@ -1,16 +1,16 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/end-to-end-scratch-lab-api-solution"
 ---
 
-This is the complete solution for the [End-to-End Scratch Lab API exercise](https://stevekinney.com/courses/aws/end-to-end-scratch-lab-api-exercise). Every command is shown with its expected output.
+هذا هو الحل الكامل لـ[تمرين واجهة برمجة تطبيقات Scratch Lab من طرف إلى طرف](https://stevekinney.com/courses/aws/end-to-end-scratch-lab-api-exercise). كل أمر معروض مع مخرجاته المتوقّعة.
 
-## Why This Works
+## لماذا ينجح هذا
 
-Every piece has one job. The DynamoDB table stores data. The Lambda handler routes requests and talks to the table. API Gateway accepts HTTP and forwards it to the Lambda. The execution role grants exactly the permissions the Lambda needs, and nothing more. The secret stores the third-party API key outside of both the code and the environment. That separation is what makes each service replaceable without tearing the rest apart.
+لكل قطعة مهمة واحدة. جدول DynamoDB يخزّن البيانات. ومعالج Lambda يوجّه الطلبات ويتحدّث إلى الجدول. وAPI Gateway يستقبل HTTP ويمرّرها إلى Lambda. ودور التنفيذ يمنح الأذونات التي تحتاجها Lambda بالضبط، ولا شيء أكثر. ويخزّن السر مفتاح API الخاص بطرف ثالث خارج الشيفرة وخارج البيئة معًا. وهذا الفصل هو ما يجعل كل خدمة قابلة للاستبدال دون تمزيق بقية الأجزاء.
 
-## 1. Create the DynamoDB Table
+## 1. إنشاء جدول DynamoDB
 
 ```bash
 aws dynamodb create-table \
@@ -30,9 +30,9 @@ aws dynamodb wait table-exists \
   --region us-east-1
 ```
 
-## 2. Store the Search API Key
+## 2. تخزين مفتاح API الخاص بالبحث
 
-Using Parameter Store as a `SecureString`:
+باستخدام Parameter Store كـ`SecureString`:
 
 ```bash
 aws ssm put-parameter \
@@ -43,9 +43,9 @@ aws ssm put-parameter \
   --output json
 ```
 
-## 3. Execution Role Policy
+## 3. سياسة دور التنفيذ
 
-Save as `scratch-lab-api-policy.json` (also available as [`scratch-lab-api.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/scratch-lab-api.json) in the Scratch Lab repository):
+احفظها باسم `scratch-lab-api-policy.json` (وهي متاحة أيضًا باسم [`scratch-lab-api.json`](https://github.com/stevekinney/scratch-lab/blob/main/policies/iam-policies/scratch-lab-api.json) في مستودع Scratch Lab):
 
 ```json
 {
@@ -70,7 +70,7 @@ Save as `scratch-lab-api-policy.json` (also available as [`scratch-lab-api.json`
 }
 ```
 
-Attach it to the Lambda’s execution role:
+أرفقها بدور تنفيذ Lambda:
 
 ```bash
 aws iam put-role-policy \
@@ -79,7 +79,7 @@ aws iam put-role-policy \
   --policy-document file://scratch-lab-api-policy.json
 ```
 
-## 4. The Lambda Handler
+## 4. معالج Lambda
 
 `lambda/src/handler.ts`:
 
@@ -219,11 +219,11 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-Build, package, and deploy using the same `npm run build` + `zip` + `aws lambda update-function-code` pattern from [Deploying and Testing a Lambda Function](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function).
+ابنِ الشيفرة وضمّنها وانشرها باستخدام النمط نفسه `npm run build` + `zip` + `aws lambda update-function-code` من [نشر دالة Lambda واختبارها](https://stevekinney.com/courses/aws/deploying-and-testing-a-lambda-function).
 
-## 5. API Gateway Routes
+## 5. مسارات API Gateway
 
-Given an existing HTTP API with ID `abc123def4`:
+بافتراض وجود HTTP API قائمة بمعرّف `abc123def4`:
 
 ```bash
 INTEGRATION_ID=$(aws apigatewayv2 create-integration \
@@ -252,7 +252,7 @@ aws lambda add-permission \
   --region us-east-1
 ```
 
-Enable CORS on the API:
+فعّل CORS على الـAPI:
 
 ```bash
 aws apigatewayv2 update-api \
@@ -261,7 +261,7 @@ aws apigatewayv2 update-api \
   --region us-east-1
 ```
 
-## 6. Smoke Test
+## 6. اختبار دخاني
 
 ```bash
 # Create
@@ -285,11 +285,11 @@ curl -sS -X DELETE https://api.example.com/notes/note-1 \
   -H "x-notepad-user-id: user-123"
 ```
 
-All four should return 2xx with the expected JSON.
+ينبغي أن تُرجع الأوامر الأربعة كلها رمز 2xx مع JSON المتوقّع.
 
-## 7. Connect the Frontend
+## 7. ربط الواجهة الأمامية
 
-Clone Scratch Lab and point it at your API:
+استنسخ Scratch Lab ووجّهه إلى الـAPI الخاص بك:
 
 ```bash
 git clone https://github.com/stevekinney/scratch-lab.git
@@ -298,19 +298,19 @@ npm install
 VITE_API_URL=https://api.example.com npm run dev
 ```
 
-Create a note in the browser. You should see the item appear in the DynamoDB console. Edit the note and verify `updatedAt` changes on the next GET.
+أنشئ ملاحظة في المتصفّح. وينبغي أن ترى العنصر يظهر في وحدة تحكّم DynamoDB. عدّل الملاحظة وتحقّق من أن `updatedAt` يتغيّر في طلب GET التالي.
 
-The Scratch Lab notepad app running on CloudFront with a note created, showing the full stack round trip from browser to DynamoDB and back.
+تطبيق المفكّرة Scratch Lab يعمل على CloudFront مع ملاحظة منشأة، عارضًا الرحلة الكاملة عبر المكدّس من المتصفّح إلى DynamoDB والعودة.
 
-## Summary of Resources Created
+## ملخّص الموارد المنشأة
 
-| Resource | Identifier |
+| المورد | المعرّف |
 | --- | --- |
-| DynamoDB table | `scratch-lab-notes` |
-| Parameter Store secret | `/scratch-lab/production/search-api-key` |
-| Lambda function | `scratch-lab-api` |
-| Execution role | `scratch-lab-api-role` with `scratch-lab-api-policy` attached |
-| API Gateway integration | `AWS_PROXY` → `scratch-lab-api` |
-| API Gateway routes | `GET /notes`, `POST /notes`, `GET /notes/{noteId}`, `PUT /notes/{noteId}`, `DELETE /notes/{noteId}` |
+| جدول DynamoDB | `scratch-lab-notes` |
+| سر Parameter Store | `/scratch-lab/production/search-api-key` |
+| دالة Lambda | `scratch-lab-api` |
+| دور التنفيذ | `scratch-lab-api-role` مع إرفاق `scratch-lab-api-policy` |
+| تكامل API Gateway | `AWS_PROXY` ← `scratch-lab-api` |
+| مسارات API Gateway | `GET /notes`, `POST /notes`, `GET /notes/{noteId}`, `PUT /notes/{noteId}`, `DELETE /notes/{noteId}` |
 
-When you tear this down, follow the order in [Cleanup and Teardown](https://stevekinney.com/courses/aws/cleanup-and-teardown): routes before the integration, integration before the function, function before the role, table last.
+عند تفكيك هذا، اتبع الترتيب الوارد في [التنظيف والتفكيك](https://stevekinney.com/courses/aws/cleanup-and-teardown): المسارات قبل التكامل، والتكامل قبل الدالة، والدالة قبل الدور، والجدول في النهاية.

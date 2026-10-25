@@ -1,30 +1,30 @@
 ---
-title: "Debugging and Limitations"
-lang: en
+title: "تصحيح دوال الحافة وقيودها"
+lang: ar
 source: "https://stevekinney.com/courses/aws/edge-function-debugging-and-limitations"
 ---
 
-Edge functions are powerful, but they fail in ways that are genuinely confusing the first time you encounter them. Your logs aren’t where you expect. Your function works locally but fails at the edge. Your deployment succeeds but the function doesn’t seem to run. This lesson covers where to look when things go wrong and what constraints to keep in mind before you write a single line of code.
+دوال الحافة (edge functions) قوية، لكنها تفشل بطرق مربكة حقًا في أول مرة تصادفها. سجلاتك ليست حيث تتوقّع. ودالتك تعمل محليًا لكنها تفشل على الحافة. ونشرك ينجح لكن الدالة لا تبدو وكأنها تعمل. يغطّي هذا الدرس أين تنظر عندما تسوء الأمور، وما القيود التي يجب أن تضعها في ذهنك قبل أن تكتب سطر شيفرة واحدًا.
 
-If you want AWS’s version of the runtime behavior while you read, the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) is the official reference.
+إذا أردت نسخة AWS من سلوك وقت التشغيل أثناء القراءة، فإن [دليل CloudFront Functions](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) هو المرجع الرسمي.
 
-## Where the Logs Go
+## أين تذهب السجلات
 
-This is the number one source of confusion—I can’t tell you how many times I’ve stared at an empty CloudWatch log group in `us-east-1` before remembering the logs are in a different region. Lambda@Edge and CloudFront Functions both write to CloudWatch Logs, but they write to **different regions** and with different behaviors.
+هذا هو المصدر الأول للارتباك — لا أستطيع أن أخبرك كم مرة حدّقت في مجموعة سجلات فارغة في CloudWatch بـ `us-east-1` قبل أن أتذكّر أن السجلات في منطقة أخرى. تكتب كل من Lambda@Edge وCloudFront Functions في CloudWatch Logs، لكنهما تكتبان في **مناطق مختلفة** وبسلوكيات مختلفة.
 
-### Lambda@Edge Logs
+### سجلات Lambda@Edge
 
-Lambda@Edge functions write logs to the **AWS region closest to the edge location that executed the function**. If a user in Tokyo triggers your function, the logs appear in the `ap-northeast-1` CloudWatch log group. If a user in London triggers it, the logs appear in `eu-west-2`.
+تكتب دوال Lambda@Edge السجلات في **منطقة AWS الأقرب إلى موقع الحافة الذي نفّذ الدالة**. فإذا أطلق مستخدم في طوكيو دالتك، ظهرت السجلات في مجموعة سجلات CloudWatch في `ap-northeast-1`. وإذا أطلقها مستخدم في لندن، ظهرت السجلات في `eu-west-2`.
 
-The log group follows the standard Lambda naming pattern:
+وتتبع مجموعة السجلات نمط تسمية Lambda القياسي:
 
 ```
 /aws/lambda/us-east-1.my-frontend-app-edge-rewrite
 ```
 
-Notice the `us-east-1.` prefix—this indicates that the function was deployed in `us-east-1` and replicated to the current region.
+لاحِظ البادئة `us-east-1.` — فهي تشير إلى أن الدالة نُشرت في `us-east-1` ونُسخت إلى المنطقة الحالية.
 
-To find your Lambda@Edge logs, you need to know (or guess) which region processed the request. If you’re testing from your own location, check the CloudFront region nearest to you:
+للعثور على سجلات Lambda@Edge، تحتاج إلى معرفة (أو تخمين) المنطقة التي عالجت الطلب. وإذا كنت تختبر من موقعك، فافحص منطقة CloudFront الأقرب إليك:
 
 ```bash
 aws logs describe-log-groups \
@@ -33,36 +33,36 @@ aws logs describe-log-groups \
   --output json
 ```
 
-> **Warning**
+> **تحذير**
 >
-> If you’re debugging a Lambda@Edge function and see no logs in `us-east-1`, that’s expected. The function was **deployed** in `us-east-1` but **executed** in whatever region was closest to the user. Check CloudWatch in the region nearest to wherever the request originated.
+> إذا كنت تصحّح دالة Lambda@Edge ولا ترى سجلات في `us-east-1`، فهذا متوقّع. فقد **نُشرت** الدالة في `us-east-1` لكنها **نُفّذت** في أي منطقة كانت الأقرب إلى المستخدم. افحص CloudWatch في المنطقة الأقرب إلى مصدر الطلب.
 
-### CloudFront Functions Logs
+### سجلات CloudFront Functions
 
-CloudFront Functions handle logging differently. Execution logs from `console.log()` statements aren’t automatically written to CloudWatch. Instead, CloudFront Functions provide:
+تتعامل CloudFront Functions مع التسجيل بشكل مختلف. فسجلات التنفيذ الناتجة عن عبارات `console.log()` لا تُكتب تلقائيًا في CloudWatch. وبدلًا من ذلك، توفّر CloudFront Functions:
 
-1. **Test output.** When you test a function using `aws cloudfront test-function`, the output includes any `console.log()` statements and the function result.
-2. **CloudWatch metrics.** CloudFront publishes function metrics (invocations, errors, compute utilization, throttles) to CloudWatch in `us-east-1`. These are metrics, not logs—you can see that your function errored, but not the error message.
+1. **مخرجات الاختبار.** عندما تختبر دالة باستخدام `aws cloudfront test-function`، تتضمن المخرجات أي عبارات `console.log()` ونتيجة الدالة.
+2. **مقاييس CloudWatch.** تنشر CloudFront مقاييس الدالة (الاستدعاءات والأخطاء واستهلاك الحوسبة وعمليات التقييد) إلى CloudWatch في `us-east-1`. وهذه مقاييس لا سجلات — ترى أن دالتك أخطأت، لكن لا ترى رسالة الخطأ.
 
-To add real-time logging to a CloudFront Function, you can enable CloudWatch Logs by creating a logging configuration. The logs appear in `us-east-1` under a log group named:
+لإضافة تسجيل فوري إلى CloudFront Function، يمكنك تفعيل CloudWatch Logs بإنشاء إعداد تسجيل. وتظهر السجلات في `us-east-1` ضمن مجموعة سجلات اسمها:
 
 ```
 /aws/cloudfront/function/url-rewrite
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> For quick debugging of CloudFront Functions, use the `test-function` CLI command with different event payloads rather than deploying and waiting for real traffic. It’s faster and gives you the full `console.log()` output.
+> للتصحيح السريع لـ CloudFront Functions، استخدم أمر CLI‏ `test-function` مع حمولات أحداث مختلفة بدلًا من النشر وانتظار حركة مرور حقيقية. فهو أسرع ويمنحك مخرجات `console.log()` كاملة.
 
-## Common Error Patterns
+## أنماط الأخطاء الشائعة
 
-### “The function returned an invalid response”
+### «أعادت الدالة استجابة غير صالحة»
 
-This error appears in CloudFront’s standard error response (a 502 or 503) when your edge function returns a malformed response object. Common causes:
+يظهر هذا الخطأ في استجابة الخطأ القياسية من CloudFront (خطأ 502 أو 503) عندما تعيد دالة الحافة كائن استجابة مشوّهًا. والأسباب الشائعة:
 
-**Lambda@Edge:** Returning `status: 200` instead of `status: '200'`. The status must be a string, not a number.
+**Lambda@Edge:** إعادة `status: 200` بدلًا من `status: '200'`. فالحالة يجب أن تكون سلسلة نصية لا عددًا.
 
-**CloudFront Functions:** Returning a response object with missing required fields. At minimum, you need `statusCode` and `statusDescription`:
+**CloudFront Functions:** إعادة كائن استجابة تنقصه حقول مطلوبة. كحد أدنى تحتاج إلى `statusCode` و`statusDescription`:
 
 ```javascript
 // Wrong—missing statusDescription
@@ -72,103 +72,103 @@ return { statusCode: 200 };
 return { statusCode: 200, statusDescription: 'OK' };
 ```
 
-### “Execution timed out”
+### «انتهت مهلة التنفيذ»
 
-- **CloudFront Functions:** Your function exceeded the compute utilization limit. This is measured as a percentage (0–100) of the maximum allowed time, not as wall-clock seconds. If you see this, your function is doing too much work—simplify the logic or move it to Lambda@Edge.
-- **Lambda@Edge:** Your viewer event function exceeded 5 seconds or your origin event function exceeded 30 seconds. If your function makes network calls, check for timeouts on those calls.
+- **CloudFront Functions:** تجاوزت دالتك حد استهلاك الحوسبة. ويُقاس ذلك كنسبة مئوية (0–100) من الوقت الأقصى المسموح، لا بثوانٍ على الساعة الجدارية. فإن رأيت هذا، فدالتك تقوم بعمل أكثر من اللازم — بسّط المنطق أو انقله إلى Lambda@Edge.
+- **Lambda@Edge:** تجاوزت دالة حدث المشاهد 5 ثوانٍ أو تجاوزت دالة حدث الأصل 30 ثانية. وإذا كانت دالتك تجري اتصالات شبكة، فافحص مهل تلك الاتصالات.
 
-### “Function exceeded the allowed size”
+### «تجاوزت الدالة الحجم المسموح»
 
-- **CloudFront Functions:** Your code exceeds 10 KB. Remove comments, shorten variable names, or split the logic across a viewer request and viewer response function. Or move the data out of the function entirely—see KeyValueStore below.
-- **Lambda@Edge:** Your zipped deployment package exceeds 1 MB (viewer events) or 50 MB (origin events). Remove unused dependencies, use tree-shaking, or consider whether the dependency is truly necessary.
+- **CloudFront Functions:** تتجاوز شيفرتك 10 KB. أزل التعليقات، أو اختصر أسماء المتغيّرات، أو قسّم المنطق بين دالة طلب المشاهد ودالة استجابة المشاهد. أو أخرج البيانات من الدالة كليًا — انظر KeyValueStore أدناه.
+- **Lambda@Edge:** تتجاوز حزمة نشرك المضغوطة 1 MB (أحداث المشاهد) أو 50 MB (أحداث الأصل). أزل الاعتماديات غير المستخدمة، أو استخدم tree-shaking، أو فكّر فيما إذا كانت الاعتمادية ضرورية فعلًا.
 
-### The function works in test but not in production
+### الدالة تعمل في الاختبار لكن لا تعمل في الإنتاج
 
-This usually means one of two things:
+هذا يعني عادةً أحد أمرين:
 
-1. **You published to DEVELOPMENT but not LIVE.** CloudFront Functions have a two-stage deployment. The `test-function` command tests the DEVELOPMENT stage. You must run `publish-function` to promote to LIVE.
-2. **The function isn’t associated with the right behavior.** Verify the association using `get-distribution-config` and check that the function ARN appears in the correct behavior’s `FunctionAssociations` or `LambdaFunctionAssociations`.
+1. **نشرت إلى DEVELOPMENT لكن ليس إلى LIVE.** فـ CloudFront Functions لها نشر على مرحلتين. وأمر `test-function` يختبر مرحلة DEVELOPMENT. ويجب أن تشغّل `publish-function` للترقية إلى LIVE.
+2. **الدالة غير مرتبطة بالسلوك الصحيح.** تحقّق من الارتباط باستخدام `get-distribution-config`، وافحص أن ARN الدالة يظهر في `FunctionAssociations` أو `LambdaFunctionAssociations` للسلوك الصحيح.
 
-### “The Lambda function associated with the CloudFront distribution is invalid or doesn’t have the required permissions”
+### «دالة Lambda المرتبطة بتوزيع CloudFront غير صالحة أو لا تملك الأذونات المطلوبة»
 
-This means one or more of:
+هذا يعني واحدًا أو أكثر ممّا يلي:
 
-- The Lambda function doesn’t exist in `us-east-1`
-- You referenced `$LATEST` instead of a numbered version
-- The execution role doesn’t include `edgelambda.amazonaws.com` in its trust policy
-- The IAM role doesn’t have the `AWSLambdaBasicExecutionRole` policy attached
+- دالة Lambda غير موجودة في `us-east-1`
+- أشرت إلى `$LATEST` بدلًا من إصدار مرقّم
+- دور التنفيذ لا يتضمّن `edgelambda.amazonaws.com` في سياسة الثقة الخاصة به
+- دور IAM لا يملك سياسة `AWSLambdaBasicExecutionRole` مرتبطة به
 
-Review the role setup in [Writing a Lambda@Edge Function](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function).
+راجع إعداد الدور في [كتابة دالة Lambda@Edge](https://stevekinney.com/courses/aws/writing-a-lambda-at-edge-function).
 
-## Response Size Limits
+## حدود حجم الاستجابة
 
-Edge functions have strict limits on the response they can generate:
+لدوال الحافة حدود صارمة على الاستجابة التي يمكنها توليدها:
 
-| Trigger | Maximum Response Size (including headers) |
+| المُشغِّل | الحد الأقصى لحجم الاستجابة (بما فيها الترويسات) |
 | --- | --- |
-| Viewer request (generated response) | 40 KB |
-| Viewer response | Can modify the response (status code, headers, body, cookies) but cannot generate a completely new response from scratch the way a viewer request function can short-circuit before reaching the origin |
-| Origin request (generated response) | 1 MB |
-| Origin response | Cannot generate a response; can only modify the existing one |
+| طلب المشاهد (استجابة مُولَّدة) | 40 KB |
+| استجابة المشاهد | يمكنها تعديل الاستجابة (رمز الحالة والترويسات والجسم وملفات تعريف الارتباط) لكنها لا تستطيع توليد استجابة جديدة كليًا من الصفر بالطريقة التي تستطيع بها دالة طلب المشاهد أن تقطع الطريق قبل الوصول إلى الأصل |
+| طلب الأصل (استجابة مُولَّدة) | 1 MB |
+| استجابة الأصل | لا تستطيع توليد استجابة؛ يمكنها فقط تعديل الاستجابة الموجودة |
 
-If your edge function generates a response that exceeds the limit, CloudFront returns a 502 error to the viewer.
+إذا ولّدت دالة الحافة استجابة تتجاوز الحد، أرجعت CloudFront خطأ 502 إلى المشاهد.
 
-> **Warning**
+> **تحذير**
 >
-> These limits apply when your function **generates** a response (short-circuits without going to the origin). If you’re modifying a response that came from the origin, the response size is governed by CloudFront’s standard limits, not the edge function limits.
+> تنطبق هذه الحدود عندما **تولّد** دالتك استجابة (تقطع الطريق دون الذهاب إلى الأصل). أما إذا كنت تعدّل استجابة جاءت من الأصل، فحجم الاستجابة تحكمه حدود CloudFront القياسية، لا حدود دالة الحافة.
 
-## Network Access Restrictions
+## قيود الوصول إلى الشبكة
 
-**CloudFront Functions can’t make network calls.** No HTTP requests, no DNS lookups, no socket connections. This is a hard constraint of the runtime. If your function needs to call an external service—validate a JWT against a JWKS endpoint, look up a feature flag, query a database—you must use Lambda@Edge.
+**لا تستطيع CloudFront Functions إجراء اتصالات شبكة.** لا طلبات HTTP، ولا استعلامات DNS، ولا اتصالات مآخذ (sockets). وهذا قيد صارم في وقت التشغيل. وإذا كانت دالتك تحتاج إلى استدعاء خدمة خارجية — التحقق من JWT مقابل نقطة نهاية JWKS، أو البحث عن علامة ميزة، أو الاستعلام من قاعدة بيانات — فيجب أن تستخدم Lambda@Edge.
 
-**Lambda@Edge** can make network calls, but keep in mind:
+**Lambda@Edge** تستطيع إجراء اتصالات شبكة، لكن ضع في الحسبان:
 
-- Network calls add latency. A viewer request function that makes an HTTP call to your API will block the user’s request until that call completes.
-- The 5-second timeout for viewer events includes network time. If your external service is slow, your function times out and the user gets a 502.
-- Consider caching external data in the function’s global scope (outside the handler) to reuse across invocations on the same execution environment.
+- اتصالات الشبكة تضيف زمن استجابة. فدالة طلب المشاهد التي تجري اتصال HTTP بواجهة API لديك ستحجب طلب المستخدم حتى يكتمل ذلك الاتصال.
+- مهلة 5 ثوانٍ لأحداث المشاهد تشمل وقت الشبكة. فإن كانت خدمتك الخارجية بطيئة، تنتهي مهلة دالتك ويحصل المستخدم على خطأ 502.
+- فكّر في تخزين البيانات الخارجية مؤقتًا في النطاق العام للدالة (خارج المعالج) لإعادة استخدامها بين الاستدعاءات على بيئة التنفيذ نفسها.
 
-## The Replication Delay
+## تأخير النسخ المتماثل
 
-Lambda@Edge functions are replicated to regional edge caches worldwide. This replication takes time:
+تُنسخ دوال Lambda@Edge إلى ذاكرات الحافة الإقليمية (regional edge caches) في أنحاء العالم. وهذا النسخ يستغرق وقتًا:
 
-- **Initial deployment:** Several minutes after associating the function with a distribution.
-- **Updates:** Each new version requires a new association and another round of replication. Budget 5–10 minutes for a full global rollout.
-- **Deletion:** After removing a Lambda@Edge association, replicas are cleaned up asynchronously. You may not be able to delete the Lambda function for hours. The API returns `ReplicatedFunctionStillCreating` or `ResourceConflictException` until cleanup completes.
+- **النشر الأول:** عدة دقائق بعد ربط الدالة بتوزيع.
+- **التحديثات:** كل إصدار جديد يتطلّب ارتباطًا جديدًا وجولة أخرى من النسخ. خصّص 5–10 دقائق لطرح عالمي كامل.
+- **الحذف:** بعد إزالة ارتباط Lambda@Edge، تُنظَّف النسخ المتماثلة بشكل غير متزامن. وقد لا تستطيع حذف دالة Lambda لساعات. وتُرجع الواجهة البرمجية `ReplicatedFunctionStillCreating` أو `ResourceConflictException` حتى يكتمل التنظيف.
 
-CloudFront Functions don’t have this problem. They propagate in seconds because they run on the CloudFront edge locations themselves, not on separate Lambda infrastructure.
+لا تعاني CloudFront Functions من هذه المشكلة. فهي تنتشر في ثوانٍ لأنها تعمل على مواقع حافة CloudFront نفسها، لا على بنية Lambda منفصلة.
 
 ## CloudFront KeyValueStore
 
-**KeyValueStore** (KVS, GA December 2023) is the operational companion to CloudFront Functions. It’s a globally distributed, low-latency key-value store that CloudFront Functions can read via `cf.kvs().get(key)`. It solves two problems that otherwise force you to Lambda@Edge:
+**KeyValueStore** (ويُختصر KVS، وأصبح متاحًا للجميع في ديسمبر 2023) هو الرفيق التشغيلي لـ CloudFront Functions. وهو مخزن مفتاح-قيمة موزّع عالميًا ومنخفض زمن الاستجابة، تستطيع CloudFront Functions القراءة منه عبر `cf.kvs().get(key)`. وهو يحلّ مشكلتين تدفعانك لولا ذلك إلى Lambda@Edge:
 
-- **Data bigger than 10 KB.** Redirect maps, feature-flag JSON, per-tenant routing configs—keep the function tiny and look up the data at runtime.
-- **Data that changes independently of the function.** KVS updates don’t redeploy the function. You can flip a feature flag in KVS without touching the CloudFront distribution at all.
+- **بيانات أكبر من 10 KB.** خرائط إعادة التوجيه، وملفات JSON لعلامات الميزات، وإعدادات التوجيه لكل مستأجر — أبقِ الدالة صغيرة وابحث عن البيانات في وقت التشغيل.
+- **بيانات تتغيّر باستقلال عن الدالة.** تحديثات KVS لا تعيد نشر الدالة. يمكنك قلب علامة ميزة في KVS دون لمس توزيع CloudFront إطلاقًا.
 
-KVS also has sensible operational surface: the AWS CLI has first-class support (`aws cloudfront-keyvaluestore`), writes propagate globally in seconds, and reads inside a function are sub-millisecond. For any CloudFront Functions use case where the data is more interesting than the logic, reach for KVS before reaching for Lambda@Edge.
+ولـ KVS أيضًا سطح تشغيلي معقول: فـ AWS CLI تدعمه دعمًا كاملًا (`aws cloudfront-keyvaluestore`)، والكتابات تنتشر عالميًا في ثوانٍ، والقراءات داخل الدالة أقل من مللي ثانية. فأي حالة استخدام لـ CloudFront Functions تكون فيها البيانات أكثر إثارة للاهتمام من المنطق، فارجع إلى KVS قبل أن ترجع إلى Lambda@Edge.
 
-## Constraints Summary
+## ملخّص القيود
 
-Here’s every constraint in one table for quick reference:
+إليك كل قيد في جدول واحد للرجوع السريع:
 
-| Constraint | CloudFront Functions | Lambda@Edge (Viewer) | Lambda@Edge (Origin) |
+| القيد | CloudFront Functions | Lambda@Edge (المشاهد) | Lambda@Edge (الأصل) |
 | --- | --- | --- | --- |
-| Runtime | JS (ES5.1 + select ES6–12) | Node.js / Python | Node.js / Python |
-| Max execution time | Sub-millisecond | 5 seconds | 30 seconds |
-| Memory | 2 MB | 128 MB | Up to 10,240 MB |
-| Package size | 10 KB | 1 MB | 50 MB |
-| Network access | No | Yes | Yes |
-| File system | No | `/tmp` (512 MB) | `/tmp` (512 MB) |
-| Environment variables | No | No | No |
-| Request body access | No | No | Yes |
-| Logs location | `us-east-1` | Nearest region | Nearest region |
-| Deployment speed | Seconds | Minutes | Minutes |
+| وقت التشغيل | JS (ES5.1 + ميزات مختارة من ES6–12) | Node.js / Python | Node.js / Python |
+| أقصى مدة تنفيذ | أقل من مللي ثانية | 5 ثوانٍ | 30 ثانية |
+| الذاكرة | 2 MB | 128 MB | حتى 10,240 MB |
+| حجم الحزمة | 10 KB | 1 MB | 50 MB |
+| الوصول إلى الشبكة | لا | نعم | نعم |
+| نظام الملفات | لا | `/tmp` (512 MB) | `/tmp` (512 MB) |
+| متغيّرات البيئة | لا | لا | لا |
+| الوصول إلى جسم الطلب | لا | لا | نعم |
+| موقع السجلات | `us-east-1` | أقرب منطقة | أقرب منطقة |
+| سرعة النشر | ثوانٍ | دقائق | دقائق |
 
-## Debugging Workflow
+## سير عمل التصحيح
 
-When an edge function isn’t working, follow this sequence:
+عندما لا تعمل دالة الحافة، اتبع هذا التسلسل:
 
-1. **Test locally first.** Use `aws cloudfront test-function` for CloudFront Functions. For Lambda@Edge, invoke the function directly with a test event that matches the CloudFront event structure.
-2. **Check the association.** Run `aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --region us-east-1 --output json` and verify the function ARN appears in the right behavior and event type.
-3. **Check the right CloudWatch region.** For Lambda@Edge, check the region nearest to where you’re making test requests.
-4. **Check CloudFront metrics.** In the CloudWatch console (in `us-east-1`), look at the CloudFront function metrics: invocation count, error rate, and compute utilization.
-5. **Check the distribution status.** If the distribution is still deploying, your changes are not live yet. Run `aws cloudfront get-distribution --id E1A2B3C4D5E6F7 --region us-east-1 --output json` and check the `Status` field. It should be `Deployed`, not `InProgress`.
+1. **اختبر محليًا أولًا.** استخدم `aws cloudfront test-function` لـ CloudFront Functions. ولـ Lambda@Edge، استدعِ الدالة مباشرةً بحدث اختبار يطابق بنية أحداث CloudFront.
+2. **افحص الارتباط.** شغّل `aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --region us-east-1 --output json` وتحقّق من أن ARN الدالة يظهر في السلوك ونوع الحدث الصحيحين.
+3. **افحص منطقة CloudWatch الصحيحة.** ولـ Lambda@Edge، افحص المنطقة الأقرب إلى المكان الذي تُجري منه طلبات الاختبار.
+4. **افحص مقاييس CloudFront.** في وحدة تحكم CloudWatch (في `us-east-1`)، انظر إلى مقاييس دالة CloudFront: عدد الاستدعاءات، ومعدّل الأخطاء، واستهلاك الحوسبة.
+5. **افحص حالة التوزيع.** إذا كان التوزيع لا يزال قيد النشر، فتغييراتك ليست مباشرة بعد. شغّل `aws cloudfront get-distribution --id E1A2B3C4D5E6F7 --region us-east-1 --output json` وافحص حقل `Status`. ينبغي أن يكون `Deployed` لا `InProgress`.

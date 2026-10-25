@@ -1,61 +1,61 @@
 ---
-title: "Dev Mode"
-lang: en
+title: "وضع المطوّر (Dev Mode)"
+lang: ar
 source: "https://stevekinney.com/courses/figma/dev-mode"
 ---
 
-[Dev Mode](https://www.figma.com/dev-mode/) is a specialized view within Figma designed for developers—as you can probably gather from the name. It allows them to access detailed information about the design, such as measurements, color codes, font properties, and code snippets for CSS, iOS, and Android. This mode is aimed at making it easier for developers to understand and implement the design as intended, reducing back-and-forth communication and ensuring accuracy in the final product.
+[وضع المطوّر (Dev Mode)](https://www.figma.com/dev-mode/) عرض متخصّص داخل Figma مصمَّم للمطوّرين، كما يمكنك أن تستنتج من الاسم. فهو يتيح لهم الوصول إلى معلومات مفصّلة عن التصميم، مثل القياسات وأكواد الألوان وخصائص الخطوط ومقتطفات الشيفرة لكل من CSS وiOS وAndroid. ويهدف هذا الوضع إلى تسهيل فهم التصميم وتنفيذه كما هو مقصود، وتقليل التواصل ذهابًا وإيابًا، وضمان الدقة في المنتج النهائي.
 
-> **Dev Mode is only available on paid accounts**
+> **وضع المطوّر متاح فقط في الحسابات المدفوعة**
 >
-> You won’t see the toggle to switch between the regular designer mode and Dev Mode if you are on a free plan. I don’t make the rules around here.
+> لن ترى مفتاح التبديل بين وضع المصمّم العادي ووضع المطوّر إذا كنت على خطة مجانية. أنا لا أضع القواعد هنا.
 
-## Accessing Dev Mode
+## الوصول إلى وضع المطوّر
 
-> **Keyboard shortcut**
+> **اختصار لوحة المفاتيح**
 >
-> You can switch into Dev Mode at any time using **Shift+D**.
+> يمكنك التبديل إلى وضع المطوّر في أي وقت باستخدام **Shift+D**.
 
-You can access Dev Mode by simply switching to the ‘Inspect’ tab within a Figma file. This view automatically provides the specific details and assets they need, based on their selection within the design file. Dev Mode is available to anyone with access to the Figma file, facilitating open communication and collaboration across the entire project team.
+يمكنك الوصول إلى وضع المطوّر بمجرد التبديل إلى تبويب «Inspect» داخل ملف Figma. يوفّر هذا العرض تلقائيًا التفاصيل والأصول المحدّدة التي يحتاجونها، بناءً على ما يحدّدونه داخل ملف التصميم. ووضع المطوّر متاح لأي شخص لديه صلاحية الوصول إلى ملف Figma، مما يسهّل التواصل المفتوح والتعاون عبر فريق المشروع بأكمله.
 
-1. **Opening a File**: Start by opening a Figma design file. Ensure you have at least “Can View” access to the file.
-2. **Switching to Developer Mode**: Navigate to the right sidebar and switch from the “Design” or “Prototype” tab to the “Inspect” tab. This action enters you into Developer Mode.
+1. **فتح ملف**: ابدأ بفتح ملف تصميم في Figma. تأكّد من أن لديك صلاحية «Can View» على الأقل على الملف.
+2. **التبديل إلى وضع المطوّر**: انتقل إلى الشريط الجانبي الأيمن وبدّل من تبويب «Design» أو «Prototype» إلى تبويب «Inspect». هذا الإجراء يُدخلك في وضع المطوّر.
 
-## Features of Dev Mode
+## مزايا وضع المطوّر
 
-- **Code Snippets:** Automatically generated code snippets for CSS, iOS (Swift), and Android (XML), making it easier to implement design elements in code.
-- **Asset Exporting:** Developers can export assets directly from the design file in various formats and resolutions, tailored to their needs.
-- **Measurement and Layout Details:** Precise measurements, spacing, and layout information are readily available, ensuring developers can replicate the exact design layout.
-- **Style Information:** Details on typography, color, effects, and other styles are clearly displayed, simplifying the process of applying design styles in the development.
+- **مقتطفات الشيفرة:** مقتطفات شيفرة تُولَّد تلقائيًا لـ CSS وiOS (Swift) وAndroid (XML)، مما يسهّل تنفيذ عناصر التصميم في الشيفرة.
+- **تصدير الأصول:** يمكن للمطوّرين تصدير الأصول مباشرة من ملف التصميم بصيغ ودقّات متعددة تناسب احتياجاتهم.
+- **تفاصيل القياس والتخطيط:** القياسات الدقيقة والتباعد ومعلومات التخطيط متاحة بسهولة، مما يضمن أن يستطيع المطوّرون تكرار تخطيط التصميم بدقة.
+- **معلومات الأنماط:** تُعرض تفاصيل الخطوط والألوان والتأثيرات والأنماط الأخرى بوضوح، مما يبسّط عملية تطبيق أنماط التصميم في التطوير.
 
-Creating a tutorial on using Figma’s Developer Mode provides a comprehensive guide for designers and developers to efficiently collaborate, ensuring the accurate handoff of design specifications. This tutorial aims to equip both parties with the knowledge to use Developer Mode effectively, bridging the gap between design and development.
+يوفّر إعداد درس تعليمي حول استخدام وضع المطوّر من Figma دليلًا شاملًا للمصمّمين والمطوّرين كي يتعاونوا بكفاءة، بما يضمن التسليم الدقيق لمواصفات التصميم. ويهدف هذا الدرس إلى تزويد الطرفين بالمعرفة اللازمة لاستخدام وضع المطوّر بفاعلية، وجسر الفجوة بين التصميم والتطوير.
 
-## The Dev Mode Toolbar
+## شريط أدوات وضع المطوّر
 
-In this toolbar, you’ll see the following options:
+في شريط الأدوات هذا، سترى الخيارات التالية:
 
-- **Inspect**: This tool allows you to click on and inspect elements of the components that you’re trying to implement.
-- **Measure**: This tool makes it easy to—umm—measure the distances between elements.
-- **Annotate**: This tool allows you to annotate different parts of the component design.
-- **Comment**: This allows you to make comments and/or have a discussion.
+- **Inspect**: تتيح لك هذه الأداة النقر على عناصر المكوّنات التي تحاول تنفيذها وفحصها.
+- **Measure**: تسهّل هذه الأداة — كما قد تتوقّع — قياس المسافات بين العناصر.
+- **Annotate**: تتيح لك هذه الأداة إضافة تعليقات توضيحية على أجزاء مختلفة من تصميم المكوّن.
+- **Comment**: يتيح لك هذا إضافة تعليقات و/أو إجراء نقاش.
 
-### Navigating the Interface
+### التنقّل في الواجهة
 
-- **Explore the UI**: Familiarize yourself with the Developer Mode interface, noting the layout, properties panel, and code snippet section.
+- **استكشف الواجهة**: تعرّف على واجهة وضع المطوّر، مع ملاحظة التخطيط ولوحة الخصائص وقسم مقتطفات الشيفرة.
 
-### Understanding Design Specifications
+### فهم مواصفات التصميم
 
-Developer Mode provides detailed information about the elements within a design, including:
+يوفّر وضع المطوّر معلومات مفصّلة عن العناصر داخل التصميم، بما في ذلك:
 
-- **Measurements and Layout**: Learn how to view and interpret measurements, spacing, and layout information.
-- **Colors and Styles**: Discover how to access color values, gradients, and text styles, with options to copy values in various formats (e.g., HEX, RGB).
-- **Typography**: Understand typography specifications, such as font family, size, line height, and spacing.
-- **Assets**: Explore how to download assets like icons and images directly from Figma.
+- **القياسات والتخطيط**: تعلّم كيفية عرض القياسات والتباعد ومعلومات التخطيط وتفسيرها.
+- **الألوان والأنماط**: اكتشف كيفية الوصول إلى قيم الألوان والتدرّجات وأنماط النص، مع خيارات لنسخ القيم بصيغ متعددة (مثل HEX وRGB).
+- **الخطوط**: افهم مواصفات الخطوط، مثل عائلة الخط وحجمه وارتفاع السطر والتباعد.
+- **الأصول**: استكشف كيفية تنزيل الأصول مثل الأيقونات والصور مباشرة من Figma.
 
-## From Design to Development
+## من التصميم إلى التطوير
 
-1. **Choose a Design Element**: Select an element from a Figma design file, such as a button or a navigation bar.
-2. **Analyze the Specifications**: Use Developer Mode to review all relevant specifications, including dimensions, colors, and typography.
-3. **Export Code Snippets**: Export the necessary code snippets for your development environment.
-4. **Implement in Code**: Use the exported specifications and snippets to recreate the design element in your development project.
-5. **Compare and Adjust**: Compare your implementation with the original design in Figma, adjusting as needed for an accurate match.
+1. **اختر عنصر تصميم**: حدّد عنصرًا من ملف تصميم في Figma، مثل زر أو شريط تنقّل.
+2. **حلّل المواصفات**: استخدم وضع المطوّر لمراجعة كل المواصفات ذات الصلة، بما في ذلك الأبعاد والألوان والخطوط.
+3. **صدّر مقتطفات الشيفرة**: صدّر مقتطفات الشيفرة اللازمة لبيئة التطوير لديك.
+4. **نفّذ في الشيفرة**: استخدم المواصفات والمقتطفات المُصدَّرة لإعادة إنشاء عنصر التصميم في مشروع التطوير لديك.
+5. **قارن وعدّل**: قارن تنفيذك بالتصميم الأصلي في Figma، وعدّل حسب الحاجة للوصول إلى مطابقة دقيقة.

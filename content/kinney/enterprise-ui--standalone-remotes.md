@@ -1,38 +1,38 @@
 ---
-title: "Standalone Remotes"
-lang: en
+title: "الوحدات البعيدة المستقلة"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/standalone-remotes"
 ---
 
-In the [runtime composition exercise](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise), the analytics remote runs on `localhost:3001` and the host loads it at runtime. But if you visit `localhost:3001` directly, you’ll see the analytics dashboard running on its own—no host required. It has its own HTML shell, its own mock data via [MSW](https://mswjs.io/), and its own entry point. The remote is a standalone application that *also* happens to expose modules for federation.
+في [تمرين التركيب وقت التشغيل](https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise)، تعمل وحدة التحليلات البعيدة على `localhost:3001` ويحمّلها المضيف وقت التشغيل. لكن إن زرت `localhost:3001` مباشرةً، سترى لوحة التحليلات تعمل بذاتها—بلا حاجة إلى مضيف. فلديها هيكل HTML الخاص بها، وبياناتها المُحاكاة عبر [MSW](https://mswjs.io/)، ونقطة دخولها الخاصة. فالوحدة البعيدة تطبيق مستقل *يكشف أيضًا* وحدات للاتحاد.
 
-This isn’t an accident. It’s the single most important developer experience decision you’ll make in a Module Federation architecture.
+وهذا ليس مصادفة، بل هو أهم قرار لتجربة المطوّر ستتخذه في معمارية اتحاد الوحدات (Module Federation).
 
-## Why Standalone Mode Matters
+## لماذا يهم النمط المستقل
 
-Without standalone mode, developing a remote means running the host alongside it. That means two dev servers, the host’s full dependency tree, and the federation runtime’s negotiation overhead—all just to see your component render. If the host has its own remotes, you might need three or four servers running. The feedback loop gets slower with every remote you add.
+بلا النمط المستقل، يعني تطوير وحدة بعيدة تشغيل المضيف إلى جانبها. وذلك يعني خادمَي تطوير، وشجرة اعتمادات المضيف كاملة، وكلفة تفاوض وقت تشغيل الاتحاد—كل ذلك فقط لترى مكوّنك يُصيَّر. وإن كان للمضيف وحداته البعيدة الخاصة، فقد تحتاج إلى ثلاثة أو أربعة خوادم تعمل. وتصير حلقة التغذية الراجعة أبطأ مع كل وحدة بعيدة تضيفها.
 
-Standalone mode breaks that dependency. A developer working on the analytics dashboard can `cd remote-analytics && pnpm dev`, open `localhost:3001`, and iterate in isolation. They don’t need the host running. They don’t need other remotes running. They don’t need to understand the host’s routing, auth flow, or state management. They just need their own code.
+يكسر النمط المستقل ذلك الاعتماد. فالمطوّر الذي يعمل على لوحة التحليلات يستطيع `cd remote-analytics && pnpm dev`، ويفتح `localhost:3001`، ويكرّر بمعزل عن غيره. ولا يحتاج إلى تشغيل المضيف، ولا إلى تشغيل وحدات بعيدة أخرى، ولا إلى فهم توجيه المضيف أو تدفّق المصادقة أو إدارة الحالة فيه. إنه يحتاج إلى شيفرته وحدها.
 
-That isolation also makes testing more tractable. You can write component tests and integration tests against the standalone remote without spinning up the entire federated system. You can run Playwright against `localhost:3001` and verify the analytics dashboard’s behavior in isolation. You can run lighthouse against a single remote instead of the full shell.
+وذلك العزل يجعل الاختبار أكثر يُسرًا أيضًا. فتستطيع كتابة اختبارات مكوّنات واختبارات تكامل ضد الوحدة البعيدة المستقلة دون تشغيل النظام الاتحادي بأكمله. وتستطيع تشغيل Playwright ضد `localhost:3001` والتحقق من سلوك لوحة التحليلات بمعزل عن غيرها. وتستطيع تشغيل lighthouse ضد وحدة بعيدة واحدة بدل الهيكل كامل.
 
-## How It Works
+## كيف يعمل
 
-A standalone remote is just a normal application that happens to also configure `exposes` in its Module Federation setup. The key is the `eager: true` flag on shared dependencies.
+الوحدة البعيدة المستقلة ليست إلا تطبيقًا عاديًا يصادف أنه يضبط أيضًا `exposes` في إعداد اتحاد الوحدات. والمفتاح هو علم `eager: true` على الاعتمادات المشتركة.
 
-When a remote is loaded through a host, Module Federation’s runtime handles shared dependency resolution—the host provides React, `react-dom`, and whatever else is declared as `shared`. The remote doesn’t need to bundle its own copy. But when the remote runs on its own, there’s no host to provide anything. Without `eager: true`, the remote would try to request shared modules from a host that doesn’t exist, and you’d get a runtime error.
+عندما تُحمَّل وحدة بعيدة عبر مضيف، يتولّى وقت تشغيل اتحاد الوحدات حلّ الاعتمادات المشتركة—فالمضيف يوفّر React و`react-dom` وكل ما يُعلن `shared`. ولا تحتاج الوحدة البعيدة إلى حزم نسختها الخاصة. لكن عندما تعمل الوحدة وحدها، لا يوجد مضيف يوفّر شيئًا. وبلا `eager: true`، ستحاول الوحدة طلب الوحدات المشتركة من مضيف غير موجود، فتحصل على خطأ وقت التشغيل.
 
-`eager: true` tells the remote to bundle shared dependencies directly into its output as a fallback. The federation runtime still deduplicates at runtime when a host is present—`eager` doesn’t mean “always load your own copy.” It means “have your own copy ready in case nobody else provides one.” That’s what makes standalone mode possible without duplicating React in production.
+يخبر `eager: true` الوحدة البعيدة أن تحزم الاعتمادات المشتركة مباشرةً في مخرجاتها كخيار احتياطي. وما زال وقت تشغيل الاتحاد يزيل التكرار وقت التشغيل عندما يكون المضيف حاضرًا—فـ`eager` لا يعني «حمّل نسختك دائمًا»، بل «أبقِ نسختك جاهزة في حال لم يوفّرها أحد غيرك». وهذا ما يجعل النمط المستقل ممكنًا دون تكرار React في الإنتاج.
 
-The remote also needs its own HTML entry point. In the exercise repo, the remote has its own `index.html`, its own `index.tsx`, and its own root component that wraps the analytics dashboard. When loaded through the host, none of that matters—the host imports `analytics-dashboard` directly via the `exposes` configuration. But when loaded standalone, that HTML entry point is what the browser actually renders.
+وتحتاج الوحدة البعيدة أيضًا إلى نقطة دخول HTML خاصة بها. ففي مستودع التمرين، للوحدة البعيدة `index.html` خاص بها، و`index.tsx` خاص بها، ومكوّن جذر خاص بها يلفّ لوحة التحليلات. وعند تحميلها عبر المضيف، لا يهم شيء من ذلك—فالمضيف يستورد `analytics-dashboard` مباشرةً عبر إعداد `exposes`. لكن عند تحميلها مستقلة، نقطة دخول HTML تلك هي ما يصيّره المتصفح فعلًا.
 
-## Mock Data with MSW
+## بيانات مُحاكاة مع MSW
 
-The other half of standalone mode is data. The analytics dashboard needs user data, analytics metrics, and auth state to render anything useful. In the full application, that data comes from the host’s API and auth flow. In standalone mode, there’s no host—so the remote needs its own data source.
+النصف الآخر من النمط المستقل هو البيانات. فلوحة التحليلات تحتاج إلى بيانات المستخدمين، ومقاييس التحليلات، وحالة المصادقة لتُصيّر أي شيء مفيد. وفي التطبيق الكامل، تأتي تلك البيانات من واجهة برمجية في المضيف وتدفّق مصادقة فيه. أما في النمط المستقل فلا يوجد مضيف—لذا تحتاج الوحدة البعيدة إلى مصدر بياناتها الخاص.
 
-[Mock Service Worker](https://mswjs.io/) is the cleanest solution here because it intercepts `fetch` requests at the network level. The remote’s code makes the same API calls it would make in production, and MSW responds with mock data. No conditional logic, no `if (isStandalone)` branches, no environment-variable-driven data sources. The application code is identical in both modes.
+و[Mock Service Worker](https://mswjs.io/) هو الحل الأنظف هنا لأنه يعترض طلبات `fetch` على مستوى الشبكة. فشيفرة الوحدة البعيدة تُجري نداءات الواجهة نفسها التي ستُجريها في الإنتاج، ويستجيب MSW ببيانات مُحاكاة. بلا منطق شرطي، وبلا فروع `if (isStandalone)`، وبلا مصادر بيانات تقودها متغيّرات البيئة. فشيفرة التطبيق متطابقة في النمطين.
 
-A typical standalone MSW setup:
+وهذا إعداد MSW نموذجي للوضع المستقل:
 
 ```typescript
 // remote-analytics/src/mocks/handlers.ts
@@ -73,19 +73,19 @@ async function main() {
 main();
 ```
 
-The `onUnhandledRequest: 'bypass'` is important—it tells MSW to let unhandled requests through to the network instead of warning about them. In standalone mode, you only want to mock the APIs your remote actually uses, not every request the browser makes.
+و`onUnhandledRequest: 'bypass'` مهم—فهو يخبر MSW أن يمرّر الطلبات غير المعالَجة إلى الشبكة بدل التحذير منها. وفي النمط المستقل، تريد أن تُحاكي فقط الواجهات البرمجية التي تستخدمها وحدتك البعيدة فعلًا، لا كل طلب يجريه المتصفح.
 
-## The Auth Gap
+## فجوة المصادقة
 
-One thing you’ll notice in standalone mode is that the analytics dashboard shows “Not authenticated.” That’s expected. In the full application, the host writes to `authStore` after fetching user data. In standalone mode, there’s no host to do that.
+من الأمور التي ستلاحظها في النمط المستقل أن لوحة التحليلات تعرض «Not authenticated». وهذا متوقّع. ففي التطبيق الكامل، يكتب المضيف إلى `authStore` بعد جلب بيانات المستخدم. أما في النمط المستقل فلا يوجد مضيف يفعل ذلك.
 
-You have a few options for handling this:
+ولديك عدة خيارات للتعامل مع هذا:
 
-- **Accept it.** If auth state isn’t critical for the UI you’re developing, just ignore the “Not authenticated” badge and focus on the analytics functionality. This is fine for most day-to-day development.
-- **Mock the auth store.** In your standalone entry point, write to `authStore` directly with mock data before rendering. This gives you a realistic auth state without needing the host.
-- **Mock the auth API.** Add an MSW handler for `/api/users/me` in the standalone mock setup, then initialize the auth store in the remote’s own entry point using the same fetch-and-set pattern the host uses.
+- **تقبّل الأمر.** إن لم تكن حالة المصادقة حرجة لواجهة المستخدم التي تطوّرها، فتجاهل شارة «Not authenticated» وركّز على وظائف التحليلات. وهذا كافٍ لمعظم التطوير اليومي.
+- **حاكِ مخزن المصادقة.** في نقطة دخولك المستقلة، اكتب إلى `authStore` مباشرةً ببيانات مُحاكاة قبل التصيير. ويمنحك هذا حالة مصادقة واقعية دون الحاجة إلى المضيف.
+- **حاكِ واجهة المصادقة البرمجية.** أضف معالج MSW لـ`/api/users/me` في إعداد المحاكاة المستقل، ثم هيّئ مخزن المصادقة في نقطة دخول الوحدة البعيدة نفسها بالنمط ذاته الذي يستخدمه المضيف: اجلب ثم اضبط.
 
-The mock-auth-store approach is the simplest:
+ونمط محاكاة مخزن المصادقة هو الأبسط:
 
 ```typescript
 // remote-analytics/src/index.tsx
@@ -98,60 +98,60 @@ authStore.set({
 });
 ```
 
-Now standalone mode shows “Viewing as: Grace Hopper” just like the full application.
+الآن يعرض النمط المستقل «Viewing as: Grace Hopper» تمامًا كما يفعل التطبيق الكامل.
 
-## Standalone Drift
+## انحراف النمط المستقل
 
-The one real risk with standalone mode is drift. Fowler’s [microfrontends article](https://martinfowler.com/articles/micro-frontends.html) warns about exactly this: simplified standalone development can diverge from the real container, especially around shared styles, global state, and environmental differences. If the host’s CSS reset changes, the standalone remote won’t reflect that. If the host updates its auth payload shape, the standalone mock data won’t know.
+الخطر الحقيقي الوحيد في النمط المستقل هو الانحراف. فمقال Fowler عن [الواجهات الأمامية الدقيقة](https://martinfowler.com/articles/micro-frontends.html) يحذّر من هذا بالضبط: فتطوير مستقل مُبسَّط قد يتباعد عن الحاوية الحقيقية، خاصةً في التنسيقات المشتركة، والحالة العامة، والفروق البيئية. فإن تغيّر إعادة الضبط (reset) في CSS المضيف، لن تعكس الوحدة البعيدة المستقلة ذلك. وإن حدّث المضيف شكل حِمل المصادقة، لن تعلم البيانات المُحاكاة المستقلة بذلك.
 
-The mitigation is regular integration testing in the full federated environment. Standalone mode is for fast iteration during development. It’s not a substitute for running the full system before shipping. A healthy workflow is: develop and test in standalone mode, verify in the full host before merging, and run integration tests against the composed application in CI.
+والتخفيف هو اختبار تكامل منتظم في البيئة الاتحادية الكاملة. فالنمط المستقل للتكرار السريع أثناء التطوير، وليس بديلًا عن تشغيل النظام كامل قبل الشحن. وسير العمل الصحي هو: طوّر واختبر في النمط المستقل، وتحقّق في المضيف الكامل قبل الدمج، وشغّل اختبارات التكامل ضد التطبيق المُركَّب في CI.
 
-Think of standalone mode the same way you’d think about running a backend service locally with a mock database. It’s great for development speed, but you still run integration tests against a real database before deploying. The mock is a convenience, not a contract guarantee.
+فكّر في النمط المستقل كما تفكّر في تشغيل خدمة خلفية محليًا بقاعدة بيانات مُحاكاة. فهو رائع لسرعة التطوير، لكنك ما زلت تشغّل اختبارات تكامل ضد قاعدة بيانات حقيقية قبل النشر. فالمحاكاة راحة، لا ضمان عقد.
 
-## The Minimum Viable Standalone Remote
+## الوحدة البعيدة المستقلة الدنيا
 
-If you’re setting up a new remote and want standalone mode from the start, the checklist is short:
+إن كنت تُعدّ وحدة بعيدة جديدة وتريد النمط المستقل من البداية، فقائمة التحقق قصيرة:
 
-- Give the remote its own `index.html` and root entry point
-- Set `eager: true` on all shared dependencies so the remote can self-boot
-- Add MSW handlers for every API the remote calls
-- Optionally seed shared stores (like `authStore`) with mock data in the standalone entry point
-- Make sure the remote’s dev server config serves the standalone entry point, not just the federation manifest
+- امنح الوحدة البعيدة `index.html` خاصًا بها ونقطة دخول جذرية خاصة بها.
+- اضبط `eager: true` على كل الاعتمادات المشتركة كي تستطيع الوحدة الإقلاع بذاتها.
+- أضف معالجات MSW لكل واجهة برمجية تنادي عليها الوحدة البعيدة.
+- اختياريًا، ازرع المخازن المشتركة (مثل `authStore`) ببيانات مُحاكاة في نقطة الدخول المستقلة.
+- تأكد أن إعداد خادم التطوير في الوحدة يخدم نقطة الدخول المستقلة، لا بيان الاتحاد فقط.
 
-That’s it. The remote is now a real application that also happens to be consumable via federation. Development stays fast, testing stays isolated, and the federation layer only matters when you’re integrating with the host.
-
----
-
-## TL;DR
-
-### Standalone Remotes
-
-> Run any remote independently — without the host.
-
-- Every remote should boot on its own for development and testing.
-- Set `eager: true` for shared dependencies so the remote loads its own copies.
-- Mock shared context (auth state, feature flags) with MSW or local providers.
-
-**Minimum viable standalone remote:**
-
-1. Boots with `npm run dev` — no host required
-2. Has mock data for API dependencies
-3. Provides its own auth context
-4. Runs its own test suite in isolation
+هذا كل شيء. فالوحدة البعيدة الآن تطبيق حقيقي يصادف أنه قابل للاستهلاك عبر الاتحاد أيضًا. يبقى التطوير سريعًا، ويبقى الاختبار معزولًا، ولا تهم طبقة الاتحاد إلا عند التكامل مع المضيف.
 
 ---
 
-### Standalone Drift
+## الخلاصة السريعة (TL;DR)
 
-> The risk: your standalone remote diverges from reality.
+### الوحدات البعيدة المستقلة
 
-- Mock data gets stale — the real API changed, your mocks didn’t.
-- Auth context in standalone doesn’t match the host’s token shape.
-- Shared dependency versions drift between standalone and host.
+> شغّل أي وحدة بعيدة باستقلال — بلا المضيف.
 
-**Mitigation:**
+- ينبغي أن تُقلع كل وحدة بعيدة بذاتها للتطوير والاختبار.
+- اضبط `eager: true` للاعتمادات المشتركة كي تحمّل الوحدة البعيدة نسخها الخاصة.
+- حاكِ السياق المشترك (حالة المصادقة، وأعلام الميزات) بـMSW أو مزوّدات محلية.
 
-- Integration tests that boot the full composed application (CI only).
-- Contract tests between remotes and the host.
-- Shared MSW handlers across standalone and test environments.
-- Regular “compose and smoke test” pipeline — not just unit tests.
+**الوحدة البعيدة المستقلة الدنيا:**
+
+1. تُقلع بـ`npm run dev` — بلا حاجة إلى مضيف
+2. لديها بيانات مُحاكاة لاعتمادات الواجهة البرمجية
+3. توفّر سياق مصادقتها الخاص
+4. تشغّل مجموعة اختباراتها الخاصة بمعزل عن غيرها
+
+---
+
+### انحراف النمط المستقل
+
+> الخطر: أن تنحرف وحدتك البعيدة المستقلة عن الواقع.
+
+- البيانات المُحاكاة تتقادم — تغيّرت الواجهة الحقيقية، ولم تتغيّر محاكاتك.
+- سياق المصادقة في النمط المستقل لا يطابق شكل الرمز (token) في المضيف.
+- إصدارات الاعتمادات المشتركة تنحرف بين النمط المستقل والمضيف.
+
+**التخفيف:**
+
+- اختبارات تكامل تُقلع التطبيق المُركَّب كامل (في CI فقط).
+- اختبارات عقد بين الوحدات البعيدة والمضيف.
+- معالجات MSW مشتركة بين النمطين المستقل والاختباري.
+- خط أنابيب منتظم لـ«التركيب واختبار الدخان» — لا اختبارات وحدة فقط.

@@ -1,115 +1,115 @@
 ---
-title: "Exercise: Set Up Alarms for Your Lambda Functions"
-lang: en
+title: "تمرين: إعداد إنذارات لدوال Lambda"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudwatch-alarms-exercise"
 ---
 
-You’re going to build a complete alerting pipeline from scratch—an SNS topic, an email subscription, and two CloudWatch alarms that watch your Lambda function’s error rate and duration. Then you’ll intentionally trigger the alarms to prove the pipeline works end to end.
+ستبني مسار تنبيه كاملًا من الصفر — موضوع SNS، واشتراك بريد إلكتروني، وإنذارَي CloudWatch يراقبان معدّل أخطاء دالة Lambda ومدة تنفيذها. ثم ستطلق الإنذارات عمدًا لتثبت أن المسار يعمل من طرف إلى طرف.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the alarm flow open while you work, keep the [CloudWatch overview](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) nearby. It is the fastest way to sanity-check console labels and alarm terminology when the UI drifts.
+> إذا أردت إبقاء نسخة AWS من تدفّق الإنذار مفتوحة أثناء عملك، فأبقِ [نظرة CloudWatch العامة](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) قريبة. فهي أسرع طريقة للتحقق من تسميات لوحة التحكم ومصطلحات الإنذار عندما تتغيّر الواجهة.
 
-This is the same monitoring setup you’d use for any production Lambda function. Get it working here, and you can replicate it for every function you deploy.
+هذا هو إعداد المراقبة نفسه الذي ستستخدمه لأي دالة Lambda في الإنتاج. اجعله يعمل هنا، وستستطيع تكراره لكل دالة تنشرها.
 
-## Why It Matters
+## لماذا يهم هذا
 
-Dashboards require you to look at them. Logs require you to search them. Neither one wakes you up when something breaks at 2 AM. Alarms are the piece that closes the loop—they watch your metrics continuously and notify you the moment something crosses a threshold. Without alarms, the gap between “something broke” and “someone noticed” is however long it takes a user to file a complaint. I’ve been on both sides of that gap, and the alarm side is *definitively* better.
+تتطلب لوحات المعلومات منك أن تنظر إليها. وتتطلب السجلات منك أن تبحث فيها. ولا يوقظك أي منهما عندما يتعطّل شيء في الساعة 2 صباحًا. الإنذارات هي القطعة التي تُغلق الحلقة — فهي تراقب مقاييسك باستمرار وتُبلغك في اللحظة التي يتجاوز فيها شيء حدًّا. ومن دون إنذارات، تكون الفجوة بين «شيء ما تعطّل» و«شخص ما لاحظ» هي المدة التي يستغرقها مستخدم لتقديم شكوى. لقد كنت على طرفَي تلك الفجوة، وجانب الإنذار *بلا شك* أفضل.
 
-## Your Task
+## مهمتك
 
-Set up a monitoring pipeline for `my-frontend-app-api` that:
+أعدّ مسار مراقبة لـ `my-frontend-app-api` يقوم بما يلي:
 
-- Sends email notifications through an SNS topic
-- Fires an alarm when the Lambda error count exceeds 3 in a 5-minute period
-- Fires an alarm when the average Lambda duration exceeds 2 seconds
-- Can be tested by intentionally triggering each alarm
+- إرسال إشعارات بريد إلكتروني عبر موضوع SNS
+- إطلاق إنذار عندما يتجاوز عدد أخطاء Lambda 3 في فترة مدتها 5 دقائق
+- إطلاق إنذار عندما يتجاوز متوسط مدة تنفيذ Lambda ثانيتين
+- إمكانية اختباره بإطلاق كل إنذار عمدًا
 
-Use the account ID `123456789012` and region `us-east-1`.
+استخدم معرّف الحساب `123456789012` والمنطقة `us-east-1`.
 
-## Create an SNS Topic
+## إنشاء موضوع SNS
 
-Create an SNS topic named `my-frontend-app-alerts` that will serve as the notification channel for your alarms.
+أنشئ موضوع SNS باسم `my-frontend-app-alerts` ليكون قناة الإشعارات لإنذاراتك.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws sns list-topics --region us-east-1 --output json` shows a topic with the ARN `arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts`.
+يعرض `aws sns list-topics --region us-east-1 --output json` موضوعًا بالـ ARN `arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts`.
 
-## Subscribe Your Email
+## الاشتراك ببريدك الإلكتروني
 
-Subscribe your email address to the topic. After running the subscribe command, check your inbox for the confirmation email and click the confirmation link.
+اشترك بعنوان بريدك الإلكتروني في الموضوع. بعد تشغيل أمر الاشتراك، افحص صندوق الوارد بحثًا عن رسالة التأكيد وانقر رابط التأكيد.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts --region us-east-1 --output json` shows your subscription with a real ARN (not `pending confirmation`).
+يعرض `aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:123456789012:my-frontend-app-alerts --region us-east-1 --output json` اشتراكك بـ ARN حقيقي (وليس `pending confirmation`).
 
-## Create the Error Count Alarm
+## إنشاء إنذار عدد الأخطاء
 
-Create a CloudWatch alarm named `my-frontend-app-api-error-count` that:
+أنشئ إنذار CloudWatch باسم `my-frontend-app-api-error-count` يقوم بما يلي:
 
-- Watches the `Errors` metric in the `AWS/Lambda` namespace
-- Uses the `FunctionName` dimension set to `my-frontend-app-api`
-- Uses the `Sum` statistic
-- Fires when the error count is **greater than 3** in a single 5-minute period (300 seconds)
-- Requires **2 consecutive** evaluation periods before triggering
-- Sends notifications to your SNS topic on both `ALARM` and `OK` transitions
+- يراقب مقياس `Errors` في مساحة الأسماء `AWS/Lambda`
+- يستخدم بُعد `FunctionName` مضبوطًا على `my-frontend-app-api`
+- يستخدم الإحصاءة `Sum`
+- ينطلق عندما يكون عدد الأخطاء **أكبر من 3** في فترة واحدة مدتها 5 دقائق (300 ثانية)
+- يتطلب **فترتَي تقييم متتاليتين** قبل الإطلاق
+- يرسل إشعارات إلى موضوع SNS عند الانتقالين `ALARM` و`OK`
 
-Think about which `--comparison-operator` you need. “Greater than 3” isn’t the same as “greater than or equal to 3.”
+فكّر في أي `--comparison-operator` تحتاج. فـ«أكبر من 3» ليس مثل «أكبر من أو يساوي 3».
 
-### Checkpoint
+### نقطة تحقق
 
-`aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-error-count --region us-east-1 --output json` returns the alarm with:
+يُرجع `aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-error-count --region us-east-1 --output json` الإنذار مع:
 
-- `StateValue` of `INSUFFICIENT_DATA` (normal for a new alarm)
-- `Threshold` of `3.0`
-- `ComparisonOperator` of `GreaterThanThreshold`
-- `Period` of `300`
-- `EvaluationPeriods` of `2`
+- `StateValue` بقيمة `INSUFFICIENT_DATA` (طبيعي لإنذار جديد)
+- `Threshold` بقيمة `3.0`
+- `ComparisonOperator` بقيمة `GreaterThanThreshold`
+- `Period` بقيمة `300`
+- `EvaluationPeriods` بقيمة `2`
 
-## Create the Duration Alarm
+## إنشاء إنذار المدة
 
-Create a CloudWatch alarm named `my-frontend-app-api-high-duration` that:
+أنشئ إنذار CloudWatch باسم `my-frontend-app-api-high-duration` يقوم بما يلي:
 
-- Watches the `Duration` metric in the `AWS/Lambda` namespace
-- Uses the `FunctionName` dimension set to `my-frontend-app-api`
-- Uses the `Average` statistic
-- Fires when the average duration is **greater than 2000 milliseconds**
-- Uses a period of 300 seconds and 2 evaluation periods
-- Sends notifications to your SNS topic when transitioning to `ALARM`
+- يراقب مقياس `Duration` في مساحة الأسماء `AWS/Lambda`
+- يستخدم بُعد `FunctionName` مضبوطًا على `my-frontend-app-api`
+- يستخدم الإحصاءة `Average`
+- ينطلق عندما يكون متوسط المدة **أكبر من 2000 مللي ثانية**
+- يستخدم فترة مدتها 300 ثانية وفترتَي تقييم
+- يرسل إشعارات إلى موضوع SNS عند الانتقال إلى `ALARM`
 
-Remember: Lambda `Duration` is measured in milliseconds.
+تذكّر: يُقاس `Duration` في Lambda بالمللي ثانية.
 
-### Checkpoint
+### نقطة تحقق
 
-`aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-high-duration --region us-east-1 --output json` returns the alarm with:
+يُرجع `aws cloudwatch describe-alarms --alarm-names my-frontend-app-api-high-duration --region us-east-1 --output json` الإنذار مع:
 
-- `MetricName` of `Duration`
-- `Statistic` of `Average`
-- `Threshold` of `2000.0`
+- `MetricName` بقيمة `Duration`
+- `Statistic` بقيمة `Average`
+- `Threshold` بقيمة `2000.0`
 
-## Test the Error Alarm
+## اختبار إنذار الأخطاء
 
-You can test the notification pipeline without waiting for real errors by manually setting the alarm state:
+يمكنك اختبار مسار الإشعارات دون انتظار أخطاء حقيقية بضبط حالة الإنذار يدويًا:
 
-1. Use `aws cloudwatch set-alarm-state` to force `my-frontend-app-api-error-count` into the `ALARM` state with a reason of `"Testing alarm notification pipeline"`
-2. Check your email for the SNS notification
-3. Wait a few minutes—the alarm will return to its actual state on the next evaluation
+1. استخدم `aws cloudwatch set-alarm-state` لفرض انتقال `my-frontend-app-api-error-count` إلى الحالة `ALARM` بسبب `"Testing alarm notification pipeline"`
+2. افحص بريدك الإلكتروني بحثًا عن إشعار SNS
+3. انتظر بضع دقائق — سيعود الإنذار إلى حالته الفعلية في التقييم التالي
 
-### Checkpoint
+### نقطة تحقق
 
-- You received an email from SNS with the alarm details
-- The email includes the alarm name, reason, and the state transition
+- تلقّيت بريدًا إلكترونيًا من SNS يتضمن تفاصيل الإنذار
+- يتضمن البريد اسم الإنذار والسبب وانتقال الحالة
 
-## Trigger a Real Alarm (Optional)
+## إطلاق إنذار حقيقي (اختياري)
 
-If you want to see the alarm fire from actual metrics instead of a manual state change, you can intentionally break your Lambda function:
+إذا أردت رؤية الإنذار ينطلق من مقاييس حقيقية بدلًا من تغيير حالة يدوي، يمكنك تعطيل دالة Lambda عمدًا:
 
-1. Update your Lambda function code to throw an error on every invocation
-2. Invoke the function more than 3 times using the CLI
-3. Wait for two 5-minute evaluation periods (up to 10 minutes)
-4. Check your email for the alarm notification
+1. حدّث شيفرة دالة Lambda لديك لتُطلق خطأً عند كل استدعاء
+2. استدعِ الدالة أكثر من 3 مرات باستخدام CLI
+3. انتظر فترتَي تقييم مدة كل منهما 5 دقائق (حتى 10 دقائق)
+4. افحص بريدك الإلكتروني بحثًا عن إشعار الإنذار
 
-To create a failing function, deploy a handler that always throws:
+لإنشاء دالة فاشلة، انشر معالجًا يُطلق خطأً دائمًا:
 
 ```typescript
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda';
@@ -119,17 +119,17 @@ export const handler: APIGatewayProxyHandlerV2 = async () => {
 };
 ```
 
-After verifying the alarm fires, **redeploy your working handler**. Don’t leave a broken function deployed.
+بعد التحقق من انطلاق الإنذار، **أعد نشر المعالج العامل**. لا تترك دالة معطّلة منشورة.
 
-### Checkpoint
+### نقطة تحقق
 
-- The alarm transitioned from `INSUFFICIENT_DATA` (or `OK`) to `ALARM`
-- You received an SNS email notification
-- After redeploying the working handler, the alarm returns to `OK` (this may take up to 10 minutes)
+- انتقل الإنذار من `INSUFFICIENT_DATA` (أو `OK`) إلى `ALARM`
+- تلقّيت إشعار بريد إلكتروني من SNS
+- بعد إعادة نشر المعالج العامل، يعود الإنذار إلى `OK` (قد يستغرق هذا حتى 10 دقائق)
 
-## List and Verify All Alarms
+## سرد كل الإنذارات والتحقق منها
 
-List all your alarms with the `my-frontend-app` prefix and confirm both are configured correctly:
+اسرد كل إنذاراتك ذات البادئة `my-frontend-app` وتأكد من أن كليهما مهيّأ بشكل صحيح:
 
 ```bash
 aws cloudwatch describe-alarms \
@@ -138,29 +138,29 @@ aws cloudwatch describe-alarms \
   --output json
 ```
 
-### Checkpoint
+### نقطة تحقق
 
-Two alarms are listed, both pointing to the same SNS topic, with the correct metrics, thresholds, and evaluation periods.
+تُسرد إنذاران، وكلاهما يشير إلى موضوع SNS نفسه، مع المقاييس والحدود وفترات التقييم الصحيحة.
 
-## Checkpoints Summary
+## ملخّص نقاط التحقق
 
-- SNS topic `my-frontend-app-alerts` exists
-- Email subscription is confirmed (not `pending confirmation`)
-- Error count alarm exists with threshold of 3, Sum statistic, period of 300s, 2 evaluation periods
-- Duration alarm exists with threshold of 2000ms, Average statistic, period of 300s, 2 evaluation periods
-- Manual alarm state test produced an email notification
-- Both alarms show in `describe-alarms` with correct configuration
+- موضوع SNS `my-frontend-app-alerts` موجود
+- اشتراك البريد الإلكتروني مؤكّد (وليس `pending confirmation`)
+- إنذار عدد الأخطاء موجود بحدّ 3، وإحصاءة Sum، وفترة 300s، وفترتَي تقييم
+- إنذار المدة موجود بحدّ 2000ms، وإحصاءة Average، وفترة 300s، وفترتَي تقييم
+- اختبار حالة الإنذار اليدوي أنتج إشعار بريد إلكتروني
+- يظهر الإنذاران في `describe-alarms` بإعداد صحيح
 
-## Failure Diagnosis
+## تشخيص الفشل
 
-- **The alarm exists but you never receive email:** The SNS subscription is still `PendingConfirmation`, or the email landed in spam and was never confirmed.
-- **The alarm never moves out of `INSUFFICIENT_DATA`:** The metric namespace, dimensions, or statistic do not match the resource that is actually emitting data.
-- **The alarm stays in `ALARM` after you fix the problem:** CloudWatch waits for the next evaluation windows. Give it enough time to see fresh healthy datapoints before assuming the configuration is wrong.
+- **الإنذار موجود لكنك لا تتلقى بريدًا أبدًا:** لا يزال اشتراك SNS في حالة `PendingConfirmation`، أو وصل البريد إلى مجلد الرسائل غير المرغوب فيها ولم يُؤكَّد قط.
+- **لا يخرج الإنذار من `INSUFFICIENT_DATA` أبدًا:** لا تطابق مساحة أسماء المقياس أو الأبعاد أو الإحصاءة المورد الذي يصدر البيانات فعلًا.
+- **يبقى الإنذار في `ALARM` بعد إصلاح المشكلة:** تنتظر CloudWatch نوافذ التقييم التالية. امنحها وقتًا كافيًا لرؤية نقاط بيانات سليمة جديدة قبل افتراض أن الإعداد خاطئ.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add a 5XX alarm for API Gateway.** Create a third alarm that watches the `5XXError` metric in the `AWS/ApiGateway` namespace. Use a threshold of 0 and a single evaluation period—any server error should trigger immediately.
-- **Add an OK action to the duration alarm.** Update the duration alarm to also notify you when it transitions back to `OK`. Use `aws cloudwatch put-metric-alarm` with the same parameters plus `--ok-actions`.
-- **Check alarm history.** Run `aws cloudwatch describe-alarm-history --alarm-name my-frontend-app-api-error-count --region us-east-1 --output json` to see the history of state transitions for your alarm.
+- **أضف إنذار 5XX لـ API Gateway.** أنشئ إنذارًا ثالثًا يراقب مقياس `5XXError` في مساحة الأسماء `AWS/ApiGateway`. استخدم حدًّا صفريًا وفترة تقييم واحدة — أي خطأ خادم يجب أن يطلقه فورًا.
+- **أضف إجراء OK إلى إنذار المدة.** حدّث إنذار المدة ليُبلغك أيضًا عند عودته إلى `OK`. استخدم `aws cloudwatch put-metric-alarm` بالمعاملات نفسها مع `--ok-actions`.
+- **افحص سجل الإنذار.** شغّل `aws cloudwatch describe-alarm-history --alarm-name my-frontend-app-api-error-count --region us-east-1 --output json` لرؤية سجل انتقالات الحالة لإنذارك.
 
-When you’re ready, check your work against the [Solution: Set Up Alarms for Your Lambda Functions](https://stevekinney.com/courses/aws/cloudwatch-alarms-solution).
+حين تكون مستعدًا، قارن عملك بـ [الحل: إعداد إنذارات لدوال Lambda](https://stevekinney.com/courses/aws/cloudwatch-alarms-solution).

@@ -1,22 +1,22 @@
 ---
-title: "Suspense for Data Fetching"
-lang: en
+title: "Suspense لجلب البيانات"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/suspense-for-data-fetching"
 ---
 
-React Suspense fundamentally changes how we think about loading states and data fetching. Instead of manually wiring up loading spinners and error boundaries throughout your component tree, Suspense lets you declaratively define loading boundaries that handle async operations gracefully. You compose these boundaries strategically to keep parts of your UI interactive while other parts are still loading—turning the traditional “everything waits for everything” pattern into something that feels more like progressive enhancement.
+يغيّر React Suspense جذريًا طريقة تفكيرنا في حالات التحميل وجلب البيانات. فبدلًا من توصيل مؤشرات التحميل وحدود الأخطاء يدويًا في أنحاء شجرة مكوّناتك، يتيح لك Suspense تعريف حدود تحميل تصريحية تتولّى العمليات غير المتزامنة بسلاسة. وتُركّب هذه الحدود بذكاء لإبقاء أجزاء من واجهتك تفاعلية بينما تُحمَّل أجزاء أخرى — فتحوّل نمط «الكل ينتظر الكل» التقليدي إلى ما يشبه التحسين التدريجي.
 
-The real power comes from how Suspense boundaries work together with modern data fetching patterns to create streaming UIs that reveal content as soon as it’s ready, rather than blocking the entire page on the slowest data dependency.
+القوة الحقيقية تأتي من تعاون حدود Suspense مع أنماط جلب البيانات الحديثة لإنشاء واجهات متدفقة تكشف المحتوى بمجرد جهوزه، بدل حجب الصفحة كلها انتظارًا لأبطأ اعتماد بيانات.
 
-> See also: [The use Hook](https://stevekinney.com/courses/react-performance/the-use-hook) for `use()`-specific patterns, basic Suspense composition, and error handling. This page focuses on Suspense-centric data fetching patterns, cache mechanics (throwing promises), and common pitfalls.
+> انظر أيضًا: [خُطّاف use](https://stevekinney.com/courses/react-performance/the-use-hook) للأنماط الخاصة بـ `use()`، وتركيب Suspense الأساسي، ومعالجة الأخطاء. وتركّز هذه الصفحة على أنماط جلب البيانات المتمركزة حول Suspense، وميكانيكا التخزين المؤقت (رمي الوعود)، والمزالق الشائعة.
 
-## Setting Up `Suspense` Boundaries
+## تهيئة حدود `Suspense`
 
-This guide assumes familiarity with basic boundary composition. For a primer and progressive enhancement examples, see [The use Hook](https://stevekinney.com/courses/react-performance/the-use-hook).
+يفترض هذا الدليل إلمامًا بتركيب الحدود الأساسي. ولمقدّمة وأمثلة على التحسين التدريجي، انظر [خُطّاف use](https://stevekinney.com/courses/react-performance/the-use-hook).
 
-## Data Fetching Patterns with `Suspense`
+## أنماط جلب البيانات مع `Suspense`
 
-To work with Suspense, your data fetching needs to follow the “render-as-you-fetch” pattern. Here’s how to implement a suspense-compatible data fetching hook:
+لكي يعمل مع Suspense، يحتاج جلب بياناتك إلى اتّباع نمط «التصيير أثناء الجلب». وإليك كيفية تنفيذ خُطّاف جلب بيانات متوافق مع Suspense:
 
 ```typescript
 // Simple cache to store promises and results
@@ -57,27 +57,27 @@ function useUser(userId: string): User {
 }
 ```
 
-This pattern ensures that:
+يضمن هذا النمط ما يلي:
 
-1. First render throws a promise → Suspense shows fallback
-2. When promise resolves → Component re-renders with data
-3. Subsequent renders use cached data immediately
+1. أول تصيير يرمي وعدًا ← يعرض Suspense البديل
+2. عند تحلّل الوعد ← يُعيد المكوّن التصيير مع البيانات
+3. التصييرات اللاحقة تستخدم البيانات المخزّنة مؤقتًا فورًا
 
-> **Tip**
+> **نصيحة**
 >
-> In production, use libraries like [SWR](https://swr.vercel.app/), [TanStack Query](https://tanstack.com/query), or [Relay](https://relay.dev/) that have built-in Suspense support instead of rolling your own cache.
+> في الإنتاج، استخدم مكتبات مثل [SWR](https://swr.vercel.app/) أو [TanStack Query](https://tanstack.com/query) أو [Relay](https://relay.dev/) التي تدعم Suspense مدمجًا، بدل بناء ذاكرتك المؤقتة بنفسك.
 
-## Error Boundaries with `Suspense`
+## حدود الأخطاء مع `Suspense`
 
-Refer to [The use Hook](https://stevekinney.com/courses/react-performance/the-use-hook) for foundational error boundary patterns with Suspense and `use()`. This page focuses on caching, streaming, and pitfalls rather than general error handling.
+ارجع إلى [خُطّاف use](https://stevekinney.com/courses/react-performance/the-use-hook) لأنماط حدود الأخطاء التأسيسية مع Suspense و`use()`. وتركّز هذه الصفحة على التخزين المؤقت والتدفّق والمزالق لا على معالجة الأخطاء عمومًا.
 
-## Real World Pattern: Streaming Data
+## نمط من الواقع العملي: تدفّق البيانات
 
-See progressive composition examples in [The use Hook](https://stevekinney.com/courses/react-performance/the-use-hook). Below we focus on initiating requests early to avoid waterfalls.
+انظر أمثلة التركيب التدريجي في [خُطّاف use](https://stevekinney.com/courses/react-performance/the-use-hook). ونركّز فيما يلي على بدء الطلبات مبكرًا لتجنّب الشلالات.
 
-### Starting Requests Early
+### بدء الطلبات مبكرًا
 
-The key to good Suspense UX is starting data requests before you render the components that need them:
+مفتاح تجربة المستخدم الجيدة مع Suspense هو بدء طلبات البيانات قبل تصيير المكوّنات التي تحتاجها:
 
 ```typescript
 // ❌ Don't start fetch inside component render
@@ -110,9 +110,9 @@ function warmCache(userId: string) {
 }
 ```
 
-## Advanced: Concurrent Features
+## متقدّم: الميزات المتزامنة
 
-React 18’s concurrent features work especially well with Suspense. `startTransition` lets you mark updates as non-urgent, preventing them from blocking the UI:
+تعمل الميزات المتزامنة في React 18 بشكل جيد خصوصًا مع Suspense. ويتيح لك `startTransition` تعليم تحديثات بأنها غير عاجلة، فتمنعها من حجب واجهة المستخدم:
 
 ```typescript
 import { startTransition } from 'react';
@@ -141,13 +141,13 @@ function SearchResults() {
 }
 ```
 
-The input stays responsive while search results load in the background.
+يبقى حقل الإدخال مستجيبًا بينما تُحمَّل نتائج البحث في الخلفية.
 
-## Common Pitfalls and Solutions
+## مزالق شائعة وحلولها
 
-### Problem: Cache Invalidation
+### المشكلة: إبطال الذاكرة المؤقتة
 
-Without proper cache management, you might show stale data:
+بلا إدارة سليمة للذاكرة المؤقتة، قد تعرض بيانات قديمة:
 
 ```typescript
 // ✅ Add cache invalidation
@@ -165,9 +165,9 @@ function updateUserMutation(userId: string, updates: Partial<User>) {
 }
 ```
 
-### Problem: Loading States Flash
+### المشكلة: وميض حالات التحميل
 
-If data loads very quickly, loading spinners can flash annoyingly:
+إذا حُمّلت البيانات سريعًا جدًا، فقد تومض مؤشرات التحميل بشكل مزعج:
 
 ```typescript
 import { useDeferredValue } from 'react';
@@ -190,9 +190,9 @@ function SearchResults({ query }: { query: string }) {
 }
 ```
 
-### Problem: Suspending on Navigation
+### المشكلة: التعليق عند التنقّل
 
-Be careful about wrapping your entire app in Suspense—it can suspend the whole UI during navigation:
+احترس من تغليف تطبيقك كله بـ Suspense — إذ قد يُعلّق الواجهة كلها أثناء التنقّل:
 
 ```typescript
 // ❌ This suspends everything during route changes
@@ -236,17 +236,17 @@ function App() {
 }
 ```
 
-## When to Use `Suspense`
+## متى تستخدم `Suspense`
 
-Suspense shines in these scenarios:
+يتألق Suspense في هذه السيناريوهات:
 
-- **Dashboard-style UIs** with multiple independent data sources
-- **Content-heavy pages** where you want to stream in sections progressively
-- **Search interfaces** where you want to keep inputs responsive during searches
-- **Social feeds** where new content can appear without blocking existing content
+- **واجهات على نمط لوحات المعلومات** بمصادر بيانات مستقلة متعددة
+- **الصفحات الغنية بالمحتوى** حيث تريد تدفّق الأقسام تدريجيًا
+- **واجهات البحث** حيث تريد إبقاء حقول الإدخال مستجيبة أثناء البحث
+- **الأخبار الاجتماعية** حيث يمكن للمحتوى الجديد أن يظهر دون حجب المحتوى الموجود
 
-It’s less useful for:
+وهو أقل فائدة في:
 
-- Simple forms with minimal async operations
-- Apps with mostly static content
-- Cases where you need fine-grained loading control for individual fields
+- النماذج البسيطة ذات العمليات غير المتزامنة المحدودة
+- التطبيقات التي معظم محتواها ثابت
+- الحالات التي تحتاج فيها إلى تحكم دقيق في التحميل لكل حقل على حدة

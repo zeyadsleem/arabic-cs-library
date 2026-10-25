@@ -1,62 +1,62 @@
 ---
-title: "Building a Task List with Vitest"
-lang: en
+title: "بناء قائمة مهام باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/task-list-example"
 ---
 
-## Building a To-Do List Application in React Using Test-Driven Development with Vitest
+## بناء تطبيق قائمة مهام في React بالتطوير المدفوع بالاختبارات مع Vitest
 
-**Table of Contents**
+**جدول المحتويات**
 
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Project Setup](#project-setup)
-4. [Understanding Test-Driven Development](#understanding-test-driven-development)
-5. [Setting Up React with Vitest](#setting-up-react-with-vitest)
-6. [Designing the To-Do List Application](#designing-the-to-do-list-application)
-7. [Implementing the Application with TDD](#implementing-the-application-with-tdd) [1. Creating the `ToDoList` Component](#creating-the-todolist-component) [2. Fetching To-Dos from an API](#fetching-to-dos-from-an-api) [3. Adding a New To-Do](#adding-a-new-to-do) [4. Marking a To-Do as Completed](#marking-a-to-do-as-completed) [5. Deleting a To-Do](#deleting-a-to-do)
-  - [1. Creating the `ToDoList` Component](#creating-the-todolist-component)
-  - [2. Fetching To-Dos from an API](#fetching-to-dos-from-an-api)
-  - [3. Adding a New To-Do](#adding-a-new-to-do)
-  - [4. Marking a To-Do as Completed](#marking-a-to-do-as-completed)
-  - [5. Deleting a To-Do](#deleting-a-to-do)
-8. [Mocking the API with MSW](#mocking-the-api-with-msw)
-9. [Running the Tests](#running-the-tests)
-10. [Conclusion](#conclusion)
-11. [Additional Exercises](#additional-exercises)
+1. [المقدمة](#introduction)
+2. [المتطلبات المسبقة](#prerequisites)
+3. [تهيئة المشروع](#project-setup)
+4. [فهم التطوير المدفوع بالاختبارات](#understanding-test-driven-development)
+5. [تهيئة React مع Vitest](#setting-up-react-with-vitest)
+6. [تصميم تطبيق قائمة المهام](#designing-the-to-do-list-application)
+7. [تنفيذ التطبيق بالتطوير المدفوع بالاختبارات](#implementing-the-application-with-tdd) [1. إنشاء مكوّن `ToDoList`](#creating-the-todolist-component) [2. جلب المهام من واجهة برمجة تطبيقات](#fetching-to-dos-from-an-api) [3. إضافة مهمة جديدة](#adding-a-new-to-do) [4. تعليم مهمة كمكتملة](#marking-a-to-do-as-completed) [5. حذف مهمة](#deleting-a-to-do)
+  - [1. إنشاء مكوّن `ToDoList`](#creating-the-todolist-component)
+  - [2. جلب المهام من واجهة برمجة تطبيقات](#fetching-to-dos-from-an-api)
+  - [3. إضافة مهمة جديدة](#adding-a-new-to-do)
+  - [4. تعليم مهمة كمكتملة](#marking-a-to-do-as-completed)
+  - [5. حذف مهمة](#deleting-a-to-do)
+8. [محاكاة واجهة برمجة التطبيقات باستخدام MSW](#mocking-the-api-with-msw)
+9. [تشغيل الاختبارات](#running-the-tests)
+10. [الخلاصة](#conclusion)
+11. [تمارين إضافية](#additional-exercises)
 
 ---
 
-### Introduction
+### المقدمة {#introduction}
 
-In this guide, we’ll build a **To-Do List** application using **Test-Driven Development (TDD)** with **React** and **Vitest**, a modern JavaScript testing framework. The application will interact with an API to fetch, add, update, and delete to-do items. We’ll mock the API using **Mock Service Worker (MSW)** to simulate server responses during testing.
+في هذا الدليل سنبني تطبيق **قائمة مهام** باستخدام **التطوير المدفوع بالاختبارات (TDD)** مع **React** و**Vitest**، إطار اختبار JavaScript حديث. سيتفاعل التطبيق مع واجهة برمجة تطبيقات لجلب عناصر المهام وإضافتها وتحديثها وحذفها. سنحاكي واجهة برمجة التطبيقات باستخدام **Mock Service Worker (MSW)** لمحاكاة استجابات الخادم أثناء الاختبار.
 
-**Objectives:**
+**الأهداف:**
 
-- Learn how to apply TDD in a React application.
-- Understand how to write unit and integration tests with Vitest and React Testing Library.
-- Use MSW to mock API interactions in tests.
-- Develop a To-Do List application with features like fetching tasks, adding new tasks, marking tasks as completed, and deleting tasks.
+- تعلّم كيفية تطبيق التطوير المدفوع بالاختبارات في تطبيق React.
+- فهم كيفية كتابة اختبارات الوحدات واختبارات التكامل باستخدام Vitest وReact Testing Library.
+- استخدام MSW لمحاكاة تفاعلات واجهة برمجة التطبيقات في الاختبارات.
+- تطوير تطبيق قائمة مهام بمزايا مثل جلب المهام وإضافة مهام جديدة وتعليم المهام كمكتملة وحذف المهام.
 
-### Prerequisites
+### المتطلبات المسبقة {#prerequisites}
 
-- Basic knowledge of JavaScript (ES6+ syntax) and React.
-- Familiarity with Node.js and npm.
-- Understanding of unit testing concepts.
-- Node.js and npm installed on your machine.
+- معرفة أساسية بـ JavaScript (صيغة ES6+) وReact.
+- إلمام بـ Node.js وnpm.
+- فهم مفاهيم اختبار الوحدات.
+- Node.js وnpm مثبّتان على جهازك.
 
-### Project Setup
+### تهيئة المشروع {#project-setup}
 
-1. **Create a New React App Using Vite** We’ll use **Vite** to bootstrap our React application quickly. <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> create</span><span style="color:#ECC48D"> vite@latest</span><span style="color:#ECC48D"> todo-app-tdd</span><span style="color:#82AAFF"> --</span><span style="color:#82AAFF"> --template</span><span style="color:#ECC48D"> react</span></span>
+1. **أنشئ تطبيق React جديدًا باستخدام Vite** سنستخدم **Vite** لتهيئة تطبيق React بسرعة. <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> create</span><span style="color:#ECC48D"> vite@latest</span><span style="color:#ECC48D"> todo-app-tdd</span><span style="color:#82AAFF"> --</span><span style="color:#82AAFF"> --template</span><span style="color:#ECC48D"> react</span></span>
 <span class="line"><span style="color:#C5E478;font-style:italic">cd</span><span style="color:#ECC48D"> todo-app-tdd</span></span></code>
-2. **Install Dependencies** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span></span></code>
-3. **Install Vitest and Related Packages** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span><span style="color:#ECC48D"> @testing-library/react</span><span style="color:#ECC48D"> @testing-library/jest-dom</span><span style="color:#ECC48D"> jsdom</span><span style="color:#ECC48D"> msw</span></span></code> `vitest`: Testing framework. `@testing-library/react`: Utilities for testing React components. `@testing-library/jest-dom`: Custom Jest matchers for the DOM. `jsdom`: Simulates a browser environment for Node.js. `msw`: Mock Service Worker for API mocking.
-  - `vitest`: Testing framework.
-  - `@testing-library/react`: Utilities for testing React components.
-  - `@testing-library/jest-dom`: Custom Jest matchers for the DOM.
-  - `jsdom`: Simulates a browser environment for Node.js.
-  - `msw`: Mock Service Worker for API mocking.
-4. **Project Structure** <code><span class="line"><span style="color:#D6DEEB">todo</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">app</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
+2. **ثبّت الاعتمادات** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span></span></code>
+3. **ثبّت Vitest والحزم ذات الصلة** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span><span style="color:#ECC48D"> @testing-library/react</span><span style="color:#ECC48D"> @testing-library/jest-dom</span><span style="color:#ECC48D"> jsdom</span><span style="color:#ECC48D"> msw</span></span></code> `vitest`: إطار الاختبار. `@testing-library/react`: أدوات مساعدة لاختبار مكوّنات React. `@testing-library/jest-dom`: مطابقات Jest مخصصة لـ DOM. `jsdom`: يحاكي بيئة متصفح لـ Node.js. `msw`: Mock Service Worker لمحاكاة واجهة برمجة التطبيقات.
+  - `vitest`: إطار الاختبار.
+  - `@testing-library/react`: أدوات مساعدة لاختبار مكوّنات React.
+  - `@testing-library/jest-dom`: مطابقات Jest مخصصة لـ DOM.
+  - `jsdom`: يحاكي بيئة متصفح لـ Node.js.
+  - `msw`: Mock Service Worker لمحاكاة واجهة برمجة التطبيقات.
+4. **بنية المشروع** <code><span class="line"><span style="color:#D6DEEB">todo</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">app</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── node_modules</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── public</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── src</span><span style="color:#C792EA">/</span></span>
@@ -71,21 +71,21 @@ In this guide, we’ll build a **To-Do List** application using **Test-Driven De
 <span class="line"><span style="color:#D6DEEB">├── vite</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">config</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB">└── vitest</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">config</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code>
 
-### Understanding Test-Driven Development
+### فهم التطوير المدفوع بالاختبارات {#understanding-test-driven-development}
 
-**Test-Driven Development (TDD)** is a software development approach where you:
+**التطوير المدفوع بالاختبارات (TDD)** مقاربة لتطوير البرمجيات تقوم فيها بما يلي:
 
-1. **Write a Test**: Write a test for the next bit of functionality.
-2. **Run the Test and See It Fail**: Ensures the test detects the absence of functionality.
-3. **Write the Minimal Code to Pass the Test**: Implement just enough code to make the test pass.
-4. **Refactor**: Improve the code while keeping the tests passing.
-5. **Repeat**: Continue with the next functionality.
+1. **اكتب اختبارًا**: اكتب اختبارًا للجزء التالي من الوظائف الذي تريد إضافته.
+2. **شغّل الاختبار وشاهده يفشل**: يضمن أن الاختبار يكتشف غياب الوظيفة.
+3. **اكتب أقل شيفرة تجعل الاختبار ينجح**: نفّذ شيفرة كافية فقط لجعل الاختبار ينجح.
+4. **أعد الهيكلة**: حسّن الشيفرة مع إبقاء الاختبارات ناجحة.
+5. **كرّر**: تابع مع الوظيفة التالية.
 
-This cycle is often referred to as **Red-Green-Refactor**.
+غالبًا ما تُسمّى هذه الدورة **الأحمر-الأخضر-إعادة الهيكلة** (Red-Green-Refactor).
 
-### Setting Up React with Vitest
+### تهيئة React مع Vitest {#setting-up-react-with-vitest}
 
-1. **Configure Vitest** Create a `vitest.config.js` file in the root directory: <code><span class="line"><span style="color:#637777;font-style:italic">// vitest.config.js</span></span>
+1. **هيّئ Vitest** أنشئ ملف `vitest.config.js` في الدليل الجذر: <code><span class="line"><span style="color:#637777;font-style:italic">// vitest.config.js</span></span>
 <span class="line"><span style="color:#C792EA;font-style:italic">import</span><span style="color:#D6DEEB"> { defineConfig } </span><span style="color:#C792EA;font-style:italic">from</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">vitest/config</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">;</span></span>
 <span class="line"><span style="color:#C792EA;font-style:italic">import</span><span style="color:#D6DEEB"> react </span><span style="color:#C792EA;font-style:italic">from</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">@vitejs/plugin-react</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">;</span></span>
 <span class="line"></span>
@@ -97,9 +97,9 @@ This cycle is often referred to as **Red-Green-Refactor**.
 <span class="line"><span style="color:#D6DEEB"> setupFiles: </span><span style="color:#D9F5DD">'</span><span style="color:#ECC48D">./tests/setupTests.js</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">,</span></span>
 <span class="line"><span style="color:#D6DEEB"> },</span></span>
 <span class="line"><span style="color:#D6DEEB">});</span></span></code>
-2. **Create a Test Setup File** Create `tests/setupTests.js` to set up testing utilities: <code><span class="line"><span style="color:#637777;font-style:italic">// tests/setupTests.js</span></span>
+2. **أنشئ ملف تهيئة للاختبارات** أنشئ `tests/setupTests.js` لإعداد أدوات الاختبار: <code><span class="line"><span style="color:#637777;font-style:italic">// tests/setupTests.js</span></span>
 <span class="line"><span style="color:#C792EA;font-style:italic">import</span><span style="color:#D9F5DD"> '</span><span style="color:#ECC48D">@testing-library/jest-dom</span><span style="color:#D9F5DD">'</span><span style="color:#D6DEEB">;</span></span></code>
-3. **Update `package.json` Scripts** <code><span class="line"><span style="color:#D6DEEB">{</span></span>
+3. **حدّث سكربتات `package.json`** <code><span class="line"><span style="color:#D6DEEB">{</span></span>
 <span class="line"><span style="color:#7FDBCA"> "scripts"</span><span style="color:#D6DEEB">: {</span></span>
 <span class="line"><span style="color:#7FDBCA"> "dev"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">vite</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
 <span class="line"><span style="color:#7FDBCA"> "build"</span><span style="color:#D6DEEB">: </span><span style="color:#D9F5DD">"</span><span style="color:#C789D6">vite build</span><span style="color:#D9F5DD">"</span><span style="color:#D6DEEB">,</span></span>
@@ -110,29 +110,29 @@ This cycle is often referred to as **Red-Green-Refactor**.
 <span class="line"><span style="color:#D6DEEB"> }</span></span>
 <span class="line"><span style="color:#D6DEEB">}</span></span></code>
 
-### Designing the To-Do List Application
+### تصميم تطبيق قائمة المهام {#designing-the-to-do-list-application}
 
-**Features:**
+**المزايا:**
 
-- Display a list of to-do items fetched from an API.
-- Add a new to-do item.
-- Mark a to-do item as completed.
-- Delete a to-do item.
+- عرض قائمة من عناصر المهام المجلوبة من واجهة برمجة تطبيقات.
+- إضافة عنصر مهمة جديد.
+- تعليم عنصر مهمة كمكتمل.
+- حذف عنصر مهمة.
 
-**API Endpoints:**
+**نقاط نهاية واجهة برمجة التطبيقات:**
 
-- `GET /api/todos`: Fetch all to-dos.
-- `POST /api/todos`: Add a new to-do.
-- `PUT /api/todos/:id`: Update a to-do.
-- `DELETE /api/todos/:id`: Delete a to-do.
+- `GET /api/todos`: جلب كل المهام.
+- `POST /api/todos`: إضافة مهمة جديدة.
+- `PUT /api/todos/:id`: تحديث مهمة.
+- `DELETE /api/todos/:id`: حذف مهمة.
 
-### Implementing the Application with TDD
+### تنفيذ التطبيق بالتطوير المدفوع بالاختبارات {#implementing-the-application-with-tdd}
 
-#### Creating the `ToDoList` Component
+#### إنشاء مكوّن `ToDoList`
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Create `src/tests/ToDoList.test.jsx`:
+أنشئ `src/tests/ToDoList.test.jsx`:
 
 ```jsx
 // src/tests/ToDoList.test.jsx
@@ -168,25 +168,25 @@ test('renders to-do items fetched from API', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We set up an MSW server to mock the API response.
-- The test checks that the loading indicator appears.
-- It waits for the to-do items to be rendered.
+- نُهيّئ خادم MSW لمحاكاة استجابة واجهة برمجة التطبيقات.
+- يتحقق الاختبار من ظهور مؤشر التحميل.
+- ينتظر تصيير عناصر المهام.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test fails because `ToDoList` component doesn’t exist.
+يفشل الاختبار لأن مكوّن `ToDoList` غير موجود.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Create `src/components/ToDoList.jsx`:
+أنشئ `src/components/ToDoList.jsx`:
 
 ```jsx
 // src/components/ToDoList.jsx
@@ -219,29 +219,29 @@ export function ToDoList() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test should pass.
+ينبغي أن ينجح الاختبار.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-No immediate refactoring needed.
+لا حاجة إلى إعادة هيكلة فورية.
 
-#### Fetching To-Dos From an API
+#### جلب المهام من واجهة برمجة تطبيقات {#fetching-to-dos-from-an-api}
 
-We’ve already implemented fetching to-dos in the previous step.
+سبق أن نفّذنا جلب المهام في الخطوة السابقة.
 
-#### Adding a New To-Do
+#### إضافة مهمة جديدة {#adding-a-new-to-do}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Update `src/tests/ToDoList.test.jsx`:
+حدّث `src/tests/ToDoList.test.jsx`:
 
 ```jsx
 import userEvent from '@testing-library/user-event';
@@ -276,24 +276,24 @@ test('adds a new to-do item', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We simulate typing into the input and clicking the add button.
-- We mock the POST request and the subsequent GET request to include the new item.
+- نحاكي الكتابة في المُدخل والنقر على زر الإضافة.
+- نحاكي طلب POST وطلب GET التالي ليشمل العنصر الجديد.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test fails because the input and button don’t exist.
+يفشل الاختبار لأن المُدخل والزر غير موجودين.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/components/ToDoList.jsx`:
+حدّث `src/components/ToDoList.jsx`:
 
 ```jsx
 import React, { useEffect, useState } from 'react';
@@ -350,25 +350,25 @@ export function ToDoList() {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test should pass.
+ينبغي أن ينجح الاختبار.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-Consider error handling and optimizing state updates.
+فكّر في معالجة الأخطاء وتحسين تحديثات الحالة.
 
-#### Marking a To-Do as Completed
+#### تعليم مهمة كمكتملة {#marking-a-to-do-as-completed}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Update `src/tests/ToDoList.test.jsx`:
+حدّث `src/tests/ToDoList.test.jsx`:
 
 ```jsx
 test('marks a to-do item as completed', async () => {
@@ -390,25 +390,25 @@ test('marks a to-do item as completed', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We find the checkbox associated with the to-do item.
-- We mock the PUT request to update the to-do item.
-- We simulate clicking the checkbox and assert that it’s checked.
+- نجد مربع الاختيار المرتبط بعنصر المهمة.
+- نحاكي طلب PUT لتحديث عنصر المهمة.
+- نحاكي النقر على مربع الاختيار ونتحقق من أنه محدّد.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test fails because the checkbox doesn’t exist.
+يفشل الاختبار لأن مربع الاختيار غير موجود.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/components/ToDoList.jsx`:
+حدّث `src/components/ToDoList.jsx`:
 
 ```jsx
 function toggleComplete(todo) {
@@ -440,25 +440,25 @@ function toggleComplete(todo) {
 </ul>
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test should pass.
+ينبغي أن ينجح الاختبار.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-Optimize `fetchTodos` to avoid unnecessary network calls.
+حسّن `fetchTodos` لتجنّب طلبات الشبكة غير الضرورية.
 
-#### Deleting a To-Do
+#### حذف مهمة {#deleting-a-to-do}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (الأحمر)
 
-Update `src/tests/ToDoList.test.jsx`:
+حدّث `src/tests/ToDoList.test.jsx`:
 
 ```jsx
 test('deletes a to-do item', async () => {
@@ -486,25 +486,25 @@ test('deletes a to-do item', async () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We locate the delete button for a specific to-do item.
-- We mock the `DELETE` request and the follow-up `GET` request.
-- After clicking delete, we assert that the removed item is no longer rendered.
+- نحدّد زر الحذف لعنصر مهمة معيّن.
+- نحاكي طلب `DELETE` وطلب `GET` التالي.
+- بعد النقر على الحذف، نتحقق من أن العنصر المحذوف لم يعد مُصيَّرًا.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-The test fails because the component does not render a delete button yet.
+يفشل الاختبار لأن المكوّن لا يصيّر زر حذف بعد.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Update `src/components/ToDoList.jsx`:
+حدّث `src/components/ToDoList.jsx`:
 
 ```jsx
 function deleteTodo(id) {
@@ -537,75 +537,75 @@ function deleteTodo(id) {
 </ul>;
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
-
-```bash
-npm run test
-```
-
-The test should pass.
-
-##### Step 5: Refactor (if necessary)
-
-Consider extracting the API calls into a small service module if the component starts handling too many responsibilities.
-
-### Mocking the API with MSW
-
-**Mock Service Worker (MSW)** lets you test the component against realistic network behavior without changing your production code. In this guide, we used:
-
-- `setupServer` from `msw/node` to intercept requests in the test environment.
-- `server.use(...)` to override handlers for a single test case.
-- Mocked `GET`, `POST`, `PUT`, and `DELETE` handlers to simulate the full to-do workflow.
-
-That gives you confidence that the UI behaves correctly across loading, create, update, and delete states while keeping the tests deterministic.
-
-### Running the Tests
-
-Run all tests with:
+شغّل الاختبار:
 
 ```bash
 npm run test
 ```
 
-Vitest will execute the test suite, and you can use `npm run test -- --watch` while you iterate during development.
+ينبغي أن ينجح الاختبار.
 
-### Conclusion
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-By following Test-Driven Development principles, we built a complete React to-do application one behavior at a time. Each test drove a specific piece of functionality, from loading initial data to adding, updating, and deleting tasks.
+فكّر في استخراج استدعاءات واجهة برمجة التطبيقات إلى وحدة خدمة صغيرة إن بدأ المكوّن يتولّى مسؤوليات كثيرة.
 
-**Key Takeaways:**
+### محاكاة واجهة برمجة التطبيقات باستخدام MSW {#mocking-the-api-with-msw}
 
-- **TDD keeps scope focused:** each failing test gave us one concrete behavior to implement.
-- **Vitest works well for React applications:** it provides fast feedback and integrates cleanly with Testing Library.
-- **MSW makes networked UI tests practical:** you can exercise realistic request flows without depending on a live API.
+يتيح لك **Mock Service Worker (MSW)** اختبار المكوّن في مواجهة سلوك شبكي واقعي دون تغيير شيفرة الإنتاج. استخدمنا في هذا الدليل:
 
-### Additional Exercises
+- `setupServer` من `msw/node` لاعتراض الطلبات في بيئة الاختبار.
+- `server.use(...)` لتجاوز المعالجات في حالة اختبار واحدة.
+- معالجات `GET` و`POST` و`PUT` و`DELETE` مُحاكاة لمحاكاة سير عمل المهام الكامل.
 
-To extend this project and keep practicing your testing skills, try adding:
+يمنحك ذلك ثقة بأن واجهة المستخدم تتصرف بشكل صحيح عبر حالات التحميل والإنشاء والتحديث والحذف مع إبقاء الاختبارات حتمية.
 
-1. **Filtering** Add filters for all, active, and completed tasks. Write tests to verify the correct tasks appear in each view.
-  - Add filters for all, active, and completed tasks.
-  - Write tests to verify the correct tasks appear in each view.
-2. **Editing Existing Tasks** Allow users to rename a task inline. Write tests for save and cancel behavior.
-  - Allow users to rename a task inline.
-  - Write tests for save and cancel behavior.
-3. **Error Handling** Show an error message when an API request fails. Write tests for failed `GET`, `POST`, `PUT`, and `DELETE` requests.
-  - Show an error message when an API request fails.
-  - Write tests for failed `GET`, `POST`, `PUT`, and `DELETE` requests.
-4. **Optimistic Updates** Update the UI before the network round trip completes. Write tests that confirm the UI rolls back correctly on failure.
-  - Update the UI before the network round trip completes.
-  - Write tests that confirm the UI rolls back correctly on failure.
-5. **Persistence** Save the list locally with `localStorage` or connect it to a real backend. Write tests that verify tasks are restored correctly.
-  - Save the list locally with `localStorage` or connect it to a real backend.
-  - Write tests that verify tasks are restored correctly.
-6. **Accessibility Improvements** Improve keyboard support and screen-reader feedback. Add tests that verify accessible names and states.
-  - Improve keyboard support and screen-reader feedback.
-  - Add tests that verify accessible names and states.
-7. **Search** Add a search input to filter tasks by text. Write tests to confirm partial matches behave correctly.
-  - Add a search input to filter tasks by text.
-  - Write tests to confirm partial matches behave correctly.
-8. **Bulk Actions** Add controls to complete or delete multiple tasks at once. Write tests for mixed selection states and batch updates.
-  - Add controls to complete or delete multiple tasks at once.
-  - Write tests for mixed selection states and batch updates.
+### تشغيل الاختبارات {#running-the-tests}
+
+شغّل كل الاختبارات بالأمر:
+
+```bash
+npm run test
+```
+
+سينفّذ Vitest مجموعة الاختبارات، ويمكنك استخدام `npm run test -- --watch` أثناء التكرار خلال التطوير.
+
+### الخلاصة {#conclusion}
+
+باتباع مبادئ التطوير المدفوع بالاختبارات، بنينا تطبيق مهام React كاملًا سلوكًا واحدًا في كل مرة. قاد كل اختبار جزءًا محدّدًا من الوظائف، من تحميل البيانات الأولية إلى إضافة المهام وتحديثها وحذفها.
+
+**الخلاصات الرئيسية:**
+
+- **TDD يبقي النطاق مركّزًا:** منحنا كل اختبار فاشل سلوكًا واحدًا ملموسًا لتنفيذه.
+- **Vitest يعمل جيدًا مع تطبيقات React:** يوفر تغذية راجعة سريعة ويتكامل بنظافة مع Testing Library.
+- **MSW يجعل اختبارات واجهة المستخدم الشبكية عملية:** يمكنك اختبار تدفقات طلبات واقعية دون الاعتماد على واجهة برمجة تطبيقات حيّة.
+
+### تمارين إضافية {#additional-exercises}
+
+لتوسيع هذا المشروع والاستمرار في تدريب مهاراتك في الاختبار، جرّب إضافة:
+
+1. **التصفية** أضف مرشّحات لكل المهام والنشطة والمكتملة. اكتب اختبارات للتحقق من ظهور المهام الصحيحة في كل عرض.
+  - أضف مرشّحات لكل المهام والنشطة والمكتملة.
+  - اكتب اختبارات للتحقق من ظهور المهام الصحيحة في كل عرض.
+2. **تحرير المهام الموجودة** اسمح للمستخدمين بإعادة تسمية مهمة في مكانها. اكتب اختبارات لسلوك الحفظ والإلغاء.
+  - اسمح للمستخدمين بإعادة تسمية مهمة في مكانها.
+  - اكتب اختبارات لسلوك الحفظ والإلغاء.
+3. **معالجة الأخطاء** اعرض رسالة خطأ عندما يفشل طلب إلى واجهة برمجة التطبيقات. اكتب اختبارات لطلبات `GET` و`POST` و`PUT` و`DELETE` الفاشلة.
+  - اعرض رسالة خطأ عندما يفشل طلب إلى واجهة برمجة التطبيقات.
+  - اكتب اختبارات لطلبات `GET` و`POST` و`PUT` و`DELETE` الفاشلة.
+4. **التحديثات المتفائلة** حدّث واجهة المستخدم قبل اكتمال رحلة الشبكة. اكتب اختبارات تؤكد أن واجهة المستخدم تتراجع بشكل صحيح عند الفشل.
+  - حدّث واجهة المستخدم قبل اكتمال رحلة الشبكة.
+  - اكتب اختبارات تؤكد أن واجهة المستخدم تتراجع بشكل صحيح عند الفشل.
+5. **الاستمرارية** احفظ القائمة محليًا باستخدام `localStorage` أو اربطها بخادم حقيقي. اكتب اختبارات تتحقق من استعادة المهام بشكل صحيح.
+  - احفظ القائمة محليًا باستخدام `localStorage` أو اربطها بخادم حقيقي.
+  - اكتب اختبارات تتحقق من استعادة المهام بشكل صحيح.
+6. **تحسينات إمكانية الوصول** حسّن دعم لوحة المفاتيح وتغذية قارئ الشاشة الراجعة. أضف اختبارات تتحقق من الأسماء والحالات المتاحة.
+  - حسّن دعم لوحة المفاتيح وتغذية قارئ الشاشة الراجعة.
+  - أضف اختبارات تتحقق من الأسماء والحالات المتاحة.
+7. **البحث** أضف حقل بحث لتصفية المهام حسب النص. اكتب اختبارات تؤكد أن المطابقات الجزئية تتصرف بشكل صحيح.
+  - أضف حقل بحث لتصفية المهام حسب النص.
+  - اكتب اختبارات تؤكد أن المطابقات الجزئية تتصرف بشكل صحيح.
+8. **الإجراءات الجماعية** أضف عناصر تحكم لإكمال أو حذف عدة مهام دفعة واحدة. اكتب اختبارات لحالات الاختيار المختلطة والتحديثات الدفعية.
+  - أضف عناصر تحكم لإكمال أو حذف عدة مهام دفعة واحدة.
+  - اكتب اختبارات لحالات الاختيار المختلطة والتحديثات الدفعية.

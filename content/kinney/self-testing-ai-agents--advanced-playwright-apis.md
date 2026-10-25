@@ -1,26 +1,26 @@
 ---
-title: "Advanced Playwright APIs"
-lang: en
+title: "واجهات Playwright المتقدمة"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/advanced-playwright-apis"
 ---
 
-Playwright has plenty of APIs that are mildly interesting in the abstract and completely irrelevant in a real test suite. This appendix is not that list.
+تضم Playwright عددًا كبيرًا من الواجهات البرمجية التي تبدو مثيرة للاهتمام في التجريد، لكنها لا صلة لها إطلاقًا بمجموعة اختبارات حقيقية. هذا الملحق ليس تلك القائمة.
 
-It is also intentionally short now. Locator debugging belongs in [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode). Screenshot stabilization belongs in [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop). HAR lifecycle details belong in [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation).
+وهو قصير عمدًا الآن. فتصحيح أعطال محدِّدات المواقع (locators) له موضعه في [وضع واجهة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode). وتثبيت لقطات الشاشة له موضعه في [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop). وتفاصيل دورة حياة ملفات HAR لها موضعها في [تسجيل ملفات HAR لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation).
 
-What remains here are the genuinely odd [Page APIs](https://playwright.dev/docs/api/class-page) that still earn their keep once the suite gets weird: quick postmortems in test code and explicit leak probes.
+ما يبقى هنا هو [واجهات الصفحة](https://playwright.dev/docs/api/class-page) الغريبة حقًا، التي تستحق بقاءها بمجرد أن تصير مجموعة الاختبارات غريبة بدورها: تشريح سريع لما بعد الحادثة داخل شيفرة الاختبار، وفحوص تسريب صريحة.
 
-## Let the page keep its own receipts
+## دع الصفحة تحتفظ بسجلاتها بنفسها
 
-The [Page API](https://playwright.dev/docs/api/class-page) exposes `page.consoleMessages()` and `page.pageErrors()`, which is a lot nicer than wiring your own event collectors every time a test gets noisy. This pairs well with [The Playwright Trace Viewer](https://stevekinney.com/courses/self-testing-ai-agents/playwright-trace-viewer): traces are still the main evidence artifact, but sometimes you want a quick postmortem directly in test code.
+تكشف [واجهة الصفحة](https://playwright.dev/docs/api/class-page) عن `page.consoleMessages()` و`page.pageErrors()`، وهما أنسب بكثير من توصيل جامعي أحداث خاصين بك في كل مرة يصبح فيها اختبار ما صاخبًا. وهذا يتناسب جيدًا مع [عارض آثار Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-trace-viewer): فالآثار تبقى وثيقة الأدلة الرئيسية، لكنك أحيانًا تريد تشريحًا سريعًا لما بعد الحادثة داخل شيفرة الاختبار مباشرة.
 
-The useful pattern is not “dump every message forever.” The useful pattern is “capture the current counts, do the risky thing, then inspect what was added.”
+النمط المفيد ليس «أفرغ كل رسالة إلى الأبد». النمط المفيد هو «التقط العدّادات الحالية، نفّذ الفعل الخطير، ثم افحص ما أُضيف».
 
-Use these when:
+استخدم هذه الواجهات عندما:
 
-- a click succeeds but the page quietly logs `console.error(...)` and the visible assertion fails three steps later
-- a save flow sometimes explodes in the browser with an uncaught exception, but the trace is more evidence than you need for the first pass
-- you want a test to fail with “the page threw after publish” instead of “expected heading to be visible”
+- تنجح نقرة ما لكن الصفحة تسجّل بهدوء `console.error(...)` فيفشل التحقق المرئي بعد ثلاث خطوات
+- ينفجر مسار الحفظ أحيانًا في المتصفح باستثناء غير ملتقط، لكن الأثر أكبر من الأدلة التي تحتاجها في المحاولة الأولى
+- تريد أن يفشل اختبار برسالة «رمت الصفحة استثناءً بعد النشر» بدلًا من «كان يُتوقع أن يكون العنوان مرئيًا»
 
 ```typescript
 const messageCountBefore = (await page.consoleMessages()).length;
@@ -35,29 +35,29 @@ expect(pageErrors).toHaveLength(0);
 expect(consoleMessages.map((message) => message.type())).not.toContain('error');
 ```
 
-That is the whole move:
+هذه هي الحركة كاملة:
 
-- `consoleMessages()` and `pageErrors()` give you the latest bounded history from the page
-- the API keeps only the last 200 messages, so this is for focused postmortems, not permanent log retention
-- counting before the risky action and slicing after it gives you a simple “what changed?” view without building your own event bus
+- تعطيك `consoleMessages()` و`pageErrors()` أحدث سجل محدود الحجم من الصفحة
+- تحتفظ الواجهة بآخر 200 رسالة فقط، لذا فهذه مخصصة لتشريح مركّز لما بعد الحادثة، لا للاحتفاظ الدائم بالسجلات
+- العدّ قبل الفعل الخطير والتقطيع بعده يمنحك رؤية بسيطة لسؤال «ما الذي تغيّر؟» دون بناء ناقل أحداث خاص بك
 
-> **200-message cap**
+> **حد الـ 200 رسالة**
 >
-> Because the buffer is capped at roughly 200 messages, the “count before and slice after” pattern breaks quietly if the action under test produces more than `200 - messageCountBefore` messages — older messages drop off and the slice index points at the wrong place. For noisy actions, either use the `{ filter: 'since-navigation' }` option on `consoleMessages()` or add an explicit navigation marker before the risky step.
+> لأن المخزن المؤقت محدود بنحو 200 رسالة، فإن نمط «العدّ قبل ثم التقطيع بعد» ينكسر بهدوء إذا أنتج الفعل قيد الاختبار أكثر من `200 - messageCountBefore` رسالة — فتسقط الرسائل الأقدم ويشير فهرس التقطيع إلى الموضع الخطأ. للأفعال الصاخبة، استخدم الخيار `{ filter: 'since-navigation' }` مع `consoleMessages()` أو أضف علامة تنقّل صريحة قبل الخطوة الخطيرة.
 
-This is not a replacement for the trace viewer. It is a good way to make the test fail with something more informative than “expected true to be false.”
+هذا ليس بديلًا عن عارض الآثار. إنه طريقة جيدة لجعل الاختبار يفشل بشيء أكثر إفادة من «كان يُتوقع أن تكون القيمة true لكنها false».
 
-## `requestGC()` is how you stop hand-waving about leaks
+## `requestGC()` هي طريقتك للتوقف عن التلويح باليد في مسألة التسريبات
 
-The [Page API](https://playwright.dev/docs/api/class-page#page-request-gc) also gives you `page.requestGC()`, which sounds suspiciously low-level until you remember that memory leaks are usually diagnosed with vibes and denial. This fits naturally beside [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation): if a page is supposed to drop an object after navigation or teardown, you can check instead of guessing.
+تكشف [واجهة الصفحة](https://playwright.dev/docs/api/class-page#page-request-gc) أيضًا عن `page.requestGC()`، وهو ما يبدو منخفض المستوى بشكل مريب حتى تتذكر أن تسريبات الذاكرة تُشخَّص عادة بالإحساس والإنكار. وهذا يتناسب طبيعيًا مع [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation): إذا كان يُفترض بالصفحة أن تُسقط كائنًا ما بعد التنقّل أو بعد التهيئة، فيمكنك التحقق بدلًا من التخمين.
 
-Use this when:
+استخدم هذا عندما:
 
-- a dialog, editor, or chart instance is created and destroyed repeatedly and you suspect old instances are sticking around
-- a route transition is supposed to tear down subscriptions, observers, or heavyweight widgets and you want one hard check instead of a hand-wave in code review
-- you are investigating “the fifth run gets slower than the first” and need a narrow leak probe before reaching for full browser profiling
+- يُنشأ مربّع حوار أو محرّر أو نسخة رسم بياني ثم يُدمَّر مرارًا وتكرارًا، وتشك في أن النسخ القديمة تبقى عالقة
+- يُفترض بانتقال مسار ما أن ينهي اشتراكات أو مراقبات أو عناصر واجهة ثقيلة، وتريد فحصًا صارمًا واحدًا بدلًا من تلويح باليد في مراجعة الشيفرة
+- تحقق في «التشغيل الخامس أبطأ من الأول» وتحتاج فحص تسريب ضيقًا قبل اللجوء إلى تنميط المتصفح الكامل
 
-The docs show the right pattern: keep a `WeakRef`, request garbage collection, then assert that the object is gone.
+توضح الوثائق النمط الصحيح: احتفظ بـ `WeakRef`، اطلب جمع القمامة، ثم أكّد أن الكائن قد اختفى.
 
 ```typescript
 await page.evaluate(() => {
@@ -71,9 +71,9 @@ const leaked = await page.evaluate(() => !!globalThis.dialogWeakRef.deref());
 expect(leaked).toBe(false);
 ```
 
-This is still a heuristic. Garbage collection is not a blood oath that every unreachable object is gone immediately. But it is a real signal, which is already better than most leak checks teams ship.
+هذا لا يزال استدلالًا تقريبيًا. فجمع القمامة ليس عهدًا مقدّسًا بأن كل كائن غير قابل للوصول قد زال فورًا. لكنه إشارة حقيقية، وهذا أفضل بالفعل من معظم فحوص التسريب التي تصدرها الفرق.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Playwright debugging APIs
@@ -87,15 +87,15 @@ This is still a heuristic. Garbage collection is not a blood oath that every unr
   code exposes a `WeakRef` or similarly testable handle.
 ```
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The useful advanced Playwright APIs are not the cute ones. They are the ones that make failures easier to explain and leak checks harder to hand-wave away.
+واجهات Playwright المتقدمة المفيدة ليست تلك الطريفة. إنها تلك التي تجعل الإخفاقات أسهل في التفسير وفحوص التسريب أصعب في التملّص منها بالتّلويح باليد.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Visual Regression as a Feedback Loop](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
-- [Recording HARs for Network Isolation](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
-- [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
-- [The Playwright Trace Viewer](https://stevekinney.com/courses/self-testing-ai-agents/playwright-trace-viewer)
-- [Deterministic State and Test Isolation](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
-- [Page API](https://playwright.dev/docs/api/class-page)
+- [الانحدار البصري كحلقة تغذية راجعة](https://stevekinney.com/courses/self-testing-ai-agents/visual-regression-as-a-feedback-loop)
+- [تسجيل ملفات HAR لعزل الشبكة](https://stevekinney.com/courses/self-testing-ai-agents/recording-hars-for-network-isolation)
+- [وضع واجهة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
+- [عارض آثار Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-trace-viewer)
+- [الحالة الحتمية وعزل الاختبارات](https://stevekinney.com/courses/self-testing-ai-agents/deterministic-state-and-test-isolation)
+- [واجهة الصفحة](https://playwright.dev/docs/api/class-page)

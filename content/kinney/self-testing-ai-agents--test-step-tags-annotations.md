@@ -1,20 +1,20 @@
 ---
-title: "test.step, Tags, and Annotations"
-lang: en
+title: "test.step والوسوم والتعليقات التوضيحية"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/test-step-tags-annotations"
 ---
 
-A failing test that says `Error: expected 5, got 0` is a bug report written by someone who doesn’t want to be helpful. It tells you what went wrong and nothing about where, why, or under what conditions. The failing test was *right there*, watching it all happen, and all it could think to say was “expected 5, got 0.”
+الاختبار الفاشل الذي يقول `Error: expected 5, got 0` هو تقرير خطأ كتبه شخص لا يريد أن يكون مفيدًا. يخبرك بما حدث من خطأ، ولا يخبرك بشيء عن أين حدث، ولا لماذا، ولا في أي ظروف. كان الاختبار الفاشل *هناك تمامًا*، يشاهد كل شيء يحدث، وكل ما استطاع أن يقوله هو «expected 5, got 0».
 
-`test.step` is how you write failing tests that read like incident reports. Tags are how you slice a suite by *intent* instead of by file. Annotations are how you link a test to the issue that made it exist. None of them change the behavior of a test — they change what the test says when it fails, and in a world where an agent is reading the failure dossier to decide what to fix, that difference is everything.
+`test.step` هو الطريقة التي تكتب بها اختبارات فاشلة تُقرأ كتقارير حوادث. والوسوم هي الطريقة التي تقطع بها مجموعة اختبارات حسب *القصد* بدلًا من الملف. أما التعليقات التوضيحية فهي الطريقة التي تربط بها اختبارًا بالمشكلة التي جعلته يوجد. لا شيء من هذه الأشياء يغيّر سلوك الاختبار — إنها تغيّر ما يقوله الاختبار عندما يفشل، وفي عالم يقرأ فيه وكيل ملفّ الفشل ليقرر ما يجب إصلاحه، فإن ذلك الفارق هو كل شيء.
 
-## `test.step` is a documentation format your tools read
+## `test.step` صيغة توثيق تقرأها أدواتك
 
-Wrap a group of actions in `test.step(label, fn)` and that group becomes a collapsible section in the trace viewer, a line in the `list` reporter, and a field in the HTML report. It also becomes part of the error message when the test fails. The label you write is the label the agent reads.
+لفّ مجموعة من الإجراءات داخل `test.step(label, fn)`، فتصبح تلك المجموعة قسمًا قابلًا للطي في عارض التتبع، وسطرًا في مُخبر `list`، وحقلًا في تقرير HTML. وتصبح أيضًا جزءًا من رسالة الخطأ عندما يفشل الاختبار. التسمية التي تكتبها هي التسمية التي يقرأها الوكيل.
 
-Here’s the rate-book test with and without steps, so you can see what the failure looks like.
+إليك اختبار تقييم الكتاب مع الخطوات وبدونها، لترى كيف يبدو الفشل.
 
-Without steps:
+بدون خطوات:
 
 ```typescript
 test('user can rate Station Eleven', async ({ page, request }) => {
@@ -28,9 +28,9 @@ test('user can rate Station Eleven', async ({ page, request }) => {
 });
 ```
 
-When that fails, the error message is a stack trace pointing at whichever line `expect` blew up on. The agent reading the dossier has to work backwards: the test is called “user can rate Station Eleven,” the failing assertion is on `Rated: 4/5`, so *something* in the chain from navigate-to-click-to-submit-to-persist broke. Good luck.
+عندما يفشل ذلك، تكون رسالة الخطأ تتبّعًا مكدّسًا يشير إلى السطر الذي انفجر فيه `expect`. وعلى الوكيل الذي يقرأ ملفّ الفشل أن يعمل بالعكس: الاختبار اسمه «user can rate Station Eleven»، والتأكيد الفاشل على `Rated: 4/5`، إذن *شيء ما* في السلسلة من الانتقال إلى النقر إلى الإرسال إلى الحفظ قد انكسر. حظًا سعيدًا.
 
-With steps:
+مع الخطوات:
 
 ```typescript
 test('user can rate Station Eleven', async ({ page, request }) => {
@@ -56,20 +56,20 @@ test('user can rate Station Eleven', async ({ page, request }) => {
 });
 ```
 
-Now the failure says `Error in step: verify the rating persists on the shelf — expected "Rated: 4/5" to be visible`. The agent reading the dossier knows exactly which phase failed. The trace viewer shows the steps as foldable sections. The HTML report lists them as subsections under the test. The JSON reporter emits them as structured data the failure-dossier summarizer can parse.
+الآن يقول الفشل `Error in step: verify the rating persists on the shelf — expected "Rated: 4/5" to be visible`. والوكيل الذي يقرأ ملفّ الفشل يعرف بالضبط أي مرحلة فشلت. ويعرض عارض التتبع الخطوات كأقسام قابلة للطي. ويسرد تقرير HTML هذه الخطوات كأقسام فرعية تحت الاختبار. ويُصدر مُخبر JSON هذه الخطوات كبيانات مُهيكلة يستطيع مُلخِّص ملفّ الفشل تحليلها.
 
-> **Steps nest**
+> **الخطوات تتداخل**
 >
-> You can call `test.step` inside another `test.step`, and the nesting shows up in all the reports. Use this sparingly — two levels deep is usually the right cap. If you need three, the test is probably doing too much.
+> يمكنك استدعاء `test.step` داخل `test.step` آخر، ويظهر التداخل في جميع التقارير. استخدم ذلك باعتدال — مستويان من العمق هما السقف المناسب عادةً. إن احتجت ثلاثة مستويات، فالاختبار على الأرجح يفعل أكثر مما ينبغي.
 
-The heuristic I use: every top-level user action gets a step. Navigate, click-through-a-flow, assert-outcome. Four steps for a four-act test. Not one step per line.
+القاعدة الإرشادية التي أستخدمها: كل إجراء مستخدم على المستوى الأعلى يحصل على خطوة. الانتقال، والنقر خلال تدفّق، وتأكيد النتيجة. أربع خطوات لاختبار من أربعة فصول. لا خطوة لكل سطر.
 
-There are a few lesser-known step options from the [Test API](https://playwright.dev/docs/api/class-test) that are worth using once the suite gets serious:
+هناك بعض خيارات الخطوة الأقل شهرة المتاحة من [واجهة Test API](https://playwright.dev/docs/api/class-test) والتي تستحق الاستخدام بمجرد أن تصبح مجموعة الاختبارات جدية:
 
-- `box: true` makes failures point at the step call site instead of some deeper line inside the callback
-- `timeout` applies only to that step
-- `location` lets you control how the step shows up in reports
-- `test.step(...)` returns the callback value, so helpers can use it as a real abstraction boundary
+- `box: true` يجعل الإخفاقات تشير إلى موضع استدعاء الخطوة بدلًا من سطر أعمق داخل الدالة المُرجعة
+- `timeout` يُطبَّق على تلك الخطوة فقط
+- `location` يتيح لك التحكم في كيفية ظهور الخطوة في التقارير
+- `test.step(...)` يعيد قيمة الدالة المُرجعة، فيمكن للدوال المساعدة استخدامه كحد تجريد حقيقي
 
 ```typescript
 async function login(page: Page) {
@@ -85,11 +85,11 @@ async function login(page: Page) {
 }
 ```
 
-That is not “pretty report grouping.” That is test structure with better failure ergonomics.
+هذا ليس «تجميعًا جميلًا للتقارير». هذه بنية اختبار ذات بيئة فشل أفضل.
 
-## Tags are how you slice a suite by intent
+## الوسوم هي كيف تقطع مجموعة اختبارات حسب القصد
 
-Every `test()` call can take a `tag` option:
+كل استدعاء `test()` يمكن أن يأخذ خيار `tag`:
 
 ```typescript
 test('user can rate Station Eleven', { tag: ['@critical', '@authenticated'] }, async ({ page }) => {
@@ -97,21 +97,21 @@ test('user can rate Station Eleven', { tag: ['@critical', '@authenticated'] }, a
 });
 ```
 
-Combine with `--grep @critical` to run just the tagged subset:
+اجمعه مع `--grep @critical` لتشغيل المجموعة الموسومة وحدها:
 
 ```bash
 npx playwright test --grep @critical
 ```
 
-This is how you shard a suite by *purpose* instead of by file. `@critical` is the handful of tests you’d run on every PR; `@slow` is the expensive ones you defer to nightly; `@flaky-quarantine` is the ones you’re not ready to delete but shouldn’t block the pipeline. None of that maps cleanly onto file boundaries, because the definition of “critical” changes as the product does.
+هكذا توزّع مجموعة الاختبارات حسب *الغرض* بدلًا من الملف. `@critical` هي الحفنة القليلة من الاختبارات التي ستشغّلها على كل طلب سحب؛ و`@slow` هي الاختبارات المكلفة التي تؤجلها إلى التشغيل الليلي؛ و`@flaky-quarantine` هي التي لست مستعدًا لحذفها لكنها لا ينبغي أن تعطّل خط الأنابيب. لا شيء من ذلك يتوافق بنظافة مع حدود الملفات، لأن تعريف «حرج» يتغيّر بتغيّر المنتج.
 
-> **Don’t use `@smoke` in Shelf**
+> **لا تستخدم `@smoke` في Shelf**
 >
-> Reserve `@smoke` for file-level or project-level smoke suites if you add them later in the course. If you also start tagging ordinary tests `@smoke`, you’ll end up with two competing definitions of the same word. The canonical tag vocabulary for this course is `@critical`, `@slow`, and `@flaky-quarantine`. `@smoke` stays out of the tag system.
+> احتفظ بـ `@smoke` لمجموعات الاختبار السريعة على مستوى الملف أو المشروع إن أضفتها لاحقًا في الدورة. وإن بدأت أيضًا بوسم الاختبارات العادية بـ `@smoke`، فستنتهي بتعريفين متنافسين للكلمة نفسها. مفردات الوسوم المعتمدة في هذه الدورة هي `@critical` و`@slow` و`@flaky-quarantine`. أما `@smoke` فيبقى خارج نظام الوسوم.
 
-Tags are supplemental metadata, not the source of truth. The file-and-project structure is where you decide *which* tests run; tags are how you decide which subset of *those* tests to run right now.
+الوسوم بيانات وصفية تكميلية، وليست مصدر الحقيقة. بنية الملفات والمشاريع هي المكان الذي تقرر فيه *أي* الاختبارات تعمل؛ أما الوسوم فهي كيفية تقرير أي مجموعة فرعية من *تلك* الاختبارات تشغّلها الآن.
 
-## Annotations are for linking to issues, not for in-test comments
+## التعليقات التوضيحية لربط الاختبارات بالمشكلات، لا للتعليقات داخل الاختبار
 
 ```typescript
 test('search handles the empty-results case', async ({ page }) => {
@@ -123,22 +123,22 @@ test('search handles the empty-results case', async ({ page }) => {
 });
 ```
 
-Annotations show up in the HTML report and the JSON reporter output. Use them for:
+تظهر التعليقات التوضيحية في تقرير HTML وفي مخرجات مُخبر JSON. استخدمها من أجل:
 
-- Linking a test to the issue it was written for.
-- Linking a test to the incident it regressed against.
-- Flagging a test as known-flaky with a pointer to the quarantine discussion.
-- Recording environment assumptions (`{ type: 'requires', description: 'DATABASE_URL points at a disposable test database' }`).
+- ربط اختبار بالمشكلة التي كُتب من أجلها.
+- ربط اختبار بالحادثة التي ارتدّ بسببها.
+- وسم اختبار بأنه متقلب معروف مع إشارة إلى نقاش الحجر الصحي.
+- تسجيل افتراضات البيئة (`{ type: 'requires', description: 'DATABASE_URL points at a disposable test database' }`).
 
-Don’t use annotations as a substitute for comments. They’re structured data meant for tooling, not prose meant for the next reader. A comment above the test is clearer than an annotation for “this tests the empty-results case.”
+لا تستخدم التعليقات التوضيحية بديلًا عن التعليقات النصية. فهي بيانات مُهيكلة موجهة للأدوات، لا نثرًا موجهًا للقارئ التالي. التعليق فوق الاختبار أوضح من تعليق توضيحي يقول «هذا يختبر حالة النتائج الفارغة».
 
-## Skipping a step is not the same as skipping a test
+## تخطّي خطوة ليس مثل تخطّي اختبار
 
-There is a `test.step.skip()` helper, but the docs nudge you toward `testStepInfo.skip()` when you are already inside a step and need to bail out of *that* unit of work. The distinction matters because “skip the whole test” and “skip this step because the environment does not support it” are not the same story in the report.
+هناك دالة مساعدة `test.step.skip()`، لكن الوثائق تدفعك نحو `testStepInfo.skip()` حين تكون بالفعل داخل خطوة وتحتاج إلى الانسحاب من *تلك* الوحدة من العمل. والفرق مهم لأن «تخطّي الاختبار بأكمله» و«تخطّي هذه الخطوة لأن البيئة لا تدعمها» ليسا القصة نفسها في التقرير.
 
-## `expect.soft` is the companion to `test.step`
+## `expect.soft` رفيق `test.step`
 
-One more tool, and it’s the one that pairs with steps to turn a failing test into a useful failure report. `expect.soft(value).toBe(...)` does everything `expect` does *except* bail on the first failure. The test still fails at the end, but every soft assertion that didn’t pass gets reported, not just the first one.
+أداة أخرى، وهي التي تقترن بالخطوات لتحويل اختبار فاشل إلى تقرير فشل مفيد. `expect.soft(value).toBe(...)` يفعل كل ما يفعله `expect` *عدا* التوقف عند أول إخفاق. يظل الاختبار فاشلًا في النهاية، لكن يُبلَّغ عن كل تأكيد ناعم لم ينجح، لا عن الأول وحده.
 
 ```typescript
 await test.step('verify all four result fields render', async () => {
@@ -150,19 +150,19 @@ await test.step('verify all four result fields render', async () => {
 });
 ```
 
-If the title is wrong, the author is missing, and the button is unlabeled, *all three* failures show up in the report. A plain `expect` would bail on the title and you’d never find out about the other two until the next run.
+إن كان العنوان خاطئًا، والمؤلف مفقودًا، والزر بلا تسمية، فستظهر *الإخفاقات الثلاثة* كلها في التقرير. أما `expect` العادي فسيتوقف عند العنوان، ولن تعرف بالاثنين الآخرين حتى التشغيل التالي.
 
-Use soft assertions when the step is verifying a list of things that *should all* be true after an action. Don’t use them for preconditions — you want those to fail fast.
+استخدم التأكيدات الناعمة عندما تتحقق الخطوة من قائمة أشياء *ينبغي أن تكون كلها* صحيحة بعد إجراء. ولا تستخدمها للشروط المسبقة — فأنت تريد أن تفشل تلك بسرعة.
 
-## How an agent uses this
+## كيف يستخدم الوكيل هذا
 
-An agent reading a [failure dossier](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) gets `Step: verify the rating persists on the shelf — expected "Rated: 4/5" to be visible` instead of a stack trace in a nameless test. That line is the difference between the agent spending its first 90 seconds *figuring out what the test was trying to do* and the agent spending its first 90 seconds *figuring out why the test failed*. `test.step` is upstream of every dossier that reads cleanly.
+الوكيل الذي يقرأ [ملفّ الفشل](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) يحصل على `Step: verify the rating persists on the shelf — expected "Rated: 4/5" to be visible` بدلًا من تتبّع مكدّس في اختبار بلا اسم. ذلك السطر هو الفرق بين أن يقضي الوكيل أول تسعين ثانية له في *معرفة ما كان الاختبار يحاول فعله* وأن يقضيها في *معرفة سبب فشل الاختبار*. `test.step` يقع في المنبع من كل ملفّ فشل يُقرأ بوضوح.
 
-Once you’ve added the dossier summarizer, it reads steps out of the Playwright JSON reporter output. Nothing else has to change — once the test file has steps, the dossier has them too.
+بمجرد أن تضيف مُلخِّص ملفّ الفشل، فإنه يقرأ الخطوات من مخرجات مُخبر JSON في Playwright. لا شيء آخر يحتاج إلى تغيير — بمجرد أن يحتوي ملف الاختبار على خطوات، يصبح ملفّ الفشل يحتوي عليها أيضًا.
 
-In the current course flow, the concrete reps are `tests/rate-book.spec.ts` (created earlier by the [harden-the-flaky-rate-book-test lab](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test), not shipped in the starter) and `tests/smoke.spec.ts`. However you isolate the practice slice for the lab, once the step labels and tags are stable they belong in the normal `npm run test` loop with the rest of the suite.
+في مسار الدورة الحالي، التمارين العملية الملموسة هي `tests/rate-book.spec.ts` (أنشأها سابقًا [مختبر تحصين اختبار تقييم الكتاب المتقلب](https://stevekinney.com/courses/self-testing-ai-agents/lab-harden-the-flaky-rate-book-test)، ولم تُشحن في المشروع الأولي) و`tests/smoke.spec.ts`. وكيفما تعزل شريحة التمرين للمختبر، فبمجرد أن تصبح تسميات الخطوات والوسوم مستقرة فإنها تنتمي إلى حلقة `npm run test` العادية مع بقية مجموعة الاختبارات.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## test.step, tags, annotations
@@ -179,12 +179,12 @@ In the current course flow, the concrete reps are `tests/rate-book.spec.ts` (cre
 - Keep `test.step` nesting to two levels deep at most. If you need three, the test is doing too much.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-A test that fails with `expected 5, got 0` is a test that doesn’t want to help you. Everything in this lesson is about writing tests that *do* want to help you — and, more importantly, tests that want to help the agent reading the dossier. Steps name the phases. Tags slice the suite. Annotations link out to context. Soft assertions collect all the failures instead of bailing on the first. Four tools, all additive, none of them change what your test is *doing*. They change what your test is *saying* when it fails, and that’s the entire game.
+الاختبار الذي يفشل بـ `expected 5, got 0` هو اختبار لا يريد مساعدتك. كل شيء في هذا الدرس يدور حول كتابة اختبارات *تريد* مساعدتك — والأهم من ذلك، اختبارات تريد مساعدة الوكيل الذي يقرأ ملفّ الفشل. الخطوات تسمّي المراحل. والوسوم تقطع مجموعة الاختبارات. والتعليقات التوضيحية تربط بالسياق الخارجي. والتأكيدات الناعمة تجمع كل الإخفاقات بدلًا من التوقف عند الأول. أربع أدوات، كلها إضافية، ولا شيء منها يغيّر ما *يفعله* اختبارك. إنها تغيّر ما *يقوله* اختبارك عندما يفشل، وهذه هي اللعبة بأكملها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Failure Dossiers: What Agents Actually Need From a Red Build](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — the lesson this one hands off into. Once your tests have steps, the dossier reads them automatically.
-- [Reading a Trace](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — the trace viewer displays `test.step` blocks as foldable sections, which is the fastest way to locate a failure in a long flow.
-- [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) — the lesson on file-and-project-level organization, which is the layer below tags. Tags supplement projects; they don’t replace them.
+- [ملفات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر](https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build) — الدرس الذي يسلّم هذا الدرس إليه. بمجرد أن تصبح لاختباراتك خطوات، يقرأ ملفّ الفشل تلك الخطوات تلقائيًا.
+- [قراءة تتبّع](https://stevekinney.com/courses/self-testing-ai-agents/reading-a-trace) — يعرض عارض التتبع كتل `test.step` كأقسام قابلة للطي، وهو أسرع طريقة لتحديد موضع فشل في تدفّق طويل.
+- [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects) — الدرس الخاص بالتنظيم على مستوى الملف والمشروع، وهو الطبقة التي تقع تحت الوسوم. الوسوم تكمّل المشاريع؛ ولا تحلّ محلها.

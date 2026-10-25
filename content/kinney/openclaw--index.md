@@ -1,26 +1,26 @@
 ---
-title: "OpenClaw"
-lang: en
+title: "OpenClaw: مساعدك الذكي الشخصي"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw"
 ---
 
-OpenClaw is a personal AI assistant that lives on your own machine. It runs a background **Gateway**, connects to the model provider of your choice, and reaches you through the chat apps you already use. This course walks through getting it installed, shaping how it behaves, and giving it the access it needs to be useful.
+OpenClaw مساعد ذكاء اصطناعي شخصي يعيش على جهازك أنت. يشغّل **بوابة (Gateway)** في الخلفية، ويتصل بمزوّد النموذج الذي تختاره، ويصلك عبر تطبيقات الدردشة التي تستخدمها أصلًا. تأخذك هذه الدورة خطوة بخطوة عبر تثبيته، وتشكيل سلوكه، ومنحه الصلاحيات التي يحتاجها ليكون مفيدًا.
 
-## What We’ll Cover
+## ما سنغطّيه
 
-- **Installing and setting up:** Get OpenClaw running locally, connect a model provider, and tighten up its permissions.
-- **Configuring your agent:** Understand the workspace files that define how your agent operates, behaves, and remembers.
-- **Security and approvals:** Decide what your agent may do on its own and what it has to ask you about first.
-- **Channels:** Talk to your agent from Telegram, and decide who else gets to.
-- **Automations:** Put it to work on a schedule, with a menu of ideas to choose from.
-- **Integrations:** Let it read your Gmail and Google Calendar.
-- **Memory and the browser:** Prove that your agent actually remembers things, and put its browser to work.
-- **Skills and delegation:** Teach it new procedures with skills, and hand work off to subagents and coding agents.
-- **Remote gateways:** Move the Gateway to an always-on server, reach it privately over Tailscale, and connect your Mac as a node.
-- **Workflows and orchestration:** Run multi-step pipelines with approval checkpoints, get structured answers from a model, fan work out to many agents at once, and choose the right tool for each job.
+- **التثبيت والتهيئة:** شغّل OpenClaw على جهازك، واربطه بمزوّد نموذج، واضبط صلاحياته.
+- **تهيئة الوكيل:** افهم ملفات مساحة العمل التي تحدد كيف يعمل وكيلك وكيف يتصرّف وكيف يتذكّر.
+- **الأمن والموافقات:** حدّد ما يجوز لوكيلك فعله من تلقاء نفسه وما يجب أن يسألك عنه أولًا.
+- **القنوات:** تحدّث مع وكيلك من Telegram، وحدّد من يحقّ له غيرك ذلك.
+- **الأتمتة:** شغّله على جدول زمني، مع قائمة أفكار للاختيار منها.
+- **التكاملات:** ادعه يقرأ بريدك على Gmail وتقويمك على Google Calendar.
+- **الذاكرة والمتصفّح:** أثبت أن وكيلك يتذكّر فعلًا الأشياء، وشغّل متصفّحه.
+- **المهارات والتفويض:** علّمه إجراءات جديدة بالمهارات، وسلّم الأعمال إلى الوكلاء الفرعيين ووكلاء البرمجة.
+- **بوابات الوصول البعيد:** انقل البوابة إلى خادم يعمل طوال الوقت، وواصل إليها عبر Tailscale بخصوصية، ووصّل جهاز Mac كعقدة.
+- **مسارات العمل والتنسيق:** شغّل خطوط أنابيب متعددة الخطوات مع نقاط تفقّد للموافقات، واحصل على إجابات منظّمة من النموذج، ووزّع الأعمال على عدة وكلاء في آنٍ واحد، واختر الأداة المناسبة لكل مهمة.
 
-If you’d rather run OpenClaw on a server from the start, the [OpenClaw Railway template](https://github.com/stevekinney/openclaw-railway-template) deploys a Gateway to [Railway](https://railway.com/?referralCode=kinney) that’s reachable only over Tailscale. The [Railway lesson](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale) later in the course walks through setting it up.
+إن فضّلت تشغيل OpenClaw على خادم منذ البداية، فإن [قالب OpenClaw على Railway](https://github.com/stevekinney/openclaw-railway-template) ينشر بوابة على [Railway](https://railway.com/?referralCode=kinney) لا يمكن الوصول إليها إلا عبر Tailscale. و[درس Railway](https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-with-tailscale) لاحقًا في الدورة يشرح طريقة تهيئة ذلك.
 
-> **New to Railway?**
+> **جديد على Railway؟**
 >
-> If you’d like, you can sign up with [my referral link](https://railway.com/?referralCode=kinney). You’ll get $20 in Railway credits, which is about a free month on the Pro plan, and I get a small referral bonus. It’s entirely optional, and the course works the same either way.
+> إن أحببت، يمكنك التسجيل عبر [رابط الإحالة الخاص بي](https://railway.com/?referralCode=kinney). ستحصل على رصيد بقيمة 20 دولارًا على Railway، وهو ما يعادل شهرًا مجانيًا تقريبًا في خطة Pro، وأحصل أنا على مكافأة إحالة صغيرة. الأمر اختياري تمامًا، وتعمل الدورة بالشكل نفسه في الحالتين.

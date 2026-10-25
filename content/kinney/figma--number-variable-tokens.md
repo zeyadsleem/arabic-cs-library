@@ -1,19 +1,19 @@
 ---
-title: "Using Variables for Tokens"
-lang: en
+title: "استخدام المتغيّرات للرموز"
+lang: ar
 source: "https://stevekinney.com/courses/figma/number-variable-tokens"
 ---
 
-The core value proposition of [variables](https://stevekinney.com/courses/figma/variables) is that they store single values that make it easy for us to change across all of our designs later. You can implement [a full set of spacing values like found in Tailwind](https://tailwindcss.com/docs/customizing-spacing#default-spacing-scale)—and this might make total sense as a basis for your primitives—or you may choose to use a curated, more-limited set.
+القيمة الجوهرية لـ[المتغيّرات](https://stevekinney.com/courses/figma/variables) أنها تخزّن قيمًا مفردة تسهّل علينا تغييرها في كل تصاميمنا لاحقًا. يمكنك تنفيذ [مجموعة كاملة من قيم التباعد كما هي في Tailwind](https://tailwindcss.com/docs/customizing-spacing#default-spacing-scale) — وقد يكون هذا منطقيًا تمامًا كأساس لعناصرك الأولية — أو قد تختار استخدام مجموعة منتقاة ومحدودة أكثر.
 
-For our purposes, we’re going to create a limited set of tokens. You can always expand if needed.
+بالنسبة إلى أغراضنا، سننشئ مجموعة محدودة من الرموز. ويمكنك دائمًا التوسّع إذا احتجت.
 
-Some spacing values in Figma
+بعض قيم التباعد في Figma
 
-> **Exercise**
+> **تمرين**
 >
-> Can you do something similar for **border radius** and **border width**?
+> هل يمكنك فعل شيء مشابه لمتغيّرات **border radius** و**border width**؟
 >
-> Your mileage my vary, but you might end up with something like this.
+> قد تختلف النتيجة لديك، لكنك قد تنتهي إلى شيء كهذا.
 >
-> Border width and border radius tokens
+> رموز عرض الحدّ ونصف قطر الحدّ

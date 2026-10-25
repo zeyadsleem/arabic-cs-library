@@ -1,43 +1,43 @@
 ---
-title: "Tables, Partition Keys, and Sort Keys"
-lang: en
+title: "الجداول ومفاتيح التقسيم ومفاتيح الفرز"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dynamodb-tables-and-keys"
 ---
 
-Every DynamoDB table needs a primary key, and the key you choose determines how you access your data for the lifetime of that table. You can’t change a table’s primary key after creation. This is the most important decision you make when designing a DynamoDB table, and it’s worth getting right from the start.
+يحتاج كل جدول DynamoDB إلى مفتاح أساسي، والمفتاح الذي تختاره يحدد كيفية وصولك إلى بياناتك طوال عمر ذلك الجدول. ولا يمكنك تغيير المفتاح الأساسي للجدول بعد إنشائه. هذا هو أهم قرار تتخذه عند تصميم جدول DynamoDB، ويستحق أن تصيبه من البداية.
 
-If you want AWS’s version of the table-shape rules while you read, the [DynamoDB core components guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) is the official reference.
+إن أردت الاطلاع على نسخة AWS من قواعد شكل الجدول أثناء قراءتك، فإن [دليل المكوّنات الأساسية في DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) هو المرجع الرسمي.
 
-## Partition Keys and Sort Keys
+## مفاتيح التقسيم ومفاتيح الفرز
 
-DynamoDB supports two types of primary keys:
+يدعم DynamoDB نوعين من المفاتيح الأساسية:
 
-**Simple primary key (partition key only).** A single attribute that uniquely identifies each item. DynamoDB uses the partition key’s value to determine which internal partition stores the item. If you’re building a table where each item is accessed by a unique ID—like a users table keyed on `userId`—a simple primary key is sufficient.
+**مفتاح أساسي بسيط (مفتاح التقسيم فقط).** سمة واحدة تحدد كل عنصر بشكل فريد. ويستخدم DynamoDB قيمة مفتاح التقسيم لتحديد القسم الداخلي الذي يخزّن العنصر. وإذا كنت تبني جدولًا يُوصَل فيه إلى كل عنصر بمعرّف فريد—مثل جدول مستخدمين مفتاحه `userId`—فالمفتاح الأساسي البسيط كافٍ.
 
-**Composite primary key (partition key + sort key).** Two attributes that together uniquely identify each item. Items with the same **partition key** are stored together and sorted by the **sort key**. This enables range queries: “give me all items with this partition key where the sort key is between these two values.”
+**مفتاح أساسي مركّب (مفتاح تقسيم + مفتاح فرز).** سمتان تحددان كل عنصر بشكل فريد معًا. وتُخزَّن العناصر ذات **مفتاح التقسيم** نفسه معًا وتُرتَّب بـ **مفتاح الفرز**. وهذا يمكّن استعلامات النطاق: «أعطني كل العناصر التي لها مفتاح التقسيم هذا حيث يقع مفتاح الفرز بين هاتين القيمتين».
 
-The composite key is where DynamoDB gets interesting for frontend applications. Consider a table that stores items for different users:
+المفتاح المركّب هو حيث يصبح DynamoDB مثيرًا للاهتمام في تطبيقات الواجهة الأمامية. تخيّل جدولًا يخزّن عناصر لمستخدمين مختلفين:
 
-| `userId` (partition key) | `itemId` (sort key) | `title` | `status` |
+| `userId` (مفتاح التقسيم) | `itemId` (مفتاح الفرز) | `title` | `status` |
 | --- | --- | --- | --- |
-| `user-123` | `item-001` | Deploy to S3 | done |
-| `user-123` | `item-002` | Configure CloudFront | in-progress |
-| `user-456` | `item-001` | Write Lambda handler | done |
-| `user-456` | `item-003` | Set up API Gateway | pending |
+| `user-123` | `item-001` | النشر إلى S3 | done |
+| `user-123` | `item-002` | تهيئة CloudFront | in-progress |
+| `user-456` | `item-001` | كتابة معالج Lambda | done |
+| `user-456` | `item-003` | إعداد API Gateway | pending |
 
-With this design, you can:
+مع هذا التصميم، يمكنك:
 
-- Get a specific item: partition key `user-123` + sort key `item-001`
-- Get all items for a user: query by partition key `user-123` (returns both items, sorted by `itemId`)
-- Get a range of items: query by partition key `user-123` where sort key begins with `item-00`
+- الحصول على عنصر محدد: مفتاح التقسيم `user-123` + مفتاح الفرز `item-001`
+- الحصول على كل عناصر مستخدم: الاستعلام بمفتاح التقسيم `user-123` (يعيد العنصرين، مرتّبين بـ `itemId`)
+- الحصول على نطاق من العناصر: الاستعلام بمفتاح التقسيم `user-123` حيث يبدأ مفتاح الفرز بـ `item-00`
 
-You can’t efficiently query across partition keys—for example, “get all items with status `done` across all users.” That requires a **scan** (which reads every item in the table) or a secondary index. This is the trade-off you accept with DynamoDB: predictable performance on your primary access patterns, at the cost of flexibility on queries you didn’t plan for.
+لا يمكنك الاستعلام بكفاءة عبر مفاتيح التقسيم—مثل «احصل على كل العناصر التي حالتها `done` لدى جميع المستخدمين». فهذا يتطلب **مسحًا (scan)** يقرأ كل عنصر في الجدول، أو فهرسًا ثانويًا. وهذه هي المقايضة التي تقبلها مع DynamoDB: أداء متوقع لأنماط وصولك الأساسية، على حساب المرونة في الاستعلامات التي لم تخطّط لها.
 
-## Global Secondary Indexes
+## الفهارس الثانوية العامة
 
-The standard fix for “I need to query by an attribute that isn’t my partition key” is a **Global Secondary Index (GSI)**. A GSI is a second view of the same table with a different key schema. DynamoDB keeps the GSI in sync with the base table automatically—you don’t write to it directly; writes to the base table propagate.
+الإصلاح القياسي لعبارة «أحتاج إلى الاستعلام بسمة ليست مفتاح التقسيم» هو **فهرس ثانوي عام (GSI)**. فـGSI هو عرض ثانٍ للجدول نفسه بمخطط مفاتيح مختلف. ويُبقي DynamoDB الـGSI متزامنًا مع الجدول الأساسي تلقائيًا—فأنت لا تكتب إليه مباشرة؛ بل تنتشر الكتابات إلى الجدول الأساسي إليه.
 
-For the “find items by status across all users” case, create a GSI keyed on `status`:
+لحالة «العثور على العناصر حسب الحالة عبر جميع المستخدمين»، أنشئ GSI مفتاحه `status`:
 
 ```bash
 aws dynamodb update-table \
@@ -60,7 +60,7 @@ aws dynamodb update-table \
   --region us-east-1
 ```
 
-Then query it instead of the base table:
+ثم استعلم عنه بدلًا من الجدول الأساسي:
 
 ```typescript
 await ddb.send(
@@ -74,38 +74,38 @@ await ddb.send(
 );
 ```
 
-A few things worth knowing before you reach for a GSI:
+ثمة أمور قليلة تستحق معرفتها قبل أن تلجأ إلى GSI:
 
-- GSIs are **eventually consistent** with the base table. A write shows up in the GSI milliseconds later, not instantly.
-- GSIs **cost extra**—both storage (the projected attributes duplicate) and write capacity (each base-table write propagates).
-- You can have up to 20 GSIs per table, but if you need more than three or four, you’re probably fighting the data model.
-- GSIs can only be *added* to an existing table; you can’t convert a GSI into a primary key. Design for them up front.
+- الفهارس الثانوية العامة **متسقة نهائيًا** مع الجدول الأساسي. فالكتابة تظهر في الـGSI بعد بضعة أجزاء من الثانية، لا فورًا.
+- الفهارس الثانوية العامة **تكلّف أكثر**—تخزينًا (فالسمات المسقطة تتكرر) وسعة كتابة (فكل كتابة في الجدول الأساسي تنتشر).
+- يمكنك أن تملك حتى 20 فهرسًا ثانويًا عامًا لكل جدول، لكن إن احتجت أكثر من ثلاثة أو أربعة فأنت على الأرجح تصارع نموذج البيانات.
+- لا يمكن *إضافة* الفهارس الثانوية العامة إلا إلى جدول موجود؛ ولا يمكنك تحويل GSI إلى مفتاح أساسي. فصمّم من أجلها مسبقًا.
 
-The rule of thumb: **design the base table around your one primary access pattern, and add a GSI per additional access pattern you can’t avoid**. The [DynamoDB access-patterns-first design talk](https://www.youtube.com/watch?v=HaEPXoXVf2k) from Rick Houlihan is the canonical deep dive.
+القاعدة العامة: **صمّم الجدول الأساسي حول نمط وصولك الأساسي الواحد، وأضف GSI لكل نمط وصول إضافي لا تستطيع تجنبه**. ومحاضرة [تصميم DynamoDB بدءًا من أنماط الوصول](https://www.youtube.com/watch?v=HaEPXoXVf2k) من Rick Houlihan هي التعمّق المرجعي في الموضوع.
 
-## Choosing Good Keys
+## اختيار مفاتيح جيدة
 
-The golden rule for partition keys: **high cardinality with even distribution**. Every unique partition key value maps to a physical partition in DynamoDB. If all your data shares the same partition key, it all lands on the same partition, and you hit throughput limits.
+القاعدة الذهبية لمفاتيح التقسيم: **تعدّدية عالية مع توزيع متساوٍ**. فكل قيمة فريدة لمفتاح التقسيم تُقابل قسمًا ماديًا في DynamoDB. وإذا كانت كل بياناتك تشترك في مفتاح التقسيم نفسه، فإنها كلها تهبط على القسم نفسه، فتصطدم بحدود معدّل النقل.
 
-Good partition keys:
+مفاتيح تقسيم جيدة:
 
-- `userId`—unique per user, distributes evenly
-- `orderId`—unique per order, high cardinality
-- UUIDs—maximum cardinality by definition
+- `userId`—فريد لكل مستخدم، ويتوزع بالتساوي
+- `orderId`—فريد لكل طلب، وبتعدّدية عالية
+- معرّفات UUID—أقصى تعدّدية بحكم التعريف
 
-Bad partition keys:
+مفاتيح تقسيم سيئة:
 
-- `status`—only a few possible values (`active`, `inactive`), creates hot partitions
-- `country`—low cardinality, and one country likely has far more items than others
-- `date`—all writes on the same day hit the same partition
+- `status`—قيم محتملة قليلة فقط (`active`، `inactive`)، ما ينشئ أقسامًا ساخنة
+- `country`—تعدّدية منخفضة، ومن المرجّح أن يكون بلد واحد فيه عناصر أكثر بكثير من غيره
+- `date`—كل الكتابات في اليوم نفسه تصطدم بالقسم نفسه
 
-> **Tip**
+> **نصيحة**
 >
-> If you’re coming from a relational database background, think of the partition key as the value you most commonly filter by in a `WHERE` clause. The sort key is what you’d `ORDER BY` within that filtered set.
+> إذا كانت لديك خلفية في قواعد البيانات العلائقية، ففكّر في مفتاح التقسيم كالقيمة التي تصفّي بها عادةً في جملة `WHERE`. ومفتاح الفرز هو ما كنت ستستخدمه في `ORDER BY` داخل تلك المجموعة المصفّاة.
 
-## Creating a Table with the CLI
+## إنشاء جدول باستخدام CLI
 
-Create the `my-frontend-app-data` table with a composite primary key—`userId` as the partition key and `itemId` as the sort key:
+أنشئ جدول `my-frontend-app-data` بمفتاح أساسي مركّب—`userId` مفتاحًا للتقسيم و`itemId` مفتاحًا للفرز:
 
 ```bash
 aws dynamodb create-table \
@@ -121,14 +121,14 @@ aws dynamodb create-table \
   --output json
 ```
 
-Let’s break down what each parameter does:
+لنفصّل ما يفعله كل معامل:
 
-- **`--table-name`**: The name of the table. This is how you reference it in your Lambda code and IAM policies.
-- **`--attribute-definitions`**: Declares the data types for key attributes. `S` means string. DynamoDB also supports `N` (number) and `B` (binary), but strings cover most frontend use cases.
-- **`--key-schema`**: Defines which attributes form the primary key. `HASH` is the partition key and `RANGE` is the sort key. (The naming comes from the internal hashing mechanism DynamoDB uses for partitioning—not the most intuitive labels, I know.)
-- **`--billing-mode PAY_PER_REQUEST`**: On-demand pricing. You pay per read and write, with no capacity planning.
+- **`--table-name`**: اسم الجدول. وهكذا تشير إليه في شيفرة Lambda وسياسات IAM.
+- **`--attribute-definitions`**: يعلن أنواع البيانات لسمات المفاتيح. و`S` تعني سلسلة نصية. ويدعم DynamoDB أيضًا `N` (رقم) و`B` (ثنائي)، لكن السلاسل النصية تغطي معظم حالات الواجهة الأمامية.
+- **`--key-schema`**: يحدد السمات التي تشكّل المفتاح الأساسي. و`HASH` هو مفتاح التقسيم و`RANGE` هو مفتاح الفرز. (التسمية تأتي من آلية التجزئة الداخلية التي يستخدمها DynamoDB للتقسيم—وليست أكثر التسميات بداهة، أعلم.)
+- **`--billing-mode PAY_PER_REQUEST`**: تسعير عند الطلب. تدفع مقابل كل قراءة وكتابة، دون تخطيط للسعة.
 
-The response includes the table description:
+تتضمن الاستجابة وصف الجدول:
 
 ```json
 {
@@ -153,11 +153,11 @@ The response includes the table description:
 }
 ```
 
-Note the `TableStatus` is `CREATING`. DynamoDB tables take a few seconds to become active. You can check the status:
+لاحظ أن `TableStatus` هي `CREATING`. تستغرق جداول DynamoDB بضع ثوانٍ لتصبح نشطة. يمكنك التحقق من الحالة:
 
-In the console, the **Create table** form shows the table name, partition key, and sort key fields in the **Table details** section.
+في وحدة التحكم، يعرض نموذج **Create table** اسم الجدول، ومفتاح التقسيم، وحقول مفتاح الفرز في قسم **Table details**.
 
-The DynamoDB Create table form showing the table name frontend-items, partition key userId of type String, and sort key itemId of type String.
+نموذج إنشاء الجدول في DynamoDB يعرض اسم الجدول frontend-items، ومفتاح التقسيم userId من النوع String، ومفتاح الفرز itemId من النوع String.
 
 ```bash
 aws dynamodb describe-table \
@@ -167,17 +167,17 @@ aws dynamodb describe-table \
   --query "Table.TableStatus"
 ```
 
-Wait until the status changes from `CREATING` to `ACTIVE` before writing data.
+انتظر حتى تتغيّر الحالة من `CREATING` إلى `ACTIVE` قبل كتابة البيانات.
 
-Once ACTIVE, the table’s **Overview** tab in the console shows the key schema, capacity mode, and table status.
+وبمجرد أن تصبح ACTIVE، تعرض علامة التبويب **Overview** للجدول في وحدة التحكم مخطط المفاتيح، ووضع السعة، وحالة الجدول.
 
-The DynamoDB table overview page showing the frontend-items table with partition key userId, sort key itemId, and table status Active.
+صفحة النظرة العامة لجدول DynamoDB تعرض جدول frontend-items مع مفتاح التقسيم userId، ومفتاح الفرز itemId، وحالة الجدول Active.
 
-> **Warning**
+> **تحذير**
 >
-> The `--attribute-definitions` parameter only defines attributes that are used in the key schema (or secondary indexes). You don’t declare non-key attributes here. DynamoDB is schemaless for non-key attributes—you can add any attributes you want when you write items. This trips up people coming from SQL databases who expect to define all columns up front.
+> المعامل `--attribute-definitions` يعرّف فقط السمات المستخدمة في مخطط المفاتيح (أو الفهارس الثانوية). أنت لا تعلن سمات غير مفتاحية هنا. فـDynamoDB بلا مخطط للسمات غير المفتاحية—يمكنك إضافة أي سمات تريدها عند كتابة العناصر. وهذا يربك القادمين من قواعد بيانات SQL الذين يتوقعون تعريف كل الأعمدة مسبقًا.
 
-## With the SDK
+## باستخدام SDK
 
 ```typescript
 import { DynamoDBClient, CreateTableCommand, waitUntilTableExists } from '@aws-sdk/client-dynamodb';
@@ -202,38 +202,38 @@ await ddb.send(
 await waitUntilTableExists({ client: ddb, maxWaitTime: 60 }, { TableName: 'my-frontend-app-data' });
 ```
 
-The item-level operations (`PutItem`, `GetItem`, `UpdateItem`, `DeleteItem`, `Query`, `Scan`) are the ones you actually reach for from application code—those lessons ([Reading and Writing Data](https://stevekinney.com/courses/aws/dynamodb-reading-and-writing-data) and [Querying and Scanning](https://stevekinney.com/courses/aws/dynamodb-querying-and-scanning)) are SDK-first because that’s how you use them in a Lambda.
+العمليات على مستوى العنصر (`PutItem`، و`GetItem`، و`UpdateItem`، و`DeleteItem`، و`Query`، و`Scan`) هي التي تلجأ إليها فعليًا من شيفرة التطبيق—وتلك الدروس ([قراءة البيانات وكتابتها](https://stevekinney.com/courses/aws/dynamodb-reading-and-writing-data) و[الاستعلام والمسح](https://stevekinney.com/courses/aws/dynamodb-querying-and-scanning)) تبدأ بـ SDK لأن هذه هي طريقة استخدامها في Lambda.
 
-## A Note on Attribute Definitions
+## ملاحظة حول تعريفات السمات
 
-It’s tempting to list every attribute your items will have in `--attribute-definitions`. Don’t do this. DynamoDB will reject your request if you define attributes that aren’t part of any key schema or index. Only define the attributes that form your keys.
+من المُغري أن تسرد كل سمة ستكون في عناصرك في `--attribute-definitions`. لا تفعل ذلك. فـDynamoDB سيرفض طلبك إذا عرّفت سمات ليست جزءًا من أي مخطط مفاتيح أو فهرس. عرّف فقط السمات التي تشكّل مفاتيحك.
 
-Your items can have as many additional attributes as you want—`title`, `status`, `createdAt`, `priority`—and you never declare them in the table definition. You just include them when you write an item.
+يمكن أن تحتوي عناصرك على أي عدد تريده من السمات الإضافية—`title`، و`status`، و`createdAt`، و`priority`—ولن تعلنها أبدًا في تعريف الجدول. بل تضمّنها فقط عند كتابة عنصر.
 
-## Key Design Patterns for Frontend Applications
+## أنماط تصميم المفاتيح لتطبيقات الواجهة الأمامية
 
-Here are common patterns that work well for frontend API backends:
+إليك أنماطًا شائعة تعمل جيدًا مع خلفيات واجهات API الأمامية:
 
-### User-scoped data
+### بيانات مقيّدة بالمستخدم
 
-Partition key: `userId`, sort key: `itemId`
+مفتاح التقسيم: `userId`، مفتاح الفرز: `itemId`
 
-This is the pattern you’re using for `my-frontend-app-data`. Each user’s items are stored together, and you can efficiently query all items for a given user. This covers the most common frontend access pattern: “show me my stuff.”
+هذا هو النمط الذي تستخدمه لـ `my-frontend-app-data`. فعناصر كل مستخدم تُخزَّن معًا، ويمكنك الاستعلام بكفاءة عن كل عناصر مستخدم معيّن. وهذا يغطي نمط الوصول الأمامي الأكثر شيوعًا: «أرني أشيائي».
 
-### Timestamp-sorted data
+### بيانات مرتّبة حسب الطابع الزمني
 
-Partition key: `userId`, sort key: `createdAt` (ISO 8601 string)
+مفتاح التقسيم: `userId`، مفتاح الفرز: `createdAt` (سلسلة ISO 8601)
 
-Items are automatically sorted by creation time. You can query for a user’s recent items by adding a sort key condition: “give me items for `user-123` where `createdAt` is greater than `2026-03-01`.”
+تُرتَّب العناصر تلقائيًا حسب وقت الإنشاء. ويمكنك الاستعلام عن العناصر الحديثة لمستخدم بإضافة شرط على مفتاح الفرز: «أعطني عناصر `user-123` حيث `createdAt` أكبر من `2026-03-01`».
 
-### Entity-type mixing (single-table design)
+### خلط أنواع الكيانات (تصميم الجدول الواحد)
 
-Partition key: `pk`, sort key: `sk`
+مفتاح التقسيم: `pk`، مفتاح الفرز: `sk`
 
-Advanced DynamoDB users sometimes store multiple entity types in a single table using generic key names. The generic key names (`pk`, `sk`) let one table hold many entity types at once: a user record uses `pk = USER#user-123` and `sk = PROFILE`, while that same user’s items use `pk = USER#user-123` and `sk = ITEM#item-456`. A single `Query` on `pk = USER#user-123` fetches the user record *and* all their items in one round trip.
+يخزّن مستخدمو DynamoDB المتقدمون أحيانًا أنواع كيانات متعددة في جدول واحد باستخدام أسماء مفاتيح عامة. فأسماء المفاتيح العامة (`pk`، `sk`) تتيح لجدول واحد أن يحمل أنواع كيانات كثيرة في آن واحد: فسجل المستخدم يستخدم `pk = USER#user-123` و`sk = PROFILE`، بينما عناصر المستخدم نفسه تستخدم `pk = USER#user-123` و`sk = ITEM#item-456`. واستعلام `Query` واحد على `pk = USER#user-123` يجلب سجل المستخدم *و*كل عناصره في رحلة واحدة.
 
-> **Tip**
+> **نصيحة**
 >
-> You don’t need single-table design for this course—the `userId`/`itemId` composite key is all you need. But you’ll see the `pk`/`sk` pattern constantly in production DynamoDB code, and now you know why the keys are named so abstractly: they’re deliberately generic so one table can mean different things for different items.
+> لا تحتاج إلى تصميم الجدول الواحد في هذه الدورة—فالمفتاح المركّب `userId`/`itemId` هو كل ما تحتاجه. لكنك سترى نمط `pk`/`sk` باستمرار في شيفرة DynamoDB الإنتاجية، والآن تعرف لماذا سُمّيت المفاتيح بهذا القدر من التجريد: فهي عامة عن قصد حتى يستطيع جدول واحد أن يعني أشياء مختلفة لعناصر مختلفة.
 
-You’ve got a table with a composite primary key. Next up, you’ll write data to it and read it back using the AWS SDK v3 from TypeScript—the same language your Lambda handlers are written in.
+أصبح لديك جدول بمفتاح أساسي مركّب. في الخطوة التالية، ستكتب بيانات إليه وتقرأها مرة أخرى باستخدام AWS SDK v3 من TypeScript—اللغة نفسها التي كُتبت بها معالجات Lambda لديك.

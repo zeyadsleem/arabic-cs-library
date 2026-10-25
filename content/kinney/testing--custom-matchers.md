@@ -1,10 +1,10 @@
 ---
-title: "Customer Matchers in Vitest"
-lang: en
+title: "مطابِقات مخصّصة في Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/custom-matchers"
 ---
 
-Let’s say you can’t find the `expect` method that makes you happy. You *could* extend the matchers in Vitest.
+لنفترض أنك لا تجد تابع `expect` الذي يُسعدك. يمكنك *بالفعل* أن توسّع المطابِقات في Vitest.
 
 ```javascript
 // vitest.setup.js
@@ -28,7 +28,7 @@ expect.extend({
 });
 ```
 
-Let’s see it in action.
+لنرَ ذلك أثناء العمل.
 
 ```javascript
 test('number is within range', () => {
@@ -36,11 +36,11 @@ test('number is within range', () => {
 });
 ```
 
-## A More Interesting Example
+## مثال أكثر تشويقًا
 
-Let’s say you’re working with **dates**. Testing for “is this date after that date?” could be a little annoying with vanilla matchers.
+لنفترض أنك تعمل على **التواريخ**. قد يكون اختبار سؤال «هل هذا التاريخ بعد ذلك التاريخ؟» مزعجًا قليلًا باستخدام المطابِقات التقليدية.
 
-Here’s a custom matcher for checking if one date is later than another:
+إليك مطابِقًا مخصّصًا للتحقق من أن تاريخًا متأخر عن تاريخ آخر:
 
 ```javascript
 expect.extend({
@@ -61,7 +61,7 @@ expect.extend({
 });
 ```
 
-Boom! Now you can write some crisp, clear date comparisons:
+هذا رائع! الآن يمكنك كتابة مقارنات تواريخ واضحة وموجزة:
 
 ```javascript
 test('date comparison', () => {
@@ -70,8 +70,8 @@ test('date comparison', () => {
 });
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Keep the matcher simple**. You don’t want to write a novel for each matcher. Remember, code is read more often than it’s written, so make sure that your custom matcher is easy to understand at a glance.
-2. **Detailed error messages**. When a test fails, the developer (spoiler: future you) needs to understand *why* things exploded. A good message makes debugging way less painful.
-3. **Leverage context for your app**. Extend matchers when you find yourself repeating specific checks. In the land of testing, **DRY** doesn’t just stand for “Don’t Repeat Yourself”, it stands for ”**Don’t Rage Yet**”, because tests are meant to stay calm and concise.
+1. **أبقِ المطابِق بسيطًا**. لا تريد أن تكتب رواية لكل مطابِق. تذكّر أن الشيفرة تُقرأ أكثر مما تُكتب، لذا احرص على أن يكون مطابِقك المخصّص سهل الفهم من نظرة واحدة.
+2. **رسائل خطأ مفصّلة**. عندما يفشل اختبار، يحتاج المطوّر (والمفاجأة: أنت في المستقبل) إلى فهم *سبب* الانفجار. الرسالة الجيدة تجعل تنقيح الأخطاء أقل إيلامًا بكثير.
+3. **استفد من سياق تطبيقك**. وسّع المطابِقات عندما تجد نفسك تكرّر فحوصًا بعينها. في عالم الاختبارات، لا تعني **DRY** «لا تكرّر نفسك» (Don’t Repeat Yourself) فحسب، بل تعني أيضًا «**لا تغضب بعد**» (Don’t Rage Yet)، لأن الاختبارات مُفترض أن تبقى هادئة وموجزة.

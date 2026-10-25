@@ -1,22 +1,22 @@
 ---
-title: "Breakpoint Utilities"
-lang: en
+title: "أدوات نقاط التوقف"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/breakpoint-utilities"
 ---
 
-Tailwind uses a mobile-first approach: un-prefixed utilities apply to all sizes, prefixed utilities apply from that breakpoint up.
+تستخدم Tailwind نهج «الجوال أولًا»: الأدوات بلا بادئة تنطبق على كل المقاسات، والأدوات ذات البادئة تنطبق من نقطة التوقف تلك فصاعدًا.
 
-## Default Breakpoints
+## نقاط التوقف الافتراضية
 
-- `sm`: 640px and up
-- `md`: 768px and up
-- `lg`: 1024px and up
-- `xl`: 1280px and up
-- `2xl`: 1536px and up
+- `sm`: من 640px وما فوق
+- `md`: من 768px وما فوق
+- `lg`: من 1024px وما فوق
+- `xl`: من 1280px وما فوق
+- `2xl`: من 1536px وما فوق
 
-## Basic Usage
+## الاستخدام الأساسي {#basic-usage}
 
-*Basic Usage — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/a6c7ba15ac0f1fb23100cf9b826687f4d73c8c64a73c68430d69ac460e6b6e92.html)*
+*الاستخدام الأساسي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a6c7ba15ac0f1fb23100cf9b826687f4d73c8c64a73c68430d69ac460e6b6e92.html)*
 
 ```html
 <!-- Mobile-first design -->
@@ -29,13 +29,13 @@ Tailwind uses a mobile-first approach: un-prefixed utilities apply to all sizes,
 <div class="block lg:hidden">Hidden on large screens</div>
 ```
 
-## Targeting Ranges
+## استهداف النطاقات
 
-### Maximum Width Variants
+### صيغ الحد الأقصى للعرض
 
-Use `max-*` to apply styles below a breakpoint:
+استخدم `max-*` لتطبيق الأنماط دون نقطة توقف:
 
-*Maximum Width Variants — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/7c688b6a5bfcad03184b34e10cc0e9c6d5431765f56cf9926afe17f2441647e4.html)*
+*صيغ الحد الأقصى للعرض — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7c688b6a5bfcad03184b34e10cc0e9c6d5431765f56cf9926afe17f2441647e4.html)*
 
 ```html
 <!-- Only on mobile -->
@@ -45,20 +45,20 @@ Use `max-*` to apply styles below a breakpoint:
 <div class="hidden max-lg:hidden md:block">Visible between 768px-1024px</div>
 ```
 
-### Stacking for Ranges
+### التكديس للنطاقات
 
-*Stacking for Ranges — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/a71b4079ae617b7def170a51956da3a391c2b2538b6959259b811c1f917469ad.html)*
+*التكديس للنطاقات — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a71b4079ae617b7def170a51956da3a391c2b2538b6959259b811c1f917469ad.html)*
 
 ```html
 <!-- Apply only between md and lg -->
 <div class="md:max-lg:bg-blue-500">Blue background on medium screens only</div>
 ```
 
-## Arbitrary Breakpoints
+## نقاط توقف عشوائية
 
-One-off custom breakpoints:
+نقاط توقف مخصّصة تُستخدم مرة واحدة:
 
-*Arbitrary Breakpoints — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/cc56ebb0bce5b4f74c352a2aa0d7286606b37dec342d9c645859df6f4f86f8a1.html)*
+*نقاط توقف عشوائية — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/cc56ebb0bce5b4f74c352a2aa0d7286606b37dec342d9c645859df6f4f86f8a1.html)*
 
 ```html
 <!-- Min width -->
@@ -71,9 +71,9 @@ One-off custom breakpoints:
 <div class="min-[600px]:max-[900px]:bg-gray-100">Gray between 600-900px</div>
 ```
 
-## Customizing Breakpoints
+## تخصيص نقاط التوقف
 
-Define custom breakpoints in `@theme`:
+عرّف نقاط توقف مخصّصة داخل `@theme`:
 
 ```css
 @import 'tailwindcss';
@@ -91,13 +91,13 @@ Define custom breakpoints in `@theme`:
 }
 ```
 
-## Container Queries
+## استعلامات الحاويات
 
-Style based on parent container size, not viewport:
+نسّق بحسب حجم الحاوية الأم لا بحسب إطار العرض:
 
-### Basic Container Queries
+### استعلامات الحاويات الأساسية
 
-*Basic Container Queries — Example 5 — [Open example](https://stevekinney.com/generated/playgrounds/0764db1c435470de16ea36bce5c4a4cbeefcffc1ad213cf9d332d462ab4ea66f.html)*
+*استعلامات الحاويات الأساسية — المثال 5 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0764db1c435470de16ea36bce5c4a4cbeefcffc1ad213cf9d332d462ab4ea66f.html)*
 
 ```html
 <!-- Mark parent as container -->
@@ -109,9 +109,9 @@ Style based on parent container size, not viewport:
 </div>
 ```
 
-### Named Containers
+### الحاويات المسمّاة
 
-*Named Containers — Example 6 — [Open example](https://stevekinney.com/generated/playgrounds/77a4fc681bf6d3b786b9366f569db29c848cb325c365acddca7f879f1e8468dd.html)*
+*الحاويات المسمّاة — المثال 6 — [افتح المثال](https://stevekinney.com/generated/playgrounds/77a4fc681bf6d3b786b9366f569db29c848cb325c365acddca7f879f1e8468dd.html)*
 
 ```html
 <!-- Named container -->
@@ -125,15 +125,15 @@ Style based on parent container size, not viewport:
 </div>
 ```
 
-### Container Sizes
+### أحجام الحاويات
 
-Default container breakpoints match viewport ones:
+نقاط توقف الحاويات الافتراضية تطابق نقاط توقف إطار العرض:
 
-- `@sm`: 640px container
-- `@md`: 768px container
-- etc.
+- `@sm`: حاوية بعرض 640px
+- `@md`: حاوية بعرض 768px
+- وغيرها.
 
-Customize in `@theme`:
+خصّصها في `@theme`:
 
 ```css
 @theme {
@@ -142,9 +142,9 @@ Customize in `@theme`:
 }
 ```
 
-### Arbitrary Container Queries
+### استعلامات حاويات عشوائية
 
-*Arbitrary Container Queries — Example 7 — [Open example](https://stevekinney.com/generated/playgrounds/7b2008710754ff6269158c4af09ac0c6680ee80343055acbb6a1f25e4f518efb.html)*
+*استعلامات حاويات عشوائية — المثال 7 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7b2008710754ff6269158c4af09ac0c6680ee80343055acbb6a1f25e4f518efb.html)*
 
 ```html
 <div class="@container">
@@ -152,11 +152,11 @@ Customize in `@theme`:
 </div>
 ```
 
-## Complex Responsive Patterns
+## أنماط استجابة معقّدة
 
-### Combining with Other Variants
+### الدمج مع صيغ أخرى
 
-*Combining with Other Variants — Example 8 — [Open example](https://stevekinney.com/generated/playgrounds/7a2b468ecff5d64542dc0d8d1e130934f22c329515c01ea17a92fdc6834d2504.html)*
+*الدمج مع صيغ أخرى — المثال 8 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7a2b468ecff5d64542dc0d8d1e130934f22c329515c01ea17a92fdc6834d2504.html)*
 
 ```html
 <!-- Dark mode + responsive + hover -->
@@ -167,9 +167,9 @@ Customize in `@theme`:
 </button>
 ```
 
-### Responsive Typography
+### الطباعة المستجيبة
 
-*Responsive Typography — Example 9 — [Open example](https://stevekinney.com/generated/playgrounds/0dd673cd2806f56d6da2f3a3a019524643de28fe03a4d84dbdafdea6f2db1a30.html)*
+*الطباعة المستجيبة — المثال 9 — [افتح المثال](https://stevekinney.com/generated/playgrounds/0dd673cd2806f56d6da2f3a3a019524643de28fe03a4d84dbdafdea6f2db1a30.html)*
 
 ```html
 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl">Scales with viewport</h1>
@@ -179,10 +179,10 @@ Customize in `@theme`:
 </div>
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Start mobile-first** - Build for small screens, enhance for larger
-2. **Use semantic breakpoints** - Match your design’s natural break points
-3. **Container queries for components** - More portable than viewport queries
-4. **Test at all sizes** - Don’t just test at exact breakpoints
-5. **Avoid too many breakpoints** - Usually 3-4 is enough
+1. **ابدأ بالجوال أولًا** — ابنِ للشاشات الصغيرة وطوّر للأكبر
+2. **استخدم نقاط توقف دلالية** — طابق نقاط الانكسار الطبيعية في تصميمك
+3. **استخدم استعلامات الحاويات للمكوّنات** — أكثر قابلية للنقل من استعلامات إطار العرض
+4. **اختبر عند كل المقاسات** — لا تختبر عند نقاط التوقف الدقيقة فقط
+5. **تجنّب كثرة نقاط التوقف** — ثلاث أو أربع نقاط تكفي عادةً

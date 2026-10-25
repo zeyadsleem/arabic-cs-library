@@ -1,48 +1,36 @@
 ---
-title: "Cost Management"
-lang: en
+title: "إدارة الكلفة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cost-management"
 ---
 
-Cost management in [Claude Code](https://code.claude.com/docs/en/overview) is
-mostly context management. Expensive models and large context windows are useful,
-but they should be tied to task value.
+إدارة الكلفة في [Claude Code](https://code.claude.com/docs/en/overview) هي في الأغلب إدارة سياق. فالنماذج المكلفة ونوافذ السياق الكبيرة مفيدة، لكن ينبغي ربطها بقيمة المهمة.
 
-## Spend on the Hard Part
+## أنفق على الجزء الصعب
 
-Use stronger models for planning, security review, migration design, and
-high-risk debugging. Use cheaper or default models for routine implementation
-once the plan is clear.
+استخدم نماذج أقوى للتخطيط والمراجعة الأمنية وتصميم الترحيل والتشخيص عالي الخطورة. واستخدم نماذج أرخص أو افتراضية للتنفيذ الروتيني بمجرد أن تصير الخطة واضحة.
 
-The `opusplan` alias is a good example: spend more on the plan, then implement
-with a faster model.
+الاسم المستعار `opusplan` مثال جيد: أنفق أكثر على الخطة، ثم نفّذ بنموذج أسرع.
 
-## Keep Context Small
+## أبقِ السياق صغيرًا
 
-Before using a one-million-token context alias, ask whether the task really
-depends on that much input. A targeted prompt with file references is often
-better:
+قبل استخدام اسم مستعار بسياق مليون رمز، اسأل هل تعتمد المهمة فعلًا على هذا القدر من المدخلات. فالطلب المركّز بمراجع الملفات أفضل في العادة:
 
 ```
 Read @src/lib/server/invitations.ts and the closest tests. Do not scan unrelated
 routes unless the implementation requires it.
 ```
 
-Large context should solve a real evidence problem, not a prompting habit.
+ينبغي أن يحلّ السياق الكبير مشكلة أدلة حقيقية، لا عادةً في الطلب.
 
-## Use Plan Mode Before Expensive Edits
+## استخدم وضع الخطة قبل التعديلات المكلفة
 
-Plan mode can prevent wasted implementation turns. If the plan names the wrong
-files, stop before paying for a long edit loop.
+يستطيع وضع الخطة منع أدوار تنفيذ مهدورة. وإذا ذكرت الخطة الملفات الخاطئة، فتوقف قبل أن تدفع ثمن حلقة تحرير طويلة.
 
-## Use Fallbacks Deliberately
+## استخدم الاحتياطات عن قصد
 
-Fallback chains improve reliability, but they can also change capability. Do not
-let a fallback silently weaken a task that needs a specific reasoning level or
-retention policy.
+تحسّن سلاسل الاحتياط الموثوقية، لكنها قد تغيّر القدرة أيضًا. لا تدع احتياطًا يضعف بصمت مهمة تحتاج إلى مستوى استدلال أو سياسة احتفاظ محددين.
 
-## Measure by Quality Gates
+## قِس ببوابات الجودة
 
-The cheapest agent run is the one that ends with a passing targeted test and a
-small diff. The expensive run is the one that edits broadly, fails lint, and
-needs a human to untangle it.
+أرخص تشغيل للوكيل هو الذي ينتهي باختبار مركّز ناجح وفرق صغير. أما التشغيل المكلف فهو الذي يعدّل على نطاق واسع، ويفشل في الفحص، ويحتاج إنسانًا ليفكّ تشابكه.

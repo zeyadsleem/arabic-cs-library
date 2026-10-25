@@ -1,112 +1,112 @@
 ---
-title: "Lab"
-lang: en
+title: "تمرين تطبيقي"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-port-the-review-loop-beyond-bugbot"
 ---
 
-This appendix lab is half tooling and half policy. That is deliberate.
+هذا التمرين الملحق نصفه أدوات ونصفه سياسات. وهذا متعمّد.
 
-If the review loop only works with one product, the process is not really encoded in the repository yet. It is encoded in the current team’s memory and billing settings. We’re going to fix that.
+فإذا كانت حلقة المراجعة لا تعمل إلا مع منتج واحد، فالعمليات ليست مشفّرة في المستودع بعد. إنها مشفّرة في ذاكرة الفريق الحالي وإعدادات الفوترة لديه. ونحن بصدد إصلاح ذلك.
 
-> **Prerequisite**
+> **متطلب سابق**
 >
-> Complete [Review Portability Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot) first. This lab assumes you already understand the portable parts of the loop.
+> أكمل [قابلية نقل المراجعة خارج Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot) أولًا. يفترض هذا التمرين أنك تفهم بالفعل الأجزاء القابلة للنقل من الحلقة.
 
-## The task
+## المهمة
 
-Keep the existing Bugbot setup if you use it, then document and wire one alternate review surface so the second-opinion loop survives a tool change.
+أبقِ إعداد Bugbot القائم إن كنت تستخدمه، ثم وثّق سطح مراجعة بديلًا واحدًا ووصّله، لتصمد حلقة الرأي الثاني أمام تغيير الأدوات.
 
-## Step 1: write the neutral playbook
+## الخطوة 1: اكتب دليل اللعب المحايد
 
-Create `docs/review-loop-playbook.md` in the Shelf repository (create the `docs/` directory if it doesn’t exist).
+أنشئ `docs/review-loop-playbook.md` في مستودع Shelf (أنشئ مجلد `docs/` إن لم يكن موجودًا).
 
-Document:
+وثّق:
 
-- which findings are blocking
-- which findings need judgment
-- which findings count as noise
-- what “the rule of three” means in this repository
-- how a repeated finding escalates into `CLAUDE.md`, a lint rule, or a test
+- أي النتائج حاجزة
+- أي النتائج تحتاج حكمًا
+- أي النتائج تُعدّ ضجيجًا
+- ماذا تعني «قاعدة الثلاثة» في هذا المستودع
+- كيف تتصاعد النتيجة المتكررة إلى `CLAUDE.md` أو قاعدة lint أو اختبار
 
-This file is the stable part of the loop.
+هذا الملف هو الجزء المستقر من الحلقة.
 
-The lesson’s **What the review playbook looks like** section in [Review Portability Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot) has a complete 30-line skeleton for Shelf’s playbook. Copy that as your starting point and edit the blocking rules to match whatever your codebase actually cares about. The Shelf starter doesn’t ship the finished version — you are authoring it here.
+يحتوي قسم **كيف يبدو دليل المراجعة** في درس [قابلية نقل المراجعة خارج Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot) على هيكل كامل من 30 سطرًا لدليل Shelf. انسخ ذلك كنقطة انطلاق، وعدّل القواعد الحاجزة لتطابق ما يهم قاعدة شيفرتك فعليًا. لا يشحن نموذج Shelf الأولي النسخة النهائية — أنت من يؤلّفها هنا.
 
-## Step 2: choose one alternate review surface
+## الخطوة 2: اختر سطح مراجعة بديلًا واحدًا
 
-Pick one surface besides Bugbot:
+اختر سطحًا واحدًا إلى جانب Bugbot:
 
-- GitHub Copilot review
-- Codex review
-- a manual GitHub pull request review flow driven by an agent prompt
+- مراجعة GitHub Copilot
+- مراجعة Codex
+- مسار مراجعة يدوي لطلب سحب على GitHub تقوده مطالبة وكيل
 
-You do **not** need to enable every tool on earth. You do need to make one alternate path concrete.
+لا تحتاج إلى تمكين كل أداة على وجه الأرض. لكنك تحتاج إلى جعل مسار بديل واحد ملموسًا.
 
-## Step 3: add the instruction surface for that tool
+## الخطوة 3: أضف سطح التعليمات الخاص بتلك الأداة
 
-Examples:
+أمثلة:
 
-- If you choose Copilot, add `.github/copilot-instructions.md`.
-- If you choose a Codex-based review flow, add a repository prompt file or review note that the reviewer can actually read.
-- If you choose manual GitHub review, add `docs/review-agent-prompt.md` with the exact prompt you use to ask for a diff review.
+- إذا اخترت Copilot، أضف `.github/copilot-instructions.md`.
+- إذا اخترت مسار مراجعة قائمًا على Codex، أضف ملف مطالبة في المستودع أو ملاحظة مراجعة يستطيع المراجع قراءتها فعلًا.
+- إذا اخترت المراجعة اليدوية على GitHub، أضف `docs/review-agent-prompt.md` بالمطالبة الدقيقة التي تستخدمها لطلب مراجعة فرق.
 
-The alternate reviewer should be told the same things Bugbot is told:
+ينبغي أن يُقال للمراجع البديل ما يُقال لـ Bugbot:
 
-- what correctness means here
-- what patterns are forbidden
-- what categories of finding matter most
-- how much noise is too much noise
+- ماذا يعني الصواب هنا
+- أي الأنماط محظورة
+- أي فئات النتائج تهم أكثر من غيرها
+- كم من الضجيج يعتبر ضجيجًا أكثر من اللازم
 
-## Step 4: define the re-review path
+## الخطوة 4: عرّف مسار إعادة المراجعة
 
-Write down exactly how the loop repeats after a fix.
+اكتب بالضبط كيف تتكرر الحلقة بعد إصلاح ما.
 
-Examples:
+أمثلة:
 
-- push a new commit and let the hosted reviewer rerun
-- request re-review
-- rerun the agent prompt against the updated diff
+- ادفع إيداعًا جديدًا ودع المراجع المستضاف يعيد التشغيل
+- اطلب إعادة المراجعة
+- أعد تشغيل مطالبة الوكيل على الفرق المحدَّث
 
-If that path is not explicit, the loop breaks the first time someone tries to use it under pressure.
+إن لم يكن ذلك المسار صريحًا، تنكسر الحلقة في أول مرة يحاول فيها أحد استخدامها تحت الضغط.
 
-## Step 5: test the process on a planted diff
+## الخطوة 5: اختبر العملية على فرق مزروع
 
-Use a small planted problem in Shelf:
+استخدم مشكلة صغيرة مزروعة في Shelf:
 
-- an unhandled null path
-- a route handler that reads trustable data from the wrong place
-- a suspicious naming or consistency issue
+- مسار null غير معالَج
+- معالج مسار يقرأ بيانات موثوقة من الموضع الخطأ
+- مشكلة تسمية أو اتساق مريبة
 
-Run both review surfaces if you can. If you only have one available today, at least dry-run the second surface by checking whether your new instruction file and playbook would give it enough context to find the issue.
+شغّل سطحَي المراجعة إن أمكن. وإن كان لديك سطح واحد متاح اليوم فقط، فجرّب السطح الثاني تجربة جافة على الأقل بالتحقق مما إذا كان ملف التعليمات ودليل اللعب الجديدان سيمنحانه سياقًا كافيًا للعثور على المشكلة.
 
-## Acceptance criteria
+## معايير القبول
 
-- `docs/review-loop-playbook.md` exists
-- The playbook defines blocking, judgment, and noise categories
-- The playbook documents the escalation path from repeated finding to instruction, lint rule, or test
-- One alternate review surface besides Bugbot is chosen and documented
-- The instruction surface for that alternate reviewer exists in the repository
-- The re-review path after a fix is written down explicitly
-- The planted diff is reviewed by the available review surface or dry-run against the written process
+- وجود `docs/review-loop-playbook.md`
+- يعرّف دليل اللعب فئات الحجز والحكم والضجيج
+- يوثّق دليل اللعب مسار التصاعد من النتيجة المتكررة إلى التعليمات أو قاعدة lint أو الاختبار
+- اختيار سطح مراجعة بديل واحد إلى جانب Bugbot وتوثيقه
+- وجود سطح التعليمات الخاص بذلك المراجع البديل في المستودع
+- كتابة مسار إعادة المراجعة بعد الإصلاح صراحةً
+- مراجعة الفرق المزروع بواسطة سطح المراجعة المتاح أو تجربته تجربة جافة مقابل العملية المكتوبة
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-- If the alternate tool has no real instruction-file surface, fall back to a repository prompt or playbook. The point is portable process, not feature envy.
-- If the reviewer leaves too much noise, tighten the severity buckets before you tighten the product settings.
-- If the same planted issue would obviously slip past the alternate reviewer, your repository instructions are not specific enough yet.
+- إن لم تكن للأداة البديلة واجهة حقيقية لملف تعليمات، فارجع إلى مطالبة في المستودع أو إلى دليل اللعب. المقصود هو عملية قابلة للنقل، لا حسد المزايا.
+- إن ترك المراجع ضجيجًا أكثر من اللازم، فاضبط دلاء الخطورة قبل أن تضبط إعدادات المنتج.
+- إن كانت المشكلة المزروعة نفسها ستفلت بوضوح من المراجع البديل، فتعليمات مستودعك ليست محددة بما يكفي بعد.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a short table to the playbook that maps Bugbot, Copilot, Codex, and manual GitHub review to their trigger and instruction surfaces.
-- Add a path-specific instruction file for a sensitive area such as auth or data writes.
-- Review three recent real pull requests and identify one repeated finding category that should become an upstream rule.
+- أضف إلى دليل اللعب جدولًا قصيرًا يربط Bugbot وCopilot وCodex والمراجعة اليدوية على GitHub بأسطح تشغيلها وتعليماتها.
+- أضف ملف تعليمات خاصًا بمسار معيّن لمنطقة حساسة مثل المصادقة أو كتابات البيانات.
+- راجع ثلاثة طلبات سحب حقيقية حديثة وحدّد فئة نتيجة متكررة واحدة ينبغي أن تصبح قاعدة في المنبع.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-Portable review loops come from written policy, not tool loyalty. If the repository explains how a second reviewer should behave, swapping review surfaces becomes annoying instead of catastrophic.
+حلقات المراجعة القابلة للنقل تنبع من سياسة مكتوبة، لا من الولاء لأداة. فإذا شرح المستودع كيف ينبغي أن يتصرف المراجع الثاني، يصير تبديل أسطح المراجعة أمرًا مزعجًا بدلًا من أن يكون كارثة.
 
-## Additional Reading
+## قراءة إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/port-the-review-loop-beyond-bugbot-solution)
-- [Review Portability Beyond Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot)
-- [Tuning Bugbot for Your Codebase](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/port-the-review-loop-beyond-bugbot-solution)
+- [قابلية نقل المراجعة خارج Bugbot](https://stevekinney.com/courses/self-testing-ai-agents/review-portability-beyond-bugbot)
+- [ضبط Bugbot لقاعدة شيفرتك](https://stevekinney.com/courses/self-testing-ai-agents/tuning-bugbot-for-your-codebase)

@@ -1,16 +1,16 @@
 ---
-title: "Built-in Problem Matchers"
-lang: en
+title: "مطابِقات المشكلات المدمجة"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/built-in-problem-matchers"
 ---
 
-Visual Studio Code includes several built-in problem matchers out of the box, which are designed to parse output from common tools and compilers. These include:
+يتضمّن Visual Studio Code عدة مطابِقات مشكلات مدمجة جاهزة، وهي مصمّمة لتحليل مخرجات الأدوات والمصرّفات الشائعة. وتشمل:
 
-- **$tsc:** For errors and warnings from the TypeScript compiler.
-- **$tsc-watch:** Specifically tailored for TypeScript’s watch mode.
-- **$eslint:** To parse ESLint output.
-- **$eslint-compact:** A variant that handles ESLint’s compact output format.
-- **$jshint:** For processing JSHint error output.
-- **$msCompile:** For matching errors from MSBuild and related Microsoft compilers.
+- **$tsc:** لأخطاء مصرّف TypeScript وتحذيراته.
+- **$tsc-watch:** مصمّم خصيصًا لوضع المراقبة في TypeScript.
+- **$eslint:** لتحليل مخرجات ESLint.
+- **$eslint-compact:** نسخة تتعامل مع صيغة مخرجات ESLint المضغوطة.
+- **$jshint:** لمعالجة مخرجات أخطاء JSHint.
+- **$msCompile:** لمطابقة الأخطاء من MSBuild والمصرّفات المتعلقة به من Microsoft.
 
-Keep in mind that additional problem matchers can also be provided by extensions, so your available list may expand based on your installed tools and languages.
+وضع في اعتبارك أن الإضافات قد توفّر مطابِقات مشكلات إضافية أيضًا، فقد تتوسّع قائمتك المتاحة حسب أدواتك ولغاتك المثبّتة.

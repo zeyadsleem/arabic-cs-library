@@ -1,12 +1,12 @@
 ---
-title: "Building an Extension with a Web View"
-lang: en
+title: "بناء إضافة بعرض ويب"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-regular-expressionist"
 ---
 
-We have some boilerplate ready to go in the `regular-expressionist` folder in the `vscode-examples` repository. Our mission is to spin up a web view in order to load up a custom user interface.
+لدينا بعض الشيفرة القالبية الجاهزة في مجلد `regular-expressionist` في مستودع `vscode-examples`. ومهمّتنا هي تشغيل عرض ويب (web view) لتحميل واجهة مستخدم مخصّصة.
 
-We’re going to try out the following:
+سنجرّب ما يلي:
 
 ```javascript
 function openRegularExpressionist(context) {

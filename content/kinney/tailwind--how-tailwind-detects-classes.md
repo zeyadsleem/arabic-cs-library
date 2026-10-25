@@ -1,83 +1,83 @@
 ---
-title: "How Tailwind Detects Classes"
-lang: en
+title: "كيف يكتشف Tailwind الأصناف"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/how-tailwind-detects-classes"
 ---
 
-Tailwind scans your project for utility classes to generate minimal CSS. It basically tries to strip out everything that you’re not using and only include what you *are* using.
+يفحص Tailwind مشروعك بحثًا عن أصناف الأدوات المساعدة ليولّد CSS بالحد الأدنى. وهو يحاول في الأساس إزالة كل ما لا تستخدمه وإدراج ما تستخدمه *فعلًا* فقط.
 
-- Treats files as plain text (no code parsing)
-- Looks for tokens resembling class names
-- Generates CSS for recognized utilities
+- يتعامل مع الملفات كنص عادي (دون تحليل شيفرة)
+- يبحث عن رموز تشبه أسماء الأصناف
+- يولّد CSS للأدوات المعروفة
 
-Tailwind scans all files except the usual suspects:
+يفحص Tailwind كل الملفات باستثناء المعتاد:
 
-- `.gitignore` entries
-- Binary files (images, videos, zips)
-- CSS files
-- Package manager lock files
+- مدخلات `.gitignore`
+- الملفات الثنائية (الصور، والفيديو، وملفات zip)
+- ملفات CSS
+- ملفات قفل مدير الحزم
 
-> **Dynamic class names aren’t detected**
+> **أسماء الأصناف الديناميكية لا تُكتشف**
 >
-> - `text-${color}-600` won’t work
-> - Use complete static class names
-> - Map props to full class names, don’t build dynamically
+> - `text-${color}-600` لن يعمل
+> - استخدم أسماء أصناف ثابتة كاملة
+> - اربط الخصائص بأسماء أصناف كاملة، ولا تبنِها ديناميكيًا
 
-## Explicit Source Registration
+## التسجيل الصريح للمصادر
 
-For files missed by automatic detection (e.g., external libraries), use `@source` to register paths:
+للملفات التي يفوتها الاكتشاف التلقائي (مثل المكتبات الخارجية)، استخدم `@source` لتسجيل المسارات:
 
 ```css
 @import 'tailwindcss';
 @source '../node_modules/my-library/src/components';
 ```
 
-Set base path with `source()`:
+اضبط المسار الأساسي باستخدام `source()`:
 
 ```css
 @import 'tailwindcss' source('./src');
 ```
 
-Ignore paths with `@source not`:
+تجاهل المسارات باستخدام `@source not`:
 
 ```css
 @import 'tailwindcss';
 @source not '../legacy';
 ```
 
-Disable automatic detection: `source(none)`.
+عطّل الاكتشاف التلقائي: `source(none)`.
 
-## Inline Safelisting
+## القائمة الآمنة المضمّنة
 
-Force generation of specific classes with `@source inline()` (replaces Tailwind 3’s `safelist` array):
+اجبر توليد أصناف محدّدة باستخدام `@source inline()` (يحلّ محل مصفوفة `safelist` في Tailwind 3):
 
 ```css
 @import 'tailwindcss';
 @source inline('inline-block');
 ```
 
-Include variants:
+ضمّن المتغيّرات:
 
 ```css
 @import 'tailwindcss';
 @source inline('underline', 'hover:underline', 'focus:underline');
 ```
 
-Or use brace expansion:
+أو استخدم توسيع الأقواس:
 
 ```css
 @import 'tailwindcss';
 @source inline('{hover:,focus:,}underline');
 ```
 
-Generate ranges:
+ولّد نطاقات:
 
 ```css
 @import 'tailwindcss';
 @source inline('{hover:,}bg-red-{100..900 by 100,50,950}');
 ```
 
-Exclude classes with `@source not inline()`:
+استثنِ الأصناف باستخدام `@source not inline()`:
 
 ```css
 @import 'tailwindcss';

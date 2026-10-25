@@ -1,10 +1,10 @@
 ---
-title: "Refining Types with Zod"
-lang: en
+title: "تحسين الأنواع مع Zod"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/refining-types-with-zod"
 ---
 
-Zod ships with a generous spread of primitive and composite schema definitions right out of the box. If your “custom type” can be expressed as a straightforward Zod object or union, just use one of those like we saw in the [introduction earlier](https://stevekinney.com/courses/full-stack-typescript/introduction-to-zod).
+يأتي Zod مزوّدًا بمجموعة سخية من تعريفات المخططات الأولية والمركّبة جاهزةً. فإذا كان «نوعك المخصّص» يمكن التعبير عنه ككائن أو اتحاد Zod مباشر، فاستخدم أحدها كما رأينا في [المقدّمة سابقًا](https://stevekinney.com/courses/full-stack-typescript/introduction-to-zod).
 
 ```typescript
 import { z } from 'zod';
@@ -22,13 +22,13 @@ const parsedUser = userSchema.parse({
 });
 ```
 
-> **Pro-Tip**
+> **نصيحة احترافية**
 >
-> If your custom type is basically just a structured shape (like a person or a fancy shape with some optional properties), you may not need anything beyond Zod’s standard schemas.
+> إذا كان نوعك المخصّص مجرّد شكل منظّم (مثل شخص أو شكل أنيق له بعض الخصائص الاختيارية)، فقد لا تحتاج إلى أكثر من مخططات Zod القياسية.
 
-## Refining Schemas
+## تحسين المخططات
 
-Zod’s `.refine()` method lets you tack on custom validation logic. Let’s say you have an email field that *must* end with `frontendmasters.com`. Start with a regular string, then refine away:
+تتيح لك طريقة `.refine()` في Zod إضافة منطق تحقّق مخصّص. لنفترض أن لديك حقل بريد إلكتروني *يجب* أن ينتهي بـ `frontendmasters.com`. ابدأ بنص عادي، ثم حسّنه:
 
 ```typescript
 const emailSchema = z.string().refine((value) => value.endsWith('frontendmasters.com'), {
@@ -41,13 +41,13 @@ emailSchema.parse('hello@anotherdomain.com');
 // throws ZodError: Email must end with frontendmasters.com
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> If you prefer leaning on external validator libs (e.g., validator.js), you can hook that up in `.refine()`
+> إذا كنت تفضّل الاعتماد على مكتبات تحقّق خارجية (مثل validator.js)، فيمكنك ربطها داخل `.refine()`
 
-## Creating Custom Schemas
+## إنشاء مخططات مخصّصة
 
-Sometimes you have a type so weird that `.refine()` just won’t cut it—or maybe you want more direct control. That’s where `z.custom()` steps in. It’s ideal for things that can’t be well represented by simple types, or for checking shape plus brand. For example:
+أحيانًا يكون لديك نوع غريب إلى حدّ لا يكفي معه `.refine()` — أو ربما تريد تحكّمًا أكثر مباشرة. هنا يأتي دور `z.custom()`. وهو مثالي للأشياء التي لا يمكن تمثيلها جيدًا بأنواع بسيطة، أو للتحقّق من الشكل مع الوسم معًا. على سبيل المثال:
 
 ```typescript
 // Suppose we want a schema for a string that must parse into a valid Date
@@ -72,13 +72,13 @@ validDateString.parse('2025-03-20'); // success
 validDateString.parse('not-a-date'); // throws ZodError
 ```
 
-> **Fair Warning**
+> **تحذير صريح**
 >
-> `z.custom()` returns a schema that by default yields the type unknown. If you want TypeScript to trust you, you can explicitly cast or define a generic type argument like `z.custom<string>()`. Just be sure your validator logic is bulletproof.
+> يُعيد `z.custom()` مخططًا يعطي النوع unknown افتراضيًا. وإذا أردت أن يثق بك TypeScript، فيمكنك التحويل صراحةً أو تعريف وسيط نوع عام مثل `z.custom<string>()`. فقط تأكّد أن منطق التحقّق لديك محصّن تمامًا.
 
-## Validating Complex or Nested Types
+## التحقّق من الأنواع المعقّدة أو المتداخلة
 
-If you have an object containing arrays containing objects (or other labyrinthine shapes that look like they were designed by an M.C. Escher fan), compose your schemas:
+إذا كان لديك كائن يحتوي مصفوفات تحتوي كائنات (أو أشكال متاهيّة أخرى تبدو كأن أحد معجبي M.C. Escher صمّمها)، فركّب مخططاتك:
 
 ```typescript
 const addressSchema = z.object({
@@ -104,13 +104,13 @@ userWithAddressSchema.parse({
 
 > **Zod v4**
 >
-> In Zod v4, `.nonempty()` still enforces a minimum length of 1 at runtime, but it no longer narrows the inferred TypeScript type to a non-empty tuple (`[T, ...T[]]`). The inferred type will be `T[]` instead.
+> في Zod v4، ما زال `.nonempty()` يفرض حدًّا أدنى للطول قدره 1 في وقت التشغيل، لكنه لم يعد يضيّق نوع TypeScript المستنتَج إلى صفّ غير فارغ (`[T, ...T[]]`). وسيكون النوع المستنتَج `T[]` بدلًا من ذلك.
 
-Keep nesting all you like. If your data structure is complicated, at least Zod’s layered approach keeps the validator logic tidy.
+واصل التداخل كما تشاء. وإن كانت بنية بياناتك معقّدة، فمقاربة Zod الطبقية على الأقل تُبقي منطق التحقّق مرتّبًا.
 
-## Branded Types for Extra Semantics
+## الأنواع الموسومة لدلالات إضافية
 
-Zod has a concept of “branded” types, letting you layer on custom brand markers to differentiate otherwise identical primitives. This is great if you want to give a type special meaning without creating a new runtime type. For instance, you can have a UserId that’s just a string under the hood but is recognized as a distinct brand in your code:
+لدى Zod مفهوم الأنواع «الموسومة»، وهو يتيح لك إضافة علامات وسم مخصّصة للتمييز بين أوليّات متطابقة لولا ذلك. وهذا رائع إن أردت منح نوع معنى خاصًا دون إنشاء نوع وقت تشغيل جديد. فمثلًا، يمكن أن يكون لديك UserId ليس في جوهره إلا نصًا، لكنه يُعرَف في شيفرتك كوسم مستقل:
 
 ```typescript
 const userIdSchema = z.string().uuid().brand<'UserId'>();
@@ -123,13 +123,13 @@ userIdSchema.parse('not-a-uuid'); // throws ZodError
 
 > **Zod v4**
 >
-> In Zod v4, `z.string().uuid()` is preferably written as `z.uuid()`. The `.brand()` method also accepts an optional second argument for placement: `"in"`, `"out"`, or `"inout"`.
+> في Zod v4، يُفضَّل كتابة `z.string().uuid()` بالصيغة `z.uuid()`. كما تقبل طريقة `.brand()` وسيطًا ثانيًا اختياريًا لتحديد الموضع: `"in"` أو `"out"` أو `"inout"`.
 
-This *can* help catch mistakes if you accidentally pass the wrong string to a function expecting a UserId.
+وهذا *قد* يساعد في التقاط الأخطاء إذا مرّرت بالخطأ نصًا خاطئًا إلى دالة تتوقع UserId.
 
-## Be Opinionated About Error Messages
+## كن حاسمًا في رسائل الأخطاء
 
-Zod out-of-the-box has decent error messaging, but do your future self (and your teammates) a favor by customizing the error messages in `.refine()`, `.optional()`, etc.:
+يملك Zod رسائل أخطاء مقبولة جاهزةً، لكن أسدِ نفسك في المستقبل (وزملاءك) معروفًا بتخصيص رسائل الأخطاء في `.refine()` و`.optional()` وغيرها:
 
 ```typescript
 const fancySchema = z.number().int().min(1, {
@@ -137,13 +137,13 @@ const fancySchema = z.number().int().min(1, {
 });
 ```
 
-Don’t be afraid to be explicit. Cryptic error messages lead to more debugging time (which leads to more coffee, which might be good, but also leads to more frustration, which definitely isn’t).
+لا تخف من أن تكون صريحًا. فرسائل الأخطاء الغامضة تقود إلى مزيد من وقت التصحيح (والمزيد من القهوة، وقد يكون ذلك جيدًا، لكنه يقود أيضًا إلى مزيد من الإحباط، وهذا ليس جيدًا بالتأكيد).
 
 ---
 
-## Testing Your Custom Schemas
+## اختبار مخططاتك المخصّصة
 
-Take the extra step and write a quick test or two for your custom logic:
+خطُ الخطوة الإضافية واكتب اختبارًا أو اختبارين سريعين لمنطقك المخصّص:
 
 ```typescript
 import { describe, it, expect } from 'vitest'; // or your test runner
@@ -160,11 +160,11 @@ describe('validDateString', () => {
 });
 ```
 
-Tests ensure that future you (who might be sleep-deprived) doesn’t accidentally break your carefully constructed custom schemas.
+تضمن الاختبارات أن نسختك المستقبلية (التي قد تكون محرومة من النوم) لن تكسر بالخطأ مخططاتك المخصّصة المبنية بعناية.
 
-## Composing Zod Schemas
+## تركيب مخططات Zod
 
-You can compose smaller schemas together. Even for wild custom requirements, break them down into smaller, easier-to-test pieces. For example, if you need a “positive integer less than 1000 that is also prime,” you might define a prime checker then .refine() on top of a smaller schema:
+يمكنك تركيب مخططات أصغر معًا. وحتى للاحتياجات المخصّصة الجامحة، فكّكها إلى قطع أصغر وأسهل في الاختبار. فمثلًا، إذا احتجت «عددًا صحيحًا موجبًا أقل من 1000 وأوليًا أيضًا»، فيمكنك تعريف فاحص أولية ثم `.refine()` فوق مخطط أصغر:
 
 ```typescript
 function isPrime(num: number): boolean {
@@ -180,9 +180,9 @@ const primeUnder1000Schema = z.number().int().min(2).max(999).refine(isPrime, {
 });
 ```
 
-## Super Refinement
+## التحسين الفائق (Super Refinement)
 
-`.superRefine(refinement: (value, ctx: RefinementCtx<T>) => void)` is similar to `.refine()`, but provides a `RefinementCtx` object for adding multiple error messages or errors at specific paths within the schema. More powerful for complex validation scenarios.
+`.superRefine(refinement: (value, ctx: RefinementCtx<T>) => void)` يشبه `.refine()`، لكنه يوفّر كائن `RefinementCtx` لإضافة عدة رسائل خطأ أو أخطاء عند مسارات محددة داخل المخطط. وهو أقوى لسيناريوهات التحقّق المعقّدة.
 
 ```typescript
 const productSchema = z
@@ -204,9 +204,9 @@ productSchema.parse({ price: 1200, quantity: 0 }); // Valid
 // productSchema.parse({ price: 1200, quantity: 5 }); // Throws ZodError: High-value items must have quantity 0 for initial stock at 'quantity'
 ```
 
-## Preprocessing
+## المعالجة المسبقة
 
-`.preprocess(fn: (input: unknown) => unknown, schema: ZodSchema)` applies a preprocessing function *before* validation. Useful for cleaning up or transforming input data before it’s validated against the core schema.
+`.preprocess(fn: (input: unknown) => unknown, schema: ZodSchema)` يطبّق دالة معالجة مسبقة *قبل* التحقّق. وهو مفيد لتنظيف بيانات المدخلات أو تحويلها قبل التحقّق منها مقابل المخطط الأساسي.
 
 ```typescript
 const preprocessNumberSchema = z.preprocess((val) => {
@@ -221,15 +221,15 @@ preprocessNumberSchema.parse(42); // Valid, returns 42 (number)
 // preprocessNumberSchema.parse("abc"); // Throws ZodError (after preprocessing): Expected number, received nan
 ```
 
-Keeping these validations separate from the raw schema logic keeps your code cleaner and more manageable.
+إبقاء هذه التحقّقات منفصلة عن منطق المخطط الخام يُبقي شيفرتك أنظف وأسهل إدارة.
 
-**Fun Fact**: There is also `z.superPreprocess`. `.superPreprocess(fn: (input: unknown, ctx: PreprocessContext) => unknown)` which is similar to `.preprocess()`, but provides a `PreprocessContext` for more control over preprocessing and error handling during preprocessing.
+**معلومة طريفة**: هناك أيضًا `z.superPreprocess`. و`.superPreprocess(fn: (input: unknown, ctx: PreprocessContext) => unknown)` يشبه `.preprocess()`، لكنه يوفّر `PreprocessContext` لمزيد من التحكّم في المعالجة المسبقة ومعالجة الأخطاء أثناءها.
 
-## `.superRefine()` for Multi-Error Reporting
+## `.superRefine()` للإبلاغ عن أخطاء متعددة
 
-`.refine()` allows you to throw a single error at once. `.superRefine()` is more flexible: you call `ctx.addIssue(...)` for each problem.
+يتيح `.refine()` إطلاق خطأ واحد في المرة. أما `.superRefine()` فأكثر مرونة: تستدعي `ctx.addIssue(...)` لكل مشكلة.
 
-### Example: Multiple Issues in a Single Validation
+### مثال: مشكلات متعددة في تحقّق واحد
 
 ```typescript
 import { z } from 'zod';
@@ -254,10 +254,10 @@ const passwordSchema = z
   });
 ```
 
-Now, if the password is missing both uppercase letters *and* digits, you get *two distinct errors.* That’s helpful for user feedback—otherwise, a single `.refine()` would typically throw just one error message.
+الآن، إذا كانت كلمة المرور تفتقد الحروف الكبيرة *و*الأرقام معًا، فستحصل على *خطأين متمايزين.* وهذا مفيد لتغذية المستخدم الراجعة — وإلا فإن `.refine()` واحدًا سيُطلق عادةً رسالة خطأ واحدة فقط.
 
-## Some Final Thoughts
+## بعض الخواطر الأخيرة
 
-- **Be mindful of performance**: For extremely large schemas or high-traffic endpoints, you might need to optimize or memoize certain checks. Zod is already pretty efficient, but if you do something insane in .refine(), you’ll pay for it.
-- **Validate input at the edges**: Don’t wait until half your codebase has touched the data to realize it’s invalid. Validate as close to the “data entry point” as you can—be it an API endpoint, a form submission, or a message queue consumer.
-- **Keep an eye on updates**: Zod evolves. New versions might bring new features or better performance. It’s worth checking once in a while to see if your custom logic can be replaced by a newly released built-in method.
+- **كن واعيًا بالأداء**: للمخططات الضخمة جدًا أو نقاط النهاية عالية الحركة، قد تحتاج إلى تحسين بعض الفحوص أو تخزين نتائجها مؤقتًا. فـ Zod كفء أصلًا، لكن إن فعلت شيئًا جنونيًا داخل .refine()، فستدفع الثمن.
+- **تحقّق من المدخلات عند الأطراف**: لا تنتظر حتى يكون نصف قاعدة شيفرتك قد لمس البيانات لتدرك أنها غير صالحة. تحقّق من البيانات بأقرب ما يمكن إلى «نقطة دخول البيانات» — سواء أكانت نقطة نهاية API، أو إرسال نموذج، أو مستهلك طابور رسائل.
+- **تابع التحديثات**: يتطوّر Zod. وقد تجلب الإصدارات الجديدة ميزات جديدة أو أداءً أفضل. ويستحقّ الأمر نظرة من حين إلى آخر لترى هل يمكن استبدال منطقك المخصّص بطريقة مدمجة صدرت حديثًا.

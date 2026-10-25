@@ -1,81 +1,81 @@
 ---
-title: "Configuring Skills"
-lang: en
+title: "تهيئة المهارات"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/skill-configuration"
 ---
 
-Most skill problems aren’t about what the skill says. They’re about when it loads, who can trigger it, and what it’s allowed to do once it runs. All of that lives in a few lines of metadata. This lesson assumes you’ve read [Skills](https://stevekinney.com/courses/ai-development-setup/skills).
+معظم مشكلات المهارات ليست في ما تقوله المهارة، بل في متى تُحمَّل، ومن يستطيع تفعيلها، وما يُسمح لها بفعله بعد أن تعمل. وكل ذلك يعيش في بضعة أسطر من البيانات الوصفية. ويفترض هذا الدرس أنك قرأت [المهارات](https://stevekinney.com/courses/ai-development-setup/skills).
 
-## Frontmatter
+## الواجهة الأمامية (Frontmatter)
 
-Your `SKILL.md` starts with a block of YAML (a simple key-value format) between two `---` lines, called *frontmatter*. The fields come in three groups.
+يبدأ `SKILL.md` عندك بكتلة من YAML (صيغة بسيطة من المفتاح-القيمة) بين سطري `---`، تُسمّى *الواجهة الأمامية*. وتأتي الحقول في ثلاث مجموعات.
 
-### Required
+### مطلوبة
 
-- `name`: 1–64 characters of lowercase letters, numbers, and hyphens, matching the directory name, with no leading, trailing, or doubled hyphens.
-- `description`: 1–1,024 characters stating the capability and the activation context. The agent reads this to decide whether to use the skill, so it carries most of the weight.
+- `name`: من 1 إلى 64 حرفًا من الأحرف الصغيرة والأرقام والشرطات، مطابقةً لاسم الدليل، بلا شرطات بادئة أو لاحقة أو مضاعفة.
+- `description`: من 1 إلى 1,024 حرفًا تبيّن القدرة وسياق التفعيل. ويقرؤه الوكيل ليقرّر هل يستخدم المهارة، فهو يحمل معظم الثقل.
 
-### Optional
+### اختيارية
 
-- `license`: A license identifier or reference.
-- `compatibility`: 1–500 characters describing environment requirements the body assumes.
-- `metadata`: A string-to-string map. A version here is a record, not a dependency resolver; nothing checks it.
-- `allowed-tools`: Experimental in the open standard, so support depends on the host. Claude Code reads it as pre-approval: the tools you list (reading a file, running a shell command) don’t prompt you during the *turn* that invokes the skill, meaning the agent’s response up until it waits for your next message. It only grants, never restricts, and it can’t override a deny rule. Workspace trust doesn’t gate it, so an automatically invoked repository skill can preapprove commands even in `claude -p` in an untrusted clone. Review repository skills and their grants before running there. Organizations can set `allowManagedPermissionRulesOnly` in managed settings (v2.1.282+) to ignore project and personal skill grants; see the [skill permission reference](https://code.claude.com/docs/en/skills#pre-approve-tools-for-a-skill).
+- `license`: معرّف رخصة أو إشارة إليها.
+- `compatibility`: من 1 إلى 500 حرف تصف متطلبات البيئة التي يفترضها المتن.
+- `metadata`: خريطة من نص إلى نص. والنسخة هنا سجل، لا محلّل اعتماديات؛ ولا شيء يتحقّق منها.
+- `allowed-tools`: تجريبي في المعيار المفتوح، فالدعم يعتمد على المضيف. ويقرؤه Claude Code كموافقة مسبقة: الأدوات التي تسردها (قراءة ملف، تشغيل أمر صدفة) لا تطالبك أثناء *الدور* الذي يستدعي المهارة، أي استجابة الوكيل حتى ينتظر رسالتك التالية. وهو يمنح فقط، ولا يقيّد أبدًا، ولا يستطيع تجاوز قاعدة رفض. وثقة مساحة العمل لا تحكمه، فمهارة مستودع تُستدعى تلقائيًا يمكنها أن توافق مسبقًا على أوامر حتى في `claude -p` داخل نسخة استنساخ غير موثوقة. راجع مهارات المستودع ومنحها قبل التشغيل هناك. ويمكن للمؤسسات ضبط `allowManagedPermissionRulesOnly` في الإعدادات المُدارة (v2.1.282+) لتجاهل منح المهارات الخاصة بالمشروع والشخصية؛ راجع [مرجع أذونات المهارات](https://code.claude.com/docs/en/skills#pre-approve-tools-for-a-skill).
 
-### Claude Code-specific
+### خاصة بـ Claude Code
 
-Other tools that read the open standard may ignore these extensions.
+قد تتجاهل أدوات أخرى تقرأ المعيار المفتوح هذه الامتدادات.
 
-- `context: fork`: The body becomes the task for a fresh subagent (a helper agent with its own empty context). Since v2.1.218 it runs in the background by default: you keep working and the result arrives later. More on this below.
-- `agent: <type>`: Gives the fork that agent type’s prompt, tools, and model. That can be a built-in type like `Explore` (a read-only search agent) or `Plan`, or one of your own [agent definitions](https://stevekinney.com/courses/ai-development-setup/subagent-configuration). It does nothing without `context: fork`. No agent means `general-purpose` with every tool.
-- `background`: Whether a fork runs in the background. Background edits land *outside* `/rewind` checkpoints (`/rewind` rolls the conversation, and optionally your files, back to an earlier point).
-- `model` and `effort`: Override the model or reasoning effort while the skill runs: on the fork if it forks, otherwise on your main conversation.
-- `arguments`: Names the inputs the skill accepts. In the body, `$ARGUMENTS` is everything typed after the skill name, `$0` and `$1` are positional, and `$name` is a named input.
-- `argument-hint`: The placeholder text autocomplete shows, like `[version]`.
-- `disallowed-tools`: Removes tools only while the skill is active, so pair it with a permission rule (a setting that allows or denies specific tool calls) when a tool must never run.
-- `hooks`: Registers [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) (scripts that run automatically at set points) when the skill is invoked. They *stay* registered for the session unless the entry sets `once: true`, which runs it once and removes it.
+- `context: fork`: يصبح المتن مهمة لوكيل فرعي جديد (وكيل مساعد بسياقه الفارغ الخاص). ومنذ v2.1.218 يعمل في الخلفية افتراضيًا: تواصل عملك وتصل النتيجة لاحقًا. والمزيد عن هذا أدناه.
+- `agent: <type>`: يمنح التفرّع طلب نوع الوكيل ذاك وأدواته ونموذجه. ويمكن أن يكون نوعًا مدمجًا مثل `Explore` (وكيل بحث للقراءة فقط) أو `Plan`، أو أحد [تعريفات وكلائك](https://stevekinney.com/courses/ai-development-setup/subagent-configuration). ولا يفعل شيئًا دون `context: fork`. وغياب الوكيل يعني `general-purpose` بكل الأدوات.
+- `background`: هل يعمل التفرّع في الخلفية. فتحريرات الخلفية تقع *خارج* نقاط تفتيش `/rewind` (`/rewind` يعيد المحادثة، وملفاتك اختياريًا، إلى نقطة سابقة).
+- `model` و`effort`: تجاوز النموذج أو جهد الاستدلال أثناء عمل المهارة: على التفرّع إن تفرّعت، وإلا على محادثتك الرئيسية.
+- `arguments`: يسمّي المدخلات التي تقبلها المهارة. وفي المتن، `$ARGUMENTS` هو كل ما كُتب بعد اسم المهارة، و`$0` و`$1` موضعيان، و`$name` مدخل مسمّى.
+- `argument-hint`: النص النائب الذي يعرضه الإكمال التلقائي، مثل `[version]`.
+- `disallowed-tools`: يزيل أدوات فقط بينما المهارة نشطة، فاقرنه بقاعدة إذن (إعداد يسمح باستدعاءات أدوات محددة أو يرفضها) حين يجب ألا تعمل أداة أبدًا.
+- `hooks`: يسجّل [خُطّافات](https://stevekinney.com/courses/ai-development-setup/hooks) (سكربتات تعمل تلقائيًا عند نقاط محددة) عند استدعاء المهارة. وتبقى مسجَّلة للجلسة إلا إذا ضبط المدخل `once: true`، الذي يشغّله مرة واحدة ويزيله.
 
-## Configuring invocation
+## تهيئة الاستدعاء
 
-By default, both you and the agent can invoke a skill: you type `/skill-name`, and the agent uses the built-in `Skill` tool. Two fields narrow that:
+افتراضيًا، يمكنك أنت والوكيل استدعاء مهارة: تكتب `/skill-name`، ويستخدم الوكيل أداة `Skill` المدمجة. ويضيّق حقلان ذلك:
 
-- `disable-model-invocation: true`: The skill runs *only* when you type its slash command. Use it for anything expensive or side-effectful, like a release pipeline. It also can’t be preloaded into [subagents](https://stevekinney.com/courses/ai-development-setup/subagents) or used as the prompt for a [desktop scheduled task](https://code.claude.com/docs/en/scheduled-tasks), a prompt the Claude desktop app runs on a schedule. The Codex equivalent, in `agents/openai.yaml`, is `policy.allow_implicit_invocation: false`.
-- `user-invocable: false`: The opposite. *Only* the agent can load the skill, which suits background knowledge that shouldn’t clutter your slash-command menu.
+- `disable-model-invocation: true`: تعمل المهارة *فقط* حين تكتب أمر الشرطة المائلة الخاص بها. استخدمه لكل ما هو مكلف أو ذو أثر جانبي، مثل خط أنابيب إصدار. كما لا يمكن تحميلها مسبقًا في [الوكلاء الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagents) ولا استخدامها كطلب لـ[مهمة مجدولة على سطح المكتب](https://code.claude.com/docs/en/scheduled-tasks)، وهو طلب يشغّله تطبيق Claude على سطح المكتب وفق جدول. والمكافئ في Codex، في `agents/openai.yaml`، هو `policy.allow_implicit_invocation: false`.
+- `user-invocable: false`: العكس. فالوكيل *وحده* يستطيع تحميل المهارة، وهذا يناسب المعرفة الخلفية التي لا ينبغي أن تزدحم بها قائمة أوامر الشرطة المائلة.
 
-## How `context: fork` works
+## كيف يعمل `context: fork`
 
-The name is misleading. A skill with `context: fork` does not run in a fork of your conversation. Its body becomes the task prompt for a brand-new [subagent](https://stevekinney.com/courses/ai-development-setup/subagents) with an empty *context* (everything the model can see when it decides its next step). Here’s what follows from that:
+الاسم مضلّل. فالمهارة ذات `context: fork` لا تعمل في تفرّع من محادثتك. بل يصبح متنها طلب المهمة لـ[وكيل فرعي](https://stevekinney.com/courses/ai-development-setup/subagents) جديد تمامًا بسياق *فارغ* (كل ما يستطيع النموذج رؤيته حين يقرّر خطوته التالية). وهذا ما يترتب على ذلك:
 
-- **The fork doesn’t see your conversation.** It sees the skill body and its arguments, and your `CLAUDE.md` (your instruction file) too, unless its agent type is `Explore` or `Plan`, which skip it. Write the body so it stands on its own.
-- **The body must be a task.** A skill of guidelines like “use these API conventions” returns without meaningful output, because the fork has nothing to do. Invoked with no arguments, a skill that expects some is a fork with no task.
-- **`agent:` picks the worker.** The default is `general-purpose` with every tool, so a read-only investigation skill pairs well with `agent: Explore`.
-- **Background forks get fewer tools.** One reported side effect: a fork meant to fan out into its own workers silently loses the ability to spawn them. Set `background: false` if the skill needs that, or if it writes files you might want to `/rewind`.
-- **It doesn’t fan out.** Invoking a forked skill while an earlier invocation of the same skill is still running makes the harness wait. For parallel copies, use subagents.
-- **The result comes back summarized.** In the background, the result arrives as a notification that the main agent paraphrases. A fork whose final message *is* the deliverable can lose detail, so have it write the deliverable to a file.
+- **لا يرى التفرّع محادثتك.** بل يرى متن المهارة ووسائطها، و`CLAUDE.md` عندك (ملف تعليماتك) أيضًا، إلا إذا كان نوع وكيله `Explore` أو `Plan`، اللذان يتخطّيانه. فاكتب المتن بحيث يقوم بذاته.
+- **يجب أن يكون المتن مهمة.** فمهارة إرشادات مثل «استخدم أعراف API هذه» تعود بلا مخرَج ذي معنى، لأن التفرّع لا شيء لديه يفعله. وبت استدعائها بلا وسائط، تصبح مهارة تتوقّع وسائط تفرّعًا بلا مهمة.
+- **`agent:` يختار العامل.** والافتراضي `general-purpose` بكل الأدوات، فمهارة تحقيق للقراءة فقط تقترن جيدًا بـ `agent: Explore`.
+- **التفرّعات الخلفية تحصل على أدوات أقل.** ومن الآثار الجانبية المُبلَّغ عنها: تفرّع مقصود منه أن يتفرّع إلى عاملين خاصين به يفقد بصمت القدرة على إنشائهم. اضبط `background: false` إن احتاجت المهارة ذلك، أو إن كانت تكتب ملفات قد تريد `/rewind` عليها.
+- **لا يتفرّع.** فاستدعاء مهارة متفرّعة بينما استدعاء سابق للمهارة نفسها لا يزال عاملًا يجعل البيئة تنتظر. وللنسخ المتوازية، استخدم الوكلاء الفرعيين.
+- **تعود النتيجة ملخّصة.** ففي الخلفية، تصل النتيجة كإشعار يعيد الوكيل الرئيسي صياغته. والتفرّع الذي تكون رسالته الأخيرة *هي* التسليم قد يفقد التفاصيل، فاجعله يكتب التسليم في ملف.
 
-So, when should you fork? Fork a self-contained task that doesn’t need your conversation when you want its noise out of your context. *Don’t* fork a skill that orchestrates other work. It needs your request and conversation to make routing decisions, and a fork throws exactly that away. [Skill or subagent?](https://stevekinney.com/courses/ai-development-setup/subagents#skill-or-subagent) goes deeper on the choice.
+إذن، متى تتفرّع؟ تفرّع في مهمة قائمة بذاتها لا تحتاج محادثتك حين تريد ضجيجها خارج سياقك. و*لا* تتفرّع بمهارة تنسّق عملًا آخر. فهي تحتاج طلبك ومحادثتك لاتخاذ قرارات التوجيه، والتفرّع يرمي ذلك بالضبط. و[مهارة أم وكيل فرعي؟](https://stevekinney.com/courses/ai-development-setup/subagents#skill-or-subagent) يتعمّق في الخيار.
 
-## Anti-patterns
+## أنماط مضادة {#anti-patterns}
 
-Most of these fail silently, which is what makes them expensive:
+معظم هذه تفشل بصمت، وهذا ما يجعلها مكلفة:
 
-- **Near-duplicate descriptions**: When skill descriptions overlap, the agent picks between them unpredictably.
-- **Critical exclusions buried in the body**: The agent decides whether to load a skill from the description alone. Anything that only appears in the body is read too late.
-- **“Read *all* of the references”**: Sure, it will listen to you. But is that what you want? Describe the conditions under which it should read a given reference instead.
-- **`agent` without `context: fork`**: The field is silently ignored. You almost certainly meant to fork.
-- **`model` or `effort` on a frequently invoked skill that doesn’t fork**: Every invocation can force a cache miss on your main conversation: the provider can’t reuse its saved copy and charges full price. `model` always does. `effort` does only where changing effort invalidates the cache. See [Prompt Caching and Cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost).
-- **Arguments declared but never referenced**: If the body never uses `$ARGUMENTS` or a named placeholder, the input is appended to the end of the body, which is probably worse than not having it at all.
-- **Arguments with no `argument-hint`**: Autocomplete shows the user nothing to type.
-- **`context: fork` on a file-editing skill without `background: false`**: Background fork edits land outside session checkpoints, so `/rewind` won’t undo them.
+- **أوصاف شبه مكرّرة**: حين تتراكب أوصاف المهارات، يختار الوكيل بينها بلا قابلية للتنبؤ.
+- **استثناءات حاسمة مدفونة في المتن**: يقرّر الوكيل هل يحمّل مهارة من الوصف وحده. وكل ما يظهر في المتن فقط يُقرأ متأخرًا جدًا.
+- **«اقرأ *كل* المراجع»**: بالتأكيد سينصت إليك. لكن هل هذا ما تريده؟ صِف بدلًا من ذلك الشروط التي ينبغي أن يقرأ فيها مرجعًا معيّنًا.
+- **`agent` بلا `context: fork`**: يُتجاهل الحقل بصمت. وأنت على الأرجح كنت تقصد التفرّع.
+- **`model` أو `effort` على مهارة كثيرة الاستدعاء لا تتفرّع**: يمكن لكل استدعاء أن يفرض فقدان ذاكرة مؤقتة في محادثتك الرئيسية: فلا يستطيع المزوّد إعادة استخدام نسخته المحفوظة ويتقاضى السعر الكامل. و`model` يفعل ذلك دائمًا. أما `effort` فيفعل ذلك فقط حيث يُبطل تغيير الجهد الذاكرة المؤقتة. راجع [التخزين المؤقت للطلبات والكلفة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost).
+- **وسائط مُعلَنة لكن غير مُشار إليها أبدًا**: إن لم يستخدم المتن `$ARGUMENTS` أو نائبًا مسمّى، يُلحَق المدخل بنهاية المتن، وهذا على الأرجح أسوأ من عدم وجوده أصلًا.
+- **وسائط بلا `argument-hint`**: لا يعرض الإكمال التلقائي للمستخدم شيئًا يكتبه.
+- **`context: fork` على مهارة تحرير ملفات بلا `background: false`**: تقع تحريرات التفرّع الخلفية خارج نقاط تفتيش الجلسة، فلن يلغيها `/rewind`.
 
-## Denying access to particular skills
+## منع الوصول إلى مهارات بعينها
 
-You have three levers:
+لديك ثلاث روافع:
 
-- Deny the `Skill` tool to forbid loading *any* skills.
-- Deny a specific skill with `Skill(name)`.
-- Hide a particular skill from the agent everywhere with `disable-model-invocation`.
+- ارفض أداة `Skill` لمنع تحميل *أي* مهارات.
+- ارفض مهارة معيّنة بـ `Skill(name)`.
+- أخفِ مهارة بعينها عن الوكيل في كل مكان بـ `disable-model-invocation`.
 
-One thing that trips people up: listing skills under a subagent’s `skills:` field only *preloads* them (loads their full text at startup). It doesn’t restrict which skills that agent can reach. If you want a fence, use one of the three levers.
+وثمة أمر يتعثّر به الناس: إدراج المهارات تحت حقل `skills:` لوكيل فرعي *يحمّلها مسبقًا* فقط (يحمّل نصها الكامل عند البدء). ولا يقيّد المهارات التي يستطيع ذلك الوكيل بلوغها. وإن أردت سياجًا، فاستخدم إحدى الروافع الثلاث.
 
-Set `disable-model-invocation` on anything with side effects. Fork only what’s a task.
+اضبط `disable-model-invocation` على كل ما له آثار جانبية. وتفرّع فقط بما هو مهمة.

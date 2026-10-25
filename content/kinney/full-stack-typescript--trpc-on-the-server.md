@@ -1,29 +1,29 @@
 ---
-title: "tRPC on the Server"
-lang: en
+title: "استخدام tRPC على الخادم"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/trpc-on-the-server"
 ---
 
-## Install Dependencies
+## تثبيت الاعتمادات
 
 ```bash
 npm install express @trpc/server zod sqlite3
 npm install -D typescript ts-node nodemon @types/node @types/express
 ```
 
-- [`express`](https://npm.im/express): For our HTTP server.
-- [`@trpc/server`](https://npm.im/@trpc/server): For tRPC core & its Express integration.
-- [`zod`](https://npm.im/zod): Schema validation library (the unstoppable input-validation sidekick).
-- [`sqlite3`](https://npm.im/sqlite3): Our sample DB driver (because “SQLite or bust” for quick examples).
-- [`typescript`](https://npm.im/typescript): You know why.
+- [`express`](https://npm.im/express): لخادم HTTP الخاص بنا.
+- [`@trpc/server`](https://npm.im/@trpc/server): لنواة tRPC وتكاملها مع Express.
+- [`zod`](https://npm.im/zod): مكتبة للتحقق من المخططات (الرفيق الذي لا يكلّ في التحقق من المدخلات).
+- [`sqlite3`](https://npm.im/sqlite3): مشغّل قاعدة البيانات في مثالنا (لأن «SQLite أو لا شيء» في الأمثلة السريعة).
+- [`typescript`](https://npm.im/typescript): أنت تعرف السبب.
 
-## Defining the tRPC API
+## تعريف واجهة tRPC البرمجية
 
-tRPC works around **routers** (collections of procedures) and **procedures** (functions that can be queries, mutations, or subscriptions).
+يعمل tRPC حول **الموجّهات (routers)** (مجموعات من الإجراءات) و**الإجراءات (procedures)** (دوال يمكن أن تكون استعلامات أو تعديلات أو اشتراكات).
 
-### Create the tRPC Base
+### إنشاء قاعدة tRPC
 
-Create a `trpc.ts` file that sets up the core tRPC functionality:
+أنشئ ملف `trpc.ts` يهيّئ الوظائف الأساسية لـ tRPC:
 
 ```typescript
 import { initTRPC } from '@trpc/server';
@@ -93,9 +93,9 @@ export const appRouter = router({
 export type AppRouter = typeof appRouter;
 ```
 
-### Set Up Context
+### إعداد السياق
 
-Create a `trpc-context.ts` file to provide the necessary context to all tRPC procedures:
+أنشئ ملف `trpc-context.ts` لتزويد كل إجراءات tRPC بالسياق اللازم:
 
 ```typescript
 import { inferAsyncReturnType } from '@trpc/server';
@@ -119,9 +119,9 @@ export async function createContext() {
 export type Context = inferAsyncReturnType<typeof createContext>;
 ```
 
-### Create an Express Adapter
+### إنشاء محوّل لـ Express
 
-Create a `trpc-adapter.ts` file to integrate tRPC with Express:
+أنشئ ملف `trpc-adapter.ts` لدمج tRPC مع Express:
 
 ```typescript
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
@@ -148,9 +148,9 @@ export function createTRPCRouter() {
 }
 ```
 
-### Add tRPC to Your Express App
+### إضافة tRPC إلى تطبيق Express لديك
 
-Update your main `server.ts` file to include the tRPC router:
+حدّث ملف `server.ts` الرئيسي لديك ليتضمّن موجّه tRPC:
 
 ```typescript
 import { createTRPCRouter } from './trpc-adapter.js';
@@ -167,33 +167,33 @@ export async function createServer(database: Database) {
 }
 ```
 
-## Using tRPC
+## استخدام tRPC
 
-After implementing these steps, your tRPC API will be available at:
+بعد تنفيذ هذه الخطوات، ستكون واجهة tRPC البرمجية متاحة على:
 
 ```typescript
 /api/cprt / [procedure - path];
 ```
 
-For example:
+على سبيل المثال:
 
-- `GET /api/trpc/task.getTasks` - Get all tasks
-- `GET /api/trpc/task.getTask` - Get a specific task
-- `POST /api/trpc/task.createTask` - Create a task
-- `POST /api/trpc/task.updateTask` - Update a task
-- `POST /api/trpc/task.deleteTask` - Delete a task
+- `GET /api/trpc/task.getTasks` - جلب كل المهام
+- `GET /api/trpc/task.getTask` - جلب مهمة محدّدة بعينها
+- `POST /api/trpc/task.createTask` - إنشاء مهمة
+- `POST /api/trpc/task.updateTask` - تحديث مهمة
+- `POST /api/trpc/task.deleteTask` - حذف مهمة
 
-## Benefits of tRPC
+## فوائد tRPC
 
-1. **Type Safety**: Full end-to-end type safety between your client and server
-2. **Schema Validation**: Automatic validation of inputs using Zod schemas
-3. **Developer Experience**: Better autocomplete and type checking in your editor
-4. **API Documentation**: Type definitions serve as documentation for your API
-5. **Performance**: tRPC uses WebSockets for subscriptions and efficient data transfer
+1. **أمان الأنواع**: أمان كامل للأنواع من طرف إلى طرف بين العميل والخادم
+2. **التحقق من المخططات**: تحقّق تلقائي من المدخلات باستخدام مخططات Zod
+3. **تجربة المطوّر**: إكمال تلقائي أفضل وفحص للأنواع في محرّرك
+4. **توثيق الواجهة البرمجية**: تعمل تعريفات الأنواع كتوثيق لواجهتك البرمجية
+5. **الأداء**: يستخدم tRPC تقنية WebSockets للاشتراكات ونقلًا فعّالًا للبيانات
 
-## Next Steps
+## الخطوات التالية
 
-- Create a tRPC client in your frontend application to consume these endpoints
-- Add middleware for authentication/authorization
-- Implement error handling strategies
-- Add more complex procedures with nested routers
+- أنشئ عميل tRPC في تطبيق الواجهة الأمامية لديك لاستهلاك نقاط النهاية هذه
+- أضف وسيطًا للمصادقة والتفويض
+- نفّذ استراتيجيات لمعالجة الأخطاء
+- أضف إجراءات أكثر تعقيدًا بموجّهات متداخلة

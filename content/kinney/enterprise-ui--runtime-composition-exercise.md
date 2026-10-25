@@ -1,59 +1,59 @@
 ---
-title: "Exercise 1: Runtime Composition"
-lang: en
+title: "تمرين 1: التركيب وقت التشغيل"
+lang: ar
 source: "https://stevekinney.com/courses/enterprise-ui/runtime-composition-exercise"
 ---
 
-Let’s take a look at setting up a run-time microfrontend. We’re going to wire up a host shell and a remote analytics module using [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation). The host application (Port `3000`) loads the analytics dashboard from a separately built and served remote (Port `3001`) at runtime. Along the way you’ll configure shared dependency negotiation, discover that [React Context](https://react.dev/reference/react/createContext) can’t cross federation boundaries, and solve the cross-boundary communication problem using [nanostores](https://github.com/nanostores/nanostores).
+لنلقِ نظرة على إعداد واجهة مصغّرة وقت التشغيل. سنربط قشرة مضيف ووحدة تحليلات بعيدة باستخدام [اتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/module-federation). فحمّل تطبيق المضيف (المنفذ `3000`) لوحة التحليلات من وحدة بعيدة تُبنى وتُقدَّم بشكل منفصل (المنفذ `3001`) وقت التشغيل. وعلى الطريق ستهيّئ تفاوض الاعتمادات المشتركة، وتكتشف أن [سياق React](https://react.dev/reference/react/createContext) لا يستطيع عبور حدود الاتحاد، وتحلّ مشكلة التواصل العابر للحدود باستخدام [nanostores](https://github.com/nanostores/nanostores).
 
-## Why It Matters
+## لماذا يهم
 
-Runtime microfrontends give teams independent builds and deploys—but they come with real operational costs. Two dev servers, remote entry manifests, shared dependency negotiation, cross-boundary state management. In my humble opinion, you need to experience those costs firsthand so you can make an informed architectural decision about whether you actually need runtime composition or whether build-time composition ([Exercise 2](https://stevekinney.com/courses/enterprise-ui/build-time-composition-exercise)) is the better fit.
+تمنح الواجهات المصغّرة وقت التشغيل الفرق عمليات بناء ونشرًا مستقلة—لكنها تأتي بكلف تشغيلية حقيقية. خادما تطوير، وبيانات مدخل الوحدة البعيدة، وتفاوض الاعتمادات المشتركة، وإدارة حالة عابرة للحدود. وفي رأيي المتواضع، تحتاج إلى أن تعيش تلك الكلف بنفسك كي تتخذ قرارًا معماريًا مستنيرًا بشأن ما إذا كنت تحتاج فعلًا التركيب وقت التشغيل أم أن التركيب وقت البناء ([التمرين 2](https://stevekinney.com/courses/enterprise-ui/build-time-composition-exercise)) هو الأنسب.
 
-## Prerequisites
+## المتطلبات المسبقة {#prerequisites}
 
-You can *probably* get away with slightly older versions of both. But, for own own sanity, let’s assume you have the following versions of the prerequisites.
+تستطيع *على الأرجح* أن تكتفي بإصدارات أقدم قليلًا من كليهما. لكن، من أجل سلامة عقلك، لنفترض أن لديك الإصدارات التالية من المتطلبات المسبقة.
 
-For this exercise, we’re working through the [enterprise-ui-federation](https://github.com/stevekinney/enterprise-ui-federation) repository.
+في هذا التمرين، نعمل عبر مستودع [enterprise-ui-federation](https://github.com/stevekinney/enterprise-ui-federation).
 
 - [Node](https://nodejs.org/) 24+
 - [pnpm](https://pnpm.io/) 10+
 
-## Setup
+## الإعداد
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000/) (the **host application**) and [http://localhost:3001](http://localhost:3001/) (the **remote standalone**).
+افتح [http://localhost:3000](http://localhost:3000/) (**تطبيق المضيف**) و[http://localhost:3001](http://localhost:3001/) (**الوحدة البعيدة المستقلة**).
 
-## Explore the Federation Setup
+## استكشف إعداد الاتحاد
 
-Let’s start by seeing the running application, then understand how [Module Federation](https://stevekinney.com/courses/enterprise-ui/module-federation) connects the pieces.
+لنبدأ بمشاهدة التطبيق العامل، ثم نفهم كيف يربط [اتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/module-federation) القطع معًا.
 
-### Explore in the Browser
+### استكشف في المتصفح
 
-1. Open [http://localhost:3000](http://localhost:3000/)
-2. Open **DevTools** → **Network** tab
-3. Look for `mf-manifest.json` loading from port 3001
-4. You’ll also see chunk files loaded from the remote—these are the analytics dashboard’s code, served from the remote’s development server.
+1. افتح [http://localhost:3000](http://localhost:3000/)
+2. افتح **DevTools** → تبويب **الشبكة (Network)**
+3. ابحث عن `mf-manifest.json` وهو يُحمَّل من المنفذ 3001
+4. سترى أيضًا ملفات الحزم محمَّلة من الوحدة البعيدة—وهي شيفرة لوحة التحليلات، مُقدَّمة من خادم تطوير الوحدة البعيدة.
 
-[Here is an example](https://gist.github.com/stevekinney/47acdccfd1a3e3a7230d4d8f28b16023) of what you can expect from `mf-manifest.json`.
+[وإليك مثال](https://gist.github.com/stevekinney/47acdccfd1a3e3a7230d4d8f28b16023) عمّا يمكن أن تتوقعه من `mf-manifest.json`.
 
-Anyway, you *should* see the analytics dashboard loading inside the host shell. The sidebar shows **Grace Hopper** with **admin** below it in gray text, and the main area shows the analytics view with stat cards and a chart. In the Network tab, you can see `mf-manifest.json` and chunk files coming from `localhost:3001`.
+على أي حال، *ينبغي* أن ترى لوحة التحليلات تُحمَّل داخل قشرة المضيف. ويعرض الشريط الجانبي **Grace Hopper** وتحته **admin** بنص رمادي، وتعرض المساحة الرئيسية شاشة التحليلات مع بطاقات إحصاءات ومخطط. وفي تبويب الشبكة، يمكنك رؤية `mf-manifest.json` وملفات الحزم قادمة من `localhost:3001`.
 
-Host shell showing the Not authenticated badge
+قشرة المضيف تعرض شارة «Not authenticated»
 
-> **Note**
+> **ملاحظة**
 >
-> You’ll also notice an amber “Not authenticated” badge in the analytics dashboard header—even though the sidebar shows a logged-in user. This is intentional. It’s the bug you’ll investigate in Step 3 and fix in Step 4.
+> ستلاحظ أيضًا شارة كهرمانية «Not authenticated» في ترويسة لوحة التحليلات—رغم أن الشريط الجانبي يعرض مستخدمًا مسجّل الدخول. وهذا مقصود. إنه العطل الذي ستحقّق فيه في الخطوة 3 وتصلحه في الخطوة 4.
 
-Now let’s look at the configuration that makes this work.
+والآن لننظر إلى التهيئة التي تجعل هذا يعمل.
 
-### What to Look At
+### ما الذي تنظر إليه
 
-Open [`host/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/rsbuild.config.ts) and find the `remotes` configuration:
+افتح [`host/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/rsbuild.config.ts) وابحث عن تهيئة `remotes`:
 
 *host/rsbuild.config.ts*
 
@@ -64,13 +64,13 @@ remotes: {
 },
 ```
 
-This tells the host where to find the remote’s module manifest at runtime. The manifest (`mf-manifest.json`) is the contract between host and remote—it lists every module the remote exposes, which JavaScript chunks implement them, and which shared dependencies the remote declares. The host fetches this JSON file at **runtime**, *before* loading any remote code, so it knows what’s available and can negotiate shared dependencies. This is why *both* development servers must be running simultaneously: the host makes a network request to port `3001` on every page load.
+يخبر هذا المضيف بمكان إيجاد بيان وحدات الوحدة البعيدة وقت التشغيل. والبيان (`mf-manifest.json`) هو العقد بين المضيف والوحدة البعيدة: فهو يسرد كل وحدة تكشفها الوحدة البعيدة، وأي حزم JavaScript تنفّذها، وأي اعتمادات مشتركة تعلنها الوحدة البعيدة. ويجلب المضيف ملف JSON هذا في **وقت التشغيل**، *قبل* تحميل أي شيفرة من الوحدة البعيدة، فيعرف ما هو متاح ويستطيع التفاوض على الاعتمادات المشتركة. ولهذا يجب أن يعمل خادما التطوير *كليهما* في الوقت نفسه: فالمضيف يُجري طلب شبكة إلى المنفذ `3001` عند كل تحميل صفحة.
 
-> **Note**
+> **ملاحظة**
 >
-> You already saw `mf-manifest.json` in the Network tab. That request is Module Federation’s runtime negotiation in action—the host and remote agree on shared dependencies and available modules before any remote code executes.
+> رأيت `mf-manifest.json` بالفعل في تبويب الشبكة. ذلك الطلب هو تفاوض اتحاد الوحدات وقت التشغيل في أبهى صوره: يتفق المضيف والوحدة البعيدة على الاعتمادات المشتركة والوحدات المتاحة قبل تنفيذ أي شيفرة من الوحدة البعيدة.
 
-Open [`remote-analytics/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts) and find the `exposes` configuration:
+افتح [`remote-analytics/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts) وابحث عن تهيئة `exposes`:
 
 *remote-analytics/rsbuild.config.ts*
 
@@ -80,9 +80,9 @@ exposes: {
 },
 ```
 
-This declares which modules the remote makes available to consumers. Think of `exposes` as the remote’s public API surface—only paths listed here are importable by consumers. The key on the left (`"./analytics-dashboard"`) becomes the import path consumers use (e.g., `import("remoteAnalytics/analytics-dashboard")`), and the value on the right is the actual source file.
+يعلن هذا الوحدات التي تتيحها الوحدة البعيدة للمستهلكين. فكّر في `exposes` كسطح الواجهة البرمجية العام للوحدة البعيدة: فالمسارات المدرجة هنا وحدها قابلة للاستيراد من المستهلكين. ويصير المفتاح على اليسار (`"./analytics-dashboard"`) مسار الاستيراد الذي يستخدمه المستهلكون (مثل `import("remoteAnalytics/analytics-dashboard")`)، أما القيمة على اليمين فهي ملف المصدر الفعلي.
 
-Open [`host/src/app.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/app.tsx) to see the dynamic import:
+افتح [`host/src/app.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/app.tsx) لترى الاستيراد الديناميكي:
 
 *host/src/app.tsx*
 
@@ -90,29 +90,29 @@ Open [`host/src/app.tsx`](https://github.com/stevekinney/enterprise-ui-federatio
 const AnalyticsDashboard = React.lazy(() => import('remoteAnalytics/analytics-dashboard'));
 ```
 
-The host loads the remote’s component lazily at runtime. It’s not bundled into the host’s build. [`React.lazy`](https://react.dev/reference/react/lazy) paired with a dynamic `import()` means the browser only downloads the remote’s JavaScript bundles when `<AnalyticsDashboard />` first renders, not at initial page load.
+يحمّل المضيف مكوّن الوحدة البعيدة تحميلًا متأخرًا وقت التشغيل. فهو غير محزَّم في بناء المضيف. أما [`React.lazy`](https://react.dev/reference/react/lazy) مقترنًا بـ`import()` الديناميكي فيعني أن المتصفح لا ينزّل حزم JavaScript الخاصة بالوحدة البعيدة إلا عندما يُصيَّر `<AnalyticsDashboard />` أول مرة، لا عند تحميل الصفحة الأولى.
 
-> **What if you skipped `React.lazy` and used a static import?**
+> **ماذا لو تجاهلت `React.lazy` واستخدمت استيرادًا ساكنًا؟**
 >
-> You might try `import AnalyticsDashboard from 'remoteAnalytics/analytics-dashboard'`—a regular top-level import. This would fail at build time. The `remoteAnalytics` module doesn’t exist in the host’s `node_modules`—it’s resolved at *runtime* by the Module Federation runtime, not at build time by the bundler. A static import tells the bundler to resolve and bundle the module during the build step, and the bundler has no idea what `remoteAnalytics` is. The dynamic `import()` works because Module Federation intercepts it at runtime and routes it through its own module resolution, fetching the remote’s code over the network. `React.lazy` is just a convenient wrapper that turns that dynamic `import()` into a component React knows how to render with a `<Suspense>` boundary.
+> قد تجرّب `import AnalyticsDashboard from 'remoteAnalytics/analytics-dashboard'`—وهو استيراد عادي في المستوى الأعلى. سيفشل هذا وقت البناء. فوحدة `remoteAnalytics` غير موجودة في `node_modules` لدى المضيف: فحلّها يحدث *وقت التشغيل* من وقت تشغيل اتحاد الوحدات، لا وقت البناء من المُجمِّع. فالاستيراد الساكن يخبر المُجمِّع أن يحلّ الوحدة ويحزمها أثناء خطوة البناء، والمُجمِّع لا يعرف ما هو `remoteAnalytics`. أما `import()` الديناميكي فيعمل لأن اتحاد الوحدات يعترضه وقت التشغيل ويوجّهه عبر حلّ الوحدات الخاص به، فيجلب شيفرة الوحدة البعيدة عبر الشبكة. و`React.lazy` مجرد غلاف مريح يحوّل ذلك `import()` الديناميكي إلى مكوّن يعرف React كيف يصيّره مع حدّ `<Suspense>`.
 
-Open [`host/src/index.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/index.tsx)—notice it’s just `import("./bootstrap")`. This async boundary is required for Module Federation’s shared module negotiation to work. Without it, eager shared modules fail to resolve.
+افتح [`host/src/index.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/index.tsx)—وستلاحظ أنه مجرد `import("./bootstrap")`. فهذا الحدّ غير المتزامن مطلوب كي يعمل تفاوض الوحدات المشتركة في اتحاد الوحدات. وبدونه، تفشل الوحدات المشتركة المتلهّفة في الحلّ.
 
-> **Why `index.tsx` only contains a dynamic import**
+> **لماذا يحتوي `index.tsx` على استيراد ديناميكي فحسب**
 >
-> Module Federation’s shared module negotiation is asynchronous—the runtime must contact all registered remotes and resolve which version of each shared dependency to use before any application code can run. If `index.tsx` imported application code synchronously, that code would execute before negotiation completed and you’d get a runtime error: `Uncaught Error: Shared module is not available for eager consumption`. The dynamic `import("./bootstrap")` defers everything until the federation runtime is ready.
+> تفاوض الوحدات المشتركة في اتحاد الوحدات غير متزامن: فعلى وقت التشغيل أن يتصل بكل الوحدات البعيدة المسجَّلة ويحلّ أي إصدار من كل اعتماد مشترك سيُستخدم قبل أن تعمل أي شيفرة تطبيق. ولو استورد `index.tsx` شيفرة تطبيق بشكل تزامني، لنُفّذت تلك الشيفرة قبل اكتمال التفاوض وحصلت على خطأ وقت تشغيل: `Uncaught Error: Shared module is not available for eager consumption`. أما `import("./bootstrap")` الديناميكي فيؤجّل كل شيء حتى يصير وقت تشغيل الاتحاد جاهزًا.
 
-### Checkpoint
+### نقطة تحقق
 
-You’ve seen the running app in the browser and understand the configuration that powers it: the host’s `remotes` pointing at the manifest URL, the remote’s `exposes` declaring its public modules, the lazy dynamic import in the host, and the async boundary in `index.tsx`.
+رأيت التطبيق العامل في المتصفح وفهمت التهيئة التي تشغّله: `remotes` لدى المضيف وهي تشير إلى عنوان البيان، و`exposes` لدى الوحدة البعيدة وهي تعلن وحداتها العامة، والاستيراد الديناميكي المتأخر في المضيف، والحدّ غير المتزامن في `index.tsx`.
 
-## Shared Dependency Negotiation
+## تفاوض الاعتمادات المشتركة
 
-Both the host and remote use React. Without shared dependency configuration, each would bundle its own copy—which breaks hooks, context, and everything else that depends on a single React instance.
+يستخدم كل من المضيف والوحدة البعيدة React. وبلا تهيئة الاعتمادات المشتركة، سيحزم كل منهما نسخته الخاصة—وهو ما يكسر الخطافات والسياق وكل ما يعتمد على نسخة React واحدة.
 
-### What to Look At
+### ما الذي تنظر إليه
 
-In both rsbuild config files ([`host/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/rsbuild.config.ts) and [`remote-analytics/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts)), find the `shared` configuration. Both files set `singleton: true` and `eager: true` on all shared dependencies:
+في ملفي تهيئة rsbuild ([`host/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/rsbuild.config.ts) و[`remote-analytics/rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts))، ابحث عن تهيئة `shared`. ويضبط الملفان `singleton: true` و`eager: true` على كل الاعتمادات المشتركة:
 
 *rsbuild.config.ts (shared)*
 
@@ -126,14 +126,14 @@ shared: {
 },
 ```
 
-- **`singleton: true`**: Only one copy of React loads, even if the host and remote declare different versions. The Module Federation runtime selects the highest compatible version available and enforces that exactly one copy is used. Without this, each participant loads its own copy, which breaks anything that depends on a single module instance: React hooks, Context, and stores all fall into this category. This constraint is global—if *any* participant declares a module as a singleton, the runtime enforces it for everyone, so a host can protect its integrity even if a remote forgets to set it.
-- **`eager: true`**: Both sides load shared modules immediately. Without `eager: true`, a remote expects the *host* to provide shared modules like React at runtime. That works when loaded through a host, but means the remote can’t boot on its own—it has nowhere to get React from. `eager: true` bundles React directly into the remote’s output as a self-contained fallback. The federation runtime still deduplicates at runtime when the host is present, so you won’t end up with two React copies in production; `eager` just ensures standalone mode (`localhost:3001`) stays functional.
+- **`singleton: true`**: لا تُحمَّل إلا نسخة واحدة من React، حتى لو أعلن المضيف والوحدة البعيدة إصدارين مختلفين. ويختار وقت تشغيل اتحاد الوحدات أعلى إصدار متوافق متاح ويفرض استخدام نسخة واحدة بالضبط. وبدون ذلك، يحمّل كل مشارك نسخته الخاصة، وهو ما يكسر كل ما يعتمد على نسخة وحدة واحدة: فخطافات React والسياق والمخازن كلها تقع في هذه الفئة. وهذا القيد عام: فإن أعلن *أي* مشارك وحدة كأحادية النسخة، فرضها وقت التشغيل على الجميع، فيستطيع المضيف حماية سلامته حتى إن نسيَت وحدة بعيدة ضبطها.
+- **`eager: true`**: يحمّل الجانبان الوحدات المشتركة فورًا. وبدون `eager: true`، تتوقع الوحدة البعيدة أن يوفّر *المضيف* وحدات مشتركة مثل React وقت التشغيل. وهذا يعمل عند التحميل عبر مضيف، لكنه يعني أن الوحدة البعيدة لا تستطيع الإقلاع وحدها: فليس لديها من أين تحصل على React. أما `eager: true` فتحزم React مباشرةً في مخرجات الوحدة البعيدة كبديل احتياطي مكتفٍ بذاته. وما زال وقت تشغيل الاتحاد يزيل التكرار وقت التشغيل عند وجود المضيف، فلن تنتهي بنسختين من React في الإنتاج؛ و`eager` تضمن فقط أن يبقى النمط المستقل (`localhost:3001`) عاملًا.
 
-> **On Nanostores**
+> **عن Nanostores**
 >
-> [`@nanostores/react`](https://npm.im/@nanostores/react) appears in the remote’s shared config even though it isn’t in the remote’s `package.json` yet—this is intentional. It’s pre-configured so that when you install the package in **Step 4c**, federation deduplication is already in place. You won’t need to touch the config later.
+> يظهر [`@nanostores/react`](https://npm.im/@nanostores/react) في تهيئة المشاركة لدى الوحدة البعيدة رغم أنه ليس في `package.json` الخاصة بها بعد—وهذا مقصود. فقد هُيّئ مسبقًا كي تكون إزالة التكرار في الاتحاد جاهزة عندما تثبّت الحزمة في **الخطوة 4c**. ولن تحتاج إلى لمس التهيئة لاحقًا.
 
-**Experiment:** Add `requiredVersion` and `strictVersion` to your existing React entry in the remote’s [`rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts). Keep `singleton: true` and `eager: true` in place—only add the two new fields:
+**تجربة:** أضف `requiredVersion` و`strictVersion` إلى مدخل React القائم لديك في [`rsbuild.config.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/rsbuild.config.ts) الخاص بالوحدة البعيدة. أبقِ `singleton: true` و`eager: true` في مكانهما، وأضف الحقلين الجديدين فقط:
 
 *rsbuild.config.ts (shared)*
 
@@ -149,38 +149,38 @@ shared: {
 },
 ```
 
-With `strictVersion: true`, Module Federation throws an error if the provided version doesn’t satisfy `requiredVersion`. Using `"^19.0.0"` here will trigger the error because this project uses React 18. Stop your dev servers (`Ctrl+C`), run `pnpm dev` again, then open `http://localhost:3001`. The page will go **blank** (React never starts), and you’ll see the version mismatch in **DevTools → Console**:
+مع `strictVersion: true`، يرمي اتحاد الوحدات خطأً إن لم يلبِّ الإصدار الموفَّر شرط `requiredVersion`. واستخدام `"^19.0.0"` هنا سيُشغّل الخطأ لأن هذا المشروع يستخدم React 18. أوقف خوادم التطوير (`Ctrl+C`)، وشغّل `pnpm dev` مرة أخرى، ثم افتح `http://localhost:3001`. وستصير الصفحة **فارغة** (فلا يبدأ React أبدًا)، وسترى عدم توافق الإصدار في **DevTools → Console**:
 
 ```
 Error: [ Federation Runtime ]: Version 18.3.1 from remoteAnalytics of shared singleton module react does not satisfy the requirement of remoteAnalytics which needs ^19.0.0)
 ```
 
-This is intentional—the remote rejected the available React version before any UI could render. This is how you catch version drift between independently deployed remotes.
+وهذا مقصود: فقد رفضت الوحدة البعيدة إصدار React المتاح قبل أن تُصيَّر أي واجهة. وهكذا تلتقط انحراف الإصدارات بين وحدات بعيدة تُنشر باستقلال.
 
-Blank page after version mismatch error
+صفحة فارغة بعد خطأ عدم توافق الإصدار
 
-**Remove both fields and restore the original config before continuing.** Stop your dev servers and run `pnpm dev` again to pick up the reverted config.
+**أزل الحقلين وأعد التهيئة الأصلية قبل المتابعة.** أوقف خوادم التطوير وشغّل `pnpm dev` مرة أخرى لالتقاط التهيئة المُرجَعة.
 
-### Checkpoint
+### نقطة تحقق
 
-Console should be clean—no shared module errors. Only one copy of React is loaded. If you have React DevTools installed, you’ll see a single React tree spanning both host and remote components.
+ينبغي أن تكون الطرفية نظيفة: بلا أخطاء وحدات مشتركة. ولا تُحمَّل إلا نسخة واحدة من React. وإن كانت React DevTools مثبَّتة لديك، فسترى شجرة React واحدة تمتد عبر مكونات المضيف والوحدة البعيدة معًا.
 
-> **`[Federation Runtime] Warn` messages**
+> **رسائل `[Federation Runtime] Warn`**
 >
-> You may see these in the console throughout the exercise. They appear whenever a shared dependency is configured without an explicit `requiredVersion` (which is the case for most entries in our shared config). They are not errors—just informational messages from the Module Federation runtime about version negotiation. You can safely ignore them.
+> قد ترى هذه في الطرفية طوال التمرين. وتظهر كلما هُيّئ اعتماد مشترك بلا `requiredVersion` صريحة (وهو حال معظم المدخلات في تهيئة المشاركة لدينا). وليست أخطاء، بل رسائل إعلامية فحسب من وقت تشغيل اتحاد الوحدات عن تفاوض الإصدارات. ويمكنك تجاهلها بأمان.
 
-## The Auth Context Problem
+## مشكلة سياق المصادقة
 
-Now look at the analytics dashboard more carefully. Something is wrong.
+والآن انظر إلى لوحة التحليلات بعناية أكبر. ثمة شيء خطأ.
 
-### Spot the Bug
+### اكتشف العطل
 
-1. Look at the **sidebar navigation**—it shows “Grace Hopper” with role “admin”. The host has auth data.
-2. Look at the **analytics dashboard** header—it shows an amber **“Not authenticated”** badge. The remote does *not* have auth data.
+1. انظر إلى **التنقل في الشريط الجانبي**: فهو يعرض «Grace Hopper» بدور «admin». ولدى المضيف بيانات المصادقة.
+2. انظر إلى ترويسة **لوحة التحليلات**: فهي تعرض شارة كهرمانية **«Not authenticated»**. أما الوحدة البعيدة فـ*لا* تملك بيانات المصادقة.
 
-### Why This Happens
+### لماذا يحدث هذا
 
-React Context relies on object identity—the same `createContext()` call must produce the same object on both sides. In a federation setup, separately built bundles create separate context objects, so the provider and consumer never match.
+يعتمد سياق React على هوية الكائن: فيجب أن يُنتج استدعاء `createContext()` نفسه الكائن نفسه على الجانبين. وفي إعداد اتحادي، تنشئ الحزم المبنية منفصلةً كائنات سياق منفصلة، فلا يتطابق الموفّر والمستهلك أبدًا.
 
 ```
 sequenceDiagram
@@ -196,7 +196,7 @@ sequenceDiagram
     Note over Host,Remote: ContextA !== ContextB—different object identity
 ```
 
-Open [`host/src/shell/auth-provider.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/shell/auth-provider.tsx). The host fetches the current user from `/api/users/me` and provides it via React Context:
+افتح [`host/src/shell/auth-provider.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/shell/auth-provider.tsx). فالمضيف يجلب المستخدم الحالي من `/api/users/me` ويوفّره عبر سياق React:
 
 *host/src/shell/auth-provider.tsx*
 
@@ -209,7 +209,7 @@ export function AuthProvider({ children }) {
 }
 ```
 
-Now open [`remote-analytics/src/analytics-dashboard.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/src/analytics-dashboard.tsx). Find the hardcoded auth values near the top of the component:
+والآن افتح [`remote-analytics/src/analytics-dashboard.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/src/analytics-dashboard.tsx). وابحث عن قيم المصادقة المكتوبة مباشرةً قرب أعلى المكوّن:
 
 *remote-analytics/src/analytics-dashboard.tsx*
 
@@ -221,31 +221,31 @@ const isAuthenticated = false;
 const userName: string | null = null;
 ```
 
-*Note:* These are hardcoded because React Context can't cross federation boundaries
+*ملاحظة:* هذه مكتوبة مباشرةً لأن سياق React لا يستطيع عبور حدود الاتحاد
 
-The remote has no way to access the host’s React Context. Even though `<AnalyticsDashboard />` renders *inside* the host’s `<AuthProvider>`, the component code was *built separately*. React Context doesn’t cross Module Federation boundaries—the remote’s React module resolution sees a different context object than the host’s.
+لا سبيل للوحدة البعيدة إلى الوصول إلى سياق React لدى المضيف. فرغم أن `<AnalyticsDashboard />` يُصيَّر *داخل* `<AuthProvider>` لدى المضيف، فإن شيفرة المكوّن *بُنيت منفصلة*. ولا يعبر سياق React حدود اتحاد الوحدات: فحلّ وحدة React لدى الوحدة البعيدة يرى كائن سياق مختلفًا عن الذي يراه المضيف.
 
-> **React Context is matched by object identity, not by type.**
+> **يُطابَق سياق React بهوية الكائن، لا بالنوع.**
 >
-> When the host calls `createContext(...)`, it gets back a specific JavaScript object—call it `ContextA`. When the remote’s separately built bundle also calls `createContext(...)` (or imports what appears to be the same context from a shared file), it gets a *different* JavaScript object—`ContextB`. React’s [`useContext`](https://react.dev/reference/react/useContext) hook works by walking up the component tree to find a `<Context.Provider>` whose context object is `===` to the one passed in. The host’s `<AuthContext.Provider>` provides `ContextA`; the remote’s `useContext(AuthContext)` asks for `ContextB`. They never match—so the remote always reads the default value.
+> عندما ينادي المضيف `createContext(...)`، يعود إليه كائن JavaScript محدد—لنسمّه `ContextA`. وعندما تنادي الحزمة المبنية منفصلةً في الوحدة البعيدة `createContext(...)` كذلك (أو تستورد ما يبدو أنه السياق نفسه من ملف مشترك)، يعود إليها كائن JavaScript *مختلف* هو `ContextB`. ويعمل خُطّاف [`useContext`](https://react.dev/reference/react/useContext) في React بالصعود في شجرة المكوّنات للعثور على `<Context.Provider>` يكون كائن سياقه `===` للكائن الممرَّر. فـ`<AuthContext.Provider>` لدى المضيف يوفّر `ContextA`؛ أما `useContext(AuthContext)` لدى الوحدة البعيدة فيطلب `ContextB`. ولا يتطابقان أبدًا—فتقرأ الوحدة البعيدة القيمة الافتراضية دائمًا.
 >
-> You might think: “Export the context from `@pulse/shared` and import it in both places.” Even that won’t work—React Context identity is based on the *module instance*, not the type. TypeScript types are erased at compile time; at runtime, what matters is whether two pieces of code received the *same JavaScript object*. With Module Federation, unless a package is declared as a singleton shared dependency, the host and remote evaluate it independently—`createContext()` runs twice, producing two distinct objects. Moving `createContext` into a shared package doesn’t help unless that package is itself a singleton shared module.
+> قد تظن: «صدّر السياق من `@pulse/shared` واستورده في الموضعين». حتى هذا لن يعمل: فهوية سياق React تقوم على *نسخة الوحدة*، لا على النوع. فأنواع TypeScript تُمحى وقت التصريف؛ وما يهم وقت التشغيل هو هل تلقّى جزءا الشيفرة *كائن JavaScript نفسه*. ومع اتحاد الوحدات، ما لم تُعلَن حزمة كاعتماد مشترك أحادي النسخة، يقيّمها المضيف والوحدة البعيدة باستقلال—فيُشغَّل `createContext()` مرتين، منتجًا كائنين متمايزين. ونقل `createContext` إلى حزمة مشتركة لا يفيد إلا إن كانت تلك الحزمة نفسها وحدة مشتركة أحادية النسخة.
 
-### Checkpoint
+### نقطة تحقق
 
-You understand why the analytics dashboard shows **Not authenticated**—React Context trees don’t span federation boundaries. The host has auth data but the remote can’t access it through React’s built-in mechanisms.
+فهمت لماذا تعرض لوحة التحليلات **Not authenticated**: فأشجار سياق React لا تمتد عبر حدود الاتحاد. ولدى المضيف بيانات المصادقة، لكن الوحدة البعيدة لا تستطيع الوصول إليها عبر آليات React المدمجة.
 
-## Cross-Boundary Communication
+## التواصل العابر للحدود
 
-The solution is to use a framework-agnostic state management library that both the host and remote can share. `nanostores` is already installed in `@pulse/shared`—you just need to create the store and wire it up.
+الحل هو استخدام مكتبة إدارة حالة مستقلة عن إطار العمل يستطيع المضيف والوحدة البعيدة مشاركتها. و`nanostores` مثبَّتة بالفعل في `@pulse/shared`، وكل ما تحتاجه هو إنشاء المخزن وربطه.
 
-### Create the Auth Store
+### أنشئ مخزن المصادقة
 
-Create a new file `shared/src/auth-store.ts` (note: [`auth.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/shared/src/auth.ts) already exists in that directory—it holds broadcast channel utilities and is unrelated to what you need here):
+أنشئ ملفًا جديدًا `shared/src/auth-store.ts` (ملاحظة: [`auth.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/shared/src/auth.ts) موجود بالفعل في ذلك المجلد، وهو يحوي أدوات قناة البث ولا علاقة له بما تحتاجه هنا):
 
-> **What is a nanostore atom?**
+> **ما هي ذرّة nanostore؟**
 >
-> An `atom` is the simplest primitive in nanostores—a reactive container for a single value. Calling `atom(initialValue)` returns a store object with three methods: `.get()` to read the current value, `.set(newValue)` to write a new value and notify all subscribers, and `.subscribe(callback)` to listen for changes. The `useStore` hook from [`@nanostores/react`](https://github.com/nanostores/react) wraps `.subscribe()` in a React hook, re-rendering the component whenever the atom’s value changes. The atom itself has zero React dependency—it’s plain JavaScript, which is precisely why it can cross framework and federation boundaries that React-specific primitives cannot.
+> `atom` أبسط عنصر أولي في nanostores: حاوية تفاعلية لقيمة واحدة. واستدعاء `atom(initialValue)` يعيد كائن مخزن بثلاث دوال: `.get()` لقراءة القيمة الحالية، و`.set(newValue)` لكتابة قيمة جديدة وإخطار كل المشتركين، و`.subscribe(callback)` للاستماع إلى التغييرات. ويغلّف خُطّاف `useStore` من [`@nanostores/react`](https://github.com/nanostores/react) الدالة `.subscribe()` في خُطّاف React، فيعيد تصيير المكوّن كلما تغيّرت قيمة الذرّة. والذرّة نفسها بلا أي اعتماد على React: فهي JavaScript صرفة، ولهذا بالضبط تستطيع عبور حدود أطر العمل والاتحاد التي لا تستطيع العناصر الأولية الخاصة بـReact عبورها.
 
 *shared/src/auth-store.ts*
 
@@ -260,7 +260,7 @@ export const authStore = atom<AuthContext>({
 });
 ```
 
-Then add the following export to [`shared/src/index.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/shared/src/index.ts):
+ثم أضف التصدير التالي إلى [`shared/src/index.ts`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/shared/src/index.ts):
 
 *shared/src/index.ts*
 
@@ -268,15 +268,15 @@ Then add the following export to [`shared/src/index.ts`](https://github.com/stev
 export * from './auth-store';
 ```
 
-### Write to the Store from the Host
+### اكتب إلى المخزن من المضيف
 
-Open [`host/src/shell/auth-provider.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/shell/auth-provider.tsx). Import the store and update it when auth state changes.
+افتح [`host/src/shell/auth-provider.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/host/src/shell/auth-provider.tsx). واستورد المخزن وحدّثه عند تغيّر حالة المصادقة.
 
-Add a second import from `@pulse/shared`—keep it separate from the existing type-only import, since this one is a runtime value:
+أضف استيرادًا ثانيًا من `@pulse/shared`—وأبقِه منفصلًا عن الاستيراد الحالي الخاص بالأنواع وحده، لأن هذا استيراد لقيمة وقت تشغيل:
 
-> **Note**
+> **ملاحظة**
 >
-> TypeScript’s `import type` syntax is erased entirely at compile time—it exists only for type checking and produces no JavaScript output. A runtime value like `authStore` cannot be included in an `import type` statement. Keeping them as two separate `import` lines is the clearest way to signal which imports are type-only and which carry runtime code.
+> تُمحى صيغة `import type` في TypeScript كليًا وقت التصريف: فهي موجودة لفحص الأنواع فقط ولا تنتج أي مخرجات JavaScript. ولا يمكن تضمين قيمة وقت تشغيل مثل `authStore` في عبارة `import type`. وإبقاؤهما في سطري `import` منفصلين أوضح طريقة للإشارة إلى أي الاستيرادات للأنواع وحدها وأيها يحمل شيفرة وقت تشغيل.
 
 *host/src/shell/auth-provider.tsx*
 
@@ -285,7 +285,7 @@ import type { User, AuthContext as AuthContextType } from '@pulse/shared';
 import { authStore } from '@pulse/shared';
 ```
 
-Inside the `useEffect`, write to the nanostore immediately after the two existing state calls in the `try` block:
+داخل `useEffect`، اكتب إلى مخزن nanostores مباشرةً بعد استدعائي الحالة القائمين في كتلة `try`:
 
 *host/src/shell/auth-provider.tsx*
 
@@ -305,23 +305,23 @@ try {
 }
 ```
 
-*Note:* Writes to the shared nanostore so the remote can read it
+*ملاحظة:* يكتب إلى مخزن nanostores المشترك كي تستطيع الوحدة البعيدة قراءته
 
-### Read from the Store in the Remote
+### اقرأ من المخزن في الوحدة البعيدة
 
-First, add `@nanostores/react` to the remote so it can use the React bindings. In a separate terminal (not the one running `pnpm dev`), run from the repo root:
+أولًا، أضف `@nanostores/react` إلى الوحدة البعيدة كي تستطيع استخدام ارتباطات React. وفي طرفية منفصلة (لا التي تشغّل `pnpm dev`)، شغّل من جذر المستودع:
 
 ```bash
 pnpm --filter @pulse/remote-analytics add @nanostores/react
 ```
 
-> **Why?**
+> **لماذا؟**
 >
-> pnpm uses strict module isolation—each package can only import its own declared dependencies. Even though `@pulse/shared` already depends on `@nanostores/react`, the remote needs its own declaration to resolve the import at build time. At runtime, Module Federation’s singleton config ensures only one copy is loaded.
+> يستخدم pnpm عزلًا صارمًا للوحدات: فلا تستطيع كل حزمة أن تستورد إلا اعتماداتها المعلنة. فرغم أن `@pulse/shared` يعتمد بالفعل على `@nanostores/react`، تحتاج الوحدة البعيدة إلى إعلانها الخاص لحلّ الاستيراد وقت البناء. أما وقت التشغيل، فتهيئة الأحادية النسخة في اتحاد الوحدات تضمن ألا تُحمَّل إلا نسخة واحدة.
 
-Now open [`remote-analytics/src/analytics-dashboard.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/src/analytics-dashboard.tsx). Replace the hardcoded auth values with the nanostore.
+والآن افتح [`remote-analytics/src/analytics-dashboard.tsx`](https://github.com/stevekinney/enterprise-ui-federation/blob/main/remote-analytics/src/analytics-dashboard.tsx). واستبدل قيم المصادقة المكتوبة مباشرةً بمخزن nanostores.
 
-Add these imports:
+أضف هذين الاستيرادين:
 
 *remote-analytics/src/analytics-dashboard.tsx*
 
@@ -330,7 +330,7 @@ import { useStore } from '@nanostores/react';
 import { authStore } from '@pulse/shared';
 ```
 
-Inside the component, find and delete the `// THE BUG` comment block and the two hardcoded `const` lines below it, then replace them with the nanostore:
+داخل المكوّن، ابحث عن كتلة التعليق `// THE BUG` وسطري `const` المكتوبين مباشرةً تحتها واحذفها، ثم استبدلها بمخزن nanostores:
 
 ```typescript
 // Delete these five lines:
@@ -350,77 +350,77 @@ const isAuthenticated = auth.isAuthenticated;
 const userName = auth.user?.name ?? null;
 ```
 
-*Note:* Reads from the same atom instance the host writes to
+*ملاحظة:* يقرأ من نسخة الذرّة نفسها التي يكتب إليها المضيف
 
-### Why This Works
+### لماذا ينجح هذا
 
-Two things make this work:
+ثمة أمران يجعلان هذا ينجح:
 
-1. **`@pulse/shared` is a singleton shared dependency** in both rsbuild configs. This means the host and remote share the exact same module instance of `@pulse/shared` at runtime—so the `authStore` atom created by `atom(...)` in `auth-store.ts` is the same object in both the host and the remote.
-2. **`nanostores` and `@nanostores/react` are also singleton shared dependencies.** This ensures the store library and its React bindings are the same instance on both sides, so `useStore()` in the remote subscribes to the same atom the host writes to.
+1. **`@pulse/shared` اعتماد مشترك أحادي النسخة** في ملفي تهيئة rsbuild. هذا يعني أن المضيف والوحدة البعيدة يتشاركان نسخة الوحدة نفسها بالضبط من `@pulse/shared` وقت التشغيل: فالذرّة `authStore` التي ينشئها `atom(...)` في `auth-store.ts` هي الكائن نفسه في المضيف والوحدة البعيدة معًا.
+2. **`nanostores` و`@nanostores/react` اعتمادان مشتركان أحاديا النسخة أيضًا.** وهذا يضمن أن مكتبة المخزن وارتباطاتها بـReact نسخة واحدة على الجانبين، فيشترك `useStore()` في الوحدة البعيدة في الذرّة نفسها التي يكتب إليها المضيف.
 
-When the host calls `authStore.set(...)`, the remote’s `useStore(authStore)` hook sees the update immediately—because they’re literally the same object in memory.
+وعندما ينادي المضيف `authStore.set(...)`، يرى خُطّاف `useStore(authStore)` في الوحدة البعيدة التحديث فورًا، لأنهما حرفيًا الكائن نفسه في الذاكرة.
 
-> **The singleton connection is load-bearing.**
+> **ارتباط الأحادية النسخة حمولة إنشائية.**
 >
-> Every piece of this solution depends on `@pulse/shared` being declared as a singleton shared dependency in both rsbuild configs. If it were missing from `shared`, Module Federation would bundle a separate copy of `@pulse/shared` into both the host and the remote. The host’s `authStore.set(...)` would write to one atom object; the remote’s `useStore(authStore)` would subscribe to a completely different atom object that never receives any updates. You’d see “Not authenticated” forever, with no error and no obvious cause. The same applies to `nanostores` itself—if the library that implements `.subscribe()` and `.set()` were duplicated, subscriptions established against one copy would be invisible to the other. All three packages—`@pulse/shared`, `nanostores`, and `@nanostores/react`—must be singletons for cross-boundary reactivity to work.
+> كل جزء من هذا الحل يعتمد على إعلان `@pulse/shared` كاعتماد مشترك أحادي النسخة في ملفي تهيئة rsbuild. فلو غاب عن `shared`، لحزم اتحاد الوحدات نسخة منفصلة من `@pulse/shared` في المضيف والوحدة البعيدة معًا. وحينها يكتب `authStore.set(...)` لدى المضيف إلى كائن ذرّة واحد، بينما يشترك `useStore(authStore)` لدى الوحدة البعيدة في كائن ذرّة مختلف تمامًا لا يتلقى أي تحديثات قط. وسترى «Not authenticated» إلى الأبد، بلا خطأ وبلا سبب ظاهر. وينطبق الأمر نفسه على `nanostores` نفسها: فلو تكررت المكتبة التي تنفّذ `.subscribe()` و`.set()`، لغدت الاشتراكات المُنشأة على إحدى النسختين غير مرئية للأخرى. ويجب أن تكون الحزم الثلاث كلها—`@pulse/shared` و`nanostores` و`@nanostores/react`—أحادية النسخة كي تعمل التفاعلية العابرة للحدود.
 
-> **If the badge still says “Not authenticated”**
+> **إن كانت الشارة ما زالت تقول «Not authenticated»**
 >
-> After making these changes, check that `@pulse/shared` is listed in the `shared` config in both `rsbuild.config.ts` files. Without it, each side bundles its own copy of `@pulse/shared` and creates separate atom instances—the host writes to one atom while the remote reads from a different one.
+> بعد إجراء هذه التغييرات، تحقق من إدراج `@pulse/shared` في تهيئة `shared` في ملفي `rsbuild.config.ts`. فبدون ذلك، تحزم كل جهة نسختها الخاصة من `@pulse/shared` وتنشئ نسخ ذرّات منفصلة: يكتب المضيف إلى ذرّة وتقرأ الوحدة البعيدة من أخرى مختلفة.
 
-This is the key insight: **framework-agnostic state (nanostores, BroadcastChannel, custom events) crosses boundaries that framework-specific state (React Context) cannot**—but only if the module that creates the state is shared across both sides.
+وهذا هو الإدراك الجوهري: **الحالة المستقلة عن إطار العمل (nanostores، وBroadcastChannel، والأحداث المخصصة) تعبر الحدود التي لا تستطيع الحالة الخاصة بإطار العمل (سياق React) عبورها**—لكن فقط إن كانت الوحدة التي تنشئ الحالة مشتركة بين الجانبين.
 
-Stop your dev servers (`Ctrl+C`) and run `pnpm dev` again to pick up the new file, the new export, and the newly installed dependency. Then open [http://localhost:3000](http://localhost:3000/).
+أوقف خوادم التطوير (`Ctrl+C`) وشغّل `pnpm dev` مرة أخرى لالتقاط الملف الجديد، والتصدير الجديد، والاعتماد المثبَّت حديثًا. ثم افتح [http://localhost:3000](http://localhost:3000/).
 
-### Checkpoint
+### نقطة تحقق
 
-The analytics dashboard now shows a green **“Viewing as: Grace Hopper”** badge instead of the amber “Not authenticated” badge. The auth context flows from the host to the remote through the shared nanostore.
+تعرض لوحة التحليلات الآن شارة خضراء **«Viewing as: Grace Hopper»** بدل الشارة الكهرمانية «Not authenticated». فسياق المصادقة يتدفق من المضيف إلى الوحدة البعيدة عبر مخزن nanostores المشترك.
 
-Fixed application showing Viewing as Grace Hopper
+التطبيق بعد الإصلاح يعرض Viewing as Grace Hopper
 
-## Stretch Goals
+## أهداف إضافية
 
-- [BroadcastChannel for Cross-Boundary Communication](https://stevekinney.com/courses/enterprise-ui/broadcast-channel): Implement the same cross-boundary auth using the browser’s `BroadcastChannel` API instead of nanostores—no singleton shared dependencies required.
-- [Error Boundaries and Module Federation](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation): Stop the remote dev server, reload the host, and discover why React error boundaries can’t catch federation failures.
-- [Standalone Remotes](https://stevekinney.com/courses/enterprise-ui/standalone-remotes): Visit `localhost:3001` directly and understand why standalone mode is the most important developer experience decision in a federation architecture.
+- [BroadcastChannel للتواصل العابر للحدود](https://stevekinney.com/courses/enterprise-ui/broadcast-channel): طبّق المصادقة العابرة للحدود نفسها باستخدام واجهة `BroadcastChannel` في المتصفح بدل nanostores—بلا حاجة إلى اعتمادات مشتركة أحادية النسخة.
+- [حدود الأخطاء واتحاد الوحدات](https://stevekinney.com/courses/enterprise-ui/error-boundaries-and-federation): أوقف خادم تطوير الوحدة البعيدة، وأعد تحميل المضيف، واكتشف لماذا لا تستطيع حدود أخطاء React التقاط أعطال الاتحاد.
+- [الوحدات البعيدة المستقلة](https://stevekinney.com/courses/enterprise-ui/standalone-remotes): زُر `localhost:3001` مباشرةً وافهم لماذا النمط المستقل أهم قرار لتجربة المطوّر في معمارية اتحادية.
 
-## Runtime vs. Build-Time Composition
+## التركيب وقت التشغيل مقابل وقت البناء
 
-You’ve now worked through the full operational cost of Module Federation. Before moving on, it’s worth being honest about where that cost is and isn’t justified.
+لقد خضت الآن الكلفة التشغيلية الكاملة لاتحاد الوحدات. وقبل المتابعة، يجدر أن نكون صادقين بشأن أين تبرَّر تلك الكلفة وأين لا تبرَّر.
 
-### Where Runtime Composition Wins
+### أين يتفوق التركيب وقت التشغيل
 
-**Independent deployments.** This is the only reason to reach for Module Federation. When the analytics team and the shell team ship on different schedules, runtime composition lets them deploy independently—the host fetches whatever the remote is currently serving without a coordinated release. No other composition strategy gives you this.
+**عمليات النشر المستقلة.** هذا هو السبب الوحيد للتوجه إلى اتحاد الوحدات. فعندما تصدر فرقة التحليلات وفرقة القشرة وفق جدولين مختلفين، يتيح لهما التركيب وقت التشغيل النشر باستقلال: فيجلب المضيف ما تقدمه الوحدة البعيدة حاليًا بلا إصدار منسّق. ولا تمنحك أي استراتيجية تركيب أخرى ذلك.
 
-**Technology isolation.** Because the boundary is a network contract (the manifest and exposed module paths), different remotes can use different frameworks, different React versions, or even different build tools—as long as they expose a compatible interface. You can have a React 18 host load a React 19 remote, or mix React and Vue, in ways that a shared bundle can’t accommodate.
+**عزل التقنيات.** لأن الحدّ عقد شبكي (البيان ومسارات الوحدات المكشوفة)، تستطيع وحدات بعيدة مختلفة استخدام أطر عمل مختلفة، أو إصدارات React مختلفة، أو حتى أدوات بناء مختلفة—ما دامت تكشف واجهة متوافقة. فيمكن أن يحمّل مضيف React 18 وحدة بعيدة بـReact 19، أو تمزج React وVue، بطرق لا تستطيع حزمة مشتركة استيعابها.
 
-**Incremental strangling.** A remote can wrap legacy code and expose it as a modern component. The host never needs to know. This makes Module Federation a practical tool for migrating large legacy applications without a big-bang rewrite—something you’ll explore directly in [Exercise 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise).
+**الخنق التدريجي.** تستطيع وحدة بعيدة أن تلفّ شيفرة قديمة وتكشفها كمكوّن حديث. ولا يحتاج المضيف إلى معرفة ذلك أبدًا. وهذا يجعل اتحاد الوحدات أداة عملية لترحيل التطبيقات القديمة الكبيرة بلا إعادة كتابة جذرية—وهو ما ستستكشفه مباشرةً في [التمرين 9](https://stevekinney.com/courses/enterprise-ui/strangler-fig-and-codemods-exercise).
 
-### Where It Costs You
+### أين تكلّفك
 
-**Developer experience.** You ran two dev servers, configured manifest URLs, debugged async bootstrap errors, and wrestled with `singleton`/`eager` flags. None of that exists in a workspace monorepo. The DX tax is real and ongoing—every new developer on the team needs to understand the federation topology before they can debug effectively.
+**تجربة المطوّر.** شغّلت خادمَي تطوير، وهيّأت عناوين بيانات، ونقّحت أخطاء إقلاع غير متزامن، وتصارعت مع علمَي `singleton`/`eager`. لا شيء من ذلك موجود في مستودع أحادي بمساحة عمل. وضريبة تجربة المطوّر حقيقية ومستمرة: فكل مطوّر جديد في الفريق يحتاج إلى فهم طوبولوجيا الاتحاد قبل أن ينقّح بفعالية.
 
-**Type safety stops at the boundary.** TypeScript can’t see across a remote entry. The host’s `import('remoteAnalytics/analytics-dashboard')` returns `any` unless you manually maintain type stubs or use a plugin that generates them. Errors that would be caught at compile time in a monorepo become runtime failures in production.
+**سلامة الأنواع تتوقف عند الحدّ.** فلا يستطيع TypeScript أن يرى عبر مدخل وحدة بعيدة. ويعيد `import('remoteAnalytics/analytics-dashboard')` لدى المضيف النوع `any` إلا إن كنت تحافظ يدويًا على بدائل تعريفات أنواع أو تستخدم إضافة تولّدها. والأخطاء التي كانت ستُلتقط وقت التصريف في مستودع أحادي تصير أعطالًا وقت التشغيل في الإنتاج.
 
-**State management becomes a constraint.** React Context, Zustand stores, Redux, and any other module-instance-dependent state library break silently across federation boundaries. You have to reach for framework-agnostic primitives—nanostores, BroadcastChannel, custom events—and declare everything shared as a singleton. It works, but it adds a layer of complexity that doesn’t exist in build-time composition.
+**إدارة الحالة تصير قيدًا.** فسياق React، ومخازن Zustand، وRedux، وأي مكتبة حالة أخرى تعتمد على نسخة الوحدة، تنكسر بصمت عبر حدود الاتحاد. وعليك أن تتوجه إلى عناصر أولية مستقلة عن إطار العمل—nanostores، وBroadcastChannel، والأحداث المخصصة—وأن تعلن كل شيء مشترك كأحادي النسخة. وهذا يعمل، لكنه يضيف طبقة تعقيد لا وجود لها في التركيب وقت البناء.
 
-**Failure modes are invisible.** When a remote fails to load, React’s error boundaries can’t catch the federation runtime error—you get a blank section with no visible indication of what went wrong. Debugging requires knowing to check the Network tab for the manifest request, then the console for federation runtime warnings, then the remote’s standalone URL to verify it’s even running.
+**أنماط الفشل غير مرئية.** فعندما يفشل تحميل وحدة بعيدة، لا تستطيع حدود أخطاء React التقاط خطأ وقت تشغيل الاتحاد: فتحصل على قسم فارغ بلا أي إشارة مرئية إلى ما جرى. ويتطلب التنقيح أن تعرف أن تفحص تبويب الشبكة بحثًا عن طلب البيان، ثم الطرفية بحثًا عن تحذيرات وقت تشغيل الاتحاد، ثم عنوان الوحدة البعيدة المستقل للتأكد من أنها تعمل أصلًا.
 
-### The Decision
+### القرار
 
-|  | Runtime (Federation) | Build-Time (Workspace) |
+|  | وقت التشغيل (الاتحاد) | وقت البناء (مساحة العمل) |
 | --- | --- | --- |
-| Independent deployments | Yes | No |
-| Compile-time type checking | No (manual stubs) | Yes, across all packages |
-| Hot reload across boundaries | No (rebuild remote) | Yes |
-| Cross-boundary state | nanostores / BroadcastChannel | React Context |
-| Shared dependency config | Required (`singleton`, `eager`) | None needed |
-| Dev servers | One per remote + host | One |
-| Debugging complexity | High | Low |
+| عمليات النشر المستقلة | نعم | لا |
+| فحص الأنواع وقت التصريف | لا (تعريفات يدوية) | نعم، عبر كل الحزم |
+| إعادة التحميل الساخن عبر الحدود | لا (أعد بناء الوحدة البعيدة) | نعم |
+| الحالة العابرة للحدود | nanostores / BroadcastChannel | سياق React |
+| تهيئة الاعتمادات المشتركة | مطلوبة (`singleton`, `eager`) | لا حاجة لأي منها |
+| خوادم التطوير | واحد لكل وحدة بعيدة + المضيف | واحد |
+| تعقيد التنقيح | مرتفع | منخفض |
 
-The right choice is almost always build-time composition—until it isn’t. If your teams deploy on different schedules, or your codebase spans technology boundaries that can’t be unified, Module Federation earns its cost. Otherwise, you’re paying operational overhead for a problem you don’t have.
+الاختيار الصحيح هو التركيب وقت البناء في الغالبية العظمى من الحالات—إلى أن لا يكون. فإن كانت فرقك تنشر وفق جداول مختلفة، أو كان مستودعك يمتد عبر حدود تقنية لا يمكن توحيدها، فاتحاد الوحدات يستحق كلفته. وإلا فأنت تدفع كلفة تشغيلية إضافية لمشكلة لا تملكها.
 
-## What’s Next
+## ما التالي
 
-You’ve felt what runtime composition actually costs. The natural follow-up question is: what if you consumed this same analytics module as a regular workspace package—no remote entry, no manifest, no shared dependency negotiation? Same product, radically simpler architecture. That’s what [build-time composition](https://stevekinney.com/courses/enterprise-ui/build-time-composition-exercise) explores.
+لقد لمست فعلًا ما تكلّفه التركيب وقت التشغيل. والسؤال التالي الطبيعي: ماذا لو استهلكت وحدة التحليلات نفسها كحزمة مساحة عمل عادية—بلا مدخل وحدة بعيدة، ولا بيان، ولا تفاوض اعتمادات مشتركة؟ المنتج نفسه، ومعمار أبسط جذريًا. وهذا ما يستكشفه [التركيب وقت البناء](https://stevekinney.com/courses/enterprise-ui/build-time-composition-exercise).

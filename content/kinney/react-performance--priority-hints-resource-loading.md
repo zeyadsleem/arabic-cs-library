@@ -1,18 +1,18 @@
 ---
-title: "Priority Hints & Resource Loading"
-lang: en
+title: "تلميحات الأولوية وتحميل الموارد"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/priority-hints-resource-loading"
 ---
 
-Your React app loads. Eventually. First the HTML, then the CSS, then the JavaScript, then the fonts, then the images, then more JavaScript, then the API calls… By the time your user sees anything useful, they’ve already mentally composed their resignation letter to your app. The browser is doing its best, but it’s guessing at what’s important. What if you could tell it exactly what to prioritize?
+يُحمَّل تطبيق React لديك. في النهاية. أولًا HTML، ثم CSS، ثم JavaScript، ثم الخطوط، ثم الصور، ثم مزيد من JavaScript، ثم استدعاءات API… وبحلول الوقت الذي يرى فيه مستخدمك أي شيء مفيد، يكون قد كتب في ذهنه رسالة استقالته من تطبيقك. يبذل المتصفح قصارى جهده، لكنه يخمّن ما هو مهم. فماذا لو استطعت إخباره بما يجب أن يعطيه الأولوية بالضبط؟
 
-Enter the world of resource hints and priority loading—your secret weapons for orchestrating the perfect loading symphony. These aren’t just `<link>` tags you sprinkle around hoping for the best. They’re precision instruments that, when used correctly, can cut your Time to Interactive in half.
+ادخل إلى عالم تلميحات الموارد (resource hints) والتحميل بالأولوية — أسلحتك السرّية لتنسيق سيمفونية تحميل مثالية. فهي ليست مجرّد وسوم `<link>` تنثرها هنا وهناك آملًا في أفضل النتائج، بل أدوات دقيقة يمكنها، عند استخدامها على نحو صحيح، أن تخفض زمن الوصول إلى التفاعل (Time to Interactive) إلى النصف.
 
-Let’s dive into how modern browsers load resources and how you can take control of that process to deliver lightning-fast React applications.
+لنتعمّق في كيفية تحميل المتصفحات الحديثة للموارد، وكيف يمكنك التحكّم في تلك العملية لتقديم تطبيقات React فائقة السرعة.
 
-## Understanding Browser Resource Loading
+## فهم تحميل المتصفح للموارد
 
-Before we optimize, let’s understand how browsers prioritize resources:
+قبل أن نحسّن، لنفهم كيف يحدّد المتصفح أولويات الموارد:
 
 ```typescript
 interface BrowserPrioritySystem {
@@ -31,9 +31,9 @@ interface BrowserPrioritySystem {
 // 5. Execute/render as resources arrive
 ```
 
-## Priority Hints with fetchpriority
+## تلميحات الأولوية عبر fetchpriority
 
-The `fetchpriority` attribute lets you override the browser’s default priorities:
+تتيح لك خاصية `fetchpriority` تجاوز الأولويات الافتراضية للمتصفح:
 
 ```typescript
 // ❌ Browser guesses importance
@@ -71,9 +71,9 @@ const OptimizedHero: React.FC = () => {
 };
 ```
 
-### Dynamic Priority Management
+### إدارة الأولويات ديناميكيًا
 
-Adjust priorities based on user behavior:
+اضبط الأولويات بناءً على سلوك المستخدم:
 
 ```typescript
 const useDynamicPriority = () => {
@@ -112,9 +112,9 @@ const AdaptiveImage: React.FC<{ src: string; critical?: boolean }> = ({
 };
 ```
 
-## Preload Critical Resources
+## التحميل المسبق للموارد الحرجة
 
-Tell the browser about critical resources before it discovers them naturally. For React 19’s new resource preloading APIs (`preload`, `preinit`, `prefetchDNS`), see [resource-preloading-apis.md](https://stevekinney.com/courses/react-performance/resource-preloading-apis).
+أخبر المتصفح بالموارد الحرجة قبل أن يكتشفها تلقائيًا. وللاطلاع على واجهات التحميل المسبق الجديدة للموارد في React 19 (`preload` و`preinit` و`prefetchDNS`)، راجع [resource-preloading-apis.md](https://stevekinney.com/courses/react-performance/resource-preloading-apis).
 
 ```typescript
 // React component for managing preloads
@@ -156,9 +156,9 @@ const ResourcePreloader: React.FC = () => {
 };
 ```
 
-### Smart Preloading Based on Routes
+### تحميل مسبق ذكي وفق المسارات
 
-Preload resources for likely next navigation:
+حمّل الموارد مسبقًا للتنقّل التالي المحتمل:
 
 ```typescript
 const useRoutePreloader = () => {
@@ -195,9 +195,9 @@ const useRoutePreloader = () => {
 };
 ```
 
-## DNS Prefetch and Preconnect
+## الجلب المسبق لـ DNS والاتصال المسبق
 
-Establish connections early to reduce latency:
+أنشئ الاتصالات مبكرًا لتقليل زمن الاستجابة:
 
 ```typescript
 const ConnectionOptimizer: React.FC = () => {
@@ -226,9 +226,9 @@ const ConnectionOptimizer: React.FC = () => {
 };
 ```
 
-### Intelligent Connection Management
+### إدارة ذكية للاتصالات
 
-Only preconnect to domains you’ll actually use:
+لا تسبق الاتصال إلا بالنطاقات التي ستستخدمها فعلًا:
 
 ```typescript
 class ConnectionManager {
@@ -281,9 +281,9 @@ const useConnectionManager = () => {
 };
 ```
 
-## Prefetch for Future Navigation
+## الجلب المسبق للتنقّل المستقبلي
 
-Load resources for likely future navigation:
+حمّل الموارد للتنقّل المستقبلي المحتمل:
 
 ```typescript
 // ❌ No prefetching
@@ -327,9 +327,9 @@ const SmartLink: React.FC<{ href: string }> = ({ href, children }) => {
 };
 ```
 
-### Intersection Observer Prefetching
+### الجلب المسبق عبر Intersection Observer
 
-Prefetch when links become visible:
+اجلب الموارد مسبقًا حين تصبح الروابط مرئية:
 
 ```typescript
 const usePrefetchOnVisible = (enabled: boolean = true) => {
@@ -377,9 +377,9 @@ const usePrefetchOnVisible = (enabled: boolean = true) => {
 };
 ```
 
-## Prerender for Instant Navigation
+## التصيير المسبق لتنقّل فوري
 
-Prerender entire pages for instant navigation:
+صيّر صفحات كاملة مسبقًا لتنقّل فوري:
 
 ```typescript
 const usePrerenderPrediction = () => {
@@ -424,9 +424,9 @@ const usePrerenderPrediction = () => {
 };
 ```
 
-## Module Preloading for Code Splitting
+## التحميل المسبق للوحدات مع تقسيم الشيفرة
 
-Optimize code-split bundles with modulepreload:
+حسّن الحزم المقسّمة بالاعتماد على modulepreload:
 
 ```typescript
 const ModulePreloader: React.FC = () => {
@@ -472,9 +472,9 @@ const webpackConfig = {
 };
 ```
 
-## Resource Timing API Integration
+## التكامل مع Resource Timing API
 
-Monitor the impact of your resource hints:
+راقب أثر تلميحات الموارد لديك:
 
 ```typescript
 class ResourceTimingMonitor {
@@ -531,9 +531,9 @@ class ResourceTimingMonitor {
 }
 ```
 
-## Adaptive Loading Strategy
+## استراتيجية التحميل التكيّفي
 
-Adjust loading strategy based on device and network:
+اضبط استراتيجية التحميل بناءً على الجهاز والشبكة:
 
 ```typescript
 const useAdaptiveLoading = () => {
@@ -619,42 +619,42 @@ const AdaptiveResourceLoader: React.FC = () => {
 };
 ```
 
-## Best Practices Checklist
+## قائمة أفضل الممارسات
 
-✅ **Use fetchpriority wisely:**
+✅ **استخدم fetchpriority بحكمة:**
 
-- High for LCP images and critical resources
-- Low for below-fold content
-- Auto for everything else
+- أولوية عالية لصور LCP والموارد الحرجة
+- أولوية منخفضة للمحتوى أسفل الطية
+- أولوية تلقائية لكل ما عدا ذلك
 
-✅ **Preload critical resources:**
+✅ **حمّل الموارد الحرجة مسبقًا:**
 
-- Fonts used above the fold
-- Critical CSS
-- Hero images
-- Important API calls
+- الخطوط المستخدمة أعلى الطية
+- CSS الحرج
+- صور الغلاف الرئيسية
+- استدعاءات API المهمة
 
-✅ **Preconnect to origins:**
+✅ **سبق الاتصال بالأصول (origins):**
 
-- API servers
-- CDN domains
-- Third-party critical services
-- Limit to 2-3 domains
+- خوادم API
+- نطاقات CDN
+- خدمات الطرف الثالث الحرجة
+- اقتصر على نطاقين أو ثلاثة
 
-✅ **Prefetch intelligently:**
+✅ **اجلب مسبقًا بذكاء:**
 
-- Next likely navigation
-- Resources visible in viewport
-- Based on user behavior patterns
+- التنقّل التالي المحتمل
+- الموارد الظاهرة في منطقة العرض
+- بناءً على أنماط سلوك المستخدم
 
-✅ **Monitor impact:**
+✅ **راقب الأثر:**
 
-- Use Resource Timing API
-- Track Core Web Vitals
-- Measure actual vs expected improvement
+- استخدم Resource Timing API
+- تتبّع Core Web Vitals
+- قِس التحسّن الفعلي مقابل المتوقّع
 
-✅ **Adapt to conditions:**
+✅ **تكيّف مع الظروف:**
 
-- Respect Save-Data header
-- Adjust for slow connections
-- Consider device memory
+- احترم ترويسة Save-Data
+- اضبط الإعداد للاتصالات البطيئة
+- راعِ ذاكرة الجهاز

@@ -1,55 +1,44 @@
 ---
-title: "Cursor Hooks"
-lang: en
+title: "خطّافات Cursor"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-hooks"
 ---
 
-[Cursor hooks](https://cursor.com/docs/hooks) let you run logic around the agent
-loop. They can observe events, inject guidance, or block unsafe actions.
+تتيح لك [خطّافات Cursor](https://cursor.com/docs/hooks) تشغيل منطق حول حلقة الوكيل. ويمكنها مراقبة الأحداث، أو حقن إرشاد، أو حجب إجراءات غير آمنة.
 
-Use hooks for small, deterministic guardrails. Do not use them to reimplement a
-continuous integration system inside the editor.
+استخدم الخطّافات لحواجز صغيرة حتمية. لا تستخدمها لإعادة تنفيذ نظام تكامل مستمر داخل المحرّر.
 
-## Where Hooks Live
+## أين تسكن الخطّافات
 
-Cursor supports project and user hooks. Cloud Agents can run command-based hooks
-from `.cursor/hooks.json` when the hook type is supported in the cloud
-environment.
+يدعم Cursor خطّافات المشروع وخطّافات المستخدم. ويستطيع وكلاء السحابة تشغيل الخطّافات القائمة على الأوامر من `.cursor/hooks.json` عندما يكون نوع الخطّاف مدعومًا في البيئة السحابية.
 
-Project hooks are best for repository safety checks. User hooks are best for
-personal workflow preferences.
+خطّافات المشروع أفضل لفحوص أمان المستودع. وخطّافات المستخدم أفضل لتفضيلات سير العمل الشخصي.
 
-## Hook Types
+## أنواع الخطّافات
 
-Cursor supports command hooks and prompt hooks. Command hooks can run scripts and
-use exit codes to influence the agent. A command hook that exits with code `2` can block an unsafe action before it happens and return the reason to the agent.
+يدعم Cursor خطّافات الأوامر وخطّافات الطلبات. وتستطيع خطّافات الأوامر تشغيل سكربتات واستخدام رموز الخروج للتأثير في الوكيل. وخطّاف أمر يخرج بالرمز `2` يستطيع حجب إجراء غير آمن قبل وقوعه وإرجاع السبب إلى الوكيل.
 
-Good hook use cases include:
+من حالات الاستخدام الجيدة للخطّافات:
 
-- Blocking edits to generated files.
-- Warning when a command targets production.
-- Adding repository-specific context at session start.
-- Recording agent activity for local audit.
+- حجب التعديلات على الملفات المولَّدة.
+- التحذير عندما يستهدف أمر الإنتاج.
+- إضافة سياق خاص بالمستودع عند بداية الجلسة.
+- تسجيل نشاط الوكيل للتدقيق المحلي.
 
-## Keep Hooks Small
+## أبقِ الخطّافات صغيرة
 
-A hook should be fast, readable, and easy to disable during diagnosis. If a hook
-needs complex state, it probably belongs in a checked-in script with tests.
+ينبغي أن يكون الخطّاف سريعًا ومقروءًا وسهل التعطيل أثناء التشخيص. وإذا احتاج الخطّاف إلى حالة معقّدة، فالأرجح أن موضعه سكربت مُودَع مع اختبارات.
 
-For example, a hook can call:
+على سبيل المثال، يمكن لخطّاف أن ينادي:
 
 ```bash
 bun scripts/check-generated-file-edit.ts "$CURSOR_FILE"
 ```
 
-The script owns the logic. The hook owns the integration point.
+السكربت يملك المنطق. والخطّاف يملك نقطة التكامل.
 
-Local and cloud support are not identical. If a hook must run in Cloud Agents,
-keep it command-based, check it into the repository, and verify that the cloud
-support matrix covers the event you are using.
+الدعم المحلي والسحابي ليسا متطابقين. وإذا وجب أن يعمل خطّاف في وكلاء السحابة، فأبقِه قائمًا على الأوامر، وأودعه المستودع، وتحقق من أن مصفوفة الدعم السحابي تغطي الحدث الذي تستخدمه.
 
-## Security Posture
+## الموقف الأمني
 
-Hooks run code. Review them with the same suspicion you would apply to a build
-script. A malicious or sloppy hook can leak secrets, approve dangerous commands,
-or hide failures from the developer.
+الخطّافات تشغّل شيفرة. راجعها بالشكّ نفسه الذي تطبّقه على سكربت بناء. فالخطّاف الخبيث أو المترهّل قد يسرّب أسرارًا، أو يوافق على أوامر خطيرة، أو يخفي حالات الفشل عن المطوّر.

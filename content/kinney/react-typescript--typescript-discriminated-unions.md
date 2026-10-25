@@ -1,14 +1,14 @@
 ---
-title: "Discriminated Unions"
-lang: en
+title: "الأنواع الاتحادية المُميَّزة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-discriminated-unions"
 ---
 
-If there’s one TypeScript pattern that will transform how you think about state management in React, it’s discriminated unions. They’re the secret weapon for making invalid states impossible to represent, and they’ll save you from countless bugs. Let’s dive deep into this game-changing pattern.
+إن كان هناك نمط واحد في TypeScript سيغيّر نظرتك إلى إدارة الحالة في React، فهو الأنواع الاتحادية المُميَّزة. فهي السلاح السريّ لجعل الحالات غير الصالحة مستحيلةَ التمثيل، وستوفّر عليك عددًا لا يُحصى من الأخطاء. فلنغوص بعمق في هذا النمط تغيير قواعد اللعبة.
 
-## What Are Discriminated Unions?
+## ما هي الأنواع الاتحادية المُميَّزة؟
 
-A discriminated union (also called a tagged union) is a pattern where you use a common property to distinguish between different shapes of data. Think of it as TypeScript’s way of saying “this thing can be one of several specific shapes, and I’ll help you figure out which one it is.”
+النوع الاتحادي المُميَّز (ويُعرف أيضًا بالاتحاد المُوسوم) هو نمطٌ تستخدم فيه خاصيةً مشتركة للتمييز بين أشكال مختلفة من البيانات. تخيّله طريقة TypeScript في القول: «هذا الشيء يمكن أن يكون واحدًا من عدّة أشكال محدّدة، وسأساعدك في معرفة أيّها هو».
 
 ```typescript
 // This is a discriminated union
@@ -21,13 +21,13 @@ type Status =
 // The 'type' field is the discriminator
 ```
 
-> **What’s the difference between a union and a discriminated union?**
+> **ما الفرق بين النوع الاتحادي والنوع الاتحادي المُميَّز؟**
 >
-> In TypeScript, a union type is just a way of saying a value can be one of several different types—for example, `string | number` means the value could be either a string or a number, but TypeScript doesn’t inherently know which one at any given time. A discriminated union (sometimes called a tagged union) adds a special common property, usually a literal type like `kind: "circle" | "square"`, that acts as a label to tell the compiler (and you) which branch of the union you’re working with. This “discriminator” lets TypeScript narrow the type automatically in a type-safe way when you check the value of that property, making discriminated unions far more powerful for modeling structured data and ensuring exhaustive checks.
+> في TypeScript، النوع الاتحادي ليس سوى طريقة لقول إنّ القيمة يمكن أن تكون واحدًا من عدّة أنواع مختلفة — فمثلًا `string | number` يعني أنّ القيمة قد تكون نصًّا أو عددًا، لكنّ TypeScript لا يعرف أيّهما هي في كل لحظة بطبيعتها. أما النوع الاتحادي المُميَّز (ويسمى أحيانًا الاتحاد المُوسوم) فيضيف خاصيةً مشتركة خاصّة، عادةً نوعًا حرفيًا مثل `kind: "circle" | "square"`، تعمل كوسمٍ يخبر المُصرِّف (وأنت) أيّ فرعٍ من الاتحاد تعمل عليه. ويتيح هذا «المُميِّز» لـ TypeScript تضييق النوع تلقائيًا وبأمانٍ عند فحصك قيمة تلك الخاصية، ما يجعل الأنواع الاتحادية المُميَّزة أقوى بكثير في نمذجة البيانات البنيوية وضمان الفحص الشامل.
 
-## Why They’re Powerful
+## لماذا هي قويّة
 
-The magic happens when TypeScript uses the discriminator to narrow the type:
+يحدث السحر حين يستخدم TypeScript المُميِّز لتضييق النوع:
 
 ```typescript
 function handleStatus(status: Status) {
@@ -51,9 +51,9 @@ function handleStatus(status: Status) {
 }
 ```
 
-## Real-World React Example
+## مثال واقعي في React
 
-Let’s build a data fetching component that uses discriminated unions:
+لنبنِ مكوّنًا لجلب البيانات يستخدم الأنواع الاتحادية المُميَّزة:
 
 ```typescript
 // Define our state shape
@@ -126,9 +126,9 @@ const UserProfile = ({ userId }: { userId: string }) => {
 };
 ```
 
-## Making Invalid States Impossible
+## جعل الحالات غير الصالحة مستحيلة
 
-Here’s the real power - discriminated unions prevent invalid states:
+إليك القوة الحقيقية — الأنواع الاتحادية المُميَّزة تمنع الحالات غير الصالحة:
 
 ```typescript
 // ❌ Bad: Multiple booleans lead to invalid states
@@ -149,9 +149,9 @@ type GoodState =
 // Can't have error without error status
 ```
 
-## Form Handling with Discriminated Unions
+## التعامل مع النماذج عبر الأنواع الاتحادية المُميَّزة
 
-Forms are perfect for discriminated unions:
+النماذج مثالية للأنواع الاتحادية المُميَّزة:
 
 ```typescript
 type FormField<T> =
@@ -218,9 +218,9 @@ const LoginComponent = () => {
 };
 ```
 
-## Validation Rules with Discriminated Unions
+## قواعد التحقّق عبر الأنواع الاتحادية المُميَّزة
 
-You can also model validation rules as a discriminated union for clear, exhaustive handling.
+يمكنك أيضًا نمذجة قواعد التحقّق كنوع اتحادي مُميَّز للحصول على معالجة واضحة وشاملة.
 
 ```typescript
 type ValidationRule<T> =
@@ -270,9 +270,9 @@ function validateField<T>(value: T, rules: ValidationRule<T>[]): string | null {
 }
 ```
 
-## Form Submission Workflow
+## سير عمل إرسال النموذج
 
-Whole-form workflows often benefit from tagged states like validating, validation-error, submitting, success, and error.
+كثيرًا ما تستفيد سير العمل للنموذج بالكامل من حالات موسومة مثل التحقّق، وخطأ التحقّق، والإرسال، والنجاح، والخطأ.
 
 ```typescript
 type FormState<T> =
@@ -335,9 +335,9 @@ function LoginForm() {
 }
 ```
 
-## Actions and Reducers
+## الأفعال والمخفّضات
 
-Discriminated unions shine in Redux-style reducers:
+تتألّق الأنواع الاتحادية المُميَّزة في المخفّضات بأسلوب Redux:
 
 ```typescript
 // Action types using discriminated unions
@@ -422,9 +422,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 };
 ```
 
-## Multiple Discriminators
+## عدّة مُميِّزات
 
-Sometimes you need multiple fields to discriminate:
+أحيانًا تحتاج إلى حقول متعدّدة للتمييز:
 
 ```typescript
 type NotificationStyle = 'banner' | 'toast' | 'modal';
@@ -471,9 +471,9 @@ function renderNotification(notification: Notification) {
 }
 ```
 
-## Nested Discriminated Unions
+## أنواع اتحادية مُميَّزة متداخلة
 
-You can nest discriminated unions for complex state:
+يمكنك تداخل الأنواع الاتحادية المُميَّزة للحالات المعقّدة:
 
 ```typescript
 type ConnectionState =
@@ -523,9 +523,9 @@ function getStatusMessage<T>(state: AppState<T>): string {
 }
 ```
 
-## Router State Management
+## إدارة حالة الموجّه (Router)
 
-Discriminated unions are perfect for routing:
+الأنواع الاتحادية المُميَّزة مثالية للتوجيه (routing):
 
 ```typescript
 type Route =
@@ -580,9 +580,9 @@ const Router = ({ state }: { state: RouterState }) => {
 };
 ```
 
-## Async Operations Pattern
+## نمط العمليات غير المتزامنة
 
-Here’s a reusable pattern for async operations:
+إليك نمطًا قابلًا لإعادة الاستخدام للعمليات غير المتزامنة:
 
 ```typescript
 type AsyncOperation<TParams, TResult> =
@@ -665,9 +665,9 @@ const SaveButton = ({ data }: { data: FormData }) => {
 };
 ```
 
-## Wizard/Multi-Step Forms
+## نماذج المعالج والنماذج متعددة الخطوات
 
-Discriminated unions excel at multi-step processes:
+الأنواع الاتحادية المُميَّزة تتفوّق في العمليات متعددة الخطوات:
 
 ```typescript
 type WizardStep =
@@ -764,9 +764,9 @@ const ProfileWizard = () => {
 };
 ```
 
-## Pattern Matching with Libraries
+## مطابقة الأنماط عبر المكتبات
 
-While TypeScript doesn’t have built-in pattern matching, libraries like `ts-pattern` make it even more powerful:
+رغم أنّ TypeScript لا يملك مطابقة أنماط مدمجة، فإنّ مكتبات مثل `ts-pattern` تجعلها أقوى بكثير:
 
 ```typescript
 import { match } from 'ts-pattern';
@@ -794,9 +794,9 @@ const handleEvent = (event: Event) =>
     .exhaustive();
 ```
 
-## Testing Discriminated Unions
+## اختبار الأنواع الاتحادية المُميَّزة
 
-Discriminated unions make testing easier:
+تجعل الأنواع الاتحادية المُميَّزة الاختبار أسهل:
 
 ```typescript
 // Easy to test each state
@@ -827,9 +827,9 @@ describe('UserProfile', () => {
 });
 ```
 
-## Common Patterns and Tips
+## أنماط شائعة ونصائح
 
-### Always Include a Discriminator
+### اجعل المُميِّز دائمًا موجودًا
 
 ```typescript
 // ✅ Good - has discriminator
@@ -840,7 +840,7 @@ type Shape = { radius: number } | { size: number };
 // TypeScript can't easily tell these apart
 ```
 
-### Use Literal Types for Discriminators
+### استخدم الأنواع الحرفية للمُميِّزات
 
 ```typescript
 // ✅ Good - literal types
@@ -851,7 +851,7 @@ type Status = { success: true } | { success: false };
 // Harder to extend and less clear
 ```
 
-### Keep Related Data Together
+### أبقِ البيانات المترابطة معًا
 
 ```typescript
 // ✅ Good - error with its message
@@ -865,7 +865,7 @@ interface Result {
 }
 ```
 
-### Use Exhaustive Checks
+### استخدم الفحوصات الشاملة
 
 ```typescript
 function handle(value: 'a' | 'b' | 'c') {
@@ -884,9 +884,9 @@ function handle(value: 'a' | 'b' | 'c') {
 }
 ```
 
-## Advanced: Building a State Machine
+## متقدّم: بناء آلة حالات
 
-Discriminated unions are perfect for state machines:
+الأنواع الاتحادية المُميَّزة مثالية لآلات الحالة:
 
 ```typescript
 type TrafficLightState =
@@ -946,9 +946,9 @@ const TrafficLightComponent = () => {
 };
 ```
 
-## Exclusive Props Without Discriminants
+## خصائص حصرية من دون مُميِّزات
 
-Sometimes you want mutual exclusivity without an explicit variant prop. Here’s a pattern using union types and the `never` type:
+أحيانًا تريد حصريةً متبادلة من دون خاصية تنويع صريحة. وهذا نمطٌ يستخدم الأنواع الاتحادية والنوع `never`:
 
 ```typescript
 type ExclusiveProps<T, U> =
@@ -973,7 +973,7 @@ function IconButton(props: IconButtonProps) {
 }
 ```
 
-This creates an either-or relationship without needing a discriminant:
+وهذا ينشئ علاقة «أو هذا أو ذاك» من دون الحاجة إلى مُميِّز:
 
 ```typescript
 // ✅ Valid uses
@@ -985,13 +985,13 @@ This creates an either-or relationship without needing a discriminant:
 <IconButton aria-label="Label only" /> // Missing icon
 ```
 
-The `ExclusiveProps` utility makes properties from one type `never` when the other type is active, preventing mixed usage.
+أداة `ExclusiveProps` تجعل خصائص أحد النوعين من نوع `never` حين يكون النوع الآخر نشطًا، فتمنع الاستخدام المختلط.
 
-## Advanced React Patterns
+## أنماط React متقدّمة
 
-### Form Field Unions
+### اتحادات حقول النماذج
 
-Let’s build a flexible form field component that handles different input types:
+لنبنِ مكوّن حقل نموذج مرنًا يتعامل مع أنواع إدخال مختلفة:
 
 ```typescript
 type BaseFieldProps = {
@@ -1081,11 +1081,11 @@ function Field(props: FieldProps) {
 }
 ```
 
-TypeScript ensures you can’t mix incompatible props—no `placeholder` on selects, no `options` on text fields.
+يضمن TypeScript ألّا تخلط خصائص غير متوافقة — لا `placeholder` في القوائم المنسدلة، ولا `options` في حقول النص.
 
-### Button Component with Variants
+### مكوّن زر بتنويعات
 
-Here’s how to create a button that can be either a button or a link:
+إليك كيف تنشئ زرًا يكون إمّا زرًا وإمّا رابطًا:
 
 ```typescript
 type ButtonAsButton = {
@@ -1125,9 +1125,9 @@ function Button(props: ButtonProps) {
 }
 ```
 
-## Runtime Validation with Zod
+## التحقّق وقت التشغيل مع Zod
 
-For extra safety, especially when dealing with external data, combine discriminated unions with runtime validation:
+لأمانٍ إضافي، وخصوصًا عند التعامل مع بيانات خارجية، اجمع الأنواع الاتحادية المُميَّزة مع التحقّق وقت التشغيل:
 
 ```typescript
 import { z } from 'zod';
@@ -1160,11 +1160,11 @@ function Button(props: ButtonProps) {
 }
 ```
 
-This is particularly valuable for components that receive props from APIs or configuration files where TypeScript can’t help.
+وهذا ذو قيمة خاصة للمكوّنات التي تتلقّى خصائصها من واجهات البرمجة أو ملفات الإعداد حيث لا يمكن لـ TypeScript المساعدة.
 
-### Runtime Validation for Async UI State
+### التحقّق وقت التشغيل لحالة الواجهة غير المتزامنة
 
-You can also validate tagged UI state at runtime with a reusable schema factory:
+يمكنك أيضًا التحقّق من حالة الواجهة الموسومة وقت التشغيل عبر مصنع مخططات قابل لإعادة الاستخدام:
 
 ```typescript
 import { z } from 'zod';
@@ -1190,19 +1190,19 @@ function parseUserAsync(input: unknown): UserAsyncState | null {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Discriminated unions and exclusive props are compile-time constructs—they add zero runtime overhead. The discriminant checks become simple property access, and TypeScript’s union narrowing is eliminated during compilation.
+الأنواع الاتحادية المُميَّزة والخصائص الحصرية هما بنى وقت التصريف — ولا تضيفان أي عبءٍ وقت التشغيل. إذ تتحوّل فحوصات المُميِّز إلى وصولٍ بسيط إلى خاصية، ويُلغى تضييق الاتحاد من TypeScript أثناء التصريف.
 
-However, be mindful of:
+لكنّ كن منتبهًا لما يلي:
 
-- **Complex union types** can slow TypeScript compilation on very large codebases
-- **Deep nesting** of discriminated unions can make error messages harder to read
-- **Runtime validation** has a cost—use it judiciously in performance-critical paths
+- **الأنواع الاتحادية المعقّدة** قد تُبطئ تصريف TypeScript في قواعد الشيفرة الكبيرة جدًّا
+- **التداخل العميق** للأنواع الاتحادية المُميَّزة قد يجعل رسائل الأخطاء أصعب في القراءة
+- **التحقّق وقت التشغيل** له كلفة — استخدمه بحكمة في المسارات الحرجة للأداء
 
-## Common Pitfalls
+## الأخطاء الشائعة
 
-### Forgetting the Discriminant
+### نسيان المُميِّز
 
 ```typescript
 // ❌ This doesn't work—no discriminant
@@ -1217,14 +1217,14 @@ function process(props: BadUnion) {
 }
 ```
 
-### Making Discriminants Optional
+### جعل المُميِّزات اختيارية
 
 ```typescript
 // ❌ Optional discriminants defeat the purpose
 type WeakUnion = { type?: 'A'; propA: string } | { type?: 'B'; propB: number };
 ```
 
-### Overcomplicating Simple Cases
+### تعقيد الحالات البسيطة
 
 ```typescript
 // ❌ Overkill for a simple boolean flag
@@ -1237,35 +1237,35 @@ type Simple = {
 };
 ```
 
-## When to Use Each Pattern
+## متى تستخدم كل نمط
 
-**Use discriminated unions when**:
+**استخدم الأنواع الاتحادية المُميَّزة عندما:**
 
-- You have clear variants of component behavior
-- Props have completely different meanings based on context
-- You want explicit, self-documenting APIs
-- You need exhaustive pattern matching in switch statements
+- لديك تنويعات واضحة لسلوك المكوّن
+- للخصائص معانٍ مختلفة تمامًا حسب السياق
+- تريد واجهات برمجية صريحة ووثّقة بذاتها
+- تحتاج مطابقة أنماط شاملة في جمل switch
 
-**Use exclusive props when**:
+**استخدم الخصائص الحصرية عندما:**
 
-- You have a smaller number of mutually exclusive options
-- The relationship is more about “either this or that” than distinct variants
-- You want a cleaner API without extra discriminant props
+- لديك عدد أقلّ من الخيارات المتباعدة حصريًّا
+- العلاقة أقرب إلى «أو هذا أو ذاك» منها إلى تنويعات متميّزة
+- تريد واجهة برمجية أنظف من دون خصائص مُميِّز إضافية
 
-**Combine with runtime validation when**:
+**اجمعها مع التحقّق وقت التشغيل عندما:**
 
-- Props come from external sources (APIs, config files)
-- You’re building a component library for external consumption
-- Data integrity is critical for security or business logic
+- تأتي الخصائص من مصادر خارجية (واجهات البرمجة، ملفات الإعداد)
+- تبني مكتبة مكوّنات للاستهلاك الخارجي
+- سلامة البيانات أمرٌ حاسم للأمان أو لمنطق العمل
 
-## Conclusion
+## الخلاصة {#conclusion}
 
-Discriminated unions are one of TypeScript’s killer features for React development. They:
+الأنواع الاتحادية المُميَّزة إحدى مزايا TypeScript القاتلة في تطوير React. فهي:
 
-1. **Make invalid states impossible** - Can’t represent incorrect combinations
-2. **Enable exhaustive checking** - TypeScript ensures you handle all cases
-3. **Provide excellent IntelliSense** - IDE knows exactly what properties are available
-4. **Document your intent** - The types themselves explain the possible states
-5. **Simplify testing** - Each state is easy to test in isolation
+1. **تجعل الحالات غير الصالحة مستحيلة** - لا يمكن تمثيل التركيبات الخاطئة
+2. **تتيح الفحص الشامل** - يضمن TypeScript معالجتك لكل الحالات
+3. **توفّر دعمًا ممتازًا لـ IntelliSense** - تعرف بيئة التطوير الخصائص المتاحة تمامًا
+4. **توثّق نيتك** - تشرح الأنواع نفسها الحالات الممكنة
+5. **تبسّط الاختبار** - من السهل اختبار كل حالة على حدة
 
-Master this pattern, and you’ll write React applications that are not just type-safe, but architecturally sound. Your future self (and your teammates) will thank you!
+أتقن هذا النمط، وستكتب تطبيقات React لا آمنةً من حيث الأنواع فحسب بل سليمةً معماريًّا. وسيشكرك نفسك في المستقبل (وزملاؤك)!

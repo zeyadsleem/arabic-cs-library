@@ -1,14 +1,14 @@
 ---
-title: "Template Literal Types"
-lang: en
+title: "أنواع القوالب النصّية"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/typescript-template-literal-types"
 ---
 
-Remember template literals in JavaScript? TypeScript took that concept and turned it into a superpower for type-level string manipulation. Template literal types let you create new string literal types by combining and transforming existing ones. They’re incredibly useful for CSS-in-JS, API routes, event names, and anywhere you need type-safe string patterns.
+أتذكر القوالب النصّية (template literals) في JavaScript؟ أخذ TypeScript هذا المفهوم وجعله قوةً خارقة في معالجة النصوص على مستوى الأنواع. تتيح لك أنواع القوالب النصّية إنشاء أنواع حرفية نصّية جديدة عبر دمج الأنواع القائمة وتحويلها. وهي مفيدة إلى حدّ بعيد لـ CSS-in-JS ومسارات API وأسماء الأحداث، وفي كل مكان تحتاج فيه إلى أنماط نصّية آمنة من حيث الأنواع.
 
-## The Basics
+## الأساسيات
 
-Template literal types use the same syntax as JavaScript template literals, but at the type level:
+تستخدم أنواع القوالب النصّية الصيغة نفسها التي تستخدمها القوالب النصّية في JavaScript، لكن على مستوى الأنواع:
 
 ```typescript
 type World = 'world';
@@ -21,9 +21,9 @@ type FullName = `${FirstName} ${LastName}`;
 // Type: "Alice Smith" | "Alice Jones" | "Bob Smith" | "Bob Jones"
 ```
 
-## Union Type Combinations
+## توليفات أنواع الاتحاد
 
-Template literal types really shine when combined with union types:
+تتألّق أنواع القوالب النصّية حقًا عند دمجها مع أنواع الاتحاد:
 
 ```typescript
 type Color = "red" | "green" | "blue";
@@ -48,9 +48,9 @@ const Button = ({ variant }: ButtonProps) => {
 <Button variant="huge-purple" />   // ❌ Error
 ```
 
-## CSS-in-JS Type Safety
+## أمان الأنواع في CSS-in-JS
 
-Template literal types are perfect for CSS properties:
+أنواع القوالب النصّية مثالية لخصائص CSS:
 
 ```typescript
 type CSSUnit = 'px' | 'em' | 'rem' | '%';
@@ -85,9 +85,9 @@ const flexContainer: FlexStyles = {
 };
 ```
 
-## Event Handler Types
+## أنواع معالِجات الأحداث
 
-Create type-safe event handler names:
+أنشئ أسماء معالِجات أحداث آمنة من حيث الأنواع:
 
 ```typescript
 type DOMEvents = "click" | "focus" | "blur" | "change";
@@ -115,9 +115,9 @@ const InteractiveElement = (props: ElementHandlers & { children: React.ReactNode
 };
 ```
 
-## API Route Types
+## أنواع مسارات API
 
-Type-safe API routes with parameters:
+مسارات API آمنة من حيث الأنواع مع معاملات:
 
 ```typescript
 type Entity = 'users' | 'posts' | 'comments';
@@ -150,9 +150,9 @@ const routes: Record<RouteWithMethod, Function> = {
 };
 ```
 
-## String Manipulation Utilities
+## أدوات معالجة النصوص
 
-TypeScript provides built-in string manipulation utilities:
+يوفّر TypeScript أدوات مدمجة لمعالجة النصوص:
 
 ```typescript
 type Greeting = 'hello world';
@@ -182,9 +182,9 @@ interface RequestHandlers {
 }
 ```
 
-## React Component Prop Patterns
+## أنماط خصائص مكوّنات React
 
-Create consistent prop naming patterns:
+أنشئ أنماطًا متّسقة لتسمية الخصائص:
 
 ```typescript
 // Variant props pattern
@@ -227,9 +227,9 @@ const element: ElementProps = {
 };
 ```
 
-## BEM Naming Convention
+## اصطلاح تسمية BEM
 
-Implement BEM (Block Element Modifier) with type safety:
+نفّذ BEM (Block Element Modifier) مع أمان الأنواع:
 
 ```typescript
 type Block = 'button' | 'card' | 'modal';
@@ -270,9 +270,9 @@ function bem<B extends Block>(block: B, element?: Element, modifier?: Modifier):
 const className = bem('button', 'icon', 'large'); // "button__icon--large"
 ```
 
-## Tailwind CSS Type Safety
+## أمان أنواع Tailwind CSS
 
-Create type-safe Tailwind class names:
+أنشئ أسماء أصناف Tailwind آمنة من حيث الأنواع:
 
 ```typescript
 type TailwindSpacing = "0" | "1" | "2" | "4" | "8" | "16";
@@ -298,9 +298,9 @@ const Component = ({ className }: TailwindProps) => {
 <Component className="invalid-class" />     // ❌ Error
 ```
 
-## Query String Types
+## أنواع سلاسل الاستعلام
 
-Type-safe URL query parameters:
+معاملات استعلام URL آمنة من حيث الأنواع:
 
 ```typescript
 type QueryParam = 'page' | 'limit' | 'sort' | 'filter';
@@ -329,9 +329,9 @@ type BuildQuery<T extends QueryParam[]> = T extends []
     : never;
 ```
 
-## Environment Variable Types
+## أنواع متغيّرات البيئة
 
-Type-safe environment variables:
+متغيّرات بيئة آمنة من حيث الأنواع:
 
 ```typescript
 type EnvPrefix = 'REACT_APP_' | 'NEXT_PUBLIC_' | 'VITE_';
@@ -358,9 +358,9 @@ const apiUrl = process.env.REACT_APP_API_URL; // string
 const env = process.env.REACT_APP_ENVIRONMENT; // "development" | "production" | "test"
 ```
 
-## Database Query Types
+## أنواع استعلامات قاعدة البيانات
 
-Type-safe database operations:
+عمليات قاعدة بيانات آمنة من حيث الأنواع:
 
 ```typescript
 type Table = 'users' | 'posts' | 'comments';
@@ -385,9 +385,9 @@ executeQuery('DELETE FROM posts WHERE id = 5'); // ✅
 // executeQuery("DROP TABLE users");                          // ❌ Error
 ```
 
-## Recursive Template Literals
+## القوالب النصّية العودية
 
-Create recursive string patterns:
+أنشئ أنماطًا نصّية عودية:
 
 ```typescript
 type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
@@ -408,7 +408,7 @@ type Path = `/${PathSegment}` | `/${PathSegment}/${Path}`;
 // Note: TypeScript has recursion depth limits, so this won't work infinitely
 ```
 
-## Real-World Example: Form Validation Messages
+## مثال من العالم الحقيقي: رسائل التحقّق من النماذج
 
 ```typescript
 type FieldName = "email" | "password" | "username" | "age";
@@ -444,7 +444,7 @@ const FormField = ({ field, rule }: ValidationError) => {
 };
 ```
 
-## Icon Component with Dynamic Imports
+## مكوّن أيقونة مع استيراد ديناميكي
 
 ```typescript
 type IconName = "home" | "user" | "settings" | "search" | "heart";
@@ -479,7 +479,7 @@ const Icon = ({ name, size = "md", variant = "outline" }: IconProps) => {
 };
 ```
 
-## Pattern Matching with Template Literals
+## مطابقة الأنماط مع القوالب النصّية
 
 ```typescript
 // Email validation at type level
@@ -506,7 +506,7 @@ fetchFromURL('https://api.example.com'); // ✅
 fetchFromURL('ftp://files.example.com'); // Would fail at runtime
 ```
 
-## State Machine Types
+## أنواع آلات الحالة
 
 ```typescript
 type State = 'idle' | 'loading' | 'success' | 'error';
@@ -530,9 +530,9 @@ function transition(currentState: State, action: Action): State {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-### Use for Consistency
+### استخدمها للاتّساق
 
 ```typescript
 // ✅ Good: Enforce naming patterns
@@ -541,7 +541,7 @@ type HookName = `use${Capitalize<string>}`;
 type HandlerName = `handle${Capitalize<string>}`;
 ```
 
-### Avoid Over-Complexity
+### تجنّب التعقيد المفرط
 
 ```typescript
 // ❌ Too complex
@@ -551,7 +551,7 @@ type ComplexPattern = `${Uppercase<string>}_${number}_${Lowercase<string>}-${str
 type SimplePattern = `${string}-${number}`;
 ```
 
-### Combine with Other Features
+### ادمجها مع ميزات أخرى
 
 ```typescript
 // Template literals + mapped types
@@ -571,7 +571,7 @@ type UserGetters = Getters<User>;
 // }
 ```
 
-### Document Intent
+### وثّق النية
 
 ```typescript
 // Make the pattern clear
@@ -580,14 +580,14 @@ type UUID = `${string}-${string}-${string}-${string}-${string}`;
 type SemVer = `${number}.${number}.${number}`;
 ```
 
-## Summary
+## الخلاصة
 
-Template literal types bring JavaScript’s string template power to TypeScript’s type system. They enable:
+تنقل أنواع القوالب النصّية قوة قوالب النصوص في JavaScript إلى نظام أنواع TypeScript. وهي تتيح:
 
-1. **Type-safe string patterns** - Enforce consistent naming and formatting
-2. **CSS-in-JS safety** - Type-check class names and styles
-3. **API route typing** - Ensure valid endpoints
-4. **Event handler patterns** - Consistent event naming
-5. **Configuration validation** - Type-safe environment variables
+1. **أنماط نصّية آمنة من حيث الأنواع** — تفرض تسميةً وتنسيقًا متّسقين
+2. **أمان CSS-in-JS** — تفحص أسماء الأصناف والأنماط
+3. **أنواع مسارات API** — تضمن نقاط نهاية صالحة
+4. **أنماط معالِجات الأحداث** — تسمية أحداث متّسقة
+5. **التحقّق من الإعدادات** — متغيّرات بيئة آمنة من حيث الأنواع
 
-Master template literal types, and you’ll write React applications with unprecedented string type safety!
+أتقن أنواع القوالب النصّية، وستكتب تطبيقات React بمستوى غير مسبوق من أمان أنواع النصوص!

@@ -1,61 +1,45 @@
 ---
-title: "Model Context Protocol"
-lang: en
+title: "بروتوكول سياق النموذج (Model Context Protocol)"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/mcp"
 ---
 
-[Model Context Protocol](https://modelcontextprotocol.io/) is a standard way for
-agents to connect to tools and data sources. Think of it as the adapter layer
-between an agent and the systems it needs to inspect or change.
+‏[Model Context Protocol](https://modelcontextprotocol.io/) طريقة معيارية لربط الوكلاء بالأدوات ومصادر البيانات. فكّر فيه كطبقة محوّل (adapter) بين الوكيل والأنظمة التي يحتاج إلى فحصها أو تغييرها.
 
-An MCP server might expose:
+قد يعرّض خادم MCP ما يلي:
 
-- Database queries.
-- Browser automation.
-- Issue tracker actions.
-- Design files.
-- Internal documentation search.
-- Deployment status.
-- Custom product tools.
+- استعلامات قواعد البيانات.
+- أتمتة المتصفح.
+- إجراءات متتبّع القضايا.
+- ملفات التصميم.
+- البحث في التوثيق الداخلي.
+- حالة النشر.
+- أدوات المنتج المخصّصة.
 
-The agent does not need bespoke code for each integration. It reads the server’s
-tool list, asks for permission when required, and calls the tool with structured
-arguments.
+لا يحتاج الوكيل إلى شيفرة مخصّصة لكل تكامل؛ فهو يقرأ قائمة أدوات الخادم، ويطلب الإذن عند اللزوم، ويستدعي الأداة بوسائط مُهيكلة.
 
-## Transports
+## وسائل النقل
 
-Current agent tools commonly support:
+تدعم أدوات الوكلاء الحالية عمومًا:
 
-- `stdio` for local servers launched as subprocesses.
-- `http` for remote servers.
-- `sse` for older remote servers.
+- `stdio` للخوادم المحلية التي تُشغَّل كعمليات فرعية.
+- `http` للخوادم البعيدة.
+- `sse` للخوادم البعيدة الأقدم.
 
-For new remote integrations, prefer HTTP when the client supports it. Treat SSE
-as a compatibility path, especially in Claude Code where the documentation now
-marks SSE as deprecated.
+للتكاملات البعيدة الجديدة، فضّل HTTP عندما يدعمه العميل. وعامل SSE كمسار توافق، خصوصًا في Claude Code حيث يصنّف التوثيق الآن SSE كمهجورة.
 
-## Authentication
+## المصادقة
 
-Remote MCP servers can use [OAuth](https://oauth.net/2/). That makes the
-security model more like a first-party application integration than a local
-editor extension. Review the scopes, callback URL, and token storage before
-enabling a server for a team.
+يمكن لخوادم MCP البعيدة استخدام [OAuth](https://oauth.net/2/). وهذا يجعل نموذج الأمان أشبه بتكامل تطبيق تابع لجهة أولى منه بإضافة محرّر محلية. راجع النطاقات وعنوان URL للاستدعاء الراجع وتخزين الرموز قبل تمكين خادم لفريق.
 
-Local servers can also leak secrets through environment variables, logs, and tool
-arguments. “It runs on my machine” is not a security review.
+قد تسرّب الخوادم المحلية الأسرار أيضًا عبر متغيّرات البيئة والسجلات ووسائط الأدوات. فعبارة «إنه يعمل على جهازي» ليست مراجعة أمنية.
 
-## Tool User Interfaces
+## واجهات مستخدم الأدوات
 
-Some MCP integrations can return richer user interfaces, not just text. Cursor
-documents MCP Apps and tool user interfaces as part of its MCP support. That is
-powerful for workflows where the agent needs a human to inspect structured
-results, choose an option, or confirm an action.
+قد تُعيد بعض تكاملات MCP واجهات مستخدم أغنى، لا مجرد نص. ويوثّق Cursor تطبيقات MCP وواجهات مستخدم الأدوات كجزء من دعمه لـ MCP. وهذا قوي لسير العمل الذي يحتاج فيه الوكيل إلى إنسان لفحص نتائج مُهيكلة، أو اختيار خيار، أو تأكيد إجراء.
 
-The same rule applies: the prettier the tool surface, the more important the
-underlying permission boundary becomes.
+وتنطبق القاعدة نفسها: كلما ازداد سطح الأداة جمالًا، ازدادت أهمية حدّ الصلاحيات الكامن تحته.
 
-## Course Rule
+## قاعدة الدورة
 
-Use MCP when the agent needs authoritative external context or a real action. Do
-not use MCP to hide a shell script that should live in the repository, and do not
-enable broad write access without a review path.
+استخدم MCP عندما يحتاج الوكيل إلى سياق خارجي موثوق أو إجراء حقيقي. ولا تستخدم MCP لإخفاء نص صدفي ينبغي أن يوجد في المستودع، ولا تمكّن وصول كتابة واسعًا دون مسار مراجعة.

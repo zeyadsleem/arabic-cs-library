@@ -1,29 +1,29 @@
 ---
-title: "The Full Static Site Pipeline"
-lang: en
+title: "خط أنابيب الموقع الثابت الكامل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/full-static-pipeline"
 ---
 
-Imagine someone opening a link to your site to check whether the new spring camping gear is live yet. They do not care that your storefront is really a private S3 bucket behind CloudFront. They care that the page loads fast, uses HTTPS, and does not fall over when they refresh a deep route. That invisible plumbing is the pipeline you are building now.
+تخيّل شخصًا يفتح رابطًا إلى موقعك ليتحقّق مما إذا كانت معدات التخييم الربيعية الجديدة متاحة بعد. لا يهمّه أن متجرك في الحقيقة حاوية S3 خاصة خلف CloudFront. ما يهمّه أن الصفحة تُحمَّل بسرعة، وتستخدم HTTPS، ولا تنهار عندما يُحدّث مسارًا عميقًا. وتلك السباكة غير المرئية هي خط الأنابيب الذي تبنيه الآن.
 
-You’ve spent the early static-hosting arc learning individual AWS services. You can create an S3 bucket, configure a CloudFront distribution, and lock it down with Origin Access Control. Each piece works on its own. But the value is in how they compose: a request hits CloudFront, CloudFront serves cached content from S3 over HTTPS, and the whole thing costs pennies. That’s the pipeline. This lesson maps out the architecture end to end and explains the order of operations: what you create first, what depends on what, and why.
+لقد أمضيت قوس الاستضافة الثابتة المبكّر في تعلّم خدمات AWS الفردية. تستطيع إنشاء حاوية S3، وضبط توزيع CloudFront، وتقييده بالتحكم في الوصول إلى الأصل. وكل قطعة تعمل بمفردها. لكن القيمة في كيفية تركيبها: يصل الطلب إلى CloudFront، فيقدّم CloudFront محتوى مخزّنًا مؤقتًا من S3 عبر HTTPS، ويكلّف الأمر كله بنسات. هذا هو خط الأنابيب. ويرسم هذا الدرس المعمارية من طرف إلى طرف ويشرح ترتيب العمليات: ما تنشئه أولًا، وما يعتمد على ما، ولماذا.
 
-If you want AWS’s canonical building blocks open next to this lesson, keep the [S3 static website tutorial](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) and the [CloudFront OAC guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) nearby.
+وإن أردت كتل البناء المعتمدة من AWS مفتوحة إلى جانب هذا الدرس، فأبقِ [درس موقع S3 الثابت](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) و[دليل OAC في CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html) قريبين.
 
-## Why This Matters
+## لماذا يهم هذا
 
-This is the first moment the course stops being “a bunch of AWS services you now vaguely recognize” and becomes “a deployment you could actually ship.” If you understand this flow, every later module has somewhere to attach. Lambda adds compute to the same frontend. API Gateway adds an HTTP edge to the same domain. DynamoDB adds state to the same application. This is the spine.
+هذه أول لحظة تتوقّف فيها الدورة عن كونها «حفنة من خدمات AWS صرت تعرفها معرفة غامضة» وتصبح «نشرًا يمكنك شحنه فعلًا». فإن فهمت هذا التدفق، فلكل وحدة لاحقة مكان تتعلّق به. فـ Lambda يضيف حوسبة إلى الواجهة الأمامية نفسها. وAPI Gateway يضيف حافة HTTP إلى النطاق نفسه. وDynamoDB يضيف حالة إلى التطبيق نفسه. فهذا هو العمود الفقري.
 
-## Builds On
+## يبني على
 
-- [Creating and Configuring a Bucket](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket)
-- [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)
-- [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3)
-- [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)
+- [إنشاء حاوية S3 وإعدادها](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket)
+- [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution)
+- [التحكم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3)
+- [سلوكات التخزين المؤقت والإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations)
 
-## The Architecture
+## المعمارية
 
-Here’s what the core pipeline looks like:
+هذا شكل خط الأنابيب الأساسي:
 
 ```
 flowchart LR
@@ -31,12 +31,12 @@ flowchart LR
     CloudFront -->|cache miss| S3["Private S3 bucket<br/>static assets"]
 ```
 
-1. **CloudFront** terminates HTTPS using its default certificate, checks its edge cache, and on a miss, fetches from S3 using Origin Access Control.
-2. **S3** stores the static files in a private bucket. Only CloudFront can read from it.
+1. **CloudFront** ينهي HTTPS باستخدام شهادته الافتراضية، ويفحص ذاكرة الحافة المؤقتة، وعند غياب الملف (miss) يجلب من S3 باستخدام التحكم في الوصول إلى الأصل.
+2. **S3** يخزّن الملفات الثابتة في حاوية خاصة. ولا يقرأ منها إلا CloudFront.
 
-Two services, two clearly defined responsibilities. No servers. No containers. No load balancers. I genuinely love how simple this ends up being.
+خدمتان، ومسؤوليتان محدّدتان بوضوح. بلا خوادم. بلا حاويات. بلا موازنات حمل. وأنا أحبّ فعلًا مدى بساطة ما ينتهي إليه الأمر.
 
-If you have a custom domain, you can optionally add Route 53 and ACM to the pipeline. That’s covered in the [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course. The extended architecture looks like this:
+وإن كان لديك نطاق مخصّص، فيمكنك اختياريًا إضافة Route 53 وACM إلى خط الأنابيب. ويُغطّى ذلك في قسم [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) في نهاية الدورة. والمعمارية الموسّعة تبدو هكذا:
 
 ```
 flowchart LR
@@ -46,65 +46,65 @@ flowchart LR
     ACM["ACM certificate<br/>us-east-1"] --> CloudFront
 ```
 
-## The Order of Operations
+## ترتيب العمليات
 
-The order matters. You can’t attach OAC to a distribution that doesn’t exist. You can’t lock down S3 before CloudFront has a distribution ARN. Here’s the sequence that keeps the dependency chain honest.
+الترتيب مهم. فلا يمكنك إرفاق OAC بتوزيع غير موجود. ولا يمكنك تقييد S3 قبل أن يكون لدى CloudFront ARN توزيع. وهذا هو التتابع الذي يحافظ على صدق سلسلة التبعيات.
 
-### Create the S3 Bucket
+### إنشاء حاوية S3
 
-The bucket is still the storage foundation: it holds your files. Nothing else in the pipeline depends on S3 being configured in a specific way at creation time—you can always update the bucket policy later. You covered this in [Creating and Configuring a Bucket](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket) and uploaded files in [Uploading and Organizing Files](https://stevekinney.com/courses/aws/uploading-and-organizing-files).
+تبقى الحاوية أساس التخزين: فهي تحمل ملفاتك. ولا شيء آخر في خط الأنابيب يعتمد على تهيئة S3 بطريقة معيّنة وقت الإنشاء — فيمكنك تحديث سياسة الحاوية لاحقًا دائمًا. وقد غطّيت هذا في [إنشاء حاوية S3 وإعدادها](https://stevekinney.com/courses/aws/creating-and-configuring-a-bucket) ورفعت الملفات في [رفع الملفات وتنظيمها](https://stevekinney.com/courses/aws/uploading-and-organizing-files).
 
-At this stage, the bucket can be public or private. The course has you make it public temporarily so you can see direct S3 hosting in isolation. That is the learning checkpoint, not the end state. The end state is private bucket plus CloudFront plus OAC.
+في هذه المرحلة، يمكن أن تكون الحاوية عامة أو خاصة. وتطلب منك الدورة جعلها عامة مؤقتًا لترى استضافة S3 المباشرة بمعزل عن غيرها. فتلك نقطة تعلّم عابرة، لا الحالة النهائية. والحالة النهائية هي حاوية خاصة مع CloudFront وOAC.
 
-### Create the CloudFront Distribution with OAC
+### إنشاء توزيع CloudFront مع OAC
 
-With the bucket ready, you can create the distribution. This is the step where everything comes together:
+بعد أن تصبح الحاوية جاهزة، يمكنك إنشاء التوزيع. وهذه هي الخطوة التي يجتمع فيها كل شيء:
 
-- The **origin** points to your S3 bucket. You configured this in [Creating a CloudFront Distribution](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution).
-- **Origin Access Control** restricts the bucket so only CloudFront can read from it. You set this up in [Origin Access Control for S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3).
-- The **default CloudFront certificate** provides HTTPS on the `*.cloudfront.net` domain automatically.
-- **Cache behaviors** and **custom error responses** handle caching and SPA routing. You configured these in [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations) and [Custom Error Pages and SPA Routing](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
+- **الأصل** يشير إلى حاوية S3 لديك. وقد أعددت هذا في [إنشاء توزيع CloudFront](https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution).
+- **التحكم في الوصول إلى الأصل** يقيّد الحاوية بحيث لا يقرأ منها إلا CloudFront. وقد أعددته في [التحكم في الوصول إلى الأصل في S3](https://stevekinney.com/courses/aws/origin-access-control-for-s3).
+- **شهادة CloudFront الافتراضية** توفّر HTTPS على نطاق `*.cloudfront.net` تلقائيًا.
+- **سلوكات التخزين المؤقت** و**استجابات الأخطاء المخصّصة** تتولّيان التخزين المؤقت وتوجيه SPA. وقد أعددتهما في [سلوكات التخزين المؤقت والإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations) و[صفحات الأخطاء المخصّصة وتوجيه SPA](https://stevekinney.com/courses/aws/custom-error-pages-and-spa-routing).
 
-After creating the distribution, you update the S3 bucket policy to allow only the CloudFront service principal, and you re-enable Block Public Access on the bucket. At this point, direct S3 URLs return 403.
+بعد إنشاء التوزيع، تحدّث سياسة حاوية S3 لتسمح فقط للكيان الخدمي (service principal) الخاص بـ CloudFront، وتعيد تمكين حجب الوصول العام على الحاوية. وعند هذه النقطة، تُرجع عناوين URL المباشرة لـ S3 الرمز 403.
 
-At this point, your site is live on the `*.cloudfront.net` domain. If you want to add a custom domain, the optional [Custom Domains, DNS, and Certificates](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) section at the end of the course covers Route 53, ACM, and wiring everything together.
+وعند هذه النقطة، يصبح موقعك حيًّا على نطاق `*.cloudfront.net`. وإن أردت إضافة نطاق مخصّص، فقسم [النطاقات المخصّصة وDNS والشهادات](https://stevekinney.com/courses/aws/dns-for-frontend-engineers) الاختياري في نهاية الدورة يغطّي Route 53 وACM وربط كل شيء معًا.
 
-## Why This Order
+## لماذا هذا الترتيب
 
-The dependency chain flows in one direction:
+تسير سلسلة التبعيات في اتجاه واحد:
 
 ```
 flowchart RL
     CloudFront["CloudFront"] --> S3["S3"]
 ```
 
-- CloudFront depends on S3 (as its origin).
-- The S3 bucket policy depends on the CloudFront distribution ARN.
-- OAC can’t be attached until the distribution exists.
+- CloudFront يعتمد على S3 (بوصفه أصله).
+- سياسة حاوية S3 تعتمد على ARN توزيع CloudFront.
+- لا يمكن إرفاق OAC قبل وجود التوزيع.
 
-The order isn’t arbitrary: it’s dictated by the dependencies between services. If you try to configure OAC before the distribution exists, there’s nothing to attach it to. If you try to lock down the bucket before you have the distribution’s ARN, the policy has no principal to trust.
+الترتيب ليس اعتباطيًا: بل يفرضه الاعتماد المتبادل بين الخدمات. فإن حاولت ضبط OAC قبل وجود التوزيع، فلا شيء تُرفقه به. وإن حاولت تقييد الحاوية قبل أن تحصل على ARN التوزيع، فليس للسياسة كيان تثق به.
 
-## The IAM Permissions That Make It Work
+## صلاحيات IAM التي تجعله يعمل
 
-Every operation in this pipeline requires IAM permissions. You built the foundational understanding in [IAM Mental Model](https://stevekinney.com/courses/aws/iam-mental-model) and [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy). For a deployment pipeline, the key permissions are:
+كل عملية في خط الأنابيب هذا تتطلّب صلاحيات IAM. وقد بنيت الفهم الأساسي في [نموذج IAM الذهني](https://stevekinney.com/courses/aws/iam-mental-model) و[كتابة أول سياسة IAM لك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy). وبالنسبة إلى خط أنابيب النشر، الصلاحيات الأساسية هي:
 
-- **S3**: `s3:PutObject`, `s3:DeleteObject`, `s3:ListBucket` on your bucket.
-- **CloudFront**: `cloudfront:CreateInvalidation` on your distribution.
+- **S3**: `s3:PutObject` و`s3:DeleteObject` و`s3:ListBucket` على حاويتك.
+- **CloudFront**: `cloudfront:CreateInvalidation` على توزيعك.
 
-You built a scoped deploy bot with exactly these S3 and CloudFront permissions in the [IAM Policy for a Deploy Bot exercise](https://stevekinney.com/courses/aws/iam-policy-exercise). That same policy is what you’ll use in CI/CD pipelines.
+وقد بنيت روبوت نشر محدود النطاق بهذه الصلاحيات نفسها لـ S3 وCloudFront في [تمرين سياسة IAM لروبوت النشر](https://stevekinney.com/courses/aws/iam-policy-exercise). والسياسة نفسها هي ما ستستخدمه في خطوط أنابيب CI/CD.
 
-## What Each Service Is Doing at Runtime
+## ما تفعله كل خدمة وقت التشغيل
 
-Once the pipeline is deployed, here’s what happens when a user visits `https://d1234abcdef.cloudfront.net/dashboard`:
+بعد نشر خط الأنابيب، هذا ما يحدث عندما يزور مستخدم `https://d1234abcdef.cloudfront.net/dashboard`:
 
-1. **DNS resolution**: The browser queries DNS for the `*.cloudfront.net` domain and gets the nearest edge location’s IP.
-2. **TLS handshake**: The browser connects to CloudFront’s edge location. CloudFront presents its default certificate. The browser verifies it and establishes an encrypted connection.
-3. **Edge cache check**: CloudFront checks if `/dashboard` is cached at this edge location.
-4. **Cache miss (first visit)**: CloudFront sends a signed request to S3 (using OAC’s SigV4 credentials). S3 doesn’t have a file at `/dashboard`, so it returns a 403.
-5. **Custom error response**: CloudFront’s custom error response intercepts the 403, serves `/index.html` instead, and returns a 200 status code. Your client-side router takes over and renders the `/dashboard` view.
-6. **Cache hit (subsequent visits)**: The next request for `/dashboard` from the same edge location is served directly from cache. No round trip to S3.
+1. **تحليل DNS**: يستعلم المتصفح DNS عن نطاق `*.cloudfront.net` ويحصل على عنوان IP لأقرب موقع حافة.
+2. **مصافحة TLS**: يتّصل المتصفح بموقع حافة CloudFront. ويعرض CloudFront شهادته الافتراضية. فيتحقّق منها المتصفح وينشئ اتصالًا مشفّرًا.
+3. **فحص ذاكرة الحافة المؤقتة**: يفحص CloudFront ما إذا كان `/dashboard` مخزّنًا مؤقتًا في موقع الحافة هذا.
+4. **غياب في الذاكرة المؤقتة (الزيارة الأولى)**: يرسل CloudFront طلبًا موقّعًا إلى S3 (باستخدام بيانات اعتماد SigV4 الخاصة بـ OAC). ولا يملك S3 ملفًا عند `/dashboard`، فيُرجع 403.
+5. **استجابة خطأ مخصّصة**: تعترض استجابة الخطأ المخصّصة في CloudFront الرمز 403، وتقدّم `/index.html` بدلًا منه، وتُرجع رمز الحالة 200. ثم يتولّى الموجّه في جانب العميل ويعرض واجهة `/dashboard`.
+6. **إصابة في الذاكرة المؤقتة (الزيارات اللاحقة)**: يُقدَّم الطلب التالي لـ `/dashboard` من موقع الحافة نفسه مباشرة من الذاكرة المؤقتة. بلا رحلة ذهاب وعودة إلى S3.
 
-Every layer does one thing. S3 stores files. CloudFront caches and routes. ACM secures. Route 53 resolves. The pieces compose without overlapping.
+كل طبقة تفعل شيئًا واحدًا. S3 يخزّن الملفات. CloudFront يخزّن مؤقتًا ويوجّه. ACM يؤمّن. Route 53 يحلّ الأسماء. والقطع تتركّب دون تداخل.
 
 ```
 sequenceDiagram
@@ -122,9 +122,9 @@ sequenceDiagram
     end
 ```
 
-## The Deployment Workflow
+## سير عمل النشر
 
-With the infrastructure in place, deploying a new version of your site is two commands:
+بعد أن تصبح البنية التحتية في مكانها، نشر نسخة جديدة من موقعك أمران فقط:
 
 ```bash
 # Upload new files to S3
@@ -141,17 +141,17 @@ aws cloudfront create-invalidation \
   --output json
 ```
 
-The `--delete` flag removes old files from S3 that no longer exist in your build directory. The invalidation tells CloudFront to drop cached copies so edge locations fetch the new versions. You learned about these in [Cache Behaviors and Invalidations](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations).
+الخيار `--delete` يحذف من S3 الملفات القديمة التي لم تعد موجودة في مجلد البناء لديك. والإبطال يخبر CloudFront بإسقاط النسخ المخزّنة مؤقتًا كي تجلب مواقع الحافة النسخ الجديدة. وقد تعلّمت عن هذين في [سلوكات التخزين المؤقت والإبطال](https://stevekinney.com/courses/aws/cache-behaviors-and-invalidations).
 
-This is the foundation. In the next two lessons, you’ll wrap these commands in a deploy script and then automate them with GitHub Actions so deployments happen on every push to `main`.
+هذا هو الأساس. وفي الدرسين التاليين، ستلفّ هذين الأمرين في سكربت نشر ثم تؤتمتهما بـ GitHub Actions بحيث يحدث النشر في كل دفعة إلى `main`.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want to test the pipeline before automating it, run the two commands above manually after each build. That’s exactly what the automated pipeline does: it just removes you from the loop.
+> إن أردت اختبار خط الأنابيب قبل أتمتته، فشغّل الأمرين أعلاه يدويًا بعد كل بناء. فهذا بالضبط ما يفعله خط الأنابيب المؤتمت: إنه فقط يزيلك من الحلقة.
 
-## Verification
+## التحقق
 
-Use these checks once the Scratch Lab app is wired together:
+استخدم هذه الفحوصات بعد ربط تطبيق Scratch Lab معًا:
 
 ```bash
 curl -I https://YOUR_CLOUDFRONT_DOMAIN
@@ -159,18 +159,18 @@ curl -I https://YOUR_CLOUDFRONT_DOMAIN/collections/tents
 curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 ```
 
-You want three things to be true:
+تريد أن تتحقّق ثلاثة أمور:
 
-- `curl -I https://YOUR_CLOUDFRONT_DOMAIN` returns `200` with a valid TLS handshake.
-- The deep route returns `200` and serves HTML, proving the SPA fallback works.
-- The direct S3 URL returns `403`, proving the bucket is private.
+- أن يُرجع `curl -I https://YOUR_CLOUDFRONT_DOMAIN` الرمز `200` مع مصافحة TLS صحيحة.
+- أن يُرجع المسار العميق `200` ويقدّم HTML، مما يثبت عمل احتياطي SPA.
+- أن يُرجع عنوان URL المباشر لـ S3 الرمز `403`، مما يثبت أن الحاوية خاصة.
 
-## Common Failure Modes
+## أنماط الفشل الشائعة
 
-- **The bucket is still public:** if the S3 URL works directly, Origin Access Control is not actually protecting the bucket.
-- **The SPA fallback is only configured in S3:** that gives you a page, but often with the wrong status code. CloudFront should own the final browser behavior.
-- **CloudFront returns 403 for files that exist:** the bucket policy doesn’t trust the distribution’s service principal, or the OAC isn’t attached to the origin.
+- **الحاوية ما زالت عامة:** إذا كان عنوان URL لـ S3 يعمل مباشرة، فالتحكم في الوصول إلى الأصل لا يحمي الحاوية فعليًا.
+- **احتياطي SPA مضبوط في S3 فقط:** يمنحك ذلك صفحة، لكن غالبًا برمز حالة خاطئ. وينبغي أن يمتلك CloudFront سلوك المتصفح النهائي.
+- **CloudFront يُرجع 403 لملفات موجودة:** سياسة الحاوية لا تثق بكيان التوزيع الخدمي، أو أن OAC غير مُرفق بالأصل.
 
-## Beyond This Course: Continuous Deployment
+## ما بعد هذه الدورة: النشر المستمر
 
-Once this pipeline is stable, **CloudFront Continuous Deployment** lets you ship high-risk distribution changes (new cache behaviors, new origin configs, new CloudFront Functions) behind a weighted split. You create a *staging distribution* linked to your primary, route a percentage of traffic to it via a continuous-deployment policy, and promote the staging config to primary once you’ve verified it. Think of it as blue/green for CloudFront itself. It’s not covered in this course—the scope is shipping the first version, not iterating on it—but it’s the right answer when you need to change the distribution without a risky cutover.
+بعد أن يستقرّ خط الأنابيب هذا، يتيح لك **النشر المستمر في CloudFront** شحن تغييرات عالية المخاطر على التوزيع (سلوكات تخزين مؤقت جديدة، وإعدادات أصل جديدة، وCloudFront Functions جديدة) خلف تقسيم مرجّح. فتنشئ *توزيعًا مرحليًا* مرتبطًا بتوزيعك الأساسي، وتوجّه نسبة من الحركة إليه عبر سياسة نشر مستمر، ثم ترقّي إعدادات التوزيع المرحلي إلى الأساسي بعد التحقّق منها. فكّر فيه كـ blue/green لـ CloudFront نفسه. وهو غير مشمول في هذه الدورة — فالنطاق هو شحن النسخة الأولى، لا التحسين عليها — لكنه الإجابة الصحيحة عندما تحتاج إلى تغيير التوزيع دون انتقال خطير.

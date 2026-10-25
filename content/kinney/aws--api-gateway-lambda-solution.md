@@ -1,26 +1,26 @@
 ---
-title: "Solution"
-lang: en
+title: "الحل"
+lang: ar
 source: "https://stevekinney.com/courses/aws/api-gateway-lambda-solution"
 ---
 
-Here’s the complete solution for every step, including the handler code, all CLI commands, and the expected output at each stage.
+هذا هو الحل الكامل لكل خطوة، بما في ذلك كود المعالج، وكل أوامر CLI، والمخرجات المتوقعة في كل مرحلة.
 
-## Why This Works
+## لماذا ينجح هذا
 
-- HTTP API routes hand the whole request to one Lambda function, which keeps the gateway configuration simple and pushes application logic into normal TypeScript code.
-- Lambda permission is the hidden dependency that makes the integration real. Without it, the API exists but cannot invoke anything.
-- The browser test matters because a backend that works in `curl` but fails on CORS is still broken for a frontend team.
+- مسارات HTTP API تسلّم الطلب كاملًا إلى دالة Lambda واحدة، وهذا يُبقي تهيئة البوابة بسيطة ويدفع منطق التطبيق إلى كود TypeScript عادي.
+- إذن Lambda هو التبعية الخفيّة التي تجعل التكامل حقيقيًا. فبدونه توجد الواجهة البرمجية لكنها لا تستطيع استدعاء أي شيء.
+- اختبار المتصفح مهم لأن خلفية تعمل في `curl` لكنها تفشل في CORS تبقى معطوبة من منظور فريق الواجهة الأمامية.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the route, integration, and CORS workflow open while you work, keep the [HTTP APIs documentation](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html), the [Lambda integration guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html), and the [HTTP API CORS guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) nearby.
+> إذا أردت إبقاء نسخة AWS من سير عمل المسار والتكامل وCORS مفتوحة أثناء عملك، فأبقِ [توثيق HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) و[دليل تكامل Lambda](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html) و[دليل CORS في HTTP API](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html) في متناول يدك.
 
-## The Handler
+## المعالج
 
-> **Tip**
+> **نصيحة**
 >
-> This handler is available as [`items-handler.ts`](https://github.com/stevekinney/scratch-lab/blob/main/lambda/src/items-handler.ts) in the Scratch Lab repository.
+> هذا المعالج متاح بصيغة [`items-handler.ts`](https://github.com/stevekinney/scratch-lab/blob/main/lambda/src/items-handler.ts) في مستودع Scratch Lab.
 
 ### `lambda/src/handler.ts`
 
@@ -96,11 +96,11 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
 };
 ```
 
-*Note:* Route by HTTP method since both `GET /items` and `POST /items` hit the same Lambda function.
+*ملاحظة:* وجّه الطلبات بحسب طريقة HTTP لأن `GET /items` و`POST /items` كلاهما يصل إلى دالة Lambda نفسها.
 
-*Note:* This in-memory array resets on cold starts. A real API would write to DynamoDB.
+*ملاحظة:* تُعاد هذه المصفوفة في الذاكرة إلى حالتها الأصلية عند كل بدء بارد. أما الواجهة البرمجية الحقيقية فستكتب إلى DynamoDB.
 
-### Build and Zip
+### البناء والضغط
 
 ```bash
 cd lambda
@@ -108,13 +108,13 @@ npm run build
 cd dist && zip -r ../function.zip . && cd ..
 ```
 
-Expected: `dist/handler.js` is created with no errors. `function.zip` contains the compiled output.
+المتوقع: يُنشأ `dist/handler.js` بلا أخطاء. ويحتوي `function.zip` على المخرجات المُصرّفة.
 
-## Deploy the Lambda Function
+## نشر دالة Lambda
 
-### Update Existing Function
+### تحديث دالة موجودة
 
-If you have the function from the Lambda exercise:
+إذا كانت لديك الدالة من تمرين Lambda:
 
 ```bash
 aws lambda update-function-code \
@@ -124,9 +124,9 @@ aws lambda update-function-code \
   --output json
 ```
 
-### Create New Function
+### إنشاء دالة جديدة
 
-If you’re starting fresh, create the execution role and function first:
+إذا كنت تبدأ من الصفر، فأنشئ دور التنفيذ والدالة أولًا:
 
 ```bash
 aws iam create-role \
@@ -151,9 +151,9 @@ aws lambda create-function \
   --output json
 ```
 
-### Verify with Direct Invocation
+### التحقق بالاستدعاء المباشر
 
-Test GET:
+اختبر GET:
 
 ```bash
 aws lambda invoke \
@@ -167,7 +167,7 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected response:
+الاستجابة المتوقعة:
 
 ```json
 {
@@ -177,7 +177,7 @@ Expected response:
 }
 ```
 
-Test POST:
+اختبر POST:
 
 ```bash
 aws lambda invoke \
@@ -191,7 +191,7 @@ aws lambda invoke \
 cat response.json
 ```
 
-Expected response:
+الاستجابة المتوقعة:
 
 ```json
 {
@@ -201,9 +201,9 @@ Expected response:
 }
 ```
 
-The `id` will be a different UUID on each invocation.
+سيكون `id` قيمة UUID مختلفة في كل استدعاء.
 
-## Create the HTTP API
+## إنشاء HTTP API
 
 ```bash
 aws apigatewayv2 create-api \
@@ -213,7 +213,7 @@ aws apigatewayv2 create-api \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -226,13 +226,13 @@ Expected output:
 }
 ```
 
-Save the API ID:
+احفظ معرّف الواجهة البرمجية:
 
 ```bash
 API_ID="abc123def4"
 ```
 
-## Create the Integration
+## إنشاء التكامل
 
 ```bash
 aws apigatewayv2 create-integration \
@@ -244,7 +244,7 @@ aws apigatewayv2 create-integration \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -257,13 +257,13 @@ Expected output:
 }
 ```
 
-Save the integration ID:
+احفظ معرّف التكامل:
 
 ```bash
 INTEGRATION_ID="a1b2c3"
 ```
 
-## Create the Routes
+## إنشاء المسارات
 
 ### GET /items
 
@@ -276,7 +276,7 @@ aws apigatewayv2 create-route \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -298,7 +298,7 @@ aws apigatewayv2 create-route \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -309,7 +309,7 @@ Expected output:
 }
 ```
 
-### Verify routes
+### التحقق من المسارات
 
 ```bash
 aws apigatewayv2 get-routes \
@@ -318,13 +318,13 @@ aws apigatewayv2 get-routes \
   --output json
 ```
 
-Expected: Two routes with route keys `GET /items` and `POST /items`, both targeting the same integration.
+المتوقع: مساران بمفتاحَي مسار `GET /items` و`POST /items`، وكلاهما يستهدف التكامل نفسه.
 
-In the console, the **Routes** page shows both routes listed under the API.
+في وحدة التحكم، تعرض صفحة **Routes** كلا المسارين مُدرجين تحت الواجهة البرمجية.
 
-The API Gateway Routes page showing the ANY / route created for the my-frontend-api HTTP API.
+تعرض صفحة Routes في API Gateway المسار ANY / المُنشأ لواجهة my-frontend-api من نوع HTTP API.
 
-## Grant Permission
+## منح الإذن
 
 ```bash
 aws lambda add-permission \
@@ -337,7 +337,7 @@ aws lambda add-permission \
   --output json
 ```
 
-Expected output:
+المخرجات المتوقعة:
 
 ```json
 {
@@ -345,13 +345,13 @@ Expected output:
 }
 ```
 
-### Test with curl
+### الاختبار باستخدام curl
 
 ```bash
 curl https://$API_ID.execute-api.us-east-1.amazonaws.com/items
 ```
 
-Expected:
+المتوقع:
 
 ```json
 {
@@ -363,7 +363,7 @@ Expected:
 }
 ```
 
-Test POST:
+اختبر POST:
 
 ```bash
 curl -X POST \
@@ -372,17 +372,17 @@ curl -X POST \
   -d '{"name":"Node.js Essentials","price":19.99}'
 ```
 
-Expected:
+المتوقع:
 
 ```json
 { "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "name": "Node.js Essentials", "price": 19.99 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> If `curl` returns `{"message":"Internal Server Error"}`, the Lambda permission is missing. Run the `add-permission` command above. If the API returns `{"message":"Not Found"}`, the routes weren’t created correctly—check `get-routes` to verify.
+> إذا أعاد `curl` الرسالة `{"message":"Internal Server Error"}`، فإن إذن Lambda مفقود. شغّل أمر `add-permission` أعلاه. وإذا أعادت الواجهة البرمجية `{"message":"Not Found"}`، فلم تُنشأ المسارات بشكل صحيح — تحقّق من `get-routes`.
 
-## Configure CORS
+## تهيئة CORS
 
 ```bash
 aws apigatewayv2 update-api \
@@ -392,9 +392,9 @@ aws apigatewayv2 update-api \
   --output json
 ```
 
-Expected: the response includes a `CorsConfiguration` block with the values you set.
+المتوقع: تتضمن الاستجابة كتلة `CorsConfiguration` بالقيم التي ضبطتها.
 
-### Test preflight
+### اختبار طلب الفحص المسبق
 
 ```bash
 curl -i -X OPTIONS \
@@ -404,7 +404,7 @@ curl -i -X OPTIONS \
   -H "Access-Control-Request-Headers: Content-Type"
 ```
 
-Expected headers in the response:
+الترويسات المتوقعة في الاستجابة:
 
 ```
 access-control-allow-headers: Content-Type
@@ -413,9 +413,9 @@ access-control-allow-origin: http://localhost:3000
 access-control-max-age: 86400
 ```
 
-## Call from React
+## الاستدعاء من React
 
-Here is a minimal React component that calls both endpoints:
+إليك مكوّن React بسيطًا يستدعي نقطتَي النهاية معًا:
 
 ```typescript
 import { useEffect, useState } from 'react';
@@ -485,15 +485,15 @@ export default function Items() {
 }
 ```
 
-Open the browser, verify the items list loads, add a new item using the form, and confirm it appears in the list. Check the DevTools Network tab to verify both requests succeed with 200/201 status codes and no CORS errors.
+افتح المتصفح، وتحقّق من تحميل قائمة العناصر، وأضف عنصرًا جديدًا باستخدام النموذج، وتأكّد من ظهوره في القائمة. افحص تبويب Network في أدوات المطوّر لتتحقق من نجاح الطلبين برمزَي الحالة 200/201 وبلا أخطاء CORS.
 
-> **Warning**
+> **تحذير**
 >
-> The in-memory `items` array in the Lambda handler resets on every cold start. If you add an item through POST and then wait a few minutes (long enough for Lambda to recycle the execution environment), the item will be gone. This is expected—in-memory state isn’t persistent. In the DynamoDB section, you’ll replace this array with DynamoDB for durable storage.
+> تُعاد مصفوفة `items` في الذاكرة داخل معالج Lambda إلى حالتها الأصلية عند كل بدء بارد. فإذا أضفت عنصرًا عبر POST ثم انتظرت بضع دقائق (ما يكفي لتُعيد Lambda تدوير بيئة التنفيذ)، فسيختفي العنصر. هذا متوقع — فالحالة في الذاكرة ليست دائمة. في قسم DynamoDB ستستبدل هذه المصفوفة بـ DynamoDB للتخزين الدائم.
 
-## Stretch Goal: `GET /items/{id}`
+## هدف إضافي: `GET /items/{id}`
 
-### Add the route
+### إضافة المسار
 
 ```bash
 aws apigatewayv2 create-route \
@@ -504,9 +504,9 @@ aws apigatewayv2 create-route \
   --output json
 ```
 
-### Update the handler
+### تحديث المعالج
 
-Add this block **before** the existing `if (method === 'GET')` check—the more specific route needs to match first:
+أضف هذه الكتلة **قبل** فحص `if (method === 'GET')` الموجود — فالمسار الأكثر تحديدًا يحتاج إلى المطابقة أولًا:
 
 ```typescript
 if (method === 'GET' && event.pathParameters?.id) {
@@ -528,7 +528,7 @@ if (method === 'GET' && event.pathParameters?.id) {
 }
 ```
 
-Rebuild, rezip, and update the function code:
+أعد البناء والضغط وحدّث كود الدالة:
 
 ```bash
 cd lambda
@@ -542,13 +542,13 @@ aws lambda update-function-code \
   --output json
 ```
 
-Test:
+اختبر:
 
 ```bash
 curl https://$API_ID.execute-api.us-east-1.amazonaws.com/items/1
 ```
 
-Expected:
+المتوقع:
 
 ```json
 { "id": "1", "name": "TypeScript in Action", "price": 29.99 }
@@ -558,15 +558,15 @@ Expected:
 curl https://$API_ID.execute-api.us-east-1.amazonaws.com/items/999
 ```
 
-Expected:
+المتوقع:
 
 ```json
 { "error": "Item not found" }
 ```
 
-## Cleanup
+## التنظيف
 
-To remove everything you created in this exercise:
+لإزالة كل ما أنشأته في هذا التمرين:
 
 ```bash
 # Delete the API (removes all routes, integrations, and stages)
@@ -583,4 +583,4 @@ aws lambda remove-permission \
   --output json
 ```
 
-The Lambda function and execution role aren’t deleted—you’ll use them again in later modules.
+لا تُحذف دالة Lambda ودور التنفيذ — ستستخدمهما مرة أخرى في وحدات لاحقة.

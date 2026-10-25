@@ -1,12 +1,12 @@
 ---
-title: "Adding Types to Express Requests"
-lang: en
+title: "إضافة الأنواع إلى طلبات Express"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/adding-types-to-express"
 ---
 
-Express’s typing system wasn’t built with TypeScript in mind. The `@types/express` package provides essential typings, but using them effectively requires understanding their intricacies.
+لم يُبنَ نظام الأنواع في Express مع أخذ TypeScript في الحسبان. وتوفّر حزمة `@types/express` تعريفات أنواع أساسية، لكن استخدامها بفعالية يتطلب فهم دقائقها.
 
-Express primarily revolves around three core types:
+يدور Express أساسًا حول ثلاثة أنواع جوهرية:
 
 ```typescript
 import { Request, Response, NextFunction } from 'express';
@@ -16,7 +16,7 @@ app.get('/users', (req: Request, res: Response, next: NextFunction) => {
 });
 ```
 
-The Request and Response interfaces are generic:
+واجهتا Request و Response عامتان:
 
 ```typescript
 interface Request<
@@ -32,15 +32,15 @@ interface Response<ResBody = any, Locals extends Record<string, any> = Record<st
   extends core.Response {}
 ```
 
-Those `any` types are danger zones. They represent the wild, untamed parts of your API contract that TypeScript can’t verify. Our mission is to replace them with precise types that reflect your API’s actual behavior.
+تلك الأنواع `any` مناطق خطر. فهي تمثل الأجزاء الجامحة غير المروَّضة من عقد API لديك التي لا يستطيع TypeScript التحقق منها. ومهمتنا أن نستبدلها بأنواع دقيقة تعكس السلوك الفعلي لـ API الخاص بك.
 
-## Request Parameters
+## معاملات الطلب
 
-Request parameters arrive through three channels: URL parameters, query strings, and request bodies. Each requires distinct typing strategies.
+تصل معاملات الطلب عبر ثلاث قنوات: معاملات URL، وسلاسل الاستعلام، وأجسام الطلبات. ويحتاج كل منها إلى استراتيجيات تنميط متمايزة.
 
-### Typing URL Parameters
+### تنميط معاملات URL
 
-URL parameters represent path variables in your route definitions:
+تمثل معاملات URL متغيّرات المسار في تعريفات مساراتك:
 
 ```typescript
 // Define the parameter structure
@@ -54,11 +54,11 @@ app.get('/users/:userId', (req: Request<UserParams>, res: Response) => {
 });
 ```
 
-This approach works, but it has a limitation: TypeScript doesn’t verify that your parameter names in the route string match your interface. For that, we need additional tooling like [`express-validator`](https://npm.im/express-validator) or advanced techniques we’ll explore later.
+هذا النهج يعمل، لكن فيه قيد: لا يتحقق TypeScript من أن أسماء المعاملات في سلسلة المسار تطابق واجهتك. ولذلك نحتاج أدوات إضافية مثل [`express-validator`](https://npm.im/express-validator) أو تقنيات متقدمة سنستكشفها لاحقًا.
 
-### Typing Query Parameters
+### تنميط معاملات الاستعلام
 
-Query strings present a unique challenge because they’re optional by nature and can appear multiple times:
+تطرح سلاسل الاستعلام تحديًا فريدًا لأنها اختيارية بطبيعتها ويمكن أن تظهر أكثر من مرة:
 
 ```typescript
 interface UserQuery {
@@ -73,11 +73,11 @@ app.get('/users', (req: Request<{}, {}, {}, UserQuery>, res: Response) => {
 });
 ```
 
-Notice the empty objects in the Request generic—they represent params and body, which aren’t used in this route.
+لاحظ الكائنات الفارغة في النوع العام Request؛ فهي تمثل params و body، وهما غير مستخدمين في هذا المسار.
 
-### Typing Request Bodies
+### تنميط أجسام الطلبات
 
-Request bodies usually come from `POST`, `PUT`, or `PATCH` requests:
+تأتي أجسام الطلبات عادةً من طلبات `POST` أو `PUT` أو `PATCH`:
 
 ```typescript
 interface CreateUserBody {
@@ -92,11 +92,11 @@ app.post('/users', (req: Request<{}, {}, CreateUserBody>, res: Response) => {
 });
 ```
 
-But there’s a catch: Express doesn’t validate that the incoming request matches your interface. A malicious or malformed request could send completely different data, and TypeScript wouldn’t catch it at runtime.
+لكن هناك مأخذ: لا يتحقق Express من أن الطلب الوارد يطابق واجهتك. فقد يرسل طلب خبيث أو مشوّه بيانات مختلفة تمامًا، ولن يلتقط TypeScript ذلك في وقت التشغيل.
 
-### Holistic Request Typing
+### تنميط الطلب الشامل
 
-For routes that use multiple parameter sources, you can combine these approaches:
+بالنسبة إلى المسارات التي تستخدم مصادر معاملات متعددة، يمكنك الجمع بين هذه الأساليب:
 
 ```typescript
 interface UserRequest {
@@ -123,15 +123,15 @@ app.patch(
 );
 ```
 
-This pattern gets verbose quickly. To manage complexity, we’ll explore custom type helpers later.
+يصبح هذا النمط مطوّلًا سريعًا. ولإدارة التعقيد، سنستكشف مساعدات أنواع مخصّصة لاحقًا.
 
-## Extending the Request Object
+## توسيع كائن الطلب
 
-Express allows extending the Request object with custom properties, often done in middleware. TypeScript needs to know about these extensions.
+يتيح Express توسيع كائن Request بخصائص مخصّصة، وغالبًا ما يحدث ذلك في وسيط. ويحتاج TypeScript إلى معرفة هذه التوسعات.
 
-### Declaring Request Extensions
+### الإعلان عن توسعات الطلب
 
-The Express namespace allows augmenting the Request interface:
+تتيح مساحة أسماء Express توسيع واجهة Request:
 
 ```typescript
 // In a declaration file (e.g., types.d.ts)
@@ -154,14 +154,14 @@ app.get('/profile', (req: Request, res: Response) => {
 });
 ```
 
-This approach works well for application-wide extensions, but it has drawbacks:
+يعمل هذا النهج جيدًا للتوسعات على مستوى التطبيق كله، لكن له مساوئ:
 
-1. It applies the extension globally, even where it might not be valid
-2. It doesn’t provide compile-time guarantees that middleware has actually attached these properties
+1. يطبّق التوسعة عالميًا، حتى حيث قد لا تكون صحيحة.
+2. لا يقدم ضمانات في وقت التصريف بأن الوسيط قد أرفق هذه الخصائص فعلًا.
 
-### Middleware-Specific Extensions
+### التوسعات الخاصة بالوسيط
 
-For more precise control, we can use middleware to guarantee properties exist:
+لمزيد من التحكم الدقيق، يمكننا استخدام وسيط يضمن وجود الخصائص:
 
 ```typescript
 // Define a middleware that attaches user data
@@ -186,7 +186,7 @@ app.get('/admin', attachUser, ensureAuth, (req: Request, res: Response) => {
 });
 ```
 
-For more sophisticated patterns, we can create custom middleware types:
+ولأنماط أكثر تطورًا، يمكننا إنشاء أنواع وسيط مخصّصة:
 
 ```typescript
 // Define a custom request type with guaranteed user property
@@ -220,4 +220,4 @@ function adminHandler(req: AuthenticatedRequest, res: Response): void {
 app.get('/admin', authenticateMiddleware, adminHandler);
 ```
 
-This pattern ensures that the route handler only runs when `req.user` exists, providing both runtime *and* compile-time guarantees.
+يضمن هذا النمط ألا يعمل معالج المسار إلا عند وجود `req.user`، فيوفر ضمانات في وقت التشغيل *و* في وقت التصريف معًا.

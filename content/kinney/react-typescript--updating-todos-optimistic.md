@@ -1,14 +1,14 @@
 ---
-title: "Optimistic Updates"
-lang: en
+title: "التحديثات المتفائلة"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/updating-todos-optimistic"
 ---
 
-Updating todos is where user experience meets technical complexity. Users expect instant feedback when they check off a task, but network requests take time. Optimistic updates solve this by immediately updating the UI while the request happens in the background. TypeScript helps us implement this pattern safely, ensuring we handle both success and failure cases properly.
+تحديث المهام هو النقطة التي تلتقي فيها تجربة المستخدم بالتعقيد التقني. يتوقّع المستخدمون تغذية راجعة فورية حين يعلّمون مهمة على أنها منجزة، لكن طلبات الشبكة تستغرق وقتًا. تحلّ التحديثات المتفائلة هذه المشكلة بتحديث واجهة المستخدم فورًا بينما يجري الطلب في الخلفية. يساعدنا TypeScript على تنفيذ هذا النمط بأمان، ويضمن تعاملنا مع حالتي النجاح والفشل على نحو سليم.
 
-## PUT vs PATCH: Understanding the Difference
+## PUT مقابل PATCH: فهم الفرق
 
-Before diving into code, let’s clarify when to use PUT vs PATCH:
+قبل الغوص في الشيفرة، لنوضّح متى نستخدم PUT ومتى نستخدم PATCH:
 
 ```typescript
 // PUT: Replace entire resource
@@ -46,9 +46,9 @@ const updateEntireTodo = async (todo: Todo) => {
 };
 ```
 
-## Basic Update Pattern
+## النمط الأساسي للتحديث
 
-Let’s start with a simple update without optimistic behavior:
+لنبدأ بتحديث بسيط دون سلوك متفائل:
 
 ```typescript
 interface Todo {
@@ -130,9 +130,9 @@ function BasicTodoUpdater() {
 }
 ```
 
-## Optimistic Updates with Rollback
+## التحديثات المتفائلة مع التراجع
 
-Now let’s implement optimistic updates that rollback on failure:
+الآن لننفّذ تحديثات متفائلة تتراجع عند الفشل:
 
 ```typescript
 interface OptimisticUpdate {
@@ -278,9 +278,9 @@ function OptimisticTodoList() {
 }
 ```
 
-## Inline Editing with TypeScript
+## التحرير المضمّن باستخدام TypeScript
 
-Implement inline editing with proper type safety:
+نفّذ تحريرًا مضمّنًا مع سلامة أنواع سليمة:
 
 ```typescript
 interface EditableTodo extends Todo {
@@ -424,9 +424,9 @@ function InlineEditTodos() {
 }
 ```
 
-## Batch Updates
+## التحديثات الدفعية
 
-Sometimes you need to update multiple todos at once:
+أحيانًا تحتاج إلى تحديث عدة مهام دفعة واحدة:
 
 ```typescript
 interface BatchUpdateOperation {
@@ -588,9 +588,9 @@ function BatchUpdateTodos() {
 }
 ```
 
-## Custom Hook for Updates
+## خُطّاف مخصّص للتحديثات
 
-Encapsulate update logic in a reusable hook:
+لنغلّق منطق التحديث في خُطّاف قابل لإعادة الاستخدام:
 
 ```typescript
 interface UseOptimisticUpdateOptions<T> {
@@ -681,9 +681,9 @@ function useOptimisticUpdate<T extends { id: number }>(
 }
 ```
 
-## Complete Example
+## مثال كامل
 
-Here’s everything combined:
+إليك كل شيء مجتمعةً:
 
 ```typescript
 function CompleteTodoUpdater() {
@@ -732,24 +732,24 @@ function CompleteTodoUpdater() {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Always implement rollback** - Network requests can fail
-2. **Show visual feedback** - Users need to know what’s happening
-3. **Use PATCH for partial updates** - More efficient than PUT
-4. **Batch when possible** - Reduce network requests
-5. **Handle race conditions** - Cancel or ignore outdated updates
+1. **نفّذ التراجع دائمًا** — يمكن أن تفشل طلبات الشبكة
+2. **اعرض تغذية راجعة بصرية** — يحتاج المستخدمون إلى معرفة ما يحدث
+3. **استخدم PATCH للتحديثات الجزئية** — أكثر كفاءة من PUT
+4. **استخدم الدفعات كلما أمكن** — قلّل عدد طلبات الشبكة
+5. **تعامل مع سباقات الطلبات** — ألغِ التحديثات القديمة أو تجاهلها
 
-## Summary
+## الخلاصة
 
-Optimistic updates provide instant feedback while maintaining data integrity. Key concepts:
+توفّر التحديثات المتفائلة تغذية راجعة فورية مع الحفاظ على سلامة البيانات. المفاهيم الأساسية:
 
-- Immediate UI updates with background sync
-- Rollback on failure
-- Visual feedback during updates
-- Batch operations for efficiency
-- Proper TypeScript types throughout
+- تحديثات فورية لواجهة المستخدم مع مزامنة في الخلفية
+- التراجع عند الفشل
+- تغذية راجعة بصرية أثناء التحديثات
+- عمليات دفعية من أجل الكفاءة
+- أنواع TypeScript سليمة في كل مكان
 
-## What’s Next?
+## ما التالي؟
 
-Let’s complete our CRUD operations by implementing DELETE with proper state cleanup.
+لنُكمل عمليات CRUD بتنفيذ DELETE مع تنظيف سليم للحالة.

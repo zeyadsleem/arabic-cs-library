@@ -1,48 +1,48 @@
 ---
-title: "ComponentType, HOCs, and Render Props"
-lang: en
+title: "ComponentType والمكوّنات ذات الرتبة العليا وخصائص التصيير"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/componenttype-hocs-render-props"
 ---
 
-> **Content Reorganized**
+> **أُعيد تنظيم المحتوى**
 >
-> This content has been split into specialized guides for better focus and clarity.
+> قُسِّم هذا المحتوى إلى أدلّة متخصّصة لزيادة التركيز والوضوح.
 
-## For Higher-Order Components
+## للمكوّنات ذات الرتبة العليا
 
-**See: [Higher Order Components Typing](https://stevekinney.com/courses/react-typescript/higher-order-components-typing)**
+**راجع: [أنواع المكوّنات ذات الرتبة العليا](https://stevekinney.com/courses/react-typescript/higher-order-components-typing)**
 
-Covers:
+يغطّي:
 
-- Complete HOC typing patterns
-- ComponentType usage in HOCs
-- Prop injection and omitting
-- Common HOC patterns and utilities
+- أنماط أنواع كاملة للمكوّنات ذات الرتبة العليا
+- استخدام `ComponentType` داخل المكوّنات ذات الرتبة العليا
+- حقن الخصائص واستبعادها
+- أنماط المكوّنات ذات الرتبة العليا الشائعة وأدواتها المساعدة
 
-## For Render Props Patterns
+## لأنماط خصائص التصيير
 
-**See: [Render Props and HOC Alternatives](https://stevekinney.com/courses/react-typescript/render-props-and-hoc-alternatives)**
+**راجع: [خصائص التصيير وبدائل المكوّنات ذات الرتبة العليا](https://stevekinney.com/courses/react-typescript/render-props-and-hoc-alternatives)**
 
-Covers:
+يغطّي:
 
-- Render prop patterns with TypeScript
-- Children as functions
-- Modern alternatives to HOCs
-- Custom hooks vs render props
+- أنماط خصائص التصيير مع TypeScript
+- `children` كدوالّ
+- البدائل الحديثة للمكوّنات ذات الرتبة العليا
+- الخُطّافات المخصّصة مقابل خصائص التصيير
 
-## Understanding ComponentType
+## فهم `ComponentType`
 
-`ComponentType` is a React TypeScript utility that represents any valid React component:
+`ComponentType` هو نوع أدوات في React مع TypeScript يمثّل أي مكوّن React صالح:
 
 ```typescript
 type ComponentType<P = {}> = ComponentClass<P> | FunctionComponent<P>;
 ```
 
-It’s the foundation for:
+إنّه الأساس في:
 
-- Writing functions that accept any component type
-- Building HOCs that work with function and class components
-- Creating polymorphic component patterns
-- Type-safe component composition
+- كتابة دوالّ تقبل أي نوع من أنواع المكوّنات
+- بناء مكوّنات ذات رتبة عليا تعمل مع المكوّنات الدالية والصنفية
+- إنشاء أنماط المكوّنات المتعدّدة الأشكال (polymorphic)
+- تركيب المكوّنات بأمانٍ من حيث الأنواع
 
-Both guides above extensively use `ComponentType` in their examples and patterns.
+يستخدم الدليلان أعلاه `ComponentType` على نطاق واسع في أمثلتهما وأنماطهما.

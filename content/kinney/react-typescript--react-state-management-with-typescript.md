@@ -1,18 +1,18 @@
 ---
-title: "React State Management with TypeScript"
-lang: en
+title: "إدارة حالة React مع TypeScript"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/react-state-management-with-typescript"
 ---
 
-React’s state management hooks are beautifully simple in JavaScript, but TypeScript transforms them into precision instruments that catch bugs before they happen. Instead of crossing your fingers and hoping your state updates work correctly, you can model your state with discriminated unions, use proper type guards, and build reducers that make impossible states literally impossible to represent. Let’s explore how to wield these hooks with the full power of TypeScript’s type system.
+خُطّافات إدارة الحالة في React بسيطةً إلى حدّ الجمال في JavaScript، لكنّ TypeScript يحوّلها إلى أدواتٍ دقيقّة تلتقط الأخطاء قبل وقوعها. فبدلًا من أن تقطب أصابعك وتمنّي أن تعمل تحديثات حالتك كما ينبغي، يمكنك نمذجة حالتك بأنواع اتحادية مُميَّزة، واستخدام حرّاس أنواع (type guards) صحيحة، وبناء مخفّضات (reducers) تجعل الحالات المستحيلة مستحيلةَ التمثيل حرفيًا. فلنستكشف كيف تُوظّف هذه الخُطّافات بكامل قوّة نظام أنواع TypeScript.
 
-## `useState`: Inference, Patterns, and Pitfalls
+## `useState`: الاستنتاج والأنماط والمزالق
 
-TypeScript’s inference with `useState` follows predictable patterns, but there are edge cases that can catch you off guard. Understanding these patterns helps you write more reliable state management code and avoid runtime surprises.
+يتبع استنتاج TypeScript مع `useState` أنماطًا يمكن التنبّؤ بها، لكنّ هناك حالات حدّية قد تفاجئك. وفهم هذه الأنماط يساعدك على كتابة شيفرة إدارة حالة أكثر موثوقية وتجنّب المفاجآت وقت التشغيل.
 
-### How `useState` Inference Works
+### كيف يعمل استنتاج `useState`
 
-TypeScript infers the state type from the initial value you pass to `useState`. This works beautifully for straightforward cases:
+يستنتج TypeScript نوع الحالة من القيمة الابتدائية التي تمرّرها إلى `useState`. وهذا يعمل بإتقان في الحالات المباشرة:
 
 ```typescript
 const [count, setCount] = useState(0); // inferred as number
@@ -20,20 +20,20 @@ const [name, setName] = useState('Alice'); // inferred as string
 const [isVisible, setVisible] = useState(true); // inferred as boolean
 ```
 
-The setter functions get proper typing too. `setCount` expects a `number` or `(prev: number) => number`, and TypeScript will yell if you try to pass a string.
+كما أنّ دوال الضبط تأخذ أنواعها الصحيحة. فـ `setCount` يتوقّع `number` أو `(prev: number) => number`، وستصرخ TypeScript في وجهك إن حاولت تمرير نصّ.
 
-But here’s where it gets interesting—TypeScript infers the *literal* type from your initial value:
+لكنّ هنا يبدأ الجزء المثير: يستنتج TypeScript *النوع الحرفي* (literal type) من قيمتك الابتدائية:
 
 ```typescript
 const [status, setStatus] = useState('idle'); // inferred as string, not 'idle'
 const [theme, setTheme] = useState('light'); // inferred as string, not 'light'
 ```
 
-This is usually what you want, but sometimes you need more specificity.
+هذا هو ما تريده عادةً، لكنّك أحيانًا تحتاج إلى دقّة أكبر.
 
-### Working with Union Types
+### العمل مع الأنواع الاتحادية
 
-When you want to constrain state to specific values, you need to guide TypeScript’s inference. The most common approach is explicit typing:
+حين تريد تقييد الحالة بقيم معيّنة، عليك أن توجّه استنتاج TypeScript. وأشيع نهج هو التحديد الصريح للنوع:
 
 ```typescript
 // ✅ Explicit union type
@@ -44,7 +44,7 @@ const [theme, setTheme] = useState('light' as const);
 // Note: This only constrains the initial value, not subsequent updates
 ```
 
-The explicit typing approach is generally preferred because it constrains both the initial value and all future updates:
+يُفضَّل نهج التحديد الصريح عادةً لأنه يقيّد كلٌّ من القيمة الابتدائية وكل التحديثات اللاحقة:
 
 ```typescript
 const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
@@ -56,9 +56,9 @@ setStatus('loading');
 setStatus('pending');
 ```
 
-> **Tip**
+> **تلميح**
 >
-> When working with union types, define them separately for reusability and better error messages.
+> عند العمل مع الأنواع الاتحادية، عرّفها على حدة من أجل إعادة الاستخدام وتحسين رسائل الأخطاء.
 
 ```typescript
 type LoadingStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -66,9 +66,9 @@ type LoadingStatus = 'idle' | 'loading' | 'success' | 'error';
 const [status, setStatus] = useState<LoadingStatus>('idle');
 ```
 
-### The Empty Array and Object Trap
+### فخّ المصفوفة الفارغة والكائن
 
-Here’s where many developers get caught: initializing state with an empty array or object.
+هنا يقع كثير من المطوّرين في الفخّ: تهيئة الحالة بمصفوفة أو كائن فارغ.
 
 ```typescript
 // ❌ Inferred as never[] - you can't add anything!
@@ -78,7 +78,7 @@ const [items, setItems] = useState([]);
 setItems(['first item']); // Type 'string' is not assignable to type 'never'
 ```
 
-TypeScript infers `never[]` because an empty array provides no clues about what types it should contain. You need to be explicit:
+يستنتج TypeScript النوع `never[]` لأنّ المصفوفة الفارغة لا تقدّم أي تلميح عن الأنواع التي يجب أن تحتويها. عليك أن تكون صريحًا:
 
 ```typescript
 // ✅ Explicit typing
@@ -95,7 +95,7 @@ interface Todo {
 const [todos, setTodos] = useState<Todo[]>([]);
 ```
 
-The same principle applies to objects:
+المبدأ نفسه ينطبق على الكائنات:
 
 ```typescript
 // ❌ Inferred as {}, which is not very useful
@@ -118,9 +118,9 @@ const [filters, setFilters] = useState<FilterState>({
 const [filters, setFilters] = useState<Partial<FilterState>>({});
 ```
 
-### The Null/Undefined Initial State Pattern
+### نمط الحالة الابتدائية null/undefined
 
-Another common scenario is starting with `null` or `undefined` when data hasn’t loaded yet:
+سيناريو شائع آخر هو البدء بـ `null` أو `undefined` حين لا تكون البيانات قد حُمِّلت بعد:
 
 ```typescript
 // ❌ Inferred as null - you can never update it!
@@ -133,7 +133,7 @@ const [user, setUser] = useState<User | null>(null);
 const [data, setData] = useState<ApiResponse | undefined>(undefined);
 ```
 
-This pattern is especially common with async data loading:
+هذا النمط شائع خصوصًا مع تحميل البيانات غير المتزامنة:
 
 ```typescript
 interface UserProfile {
@@ -154,13 +154,13 @@ useEffect(() => {
 }, []);
 ```
 
-## `useReducer`: Advanced State with Type Safety
+## `useReducer`: حالة متقدّمة بأمان في الأنواع
 
-`useReducer` shines when your state logic gets complex. With proper typing, you get compile-time guarantees about your actions and state transitions.
+يتألّق `useReducer` حين يصبح منطق حالتك معقّدًا. ومع التحديد الصحيح للأنواع، تحصل على ضمانات وقت التصريف بشأن أفعالك وانتقالات حالتك.
 
-### Basic `useReducer` Typing
+### التحديد الأساسي بأنواع `useReducer`
 
-The simplest case of `useReducer` with TypeScript:
+أبسط حالة لـ `useReducer` مع TypeScript:
 
 ```typescript
 interface CounterState {
@@ -211,11 +211,11 @@ function Counter() {
 }
 ```
 
-The `never` type in the default case is a neat trick—if you add a new action type but forget to handle it, TypeScript will yell at you.
+النوع `never` في الحالة الافتراضية حيلةٌ أنيقة — إن أضفت نوع إجراء جديد ونسيتَ معالجته، لصاحبت TypeScript في وجهك.
 
-### Discriminated Unions for Complex State
+### الأنواع الاتحادية المُميَّزة للحالة المعقّدة
 
-Instead of modeling loading states with separate boolean flags (which can lead to impossible combinations), use discriminated unions to make invalid states unrepresentable:
+بدلًا من نمذجة حالات التحميل بأعلام منطقية منفصلة (وهو ما قد يؤدي إلى تركيبات مستحيلة)، استخدم أنواعًا اتحادية مُميَّزة تجعل الحالات غير الصالحة غير قابلة للتمثيل:
 
 ```typescript
 // ❌ Problematic approach - allows impossible states
@@ -254,15 +254,15 @@ function useAsyncData<T>(fetchFn: () => Promise<T>) {
 }
 ```
 
-This approach forces you to handle each state explicitly and prevents bugs like showing loading spinners while displaying error messages.
+يفرض هذا النهج عليك معالجة كل حالة صراحةً ويمنع أخطاءً مثل إظهار مؤشّرات التحميل مع عرض رسائل الخطأ في الوقت نفسه.
 
-## Advanced Action Typing Patterns
+## أنماط متقدّمة في تحديد أنواع الإجراءات
 
-When building complex applications, your action types become critical for maintainability. Here are battle-tested patterns for scaling your reducer logic.
+عند بناء تطبيقات معقّدة، تصبح أنواع أفعالك حيويةً للصيانة. وهذه أنماط مجرَّبة في الميدان لتوسيع منطق مخفّض الحالة.
 
-### The Union-Based Solution
+### الحل القائم على النوع الاتحادي
 
-Instead of string constants, define your actions as a discriminated union. This gives you compile-time safety for both action creators and reducer logic:
+بدلًا من ثوابت نصّية، عرّف أفعالك كنوع اتحادي مُميَّز. هذا يمنحك أمانًا وقت التصريف لكلٍّ من دوال إنشاء الإجراءات ومنطق المخفّض:
 
 ```typescript
 // ✅ Type-safe actions with discriminated union
@@ -292,9 +292,9 @@ function counterReducer(state: number, action: CounterAction): number {
 }
 ```
 
-### Action Creators with Type Safety
+### دوال إنشاء الإجراءات بأنواع آمنة
 
-Create type-safe action creators that prevent malformed actions:
+أنشئ دوال إنشاء إجراءات آمنةً من حيث الأنواع تمنع الأفعال المشوّهة:
 
 ```typescript
 // Action creators with proper typing
@@ -320,9 +320,9 @@ function Counter() {
 }
 ```
 
-### Generic Actions for Common Patterns
+### إجراءات عامة للأنماط الشائعة
 
-For actions that follow similar patterns, you can create generic action types:
+للأفعال التي تتبع أنماطًا متشابهة، يمكنك إنشاء أنواع إجراءات عامة:
 
 ```typescript
 // Generic action patterns
@@ -344,9 +344,9 @@ type UserAction = AsyncAction<'FETCH_USER', User> | AsyncAction<'DELETE_USER'>;
 // | { type: 'DELETE_USER_REJECTED'; error: string }
 ```
 
-## Real-World Example: Complex Form State
+## مثال واقعي: حالة نموذج معقّدة
 
-Here’s a practical example that showcases advanced typing patterns for form management:
+إليك مثالًا عمليًا يستعرض أنماط تحديد متقدّمة للأنواع في إدارة النماذج:
 
 ```typescript
 interface FormState {
@@ -361,9 +361,9 @@ interface FormState {
 }
 ```
 
-## Reducer-Driven Form with Derived Action/Dispatch Types
+## نموذج مدفوع بالمخفّض مع أنواع Action وDispatch المشتقّة
 
-Derive `Action` and `Dispatch` directly from action creators to keep everything in sync and prove exhaustiveness with `never`.
+اشتقّ `Action` و`Dispatch` مباشرةً من دوال إنشاء الإجراءات حتى تبقى العناصر كلّها متزامنة، وتُثبت الشمول بالاستعانة بـ `never`.
 
 ```typescript
 // 1) State
@@ -523,9 +523,9 @@ return { state, updateField, validateAndSubmit, dispatch };
 }
 ```
 
-## Functional Updates and Type Safety
+## التحديثات الوظيفية وأمان الأنواع
 
-TypeScript’s inference shines with functional state updates. The callback parameter gets the correct type automatically:
+يتألّق استنتاج TypeScript مع التحديثات الوظيفية للحالة. فمعامل الاستدعاء يأخذ نوعه الصحيح تلقائيًا:
 
 ```typescript
 const [items, setItems] = useState<string[]>([]);
@@ -552,13 +552,13 @@ setForm((prev) => ({
 }));
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Be careful not to mutate state directly, even with functional updates. Always return a new object or array.
+> احذر أن تعدّل الحالة مباشرة، حتى مع التحديثات الوظيفية. أعِد دائمًا كائنًا أو مصفوفة جديدة.
 
-## Custom Hooks with State Management
+## خُطّافات مخصّصة مع إدارة الحالة
 
-Custom hooks that use `useState` internally benefit from generic typing to make them reusable:
+الخُطّافات المخصّصة التي تستخدم `useState` في داخلها تستفيد من التحديد العام للأنواع لتصبح قابلة لإعادة الاستخدام:
 
 ```typescript
 function useLocalStorage<T>(key: string, initialValue: T) {
@@ -592,9 +592,9 @@ const [settings, setSettings] = useLocalStorage('userSettings', {
 });
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-Proper typing doesn’t just prevent bugs—it can also guide performance optimizations. When you model state precisely, you can use React’s optimization hooks more effectively:
+لا يقتصر التحديد الصحيح للأنواع على منع الأخطاء — بل يمكنه أن يوجّه تحسينات الأداء أيضًا. فحين تنمذج حالتك بدقّة، تتمكّن من استخدام خُطّافات تحسين React بفاعلية أكبر:
 
 ```typescript
 interface OptimizedState {
@@ -627,9 +627,9 @@ function useOptimizedState() {
 }
 ```
 
-## Common Pitfalls and Best Practices
+## الأخطاء الشائعة وأفضل الممارسات
 
-### Over-specifying Generic Types
+### تحديد الأنواع العامة أكثر من اللازم
 
 ```typescript
 // ❌ Unnecessary - TypeScript can infer this
@@ -642,7 +642,7 @@ const [name, setName] = useState('');
 const [user, setUser] = useState<User | null>(null);
 ```
 
-### Not Exhausting Discriminated Unions
+### عدم استنفاد الأنواع الاتحادية المُميَّزة
 
 ```typescript
 type Status = 'loading' | 'success' | 'error' | 'idle';
@@ -664,7 +664,7 @@ function handleStatus(status: Status) {
 }
 ```
 
-### Forgetting About Stale Closures
+### النسيان للإغلاقات القديمة
 
 ```typescript
 function Timer() {
@@ -681,16 +681,16 @@ function Timer() {
 }
 ```
 
-## Best Practices Summary
+## ملخّص أفضل الممارسات
 
-1. **Let inference work for primitives**: `useState(0)`, `useState('')`, `useState(false)`
-2. **Be explicit with unions**: `useState<Status>('idle')`
-3. **Always type empty containers**: `useState<T[]>([])`, `useState<Partial<T>>({})`
-4. **Use discriminated unions for complex state**: Prevent impossible state combinations
-5. **Prefer functional updates**: They’re safer and get better type checking
-6. **Define types separately**: Make them reusable and improve error messages
-7. **Use exhaustive checking**: Add `never` checks in your reducers
+1. **دع الاستنتاج يعمل مع الأنواع الأولية**: `useState(0)` و`useState('')` و`useState(false)`
+2. **كن صريحًا مع الأنواع الاتحادية**: `useState<Status>('idle')`
+3. **حدّد أنواع الحاويات الفارغة دائمًا**: `useState<T[]>([])` و`useState<Partial<T>>({})`
+4. **استخدم الأنواع الاتحادية المُميَّزة للحالة المعقّدة**: تمنع تركيبات الحالات المستحيلة
+5. **فضّل التحديثات الوظيفية**: فهي أكثر أمانًا وتحصل على فحص أنواع أفضل
+6. **عرّف الأنواع على حدة**: اجعلها قابلة لإعادة الاستخدام وحسّن رسائل الأخطاء
+7. **استخدم الفحص الشامل**: أضف فحوصات `never` في مخفّضات الحالة
 
-With these patterns, you’ll write React state management code that’s both type-safe and maintainable. The key is thinking about your state shape upfront and modeling it with TypeScript’s type system in mind.
+بهذه الأنماط، ستكتب شيفرة إدارة حالة في React آمنةً من حيث الأنواع وقابلةً للصيانة في آنٍ واحد. والمفتاح أن تفكّر في شكل حالتك مسبقًا وأن تنمذجه وأنت تراعي نظام أنواع TypeScript.
 
-Your future self (and your teammates) will thank you for the extra type safety when that tricky state bug doesn’t make it to production.
+وسيشكرك نفسك في المستقبل (وزملاؤك) على أمان الأنواع الإضافي حين لا يبلغ خللُ الحالة الصعب إلى بيئة الإنتاج.

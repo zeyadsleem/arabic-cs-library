@@ -1,80 +1,80 @@
 ---
-title: "Building a Guess the Number Game with Vitest"
-lang: en
+title: "بناء لعبة «خمّن الرقم» باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/guess-the-number-example"
 ---
 
-## Building a “Guess the Number” Game Using Test-Driven Development with Vitest
+## بناء لعبة «خمّن الرقم» باستخدام التطوير الموجّه بالاختبارات مع Vitest
 
-**Table of Contents**
+**جدول المحتويات**
 
-1. [Introduction](#introduction)
-2. [Prerequisites](#prerequisites)
-3. [Project Setup](#project-setup)
-4. [Understanding Test-Driven Development](#understanding-test-driven-development)
-5. [Setting Up Vitest](#setting-up-vitest)
-6. [Designing the Game Logic](#designing-the-game-logic)
-7. [Implementing the Game Logic with TDD](#implementing-the-game-logic-with-tdd) [1. Generating a Random Number](#generating-a-random-number) [2. Making a Guess](#making-a-guess) [3. Providing Feedback](#providing-feedback) [4. Tracking Attempts](#tracking-attempts) [5. Handling Invalid Inputs](#handling-invalid-inputs)
-  - [1. Generating a Random Number](#generating-a-random-number)
-  - [2. Making a Guess](#making-a-guess)
-  - [3. Providing Feedback](#providing-feedback)
-  - [4. Tracking Attempts](#tracking-attempts)
-  - [5. Handling Invalid Inputs](#handling-invalid-inputs)
-8. [Running the Tests](#running-the-tests)
-9. [Conclusion](#conclusion)
-10. [Additional Exercises](#additional-exercises)
+1. [المقدمة](#introduction)
+2. [المتطلبات المسبقة](#prerequisites)
+3. [إعداد المشروع](#project-setup)
+4. [فهم التطوير الموجّه بالاختبارات](#understanding-test-driven-development)
+5. [تهيئة Vitest](#setting-up-vitest)
+6. [تصميم منطق اللعبة](#designing-the-game-logic)
+7. [تنفيذ منطق اللعبة باستخدام TDD](#implementing-the-game-logic-with-tdd) [1. توليد رقم عشوائي](#generating-a-random-number) [2. إجراء تخمين](#making-a-guess) [3. تقديم التغذية الراجعة](#providing-feedback) [4. تتبّع المحاولات](#tracking-attempts) [5. التعامل مع المدخلات غير الصالحة](#handling-invalid-inputs)
+  - [1. توليد رقم عشوائي](#generating-a-random-number)
+  - [2. إجراء تخمين](#making-a-guess)
+  - [3. تقديم التغذية الراجعة](#providing-feedback)
+  - [4. تتبّع المحاولات](#tracking-attempts)
+  - [5. التعامل مع المدخلات غير الصالحة](#handling-invalid-inputs)
+8. [تشغيل الاختبارات](#running-the-tests)
+9. [الخاتمة](#conclusion)
+10. [تمارين إضافية](#additional-exercises)
 
 ---
 
-### Introduction
+### المقدمة {#introduction}
 
-In this guide, we’ll build a simple **“Guess the Number”** game using **Test-Driven Development (TDD)** with **Vitest**, a modern JavaScript testing framework. The game logic will be developed through unit tests without any user interface. This approach will help you focus on writing clean, testable code and understanding the principles of TDD.
+في هذا الدليل، سنبني لعبة بسيطة هي **«خمّن الرقم»** باستخدام **التطوير الموجّه بالاختبارات (TDD)** مع **Vitest**، إطار اختبارات JavaScript حديث. سيُطوَّر منطق اللعبة عبر اختبارات الوحدات دون أي واجهة مستخدم. سيساعدك هذا الأسلوب على التركيز على كتابة شيفرة نظيفة قابلة للاختبار وعلى فهم مبادئ TDD.
 
-**Objectives:**
+**الأهداف:**
 
-- Learn how to apply TDD to build a game.
-- Understand how to write unit tests with Vitest.
-- Develop the game logic for a “Guess the Number” game.
-- Write tests for various functionalities, including random number generation and user input handling.
+- تعلّم كيفية تطبيق TDD لبناء لعبة.
+- فهم كيفية كتابة اختبارات الوحدات باستخدام Vitest.
+- تطوير منطق لعبة «خمّن الرقم».
+- كتابة اختبارات لوظائف متنوّعة، منها توليد الأرقام العشوائية والتعامل مع مدخلات المستخدم.
 
-### Prerequisites
+### المتطلبات المسبقة {#prerequisites}
 
-- Basic knowledge of JavaScript (ES6+ syntax).
-- Familiarity with Node.js and npm.
-- Understanding of unit testing concepts.
-- Node.js and npm installed on your machine.
+- معرفة أساسية بـ JavaScript (صياغة ES6+).
+- إلمام بـ Node.js وnpm.
+- فهم مفاهيم اختبار الوحدات.
+- تثبيت Node.js وnpm على جهازك.
 
-### Project Setup
+### إعداد المشروع {#project-setup}
 
-1. **Create a New Directory** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> guess-the-number-tdd</span></span>
+1. **أنشئ دليلًا جديدًا** <code><span class="line"><span style="color:#82AAFF;font-style:italic">mkdir</span><span style="color:#ECC48D"> guess-the-number-tdd</span></span>
 <span class="line"><span style="color:#C5E478;font-style:italic">cd</span><span style="color:#ECC48D"> guess-the-number-tdd</span></span></code>
-2. **Initialize npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
-3. **Install Vitest** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span></span></code>
-4. **Set Up the Project Structure** <code><span class="line"><span style="color:#D6DEEB">guess</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">the</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">number</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
+2. **هيّئ npm** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> init</span><span style="color:#82AAFF"> -y</span></span></code>
+3. **ثبّت Vitest** <code><span class="line"><span style="color:#82AAFF;font-style:italic">npm</span><span style="color:#ECC48D"> install</span><span style="color:#82AAFF"> --save-dev</span><span style="color:#ECC48D"> vitest</span></span></code>
+4. **أعدّ بنية المشروع** <code><span class="line"><span style="color:#D6DEEB">guess</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">the</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">number</span><span style="color:#C792EA">-</span><span style="color:#D6DEEB">tdd</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">├── package</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">json</span></span>
 <span class="line"><span style="color:#D6DEEB">├── vitest</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">config</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB">├── src</span><span style="color:#C792EA">/</span></span>
 <span class="line"><span style="color:#D6DEEB">│ └── game</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span>
 <span class="line"><span style="color:#D6DEEB">└── tests</span><span style="color:#C792EA">/</span></span>
-<span class="line"><span style="color:#D6DEEB"> └── game</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: Contains the source code for the game logic. `tests/`: Contains the test files.
-  - `src/`: Contains the source code for the game logic.
-  - `tests/`: Contains the test files.
+<span class="line"><span style="color:#D6DEEB"> └── game</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#FAF39F;font-style:italic">test</span><span style="color:#C792EA;font-style:italic">.</span><span style="color:#BAEBE2">js</span></span></code> `src/`: يحتوي على الشيفرة المصدرية لمنطق اللعبة. `tests/`: يحتوي على ملفات الاختبار.
+  - `src/`: يحتوي على الشيفرة المصدرية لمنطق اللعبة.
+  - `tests/`: يحتوي على ملفات الاختبار.
 
-### Understanding Test-Driven Development
+### فهم التطوير الموجّه بالاختبارات {#understanding-test-driven-development}
 
-**Test-Driven Development (TDD)** is a software development approach where you:
+**التطوير الموجّه بالاختبارات (TDD)** أسلوب لتطوير البرمجيات يقوم فيه المطوّر بما يلي:
 
-1. **Write a Test**: Write a test for the next bit of functionality.
-2. **Run the Test and See It Fail**: Ensures the test detects the absence of functionality.
-3. **Write the Minimal Code to Pass the Test**: Implement just enough code to make the test pass.
-4. **Refactor**: Improve the code while keeping the tests passing.
-5. **Repeat**: Continue with the next functionality.
+1. **كتابة اختبار**: اكتب اختبارًا للجزء التالي من الوظيفة.
+2. **تشغيل الاختبار ورؤيته يفشل**: يضمن أن الاختبار يكتشف غياب الوظيفة.
+3. **كتابة أقل شيفرة تجعل الاختبار ينجح**: نفّذ ما يكفي فقط من الشيفرة لجعل الاختبار ينجح.
+4. **إعادة الهيكلة**: حسّن الشيفرة مع إبقاء الاختبارات ناجحة.
+5. **التكرار**: تابع مع الوظيفة التالية.
 
-This cycle is often referred to as **Red-Green-Refactor**.
+غالبًا ما تُسمّى هذه الدورة **أحمر-أخضر-إعادة هيكلة**.
 
-### Setting Up Vitest
+### تهيئة Vitest {#setting-up-vitest}
 
-Add a test script to your `package.json`:
+أضف سكربت اختبار إلى `package.json`:
 
 ```json
 {
@@ -84,7 +84,7 @@ Add a test script to your `package.json`:
 }
 ```
 
-Create a `vitest.config.js` file (optional for simple setups):
+أنشئ ملف `vitest.config.js` (اختياري في الإعدادات البسيطة):
 
 ```javascript
 // vitest.config.js
@@ -97,27 +97,27 @@ export default defineConfig({
 });
 ```
 
-### Designing the Game Logic
+### تصميم منطق اللعبة {#designing-the-game-logic}
 
-Before we start coding, let’s outline the game logic:
+قبل أن نبدأ بالبرمجة، لنحدّد منطق اللعبة بإيجاز:
 
-- The game generates a random number within a specified range (e.g., 1 to 100).
-- The player makes guesses to find the number.
-- After each guess, the game provides feedback: If the guess is too high. If the guess is too low. If the guess is correct.
-  - If the guess is too high.
-  - If the guess is too low.
-  - If the guess is correct.
-- The game tracks the number of attempts.
-- The game ends when the player guesses the correct number.
-- Input validation ensures that guesses are valid numbers within the range.
+- تولّد اللعبة رقمًا عشوائيًا داخل نطاق محدّد (مثلًا من 1 إلى 100).
+- يقوم اللاعب بتخمينات للعثور على الرقم.
+- بعد كل تخمين، تقدّم اللعبة تغذية راجعة: إن كان التخمين مرتفعًا جدًا، أو منخفضًا جدًا، أو صحيحًا.
+  - إن كان التخمين مرتفعًا جدًا.
+  - إن كان التخمين منخفضًا جدًا.
+  - إن كان التخمين صحيحًا.
+- تتتبّع اللعبة عدد المحاولات.
+- تنتهي اللعبة عندما يخمّن اللاعب الرقم الصحيح.
+- يضمن التحقق من المدخلات أن التخمينات أرقام صالحة داخل النطاق.
 
-### Implementing the Game Logic with TDD
+### تنفيذ منطق اللعبة باستخدام TDD {#implementing-the-game-logic-with-tdd}
 
-#### Generating a Random Number
+#### توليد رقم عشوائي {#generating-a-random-number}
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Create `tests/game.test.js`:
+أنشئ `tests/game.test.js`:
 
 ```javascript
 // tests/game.test.js
@@ -139,24 +139,24 @@ describe('Guess the Number Game', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test that `createGame` generates a random number within the default range (1 to 100).
-- We test that a custom range can be specified.
+- نختبر أن `createGame` تولّد رقمًا عشوائيًا داخل النطاق الافتراضي (من 1 إلى 100).
+- نختبر أنه يمكن تحديد نطاق مخصّص.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-You’ll get an error: `createGame` is not defined.
+ستحصل على خطأ: `createGame` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Implement `createGame` in `src/game.js`:
+نفّذ `createGame` في `src/game.js`:
 
 ```javascript
 // src/game.js
@@ -170,27 +170,27 @@ export function createGame(min = 1, max = 100) {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Tests should now pass.
+ينبغي أن تنجح الاختبارات الآن.
 
-##### Step 5: Refactor (if necessary)
+##### الخطوة 5: أعد الهيكلة (إن لزم)
 
-Our code is acceptable as is.
+شيفرتنا مقبولة كما هي.
 
-#### Making a Guess
+#### إجراء تخمين {#making-a-guess}
 
-We need to implement a function to make a guess.
+نحتاج إلى تنفيذ دالة لإجراء تخمين.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('makeGuess', () => {
@@ -223,24 +223,24 @@ describe('makeGuess', () => {
 });
 ```
 
-**Explanation:**
+**الشرح:**
 
-- We test that `makeGuess` increments the attempts.
-- We test the feedback for correct, too high, and too low guesses.
+- نختبر أن `makeGuess` تزيد عدد المحاولات.
+- نختبر التغذية الراجعة للتخمينات الصحيحة والمرتفعة جدًا والمنخفضة جدًا.
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Errors occur because `makeGuess` is not defined.
+تحدث أخطاء لأن `makeGuess` غير معرّفة.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Update `src/game.js`:
+حدّث `src/game.js`:
 
 ```javascript
 export function createGame(min = 1, max = 100) {
@@ -263,27 +263,27 @@ export function createGame(min = 1, max = 100) {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All tests should pass.
+ينبغي أن تنجح كل الاختبارات.
 
-##### Step 5: Refactor
+##### الخطوة 5: أعد الهيكلة
 
-No immediate refactoring needed.
+لا حاجة إلى إعادة هيكلة فورية.
 
-#### Providing Feedback
+#### تقديم التغذية الراجعة {#providing-feedback}
 
-We’ve already implemented feedback in the previous step, but let’s add tests for edge cases.
+نفّذنا التغذية الراجعة بالفعل في الخطوة السابقة، لكن لنضف اختبارات للحالات الحدّية.
 
-##### Step 1: Write Additional Tests (Red)
+##### الخطوة 1: اكتب اختبارات إضافية (أحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('makeGuess', () => {
@@ -298,31 +298,31 @@ describe('makeGuess', () => {
 });
 ```
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-The test should pass if the previous implementation handles negative numbers.
+ينبغي أن ينجح الاختبار إن كان التنفيذ السابق يتعامل مع الأرقام السالبة.
 
-##### Step 3: Verify the Implementation
+##### الخطوة 3: تحقّق من التنفيذ
 
-Our `makeGuess` function already compares numbers correctly, including negative numbers.
+دالتنا `makeGuess` تقارن الأرقام بشكل صحيح بالفعل، بما في ذلك الأرقام السالبة.
 
-##### Step 4: Refactor
+##### الخطوة 4: أعد الهيكلة
 
-Ensure that comparisons handle edge cases correctly.
+تأكد من أن المقارنات تتعامل مع الحالات الحدّية بشكل صحيح.
 
-#### Tracking Attempts
+#### تتبّع المحاولات {#tracking-attempts}
 
-We need to ensure the game tracks the number of attempts accurately.
+نحتاج إلى التأكد من أن اللعبة تتبّع عدد المحاولات بدقة.
 
-##### Step 1: Write Additional Tests (Red)
+##### الخطوة 1: اكتب اختبارات إضافية (أحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('attempts tracking', () => {
@@ -336,23 +336,23 @@ describe('attempts tracking', () => {
 });
 ```
 
-##### Step 2: Run the Test
+##### الخطوة 2: شغّل الاختبار
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-The test should pass, confirming attempts are tracked.
+ينبغي أن ينجح الاختبار، مؤكدًا تتبّع المحاولات.
 
-#### Handling Invalid Inputs
+#### التعامل مع المدخلات غير الصالحة {#handling-invalid-inputs}
 
-We need to handle cases where the guess is not a valid number or is out of range.
+نحتاج إلى التعامل مع الحالات التي لا يكون فيها التخمين رقمًا صالحًا أو يكون خارج النطاق.
 
-##### Step 1: Write the Test (Red)
+##### الخطوة 1: اكتب الاختبار (أحمر)
 
-Add to `tests/game.test.js`:
+أضف إلى `tests/game.test.js`:
 
 ```javascript
 describe('input validation', () => {
@@ -369,19 +369,19 @@ describe('input validation', () => {
 });
 ```
 
-##### Step 2: Run the Test and See It Fail
+##### الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Errors occur because we haven’t implemented input validation.
+تحدث أخطاء لأننا لم ننفّذ التحقق من المدخلات.
 
-##### Step 3: Write Minimal Code to Pass the Test (Green)
+##### الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (أخضر)
 
-Update `src/game.js`:
+حدّث `src/game.js`:
 
 ```javascript
 export function createGame(min = 1, max = 100) {
@@ -410,73 +410,73 @@ export function createGame(min = 1, max = 100) {
 }
 ```
 
-##### Step 4: Run the Test Again
+##### الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
-
-```bash
-npm test
-```
-
-All tests should pass.
-
-##### Step 5: Refactor
-
-Consider moving validation logic into separate functions if needed.
-
----
-
-At this point, we’ve implemented the core game logic using TDD.
-
-### Running the Tests
-
-At any point, you can run all tests using:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-Vitest will execute all tests in the `tests/` directory and report the results.
+ينبغي أن تنجح كل الاختبارات.
 
-### Conclusion
+##### الخطوة 5: أعد الهيكلة
 
-By following Test-Driven Development principles, we’ve built a functional “Guess the Number” game without a user interface. We’ve written unit tests for the game logic, ensuring our code is reliable and behaves as expected.
-
-**Key Takeaways:**
-
-- **TDD Workflow:** Writing tests first helps define expected behavior and leads to better-designed code.
-- **Vitest for Testing:** Vitest provides a fast and modern testing experience for JavaScript applications.
-- **Unit Testing Focus:** Focusing on unit tests allows us to ensure each part of our code works correctly in isolation.
-
-### Additional Exercises
-
-To further enhance your “Guess the Number” game and testing skills, consider implementing the following features:
-
-1. **Set Maximum Attempts** Modify the game to allow a maximum number of attempts. Write tests to ensure the game ends after the maximum attempts are reached.
-  - Modify the game to allow a maximum number of attempts.
-  - Write tests to ensure the game ends after the maximum attempts are reached.
-2. **Hint System** Implement a hint system that provides additional clues. Write tests to verify hints are accurate and provided correctly.
-  - Implement a hint system that provides additional clues.
-  - Write tests to verify hints are accurate and provided correctly.
-3. **Replay Functionality** Add a method to reset the game and start over. Write tests to ensure the game resets correctly.
-  - Add a method to reset the game and start over.
-  - Write tests to ensure the game resets correctly.
-4. **Difficulty Levels** Introduce difficulty levels that adjust the range or number of attempts. Write tests to verify the game behaves correctly at different difficulty levels.
-  - Introduce difficulty levels that adjust the range or number of attempts.
-  - Write tests to verify the game behaves correctly at different difficulty levels.
-5. **Statistical Tracking** Keep track of statistics like total games played, wins, and average attempts. Write tests to ensure statistics are recorded accurately.
-  - Keep track of statistics like total games played, wins, and average attempts.
-  - Write tests to ensure statistics are recorded accurately.
-6. **Input Parsing** Enhance input handling to accept strings and convert them to numbers. Write tests to ensure inputs like `'42'` are correctly interpreted.
-  - Enhance input handling to accept strings and convert them to numbers.
-  - Write tests to ensure inputs like `'42'` are correctly interpreted.
-7. **Multiplayer Mode** Allow multiple players to take turns guessing. Write tests to ensure player turns and scores are managed correctly.
-  - Allow multiple players to take turns guessing.
-  - Write tests to ensure player turns and scores are managed correctly.
-8. **High Score List** Implement a high score system that records the best scores. Write tests to ensure high scores are updated and retrieved correctly.
-  - Implement a high score system that records the best scores.
-  - Write tests to ensure high scores are updated and retrieved correctly.
+فكّر في نقل منطق التحقق إلى دوال منفصلة إن لزم.
 
 ---
 
-By extending the game and writing tests for new features, you’ll deepen your understanding of TDD and improve your testing proficiency.
+في هذه المرحلة، نفّذنا منطق اللعبة الأساسي باستخدام TDD.
+
+### تشغيل الاختبارات {#running-the-tests}
+
+يمكنك في أي وقت تشغيل كل الاختبارات باستخدام:
+
+```bash
+npm test
+```
+
+سينفّذ Vitest كل الاختبارات في دليل `tests/` ويبلّغ بالنتائج.
+
+### الخاتمة {#conclusion}
+
+باتّباع مبادئ التطوير الموجّه بالاختبارات، بنينا لعبة «خمّن الرقم» عاملة دون واجهة مستخدم. كتبنا اختبارات وحدات لمنطق اللعبة، ضامنين أن شيفرتنا موثوقة وتتصرّف كما هو متوقع.
+
+**الخلاصات الأساسية:**
+
+- **سير عمل TDD:** كتابة الاختبارات أولًا تساعد في تحديد السلوك المتوقع وتؤدي إلى شيفرة أفضل تصميمًا.
+- **Vitest للاختبار:** يوفّر Vitest تجربة اختبار سريعة وحديثة لتطبيقات JavaScript.
+- **التركيز على اختبار الوحدات:** يتيح لنا التركيز على اختبارات الوحدات ضمان أن كل جزء من شيفرتنا يعمل بشكل صحيح في عزلة.
+
+### تمارين إضافية {#additional-exercises}
+
+لتعزيز لعبة «خمّن الرقم» ومهاراتك في الاختبار أكثر، فكّر في تنفيذ الميزات التالية:
+
+1. **تحديد الحد الأقصى للمحاولات** عدّل اللعبة لتسمح بعدد أقصى من المحاولات. اكتب اختبارات لضمان انتهاء اللعبة بعد بلوغ الحد الأقصى من المحاولات.
+  - عدّل اللعبة لتسمح بعدد أقصى من المحاولات.
+  - اكتب اختبارات لضمان انتهاء اللعبة بعد بلوغ الحد الأقصى من المحاولات.
+2. **نظام تلميحات** نفّذ نظام تلميحات يقدّم قرائن إضافية. اكتب اختبارات للتحقق من دقة التلميحات وتقديمها بشكل صحيح.
+  - نفّذ نظام تلميحات يقدّم قرائن إضافية.
+  - اكتب اختبارات للتحقق من دقة التلميحات وتقديمها بشكل صحيح.
+3. **وظيفة إعادة اللعب** أضف تابعًا لإعادة ضبط اللعبة والبدء من جديد. اكتب اختبارات لضمان إعادة ضبط اللعبة بشكل صحيح.
+  - أضف تابعًا لإعادة ضبط اللعبة والبدء من جديد.
+  - اكتب اختبارات لضمان إعادة ضبط اللعبة بشكل صحيح.
+4. **مستويات الصعوبة** أدخل مستويات صعوبة تعدّل النطاق أو عدد المحاولات. اكتب اختبارات للتحقق من تصرّف اللعبة بشكل صحيح عند مستويات صعوبة مختلفة.
+  - أدخل مستويات صعوبة تعدّل النطاق أو عدد المحاولات.
+  - اكتب اختبارات للتحقق من تصرّف اللعبة بشكل صحيح عند مستويات صعوبة مختلفة.
+5. **تتبّع إحصائي** تتبّع إحصاءات مثل إجمالي الألعاب الملعوبة، والفوزات، ومتوسط المحاولات. اكتب اختبارات لضمان تسجيل الإحصاءات بدقة.
+  - تتبّع إحصاءات مثل إجمالي الألعاب الملعوبة، والفوزات، ومتوسط المحاولات.
+  - اكتب اختبارات لضمان تسجيل الإحصاءات بدقة.
+6. **تحليل المدخلات** حسّن التعامل مع المدخلات لقبول النصوص وتحويلها إلى أرقام. اكتب اختبارات لضمان تفسير مدخلات مثل `'42'` بشكل صحيح.
+  - حسّن التعامل مع المدخلات لقبول النصوص وتحويلها إلى أرقام.
+  - اكتب اختبارات لضمان تفسير مدخلات مثل `'42'` بشكل صحيح.
+7. **وضع اللاعبين المتعددين** اسمح لعدة لاعبين بالتخمين بالتناوب. اكتب اختبارات لضمان إدارة أدوار اللاعبين ونتائجهم بشكل صحيح.
+  - اسمح لعدة لاعبين بالتخمين بالتناوب.
+  - اكتب اختبارات لضمان إدارة أدوار اللاعبين ونتائجهم بشكل صحيح.
+8. **قائمة أفضل النتائج** نفّذ نظام أفضل النتائج الذي يسجّل أفضل الدرجات. اكتب اختبارات لضمان تحديث أفضل النتائج واسترجاعها بشكل صحيح.
+  - نفّذ نظام أفضل النتائج الذي يسجّل أفضل الدرجات.
+  - اكتب اختبارات لضمان تحديث أفضل النتائج واسترجاعها بشكل صحيح.
+
+---
+
+بتوسيع اللعبة وكتابة اختبارات لميزات جديدة، ستعمّق فهمك لـ TDD وتحسّن كفاءتك في الاختبار.

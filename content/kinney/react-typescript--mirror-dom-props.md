@@ -1,16 +1,16 @@
 ---
-title: "Mirroring DOM Props"
-lang: en
+title: "محاكاة خصائص DOM"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/mirror-dom-props"
 ---
 
-Building wrapper components around native DOM elements is one of those things that looks simple until you realize you need to support all the props. You know the drill: you build a nice `Button` component, then someone needs `onClick`, then `disabled`, then `aria-label`, then `onMouseEnter`, and before you know it you’re manually typing out dozens of props that the native `<button>` already supports perfectly.
+بناء مكوّنات غلاف (wrapper components) حول عناصر DOM الأصلية هو أحد تلك الأمور التي تبدو بسيطة حتى تدرك أنك تحتاج إلى دعم جميع الخصائص. أنت تعرف الإجراء: تبني مكوّن `Button` جميلًا، ثم يحتاج أحدهم إلى `onClick`، ثم `disabled`، ثم `aria-label`، ثم `onMouseEnter`، وقبل أن تدري إنك تكتب يدويًا عشرات الخصائص التي يدعمها `<button>` الأصلي دعمًا مثاليًا.
 
-Enter `ComponentPropsWithoutRef`—React’s utility type that gives you all the props of a native element without the ref clutter. It’s like getting a VIP pass to the DOM’s prop buffet while keeping TypeScript happy and your autocomplete snappy.
+وهنا يأتي `ComponentPropsWithoutRef` — نوع أدوات في React يمنحك جميع خصائص عنصر أصلي دون فوضى المراجع. وكأنك حصلت على تذكرة دعوة VIP إلى وليمة خصائص DOM مع إبقاء TypeScript راضيًا وإكمالك التلقائي سريعًا.
 
-## The Problem: Manual Prop Forwarding
+## المشكلة: تمرير الخصائص يدويًا
 
-Let’s start with the common approach that makes everyone’s life harder:
+لنبدأ بالمنهج الشائع الذي يجعل حياة الجميع أصعب:
 
 ```typescript
 // ❌ Bad - manually defining every prop you might need
@@ -41,16 +41,16 @@ function Button({ children, onClick, disabled, type, className, style }: ButtonP
 }
 ```
 
-This approach has several problems:
+لهذا النهج عدة مشكلات:
 
-- **Incomplete**: You’ll inevitably forget props that users need
-- **Maintenance burden**: Every new prop requirement means updating the interface
-- **Type drift**: Your custom props might not match the actual DOM element behavior
-- **No autocomplete**: Users don’t get IntelliSense for standard HTML attributes
+- **ناقصة**: ستنسى حتمًا خصائص يحتاجها المستخدمون
+- **عبء صيانة**: كل متطلب خاصية جديد يعني تحديث الواجهة
+- **انزياح الأنواع**: قد لا تتطابق خصائصك المخصّصة مع سلوك عنصر DOM الفعلي
+- **بلا إكمال تلقائي**: لا يحصل المستخدمون على IntelliSense لخصائص HTML القياسية
 
-## The Solution: ComponentPropsWithoutRef
+## الحل: ComponentPropsWithoutRef
 
-`ComponentPropsWithoutRef` is a utility type that extracts all the props from a given HTML element type, minus the `ref` prop (which we’ll handle separately if needed):
+`ComponentPropsWithoutRef` هو نوع أدوات يستخرج جميع الخصائص من نوع عنصر HTML معيّن، بطرح خاصية `ref` (التي سنتعامل معها على حدة عند الحاجة):
 
 ```typescript
 import { ComponentPropsWithoutRef } from 'react';
@@ -70,7 +70,7 @@ function Button({ variant = 'primary', size = 'md', className, ...props }: Butto
 }
 ```
 
-Now your `Button` component automatically supports every prop that native `<button>` elements support:
+الآن يدعم مكوّن `Button` تلقائيًا كل خاصية تدعمها عناصر `<button>` الأصلية:
 
 ```typescript
 // ✅ All of these work automatically with full TypeScript support
@@ -88,9 +88,9 @@ Now your `Button` component automatically supports every prop that native `<butt
 </Button>
 ```
 
-## Understanding the Type Magic
+## فهم سحر الأنواع
 
-Let’s peek under the hood to understand what `ComponentPropsWithoutRef` actually gives you:
+لنُطل على الآلية الداخلية لفهم ما يقدّمه `ComponentPropsWithoutRef` فعليًا:
 
 ```typescript
 // This is roughly what ComponentPropsWithoutRef<'button'> expands to:
@@ -110,11 +110,11 @@ type ButtonElementProps = {
 };
 ```
 
-The beauty is that you don’t need to know or maintain this list—React’s type definitions handle it for you, and they stay up-to-date with web standards.
+الجميل في الأمر أنك لا تحتاج إلى معرفة هذه القائمة أو صيانتها — تتولّى تعريفات أنواع React ذلك نيابةً عنك، وتبقى محدَّثة مع معايير الويب.
 
-## Working with Different HTML Elements
+## العمل مع عناصر HTML مختلفة
 
-`ComponentPropsWithoutRef` works with any HTML element. Just change the string literal:
+يعمل `ComponentPropsWithoutRef` مع أي عنصر HTML. ما عليك سوى تغيير السلسلة الحرفية:
 
 ```typescript
 // Input component
@@ -152,9 +152,9 @@ function Card({ title, actions, children, className, ...props }: CardProps) {
 }
 ```
 
-## Handling Prop Conflicts Gracefully
+## التعامل بأناقة مع تعارض الخصائص
 
-Sometimes your custom props might conflict with native DOM props. Here’s how to handle that:
+أحيانًا قد تتعارض خصائصك المخصّصة مع خصائص DOM الأصلية. إليك كيفية التعامل مع ذلك:
 
 ```typescript
 // What if your custom 'size' conflicts with the native 'size' attribute?
@@ -183,7 +183,7 @@ function Input({ label, inputSize = 'md', ...props }: InputProps) {
 />;
 ```
 
-If you need to completely override a native prop, use `Omit`:
+وإذا احتجت إلى تجاوز خاصية أصلية تمامًا، استخدم `Omit`:
 
 ```typescript
 interface CustomButtonProps extends Omit<ComponentPropsWithoutRef<'button'>, 'onClick'> {
@@ -197,9 +197,9 @@ function CustomButton({ onClick, buttonType, ...props }: CustomButtonProps) {
 }
 ```
 
-## Adding forwardRef Support
+## إضافة دعم `forwardRef`
 
-When you need ref forwarding, combine `ComponentPropsWithoutRef` with `forwardRef`:
+حين تحتاج إلى تمرير المراجع، اجمع بين `ComponentPropsWithoutRef` و`forwardRef`:
 
 ```typescript
 import { forwardRef, ComponentPropsWithoutRef } from 'react';
@@ -220,7 +220,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 ```
 
-Now your component supports refs *and* all native button props:
+الآن يدعم مكوّنك المراجع *و*كل خصائص الزر الأصلية:
 
 ```typescript
 function App() {
@@ -241,9 +241,9 @@ function App() {
 }
 ```
 
-## Real-World Example: Building a Link Component
+## مثال من العالم الحقيقي: بناء مكوّن رابط
 
-Here’s a comprehensive example that shows `ComponentPropsWithoutRef` in action:
+إليك مثالًا شاملًا يوضّح `ComponentPropsWithoutRef` في العمل:
 
 ```typescript
 import { forwardRef, ComponentPropsWithoutRef } from 'react';
@@ -300,9 +300,9 @@ Link.displayName = 'Link';
 </Link>
 ```
 
-## Advanced Pattern: Polymorphic Components
+## النمط المتقدّم: المكوّنات متعددة الأشكال
 
-For ultimate flexibility, you can create components that can render as different HTML elements:
+لأقصى قدر من المرونة، يمكنك إنشاء مكوّنات قادرة على التصيير كعناصر HTML مختلفة:
 
 ```typescript
 import { ComponentPropsWithoutRef, ElementType, forwardRef } from 'react';
@@ -337,15 +337,15 @@ const PolymorphicComponent = forwardRef(
 </PolymorphicComponent>
 ```
 
-> **Note**
+> **ملاحظة**
 >
-> Polymorphic components are powerful but complex. Use them sparingly—most components work better with a fixed element type.
+> المكوّنات متعددة الأشكال قويّة لكنها معقّدة. استخدمها باعتدال — معظم المكوّنات تعمل بشكل أفضل مع نوع عنصر ثابت.
 
-## Common Patterns and Best Practices
+## الأنماط الشائعة وأفضل الممارسات
 
-### Pattern 1: The Wrapper Component
+### النمط 1: مكوّن الغلاف
 
-Perfect for adding styling or behavior to native elements:
+مثالي لإضافة التنسيق أو السلوك إلى العناصر الأصلية:
 
 ```typescript
 interface StyledInputProps extends ComponentPropsWithoutRef<'input'> {
@@ -357,9 +357,9 @@ function StyledInput({ variant = 'outline', className, ...props }: StyledInputPr
 }
 ```
 
-### Pattern 2: The Enhanced Component
+### النمط 2: المكوّن المحسَّن
 
-Adding functionality while preserving the native API:
+إضافة وظائف مع الحفاظ على الواجهة الأصلية:
 
 ```typescript
 interface AutoResizeTextareaProps extends ComponentPropsWithoutRef<'textarea'> {
@@ -389,9 +389,9 @@ function AutoResizeTextarea({
 }
 ```
 
-### Pattern 3: The Compound Component
+### النمط 3: المكوّن المركّب
 
-Building complex components from simple ones:
+بناء مكوّنات معقّدة من مكوّنات بسيطة:
 
 ```typescript
 interface FormFieldProps extends ComponentPropsWithoutRef<'div'> {
@@ -419,9 +419,9 @@ function FormField({ label, error, required, children, className, ...props }: Fo
 </FormField>;
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-`ComponentPropsWithoutRef` has minimal runtime cost since it’s purely a type-level construct. However, there are a few things to keep in mind:
+`ComponentPropsWithoutRef` له كلفة تشغيل ضئيلة لأنه مجرّد بنية على مستوى الأنواع. لكن هناك بعض الأمور التي ينبغي مراعاتها:
 
 ```typescript
 // ✅ Good - destructuring commonly used props
@@ -437,9 +437,9 @@ function Button(props: ButtonProps) {
 }
 ```
 
-## Debugging Tips
+## نصائح التنقيح
 
-When things go wrong with prop types, these patterns help with debugging:
+حين تسوء الأمور مع أنواع الخصائص، تساعدك هذه الأنماط على التنقيح:
 
 ```typescript
 // Add type assertions to understand what you're working with
@@ -457,13 +457,13 @@ const MyButton = ((props) => {
 }) satisfies React.FC<ComponentPropsWithoutRef<'button'>>;
 ```
 
-## React’s DOM Utility Types Arsenal
+## ترسانة أنواع DOM في React
 
-While `ComponentPropsWithoutRef` is your go-to for most cases, React provides a suite of more specialized DOM typing utilities. Understanding when and why to use each one will level up your TypeScript game.
+في حين أن `ComponentPropsWithoutRef` هو خيارك الأول في معظم الحالات، يوفّر React مجموعة من أدوات ربط DOM أكثر تخصّصًا. وفهم متى ولماذا تستخدم كل واحدة منها سيرفع مستواك في TypeScript.
 
-### HTMLAttributes vs HTMLProps vs AllHTMLAttributes
+### مقارنة بين HTMLAttributes وHTMLProps وAllHTMLAttributes
 
-These types provide different levels of HTML attribute support, each with specific use cases:
+توفّر هذه الأنواع مستويات مختلفة من دعم خصائص HTML، ولكل منها حالات استخدام محدّدة:
 
 ```typescript
 import { HTMLAttributes, HTMLProps, AllHTMLAttributes } from 'react';
@@ -484,11 +484,11 @@ interface GenericWrapperProps extends AllHTMLAttributes<HTMLElement> {
 }
 ```
 
-Let’s break down the differences:
+لنُفصّل الفروقات:
 
-### HTMLAttributes: The Foundation
+### HTMLAttributes: الأساس
 
-`HTMLAttributes` includes all the common HTML attributes but excludes element-specific props:
+يتضمّن `HTMLAttributes` جميع خصائص HTML الشائعة لكنه يستثني الخصائص الخاصة بنوع العنصر:
 
 ```typescript
 // HTMLAttributes includes these common props:
@@ -525,9 +525,9 @@ function Panel<T extends HTMLElement = HTMLDivElement>({
 }
 ```
 
-### HTMLProps: The Full Package
+### HTMLProps: الحزمة الكاملة
 
-`HTMLProps` extends `HTMLAttributes` with element-specific props. This is what `ComponentPropsWithoutRef` uses under the hood:
+يوسّع `HTMLProps` نوع `HTMLAttributes` بالخصائص الخاصة بنوع العنصر. وهذا هو ما يستخدمه `ComponentPropsWithoutRef` في الخلفية:
 
 ```typescript
 // HTMLProps includes everything from HTMLAttributes PLUS element-specific props
@@ -564,9 +564,9 @@ function EnhancedInput({ label, error, ...inputProps }: EnhancedInputProps) {
 />;
 ```
 
-### AllHTMLAttributes: The Kitchen Sink
+### AllHTMLAttributes: كل الصفات مجتمعة
 
-`AllHTMLAttributes` is the union of all HTML element attributes. Use it when building highly generic components:
+`AllHTMLAttributes` هو اتحاد جميع خصائص عناصر HTML. استخدمه عند بناء مكوّنات عامة بدرجة عالية:
 
 ```typescript
 // AllHTMLAttributes includes EVERY possible HTML attribute
@@ -587,13 +587,13 @@ function GenericElement({
 <GenericElement as="button" onClick={() => {}} disabled />
 ```
 
-> **Warning**
+> **تحذير**
 >
-> `AllHTMLAttributes` can lead to confusing APIs since it allows any HTML attribute regardless of the element type. Use it sparingly and prefer more specific types when possible.
+> قد يؤدّي `AllHTMLAttributes` إلى واجهات مُربكة لأنه يسمح بأي خاصية HTML مهما كان نوع العنصر. استخدمه باعتدال وفضّل الأنواع الأدقّ كلما أمكن.
 
-### JSX.IntrinsicElements: Type-Safe Element Maps
+### JSX.IntrinsicElements: خرائط عناصر آمنة الأنواع
 
-`JSX.IntrinsicElements` provides a mapping of all HTML element names to their prop types:
+يوفّر `JSX.IntrinsicElements` خريطة تربط أسماء عناصر HTML بأنواع خصائصها:
 
 ```typescript
 // JSX.IntrinsicElements maps element names to their prop types
@@ -614,7 +614,7 @@ createElement('input', { type: 'text', value: 'test' }); // ✅
 createElement('div', { type: 'text' }); // ❌ Type error: div doesn't have 'type'
 ```
 
-This is incredibly powerful for building polymorphic components with proper type safety:
+وهذا قويّ للغاية لبناء مكوّنات متعددة الأشكال بأمان أنواع كامل:
 
 ```typescript
 // Type-safe polymorphic component using JSX.IntrinsicElements
@@ -647,9 +647,9 @@ function Polymorphic<T extends keyof JSX.IntrinsicElements = 'div'>({
 <Polymorphic as="input" type="text" value="test" />
 ```
 
-### Choosing the Right Type: A Decision Matrix
+### اختيار النوع الصحيح: مصفوفة قرار
 
-Here’s when to use each DOM utility type:
+إليك متى تستخدم كل نوع من أنواع DOM المساعدة:
 
 ```typescript
 // Use ComponentPropsWithoutRef for most wrapper components
@@ -677,9 +677,9 @@ type ButtonOrLinkProps =
   ({ as: 'button' } & JSX.IntrinsicElements['button']) | ({ as: 'a' } & JSX.IntrinsicElements['a']);
 ```
 
-### Real-World Example: Building a Form Field System
+### مثال من العالم الحقيقي: بناء نظام حقول للنماذج
 
-Let’s see how these types work together in a real form system:
+لنرَ كيف تعمل هذه الأنواع معًا في نظام نماذج حقيقي:
 
 ```typescript
 // Base field wrapper using HTMLAttributes (no input-specific props needed)
@@ -753,9 +753,9 @@ function SelectField<T extends string | number>({
 }
 ```
 
-### Performance and Bundle Size Considerations
+### اعتبارات الأداء وحجم الحزمة
 
-These utility types are purely compile-time constructs with zero runtime overhead:
+هذه الأنواع المساعدة مجرّدات وقت التصريف (compile-time) بلا أي حمل على وقت التشغيل:
 
 ```typescript
 // All of these compile to the same JavaScript
@@ -766,11 +766,11 @@ const props3: JSX.IntrinsicElements['button'] = { onClick: () => {} };
 // In JavaScript, they're all just: { onClick: () => {} }
 ```
 
-The choice between them is about developer experience and type safety, not performance.
+الاختيار بينها يتعلق تجربة المطوّر وأمان الأنواع، لا الأداء.
 
-## Migration Strategy
+## استراتيجية الترحيل
 
-Moving from manual props to `ComponentPropsWithoutRef`? Here’s a safe approach:
+هل تنتقل من الخصائص اليدوية إلى `ComponentPropsWithoutRef`؟ إليك منهجًا آمنًا:
 
 ```typescript
 // Step 1: Keep existing interface, extend ComponentPropsWithoutRef
@@ -793,21 +793,21 @@ function Button({ variant = 'primary', className, ...props }: ButtonProps) {
 }
 ```
 
-This approach is backwards-compatible and gives you immediate access to all native props.
+هذا النهج متوافق مع الإصدارات السابقة ويمنحك فورًا الوصول إلى جميع الخصائص الأصلية.
 
-## Looking Forward
+## إلى الأمام
 
-`ComponentPropsWithoutRef` is the foundation for building robust, reusable components that feel natural to use. It eliminates the friction between your custom components and the native DOM, giving developers the full power of HTML attributes with the benefits of your custom logic.
+`ComponentPropsWithoutRef` هو الأساس لبناء مكوّنات متينة وقابلة لإعادة الاستخدام تبدو طبيعية الاستخدام. فهو يزيل الاحتكاك بين مكوّناتك المخصّصة وDOM الأصلي، ويمنح المطوّرين كامل قوة خصائص HTML مع فوائد منطقك المخصّص.
 
-The patterns we’ve covered—from simple wrappers to polymorphic components—scale from single-component libraries to comprehensive design systems. Your components become more powerful and your developers become more productive, all while TypeScript keeps everyone honest about what props are actually available.
+والأنماط التي غطّيناها — من الأغلفة البسيطة إلى المكوّنات متعددة الأشكال — تتوسّع من مكتبات مكوّنات من مكوّن واحد إلى أنظمة تصميم شاملة. تصبح مكوّناتك أكثر قوة ويصبح مطوّروك أكثر إنتاجية، ويبقى TypeScript في الوقت نفسه يراقب الجميع بصرامة بشأن الخصائص المتاحة فعلًا.
 
-Remember: the goal isn’t just to make TypeScript happy, but to create components that feel like natural extensions of HTML. When you nail that balance, building UIs becomes a joy rather than a chore.
+وتذكّر: الهدف ليس مجرّد إرضاء TypeScript، بل إنشاء مكوّنات تبدو امتدادات طبيعية لـ HTML. وحين تضبط هذا التوازن، يصبح بناء واجهات المستخدم متعةً لا عبئًا.
 
-**Next up**: We’ll explore advanced prop patterns, including render props, compound components, and event handler composition that work seamlessly with the DOM prop foundation we’ve established here.
+**التالي**: سنستكشف أنماط خصائص متقدّمة، بما في ذلك render props والمكوّنات المركّبة وتركيب معالِج الأحداث (event handlers) التي تعمل بسلاسة مع أساس خصائص DOM الذي أسّسناه هنا.
 
-## Typed Button with `as` and Safe Refs
+## زر مُنمَّط بـ `as` ومراجع آمنة
 
-Build a single `Button` that mirrors intrinsic attributes, supports `as="a" | "button"`, and forwards refs with correct types.
+ابنِ زرًّا واحدًا `Button` يحاكي الخصائص الأصلية، ويدعم `as="a" | "button"`، ويمرّر المراجع بأنواع صحيحة.
 
 ```typescript
 import { forwardRef } from 'react';
@@ -863,6 +863,6 @@ export const Button = forwardRef<HTMLElement, ButtonProps>(function Button(props
 });
 ```
 
-- Mirrors native props via `JSX.IntrinsicElements` so you get accurate attributes and events.
-- Restricts `as` to `'a' | 'button'` to avoid surprising combinations.
-- Forwards refs with the correct underlying element type.
+- يحاكي الخصائص الأصلية عبر `JSX.IntrinsicElements` فتتحصل على خصائص وأحداث دقيقة.
+- يقيّد `as` بالقيمة `'a' | 'button'` لتجنّب التركيبات المفاجئة.
+- يمرّر المراجع بنوع العنصر الأساسي الصحيح.

@@ -1,31 +1,31 @@
 ---
-title: "Screen Reader Support"
-lang: en
+title: "دعم قارئات الشاشة"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/screen-reader-support"
 ---
 
-For elements that need to be present for screen readers but visually hidden, Tailwind offers specific utilities.
+للعناصر التي يلزم وجودها لقارئات الشاشة مع إخفاءها بصريًا، توفّر Tailwind أدوات محدّدة.
 
-### The `sr-only` Utility
+### أداة `sr-only`
 
-The `sr-only` utility positions elements off-screen while keeping them accessible to assistive technologies. Use for labels or descriptive text that provides context for screen reader users but isn’t needed for sighted users. The `not-sr-only` utility reverses this, making elements visible again.
+تُزيح أداة `sr-only` العناصر خارج الشاشة مع إبقائها في متناول التقنيات المساعدة. استخدمها للتسميات أو النصوص الوصفية التي توفّر سياقًا لمستخدمي قارئات الشاشة ولا يحتاجها المستخدمون ذوو البصر. وتعكس أداة `not-sr-only` ذلك، فتعيد العناصر إلى الظهور.
 
-## Focus Indicators
+## مؤشرات التركيز
 
-Proper focus styling is essential for keyboard navigation, indicating which element is currently interactive.
+التنسيق السليم للتركيز ضروري للتنقل بلوحة المفاتيح، إذ يوضّح العنصر القابل للتفاعل حاليًا.
 
-### Outline Utilities
+### أدوات المحيط
 
-Browsers provide default outlines on focused elements, but you often need custom styling. Tailwind provides utilities like `outline-2` and `outline-blue-500` to set outline width and color. Apply these using the `focus:` variant.
+تقدّم المتصفحات محيطات افتراضية للعناصر التي تحوز على التركيز، لكنك غالبًا ما تحتاج إلى تنسيق مخصّص. توفّر Tailwind أدوات مثل `outline-2` و`outline-blue-500` لضبط سماكة المحيط ولونه. طبّقها باستخدام صيغة `focus:`.
 
-### `outline-hidden` vs `outline-none`
+### `outline-hidden` مقابل `outline-none`
 
-If you hide the default browser outline, apply your own focus styling for accessibility. The `outline-hidden` utility hides the default outline while preserving it in forced colors mode. The `outline-none` utility explicitly sets `outline-style: none`, completely removing the outline.
+إذا أخفتَ محيط المتصفح الافتراضي، فطبّق تنسيق تركيزك الخاص لأغراض الوصولية. تُخفي أداة `outline-hidden` المحيط الافتراضي مع الحفاظ عليه في وضع الألوان القسرية. أمّا أداة `outline-none` فتضبط `outline-style: none` صراحةً، فتزيل المحيط تمامًا.
 
-### Text Selection and Readability
+### تحديد النص وقابلية القراءة
 
-Text selection utilities (`user-select-none`, `select-text`, `select-all`, `select-auto`) impact user interaction. Text wrapping utilities like `text-balance` (distributes text evenly for headings) and `text-pretty` (prevents orphans) improve readability. Font smoothing utilities (`antialiased`, `subpixel-antialiased`) affect text rendering.
+أدوات تحديد النص (`user-select-none` و`select-text` و`select-all` و`select-auto`) تؤثر في تفاعل المستخدم. وأدوات لفّ النص مثل `text-balance` (توزّع النص بالتساوي في العناوين) و`text-pretty` (تمنع الكلمات اليتيمة) تحسّن قابلية القراءة. وأدوات تنعيم الخطوط (`antialiased` و`subpixel-antialiased`) تؤثر في تصيير النص.
 
-### List Accessibility in Preflight
+### الوصولية للقوائم في Preflight
 
-Tailwind’s Preflight base styles remove bullets or numbers from lists by default. For unstyled content that is truly a list, add `role="list"` for VoiceOver accessibility, as unstyled lists aren’t announced as lists by default.
+تزيل أنماط Preflight الأساسية في Tailwind النقاط أو الأرقام من القوائم افتراضيًا. أما المحتوى غير المسنَّد الذي هو قائمة بالفعل، فأضِف إليه `role="list"` من أجل وصولية VoiceOver، إذ لا تُعلَن القوائم غير المسنَّد بوصفها قوائم افتراضيًا.

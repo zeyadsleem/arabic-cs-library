@@ -1,64 +1,64 @@
 ---
-title: "Swarms"
-lang: en
+title: "الأسراب (Swarms)"
+lang: ar
 source: "https://stevekinney.com/courses/openclaw/swarms"
 ---
 
-[Subagents](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) are good for handing off a few pieces of work. When you have many similar tasks, like reviewing twenty files, checking a dozen vendors, or summarizing every issue in a milestone, spawning children one at a time and waiting for each announcement gets clumsy. A **swarm** is OpenClaw’s tool for that.
+[الوكلاء الفرعيون](https://stevekinney.com/courses/openclaw/subagents-and-orchestration) مناسبون لتسليم بضع قطع من العمل. وحين تكون لديك مهام متشابهة كثيرة، مثل مراجعة عشرين ملفًا، أو فحص دستة من المورّدين، أو تلخيص كل مشكلة في مرحلة إنجاز، يصبح توليد الأبناء واحدًا واحدًا وانتظار كل إبلاغ أمرًا ثقيلًا. و**السرب (swarm)** هو أداة OpenClaw لذلك.
 
-In a swarm, your agent writes a short JavaScript program that starts a batch of children, waits for them, and combines their results. The program is the plan: ordinary `Promise.allSettled`, `if`, and `while` decide what runs and in what order. There’s no special workflow format.
+في السرب، يكتب وكيلك برنامج JavaScript قصيرًا يبدأ دفعة من الأبناء، وينتظرهم، ويجمع نتائجهم. والبرنامج هو الخطة: فـ `Promise.allSettled` و`if` و`while` العادية تقرّر ما يُشغَّل وبأي ترتيب. ولا توجد صيغة سير عمل خاصة.
 
-The docs suggest a swarm once you have about **five or more** similar, independent tasks. For one or a few, a regular subagent is simpler.
+وتقترح الوثائق استخدام سرب عندما تكون لديك نحو **خمس مهام** متشابهة ومستقلّة أو أكثر. أما مهمة واحدة أو بضع مهام، فالوكيل الفرعي العادي أبسط.
 
-## How Swarm Children Differ
+## كيف يختلف أبناء السرب
 
-Swarm children are called **collectors**. They’re ordinary subagent sessions with a different way of finishing:
+يُسمّى أبناء السرب **جامعين (collectors)**. وهم جلسات وكلاء فرعيين عادية، لكن بطريقة مختلفة في الإنهاء:
 
-| Ordinary subagent | Swarm collector |
+| الوكيل الفرعي العادي | جامع السرب |
 | --- | --- |
-| Announces its result back to the parent | Saves its result for the script to collect |
-| Can be steered while it runs | Can’t be steered |
-| Waits for approval like any run | **Never asks.** Anything that needs approval is denied |
-| Returns text | Can return validated JSON when given a schema |
+| يُعلن نتيجته إلى الأصل | يحفظ نتيجته ليأخذها السكربت |
+| يمكن توجيهه أثناء تشغيله | لا يمكن توجيهه |
+| ينتظر الموافقة مثل أي تشغيل | **لا يسأل أبدًا.** وكل ما يحتاج موافقة يُرفض |
+| يُعيد نصًا | يمكنه إعادة JSON مُتحقَّق منه عند إعطائه مخطّطًا |
 
-That approval rule is the one to design around. A swarm is unattended by design, so give collectors read-only work. If a task needs a command that would normally ask you first, the collector reports the denial instead of waiting.
+وقاعدة الموافقة تلك هي ما يجب أن تبني تصميمك حوله. فالسرب غير مُراقَب بحكم تصميمه، فامنح الجامعين عملًا للقراءة فقط. وإن احتاجت مهمة أمرًا كان يسألك أولًا عادةً، يُبلّغ الجامع عن الرفض بدلًا من الانتظار.
 
-Everything from the subagents lesson about tool policy still applies. A collector of your main agent inherits its tools, minus the tools every subagent loses (like `message` and `cron`). To limit collectors further, run them as a [dedicated agent](#run-collectors-as-a-locked-down-agent).
+وكل ما ورد في درس الوكلاء الفرعيين عن سياسة الأدوات يبقى ساريًا. فجامع تابع لوكيلك الرئيسي يرث أدواته، ناقصًا الأدوات التي يفقدها كل وكيل فرعي (مثل `message` و`cron`). ولتقييد الجامعين أكثر، شغّلهم كـ[وكيل مخصّص](#run-collectors-as-a-locked-down-agent).
 
-## What You Need: Code Mode
+## ما تحتاجه: وضع الشيفرة
 
-Swarms are on by default. The friendly way to write one, the `agents.run()` function, needs **Code Mode** to be active for the run.
+الأسراب مفعّلة افتراضيًا. والطريقة السهلة لكتابة سرب، وهي دالة `agents.run()`، تحتاج إلى أن يكون **وضع الشيفرة (Code Mode)** نشطًا للتشغيل.
 
-**Code Mode** is an experimental feature that changes how your agent uses tools. Instead of calling tools one at a time, the model writes a small JavaScript program that calls them as functions. That’s what lets it start twenty children in one go.
+**وضع الشيفرة** ميزة تجريبية تغيّر طريقة استخدام وكيلك للأدوات. فبدلًا من استدعاء الأدوات واحدة واحدة، يكتب النموذج برنامج JavaScript صغيرًا يستدعيها كدوال. وهذا ما يتيح له بدء عشرين ابنًا في دفعة واحدة.
 
-Code Mode’s default is `"auto"`, which turns it on only for models OpenClaw has marked as working well with it. That list includes recent Claude Opus and Sonnet models and recent GPT models, among others. It doesn’t include smaller models like Haiku, local Ollama models, or custom endpoints.
+الافتراضي في وضع الشيفرة هو `"auto"`، وهو يفعّله فقط للنماذج التي وسمها OpenClaw بأنها تعمل معه جيدًا. وتشمل تلك القائمة أحدث نماذج Claude Opus وSonnet وأحدث نماذج GPT، وغيرها. وهي لا تشمل نماذج أصغر مثل Haiku، ولا نماذج Ollama المحلية، ولا نقاط النهاية المخصّصة.
 
-You can’t tell from your config whether it’s actually on, so check a real run. This sends one message in a throwaway session, so it doesn’t clutter your main conversation:
+ولا يمكنك أن تعرف من تهيئتك هل هو مفعّل فعلًا، فافحص تشغيلًا حقيقيًا. وهذا يرسل رسالة واحدة في جلسة مؤقتة، فلا يزدحم به حديثك الرئيسي:
 
 ```bash
 openclaw agent --agent main --session-key agent:main:code-mode-check \
   --message "Reply with OK." --json | grep codeModeEngaged
 ```
 
-`"codeModeEngaged": true` means you’re set. If it’s `false`, you can turn Code Mode on:
+و`"codeModeEngaged": true` يعني أنك جاهز. وإن كانت `false`، فيمكنك تفعيل وضع الشيفرة:
 
-- **In the Control UI:** **Settings → System → Labs → Code Mode**. It applies to the next run, with no restart.
-- **For all agents:** `openclaw config set tools.codeMode true`
-- **For one agent:** `openclaw config set agents.entries.main.tools.codeMode true`
+- **في واجهة التحكم:** **Settings → System → Labs → Code Mode**. ويُطبَّق على التشغيل التالي، دون إعادة تشغيل.
+- **لكل الوكلاء:** `openclaw config set tools.codeMode true`
+- **لوكيل واحد:** `openclaw config set agents.entries.main.tools.codeMode true`
 
-`true` forces it on for every model, and `"auto"` returns to the default. If you ever write `tools.codeMode` as an object, include `enabled`. An object without `enabled` turns Code Mode **off**.
+و`true` يفرضه على كل نموذج، و`"auto"` يعود إلى الافتراضي. وإن كتبت `tools.codeMode` يومًا ككائن، فأدرج `enabled`. والكائن بلا `enabled` يُطفئ وضع الشيفرة.
 
-> **Code Mode changes how your agent works in general**
+> **وضع الشيفرة يغيّر طريقة عمل وكيلك عمومًا**
 >
-> Code Mode affects every tool call, not just swarms, and it’s still experimental. If your agent gets worse at everyday tasks after you force it on, turn it on for a separate agent instead and use that one for fan-out work.
+> يؤثّر وضع الشيفرة على كل نداء أداة، لا على الأسراب فقط، وهو ما زال تجريبيًا. فإن ساء أداء وكيلك في المهام اليومية بعد فرضه، ففعّله لوكيل منفصل بدلًا من ذلك واستخدم ذاك للعمل المتفرّع.
 
-> **On OpenAI models, check your runtime**
+> **في نماذج OpenAI، افحص بيئة التشغيل لديك**
 >
-> OpenAI models run through the Codex harness by default, which has its own Code Mode and never uses OpenClaw’s. Swarms still work there, but tools are called as `tools.<name>` inside scripts and the setup differs. This lesson assumes OpenClaw’s own runtime.
+> تعمل نماذج OpenAI عبر بيئة تشغيل Codex افتراضيًا، ولها وضع الشيفرة الخاص بها ولا تستخدم وضع OpenClaw أبدًا. والأسراب تعمل هناك أيضًا، لكن الأدوات تُستدعى باسم `tools.<name>` داخل السكربتات وتختلف التهيئة. ويفترض هذا الدرس بيئة تشغيل OpenClaw نفسه.
 
-## Writing a Swarm
+## كتابة سرب
 
-Once Code Mode is active, your agent has three extra functions:
+متى كان وضع الشيفرة نشطًا، صارت لوكيلك ثلاث دوال إضافية:
 
 ```typescript
 agents.run(prompt, options?)   // start one collector and wait for its result
@@ -66,9 +66,9 @@ phase(title)                   // label a stage, shown in the progress widget
 log(message)                   // post a short progress note
 ```
 
-`agents.run` takes these options: `label`, `model`, `thinking`, `fastMode`, `agentId`, `phase`, and `schema`. Without a `schema`, it resolves to the child’s final text. With one, the child must submit an answer that matches it, and `agents.run` resolves to that value.
+وتأخذ `agents.run` هذه الخيارات: `label` و`model` و`thinking` و`fastMode` و`agentId` و`phase` و`schema`. وبدون `schema`، تُحلّ إلى النص النهائي للابن. ومع واحد، يجب أن يقدّم الابن جوابًا يطابقه، فتُحلّ `agents.run` إلى تلك القيمة.
 
-Here’s what a typical script looks like. Your agent writes this; you don’t have to:
+وهذا شكل سكربت نموذجي. يكتبه وكيلك؛ ولا يلزمك أنت:
 
 ```javascript
 const reviewSchema = {
@@ -105,109 +105,109 @@ log(`${reviews.length} reviews, ${failures.length} failures`);
 return { reviews, failures };
 ```
 
-A few patterns matter:
+وهناك أنماط قليلة تهمّ:
 
-- **Use `Promise.allSettled`, not `Promise.all`.** With `all`, one failed child throws away every other result. With `allSettled`, you keep what succeeded and can report what didn’t.
-- **A failed child rejects with a `SwarmAgentError`.** It carries the child’s `runId` and `status`. A child that returns JSON that doesn’t match the schema counts as failed.
-- **Bound your loops.** A `while` loop that keeps spawning children until something is “ready” should stop after a fixed number of passes. The group limits below are only a backstop.
-- **Don’t re-run on failure automatically.** Report the failures and let the agent, or you, decide.
+- **استخدم `Promise.allSettled` لا `Promise.all`.** فمع `all`، يُهدر ابن فاشل واحد كل نتيجة أخرى. أما مع `allSettled`، فتحتفظ بما نجح ويمكنك الإبلاغ عمّا لم ينجح.
+- **الابن الفاشل يرفض بـ `SwarmAgentError`.** وهي تحمل `runId` و`status` الخاصين بالابن. والابن الذي يُعيد JSON لا يطابق المخطّط يُحتسب فاشلًا.
+- **حدّد حلقاتك.** فحلقة `while` التي تظل تولّد أبناء حتى يصير شيء ما «جاهزًا» ينبغي أن تتوقّف بعد عدد ثابت من الدورات. وحدود المجموعة أدناه ليست إلا شبكة أمان.
+- **لا تُعِد التشغيل عند الفشل تلقائيًا.** أبلِغ عن الإخفاقات ودع الوكيل، أو نفسك، يقرّر.
 
-In practice you won’t write these scripts by hand. You describe the fan-out, say “use Swarm” or “use `agents.run`”, and ask for a schema and `Promise.allSettled`. The agent writes the script.
+وعمليًا لن تكتب هذه السكربتات بيدك. تصف التفرّع، وتقول «استخدم Swarm» أو «استخدم `agents.run`»، وتطلب مخطّطًا و`Promise.allSettled`. ويكتب الوكيل السكربت.
 
-## Limits
+## الحدود
 
-These live under `tools.swarm`:
+وهذه تقع تحت `tools.swarm`:
 
-| Setting | Default | What it limits |
+| الإعداد | الافتراضي | ما الذي يحدّه |
 | --- | --- | --- |
-| `maxConcurrent` | `32` | Children running at once. The rest wait in line |
-| `maxChildrenPerGroup` | `50` | Live children in one swarm |
-| `maxTotalPerGroup` | `200` | Children one swarm may ever start |
-| `waitTimeoutSecondsMax` | `600` | The longest a single wait can last |
-| `defaultAgentId` | (empty) | Which agent collectors run as. Empty means your agent |
-| `enabled` | `true` | Set `false` to turn swarms off |
+| `maxConcurrent` | `32` | الأبناء العاملون في وقت واحد. والباقي ينتظر في الطابور |
+| `maxChildrenPerGroup` | `50` | الأبناء الأحياء في سرب واحد |
+| `maxTotalPerGroup` | `200` | الأبناء الذين قد يبدأهم سرب واحد إجمالًا |
+| `waitTimeoutSecondsMax` | `600` | أطول مدة يمكن أن يستغرقها انتظار واحد |
+| `defaultAgentId` | (فارغ) | أي وكيل يعمل الجامعون باسمه. والفارغ يعني وكيلك |
+| `enabled` | `true` | اضبطه على `false` لإطفاء الأسراب |
 
-Swarm children don’t count against the ordinary subagent limits (`maxConcurrent: 8` and `maxChildrenPerAgent: 5`), but `maxSpawnDepth` still applies.
+ولا يُحتسب أبناء السرب على حدود الوكيل الفرعي العادية (`maxConcurrent: 8` و`maxChildrenPerAgent: 5`)، لكن `maxSpawnDepth` يبقى ساريًا.
 
-**Cost scales with the batch.** Each running child is its own model conversation. Twenty children cost roughly twenty times as much as one. For cheap fan-out work, pass a cheaper `model` to `agents.run` or run collectors as an agent with a cheaper default model.
+**التكلفة تتناسب مع الدفعة.** فكل ابن عامل هو محادثة نموذج مستقلة. وعشرون ابنًا تكلّف نحو عشرين ضعف ابن واحد. وللعمل المتفرّع الرخيص، مرّر `model` أرخص إلى `agents.run` أو شغّل الجامعين كوكيل ذي نموذج افتراضي أرخص.
 
-## Run Collectors as a Locked-Down Agent
+## تشغيل الجامعين كوكيل مقيّد {#run-collectors-as-a-locked-down-agent}
 
-`defaultAgentId` sends every collector to a different agent unless the script says otherwise. Point it at the read-only `researcher` from [the subagents lesson](https://stevekinney.com/courses/openclaw/subagents-and-orchestration#lever-2-a-dedicated-agent-for-risky-work), and every child gets that agent’s narrow tool policy, model, and workspace:
+يرسل `defaultAgentId` كل جامع إلى وكيل مختلف ما لم يقل السكربت غير ذلك. وجّهه إلى `researcher` الذي يعمل للقراءة فقط من [درس الوكلاء الفرعيين](https://stevekinney.com/courses/openclaw/subagents-and-orchestration#lever-2-a-dedicated-agent-for-risky-work)، فيحصل كل ابن على سياسة الأدوات الضيّقة لذلك الوكيل ونموذجه ومساحة عمله:
 
 ```bash
 openclaw config set tools.swarm.defaultAgentId researcher
 openclaw config set agents.entries.researcher.tools.swarm false
 ```
 
-The second line stops the researcher from starting swarms of its own. The target agent must be in your main agent’s `subagents.allowAgents`, which it already is if you followed that lesson. If it isn’t, spawns are rejected instead of falling back to your main agent.
+ويمنع السطر الثاني researcher من بدء أسراب خاصة به. ويجب أن يكون الوكيل الهدف ضمن `subagents.allowAgents` لوكيلك الرئيسي، وهذا ما هو عليه بالفعل إن كنت قد اتّبعت ذلك الدرس. وإن لم يكن، رُفضت عمليات التوليد بدلًا من الرجوع إلى وكيلك الرئيسي.
 
-## Watching and Stopping
+## المراقبة والإيقاف
 
-Keep the conversation open in the **Control UI** (or the macOS, iOS, or Android app) while a swarm runs. A progress widget appears above the message box with queued, running, completed, and failed-or-stopped counts. Click **Child details** to see each child and how long it took. Collectors also have their own transcripts, but they don’t get rows in the session sidebar.
+أبقِ المحادثة مفتوحة في **واجهة التحكم** (أو تطبيق macOS أو iOS أو Android) أثناء عمل السرب. وتظهر أداة تقدّم فوق مربّع الرسالة بأعداد المنتظر والعامل والمكتمل والفاشل-أو-المتوقّف. وانقر **Child details** لترى كل ابن والمدة التي استغرقها. وللجامعين أيضًا نصوصهم الخاصة، لكنهم لا يحصلون على صفوف في الشريط الجانبي للجلسات.
 
-Telegram and other chat apps don’t show the widget. If you started the swarm there, open the same session in the Control UI to watch it.
+ولا يُظهر Telegram وتطبيقات الدردشة الأخرى أداة التقدّم. وإن كنت قد بدأت السرب هناك، فافتح الجلسة نفسها في واجهة التحكم لتراقبه.
 
-To stop a swarm, click **Stop** in the parent conversation. That cancels the swarm’s children and anything they started. Like other subagents, collectors that have already started **keep running** if the parent simply finishes or times out, so stop them explicitly.
+لإيقاف سرب، انقر **Stop** في محادثة الأصل. وهذا يُلغي أبناء السرب وكل ما بدأوه. ومثل الوكلاء الفرعيين الآخرين، **يستمر الجامعون الذين بدأوا بالفعل في العمل** إن انتهى الأصل أو انتهت مهلته ببساطة، فأوقفهم صراحةً.
 
-If the Gateway restarts mid-swarm, interrupted children aren’t relaunched, and the script itself doesn’t resume. Look at what finished before asking for the rest again.
+وإن أُعيد تشغيل البوابة في منتصف سرب، لا يُعاد إطلاق الأبناء المنقطعين، ولا يُستأنف السكربت نفسه. فانظر في ما انتهى قبل أن تطلب الباقي مرة أخرى.
 
-## Without Code Mode
+## بدون وضع الشيفرة
 
-If you can’t or don’t want to turn on Code Mode, the same machinery is available as plain tools. Your agent calls `sessions_spawn` with `collect: true` (and an `outputSchema` for JSON results), then calls `agents_wait` with the run IDs to collect the results. Both tools must be allowed by your tool policy. It’s clunkier, since the model makes one tool call per child, but it works with any model.
+إن لم تستطع تفعيل وضع الشيفرة أو لم ترغب فيه، فالآلية نفسها متاحة كأدوات عادية. فيستدعي وكيلك `sessions_spawn` مع `collect: true` (ومع `outputSchema` لنتائج JSON)، ثم يستدعي `agents_wait` بمعرّفات التشغيل لجمع النتائج. ويجب أن تسمح سياسة أدواتك بالأداتين. وهو أثقل، لأن النموذج يجري نداء أداة واحدًا لكل ابن، لكنه يعمل مع أي نموذج.
 
-## Try It Out
+## جرّبه
 
-### 1. Check Whether Code Mode Is Active
+### 1. افحص هل وضع الشيفرة نشط
 
-Run the `codeModeEngaged` check from above. If it says `false`, turn on Code Mode with the Labs switch or `openclaw config set tools.codeMode true`, and check again.
+شغّل فحص `codeModeEngaged` من أعلاه. وإن قال `false`، ففعّل وضع الشيفرة بمفتاح Labs أو بـ `openclaw config set tools.codeMode true`، ثم افحص مرة أخرى.
 
-### 2. Run Your First Swarm
+### 2. شغّل سربك الأول
 
-Ask your agent:
+اطلب من وكيلك:
 
-> Use Swarm. Write a Code Mode script that calls `agents.run` once for each of these workspace files: AGENTS.md, SOUL.md, USER.md, TOOLS.md, and MEMORY.md. Each child reads its file and returns `{ file, purpose, suggestion }` using a schema. Use `Promise.allSettled`. Then give me a table of the results and list any failures.
+> استخدم Swarm. اكتب سكربت وضع شيفرة يستدعي `agents.run` مرة واحدة لكل ملف من ملفات مساحة العمل هذه: AGENTS.md وSOUL.md وUSER.md وTOOLS.md وMEMORY.md. ويقرأ كل ابن ملفه ويُعيد `{ file, purpose, suggestion }` باستخدام مخطّط. واستخدم `Promise.allSettled`. ثم أعطني جدولًا بالنتائج واسرد أي إخفاقات.
 
-Open the conversation in the Control UI and watch the widget while it runs. When it’s done, you should have one row per file, with a suggestion for each. The suggestions themselves are useful; consider acting on one.
+افتح المحادثة في واجهة التحكم وراقب أداة التقدّم أثناء عمله. وحين ينتهي، ينبغي أن يكون لديك صف لكل ملف، مع اقتراح لكل منها. والاقتراحات نفسها مفيدة؛ ففكّر في تنفيذ أحدها.
 
-The Control UI chat after a five-child swarm, with the results table above a Parallel tasks widget listing five completed review children and how long each took
+محادثة واجهة التحكم بعد سرب من خمسة أبناء، مع جدول النتائج فوق أداة مهام متوازية تسرد خمسة أبناء مراجعة مكتملين والمدة التي استغرقها كل منهم
 
-### 3. Make One Child Fail
+### 3. اجعل ابنًا واحدًا يفشل
 
-Run it again with a sixth file that doesn’t exist, like `NOPE.md`. You should get five results and one reported failure. Depending on the model, a child may instead finish normally and report that it couldn’t determine anything because the file doesn’t exist, so the agent’s summary is where the missing file shows up. Then ask for the same swarm using `Promise.all` instead. If a child failed outright, the whole run fails this time and the five good results are lost. If every child finished normally, `Promise.all` succeeds too, because nothing rejected. Either way, `allSettled` is the one that never throws away good results, which is why scripts should use it.
+شغّله مرة أخرى بملف سادس غير موجود، مثل `NOPE.md`. ينبغي أن تحصل على خمس نتائج وإخفاق واحد مُبلَّغ عنه. وقد ينتهي ابن بشكل طبيعي بدلًا من ذلك ويبلّغ أنه لم يستطع تحديد شيء لأن الملف غير موجود، حسب النموذج، فيظهر الملف المفقود في ملخّص الوكيل. ثم اطلب السرب نفسه باستخدام `Promise.all` بدلًا من ذلك. فإن فشل ابن فشلًا صريحًا، يفشل التشغيل كله هذه المرة وتُفقد النتائج الخمس الجيدة. وإن انتهى كل ابن انتهاءً طبيعيًا، ينجح `Promise.all` أيضًا، لأن شيئًا لم يُرفض. وفي الحالتين، `allSettled` هو الذي لا يُهدر النتائج الجيدة أبدًا، ولهذا ينبغي أن تستخدمه السكربتات.
 
-### 4. Confirm Collectors Never Ask
+### 4. أكّد أن الجامعين لا يسألون أبدًا
 
-If your exec policy asks before running commands (see [Security and Approvals](https://stevekinney.com/courses/openclaw/security-and-approvals)), ask for a five-child swarm in which each child runs `uname -a` and reports the output. No approval card should appear. Each child should report that the command was denied. Compare that with asking your main agent to run `uname -a` directly, which does ask you first.
+إن كانت سياسة تنفيذك تسأل قبل تشغيل الأوامر (انظر [الأمن والموافقات](https://stevekinney.com/courses/openclaw/security-and-approvals))، فاطلب سربًا من خمسة أبناء يشغّل فيه كل ابن `uname -a` ويبلّغ بالخرج. وينبغي ألا تظهر أي بطاقة موافقة. وينبغي أن يبلّغ كل ابن بأن الأمر رُفض. وقارن ذلك بمطالبة وكيلك الرئيسي بتشغيل `uname -a` مباشرةً، فهو يسألك أولًا فعلًا.
 
-### 5. Route Collectors to the Researcher
+### 5. وجّه الجامعين إلى researcher
 
-Set `tools.swarm.defaultAgentId` to `researcher` as shown above, and run the five-file review again. Look closely at the answers: they now describe the researcher’s workspace, not your main agent’s, because every agent has its own. Some files may be missing there. Then ask for a swarm in which each child tries to run `ls ~`. Every child should report that it can’t run commands, because the researcher has no shell. When you’re done, remove the setting:
+اضبط `tools.swarm.defaultAgentId` على `researcher` كما هو موضّح أعلاه، وشغّل مراجعة الملفات الخمسة مرة أخرى. وانظر في الأجوبة بدقة: فهي تصف الآن مساحة عمل researcher، لا مساحة عمل وكيلك الرئيسي، لأن لكل وكيل مساحته الخاصة. وقد تكون بعض الملفات مفقودة هناك. ثم اطلب سربًا يحاول فيه كل ابن تشغيل `ls ~`. وينبغي أن يبلّغ كل ابن بأنه لا يستطيع تشغيل الأوامر، لأن researcher لا يملك طرفية. وحين تنتهي، أزل الإعداد:
 
 ```bash
 openclaw config unset tools.swarm.defaultAgentId
 ```
 
-### 6. Stop One Partway Through
+### 6. أوقف واحدًا في منتصفه
 
-Ask for a swarm of ten children that each research a different topic in depth, so they take a while. While the widget shows children running, click **Stop**. The counts should move to failed-or-stopped, and the agent should report only partial results.
+اطلب سربًا من عشرة أبناء يبحث كل منهم في موضوع مختلف بعمق، حتى يستغرقوا وقتًا. وبينما تُظهر أداة التقدّم أبناءً عاملين، انقر **Stop**. وينبغي أن تنتقل الأعداد إلى فاشل-أو-متوقّف، وأن يبلّغ الوكيل بنتائج جزئية فقط.
 
-### 7. Decide What to Keep
+### 7. قرّر ما الذي تُبقيه
 
-If you forced Code Mode on just for these exercises, decide whether to keep it. Use your agent normally for a day. If it seems worse at ordinary tasks, set `tools.codeMode` back to `"auto"`, or turn it on only for a dedicated fan-out agent.
+إن كنت قد فرضت وضع الشيفرة من أجل هذه التمارين فقط، فقرّر هل تُبقيه. استخدم وكيلك بشكل عادي ليوم واحد. فإن بدا أسوأ في المهام العادية، فأعِد `tools.codeMode` إلى `"auto"`، أو فعّله فقط لوكيل تفرّع مخصّص.
 
-## Troubleshooting
+## استكشاف الأخطاء وإصلاحها
 
-| Symptom | Check |
+| العَرَض | ما تفحصه |
 | --- | --- |
-| The agent says `agents.run` isn’t available | Whether Code Mode is engaged (`codeModeEngaged`), and that `tools.swarm` isn’t `false` |
-| `codeModeEngaged` is `false` even with Code Mode on | Your model runs on a harness with its own tools, such as Codex for OpenAI models |
-| Code Mode is set but turned itself off | A `tools.codeMode` object without `enabled` means off |
-| A child “failed” but its answer looks fine | Its JSON didn’t match the schema. Check the error for `schemaError` |
-| Spawns to another agent are rejected | That agent must be in your agent’s `subagents.allowAgents` |
-| A spawn fails with a config key in the message | The swarm hit `maxChildrenPerGroup` or `maxTotalPerGroup` |
-| Every child reports a denied command | Collectors never ask for approval. Make the task read-only or run it outside the swarm |
+| يقول الوكيل إن `agents.run` غير متاحة | هل وضع الشيفرة نشط (`codeModeEngaged`)، وأن `tools.swarm` ليس `false` |
+| `codeModeEngaged` تساوي `false` رغم تفعيل وضع الشيفرة | نموذجك يعمل على بيئة تشغيل لها أدواتها الخاصة، مثل Codex لنماذج OpenAI |
+| وضع الشيفرة مضبوط لكنه أطفأ نفسه | كائن `tools.codeMode` بلا `enabled` يعني الإطفاء |
+| ابن «فشل» لكن جوابه يبدو جيدًا | لم يطابق JSON الخاص به المخطّط. افحص الخطأ بحثًا عن `schemaError` |
+| رُفضت عمليات توليد إلى وكيل آخر | يجب أن يكون ذلك الوكيل ضمن `subagents.allowAgents` لوكيلك |
+| فشل توليد برسالة تحوي مفتاح تهيئة | بلغ السرب `maxChildrenPerGroup` أو `maxTotalPerGroup` |
+| كل ابن يبلّغ عن أمر مرفوض | الجامعون لا يطلبون الموافقة أبدًا. اجعل المهمة للقراءة فقط أو شغّلها خارج السرب |
 
-> **Commands and flags change**
+> **الأوامر والأعلام تتغيّر**
 >
-> This lesson matches OpenClaw `2026.9.8`. Code Mode is experimental, so expect it to change. If something doesn’t behave as described, check the [OpenClaw documentation](https://docs.openclaw.ai/).
+> يطابق هذا الدرس OpenClaw `2026.9.8`. ووضع الشيفرة تجريبي، فتوقّع أن يتغيّر. فإن لم يتصرّف شيء كما هو موصوف، فافحص [وثائق OpenClaw](https://docs.openclaw.ai/).

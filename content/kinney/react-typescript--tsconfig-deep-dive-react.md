@@ -1,21 +1,21 @@
 ---
-title: "An Even Deeper Dive into tsconfig.json"
-lang: en
+title: "غوص أعمق في tsconfig.json"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/tsconfig-deep-dive-react"
 ---
 
-As we saw in the [previous section](https://stevekinney.com/courses/react-typescript/setting-up-react-and-typescript), the `tsconfig.json` file is the command center for TypeScript in your project. It tells TypeScript:
+كما رأينا في [القسم السابق](https://stevekinney.com/courses/react-typescript/setting-up-react-and-typescript)، فإن ملف `tsconfig.json` هو مركز القيادة لـ TypeScript في مشروعك. وهو يخبر TypeScript:
 
-- How to compile your code—or in React’s case—how to type-check it.
-- Which files to include/exclude.
-- How strict to be about type checking.
-- How to resolve modules and paths.
+- كيف يُترجم شيفرتك — أو في حالة React — كيف يفحص أنواعها.
+- أي الملفات يجب تضمينها أو استبعادها.
+- مدى صرامة فحص الأنواع.
+- كيف يحلّ الوحدات والمسارات.
 
-In a React + Vite project, TypeScript doesn’t actually compile your code—Vite does that. Instead, TypeScript purely provides type checking. This is why we use `noEmit: true`.
+في مشروع React + Vite، لا يترجم TypeScript شيفرتك فعليًا — بل يتولّى ذلك Vite. وبدلًا من ذلك، يوفّر TypeScript فحص الأنواع فقط. ولهذا نستخدم `noEmit: true`.
 
-## The Complete Configuration
+## الضبط الكامل
 
-Let’s build the optimal `tsconfig.json` step by step:
+لنبنِ ملف `tsconfig.json` الأمثل خطوة بخطوة:
 
 ```json
 {
@@ -83,62 +83,62 @@ Let’s build the optimal `tsconfig.json` step by step:
 }
 ```
 
-## Target and Library Settings
+## ضبط الهدف والمكتبات
 
 ### `"target": "ES2022"`
 
-**What it does:** Specifies the JavaScript version TypeScript compiles to.
+**ما الذي يفعله:** يحدّد إصدار JavaScript الذي يترجم إليه TypeScript.
 
-**Why ES2022?**
+**لماذا ES2022؟**
 
-- Includes modern features like top-level await, class fields, and `.at()` method
-- All modern browsers support ES2022
-- Vite will handle any additional transpilation needed for older browsers
+- يشمل ميزات حديثة مثل `await` على المستوى الأعلى وحقول الأصناف وتابع `.at()`
+- جميع المتصفحات الحديثة تدعم ES2022
+- يتولّى Vite أي تحويل إضافي مطلوب للمتصفحات الأقدم
 
-**Alternatives:**
+**البدائل:**
 
-- `"ESNext"`: Always latest features (less predictable)
-- `"ES2020"`: More conservative, but misses nice features
+- `"ESNext"`: أحدث الميزات دائمًا (أقلّ قابلية للتنبّؤ)
+- `"ES2020": أكثر تحفّظًا، لكنه يفوّت ميزات جميلة
 
 ### `"lib": ["DOM", "DOM.Iterable", "ES2022"]`
 
-**What it does:** Tells TypeScript which built-in APIs are available.
+**ما الذي يفعله:** يخبر TypeScript بواجهات API المدمجة المتاحة.
 
-**Breaking it down:**
+**تفصيله:**
 
-- `"DOM"`: Browser APIs (document, window, HTMLElement)
-- `"DOM.Iterable"`: Makes DOM collections iterable (for…of loops on NodeLists)
-- `"ES2022"`: JavaScript language features matching our target
+- `"DOM"`: واجهات المتصفح (document، window، HTMLElement)
+- `"DOM.Iterable"`: يجعل مجموعات DOM قابلة للتكرار (حلقات for…of على NodeLists)
+- `"ES2022"`: ميزات لغة JavaScript المطابقة لهدفنا
 
-**Could add:** `"WebWorker"` if using web workers, `"ES2022.Array"` for specific features
+**يمكن إضافة:** `"WebWorker"` إذا كنت تستخدم web workers، و`"ES2022.Array"` لميزات محدّدة
 
 ### `"module": "ESNext"`
 
-**What it does:** Specifies the module system for emitted code.
+**ما الذي يفعله:** يحدّد نظام الوحدات للشيفرة الناتجة.
 
-**Why ESNext?** We’re using native ES modules, and Vite handles the actual module transformation. This gives us:
+**لماذا ESNext؟** نستخدم وحدات ES الأصلية، ويتولّى Vite تحويل الوحدات فعليًا. وهذا يمنحنا:
 
-- Dynamic imports
-- Top-level await
-- Import assertions
+- استيرادات ديناميكية
+- `await` على المستوى الأعلى
+- تأكيدات الاستيراد
 
 ### `"moduleResolution": "bundler"`
 
-**What it does:** How TypeScript resolves import statements.
+**ما الذي يفعله:** كيف يحلّ TypeScript عبارات الاستيراد.
 
-**Why bundler?** New in TS 5.0+, designed for tools like Vite:
+**لماذا bundler؟** جديد في TS 5.0+، ومصمَّم لأدوات مثل Vite:
 
-- Allows imports without extensions
-- Supports package.json `exports` field
-- More permissive than `"node16"` but safer than legacy `"node"`
+- يسمح بالاستيراد بلا امتدادات
+- يدعم حقل `exports` في package.json
+- أكثر تسامحًا من `"node16"` لكن أكثر أمانًا من `"node"` القديمة
 
-**Legacy option:** `"node"` - still common but less accurate for modern bundlers
+**الخيار القديم:** `"node"` - لا يزال شائعًا لكنه أقل دقّة مع أدوات التجميع الحديثة
 
 ### `"allowImportingTsExtensions": true`
 
-**What it does:** Lets you import TypeScript files with explicit extensions.
+**ما الذي يفعله:** يتيح لك استيراد ملفات TypeScript بامتدادات صريحة.
 
-**Why enable?** Allows explicit imports that some bundlers prefer:
+**لماذا تفعّله؟** يسمح بالاستيرادات الصريحة التي تفضّلها بعض أدوات التجميع:
 
 ```typescript
 // Now you can be explicit about imports
@@ -146,82 +146,82 @@ import { UserSchema } from './schemas/user.schema.ts';
 import { Button } from '../components/Button.tsx';
 ```
 
-This is especially valuable in monorepos where different packages might have different build outputs
+وهذا ذو قيمة خاصة في المستودعات الأحادية حيث قد تكون مخرجات البناء مختلفة لكل حزمة
 
-## JavaScript Support
+## دعم JavaScript
 
 ### `"allowJs": true`
 
-**What it does:** Lets TypeScript process JavaScript files.
+**ما الذي يفعله:** يتيح لـ TypeScript معالجة ملفات JavaScript.
 
-**Why enable?**
+**لماذا تفعّله؟**
 
-- Gradual migration from JS to TS
-- Third-party JS code in your source
-- Configuration files often in JS
+- ترحيل تدريجي من JS إلى TS
+- شيفرة JS من طرف ثالث في مصدرك
+- ملفات الضبط غالبًا بصيغة JS
 
 ### `"checkJs": false`
 
-**What it does:** Type-checks JavaScript files.
+**ما الذي يفعله:** يفحص أنواع ملفات JavaScript.
 
-**Why disable?**
+**لماذا تعطّله؟**
 
-- JS files might have looser patterns
-- Avoid errors in config files
-- Can enable per-file with `// @ts-check`
+- قد تكون ملفات JS بأنماط أرخى
+- تجنّب الأخطاء في ملفات الضبط
+- يمكنك تفعيله لكل ملف عبر `// @ts-check`
 
-**🔒 Stricter option:** Set to `true` for full type checking in JS files
+**🔒 خيار أكثر صرامة:** اضبطه على `true` لفحص أنواع كامل في ملفات JS
 
-## Emit Configuration
+## ضبط الإخراج (Emit)
 
 ### `"noEmit": true`
 
-**What it does:** Prevents TypeScript from generating output files.
+**ما الذي يفعله:** يمنع TypeScript من توليد ملفات الإخراج.
 
-**Critical for React:** Vite/esbuild handles compilation, TypeScript only type-checks. This prevents:
+**حاسم لـ React:** يتولّى Vite/esbuild عملية الترجمة، وTypeScript يفحص الأنواع فقط. وهذا يمنع:
 
-- Duplicate output files
-- Compilation conflicts
-- Slower builds
+- ازدواج ملفات الإخراج
+- تعارضات الترجمة
+- عمليات بناء أبطأ
 
 ### `"sourceMap": true`
 
-**What it does:** Generates source maps for debugging.
+**ما الذي يفعله:** يولّد خرائط المصدر (source maps) لأغراض التصحيح.
 
-**Why enable?** Better debugging experience - see original TS code in browser DevTools
+**لماذا تفعّله؟** تجربة تصحيح أفضل - ترى شيفرة TS الأصلية في أدوات مطوّر المتصفح
 
-**Note:** Only matters if `noEmit: false`
+**ملاحظة:** لا يهم إلا إذا كان `noEmit: false`
 
 ### `"jsx": "react-jsx"`
 
-**What it does:** How JSX is transformed.
+**ما الذي يفعله:** كيف يُحوَّل JSX.
 
-**Options explained:**
+**الخيارات مشروحة:**
 
-- `"react-jsx"`: New transform (React 17+), no React import needed
-- `"react"`: Legacy, requires `import React from 'react'`
-- `"preserve"`: Leaves JSX unchanged (for other tools to handle)
+- `"react-jsx"`: التحويل الجديد (React 17+)، ولا حاجة إلى استيراد React
+- `"react"`: القديم، ويتطلّب `import React from 'react'`
+- `"preserve"`: يترك JSX دون تغيير (لتتولّاه أدوات أخرى)
 
-## The Strict Family
+## عائلة الصرامة
 
 ### `"strict": true`
 
-**What it does:** Enables ALL strict type-checking options:
+**ما الذي يفعله:** يفعّل جميع خيارات فحص الأنواع الصارمة:
 
-- `strictNullChecks`: null/undefined must be explicit
-- `strictFunctionTypes`: Stricter function compatibility
-- `strictBindCallApply`: Type-check .bind(), .call(), .apply()
-- `strictPropertyInitialization`: Class properties must be initialized
-- `noImplicitAny`: No implicit any types
-- `noImplicitThis`: ‘this’ must have explicit type
-- `alwaysStrict`: Emit “use strict”
-- `useUnknownInCatchVariables`: catch clause variables are ‘unknown’
+- `strictNullChecks`: يجب أن يكون null/undefined صريحًا
+- `strictFunctionTypes`: توافق صارم للدوال
+- `strictBindCallApply`: فحص أنواع .bind() و.call() و.apply()
+- `strictPropertyInitialization`: يجب تهيئة خصائص الأصناف
+- `noImplicitAny`: لا أنواع any ضمنية
+- `noImplicitThis`: يجب أن يكون لـ ‘this’ نوع صريح
+- `alwaysStrict`: إصدار “use strict”
+- `useUnknownInCatchVariables`: متغيّرات بند catch من نوع ‘unknown’
 
-**This is non-negotiable** for any serious TypeScript project.
+**هذا غير قابل للتفاوض** في أي مشروع TypeScript جاد.
 
 ### `"noImplicitOverride": true`
 
-**What it does:** Requires `override` keyword when overriding base class methods.
+**ما الذي يفعله:** يتطلّب كلمة المفتاح `override` عند تجاوز توابع الصنف الأساسي.
 
 ```typescript
 // Without this flag - silent bugs possible
@@ -237,9 +237,9 @@ class Dog extends Animal {
 
 ### `"noPropertyAccessFromIndexSignature": false`
 
-**What it does:** When true, forces bracket notation for index signatures.
+**ما الذي يفعله:** عند تفعيله، يفرض استخدام صيغة الأقواس المربّعة لتوقيعات الفهرسة.
 
-**Why we disable it:**
+**لماذا نعطّله:**
 
 ```typescript
 interface Config {
@@ -255,13 +255,13 @@ config.name; // Error!
 config.name; // Allowed - better DX
 ```
 
-**🔒 Stricter option:** Enable for explicit index access patterns
+**🔒 خيار أكثر صرامة:** فعّله لأنماط الوصول إلى الفهرس الصريحة
 
 ### `"exactOptionalPropertyTypes": false`
 
-**What it does:** Distinguishes between undefined and missing properties.
+**ما الذي يفعله:** يميّز بين الخصائص غير المعرّفة (undefined) والخصائص الغائبة.
 
-**Why we disable it:**
+**لماذا نعطّله:**
 
 ```typescript
 interface User {
@@ -275,13 +275,13 @@ const user: User = { name: undefined }; // Allowed
 const user: User = { name: undefined }; // Error!
 ```
 
-Most React code doesn’t distinguish these cases, enabling causes friction.
+معظم شيفرة React لا تميّز بين هاتين الحالتين، وتفعيله يسبّب احتكاكًا.
 
-**🔒 Stricter option:** Enable for precise optional property handling
+**🔒 خيار أكثر صرامة:** فعّله للتعامل الدقيق مع الخصائص الاختيارية
 
 ### `"noFallthroughCasesInSwitch": true`
 
-**What it does:** Errors on fallthrough cases in switch statements.
+**ما الذي يفعله:** يبلّغ عن أخطاء سقوط الحالات في عبارات switch.
 
 ```typescript
 switch(action) {
@@ -293,23 +293,23 @@ switch(action) {
 }
 ```
 
-## Code Quality Checks
+## فحوص جودة الشيفرة
 
 ### `"noUnusedLocals": false` / `"noUnusedParameters": false`
 
-**What it does:** Errors on unused variables/parameters.
+**ما الذي يفعله:** يبلّغ عن أخطاء في المتغيّرات/المعاملات غير المستخدمة.
 
-**Why we disable:**
+**لماذا نعطّلهما:**
 
-- Annoying during development
-- ESLint handles this better
-- Can prefix with `_` to indicate intentionally unused
+- مُزعج أثناء التطوير
+- يتولّى ESLint ذلك بشكل أفضل
+- يمكنك البادئة بـ `_` للدلالة على عدم الاستخدام المقصود
 
-**🔒 Stricter option:** Enable both for cleaner code
+**🔒 خيار أكثر صرامة:** فعّلهما معًا من أجل شيفرة أنظف
 
 ### `"noImplicitReturns": true`
 
-**What it does:** All code paths must explicitly return.
+**ما الذي يفعله:** يجب أن تُعيد جميع مسارات الشيفرة قيمة صراحةً.
 
 ```typescript
 function calculate(n: number): number {
@@ -322,7 +322,7 @@ function calculate(n: number): number {
 
 ### `"allowUnreachableCode": false`
 
-**What it does:** Errors on code after return/throw/break.
+**ما الذي يفعله:** يبلّغ عن أخطاء في الشيفرة التالية لعبارة return أو throw أو break.
 
 ```typescript
 function example() {
@@ -331,13 +331,13 @@ function example() {
 }
 ```
 
-## Module Resolution Options
+## خيارات حلّ الوحدات
 
 ### `"esModuleInterop": true`
 
-**What it does:** Fixes CommonJS/ES module interoperability.
+**ما الذي يفعله:** يصلح التشغيل البيني بين CommonJS ووحدات ES.
 
-**Enables:**
+**يتيح:**
 
 ```typescript
 // Without:
@@ -349,13 +349,13 @@ import React from 'react';
 
 ### `"allowSyntheticDefaultImports": true`
 
-**What it does:** Allows default imports from modules without default export.
+**ما الذي يفعله:** يتيح الاستيراد الافتراضي من وحدات ليس لها تصدير افتراضي.
 
-**Note:** Implied by `esModuleInterop`, but explicit is clearer.
+**ملاحظة:** مفترَض ضمن `esModuleInterop`، لكن الصراحة أوضح.
 
 ### `"resolveJsonModule": true`
 
-**What it does:** Import JSON files as modules.
+**ما الذي يفعله:** استيراد ملفات JSON كوحدات.
 
 ```typescript
 import config from './config.json';
@@ -363,26 +363,26 @@ import config from './config.json';
 
 ### `"isolatedModules": true`
 
-**What it does:** Ensures each file can be transpiled independently.
+**ما الذي يفعله:** يضمن أن كل ملف يمكن تحويله بشكل مستقل.
 
-**Critical for Vite/esbuild** which transpile file-by-file. Catches:
+**حاسم لـ Vite/esbuild** التي تحوّل كل ملف على حدة. ويكتشف:
 
-- Files without imports/exports
-- Type-only imports not marked as such
+- ملفات بلا استيرادات أو تصديرات
+- استيرادات من نوع type فقط غير موسومة بذلك
 
 ### `"moduleDetection": "force"`
 
-**What it does:** Treats all files as modules (not scripts).
+**ما الذي يفعله:** يتعامل مع جميع الملفات كوحدات (لا كسكربتات).
 
-**Benefits:**
+**الفوائد:**
 
-- No accidental globals
-- Consistent file treatment
-- Required for top-level await
+- لا متغيّرات عامة عشوائية
+- تعامل متسق مع الملفات
+- مطلوب لـ `await` على المستوى الأعلى
 
 ### `"verbatimModuleSyntax": true`
 
-**What it does:** Requires explicit `type` modifier for type-only imports.
+**ما الذي يفعله:** يتطلّب المُعدِّل `type` الصريح للاستيرادات من نوع type فقط.
 
 ```typescript
 // Bad - ambiguous
@@ -392,17 +392,17 @@ import { User } from './types';
 import type { User } from './types';
 ```
 
-**Why?** Bundlers can tree-shake better, clearer intent.
+**لماذا؟** تستطيع أدوات التجميع إجراء tree-shaking بشكل أفضل، والنية أوضح.
 
-## Path Mapping
+## خرائط المسارات
 
 ### `"baseUrl": "."`
 
-**What it does:** Base directory for non-relative imports.
+**ما الذي يفعله:** المجلد الأساسي للاستيرادات غير النسبية.
 
 ### `"paths"`
 
-**What it does:** Custom module resolution paths.
+**ما الذي يفعله:** مسارات حلّ وحدات مخصّصة.
 
 ```typescript
 // Instead of:
@@ -412,43 +412,43 @@ import Button from '../../../components/Button';
 import Button from '@components/Button';
 ```
 
-**Best practices:**
+**أفضل الممارسات:**
 
-- Keep aliases focused and meaningful
-- Mirror your folder structure
-- Don’t overdo it (too many aliases = confusion)
+- أبقِ الأسماء المستعارة مركّزة وذات معنى
+- طابق بنية مجلداتك
+- لا تبالغ في ذلك (كثرة الأسماء المستعارة = ارتباك)
 
-## Performance
+## الأداء
 
 ### `"skipLibCheck": true`
 
-**What it does:** Skip type checking of declaration files (.d.ts).
+**ما الذي يفعله:** يتخطّى فحص أنواع ملفات التعريف (.d.ts).
 
-**Why enable?**
+**لماذا تفعّله؟**
 
-- Faster compilation
-- Avoid errors in third-party types
-- You can’t fix node_modules anyway
+- ترجمة أسرع
+- تجنّب الأخطاء في أنواع الطرف الثالث
+- لا يمكنك على أي حال إصلاح node_modules
 
-**🔒 Stricter option:** Disable to catch all type issues
+**🔒 خيار أكثر صرامة:** عطّله لالتقاط كل مشكلات الأنواع
 
 ### `"incremental": true`
 
-**What it does:** Saves compilation info for faster subsequent builds.
+**ما الذي يفعله:** يحفظ معلومات الترجمة ليجعل عمليات البناء اللاحقة أسرع.
 
 ### `"tsBuildInfoFile"`
 
-**What it does:** Where to store incremental compilation info.
+**ما الذي يفعله:** أين تُخزَّن معلومات الترجمة التزايدة.
 
-**Best practice:** Use node_modules/.cache to keep project clean.
+**أفضل ممارسة:** استخدم node_modules/.cache لإبقاء المشروع نظيفًا.
 
-## Environment Types
+## أنواع البيئة
 
 ### `"types": ["vite/client"]`
 
-**What it does:** Which type packages to include globally.
+**ما الذي يفعله:** أي حزم أنواع تُضمَّن بشكل عام.
 
-**Common additions:**
+**الإضافات الشائعة:**
 
 ```json
 "types": [
@@ -459,15 +459,15 @@ import Button from '@components/Button';
 ]
 ```
 
-## Advanced: Multiple Config Strategy
+## متقدّم: استراتيجية الضبط المتعدّد
 
-### Base config (`tsconfig.json`)
+### الضبط الأساسي (`tsconfig.json`)
 
-Your main configuration (shown above)
+ضبطك الرئيسي (المُبيَّن أعلاه)
 
-### Node config (`tsconfig.node.json`)
+### ضبط Node (`tsconfig.node.json`)
 
-For Vite config and Node.js scripts:
+لإعداد Vite وسكربتات Node.js:
 
 ```json
 {
@@ -481,9 +481,9 @@ For Vite config and Node.js scripts:
 }
 ```
 
-### Build config (`tsconfig.build.json`)
+### ضبط البناء (`tsconfig.build.json`)
 
-Stricter for production:
+أكثر صرامة للإنتاج:
 
 ```json
 {
@@ -496,9 +496,9 @@ Stricter for production:
 }
 ```
 
-### Server Components config (`tsconfig.server.json`)
+### ضبط مكوّنات الخادم (`tsconfig.server.json`)
 
-If using React Server Components:
+إن كنت تستخدم مكوّنات خادم React:
 
 ```json
 {
@@ -511,9 +511,9 @@ If using React Server Components:
 }
 ```
 
-### Development vs Production Configs
+### إعدادات التطوير مقابل الإنتاج
 
-You might want different strictness levels during development:
+قد ترغب في مستويات صرامة مختلفة أثناء التطوير:
 
 ```json
 // tsconfig.dev.json
@@ -526,7 +526,7 @@ You might want different strictness levels during development:
 }
 ```
 
-Then in your package.json:
+ثم في ملف package.json:
 
 ```json
 {
@@ -539,11 +539,11 @@ Then in your package.json:
 }
 ```
 
-## Where We Chose Developer Experience Over Strictness
+## حيث اخترنا تجربة المطور على الصرامة
 
-### `noUncheckedIndexedAccess` (not included)
+### `noUncheckedIndexedAccess` (غير مُضمَّن)
 
-**What it does:** Makes indexed access return `T | undefined`
+**ما الذي يفعله:** يجعل الوصول المُفهرس يُعيد `T | undefined`
 
 ```typescript
 // Without noUncheckedIndexedAccess
@@ -555,7 +555,7 @@ const first = arr[0]; // Type: number | undefined
 // Requires constant checking even for "safe" access
 ```
 
-**React 19 consideration:** This option is particularly valuable with Server Components and dynamic imports:
+**ملاحظة خاصة بـ React 19:** هذا الخيار ذو قيمة خاصة مع مكوّنات الخادم والاستيرادات الديناميكية:
 
 ```typescript
 // Without noUncheckedIndexedAccess - runtime error possible!
@@ -571,56 +571,56 @@ function getUser(users: User[], id: string) {
 }
 ```
 
-In my humble opinion, this is much friction for most React applications. Consider for high-reliability applications. Every time I try to be a good person and use this, I end up turning it off *real fast*.
+في رأيي المتواضع، هذا يمثّل احتكاكًا كبيرًا لمعظم تطبيقات React. فكّر فيه للتطبيقات عالية الموثوقية. في كل مرة أحاول فيها أن أكون شخصًا صالحًا وأستخدم هذا، أنتهي إلى إطفائه *بسرعة كبيرة*.
 
 ### `noPropertyAccessFromIndexSignature: false`
 
-Allows natural property access on index signatures.
+يسمح بالوصول الطبيعي إلى الخصائص في توقيعات الفهرسة.
 
 ### `exactOptionalPropertyTypes: false`
 
-Doesn’t distinguish undefined from missing - matches most React patterns.
+لا يميّز بين undefined وغياب الخاصية - يطابق معظم أنماط React.
 
 ### `noUnusedLocals/Parameters: false`
 
-ESLint handles this better with more flexibility.
+يتولّى ESLint ذلك بشكل أفضل بمرونة أكبر.
 
-## Decision Framework
+## إطار القرار
 
-**Enable for safety:**
+**فعّلها لأجل السلامة:**
 
-- All `strict` options
+- جميع خيارات `strict`
 - `noImplicitReturns`
 - `noFallthroughCasesInSwitch`
 
-**Enable for clarity:**
+**فعّلها لأجل الوضوح:**
 
 - `verbatimModuleSyntax`
 - `noImplicitOverride`
 - `isolatedModules`
 
-**Consider per project:**
+**فكّر فيها لكل مشروع:**
 
-- `noUncheckedIndexedAccess` - High safety requirements
-- `noUnusedLocals/Parameters` - Clean codebase
-- `exactOptionalPropertyTypes` - API precision
+- `noUncheckedIndexedAccess` - متطلبات سلامة عالية
+- `noUnusedLocals/Parameters` - مستودع نظيف
+- `exactOptionalPropertyTypes` - دقّة واجهات البرمجة
 
-**Always enable for React:**
+**فعّلها دائمًا لـ React:**
 
 - `jsx: "react-jsx"`
 - `noEmit: true`
 - `moduleResolution: "bundler"`
 
-## Common Pitfalls
+## الأخطاء الشائعة
 
-1. **Don’t use `"moduleResolution": "node"`** - It’s legacy
-2. **Don’t disable `strict`** - It’s a package deal
-3. **Don’t forget `isolatedModules`** - Required for Vite
-4. **Don’t mix build tools** - Let Vite build, TypeScript check
+1. **لا تستخدم `"moduleResolution": "node"`** - إنها قديمة
+2. **لا تعطّل `strict`** - إنها صفقة متكاملة
+3. **لا تنسَ `isolatedModules`** - مطلوبة لـ Vite
+4. **لا تخلط بين أدوات البناء** - دع Vite يبني و TypeScript يفحص
 
-## Checking Your Config
+## فحص ضبطك
 
-Run these commands to verify:
+شغّل هذه الأوامر للتحقق:
 
 ```bash
 # Type checking
@@ -633,11 +633,11 @@ npx tsc --showConfig
 npx tsc --noEmit --explain-files | grep "yourfile.tsx"
 ```
 
-## React 19 and Modern React Features
+## React 19 وميزات React الحديثة
 
-### Supporting the `use` Hook
+### دعم خُطّاف `use`
 
-React 19’s `use` hook requires proper async typing:
+يتطلّب خُطّاف `use` في React 19 كتابة أنواع غير متزامنة صحيحة:
 
 ```typescript
 // Ensure promises are well-typed for the use hook
@@ -654,17 +654,17 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-### Concurrent Features Type Safety
+### أمان أنواع الميزات المتزامنة
 
-React 19’s concurrent features benefit from strict async patterns. The configuration above ensures:
+تستفيد الميزات المتزامنة في React 19 من الأنماط غير المتزامنة الصارمة. ويضمن الضبط أعلاه:
 
-- Promises are properly typed
-- Async boundaries are clear
-- Suspense boundaries work correctly with TypeScript
+- أن الوعود مُكتوبة بأنواع صحيحة
+- أن حدود اللاتزامن واضحة
+- أن حدود Suspense تعمل بشكل صحيح مع TypeScript
 
-## Validating Your Configuration
+## التحقق من ضبطك
 
-Create a simple test file to verify your configuration works:
+أنشئ ملف اختبار بسيطًا للتحقق من أن ضبطك يعمل:
 
 ```typescript
 // test-config.tsx - Put this in your src folder temporarily
@@ -684,15 +684,15 @@ const maybeUser: { name: string } | undefined = undefined;
 console.log(maybeUser.name); // Should error with strict checks
 ```
 
-Run `tsc --noEmit` to verify everything type-checks correctly, then delete the test file.
+شغّل `tsc --noEmit` للتأكد من أن كل شيء يُفحص بأنواعه بشكل صحيح، ثم احذف ملف الاختبار.
 
-## Keeping Your Config Updated
+## إبقاء ضبطك محدَّثًا
 
-React and TypeScript evolve quickly. Here’s how to stay current:
+يتطوّر React و TypeScript بسرعة. إليك كيف تبقى على اطّلاع:
 
-1. **Follow React’s TypeScript integration updates** in their release notes
-2. **Monitor TypeScript’s release blog** for new compiler options
-3. **Use tools like `@typescript-eslint/parser`** to ensure your config stays compatible with your linting setup
-4. **Test your config with new TypeScript versions** before upgrading
+1. **اتّبع تحديثات تكامل TypeScript في React** في ملاحظات الإصدار الخاصة بها
+2. **راقب مدوّنة إصدار TypeScript** خيارات المُصرِّف الجديدة
+3. **استخدم أدوات مثل `@typescript-eslint/parser`** لضمان بقاء ضبطك متوافقًا مع إعداد الفحص لديك
+4. **اختبر ضبطك مع إصدارات TypeScript الجديدة** قبل الترقية
 
-Remember: TypeScript is a tool to help you ship better code faster, not to fight with you. This config embodies that philosophy, while being ready for React 19’s latest features.
+تذكّر: TypeScript أداة تساعدك على تسليم شيفرة أفضل وأسرع، لا أداة تحاربك. يجسّد هذا الضبط تلك الفلسفة، مع كونه جاهزًا لآخر ميزات React 19.

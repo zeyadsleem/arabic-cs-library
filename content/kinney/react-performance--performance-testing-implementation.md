@@ -1,14 +1,14 @@
 ---
-title: "Performance Testing Implementation Guide"
-lang: en
+title: "دليل تنفيذ اختبارات الأداء"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/performance-testing-implementation"
 ---
 
-This implementation guide covers advanced performance testing techniques including end-to-end performance testing, Lighthouse CI integration, continuous monitoring, and automated performance regression detection for production React applications.
+يغطّي دليل التنفيذ هذا تقنيات متقدّمة لاختبار الأداء، من بينها اختبار الأداء من طرف إلى طرف، وتكامل Lighthouse CI، والمراقبة المستمرة، والكشف الآلي عن انحدارات الأداء في تطبيقات React الإنتاجية.
 
-## End-to-End Performance Testing
+## اختبار الأداء من طرف إلى طرف
 
-### Lighthouse CI Integration
+### تكامل Lighthouse CI
 
 ```typescript
 // lighthouse-ci.config.js
@@ -181,7 +181,7 @@ class PerformanceTestSuite {
 }
 ```
 
-### Custom Performance Test Suite
+### مجموعة اختبارات أداء مخصّصة
 
 ```typescript
 // Custom E2E performance testing with Playwright
@@ -359,9 +359,9 @@ test.describe('Performance Tests', () => {
 });
 ```
 
-## Continuous Performance Monitoring
+## المراقبة المستمرة للأداء
 
-### Performance Regression Detection
+### كشف انحدارات الأداء
 
 ```typescript
 // Automated performance regression detection
@@ -522,9 +522,9 @@ jobs:
 `;
 ```
 
-## Performance Testing Best Practices
+## أفضل ممارسات اختبار الأداء
 
-### Test Data Management
+### إدارة بيانات الاختبار
 
 ```typescript
 // Performance test data management

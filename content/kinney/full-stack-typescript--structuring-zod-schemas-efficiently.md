@@ -1,34 +1,34 @@
 ---
-title: "Structuring Zod Schemas Efficiently"
-lang: en
+title: "تنظيم مخططات Zod بكفاءة"
+lang: ar
 source: "https://stevekinney.com/courses/full-stack-typescript/structuring-zod-schemas-efficiently"
 ---
 
-## Modularize schemas by domain
+## تقسيم المخططات إلى وحدات حسب النطاق
 
-Group related schemas together, perhaps each module or file corresponds to a feature or data type (e.g., `user.schema.ts` contains UserSchema, maybe UserUpdateSchema, etc.). This way, you have a clear place to find and update schema definitions when your data model changes.
+اجمع المخططات المترابطة معًا، بحيث يقابل كل وحدة أو ملف ميزة أو نوع بيانات (مثل `user.schema.ts` الذي يحتوي UserSchema، وربما UserUpdateSchema، إلخ). وبهذه الطريقة يصبح لديك موضع واضح تجد فيه تعريفات المخطط وتحدّثها حين يتغيّر نموذج بياناتك.
 
-## Reuse and extend schemas
+## إعادة استخدام المخططات وتوسيعها
 
-Often you have similar schemas for different situations – for example, a “create user” vs “update user” (where update might allow omission of some fields). Rather than define two from scratch, define a base and derive the other. Zod provides methods like `.partial()` to make all fields optional, or `.omit()` / `.pick()` to derive a subset. For instance, you might do `const UserSchemaPartial = UserSchema.partial()` to get a schema where none of the fields are required (useful for PATCH update input). Or if an extended version has extra fields, use `UserSchema.extend({ newField: z.string() })`. This ensures consistency – you’re not redefining the validation rules for those shared fields in multiple places.
+غالبًا ما تكون لديك مخططات متشابهة لحالات مختلفة، مثل «إنشاء مستخدم» مقابل «تحديث مستخدم» (حيث قد يسمح التحديث بإغفال بعض الحقول). وبدلًا من تعريف اثنين من الصفر، عرّف مخططًا أساسيًا واشتقّ الآخر منه. ويوفر Zod دوالًا مثل `.partial()` لجعل كل الحقول اختيارية، أو `.omit()` / `.pick()` لاشتقاق مجموعة فرعية. فمثلًا قد تكتب `const UserSchemaPartial = UserSchema.partial()` للحصول على مخطط لا يُلزِم بأي حقل من حقوله (وهو مفيد لمدخل تحديث PATCH). أو إذا كانت النسخة الموسَّعة تحمل حقولًا إضافية، فاستخدم `UserSchema.extend({ newField: z.string() })`. وهذا يضمن الاتساق؛ فلا تعيد تعريف قواعد التحقق لتلك الحقول المشتركة في مواضع متعددة.
 
-## Leverage `z.infer` for types
+## الاستفادة من `z.infer` للأنواع
 
-Every time you create a schema, you can extract its TypeScript type with `z.infer<typeof Schema>`. Use this instead of manually writing an interface or type for the same data shape. This way, if your schema changes, your TypeScript types automatically update to match. For example:
+في كل مرة تنشئ فيها مخططًا، يمكنك استخراج نوعه في TypeScript بـ `z.infer<typeof Schema>`. واستخدم هذا بدلًا من كتابة واجهة أو نوع يدويًا لشكل البيانات نفسه. وبهذه الطريقة، إذا تغيّر مخططك، تحدّثت أنواع TypeScript تلقائيًا لتطابقه. مثلًا:
 
 ```typescript
 const OrderSchema = z.object({ id: z.string().uuid(), amount: z.number() });
 type Order = z.infer<typeof OrderSchema>; // { id: string, amount: number }
 ```
 
-Now if you add a field to OrderSchema, the Order type will include it too. This eliminates a whole class of bugs that come from code drifting apart from validation rules.
+والآن إذا أضفت حقلًا إلى OrderSchema، فسيضمّه نوع Order أيضًا. وهذا يلغي فئة كاملة من الأخطاء الناشئة عن انفصال الشيفرة عن قواعد التحقق.
 
-## Compose smaller schemas
+## تركيب مخططات أصغر
 
-If you have common pieces, define them once. Say you have an Address schema used in multiple places, define `AddressSchema` and then reuse it: `z.object({ address: AddressSchema, … })`. This also applies to enums or literal types that appear in several schemas – define a single schema for the enum and reuse references to it, rather than repeating `z.enum([…])` in multiple schemas.
+إذا كانت لديك أجزاء مشتركة، فعّرفها مرة واحدة. لنفترض أن لديك مخطط Address يُستخدم في مواضع متعددة: عرّف `AddressSchema` ثم أعِد استخدامه: `z.object({ address: AddressSchema, … })`. وهذا ينطبق أيضًا على التعدادات أو الأنواع الحرفية التي تظهر في عدة مخططات؛ عرّف مخططًا واحدًا للتعداد وأعِد استخدام الإشارات إليه، بدلًا من تكرار `z.enum([…])` في عدة مخططات.
 
-## Naming and describing
+## التسمية والوصف
 
-Use `.describe("Description")` on schemas for documentation purposes. While this doesn’t affect validation, it can embed human-readable descriptions in the schema which can later be used for documentation generation or just making error messages clearer. For instance, `z.string().min(1).describe("Non-empty name")`. This is useful if you convert schemas to OpenAPI or GraphQL documentation, as the descriptions can carry over.
+استخدم `.describe("Description")` على المخططات لأغراض التوثيق. فرغم أن هذا لا يؤثر في التحقق، فإنه يضمّن أوصافًا مقروءة للبشر داخل المخطط يمكن لاحقًا استخدامها في توليد التوثيق أو في جعل رسائل الخطأ أوضح فحسب. مثلًا: `z.string().min(1).describe("Non-empty name")`. وهذا مفيد إذا حوّلت المخططات إلى توثيق OpenAPI أو GraphQL، إذ تنتقل الأوصاف معها.
 
-By structuring schemas thoughtfully, you make it easier to maintain the contract your application relies on. When requirements change (like a new field is added), you update one schema definition in one place. And by inferring types, you ensure all your functions that consume that data type are aware of the change. Essentially, treat schemas as a fundamental part of your application’s architecture – much like you treat database models or API interfaces.
+بترتيب المخططات على نحو مدروس، تجعل الحفاظ على العقد الذي يعتمد عليه تطبيقك أسهل. وعندما تتغيّر المتطلبات (مثل إضافة حقل جديد)، تحدّث تعريف مخطط واحد في موضع واحد. وباستنتاج الأنواع، تضمن أن كل دوالك التي تستهلك نوع البيانات هذا على علم بالتغيير. وفي جوهر الأمر، تعامل مع المخططات كجزء أساسي من معمارية تطبيقك، تمامًا كما تتعامل مع نماذج قاعدة البيانات أو واجهات API.

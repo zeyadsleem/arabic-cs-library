@@ -1,20 +1,20 @@
 ---
-title: "Keybindings"
-lang: en
+title: "اختصارات لوحة المفاتيح (Keybindings)"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/keybindings"
 ---
 
-Keybindings are the magic shortcuts that let you summon commands with a single keystroke. You can view and customize them directly from the Command Palette by searching for `Preferences: Open Keyboard Shortcuts`. This view lists every available command and any default or custom bindings.
+اختصارات لوحة المفاتيح هي الاختصارات السحرية التي تمكّنك من استدعاء الأوامر بضغطة مفتاح واحدة. ويمكنك عرضها وتخصيصها مباشرةً من لوحة الأوامر بالبحث عن `Preferences: Open Keyboard Shortcuts`. وتعرض هذه الواجهة كل أمر متاح وأي ارتباطات افتراضية أو مخصّصة.
 
-If you find an essential command buried in the Command Palette, assign it a convenient keyboard shortcut. That way, you can skip hunting for it next time and cut right to the chase.
+وإذا وجدت أمرًا أساسيًا مدفونًا في لوحة الأوامر، فخصّص له اختصارًا ملائمًا. وبذلك تتجنّب التنقيب عنه في المرة القادمة وتذهب مباشرةً إلى ما تريد.
 
-## Custom Keybindings
+## اختصارات لوحة المفاتيح المخصّصة
 
-Beyond the Keybindings editor lies the real wizardry: custom keybindings in `keybindings.json`. This file is accessible via the Command Palette by searching for `Preferences: Open Keyboard Shortcuts (JSON)`. It provides granular control over how and when shortcuts fire.
+وراء محرّر الاختصارات تقع البراعة الحقيقية: اختصارات مخصّصة في `keybindings.json`. ويُفتح هذا الملف من لوحة الأوامر بالبحث عن `Preferences: Open Keyboard Shortcuts (JSON)`. وهو يوفّر تحكمًا دقيقًا في كيفية عمل الاختصارات ووقت تفعيلها.
 
-### The `keybindings.json` File
+### ملف `keybindings.json`
 
-At its core, `keybindings.json` is a list of rules. Each rule typically contains a `key`, a `command`, and an optional `when` clause. For example:
+`keybindings.json` في جوهره قائمة من القواعد. وتحتوي كل قاعدة عادةً على `key` و`command` وشرط `when` اختياري. على سبيل المثال:
 
 ```json
 {
@@ -24,61 +24,61 @@ At its core, `keybindings.json` is a list of rules. Each rule typically contains
 }
 ```
 
-This binds `Ctrl+Alt+J` to toggle line comments, but only in JavaScript files (`editorLangId == 'javascript'`). If you tried using this binding in a TypeScript file, it wouldn’t work.
+يربط هذا `Ctrl+Alt+J` بتبديل تعليقات الأسطر، لكن في ملفات JavaScript فقط (`editorLangId == 'javascript'`). ولو جرّبت هذا الارتباط في ملف TypeScript، لما عمل.
 
-### Understanding the `when` Clause
+### فهم شرط `when`
 
-The `when` clause is how you set contextual rules. It acts like an inline condition that must be true for the binding to trigger. Common examples include:
+شرط `when` هو وسيلتك لضبط قواعد سياقية. وهو يعمل كشرط تضميني يجب أن يكون صحيحًا حتى يُفعَّل الارتباط. ومن الأمثلة الشائعة:
 
-- `editorTextFocus`: Ensures the cursor is currently in a text editor (not in a diff view or a panel).
-- `editorLangId == 'javascript'`: Restricts the keybinding to JavaScript files.
-- `isInDiffEditor`: Targets only the diff editor, useful for code reviews.
+- `editorTextFocus`: يضمن أن المؤشر حاليًا في محرّر نصوص (لا في عرض فروقات ولا في لوحة).
+- `editorLangId == 'javascript'`: يقصر الاختصار على ملفات JavaScript فقط.
+- `isInDiffEditor`: يستهدف محرّر الفروقات وحده، وهو مفيد في مراجعات الشيفرة.
 
-Chaining multiple conditions is as easy as using `&&` between them. This flexibility empowers you to craft precise shortcuts that behave consistently in each context.
+وسَلسْنة شروط متعددة سهلة باستخدام `&&` بينها. وتمنحك هذه المرونة القدرة على صياغة اختصارات دقيقة تتصرّف بثبات في كل سياق.
 
-> **Be careful not to get carried away adding too many conditions. Overly specific `when` clauses might leave you wondering why a shortcut suddenly stopped working.**
+> **احرص ألّا تبالغ في إضافة شروط كثيرة. فشروط `when` المفرطة في التحديد قد تتركك تتساءل لماذا توقّف اختصار فجأة عن العمل.**
 
-Here are some common values for the `when` property.
+وإليك بعض القيم الشائعة لخاصية `when`.
 
-- **`editorTextFocus`**: True when the text editor has focus.
-- **`editorLangId`**: Represents the language identifier of the current file (e.g., ‘typescript’, ‘javascript’).
-- **`resourceExtname`**: The file extension of the current resource (e.g., ‘.js’, ‘.ts’).
-- **`resourceScheme`**: The URI scheme of the resource (e.g., ‘file’, ‘untitled’).
-- **`sideBarFocus`**: True when the sidebar has focus.
-- **`panelFocus`**: True when the panel (bottom section) has focus.
-- **`inDebugMode`**: True when the debugger is active.
-- **`debuggersAvailable`**: True when there are debuggers available for the current session.
-- **`textInputFocus`**: True when a text input box (including the editor) has focus.
-- **`config.<settingName>`**: Represents the value of a specific setting; for example, `config.editor.tabCompletion` checks the ‘editor.tabCompletion’ setting.
+- **`editorTextFocus`**: صحيحة عندما يكون محرّر النصوص في التركيز.
+- **`editorLangId`**: يمثّل معرّف اللغة للملف الحالي (مثل ‘typescript’ و‘javascript’).
+- **`resourceExtname`**: امتداد الملف للمورد الحالي (مثل ‘.js’ و‘.ts’).
+- **`resourceScheme`**: مخطط URI للمورد (مثل ‘file’ و‘untitled’).
+- **`sideBarFocus`**: صحيحة عندما يكون الشريط الجانبي في التركيز.
+- **`panelFocus`**: صحيحة عندما تكون اللوحة (القسم السفلي) في التركيز.
+- **`inDebugMode`**: صحيحة عندما يكون المنقّح نشطًا.
+- **`debuggersAvailable`**: صحيحة عندما تتوفّر منقّحات للجلسة الحالية.
+- **`textInputFocus`**: صحيحة عندما يكون صندوق إدخال نصي (بما في ذلك المحرّر) في التركيز.
+- **`config.<settingName>`**: يمثّل قيمة إعداد معيّن؛ فمثلًا `config.editor.tabCompletion` يفحص إعداد ‘editor.tabCompletion’.
 
-These context keys can be combined using conditional operators to create more specific conditions:
+يمكن دمج مفاتيح السياق هذه باستخدام معاملات شرطية لإنشاء شروط أكثر تحديدًا:
 
-- **`&&`**: Logical AND.
-- **`||`**: Logical OR.
-- **`!`**: Logical NOT.
-- **`==`**: Equality.
-- **`!=`**: Inequality.
-- **`=~`**: Matches a regular expression.
+- **`&&`**: و (AND) المنطقية.
+- **`||`**: أو (OR) المنطقية.
+- **`!`**: النفي (NOT) المنطقي.
+- **`==`**: التساوي.
+- **`!=`**: عدم التساوي.
+- **`=~`**: مطابقة تعبير نمطي.
 
-> **Exploring Context Keys**
+> **استكشاف مفاتيح السياق**
 >
-> To explore active context keys in your current VS Code session, you can use the **Developer: Inspect Context Keys** command from the Command Palette. This tool provides insight into the current state of various context keys, aiding in the creation of precise “when” clauses. You will need to
+> لاستكشاف مفاتيح السياق النشطة في جلسة VS Code الحالية، يمكنك استخدام أمر **Developer: Inspect Context Keys** من لوحة الأوامر. وتوفّر هذه الأداة نظرة على الحالة الحالية لمفاتيح السياق المختلفة، ما يساعد في إنشاء شروط “when” دقيقة. وستحتاج إلى
 
-### Avoiding Keybinding Conflicts
+### تجنّب تعارضات الاختصارات
 
-Conflicts occur when two or more shortcuts are bound to the same keys in the same context. Visual Studio Code typically uses the last declared binding, so whichever one is loaded last takes priority. To avoid confusion, review existing shortcuts in the Keybindings editor before assigning new ones. If you find a conflict, either remove or change the old binding to keep your muscle memory intact.
+تحدث التعارضات عندما يُربط اختصاران أو أكثر بالمفاتيح نفسها في السياق نفسه. ويستخدم Visual Studio Code عادةً الارتباط المعلَن أخيرًا، فيأخذ الأولوية أيهما حُمِّل آخرًا. ولتجنّب الالتباس، راجع الاختصارات الموجودة في محرّر الاختصارات قبل تعيين اختصارات جديدة. وإذا وجدت تعارضًا، فأزل الارتباط القديم أو غيّره للحفاظ على ذاكرتك العضلية.
 
-> **Overriding extensions that override your key bindings**
+> **تجاوز الإضافات التي تتجاوز اختصاراتك**
 >
-> If you rely on an extension that hijacks a shortcut you love, open `keybindings.json` and override it. Conflict solved—no drama necessary.
+> إذا كنت تعتمد على إضافة تخطف اختصارًا تحبه، فافتح `keybindings.json` وتجاوزه. انتهت المشكلة — بلا حاجة إلى ضجّة.
 
-## Exporting and Syncing Keybindings
+## تصدير اختصارات لوحة المفاتيح ومزامنتها
 
-VS Code offers a built-in Settings Sync feature that includes your custom keybindings, ensuring that your personalized shortcuts travel with you between machines. By enabling Settings Sync, your `keybindings.json` is automatically backed up and shared across your devices, keeping your workflow consistent wherever you work.
+يقدّم VS Code ميزة Settings Sync المدمجة التي تتضمّن اختصاراتك المخصّصة، فتضمن أن اختصاراتك الشخصية ترافقك بين الأجهزة. وبتفعيل Settings Sync، يُنسَخ `keybindings.json` احتياطيًا ويُشارَك تلقائيًا بين أجهزتك، فيبقى سير عملك متسقًا حيثما عملت.
 
-## Platform-Specific Keybindings
+## اختصارات خاصة بكل نظام تشغيل
 
-Sometimes the same shortcut isn’t ideal across different operating systems. VS Code allows you to define platform-specific keybindings directly in your `keybindings.json`. For example, you can override the key for a command on macOS compared to Windows or Linux:
+أحيانًا لا يكون الاختصار نفسه مثاليًا عبر أنظمة تشغيل مختلفة. ويتيح لك VS Code تعريف اختصارات خاصة بكل نظام مباشرةً في `keybindings.json`. فمثلًا، يمكنك تجاوز مفتاح أمر على macOS مقارنةً بـ Windows أو Linux:
 
 ```json
 {
@@ -89,11 +89,11 @@ Sometimes the same shortcut isn’t ideal across different operating systems. VS
 }
 ```
 
-This configuration ensures that macOS users use `Cmd+Shift+T` while others stick with `Ctrl+Shift+T`, adapting the experience to the strengths of each platform.
+يضمن هذا الإعداد أن يستخدم مستخدمو macOS الاختصار `Cmd+Shift+T` بينما يلتزم الآخرون بـ `Ctrl+Shift+T`، فيتكيّف التجربة مع مواطن القوة في كل نظام.
 
-## Multi-Stroke Keybindings
+## اختصارات متعددة الضغطات
 
-VS Code supports multi-stroke (or chorded) keybindings, which allow you to chain multiple keystrokes to trigger a command. This approach minimizes conflicts with single keystroke bindings and can be more memorable for complex commands. For instance, the following binding requires two sequential key presses:
+يدعم VS Code اختصارات متعددة الضغطات (أو المقترنة)، التي تتيح لك تسلسل عدة ضغطات مفتاح لتشغيل أمر. وتقلّل هذه المقاربة التعارضات مع الارتباطات أحادية الضغطة وقد تكون أسهل تذكّرًا للأوامر المعقّدة. فمثلًا، يتطلّب الارتباط التالي ضغطتين متتاليتين:
 
 ```json
 {
@@ -103,8 +103,8 @@ VS Code supports multi-stroke (or chorded) keybindings, which allow you to chain
 }
 ```
 
-Using multi-stroke keybindings provides a robust way to extend your shortcut repertoire without overcrowding your keyboard, allowing you to assign commands in a more intuitive and organized manner.
+يوفّر استخدام الاختصارات متعددة الضغطات طريقة متينة لتوسيع مجموعة اختصاراتك دون إثقال لوحة المفاتيح، ما يتيح لك تعيين الأوامر بطريقة أكثر بديهية وتنظيمًا.
 
-> **Running Multiple Commands**
+> **تشغيل عدة أوامر**
 >
-> There is a handy extension for that called [**Multi Command**](https://marketplace.visualstudio.com/items?itemName=ryuta46.multi-command).
+> توجد إضافة مفيدة لذلك تُسمّى [**Multi Command**](https://marketplace.visualstudio.com/items?itemName=ryuta46.multi-command).

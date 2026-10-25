@@ -1,35 +1,29 @@
 ---
-title: "Cloud Agents"
-lang: en
+title: "وكلاء السحابة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development/cursor-background-agents"
 ---
 
-[Cursor Cloud Agents](https://cursor.com/docs/cloud-agent) are the current form
-of what earlier material called Background Agents. They run in isolated cloud
-environments, clone the repository, create their own branch, and can continue
-working while you use the editor for something else.
+[وكلاء سحابة Cursor](https://cursor.com/docs/cloud-agent) هم الشكل الحالي لما كانت المواد الأقدم تسمّيه وكلاء الخلفية (Background Agents). يعملون في بيئات سحابية معزولة، ويستنسخون المستودع، وينشئون فرعهم الخاص، ويستطيعون مواصلة العمل بينما تستخدم المحرّر لشيء آخر.
 
-Cloud Agents are useful when a task is clear enough to run away from your local
-machine. They are a poor fit for vague product decisions or work that requires
-constant taste-level feedback.
+وكلاء السحابة مفيدون عندما تكون المهمة واضحة بما يكفي لتشغيلها بعيدًا عن جهازك المحلي. وهم غير مناسبين لقرارات المنتج الغامضة أو للعمل الذي يحتاج تغذية راجعة مستمرة على مستوى الذوق.
 
-## What the Cloud Environment Contains
+## ما الذي تتضمنه البيئة السحابية
 
-A Cloud Agent can use:
+يستطيع وكيل السحابة استخدام:
 
-- A cloned repository from a supported version control provider.
-- Installed dependencies and setup commands.
-- Secrets that you explicitly provide.
-- MCP servers configured for the environment.
-- Command-based hooks.
-- Browser, terminal, screenshots, videos, logs, and other artifacts.
+- مستودع مستنسخ من مزوّد تحكم بالإصدارات مدعوم.
+- اعتماديات مثبَّتة وأوامر تهيئة.
+- أسرار تقدّمها صراحةً.
+- خوادم MCP مهيّأة للبيئة.
+- خطّافات قائمة على الأوامر.
+- المتصفح والطرفية ولقطات الشاشة والفيديو والسجلات وغيرها من المخرجات.
 
-Environment setup can live in `.cursor/environment.json`. Keep it boring. A
-repeatable environment beats a clever prompt every time.
+يمكن أن تسكن تهيئة البيئة في `.cursor/environment.json`. أبقِها مملّة. فالبيئة القابلة للتكرار تتفوق على الطلب الذكي في كل مرة.
 
-## Prompt Shape
+## شكل الطلب
 
-Use cloud prompts that define scope, verification, and stop conditions:
+استخدم طلبات سحابية تحدّد النطاق والتحقق وشروط التوقف:
 
 ```
 Update the invite-token validation path only.
@@ -43,15 +37,10 @@ Stop and report the blocker if dependency installation fails or if an unrelated
 test failure appears.
 ```
 
-That prompt can be judged from a branch diff and command output. “Improve the
-authentication flow” cannot.
+يمكن الحكم على هذا الطلب من فرق الفرع ومخرَج الأوامر. أما «حسّن تدفق المصادقة» فلا يمكن.
 
-## Handoff Back to the Editor
+## التسليم مرة أخرى إلى المحرّر
 
-Inspect the Cloud Agent branch before merging or continuing locally. Review the
-diff, artifacts, command output, and any created pull request. If you continue
-locally, treat the branch as untrusted work from another developer: run the tests
-again and read the changed files.
+افحص فرع وكيل السحابة قبل الدمج أو المتابعة محليًا. راجع الفرق والمخرجات ومخرَج الأوامر وأي طلب سحب منشأ. وإذا تابعت محليًا، فعامل الفرع كعمل غير موثوق من مطوّر آخر: شغّل الاختبارات مرة أخرى واقرأ الملفات المتغيّرة.
 
-Cloud Agents are an execution surface. They do not remove your review
-responsibility.
+وكلاء السحابة سطح تنفيذ. وهم لا يعفونك من مسؤولية المراجعة.

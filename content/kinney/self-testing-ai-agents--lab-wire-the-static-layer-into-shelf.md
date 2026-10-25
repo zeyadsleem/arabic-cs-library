@@ -1,166 +1,166 @@
 ---
-title: "Lab"
-lang: en
+title: "مختبر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/lab-wire-the-static-layer-into-shelf"
 ---
 
-Longest lab of the day. Multi-part. Pace yourself—each part is a self-contained check, and you can stop between parts if you need to.
+أطول مختبرات اليوم. متعدّد الأجزاء. وزّع وتيرتك—كل جزء فحص مكتفٍ بذاته، ويمكنك التوقف بين الأجزاء إن احتجت.
 
-> **In the current starter**
+> **في النسخة الأولية الحالية**
 >
-> Shelf now starts smaller on purpose. The starter already has ESLint, TypeScript, and the minimal Playwright loop, but it does **not** ship `knip.json`, `lefthook.yml`, `.gitleaks.toml`, or `scripts/run-gitleaks-staged.ts`. This lab is where you add those files and then verify each one against a planted bad input.
+> صار Shelf يبدأ أصغر عن قصد. فالنسخة الأولية تحتوي بالفعل على ESLint وTypeScript وحلقة Playwright الدنيا، لكنها **لا** تشحن `knip.json` ولا `lefthook.yml` ولا `.gitleaks.toml` ولا `scripts/run-gitleaks-staged.ts`. هذا المختبر هو حيث تضيف تلك الملفات ثم تتحقّق من كل واحد منها مقابل مدخل سيئ مزروع.
 
-## The task
+## المهمة
 
-Build out the full static layer for Shelf and verify every piece fires on a planted bad input. For each part: add or extend the file, read back over the rule you just created, then trigger the probe and watch it catch.
+ابنِ الطبقة الثابتة الكاملة لـ Shelf وتحقّق من أن كل قطعة تنطلق عند مدخل سيئ مزروع. ولكل جزء: أضف الملف أو وسّعه، ثم أعد قراءة القاعدة التي أنشأتها للتو، ثم أشعل المجسّ وراقبه يلتقط.
 
-## What you can verify locally
+## ما يمكنك التحقّق منه محليًا
 
-Everything in Parts 1 through 5 is local and mechanical: extend `eslint.config.js` and `tsconfig.json`, create `knip.json`, `lefthook.yml`, `.gitleaks.toml`, and `scripts/run-gitleaks-staged.ts`, run `npm run lint`, `npm run typecheck`, `npm run knip`, `npm run test`, and `npm run pre-push`, plant one bad input at a time, then watch the right layer fail. Part 6 is local too if you are updating your own `CLAUDE.md` or Codex instructions file.
+كل شيء في الأجزاء من الأول إلى الخامس محلي وآلي: وسّع `eslint.config.js` و`tsconfig.json`، وأنشئ `knip.json` و`lefthook.yml` و`.gitleaks.toml` و`scripts/run-gitleaks-staged.ts`، وشغّل `npm run lint` و`npm run typecheck` و`npm run knip` و`npm run test` و`npm run pre-push`، وازرع مدخلًا سيئًا واحدًا في كل مرة، ثم راقب الطبقة الصحيحة تفشل. والجزء السادس محلي أيضًا إن كنت تحدّث `CLAUDE.md` الخاص بك أو ملف إرشادات Codex.
 
-## What remains manual or external
+## ما يبقى يدويًا أو خارجيًا
 
-The only non-mechanical part is judging the agent behavior at the end. The final prompt is there to test whether the instructions and static layer are strong enough that the agent reads the error, repairs the code, and reruns the checks without coaching. If you decide to open a pull request afterward, treat that as an optional hosted follow-up, not a requirement for finishing the lab locally.
+الجزء غير الآلي الوحيد هو الحكم على سلوك الوكيل في النهاية. فالمطالبة الأخيرة موجودة لاختبار ما إن كانت الإرشادات والطبقة الثابتة قوية بما يكفي ليقرأ الوكيل الخطأ ويصلح الشيفرة ويعيد تشغيل الفحوص دون تدريب. وإن قرّرت فتح طلب سحب بعد ذلك، فاعتبره متابعة مستضافة اختيارية، لا شرطًا لإكمال المختبر محليًا.
 
-## Part 1: ESLint custom rules
+## الجزء الأول: قواعد ESLint المخصّصة
 
-Open `eslint.config.js`. Find the `no-restricted-syntax` block. It bans four patterns:
+افتح `eslint.config.js`. وابحث عن كتلة `no-restricted-syntax`. إنها تحظر أربعة أنماط:
 
-- `page.waitForTimeout` (anywhere in `tests/end-to-end/`). Selector: `CallExpression[callee.property.name='waitForTimeout']`. Message: `"page.waitForTimeout is banned. See CLAUDE.md → Playwright → Waiting."`
-- `page.locator` called with a string argument (anywhere in `tests/end-to-end/`). Selector: `CallExpression[callee.property.name='locator'][arguments.0.type='Literal']`. Message: `"Use a getByRole/getByLabel locator. See CLAUDE.md → Playwright → Locators."`
-- `page.waitForLoadState('networkidle')` (anywhere). Selector: `CallExpression[callee.property.name='waitForLoadState'] Literal[value='networkidle']`. Message: `"networkidle is unreliable. Wait on a real signal."`
-- Reading `userId` from a request body in a route handler. Selector: `MemberExpression[object.type='MemberExpression'][object.property.name='body'][property.name='userId']`. Message: `"Read userId from the session, not the request body. See CLAUDE.md → Auth."`
+- `page.waitForTimeout` (في أي مكان داخل `tests/end-to-end/`). المحدِّد: `CallExpression[callee.property.name='waitForTimeout']`. الرسالة: `"page.waitForTimeout is banned. See CLAUDE.md → Playwright → Waiting."`
+- `page.locator` المستدعاة بوسيط نصي (في أي مكان داخل `tests/end-to-end/`). المحدِّد: `CallExpression[callee.property.name='locator'][arguments.0.type='Literal']`. الرسالة: `"Use a getByRole/getByLabel locator. See CLAUDE.md → Playwright → Locators."`
+- `page.waitForLoadState('networkidle')` (في أي مكان). المحدِّد: `CallExpression[callee.property.name='waitForLoadState'] Literal[value='networkidle']`. الرسالة: `"networkidle is unreliable. Wait on a real signal."`
+- قراءة `userId` من جسم الطلب في معالج مسار. المحدِّد: `MemberExpression[object.type='MemberExpression'][object.property.name='body'][property.name='userId']`. الرسالة: `"Read userId from the session, not the request body. See CLAUDE.md → Auth."`
 
-Each rule has both a `selector` and a `message`. The message strings are load-bearing — they name the file, the section, and the fix. That’s the difference between a lint error the agent ignores and a lint error the agent reads and acts on.
+لكل قاعدة `selector` و`message`. ونصوص الرسائل تؤدّي دورًا حاسمًا — فهي تسمّي الملف والقسم والإصلاح. وذلك هو الفرق بين خطأ lint يتجاهله الوكيل وخطأ lint يقرأه الوكيل ويتصرّف بناءً عليه.
 
-The lesson’s **Writing a `no-restricted-syntax` rule** section in [Lint and Types as Guardrails](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails) walks each of these four AST selectors in English. Read it alongside the file you build here so you understand *why* the `body.userId` rule uses a nested `MemberExpression` match instead of just a property name, and why the `networkidle` rule uses the descendant combinator.
+قسم **كتابة قاعدة `no-restricted-syntax`** في درس [Lint والأنواع كحواجز حماية](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails) يشرح كل واحد من هذه المحدّدات الأربعة لشجرة النحو المجرّدة (AST) شرحًا نثريًا مفصّلًا. اقرأه إلى جانب الملف الذي تبنيه هنا كي تفهم *لماذا* تستخدم قاعدة `body.userId` مطابقة `MemberExpression` متداخلة بدلًا من اسم خاصية فقط، ولماذا تستخدم قاعدة `networkidle` مُركِّب السليل.
 
-> **Note**
+> **ملاحظة**
 >
-> In the Shelf workshop repository, `npm` is the source of truth. If your own project uses Bun, translate the commands back to `bun` as appropriate. The important part is that the checks are real, named scripts the agent is required to run.
+> في مستودع ورشة Shelf، `npm` هو مصدر الحقيقة. فإن كان مشروعك يستخدم Bun، فأعد صياغة الأوامر إلى `bun` كما يليق. المهم أن تكون الفحوص سكربتات حقيقية مسمّاة يُلزَم الوكيل بتشغيلها.
 
-### Acceptance for Part 1
+### معايير قبول الجزء الأول
 
-- `eslint.config.js` contains the four restricted-syntax rules above (selector + message).
-- Running `npm run lint` on the current (clean) Shelf repository exits zero.
-- Adding a `page.waitForTimeout(1000)` line to any file under `tests/end-to-end/` makes `npm run lint` exit non-zero, and the output contains the substring `page.waitForTimeout is banned`.
-- Adding a `page.locator('.foo')` line to any file under `tests/end-to-end/` makes `npm run lint` exit non-zero, and the output contains the substring `Use a getByRole/getByLabel locator`.
-- Reverting the test changes restores a clean lint (`npm run lint` exits zero).
+- أن يحتوي `eslint.config.js` على قواعد النحو المقيّد الأربع أعلاه (محدِّد + رسالة).
+- أن ينتهي `npm run lint` على مستودع Shelf الحالي (النظيف) بالرمز صفر.
+- أن يجعل إضافة سطر `page.waitForTimeout(1000)` إلى أي ملف تحت `tests/end-to-end/` الأمرَ `npm run lint` ينتهي برمز غير صفري، وأن يحتوي الناتج على السلسلة الفرعية `page.waitForTimeout is banned`.
+- أن يجعل إضافة سطر `page.locator('.foo')` إلى أي ملف تحت `tests/end-to-end/` الأمرَ `npm run lint` ينتهي برمز غير صفري، وأن يحتوي الناتج على السلسلة الفرعية `Use a getByRole/getByLabel locator`.
+- أن يعيد التراجع عن تغييرات الاختبار نظافة lint (`npm run lint` ينتهي بالرمز صفر).
 
-## Part 2: TypeScript strict mode
+## الجزء الثاني: الوضع الصارم في TypeScript
 
-Open `tsconfig.json`. Find every strict flag from the lesson — `strict: true`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`. They’re all there. Read each one and make sure you can explain, in one sentence, what kind of bug it catches that `strict: true` alone would miss.
+افتح `tsconfig.json`. وابحث عن كل راية صرامة من الدرس—`strict: true`، و`noUncheckedIndexedAccess`، و`exactOptionalPropertyTypes`، و`noUnusedLocals`، و`noUnusedParameters`، و`noImplicitReturns`، و`noFallthroughCasesInSwitch`. كلها موجودة هناك. اقرأ كل واحدة وتأكّد أنك تستطيع أن تشرح في جملة واحدة أي صنف من الأخطاء تلتقطه، وأي صنف كان `strict: true` وحده سيفوته.
 
-### Acceptance for Part 2
+### معايير قبول الجزء الثاني
 
-- `tsconfig.json` has `strict: true`.
-- `tsconfig.json` explicitly enables `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`, `noUnusedLocals`, and `noUnusedParameters`.
-- `npm run typecheck` exits zero on the current Shelf source.
-- Adding `const x: string = items[0]` (without a guard) to any file produces a typecheck error.
+- `tsconfig.json` يحوي `strict: true`.
+- `tsconfig.json` يفعّل صراحةً `noUncheckedIndexedAccess` و`exactOptionalPropertyTypes` و`noUnusedLocals` و`noUnusedParameters`.
+- `npm run typecheck` ينتهي بالرمز صفر على شيفرة Shelf الحالية.
+- إضافة `const x: string = items[0]` (بلا حارس) إلى أي ملف تنتج خطأ في فحص الأنواع.
 
-## Part 3: Dead code detection
+## الجزء الثالث: كشف الشيفرة الميتة
 
-Create `knip.json`. Set the `entry` and `project` globs so knip knows which files are roots (SvelteKit pages, tests, scripts) and which files are in-scope for the unused-exports analysis. Then run `npm run knip` to see it report zero findings against the current repo.
+أنشئ `knip.json`. اضبط أنماط glob في `entry` و`project` كي يعرف knip أي الملفات تُعدّ جذورًا (صفحات SvelteKit والاختبارات والسكربتات) وأي الملفات داخل نطاق تحليل التصديرات غير المستخدمة. ثم شغّل `npm run knip` لتراه يبلّغ عن صفر نتائج على المستودع الحالي.
 
-> **Note**
+> **ملاحظة**
 >
-> In the current Shelf starter, `drizzle.config.ts` can already fall back to `file:./local.db`, so you may not need an extra `DATABASE_URL=...` shim at all. If your own project’s config crashes without one, add a throwaway database URL in the script there. The point of the lab is the dead-code loop, not env gymnastics.
+> في نسخة Shelf الأولية الحالية، يستطيع `drizzle.config.ts` أن يعود بالفعل إلى `file:./local.db`، فقد لا تحتاج إلى غلاف `DATABASE_URL=...` إضافي أصلًا. وإن كانت تهيئة مشروعك تنهار بدونه، فأضف عنوان قاعدة بيانات عابرًا في السكربت هناك. المقصود من المختبر هو حلقة الشيفرة الميتة، لا الألعاب البهلوانية مع متغيّرات البيئة.
 
-### Acceptance for Part 3
+### معايير قبول الجزء الثالث
 
-- `knip.json` exists with sensible `entry` and `project` globs.
-- `npm run knip` exits zero on the current Shelf repo.
-- Adding an unreferenced `.ts` file under `src/lib/` causes `npm run knip` to report it as unused.
-- Removing the file restores clean knip output.
-- If your repository still contains a retired subtree like `src/lib/legacy-auth/`, it is explicitly ignored. If your local Shelf clone does not contain that directory, do not invent it just to satisfy the lab.
+- `knip.json` موجود بأنماط `entry` و`project` معقولة.
+- `npm run knip` ينتهي بالرمز صفر على مستودع Shelf الحالي.
+- إضافة ملف `.ts` غير مُشار إليه تحت `src/lib/` تجعل `npm run knip` يبلّغ عنه كغير مستخدم.
+- حذف الملف يعيد ناتج knip نظيفًا.
+- إن كان مستودعك ما يزال يحوي شجرة متقاعدة مثل `src/lib/legacy-auth/`، فهي متجاهلة صراحةً. وإن لم تحوِ نسختك المحلية من Shelf ذلك المجلد، فلا تخترعه لمجرد إرضاء المختبر.
 
-## Part 4: Lefthook
+## الجزء الرابع: Lefthook
 
-Create `lefthook.yml`. Add `pre-commit` and `pre-push` blocks. Pre-commit should run fast checks on `{staged_files}` with `parallel: true` and `stage_fixed: true`, while pre-push should run the slightly-slower `npm run pre-push` script (which calls typecheck, knip, and unit tests) against the whole tree. Read the [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) lesson if you want the reasoning behind the split.
+أنشئ `lefthook.yml`. وأضف كتلتي `pre-commit` و`pre-push`. ينبغي أن يشغّل pre-commit فحوصًا سريعة على `{staged_files}` مع `parallel: true` و`stage_fixed: true`، بينما يشغّل pre-push سكربت `npm run pre-push` الأبطأ قليلًا (الذي ينادي فحص الأنواع وknip واختبارات الوحدة) على الشجرة كلها. اقرأ درس [خطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook) إن أردت المنطق وراء هذا التقسيم.
 
-### Acceptance for Part 4
+### معايير قبول الجزء الرابع
 
-- `lefthook.yml` exists at the repo root.
-- `pre-commit` runs ESLint, Prettier, and a secret scan against `{staged_files}`, all marked `parallel: true`, and any auto-fixed files are restaged via `stage_fixed: true`.
-- `pre-push` runs `npm run pre-push`, which in turn runs at least `npm run typecheck` and `npm run knip`.
-- Making a change with a lint error and running `lefthook run pre-commit` aborts with the lint error visible.
-- Auto-fixable issues (formatting) get fixed and restaged automatically.
+- `lefthook.yml` موجود في جذر المستودع.
+- `pre-commit` يشغّل ESLint وPrettier وفحص أسرار على `{staged_files}`، وكلها معلّمة `parallel: true`، وأي ملفات صُحّحت تلقائيًا يُعاد ترحيلها عبر `stage_fixed: true`.
+- `pre-push` يشغّل `npm run pre-push`، الذي يشغّل بدوره على الأقل `npm run typecheck` و`npm run knip`.
+- إجراء تغيير فيه خطأ lint ثم تشغيل `lefthook run pre-commit` يُجهض الالتزام مع ظهور خطأ lint.
+- المشكلات القابلة للتصحيح التلقائي (التنسيق) تُصحَّح وتُعاد مرحلتها تلقائيًا.
 
-## Part 5: Secret scanning
+## الجزء الخامس: فحص الأسرار
 
-Add a `secrets` command under `pre-commit` in `lefthook.yml` so it shells out to `npx tsx scripts/run-gitleaks-staged.ts`. Then read back over that script and make sure it materializes the staged index into a tmp directory before running `gitleaks dir`.
+أضف أمر `secrets` تحت `pre-commit` في `lefthook.yml` بحيث يستدعي `npx tsx scripts/run-gitleaks-staged.ts`. ثم أعد قراءة ذلك السكربت وتأكّد من أنه يجسّد الفهرس المرحّل في مجلد مؤقت قبل تشغيل `gitleaks dir`.
 
-Create a small bait file such as `sample-config.json` during the lab so you have one harmless false-positive to allowlist on purpose. In the current Shelf starter, `tests/data/users.json` is another deliberate allowlist candidate because it stores fake workshop credentials the seeding labs depend on.
+أنشئ ملف طُعم صغيرًا مثل `sample-config.json` أثناء المختبر كي يكون لديك إيجابية كاذبة غير ضارّة واحدة تُدرجها في قائمة السماح عن قصد. وفي نسخة Shelf الأولية الحالية، يُعدّ `tests/data/users.json` مرشّحًا آخر متعمّدًا لقائمة السماح، لأنه يخزّن بيانات اعتماد ورشة وهمية تعتمد عليها مختبرات الزرع.
 
-> **Note**
+> **ملاحظة**
 >
-> With the current Gitleaks release used in this workshop, `gitleaks git --staged` was not a reliable pre-commit verifier for newly added files. The local Shelf repository fixes that by materializing the exact git index into a temporary directory and running `gitleaks dir` there from `scripts/run-gitleaks-staged.ts`. That wrapper is what the lefthook `secrets` command shells out to.
+> مع إصدار Gitleaks الحالي المستخدم في هذه الورشة، لم يكن `gitleaks git --staged` مُتحقِّقًا موثوقًا قبل الالتزام للملفات المضافة حديثًا. يعالج مستودع Shelf المحلي ذلك بتجسيد فهرس git الدقيق في مجلد مؤقت وتشغيل `gitleaks dir` هناك من `scripts/run-gitleaks-staged.ts`. وذلك الغلاف هو ما يستدعيه أمر `secrets` في lefthook.
 
-### Acceptance for Part 5
+### معايير قبول الجزء الخامس
 
-- `gitleaks version` runs on your machine.
-- `lefthook.yml` has a `secrets` command under `pre-commit` that invokes `npx tsx scripts/run-gitleaks-staged.ts`.
-- `.gitleaks.toml` allowlists `sample-config.json` and `tests/data/users.json` (or `tests/data/` if you prefer the directory-level rule).
-- Running the staged-snapshot script directly (`npx tsx scripts/run-gitleaks-staged.ts`) exits zero for the clean staged state.
-- Attempting to stage a file containing `BETTER_AUTH_SECRET="7Xse4XqnSo3hcT31Yb2vi7LMt6BYI93w.0EWmIcjHKAdde1SY5TEVqh5fPu6NvFBf"` triggers the hook and blocks the commit.
-- The `sample-config.json` file can still be committed without issue (the allowlist works).
+- `gitleaks version` يعمل على جهازك.
+- `lefthook.yml` يحوي أمر `secrets` تحت `pre-commit` يستدعي `npx tsx scripts/run-gitleaks-staged.ts`.
+- `.gitleaks.toml` يدرج `sample-config.json` و`tests/data/users.json` في قائمة السماح (أو `tests/data/` إن كنت تفضّل قاعدة على مستوى المجلد).
+- تشغيل سكربت اللقطة المرحّلة مباشرةً (`npx tsx scripts/run-gitleaks-staged.ts`) ينتهي بالرمز صفر لحالة الفهرس المرحّل النظيفة.
+- محاولة ترحيل ملف يحوي `BETTER_AUTH_SECRET="7Xse4XqnSo3hcT31Yb2vi7LMt6BYI93w.0EWmIcjHKAdde1SY5TEVqh5fPu6NvFBf"` تُطلق الخطّاف وتحجب الالتزام.
+- يبقى ملف `sample-config.json` قابلًا للالتزام دون مشكلة (قائمة السماح تعمل).
 
-## Part 6: the `CLAUDE.md` update
+## الجزء السادس: تحديث `CLAUDE.md`
 
-Add sections to `CLAUDE.md` that reflect every layer you wired up. At minimum:
+أضف إلى `CLAUDE.md` أقسامًا تعكس كل طبقة ربطتها. على الأقل:
 
-- A “static checks” section listing `npm run lint`, `npm run typecheck`, and `npm run knip` as mandatory pre-done commands.
-- In the Shelf starter, “done” only means `npm run typecheck`, `npm run lint`, and `npm run test`. This lab is where you extend that definition to include `npm run knip` and `npm run pre-push`.
-- Rules about `@ts-expect-error`, `eslint-disable`, and `--no-verify`.
-- A secrets section per the gitleaks lesson.
-- A reference back to the Playwright rules ([locators](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy), [waiting](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story), [auth](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)) so the custom lint rules are connected to the same source of truth.
+- قسم «الفحوص الثابتة» يسرد `npm run lint` و`npm run typecheck` و`npm run knip` كأوامر إلزامية قبل إعلان الإنجاز.
+- في نسخة Shelf الأولية، «منجَز» لا تعني إلا `npm run typecheck` و`npm run lint` و`npm run test`. هذا المختبر هو حيث توسّع ذلك التعريف ليشمل `npm run knip` و`npm run pre-push`.
+- قواعد بشأن `@ts-expect-error` و`eslint-disable` و`--no-verify`.
+- قسم أسرار وفق درس gitleaks.
+- إحالة راجعة إلى قواعد Playwright ([المحددات](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy)، و[الانتظار](https://stevekinney.com/courses/self-testing-ai-agents/the-waiting-story)، و[المصادقة](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)) بحيث تُربط قواعد lint المخصّصة بمصدر الحقيقة نفسه.
 
-### Acceptance for Part 6
+### معايير قبول الجزء السادس
 
-- `CLAUDE.md` lists all static check commands under a “what done means” heading.
-- `CLAUDE.md` explicitly bans bypassing via `@ts-expect-error`, `eslint-disable`, or `--no-verify`.
-- The sections cross-reference each other where rules overlap (e.g., the lint rule for `waitForTimeout` points at the same source as the Playwright waiting rules).
-- `wc -l CLAUDE.md` still reports a number under 150. (It’s going to grow; that’s fine. Just don’t let it become a novel.)
+- `CLAUDE.md` يسرد كل أوامر الفحوص الثابتة تحت عنوان «ماذا يعني منجَز».
+- `CLAUDE.md` يحظر صراحةً التجاوز عبر `@ts-expect-error` أو `eslint-disable` أو `--no-verify`.
+- الأقسام تُحيل إلى بعضها حيث تتداخل القواعد (مثلًا قاعدة lint الخاصة بـ`waitForTimeout` تشير إلى المصدر نفسه الذي تشير إليه قواعد الانتظار في Playwright).
+- ما يزال `wc -l CLAUDE.md` يبلّغ عن رقم أقل من 150. (سيكبر؛ لا بأس. فقط لا تدعه يصير رواية.)
 
-## End-to-end verification
+## التحقق من طرف إلى طرف
 
-Once every layer is in place, hand the agent a single prompt that exercises all of them:
+حين تكون كل طبقة في مكانها، سلّم الوكيل مطالبة واحدة تمرّنها كلها:
 
-> Add a new route `/shelf/export` that lets a user download their shelf as a JSON file. Include a Playwright test for it. Run all static checks and the tests before declaring done.
+> أضف مسارًا جديدًا `/shelf/export` يتيح للمستخدم تنزيل رفّه كملف JSON. وأضف اختبار Playwright له. وشغّل كل الفحوص الثابتة والاختبارات قبل أن تعلن الإنجاز.
 
-Watch what the agent does. The correct behavior is:
+راقب ما يفعله الوكيل. السلوك الصحيح هو:
 
-1. It writes the route handler.
-2. It writes the Playwright test.
-3. It runs `npm run lint`, `npm run typecheck`, `npm run knip`, `npm run test`, and `npm run pre-push` (which covers unit tests).
-4. If any of them fail, it reads the error, fixes it, and re-runs.
-5. It does not use `page.waitForTimeout`, does not use `page.locator` with a CSS selector, does not use UI login, does not read `userId` from the request body, does not leave dead code behind.
+1. يكتب معالج المسار.
+2. يكتب اختبار Playwright.
+3. يشغّل `npm run lint` و`npm run typecheck` و`npm run knip` و`npm run test` و`npm run pre-push` (الذي يغطّي اختبارات الوحدة).
+4. إن فشل أي منها، يقرأ الخطأ ويصلحه ويعيد التشغيل.
+5. لا يستخدم `page.waitForTimeout`، ولا يستخدم `page.locator` بمحدّد CSS، ولا يستخدم تسجيل دخول عبر الواجهة، ولا يقرأ `userId` من جسم الطلب، ولا يترك شيفرة ميتة خلفه.
 
-If the agent does any of the forbidden things, go look at why the static layer didn’t catch it. That’s the gap.
+إن فعل الوكيل أيًّا من الأمور المحظورة، فاذهب وانظر لماذا لم تلتقطه الطبقة الثابتة. تلك هي الفجوة.
 
-## Final acceptance
+## معايير القبول النهائية
 
-- The end-to-end prompt above completed with the agent running `npm run lint`, `npm run typecheck`, `npm run knip`, `npm run test`, and `npm run pre-push` without being reminded.
-- No forbidden patterns made it into the final code.
-- If you opened a pull request, it is clean.
-- Every single checkbox in Parts 1 through 6 is ticked.
+- اكتملت المطالبة من طرف إلى طرف أعلاه مع تشغيل الوكيل `npm run lint` و`npm run typecheck` و`npm run knip` و`npm run test` و`npm run pre-push` دون تذكير.
+- لم يصل أي نمط محظور إلى الشيفرة النهائية.
+- إن فتحت طلب سحب، فهو نظيف.
+- كل مربّع اختيار في الأجزاء من الأول إلى السادس مؤشَّر.
 
-## Stretch goals
+## أهداف إضافية
 
-- Add a Claude-specific `PostToolUse` hook that runs `npm run lint -- --quiet` after every edit, per the Claude hooks lesson.
-- Add a pinned knip-count script to pre-push that fails if the unused count goes up from a committed baseline (the ratchet pattern).
-- Configure dependency-cruiser with the `no-orphans` rule and, if your repository still has that boundary, the `legacy-auth` rule, and run it in pre-push.
-- Write a tiny report at the end of the lab: which layer caught what, and which layer never fired. The layers that never fired might be too loose (or might just be working so well there’s nothing to catch).
+- أضف خطّاف `PostToolUse` خاصًا بـClaude يشغّل `npm run lint -- --quiet` بعد كل تعديل، وفق درس خطّافات Claude.
+- أضف إلى pre-push سكربتًا مثبّتًا لعدّ knip يفشل إن ارتفع عدد غير المستخدم عن خط أساس مُودَع (نمط السقّاطة).
+- هيّئ dependency-cruiser بقاعدة `no-orphans`، وقاعدة `legacy-auth` إن كان مستودعك ما يزال يحمل تلك الحدود، وشغّله في pre-push.
+- اكتب تقريرًا صغيرًا في نهاية المختبر: أي طبقة التقطت ماذا، وأي طبقة لم تنطلق قط. الطبقات التي لم تنطلق قط قد تكون متراخية أكثر من اللازم (أو قد تكون تعمل جيدًا لدرجة أنه لا شيء لتفعله).
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-The static layer is five tools and an hour of setup. Every one of them runs under everything else, catches a specific class of mistake at the cheapest possible moment, and compounds with the others. At the end of this lab, the agent is working under a feedback net so tight that most mistakes can’t survive long enough to reach the tests we spent the morning building.
+الطبقة الثابتة خمس أدوات وساعة من الإعداد. كل واحدة منها تعمل تحت كل ما عداها، وتلتقط صنفًا محدّدًا من الأخطاء في اللحظة الأرخص ممكنة، وتتراكم مع الأخريات. في نهاية هذا المختبر، يعمل الوكيل تحت شبكة تغذية راجعة محكمة لدرجة أن معظم الأخطاء لا تستطيع البقاء طويلًا بما يكفي لتصل إلى الاختبارات التي أمضينا الصباح في بنائها.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Solution](https://stevekinney.com/courses/self-testing-ai-agents/wire-the-static-layer-into-shelf-solution)
-- [The Static Layer as Underlayment](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
-- [Lint and Types as Guardrails](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
-- [Dead Code Detection](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
-- [Git Hooks with Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
-- [Secret Scanning with Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)
+- [الحل](https://stevekinney.com/courses/self-testing-ai-agents/wire-the-static-layer-into-shelf-solution)
+- [الطبقة الثابتة كطبقة أساس](https://stevekinney.com/courses/self-testing-ai-agents/the-static-layer-as-underlayment)
+- [Lint والأنواع كحواجز حماية](https://stevekinney.com/courses/self-testing-ai-agents/lint-and-types-as-guardrails)
+- [كشف الشيفرة الميتة](https://stevekinney.com/courses/self-testing-ai-agents/dead-code-detection)
+- [خطّافات Git مع Lefthook](https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-lefthook)
+- [فحص الأسرار باستخدام Gitleaks](https://stevekinney.com/courses/self-testing-ai-agents/secret-scanning-with-gitleaks)

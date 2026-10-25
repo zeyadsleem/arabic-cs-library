@@ -1,12 +1,12 @@
 ---
-title: "Building a Statistics Card"
-lang: en
+title: "بناء بطاقة إحصاءات"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/building-a-statistics-card"
 ---
 
-Let’s start with our basic HTML structure for a collection of stat cards.
+لنبدأ ببنية HTML الأساسية لمجموعة من بطاقات الإحصاءات.
 
-*Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/7c6aefe67c3b63d60e4b3b0e222fd91c4a6e799c87bcdb8fb80c91c8e5dd4e4d.html)*
+*المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7c6aefe67c3b63d60e4b3b0e222fd91c4a6e799c87bcdb8fb80c91c8e5dd4e4d.html)*
 
 ```html
 <div>
@@ -27,13 +27,13 @@ Let’s start with our basic HTML structure for a collection of stat cards.
 </div>
 ```
 
-We have three stat cards in a container, but they’re stacked vertically and completely unstyled. Let’s transform this into a smart grid that adapts based on how much space the parent container has available—not the viewport size.
+لدينا ثلاث بطاقات إحصاءات داخل حاوية، لكنها مكدّسة رأسيًا وبلا أي تنسيق. لنحوّلها إلى شبكة ذكية تتكيّف بحسب المساحة المتاحة في الحاوية الأم — لا بحسب حجم إطار العرض.
 
-## Adding Container Query Context
+## إضافة سياق استعلام الحاوية
 
-First, let’s establish our container as a “containment context” and add basic card styling using patterns from our [card tutorial](https://stevekinney.com/courses/tailwind/building-a-card).
+أولًا، لنثبّت حاويتنا بوصفها «سياق احتواء»، ونضيف تنسيقًا أساسيًا للبطاقة مستخدمين أنماطًا من [درس البطاقة](https://stevekinney.com/courses/tailwind/building-a-card).
 
-*Adding Container Query Context — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/d0c5df5a9b19ba600edbbfcd8bbeffa4553d97d42c7b2939bc027b89d22f0af0.html)*
+*إضافة سياق استعلام الحاوية — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/d0c5df5a9b19ba600edbbfcd8bbeffa4553d97d42c7b2939bc027b89d22f0af0.html)*
 
 ```html
 <div class="@container p-4">
@@ -54,20 +54,20 @@ First, let’s establish our container as a “containment context” and add ba
 </div>
 ```
 
-Key additions:
+الإضافات الأساسية:
 
-- `@container`: Establishes this element as a container query context—child elements can now respond to this container’s size, not the viewport
-- `grid gap-4`: Creates a CSS Grid layout with 16px gaps between items
-- Card styling with `rounded-lg bg-white p-6 shadow-md` for professional appearance
-- Typography hierarchy with small labels and large values
+- `@container`: يثبّت هذا العنصر بوصفه سياق استعلام حاوية — فيمكن لعناصره الآن أن تستجيب لحجم هذه الحاوية، لا لإطار العرض
+- `grid gap-4`: ينشئ تخطيط CSS Grid مع فواصل قدرها 16px بين العناصر
+- تنسيق البطاقة بـ`rounded-lg bg-white p-6 shadow-md` لمظهر احترافي
+- تسلسل هرمي في الطباعة بتسميات صغيرة وقيم كبيرة
 
-This is fundamentally different from responsive design with media queries—these cards will adapt based on their parent’s width, not the browser window’s width.
+هذا مختلف جوهريًا عن التصميم المستجيب باستعلامات الوسائط — فستتكيّف هذه البطاقات بحسب عرض العنصر الأم، لا بحسب عرض نافذة المتصفح.
 
-## Creating Container-Based Responsive Behavior
+## إنشاء سلوك استجابة قائم على الحاوية
 
-Now let’s add the magic: making the grid responsive to the container’s size using container query utilities.
+الآن لنضف السحر: جعل الشبكة مستجيبة لحجم الحاوية باستخدام أدوات استعلام الحاوية.
 
-*Creating Container-Based Responsive Behavior — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/b0976661a376ccb86f0442855691729d17f016cf92b16ecee8d4a946b52f192d.html)*
+*إنشاء سلوك استجابة قائم على الحاوية — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b0976661a376ccb86f0442855691729d17f016cf92b16ecee8d4a946b52f192d.html)*
 
 ```html
 <div class="@container p-4">
@@ -88,29 +88,29 @@ Now let’s add the magic: making the grid responsive to the container’s size 
 </div>
 ```
 
-Container query responsive behavior:
+السلوك المستجيب لاستعلام الحاوية:
 
-- `@sm:grid-cols-2`: When the container is at least 384px wide, show 2 columns
-- `@lg:grid-cols-3`: When the container is at least 512px wide, show 3 columns
-- Default (no prefix): Single column when container is narrow
+- `@sm:grid-cols-2`: عندما يبلغ عرض الحاوية 384px على الأقل، اعرض عمودين
+- `@lg:grid-cols-3`: عندما يبلغ عرض الحاوية 512px على الأقل، اعرض ثلاثة أعمدة
+- الافتراضي (بلا بادئة): عمود واحد عندما تكون الحاوية ضيّقة
 
-The `@` prefix indicates these are container queries, not media queries. The cards respond to their immediate parent’s size, making them perfectly modular for sidebars, dashboards, or any constrained layout.
+تشير البادئة `@` إلى أن هذه استعلامات حاويات لا استعلامات وسائط. وتستجيب البطاقات لحجم العنصر الأب المباشر، ما يجعلها مثالية للتعديلية في الأشرطة الجانبية أو لوحات المعلومات أو أي تخطيط مقيَّد.
 
-## Why Container Queries Matter
+## لماذا تهم استعلامات الحاويات
 
-Traditional responsive design uses media queries that respond to viewport size. But what if you want to place this stat grid in a narrow sidebar? Media queries would still show the desktop layout even though the container is narrow.
+يستخدم التصميم المستجيب التقليدي استعلامات وسائط تستجيب لحجم إطار العرض. لكن ماذا لو أردت وضع شبكة الإحصاءات هذه في شريط جانبي ضيّق؟ كانت استعلامات الوسائط ستعرض تخطيط سطح المكتب حتى مع ضيق الحاوية.
 
-Container queries solve this by making components **truly reusable**. This same stat grid component will:
+تحل استعلامات الحاويات ذلك بجعل المكوّنات **قابلة لإعادة الاستخدام فعلًا**. فمكوّن شبكة الإحصاءات نفسه سي:
 
-- Show 1 column in a narrow sidebar (even on desktop)
-- Show 2-3 columns in the main content area
-- Adapt automatically to any parent container size
+- يعرض عمودًا واحدًا في شريط جانبي ضيّق (حتى على سطح المكتب)
+- يعرض عمودين أو ثلاثة في منطقة المحتوى الرئيسية
+- يتكيّف تلقائيًا مع أي حجم لحاوية أم
 
-This is the future of responsive component design—components that adapt to their context, not just the screen size.
+هذا هو مستقبل تصميم المكوّنات المستجيب — مكوّنات تتكيّف مع سياقها، لا مع حجم الشاشة وحده.
 
-## Challenges
+## التحديات
 
-Try building these variations:
+جرّب بناء هذه الصيغ:
 
-1. **Enhanced Stats**: Add trend indicators (↗️ icons) that only appear in multi-column layouts using `@sm:block hidden`
-2. **Nested Container**: Place this stat grid inside a card container and watch how it adapts to the card’s width instead of the page width
+1. **إحصاءات محسّنة**: أضف مؤشرات اتجاه (أيقونات ↗️) لا تظهر إلا في التخطيطات متعددة الأعمدة باستخدام `@sm:block hidden`
+2. **حاوية متداخلة**: ضع شبكة الإحصاءات هذه داخل حاوية بطاقة وراقب كيف تتكيّف بحسب عرض البطاقة لا بعرض الصفحة

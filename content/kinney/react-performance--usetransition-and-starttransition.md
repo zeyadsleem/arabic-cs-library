@@ -1,16 +1,16 @@
 ---
-title: "useTransition and startTransition"
-lang: en
+title: "دليل useTransition وstartTransition"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/usetransition-and-starttransition"
 ---
 
-React 18 introduced concurrent features that help keep your app responsive even when doing expensive work. At the heart of this is the concept of **transitions**—marking some updates as less urgent so the more important ones (like responding to user input) don’t get blocked. Think of it like traffic management: express lanes for urgent updates, regular lanes for everything else.
+قدّم React 18 ميزات متزامنة تساعد في إبقاء تطبيقك مستجيبًا حتى أثناء أداء عمل مكلف. وفي قلب ذلك يكمن مفهوم **الانتقالات** — تعليم بعض التحديثات بأنها أقل إلحاحًا حتى لا تُحجب التحديثات الأهم (مثل الاستجابة لإدخال المستخدم). تخيّل الأمر كإدارة مرور: مسارات سريعة للتحديثات العاجلة، ومسارات عادية لكل ما سواها.
 
-`useTransition` and `startTransition` let you defer non-urgent state updates, preventing them from blocking the UI thread while users are actively typing, clicking, or scrolling. Instead of freezing up during heavy computations, your app stays interactive while the expensive work happens in the background.
+يتيح لك `useTransition` و`startTransition` تأجيل تحديثات الحالة غير العاجلة، ومنعها من حجب خيط واجهة المستخدم أثناء كتابة المستخدمين أو نقرهم أو تمريرهم النشط. فبدل أن يتجمّد تطبيقك أثناء الحسابات الثقيلة، يبقى تفاعليًا بينما يجري العمل المكلف في الخلفية.
 
-## The Problem: Blocking Updates
+## المشكلة: تحديثات تحجب الواجهة
 
-Before we dive into the solution, let’s understand what we’re solving. Consider this search component that filters a large list:
+قبل أن نغوص في الحل، لنفهم ما الذي نحلّه. تأمّل مكوّن البحث هذا الذي يرشّح قائمة كبيرة:
 
 ```typescript
 // ❌ This blocks the UI during expensive filtering
@@ -34,11 +34,11 @@ function SearchResults() {
 }
 ```
 
-When you type in the search box, each keystroke triggers expensive filtering that blocks the UI. The input feels sluggish because React can’t update the input value until the filtering completes. Not exactly the smooth experience your users expect.
+عندما تكتب في مربع البحث، تُطلق كل ضغطة مفتاح عملية ترشيح مكلفة تحجب واجهة المستخدم. ويبدو حقل الإدخال بطيئًا لأن React لا يستطيع تحديث قيمته حتى يكتمل الترشيح. وليست هذه تمامًا التجربة السلسة التي يتوقّعها مستخدموك.
 
-## Enter `useTransition`
+## دور `useTransition`
 
-`useTransition` gives you a way to mark updates as “transitions”—non-urgent updates that can be interrupted by more important work:
+يمنحك `useTransition` طريقة لتعليم تحديثات بأنها «انتقالات» — تحديثات غير عاجلة يمكن أن يقاطعها عمل أهم:
 
 ```typescript
 import { useTransition, useState } from 'react';
@@ -74,25 +74,25 @@ function SearchResults() {
 }
 ```
 
-Here’s what’s happening:
+وإليك ما يجري:
 
-- **Immediate update**: `setQuery(value)` runs synchronously, so typing stays responsive
-- **Deferred update**: `setFilteredQuery(value)` inside `startTransition` gets lower priority
-- **Loading state**: `isPending` tells us when the transition is still processing
+- **تحديث فوري**: يعمل `setQuery(value)` تزامنيًا، فتبقى الكتابة مستجيبة
+- **تحديث مؤجَّل**: يحصل `setFilteredQuery(value)` داخل `startTransition` على أولوية أدنى
+- **حالة التحميل**: يخبرنا `isPending` بأن الانتقال ما زال قيد المعالجة
 
-The input updates immediately while the expensive filtering happens in the background. If the user keeps typing, React will interrupt the ongoing filtering to handle the new input.
+يتحدّث حقل الإدخال فورًا بينما يجري الترشيح المكلف في الخلفية. وإن واصل المستخدم الكتابة، سيقاطع React الترشيح الجاري ليعالج الإدخال الجديد.
 
-## `useTransition` Hook Deep Dive
+## تعمّق في خُطّاف `useTransition`
 
-The `useTransition` hook returns a tuple with two elements:
+يعيد خُطّاف `useTransition` زوجًا من عنصرين:
 
 ```typescript
 const [isPending, startTransition] = useTransition();
 ```
 
-### isPending
+### قيمة isPending
 
-A boolean indicating whether any transition is currently pending. Use this to show loading indicators:
+قيمة منطقية تشير إلى ما إذا كان أي انتقال معلّقًا حاليًا. استخدمها لعرض مؤشرات التحميل:
 
 ```typescript
 function FilteredList() {
@@ -107,9 +107,9 @@ function FilteredList() {
 }
 ```
 
-### startTransition
+### الدالة startTransition
 
-A function that wraps state updates you want to mark as transitions:
+دالة تغلّف تحديثات الحالة التي تريد تعليمها كانتقالات:
 
 ```typescript
 const handleExpensiveUpdate = (newData) => {
@@ -125,11 +125,11 @@ const handleExpensiveUpdate = (newData) => {
 };
 ```
 
-Multiple state updates inside `startTransition` are batched together as a single, interruptible transition.
+تُجمَّع تحديثات الحالة المتعددة داخل `startTransition` معًا في انتقال واحد قابل للمقاطعة.
 
-## startTransition (Standalone)
+## الدالة startTransition المستقلة
 
-You don’t always need the `isPending` state. For cases where you just want to mark updates as non-urgent, import `startTransition` directly:
+لا تحتاج دائمًا إلى حالة `isPending`. وفي الحالات التي تريد فيها فقط تعليم التحديثات بأنها غير عاجلة، استورد `startTransition` مباشرةً:
 
 ```typescript
 import { startTransition } from 'react';
@@ -166,13 +166,13 @@ function TabContainer() {
 }
 ```
 
-The tab highlighting happens immediately (great UX), while the potentially expensive content loading happens as a transition.
+يحدث تمييز التبويب فورًا (تجربة استخدام ممتازة)، بينما يجري تحميل المحتوى الذي قد يكون مكلفًا في صورة انتقال.
 
-## Real-World Patterns
+## أنماط واقعية
 
-### Search with Debouncing
+### بحث مع التخميد (debouncing)
 
-Combine transitions with debouncing for even better search performance:
+اجمع الانتقالات مع التخميد للحصول على أداء بحث أفضل:
 
 ```typescript
 function AdvancedSearch() {
@@ -219,9 +219,9 @@ function AdvancedSearch() {
 }
 ```
 
-### Data Visualization Updates
+### تحديثات تصوّر البيانات
 
-Perfect for charts and graphs that need expensive recalculations:
+مثالي للرسوم والمخططات التي تحتاج إعادة حسابات مكلفة:
 
 ```typescript
 function DataDashboard() {
@@ -251,13 +251,13 @@ function DataDashboard() {
 }
 ```
 
-## When NOT to Use Transitions
+## متى لا تستخدم الانتقالات
 
-Transitions aren’t always the answer. Avoid them for:
+ليست الانتقالات هي الجواب دائمًا. تجنّبها في:
 
-### Critical User Feedback
+### استجابة المستخدم الحرجة
 
-Don’t defer updates that provide immediate feedback for user actions:
+لا تؤجّل التحديثات التي تقدّم استجابة فورية لأفعال المستخدم:
 
 ```typescript
 // ❌ Don't defer form validation feedback
@@ -273,9 +273,9 @@ const handleSubmit = () => {
 };
 ```
 
-### Navigation Updates
+### تحديثات التنقّل
 
-Route changes should feel instant:
+ينبغي أن تبدو تغييرات المسار فورية:
 
 ```typescript
 // ❌ Don't defer navigation
@@ -295,9 +295,9 @@ const handleNavigation = (route: string) => {
 };
 ```
 
-### Small, Fast Updates
+### التحديثات الصغيرة السريعة
 
-For trivial state changes, transitions add unnecessary complexity:
+في تغييرات الحالة التافهة، تضيف الانتقالات تعقيدًا بلا داعٍ:
 
 ```typescript
 // ❌ Overkill for simple updates
@@ -315,11 +315,11 @@ const increment = () => {
 };
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### Measuring Impact
+### قياس الأثر
 
-Use React DevTools Profiler to measure the actual impact:
+استخدم مُنمّق React DevTools لقياس الأثر الفعلي:
 
 ```typescript
 // Before adding transitions, profile this component
@@ -339,13 +339,13 @@ function ExpensiveList({ items, query }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Only add transitions if you can measure a real improvement in user experience. Don’t optimize prematurely.
+> لا تُضف الانتقالات إلا إذا استطعت قياس تحسّن حقيقي في تجربة المستخدم. ولا تُحسّن قبل الأوان.
 
-### Memory Considerations
+### اعتبارات الذاكرة
 
-Transitions can keep multiple versions of data in memory simultaneously:
+قد تُبقي الانتقالات عدة نسخ من البيانات في الذاكرة في الوقت نفسه:
 
 ```typescript
 function OptimizedSearch() {
@@ -369,22 +369,22 @@ function OptimizedSearch() {
 }
 ```
 
-## Migration Strategy
+## استراتيجية الترحيل
 
-Converting existing components to use transitions:
+تحويل المكوّنات القائمة لاستخدام الانتقالات:
 
-### Step 1: Identify Expensive Operations
+### الخطوة 1: حدّد العمليات المكلفة
 
-Look for operations that cause noticeable UI freezing:
+ابحث عن العمليات التي تسبّب تجمّدًا ملحوظًا في الواجهة:
 
-- Large list filtering/sorting
-- Complex calculations
-- Heavy DOM updates
-- Data processing
+- ترشيح وترتيب قوائم كبيرة
+- حسابات معقّدة
+- تحديثات DOM ثقيلة
+- معالجة البيانات
 
-### Step 2: Split State
+### الخطوة 2: افصل الحالة
 
-Separate immediate updates from expensive ones:
+افصل التحديثات الفورية عن المكلفة:
 
 ```typescript
 // Before: Single state causes blocking updates
@@ -398,9 +398,9 @@ const [query, setQuery] = useState('');
 const [results, setResults] = useState([]);
 ```
 
-### Step 3: Add Transitions Incrementally
+### الخطوة 3: أضف الانتقالات تدريجيًا
 
-Start with the most problematic components:
+ابدأ بأكثر المكوّنات إشكالًا:
 
 ```typescript
 // Start here: Most obvious wins
@@ -415,15 +415,15 @@ function DataTable() {
 }
 ```
 
-### Step 4: Measure and Iterate
+### الخطوة 4: قِس وكرّر
 
-Use performance profiling to validate improvements and find the next optimization target.
+استخدم تنميق الأداء للتحقق من التحسينات والعثور على هدف التحسين التالي.
 
-## Common Gotchas
+## مزالق شائعة
 
-### Stale Closures in Transitions
+### الإغلاقات القديمة في الانتقالات
 
-Be careful with closures inside `startTransition`:
+احترس من الإغلاقات (closures) داخل `startTransition`:
 
 ```typescript
 // ❌ This captures stale values
@@ -442,9 +442,9 @@ const handleUpdate = () => {
 };
 ```
 
-### Transitions Don’t Make Code Faster
+### الانتقالات لا تجعل الشيفرة أسرع
 
-Transitions don’t magically speed up your code—they just prevent slow code from blocking urgent updates:
+لا تُسرّع الانتقالات شيفرتك بسحر — إنها فقط تمنع الشيفرة البطيئة من حجب التحديثات العاجلة:
 
 ```typescript
 // ❌ Still slow, just non-blocking
@@ -459,6 +459,6 @@ startTransition(() => {
 });
 ```
 
-## Next Steps
+## الخطوات التالية
 
-Now that you understand transitions, you’re ready to build more responsive React applications. The key is identifying which updates are urgent (user input, navigation) versus which can wait (search results, data visualization).
+بعد أن فهمت الانتقالات، أصبحت جاهزًا لبناء تطبيقات React أكثر استجابة. والمفتاح هو تحديد أي التحديثات عاجل (إدخال المستخدم، والتنقّل) وأيها يمكن أن ينتظر (نتائج البحث، وتصوّر البيانات).

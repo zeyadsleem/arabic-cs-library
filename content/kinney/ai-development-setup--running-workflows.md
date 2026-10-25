@@ -1,130 +1,130 @@
 ---
-title: "Running Workflows"
-lang: en
+title: "تشغيل سير العمل"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/running-workflows"
 ---
 
-[Dynamic workflows](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows) are easy to start and easy to regret. A script that fans out to a hundred agents will happily spend a big chunk of your usage before you’ve finished your coffee. So know when the work justifies one.
+[سير العمل الديناميكية](https://stevekinney.com/courses/ai-development-setup/dynamic-workflows) سهلة البدء وسهلة الندم. فسكربت يتفرّع إلى مئة وكيل سينفق بسعادة جزءًا كبيرًا من استهلاكك قبل أن تُنهي قهوتك. فاعرف متى يستحق العمل واحدًا منها.
 
-## When to use one, and when to skip it
+## متى تستخدم واحدًا، ومتى تتخطّاه
 
-Consider a workflow when:
+فكّر في سير عمل عندما:
 
-- You want to cover a large surface in parallel.
-- You want adversarial checks: a second agent trying to knock down a finding before you accept it.
+- تريد تغطية سطح كبير على التوازي.
+- تريد فحوصًا تخاصمية: وكيل ثانٍ يحاول إسقاط نتيجة قبل أن تقبلها.
 
-Skip it when:
+وتتخطّاه عندما:
 
-- You’re just making one edit.
-- Nothing can run in parallel.
-- The plan may change mid-run. (Not yet knowing the *list* of work is different. See the table below.)
-- You need planned human sign-off between phases. Tool permission prompts are supported, but arbitrary mid-run questions aren’t.
-- Several agents would share ownership of the same files. Give each its own [worktree](https://stevekinney.com/courses/ai-development-setup/worktrees), an extra checkout of the repository with its own files and branch.
-- The script would have to make the important decisions. Merges and writes to outside systems belong to the main session (the agent coordinating the work) or to you.
-- Verifying the fan-out would cost more than the fan-out itself.
+- كنت تجري تعديلًا واحدًا فقط.
+- لا شيء يمكن أن يعمل على التوازي.
+- قد تتغيّر الخطة أثناء التشغيل. (عدم معرفتك بـ*قائمة* العمل بعد أمر مختلف. راجع الجدول أدناه.)
+- تحتاج إلى موافقة بشرية مخطَّطة بين المراحل. فمطالبات أذونات الأدوات مدعومة، أما الأسئلة العشوائية أثناء التشغيل فلا.
+- ستتشارك عدة وكلاء ملكية الملفات نفسها. فأعطِ كل واحد [شجرة عمل](https://stevekinney.com/courses/ai-development-setup/worktrees) خاصة به، وهي نسخة سحب إضافية من المستودع بملفاتها وفرعها.
+- سيتعيّن على السكربت اتخاذ القرارات المهمة. فالدمج والكتابة إلى أنظمة خارجية يخصّان الجلسة الرئيسية (الوكيل المنسّق للعمل) أو يخصّانك.
+- سيكلّف التحقّق من التفرّع أكثر من التفرّع نفسه.
 
-## Limits
+## الحدود
 
-- **Concurrency**: 16 agents at once by default, adjustable from 1 to 256 if you *really* hate your usage limit. (Subscriptions meter usage in five-hour windows, and API billing charges per token. A big fan-out drains either.)
-- **Items per call**: 4,096 per `pipeline()` or `parallel()` call. Items beyond the concurrency cap queue for a free slot.
-- **Agents per run**: 1,000 in total, and you get a warning after about 25 agents or 1.5 million projected tokens.
+- **التزامن**: 16 وكيلًا في وقت واحد افتراضيًا، قابلة للضبط من 1 إلى 256 إن كنت *بالفعل* تكره حدّ استهلاكك. (تقيس الاشتراكات الاستهلاك في نوافذ من خمس ساعات، وتتقاضى فاتورة API لكل رمز. والتفرّع الكبير يستنزف أيهما.)
+- **العناصر في كل استدعاء**: 4,096 لكل استدعاء `pipeline()` أو `parallel()`. والعناصر الزائدة عن سقف التزامن تنتظر في الطابور مكانًا شاغرًا.
+- **الوكلاء في كل تشغيل**: 1,000 إجمالًا، وتتلقّى تحذيرًا بعد نحو 25 وكيلًا أو 1.5 مليون رمز متوقّع.
 
-The limits stack. A call can stay under 4,096 items and still hit the 1,000-agent cap.
+والحدود تتضاعف تراكميًا. فقد يبقى استدعاء تحت 4,096 عنصرًا ويبلغ مع ذلك سقف الـ 1,000 وكيل.
 
-## Resuming a run
+## استئناف تشغيل
 
-Pausing a live run in `/workflows` and pressing `p` again picks up where it paused. Nothing replays. Relaunching a stopped run or an edited script is different: Claude Code replays from the top, returning saved results for unchanged successful calls until the first changed or failed call. Everything after that runs live. The [resume reference](https://code.claude.com/docs/en/workflows#resume-after-a-pause) distinguishes these paths.
+إيقاف تشغيل جارٍ مؤقتًا في `/workflows` والضغط على `p` مرة أخرى يستأنف من حيث توقف. ولا يُعاد شيء. أما إعادة إطلاق تشغيل متوقف أو سكربت مُحرَّر فأمر مختلف: تعيد Claude Code التشغيل من الأعلى، وتُرجع النتائج المحفوظة للاستدعاءات الناجحة غير المتغيّرة حتى أول استدعاء متغيّر أو فاشل. وكل ما بعد ذلك يعمل مباشرة. و[مرجع الاستئناف](https://code.claude.com/docs/en/workflows#resume-after-a-pause) يفرّق بين هذه المسارات.
 
-## What doesn’t work in a script
+## ما لا يعمل داخل سكربت
 
-A workflow script is JavaScript, not TypeScript, and it runs in a restricted environment. These are out:
+سكربت سير العمل JavaScript لا TypeScript، ويعمل في بيئة مقيّدة. وهذه مستبعدة:
 
-- Type annotations.
-- `Date.now()`, `Math.random()`, and `new Date()` with no arguments. They throw, because a replay has to make the same decisions as the original run.
-- The filesystem, the shell, and other Node APIs.
+- وسوم الأنواع (type annotations).
+- `Date.now()` و`Math.random()` و`new Date()` بلا وسائط. فهي تطرح استثناءً، لأن إعادة التشغيل يجب أن تتخذ القرارات نفسها التي اتخذها التشغيل الأصلي.
+- نظام الملفات، والصدفة (shell)، وواجهات Node الأخرى.
 - `import()`.
-- Variables, calls, spreads, or interpolation inside `meta`.
+- المتغيّرات، والاستدعاءات، والتفريغ (spreads)، والاستيفاء (interpolation) داخل `meta`.
 
-## Kicking one off
+## إطلاق واحد منها
 
-Four ways to start one:
+أربع طرق لبدء واحد:
 
-- Say “use a workflow.”
-- Include the `ultracode` keyword in a prompt you typed.
-- Run `/effort ultracode`, a session setting that makes Claude plan a workflow for every substantial task.
-- Run a saved `/<name>` command.
+- قل «استخدم سير عمل».
+- أدرج كلمة `ultracode` المفتاحية في طلب كتبته.
+- شغّل `/effort ultracode`، وهو إعداد جلسة يجعل Claude يخطّط سير عمل لكل مهمة جوهرية.
+- شغّل أمر `/<name>` محفوظًا.
 
-The keyword only counts when a *person* typed it. It’s ignored in `claude -p` (print mode, one non-interactive run), in [desktop scheduled tasks and cloud routines](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules), and in webhooks. And `workflowSizeGuideline`, a setting that tells Claude roughly how many agents to aim for, is only advice.
+ولا تُحتسب الكلمة المفتاحية إلا حين يكتبها *شخص*. فهي تُتجاهل في `claude -p` (وضع الطباعة، تشغيل واحد غير تفاعلي)، وفي [المهام المجدولة على سطح المكتب والروتينات السحابية](https://stevekinney.com/courses/ai-development-setup/routines-and-schedules)، وفي خطافات الويب (webhooks). و`workflowSizeGuideline`، وهو إعداد يخبر Claude تقريبًا بعدد الوكلاء الذي يستهدفه، مجرد نصيحة.
 
-The `/workflows` view lists your runs. Press `s` on one to save its script as a `/<name>` command, in `.claude/workflows/` for the project or `~/.claude/workflows/` for you personally.
+تعرض واجهة `/workflows` تشغيلاتك. اضغط `s` على أحدها لحفظ سكربته كأمر `/<name>`، في `.claude/workflows/` للمشروع أو `~/.claude/workflows/` لك شخصيًا.
 
-## Models and cost
+## النماذج والكلفة
 
-Each agent’s model comes from the first match in this order:
+يأتي نموذج كل وكيل من أول تطابق بهذا الترتيب:
 
-1. The `model` on the `agent()` call.
-2. The `model:` in the agent’s definition, which only applies when you run one of your own [subagent definitions](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) with `agentType`. The default workflow agent has none.
-3. The `CLAUDE_CODE_SUBAGENT_MODEL` environment variable.
-4. Your session’s model.
+1. `model` في استدعاء `agent()`.
+2. `model:` في تعريف الوكيل، ولا ينطبق إلا حين تشغّل أحد [تعريفات وكلائك الفرعيين](https://stevekinney.com/courses/ai-development-setup/subagent-configuration) بـ `agentType`. ووكيل سير العمل الافتراضي لا يملك أيًّا منها.
+3. متغيّر البيئة `CLAUDE_CODE_SUBAGENT_MODEL`.
+4. نموذج جلستك.
 
-Leave the first and third unset and use the default agent, and an Opus session runs *every* agent on Opus. Field reports put runs at hundreds of thousands to millions of tokens, so don’t discover that on your invoice. [Prompt Caching and Cost](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) covers what drives the number.
+اترك الأول والثالث غير مضبوطين واستخدم الوكيل الافتراضي، وستشغّل جلسة Opus *كل* وكيل على Opus. وتضع تقارير الميدان التشغيلات عند مئات الآلاف إلى ملايين الرموز، فلا تكتشف ذلك على فاتورتك. و[التخزين المؤقت للطلبات والكلفة](https://stevekinney.com/courses/ai-development-setup/caching-and-cost) يغطّي ما يدفع هذا الرقم.
 
-## What a workflow agent can and can’t do
+## ما يستطيع وكيل سير العمل فعله وما لا يستطيع
 
-A workflow agent can:
+يستطيع وكيل سير العمل:
 
-- Read, edit, and run commands with its own tools.
-- Work in its own checkout with `isolation: worktree`.
-- Message other agents, when its tools include `SendMessage`.
-- Return a schema-validated object to the script.
-- Run as one of your own agent definitions via `agentType`, so its model, tools list, and [hooks](https://stevekinney.com/courses/ai-development-setup/hooks) (scripts the harness runs at lifecycle events) all apply.
+- القراءة والتحرير وتشغيل الأوامر بأدواته الخاصة.
+- العمل في نسخة سحبه الخاصة بـ `isolation: worktree`.
+- مراسلة وكلاء آخرين، حين تتضمن أدواته `SendMessage`.
+- إرجاع كائن متحقَّق من مخطّطه إلى السكربت.
+- العمل كأحد تعريفات وكلائك عبر `agentType`، فينطبق نموذجه وقائمة أدواته و[خُطّافاته](https://stevekinney.com/courses/ai-development-setup/hooks) (سكربتات تشغّلها البيئة عند أحداث دورة الحياة) جميعًا.
 
-It can’t:
+ولا يستطيع:
 
-- See your conversation or the skills you invoked.
-- Ask you a question. The `AskUserQuestion` tool is removed from every subagent.
-- Launch another workflow. The `Workflow` tool is removed too.
-- Request arbitrary human sign-off between stages. Split those stages into separate runs.
+- رؤية محادثتك أو المهارات التي استدعيتها.
+- طرح سؤال عليك. فأداة `AskUserQuestion` مُزالة من كل وكيل فرعي.
+- إطلاق سير عمل آخر. فأداة `Workflow` مُزالة أيضًا.
+- طلب موافقة بشرية عشوائية بين المراحل. فاقسم تلك المراحل إلى تشغيلات منفصلة.
 
-The run does pause when an agent’s tool call needs permission, and eligible interactive runs can wait for usage limits to reset. Those are the [automatic pause cases](https://code.claude.com/docs/en/workflows#behavior-and-limits), and neither gives you a scripted sign-off step. Keep human decisions between stages outside the script.
+يتوقف التشغيل مؤقتًا فعلًا حين يحتاج استدعاء أداة وكيل إلى إذن، ويمكن للتشغيلات التفاعلية المؤهَّلة أن تنتظر إعادة ضبط حدود الاستهلاك. وهاتان [حالتا التوقف التلقائي](https://code.claude.com/docs/en/workflows#behavior-and-limits)، ولا تمنحك أيٌّ منهما خطوة موافقة مبرمَجة. فأبقِ القرارات البشرية بين المراحل خارج السكربت.
 
-## Failure modes
+## أنماط الفشل
 
-- **Runaway fan-out**: Nothing stops a script from queuing hundreds of agents, all on your session’s model. The concurrency cap limits how many run at once, not how many run in total.
-- **Believing an agent’s summary**: “Success” is a claim, not evidence. [Verification and Evidence](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) is the whole argument.
-- **Silently dropping partial results**: See the `.filter(Boolean)` caveat below.
-- **Resuming into duplicate side effects**: See resume’s sharp edge below.
+- **تفرّع جامح**: لا شيء يمنع سكربتًا من وضع مئات الوكلاء في الطابور، كلهم على نموذج جلستك. فسقف التزامن يحدّ من عدد العاملين في وقت واحد، لا من العدد الإجمالي.
+- **تصديق ملخّص الوكيل**: «النجاح» ادّعاء لا دليل. و[التحقّق والدليل](https://stevekinney.com/courses/ai-development-setup/verification-and-evidence) هو الحجة كلها.
+- **إسقاط النتائج الجزئية بصمت**: راجع التحذير من `.filter(Boolean)` أدناه.
+- **الاستئناف إلى آثار جانبية مكرّرة**: راجع الحدّة الكامنة في الاستئناف أدناه.
 
-### The `.filter(Boolean)` caveat
+### التحذير من `.filter(Boolean)`
 
-A stopped subagent or an unrecoverable API error produces `null`, and the pipeline keeps it in its results. Exhausting the five structured-output validation attempts throws instead, with the last validation failure. The [workflow reference](https://code.claude.com/docs/en/workflows#what-the-saved-script-looks-like) says to handle these separately: catch validation errors to record failures and keep going, and count null results before reporting success.
+وكيل فرعي متوقف أو خطأ API غير قابل للاسترداد ينتج `null`، وتبقيه الخَطّية (pipeline) في نتائجها. أما استنفاد محاولات التحقّق الخمس من المخرجات المهيكلة فيطرح استثناءً بدلًا من ذلك، مع آخر إخفاق تحقّق. ويقول [مرجع سير العمل](https://code.claude.com/docs/en/workflows#what-the-saved-script-looks-like) إن تتعامل مع هذه منفصلة: التقط أخطاء التحقّق لتسجيل الإخفاقات وواصل، وعُدّ نتائج null قبل الإبلاغ عن النجاح.
 
-Writing `.filter(Boolean)` deletes those entries, so the run looks clean. That’s fine when losing one item doesn’t change the result, like one of several independent reviewers. It’s a failure when the missing item was the one thing you needed. Count how many items the filter removed, and report it.
+كتابة `.filter(Boolean)` تحذف تلك المدخلات، فيبدو التشغيل نظيفًا. وهذا مقبول حين لا يغيّر فقدان عنصر واحد النتيجة، كأحد عدة مراجعين مستقلين. وهو فشل حين يكون العنصر المفقود الشيء الوحيد الذي احتجته. فعُدّ كم عنصرًا أزال المرشّح، وأبلغ عنه.
 
-### Resume’s sharp edge
+### الحدّة الكامنة في الاستئناف
 
-When you relaunch a stopped or edited run, everything from the first changed or failed step reruns. If those steps write to outside systems, they can write twice. Use idempotency keys (IDs that make a repeated write harmless) or move the write outside the workflow.
+حين تعيد إطلاق تشغيل متوقف أو مُحرَّر، يُعاد تنفيذ كل شيء من أول خطوة متغيّرة أو فاشلة. وإن كانت تلك الخطوات تكتب إلى أنظمة خارجية، فقد تكتب مرتين. فاستخدم مفاتيح اللاتكرار (معرّفات تجعل الكتابة المكرّرة غير ضارة) أو انقل الكتابة خارج سير العمل.
 
-You don’t type the relaunch yourself. Ask Claude, and it calls the `Workflow` tool with `{ scriptPath, resumeFromRunId }`, using the run ID from the original tool result. And check `journal.jsonl`, the file in the run’s transcript directory that records what each agent actually returned, before you trust an empty-looking result.
+ولا تكتب إعادة الإطلاق بنفسك. اطلب من Claude، فيستدعي أداة `Workflow` بـ `{ scriptPath, resumeFromRunId }`، مستخدمًا معرّف التشغيل من نتيجة الأداة الأصلية. وافحص `journal.jsonl`، وهو الملف في دليل نصّ التشغيل الذي يسجّل ما أعاده كل وكيل فعلًا، قبل أن تثق بنتيجة تبدو فارغة.
 
-## What to use when
+## متى تستخدم ماذا
 
-“Direct agent dispatch” means Claude starts subagents itself, turn by turn, with no script.
+«إرسال الوكلاء المباشر» يعني أن Claude يبدأ الوكلاء الفرعيين بنفسه، دورًا بدور، بلا سكربت.
 
-| You have | Use |
+| لديك | استخدم |
 | --- | --- |
-| Three to five independent investigations | [Subagents](https://stevekinney.com/courses/ai-development-setup/subagents) in the background |
-| Dozens to hundreds of agents, or an orchestration you’ll rerun | A workflow |
-| A known fan-out you want deterministic and resumable | A workflow |
-| A graph with no real parallelism and a plan that *may* change | Direct agent dispatch |
-| Planned human sign-off, or a stop-and-verify handshake | Direct agent dispatch |
-| A list of work you haven’t discovered yet | Scout inline first, then pipeline over what you found |
-| You want to steer each step yourself | A [skill](https://stevekinney.com/courses/ai-development-setup/skills) |
-| Five to thirty worktree pull requests | `/batch`, which fans a change out as worktree pull requests |
-| Workers that need to argue with each other | An [agent team](https://stevekinney.com/courses/ai-development-setup/agent-teams) |
+| ثلاث إلى خمس تحقيقات مستقلة | [وكلاء فرعيين](https://stevekinney.com/courses/ai-development-setup/subagents) في الخلفية |
+| عشرات إلى مئات الوكلاء، أو تنسيق ستعيد تشغيله | سير عمل |
+| تفرّع معروف تريده حتميًا وقابلًا للاستئناف | سير عمل |
+| رسم بياني بلا توازٍ حقيقي وخطة *قد* تتغيّر | إرسال الوكلاء المباشر |
+| موافقة بشرية مخطَّطة، أو مصافحة توقّف وتحقّق | إرسال الوكلاء المباشر |
+| قائمة عمل لم تكتشفها بعد | استكشف داخليًا أولًا، ثم خُطّ (pipeline) فوق ما وجدته |
+| تريد توجيه كل خطوة بنفسك | [مهارة](https://stevekinney.com/courses/ai-development-setup/skills) |
+| خمس إلى ثلاثين طلب سحب لشجرة عمل | `/batch`، الذي يفرّع تغييرًا كطلبات سحب لأشجار العمل |
+| عاملون يحتاجون إلى التجادل فيما بينهم | [فريق وكلاء](https://stevekinney.com/courses/ai-development-setup/agent-teams) |
 
-> **Codex has no script-driven equivalent**
+> **لا يملك Codex مقابلًا مدفوعًا بالسكربت**
 >
-> You can build one yourself: a script that runs `codex exec --output-schema` workers. `codex exec` is [Codex’s non-interactive mode](https://developers.openai.com/codex/noninteractive).
+> ويمكنك بناؤه بنفسك: سكربت يشغّل عاملين بـ `codex exec --output-schema`. و`codex exec` هو [الوضع غير التفاعلي في Codex](https://developers.openai.com/codex/noninteractive).
 
-Use a workflow when the parallel work is real, the plan is stable, and the gates can stay outside the script. If any of them is shaky, dispatch the agents yourself.
+استخدم سير عمل حين يكون العمل المتوازي حقيقيًا، والخطة مستقرة، ويمكن للبوابات أن تبقى خارج السكربت. وإن كان أي منها متزعزعًا، فأرسل الوكلاء بنفسك.

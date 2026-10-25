@@ -1,16 +1,16 @@
 ---
-title: "Module Resolution and Paths"
-lang: en
+title: "حلّ الوحدات ومساراتها"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/module-resolution-and-paths"
 ---
 
-Deep folder hierarchies make imports a nightmare. You know the drill: `../../../components/ui/Button` everywhere, fragile paths that break when you refactor, and import statements that look like they’re trying to escape your codebase entirely. **Module resolution** and **path aliases** solve this by letting you write clean, absolute imports like `@/components/Button` or `~/utils/helpers`—but only if you configure both TypeScript and your bundler correctly.
+تحوّل هياكل المجلدات العميقة عمليات الاستيراد إلى كابوس. أنت تعرف الطريقة تمامًا: `../../../components/ui/Button` في كل مكان، ومسارات هشّة تنكسر متى أعدتَ الهيكلة، وعبارات استيراد تبدو وكأنها تحاول الهروب من قاعدتك البرمجية كليًا. و**حلّ الوحدات** و**مسارات الاختصار** يحلّان هذه المشكلة بأن يتيحا لك كتابة استيرادات مطلقة نظيفة مثل `@/components/Button` أو `~/utils/helpers` — لكن ذلك لا يتحقّق إلا إن ضبطتَ TypeScript ومُجمِّع الملفات على نحو صحيح.
 
-Module resolution is how TypeScript (and your bundler) finds the files you’re importing. Path aliases let you create shortcuts—think of them as bookmarks for your most commonly imported directories. The trick is making sure your `tsconfig.json` paths match what your bundler expects, so your code works both in development and production.
+حلّ الوحدات هو الطريقة التي يعثر بها TypeScript (ومُجمِّع ملفاتك) على الملفات التي تستوردها. أمّا مسارات الاختصار فتتيح لك إنشاء اختصارات — فكّر فيها كأنها إشارات مرجعية للمجلدات التي تستوردها كثيرًا. أمّا الحيلة فهي التأكّد من أن مسارات `tsconfig.json` لديك تطابق ما يتوقّعه مُجمِّع الملفات، ليعمل كودك في بيئة التطوير وفي الإنتاج على حدّ سواء.
 
-## The Problem with Relative Imports
+## المشكلة مع الاستيراد النسبي
 
-Before we dive into solutions, let’s acknowledge why relative imports get messy:
+قبل أن نغوص في الحلول، لنُعترف أولًا بأن الاستيراد النسبي يصبح فوضويًا:
 
 ```typescript
 // ❌ Fragile and hard to read
@@ -22,11 +22,11 @@ import { useAuth } from '../../../hooks/useAuth';
 // What happens when you refactor the folder structure?
 ```
 
-Every time you move a file or reorganize folders, you’re hunting down relative paths. And don’t get me started on the cognitive load of counting `../` segments to figure out where you actually are in your project.
+في كل مرة تنقل فيها ملفًا أو تُعيد تنظيم المجلدات، تجد نفسك تطارد المسارات النسبية. ولا تُعطِني بداية الحديث عن الحمل المعرفي الناتج عن عدّ أجزاء `../` لتعرف أين تقف فعلًا داخل مشروعك.
 
-## Setting Up Path Aliases in TypeScript
+## ضبط مسارات الاختصار في TypeScript
 
-TypeScript’s `tsconfig.json` lets you define path mappings that create shortcuts to commonly used directories. Here’s a typical setup:
+يتيح لك ملف `tsconfig.json` في TypeScript تعريف تعيينات مسارات تنشئ اختصارات إلى المجلدات المستخدَمة كثيرًا. إليك إعدادًا نموذجيًا:
 
 ```json
 {
@@ -44,7 +44,7 @@ TypeScript’s `tsconfig.json` lets you define path mappings that create shortcu
 }
 ```
 
-Now your imports become clean and predictable:
+تصبح استيراداتك الآن نظيفة ويمكن التنبؤ بها:
 
 ```typescript
 // ✅ Clear, absolute, and refactor-safe
@@ -53,9 +53,9 @@ import { formatDate } from '@/utils/date';
 import { useAuth } from '@/hooks/useAuth';
 ```
 
-### Common Path Alias Patterns
+### أنماط مسارات الاختصار الشائعة
 
-Different teams prefer different conventions. Here are the most popular approaches:
+تفضّل كل فريق اصطلاحاته الخاصة. إليك أكثر الأساليب شيوعًا:
 
 ```json
 {
@@ -83,17 +83,17 @@ Different teams prefer different conventions. Here are the most popular approach
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Stick to one convention across your project. Mixing `@/` and `~/` prefixes will confuse your team and your future self.
+> التزم باصطلاح واحد في كل مشروع. فخلطُ بادئتَي `@/` و`~/` سيُربك فريقك ويُربك نفسك في المستقبل.
 
-## Bundler Configuration
+## ضبط مُجمِّع الملفات
 
-Here’s where things get tricky: TypeScript handles type checking, but your bundler (Vite, Webpack, etc.) handles the actual file resolution at runtime. They need to agree on what your aliases mean.
+هنا تصبح الأمور معقّدة: يتولّى TypeScript فحص الأنواع، لكن مُجمِّع الملفات (Vite وWebpack وغيرها) يتولّى حلّ الملفات فعليًا أثناء التشغيل. ولا بدّ أن يتّفق الاثنان على معنى مسارات الاختصار لديك.
 
-### Vite Configuration
+### ضبط Vite
 
-If you’re using Vite, you’ll need to configure its alias resolution:
+إذا كنت تستخدم Vite، فعليك ضبط آليّة حلّ مسارات الاختصار فيه:
 
 ```typescript
 // vite.config.ts
@@ -115,4 +115,4 @@ export default defineConfig({
 });
 ```
 
-**Alternatively**: You can use [vite-tsconfig-paths](https://npm.im/vite-tsconfig-paths) to have Vite use your `tsconfig.json` paths.
+**بدلًا من ذلك**: يمكنك استخدام [vite-tsconfig-paths](https://npm.im/vite-tsconfig-paths) لتجعل Vite يستخدم مسارات `tsconfig.json` لديك.

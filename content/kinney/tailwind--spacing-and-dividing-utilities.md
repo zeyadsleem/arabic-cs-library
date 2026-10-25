@@ -1,23 +1,23 @@
 ---
-title: "Spacing and Dividing Utilities"
-lang: en
+title: "أدوات التباعد والفصل"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/spacing-and-dividing-utilities"
 ---
 
-## Space
+## المسافة
 
-The `space-` utility adds fixed margins between child elements.
+تضيف أداة `space-` هوامش ثابتة بين العناصر التابعة.
 
-> **It’s Just a Shorthand**
+> **إنها مجرد اختصار**
 >
-> `space` adds margins to all children except the last.
+> يضيف `space` هوامش إلى كل العناصر التابعة عدا الأخير.
 
-- **Direction**: `space-x-{n}` (horizontal), `space-y-{n}` (vertical)
-- **No outer edges**: Doesn’t affect first/last element margins
+- **الاتجاه**: `space-x-{n}` (أفقي)، `space-y-{n}` (رأسي)
+- **بلا حواف خارجية**: لا تؤثر على هوامش العنصر الأول أو الأخير
 
-### Vertical Spacing
+### التباعد الرأسي
 
-*Vertical Spacing — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/7e0f2e5e6889514a9d1a2b1fa8748eab558f05c6840d7f0ebf7865a87e8fcbc3.html)*
+*التباعد الرأسي — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/7e0f2e5e6889514a9d1a2b1fa8748eab558f05c6840d7f0ebf7865a87e8fcbc3.html)*
 
 ```html
 <div class="space-y-4 bg-sky-100 px-4">
@@ -28,9 +28,9 @@ The `space-` utility adds fixed margins between child elements.
 </div>
 ```
 
-### Horizontal Spacing
+### التباعد الأفقي
 
-*Horizontal Spacing — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/a94c30cee9d37fbb10d7bc364d9c499482f9a53727a290c017e62fffaef2821b.html)*
+*التباعد الأفقي — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/a94c30cee9d37fbb10d7bc364d9c499482f9a53727a290c017e62fffaef2821b.html)*
 
 ```html
 <div class="space-x-8">
@@ -46,7 +46,7 @@ The `space-` utility adds fixed margins between child elements.
 </div>
 ```
 
-This is what it *really* does under the hood:
+هذا ما تفعله *حقًا* تحت الغطاء:
 
 ```css
 .space-y-4 > * + * {
@@ -54,20 +54,20 @@ This is what it *really* does under the hood:
 }
 ```
 
-- **Use for:** Lists, row and column layouts with equal spacing.
-- **Limitations:** Fixed spacing only, no outer margins.
+- **استخدمها من أجل:** القوائم وتخطيطات الصفوف والأعمدة ذات التباعد المتساوي.
+- **القيود:** تباعد ثابت فقط، بلا هوامش خارجية.
 
-> **Why not just use flexbox?**
+> **لماذا لا تستخدم flexbox ببساطة؟**
 >
-> `space-y-*` maintains normal document flow while flexbox creates a flex formatting context. With Flexbox, everything becomes a flex item, which can affect how text flows, how lists behave, etc.
+> يحافظ `space-y-*` على تدفق المستند الطبيعي بينما ينشئ flexbox سياق تنسيق مرنًا. مع Flexbox يصبح كل شيء عنصرًا مرنًا، ما قد يؤثر على كيفية تدفق النص وسلوك القوائم وغير ذلك.
 >
-> But, honestly, it probably doesn’t matter.
+> لكن بصراحة، على الأرجح أن الأمر لا يهم.
 
-## Divide
+## الفصل
 
-The `divide` utility adds borders between child elements as separators.
+تضيف أداة `divide` حدودًا بين العناصر التابعة بوصفها فواصل.
 
-*Divide — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/acd410a0819dd82c39fd2cad8281f39da157d6fbdf047047eae9412509b0b77c.html)*
+*الفصل — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/acd410a0819dd82c39fd2cad8281f39da157d6fbdf047047eae9412509b0b77c.html)*
 
 ```html
 <div class="divide-y-4 bg-sky-100 px-4">
@@ -78,9 +78,9 @@ The `divide` utility adds borders between child elements as separators.
 </div>
 ```
 
-Customize thickness and color:
+خصّص السماكة واللون:
 
-*Divide — Example 4 — [Open example](https://stevekinney.com/generated/playgrounds/c73cc306f1ab150e0a9911ce9888b1ad77fb29e430c7fb374559441939bbed8b.html)*
+*الفصل — المثال 4 — [افتح المثال](https://stevekinney.com/generated/playgrounds/c73cc306f1ab150e0a9911ce9888b1ad77fb29e430c7fb374559441939bbed8b.html)*
 
 ```html
 <div class="divide-y-4 divide-cyan-400 bg-sky-100 px-4">
@@ -91,24 +91,24 @@ Customize thickness and color:
 </div>
 ```
 
-## Compare and Contrast
+## المقارنة والتباين
 
-### Both Space *and* Divide
+### كل من space *و* divide
 
-- Manage spacing between children
-- Support responsive variants
-- Have `-x` and `-y` directions
-- Customizable via `@theme`
+- تدير التباعد بين العناصر التابعة
+- تدعم المتغيّرات المتجاوبة
+- تمتلك اتجاهي `-x` و`-y`
+- قابلة للتخصيص عبر `@theme`
 
-### Space
+### space
 
-- Adds **margins** between elements
-- Affects all children (including first/last)
-- Example: `space-x-4`
+- تضيف **هوامش** بين العناصر
+- تؤثر على كل العناصر التابعة (بما فيها الأول والأخير)
+- مثال: `space-x-4`
 
-### Divide
+### divide
 
-- Adds **borders** as dividers
-- Skips first/last edges automatically
-- Customizable color and style
-- Example: `divide-x-2 divide-gray-300`
+- تضيف **حدودًا** بوصفها فواصل
+- تتخطى الحافتين الأولى والأخيرة تلقائيًا
+- لونها ونمطها قابلان للتخصيص
+- مثال: `divide-x-2 divide-gray-300`

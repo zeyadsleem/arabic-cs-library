@@ -1,14 +1,14 @@
 ---
-title: "Advanced Image Optimization Techniques"
-lang: en
+title: "تقنيات تحسين الصور المتقدمة"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/image-optimization-advanced"
 ---
 
-Advanced image optimization goes beyond basic responsive images and lazy loading. This guide covers CDN integration, build-time optimization, performance monitoring, and automated optimization pipelines that ensure your images perform optimally at scale in production environments.
+يتجاوز تحسين الصور المتقدّم الصور المتجاوبة الأساسية والتحميل الكسول. يغطي هذا الدليل التكامل مع CDN، والتحسين وقت البناء، ومراقبة الأداء، وخطوط التحسين المؤتمتة التي تضمن أداء صورك على النحو الأمثل عند التوسّع في بيئات الإنتاج.
 
-## CDN Integration and Optimization
+## التكامل مع CDN وتحسينه
 
-### CDN Configuration Helper
+### مساعد تهيئة CDN
 
 ```typescript
 // utils/cdn.ts
@@ -177,7 +177,7 @@ function useCDNImage() {
 }
 ```
 
-### Smart CDN Caching Strategy
+### استراتيجية تخزين مؤقت ذكية في CDN
 
 ```typescript
 // CDN cache optimization
@@ -249,9 +249,9 @@ export default {
 };
 ```
 
-## Image Loading Performance Patterns
+## أنماط أداء تحميل الصور
 
-### Priority Loading Strategy
+### استراتيجية التحميل حسب الأولوية
 
 ```typescript
 // Priority-based image loading
@@ -341,7 +341,7 @@ function usePriorityImageLoading() {
 }
 ```
 
-### Adaptive Loading Based on Network
+### التحميل التكيّفي بناءً على الشبكة
 
 ```typescript
 // Network-aware image loading
@@ -406,9 +406,9 @@ function useNetworkAwareImages() {
 }
 ```
 
-## Build-Time Image Optimization
+## تحسين الصور وقت البناء
 
-### Webpack Image Optimization
+### تحسين الصور في Webpack
 
 ```typescript
 // webpack.config.js
@@ -471,7 +471,7 @@ module.exports = {
 };
 ```
 
-### Next.js Image Component Configuration
+### تهيئة مكوّن الصور في Next.js
 
 ```typescript
 // next.config.js
@@ -532,7 +532,7 @@ export function OptimizedImage({
 }
 ```
 
-## Performance Monitoring and Metrics
+## مراقبة الأداء والمقاييس
 
 ```typescript
 // Image performance monitoring

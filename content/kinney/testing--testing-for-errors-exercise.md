@@ -1,18 +1,18 @@
 ---
-title: "Testing Division By Zero in JavaScript"
-lang: en
+title: "اختبار القسمة على صفر في JavaScript"
+lang: ar
 source: "https://stevekinney.com/courses/testing/testing-for-errors-exercise"
 ---
 
-Math has some rules. For example, you’re not allowed to divide by zero. JavaScript gets especially weird about this. `5 / 0` equals `Infinity`. We don’t want that. The purpose of our utility library is to protect us from some of the oddities that might come up.
+للرياضيات قواعد. منها، مثلًا، أنه لا يُسمح لك بالقسمة على صفر. وJavaScript تصبح غريبة بشكل خاص في هذا الأمر. `5 / 0` تساوي `Infinity`. لا نريد ذلك. الغرض من مكتبة الأدوات المساعدة لدينا هو حمايتنا من بعض غرائب الأمور التي قد تظهر.
 
-Instead of giving us stuff like `Infinity` or `NaN`, we *want* our library to throw an error. And, if we want our code to do something, then we should probably test that it does what we want it to do, right?
+بدلًا من أن تعطينا أشياء مثل `Infinity` أو `NaN`، *نريد* أن ترمي مكتبتنا خطأً. وإن كنا نريد لشيفرتنا أن تفعل شيئًا، فمن المفترض أن نختبر أنها تفعل ما نريده، أليس كذلك؟
 
-The question then is: **How do we test to make sure that our code blows up in certain situations**?
+السؤال إذن: **كيف نختبر للتأكد من أن شيفرتنا تنفجر في مواقف معيّنة**؟
 
-## Step 1: Write the Test (Red)
+## الخطوة 1: اكتب الاختبار (الأحمر)
 
-Add a test for division by zero in `calculator.test.js`:
+أضف اختبارًا للقسمة على صفر في `calculator.test.js`:
 
 ```javascript
 // src/calculator.test.js
@@ -25,19 +25,19 @@ describe('divide', () => {
 });
 ```
 
-## Step 2: Run the Test and See It Fail
+## الخطوة 2: شغّل الاختبار وشاهده يفشل
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-The test fails because an error is not thrown.
+يفشل الاختبار لأن الخطأ لا يُرمى.
 
-## Step 3: Write Minimal Code to Pass the Test (Green)
+## الخطوة 3: اكتب أقل شيفرة تجعل الاختبار ينجح (الأخضر)
 
-Modify the `divide` function in `calculator.js`:
+عدّل دالة `divide` في `calculator.js`:
 
 ```javascript
 // src/calculator.js
@@ -49,38 +49,38 @@ export function divide(a, b) {
 }
 ```
 
-## Step 4: Run the Test Again
+## الخطوة 4: شغّل الاختبار مرة أخرى
 
-Run the test:
+شغّل الاختبار:
 
 ```bash
 npm test
 ```
 
-All tests, including the division by zero test, should pass.
+ينبغي أن تنجح كل الاختبارات، بما فيها اختبار القسمة على صفر.
 
-## Exercise
+## تمرين
 
-Write some tests for the following other oddities. See how many of these you can add to your test suite.
+اكتب بعض الاختبارات للغرائب الأخرى التالية. جرّب كم واحدًا منها تستطيع إضافته إلى مجموعة اختباراتك.
 
-### `+` Vs `-` with Strings and Numbers
+### `+` مقابل `-` مع النصوص والأعداد
 
-The `+` operator concatenates strings, but `-` only works for subtraction with numbers. So you get different results:
+عامل `+` يدمج النصوص، لكن `-` يعمل فقط للطرح مع الأعداد. لذا تحصل على نتائج مختلفة:
 
 ```javascript
 console.log(5 + '5'); // "55" (string concatenation)
 console.log(5 - '5'); // 0 (subtraction)
 ```
 
-**Your choice**: Either write a test that makes sure that the values of both `a` and `b` are numbers *or* write some tests that verify that the strings were converted to a number. If converting an argument to a string results in `NaN`, then throw an error.
+**خيارك**: إما أن تكتب اختبارًا يضمن أن قيمتي `a` و`b` كلتيهما أعداد *أو* أن تكتب بعض الاختبارات التي تتحقق من تحويل النصوص إلى عدد. إن أسفر تحويل وسيط ما إلى نص عن `NaN`، فارمِ خطأً.
 
-For example:
+على سبيل المثال:
 
-- `add(5, '5')`: Either write a test that throws an error or one that verifies that `add` returns `10`.
-- But, no matter what, `add(5, 'hotdog')` should probably throw an error.
-- Do the same for subtraction, multiplication, and division.
-- For division, you want to make sure that dividing by the string `'0'` also throws an error.
+- `add(5, '5')`: إما أن تكتب اختبارًا يرمي خطأً أو واحدًا يتحقق من أن `add` تعيد `10`.
+- لكن، مهما كان الأمر، فمن المفترض أن `add(5, 'hotdog')` ترمي خطأً.
+- افعل الشيء نفسه للطرح والضرب والقسمة.
+- بالنسبة للقسمة، تريد أن تتأكد من أن القسمة على النص `'0'` ترمي خطأً أيضًا.
 
-### Missing Arguments Are Undefined
+### الوسائط المفقودة تكون `undefined`
 
-We’re not using TypeScript right now. It’s not totally off the table that someone might call `add(5)`. What should happen in this case? Should it default `b` to `0`? Should it throw an error? Either way, it should probably throw an error in the case of `divide`. Write some tests to make sure this is the case.
+لسنا نستخدم TypeScript الآن. ليس مستبعدًا تمامًا أن ينادي أحدهم `add(5)`. ماذا ينبغي أن يحدث في هذه الحالة؟ هل ينبغي أن تجعل `b` تساوي `0` افتراضيًا؟ هل ينبغي أن ترمي خطأً؟ في كلتا الحالتين، من المفترض أن ترمي خطأً في حالة `divide`. اكتب بعض الاختبارات للتأكد من أن الأمر كذلك.

@@ -1,157 +1,157 @@
 ---
-title: "Exercise: Add a CloudFront Function"
-lang: en
+title: "تمرين: إضافة دالة CloudFront"
+lang: ar
 source: "https://stevekinney.com/courses/aws/cloudfront-function-exercise"
 ---
 
-You’re going to write and deploy two CloudFront Functions: one that adds security headers to every response and one that redirects a legacy URL to a new path. By the end of this exercise, your CloudFront distribution will enforce security headers on all responses and automatically redirect `/old-path` to `/new-path`—without touching your origin or your application code.
+ستكتب وتنشر دالتَي CloudFront: واحدة تضيف رؤوس أمان إلى كل استجابة، وأخرى تعيد توجيه عنوان URL قديم إلى مسار جديد. بنهاية هذا التمرين، سيفرض توزيع CloudFront لديك رؤوس الأمان على جميع الاستجابات ويعيد توجيه `/old-path` تلقائيًا إلى `/new-path`—دون لمس أصلك أو كود تطبيقك.
 
-## Why It Matters
+## لماذا يهمّ هذا
 
-On Vercel or Netlify, you configure security headers in a `vercel.json` or `_headers` file. On AWS, you can use a CloudFront response headers policy (which you set up in [CloudFront Headers, CORS, and Security](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security)), but that approach is static configuration. A CloudFront Function gives you **programmable** control over headers—you can add headers conditionally, vary them by path, or include dynamic values. And for redirects, a CloudFront Function replaces what would otherwise be a redirect rule baked into your application code.
+على Vercel أو Netlify، تهيّئ رؤوس الأمان في ملف `vercel.json` أو `_headers`. على AWS، يمكنك استخدام سياسة رؤوس استجابة CloudFront (التي تعدها في [رؤوس CloudFront وCORS والأمان](https://stevekinney.com/courses/aws/cloudfront-headers-cors-and-security))، لكن ذلك النهج إعداد ثابت. أما دالة CloudFront فتمنحك تحكمًا **برمجيًا** في الرؤوس—يمكنك إضافة رؤوس شرطيًا، أو تنويعها حسب المسار، أو تضمين قيم ديناميكية. ولإعادة التوجيه، تحل دالة CloudFront محل قاعدة إعادة توجيه كانت ستُثبَّت في كود تطبيقك.
 
-> **Tip**
+> **نصيحة**
 >
-> If you want AWS’s version of the runtime limits and deployment flow open while you work, keep the [CloudFront Functions guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) nearby.
+> إذا أردت نسخة AWS من حدود وقت التشغيل وتدفق النشر مفتوحة أثناء عملك، فأبقِ [دليل دوال CloudFront](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-functions.html) قريبًا منك.
 
-This exercise reinforces the CloudFront Functions workflow: write the function, test it, publish it, associate it with a behavior. Once you’ve got this workflow down, you can adapt it for any of the use cases in [Edge Function Use Cases](https://stevekinney.com/courses/aws/edge-function-use-cases).
+يعزّز هذا التمرين سير عمل دوال CloudFront: اكتب الدالة، واختبرها، وانشرها، واربطها بسلوك. وبمجرد أن تتقن هذا السير، يمكنك تكييفه مع أي من حالات الاستخدام في [حالات استخدام دوال الحافة](https://stevekinney.com/courses/aws/edge-function-use-cases).
 
-## Your Task
+## مهمتك
 
-Build and deploy two CloudFront Functions:
+ابنِ وانشر دالتَي CloudFront:
 
-1. **`security-headers`**—A viewer response function that adds security headers to every response from your distribution.
-2. **`legacy-redirect`**—A viewer request function that redirects requests for `/old-path` to `/new-path` with a 301 status code.
+1. **`security-headers`**—دالة استجابة مشاهد تضيف رؤوس أمان إلى كل استجابة من توزيعك.
+2. **`legacy-redirect`**—دالة طلب مشاهد تعيد توجيه الطلبات إلى `/old-path` نحو `/new-path` برمز حالة 301.
 
-Use the distribution `E1A2B3C4D5E6F7`, account `123456789012`, and region `us-east-1`.
+استخدم التوزيع `E1A2B3C4D5E6F7`، والحساب `123456789012`، والمنطقة `us-east-1`.
 
-## Write the Security Headers Function
+## اكتب دالة رؤوس الأمان
 
-Write a CloudFront Function that adds these headers to every response:
+اكتب دالة CloudFront تضيف هذه الرؤوس إلى كل استجابة:
 
 - `Strict-Transport-Security`: `max-age=63072000; includeSubDomains; preload`
 - `X-Content-Type-Options`: `nosniff`
 - `X-Frame-Options`: `DENY`
 - `Referrer-Policy`: `strict-origin-when-cross-origin`
 
-The function should:
+ينبغي أن تكون الدالة:
 
-- Be named `security-headers`
-- Use the `cloudfront-js-2.0` runtime
-- Trigger on `viewer-response` events
-- Preserve any existing response headers (don’t overwrite the entire headers object)
+- باسم `security-headers`
+- تستخدم بيئة التشغيل `cloudfront-js-2.0`
+- تُفعَّل عند أحداث `viewer-response`
+- تحافظ على أي رؤوس استجابة موجودة (لا تستبدل كائن الرؤوس بأكمله)
 
-### Checkpoint
+### نقطة تحقّق
 
-You have a JavaScript function that takes an event, adds four headers to `event.response.headers`, and returns the response.
+لديك دالة JavaScript تأخذ حدثًا، وتضيف أربعة رؤوس إلى `event.response.headers`، وتعيد الاستجابة.
 
-## Create and Test the Security Headers Function
+## أنشئ دالة رؤوس الأمان واختبرنها
 
-Use the AWS CLI to create the function with `aws cloudfront create-function`. Save the `ETag` from the response.
+استخدم AWS CLI لإنشاء الدالة بـ `aws cloudfront create-function`. احفظ `ETag` من الاستجابة.
 
-Test the function with a sample viewer response event. The test event should include a basic response object with `statusCode: 200` and at least one existing header (like `content-type`).
+اختبر الدالة بحدث استجابة مشاهد تجريبي. ينبغي أن يتضمن الحدث التجريبي كائن استجابة أساسيًا فيه `statusCode: 200` ورأس موجود واحد على الأقل (مثل `content-type`).
 
-Verify that:
+تحقق من أن:
 
-- The function executes without errors
-- The four security headers appear in the output response
-- The original `content-type` header is preserved
+- الدالة تُنفَّذ دون أخطاء
+- تظهر رؤوس الأمان الأربعة في استجابة المخرجات
+- يُحافَظ على رأس `content-type` الأصلي
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws cloudfront test-function` returns a successful result with all four security headers in the response and the original headers intact.
+يعيد `aws cloudfront test-function` نتيجة ناجحة مع رؤوس الأمان الأربعة كلها في الاستجابة والرؤوس الأصلية سليمة.
 
-## Write the Legacy Redirect Function
+## اكتب دالة إعادة التوجيه القديمة
 
-Write a CloudFront Function that:
+اكتب دالة CloudFront تقوم بما يلي:
 
-- Checks if the request URI is `/old-path`
-- If it matches, returns a 301 redirect response with the `Location` header set to `/new-path`
-- If it doesn’t match, passes the request through unchanged
+- تتحقق مما إذا كان URI الطلب هو `/old-path`
+- إذا طابق، تعيد استجابة إعادة توجيه 301 مع ضبط رأس `Location` على `/new-path`
+- إذا لم يطابق، تمرّر الطلب دون تغيير
 
-The function should:
+ينبغي أن تكون الدالة:
 
-- Be named `legacy-redirect`
-- Use the `cloudfront-js-2.0` runtime
-- Trigger on `viewer-request` events
+- باسم `legacy-redirect`
+- تستخدم بيئة التشغيل `cloudfront-js-2.0`
+- تُفعَّل عند أحداث `viewer-request`
 
-### Checkpoint
+### نقطة تحقّق
 
-You have a JavaScript function that returns a 301 response for `/old-path` and returns the unmodified request for all other paths.
+لديك دالة JavaScript تعيد استجابة 301 لـ `/old-path` وتعيد الطلب غير المعدّل لجميع المسارات الأخرى.
 
-## Create and Test the Legacy Redirect Function
+## أنشئ دالة إعادة التوجيه القديمة واختبرنها
 
-Create the function using the CLI and test it with two different events:
+أنشئ الدالة باستخدام CLI واختبرها بحدثين مختلفين:
 
-1. A request to `/old-path`—should return a 301 response with `Location: /new-path`
-2. A request to `/about`—should return the request unchanged (pass-through)
+1. طلب إلى `/old-path`—ينبغي أن يعيد استجابة 301 مع `Location: /new-path`
+2. طلب إلى `/about`—ينبغي أن يعيد الطلب دون تغيير (تمرير)
 
-### Checkpoint
+### نقطة تحقّق
 
-Both test cases produce the expected output: a redirect for `/old-path` and a pass-through for `/about`.
+تنتج حالتا الاختبار المخرجات المتوقعة: إعادة توجيه لـ `/old-path` وتمرير لـ `/about`.
 
-## Publish Both Functions
+## انشر الدالتين
 
-Publish both functions from `DEVELOPMENT` to `LIVE` using `aws cloudfront publish-function`. Remember that each publish requires the current `ETag`.
+انشر الدالتين من `DEVELOPMENT` إلى `LIVE` باستخدام `aws cloudfront publish-function`. تذكّر أن كل عملية نشر تتطلب `ETag` الحالي.
 
-### Checkpoint
+### نقطة تحقّق
 
-Both functions are in the `LIVE` stage. You can verify with `aws cloudfront describe-function --name security-headers --stage LIVE --region us-east-1 --output json`.
+الدالتان في مرحلة `LIVE`. يمكنك التحقق بـ `aws cloudfront describe-function --name security-headers --stage LIVE --region us-east-1 --output json`.
 
-## Associate Both Functions with Your Distribution
+## اربط الدالتين بتوزيعك
 
-Retrieve your distribution configuration and update the default cache behavior to include both function associations:
+استرجع تهيئة توزيعك وحدّث سلوك التخزين المؤقت الافتراضي ليتضمن ارتباطَي الدالتين:
 
-- `legacy-redirect` on the `viewer-request` event
-- `security-headers` on the `viewer-response` event
+- `legacy-redirect` على حدث `viewer-request`
+- `security-headers` على حدث `viewer-response`
 
-Remember: a single behavior can have **one** function per event type. You’re attaching two different functions to two different events on the same behavior.
+تذكّر: يمكن أن يكون للسلوك الواحد **دالة واحدة** لكل نوع حدث. أنت تربط دالتين مختلفتين بحدثين مختلفين على السلوك نفسه.
 
-After updating, wait for the distribution status to change from `InProgress` to `Deployed`.
+بعد التحديث، انتظر حتى تتغير حالة التوزيع من `InProgress` إلى `Deployed`.
 
-### Checkpoint
+### نقطة تحقّق
 
-`aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --region us-east-1 --output json` shows both function associations in the default cache behavior.
+يعرض `aws cloudfront get-distribution-config --id E1A2B3C4D5E6F7 --region us-east-1 --output json` ارتباطَي الدالتين في سلوك التخزين المؤقت الافتراضي.
 
-## Verify in Production
+## تحقق في الإنتاج
 
-Test the security headers by making a request to your distribution and inspecting the response headers:
+اختبر رؤوس الأمان بإرسال طلب إلى توزيعك وفحص رؤوس الاستجابة:
 
 ```bash
 curl -I https://d111111abcdef8.cloudfront.net/
 ```
 
-Test the redirect:
+اختبر إعادة التوجيه:
 
 ```bash
 curl -I https://d111111abcdef8.cloudfront.net/old-path
 ```
 
-### Checkpoint
+### نقطة تحقّق
 
-- The security headers response includes `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy`
-- The `/old-path` request returns a `301 Moved Permanently` with `Location: /new-path`
+- تتضمن استجابة رؤوس الأمان `Strict-Transport-Security` و`X-Content-Type-Options` و`X-Frame-Options` و`Referrer-Policy`
+- يعيد طلب `/old-path` استجابة `301 Moved Permanently` مع `Location: /new-path`
 
-## Checkpoints Summary
+## ملخّص نقاط التحقّق
 
-- `security-headers` function adds four headers to viewer responses
-- `legacy-redirect` function returns a 301 for `/old-path` and passes through other requests
-- Both functions pass `test-function` with expected output
-- Both functions are published to `LIVE`
-- Both functions are associated with the default behavior on distribution `E1A2B3C4D5E6F7`
-- `curl -I` confirms security headers in the response
-- `curl -I /old-path` confirms the 301 redirect
+- دالة `security-headers` تضيف أربعة رؤوس إلى استجابات المشاهد
+- دالة `legacy-redirect` تعيد 301 لـ `/old-path` وتمرّر الطلبات الأخرى
+- كلتا الدالتين تنجحان في `test-function` بالمخرجات المتوقعة
+- كلتا الدالتين منشورتان إلى `LIVE`
+- كلتا الدالتين مرتبطتان بالسلوك الافتراضي على التوزيع `E1A2B3C4D5E6F7`
+- يؤكد `curl -I` وجود رؤوس الأمان في الاستجابة
+- يؤكد `curl -I /old-path` إعادة التوجيه 301
 
-## Failure Diagnosis
+## تشخيص الأعطال
 
-- **The function tests pass but production behavior never changes:** CloudFront Functions do not affect traffic until you publish them to `LIVE` and the distribution finishes deploying the new association.
-- **The redirect works but the headers are missing:** The functions are attached to the wrong event types. Redirect logic belongs on `viewer-request`; header mutation belongs on `viewer-response`.
-- **Every path redirects instead of just `/old-path`:** Your condition is too broad. Re-test the request URI comparison before republishing.
+- **اختبارات الدالة تنجح لكن سلوك الإنتاج لا يتغيّر أبدًا:** لا تؤثر دوال CloudFront في المرور حتى تنشرها إلى `LIVE` وينتهي التوزيع من نشر الارتباط الجديد.
+- **إعادة التوجيه تعمل لكن الرؤوس مفقودة:** الدالتان مرتبطتان بأنواع أحداث خاطئة. منطق إعادة التوجيه ينتمي إلى `viewer-request`، وتعديل الرؤوس ينتمي إلى `viewer-response`.
+- **كل المسارات تُعاد توجيهها بدلًا من `/old-path` فقط:** شرطك واسع جدًا. أعد اختبار مقارنة URI الطلب قبل إعادة النشر.
 
-## Stretch Goals
+## أهداف إضافية
 
-- **Add a `Content-Security-Policy` header.** Extend the security headers function with a CSP directive. Start with `default-src 'self'` and adjust based on what your site actually loads.
-- **Redirect multiple paths.** Extend the redirect function to handle a map of old-to-new paths instead of a single hardcoded path. Keep the function under 10 KB.
-- **Combine both functions into one.** You can’t have two CloudFront Functions on the same event type for one behavior. But can you handle both security headers (viewer response) and redirects (viewer request) with a single function if they’re on different events? Hint: you can’t—they require different event types. But it’s worth thinking about to understand the constraint.
+- **أضف رأس `Content-Security-Policy`.** وسّع دالة رؤوس الأمان بتوجيه CSP. ابدأ بـ `default-src 'self'` وعدّل بناءً على ما يحمّله موقعك فعليًا.
+- **أعد توجيه مسارات متعددة.** وسّع دالة إعادة التوجيه لتعالج خريطة من المسارات القديمة إلى الجديدة بدلًا من مسار واحد مثبّت في الكود. أبقِ الدالة أقل من 10 KB.
+- **ادمج الدالتين في واحدة.** لا يمكنك أن تملك دالتَي CloudFront على نوع الحدث نفسه لسلوك واحد. لكن هل يمكنك معالجة رؤوس الأمان (استجابة المشاهد) وإعادة التوجيه (طلب المشاهد) بدالة واحدة إذا كانتا على حدثين مختلفين؟ تلميح: لا يمكنك—فهما تتطلبان نوعي حدث مختلفين. لكن الأمر يستحق التفكير لفهم القيد.
 
-When you’re ready, check your work against the [Solution: Add a CloudFront Function to Your Distribution](https://stevekinney.com/courses/aws/cloudfront-function-solution).
+عندما تكون مستعدًا، راجع عملك مقابل [الحل: إضافة دالة CloudFront إلى توزيعك](https://stevekinney.com/courses/aws/cloudfront-function-solution).

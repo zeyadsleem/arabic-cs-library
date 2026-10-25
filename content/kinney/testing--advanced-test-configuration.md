@@ -1,18 +1,18 @@
 ---
-title: "Advanced Test Configuration With Vitest"
-lang: en
+title: "إعداد اختبارات متقدم باستخدام Vitest"
+lang: ar
 source: "https://stevekinney.com/courses/testing/advanced-test-configuration"
 ---
 
-## Customizing the `vitest.config.ts`
+## تخصيص `vitest.config.ts`
 
-Vitest is pretty awesome right out of the box, but sometimes you need to customize things to fit your project. This brings us to the `vitest.config.ts` file.
+Vitest رائع جدًا خارج الصندوق، لكنك تحتاج أحيانًا إلى تخصيص الأشياء لتلائم مشروعك. وهذا يقودنا إلى ملف `vitest.config.ts`.
 
-> **This is Mostly Vite-Related Content**
+> **هذا محتوى متعلق بـ Vite في معظمه**
 >
-> Most of what we’re covering here related to Vite—and thereby Vitest. Our friends at [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney) have [a whole course on Vite](https://frontendmasters.com/courses/vite/?utm_source=kinney&utm_medium=social&code=kinney) that is taught by a *very* dapper instructor.
+> معظم ما نغطيه هنا يتعلق بـ Vite — وبالتالي بـ Vitest. لدى أصدقائنا في [Frontend Masters](https://frontendmasters.com/?utm_source=kinney&utm_medium=social&code=kinney) [دورة كاملة عن Vite](https://frontendmasters.com/courses/vite/?utm_source=kinney&utm_medium=social&code=kinney) يدرّسها مدرّب *بالغ الأناقة*.
 
-Here’s a basic one as a refresher:
+إليك إعدادًا أساسيًا للتذكير:
 
 ```typescript
 // vitest.config.ts
@@ -29,17 +29,17 @@ export default defineConfig({
 });
 ```
 
-This gives you a decent setup—global variables available across all tests, using `jsdom` —but Vitest’s true power shines through when you start to flex this configuration.
+يمنحك هذا إعدادًا معقولًا — متغيرات عامة متاحة عبر كل الاختبارات، باستخدام `jsdom` — لكن قوة Vitest الحقيقية تظهر عندما تبدأ في ثني هذا الإعداد.
 
-### Setting up Test Aliases
+### إعداد أسماء مستعارة للمسارات
 
-Let’s knock out something simple but powerful: **path aliases**. If you’re deep into a project, your imports are probably starting to look like a tangled mess of relative paths.
+لننجز شيئًا بسيطًا لكنه قوي: **الأسماء المستعارة للمسارات**. إن كنت غارقًا في مشروع كبير، فمن المحتمل أن استيراداتك بدأت تبدو فوضى متشابكة من المسارات النسبية.
 
 ```typescript
 import MyComponent from '../../../../../component/MyComponent';
 ```
 
-*Yikes*, right? Time to leverage Vitest’s configurability. You can set up path aliases to tidy things up.
+*يا للهول*، أليس كذلك؟ حان وقت الاستفادة من قابلية ضبط Vitest. يمكنك إعداد أسماء مستعارة للمسارات لترتيب الأمور.
 
 ```typescript
 // vitest.config.ts
@@ -56,17 +56,17 @@ export default defineConfig({
 });
 ```
 
-Now in your tests, it’s much cleaner:
+الآن في اختباراتك، الأمر أنظف بكثير:
 
 ```typescript
 import MyComponent from '@components/MyComponent'; // Phew.
 ```
 
-Neat and readable. Plus, we’re already one step closer to a maintainable codebase.
+أنيق ومقروء. وإضافةً إلى ذلك، صرنا أقرب بخطوة إلى قاعدة شيفرة قابلة للصيانة.
 
-### Handling ESM and CommonJS Together
+### التعامل مع ESM وCommonJS معًا
 
-Ah yes, the modern mess of JavaScript modules. You’re probably encountering both in your project, and it can get nasty when you try to test them. Sometimes, you need to treat CommonJS and ESM *differently*. No problem—Vitest’s got you covered.
+آه، فوضى وحدات JavaScript الحديثة. من المحتمل أنك تصادف كليهما في مشروعك، وقد يصبح الأمر سيئًا عندما تحاول اختبارهما. تحتاج أحيانًا إلى معالجة CommonJS وESM *بشكل مختلف*. لا مشكلة — Vitest يغطيك.
 
 ```typescript
 export default defineConfig({
@@ -78,11 +78,11 @@ export default defineConfig({
 });
 ```
 
-This little addition can save you headaches when testing packages that work with `require()` while your code lives in the glorious land of `import`.
+قد يوفر عليك هذه الإضافة الصغيرة صداعًا عند اختبار حزم تعمل بـ `require()` بينما تعيش شيفرتك في أرض `import` المجيدة.
 
-### Isolating Test Environments
+### عزل بيئات الاختبار
 
-Here’s a quick scenario. Let’s say you’re testing a Node application. You’re using actual **file reads**, and it is *slow*. But you know about mocking, right? But wait! Before you even get into mocking (which is another can of worms), Vitest lets you run each test file in complete **isolation**—sort of like a mini-reset between each run.
+إليك سيناريو سريع. لنفترض أنك تختبر تطبيق Node. أنت تستخدم **قراءات ملفات** فعلية، وهي *بطيئة*. لكنك تعرف المحاكاة، أليس كذلك؟ لكن انتظر! قبل أن تدخل في المحاكاة (وهي قصة أخرى)، يتيح لك Vitest تشغيل كل ملف اختبار في **عزل** تام — أشبه بإعادة ضبط صغيرة بين كل تشغيل.
 
 ```typescript
 // vitest.config.ts
@@ -93,13 +93,13 @@ export default defineConfig({
 });
 ```
 
-This turns each test file into its own bubble. That means if you’re changing `global variables`, messing with servers, or tweaking API states, Vitest will restore the peace and clean up the neighborhood automatically after each file.
+يحوّل هذا كل ملف اختبار إلى فقاعة خاصة به. يعني ذلك أنك إن كنت تغيّر `global variables`، أو تعبث بالخوادم، أو تعدّل حالات API، فسيستعيد Vitest الهدوء وينظّف الحي تلقائيًا بعد كل ملف.
 
-## Test Timeouts and Reruns
+## مهل الاختبار وإعادة التشغيل
 
-So, what happens when one of your tests drags on, like… for-ev-er. Maybe it depends on network latency or takes a second to spin up resources. You don’t want your test suite hanging just because one test feels a little lazy, right? Vitest lets you set **global timeouts**, but you can configure them on a *test-by-test* basis too. Get ready to save precious minutes of your life:
+إذن، ماذا يحدث عندما يستمر أحد اختباراتك، مثلًا… إلى الأبد. ربما يعتمد على زمن استجابة الشبكة أو يستغرق ثانية لإطلاق الموارد. لا تريد أن تتعطل مجموعة اختباراتك لأن اختبارًا واحدًا يشعر بالكسل، أليس كذلك؟ يتيح لك Vitest ضبط **مهل عامة**، ويمكنك أيضًا ضبطها على أساس *اختبار باختبار*. استعد لتوفير دقائق ثمينة من حياتك:
 
-### Global Timeouts
+### المهل العامة
 
 ```typescript
 export default defineConfig({
@@ -109,11 +109,11 @@ export default defineConfig({
 });
 ```
 
-That’s right, 5000 milliseconds. More than enough time for most tests. If anything runs longer than that, Vitest will scream at you, and maybe it’s time to investigate **why**.
+هذا صحيح، 5000 مللي ثانية. وقت أكثر من كافٍ لمعظم الاختبارات. إن استغرق أي شيء وقتًا أطول، سيصرخ Vitest في وجهك، وربما حان الوقت للتحقيق في **السبب**.
 
-### Test Rerun: Flaky Test Insurance
+### إعادة تشغيل الاختبار: تأمين ضد الاختبارات المتقلبة
 
-That occasional test that just decides it wants some attention by failing randomly? (Yeah, we *all* have that *one* test.) Let’s tell Vitest to rerun it automatically a few times before calling it a failure:
+ذلك الاختبار العارض الذي يقرر فجأة أنه يريد بعض الاهتمام بالفشل عشوائيًا؟ (نعم، *كلنا* لدينا ذلك الاختبار *الواحد*.) لنخبر Vitest أن يعيد تشغيله تلقائيًا بضع مرات قبل اعتباره فاشلًا:
 
 ```typescript
 export default defineConfig({
@@ -123,13 +123,13 @@ export default defineConfig({
 });
 ```
 
-Boom—no more “it failed on CI but passed locally” headbanging. But hey, if it’s failing more than twice, it’s time for **you** to shine your detective cap.
+بوم — لا مزيد من ضرب الرأس بسبب «فشل في CI لكنه نجح محليًا». لكن مهما كان، إن كان يفشل أكثر من مرتين، فحان وقت **أنت** لتشغيل قبعة المحقق.
 
-## Fine-Tuning Watch Mode
+## ضبط دقيق لوضع المراقبة
 
-Here’s what usually happens after you start integrating **watch mode** into your life: you make a tiny code change, Vitest detects it, runs hundreds of tests, and suddenly your CPU is on fire. Yeah, running everything might be overkill. Luckily, we can refine which tests are run on each watch cycle for better speed.
+إليك ما يحدث عادةً بعد أن تبدأ دمج **وضع المراقبة** في حياتك: تجري تغييرًا صغيرًا في الشيفرة، يكتشفه Vitest، يشغّل مئات الاختبارات، وفجأة تشتعل وحدة المعالجة المركزية. نعم، تشغيل كل شيء قد يكون مبالغة. لحسن الحظ، يمكننا تحسين الاختبارات التي تُشغَّل في كل دورة مراقبة لسرعة أفضل.
 
-### Only Run Changed Tests
+### تشغيل الاختبارات المتغيرة فقط
 
 ```typescript
 export default defineConfig({
@@ -142,8 +142,8 @@ export default defineConfig({
 });
 ```
 
-This way, you’re far more selective during your test runs—letting you focus only on the changes that matter.
+بهذه الطريقة، تصبح أكثر انتخابية بكثير أثناء تشغيل اختباراتك — ما يتيح لك التركيز على التغييرات المهمة فقط.
 
-## Conclusion
+## الخاتمة {#conclusion}
 
-The goal here isn’t just about writing squeaky-clean tests—**it’s about staying sane** while doing it. Take these tips as your advanced toolbox to wield Vitest the next time complexity strikes.
+الهدف هنا ليس كتابة اختبارات نظيفة تمامًا فحسب — **بل البقاء عاقلًا** أثناء ذلك. خذ هذه النصائح كصندوق أدواتك المتقدم لاستخدام Vitest في المرة القادمة التي يضرب فيها التعقيد.

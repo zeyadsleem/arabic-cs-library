@@ -1,36 +1,36 @@
 ---
-title: "React Query TRPC"
-lang: en
+title: "React Query مع tRPC"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/react-query-trpc"
 ---
 
-Building a fully type-safe data layer between your React frontend and backend is one of those things that sounds complicated but becomes surprisingly elegant once you get the pieces in place. When you combine React Query’s powerful caching and state management with tRPC’s end-to-end type safety, you get something magical: full TypeScript inference from your server functions all the way to your React components, with zero manual type definitions.
+بناء طبقة بيانات آمنة النوع بالكامل بين واجهة React الأمامية وخادمك الخلفي هو من تلك الأشياء التي تبدو معقّدة، لكنها تصبح مدهشة في البساطة بمجرد أن تضع القطع في مواضعها. حين تجمع بين التخزين المؤقت القوي وإدارة الحالة في React Query وبين الأمان النوعي من الطرف إلى الطرف في tRPC، تحصل على شيء سحري: استنتاجًا كاملًا من TypeScript من دوال الخادم وصولًا إلى مكوّنات React، دون أي تعريفات أنواع يدوية.
 
-Here’s what we’re solving: traditional REST APIs require you to manually keep your frontend and backend types in sync, React Query’s cache keys are just strings (easy to typo), and you’re constantly writing boilerplate for data fetching patterns. tRPC eliminates the type drift between client and server, while React Query handles all the messy async state management—and when they work together, your data layer becomes both powerful and completely type-safe.
+إليك ما نحن بصدد حله: واجهات REST التقليدية تُلزمك بالحفاظ يدويًا على تزامن أنواع الواجهة الأمامية مع الأنواع الخلفية، ومفاتيح التخزين المؤقت في React Query مجرد نصوص (فمن السهل أن يخطئ فيها أحد)، وأنت تكتب باستمرار شيفرة متكرّرة لأنماط جلب البيانات. يزيل tRPC الانحراف النوعي بين العميل والخادم، بينما يتولى React Query كل فوضى إدارة الحالة غير المتزامنة — وحين يعملان معًا تصير طبقة بياناتك قويّة وآمنة النوع بالكامل في آن واحد.
 
-## What Makes tRPC + React Query Special
+## ما الذي يجعل tRPC مع React Query مميّزًا
 
-Before we dive into implementation, let’s understand why this combination is so compelling:
+قبل أن نغوص في التنفيذ، لنفهم لماذا هذا المزيج مقنع إلى هذا الحد:
 
-**tRPC gives you**:
+**يمنحك tRPC**:
 
-- End-to-end type safety from server to client
-- Auto-generated client code from your server router
-- No more manual API types or keeping schemas in sync
-- Compile-time errors when server APIs change
+- أمانًا نوعيًا من الطرف إلى الطرف من الخادم إلى العميل
+- شيفرة عميل مولَّدة تلقائيًا من موجّه الخادم (server router)
+- لا مزيد من أنواع API يدوية ولا من الحاجة إلى مزامنة المخططات (schemas)
+- أخطاء وقت ترجمة (compile-time) حين تتغير واجهات الخادم
 
-**React Query adds**:
+**يضيف React Query**:
 
-- Intelligent caching with automatic background updates
-- Request deduplication and proper loading states
-- Optimistic updates and cache invalidation
-- Proper error handling and retry logic
+- تخزينًا مؤقتًا ذكيًا مع تحديثات خلفية تلقائية
+- إلغاء تكرار الطلبات (request deduplication) وحالات تحميل صحيحة
+- تحديثات متفائلة (optimistic updates) وإبطال الذاكرة المؤقتة
+- معالجة أخطاء سليمة ومنطق إعادة المحاولة
 
-Together, they create a data layer where your IDE can autocomplete server function names, parameters, and return types—while React Query handles all the async complexity behind the scenes.
+معًا، يخلقان طبقة بيانات يستطيع محرّرك أن يكمل فيها أسماء دوال الخادم ومعاملاتها وأنواع إرجاعها تلقائيًا — بينما يتولى React Query كل التعقيد غير المتزامن في الخلفية.
 
-## Setting Up the Foundation
+## وضع الأساس
 
-Let’s start with a basic tRPC setup. First, install the dependencies:
+لنبدأ بإعداد tRPC بسيط. أولًا، ثبّت الاعتماديات:
 
 ```bash
 # Server packages
@@ -41,7 +41,7 @@ npm install @tanstack/react-query zod
 npm install @trpc/next
 ```
 
-Here’s a minimal tRPC server setup:
+وهذا إعداد خادم tRPC أدنى:
 
 ```typescript
 // server/trpc.ts
@@ -93,11 +93,11 @@ export const appRouter = router({
 export type AppRouter = typeof appRouter;
 ```
 
-The magic here is that `AppRouter` type—tRPC will use this to generate fully typed client code.
+السحر هنا في نوع `AppRouter` — إذ سيستخدمه tRPC لتوليد شيفرة عميل مُنمَّطة بالكامل.
 
-## Client Setup with React Query Integration
+## إعداد العميل مع التكامل مع React Query
 
-Now let’s set up the client side. tRPC’s React Query integration gives you hooks that work exactly like regular React Query, but with full type safety:
+الآن لنجهّز جانب العميل. تكامل tRPC مع React Query يمنحك خُطّافات (hooks) تعمل تمامًا مثل React Query العادي، لكن مع أمان نوعي كامل:
 
 ```typescript
 // utils/trpc.ts
@@ -107,7 +107,7 @@ import type { AppRouter } from '../server/trpc';
 export const trpc = createTRPCReact<AppRouter>();
 ```
 
-Set up your providers—this looks a lot like regular React Query setup:
+اضبط المزوّدات (providers) — يبدو هذا مثل إعداد React Query العادي إلى حد بعيد:
 
 ```typescript
 // app.tsx
@@ -149,9 +149,9 @@ function App() {
 }
 ```
 
-## Using tRPC Queries in Components
+## استخدام استعلامات tRPC في المكوّنات
 
-Here’s where the magic happens. Your components get fully typed hooks that know about your server functions:
+هنا يحدث السحر. يحصل مكوّناتك على خُطّافات مُنمَّطة بالكامل تعرف دوال الخادم لديك:
 
 ```typescript
 // components/UserDashboard.tsx
@@ -192,11 +192,11 @@ function UserCard({ user }: { user: { id: string; name: string; email: string } 
 }
 ```
 
-Notice how there’s no manual typing needed—tRPC inferred the return types from your server router, and React Query provides all the loading states and error handling.
+لاحظ أنه لا حاجة إلى أي كتابة يدوية للأنواع — فقد استنتج tRPC أنواع الإرجاع من موجّه الخادم لديك، ويقدّم React Query كل حالات التحميل ومعالجة الأخطاء.
 
-## Mutations with Optimistic Updates
+## الطفرات مع التحديثات المتفائلة
 
-tRPC mutations work seamlessly with React Query’s optimistic update patterns:
+تعمل طفرات tRPC بسلاسة تامّة مع أنماط التحديث المتفائلة في React Query:
 
 ````typescript
 function CreateUserForm() {
@@ -288,15 +288,15 @@ function useUser(id: string): UseQueryResult<UserData, Error> {
 const { data, error } = useUser('123');
 ````
 
-- Use `as const` on query keys to keep them literal and stable.
-- Prefer returning typed data from fetchers and inferring with `ReturnType` or a small `InferPromise` helper.
-- Specify the error type parameter for consistent `error` handling in UI.
+- استخدم `as const` في مفاتيح الاستعلامات (query keys) لتبقيها حرفية ومستقرة.
+- فضّل إعادة بيانات مُنمَّطة من دوال الجلب (fetchers) والاستنتاج عبر `ReturnType` أو مُساعد صغير اسمه `InferPromise`.
+- حدّد معامل نوع الخطأ (error type parameter) afin تتّسق معالجة `error` في واجهة المستخدم.
 
-## Advanced Query Patterns
+## أنماط الاستعلام المتقدمة
 
-### Dependent Queries
+### استعلامات الاعتمادية
 
-Sometimes you need to chain queries—fetch a user, then fetch their posts:
+أحيانًا تحتاج إلى سلسلة استعلامات — تجلب مستخدمًا ثم تجلب مقالاته:
 
 ```typescript
 function UserWithPosts({ userId }: { userId: string }) {
@@ -325,9 +325,9 @@ function UserWithPosts({ userId }: { userId: string }) {
 }
 ```
 
-### Infinite Queries
+### الاستعلامات اللانهائية
 
-For pagination, tRPC plays nicely with React Query’s infinite queries:
+للترقيم الصفحي، ينسجم tRPC مع الاستعلامات اللانهائية في React Query:
 
 ```typescript
 // Server procedure with cursor-based pagination
@@ -385,9 +385,9 @@ function InfinitePostList() {
 }
 ```
 
-## Cache Management and Invalidation
+## إدارة الذاكرة المؤقتة والإبطال
 
-One of React Query’s superpowers is intelligent cache management. With tRPC, you get typed utilities for managing the cache:
+إحدى أقوى قدرات React Query هي الإدارة الذكية للذاكرة المؤقتة. ومع tRPC تحصل على أدوات مُنمَّطة لإدارة الذاكرة المؤقتة:
 
 ```typescript
 function useUserActions(userId: string) {
@@ -424,9 +424,9 @@ function useUserActions(userId: string) {
 }
 ```
 
-## Optimizing with Prefetching
+## التحسين عبر الجلب المسبق
 
-You can prefetch data before it’s needed—great for hover states or predictable navigation:
+يمكنك جلب البيانات مسبقًا قبل أن تلزم — وهو أمر ممتاز لحالات التمرير المؤشر (hover states) أو التنقّل المتوقّع:
 
 ```typescript
 function UserListItem({ user }: { user: { id: string; name: string } }) {
@@ -445,7 +445,7 @@ function UserListItem({ user }: { user: { id: string; name: string } }) {
 }
 ```
 
-For server-side rendering or static generation, you can prefetch queries:
+وللتصيير على الخادم (server-side rendering) أو التوليد الساكن (static generation)، يمكنك جلب الاستعلامات مسبقًا:
 
 ```typescript
 // In Next.js, prefetch during SSG/SSR
@@ -465,9 +465,9 @@ export async function getStaticProps() {
 }
 ```
 
-## Error Handling Strategies
+## استراتيجيات معالجة الأخطاء
 
-tRPC integrates with React Query’s error handling, but you can customize error behavior:
+يتكامل tRPC مع معالجة الأخطاء في React Query، لكن يمكنك تخصيص سلوك الأخطاء:
 
 ```typescript
 // Global error handling
@@ -538,11 +538,11 @@ function UserProfile({ userId }: { userId: string }) {
 }
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### Query Batching
+### تجميع الاستعلامات
 
-tRPC automatically batches multiple queries made in the same tick:
+يجمع tRPC تلقائيًا عدة استعلامات أُنشئت في نبضة زمنية واحدة:
 
 ```typescript
 function Dashboard() {
@@ -555,9 +555,9 @@ function Dashboard() {
 }
 ```
 
-### Selective Invalidation
+### الإبطال الانتقائي
 
-Be surgical about cache invalidation to avoid unnecessary refetches:
+كن دقيقًا في إبطال الذاكرة المؤقتة لتتجنّب إعادة الجلب غير الضرورية:
 
 ```typescript
 const createPost = trpc.createPost.useMutation({
@@ -571,9 +571,9 @@ const createPost = trpc.createPost.useMutation({
 });
 ```
 
-### Subscription Patterns
+### أنماط الاشتراك
 
-For real-time features, tRPC supports subscriptions (though this requires WebSocket setup):
+للميزات الفورية (real-time)، يدعم tRPC الاشتراكات (subscriptions)، وإن كان ذلك يتطلب إعداد WebSocket:
 
 ```typescript
 // Server
@@ -613,11 +613,11 @@ function PostFeed() {
 }
 ```
 
-## Real-World Architecture Patterns
+## أنماط البنية المعمارية في العالم الحقيقي
 
-### Query Organization
+### تنظيم الاستعلامات
 
-As your app grows, organize queries logically:
+مع نمو تطبيقك، نظّم الاستعلامات ترتيبًا منطقيًا:
 
 ```typescript
 // routers/users.ts
@@ -648,9 +648,9 @@ const { data: user } = trpc.users.getUser.useQuery({ id: '1' });
 const createPost = trpc.posts.createPost.useMutation();
 ```
 
-### Custom Hooks for Business Logic
+### خُطّافات مخصّصة لمنطق العمل
 
-Encapsulate complex query patterns in custom hooks:
+غلّف أنماط الاستعلامات المعقّدة في خُطّافات مخصّصة:
 
 ```typescript
 function useUserWithPosts(userId: string) {
@@ -670,11 +670,11 @@ function useUserWithPosts(userId: string) {
 }
 ```
 
-## Common Pitfalls and Solutions
+## الأخطاء الشائعة والحلول
 
-### Cache Key Confusion
+### الالتباس في مفاتيح الذاكرة المؤقتة
 
-Remember that tRPC generates cache keys based on procedure names and inputs:
+تذكّر أن tRPC يولّد مفاتيح الذاكرة المؤقتة بناءً على أسماء الإجراءات (procedure names) ومدخلاتها:
 
 ```typescript
 // ❌ These create separate cache entries
@@ -688,9 +688,9 @@ const UserQueryInput = z.object({
 });
 ```
 
-### Over-Invalidation
+### الإبطال المفرط
 
-Avoid invalidating too broadly:
+تجنّب الإبطال الواسع جدًا:
 
 ```typescript
 const updateUser = trpc.updateUser.useMutation({
@@ -705,9 +705,9 @@ const updateUser = trpc.updateUser.useMutation({
 });
 ```
 
-### Memory Leaks with Subscriptions
+### تسرّب الذاكرة مع الاشتراكات
 
-Always clean up subscriptions:
+نظّف الاشتراكات دائمًا:
 
 ```typescript
 function useRealtimeData(userId: string) {
@@ -728,14 +728,14 @@ function useRealtimeData(userId: string) {
 }
 ```
 
-## Next Steps
+## الخطوات التالية
 
-The combination of tRPC and React Query creates a incredibly productive development experience—you get end-to-end type safety, intelligent caching, and all the async state management patterns you need. Once you’ve got the basics down, consider exploring:
+يولّد المزيج بين tRPC و React Query تجربة تطوير مذهلة وإنتاجية إلى حد بعيد — تحصل على أمان نوعي من الطرف إلى الطرف، وتخزينًا مؤقتًا ذكيًا، وكل أنماط إدارة الحالة غير المتزامنة التي تحتاجها. وحين تتقن الأساسيات، فكّر في استكشاف:
 
-- **Authentication patterns** with tRPC middleware for protected procedures
-- **File uploads** and handling non-JSON data with tRPC
-- **Error monitoring** to track query failures in production
-- **Advanced cache patterns** like cache warming and background updates
-- **Testing strategies** for components that use tRPC queries
+- **أنماط المصادقة** مع وسيط tRPC (tRPC middleware) للإجراءات المحميّة
+- **رفع الملفات** ومعالجة البيانات غير بصيغة JSON عبر tRPC
+- **مراقبة الأخطاء** لتتبّع فشل الاستعلامات في بيئة الإنتاج
+- **أنماط ذاكرة مؤقتة متقدّمة** مثل تسخين الذاكرة المؤقتة (cache warming) والتحديثات الخلفية
+- **استراتيجيات الاختبار** للمكوّنات التي تستخدم استعلامات tRPC
 
-The key insight is that modern type-safe data fetching isn’t just about preventing bugs (though it does that beautifully)—it’s about creating a development experience where your tools understand your data flow and can help you build features faster and more confidently.
+الفكرة المحورية هي أن جلب البيانات الآمن نوعيًا في العصر الحديث ليس مجرد منع للأخطاء (وإن كان يفعل ذلك بامتياز) — بل هو صنع تجربة تطوير تفهم فيها أدواتك تدفّق بياناتك، فتتمكن من بناء الميزات أسرع وبثقة أكبر.

@@ -1,34 +1,34 @@
 ---
-title: "Failure Dossiers: What Agents Actually Need From a Red Build"
-lang: en
+title: "ملفّات الفشل: ما يحتاجه الوكلاء فعلًا من بناء أحمر"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/failure-dossiers-what-agents-actually-need-from-a-red-build"
 ---
 
-Here’s a thing I wish I’d understood about a year earlier than I did: **when an agent sees a test failure, the test output is a prompt.** That’s the whole framing shift. The red X on the build isn’t a status—it’s the next instruction the agent is going to act on, and everything attached to the red X is context for that instruction.
+هناك شيء كنت أتمنّى أن أفهمه قبل عام تقريبًا ممّا فعلت: **حين يرى الوكيل فشل اختبار، فإن مخرجات الاختبار موجّه.** هذا هو تحوّل الإطار كله. علامة X الحمراء على البناء ليست حالة — إنها التعليمة التالية التي سيتصرّف الوكيل بناءً عليها، وكل ما يتعلّق بعلامة X الحمراء سياق لتلك التعليمة.
 
-Which means the quality of your test output determines how well the agent can fix things. A failure that says `expect(received).toBe(expected)` with two-line stack trace is a bad prompt. A failure that says what was expected, what actually happened, what the page looked like, what the console said, what the network did, and where to look first—that’s a good prompt. The agent will fix the second one without your help about three times more often than it fixes the first.
+وهذا يعني أن جودة مخرجات اختبارك تحدّد مدى قدرة الوكيل على إصلاح الأمور. فالفشل الذي يقول `expect(received).toBe(expected)` مع تتبّع مكدّس من سطرين موجّه سيئ. أما الفشل الذي يقول ما كان متوقّعًا، وما حدث فعلًا، وكيف بدت الصفحة، وما قالته الطرفية، وما فعلته الشبكة، وأين تنظر أولًا — فذلك موجّه جيد. وسيصلح الوكيل الثاني دون مساعدتك نحو ثلاثة أضعاف ما يصلح الأول.
 
-This lesson is about making failures good prompts. I call the bundle a “failure dossier,” because I’m dramatic. Call it whatever you want. The idea is the same.
+هذا الدرس عن جعل حالات الفشل موجّهات جيدة. أسمّي الحزمة «ملف الفشل»، لأنني ميّال إلى الدراما. سمّها ما شئت. الفكرة واحدة.
 
-## What a failure dossier contains
+## ما الذي يحتويه ملف الفشل
 
-Minimum viable dossier for a failing Playwright test:
+أصغر ملف فشل صالح لاختبار Playwright فاشل:
 
-- **The test name and file path.** Obvious, often missing from a copy-pasted error.
-- **The assertion that failed.** What did the test expect? What did it get? Both sides, not just the failure message.
-- **A screenshot of the page at the point of failure.** Playwright takes this for you if you ask it to.
-- **The full DOM snapshot at the point of failure.** Playwright’s trace file includes this.
-- **Console logs from the browser during the test run.** Also in the trace.
-- **Network requests that happened during the test.** Also in the trace.
-- **The command to reproduce.** Not “the test failed”—the literal shell command that isolates this test.
+- **اسم الاختبار ومسار الملف.** بديهي، وغالبًا ما يغيب عن خطأ منسوخ ولصوق.
+- **التأكيد الذي فشل.** ماذا توقّع الاختبار؟ وماذا حصل؟ الطرفان معًا، لا رسالة الفشل وحدها.
+- **لقطة شاشة للصفحة عند لحظة الفشل.** يلتقطها Playwright لك إن طلبت منه ذلك.
+- **لقطة DOM كاملة عند لحظة الفشل.** يتضمّنها ملف التتبّع في Playwright.
+- **سجلات الطرفية من المتصفّح أثناء تشغيل الاختبار.** وهي أيضًا في التتبّع.
+- **طلبات الشبكة التي حدثت أثناء الاختبار.** وهي أيضًا في التتبّع.
+- **أمر إعادة الإنتاج.** لا «الاختبار فشل» — بل أمر shell الحرفي الذي يعزل هذا الاختبار.
 
-If your dossier has all of these and a label saying “here’s what failed and why,” the agent has everything it needs to propose a fix without asking you a single question.
+إن كان ملفك يحتوي كل هذه إضافةً إلى عنوان يقول «هذا ما فشل ولماذا»، فلدى الوكيل كل ما يحتاجه ليقترح إصلاحًا دون أن يسألك سؤالًا واحدًا.
 
-The good news: Playwright already captures most of this for you. You just have to turn it on and route it to a place the agent can read it.
+الخبر الجيد: يلتقط Playwright معظم هذا لك سلفًا. كل ما عليك هو تفعيله وتوجيهه إلى مكان يستطيع الوكيل قراءته.
 
-## Turning on traces, screenshots, and videos
+## تفعيل التتبّعات ولقطات الشاشة والفيديوهات
 
-In `playwright.config.ts`, use the [tracing configuration options](https://playwright.dev/docs/api/class-testoptions#test-options-trace):
+في `playwright.config.ts`، استخدم [خيارات تهيئة التتبّع](https://playwright.dev/docs/api/class-testoptions#test-options-trace):
 
 ```typescript
 export default defineConfig({
@@ -41,15 +41,15 @@ export default defineConfig({
 });
 ```
 
-Three knobs.
+ثلاثة مقابض.
 
-`trace: 'retain-on-failure'` tells Playwright to record a trace file (`trace.zip`) for every test that fails and discard it for every test that passes. The trace includes DOM snapshots, screenshots, network logs, console logs, and the full Playwright action log. It’s the most information-dense artifact in the whole ecosystem. You can open it with `npx playwright show-trace trace.zip` and get a fully interactive timeline of the test using the [Trace Viewer](https://playwright.dev/docs/trace-viewer).
+`trace: 'retain-on-failure'` يخبر Playwright بتسجيل ملف تتبّع (`trace.zip`) لكل اختبار يفشل، والتخلّص منه لكل اختبار ينجح. ويتضمّن التتبّع لقطات DOM، ولقطات شاشة، وسجلات شبكة، وسجلات طرفية، وسجل إجراءات Playwright الكامل. وهو أكثر أثر كثيف المعلومات في المنظومة كلها. يمكنك فتحه بـ`npx playwright show-trace trace.zip` والحصول على خط زمني تفاعلي كامل للاختبار عبر [عارض التتبّع](https://playwright.dev/docs/trace-viewer).
 
-`screenshot: 'only-on-failure'` writes a single PNG of the page at the moment the assertion failed. This is the image you feed to an agent. It’s redundant with the trace but cheaper to access—one file, opens instantly.
+`screenshot: 'only-on-failure'` يكتب صورة PNG واحدة للصفحة في لحظة فشل التأكيد. هذه هي الصورة التي تطعمها للوكيل. إنها مكرّرة مع التتبّع لكنها أرخص وصولًا — ملف واحد يُفتح فورًا.
 
-`video: 'retain-on-failure'` records the whole test as a video. I use this less often than I expected to. A video of a test is hard for an agent to consume (most agents can’t watch video), and it’s rarely more useful than the trace for a human. I keep it on because it’s free, but I wouldn’t miss it if it weren’t.
+`video: 'retain-on-failure'` يسجّل الاختبار كله فيديو. أستخدم هذا أقل ممّا توقّعت. فالفيديو لاختبار صعب على الوكيل استهلاكه (معظم الوكلاء لا يستطيعون مشاهدة الفيديو)، ونادرًا ما يكون أنفع للبشر من التتبّع. أُبقيه مفعّلًا لأنه مجاني، لكنني لن أفتقده لو لم يكن.
 
-## The HTML report is the dossier’s front door
+## تقرير HTML هو الباب الأمامي لملف الفشل
 
 `playwright.config.ts`:
 
@@ -61,32 +61,32 @@ reporter: [
 ],
 ```
 
-The HTML reporter writes `playwright-report/html/index.html`, and for each failed test it shows the assertion, the screenshot, the error stack, and a link to open the trace. Open it in a browser and you get a gorgeous, readable dossier with zero effort.
+يكتب مُبلِّغ HTML الملف `playwright-report/html/index.html`، ويعرض لكل اختبار فاشل التأكيد، ولقطة الشاشة، ومكدّس الخطأ، ورابطًا لفتح التتبّع. افتحه في متصفّح فتحصل على ملف فشل بديع وسهل القراءة بلا أي جهد.
 
-> **The easiest way to see this work**
+> **أسهل طريقة لترى هذا يعمل**
 >
-> If you want to see the Playwright artifact pipeline end-to-end without planting a fake application bug, temporarily move one committed visual-regression baseline and run the matching visual test. That produces `report.json`, a retained screenshot, a retained video, and a `trace.zip` under `playwright-report/test-results/` off a single intentional failure you can undo in one commit. Once you build the dossier summarizer from the companion lab, that same run also produces `playwright-report/dossier.md`.
+> إن أردت أن ترى خط أنابيب آثار Playwright من طرف إلى طرف دون أن تزرع علة مصطنعة في التطبيق، فانقل مؤقتًا أحد خطوط الأساس المُودَعة في المستودع للانحدار البصري وشغّل الاختبار البصري المطابق. ينتج عن ذلك `report.json`، ولقطة شاشة محفوظة، وفيديو محفوظ، وملف `trace.zip` تحت `playwright-report/test-results/` من فشل متعمّد واحد يمكنك التراجع عنه في التزام واحد. وحين تبني مُلخِّص ملف الفشل من المختبر المرافق، ينتج التشغيل نفسه أيضًا `playwright-report/dossier.md`.
 
-The Playwright HTML report after a deliberate Shelf failure
+تقرير Playwright بصيغة HTML بعد فشل متعمّد في Shelf
 
-The `open: 'never'` flag keeps Playwright from auto-opening a browser tab when you run tests, which is annoying in CI and distracting locally.
+يمنع العلم `open: 'never'` Playwright من فتح تبويب متصفّح تلقائيًا عند تشغيل الاختبارات، وهو أمر مزعج في التكامل المستمر ومشتّت محليًا.
 
-In Shelf, the easiest deliberate break is editing the home page heading in `src/routes/+page.svelte` — change `Build a shelf that remembers what you actually read` to anything else and `tests/smoke.spec.ts` goes red on its `getByRole('heading', { ... })` assertion. It’s a loud UI change that doesn’t touch auth or seeded data. Run the suite through `npm run test` when you want the real Playwright artifact set, and keep the other basic gates in the loop too so the repository stays honest while you are iterating on the failure.
+في Shelf، أسهل كسر متعمّد هو تعديل عنوان الصفحة الرئيسية في `src/routes/+page.svelte` — غيّر `Build a shelf that remembers what you actually read` إلى أي شيء آخر فيصبح `tests/smoke.spec.ts` أحمر عند تأكيده `getByRole('heading', { ... })`. إنه تغيير واجهة صاخب لا يمسّ المصادقة ولا البيانات المزروعة. شغّل المجموعة عبر `npm run test` حين تريد مجموعة آثار Playwright الحقيقية، وأبقِ البوابات الأساسية الأخرى في الحلقة أيضًا كي يظلّ المستودع صادقًا وأنت تكرّر على الفشل.
 
-## Making dossiers agent-readable
+## جعل ملفات الفشل قابلة لقراءة الوكيل
 
-Here’s where the lesson gets interesting. An HTML report is great for humans. It’s *okay* for agents. The agent can read the filesystem, so it can technically find the error messages. But it’s much better if the agent can ask for “the dossier for the last failing test” and get back a structured summary.
+هنا يصبح الدرس مثيرًا. تقرير HTML رائع للبشر. وهو *مقبول* للوكلاء. يستطيع الوكيل قراءة نظام الملفات، فيمكنه تقنيًا العثور على رسائل الخطأ. لكنه أفضل بكثير إن استطاع الوكيل أن يطلب «ملف الفشل الخاص بآخر اختبار فاشل» ويحصل على ملخّص منظّم.
 
-A failure dossier summarizer is worth writing. It’s a ~50 line script that:
+يستحقّ مُلخِّص ملف الفشل أن يُكتب. إنه سكربت من نحو 50 سطرًا يقوم بما يلي:
 
-1. Reads `playwright-report/report.json` after a test run.
-2. Finds the failed tests.
-3. For each one, extracts the error message, the screenshot path, the retained trace, and the reproduction command.
-4. Writes a single `dossier.md` file with all of that, linked to the attachments.
+1. يقرأ `playwright-report/report.json` بعد تشغيل الاختبارات.
+2. يعثر على الاختبارات الفاشلة.
+3. يستخرج لكل واحد منها رسالة الخطأ، ومسار لقطة الشاشة، والتتبّع المحفوظ، وأمر إعادة الإنتاج.
+4. يكتب ملف `dossier.md` واحدًا يحتوي كل ذلك، مرتبطًا بالمرفقات.
 
-### What the Playwright report looks like
+### كيف يبدو تقرير Playwright
 
-Before we walk the report, it helps to see the shape you’re walking. The JSON reporter writes a nested tree: `suites` at the top, each with its own `suites` and `specs`, each `spec` has `tests`, each `test` has `results`, and each failing `result` has an `error` plus `attachments`. The trimmed shape below is *illustrative* — the `tests/rate-book.spec.ts` spec and the `authenticated` Playwright project referenced in the example are aspirational: they’re added in later labs (fixtures, projects, deterministic state). Against the current minimal starter the same walk runs over `tests/smoke.spec.ts` with an empty `projectName`. The structure is the point:
+قبل أن نسير في التقرير، يساعد أن ترى الشكل الذي تسير فيه. يكتب مُبلِّغ JSON شجرة متداخلة: `suites` في الأعلى، ولكل منها `suites` و`specs` خاصة بها، ولكل `spec` اختبارات `tests`، ولكل `test` نتائج `results`، ولكل `result` فاشل `error` إضافة إلى `attachments`. والشكل المختصر أدناه *توضيحي* — فمواصفة `tests/rate-book.spec.ts` ومشروع Playwright المسمّى `authenticated` المشار إليهما في المثال طموحان: يُضافان في مختبرات لاحقة (التجهيزات، والمشاريع، والحالة الحتمية). أما مع المشروع الانطلاقي البسيط الحالي، فالسير نفسه يمرّ على `tests/smoke.spec.ts` مع `projectName` فارغ. البنية هي المقصد:
 
 ```json
 {
@@ -128,16 +128,16 @@ Before we walk the report, it helps to see the shape you’re walking. The JSON 
 }
 ```
 
-The important fields, in the order the walker will reach them:
+الحقول المهمة، بالترتيب الذي سيصل إليه السائر:
 
-- `suites[].suites[]` — suites nest, so the walker is recursive.
-- `specs[].title`, `specs[].file`, `specs[].line` — these are the fields that identify the test.
-- `tests[].projectName` — the Playwright project (e.g. `authenticated`, `public`) that produced the result. We’ll use it to build the reproduction command.
-- `results[].status` — check for `failed` or `timedOut`.
-- `results[].error.message` — the primary human-readable error string.
-- `results[].attachments[]` — each attachment has `name`, `contentType`, and `path`. Screenshots land as `image/png`, traces as `application/zip` (and are also named `trace`), videos as `video/webm`.
+- `suites[].suites[]` — المجموعات تتداخل، لذا فالسائر تعاودي.
+- `specs[].title` و`specs[].file` و`specs[].line` — هذه هي الحقول التي تعرّف الاختبار.
+- `tests[].projectName` — مشروع Playwright (مثل `authenticated` و`public`) الذي أنتج النتيجة. سنستخدمه لبناء أمر إعادة الإنتاج.
+- `results[].status` — افحص هل هو `failed` أو `timedOut`.
+- `results[].error.message` — سلسلة الخطأ الأساسية القابلة للقراءة البشرية.
+- `results[].attachments[]` — لكل مرفق `name` و`contentType` و`path`. وتصل لقطات الشاشة بصيغة `image/png`، والتتبّعات بصيغة `application/zip` (وتُسمّى أيضًا `trace`)، والفيديوهات بصيغة `video/webm`.
 
-Now the script. It walks the suite tree, filters to failed results, and renders each one into a markdown section.
+الآن السكربت. إنه يسير في شجرة المجموعات، ويرشّح النتائج الفاشلة، ويعرض كل واحدة في قسم markdown.
 
 ```typescript
 // scripts/summarize-failure-dossier.ts
@@ -202,13 +202,13 @@ writeFileSync(
 console.error(`Wrote dossier for ${failures.length} failures`);
 ```
 
-> **The course solution includes the production version**
+> **حلّ الدورة يتضمّن النسخة الإنتاجية**
 >
-> The Shelf starter does **not** ship `scripts/summarize-failure-dossier.ts`. You add it in [Lab: Build a Failure Dossier for Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf). The completed lab version is a longer, fully-typed implementation of this sketch that also picks the `diff` attachment ahead of the baseline on visual regression failures, guards against `result.error` being undefined via `result.errors[0]`, and makes every attachment path relative to the repo root. Read the sketch above to understand the walk, then open the lab solution or your own implementation to see the production shape.
+> لا يشحن المشروع الانطلاقي Shelf الملف `scripts/summarize-failure-dossier.ts`. أنت تضيفه في [مختبر: ابنِ ملف فشل من أجل Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf). ونسخة المختبر المكتملة تنفيذ أطول ومكتوب بأنواع كاملة لهذا المخطّط، وهي تختار أيضًا مرفق `diff` قبل خط الأساس في حالات فشل الانحدار البصري، وتتحرّز من أن يكون `result.error` غير معرّف عبر `result.errors[0]`، وتجعل كل مسار مرفق نسبيًا إلى جذر المستودع. اقرأ المخطّط أعلاه لتفهم السير، ثم افتح حلّ المختبر أو تنفيذك الخاص لترى الشكل الإنتاجي.
 
-### A representative failing-run `dossier.md` excerpt
+### مقتطف تمثيلي من `dossier.md` لتشغيل فاشل
 
-Here’s what the generated markdown would look like after an intentionally failing rate-book test in a version of Shelf that’s already been through the later fixtures and projects labs. (In the current starter, the same walk produces an entry for whichever `tests/smoke.spec.ts` assertion you broke, with an empty `projectName`.)
+هكذا سيبدو ملف markdown المولّد بعد اختبار تقييم كتاب فاشل عمدًا في نسخة من Shelf مرّت سلفًا بمختبرات التجهيزات والمشاريع اللاحقة. (وفي المشروع الانطلاقي الحالي، ينتج السير نفسه مدخلًا لأي تأكيد تكسره في `tests/smoke.spec.ts`، مع `projectName` فارغ.)
 
 ```markdown
 # Playwright failure dossier
@@ -239,13 +239,13 @@ npx playwright test --project=authenticated tests/rate-book.spec.ts -g "user can
 \`\`\`
 ```
 
-That’s exactly what you want in an agent’s hand: the test title, the project it lived in, the file and line, the full error message, a link to the screenshot, a one-liner to open the trace, and a reproduction command that isolates just this test. The agent reads one file and knows what to do next.
+هذا بالضبط ما تريده في يد الوكيل: عنوان الاختبار، والمشروع الذي عاش فيه، والملف والسطر، ورسالة الخطأ الكاملة، ورابط لقطة الشاشة، وسطر واحد لفتح التتبّع، وأمر إعادة إنتاج يعزل هذا الاختبار وحده. يقرأ الوكيل ملفًا واحدًا فيعرف ما يفعله بعد ذلك.
 
-(Adjust field names to match your Playwright version if needed—the JSON schema shifts between releases. The point is the structure, not the exact API.)
+(عدّل أسماء الحقول لتطابق إصدار Playwright لديك إن لزم — فمخطّط JSON يتغيّر بين الإصدارات. المقصد هو البنية، لا الواجهة البرمجية الدقيقة.)
 
-For an alternative that skips the custom script entirely and uses the LLM itself to triage the dossier into typed JSON, see [Structured CLI Output as Pipeline Glue](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue). That lesson teaches `claude -p --json-schema` with the dossier as input—same data, different consumer.
+ولبديل يتخطّى السكربت المخصّص كليًا ويستخدم النموذج اللغوي نفسه لفرز ملف الفشل إلى JSON مكتوب بأنواع، راجع [مخرجات CLI المنظّمة كغراء للخط الأنابيب](https://stevekinney.com/courses/self-testing-ai-agents/structured-cli-output-as-pipeline-glue). يعلّمك ذلك الدرس `claude -p --json-schema` مع ملف الفشل كمدخل — البيانات نفسها، والمستهلك مختلف.
 
-Once you’ve added the summarizer from the dossier lab, you can add this section to your agent instructions:
+بعد أن تضيف المُلخِّص من مختبر ملف الفشل، يمكنك إضافة هذا القسم إلى تعليمات وكيلك:
 
 ```markdown
 ## When a test fails
@@ -257,9 +257,9 @@ Once you’ve added the summarizer from the dossier lab, you can add this sectio
 5. Do not add `console.log` calls to test files to debug. The trace already has the DOM at every step; open it with `npx playwright show-trace <path>`.
 ```
 
-The agent now has a single, structured entry point. One command, one file, actionable content inside.
+صار لدى الوكيل الآن نقطة دخول واحدة منظّمة. أمر واحد، وملف واحد، ومحتوى قابل للتنفيذ في الداخل.
 
-## How the loop flows
+## كيف تسير الحلقة
 
 ```
 graph LR
@@ -274,11 +274,11 @@ graph LR
   H -->|Still fails| D
 ```
 
-## Console and network capture
+## التقاط الطرفية والشبكة
 
-Two Playwright tricks that pay for themselves immediately in the dossier.
+حيلتان في Playwright تدفعان ثمنهما فورًا في ملف الفشل.
 
-**Forwarding browser console to test output.** Add this as a test fixture:
+**تمرير طرفية المتصفّح إلى مخرجات الاختبار.** أضف هذا كتجهيز اختبار:
 
 ```typescript
 // tests/fixtures.ts
@@ -297,9 +297,9 @@ export const test = base.extend({
 });
 ```
 
-Now any browser console error shows up in the test output. When a test fails, the agent can grep the output for `[browser` and see what the app was complaining about in the moments leading up to failure. Half of “mystery” failures turn out to be “oh, there was a TypeError in a component we didn’t think mattered.”
+الآن يظهر أي خطأ في طرفية المتصفّح في مخرجات الاختبار. وحين يفشل اختبار، يستطيع الوكيل أن يبحث في المخرجات عن `[browser` ليرى ما كان التطبيق يشتكي منه في اللحظات السابقة للفشل. تبيّن أن نصف حالات الفشل «الغامضة» ليست إلا «آه، كان هناك TypeError في مكوّن ظننّا أنه لا يهم».
 
-**Network failure logging.** Similar pattern:
+**تسجيل فشل الشبكة.** نمط مشابه:
 
 ```typescript
 page.on('requestfailed', (request) => {
@@ -318,13 +318,13 @@ page.on('response', async (response) => {
 });
 ```
 
-Every failed request, every 4xx, every 5xx shows up in the output. When a test fails because “the button didn’t do anything,” the `[network 500]` line in the output tells the agent that the button *did* do something—the API call just failed.
+يظهر في المخرجات كل طلب فاشل، وكل 4xx، وكل 5xx. وحين يفشل اختبار لأن «الزر لم يفعل شيئًا»، يخبر السطر `[network 500]` في المخرجات الوكيل أن الزر *فعل* شيئًا — لكن استدعاء واجهة البرمجة فشل فقط.
 
-## The `console.log` trap
+## فخّ `console.log`
 
-A counterintuitive one: stop letting the agent add `console.log` statements to tests as a debugging technique. The test fails, the agent adds `console.log(await page.content())` and reruns it. This works, but it’s a worse version of what the trace already gives you. The trace has the full DOM at every step, timestamped, already structured.
+نصيحة مخالفة للحدس: كفّ عن السماح للوكيل بإضافة عبارات `console.log` إلى الاختبارات كأسلوب تنقيح. يفشل الاختبار، فيضيف الوكيل `console.log(await page.content())` ويعيد تشغيله. هذا يعمل، لكنه نسخة أسوأ ممّا يمنحك التتبّع سلفًا. فالتتبّع يحتوي DOM كاملًا عند كل خطوة، بطوابع زمنية، ومنظّمًا مسبقًا.
 
-Rule:
+القاعدة:
 
 ```markdown
 - Do not add `console.log` statements to test files to debug failures.
@@ -334,23 +334,23 @@ Rule:
   explain why it's missing.
 ```
 
-The reason this matters is that `console.log` statements add up. They land in PRs. They ship to CI. They accumulate. A test file with fifteen `console.log` calls is a test file nobody wants to read, and all fifteen were added one at a time by an agent trying to fix a failure.
+سبب أهمية هذا أن عبارات `console.log` تتراكم. تصل إلى طلبات السحب. وتُشحن إلى التكامل المستمر. وتتجمّع. فملف اختبار فيه خمسة عشر استدعاءً لـ`console.log` هو ملف لا يريد أحد قراءته، وقد أُضيفت الخمسة عشر كلها واحدًا واحدًا بواسطة وكيل يحاول إصلاح فشل.
 
-## What the dossier gives you on the agent side
+## ما يمنحك ملف الفشل على جانب الوكيل
 
-Here’s the loop I care about. A test fails. The dossier is generated. The agent runs Claude Code and says:
+هذه هي الحلقة التي تهمّني. يفشل اختبار. يُولَّد ملف الفشل. يشغّل الوكيل Claude Code ويقول:
 
-> Read `playwright-report/dossier.md`. Pick the first failure. Use the reproduction command to rerun the test in isolation. Look at the screenshot. Read the trace. Propose a fix. Apply the fix. Re-run the test. If it still fails, iterate.
+> اقرأ `playwright-report/dossier.md`. اختر أول فشل. استخدم أمر إعادة الإنتاج لإعادة تشغيل الاختبار معزولًا. انظر إلى لقطة الشاشة. اقرأ التتبّع. اقترح إصلاحًا. طبّق الإصلاح. أعد تشغيل الاختبار. فإن ظلّ فاشلًا، فكرّر.
 
-That’s a fully self-driving debugging loop. The agent doesn’t need you to paste error messages. It doesn’t need you to run the test. It doesn’t need you to open the HTML report. It reads the dossier, reproduces the failure, looks at the evidence, and iterates. All you do is notice when the loop converges and review the fix.
+تلك حلقة تنقيح ذاتية القيادة بالكامل. لا يحتاج الوكيل منك لصق رسائل خطأ. ولا يحتاج منك تشغيل الاختبار. ولا يحتاج منك فتح تقرير HTML. إنه يقرأ ملف الفشل، ويعيد إنتاج الفشل، وينظر إلى الأدلّة، ويكرّر. كل ما تفعله أنت أن تلاحظ متى تتقارب الحلقة وتراجع الإصلاح.
 
-Every piece of this lesson is a piece of that loop. The dossier is the entry point. The trace is the evidence. The reproduction command is the action. The screenshot is the sanity check.
+كل جزء من هذا الدرس جزء من تلك الحلقة. ملف الفشل هو نقطة الدخول. والتتبّع هو الدليل. وأمر إعادة الإنتاج هو الفعل. ولقطة الشاشة هي فحص المعقولية.
 
-## The one thing to remember
+## الشيء الوحيد الذي يجب تذكّره
 
-A failing test is a prompt. A good prompt is loaded with evidence. Traces, screenshots, console logs, reproduction commands—all of them belong in the dossier, because the agent can only act on what you attach. Turn them on once and the loop gets dramatically tighter.
+الاختبار الفاشل موجّه. والموجّه الجيد محمّل بالأدلّة. التتبّعات، ولقطات الشاشة، وسجلات الطرفية، وأوامر إعادة الإنتاج — كلها تنتمي إلى ملف الفشل، لأن الوكيل لا يستطيع التصرّف إلا بناءً على ما ترفقه. فعّلها مرّة واحدة فتصبح الحلقة أشدّ إحكامًا بدرجة هائلة.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Writing a Custom MCP Wrapper](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
-- [Lab: Build a Failure Dossier for Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf)
+- [كتابة غلاف MCP مخصّص](https://stevekinney.com/courses/self-testing-ai-agents/writing-a-custom-mcp-wrapper)
+- [مختبر: ابنِ ملف فشل من أجل Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-build-a-failure-dossier-for-shelf)

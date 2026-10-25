@@ -1,16 +1,16 @@
 ---
-title: "React Component Props"
-lang: en
+title: "خصائص مكوّنات React"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/component-props-complete-guide"
 ---
 
-Props are the API of your React components—they’re how other developers (including future you) will interact with what you’ve built. Getting the types right isn’t just about avoiding runtime errors; it’s about creating components that are intuitive to use, self-documenting, and impossible to misuse.
+الخصائص هي واجهة البرمجة (API) لمكوّنات React — فهي الطريقة التي سيتفاعل بها المطوّرون الآخرون (ومنهم أنت في المستقبل) مع ما بنيته. والحصول على الأنواع الصحيحة ليس مجرد تجنّب أخطاء وقت التشغيل، بل هو إنشاء مكوّنات سهلة الاستخدام، تشرح نفسها، ولا يمكن إساءة استخدامها.
 
-Good prop types tell a story about how your component should be used. They make the happy path obvious and the wrong path impossible. This guide covers everything from basic prop patterns to advanced type techniques that create delightful developer experiences.
+أنواع الخصائص الجيدة تحكي قصة عن كيفية استخدام المكوّن. فهي تجعل المسار السعيد واضحًا والمسار الخاطئ مستحيلًا. ويغطي هذا الدليل كل شيء من أنماط الخصائص الأساسية إلى تقنيات الأنواع المتقدمة التي تصنع تجارب مطوّرين ممتعة.
 
-## The Foundation: Required vs Optional Props
+## الأساس: الخصائص المطلوبة مقابل الاختيارية
 
-The most fundamental decision for any prop is whether it’s required or optional. TypeScript makes this distinction explicit, and it’s worth thinking carefully about each prop’s necessity.
+أهم قرار يخص أي خاصية هو: هل هي مطلوبة أم اختيارية؟ يجعل TypeScript هذا التمييز صريحًا، ويستحق التفكير الجاد في ضرورة كل خاصية.
 
 ```typescript
 interface ButtonProps {
@@ -35,15 +35,15 @@ interface ButtonProps {
 </Button>
 ```
 
-The rule of thumb: make props required when the component genuinely can’t function without them. Everything else should be optional with sensible defaults.
+قاعدة الإبهام: اجعل الخصائص مطلوبة حين لا يستطيع المكوّن أن يعمل بدونها فعلًا. وكل ما عدا ذلك ينبغي أن يكون اختياريًا مع قيم افتراضية مناسبة.
 
-> **Tip**
+> **نصيحة**
 >
-> If you find yourself with many required props, consider whether your component is trying to do too much. Sometimes splitting into smaller, more focused components creates a better API.
+> إذا وجدت نفسك أمام كثير من الخصائص المطلوبة، فكّر فيما إذا كان مكوّنك يحاول أن يفعل أكثر مما ينبغي. أحيانًا يقسّم المكوّن إلى مكوّنات أصغر محدّدة الغرض يخلق واجهة برمجية أفضل.
 
-## Providing Sensible Defaults
+## توفير قيم افتراضية مناسبة
 
-React’s `defaultProps` are being phased out in favor of ES6 default parameters and destructuring defaults. This approach is more TypeScript-friendly and keeps your defaults close to where they’re used.
+يجري سحب `defaultProps` من React لصالح معاملات ES6 الافتراضية وقيم التفكيك الافتراضية. وهذا الأسلوب أكثر ملاءمة لـ TypeScript ويُبقي قيمك الافتراضية قريبة من مواضع استخدامها.
 
 ```typescript
 interface ButtonProps {
@@ -73,16 +73,16 @@ function Button({
 }
 ```
 
-This pattern has several advantages:
+لهذا النمط عدة مزايا:
 
-- **Type safety**: TypeScript knows about your defaults at compile time
-- **Locality**: Defaults are visible right where the component is defined
-- **Performance**: No extra property merging at runtime
-- **Future-proof**: Works with React’s Compiler and other optimizations
+- **أمان الأنواع**: يعرف TypeScript قيمك الافتراضية وقت الترجمة (compilation)
+- **القرب**: تظهر القيم الافتراضية في المكان نفسه الذي يُعرَّف فيه المكوّن
+- **الأداء**: لا دمج إضافي للخصائص وقت التشغيل
+- **المستقبلية**: تعمل مع مُجمِّع React (React's Compiler) والتحسينات الأخرى
 
-## Primitive Props: The Building Blocks
+## خصائص الأنواع الأولية: لبنات البناء
 
-Every React component starts with primitive props—strings, numbers, booleans. These are your bread and butter, but even simple primitives benefit from thoughtful typing:
+يبدأ كل مكوّن React بخصائص من الأنواع الأولية — نصوصًا وأرقامًا وقيمًا منطقية. هذه هي خبزك وخيرك، لكن حتى الأنواع الأولية البسيطة تستفيد من كتابة أنواع بعناية:
 
 ```typescript
 interface AlertProps {
@@ -117,9 +117,9 @@ function Alert({
 }
 ```
 
-## Array Props: Collections and Lists
+## خصائص المصفوفات: المجموعات والقوائم
 
-Arrays are everywhere in React—lists of items, sets of options, collections of data. The key is typing both the array structure and its contents precisely:
+المصفوفات في كل مكان في React — قوائم عناصر ومجموعات خيارات ومجموعات بيانات. والمفتاح هو كتابة نوع بنية المصفوفة ومحتوياتها بدقّة:
 
 ```typescript
 // Simple array of primitives
@@ -179,9 +179,9 @@ function NotificationList({ notifications }: NotificationProps) {
 }
 ```
 
-## Object Props: Complex Data Structures
+## خصائص الكائنات: بنى بيانات معقّدة
 
-Object props require careful consideration. Sometimes you need strict shapes, other times flexibility is key:
+تتطلب خصائص الكائنات تفكيرًا دقيقًا. أحيانًا تحتاج إلى بنى صارمة، وأحيانًا أخرى تكون المرونة هي المفتاح:
 
 ```typescript
 // Strict object shape
@@ -229,9 +229,9 @@ interface FormProps {
 }
 ```
 
-## Function Props: Callbacks and Event Handlers
+## خصائص الدوال: الاستدعاءات ومعالِجات الأحداث
 
-Functions as props need careful typing to ensure type safety for both arguments and return values:
+الدوال المستخدَمة كخصائص تحتاج إلى كتابة أنواع دقيقة لضمان أمان الأنواع لكل من المعاملات وقيم العائد:
 
 ```typescript
 interface SearchProps {
@@ -278,9 +278,9 @@ function Search({ onSearch, onSubmit, onChange }: SearchProps) {
 }
 ```
 
-## Conditional Props with Discriminated Unions
+## خصائص شرطية مع الأنواع الاتحادية المُميَّزة
 
-Sometimes props depend on each other—when one prop is present, others become required or forbidden. Discriminated unions help model these relationships precisely:
+أحيانًا تعتمد الخصائص على بعضها — فحين تكون خاصية موجودة تصبح أخرى مطلوبة أو ممنوعة. وتساعد الأنواع الاتحادية المُميَّزة (discriminated unions) على نمذجة هذه العلاقات بدقّة:
 
 ```typescript
 type ButtonProps = {
@@ -336,9 +336,9 @@ function Button(props: ButtonProps) {
 <Button variant="submit" form="myForm">Submit</Button>
 ```
 
-## Generic Props for Reusable Components
+## الخصائص العامة للمكوّنات القابلة لإعادة الاستخدام
 
-Generics make components truly reusable while maintaining type safety:
+تجعل الأنواع العامة المكوّنات قابلة لإعادة الاستخدام حقًا مع الحفاظ على أمان الأنواع:
 
 ````typescript
 interface SelectProps<T> {
@@ -446,9 +446,9 @@ getValue={(c) => c}
 />
 ````
 
-## Extending HTML Element Props
+## توسيع خصائص عناصر HTML
 
-Often you want your components to accept all standard HTML attributes plus your custom props:
+كثيرًا ما تريد لمكوّناتك أن تقبل كل سمات HTML القياسية إضافة إلى خصائصك المخصّصة:
 
 ```typescript
 // Extending button props
@@ -494,13 +494,13 @@ function Input({ onChange, ...props }: InputProps) {
 }
 ```
 
-## React’s Built-in Helper Types
+## أنواع المساعدات المدمجة في React
 
-React provides several utility types that eliminate boilerplate and make your component props more expressive. These helpers handle common patterns that every React developer encounters, from adding children props to managing refs.
+يوفّر React عدة أنواع مساعِدة تزيل التكرار وتجعّل خصائص مكوّناتك أكثر تعبيرًا. وتتعامل هذه المساعدات مع أنماط شائعة يمرّ بها كل مطوّر React، من إضافة خاصية العناصر الفرعية إلى إدارة المراجع (refs).
 
-### PropsWithChildren: The Children Helper
+### PropsWithChildren: مساعد العناصر الفرعية
 
-Ever get tired of manually adding `children` to every container component? `PropsWithChildren` has your back:
+هل مللت من إضافة `children` يدويًا إلى كل مكوّن حاوٍ؟ فـ `PropsWithChildren` يغطّي ظهرك:
 
 ```typescript
 import { PropsWithChildren } from 'react';
@@ -528,7 +528,7 @@ function Card({ title, variant = 'default', children }: PropsWithChildren<CardPr
 }
 ```
 
-`PropsWithChildren` is exactly equivalent to adding `children?: ReactNode` to your props:
+«PropsWithChildren» مطابق تمامًا لإضافة `children?: ReactNode` إلى خصائصك:
 
 ```typescript
 // These are identical:
@@ -539,15 +539,15 @@ type WithChildrenHelper = PropsWithChildren<CardProps>;
 type PropsWithChildren<P> = P & { children?: ReactNode };
 ```
 
-Use `PropsWithChildren` when:
+استخدم `PropsWithChildren` حين:
 
-- Your component is a container that wraps other content
-- You want consistent children typing across your codebase
-- You’re building layout or wrapper components
+- كان مكوّنك حاوية تلفّ محتوى آخر
+- أردت كتابة نوع موحّد للعناصر الفرعية في كامل شيفرتك
+- كنت تبني مكوّنات تخطيط أو التفاف
 
-### PropsWithoutChildren: The Explicit Leaf
+### PropsWithoutChildren: الورقة الصريحة
 
-Sometimes you need to be explicit that a component shouldn’t have children. While rarely used directly, `PropsWithoutChildren` makes your intent clear:
+أحيانًا تحتاج إلى أن تكون صريحًا بأنه لا ينبغي أن يكون لمكوّنك عناصر فرعية. ورغم ندرة استخدامها مباشرة، فإن `PropsWithoutChildren` يجعل نيتك واضحة:
 
 ```typescript
 import { PropsWithoutChildren } from 'react';
@@ -575,7 +575,7 @@ function Input({ value, onChange, placeholder }: InputProps) {
 </Input>
 ```
 
-The real power of `PropsWithoutChildren` comes when building type utilities:
+القوة الحقيقية لـ `PropsWithoutChildren` تظهر عند بناء أدوات الأنواع:
 
 ```typescript
 // Creating a type helper that strips children from any props
@@ -587,9 +587,9 @@ const StatusBadge: LeafComponent<{ status: 'online' | 'offline' }> = ({ status }
 };
 ```
 
-### RefAttributes: Type-Safe Refs
+### RefAttributes: مراجع آمنة من ناحية الأنواع
 
-When you need to expose refs from your components, `RefAttributes` provides the correct typing:
+حين تحتاج إلى إتاحة المراجع من مكوّناتك، توفّر `RefAttributes` الكتابة الصحيحة:
 
 ```typescript
 import { forwardRef, RefAttributes } from 'react';
@@ -628,7 +628,7 @@ function App() {
 }
 ```
 
-`RefAttributes` is particularly useful when composing complex prop types:
+«RefAttributes» مفيدة بشكل خاص عند تركيب أنواع خصائص معقّدة:
 
 ```typescript
 // Combining multiple type helpers
@@ -655,9 +655,9 @@ const FancyInput = forwardRef<HTMLInputElement, FancyInputProps>(
 );
 ```
 
-### Combining Helper Types: Real-World Patterns
+### دمج أنواع المساعدين: أنماط من العالم الحقيقي
 
-These helper types shine when combined to create expressive, reusable prop patterns:
+تتألق أنواع المساعدين عند دمجها لإنشاء أنماط خصائص تعبيرية وقابلة لإعادة الاستخدام:
 
 ```typescript
 // A card component that needs children and refs
@@ -706,9 +706,9 @@ function Layout({ sidebar, header, children }: PropsWithChildren<LayoutProps>) {
 }
 ```
 
-### Helper Types vs Manual Definitions
+### أنواع المساعدين مقابل التعريفات اليدوية
 
-When should you use these helpers versus defining props manually?
+متى ينبغي أن تستخدم هذه المساعدات بدلًا من تعريف الخصائص يدويًا؟
 
 ```typescript
 // ✅ Use PropsWithChildren for consistency
@@ -737,13 +737,13 @@ interface VideoPlayerProps {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> These helper types are about clarity and consistency. They make your code more readable by clearly expressing intent—a component either expects children or it doesn’t, it forwards refs or it doesn’t. Use them to make your component APIs more predictable.
+> هذه الأنواع المساعدة تتعلق بالوضوح والاتساق. فهي تجعل شيفرتك أكثر قابلية للقراءة عبر التعبير الصريح عن النية — فالمكوّن إما أن يتوقّع عناصر فرعية أو لا يتوقّعها، وإما أن يمرّر المراجع أو لا يمرّرها. استخدمها لجعل واجهات مكوّناتك أكثر قابلية للتنبّؤ.
 
-## Props Documentation with JSDoc
+## توثيق الخصائص عبر JSDoc
 
-TypeScript types are documentation, but sometimes you need more context:
+أنواع TypeScript هي توثيق بحد ذاتها، لكنك أحيانًا تحتاج إلى سياق أكثر:
 
 ```typescript
 interface ChartProps {
@@ -781,9 +781,9 @@ interface ChartProps {
 }
 ```
 
-## Common Patterns and Anti-Patterns
+## الأنماط الشائعة والأنماط المضادة
 
-### ✅ Good Patterns
+### ✅ الأنماط الجيدة
 
 ```typescript
 // Use string literals for known values
@@ -808,7 +808,7 @@ interface FormFieldProps {
 }
 ```
 
-### ❌ Anti-Patterns to Avoid
+### ❌ الأنماط المضادة التي ينبغي تجنّبها
 
 ```typescript
 // Don't use 'any' for props
@@ -833,11 +833,11 @@ interface ConfusingStates {
 }
 ```
 
-## Best Practices
+## أفضل الممارسات {#best-practices}
 
-1. **Start strict, loosen when needed**: Begin with strict types and relax them only when flexibility is genuinely required
-2. **Use discriminated unions for mutually exclusive props**: Model your domain accurately
-3. **Provide defaults for optional props**: Make the common case easy
-4. **Document complex props**: Use JSDoc comments for additional context
-5. **Keep props flat when possible**: Deeply nested props are harder to use
-6. **Use generics for truly reusable components**: But don’t over-engineer
+1. **ابدأ صارمًا، وارخِ متى لزم**: ابدأ بأنواع صارمة ولا تليّنها إلا حين تكون المرونة مطلوبة فعلًا
+2. **استخدم الأنواع الاتحادية المُميَّزة للخصائص المتبادلة الحصرية**: نمذج مجال عملك بدقّة
+3. **وفّر قيمًا افتراضية للخصائص الاختيارية**: اجعل الحالة الشائعة سهلة
+4. **وثّق الخصائص المعقّدة**: استخدم تعليقات JSDoc لتوفير سياق إضافي
+5. **أبقِ الخصائص مسطّحة قدر الإمكان**: الخصائص المتداخلة بعمق أصعب في الاستخدام
+6. **استخدم الأنواع العامة للمكوّنات القابلة لإعادة الاستخدام حقًا**: لكن لا تُفرط في تعقيد التصميم

@@ -1,27 +1,27 @@
 ---
-title: "Configuring Playwright"
-lang: en
+title: "تهيئة Playwright"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright"
 ---
 
-Every Playwright suite starts with a config file, and most of them are wrong in the same three ways: the dev server is running instead of preview, runner options are buried inside `use` where Playwright silently ignores them, or the config is trying to teach every advanced trick up front. Shelf’s current starter deliberately does the opposite: it keeps the config tiny.
+كل مجموعة اختبارات Playwright تبدأ بملف إعداد، ومعظمها مخطئ بالطرق الثلاث نفسها: خادم التطوير يعمل بدلًا من المعاينة، أو خيارات المشغّل مدفونة داخل `use` حيث يتجاهلها Playwright بصمت، أو أن الإعداد يحاول تعليم كل الحيل المتقدّمة من البداية. أما مشروع Shelf الابتدائي الحالي فيفعل العكس عن قصد: يُبقي الإعداد ضئيلًا.
 
-That’s good. Students should be able to look at `playwright.config.ts` and understand it in one pass.
+وهذا جيد. ينبغي أن يستطيع الطلاب النظر إلى `playwright.config.ts` وفهمه من مرور واحد.
 
-We’ll walk through what the starter actually ships first, then look at a few realistic ways you might extend it once the suite grows.
+سنمرّ أولًا على ما يوفّره المشروع الابتدائي فعلًا، ثم ننظر في بضعة طرق واقعية قد توسّع بها الإعداد عندما تكبر المجموعة.
 
-## `testDir` and `testIgnore`
+## `testDir` و`testIgnore`
 
 ```typescript
 testDir: 'tests',
 testIgnore: ['**/labs/fixtures/**', '**/labs/broken-traces/**'],
 ```
 
-`testDir` is where Playwright looks for specs. In Shelf’s starter, that’s just `tests`.
+`testDir` هو المكان الذي يبحث فيه Playwright عن المواصفات. وفي مشروع Shelf الابتدائي هو `tests` فقط.
 
-`testIgnore` is doing something slightly more interesting: it keeps the intentionally broken lab exercises out of the default green run. Those files still live in the repo, but they don’t sabotage the starter experience before you’ve taught the relevant lesson.
+أما `testIgnore` فيفعل شيئًا أكثر تشويقًا قليلًا: يُبقي تمارين المختبر المكسورة عن قصد خارج التشغيل الأخضر الافتراضي. فتلك الملفات تبقى في المستودع، لكنها لا تُفسد تجربة المشروع الابتدائي قبل أن تعلّم الدرس المتعلّق بها.
 
-This is a good use of `testIgnore`: excluding known teaching fixtures or generated files. It is a bad use of `testIgnore` to hide flaky real tests. If a normal spec is unstable, fix the spec.
+هذا استخدام جيد لـ `testIgnore`: استثناء عناصر تعليمية معروفة أو ملفات مولّدة. واستخدامه السيئ أن تُخفي به اختبارات حقيقية متذبذبة. فإن كانت مواصفة عادية غير مستقرة، فأصلح المواصفة.
 
 ## `webServer`
 
@@ -32,21 +32,21 @@ webServer: {
 },
 ```
 
-This is how Playwright starts your app before any test runs.
+هكذا يبدأ Playwright تطبيقك قبل تشغيل أي اختبار.
 
-Shelf builds and previews rather than running the dev server. Why: preview mode is closer to production. No HMR, no Vite transforms at runtime, no dev-only middleware changing behavior in ways production never will. If a test passes against preview, it’s much more likely to pass in CI and production.
+يبني Shelf ويعاين بدلًا من تشغيل خادم التطوير. ولماذا: لأن وضع المعاينة أقرب إلى الإنتاج. فلا HMR، ولا تحويلات Vite وقت التشغيل، ولا وسيط خاص بالتطوير يغيّر السلوك بطرق لا يفعلها الإنتاج أبدًا. وإن نجح اختبار على المعاينة، فمن المرجّح جدًا أن ينجح في CI والإنتاج.
 
-A common addition once the local loop starts to drag is `reuseExistingServer: true`. If you already have the app running on port `4173`, Playwright reuses it instead of trying to boot a second copy.
+ومن الإضافات الشائعة عندما تبدأ الحلقة المحلية بالتباطؤ `reuseExistingServer: true`. فإن كان التطبيق يعمل لديك بالفعل على المنفذ `4173`، يعيد Playwright استخدامه بدلًا من محاولة إقلاع نسخة ثانية.
 
-Later, a common CI-friendly variant is:
+ولاحقًا، ثمّة صيغة شائعة ملائمة لـ CI:
 
 ```typescript
 reuseExistingServer: !process.env.CI,
 ```
 
-That split is useful once you care about CI determinism. Locally, reuse the running server. In CI, always boot a fresh one.
+وهذا التفريق مفيد بمجرد أن تهتم بحتمية CI. محليًا، أعد استخدام الخادم العامل. وفي CI، اقلع خادمًا جديدًا دائمًا.
 
-If you ever need environment overrides for tests, `webServer` is also the right place for them:
+وإن احتجت يومًا تجاوزات لمتغيّرات البيئة في الاختبارات، فـ `webServer` هو المكان الصحيح لها أيضًا:
 
 ```typescript
 webServer: {
@@ -59,7 +59,7 @@ webServer: {
 },
 ```
 
-## The `use` block
+## كتلة `use`
 
 ```typescript
 use: {
@@ -67,11 +67,11 @@ use: {
 },
 ```
 
-Everything in `use` applies to every test’s browser context.
+كل ما في `use` ينطبق على سياق المتصفح في كل اختبار.
 
-`baseURL` is the one thing the starter absolutely wants. It means you write `page.goto('/playground')` instead of `page.goto('http://127.0.0.1:4173/playground')`. Small thing, but it keeps tests portable and keeps hostnames from leaking all over the suite.
+`baseURL` هو الشيء الوحيد الذي يريده المشروع الابتدائي قطعًا. فهو يعني أنك تكتب `page.goto('/playground')` بدلًا من `page.goto('http://127.0.0.1:4173/playground')`. أمر صغير، لكنه يُبقي الاختبارات قابلة للنقل ويمنع تسرّب أسماء المضيفين في أرجاء المجموعة.
 
-What the starter does **not** ship yet is traces, screenshots, and videos. Those are useful, but they are not concepts you need right away. When you are ready for them, the setup looks like this:
+وما **لا** يوفّره المشروع الابتدائي بعد هو التتبّعات ولقطات الشاشة والفيديو. وهي مفيدة، لكنها ليست مفاهيم تحتاجها فورًا. وحين تصبح جاهزًا لها، يبدو الإعداد هكذا:
 
 ```typescript
 use: {
@@ -82,13 +82,13 @@ use: {
 },
 ```
 
-That combination follows the right philosophy: keep failure forensics, discard success noise.
+هذه التركيبة تتبع الفلسفة الصحيحة: احتفظ بأدلّة الفشل، واطرح ضجيج النجاح.
 
-## Runner options you might add later
+## خيارات المشغّل التي قد تضيفها لاحقًا
 
-Shelf’s starter intentionally leaves a lot of top-level runner options alone. That keeps the default config small and lets Playwright’s defaults do their job.
+يترك مشروع Shelf الابتدائي الكثير من خيارات المشغّل في المستوى الأعلى دون مساس عن قصد. وهذا يُبقي الإعداد الافتراضي صغيرًا ويدع إعدادات Playwright الافتراضية تؤدّي عملها.
 
-Once your suite gets bigger, the first runner options most teams add are:
+وبمجرد أن تكبر مجموعتك، تكون أول خيارات المشغّل التي تضيفها معظم الفرق:
 
 ```typescript
 fullyParallel: true,
@@ -97,20 +97,20 @@ forbidOnly: !!process.env.CI,
 retries: process.env.CI ? 2 : 0,
 ```
 
-Here’s what each one does:
+وهذا ما يفعله كل منها:
 
-- `fullyParallel` allows tests in the same file to run concurrently.
-- `workers` controls how many worker processes Playwright can use. Pinning `workers: 1` in CI is appropriate only for some setups (shared external resources, flaky infrastructure) and it will defeat `fullyParallel` when both are set. If you have `fullyParallel: true` and want the parallelism, leave `workers` undefined in CI so Playwright can scale to the available cores.
-- `forbidOnly` fails CI if someone accidentally committed `test.only`.
-- `retries` gives CI a little resilience against one-off flakes.
+- `fullyParallel` يسمح بتشغيل الاختبارات في الملف نفسه على التوازي.
+- `workers` يتحكّم في عدد عمليات العمال التي يستطيع Playwright استخدامها. وتثبيت `workers: 1` في CI مناسب لبعض الإعدادات فقط (موارد خارجية مشتركة، بنية تحتية متذبذبة)، وسيُبطل `fullyParallel` عند ضبط الاثنين. فإن كان لديك `fullyParallel: true` وأردت التوازي، فاترك `workers` غير معرّف في CI كي يتوسّع Playwright حسب الأنوية المتاحة.
+- `forbidOnly` يُفشل CI إن أودع أحدهم `test.only` بالخطأ.
+- `retries` يمنح CI قدرًا من المرونة أمام التذبذبات العارضة.
 
-Notice that these are **runner options**, not browser-context options. They belong at the top level of `defineConfig`, not inside `use`.
+لاحظ أن هذه **خيارات مشغّل**، لا خيارات سياق متصفح. فهي تنتمي إلى المستوى الأعلى من `defineConfig`، لا إلى داخل `use`.
 
-## Optional reporters
+## مُبلِّغات اختيارية
 
-The starter relies on Playwright’s default terminal reporter. That’s enough for a tiny suite.
+يعتمد المشروع الابتدائي على مُبلِّغ Playwright الافتراضي للطرفية. وهذا يكفي لمجموعة صغيرة.
 
-When you want richer output, a common next step is:
+وحين تريد مخرجات أغنى، فالخطوة التالية الشائعة هي:
 
 ```typescript
 reporter: [
@@ -120,15 +120,15 @@ reporter: [
 ],
 ```
 
-- `list` gives you the terminal output you expect.
-- `html` gives you a browsable report with failures, screenshots, traces, and steps.
-- `json` gives CI and automation something machine-readable to parse.
+- `list` يمنحك مخرجات الطرفية التي تتوقعها.
+- `html` يمنحك تقريرًا قابلًا للتصفّح فيه الإخفاقات ولقطات الشاشة والتتبّعات والخطوات.
+- `json` يمنح CI والأتمتة شيئًا قابلًا للقراءة آليًا لتحليله.
 
-This is useful later in the course. It does not need to be part of the starter app.
+هذا مفيد لاحقًا في الدورة. ولا حاجة لأن يكون جزءًا من التطبيق الابتدائي.
 
-## Optional screenshot defaults
+## إعدادات لقطات الشاشة الافتراضية الاختيارية
 
-If you add visual regression tests, it is worth setting screenshot defaults globally:
+إن أضفت اختبارات انحدار بصري، فمن المجدي ضبط إعدادات لقطات الشاشة افتراضيًا على المستوى العام:
 
 ```typescript
 expect: {
@@ -141,28 +141,28 @@ expect: {
 },
 ```
 
-- `animations: 'disabled'` freezes motion for deterministic screenshots.
-- `caret: 'hide'` removes blinking cursor noise.
-- `scale: 'css'` helps normalize screenshots across different display densities.
-- `maxDiffPixelRatio: 0.01` gives you a little tolerance for tiny rendering differences.
+- `animations: 'disabled'` يجمّد الحركة للحصول على لقطات حتمية.
+- `caret: 'hide'` يزيل ضجيج المؤشّر الوامض.
+- `scale: 'css'` يساعد على تطبيع اللقطات عبر كثافات عرض مختلفة.
+- `maxDiffPixelRatio: 0.01` يمنحك قدرًا صغيرًا من التجاوز لفروق التصيير الدقيقة.
 
-Again: useful later, not necessary in a starter config.
+ومرة أخرى: مفيد لاحقًا، وليس ضروريًا في إعداد ابتدائي.
 
-## Projects
+## المشروعات
 
-Shelf’s current starter does **not** define custom Playwright projects. That is intentional.
+المشروع الابتدائي الحالي لـ Shelf **لا** يعرّف مشروعات Playwright مخصّصة. وذلك مقصود.
 
-One default project keeps the beginner loop obvious:
+فمشروع افتراضي واحد يُبقي حلقة المبتدئ واضحة:
 
-- one config file
-- one default run
-- one place to look when something breaks
+- ملف إعداد واحد
+- تشغيل افتراضي واحد
+- مكان واحد تنظر فيه عندما ينكسر شيء
 
-Projects are still a great tool. They are just something you add when you have a concrete reason, not because the config file looks more impressive with a giant `projects` array.
+والمشروعات أداة رائعة مع ذلك. لكنها شيء تضيفه عندما يكون لديك سبب ملموس، لا لأن ملف الإعداد يبدو أكثر إبهارًا مع مصفوفة `projects` ضخمة.
 
-### Example 1: Authentication setup plus the real app suite
+### المثال 1: تهيئة المصادقة مع مجموعة التطبيق الحقيقية
 
-This is the classic pattern when you want a setup spec to log in once and save storage state for other tests.
+هذا هو النمط الكلاسيكي عندما تريد مواصفة تهيئة تسجّل الدخول مرة واحدة وتحفظ حالة التخزين للاختبارات الأخرى.
 
 ```typescript
 projects: [
@@ -181,11 +181,11 @@ projects: [
 ],
 ```
 
-The important idea is `dependencies`: Playwright runs `setup` first, then the dependent project can reuse the saved session.
+الفكرة المهمة هي `dependencies`: يشغّل Playwright مشروع `setup` أولًا، ثم يستطيع المشروع المعتمد إعادة استخدام الجلسة المحفوظة.
 
-### Example 2: Public vs. authenticated specs
+### المثال 2: مواصفات عامة مقابل مواصفات موثّقة
 
-This is useful when part of your suite should stay anonymous and part of it assumes a signed-in user.
+هذا مفيد عندما ينبغي أن يبقى جزء من مجموعتك مجهولًا وأن يفترض جزء آخر مستخدمًا مسجّل الدخول.
 
 ```typescript
 projects: [
@@ -208,11 +208,11 @@ projects: [
 ],
 ```
 
-This keeps the public tests simple while letting the authenticated tests share login setup.
+يُبقي هذا الاختبارات العامة بسيطة بينما يسمح للاختبارات الموثّقة بمشاركة تهيئة تسجيل الدخول.
 
-### Example 3: Cross-browser smoke only
+### المثال 3: تدقيق عبر المتصفحات فقط
 
-Full cross-browser coverage is expensive. Smoke-only cross-browser coverage is often the better tradeoff.
+التغطية الكاملة عبر المتصفحات مكلفة. والتغطية عبر المتصفحات بالتدقيق فقط غالبًا هي المقايضة الأفضل.
 
 ```typescript
 import { defineConfig, devices } from '@playwright/test';
@@ -244,11 +244,11 @@ export default defineConfig({
 });
 ```
 
-This pattern gives you fast confidence in your core user flow without tripling the runtime of the whole suite.
+يمنحك هذا النمط ثقة سريعة في مسار المستخدم الجوهري دون مضاعفة زمن تشغيل المجموعة بأكملها ثلاث مرات.
 
-### Example 4: A visual-regression-only project
+### المثال 4: مشروع مخصّص للانحدار البصري
 
-If you decide to add screenshot tests, isolating them into their own project can keep expectations and artifacts tidy.
+إن قرّرت إضافة اختبارات لقطات الشاشة، فعزلها في مشروع خاص بها يمكن أن يُبقي التوقّعات والمخرجات مرتّبة.
 
 ```typescript
 projects: [
@@ -267,19 +267,19 @@ projects: [
 ],
 ```
 
-That lets you keep visual assumptions separate from functional assumptions.
+يتيح لك ذلك إبقاء الافتراضات البصرية منفصلة عن الافتراضات الوظيفية.
 
-The main rule: add projects when they reduce confusion, not when they create it.
+والقاعدة الأساسية: أضف المشروعات عندما تقلّل الالتباس، لا عندما تخلقه.
 
-## The anti-pattern: runner options in `use`
+## النمط المضاد: خيارات المشغّل داخل `use`
 
-This is still the most common Playwright config mistake, and Playwright won’t save you from it.
+هذا ما يزال أشهر خطأ في إعداد Playwright، ولن ينقذك Playwright منه.
 
-`testDir`, `timeout`, `retries`, `workers`, and `projects` are **runner options**. They go at the top level of `defineConfig`.
+`testDir` و`timeout` و`retries` و`workers` و`projects` هي **خيارات مشغّل**. وتوضع في المستوى الأعلى من `defineConfig`.
 
-`baseURL`, `trace`, `screenshot`, `storageState`, and `viewport` are **context options**. They go inside `use`.
+و`baseURL` و`trace` و`screenshot` و`storageState` و`viewport` هي **خيارات سياق**. وتوضع داخل `use`.
 
-If you put `timeout` inside `use`, Playwright does not error. It does not warn. It just ignores it.
+فإن وضعت `timeout` داخل `use`، فلن يُخطئ Playwright. ولن ينبّهك. بل سيتجاهله فقط.
 
 ```typescript
 // Wrong — silently ignored:
@@ -291,24 +291,24 @@ use: {
 timeout: 60_000,
 ```
 
-The mental model is simple:
+والنموذج الذهني بسيط:
 
-- `use` configures the browser context
-- everything else configures the runner
+- `use` يضبط سياق المتصفح
+- وكل ما عداه يضبط المشغّل
 
-## The one thing to remember
+## الشيء الواحد الذي يجب تذكّره
 
-The config file is the contract between your suite and your environment. The starter should keep that contract easy to read. Add the next layer of configuration when you have earned it:
+ملف الإعداد هو العقد بين مجموعتك وبيئتك. وينبغي أن يُبقي المشروع الابتدائي ذلك العقد سهل القراءة. وأضف الطبقة التالية من الإعداد عندما تستحقّها:
 
-- first `webServer`
-- then `baseURL`
-- then maybe traces and screenshots
-- then maybe projects
+- أولًا `webServer`
+- ثم `baseURL`
+- ثم ربما التتبّعات ولقطات الشاشة
+- ثم ربما المشروعات
 
-If a config file is trying to teach authentication setup, cross-browser coverage, visual regression, CI retries, and failure reporting all at once, it is probably doing too much for a beginner repo.
+فإن كان ملف إعداد يحاول تعليم تهيئة المصادقة، والتغطية عبر المتصفحات، والانحدار البصري، وإعادات المحاولة في CI، والإبلاغ عن الإخفاقات دفعة واحدة، فهو على الأرجح يفعل أكثر من اللازم لمستودع مبتدئ.
 
-## Additional Reading
+## قراءات إضافية
 
-- [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
-- [Playwright UI Mode](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
-- [Storage State Authentication](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)
+- [مشروعات Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
+- [وضع واجهة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-ui-mode)
+- [المصادقة بحالة التخزين](https://stevekinney.com/courses/self-testing-ai-agents/storage-state-authentication)

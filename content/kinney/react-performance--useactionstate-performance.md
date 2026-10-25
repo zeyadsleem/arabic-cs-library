@@ -1,16 +1,16 @@
 ---
-title: "useActionState Performance"
-lang: en
+title: "أداء useActionState"
+lang: ar
 source: "https://stevekinney.com/courses/react-performance/useactionstate-performance"
 ---
 
-Forms and mutations are where React apps traditionally become sluggish and confusing. React 19’s `useActionState` hook elegantly solves the coordination problem of managing pending, success, and error states while keeping your components performant. Instead of scattered `useState` calls and manual loading flags, you get a single hook that handles the entire mutation lifecycle—with built-in optimizations that prevent unnecessary renders and provide clear UX feedback.
+النماذج والطفرات (mutations) هي الموضع الذي تصبح فيه تطبيقات React تقليديًا بطيئة ومربكة. يحلّ خُطّاف `useActionState` في React 19 بأناقة مشكلة تنسيق إدارة حالات الانتظار والنجاح والخطأ مع الحفاظ على أداء مكوّناتك. فبدلًا من نداءات `useState` المتناثرة وأعلام التحميل اليدوية، تحصل على خُطّاف واحد يتولّى دورة حياة الطفرة كاملة — مع تحسينات مدمجة تمنع عمليات التصيير غير الضرورية وتقدّم تغذية راجعة واضحة لتجربة المستخدم.
 
-`useActionState` is React 19’s answer to the common pattern of wrapping async operations in loading states, error handling, and optimistic updates. It replaces the verbose dance of multiple `useState` hooks with a streamlined API that coordinates server actions, form submissions, and async mutations. Think of it as `useState` with superpowers specifically designed for actions that change data.
+`useActionState` هو جواب React 19 على النمط الشائع لتغليف العمليات غير المتزامنة بحالات التحميل ومعالجة الأخطاء والتحديثات المتفائلة. فهو يستبدل الرقصة المطوّلة لخُطّافات `useState` المتعددة بواجهة برمجية ميسّرة تنسّق إجراءات الخادم وإرسالات النماذج والطفرات غير المتزامنة. اعتبره `useState` بقوى خارقة مصمَّمة خصيصًا للإجراءات التي تغيّر البيانات.
 
-## The Traditional Approach (And Why It’s Painful)
+## الأسلوب التقليدي (ولماذا هو مؤلم)
 
-Before diving into `useActionState`, let’s look at what we used to do. Here’s the typical pattern for handling a form submission with loading and error states:
+قبل الغوص في `useActionState`، لننظر إلى ما كنّا نفعله سابقًا. إليك النمط النموذجي لمعالجة إرسال نموذج مع حالتي التحميل والخطأ:
 
 ```typescript
 // ❌ The old way: verbose and error-prone
@@ -43,16 +43,16 @@ function UserForm() {
 }
 ```
 
-This approach has several problems:
+لهذا الأسلوب عدة مشكلات:
 
-1. **Multiple state updates**: Each mutation triggers 3-4 separate renders
-2. **Boilerplate everywhere**: The same loading/error pattern repeated across components
-3. **Race conditions**: Fast users can trigger multiple submissions
-4. **Inconsistent UX**: Different loading states across your app
+1. **تحديثات حالة متعددة**: كل طفرة تُطلق 3-4 عمليات تصيير منفصلة
+2. **كود متكرر في كل مكان**: النمط نفسه للتحميل والخطأ مكرّر عبر المكوّنات
+3. **حالات تسابق**: يمكن للمستخدمين السريعين إطلاق إرسالات متعددة
+4. **تجربة مستخدم غير متسقة**: حالات تحميل مختلفة في أنحاء تطبيقك
 
-## Enter `useActionState`
+## ظهور `useActionState`
 
-`useActionState` consolidates this entire pattern into a single hook that manages the complete action lifecycle:
+يجمع `useActionState` هذا النمط كله في خُطّاف واحد يدير دورة حياة الإجراء كاملة:
 
 ```typescript
 // ✅ The new way: clean and performant
@@ -79,7 +79,7 @@ function UserForm() {
 }
 ```
 
-The magic happens in the action function itself:
+والسحر يحدث في دالة الإجراء نفسها:
 
 ```typescript
 async function createUserAction(
@@ -98,31 +98,31 @@ async function createUserAction(
 }
 ```
 
-## Performance Benefits
+## مكاسب الأداء
 
-### Fewer Renders, Better UX
+### تصيير أقل وتجربة مستخدم أفضل
 
-The traditional approach triggers multiple renders for each mutation:
+يُطلق الأسلوب التقليدي عمليات تصيير متعددة لكل طفرة:
 
-1. Set loading to `true`
-2. Clear previous errors
-3. Update with success/error
-4. Set loading to `false`
+1. ضبط التحميل على `true`
+2. مسح الأخطاء السابقة
+3. التحديث بالنجاح أو الخطأ
+4. ضبط التحميل على `false`
 
-`useActionState` batches these updates into a single render cycle. React knows that `state.pending` is automatically managed, so it can optimize when and how often to re-render your component.
+يجمع `useActionState` هذه التحديثات في دورة تصيير واحدة. يعرف React أن `state.pending` مُدارة تلقائيًا، فيستطيع تحسين متى وكم مرة يُعيد تصيير مكوّنك.
 
-### Built-in Race Condition Prevention
+### منع حالات التسابق المدمج
 
-When users rapidly click submit buttons (because we’ve all been there), `useActionState` automatically prevents concurrent executions of the same action. No more defensive coding or custom debouncing:
+عندما ينقر المستخدمون أزرار الإرسال بسرعة (فقد مرّ بها جميعًا)، يمنع `useActionState` تلقائيًا التنفيذ المتزامن للإجراء نفسه. لا مزيد من الشيفرة الدفاعية أو التهدئة المخصّصة:
 
 ```typescript
 // This just works—no extra race condition handling needed
 const [state, formAction] = useActionState(slowNetworkAction, initialState);
 ```
 
-### Automatic Accessibility
+### إمكانية وصول تلقائية
 
-The hook provides built-in accessibility features through the `pending` state. Screen readers can announce loading states, and form controls automatically get appropriate `aria-*` attributes:
+يوفّر الخُطّاف ميزات إمكانية وصول مدمجة عبر حالة `pending`. يمكن لقارئات الشاشة الإعلان عن حالات التحميل، وتحصل عناصر التحكم في النماذج تلقائيًا على خصائص `aria-*` المناسبة:
 
 ```typescript
 <button disabled={state.pending} aria-busy={state.pending}>
@@ -130,11 +130,11 @@ The hook provides built-in accessibility features through the `pending` state. S
 </button>
 ```
 
-## Real-World Patterns
+## أنماط من الواقع العملي
 
-### Progressive Enhancement with Server Actions
+### التحسين التدريجي مع إجراءات الخادم
 
-`useActionState` works beautifully with React Server Components and Server Actions, providing progressive enhancement out of the box:
+يعمل `useActionState` بشكل رائع مع مكوّنات خادم React وإجراءات الخادم، فيوفّر التحسين التدريجي جاهزًا:
 
 ```typescript
 // Server Action
@@ -191,13 +191,13 @@ function ProfileForm({ initialProfile }: { initialProfile: Profile }) {
 }
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> Server Actions automatically work without JavaScript—your forms remain functional even if the client bundle fails to load.
+> تعمل إجراءات الخادم تلقائيًا دون JavaScript — وتظل نماذجك صالحة للعمل حتى لو فشل تحميل حزمة العميل.
 
-### Optimistic Updates
+### التحديثات المتفائلة
 
-For actions that are likely to succeed (like toggling a favorite or incrementing a counter), you can implement optimistic updates by immediately updating your local state:
+بالنسبة إلى الإجراءات التي يُرجَّح نجاحها (مثل تبديل مفضَّلة أو زيادة عدّاد)، يمكنك تنفيذ التحديثات المتفائلة بتحديث حالتك المحلية فورًا:
 
 ```typescript
 async function toggleFavoriteAction(
@@ -245,9 +245,9 @@ function FavoriteButton({ postId, initialFavorited }: FavoriteProps) {
 }
 ```
 
-### Complex State Transitions
+### انتقالات حالة معقدة
 
-For more sophisticated workflows, your action can return detailed state that drives different UI states:
+لسير عمل أكثر تطورًا، يمكن لإجرائك أن يُعيد حالة مفصّلة تقود حالات واجهة مختلفة:
 
 ```typescript
 type CheckoutState = {
@@ -290,11 +290,11 @@ async function processCheckoutAction(
 }
 ```
 
-## Common Patterns and Best Practices
+## أنماط شائعة وأفضل الممارسات
 
-### Type Safety with Discriminated Unions
+### أمان الأنواع مع الاتحادات المتمايزة
 
-Structure your action state as a discriminated union for better type safety and clearer state transitions:
+هيكل حالة إجرائك كاتحاد متمايز (discriminated union) لأمان أنواع أفضل وانتقالات حالة أوضح:
 
 ```typescript
 type ActionState =
@@ -316,9 +316,9 @@ async function createUserAction(prevState: ActionState, formData: FormData): Pro
 }
 ```
 
-### Combining with `useTransition`
+### الدمج مع `useTransition`
 
-For actions that don’t involve forms, combine `useActionState` with `useTransition` for even more control:
+للإجراءات التي لا تتضمن نماذج، ادمج `useActionState` مع `useTransition` لمزيد من التحكم:
 
 ```typescript
 function UserList() {
@@ -347,13 +347,13 @@ function UserList() {
 }
 ```
 
-> **Warning**
+> **تحذير**
 >
-> Don’t overuse `useActionState` for simple synchronous state updates. Stick to regular `useState` for client-only state that doesn’t involve async operations.
+> لا تفرط في استخدام `useActionState` لتحديثات الحالة التزامنية البسيطة. التزم بـ `useState` العادي للحالة الخاصة بالعميل وحدها التي لا تتضمن عمليات غير متزامنة.
 
-### Testing Actions
+### اختبار الإجراءات
 
-Testing `useActionState` is straightforward since actions are just async functions:
+اختبار `useActionState` مباشر، لأن الإجراءات مجرّد دوال غير متزامنة:
 
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
@@ -386,21 +386,21 @@ describe('createUserAction', () => {
 });
 ```
 
-## Migration Strategy
+## استراتيجية الترحيل
 
-Moving from traditional patterns to `useActionState` can be done incrementally:
+يمكن الانتقال من الأنماط التقليدية إلى `useActionState` تدريجيًا:
 
-### Step 1: Identify Action Components
+### الخطوة 1: تحديد مكوّنات الإجراءات
 
-Look for components with this pattern:
+ابحث عن المكوّنات ذات هذا النمط:
 
-- Multiple `useState` calls for loading, error, and data
-- Async functions that update multiple state variables
-- Form submissions with loading states
+- نداءات `useState` متعددة للتحميل والخطأ والبيانات
+- دوال غير متزامنة تحدّث متغيّرات حالة متعددة
+- إرسالات نماذج مع حالات تحميل
 
-### Step 2: Extract Action Functions
+### الخطوة 2: استخلاص دوال الإجراءات
 
-Move your async logic into standalone action functions:
+انقل منطقك غير المتزامن إلى دوال إجراءات مستقلة:
 
 ```typescript
 // Before
@@ -428,9 +428,9 @@ async function createUserAction(prevState, formData) {
 }
 ```
 
-### Step 3: Replace State Management
+### الخطوة 3: استبدال إدارة الحالة
 
-Swap your multiple `useState` hooks for a single `useActionState`:
+استبدل خُطّافات `useState` المتعددة بخُطّاف `useActionState` واحد:
 
 ```typescript
 // Before
@@ -445,25 +445,25 @@ const [state, formAction] = useActionState(createUserAction, {
 });
 ```
 
-## Performance Considerations
+## اعتبارات الأداء
 
-### When to Use `useActionState`
+### متى تستخدم `useActionState`
 
-`useActionState` shines for:
+يبدع `useActionState` في:
 
-- **Form submissions** with validation and error handling
-- **Server Actions** that need progressive enhancement
-- **Mutations** that affect server state
-- **Actions** with complex state transitions
+- **إرسالات النماذج** مع التحقق ومعالجة الأخطاء
+- **إجراءات الخادم** التي تحتاج تحسينًا تدريجيًا
+- **الطفرات** التي تؤثر في حالة الخادم
+- **الإجراءات** ذات انتقالات الحالة المعقدة
 
-### When to Stick with `useState`
+### متى تلتزم بـ `useState`
 
-Keep using `useState` for:
+أبقِ على استخدام `useState` من أجل:
 
-- **Simple synchronous updates** (toggling UI, updating form fields)
-- **Client-only state** that doesn’t involve network requests
-- **High-frequency updates** where action overhead isn’t worth it
+- **التحديثات التزامنية البسيطة** (تبديل عناصر الواجهة، تحديث حقول النماذج)
+- **الحالة الخاصة بالعميل** التي لا تتضمن طلبات شبكة
+- **التحديثات عالية التكرار** التي لا تستحق فيها كلفة الإجراء الزائدة
 
-### Memory and Bundle Size
+### الذاكرة وحجم الحزمة
 
-`useActionState` adds minimal overhead—it’s essentially a specialized `useReducer` with built-in async handling. The performance benefits from reduced renders typically outweigh the small bundle size increase.
+يضيف `useActionState` كلفة زائدة ضئيلة — فهو في جوهره `useReducer` متخصص مع معالجة غير متزامنة مدمجة. وعادةً تفوق مكاسب الأداء الناتجة عن تقليل عمليات التصيير الزيادة الصغيرة في حجم الحزمة.

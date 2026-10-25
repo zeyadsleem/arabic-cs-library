@@ -1,54 +1,54 @@
 ---
-title: "Recovering a Failing Session"
-lang: en
+title: "استعادة جلسة فاشلة"
+lang: ar
 source: "https://stevekinney.com/courses/ai-development-setup/recovering-a-failing-session"
 ---
 
-You asked for a fix. It didn’t work. You asked again. Now there’s a second patch on top of the first, and the agent is confidently explaining why the *third* idea will definitely do it.
+طلبت إصلاحًا. لم ينجح. طلبت مرة أخرى. والآن هناك رقعة ثانية فوق الأولى، والوكيل يشرح بثقة لماذا ستحقق الفكرة *الثالثة* النتيجة حتمًا.
 
-The hard skill isn’t repairing this session. It’s knowing when to throw it away.
+المهارة الصعبة ليست إصلاح هذه الجلسة، بل معرفة متى تتخلص منها.
 
-## Ask the causal-chain question
+## اطرح سؤال السلسلة السببية
 
-Before you apply the next patch, ask: *can I state exactly how this change breaks the causal chain between the cause and the symptom?*
+قبل أن تطبّق الرقعة التالية، اسأل: *هل أستطيع أن أحدد بدقة كيف يقطع هذا التغيير السلسلة السببية بين السبب والعَرَض؟*
 
-If you can’t, you aren’t applying a diagnosis. You’re placing another bet.
+إن لم تستطع، فأنت لا تطبّق تشخيصًا، بل تضع رهانًا آخر.
 
-By the third failed attempt, you haven’t made three bad patches. You’ve falsified your model of the system three times, and every rejected theory is still sitting in the context (everything the model can see: the conversation, the files it read, the instructions it loaded) looking like a premise. The agent keeps reasoning from it.
+بحلول المحاولة الفاشلة الثالثة، لم تكن قد وضعت ثلاث رقعات سيئة. لقد كذّبت نموذجك للنظام ثلاث مرات، وكل نظرية مرفوضة ما زالت جالسة في السياق (كل ما يستطيع النموذج رؤيته: المحادثة، والملفات التي قرأها، والتعليمات التي حمّلها) تبدو كأنها مقدّمة مسلَّمة. فيظل الوكيل يستنتج منها.
 
-So the default is the original attempt plus two failed corrections, then `/clear`, which starts a new conversation with an empty context. [Managing a Long Session](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session) covers `/clear` and its sibling `/compact`.
+فالقاعدة الافتراضية هي المحاولة الأصلية زائد تصحيحان فاشلان، ثم `/clear`، الذي يبدأ محادثة جديدة بسياق فارغ. ويتناول [إدارة جلسة طويلة](https://stevekinney.com/courses/ai-development-setup/managing-a-long-session) الأمر `/clear` وشقيقه `/compact`.
 
-## Salvage, then clear
+## أنقذ، ثم امسح
 
-Before you clear anything, save what you learned:
+قبل أن تمسح أي شيء، احفظ ما تعلمته:
 
-- **Preserve the work before removing failed commits**: Run `git status --porcelain` first. Copy the plan, recovery notes, and every tracked or untracked change worth keeping to somewhere outside the checkout, and verify the copy. Use `git reset --hard <trusted-commit>` only once the checkout is clean and the commits are yours to discard; it overwrites tracked changes and can remove obstructing untracked files. For already-pushed commits, use `git revert` from a clean checkout instead.
-- **Write a recovery handoff**: The original goal, what’s been ruled out, and the *one* observation that disproved the last approach. Leave the failed diff out of it.
-- **Start fresh with the handoff**: New session, empty context, and the handoff (plus the plan, if you kept one).
+- **احفظ العمل قبل إزالة الإيداعات الفاشلة**: شغّل `git status --porcelain` أولًا. وانسخ الخطة وملاحظات الاستعادة وكل تغيير متعقَّب أو غير متعقَّب يستحق البقاء إلى مكان خارج نسخة العمل، وتحقق من النسخة. ولا تستخدم `git reset --hard <trusted-commit>` إلا بعد أن تصبح نسخة العمل نظيفة والإيداعات إيداعاتك التي يجوز لك التخلص منها؛ فهو يستبدل التغييرات المتعقَّبة وقد يحذف ملفات غير متعقَّبة تعترض طريقه. أما الإيداعات المدفوعة سلفًا فاستخدم `git revert` من نسخة عمل نظيفة بدلًا من ذلك.
+- **اكتب تسليم استعادة**: الهدف الأصلي، وما استُبعد، و*الملاحظة الواحدة* التي كذّبت النهج الأخير. واترك الـ diff الفاشل خارجه.
+- **ابدأ من جديد بالتسليم**: جلسة جديدة، وسياق فارغ، والتسليم (مع الخطة إن كنت قد أبقيتهما).
 
-Leaving the diff out is the point. A failed diff pulls the new session back toward the old approach. The observation that killed it is what you want to carry forward.
+إبقاء الـ diff خارجًا هو المقصد. فالـ diff الفاشل يجرّ الجلسة الجديدة عائدًا إلى النهج القديم. أما الملاحظة التي قضت عليه فهي ما تريد نقله إلى الأمام.
 
-## When there’s no clean red or green
+## حين لا يوجد أحمر أو أخضر نظيف
 
-Without a failing test to lean on, you can’t tell whether the session made things better or worse. Revert to the last commit you trusted if two or more of these are true:
+بلا اختبار فاشل تتكئ عليه، لا تستطيع أن تعرف هل حسّنت الجلسة الأمور أم أفسدتها. فارجع إلى آخر إيداع وثقت به إذا صحّ اثنان أو أكثر من هذه:
 
-- Files were touched outside the task’s scope.
-- Tests are failing.
-- There are schema or migration changes.
-- There’s a hunk (a block of changed lines in the diff) nobody can explain.
+- مُسّت ملفات خارج نطاق المهمة.
+- هناك اختبارات فاشلة.
+- هناك تغييرات في المخطط (schema) أو الترحيلات.
+- هناك كتلة (hunk، وهي مجموعة أسطر متغيرة في الـ diff) لا يستطيع أحد تفسيرها.
 
-## When the agent breaks something
+## حين يكسر الوكيل شيئًا
 
-Sometimes it’s worse than a failing test. The agent deleted something, reset something, or ran a command you didn’t expect. Your first instinct will be `/rewind`, and it covers much less than people assume. It restores edits made by the agent’s file tools. It does *not* restore anything a Bash command did, like `rm`, `mv`, or `git reset --hard`. And it usually doesn’t restore what a subagent (a helper agent with its own context) did.
+أحيانًا يكون الأمر أسوأ من اختبار فاشل. فقد يحذف الوكيل شيئًا، أو يعيد ضبط شيء، أو يشغّل أمرًا لم تتوقعه. وحدسك الأول سيكون `/rewind`، وهو يغطي أقل بكثير مما يفترض الناس. فهو يستعيد التحريرات التي أجرتها أدوات ملفات الوكيل. لكنه *لا* يستعيد أي شيء فعله أمر Bash، مثل `rm` أو `mv` أو `git reset --hard`. وهو عادةً لا يستعيد ما فعله وكيل فرعي (وكيل مساعد بسياقه الخاص).
 
-My rule of thumb is that a recovery either works in the first ten minutes or it doesn’t work at all, so move in this order.
+قاعدتي العامة أن الاستعادة إما تنجح في أول عشر دقائق أو لا تنجح أصلًا، فتقدم بهذا الترتيب.
 
-If a credential was exposed, rotate it first, even before you freeze the scene. Transcripts (the session logs the harness saves to disk) are plaintext, so assume anything the agent printed is stored somewhere. Investigate second. [Blast radius](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) covers how to limit what an agent can reach in the first place.
+إن انكشف مُعرّف دخول (credential)، فبدّله أولًا، حتى قبل أن تجمّد المشهد. فالنصوص الكاملة (transcripts، أي سجلات الجلسة التي تحفظها المنصة على القرص) نص صريح، لذا افترض أن كل ما طبعه الوكيل محفوظ في مكان ما. وحقّق ثانيًا. ويغطي [نطاق التأثير](https://stevekinney.com/courses/ai-development-setup/the-enforcement-ladder#blast-radius) كيف تحدّ من متناول الوكيل من الأساس.
 
-Then freeze the scene. Stop the agent and every process that might write to the repository. Before you change anything, snapshot the entire working directory, uncommitted and untracked files included, to somewhere outside the checkout. Resolve the common Git directory with `git rev-parse --path-format=absolute --git-common-dir` and copy that directory too, preserving metadata. In a linked worktree, `.git` is only a pointer file; the common directory holds the objects, refs, reflogs, and `worktrees/<id>` administrative state. Also resolve `git rev-parse --absolute-git-dir` and verify its administrative files are covered by the backup. If those plumbing commands cannot run, snapshot the full repository and worktree layout without modifying it. [Git’s worktree storage documentation](https://git-scm.com/docs/git-worktree#_details) explains what must survive.
+ثم جمّد المشهد. أوقف الوكيل وكل عملية قد تكتب إلى المستودع. وقبل أن تغيّر أي شيء، التقط صورة كاملة لدليل العمل بأكمله، بما فيه الملفات غير المُودَعة وغير المتعقَّبة، إلى مكان خارج نسخة العمل. وحلّل دليل Git المشترك بـ `git rev-parse --path-format=absolute --git-common-dir` وانسخ ذلك الدليل أيضًا مع الحفاظ على البيانات الوصفية. وفي worktree مرتبط، ليس `.git` إلا ملف مؤشر؛ فالدليل المشترك يحمل الكائنات (objects) والمراجع (refs) وسجلات المراجع (reflogs) وحالة الإدارة `worktrees/<id>`. وحلّل أيضًا `git rev-parse --absolute-git-dir` وتحقّق من أن ملفاته الإدارية مغطاة بالنسخة الاحتياطية. وإن لم تستطع تلك الأوامر الأساسية العمل، فالتقط صورة كاملة للمستودع وتخطيط الـ worktree دون تعديله. ويوضّح [توثيق تخزين worktree في Git](https://git-scm.com/docs/git-worktree#_details) ما يجب أن ينجو.
 
-Next, climb the recovery ladder: `git reflog`, `ORIG_HEAD`, `git fsck --lost-found`, the remote, another clone, your editor’s local history. Anything that was ever staged is probably recoverable. Anything that wasn’t, probably isn’t.
+ثم اصعد سلّم الاستعادة: `git reflog`، و`ORIG_HEAD`، و`git fsck --lost-found`، والمرجع البعيد، ونسخة مستنسخة أخرى، والسجل المحلي لمحرّرك. وكل ما أُضيف إلى منطقة التجهيز يومًا ما قابل للاستعادة على الأرجح. وكل ما لم يُضف، لا.
 
-Finally, end with a control. Ask what would have had to be true for this to get caught, then make it true. That might be a permission rule, a [hook](https://stevekinney.com/courses/ai-development-setup/hooks), or a check in CI. A recovery without a prevention is half the job.
+وأخيرًا، أنهِ بضابط. اسأل ما الذي كان يجب أن يكون صحيحًا حتى يُلتقط هذا، ثم اجعله صحيحًا. وقد يكون ذلك قاعدة صلاحيات، أو [خطّافًا](https://stevekinney.com/courses/ai-development-setup/hooks)، أو فحصًا في CI. فالاستعادة بلا وقاية نصف عمل.
 
-Two failed corrections after the original attempt means the session is done. Clear it.
+تصحيحان فاشلان بعد المحاولة الأصلية يعنيان أن الجلسة انتهت. امسحها.

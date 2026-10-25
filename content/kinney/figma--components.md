@@ -1,58 +1,58 @@
 ---
-title: "Components"
-lang: en
+title: "المكوّنات"
+lang: ar
 source: "https://stevekinney.com/courses/figma/components"
 ---
 
-Components in Figma are like handy tools that help designers create elements they can use again and again in different projects. These elements, ranging from simple icons to more complex UI sections, make designing easier by keeping everything looking consistent and saving time. Let’s dive into how to make the most of components in Figma to improve your design process.
+المكوّنات (components) في Figma أشبه بأدوات مفيدة تساعد المصمّمين على إنشاء عناصر يمكنهم استخدامها مرارًا وتكرارًا في مشروعات مختلفة. وهذه العناصر، بدءًا من الأيقونات البسيطة وصولًا إلى أقسام واجهة المستخدم الأكثر تعقيدًا، تجعل التصميم أسهل بالحفاظ على اتساق كل شيء وتوفير الوقت. هيا نتعمّق في كيفية الاستفادة القصوى من المكوّنات في Figma لتحسين عملية تصميمك.
 
-In Figma, a component is a reusable element that you can use in all your design files. Once you create a component, you can add copies of it anywhere in your designs. Any changes you make to the original component automatically update all its copies, keeping your design consistent throughout.
+في Figma، المكوّن عنصر قابل لإعادة الاستخدام يمكنك استخدامه في كل ملفات تصميمك. وبمجرد إنشاء مكوّن، يمكنك إضافة نسخ منه في أي مكان في تصميماتك. وأي تغييرات تُجريها على المكوّن الأصلي تحدّث تلقائيًا كل نسخه، فتبقى تصميماتك متسقة في كل مكان.
 
-**TL;DR**: If you’re going to be using it more than a couple of times, you should consider making it a component.
+**باختصار**: إذا كنت ستستخدمه أكثر من مرتين أو ثلاث، فينبغي أن تفكّر في تحويله إلى مكوّن.
 
-I probably don’t need to sell you on the value of using components in your designs (or your implementations for that matter), but let’s list out some of the high-level benefits—if only in the name of completeness:
+على الأرجح لست بحاجة إلى من يقنعك بقيمة استخدام المكوّنات في تصميماتك (أو في تطبيقاتك، من باب أولى)، لكن دعنا نُعدّد بعض الفوائد العامة — ولو من باب الاكتمال:
 
-1. **Consistency:** Components help keep elements like buttons and icons looking the same on all pages and projects.
-2. **Efficiency:** By reusing components, you save time instead of recreating them every time.
-3. **Flexibility:** You can customize instances without changing the master component, striking a balance between uniformity and creativity.
-4. **Collaboration:** Shared component libraries help teams work with a common design language and make it easier to hand off designs to developers.
+1. **الاتساق:** تساعد المكوّنات على إبقاء عناصر مثل الأزرار والأيقونات بمظهر واحد في كل الصفحات والمشروعات.
+2. **الكفاءة:** بإعادة استخدام المكوّنات توفّر الوقت بدلًا من إعادة إنشائها في كل مرة.
+3. **المرونة:** يمكنك تخصيص النُّسخ (instances) دون تغيير المكوّن الرئيسي، فتحقّق توازنًا بين التناسق والإبداع.
+4. **التعاون:** تساعد مكتبات المكوّنات المشتركة الفرق على العمل بلغة تصميم موحّدة وتسهّل تسليم التصميمات إلى المطوّرين.
 
-Your available components can be found in Assets mode in the left-pane of your workspace. That said, until you’ve created some components, there isn’t much to see here.
+تجد مكوّناتك المتاحة في وضع Assets في اللوحة اليسرى من مساحة عملك. ومع ذلك، لن ترى هنا الكثير قبل أن تنشئ بعض المكوّنات.
 
-An Empty Components Pane
+لوحة مكوّنات فارغة
 
-## Creating Components
+## إنشاء المكوّنات
 
-To make a component, just choose the element you want to use and click the “Create Component” button or use the shortcut `Ctrl/Cmd + Alt + K`. This element becomes a master component, and you can easily add copies from the Assets panel to your canvas.
+لإنشاء مكوّن، اختر العنصر الذي تريد استخدامه وانقر على الزر «Create Component» أو استخدم الاختصار `Ctrl/Cmd + Alt + K`. وسيصبح هذا العنصر مكوّنًا رئيسيًا، ويمكنك بسهولة إضافة نسخ من لوحة Assets إلى لوحة الرسم.
 
-You can create a component using the context menu by right-clicking on the object that you want to turn into a component.
+يمكنك إنشاء مكوّن باستخدام قائمة السياق بالنقر بالزر الأيمن على الكائن الذي تريد تحويله إلى مكوّن.
 
-Creating a Component from the Context Menu in Figma
+إنشاء مكوّن من قائمة السياق في Figma
 
-You can also create a component using the center of the toolbar menu when you’re selecting an object.
+يمكنك أيضًا إنشاء مكوّن باستخدام وسط قائمة شريط الأدوات عندما تكون قد حدّدت كائنًا.
 
-Creating a Component from the Toolbar Menu
+إنشاء مكوّن من قائمة شريط الأدوات
 
-## Using Instances
+## استخدام النُّسخ (Instances)
 
-Copies of the master component are called instances and they keep the same properties. You can change specific details in each instance (like text or color) without changing the master component. This way, you can have different designs while keeping the main properties consistent.
+تُسمّى نسخ المكوّن الرئيسي «نُسخًا» (instances)، وهي تحتفظ بالخصائص نفسها. ويمكنك تغيير تفاصيل محدّدة في كل نسخة (مثل النص أو اللون) دون تغيير المكوّن الرئيسي. وبهذه الطريقة يمكن أن يكون لديك تصميمات مختلفة مع الحفاظ على اتساق الخصائص الأساسية.
 
-Once you’ve created a component, you can see it in that pane that we looked at earlier that was empty.
+بمجرد أن تنشئ مكوّنًا، ستراه في تلك اللوحة التي نظرنا إليها سابقًا وكانت فارغة.
 
-Components in Figma's asset pane
+المكوّنات في لوحة الأصول في Figma
 
-Simply drag the component onto the canvas to use it. Changing the main component will cascade down to the individual component, but you can also override certain properties on the instance component. In the example below, we’ll create a component and then override its text content as well as its background color.
+ما عليك سوى سحب المكوّن إلى لوحة الرسم لاستخدامه. وتغيير المكوّن الرئيسي سينتقل إلى المكوّن الفرعي، لكن يمكنك أيضًا تجاوز خصائص معيّنة في المكوّن المنسوخ. وفي المثال أدناه، سننشئ مكوّنًا ثم نتجاوز محتواه النصي وكذلك لون خلفيته.
 
-### Detaching an Instance from a Component
+### فصل نسخة عن مكوّن
 
-If you no longer want an instance of a component to inherit properties from the main component, you can choose to detach it from the component—effectively breaking the prototypal inheritance chain.
+إذا لم تعد تريد أن ترث نسخة من مكوّن خصائص من المكوّن الرئيسي، فيمكنك اختيار فصلها عن المكوّن — لتنقطع بذلك سلسلة الوراثة النموذجية (prototypal inheritance).
 
-Detatch a component
+فصل مكوّن
 
-The shortcut for detaching an instance is `Option/Ctrl-Alt-B`.
+اختصار فصل نسخة هو `Option/Ctrl-Alt-B`.
 
-## Organizing Components
+## تنظيم المكوّنات
 
-Figma’s Assets panel is where you can keep all your components organized. You can create a library of components to share with your team, making sure everyone uses the same elements. Naming them well and grouping them helps you find and use components quickly.
+لوحة Assets في Figma هي المكان الذي تنظّم فيه كل مكوّناتك. ويمكنك إنشاء مكتبة من المكوّنات لتشاركها مع فريقك، لتضمن أن الجميع يستخدم العناصر نفسها. وتسميتها تسمية جيدة وتجميعها يساعدك على إيجاد المكوّنات واستخدامها بسرعة.
 
-[Sections](https://stevekinney.com/courses/figma/layers#sections) are useful not only for marking whether or not a given component is ready for development, but also add a layer of organization to your [Assets](https://stevekinney.com/courses/figma/getting-started#assets) panel.
+تُفيد [الأقسام (Sections)](https://stevekinney.com/courses/figma/layers#sections) لا في تحديد ما إذا كان مكوّن معيّن جاهزًا للتطوير فحسب، بل تضيف أيضًا طبقة من التنظيم إلى لوحة [الأصول (Assets)](https://stevekinney.com/courses/figma/getting-started#assets).

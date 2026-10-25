@@ -1,30 +1,30 @@
 ---
-title: "DNS Validation vs. Email Validation"
-lang: en
+title: "التحقق عبر DNS مقابل التحقق عبر البريد الإلكتروني"
+lang: ar
 source: "https://stevekinney.com/courses/aws/dns-validation-vs-email-validation"
 ---
 
-You’ve requested a certificate in ACM and it’s sitting at **Pending validation**. ACM needs you to prove that you own the domain before it’ll issue the certificate. This isn’t an AWS-specific requirement—every Certificate Authority does this. The question is how you prove it. ACM gives you two options: **DNS validation** and **email validation**. DNS validation is almost always the right choice, and by the end of this lesson you’ll understand why.
+لقد طلبت شهادة في ACM وهي الآن في حالة **Pending validation**. وتحتاج ACM إلى دليل على أنك تملك النطاق قبل أن تصدر الشهادة. وهذا ليس متطلبًا خاصًا بـ AWS — فكل جهة إصدار شهادات تفعل ذلك. والسؤال هو كيف تثبت الملكية. تمنحك ACM خيارين: **التحقق عبر DNS** و**التحقق عبر البريد الإلكتروني**. والتحقق عبر DNS هو الخيار الصحيح دائمًا تقريبًا، وبنهاية هذا الدرس ستفهم لماذا.
 
-If you want AWS’s version of the validation behavior while you read, the [ACM DNS validation guide](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) is the canonical reference.
+إذا أردت نسخة AWS من سلوك التحقق أثناء القراءة، فإن [دليل التحقق عبر DNS في ACM](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) هو المرجع المعتمد.
 
-## What Validation Actually Proves
+## ما يثبته التحقق فعلًا
 
-When you request a certificate for `example.com`, ACM needs to verify that the person making the request actually controls that domain. Without this step, anyone could request a certificate for `google.com` or `your-bank.com` and use it to impersonate those sites. Domain validation is what makes the TLS trust model work.
+عندما تطلب شهادة لـ `example.com`، تحتاج ACM إلى التحقق من أن الشخص الذي يقدّم الطلب يتحكم فعلًا في ذلك النطاق. فمن دون هذه الخطوة، يمكن لأي شخص طلب شهادة لـ `google.com` أو `your-bank.com` واستخدامها لانتحال هوية تلك المواقع. والتحقق من النطاق هو ما يجعل نموذج الثقة في TLS يعمل.
 
-Both validation methods answer the same question: “Can you demonstrate control over this domain?” They just use different signals to answer it.
+كلا طريقتي التحقق تجيبان عن السؤال نفسه: «هل يمكنك إثبات التحكم في هذا النطاق؟» لكنهما تستخدمان إشارات مختلفة للإجابة.
 
-## DNS Validation: The Preferred Approach
+## التحقق عبر DNS: النهج المفضّل
 
-With **DNS validation**, ACM gives you a CNAME record to add to your domain’s DNS configuration. The record looks something like this:
+مع **التحقق عبر DNS**، تعطيك ACM سجل CNAME تضيفه إلى إعدادات DNS لنطاقك. ويبدو السجل هكذا:
 
-| Record Name | Record Type | Record Value |
+| اسم السجل | نوع السجل | قيمة السجل |
 | --- | --- | --- |
 | `_abc123.example.com` | CNAME | `_def456.acm-validations.aws` |
 
-You add this CNAME record to your DNS, and ACM periodically checks whether the record exists. Once it finds the record, it considers the domain validated and issues the certificate. The whole process usually takes a few minutes, though it can take up to 30 minutes depending on DNS propagation.
+تضيف سجل CNAME هذا إلى DNS لديك، وتفحص ACM دوريًا ما إذا كان السجل موجودًا. وبمجرد أن تجده، تعتبر النطاق مُتحقَّقًا منه وتصدر الشهادة. وتستغرق العملية كلها عادةً بضع دقائق، رغم أنها قد تستغرق حتى 30 دقيقة حسب انتشار DNS.
 
-Here is how to retrieve the validation records from a pending certificate:
+وهذه طريقة استرداد سجلات التحقق من شهادة معلّقة:
 
 ```bash
 aws acm describe-certificate \
@@ -34,7 +34,7 @@ aws acm describe-certificate \
   --query "Certificate.DomainValidationOptions"
 ```
 
-The `--query` flag filters the output to just the validation options, which is what you care about right now:
+يصفّي العلم `--query` المخرجات لتعرض خيارات التحقق فقط، وهو ما يهمك الآن:
 
 ```json
 [
@@ -52,7 +52,7 @@ The `--query` flag filters the output to just the validation options, which is w
 ]
 ```
 
-If your domain is managed in Route 53, the ACM console offers a **Create records in Route 53** button that adds the CNAME records for you with a single click. From the CLI, you can do the same thing if your hosted zone is in Route 53:
+إذا كان نطاقك مُدارًا في Route 53، فتقدّم لوحة تحكم ACM زر **Create records in Route 53** الذي يضيف سجلات CNAME نيابة عنك بنقرة واحدة. ومن CLI، يمكنك فعل الشيء نفسه إن كان نطاقك المستضاف في Route 53:
 
 ```bash
 aws route53 change-resource-record-sets \
@@ -78,23 +78,23 @@ aws route53 change-resource-record-sets \
   }'
 ```
 
-If your DNS is hosted elsewhere (GoDaddy, Cloudflare, Namecheap), you add the CNAME record through that provider’s DNS management interface. The record name and value come from the ACM output above.
+إذا كان DNS لديك مستضافًا في مكان آخر (GoDaddy أو Cloudflare أو Namecheap)، فتضيف سجل CNAME عبر واجهة إدارة DNS لدى ذلك المزوّد. ويأتي اسم السجل وقيمته من مخرجات ACM أعلاه.
 
-> **Tip**
+> **نصيحة**
 >
-> Some DNS providers require you to enter the CNAME name without the trailing dot and without your domain suffix. If ACM tells you to create `_abc123.example.com.`, you might need to enter just `_abc123` in your DNS provider’s interface. Check your provider’s documentation if the record isn’t being found.
+> بعض مزوّدي DNS يطلبون إدخال اسم CNAME دون النقطة الأخيرة ودون لاحقة نطاقك. فإذا أخبرتك ACM بإنشاء `_abc123.example.com.`، فقد تحتاج إلى إدخال `_abc123` فقط في واجهة مزوّد DNS. راجع وثائق مزوّدك إن لم يُعثر على السجل.
 
-### Why DNS Validation Is Better
+### لماذا التحقق عبر DNS أفضل
 
-DNS validation wins on three fronts:
+يتفوق التحقق عبر DNS في ثلاثة جوانب:
 
-1. **Auto-renewal**: This is the big one. ACM uses the same CNAME record to re-validate the domain when the certificate comes up for renewal. As long as the record stays in your DNS, ACM renews the certificate automatically—no human intervention, no emails to respond to, no risk of the certificate expiring because someone was on vacation.
-2. **No email infrastructure required**: Email validation requires that someone receive and click a link in an email sent to specific addresses at your domain. If you don’t have email set up for your domain (and many frontend engineers running side projects don’t), email validation is a non-starter.
-3. **Scriptable**: You can automate the entire certificate request and validation process with the CLI. Request the certificate, extract the CNAME records, create them in Route 53, wait for validation—all in a shell script or CI pipeline. Email validation requires a human clicking a link.
+1. **التجديد التلقائي**: وهذا هو الأهم. تستخدم ACM سجل CNAME نفسه لإعادة التحقق من النطاق عندما يحين موعد تجديد الشهادة. وما دام السجل باقيًا في DNS لديك، تجدّد ACM الشهادة تلقائيًا — بلا تدخل بشري، ولا رسائل بريد للرد عليها، ولا خطر لانتهاء صلاحية الشهادة لأن أحدهم كان في إجازة.
+2. **لا حاجة إلى بنية بريد إلكتروني**: يتطلب التحقق عبر البريد أن يتلقى شخص ما رابطًا في رسالة مرسلة إلى عناوين محدّدة على نطاقك وينقر عليه. وإذا لم تكن لديك بريد مهيّأ لنطاقك (وكثير من مهندسي الواجهات الأمامية الذين يديرون مشاريع جانبية ليس لديهم)، فالتحقق عبر البريد خيار غير قابل للتنفيذ.
+3. **قابل للبرمجة**: يمكنك أتمتة عملية طلب الشهادة والتحقق بأكملها باستخدام CLI. اطلب الشهادة، واستخرج سجلات CNAME، وأنشئها في Route 53، وانتظر التحقق — كل ذلك في سكربت صدفة أو خط CI. أما التحقق عبر البريد فيتطلب إنسانًا ينقر رابطًا.
 
-## Email Validation: When You Might Need It
+## التحقق عبر البريد الإلكتروني: متى قد تحتاجه
 
-With **email validation**, ACM sends an email to a set of predefined addresses associated with the domain:
+مع **التحقق عبر البريد الإلكتروني**، ترسل ACM رسالة إلى مجموعة عناوين محدّدة مسبقًا مرتبطة بالنطاق:
 
 - `admin@example.com`
 - `administrator@example.com`
@@ -102,19 +102,19 @@ With **email validation**, ACM sends an email to a set of predefined addresses a
 - `postmaster@example.com`
 - `webmaster@example.com`
 
-It also sends to the domain’s WHOIS contact addresses (if they’re not privacy-protected, which they almost always are these days).
+وترسل أيضًا إلى عناوين جهة اتصال WHOIS للنطاق (إن لم تكن محمية بالخصوصية، وهي كذلك دائمًا تقريبًا هذه الأيام).
 
-The email contains a link. Click the link, and the domain is validated. Simple enough in theory, but fragile in practice.
+تحتوي الرسالة على رابط. انقر الرابط، فيُتحقَّق من النطاق. بسيط نظريًا، لكنه هشّ عمليًا.
 
-Email validation exists for cases where you genuinely can’t modify DNS records—maybe your DNS is managed by a different team with a slow change process, or your DNS provider’s API doesn’t support CNAME records for the validation subdomain. These situations are uncommon enough that most people never encounter them.
+يوجد التحقق عبر البريد في الحالات التي يتعذّر فيها عليك تعديل سجلات DNS فعلًا — ربما يدير فريق آخر DNS لديك بعملية تغيير بطيئة، أو لا تدعم واجهة API لمزوّد DNS لديك سجلات CNAME للنطاق الفرعي للتحقق. وهذه الحالات غير شائعة بما يكفي بحيث لا يصادفها معظم الناس أبدًا.
 
-> **Warning**
+> **تحذير**
 >
-> Email-validated certificates do **not** auto-renew through ACM. When the certificate approaches expiration, ACM sends another validation email. If nobody responds to that email, the certificate expires and your site goes down. For any production deployment, DNS validation is the only responsible choice. I’ve seen this happen—it’s not fun.
+> الشهادات المُتحقَّق منها عبر البريد **لا** تتجدد تلقائيًا عبر ACM. فعندما تقترب الشهادة من الانتهاء، ترسل ACM رسالة تحقق أخرى. وإن لم يردّ أحد على تلك الرسالة، تنتهي صلاحية الشهادة ويسقط موقعك. ولأي نشر إنتاجي، التحقق عبر DNS هو الخيار المسؤول الوحيد. لقد رأيت هذا يحدث — وهو ليس ممتعًا.
 
-## Checking Validation Status
+## فحص حالة التحقق
 
-After you add the CNAME record (or click the email link), you can poll the certificate status:
+بعد إضافة سجل CNAME (أو النقر على رابط البريد)، يمكنك الاستعلام عن حالة الشهادة:
 
 ```bash
 aws acm describe-certificate \
@@ -124,7 +124,7 @@ aws acm describe-certificate \
   --query "Certificate.Status"
 ```
 
-This returns `"PENDING_VALIDATION"` until validation completes, then switches to `"ISSUED"`. You can also use `wait` to block until the certificate is issued:
+يُرجع هذا `"PENDING_VALIDATION"` حتى يكتمل التحقق، ثم يتحوّل إلى `"ISSUED"`. ويمكنك أيضًا استخدام `wait` للحجب حتى تُصدر الشهادة:
 
 ```bash
 aws acm wait certificate-validated \
@@ -132,13 +132,13 @@ aws acm wait certificate-validated \
   --region us-east-1
 ```
 
-This command polls every 60 seconds and exits when the certificate status changes to `ISSUED` (or times out after 40 attempts).
+يستعلم هذا الأمر كل 60 ثانية وينتهي عندما تتغيّر حالة الشهادة إلى `ISSUED` (أو تنتهي مهلته بعد 40 محاولة).
 
-## Multiple Domains Mean Multiple Records
+## نطاقات متعددة تعني سجلات متعددة
 
-If your certificate covers `example.com` and `www.example.com`, ACM generates a separate CNAME validation record for each domain name. You need to add all of them. If you validate `example.com` but forget `www.example.com`, the certificate stays in **Pending validation** indefinitely. (Ask me how I know.)
+إذا كانت شهادتك تغطّي `example.com` و`www.example.com`، فستولّد ACM سجل تحقق CNAME منفصلًا لكل اسم نطاق. وتحتاج إلى إضافة كلها. فإذا تحققت من `example.com` ونسيت `www.example.com`، فستبقى الشهادة في حالة **Pending validation** إلى ما لا نهاية. (اسألني كيف أعرف.)
 
-The `describe-certificate` output shows the validation status for each domain individually, so you can see which ones are still pending:
+تعرض مخرجات `describe-certificate` حالة التحقق لكل نطاق على حدة، لترى أيها لا يزال معلّقًا:
 
 ```bash
 aws acm describe-certificate \
@@ -161,12 +161,12 @@ aws acm describe-certificate \
 ]
 ```
 
-> **Tip**
+> **نصيحة**
 >
-> If validation has been pending for more than 72 hours, ACM marks the certificate as **Failed**. You’ll need to request a new certificate and start over. This timeout applies to both DNS and email validation.
+> إذا بقي التحقق معلّقًا أكثر من 72 ساعة، فستضع ACM الشهادة في حالة **Failed**. وستحتاج إلى طلب شهادة جديدة والبدء من جديد. وتنطبق هذه المهلة على التحقق عبر DNS والبريد معًا.
 
-## The Bottom Line
+## الخلاصة
 
-Use DNS validation. Add the CNAME record, leave it in place forever, and never think about certificate renewal again. Email validation is a vestige of a time before DNS automation was widespread—it still exists for edge cases, but for a frontend engineer deploying to AWS with CloudFront, DNS validation is the only path that scales.
+استخدم التحقق عبر DNS. أضف سجل CNAME، واتركه في مكانه إلى الأبد، ولا تفكر في تجديد الشهادة مرة أخرى. أما التحقق عبر البريد فهو بقية من زمن سبق انتشار أتمتة DNS — لا يزال موجودًا للحالات الطرفية، لكن لمهندس واجهات أمامية ينشر على AWS مع CloudFront، التحقق عبر DNS هو المسار الوحيد القابل للتوسّع.
 
-Next, you’ll put that issued certificate to work by attaching it to CloudFront and moving from “I own the domain” to “the CDN can actually serve it over HTTPS.”
+بعد ذلك، ستضع تلك الشهادة الصادرة موضع العمل بربطها بـ CloudFront، لتنتقل من «أملك النطاق» إلى «يمكن لـ CDN أن يقدّمه فعلًا عبر HTTPS».

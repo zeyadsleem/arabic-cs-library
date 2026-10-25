@@ -1,28 +1,28 @@
 ---
-title: "Hugging Face Pipelines"
-lang: en
+title: "خطوط أنابيب Hugging Face"
+lang: ar
 source: "https://stevekinney.com/courses/python-ai/hugging-face-pipeline-tasks"
 ---
 
-The `pipeline()` function in the Hugging Face Transformers library is a **high-level abstraction that offers the simplest way to use pre-trained AI models out-of-the-box** for various tasks. It handles the necessary preprocessing and postprocessing steps, allowing you to input raw data and receive intelligible answers.
+دالة `pipeline()` في مكتبة Hugging Face Transformers هي **تجريد عالي المستوى يوفّر أبسط طريقة لاستخدام نماذج الذكاء الاصطناعي المدرّبة مسبقًا وجاهزةً للعمل** في مهام متنوّعة. وهي تتولّى خطوات المعالجة المسبقة واللاحقة اللازمة، ما يتيح لك إدخال بيانات خام وتلقّي إجابات مفهومة.
 
-Here are the different tasks you can perform with a `pipeline()`:
+وفي ما يلي المهام المختلفة التي يمكنك تنفيذها باستخدام `pipeline()`:
 
-- **Sentiment Analysis**: This task aims to determine whether a piece of text expresses a positive, negative, or neutral sentiment. Use cases include analyzing movie or product reviews, tweets, customer feedback, and social media posts.
-- **Text Generation**: This involves generating coherent and creative text based on a given prompt or starting point. It’s useful for writing assistance, poetry and story generation, educational chats, and even coding. The model auto-completes the input by predicting the most probable next word. Parameters like `max_length` and `num_return_sequences` can control the output.
-- **Zero-Shot Classification**: This allows you to classify text into categories **even if the model was not explicitly trained on those labels**. You provide a set of `candidate_labels`, and the model returns probability scores for each. It’s powerful for auto-labeling customer concerns without custom training.
-- **Summarization**: This task condenses long text into a shorter version while preserving its key information and meaning. It can be extractive (pulls key sentences) or abstractive (rewrites content). Useful for news, research, meeting notes, emails, and reports. You can specify `max_length` and `min_length` for the summary.
-- **Translation**: This converts text from one language to another. Hugging Face supports models for hundreds of languages.
-- **Fill-Mask / Masked Language Modeling**: This task involves filling in the blanks (masked words or tokens) in a given text. It’s how models like BERT are trained. The pipeline returns top likely replacements along with confidence scores.
-- **Named Entity Recognition (NER)**: This pipeline identifies and classifies important keywords in a sentence into predefined categories, such as names of people (PER), places (LOC), or organizations (ORG). It’s great for news tagging, searching, indexing, resume parsing, and legal documents. The `grouped_entities=True` option regroups parts of a sentence corresponding to the same entity.
-- **Question Answering**: This pipeline extracts an answer span from a given context to a provided question. It’s useful for chatbots, search tools, and interactive learning.
-- **Feature Extraction**: This task extracts vector representations (embeddings) of text. These raw embeddings can be used for tasks like sentence similarity or as input for custom classification heads.
-- **Image Classification**: This helps models recognize objects, people, or animals in pictures. It predicts the likelihood that an image belongs to a specified class.
-- **Object Detection**: This locates and identifies objects within images.
-- **Image-to-Text**: This generates text descriptions of images.
-- **Automatic Speech Recognition (ASR)**: This converts spoken audio into text. It’s the backbone of voice assistants, auto-captioning tools, and audio note transcriptions.
-- **Audio Classification**: This classifies audio into categories.
-- **Text-to-Speech**: This converts text into spoken audio.
-- **Multimodal (e.g., Image-Text-to-Text)**: These pipelines combine and process data from multiple sources or modalities. For example, they can respond to an image based on a text prompt.
+- **تحليل المشاعر**: تهدف هذه المهمة إلى تحديد ما إذا كان نصٌّ ما يعبّر عن مشاعر إيجابية أو سلبية أو محايدة. وتشمل حالات استخدامها تحليل مراجعات الأفلام أو المنتجات والتغريدات وملاحظات العملاء ومنشورات وسائل التواصل الاجتماعي.
+- **توليد النصوص**: يتضمّن ذلك توليد نص متماسك وإبداعي انطلاقًا من موجّه أو نقطة بداية معيّنة. وهو مفيد في المساعدة على الكتابة، وتوليد الشعر والقصص، والمحادثات التعليمية، وحتى البرمجة. ويُكمل النموذج الإدخال تلقائيًا بتوقّع الكلمة التالية الأكثر احتمالًا. ويمكن لمعاملات مثل `max_length` و`num_return_sequences` التحكّم في المخرجات.
+- **التصنيف بدون أمثلة (Zero-Shot Classification)**: يتيح لك ذلك تصنيف النص في فئات **حتى إن لم يُدرَّب النموذج صراحةً على تلك التسميات**. فتقدّم مجموعة من `candidate_labels`، ويعيد النموذج درجات احتمال لكل منها. وهو فعّال في وسم شواغل العملاء تلقائيًا دون تدريب مخصّص.
+- **التلخيص**: تُكثّف هذه المهمة نصًا طويلًا في نسخة أقصر مع الحفاظ على معلوماته ومعناه الأساسيين. ويمكن أن يكون التلخيص استخلاصيًا (يسحب الجمل المفتاحية) أو تجريديًا (يعيد صياغة المحتوى). وهو مفيد للأخبار والأبحاث وملاحظات الاجتماعات ورسائل البريد الإلكتروني والتقارير. ويمكنك تحديد `max_length` و`min_length` للملخّص.
+- **الترجمة**: تحوّل هذه المهمة النص من لغة إلى أخرى. وتدعم Hugging Face نماذج لمئات اللغات.
+- **ملء الفراغ / نمذجة اللغة المقنّعة (Fill-Mask / Masked Language Modeling)**: تتضمّن هذه المهمة ملء الفراغات (الكلمات أو الرموز المقنّعة) في نص معيّن. وهكذا تُدرَّب نماذج مثل BERT. ويعيد خط الأنابيب أكثر البدائل احتمالًا مع درجات الثقة.
+- **التعرّف على الكيانات المسمّاة (NER)**: يحدّد خط الأنابيب هذا الكلمات المفتاحية المهمة في الجملة ويصنّفها في فئات محدّدة سلفًا، مثل أسماء الأشخاص (PER) والأماكن (LOC) أو المؤسسات (ORG). وهو ممتاز في وسم الأخبار والبحث والفهرسة وتحليل السير الذاتية والوثائق القانونية. ويعيد الخيار `grouped_entities=True` تجميع أجزاء الجملة التي تنتمي إلى الكيان نفسه.
+- **الإجابة عن الأسئلة**: يستخلص خط الأنابيب هذا نطاق إجابة من سياق معيّن ردًّا على سؤال مطروح. وهو مفيد في روبوتات المحادثة وأدوات البحث والتعلّم التفاعلي.
+- **استخلاص الخصائص**: تستخلص هذه المهمة تمثيلات متجهية (تضمينات) للنص. ويمكن استخدام هذه التضمينات الخام في مهام مثل تشابه الجمل أو كمدخلات لرؤوس تصنيف مخصّصة.
+- **تصنيف الصور**: يساعد ذلك النماذج على التعرّف على الأشياء أو الأشخاص أو الحيوانات في الصور. ويتوقّع احتمال انتماء صورة إلى صنف محدّد.
+- **كشف الأشياء**: يحدّد هذا مواقع الأشياء داخل الصور ويتعرّف عليها.
+- **من صورة إلى نص**: يولّد هذا أوصافًا نصية للصور.
+- **التعرّف التلقائي على الكلام (ASR)**: يحوّل هذا الكلام المنطوق إلى نص. وهو العمود الفقري للمساعدات الصوتية وأدوات التسمية التوضيحية التلقائية وتفريغ الملاحظات الصوتية.
+- **تصنيف الصوت**: يصنّف الصوت في فئات.
+- **من نص إلى كلام**: يحوّل هذا النص إلى صوت منطوق.
+- **متعدّد الوسائط (مثل من صورة ونص إلى نص)**: تجمع خطوط الأنابيب هذه بين بيانات من مصادر أو وسائط متعدّدة وتعالجها. ويمكنها، على سبيل المثال، الردّ على صورة انطلاقًا من موجّه نصي.
 
-The `pipeline()` function allows for flexibility, letting you specify a particular model from the Hugging Face Hub for a given task, rather than just using the default. You can also pass a list of inputs to pipelines for efficient batch inference.
+تتيح دالة `pipeline()` قدرًا من المرونة، إذ تسمح لك بتحديد نموذج بعينه من Hugging Face Hub لمهمة معيّنة، بدلًا من استخدام النموذج الافتراضي فقط. ويمكنك أيضًا تمرير قائمة مدخلات إلى خطوط الأنابيب لاستدلال دفعي فعّال.

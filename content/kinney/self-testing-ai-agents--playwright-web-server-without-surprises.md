@@ -1,25 +1,25 @@
 ---
-title: "Configuring the Web Server"
-lang: en
+title: "تهيئة خادم الويب"
+lang: ar
 source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-web-server-without-surprises"
 ---
 
-Most `webServer` problems don’t look like `webServer` problems. They look like “the test is flaky,” “the app works locally but not in CI,” or my personal favorite: “Playwright says the server is ready, but the page is obviously not ready.” I’ve lost enough time to this knob that I now treat it as infrastructure, not convenience.
+معظم مشكلات `webServer` لا تبدو في ظاهرها مشكلات `webServer`. تبدو كأنها «الاختبار متقلّب»، أو «التطبيق يعمل محليًا لكنه لا يعمل في CI»، أو المفضّلة عندي شخصيًا: «يقول Playwright إن الخادم جاهز، لكن الصفحة ليست جاهزة بأي حال». لقد أهدرت من الوقت على هذا المفتاح ما يجعلني أتعامل معه اليوم كبنية تحتية، لا كوسيلة راحة.
 
-[`webServer`](https://playwright.dev/docs/test-webserver) is Playwright’s answer to a very specific question: *what process should be running before the test suite starts, and how do we know it is ready?* Once you frame it that way, the option gets a lot easier to reason about.
+[`webServer`](https://playwright.dev/docs/test-webserver) هو جواب Playwright عن سؤال محدّد جدًا: *أي عملية ينبغي أن تكون عاملة قبل أن تبدأ حزمة الاختبارات، وكيف نعرف أنها جاهزة؟* عندما تصوغ المسألة بهذه الطريقة، يصبح التفكير في هذا الخيار أسهل بكثير.
 
-## What `webServer` actually does
+## ما الذي يفعله `webServer` فعليًا
 
-At test startup, Playwright will:
+عند بدء الاختبارات، سيقوم Playwright بما يلي:
 
-1. Spawn the command you configured.
-2. Wait for a port or URL to become available.
-3. Run the tests.
-4. Shut the process down when the run is over.
+1. تشغيل الأمر الذي هيّأته.
+2. الانتظار حتى يصبح منفذ أو عنوان URL متاحًا.
+3. تشغيل الاختبارات.
+4. إيقاف العملية عند انتهاء التشغيل.
 
-That is the whole contract. `webServer` is not your deploy system, not your seed system, and not a substitute for application health checks. It is a process launcher with a readiness check.
+هذا هو العقد كله. `webServer` ليس نظام النشر لديك، ولا نظام تهيئة البيانات الأولية، ولا بديلًا عن فحوص صحة التطبيق. إنه مشغّل عمليات مع فحص جاهزية.
 
-The boring shape looks like this:
+الشكل المملّ يبدو هكذا:
 
 ```typescript
 import { defineConfig } from '@playwright/test';
@@ -36,26 +36,26 @@ export default defineConfig({
 });
 ```
 
-That config answers the two questions that matter:
+هذه التهيئة تجيب عن السؤالين المهمّين:
 
-- What should start? `npm run preview ...`
-- How do we know it is ready? a successful HTTP check against `http://127.0.0.1:4173`
+- ما الذي ينبغي أن يبدأ؟ `npm run preview ...`
+- كيف نعرف أنه جاهز؟ فحص HTTP ناجح على `http://127.0.0.1:4173`
 
-Everything else is tuning.
+كل ما عدا ذلك ضبطٌ وتنغيم.
 
-## The three common shapes
+## الأشكال الثلاثة الشائعة
 
-Most real setups fall into one of three buckets.
+معظم الإعدادات الحقيقية تقع في واحد من ثلاثة أوانٍ.
 
-### One app, one process
+### تطبيق واحد وعملية واحدة
 
-This is the standard `frontend starts app, Playwright hits app` flow. [Shelf](https://github.com/stevekinney/shelf-life) lives here. So do most [SvelteKit](https://kit.svelte.dev/), [Next.js](https://nextjs.org/), [Remix](https://remix.run/), and [Vite](https://vite.dev/) apps.
+هذا هو التدفق المعتاد «الواجهة الأمامية تشغّل التطبيق، وPlaywright يطرق التطبيق». [Shelf](https://github.com/stevekinney/shelf-life) يعيش هنا. وكذلك معظم تطبيقات [SvelteKit](https://kit.svelte.dev/) و[Next.js](https://nextjs.org/) و[Remix](https://remix.run/) و[Vite](https://vite.dev/).
 
-Use `webServer` when the app under test is local and the suite should own its lifecycle.
+استخدم `webServer` عندما يكون التطبيق مدار الاختبار محليًا وتكون الحزمة هي المسؤولة عن دورة حياته.
 
-### Frontend plus backend
+### الواجهة الأمامية مع الخلفية
 
-Sometimes the browser needs two processes: frontend plus API server, app plus webhook receiver, docs site plus mock identity provider. `webServer` accepts an array for exactly this reason:
+أحيانًا يحتاج المتصفح إلى عمليتين: واجهة أمامية مع خادم API، أو تطبيق مع مستقبِل webhook، أو موقع توثيق مع مزوّد هوية وهمي. يقبل `webServer` مصفوفة لهذا السبب تحديدًا:
 
 ```typescript
 export default defineConfig({
@@ -79,74 +79,74 @@ export default defineConfig({
 });
 ```
 
-Use `name`. When two startup logs are interleaved, named prefixes are the difference between “obvious” and “guessing.”
+استخدم `name`. عندما يتشابك سجلّا تشغيل، تكون البادئات المسمّاة الفرق بين «واضح» و«تخمين».
 
-### Hosted target
+### هدف مستضاف
 
-If the thing under test is already deployed—a preview URL, a staging environment, a local container stack somebody else booted—do not add a fake local `webServer` just to make the config symmetrical. Point `baseURL` at the hosted target and leave `webServer` out entirely.
+إذا كان الشيء مدار الاختبار منشورًا بالفعل — عنوان معاينة، أو بيئة staging، أو مكدّس حاويات محلي أشعله شخص آخر — فلا تضف `webServer` محليًا مزيفًا فقط لجعل التهيئة متماثلة. وجّه `baseURL` إلى الهدف المستضاف واترك `webServer` خارج المعادلة كليًا.
 
-This is the common mistake in smoke suites: people inherit the end-to-end config, so the smoke tests boot a local app even though the real target is a deployed URL. That is not a smoke test anymore. That is a local regression suite wearing a smoke-test badge.
+هذا هو الخطأ الشائع في حزم الدخان: يرث الناس تهيئة الاختبار الشامل فيُشغّل اختبار الدخان تطبيقًا محليًا مع أن الهدف الحقيقي عنوان منشور. لم يعد هذا اختبار دخان. صار حزمة انحدار محلية ترتدي شارة اختبار دخان.
 
-## `port` versus `url`
+## `port` مقابل `url`
 
-This is the first gotcha worth memorizing.
+هذا أول مَزلق يستحق الحفظ.
 
-- `port` waits until something accepts TCP connections on that port. Note that `port` is marked **deprecated** in current Playwright docs, which direct new configs to use `url` instead.
-- `url` waits until the URL returns an allowed status code.
+- ينتظر `port` حتى يقبل شيءٌ اتصالات TCP على ذلك المنفذ. لاحظ أن `port` مصنّف **مهجورًا** في وثائق Playwright الحالية، التي توجّه التهيئات الجديدة إلى استخدام `url` بدلًا منه.
+- ينتظر `url` حتى يعيد العنوان رمز حالة مسموحًا.
 
-Allowed status codes for `url` readiness are broader than people expect: `2xx`, `3xx`, `400`, `401`, `402`, and `403` all count as “server is ready.” That is deliberate. The question is “is the server listening and responding?” not “did the application render the exact page I wanted?”
+رموز الحالة المسموحة لجاهزية `url` أوسع مما يتوقع الناس: `2xx` و`3xx` و`400` و`401` و`402` و`403` كلها تُحتسب «الخادم جاهز». وهذا مقصود. السؤال هو «هل الخادم يستمع ويستجيب؟» لا «هل رسم التطبيق الصفحة التي أردتها بالضبط؟»
 
-Use `port` when:
+استخدم `port` عندما:
 
-- you only care that the process is listening
-- the app has no useful health endpoint
-- you want the simplest possible local check
+- يهمّك فقط أن العملية تستمع
+- لا يملك التطبيق نقطة فحص صحة مفيدة
+- تريد أبسط فحص محلي ممكن
 
-Use `url` when:
+استخدم `url` عندما:
 
-- you want to probe a specific health endpoint like `/health`
-- the app needs warmup work before the real pages are useful
-- you need `ignoreHTTPSErrors`
-- auth redirects or non-200 readiness are part of the normal boot shape
+- تريد سبر نقطة صحة محدّدة مثل `/health`
+- يحتاج التطبيق إلى عمل تسخين قبل أن تصبح الصفحات الحقيقية مفيدة
+- تحتاج `ignoreHTTPSErrors`
+- تكون تحويلات المصادقة أو جاهزية بغير 200 جزءًا من شكل الإقلاع الطبيعي
 
-There is one more wrinkle: according to the [Playwright `TestConfig` docs](https://playwright.dev/docs/api/class-testconfig#test-config-web-server), `port` can implicitly set `baseURL`, but `url` does not. And if `webServer` is an array, you must configure `baseURL` explicitly anyway. My advice is simple: always set `use.baseURL` yourself. You will forget this detail exactly once, and it will be on a day you did not have spare patience.
+هناك ثنية أخرى: وفقًا [لوثائق `TestConfig` في Playwright](https://playwright.dev/docs/api/class-testconfig#test-config-web-server)، يمكن لـ `port` أن يضبط `baseURL` ضمنًا، أما `url` فلا يفعل ذلك. وإذا كان `webServer` مصفوفة، فيجب عليك ضبط `baseURL` صراحةً على أي حال. نصيحتي بسيطة: اضبط `use.baseURL` بنفسك دائمًا. ستنسى هذه التفصيلة مرة واحدة بالضبط، وستكون في يوم لا تملك فيه صبرًا إضافيًا.
 
-## The options that actually matter
+## الخيارات التي تهمّ فعليًا
 
-The full option list is longer than the average team needs. These are the ones I keep coming back to.
+قائمة الخيارات الكاملة أطول من حاجة الفريق المتوسط. هذه هي التي أعود إليها دائمًا.
 
 ### `cwd`
 
-`cwd` controls where the process starts. It defaults to the directory of the Playwright config file. In a monorepo, that default is often wrong for at least one of your servers.
+يتحكم `cwd` في مكان بدء العملية. وهو يعود افتراضيًا إلى دليل ملف تهيئة Playwright. في مستودع أحادي كبير (monorepo)، يكون هذا الافتراضي خاطئًا في الغالب لواحد من خوادمك على الأقل.
 
-If the startup command depends on local files, set `cwd` deliberately.
+إذا كان أمر التشغيل يعتمد على ملفات محلية، فاضبط `cwd` عن قصد.
 
 ### `env`
 
-The spawned process inherits `process.env`, and Playwright adds `PLAYWRIGHT_TEST=1`. That default is useful. It gives your app a stable “I am running under Playwright” signal without inventing yet another environment variable.
+ترث العملية المشغّلة `process.env`، ويضيف Playwright `PLAYWRIGHT_TEST=1`. هذا الافتراضي مفيد. فهو يمنح تطبيقك إشارة مستقرة «أنا أعمل تحت Playwright» دون اختراع متغيّر بيئة آخر.
 
-This is a good place for test-only flags like:
+هذا مكان جيد لأعلام خاصة بالاختبار مثل:
 
-- pointing the app at a disposable test database
-- switching to a temporary database
-- disabling analytics
-- pointing the app at a fake third-party service
+- توجيه التطبيق إلى قاعدة بيانات اختبار قابلة للتخلص منها
+- التبديل إلى قاعدة بيانات مؤقتة
+- تعطيل التحليلات
+- توجيه التطبيق إلى خدمة طرف ثالث وهمية
 
-What this is *not* a good place for is a giant blob of production configuration copied from your deployment platform. Keep the test environment minimal and explicit.
+ما *ليس* مكانًا جيدًا له هو كتلة ضخمة من تهيئة الإنتاج منسوخة من منصة النشر لديك. أبقِ بيئة الاختبار صغيرة وصريحة.
 
 ### `reuseExistingServer`
 
-This should usually be `!process.env.CI`.
+ينبغي أن تكون هذه القيمة `!process.env.CI` في العادة.
 
-Locally, reusing an already-running server makes the loop faster. In CI, it is the opposite of what you want. CI should start fresh so a stale process cannot make the suite pass for the wrong reason.
+محليًا، إعادة استخدام خادم يعمل بالفعل تجعل الحلقة أسرع. في CI، الأمر عكس ما تريد تمامًا. ينبغي أن تبدأ CI من جديد حتى لا تستطيع عملية عالقة أن تجعل الحزمة تنجح للسبب الخاطئ.
 
-The gotcha: if you are building before previewing, a reused local server can be a *stale build*. That is the exact failure mode Shelf calls out elsewhere in the course. When the app behavior does not match the code you just changed, kill the reused server first. Do that before you start debugging the test.
+المَزلق: إذا كنت تبني قبل المعاينة، فقد يكون الخادم المحلي المُعاد استخدامه *بناءً قديمًا*. هذا هو نمط الفشل نفسه الذي ينبّه إليه Shelf في مكان آخر من الدورة. عندما لا يطابق سلوك التطبيق الكود الذي غيّرته للتو، اقتل الخادم المُعاد استخدامه أولًا. افعل ذلك قبل أن تبدأ تنقيح الاختبار.
 
-### `stdout`, `stderr`, and `wait`
+### `stdout` و`stderr` و`wait`
 
-Output handling is one of those places where people assume the defaults will save them. Sometimes they do. Sometimes the only useful readiness message prints somewhere you are not looking.
+معالجة المخرجات من المواضع التي يفترض فيها الناس أن الافتراضيات ستنقذهم. أحيانًا تنقذهم فعلًا. وأحيانًا تُطبع رسالة الجاهزية المفيدة الوحيدة في مكان لا تنظر إليه.
 
-If your server chooses its port dynamically or only prints “ready” to stdout, switch `stdout` to `'pipe'` and use `wait.stdout` with a regular expression:
+إذا كان خادمك يختار منفذه ديناميكيًا أو لا يطبع «جاهز» إلا إلى stdout، فبدّل `stdout` إلى `'pipe'` واستخدم `wait.stdout` مع تعبير نمطي:
 
 ```typescript
 webServer: {
@@ -158,52 +158,52 @@ webServer: {
 }
 ```
 
-This is an advanced escape hatch, not the default path. If you do use capture groups, keep the names distinct across multiple servers and make sure you have a concrete reason for it beyond “this seemed neat.”
+هذا منفذ نجاة متقدّم، لا المسار الافتراضي. إذا استخدمت مجموعات التقاط، فأبقِ الأسماء متمايزة بين الخوادم المتعددة وتأكد أن لديك سببًا ملموسًا يتجاوز «بدا هذا أنيقًا».
 
-Those named capture groups become environment variables for the test run. Playwright uppercases the name, so `app_port` is exposed as `process.env.APP_PORT`. That is powerful and a great way to create weird invisible plumbing if you use it casually. Treat it like infrastructure, not a cute regex trick.
+تلك المجموعات المسمّاة تصبح متغيّرات بيئة لتشغيل الاختبار. يحوّل Playwright الاسم إلى أحرف كبيرة، فيُعرَض `app_port` باسم `process.env.APP_PORT`. هذا قوي وهو طريقة رائعة لصنع سباكة خفية غريبة إذا استخدمته على نحو عابر. تعامله كبنية تحتية، لا كحيلة regex لطيفة.
 
 ### `timeout`
 
-The default startup timeout is 60 seconds. Raise it when the app *honestly* needs longer. Do not raise it because the wrong readiness check is probing the wrong thing.
+مهلة البدء الافتراضية 60 ثانية. ارفعها عندما يحتاج التطبيق وقتًا أطول *بصدق*. لا ترفعها لأن فحص الجاهزية الخاطئ يسبر الشيء الخاطئ.
 
-If your app is ready at 12 seconds and your `webServer` is still timing out at 60, the problem is almost never “the app is too slow.” The problem is usually:
+إذا كان تطبيقك جاهزًا في 12 ثانية وما زال `webServer` ينتهي وقته عند 60، فالسبب لا يكون أبدًا تقريبًا «التطبيق بطيء جدًا». السبب عادةً:
 
-- the command failed and you hid stdout
-- the process is listening on a different port
-- the readiness URL is wrong
-- the app is redirecting somewhere unexpected
+- فشل الأمر وأخفيت stdout
+- العملية تستمع على منفذ مختلف
+- عنوان الجاهزية خاطئ
+- التطبيق يحوّل إلى مكان غير متوقع
 
 ### `gracefulShutdown`
 
-If you do not configure shutdown, Playwright will force-kill the process group. That is fine for simple dev servers. It is not always fine for [Docker](https://www.docker.com/) containers, watchers, or servers that need a clean `SIGTERM` path.
+إذا لم تهيّئ الإيقاف، فسيقتل Playwright مجموعة العمليات قسرًا. هذا مقبول لخوادم تطوير بسيطة. وهو ليس مقبولًا دائمًا مع حاويات [Docker](https://www.docker.com/) أو المراقبات أو الخوادم التي تحتاج مسار `SIGTERM` نظيفًا.
 
-The docs explicitly call out that Docker shutdown requires `SIGTERM`, and they also note that Windows ignores `SIGTERM` and `SIGINT` here. That is worth knowing before you start wondering why your teardown behavior differs between local machines and CI.
+تذكر الوثائق صراحةً أن إيقاف Docker يتطلب `SIGTERM`، وتلاحظ أيضًا أن Windows يتجاهل `SIGTERM` و`SIGINT` هنا. هذا يستحق المعرفة قبل أن تبدأ بالتساؤل عن سبب اختلاف سلوك الإنهاء بين أجهزتك المحلية وCI.
 
-## The gotchas that matter in practice
+## المزالق التي تهمّ في الممارسة
 
-### A healthy URL can still be the wrong URL
+### قد يكون عنوان URL السليم عنوانًا خاطئًا
 
-If your readiness URL is too shallow—say, `/health` returns 200 while the real app is still compiling assets—you will start tests against a half-ready system. `webServer` did its job. Your health check lied.
+إذا كان عنوان الجاهزية سطحيًا جدًا — مثلًا، يعيد `/health` الرمز 200 بينما التطبيق الحقيقي ما زال يجمّع الأصول — فستبدأ الاختبارات على نظام نصف جاهز. أدّى `webServer` مهمته. أما فحص الصحة لديك فقد كذب.
 
-Pick a readiness signal that exercises the thing the browser actually needs.
+اختر إشارة جاهزية تختبر الشيء الذي يحتاجه المتصفح فعلًا.
 
-### `reuseExistingServer` can hide drift
+### يمكن لـ `reuseExistingServer` أن يخفي الانحراف
 
-This is the local-developer tax. Reusing a server is fast, until the reused process does not match your current code or environment. When the failure makes no sense, turn reuse off temporarily or kill the server and rerun. I have saved more time with that blunt move than with any clever debugging trick.
+هذه ضريبة المطوّر المحلي. إعادة استخدام الخادم سريعة، إلى أن تصبح العملية المُعاد استخدامها غير مطابقة لكودك أو بيئتك الحالية. عندما يصبح الفشل بلا معنى، أوقف إعادة الاستخدام مؤقتًا أو اقتل الخادم وأعد التشغيل. لقد وفّرت بهذه الحركة الفجّة وقتًا أكثر مما وفّرته أي حيلة تنقيح ذكية.
 
-### `webServer` is not a seed hook
+### `webServer` ليس خطّاف تهيئة بيانات
 
-Starting the server and seeding the app are different responsibilities. If the suite needs a seeded database, do that in [fixtures](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped), [global setup](https://playwright.dev/docs/test-global-setup-teardown), or explicit test helpers. Do not jam seed logic into the startup command and pretend that is cleaner.
+تشغيل الخادم وتغذية التطبيق بالبيانات مسؤوليتان مختلفتان. إذا كانت الحزمة تحتاج قاعدة بيانات مغذّاة، فافعل ذلك في [الـ fixtures](https://stevekinney.com/courses/self-testing-ai-agents/fixtures-worker-scoped-test-scoped) أو [الإعداد العام](https://playwright.dev/docs/test-global-setup-teardown) أو مساعدات اختبار صريحة. لا تحشر منطق التغذية في أمر التشغيل وتدّعي أن هذا أنظف.
 
-### CI does not need a second manual boot step
+### لا تحتاج CI إلى خطوة تشغيل يدوية ثانية
 
-If `playwright.config.ts` already has a correct `webServer`, your [GitHub Actions](https://github.com/features/actions) workflow usually does *not* need an extra “start the server in the background” step. Duplicating the lifecycle in CI is how you get port conflicts, races, and two sources of truth.
+إذا كان `playwright.config.ts` يحتوي بالفعل على `webServer` صحيح، فسير عمل [GitHub Actions](https://github.com/features/actions) لديك *لا* يحتاج عادةً إلى خطوة إضافية «شغّل الخادم في الخلفية». تكرار دورة الحياة في CI هو طريقك إلى تعارض المنافذ وحالات التسابق ومصدرين للحقيقة.
 
-### Use preview or production-ish start when you care about reality
+### استخدم تشغيل المعاينة أو ما يشبه الإنتاج عندما يهمّك الواقع
 
-For end-to-end tests, I usually want the production-ish server path, not the dev server. Dev servers add hot reload, extra transforms, debug overlays, and middleware that do not exist in production. That is sometimes exactly what you want while debugging. It is usually not what you want as the default contract for the suite.
+بالنسبة لاختبارات الطرف إلى الطرف، أريد عادةً مسار الخادم القريب من الإنتاج، لا خادم التطوير. تضيف خوادم التطوير إعادة التحميل السريع وتحويلات إضافية وطبقات تصحيح وبرمجيات وسيطة لا وجود لها في الإنتاج. هذا أحيانًا هو بالضبط ما تريده أثناء التنقيح. لكنه ليس عادةً ما تريده كعقد افتراضي للحزمة.
 
-## The agent rules
+## قواعد الوكيل
 
 ```markdown
 ## Playwright webServer
@@ -219,13 +219,13 @@ For end-to-end tests, I usually want the production-ish server path, not the dev
   with `DEBUG=pw:webserver`.
 ```
 
-## The thing to remember
+## الشيء الذي يجب تذكّره
 
-`webServer` is a contract: start this process, wait for this signal, then run the suite. The moment you treat it like a general-purpose setup hook, it gets weird. Keep the contract small, pick an honest readiness signal, and most of the “mysterious Playwright flake” category disappears.
+`webServer` عقد: شغّل هذه العملية، وانتظر هذه الإشارة، ثم شغّل الحزمة. في اللحظة التي تتعامل فيها معه كخطّاف إعداد عام الغرض، يصبح غريبًا. أبقِ العقد صغيرًا، واختر إشارة جاهزية صادقة، وستختفي معظم فئة «تقلّب Playwright الغامض».
 
-## Additional Reading
+## قراءات إضافية
 
-- [Configuring Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)
-- [Playwright Projects](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
-- [CI as the Loop of Last Resort](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
-- [Lab: Add Post-Deploy Smoke Checks to Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)
+- [تهيئة Playwright](https://stevekinney.com/courses/self-testing-ai-agents/configuring-playwright)
+- [مشاريع Playwright](https://stevekinney.com/courses/self-testing-ai-agents/playwright-projects)
+- [CI كحلقة الملاذ الأخير](https://stevekinney.com/courses/self-testing-ai-agents/ci-as-the-loop-of-last-resort)
+- [مختبر: أضف فحوص دخان بعد النشر إلى Shelf](https://stevekinney.com/courses/self-testing-ai-agents/lab-add-post-deploy-smoke-checks-to-shelf)

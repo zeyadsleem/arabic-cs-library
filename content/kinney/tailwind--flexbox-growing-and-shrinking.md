@@ -1,20 +1,20 @@
 ---
-title: "Growing and Shrinking"
-lang: en
+title: "النمو والانكماش"
+lang: ar
 source: "https://stevekinney.com/courses/tailwind/flexbox-growing-and-shrinking"
 ---
 
-Control how flex items grow to fill available space or shrink when space is limited.
+تحكّم في كيفية نمو عناصر flex لملء المساحة المتاحة أو انكماشها عندما تكون المساحة محدودة.
 
-## Flex Grow
+## نمو flex
 
-Use `grow` utilities to control how items expand:
+استخدم أدوات `grow` للتحكم في كيفية توسّع العناصر:
 
-- `grow-0` - Item won’t grow (default)
-- `grow` - Item can grow to fill space (flex-grow: 1)
-- `grow-[2]` - Custom grow factor
+- `grow-0` - لن ينمو العنصر (افتراضي)
+- `grow` - يمكن للعنصر النمو لملء المساحة (flex-grow: 1)
+- `grow-[2]` - عامل نمو مخصص
 
-*Flex Grow — Example 1 — [Open example](https://stevekinney.com/generated/playgrounds/bc718c0fc551fb2fa0c772ce73d83a6fbe19c528a4ef6fb3ba17c0b19e4d5e18.html)*
+*نمو flex — المثال 1 — [افتح المثال](https://stevekinney.com/generated/playgrounds/bc718c0fc551fb2fa0c772ce73d83a6fbe19c528a4ef6fb3ba17c0b19e4d5e18.html)*
 
 ```html
 <!-- Middle item takes up remaining space -->
@@ -25,15 +25,15 @@ Use `grow` utilities to control how items expand:
 </div>
 ```
 
-## Flex Shrink
+## انكماش flex
 
-Use `shrink` utilities to control how items contract:
+استخدم أدوات `shrink` للتحكم في كيفية تقلّص العناصر:
 
-- `shrink-0` - Item won’t shrink below natural size
-- `shrink` - Item can shrink if needed (flex-shrink: 1)
-- `shrink-[2]` - Custom shrink factor
+- `shrink-0` - لن ينكمش العنصر تحت حجمه الطبيعي
+- `shrink` - يمكن للعنصر الانكماش عند الحاجة (flex-shrink: 1)
+- `shrink-[2]` - عامل انكماش مخصص
 
-*Flex Shrink — Example 2 — [Open example](https://stevekinney.com/generated/playgrounds/b9bfb7c39c5a8d5ac94a3b45a8b7b8b4085d2ceb8f66c349f580f80130fcca72.html)*
+*انكماش flex — المثال 2 — [افتح المثال](https://stevekinney.com/generated/playgrounds/b9bfb7c39c5a8d5ac94a3b45a8b7b8b4085d2ceb8f66c349f580f80130fcca72.html)*
 
 ```html
 <!-- Prevent logo from shrinking -->
@@ -51,9 +51,9 @@ Use `shrink` utilities to control how items contract:
 </div>
 ```
 
-## Common Patterns
+## أنماط شائعة
 
-*Common Patterns — Example 3 — [Open example](https://stevekinney.com/generated/playgrounds/15ce1dbe609fcb235857b83bd1d2a3baf9d59987ffa585e38cb2402ccbbaf225.html)*
+*أنماط شائعة — المثال 3 — [افتح المثال](https://stevekinney.com/generated/playgrounds/15ce1dbe609fcb235857b83bd1d2a3baf9d59987ffa585e38cb2402ccbbaf225.html)*
 
 ```html
 <!-- Equal width columns -->
@@ -76,4 +76,4 @@ Use `shrink` utilities to control how items contract:
 </div>
 ```
 
-Combine with responsive modifiers: `md:grow-0`, `lg:shrink-0`, etc.
+ادمجها مع معدِّلات التجاوب: `md:grow-0` و`lg:shrink-0` وما شابه.

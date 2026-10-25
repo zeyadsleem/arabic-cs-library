@@ -1,12 +1,12 @@
 ---
-title: "Visual Studio Code Snippet Exercise Solutions"
-lang: en
+title: "حلول تمارين مقاطع الشيفرة في Visual Studio Code"
+lang: ar
 source: "https://stevekinney.com/courses/visual-studio-code/vscode-snippets-solutions"
 ---
 
-Below are some possible solutions to [these exercises around create snippets in Visual Studio Code](https://stevekinney.com/courses/visual-studio-code/vscode-snippet-exercises).
+في ما يلي بعض الحلول الممكنة [لهذه التمارين حول إنشاء المقاطع في Visual Studio Code](https://stevekinney.com/courses/visual-studio-code/vscode-snippet-exercises).
 
-## Basic Function
+## دالة أساسية
 
 ```json
 {
@@ -18,7 +18,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Arrow Function
+## دالة سهمية
 
 ```json
 {
@@ -30,7 +30,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Async Function
+## دالة غير متزامنة
 
 ```json
 {
@@ -46,7 +46,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Basic Class
+## صنف أساسي
 
 ```json
 {
@@ -58,7 +58,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Class Method
+## تابع الصنف
 
 ```json
 {
@@ -70,7 +70,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Private Property
+## خاصية خاصة
 
 ```json
 {
@@ -82,7 +82,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Basic Import
+## استيراد أساسي
 
 ```json
 {
@@ -94,7 +94,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Import All
+## استيراد الكل
 
 ```json
 {
@@ -106,7 +106,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Type Alias
+## اسم نوع بديل
 
 ```json
 {
@@ -130,7 +130,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Basic `Workspace` Request
+## طلب `Workspace` أساسي
 
 ```json
 {
@@ -153,7 +153,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Import Default Export
+## استيراد التصدير الافتراضي
 
 ```json
 {
@@ -165,7 +165,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Basic Express Route
+## مسار Express أساسي
 
 ```json
 {
@@ -182,7 +182,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Basic React Component
+## مكوّن React أساسي
 
 ```json
 {
@@ -208,7 +208,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## File Header Snippet
+## مقطع ترويسة الملف
 
 ```json
 {
@@ -225,7 +225,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Transform to Uppercase
+## التحويل إلى أحرف كبيرة
 
 ```json
 {
@@ -240,7 +240,7 @@ Below are some possible solutions to [these exercises around create snippets in 
 }
 ```
 
-## Surround with `try…catch`
+## الإحاطة بـ `try…catch`
 
 ```json
 {

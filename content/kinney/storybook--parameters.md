@@ -1,18 +1,17 @@
 ---
-title: "Parameters"
-lang: en
+title: "المعاملات (Parameters)"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/parameters"
 ---
 
-Parameters are a set of static, named metadata about a story, used to control the behavior or appearance of components within Storybook. They can be set globally to affect all stories or locally to affect individual stories.
+المعاملات مجموعة من البيانات الوصفية الثابتة المسمّاة عن قصة، تُستخدم للتحكم في سلوك أو مظهر المكوّنات داخل Storybook. ويمكن تعيينها عالميًا لتؤثر في كل القصص أو محليًا لتؤثر في قصص فردية.
 
-Storybook doesn’t do a lot with parameters out of the box, but they’re particularly helpful when working with addons. You can define parameters at a bunch of different levels:
+لا تفعل Storybook الكثير بالمعاملات جاهزة، لكنها مفيدة بشكل خاص عند العمل مع الملحقات. ويمكنك تعريف المعاملات في جملة مستويات مختلفة:
 
-- `.storybook/preview.ts`: These parameters are globally available to all stories.
-- In the `Meta` for a set of stories.
-- Scoped to a particular story.
+- `.storybook/preview.ts`: هذه المعاملات متاحة عالميًا لكل القصص.
+- في `Meta` لمجموعة قصص.
+- مقصوصة على قصة بعينها.
 
-Along the way, parameter objects are merged, so your individual stories will inherit parameters defined at a higher level, but they can also override those parameters if needed.
+وعلى طول الطريق، تُدمج كائنات المعاملات، فترث قصصك الفردية المعاملات المعرَّفة في مستوى أعلى، لكنها تستطيع أيضًا تجاوزها عند الحاجة.
 
-The important part here is that parameters can be accessed by [decorators](https://stevekinney.com/courses/storybook/decorators) and controlled using
-addons. This allows for a ton of flexibility for adding custom functionality to control your stories.
+والجزء المهم هنا أن المعاملات يستطيع [المزيّنات](https://stevekinney.com/courses/storybook/decorators) الوصول إليها، ويمكن التحكم بها باستخدام الملحقات. وهذا يتيح قدرًا كبيرًا من المرونة لإضافة وظائف مخصّصة للتحكم في قصصك.

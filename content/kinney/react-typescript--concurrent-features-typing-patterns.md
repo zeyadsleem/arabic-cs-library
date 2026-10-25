@@ -1,18 +1,18 @@
 ---
-title: "Concurrent Features Typing Patterns"
-lang: en
+title: "أنماط تحديد الأنواع للخصائص التزامنية"
+lang: ar
 source: "https://stevekinney.com/courses/react-typescript/concurrent-features-typing-patterns"
 ---
 
-React’s concurrent features are like having a traffic controller for your UI updates. Instead of every update blocking everything else, React can now interrupt, prioritize, and defer work to keep your app responsive. But with great power comes great complexity—and that’s where TypeScript becomes your safety net. Let’s explore how to leverage concurrent rendering, transitions, and deferred values with full type safety.
+تُشبه الخصائص التزامنية (concurrent features) في React وجود مراقب تدفّق لتحديثات واجهتك. فبدلًا من أن يسدّ كل تحديث ما سواه، يستطيع React الآن مقاطعة العمل وترتيب أولوياته وتأجيله لإبقاء تطبيقك متجاوبًا. لكنّ القوة العظيمة تجلب التعقيد العظيم—وهنا يصبح TypeScript شبكة أمانك. لنستكشف كيف نستفيد من التصيير التزامني (concurrent rendering) وتنظيم الانتقالات والقيم المؤجَّلة بأمانٍ كامل في الأنواع.
 
-Think of concurrent features as giving React the ability to multitask. Just like you might pause writing an email to answer an urgent phone call, React can pause rendering a large list to handle a user’s button click. TypeScript ensures you’re using these powerful features correctly.
+فكّر في الخصائص التزامنية على أنها تمنح React قدرةً على تعدّد المهام. تمامًا كما قد تتوقّف عن كتابة بريد إلكتروني لتجيب عن اتصال عاجل، يستطيع React أن يوقف تصيير قائمة كبيرة ليعالج نقرة زرٍّ من المستخدم. ويحرص TypeScript على صحّة استخدامك لهذه الخصائص القوية.
 
-## Understanding Concurrent Rendering
+## فهم التصيير التزامني
 
-Before diving into code, let’s understand what concurrent rendering actually means and why it matters for TypeScript developers.
+قبل الغوص في الشيفرة، لنفهم ماذا يعني التصيير التزامني فعلًا، ولماذا يهمّ مطوّري TypeScript.
 
-### The Concurrent Mental Model
+### النموذج الذهني التزامني
 
 ```typescript
 // Traditional rendering: All or nothing
@@ -54,11 +54,11 @@ function ConcurrentComponent({ items }: { items: Item[] }) {
 }
 ```
 
-## `useTransition`: Type-Safe Transitions
+## `useTransition`: انتقالات آمنة الأنواع
 
-The `useTransition` hook lets you mark updates as non-urgent. TypeScript helps ensure you’re using it correctly.
+يتيح لك الخُطّاف (hook) `useTransition` وسمَ تحديثاتك بأنها غير عاجلة. ويساعدك TypeScript على ضمان صحّة استخدامك له.
 
-### Basic Transition Patterns
+### أنماط الانتقال الأساسية
 
 ```typescript
 import { useTransition, useState, TransitionStartFunction } from 'react';
@@ -119,7 +119,7 @@ function DataExplorer() {
 }
 ```
 
-### Advanced Transition Patterns
+### أنماط انتقال متقدّمة
 
 ```typescript
 // Transition with error handling
@@ -180,7 +180,7 @@ function SearchableList() {
 }
 ```
 
-### Coordinated Transitions
+### انتقالات منسّقة
 
 ```typescript
 // Multiple transitions with priority
@@ -257,11 +257,11 @@ function Dashboard({ userId }: { userId: string }) {
 }
 ```
 
-## `useDeferredValue`: Deferred Updates with Types
+## `useDeferredValue`: التحديثات المؤجَّلة مع الأنواع
 
-`useDeferredValue` lets you defer updating a part of the UI. TypeScript ensures the deferred value matches the original type.
+يتيح لك `useDeferredValue` تأجيل تحديث جزءٍ من الواجهة. ويضمن TypeScript أنّ القيمة المؤجَّلة تطابق النوع الأصلي.
 
-### Basic Deferred Values
+### القيم المؤجَّلة الأساسية
 
 ```typescript
 import { useDeferredValue, useState, memo } from 'react';
@@ -295,7 +295,7 @@ function SearchableTable({ data }: SearchProps) {
 }
 ```
 
-### Advanced Deferred Patterns
+### أنماط تأجيل متقدّمة
 
 ```typescript
 // Deferred value with custom comparison
@@ -341,7 +341,7 @@ function ComplexFilter() {
 }
 ```
 
-### Combining Deferred Values with `Suspense`
+### جمع القيم المؤجَّلة مع `Suspense`
 
 ```typescript
 // Type-safe deferred suspense pattern
@@ -376,11 +376,11 @@ function AsyncDataView({ query }: { query: string }) {
 }
 ```
 
-## Concurrent Rendering Patterns
+## أنماط التصيير التزامني
 
-Let’s explore patterns that leverage concurrent rendering for better user experience.
+لنستكشف أنماطًا تستفيد من التصيير التزامني لتجربة مستخدمٍ أفضل.
 
-### Time Slicing Pattern
+### نمط تقطيع الوقت
 
 ```typescript
 // Break large renders into chunks
@@ -426,7 +426,7 @@ function TimeSlicedList<T extends { id: string }>({
 }
 ```
 
-### Interruptible Sorting
+### الفرز القابل للمقاطعة
 
 ```typescript
 // Type-safe interruptible sorting
@@ -497,7 +497,7 @@ function useInterruptibleSort<T>(
 }
 ```
 
-### Progressive Enhancement with Concurrent Features
+### التحسين التدريجي مع الخصائص التزامنية
 
 ```typescript
 // Gradually enhance UI based on interaction
@@ -537,11 +537,11 @@ function ProgressiveList<T extends { id: string }>({
 }
 ```
 
-## `Suspense` List and Concurrent `Suspense`
+## قوائم `Suspense` وحدود `Suspense` التزامنيّة
 
-TypeScript patterns for coordinating multiple Suspense boundaries.
+أنماط TypeScript لتنسيق حدود `Suspense` المتعددة.
 
-### `SuspenseList` Patterns
+### أنماط `SuspenseList`
 
 ```typescript
 import { SuspenseList, Suspense } from 'react';
@@ -591,7 +591,7 @@ function ProfilePage({ userId }: { userId: string }) {
 }
 ```
 
-### Nested Concurrent Boundaries
+### الحدود التزامنية المتداخلة
 
 ```typescript
 // Type-safe nested suspense configuration
@@ -661,11 +661,11 @@ const pageStructure: SuspenseNode = {
 };
 ```
 
-## Activity and Priority Management
+## إدارة الأنشطة والأولويات
 
-Managing UI priorities with TypeScript for optimal concurrent rendering.
+إدارة أولويات الواجهة بواسطة TypeScript لتصييرٍ تزامنيّ مثالي.
 
-### Activity Manager
+### مدير الأنشطة
 
 ```typescript
 // Track and prioritize UI activities
@@ -754,11 +754,11 @@ function getPriorityForType(type: Activity['type']): number {
 }
 ```
 
-## Performance Monitoring for Concurrent Features
+## رصد الأداء للخصائص التزامنية
 
-Track the impact of concurrent features with TypeScript.
+تتبّع أثر الخصائص التزامنية بواسطة TypeScript.
 
-### Concurrent Metrics
+### المقاييس التزامنية
 
 ```typescript
 interface ConcurrentMetrics {
@@ -852,9 +852,9 @@ function useConcurrentMetrics() {
 }
 ```
 
-## Best Practices and Patterns
+## أفضل الممارسات والأنماط
 
-### Do’s and Don’ts
+### ما تفعله وما تتجنّبه
 
 ```typescript
 // ✅ DO: Use transitions for non-urgent updates
@@ -926,7 +926,7 @@ function CombinedPattern({ data }: { data: Item[] }) {
 }
 ```
 
-### Testing Concurrent Features
+### اختبار الخصائص التزامنية
 
 ```typescript
 // Test utilities for concurrent features
@@ -967,8 +967,8 @@ describe('Concurrent Features', () => {
 });
 ```
 
-## Wrapping Up
+## الخلاصة
 
-Concurrent features in React 19 with TypeScript give you fine-grained control over rendering priorities and user experience. By understanding transitions, deferred values, and concurrent patterns, you can build applications that stay responsive even under heavy load.
+تمنحك الخصائص التزامنية في React 19 مع TypeScript تحكّمًا دقيقًا في أولويات التصيير وفي تجربة المستخدم. وبفهمك الانتقالات، والقيم المؤجَّلة، والأنماط التزامنية، تستطيع بناء تطبيقات تبقى متجاوبة حتى تحت ضغطٍ ثقيل.
 
-Remember: concurrent features aren’t about making things faster—they’re about making things feel faster by prioritizing what matters most to users. Use TypeScript to ensure you’re applying these powerful features correctly, and your users will experience the difference in every interaction.
+تذكّر: ليست الخصائص التزامنية غايتها جعل الأشياء أسرع—إنّما جعلها تبدو أسرع، بإعطاء الأولوية لما يهمّ المستخدمين أكثر. استخدم TypeScript ليتأكّد أنّك تطبّق هذه الخصائص القوية على نحوٍ صحيح، وسيدرك مستخدموك الفرق في كل تفاعل.

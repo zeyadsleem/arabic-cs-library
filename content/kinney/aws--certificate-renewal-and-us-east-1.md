@@ -1,12 +1,12 @@
 ---
-title: "Certificate Renewal and the us-east-1 Requirement"
-lang: en
+title: "تجديد الشهادات وشرط us-east-1"
+lang: ar
 source: "https://stevekinney.com/courses/aws/certificate-renewal-and-us-east-1"
 ---
 
-Certificate expiration is one of those problems that doesn’t feel urgent until your site is down at 2 a.m. on a Saturday. A valid certificate quietly does its job. An expired certificate triggers a full-page browser warning that tells your users “this site may be trying to steal your information.” There’s no graceful fallback—the browser blocks the connection entirely. ACM’s auto-renewal is the feature that keeps this from happening, but it only works if you set things up correctly.
+انتهاء صلاحية الشهادة من المشكلات التي لا تبدو عاجلة حتى يتعطّل موقعك في الثانية صباحًا من يوم سبت. الشهادة الصالحة تؤدي عملها بهدوء. أما الشهادة المنتهية فتُطلق تحذيرًا في المتصفح يملأ الصفحة ويقول لمستخدميك «قد يحاول هذا الموقع سرقة معلوماتك». لا يوجد تراجع رشيق—فالمتصفح يحجب الاتصال كليًا. التجديد التلقائي في ACM هو الميزة التي تمنع حدوث ذلك، لكنه لا يعمل إلا إذا أعددت الأمور بشكل صحيح.
 
-If you want AWS’s official framing for the certificate behavior in this lesson, the [AWS Certificate Manager User Guide](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) is the source of truth.
+إن أردت صياغة AWS الرسمية لسلوك الشهادات في هذا الدرس، فـ[دليل مستخدم AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) هو المصدر الموثوق.
 
 ```
 flowchart LR
@@ -18,50 +18,50 @@ flowchart LR
     Check -- "No" --> Alerts["Health and EventBridge notifications"]
 ```
 
-## How ACM Auto-Renewal Works
+## كيف يعمل التجديد التلقائي في ACM
 
-ACM public certificates are valid for **13 months** (395 days). Starting **60 days** before expiration, ACM begins attempting to renew the certificate automatically. The renewal process depends on which validation method you used when you originally requested the certificate.
+شهادات ACM العامة صالحة لمدة **13 شهرًا** (395 يومًا). وبدءًا من **60 يومًا** قبل الانتهاء، تشرع ACM في محاولة تجديد الشهادة تلقائيًا. وتعتمد عملية التجديد على طريقة التحقق التي استخدمتها عند طلب الشهادة أصلًا.
 
-### DNS-Validated Certificates
+### الشهادات المُتحقَّق منها عبر DNS
 
-For certificates validated with DNS, ACM checks whether the original CNAME validation record is still present in your DNS. If it is, ACM validates the domain and issues a renewed certificate. The new certificate has the same ARN as the old one—any CloudFront distribution, load balancer, or API Gateway endpoint using that ARN automatically picks up the renewed certificate with zero downtime and zero manual intervention. It’s honestly one of the best “set it and forget it” features in all of AWS.
+بالنسبة للشهادات التي جرى التحقق منها عبر DNS، تفحص ACM ما إذا كان سجل التحقق CNAME الأصلي لا يزال موجودًا في DNS لديك. فإن كان موجودًا، تتحقق ACM من النطاق وتصدر شهادة مجدّدة. وتحمل الشهادة الجديدة ARN نفسه الذي تحمله القديمة—وأي توزيع CloudFront أو موازن تحميل أو نقطة نهاية API Gateway يستخدم ذلك ARN يلتقط الشهادة المجدّدة تلقائيًا دون أي توقف ودون أي تدخل يدوي. وهي بصراحة واحدة من أفضل ميزات «أعدّها وانسَها» في AWS كلها.
 
-This is why DNS validation is the default recommendation in [DNS Validation vs. Email Validation](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation): **the CNAME record is the key to automatic renewal**. Remove it and ACM can’t re-validate the domain. Keep it and renewal is invisible.
+ولهذا يكون التحقق عبر DNS هو التوصية الافتراضية في [التحقق عبر DNS مقابل التحقق عبر البريد الإلكتروني](https://stevekinney.com/courses/aws/dns-validation-vs-email-validation): **سجل CNAME هو مفتاح التجديد التلقائي**. أزله ولن تستطيع ACM إعادة التحقق من النطاق. أبقِه يصبح التجديد غير مرئي.
 
-### Email-Validated Certificates
+### الشهادات المُتحقَّق منها عبر البريد الإلكتروني
 
-For email-validated certificates, ACM sends a renewal email to the same addresses it used for the original validation. Someone has to click the approval link. If nobody responds, the certificate expires.
+بالنسبة للشهادات المُتحقَّق منها عبر البريد الإلكتروني، ترسل ACM رسالة تجديد إلى العناوين نفسها التي استخدمتها في التحقق الأصلي. ويجب أن ينقر شخص ما على رابط الموافقة. وإن لم يستجب أحد، تنتهي صلاحية الشهادة.
 
-> **Warning**
+> **تحذير**
 >
-> If you used email validation and the person who originally approved the certificate has left the company, changed roles, or simply doesn’t check that email address anymore, the renewal email will go unanswered and your certificate will expire. This has taken down production sites. Use DNS validation.
+> إن كنت قد استخدمت التحقق عبر البريد الإلكتروني، وغادر الشخص الذي وافق على الشهادة أصلًا الشركة، أو تغيّرت أدواره، أو ببساطة لم يعد يفحص ذلك العنوان، فستبقى رسالة التجديد دون رد وستنتهي صلاحية شهادتك. لقد أسقط هذا مواقع إنتاج. استخدم التحقق عبر DNS.
 
-## The Renewal Timeline
+## الجدول الزمني للتجديد
 
-Here’s what happens as a certificate approaches expiration:
+إليك ما يحدث مع اقتراب الشهادة من الانتهاء:
 
-| Days Before Expiry | What Happens |
+| الأيام المتبقية قبل الانتهاء | ما يحدث |
 | --- | --- |
-| 60 days | ACM begins renewal attempts for DNS-validated certificates |
-| 45 days | If DNS validation fails, ACM sends an AWS Health event and EventBridge notification |
-| 30 days | ACM sends another notification if renewal is still failing |
-| 15 days | Another notification |
-| 7 days | Another notification |
-| 3 days | Another notification |
-| 1 day | Final notification before expiration |
-| 0 days | Certificate expires. Browser shows security warning. Users can’t access your site. |
+| 60 يومًا | تبدأ ACM محاولات التجديد للشهادات المُتحقَّق منها عبر DNS |
+| 45 يومًا | إن فشل التحقق عبر DNS، ترسل ACM حدث AWS Health وإشعار EventBridge |
+| 30 يومًا | ترسل ACM إشعارًا آخر إن كان التجديد لا يزال يفشل |
+| 15 يومًا | إشعار آخر |
+| 7 أيام | إشعار آخر |
+| 3 أيام | إشعار آخر |
+| يوم واحد | الإشعار الأخير قبل الانتهاء |
+| 0 أيام | تنتهي صلاحية الشهادة. يعرض المتصفح تحذيرًا أمنيًا. ولا يستطيع المستخدمون الوصول إلى موقعك. |
 
-If you have DNS validation records in place and the certificate is associated with an active AWS resource, you’ll never see any of these notifications. Renewal happens silently around the 60-day mark.
+إن كانت سجلات التحقق عبر DNS موجودة والشهادة مرتبطة بمورد AWS نشط، فلن ترى أيًّا من هذه الإشعارات أبدًا. يحدث التجديد بصمت قرب علامة الستين يومًا.
 
-### What Can Go Wrong
+### ما قد يخطئ
 
-Even with DNS validation, renewal can fail if:
+حتى مع التحقق عبر DNS، قد يفشل التجديد إذا:
 
-1. **The CNAME record was removed**: Someone cleaning up DNS records deletes the ACM validation CNAME. ACM can no longer re-validate the domain.
-2. **The certificate isn’t in use**: ACM requires the certificate to be associated with at least one AWS service (CloudFront, ELB, API Gateway). An unused certificate doesn’t get auto-renewed.
-3. **The domain itself expired**: If your domain registration lapses, the DNS records disappear and ACM can’t validate anything.
+1. **حُذف سجل CNAME**: ينظّف أحدهم سجلات DNS فيحذف سجل CNAME الخاص بالتحقق في ACM. عندئذ لا تستطيع ACM إعادة التحقق من النطاق.
+2. **الشهادة غير مستخدمة**: تشترط ACM أن تكون الشهادة مرتبطة بخدمة AWS واحدة على الأقل (CloudFront أو ELB أو API Gateway). والشهادة غير المستخدمة لا تُجدَّد تلقائيًا.
+3. **انتهت صلاحية النطاق نفسه**: إذا انقضى تسجيل نطاقك، اختفت سجلات DNS ولم تستطع ACM التحقق من أي شيء.
 
-You can check a certificate’s renewal eligibility:
+يمكنك فحص أهلية شهادة ما للتجديد:
 
 ```bash
 aws acm describe-certificate \
@@ -79,36 +79,36 @@ aws acm describe-certificate \
 }
 ```
 
-If `RenewalEligibility` shows `INELIGIBLE`, investigate immediately. Check that the CNAME record is still in DNS and that the certificate is attached to a live AWS resource.
+إن أظهر `RenewalEligibility` القيمة `INELIGIBLE`، فحقّق في الأمر فورًا. تحقّق من أن سجل CNAME لا يزال في DNS وأن الشهادة مرتبطة بمورد AWS حي.
 
-> **Tip**
+> **نصيحة**
 >
-> Never delete the ACM validation CNAME records from your DNS. They are small, they cost nothing, and they are the mechanism that keeps your certificates alive. Treat them as permanent infrastructure.
+> لا تحذف سجلات CNAME الخاصة بالتحقق في ACM من DNS أبدًا. فهي صغيرة، ولا تكلّف شيئًا، وهي الآلية التي تُبقي شهاداتك حيّة. تعامل معها كبنية تحتية دائمة.
 
-## Why CloudFront Requires us-east-1
+## لماذا تشترط CloudFront منطقة us-east-1
 
-This is the constraint that trips up nearly every engineer the first time they use ACM with CloudFront. It deserves a full explanation.
+هذا هو القيد الذي يُربك كل مهندس تقريبًا في أول مرة يستخدم فيها ACM مع CloudFront. ويستحق شرحًا كاملًا.
 
-**CloudFront** is a global CDN. Your CloudFront distribution doesn’t live in a single region—it operates across hundreds of edge locations worldwide. But CloudFront’s control plane, the system that manages distribution configurations, runs in `us-east-1`. When you attach a certificate to a CloudFront distribution, CloudFront looks for that certificate in the ACM registry in `us-east-1` and nowhere else.
+**CloudFront** شبكة توصيل محتوى عالمية. توزيع CloudFront الخاص بك لا يعيش في منطقة واحدة—بل يعمل عبر مئات مواقع الحافة حول العالم. لكن مستوى التحكم في CloudFront، وهو النظام الذي يدير إعدادات التوزيعات، يعمل في `us-east-1`. وحين تربط شهادة بتوزيع CloudFront، يبحث CloudFront عن تلك الشهادة في سجل ACM في `us-east-1` ولا مكان آخر.
 
-This means:
+هذا يعني:
 
-- A certificate in `us-east-1` works with CloudFront.
-- A certificate in `us-west-2` doesn’t work with CloudFront. CloudFront won’t see it.
-- A certificate in `eu-west-1` doesn’t work with CloudFront. CloudFront won’t see it.
-- There’s no way to copy or move a certificate between regions. If you created it in the wrong region, you need to request a new one in `us-east-1`.
+- الشهادة في `us-east-1` تعمل مع CloudFront.
+- الشهادة في `us-west-2` لا تعمل مع CloudFront. فلن يراها CloudFront.
+- الشهادة في `eu-west-1` لا تعمل مع CloudFront. فلن يراها CloudFront.
+- لا توجد طريقة لنسخ شهادة أو نقلها بين المناطق. فإن أنشأتها في المنطقة الخطأ، فعليك طلب شهادة جديدة في `us-east-1`.
 
-> **Warning**
+> **تحذير**
 >
-> CloudFront certificates **must** be in `us-east-1`. If you provision your certificate in any other region, it won’t appear in the CloudFront console and can’t be attached via the CLI. This isn’t a bug—it’s by design. CloudFront is a global service with a control plane in `us-east-1`, and all global resources (certificates, WAF rules, Lambda@Edge functions) must be provisioned there.
+> شهادات CloudFront **يجب** أن تكون في `us-east-1`. فإن وثّرت شهادتك في أي منطقة أخرى، فلن تظهر في وحدة تحكم CloudFront ولن يمكن ربطها عبر سطر الأوامر. هذا ليس عيبًا—بل هو مقصود بالتصميم. فـ CloudFront خدمة عالمية لها مستوى تحكم في `us-east-1`، وكل الموارد العالمية (الشهادات وقواعد WAF ودوال Lambda@Edge) يجب توفيرها هناك.
 
-### The “I Can’t Find My Certificate” Debugging Flow
+### مسار تصحيح «لا أجد شهادتي»
 
-If you’re trying to attach a certificate to CloudFront and it doesn’t appear:
+إن كنت تحاول ربط شهادة بـ CloudFront وهي لا تظهر:
 
-1. Check the region. Run `aws acm list-certificates --region us-east-1 --output json`. If your certificate isn’t in the list, it’s in a different region.
-2. If the certificate is in the wrong region, request a new one in `us-east-1`. There’s no shortcut.
-3. If the certificate is in `us-east-1` but not showing up in the CloudFront console, check its status. Only certificates with status `ISSUED` can be attached. A certificate in `PENDING_VALIDATION` isn’t usable.
+1. افحص المنطقة. نفّذ `aws acm list-certificates --region us-east-1 --output json`. فإن لم تكن شهادتك في القائمة، فهي في منطقة أخرى.
+2. إن كانت الشهادة في المنطقة الخطأ، فاطلب شهادة جديدة في `us-east-1`. لا يوجد اختصار.
+3. إن كانت الشهادة في `us-east-1` لكنها لا تظهر في وحدة تحكم CloudFront، فافحص حالتها. لا يمكن ربط إلا الشهادات ذات الحالة `ISSUED`. أما الشهادة في حالة `PENDING_VALIDATION` فهي غير صالحة للاستخدام.
 
 ```bash
 aws acm list-certificates \
@@ -127,20 +127,20 @@ aws acm list-certificates \
 ]
 ```
 
-### Other Services Are Different
+### الخدمات الأخرى مختلفة
 
-This `us-east-1` requirement is specific to CloudFront (and a few other global services like AWS Global Accelerator). If you’re using ACM with an Application Load Balancer or API Gateway, the certificate needs to be in the same region as that resource—not necessarily `us-east-1`.
+شرط `us-east-1` هذا خاص بـ CloudFront (وبعدد قليل من الخدمات العالمية الأخرى مثل AWS Global Accelerator). فإن كنت تستخدم ACM مع Application Load Balancer أو API Gateway، فيجب أن تكون الشهادة في المنطقة نفسها التي يوجد فيها ذلك المورد—وليس بالضرورة في `us-east-1`.
 
-For this course, since your frontend is served through CloudFront, `us-east-1` is the only region that matters for ACM. Every `aws acm` command in this course explicitly includes `--region us-east-1`, and yours should too.
+وفي هذه الدورة، بما أن واجهتك الأمامية تُقدَّم عبر CloudFront، فإن `us-east-1` هي المنطقة الوحيدة التي تهمّ بالنسبة لـ ACM. فكل أمر `aws acm` في هذه الدورة يتضمن صراحةً `--region us-east-1`، وينبغي أن تتضمن أوامرك ذلك أيضًا.
 
-## Putting It Together
+## تجميع الخيوط
 
-The lifecycle of a well-configured ACM certificate looks like this:
+تبدو دورة حياة شهادة ACM مُعدّة جيدًا هكذا:
 
-1. **Request** the certificate in `us-east-1` with DNS validation.
-2. **Add** the CNAME validation record to your DNS.
-3. **Wait** for ACM to validate and issue the certificate.
-4. **Attach** the certificate to your CloudFront distribution (covered in the next module).
-5. **Forget about it**: ACM renews the certificate automatically every 13 months, re-validating via the same CNAME record.
+1. **اطلب** الشهادة في `us-east-1` مع التحقق عبر DNS.
+2. **أضف** سجل التحقق CNAME إلى DNS لديك.
+3. **انتظر** أن تتحقق ACM من الشهادة وتصدرها.
+4. **اربط** الشهادة بتوزيع CloudFront الخاص بك (وهو ما يغطيه الوحدة القادمة).
+5. **انسَ أمرها**: تجدّد ACM الشهادة تلقائيًا كل 13 شهرًا، مع إعادة التحقق عبر سجل CNAME نفسه.
 
-That last step is the whole point. A DNS-validated certificate in `us-east-1`, attached to a CloudFront distribution, with the CNAME record left in place, is a certificate you never have to think about again. And in infrastructure, the things you never have to think about are the things that don’t break at 2 a.m.
+تلك الخطوة الأخيرة هي كل المقصود. فشهادة مُتحقَّق منها عبر DNS في `us-east-1`، ومرتبطة بتوزيع CloudFront، وسجل CNAME الخاص بها متروك في مكانه، هي شهادة لن تضطر إلى التفكير فيها مرة أخرى. وفي البنية التحتية، الأشياء التي لا تضطر إلى التفكير فيها أبدًا هي الأشياء التي لا تتعطّل في الثانية صباحًا.

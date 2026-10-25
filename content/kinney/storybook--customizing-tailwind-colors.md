@@ -1,19 +1,19 @@
 ---
-title: "Customizing Tailwind Colors"
-lang: en
+title: "تخصيص ألوان Tailwind"
+lang: ar
 source: "https://stevekinney.com/courses/storybook/customizing-tailwind-colors"
 ---
 
-Our design system has it’s own color system. Luckily, we can swap out the one included in Tailwind fairly easily. To save you the hassle of putting it together yourself, I included an implementation in `src/tokens/colors.ts` that you can use.
+لنظام التصميم لدينا نظام ألوانه الخاص. ولحسن الحظ، يمكننا استبدال النظام المضمّن في Tailwind بسهولة لا بأس بها. ولأوفّر عليك عناء تجميعه بنفسك، أدرجت تنفيذًا في `src/tokens/colors.ts` يمكنك استخدامه.
 
-You have two choices here:
+أمامك خياران هنا:
 
-1. Extend the color theme included in Tailwind
-2. Replace it all together.
+1. توسيع سمة الألوان المضمّنة في Tailwind.
+2. استبدالها كليًا.
 
-I am going to argue that we should replace it so that our fellow developers don’t actually use the built-in colors.
+وسأحتجّ بأننا ينبغي أن نستبدلها حتى لا يستخدم زملاؤنا المطوّرون الألوان المدمجة فعليًا.
 
-Now, we’ll just replace the built-in colors in the theme with our bespoke color palette.
+الآن، سنستبدل ببساطة الألوان المدمجة في السمة بلوحة ألواننا المخصّصة.
 
 ```typescript
 import type { Config } from 'tailwindcss';
@@ -35,19 +35,19 @@ export default {
 } satisfies Config;
 ```
 
-## Integrating Our Theme
+## دمج سمتنا
 
-There are three ways to use our new Tailwind theme in our component:
+هناك ثلاث طرق لاستخدام سمة Tailwind الجديدة في مكوّننا:
 
-1. Use the `theme()` CSS function provided by Tailwind via PostCSS.
-2. Use the `@apply` directive provided by Tailwind via PostCSS.
-3. Rewrite the component using Tailwind’s utility classes.
+1. استخدام دالة `theme()` الخاصة بـ CSS التي توفّرها Tailwind عبر PostCSS.
+2. استخدام توجيه `@apply` الذي توفّره Tailwind عبر PostCSS.
+3. إعادة كتابة المكوّن باستخدام أصناف Tailwind المساعدة.
 
-The third option is probably our best bet—and we’ll do that one in a second, but that might be easier said than done in a legacy codebase. So, let’s look at the first two.
+والخيار الثالث هو أفضل رهان لدينا على الأرجح—وسنفعله بعد قليل، لكنه قد يكون أسهل قولًا من فعل في قاعدة شيفرة قديمة. فلننظر في الأولين.
 
-### Using the Theme Function
+### استخدام دالة theme
 
-Using the first approach, we can go through and replace the values with references to our theme.
+باستخدام الأسلوب الأول، يمكننا المرور على القيم واستبدالها بإشارات إلى سمتنا.
 
 ```diff
  .button {
@@ -59,9 +59,9 @@ Using the first approach, we can go through and replace the values with referenc
    border-width: 1px;
 ```
 
-### Using Apply
+### استخدام Apply
 
-Alternatively, we can apply Tailwind’s utility classes to our existing classes.
+بدلًا من ذلك، يمكننا تطبيق أصناف Tailwind المساعدة على أصنافنا الموجودة.
 
 ```diff
  .button {
