@@ -245,7 +245,7 @@ The response is large—CloudFront returns the complete distribution configurati
 
 In the console, the distribution detail page shows the deployment progress. The **Last modified** column shows “Deploying” as CloudFront propagates to all edge locations.
 
-CloudFront distribution detail page showing the distribution as Deploying immediately after creation.
+![CloudFront distribution detail page showing the distribution as Deploying immediately after creation.](/images/kinney/c030d7c76b45a438.webp)
 
 ## Waiting for Deployment
 

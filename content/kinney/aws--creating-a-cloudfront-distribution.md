@@ -242,7 +242,7 @@ aws cloudfront create-distribution \
 
 في لوحة التحكم، تعرض صفحة تفاصيل التوزيع تقدّم النشر. ويعرض عمود **Last modified** عبارة «Deploying» بينما تنتشر CloudFront إلى كل مواقع الحافة.
 
-صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.
+![صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.](/images/kinney/c030d7c76b45a438.webp)
 
 ## انتظار النشر
 
