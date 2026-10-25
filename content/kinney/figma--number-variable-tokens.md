@@ -8,7 +8,7 @@ source: "https://stevekinney.com/courses/figma/number-variable-tokens"
 
 بالنسبة إلى أغراضنا، سننشئ مجموعة محدودة من الرموز. ويمكنك دائمًا التوسّع إذا احتجت.
 
-بعض قيم التباعد في Figma
+![بعض قيم التباعد في Figma](/images/kinney/8ca01646b59903c7.webp)
 
 > **تمرين**
 >
@@ -17,3 +17,6 @@ source: "https://stevekinney.com/courses/figma/number-variable-tokens"
 > قد تختلف النتيجة لديك، لكنك قد تنتهي إلى شيء كهذا.
 >
 > رموز عرض الحدّ ونصف قطر الحدّ
+
+
+![رموز عرض الحدود ونصف قطر الزوايا](/images/kinney/e81f1cb5ce69b6bf.webp)

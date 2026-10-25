@@ -66,19 +66,19 @@ You’ve got two options here.
 1. You can jump to a *particular* group.
 2. You can move around between the groups using the arrow keys.
 
-Switch Groups in Visual Studio Code
+![Switch Groups in Visual Studio Code](/images/kinney/ba39abbdce48a662.webp)
 
 ## Jump to a Line
 
 Use `Ctrl-G` to jump to a particular line.
 
-Jump to a Line
+![Jump to a Line](/images/kinney/3ebd3fc067fbef04.webp)
 
 ## Go to Bracket
 
 The **Go to Bracket** command jumps from the opening to the closing bracket. There is also ability to **Select to Bracket**, but it doesn’t have a keybinding—by default. We’ll look at how to add one later.
 
-Go to Bracket
+![Go to Bracket](/images/kinney/42ca5a1e60ba6784.webp)
 
 ## Open the Integrated Terminal
 

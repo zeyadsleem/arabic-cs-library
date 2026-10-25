@@ -161,15 +161,15 @@ function handler(event) {
 
 انتقل إلى **CloudFront → Functions** في الشريط الجانبي الأيسر. وسترى صفحة قائمة Functions.
 
-صفحة قائمة دوال CloudFront وهي لا تعرض أي دوال، مع زر Create function.
+![صفحة قائمة دوال CloudFront وهي لا تعرض أي دوال، مع زر Create function.](/images/kinney/de4cb39b32bb85c9.webp)
 
 انقر **Create function**. يسألك نموذج الإنشاء عن ثلاثة أشياء: **الاسم**، و**الوصف** الاختياري، وإصدار **وقت التشغيل**. استخدم `cloudfront-js-2.0` (الافتراضي) — فهو يدعم ميزات JavaScript الحديثة بما في ذلك `async`/`await` وواجهات WebCrypto.
 
-نموذج إنشاء دالة CloudFront مع حقول الاسم والوصف واختيار وقت التشغيل بين cloudfront-js-1.0 وcloudfront-js-2.0.
+![نموذج إنشاء دالة CloudFront مع حقول الاسم والوصف واختيار وقت التشغيل بين cloudfront-js-1.0 وcloudfront-js-2.0.](/images/kinney/7ff17d07212a3182.webp)
 
 بعد النقر على **Create function** تصل إلى صفحة تفاصيل الدالة. وهذه الصفحة فيها ثلاثة تبويبات: **Build** و**Test** و**Publish**. ويعرض تبويب Build محرّر الكود حيث تكتب كود دالتك أو تلصقه.
 
-صفحة تفاصيل دالة CloudFront وهي تعرض دالة url-rewrite مع تبويبات Build وTest وPublish ومحرّر كود الدالة أسفله.
+![صفحة تفاصيل دالة CloudFront وهي تعرض دالة url-rewrite مع تبويبات Build وTest وPublish ومحرّر كود الدالة أسفله.](/images/kinney/c9c6fe56c07c72d4.webp)
 
 ألصق كود دالتك في المحرّر وانقر **Save changes**. يبدأ المحرّر بهيكل دالة أولي — استبدله كليًا بدالة إعادة الكتابة.
 

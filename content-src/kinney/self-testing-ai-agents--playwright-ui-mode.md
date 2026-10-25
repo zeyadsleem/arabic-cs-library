@@ -11,7 +11,7 @@ You’ve written a test, you’ve used `getByRole` like a responsible adult, and
 
 Stop doing that. Playwright has a visual test runner that lets you *see* the page at every step of the test. It’s called UI Mode, and once you’ve used it, the `console.log` archaeology feels almost medieval.
 
-Playwright UI
+![Playwright UI](/images/kinney/580bec99e735ddb4.webp)
 
 ## Launching UI Mode
 
@@ -39,7 +39,7 @@ The Before/After tabs are particularly useful for `click` and `fill` actions: yo
 
 This is the killer feature for this course.
 
-Locator panel in Playwright UI
+![Locator panel in Playwright UI](/images/kinney/bf5825154c845e55.webp)
 
 Click the “Pick locator” button in the toolbar, then hover over any element in the DOM snapshot. Playwright suggests a locator for that element—and it follows the same hierarchy from the [locators lesson](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). Role first, then label, then text, then test ID, CSS as a last resort.
 

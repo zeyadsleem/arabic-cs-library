@@ -103,7 +103,7 @@ aws iam create-role \
 
 في وحدة التحكم، يتولّى معالج **Create role** ذلك في خطوة **Select trusted entity**—اختر **AWS service**، ثم اختر **Lambda** كحالة الاستخدام.
 
-صفحة IAM Create Role مع اختيار AWS service كنوع الكيان الموثوق وLambda كاختيار الخدمة أو حالة الاستخدام.
+![صفحة IAM Create Role مع اختيار AWS service كنوع الكيان الموثوق وLambda كاختيار الخدمة أو حالة الاستخدام.](/images/kinney/752877a58602f8d4.webp)
 
 ## إرفاق سياسة التنفيذ الأساسية
 

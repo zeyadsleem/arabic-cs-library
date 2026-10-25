@@ -100,15 +100,15 @@ Notice the defaults: 3-second timeout and 128 MB of memory. These are fine for a
 
 In the console, the **Create function** page lets you select the runtime and configure basic settings before deploying.
 
-The Lambda Create Function page showing Author from scratch selected, a function name entered, and Node.js runtime selected.
+![The Lambda Create Function page showing Author from scratch selected, a function name entered, and Node.js runtime selected.](/images/kinney/25020ebaadd78dd6.webp)
 
 After creation, the **Code** tab shows the deployed handler code in the inline editor.
 
-The Lambda function detail page showing the Code tab with the inline code editor displaying the handler function.
+![The Lambda function detail page showing the Code tab with the inline code editor displaying the handler function.](/images/kinney/0888c411ffe00b5b.webp)
 
 The **Configuration** tab shows the function’s runtime settings—memory, timeout, ephemeral storage, and SnapStart. You’ll come back here when you need to adjust these or add environment variables.
 
-The Lambda Configuration tab showing General configuration with 128 MB memory, 10-second timeout, and 512 MB ephemeral storage.
+![The Lambda Configuration tab showing General configuration with 128 MB memory, 10-second timeout, and 512 MB ephemeral storage.](/images/kinney/0ad6f3884a352490.webp)
 
 ## Invoking the Function
 
@@ -151,15 +151,15 @@ Your function received the event, read the `name` query parameter, and returned 
 
 In the console, the **Test** tab lets you configure a test event and run the function directly. Select **Create new event**, give it a name, and paste your JSON payload into the editor.
 
-The Lambda Test tab showing the Create new event option selected with the Event JSON editor ready for input.
+![The Lambda Test tab showing the Create new event option selected with the Event JSON editor ready for input.](/images/kinney/4eeedd45f6933417.webp)
 
 After entering your test payload, click **Test**. The **Event JSON** editor accepts any JSON payload, and the execution result shows the response and logs inline.
 
-The Lambda Test tab showing the Event JSON editor configured with a sample payload, ready to invoke the function.
+![The Lambda Test tab showing the Event JSON editor configured with a sample payload, ready to invoke the function.](/images/kinney/8d4f44b53f17ab65.webp)
 
 After clicking **Test**, the result expands above the event editor showing the status, response body, and log output.
 
-The Lambda Test tab showing the execution result as Succeeded with the response JSON expanded showing statusCode 200 and the Hello from Lambda body.
+![The Lambda Test tab showing the execution result as Succeeded with the response JSON expanded showing statusCode 200 and the Hello from Lambda body.](/images/kinney/4fac9aa0efe62bc5.webp)
 
 > **Tip**
 >
@@ -222,7 +222,7 @@ This replaces the function’s code while preserving all configuration (runtime,
 
 In the console, the **Monitor** tab shows invocation metrics, duration, and error rates at a glance. It also links directly to the CloudWatch log group for your function.
 
-The Lambda Monitor tab showing invocation count, duration, and error metrics with a link to CloudWatch Logs.
+![The Lambda Monitor tab showing invocation count, duration, and error metrics with a link to CloudWatch Logs.](/images/kinney/d3b4a25aa5e4380b.webp)
 
 Your function’s `console.log` output goes to CloudWatch Logs. The simplest way to watch logs in real time is `aws logs tail`:
 

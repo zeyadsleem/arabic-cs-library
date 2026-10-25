@@ -35,7 +35,7 @@ That’s already 16 buttons and we haven’t even begun to consider that they ca
 
 The first and easiest thing to do is start with some text for the label of the button.
 
-Just some text as the starting point for a button
+![Just some text as the starting point for a button](/images/kinney/1f89b5597d423d26.webp)
 
 Next, we’ll convert to an [auto-layout](https://stevekinney.com/courses/figma/auto-layout) layer by pressing **Shift-A**. Figma will do its best to set some padding, but we’ll need to do some adjustments.
 
@@ -52,7 +52,7 @@ We’ll use the **primary** variant as our default as well. I can hear an argume
 >
 > I can reference my color directly, but what I like to do here is create a new variable that references my color token. My thinking here is that I might have other kind of button that are not variations of this button *and* if I need to go to a different shade, then I don’t want to have to change all of them. For me, this also maps to how I might think of it in code.
 
-Component-specific button colors
+![Component-specific button colors](/images/kinney/2d74a2115a6387d9.webp)
 
 > **Could I go as far as to extend this to my spacing and border radii?**
 >
@@ -65,6 +65,8 @@ Some other little tweaks:
 - I’ll use the `rounded` variable to give it some rounded edges.
 - I’ll use the `shadow-sm` to give it a slight shadow.
 - I’ll use a semibold font weight for the label.
+
+![Our basic button component](/images/kinney/05d72bba334e67b5.webp)
 
 ## Creating the Variants
 
@@ -83,13 +85,13 @@ Let’s get the interactions in place now so that like is easier when I begin to
 
 While hovering, we’ll transition to the hover state and when hovering, we’ll transition to the active state.
 
-Setting up transitions between button states
+![Setting up transitions between button states](/images/kinney/25c15a0fbfd46f82.webp)
 
 ## Creating the Other Buttons
 
 Creating a secondary button isn’t much different. I added a variable for the border as well. Arguably, I could/should do this for the primary button as well but with a transparent border. But, it’s probably not necessary—other than a bizarre need for consistency.
 
-A secondary button
+![A secondary button](/images/kinney/a027475faf2234c7.webp)
 
 The same process should do the trick for the other variations as well. To do this, I’ll both duplicate the groups of variables and then also duplicate the components.
 

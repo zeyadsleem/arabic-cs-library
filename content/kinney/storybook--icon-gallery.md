@@ -27,7 +27,7 @@ These are the icons being used in our design system. They are available as React
 </IconGallery>
 ```
 
-معرض أيقونات في Storybook
+![معرض أيقونات في Storybook](/images/kinney/14b7bc5b4830d90d.webp)
 
 > **تنفيذ مكوّن `Icon`**
 >

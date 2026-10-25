@@ -13,7 +13,7 @@ Agents are *fast* at editing code. They are not particularly good at knowing whe
 
 I’ve done the relay dance more times than I’d like to admit: The agent ships something confident-looking. I run it. It’s wrong in a way the agent would have caught immediately if it had bothered to actually *run* the code. I paste the error back. It fixes the error and introduces a new one. Repeat until lunch—or, I get rate limited.
 
-A joke prompt saying that it's very broken
+![A joke prompt saying that it's very broken](/images/kinney/298c41f902cdb002.webp)
 
 The hypothesis for today is that the problem isn’t the agent’s intelligence—it’s that we keep making ourselves the feedback loop. If the agent could run lint, types, unit tests, an end-to-end probe, a visual diff, and a second-opinion review on its own, it would catch most of its own mistakes before we ever saw them. We’d stop reviewing every edit and start reviewing the ones that escape the loop.
 
@@ -27,13 +27,13 @@ That’s the whole workshop in one sentence: **how do we make it cheap and autom
 
 You can get surprisingly far by writing a great prompt. I am not going to tell you to stop doing that. But, prompting discipline has a ceiling, and the ceiling is lower than people think.
 
-Ralph Wiggum at a computer
+![Ralph Wiggum at a computer](/images/kinney/1df437d7da555a3b.webp)
 
 A prompt is a one-shot instruction. A loop is a process that keeps running until something is true. “Don’t use `waitForTimeout`” is a prompt. A lint rule that fails the build when `waitForTimeout` appears is a loop. The first one works until the agent forgets. The second one works until you delete the rule.
 
 The interesting thing about loops is that they compound. Every layer you add catches a class of mistake the previous layer missed, and *also* makes the next layer cheaper to add. Once your tests run reliably, writing a visual regression gate is a config change. Once your visual regression gate exists, feeding the diff back to the agent is a few lines of glue. The work stacks.
 
-A chart diagramming the Ralph Loop
+![A chart diagramming the Ralph Loop](/images/kinney/7c9b3e7dc31c0493.webp)
 
 ## The three beats of the day
 

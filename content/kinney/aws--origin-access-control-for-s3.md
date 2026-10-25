@@ -89,7 +89,7 @@ aws cloudfront create-origin-access-control \
 
 في لوحة التحكم، يتولّى معالج **Create distribution** هذا تلقائيًا: اختيار «Allow private S3 bucket access to CloudFront» في خطوة تحديد الأصل ينشئ OAC ويرفقه في عملية واحدة.
 
-معالج CloudFront يعرض خانة «Allow private S3 bucket access to CloudFront» محدّدة وخيار «Use recommended origin settings» مختارًا.
+![معالج CloudFront يعرض خانة «Allow private S3 bucket access to CloudFront» محدّدة وخيار «Use recommended origin settings» مختارًا.](/images/kinney/5e6d5d0cf02bbe4d.webp)
 
 ### باستخدام SDK
 
@@ -200,7 +200,7 @@ aws cloudfront update-distribution \
 
 في لوحة التحكم، يعرض تبويب **Origins** في توزيعك OAC مرفقًا بأصل S3 في عمود **Origin access**.
 
-تبويب Origins في توزيع CloudFront يعرض أصل S3 مع معرّف OAC في عمود Origin access.
+![تبويب Origins في توزيع CloudFront يعرض أصل S3 مع معرّف OAC في عمود Origin access.](/images/kinney/0c45ad9b26f91092.webp)
 
 ## تحديث سياسة حاوية S3
 
@@ -246,7 +246,7 @@ aws s3api put-bucket-policy \
 
 في لوحة التحكم، يعرض تبويب **Permissions** في الحاوية السياسة المحدّثة مع المبدأ الخدمي `cloudfront.amazonaws.com` وARN التوزيع في الشرط.
 
-تبويب Permissions في حاوية S3 يعرض سياسة الحاوية مع cloudfront.amazonaws.com كمبدأ خدمي وشرط يقيّد الوصول إلى ARN توزيع محدّد.
+![تبويب Permissions في حاوية S3 يعرض سياسة الحاوية مع cloudfront.amazonaws.com كمبدأ خدمي وشرط يقيّد الوصول إلى ARN توزيع محدّد.](/images/kinney/6bd6bfc12f1ce110.webp)
 
 ## إعادة تفعيل حجب الوصول العام
 

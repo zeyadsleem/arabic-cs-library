@@ -102,11 +102,11 @@ Replace `E2QWRUHEXAMPLE` with the `ETag` from the `get-distribution-config` resp
 
 In the console, the **Error pages** tab on your distribution shows each custom error response. The form for a single rule maps an HTTP error code to a custom response page and status code.
 
-The CloudFront Create Custom Error Response form showing HTTP error code 403, response page path /index.html, and HTTP response code 200.
+![The CloudFront Create Custom Error Response form showing HTTP error code 403, response page path /index.html, and HTTP response code 200.](/images/kinney/cf9b2d8a10d23c06.webp)
 
 Once both rules are configured, the **Error pages** tab shows the complete mapping.
 
-The CloudFront Error pages tab showing two custom error responses: 403 and 404 both mapped to /index.html with HTTP response code 200.
+![The CloudFront Error pages tab showing two custom error responses: 403 and 404 both mapped to /index.html with HTTP response code 200.](/images/kinney/7827c787942bc8f5.webp)
 
 ## Breaking Down the Config
 

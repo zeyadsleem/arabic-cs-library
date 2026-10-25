@@ -155,6 +155,8 @@ await server.connect(transport);
 
 يستدعي الوكيل الأداة، فيحصل على المُخرجات المُهيكلة، ويتصرّف بناءً عليها.
 
+![مسار الرفّ العام الذي يستهدفه `verify_shelf_page`](/images/kinney/2dd3ff9d7f78d14b.webp)
+
 المسار العام للرفّ الذي تستهدفه `verify_shelf_page`
 
 ## معايير القبول

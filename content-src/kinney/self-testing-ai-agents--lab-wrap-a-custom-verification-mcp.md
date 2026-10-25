@@ -158,6 +158,8 @@ Ask the agent to verify the shelf for alice. Example prompt:
 
 The agent calls the tool, gets back the structured output, and acts on it.
 
+![The public shelf route targeted by `verify_shelf_page`](/images/kinney/2dd3ff9d7f78d14b.webp)
+
 The public shelf route targeted by `verify_shelf_page`
 
 ## Acceptance criteria

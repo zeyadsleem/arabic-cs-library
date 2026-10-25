@@ -15,17 +15,19 @@ You can apply a layout grid to any frame. You can even apply multiple grids to a
 
 Figma comes with some built-in grids.
 
+![Figma's built-in layout grids](/images/kinney/0680343a528a3f0e.webp)
+
 ## Columns
 
 Column grids are perfect for web pages and mobile interfaces, where vertical alignment is super important. In Figma, you can customize the number of columns, the gutter width between columns, and the margin on the sides of the canvas.
 
-Columns in layout grids
+![Columns in layout grids](/images/kinney/d1646bf8e44fd8ad.webp)
 
 ## Rows
 
 Row grids are used less frequently but are invaluable for designs that require horizontal alignment, such as timelines or charts. Similar to column grids, you can adjust the number of rows, the gutter height, and margins to fit your design specifications.
 
-Rows in layout grids
+![Rows in layout grids](/images/kinney/b705beeebee2485a.webp)
 
 ## Grids
 

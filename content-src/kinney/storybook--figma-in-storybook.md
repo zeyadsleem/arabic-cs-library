@@ -23,7 +23,7 @@ Running this script will install the dependency as well as add it to `.storybook
 
 Head over into Figma and click on the **Share** button towards the right in the toolbar and then select **Copy Link**.
 
-Sharing a Figma file
+![Sharing a Figma file](/images/kinney/16ccfecb98aee0b5.webp)
 
 Next, in your story, we’re going to add a parameter that creates the link between the story and the designs.
 
@@ -43,4 +43,4 @@ const meta: Meta<typeof Button> = {
 
 And now, when you start up storybook, you’ll be able to see both side by side.
 
-Figma design alongside Storybook
+![Figma design alongside Storybook](/images/kinney/1b0127d0f23d7498.webp)

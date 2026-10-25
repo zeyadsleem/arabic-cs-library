@@ -11,7 +11,7 @@ Once we’ve finished up with [installation](https://stevekinney.com/courses/ope
 
 The first thing we’re going to want to do is set up which models we’re going to use. This, of course, is a personal decision—but, here are some sensible defaults.
 
-The model settings showing a primary model, a utility model, a decision model, a fallback model, thinking, and fast mode
+![The model settings showing a primary model, a utility model, a decision model, a fallback model, thinking, and fast mode](/images/kinney/0ef6e78fd52956bc.webp)
 
 ## Tweaking Your Security Settings
 

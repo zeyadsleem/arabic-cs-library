@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/self-testing-ai-agents"
 
 Agents are fast at editing code. They are not particularly good at knowing whether the edit was any good. If every change they make requires you to read the diff, run the thing, click around the UI, eyeball the console, and then prompt the agent to fix what it missed, you haven’t automated much. You’ve traded one kind of typing for another.
 
-A naïve cycle of AI-assisted development
+![A naïve cycle of AI-assisted development](/images/kinney/a25167d4c3e159e1.webp)
 
 And then this is what happens:
 

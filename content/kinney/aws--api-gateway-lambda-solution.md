@@ -322,7 +322,7 @@ aws apigatewayv2 get-routes \
 
 في وحدة التحكم، تعرض صفحة **Routes** كلا المسارين مُدرجين تحت الواجهة البرمجية.
 
-تعرض صفحة Routes في API Gateway المسار ANY / المُنشأ لواجهة my-frontend-api من نوع HTTP API.
+![تعرض صفحة Routes في API Gateway المسار ANY / المُنشأ لواجهة my-frontend-api من نوع HTTP API.](/images/kinney/6bf5325c96478758.webp)
 
 ## منح الإذن
 

@@ -36,6 +36,8 @@ Manually adjusting everything is hard and we certainly don’t arrange our UIs b
 
 Auto layout adds a structure to your frames and components, allowing them to resize content automatically based on the properties you define. It’s particularly useful for designing interfaces that need to be responsive or adapt to content variations, such as text changes, navigation bars, or dynamic lists. As I mentioned above, if you think you might use flexbox in your implementation, then you’ll probably choose to use auto layout in Figma.
 
+![Figma's auto layout contols](/images/kinney/265b7f1c59147a09.webp)
+
 Looking at the screenshot above, you can see the following controls:
 
 - The ability to set the direction of the elements in the auto-layout. You can think of this as similar to `flex-direction` in CSS.
@@ -45,7 +47,7 @@ Looking at the screenshot above, you can see the following controls:
 
 There are also some advanced settings hiding out in the little menu along the right-side of the control panel.
 
-Advanced options for Figma's auto layout
+![Advanced options for Figma's auto layout](/images/kinney/889392ba9a5127c5.webp)
 
 ## Setting Up Auto Layout
 
@@ -53,9 +55,15 @@ To apply auto layout, select a frame or group of objects and click the “Auto L
 
 The really cool thing about using auto layout is that you no longer need to resize your frames in order to accommodate new items.
 
+![Figma auto layout in the side menu](/images/kinney/1bb7533163074244.gif)
+
 This works because in this case, sizing is controlled by the `Hug` value in the frame size. This instructs the frame to adapt to the size of its children.
 
+![Figma auto layout's hug frame size option](/images/kinney/0a01de6e4b023ad7.webp)
+
 You can control this by using the caret next to the value.
+
+![Fixed versus hug contents in Figma's auto layout](/images/kinney/79f9ce0468a749e9.webp)
 
 ## Minding the Gap
 
@@ -65,13 +73,17 @@ When you’re basing the size of the frame based on it’s children, then you ca
 >
 > You can quickly switch between fixed and automatic spacing using **Command+X**.
 
-Fixed height and automatic gap sizing with auto layout
+![Fixed height and automatic gap sizing with auto layout](/images/kinney/e3bd902daa69d629.webp)
 
 Now, the you can resize the frame and the elements will distribute themselves evenly. The ability for frames to adapt to the size of their children and be able to maintain consistent spaces are basically two of the most common use cases for using auto layout.
+
+![Resizing with a fixed size using auto layout in Figma](/images/kinney/b5749974152ef13c.gif)
 
 ## Adjusting the Padding
 
 Trying to grab the corners of the frame to resize it will switch the horizontal and/or vertical resizing from **Hug** to **Fixed**. However, if you want to click to change the padding, you can do that as well, you just need to be a *little bit* more precise as to where you click to drag.
+
+![Click to resize padding using auto layout](/images/kinney/e7d71b64cdd69c9e.gif)
 
 ## Accounting for Strokes
 
@@ -80,6 +92,8 @@ When determining the size of objects for auto layout, strokes are not considered
 This might not be the best approach for developer handoff since it doesn’t show how CSS displays borders accurately.
 
 To address this, you can decide if strokes should occupy space within an auto layout frame. Simply access the advanced layout settings and use the dropdown menu next to **stroke** to choose between **included in layout** or **excluded from layout**.
+
+![Exclude Stroke From Auto Layout](/images/kinney/3636b91627fbf6ac.gif)
 
 ## Nesting Auto Layouts
 

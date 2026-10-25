@@ -22,13 +22,13 @@ source: "https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution"
 
 تسأل الشاشة الأولى عن **اسم التوزيع** و**نوع التوزيع**. أدخل اسمًا مثل `my-frontend-app` — ويُخزَّن هذا كوسم لتسهيل التعرّف. واترك نوع التوزيع على **Single website or app** (الافتراضي). ويمكنك تخطّي نطاق Route 53 الآن — ستضيف نطاقًا مخصّصًا لاحقًا.
 
-معالج CloudFront Create Distribution الخطوة 1، وهو يعرض حقل اسم التوزيع مملوءًا بـ my-frontend-app والنوع Single website or app مختارًا.
+![معالج CloudFront Create Distribution الخطوة 1، وهو يعرض حقل اسم التوزيع مملوءًا بـ my-frontend-app والنوع Single website or app مختارًا.](/images/kinney/0819cac04418b315.webp)
 
 ### الخطوة 2: تحديد الأصل
 
 هنا تخبر CloudFront من أين تجلب محتواك. اختر **Amazon S3** كنوع الأصل، ثم أدخل اسم النطاق الإقليمي لحاوية S3: `my-frontend-app-assets.s3.us-east-1.amazonaws.com`.
 
-معالج CloudFront Create Distribution الخطوة 2، وهو يعرض اختيار Amazon S3 كنوع الأصل مع ملء عنوان URL لحاوية S3.
+![معالج CloudFront Create Distribution الخطوة 2، وهو يعرض اختيار Amazon S3 كنوع الأصل مع ملء عنوان URL لحاوية S3.](/images/kinney/f547fd15ca5c1091.webp)
 
 > **تحذير**
 >
@@ -36,13 +36,13 @@ source: "https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution"
 
 مرّر لأسفل وسترى قسم **Settings**. اترك **Allow private S3 bucket access to CloudFront** محدّدًا — فهذا يضبط التحكم في الوصول إلى الأصل (OAC) بحيث لا يقرأ من حاويتك إلا CloudFront. وإعدادات الأصل والتخزين المؤقت الموصى بها مناسبة لموقع ثابت.
 
-إعدادات أصل CloudFront وهي تعرض مربّع اختيار OAC ممكّنًا، وإعدادات الأصل الموصى بها مختارة، وإعدادات التخزين المؤقت الموصى بها المصمّمة لمحتوى S3.
+![إعدادات أصل CloudFront وهي تعرض مربّع اختيار OAC ممكّنًا، وإعدادات الأصل الموصى بها مختارة، وإعدادات التخزين المؤقت الموصى بها المصمّمة لمحتوى S3.](/images/kinney/24e7751db244abdb.webp)
 
 ### الخطوة 3: تمكين الأمان
 
 يسأل المعالج إن كنت تريد تمكين AWS WAF (جدار حماية تطبيقات الويب). تضيف WAF تكلفة (14 دولارًا شهريًا لـ 10 ملايين طلب) وليست ضرورية لتمرين موقع ثابت. اختر **Do not enable security protections**.
 
-خطوة الأمان في CloudFront وهي تعرض خيارات WAF مع اختيار Do not enable security protections.
+![خطوة الأمان في CloudFront وهي تعرض خيارات WAF مع اختيار Do not enable security protections.](/images/kinney/9e01e32143974bc5.webp)
 
 ### الخطوة 4: الحصول على شهادة TLS
 
@@ -52,11 +52,11 @@ source: "https://stevekinney.com/courses/aws/creating-a-cloudfront-distribution"
 
 تعرض الخطوة الأخيرة ملخّصًا لكل ما أعددته — اسم التوزيع، وأصل S3 مع منح وصول CloudFront، وإعدادات التخزين المؤقت، وإعداد الأمان. تحقّق من التفاصيل وانقر **Create distribution**.
 
-خطوة المراجعة في CloudFront وهي تعرض اسم التوزيع وأصل S3 ووصول OAC الممنوح وإعدادات التخزين المؤقت قبل الإنشاء.
+![خطوة المراجعة في CloudFront وهي تعرض اسم التوزيع وأصل S3 ووصول OAC الممنوح وإعدادات التخزين المؤقت قبل الإنشاء.](/images/kinney/6170037ae4d827ec.webp)
 
 بعد الإنشاء، تنشر CloudFront توزيعك إلى مواقع الحافة حول العالم. ويستغرق هذا بضع دقائق — وتعرض لوحة التحكم حالة النشر.
 
-صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.
+![صفحة تفاصيل توزيع CloudFront وهي تعرض التوزيع بحالة Deploying فور الإنشاء.](/images/kinney/c030d7c76b45a438.webp)
 
 ## إعدادات التوزيع (CLI)
 
@@ -268,7 +268,7 @@ aws cloudfront wait distribution-deployed \
 
 في لوحة التحكم، تعرض قائمة التوزيعات التوزيع بحالة **Enabled** واسم النطاق `*.cloudfront.net` بمجرد اكتمال النشر.
 
-قائمة توزيعات CloudFront وهي تعرض التوزيع بحالة Enabled واسم نطاقه cloudfront.net.
+![قائمة توزيعات CloudFront وهي تعرض التوزيع بحالة Enabled واسم نطاقه cloudfront.net.](/images/kinney/2f13031a971ba614.webp)
 
 ## اختبار توزيعك
 

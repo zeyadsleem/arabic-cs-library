@@ -77,7 +77,7 @@ INTEGRATION_ID="a1b2c3"
 
 In the console, the **Integrations → Attach integrations to routes** page lets you select a route and choose between creating a new integration or attaching an existing one—then pick **Lambda function** from the integration type dropdown.
 
-The API Gateway Create an integration form showing Lambda function selected as the integration type with the AWS Region and Lambda function fields visible.
+![The API Gateway Create an integration form showing Lambda function selected as the integration type with the AWS Region and Lambda function fields visible.](/images/kinney/87a03c09041974d4.webp)
 
 A few things about these options:
 
@@ -115,7 +115,7 @@ The `--target` value is `integrations/{IntegrationId}`—note the `integrations/
 
 In the console, the **Create a route** form shows the method dropdown (ANY, GET, POST, etc.) and the path field side by side.
 
-The API Gateway Create a route form showing the method set to ANY and the path field filled with /items.
+![The API Gateway Create a route form showing the method set to ANY and the path field filled with /items.](/images/kinney/d8334b11050a28a2.webp)
 
 Create a second route for `POST /items`:
 
@@ -132,7 +132,7 @@ Both routes point to the same integration (the same Lambda function). Your handl
 
 After adding routes, the **Routes** page shows all configured routes in a tree view with the `$default` catch-all route that the console wizard created.
 
-The API Gateway Routes page showing the routes tree with a $default catch-all route and the Lambda integration attached.
+![The API Gateway Routes page showing the routes tree with a $default catch-all route and the Lambda integration attached.](/images/kinney/3d3db919a58ef7fb.webp)
 
 ### Path Parameters
 

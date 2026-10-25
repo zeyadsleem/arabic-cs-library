@@ -42,7 +42,7 @@ Every distribution has a **default cache behavior** (`*`) that applies to all re
 
 In the console, the **Behaviors** tab lists all cache behaviors for your distribution with their path patterns, origins, and attached policies.
 
-The CloudFront distribution Behaviors tab showing the default cache behavior with path pattern Default, origin, and Managed-CachingOptimized policy.
+![The CloudFront distribution Behaviors tab showing the default cache behavior with path pattern Default, origin, and Managed-CachingOptimized policy.](/images/kinney/70d2449b3b9efcb8.webp)
 
 ## Cache Policies and TTLs
 
@@ -182,11 +182,13 @@ Invalidations typically take 5–15 minutes to propagate fully across all edge l
 
 In the console, the **Invalidations** tab lets you create invalidations by entering object paths. The `/*` wildcard invalidates everything in one operation.
 
+![The CloudFront Create Invalidation form with /* entered in the object paths field.](/images/kinney/af65f08e32f29ce3.webp)
+
 The CloudFront Create Invalidation form with /* entered in the object paths field.
 
 Once CloudFront finishes propagating the invalidation to all edge locations, the status changes to **Completed**.
 
-The CloudFront Invalidations tab showing the invalidation with Completed status.
+![The CloudFront Invalidations tab showing the invalidation with Completed status.](/images/kinney/4c9240d0f3732203.webp)
 
 ### With the SDK
 

@@ -57,7 +57,7 @@ aws s3api get-bucket-versioning \
 
 From this point forward, every object you upload gets a version ID, and overwriting or deleting an object preserves the previous versions.
 
-The S3 bucket Properties tab showing Bucket Versioning status set to Enabled with a success banner confirming the change.
+![The S3 bucket Properties tab showing Bucket Versioning status set to Enabled with a success banner confirming the change.](/images/kinney/5889a482645e4824.webp)
 
 > **Warning**
 >
@@ -149,7 +149,7 @@ This rule applies to all objects in the bucket (empty prefix means everything) a
 
 In the console, the **Create lifecycle rule** form on the bucket’s **Management** tab lets you configure the same rule visually—giving it a name, setting the scope, and choosing the expiration action.
 
-The S3 Create Lifecycle Rule form showing the rule name expire-old-versions and scope options for filtering by prefix.
+![The S3 Create Lifecycle Rule form showing the rule name expire-old-versions and scope options for filtering by prefix.](/images/kinney/ba8f9e97f183879a.webp)
 
 Apply it:
 

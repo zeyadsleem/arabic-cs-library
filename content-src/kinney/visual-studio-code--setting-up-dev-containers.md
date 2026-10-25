@@ -7,7 +7,7 @@ order: 41
 source: "https://stevekinney.com/courses/visual-studio-code/setting-up-dev-containers"
 ---
 
-Setting up Dev Containers
+![Setting up Dev Containers](/images/kinney/75da7687ea1671cb.webp)
 
 Visual Studio Code and the community provide a rich collection of pre-built Dev Container definitions. These are incredibly useful for quickly setting up common development environments without writing `devcontainer.json` from scratch.
 
@@ -20,23 +20,23 @@ You can start with **Add Dev Container Configuration Files** from the Command Ce
 
 Visual Studio Code interface showing the Dev Containers command location Next, select which container you’d like to use.
 
-Dialog for selecting a prebuilt container configuration
+![Dialog for selecting a prebuilt container configuration](/images/kinney/0ba8e3ca93e05f43.webp)
 
 In the case of the **Node.js & TypeScript** image, you’ll be asked which version of Node, you’d like to use.
 
-Dialog for selecting Node.js version for the container
+![Dialog for selecting Node.js version for the container](/images/kinney/3e25a5bbebec65af.webp)
 
 Once you’ve selected your container, you can also pick some additional software that you’d like to include.
 
-Dialog for selecting additional features for the dev container
+![Dialog for selecting additional features for the dev container](/images/kinney/97b1d1101062b295.webp)
 
 You can filter this list to find whatever you’re looking for.
 
-Filtered list of dev container features
+![Filtered list of dev container features](/images/kinney/065f0e4697e08a55.webp)
 
 Finally, you can add some bonus files.
 
-Dialog for selecting optional configuration files
+![Dialog for selecting optional configuration files](/images/kinney/92dfff9ebad73dd7.webp)
 
 ## The End Result
 

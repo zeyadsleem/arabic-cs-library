@@ -303,7 +303,7 @@ VITE_API_URL=https://api.example.com npm run dev
 
 Create a note in the browser. You should see the item appear in the DynamoDB console. Edit the note and verify `updatedAt` changes on the next GET.
 
-The Scratch Lab notepad app running on CloudFront with a note created, showing the full stack round trip from browser to DynamoDB and back.
+![The Scratch Lab notepad app running on CloudFront with a note created, showing the full stack round trip from browser to DynamoDB and back.](/images/kinney/634119f21216e8a2.webp)
 
 ## Summary of Resources Created
 

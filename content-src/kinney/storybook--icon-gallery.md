@@ -30,7 +30,7 @@ These are the icons being used in our design system. They are available as React
 </IconGallery>
 ```
 
-An icon gallery in Storybook
+![An icon gallery in Storybook](/images/kinney/14b7bc5b4830d90d.webp)
 
 > **The implementation of the `Icon` component**
 >

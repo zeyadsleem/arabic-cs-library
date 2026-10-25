@@ -314,9 +314,9 @@ The second run should be noticeably faster. TypeScript reads each `.tsbuildinfo`
 
 `tsc --build` completes successfully. Each package has a `.tsbuildinfo` file. The second run is faster because TypeScript uses incremental state.
 
-First tsc --build run processing all projects
+![First tsc --build run processing all projects](/images/kinney/60b0ceca38528002.webp)
 
-Subsequent tsc --build run with incremental checking
+![Subsequent tsc --build run with incremental checking](/images/kinney/cfdc7dab2b7f9f11.webp)
 
 ## Test Incremental Rechecking
 

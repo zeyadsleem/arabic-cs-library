@@ -108,7 +108,7 @@ Save that ARN. You’ll pass it to `aws lambda create-function` in the next less
 
 In the console, the **Create role** wizard handles this on the **Select trusted entity** step—select **AWS service**, then choose **Lambda** as the use case.
 
-The IAM Create Role page with AWS service selected as the trusted entity type and Lambda chosen as the service or use case.
+![The IAM Create Role page with AWS service selected as the trusted entity type and Lambda chosen as the service or use case.](/images/kinney/752877a58602f8d4.webp)
 
 ## Attaching the Basic Execution Policy
 

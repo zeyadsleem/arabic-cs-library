@@ -38,4 +38,4 @@ import { Meta, Typeset } from '@storybook/blocks';
 
 You’ll see something along these lines.
 
-Storybooks Typeset component rendering a our design system's typography
+![Storybooks Typeset component rendering a our design system's typography](/images/kinney/2046b2dd3faff7c0.webp)

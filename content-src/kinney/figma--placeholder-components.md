@@ -18,7 +18,7 @@ Your placeholder components can look like anything, this is what one that I whip
 
 A placeholder component And then I can create something like a generic card component where I want to be able to swap in a component.
 
-Card component with a placeholder
+![Card component with a placeholder](/images/kinney/27dd7c229da2c428.webp)
 
 > **Make sure to set the placeholder to fill the container for both width and height.**
 
@@ -26,10 +26,13 @@ Card component with a placeholder
 
 With my component in place, I want to set up the ability to do an instance swap of the placeholder component
 
-Instance swap a placeholder component
+![Instance swap a placeholder component](/images/kinney/dc9e3a6e95fe169f.webp)
 
 And now, you can select any components that you want to as preferred components, but honestly, this is just a shorthand, you can pop in any component that you want.
 
-Swapping in a preferred component
+![Swapping in a preferred component](/images/kinney/8b0de9684c5ea6f4.webp)
 
 And now you can swap in some other component into this card. This is also a reasonable strategy for base component, but it *definitely* still feels like a hack—so, I’d probably use it sparingly.
+
+
+![Placeholder with checklist](/images/kinney/4b4f47bc158db8c1.webp)

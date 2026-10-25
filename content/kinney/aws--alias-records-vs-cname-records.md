@@ -8,6 +8,8 @@ source: "https://stevekinney.com/courses/aws/alias-records-vs-cname-records"
 
 إن أردت نسخة AWS التي تقارن الخيارين جنبًا إلى جنب، فـ[دليل Route 53 لسجلات alias مقابل السجلات غير alias](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) هو المرجع الرسمي.
 
+![مخطط يوضح سبب تعذّر استخدام CNAME في جذر المنطقة لأن سجلّي NS وSOA موجودان هناك بالفعل، وكيف تحلّ سجلات alias في Route 53 توزيع CloudFront بدلًا من ذلك.](/images/kinney/f737b82922804df0.svg)
+
 ## مشكلة قمة النطاق
 
 المشكلة الجوهرية هي هذه: **لا يمكن استخدام سجلات CNAME عند قمة النطاق (zone apex)**.

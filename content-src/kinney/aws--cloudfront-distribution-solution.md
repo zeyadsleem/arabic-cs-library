@@ -464,7 +464,7 @@ Expected results: CloudFront returns `200 OK` for both the root and the SPA rout
 
 Open the CloudFront domain in a browser to see the site live:
 
-The static site served through CloudFront with HTTPS, showing Hello from S3 on a dark background with a page-load timestamp.
+![The static site served through CloudFront with HTTPS, showing Hello from S3 on a dark background with a page-load timestamp.](/images/kinney/e6808f0fa9cac56d.webp)
 
 ## Summary of Resources Created
 

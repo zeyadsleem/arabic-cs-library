@@ -73,3 +73,75 @@ test('a summarized page is rejected by the source coverage check', () => {
   );
   assert.ok(problems.some((problem) => problem.includes('summarized or truncated')));
 });
+
+const IMAGE_SOURCE = `${SOURCE}
+![A screenshot of the settings panel](/images/book/settings.webp)
+
+A closing paragraph with enough English words to keep the coverage check quiet.
+`;
+
+test('a dropped image is rejected', () => {
+  const problems = validatePageTranslation(
+    'book--page',
+    IMAGE_SOURCE,
+    translation(`# عنوان الصفحة
+
+هذه فقرة تشرح الفكرة بما يكفي من الكلمات العربية لتقارن الأطوال، وتحتفظ
+بـ[مرجع](https://example.com/docs) وعيّنة شيفرة.
+
+\`\`\`javascript
+const answer = 42;
+\`\`\`
+
+وفقرة ختامية فيها من الكلمات ما يُبقي فحص التغطية هادئًا.
+`)
+  );
+  assert.ok(problems.some((problem) => problem.includes('images differ')));
+});
+
+test('images must keep their order, not just their set', () => {
+  const source = `${SOURCE}
+![First diagram](/images/book/first.webp)
+
+![Second diagram](/images/book/second.webp)
+`;
+  const problems = validatePageTranslation(
+    'book--page',
+    source,
+    translation(`# عنوان الصفحة
+
+هذه فقرة تشرح الفكرة بما يكفي من الكلمات العربية لتقارن الأطوال، وتحتفظ
+بـ[مرجع](https://example.com/docs) وعيّنة شيفرة.
+
+\`\`\`javascript
+const answer = 42;
+\`\`\`
+
+![المخطط الثاني](/images/book/second.webp)
+
+![المخطط الأول](/images/book/first.webp)
+`)
+  );
+  assert.ok(problems.some((problem) => problem.includes('images differ')));
+});
+
+test('a translated alt text keeps the image rule quiet', () => {
+  const problems = validatePageTranslation(
+    'book--page',
+    IMAGE_SOURCE,
+    translation(`# عنوان الصفحة
+
+هذه فقرة تشرح الفكرة بما يكفي من الكلمات العربية لتقارن الأطوال، وتحتفظ
+بـ[مرجع](https://example.com/docs) وعيّنة شيفرة.
+
+\`\`\`javascript
+const answer = 42;
+\`\`\`
+
+![لقطة شاشة للوحة الإعدادات](/images/book/settings.webp)
+
+وفقرة ختامية فيها من الكلمات ما يُبقي فحص التغطية هادئًا.
+`)
+  );
+  assert.deepEqual(problems, []);
+});

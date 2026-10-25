@@ -331,9 +331,9 @@ npx yaml-lint .github/workflows/ci.yml
 
 صيغة YAML لسير عمل CI صالحة. وتغطّي فحص الأنواع والفحص الساكن والاختبار والبناء وميزانيات الأداء. ويتولّى Turborepo التخزين المؤقت داخل كل مهمة. والتخزين المؤقت البعيد مهيّأ لمشاركة المخرجات عبر التشغيلات.
 
-نظرة عامة على سير عمل CI في GitHub Actions
+![نظرة عامة على سير عمل CI في GitHub Actions](/images/kinney/255f86829c46782e.webp)
 
-تهيئة Lighthouse CI وميزانيات الأداء
+![تهيئة Lighthouse CI وميزانيات الأداء](/images/kinney/6da1d3f7cffb34a1.webp)
 
 ## الحل
 

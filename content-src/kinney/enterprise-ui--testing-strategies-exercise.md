@@ -184,7 +184,7 @@ npx playwright test tests/e2e/cross-remote.spec.ts --config tests/e2e/playwright
 
 At least three E2E tests pass. They cover navigation between analytics, users, and settings, verifying that data loads correctly across route transitions.
 
-Playwright test results showing passing tests
+![Playwright test results showing passing tests](/images/kinney/69c930130eec1050.webp)
 
 ## Write Tests with MSW Data Verification
 
@@ -347,7 +347,7 @@ This is a discussion point, not a hands-on exercise. Think about where in your C
 
 All Playwright tests pass. You can articulate the testing pyramid for a monorepo: unit tests (Vitest) for component logic, E2E tests (Playwright) for integration behavior, and contract tests (Pact) for API compatibility.
 
-Playwright HTML report with test summary
+![Playwright HTML report with test summary](/images/kinney/8eb6a24cdf17e4e4.webp)
 
 ## Solution
 

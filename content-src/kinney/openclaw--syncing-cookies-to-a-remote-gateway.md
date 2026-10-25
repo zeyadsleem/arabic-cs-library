@@ -218,7 +218,7 @@ If you’d rather block the one-time import path entirely, set `browser.allowSys
 
 In the Control UI, that switch is the Allow System Profile Import toggle under **Settings → Infrastructure → Browser**. It’s on by default.
 
-The Browser page under Infrastructure in the OpenClaw settings, with the Allow System Profile Import toggle switched on above the Browser Enabled and Browser Evaluate Enabled toggles
+![The Browser page under Infrastructure in the OpenClaw settings, with the Allow System Profile Import toggle switched on above the Browser Enabled and Browser Evaluate Enabled toggles](/images/kinney/15b3a045bd961457.webp)
 
 > **Versions and updates**
 >

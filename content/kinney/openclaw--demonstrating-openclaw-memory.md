@@ -49,7 +49,7 @@ Show me the exact Markdown content containing the Project Magpie information and
 Do not answer based solely on our conversation history. If you cannot access or verify the file, say so explicitly.
 ```
 
-دردشة Control UI تُظهر الوكيل وهو يقرأ MEMORY.md من القرص بعد طلب Project Magpie
+![دردشة Control UI تُظهر الوكيل وهو يقرأ MEMORY.md من القرص بعد طلب Project Magpie](/images/kinney/870406528fe37a06.webp)
 
 حسب تهيئة وكيلك، قد يخزّن المعلومة في `MEMORY.md`، أو في ملف Markdown بتاريخ ضمن `memory/`، أو في خلفية ذاكرة أخرى مُهيّأة.
 
@@ -63,7 +63,7 @@ Do not answer based solely on our conversation history. If you cannot access or 
 
 في Control UI، يؤدي كتابة `/` إلى فتح قائمة أوامر، ويظهر `/new` تحت Session كأمر يبدأ جلسة جديدة.
 
-قائمة أوامر الشرطة المائلة في محرّر Control UI مع إبراز الأمر new
+![قائمة أوامر الشرطة المائلة في محرّر Control UI مع إبراز الأمر new](/images/kinney/6389b3017b76a662.webp)
 
 يبدأ هذا جلسة جديدة دون السياق النشط للمحادثة السابقة.
 
@@ -85,7 +85,7 @@ Use your persistent memory, not previous conversation history. Tell me which mem
 
 ينبغي للاستجابة الناجحة أن تحدّد التفاصيل الأربعة كلها بشكل صحيح دون الحاجة إلى المحادثة الأصلية.
 
-جلسة جديدة تجيب عن أسئلة Project Magpie وتسمّي MEMORY.md وUSER.md كمصدرين لها
+![جلسة جديدة تجيب عن أسئلة Project Magpie وتسمّي MEMORY.md وUSER.md كمصدرين لها](/images/kinney/5c2c085666a78303.webp)
 
 ## الخطوة 4: اختبر الاسترجاع الدلالي من الذاكرة
 

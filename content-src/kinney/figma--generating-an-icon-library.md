@@ -7,7 +7,7 @@ order: 16
 source: "https://stevekinney.com/courses/figma/generating-an-icon-library"
 ---
 
-Icons
+![Icons](/images/kinney/68d7285c068060c4.webp)
 
 Any design system or application comes with a certain amount of iconography. This is always a tricky dance, you typically want **as many as you need and as few as you can get away with**. Again, I’ll leave the philosophy and theory to the experts and we’ll focus on the practical parts of how you can go about generating an icon library in Figma—and in [another course](https://stevekinney.com/courses/storybook/), we’ll look at how implement these in code.
 
@@ -23,7 +23,7 @@ Here is our plan of attack:
 
 There are plugins for Figma, but honestly, it’s super easy to just grab an icon as an SVG and paste it into Figma.
 
-A Lucide icon that we're going to copy as an SVG
+![A Lucide icon that we're going to copy as an SVG](/images/kinney/9c0fa8cfffe5d0db.webp)
 
 I’m going to copy in the following icons:
 
@@ -55,10 +55,10 @@ I’m going to copy in the following icons:
 
 If you want to make your future life easier—go and rename all of the components and prefix them with **Type=**, you can do this easily with **Type=$&**.
 
-Bulk rename the icons
+![Bulk rename the icons](/images/kinney/ff505944d5a4b6ee.webp)
 
 Next, we’ll select **Create component set**.
 
-Create component set
+![Create component set](/images/kinney/51199dfc48b3ce4a.webp)
 
 You will now have an component that you can rename to **Icon**. This give you a quick and easy list of approved icons for use in your design system.

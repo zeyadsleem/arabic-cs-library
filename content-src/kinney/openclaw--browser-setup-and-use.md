@@ -122,7 +122,7 @@ Everything you just did by hand, the agent can do in a chat. You don’t write c
 
 In the Control UI, the browser opens in a side panel next to the chat, labeled with the `openclaw` profile, so you can watch the page the agent is working on.
 
-The Control UI chat with a browser side panel showing example.com under the openclaw profile, beside the agent's summary of the page
+![The Control UI chat with a browser side panel showing example.com under the openclaw profile, beside the agent's summary of the page](/images/kinney/89adfa13fd53a202.webp)
 
 A good browser prompt does a few things:
 

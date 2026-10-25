@@ -17,7 +17,7 @@ source: "https://stevekinney.com/courses/visual-studio-code/vscode-debugging-bas
 
 وهناك مجموعة من القوالب التي يوفّرها Visual Studio Code لتبدأ العمل سريعًا.
 
-إعداد تهيئة التشغيل
+![إعداد تهيئة التشغيل](/images/kinney/642f8d223e160b1d.webp)
 
 ## معًا
 

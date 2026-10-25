@@ -22,17 +22,23 @@ In Figma, there are four types of component properties:
 
 Boolean properties to set `true` and `false` values. This allows us to toggle an attribute on or off. Let’s say we had a badge component and we wanted to add the ability to add a hash tag to the badge—and we wanted it to be something that we could toggle on and off.
 
-An example badge and hash tag component
+![An example badge and hash tag component](/images/kinney/1db95f27b72c840f.webp)
 
 We can start by creating a boolean component property from the **Properties** on the left panel.
 
+![Create a new component property](/images/kinney/65f41b5ca5d833e5.webp)
+
 And from there, we can give it a default value of—you guessed it—either `true` or `false` along with a convenient name for the property.
 
-Properties when creating a new component in Figma
+![Properties when creating a new component in Figma](/images/kinney/0f865ddfee41e455.webp)
 
 Then we can navigate to the layer that want trigger with this property and link it it’s visibility to the component property.
 
+![Link the visibility of a layer to a component property](/images/kinney/239b9aa7b749c3fc.webp)
+
 Now, when we use an instance of that component, we’ll see that we have the ability to toggle the component property on and off.
+
+![Triggering the visibility of a layer on and off based on a component property](/images/kinney/2894c304d9e79825.gif)
 
 ## Text Properties
 
@@ -43,11 +49,15 @@ We can also create component properties that have a text value. There are two ma
 
 The first reason is probably the most common, but the second reason might become handy if you’re looking to get a little fancy with the given variants of your component and want to use the same label in more than one place.
 
-Text property for components
+![Text property for components](/images/kinney/20db1a9cd2a20ad9.webp)
 
 We can then set the value of any text field to this property in the **Text** panel.
 
+![Setting a text property on a component](/images/kinney/85a4794a777b1212.webp)
+
 Now, you can easily change the value of the text property just by clicking the instance of the component.
+
+![Changing a text component property](/images/kinney/00bf89a688eb8bf9.gif)
 
 ## Instance Swap
 
@@ -66,5 +76,7 @@ If you want to hide away most of the complexities of a component away from anyon
 > **Simplifying Won’t Protect You**
 >
 > Simplifying an instance will hide layers, but **anyone with the ability to edit** the design file will still be able to edit those layers.
+
+![Simplifying component instances](/images/kinney/b1c1406cc771421a.gif)
 
 Next let’s talk about [Variants](https://stevekinney.com/courses/figma/variants).

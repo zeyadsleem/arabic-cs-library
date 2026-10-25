@@ -63,4 +63,4 @@ Git مدمج في Visual Studio Code مباشرةً، ما يجعل التحكم
 
 بدلًا من ذلك، تعجبني أيضًا [GitHub Desktop](https://github.com/desktop).
 
-GitHub Desktop
+![GitHub Desktop](/images/kinney/2d949d9da28b43ff.webp)

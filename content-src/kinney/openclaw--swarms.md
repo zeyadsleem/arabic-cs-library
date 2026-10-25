@@ -173,7 +173,7 @@ Ask your agent:
 
 Open the conversation in the Control UI and watch the widget while it runs. When it’s done, you should have one row per file, with a suggestion for each. The suggestions themselves are useful; consider acting on one.
 
-The Control UI chat after a five-child swarm, with the results table above a Parallel tasks widget listing five completed review children and how long each took
+![The Control UI chat after a five-child swarm, with the results table above a Parallel tasks widget listing five completed review children and how long each took](/images/kinney/1f43dfbbefda49b0.webp)
 
 ### 3. Make One Child Fail
 

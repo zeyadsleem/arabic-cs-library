@@ -11,6 +11,8 @@ Every DynamoDB table needs a primary key, and the key you choose determines how 
 
 If you want AWS’s version of the table-shape rules while you read, the [DynamoDB core components guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) is the official reference.
 
+![Diagram showing items grouped by partition key, ordered by sort key within each group, and how a query targets a single partition.](/images/kinney/8ccb3cdfd8758f40.svg)
+
 ## Partition Keys and Sort Keys
 
 DynamoDB supports two types of primary keys:
@@ -160,7 +162,7 @@ Note the `TableStatus` is `CREATING`. DynamoDB tables take a few seconds to beco
 
 In the console, the **Create table** form shows the table name, partition key, and sort key fields in the **Table details** section.
 
-The DynamoDB Create table form showing the table name frontend-items, partition key userId of type String, and sort key itemId of type String.
+![The DynamoDB Create table form showing the table name frontend-items, partition key userId of type String, and sort key itemId of type String.](/images/kinney/3ca88eca88ca1832.webp)
 
 ```bash
 aws dynamodb describe-table \
@@ -174,7 +176,7 @@ Wait until the status changes from `CREATING` to `ACTIVE` before writing data.
 
 Once ACTIVE, the table’s **Overview** tab in the console shows the key schema, capacity mode, and table status.
 
-The DynamoDB table overview page showing the frontend-items table with partition key userId, sort key itemId, and table status Active.
+![The DynamoDB table overview page showing the frontend-items table with partition key userId, sort key itemId, and table status Active.](/images/kinney/9ade6688e335fc33.webp)
 
 > **Warning**
 >

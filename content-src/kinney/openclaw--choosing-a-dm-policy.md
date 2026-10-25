@@ -28,7 +28,7 @@ The policy lives under the channel it applies to, for example `channels.telegram
 
 You can also see and change it in the Control UI. Open *Channels* in Settings, click the channel, and look for the DM policy control. Here’s the Telegram channel on a gateway still using the default:
 
-The Telegram channel settings in the Control UI with the Telegram DM Policy control set to pairing, beside the Group Policy control
+![The Telegram channel settings in the Control UI with the Telegram DM Policy control set to pairing, beside the Group Policy control](/images/kinney/d97e8b0a8b6d04d6.webp)
 
 The four values are a progression, not a menu of equals. Here’s what each one actually means.
 

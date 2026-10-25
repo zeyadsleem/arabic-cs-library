@@ -74,7 +74,7 @@ INTEGRATION_ID="a1b2c3"
 
 في لوحة التحكم، تتيح لك صفحة **Integrations → Attach integrations to routes** اختيار مسار والاختيار بين إنشاء تكامل جديد أو إرفاق تكامل موجود — ثم اختر **Lambda function** من قائمة نوع التكامل المنسدلة.
 
-نموذج API Gateway Create an integration وهو يعرض اختيار Lambda function كنوع التكامل مع ظهور حقلي AWS Region وLambda function.
+![نموذج API Gateway Create an integration وهو يعرض اختيار Lambda function كنوع التكامل مع ظهور حقلي AWS Region وLambda function.](/images/kinney/87a03c09041974d4.webp)
 
 بضعة أمور عن هذه الخيارات:
 
@@ -112,7 +112,7 @@ aws apigatewayv2 create-route \
 
 في لوحة التحكم، يعرض نموذج **Create a route** قائمة الطريقة المنسدلة (ANY وGET وPOST وغيرها) وحقل المسار جنبًا إلى جنب.
 
-نموذج API Gateway Create a route وهو يعرض الطريقة مضبوطة على ANY وحقل المسار مملوءًا بـ /items.
+![نموذج API Gateway Create a route وهو يعرض الطريقة مضبوطة على ANY وحقل المسار مملوءًا بـ /items.](/images/kinney/d8334b11050a28a2.webp)
 
 أنشئ مسارًا ثانيًا لـ `POST /items`:
 
@@ -129,7 +129,7 @@ aws apigatewayv2 create-route \
 
 بعد إضافة المسارات، تعرض صفحة **Routes** كل المسارات المهيّأة في عرض شجري مع مسار الالتقاط الشامل `$default` الذي أنشأه معالج لوحة التحكم.
 
-صفحة API Gateway Routes وهي تعرض شجرة المسارات مع مسار التقاط شامل $default وتكامل Lambda المرفق.
+![صفحة API Gateway Routes وهي تعرض شجرة المسارات مع مسار التقاط شامل $default وتكامل Lambda المرفق.](/images/kinney/3d3db919a58ef7fb.webp)
 
 ### معاملات المسار
 

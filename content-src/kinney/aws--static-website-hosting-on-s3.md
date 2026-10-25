@@ -73,15 +73,15 @@ aws s3api get-bucket-website \
 
 Before enabling, the **Properties** tab shows **Static website hosting** as **Disabled**.
 
-The S3 bucket Properties tab showing Static website hosting as Disabled at the bottom of the page.
+![The S3 bucket Properties tab showing Static website hosting as Disabled at the bottom of the page.](/images/kinney/94d36445f5bdcee0.webp)
 
 In the console, the **Static website hosting** section on the **Properties** tab shows the configuration form where you enter the index and error document names.
 
-The S3 Edit Static Website Hosting form showing the feature enabled with index document set to index.html and error document set to error.html.
+![The S3 Edit Static Website Hosting form showing the feature enabled with index document set to index.html and error document set to error.html.](/images/kinney/f8b0bee804de6d10.webp)
 
 After saving, the section shows the **Bucket website endpoint** URL you can open in a browser.
 
-The S3 bucket Properties tab showing Static website hosting as Enabled with the website endpoint URL displayed.
+![The S3 bucket Properties tab showing Static website hosting as Enabled with the website endpoint URL displayed.](/images/kinney/ce7d1cc0be53c9f2.webp)
 
 ## The Website Endpoint URL
 

@@ -38,6 +38,8 @@ aws lambda update-function-configuration \
 
 في وحدة التحكم، يعرض قسم **Configuration → Environment variables** جميع المتغيرات بنص صريح مع زر **Edit** يتيح لك إضافتها أو تعديلها أو حذفها.
 
+![علامة تبويب Configuration لدالة Lambda تعرض قسم Environment variables مع TABLE_NAME مضبوطًا على frontend-items.](/images/kinney/73ec664ba720f480.webp)
+
 يعرض تبويب Configuration في دالة Lambda قسم Environment variables مع ضبط TABLE_NAME على frontend-items.
 
 > **تحذير**

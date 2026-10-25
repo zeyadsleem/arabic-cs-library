@@ -28,7 +28,7 @@ make_bucket: my-frontend-app-assets
 
 That’s it. You have a bucket. In the console, a green success banner confirms the bucket was created and takes you directly to the bucket’s detail page.
 
-The S3 bucket detail page showing a green Successfully created bucket banner at the top with the bucket name and region displayed.
+![The S3 bucket detail page showing a green Successfully created bucket banner at the top with the bucket name and region displayed.](/images/kinney/f86e1083ae581dca.webp)
 
 But the defaults AWS applied to it matter a lot, and understanding them will save you from a class of debugging problems that plague every newcomer to S3.
 
@@ -38,7 +38,7 @@ But the defaults AWS applied to it matter a lot, and understanding them will sav
 
 If you prefer to create the bucket through the AWS console, the Create Bucket form asks for the same two things: a name and a region.
 
-The S3 Create Bucket form showing the bucket name field filled with my-frontend-app-assets and the AWS Region set to US East (N. Virginia) us-east-1.
+![The S3 Create Bucket form showing the bucket name field filled with my-frontend-app-assets and the AWS Region set to US East (N. Virginia) us-east-1.](/images/kinney/d07fadea87edd0d9.webp)
 
 ## Choosing a Region
 
@@ -102,7 +102,7 @@ aws s3api get-public-access-block \
 
 In the console, the bucket’s **Permissions** tab shows these same four settings under **Block Public Access (bucket settings)**—all enabled by default.
 
-S3 bucket Permissions tab showing Block Public Access settings with all four options enabled, labeled On in the console.
+![S3 bucket Permissions tab showing Block Public Access settings with all four options enabled, labeled On in the console.](/images/kinney/8f28109774ea5b57.webp)
 
 When you’re ready to make the bucket publicly accessible for static website hosting, you’ll need to disable these settings. We’ll do that in [Bucket Policies and Public Access](https://stevekinney.com/courses/aws/bucket-policies-and-public-access), once you understand what a bucket policy actually is.
 
@@ -251,7 +251,7 @@ aws s3api head-bucket \
 
 If the command returns without error, the bucket exists and you have access to it. A 404 means the bucket doesn’t exist; a 403 means it exists but you don’t have permission (which can happen if someone else owns a bucket with that name, as covered in [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)).
 
-The S3 Buckets list showing the newly created my-frontend-app-assets bucket with its creation date and region.
+![The S3 Buckets list showing the newly created my-frontend-app-assets bucket with its creation date and region.](/images/kinney/25ee600050e1c3e3.webp)
 
 ## What You Have So Far
 

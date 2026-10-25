@@ -11,7 +11,7 @@ If you’ve done the git hook dance before, you know how it usually goes: instal
 
 It works. I’ve shipped it on plenty of projects. But, every time I set it up I think: this is a lot of indirection for “run ESLint on the files I’m about to commit.”
 
-Left Hook
+![Left Hook](/images/kinney/f2923a060096d8f6.webp)
 
 [Lefthook](https://github.com/evilmartians/lefthook) is the tool that made me stop thinking that. It’s a single binary (written in Go, distributed via npm if you want it) that replaces Husky *and* lint-staged in one configuration file. One YAML file. No shell scripts. No `prepare` hook. No second package to manage staged-file filtering—Lefthook handles that natively with its `glob` and `run` options.
 

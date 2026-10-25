@@ -10,6 +10,8 @@ source: "https://stevekinney.com/courses/aws/parameter-store-hierarchical-config
 
 إذا كانت متغيرات بيئة Lambda أشبه بملف `.env` مسطّح، فإن Parameter Store أشبه بشجرة تهيئة منظّمة. أجد هذا التمييز مفيدًا لأنه يغيّر طريقة تفكيرك في تنظيم التهيئة. تنظّم المعاملات حسب التطبيق والبيئة والغرض باستخدام مسارات تشبه أدلّة نظام الملفات: `/my-frontend-app/production/api-key`. وعلى خلاف متغيرات البيئة، يمكنك مشاركة المعاملات بين عدة دوال Lambda دون تكرار القيم.
 
+![مخطط يوضح مسارات Parameter Store مجمّعة حسب التطبيق والبيئة، مع سياسة IAM محصورة في شجرة الإنتاج فقط.](/images/kinney/a03090c0b84b911b.svg)
+
 ## إنشاء المعاملات باستخدام CLI
 
 ينشئ الأمر `put-parameter` معاملًا جديدًا أو يحدّث معاملًا قائمًا. إليك معامل نص عادي:
@@ -45,7 +47,7 @@ aws ssm put-parameter \
 
 في وحدة التحكم، يعرض نموذج **Create parameter** خيار النوع **SecureString** مع محدّد مفتاح KMS.
 
-نموذج Create parameter في AWS Systems Manager Parameter Store يعرض الاسم /my-frontend-app/api-key مملوءًا وSecureString محدّدًا كنوع مع مفتاح KMS الافتراضي.
+![نموذج Create parameter في AWS Systems Manager Parameter Store يعرض الاسم /my-frontend-app/api-key مملوءًا وSecureString محدّدًا كنوع مع مفتاح KMS الافتراضي.](/images/kinney/896464961b187605.webp)
 
 تُشفَّر القيمة عند السكون باستخدام مفتاح KMS تديره AWS. يمكنك أيضًا تحديد مفتاح KMS خاص بك عبر العلم `--key-id`، لكن المفتاح الافتراضي يفي بالغرض في معظم حالات الاستخدام.
 
@@ -77,7 +79,7 @@ aws ssm put-parameter \
 
 في وحدة التحكم، تعرض قائمة **Parameter Store** جميع المعاملات في حسابك. يمكنك التصفية حسب المسار لرؤية تسلسل `/my-frontend-app/` فقط.
 
-تعرض قائمة AWS Systems Manager Parameter Store المعاملات بأسمائها وأنواعها وتواريخ آخر تعديل لها.
+![تعرض قائمة AWS Systems Manager Parameter Store المعاملات بأسمائها وأنواعها وتواريخ آخر تعديل لها.](/images/kinney/d29c7300d68d8ec6.webp)
 
 لنضِف بضعة معاملات أخرى:
 

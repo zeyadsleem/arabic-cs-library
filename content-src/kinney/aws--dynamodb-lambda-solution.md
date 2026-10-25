@@ -376,7 +376,7 @@ The `itemId` (a UUID) and `createdAt` values will differ based on when you run t
 
 In the console, the same invocation using the **Test** tab shows the execution result with the 201 status code and the item’s data.
 
-The Lambda Test tab showing the execution result as Succeeded with the response body showing a newly created DynamoDB item.
+![The Lambda Test tab showing the execution result as Succeeded with the response body showing a newly created DynamoDB item.](/images/kinney/4fac9aa0efe62bc5.webp)
 
 ### Create a second item
 

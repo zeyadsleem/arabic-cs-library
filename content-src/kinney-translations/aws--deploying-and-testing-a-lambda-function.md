@@ -95,15 +95,15 @@ aws lambda create-function \
 
 في لوحة التحكم، تتيح لك صفحة **Create function** اختيار وقت التشغيل وضبط الإعدادات الأساسية قبل النشر.
 
-صفحة Lambda Create Function وهي تعرض اختيار Author from scratch وإدخال اسم دالة واختيار وقت تشغيل Node.js.
+![صفحة Lambda Create Function وهي تعرض اختيار Author from scratch وإدخال اسم دالة واختيار وقت تشغيل Node.js.](/images/kinney/25020ebaadd78dd6.webp)
 
 بعد الإنشاء، يعرض تبويب **Code** شيفرة المعالج المنشورة في المحرّر المضمّن.
 
-صفحة تفاصيل دالة Lambda وهي تعرض تبويب Code مع المحرّر المضمّن يعرض دالة المعالج.
+![صفحة تفاصيل دالة Lambda وهي تعرض تبويب Code مع المحرّر المضمّن يعرض دالة المعالج.](/images/kinney/0888c411ffe00b5b.webp)
 
 ويعرض تبويب **Configuration** إعدادات وقت التشغيل للدالة — الذاكرة والمهلة والتخزين المؤقت وSnapStart. وستعود هنا عندما تحتاج إلى تعديلها أو إضافة متغيّرات بيئة.
 
-تبويب Lambda Configuration وهو يعرض General configuration بذاكرة 128 MB ومهلة 10 ثوانٍ وتخزين مؤقت 512 MB.
+![تبويب Lambda Configuration وهو يعرض General configuration بذاكرة 128 MB ومهلة 10 ثوانٍ وتخزين مؤقت 512 MB.](/images/kinney/0ad6f3884a352490.webp)
 
 ## استدعاء الدالة
 
@@ -146,15 +146,15 @@ cat response.json
 
 في لوحة التحكم، يتيح لك تبويب **Test** ضبط حدث اختبار وتشغيل الدالة مباشرة. اختر **Create new event**، وأعطه اسمًا، والصق حمولة JSON في المحرّر.
 
-تبويب Lambda Test وهو يعرض خيار Create new event مختارًا مع محرّر Event JSON جاهزًا للإدخال.
+![تبويب Lambda Test وهو يعرض خيار Create new event مختارًا مع محرّر Event JSON جاهزًا للإدخال.](/images/kinney/4eeedd45f6933417.webp)
 
 بعد إدخال حمولة الاختبار، انقر **Test**. ويقبل محرّر **Event JSON** أي حمولة JSON، وتعرض نتيجة التنفيذ الاستجابة والسجلات مضمّنة.
 
-تبويب Lambda Test وهو يعرض محرّر Event JSON مهيّأً بحمولة نموذجية، جاهزًا لاستدعاء الدالة.
+![تبويب Lambda Test وهو يعرض محرّر Event JSON مهيّأً بحمولة نموذجية، جاهزًا لاستدعاء الدالة.](/images/kinney/8d4f44b53f17ab65.webp)
 
 بعد النقر على **Test**، تتوسّع النتيجة فوق محرّر الحدث لتعرض الحالة ونص الاستجابة ومخرجات السجل.
 
-تبويب Lambda Test وهو يعرض نتيجة التنفيذ كـ Succeeded مع توسّع استجابة JSON التي تعرض statusCode 200 ونص Hello from Lambda.
+![تبويب Lambda Test وهو يعرض نتيجة التنفيذ كـ Succeeded مع توسّع استجابة JSON التي تعرض statusCode 200 ونص Hello from Lambda.](/images/kinney/4fac9aa0efe62bc5.webp)
 
 > **نصيحة**
 >
@@ -217,7 +217,7 @@ aws lambda update-function-code \
 
 في لوحة التحكم، يعرض تبويب **Monitor** مقاييس الاستدعاء والمدة ومعدّلات الأخطاء بنظرة واحدة. ويربط أيضًا مباشرة بمجموعة سجلات CloudWatch لدالتك.
 
-تبويب Lambda Monitor وهو يعرض عدد الاستدعاءات والمدة ومقاييس الأخطاء مع رابط إلى CloudWatch Logs.
+![تبويب Lambda Monitor وهو يعرض عدد الاستدعاءات والمدة ومقاييس الأخطاء مع رابط إلى CloudWatch Logs.](/images/kinney/d3b4a25aa5e4380b.webp)
 
 تذهب مخرجات `console.log` من دالتك إلى CloudWatch Logs. وأبسط طريقة لمراقبة السجلات في الوقت الفعلي هي `aws logs tail`:
 

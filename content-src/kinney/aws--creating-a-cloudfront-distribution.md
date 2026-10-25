@@ -25,13 +25,13 @@ The CloudFront **Create distribution** wizard walks you through the process step
 
 The first screen asks for a **distribution name** and **distribution type**. Enter a name like `my-frontend-app`—this is stored as a tag for easy identification. Leave the distribution type as **Single website or app** (the default). You can skip the Route 53 domain for now—you’ll add a custom domain later.
 
-The CloudFront Create Distribution wizard Step 1, showing the distribution name field filled with my-frontend-app and the Single website or app type selected.
+![The CloudFront Create Distribution wizard Step 1, showing the distribution name field filled with my-frontend-app and the Single website or app type selected.](/images/kinney/0819cac04418b315.webp)
 
 ### Step 2: Specify Origin
 
 This is where you tell CloudFront where to fetch your content. Select **Amazon S3** as the origin type, then enter your S3 bucket’s regional domain name: `my-frontend-app-assets.s3.us-east-1.amazonaws.com`.
 
-The CloudFront Create Distribution wizard Step 2, showing Amazon S3 selected as the origin type with the S3 bucket URL filled in.
+![The CloudFront Create Distribution wizard Step 2, showing Amazon S3 selected as the origin type with the S3 bucket URL filled in.](/images/kinney/f547fd15ca5c1091.webp)
 
 > **Warning**
 >
@@ -39,13 +39,13 @@ The CloudFront Create Distribution wizard Step 2, showing Amazon S3 selected as 
 
 Scroll down and you’ll see the **Settings** section. Leave **Allow private S3 bucket access to CloudFront** checked—this configures Origin Access Control (OAC) so only CloudFront can read from your bucket. The recommended origin and cache settings are fine for a static site.
 
-The CloudFront origin settings showing the OAC checkbox enabled, recommended origin settings selected, and recommended cache settings tailored to S3 content.
+![The CloudFront origin settings showing the OAC checkbox enabled, recommended origin settings selected, and recommended cache settings tailored to S3 content.](/images/kinney/24e7751db244abdb.webp)
 
 ### Step 3: Enable Security
 
 The wizard asks whether to enable AWS WAF (Web Application Firewall). WAF adds cost ($14/month for 10 million requests) and isn’t necessary for a static site exercise. Select **Do not enable security protections**.
 
-The CloudFront security step showing WAF options with Do not enable security protections selected.
+![The CloudFront security step showing WAF options with Do not enable security protections selected.](/images/kinney/9e01e32143974bc5.webp)
 
 ### Step 4: Get TLS Certificate
 
@@ -55,11 +55,11 @@ The wizard asks whether you want to request an ACM certificate for a custom doma
 
 The final step shows a summary of everything you’ve configured—distribution name, S3 origin with CloudFront access granted, cache settings, and security configuration. Verify the details and click **Create distribution**.
 
-The CloudFront review step showing the distribution name, S3 origin, OAC access granted, and cache settings before creation.
+![The CloudFront review step showing the distribution name, S3 origin, OAC access granted, and cache settings before creation.](/images/kinney/6170037ae4d827ec.webp)
 
 After creation, CloudFront deploys your distribution to edge locations worldwide. This takes a few minutes—the console shows the deployment status.
 
-CloudFront distribution detail page showing the distribution as Deploying immediately after creation.
+![CloudFront distribution detail page showing the distribution as Deploying immediately after creation.](/images/kinney/c030d7c76b45a438.webp)
 
 ## The Distribution Config (CLI)
 
@@ -271,7 +271,7 @@ This command exits silently when the distribution is fully deployed. No output m
 
 In the console, the distributions list shows the distribution with status **Enabled** and the `*.cloudfront.net` domain name once deployment completes.
 
-The CloudFront distributions list showing the distribution with Enabled status and its cloudfront.net domain name.
+![The CloudFront distributions list showing the distribution with Enabled status and its cloudfront.net domain name.](/images/kinney/2f13031a971ba614.webp)
 
 ## Testing Your Distribution
 

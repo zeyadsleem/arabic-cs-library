@@ -6,7 +6,7 @@ source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-codeg
 
 أحيانًا تكون أسرع طريقة لكتابة اختبار هي أن *تفعل الشيء* فقط وتدع الأدوات تراقب. فـ[مولّد الشيفرة](https://playwright.dev/docs/codegen-intro) في Playwright يسجّل نقراتك وضغطات مفاتيحك ويحوّلها إلى شيفرة اختبار. وهو ليس سحرًا — فالمخرجات تحتاج إلى تحرير — لكنه نقطة بداية مشروعة، وهو في التطبيقات غير المألوفة غالبًا أسرع من قراءة DOM يدويًا.
 
-مولّد الشيفرة في Playwright
+![مولّد الشيفرة في Playwright](/images/kinney/fd7f8a7197ab5156.webp)
 
 ## تشغيل مولّد الشيفرة
 

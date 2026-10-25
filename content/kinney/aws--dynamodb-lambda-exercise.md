@@ -39,7 +39,7 @@ source: "https://stevekinney.com/courses/aws/dynamodb-lambda-exercise"
 
 في وحدة التحكم، تعرض قائمة **Tables** حالة الجدول على أنها **Active** بمجرد اكتمال التهيئة.
 
-قائمة جداول DynamoDB تعرض جدول frontend-items بالحالة Active.
+![قائمة جداول DynamoDB تعرض جدول frontend-items بالحالة Active.](/images/kinney/6cfa6c9fcac2fdb3.webp)
 
 ### نقطة تحقق
 

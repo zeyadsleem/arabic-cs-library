@@ -66,7 +66,7 @@ This follows the principle of least privilege from [Principle of Least Privilege
 
 In the console, you can create this policy in the IAM **Create policy** JSON editor—the same place you defined the execution role trust policy.
 
-The IAM Create Policy JSON editor showing a policy with DynamoDB actions including PutItem, GetItem, UpdateItem, and Query scoped to a specific table ARN.
+![The IAM Create Policy JSON editor showing a policy with DynamoDB actions including PutItem, GetItem, UpdateItem, and Query scoped to a specific table ARN.](/images/kinney/7d974120c618a4ba.webp)
 
 Create and attach the policy:
 

@@ -11,6 +11,8 @@ You’ve requested a certificate in ACM and it’s sitting at **Pending validati
 
 If you want AWS’s version of the validation behavior while you read, the [ACM DNS validation guide](https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html) is the canonical reference.
 
+![Side-by-side comparison of ACM DNS validation and email validation, including issuance steps and renewal behavior.](/images/kinney/3c53fe690c72c8e0.svg)
+
 ## What Validation Actually Proves
 
 When you request a certificate for `example.com`, ACM needs to verify that the person making the request actually controls that domain. Without this step, anyone could request a certificate for `google.com` or `your-bank.com` and use it to impersonate those sites. Domain validation is what makes the TLS trust model work.

@@ -4,7 +4,7 @@ lang: ar
 source: "https://stevekinney.com/courses/ai-development/notebooklm"
 ---
 
-NotebookLM
+![NotebookLM](/images/kinney/7f9240bdf105ff88.webp)
 
 ‏NotebookLM هو مساحة عمل Google للبحث وتدوين الملاحظات المدعومة بالذكاء الاصطناعي. تنشئ دفترًا، وترفق به مصادر (مستندات Google وملفات PDF وعناوين URL وملفات Drive)، ثم تطرح أسئلة، وتولّد ملخّصات ومخططات وقوائم مصطلحات وأدلة دراسة مستندة إلى تلك المصادر مع استشهادات. وهو مفيد جدًا في تحويل التوثيق المتناثر إلى معرفة موجزة وموثوقة يمكنك مشاركتها مع فريق.
 

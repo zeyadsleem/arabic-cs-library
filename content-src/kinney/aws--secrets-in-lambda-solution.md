@@ -55,7 +55,7 @@ Expected output:
 
 You can also verify the parameter in the AWS Console under **Systems Manager → Parameter Store**:
 
-The Parameter Store detail view showing the SecureString parameter with its ARN, type, tier, and masked value.
+![The Parameter Store detail view showing the SecureString parameter with its ARN, type, tier, and masked value.](/images/kinney/fdaed0203b072c70.webp)
 
 ## Write the Handler
 

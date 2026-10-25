@@ -314,7 +314,7 @@ You should see:
 - The text “This site is hosted entirely on Amazon S3.”
 - A timestamp showing when the page loaded
 
-Browser showing the deployed S3 static site with the Hello from S3 heading on a dark background and a page-load timestamp.
+![Browser showing the deployed S3 static site with the Hello from S3 heading on a dark background and a page-load timestamp.](/images/kinney/72c4395efa79b42b.webp)
 
 Test the error page by navigating to a nonexistent path:
 

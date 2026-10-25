@@ -97,11 +97,11 @@ aws cloudfront update-distribution \
 
 في لوحة التحكم، يعرض تبويب **Error pages** على توزيعك كل استجابة خطأ مخصّصة. ويطابق نموذج القاعدة الواحدة رمز خطأ HTTP بصفحة استجابة مخصّصة ورمز حالة.
 
-نموذج CloudFront Create Custom Error Response وهو يعرض رمز خطأ HTTP 403، ومسار صفحة الاستجابة /index.html، ورمز استجابة HTTP 200.
+![نموذج CloudFront Create Custom Error Response وهو يعرض رمز خطأ HTTP 403، ومسار صفحة الاستجابة /index.html، ورمز استجابة HTTP 200.](/images/kinney/cf9b2d8a10d23c06.webp)
 
 بمجرد إعداد القاعدتين، يعرض تبويب **Error pages** التعيين الكامل.
 
-تبويب CloudFront Error pages وهو يعرض استجابتَي خطأ مخصّصتين: 403 و404 كلتاهما معيّنتان إلى /index.html برمز استجابة HTTP 200.
+![تبويب CloudFront Error pages وهو يعرض استجابتَي خطأ مخصّصتين: 403 و404 كلتاهما معيّنتان إلى /index.html برمز استجابة HTTP 200.](/images/kinney/7827c787942bc8f5.webp)
 
 ## تفكيك الإعدادات
 

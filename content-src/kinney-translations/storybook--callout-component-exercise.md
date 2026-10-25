@@ -4,7 +4,7 @@ title: "تنفيذ مكوّن Callout"
 
 حسنًا، جاء دورك لتجربة هذا. تأمّل [مكوّن Callout](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=2-2372&mode=design). وتأمّل ما يلي. ويمكنك أن تختار تجاهل كونها بأيقونات مختلفة إن أردت.
 
-تصميمات مكوّن Callout
+![تصميمات مكوّن Callout](/images/kinney/4e82532f86431ad7.webp)
 
 ## الألوان
 

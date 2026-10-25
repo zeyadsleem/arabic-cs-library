@@ -25,7 +25,7 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
 
 ستصيّر Storybook لوحة الألوان البسيطة هذه.
 
-Storybook تصيّر لوحة ألوان
+![Storybook تصيّر لوحة ألوان](/images/kinney/2482be08aa1a3910.webp)
 
 والأفضل من ذلك أنك تستطيع تصيير لوحة الألوان برمجيًا، لأن كامل قوة JSX تحت تصرفك. وهذا يتيح لك توليد لوحة ألوان بسهولة بناءً على سمتك.
 
@@ -45,7 +45,7 @@ import colors from 'tailwindcss/colors';
 
 من الواضح أن هذا سيختلف قليلًا حسب تصنيف سمتك، لكن يمكنك أن تتوقع شيئًا على هذه الشاكلة.
 
-لوحة ألوان مبنية على سمة Tailwind الافتراضية
+![لوحة ألوان مبنية على سمة Tailwind الافتراضية](/images/kinney/0a2f83a2f2f62e9b.webp)
 
 ## إنشاء سمة من الألوان الدلالية
 
@@ -95,4 +95,4 @@ export default {
 
 هل يمكنك أن تأخذ المجموعة الأكثر تحديدًا من الألوان من سمتنا وتولّد لوحة ألوان؟ وإن واجهتك صعوبة [يمكنك الاطلاع على هذا الحل المحتمل](https://stevekinney.com/courses/storybook/color-palette-solution).
 
-لوحة ألوان مولَّدة برمجيًا معروضة في Storybook
+![لوحة ألوان مولَّدة برمجيًا معروضة في Storybook](/images/kinney/34d45b950e2a797f.webp)

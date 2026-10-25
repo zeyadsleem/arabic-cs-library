@@ -55,4 +55,4 @@ In `src/icons.mdx`:
 
 We should now live in a much more orderly world.
 
-Storybook components ordered nicely
+![Storybook components ordered nicely](/images/kinney/104a990d309d86f0.webp)

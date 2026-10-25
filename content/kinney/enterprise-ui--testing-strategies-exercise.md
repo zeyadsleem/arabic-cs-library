@@ -181,7 +181,7 @@ npx playwright test tests/e2e/cross-remote.spec.ts --config tests/e2e/playwright
 
 تنجح ثلاثة اختبارات E2E على الأقل. وهي تغطّي التنقل بين التحليلات والمستخدمين والإعدادات، وتتحقق من تحميل البيانات بشكل صحيح عبر انتقالات المسارات.
 
-نتائج اختبارات Playwright تعرض اختبارات ناجحة
+![نتائج اختبارات Playwright تعرض اختبارات ناجحة](/images/kinney/69c930130eec1050.webp)
 
 ## اكتب اختبارات مع التحقق من بيانات MSW
 
@@ -344,7 +344,7 @@ npx playwright test --config tests/e2e/playwright.config.ts
 
 تنجح كل اختبارات Playwright. وتستطيع أن تبيّن هرم الاختبارات في مستودع أحادي: اختبارات الوحدة (Vitest) لمنطق المكوّنات، واختبارات E2E (Playwright) لسلوك التكامل، واختبارات العقود (Pact) لتوافق الواجهة البرمجية.
 
-تقرير HTML من Playwright مع ملخّص الاختبارات
+![تقرير HTML من Playwright مع ملخّص الاختبارات](/images/kinney/8eb6a24cdf17e4e4.webp)
 
 ## الحل
 

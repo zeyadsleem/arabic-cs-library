@@ -13,7 +13,7 @@ Navigating large codebases can feel like exploring a maze. I have a long rant ab
 
 Visual Studio Code makes a lot of use of the function keys. The problem is—so does macOS. You *could* hold down the `fn` key on your keyboard. Alternatively, you can switch it so that your functions keys are `F1`, `F2`, etc. and only change your screen brightness when you press the `fn` key. This is one of the first things that I do when I set up a new Mac.
 
-Use Function Keys as Standard Function Keys
+![Use Function Keys as Standard Function Keys](/images/kinney/a779dac9f1a5d9f3.webp)
 
 ## Go to Definition, Declaration, Implementation, and Type Definition
 

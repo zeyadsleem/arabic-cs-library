@@ -38,7 +38,7 @@ Welcome to our dope component library. This is a collection of components that w
 <Button>Wow, a button!</Button>
 ```
 
-صفحة توثيق MDX أساسية في Storybook
+![صفحة توثيق MDX أساسية في Storybook](/images/kinney/b538d7878f197348.webp)
 
 ## كتل التوثيق
 
@@ -70,4 +70,4 @@ Buttons have lots of little things that you can tweak about them.
 - كتلة `Primary` تصيّر أول قصة معرَّفة في ملف `button.stories.tsx` لدينا. ومن قبيل المصادفة البحتة أن أول تصدير لدي *أيضًا* اسمه **Primary**.
 - هناك بعض النثر الإضافي ثم نعيد تصيير `Controls`، وهو مماثل لما رأيناه حتى الآن.
 
-توثيق مكوّن الزر مصيَّر في MDX
+![توثيق مكوّن الزر مصيَّر في MDX](/images/kinney/512f75e347b95e68.webp)

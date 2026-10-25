@@ -43,7 +43,7 @@ CORS ليس مفهومًا خاصًا بـ API Gateway — إنه آلية أم�
 
 افتراضيًا، لا تحتوي HTTP API لديك على أي تهيئة CORS. في وحدة التحكم، الانتقال إلى **CORS** في الشريط الجانبي الأيسر يعرض جميع الحقول فارغة — لا أصول مسموحة، ولا أساليب، ولا ترويسات.
 
-تعرض صفحة CORS في API Gateway الحالة الافتراضية غير المهيّأة مع عدم السماح بأي أصول أو أساليب أو ترويسات.
+![تعرض صفحة CORS في API Gateway الحالة الافتراضية غير المهيّأة مع عدم السماح بأي أصول أو أساليب أو ترويسات.](/images/kinney/6adb9000b7916a94.webp)
 
 تهيئة CORS خاصية على واجهة API نفسها — وهذا بصراحة أحد الأمور المفضّلة لدي في HTTP APIs. استخدم `aws apigatewayv2 update-api` لضبطها:
 
@@ -74,7 +74,7 @@ aws apigatewayv2 update-api \
 
 في وحدة التحكم، يعرض قسم **CORS** في التنقّل الأيسر حقول CORS الستة جميعها مع زر **Configure** يفتح لوحة الإعدادات.
 
-تعرض صفحة تهيئة CORS في API Gateway الحقول Access-Control-Allow-Origin وAccess-Control-Allow-Methods وغيرها من حقول CORS مع قيمها الحالية.
+![تعرض صفحة تهيئة CORS في API Gateway الحقول Access-Control-Allow-Origin وAccess-Control-Allow-Methods وغيرها من حقول CORS مع قيمها الحالية.](/images/kinney/9c44de355dbd58f6.webp)
 
 ### ما الذي يفعله كل حقل
 

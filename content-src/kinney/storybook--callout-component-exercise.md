@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/storybook/callout-component-exercise"
 
 Okay, it’s your turn to try this out. Consider this [Callout component](https://www.figma.com/file/Qhb4PJucNK8bgvf4N65Jrm/Anthology?type=design&node-id=2-2372&mode=design). Consider the following. You can choose to ignore the fact that they have different icons if you’d like.
 
-Callout component designs
+![Callout component designs](/images/kinney/4e82532f86431ad7.webp)
 
 ## Colors
 

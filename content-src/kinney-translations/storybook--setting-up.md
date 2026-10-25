@@ -34,6 +34,6 @@ npx storybook@latest init
 
 وأخيرًا، سيُشغّل خادمًا يعمل على المنفذ 6006. ويمكنك تشغيل هذا الخادم في أي وقت باستخدام `npm run storybook`.
 
-شاشة الترحيب الأولية في Storybook
+![شاشة الترحيب الأولية في Storybook](/images/kinney/eb40b408789bbdc7.webp)
 
 وبعد ذلك، لنلقِ نظرة على [كتابة أول قصة لنا](https://stevekinney.com/courses/storybook/writing-stories).

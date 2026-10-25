@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/visual-studio-code/working-with-dev-con
 
 Once you have a `.devcontainer` folder in your project, Visual Studio Code will recognize it and offer you options to work within the Dev Container.
 
-Visual Studio Code dialog showing option to reopen in container
+![Visual Studio Code dialog showing option to reopen in container](/images/kinney/9794dd1ba1106eb3.webp)
 
 > **Docker Installation**
 >
@@ -26,7 +26,7 @@ Visual Studio Code dialog showing option to reopen in container
 
 Once the container is up and running, you’ll be able to see it in **Docker Desktop**.
 
-Docker Desktop showing a running container
+![Docker Desktop showing a running container](/images/kinney/03d25a73fc176c38.webp)
 
 ## Building, Rebuilding, and Updating
 

@@ -63,19 +63,19 @@ source: "https://stevekinney.com/courses/visual-studio-code/vscode-editor-layout
 1. يمكنك القفز إلى مجموعة *محدّدة*.
 2. يمكنك التنقّل بين المجموعات باستخدام مفاتيح الأسهم.
 
-التبديل بين المجموعات في Visual Studio Code
+![التبديل بين المجموعات في Visual Studio Code](/images/kinney/ba39abbdce48a662.webp)
 
 ## القفز إلى سطر (Jump to a Line)
 
 استخدم `Ctrl-G` للقفز إلى سطر محدد.
 
-القفز إلى سطر
+![القفز إلى سطر](/images/kinney/3ebd3fc067fbef04.webp)
 
 ## الانتقال إلى قوس (Go to Bracket)
 
 أمر الانتقال إلى قوس (Go to Bracket) ينتقل من القوس الافتتاحي إلى القوس الختامي. هناك أيضًا إمكانية **Select to Bracket**، لكنها لا تملك اختصارًا — افتراضيًا. سننظر لاحقًا في كيفية إضافة واحد.
 
-الانتقال إلى قوس
+![الانتقال إلى قوس](/images/kinney/42ca5a1e60ba6784.webp)
 
 ## فتح الطرفية المدمجة (Open the Integrated Terminal)
 

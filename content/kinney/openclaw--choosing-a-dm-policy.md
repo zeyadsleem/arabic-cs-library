@@ -25,7 +25,7 @@ source: "https://stevekinney.com/courses/openclaw/choosing-a-dm-policy"
 
 يمكنك أيضًا رؤيتها وتغييرها في واجهة التحكم (Control UI). افتح *القنوات* (Channels) في الإعدادات، انقر على القناة، وابحث عن عنصر التحكم بسياسة الرسائل المباشرة. إليك قناة Telegram على بوابة (gateway) ما زالت تستخدم الافتراضي:
 
-إعدادات قناة Telegram في واجهة التحكم (Control UI) مع عنصر التحكم بسياسة Telegram DM Policy مضبوطًا على pairing، بجوار عنصر التحكم بسياسة المجموعة (Group Policy)
+![إعدادات قناة Telegram في واجهة التحكم (Control UI) مع عنصر التحكم بسياسة Telegram DM Policy مضبوطًا على pairing، بجوار عنصر التحكم بسياسة المجموعة (Group Policy)](/images/kinney/d97e8b0a8b6d04d6.webp)
 
 القيم الأربع تشكل تقدمًا، لا قائمة من المتساوين. إليك ما يعنيه كل منها فعلًا.
 

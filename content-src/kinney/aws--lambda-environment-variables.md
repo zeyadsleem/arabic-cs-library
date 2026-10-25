@@ -41,6 +41,8 @@ aws lambda update-function-configuration \
 
 In the console, the **Configuration → Environment variables** section shows all variables in plain text with an **Edit** button that lets you add, modify, or remove them.
 
+![The Lambda function Configuration tab showing the Environment variables section with TABLE_NAME set to frontend-items.](/images/kinney/73ec664ba720f480.webp)
+
 The Lambda function Configuration tab showing the Environment variables section with TABLE_NAME set to frontend-items.
 
 > **Warning**

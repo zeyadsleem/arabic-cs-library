@@ -309,7 +309,7 @@ http://my-frontend-app-assets.s3-website-us-east-1.amazonaws.com
 - النص «This site is hosted entirely on Amazon S3.»
 - طابعًا زمنيًا يبيّن وقت تحميل الصفحة
 
-متصفح يعرض موقع S3 الثابت المنشور، وفيه عنوان Hello from S3 على خلفية داكنة وطابع زمني لتحميل الصفحة.
+![متصفح يعرض موقع S3 الثابت المنشور، وفيه عنوان Hello from S3 على خلفية داكنة وطابع زمني لتحميل الصفحة.](/images/kinney/72c4395efa79b42b.webp)
 
 اختبر صفحة الخطأ بالانتقال إلى مسار غير موجود:
 

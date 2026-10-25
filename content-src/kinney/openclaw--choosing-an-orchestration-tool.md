@@ -98,7 +98,7 @@ A **goal** is one objective attached to the current session. It stays visible to
 
 In the Control UI, a goal also shows up as a banner above the message box, with buttons to edit, pause, or clear it.
 
-The Control UI chat with a Pursuing goal banner above the message box, showing the goal text, a timer, and edit, pause, and clear buttons
+![The Control UI chat with a Pursuing goal banner above the message box, showing the goal text, a timer, and edit, pause, and clear buttons](/images/kinney/777c0de30a66ea1f.webp)
 
 What to know:
 

@@ -11,7 +11,7 @@ The locator hierarchy is easy to understand and hard to internalize. You know `g
 
 This lab fixes that. Shelf ships a `/playground` page built specifically for this: eleven sections of UI patterns, each designed to exercise a different part of the locator toolkit. Your job is to write Playwright locators for each challenge, run them, and see them pass. The route itself lives at `src/routes/playground/+page.svelte` in the starter — you don’t need to edit it, just target it.
 
-The eleven locator-practice sections on the shipped /playground page
+![The eleven locator-practice sections on the shipped /playground page](/images/kinney/3690cd23a95816fb.webp)
 
 > **Prerequisite**
 >

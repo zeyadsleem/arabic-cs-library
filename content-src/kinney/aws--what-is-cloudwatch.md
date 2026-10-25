@@ -59,7 +59,7 @@ Metrics are time-series data. You can graph them, aggregate them over time windo
 
 The Lambda function’s **Monitor** tab gives you a quick view of these metrics in the console—invocation counts, error counts, and duration percentiles over configurable time windows.
 
-The Lambda function Monitor tab showing invocation metrics graphs for Invocations, Duration, and Error count.
+![The Lambda function Monitor tab showing invocation metrics graphs for Invocations, Duration, and Error count.](/images/kinney/d3b4a25aa5e4380b.webp)
 
 ### Alarms
 

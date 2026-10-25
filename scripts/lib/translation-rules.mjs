@@ -47,6 +47,15 @@ export const codeFences = (markdown) => {
 export const linkTargets = (markdown) =>
   [...markdown.matchAll(/\]\(([^)]+)\)/g)].map((match) => match[1].trim());
 
+/** Every image destination, in document order. A reader sees the picture, not
+ * the words, so a translation that drops one silently loses part of the page:
+ * the order matters as much as the set, because two diagrams can sit on either
+ * side of the paragraph that explains them.
+ * @param {string} markdown @returns {string[]}
+ */
+export const imageTargets = (markdown) =>
+  [...markdown.matchAll(/!\[[^\]]*\]\(\s*([^)\s]+)(?:\s+"[^"\n]*")?\s*\)/g)].map((match) => match[1].trim());
+
 /** Markdown with code removed, so code cannot hide or fake Arabic text.
  * Fenced blocks and inline spans both count: the library renders both verbatim.
  * @param {string} markdown @returns {string}
@@ -300,6 +309,14 @@ export const validatePageTranslation = (key, source, translation) => {
   if (sourceLinks.join('\n') !== arabicLinks.join('\n')) {
     problems.push(
       `${key}: link targets differ (${sourceLinks.length} in the source, ${arabicLinks.length} in the translation)`
+    );
+  }
+
+  const sourceImages = imageTargets(source);
+  const arabicImages = imageTargets(translation.body);
+  if (sourceImages.join('\n') !== arabicImages.join('\n')) {
+    problems.push(
+      `${key}: images differ (${sourceImages.length} in the source, ${arabicImages.length} in the translation)`
     );
   }
 

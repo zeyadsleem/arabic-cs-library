@@ -316,7 +316,7 @@ The `body` is a stringified JSON object. If you parse it, you get:
 
 In the console, the **Test** tab shows the same result with the execution status and response body expanded.
 
-The Lambda Test tab showing the execution result as Succeeded with the statusCode 200 and Hello from Lambda body visible in the Details section.
+![The Lambda Test tab showing the execution result as Succeeded with the statusCode 200 and Hello from Lambda body visible in the Details section.](/images/kinney/4fac9aa0efe62bc5.webp)
 
 ### Test event without name parameter
 

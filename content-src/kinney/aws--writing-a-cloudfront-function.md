@@ -166,15 +166,15 @@ The steps below walk through the create → test → publish → associate workf
 
 Navigate to **CloudFront → Functions** in the left sidebar. You’ll see the Functions list page.
 
-The CloudFront Functions list page showing no functions with a Create function button.
+![The CloudFront Functions list page showing no functions with a Create function button.](/images/kinney/de4cb39b32bb85c9.webp)
 
 Click **Create function**. The create form asks for three things: a **Name**, an optional **Description**, and the **Runtime** version. Use `cloudfront-js-2.0` (the default)—it supports modern JavaScript features including `async`/`await` and WebCrypto APIs.
 
-The CloudFront Create function form with fields for Name, Description, and Runtime selection between cloudfront-js-1.0 and cloudfront-js-2.0.
+![The CloudFront Create function form with fields for Name, Description, and Runtime selection between cloudfront-js-1.0 and cloudfront-js-2.0.](/images/kinney/7ff17d07212a3182.webp)
 
 After clicking **Create function**, you land on the function detail page. This page has three tabs: **Build**, **Test**, and **Publish**. The Build tab shows the code editor where you write or paste your function code.
 
-The CloudFront function detail page showing the url-rewrite function with Build, Test, and Publish tabs and the function code editor below.
+![The CloudFront function detail page showing the url-rewrite function with Build, Test, and Publish tabs and the function code editor below.](/images/kinney/c9c6fe56c07c72d4.webp)
 
 Paste your function code into the editor and click **Save changes**. The editor starts with a skeleton handler—replace it entirely with your rewrite function.
 

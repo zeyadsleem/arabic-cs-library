@@ -13,6 +13,8 @@ If you want AWS’s version of the same feature while you read, the [Parameter S
 
 If Lambda environment variables are like a flat `.env` file, Parameter Store is like a structured configuration tree. I find that distinction helpful because it changes how you think about organizing your config. You organize parameters by application, environment, and purpose using paths that look like file system directories: `/my-frontend-app/production/api-key`. And unlike environment variables, you can share parameters across multiple Lambda functions without duplicating values.
 
+![Diagram showing Parameter Store paths grouped by application and environment, with an IAM policy scoped to only the production subtree.](/images/kinney/a03090c0b84b911b.svg)
+
 ## Creating Parameters with the CLI
 
 The `put-parameter` command creates or updates a parameter. Here’s a plain text parameter:
@@ -48,7 +50,7 @@ aws ssm put-parameter \
 
 In the console, the **Create parameter** form shows the **SecureString** type option with the KMS key selector.
 
-The AWS Systems Manager Parameter Store Create parameter form showing the name /my-frontend-app/api-key filled in and SecureString selected as the type with the default KMS key.
+![The AWS Systems Manager Parameter Store Create parameter form showing the name /my-frontend-app/api-key filled in and SecureString selected as the type with the default KMS key.](/images/kinney/896464961b187605.webp)
 
 The value is encrypted at rest using an AWS-managed KMS key. You can also specify your own KMS key with the `--key-id` flag, but the default key works fine for most use cases.
 
@@ -80,7 +82,7 @@ This hierarchy gives you two things. First, you can retrieve all parameters for 
 
 In the console, the **Parameter Store** list view shows all parameters in your account. You can filter by path to see only the `/my-frontend-app/` hierarchy.
 
-The AWS Systems Manager Parameter Store list view showing parameters with their names, types, and last modified dates.
+![The AWS Systems Manager Parameter Store list view showing parameters with their names, types, and last modified dates.](/images/kinney/d29c7300d68d8ec6.webp)
 
 Let’s populate a few more parameters:
 

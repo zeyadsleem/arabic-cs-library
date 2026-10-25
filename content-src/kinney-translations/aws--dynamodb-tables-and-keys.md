@@ -6,6 +6,8 @@ title: "الجداول ومفاتيح التقسيم ومفاتيح الفرز"
 
 إن أردت الاطلاع على نسخة AWS من قواعد شكل الجدول أثناء قراءتك، فإن [دليل المكوّنات الأساسية في DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html) هو المرجع الرسمي.
 
+![مخطط يوضح العناصر مجمّعة حسب مفتاح التقسيم ومرتّبة بمفتاح الفرز داخل كل مجموعة، وكيف يستهدف الاستعلام قسمًا واحدًا.](/images/kinney/8ccb3cdfd8758f40.svg)
+
 ## مفاتيح التقسيم ومفاتيح الفرز
 
 يدعم DynamoDB نوعين من المفاتيح الأساسية:
@@ -155,7 +157,7 @@ aws dynamodb create-table \
 
 في وحدة التحكم، يعرض نموذج **Create table** اسم الجدول، ومفتاح التقسيم، وحقول مفتاح الفرز في قسم **Table details**.
 
-نموذج إنشاء الجدول في DynamoDB يعرض اسم الجدول frontend-items، ومفتاح التقسيم userId من النوع String، ومفتاح الفرز itemId من النوع String.
+![نموذج إنشاء الجدول في DynamoDB يعرض اسم الجدول frontend-items، ومفتاح التقسيم userId من النوع String، ومفتاح الفرز itemId من النوع String.](/images/kinney/3ca88eca88ca1832.webp)
 
 ```bash
 aws dynamodb describe-table \
@@ -169,7 +171,7 @@ aws dynamodb describe-table \
 
 وبمجرد أن تصبح ACTIVE، تعرض علامة التبويب **Overview** للجدول في وحدة التحكم مخطط المفاتيح، ووضع السعة، وحالة الجدول.
 
-صفحة النظرة العامة لجدول DynamoDB تعرض جدول frontend-items مع مفتاح التقسيم userId، ومفتاح الفرز itemId، وحالة الجدول Active.
+![صفحة النظرة العامة لجدول DynamoDB تعرض جدول frontend-items مع مفتاح التقسيم userId، ومفتاح الفرز itemId، وحالة الجدول Active.](/images/kinney/9ade6688e335fc33.webp)
 
 > **تحذير**
 >

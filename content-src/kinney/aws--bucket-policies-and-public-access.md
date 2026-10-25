@@ -13,6 +13,8 @@ If you want AWS’s version of the guardrails nearby, the [Amazon S3 User Guide]
 
 If you completed [Writing Your First IAM Policy](https://stevekinney.com/courses/aws/writing-your-first-iam-policy) in the IAM foundation section, the structure of a bucket policy will look familiar. The JSON shape is nearly identical. The difference is where the policy lives and who it applies to.
 
+![Diagram comparing IAM policies, bucket policies, and S3 Block Public Access, showing how a public read request is evaluated.](/images/kinney/9001c5485feca325.svg)
+
 ## IAM Policies vs. Bucket Policies
 
 In the IAM foundation section, you attached IAM policies to users, groups, or roles. Those policies travel with the identity: “This user is allowed to do these things.” A bucket policy is the reverse—it attaches to the resource and says: “These people are allowed to do things to me.”
@@ -66,11 +68,11 @@ aws s3api get-public-access-block \
 
 In the console, disabling all four settings on the **Edit Block Public Access** form looks like this—all checkboxes cleared.
 
-The S3 Edit Block Public Access form with all four checkboxes unchecked, ready to save.
+![The S3 Edit Block Public Access form with all four checkboxes unchecked, ready to save.](/images/kinney/395c2d1df85d2aab.webp)
 
 After saving, the **Permissions** tab confirms that Block Public Access is now **Off** with a success banner.
 
-The S3 bucket Permissions tab showing Block Public Access labeled Off with a success banner confirming the change was saved.
+![The S3 bucket Permissions tab showing Block Public Access labeled Off with a success banner confirming the change was saved.](/images/kinney/3a0a4e4c6063ed2c.webp)
 
 > **Warning**
 >
@@ -129,6 +131,8 @@ aws s3api put-bucket-policy \
 
 In the console, the same operation happens through the **Bucket Policy** editor on the **Permissions** tab. You paste the JSON directly into the editor.
 
+![The S3 Bucket Policy editor showing the public-read JSON policy with Principal set to * and Action set to s3:GetObject.](/images/kinney/8387ada94181a23f.webp)
+
 The S3 Bucket Policy editor showing the public-read JSON policy with Principal set to * and Action set to s3:GetObject.
 
 You can verify the policy was applied:
@@ -142,7 +146,7 @@ aws s3api get-bucket-policy \
 
 The response wraps the policy in a `Policy` field as a JSON string. It’s not the prettiest output, but it confirms the policy is in place.
 
-The S3 bucket Permissions tab showing the applied bucket policy granting public read access to all objects.
+![The S3 bucket Permissions tab showing the applied bucket policy granting public read access to all objects.](/images/kinney/dcd34f9efa156ce1.webp)
 
 ## With the SDK
 

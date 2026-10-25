@@ -49,7 +49,7 @@ it('should create a person with a first name and last name', () => {
 });
 ```
 
-The test fails because of a random id
+![The test fails because of a random id](/images/kinney/49f19940ace6abae.webp)
 
 We don’t really care what the `id` is but maybe we want to make sure that there *is* an `id` and that it’s a string.
 

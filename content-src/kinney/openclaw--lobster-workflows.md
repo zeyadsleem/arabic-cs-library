@@ -59,6 +59,8 @@ The Control UI chat showing a lobster result with a status of needs_approval, th
 
 ## Workflow Files
 
+![The Control UI chat showing a lobster result with a status of needs_approval, the Keep going prompt, a three-item preview, a resume token, and an approval ID](/images/kinney/470e864930a9d4ef.webp)
+
 Anything more than a few steps belongs in a workflow file. Here’s one that cleans up `.tmp` files in a folder, but only after you’ve seen the list:
 
 ```yaml
@@ -144,7 +146,7 @@ Install the plugin, allow the tool, and confirm it loaded with `openclaw plugins
 
 You should see a status of `ok` and an output of `[1, 2, 3]`. If the agent says it doesn’t have a `lobster` tool, check `tools.alsoAllow` and send `/tools` to see what it can use.
 
-The Control UI chat showing the lobster tool result with a status of ok and an output of 1, 2, 3
+![The Control UI chat showing the lobster tool result with a status of ok and an output of 1, 2, 3](/images/kinney/dc86b7963be18a22.webp)
 
 ### 2. Set Up a Lab
 

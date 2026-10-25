@@ -39,6 +39,6 @@ It will set you up with some basic stories in `src/stories`.
 
 Lastly, it will start up a server running on port 6006. You can start this server up at any time using `npm run storybook`.
 
-Storybook's initial welcome screen
+![Storybook's initial welcome screen](/images/kinney/eb40b408789bbdc7.webp)
 
 With that, let’s take a look at [writing our first story](https://stevekinney.com/courses/storybook/writing-stories).

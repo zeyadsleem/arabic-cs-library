@@ -8,7 +8,7 @@ source: "https://stevekinney.com/courses/self-testing-ai-agents/git-hooks-with-l
 
 إنه يعمل. وقد شحنته في كثير من المشاريع. لكن في كل مرة أُعِدّه أفكّر: هذا قدر كبير من الالتفاف مقابل «شغّل ESLint على الملفات التي أنا على وشك الالتزام بها».
 
-الخطّاف الأيسر
+![الخطّاف الأيسر](/images/kinney/f2923a060096d8f6.webp)
 
 [Lefthook](https://github.com/evilmartians/lefthook) هو الأداة التي جعلتني أكفّ عن ذلك التفكير. إنه ملف ثنائي واحد (مكتوب بـ Go، ويُوزّع عبر npm إن أردت) يستبدل Husky *و*lint-staged في ملف إعداد واحد. ملف YAML واحد. بلا سكربتات صدفة. بلا خطّاف `prepare`. بلا حزمة ثانية تدير تصفية الملفات المرحّلة—فـ Lefthook يتولّى ذلك أصلًا بخياري `glob` و`run`.
 

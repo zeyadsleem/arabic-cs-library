@@ -6,19 +6,19 @@ source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 
 لننظر في أخذ بعض المفاهيم التي تعلّمناها حتى الآن وإنشاء مكوّن **Callout** يمكننا استخدامه في تصميماتنا. وستبدو النتيجة النهائية *شيئًا* كهذا.
 
-مكوّن الصندوق التوضيحي مكتملًا
+![مكوّن الصندوق التوضيحي مكتملًا](/images/kinney/bc3a717a1a862f17.webp)
 
 ## ألوان السطح والحدود
 
 سنبدأ بإطار أساسي، لكننا نريد أن نمنحه متغيّرَي الخلفية والحدود اللذين أعددناهما في قسم [الألوان الدلالية](https://stevekinney.com/courses/figma/semantic-colors).
 
-أساسيات صندوق توضيحي في Figma بمتغيّرات ألواننا الدلالية
+![أساسيات صندوق توضيحي في Figma بمتغيّرات ألواننا الدلالية](/images/kinney/7359e1e0561d4e5a.webp)
 
 ## نصف قطر الحدود
 
 بعد ذلك، سنُرفق [متغيّر نصف قطر الحدود](https://stevekinney.com/courses/figma/number-variable-tokens).
 
-استخدام متغيّر Figma لنصف قطر الحدود
+![استخدام متغيّر Figma لنصف قطر الحدود](/images/kinney/bcacf3c9a8d02002.webp)
 
 ## استخدام التخطيط التلقائي
 
@@ -31,11 +31,13 @@ source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 
 ومن هنا سنستخدم [متغيّرات التباعد](https://stevekinney.com/courses/figma/number-variable-tokens) لضبط الحشو والفجوة في التخطيط التلقائي.
 
+![استخدام متغيّر لضبط الهامش الداخلي والفراغ في تخطيط تلقائي](/images/kinney/b1dc54b98c93c51c.webp)
+
 سنستخدم ذلك التباعد **الطفيف** بين الأيقونة والعنوان، ثم التباعد **الأساسي** لحشو الصندوق التوضيحي والمسافة بين العنوان والمتن.
 
 أصبح لدينا الآن نقطة بداية جيدة لمكوّن الصندوق التوضيحي.
 
-التخطيط الأساسي لمكوّن الصندوق التوضيحي
+![التخطيط الأساسي لمكوّن الصندوق التوضيحي](/images/kinney/fa3fb6407b65caaa.webp)
 
 أصبحنا جاهزين للمضي واختيار **Create a component**.
 
@@ -45,7 +47,7 @@ source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 
 لنُظهر الخصائص المتداخلة من **Icon**. انقر على **+** بجوار **Properties** واختر **Expose properties from Nested Instances**.
 
-إظهار الخصائص من النسخ المتداخلة
+![إظهار الخصائص من النسخ المتداخلة](/images/kinney/4bbcd7334879a1b6.webp)
 
 ## إخفاء المتن وإظهاره
 
@@ -53,11 +55,11 @@ source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 
 على طبقة نص متن المكوّن، انقر على الأيقونة الصغيرة في أعلى اليمين.
 
-إنشاء خاصية منطقية
+![إنشاء خاصية منطقية](/images/kinney/509d3ddd59792200.webp)
 
 ثم سترى نافذة تحتوي على معظم ما تريده جاهزًا.
 
-إنشاء خاصية منطقية لمتن الصندوق التوضيحي
+![إنشاء خاصية منطقية لمتن الصندوق التوضيحي](/images/kinney/f15bd086986992d5.webp)
 
 ## إضافة الأنماط البديلة
 
@@ -72,7 +74,7 @@ source: "https://stevekinney.com/courses/figma/creating-a-callout-component"
 
 يمكنك إنشاء [أنماط بديلة](https://stevekinney.com/courses/figma/variants) تعدّل فيها الألوان وفق [الألوان الدلالية](https://stevekinney.com/courses/figma/semantic-colors) التي أعددناها سابقًا. ويمكنك أيضًا المضي قدمًا وضبط أيقونة افتراضية لكل نمط — ويمكن تجاوز ذلك بالخصائص المتداخلة التي أعددناها سابقًا.
 
-خصائص مكوّن الصندوق التوضيحي
+![خصائص مكوّن الصندوق التوضيحي](/images/kinney/57fa10ef8b4d5cd6.webp)
 
 ## إضافات
 

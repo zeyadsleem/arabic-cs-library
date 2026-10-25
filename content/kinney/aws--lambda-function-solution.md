@@ -313,7 +313,7 @@ cat response.json
 
 في وحدة التحكم، تُظهر علامة التبويب **Test** النتيجة نفسها مع حالة التنفيذ وجسم الاستجابة موسّعين.
 
-علامة تبويب Lambda Test تُظهر نتيجة التنفيذ بحالة Succeeded، مع statusCode 200 وجسم Hello from Lambda ظاهرًا في قسم Details.
+![علامة تبويب Lambda Test تُظهر نتيجة التنفيذ بحالة Succeeded، مع statusCode 200 وجسم Hello from Lambda ظاهرًا في قسم Details.](/images/kinney/4fac9aa0efe62bc5.webp)
 
 ### حدث اختبار بدون معامل name
 

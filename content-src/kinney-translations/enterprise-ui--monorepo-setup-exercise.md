@@ -225,9 +225,9 @@ Cached:    6 cached, 6 total
 
 `pnpm turbo build` بمخزن مؤقت نظيف يبني كل شيء. والتشغيلة الثانية تعرض `FULL TURBO` وتكتمل في أقل من ثانية.
 
-أول بناء بـturbo يعرض حالات cache miss لكل الحزم
+![أول بناء بـturbo يعرض حالات cache miss لكل الحزم](/images/kinney/97f966da08c122d2.webp)
 
-البناء الثاني بـturbo يعرض FULL TURBO مع كل حالات cache hit
+![البناء الثاني بـturbo يعرض FULL TURBO مع كل حالات cache hit](/images/kinney/72f4d6eb0a1c7233.webp)
 
 ## راقب البناءات الجزئية
 

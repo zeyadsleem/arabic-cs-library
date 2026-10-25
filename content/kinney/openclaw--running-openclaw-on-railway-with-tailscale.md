@@ -85,7 +85,7 @@ source: "https://stevekinney.com/courses/openclaw/running-openclaw-on-railway-wi
 
 تحتاج خدمة `tailscale` إلى مفتاح يُستخدم مرة واحدة كي تنضم إلى شبكة tailnet دون أن يسجّل أحد الدخول يدويًا. اذهب إلى **الإعدادات (Settings) → المفاتيح (Keys) → توليد مفتاح مصادقة (Generate auth key)**.
 
-مربّع الحوار Generate auth key في Tailscale وفيه مفاتيح تبديل الخيارات Reusable وEphemeral وTags.
+![مربّع الحوار Generate auth key في Tailscale وفيه مفاتيح تبديل الخيارات Reusable وEphemeral وTags.](/images/kinney/32fcd84b09c248cb.webp)
 
 اضبطه على هذا النحو:
 

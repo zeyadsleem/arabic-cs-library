@@ -42,7 +42,7 @@ Use the CLI to create the table and wait for it to become active.
 
 In the console, the **Tables** list shows the table status as **Active** once provisioning completes.
 
-The DynamoDB tables list showing the frontend-items table with Active status.
+![The DynamoDB tables list showing the frontend-items table with Active status.](/images/kinney/6cfa6c9fcac2fdb3.webp)
 
 ### Checkpoint
 

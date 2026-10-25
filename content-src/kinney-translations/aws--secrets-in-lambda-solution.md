@@ -50,7 +50,7 @@ aws ssm get-parameter \
 
 يمكنك أيضًا التحقّق من المعامل في وحدة تحكّم AWS تحت **Systems Manager → Parameter Store**:
 
-عرض تفاصيل Parameter Store وهو يُظهر معامل SecureString مع ARN الخاص به ونوعه وطبقته وقيمته المقنّعة.
+![عرض تفاصيل Parameter Store وهو يُظهر معامل SecureString مع ARN الخاص به ونوعه وطبقته وقيمته المقنّعة.](/images/kinney/fdaed0203b072c70.webp)
 
 ## كتابة المعالج
 

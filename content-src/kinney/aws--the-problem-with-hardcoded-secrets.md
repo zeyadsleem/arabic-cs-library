@@ -37,6 +37,8 @@ Here’s what goes wrong when you store secrets as Lambda environment variables:
 
 **They’re visible in the console.** Open the Lambda function in the AWS console, click the Configuration tab, and every environment variable is right there. No extra authentication, no audit trail for who viewed them. Anyone with console access to the Lambda service can see your database password.
 
+![The Lambda Edit environment variables form showing API_KEY with its secret value visible in plain text in the Value field.](/images/kinney/6d592a5007305896.webp)
+
 The Lambda Edit environment variables form showing API_KEY with its secret value visible in plain text in the Value field.
 
 **They appear in CLI output.** Run `aws lambda get-function-configuration` and the response includes every environment variable in plain text. If your CI/CD pipeline logs that output—and many do—your secrets are in your build logs.

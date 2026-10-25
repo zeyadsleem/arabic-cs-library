@@ -144,7 +144,7 @@ Connecting isn’t the same as being trusted. There are two separate approvals:
 
 When the node asks for its capabilities, you’ll see a prompt like this.
 
-The Allow this node's capabilities prompt listing the node's name, requested access, capabilities, and commands, with Not Now, Reject, and Approve Node buttons
+![The Allow this node's capabilities prompt listing the node's name, requested access, capabilities, and commands, with Not Now, Reject, and Approve Node buttons](/images/kinney/ca7384a348b9f784.webp)
 
 Read it before you click anything:
 
@@ -180,7 +180,7 @@ When you refer to a node in configuration, use its **node ID** rather than its d
 
 The Control UI shows the same picture under **Settings → Devices**: each paired device, whether it’s connected, and the capabilities a node offers. The **Pair device** button at the top of that page is where new pairings start.
 
-The top of the Devices page in the OpenClaw settings, with the Paired Devices count and the Pair device button
+![The top of the Devices page in the OpenClaw settings, with the Paired Devices count and the Pair device button](/images/kinney/4a7a797fb91997f3.webp)
 
 Then check that the Mac has the tools you expect. This looks for executables without running them:
 

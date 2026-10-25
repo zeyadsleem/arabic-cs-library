@@ -49,7 +49,7 @@ aws apigatewayv2 create-stage \
 
 In the console, the **Stages** section in the left navigation shows all stages for the API. Clicking a stage reveals its invoke URL and deployment settings.
 
-The API Gateway Stages page showing the $default stage listed with options to select it and view its details including the invoke URL.
+![The API Gateway Stages page showing the $default stage listed with options to select it and view its details including the invoke URL.](/images/kinney/00461c360030c981.webp)
 
 Named stages don’t auto-deploy. You need to create a **deployment** and associate it with the stage:
 

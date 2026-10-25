@@ -228,21 +228,21 @@ The SDK has no direct equivalent of `aws s3 sync`—`sync` is a CLI-level conven
 
 The AWS console works fine for uploading a file or two during development. Navigate to S3, click your bucket, click “Upload,” and drag your files in. The console even lets you set metadata (including content type) per file.
 
-The S3 upload dialog showing the drag-and-drop area before any files are added.
+![The S3 upload dialog showing the drag-and-drop area before any files are added.](/images/kinney/656328e94b299001.webp)
 
 After dropping your files in, the upload dialog queues them for review before you click **Upload**.
 
-The S3 upload dialog with four files queued: index.html, error.html, styles.css, and app.js.
+![The S3 upload dialog with four files queued: index.html, error.html, styles.css, and app.js.](/images/kinney/d127b7280063626e.webp)
 
 Once the upload completes, the console shows a success summary and you can see all four files listed in the bucket’s **Objects** tab.
 
-The S3 upload success page confirming all four files were uploaded successfully.
+![The S3 upload success page confirming all four files were uploaded successfully.](/images/kinney/ff975818d0c17a55.webp)
 
-The S3 bucket Objects tab listing index.html, error.html, styles.css, and app.js with their sizes and last-modified dates.
+![The S3 bucket Objects tab listing index.html, error.html, styles.css, and app.js with their sizes and last-modified dates.](/images/kinney/92e1343b83f83889.webp)
 
 You can also inspect an individual object to check its content type. Click any file in the Objects tab to open its detail page, then scroll to **Metadata**.
 
-The S3 object detail page for index.html showing the Content-Type metadata field set to text/html.
+![The S3 object detail page for index.html showing the Content-Type metadata field set to text/html.](/images/kinney/a5732d18d33b3a95.webp)
 
 But don’t rely on the console for deployments. It’s slow, error-prone, and impossible to automate. The CLI is the right tool for anything you’ll do more than once—and later in this course, you’ll automate the entire deployment process with the CLI and GitHub Actions.
 

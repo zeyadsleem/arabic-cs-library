@@ -42,7 +42,7 @@ For a static site that doesn’t serve API responses and doesn’t need CORS (yo
 
 In the console, the **Policies** page under **Response headers** lists all available managed policies with their descriptions.
 
-The CloudFront Policies page showing the Response headers tab with managed policies including SecurityHeadersPolicy, CORS-With-Preflight, and CORS-and-SecurityHeadersPolicy.
+![The CloudFront Policies page showing the Response headers tab with managed policies including SecurityHeadersPolicy, CORS-With-Preflight, and CORS-and-SecurityHeadersPolicy.](/images/kinney/7e90e9fcd5a89d90.webp)
 
 ## Attaching a Managed Policy
 
@@ -92,7 +92,7 @@ aws cloudfront update-distribution \
 
 In the console, you attach the policy to a behavior from the **Edit behavior** form. The **Response headers policy** dropdown shows the managed policies alongside any custom policies you’ve created.
 
-The CloudFront Edit behavior form showing the Response headers policy section with SecurityHeadersPolicy selected from the dropdown.
+![The CloudFront Edit behavior form showing the Response headers policy section with SecurityHeadersPolicy selected from the dropdown.](/images/kinney/e8d2f29f92c6e852.webp)
 
 After the distribution deploys, every response from CloudFront will include security headers:
 

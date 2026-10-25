@@ -44,7 +44,7 @@ flowchart LR
 
 في لوحة التحكم، تعرض صفحة **Alarms** إنذارك مع حالته الحالية وإعداد الإجراء ووقت آخر تحديث للحالة.
 
-صفحة CloudWatch Alarms وهي تعرض إنذارًا واحدًا باسم my-frontend-app-api-errors في حالة Insufficient data مع تمكين الإجراءات.
+![صفحة CloudWatch Alarms وهي تعرض إنذارًا واحدًا باسم my-frontend-app-api-errors في حالة Insufficient data مع تمكين الإجراءات.](/images/kinney/e6c394d48a5a6861.webp)
 
 ## إعداد SNS
 

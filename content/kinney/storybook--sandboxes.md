@@ -14,4 +14,4 @@ source: "https://stevekinney.com/courses/storybook/sandboxes"
 npx storybook@latest sandbox
 ```
 
-إنشاء بيئة Storybook معزولة من سطر الأوامر
+![إنشاء بيئة Storybook معزولة من سطر الأوامر](/images/kinney/6898c01d9d557172.webp)

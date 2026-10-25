@@ -17,4 +17,4 @@ Storybook allows you to set up pre-configured sandboxes. This is useful if you j
 npx storybook@latest sandbox
 ```
 
-Creating a Storybook sandbox from the CLI
+![Creating a Storybook sandbox from the CLI](/images/kinney/6898c01d9d557172.webp)

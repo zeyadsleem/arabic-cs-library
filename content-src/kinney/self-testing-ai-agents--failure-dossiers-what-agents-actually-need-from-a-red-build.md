@@ -70,7 +70,7 @@ The HTML reporter writes `playwright-report/html/index.html`, and for each faile
 >
 > If you want to see the Playwright artifact pipeline end-to-end without planting a fake application bug, temporarily move one committed visual-regression baseline and run the matching visual test. That produces `report.json`, a retained screenshot, a retained video, and a `trace.zip` under `playwright-report/test-results/` off a single intentional failure you can undo in one commit. Once you build the dossier summarizer from the companion lab, that same run also produces `playwright-report/dossier.md`.
 
-The Playwright HTML report after a deliberate Shelf failure
+![The Playwright HTML report after a deliberate Shelf failure](/images/kinney/da9e47276d7154c2.webp)
 
 The `open: 'never'` flag keeps Playwright from auto-opening a browser tab when you run tests, which is annoying in CI and distracting locally.
 

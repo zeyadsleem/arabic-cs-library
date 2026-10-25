@@ -46,7 +46,7 @@ HTTP APIs handle preflight requests automatically when you configure CORS on the
 
 By default, your HTTP API has no CORS configuration. In the console, navigating to **CORS** in the left sidebar shows all fields empty—no origins, no methods, no headers allowed.
 
-The API Gateway CORS page showing the default unconfigured state with no origins, methods, or headers allowed.
+![The API Gateway CORS page showing the default unconfigured state with no origins, methods, or headers allowed.](/images/kinney/6adb9000b7916a94.webp)
 
 CORS configuration is a property of the API itself—which is honestly one of my favorite things about HTTP APIs. Use `aws apigatewayv2 update-api` to set it:
 
@@ -77,7 +77,7 @@ The response includes the CORS configuration:
 
 In the console, the **CORS** section in the left nav shows all six CORS fields with a **Configure** button that opens the settings panel.
 
-The API Gateway CORS configuration page showing the Access-Control-Allow-Origin, Access-Control-Allow-Methods, and other CORS fields with their current values.
+![The API Gateway CORS configuration page showing the Access-Control-Allow-Origin, Access-Control-Allow-Methods, and other CORS fields with their current values.](/images/kinney/9c44de355dbd58f6.webp)
 
 ### What Each Field Does
 

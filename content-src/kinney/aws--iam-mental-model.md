@@ -15,6 +15,8 @@ If you want AWS’s canonical version of the same model while you read, the [IAM
 >
 > **IAM (Identity and Access Management)** is AWS’s system for answering two questions on every single API call: *who are you?* and *are you allowed to do that?* Every request to every AWS service—whether it comes from the console, the CLI, or an SDK running in a Lambda function—goes through IAM evaluation. No exceptions.
 
+![Diagram showing IAM users, groups, roles, and policies inside an AWS account, plus the explicit deny and allow evaluation flow.](/images/kinney/a2c84993a05d9faa.svg)
+
 ## The Four Building Blocks
 
 IAM has four concepts you need to internalize. Everything else is built on top of these.

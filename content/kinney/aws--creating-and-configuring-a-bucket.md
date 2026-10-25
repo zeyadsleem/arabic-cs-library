@@ -25,7 +25,7 @@ make_bucket: my-frontend-app-assets
 
 هذا كل شيء. لديك حاوية. وفي لوحة التحكم، يؤكد شريط نجاح أخضر إنشاء الحاوية وينقلك مباشرة إلى صفحة تفاصيلها.
 
-صفحة تفاصيل حاوية S3 وهي تعرض شريط نجاح أخضر بعنوان Successfully created bucket في الأعلى مع اسم الحاوية والمنطقة.
+![صفحة تفاصيل حاوية S3 وهي تعرض شريط نجاح أخضر بعنوان Successfully created bucket في الأعلى مع اسم الحاوية والمنطقة.](/images/kinney/f86e1083ae581dca.webp)
 
 لكن الافتراضيات التي طبّقتها AWS عليها تهم كثيرًا، وفهمها سينقذك من فئة من مشكلات التصحيح تؤرق كل قادم جديد إلى S3.
 
@@ -35,7 +35,7 @@ make_bucket: my-frontend-app-assets
 
 إذا كنت تفضّل إنشاء الحاوية عبر لوحة تحكم AWS، فإن نموذج Create Bucket يسأل عن الأمرين نفسهما: اسم ومنطقة.
 
-نموذج S3 Create Bucket وهو يعرض حقل اسم الحاوية مملوءًا بـ my-frontend-app-assets والمنطقة مضبوطة على US East (N. Virginia) us-east-1.
+![نموذج S3 Create Bucket وهو يعرض حقل اسم الحاوية مملوءًا بـ my-frontend-app-assets والمنطقة مضبوطة على US East (N. Virginia) us-east-1.](/images/kinney/d07fadea87edd0d9.webp)
 
 ## اختيار منطقة
 
@@ -99,7 +99,7 @@ aws s3api get-public-access-block \
 
 في لوحة التحكم، يعرض تبويب **Permissions** في الحاوية هذه الإعدادات الأربعة نفسها ضمن **Block Public Access (bucket settings)** — وكلها ممكّنة افتراضيًا.
 
-تبويب S3 bucket Permissions وهو يعرض إعدادات Block Public Access مع تمكين الخيارات الأربعة كلها، وموسومة On في لوحة التحكم.
+![تبويب S3 bucket Permissions وهو يعرض إعدادات Block Public Access مع تمكين الخيارات الأربعة كلها، وموسومة On في لوحة التحكم.](/images/kinney/8f28109774ea5b57.webp)
 
 حين تكون مستعدًا لجعل الحاوية متاحة للعامة لاستضافة موقع ثابت، ستحتاج إلى تعطيل هذه الإعدادات. وسنفعل ذلك في [سياسات الحاويات والوصول العام](https://stevekinney.com/courses/aws/bucket-policies-and-public-access)، بعد أن تفهم ما هي سياسة الحاوية فعلًا.
 
@@ -248,7 +248,7 @@ aws s3api head-bucket \
 
 إذا عاد الأمر دون خطأ، فالحاوية موجودة ولديك وصول إليها. و404 تعني أن الحاوية غير موجودة؛ و403 تعني أنها موجودة لكنك لا تملك الإذن (وهو ما قد يحدث إن كان شخص آخر يملك حاوية بهذا الاسم، كما هو مشمول في [كتابة أول سياسة IAM لديك](https://stevekinney.com/courses/aws/writing-your-first-iam-policy)).
 
-قائمة S3 Buckets وهي تعرض حاوية my-frontend-app-assets المنشأة حديثًا مع تاريخ إنشائها ومنطقتها.
+![قائمة S3 Buckets وهي تعرض حاوية my-frontend-app-assets المنشأة حديثًا مع تاريخ إنشائها ومنطقتها.](/images/kinney/25ee600050e1c3e3.webp)
 
 ## ما لديك حتى الآن
 

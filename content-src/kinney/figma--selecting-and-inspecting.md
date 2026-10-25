@@ -12,6 +12,8 @@ Some of the standard tips that we’ve picked up from most GUIs apply to Figma a
 - Hold `Shift` to select multiple objects.
 - Click and drag on the canvas to create a square that represents the range of objects that you want to select.
 
+![Select multiple layers](/images/kinney/1947a115cbed22ec.gif)
+
 **Pro Tip**: Holding the `Command` key will always allow you to drag to select an area even when you might have otherwise ended up clicking on an individual frame.
 
 ## Selecting Similar Objects
@@ -20,7 +22,7 @@ Some of the standard tips that we’ve picked up from most GUIs apply to Figma a
 - With an element selected, click on the Inspect tab at the top of the right sidebar.
 - Select one of the blue buttons, go to the Figma menu in the upper-left corner, select the Edit menu, and see how you can select similar elements with the same properties.
 
-Select similar in Figma
+![Select similar in Figma](/images/kinney/db94da5a811981f4.webp)
 
 > **Note**
 >
@@ -29,6 +31,8 @@ Select similar in Figma
 ## Measuring the Distance Between Layers
 
 Select an element on the page and hold down either the `Alt` or `Option` key. As you move your mouse around, you’ll see its relative distance from other objects. This is super useful for when we are trying to implement a design.
+
+![Hold option to measure layers](/images/kinney/e87775832cb1ac04.gif)
 
 ## Selecting and Adjusting Multiple Layers
 

@@ -48,7 +48,7 @@ Install it under the same operating-system user that runs your OpenClaw Gateway,
 
 You need your own OAuth client to authorize access to Google.
 
-The Google Auth Platform overview page, not yet configured
+![The Google Auth Platform overview page, not yet configured](/images/kinney/472f27a59bc85a41.webp)
 
 [Create a Google Cloud project](https://console.cloud.google.com/projectcreate)
 
@@ -58,13 +58,13 @@ Give it a name like `OpenClaw Personal`.
 
 Enable the Gmail API and Google Calendar API. You don’t need Drive unless you intend to use it.
 
-The OAuth overview page prompting you to create an OAuth client
+![The OAuth overview page prompting you to create an OAuth client](/images/kinney/f048bcd10e4b0f91.webp)
 
 [Configure Google Auth](https://console.cloud.google.com/auth/overview)
 
 Configure the OAuth consent screen, choose External for a personal Gmail account, and add your email as a test user if the app remains in Testing.
 
-The Create OAuth client ID form with the Desktop app application type selected
+![The Create OAuth client ID form with the Desktop app application type selected](/images/kinney/998f6475b7030ecd.webp)
 
 [Create an OAuth client](https://console.cloud.google.com/apis/credentials)
 
@@ -173,7 +173,7 @@ openclaw skills check
 
 Look for the `gog` skill. Depending on your installation, it may already be available once the required CLI is installed. If it isn’t, [Skills and ClawHub](https://stevekinney.com/courses/openclaw/skills-and-clawhub) covers installing and vetting skills.
 
-The Skills page in the Control UI searched for gog, showing the bundled gog skill and the gog-remote-oauth skill at the top of the results
+![The Skills page in the Control UI searched for gog, showing the bundled gog skill and the gog-remote-oauth skill at the top of the results](/images/kinney/b6bff6c046c42978.webp)
 
 In the Control UI, you’ll find the same list under Plugins and then the Skills tab. Searching for `gog` shows the bundled skill, which can still be disabled until you turn it on, along with community skills from ClawHub. Don’t install those just because they share the name.
 

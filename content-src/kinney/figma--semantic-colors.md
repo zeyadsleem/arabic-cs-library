@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/figma/semantic-colors"
 
 Once we have our wider color palette, it might make sense to create a curated subset of those colors that have some actual meaning. For example, we might have some callouts or alerts that we want to have a standard background color for. We can start with something like this.
 
-Scoping colors with Figma variables
+![Scoping colors with Figma variables](/images/kinney/1fb8a5486d04740b.webp)
 
 You’ll notice that I’m scoping these colors just to where I expect them to be used. We can do the same for text and borders as well.
 

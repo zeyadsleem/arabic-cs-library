@@ -32,11 +32,11 @@ That’s the user story. Concrete enough to build, vague enough to require real 
 
 These are the three capstone surfaces the final Shelf repo should expose when the feature lands:
 
-The shelf page after the reading-goals capstone, including the current-year progress bar and completed badge
+![The shelf page after the reading-goals capstone, including the current-year progress bar and completed badge](/images/kinney/28392a6fcecf62ce.webp)
 
-The dedicated goals page used to set the annual target and confirm the current-year progress
+![The dedicated goals page used to set the annual target and confirm the current-year progress](/images/kinney/5215445181f9f344.webp)
 
-The administrator goals dashboard showing aggregate current-year progress across readers
+![The administrator goals dashboard showing aggregate current-year progress across readers](/images/kinney/bc3a3c0405d84440.webp)
 
 ## The prompt
 

@@ -21,6 +21,8 @@ source: "https://stevekinney.com/courses/figma/dev-mode"
 
 You can access Dev Mode by simply switching to the ‘Inspect’ tab within a Figma file. This view automatically provides the specific details and assets they need, based on their selection within the design file. Dev Mode is available to anyone with access to the Figma file, facilitating open communication and collaboration across the entire project team.
 
+![Accessing Dev Mode](/images/kinney/884df5295630ad91.gif)
+
 1. **Opening a File**: Start by opening a Figma design file. Ensure you have at least “Can View” access to the file.
 2. **Switching to Developer Mode**: Navigate to the right sidebar and switch from the “Design” or “Prototype” tab to the “Inspect” tab. This action enters you into Developer Mode.
 
@@ -32,6 +34,8 @@ You can access Dev Mode by simply switching to the ‘Inspect’ tab within a Fi
 - **Style Information:** Details on typography, color, effects, and other styles are clearly displayed, simplifying the process of applying design styles in the development.
 
 Creating a tutorial on using Figma’s Developer Mode provides a comprehensive guide for designers and developers to efficiently collaborate, ensuring the accurate handoff of design specifications. This tutorial aims to equip both parties with the knowledge to use Developer Mode effectively, bridging the gap between design and development.
+
+![Dev Mode in the Figma toolbar](/images/kinney/72525c3e165a860a.webp)
 
 ## The Dev Mode Toolbar
 

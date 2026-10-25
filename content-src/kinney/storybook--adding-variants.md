@@ -181,7 +181,7 @@ export const Button = (props: ButtonProps) => {
 
 Our button now looks a little prettier.
 
-Add variants to the button component
+![Add variants to the button component](/images/kinney/9539156f5cfd5695.webp)
 
 So far, we’ve made the follow changes to our code.
 
@@ -248,7 +248,7 @@ export const Destructive: Story = {
 
 We’ll now see each variant in our Storybook as well as an additional control for swapping between the variants.
 
-Basic button with variants
+![Basic button with variants](/images/kinney/7d48f6d7198d8b75.webp)
 
 ### Using `clsx` to Compose Class Names
 

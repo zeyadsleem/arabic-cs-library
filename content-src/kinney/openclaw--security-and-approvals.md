@@ -188,7 +188,7 @@ When you do approve an automation’s command with **Always allow**, OpenClaw cr
 
 You can review and revoke standing grants in the Control UI under **Settings → Approvals**, which also lists a rolling 30-day history of resolved approvals. You can also do it from the terminal:
 
-The Approvals page in the OpenClaw settings, with empty tables for standing grants and approval history
+![The Approvals page in the OpenClaw settings, with empty tables for standing grants and approval history](/images/kinney/fb65d221c8d68280.webp)
 
 ```bash
 openclaw approvals grants list
@@ -220,7 +220,7 @@ The Control UI adds one more dial per conversation. In the chat composer, the **
 | Workspace | Read and write inside the folder | An AI reviewer decides, or asks you |
 | Full Access | Anywhere | Run without asking |
 
-The Execution permissions menu in the chat composer, listing Default, Read Only, Guarded, Workspace, and Full Access
+![The Execution permissions menu in the chat composer, listing Default, Read Only, Guarded, Workspace, and Full Access](/images/kinney/b7437633128452f4.webp)
 
 A session with no mode uses your global policy. The menu’s **Default** entry follows that policy, and its label spells out what the policy currently allows, such as **Default (Full Access)**. Without any of the settings in this lesson, the default is full access.
 

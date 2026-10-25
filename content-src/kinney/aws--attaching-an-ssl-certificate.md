@@ -63,7 +63,7 @@ Replace the `ViewerCertificate` section in the `DistributionConfig`. The current
 
 In the console, the **Edit settings** page shows the **Custom SSL certificate** dropdown with no certificate selected (using the default `*.cloudfront.net` certificate).
 
-The CloudFront Edit settings form showing the Custom SSL certificate field with an empty Choose certificate dropdown, indicating the default CloudFront certificate is in use.
+![The CloudFront Edit settings form showing the Custom SSL certificate field with an empty Choose certificate dropdown, indicating the default CloudFront certificate is in use.](/images/kinney/1c651b01a6002bea.webp)
 
 > **Default cert ignores `MinimumProtocolVersion`**
 >

@@ -66,7 +66,7 @@ Open `package.json` and add `"dossier": "tsx scripts/summarize-failure-dossier.t
 
 Open `CLAUDE.md`. Find the “When a test fails” section. It names `npm run dossier` and points at `playwright-report/dossier.md`. That’s the whole entry — three lines of markdown, but load-bearing. Without it, the agent would look at a failing test and scroll the terminal output instead of reading the structured file.
 
-The Playwright HTML report used as the dossier front door
+![The Playwright HTML report used as the dossier front door](/images/kinney/da9e47276d7154c2.webp)
 
 ## Acceptance criteria
 

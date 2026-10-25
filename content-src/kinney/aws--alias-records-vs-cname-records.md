@@ -11,6 +11,8 @@ If you’ve managed DNS before, you’ve probably created CNAME records. They’
 
 If you want AWS’s side-by-side version of this decision, the [Route 53 guide to alias versus non-alias records](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html) is the official reference.
 
+![Diagram showing why a zone apex cannot use a CNAME because NS and SOA already exist there, and how Route 53 alias records resolve a CloudFront distribution instead.](/images/kinney/f737b82922804df0.svg)
+
 ## The Zone Apex Problem
 
 Here’s the core issue: **CNAME records can’t be used at the zone apex**.

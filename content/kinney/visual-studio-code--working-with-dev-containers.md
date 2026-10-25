@@ -6,7 +6,7 @@ source: "https://stevekinney.com/courses/visual-studio-code/working-with-dev-con
 
 ما إن يصبح لديك مجلد `.devcontainer` في مشروعك، حتى يتعرّف عليه Visual Studio Code ويعرض عليك خيارات للعمل داخل حاوية التطوير.
 
-نافذة حوارية في Visual Studio Code تعرض خيار إعادة الفتح في الحاوية
+![نافذة حوارية في Visual Studio Code تعرض خيار إعادة الفتح في الحاوية](/images/kinney/9794dd1ba1106eb3.webp)
 
 > **تثبيت Docker**
 >
@@ -23,7 +23,7 @@ source: "https://stevekinney.com/courses/visual-studio-code/working-with-dev-con
 
 ما إن تصبح الحاوية قيد التشغيل، ستتمكّن من رؤيتها في **Docker Desktop**.
 
-Docker Desktop يعرض حاوية قيد التشغيل
+![Docker Desktop يعرض حاوية قيد التشغيل](/images/kinney/03d25a73fc176c38.webp)
 
 ## البناء وإعادة البناء والتحديث
 

@@ -11,7 +11,7 @@ When you first enter Figma, you’re greeted with the option to either create a 
 
 Figma Home Upon entering a project, you’re presented with an interface similar to the screenshot below. Almost everything that you’re going to do in Figma is going to be in this workspace.
 
-The Figma Workspace
+![The Figma Workspace](/images/kinney/1e256521483a8ebb.webp)
 
 In the center, you have the Canvas. Here are some helpful tips for navigating around the canvas:
 
@@ -20,7 +20,7 @@ In the center, you have the Canvas. Here are some helpful tips for navigating ar
 
 ## The Toolbar
 
-Figma's Toolbar
+![Figma's Toolbar](/images/kinney/c413d6631837e247.webp)
 
 The toolbar, located along the top, is where you find essential tools for drawing shapes, creating layers, adding comments, and more. A small caret next to some of the icons reveals a sub-menu with additional tools.
 
@@ -34,7 +34,7 @@ The toolbar, located along the top, is where you find essential tools for drawin
 
 ### The Figma Menu
 
-The Figma Menu
+![The Figma Menu](/images/kinney/8ea54403e3926d79.webp)
 
 At the toolbar’s leftmost end is the **Figma menu**. In the [desktop application](https://www.figma.com/downloads), this menu combines application menu bar items with additional preferences.
 
@@ -44,7 +44,7 @@ The **Quick Actions…** menu item opens a command palette (using `Command/Contr
 
 When you haven’t selected any layers, you’ll see information about the current file in the center of the toolbar.
 
-The File Menu in Figma
+![The File Menu in Figma](/images/kinney/cf752f343a20dea1.webp)
 
 The center of the toolbar displays the current file name, surrounded by various file-related options. Figma tracks revisions, allowing access to version history.
 
@@ -52,13 +52,15 @@ The center of the toolbar displays the current file name, surrounded by various 
 
 Selecting a layer changes the toolbar center to display a set of layer-specific tools. You’ll no longer see the name of the file in the center of toolbar until you deselect whatever layers that you’ve chosen.
 
+![Layer Options in Figma's Toolbar](/images/kinney/0b65d070dfad841e.webp)
+
 These options allow you to reset changes, create components, use masks, combine selections, and mark designs as ready for development.
 
 ### Account, Sharing, and Dev Mode
 
 The right end of the toolbar shows account information, sharing options, and a switch for [Dev Mode](https://stevekinney.com/courses/figma/dev-mode).
 
-Right Section of Figma's Toolbar
+![Right Section of Figma's Toolbar](/images/kinney/96f700d5b9e40ac1.webp)
 
 We’ll talk a little bit more about [Dev Mode](https://stevekinney.com/courses/figma/dev-mode) in a little bit, but I’d be remiss if I didn’t point out that this feature is only available on paid plans and is *not* available on free plans.
 
@@ -73,7 +75,7 @@ This panel has two sections:
 
 Figma allows you to organize your designs into pages. Within a page, you can see a list of all of the layers and objects in the currently selected page. The interface’s left side lets you navigate between pages and view layers for the selected page.
 
-Pages and Layers
+![Pages and Layers](/images/kinney/afa4a85dfd5dcff2.webp)
 
 ### Assets
 
@@ -94,6 +96,8 @@ This panel features two modes:
 
 This is where the magic happens. The right side provides options for adjusting the properties of selected layers.
 
+![Design Panel](/images/kinney/d1d460c4b46d2073.webp)
+
 ### Prototype
 
 The **Prototype** tab enables the creation of detailed, interactive prototypes, enhancing the design process and facilitating user testing by simulating real user flows.
@@ -102,19 +106,19 @@ The **Prototype** tab enables the creation of detailed, interactive prototypes, 
 
 Right-clicking a layer opens a context menu for layer-specific actions just like it does in many other applications. The tasting note here, of course, is that this is clearly a bespoke context menu and is available both in the Web UI as well as in the Figma desktop application.
 
-Figma's Context Menu
+![Figma's Context Menu](/images/kinney/c7e9649176e48c07.webp)
 
 ## The Command Palette
 
 Hitting `Command-P`/`Control-P` *or* `Command-/`/`Control-/` will allow you to pull up the Command Palette, which makes it easy to search for and jump to any command that you need. This is also a great way to learn about some of the keyboard shortcuts that are available for common tasks.
 
-Figma's Command Palette
+![Figma's Command Palette](/images/kinney/d93dbb686ae3bc9e.webp)
 
 ## Keyboard Shortcuts
 
 You can either use the Command Palette *or* press `Control-Shift-?` and pull up this helpful guide for learning all of the keyboard shortcuts supported by Figma.
 
-Figma Keyboard Shortcuts
+![Figma Keyboard Shortcuts](/images/kinney/c5ae9d88c3d89050.webp)
 
 ## Moving Around
 

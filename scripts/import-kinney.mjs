@@ -11,15 +11,20 @@
 import dns from 'node:dns';
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { parse } from 'node-html-parser';
+import { fetchImage, imageType, writeWebp } from './lib/image-assets.mjs';
 
 dns.setDefaultResultOrder('ipv4first');
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const origin = 'https://stevekinney.com';
 const sourceDir = path.join(root, 'content-src', 'kinney');
+const imagesDir = path.join(root, 'static', 'images', 'kinney');
+const imagePrefix = '/images/kinney';
 const manifestPath = path.join(sourceDir, 'manifest.json');
+const imageCatalogPath = path.join(sourceDir, 'images.json');
 const structurePath = path.join(root, 'content', 'kinney-structure.json');
 const libraryPath = path.join(root, 'content', 'library.json');
 const discover = process.argv.includes('--discover');
@@ -72,6 +77,52 @@ const decode = (text) =>
  * so they are never escaped.
  * @param {string} value @returns {string} */
 const escapeAngles = (value) => value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** The site's screenshots live on a public blob store under an opaque name.
+ * Files are kept locally under the hash of their URL, so a re-import reuses the
+ * bytes it already has instead of appending duplicates. SVG and GIF keep their
+ * format; every other raster is encoded to WebP like the rest of the library.
+ * @param {string} src @param {string} base @param {Record<string, {local: string}>} catalog
+ * @returns {Promise<string|null>}
+ */
+const cacheImage = async (src, base, catalog) => {
+  if (!src || /^data:/.test(src)) return null;
+  let url;
+  try {
+    url = new URL(src, base).href;
+  } catch {
+    return null;
+  }
+  if (!/^https?:/.test(url)) return null;
+  const known = catalog[url];
+  if (known && fs.existsSync(path.join(root, 'static', known.local))) return known.local;
+  try {
+    const bytes = await fetchImage(url);
+    const kind = imageType(bytes);
+    const extension = ['svg', 'gif'].includes(kind) ? kind : 'webp';
+    const local = `${imagePrefix}/${createHash('sha256').update(url).digest('hex').slice(0, 16)}.${extension}`;
+    const file = path.join(root, 'static', local);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    if (extension === 'webp') writeWebp(bytes, file);
+    else fs.writeFileSync(file, bytes);
+    catalog[url] = { local };
+    return local;
+  } catch (error) {
+    console.warn(`  image skipped: ${url} — ${error.message}`);
+    return null;
+  }
+};
+
+/** An `<img>` becomes a markdown image when its bytes were cached; otherwise it
+ * degrades to its alt text rather than linking to a third-party host.
+ * @param {object} node @param {{images?: Map<string, string>}} context
+ * @returns {string}
+ */
+const imageMarkdown = (node, context) => {
+  const alt = decode(node.getAttribute('alt') || '').replace(/\s+/g, ' ').trim().replace(/([[\]])/g, '\\$1');
+  const local = context.images?.get((node.getAttribute('src') || '').trim());
+  return local ? `![${alt}](${local})` : alt;
+};
 
 /** Fetch a page once, retrying a single time before giving up.
  * @param {string} url
@@ -160,7 +211,7 @@ const inlineText = (nodes, context) => {
     const tag = node.tagName?.toLowerCase();
     if (!tag || skippedTags.has(tag)) continue;
     if (tag === 'br') { out += '\n'; continue; }
-    if (tag === 'img') { out += ` ${decode(node.getAttribute('alt') || '')} `; continue; }
+    if (tag === 'img') { const image = imageMarkdown(node, context); if (image) out += ` ${image} `; continue; }
     if (tag === 'iframe') { out += ` ${decode(node.getAttribute('title') || '')} `; continue; }
     if (tag === 'code') {
       const value = decode(node.textContent || '').replace(/\s+/g, ' ').trim();
@@ -287,6 +338,11 @@ const renderBlocks = (node, context) => {
     if (tag === 'pre') {
       const code = readCodeBlock(child.innerHTML, context).code;
       if (code) chunks.push(fenced('', code));
+      continue;
+    }
+    if (tag === 'img') {
+      const image = imageMarkdown(child, context);
+      if (image) chunks.push(image);
       continue;
     }
     if (tag === 'p') { const value = text(child, context); if (value) chunks.push(value); continue; }
@@ -446,6 +502,9 @@ const main = async () => {
   const failures = [];
   const kept = new Set();
   const titles = new Map();
+  const imageCatalog = fs.existsSync(imageCatalogPath)
+    ? JSON.parse(fs.readFileSync(imageCatalogPath, 'utf8'))
+    : {};
   let written = 0;
 
   for (const course of manifest.courses) {
@@ -467,9 +526,16 @@ const main = async () => {
       let title = lesson.title;
       try {
         const document = parse(await fetchPage(lesson.url));
-        const context = { base: lesson.url };
         const body = bodyOf(document);
         if (!body) throw new Error('no article body found');
+        const images = new Map();
+        for (const image of body.querySelectorAll('img')) {
+          const src = (image.getAttribute('src') || '').trim();
+          if (!src || images.has(src)) continue;
+          const local = await cacheImage(src, lesson.url, imageCatalog);
+          if (local) images.set(src, local);
+        }
+        const context = { base: lesson.url, images };
         title = lesson.title || pageTitle(document) || course.title;
         markdown = renderBlocks(body, context).join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
         if (!markdown) throw new Error('empty body');
@@ -521,6 +587,7 @@ const main = async () => {
   }
 
   fs.writeFileSync(structurePath, `${JSON.stringify(structure, null, 2)}\n`);
+  fs.writeFileSync(imageCatalogPath, `${JSON.stringify(imageCatalog, null, 2)}\n`);
 
   const totalPages = structure.chapters.reduce((sum, chapter) => sum + chapter.sections.length, 0);
   const entry = {
@@ -546,14 +613,14 @@ const main = async () => {
   if (existing === -1) {
     library.books.push(entry);
   } else {
-    // The importer owns the page inventory, not the licence record: `license`,
-    // `licenseUrl` and `note` are written by hand, so a re-import must never
-    // overwrite them (doing so once silently downgraded a recorded permission
-    // back to "unverified").
+    // The importer owns the page inventory, not the licence or publication
+    // record: `license`, `licenseUrl`, `note`, `description`, `status` and
+    // `completeCourse` are written by hand once the translation lands, so a
+    // re-import must never downgrade them.
     const recorded = library.books[existing];
     const merged = { ...recorded };
     for (const [key, value] of Object.entries(entry)) {
-      if (key === 'license' || key === 'note') continue;
+      if (['license', 'licenseUrl', 'note', 'description', 'status', 'completeCourse'].includes(key)) continue;
       merged[key] = value;
     }
     library.books[existing] = merged;

@@ -97,7 +97,7 @@ aws apigatewayv2 get-stages \
 
 في لوحة التحكم، يعرض النقر على مرحلة `$default` **Invoke URL** — عنوان URL الأساسي لكل مساراتك.
 
-صفحة تفاصيل مرحلة API Gateway وهي تعرض اسم المرحلة $default وعنوان URL للاستدعاء في منطقة us-east-1.
+![صفحة تفاصيل مرحلة API Gateway وهي تعرض اسم المرحلة $default وعنوان URL للاستدعاء في منطقة us-east-1.](/images/kinney/a7d91278d57741d1.webp)
 
 ## تعبير اختيار المسار
 

@@ -10,6 +10,8 @@ source: "https://stevekinney.com/courses/aws/cloudwatch-log-groups-and-structure
 
 في هذا الدرس، ستتعلم كيف تنظّم CloudWatch السجلات، وكيف تنتقل من `console.log('something happened')` إلى تسجيل JSON مهيكل، وكيف تستعلم عن سجلاتك باستخدام CloudWatch Logs Insights — لغة استعلام شبيهة بـ SQL تجعل سجلاتك قابلة للبحث فعلًا.
 
+![مخطط يوضح مجموعة سجلات Lambda تحتوي عدة تدفقات سجلات، ومدخلًا بصيغة JSON، واستعلام Logs Insights يقرأ الحقول المنظّمة.](/images/kinney/21d6189da68b72ce.svg)
+
 ## مجموعات السجلات وتدفقاتها
 
 تنظّم CloudWatch السجلات في مستويين: **مجموعات السجلات** (log groups) و**تدفقات السجلات** (log streams).

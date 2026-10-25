@@ -34,7 +34,7 @@ source: "https://stevekinney.com/courses/figma/generating-a-color-palette"
 
 هناك *الكثير* من الأدوات لتوليد لوحة ألوان. ويعجبني حقًا [uicolors.app](https://uicolors.app/). فلديهم [إضافة رائعة حقًا لـ Figma](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) تتيح لك توليد لوحة ألوان تتوافق مع دلالات [Tailwind](https://tailwindcss.com/). ولست مضطرًا لاستخدام Tailwind كي تستعملها. إنها بالتأكيد نقطة انطلاق جيدة للبدء.
 
-مولّد ألوان Tailwind CSS
+![مولّد ألوان Tailwind CSS](/images/kinney/13998371ea9c453a.webp)
 
 وكما ترى، تُنشئ فورًا [الأنماط](https://stevekinney.com/courses/figma/styles) و[المتغيّرات](https://stevekinney.com/courses/figma/variables) في أثناء ذلك. ويمكنك أيضًا تحديد **Generate a color guide** لإنشاء مكوّن يتيح لك رؤية لوحة ألوانك بسهولة.
 
@@ -50,17 +50,17 @@ source: "https://stevekinney.com/courses/figma/generating-a-color-palette"
 
 واختياريًا، يمكنك إنشاء مجموعة ألوان **Neutral** و**Secondary**. استخدم إطارًا (frame) و[التخطيط التلقائي (auto layout)](https://stevekinney.com/courses/figma/auto-layout) لإنشاء دليل أنماط لرموزك. وينبغي أن يبدو على نحو ما يلي.
 
-لوحة ألوان مولَّدة باستخدام وظيفة Tailwind CSS Color Generator
+![لوحة ألوان مولَّدة باستخدام وظيفة Tailwind CSS Color Generator](/images/kinney/d65a9470e22b6263.webp)
 
 ## استخدام الألوان في الشيفرة
 
 يمكنك ربط هذه الألوان بـ [dev-mode](https://stevekinney.com/courses/figma/dev-mode) أو تصدير المتغيّرات، لكن يمكنك أيضًا استخدام [**UI Colors**](https://uicolors.app/) لإنشاء سمة Tailwind أو متغيّرات CSS تستخدمها في شيفرتك الفعلية.
 
-موقع UIColors.app
+![موقع UIColors.app](/images/kinney/85fbe4e0e0734659.webp)
 
 النقر على **Export** يسهّل الحصول على أنماطك كشيفرة بالصيغة التي تحتاجها.
 
-تصدير الألوان من UIColors.app
+![تصدير الألوان من UIColors.app](/images/kinney/7b354fc736db8b61.webp)
 
 وهناك أيضًا عدد من الأدوات الأخرى التي يمكنك استخدامها لإخراج متغيّراتك من Figma.
 

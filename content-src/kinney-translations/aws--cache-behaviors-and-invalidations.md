@@ -37,7 +37,7 @@ flowchart LR
 
 وفي لوحة التحكم، يسرد تبويب **Behaviors** كل سلوكات التخزين المؤقت لتوزيعك مع أنماط مساراتها وأصولها والسياسات المرفقة بها.
 
-تبويب Behaviors في توزيع CloudFront وهو يعرض سلوك التخزين المؤقت الافتراضي بنمط المسار Default والأصل وسياسة Managed-CachingOptimized.
+![تبويب Behaviors في توزيع CloudFront وهو يعرض سلوك التخزين المؤقت الافتراضي بنمط المسار Default والأصل وسياسة Managed-CachingOptimized.](/images/kinney/70d2449b3b9efcb8.webp)
 
 ## سياسات التخزين المؤقت ومدد TTL
 
@@ -177,11 +177,13 @@ aws cloudfront create-invalidation \
 
 وفي لوحة التحكم، يتيح لك تبويب **Invalidations** إنشاء عمليات إبطال بإدخال مسارات الكائنات. وتُبطل العلامة `/*` كل شيء في عملية واحدة.
 
+![نموذج Create Invalidation في CloudFront مع إدخال /* في حقل مسارات الكائنات.](/images/kinney/af65f08e32f29ce3.webp)
+
 نموذج Create Invalidation في CloudFront مع إدخال /* في حقل مسارات الكائنات.
 
 وبمجرد أن تنتهي CloudFront من نشر الإبطال إلى كل مواقع الحافة، تتغيّر الحالة إلى **Completed**.
 
-تبويب Invalidations في CloudFront وهو يعرض الإبطال بحالة Completed.
+![تبويب Invalidations في CloudFront وهو يعرض الإبطال بحالة Completed.](/images/kinney/4c9240d0f3732203.webp)
 
 ### باستخدام SDK
 

@@ -37,7 +37,7 @@ title: "الترويسات وCORS وسياسات الأمان"
 
 في لوحة التحكم، تسرد صفحة **Policies** ضمن **Response headers** كل السياسات المُدارة المتاحة مع أوصافها.
 
-صفحة CloudFront Policies وهي تعرض تبويب Response headers مع سياسات مُدارة تشمل SecurityHeadersPolicy وCORS-With-Preflight وCORS-and-SecurityHeadersPolicy.
+![صفحة CloudFront Policies وهي تعرض تبويب Response headers مع سياسات مُدارة تشمل SecurityHeadersPolicy وCORS-With-Preflight وCORS-and-SecurityHeadersPolicy.](/images/kinney/7e90e9fcd5a89d90.webp)
 
 ## إرفاق سياسة مُدارة
 
@@ -87,7 +87,7 @@ aws cloudfront update-distribution \
 
 في لوحة التحكم، ترفق السياسة بسلوك من نموذج **Edit behavior**. وتعرض قائمة **Response headers policy** المنسدلة السياسات المُدارة إلى جانب أي سياسات مخصّصة أنشأتها.
 
-نموذج CloudFront Edit behavior وهو يعرض قسم Response headers policy مع اختيار SecurityHeadersPolicy من القائمة المنسدلة.
+![نموذج CloudFront Edit behavior وهو يعرض قسم Response headers policy مع اختيار SecurityHeadersPolicy من القائمة المنسدلة.](/images/kinney/e8d2f29f92c6e852.webp)
 
 بعد نشر التوزيع، ستتضمن كل استجابة من CloudFront ترويسات الأمان:
 

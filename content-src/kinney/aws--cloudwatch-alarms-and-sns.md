@@ -47,7 +47,7 @@ Every alarm is in one of three states at any given time:
 
 In the console, the **Alarms** page shows your alarm with its current state, action configuration, and last state update time.
 
-The CloudWatch Alarms page showing one alarm named my-frontend-app-api-errors in Insufficient data state with Actions enabled.
+![The CloudWatch Alarms page showing one alarm named my-frontend-app-api-errors in Insufficient data state with Actions enabled.](/images/kinney/e6c394d48a5a6861.webp)
 
 ## Setting Up SNS
 

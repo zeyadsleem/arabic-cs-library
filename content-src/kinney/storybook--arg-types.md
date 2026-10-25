@@ -115,7 +115,7 @@ const meta: Meta<typeof Button> = {
 
 This will render a little tooltip with your additional detail.
 
-Additional details are rendered in a small tooltip
+![Additional details are rendered in a small tooltip](/images/kinney/1399822d6bdf4c7a.webp)
 
 Here is a summary of our changes so far for those of you keeping track at home.
 
@@ -170,4 +170,4 @@ index 4348e02..34ba94e 100644
 
 You can also use the `category` and `subcategory` properties on `table` to section. In order to further organize your controls. We don’t have a lot to organize *right now*, but I wanted to put it on your radar.
 
-Figma controls with categories and subcategories
+![Figma controls with categories and subcategories](/images/kinney/31b18f78c73e0647.webp)

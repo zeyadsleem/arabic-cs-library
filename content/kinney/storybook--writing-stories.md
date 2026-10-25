@@ -90,7 +90,7 @@ export const Primary: Story = {
 
 ستلاحظ أن بإمكانك ضبط الخصائص (`props`) في تبويب **التحكّم (Controls)**.
 
-تنفيذ أساسي للتحكّم في Storybook
+![تنفيذ أساسي للتحكّم في Storybook](/images/kinney/60d2c9b175606449.webp)
 
 ## زرّنا الأساسي
 

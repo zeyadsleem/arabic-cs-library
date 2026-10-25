@@ -141,11 +141,11 @@ Like I said, either answer is fine depending on your settings. I don’t have a 
 
 If all goes well, you should see something like this:
 
-A notification from Storybook's CLI that the themes addon was successfully installed
+![A notification from Storybook's CLI that the themes addon was successfully installed](/images/kinney/664ad2c027c7044f.webp)
 
 In addition to installing the dependency, this will make the following changes to your Storybook configuration.
 
 - It will add [`@storybook/addon-themes`](https://storybook.js.org/addons/@storybook/addon-themes/) to your list of `addons` in `.storybook/main.ts`.
 - It will configure a [decorator](https://stevekinney.com/courses/storybook/decorators) in `.storybook/main.ts`.
 
-Dark mode in Storybook as powered by Tailwind
+![Dark mode in Storybook as powered by Tailwind](/images/kinney/c7a7aae0dda1bd4d.webp)

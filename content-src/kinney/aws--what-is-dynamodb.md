@@ -20,6 +20,8 @@ This is the moment Scratch Lab stops being “a frontend with an API” and beco
 - [What Lambda Is and Why Frontend Engineers Care](https://stevekinney.com/courses/aws/what-is-lambda)
 - [Connecting API Gateway to Lambda](https://stevekinney.com/courses/aws/connecting-api-gateway-to-lambda)
 
+![Side-by-side comparison of relational database design starting with schema and joins versus DynamoDB design starting with access patterns and keys.](/images/kinney/3fd3135a1c3b6e69.svg)
+
 ## How It Differs from SQL Databases
 
 If you’ve used PostgreSQL, MySQL, or even SQLite in a side project, you’re accustomed to the relational model: tables with rigid schemas, rows and columns, and SQL queries that can join across multiple tables. That model is powerful, but it comes with operational overhead that frontend engineers rarely need.

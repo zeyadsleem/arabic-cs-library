@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/self-testing-ai-agents/playwright-codeg
 
 Sometimes the fastest way to write a test is to just *do the thing* and let the tooling watch. Playwright’s [code generator](https://playwright.dev/docs/codegen-intro) records your clicks and keystrokes and turns them into test code. It’s not magic—the output needs editing—but it’s a legitimate starting point, and for unfamiliar apps it’s often faster than reading the DOM by hand.
 
-Playwright Codegen
+![Playwright Codegen](/images/kinney/fd7f8a7197ab5156.webp)
 
 ## Launching codegen
 

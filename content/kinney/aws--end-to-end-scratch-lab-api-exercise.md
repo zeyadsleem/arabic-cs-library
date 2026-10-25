@@ -12,6 +12,8 @@ source: "https://stevekinney.com/courses/aws/end-to-end-scratch-lab-api-exercise
 
 كل خدمة بمفردها لعبة. أما حين تُوصَل ببعضها فإنها تصبح واجهة خلفية. السبب في أن الدورة تعلّم Lambda وAPI Gateway وDynamoDB وSecrets Manager كلًا على حدة هو أن الأجزاء المتحركة أسهل في التفكير فيها بمعزل عن غيرها—لكن شحن البرمجيات يعني جمعها معًا والتعايش مع الحواف الخشنة عند نقاط الالتحام. تلك هي المهارة التي يبنيها هذا المشروع الختامي.
 
+![مخطط لسلسلة طلب الواجهة الخلفية كاملة: يستدعي المتصفح Route 53، ثم API Gateway، ثم Lambda التي تقرأ من DynamoDB وParameter Store وتكتب في CloudWatch.](/images/kinney/699d71bfcaf946d8.svg)
+
 ## مهمتك
 
 ابنِ واجهة خلفية للملاحظات من أجل [Scratch Lab](https://github.com/stevekinney/scratch-lab) تقوم بما يلي:

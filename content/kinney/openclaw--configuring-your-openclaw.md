@@ -4,7 +4,7 @@ lang: ar
 source: "https://stevekinney.com/courses/openclaw/configuring-your-openclaw"
 ---
 
-صفحة إعدادات وكلاء OpenClaw تعرض الهوية ومساحة العمل واختيار النموذج
+![صفحة إعدادات وكلاء OpenClaw تعرض الهوية ومساحة العمل واختيار النموذج](/images/kinney/5ab65f84ff54ce57.webp)
 
 | الملف | السؤال الذي يجيب عنه | النطاق |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ source: "https://stevekinney.com/courses/openclaw/configuring-your-openclaw"
 
 يمكنك قراءة الملفات الأساسية وتحريرها من واجهة التحكم. افتح الإعدادات، واختر الوكلاء، ثم اختر تبويب الملفات.
 
-تبويب الملفات في إعدادات وكيل OpenClaw، حيث تبويبات AGENTS وSOUL وUSER وMEMORY ومحرّر يعرض AGENTS.md
+![تبويب الملفات في إعدادات وكيل OpenClaw، حيث تبويبات AGENTS وSOUL وUSER وMEMORY ومحرّر يعرض AGENTS.md](/images/kinney/b5ea739b81c7b719.webp)
 
 هذه الملفات ليست مجرد اصطلاحات تنظيمية. أغلبها يُدرَج تلقائيًا في سياق الوكيل، لذلك لكل فقرة زائدة كلفة على مستوى الرموز (tokens) والانتباه، وربما على مستوى تعليمات متعارضة.
 

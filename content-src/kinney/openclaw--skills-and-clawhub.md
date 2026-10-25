@@ -246,7 +246,7 @@ openclaw skills search "calendar"
 
 Each skill has a page with its install command, its `SKILL.md`, its files, its version history, and a security audit:
 
-The ClawHub page for the gog skill, showing the install command, tabs for SKILL.md, Skill Card, Files, Versions, and Requirements, and a security audit result of Pass
+![The ClawHub page for the gog skill, showing the install command, tabs for SKILL.md, Skill Card, Files, Versions, and Requirements, and a security audit result of Pass](/images/kinney/59856eb369840dc1.webp)
 
 Refer to skills by **owner and name**, like `@steipete/gog`. Popular names attract look-alikes: a search for “calendar” returns several skills from different owners with nearly identical descriptions. The owner is part of what you’re trusting.
 
@@ -254,7 +254,7 @@ Refer to skills by **owner and name**, like `@steipete/gog`. Popular names attra
 
 Every release gets a ClawHub security audit. Click the result on the skill’s page to read the full report:
 
-The ClawHub security audit page for the gog skill, with an overview of what the skill does, an outcome of Pass, the audit date, and a list of vulnerability patterns it was checked against
+![The ClawHub security audit page for the gog skill, with an overview of what the skill does, an outcome of Pass, the audit date, and a list of vulnerability patterns it was checked against](/images/kinney/4fec0d0e4dc4fc26.webp)
 
 The audit gives two separate answers. The **status** says what to do with the result:
 
@@ -381,7 +381,7 @@ openclaw skills workshop reject <proposal-id> --reason "Too specific"
 
 The same queue is in the Control UI under **Plugins**, on the **Skill Workshop** tab, under **Suggestions**.
 
-The Skill workshop tab in the Control UI, with Skills and Suggestions subtabs, a Self-learning toggle, and the agent's installed workshop skills listed beside a preview of the selected skill
+![The Skill workshop tab in the Control UI, with Skills and Suggestions subtabs, a Self-learning toggle, and the agent's installed workshop skills listed beside a preview of the selected skill](/images/kinney/33a961e95cb17177.webp)
 
 Whatever the mode, you can ask for a skill directly. Send `/learn` after a conversation that went well, optionally with a request like `/learn a skill for triaging my GitHub notifications`. It drafts one skill for review and never applies it on its own.
 

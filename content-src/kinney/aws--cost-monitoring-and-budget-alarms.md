@@ -178,7 +178,7 @@ Two tools in the AWS console help you understand where your money is going:
 
 The **Billing and Cost Management Dashboard** shows your current month’s charges broken down by service. Open it from the console’s top navigation bar (click your account name, then “Billing and Cost Management”). This is the page you should check once a week while you’re learning AWS.
 
-Billing and Cost Management home showing the cost summary, cost monitor, and recommended actions panels.
+![Billing and Cost Management home showing the cost summary, cost monitor, and recommended actions panels.](/images/kinney/696aad4443332714.webp)
 
 The dashboard shows:
 

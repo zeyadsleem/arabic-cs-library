@@ -74,7 +74,7 @@ Before you can configure the CLI, you need **access keys** for your IAM user. Ac
 6. Acknowledge the recommendation about alternatives (AWS wants you to know that short-lived credentials via IAM Identity Center are more secure—true, but access keys are simpler for learning).
 7. Click **Create access key**.
 
-Security credentials tab for an IAM user showing the Access keys section and the Create access key button.
+![Security credentials tab for an IAM user showing the Access keys section and the Create access key button.](/images/kinney/cfdebdf1b040e8d5.webp)
 
 You’ll see your **Access Key ID** and **Secret Access Key**. This is the only time the secret key is shown. Copy both values and store them in your password manager.
 

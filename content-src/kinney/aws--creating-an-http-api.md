@@ -102,7 +102,7 @@ aws apigatewayv2 get-stages \
 
 In the console, clicking the `$default` stage shows the **Invoke URL**—the base URL for all your routes.
 
-The API Gateway stage details page showing the $default stage name and its invoke URL in the us-east-1 region.
+![The API Gateway stage details page showing the $default stage name and its invoke URL in the us-east-1 region.](/images/kinney/a7d91278d57741d1.webp)
 
 ## The Route Selection Expression
 

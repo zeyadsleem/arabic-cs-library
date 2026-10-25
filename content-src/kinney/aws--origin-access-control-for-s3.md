@@ -92,7 +92,7 @@ Save the `Id` value—you need it in the next step.
 
 In the console, the **Create distribution** wizard handles this automatically: selecting “Allow private S3 bucket access to CloudFront” on the Specify origin step creates the OAC and attaches it in one operation.
 
-The CloudFront wizard showing the Allow private S3 bucket access to CloudFront checkbox checked and the Use recommended origin settings option selected.
+![The CloudFront wizard showing the Allow private S3 bucket access to CloudFront checkbox checked and the Use recommended origin settings option selected.](/images/kinney/5e6d5d0cf02bbe4d.webp)
 
 ### With the SDK
 
@@ -203,7 +203,7 @@ If the `ETag` doesn’t match, CloudFront rejects the update—this prevents you
 
 In the console, the **Origins** tab of your distribution shows the OAC attached to the S3 origin in the **Origin access** column.
 
-The CloudFront distribution Origins tab showing the S3 origin with an OAC ID in the Origin access column.
+![The CloudFront distribution Origins tab showing the S3 origin with an OAC ID in the Origin access column.](/images/kinney/0c45ad9b26f91092.webp)
 
 ## Update the S3 Bucket Policy
 
@@ -249,7 +249,7 @@ aws s3api put-bucket-policy \
 
 In the console, the bucket’s **Permissions** tab shows the updated policy with the `cloudfront.amazonaws.com` service principal and the distribution ARN in the condition.
 
-The S3 bucket Permissions tab showing the bucket policy with cloudfront.amazonaws.com as the service principal and a condition restricting access to a specific distribution ARN.
+![The S3 bucket Permissions tab showing the bucket policy with cloudfront.amazonaws.com as the service principal and a condition restricting access to a specific distribution ARN.](/images/kinney/6bd6bfc12f1ce110.webp)
 
 ## Re-enable Block Public Access
 

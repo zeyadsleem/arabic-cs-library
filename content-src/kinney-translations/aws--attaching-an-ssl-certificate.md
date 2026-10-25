@@ -58,7 +58,7 @@ aws cloudfront get-distribution-config \
 
 في وحدة التحكم، تعرض صفحة **Edit settings** القائمة المنسدلة **Custom SSL certificate** دون شهادة محددة (أي باستخدام شهادة `*.cloudfront.net` الافتراضية).
 
-نموذج Edit settings في CloudFront يعرض حقل Custom SSL certificate مع قائمة Choose certificate فارغة، ما يدل على أن شهادة CloudFront الافتراضية هي المستخدمة.
+![نموذج Edit settings في CloudFront يعرض حقل Custom SSL certificate مع قائمة Choose certificate فارغة، ما يدل على أن شهادة CloudFront الافتراضية هي المستخدمة.](/images/kinney/1c651b01a6002bea.webp)
 
 > **الشهادة الافتراضية تتجاهل `MinimumProtocolVersion`**
 >

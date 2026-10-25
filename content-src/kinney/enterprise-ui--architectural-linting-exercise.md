@@ -277,7 +277,7 @@ Remove the violation.
 
 The element-type rules are configured. Run `pnpm turbo lint` and confirm all packages pass with no violations (after removing the test imports).
 
-Lint output showing a boundary violation error
+![Lint output showing a boundary violation error](/images/kinney/f3a1010f7567b214.webp)
 
 ## Add the `no-private` Rule
 
@@ -409,7 +409,7 @@ export default [
 
 The complete boundary configuration is in place. Apps can import from packages. Packages can import from other packages. No one can import private internals. The architecture is encoded in tooling.
 
-Clean lint output with no boundary violations
+![Clean lint output with no boundary violations](/images/kinney/9d8939a6a97a079d.webp)
 
 ## Solution
 

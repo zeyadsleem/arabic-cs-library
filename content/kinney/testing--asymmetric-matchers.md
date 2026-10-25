@@ -46,7 +46,7 @@ it('should create a person with a first name and last name', () => {
 });
 ```
 
-يفشل الاختبار بسبب معرّف عشوائي.
+![يفشل الاختبار بسبب معرّف عشوائي.](/images/kinney/49f19940ace6abae.webp)
 
 لا يهمنا حقًا ما هو `id`، لكن ربما نريد التأكد من وجود `id` وأنه نصي.
 

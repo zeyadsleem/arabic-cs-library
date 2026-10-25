@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/storybook/default-args"
 
 Now, this is interesting. If you look closely, you’ll see that we don’t have anything selected in terms of the `variant` for each of these button sizes. This makes sense since we didn’t add it as an argument and if you peek back over at our component code, you’ll see that when in doubt, we default to a primary button unless told otherwise—similarly, we default to a medium-size button if no `size` prop is passed in.
 
-An additional disabled control in Storybook
+![An additional disabled control in Storybook](/images/kinney/f3cf7e9d06b435a1.webp)
 
 We can set some default arguments that Storybook will fall back to unless we override them in our stories.
 

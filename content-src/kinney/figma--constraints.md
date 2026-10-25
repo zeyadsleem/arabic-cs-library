@@ -27,6 +27,8 @@ Okay, let’s say you want to set up some constraints:
   - **Center:** The element stays centered as the frame resizes.
   - **Scale:** The element scales proportionally with the frame.
 
+![Figma Constraints](/images/kinney/a47f1edf3ef6fa75.gif)
+
 ## Some Practical Applications
 
 - **Responsive Web Design**: Constraints are invaluable in responsive web design, allowing UI components to adjust gracefully as browser windows resize. For instance, setting side navigation to “Left & Scale” ensures it stretches correctly, while the main content area can be set to “Scale” to utilize available space efficiently.

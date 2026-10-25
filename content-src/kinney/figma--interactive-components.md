@@ -11,7 +11,7 @@ It turns out that users like to interact with these web pages that we build. Som
 
 Not only can we have lots and lots of different types of buttons, those buttons can be in different states based on user interaction. Consider this simple button for a moment.
 
-Button states
+![Button states](/images/kinney/1a68501dacd97a1d.webp)
 
 We want our buttons to behave in our prototypes as they would in the browser. This is where that Prototype mode in the right sidebar comes into play.
 
@@ -19,7 +19,11 @@ We want our buttons to behave in our prototypes as they would in the browser. Th
 
 One option at our disposal is to swap between variables based on the user interaction.
 
+![Setting up interactions for a button](/images/kinney/8f2aef76dcc3caac.gif)
+
 And with that you should be able to see your button in action and interact with it.
+
+![Interactive prototype of button](/images/kinney/deab4f8fead8f365.gif)
 
 > **Exercise**
 >

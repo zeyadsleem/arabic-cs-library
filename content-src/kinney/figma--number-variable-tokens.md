@@ -11,7 +11,7 @@ The core value proposition of [variables](https://stevekinney.com/courses/figma/
 
 For our purposes, we’re going to create a limited set of tokens. You can always expand if needed.
 
-Some spacing values in Figma
+![Some spacing values in Figma](/images/kinney/8ca01646b59903c7.webp)
 
 > **Exercise**
 >
@@ -20,3 +20,6 @@ Some spacing values in Figma
 > Your mileage my vary, but you might end up with something like this.
 >
 > Border width and border radius tokens
+
+
+![Border width and border radius tokens](/images/kinney/e81f1cb5ce69b6bf.webp)

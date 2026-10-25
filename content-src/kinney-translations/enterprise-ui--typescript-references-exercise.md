@@ -309,9 +309,9 @@ npx tsc --build
 
 يكتمل `tsc --build` بنجاح. ولكل حزمة ملف `.tsbuildinfo`. والتشغيلة الثانية أسرع لأن TypeScript يستخدم حالة تزايدية.
 
-أول تشغيل لـ`tsc --build` يعالج كل المشاريع
+![أول تشغيل لـ`tsc --build` يعالج كل المشاريع](/images/kinney/60b0ceca38528002.webp)
 
-تشغيلات لاحقة لـ`tsc --build` بفحص تزايدي
+![تشغيلات لاحقة لـ`tsc --build` بفحص تزايدي](/images/kinney/cfdc7dab2b7f9f11.webp)
 
 ## اختبر إعادة الفحص التزايدي
 

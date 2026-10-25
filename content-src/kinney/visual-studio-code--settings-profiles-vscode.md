@@ -9,7 +9,7 @@ source: "https://stevekinney.com/courses/visual-studio-code/settings-profiles-vs
 
 **Settings Profiles** allow you to create and manage distinct Visual Studio Code configurations for different projects, tasks, or programming languages. This is incredibly useful when you need to switch between drastically different development environments (e.g., web development vs. data science, personal projects vs. work projects).
 
-Creating a New Profile
+![Creating a New Profile](/images/kinney/54f282ed354b70f5.webp)
 
 ## Creating Profiles
 

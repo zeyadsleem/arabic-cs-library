@@ -73,7 +73,7 @@ You can also just ask your agent, in Telegram, to set one up. Jobs created that 
 
 If you’d rather click than type, the Control UI has an Automations page with a New automation form. It asks for the same things as the flags above: a prompt, a name, whether it runs in the main session or an isolated one, and a schedule of an interval, a single time, or a cron expression.
 
-The top of the New automation form in the Control UI, with the prompt box followed by the action, model, and reasoning settings
+![The top of the New automation form in the Control UI, with the prompt box followed by the action, model, and reasoning settings](/images/kinney/c44cb1ec529ca24e.webp)
 
 ## Ground Rules
 

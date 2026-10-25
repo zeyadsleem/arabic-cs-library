@@ -18,7 +18,7 @@ npx storybook@latest add @storybook/addon-designs
 
 انتقل إلى Figma وانقر على زر **Share** نحو اليمين في شريط الأدوات، ثم اختر **Copy Link**.
 
-مشاركة ملف Figma
+![مشاركة ملف Figma](/images/kinney/16ccfecb98aee0b5.webp)
 
 بعد ذلك، في قصتك، سنضيف معاملًا ينشئ الرابط بين القصة والتصميمات.
 
@@ -38,4 +38,4 @@ const meta: Meta<typeof Button> = {
 
 والآن، عند تشغيل Storybook، ستستطيع أن ترى الاثنين جنبًا إلى جنب.
 
-تصميم Figma إلى جانب Storybook
+![تصميم Figma إلى جانب Storybook](/images/kinney/1b0127d0f23d7498.webp)

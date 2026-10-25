@@ -22,7 +22,7 @@ I probably don’t need to sell you on the value of using components in your des
 
 Your available components can be found in Assets mode in the left-pane of your workspace. That said, until you’ve created some components, there isn’t much to see here.
 
-An Empty Components Pane
+![An Empty Components Pane](/images/kinney/77f0969e2e3ae589.webp)
 
 ## Creating Components
 
@@ -30,11 +30,11 @@ To make a component, just choose the element you want to use and click the “Cr
 
 You can create a component using the context menu by right-clicking on the object that you want to turn into a component.
 
-Creating a Component from the Context Menu in Figma
+![Creating a Component from the Context Menu in Figma](/images/kinney/538f7dadb78632fb.webp)
 
 You can also create a component using the center of the toolbar menu when you’re selecting an object.
 
-Creating a Component from the Toolbar Menu
+![Creating a Component from the Toolbar Menu](/images/kinney/a2cc8aed6ac1a835.webp)
 
 ## Using Instances
 
@@ -42,15 +42,17 @@ Copies of the master component are called instances and they keep the same prope
 
 Once you’ve created a component, you can see it in that pane that we looked at earlier that was empty.
 
-Components in Figma's asset pane
+![Components in Figma's asset pane](/images/kinney/e30a62e185d16a39.webp)
 
 Simply drag the component onto the canvas to use it. Changing the main component will cascade down to the individual component, but you can also override certain properties on the instance component. In the example below, we’ll create a component and then override its text content as well as its background color.
+
+![Creating an instance component](/images/kinney/bc61f793def11e6b.gif)
 
 ### Detaching an Instance from a Component
 
 If you no longer want an instance of a component to inherit properties from the main component, you can choose to detach it from the component—effectively breaking the prototypal inheritance chain.
 
-Detatch a component
+![Detatch a component](/images/kinney/eb5c139ab7907de0.webp)
 
 The shortcut for detaching an instance is `Option/Ctrl-Alt-B`.
 

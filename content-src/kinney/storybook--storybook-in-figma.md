@@ -11,4 +11,4 @@ You’ll need to have your project published on [Chromatic](https://stevekinney.
 
 In [Figma’s Dev Mode](https://stevekinney.com/courses/figma/dev-mode), go to the plugins pane and search for Storybook. You’ll need to connect Figma to Chromatic, but after that you’ll be able to paste in the link to your story and see them side by side.
 
-Storybook integrated into Figma
+![Storybook integrated into Figma](/images/kinney/72c14cc5213ee1e0.webp)

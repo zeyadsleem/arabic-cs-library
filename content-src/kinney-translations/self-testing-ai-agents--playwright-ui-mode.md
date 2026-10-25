@@ -6,7 +6,7 @@ title: "وضع واجهة المستخدم في Playwright"
 
 توقّف عن فعل ذلك. لدى Playwright مُشغّل اختبارات مرئي يتيح لك أن *ترى* الصفحة في كل خطوة من خطوات الاختبار. اسمه وضع واجهة المستخدم (UI Mode)، وبعد أن تستخدمه مرة واحدة ستبدو لك حفريات `console.log` أشبه بشيء من العصور الوسطى.
 
-واجهة Playwright
+![واجهة Playwright](/images/kinney/580bec99e735ddb4.webp)
 
 ## تشغيل وضع واجهة المستخدم
 
@@ -34,7 +34,7 @@ npx playwright test tests/smoke.spec.ts --ui
 
 هذه هي الميزة القاتلة في هذه الدورة.
 
-لوحة المحدّد في واجهة Playwright
+![لوحة المحدّد في واجهة Playwright](/images/kinney/bf5825154c845e55.webp)
 
 انقر على زر «Pick locator» في شريط الأدوات، ثم مرّر المؤشر فوق أي عنصر في لقطة DOM. يقترح Playwright محدّدًا لذلك العنصر، وهو يتبع التسلسل الهرمي نفسه من [المحدّدات وتدرّج إمكانية الوصول](https://stevekinney.com/courses/self-testing-ai-agents/locators-and-the-accessibility-hierarchy). الدور أولًا، ثم التسمية، ثم النص، ثم معرّف الاختبار، وCSS كملاذ أخير.
 

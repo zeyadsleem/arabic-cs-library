@@ -61,7 +61,7 @@ flowchart LR
 
 في لوحة التحكم، يمكنك إنشاء هذه السياسة في محرّر JSON في **Create policy** ضمن IAM — وهو المكان نفسه الذي عرّفت فيه سياسة الثقة لدور التنفيذ.
 
-محرّر IAM Create Policy JSON وهو يعرض سياسة بإجراءات DynamoDB تشمل PutItem وGetItem وUpdateItem وQuery مقصورة على ARN جدول محدّد.
+![محرّر IAM Create Policy JSON وهو يعرض سياسة بإجراءات DynamoDB تشمل PutItem وGetItem وUpdateItem وQuery مقصورة على ARN جدول محدّد.](/images/kinney/7d974120c618a4ba.webp)
 
 أنشئ السياسة وأرفقها:
 

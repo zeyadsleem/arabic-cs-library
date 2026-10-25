@@ -108,7 +108,7 @@ If you finish early, pick one or more:
 
 The hardened Shelf starter ends up with an explicit toast and persisted rating after the test clicks through the modal. Your exact styling may differ, but the success state should look like this:
 
-The hardened rate-book flow showing the persisted success toast and updated shelf summary
+![The hardened rate-book flow showing the persisted success toast and updated shelf summary](/images/kinney/1c9239e1fa5fda41.webp)
 
 ## What this looks like against a real agent
 

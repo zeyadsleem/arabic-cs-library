@@ -43,7 +43,7 @@ Welcome to our dope component library. This is a collection of components that w
 <Button>Wow, a button!</Button>
 ```
 
-A basic MDX documentation page in Storybook
+![A basic MDX documentation page in Storybook](/images/kinney/b538d7878f197348.webp)
 
 ## Doc Blocks
 
@@ -75,4 +75,4 @@ Let’s talk about what’s going on here:
 - The `Primary` block renders the first-defined story in our `button.stories.tsx` file. It’s purely coincidental that it happens that my first export is *also* named **Primary**.
 - There is some more prose and then re render the `Controls`, which is analogous to what we’ve seen so far.
 
-Button component documentation rendered in MDX
+![Button component documentation rendered in MDX](/images/kinney/512f75e347b95e68.webp)

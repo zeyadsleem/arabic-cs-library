@@ -14,4 +14,4 @@ npm install -g yo generator-code
 yo code
 ```
 
-Running the Yeoman generator for a Visual Studio Code extension
+![Running the Yeoman generator for a Visual Studio Code extension](/images/kinney/58540f2eb6208db7.webp)

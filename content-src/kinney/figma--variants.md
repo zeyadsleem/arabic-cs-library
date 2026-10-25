@@ -7,7 +7,7 @@ order: 15
 source: "https://stevekinney.com/courses/figma/variants"
 ---
 
-Loki and his variants
+![Loki and his variants](/images/kinney/ae03dc996bfe4806.webp)
 
 We all know that there usually isn’t just *one* button. Buttons come in lots of shapes and sizes.
 
@@ -38,19 +38,21 @@ Variants reduce clutter by housing related components together. They streamline 
 
 The easiest way to do this is similar to what we saw using [Component Properties](https://stevekinney.com/courses/figma/component-properties).
 
-A variant component property in Figma
+![A variant component property in Figma](/images/kinney/e3b465fecab2f8a6.webp)
 
 You’re variants are effectively key/value stores. They all need to have the same names for the given nature of the variant and then you can have a bunch of names for actual iterations.
 
-A default and small variant of the badge component
+![A default and small variant of the badge component](/images/kinney/1d0ff366f13706be.webp)
 
 I won’t bore you with the implementation details of each component. But, you can take a lucky guess. The “Small” variant has reduced padding and a slightly smaller font size.
+
+![An example of a Figma component variant](/images/kinney/b3d0e3b49ab7b192.gif)
 
 ### Creating Variants for Existing Components
 
 Consider this collection of random icons. I want to create an **Icon** component with a bunch of different variants.
 
-Icons that we want to turn into variants
+![Icons that we want to turn into variants](/images/kinney/11436e96a5b337cf.webp)
 
 I can do this as follows:
 
@@ -61,22 +63,29 @@ I can do this as follows:
 5. Give your new property a name.
 6. Name the new composite component appropriately.
 
+![Creating Variants from components in Figma](/images/kinney/9dca211c4bee00ef.gif)
+
 #### Streamlining Variant Creation with Names
 
 If you really want to show off, you can cut at least one tiny step out of this whole process by naming your variants as follows: `Property=Value`. This will give them all the correct variant property name instead of `Property 1` or whatever.
 
 ## Swapping Variants with the Instance Swap Component Property
 
-Figma button with an icon
+![Figma button with an icon](/images/kinney/7ea1b8110361f3a0.webp)
 
 Consider this button that has an icon. Let’s say that we wanted to allow the consumer of this button swap out the icon for another icon—but *only* another icon. How would we do this?
 
 As long as the Icon is a component, we can use the “Expose properties from Nested Instances” option to surface the variants of the Icon up to the top.
 
-Expose nested component instances
+![Expose nested component instances](/images/kinney/82c3d1907db297e1.webp)
 
 Now, when we have an instance of the component, we can easily switch between variants of the underlying components.
+
+![Switch between nested variants](/images/kinney/d45f43d0438386a2.gif)
 
 ### Conditional Nested Variants
 
 For extra fun, you can combine the above technique with [component-properties](https://stevekinney.com/courses/figma/component-properties#boolean-properties) to conditionally show the nested variant.
+
+
+![Boolean properties with nested variants](/images/kinney/dde2624ff8d72b1c.gif)

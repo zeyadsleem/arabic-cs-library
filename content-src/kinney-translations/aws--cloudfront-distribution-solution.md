@@ -459,7 +459,7 @@ curl -I https://my-frontend-app-assets.s3.us-east-1.amazonaws.com/index.html
 
 افتح نطاق CloudFront في متصفح لترى الموقع مباشرًا:
 
-الموقع الثابت المقدّم عبر CloudFront بـ HTTPS، ويعرض «Hello from S3» على خلفية داكنة مع طابع زمني لتحميل الصفحة.
+![الموقع الثابت المقدّم عبر CloudFront بـ HTTPS، ويعرض «Hello from S3» على خلفية داكنة مع طابع زمني لتحميل الصفحة.](/images/kinney/e6808f0fa9cac56d.webp)
 
 ## ملخص الموارد المنشأة
 

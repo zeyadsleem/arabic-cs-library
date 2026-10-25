@@ -33,4 +33,4 @@ import { Meta, Typeset } from '@storybook/blocks';
 
 سترى شيئًا على هذا النحو.
 
-مكوّن Typeset في Storybook يصيّر تنضيد نظام التصميم لدينا
+![مكوّن Typeset في Storybook يصيّر تنضيد نظام التصميم لدينا](/images/kinney/2046b2dd3faff7c0.webp)

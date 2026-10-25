@@ -43,7 +43,7 @@ gog --version
 
 تحتاج إلى عميل OAuth خاص بك لتفويض الوصول إلى Google.
 
-صفحة نظرة عامة على منصّة مصادقة Google، ولم تُهيّأ بعد
+![صفحة نظرة عامة على منصّة مصادقة Google، ولم تُهيّأ بعد](/images/kinney/472f27a59bc85a41.webp)
 
 [إنشاء مشروع على Google Cloud](https://console.cloud.google.com/projectcreate)
 
@@ -53,13 +53,13 @@ gog --version
 
 مكّن واجهة Gmail البرمجية وواجهة Google Calendar البرمجية. ولا تحتاج إلى Drive إلا إذا كنت تنوي استخدامه.
 
-صفحة نظرة عامة على OAuth التي تدعوك إلى إنشاء عميل OAuth
+![صفحة نظرة عامة على OAuth التي تدعوك إلى إنشاء عميل OAuth](/images/kinney/f048bcd10e4b0f91.webp)
 
 [تهيئة مصادقة Google](https://console.cloud.google.com/auth/overview)
 
 هيّئ شاشة موافقة OAuth، واختر External لحساب Gmail شخصي، وأضف بريدك الإلكتروني كمستخدم اختباري إذا بقي التطبيق في وضع Testing.
 
-نموذج Create OAuth client ID مع تحديد نوع التطبيق Desktop app
+![نموذج Create OAuth client ID مع تحديد نوع التطبيق Desktop app](/images/kinney/998f6475b7030ecd.webp)
 
 [إنشاء عميل OAuth](https://console.cloud.google.com/apis/credentials)
 
@@ -168,7 +168,7 @@ openclaw skills check
 
 ابحث عن مهارة `gog`. وقد تكون متاحة بالفعل بمجرد تثبيت أداة سطر الأوامر المطلوبة، حسب تثبيتك. وإن لم تكن كذلك، فإن [المهارات وClawHub](https://stevekinney.com/courses/openclaw/skills-and-clawhub) يغطي تثبيت المهارات وفحصها.
 
-صفحة المهارات في Control UI مع البحث عن gog، وتُظهر مهارة gog المضمّنة ومهارة gog-remote-oauth في أعلى النتائج
+![صفحة المهارات في Control UI مع البحث عن gog، وتُظهر مهارة gog المضمّنة ومهارة gog-remote-oauth في أعلى النتائج](/images/kinney/b6bff6c046c42978.webp)
 
 في Control UI، ستجد القائمة نفسها تحت Plugins ثم تبويب Skills. والبحث عن `gog` يُظهر المهارة المضمّنة، التي يمكن أن تظل معطّلة حتى تشغّلها، إلى جانب مهارات مجتمعية من ClawHub. ولا تثبّتها لمجرّد أنها تحمل الاسم نفسه.
 

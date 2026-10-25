@@ -328,7 +328,7 @@ export default AnalyticsDashboard;
 
 Reload the page at `http://localhost:5173`. You should now see each section appear independently—the stats bar first (~200ms), then the chart (~800ms), then the table (~2000ms). Each shows its own loading skeleton while waiting. This is the per-component fetching pattern you need before adding Suspense.
 
-Loading skeletons shown while data fetches
+![Loading skeletons shown while data fetches](/images/kinney/32a64b3bfabf03c9.webp)
 
 ## Make Data Fetching Suspense-Compatible
 
@@ -620,11 +620,11 @@ Save and reload the page. Watch the rendering sequence:
 
 Each section of the analytics dashboard now loads independently via Suspense. The stats bar with its four metric cards appears first, the chart follows about 600ms later, and the table arrives last. Each shows its own skeleton placeholder while loading. The key difference from Step 1: the loading state is now managed by React’s Suspense mechanism, not by manual `useState` in each component.
 
-Stats bar loaded while chart and table still show skeletons
+![Stats bar loaded while chart and table still show skeletons](/images/kinney/0142a98c5bc53abb.webp)
 
-Chart loaded with stats bar, table still loading
+![Chart loaded with stats bar, table still loading](/images/kinney/0bd9c26954e3e8f5.webp)
 
-All sections fully loaded
+![All sections fully loaded](/images/kinney/c02cd34e22318477.webp)
 
 ## Streaming SSR with `renderToPipeableStream`
 

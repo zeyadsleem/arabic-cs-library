@@ -20,7 +20,7 @@ Visual Studio Code offers a few ways for debugging your code.
 
 There are a bunch of templates that Visual Studio Code provides to get up and running quickly.
 
-Setting Up a Launch Configuration
+![Setting Up a Launch Configuration](/images/kinney/642f8d223e160b1d.webp)
 
 ## Together
 

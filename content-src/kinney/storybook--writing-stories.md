@@ -93,7 +93,7 @@ export const Primary: Story = {
 
 You’ll notice that you can adjust the `props` in the **Controls** tab.
 
-A basic implementation of controls in Storybook
+![A basic implementation of controls in Storybook](/images/kinney/60d2c9b175606449.webp)
 
 ## Our Basic Button
 

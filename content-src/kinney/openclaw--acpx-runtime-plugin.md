@@ -86,7 +86,7 @@ capabilities: session/set_config_option, session/set_mode, session/status
 
 In the Control UI, the same report shows up as a reply from your agent:
 
-A Control UI chat where the agent replies to the acp doctor command with the ACPX backend report, ending in healthy: yes
+![A Control UI chat where the agent replies to the acp doctor command with the ACPX backend report, ending in healthy: yes](/images/kinney/3cc7484b0e0974f2.webp)
 
 The lines worth reading:
 
@@ -325,6 +325,8 @@ What to look for:
 - Run `/acp doctor` again. The counters should have moved, and `turnCounts` should show a completed turn.
 
 Here’s what the authentication failure looks like when the harness isn’t signed in on the Gateway host. `/acp doctor` was healthy, and the spawn still failed:
+
+![A Control UI chat where the agent reports that sessions_spawn for the codex harness failed with Authentication required, with no files changed](/images/kinney/1b3dfe3cd651b50d.webp)
 
 A Control UI chat where the agent reports that sessions_spawn for the codex harness failed with Authentication required, with no files changed
 

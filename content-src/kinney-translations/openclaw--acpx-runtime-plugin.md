@@ -81,7 +81,7 @@ capabilities: session/set_config_option, session/set_mode, session/status
 
 وفي واجهة التحكّم (Control UI)، يظهر التقرير نفسه كردٍّ من وكيلك:
 
-دردشة في واجهة التحكّم يردّ فيها الوكيل على أمر acp doctor بتقرير خلفية ACPX، وينتهي بالعبارة healthy: yes
+![دردشة في واجهة التحكّم يردّ فيها الوكيل على أمر acp doctor بتقرير خلفية ACPX، وينتهي بالعبارة healthy: yes](/images/kinney/3cc7484b0e0974f2.webp)
 
 والأسطر التي تستحقّ القراءة:
 
@@ -320,6 +320,8 @@ railway ssh --service openclaw -- as-node mkdir -p /data/scratch/acp-playground
 - شغّل `/acp doctor` مرة أخرى. ينبغي أن تكون العدّادات قد تحرّكت، وأن يُظهر `turnCounts` دورة مكتملة.
 
 وهذا شكل فشل التوثيق عندما يكون الـ harness غير مسجّل الدخول على مضيف البوابة. كان `/acp doctor` سليمًا، ومع ذلك فشل التشغيل:
+
+![محادثة في واجهة Control UI يبلّغ فيها الوكيل بأن sessions_spawn لمنصّة codex فشل بسبب «Authentication required»، دون تغيير أي ملفات](/images/kinney/1b3dfe3cd651b50d.webp)
 
 دردشة في واجهة التحكّم يبلّغ فيها الوكيل بأن sessions_spawn الخاص بـ harness اسمه codex فشل بخطأ Authentication required، دون تغيير أي ملف
 

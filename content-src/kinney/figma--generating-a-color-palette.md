@@ -37,7 +37,7 @@ I usually start with the following semantic colors:
 
 There are *a lot* of tools out there for generating a color palette. I really like [uicolors.app](https://uicolors.app/). They have a [really cool plugin for Figma](https://www.figma.com/community/plugin/1242548152689430610/tailwind-css-color-generator) that allows you to generate a color palette that aligns with [Tailwind](https://tailwindcss.com/)’s semantics. You don’t have to use Tailwind to use it either. It’s definitely a nice jumping off point to begin with.
 
-Tailwind CSS Color Generator
+![Tailwind CSS Color Generator](/images/kinney/13998371ea9c453a.webp)
 
 As you can see, instantly create [styles](https://stevekinney.com/courses/figma/styles) and [variables](https://stevekinney.com/courses/figma/variables) along the way. You can also check **Generate a color guide** to create a component that allows you to easily see your color palette.
 
@@ -53,17 +53,17 @@ Let’s generate a color palette with the following semantic colors:
 
 Optionally, you can create a set **Neutral** and **Secondary** colors. Use a frame and [auto layout](https://stevekinney.com/courses/figma/auto-layout) to create a style guide for your tokens. It should look something like this.
 
-A color palette generated using the Tailwind CSS Color Generator Function
+![A color palette generated using the Tailwind CSS Color Generator Function](/images/kinney/d65a9470e22b6263.webp)
 
 ## Using Colors in Code
 
 You can hook these colors up to [dev-mode](https://stevekinney.com/courses/figma/dev-mode) or export the variables, but you can also use [**UI Colors**](https://uicolors.app/) to create either a Tailwind theme or CSS variables that you can use in your actual code.
 
-The UIColors.app website
+![The UIColors.app website](/images/kinney/85fbe4e0e0734659.webp)
 
 Clicking **Export** makes it easy to grab your styles as code in the format you need it.
 
-Exporting colors from UIColors.app
+![Exporting colors from UIColors.app](/images/kinney/7b354fc736db8b61.webp)
 
 There are also a number of other tools that you can use to get your variables out of Figma.
 

@@ -13,6 +13,8 @@ If you want AWS’s version of the logging service surface while you read, the [
 
 In this lesson, you’ll learn how CloudWatch organizes logs, how to switch from `console.log('something happened')` to structured JSON logging, and how to query your logs with CloudWatch Logs Insights—a SQL-like query language that makes your logs actually searchable.
 
+![Diagram showing a Lambda log group containing multiple log streams, a JSON log entry, and a Logs Insights query reading the structured fields.](/images/kinney/21d6189da68b72ce.svg)
+
 ## Log Groups and Log Streams
 
 CloudWatch organizes logs into two levels: **log groups** and **log streams**.

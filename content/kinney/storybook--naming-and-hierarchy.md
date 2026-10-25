@@ -52,4 +52,4 @@ source: "https://stevekinney.com/courses/storybook/naming-and-hierarchy"
 
 ينبغي أن نعيش الآن في عالم أكثر نظامًا بكثير.
 
-مكوّنات Storybook مرتّبة بشكل جميل
+![مكوّنات Storybook مرتّبة بشكل جميل](/images/kinney/104a990d309d86f0.webp)

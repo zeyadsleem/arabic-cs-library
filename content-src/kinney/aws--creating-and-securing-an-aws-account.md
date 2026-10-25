@@ -21,11 +21,11 @@ Your AWS account is *not* just another dashboard login. It is the trust boundary
 
 Start on the AWS homepage. Depending on which part of the page AWS is currently promoting, you’ll usually see either **Create account** in the header or a larger call-to-action like **Start free with AWS**.
 
-AWS homepage showing both the Create account button in the header and the Start free with AWS call-to-action in the hero.
+![AWS homepage showing both the Create account button in the header and the Start free with AWS call-to-action in the hero.](/images/kinney/0007bfe11776802c.webp)
 
 After you click into the signup flow, AWS asks for the email address that will own the account and an account name.
 
-AWS signup screen asking for the root user email address and AWS account name.
+![AWS signup screen asking for the root user email address and AWS account name.](/images/kinney/6905fde4102a2890.webp)
 
 A few decisions here matter more than they look:
 
@@ -35,25 +35,25 @@ A few decisions here matter more than they look:
 
 Once AWS verifies your email address, the next screen is where you set the root password.
 
-Root password screen shown immediately after email verification in the AWS signup flow.
+![Root password screen shown immediately after email verification in the AWS signup flow.](/images/kinney/cfcd3362bcb1038d.webp)
 
 Use a strong password and store it in a password manager immediately. This is not a password you should memorize or reuse anywhere else.
 
 AWS then asks you to choose an account plan. In the current flow shown here, AWS offers a free option and a **Paid** option. AWS’s Free Tier options include an introductory period (the duration varies — check the current offer) and a set of always-free allowances.
 
-Account plan selection screen offering the Free and Paid account plans during signup.
+![Account plan selection screen offering the Free and Paid account plans during signup.](/images/kinney/685d2fc62532be96.webp)
 
 For a personal learning account, choose the free plan if AWS offers it to you. The goal for this course is to learn the platform without accidentally turning your first week into a billing postmortem.
 
 Next comes your contact information.
 
-Contact information form during AWS account creation asking for name, phone number, address, and country.
+![Contact information form during AWS account creation asking for name, phone number, address, and country.](/images/kinney/82b24f7776f68cd5.webp)
 
 Fill this out accurately. AWS uses it for account ownership, billing, and recovery. This is not the place for fake data.
 
 After that, AWS asks for billing information.
 
-Billing information form during AWS signup asking for card details and billing address.
+![Billing information form during AWS signup asking for card details and billing address.](/images/kinney/b9d742032abb43d9.webp)
 
 Yes, AWS requires a payment method even for a learning account. No, that does not mean you are guaranteed to be charged right away. It means AWS has a way to bill you if you create something outside the free tier or leave paid resources running indefinitely.
 
@@ -71,11 +71,11 @@ Here is the rule: use the root user to finish the initial account setup, enable 
 
 From the console home page, click your account menu in the top-right corner and choose **Security credentials**.
 
-Account menu in the AWS console with Security credentials highlighted.
+![Account menu in the AWS console with Security credentials highlighted.](/images/kinney/5540e28ad7e00f90.webp)
 
 That takes you to the root user’s security page.
 
-Root security credentials page showing the warning that MFA is not assigned yet.
+![Root security credentials page showing the warning that MFA is not assigned yet.](/images/kinney/51a55fa34b8a58b2.webp)
 
 If you see a warning banner telling you MFA is not assigned, good. That means you are in exactly the right place.
 
@@ -87,7 +87,7 @@ If you see a warning banner telling you MFA is not assigned, good. That means yo
 
 Click **Assign MFA** and AWS will walk you through choosing a device type. The screenshots here use a passkey because it is phishing-resistant and tied to a device you already control.
 
-Assign MFA device screen with Passkey or security key selected as the MFA device type.
+![Assign MFA device screen with Passkey or security key selected as the MFA device type.](/images/kinney/310d883071ce050d.webp)
 
 Other choices are still valid:
 
@@ -97,7 +97,7 @@ Other choices are still valid:
 
 I chose a passkey, but you’re free to use whatever makes you happiest. Once the flow completes, AWS shows a confirmation banner on the root security page.
 
-Root security credentials page showing the Passkey MFA device assigned confirmation banner.
+![Root security credentials page showing the Passkey MFA device assigned confirmation banner.](/images/kinney/a87181f8f01f0330.webp)
 
 At that point, every future root login requires both the password and the second factor. That is exactly what you want.
 
@@ -109,7 +109,7 @@ Before you retire the root user, there are three small pieces of account hygiene
 
 AWS lets you define separate contacts for billing, operations, and security notifications.
 
-Alternate contacts section showing separate billing, operations, and security contacts.
+![Alternate contacts section showing separate billing, operations, and security contacts.](/images/kinney/7f7d16b68ae5f0ec.webp)
 
 If this is just your personal learning account, you can leave these empty for now. If you have a shared inbox for billing or a teammate who should receive security notices, set them now while you still remember. It is much easier to do this on day one than during an incident.
 
@@ -121,7 +121,7 @@ Every new AWS account already has a 90-day **event history** for management acti
 
 By default, new IAM users often cannot see billing information. That becomes a problem later when you try to set up budgets or inspect charges without logging back in as root.
 
-Billing settings section showing IAM user and role access to Billing information deactivated.
+![Billing settings section showing IAM user and role access to Billing information deactivated.](/images/kinney/7c2ef8146a2fb34a.webp)
 
 Click **Edit** and enable **IAM user and role access to Billing information** before you move on. Your future `admin` user needs this.
 
@@ -129,7 +129,7 @@ Click **Edit** and enable **IAM user and role access to Billing information** be
 
 AWS now surfaces [**IAM Identity Center**](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) prominently because it is the preferred long-term answer for workforce access and single sign-on.
 
-IAM Identity Center landing page inviting you to enable an IAM Identity Center instance.
+![IAM Identity Center landing page inviting you to enable an IAM Identity Center instance.](/images/kinney/bd072b1c0a5a5c08.webp)
 
 That is a good direction for a team. It is also one more system to understand on the same day you are still learning what an IAM user even is. For this course, we are intentionally keeping the starting point simpler:
 
@@ -156,13 +156,13 @@ One quick note before you follow the screenshots below: the screenshots show the
 
 Search for **IAM** from the AWS console header and open the service.
 
-AWS global search showing IAM as the primary service result.
+![AWS global search showing IAM as the primary service result.](/images/kinney/5896180f3512b61b.webp)
 
 ### Create an Administrators Group
 
 Before you create the user, create a group named `Administrators` and attach the AWS-managed `AdministratorAccess` policy to that group.
 
-Create user group flow in IAM with AdministratorAccess selected in the permissions list.
+![Create user group flow in IAM with AdministratorAccess selected in the permissions list.](/images/kinney/328a2aa7ee2a3cf4.webp)
 
 This is a better starting shape than attaching the policy directly to the user. Even in a tiny account, it nudges you toward cleaner IAM habits:
 
@@ -174,11 +174,11 @@ This is a better starting shape than attaching the policy directly to the user. 
 
 After the group exists, go to **Users** and click **Create user**.
 
-IAM users page after creating the Administrators group, with the Create user button visible.
+![IAM users page after creating the Administrators group, with the Create user button visible.](/images/kinney/3f0d456980e0d399.webp)
 
 On the user details screen, enter `admin` as the username, enable console access, and set the password options you want.
 
-Specify user details screen in IAM showing console access enabled and a custom password being set.
+![Specify user details screen in IAM showing console access enabled and a custom password being set.](/images/kinney/9620a219e712e69c.webp)
 
 For your own learning account, a custom password is fine. If you were creating this user for someone else, you would usually require a password reset on first sign-in.
 
@@ -186,7 +186,7 @@ For your own learning account, a custom password is fine. If you were creating t
 
 On the permissions screen, choose **Add user to group** and select the `Administrators` group.
 
-Set permissions screen with the Administrators group selected under the Add user to group option.
+![Set permissions screen with the Administrators group selected under the Add user to group option.](/images/kinney/4b262c2762f76540.webp)
 
 This is the point where the screenshots and the course conventions intentionally diverge. The screenshot shows a real username from my account. You should still create `admin` and add that user to the `Administrators` group.
 
@@ -194,7 +194,7 @@ This is the point where the screenshots and the course conventions intentionally
 
 AWS then gives you a review screen so you can confirm the username, console password configuration, and group assignment.
 
-Review and create screen in IAM showing the selected username and Administrators group assignment.
+![Review and create screen in IAM showing the selected username and Administrators group assignment.](/images/kinney/ec73cd0e48a53916.webp)
 
 If the group assignment looks wrong, fix it here. This is much better than creating the user and then cleaning up a bad permission model afterwards.
 
@@ -202,7 +202,7 @@ If the group assignment looks wrong, fix it here. This is much better than creat
 
 After the user is created, AWS shows the IAM console sign-in details.
 
-User creation completion screen showing the IAM console sign-in URL, username, and initial password details.
+![User creation completion screen showing the IAM console sign-in URL, username, and initial password details.](/images/kinney/1433595e15a5c570.webp)
 
 Bookmark that IAM sign-in URL. It has this shape:
 

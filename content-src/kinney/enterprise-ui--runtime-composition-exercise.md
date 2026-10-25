@@ -46,7 +46,7 @@ Let’s start by seeing the running application, then understand how [Module Fed
 
 Anyway, you *should* see the analytics dashboard loading inside the host shell. The sidebar shows **Grace Hopper** with **admin** below it in gray text, and the main area shows the analytics view with stat cards and a chart. In the Network tab, you can see `mf-manifest.json` and chunk files coming from `localhost:3001`.
 
-Host shell showing the Not authenticated badge
+![Host shell showing the Not authenticated badge](/images/kinney/f645da17213f4c60.webp)
 
 > **Note**
 >
@@ -160,7 +160,7 @@ Error: [ Federation Runtime ]: Version 18.3.1 from remoteAnalytics of shared sin
 
 This is intentional—the remote rejected the available React version before any UI could render. This is how you catch version drift between independently deployed remotes.
 
-Blank page after version mismatch error
+![Blank page after version mismatch error](/images/kinney/e30f5dd1ded90d7d.webp)
 
 **Remove both fields and restore the original config before continuing.** Stop your dev servers and run `pnpm dev` again to pick up the reverted config.
 
@@ -380,7 +380,7 @@ Stop your dev servers (`Ctrl+C`) and run `pnpm dev` again to pick up the new fil
 
 The analytics dashboard now shows a green **“Viewing as: Grace Hopper”** badge instead of the amber “Not authenticated” badge. The auth context flows from the host to the remote through the shared nanostore.
 
-Fixed application showing Viewing as Grace Hopper
+![Fixed application showing Viewing as Grace Hopper](/images/kinney/257dcc36abbba701.webp)
 
 ## Stretch Goals
 

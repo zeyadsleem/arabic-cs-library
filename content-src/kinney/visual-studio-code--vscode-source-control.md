@@ -66,4 +66,4 @@ Visual Studio Code provides native support for GitHub, GitLab, and Bitbucket wor
 
 Alternatively, I also really like [GitHub Desktop](https://github.com/desktop).
 
-GitHub Desktop
+![GitHub Desktop](/images/kinney/2d949d9da28b43ff.webp)

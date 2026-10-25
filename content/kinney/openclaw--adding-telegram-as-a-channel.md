@@ -6,11 +6,11 @@ source: "https://stevekinney.com/courses/openclaw/adding-telegram-as-a-channel"
 
 في البداية، سنذهب للعثور على [BotFather](https://t.me/BotFather) على Telegram، ثم سنستعمل الأمر `/newbot`.
 
-كتابة أمر /newbot داخل محادثة مع BotFather
+![كتابة أمر /newbot داخل محادثة مع BotFather](/images/kinney/b0a5a79a0dad766b.webp)
 
 سيُطلب منك أن تمنح روبوتك اسمًا، ثم — في مرحلة لاحقة — اسم مستخدم. وحين يكتمل ذلك كلّه، ستحصل على رمز (token) يمكنك استخدامه.
 
-رسالة تأكيد BotFather مع إخفاء رمز واجهة HTTP البرمجية للروبوت الجديد
+![رسالة تأكيد BotFather مع إخفاء رمز واجهة HTTP البرمجية للروبوت الجديد](/images/kinney/cd38e6b3fcce6412.webp)
 
 > **تحذير**
 >
@@ -24,13 +24,13 @@ openclaw channels add --channel telegram --token <YOUR_BOT_TOKEN>
 
 بمجرّد أن تراسل روبوتك لأول مرة، ستلاحظ أنه ما زال بحاجة إلى الإقران.
 
-الروبوت يردّ بأن الوصول غير مُهيّأ، مع رمز إقران وأمر موافقة
+![الروبوت يردّ بأن الوصول غير مُهيّأ، مع رمز إقران وأمر موافقة](/images/kinney/b3c0df86115bc153.webp)
 
 نفّذ أمر الموافقة الوارد في الرسالة على الجهاز الذي يضيف OpenClaw. وحين ننجز ذلك، نكون جاهزين للانطلاق.
 
 يمكنك تأكيد الاتصال من واجهة التحكم (Control UI). افتح الإعدادات (Settings)، ثم اختر القنوات (Channels)، فيظهر Telegram تحت «القنوات المتصلة» (Connected Channels) بحالة «قيد التشغيل» (Running).
 
-صفحة القنوات في إعدادات OpenClaw مع إدراج Telegram كقناة تعمل ضمن القنوات المتصلة
+![صفحة القنوات في إعدادات OpenClaw مع إدراج Telegram كقناة تعمل ضمن القنوات المتصلة](/images/kinney/91296a488f4e4e34.webp)
 
 إن كان بإمكان أشخاصٍ آخرين التواصل مع الوكيل (agent)، فاضبط `session.dmScope` على `"per-channel-peer"`.
 

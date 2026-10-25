@@ -9,11 +9,11 @@ source: "https://stevekinney.com/courses/storybook/play-functions"
 
 Consider this text area for a moment.
 
-Text area component
+![Text area component](/images/kinney/15e7f6cac986241d.webp)
 
 If a `maxLength` attribute is passed in, then we display a character count at the bottom. In fact it has an extra feature: we’ll add styling to the text area in the event that the user blows past the character count.
 
-An invalid text area
+![An invalid text area](/images/kinney/cfc21e8060607e4c.webp)
 
 What we’d like to do is verify this state. I suppose that we could cheat and have stories that put it in each state, but this has the drawback of needing to make sure look at the story every time we modify the component.
 

@@ -325,7 +325,7 @@ Expected: Two routes with route keys `GET /items` and `POST /items`, both target
 
 In the console, the **Routes** page shows both routes listed under the API.
 
-The API Gateway Routes page showing the ANY / route created for the my-frontend-api HTTP API.
+![The API Gateway Routes page showing the ANY / route created for the my-frontend-api HTTP API.](/images/kinney/6bf5325c96478758.webp)
 
 ## Grant Permission
 

@@ -13,7 +13,7 @@ source: "https://stevekinney.com/courses/python-ai/what-is-hugging-face"
 
 [Hugging Face](https://huggingface.co/) is a **AI company and an open-source community** that focuses on Natural Language Processing (NLP) and Artificial Intelligence. It initially began as a chatbot company before pivoting to develop cutting-edge open-source NLP technologies. Its primary goal is to **democratize AI technology**, making it accessible, open, and easy for everyone, which helps reduce computation costs and allows users to leverage state-of-the-art models without training them from scratch.
 
-The Hugging Face website
+![The Hugging Face website](/images/kinney/fd3fef54cae82f64.webp)
 
 The Hugging Face ecosystem is built around its **collaborative platform, the Hugging Face Hub**, which functions similarly to GitHub for machine learning assets. Key components of this ecosystem include:
 

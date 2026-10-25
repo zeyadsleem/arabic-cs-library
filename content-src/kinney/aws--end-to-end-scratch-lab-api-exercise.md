@@ -15,6 +15,8 @@ This is the Part 2 capstone—the mirror of [Exercise: End-to-End Static Site De
 
 Each service on its own is a toy. Wired together they’re a backend. The reason the course teaches Lambda, API Gateway, DynamoDB, and Secrets Manager separately is that the moving pieces are easier to reason about in isolation—but shipping software means putting them together and living with the rough edges at the seams. That’s the skill this capstone builds.
 
+![Diagram of the full backend request chain: browser calls Route 53, then API Gateway, then Lambda, which reads from DynamoDB and Parameter Store while writing to CloudWatch.](/images/kinney/699d71bfcaf946d8.svg)
+
 ## Your Task
 
 Build a notes backend for [Scratch Lab](https://github.com/stevekinney/scratch-lab) that:

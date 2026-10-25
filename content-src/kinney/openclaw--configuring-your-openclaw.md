@@ -7,7 +7,7 @@ order: 3
 source: "https://stevekinney.com/courses/openclaw/configuring-your-openclaw"
 ---
 
-The OpenClaw Agents settings page showing identity, workspace, and model selection
+![The OpenClaw Agents settings page showing identity, workspace, and model selection](/images/kinney/5ab65f84ff54ce57.webp)
 
 | File | Question it answers | Scope |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ The OpenClaw Agents settings page showing identity, workspace, and model selecti
 
 You can read and edit the core files from the Control UI. Open Settings, choose Agents, and then pick the Files tab.
 
-The Files tab in the OpenClaw agent settings, with tabs for AGENTS, SOUL, USER, and MEMORY and an editor showing AGENTS.md
+![The Files tab in the OpenClaw agent settings, with tabs for AGENTS, SOUL, USER, and MEMORY and an editor showing AGENTS.md](/images/kinney/b5ea739b81c7b719.webp)
 
 These files are not merely organizational conventions. Most are automatically included in the agent’s context, so every unnecessary paragraph has a cost in tokens, attention, and potentially conflicting instructions.
 

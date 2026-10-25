@@ -39,7 +39,7 @@ Notice the random suffix on the ARN (`-AbCdEf`). Secrets Manager appends this au
 
 In the console, the **Secrets** list shows all secrets in your account with their names, descriptions, and last rotation dates.
 
-The AWS Secrets Manager Secrets list page showing the list of secrets with columns for name, description, last retrieved, and last changed.
+![The AWS Secrets Manager Secrets list page showing the list of secrets with columns for name, description, last retrieved, and last changed.](/images/kinney/7a5d69a1e85a2b05.webp)
 
 You can also store a plain string instead of JSON:
 

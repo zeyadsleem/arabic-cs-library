@@ -28,7 +28,7 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
 
 Storybook will render this simple color palette.
 
-Storybook rendering a color palette
+![Storybook rendering a color palette](/images/kinney/2482be08aa1a3910.webp)
 
 What’s even better is that you can programmatically render the color palette since you have the full power of JSX at your disposal. This allows you to easily generate a color palette based on your theme.
 
@@ -48,7 +48,7 @@ import colors from 'tailwindcss/colors';
 
 Obviously, this will be a little different depending on the taxonomy of your theme, but you can expect something along the lines of this.
 
-A color palette based on Tailwind's default theme
+![A color palette based on Tailwind's default theme](/images/kinney/0a2f83a2f2f62e9b.webp)
 
 ## Creating a Theme of Semantic Colors
 
@@ -98,4 +98,4 @@ export default {
 
 Can you take the more limited set of colors from our theme and generate a color palette? If you get stuck [you can check out this potential solution](https://stevekinney.com/courses/storybook/color-palette-solution).
 
-A programmatically generated color palette displayed in Storybook
+![A programmatically generated color palette displayed in Storybook](/images/kinney/34d45b950e2a797f.webp)

@@ -13,6 +13,8 @@ If you want AWS’s official framing for the certificate behavior in this lesson
 
 ACM supports two strategies for covering multiple hostnames: **wildcard certificates** and **Subject Alternative Names (SANs)**. Each has tradeoffs, and knowing when to use which will save you from unnecessary certificate management overhead.
 
+![Diagram comparing apex-only, wildcard, and SAN certificate coverage across example hostnames including excluded cases.](/images/kinney/8c129427a2d979c6.svg)
+
 ## Wildcard Certificates
 
 A **wildcard certificate** covers a domain and all of its subdomains at one level. The syntax uses an asterisk: `*.example.com`.

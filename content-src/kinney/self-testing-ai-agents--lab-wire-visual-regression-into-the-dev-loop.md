@@ -106,7 +106,7 @@ Commit the baseline PNGs at `tests/visual.spec.ts-snapshots/` and `tests/visual-
 
 Once the suite is wired correctly, the shelf-page baseline should look something like this:
 
-The Shelf visual baseline rendered from the committed Playwright snapshot
+![The Shelf visual baseline rendered from the committed Playwright snapshot](/images/kinney/5931137c35aa95e1.webp)
 
 ## Part two: break something, and watch it fire
 
@@ -143,7 +143,7 @@ Either way, notice what the agent says. It should identify that the buttons got 
 
 When the padding experiment lands correctly, the shelf-page diff should look like this kind of “everything got roomier” change:
 
-The shelf-page visual diff after widening button padding
+![The shelf-page visual diff after widening button padding](/images/kinney/02499d1258b63ca0.webp)
 
 ## Part two acceptance criteria
 

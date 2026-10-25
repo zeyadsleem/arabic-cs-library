@@ -7,7 +7,7 @@ order: 39
 source: "https://stevekinney.com/courses/ai-development/notebooklm"
 ---
 
-NotebookLM
+![NotebookLM](/images/kinney/7f9240bdf105ff88.webp)
 
 NotebookLM is Google’s AI-powered research and note-taking workspace. You create a notebook, attach sources (Google Docs, PDFs, URLs, Drive files), and then ask questions, generate summaries, outlines, glossaries, and study guides that are grounded in those sources with citations. It’s super useful for turning sprawling documentation into concise, reliable knowledge that you can share with a team.
 

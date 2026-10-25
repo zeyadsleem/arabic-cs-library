@@ -230,9 +230,9 @@ Every task shows “cache hit.” The total time drops to under a second. `FULL 
 
 `pnpm turbo build` on a clean cache builds everything. The second run shows `FULL TURBO` and completes in under a second.
 
-First turbo build showing cache misses for all packages
+![First turbo build showing cache misses for all packages](/images/kinney/97f966da08c122d2.webp)
 
-Second turbo build showing FULL TURBO with all cache hits
+![Second turbo build showing FULL TURBO with all cache hits](/images/kinney/72f4d6eb0a1c7233.webp)
 
 ## Observe Partial Rebuilds
 

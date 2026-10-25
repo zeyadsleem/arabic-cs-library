@@ -80,9 +80,9 @@ Compare with `packages/analytics/src/analytics-dashboard.tsx`. Same product feat
 
 You understand the structural differences between the legacy and modern apps. The legacy app has no package boundaries, no shared types, and no design system integration.
 
-Legacy application with inline styles and flat structure
+![Legacy application with inline styles and flat structure](/images/kinney/f8176c130a4cea8c.webp)
 
-Modern application with package-based architecture
+![Modern application with package-based architecture](/images/kinney/81f1a5072b60e7e4.webp)
 
 ## Set Up the Routing Strangler Fig
 
@@ -404,7 +404,7 @@ pnpm turbo typecheck
 
 The codemod transforms legacy imports to modern package imports. The diff shows clean, expected changes.
 
-Git diff showing codemod import transformations
+![Git diff showing codemod import transformations](/images/kinney/181d4ee2a16088cc.webp)
 
 ## Write Codemod Tests
 
@@ -478,7 +478,7 @@ pnpm --filter codemods test
 
 Codemod tests pass. Each test verifies a specific transformation scenario. Edge cases are covered.
 
-Codemod test results showing all tests passing
+![Codemod test results showing all tests passing](/images/kinney/7b59a6f171e7e252.webp)
 
 ## Solution
 

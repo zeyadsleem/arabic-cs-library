@@ -131,7 +131,7 @@ You should see the dashboard running at `http://localhost:5173` with:
 - A “Recent Activity” table below the chart
 - A green **“Viewing as: Grace Hopper”** badge in the header
 
-Analytics dashboard with stat cards, bar chart, and activity table
+![Analytics dashboard with stat cards, bar chart, and activity table](/images/kinney/81f1a5072b60e7e4.webp)
 
 ## Package Dependency Graph
 
@@ -241,9 +241,9 @@ The dashboard has routing—unlike the federation setup which only had a single 
 
 Navigation between Analytics and Settings works. The sidebar highlights the active route. Both pages load data from MSW mock handlers.
 
-Settings page with organization data
+![Settings page with organization data](/images/kinney/c6b8b7c887d5b50b.webp)
 
-Users page with user list
+![Users page with user list](/images/kinney/a6230313af9a8515.webp)
 
 ## Solution
 
