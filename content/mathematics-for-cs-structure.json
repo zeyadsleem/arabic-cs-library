@@ -2,12 +2,57 @@
   "chapters": [
     {
       "key": "ch01-what-is-a-proof",
-      "title": "What is a Proof?",
+      "title": "ما هو البرهان؟",
       "sections": [
         {
           "slug": "index",
-          "title": "What is a Proof?",
+          "title": "ما هو البرهان؟",
           "order": 0
+        },
+        {
+          "slug": "sec-propositions",
+          "title": "المقولات",
+          "order": 1
+        },
+        {
+          "slug": "sec-predicates",
+          "title": "المحمولات",
+          "order": 2
+        },
+        {
+          "slug": "sec-axiomatic-method",
+          "title": "المنهج المسلَّماتي",
+          "order": 3
+        },
+        {
+          "slug": "sec-our-axioms",
+          "title": "مسلَّماتنا",
+          "order": 4
+        },
+        {
+          "slug": "sec-proving-implication",
+          "title": "إثبات الاستلزام",
+          "order": 5
+        },
+        {
+          "slug": "sec-proving-iff",
+          "title": "إثبات «إذا وفقط إذا»",
+          "order": 6
+        },
+        {
+          "slug": "sec-proof-by-cases",
+          "title": "البرهان بالحالات",
+          "order": 7
+        },
+        {
+          "slug": "sec-proof-by-contradiction",
+          "title": "البرهان بالتناقض",
+          "order": 8
+        },
+        {
+          "slug": "sec-good-proofs",
+          "title": "البرهان الجيّد في الممارسة",
+          "order": 9
         }
       ]
     },
