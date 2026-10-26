@@ -4,68 +4,144 @@ lang: ar
 source: "https://www.youtube.com/watch?v=8_sGz4DHwIA&t=2239s"
 ---
 
-الدرس 7 من 34 · دورة TanStack Router الكاملة · 5 دقيقة و53 ثانية
+## ماذا سنتعلّم؟
 
-<div class="lecture-video"><iframe src="https://www.youtube.com/embed/8_sGz4DHwIA?start=2239&amp;rel=0" title="التخطيطات بلا مسار (Pathless Layouts) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+في الدرس السابق بنينا إعداداتٍ متداخلة: `/settings` مسارٌ أب، و`/settings/payment` و`/settings/profile` أبناء له، ويعرض المسارُ الأبُ تنقّلًا مشتركًا فوق أبنائه. لكن هذا المسارَ الأب له **عنوان** في الرابط، فإن أردتَ تنقّلًا مشتركًا يجمع مجموعة صفحاتٍ لا تريد لها عنوانًا خاصًّا، ستضطر إلى اختلاق عنوان زائد مثل `/settings-group` لا معنى له.
 
-<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&t=2239s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+في هذا الدرس نتعلّم كيف يجعل TanStack Router المسارَ الأب بلا عنوان في الرابط، مع إبقائه أبًا حقيقيًا في شجرة المسارات: تضع ملفاته في مجلّدٍ يبدأ بشرطةٍ سفلية (`_`)، فيبقى في الشجرة ويُعرض كتخطيطٍ مشترك، لكن عنوان الصفحة يبقى `/settings/payment` لا `/_settingsLayout/settings/payment`.
 
-> **مستودع الكود لهذا الدرس**
->
-> الفرع: [`pathless-layouts`](https://github.com/alialaa/tanstack-router-course/tree/pathless-layouts)
+## المسارُ الأب الذي نحتاجه
 
-<p><bdi dir="ltr">[00:01]</bdi> ماذا لو أردنا أن يكون لَدَينا مسار أب (parent route) يمكنه أن يعمل تخطيطًا (layout) مشتركًا لبعض المسارات؟ غير أنّنا لا نحتاج هذا التخطيط الأب إلى امتلاكه مسارًا. فمثلاً، في حالتنا، لَدَينا هذا الأب settings الذي يمكنه أن يعمل</p>
+تخيّل شجرة المسارات على النحو التالي:
 
-<p><bdi dir="ltr">[00:14]</bdi> تخطيطًا لأيّ مسار يكون ابنًا له. فإذا ذهبت إلى settings/payments أو إلى settings/profile، فسَيَكُون مسار settings هذا معروضًا هنا مُصيَّرًا (rendered)، ويمكننا أن نستخدمه تخطيطًا لعرض ذلك التنقّل،</p>
+- `settings/route.tsx` — تخطيطٌ فيه شريط تنقّل
+- `settings/payment.tsx` — صفحة الدفع
+- `settings/profile.tsx` — صفحة الملف الشخصي
 
-<p><bdi dir="ltr">[00:26]</bdi> مثلًا كما لَدَينا هنا. لكن ماذا لو أردت ذاك التخطيط لكن من دون ذاك المسار، دون أن تُضطرّ إلى الانتقال إلى settings/شيء ما؟ في TanStack Router يمكننا أيضًا أن تَكُون لَدَينا تخطيطات بلا مسار (pathless layouts). إذًا فلنقل إنّنا نحتاج إلى العودة إلى</p>
+المسارُ الأب `/settings` هنا له عنوان، فكل رابطٍ إلى أحد أبنائه يبدأ بـ`/settings`. ولأننا نريد واجهةً مشتركة بين هذه الصفحات، نحتاج أحيانًا إلى أبٍّ يشترك أبناؤه في واجهته دون أن يفرض عنوانًا على الرابط.
 
-<p><bdi dir="ltr">[00:44]</bdi> هذا النهج، هذا الذي فيه سَتَكُون لَدَينا تخطيط الجذر (root layout)، وسَتَكُون settings مسارًا مستقلًا بذاته، وsettings/payment مسارًا مستقلًا بذاته، وكذلك settings/profile مسارًا مستقلًا. غير أنّنا نحتاج كلّ</p>
+الحلّ الذي تقدّمه المكتبة هو **تخطيطٌ بلا مسار** (pathless layout): أبٌ في شجرة المسارات يعرض واجهته المشتركة، لكنّه لا يُسهم في بناء عنوان الصفحة.
 
-<p><bdi dir="ltr">[00:58]</bdi> هذه المسارات إلى امتلاك تخطيط مشترك من دون امتلاك مسار، صحيح؟ فنحن نحتاج إلى وجود نوعٍ من التخطيط هنا، وبعدها يمكن أن تكون لَدَينا مساراتنا، أي settings وsettings/payments وsettings/profile وما إلى ذلك. غير أنّ</p>
+## اصطلاح الشرطة السفلية
 
-<p><bdi dir="ltr">[01:14]</bdi> هذا الأب هنا لا نحتاج منه أن يمتلك مسارًا، بل نحتاجه فقط ليعمل تخطيطًا لعناصر واجهة مشتركة (common UI elements) كالتنقّل مثلاً. ولِنفعل ذلك، يمكننا استخدام صيغة خاصّة (special syntax) داخل مجلدنا.</p>
+اصطلاح TanStack Router بسيط: **أيّ مجلّدٍ يبدأ بشرطةٍ سفلية لا يُسهم في المسار**. وهذا ما نراه في شجرة الملفات بعد التعديل:
 
-<p><bdi dir="ltr">[01:27]</bdi> إذًا لِنذهب إلى هنا، وبدلًا من أن يكون اسم هذا المجلد settings، يمكننا إعادة تسميته. ولِنجعل هذا الأب بلا مسار، نضيف شرطة سفلية (underscore) فقط.</p>
+- `_settingsLayout/route.tsx` — المسارُ الأب بلا عنوان
+- `_settingsLayout/settings/index.tsx` — الصفحة `/settings`
+- `_settingsLayout/settings/payment.tsx` — الصفحة `/settings/payment`
+- `_settingsLayout/settings/profile.tsx` — الصفحة `/settings/profile`
 
-<p><bdi dir="ltr">[01:39]</bdi> ثم نضيف معرّفًا فريدًا (unique identifier) للتخطيط بلا مسار (pathless layout) الخاص بنا هذا. فِلنجعل الأمر أوضح ونسمّيه settings layout، هكذا.</p>
+وهكذا يكون الملفُ الأب هكذا:
 
-<p><bdi dir="ltr">[01:49]</bdi> وما يتعيّن علينا فعله هو الإبقاء على هذا route.tsx كما هو، صحيح؟</p>
+```tsx
+import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
-<p><bdi dir="ltr">[01:56]</bdi> إذًا لِنُغلق هذا الملف أيضًا.</p>
+export const Route = createFileRoute("/_settingsLayout")({
+  component: RouteComponent,
+});
 
-<p><bdi dir="ltr">[01:59]</bdi> الآن سَتكُون لَدَينا أخطاء لأنّنا لم نَعُد نملك هذه المسارات، لكنّنا سَنُصلح ذلك بعد قليل. فالآن داخل settings layout ثم route، سَيَعمل هذا تخطيطًا لنا لأيّ مسار</p>
+function RouteComponent() {
+  return (
+    <div>
+      _settingsLayout
+      <div className="p-2 flex gap-2 mb-4 bg-yellow-600 border-2">
+        <Link
+          to="/settings"
+          activeOptions={{
+            exact: true,
+          }}
+          className="[&.active]:font-bold"
+        >
+          General
+        </Link>
+        <Link to="/settings/payment" className="[&.active]:font-bold">
+          Payment
+        </Link>
+        <Link to="/settings/profile" className="[&.active]:font-bold">
+          Profile
+        </Link>
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+```
 
-<p><bdi dir="ltr">[02:13]</bdi> سنضعه داخل هذا المجلد. فالآن، وكما تلاحظ هنا في شجرتنا، لَدَينا هذا التخطيط بوصفه أبًا، إلا أنّه لا يملك مسارًا. فباستطاعتنا الانتقال مباشرةً إلى payment.</p>
+لاحظ ثلاث نقاط في هذا الملف:
 
-<p><bdi dir="ltr">[02:27]</bdi> ويمكننا الانتقال مباشرةً إلى profile دون settings. لكن وكما تلاحظ، سَيُطابَق هذا التخطيط الأب، وسَيُعرض هنا. فلِنُوضّح الآن أنّ هذا تخطيط بلا مسار وليس أبًا</p>
+1. **اسم المسار** في `createFileRoute("/_settingsLayout")` يحمل الشرطةَ السفلية، وهي التي تُخرج المجلّد من المسار.
+2. **`<Outlet />`** هو مكانُ عرض المسار الابن، كما في المساراتِ الأبِّ الاعتيادية تمامًا.
+3. **روابط التنقّل** تشير إلى العناوين النهائية (`/settings/payment`)، لا إلى مسارات المجلّدات؛ فالعلاقة بين شجرة المسارات وعنوان الصفحة أمران منفصلان.
 
-<p><bdi dir="ltr">[02:43]</bdi> مسارًا، هكذا. إذًا سَتَكُون لَدَينا ذلك التنقّل، وسَتَكُون لَدَينا نصّنا هنا، لكن يتعيّن علينا الآن إصلاح هذه الروابط، لأنّنا لم نَعُد نملك /settings، إنّما لَدَينا payment وprofile فقط هكذا. وهذا ينبغي أن يظلّ</p>
+## إبقاء العناوين كما كانت
 
-<p><bdi dir="ltr">[03:00]</bdi> يعمل هكذا. وبالطبع، ما نزال بوسعنا أن نُبقي الـ URL على الصورة settings/شيء ما وأن نستخدم ذاك التخطيط نفسه. وكيف؟ دَعْنا في الواقع نُعِد هذا الـ URL إلى settings/شيء ما. وببساطة، داخل تخطيطنا، يمكننا أن نُنشئ</p>
+نقلنا المجلّد `settings/` كاملًا إلى `_settingsLayout/`، فصارت أسماؤُ الملفات `_settingsLayout/settings/payment.tsx`، وبما أنّ الشرطةَ السفلية لا تُسهم في المسار فصار العنوان `/settings/payment` كما كان. أمّا الصفحةُ الأمّ `/settings` فلم تعد لها ملفٌ مستقلّ، لأنّ المجلّد `settings` لم يعد مجلّدًا فيه `route.tsx`، فأنشأنا له ملفَّ `index.tsx`:
 
-<p><bdi dir="ltr">[03:16]</bdi> مجلدًا باسم settings وننقل payment وprofile إلى داخل settings، هكذا.</p>
+```tsx
+import { createFileRoute } from '@tanstack/react-router'
 
-<p><bdi dir="ltr">[03:25]</bdi> الآن يُفترض ألّا تكون لَدَينا أية أخطاء في مسارنا هنا في route.tsx داخل settings layout، ولن تكون لَدَينا أخطاء لأنّ لَدَينا الآن settings/payment وsettings/profile. الآن</p>
+export const Route = createFileRoute('/_settingsLayout/settings/')({
+  component: RouteComponent,
+})
 
-<p><bdi dir="ltr">[03:39]</bdi> إذا تطلّعنا إلى شجرتنا، سَتَكُون لَدَينا هذا التخطيط الذي هو أب لـ settings/payment وsettings/profile.</p>
+function RouteComponent() {
+  return <div>Hello "/_settingsLayout/settings/"!</div>
+}
+```
 
-<p><bdi dir="ltr">[03:48]</bdi> وماذا لو أردنا أن يَكُون /settings أيضًا مسارًا يستخدم التخطيط بلا مسار هذا كذلك؟ تذكّر، ولِفعل ذلك، يمكننا إنشاء ملف index داخل settings هكذا، أي index.tsx.</p>
+وثمّة صفحاتُ الإعدادات نفسها، وكلّها فارغةٌ من المنطق:
 
-<p><bdi dir="ltr">[04:07]</bdi> والآن سَيَكُون settings مطابَقًا كذلك، وسَيَكُون ابنًا لهذا التخطيط settings layout لَدَينا هنا.</p>
+```tsx
+import { createFileRoute } from "@tanstack/react-router";
 
-<p><bdi dir="ltr">[04:16]</bdi> إذًا أصبح بوسعنا الآن تحقيق هذا النهج، حيث تكون settings وsettings/payment وsettings/profile جميعها ذات تخطيط مشترك لا يملك مسارًا.</p>
+export const Route = createFileRoute("/_settingsLayout/settings/payment")({
+  component: RouteComponent,
+});
 
-<p><bdi dir="ltr">[04:31]</bdi> حسنًا، رائع. لِنفعل الآن، ربّما، أمرًا أخيرًا واحدًا لهذا داخل تخطيطنا. فتذكّر أنّ تخطيطنا سَيَعيش في route.tsx داخل التخطيط. لِنصنع رابطًا يذهب إلى /settings. إذًا هنا، فلنجرب ربّما</p>
+function RouteComponent() {
+  return (
+    <div className="p-2 bg-amber-700 border-2">Hello "/settings/payment"!</div>
+  );
+}
+```
 
-<p><bdi dir="ltr">[04:49]</bdi> أن نُكرّر واحدًا من هذه ونُجعله يذهب مباشرةً إلى /settings.</p>
+## النتيجة
 
-<p><bdi dir="ltr">[04:56]</bdi> ولِنجعله يقول «الإعدادات العامة» (general settings) أو ما شابه. صحيح؟ متى توفر لنا هذا، فسَيَعمل. غير أنّه إذا ذهبنا إلى payment، فسيظلّ هذا نشطًا. صحيح؟ فذاك يحدث افتراضيًا (by default). سَيُعَدّ الرابط النشِط</p>
+![تخطيطٌ بلا مسار يعرض شريط تنقّل بين صفحات الإعدادات فوق صفحة «General»](/images/tanstack-router/router--pathless-layouts--settings.png)
 
-<p><bdi dir="ltr">[05:13]</bdi> نشطًا إذا كان مطابَقًا، أي إذا كانت settings بالضبط هي المطابَقة، أو كانت settings/شيء ما مطابَقة أيضًا.</p>
+في الصورة: الشريطُ الأصفر في الأعلى (General / Payment / Profile) هو التخطيطُ بلا مسار، وهو معروضٌ فوق أيٍّ من أبنائه الثلاثة. ولو انتقلتَ إلى `/settings/payment` لبقي الشريطُ نفسه معروضًا، لأنّ المسارَ الأب يبقى والدًا في شجرة المسارات وإن لم يكن له عنوان.
 
-<p><bdi dir="ltr">[05:22]</bdi> لكن في حالتنا لا نحتاج إلى ذلك، فنحن هنا بإمكاننا تمرير exact.</p>
+## تمييز الرابط النشطّ بدقّة
 
-<p><bdi dir="ltr">[05:27]</bdi> عذرًا، ليس هنا، بل في خيارات active يمكننا تمرير exact وضبطها إلى true، وهذا سيجعل هذا الرابط نشطًا حصرًا حين تكون settings هي المطابَقة بالضبط، لا settings/شيء ما. فبهذا سَيُصلَح الأمر.</p>
+لاحظ في الشيفرة أعلاه أنّ رابط «General» يمرّر `activeOptions` بخيار `exact`. السبب: الرابطُ إلى `/settings` يُعدّ نشطًا تلقائيًا عندما يكون العنوانُ الحالي هو `/settings` **أو** أيّ عنوانٍ يبدأ به، مثل `/settings/payment`. وبما أنّنا نريد إبراز «General» وحده على `/settings`، منعنا التطابقَ الجزئي:
 
-<p><bdi dir="ltr">[05:46]</bdi> وبالمناسبة، يمكننا ضبط هذا الخيار لرابطٍ بعينه، كما يمكننا كذلك ضبطه عالميًا (globally) حين نُعرِّف موجّهنا. أحيانًا في مجلدك، قد</p>
+```tsx
+        <Link
+          to="/settings"
+          activeOptions={{
+            exact: true,
+          }}
+          className="[&.active]:font-bold"
+        >
+          General
+        </Link>
+```
+
+ويمكن تمرير `exact` على مستوى الرابط الواحد كما هنا، أو على مستوى الموجّه كلّه عند تعريفه.
+
+## جرّب بنفسك
+
+1. أنشئ المجلّد `src/routes/_settingsLayout/` وانقل إليه مجلّد `settings` كاملًا.
+2. أضف ملف `_settingsLayout/route.tsx` فيه شريطُ تنقّل و`<Outlet />`، كما في المثال أعلاه.
+3. أضف `src/routes/_settingsLayout/settings/index.tsx` ليظهر العنوان `/settings`.
+4. شغّل `npm run dev`، ثم افتح `/settings/payment` وتأكّد من ظهور الشريط المشترك وأنّ عنوان المتصفّح لا يحوي `_settingsLayout`.
+
+## المراجع
+
+- [فيديو الدرس: Pathless Layouts](https://www.youtube.com/watch?v=8_sGz4DHwIA&t=2239s)
+- [شيفرة الدرس: فرع pathless-layouts](https://github.com/alialaa/tanstack-router-course/tree/pathless-layouts)
+- [التوثيق الرسمي لـ TanStack Router](https://tanstack.com/router/latest/docs/framework/react/overview)
+
+---
+
+> هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Pathless Layouts» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.

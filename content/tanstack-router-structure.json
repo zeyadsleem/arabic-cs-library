@@ -72,7 +72,7 @@
         },
         {
           "slug": "validating-search-params-with-zod",
-          "title": "التحقّق من صحة معامِلات البحث باستخدام Zod (Validating Search Params with Zod)",
+          "title": "التحقّق من معاملات البحث بـZod",
           "order": 13
         },
         {
@@ -112,17 +112,17 @@
         },
         {
           "slug": "loading-data-in-parallel-single-blog-post-page",
-          "title": "تحميل البيانات بالتوازي: صفحة التدوينة المفردة (Loading Data in Parallel: Single Blog Post Page)",
+          "title": "التحميل المتوازي: صفحة التدوينة المفردة",
           "order": 21
         },
         {
           "slug": "pending-state-component",
-          "title": "مكوّن حالة الانتظار (Pending State Component)",
+          "title": "مكوّن حالة الانتظار وضبط توقيته",
           "order": 22
         },
         {
           "slug": "loading-data-in-the-background",
-          "title": "تحميل البيانات في الخلفية (Loading Data in the Background)",
+          "title": "تحميل البيانات في الخلفية",
           "order": 23
         },
         {
@@ -167,12 +167,12 @@
         },
         {
           "slug": "protecting-multiple-routes-with-layouts",
-          "title": "حماية مسارات متعدّدة باستخدام التخطيطات (Protecting Multiple Routes with Layouts)",
+          "title": "حماية مجموعة مسارات بتخطيط واحد",
           "order": 32
         },
         {
           "slug": "more-topics-and-outro",
-          "title": "مزيد من المواضيع والخاتمة (More Topics & Outro)",
+          "title": "الختام: حصاد الدورة والمواضيع التالية",
           "order": 33
         }
       ]

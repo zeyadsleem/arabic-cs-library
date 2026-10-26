@@ -6,9 +6,9 @@
   "description": "المكتبة العربية لعلوم الحاسوب",
   "scripts": {
     "dev": "pnpm content && vite dev",
-    "build": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-mooc.mjs && node scripts/build-kinney.mjs && node scripts/build-content.mjs && vite build",
+    "build": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-mooc.mjs && node scripts/build-kinney.mjs && node scripts/build-tanstack.mjs && node scripts/build-content.mjs && node --max-old-space-size=6144 node_modules/vite/bin/vite.js build",
     "preview": "vite preview",
-    "content": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-mooc.mjs && node scripts/build-kinney.mjs && node scripts/build-content.mjs",
+    "content": "node scripts/import-frontend-architecture.mjs && node scripts/build-go-tour.mjs && node scripts/build-hono.mjs && node scripts/build-better-auth.mjs && node scripts/build-mooc.mjs && node scripts/build-kinney.mjs && node scripts/build-tanstack.mjs && node scripts/build-content.mjs",
     "build:go-browser": "node scripts/build-go-browser.mjs",
     "build:kinney": "node scripts/build-kinney.mjs",
     "audit:content": "node scripts/audit-content.mjs --check",

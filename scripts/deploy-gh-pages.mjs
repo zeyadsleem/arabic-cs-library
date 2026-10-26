@@ -26,6 +26,11 @@ run('node', ['scripts/build-go-tour.mjs'], {
   stdio: 'inherit',
   env: { ...process.env, BASE_PATH: `/${repo}` },
 });
+run('node', ['scripts/build-tanstack.mjs'], {
+  cwd: root,
+  stdio: 'inherit',
+  env: { ...process.env, BASE_PATH: `/${repo}` },
+});
 run('node', ['scripts/build-content.mjs'], {
   cwd: root,
   stdio: 'inherit',
@@ -34,7 +39,7 @@ run('node', ['scripts/build-content.mjs'], {
 run('node', ['node_modules/vite/bin/vite.js', 'build'], {
   cwd: root,
   stdio: 'inherit',
-  env: { ...process.env, BASE_PATH: `/${repo}` },
+  env: { ...process.env, BASE_PATH: `/${repo}`, NODE_OPTIONS: '--max-old-space-size=6144' },
 });
 
 if (!fs.existsSync(path.join(buildDir, 'index.html'))) {

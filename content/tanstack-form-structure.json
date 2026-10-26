@@ -7,32 +7,32 @@
       "sections": [
         {
           "slug": "index",
-          "title": "مقدمة",
+          "title": "مقدمة إلى TanStack Form",
           "order": 0
         },
         {
           "slug": "installation",
-          "title": "التثبيت (Installation)",
+          "title": "تثبيت TanStack Form وإعداد أدوات التطوير",
           "order": 1
         },
         {
           "slug": "first-form",
-          "title": "النموذج الأول (First Form)",
+          "title": "أوّل استمارة: مثيل النموذج وتوصيل الحقول",
           "order": 2
         },
         {
           "slug": "fields-meta-data",
-          "title": "المعلومات الوصفية للحقول (Fields Meta Data)",
+          "title": "بيانات الحقل الوصفية: ماذا تعرف الاستمارة عن حقولك؟",
           "order": 3
         },
         {
           "slug": "reactivity-and-listeners",
-          "title": "التفاعلية والمستمعات (Reactivity & Listeners)",
+          "title": "التفاعلية والمستمعات: من يشترك في الاستمارة ومن يتفاعل معها؟",
           "order": 4
         },
         {
           "slug": "objects-and-arrays",
-          "title": "الكائنات والمصفوفات (Objects & Arrays)",
+          "title": "الكائنات والمصفوفات والقيم المنطقية",
           "order": 5
         },
         {
@@ -42,12 +42,12 @@
         },
         {
           "slug": "form-level-validations",
-          "title": "التحقّق من الصحة على مستوى النموذج (Form Level Validations)",
+          "title": "التحقّق من الصحة على مستوى الاستمارة (Form Level Validations)",
           "order": 7
         },
         {
           "slug": "async-validations",
-          "title": "التحقّق من الصحة غير المتزامن (Async Validations)",
+          "title": "التحقّق غير المتزامن من الصحة (Async Validations)",
           "order": 8
         },
         {
@@ -57,57 +57,57 @@
         },
         {
           "slug": "linked-fields",
-          "title": "الحقول المرتبطة (Linked Fields)",
+          "title": "الحقول المرتبطة: حقلٌ يتحقّق من قيمة حقلٍ آخر",
           "order": 10
         },
         {
           "slug": "validating-with-zod",
-          "title": "التحقّق من الصحة باستخدام Zod (Validating with ZOD)",
+          "title": "التحقّق من الصحة بمخطّط Zod (Validating with ZOD)",
           "order": 11
         },
         {
           "slug": "validating-with-zod-refine-and-async",
-          "title": "التحقّق من الصحة باستخدام Zod (Refine and Async)",
+          "title": "التحقّق من الصحة باستخدام Zod: refine والتحقّق غير المتزامن",
           "order": 12
         },
         {
           "slug": "notes-on-form-submission",
-          "title": "ملاحظات حول إرسال النموذج (Notes on Form Submission)",
+          "title": "ملاحظات على إرسال النموذج: المدخل والمخرَج والبيانات الوصفية",
           "order": 13
         },
         {
           "slug": "using-shadcn-components",
-          "title": "استخدام مكوّنات shadcn (Using shadcn Components)",
+          "title": "استخدام مكوّنات shadcn: حين تتغيّر الواجهة ويبقى العقد",
           "order": 14
         },
         {
           "slug": "refactoring-our-form-and-using-useappform",
-          "title": "إعادة هيكلة نموذجنا واستخدام useAppForm (Refactoring Our Form & Using useAppForm)",
+          "title": "إعادة هيكلة الاستمارة وبناء خُطّاف `useAppForm`",
           "order": 15
         },
         {
           "slug": "creating-reusable-field-components",
-          "title": "إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components)",
+          "title": "بناء مكوّنات حقول قابلة لإعادة الاستخدام",
           "order": 16
         },
         {
           "slug": "creating-reusable-form-components",
-          "title": "إنشاء مكوّنات نموذج قابلة لإعادة الاستخدام (Creating Reusable Form Components)",
+          "title": "بناء مكوّنات نموذج قابلة لإعادة الاستعمال",
           "order": 17
         },
         {
           "slug": "lazy-loading-form-components",
-          "title": "التحميل الكسول لمكوّنات النموذج (Lazy Loading Form Components)",
+          "title": "التحميل الكسول لمكوّنات النموذج",
           "order": 18
         },
         {
           "slug": "breaking-forms-into-smaller-pieces-with-withform-hoc",
-          "title": "تقسيم النماذج إلى أجزاء أصغر باستخدام withForm HOC (Breaking Forms into Smaller Pieces with withForm HOC)",
+          "title": "تجزئة النموذج إلى أجزاء أصغر باستخدام `withForm`",
           "order": 19
         },
         {
           "slug": "creating-reusable-group-of-fields-with-withfieldgroup-hoc",
-          "title": "إنشاء مجموعة حقول قابلة لإعادة الاستخدام باستخدام withFieldGroup HOC (Creating Reusable Group of Fields with withFieldGroup HOC)",
+          "title": "بناء مجموعة حقول قابلة لإعادة الاستعمال باستخدام `withFieldGroup`",
           "order": 20
         }
       ]

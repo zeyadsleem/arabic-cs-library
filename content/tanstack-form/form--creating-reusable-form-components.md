@@ -1,56 +1,158 @@
 ---
-title: "إنشاء مكوّنات نموذج قابلة لإعادة الاستخدام (Creating Reusable Form Components)"
+title: "بناء مكوّنات نموذج قابلة لإعادة الاستعمال"
 lang: ar
 source: "https://www.youtube.com/watch?v=H2T21r5wu3g&t=7262s"
 ---
 
-الدرس 18 من 21 · دورة TanStack Form الكاملة · 3 دقيقة و40 ثانية
+## ماذا سنتعلّم؟
 
-<div class="lecture-video"><iframe src="https://www.youtube.com/embed/H2T21r5wu3g?start=7262&amp;rel=0" title="إنشاء مكوّنات نموذج قابلة لإعادة الاستخدام (Creating Reusable Form Components) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+في الدرس السابق نقلنا مكوّنات الحقول إلى سجلّ مركزي، فصار استدعاء `field.TextInput` كافيًا لتحصل على حقل كامل بعنوانه ووصفه ورسالة خطئه. بقي في النموذج جزء لم نمسّه: زرّا الإرسال. فكل نموذج يحتاج إلى زر يحفظ، وزرّ يحفظ ثم يعود، وكلاهما يحتاج إلى قراءة `canSubmit` وتعطيل نفسه عند الحاجة. ومع كل نموذج جديد تعيد كتابة الكتلة نفسها.
 
-<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&t=7262s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+تلك الكتلة ليست حقلًا، فلا يصحّ وضعها في سجلّ الحقول. لهذا يقدّم `createFormHook` سجلًّا ثانيًا اسمه `formComponents`، موضوعه المكوّنات التي تنتمي إلى النموذج كلّه لا إلى حقل واحد. سنستخرج في هذا الدرس زرّي الإرسال إلى مكوّن مستقل، ونسجّله في ذلك السجل، ثم نتعلّم لماذا لا يعمل هذا المكوّن إلّا داخل غلاف `<form.AppForm>` ولا يحتاج إلى أي خاصية ليعرف النموذج الذي يخدمه.
 
-> **مستودع شيفرة هذا الدرس**
->
-> الفرع: [`useAppForm-4`](https://github.com/alialaa/tanstack-form-course/tree/useAppForm-4)
+## سجلّان لا سجلّ واحد
 
+```tsx
+import { createFormHook } from "@tanstack/react-form";
+import { fieldContext, formContext } from "./form-context";
+import TextInput from "@/components/form/TextInput";
+import Select from "@/components/form/Select.tsx";
+import Checkbox from "@/components/form/Checkbox.tsx";
+import SubmitButton from "@/components/form/SubmitButton";
 
-<p><bdi dir="ltr">[00:02]</bdi> إذًا بالإضافة إلى — لنغلّق هذه، ربما. فإضافةً إلى مكوّنات الحقول (field components) التي لَدَينا هنا، لَدَينا أيضًا مكوّنات نموذج (form components) كذلك. وهنا يمكننا أن نمرّر مكوّناتٍ متعلقة بالنموذج ذاته لا بمكوّن حقل. مثلًا</p>
+export const { useAppForm, withForm, withFieldGroup } = createFormHook({
+  fieldContext: fieldContext,
+  formContext: formContext,
+  fieldComponents: {
+    TextInput: TextInput,
+    Select: Select,
+    Checkbox: Checkbox,
+  },
+  formComponents: {
+    SubmitButton: SubmitButton,
+  },
+});
+```
 
-<p><bdi dir="ltr">[00:16]</bdi> هذه الأزرار الخاصة بالإرسال. ففي هنا — هذه الأزرار الخاصة بالإرسال — نحن نستخدم form.Subscribe ثم نصيّر أزرارنا وهكذا. وبدلًا من الاضطرار إلى فعل كل ذلك هنا، يمكننا كذلك أن نُجرّد هذا في مكوّنٍ منفصل</p>
+قارن هذا الملف بنسخته في الدرس الماضي: المفاتيح الثلاثة في `fieldComponents` لم تتغيّر، وأُضيف كائن `formComponents` بمفتاح واحد. هذا التمييز هو جوهر الدرس. مكوّن الحقل يُستعمل داخل `form.AppField` ويقرأ الحقل الذي يحيط به، وهذا ما يجعله يعرف اسمه وقيمته وأخطاءه دون أن تُمرّر له. أمّا مكوّن النموذج فيُستعمل في أي مكان داخل النموذج، ويقرأ النموذج نفسه من سياقه. الاثنان يشتركان في أنّ الأسماء المختصرة `form.SubmitButton` و`field.TextInput` تُشتقّ من مفاتيح السجل، فاختيار الاسم هنا قرار واجهة برمجية لا تفصيلًا شكليًّا.
 
-<p><bdi dir="ltr">[00:30]</bdi> ونستخدمه هنا مماثلين لما نفعله مع الحقول. ويمكننا فعل ذلك بالتوجّه إلى createFormHook لَدَينا، بإنشاء مكوّنٍ لأزرار الإرسال وتمريره هنا. فلنفعل ذلك. فإذًا في مجلد form الخاص بي هنا، سأقوم</p>
+## استخراج زرّي الإرسال
 
-<p><bdi dir="ltr">[00:46]</bdi> بإنشاء ملفٍّ جديد، مكوّنٍ جديد. فلنسمّه SubmitButton.tsx.</p>
+```tsx
+import { useFormContext } from "@/hooks/form-context";
+import { Button } from "../ui/button";
 
-<p><bdi dir="ltr">[00:57]</bdi> وفي هنا، فلنشئ مكوّن React جديدًا.</p>
+export default function SubmitButton() {
+  const form = useFormContext();
+  return (
+    <form.Subscribe selector={(state) => state.canSubmit}>
+      {(canSubmit) => (
+        <div>
+          <Button
+            disabled={!canSubmit}
+            type="submit"
+            onClick={() => form.handleSubmit({ submitAction: "save" })}
+          >
+            Save
+          </Button>
+          <Button
+            disabled={!canSubmit}
+            type="submit"
+            onClick={() => form.handleSubmit({ submitAction: "goback" })}
+          >
+            Save & Go back
+          </Button>
+        </div>
+      )}
+    </form.Subscribe>
+  );
+}
+```
 
-<p><bdi dir="ltr">[00:59]</bdi> ولنذهب الآن إلى نموذجنا ولننسخ الأشياء المتعلقة بزر الإرسال بدءًا من form.Subscribe هنا. هكذا. فلنسخ هذا — أو لنقطعه من هنا — ولنضعه ببساطة هنا.</p>
+الجزء الأول من الملف منسوخ حرفيًّا من النموذج: `<form.Subscribe>` على `canSubmit`، ثم الزرّان مع `disabled` والبيانات الوصفية التي تميّز كل زر عن الآخر. لم نُضف منطقًا جديدًا؛ المهمّ أنّ هذه الكتلة صارت في مكان واحد يُصلَح فيه الخطأ مرة واحدة.
 
-<p><bdi dir="ltr">[01:15]</bdi> والآن، نحتاج — بالطبع — إلى استيراد بعض الأشياء وهكذا. فلنستورد Button من مجلد UI لَدَينا.</p>
+والجزء الثاني هو الجديد فعلًا: `useFormContext()`. حين انتقلت الكتلة إلى ملف مستقل فقدت المتغيّر `form` الذي كان في نطاق النموذج، وكان الحلّ البديهي تمرير النموذج خاصيةً: `<SubmitButton form={form} />`. لكنّ ذلك يعيدنا إلى ما تخلّصنا منه: كل استعمال يحتاج تمريرًا، وكل مكوّن وسيط يحتاج أن يعرف عن النموذج. بدلًا من ذلك يقرأ المكوّن النموذج من `formContext` الذي أنشأناه في الدرس الماضي عبر `createFormHookContexts`، فتصبح الكتلة قابلة للنسخ إلى أي نموذج بلا وسيط.
 
-<p><bdi dir="ltr">[01:23]</bdi> حسنًا، أظنّ أنّ هذا هو كل شيء في الواقع. غير أنّه الآن نحتاج إلى امتلاك وصولٍ إلى النموذج، مماثلين لسياق الحقل (field context). تذكّر أنّ لدينا أيضًا سياق النموذج (form context) كذلك، وهو ما نحصل عليه من هنا ونمرّره هنا. إذًا سيكون لدينا</p>
+## لماذا نحتاج `<form.AppForm>`؟
 
-<p><bdi dir="ltr">[01:37]</bdi> الوصول إلى نموذجنا باستخدام سياق النموذج هذا كذلك، ويمكننا الوصول إليه باستخدام الدالة useFormContext.</p>
+إن وضعت `<form.SubmitButton />` داخل النموذج مباشرة فلن يجد السياق الذي يقرأ منه، لأنّ `formContext` لا يُوفَّر تلقائيًّا. الغلاف `<form.AppForm>` هو الذي يوفّره، تمامًا كما يوفّر `<form.AppField>` سياق الحقل لمكوّن الحقل:
 
-<p><bdi dir="ltr">[01:45]</bdi> فإذًا هنا يمكننا أن نكتب const form ثم نستدعي useFormContext. عذرًا.</p>
+```tsx
+      <form.AppForm>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            form.handleSubmit({ key: "value" });
+          }}
+        >
+```
 
-<p><bdi dir="ltr">[01:54]</bdi> useFormContext هكذا.</p>
+ولاحظ أنّ الغلاف يحيط بعنصر `<form>` لا بداخله. هذا موضع منطقي: من يملك النموذج هو المكوّن الذي أنشأه بـ`useAppForm`، والغلاف يوزّع مرجعه على ما تحته. لذلك يتغيّر إغلاق الشجرة أيضًا:
 
-<p><bdi dir="ltr">[01:58]</bdi> وسيعمل هذا. وبالطبع، يمكن أن يملك هذا المكوّن خصائص (props) لتخصيص الأشياء التي يلزم تخصيصُها هنا. ربّما البيانات التي نرسلها عند الإرسال، وربّما النصّ وهلمّ جرا. غير أنّني</p>
+```tsx
+          <form.SubmitButton />
+        </form>
+      </form.AppForm>
+```
 
-<p><bdi dir="ltr">[02:12]</bdi> سأبقي الأمر بسيطًا فقط. والآن بعد أن أصبح لدينا هذا المكوّن، سأمرّره هنا. فلنعطِه اسمًا.</p>
+هذان السطران يستبدلان الكتلة التي كانت تحتلّ نحو خمسة وعشرين سطرًا في نهاية الملف. لاحظ أيضًا أنّ اسم المكوّن في السجل `SubmitButton` فاستُعمل `form.SubmitButton`؛ لو أسميته `submitButton` لصار الاستدعاء بحرف صغير، والاختيار بين الحالين مسألة اصطلاح داخل فريقك لا مسألة تقنية.
 
-<p><bdi dir="ltr">[02:20]</bdi> SubmitButton مثلًا، ونمرّر المكوّن الذي عرّفناه للتوّ وهو SubmitButton هكذا.</p>
+## ما يتغيّر في النموذج
 
-<p><bdi dir="ltr">[02:29]</bdi> وبفعل ذلك يمكننا أن نعود إلى نموذجنا هنا، وفي النموذج الذي نحصل عليه من useAppForm يجب أن نملك وصولًا إلى هذا المكوّن. غير أنّه كي نستخدم هذا المكوّن يلزمنا أن نوفّر له السياقَ الذي يحتاجه كي</p>
+```tsx
+import { Button } from "@/components/ui/button";
+import {
+  FieldDescription,
+  FieldGroup,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
+import { revalidateLogic } from "@tanstack/react-form";
+import { registerFormOpts, registerFormSchema } from "./shared";
+import { useAppForm } from "@/hooks/form";
 
-<p><bdi dir="ltr">[02:45]</bdi> الوصول إلى النموذج. ولفعل ذلك يلزمنا أن نلفّ نموذجنا بالكامل بـ form.AppForm. فلنلفّ كل شيء إذًا بـ form.AppForm. وهذا سيضمن أنّ السياق اللازم لمكوّنات النموذج سوف</p>
+export default function RegisterForm() {
+  const form = useAppForm({
+    ...registerFormOpts,
+    onSubmit: ({ value, meta }) => {
+      console.log(value);
+      console.log(registerFormSchema.parse(value));
+      console.log(meta);
+    },
+    validators: {
+      onDynamic: registerFormSchema,
+    },
+    validationLogic: revalidateLogic({
+      mode: "submit",
+      modeAfterSubmission: "blur",
+    }),
+  });
+```
 
-<p><bdi dir="ltr">[03:03]</bdi> يكون متاحًا، مماثلين لما فعلناه حين استخدمنا حقل form.AppField هنا كي يصبح السياق متاحًا في مكوّناتنا أيضًا.</p>
+بقيت استيرادات النموذج كما هي تقريبًا، لأنّ `Button` ما زال مستعملًا في صفوف المهارات (زر الإزالة وزر الإضافة)، وهو مثال مفيد على أنّ الاستخراج لا يعني حذف كل ما يتعلق بالأزرار: نُقل ما يتكرّر، وبقي ما يخصّ هذا النموذج وحده.
 
-<p><bdi dir="ltr">[03:12]</bdi> غير أنّه الآن بعدما نفعل هذا، فلنذهب هنا — بعد إغلاق نموذجنا أو قبله — ونستخدم ببساطة form.SubmitButton هكذا.</p>
+تفصيل يستحقّ الانتباه: النموذج يمرّر بيانات وصفية مختلفة في الموضعين. مُعالج `<form onSubmit>` يمرّر `{ key: "value" }`، بينما يمرّر كل زر `{ submitAction: ... }`، والزرّان من النوع `submit`، فيقع الإرسال مرتين عند الضغط على أحدهما: مرة من `onClick` ومرة من حدث النموذج. الشيفرة كما كتبها صاحب الدورة، وأثرها العملي أن يصل إلى `onSubmit` آخرُ نداء؛ ولهذا جعلنا تنظيف هذا التداخل تمرينًا لا تعديلًا صامتًا.
 
-<p><bdi dir="ltr">[03:24]</bdi> وبفعل هذا، إذا حفظنا الآن فينبغي أن نحصل على أزرارنا من جديد. وسيعمل هذا تمامًا بالطريقة نفسها. فلنحدّث.</p>
+## النتيجة
 
-<p><bdi dir="ltr">[03:32]</bdi> فلنُرسِل. وكل شيء يعمل تمامًا بالطريقة نفسها، لكن نموذجنا الآن أصغر حجمًا بكثير. ما فعلْناه</p>
+![نموذج التسجيل بعد استخراج زرّي الإرسال إلى مكوّن مسجَّل: حقول نصية بأوصافها، وثلاث بطاقات مهارات فيها قائمة مستوى «Beginner» وزر إزالة، ثم زر إضافة مهارة، ثم زرّا الحفظ أسفل الصفحة](/images/tanstack-form/form--creating-reusable-form-components--form.png)
+
+اللقطة هي النموذج بعد النقل، ولا تكشف أي تغيير بصري: حقول الاسم الأول واسم العائلة والشارع وكلمة المرور وتأكيدها، ثم قسم المهارات ببطاقاته الثلاث (`HTML` و`CSS` و`JavaScript`) وفي كلّ منها قائمة المستوى على `Beginner` وزر إزالة أحمر، ثم زر إضافة مهارة، ثم خانة الموافقة وزرّا `Save` و`Save & Go back`.
+
+وهذا هو المطلوب: إعادة التنظيم يجب أن تكون غير مرئية للمستخدم. الدليل على نجاحها ليس في الشكل بل في الملف: خمسة وعشرون سطرًا صارت سطرًا واحدًا، والزرّان يعملان كما كانا، وكل نموذج لاحق يحصل عليهما مجانًا.
+
+## جرّب بنفسك
+
+1. أضف خاصية `label` إلى `SubmitButton` لتغيير نصّ الزرّ الأول من خارج النموذج، ثم اقرأ النصّ داخل المكوّن بدلًا من كتابته ثابتًا.
+2. أضف زرًّا ثالثًا للبيانات الوصفية الجديدة نفسها، مثل الحفظ كمسوّدة، دون تكرار منطق `canSubmit`.
+3. انقل `<form.AppForm>` إلى داخل `<form>` ثم إلى خارج `<div>` الحاوي، وسجّل رسالة الخطأ التي تظهر في كل حالة.
+4. أزل `type="submit"` من الزرّين وأبقِ `onClick`، ثم تحقّق هل ما زال الإرسال يحدث مرتين أم مرة واحدة، واشرح الفرق.
+5. اكتب مكوّن نموذج آخر، مثل رسالة خطأ عامة تقرأ `state.errors`، وسجّله في `formComponents` واستعمله بجوار زرّ الإرسال.
+
+## المراجع
+
+- شرح الدرس في دورة TanStack Form: [Creating Reusable Form Components](https://www.youtube.com/watch?v=H2T21r5wu3g&t=7262s)
+- شيفرة الفرع الكامل: [مستودع الدورة — الفرع `useAppForm-4`](https://github.com/alialaa/tanstack-form-course/tree/useAppForm-4)
+- التوثيق الرسمي لسجلّات المكوّنات وسياقاتها: [تركيب النماذج والمكوّنات](https://tanstack.com/form/latest/docs/framework/react/guides/form-composition)
+
+> هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Creating Reusable Form Components» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.

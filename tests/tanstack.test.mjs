@@ -46,8 +46,15 @@ for (const bookId of TANSTACK_BOOKS) {
     for (const page of pages) {
       assert.ok(bundles.has(page.key), `lesson bundle missing for ${page.key}`);
       const bundle = bundles.get(page.key);
-      if (page.key.endsWith('--index')) assert.equal(bundle.branch, null, 'index pages have no branch');
-      else assert.ok(bundle.files.length > 0, `${page.key} bundle carries no files`);
+      assert.ok(bundle.files.length > 0, `${page.key} bundle carries no files`);
+      if (page.key.endsWith('--index')) {
+        // An index lesson introduces the scaffold, so it either has no branch or
+        // points at the repository's default branch — never at a feature branch.
+        assert.ok(
+          bundle.branch === null || bundle.branch === 'main',
+          `index page sits on an unexpected branch: ${bundle.branch}`
+        );
+      }
     }
   });
 

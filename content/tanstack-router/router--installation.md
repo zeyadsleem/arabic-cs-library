@@ -4,52 +4,100 @@ lang: ar
 source: "https://www.youtube.com/watch?v=8_sGz4DHwIA&t=165s"
 ---
 
-الدرس 2 من 34 · دورة TanStack Router الكاملة · 4 دقيقة و29 ثانية
+## ماذا سنتعلّم؟
 
-<div class="lecture-video"><iframe src="https://www.youtube.com/embed/8_sGz4DHwIA?start=165&amp;rel=0" title="التثبيت (Installation) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+في هذا الدرس نُنشئ تطبيقًا جديدًا من الصفر وندخل عليه `TanStack Router`: مشروعُ `Vite` مبنيٌّ على `React` و`TypeScript`، ثم إضافةُ موجّه `TanStack Router` وأدوات المطوّر وإضافتِه الخاصة بـ`Vite`، وأخيرًا ربطُ كل ذلك بإعدادات البناء حتى يعمل المشروعُ كما في الصورة.
 
-<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=8_sGz4DHwIA&t=165s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+الخطواتُ هنا مرتّبةٌ على شكل «حلقة صغيرة»: إنشاءُ المشروع، ثم تثبيتُ الحزم، ثم تعديلُ ملفّ الإعدادات، ثم تشغيلُ التطبيق للتأكّد من أنّ شيئًا لم ينكسر. وأيّ خطأ في الترتيب يظهر مباشرةً في المتصفّح، فالدرس ينتهي بمشروعٍ يعمل.
 
-> **مستودع شيفرة هذا الدرس**
->
-> الفرع: [`app-init`](https://github.com/alialaa/tanstack-router-course/tree/app-init)
+## لماذا نبدأ من مشروعٍ جديد؟
 
+أداةُ `Vite` توفّر أمرًا ينشئ مشروعًا كاملًا بسؤالين: اسمُ المشروع، وإطارُ العمل الذي تريده، وهل تريد `TypeScript` أم لا. والأمرُ الذي سننفّذه هو `npm create vite@latest`.
 
-<p><bdi dir="ltr">[00:00]</bdi> هيا بنا نثبّت TanStack Router. وللقيام بذلك سأُنشئ مشروع React جديداً، لكن دون استخدام أي إطار عمل (framework)، ودون Next.js أو ما شابه. ما سأفعله هو أنّني</p>
+والمؤلّفُ يعرض عليك في هذه الخطوة قوالبَ جاهزة، أحدُها يتضمّن `TanStack Router` أصلًا، لكنه يتجاوزها عن قصد. والسببُ عمليٌّ لا تشغيلي: هو يريد أن يريك التثبيتَ من الصفر، لأنّ قارئَ الدرس قد يكون لديه مشروعٌ قائمٌ يريد إضافةَ الموجّه إليه، فتطبيقُ الخطواتِ على مشروعٍ جديدٍ لا يجيب عن سؤاله.
 
-<p><bdi dir="ltr">[00:13]</bdi> أُنشئ مشروع React جديداً مع Vite فقط كأداة تجميع (bundler). يدعم TanStack Router عدّة أدوات تجميع (bundlers)، من بينها Vite الذي سنستخدمه. كما يدعم Webpack وES Build، وربما غيرها أيضاً.</p>
+أمّا اختيارُ أداة البناء فمقرَّرٌ أيضًا: تدعم المكتبةُ عدةَ أدواتِ تجميع، منها `Vite` الذي سنستخدمه، كما تدعم `Webpack` و`ES Build`. و`Vite` خيارٌ مناسبٌ هنا لأنّ إضافةَ الموجّه تُسجَّل في ملفّ إعداداته ببساطة.
 
-<p><bdi dir="ltr">[00:28]</bdi> لكن سنستخدم Vite لإنشاء مشروع Vite جديداً. دعنا نضعه ربما على سطح المكتب.</p>
+## الحزمُ التي سنثبّتها
 
-<p><bdi dir="ltr">[00:35]</bdi> سأقوم بتشغيل npm create vite@latest. وسنحصل على قائمة خيارات. لذا فلنختر اسمًا. ليكن TanStack Router. ولنختر إطار عمل (framework). بالطبع سنستخدم React. بالمناسبة،</p>
+- `@tanstack/react-router` — مكتبةُ الموجّه نفسها، وتُثبَّت مع التطبيق.
+- `@tanstack/react-router-devtools` — أدواتُ المطوّر الخاصة بالموجّه، وتُثبَّت معها.
+- `@tanstack/router-plugin` — إضافةُ `Vite` التي تولّد شجرةَ المسارات وأنواعَها، وتُثبَّت ضمن اعتماديات التطوير.
+- `tailwindcss` مع `@tailwindcss/vite` — للتنسيق السريع في أمثلة الدورة.
 
-<p><bdi dir="ltr">[00:53]</bdi> كما ذكرنا، يدعم TanStack Router أيضًا Solid، لكن سنستخدم React هنا. فلنختر React. وبالمناسبة، في هذا المكان يمكننا اختيار قالب (template) يشتمل بالفعل على TanStack Router. لكنني</p>
+ولأنّ `Vite` يتكفّل بالبناء، فإنّ تثبيتَ هذه الحزم يتمّ بسطرٍ واحدٍ لكل مجموعة: `npm install` للاعتماديات العادية، و`npm install -D` لاعتماديات التطوير.
 
-<p><bdi dir="ltr">[01:07]</bdi> لن أفعل ذلك لأنني أريد أن أُريك كيفية تثبيت TanStack Router من الصفر؛ إذا كنت مثلاً تستخدم TanStack Router في مشروع قائم. لذا سأقوم باختيار</p>
+## ربطُ الموجّه بإعدادات `Vite`
 
-<p><bdi dir="ltr">[01:18]</bdi> TypeScript. فلنختر TypeScript هنا، ويجب أن يُنشأ مشروعنا على سطح المكتب. لذا دعنا ننتقل إليه، ثم نشغّل npm install.</p>
+لا يكفي تثبيتُ الحزم؛ على `Vite` أن يعرف أنّ المشروع يستخدم موجّهًا مولِّدًا. كلُّ ما يلزم هو سطرُ استيرادٍ لإضافة `TanStack Router`، وإضافتُها إلى مصفوفة `plugins` قبل إضافة `React`، مع تمرير `target` الذي يحدّد إطارَ العمل المستهدَف (ويمكن أن يكون `solid` أيضًا):
 
-<p><bdi dir="ltr">[01:29]</bdi> وكذلك سأفتح هذا المشروع في محرر الشيفرة (code editor) الخاص بي. والآن مشروعي مفتوح في VS Code وقد ثبّتت الاعتماديات (dependencies). لكن الآن لنثبّت TanStack Router. وسأثبّت أيضًا Tailwind من أجل تنسيق سريع مع تقدّم الأمثلة على امتداد الفيديو.</p>
+```ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
-<p><bdi dir="ltr">[01:43]</bdi> لذلك لتثبيت TanStack Router، نحتاج إلى تثبيت هذه الحزم (packages). سأقوم بـ npm install. وكما ترون ها هنا: @tanstack/react-router و @tanstack/react-router-devtools. نحتاج إلى تثبيت هذه الحزم، كما نحتاج إلى Vite plugin ضمن اعتماديات التطوير (dev dependencies). بعد الانتهاء، دعنا نثبّت أيضاً TanStack Router plugin كاعتماديات تطوير (dev dependency).</p>
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    tanstackRouter({
+      target: "react",
+    }),
+    react(),
+    tailwindcss(),
+  ],
+});
+```
 
-<p><bdi dir="ltr">[01:59]</bdi> React Router و @tanstack/react-router-devtools. نحتاج إلى تثبيت هذه الحزم، كما نحتاج إلى Vite plugin ضمن اعتماديات التطوير (dev dependencies). بعد الانتهاء، دعنا نثبّت أيضاً TanStack Router plugin كاعتماديات تطوير (dev dependency).</p>
+والترتيبُ الذي اختاره المؤلّف مقصود: إضافةُ الموجّه تسبق إضافةَ `React` في مصفوفة `plugins`. (توضيحٌ من عندي: إضافةُ `React` هي ما يترجم ملفات `tsx` إلى كودٍ يعمل في المتصفّح، أمّا إضافةُ الموجّه فمهمّتها أن تقرأ ملفات المسارات وتولّد شجرةَ المسارات وأنواعَها من تحتها.) أمّا إضافةُ `Tailwind` فتأتي في الآخر، فمهمّتها تنسيقُ الصفحة لا أكثر.
 
-<p><bdi dir="ltr">[02:17]</bdi> لنقشه. ثم بالنسبة إلى Tailwind، سأضيف تثبيتًا إضافيًا هنا، وهو npm install tailwindcss و tailwindcss/vite. هذا كل ما نحتاجه. الآن سندخل إلى Vite config الخاص بنا هنا، و</p>
+## تفعيلُ Tailwind في ملفّ الأنماط
 
-<p><bdi dir="ltr">[02:37]</bdi> نحتاج إلى إنجاز بعض التعديلات. أولاً، نحتاج إلى استيراد إضافة Tailwind لـ Vite. فلندعم ذلك هنا. كما نحتاج إلى استيراد إضافة TanStack Router لـ Vite، ويمكن إنجاز ذلك by importing tanstackRouter from this import.</p>
+بعد تسجيل الإضافة، تبقى خطوةٌ صغيرة: تعريفُ Tailwind في ملفّ الأنماط العامّ `src/index.css`، وتُكتب سطرًا واحدًا في أعلى الملف:
 
-<p><bdi dir="ltr">[02:54]</bdi> وكذلك سأُغلق إكمالات Copilot، لأنني أعتقد أنّها ستكون مزعجة لك.</p>
+`@import "tailwindcss";`
 
-<p><bdi dir="ltr">[03:02]</bdi> بيد أن، ما نحتاج إلى فعله هو ببساطة استخدام هذه الإضافات في مصفوفة plugins لـ TanStack Router. يجب ضبطه قبل React. لذا هنا يمكن وضع TanStack Router هكذا.</p>
+ويُنقَح المؤلّفُ في أثناء ذلك أنماطَ المشروع الافتراضية: يحذفُ ما يخصّ `body` و`h1` لأنّ صفحاتِ التطبيق ستُنسَّق من الآن على طريقة `Tailwind`، ويُبقي أنماطَ عنصر الجذر `root` وأنماطَ الأزرار وأنماطَ الوضع الفاتح والداكن.
 
-<p><bdi dir="ltr">[03:17]</bdi> و يمكننا تمرير خيارات الآن. فلنمرّر فقط الهدف (target) الذي ستكون React. يمكن أن يكون Solid أيضاً. ثم نحتاج إلى إضافة Tailwind plugin لغرض استخدم Tailwind ضمن app. والآن ما الذي نحتاج إلى</p>
+## نقطةُ الدخول
 
-<p><bdi dir="ltr">[03:33]</bdi> فعله هو فقط لغرض استخدم Tailwind، دعنا نفتح main styles index.tss هنا and استورد Tailwind هكذا.</p>
+أمّا ملفُّ الدخول `src/main.tsx` فلم يتغيّر في هذا الدرس، ومع ذلك من المهمّ أن نعرف شكله، لأنّه هو الموضعُ الذي سيُركَّب فيه الموجّه في الدرس التالي: تُستورد الأنماطُ من `index.css` (وهو الملف الذي أضفنا إليه `Tailwind`)، ويُركَّب `<App />` داخل `StrictMode`:
 
-<p><bdi dir="ltr">[03:43]</bdi> كذلك سأقوم ربما حذف بعض هذه الأنماط الافتراضية. دعنا حذف الكل لكن ربما احتفظ بـ أنماط الأزرار. على سبيل المثال، دعنا حذف هذا.</p>
+```tsx
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
 
-<p><bdi dir="ltr">[03:57]</bdi> نص H1 body.</p>
-<p><bdi dir="ltr">[04:00]</bdi> فقط حذف هذه واحتفظ بـ الأنماط الجذر، أنماط الأزرار وأنماط الوضع الداكن أو الوضع الفاتح أيضاً. يجب أن يكون تطبيقنا. دعنا جرّب تشغيله بـ npm run dev ودعنا جرّب فتحه في المتصفح. ونحن</p>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+```
 
-<p><bdi dir="ltr">[04:18]</bdi> هناك خلل هنا. يمكن تجاهل هذا حالياً، لكن دعنا الآن نفتح هذا الرابط في المتصفح هكذا. والآن أصبح لدينا هذا التطبيق ويمكننا البدء بالعمل مع TanStack Router. في</p>
+## النتيجة
+
+![صفحةُ البداية الافتراضية لمشروع `Vite` تعمل في المتصفّح بعد تثبيت موجّه `TanStack Router` وإضافة `Tailwind`](/images/tanstack-router/router--installation--home.png)
+
+هذه صفحةُ البداية الافتراضية لمشروع `Vite`: شعارا `Vite` و`React` في الأعلى، وعنوانُ «`Vite + React`»، وزرٌّ يعدّ الضغطات ونصّه `count is 0`، وتحتَه تذكيرٌ بملفّ `src/App.tsx`، وسطرٌ يطلب الضغطَ على الشعارين. ما المهمُّ فيها أنّ المشروعَ **يعمل**: لم يتعطّل شيءٌ بعد إضافةِ الموجّه، وأُزيلت الأنماطُ الافتراضية التي كانت تتعارض مع تنسيق `Tailwind`.
+
+ولم تُضَف بعدُ صفحةٌ ولا مسار: هذه نقطةُ انطلاقٍ فقط. الخطوةُ التالية في الدورة هي أن نُركّب الموجّه في `src/main.tsx` وننشئ أولَ مسار.
+
+## جرّب بنفسك
+
+1. نفّذ `npm create vite@latest`، واختر اسمًا للمشروع، ثم `React` ثم `TypeScript`، ثم ادخل إلى المجلّد ونفّذ `npm install`.
+2. ثبّت المكتبات: `npm install @tanstack/react-router @tanstack/react-router-devtools`، ثم `npm install -D @tanstack/router-plugin`، ثم `npm install tailwindcss @tailwindcss/vite`.
+3. عدّل `vite.config.ts` كما في المثال أعلاه: استيرادُ إضافةِ الموجّه، وتسجيلُها في `plugins` قبل إضافة `React`، مع `target: "react"`.
+4. أضِف السطرَ `@import "tailwindcss";` في أعلى `src/index.css`، واحذف أنماطَ `body` و`h1` الافتراضية.
+5. نفّذ `npm run dev`، وافتح العنوانَ الذي يظهر في الطرفية، وتأكّد من أن الصفحة تُشبه الصورة أعلاه وأنّ عدّادَ الضغطات يتحرّك.
+
+## المراجع
+
+- [فيديو الدرس: التثبيت](https://www.youtube.com/watch?v=8_sGz4DHwIA&t=165s)
+- [شيفرة الدرس: فرع app-init](https://github.com/alialaa/tanstack-router-course/tree/app-init)
+- [التوثيق الرسمي لـ TanStack Router](https://tanstack.com/router/latest/docs/framework/react/overview)
+
+---
+
+> هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «التثبيت» في دورة TanStack Router التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي.

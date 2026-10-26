@@ -1,124 +1,303 @@
 ---
-title: "إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components)"
+title: "بناء مكوّنات حقول قابلة لإعادة الاستخدام"
 lang: ar
 source: "https://www.youtube.com/watch?v=H2T21r5wu3g&t=6626s"
 ---
 
-الدرس 17 من 21 · دورة TanStack Form الكاملة · 10 دقيقة و36 ثانية
+## ماذا سنتعلّم؟
 
-<div class="lecture-video"><iframe src="https://www.youtube.com/embed/H2T21r5wu3g?start=6626&amp;rel=0" title="إنشاء مكوّنات حقول قابلة لإعادة الاستخدام (Creating Reusable Field Components) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+أنهينا الدرس السابق بخُطّاف `useAppForm` جاهز لكنّه فارغ: `createFormHook` بُني بالسياقين وسجلّي مكوّنات خاليين، فلم يتغيّر شيء في الاستمارة. في هذا الدرس نملأ السجلّ الأوّل، `fieldComponents`، ونجني الثمرة التي من أجلها أعدنا الهيكلة: مكوّن حقل واحد يُكتب مرّة ويُستعمل في كلّ حقل من نوعه.
 
-<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&t=6626s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+نبني ثلاثة مكوّنات في مجلّد جديد `src/components/form`: صندوق نصّ، ومربّع اختيار، وقائمة منسدلة. كلّ واحد يقرأ الحقل من السياق المحيط بدل أن يستقبله وسيطًا، ويأخذ تسميته ووصفه ومعرّفه خصائصَ عادية. ثم نسجّلها في `src/hooks/form.tsx`، ونستهلكها عبر `form.AppField` الذي يوفّر السياق.
 
-> **مستودع شيفرة هذا الدرس**
->
-> الفرع: [`useAppForm-3`](https://github.com/alialaa/tanstack-form-course/tree/useAppForm-3)
+## الشرح
 
+### لماذا لا يكفي `form.Field`؟
 
-<p><bdi dir="ltr">[00:01]</bdi> بالتعريف بمكوّنٍ لحقلنا النصّي. وأمّا الحقول الأخرى، فسأفعلها أيضًا وأمرّ معك عليها سريعًا. لكن فلنبدأ بالحقل النصّي أو الـ text input. فإذًا في هنا، فلنذهب إلى</p>
+في الدرس السابق كان كائن الحقل يصل إلى الواجهة عبر دالة تصيير: `form.Field` ينادي الدالة ويمرّر لها `field`. هذا يعمل ما دام العرض مكتوبًا في المكان نفسه، لكنّه ينتهي عند أوّل مكوّن مستقلّ: المكوّن الجديد يستقبل خصائصه وحده، فلن يعرف أيّ قيمة يقرأ ولا إلى أين يكتب.
 
-<p><bdi dir="ltr">[00:15]</bdi> مجلد components لدينا. فربما فلننشئ مجلدًا آخر. فمجلد ui هذا هو مكوّنات shadcn. فلننشئ آخر لمكوّناتنا نحن.</p>
+لهذا وُجد سياق الحقل. `useAppForm` يلفّ كلّ حقل بالسياق، ومكوّن الحقل يقرأه بخُطّاف `useFieldContext` بلا وسائط، والخُطّاف المستورد يجب أن يكون نفسه المصدَّر من `src/hooks/form-context.tsx`، لأنّ نسخة السياق الثانية لا تعرف شيئًا عن الأولى، فيعود الحقل `undefined` بلا خطأ يشرح السبب.
 
-<p><bdi dir="ltr">[00:26]</bdi> لنسمّه ربما form.</p>
+### مكوّن `TextInput`
 
-<p><bdi dir="ltr">[00:28]</bdi> داخل form، فلننشئ مكوّنًا لحقل الإدخال النصّي الخاصّ بنا — الـ text input. ففلنسمّه text-input.tsx.</p>
+ننشئ أوّلًا مجلّد `src/components/form` بجانب مجلّد مكوّنات `shadcn/ui`، ونكتب فيه ملف `TextInput.tsx`. هذا نصّ الملف في فرع الدرس:
 
-<p><bdi dir="ltr">[00:37]</bdi> والآن في هنا، فلنعرّف مكوّن React فحسب. وما يلزمنا فعله هو أن ننسخ الأشياء التي نقوم بها في نموذجنا لعرض الـ input. ففلنسخ كلّ ذلك من هنا.</p>
+```tsx
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+import { Input } from "../ui/input";
+import { useFieldContext } from "@/hooks/form-context";
 
-<p><bdi dir="ltr">[00:48]</bdi> ولنقصّه أيضًا في الواقع. فسأقصّه من هنا، وأضعه في هنا فحسب هكذا. ونحتاج كذلك إلى استيراد أشيائنا. فلننسخه ربما من هنا.</p>
+export default function TextInput({
+  label,
+  description,
+  id,
+  type = "text",
+}: {
+  label: string;
+  id: string;
+  description?: string;
+  type?: string;
+}) {
+  const field = useFieldContext<string>();
+  return (
+    <Field>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Input
+        id={id}
+        type={type}
+        placeholder={label}
+        value={field.state.value}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
+      />
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {!field.state.meta.isValid && (
+        <FieldError>
+          {field.state.meta.errors.map((error) => error?.message).join(", ")}
+        </FieldError>
+      )}
+    </Field>
+  );
+}
+```
 
-<p><bdi dir="ltr">[01:02]</bdi> فلنستورد أشياءنا هكذا. فلا نحتاج إلى كلّ ذلك، فلنُزِل الاستيرادات غير المستخدمة.</p>
+أهمّ سطر فيه هو `useFieldContext<string>()`. الوسيط النوعي ليس زينة: هو ما يجعل `field.state.value` نصًّا و`field.handleChange` لا يقبل إلّا نصًّا. لو كتبت `useFieldContext<number>()` لرفض المترجم تمرير `e.target.value`. أي أنّ المكوّن يعلن نوع القيمة التي يخدمها، وTanStack Form يتحقّق من ذلك عند التركيب.
 
-<p><bdi dir="ltr">[01:09]</bdi> وفلنستورد أيضًا الـ input لدينا. وفلنحفظ. وسيواجهنا الآن هذه المشكلة حيث نحتاج إلى أن نملك الوصول إلى الحقل في هنا. فحين أنشأنا نموذجنا كنّا نملك الوصول إلى هذا الحقل في هذه الدالة، أليس كذلك؟ غير أنّنا</p>
+بقية الجسم هي الشيفرة نفسها التي كانت مكتوبة داخل الاستمارة، منقولةً لا معاد كتابتها: `value` من حالة الحقل، و`handleBlur` و`handleChange` من واجهة الحقل، ثم كتلة الأخطاء التي تُعرض فقط حين يكون `field.state.meta.isValid` غير صحيح، والأخطاء تُجمع بـ`join(", ")` لعرض أكثر من رسالة في سطر واحد.
 
-<p><bdi dir="ltr">[01:20]</bdi> كما ذكرنا، سنملك الوصول إليه عن طريق السياق (context). فإذًا في هنا في form-context.tsx، تذكّر أنّنا كنّا نُصدّر fieldContext وuseFieldContext ونمرّر fieldContext هذا إلى الدالة التي</p>
+### من القيم المثبتة إلى الخصائص
 
-<p><bdi dir="ltr">[01:35]</bdi> تنشئ useAppForm هنا أو هنا. فإذا استخدمنا useAppForm الآن في نموذجنا — ونحن نستخدم useAppForm — فحين ننشئ مكوّنًا لحقلٍ سيكون بذلك الحقل السياقُ fieldContext متوفّرًا. فإذًا ببساطة نستخدم</p>
+التسمية والوصف ونصّ العنصر النائب كانت مكتوبة داخل المكوّن، وهذا يجعله صالحًا لحقل واحد فقط. لذلك تصبح هذه القيم خصائص: `label` نصّ إلزامي، و`description` نصّ اختياري، و`id` نصّ إلزامي، و`type` نصّ له قيمة افتراضية `"text"`.
 
-<p><bdi dir="ltr">[01:55]</bdi> دالة useFieldContext لنملك الوصول إلى الحقل. فإذًا في هنا نستطيع أن نستدعي useFieldContext. فتأكّد فقط أنّ هذه هي دالة useFieldContext التي صدّرتها من ملف form-context هذا. أليس كذلك؟ و</p>
+ثلاثة قرارات هنا تستحقّ التوقّف. الأوّل أنّ `id` صار خاصية رغم أنّه ليس بيانات عرض: `shadcn/ui` تربط التسمية بالحقل عبر `htmlFor`، فلو تُرك المعرّف ثابتًا لتكرّر في كلّ الحقول وصارت التسميات كلّها تشير إلى حقل واحد. والثاني أنّ `description` اختياري، فيُصيَّر بشرط `description &&` وإلّا ظهر عنصر وصف فارغ يزحزح ما بعده. والثالث أنّ `type` له قيمة افتراضية، فتستعمل المكوّن نفسه للنصّ العادي وكلمة المرور. واختيار أنّ `placeholder` يأخذ قيمة `label` تبسيط مقصود.
 
-<p><bdi dir="ltr">[02:12]</bdi> يلزمنا فقط أن نعطيه نوعًا. فإذًا هذا مربّع نصّ، فسيكون حقلنا من نوع string.</p>
+### تسجيل المكوّنات في `createFormHook`
 
-<p><bdi dir="ltr">[02:18]</bdi> وبفعلنا هذا، أظنّ أنّه لن نرى أيّ أخطاء. غير أنّ بعض الأشياء عندنا هنا مكتوبة يدويًّا: فالـ label، والـ description، والـ placeholder، وهلمّ جرًا. فالذي يلزمنا هو أن نتمكّن من تغيير</p>
+المكوّن موجود، لكنّ الخُطّاف لا يعرفه. التسجيل هو ما يجعله مرئيًّا داخل الاستمارة، ويحدث في `src/hooks/form.tsx` الذي كان سجلّاه فارغين:
 
-<p><bdi dir="ltr">[02:32]</bdi> هذه حين نستخدم مكوّننا. فببساطة نمرّرها كخصائص (props). ففلنعرِّف خصائصنا هنا: فالـ label، والـ description. وتذكّر أيضًا أنّ لدينا هذا id الذي نمرّره في هذه وفي هذه.</p>
+```tsx
+import { createFormHook } from "@tanstack/react-form";
+import { fieldContext, formContext } from "./form-context";
+import TextInput from "@/components/form/TextInput";
+import Select from "@/components/form/Select.tsx";
+import Checkbox from "@/components/form/Checkbox.tsx";
 
-<p><bdi dir="ltr">[02:45]</bdi> فنحتاج إلى أن نجعلها خاصيةً أيضًا.</p>
+export const { useAppForm, withForm, withFieldGroup } = createFormHook({
+  fieldContext: fieldContext,
+  formContext: formContext,
+  fieldComponents: {
+    TextInput: TextInput,
+    Select: Select,
+    Checkbox: Checkbox,
+  },
+  formComponents: {},
+});
+```
 
-<p><bdi dir="ltr">[02:47]</bdi> وفلنعطيها أيضًا نوعًا. فالـ label سيكون من نوع string، والـ description أيضًا، ولنجعله string اختياريًّا. فالآن نستطيع ببساطة أن نزيله ونستبدله بـ label.</p>
+هذا الملف صورة الفرع بعد إتمام الدرس، وفيه الثلاثة مسجّلون دفعةً واحدة؛ في الفيديو يسجّل المؤلف صندوق النصّ أوّلًا ويتحقّق منه، ثم يضيف الآخرين. المفتاح في الكائن هو الاسم الذي ستستعمله داخل الاستمارة، والقيمة هي المكوّن: المفتاح `TextInput` يعطي `field.TextInput`، ولو كتبته صغيرًا لأصبح الاستعمال `field.textInput`.
 
-<p><bdi dir="ltr">[03:01]</bdi> وفلنجعل الـ placeholder يماثل الـ label. ويمكنك أن تصنع له prop خاصًّا، لكن فلنُبق الأمر ببساطة.</p>
+السجلّ الثاني `formComponents` بقي فارغًا لأنّ الدرس كلّه عن الحقول؛ مكوّنات الاستمارة ككتلة، كزرّ إرسال يقرأ `canSubmit`، لها درسها الخاصّ، وهي تحصل على سياق الاستمارة لا على سياق الحقل.
 
-<p><bdi dir="ltr">[03:08]</bdi> وفي هذا وهذا يلزمنا تمرير الـ id.</p>
+### `form.AppField` بدل `form.Field`
 
-<p><bdi dir="ltr">[03:12]</bdi> ويلزمنا في هذا أن نمرّر description لدينا هكذا — عذرًا — description.</p>
+بقي أن نستهلك المكوّن، وهنا التغيير الذي يجب ألّا تنساه: `form.AppField` لا `form.Field`. الأوّل يوفّر سياق الحقل الذي يقرأه `useFieldContext`، والثاني لا يوفّره لأنّه واجهة الطريق الطويل. هذا الحقل الأوّل في الاستمارة بعد التعديل:
 
-<p><bdi dir="ltr">[03:20]</bdi> وفي هذا نُصيّر الأخطاء فحسب. وأظنّ أنّنا لن نحتاج إلى تغيير شيء هنا. والآن بامتلاكنا هذا المكوّن نستطيع أن نذهب إلى form.tsx ونمرّره هنا في fieldComponents لدينا كي نملك الوصول إليه في</p>
+```tsx
+          <form.AppField name="firstName">
+            {(field) => {
+              return (
+                <field.TextInput
+                  id="firstName"
+                  label="First Name"
+                  description="Your First Name"
+                />
+              );
+            }}
+          </form.AppField>
+```
 
-<p><bdi dir="ltr">[03:33]</bdi> نموذجنا وأن نستخدمه، بدلًا من الاضطرار إلى كتابة كلّ هذه الشيفرة القالبية (boilerplate) لكلّ حقل. فإذًا في هنا نستطيع أن نمرّر مكوّنًا، ويمكنك أن تسمّيته أيّ شيء. سأتّجه إلى text input وأمرّر مكوّن مربّع النص</p>
+قارن هذا بما كان: أحد عشر سطرًا بدل نحو أربعين، وليس فيها `value` ولا `onChange` ولا `onBlur` ولا كتلة أخطاء. اسم الحقل ما زال `name="firstName"`، فالتوصيف النوعي يعمل: اسم غير موجود في المخطّط خطأ يرفضه المترجم، والنوع المستنتج يحدّد `useFieldContext<string>()` في المكوّن. ودالة `children` تستقبل `field` لتسجّل به المكوّن، والمكوّن نفسه يعرف حقله من السياق.
 
-<p><bdi dir="ltr">[03:49]</bdi> الذي أنشأناه للتوّ — وتأكّد أنّك تستورد المكوّن الصحيح، المكوّن الداخليّ في مجلد forms — عذرًا — مجلد form الذي أنشأناه داخل components — هكذا. وأخيرًا نستطيع أن نعود إلى نموذجنا، وتذكّر أنّنا</p>
+وإن تركت `description` خارج الاستعمال اختفت من الواجهة. ولو نسيت استبدال `form.Field` بـ`form.AppField` لظهر الخطأ في وقت التشغيل لا في الترجمة، لأنّ المكوّن سيبحث عن سياق الحقل فلا يجده.
 
-<p><bdi dir="ltr">[04:06]</bdi> أزلنا الأشياء التي كنّا نعيدها للاسم الأول (firstName)، والآن نستطيع ببساطة أن نعيد الحقل، ثم داخل الحقل سنحصل على الوصول إلى مكوّن مربّع النص الذي مرّرناه هنا عندما عرّفنا خُطّافنا. غير أنّنا</p>
+### تكرار النمط: كلمة المرور والمربّع والقائمة
 
-<p><bdi dir="ltr">[04:22]</bdi> سنحتاج إلى أن نعدّل شيئًا قليلًا هنا.</p>
+بعد أن يعمل حقل واحد يصبح الباقي تكرارًا ميكانيكيًّا. حقل كلمة المرور يستعمل `TextInput` نفسه مع تمرير النوع:
 
-<p><bdi dir="ltr">[04:24]</bdi> فإذًا الآن، بدلًا من استخدام form.Field، نحتاج إلى استخدام form.AppField. ولماذا؟ لأنّ هذا سيتيح السياقَ اللازم لمكوّن مربّع النص لدينا — السياق الذي نستخدمه هنا. فإذًا يلزمنا تغيير هذا من form.Field</p>
+```tsx
+          <form.AppField name="password">
+            {(field) => {
+              return (
+                <field.TextInput
+                  label="Password"
+                  id="password"
+                  type="password"
+                  description="Your password (must be at least 8 characters long)"
+                />
+              );
+            }}
+          </form.AppField>
+```
 
-<p><bdi dir="ltr">[04:41]</bdi> إلى form.AppField ثم نغلقه هكذا.</p>
+هذا هو مكسب القيمة الافتراضية لـ`type`: الحقل يبدو مختلفًا في المتصفّح، والمكوّن واحد، وحقل تأكيد كلمة المرور يتبع النمط نفسه.
 
-<p><bdi dir="ltr">[04:45]</bdi> والآن سنحصل على الوصول إلى مكوّناتنا. وفي حالتنا لدينا مربّع النص، حيث يلزمنا فحسب تمرير... عذرًا... الـ id. فلنقل firstName، والـ label، ولدينا أيضًا description اختياريّ أيضًا. وبـ</p>
+أمّا مربّع الاختيار فيحتاج مكوّنًا آخر لأنّ واجهته مختلفة: القيمة `boolean` لا `string`، والحدث `onCheckedChange` لا `onChange`، والتسمية تجلس بجانب المربّع لا فوقه:
 
-<p><bdi dir="ltr">[05:03]</bdi> المناسبة، أظنّ أنّه يلزمنا في هنا أن نتحقّق من أنّ لدينا description قبل أن نعرض — عذرًا — قبل أن نعرض مكوّن وصف الحقل (FieldDescription).</p>
+```tsx
+import { useFieldContext } from "@/hooks/form-context";
+import { Field, FieldContent, FieldError, FieldLabel } from "../ui/field";
 
-<p><bdi dir="ltr">[05:15]</bdi> فإذًا إذا حفظنا هذا، فسنحصل على الاسم الأول. لكن كما ترى، هذا الآن أصغر بكثير مما كان عندنا سابقًا. فلسنا بحاجة إلى تمرير أيّ قيم، أو أيّ نداءات (callbacks)، وإنّما هذا المكوّن البسيط للحقل فحسب. وإذا شُئنا، فسيتيسّر</p>
+import { Checkbox } from "../ui/checkbox";
 
-<p><bdi dir="ltr">[05:28]</bdi> من تمرير description أيضًا. وينبغي أن يظهر هكذا.</p>
+export default function CustomCheckbox({
+  label,
+  id,
+}: {
+  label: string;
+  id: string;
+}) {
+  const field = useFieldContext<boolean>();
+  return (
+    <Field>
+      <div className="flex items-center gap-2">
+        <Checkbox
+          id={id}
+          checked={field.state.value}
+          onCheckedChange={(checked) => field.handleChange(checked === true)}
+          onBlur={field.handleBlur}
+        />
+        <FieldContent>
+          <FieldLabel htmlFor={id}>{label}</FieldLabel>
+        </FieldContent>
+      </div>
+      {!field.state.meta.isValid && (
+        <FieldError>
+          {field.state.meta.errors.map((error) => error?.message).join(", ")}
+        </FieldError>
+      )}
+    </Field>
+  );
+}
+```
 
-<p><bdi dir="ltr">[05:34]</bdi> والآن نستطيع ببساطة أن نفعل الشيء نفسه مع بقيّة حقولنا. فدعنا نفعل ذلك مع الاسم الأخير أيضًا مثلاً. فتذكّر أنّه إذا كان لنا الاسم الأول، فعندنا حقل الاسم الأخير هذا. فإذًا في هنا، كما ترى، هذا هو مقدار</p>
+لاحظ `checked === true`: مكوّن `Checkbox` يعطي `boolean | "indeterminate"`، والحقل يقبل قيمة منطقية صريحة، فالتحويل يمنع تمرير الحالة الثالثة التي لا معنى لها في هذا المخطّط. ولاحظ الاسم `CustomCheckbox`، لأنّ الملف يستورد `Checkbox` من `../ui/checkbox`، فلو حمل المكوّن الاسم نفسه لتضارب الاستيرادان. والقائمة المنسدلة تحتاج مكوّنًا ثالثًا لسبب مشابه: قيمتها واحدة من ثلاث، والحدث `onValueChange`:
 
-<p><bdi dir="ltr">[05:50]</bdi> الشيفرة التي يمكننا إزالتها الآن. فدعنا نزِل هذا وببساطة — عذرًا — دعنا نزِل من هنا، من الحقل إلى هنا، هكذا وببساطة نغيّر هذا</p>
+```tsx
+import { useFieldContext } from "@/hooks/form-context";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../ui/field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-<p><bdi dir="ltr">[06:06]</bdi> إلى AppField، وفي هنا نستخدم فحسب field.TextInput ونمرّر أشياءنا: أي الـ id، والـ label، وdescription اختياريّ أيضًا.</p>
+export default function Dropdown({
+  label,
+  id,
+  description,
+}: {
+  label: string;
+  id: string;
+  description?: string;
+}) {
+  const field = useFieldContext<string>();
+  return (
+    <Field>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Select
+        value={field.state.value}
+        onValueChange={(value) => field.handleChange(value as any)}
+      >
+        <SelectTrigger id={id} onBlur={field.handleBlur}>
+          <SelectValue placeholder={label} />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="beginner">Beginner</SelectItem>
+          <SelectItem value="intermediate">Intermediate</SelectItem>
+          <SelectItem value="expert">Expert</SelectItem>
+        </SelectContent>
+      </Select>
 
-<p><bdi dir="ltr">[06:24]</bdi> فإذًا — ممتاز. كما ترى، يمكن أن تكون نماذجنا أصغر حجمًا بكثير. والآن، إذا فعلنا الشيء نفسه مع بقية حقولنا، فتذكّر أنّه كانت لدينا بعض الأشياء التي كنّا نجرّبها هنا؛ فهذه validators مثلًا،</p>
+      {description && <FieldDescription>{description}</FieldDescription>}
+      {!field.state.meta.isValid && (
+        <FieldError>
+          {field.state.meta.errors.map((error) => error?.message).join(", ")}
+        </FieldError>
+      )}
+    </Field>
+  );
+}
+```
 
-<p><bdi dir="ltr">[06:37]</bdi> فلنتخلَّ عنها، إذ بدلًا من امتلاء المكان بالضجيج هنا، نزيلها والـ listeners أيضًا من هنا هكذا.</p>
+الخيارات الثلاثة مكتوبة في المكوّن لا في خصائصه، لأنّها تخصّ مستوى المهارة وحده؛ ولو أردت قائمة عامّة لنقلتها إلى خاصية. أمّا `value as any` فمساحة تنازل صريحة: مكوّن `Select` يعطي نصًّا عامًّا، والحقل يتوقّع واحدة من ثلاث قيم حرفية.
 
-<p><bdi dir="ltr">[06:46]</bdi> وتذكّر أيضًا أنّنا كنّا نستخدم form.subscribe هنا كي نعرض الاسم الأخير فقط إذا كان لدينا اسم أول، وهذا كان مجرد مثال أيضًا. فدعنا نزِله ربما. فلنزِل هذه ونُبقِ نموذجنا فقط هكذا — عذرًا — نُبقِ</p>
+ثم تُستهلك الثلاثة داخل الاستمارة. في مصفوفة المهارات يستعمل كلّ صفّ القائمة المسجّلة، والاسم في السجلّ `Select` فصار الاستعمال `subField.Select`:
 
-<p><bdi dir="ltr">[07:02]</bdi> حقلنا، عذرًا. والآن ما سأفعله هو أنّني سأفعل الشيء نفسه مع بقيّة حقولنا. فسأنشئ مكوّنًا للقائمة المنسدلة (dropdown)، ومكوّنًا للـ checkbox، وهلمّ جرًا.</p>
+```tsx
+                          <form.AppField
+                            key={index}
+                            name={`skills[${index}].level`}
+                          >
+                            {(subField) => {
+                              return (
+                                <subField.Select
+                                  label="Skill Level"
+                                  id={`skills-${index}-level`}
+                                />
+                              );
+                            }}
+                          </form.AppField>
+```
 
-<p><bdi dir="ltr">[07:14]</bdi> وسأستخدمها هنا كذلك وأمرّ معك على النتيجة. ولن أفعل هذا على الشاشة، فأظنّ أنّه سيكون بلا فائدة؛ إذ ستكون العملية هي نفسها: إنشاء مكوّناتَ واستخدامها هنا. فإذًا الآن</p>
+هنا مكسبان معًا. الأوّل أنّ `id` يُبنى من الفهرس `skills-${index}-level`، فكلّ صفّ له معرّف فريد وتسميته تشير إلى قائمته، وهذا مستحيل حين يكون المعرّف مثبّتًا في المكوّن. والثاني أنّ `field` في `form.AppField` الأب هو المصفوفة و`subField` في الابن حقل واحد منها.
 
-<p><bdi dir="ltr">[07:26]</bdi> بعد أن أنتهي من إنشاء مكوّناتٍ لمدخلاتنا وتحديث نموذجنا واستخدام هذه المكوّنات، فكما ترى، ملفنا — نموذج التسجيل — صار حجمه الآن نصف الحجم تقريبًا، ويمكننا بل أن نفعل الأفضل. سنرى</p>
+ومربّع الشروط أقصر استعمال في الملف:
 
-<p><bdi dir="ltr">[07:41]</bdi> ذلك لاحقًا، لكن في الوقت الحالي هذا أفضل بكثير. فما فعله هو أنّني دخلت مجلد components لدينا. وفي داخل مجلد form هذا أنشأت مكوّنًا للـ checkbox، ومكوّنًا للـ select أيضًا. وبخصوص مربّع النص فقد</p>
+```tsx
+          <form.AppField name="acceptTerms">
+            {(field) => {
+              return <field.Checkbox id="acceptTerms" label="Accept Terms" />;
+            }}
+          </form.AppField>
+```
 
-<p><bdi dir="ltr">[07:59]</bdi> عدّلته قليلًا فحسب كي يوافق نوعًا (type) أيضًا؛ وهو افتراضيًّا من نوع text، لكن يمكننا أن نلغي هذا النوع كي نستخدمه لحقل كلمة السرّ أيضًا. وقيل أنّني أنشأت مكوّن الـ checkbox — في</p>
+سطر واحد مقابل الكتلة الطويلة السابقة، ومنه نرى أنّ `id` صار يُمرَّر دائمًا بعد إصلاح المكوّن؛ كان ناقصًا في النسخة الأولى فلم تكن التسمية مرتبطة بالمربّع.
 
-<p><bdi dir="ltr">[08:11]</bdi> الطريقة نفسها. وبالطبع سأزوّدك بشيفرة هذا، وقد أدركت للتوّ أنّه هنا — لا أدري كيف حدث هذا. غير أنّه فلنصلحه سريعًا.</p>
+### تنظيف بقايا التجارب
 
-<p><bdi dir="ltr">[08:22]</bdi> فنحتاج أيضًا إلى أن نمرّر ربما id هنا لمكوّننا، ثم نعطي id للـ checkbox لدينا، وفي htmlFor هنا نمرّر الـ id هكذا.</p>
+لا يكفي اختصار الحقول؛ كان في الملف بقايا من دروس سابقة. يحذف المؤلف المحقّقات المكتوبة داخل الحقل نفسه (`validators` على مستوى الحقل) و`listeners`، لأنّ التحقّق صار على مستوى الاستمارة عبر `registerFormSchema`. ويحذف أيضًا `form.Subscribe` الذي كان يعرض الاسم الأخير بشرط وجود الاسم الأوّل، فقد كان مثالًا لعرض مشروط.
 
-<p><bdi dir="ltr">[08:37]</bdi> عذرًا عن هذا. لكن عمومًا، المفهوم هو نفسه: ننشئ الـ checkbox، ونمرّر له أشياءنا، ونحصل على الوصول إلى الحقل باستخدام useFieldContext، ونُظهر أخطاءنا أيضًا. وينبغي أن يُدعى هذا checkbox. يبدو أنني</p>
+الحذف ليس تجميلًا: `validators` داخل الحقل كانت ستُضاف إلى تحقّق المخطّط، فترى رسالتين لحقل واحد عند الخطأ، إحداهما من درس قديم. وإزالة `form.Subscribe` تُرجع الاسم الأخير إلى الظهور الدائم، وهو ما تراه في الصورة. أمّا `form.Subscribe` حول زرّي الإرسال فبقي لأنّه يقرأ `canSubmit`، وهو أمر يخصّ الاستمارة لا الحقل.
 
-<p><bdi dir="ltr">[08:50]</bdi> كنت مستعجلًا حين أنشأت هذه المكوّنات. وفلنسمّه أيضًا شيئًا آخر لأنّنا نستورد الـ checkbox من shadcn أصلًا.</p>
+## النتيجة
 
-<p><bdi dir="ltr">[09:00]</bdi> لكن عمومًا، الآن أيضًا مكوّن الـ select. أنجزته بالطريقة نفسها، مستخدمًا مكوّنات shadcn فقط، وناقلًا الخصائص التي نحتاجها، وعاملًا الأخطاء وما إلى ذلك. وبعد ذلك في نموذجنا يلزمنا تمرير هذه</p>
+![استمارة التسجيل بعد استبدال كلّ حقل بمكوّن مسجَّل: حقول نصّية بعناوينها وأوصافها، وأربع بطاقات مهارات بقوائمها، ثم مربّع الشروط وزرّا الإرسال](/images/tanstack-form/form--creating-reusable-field-components--form.png)
 
-<p><bdi dir="ltr">[09:16]</bdi> المكوّنات إلى createFormHook كي نحصل، حين نستخدم useAppForm، على الوصول إليها، وبفعلنا ذلك استخدمتُ هذه المكوّنات في نموذجنا لكلّ حقولنا. فدعنا نمرّ عليها</p>
+على خلفية داكنة، وفي عمود ضيّق إلى يسار الشاشة، يظهر الحقل الأوّل بتسمية `First Name` وداخله القيمة `Zayd` وتحته `Your First Name`، ثم `Last Name` بعبارته الإرشادية `Last Name` ووصفه `Your Last Name`، ثم `Street` بوصفه `Some Description`، ثم `Password` ووصفه `Your password (must be at least 8 characters long)`، ثم `Confirm Password`. بعدها قسم `Skills` بوصفه `Your skills and expertise.`، وفيه أربع بطاقات كحلية داكنة: `HTML` و`CSS` و`JavaScript` و`New Skill 4`، وفي كلّ بطاقة تسمية `Skill Level` وقائمة تُظهر `Beginner` وزرّ `Remove` أحمر. وجود البطاقة الرابعة يعني أنّ زرّ `Add Skill` العريض تحتها قد ضُغط مرّة. في الأسفل مربّع `Accept Terms` غير محدَّد، ثم زرّا `Save` و`Save & Go back`، وعلى الحافة اليمنى السفلية زرّ لوحة أدوات التطوير الدائري.
 
-<p><bdi dir="ltr">[09:30]</bdi> بسرعة. فلدينا الاسم الأول الآن، وهو أصغر بكثير، والاسم الأخير، والعنوان كذلك. تذكّر فقط أنّك ستحتاج إلى تغليف مكوّناتك بـ form.AppField بدلًا من form.Field، وكذا الحال مع كلمة السرّ. فهي العمل نفسه:</p>
+ما لا تراه في الصورة هو التغيير الحقيقي: ملف الاستمارة نزل إلى نحو نصف حجمه، ولم يتغيّر سلوك: أخطاء التحقّق تظهر كما كانت، والمخطّط ما زال يحكم الإرسال، والزرّان معطّلان حتى تصبح الاستمارة صالحة.
 
-<p><bdi dir="ltr">[09:47]</bdi> مرّر النوع password هنا فحسب.</p>
+## جرّب بنفسك
 
-<p><bdi dir="ltr">[09:48]</bdi> تأكيد كلمة السرّ. وبالنسبة إلى مصفوفة المهارات فقد غيّرتُ تنسيقها قليلًا، لكنّها تقريبًا كما كانت. لكني أستخدم الآن — بالطبع، لا تنسَ form.AppField هنا وهنا — أستخدم أيضًا مكوّن الـ select</p>
+1. احذف `description` من استعمال حقل `Street`، وتحقّق من أنّ الوصف يختفي وحدَه دون أن يترك فراغًا.
+2. غيّر مفتاح التسجيل من `TextInput` إلى `textInput` في `src/hooks/form.tsx`، ثم استعمل `field.textInput`: الاسم الذي تكتبه في السجلّ هو الاسم الوحيد المتاح عند الاستعمال.
+3. بدّل `useFieldContext<string>()` في `TextInput` إلى `useFieldContext<number>()`، ثم تأمّل رفض المترجم لـ`e.target.value`: النوع يأتي من الحقل المسجَّل لا من المكوّن وحده.
+4. استبدل `form.AppField` بـ`form.Field` في حقل `acceptTerms` وحدها: مربّع الاختيار سيشتكي من غياب السياق، وهذا الفرق العملي بين الواجهتين.
 
-<p><bdi dir="ltr">[10:05]</bdi> الذي عرّفتُه هنا أيضًا.</p>
+## المراجع
 
-<p><bdi dir="ltr">[10:10]</bdi> وأخيرًا بالنسبة إلى الـ checkbox فكما ترى أصغر بكثير، ونحتاج فقط إلى تمرير الـ id الذي أصلحناه للتوّ.</p>
+- [فيديو الدرس: Creating Reusable Field Components](https://www.youtube.com/watch?v=H2T21r5wu3g&t=6626s)
+- [شيفرة الدرس: فرع useAppForm-3](https://github.com/alialaa/tanstack-form-course/tree/useAppForm-3)
+- [التوثيق الرسمي: تركيب النماذج في TanStack Form](https://tanstack.com/form/latest/docs/framework/react/guides/form-composition)
+- [التوثيق الرسمي: نظرة عامة على TanStack Form](https://tanstack.com/form/latest/docs/framework/react/overview)
 
-<p><bdi dir="ltr">[10:19]</bdi> ففلنقل accept terms، وفي هنا لدينا form.subscribe والأزرار. لم أفعل في هنا أيّ شيء، فينبغي أن يعمل بالطريقة نفسها تمامًا. فإذا أرسلنا، فسنحصل على التحقّق من الصحة وكلّ شيء. لكن نموذجنا الآن أصبح</p>
+---
 
-<p><bdi dir="ltr">[10:33]</bdi> أصغر حجمًا وأسهل استخدامًا كذلك. غير أنّه ما زال لدينا القدرة على فعل ما هو أفضل.</p>
+> هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Creating Reusable Field Components» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.

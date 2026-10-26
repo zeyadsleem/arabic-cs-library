@@ -1,37 +1,134 @@
 ---
-title: "التثبيت (Installation)"
+title: "تثبيت TanStack Form وإعداد أدوات التطوير"
 lang: ar
 source: "https://www.youtube.com/watch?v=H2T21r5wu3g&t=164s"
 ---
 
-الدرس 2 من 21 · دورة TanStack Form الكاملة · 2 دقيقة و29 ثانية
+## ماذا سنتعلّم؟
 
-<div class="lecture-video"><iframe src="https://www.youtube.com/embed/H2T21r5wu3g?start=164&amp;rel=0" title="التثبيت (Installation) — الفيديو الأصلي" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+قبل أن نكتب أوّل استمارة، نحتاج إلى أرضية صالحة: مشروع `React` مع `TypeScript` يبنيه `Vite`، ثم ثلاث حزم من `TanStack` تُضاف إليه. هذه الحزم ليست واحدة: واحدة تحمل منطق الاستمارات نفسها، وواحدة تبني لوحة أدوات التطوير، وواحدة تربط الاستمارات بهذه اللوحة. في هذا الدرس نثبّت الثلاث، ونركّب اللوحة في نقطة دخول التطبيق، ونقرأ ما تغيّر في `package.json` بندًا بندًا لنفهم وظيفة كل حزمة وما الذي ينكسر بدونها.
 
-<p>الفيديو الأصلي باللغة الإنجليزية. إذا تعذّر تشغيله هنا، <a href="https://www.youtube.com/watch?v=H2T21r5wu3g&t=164s" target="_blank" rel="noopener noreferrer">شاهده على موقع المؤلف</a>. التفريغ النصي العربي الكامل أدناه.</p>
+لا استمارة في نهاية هذا الدرس، ولا حقل واحد. الفكرة التي يثبتها الدرس أنّ الاستمارة القادمة تحتاج إلى شيء واحد فقط قبل أن تُكتب: أن تكون الحزمة موجودة في المشروع، وأن تكون أدوات الفحص مركّبة، حتى نرى ما يجري داخل الاستمارة حين نبدأ ببنائها في الدرس التالي بدل أن نخمّن.
 
-<p><bdi dir="ltr">[00:04]</bdi> إذًا في هنا لديّ مشروع React مفتوح، وقد أُنشئ بكل بساطة باستخدام Vite، وقد ثُبِّت فيه shadcn أيضًا. لذا يمكنك استنساخ المستودع الذي سأوفّره إن شئت أن تُتابع معي، أو ربما أن تملك</p>
+## الشرح
 
-<p><bdi dir="ltr">[00:15]</bdi> مشروع React خاصًا بك تحتاج إلى العمل عليه. لا يهم ذلك. وإذا شئت أيضًا أن تفعل هذا من الصفر، فيمكنك هنا أن تجد تعليمات في موقع shadcn عن كيفية إنشاء مشروع React مع Vite مع shadcn كذلك.</p>
+### نقطة البداية: المشروع الذي نبني عليه
 
-<p><bdi dir="ltr">[00:29]</bdi> هذا تقريبًا ما فعلتُه لإنشاء هذا المشروع، وأنت أيضًا لست مضطرًا لاستخدام shadcn، فاستخدام CSS فقط، لأنّنا سنرى لاحقًا كيفية دمج مكتبات المكوّنات (components) مثل هذه مع TanStack Form، ولكن ربما أنت</p>
+المشروع في فرع الدرس ليس فارغًا. هو مشروع `React` أنشأه `Vite` بقالب `TypeScript`، وأُضيفت إليه `Tailwind CSS` بإصدارها الرابع عبر الملحق `@tailwindcss/vite`، وأُضيف `shadcn/ui` لتوليد مكوّنات الواجهة. لا يهمّ أن تعيد إنشاء المشروع حرفيًا: يمكنك استنساخ فرع الدرس، أو العمل على مشروعك الخاص، أو اتّباع تعليمات `Vite` و`shadcn/ui` لإنشاء واحد جديد. الشرط الوحيد أن يكون لديك جذر تصيير واحد في `index.html` ومعرّفه `root`، وملف `src/main.tsx` هو نقطة الدخول.
 
-<p><bdi dir="ltr">[00:43]</bdi> تستخدم أيّ مكتبة مكوّنات أخرى، فهذا سيعمل كذلك أيضًا، ولكن في هنا لديّ هذا المكوّن app الذي يُعرض في صفحتنا الرئيسية هكذا، فلنبدأ العمل في هذا المكوّن، فلنثبّت أولًا TanStack Form، لذا نحن</p>
+قبل التثبيت، لنقرأ إعداد `Vite` في الفرع، لأنّه يفسّر شيئًا ستعتمد عليه مكوّنات `shadcn/ui` لاحقًا:
 
-<p><bdi dir="ltr">[01:00]</bdi> نحتاج إلى تثبيت بضعة حزم (packages)، فأولًا TanStack Form نفسه، وهو npm install @tanstack/react-form، أو بالطبع قد تستخدم شيئًا آخر غير npm. أنا أستخدم npm لذا سأقوم</p>
+```ts
+import { defineConfig } from 'vite'
+import path from "path"
+import tailwindcss from "@tailwindcss/vite"
+import react from '@vitejs/plugin-react'
 
-<p><bdi dir="ltr">[01:15]</bdi> بتثبيته، وكذلك يزوّدنا TanStack Form ببعض أدوات التطوير (dev tools) التي يمكننا استخدامها من أجل تصيّد الأخطاء (debugging) في نموذجنا وما إلى ذلك. لذا يمكننا تثبيتها أيضًا بتثبيت @tanstack/react-devtools، وبالإضافة إلى ذلك يلزمنا أيضًا</p>
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+})
+```
 
-<p><bdi dir="ltr">[01:33]</bdi> تثبيت @tanstack/react-form-devtools.</p>
+الملحقان في `plugins` هما مصدر التحويل: `react()` يفعّل دعم `JSX` والتحديث السريع، و`tailwindcss()` يولّد أنماط `Tailwind` من ملف `src/index.css` دون ملف إعداد منفصل، وهو أسلوب الإصدار الرابع. أمّا `resolve.alias` فيجعل الرمز `@` يشير إلى مجلّد `src`؛ من دونه تفشل كل استيرادات `shadcn/ui` التي تُكتب على الشكل `@/lib/utils`, لأنّ `Vite` لن يعرف إلى أين يذهب. ولهذا نجد في الفرع ملف الأدوات المساعدة نفسه:
 
-<p><bdi dir="ltr">[01:36]</bdi> وبعد إنجاز هذا يمكننا كذلك تثبيت @tanstack/react-form-devtools هكذا.</p>
+```ts
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-<p><bdi dir="ltr">[01:44]</bdi> والآن من أجل استخدام أدوات التطوير هذه يمكننا الذهاب إلى هنا، إلى ملف main.tsx لدينا.</p>
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
 
-<p><bdi dir="ltr">[01:50]</bdi> قد يكون هذا مختلفًا عندك إن أنشأت مشروعك بنفسك، غير أنّه في هنا عندما نصيّر مكوّن app هذا نحتاج أيضًا إلى تصيير TanStackDevtools. إذًا في هنا، TanStackDevtools، ثم نحتاج إلى تمرير إضافة</p>
+دالة `cn` هذه هي الأنبوب الذي تمرّ منه أصناف `Tailwind` في مكوّنات `shadcn/ui`: تجمع الأصناف الشرطية عبر `clsx`, ثم يحلّ `twMerge` التعارض بينها حين تتكرّر خاصية واحدة بإصدارين. وهي سبب وجود `clsx` و`tailwind-merge` في قائمة التبعيات، لا لأنّ الاستمارة تحتاجهما.
 
-<p><bdi dir="ltr">[02:05]</bdi> النموذج (form plugin). إذًا في هنا، ضمن plugins، نحتاج إلى تمرير FormDevtoolsPlugin من @tanstack/react-form-devtools هكذا.</p>
+### الحزم الثلاث التي نحتاجها
 
-<p><bdi dir="ltr">[02:15]</bdi> ونحتاج إلى استدعاء هذه الدالة.</p>
+نبدأ من الحزمة الأساسية: حزمة الاستمارات الخاصة بـ`React`. هذه هي التي تعطينا `useForm` والحقول والتحقّق من الصحة، وكلّ ما سنكتبه في الدروس القادمة يستورد منها. الأمر الذي استعمله المؤلف في الفيديو هو `npm install @tanstack/react-form`, وهو يضيف الحزمة إلى `dependencies` ويثبّت أحدث إصدار متاح.
 
-<p><bdi dir="ltr">[02:20]</bdi> وبتوفّر هذا ينبغي أن يكون لدينا هذه الأيقونة هنا التي ستعرض أدوات التطوير هذه. غير أنّه يمكننا الآن أن نبدأ وإنشاء نموذجنا الأول. إذًا</p>
+ثم نضيف أدوات التطوير بأمر واحد: `npm install @tanstack/react-devtools @tanstack/react-form-devtools`. هنا نقطة يخطئ فيها كثيرون: الحزمتان ليستا بديلًا عن بعضهما. `@tanstack/react-devtools` هي اللوحة العائمة نفسها، وهي حزمة عامّة تخدم كلّ مكتبات `TanStack` وتُصيَّر مرّة واحدة في التطبيق. أمّا `@tanstack/react-form-devtools` فهي المُلحق (plugin) الذي يعرف شكل حالة الاستمارة ويكشفها داخل اللوحة. بلا اللوحة لن يظهر شيء، وبلا المُلحق ستظهر لوحة فارغة لا تعرض شيئًا عن الاستمارة.
+
+الأمران مكتوبان بصيغة `npm` لأنّها ما يستعمله المؤلف في الفيديو؛ إن كنت تستعمل `pnpm` أو `yarn` أو `bun` فالمكافئ واضح، والنتيجة واحدة. ونقطة ثانية تخصّ الإصدارات: نكتب اسم الحزمة بلا رقم لنحصل على أحدث إصدار متوافق، وهذا ما جرى في الفرع فعلًا، فظهرت الإصدارات في `package.json` مسبوقة بالرمز `^`.
+
+### ما الذي تغيّر في `package.json`
+
+هذا مقتطف حرفي من `package.json` في الفرع، من قسم الأوامر إلى نهاية التبعيات:
+
+```json
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "@tanstack/react-devtools": "^0.7.4",
+    "@tanstack/react-form": "^1.23.6",
+    "@tanstack/react-form-devtools": "^0.1.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.545.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.14"
+  },
+```
+
+لاحظ ثلاثة أمور. الأول أنّ الحزم الثلاث دخلت قسم `dependencies` لا قسم `devDependencies`, وهذا ما نتج عن أمر التثبيت العادي؛ والتوثيق الرسمي يقترح تثبيت حزمتَي أدوات التطوير كتبعية تطوير لأنّها لا تُشحن إلى الإنتاج، فإن أردت الدقّة أضف `--save-dev` إلى الأمر الثاني. لا أثر وظيفي لهذا الفرق في التطوير، لكنّه يغيّر ما يُحزَّم عند البناء. الثاني أنّ الأرقام مسبوقة بـ`^`, أي أنّ التثبيت التالي يجلب أحدث إصدار داخل النطاق نفسه دون تغيير الرقم الرئيسي، فيصلك إصلاح الأخطاء ولا يصلك ما يكسر الواجهة البرمجية. والنطاق يضيق في الحزم التي يبدأ إصدارها بـ`0.`, فحزمتا أدوات التطوير هنا لا تتجاوزان إصلاحات الخطأ داخل الرقم الثاني. الثالث أنّ ترتيب البنود أبجدي، وهذا أثر `npm` وحده ولا يعني شيئًا.
+
+أمّا بقية القائمة فهي البنية التي جاءت مع المشروع: `react` و`react-dom` للإصدار التاسع عشر، و`tailwindcss` مع ملحقه، و`class-variance-authority` لتعريف أشكال المكوّنات، و`lucide-react` للأيقونات. كلّها موجودة في الفرع لأنّ مكوّنات `shadcn/ui` تعتمد عليها، لا لأنّ الاستمارة تحتاج إليها. وليس في القائمة `zod` ولا أيّ مكتبة تحقّق خارجية؛ ستُضاف حين نحتاج إلى مخطط (schema) للتحقّق، لا قبل ذلك.
+
+### تركيب اللوحة في نقطة الدخول
+
+الخطوة الأخيرة هي تصيير اللوحة. نفتح `src/main.tsx` ونضيف سطرين إلى ما كان فيه:
+
+```tsx
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.tsx";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { FormDevtoolsPlugin } from "@tanstack/react-form-devtools";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <App />
+    <TanStackDevtools plugins={[FormDevtoolsPlugin()]} />
+  </StrictMode>
+);
+```
+
+الترتيب هنا مقصود. `TanStackDevtools` مكوّن عادي، لا مزوّد ولا سياق يغلّف التطبيق، فيُصيَّر شقيقًا لـ`<App />` داخل `StrictMode`. وخاصية `plugins` تأخذ مصفوفة، لأنّ اللوحة الواحدة قد تحمل عدّة مُلحقات في وقت واحد — للاستمارات وللجداول وللموجّه. وهذا سبب استدعاء `FormDevtoolsPlugin()` بأقواس: الدالة مصنع يُرجع إعداد المُلحق، فإن نسيت الأقواس مرّرت الدالة نفسها فلم تعرف اللوحة أيّ مكتبة تعرض. أمّا علامة التعجّب بعد `document.getElementById("root")` فهي تأكيد لـ`TypeScript` بأنّ العنصر موجود، لأنّ نوع الإرجاع يحتمل `null` ونحن نعرف أنّ `index.html` يحوي `#root`.
+
+لا حاجة إلى أيّ إعداد آخر: لا ملف إعداد للوحة، ولا تسجيل يدوي، ولا استيراد أنماط. المكوّن يجد المُلحق في المصفوفة، ويرسم زرًّا عائمًا في طرف الصفحة، ومنه تُفتح لوحة تعرض حالة كلّ استمارة مسجّلة.
+
+## النتيجة
+
+لا شيء تغيّر في واجهة التطبيق: الصفحة ما زالت تعرض `<h1>Hello</h1>` كما كانت، ولم نكتب حقلًا واحدًا. الذي تغيّر هو قائمة التبعيات في `package.json`, إذ صارت تضمّ `@tanstack/react-form` بإصدار `1.23.6`, و`@tanstack/react-devtools` بإصدار `0.7.4`, و`@tanstack/react-form-devtools` بإصدار `0.1.6`, ثم ملف `src/main.tsx` الذي صار يصيّر مكوّن `TanStackDevtools` بجانب التطبيق ومعه مُلحق الاستمارات. وإذا شغّلت `npm run dev` وفتحت الصفحة، فستجد زرًّا عائمًا للوحة في طرف النافذة؛ فتحه الآن يعطي لوحة فارغة، وهذا هو المتوقّع تمامًا: المُلحق مركّب، ولم تُسجَّل استمارة بعد. حين ننشئ أوّل استمارة في الدرس التالي ستمتلئ هذه اللوحة بالقيم والأخطاء وحالة كلّ حقل، بلا سطر طباعة واحد في الشيفرة.
+
+## جرّب بنفسك
+
+1. احذف سطر `<TanStackDevtools … />` مؤقّتًا من `src/main.tsx` وأعد تحميل الصفحة، ثم أعده: الفرق هو دليل أنّ اللوحة مكوّن مستقلّ عن التطبيق لا جزء منه.
+2. انقل `@tanstack/react-devtools` و`@tanstack/react-form-devtools` من `dependencies` إلى `devDependencies` في `package.json`, ثم شغّل `npm install` و`npm run build` وتأكّد من نجاح البناء.
+3. انسَ الأقواس واكتب `plugins={[FormDevtoolsPlugin]}` بدل `plugins={[FormDevtoolsPlugin()]}`, ثم أعد تحميل الصفحة ولاحظ ما يحدث قبل أن تتراجع.
+4. شغّل `npm ls @tanstack/react-form` وقارن الإصدار المثبّت فعليًا بالرقم المكتوب في `package.json`, ثم جرّب `npm install @tanstack/react-form@latest` ولاحظ كيف يتغيّر النطاق في الملف.
+5. أعد إنشاء المشروع من الصفر بمشروع `Vite` جديد وقالب `React` مع `TypeScript`, ثم ثبّت الحزم الثلاث وحدها وشغّل التطبيق: ستحصل على لوحة تعمل بلا `Tailwind` ولا `shadcn/ui`, وهذا يبيّن أيّ التبعيات تخصّ الاستمارة وأيّها يخصّ الواجهة.
+
+## المراجع
+
+- [فيديو الدرس: Installation](https://www.youtube.com/watch?v=H2T21r5wu3g&t=164s)
+- [شيفرة الدرس: فرع installing-tanstack-form](https://github.com/alialaa/tanstack-form-course/tree/installing-tanstack-form)
+- [التوثيق الرسمي: تثبيت TanStack Form](https://tanstack.com/form/latest/docs/framework/react/installation)
+- [التوثيق الرسمي: نظرة عامة على TanStack Form](https://tanstack.com/form/latest/docs/framework/react/overview)
+
+---
+
+> هذا الدرس شرحٌ عربيٌّ مُعَدّ عن درس «Installation» في دورة TanStack Form التي يقدّمها علي علاء؛ والشيفرة فيه من فرع المستودع الأصلي، والروابط تشير إلى المصدر الرسمي. وما أضافه المترجم من توضيح لا يُنسب إلى المؤلف.
