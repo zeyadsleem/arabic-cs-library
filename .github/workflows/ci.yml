@@ -31,7 +31,7 @@ jobs:
         run: pnpm content
 
       - name: The committed artifacts must match what the generators produce
-        run: git diff --exit-code -- content/frontend-architecture content/frontend-architecture-structure.json content/kinney content/kinney-structure.json src/lib/generated src/lib/tour
+        run: git diff --exit-code -- content/frontend-architecture content/frontend-architecture-structure.json content/kinney content/kinney-structure.json content/tanstack-router content/tanstack-router-structure.json content/tanstack-form content/tanstack-form-structure.json src/lib/generated src/lib/tour
 
       - name: Audit the rendered sections
         run: pnpm audit:content
